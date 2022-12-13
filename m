@@ -1,60 +1,61 @@
-Delivery-date: Mon, 12 Dec 2022 17:43:55 +0100
+Delivery-date: Tue, 13 Dec 2022 09:42:44 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p4luE-001pqD-TG
-	for lore@lore.pengutronix.de; Mon, 12 Dec 2022 17:43:55 +0100
+	id 1p50s8-002RfQ-Ch
+	for lore@lore.pengutronix.de; Tue, 13 Dec 2022 09:42:44 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p4luE-0006t1-B2
-	for lore@pengutronix.de; Mon, 12 Dec 2022 17:43:55 +0100
+	id 1p50s7-00083a-OI
+	for lore@pengutronix.de; Tue, 13 Dec 2022 09:42:44 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SixFLgwYUqsbhmOh4rLbHbQ00czyFt31gEvBK1jiERE=; b=KkszK+DE1Tlc3ZT7ANn414Lhm8
-	GOPdQyrcT9Z7uijE1VrtYHtDlHwPHWChFpf3Cv3oFGLXKEOsrvm/5Puw5wJuVEu5kbr2gkPcMylq7
-	QfXY3dk795j4h4pAAFz46tq6p7gBSUgPitRZChluCmbYLtBnN9s5zPYL4MByZoszGoSXc85tiVCX+
-	csuwZqGfnSggtAPsuNfbpm9/WdY5a10siWxeMzX60AsVXkUyX3jgycwjrdOPwJ6iSiDeIUWElmvCG
-	ljSoIc4eCjJ6/bJrljlFdfqxtk+7pKmWzZr45MHX7zYEKrT+H2wVaD+EkLtjZI66By3ZMa1tgDS+z
-	ChEItFIw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=UsoFDLq4RYhHQDCW+/qqxwajpaqIJlSjQy1F+sEGgwM=; b=oVLWgNDM6qzWYyw84Fj8RzpXyz
+	kl+Cx2P9Vj+phYwtx6JBxJtpN9wa2kDv4PdxO9jNVUxBpIJq4XXDsVVYpdec8qzfv5V6eFwMBYlVJ
+	mDKliRwbnpZqqAIxkAd7cJrstuDDjxZ9Oz441aimyhNXVW6clFez7FHmUW/l6MTn5u6+/vdosSCb5
+	FRTuk8BIUnXTrZo0rnXwLNCSLekj759i3s2eh4ICiDkfS4vaxVb7cAjZ89hutbtjEqXSaKDHCtC2y
+	qSNctUX8cxDHDUfC0hkfZOhhLTDGnETInSCZqXwAszOdzHc6nClJ3A5uHWh/ZJIJj+No9JvZLPyIn
+	B3jw5Odw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p4lsz-002FON-9J; Mon, 12 Dec 2022 16:42:37 +0000
+	id 1p50qO-00E0SH-E5; Tue, 13 Dec 2022 08:40:56 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p4lse-002F8P-8V
-	for barebox@lists.infradead.org; Mon, 12 Dec 2022 16:42:18 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1p50mv-00DyL8-0O
+	for barebox@lists.infradead.org; Tue, 13 Dec 2022 08:37:23 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1p4lsc-0006eN-TW; Mon, 12 Dec 2022 17:42:14 +0100
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1p4lsb-0043p0-Gj; Mon, 12 Dec 2022 17:42:14 +0100
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1p4lsb-009v92-Gk; Mon, 12 Dec 2022 17:42:13 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 12 Dec 2022 17:42:12 +0100
-Message-Id: <20221212164212.2358450-3-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221212164212.2358450-1-a.fatoum@pengutronix.de>
-References: <20221212164212.2358450-1-a.fatoum@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1p50mr-0007Km-Mm; Tue, 13 Dec 2022 09:37:17 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1p50mr-0005Ts-FP; Tue, 13 Dec 2022 09:37:17 +0100
+Date: Tue, 13 Dec 2022 09:37:17 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20221213083717.GO29728@pengutronix.de>
+References: <20221212163907.2356192-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221212163907.2356192-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221212_084216_407774_6EB56A7E 
-X-CRM114-Status: GOOD (  10.58  )
+X-CRM114-CacheID: sfid-20221213_003721_099836_7006591C 
+X-CRM114-Status: GOOD (  18.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,62 +77,51 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/3] pbl: define DEBUG globally when CONFIG_INITCALL_DEBUG=y
+Subject: Re: [PATCH master 1/2] KASan: test_kasan: silence warning with newer
+ GCC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-CONFIG_INITCALL_DEBUG=y is a very useful tool for debugging barebox
-hangs, but it's not so useful if the hang happens very early.
-Define a new CONFIG_PBL_DEBUG symbol that will define DEBUG globally
-in PBL to get more insight into boot hangs.
+On Mon, Dec 12, 2022 at 05:39:06PM +0100, Ahmad Fatoum wrote:
+> Newer GCC will rightly complain about this being an out-of-bounds
+> access. This is intended as the kasan command is meant to cause
+> out-of-bounds accesses to test proper operation of KASan.
+> 
+> Thus silence the warning for this specific instance.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  lib/kasan/test_kasan.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - changed into separate config option instead of piggy backing
-    CONFIG_DEBUG_INITCALLS (Sascha)
----
- common/Kconfig       | 9 +++++++++
- scripts/Makefile.lib | 4 ++++
- 2 files changed, 13 insertions(+)
+Applied, thanks
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 19cd79311016..46675dfe2ea7 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1566,6 +1566,15 @@ config DEBUG_INITCALLS
- 	help
- 	  If enabled this will print initcall traces.
- 
-+config DEBUG_PBL
-+	bool "Print PBL debugging information"
-+	depends on PBL_CONSOLE || DEBUG_LL
-+	help
-+	  If enabled this will enable all debug prints in the prebootloader.
-+	  For this to work, a console needs to be configured in the
-+	  board-specific entry point and configured for either DEBUG_LL
-+	  or PBL_CONSOLE.
-+
- config DEBUG_PROBES
- 	bool "Trace driver probes/removes"
- 	help
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 85d18f07a2b6..6e0d92cf756d 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -156,6 +156,10 @@ _c_flags       += $(if $(patsubst n%,, \
- PBL_CPPFLAGS   += $(call cc-option,-fno-sanitize=all)
- endif
- 
-+ifeq ($(CONFIG_DEBUG_PBL),y)
-+PBL_CPPFLAGS   += -DDEBUG
-+endif
-+
- # If building barebox in a separate objtree expand all occurrences
- # of -Idir to -I$(srctree)/dir except for absolute paths (starting with '/').
- 
+Sascha
+
+> 
+> diff --git a/lib/kasan/test_kasan.c b/lib/kasan/test_kasan.c
+> index d0ea91547711..14511cdb80bd 100644
+> --- a/lib/kasan/test_kasan.c
+> +++ b/lib/kasan/test_kasan.c
+> @@ -290,6 +290,8 @@ static noinline void kasan_alloca_oob_left(void)
+>  	char alloca_array[i];
+>  	char *p = alloca_array - 1;
+>  
+> +	OPTIMIZER_HIDE_VAR(p);
+> +
+>  	pr_info("out-of-bounds to left on alloca\n");
+>  	*(volatile char *)p;
+>  }
+> -- 
+> 2.30.2
+> 
+> 
+> 
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
