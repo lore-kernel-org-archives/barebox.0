@@ -1,165 +1,58 @@
-Delivery-date: Tue, 13 Dec 2022 10:42:51 +0100
+Delivery-date: Tue, 13 Dec 2022 15:13:58 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p51oI-002VIQ-Fu
-	for lore@lore.pengutronix.de; Tue, 13 Dec 2022 10:42:51 +0100
+	id 1p562f-002hde-VU
+	for lore@lore.pengutronix.de; Tue, 13 Dec 2022 15:13:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p51oH-0007je-EW
-	for lore@pengutronix.de; Tue, 13 Dec 2022 10:42:50 +0100
+	id 1p562e-0000wW-Vf
+	for lore@pengutronix.de; Tue, 13 Dec 2022 15:13:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
-	:Subject:CC:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kUyJs1zYW71oPrl0GBV5htxEedhfnP8wIes29kqnFb0=; b=UXoyWfSexnTqT+UiXMp3+6TOo2
-	hlNj0geVTQrgahwnZllG81xR9Jy+nS7kQ3xHdUWLDOuE3NjYiGLmLHQlsCbH20ooUG1ALVGNjsMb2
-	fbReY6xzoNU/xFOmO7lpRXIZZpOYo3BfcyiBXwmIVNSLEtB/Hzh7E2HJZ17oy5ujRF99ZFPJP4tQu
-	frOJFi5B7V4ctAWb3skBVlXVhKi+3V1lQ1VOYQdL0omn74iE2Gz3VjLR+Zi1ptoMZO3Iz9c+Wupkt
-	SlVd6ZJ7h3Z4Ldfw5d9Lv8jM0SqiutQmFg1+Pu+r4CNZBgOX8qOdPWyEzQkGGt2QRb6+0Y+5lHJ+c
-	Ve+gxa+g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=7+4ddenDU5IJjXB15uSnl0vkemPh1cL0BoBtrIUSFUM=; b=gADDh4dKu8kK4seANwCADYwyUO
+	DMG4OschSeOReLHPl8rkIKJWI/wMkDicrPRNCRh+p1cZIizm9smeKl0F9pHsVMZC9VlkM5lKedPkG
+	XpOeNWacBxgvYoWqNcrHitXgHqbxE2XiO9c4d7Fm7npxDm+Lyf1RfiKn+wUAdUUZj/dFLtvgTibvj
+	aNd+Dt4JkTSks//UCkuSh+bmmUmMQ4JFNXWmKQTR60f+8wcuLOrR76IwDfHSByXELKPTWlJwGPFmb
+	PqbRsB1d513WXfH/auwkmkMrFkd+7qsMDQ+l8DexkLM2nntM2bVxRu6m5xPeoOAOmyvu3tFU+F6LV
+	6Tl28dpg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p51mj-00Efou-Jn; Tue, 13 Dec 2022 09:41:13 +0000
-Received: from mx0b-001ec801.pphosted.com ([148.163.140.146])
+	id 1p5614-000y2g-3b; Tue, 13 Dec 2022 14:12:18 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p51mb-00EfUx-JB
-	for barebox@lists.infradead.org; Tue, 13 Dec 2022 09:41:10 +0000
-Received: from pps.filterd (m0163889.ppops.net [127.0.0.1])
-	by mx0b-001ec801.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 2BD3bXFY032493;
-	Tue, 13 Dec 2022 04:41:01 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ametek.com; h=from : to : cc :
- subject : date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pphost;
- bh=kUyJs1zYW71oPrl0GBV5htxEedhfnP8wIes29kqnFb0=;
- b=OyLMwVTg4j1S6Ym+3yOpdNZiVmuOUq6KnR6iM8hN001QcHcLmoZgotI+UlpjzK3JCRcJ
- xYKmUZsi2CIRVR01mG+kLFFqVWbiGr0Lp7z8n2oSb9KIoVR7BPW1fc0DNGTaN+Z6/6dL
- EfocYMspAaEUjozs5hC1HTTtFfagrx1rD3V0OVTfW2qKowhsjyWBLY3favaDKVHUm1Hj
- 6l8/ZSLLn6N+3OfizbGtt334zZe3K6IvmNmVu1o46oZgCf2ODtp1ygSRRO5qabq7YNcd
- /pwEnNbezK7uTv/pwylbYkY+X74nnxQ5e2xc0z/0IrRHle4lGiPkrcDZ5xScyP0CaYub Xw== 
-Received: from nam12-bn8-obe.outbound.protection.outlook.com (mail-bn8nam12lp2168.outbound.protection.outlook.com [104.47.55.168])
-	by mx0b-001ec801.pphosted.com (PPS) with ESMTPS id 3mckvc717s-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Dec 2022 04:41:01 -0500
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L+PktMAZo+eIDzfveARvHnL3ogeBFma9MtEI1ATWDaWqG3o+5cRopFsD3pRW1RUHma2XNVwBsOWHN5u2vE2ORL3syv1kzbg71V5oOgGCm/CN3TD7DRihwivdSe6Pwa6k+uDp5IbzLraOnl4+FA4m5BE/7KnHrRkunx40TxFi4tFOlN9khjhqVMMKOLoJlKHE8nkz7bNHIXlkRIzpAs547D77ABj+aL1REduATC6lLd6H6rXgVCYh0R/7Aq87D1uDPhGW6lMAuTymVrqd8CPU8quYuvKA4Fu6NSL+aoxMWenFmdrTDQlOaIo9EkZ2b40t2MUugLPfSCBkwp0SPc9fSA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kUyJs1zYW71oPrl0GBV5htxEedhfnP8wIes29kqnFb0=;
- b=arwrerGBGjXsu0UECzJv9Ip4Ub0uaC7JOBV+Dyi/abf3r7oA71UoMRz83pKBv8t7igrWDcS73Hh3AdHj8IuugS1N4VKqxZ82hmfKRl10Bl1g0s0L2+MGYqK2aTS/KXAZKemb82FJk0ov+UeyBtBxOm+M0W2LUQ9xyEZIziexALDRlsd/P5LJqe07CQmhCT3sf+zo2jFS7nTsom2ESxi5F5W99M858H+SygG/2vFSmnalxYXCSAZ0udO0W0KNuK2i1HydqdJw/+MCPVUqUO1GJIPeFHSaojMFFXrLpjsh/LyicQw3mkGrl79t2z44E7JHDmaV2Kb6KvWua5km479YEA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ametek.com; dmarc=pass action=none header.from=ametek.com;
- dkim=pass header.d=ametek.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ametek.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kUyJs1zYW71oPrl0GBV5htxEedhfnP8wIes29kqnFb0=;
- b=XhNsEMUiGdhyyyH9s7KXsoOjCGplmgfVzPUh2z+PzOf0p/VEyNKcUSVoDm4ATQ8omSGniawNtmJllu14V1tJiFqcpszzoXjUGFfdry86yvTbZ+g6LOpYmZlk0f4Q/IxmmnpSD1oRrbsy2XzhztMIqckCPevMtJLeaHoCdE4e99k=
-Received: from BL0PR07MB5665.namprd07.prod.outlook.com (2603:10b6:208:80::28)
- by MWHPR07MB3053.namprd07.prod.outlook.com (2603:10b6:300:e9::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.5880.19; Tue, 13 Dec
- 2022 09:40:57 +0000
-Received: from BL0PR07MB5665.namprd07.prod.outlook.com
- ([fe80::a7dd:4fd8:4f34:bc2f]) by BL0PR07MB5665.namprd07.prod.outlook.com
- ([fe80::a7dd:4fd8:4f34:bc2f%5]) with mapi id 15.20.5880.019; Tue, 13 Dec 2022
- 09:40:57 +0000
-From: Renaud Barbier <Renaud.Barbier@ametek.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Barebox List
-	<barebox@lists.infradead.org>
-CC: Lucas Stach <lst@pengutronix.de>
-Thread-Topic: PCIE on LS1021A
-Thread-Index: AdkL8DOb81y0+p2vQua38NWFw8d4qwADQ1uAAABuCMAAAG0rAAC1f4Zg
-Date: Tue, 13 Dec 2022 09:40:57 +0000
-Message-ID:  <BL0PR07MB5665830512AFD69F6619A5A2ECE39@BL0PR07MB5665.namprd07.prod.outlook.com>
-References:  <BL0PR07MB5665EA1D980C39F834845849EC1C9@BL0PR07MB5665.namprd07.prod.outlook.com>
- <9bb964dc-3c24-7c70-b007-759c3aa85511@pengutronix.de>
- <BL0PR07MB5665C80785AAEF796F499985EC1C9@BL0PR07MB5665.namprd07.prod.outlook.com>
- <c4595d56-6284-4f03-e553-2f76cc8e7aa6@pengutronix.de>
-In-Reply-To: <c4595d56-6284-4f03-e553-2f76cc8e7aa6@pengutronix.de>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL0PR07MB5665:EE_|MWHPR07MB3053:EE_
-x-ms-office365-filtering-correlation-id: 657baea2-7180-48ce-54b5-08dadcee22e8
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  GUBXH/2w5YGx2CHcz8EcjbtsHRxbKYfLMofHkipjoXjYTLiQYZ2XSFKdacFsnrH9v0JtqpwN+pUVGarzTzkcfoIf7azythexhelbs0Hls6FMSc6UTzn88gbXwPpCbsM9Pln0ZnImJHPSuBh4zUpcAhqMwPW6jWxTwYx6zaGbZAz/yMjJdIVcZ4i0z/8CpHvJ/odmdYfglqcltD5lSmZbM2UKucL6CPcdSLczEq30AAg6/JA6bpdSOTJM1AjcNbmLqBEpmB1EqQPGOpnGFT7+jfmGyNDDiUKzjSkfraYzH9iVon3F7IWj6KjBIWNXnBYj54jAPm1xD6xYZsCxk6CmEu47Qd+BIVXikhoam0wt7JuA/6UUbfmbRzQvF/IXlUtG91OYFMJVp1Z/WUDiZ8xiKEv/tV5fwrO0ZVF9dHG1ADID338hONPJCq/V4B7GO1JTtLSNXRQ0pGPKDhalZAHd8n+4aurbw5R/Ia/enEAuJDMw/V6bpEdvhU1zukVkz8loY0S7uDmmyU1FxD1iVZADvIJE/yyfSuCYbWAuToMEFJnJTWUFujtVELwhcxf6+MOqlGFbxMTb1MwGOPGMAyudl6mZgsYjk8XJ4BBTVFKol1Xg7DKu9wv+YAyLpk8N8eVU137g33+fuLSsKKDZs9KupfwPb3JMDFkv27BPPiOJ0zBGdRmDv+fvslELROoi5DVdyeALYSEg9sjkkBz8P63pjw==
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR07MB5665.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230022)(4636009)(376002)(39860400002)(346002)(396003)(366004)(136003)(451199015)(110136005)(26005)(76116006)(316002)(5660300002)(52536014)(66556008)(66476007)(8936002)(64756008)(66446008)(8676002)(66946007)(41300700001)(38070700005)(4326008)(7116003)(86362001)(9686003)(7696005)(6506007)(83380400001)(186003)(33656002)(478600001)(71200400001)(2906002)(122000001)(55016003)(4744005)(38100700002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?azh2dUg0QWdvR096OGp0QzQwMDdvUVk1bk1lV0JScFczN1p0c201eUQ1UEJ3?=
- =?utf-8?B?MU4yMXZwMWJLTWRKbVhlelRsVzdmSmd4OXhBUG4zZUtQa1l0akdtUzVpbFJx?=
- =?utf-8?B?WVorb2tQQjNmVUY3T21HbkxGVG9pOHprZWJCZjFtTlkxMEdBS0NOZTJSRWNN?=
- =?utf-8?B?LzREYStCM2ZrTFl2QW43ZmVRR0R3Rmk2dmc3L3N2c0dXYzVYcTN5WWh6WlZF?=
- =?utf-8?B?SGNLdkZNUExZbTJSL0w2aE1XZmpiUGQ2ZGdZckVXNFE5TzBWNUx5dVFuMzZY?=
- =?utf-8?B?SmEwYlN1NW5WVHlWZTk0Y1c2aWMyOW5EMDkvOHNPQUNXTGZaLzNJcHNMeVFr?=
- =?utf-8?B?M0VaUWh4LzRqelVITHhUejhEOUFMNVVGejhuOVBlekx6S1lvZ21DZUlaYlZS?=
- =?utf-8?B?U0JQUFdDa1hSRVBscENEb0djdzV4QmJOS0pnU3lyZGx2TWdxM0NlZWNIdHZE?=
- =?utf-8?B?Z2xVRVUwNGY2ei9aTmowbzR5ZGxZVFpneEgvZldoeXlpVkcrQURxMWdRbi91?=
- =?utf-8?B?czhvSDhTSFgvbUUrY0FMaGNPdS95eWJPTTQ2NWxNTEt4TnNtbWhQNDV3VDdl?=
- =?utf-8?B?L21KMVpvYjMwa25CSndoZWRzSUZDdkhIcVJyT21VdlpINUVTTGVHSHZLYWZJ?=
- =?utf-8?B?amh4a3h4TUhGNjJoRDMvNEl2cC9DNnk4Q3NXMjkxYlNValFXcE5pTkdNcDNJ?=
- =?utf-8?B?dFhKcm9yNlRwNVhSOXI2ME5LSGN5bmRVMXU0Kzc0SjhBOGw5VTQwSjhjdFdw?=
- =?utf-8?B?VDJ6eHdNRTlFRlJLUmJ2aHBXU243c3BZYWJIRE1yOStxWG1SbkVxTE0wd0s5?=
- =?utf-8?B?aEF4T3p3VWFHd2RtdEx2eFFKQWN1WHB4dzRVNEFKWjBmSU96WFZhVWdQNFN4?=
- =?utf-8?B?Wk9MdjdGZ21tbUdXb0gwc2ZsMW15SkpWZ2FyR0RJNTE5c0RwMTFiY2FQYVh0?=
- =?utf-8?B?TVpzeXpUanVUeG9pcERndDJ1Vng0eWd6QmZYUmw3WEdPa1pEL3JqbXBIZnZI?=
- =?utf-8?B?Q3N4bGYzU2s0bWpjYUZRdSs3OGY5TGFiUmM2RjNqVE9DLzJQQXlneHQwc2JL?=
- =?utf-8?B?WHk3bjFacnZTRGF0V3c1dllhdllxckNJZExPU1VEVS85T2Z1dVVNMGlzdzB4?=
- =?utf-8?B?NCthY3NlNXpSSGFiNGlYNll0YzRlbExLQ3lJZThZbHcrbXFvNW13NEpHbm1y?=
- =?utf-8?B?WkIvS1JZVlZqS3d1TEJUWmhMT0ZYNWlXV21RdE5qU0RtQXZFWUU2YytjRzNi?=
- =?utf-8?B?SkxPVDFMWWpuM3lqb1VDd2R6Y1ZuYm15Slk0ZVVBUEdNeGROaTlCN1hDMWdS?=
- =?utf-8?B?RzV5RURSbGNMMUJjemM5QUtHUk1HYXJCbHVUSzYwZzVvc0N3eC8xOFJHRytU?=
- =?utf-8?B?Z3JMbXp1NXo3c21pTExiVmg2MStoWjhYWEVNTTZYMFNUZ25Tc1NTRlVwUXNU?=
- =?utf-8?B?NjNVQmZtM0hVbHFFWnZ3eEsyOWpJbnBhRmRKL2pZNkFpcEk0a09peUE2M25G?=
- =?utf-8?B?UTVyRVc4eWgxQS90eE5NQ0x3K2djVzFldDVqbUV5VFByYngyQlVLUHNHNnlx?=
- =?utf-8?B?aU5OQXNmU0Y3WjM5ZXY0ZDI2T2ZqUXFFRThsQktMOW5HaEtSN2xoT3ArYzNi?=
- =?utf-8?B?REpiMi93ZTREVkplT3lGNG85VzZBTEk2akNBcHd1am5oNkpTU0Z0WGtvSUNO?=
- =?utf-8?B?R0tKZGtzQmJ3ZFFCL2ZCZVJaMkdHM0F3bytjbFJBejVXdENpZi9MeU9uZmNp?=
- =?utf-8?B?ZXh6bzFJdSt6WFlqcUJBQmpubHlYWDBmUGRjVEg3TjdyTmVuZ2QwZHBBdkt4?=
- =?utf-8?B?N0ttaWVrQ0JuT2ltdlR0TERCcU95MWp5eHM3eFFabVBrZk11WWIyUzQwTS9o?=
- =?utf-8?B?TmFxK0Z3anRLYVJwaUsyTnV0NDk0RVJ0NGtucHBNYWh4VmREaUprMW9mVVhv?=
- =?utf-8?B?d2Q4NEVGbDVXS2VoWjhpZWFrcjYrSXF0ZGhaeTNqVUFhRDgrdHBESkk5aFdC?=
- =?utf-8?B?Z3h6djhab2s4RE5pQ0dEWU93UVdsd3hkVUJPWnA3QjJhZHA3RFFvRWdFRGVB?=
- =?utf-8?B?SEhwUWxBaGgxcWFJVHhKTzg1WWxsWlVjWXlmUXNiQTQyTTk0M1Z6TjV3dDFK?=
- =?utf-8?Q?265RRgoHIuu2kcNY2z6WLttGw?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	id 1p560x-000xqX-09
+	for barebox@lists.infradead.org; Tue, 13 Dec 2022 14:12:13 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1p560s-0000mg-Nc; Tue, 13 Dec 2022 15:12:06 +0100
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1p560r-004Gce-Au; Tue, 13 Dec 2022 15:12:06 +0100
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1p560r-007wXY-Hd; Tue, 13 Dec 2022 15:12:05 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 13 Dec 2022 15:12:04 +0100
+Message-Id: <20221213141204.1860400-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-X-OriginatorOrg: ametek.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR07MB5665.namprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 657baea2-7180-48ce-54b5-08dadcee22e8
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Dec 2022 09:40:57.1856
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 31a88536-e2ab-44b5-837e-5110158247ab
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: H/ebCqGpUpxVJ2W98/OFv9/ggaS3nRQqFAaNrmPdGaOE9b9hZveCmTIkFy7qz7YdKRviJJwaS9Jrg4IJ8iZhE4bL8JkFRHT3nUNKNyikn9Q=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR07MB3053
-X-Proofpoint-GUID: bZxUyy3okbDJXut2eGFw1WcSEecGVpoc
-X-Proofpoint-ORIG-GUID: bZxUyy3okbDJXut2eGFw1WcSEecGVpoc
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.205,Aquarius:18.0.923,Hydra:6.0.545,FMLib:17.11.122.1
- definitions=2022-12-13_03,2022-12-12_02,2022-06-22_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxlogscore=567 bulkscore=0
- adultscore=0 clxscore=1015 mlxscore=0 suspectscore=0 priorityscore=1501
- malwarescore=0 spamscore=0 phishscore=0 impostorscore=0 lowpriorityscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2210170000
- definitions=main-2212130085
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221213_014106_359002_016F31ED 
-X-CRM114-Status: GOOD (  13.16  )
+X-CRM114-CacheID: sfid-20221213_061211_064987_870E5DB0 
+X-CRM114-Status: GOOD (  24.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -177,21 +70,228 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: RE: PCIE on LS1021A
+Subject: [PATCH] mci: only write blocks when card out of programming mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-DQouPj4gRG9lcyBMaW51eCBQQ0llIHdvcmtzIHdoZW4gYm9vdGVkIHdpdGggVS1Cb290PyBBdCBs
-ZWFzdCB0aGUgTFMxMDQ2QSBoYXMgc29tZSBzcGVjaWFsIFBDSWUgZml4dXBzLiBJIGFtIG5vdCBz
-dXJlIGhvdyBhcHBsaWNhYmxlIHRoZXNlIGFyZSB0byB0aGUgTFMxMDIxQS4NCj4+IE5vdCBzdXJl
-IHdoeSBidXQgTGludXggZG9lcyBub3Qgc3RhcnQgaW4gbXkgVS1ib290LiBJIG5lZWQgdG8gZml4
-IHRoYXQuDQoNCj5PciBhZGQgTFBBRSB0byBiYXJlYm94IDspDQpUaGFua3MuIEkgZW5hYmxlZCBM
-UEFFIGluIExpbnV4IGFuZCAgdGhlIGRldmljZSBub3cgaXMgZGV0ZWN0ZWQuDQpIb3BlZnVsbHks
-IEkgd2lsbCBnZXQgeW91IHRoZSBiYXNpYyBvZiB0aGUgTFMxMDIxQS1JT1QgZWFybHkgbmV4dCB5
-ZWFyLiANCg0KDQpDaGVlcnMsDQpSZW5hdWQNCg0KDQoNCg==
+eMMC Spec v5.1 (JEDEC Standard No. 84-B51) is quite clear that:
+
+  Due to legacy reasons, a Device may still treat CMD24/25 during
+  prg-state (while busy is active) as a legal or illegal command.
+  A host should not send CMD24/25 while the Device is in the prg
+  state and busy is active.
+
+So far, we had never evaluated MMC_CMD_SEND_STATUS. This patch
+corrects this and thereby resolves an issue of timed out writes
+with the atmel_mci driver:
+
+  barebox@SAMA5D4:/ saveenv
+  ERROR: atmel_mci fc000000.mmc@fc000000.of: command/data timeout
+  ERROR: atmel_mci fc000000.mmc@fc000000.of: command/data timeout
+
+These issues are not new, but were first reported in 2018[0] along
+with a workaround suggesting a delay at the end of atmci_request:
+
+  if (cmdidx == MMC_CMD_STOP_TRANSMISSION)
+	mdelay(5)
+
+Just before the command timing out, we read 0x00c00_0025 from the
+status register, which is
+
+  CMDRDY | TXRDY | NOTBUSY | XFERDONE | FIFOEMPTY
+
+which suggests the issue is not at the MCI host side, but rather at
+the card side. With this patch applied and debugging enabled, this
+seems to be confirmed:
+
+  barebox@SAMA5D4:/ saveenv
+  saving environment
+  mmc1: Ready polling took 0ms
+  mmc1: Ready polling took 4ms
+
+I compared with AT91Bootstrap[1], U-Boot[2] and Trusted Firmware-A[3]
+and all of them poll MCI status after block writes.
+
+The sequence imported here is taken from U-Boot, but instead of doing
+it after writes, we do it before them in hope that we need not always
+incur the extra delay.
+
+I don't have an answer why this was only necessary on the SAMA5D3/4 and
+such issues weren't observed with other drivers. Card was operated
+at 50MHz (SD HS) and I didn't observe differences when trying other
+cards. I tested this change also on a Beaglebone Black where an
+environment is also stored into FAT on a SD-Card operated with 50 MHz:
+Ready polling took 0ms for each of the two writes.
+
+[0]: https://lore.barebox.org/barebox/20181102091156.26476-1-s.hauer@pengutronix.de/
+[1]: https://github.com/linux4sam/at91bootstrap/blob/v4.0.5/driver/mci_media.c#L1187
+[2]: https://github.com/trini/u-boot/blob/v2023.01-rc3/drivers/mmc/mmc_write.c#L181
+[3]: https://github.com/ARM-software/arm-trusted-firmware/blob/v2.8.0/drivers/mmc/mmc.c#L718
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+For next, not master. I intend to test this change across more devices
+in the coming weeks.
+---
+ drivers/mci/mci-core.c | 96 ++++++++++++++++++++++++++++++++++++++++++
+ include/mci.h          | 15 +++++++
+ 2 files changed, 111 insertions(+)
+
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 8cda07e71120..ec78bd33911c 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -74,6 +74,28 @@ static int mci_send_cmd(struct mci *mci, struct mci_cmd *cmd, struct mci_data *d
+ 	return host->send_cmd(mci->host, cmd, data);
+ }
+ 
++/**
++ * mci_send_cmd_retry() - send a command to the mmc device, retrying on error
++ *
++ * @dev:	device to receive the command
++ * @cmd:	command to send
++ * @data:	additional data to send/receive
++ * @retries:	how many times to retry; mci_send_cmd is always called at least
++ *              once
++ * Return: 0 if ok, -ve on error
++ */
++static int mci_send_cmd_retry(struct mci *mci, struct mci_cmd *cmd,
++			      struct mci_data *data, unsigned retries)
++{
++	int ret;
++
++	do
++		ret = mci_send_cmd(mci, cmd, data);
++	while (ret && retries--);
++
++	return ret;
++}
++
+ /**
+  * @param p Command definition to setup
+  * @param cmd Valid SD/MMC command (refer MMC_CMD_* / SD_CMD_*)
+@@ -119,6 +141,69 @@ static int mci_set_blocklen(struct mci *mci, unsigned len)
+ 
+ static void *sector_buf;
+ 
++static int mci_send_status(struct mci *mci, unsigned int *status)
++{
++	struct mci_host *host = mci->host;
++	struct mci_cmd cmd;
++	int ret;
++
++	cmd.cmdidx = MMC_CMD_SEND_STATUS;
++	cmd.resp_type = MMC_RSP_R1;
++	if (!mmc_host_is_spi(host))
++		cmd.cmdarg = mci->rca << 16;
++
++	ret = mci_send_cmd_retry(mci, &cmd, NULL, 4);
++	if (!ret)
++		*status = cmd.response[0];
++
++	return ret;
++}
++
++static int mci_poll_until_ready(struct mci *mci, int timeout_ms)
++{
++	unsigned int status;
++	int err, retries = 0;
++
++	while (1) {
++		err = mci_send_status(mci, &status);
++		if (err)
++			return err;
++
++		/*
++		 * Some cards mishandle the status bits, so make sure to
++		 * check both the busy indication and the card state.
++		 */
++		if ((status & R1_READY_FOR_DATA) &&
++		    R1_CURRENT_STATE(status) != R1_STATE_PRG)
++			break;
++
++		if (status & R1_STATUS_MASK) {
++			dev_err(&mci->dev, "Status Error: 0x%08x\n", status);
++			return -EIO;
++		}
++
++		if (retries++ == timeout_ms)
++			break;
++
++		udelay(1000);
++	}
++
++	if (retries >=  timeout_ms) {
++		dev_err(&mci->dev, "Timeout waiting card ready\n");
++		return -ETIMEDOUT;
++	}
++
++	/*
++	 * With small UART FIFOs and slow CPUs, printing in the loop above
++	 * may take enough time to render the polling loop above unnecessary
++	 * falsifying the debugging info. Thus we report the retries here.
++	 */
++	dev_info(&mci->dev, "Ready polling took %ums\n", retries);
++
++	return 0;
++}
++
++
+ /**
+  * Write one or several blocks of data to the card
+  * @param mci_dev MCI instance
+@@ -136,6 +221,17 @@ static int mci_block_write(struct mci *mci, const void *src, int blocknum,
+ 	unsigned mmccmd;
+ 	int ret;
+ 
++	/*
++	 * Quoting eMMC Spec v5.1 (JEDEC Standard No. 84-B51):
++	 * Due to legacy reasons, a Device may still treat CMD24/25 during
++	 * prg-state (while busy is active) as a legal or illegal command.
++	 * A host should not send CMD24/25 while the Device is in the prg
++	 * state and busy is active.
++	 */
++	ret = mci_poll_until_ready(mci, 10 /* ms */);
++	if (ret)
++		return ret;
++
+ 	if (blocks > 1)
+ 		mmccmd = MMC_CMD_WRITE_MULTIPLE_BLOCK;
+ 	else
+diff --git a/include/mci.h b/include/mci.h
+index d949310fac30..1e53a09d71db 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -308,8 +308,23 @@
+ #define EXT_CSD_DDR_BUS_WIDTH_8	6	/* Card is in 8 bit DDR mode */
+ 
+ #define R1_ILLEGAL_COMMAND		(1 << 22)
++#define R1_STATUS(x)			(x & 0xFFF9A000)
++#define R1_CURRENT_STATE(x)		((x & 0x00001E00) >> 9)	/* sx, b (4 bits) */
++#define R1_READY_FOR_DATA 		(1 << 8)		/* sx, a */
+ #define R1_APP_CMD			(1 << 5)
+ 
++#define R1_STATUS_MASK			(~0x0206BF7F)
++
++#define	R1_STATE_IDLE	0
++#define	R1_STATE_READY	1
++#define	R1_STATE_IDENT	2
++#define	R1_STATE_STBY	3
++#define	R1_STATE_TRAN	4
++#define	R1_STATE_DATA	5
++#define	R1_STATE_RCV	6
++#define	R1_STATE_PRG	7
++#define	R1_STATE_DIS	8
++
+ #define R1_SPI_IDLE		(1 << 0)
+ #define R1_SPI_ERASE_RESET	(1 << 1)
+ #define R1_SPI_ILLEGAL_COMMAND	(1 << 2)
+-- 
+2.30.2
+
 
 
