@@ -1,55 +1,61 @@
-Delivery-date: Wed, 14 Dec 2022 10:49:06 +0100
+Delivery-date: Wed, 14 Dec 2022 11:04:59 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p5ONt-003WDW-DZ
-	for lore@lore.pengutronix.de; Wed, 14 Dec 2022 10:49:06 +0100
+	id 1p5OdH-003Wfg-5H
+	for lore@lore.pengutronix.de; Wed, 14 Dec 2022 11:04:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p5ONs-0004JA-B2
-	for lore@pengutronix.de; Wed, 14 Dec 2022 10:49:05 +0100
+	id 1p5OdG-0006TX-6w
+	for lore@pengutronix.de; Wed, 14 Dec 2022 11:04:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2X6dDp4tIM4cZLOI76uX6AtvjSL+nuB9+5Z/cKcv2Dw=; b=KP7anya03pGg20kyxoVu28WMFM
-	4xiVb6YS2Z+Quc944ERvsW8X7KKC5nVQze9MQCDqcVYt+N7AG46H9nUGcxne9b9Llj8fZphd8IyQl
-	tOmMO8dc5K5E/IWQ3OVdKbjJOjQQ6FmayyTJKR0hgKlX4H4dBkQMFOEF6zQjaUj3ffpTrVfLwEP2b
-	ssTDHO+w5yxbL3Wl9+SxVEDBouJMIR5VeQ7XZNzKdu90T+eXSs0m5LRkdPF3Q8GBtoxPEAKwzEejO
-	aAK+CXAKPBd7ijGVhb2IU+gYBSMOs7WqBaVtFOgCmf4jsgNH2dqHzK38+1RGz6e6/hhYS8TDZCq6V
-	3sh2d6yg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Djwf/7D2B3YpmB851M/UOKGgGOj3gR0M8ogzL4zRiyg=; b=HK7J7b0Koyhpp4CJ5jFjhwSpIU
+	UeYxUaG9q8bsqaEJGWv9er7g3CXNON2kuKQVAUIYyjn3VxeirFsR6Iqcg38DQKe9NgkxQN6t9WFK6
+	1/OG9wvx7/oJpawaL3PrOP2ZC0AxW4x7788uRjUPNBQwRa8s2Ec0sLQQL2Hk9bNZspC7j56ceEHQO
+	+o4G2evl7hoswjq6jr+iMNasJ/oYS0n2FUFUsx+H+HUXLsAHO/fxfQEpLvQE7BnFEn1kSO5kW2D7a
+	zReXN8rnltwFTq68l6FQrihpcV/eJ9X0tgF2J5Z4CJv9jcqoEpH/Dnab/DBF7qFXJHd+hWWuatMFk
+	7xXY3oFg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p5OMC-00FFbc-Re; Wed, 14 Dec 2022 09:47:20 +0000
+	id 1p5Oby-00FOXd-MM; Wed, 14 Dec 2022 10:03:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p5OM7-00FFXR-AC
-	for barebox@lists.infradead.org; Wed, 14 Dec 2022 09:47:17 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1p5OM3-0004Eq-78
-	for barebox@lists.infradead.org; Wed, 14 Dec 2022 10:47:11 +0100
-Message-ID: <76b3e76c-7aed-b2a9-d428-b467e8684b83@pengutronix.de>
-Date: Wed, 14 Dec 2022 10:47:10 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Content-Language: en-US
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+	id 1p5Obs-00FOUm-Js
+	for barebox@lists.infradead.org; Wed, 14 Dec 2022 10:03:34 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1p5Obp-0006OB-EW; Wed, 14 Dec 2022 11:03:29 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1p5Obp-0002TU-7Q; Wed, 14 Dec 2022 11:03:29 +0100
+Date: Wed, 14 Dec 2022 11:03:29 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20221214100329.GR29728@pengutronix.de>
 References: <20221213141204.1860400-1-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20221213141204.1860400-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221214_014715_557789_7CD73138 
-X-CRM114-Status: GOOD (  44.87  )
+X-CRM114-CacheID: sfid-20221214_020332_689698_E01F4EFC 
+X-CRM114-Status: GOOD (  24.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,106 +75,13 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
 Subject: Re: [PATCH] mci: only write blocks when card out of programming mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 13.12.22 15:12, Ahmad Fatoum wrote:
-> eMMC Spec v5.1 (JEDEC Standard No. 84-B51) is quite clear that:
-> 
->   Due to legacy reasons, a Device may still treat CMD24/25 during
->   prg-state (while busy is active) as a legal or illegal command.
->   A host should not send CMD24/25 while the Device is in the prg
->   state and busy is active.
-> 
-> So far, we had never evaluated MMC_CMD_SEND_STATUS. This patch
-> corrects this and thereby resolves an issue of timed out writes
-> with the atmel_mci driver:
-> 
->   barebox@SAMA5D4:/ saveenv
->   ERROR: atmel_mci fc000000.mmc@fc000000.of: command/data timeout
->   ERROR: atmel_mci fc000000.mmc@fc000000.of: command/data timeout
-> 
-> These issues are not new, but were first reported in 2018[0] along
-> with a workaround suggesting a delay at the end of atmci_request:
-> 
->   if (cmdidx == MMC_CMD_STOP_TRANSMISSION)
-> 	mdelay(5)
-> 
-> Just before the command timing out, we read 0x00c00_0025 from the
-> status register, which is
-> 
->   CMDRDY | TXRDY | NOTBUSY | XFERDONE | FIFOEMPTY
-> 
-> which suggests the issue is not at the MCI host side, but rather at
-> the card side. With this patch applied and debugging enabled, this
-> seems to be confirmed:
-> 
->   barebox@SAMA5D4:/ saveenv
->   saving environment
->   mmc1: Ready polling took 0ms
->   mmc1: Ready polling took 4ms
-> 
-> I compared with AT91Bootstrap[1], U-Boot[2] and Trusted Firmware-A[3]
-> and all of them poll MCI status after block writes.
-> 
-> The sequence imported here is taken from U-Boot, but instead of doing
-> it after writes, we do it before them in hope that we need not always
-> incur the extra delay.
-> 
-> I don't have an answer why this was only necessary on the SAMA5D3/4 and
-> such issues weren't observed with other drivers. Card was operated
-> at 50MHz (SD HS) and I didn't observe differences when trying other
-> cards. I tested this change also on a Beaglebone Black where an
-> environment is also stored into FAT on a SD-Card operated with 50 MHz:
-> Ready polling took 0ms for each of the two writes.
-> 
-> [0]: https://lore.barebox.org/barebox/20181102091156.26476-1-s.hauer@pengutronix.de/
-> [1]: https://github.com/linux4sam/at91bootstrap/blob/v4.0.5/driver/mci_media.c#L1187
-> [2]: https://github.com/trini/u-boot/blob/v2023.01-rc3/drivers/mmc/mmc_write.c#L181
-> [3]: https://github.com/ARM-software/arm-trusted-firmware/blob/v2.8.0/drivers/mmc/mmc.c#L718
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> For next, not master. I intend to test this change across more devices
-> in the coming weeks.
-> ---
->  drivers/mci/mci-core.c | 96 ++++++++++++++++++++++++++++++++++++++++++
->  include/mci.h          | 15 +++++++
->  2 files changed, 111 insertions(+)
-> 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 8cda07e71120..ec78bd33911c 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -74,6 +74,28 @@ static int mci_send_cmd(struct mci *mci, struct mci_cmd *cmd, struct mci_data *d
->  	return host->send_cmd(mci->host, cmd, data);
->  }
->  
-> +/**
-> + * mci_send_cmd_retry() - send a command to the mmc device, retrying on error
-> + *
-> + * @dev:	device to receive the command
-> + * @cmd:	command to send
-> + * @data:	additional data to send/receive
-> + * @retries:	how many times to retry; mci_send_cmd is always called at least
-> + *              once
-> + * Return: 0 if ok, -ve on error
-> + */
-> +static int mci_send_cmd_retry(struct mci *mci, struct mci_cmd *cmd,
-> +			      struct mci_data *data, unsigned retries)
-> +{
-> +	int ret;
-> +
-> +	do
-> +		ret = mci_send_cmd(mci, cmd, data);
-> +	while (ret && retries--);
-> +
-> +	return ret;
-> +}
-> +
+On Tue, Dec 13, 2022 at 03:12:04PM +0100, Ahmad Fatoum wrote:
 >  /**
 >   * @param p Command definition to setup
 >   * @param cmd Valid SD/MMC command (refer MMC_CMD_* / SD_CMD_*)
@@ -186,6 +99,9 @@ On 13.12.22 15:12, Ahmad Fatoum wrote:
 > +	cmd.resp_type = MMC_RSP_R1;
 > +	if (!mmc_host_is_spi(host))
 > +		cmd.cmdarg = mci->rca << 16;
+
+cmd.cmdarg will be uninitialized for SPI MMC hosts.
+
 > +
 > +	ret = mci_send_cmd_retry(mci, &cmd, NULL, 4);
 > +	if (!ret)
@@ -227,15 +143,22 @@ On 13.12.22 15:12, Ahmad Fatoum wrote:
 > +		dev_err(&mci->dev, "Timeout waiting card ready\n");
 > +		return -ETIMEDOUT;
 > +	}
+
+You could move this into the timeout test in the loop above.
+
 > +
 > +	/*
 > +	 * With small UART FIFOs and slow CPUs, printing in the loop above
 > +	 * may take enough time to render the polling loop above unnecessary
 > +	 * falsifying the debugging info. Thus we report the retries here.
 > +	 */
+
+People reading this code are likely aware of that, I think you can remove
+this comment.
+
 > +	dev_info(&mci->dev, "Ready polling took %ums\n", retries);
 
-This should've been a dev_dbg...
+dev_dbg()?
 
 > +
 > +	return 0;
@@ -257,46 +180,15 @@ This should've been a dev_dbg...
 > +	 * state and busy is active.
 > +	 */
 > +	ret = mci_poll_until_ready(mci, 10 /* ms */);
-> +	if (ret)
-> +		return ret;
-> +
->  	if (blocks > 1)
->  		mmccmd = MMC_CMD_WRITE_MULTIPLE_BLOCK;
->  	else
-> diff --git a/include/mci.h b/include/mci.h
-> index d949310fac30..1e53a09d71db 100644
-> --- a/include/mci.h
-> +++ b/include/mci.h
-> @@ -308,8 +308,23 @@
->  #define EXT_CSD_DDR_BUS_WIDTH_8	6	/* Card is in 8 bit DDR mode */
->  
->  #define R1_ILLEGAL_COMMAND		(1 << 22)
-> +#define R1_STATUS(x)			(x & 0xFFF9A000)
-> +#define R1_CURRENT_STATE(x)		((x & 0x00001E00) >> 9)	/* sx, b (4 bits) */
-> +#define R1_READY_FOR_DATA 		(1 << 8)		/* sx, a */
->  #define R1_APP_CMD			(1 << 5)
->  
-> +#define R1_STATUS_MASK			(~0x0206BF7F)
-> +
-> +#define	R1_STATE_IDLE	0
-> +#define	R1_STATE_READY	1
-> +#define	R1_STATE_IDENT	2
-> +#define	R1_STATE_STBY	3
-> +#define	R1_STATE_TRAN	4
-> +#define	R1_STATE_DATA	5
-> +#define	R1_STATE_RCV	6
-> +#define	R1_STATE_PRG	7
-> +#define	R1_STATE_DIS	8
-> +
->  #define R1_SPI_IDLE		(1 << 0)
->  #define R1_SPI_ERASE_RESET	(1 << 1)
->  #define R1_SPI_ILLEGAL_COMMAND	(1 << 2)
+
+Is 10ms enough? U-Boot has 1s here.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
