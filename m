@@ -1,52 +1,53 @@
-Delivery-date: Wed, 14 Dec 2022 11:04:59 +0100
+Delivery-date: Wed, 14 Dec 2022 11:26:34 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p5OdH-003Wfg-5H
-	for lore@lore.pengutronix.de; Wed, 14 Dec 2022 11:04:59 +0100
+	id 1p5Oy9-003XWn-HW
+	for lore@lore.pengutronix.de; Wed, 14 Dec 2022 11:26:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p5OdG-0006TX-6w
-	for lore@pengutronix.de; Wed, 14 Dec 2022 11:04:58 +0100
+	id 1p5Oy8-0001Em-Sm
+	for lore@pengutronix.de; Wed, 14 Dec 2022 11:26:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Djwf/7D2B3YpmB851M/UOKGgGOj3gR0M8ogzL4zRiyg=; b=HK7J7b0Koyhpp4CJ5jFjhwSpIU
-	UeYxUaG9q8bsqaEJGWv9er7g3CXNON2kuKQVAUIYyjn3VxeirFsR6Iqcg38DQKe9NgkxQN6t9WFK6
-	1/OG9wvx7/oJpawaL3PrOP2ZC0AxW4x7788uRjUPNBQwRa8s2Ec0sLQQL2Hk9bNZspC7j56ceEHQO
-	+o4G2evl7hoswjq6jr+iMNasJ/oYS0n2FUFUsx+H+HUXLsAHO/fxfQEpLvQE7BnFEn1kSO5kW2D7a
-	zReXN8rnltwFTq68l6FQrihpcV/eJ9X0tgF2J5Z4CJv9jcqoEpH/Dnab/DBF7qFXJHd+hWWuatMFk
-	7xXY3oFg==;
+	bh=3cMf1PwsYPhc+3cgDDKa5OEvlEPHn/3CD7GwBkrOfSE=; b=vd/5uej0SQgIDJ0MxFlx9x4qmq
+	ycIsqYJXN3AOwhbjujwVQCIa4eqxGFO07dfzQRbA4FkYu8hrc7xMChQBhzN8/DKkTImJNjMS/ej2E
+	r4wqBW7hZ04Q2Gwn4GRNyDJTNsGBEzHvQh5CIjq3qCikNFyU3giMOGDLMRUEGUdC3Qr0od6Qbe0PC
+	MXBxrEwQ+ETwTuxrgvoAdgJMJH/KzNlpUdbNB3UgA9APvnAmysjaQHMULu+4e0zydoEuJXoMzM2ZP
+	NfMqKg8FpmTDSUgv3lNx7gScVIa2ch3j+8ZSi5xH20Ni1ZUDGEsM9pg8QFAAl8+zEMDtlHJY5i7yi
+	pqeB0FsA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p5Oby-00FOXd-MM; Wed, 14 Dec 2022 10:03:38 +0000
+	id 1p5Owp-00FYbR-AB; Wed, 14 Dec 2022 10:25:11 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p5Obs-00FOUm-Js
-	for barebox@lists.infradead.org; Wed, 14 Dec 2022 10:03:34 +0000
+	id 1p5Owl-00FYYP-0R
+	for barebox@lists.infradead.org; Wed, 14 Dec 2022 10:25:08 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p5Obp-0006OB-EW; Wed, 14 Dec 2022 11:03:29 +0100
+	id 1p5Owj-0000s1-3q; Wed, 14 Dec 2022 11:25:05 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p5Obp-0002TU-7Q; Wed, 14 Dec 2022 11:03:29 +0100
-Date: Wed, 14 Dec 2022 11:03:29 +0100
+	id 1p5Owi-0003G8-S3; Wed, 14 Dec 2022 11:25:04 +0100
+Date: Wed, 14 Dec 2022 11:25:04 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20221214100329.GR29728@pengutronix.de>
-References: <20221213141204.1860400-1-a.fatoum@pengutronix.de>
+Message-ID: <20221214102504.GA11668@pengutronix.de>
+References: <20221212164212.2358450-1-a.fatoum@pengutronix.de>
+ <20221212164212.2358450-3-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221213141204.1860400-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20221212164212.2358450-3-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +55,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221214_020332_689698_E01F4EFC 
-X-CRM114-Status: GOOD (  24.97  )
+X-CRM114-CacheID: sfid-20221214_022507_072732_B5FE462C 
+X-CRM114-Status: GOOD (  24.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,113 +78,74 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mci: only write blocks when card out of programming mode
+Subject: Re: [PATCH v2 3/3] pbl: define DEBUG globally when
+ CONFIG_INITCALL_DEBUG=y
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Dec 13, 2022 at 03:12:04PM +0100, Ahmad Fatoum wrote:
->  /**
->   * @param p Command definition to setup
->   * @param cmd Valid SD/MMC command (refer MMC_CMD_* / SD_CMD_*)
-> @@ -119,6 +141,69 @@ static int mci_set_blocklen(struct mci *mci, unsigned len)
->  
->  static void *sector_buf;
->  
-> +static int mci_send_status(struct mci *mci, unsigned int *status)
-> +{
-> +	struct mci_host *host = mci->host;
-> +	struct mci_cmd cmd;
-> +	int ret;
-> +
-> +	cmd.cmdidx = MMC_CMD_SEND_STATUS;
-> +	cmd.resp_type = MMC_RSP_R1;
-> +	if (!mmc_host_is_spi(host))
-> +		cmd.cmdarg = mci->rca << 16;
+On Mon, Dec 12, 2022 at 05:42:12PM +0100, Ahmad Fatoum wrote:
+> CONFIG_INITCALL_DEBUG=y is a very useful tool for debugging barebox
+> hangs, but it's not so useful if the hang happens very early.
+> Define a new CONFIG_PBL_DEBUG symbol that will define DEBUG globally
+> in PBL to get more insight into boot hangs.
 
-cmd.cmdarg will be uninitialized for SPI MMC hosts.
+s/CONFIG_PBL_DEBUG/CONFIG_DEBUG_PBL/
 
-> +
-> +	ret = mci_send_cmd_retry(mci, &cmd, NULL, 4);
-> +	if (!ret)
-> +		*status = cmd.response[0];
-> +
-> +	return ret;
-> +}
-> +
-> +static int mci_poll_until_ready(struct mci *mci, int timeout_ms)
-> +{
-> +	unsigned int status;
-> +	int err, retries = 0;
-> +
-> +	while (1) {
-> +		err = mci_send_status(mci, &status);
-> +		if (err)
-> +			return err;
-> +
-> +		/*
-> +		 * Some cards mishandle the status bits, so make sure to
-> +		 * check both the busy indication and the card state.
-> +		 */
-> +		if ((status & R1_READY_FOR_DATA) &&
-> +		    R1_CURRENT_STATE(status) != R1_STATE_PRG)
-> +			break;
-> +
-> +		if (status & R1_STATUS_MASK) {
-> +			dev_err(&mci->dev, "Status Error: 0x%08x\n", status);
-> +			return -EIO;
-> +		}
-> +
-> +		if (retries++ == timeout_ms)
-> +			break;
-> +
-> +		udelay(1000);
-> +	}
-> +
-> +	if (retries >=  timeout_ms) {
-> +		dev_err(&mci->dev, "Timeout waiting card ready\n");
-> +		return -ETIMEDOUT;
-> +	}
-
-You could move this into the timeout test in the loop above.
-
-> +
-> +	/*
-> +	 * With small UART FIFOs and slow CPUs, printing in the loop above
-> +	 * may take enough time to render the polling loop above unnecessary
-> +	 * falsifying the debugging info. Thus we report the retries here.
-> +	 */
-
-People reading this code are likely aware of that, I think you can remove
-this comment.
-
-> +	dev_info(&mci->dev, "Ready polling took %ums\n", retries);
-
-dev_dbg()?
-
-> +
-> +	return 0;
-> +}
-> +
-> +
->  /**
->   * Write one or several blocks of data to the card
->   * @param mci_dev MCI instance
-> @@ -136,6 +221,17 @@ static int mci_block_write(struct mci *mci, const void *src, int blocknum,
->  	unsigned mmccmd;
->  	int ret;
->  
-> +	/*
-> +	 * Quoting eMMC Spec v5.1 (JEDEC Standard No. 84-B51):
-> +	 * Due to legacy reasons, a Device may still treat CMD24/25 during
-> +	 * prg-state (while busy is active) as a legal or illegal command.
-> +	 * A host should not send CMD24/25 while the Device is in the prg
-> +	 * state and busy is active.
-> +	 */
-> +	ret = mci_poll_until_ready(mci, 10 /* ms */);
-
-Is 10ms enough? U-Boot has 1s here.
+Fixed that and adjusted to subject to the updated patch while applying.
 
 Sascha
+
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> v1 -> v2:
+>   - changed into separate config option instead of piggy backing
+>     CONFIG_DEBUG_INITCALLS (Sascha)
+> ---
+>  common/Kconfig       | 9 +++++++++
+>  scripts/Makefile.lib | 4 ++++
+>  2 files changed, 13 insertions(+)
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 19cd79311016..46675dfe2ea7 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -1566,6 +1566,15 @@ config DEBUG_INITCALLS
+>  	help
+>  	  If enabled this will print initcall traces.
+>  
+> +config DEBUG_PBL
+> +	bool "Print PBL debugging information"
+> +	depends on PBL_CONSOLE || DEBUG_LL
+> +	help
+> +	  If enabled this will enable all debug prints in the prebootloader.
+> +	  For this to work, a console needs to be configured in the
+> +	  board-specific entry point and configured for either DEBUG_LL
+> +	  or PBL_CONSOLE.
+> +
+>  config DEBUG_PROBES
+>  	bool "Trace driver probes/removes"
+>  	help
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index 85d18f07a2b6..6e0d92cf756d 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -156,6 +156,10 @@ _c_flags       += $(if $(patsubst n%,, \
+>  PBL_CPPFLAGS   += $(call cc-option,-fno-sanitize=all)
+>  endif
+>  
+> +ifeq ($(CONFIG_DEBUG_PBL),y)
+> +PBL_CPPFLAGS   += -DDEBUG
+> +endif
+> +
+>  # If building barebox in a separate objtree expand all occurrences
+>  # of -Idir to -I$(srctree)/dir except for absolute paths (starting with '/').
+>  
+> -- 
+> 2.30.2
+> 
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
