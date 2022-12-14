@@ -1,59 +1,59 @@
-Delivery-date: Wed, 14 Dec 2022 13:37:02 +0100
+Delivery-date: Wed, 14 Dec 2022 13:37:03 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p5R0P-003cq1-Sk
-	for lore@lore.pengutronix.de; Wed, 14 Dec 2022 13:37:02 +0100
+	id 1p5R0Q-003cqH-Us
+	for lore@lore.pengutronix.de; Wed, 14 Dec 2022 13:37:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p5R0O-0002Hn-8G
-	for lore@pengutronix.de; Wed, 14 Dec 2022 13:37:01 +0100
+	id 1p5R0O-0002Hy-TW
+	for lore@pengutronix.de; Wed, 14 Dec 2022 13:37:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VSJ5G+c0Xl/9leoTC1ZutwO8FI440TlShOpE5HVES/Q=; b=rzrzIG7IY69J1RXfvoMhoyha+Z
-	htvS+LuCroT6E7jwJ5iFWxseFtZzjpNT1r5t6xc0KKzulxAznhBjkKzhWopsudq556K76zQ3M4Fid
-	VdcqerJMCDZZolyytxPhQcKzsDTPUXwU7PEmHn45LyL6OXEsb+wS/7MTiruydIVWdqlPfLjbRXrGb
-	0i2j2Ac2mk7aZHVCpXcgeBHk+YohgPXpOrWYZEmY9Oc0pxHenKJrcSgWR+zZoTTK62nuzEgyNOBwB
-	INiOVuyFuklIuLleqA/Um5iNXS+rb9CS6EQWw7nQXYn1vqQz91tWxRu/LmPb6e6bwhnuMySDnW1nF
-	2vz7le9Q==;
+	bh=l84tNihR3YgMKk0/TsTbL6M64n2hWMaAjySdyTRUHv8=; b=S2z4lZaMZec33KJ/vPioGszROH
+	YTErWaUcLzukP0ZNhmQ5437o1vCMv71/3AaUqhpPNdCyGTajBCU1qHHpFKSz8onK9QxGeSbvCIXBl
+	zBGDuCRQ56BDBEX3Vuc825o9XRdrZigJchfA6tlcN5u7uHVKLhPuNRYOuBysi8+4Usapf/LUoow49
+	nd26dKC0Yel6EvyNC4YfBNDpeUMHJOLkq81JJC3aLYGnjVW+R6yBmGEpiUif08Bcj48YXqXzhiYkv
+	sfFUeVNqcg2SwGV89o+7dMtyF0ghWohcQHFE5ugrXjbGmD38O3KzMaRZ4NNfaD2hf/T0KG6hj9BlI
+	ZB+cMpcQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p5Qyv-00GML9-UV; Wed, 14 Dec 2022 12:35:30 +0000
+	id 1p5Qyy-00GMMi-7U; Wed, 14 Dec 2022 12:35:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p5Qyi-00GMF1-Pu
+	id 1p5Qyi-00GMEz-Lc
 	for barebox@lists.infradead.org; Wed, 14 Dec 2022 12:35:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p5Qyh-0001sT-Ih; Wed, 14 Dec 2022 13:35:15 +0100
+	id 1p5Qyh-0001sR-ED; Wed, 14 Dec 2022 13:35:15 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p5Qyg-004TOI-7P; Wed, 14 Dec 2022 13:35:15 +0100
+	id 1p5Qyg-004TOF-1R; Wed, 14 Dec 2022 13:35:14 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p5Qyg-000nNO-35; Wed, 14 Dec 2022 13:35:14 +0100
+	id 1p5Qyg-000nNL-1o; Wed, 14 Dec 2022 13:35:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 14 Dec 2022 13:35:12 +0100
-Message-Id: <20221214123512.189688-6-s.hauer@pengutronix.de>
+Date: Wed, 14 Dec 2022 13:35:11 +0100
+Message-Id: <20221214123512.189688-5-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221214123512.189688-1-s.hauer@pengutronix.de>
 References: <20221214123512.189688-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221214_043517_208200_57DFBF99 
-X-CRM114-Status: GOOD (  18.82  )
+X-CRM114-CacheID: sfid-20221214_043517_079027_F486D64B 
+X-CRM114-Status: GOOD (  17.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,7 +75,7 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 5/5] Rename struct fs_driver_d to fs_driver
+Subject: [PATCH 4/5] Rename struct fs_device_d to fs_device
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
@@ -84,491 +84,845 @@ Remove the meaningless '_d' suffix.
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
  commands/mount.c       |  2 +-
+ common/blspec.c        |  2 +-
  fs/bpkfs.c             |  2 +-
- fs/cramfs/cramfs.c     |  2 +-
+ fs/cramfs/cramfs.c     | 11 +++++----
  fs/devfs.c             |  2 +-
  fs/efi.c               |  2 +-
- fs/efivarfs.c          |  2 +-
- fs/ext4/ext_barebox.c  |  2 +-
+ fs/ext4/ext_barebox.c  |  6 ++---
  fs/fat/fat.c           |  2 +-
- fs/fs.c                | 32 ++++++++++++++++----------------
- fs/jffs2/fs.c          |  2 +-
- fs/nfs.c               |  2 +-
- fs/omap4_usbbootfs.c   |  2 +-
- fs/pstore/fs.c         |  2 +-
+ fs/fs.c                | 54 +++++++++++++++++++++---------------------
+ fs/jffs2/fs.c          |  4 ++--
+ fs/jffs2/os-linux.h    |  4 ++--
+ fs/jffs2/super.c       |  2 +-
+ fs/legacy.c            | 20 ++++++++--------
+ fs/nfs.c               |  4 ++--
  fs/ramfs.c             |  2 +-
  fs/ratpfs.c            |  2 +-
- fs/smhfs.c             |  2 +-
- fs/squashfs/squashfs.c |  2 +-
- fs/tftp.c              |  2 +-
- fs/ubifs/ubifs.c       |  2 +-
- fs/ubootvarfs.c        |  2 +-
+ fs/squashfs/squashfs.c |  6 ++---
+ fs/squashfs/squashfs.h |  4 ++--
+ fs/squashfs/super.c    |  4 ++--
+ fs/tftp.c              |  6 ++---
+ fs/ubifs/super.c       |  2 +-
+ fs/ubifs/ubifs.c       |  5 ++--
+ fs/ubootvarfs.c        |  8 +++----
  fs/uimagefs.c          |  2 +-
- include/dirent.h       |  2 +-
- include/fs.h           |  8 ++++----
- 23 files changed, 41 insertions(+), 41 deletions(-)
+ include/fs.h           | 12 +++++-----
+ 25 files changed, 87 insertions(+), 83 deletions(-)
 
 diff --git a/commands/mount.c b/commands/mount.c
-index 9684edf7c5..fddd770dc9 100644
+index 966807a1f4..9684edf7c5 100644
 --- a/commands/mount.c
 +++ b/commands/mount.c
-@@ -48,7 +48,7 @@ static int do_mount(int argc, char *argv[])
- 		if (verbose) {
- 			printf("\nSupported filesystems:\n\n");
- 			bus_for_each_driver(&fs_bus, drv) {
--				struct fs_driver_d * fsdrv = drv_to_fs_driver(drv);
-+				struct fs_driver * fsdrv = drv_to_fs_driver(drv);
- 				printf("%s\n", fsdrv->drv.name);
- 			}
- 		}
+@@ -36,7 +36,7 @@ static int do_mount(int argc, char *argv[])
+ 	}
+ 
+ 	if (argc == optind) {
+-		struct fs_device_d *fsdev;
++		struct fs_device *fsdev;
+ 
+ 		for_each_fs_device(fsdev) {
+ 			printf("%s on %s type %s\n",
+diff --git a/common/blspec.c b/common/blspec.c
+index e023259bac..c9380a306f 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -316,7 +316,7 @@ static int blspec_have_entry(struct bootentries *bootentries, const char *path)
+  */
+ static const char *nfs_find_mountpath(const char *nfshostpath)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 
+ 	for_each_fs_device(fsdev) {
+ 		if (fsdev->backingstore && !strcmp(fsdev->backingstore, nfshostpath))
 diff --git a/fs/bpkfs.c b/fs/bpkfs.c
-index 6e22a5ebec..ea2c279585 100644
+index bab989c4c0..6e22a5ebec 100644
 --- a/fs/bpkfs.c
 +++ b/fs/bpkfs.c
-@@ -491,7 +491,7 @@ err:
- 	return ret;
- }
+@@ -353,7 +353,7 @@ static void bpkfs_remove(struct device *dev)
  
--static struct fs_driver_d bpkfs_driver = {
-+static struct fs_driver bpkfs_driver = {
- 	.open      = bpkfs_open,
- 	.close     = bpkfs_close,
- 	.read      = bpkfs_read,
+ static int bpkfs_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct bpkfs_handle *priv;
+ 	struct bpkfs_header *header;
+ 	struct bpkfs_data_header data_header;
 diff --git a/fs/cramfs/cramfs.c b/fs/cramfs/cramfs.c
-index 4322bbffd4..4676af8a55 100644
+index 6da8757888..4322bbffd4 100644
 --- a/fs/cramfs/cramfs.c
 +++ b/fs/cramfs/cramfs.c
-@@ -496,7 +496,7 @@ static void cramfs_remove(struct device *dev)
- 	free(priv);
- }
+@@ -118,7 +118,8 @@ static int cramfs_read_file(struct inode *inode, unsigned long offset,
+ {
+ 	struct cramfs_inode_info *info = to_cramfs_inode_info(inode);
+ 	struct cramfs_inode *cramfs_inode = &info->inode;
+-	struct fs_device_d *fsdev = container_of(inode->i_sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(inode->i_sb, struct fs_device,
++					       sb);
+ 	struct cramfs_priv *priv = fsdev->dev.priv;
+ 	unsigned int blocknr;
+ 	int outsize = 0;
+@@ -274,7 +275,8 @@ static struct dentry *cramfs_lookup(struct inode *dir, struct dentry *dentry,
+ 	struct cramfs_inode *de;
+ 	unsigned int offset = 0;
+ 	struct inode *inode = NULL;
+-	struct fs_device_d *fsdev = container_of(dir->i_sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(dir->i_sb, struct fs_device,
++					       sb);
+ 	struct cramfs_priv *priv = fsdev->dev.priv;
  
--static struct fs_driver_d cramfs_driver = {
-+static struct fs_driver cramfs_driver = {
- 	.read		= cramfs_read,
- 	.drv = {
- 		.probe = cramfs_probe,
+ 	de = xmalloc(sizeof(*de) + CRAMFS_MAXPATHLEN);
+@@ -346,7 +348,8 @@ static int cramfs_iterate(struct file *file, struct dir_context *ctx)
+ {
+ 	struct dentry *dentry = file->f_path.dentry;
+ 	struct inode *dir = d_inode(dentry);
+-	struct fs_device_d *fsdev = container_of(dir->i_sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(dir->i_sb, struct fs_device,
++					       sb);
+ 	struct cramfs_priv *priv = fsdev->dev.priv;
+ 	char *buf;
+ 	unsigned int offset;
+@@ -441,7 +444,7 @@ static const struct super_operations cramfs_ops = {
+ 
+ static int cramfs_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 	struct cramfs_priv *priv;
+ 	int ret;
+ 	struct super_block *sb;
 diff --git a/fs/devfs.c b/fs/devfs.c
-index eaee51c375..c30ae4f384 100644
+index 08ce8b7bdd..eaee51c375 100644
 --- a/fs/devfs.c
 +++ b/fs/devfs.c
-@@ -314,7 +314,7 @@ static void devfs_delete(struct device *dev)
+@@ -298,7 +298,7 @@ static const struct super_operations devfs_ops = {
+ static int devfs_probe(struct device *dev)
  {
- }
+ 	struct inode *inode;
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct super_block *sb = &fsdev->sb;
  
--static struct fs_driver_d devfs_driver = {
-+static struct fs_driver devfs_driver = {
- 	.read      = devfs_read,
- 	.write     = devfs_write,
- 	.lseek     = devfs_lseek,
+ 	sb->s_op = &devfs_ops;
 diff --git a/fs/efi.c b/fs/efi.c
-index 12275e4a85..0789f6ecee 100644
+index 4afd139623..12275e4a85 100644
 --- a/fs/efi.c
 +++ b/fs/efi.c
-@@ -479,7 +479,7 @@ static void efifs_remove(struct device *dev)
- 	free(dev->priv);
- }
+@@ -451,7 +451,7 @@ static int efifs_readlink(struct device *dev, const char *pathname,
  
--static struct fs_driver_d efifs_driver = {
-+static struct fs_driver efifs_driver = {
- 	.create    = efifs_create,
- 	.unlink    = efifs_unlink,
- 	.open      = efifs_open,
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index bba2c33340..5d805aefbf 100644
---- a/fs/efivarfs.c
-+++ b/fs/efivarfs.c
-@@ -347,7 +347,7 @@ static void efivarfs_remove(struct device *dev)
- 	free(priv);
- }
- 
--static struct fs_driver_d efivarfs_driver = {
-+static struct fs_driver efivarfs_driver = {
- 	.create    = efivars_create,
- 	.unlink    = efivars_unlink,
- 	.open      = efivarfs_open,
+ static int efifs_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct efifs_priv *priv;
+ 	efi_status_t efiret;
+ 	struct efi_file_handle *file;
 diff --git a/fs/ext4/ext_barebox.c b/fs/ext4/ext_barebox.c
-index e0b5951e86..93dc9b4b14 100644
+index 9e91288b8e..e0b5951e86 100644
 --- a/fs/ext4/ext_barebox.c
 +++ b/fs/ext4/ext_barebox.c
-@@ -298,7 +298,7 @@ static void ext_remove(struct device *dev)
- 	free(fs);
- }
+@@ -58,7 +58,7 @@ static int ext_read(struct device *_dev, FILE *f, void *buf, size_t insize)
  
--static struct fs_driver_d ext_driver = {
-+static struct fs_driver ext_driver = {
- 	.read      = ext_read,
- 	.type      = filetype_ext,
- 	.flags     = 0,
+ static struct inode *ext_alloc_inode(struct super_block *sb)
+ {
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct ext_filesystem *fs = fsdev->dev.priv;
+ 	struct ext2fs_node *node;
+ 
+@@ -209,7 +209,7 @@ struct inode *ext_get_inode(struct super_block *sb, int ino)
+ {
+ 	struct inode *inode;
+ 	struct ext2fs_node *node;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct ext_filesystem *fs = fsdev->dev.priv;
+ 	int ret;
+ 
+@@ -251,7 +251,7 @@ struct inode *ext_get_inode(struct super_block *sb, int ino)
+ 
+ static int ext_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	int ret;
+ 	struct ext_filesystem *fs;
+ 	struct super_block *sb = &fsdev->sb;
 diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index 79c7d26ab7..f3c7f9b863 100644
+index b9c0a6e7fa..79c7d26ab7 100644
 --- a/fs/fat/fat.c
 +++ b/fs/fat/fat.c
-@@ -373,7 +373,7 @@ static void fat_remove(struct device *dev)
- 	free(dev->priv);
- }
+@@ -342,7 +342,7 @@ static int fat_stat(struct device *dev, const char *filename, struct stat *s)
  
--static struct fs_driver_d fat_driver = {
-+static struct fs_driver fat_driver = {
- 	.open      = fat_open,
- 	.close     = fat_close,
- 	.read      = fat_read,
+ static int fat_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct fat_priv *priv = xzalloc(sizeof(struct fat_priv));
+ 	int ret;
+ 
 diff --git a/fs/fs.c b/fs/fs.c
-index 0e1e9b0dd0..752688b574 100644
+index 52751fe37b..0e1e9b0dd0 100644
 --- a/fs/fs.c
 +++ b/fs/fs.c
-@@ -179,7 +179,7 @@ static FILE *files;
- static struct dentry *d_root;
- static struct vfsmount *mnt_root;
- 
--static struct fs_driver_d *ramfs_driver;
-+static struct fs_driver *ramfs_driver;
- 
- static int init_fs(void)
- {
-@@ -313,7 +313,7 @@ EXPORT_SYMBOL(creat);
- 
- static int fsdev_truncate(struct device *dev, FILE *f, loff_t length)
- {
--	struct fs_driver_d *fsdrv = f->fsdev->driver;
-+	struct fs_driver *fsdrv = f->fsdev->driver;
- 
- 	return fsdrv->truncate ? fsdrv->truncate(dev, f, length) : -EROFS;
+@@ -111,12 +111,12 @@ void cdev_print(const struct cdev *cdev)
  }
-@@ -343,7 +343,7 @@ int ftruncate(int fd, loff_t length)
+ EXPORT_SYMBOL(cdev_print);
  
- int ioctl(int fd, int request, void *buf)
+-static struct fs_device_d *get_fsdevice_by_path(const char *path);
++static struct fs_device *get_fsdevice_by_path(const char *path);
+ 
+ void stat_print(const char *filename, const struct stat *st)
  {
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	FILE *f = fd_to_file(fd);
- 	int ret;
+ 	struct block_device *bdev = NULL;
+-	struct fs_device_d *fdev;
++	struct fs_device *fdev;
+ 	struct cdev *cdev = NULL;
+ 	const char *type = NULL;
+ 	char modestr[11];
+@@ -222,7 +222,7 @@ static void mntput(struct vfsmount *mnt)
  
-@@ -363,7 +363,7 @@ int ioctl(int fd, int request, void *buf)
- 
- static ssize_t __read(FILE *f, void *buf, size_t count)
+ static struct vfsmount *lookup_mnt(struct path *path)
  {
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	int ret;
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
  
- 	if ((f->flags & O_ACCMODE) == O_WRONLY) {
-@@ -425,7 +425,7 @@ EXPORT_SYMBOL(read);
- 
- static ssize_t __write(FILE *f, const void *buf, size_t count)
+ 	for_each_fs_device(fsdev) {
+ 		if (path->dentry == fsdev->vfsmount.mountpoint) {
+@@ -240,7 +240,7 @@ static struct vfsmount *lookup_mnt(struct path *path)
+  */
+ struct cdev *get_cdev_by_mountpath(const char *path)
  {
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	int ret;
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
  
- 	fsdrv = f->fsdev->driver;
-@@ -494,7 +494,7 @@ EXPORT_SYMBOL(write);
+ 	fsdev = get_fsdevice_by_path(path);
  
- int flush(int fd)
+@@ -249,7 +249,7 @@ struct cdev *get_cdev_by_mountpath(const char *path)
+ 
+ char *get_mounted_path(const char *path)
  {
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	FILE *f = fd_to_file(fd);
- 	int ret;
+-	struct fs_device_d *fdev;
++	struct fs_device *fdev;
  
-@@ -515,7 +515,7 @@ int flush(int fd)
+ 	fdev = get_fsdevice_by_path(path);
  
- loff_t lseek(int fd, loff_t offset, int whence)
+@@ -733,7 +733,7 @@ static int fs_match(struct device *dev, struct driver *drv)
+ 
+ static int fs_probe(struct device *dev)
  {
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	FILE *f = fd_to_file(fd);
- 	loff_t pos;
- 	int ret;
-@@ -569,7 +569,7 @@ EXPORT_SYMBOL(lseek);
- 
- int erase(int fd, loff_t count, loff_t offset)
- {
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	FILE *f = fd_to_file(fd);
- 	int ret;
- 
-@@ -601,7 +601,7 @@ EXPORT_SYMBOL(erase);
- 
- int protect(int fd, size_t count, loff_t offset, int prot)
- {
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	FILE *f = fd_to_file(fd);
- 	int ret;
- 
-@@ -631,7 +631,7 @@ EXPORT_SYMBOL(protect);
- 
- int discard_range(int fd, loff_t count, loff_t offset)
- {
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	FILE *f = fd_to_file(fd);
- 	int ret;
- 
-@@ -675,7 +675,7 @@ int protect_file(const char *file, int prot)
- 
- void *memmap(int fd, int flags)
- {
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	FILE *f = fd_to_file(fd);
- 	void *retp = MAP_FAILED;
- 	int ret;
-@@ -702,7 +702,7 @@ EXPORT_SYMBOL(memmap);
- 
- int close(int fd)
- {
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	FILE *f = fd_to_file(fd);
- 	int ret = 0;
- 
-@@ -735,7 +735,7 @@ static int fs_probe(struct device *dev)
- {
- 	struct fs_device *fsdev = dev_to_fs_device(dev);
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
  	struct driver *drv = dev->driver;
--	struct fs_driver_d *fsdrv = container_of(drv, struct fs_driver_d, drv);
-+	struct fs_driver *fsdrv = container_of(drv, struct fs_driver, drv);
+ 	struct fs_driver_d *fsdrv = container_of(drv, struct fs_driver_d, drv);
+ 	int ret;
+@@ -793,7 +793,7 @@ static void destroy_inode(struct inode *inode)
+ 
+ static void fs_remove(struct device *dev)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct super_block *sb = &fsdev->sb;
+ 	struct inode *inode, *tmp;
+ 	struct path path;
+@@ -887,7 +887,7 @@ const char *fs_detect(const char *filename, const char *fsoptions)
+ 	return NULL;
+ }
+ 
+-int fsdev_open_cdev(struct fs_device_d *fsdev)
++int fsdev_open_cdev(struct fs_device *fsdev)
+ {
+ 	unsigned long long offset = 0;
+ 	struct path path = {};
+@@ -925,7 +925,7 @@ static void init_super(struct super_block *sb)
+ 	INIT_LIST_HEAD(&sb->s_inodes);
+ }
+ 
+-static int fsdev_umount(struct fs_device_d *fsdev)
++static int fsdev_umount(struct fs_device *fsdev)
+ {
  	int ret;
  
- 	ret = dev->driver->probe(dev);
-@@ -847,7 +847,7 @@ static int fs_bus_init(void)
+@@ -948,8 +948,8 @@ static int fsdev_umount(struct fs_device_d *fsdev)
+  */
+ int umount_by_cdev(struct cdev *cdev)
+ {
+-	struct fs_device_d *fs;
+-	struct fs_device_d *fs_tmp;
++	struct fs_device *fs;
++	struct fs_device *fs_tmp;
+ 	int first_error = 0;
+ 
+ 	for_each_fs_device_safe(fs_tmp, fs) {
+@@ -1058,7 +1058,7 @@ EXPORT_SYMBOL(fstat);
+  */
+ const char *cdev_get_mount_path(struct cdev *cdev)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 
+ 	for_each_fs_device(fsdev) {
+ 		if (fsdev->cdev && fsdev->cdev == cdev)
+@@ -1158,7 +1158,7 @@ void mount_all(void)
+ 	}
  }
- pure_initcall(fs_bus_init);
  
--int register_fs_driver(struct fs_driver_d *fsdrv)
-+int register_fs_driver(struct fs_driver *fsdrv)
+-void fsdev_set_linux_rootarg(struct fs_device_d *fsdev, const char *str)
++void fsdev_set_linux_rootarg(struct fs_device *fsdev, const char *str)
  {
- 	fsdrv->drv.bus = &fs_bus;
- 	register_driver(&fsdrv->drv);
-@@ -863,7 +863,7 @@ const char *fs_detect(const char *filename, const char *fsoptions)
- {
- 	enum filetype type;
- 	struct driver *drv;
--	struct fs_driver_d *fdrv;
-+	struct fs_driver *fdrv;
- 	bool loop = false;
- 	unsigned long long offset = 0;
+ 	fsdev->linux_rootarg = xstrdup(str);
  
-@@ -2491,7 +2491,7 @@ EXPORT_SYMBOL(rmdir);
+@@ -1175,7 +1175,7 @@ void fsdev_set_linux_rootarg(struct fs_device_d *fsdev, const char *str)
+  */
+ char *path_get_linux_rootarg(const char *path)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 	const char *str;
+ 
+ 	fsdev = get_fsdevice_by_path(path);
+@@ -1199,7 +1199,7 @@ char *path_get_linux_rootarg(const char *path)
+  */
+ bool __is_tftp_fs(const char *path)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 
+ 	fsdev = get_fsdevice_by_path(path);
+ 	if (!fsdev)
+@@ -2026,18 +2026,18 @@ static void putname(struct filename *name)
+ 	free(name);
+ }
+ 
+-static struct fs_device_d *get_fsdevice_by_dentry(struct dentry *dentry)
++static struct fs_device *get_fsdevice_by_dentry(struct dentry *dentry)
+ {
+ 	struct super_block *sb;
+ 
+ 	sb = dentry->d_sb;
+ 
+-	return container_of(sb, struct fs_device_d, sb);
++	return container_of(sb, struct fs_device, sb);
+ }
+ 
+ static bool dentry_is_tftp(struct dentry *dentry)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 
+ 	fsdev = get_fsdevice_by_dentry(dentry);
+ 	if (!fsdev)
+@@ -2350,9 +2350,9 @@ static int filename_lookup(struct filename *name, unsigned flags,
+ 	return err;
+ }
+ 
+-static struct fs_device_d *get_fsdevice_by_path(const char *pathname)
++static struct fs_device *get_fsdevice_by_path(const char *pathname)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 	struct path path;
+ 	int ret;
+ 
+@@ -2490,7 +2490,7 @@ EXPORT_SYMBOL(rmdir);
+ 
  int open(const char *pathname, int flags, ...)
  {
- 	struct fs_device *fsdev;
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 	struct fs_driver_d *fsdrv;
  	struct super_block *sb;
  	FILE *f;
- 	int error = 0;
+@@ -2579,7 +2579,7 @@ int open(const char *pathname, int flags, ...)
+ 	f->size = inode->i_size;
+ 
+ 	sb = inode->i_sb;
+-	fsdev = container_of(sb, struct fs_device_d, sb);
++	fsdev = container_of(sb, struct fs_device, sb);
+ 	fsdrv = fsdev->driver;
+ 
+ 	f->fsdev = fsdev;
+@@ -2870,7 +2870,7 @@ static char *__dpath(struct dentry *dentry, struct dentry *root)
+ 		return NULL;
+ 
+ 	while (IS_ROOT(dentry)) {
+-		struct fs_device_d *fsdev;
++		struct fs_device *fsdev;
+ 
+ 		for_each_fs_device(fsdev) {
+ 			if (dentry == fsdev->vfsmount.mnt_root) {
+@@ -3068,7 +3068,7 @@ char *cdev_get_linux_rootarg(const struct cdev *cdev)
+ int mount(const char *device, const char *fsname, const char *pathname,
+ 		const char *fsoptions)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 	int ret;
+ 	struct path path = {};
+ 
+@@ -3105,7 +3105,7 @@ int mount(const char *device, const char *fsname, const char *pathname,
+ 		goto out;
+ 	}
+ 
+-	fsdev = xzalloc(sizeof(struct fs_device_d));
++	fsdev = xzalloc(sizeof(struct fs_device));
+ 	fsdev->backingstore = xstrdup(device);
+ 	dev_set_name(&fsdev->dev, fsname);
+ 	fsdev->dev.id = get_free_deviceid(fsdev->dev.name);
+@@ -3175,7 +3175,7 @@ EXPORT_SYMBOL(mount);
+ 
+ int umount(const char *pathname)
+ {
+-	struct fs_device_d *fsdev = NULL, *f;
++	struct fs_device *fsdev = NULL, *f;
+ 	struct path path = {};
+ 	int ret;
+ 
+@@ -3413,7 +3413,7 @@ BAREBOX_CMD_END
+ 
+ static struct dentry *debug_follow_mount(struct dentry *dentry)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 	unsigned managed = dentry->d_flags;
+ 
+ 	if (managed & DCACHE_MOUNTED) {
 diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
-index 8b526f7b7f..6f2cbff6c9 100644
+index 3a56094b3c..8b526f7b7f 100644
 --- a/fs/jffs2/fs.c
 +++ b/fs/jffs2/fs.c
-@@ -466,7 +466,7 @@ static void jffs2_remove(struct device *dev)
+@@ -403,7 +403,7 @@ static int jffs2_probe_cnt;
+ 
+ static int jffs2_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 	struct super_block *sb;
+ 	struct jffs2_sb_info *ctx;
+ 	int ret;
+@@ -450,7 +450,7 @@ err_out:
+ 
+ static void jffs2_remove(struct device *dev)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 	struct super_block *sb;
+ 
+ 	fsdev = dev_to_fs_device(dev);
+diff --git a/fs/jffs2/os-linux.h b/fs/jffs2/os-linux.h
+index 3f6af90582..29915715bb 100644
+--- a/fs/jffs2/os-linux.h
++++ b/fs/jffs2/os-linux.h
+@@ -17,7 +17,7 @@
+ 
+ struct kstatfs;
+ struct kvec;
+-struct fs_device_d;
++struct fs_device;
+ 
+ #define JFFS2_BLOCK_SIZE	PAGE_SIZE
+ 
+@@ -180,7 +180,7 @@ struct jffs2_inode_info *jffs2_gc_fetch_inode(struct jffs2_sb_info *c,
+ void jffs2_flash_cleanup(struct jffs2_sb_info *c);
+ 
+ /* super.c */
+-int jffs2_fill_super(struct fs_device_d *fsdev, int silent);
++int jffs2_fill_super(struct fs_device *fsdev, int silent);
+ 
+ /* writev.c */
+ int jffs2_flash_direct_writev(struct jffs2_sb_info *c, const struct kvec *vecs,
+diff --git a/fs/jffs2/super.c b/fs/jffs2/super.c
+index 6001be8e10..37b3f328c6 100644
+--- a/fs/jffs2/super.c
++++ b/fs/jffs2/super.c
+@@ -68,7 +68,7 @@ static const struct super_operations jffs2_super_operations =
+ /*
+  * fill in the superblock
+  */
+-int jffs2_fill_super(struct fs_device_d *fsdev, int silent)
++int jffs2_fill_super(struct fs_device *fsdev, int silent)
+ {
+ 	struct super_block *sb = &fsdev->sb;
+ 	struct jffs2_sb_info *c = sb->s_fs_info;
+diff --git a/fs/legacy.c b/fs/legacy.c
+index 779f546294..7e886e7ae9 100644
+--- a/fs/legacy.c
++++ b/fs/legacy.c
+@@ -19,7 +19,7 @@ static int legacy_iterate(struct file *file, struct dir_context *ctx)
+ 	struct dentry *dentry = file->f_path.dentry;
+ 	struct inode *dir = d_inode(dentry);
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct dir *d;
+ 	struct dirent *dirent;
+ 	char *pathname;
+@@ -48,7 +48,7 @@ static struct dentry *legacy_lookup(struct inode *dir, struct dentry *dentry,
+ 				    unsigned int flags)
+ {
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct inode *inode;
+ 	char *pathname;
+ 	struct stat s;
+@@ -72,7 +72,7 @@ static struct dentry *legacy_lookup(struct inode *dir, struct dentry *dentry,
+ static int legacy_create(struct inode *dir, struct dentry *dentry, umode_t mode)
+ {
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct inode *inode;
+ 	char *pathname;
+ 	int ret;
+@@ -99,7 +99,7 @@ static int legacy_create(struct inode *dir, struct dentry *dentry, umode_t mode)
+ static int legacy_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
+ {
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct inode *inode;
+ 	char *pathname;
+ 	int ret;
+@@ -127,7 +127,7 @@ static int legacy_dir_is_empty(struct dentry *dentry)
+ {
+ 	struct inode *dir = d_inode(dentry);
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct dir *d;
+ 	struct dirent *dirent;
+ 	char *pathname;
+@@ -147,7 +147,7 @@ static int legacy_dir_is_empty(struct dentry *dentry)
+ static int legacy_rmdir(struct inode *dir, struct dentry *dentry)
+ {
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	char *pathname;
+ 	int ret;
+ 
+@@ -176,7 +176,7 @@ static int legacy_rmdir(struct inode *dir, struct dentry *dentry)
+ static int legacy_unlink(struct inode *dir, struct dentry *dentry)
+ {
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	char *pathname;
+ 	int ret;
+ 
+@@ -202,7 +202,7 @@ static int legacy_symlink(struct inode *dir, struct dentry *dentry,
+ 			  const char *dest)
+ {
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct inode *inode;
+ 	char *pathname;
+ 	int ret;
+@@ -230,7 +230,7 @@ static int legacy_symlink(struct inode *dir, struct dentry *dentry,
+ static const char *legacy_get_link(struct dentry *dentry, struct inode *inode)
+ {
+ 	struct super_block *sb = inode->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	char *pathname;
+ 	int ret;
+ 	char link[PATH_MAX] = {};
+@@ -304,7 +304,7 @@ static struct inode *legacy_get_inode(struct super_block *sb, const struct inode
+ 	return inode;
  }
  
+-int fs_init_legacy(struct fs_device_d *fsdev)
++int fs_init_legacy(struct fs_device *fsdev)
+ {
+ 	struct inode *inode;
  
--static struct fs_driver_d jffs2_driver = {
-+static struct fs_driver jffs2_driver = {
- 	.open = jffs2_open,
- 	.close = jffs2_close,
- 	.read = jffs2_read,
 diff --git a/fs/nfs.c b/fs/nfs.c
-index 1b38923ce0..446d0f7946 100644
+index 5a1b7b6531..1b38923ce0 100644
 --- a/fs/nfs.c
 +++ b/fs/nfs.c
-@@ -1530,7 +1530,7 @@ static void nfs_remove(struct device *dev)
- 	free(npriv);
- }
+@@ -1386,7 +1386,7 @@ static const struct super_operations nfs_ops = {
  
--static struct fs_driver_d nfs_driver = {
-+static struct fs_driver nfs_driver = {
- 	.open      = nfs_open,
- 	.close     = nfs_close,
- 	.read      = nfs_read,
-diff --git a/fs/omap4_usbbootfs.c b/fs/omap4_usbbootfs.c
-index 1ccfe14182..985d968cc5 100644
---- a/fs/omap4_usbbootfs.c
-+++ b/fs/omap4_usbbootfs.c
-@@ -149,7 +149,7 @@ static void omap4_usbbootfs_remove(struct device *dev)
+ static char *rootnfsopts;
+ 
+-static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
++static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device *fsdev)
  {
- }
+ 	char *str, *tmp;
+ 	const char *bootargs;
+@@ -1421,7 +1421,7 @@ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
  
--static struct fs_driver_d omap4_usbbootfs_driver = {
-+static struct fs_driver omap4_usbbootfs_driver = {
- 	.open    = omap4_usbbootfs_open,
- 	.close   = omap4_usbbootfs_close,
- 	.read    = omap4_usbbootfs_read,
-diff --git a/fs/pstore/fs.c b/fs/pstore/fs.c
-index 24b5306d15..777e2448cc 100644
---- a/fs/pstore/fs.c
-+++ b/fs/pstore/fs.c
-@@ -254,7 +254,7 @@ static int pstore_probe(struct device *dev)
- 	return 0;
- }
- 
--static struct fs_driver_d pstore_driver = {
-+static struct fs_driver pstore_driver = {
- 	.open      = pstore_open,
- 	.close     = pstore_close,
- 	.read      = pstore_read,
+ static int nfs_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct nfs_priv *npriv = xzalloc(sizeof(struct nfs_priv));
+ 	struct super_block *sb = &fsdev->sb;
+ 	char *tmp = xstrdup(fsdev->backingstore);
 diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 9e1f22c152..117e69b70c 100644
+index 127ff7de82..9e1f22c152 100644
 --- a/fs/ramfs.c
 +++ b/fs/ramfs.c
-@@ -450,7 +450,7 @@ static void ramfs_remove(struct device *dev)
+@@ -435,7 +435,7 @@ static const struct super_operations ramfs_ops = {
+ static int ramfs_probe(struct device *dev)
  {
- }
+ 	struct inode *inode;
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct super_block *sb = &fsdev->sb;
  
--static struct fs_driver_d ramfs_driver = {
-+static struct fs_driver ramfs_driver = {
- 	.read      = ramfs_read,
- 	.write     = ramfs_write,
- 	.memmap    = ramfs_memmap,
+ 	sb->s_op = &ramfs_ops;
 diff --git a/fs/ratpfs.c b/fs/ratpfs.c
-index 8432198ebd..9e85fc596e 100644
+index 684bc68f74..8432198ebd 100644
 --- a/fs/ratpfs.c
 +++ b/fs/ratpfs.c
-@@ -438,7 +438,7 @@ static void ratpfs_remove(struct device __always_unused *dev)
- 	barebox_ratp_fs_mount(NULL);
- }
+@@ -401,7 +401,7 @@ static int ratpfs_probe(struct device *dev)
+ 	struct ratp_bb_pkt *pkt_tx = xzalloc(sizeof(*pkt_tx) + len_tx);
+ 	struct ratp_bb_pkt *pkt_rx = NULL;
+ 	int ret;
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
  
--static struct fs_driver_d ratpfs_driver = {
-+static struct fs_driver ratpfs_driver = {
- 	.open      = ratpfs_open,
- 	.close     = ratpfs_close,
- 	.read      = ratpfs_read,
-diff --git a/fs/smhfs.c b/fs/smhfs.c
-index 6431b894f6..5165bf9394 100644
---- a/fs/smhfs.c
-+++ b/fs/smhfs.c
-@@ -148,7 +148,7 @@ static void smhfs_remove(struct device __always_unused *dev)
- {
- }
+ 	pr_debug("%s\n", __func__);
  
--static struct fs_driver_d smhfs_driver = {
-+static struct fs_driver smhfs_driver = {
- 	.open      = smhfs_open,
- 	.close     = smhfs_close,
- 	.read      = smhfs_read,
 diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-index 17663d8976..f2e5769a19 100644
+index 96531be0f6..17663d8976 100644
 --- a/fs/squashfs/squashfs.c
 +++ b/fs/squashfs/squashfs.c
-@@ -251,7 +251,7 @@ struct squashfs_dir {
- 	char root_d_name[256];
- };
+@@ -41,7 +41,7 @@ char *squashfs_devread(struct squashfs_sb_info *fs, int byte_offset,
+ 	return buf;
+ }
  
--static struct fs_driver_d squashfs_driver = {
-+static struct fs_driver squashfs_driver = {
- 	.open		= squashfs_open,
- 	.close		= squashfs_close,
- 	.read		= squashfs_read,
+-static void squashfs_set_rootarg(struct fs_device_d *fsdev)
++static void squashfs_set_rootarg(struct fs_device *fsdev)
+ {
+ 	struct ubi_volume_desc *ubi_vol;
+ 	struct ubi_volume_info vi = {};
+@@ -92,7 +92,7 @@ static const struct super_operations squashfs_super_ops = {
+ 
+ static int squashfs_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 	int ret;
+ 	struct super_block *sb;
+ 
+@@ -122,7 +122,7 @@ err_out:
+ 
+ static void squashfs_remove(struct device *dev)
+ {
+-	struct fs_device_d *fsdev;
++	struct fs_device *fsdev;
+ 	struct super_block *sb;
+ 
+ 	fsdev = dev_to_fs_device(dev);
+diff --git a/fs/squashfs/squashfs.h b/fs/squashfs/squashfs.h
+index 9ddcfbf1c2..d22e83dc3c 100644
+--- a/fs/squashfs/squashfs.h
++++ b/fs/squashfs/squashfs.h
+@@ -54,8 +54,8 @@ static inline struct squashfs_page *squashfs_page(struct page *page)
+ 
+ char *squashfs_devread(struct squashfs_sb_info *fs, int byte_offset,
+ 		int byte_len);
+-extern int squashfs_mount(struct fs_device_d *fsdev,
+-		int silent);
++extern int squashfs_mount(struct fs_device *fsdev,
++			  int silent);
+ extern void squashfs_put_super(struct super_block *sb);
+ 
+ /* block.c */
+diff --git a/fs/squashfs/super.c b/fs/squashfs/super.c
+index 35df3a0307..2e34c0e540 100644
+--- a/fs/squashfs/super.c
++++ b/fs/squashfs/super.c
+@@ -91,7 +91,7 @@ void squashfs_put_super(struct super_block *sb)
+ static int squashfs_fill_super(struct super_block *sb, void *data, int silent)
+ {
+ 	struct squashfs_sb_info *msblk;
+-	struct fs_device_d *fsdev = (struct fs_device_d *)data;
++	struct fs_device *fsdev = (struct fs_device *)data;
+ 	struct squashfs_super_block *sblk = NULL;
+ 	struct inode *root;
+ 	long long root_inode;
+@@ -321,7 +321,7 @@ failed_mount:
+ }
+ 
+ 
+-int squashfs_mount(struct fs_device_d *fsdev, int silent)
++int squashfs_mount(struct fs_device *fsdev, int silent)
+ {
+ 	struct super_block *sb = &fsdev->sb;
+ 
 diff --git a/fs/tftp.c b/fs/tftp.c
-index 6509d97d7e..0b0b86a1a0 100644
+index e41b5da4c0..6509d97d7e 100644
 --- a/fs/tftp.c
 +++ b/fs/tftp.c
-@@ -1051,7 +1051,7 @@ static void tftp_remove(struct device *dev)
- 	free(priv);
- }
+@@ -651,7 +651,7 @@ static struct file_priv *tftp_do_open(struct device *dev,
+ 				      int accmode, struct dentry *dentry,
+ 				      bool is_getattr)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct file_priv *priv;
+ 	struct tftp_priv *tpriv = dev->priv;
+ 	int ret;
+@@ -980,7 +980,7 @@ static struct dentry *tftp_lookup(struct inode *dir, struct dentry *dentry,
+ 			    unsigned int flags)
+ {
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct inode *inode;
+ 	struct file_priv *priv;
+ 	loff_t filesize;
+@@ -1017,7 +1017,7 @@ static const struct super_operations tftp_ops;
  
--static struct fs_driver_d tftp_driver = {
-+static struct fs_driver tftp_driver = {
- 	.open      = tftp_open,
- 	.close     = tftp_close,
- 	.read      = tftp_read,
+ static int tftp_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct tftp_priv *priv = xzalloc(sizeof(struct tftp_priv));
+ 	struct super_block *sb = &fsdev->sb;
+ 	struct inode *inode;
+diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
+index 37d5584454..564ac950eb 100644
+--- a/fs/ubifs/super.c
++++ b/fs/ubifs/super.c
+@@ -1210,7 +1210,7 @@ late_initcall(ubifs_init);
+ int ubifs_get_super(struct device *dev, struct ubi_volume_desc *ubi,
+ 		    int silent)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct super_block *sb;
+ 	struct ubifs_info *c;
+ 	int err;
 diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
-index 8a190309aa..ad288f4daa 100644
+index 95d5dbaff8..8a190309aa 100644
 --- a/fs/ubifs/ubifs.c
 +++ b/fs/ubifs/ubifs.c
-@@ -503,7 +503,7 @@ static void ubifs_remove(struct device *dev)
- 	free(priv);
+@@ -431,7 +431,8 @@ static int ubifs_read(struct device *_dev, FILE *f, void *buf, size_t insize)
+ 	return insize;
  }
  
--static struct fs_driver_d ubifs_driver = {
-+static struct fs_driver ubifs_driver = {
- 	.open      = ubifs_open,
- 	.close     = ubifs_close,
- 	.read      = ubifs_read,
+-static void ubifs_set_rootarg(struct ubifs_priv *priv, struct fs_device_d *fsdev)
++static void ubifs_set_rootarg(struct ubifs_priv *priv,
++			      struct fs_device *fsdev)
+ {
+ 	struct ubi_volume_info vi = {};
+ 	struct ubi_device_info di = {};
+@@ -453,7 +454,7 @@ static void ubifs_set_rootarg(struct ubifs_priv *priv, struct fs_device_d *fsdev
+ 
+ static int ubifs_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct ubifs_priv *priv = xzalloc(sizeof(struct ubifs_priv));
+ 	int ret;
+ 
 diff --git a/fs/ubootvarfs.c b/fs/ubootvarfs.c
-index 2559cfd111..32cf574e57 100644
+index b70ad99e07..2559cfd111 100644
 --- a/fs/ubootvarfs.c
 +++ b/fs/ubootvarfs.c
-@@ -481,7 +481,7 @@ static void ubootvarfs_remove(struct device *dev)
- 	free(data);
- }
+@@ -148,7 +148,7 @@ static struct dentry *ubootvarfs_lookup(struct inode *dir,
+ 					unsigned int flags)
+ {
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct ubootvarfs_data *data = fsdev->dev.priv;
+ 	struct ubootvarfs_var *var;
+ 	struct inode *inode;
+@@ -269,7 +269,7 @@ static int ubootvarfs_create(struct inode *dir, struct dentry *dentry,
+ 			     umode_t mode)
+ {
+ 	struct super_block *sb = dir->i_sb;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct ubootvarfs_data *data = fsdev->dev.priv;
+ 	struct inode *inode;
+ 	struct ubootvarfs_var *var;
+@@ -311,7 +311,7 @@ static const struct inode_operations ubootvarfs_dir_inode_operations = {
+ static struct inode *ubootvarfs_alloc_inode(struct super_block *sb)
+ {
+ 	struct ubootvarfs_inode *node;
+-	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
++	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
+ 	struct ubootvarfs_data *data = fsdev->dev.priv;
  
--static struct fs_driver_d ubootvarfs_driver = {
-+static struct fs_driver ubootvarfs_driver = {
- 	.truncate = ubootvarfs_truncate,
- 	.read = ubootvarfs_read,
- 	.write = ubootvarfs_write,
+ 	node = xzalloc(sizeof(*node));
+@@ -427,7 +427,7 @@ static int ubootvarfs_probe(struct device *dev)
+ {
+ 	struct inode *inode;
+ 	struct ubootvarfs_data *data = xzalloc(sizeof(*data));
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct super_block *sb = &fsdev->sb;
+ 	struct stat s;
+ 	void *map;
 diff --git a/fs/uimagefs.c b/fs/uimagefs.c
-index 4e98d82f38..9cae2091da 100644
+index 0b7fed0f63..4e98d82f38 100644
 --- a/fs/uimagefs.c
 +++ b/fs/uimagefs.c
-@@ -520,7 +520,7 @@ err:
- 	return ret;
- }
+@@ -497,7 +497,7 @@ err_out:
  
--static struct fs_driver_d uimagefs_driver = {
-+static struct fs_driver uimagefs_driver = {
- 	.open      = uimagefs_open,
- 	.close     = uimagefs_close,
- 	.read      = uimagefs_read,
-diff --git a/include/dirent.h b/include/dirent.h
-index b8fbfafe3c..75627730f8 100644
---- a/include/dirent.h
-+++ b/include/dirent.h
-@@ -10,7 +10,7 @@ struct dirent {
+ static int uimagefs_probe(struct device *dev)
+ {
+-	struct fs_device_d *fsdev = dev_to_fs_device(dev);
++	struct fs_device *fsdev = dev_to_fs_device(dev);
+ 	struct uimagefs_handle *priv;
+ 	int ret = 0;
  
- typedef struct dir {
- 	struct device *dev;
--	struct fs_driver_d *fsdrv;
-+	struct fs_driver *fsdrv;
- 	struct dirent d;
- 	void *priv; /* private data for the fs driver */
- 	struct list_head entries;
 diff --git a/include/fs.h b/include/fs.h
-index e792c9e9ba..c64e78b38c 100644
+index 3c63158602..e792c9e9ba 100644
 --- a/include/fs.h
 +++ b/include/fs.h
-@@ -39,7 +39,7 @@ typedef struct filep {
+@@ -20,7 +20,7 @@ struct node_d;
+ struct stat;
  
- #define FS_DRIVER_NO_DEV	1
+ typedef struct filep {
+-	struct fs_device_d *fsdev; /* The device this FILE belongs to              */
++	struct fs_device *fsdev; /* The device this FILE belongs to              */
+ 	char *path;
+ 	loff_t pos;            /* current position in stream                   */
+ #define FILE_SIZE_STREAM	((loff_t) -1)
+@@ -86,14 +86,14 @@ struct fs_driver_d {
+ 	unsigned long flags;
+ };
  
--struct fs_driver_d {
-+struct fs_driver {
- 	int (*probe) (struct device *dev);
+-#define dev_to_fs_device(d) container_of(d, struct fs_device_d, dev)
++#define dev_to_fs_device(d) container_of(d, struct fs_device, dev)
  
- 	/* create a file. The file is guaranteed to not exist */
-@@ -97,7 +97,7 @@ struct fs_device {
+ extern struct list_head fs_device_list;
+ #define for_each_fs_device(f) list_for_each_entry(f, &fs_device_list, list)
+ #define for_each_fs_device_safe(tmp, f) list_for_each_entry_safe(f, tmp, &fs_device_list, list)
+ extern struct bus_type fs_bus;
+ 
+-struct fs_device_d {
++struct fs_device {
  	char *backingstore; /* the device we are associated with */
  	struct device dev; /* our own device */
  
--	struct fs_driver_d *driver;
-+	struct fs_driver *driver;
- 
- 	struct cdev *cdev;
- 	bool loop;
-@@ -121,7 +121,7 @@ static inline bool is_tftp_fs(const char *path)
- 	return __is_tftp_fs(path);
- }
- 
--#define drv_to_fs_driver(d) container_of(d, struct fs_driver_d, drv)
-+#define drv_to_fs_driver(d) container_of(d, struct fs_driver, drv)
- 
- int flush(int fd);
- int umount_by_cdev(struct cdev *cdev);
-@@ -158,7 +158,7 @@ char *get_mounted_path(const char *path);
- struct cdev *get_cdev_by_mountpath(const char *path);
- 
- /* Register a new filesystem driver */
--int register_fs_driver(struct fs_driver_d *fsdrv);
-+int register_fs_driver(struct fs_driver *fsdrv);
- 
- void automount_remove(const char *_path);
+@@ -164,14 +164,14 @@ void automount_remove(const char *_path);
  int automount_add(const char *path, const char *cmd);
+ void automount_print(void);
+ 
+-int fs_init_legacy(struct fs_device_d *fsdev);
+-int fsdev_open_cdev(struct fs_device_d *fsdev);
++int fs_init_legacy(struct fs_device *fsdev);
++int fsdev_open_cdev(struct fs_device *fsdev);
+ const char *cdev_get_mount_path(struct cdev *cdev);
+ const char *cdev_mount_default(struct cdev *cdev, const char *fsoptions);
+ const char *cdev_mount(struct cdev *cdev);
+ void mount_all(void);
+ 
+-void fsdev_set_linux_rootarg(struct fs_device_d *fsdev, const char *str);
++void fsdev_set_linux_rootarg(struct fs_device *fsdev, const char *str);
+ char *path_get_linux_rootarg(const char *path);
+ char *cdev_get_linux_rootarg(const struct cdev *cdev);
+ 
 -- 
 2.30.2
 
