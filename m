@@ -1,59 +1,57 @@
-Delivery-date: Wed, 14 Dec 2022 13:37:03 +0100
+Delivery-date: Wed, 14 Dec 2022 13:37:06 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p5R0Q-003cqH-Us
-	for lore@lore.pengutronix.de; Wed, 14 Dec 2022 13:37:03 +0100
+	id 1p5R0T-003cqx-Gg
+	for lore@lore.pengutronix.de; Wed, 14 Dec 2022 13:37:06 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p5R0O-0002Hy-TW
-	for lore@pengutronix.de; Wed, 14 Dec 2022 13:37:02 +0100
+	id 1p5R0R-0002Ik-Fn
+	for lore@pengutronix.de; Wed, 14 Dec 2022 13:37:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=l84tNihR3YgMKk0/TsTbL6M64n2hWMaAjySdyTRUHv8=; b=S2z4lZaMZec33KJ/vPioGszROH
-	YTErWaUcLzukP0ZNhmQ5437o1vCMv71/3AaUqhpPNdCyGTajBCU1qHHpFKSz8onK9QxGeSbvCIXBl
-	zBGDuCRQ56BDBEX3Vuc825o9XRdrZigJchfA6tlcN5u7uHVKLhPuNRYOuBysi8+4Usapf/LUoow49
-	nd26dKC0Yel6EvyNC4YfBNDpeUMHJOLkq81JJC3aLYGnjVW+R6yBmGEpiUif08Bcj48YXqXzhiYkv
-	sfFUeVNqcg2SwGV89o+7dMtyF0ghWohcQHFE5ugrXjbGmD38O3KzMaRZ4NNfaD2hf/T0KG6hj9BlI
-	ZB+cMpcQ==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=4OkcdAbOWSamIdrl9/4TySVKMaGlJg6lJHPCR6pKZVo=; b=k/SvLf3/+IP18gp58S10mq0uST
+	wSnzIkFXJ/E3vpTXFDIyKhlL0ktLf/k1ac5/eKArZ7W/cSCPP+KFSN+lajCjPuZPtFy9LRQUmuhY+
+	NvIzQV3VX+5MhJIXFTACWdxQWiLu6cSKiY/REVu49IFh3hojfFklkBV8IodMi244dmRsjElDIb3tp
+	NJnh+gziPFxi1UOYkHL9K+KI0JYMcZB59AOEnkjkJxVwdadb+ZZIrL7DllfQ+sQdL5zxE5h8OQqix
+	rk4rDjFluU2tNJ4FMsDGC1muwQ1E1JPUG6NBOK6z7SHyY56bv74yU53Iz27tpPK3rUyv8xTEKE4Hb
+	yRjJgiGw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p5Qyy-00GMMi-7U; Wed, 14 Dec 2022 12:35:32 +0000
+	id 1p5Qyq-00GMID-Fs; Wed, 14 Dec 2022 12:35:24 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p5Qyi-00GMEz-Lc
-	for barebox@lists.infradead.org; Wed, 14 Dec 2022 12:35:24 +0000
+	id 1p5Qyh-00GMEQ-No
+	for barebox@lists.infradead.org; Wed, 14 Dec 2022 12:35:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p5Qyh-0001sR-ED; Wed, 14 Dec 2022 13:35:15 +0100
+	id 1p5Qyg-0001ro-88; Wed, 14 Dec 2022 13:35:14 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p5Qyg-004TOF-1R; Wed, 14 Dec 2022 13:35:14 +0100
+	id 1p5Qye-004TO0-RW; Wed, 14 Dec 2022 13:35:13 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p5Qyg-000nNL-1o; Wed, 14 Dec 2022 13:35:14 +0100
+	id 1p5Qye-000nN8-ML; Wed, 14 Dec 2022 13:35:12 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 14 Dec 2022 13:35:11 +0100
-Message-Id: <20221214123512.189688-5-s.hauer@pengutronix.de>
+Date: Wed, 14 Dec 2022 13:35:07 +0100
+Message-Id: <20221214123512.189688-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20221214123512.189688-1-s.hauer@pengutronix.de>
-References: <20221214123512.189688-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221214_043517_079027_F486D64B 
-X-CRM114-Status: GOOD (  17.91  )
+X-CRM114-CacheID: sfid-20221214_043516_311021_838FAE2C 
+X-CRM114-Status: GOOD (  10.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,854 +73,844 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/5] Rename struct fs_device_d to fs_device
+Subject: [PATCH 0/5] Rename some structs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Remove the meaningless '_d' suffix.
+Several barebox struct names have a '_d' suffix. The suffix was
+originally added to struct device_d in case we may want to import
+Linux struct device as a separate struct. That never happened, instead
+barebox struct device_d basically is the same as Linux struct device,
+so rename it accordingly. While at it remove the unnecessary '_d'
+suffixes from other struct names as well.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- commands/mount.c       |  2 +-
- common/blspec.c        |  2 +-
- fs/bpkfs.c             |  2 +-
- fs/cramfs/cramfs.c     | 11 +++++----
- fs/devfs.c             |  2 +-
- fs/efi.c               |  2 +-
- fs/ext4/ext_barebox.c  |  6 ++---
- fs/fat/fat.c           |  2 +-
- fs/fs.c                | 54 +++++++++++++++++++++---------------------
- fs/jffs2/fs.c          |  4 ++--
- fs/jffs2/os-linux.h    |  4 ++--
- fs/jffs2/super.c       |  2 +-
- fs/legacy.c            | 20 ++++++++--------
- fs/nfs.c               |  4 ++--
- fs/ramfs.c             |  2 +-
- fs/ratpfs.c            |  2 +-
- fs/squashfs/squashfs.c |  6 ++---
- fs/squashfs/squashfs.h |  4 ++--
- fs/squashfs/super.c    |  4 ++--
- fs/tftp.c              |  6 ++---
- fs/ubifs/super.c       |  2 +-
- fs/ubifs/ubifs.c       |  5 ++--
- fs/ubootvarfs.c        |  8 +++----
- fs/uimagefs.c          |  2 +-
- include/fs.h           | 12 +++++-----
- 25 files changed, 87 insertions(+), 83 deletions(-)
+Also, Linux uses 'of_node' for the device_node * inside struct device.
+Rename this in barebox to match the Linux name to make porting code
+from Linux easier.
 
-diff --git a/commands/mount.c b/commands/mount.c
-index 966807a1f4..9684edf7c5 100644
---- a/commands/mount.c
-+++ b/commands/mount.c
-@@ -36,7 +36,7 @@ static int do_mount(int argc, char *argv[])
- 	}
- 
- 	if (argc == optind) {
--		struct fs_device_d *fsdev;
-+		struct fs_device *fsdev;
- 
- 		for_each_fs_device(fsdev) {
- 			printf("%s on %s type %s\n",
-diff --git a/common/blspec.c b/common/blspec.c
-index e023259bac..c9380a306f 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -316,7 +316,7 @@ static int blspec_have_entry(struct bootentries *bootentries, const char *path)
-  */
- static const char *nfs_find_mountpath(const char *nfshostpath)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 
- 	for_each_fs_device(fsdev) {
- 		if (fsdev->backingstore && !strcmp(fsdev->backingstore, nfshostpath))
-diff --git a/fs/bpkfs.c b/fs/bpkfs.c
-index bab989c4c0..6e22a5ebec 100644
---- a/fs/bpkfs.c
-+++ b/fs/bpkfs.c
-@@ -353,7 +353,7 @@ static void bpkfs_remove(struct device *dev)
- 
- static int bpkfs_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct bpkfs_handle *priv;
- 	struct bpkfs_header *header;
- 	struct bpkfs_data_header data_header;
-diff --git a/fs/cramfs/cramfs.c b/fs/cramfs/cramfs.c
-index 6da8757888..4322bbffd4 100644
---- a/fs/cramfs/cramfs.c
-+++ b/fs/cramfs/cramfs.c
-@@ -118,7 +118,8 @@ static int cramfs_read_file(struct inode *inode, unsigned long offset,
- {
- 	struct cramfs_inode_info *info = to_cramfs_inode_info(inode);
- 	struct cramfs_inode *cramfs_inode = &info->inode;
--	struct fs_device_d *fsdev = container_of(inode->i_sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(inode->i_sb, struct fs_device,
-+					       sb);
- 	struct cramfs_priv *priv = fsdev->dev.priv;
- 	unsigned int blocknr;
- 	int outsize = 0;
-@@ -274,7 +275,8 @@ static struct dentry *cramfs_lookup(struct inode *dir, struct dentry *dentry,
- 	struct cramfs_inode *de;
- 	unsigned int offset = 0;
- 	struct inode *inode = NULL;
--	struct fs_device_d *fsdev = container_of(dir->i_sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(dir->i_sb, struct fs_device,
-+					       sb);
- 	struct cramfs_priv *priv = fsdev->dev.priv;
- 
- 	de = xmalloc(sizeof(*de) + CRAMFS_MAXPATHLEN);
-@@ -346,7 +348,8 @@ static int cramfs_iterate(struct file *file, struct dir_context *ctx)
- {
- 	struct dentry *dentry = file->f_path.dentry;
- 	struct inode *dir = d_inode(dentry);
--	struct fs_device_d *fsdev = container_of(dir->i_sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(dir->i_sb, struct fs_device,
-+					       sb);
- 	struct cramfs_priv *priv = fsdev->dev.priv;
- 	char *buf;
- 	unsigned int offset;
-@@ -441,7 +444,7 @@ static const struct super_operations cramfs_ops = {
- 
- static int cramfs_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 	struct cramfs_priv *priv;
- 	int ret;
- 	struct super_block *sb;
-diff --git a/fs/devfs.c b/fs/devfs.c
-index 08ce8b7bdd..eaee51c375 100644
---- a/fs/devfs.c
-+++ b/fs/devfs.c
-@@ -298,7 +298,7 @@ static const struct super_operations devfs_ops = {
- static int devfs_probe(struct device *dev)
- {
- 	struct inode *inode;
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct super_block *sb = &fsdev->sb;
- 
- 	sb->s_op = &devfs_ops;
-diff --git a/fs/efi.c b/fs/efi.c
-index 4afd139623..12275e4a85 100644
---- a/fs/efi.c
-+++ b/fs/efi.c
-@@ -451,7 +451,7 @@ static int efifs_readlink(struct device *dev, const char *pathname,
- 
- static int efifs_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct efifs_priv *priv;
- 	efi_status_t efiret;
- 	struct efi_file_handle *file;
-diff --git a/fs/ext4/ext_barebox.c b/fs/ext4/ext_barebox.c
-index 9e91288b8e..e0b5951e86 100644
---- a/fs/ext4/ext_barebox.c
-+++ b/fs/ext4/ext_barebox.c
-@@ -58,7 +58,7 @@ static int ext_read(struct device *_dev, FILE *f, void *buf, size_t insize)
- 
- static struct inode *ext_alloc_inode(struct super_block *sb)
- {
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct ext_filesystem *fs = fsdev->dev.priv;
- 	struct ext2fs_node *node;
- 
-@@ -209,7 +209,7 @@ struct inode *ext_get_inode(struct super_block *sb, int ino)
- {
- 	struct inode *inode;
- 	struct ext2fs_node *node;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct ext_filesystem *fs = fsdev->dev.priv;
- 	int ret;
- 
-@@ -251,7 +251,7 @@ struct inode *ext_get_inode(struct super_block *sb, int ino)
- 
- static int ext_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	int ret;
- 	struct ext_filesystem *fs;
- 	struct super_block *sb = &fsdev->sb;
-diff --git a/fs/fat/fat.c b/fs/fat/fat.c
-index b9c0a6e7fa..79c7d26ab7 100644
---- a/fs/fat/fat.c
-+++ b/fs/fat/fat.c
-@@ -342,7 +342,7 @@ static int fat_stat(struct device *dev, const char *filename, struct stat *s)
- 
- static int fat_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct fat_priv *priv = xzalloc(sizeof(struct fat_priv));
- 	int ret;
- 
-diff --git a/fs/fs.c b/fs/fs.c
-index 52751fe37b..0e1e9b0dd0 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -111,12 +111,12 @@ void cdev_print(const struct cdev *cdev)
- }
- EXPORT_SYMBOL(cdev_print);
- 
--static struct fs_device_d *get_fsdevice_by_path(const char *path);
-+static struct fs_device *get_fsdevice_by_path(const char *path);
- 
- void stat_print(const char *filename, const struct stat *st)
- {
- 	struct block_device *bdev = NULL;
--	struct fs_device_d *fdev;
-+	struct fs_device *fdev;
- 	struct cdev *cdev = NULL;
- 	const char *type = NULL;
- 	char modestr[11];
-@@ -222,7 +222,7 @@ static void mntput(struct vfsmount *mnt)
- 
- static struct vfsmount *lookup_mnt(struct path *path)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 
- 	for_each_fs_device(fsdev) {
- 		if (path->dentry == fsdev->vfsmount.mountpoint) {
-@@ -240,7 +240,7 @@ static struct vfsmount *lookup_mnt(struct path *path)
-  */
- struct cdev *get_cdev_by_mountpath(const char *path)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 
- 	fsdev = get_fsdevice_by_path(path);
- 
-@@ -249,7 +249,7 @@ struct cdev *get_cdev_by_mountpath(const char *path)
- 
- char *get_mounted_path(const char *path)
- {
--	struct fs_device_d *fdev;
-+	struct fs_device *fdev;
- 
- 	fdev = get_fsdevice_by_path(path);
- 
-@@ -733,7 +733,7 @@ static int fs_match(struct device *dev, struct driver *drv)
- 
- static int fs_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct driver *drv = dev->driver;
- 	struct fs_driver_d *fsdrv = container_of(drv, struct fs_driver_d, drv);
- 	int ret;
-@@ -793,7 +793,7 @@ static void destroy_inode(struct inode *inode)
- 
- static void fs_remove(struct device *dev)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct super_block *sb = &fsdev->sb;
- 	struct inode *inode, *tmp;
- 	struct path path;
-@@ -887,7 +887,7 @@ const char *fs_detect(const char *filename, const char *fsoptions)
- 	return NULL;
- }
- 
--int fsdev_open_cdev(struct fs_device_d *fsdev)
-+int fsdev_open_cdev(struct fs_device *fsdev)
- {
- 	unsigned long long offset = 0;
- 	struct path path = {};
-@@ -925,7 +925,7 @@ static void init_super(struct super_block *sb)
- 	INIT_LIST_HEAD(&sb->s_inodes);
- }
- 
--static int fsdev_umount(struct fs_device_d *fsdev)
-+static int fsdev_umount(struct fs_device *fsdev)
- {
- 	int ret;
- 
-@@ -948,8 +948,8 @@ static int fsdev_umount(struct fs_device_d *fsdev)
-  */
- int umount_by_cdev(struct cdev *cdev)
- {
--	struct fs_device_d *fs;
--	struct fs_device_d *fs_tmp;
-+	struct fs_device *fs;
-+	struct fs_device *fs_tmp;
- 	int first_error = 0;
- 
- 	for_each_fs_device_safe(fs_tmp, fs) {
-@@ -1058,7 +1058,7 @@ EXPORT_SYMBOL(fstat);
-  */
- const char *cdev_get_mount_path(struct cdev *cdev)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 
- 	for_each_fs_device(fsdev) {
- 		if (fsdev->cdev && fsdev->cdev == cdev)
-@@ -1158,7 +1158,7 @@ void mount_all(void)
- 	}
- }
- 
--void fsdev_set_linux_rootarg(struct fs_device_d *fsdev, const char *str)
-+void fsdev_set_linux_rootarg(struct fs_device *fsdev, const char *str)
- {
- 	fsdev->linux_rootarg = xstrdup(str);
- 
-@@ -1175,7 +1175,7 @@ void fsdev_set_linux_rootarg(struct fs_device_d *fsdev, const char *str)
-  */
- char *path_get_linux_rootarg(const char *path)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 	const char *str;
- 
- 	fsdev = get_fsdevice_by_path(path);
-@@ -1199,7 +1199,7 @@ char *path_get_linux_rootarg(const char *path)
-  */
- bool __is_tftp_fs(const char *path)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 
- 	fsdev = get_fsdevice_by_path(path);
- 	if (!fsdev)
-@@ -2026,18 +2026,18 @@ static void putname(struct filename *name)
- 	free(name);
- }
- 
--static struct fs_device_d *get_fsdevice_by_dentry(struct dentry *dentry)
-+static struct fs_device *get_fsdevice_by_dentry(struct dentry *dentry)
- {
- 	struct super_block *sb;
- 
- 	sb = dentry->d_sb;
- 
--	return container_of(sb, struct fs_device_d, sb);
-+	return container_of(sb, struct fs_device, sb);
- }
- 
- static bool dentry_is_tftp(struct dentry *dentry)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 
- 	fsdev = get_fsdevice_by_dentry(dentry);
- 	if (!fsdev)
-@@ -2350,9 +2350,9 @@ static int filename_lookup(struct filename *name, unsigned flags,
- 	return err;
- }
- 
--static struct fs_device_d *get_fsdevice_by_path(const char *pathname)
-+static struct fs_device *get_fsdevice_by_path(const char *pathname)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 	struct path path;
- 	int ret;
- 
-@@ -2490,7 +2490,7 @@ EXPORT_SYMBOL(rmdir);
- 
- int open(const char *pathname, int flags, ...)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 	struct fs_driver_d *fsdrv;
- 	struct super_block *sb;
- 	FILE *f;
-@@ -2579,7 +2579,7 @@ int open(const char *pathname, int flags, ...)
- 	f->size = inode->i_size;
- 
- 	sb = inode->i_sb;
--	fsdev = container_of(sb, struct fs_device_d, sb);
-+	fsdev = container_of(sb, struct fs_device, sb);
- 	fsdrv = fsdev->driver;
- 
- 	f->fsdev = fsdev;
-@@ -2870,7 +2870,7 @@ static char *__dpath(struct dentry *dentry, struct dentry *root)
- 		return NULL;
- 
- 	while (IS_ROOT(dentry)) {
--		struct fs_device_d *fsdev;
-+		struct fs_device *fsdev;
- 
- 		for_each_fs_device(fsdev) {
- 			if (dentry == fsdev->vfsmount.mnt_root) {
-@@ -3068,7 +3068,7 @@ char *cdev_get_linux_rootarg(const struct cdev *cdev)
- int mount(const char *device, const char *fsname, const char *pathname,
- 		const char *fsoptions)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 	int ret;
- 	struct path path = {};
- 
-@@ -3105,7 +3105,7 @@ int mount(const char *device, const char *fsname, const char *pathname,
- 		goto out;
- 	}
- 
--	fsdev = xzalloc(sizeof(struct fs_device_d));
-+	fsdev = xzalloc(sizeof(struct fs_device));
- 	fsdev->backingstore = xstrdup(device);
- 	dev_set_name(&fsdev->dev, fsname);
- 	fsdev->dev.id = get_free_deviceid(fsdev->dev.name);
-@@ -3175,7 +3175,7 @@ EXPORT_SYMBOL(mount);
- 
- int umount(const char *pathname)
- {
--	struct fs_device_d *fsdev = NULL, *f;
-+	struct fs_device *fsdev = NULL, *f;
- 	struct path path = {};
- 	int ret;
- 
-@@ -3413,7 +3413,7 @@ BAREBOX_CMD_END
- 
- static struct dentry *debug_follow_mount(struct dentry *dentry)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 	unsigned managed = dentry->d_flags;
- 
- 	if (managed & DCACHE_MOUNTED) {
-diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
-index 3a56094b3c..8b526f7b7f 100644
---- a/fs/jffs2/fs.c
-+++ b/fs/jffs2/fs.c
-@@ -403,7 +403,7 @@ static int jffs2_probe_cnt;
- 
- static int jffs2_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 	struct super_block *sb;
- 	struct jffs2_sb_info *ctx;
- 	int ret;
-@@ -450,7 +450,7 @@ err_out:
- 
- static void jffs2_remove(struct device *dev)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 	struct super_block *sb;
- 
- 	fsdev = dev_to_fs_device(dev);
-diff --git a/fs/jffs2/os-linux.h b/fs/jffs2/os-linux.h
-index 3f6af90582..29915715bb 100644
---- a/fs/jffs2/os-linux.h
-+++ b/fs/jffs2/os-linux.h
-@@ -17,7 +17,7 @@
- 
- struct kstatfs;
- struct kvec;
--struct fs_device_d;
-+struct fs_device;
- 
- #define JFFS2_BLOCK_SIZE	PAGE_SIZE
- 
-@@ -180,7 +180,7 @@ struct jffs2_inode_info *jffs2_gc_fetch_inode(struct jffs2_sb_info *c,
- void jffs2_flash_cleanup(struct jffs2_sb_info *c);
- 
- /* super.c */
--int jffs2_fill_super(struct fs_device_d *fsdev, int silent);
-+int jffs2_fill_super(struct fs_device *fsdev, int silent);
- 
- /* writev.c */
- int jffs2_flash_direct_writev(struct jffs2_sb_info *c, const struct kvec *vecs,
-diff --git a/fs/jffs2/super.c b/fs/jffs2/super.c
-index 6001be8e10..37b3f328c6 100644
---- a/fs/jffs2/super.c
-+++ b/fs/jffs2/super.c
-@@ -68,7 +68,7 @@ static const struct super_operations jffs2_super_operations =
- /*
-  * fill in the superblock
-  */
--int jffs2_fill_super(struct fs_device_d *fsdev, int silent)
-+int jffs2_fill_super(struct fs_device *fsdev, int silent)
- {
- 	struct super_block *sb = &fsdev->sb;
- 	struct jffs2_sb_info *c = sb->s_fs_info;
-diff --git a/fs/legacy.c b/fs/legacy.c
-index 779f546294..7e886e7ae9 100644
---- a/fs/legacy.c
-+++ b/fs/legacy.c
-@@ -19,7 +19,7 @@ static int legacy_iterate(struct file *file, struct dir_context *ctx)
- 	struct dentry *dentry = file->f_path.dentry;
- 	struct inode *dir = d_inode(dentry);
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct dir *d;
- 	struct dirent *dirent;
- 	char *pathname;
-@@ -48,7 +48,7 @@ static struct dentry *legacy_lookup(struct inode *dir, struct dentry *dentry,
- 				    unsigned int flags)
- {
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct inode *inode;
- 	char *pathname;
- 	struct stat s;
-@@ -72,7 +72,7 @@ static struct dentry *legacy_lookup(struct inode *dir, struct dentry *dentry,
- static int legacy_create(struct inode *dir, struct dentry *dentry, umode_t mode)
- {
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct inode *inode;
- 	char *pathname;
- 	int ret;
-@@ -99,7 +99,7 @@ static int legacy_create(struct inode *dir, struct dentry *dentry, umode_t mode)
- static int legacy_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
- {
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct inode *inode;
- 	char *pathname;
- 	int ret;
-@@ -127,7 +127,7 @@ static int legacy_dir_is_empty(struct dentry *dentry)
- {
- 	struct inode *dir = d_inode(dentry);
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct dir *d;
- 	struct dirent *dirent;
- 	char *pathname;
-@@ -147,7 +147,7 @@ static int legacy_dir_is_empty(struct dentry *dentry)
- static int legacy_rmdir(struct inode *dir, struct dentry *dentry)
- {
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	char *pathname;
- 	int ret;
- 
-@@ -176,7 +176,7 @@ static int legacy_rmdir(struct inode *dir, struct dentry *dentry)
- static int legacy_unlink(struct inode *dir, struct dentry *dentry)
- {
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	char *pathname;
- 	int ret;
- 
-@@ -202,7 +202,7 @@ static int legacy_symlink(struct inode *dir, struct dentry *dentry,
- 			  const char *dest)
- {
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct inode *inode;
- 	char *pathname;
- 	int ret;
-@@ -230,7 +230,7 @@ static int legacy_symlink(struct inode *dir, struct dentry *dentry,
- static const char *legacy_get_link(struct dentry *dentry, struct inode *inode)
- {
- 	struct super_block *sb = inode->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	char *pathname;
- 	int ret;
- 	char link[PATH_MAX] = {};
-@@ -304,7 +304,7 @@ static struct inode *legacy_get_inode(struct super_block *sb, const struct inode
- 	return inode;
- }
- 
--int fs_init_legacy(struct fs_device_d *fsdev)
-+int fs_init_legacy(struct fs_device *fsdev)
- {
- 	struct inode *inode;
- 
-diff --git a/fs/nfs.c b/fs/nfs.c
-index 5a1b7b6531..1b38923ce0 100644
---- a/fs/nfs.c
-+++ b/fs/nfs.c
-@@ -1386,7 +1386,7 @@ static const struct super_operations nfs_ops = {
- 
- static char *rootnfsopts;
- 
--static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
-+static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device *fsdev)
- {
- 	char *str, *tmp;
- 	const char *bootargs;
-@@ -1421,7 +1421,7 @@ static void nfs_set_rootarg(struct nfs_priv *npriv, struct fs_device_d *fsdev)
- 
- static int nfs_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct nfs_priv *npriv = xzalloc(sizeof(struct nfs_priv));
- 	struct super_block *sb = &fsdev->sb;
- 	char *tmp = xstrdup(fsdev->backingstore);
-diff --git a/fs/ramfs.c b/fs/ramfs.c
-index 127ff7de82..9e1f22c152 100644
---- a/fs/ramfs.c
-+++ b/fs/ramfs.c
-@@ -435,7 +435,7 @@ static const struct super_operations ramfs_ops = {
- static int ramfs_probe(struct device *dev)
- {
- 	struct inode *inode;
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct super_block *sb = &fsdev->sb;
- 
- 	sb->s_op = &ramfs_ops;
-diff --git a/fs/ratpfs.c b/fs/ratpfs.c
-index 684bc68f74..8432198ebd 100644
---- a/fs/ratpfs.c
-+++ b/fs/ratpfs.c
-@@ -401,7 +401,7 @@ static int ratpfs_probe(struct device *dev)
- 	struct ratp_bb_pkt *pkt_tx = xzalloc(sizeof(*pkt_tx) + len_tx);
- 	struct ratp_bb_pkt *pkt_rx = NULL;
- 	int ret;
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 
- 	pr_debug("%s\n", __func__);
- 
-diff --git a/fs/squashfs/squashfs.c b/fs/squashfs/squashfs.c
-index 96531be0f6..17663d8976 100644
---- a/fs/squashfs/squashfs.c
-+++ b/fs/squashfs/squashfs.c
-@@ -41,7 +41,7 @@ char *squashfs_devread(struct squashfs_sb_info *fs, int byte_offset,
- 	return buf;
- }
- 
--static void squashfs_set_rootarg(struct fs_device_d *fsdev)
-+static void squashfs_set_rootarg(struct fs_device *fsdev)
- {
- 	struct ubi_volume_desc *ubi_vol;
- 	struct ubi_volume_info vi = {};
-@@ -92,7 +92,7 @@ static const struct super_operations squashfs_super_ops = {
- 
- static int squashfs_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 	int ret;
- 	struct super_block *sb;
- 
-@@ -122,7 +122,7 @@ err_out:
- 
- static void squashfs_remove(struct device *dev)
- {
--	struct fs_device_d *fsdev;
-+	struct fs_device *fsdev;
- 	struct super_block *sb;
- 
- 	fsdev = dev_to_fs_device(dev);
-diff --git a/fs/squashfs/squashfs.h b/fs/squashfs/squashfs.h
-index 9ddcfbf1c2..d22e83dc3c 100644
---- a/fs/squashfs/squashfs.h
-+++ b/fs/squashfs/squashfs.h
-@@ -54,8 +54,8 @@ static inline struct squashfs_page *squashfs_page(struct page *page)
- 
- char *squashfs_devread(struct squashfs_sb_info *fs, int byte_offset,
- 		int byte_len);
--extern int squashfs_mount(struct fs_device_d *fsdev,
--		int silent);
-+extern int squashfs_mount(struct fs_device *fsdev,
-+			  int silent);
- extern void squashfs_put_super(struct super_block *sb);
- 
- /* block.c */
-diff --git a/fs/squashfs/super.c b/fs/squashfs/super.c
-index 35df3a0307..2e34c0e540 100644
---- a/fs/squashfs/super.c
-+++ b/fs/squashfs/super.c
-@@ -91,7 +91,7 @@ void squashfs_put_super(struct super_block *sb)
- static int squashfs_fill_super(struct super_block *sb, void *data, int silent)
- {
- 	struct squashfs_sb_info *msblk;
--	struct fs_device_d *fsdev = (struct fs_device_d *)data;
-+	struct fs_device *fsdev = (struct fs_device *)data;
- 	struct squashfs_super_block *sblk = NULL;
- 	struct inode *root;
- 	long long root_inode;
-@@ -321,7 +321,7 @@ failed_mount:
- }
- 
- 
--int squashfs_mount(struct fs_device_d *fsdev, int silent)
-+int squashfs_mount(struct fs_device *fsdev, int silent)
- {
- 	struct super_block *sb = &fsdev->sb;
- 
-diff --git a/fs/tftp.c b/fs/tftp.c
-index e41b5da4c0..6509d97d7e 100644
---- a/fs/tftp.c
-+++ b/fs/tftp.c
-@@ -651,7 +651,7 @@ static struct file_priv *tftp_do_open(struct device *dev,
- 				      int accmode, struct dentry *dentry,
- 				      bool is_getattr)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct file_priv *priv;
- 	struct tftp_priv *tpriv = dev->priv;
- 	int ret;
-@@ -980,7 +980,7 @@ static struct dentry *tftp_lookup(struct inode *dir, struct dentry *dentry,
- 			    unsigned int flags)
- {
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct inode *inode;
- 	struct file_priv *priv;
- 	loff_t filesize;
-@@ -1017,7 +1017,7 @@ static const struct super_operations tftp_ops;
- 
- static int tftp_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct tftp_priv *priv = xzalloc(sizeof(struct tftp_priv));
- 	struct super_block *sb = &fsdev->sb;
- 	struct inode *inode;
-diff --git a/fs/ubifs/super.c b/fs/ubifs/super.c
-index 37d5584454..564ac950eb 100644
---- a/fs/ubifs/super.c
-+++ b/fs/ubifs/super.c
-@@ -1210,7 +1210,7 @@ late_initcall(ubifs_init);
- int ubifs_get_super(struct device *dev, struct ubi_volume_desc *ubi,
- 		    int silent)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct super_block *sb;
- 	struct ubifs_info *c;
- 	int err;
-diff --git a/fs/ubifs/ubifs.c b/fs/ubifs/ubifs.c
-index 95d5dbaff8..8a190309aa 100644
---- a/fs/ubifs/ubifs.c
-+++ b/fs/ubifs/ubifs.c
-@@ -431,7 +431,8 @@ static int ubifs_read(struct device *_dev, FILE *f, void *buf, size_t insize)
- 	return insize;
- }
- 
--static void ubifs_set_rootarg(struct ubifs_priv *priv, struct fs_device_d *fsdev)
-+static void ubifs_set_rootarg(struct ubifs_priv *priv,
-+			      struct fs_device *fsdev)
- {
- 	struct ubi_volume_info vi = {};
- 	struct ubi_device_info di = {};
-@@ -453,7 +454,7 @@ static void ubifs_set_rootarg(struct ubifs_priv *priv, struct fs_device_d *fsdev
- 
- static int ubifs_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct ubifs_priv *priv = xzalloc(sizeof(struct ubifs_priv));
- 	int ret;
- 
-diff --git a/fs/ubootvarfs.c b/fs/ubootvarfs.c
-index b70ad99e07..2559cfd111 100644
---- a/fs/ubootvarfs.c
-+++ b/fs/ubootvarfs.c
-@@ -148,7 +148,7 @@ static struct dentry *ubootvarfs_lookup(struct inode *dir,
- 					unsigned int flags)
- {
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct ubootvarfs_data *data = fsdev->dev.priv;
- 	struct ubootvarfs_var *var;
- 	struct inode *inode;
-@@ -269,7 +269,7 @@ static int ubootvarfs_create(struct inode *dir, struct dentry *dentry,
- 			     umode_t mode)
- {
- 	struct super_block *sb = dir->i_sb;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct ubootvarfs_data *data = fsdev->dev.priv;
- 	struct inode *inode;
- 	struct ubootvarfs_var *var;
-@@ -311,7 +311,7 @@ static const struct inode_operations ubootvarfs_dir_inode_operations = {
- static struct inode *ubootvarfs_alloc_inode(struct super_block *sb)
- {
- 	struct ubootvarfs_inode *node;
--	struct fs_device_d *fsdev = container_of(sb, struct fs_device_d, sb);
-+	struct fs_device *fsdev = container_of(sb, struct fs_device, sb);
- 	struct ubootvarfs_data *data = fsdev->dev.priv;
- 
- 	node = xzalloc(sizeof(*node));
-@@ -427,7 +427,7 @@ static int ubootvarfs_probe(struct device *dev)
- {
- 	struct inode *inode;
- 	struct ubootvarfs_data *data = xzalloc(sizeof(*data));
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct super_block *sb = &fsdev->sb;
- 	struct stat s;
- 	void *map;
-diff --git a/fs/uimagefs.c b/fs/uimagefs.c
-index 0b7fed0f63..4e98d82f38 100644
---- a/fs/uimagefs.c
-+++ b/fs/uimagefs.c
-@@ -497,7 +497,7 @@ err_out:
- 
- static int uimagefs_probe(struct device *dev)
- {
--	struct fs_device_d *fsdev = dev_to_fs_device(dev);
-+	struct fs_device *fsdev = dev_to_fs_device(dev);
- 	struct uimagefs_handle *priv;
- 	int ret = 0;
- 
-diff --git a/include/fs.h b/include/fs.h
-index 3c63158602..e792c9e9ba 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -20,7 +20,7 @@ struct node_d;
- struct stat;
- 
- typedef struct filep {
--	struct fs_device_d *fsdev; /* The device this FILE belongs to              */
-+	struct fs_device *fsdev; /* The device this FILE belongs to              */
- 	char *path;
- 	loff_t pos;            /* current position in stream                   */
- #define FILE_SIZE_STREAM	((loff_t) -1)
-@@ -86,14 +86,14 @@ struct fs_driver_d {
- 	unsigned long flags;
- };
- 
--#define dev_to_fs_device(d) container_of(d, struct fs_device_d, dev)
-+#define dev_to_fs_device(d) container_of(d, struct fs_device, dev)
- 
- extern struct list_head fs_device_list;
- #define for_each_fs_device(f) list_for_each_entry(f, &fs_device_list, list)
- #define for_each_fs_device_safe(tmp, f) list_for_each_entry_safe(f, tmp, &fs_device_list, list)
- extern struct bus_type fs_bus;
- 
--struct fs_device_d {
-+struct fs_device {
- 	char *backingstore; /* the device we are associated with */
- 	struct device dev; /* our own device */
- 
-@@ -164,14 +164,14 @@ void automount_remove(const char *_path);
- int automount_add(const char *path, const char *cmd);
- void automount_print(void);
- 
--int fs_init_legacy(struct fs_device_d *fsdev);
--int fsdev_open_cdev(struct fs_device_d *fsdev);
-+int fs_init_legacy(struct fs_device *fsdev);
-+int fsdev_open_cdev(struct fs_device *fsdev);
- const char *cdev_get_mount_path(struct cdev *cdev);
- const char *cdev_mount_default(struct cdev *cdev, const char *fsoptions);
- const char *cdev_mount(struct cdev *cdev);
- void mount_all(void);
- 
--void fsdev_set_linux_rootarg(struct fs_device_d *fsdev, const char *str);
-+void fsdev_set_linux_rootarg(struct fs_device *fsdev, const char *str);
- char *path_get_linux_rootarg(const char *path);
- char *cdev_get_linux_rootarg(const struct cdev *cdev);
- 
+Sascha
+
+Sascha Hauer (5):
+  Rename device_d::device_node to device_d::of_node
+  Rename struct device_d to device
+  Rename struct driver_d to driver
+  Rename struct fs_device_d to fs_device
+  Rename struct fs_driver_d to fs_driver
+
+ Documentation/devel/porting.rst               |   3 +-
+ arch/arm/boards/animeo_ip/init.c              |   4 +-
+ arch/arm/boards/at91sam9m10ihd/hw_version.c   |   2 +-
+ arch/arm/boards/at91sam9x5ek/hw_version.c     |   2 +-
+ arch/arm/boards/embest-marsboard/board.c      |   4 +-
+ .../boards/freescale-mx6-sabrelite/board.c    |   4 +-
+ arch/arm/boards/grinn-liteboard/board.c       |   2 +-
+ arch/arm/boards/innocomm-imx8mm-wb15/board.c  |   4 +-
+ arch/arm/boards/kindle-mx50/board.c           |   2 +-
+ arch/arm/boards/lxa-mc1/board.c               |   4 +-
+ arch/arm/boards/mnt-reform/board.c            |   4 +-
+ arch/arm/boards/nhk8815/setup.c               |   2 +-
+ arch/arm/boards/nxp-imx8mm-evk/board.c        |   4 +-
+ arch/arm/boards/nxp-imx8mn-evk/board.c        |   4 +-
+ arch/arm/boards/nxp-imx8mp-evk/board.c        |   4 +-
+ arch/arm/boards/phytec-phycore-imx27/pcm970.c |   2 +-
+ .../boards/phytec-phycore-stm32mp1/board.c    |   4 +-
+ arch/arm/boards/phytec-som-imx6/board.c       |   4 +-
+ arch/arm/boards/pine64-quartz64/board.c       |   4 +-
+ arch/arm/boards/protonic-imx6/board.c         |  22 +-
+ arch/arm/boards/protonic-imx8m/board.c        |   4 +-
+ arch/arm/boards/protonic-stm32mp1/board.c     |   4 +-
+ arch/arm/boards/radxa-rock3/board.c           |   4 +-
+ arch/arm/boards/raspberry-pi/rpi-common.c     |   6 +-
+ .../boards/rockchip-rk3568-bpi-r2pro/board.c  |   4 +-
+ arch/arm/boards/rockchip-rk3568-evb/board.c   |   4 +-
+ arch/arm/boards/sama5d3_xplained/board.c      |   4 +-
+ arch/arm/boards/sama5d3xek/hw_version.c       |   2 +-
+ arch/arm/boards/seeed-odyssey/board.c         |   4 +-
+ arch/arm/boards/skov-arm9cpu/board.c          |   4 +-
+ arch/arm/boards/skov-imx6/board.c             |  10 +-
+ arch/arm/boards/stm32mp15x-ev1/board.c        |   4 +-
+ arch/arm/boards/stm32mp15xx-dkx/board.c       |   4 +-
+ arch/arm/boards/tqma6ulx/board.c              |   4 +-
+ arch/arm/boards/tqma8mpxl/board.c             |   4 +-
+ arch/arm/boards/usb-a926x/init.c              |   2 +-
+ arch/arm/boards/vexpress/init.c               |   4 +-
+ arch/arm/boards/webasto-ccbv2/board.c         |   4 +-
+ arch/arm/boards/zii-common/board.c            |   2 +-
+ arch/arm/boards/zii-common/switch-cmd.c       |   2 +-
+ arch/arm/boards/zii-imx8mq-dev/board.c        |   2 +-
+ arch/arm/cpu/psci-client.c                    |   6 +-
+ arch/arm/mach-at91/at91sam9260_devices.c      |   2 +-
+ arch/arm/mach-at91/at91sam9261_devices.c      |   2 +-
+ arch/arm/mach-at91/at91sam9_rst.c             |   6 +-
+ arch/arm/mach-at91/ddramc.c                   |   4 +-
+ arch/arm/mach-at91/generic.h                  |   8 +-
+ arch/arm/mach-at91/include/mach/board.h       |   4 +-
+ arch/arm/mach-at91/sam9_smc.c                 |   4 +-
+ arch/arm/mach-at91/setup.c                    |   2 +-
+ arch/arm/mach-clps711x/clock.c                |   6 +-
+ arch/arm/mach-clps711x/common.c               |  14 +-
+ arch/arm/mach-imx/devices.c                   |  36 +--
+ arch/arm/mach-imx/esdctl.c                    |   4 +-
+ arch/arm/mach-imx/iim.c                       |  12 +-
+ arch/arm/mach-imx/include/mach/devices-imx1.h |   4 +-
+ .../arm/mach-imx/include/mach/devices-imx21.h |  12 +-
+ .../arm/mach-imx/include/mach/devices-imx25.h |  32 +-
+ .../arm/mach-imx/include/mach/devices-imx27.h |  34 +--
+ .../arm/mach-imx/include/mach/devices-imx31.h |  36 +--
+ .../arm/mach-imx/include/mach/devices-imx35.h |  28 +-
+ .../arm/mach-imx/include/mach/devices-imx50.h |  32 +-
+ .../arm/mach-imx/include/mach/devices-imx51.h |  38 +--
+ .../arm/mach-imx/include/mach/devices-imx53.h |  34 +--
+ arch/arm/mach-imx/include/mach/devices-imx6.h |  36 +--
+ arch/arm/mach-imx/include/mach/devices.h      |  34 +--
+ arch/arm/mach-imx/src.c                       |   4 +-
+ arch/arm/mach-mxs/include/mach/devices.h      |   8 +-
+ arch/arm/mach-mxs/ocotp.c                     |   6 +-
+ arch/arm/mach-omap/am33xx_generic.c           |   2 +-
+ arch/arm/mach-omap/am33xx_scrm.c              |   4 +-
+ arch/arm/mach-omap/include/mach/devices.h     |   4 +-
+ .../mach-omap/include/mach/omap3-devices.h    |  30 +-
+ .../mach-omap/include/mach/omap4-devices.h    |  26 +-
+ arch/arm/mach-omap/omap_devices.c             |   6 +-
+ arch/arm/mach-pxa/devices.c                   |  12 +-
+ arch/arm/mach-pxa/include/mach/devices.h      |  10 +-
+ arch/arm/mach-pxa/include/mach/mci_pxa2xx.h   |   4 +-
+ arch/arm/mach-socfpga/cyclone5-generic.c      |   6 +-
+ arch/arm/mach-stm32mp/ddrctrl.c               |   4 +-
+ arch/arm/mach-tegra/tegra20-pmc.c             |   4 +-
+ arch/arm/mach-tegra/tegra20-timer.c           |   4 +-
+ arch/arm/mach-zynqmp/firmware-zynqmp.c        |   8 +-
+ arch/kvx/lib/poweroff.c                       |   4 +-
+ arch/mips/mach-ar231x/ar231x_reset.c          |   4 +-
+ arch/mips/mach-ath79/art.c                    |  12 +-
+ arch/mips/mach-xburst/include/mach/devices.h  |   2 +-
+ arch/riscv/boards/beaglev/board.c             |   4 +-
+ arch/riscv/boards/riscvemu/board.c            |   6 +-
+ arch/riscv/cpu/core.c                         |  12 +-
+ arch/sandbox/board/board.c                    |  10 +-
+ arch/sandbox/board/console.c                  |   4 +-
+ arch/sandbox/board/devices.c                  |   4 +-
+ arch/sandbox/board/hostfile.c                 |   8 +-
+ arch/sandbox/board/led.c                      |   8 +-
+ arch/sandbox/board/power.c                    |   7 +-
+ arch/sandbox/board/watchdog.c                 |   9 +-
+ .../sandbox/mach-sandbox/include/mach/linux.h |   4 +-
+ arch/x86/mach-efi/clocksource.c               |   2 +-
+ commands/detect.c                             |   2 +-
+ commands/devinfo.c                            |  12 +-
+ commands/devunbind.c                          |   2 +-
+ commands/drvinfo.c                            |   4 +-
+ commands/gpio.c                               |   2 +-
+ commands/miitool.c                            |   2 +-
+ commands/mount.c                              |   6 +-
+ common/blspec.c                               |  12 +-
+ common/boards/qemu-virt/board.c               |   6 +-
+ common/complete.c                             |   6 +-
+ common/console.c                              |   6 +-
+ common/console_common.c                       |   6 +-
+ common/efi/payload/init.c                     |   2 +-
+ common/env.c                                  |   4 +-
+ common/globalvar.c                            |  32 +-
+ common/oftree.c                               |   6 +-
+ common/partitions/efi.c                       |   3 +-
+ common/reset_source.c                         |  10 +-
+ common/serdev.c                               |   4 +-
+ common/state/backend_bucket_circular.c        |   4 +-
+ common/state/backend_bucket_direct.c          |   4 +-
+ common/state/backend_format_dtb.c             |   4 +-
+ common/state/backend_format_raw.c             |   4 +-
+ common/state/state.h                          |  14 +-
+ common/usbgadget.c                            |   2 +-
+ drivers/aiodev/am335x_adc.c                   |   6 +-
+ drivers/aiodev/core.c                         |  12 +-
+ drivers/aiodev/imx7d_adc.c                    |  14 +-
+ drivers/aiodev/imx_thermal.c                  |   8 +-
+ drivers/aiodev/lm75.c                         |   6 +-
+ drivers/aiodev/mc13xxx_adc.c                  |   2 +-
+ drivers/aiodev/qoriq_thermal.c                |  10 +-
+ drivers/aiodev/rockchip_saradc.c              |   4 +-
+ drivers/aiodev/st_gyro.c                      |   4 +-
+ drivers/aiodev/stm32-adc-core.c               |   8 +-
+ drivers/aiodev/stm32-adc.c                    |  22 +-
+ drivers/amba/bus.c                            |   8 +-
+ drivers/ata/ahci.c                            |   8 +-
+ drivers/ata/ahci.h                            |   4 +-
+ drivers/ata/disk_ata_drive.c                  |   6 +-
+ drivers/ata/intf_platform_ide.c               |   6 +-
+ drivers/ata/pata-imx.c                        |   8 +-
+ drivers/ata/sata-imx.c                        |   4 +-
+ drivers/ata/sata_mv.c                         |   4 +-
+ drivers/base/bus.c                            |  10 +-
+ drivers/base/driver.c                         |  95 +++---
+ drivers/base/platform.c                       |   8 +-
+ drivers/base/power.c                          |  10 +-
+ drivers/base/regmap/internal.h                |   4 +-
+ drivers/base/regmap/regmap-mmio.c             |   8 +-
+ drivers/base/regmap/regmap.c                  |  12 +-
+ drivers/base/resource.c                       |  28 +-
+ drivers/block/efi-block-io.c                  |   8 +-
+ drivers/bus/acpi.c                            |  16 +-
+ drivers/bus/imx-weim.c                        |  12 +-
+ drivers/bus/omap-gpmc.c                       |  16 +-
+ drivers/bus/ti-sysc.c                         |   8 +-
+ drivers/clk/bcm/clk-bcm2835-aux.c             |   8 +-
+ drivers/clk/clk-ar933x.c                      |   6 +-
+ drivers/clk/clk-ar9344.c                      |   6 +-
+ drivers/clk/clk-bulk.c                        |  10 +-
+ drivers/clk/clk-composite.c                   |  18 +-
+ drivers/clk/clk-divider.c                     |  44 +--
+ drivers/clk/clk-fixed-factor.c                |  16 +-
+ drivers/clk/clk-fixed.c                       |   2 +-
+ drivers/clk/clk-gate.c                        |   8 +-
+ drivers/clk/clk-mux.c                         |  22 +-
+ drivers/clk/clk-rpi.c                         |  10 +-
+ drivers/clk/clk-scmi.c                        |   9 +-
+ drivers/clk/clk-stm32f4.c                     |  23 +-
+ drivers/clk/clk-stm32mp1.c                    |  50 +--
+ drivers/clk/clk.c                             |   2 +-
+ drivers/clk/clkdev.c                          |   8 +-
+ drivers/clk/imx/clk-imx1.c                    |   4 +-
+ drivers/clk/imx/clk-imx21.c                   |   4 +-
+ drivers/clk/imx/clk-imx25.c                   |   4 +-
+ drivers/clk/imx/clk-imx27.c                   |   4 +-
+ drivers/clk/imx/clk-imx31.c                   |   4 +-
+ drivers/clk/imx/clk-imx35.c                   |   4 +-
+ drivers/clk/imx/clk-imx5.c                    |  27 +-
+ drivers/clk/imx/clk-imx6.c                    |   8 +-
+ drivers/clk/imx/clk-imx6sl.c                  |   6 +-
+ drivers/clk/imx/clk-imx6sx.c                  |   6 +-
+ drivers/clk/imx/clk-imx6ul.c                  |   6 +-
+ drivers/clk/imx/clk-imx7.c                    |   8 +-
+ drivers/clk/loongson/clk-ls1b200.c            |   6 +-
+ drivers/clk/mvebu/common.c                    |  12 +-
+ drivers/clk/mvebu/corediv.c                   |   6 +-
+ drivers/clk/mxs/clk-imx23.c                   |   4 +-
+ drivers/clk/mxs/clk-imx28.c                   |  11 +-
+ drivers/clk/rockchip/clk-rk3399.c             |   6 +-
+ drivers/clk/rockchip/clk-rk3568.c             |   6 +-
+ drivers/clk/sifive/sifive-prci.c              |  10 +-
+ drivers/clk/socfpga/clk.c                     |   9 +-
+ drivers/clk/starfive/jh7100-clkgen.c          |   8 +-
+ drivers/clk/tegra/clk-tegra124.c              |   8 +-
+ drivers/clk/tegra/clk-tegra20.c               |   8 +-
+ drivers/clk/tegra/clk-tegra30.c               |   8 +-
+ drivers/clk/zynq/clkc.c                       |   8 +-
+ drivers/clk/zynqmp/clkc.c                     |  10 +-
+ drivers/clocksource/arm_architected_timer.c   |   4 +-
+ drivers/clocksource/arm_global_timer.c        |   4 +-
+ drivers/clocksource/arm_smp_twd.c             |   4 +-
+ drivers/clocksource/armv7m_systick.c          |   6 +-
+ drivers/clocksource/bcm2835.c                 |   6 +-
+ drivers/clocksource/clps711x.c                |   6 +-
+ drivers/clocksource/digic.c                   |   4 +-
+ drivers/clocksource/dw_apb_timer.c            |   6 +-
+ drivers/clocksource/efi.c                     |   4 +-
+ drivers/clocksource/efi_x86.c                 |   4 +-
+ drivers/clocksource/kvx_timer.c               |   4 +-
+ drivers/clocksource/mvebu.c                   |   6 +-
+ drivers/clocksource/nomadik.c                 |   4 +-
+ drivers/clocksource/orion.c                   |   4 +-
+ drivers/clocksource/rk_timer.c                |   4 +-
+ drivers/clocksource/timer-atmel-pit.c         |   4 +-
+ drivers/clocksource/timer-clint.c             |   4 +-
+ drivers/clocksource/timer-imx-gpt.c           |   4 +-
+ drivers/clocksource/timer-riscv.c             |   4 +-
+ drivers/clocksource/timer-stm32.c             |   4 +-
+ drivers/clocksource/timer-ti-32k.c            |   4 +-
+ drivers/clocksource/timer-ti-dm.c             |   4 +-
+ drivers/clocksource/uemd.c                    |   4 +-
+ drivers/crypto/caam/caam-blobgen.c            |   8 +-
+ drivers/crypto/caam/caamrng.c                 |  10 +-
+ drivers/crypto/caam/ctrl.c                    |  18 +-
+ drivers/crypto/caam/error.c                   |  16 +-
+ drivers/crypto/caam/error.h                   |   2 +-
+ drivers/crypto/caam/intern.h                  |  14 +-
+ drivers/crypto/caam/jr.c                      |  12 +-
+ drivers/crypto/caam/jr.h                      |   4 +-
+ drivers/crypto/caam/rng_self_test.c           |   6 +-
+ drivers/crypto/caam/rng_self_test.h           |   3 +-
+ drivers/crypto/imx-scc/scc-blobgen.c          |   2 +-
+ drivers/crypto/imx-scc/scc.c                  |   6 +-
+ drivers/crypto/imx-scc/scc.h                  |   2 +-
+ drivers/dma/apbh_dma.c                        |   4 +-
+ drivers/dma/map.c                             |   9 +-
+ drivers/eeprom/at24.c                         |  18 +-
+ drivers/eeprom/at25.c                         |  12 +-
+ drivers/efi/efi-device.c                      |  20 +-
+ drivers/firmware/altera_serial.c              |  22 +-
+ drivers/firmware/arm_scmi/base.c              |   4 +-
+ drivers/firmware/arm_scmi/bus.c               |  16 +-
+ drivers/firmware/arm_scmi/common.h            |  12 +-
+ drivers/firmware/arm_scmi/driver.c            |  26 +-
+ drivers/firmware/arm_scmi/smc.c               |  12 +-
+ drivers/firmware/arm_scmi/voltage.c           |   4 +-
+ drivers/firmware/socfpga.c                    |  10 +-
+ drivers/firmware/zynqmp-fpga.c                |  16 +-
+ drivers/fpga/fpga-bridge.c                    |   8 +-
+ drivers/fpga/socfpga-fpga2sdram-bridge.c      |   6 +-
+ drivers/fpga/socfpga-hps2fpga-bridge.c        |  10 +-
+ drivers/gpio/gpio-74164.c                     |  10 +-
+ drivers/gpio/gpio-74xx-mmio.c                 |   4 +-
+ drivers/gpio/gpio-ath79.c                     |   6 +-
+ drivers/gpio/gpio-clps711x.c                  |   6 +-
+ drivers/gpio/gpio-davinci.c                   |   6 +-
+ drivers/gpio/gpio-digic.c                     |   4 +-
+ drivers/gpio/gpio-dw.c                        |  10 +-
+ drivers/gpio/gpio-generic.c                   |  18 +-
+ drivers/gpio/gpio-imx.c                       |   6 +-
+ drivers/gpio/gpio-jz4740.c                    |   4 +-
+ drivers/gpio/gpio-latch.c                     |   6 +-
+ drivers/gpio/gpio-libftdi1.c                  |  12 +-
+ drivers/gpio/gpio-malta-fpga-i2c.c            |   4 +-
+ drivers/gpio/gpio-mpc8xxx.c                   |   8 +-
+ drivers/gpio/gpio-mxs.c                       |   6 +-
+ drivers/gpio/gpio-omap.c                      |   6 +-
+ drivers/gpio/gpio-orion.c                     |   8 +-
+ drivers/gpio/gpio-pca953x.c                   |   4 +-
+ drivers/gpio/gpio-pcf857x.c                   |   6 +-
+ drivers/gpio/gpio-raspberrypi-exp.c           |   4 +-
+ drivers/gpio/gpio-sifive.c                    |   6 +-
+ drivers/gpio/gpio-starfive-vic.c              |   4 +-
+ drivers/gpio/gpio-stmpe.c                     |   4 +-
+ drivers/gpio/gpio-sx150x.c                    |   4 +-
+ drivers/gpio/gpio-tegra.c                     |   4 +-
+ drivers/gpio/gpio-vf610.c                     |  10 +-
+ drivers/gpio/gpio-zynq.c                      |   6 +-
+ drivers/gpio/gpiolib.c                        |  24 +-
+ drivers/hw_random/core.c                      |   6 +-
+ drivers/hw_random/dev-random.c                |   4 +-
+ drivers/hw_random/mxc-rngc.c                  |   6 +-
+ drivers/hw_random/starfive-vic-rng.c          |   6 +-
+ drivers/hw_random/stm32-rng.c                 |   6 +-
+ drivers/i2c/algos/i2c-algo-bit.c              |   2 +-
+ drivers/i2c/busses/i2c-at91.c                 |   8 +-
+ drivers/i2c/busses/i2c-bcm283x.c              |  12 +-
+ drivers/i2c/busses/i2c-cadence.c              |   8 +-
+ drivers/i2c/busses/i2c-designware.c           |   8 +-
+ drivers/i2c/busses/i2c-gpio.c                 |  10 +-
+ drivers/i2c/busses/i2c-imx.c                  |  23 +-
+ drivers/i2c/busses/i2c-mv64xxx.c              |  12 +-
+ drivers/i2c/busses/i2c-omap.c                 |  10 +-
+ drivers/i2c/busses/i2c-rockchip.c             |  22 +-
+ drivers/i2c/busses/i2c-stm32.c                |  14 +-
+ drivers/i2c/busses/i2c-tegra.c                |  12 +-
+ drivers/i2c/busses/i2c-versatile.c            |   6 +-
+ drivers/i2c/i2c-mux.c                         |  10 +-
+ drivers/i2c/i2c.c                             |  28 +-
+ drivers/i2c/muxes/i2c-mux-pca954x.c           |   8 +-
+ drivers/input/gpio_keys.c                     |  14 +-
+ drivers/input/imx_keypad.c                    |   6 +-
+ drivers/input/matrix-keymap.c                 |  13 +-
+ drivers/input/qt1070.c                        |   6 +-
+ drivers/input/twl6030_pwrbtn.c                |   4 +-
+ drivers/input/virtio_input.c                  |   2 +-
+ drivers/led/led-gpio.c                        |   8 +-
+ drivers/led/led-pca955x.c                     |   6 +-
+ drivers/led/led-pwm.c                         |   6 +-
+ drivers/mci/arasan-sdhci.c                    |   8 +-
+ drivers/mci/atmel-mci-regs.h                  |   4 +-
+ drivers/mci/atmel-sdhci.c                     |   8 +-
+ drivers/mci/atmel-sdhci.h                     |   2 +-
+ drivers/mci/atmel_mci.c                       |   8 +-
+ drivers/mci/atmel_mci_common.c                |   2 +-
+ drivers/mci/bcm2835-sdhost.c                  |   6 +-
+ drivers/mci/dove-sdhci.c                      |   6 +-
+ drivers/mci/dw_mmc.c                          |  27 +-
+ drivers/mci/imx-esdhc.c                       |   6 +-
+ drivers/mci/imx-esdhc.h                       |   2 +-
+ drivers/mci/imx.c                             |   6 +-
+ drivers/mci/mci-bcm2835.c                     |   8 +-
+ drivers/mci/mci-core.c                        |  22 +-
+ drivers/mci/mci_spi.c                         |   8 +-
+ drivers/mci/mmci.c                            |   8 +-
+ drivers/mci/mxs.c                             |   8 +-
+ drivers/mci/omap_hsmmc.c                      |   8 +-
+ drivers/mci/pxamci.c                          |   6 +-
+ drivers/mci/rockchip-dwcmshc-sdhci.c          |   6 +-
+ drivers/mci/s3c.c                             |  11 +-
+ drivers/mci/sdhci.c                           |   8 +-
+ drivers/mci/stm32_sdmmc2.c                    |   8 +-
+ drivers/mci/tegra-sdmmc.c                     |  12 +-
+ drivers/memory/mc-tegra124.c                  |   4 +-
+ drivers/mfd/act8846.c                         |   4 +-
+ drivers/mfd/atmel-flexcom.c                   |   8 +-
+ drivers/mfd/axp20x-i2c.c                      |   4 +-
+ drivers/mfd/axp20x.c                          |   6 +-
+ drivers/mfd/core.c                            |   5 +-
+ drivers/mfd/da9053.c                          |  10 +-
+ drivers/mfd/da9063.c                          |  14 +-
+ drivers/mfd/lp3972.c                          |   4 +-
+ drivers/mfd/mc13xxx.c                         |  10 +-
+ drivers/mfd/mc34704.c                         |   4 +-
+ drivers/mfd/mc9sdz60.c                        |   4 +-
+ drivers/mfd/rave-sp.c                         |  24 +-
+ drivers/mfd/rk808.c                           |   6 +-
+ drivers/mfd/rn5t568.c                         |  11 +-
+ drivers/mfd/stm32-timers.c                    |   6 +-
+ drivers/mfd/stmpe-i2c.c                       |  10 +-
+ drivers/mfd/stpmic1.c                         |   6 +-
+ drivers/mfd/superio.c                         |   4 +-
+ drivers/mfd/syscon.c                          |   6 +-
+ drivers/mfd/twl4030.c                         |   4 +-
+ drivers/mfd/twl6030.c                         |   4 +-
+ drivers/misc/jtag.c                           |   8 +-
+ drivers/misc/mem.c                            |   6 +-
+ drivers/misc/sram.c                           |   4 +-
+ drivers/misc/starfive-pwrseq.c                |   6 +-
+ drivers/misc/state.c                          |   6 +-
+ drivers/misc/storage-by-uuid.c                |  12 +-
+ drivers/misc/ubootvar.c                       |  20 +-
+ drivers/mtd/core.c                            |   2 +-
+ drivers/mtd/devices/docg3.c                   |   6 +-
+ drivers/mtd/devices/docg3.h                   |   2 +-
+ drivers/mtd/devices/m25p80.c                  |  12 +-
+ drivers/mtd/devices/mtd_dataflash.c           |   4 +-
+ drivers/mtd/devices/mtdram.c                  |   8 +-
+ drivers/mtd/nand/atmel_nand.c                 |  16 +-
+ drivers/mtd/nand/denali.h                     |   2 +-
+ drivers/mtd/nand/nand_denali_dt.c             |   6 +-
+ drivers/mtd/nand/nand_fsl_ifc.c               |   8 +-
+ drivers/mtd/nand/nand_imx.c                   |   8 +-
+ drivers/mtd/nand/nand_mrvl_nfc.c              |  10 +-
+ drivers/mtd/nand/nand_mxs.c                   |  11 +-
+ drivers/mtd/nand/nand_omap_gpmc.c             |   6 +-
+ drivers/mtd/nand/nand_orion.c                 |   6 +-
+ drivers/mtd/nand/nand_s3c24xx.c               |   6 +-
+ drivers/mtd/nand/nomadik_nand.c               |   4 +-
+ drivers/mtd/nand/omap_elm.c                   |   6 +-
+ drivers/mtd/nor/cfi_flash.c                   |   8 +-
+ drivers/mtd/nor/cfi_flash.h                   |   2 +-
+ drivers/mtd/spi-nor/cadence-quadspi.c         |  22 +-
+ drivers/mtd/spi-nor/spi-nor.c                 |   4 +-
+ drivers/mtd/ubi/ubi.h                         |   4 +-
+ drivers/net/ag71xx.c                          |  14 +-
+ drivers/net/ar231x.c                          |   4 +-
+ drivers/net/arc_emac.c                        |   4 +-
+ drivers/net/at91_ether.c                      |   4 +-
+ drivers/net/bcmgenet.c                        |  14 +-
+ drivers/net/cpsw.c                            |  36 +--
+ drivers/net/cs8900.c                          |   6 +-
+ drivers/net/davinci_emac.c                    |  16 +-
+ drivers/net/designware.c                      |  14 +-
+ drivers/net/designware.h                      |   4 +-
+ drivers/net/designware_eqos.c                 |  30 +-
+ drivers/net/designware_eqos.h                 |   8 +-
+ drivers/net/designware_generic.c              |   4 +-
+ drivers/net/designware_rockchip.c             |  18 +-
+ drivers/net/designware_socfpga.c              |  16 +-
+ drivers/net/designware_starfive.c             |   7 +-
+ drivers/net/designware_stm32.c                |  14 +-
+ drivers/net/designware_tegra186.c             |  10 +-
+ drivers/net/dm9k.c                            |  28 +-
+ drivers/net/dsa.c                             |  10 +-
+ drivers/net/e1000/e1000.h                     |   4 +-
+ drivers/net/e1000/eeprom.c                    |   3 +-
+ drivers/net/efi-snp.c                         |   2 +-
+ drivers/net/enc28j60.c                        |   6 +-
+ drivers/net/ep93xx.c                          |   4 +-
+ drivers/net/ethoc.c                           |   4 +-
+ drivers/net/fec_imx.c                         |  25 +-
+ drivers/net/fec_imx.h                         |   2 +-
+ drivers/net/fec_mpc5200.c                     |   6 +-
+ drivers/net/fsl-fman.c                        |  36 +--
+ drivers/net/gianfar.c                         |  18 +-
+ drivers/net/gianfar.h                         |   2 +-
+ drivers/net/ks8851_mll.c                      |  16 +-
+ drivers/net/ksz8864rmn.c                      |   4 +-
+ drivers/net/ksz8873.c                         |   8 +-
+ drivers/net/ksz9477.c                         |  12 +-
+ drivers/net/liteeth.c                         |   8 +-
+ drivers/net/macb.c                            |  22 +-
+ drivers/net/mvneta.c                          |   8 +-
+ drivers/net/orion-gbe.c                       |  18 +-
+ drivers/net/phy/ar8327.c                      |   4 +-
+ drivers/net/phy/at803x.c                      |   4 +-
+ drivers/net/phy/dp83867.c                     |   4 +-
+ drivers/net/phy/marvell.c                     |   4 +-
+ drivers/net/phy/mdio-gpio.c                   |  16 +-
+ drivers/net/phy/mdio-mux-gpio.c               |  10 +-
+ drivers/net/phy/mdio-mux.c                    |   4 +-
+ drivers/net/phy/mdio-mvebu.c                  |   8 +-
+ drivers/net/phy/mdio_bus.c                    |  24 +-
+ drivers/net/phy/micrel.c                      |  30 +-
+ drivers/net/phy/mv88e6xxx/chip.c              |   8 +-
+ drivers/net/phy/mv88e6xxx/chip.h              |   2 +-
+ drivers/net/phy/mv88e6xxx/port.c              |   6 +-
+ drivers/net/phy/phy.c                         |  18 +-
+ drivers/net/phy/realtek.c                     |   2 +-
+ drivers/net/rtl8139.c                         |   2 +-
+ drivers/net/rtl8169.c                         |   2 +-
+ drivers/net/sja1105.c                         |  16 +-
+ drivers/net/smc91111.c                        |   4 +-
+ drivers/net/smc911x.c                         |  14 +-
+ drivers/net/tap.c                             |   4 +-
+ drivers/nvme/host/core.c                      |   2 +-
+ drivers/nvme/host/nvme.h                      |   4 +-
+ drivers/nvme/host/pci.c                       |   2 +-
+ drivers/nvmem/bsec.c                          |  10 +-
+ drivers/nvmem/core.c                          |  31 +-
+ drivers/nvmem/eeprom_93xx46.c                 |   8 +-
+ drivers/nvmem/kvx-otp-nv.c                    |   4 +-
+ drivers/nvmem/ocotp.c                         |   8 +-
+ drivers/nvmem/rave-sp-eeprom.c                |   8 +-
+ drivers/nvmem/rmem.c                          |   6 +-
+ drivers/nvmem/snvs_lpgpr.c                    |   8 +-
+ drivers/nvmem/starfive-otp.c                  |   6 +-
+ drivers/of/barebox.c                          |  11 +-
+ drivers/of/base.c                             |  12 +-
+ drivers/of/device.c                           |  10 +-
+ drivers/of/of_gpio.c                          |   2 +-
+ drivers/of/of_path.c                          |  10 +-
+ drivers/of/platform.c                         |  50 +--
+ drivers/pci/bus.c                             |  10 +-
+ drivers/pci/pci-ecam-generic.c                |   8 +-
+ drivers/pci/pci-efi.c                         |   6 +-
+ drivers/pci/pci-imx6.c                        |  22 +-
+ drivers/pci/pci-layerscape.c                  |  16 +-
+ drivers/pci/pci-mvebu.c                       |  12 +-
+ drivers/pci/pci-tegra.c                       |  12 +-
+ drivers/pci/pci.c                             |  12 +-
+ drivers/pci/pcie-designware-host.c            |   4 +-
+ drivers/pci/pcie-designware.c                 |   4 +-
+ drivers/pci/pcie-designware.h                 |   2 +-
+ drivers/phy/freescale/phy-fsl-imx8mq-usb.c    |   6 +-
+ drivers/phy/phy-core.c                        |  40 +--
+ drivers/phy/phy-stm32-usbphyc.c               |  16 +-
+ drivers/phy/rockchip/phy-rockchip-inno-usb2.c |  20 +-
+ .../rockchip/phy-rockchip-naneng-combphy.c    |  14 +-
+ drivers/phy/usb-nop-xceiv.c                   |   8 +-
+ drivers/pinctrl/imx-iomux-v1.c                |  10 +-
+ drivers/pinctrl/imx-iomux-v2.c                |   4 +-
+ drivers/pinctrl/imx-iomux-v3.c                |   8 +-
+ drivers/pinctrl/mvebu/armada-370.c            |   6 +-
+ drivers/pinctrl/mvebu/armada-xp.c             |   6 +-
+ drivers/pinctrl/mvebu/common.c                |   2 +-
+ drivers/pinctrl/mvebu/common.h                |   2 +-
+ drivers/pinctrl/mvebu/dove.c                  |   6 +-
+ drivers/pinctrl/mvebu/kirkwood.c              |   6 +-
+ drivers/pinctrl/pinctrl-at91-pio4.c           |   8 +-
+ drivers/pinctrl/pinctrl-at91.c                |  20 +-
+ drivers/pinctrl/pinctrl-bcm2835.c             |   4 +-
+ drivers/pinctrl/pinctrl-mxs.c                 |   4 +-
+ drivers/pinctrl/pinctrl-rockchip.c            |  22 +-
+ drivers/pinctrl/pinctrl-single.c              |   6 +-
+ drivers/pinctrl/pinctrl-stm32.c               |  15 +-
+ drivers/pinctrl/pinctrl-tegra-xusb.c          |   8 +-
+ drivers/pinctrl/pinctrl-tegra20.c             |   6 +-
+ drivers/pinctrl/pinctrl-tegra30.c             |   6 +-
+ drivers/pinctrl/pinctrl-vf610.c               |   4 +-
+ drivers/pinctrl/pinctrl.c                     |  10 +-
+ drivers/power/reset/gpio-poweroff.c           |   6 +-
+ drivers/power/reset/gpio-restart.c            |   8 +-
+ drivers/power/reset/htif-poweroff.c           |   4 +-
+ drivers/power/reset/nvmem-reboot-mode.c       |   4 +-
+ drivers/power/reset/reboot-mode.c             |   6 +-
+ drivers/power/reset/stm32-reboot.c            |   2 +-
+ drivers/power/reset/syscon-poweroff.c         |  12 +-
+ drivers/power/reset/syscon-reboot-mode.c      |   8 +-
+ drivers/power/reset/syscon-reboot.c           |  16 +-
+ drivers/pwm/core.c                            |   8 +-
+ drivers/pwm/pwm-atmel.c                       |   8 +-
+ drivers/pwm/pwm-imx.c                         |   8 +-
+ drivers/pwm/pwm-mxs.c                         |   6 +-
+ drivers/pwm/pwm-stm32.c                       |   8 +-
+ drivers/pwm/pxa_pwm.c                         |   4 +-
+ drivers/regulator/anatop-regulator.c          |   8 +-
+ drivers/regulator/bcm2835.c                   |   4 +-
+ drivers/regulator/core.c                      |  23 +-
+ drivers/regulator/fixed.c                     |   8 +-
+ drivers/regulator/of_regulator.c              |   2 +-
+ drivers/regulator/pfuze.c                     |   8 +-
+ drivers/regulator/rk808-regulator.c           |  10 +-
+ drivers/regulator/scmi-regulator.c            |   4 +-
+ drivers/regulator/stm32-pwr.c                 |   6 +-
+ drivers/regulator/stm32-vrefbuf.c             |  10 +-
+ drivers/regulator/stpmic1_regulator.c         |   8 +-
+ drivers/remoteproc/imx_rproc.c                |  12 +-
+ drivers/remoteproc/remoteproc_core.c          |  12 +-
+ drivers/remoteproc/remoteproc_elf_loader.c    |   2 +-
+ drivers/remoteproc/stm32_rproc.c              |  12 +-
+ drivers/reset/core.c                          |  25 +-
+ drivers/reset/reset-imx7.c                    |   8 +-
+ drivers/reset/reset-scmi.c                    |   4 +-
+ drivers/reset/reset-simple.c                  |   6 +-
+ drivers/reset/reset-socfpga.c                 |   6 +-
+ drivers/reset/reset-starfive-vic.c            |   6 +-
+ drivers/rtc/class.c                           |   2 +-
+ drivers/rtc/rtc-abracon.c                     |   4 +-
+ drivers/rtc/rtc-ds1307.c                      |  10 +-
+ drivers/rtc/rtc-imxdi.c                       |   6 +-
+ drivers/rtc/rtc-jz4740.c                      |   4 +-
+ drivers/rtc/rtc-pcf85363.c                    |   6 +-
+ drivers/serial/arm_dcc.c                      |   6 +-
+ drivers/serial/atmel.c                        |   6 +-
+ drivers/serial/efi-stdio.c                    |   4 +-
+ drivers/serial/linux_console.c                |  10 +-
+ drivers/serial/serial_altera.c                |   4 +-
+ drivers/serial/serial_altera_jtag.c           |   4 +-
+ drivers/serial/serial_ar933x.c                |   4 +-
+ drivers/serial/serial_auart.c                 |   4 +-
+ drivers/serial/serial_cadence.c               |   4 +-
+ drivers/serial/serial_clps711x.c              |   8 +-
+ drivers/serial/serial_digic.c                 |   4 +-
+ drivers/serial/serial_imx.c                   |  14 +-
+ drivers/serial/serial_litex.c                 |   4 +-
+ drivers/serial/serial_lpuart.c                |   8 +-
+ drivers/serial/serial_mpc5xxx.c               |  14 +-
+ drivers/serial/serial_ns16550.c               |  10 +-
+ drivers/serial/serial_ns16550_pci.c           |   2 +-
+ drivers/serial/serial_omap4_usbboot.c         |   4 +-
+ drivers/serial/serial_pl010.c                 |   4 +-
+ drivers/serial/serial_pxa.c                   |   4 +-
+ drivers/serial/serial_s3c.c                   |   4 +-
+ drivers/serial/serial_sbi.c                   |   4 +-
+ drivers/serial/serial_sifive.c                |   7 +-
+ drivers/serial/serial_stm32.c                 |   8 +-
+ drivers/serial/stm-serial.c                   |   4 +-
+ drivers/soc/imx/gpcv2.c                       |  20 +-
+ drivers/soc/imx/imx8m-featctrl.c              |   2 +-
+ drivers/soc/kvx/kvx_socinfo.c                 |   6 +-
+ drivers/soc/rockchip/io-domain.c              |   8 +-
+ drivers/soc/sifive/sifive_l2_cache.c          |   6 +-
+ drivers/sound/gpio-beeper.c                   |   8 +-
+ drivers/sound/pwm-beeper.c                    |  13 +-
+ drivers/sound/sdl.c                           |   4 +-
+ drivers/spi/altera_spi.c                      |   6 +-
+ drivers/spi/ath79_spi.c                       |  10 +-
+ drivers/spi/atmel-quadspi.c                   |   4 +-
+ drivers/spi/atmel_spi.c                       |   6 +-
+ drivers/spi/dspi_spi.c                        |  14 +-
+ drivers/spi/gpio_spi.c                        |   8 +-
+ drivers/spi/imx_spi.c                         |   8 +-
+ drivers/spi/litex_spiflash.c                  |   8 +-
+ drivers/spi/mvebu_spi.c                       |   6 +-
+ drivers/spi/mxs_spi.c                         |   4 +-
+ drivers/spi/omap3_spi.c                       |  11 +-
+ drivers/spi/spi-fsl-dspi.c                    |  12 +-
+ drivers/spi/spi-fsl-qspi.c                    |  10 +-
+ drivers/spi/spi-nxp-fspi.c                    |  15 +-
+ drivers/spi/spi-sifive.c                      |  10 +-
+ drivers/spi/spi.c                             |  12 +-
+ drivers/spi/stm32_spi.c                       |  10 +-
+ drivers/spi/zynq_qspi.c                       |   8 +-
+ drivers/usb/core/hub.c                        |   2 +-
+ drivers/usb/core/usb.c                        |   8 +-
+ drivers/usb/dwc2/core.h                       |   2 +-
+ drivers/usb/dwc2/dwc2.c                       |   6 +-
+ drivers/usb/dwc2/host.c                       |   4 +-
+ drivers/usb/dwc3/core.c                       |  40 +--
+ drivers/usb/dwc3/core.h                       |   4 +-
+ drivers/usb/dwc3/dwc3-of-simple.c             |  10 +-
+ drivers/usb/dwc3/gadget.c                     |   2 +-
+ drivers/usb/dwc3/host.c                       |   2 +-
+ drivers/usb/gadget/at91_udc.c                 |   8 +-
+ drivers/usb/gadget/at91_udc.h                 |   2 +-
+ drivers/usb/gadget/fsl_udc.c                  |  10 +-
+ drivers/usb/gadget/pxa27x_udc.c               |   4 +-
+ drivers/usb/gadget/pxa27x_udc.h               |   2 +-
+ drivers/usb/gadget/storage_common.h           |   2 +-
+ drivers/usb/gadget/udc-core.c                 |   9 +-
+ drivers/usb/host/ehci-atmel.c                 |  10 +-
+ drivers/usb/host/ehci-hcd.c                   |  14 +-
+ drivers/usb/host/ohci-at91.c                  |  14 +-
+ drivers/usb/host/ohci-hcd.c                   |   4 +-
+ drivers/usb/host/xhci.c                       |   8 +-
+ drivers/usb/host/xhci.h                       |   2 +-
+ drivers/usb/imx/chipidea-imx.c                |  30 +-
+ drivers/usb/imx/imx-usb-misc.c                |   8 +-
+ drivers/usb/imx/imx-usb-phy.c                 |   8 +-
+ drivers/usb/misc/usb251xb.c                   |  16 +-
+ drivers/usb/musb/am35x-phy-control.h          |   2 +-
+ drivers/usb/musb/musb_am335x.c                |   6 +-
+ drivers/usb/musb/musb_core.h                  |   2 +-
+ drivers/usb/musb/musb_dsps.c                  |  16 +-
+ drivers/usb/musb/phy-am335x-control.c         |  10 +-
+ drivers/usb/musb/phy-am335x.c                 |   6 +-
+ drivers/usb/otg/otgdev.c                      |   8 +-
+ drivers/usb/storage/transport.c               |   6 +-
+ drivers/usb/storage/usb.c                     |  24 +-
+ drivers/video/atmel_hlcdfb.c                  |   4 +-
+ drivers/video/atmel_lcdfb.c                   |   4 +-
+ drivers/video/atmel_lcdfb.h                   |   4 +-
+ drivers/video/atmel_lcdfb_core.c              |  17 +-
+ drivers/video/backlight-pwm.c                 |  14 +-
+ drivers/video/bcm2835.c                       |   4 +-
+ drivers/video/bochs/bochs_hw.c                |   3 +-
+ drivers/video/bochs/bochs_hw.h                |   4 +-
+ drivers/video/bochs/bochs_isa.c               |   2 +-
+ drivers/video/efi_gop.c                       |   2 +-
+ drivers/video/fb.c                            |   6 +-
+ drivers/video/imx-ipu-fb.c                    |   6 +-
+ drivers/video/imx-ipu-v3/imx-hdmi.c           |   8 +-
+ drivers/video/imx-ipu-v3/imx-ldb.c            |   8 +-
+ drivers/video/imx-ipu-v3/imx-pd.c             |   8 +-
+ drivers/video/imx-ipu-v3/ipu-common.c         |  14 +-
+ drivers/video/imx-ipu-v3/ipu-dc.c             |   4 +-
+ drivers/video/imx-ipu-v3/ipu-di.c             |   2 +-
+ drivers/video/imx-ipu-v3/ipu-dmfc.c           |   6 +-
+ drivers/video/imx-ipu-v3/ipu-dp.c             |   4 +-
+ drivers/video/imx-ipu-v3/ipu-prv.h            |  15 +-
+ drivers/video/imx-ipu-v3/ipufb.c              |  17 +-
+ drivers/video/imx-ipu-v3/ipuv3-plane.c        |   2 +-
+ drivers/video/imx.c                           |   8 +-
+ drivers/video/mipi_dbi.c                      |   2 +-
+ drivers/video/mtl017.c                        |  17 +-
+ drivers/video/omap.c                          |   6 +-
+ drivers/video/panel-ilitek-ili9341.c          |  14 +-
+ drivers/video/pxa.c                           |   6 +-
+ drivers/video/rave-sp-backlight.c             |   4 +-
+ drivers/video/s3c24xx.c                       |   8 +-
+ drivers/video/sdl.c                           |   6 +-
+ drivers/video/simple-panel.c                  |  10 +-
+ drivers/video/simplefb-client.c               |  12 +-
+ drivers/video/ssd1307fb.c                     |  10 +-
+ drivers/video/stm.c                           |  10 +-
+ drivers/video/stm32_ltdc.c                    |  10 +-
+ drivers/video/tc358767.c                      |  20 +-
+ drivers/virtio/virtio.c                       |   8 +-
+ drivers/virtio/virtio_mmio.c                  |   6 +-
+ drivers/virtio/virtio_pci_modern.c            |   2 +-
+ drivers/virtio/virtio_ring.c                  |   2 +-
+ drivers/w1/masters/w1-gpio.c                  |   8 +-
+ drivers/w1/w1.c                               |   8 +-
+ drivers/w1/w1.h                               |   8 +-
+ drivers/watchdog/ar9344_wdt.c                 |   6 +-
+ drivers/watchdog/at91sam9_wdt.c               |   4 +-
+ drivers/watchdog/bcm2835_wdt.c                |   6 +-
+ drivers/watchdog/davinci_wdt.c                |   4 +-
+ drivers/watchdog/dw_wdt.c                     |   4 +-
+ drivers/watchdog/efi_wdt.c                    |   6 +-
+ drivers/watchdog/f71808e_wdt.c                |   6 +-
+ drivers/watchdog/gpio_wdt.c                   |   6 +-
+ drivers/watchdog/im28wd.c                     |   6 +-
+ drivers/watchdog/imxwd.c                      |  10 +-
+ drivers/watchdog/jz4740.c                     |   4 +-
+ drivers/watchdog/kvx_wdt.c                    |   4 +-
+ drivers/watchdog/omap_wdt.c                   |   4 +-
+ drivers/watchdog/orion_wdt.c                  |   4 +-
+ drivers/watchdog/rave-sp-wdt.c                |   6 +-
+ drivers/watchdog/rn5t568_wdt.c                |   4 +-
+ drivers/watchdog/starfive_wdt.c               |   4 +-
+ drivers/watchdog/stm32_iwdg.c                 |   4 +-
+ drivers/watchdog/stpmic1_wdt.c                |   4 +-
+ drivers/watchdog/wd_core.c                    |  12 +-
+ drivers/watchdog/wdat_wdt.c                   |   2 +-
+ fs/bpkfs.c                                    |  26 +-
+ fs/cramfs/cramfs.c                            |  19 +-
+ fs/devfs-core.c                               |  12 +-
+ fs/devfs.c                                    |  35 ++-
+ fs/efi.c                                      |  48 +--
+ fs/efivarfs.c                                 |  32 +-
+ fs/ext4/ext4fs.h                              |   2 +-
+ fs/ext4/ext_barebox.c                         |  14 +-
+ fs/fat/fat.c                                  |  37 +--
+ fs/fs.c                                       | 100 +++---
+ fs/jffs2/fs.c                                 |  16 +-
+ fs/jffs2/os-linux.h                           |   4 +-
+ fs/jffs2/super.c                              |   2 +-
+ fs/legacy.c                                   |  20 +-
+ fs/nfs.c                                      |  24 +-
+ fs/omap4_usbbootfs.c                          |  27 +-
+ fs/pstore/fs.c                                |  22 +-
+ fs/pstore/ram.c                               |  12 +-
+ fs/ramfs.c                                    |  17 +-
+ fs/ratpfs.c                                   |  48 +--
+ fs/smhfs.c                                    |  28 +-
+ fs/squashfs/squashfs.c                        |  20 +-
+ fs/squashfs/squashfs.h                        |   4 +-
+ fs/squashfs/squashfs_fs_sb.h                  |   2 +-
+ fs/squashfs/super.c                           |   4 +-
+ fs/tftp.c                                     |  31 +-
+ fs/ubifs/super.c                              |   5 +-
+ fs/ubifs/ubifs.c                              |  17 +-
+ fs/ubifs/ubifs.h                              |   5 +-
+ fs/ubootvarfs.c                               |  22 +-
+ fs/uimagefs.c                                 |  28 +-
+ include/acpi.h                                |   4 +-
+ include/aiodev.h                              |   6 +-
+ include/ata_drive.h                           |   6 +-
+ include/blobgen.h                             |   4 +-
+ include/block.h                               |   2 +-
+ include/blspec.h                              |   2 +-
+ include/console.h                             |  16 +-
+ include/dirent.h                              |   4 +-
+ include/dma.h                                 |   8 +-
+ include/driver.h                              | 145 ++++-----
+ include/dsa.h                                 |   4 +-
+ include/efi/efi-device.h                      |   8 +-
+ include/fb.h                                  |   2 +-
+ include/featctrl.h                            |   2 +-
+ include/firmware.h                            |   2 +-
+ include/fpga-bridge.h                         |   4 +-
+ include/fpga-mgr.h                            |   2 +-
+ include/fs.h                                  |  77 ++---
+ include/globalvar.h                           |   7 +-
+ include/gpio.h                                |   9 +-
+ include/gpiod.h                               |   2 +-
+ include/hwspinlock.h                          |   2 +-
+ include/i2c/i2c-mux.h                         |   2 +-
+ include/i2c/i2c.h                             |   9 +-
+ include/input/matrix_keypad.h                 |   2 +-
+ include/linux/amba/bus.h                      |  10 +-
+ include/linux/basic_mmio_gpio.h               |   2 +-
+ include/linux/clk.h                           | 161 +++++-----
+ include/linux/clkdev.h                        |   4 +-
+ include/linux/font.h                          |   8 +-
+ include/linux/hw_random.h                     |   4 +-
+ include/linux/mdio-mux.h                      |   2 +-
+ include/linux/mfd/axp20x.h                    |   2 +-
+ include/linux/mfd/core.h                      |   5 +-
+ include/linux/mtd/mtd.h                       |  10 +-
+ include/linux/mtd/spi-nor.h                   |   2 +-
+ include/linux/nvmem-consumer.h                |  14 +-
+ include/linux/nvmem-provider.h                |   2 +-
+ include/linux/pci.h                           |   8 +-
+ include/linux/phy.h                           |  10 +-
+ include/linux/phy/phy.h                       |  39 ++-
+ include/linux/printk.h                        |  14 +-
+ include/linux/reboot-mode.h                   |   4 +-
+ include/linux/regulator/of_regulator.h        |   6 +-
+ include/linux/remoteproc.h                    |   4 +-
+ include/linux/reset.h                         |  25 +-
+ include/linux/rtc.h                           |   4 +-
+ include/linux/scmi_protocol.h                 |  16 +-
+ include/linux/spi/spi-mem.h                   |   2 +-
+ include/linux/virtio.h                        |  10 +-
+ include/mci.h                                 |   6 +-
+ include/mfd/mc13xxx.h                         |   5 +-
+ include/net.h                                 |   6 +-
+ include/of.h                                  |  47 +--
+ include/of_device.h                           |  20 +-
+ include/param.h                               | 286 ++++++++++--------
+ include/pinctrl.h                             |  14 +-
+ include/pm_domain.h                           |   8 +-
+ include/printk.h                              |   4 +-
+ include/pwm.h                                 |   4 +-
+ include/regmap.h                              |  10 +-
+ include/regulator.h                           |  13 +-
+ include/reset_source.h                        |   8 +-
+ include/serdev.h                              |   2 +-
+ include/soc/imx8m/featctrl.h                  |   4 +-
+ include/soc/stm32/reboot.h                    |   6 +-
+ include/spi/spi.h                             |   8 +-
+ include/superio.h                             |   4 +-
+ include/usb/chipidea-imx.h                    |   8 +-
+ include/usb/ehci.h                            |   4 +-
+ include/usb/fsl_usb2.h                        |   2 +-
+ include/usb/gadget.h                          |  14 +-
+ include/usb/musb.h                            |   2 +-
+ include/usb/phy.h                             |   2 +-
+ include/usb/usb.h                             |   8 +-
+ include/video/backlight.h                     |   2 +-
+ include/video/mipi_dbi.h                      |   2 +-
+ include/watchdog.h                            |   4 +-
+ lib/blobgen.c                                 |   4 +-
+ lib/fonts/fonts.c                             |   8 +-
+ lib/hexdump.c                                 |   2 +-
+ lib/parameter.c                               | 143 +++++----
+ net/eth.c                                     |  22 +-
+ 812 files changed, 4126 insertions(+), 3931 deletions(-)
+
 -- 
 2.30.2
 
