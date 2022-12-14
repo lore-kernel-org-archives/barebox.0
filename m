@@ -1,15 +1,15 @@
-Delivery-date: Wed, 14 Dec 2022 12:00:05 +0100
+Delivery-date: Wed, 14 Dec 2022 12:00:06 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p5PUa-003YKg-4R
-	for lore@lore.pengutronix.de; Wed, 14 Dec 2022 12:00:04 +0100
+	id 1p5PUb-003YKf-5l
+	for lore@lore.pengutronix.de; Wed, 14 Dec 2022 12:00:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p5PUX-0005pd-UB
+	id 1p5PUX-0005p9-9F
 	for lore@pengutronix.de; Wed, 14 Dec 2022 12:00:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,45 +17,44 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rM2CsnH1cuZaqfZvL9fQn9z58WOAjaNFCvxtZhIqTig=; b=LJrkeys2TZlh6zztqS+Cff7CAe
-	+FOxWh7AGzBy4sKIjTQs1xLpMIO6/zOBkTuQgTm3LpOSFuKUvJaDunzFHLKR4KKQEIibCRsHdJpMF
-	5aHAXP1hgqOFjCdCyAyaiCCzU3IT3JfyHxZj8RtNiw8Y4cws8Uhhdpeozg9St6DET3bl7plOIQsot
-	3CkB9ckS76FbFNdhyNmMLRl4WV9oeViUDKX6R2A13X1PHnp+HMq41XymVBMySeDb1CitpxwmfaTea
-	R/G8+EON+lSObQj0YjzJn6m0ZFEybMaKPr+/mKREIlndwyA5MWwL60Esrr3gPYBD3zpqIedVICe8h
-	mndyQSow==;
+	bh=QnpEFFkuTn3hgDnMIz0AEA61VdH0aU//BdDBVQt5hYw=; b=zvINo/hp5rEyOAOY/EoKmZ0wsF
+	4nlr/XJHSDsfstrwqfBcF6pk+9UG/KF8EHjJZi0frkUdack1HdRYkLYREEzPBlGSJFh0nC1YJ4hl7
+	L8dx/Wn1yPwQWOXNzyYJ2McaVSClbRPC0yPct5/K0/1AK1So4YMgCtS0z3Mi2wZseX6e33zi3Kcqh
+	gfwV1/JiDKKozY4aKANAk/zaWOG1mgsy1yIwzI3iqZ4+bgASjddM2RgoDu5Hf3vqvOLLH7pEHu9w0
+	QA7nxIf/xLbQwl5Q38Oug0ZQ6omLDDE4k8EHkSg6HVbCKlm8rGL92dQSCDQzt6s1UHF7tN50vsT5f
+	sVJqRjdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p5PTQ-00FlZ3-LV; Wed, 14 Dec 2022 10:58:52 +0000
+	id 1p5PTN-00FlXC-Au; Wed, 14 Dec 2022 10:58:49 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p5PTA-00FlPk-50
+	id 1p5PTA-00FlPl-4y
 	for barebox@lists.infradead.org; Wed, 14 Dec 2022 10:58:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1p5PT8-0005D4-OW; Wed, 14 Dec 2022 11:58:34 +0100
+	id 1p5PT8-0005D6-PH; Wed, 14 Dec 2022 11:58:34 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1p5PT7-004Run-8h; Wed, 14 Dec 2022 11:58:34 +0100
+	id 1p5PT7-004Rur-Ar; Wed, 14 Dec 2022 11:58:34 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1p5PT6-003Xh8-EZ; Wed, 14 Dec 2022 11:58:32 +0100
+	id 1p5PT6-003XhH-FK; Wed, 14 Dec 2022 11:58:32 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 14 Dec 2022 11:58:23 +0100
-Message-Id: <20221214105831.844421-4-a.fatoum@pengutronix.de>
+Date: Wed, 14 Dec 2022 11:58:26 +0100
+Message-Id: <20221214105831.844421-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20221214105831.844421-1-a.fatoum@pengutronix.de>
 References: <20221214105831.844421-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221214_025836_332760_88BCBDB5 
-X-CRM114-Status: UNSURE (   9.94  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20221214_025836_313329_30AA20AE 
+X-CRM114-Status: GOOD (  11.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,36 +76,33 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 03/11] ARM: at91: sama5d4: enable for DT use
+Subject: [PATCH 06/11] eeprom: at24: add 24mac402/602 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The sama5d4[devices].c files are for non-OF instantiation of platform
-devices. We don't need anything out of these two files, so don't build
-them when compiling for CONFIG_OFDEVICE.
+The 24MAC chips feature an independent address mode for a MAC address.
+Linux handles these by registering a device that's just 6/8 bytes of
+size and that seeks to a fixed offset. In barebox, we'll just report
+the real size and expect code to use the appropriate offset.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/eeprom/at24.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index 390d49d03dee..b9fda00b2e1a 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -30,6 +30,7 @@ obj-$(CONFIG_SOC_AT91SAM9G10) += at91sam9261.o at91sam9261_devices.o
- ifeq ($(CONFIG_OFDEVICE),)
- obj-$(CONFIG_SOC_AT91SAM9263) += at91sam9263.o at91sam9263_devices.o
- obj-$(CONFIG_SOC_SAMA5D3)	+= sama5d3.o sama5d3_devices.o
-+obj-$(CONFIG_SOC_SAMA5D4)	+= sama5d4.o sama5d4_devices.o
- endif
- lwl-$(CONFIG_SOC_AT91SAM9263)	+= sam9263_ll.o
- lwl-$(CONFIG_SOC_SAMA5D2)	+= sama5d2_ll.o
-@@ -39,4 +40,3 @@ obj-$(CONFIG_SOC_AT91SAM9G20) += at91sam9260.o at91sam9260_devices.o
- obj-$(CONFIG_SOC_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
- obj-$(CONFIG_SOC_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
- obj-$(CONFIG_SOC_AT91SAM9N12)	+= at91sam9n12.o at91sam9n12_devices.o
--obj-$(CONFIG_SOC_SAMA5D4)	+= sama5d4.o sama5d4_devices.o
+diff --git a/drivers/eeprom/at24.c b/drivers/eeprom/at24.c
+index 3103d7722a40..f4b43ffe3f8d 100644
+--- a/drivers/eeprom/at24.c
++++ b/drivers/eeprom/at24.c
+@@ -99,6 +99,8 @@ static struct platform_device_id at24_ids[] = {
+ 	/* old variants can't be handled with this generic entry! */
+ 	{ "24c01", AT24_DEVICE_MAGIC(1024 / 8, 0) },
+ 	{ "24c02", AT24_DEVICE_MAGIC(2048 / 8, 0) },
++	{ "24mac402",	AT24_DEVICE_MAGIC(2048 / 8, AT24_FLAG_READONLY) },
++	{ "24mac602",	AT24_DEVICE_MAGIC(2048 / 8, AT24_FLAG_READONLY) },
+ 	/* spd is a 24c02 in memory DIMMs */
+ 	{ "spd", AT24_DEVICE_MAGIC(2048 / 8,
+ 		AT24_FLAG_READONLY | AT24_FLAG_IRUGO) },
 -- 
 2.30.2
 
