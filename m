@@ -1,53 +1,52 @@
-Delivery-date: Fri, 16 Dec 2022 07:40:22 +0100
+Delivery-date: Fri, 16 Dec 2022 07:42:49 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p64OM-005PSD-5f
-	for lore@lore.pengutronix.de; Fri, 16 Dec 2022 07:40:22 +0100
+	id 1p64Qi-005Pa6-MV
+	for lore@lore.pengutronix.de; Fri, 16 Dec 2022 07:42:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p64OL-0004pT-Qo
-	for lore@pengutronix.de; Fri, 16 Dec 2022 07:40:22 +0100
+	id 1p64Qi-000572-3y
+	for lore@pengutronix.de; Fri, 16 Dec 2022 07:42:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dabOl29pacK+P9U4Q88yqOzyPR01qO77KB460vuD5dU=; b=MQE4xgHJ6biasx4R2vms8KIZJp
-	EmIrg3TYgTBHkOfkt8Z/ZMM8s4G3OogIXjrw1cZuy/MACf8OmNF6HMD+p7q43CR9TOa3SXihy4OWO
-	fPiiou/UsvSs414RxBV+lOy92D5JKSn7WClx4qdZCgosxql8IhEFJnkWDNMX9p4mF4MMPXxPsLV0e
-	PXmfFO3v+SqK5EqDbfRJR2CUusxdw22RwURw/HY+79gwWYn87odLPB0QFR/kgiRT6wFLAJ27Gt+BS
-	zovJ3ZFWfhm8daug8mlvrBB83KfSvjB7L2nELZjZSep0VriwdlazeOgukiP3b3IULqD4kUFJqPJwF
-	BGMIG8aw==;
+	bh=xiV0p1EddlyrljFPXkjudmDeRhuyLgIaNmzo/d4kVW8=; b=jM9jDxEKAPn4Cl4kVEQbydlKUd
+	Ayr2BmGcIlZTCptO0sNIw0DorRtO3+qMuKAGZwEPoH5qAm2iZ+1sQjN6LS4RxFefymXkUB254zx8s
+	iBEXQ0jRWPJuiJd/N4jnNkYBeLC52qNHKAcB1eotslqiBKCQ9YSlKZnJW8qoOIB1O3ywiF3CUvnZb
+	ebgfMXRQ2a+bA91ka8neI5axzB0UkW+whhePaUkNK+IhORloE2+qDSawxx0zr+qJWMaI1B0G6mpMJ
+	JLyWzvz3+cX5r80XI/EmunqP9Ie7oEQkVw0343u/3B5xPEuX9kN3H/y9AU8o2N4F4FeHVRovCRsDE
+	TECXPYeQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p64N6-00DCLA-7x; Fri, 16 Dec 2022 06:39:04 +0000
+	id 1p64PS-00DD72-0h; Fri, 16 Dec 2022 06:41:30 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p64N1-00DCK6-Dh
-	for barebox@lists.infradead.org; Fri, 16 Dec 2022 06:39:00 +0000
+	id 1p64PN-00DD5Y-Pn
+	for barebox@lists.infradead.org; Fri, 16 Dec 2022 06:41:27 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p64N0-0004ZC-4V; Fri, 16 Dec 2022 07:38:58 +0100
+	id 1p64PL-00053b-Ud; Fri, 16 Dec 2022 07:41:23 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p64Mz-0003kU-Tn; Fri, 16 Dec 2022 07:38:57 +0100
-Date: Fri, 16 Dec 2022 07:38:57 +0100
+	id 1p64PL-0003sc-MF; Fri, 16 Dec 2022 07:41:23 +0100
+Date: Fri, 16 Dec 2022 07:41:23 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20221216063857.GE11668@pengutronix.de>
-References: <20221209071002.3765134-1-a.fatoum@pengutronix.de>
- <20221209071002.3765134-2-a.fatoum@pengutronix.de>
+Message-ID: <20221216064123.GF11668@pengutronix.de>
+References: <20221214105050.633668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20221209071002.3765134-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20221214105050.633668-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -55,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221215_223859_478284_6602A025 
-X-CRM114-Status: GOOD (  20.60  )
+X-CRM114-CacheID: sfid-20221215_224125_855257_8CD6C361 
+X-CRM114-Status: GOOD (  29.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,41 +77,79 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/3] clk: add prepare/unprepare helpers
+Subject: Re: [PATCH v2] mci: only write blocks when card out of programming
+ mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Dec 09, 2022 at 08:10:01AM +0100, Ahmad Fatoum wrote:
-> barebox doesn't use interrupts, so it need not differentiate between a
-> possibly sleeping prepare/unprepare and an atomic enable/disable.
+On Wed, Dec 14, 2022 at 11:50:50AM +0100, Ahmad Fatoum wrote:
+> eMMC Spec v5.1 (JEDEC Standard No. 84-B51) is quite clear that:
 > 
-> Provide a wrapper that just expands to the already existing functions to
-> simplify porting of Linux kernel drivers.
+>   Due to legacy reasons, a Device may still treat CMD24/25 during
+>   prg-state (while busy is active) as a legal or illegal command.
+>   A host should not send CMD24/25 while the Device is in the prg
+>   state and busy is active.
+> 
+> So far, we had never evaluated MMC_CMD_SEND_STATUS. This patch
+> corrects this and thereby resolves an issue of timed out writes
+> with the atmel_mci driver:
+> 
+>   barebox@SAMA5D4:/ saveenv
+>   ERROR: atmel_mci fc000000.mmc@fc000000.of: command/data timeout
+>   ERROR: atmel_mci fc000000.mmc@fc000000.of: command/data timeout
+> 
+> These issues are not new, but were first reported in 2018[0] along
+> with a workaround suggesting a delay at the end of atmci_request:
+> 
+>   if (cmdidx == MMC_CMD_STOP_TRANSMISSION)
+> 	mdelay(5)
+> 
+> Just before the command timing out, we read 0x00c00_0025 from the
+> status register, which is
+> 
+>   CMDRDY | TXRDY | NOTBUSY | XFERDONE | FIFOEMPTY
+> 
+> which suggests the issue is not at the MCI host side, but rather at
+> the card side. With this patch applied and debugging enabled, this
+> seems to be confirmed:
+> 
+>   barebox@SAMA5D4:/ saveenv
+>   saving environment
+>   mmc1: Ready polling took 0ms
+>   mmc1: Ready polling took 4ms
+> 
+> I compared with AT91Bootstrap[1], U-Boot[2] and Trusted Firmware-A[3]
+> and all of them poll MCI status after block writes.
+> 
+> The sequence imported here is taken from U-Boot, but instead of doing
+> it after writes, we do it before them in hope that we need not always
+> incur the extra delay.
+> 
+> I don't have an answer why this was only necessary on the SAMA5D3/4 and
+> such issues weren't observed with other drivers. Card was operated
+> at 50MHz (SD HS) and it didn't help trying other cards or going down
+> to 400kHz. I tested this change also on a Beaglebone Black where an
+> environment is also stored into FAT on a SD-Card operated with 50 MHz:
+> Ready polling took 0ms for each of the two writes.
+> 
+> [0]: https://lore.barebox.org/barebox/20181102091156.26476-1-s.hauer@pengutronix.de/
+> [1]: https://github.com/linux4sam/at91bootstrap/blob/v4.0.5/driver/mci_media.c#L1187
+> [2]: https://github.com/trini/u-boot/blob/v2023.01-rc3/drivers/mmc/mmc_write.c#L181
+> [3]: https://github.com/ARM-software/arm-trusted-firmware/blob/v2.8.0/drivers/mmc/mmc.c#L718
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  include/linux/clk.h | 2 ++
->  1 file changed, 2 insertions(+)
+> For next, not master. I intend to test this change across more devices
+> in the coming weeks.
 > 
-> diff --git a/include/linux/clk.h b/include/linux/clk.h
-> index 42c64d650d1f..afa62cdccc02 100644
-> --- a/include/linux/clk.h
-> +++ b/include/linux/clk.h
-> @@ -71,6 +71,7 @@ struct clk *clk_get(struct device_d *dev, const char *id);
->   * Returns success (0) or negative errno.
->   */
->  int clk_enable(struct clk *clk);
-> +#define clk_prepare_enable(clk) clk_enable(clk)
->  
->  /**
->   * clk_disable - inform the system when the clock source is no longer required.
-> @@ -85,6 +86,7 @@ int clk_enable(struct clk *clk);
->   * disabled.
->   */
->  void clk_disable(struct clk *clk);
-> +#define clk_disable_unprepare(clk) clk_disable(clk)
+> v1 -> v2:
+>   - skip mci_poll_until_ready for SPI mode (Sascha)
+>   - simplify timeout handling (Sascha)
+>   - turn dev_info into dev_dbg
+>   - remove comment about debugging message placement
+>   - increase timeout from 10ms to 1s
 
-You should define this outside of #ifdef CONFIG_HAVE_CLK.
+Applied, thanks
 
 Sascha
 
