@@ -1,53 +1,53 @@
-Delivery-date: Fri, 16 Dec 2022 07:50:55 +0100
+Delivery-date: Fri, 16 Dec 2022 09:47:33 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p64YZ-005Pv6-89
-	for lore@lore.pengutronix.de; Fri, 16 Dec 2022 07:50:55 +0100
+	id 1p66NR-005V1b-2t
+	for lore@lore.pengutronix.de; Fri, 16 Dec 2022 09:47:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p64YY-00060g-Pj
-	for lore@pengutronix.de; Fri, 16 Dec 2022 07:50:55 +0100
+	id 1p66NQ-0001p6-Ac
+	for lore@pengutronix.de; Fri, 16 Dec 2022 09:47:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CouPQyYj3LD/in1sc5wkG6U22YcVCUqMEU2HhYqJBe4=; b=La+AAtBA375L6eY8InFUfQhr6u
-	m3qxiZAr6Be82HnXBjAhyxMrgfL5giFXBosivOGvKnf7db3oT3gPzRkpqggBjOViuaHUe8NFs+zlU
-	5pfcoYxZh16Xu56lH8RpowUD0Q1mRVifx4vMfzj8rJdR6tFPdscgKBDxZAX9ZLUX/bpkxZJWi9I32
-	byaKX/3JwWYVBnCjeSUsyaegoJ71xTpkjX1JdhwttM8ywIWRozZPUsAJ6WebLN6X85D3QKuAiJz/e
-	eCuyVXgvmTWYqo68gIXTmpM+X20p5Eo76qCnP907T+f/FeeHzfw5qOr3b18DpC92YCPt++bCd9rjc
-	OLi1svZA==;
+	bh=X6kR0Kz2pzy/8aGbN9kJXM0Kqa/+w4Becs0w9cGOZYQ=; b=yxVwUkrQpW/wqQfFcoYw7Awrhc
+	CGKc60zGK19YDCeUxU/rDd3B1/YndWZNuM1UpmIBVegEv+LaWVfyvAzwrol9no1nxK8d+9+gPuMEJ
+	5RZ3QCiwx88SMNaDwnxfczi8qy2d9TyxDk7D7f0mwn1CnxYBx6hM6ieHZcPjw81+dhtLt11lO6iSH
+	giW/9TWkH4gYDNaxU8pjnIL++P2M1/SRbXqZ6+koeSXJb+sh8M99zHqp2xlQMLF1aWziYO7Z7Zv3B
+	IdeB7/z00xUeuKQK70054vWkNZQLAyT4OAUzErvALbte0KinWeJmbVJzvB0QFOtFQBGkIJiYlM0tL
+	rlkFdpJA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p64XI-00DFoM-5K; Fri, 16 Dec 2022 06:49:36 +0000
+	id 1p66Ln-00DfkP-7t; Fri, 16 Dec 2022 08:45:51 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p64XD-00DFkM-DG
-	for barebox@lists.infradead.org; Fri, 16 Dec 2022 06:49:32 +0000
+	id 1p66Li-00Dfin-TR
+	for barebox@lists.infradead.org; Fri, 16 Dec 2022 08:45:48 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p64XB-0005gw-Re; Fri, 16 Dec 2022 07:49:29 +0100
+	id 1p66Lf-0001b8-SJ; Fri, 16 Dec 2022 09:45:43 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1p64XB-00043o-KF; Fri, 16 Dec 2022 07:49:29 +0100
-Date: Fri, 16 Dec 2022 07:49:29 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	id 1p66Lf-0002R1-6l; Fri, 16 Dec 2022 09:45:43 +0100
+Date: Fri, 16 Dec 2022 09:45:43 +0100
+To: Matthias Feser <m.feser@kbs-gmbh.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20221216064929.GG11668@pengutronix.de>
-References: <20221214105831.844421-1-a.fatoum@pengutronix.de>
- <20221214105831.844421-2-a.fatoum@pengutronix.de>
+Message-ID: <20221216084543.GH11668@pengutronix.de>
+References: <3454916a.1d9106b.748ad6.4d5c@kbs-gmbh.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <20221214105831.844421-2-a.fatoum@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <3454916a.1d9106b.748ad6.4d5c@kbs-gmbh.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -55,8 +55,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221215_224931_467232_B05F92CB 
-X-CRM114-Status: GOOD (  21.51  )
+X-CRM114-CacheID: sfid-20221216_004547_003367_17A1640A 
+X-CRM114-Status: GOOD (  34.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,79 +78,92 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 01/11] ARM: at91: sama5: switch to nonnaked entry
- functions
+Subject: Re: AM335x DDR3 initialization / timing violation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Dec 14, 2022 at 11:58:21AM +0100, Ahmad Fatoum wrote:
-> Functions were kept naked because they modify the stack pointer.
-> We can hoist that up and change the board-provided entry point
-> to be non-naked to be more robust in face of unexpected compiler
-> optimizations.
+On Thu, Dec 15, 2022 at 10:54:00AM +0100, Matthias Feser wrote:
+> Hi, 
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  .../boards/microchip-ksz9477-evb/lowlevel.c    |  6 ++----
->  arch/arm/boards/sama5d27-giantboard/lowlevel.c |  4 ++--
->  arch/arm/boards/sama5d27-som1/lowlevel.c       |  4 ++--
->  arch/arm/boards/sama5d3_xplained/lowlevel.c    |  6 ++----
->  arch/arm/mach-at91/include/mach/barebox-arm.h  | 18 ++++++++++++++----
->  5 files changed, 22 insertions(+), 16 deletions(-)
+> we are using the AM3352 processor in combination with a single 512MB
+> Micron DDR3 chip running the barebox bootloader in our products for
+> several years now. A minor amount of boards (around 5 of 2000) fail
+> the production test, because they do not boot properly after warm
+> reset. In such cases the MLO is loaded, initializes the EMIF and then
+> crashes after a certain amount of accesses to the DDR3. After a cold
+> reset all of these boards run stable and produce no errors when
+> running a deep RAM test. 
+> 
+> I am currently in discussion with a TI employee about this topic. He
+> told me that the bootloader should detect a warm reset and EMIF should
+> not be reinitialized, because DDR3 is automatically put into
+> self-refresh on warm reset. So far he hasn’t told me what the
+> desired init sequence actually is. From what I have observed while
+> debugging, at least the EMIF clock has to be enabled and CKE brought
+> high. Unfortunately the TRM does not give guidance about this.
+> 
+> Our board initialization code is very similar to other AM335x based
+> boards like beaglebone (400MHz DDR clock), which effectively always
+> initializes the EMIF in the same way by calling am335x_sdram_init(),
+> no matter if cold or warm reset has brought up the processor. From
+> investigating the signals DDR_RESET and DDR_CKE with an oscilloscope,
+> I can tell that even with this same init code the hardware behaves
+> differently in both reset cases.
+> 
+> On cold reset both DDR_RESET and DDR_CKE remain low until
+> initialization, and there is a delay of roughly 436us between the
+> rising edges of DDR_RESET and DDR_CKE. After warm reset DDR_RESET is
+> high and DDR_CKE is low. EMIF initialization results in a short pulse
+> on DDR_RESET with 5us low phase and there is only about 38us delay
+> between the rising edges of DDR_RESET and DDR_CKE.
+> Both cases violate the DDR3 specification, according to which the
+> delay between the rising edges of DDR_RESET and DDR_CKE has to be
+> 500us min.
+> 
+> In am33xx_config_sdram() a value of 0x2800 is written to
+> EMIF4_SDRAM_REF_CTRL. TI recommends a value of 0x3100 during
+> initialization, which is used in u-boot EMIF initialization code and
+> does not violate the DDR3 specification. I think barebox EMIF init
+> code requires some revision.
+> 
+> I also wonder why EMIF4_SDRAM_CONFIG, REF_CTRL and REF_CTRL_SHADOW are
+> accessed twice when regs->zq_config is not zero (see code snippet
+> below taken from barebox 2022.12.0). Is there any reason behind this?
+
+The code is from U-Boot.
+
+> 
+>                 if (regs->zq_config) {
+>                                /*
+>                                * A value of 0x2800 for the REF CTRL will give us
+>                                * about 570us for a delay, which will be long enough
+>                                * to configure things.
+>                                */
+>                                writel(0x2800, emif4 + EMIF4_SDRAM_REF_CTRL);
+>                                writel(regs->zq_config, emif4 + EMIF4_ZQ_CONFIG);
+>                                writel(regs->sdram_config, CM_EMIF_SDRAM_CONFIG);
+>                                writel(regs->sdram_config, emif4 + EMIF4_SDRAM_CONFIG);
+>                                writel(regs->sdram_ref_ctrl, emif4 + EMIF4_SDRAM_REF_CTRL);
+>                                writel(regs->sdram_ref_ctrl, emif4 + EMIF4_SDRAM_REF_CTRL_SHADOW);
+>                 }
+> 
+>                 writel(regs->sdram_ref_ctrl, emif4 + EMIF4_SDRAM_REF_CTRL);
+>                 writel(regs->sdram_ref_ctrl, emif4 + EMIF4_SDRAM_REF_CTRL_SHADOW);
+>                 writel(regs->sdram_config, emif4 + EMIF4_SDRAM_CONFIG);
 > 
 
-[...]
+The second access to EMIF4_SDRAM_REF_CTRL goes down to U-Boot commit
+1c382ead7a00 ("am33xx: Update DDR3 EMIF configuration sequence"). This
+commit also introduces the 0x2800 value we still find in barebox.
 
-> diff --git a/arch/arm/mach-at91/include/mach/barebox-arm.h b/arch/arm/mach-at91/include/mach/barebox-arm.h
-> index 4a65c6f8fa55..36c6abadc137 100644
-> --- a/arch/arm/mach-at91/include/mach/barebox-arm.h
-> +++ b/arch/arm/mach-at91/include/mach/barebox-arm.h
-> @@ -3,19 +3,29 @@
->  #define AT91_BAREBOX_ARM_H_
->  
->  #include <asm/barebox-arm.h>
-> +#include <asm/common.h>
-> +#include <mach/sama5d3.h>
->  
-> -#define SAMA5_ENTRY_FUNCTION(name, r4)						\
-> +#define SAMA5_ENTRY_FUNCTION(name, stack_top, r4)				\
->  	void name (u32 r0, u32 r1, u32 r2, u32 r3);				\
->  										\
->  	static void __##name(u32);						\
->  										\
-> -	void NAKED __section(.text_head_entry_##name)	name			\
-> +	void __naked __section(.text_head_entry_##name)	name			\
->  				(u32 r0, u32 r1, u32 r2, u32 r3)		\
->  		{								\
->  			register u32 r4 asm("r4");				\
->  			__barebox_arm_head();					\
-> +			arm_setup_stack(stack_top);				\
->  			__##name(r4);						\
->  		}								\
-> -		static void NAKED noinline __##name				\
-> -			(u32 r4)
-> +		static void noinline __##name(u32 r4)
-> +
-> +/* BootROM already initialized usable stack top */
-> +#define SAMA5D2_ENTRY_FUNCTION(name, r4)					\
-> +	SAMA5_ENTRY_FUNCTION(name, 0, r4)
+The 0x2800 value was removed in fc46bae2ae38 ("arm: am437x: Enable
+hardware leveling for EMIF"). In this commit we also see the value
+0x3100 for the first time.
 
-Shouldn't you pass a valid stack address here as well? Without this
-change the stack pointer from the bootrom was reused in barebox, but now
-it is explicitly set to 0.
+I can't say much more to this, except that I am happy to accept patches
+to clean that up.
 
 Sascha
-
-> +
-> +#define SAMA5D3_ENTRY_FUNCTION(name, r4)					\
-> +	SAMA5_ENTRY_FUNCTION(name, SAMA5D3_SRAM_BASE + SAMA5D3_SRAM_SIZE, r4)
-> +
->  #endif
-> -- 
-> 2.30.2
-> 
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
