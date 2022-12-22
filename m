@@ -1,61 +1,64 @@
-Delivery-date: Thu, 22 Dec 2022 15:31:52 +0100
+Delivery-date: Thu, 22 Dec 2022 15:32:35 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p8Mbx-0051Wg-DK
-	for lore@lore.pengutronix.de; Thu, 22 Dec 2022 15:31:52 +0100
+	id 1p8Mce-0051ZH-Bz
+	for lore@lore.pengutronix.de; Thu, 22 Dec 2022 15:32:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p8Mbu-0006vB-O3
-	for lore@pengutronix.de; Thu, 22 Dec 2022 15:31:52 +0100
+	id 1p8Mca-00073P-Kx
+	for lore@pengutronix.de; Thu, 22 Dec 2022 15:32:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=acVaLjrkPwrWfrIdtwXdjR9WMpnozk9DYl3/XJ1mpqA=; b=0IMnhltJs/+yjiiBg3dwFjhHTR
-	LJGjI+dNS/UwioHYopER1OZ7Q+THN89ly6A3nLswsRQX+Hnh/eWET1S0/icV3UcIejlEmtxDzSftL
-	J/RXUl946D+voIZ3gRm2mjVgIkC2ZGoowSAT/i93WNqjLABHD/1CYQHA89OzQC7n/NOm25w7RlnCy
-	OQCl5PdqBUQdQXDihUUfh4XIc+yNbvNmwbfGDACLw9xhG//ZpQUTAJY6QbvI83btBCVmPhM+9zxpt
-	uPv7rMDotoKYwCcMqAQwzdQoJNFKqH92y0g3f7mrGXSxw+raUZTXh+LYms/3oMLHRwxzxrSTdjfRT
-	8RDym+Qw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=uGPmxsDp0QwTxJBFFQceF3wR/Wlb/zrnAehWlBYrrIQ=; b=p/BeeyniwR7qCt2Io2Rr4idMp5
+	I5jZ/lLNejzN/GYO8dq9L/HiRgfkBYDxrCQWOgt3L+7LubhlxrXoSSA/JRQg8aYHyjgOfJmNJwu7H
+	Kfhx3LqknOkKIHMQqFohDAb8Ro7X2cVVV01YDBdaRZE5QNbuofj9S7a2NJI6bRyGKLwqGJEnUoI9q
+	0W7MFQrybw8hGU8mv1cTXVMJQG6tn5ujjqYMmpqQKPC4XPheHK/UZOEBokR22EyDQqmmtBMEEutxu
+	+B80wMALP3719OH+lD265wCxq/YKi2TA6Fj1B/0VgQFqISUmOALSKnylTiJHpRWi65PhSZRjpRUql
+	44BJYKLg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p8Ma9-00CyEB-UT; Thu, 22 Dec 2022 14:30:03 +0000
+	id 1p8Mag-00Cyc3-La; Thu, 22 Dec 2022 14:30:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p8MIv-00ComD-2q
-	for barebox@lists.infradead.org; Thu, 22 Dec 2022 14:12:17 +0000
+	id 1p8MIv-00ComW-3W
+	for barebox@lists.infradead.org; Thu, 22 Dec 2022 14:12:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1p8MIr-0003uW-4B; Thu, 22 Dec 2022 15:12:09 +0100
+	id 1p8MIr-0003ua-AA; Thu, 22 Dec 2022 15:12:09 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1p8MIq-0011ph-AA; Thu, 22 Dec 2022 15:12:08 +0100
+	id 1p8MIq-0011pt-Mk; Thu, 22 Dec 2022 15:12:08 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1p8MIp-00Cx8m-6A; Thu, 22 Dec 2022 15:12:07 +0100
+	id 1p8MIp-00Cx93-7z; Thu, 22 Dec 2022 15:12:07 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Leif Middelschulte <leif.middelschulte@klsmartin.com>,
 	uol@pengutronix.de,
 	ore@pengutronix.de,
-	=?UTF-8?q?S=C3=B8ren=20Andersen?= <san@skov.dk>
-Date: Thu, 22 Dec 2022 15:11:55 +0100
-Message-Id: <20221222141201.3087192-1-a.fatoum@pengutronix.de>
+	=?UTF-8?q?S=C3=B8ren=20Andersen?= <san@skov.dk>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 22 Dec 2022 15:12:01 +0100
+Message-Id: <20221222141201.3087192-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20221222141201.3087192-1-a.fatoum@pengutronix.de>
+References: <20221222141201.3087192-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221222_061213_376318_6E0EE615 
-X-CRM114-Status: UNSURE (   8.81  )
+X-CRM114-CacheID: sfid-20221222_061213_572388_7CB76149 
+X-CRM114-Status: UNSURE (   7.95  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -76,44 +79,91 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/6] ARM: i.MX6: Fix LVDS splash on skov and some others
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 6/6] ARM: configs: imx_v7_defconfig: enable some useful options
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The Skov boards exist in multiple variants, among them ones with
-displays connected over LVDS and HDMI.
-HDMI continues to work for me, but LVDS has regressed due to two issues:
+Give the defconfig some color by enabling console colors during startup,
+i.MX6 parallel LCD driver, backlight and some more options that were
+noticed missing during debugging a skov-imx6 issue.
 
-  - LVDS clock calculation was broken by clock framework rework
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/configs/imx_v7_defconfig | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-  - Device tree is fixed up in wrong order in skov board code, which
-    became problematic when deep probe was enabled for that board
-
-The first four patches fix these issues and should preferably be
-applied to master. The remainder are other patches that resulted
-during debugging.
-
-The first problem is generic and I am curious what other issues may
-disappear or pop up, now that's fixed.
-
-Cheers,
-Ahmad Fatoum (6):
-  clk: imx: set CLK_SET_RATE_NO_REPARENT for all muxes
-  clk: mux: forward round/set rate to parent if CLK_SET_RATE_PARENT
-  ARM: i.MX6: skov: refactor LVDS/parallel device tree fixups
-  ARM: i.MX6: skov: fix LVDS deep probe
-  video: edid: print debug message on EDID read out error
-  ARM: configs: imx_v7_defconfig: enable some useful options
-
- arch/arm/boards/skov-imx6/board.c | 60 +++++++++++++++++++------------
- arch/arm/configs/imx_v7_defconfig | 16 +++++++++
- drivers/clk/clk-mux.c             |  4 +--
- drivers/clk/imx/clk.h             | 30 ++++++++++------
- drivers/video/edid.c              | 11 ++++--
- 5 files changed, 84 insertions(+), 37 deletions(-)
-
+diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
+index 3cbec267fc87..6110a52e486f 100644
+--- a/arch/arm/configs/imx_v7_defconfig
++++ b/arch/arm/configs/imx_v7_defconfig
+@@ -72,11 +72,13 @@ CONFIG_BOOTM_OFTREE=y
+ CONFIG_BOOTM_OFTREE_UIMAGE=y
+ CONFIG_BLSPEC=y
+ CONFIG_CONSOLE_ACTIVATE_NONE=y
++CONFIG_CONSOLE_ALLOW_COLOR=y
+ CONFIG_PARTITION_DISK_EFI=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_STATE=y
+ CONFIG_BOOTCHOOSER=y
+ CONFIG_RESET_SOURCE=y
++CONFIG_MACHINE_ID=y
+ CONFIG_FASTBOOT_CMD_OEM=y
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+@@ -86,6 +88,7 @@ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_CMD_REGULATOR=y
+ CONFIG_CMD_MMC_EXTCSD=y
++CONFIG_CMD_FCB=y
+ # CONFIG_CMD_BOOTU is not set
+ CONFIG_CMD_GO=y
+ CONFIG_CMD_RESET=y
+@@ -117,6 +120,7 @@ CONFIG_CMD_MENU=y
+ CONFIG_CMD_MENU_MANAGEMENT=y
+ CONFIG_CMD_MENUTREE=y
+ CONFIG_CMD_SPLASH=y
++CONFIG_CMD_FBTEST=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_CRC=y
+@@ -149,9 +153,14 @@ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_NET_FEC_IMX=y
+ CONFIG_AT803X_PHY=y
+ CONFIG_MICREL_PHY=y
++CONFIG_MDIO_BITBANG=y
++CONFIG_MDIO_GPIO=y
++CONFIG_MDIO_BUS_MUX_GPIO=y
+ CONFIG_NET_USB=y
+ CONFIG_NET_USB_ASIX=y
+ CONFIG_NET_USB_SMSC95XX=y
++CONFIG_I2C_GPIO=y
++CONFIG_I2C_MUX=y
+ CONFIG_MTD=y
+ CONFIG_MTD_RAW_DEVICE=y
+ CONFIG_MTD_DATAFLASH=y
+@@ -180,8 +189,12 @@ CONFIG_VIDEO=y
+ CONFIG_DRIVER_VIDEO_IMX_IPUV3=y
+ CONFIG_DRIVER_VIDEO_IMX_IPUV3_LVDS=y
+ CONFIG_DRIVER_VIDEO_IMX_IPUV3_HDMI=y
++CONFIG_DRIVER_VIDEO_IMX_IPUV3_PARALLEL=y
+ CONFIG_DRIVER_VIDEO_SIMPLEFB=y
+ CONFIG_DRIVER_VIDEO_EDID=y
++CONFIG_DRIVER_VIDEO_BACKLIGHT=y
++CONFIG_DRIVER_VIDEO_BACKLIGHT_PWM=y
++CONFIG_DRIVER_VIDEO_SIMPLE_PANEL=y
+ CONFIG_MCI=y
+ CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+ CONFIG_MCI_IMX_ESDHC=y
+@@ -219,4 +232,7 @@ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
+ CONFIG_FS_UBIFS=y
+ CONFIG_FS_UBIFS_COMPRESSION_LZO=y
++CONFIG_FS_UBIFS_COMPRESSION_ZSTD=y
++CONFIG_FS_SQUASHFS=y
+ CONFIG_PNG=y
++CONFIG_DIGEST_SHA1_ARM=y
 -- 
 2.30.2
 
