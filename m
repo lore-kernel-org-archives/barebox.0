@@ -1,56 +1,61 @@
-Delivery-date: Thu, 22 Dec 2022 18:34:20 +0100
+Delivery-date: Fri, 23 Dec 2022 10:08:09 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p8PSX-005Ay1-EX
-	for lore@lore.pengutronix.de; Thu, 22 Dec 2022 18:34:20 +0100
+	id 1p8e2D-005u27-TL
+	for lore@lore.pengutronix.de; Fri, 23 Dec 2022 10:08:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1p8PSV-00052b-N3
-	for lore@pengutronix.de; Thu, 22 Dec 2022 18:34:20 +0100
+	id 1p8e2B-0004cK-Ol
+	for lore@pengutronix.de; Fri, 23 Dec 2022 10:08:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BMNxI9OYNriO9ebxxJdp9xX8XsHZR+oxsmzkzmgo60w=; b=C0F3dopQON0zMyLxhjq7bCkWV8
-	i0tgZsNVi0U6AGrsAvNlLWfs9gEU4ssqMwCq6n+nd7Iy5yC6nAo5sADB8Nz/RBAlJRE8hIeg8VYJP
-	EmcMMFOgwn3Gyint1BLEnaItywoG8g8bw27vzOAeyYMqLJkoggDgJx7mC3nHj5N+A5JYO3T3wsnkB
-	bbzx0wC426Jp29S2yTklbh3QQUrXGKNxM0q4GiX1LZxhOTU2gvSil1ytNOCelCUW928x5swDHoOoE
-	YN4XAuGks8P+YgveP0qcSFO6IQHpn7SP5cEsqL8l49Soyt6fiGVSBOsjOmulVLEpkzR1yAr9JHIme
-	mjWa723g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=73xlaZ69EhcKVwVvlYoygGXmJv+4IF4w+h5IS3ri6SM=; b=d2LWbe1Nv3qaov6pn/hmvtIoCy
+	zn1P0dnOifhArd3HUtXqxiAmup/gbOpcKMHLQLuFZ25x4mNfgte9Baz++PJUcsWUgYg/M9hgKL/ZH
+	YWk6UetMyk/ZV46V2UTmHgVPjGY3zt/8J5F8E3G0Rf7QfaQ9lUM2BEdwIBm+3A0s1dOzwEG3sI1Eq
+	REnKhRk+HzODxkiWp/rjV6SRliIXo4oLrPN8VmpCyLSZUgcplKlxk2l9nj2EIyli4fGzmJngtNdw5
+	8d+KqFSHKEb+TuVFpff5HJxOo1MA+GRa35aWOJ9g+q+28+75iORiuHHrcim//Om83TuN9+HCrZQ7y
+	tShV2kUg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p8PRD-00FHXE-3a; Thu, 22 Dec 2022 17:32:59 +0000
+	id 1p8e0S-005WQ5-3s; Fri, 23 Dec 2022 09:06:20 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1p8PR7-00FHWb-R6
-	for barebox@lists.infradead.org; Thu, 22 Dec 2022 17:32:55 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1p8PR5-0004yG-Nf; Thu, 22 Dec 2022 18:32:51 +0100
-Message-ID: <6071f5d7-10ed-c2f5-2c6b-809cdfba8584@pengutronix.de>
-Date: Thu, 22 Dec 2022 18:32:51 +0100
+	id 1p8e0G-005WNn-GI
+	for barebox@lists.infradead.org; Fri, 23 Dec 2022 09:06:10 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1p8e0E-0004Sr-JZ; Fri, 23 Dec 2022 10:06:06 +0100
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1p8e0D-0000wi-Pf; Fri, 23 Dec 2022 10:06:05 +0100
+Date: Fri, 23 Dec 2022 10:06:05 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org,
+	Leif Middelschulte <leif.middelschulte@klsmartin.com>,
+	uol@pengutronix.de, ore@pengutronix.de,
+	=?utf-8?B?U8O4cmVu?= Andersen <san@skov.dk>
+Message-ID: <20221223090605.zis4mcft72crswfm@pengutronix.de>
+References: <20221222141201.3087192-1-a.fatoum@pengutronix.de>
+ <20221222141201.3087192-6-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Content-Language: en-US
-To: =?UTF-8?Q?Ulrich_=c3=96lmann?= <u.oelmann@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20221222143513.3182725-1-a.fatoum@pengutronix.de>
- <6rr0wr74id.fsf@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <6rr0wr74id.fsf@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20221222141201.3087192-6-a.fatoum@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20221222_093253_903912_589C2638 
-X-CRM114-Status: GOOD (  20.51  )
+X-CRM114-CacheID: sfid-20221223_010608_621420_82CEBE77 
+X-CRM114-Status: GOOD (  17.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,73 +73,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] common: deep-probe: write deep probe enabled message to
- log
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 5/6] video: edid: print debug message on EDID read out
+ error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Ulrich,
+Hi Ahmad,
 
-On 22.12.22 18:04, Ulrich Ölmann wrote:
-> Hi Ahmad,
+On 22-12-22, Ahmad Fatoum wrote:
+> EDID readout errors happen often, e.g. because the HDMI port doesn't
+> have a display connected. However, when a monitor is connected, but some
+> other error occurs, barebox is silent. Add a debug message with an error
+> code for this.
 > 
-> On Thu, Dec 22 2022 at 15:35 +0100, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->> The "Deep probe supported due to" was not written to log and thus only
->> shown on startup and not in dmesg output. Make it available in both.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  common/deep-probe.c | 4 +++-
->>  1 file changed, 3 insertions(+), 1 deletion(-)
->>
->> diff --git a/common/deep-probe.c b/common/deep-probe.c
->> index 1020ad93b7f7..931e5a17709d 100644
->> --- a/common/deep-probe.c
->> +++ b/common/deep-probe.c
->> @@ -1,5 +1,7 @@
->>  // SPDX-License-Identifier: GPL-2.0-only
->>  
->> +#define pr_fmt(fmt) "deep-probe: " fmt
->> +
->>  #include <common.h>
->>  #include <deep-probe.h>
->>  #include <of.h>
->> @@ -27,7 +29,7 @@ bool deep_probe_is_supported(void)
->>  		for (; matches->compatible; matches++) {
->>  			if (of_machine_is_compatible(matches->compatible)) {
->>  				boardstate = DEEP_PROBE_SUPPORTED;
->> -				printk("Deep probe supported due to %s\n", matches->compatible);
->> +				pr_info("supported due to %s\n", matches->compatible);
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/video/edid.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 > 
-> was it by accident that you removed the message's beginning "Deep probe "?
+> diff --git a/drivers/video/edid.c b/drivers/video/edid.c
+> index 96489f2a372c..7e6747ccd521 100644
+> --- a/drivers/video/edid.c
+> +++ b/drivers/video/edid.c
+> @@ -847,20 +847,27 @@ edid_do_read_i2c(struct i2c_adapter *adapter, unsigned char *buf,
+>  		ret = i2c_transfer(adapter, &msgs[3 - xfers], xfers);
+>  	} while (ret != xfers && --retries);
+>  
+> -	return ret == xfers ? 0 : -1;
+> +	if (ret == 0)
 
-The pr_ family of macros run the format string through pr_fmt before passing
-it along. pr_fmt is defined above to prepend "deep-probe: ". This is a convention
-to maintain a uniform prefix for debug prints of a file.
+When does the i2c_transfer() return 0? According the API documentation
+this shouldn't happen and if otherwise is a bug in i2c_transfer().
 
-As we now have the prefix, I dropped that part here to avoid the duplication.
+Regards,
+  Marco
 
-Cheers,
-Ahmad
-
+> +		ret = -EPROTO;
+> +
+> +	return ret == xfers ? 0 : ret;
+>  }
+>  
+>  void *edid_read_i2c(struct i2c_adapter *adapter)
+>  {
+>  	u8 *block;
+> +	int ret;
+>  
+>  	if (!IS_ENABLED(CONFIG_I2C))
+>  		return NULL;
+>  
+>  	block = xmalloc(EDID_LENGTH);
+>  
+> -	if (edid_do_read_i2c(adapter, block, 0, EDID_LENGTH))
+> +	ret = edid_do_read_i2c(adapter, block, 0, EDID_LENGTH);
+> +	if (ret) {
+> +		dev_dbg(&adapter->dev, "EDID readout failed: %pe\n", ERR_PTR(ret));
+>  		goto out;
+> +	}
+>  
+>  	return block;
+>  out:
+> -- 
+> 2.30.2
 > 
-> Best regards
-> Ulrich
 > 
 > 
->>  				return true;
->>  			}
->>  		}
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
