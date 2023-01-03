@@ -1,59 +1,52 @@
-Delivery-date: Tue, 03 Jan 2023 22:57:21 +0100
+Delivery-date: Tue, 03 Jan 2023 23:06:41 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pCpHb-000nPk-H4
-	for lore@lore.pengutronix.de; Tue, 03 Jan 2023 22:57:21 +0100
+	id 1pCpQg-000nrj-Aj
+	for lore@lore.pengutronix.de; Tue, 03 Jan 2023 23:06:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pCpHZ-000626-2L
-	for lore@pengutronix.de; Tue, 03 Jan 2023 22:57:17 +0100
+	id 1pCpQe-000702-EQ
+	for lore@pengutronix.de; Tue, 03 Jan 2023 23:06:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=XOpxW9au5y4Vc35PoVE9msyazNRn361Z+Fh+Ihrj4Yg=; b=1IcNH3rI97k42iwsAgvdcMIj+A
-	SCj7RJVFlZzTA40GUEjcG24OfcmFX/CJCoiinLqWKnSIJ/wWq/97J+tvHDy7oig6DAKGMA5AF0DU+
-	8UXo6X0aU9XKDY0a4A1/F4wN078JYHRjafyidWpY8cUwT00w+DToZetrj39Oe65w9sL07fgjIX7O/
-	3C+UCt+2CWylHGGWz481XFsT18FN5t9/fSUNbh9tfoeLagDmqUoapQYmTD/4wXbGFrjjusgo+zs4C
-	A5EqkkC/oZGMJ4z9RlgDIc+s8CmEwV2fs+w1U8MCrGitgd8CmOKb6mmbXDh9tCTr2Ahox1S5svfWC
-	YL4Ik5Fg==;
+	bh=sDxoLjXJnKUBPB4dhLT4NsBIiLzpK1SCkSPeLrj+6zI=; b=1SbSWnqwPhrCJXmFmiWY1JSLGe
+	U5+U5xsh6jPHRm38xO3Iye/wLkW8QeYL/fVDqP7lGpUwhG4DVt7WkBV75PRuyxh5w0bZ6QjP59n+Y
+	yGzujAZFiZ0pcS9GUVZGjzYZa3XQK7yvwU6AYdgJTt6ag+HXmWhnuf8Gm5LXcu20EB7GSZGDgomE/
+	RU2RvL5ihW2FktEnZKJ8yinv59g6v/ySN7424/wVddGEX2HsD7+RyIRDZ5ThcDuE30XlB4yMvu5Rx
+	a9MOATMVlnioMNvJpiP4H8JZ7/JPP2SqtMU2T/4FDPGf2u2Z4fyUY7NcsBc9a4uzu9+VpMNw06d5p
+	ud5lh8WQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pCpFi-005JbH-Q4; Tue, 03 Jan 2023 21:55:22 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1pCpPC-005KzE-Q2; Tue, 03 Jan 2023 22:05:10 +0000
+Received: from relay3-d.mail.gandi.net ([217.70.183.195])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pCpFL-005JXC-KR
-	for barebox@lists.infradead.org; Tue, 03 Jan 2023 21:55:02 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1pCpFD-0005dY-Ht; Tue, 03 Jan 2023 22:54:51 +0100
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1pCpFC-003eAE-F4; Tue, 03 Jan 2023 22:54:50 +0100
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1pCpFB-00FKxr-K8; Tue, 03 Jan 2023 22:54:49 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	id 1pCpNf-005KjF-ST
+	for barebox@lists.infradead.org; Tue, 03 Jan 2023 22:03:37 +0000
+Received: (Authenticated sender: ahmad@a3f.at)
+	by mail.gandi.net (Postfix) with ESMTPSA id 827DD60007;
+	Tue,  3 Jan 2023 22:03:25 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
-Cc: BAUER Bernd <bernd.bauer@ses-imagotag.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  3 Jan 2023 22:54:48 +0100
-Message-Id: <20230103215448.3655459-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+Cc: Ahmad Fatoum <ahmad@a3f.at>,
+	Michael Graichen <michael.graichen@hotmail.com>,
+	Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+	Yann Sionneau <ysionneau@kalray.eu>
+Date: Tue,  3 Jan 2023 23:03:17 +0100
+Message-Id: <20230103220317.466767-1-ahmad@a3f.at>
+X-Mailer: git-send-email 2.38.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230103_135459_766355_FAB89287 
-X-CRM114-Status: GOOD (  15.35  )
+X-CRM114-CacheID: sfid-20230103_140336_119308_28A79197 
+X-CRM114-Status: GOOD (  12.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,120 +64,95 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] Documentation: i.MX8M: add EVK barebox installation documentation
+Subject: [PATCH] mci: sdhci: arasan: fix probing eMMC without no-sd
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The barebox i.MX images have a preamble that pads the i.MX header to the
-offset expected by the BootROM. This allows writing barebox images
-directly to offset 0 on SD-Cards and eMMC user area. For some i.MX8M,
-these images can't be directly written to eMMC boot partitions and
-instead require special handling. Add a note about this to the
-documentation.
+Usual procedure when calling the detect callback of a MCI host driver is
+to assume the connected card is a SD-Card and on timeout, treat it as
+MMC instead. The Arasan driver failed to do this properly leading to the
+need to specify no-sd to get eMMCs working. This is because the driver
+only handled software timeouts gracefully: The MCI host itself may also
+report timeout and it should not be treated as an error and instead
+should be silently passed along as -ETIMEDOUT, so the MCI core can check
+against it and fall back to eMMC after a failed probe for SD.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reported-by: Michael Graichen <michael.graichen@hotmail.com>
+Reported-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: Yann Sionneau <ysionneau@kalray.eu>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- Documentation/boards/imx/nxp-imx8mm-evk.rst | 18 ++++++++++++++++
- Documentation/boards/imx/nxp-imx8mn-evk.rst | 24 +++++++++++++++++++++
- Documentation/boards/imx/nxp-imx8mp-evk.rst | 24 +++++++++++++++++++++
- 3 files changed, 66 insertions(+)
+ drivers/mci/arasan-sdhci.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/boards/imx/nxp-imx8mm-evk.rst b/Documentation/boards/imx/nxp-imx8mm-evk.rst
-index c3cd35ae38a2..7ed7459c08a6 100644
---- a/Documentation/boards/imx/nxp-imx8mm-evk.rst
-+++ b/Documentation/boards/imx/nxp-imx8mm-evk.rst
-@@ -69,3 +69,21 @@ board for serial download mode as printed on the PCB. You can start barebox with
- the imx-usb-loader tool that comes with barebox like this:
+diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
+index 22389503becf..00a8ceed6836 100644
+--- a/drivers/mci/arasan-sdhci.c
++++ b/drivers/mci/arasan-sdhci.c
+@@ -136,16 +136,17 @@ static void arasan_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
+ static int arasan_sdhci_wait_for_done(struct arasan_sdhci_host *host, u32 mask)
+ {
+ 	u64 start = get_time_ns();
+-	u16 stat;
+-	u16 error;
++	u32 stat;
  
- ./scripts/imx/imx-usb-loader images/barebox-nxp-imx8mm-evk.img
+ 	do {
+-		stat = sdhci_read16(&host->sdhci, SDHCI_INT_NORMAL_STATUS);
++		stat = sdhci_read32(&host->sdhci, SDHCI_INT_STATUS);
 +
-+Installing barebox
-+==================
++		if (stat & SDHCI_INT_TIMEOUT)
++			return -ETIMEDOUT;
 +
-+When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
-+consult the eMMC ext_csd register to determine whether to boot
-+from the active eMMC boot partition or from the user area.
-+
-+The same barebox image written to the start of the SD-Card can
-+be written to the start of the eMMC user area. Power-fail installation
-+to the eMMC boot partition requires special handling:
-+
-+  - The barebox image must be written to the inactive boot partition,
-+    then afterwards, the newly written boot partition is activated
-+    (This is controlled by the barebox ``mmcX.boot`` variable).
-+
-+The ``barebox_update`` command takes care of this and need just be
-+supplied a barebox image as argument.
-diff --git a/Documentation/boards/imx/nxp-imx8mn-evk.rst b/Documentation/boards/imx/nxp-imx8mn-evk.rst
-index b920e22d33e9..4c07b949dafb 100644
---- a/Documentation/boards/imx/nxp-imx8mn-evk.rst
-+++ b/Documentation/boards/imx/nxp-imx8mn-evk.rst
-@@ -58,3 +58,27 @@ Build barebox
+ 		if (stat & SDHCI_INT_ERROR) {
+-			error = sdhci_read16(&host->sdhci,
+-					     SDHCI_INT_ERROR_STATUS);
+ 			dev_err(host->mci.hw_dev, "SDHCI_INT_ERROR: 0x%08x\n",
+-				error);
++				stat);
+ 			return -EPERM;
+ 		}
  
-  make imx_v8_defconfig
-  make
+@@ -159,8 +160,11 @@ static int arasan_sdhci_wait_for_done(struct arasan_sdhci_host *host, u32 mask)
+ 	return 0;
+ }
+ 
+-static void print_error(struct arasan_sdhci_host *host, int cmdidx)
++static void print_error(struct arasan_sdhci_host *host, int cmdidx, int ret)
+ {
++	if (ret == -ETIMEDOUT)
++		return;
 +
-+Installing barebox
-+==================
-+
-+When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
-+consult the eMMC ext_csd register to determine whether to boot
-+from the active eMMC boot partition or from the user area.
-+
-+The same barebox image written to the start of the SD-Card can
-+be written to the start of the eMMC user area. Power-fail installation
-+to the eMMC boot partition requires special handling:
-+
-+  - The barebox image must be written to the inactive boot partition,
-+    then afterwards, the newly written boot partition is activated
-+    (This is controlled by the barebox ``mmcX.boot`` variable).
-+
-+  - The barebox image includes a 32KiB preamble that allows the image
-+    to be directly writable to the start of the SD-Card or eMMC user area.
-+    Unlike older i.MX8M, the i.MX8MN BootROM expects the bootloader to not
-+    start as an offset when booting from eMMC boot partitions, thus the first
-+    32KiB must be stripped.
-+
-+The ``barebox_update`` command takes care of this and need just be
-+supplied a barebox image as argument.
-diff --git a/Documentation/boards/imx/nxp-imx8mp-evk.rst b/Documentation/boards/imx/nxp-imx8mp-evk.rst
-index 1074992f2f88..60e9f9eaea5d 100644
---- a/Documentation/boards/imx/nxp-imx8mp-evk.rst
-+++ b/Documentation/boards/imx/nxp-imx8mp-evk.rst
-@@ -66,3 +66,27 @@ Boot Configuration
- The NXP i.MX8MP-EVK board has four switches responsible for configuring
- bootsource/boot mode. The settings for the different boot sources are
- printed on the board.
-+
-+Installing barebox
-+==================
-+
-+When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
-+consult the eMMC ext_csd register to determine whether to boot
-+from the active eMMC boot partition or from the user area.
-+
-+The same barebox image written to the start of the SD-Card can
-+be written to the start of the eMMC user area. Power-fail installation
-+to the eMMC boot partition requires special handling:
-+
-+  - The barebox image must be written to the inactive boot partition,
-+    then afterwards, the newly written boot partition is activated
-+    (This is controlled by the barebox ``mmcX.boot`` variable).
-+
-+  - The barebox image includes a 32KiB preamble that allows the image
-+    to be directly writable to the start of the SD-Card or eMMC user area.
-+    Unlike older i.MX8M, the i.MX8MP BootROM expects the bootloader to not
-+    start as an offset when booting from eMMC boot partitions, thus the first
-+    32KiB must be stripped.
-+
-+The ``barebox_update`` command takes care of this and need just be
-+supplied a barebox image as argument.
+ 	dev_err(host->mci.hw_dev,
+ 		"error while transferring data for command %d\n", cmdidx);
+ 	dev_err(host->mci.hw_dev, "state = 0x%08x , interrupt = 0x%08x\n",
+@@ -210,10 +214,8 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	sdhci_write16(&host->sdhci, SDHCI_COMMAND, command);
+ 
+ 	ret = arasan_sdhci_wait_for_done(host, mask);
+-	if (ret == -EPERM)
++	if (ret)
+ 		goto error;
+-	else if (ret)
+-		return ret;
+ 
+ 	sdhci_read_response(&host->sdhci, cmd);
+ 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, mask);
+@@ -223,7 +225,7 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 
+ error:
+ 	if (ret) {
+-		print_error(host, cmd->cmdidx);
++		print_error(host, cmd->cmdidx, ret);
+ 		arasan_sdhci_reset(host, BIT(1)); // SDHCI_RESET_CMD
+ 		arasan_sdhci_reset(host, BIT(2)); // SDHCI_RESET_DATA
+ 	}
 -- 
-2.30.2
+2.38.1
 
 
 
