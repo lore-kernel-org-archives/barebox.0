@@ -1,56 +1,57 @@
-Delivery-date: Tue, 03 Jan 2023 23:08:55 +0100
+Delivery-date: Wed, 04 Jan 2023 08:07:52 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pCpSp-000nwY-PN
-	for lore@lore.pengutronix.de; Tue, 03 Jan 2023 23:08:55 +0100
+	id 1pCxsP-001ClD-9O
+	for lore@lore.pengutronix.de; Wed, 04 Jan 2023 08:07:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pCpSn-00077Q-KA
-	for lore@pengutronix.de; Tue, 03 Jan 2023 23:08:54 +0100
+	id 1pCxsN-0004Sj-AF
+	for lore@pengutronix.de; Wed, 04 Jan 2023 08:07:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EldhrmXgmvqS0VFTwHoaIRFXWulUwlvx37DQakTa5VQ=; b=LHJtYhsO2Bq8Fl+WKJgM2MYAkk
-	iNDpyo98JdThM8bNdHJO2mmhq0/DOJ63YfF525J7kt3ahjxkkBky31Or23LLU/VIoTxDHJLtnVvQi
-	LPPpLouPtnllmDJnHoUNh3eZVZn4dsiikrBa8mkdLezwV+wBFMpcpO4zOwOe6iX0AZgX8MEBI/cQJ
-	bnnPDQTsMYYD5BqRQdSteryBAbx8LE+YEEQLnA+rDDxKJCtOt18jO5nM3lXiS19EOhZN7W4YjA0O8
-	rjHZF9DRf157R2eNOct/WGgLPzxNBKQYR0pDFgKigONUCPAhfP35Dh+6+3xlF3vf3lDtJN/VJsW0T
-	NgX4yIKg==;
+	Content-Type:MIME-Version:Message-ID:In-reply-to:Date:Subject:Cc:To:From:
+	References:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=rPfkARmdlB2ViXZwKpOEDX+sFsZh783uIEH+B1kA+yE=; b=EQXHcBLZy1DAQTO+0lmTu78hNi
+	IXTgakC2NNruHB1YW6EtCSBQI/07jqKYfe26goVhUQ6UvGGMOex3nuRjz8HtfySUQx6wEkZNvlA+C
+	FxHn6y7lrfceoLhXPWtJwSFv3sGJBDsnm+/JI6lyjcMDDJ5WTr1pGKowafp0v9bckrTT1LyKChFfF
+	LsJyZ7tRCKTqnCWt9J9LriuxsvYaFx/dBIKU8FuQaeaWV8O92fcTjfXcevvZ7WYLashmaw4zH0hth
+	dPMzRBxq3lMugOkZkwk79kyWnvjw5v7hUxrYaF8ye3tDKZFciCkBe2iWkcQCtzHfRBfX0JwipFc9F
+	dSLNIjSw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pCpRV-005LTk-7i; Tue, 03 Jan 2023 22:07:33 +0000
+	id 1pCxqC-007JR6-HF; Wed, 04 Jan 2023 07:05:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pCpQS-005LFh-IM
-	for barebox@lists.infradead.org; Tue, 03 Jan 2023 22:06:31 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pCpQP-0006y9-79; Tue, 03 Jan 2023 23:06:25 +0100
-Message-ID: <2a89bf74-0923-aca5-913f-51141c7e02e6@pengutronix.de>
-Date: Tue, 3 Jan 2023 23:06:23 +0100
+	id 1pCxp9-007JHc-D5
+	for barebox@lists.infradead.org; Wed, 04 Jan 2023 07:04:33 +0000
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <u.oelmann@pengutronix.de>)
+	id 1pCxp3-0003yO-OZ; Wed, 04 Jan 2023 08:04:25 +0100
+Received: from uol by pty.hi.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <u.oelmann@pengutronix.de>)
+	id 1pCxp3-003KM8-1t; Wed, 04 Jan 2023 08:04:25 +0100
+References: <20230103215448.3655459-1-a.fatoum@pengutronix.de>
+User-agent: mu4e 1.6.9; emacs 29.0.50
+From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: BAUER Bernd <bernd.bauer@ses-imagotag.com>, barebox@lists.infradead.org
+Date: Wed, 04 Jan 2023 08:00:52 +0100
+In-reply-to: <20230103215448.3655459-1-a.fatoum@pengutronix.de>
+Message-ID: <6rlemi6arq.fsf@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Content-Language: en-US
-To: Yann Sionneau <ysionneau@kalray.eu>, barebox@lists.infradead.org,
- Michael Graichen <michael.graichen@hotmail.com>
-References: <AM9P192MB08709ED9E86625C99913EA2FAB5C9@AM9P192MB0870.EURP192.PROD.OUTLOOK.COM>
- <49e58ddb-dfe1-b387-9721-05596f9f0cbd@kalray.eu>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <49e58ddb-dfe1-b387-9721-05596f9f0cbd@kalray.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230103_140628_816734_B328BB6A 
-X-CRM114-Status: GOOD (  34.54  )
+X-CRM114-CacheID: sfid-20230103_230431_516131_D5DF60C7 
+X-CRM114-Status: GOOD (  28.86  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,130 +69,150 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: arasan-sdhci eMMC Problem 'command timeout'
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] Documentation: i.MX8M: add EVK barebox installation
+ documentation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Yann,
+Hi Ahmad,
 
-On 06.10.22 15:28, Yann Sionneau wrote:
-> Hello Michael,
-> 
-> The driver is polling for completion of the commands (8 for the first error, 55 for the second).
-> 
-> While doing this polling, an error was raised by the SDHCI controller.
-> 
-> The nature of the error is reported in the register SDHCI_INT_ERROR (reg offset 0x32)
-> 
-> Only the LSB (bit 0) is set.
-> 
-> This bit means "Command Timeout Error".
-> 
-> I copy paste the SDHC simplified specification version 4.20:
-> 
-> "
-> 
-> This bit is set only if no response is returned within 64 SD clock cycles from
-> the end bit of the command. If the Host Controller detects a CMD line
-> conflict, in which case Command CRC Error shall also be set as shown in
-> Table 2-26, this bit shall be set without waiting for 64 SD clock cycles
-> because the command will be aborted by the Host Controller.
-> 
-> "
-> 
-> So it seems either the eMMC stops answering, or it's too slow.
+just a small copied'n'pasted typo:
 
-Turns out these are SD-Card specific commands and the timeout is expected and
-should've been passed along as -ETIMEDOUT, so MCI core can fall back to MMC
-setup instead of SD.
+On Tue, Jan 03 2023 at 22:54 +0100, Ahmad Fatoum <a.fatoum@pengutronix.de> =
+wrote:
+> The barebox i.MX images have a preamble that pads the i.MX header to the
+> offset expected by the BootROM. This allows writing barebox images
+> directly to offset 0 on SD-Cards and eMMC user area. For some i.MX8M,
+> these images can't be directly written to eMMC boot partitions and
+> instead require special handling. Add a note about this to the
+> documentation.
+>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  Documentation/boards/imx/nxp-imx8mm-evk.rst | 18 ++++++++++++++++
+>  Documentation/boards/imx/nxp-imx8mn-evk.rst | 24 +++++++++++++++++++++
+>  Documentation/boards/imx/nxp-imx8mp-evk.rst | 24 +++++++++++++++++++++
+>  3 files changed, 66 insertions(+)
+>
+> diff --git a/Documentation/boards/imx/nxp-imx8mm-evk.rst b/Documentation/=
+boards/imx/nxp-imx8mm-evk.rst
+> index c3cd35ae38a2..7ed7459c08a6 100644
+> --- a/Documentation/boards/imx/nxp-imx8mm-evk.rst
+> +++ b/Documentation/boards/imx/nxp-imx8mm-evk.rst
+> @@ -69,3 +69,21 @@ board for serial download mode as printed on the PCB. =
+You can start barebox with
+>  the imx-usb-loader tool that comes with barebox like this:
+>=20=20
+>  ./scripts/imx/imx-usb-loader images/barebox-nxp-imx8mm-evk.img
+> +
+> +Installing barebox
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
+> +consult the eMMC ext_csd register to determine whether to boot
+> +from the active eMMC boot partition or from the user area.
+> +
+> +The same barebox image written to the start of the SD-Card can
+> +be written to the start of the eMMC user area. Power-fail installation
+> +to the eMMC boot partition requires special handling:
+> +
+> +  - The barebox image must be written to the inactive boot partition,
+> +    then afterwards, the newly written boot partition is activated
+> +    (This is controlled by the barebox ``mmcX.boot`` variable).
+> +
+> +The ``barebox_update`` command takes care of this and need just be
+> +supplied a barebox image as argument.
+> diff --git a/Documentation/boards/imx/nxp-imx8mn-evk.rst b/Documentation/=
+boards/imx/nxp-imx8mn-evk.rst
+> index b920e22d33e9..4c07b949dafb 100644
+> --- a/Documentation/boards/imx/nxp-imx8mn-evk.rst
+> +++ b/Documentation/boards/imx/nxp-imx8mn-evk.rst
+> @@ -58,3 +58,27 @@ Build barebox
+>=20=20
+>   make imx_v8_defconfig
+>   make
+> +
+> +Installing barebox
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
+> +consult the eMMC ext_csd register to determine whether to boot
+> +from the active eMMC boot partition or from the user area.
+> +
+> +The same barebox image written to the start of the SD-Card can
+> +be written to the start of the eMMC user area. Power-fail installation
+> +to the eMMC boot partition requires special handling:
+> +
+> +  - The barebox image must be written to the inactive boot partition,
+> +    then afterwards, the newly written boot partition is activated
+> +    (This is controlled by the barebox ``mmcX.boot`` variable).
+> +
+> +  - The barebox image includes a 32KiB preamble that allows the image
+> +    to be directly writable to the start of the SD-Card or eMMC user are=
+a.
+> +    Unlike older i.MX8M, the i.MX8MN BootROM expects the bootloader to n=
+ot
+> +    start as an offset when booting from eMMC boot partitions, thus the =
+first
 
-I ran into this getting my eMMC working with the SDHCI on the RK3399 and just
-sent out a patch to resolve this.
+s/start as an offset/start at an offset/
 
-Cheers,
-Ahmad
+> +    32KiB must be stripped.
+> +
+> +The ``barebox_update`` command takes care of this and need just be
+> +supplied a barebox image as argument.
+> diff --git a/Documentation/boards/imx/nxp-imx8mp-evk.rst b/Documentation/=
+boards/imx/nxp-imx8mp-evk.rst
+> index 1074992f2f88..60e9f9eaea5d 100644
+> --- a/Documentation/boards/imx/nxp-imx8mp-evk.rst
+> +++ b/Documentation/boards/imx/nxp-imx8mp-evk.rst
+> @@ -66,3 +66,27 @@ Boot Configuration
+>  The NXP i.MX8MP-EVK board has four switches responsible for configuring
+>  bootsource/boot mode. The settings for the different boot sources are
+>  printed on the board.
+> +
+> +Installing barebox
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
+> +consult the eMMC ext_csd register to determine whether to boot
+> +from the active eMMC boot partition or from the user area.
+> +
+> +The same barebox image written to the start of the SD-Card can
+> +be written to the start of the eMMC user area. Power-fail installation
+> +to the eMMC boot partition requires special handling:
+> +
+> +  - The barebox image must be written to the inactive boot partition,
+> +    then afterwards, the newly written boot partition is activated
+> +    (This is controlled by the barebox ``mmcX.boot`` variable).
+> +
+> +  - The barebox image includes a 32KiB preamble that allows the image
+> +    to be directly writable to the start of the SD-Card or eMMC user are=
+a.
+> +    Unlike older i.MX8M, the i.MX8MP BootROM expects the bootloader to n=
+ot
+> +    start as an offset when booting from eMMC boot partitions, thus the =
+first
 
-> 
-> Or ... the controller thinks it's too slow and the "timeout" could be a false positive.
-> 
-> To check for false positive :
-> 
-> * check the tmclk frequency, it's a clock which is an input of the sdhc controller in the Soc: see your SoC documentation for that on how the sdhc controller is integrated.
-> 
-> * check the Timeout Control Register content (register 0x2E). Try to force a higher value (for instance max value is 0xe)
-> 
-> * Check that CAPABILITIES1_R (register 0x40) fields TOUT_CLK_UNIT (bit 7) and TOUT_CLK_FREQ (bits [5:0]) that are reported by the controller corresponds correctly to the real value of the tmclk clock that is feeded to the controller by the SoC.
-> 
-> You can try to hook-up a logic analyser to your eMMC bus to have a look at what's happening. Try to lower the max frequency of the bus before doing so, so that the logic analyzer extra capacitance does not mess too much with the bus signaling.
-> 
-> Another lead to investigate is to have a look at which QUIRKS are enabled by the Linux driver to make the controller work in your case: https://github.com/torvalds/linux/blob/master/drivers/mmc/host/sdhci-of-arasan.c
-> 
-> Maybe Linux enables some quirks that could be needed to also "enable" in the Barebox driver?
-> 
-> Regards,
-> 
-> Yann
-> 
-> On 10/6/22 15:03, michael.graichen@hotmail.com wrote:
->> Hey,
->>
->> I have connected an eMMC to sdhci0 and a uSD Card to sdhci1 of a Zynq.
->> while the uSD Card seams to work fine i'm getting the error
->>
->> arasan-sdhci e0100000.mmc@e0100000.of: registered as mmc0
->> arasan-sdhci e0100000.mmc@e0100000.of: SDHCI_INT_ERROR: 0x00000001
->> arasan-sdhci e0100000.mmc@e0100000.of: error while transfering data for command 8
->> arasan-sdhci e0100000.mmc@e0100000.of: state = 0x01ff0001 , interrupt = 0x00018000
->> arasan-sdhci e0100000.mmc@e0100000.of: SDHCI_INT_ERROR: 0x00000001
->> arasan-sdhci e0100000.mmc@e0100000.of: error while transfering data for command 55
->> arasan-sdhci e0100000.mmc@e0100000.of: state = 0x01ff0001 , interrupt = 0x00018000
->>
->> from the eMMC.
->>
->> arasan-sdhci e0101000.mmc@e0101000.of: registered as mmc1
->> mmc1: detected SD card version 2.0
->> mmc1: registered mmc1
->>
->> both eMMC and SDCard work fine in Linux. So I think the Problem is some confuguration difference between Linux and barebox.
->> The MMC is from type MTFC8G but Linux detects it as
->>
->> [    2.012122] mmc0: new high speed MMC card at address 0001
->> [    2.021129] mmcblk0: mmc0:0001 Q2J55L 7.09 GiB
->> [    2.026355] Btrfs loaded, crc32c=crc32c-generic, zoned=no, fsverity=no
->> [    2.027458] mmcblk0boot0: mmc0:0001 Q2J55L 16.0 MiB
->> [    2.031509] mmcblk0boot1: mmc0:0001 Q2J55L 16.0 MiB
->> [    2.039829] mmcblk0rpmb: mmc0:0001 Q2J55L 4.00 MiB, chardev (245:0)
->>
->> Unfortunattly I'm not very familliar with SDHCI, so I would apreciate any help.
->>
->> Best Regards
->> Michael
->>
->>
->>
->>
->>
->>
->>
->>
->>
->>
-> 
-> 
-> 
-> 
-> 
-> 
+s/start as an offset/start at an offset/
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Best regards
+Ulrich
+
+
+> +    32KiB must be stripped.
+> +
+> +The ``barebox_update`` command takes care of this and need just be
+> +supplied a barebox image as argument.
+--=20
+Pengutronix e.K.                           | Ulrich =C3=96lmann            =
+   |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
