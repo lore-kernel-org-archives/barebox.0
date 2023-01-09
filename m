@@ -1,61 +1,58 @@
-Delivery-date: Mon, 09 Jan 2023 14:11:25 +0100
+Delivery-date: Mon, 09 Jan 2023 16:10:01 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pErvy-006gLG-39
-	for lore@lore.pengutronix.de; Mon, 09 Jan 2023 14:11:25 +0100
+	id 1pEtmk-006lVf-Fn
+	for lore@lore.pengutronix.de; Mon, 09 Jan 2023 16:10:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pErvr-0002EU-Qo
-	for lore@pengutronix.de; Mon, 09 Jan 2023 14:11:24 +0100
+	id 1pEtmi-0002kQ-G8
+	for lore@pengutronix.de; Mon, 09 Jan 2023 16:10:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tcwQpahGzOzI1X568jb9OWe4xjcXj+2lY451J7sXDCY=; b=pgBdpm2uKi9P3b09KPlk89MUjB
-	Xch2vlLQp++b8EJF8jh9DDhyCxnV0tpCSAYZd/IQGldA1AYvgRCH4XUYaCDNgKB2bEwYYuoDWplKd
-	ThGN1t7O+lQfShbpdEXC38dTcxhE4p+G3YP1BMNQvQeVbh3Qr2sjSpZJELj93ax1MESHTffA9ifMa
-	QSHXaUnUTmNv+PBLQ2PvTOhr2B+JZmITQ9HKgr6eNHByIFrWuBjsyHseeGkvt1d6uUI7UEIpjzdE0
-	jWY+jBvFh528ySKgqgN0w/alvXXkMYWRoXIWiQHSy62Wcrc5FF98sXwbltmWhMkHybTZuQTav/9Uz
-	hXHlsOZw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=MFSPpb7FIZ56nzp/qL7l6DK1vnHcHPtNT0RpVATl2zo=; b=2VlfSgdnD9sMS0tB1GT9ftVbxF
+	OVYLVQXJ9SKyPTjtxBh69DMyjuWNSeqOTpff8ewsH3MpMhm4P614HdpOy7szztrUDjjC6n/vIrDxx
+	Ap1RLtEgHlPa3LLACHz4JbcbeOborve+wgPBEwNHCIx9zrZfLN+JsOuJJuTCRcbXr9JT1Ztkri2/f
+	MnMvkclHcWaczkhawklstmStdJAAAhRKOsZfqXW6r3DG71MKcw2GbgXpAOdJcMgH7bKIXOgHhqF0d
+	AY1CHuSLkl4WxKVpbLsPWWz6YEFKHDTOsJxQzZy3PLELeF74/nSOkUDg3mxe2x/Gft/p9XUs+owEQ
+	q9FH9uSA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pEruM-001S5O-Ab; Mon, 09 Jan 2023 13:09:46 +0000
+	id 1pEtlA-0027HN-PX; Mon, 09 Jan 2023 15:08:24 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pErtU-001RWm-KF
-	for barebox@lists.infradead.org; Mon, 09 Jan 2023 13:08:57 +0000
+	id 1pEtl5-0027GH-7Q
+	for barebox@lists.infradead.org; Mon, 09 Jan 2023 15:08:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pErt5-0000qh-A9; Mon, 09 Jan 2023 14:08:27 +0100
+	id 1pEtl1-0002aP-PS; Mon, 09 Jan 2023 16:08:15 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pErt4-004qvo-JZ; Mon, 09 Jan 2023 14:08:26 +0100
+	id 1pEtl1-004san-5P; Mon, 09 Jan 2023 16:08:15 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pErt3-006zGu-Gl; Mon, 09 Jan 2023 14:08:25 +0100
+	id 1pEtl0-008bmV-EC; Mon, 09 Jan 2023 16:08:14 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Sam Ravnborg <sam@ravnborg.org>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Jan 2023 14:08:21 +0100
-Message-Id: <20230109130822.1657470-11-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  9 Jan 2023 16:08:13 +0100
+Message-Id: <20230109150813.2051799-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230109130822.1657470-1-a.fatoum@pengutronix.de>
-References: <20230109130822.1657470-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230109_050852_804391_379C387F 
-X-CRM114-Status: GOOD (  21.18  )
+X-CRM114-CacheID: sfid-20230109_070819_287584_9CB44C92 
+X-CRM114-Status: GOOD (  11.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,181 +74,37 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 10/11] ARM: at91: make bootsource code generic to all SAMA5
+Subject: [PATCH] mtd: consult CONFIG_OFDEVICE in mtd_get_of_node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-While I couldn't find documentation, the BootROM of all of SAMA5D2, D3
-and D4 populates R4 when calling next stage bootloader with information
-about the booutsource. barebox PBL will pass along this information to
-barebox proper, so add a generic initcall that sets the bootsource.
+Get barebox on non-DT platforms with NAND a tiny bit smaller by using
+dev_of_node: The helper will return NULL unconditionally when
+CONFIG_OFDEVICE is not enabled, thereby allowing more code to be
+discarded at compile-time in absence of link-time optimization.
 
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-at91/Kconfig                    |  3 ++
- arch/arm/mach-at91/Makefile                   |  1 +
- arch/arm/mach-at91/bootm-barebox.c            |  3 +-
- arch/arm/mach-at91/include/mach/cpu.h         |  1 -
- .../mach-at91/include/mach/sama5_bootsource.h |  2 ++
- arch/arm/mach-at91/sama5_bootsource.c         | 36 +++++++++++++++++++
- arch/arm/mach-at91/sama5d2.c                  | 15 --------
- arch/arm/mach-at91/setup.c                    |  3 --
- 8 files changed, 43 insertions(+), 21 deletions(-)
- create mode 100644 arch/arm/mach-at91/sama5_bootsource.c
+ include/linux/mtd/mtd.h | 6 +-----
+ 1 file changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index bc55b1c4e76e..529512b6c0db 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -75,6 +75,9 @@ config SOC_SAMA5
- 	select HAVE_AT91SAM9_RST
- 	select CPU_V7
+diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+index 6b539a9eceb5..2824853e2954 100644
+--- a/include/linux/mtd/mtd.h
++++ b/include/linux/mtd/mtd.h
+@@ -293,11 +293,7 @@ static inline void mtd_set_of_node(struct mtd_info *mtd,
  
-+config SOC_SAMA5_MULTI
-+	def_bool SOC_SAMA5 && AT91_MULTI_BOARDS
-+
- config SOC_SAMA5D2
- 	bool
- 	select SOC_SAMA5
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index b9fda00b2e1a..bd39aad97410 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -40,3 +40,4 @@ obj-$(CONFIG_SOC_AT91SAM9G20) += at91sam9260.o at91sam9260_devices.o
- obj-$(CONFIG_SOC_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
- obj-$(CONFIG_SOC_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
- obj-$(CONFIG_SOC_AT91SAM9N12)	+= at91sam9n12.o at91sam9n12_devices.o
-+obj-$(CONFIG_SOC_SAMA5_MULTI)	+= sama5_bootsource.o
-diff --git a/arch/arm/mach-at91/bootm-barebox.c b/arch/arm/mach-at91/bootm-barebox.c
-index 3c99d5813b53..afd0c3cf6962 100644
---- a/arch/arm/mach-at91/bootm-barebox.c
-+++ b/arch/arm/mach-at91/bootm-barebox.c
-@@ -6,7 +6,6 @@
- #include <common.h>
- #include <init.h>
- #include <memory.h>
--#include <mach/cpu.h>
- #include <mach/sama5_bootsource.h>
- 
- static int do_bootm_at91_barebox_image(struct image_data *data)
-@@ -40,7 +39,7 @@ static struct image_handler image_handler_at91_barebox_image = {
- 
- static int at91_register_barebox_image_handler(void)
+ static inline struct device_node *mtd_get_of_node(struct mtd_info *mtd)
  {
--	if (!of_machine_is_compatible("atmel,sama5d2"))
-+	if (!of_machine_is_compatible("atmel,sama5"))
- 	    return 0;
- 
- 	return register_image_handler(&image_handler_at91_barebox_image);
-diff --git a/arch/arm/mach-at91/include/mach/cpu.h b/arch/arm/mach-at91/include/mach/cpu.h
-index 37e516947b57..ca85e8be6e24 100644
---- a/arch/arm/mach-at91/include/mach/cpu.h
-+++ b/arch/arm/mach-at91/include/mach/cpu.h
-@@ -160,7 +160,6 @@ struct at91_socinfo {
- extern struct at91_socinfo at91_soc_initdata;
- const char *at91_get_soc_type(struct at91_socinfo *c);
- const char *at91_get_soc_subtype(struct at91_socinfo *c);
--extern unsigned long at91_bootsource;
- 
- static inline int at91_soc_is_detected(void)
- {
-diff --git a/arch/arm/mach-at91/include/mach/sama5_bootsource.h b/arch/arm/mach-at91/include/mach/sama5_bootsource.h
-index b31d20bc7c34..8072e7c25154 100644
---- a/arch/arm/mach-at91/include/mach/sama5_bootsource.h
-+++ b/arch/arm/mach-at91/include/mach/sama5_bootsource.h
-@@ -52,6 +52,8 @@ static inline int sama5_bootsource_instance(u32 reg)
- #define __sama5d4_stashed_bootrom_r4 \
- 	(*(volatile u32 *)(SAMA5D4_SRAM_BASE + SAMA5D4_SRAM_SIZE - 0x4))
- 
-+extern unsigned long at91_bootsource;
-+
- static inline void __noreturn sama5_boot_xload(void __noreturn (*bb)(void), u32 r4)
- {
- 	asm volatile("mov r4, %0" : : "r"(r4) : );
-diff --git a/arch/arm/mach-at91/sama5_bootsource.c b/arch/arm/mach-at91/sama5_bootsource.c
-new file mode 100644
-index 000000000000..ea657ae36011
---- /dev/null
-+++ b/arch/arm/mach-at91/sama5_bootsource.c
-@@ -0,0 +1,36 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <mach/sama5_bootsource.h>
-+#include <linux/export.h>
-+#include <bootsource.h>
-+#include <init.h>
-+#include <of.h>
-+
-+unsigned long at91_bootsource;
-+EXPORT_SYMBOL(at91_bootsource);
-+
-+/*
-+ * sama5_bootsource_init - initialize bootsource
-+ *
-+ * BootROM will populate r4 when loading first stage bootloader
-+ * with information about boot source. The entry points for
-+ * multi-image capable SAMA5 boards will pass this information
-+ * along. If you use a bootloader before barebox, you need to
-+ * ensure that r4 is initialized for $bootsource to be correct
-+ * in barebox. Example implementing it for AT91Bootstrap:
-+ * https://github.com/linux4sam/at91bootstrap/pull/159
-+ */
-+static int sama5_bootsource_init(void)
-+{
-+	if (!of_machine_is_compatible("atmel,sama5"))
-+		return 0;
-+
-+	at91_bootsource = __sama5d2_stashed_bootrom_r4;
-+
-+	if (at91_bootsource)
-+		bootsource_set_raw(sama5_bootsource(at91_bootsource),
-+				   sama5_bootsource_instance(at91_bootsource));
-+
-+	return 0;
-+}
-+postcore_initcall(sama5_bootsource_init);
-diff --git a/arch/arm/mach-at91/sama5d2.c b/arch/arm/mach-at91/sama5d2.c
-index b05d6a56bdd8..b0a04beb639e 100644
---- a/arch/arm/mach-at91/sama5d2.c
-+++ b/arch/arm/mach-at91/sama5d2.c
-@@ -6,7 +6,6 @@
- #include <mach/aic.h>
- #include <mach/sama5d2.h>
- #include <asm/cache-l2x0.h>
--#include <mach/sama5_bootsource.h>
- #include <asm/mmu.h>
- #include <mach/cpu.h>
- 
-@@ -54,17 +53,3 @@ static int sama5d2_init(void)
- 	return 0;
+-	if (mtd->dev.of_node)
+-		return mtd->dev.of_node;
+-	if (mtd->dev.parent)
+-		return mtd->dev.parent->of_node;
+-	return NULL;
++	return dev_of_node(&mtd->dev) ?: dev_of_node(mtd->dev.parent);
  }
- postmmu_initcall(sama5d2_init);
--
--static int sama5d2_bootsource_init(void)
--{
--	if (!of_machine_is_compatible("atmel,sama5d2"))
--		return 0;
--
--	at91_bootsource = __sama5d2_stashed_bootrom_r4;
--
--	bootsource_set_raw(sama5_bootsource(at91_bootsource),
--			   sama5_bootsource_instance(at91_bootsource));
--
--	return 0;
--}
--postcore_initcall(sama5d2_bootsource_init);
-diff --git a/arch/arm/mach-at91/setup.c b/arch/arm/mach-at91/setup.c
-index 8a21d8debcd5..3d49624cd5c1 100644
---- a/arch/arm/mach-at91/setup.c
-+++ b/arch/arm/mach-at91/setup.c
-@@ -403,6 +403,3 @@ void at91sam_phy_reset(void __iomem *rstc_base)
- 	/* Restore NRST value */
- 	writel(AT91_RSTC_KEY | (rstc) | AT91_RSTC_URSTEN, rstc_base + AT91_RSTC_MR);
- }
--
--unsigned long at91_bootsource;
--EXPORT_SYMBOL(at91_bootsource);
+ 
+ static inline u32 mtd_oobavail(struct mtd_info *mtd, struct mtd_oob_ops *ops)
 -- 
 2.30.2
 
