@@ -1,58 +1,60 @@
-Delivery-date: Mon, 09 Jan 2023 16:10:01 +0100
+Delivery-date: Mon, 09 Jan 2023 16:13:28 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pEtmk-006lVf-Fn
-	for lore@lore.pengutronix.de; Mon, 09 Jan 2023 16:10:01 +0100
+	id 1pEtq5-006lcW-4z
+	for lore@lore.pengutronix.de; Mon, 09 Jan 2023 16:13:28 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pEtmi-0002kQ-G8
-	for lore@pengutronix.de; Mon, 09 Jan 2023 16:10:01 +0100
+	id 1pEtq2-0003k0-Sp
+	for lore@pengutronix.de; Mon, 09 Jan 2023 16:13:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=MFSPpb7FIZ56nzp/qL7l6DK1vnHcHPtNT0RpVATl2zo=; b=2VlfSgdnD9sMS0tB1GT9ftVbxF
-	OVYLVQXJ9SKyPTjtxBh69DMyjuWNSeqOTpff8ewsH3MpMhm4P614HdpOy7szztrUDjjC6n/vIrDxx
-	Ap1RLtEgHlPa3LLACHz4JbcbeOborve+wgPBEwNHCIx9zrZfLN+JsOuJJuTCRcbXr9JT1Ztkri2/f
-	MnMvkclHcWaczkhawklstmStdJAAAhRKOsZfqXW6r3DG71MKcw2GbgXpAOdJcMgH7bKIXOgHhqF0d
-	AY1CHuSLkl4WxKVpbLsPWWz6YEFKHDTOsJxQzZy3PLELeF74/nSOkUDg3mxe2x/Gft/p9XUs+owEQ
-	q9FH9uSA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Z77+99VFXCvMoUj1eFEHaD/RPo7oTNyK6JUstHUJqkE=; b=h5GZ7pnpc3AtmUA2F8bCSAOULb
+	wEojICGZaJT4B1M0sZnzKRT5oSYuZXQ1TKARibquoteUJ+Arksc3jV08DTls+gcR3njJZJ296rNlU
+	vTDtwGgmL8weWOEiuiZpycHm/otiQrfRMTbh5MR/UXMqs9wrqBWKKIUHmz0MRPpsF1mLRUB4GlMB5
+	FpH8H3uiR2KuxL/ML4VrYXjgeAkA1qUBpoKmPFKVj8/ytBciF4p7Kexdr5X6rpm35vE4RQHxS7m+M
+	lZsStJxVMy/yuqNdu1psd/V2gYeApxHbuWxQRorYwTI0wAMfkVnFV7TjXzGjY2MfYHS/t+2T+6lt2
+	8wDIqqKg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pEtlA-0027HN-PX; Mon, 09 Jan 2023 15:08:24 +0000
+	id 1pEtok-0028EO-UD; Mon, 09 Jan 2023 15:12:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pEtl5-0027GH-7Q
-	for barebox@lists.infradead.org; Mon, 09 Jan 2023 15:08:20 +0000
+	id 1pEtoc-00289b-Js
+	for barebox@lists.infradead.org; Mon, 09 Jan 2023 15:12:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pEtl1-0002aP-PS; Mon, 09 Jan 2023 16:08:15 +0100
+	id 1pEtob-0003Mf-DP; Mon, 09 Jan 2023 16:11:57 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pEtl1-004san-5P; Mon, 09 Jan 2023 16:08:15 +0100
+	id 1pEtoa-004sbL-Nx; Mon, 09 Jan 2023 16:11:56 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pEtl0-008bmV-EC; Mon, 09 Jan 2023 16:08:14 +0100
+	id 1pEtoZ-008bxo-Lm; Mon, 09 Jan 2023 16:11:55 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  9 Jan 2023 16:08:13 +0100
-Message-Id: <20230109150813.2051799-1-a.fatoum@pengutronix.de>
+Date: Mon,  9 Jan 2023 16:11:46 +0100
+Message-Id: <20230109151152.2052493-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230109151152.2052493-1-a.fatoum@pengutronix.de>
+References: <20230109151152.2052493-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230109_070819_287584_9CB44C92 
-X-CRM114-Status: GOOD (  11.04  )
+X-CRM114-CacheID: sfid-20230109_071158_699086_9C15F5DA 
+X-CRM114-Status: GOOD (  12.17  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,37 +76,85 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] mtd: consult CONFIG_OFDEVICE in mtd_get_of_node
+Subject: [PATCH 1/7] vsprintf: support %pOF format specifier
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Get barebox on non-DT platforms with NAND a tiny bit smaller by using
-dev_of_node: The helper will return NULL unconditionally when
-CONFIG_OFDEVICE is not enabled, thereby allowing more code to be
-discarded at compile-time in absence of link-time optimization.
+Supporting %pO* is easy enough and we have at least 50 instances in
+tree, where this can be used.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/mtd/mtd.h | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ include/of.h   | 10 ++++++++++
+ lib/vsprintf.c | 13 +++++++++++++
+ 2 files changed, 23 insertions(+)
 
-diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
-index 6b539a9eceb5..2824853e2954 100644
---- a/include/linux/mtd/mtd.h
-+++ b/include/linux/mtd/mtd.h
-@@ -293,11 +293,7 @@ static inline void mtd_set_of_node(struct mtd_info *mtd,
+diff --git a/include/of.h b/include/of.h
+index c69fa9605415..f22730c081fe 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -332,6 +332,11 @@ int of_autoenable_device_by_path(char *path);
+ int of_autoenable_i2c_by_component(char *path);
+ int of_prepend_machine_compatible(struct device_node *root, const char *compat);
  
- static inline struct device_node *mtd_get_of_node(struct mtd_info *mtd)
++static inline const char *of_node_full_name(const struct device_node *np)
++{
++	return np ? np->full_name : "<no-node>";
++}
++
+ #else
+ static inline struct of_reserve_map *of_get_reserve_map(void)
  {
--	if (mtd->dev.of_node)
--		return mtd->dev.of_node;
--	if (mtd->dev.parent)
--		return mtd->dev.parent->of_node;
--	return NULL;
-+	return dev_of_node(&mtd->dev) ?: dev_of_node(mtd->dev.parent);
+@@ -893,6 +898,11 @@ static inline int of_prepend_machine_compatible(struct device_node *root,
+ 	return -ENODEV;
  }
  
- static inline u32 mtd_oobavail(struct mtd_info *mtd, struct mtd_oob_ops *ops)
++static inline const char *of_node_full_name(const struct device_node *np)
++{
++	return "<no-node>";
++}
++
+ #endif
+ 
+ #define for_each_property_of_node(dn, pp) \
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index 693f3c0cc0c8..1291cf7dd95f 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -19,6 +19,7 @@
+ #include <malloc.h>
+ #include <kallsyms.h>
+ #include <wchar.h>
++#include <of.h>
+ 
+ #include <common.h>
+ #include <pbl.h>
+@@ -391,6 +392,14 @@ char *address_val(char *buf, const char *end, const void *addr,
+ 	return number(buf, end, num, 16, field_width, precision, flags);
+ }
+ 
++static noinline_for_stack
++char *device_node_string(char *buf, const char *end, const struct device_node *np,
++			 int field_width, int precision, int flags, const char *fmt)
++{
++	return string(buf, end, of_node_full_name(np), field_width,
++		      precision, flags);
++}
++
+ /*
+  * Show a '%p' thing.  A kernel extension is that the '%p' is followed
+  * by an extra set of alphanumeric characters that are extended format
+@@ -454,6 +463,10 @@ static char *pointer(const char *fmt, char *buf, const char *end, const void *pt
+ 		break;
+ 	case 'e':
+ 		return error_string(buf, end, ptr, field_width, precision, flags, fmt);
++	case 'O':
++		if (IS_ENABLED(CONFIG_OFTREE))
++			return device_node_string(buf, end, ptr, field_width, precision, flags, fmt + 1);
++		break;
+ 	case 'h':
+ 		if (IS_ENABLED(CONFIG_PRINTF_HEXSTR))
+ 			return hex_string(buf, end, ptr, field_width, precision, flags, fmt);
 -- 
 2.30.2
 
