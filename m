@@ -1,58 +1,58 @@
-Delivery-date: Tue, 10 Jan 2023 09:53:23 +0100
+Delivery-date: Tue, 10 Jan 2023 09:53:58 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFANo-007a2J-KK
-	for lore@lore.pengutronix.de; Tue, 10 Jan 2023 09:53:23 +0100
+	id 1pFAON-007a3o-FP
+	for lore@lore.pengutronix.de; Tue, 10 Jan 2023 09:53:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFANm-0000MR-Ks
-	for lore@pengutronix.de; Tue, 10 Jan 2023 09:53:23 +0100
+	id 1pFAOL-0000Pk-FE
+	for lore@pengutronix.de; Tue, 10 Jan 2023 09:53:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=bBYecFCua+xeddSFe5NypYUd7z9QI2jVzqzPuIqtvSE=; b=AZVXO9XAaHU9/XAl7eTIaMSyWj
-	0+BO2mVzbY5bJFoD/Sd9cYmsfwyZkCCODcT8MeFbU7+dfwfMm05G1axt8f22EMyQbdjuFugUmReSS
-	4FpbMkvTcPmXKh9kZc/erDYKbbhhNV+xfUhAVnM0ORgVPXuAzn2gtTYtNDEWbdT5yiocFayl/FkbB
-	735P/EWgMex3EYGRFuOCJhSGclBY1dNgq8HesCbIwr05wTm8Bsg8EQEYWlfjrJQuBYr+3vQb6mu/8
-	OIVBWfvWRpxRSxsz8uFhsgblD2nQaOjw5gprGTMWU+Mjfn/x90ygj/nFFPp5fs9dnYJLlg6zzu9OX
-	PWwAlaLA==;
+	bh=3AlfQN4WBSQ9t+cVTATjRq59S/24r26HChQkvVjyNvw=; b=SKmeLxOVg5rMv586cg2SRfqRZH
+	h35G2QfwQ34tWg58ZfDnlBpnRb55aCS28d9k3SMjHMhNQMh5rcI3Vk8VKnX/mSz2gUFyjexVOSuk+
+	e0JNXQ3QFClUTmHIHkxQgAUtXF+SeGTO0VI/K6VknjN7ZaYJCcLORIquT+wQXX0MYaJP3k4Gy9eYX
+	R3Dl+7mBAu2VhJd7hEQZ6joIX9hfG43iVEjuMkS7ziPdOCTGmHOVfQU72nhjNGxT0/Ym6waIwQaSu
+	ep1vj0PJBsF26zG9QkizyFIaup24idvw5rbElCV5jSX4i7UVxKWSgA3drVq+GuhKGiU/AUcwzcrO/
+	74igUx1Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFAMa-005vVR-TM; Tue, 10 Jan 2023 08:52:08 +0000
+	id 1pFANB-005vol-GU; Tue, 10 Jan 2023 08:52:45 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFAMV-005vT4-5Q
-	for barebox@lists.infradead.org; Tue, 10 Jan 2023 08:52:04 +0000
+	id 1pFAN6-005vmr-P7
+	for barebox@lists.infradead.org; Tue, 10 Jan 2023 08:52:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFAMT-0008Rt-Ri; Tue, 10 Jan 2023 09:52:01 +0100
+	id 1pFAN5-0000Bl-D6; Tue, 10 Jan 2023 09:52:39 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFAMT-0052BW-7A; Tue, 10 Jan 2023 09:52:01 +0100
+	id 1pFAN4-0052Bd-PI; Tue, 10 Jan 2023 09:52:38 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFAMS-00EQy6-4o; Tue, 10 Jan 2023 09:52:00 +0100
+	id 1pFAN3-00ER80-Pa; Tue, 10 Jan 2023 09:52:37 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 10 Jan 2023 09:51:59 +0100
-Message-Id: <20230110085159.3440210-1-a.fatoum@pengutronix.de>
+Date: Tue, 10 Jan 2023 09:52:37 +0100
+Message-Id: <20230110085237.3440824-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230110_005203_225172_D8DE26BF 
-X-CRM114-Status: GOOD (  10.05  )
+X-CRM114-CacheID: sfid-20230110_005240_828385_5F58ED89 
+X-CRM114-Status: GOOD (  11.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,41 +74,39 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] nvmem: ocotp: decouple featctrl from barebox,provide-mac-address
+Subject: [PATCH master] i2c: imx: increase timeout in i2c_fsl_poll_status from 1 to 5ms
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-imx_ocotp_init_dt() does both barebox,provide-mac-address and
-barebox,feature-controller parsing, but it erroneously exited
-early when the former was not available. Change this so no
-early exit happens.
+The current wait time of 1 ms is apparently too short in some
+circumstances leading to following error when communicating
+with a KSZ switch with 100 kHz from an i.MX8MN I2C controller:
 
-Fixes: 4adc4e12ac95 ("nvmem: ocotp: add i.MX8M[MN] feature controller support")
+  ERROR: ksz9477-i2c ksz85630: error detecting KSZ9477: I/O error
+
+Increasing the poll time to 5ms resolved this issue:
+
+  ksz9477-i2c ksz85630: Found KSZ9893
+  ksz9477-i2c ksz85630: chip id: 0x00989360
+
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/nvmem/ocotp.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/i2c/busses/i2c-imx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index 7545059aa92b..2fef84074302 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -646,14 +646,12 @@ static int imx_ocotp_init_dt(struct ocotp_priv *priv)
- 	const __be32 *prop;
- 	struct device_node *node = priv->dev.parent->of_node;
- 	u32 tester4;
--	int ret, len;
-+	int ret, len = 0;
+diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+index c0af446bcc25..28bd0072addf 100644
+--- a/drivers/i2c/busses/i2c-imx.c
++++ b/drivers/i2c/busses/i2c-imx.c
+@@ -201,7 +201,7 @@ static int i2c_fsl_trx_complete(struct i2c_adapter *adapter)
  
- 	if (!node)
- 		return 0;
+ static int i2c_fsl_acked(struct i2c_adapter *adapter)
+ {
+-	return i2c_fsl_poll_status(adapter, 1, 0, I2SR_RXAK);
++	return i2c_fsl_poll_status(adapter, 5, 0, I2SR_RXAK);
+ }
  
- 	prop = of_get_property(node, "barebox,provide-mac-address", &len);
--	if (!prop)
--		return 0;
- 
- 	for (; len >= MAC_ADDRESS_PROPLEN; len -= MAC_ADDRESS_PROPLEN) {
- 		struct device_node *rnode;
+ static int i2c_fsl_start(struct i2c_adapter *adapter)
 -- 
 2.30.2
 
