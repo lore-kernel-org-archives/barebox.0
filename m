@@ -1,59 +1,88 @@
-Delivery-date: Tue, 10 Jan 2023 16:52:29 +0100
+Delivery-date: Tue, 10 Jan 2023 16:53:08 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFGvN-007ui7-Qf
-	for lore@lore.pengutronix.de; Tue, 10 Jan 2023 16:52:29 +0100
+	id 1pFGw0-007ukr-J9
+	for lore@lore.pengutronix.de; Tue, 10 Jan 2023 16:53:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFGvL-00018v-W9
-	for lore@pengutronix.de; Tue, 10 Jan 2023 16:52:28 +0100
+	id 1pFGvy-0001Hl-Jc
+	for lore@pengutronix.de; Tue, 10 Jan 2023 16:53:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:MIME-Version:References:Message-ID:Subject:Cc:To:
+	From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0Q0pPoCFw2aEiAracNJ5c0/rQ3NBnIqCAEYqF7RjALA=; b=s77ToogsoecSBPJ6eaKHouBFmy
-	+7X5Sq46ut+dr2S1B+1Bv4vKvXs1aSlnQRk0SKn1YiqRzHLh/gTjtsaGShNjdS5jzYoJsM4UVcsMt
-	D151j7ohSVsIrVqEyuLZIwKvKIbPyz6KnmYmZu4LVPbOCTTYWqRpSE/lhULVuRezFJEOmEYYDl6ae
-	s4fpnTO9RRYokg/COGT1pimc7SZuhYIJ2swACQjn46sBpghdMqIeoI64JuNH6l6aagAD+D+7EXuC/
-	79nh4ZECyzaFo8CeiU0bwNQMkGBXFwbhf9fz+caYvIHsLS7Ugbp7bJBKS1kOs53+LslBNRyhU2hKQ
-	4+htYPtw==;
+	bh=lmgFkI+81axC8FXq/iQEAdmPLSGTiodoBfr9zdPOvfw=; b=Pmgrv9dWWt2OFZ538ZaNeUS965
+	2Fmt5H/WsSIYocr5G4J/g2R58jaSHIMQtJ10uGon5NsdtuzGBd4wT/aqWR7yTwVWV1/WCLuPuOUvB
+	lu624SL+52NFWV3YJST2yfw+66gK1f0BkZvfnA/Y7Ir5/WvvlZJ9ir5GTINFG7NbRTdyP14cPbhKY
+	Su/oUKSzi0F0hD0IxiyiE0OZ4sLndMfbngk8SU6H2Jh/88rYLS2sItD943+7K5Sy0MxCi+9njTNpb
+	g2CjVGMUyHyiocVxru/lksaOyztFnmZEUbJQbqmf7NRjF+5torzdjowDmo40aLQeJXd853B2aEpYl
+	xH7GdbWA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFGtz-007erM-Ge; Tue, 10 Jan 2023 15:51:03 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1pFGum-007f5w-9Z; Tue, 10 Jan 2023 15:51:52 +0000
+Received: from smtpout140.security-mail.net ([85.31.212.149] helo=fx409.security-mail.net)
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFGtm-007eou-4b
-	for barebox@lists.infradead.org; Tue, 10 Jan 2023 15:50:55 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pFGti-0000ng-1Z; Tue, 10 Jan 2023 16:50:46 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pFGth-0056o3-EJ; Tue, 10 Jan 2023 16:50:45 +0100
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pFGtg-008Zgp-I8; Tue, 10 Jan 2023 16:50:44 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 10 Jan 2023 16:50:38 +0100
-Message-Id: <20230110155039.2039341-2-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230110155039.2039341-1-s.hauer@pengutronix.de>
-References: <20230110155039.2039341-1-s.hauer@pengutronix.de>
+	id 1pFGui-007f4Y-0F
+	for barebox@lists.infradead.org; Tue, 10 Jan 2023 15:51:49 +0000
+Received: from localhost (fx409.security-mail.net [127.0.0.1])
+	by fx409.security-mail.net (Postfix) with ESMTP id 2C866349833
+	for <barebox@lists.infradead.org>; Tue, 10 Jan 2023 16:51:43 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
+	s=sec-sig-email; t=1673365903;
+	bh=WMo4Y+KNKlvVkZ3dhi5EQwxFtnheg5CqTTWe5Ot8Wz0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TMOZrELHbzy9FIjZRyHUdmQeKLlSF83WUE2KteKy7mAhlBbhcvBnPtqxcg57/rIV8
+	 rY+XaUlM4AcjwC+S4kuKJsqNDcX048hvB19qW3aCrI4AF6wu8JYEdUomx+2x67pU8f
+	 qDHfjORyR1qc2hL5uVX0R5/daQ8WmXd+et1n1YxM=
+Received: from fx409 (fx409.security-mail.net [127.0.0.1]) by
+ fx409.security-mail.net (Postfix) with ESMTP id EF4DE349391; Tue, 10 Jan
+ 2023 16:51:42 +0100 (CET)
+Received: from zimbra2.kalray.eu (unknown [217.181.231.53]) by
+ fx409.security-mail.net (Postfix) with ESMTPS id 27D26349809; Tue, 10 Jan
+ 2023 16:51:42 +0100 (CET)
+Received: from zimbra2.kalray.eu (localhost [127.0.0.1]) by
+ zimbra2.kalray.eu (Postfix) with ESMTPS id 0080A27E0402; Tue, 10 Jan 2023
+ 16:51:41 +0100 (CET)
+Received: from localhost (localhost [127.0.0.1]) by zimbra2.kalray.eu
+ (Postfix) with ESMTP id DCCB727E0405; Tue, 10 Jan 2023 16:51:41 +0100 (CET)
+Received: from zimbra2.kalray.eu ([127.0.0.1]) by localhost
+ (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026) with ESMTP id
+ 1qCKoE1u-BYI; Tue, 10 Jan 2023 16:51:41 +0100 (CET)
+Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206]) by
+ zimbra2.kalray.eu (Postfix) with ESMTPSA id C06A627E0402; Tue, 10 Jan 2023
+ 16:51:41 +0100 (CET)
+X-Virus-Scanned: E-securemail
+Secumail-id: <5428.63bd898e.251ba.0>
+DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu DCCB727E0405
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1673365901;
+ bh=lmgFkI+81axC8FXq/iQEAdmPLSGTiodoBfr9zdPOvfw=;
+ h=Date:From:To:Message-ID:MIME-Version;
+ b=Ch9Ip6AfRVTyUW7at074S+Lg+xVdazHE8Fqimd96priBvLkqg8Ra7Vq9qnm7Khqw0
+ qnscyQxYqK+FnUrXuxyaUdAtY9hP/Ws4ykoCHrdIGBhzcQ5ULa9la4bBYR+RqWu6D1
+ 034/v6/261JDxIxgGNWy3OGtECBYewIYjy3YA3dk=
+Date: Tue, 10 Jan 2023 16:51:40 +0100
+From: Jules Maselbas <jmaselbas@kalray.eu>
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230110155140.GB29108@tellis.lin.mbt.kalray.eu>
+References: <20230110151738.4019078-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
+Content-Disposition: inline
+In-Reply-To: <20230110151738.4019078-1-m.grzeschik@pengutronix.de>
+User-Agent: Mutt/1.9.4 (2018-02-28)
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
+X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230110_075050_218457_681F5F55 
-X-CRM114-Status: GOOD (  18.71  )
+X-CRM114-CacheID: sfid-20230110_075148_223138_90318DAE 
+X-CRM114-Status: GOOD (  20.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,120 +101,78 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] mci: handle SDIO cards gracefully
+Subject: Re: [PATCH] usb: dwc2: fix multiplier handling in endpoint setup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Detect SDIO cards properly to be able to return from card detection
-without errors. So far a SDIO card reports several errors during
-detection:
+On Tue, Jan 10, 2023 at 04:17:38PM +0100, Michael Grzeschik wrote:
+> If the multiplier is 0 in the descriptor bitfield the multiplier count
+> is one. For calculating the multiplier count the extra function
+> usb_endpoint_maxp_mult should be used. Rework the dwc2 driver to use it
+> and make multi packages work.
+Yes, the driver seems to expect mc to be in the range of 1 to 3
+included (see dwc2_set_ep_maxpacket in driver/usb/dwc2/gadget.c)
+This is aslo the range accepted by dwc2 hardware.
 
-ERROR: bcm2835_mci 3f300000.mmc@7e300000.of: Error while executing command 8
-ERROR: bcm2835_mci 3f300000.mmc@7e300000.of: Status: 0x1FF0001, Interrupt: 0x18000
-ERROR: bcm2835_mci 3f300000.mmc@7e300000.of: Error while executing command 55
-ERROR: bcm2835_mci 3f300000.mmc@7e300000.of: Status: 0x1FF0001, Interrupt: 0x18000
-ERROR: bcm2835_mci 3f300000.mmc@7e300000.of: Error while executing command 1
-ERROR: bcm2835_mci 3f300000.mmc@7e300000.of: Status: 0x1FF0001, Interrupt: 0x18000
+However the .mc fields isn't used at all, it should be written
+in the epsize register (see macro DXEPTSIZ_MC)
 
-With this we can now detect SDIO cards without reporting errors, or
-to put it differently: barebox now has SDIO support ;)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/mci/mci-core.c | 24 +++++++++++++++++++++++-
- include/mci.h          |  4 ++++
- 2 files changed, 27 insertions(+), 1 deletion(-)
+> While at it, we also remove the USB_EP_MAXP_MULT and
+> USB_ENDPOINT_MAXP_MASK macros that would stay left unused and are
+> defined in include/usb/ch9.ch anyway.
+Indeed, this is can be removed.
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 8cda07e711..44a577e8c3 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -232,6 +232,15 @@ static int mci_go_idle(struct mci *mci)
- 	return 0;
- }
- 
-+static int sdio_send_op_cond(struct mci *mci)
-+{
-+	struct mci_cmd cmd;
-+
-+	mci_setup_cmd(&cmd, SD_IO_SEND_OP_COND, 0, MMC_RSP_SPI_R4 | MMC_RSP_R4 | MMC_CMD_BCR);
-+
-+	return mci_send_cmd(mci, &cmd, NULL);
-+}
-+
- /**
-  * FIXME
-  * @param mci MCI instance
-@@ -1596,7 +1605,9 @@ static void mci_info(struct device_d *dev)
- 	mci_print_caps(host->host_caps);
- 
- 	printf("Card information:\n");
--	printf("  Attached is a %s card\n", IS_SD(mci) ? "SD" : "MMC");
-+	printf("  Card type: %s\n", mci->sdio ? "SDIO" : IS_SD(mci) ? "SD" : "MMC");
-+	if (mci->sdio)
-+		return;
- 	printf("  Version: %s\n", mci_version_string(mci));
- 	printf("  Capacity: %u MiB\n", (unsigned)(mci->capacity >> 20));
- 
-@@ -1809,6 +1820,16 @@ static int mci_card_probe(struct mci *mci)
- 		goto on_error;
- 	}
- 
-+	if (!host->no_sdio) {
-+		rc = sdio_send_op_cond(mci);
-+		if (!rc) {
-+			mci->ready_for_use = true;
-+			mci->sdio = true;
-+			dev_info(&mci->dev, "SDIO card detected, ignoring\n");
-+			return 0;
-+		}
-+	}
-+
- 	/* Check if this card can handle the "SD Card Physical Layer Specification 2.0" */
- 	if (!host->no_sd) {
- 		rc = sd_send_if_cond(mci);
-@@ -2086,6 +2107,7 @@ void mci_of_parse_node(struct mci_host *host,
- 	host->broken_cd = of_property_read_bool(np, "broken-cd");
- 	host->non_removable = of_property_read_bool(np, "non-removable");
- 	host->no_sd = of_property_read_bool(np, "no-sd");
-+	host->no_sdio = of_property_read_bool(np, "no-sdio");
- 	host->disable_wp = of_property_read_bool(np, "disable-wp");
- }
- 
-diff --git a/include/mci.h b/include/mci.h
-index d3201e17e6..56a5659e50 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -91,6 +91,8 @@
- #define SD_CMD_APP_SEND_OP_COND		41
- #define SD_CMD_APP_SEND_SCR		51
- 
-+#define SD_IO_SEND_OP_COND		5 /* bcr  [23:0] OCR         R4  */
-+
- /* SCR definitions in different words */
- #define SD_HIGHSPEED_BUSY	0x00020000
- #define SD_HIGHSPEED_SUPPORTED	0x00020000
-@@ -431,6 +433,7 @@ struct mci_host {
- 	int broken_cd;		/**< card detect is broken */
- 	bool non_removable;	/**< device is non removable */
- 	bool no_sd;		/**< do not send SD commands during initialization */
-+	bool no_sdio;		/**< do not send SDIO commands during initialization */
- 	bool disable_wp;	/**< ignore write-protect detection logic */
- 	struct regulator *supply;
- 
-@@ -469,6 +472,7 @@ struct mci {
- 	struct mci_host *host;		/**< the host for this card */
- 	struct device_d dev;		/**< the device for our disk (mcix) */
- 	unsigned version;
-+	bool sdio;		/**< card is a SDIO card */
- 	/** != 0 when a high capacity card is connected (OCR -> OCR_HCS) */
- 	int high_capacity;
- 	unsigned card_caps;	/**< Card's capabilities */
--- 
-2.30.2
+I've tested this patch on one board and it worked just find.
+
+Tested-by: Jules Maselbas <jmaselbas@kalray.eu>
+
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
+> ---
+>  drivers/usb/dwc2/gadget.c | 9 +--------
+>  1 file changed, 1 insertion(+), 8 deletions(-)
+> 
+> diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
+> index 7070485410..5a72ba795b 100644
+> --- a/drivers/usb/dwc2/gadget.c
+> +++ b/drivers/usb/dwc2/gadget.c
+> @@ -14,13 +14,6 @@
+>  #define spin_lock_irqsave(lock, flags) (void)(flags)
+>  #define spin_unlock_irqrestore(lock, flags) (void)(flags)
+>  
+> -#ifndef USB_ENDPOINT_MAXP_MASK
+> -#define USB_ENDPOINT_MAXP_MASK	0x07ff
+> -#endif
+> -#ifndef USB_EP_MAXP_MULT
+> -#define USB_EP_MAXP_MULT(m)	(((m) & 0x1800) >> 11)
+> -#endif
+> -
+>  static void kill_all_requests(struct dwc2 *, struct dwc2_ep *, int);
+>  
+>  static inline struct dwc2_ep *index_to_ep(struct dwc2 *dwc2,
+> @@ -484,7 +477,7 @@ static int dwc2_ep_enable(struct usb_ep *ep,
+>  
+>  	ep_type = desc->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK;
+>  	mps = usb_endpoint_maxp(desc) & USB_ENDPOINT_MAXP_MASK;
+> -	mc =  USB_EP_MAXP_MULT(usb_endpoint_maxp(desc));
+> +	mc = usb_endpoint_maxp_mult(desc);
+>  
+>  	/* note, we handle this here instead of dwc2_set_ep_maxpacket */
+>  	epctrl_reg = dir_in ? DIEPCTL(index) : DOEPCTL(index);
+> -- 
+> 2.30.2
+> 
+> 
+> 
+> 
+> 
+> 
+
+
+
 
 
 
