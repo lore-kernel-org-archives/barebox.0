@@ -1,60 +1,60 @@
-Delivery-date: Wed, 11 Jan 2023 18:43:21 +0100
+Delivery-date: Wed, 11 Jan 2023 18:43:42 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFf8E-0091hb-Fk
-	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 18:43:21 +0100
+	id 1pFf8Y-0091jl-RK
+	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 18:43:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFf8C-0006Ef-0N
-	for lore@pengutronix.de; Wed, 11 Jan 2023 18:43:21 +0100
+	id 1pFf8W-0006L1-Pt
+	for lore@pengutronix.de; Wed, 11 Jan 2023 18:43:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nQIrleT//q/QjLXHgrbme/NCXfctytGjhks9qhFmAAo=; b=Imq6t3tqYBCzBhO1iMlPrWmxdH
-	okKA6C4W4chrMb9t53gfgIQa4ZJtB1lryAhOPio1UlAms8sl9ZEaw9ZkKFq2iYWb8mKmG4WAQAHit
-	yxQY50nYy52iooNcS5AxyRQw0916oBCJUCsAgpFmi8brLcQSJiU6M7DC/gWuO05D0cxaRsKdugTL5
-	Pa3giTh1/YprNW9JUoWiL1L/RCAyJyUWhku3eBsfi3bdOXsu9vS/bA78vxDaToBFyeH4IZlrFq/KS
-	Vq/iSyGsmWRduIMZjZJl8exXWZA7nuMnSZ91+Sh82OTY+UXM0h+WEmnQTxQ+UNW7ahhmCZxYD7Yjp
-	xBuK99cQ==;
+	bh=9X6x+8ZyNXf3R063uf7xowdU6GvO06b1BrryHaYpfnc=; b=boirRjyFj60RpvG6+Yi74s4TuI
+	EE81v8E1w7JWVjhNVarppH+mi61VuJ+4kELE39shxfNgxZTr1PULidherJvvJmjnPtMyS82YPFK24
+	q7UDis2+nATd3y35kDloCF7Av4niY+W/KJq6fR0Kw8RDWlgW+3pVP3JCA6eA9Fx5z8GOkyf1y5dU3
+	JPDVNchAJ46O+v5EcJDifPyBf/pf4WcHXD2QobGyjR7Tako5namfwx7ury1Q01LOsoeKy0WxHi82o
+	zl6zUY3uXzAzlHlqeJvRvM3smdxG3KLDke4lLg7gCToBFcQ5dqOGlqk2FyJkXuEMQmyLQTgesbhgX
+	rAYb2KIg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFf6o-00CU3m-VS; Wed, 11 Jan 2023 17:41:55 +0000
+	id 1pFf6z-00CUA1-Ar; Wed, 11 Jan 2023 17:42:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFf5T-00CTHw-3J
-	for barebox@lists.infradead.org; Wed, 11 Jan 2023 17:40:36 +0000
+	id 1pFf5T-00CTIE-CY
+	for barebox@lists.infradead.org; Wed, 11 Jan 2023 17:40:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFf5R-00053v-Nl; Wed, 11 Jan 2023 18:40:29 +0100
+	id 1pFf5S-00054r-76; Wed, 11 Jan 2023 18:40:30 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFf5R-005M6e-4E; Wed, 11 Jan 2023 18:40:29 +0100
+	id 1pFf5R-005M70-LI; Wed, 11 Jan 2023 18:40:29 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFf5O-007DGE-Ei; Wed, 11 Jan 2023 18:40:26 +0100
+	id 1pFf5O-007DGl-Jo; Wed, 11 Jan 2023 18:40:26 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 11 Jan 2023 18:40:11 +0100
-Message-Id: <20230111174023.1719129-4-a.fatoum@pengutronix.de>
+Date: Wed, 11 Jan 2023 18:40:22 +0100
+Message-Id: <20230111174023.1719129-15-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230111174023.1719129-1-a.fatoum@pengutronix.de>
 References: <20230111174023.1719129-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230111_094031_290104_D37D16D6 
-X-CRM114-Status: GOOD (  14.53  )
+X-CRM114-CacheID: sfid-20230111_094031_474967_C98E788A 
+X-CRM114-Status: GOOD (  21.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,162 +76,181 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 03/15] mtd: nand: prefix enum nand_ecc_algo constants with NAND_ECC_ALGO_
+Subject: [PATCH 14/15] mtd: nand: drop DT support in legacy driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This aligns us with how Linux now names these constants.
-No functional change.
+With the legacy binding removed from the barebox sama5d3_xplained DT,
+the only remaining user of "atmel,at91rm9200-nand" is
+dts/src/arm/at91rm9200.dtsi, which we don't use. Should DT support
+ever be added to that platform, we should invest the time to update
+the kernel DT to use the new EBI binding. Thus drop the now unused
+DT support in the legacy driver, so only the new EBI binding is
+supported with the new driver.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mtd/nand/nand_base.c    | 26 +++++++++++++-------------
- drivers/mtd/nand/nand_fsl_ifc.c |  2 +-
- drivers/mtd/nand/nand_micron.c  |  2 +-
- include/linux/mtd/rawnand.h     |  8 ++++----
- 4 files changed, 19 insertions(+), 19 deletions(-)
+ drivers/mtd/nand/Kconfig        |   5 +-
+ drivers/mtd/nand/atmel/legacy.c | 104 +-------------------------------
+ 2 files changed, 3 insertions(+), 106 deletions(-)
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index c3cd22935bb2..b686cef79bc6 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -4936,9 +4936,9 @@ free_detect_allocation:
- }
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 4aeb2b603b95..4a673e94406c 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -101,11 +101,10 @@ config NAND_ATMEL
+ 	depends on ARCH_AT91 || (OFDEVICE && COMPILE_TEST)
  
- static const char * const nand_ecc_algos[] = {
--	[NAND_ECC_HAMMING]	= "hamming",
--	[NAND_ECC_BCH]		= "bch",
--	[NAND_ECC_RS]		= "rs",
-+	[NAND_ECC_ALGO_HAMMING]		= "hamming",
-+	[NAND_ECC_ALGO_BCH]		= "bch",
-+	[NAND_ECC_ALGO_RS]		= "rs",
- };
+ config NAND_ATMEL_LEGACY
+-	def_bool y
++	def_bool !AT91_MULTI_BOARDS
+ 	depends on NAND_ATMEL
+ 	help
+-	  Select legacy driver for non-DT-enabled platforms
+-	  and for the deprecated non-EBI binding.
++	  Select legacy non-device tree enabled driver.
  
- static enum nand_ecc_algo of_get_nand_ecc_algo(struct device_node *np)
-@@ -4949,7 +4949,7 @@ static enum nand_ecc_algo of_get_nand_ecc_algo(struct device_node *np)
+ config NAND_ATMEL_PMECC
+ 	bool
+diff --git a/drivers/mtd/nand/atmel/legacy.c b/drivers/mtd/nand/atmel/legacy.c
+index bd8923f93dd5..1f804eb53720 100644
+--- a/drivers/mtd/nand/atmel/legacy.c
++++ b/drivers/mtd/nand/atmel/legacy.c
+@@ -23,10 +23,6 @@
+ #include <init.h>
+ #include <gpio.h>
  
- 	err = of_property_read_string(np, "nand-ecc-algo", &pm);
- 	if (!err) {
--		for (ecc_algo = NAND_ECC_HAMMING;
-+		for (ecc_algo = NAND_ECC_ALGO_HAMMING;
- 		     ecc_algo < ARRAY_SIZE(nand_ecc_algos);
- 		     ecc_algo++) {
- 			if (!strcasecmp(pm, nand_ecc_algos[ecc_algo]))
-@@ -4964,12 +4964,12 @@ static enum nand_ecc_algo of_get_nand_ecc_algo(struct device_node *np)
- 	err = of_property_read_string(np, "nand-ecc-mode", &pm);
- 	if (!err) {
- 		if (!strcasecmp(pm, "soft"))
--			return NAND_ECC_HAMMING;
-+			return NAND_ECC_ALGO_HAMMING;
- 		else if (!strcasecmp(pm, "soft_bch"))
--			return NAND_ECC_BCH;
-+			return NAND_ECC_ALGO_BCH;
- 	}
- 
--	return NAND_ECC_UNKNOWN;
-+	return NAND_ECC_ALGO_UNKNOWN;
- }
- 
- static int nand_dt_init(struct nand_chip *chip)
-@@ -4998,7 +4998,7 @@ static int nand_dt_init(struct nand_chip *chip)
- 	if (ecc_mode >= 0)
- 		chip->ecc.mode = ecc_mode;
- 
--	if (ecc_algo != NAND_ECC_UNKNOWN)
-+	if (ecc_algo != NAND_ECC_ALGO_UNKNOWN)
- 		chip->ecc.algo = ecc_algo;
- 
- 	if (ecc_strength >= 0)
-@@ -5127,7 +5127,7 @@ static int nand_set_ecc_soft_ops(struct nand_chip *chip)
- 		return -EINVAL;
- 
- 	switch (ecc->algo) {
--	case NAND_ECC_HAMMING:
-+	case NAND_ECC_ALGO_HAMMING:
- 		ecc->calculate = nand_calculate_ecc;
- 		ecc->correct = nand_correct_data;
- 		ecc->read_page = nand_read_page_swecc;
-@@ -5148,7 +5148,7 @@ static int nand_set_ecc_soft_ops(struct nand_chip *chip)
- 			ecc->options |= NAND_ECC_SOFT_HAMMING_SM_ORDER;
- 
- 		return 0;
--	case NAND_ECC_BCH:
-+	case NAND_ECC_ALGO_BCH:
- 		if (!mtd_nand_has_bch()) {
- 			WARN(1, "CONFIG_MTD_NAND_ECC_SW_BCH not enabled\n");
- 			return -EINVAL;
-@@ -5588,7 +5588,7 @@ int nand_scan_tail(struct nand_chip *chip)
- 	 * If no default placement scheme is given, select an appropriate one.
- 	 */
- 	if (!mtd->ooblayout &&
--	    !(ecc->mode == NAND_ECC_SOFT && ecc->algo == NAND_ECC_BCH)) {
-+	    !(ecc->mode == NAND_ECC_SOFT && ecc->algo == NAND_ECC_ALGO_BCH)) {
- 		switch (mtd->oobsize) {
- 		case 8:
- 		case 16:
-@@ -5684,7 +5684,7 @@ int nand_scan_tail(struct nand_chip *chip)
- 		pr_warn("%d byte HW ECC not possible on %d byte page size, fallback to SW ECC\n",
- 			ecc->size, mtd->writesize);
- 		ecc->mode = NAND_ECC_SOFT;
--		ecc->algo = NAND_ECC_HAMMING;
-+		ecc->algo = NAND_ECC_ALGO_HAMMING;
- 	case NAND_ECC_SOFT:
- 		ret = nand_set_ecc_soft_ops(chip);
- 		if (ret) {
-@@ -5935,7 +5935,7 @@ EXPORT_SYMBOL(nand_scan_with_ids);
- void nand_cleanup(struct nand_chip *chip)
+-#include <of.h>
+-#include <of_gpio.h>
+-#include <of_mtd.h>
+-
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/rawnand.h>
+ #include <linux/mtd/nand.h>
+@@ -1109,92 +1105,6 @@ static void atmel_nand_hwctl(struct nand_chip *nand_chip, int mode)
  {
- 	if (chip->ecc.mode == NAND_ECC_SOFT &&
--	    chip->ecc.algo == NAND_ECC_BCH)
-+	    chip->ecc.algo == NAND_ECC_ALGO_BCH)
- 		nand_bch_free((struct nand_bch_control *)chip->ecc.priv);
+ }
  
- 	nanddev_cleanup(&chip->base);
-diff --git a/drivers/mtd/nand/nand_fsl_ifc.c b/drivers/mtd/nand/nand_fsl_ifc.c
-index 74bc9fe1edfd..8eef77e93c2f 100644
---- a/drivers/mtd/nand/nand_fsl_ifc.c
-+++ b/drivers/mtd/nand/nand_fsl_ifc.c
-@@ -964,7 +964,7 @@ static int fsl_ifc_chip_init(struct fsl_ifc_mtd *priv)
- 		mtd_set_ooblayout(mtd, &fsl_ifc_ooblayout_ops);
- 	} else {
- 		nand->ecc.mode = NAND_ECC_SOFT;
--		nand->ecc.algo = NAND_ECC_HAMMING;
-+		nand->ecc.algo = NAND_ECC_ALGO_HAMMING;
- 	}
+-static int atmel_nand_of_init(struct atmel_nand_host *host, struct device_node *np)
+-{
+-	u32 val;
+-	u32 offset[2];
+-	int ecc_mode;
+-	struct atmel_nand_data *board = host->board;
+-	enum of_gpio_flags flags = 0;
+-
+-	if (!IS_ENABLED(CONFIG_OFDEVICE))
+-		return -ENOSYS;
+-
+-	if (of_property_read_u32(np, "atmel,nand-addr-offset", &val) == 0) {
+-		if (val >= 32) {
+-			dev_err(host->dev, "invalid addr-offset %u\n", val);
+-			return -EINVAL;
+-		}
+-		board->ale = val;
+-	}
+-
+-	if (of_property_read_u32(np, "atmel,nand-cmd-offset", &val) == 0) {
+-		if (val >= 32) {
+-			dev_err(host->dev, "invalid cmd-offset %u\n", val);
+-			return -EINVAL;
+-		}
+-		board->cle = val;
+-	}
+-
+-	ecc_mode = of_get_nand_ecc_mode(np);
+-
+-	board->ecc_mode = ecc_mode < 0 ? NAND_ECC_SOFT : ecc_mode;
+-
+-	board->on_flash_bbt = of_get_nand_on_flash_bbt(np);
+-
+-	if (of_get_nand_bus_width(np) == 16)
+-		board->bus_width_16 = 1;
+-
+-	board->rdy_pin = of_get_gpio_flags(np, 0, &flags);
+-	board->enable_pin = of_get_gpio(np, 1);
+-	board->det_pin = of_get_gpio(np, 2);
+-
+-	board->has_pmecc = of_property_read_bool(np, "atmel,has-pmecc");
+-
+-	if (!(board->ecc_mode == NAND_ECC_HW) || !board->has_pmecc)
+-		return 0;	/* Not using PMECC */
+-
+-	/* use PMECC, get correction capability, sector size and lookup
+-	* table offset.
+-	* If correction bits and sector size are not specified, then
+-	*   find
+-	* them from NAND ONFI parameters.
+-	*/
+-	if (of_property_read_u32(np, "atmel,pmecc-cap", &val) == 0) {
+-		if ((val != 2) && (val != 4) && (val != 8) && (val != 12) && (val != 24)) {
+-			dev_err(host->dev, "Unsupported PMECC correction capability: %d"
+-					" should be 2, 4, 8, 12 or 24\n", val);
+-			return -EINVAL;
+-		}
+-
+-		board->pmecc_corr_cap = (u8)val;
+-	}
+-
+-	if (of_property_read_u32(np, "atmel,pmecc-sector-size", &val) == 0) {
+-		if ((val != 512) && (val != 1024)) {
+-				dev_err(host->dev, "Unsupported PMECC sector size: %d"
+-					" should be 512 or 1024 bytes\n", val);
+-			return -EINVAL;
+-		}
+-
+-		board->pmecc_sector_size = (u16)val;
+-	}
+-
+-	if (of_property_read_u32_array(np, "atmel,pmecc-lookup-table-offset", offset, 2) != 0) {
+-		dev_err(host->dev, "Cannot get PMECC lookup table offset\n");
+-		return -EINVAL;
+-	}
+-
+-	if (!offset[0] && !offset[1]) {
+-		dev_err(host->dev, "Invalid PMECC lookup table offset\n");
+-		return -EINVAL;
+-	}
+-
+-	board->pmecc_lookup_table_offset = (board->pmecc_sector_size == 512) ? offset[0] : offset[1];
+-
+-	return 0;
+-}
+-
+ static int atmel_hw_nand_init_params(struct device *dev,
+ 					 struct atmel_nand_host *host)
+ {
+@@ -1281,13 +1191,7 @@ static int __init atmel_nand_probe(struct device *dev)
+ 	host->board = pdata;
+ 	host->dev = dev;
  
- 	if (ctrl->version >= FSL_IFC_V1_1_0) {
-diff --git a/drivers/mtd/nand/nand_micron.c b/drivers/mtd/nand/nand_micron.c
-index d59be7ca7b02..4401a55886b2 100644
---- a/drivers/mtd/nand/nand_micron.c
-+++ b/drivers/mtd/nand/nand_micron.c
-@@ -544,7 +544,7 @@ static int micron_nand_init(struct nand_chip *chip)
- 		chip->ecc.bytes = chip->base.eccreq.strength * 2;
- 		chip->ecc.size = 512;
- 		chip->ecc.strength = chip->base.eccreq.strength;
--		chip->ecc.algo = NAND_ECC_BCH;
-+		chip->ecc.algo = NAND_ECC_ALGO_BCH;
- 		chip->ecc.read_page = micron_nand_read_page_on_die_ecc;
- 		chip->ecc.write_page = micron_nand_write_page_on_die_ecc;
+-	if (dev->of_node) {
+-		res = atmel_nand_of_init(host, dev->of_node);
+-		if (res)
+-			goto err_no_card;
+-	} else {
+-		memcpy(host->board, dev->platform_data, sizeof(struct atmel_nand_data));
+-	}
++	memcpy(host->board, dev->platform_data, sizeof(struct atmel_nand_data));
  
-diff --git a/include/linux/mtd/rawnand.h b/include/linux/mtd/rawnand.h
-index a05c67e1404b..87e37fa9a349 100644
---- a/include/linux/mtd/rawnand.h
-+++ b/include/linux/mtd/rawnand.h
-@@ -96,10 +96,10 @@ enum nand_ecc_mode {
+ 	nand_chip->priv = host;		/* link the private data structures */
+ 	mtd->dev.parent = dev;
+@@ -1428,15 +1332,9 @@ err_no_card:
+ 	return res;
+ }
+ 
+-static struct of_device_id atmel_nand_dt_ids[] = {
+-	{ .compatible = "atmel,at91rm9200-nand" },
+-	{ /* sentinel */ }
+-};
+-
+ static struct driver atmel_nand_driver = {
+ 	.name	= "atmel_nand",
+ 	.probe	= atmel_nand_probe,
+-	.of_compatible	= DRV_OF_COMPAT(atmel_nand_dt_ids),
  };
+ device_platform_driver(atmel_nand_driver);
  
- enum nand_ecc_algo {
--	NAND_ECC_UNKNOWN,
--	NAND_ECC_HAMMING,
--	NAND_ECC_BCH,
--	NAND_ECC_RS,
-+	NAND_ECC_ALGO_UNKNOWN,
-+	NAND_ECC_ALGO_HAMMING,
-+	NAND_ECC_ALGO_BCH,
-+	NAND_ECC_ALGO_RS,
- };
- 
- /*
 -- 
 2.30.2
 
