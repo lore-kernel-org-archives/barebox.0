@@ -1,56 +1,62 @@
-Delivery-date: Wed, 11 Jan 2023 11:27:40 +0100
+Delivery-date: Wed, 11 Jan 2023 11:38:56 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFYKb-008jHZ-3Z
-	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 11:27:40 +0100
+	id 1pFYVU-008jUl-R9
+	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 11:38:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFYKY-00073f-4P
-	for lore@pengutronix.de; Wed, 11 Jan 2023 11:27:39 +0100
+	id 1pFYVS-0008JC-Q5
+	for lore@pengutronix.de; Wed, 11 Jan 2023 11:38:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=a56ohvYoBMAy8Ru+l+Ohu+shRqKLWPQtJEDPvhpE1CE=; b=RIvzJ/tXNnyNKlYRLWWfnUxWe9
-	QgQsrBAVaMJLc6LxcGh+Hr+/6GcRTOvYladzJJptA1Ow7imBJn5G0oG1t6CJNyRO7HVeLsam+uby/
-	yGeKHbmbAakUYZSyE4quURWyL4V4CNk0Y736wNxQjsWWo3ofpAWuUQfCngPYCErsPMDiK+aRVxFYp
-	NPxnw+7iBWx8vSyGOZxx/ibQ7G6JyReDycBRyVgHxfLPM/IuyCmGUNF7vISYgflWSAJvfetJjS3K0
-	nn/7BUy8SOdC7q/ydwB7fnYpj4bGhsiGp8zMRSnzF8qadGXM4zMsN+z8qe1+8+VnlKLlPgmfAerdC
-	RHvnUGTw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=CuOiutNA7BKRSTUI8MvS79aRYFtG2xzqoqv5lDaOxRs=; b=2TZil8/nkqNuILAt6qkIdXV31I
+	mq1pmkLoJ55FVv5vwmoKLYt8xyadYJaKu4ZvCIVR/cwE1kl5QH6lv/SCnZczbvPYcImuL7sBFj1Vk
+	iEwx8mGsly0J+2DLpJg/PM/YMDRLKtjjn0qkvg81nuxnFdt8qa5fm7ZPGfCWFcXpFK24mjDkKQuWm
+	Kad0NsWJikja8QcL4g6OvOEujL/HPYvw5JSo4Z/GZVxrzAZCVLfjcjBPw9ym3WFD8RlfbVAWFe8mX
+	GE5otJZJTrPwgjathKKc2UiGMcDXtVJuGN+UhoYv8EON4NWKz5YouIL5g4YlcVDyp5Y44Nv4eVvGF
+	Vnbwz6pQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFYJL-00AmNO-GF; Wed, 11 Jan 2023 10:26:23 +0000
+	id 1pFYU8-00ApuU-39; Wed, 11 Jan 2023 10:37:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFYJF-00AmLv-Hh
-	for barebox@lists.infradead.org; Wed, 11 Jan 2023 10:26:19 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pFYJE-0006t4-31; Wed, 11 Jan 2023 11:26:16 +0100
-Message-ID: <57b55532-c473-d4c7-c1f4-0a8aa32b5977@pengutronix.de>
-Date: Wed, 11 Jan 2023 11:26:15 +0100
+	id 1pFYU3-00Apsm-Dv
+	for barebox@lists.infradead.org; Wed, 11 Jan 2023 10:37:28 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pFYU1-0008CZ-Fp; Wed, 11 Jan 2023 11:37:25 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pFYU1-0007w0-1W; Wed, 11 Jan 2023 11:37:25 +0100
+Date: Wed, 11 Jan 2023 11:37:25 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, Sam Ravnborg <sam@ravnborg.org>
+Message-ID: <20230111103725.GA23347@pengutronix.de>
+References: <20230109130822.1657470-1-a.fatoum@pengutronix.de>
+ <20230109130822.1657470-4-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Johannes Schneider <johannes.schneider@leica-geosystems.com>,
- barebox@lists.infradead.org
-References: <20230111100111.677018-1-johannes.schneider@leica-geosystems.com>
- <e34cc83c-f3cc-27e0-ab23-fe00ccbf3e6e@pengutronix.de>
-In-Reply-To: <e34cc83c-f3cc-27e0-ab23-fe00ccbf3e6e@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230109130822.1657470-4-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230111_022617_628434_D40FA802 
-X-CRM114-Status: GOOD (  30.05  )
+X-CRM114-CacheID: sfid-20230111_023727_487010_8B3B23D8 
+X-CRM114-Status: GOOD (  19.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,141 +76,56 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/1] ARM: i.MX8M: add PCA9450 PMIC on rev-b EVK
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 03/11] ARM: at91: sama5d4: enable for DT use
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 11.01.23 11:17, Ahmad Fatoum wrote:
-> Hi,
+On Mon, Jan 09, 2023 at 02:08:14PM +0100, Ahmad Fatoum wrote:
+> The sama5d4[devices].c files are for non-OF instantiation of platform
+> devices. We don't need anything out of these two files, so don't build
+> them when compiling for CONFIG_OFDEVICE.
 > 
-> How do you generate your patches? Easiest is:
+> Acked-by: Sam Ravnborg <sam@ravnborg.org>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/mach-at91/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
->   git config sendemail.to barebox@lists.infradead.org
->   git send-email -3 --annotate
-> 
-> This will take care to number the patches correctly.
-> 
-> On 11.01.23 11:01, Johannes Schneider wrote:
->> Configure and setup the PMIC found on rev-b EVKs.
->> The code is algiend with how imx8mn-evk handles both
-> 
-> aligned*
-> 
->> PMIC variants: pca9450 vs bd71837
-> 
-> Please note which Boards you tested this on.
+> diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
+> index 390d49d03dee..b9fda00b2e1a 100644
+> --- a/arch/arm/mach-at91/Makefile
+> +++ b/arch/arm/mach-at91/Makefile
+> @@ -30,6 +30,7 @@ obj-$(CONFIG_SOC_AT91SAM9G10) += at91sam9261.o at91sam9261_devices.o
+>  ifeq ($(CONFIG_OFDEVICE),)
+>  obj-$(CONFIG_SOC_AT91SAM9263) += at91sam9263.o at91sam9263_devices.o
+>  obj-$(CONFIG_SOC_SAMA5D3)	+= sama5d3.o sama5d3_devices.o
+> +obj-$(CONFIG_SOC_SAMA5D4)	+= sama5d4.o sama5d4_devices.o
+>  endif
+>  lwl-$(CONFIG_SOC_AT91SAM9263)	+= sam9263_ll.o
+>  lwl-$(CONFIG_SOC_SAMA5D2)	+= sama5d2_ll.o
+> @@ -39,4 +40,3 @@ obj-$(CONFIG_SOC_AT91SAM9G20) += at91sam9260.o at91sam9260_devices.o
+>  obj-$(CONFIG_SOC_AT91SAM9G45) += at91sam9g45.o at91sam9g45_devices.o
+>  obj-$(CONFIG_SOC_AT91SAM9X5)	+= at91sam9x5.o at91sam9x5_devices.o
+>  obj-$(CONFIG_SOC_AT91SAM9N12)	+= at91sam9n12.o at91sam9n12_devices.o
+> -obj-$(CONFIG_SOC_SAMA5D4)	+= sama5d4.o sama5d4_devices.o
 
-Also be aware that while you now do correct PMIC setup in PBL, you still
-unconditionally use a DT with only Rohm PMIC. Given that you now have
-a kernel DT for evkb. Can you add it to arch/arm/dts, enable it in the
-Makefile and choose one or the other DT in PBL like i.MX8MN does?
+This breaks compilation of sama5d4ek_defconfig and
+sama5d4_xplained_defconfig:
 
-Don't forget to add fsl,imx8mm-evkb to the match list in the board.c file.
+arch/arm/boards/sama5d4_xplained/sama5d4_xplained.o: in function `sama5d4_xplained_mem_init':
+arch/arm/boards/sama5d4_xplained/sama5d4_xplained.c:251: undefined reference to `at91_add_device_sdram'
 
->> Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
->> ---
->>  arch/arm/boards/nxp-imx8mm-evk/lowlevel.c | 51 +++++++++++++++--------
->>  1 file changed, 34 insertions(+), 17 deletions(-)
->>
->> diff --git a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
->> index 6132df53ec..409554c2d5 100644
->> --- a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
->> +++ b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
->> @@ -16,6 +16,7 @@
->>  #include <mach/iomux-mx8mm.h>
->>  #include <mach/imx8m-ccm-regs.h>
->>  #include <mfd/bd71837.h>
->> +#include <mfd/pca9450.h>
->>  #include <mach/xload.h>
->>  #include <soc/imx8m/ddr.h>
->>  #include <image-metadata.h>
->> @@ -38,6 +39,25 @@ static void setup_uart(void)
->>  	putc_ll('>');
->>  }
->>  
->> +static struct pmic_config pca9450_cfg[] = {
->> +	/* BUCKxOUT_DVS0/1 control BUCK123 output */
->> +	{ PCA9450_BUCK123_DVS, 0x29 },
->> +	/*
->> +	 * increase VDD_SOC to typical value 0.95V before first
->> +	 * DRAM access, set DVS1 to 0.85v for suspend.
->> +	 * Enable DVS control through PMIC_STBY_REQ and
->> +	 * set B1_ENMODE=1 (ON by PMIC_ON_REQ=H)
->> +	 */
->> +	{ PCA9450_BUCK1OUT_DVS0, 0x1C },
->> +	/* Set DVS1 to 0.85v for suspend */
->> +	/* Enable DVS control through PMIC_STBY_REQ and set B1_ENMODE=1 (ON by PMIC_ON_REQ=H) */
->> +	{ PCA9450_BUCK1OUT_DVS1, 0x14 },
->> +	{ PCA9450_BUCK1CTRL, 0x59 },
->> +
->> +	/* set WDOG_B_CFG to cold reset */
->> +	{ PCA9450_RESET_CTRL, 0xA1 },
->> +};
->> +
->>  static struct pmic_config bd71837_cfg[] = {
->>  	/* decrease RESET key long push time from the default 10s to 10ms */
->>  	{ BD718XX_PWRONCONFIG1, 0x0 },
->> @@ -51,21 +71,6 @@ static struct pmic_config bd71837_cfg[] = {
->>  	{ BD718XX_REGLOCK, 0x11 },
->>  };
->>  
->> -static void power_init_board(void)
->> -{
-> 
-> Can you leave this function as-is? This will make the diff more
-> readable.
-> 
->> -	struct pbl_i2c *i2c;
->> -
->> -	imx8mm_setup_pad(IMX8MM_PAD_I2C1_SCL_I2C1_SCL);
->> -	imx8mm_setup_pad(IMX8MM_PAD_I2C1_SDA_I2C1_SDA);
->> -
->> -	imx8mm_early_clock_init();
->> -	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
->> -
->> -	i2c = imx8m_i2c_early_init(IOMEM(MX8MQ_I2C1_BASE_ADDR));
->> -
->> -	pmic_configure(i2c, 0x4b, bd71837_cfg, ARRAY_SIZE(bd71837_cfg));
->> -}
->> -
->>  extern struct dram_timing_info imx8mm_evk_dram_timing;
->>  
->>  static void start_atf(void)
->> @@ -78,8 +83,20 @@ static void start_atf(void)
->>  	if (current_el() != 3)
->>  		return;
->>  
->> -	power_init_board();
->> -	imx8mm_ddr_init(&imx8mm_evk_dram_timing, DRAM_TYPE_LPDDR4);
->> +	imx8mm_setup_pad(IMX8MM_PAD_I2C1_SCL_I2C1_SCL);
->> +	imx8mm_setup_pad(IMX8MM_PAD_I2C1_SDA_I2C1_SDA);
->> +
->> +	imx8mm_early_clock_init();
->> +	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
->> +
->> +	i2c = imx8m_i2c_early_init(IOMEM(MX8MM_I2C1_BASE_ADDR));
->> +
->> +	imx8mm_ddr_init(&imx8mm_evk_lpddr4_timing, DRAM_TYPE_LPDDR4);
->> +	if (i2c_dev_probe(i2c, 0x25, true) == 0) {
->> +		pmic_configure(i2c, 0x25, pca9450_cfg, ARRAY_SIZE(pca9450_cfg));
->> +	} else {
->> +		pmic_configure(i2c, 0x4b, bd71837_cfg, ARRAY_SIZE(bd71837_cfg));
->> +	}
-> 
-> Nitpick: You can drop the braces (Kernel coding style).
-> 
->>  
->>  	imx8mm_load_and_start_image_via_tfa();
->>  }
-> 
+Several more undefined references follow.
+
+Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
