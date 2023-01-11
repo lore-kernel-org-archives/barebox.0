@@ -1,58 +1,62 @@
-Delivery-date: Wed, 11 Jan 2023 08:53:56 +0100
+Delivery-date: Wed, 11 Jan 2023 08:59:06 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFVvo-008dEc-Ty
-	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 08:53:56 +0100
+	id 1pFW0p-008dXT-ID
+	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 08:59:06 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFVvm-0006nP-7P
-	for lore@pengutronix.de; Wed, 11 Jan 2023 08:53:55 +0100
+	id 1pFW0n-0007SG-Dv
+	for lore@pengutronix.de; Wed, 11 Jan 2023 08:59:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=8GWh2DxQ3gwLvnxCf7mp2NqHi2yH8Z0W+JrKAyjW2hQ=; b=tC793grBT2JLDwuLOj+yLEHyfQ
-	bbXtwo3kR79NxgEfXp6CCweV2+jcTV1FGe281pN1JzMTB6Ahn4bgY1WpsbXucy6ls/EUq4k91jz9S
-	+mZTJNE2yHkuXG3iLPKQPPBCFeZSKaRiDv9wUcxowiea5mni6RMdMkPt77Y+8GGbVRmMIgVkncOp3
-	K0XBhYEFsOxH+xcCw1il49eGPgxRZSXwftVr8hwYZgh2J588zUTz0lfx6RllNb983rLolZCBPVYwH
-	9A1/ANT/3mHHIKJlXZ3/5gGBkgoU6lM5zHIS8fsW1b4paw12EVHBrrllvHj0UhH9CFx9zJj6M+4FH
-	lO4PLqeA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=NduSCrExqQAcu7y8tW6UwHUASWmeytPJAG0PEnMcEds=; b=NGD+DJrH5e5v0krBVZDkzkIFq0
+	tuFP2vqAm0r7hUnv1ndJYWnHxLfQzQ1IhJ1X2QZGvTwdhcuW3HpM3zT0/iWgbvxWt4qZvWCJD9PhY
+	l9Ttnmqm+mIKdF05URG0jd95W5DG/E+DUV7VQ1/V9VjI29hBen0Ik0ptGRy1YjsIN82gsz5PIp3Cq
+	YqQ1nhFANuhGlb8uIPXZaPOGkSFafCrgZLe2KXR/KIfedm3H2rN5ICDI5rBoGm6bACiqGUufhsDvE
+	WhccU2JaYPr6xu4FvjhuAPQHBVwB6B1qV72DlBZq7N30yMgGmvrtn0z6MIxOPcluj1iRinrJTS8R/
+	whIOxF1g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFVuN-00AACD-Fo; Wed, 11 Jan 2023 07:52:27 +0000
+	id 1pFVzU-00ACX6-K5; Wed, 11 Jan 2023 07:57:44 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFVu8-00AA80-19
-	for barebox@lists.infradead.org; Wed, 11 Jan 2023 07:52:13 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1pFVzM-00ACTs-RO
+	for barebox@lists.infradead.org; Wed, 11 Jan 2023 07:57:38 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1pFVu6-0006aE-Nz; Wed, 11 Jan 2023 08:52:10 +0100
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1pFVu6-005FbP-4S; Wed, 11 Jan 2023 08:52:10 +0100
-Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1pFVu5-003ldq-Cl; Wed, 11 Jan 2023 08:52:09 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 11 Jan 2023 08:51:14 +0100
-Message-Id: <20230111075113.898062-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1pFVzJ-0007Kw-6w; Wed, 11 Jan 2023 08:57:33 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pFVzI-0005dp-VO; Wed, 11 Jan 2023 08:57:32 +0100
+Date: Wed, 11 Jan 2023 08:57:32 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230111075732.GC24755@pengutronix.de>
+References: <20230110173513.43277-1-a.fatoum@pengutronix.de>
+ <20230111071240.889926-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230111071240.889926-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230110_235212_109109_020D8074 
-X-CRM114-Status: GOOD (  21.70  )
+X-CRM114-CacheID: sfid-20230110_235736_926258_1C004231 
+X-CRM114-Status: GOOD (  16.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,182 +78,38 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: i.MX8M: bootrom: access OCRAM directly if running in EL3
+Subject: Re: [PATCH] fixup! ARM: switch open-coded instances to
+ platform_mem_driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-It's straight-forward to hack barebox PBL to skip ATF installation
-and to start barebox proper in EL3. This can be useful for debugging
-and may in future be just a Kconfig option like we now have with
-Rockchip.
+On Wed, Jan 11, 2023 at 08:12:40AM +0100, Ahmad Fatoum wrote:
+> Now tested both on i.MX as well and noticed the typo..
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/esdctl.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
-In such a configuration, we don't need to copy the ROM log out of OCRAM,
-because there's no ATF installed there that might overwrite it.
-Therefore, just directly access the event log pointer in BootROM if
-running in EL3. As 0x9e0 is in the first zero page, we use the function
-in zero_page.h to temporarily disable traps in the zero page. We don't
-need to do that in PBL though as even early MMU will be enabled later.
+Could you resend this one? git b4 doesn't cope with this one as well.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-I wanted to send this along with an option to disable ATF via Kconfig,
-but that will need us to touch all boards and maybe replace current_el()
-checks with comparison whether we run in DRAM to avoid renewed setup.
+Plain git b4 tries to apply the fixup first. Explicitly applying the
+first one with
 
-I may look later into this, but this patch may still be useful to have.
----
- arch/arm/mach-imx/Makefile              |  4 ++--
- arch/arm/mach-imx/bootrom-cmd.c         | 14 ++++++++++++--
- arch/arm/mach-imx/include/mach/romapi.h |  4 ++++
- arch/arm/mach-imx/romapi.c              | 24 ++++++++++++++++--------
- include/zero_page.h                     |  2 +-
- 5 files changed, 35 insertions(+), 13 deletions(-)
+git b4 -P_ 20230110173513.43277-1-a.fatoum@pengutronix.de
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index cc834fed7be7..5d70e79b57f1 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -18,8 +18,8 @@ lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
- obj-$(CONFIG_ARCH_IMX7) += imx7.o
- obj-$(CONFIG_ARCH_VF610) += vf610.o
- obj-pbl-$(CONFIG_ARCH_IMX8M) += imx8m.o
--lwl-$(CONFIG_ARCH_IMX8M) += atf.o romapi.o
--obj-pbl-$(CONFIG_ARCH_IMX8M) += tzasc.o
-+lwl-$(CONFIG_ARCH_IMX8M) += atf.o
-+obj-pbl-$(CONFIG_ARCH_IMX8M) += romapi.o tzasc.o
- obj-$(CONFIG_IMX_IIM)	+= iim.o
- obj-$(CONFIG_NAND_IMX) += nand.o
- lwl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
-diff --git a/arch/arm/mach-imx/bootrom-cmd.c b/arch/arm/mach-imx/bootrom-cmd.c
-index 0238d09b169f..c891fd2e0640 100644
---- a/arch/arm/mach-imx/bootrom-cmd.c
-+++ b/arch/arm/mach-imx/bootrom-cmd.c
-@@ -8,6 +8,7 @@
- #include <linux/bitfield.h>
- #include <mach/imx8m-regs.h>
- #include <mach/xload.h>
-+#include <mach/romapi.h>
- #include <asm/barebox-arm.h>
- 
- /* i.MX7 and later ID field is swapped compared to i.MX6 */
-@@ -51,6 +52,9 @@ static int imx8m_bootrom_decode_log(const u32 *rom_log)
- {
- 	int i;
- 
-+	if (!rom_log)
-+		return -ENODATA;
-+
- 	for (i = 0; i < 128; i++) {
- 		u8 event_id = FIELD_GET(ROM_EVENT_FORMAT_V1_ID, rom_log[i]);
- 		u8 event_id_idx = FIELD_GET(ROM_EVENT_FORMAT_V1_ID_IDX, rom_log[i]);
-@@ -178,11 +182,17 @@ static int imx8m_bootrom_decode_log(const u32 *rom_log)
- 
- static int do_bootrom(int argc, char *argv[])
- {
--	const struct imx_scratch_space *scratch = arm_mem_scratch_get();
--	const u32 *rom_log_addr = scratch->bootrom_log;
-+	const u32 *rom_log_addr;
- 	bool log = false;
- 	int ret, opt;
- 
-+	if (current_el() == 3) {
-+		rom_log_addr = __imx8m_get_bootrom_log();
-+	} else {
-+		const struct imx_scratch_space *scratch = arm_mem_scratch_get();
-+		rom_log_addr = scratch->bootrom_log;
-+	}
-+
- 	while((opt = getopt(argc, argv, "la:")) > 0) {
- 		switch(opt) {
- 		case 'a':
-diff --git a/arch/arm/mach-imx/include/mach/romapi.h b/arch/arm/mach-imx/include/mach/romapi.h
-index d22ba7259dd0..0aecfa7f5c15 100644
---- a/arch/arm/mach-imx/include/mach/romapi.h
-+++ b/arch/arm/mach-imx/include/mach/romapi.h
-@@ -3,6 +3,7 @@
- #define __MACH_IMX_ROMAPI_H
- 
- #include <mach/xload.h>
-+#include <linux/types.h>
- 
- struct rom_api {
- 	u16 ver;
-@@ -40,6 +41,9 @@ int imx8mn_bootrom_load_image(void);
- /* only call after DRAM has been configured */
- void imx8m_save_bootrom_log(void *dst);
- 
-+/* only usable in EL3 */
-+const u32 *__imx8m_get_bootrom_log(void);
-+
- #define imx8mq_save_bootrom_log() imx8m_save_bootrom_log(imx8mq_scratch_space())
- #define imx8mm_save_bootrom_log() imx8m_save_bootrom_log(imx8mm_scratch_space())
- #define imx8mn_save_bootrom_log() imx8m_save_bootrom_log(imx8mn_scratch_space())
-diff --git a/arch/arm/mach-imx/romapi.c b/arch/arm/mach-imx/romapi.c
-index 5885fb698ecd..74cc0119afdb 100644
---- a/arch/arm/mach-imx/romapi.c
-+++ b/arch/arm/mach-imx/romapi.c
-@@ -7,6 +7,7 @@
- #include <mach/romapi.h>
- #include <mach/atf.h>
- #include <mach/imx8m-regs.h>
-+#include <zero_page.h>
- 
- static int imx8m_bootrom_load(struct rom_api *rom_api, void *adr, size_t size)
- {
-@@ -50,23 +51,30 @@ int imx8mn_bootrom_load_image(void)
- 	return imx8mp_bootrom_load_image();
- }
- 
--void imx8m_save_bootrom_log(void *dest)
-+const u32 *__imx8m_get_bootrom_log(void)
- {
- 	ulong rom_log_addr;
- 
--	if (!IS_ENABLED(CONFIG_IMX_SAVE_BOOTROM_LOG)) {
--		pr_debug("skipping bootrom log saving\n");
--		return;
--	}
--
--	rom_log_addr = *(u32 *)0x9e0;
-+	zero_page_access();
-+	rom_log_addr = readl(IOMEM(0x9e0));
-+	zero_page_faulting();
- 
- 	if (rom_log_addr < MX8M_OCRAM_BASE_ADDR ||
- 	    rom_log_addr >= MX8M_OCRAM_BASE_ADDR + MX8M_OCRAM_MAX_SIZE ||
- 	    rom_log_addr & 0x3) {
- 		pr_warn("No BootROM log found at address 0x%08lx\n", rom_log_addr);
-+		return NULL;
-+	}
-+
-+	return (u32 *)rom_log_addr;
-+}
-+
-+void imx8m_save_bootrom_log(void *dest)
-+{
-+	if (!IS_ENABLED(CONFIG_IMX_SAVE_BOOTROM_LOG)) {
-+		pr_debug("skipping bootrom log saving\n");
- 		return;
- 	}
- 
--	memcpy(dest, (u32 *)rom_log_addr, 128 * sizeof(u32));
-+	memcpy(dest, __imx8m_get_bootrom_log(), 128 * sizeof(u32));
- }
-diff --git a/include/zero_page.h b/include/zero_page.h
-index 519e65be7628..26a12246f155 100644
---- a/include/zero_page.h
-+++ b/include/zero_page.h
-@@ -4,7 +4,7 @@
- 
- #include <common.h>
- 
--#if defined CONFIG_ARCH_HAS_ZERO_PAGE && defined CONFIG_MMU
-+#if defined CONFIG_ARCH_HAS_ZERO_PAGE && defined CONFIG_MMU && !defined __PBL__
- 
- /*
-  * zero_page_faulting - fault when accessing the zero page
+also doesn't work:
+
+Looking up https://lore.barebox.org/20230110173513.43277-1-a.fatoum%40pengutronix.de
+Analyzing 2 messages in the thread
+Specified msgid is not present in the series, cannot cherrypick
+
+Sascha
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
