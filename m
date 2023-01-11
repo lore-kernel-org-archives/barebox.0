@@ -1,55 +1,59 @@
-Delivery-date: Wed, 11 Jan 2023 12:45:08 +0100
+Delivery-date: Wed, 11 Jan 2023 13:01:37 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFZXZ-008lhG-Gd
-	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 12:45:08 +0100
+	id 1pFZnW-008mFS-M7
+	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 13:01:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFZXX-00034T-5v
-	for lore@pengutronix.de; Wed, 11 Jan 2023 12:45:08 +0100
+	id 1pFZnU-0005ZA-RV
+	for lore@pengutronix.de; Wed, 11 Jan 2023 13:01:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=W9meZUV5a98gu21lnFm5jxy70nFe9Q3550+e2LTqVs4=; b=EluavacdKbiMQZ6HIbjT6qY6XL
-	/7h8Z2sgPTDbVsRYrM0Ahr+FqsfpEuA9cqrcF8PH3W91gPQKqO769EbR0QKJ0IqqmSU8qubK71KLS
-	qx4Mu1Sajjg5U6JmfK1/MNyHf2FEIoTx763ZU+0i6jMEegkUntnUA3FeAvrMIsoiGOljfUqjW63yL
-	Jtcx94VCzvLMuKHPd4kGCUY4Grz5Eycf6yQp0BNEBUxlz8pDb9K9FwxjvlkJLoe+NKd1sj3jWn9JL
-	SlnvFOY2S1o9JEMqmiu5PD/pkghx18aQiO3Dc5MdMm78RpiGIOJSib4tK2RQwDE0aQkzvCdyvze+7
-	JHsoQqLg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=f3WdmUObwtRjAZi6nGi6PHsnUsy2JxXB4XaWo4QXRmY=; b=EMC4teU7HNvxjx3aOIT7g/xL6s
+	Row9BYEuJ/aolmpokP1LSeVuXjRhLJzZx0k03iDnNOnk9DB9Wv8TPum3X40WjTLZ8Ue64SvPwgbhk
+	K6yT0Qyj7Q9YPLjczXJRJO3hxnHaKv+CVTTrttPxIb3OXKgwdgJG+FwDqzQIcLjdzi1vNRl0Y4lba
+	ozszosUpHIntSVuM954E7qGPyYRyjUn0265ZQQiK4zCNsG6RWL1Q2P5lLPY7d1JPzTnsvtXsB8eds
+	r6crg2SeWsF+Wl4OC5QZJBI8i0JNu8T7q+ivgmNlc1UdA5/klhhYCU/fpcP4KV0xCET7eHOoQx9Ap
+	IhECzytQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFZWM-00B7cx-NX; Wed, 11 Jan 2023 11:43:54 +0000
+	id 1pFZm8-00BBf9-ES; Wed, 11 Jan 2023 12:00:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFZWH-00B7bm-QO
-	for barebox@lists.infradead.org; Wed, 11 Jan 2023 11:43:51 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pFZWG-0002q8-4E; Wed, 11 Jan 2023 12:43:48 +0100
-Message-ID: <864f5a74-bff8-a733-8ef1-9c7751670a78@pengutronix.de>
-Date: Wed, 11 Jan 2023 12:43:47 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Content-Language: en-US
-To: Johannes Schneider <johannes.schneider@leica-geosystems.com>,
- barebox@lists.infradead.org
-References: <20230111113729.779283-1-johannes.schneider@leica-geosystems.com>
+	id 1pFZm4-00BBeg-SP
+	for barebox@lists.infradead.org; Wed, 11 Jan 2023 12:00:10 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pFZm2-0005I6-RH; Wed, 11 Jan 2023 13:00:06 +0100
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pFZm1-005Hyy-AK; Wed, 11 Jan 2023 13:00:05 +0100
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pFZlz-004dTW-TC; Wed, 11 Jan 2023 13:00:03 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230111113729.779283-1-johannes.schneider@leica-geosystems.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 11 Jan 2023 13:00:02 +0100
+Message-Id: <20230111120002.1104864-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230111_034349_891575_D66AA0A2 
-X-CRM114-Status: GOOD (  22.75  )
+X-CRM114-CacheID: sfid-20230111_040008_936491_01C95F83 
+X-CRM114-Status: UNSURE (   8.29  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,116 +73,37 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v4] ARM: i.MX8M: separate function call for clock_init
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] driver: drop no longer used RW_SIZE/_MASK macros
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 11.01.23 12:37, Johannes Schneider wrote:
-> Add a separate function call for imx8mp_early_clock_init, to avoid
-> confusion with imx8mm.
-> 
-> Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+O_RWSIZE_MASK is what's now used and it's passed as argument to open.
+There remain no users of either RW_SIZE or RW_SIZE_MASK. Remove to avoid
+confusion.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/driver.h | 3 ---
+ 1 file changed, 3 deletions(-)
 
-> ---
-
-Tip: You can add --- at the end of your git commit message to include
-changelog information in your git history. When you send out the patch,
-the information will be sent out as well, but if you apply it, the changelog
-will be discarded. I find this very convenient to keep track of changes.
-
-Cheers,
-Ahmad
-
->  arch/arm/boards/nxp-imx8mp-evk/lowlevel.c       |  2 +-
->  arch/arm/boards/tqma8mpxl/lowlevel.c            |  2 +-
->  arch/arm/mach-imx/imx8m.c                       | 12 +++++++++---
->  arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h |  1 +
->  4 files changed, 12 insertions(+), 5 deletions(-)
-> 
-> diff --git a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-> index 4f24dd4cd4..3cb24df1ca 100644
-> --- a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-> +++ b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-> @@ -72,7 +72,7 @@ static void power_init_board(void)
->  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SCL__I2C1_SCL | I2C_PAD_CTRL);
->  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SDA__I2C1_SDA | I2C_PAD_CTRL);
->  
-> -	imx8mm_early_clock_init();
-> +	imx8mp_early_clock_init();
->  	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
->  
->  	i2c = imx8m_i2c_early_init(IOMEM(MX8MP_I2C1_BASE_ADDR));
-> diff --git a/arch/arm/boards/tqma8mpxl/lowlevel.c b/arch/arm/boards/tqma8mpxl/lowlevel.c
-> index 0ce0e7a73b..037c7abf4b 100644
-> --- a/arch/arm/boards/tqma8mpxl/lowlevel.c
-> +++ b/arch/arm/boards/tqma8mpxl/lowlevel.c
-> @@ -73,7 +73,7 @@ static void power_init_board(void)
->  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SCL__I2C1_SCL | I2C_PAD_CTRL);
->  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SDA__I2C1_SDA | I2C_PAD_CTRL);
->  
-> -	imx8mm_early_clock_init();
-> +	imx8mp_early_clock_init();
->  	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
->  
->  	i2c = imx8m_i2c_early_init(IOMEM(MX8MP_I2C1_BASE_ADDR));
-> diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
-> index 9758525b54..7f3856e545 100644
-> --- a/arch/arm/mach-imx/imx8m.c
-> +++ b/arch/arm/mach-imx/imx8m.c
-> @@ -182,7 +182,7 @@ int imx8mq_init(void)
->  #define IMX8MM_CCM_ANALOG_SYS_PLL2_GEN_CTRL	0x104
->  #define IMX8MM_CCM_ANALOG_SYS_PLL3_GEN_CTRL	0x114
->  
-> -static void __imx8mm_early_clock_init(unsigned long pll3_freq) /* and later */
-> +static void __imx8m_early_clock_init(unsigned long pll3_freq) /* and later */
->  {
->  	void __iomem *ana = IOMEM(MX8M_ANATOP_BASE_ADDR);
->  	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
-> @@ -252,14 +252,20 @@ static void __imx8mm_early_clock_init(unsigned long pll3_freq) /* and later */
->  
->  void imx8mm_early_clock_init(void)
->  {
-> -	__imx8mm_early_clock_init(750000000UL);
-> +	__imx8m_early_clock_init(750000000UL);
->  }
->  
->  void imx8mn_early_clock_init(void)
->  {
-> -	__imx8mm_early_clock_init(600000000UL);
-> +	__imx8m_early_clock_init(600000000UL);
->  }
->  
-> +void imx8mp_early_clock_init(void)
-> +{
-> +	__imx8m_early_clock_init(750000000UL);
-> +}
-> +
-> +
->  #define KEEP_ALIVE			0x18
->  #define VER_L				0x1c
->  #define VER_H				0x20
-> diff --git a/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
-> index eeb15f4dd0..659615e1cc 100644
-> --- a/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
-> +++ b/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
-> @@ -53,6 +53,7 @@
->  void imx8m_early_setup_uart_clock(void);
->  void imx8mm_early_clock_init(void);
->  void imx8mn_early_clock_init(void);
-> +void imx8mp_early_clock_init(void);
->  void imx8m_clock_set_target_val(int clock_id, u32 val);
->  void imx8m_ccgr_clock_enable(int index);
->  void imx8m_ccgr_clock_disable(int index);
-
+diff --git a/include/driver.h b/include/driver.h
+index e1b1ebde5b5f..957b23dff79a 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -128,9 +128,6 @@ struct driver {
+ #define device_d device
+ #define driver_d driver
+ 
+-#define RW_SIZE(x)      (x)
+-#define RW_SIZE_MASK    0x7
+-
+ /* dynamically assign the next free id */
+ #define DEVICE_ID_DYNAMIC	-2
+ /* do not use an id (only one device available */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
 
 
 
