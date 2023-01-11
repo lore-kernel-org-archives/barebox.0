@@ -1,60 +1,75 @@
-Delivery-date: Wed, 11 Jan 2023 09:05:27 +0100
+Delivery-date: Wed, 11 Jan 2023 09:05:36 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFW6x-008dyw-Nj
-	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 09:05:27 +0100
+	id 1pFW77-008dzV-GH
+	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 09:05:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFW6u-0001Ls-Ga
-	for lore@pengutronix.de; Wed, 11 Jan 2023 09:05:26 +0100
+	id 1pFW75-0001Q2-3A
+	for lore@pengutronix.de; Wed, 11 Jan 2023 09:05:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Fk6TQbvfLLr2sv8mZkmvgsrGVWA60aMSU6fZmUE4rug=; b=YZyQm+03/kmCUMWwyA/JgP0CzN
-	ScW+VZMq8nLSfQKiNj+tnANwbi+DAYkuDhLRAQ/Yl+nLQ3XymitcWq1DBYcT5pmDHAV74HjBSXfGP
-	SLwoSORZxRDFM41NP1z2HTX5BCj6MnqFFtDJ43v6alauV3/Xnwdbe89wNiPxWq/IkFTg3rsHEPE3f
-	Prr5+Vyl2E/UKcCrAYzc58QoMT28ARZWM+maFRUStgFcJN3y2GaDryKmjN6lE7Vw2mrCjYshca31f
-	e3oYVGL5IjcNX/8vrnPXruntLVwbZvXIGCRdWpib1DNM8kr8ezoNwncOyOVdElgLYFigvLBFNRu97
-	3kg7mySA==;
+	bh=xuIZCYZk+lcsHnmCmLV/srvdJO9XeWzQ8buAb4B9qUg=; b=q7EmkPN6zLZKiN0OyP78c9orr9
+	30lh9E7EkVXYTJUDBPU5Qz8N9TJlRF05CmtIwjkL1zWeZtQl4Et8WW9kWbvClcplsMeyOxKb4Jx7y
+	Wrwf+CX2GsWiQc2WR/fkJ9zL7N5Y4RMmO/OFpY8pa0xtdHCAxlz3Y6lTurAR+Q30/40Q0lNASMReJ
+	kseZngSqvWBSv5275+LAGhoWr1Ftcb10yL99nlDNzeS6IBSxSSsVGw9SHAyHdnmBc+R6jMPrTwxQA
+	iXF680e8icwNkvm+fu12myCEYSdS8ddaYDrN9p1AtCxJ5fw4gmR6NFvVpYdSUWGrWZuIR8RQZirHc
+	zLX5nXNw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFW5P-00AFsz-RW; Wed, 11 Jan 2023 08:03:52 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1pFW5c-00AG3A-C4; Wed, 11 Jan 2023 08:04:04 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFW37-00AEX1-BK
-	for barebox@lists.infradead.org; Wed, 11 Jan 2023 08:01:39 +0000
+	id 1pFW3I-00AEfG-Db
+	for barebox@bombadil.infradead.org; Wed, 11 Jan 2023 08:01:40 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=xuIZCYZk+lcsHnmCmLV/srvdJO9XeWzQ8buAb4B9qUg=; b=cYJEKREON+70AeUy8mRdeDovKr
+	gWuZXDzlDxAoHzvPGowbkM47IQbb57D3QxYAXgVcefsC13U321uSyou1g9iPl4VkP2Oc+PcJYn+l8
+	AIec2pZiVYMRUm9/KajnEOXIUZhjdf00eRHLfERNvRS+fkueemM7o6R5O8NilzIuHdKweMpVk+vsJ
+	4sXvjbWsPBoyGkgON/zE0fRW/bFdSvNGCq+LkEA7cGGsU6A/PrdVAz48eDlAycxd3b7sxaCHIasOr
+	qQX2RbCWH5cTeLHIAkuQby04i1C49aq+DSHDUXbSJtjEokRusVav8HdWklzYT8BzXeHoCmxkHA6TG
+	aJekE8Rw==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1pFW35-003ZZb-2l
+	for barebox@lists.infradead.org;
+	Wed, 11 Jan 2023 08:01:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFW36-0008Lp-0G; Wed, 11 Jan 2023 09:01:28 +0100
+	id 1pFW37-0008Nk-4e; Wed, 11 Jan 2023 09:01:29 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFW35-005Ff8-A7; Wed, 11 Jan 2023 09:01:27 +0100
+	id 1pFW36-005FfZ-IB; Wed, 11 Jan 2023 09:01:28 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFW33-003uzo-9R; Wed, 11 Jan 2023 09:01:25 +0100
+	id 1pFW33-003uzr-9v; Wed, 11 Jan 2023 09:01:25 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 11 Jan 2023 09:01:10 +0100
-Message-Id: <20230111080119.933475-3-a.fatoum@pengutronix.de>
+Date: Wed, 11 Jan 2023 09:01:11 +0100
+Message-Id: <20230111080119.933475-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230111080119.933475-1-a.fatoum@pengutronix.de>
 References: <20230111080119.933475-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230111_000129_830880_173D536E 
-X-CRM114-Status: GOOD (  30.06  )
+X-CRM114-CacheID: sfid-20230111_080128_208499_011CBAB9 
+X-CRM114-Status: GOOD (  15.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,856 +91,116 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 02/11] regmap: support formatted read and write
+Subject: [PATCH 03/11] regmap: port regmap_init_spi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Regmap support in barebox compared to Linux is quite primitive.
-For incoming SPI regmap support, we will want users of the API to just
-populate their regmap config appropriately and have the core do the heavy
-lifting of formatting register and value into the buffer correctly.
-
-For this, import the formatted read/write functionality of Linux into
-a new regmap-fmt.c file. Unlike Linux, we keep this functionally gated
-behind a Kconfig option, so it's only selected when needed, e.g. via
-REGMAP_SPI in a follow-up commit.
+We already have regmap_init_i2c, so add regmap_init_spi as well. Unlike
+regmap_init_i2c, this one makes full use of the formatted regmap API.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/base/Kconfig             |   2 +
- drivers/base/regmap/Kconfig      |   4 +
- drivers/base/regmap/Makefile     |   1 +
- drivers/base/regmap/internal.h   |  24 ++
- drivers/base/regmap/regmap-fmt.c | 577 +++++++++++++++++++++++++++++++
- drivers/base/regmap/regmap.c     |  34 +-
- include/regmap.h                 |  46 +++
- 7 files changed, 686 insertions(+), 2 deletions(-)
- create mode 100644 drivers/base/regmap/Kconfig
- create mode 100644 drivers/base/regmap/regmap-fmt.c
+ drivers/base/regmap/Kconfig      |  5 ++++
+ drivers/base/regmap/Makefile     |  1 +
+ drivers/base/regmap/regmap-spi.c | 42 ++++++++++++++++++++++++++++++++
+ include/regmap.h                 | 13 ++++++++++
+ 4 files changed, 61 insertions(+)
+ create mode 100644 drivers/base/regmap/regmap-spi.c
 
-diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
-index eebb60ce9193..3788231b6e82 100644
---- a/drivers/base/Kconfig
-+++ b/drivers/base/Kconfig
-@@ -5,3 +5,5 @@ config PM_GENERIC_DOMAINS
- 
- config FEATURE_CONTROLLER
- 	bool "Feature controller support" if COMPILE_TEST
-+
-+source "drivers/base/regmap/Kconfig"
 diff --git a/drivers/base/regmap/Kconfig b/drivers/base/regmap/Kconfig
-new file mode 100644
-index 000000000000..4fb6b6bcecf8
---- /dev/null
+index 4fb6b6bcecf8..afe59a538c87 100644
+--- a/drivers/base/regmap/Kconfig
 +++ b/drivers/base/regmap/Kconfig
-@@ -0,0 +1,4 @@
-+# SPDX-License-Identifier: GPL-2.0-only
+@@ -2,3 +2,8 @@
+ 
+ config REGMAP_FORMATTED
+ 	bool
 +
-+config REGMAP_FORMATTED
-+	bool
++config REGMAP_SPI
++	bool "SPI regmaps" if COMPILE_TEST
++	depends on SPI
++	select REGMAP_FORMATTED
 diff --git a/drivers/base/regmap/Makefile b/drivers/base/regmap/Makefile
-index b136a72409fc..ef6814a50277 100644
+index ef6814a50277..d99db4277149 100644
 --- a/drivers/base/regmap/Makefile
 +++ b/drivers/base/regmap/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
- obj-y	+= regmap.o
+@@ -3,3 +3,4 @@ obj-y	+= regmap.o
  obj-y	+= regmap-mmio.o
-+obj-$(CONFIG_REGMAP_FORMATTED)	+= regmap-fmt.o
+ obj-$(CONFIG_REGMAP_FORMATTED)	+= regmap-fmt.o
  obj-$(CONFIG_I2C)	+= regmap-i2c.o
-diff --git a/drivers/base/regmap/internal.h b/drivers/base/regmap/internal.h
-index 30ac6d162d73..89a4ed6066b0 100644
---- a/drivers/base/regmap/internal.h
-+++ b/drivers/base/regmap/internal.h
-@@ -8,9 +8,15 @@
- struct regmap_bus;
- 
- struct regmap_format {
-+	size_t buf_size;
- 	size_t reg_bytes;
- 	size_t pad_bytes;
- 	size_t val_bytes;
-+	void (*format_write)(struct regmap *map,
-+			     unsigned int reg, unsigned int val);
-+	void (*format_reg)(void *buf, unsigned int reg, unsigned int shift);
-+	void (*format_val)(void *buf, unsigned int val, unsigned int shift);
-+	unsigned int (*parse_val)(const void *buf);
- };
- 
- struct regmap {
-@@ -20,14 +26,32 @@ struct regmap {
- 	void *bus_context;
- 	struct list_head list;
- 	int reg_stride;
-+	void *work_buf;     /* Scratch buffer used to format I/O */
- 	struct regmap_format format;
-+	unsigned int read_flag_mask;
-+	unsigned int write_flag_mask;
-+	int reg_shift;
- 	unsigned int max_register;
- 
- 	struct cdev cdev;
-+
-+	int (*reg_read)(void *context, unsigned int reg,
-+			unsigned int *val);
-+	int (*reg_write)(void *context, unsigned int reg,
-+			 unsigned int val);
- };
- 
- enum regmap_endian regmap_get_val_endian(struct device *dev,
- 					 const struct regmap_bus *bus,
- 					 const struct regmap_config *config);
- 
-+#ifdef CONFIG_REGMAP_FORMATTED
-+int regmap_formatted_init(struct regmap *map, const struct regmap_config *);
-+#else
-+static inline int regmap_formatted_init(struct regmap *map, const struct regmap_config *cfg)
-+{
-+	return 0;
-+}
-+#endif
-+
- #endif
-diff --git a/drivers/base/regmap/regmap-fmt.c b/drivers/base/regmap/regmap-fmt.c
++obj-$(CONFIG_REGMAP_SPI)	+= regmap-spi.o
+diff --git a/drivers/base/regmap/regmap-spi.c b/drivers/base/regmap/regmap-spi.c
 new file mode 100644
-index 000000000000..9621cae3b65e
+index 000000000000..5a0e418065b8
 --- /dev/null
-+++ b/drivers/base/regmap/regmap-fmt.c
-@@ -0,0 +1,577 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Formatted register map access API
-+ *
-+ * Copyright 2022 Ahmad Fatoum <a.fatoum@pengutronix.de>
-+ *
-+ * based on Kernel code:
-+ *
-+ * Copyright 2011 Wolfson Microelectronics plc
-+ *
-+ * Author: Mark Brown <broonie@opensource.wolfsonmicro.com>
-+ */
++++ b/drivers/base/regmap/regmap-spi.c
+@@ -0,0 +1,42 @@
++// SPDX-License-Identifier: GPL-2.0
++//
++// Register map access API - SPI support
++//
++// Copyright 2011 Wolfson Microelectronics plc
++//
++// Author: Mark Brown <broonie@opensource.wolfsonmicro.com>
 +
-+#include <common.h>
 +#include <regmap.h>
-+#include <linux/log2.h>
-+#include <asm/unaligned.h>
++#include <spi/spi.h>
 +
-+#include "internal.h"
-+
-+static void regmap_format_12_20_write(struct regmap *map,
-+				     unsigned int reg, unsigned int val)
++static int regmap_spi_write(void *context, const void *data, size_t count)
 +{
-+	u8 *out = map->work_buf;
++	struct device_d *dev = context;
++	struct spi_device *spi = to_spi_device(dev);
 +
-+	out[0] = reg >> 4;
-+	out[1] = (reg << 4) | (val >> 16);
-+	out[2] = val >> 8;
-+	out[3] = val;
++	return spi_write(spi, data, count);
 +}
 +
-+
-+static void regmap_format_2_6_write(struct regmap *map,
-+				     unsigned int reg, unsigned int val)
++static int regmap_spi_read(void *context,
++			   const void *reg, size_t reg_size,
++			   void *val, size_t val_size)
 +{
-+	u8 *out = map->work_buf;
++	struct device_d *dev = context;
++	struct spi_device *spi = to_spi_device(dev);
 +
-+	*out = (reg << 6) | val;
++	return spi_write_then_read(spi, reg, reg_size, val, val_size);
 +}
 +
-+static void regmap_format_4_12_write(struct regmap *map,
-+				     unsigned int reg, unsigned int val)
++static const struct regmap_bus regmap_spi = {
++	.write = regmap_spi_write,
++	.read = regmap_spi_read,
++	.read_flag_mask = 0x80,
++	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
++	.val_format_endian_default = REGMAP_ENDIAN_BIG,
++};
++
++struct regmap *regmap_init_spi(struct spi_device *spi,
++			       const struct regmap_config *config)
 +{
-+	__be16 *out = map->work_buf;
-+	*out = cpu_to_be16((reg << 12) | val);
++	return regmap_init(&spi->dev, &regmap_spi, &spi->dev, config);
 +}
-+
-+static void regmap_format_7_9_write(struct regmap *map,
-+				    unsigned int reg, unsigned int val)
-+{
-+	__be16 *out = map->work_buf;
-+	*out = cpu_to_be16((reg << 9) | val);
-+}
-+
-+static void regmap_format_7_17_write(struct regmap *map,
-+				    unsigned int reg, unsigned int val)
-+{
-+	u8 *out = map->work_buf;
-+
-+	out[2] = val;
-+	out[1] = val >> 8;
-+	out[0] = (val >> 16) | (reg << 1);
-+}
-+
-+static void regmap_format_10_14_write(struct regmap *map,
-+				    unsigned int reg, unsigned int val)
-+{
-+	u8 *out = map->work_buf;
-+
-+	out[2] = val;
-+	out[1] = (val >> 8) | (reg << 6);
-+	out[0] = reg >> 2;
-+}
-+
-+static void regmap_format_8(void *buf, unsigned int val, unsigned int shift)
-+{
-+	u8 *b = buf;
-+
-+	b[0] = val << shift;
-+}
-+
-+static void regmap_format_16_be(void *buf, unsigned int val, unsigned int shift)
-+{
-+	put_unaligned_be16(val << shift, buf);
-+}
-+
-+static void regmap_format_16_le(void *buf, unsigned int val, unsigned int shift)
-+{
-+	put_unaligned_le16(val << shift, buf);
-+}
-+
-+static void regmap_format_16_native(void *buf, unsigned int val,
-+				    unsigned int shift)
-+{
-+	u16 v = val << shift;
-+
-+	memcpy(buf, &v, sizeof(v));
-+}
-+
-+static void regmap_format_24(void *buf, unsigned int val, unsigned int shift)
-+{
-+	u8 *b = buf;
-+
-+	val <<= shift;
-+
-+	b[0] = val >> 16;
-+	b[1] = val >> 8;
-+	b[2] = val;
-+}
-+
-+static void regmap_format_32_be(void *buf, unsigned int val, unsigned int shift)
-+{
-+	put_unaligned_be32(val << shift, buf);
-+}
-+
-+static void regmap_format_32_le(void *buf, unsigned int val, unsigned int shift)
-+{
-+	put_unaligned_le32(val << shift, buf);
-+}
-+
-+static void regmap_format_32_native(void *buf, unsigned int val,
-+				    unsigned int shift)
-+{
-+	u32 v = val << shift;
-+
-+	memcpy(buf, &v, sizeof(v));
-+}
-+
-+#ifdef CONFIG_64BIT
-+static void regmap_format_64_be(void *buf, unsigned int val, unsigned int shift)
-+{
-+	put_unaligned_be64((u64) val << shift, buf);
-+}
-+
-+static void regmap_format_64_le(void *buf, unsigned int val, unsigned int shift)
-+{
-+	put_unaligned_le64((u64) val << shift, buf);
-+}
-+
-+static void regmap_format_64_native(void *buf, unsigned int val,
-+				    unsigned int shift)
-+{
-+	u64 v = (u64) val << shift;
-+
-+	memcpy(buf, &v, sizeof(v));
-+}
-+#endif
-+
-+static unsigned int regmap_parse_8(const void *buf)
-+{
-+	const u8 *b = buf;
-+
-+	return b[0];
-+}
-+
-+static unsigned int regmap_parse_16_be(const void *buf)
-+{
-+	return get_unaligned_be16(buf);
-+}
-+
-+static unsigned int regmap_parse_16_le(const void *buf)
-+{
-+	return get_unaligned_le16(buf);
-+}
-+
-+static unsigned int regmap_parse_16_native(const void *buf)
-+{
-+	u16 v;
-+
-+	memcpy(&v, buf, sizeof(v));
-+	return v;
-+}
-+
-+static unsigned int regmap_parse_24(const void *buf)
-+{
-+	const u8 *b = buf;
-+	unsigned int ret = b[2];
-+	ret |= ((unsigned int)b[1]) << 8;
-+	ret |= ((unsigned int)b[0]) << 16;
-+
-+	return ret;
-+}
-+
-+static unsigned int regmap_parse_32_be(const void *buf)
-+{
-+	return get_unaligned_be32(buf);
-+}
-+
-+static unsigned int regmap_parse_32_le(const void *buf)
-+{
-+	return get_unaligned_le32(buf);
-+}
-+
-+static unsigned int regmap_parse_32_native(const void *buf)
-+{
-+	u32 v;
-+
-+	memcpy(&v, buf, sizeof(v));
-+	return v;
-+}
-+
-+#ifdef CONFIG_64BIT
-+static unsigned int regmap_parse_64_be(const void *buf)
-+{
-+	return get_unaligned_be64(buf);
-+}
-+
-+static unsigned int regmap_parse_64_le(const void *buf)
-+{
-+	return get_unaligned_le64(buf);
-+}
-+
-+static unsigned int regmap_parse_64_native(const void *buf)
-+{
-+	u64 v;
-+
-+	memcpy(&v, buf, sizeof(v));
-+	return v;
-+}
-+#endif
-+
-+
-+static enum regmap_endian regmap_get_reg_endian(const struct regmap_bus *bus,
-+					const struct regmap_config *config)
-+{
-+	enum regmap_endian endian;
-+
-+	/* Retrieve the endianness specification from the regmap config */
-+	endian = config->reg_format_endian;
-+
-+	/* If the regmap config specified a non-default value, use that */
-+	if (endian != REGMAP_ENDIAN_DEFAULT)
-+		return endian;
-+
-+	/* Retrieve the endianness specification from the bus config */
-+	if (bus && bus->reg_format_endian_default)
-+		endian = bus->reg_format_endian_default;
-+
-+	/* If the bus specified a non-default value, use that */
-+	if (endian != REGMAP_ENDIAN_DEFAULT)
-+		return endian;
-+
-+	/* Use this if no other value was found */
-+	return REGMAP_ENDIAN_BIG;
-+}
-+
-+static void regmap_set_work_buf_flag_mask(struct regmap *map, int max_bytes,
-+					  unsigned long mask)
-+{
-+	u8 *buf;
-+	int i;
-+
-+	if (!mask || !map->work_buf)
-+		return;
-+
-+	buf = map->work_buf;
-+
-+	for (i = 0; i < max_bytes; i++)
-+		buf[i] |= (mask >> (8 * i)) & 0xff;
-+}
-+
-+static int _regmap_raw_read(struct regmap *map, unsigned int reg, void *val,
-+			    unsigned int val_len, bool noinc)
-+{
-+	const struct regmap_bus *bus = map->bus;
-+
-+	if (!bus->read)
-+		return -EINVAL;
-+
-+	map->format.format_reg(map->work_buf, reg, map->reg_shift);
-+	regmap_set_work_buf_flag_mask(map, map->format.reg_bytes,
-+				      map->read_flag_mask);
-+
-+	return bus->read(map->bus_context, map->work_buf,
-+			 map->format.reg_bytes + map->format.pad_bytes,
-+			 val, val_len);
-+
-+}
-+
-+static int _regmap_bus_read(void *context, unsigned int reg,
-+			    unsigned int *val)
-+{
-+	int ret;
-+	struct regmap *map = context;
-+	void *work_val = map->work_buf + map->format.reg_bytes +
-+		map->format.pad_bytes;
-+
-+	if (!map->format.parse_val)
-+		return -EINVAL;
-+
-+	ret = _regmap_raw_read(map, reg, work_val, map->format.val_bytes, false);
-+	if (ret == 0)
-+		*val = map->format.parse_val(work_val);
-+
-+	return ret;
-+}
-+
-+static int _regmap_bus_formatted_write(void *context, unsigned int reg,
-+				       unsigned int val)
-+{
-+	struct regmap *map = context;
-+
-+	map->format.format_write(map, reg, val);
-+
-+	return map->bus->write(map->bus_context, map->work_buf,
-+			      map->format.buf_size);
-+}
-+
-+static int _regmap_raw_write_impl(struct regmap *map, unsigned int reg,
-+				  const void *val, size_t val_len, bool noinc)
-+{
-+	void *work_val = map->work_buf + map->format.reg_bytes +
-+		map->format.pad_bytes;
-+
-+	map->format.format_reg(map->work_buf, reg, map->reg_shift);
-+	regmap_set_work_buf_flag_mask(map, map->format.reg_bytes,
-+				      map->write_flag_mask);
-+
-+	/*
-+	 * Essentially all I/O mechanisms will be faster with a single
-+	 * buffer to write.  Since register syncs often generate raw
-+	 * writes of single registers optimise that case.
-+	 */
-+	if (val != work_val && val_len == map->format.val_bytes) {
-+		memcpy(work_val, val, map->format.val_bytes);
-+		val = work_val;
-+	}
-+
-+	/* If we're doing a single register write we can probably just
-+	 * send the work_buf directly, otherwise try to do a gather
-+	 * write.
-+	 */
-+	return map->bus->write(map->bus_context, map->work_buf,
-+			       map->format.reg_bytes +
-+			       map->format.pad_bytes +
-+			       val_len);
-+
-+}
-+
-+static int _regmap_bus_raw_write(void *context, unsigned int reg,
-+				 unsigned int val)
-+{
-+	struct regmap *map = context;
-+
-+	WARN_ON(!map->format.format_val);
-+
-+	map->format.format_val(map->work_buf + map->format.reg_bytes
-+			       + map->format.pad_bytes, val, 0);
-+	return _regmap_raw_write_impl(map, reg,
-+				      map->work_buf +
-+				      map->format.reg_bytes +
-+				      map->format.pad_bytes,
-+				      map->format.val_bytes,
-+				      false);
-+}
-+
-+int regmap_formatted_init(struct regmap *map, const struct regmap_config *config)
-+{
-+	enum regmap_endian reg_endian, val_endian;
-+	const struct regmap_bus *bus = map->bus;
-+
-+	if (map->reg_read || map->reg_write)
-+		return 0;
-+
-+	map->format.buf_size = DIV_ROUND_UP(config->reg_bits +
-+			config->val_bits + config->pad_bits, 8);
-+
-+	map->work_buf = xzalloc(map->format.buf_size);
-+
-+	if (config->read_flag_mask || config->write_flag_mask) {
-+		map->read_flag_mask = config->read_flag_mask;
-+		map->write_flag_mask = config->write_flag_mask;
-+	} else {
-+		map->read_flag_mask = bus->read_flag_mask;
-+	}
-+
-+	map->reg_read = _regmap_bus_read;
-+
-+	reg_endian = regmap_get_reg_endian(bus, config);
-+	val_endian = regmap_get_val_endian(map->dev, bus, config);
-+
-+	switch (config->reg_bits + config->pad_bits % 8) {
-+	case 2:
-+		switch (config->val_bits) {
-+		case 6:
-+			map->format.format_write = regmap_format_2_6_write;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+
-+	case 4:
-+		switch (config->val_bits) {
-+		case 12:
-+			map->format.format_write = regmap_format_4_12_write;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+
-+	case 7:
-+		switch (config->val_bits) {
-+		case 9:
-+			map->format.format_write = regmap_format_7_9_write;
-+			break;
-+		case 17:
-+			map->format.format_write = regmap_format_7_17_write;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+
-+	case 10:
-+		switch (config->val_bits) {
-+		case 14:
-+			map->format.format_write = regmap_format_10_14_write;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+
-+	case 12:
-+		switch (config->val_bits) {
-+		case 20:
-+			map->format.format_write = regmap_format_12_20_write;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+
-+	case 8:
-+		map->format.format_reg = regmap_format_8;
-+		break;
-+
-+	case 16:
-+		switch (reg_endian) {
-+		case REGMAP_ENDIAN_BIG:
-+			map->format.format_reg = regmap_format_16_be;
-+			break;
-+		case REGMAP_ENDIAN_LITTLE:
-+			map->format.format_reg = regmap_format_16_le;
-+			break;
-+		case REGMAP_ENDIAN_NATIVE:
-+			map->format.format_reg = regmap_format_16_native;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+
-+	case 24:
-+		if (reg_endian != REGMAP_ENDIAN_BIG)
-+			return -EINVAL;
-+		map->format.format_reg = regmap_format_24;
-+		break;
-+
-+	case 32:
-+		switch (reg_endian) {
-+		case REGMAP_ENDIAN_BIG:
-+			map->format.format_reg = regmap_format_32_be;
-+			break;
-+		case REGMAP_ENDIAN_LITTLE:
-+			map->format.format_reg = regmap_format_32_le;
-+			break;
-+		case REGMAP_ENDIAN_NATIVE:
-+			map->format.format_reg = regmap_format_32_native;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+
-+#ifdef CONFIG_64BIT
-+	case 64:
-+		switch (reg_endian) {
-+		case REGMAP_ENDIAN_BIG:
-+			map->format.format_reg = regmap_format_64_be;
-+			break;
-+		case REGMAP_ENDIAN_LITTLE:
-+			map->format.format_reg = regmap_format_64_le;
-+			break;
-+		case REGMAP_ENDIAN_NATIVE:
-+			map->format.format_reg = regmap_format_64_native;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+#endif
-+
-+	default:
-+		return -EINVAL;
-+	}
-+
-+	switch (config->val_bits) {
-+	case 8:
-+		map->format.format_val = regmap_format_8;
-+		map->format.parse_val = regmap_parse_8;
-+		break;
-+	case 16:
-+		switch (val_endian) {
-+		case REGMAP_ENDIAN_BIG:
-+			map->format.format_val = regmap_format_16_be;
-+			map->format.parse_val = regmap_parse_16_be;
-+			break;
-+		case REGMAP_ENDIAN_LITTLE:
-+			map->format.format_val = regmap_format_16_le;
-+			map->format.parse_val = regmap_parse_16_le;
-+			break;
-+		case REGMAP_ENDIAN_NATIVE:
-+			map->format.format_val = regmap_format_16_native;
-+			map->format.parse_val = regmap_parse_16_native;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+	case 24:
-+		if (val_endian != REGMAP_ENDIAN_BIG)
-+			return -EINVAL;
-+		map->format.format_val = regmap_format_24;
-+		map->format.parse_val = regmap_parse_24;
-+		break;
-+	case 32:
-+		switch (val_endian) {
-+		case REGMAP_ENDIAN_BIG:
-+			map->format.format_val = regmap_format_32_be;
-+			map->format.parse_val = regmap_parse_32_be;
-+			break;
-+		case REGMAP_ENDIAN_LITTLE:
-+			map->format.format_val = regmap_format_32_le;
-+			map->format.parse_val = regmap_parse_32_le;
-+			break;
-+		case REGMAP_ENDIAN_NATIVE:
-+			map->format.format_val = regmap_format_32_native;
-+			map->format.parse_val = regmap_parse_32_native;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+#ifdef CONFIG_64BIT
-+	case 64:
-+		switch (val_endian) {
-+		case REGMAP_ENDIAN_BIG:
-+			map->format.format_val = regmap_format_64_be;
-+			map->format.parse_val = regmap_parse_64_be;
-+			break;
-+		case REGMAP_ENDIAN_LITTLE:
-+			map->format.format_val = regmap_format_64_le;
-+			map->format.parse_val = regmap_parse_64_le;
-+			break;
-+		case REGMAP_ENDIAN_NATIVE:
-+			map->format.format_val = regmap_format_64_native;
-+			map->format.parse_val = regmap_parse_64_native;
-+			break;
-+		default:
-+			return -EINVAL;
-+		}
-+		break;
-+#endif
-+	}
-+
-+	if (map->format.format_write)
-+		map->reg_write = _regmap_bus_formatted_write;
-+	else if (map->format.format_val)
-+		map->reg_write = _regmap_bus_raw_write;
-+	else
-+		return -EOPNOTSUPP;
-+
-+	return 0;
-+}
-diff --git a/drivers/base/regmap/regmap.c b/drivers/base/regmap/regmap.c
-index 1b0985376a1f..3685226dd1d5 100644
---- a/drivers/base/regmap/regmap.c
-+++ b/drivers/base/regmap/regmap.c
-@@ -64,6 +64,23 @@ enum regmap_endian regmap_get_val_endian(struct device *dev,
- }
- EXPORT_SYMBOL_GPL(regmap_get_val_endian);
- 
-+static int _regmap_bus_reg_read(void *context, unsigned int reg,
-+				unsigned int *val)
-+{
-+	struct regmap *map = context;
-+
-+	return map->bus->reg_read(map->bus_context, reg, val);
-+}
-+
-+
-+static int _regmap_bus_reg_write(void *context, unsigned int reg,
-+				 unsigned int val)
-+{
-+	struct regmap *map = context;
-+
-+	return map->bus->reg_write(map->bus_context, reg, val);
-+}
-+
- /*
-  * regmap_init - initialize and register a regmap
-  *
-@@ -80,6 +97,7 @@ struct regmap *regmap_init(struct device *dev,
- 			     const struct regmap_config *config)
- {
- 	struct regmap *map;
-+	int ret;
- 
- 	map = xzalloc(sizeof(*map));
- 	map->dev = dev;
-@@ -92,8 +110,20 @@ struct regmap *regmap_init(struct device *dev,
- 		map->reg_stride = 1;
- 	map->format.pad_bytes = config->pad_bits / 8;
- 	map->format.val_bytes = DIV_ROUND_UP(config->val_bits, 8);
-+	map->reg_shift = config->pad_bits % 8;
- 	map->max_register = config->max_register;
- 
-+	if (!bus->read || !bus->write) {
-+		map->reg_read = _regmap_bus_reg_read;
-+		map->reg_write = _regmap_bus_reg_write;
-+	}
-+
-+	ret = regmap_formatted_init(map, config);
-+	if (ret) {
-+		free(map);
-+		return ERR_PTR(ret);
-+	}
-+
- 	list_add_tail(&map->list, &regmaps);
- 
- 	return map;
-@@ -139,7 +169,7 @@ struct device *regmap_get_device(struct regmap *map)
-  */
- int regmap_write(struct regmap *map, unsigned int reg, unsigned int val)
- {
--	return map->bus->reg_write(map->bus_context, reg, val);
-+	return map->reg_write(map, reg, val);
- }
- 
- /*
-@@ -153,7 +183,7 @@ int regmap_write(struct regmap *map, unsigned int reg, unsigned int val)
-  */
- int regmap_read(struct regmap *map, unsigned int reg, unsigned int *val)
- {
--	return map->bus->reg_read(map->bus_context, reg, val);
-+	return map->reg_read(map, reg, val);
- }
- 
- /**
 diff --git a/include/regmap.h b/include/regmap.h
-index 44dd8f38c8af..36a75eb34e03 100644
+index 36a75eb34e03..8f191c87cfcb 100644
 --- a/include/regmap.h
 +++ b/include/regmap.h
-@@ -2,6 +2,9 @@
- #ifndef __REGMAP_H
- #define __REGMAP_H
- 
-+#include <linux/compiler.h>
-+#include <linux/types.h>
-+
- enum regmap_endian {
- 	/* Unspecified -> 0 -> Backwards compatible default */
- 	REGMAP_ENDIAN_DEFAULT = 0,
-@@ -23,7 +26,14 @@ enum regmap_endian {
-  * @pad_bits: Number of bits of padding between register and value.
-  * @val_bits: Number of bits in a register value, mandatory.
-  *
-+ * @write: Write operation.
-+ * @read: Read operation.  Data is returned in the buffer used to transmit
-+ *         data.
-+ *
-  * @max_register: Optional, specifies the maximum valid register index.
-+ *
-+ * @read_flag_mask: Mask to be set in the top byte of the register when doing
-+ *                  a read.
-  */
- struct regmap_config {
- 	const char *name;
-@@ -37,16 +47,52 @@ struct regmap_config {
- 
- 	enum regmap_endian reg_format_endian;
- 	enum regmap_endian val_format_endian;
-+
-+	unsigned int read_flag_mask;
-+	unsigned int write_flag_mask;
- };
- 
-+typedef int (*regmap_hw_write)(void *context, const void *data,
-+			       size_t count);
-+typedef int (*regmap_hw_read)(void *context,
-+			      const void *reg_buf, size_t reg_size,
-+			      void *val_buf, size_t val_size);
- typedef int (*regmap_hw_reg_read)(void *context, unsigned int reg,
- 				  unsigned int *val);
- typedef int (*regmap_hw_reg_write)(void *context, unsigned int reg,
- 				   unsigned int val);
+@@ -138,6 +138,19 @@ struct regmap *regmap_init_i2c(struct i2c_client *i2c,
+ struct regmap *regmap_init_i2c_smbus(struct i2c_client *client,
+ 			       const struct regmap_config *config);
  
 +/**
-+ * struct regmap_bus - Description of a hardware bus for the register map
-+ *                     infrastructure.
++ * regmap_init_spi() - Initialise spi register map
 + *
-+ * @reg_write: Write a single register value to the given register address. This
-+ *             write operation has to complete when returning from the function.
-+ * @reg_read: Read a single register value from a given register address.
-+ * @read: Read operation.  Data is returned in the buffer used to transmit
-+ *         data.
-+ * @write: Write operation.
-+ * @read_flag_mask: Mask to be set in the top byte of the register when doing
-+ *                  a read.
-+ * @reg_format_endian_default: Default endianness for formatted register
-+ *     addresses. Used when the regmap_config specifies DEFAULT. If this is
-+ *     DEFAULT, BIG is assumed.
-+ * @val_format_endian_default: Default endianness for formatted register
-+ *     values. Used when the regmap_config specifies DEFAULT. If this is
-+ *     DEFAULT, BIG is assumed.
++ * @spi: Device that will be interacted with
++ * @config: Configuration for register map
++ *
++ * The return value will be an ERR_PTR() on error or a valid pointer
++ * to a struct regmap.
 + */
- struct regmap_bus {
- 	regmap_hw_reg_write reg_write;
- 	regmap_hw_reg_read reg_read;
++struct spi_device;
++struct regmap *regmap_init_spi(struct spi_device *dev,
++			       const struct regmap_config *config);
 +
-+	int (*read)(void *context,
-+		    const void *reg_buf, size_t reg_size,
-+		    void *val_buf, size_t val_size);
-+	int (*write)(void *context, const void *data,
-+		     size_t count);
-+
-+	u8 read_flag_mask;
-+
- 	enum regmap_endian reg_format_endian_default;
- 	enum regmap_endian val_format_endian_default;
- };
+ /**
+  * regmap_init_mmio() - Initialise register map
+  *
 -- 
 2.30.2
 
