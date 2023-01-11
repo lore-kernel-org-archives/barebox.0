@@ -1,60 +1,60 @@
-Delivery-date: Wed, 11 Jan 2023 14:31:52 +0100
+Delivery-date: Wed, 11 Jan 2023 14:31:53 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFbCr-008r4T-I8
-	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 14:31:52 +0100
+	id 1pFbCs-008r4r-7m
+	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 14:31:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFbCp-0002RR-5O
-	for lore@pengutronix.de; Wed, 11 Jan 2023 14:31:52 +0100
+	id 1pFbCp-0002Rg-Hv
+	for lore@pengutronix.de; Wed, 11 Jan 2023 14:31:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fr41Onjj+BwuZRGyinGrFZYoySfbuwL+Hk7OXGjdNSo=; b=eIfdTRKB8z//4Dda/LO+WMCdaO
-	ckW5Kh1f6QhfTEdE5EHB2O5Ofcaoe6UblVnlV5IQjIGGPGREk4u4LrBL8J8JNngGtDwz1jSAQI6mw
-	q1Pq/J29Cm8LdC/hh7GTW2n/pHBb3FcGw0KGxEkNB0qqusntj3NmdR1Ls/395MlKAPWWBwwgEesz3
-	CkyOL+s8kWcOYhbggQHyyem8SWNrRlosxtDXmVXKVvekpynqH03GPtwitDbeuQWsWXut+TDVB3bvK
-	RAtk02sWAiqbcswwSQSzkLcUz96CbBKyUxmQraxxyZ3UlDSLy+9nCN+SgnD0wMHh9UL3cOyBRNZIt
-	KSGBfTMg==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=0MKp3Hjh7/ejrdVOrxAZYzu5u2cbYmrmMgfEXo3DkwA=; b=JxKqzOSlr5lds5Z0DBXOJ69x9M
+	rkVMiiZl4iIo5BeKZtDeLB1NxcZuEz5ACTbqKQBbiUTknel+PXJbzgeRaya8bjqX2sbikGQSqHnDs
+	SiCp44AvuHHo8Wl07seea5/F9Dxj9oD0JysP37S0D+COZ6fAUiXSFLHEOwwdsYEmqMncMzkq7zIuZ
+	dWsIzuJ0g668TKV77rA7V27oABoqUC4cNbNNoHfcHJeivD9Bgc5zCXsUH2Nh6QIE8twvQvpiSFuFC
+	VdKHkHuMc3XlrGH9gcXHE4TFIjKxSSllRMnHhsUFjagE9lKz32j28cuFWY9iHLXRIOxGPJBApI84B
+	6i7nRtrg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFbBN-00BZjA-IT; Wed, 11 Jan 2023 13:30:21 +0000
+	id 1pFbBI-00BZft-4s; Wed, 11 Jan 2023 13:30:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFbB7-00BZad-GJ
+	id 1pFbB7-00BZaF-GO
 	for barebox@lists.infradead.org; Wed, 11 Jan 2023 13:30:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFbB4-0001im-AZ; Wed, 11 Jan 2023 14:30:02 +0100
+	id 1pFbB3-0001ez-Lc
+	for barebox@lists.infradead.org; Wed, 11 Jan 2023 14:30:01 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFbB3-005JQQ-Fr; Wed, 11 Jan 2023 14:30:01 +0100
+	id 1pFbB2-005JQ7-Vr
+	for barebox@lists.infradead.org; Wed, 11 Jan 2023 14:30:00 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFbB1-004rqr-LN; Wed, 11 Jan 2023 14:29:59 +0100
+	id 1pFbB1-004rmv-7B
+	for barebox@lists.infradead.org; Wed, 11 Jan 2023 14:29:59 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 11 Jan 2023 14:29:55 +0100
-Message-Id: <20230111132956.1153359-11-a.fatoum@pengutronix.de>
+Date: Wed, 11 Jan 2023 14:29:45 +0100
+Message-Id: <20230111132956.1153359-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230111132956.1153359-1-a.fatoum@pengutronix.de>
-References: <20230111132956.1153359-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230111_053005_672520_466A2AAC 
-X-CRM114-Status: GOOD (  14.41  )
+X-CRM114-CacheID: sfid-20230111_053005_714859_E98D9E4D 
+X-CRM114-Status: GOOD (  13.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,105 +76,66 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 10/11] regmap: i2c: use formatted I/O
+Subject: [PATCH v2 00/11] net: dsa: ksz9477: use regmap to add I2C support next to SPI
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Switching to formatted I/O will enable consumers to customize access
-sizes, which we'll need to support KSZ switch I2C communication.
+The Linux DSA driver supports both I2C and SPI as management interface
+by using regmaps as abstraction. barebox regmaps were not quite that
+powerful yet, so we rework our regmaps to support optional formatting
+and then use that to make the KSZ driver work with either I2C or SPI
+transports.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/base/regmap/Kconfig      |  1 +
- drivers/base/regmap/regmap-i2c.c | 50 ++++++++++++++++++++++----------
- 2 files changed, 36 insertions(+), 15 deletions(-)
+This series has been tested with both an I2C-connected KSZ8563 and
+a SPI-connected KSZ9563, both of which are supported by the barebox
+KSZ9477 driver.
 
-diff --git a/drivers/base/regmap/Kconfig b/drivers/base/regmap/Kconfig
-index 78a00a085f05..c76908952a79 100644
---- a/drivers/base/regmap/Kconfig
-+++ b/drivers/base/regmap/Kconfig
-@@ -6,6 +6,7 @@ config REGMAP_FORMATTED
- config REGMAP_I2C
- 	bool "I2C regmaps" if COMPILE_TEST
- 	depends on I2C
-+	select REGMAP_FORMATTED
- 
- config REGMAP_SPI
- 	bool "SPI regmaps" if COMPILE_TEST
-diff --git a/drivers/base/regmap/regmap-i2c.c b/drivers/base/regmap/regmap-i2c.c
-index 756bc224cc3b..583bfffc1bb0 100644
---- a/drivers/base/regmap/regmap-i2c.c
-+++ b/drivers/base/regmap/regmap-i2c.c
-@@ -7,34 +7,54 @@
- #include <regmap.h>
- 
- 
--static int regmap_i2c_reg_read(void *client, unsigned int reg, unsigned int *val)
-+static int regmap_i2c_read(void *context,
-+			   const void *reg, size_t reg_size,
-+			   void *val, size_t val_size)
- {
--	u8 buf[1];
-+	struct device_d *dev = context;
-+	struct i2c_client *i2c = to_i2c_client(dev);
-+	struct i2c_msg xfer[2];
- 	int ret;
- 
--	ret = i2c_read_reg(client, reg, buf, 1);
--	if (ret != 1)
--		return ret;
-+	xfer[0].addr = i2c->addr;
-+	xfer[0].flags = 0;
-+	xfer[0].len = reg_size;
-+	xfer[0].buf = (void *)reg;
- 
--	*val = buf[0];
--	return 0;
-+	xfer[1].addr = i2c->addr;
-+	xfer[1].flags = I2C_M_RD;
-+	xfer[1].len = val_size;
-+	xfer[1].buf = val;
-+
-+	ret = i2c_transfer(i2c->adapter, xfer, 2);
-+	if (ret == 2)
-+		return 0;
-+	else if (ret < 0)
-+		return ret;
-+	else
-+		return -EIO;
- }
- 
--static int regmap_i2c_reg_write(void *client, unsigned int reg, unsigned int val)
-+static int regmap_i2c_write(void *context, const void *data, size_t count)
- {
--	u8 buf[] = { val & 0xff };
-+	struct device_d *dev = context;
-+	struct i2c_client *i2c = to_i2c_client(dev);
- 	int ret;
- 
--	ret = i2c_write_reg(client, reg, buf, 1);
--	if (ret != 1)
-+	ret = i2c_master_send(i2c, data, count);
-+	if (ret == count)
-+		return 0;
-+	else if (ret < 0)
- 		return ret;
--
--	return 0;
-+	else
-+		return -EIO;
- }
- 
- static const struct regmap_bus regmap_regmap_i2c_bus = {
--	.reg_write = regmap_i2c_reg_write,
--	.reg_read = regmap_i2c_reg_read,
-+	.write = regmap_i2c_write,
-+	.read = regmap_i2c_read,
-+	.reg_format_endian_default = REGMAP_ENDIAN_BIG,
-+	.val_format_endian_default = REGMAP_ENDIAN_BIG,
- };
- 
- struct regmap *regmap_init_i2c(struct i2c_client *client,
+v1 -> v2:
+  - Use cdev access size encoded in flags to arrive at correct
+    regmap to use (md -b / md -w works correctly now)
+  - Changed regmap_init_multi prototype to not take an array
+  - Added option for 64bit regmap in regmap_init_multi
+  - Have regmap_init return -ENOSYS if formatted regmap support
+    is needed, but is not compiled in (previously it crashed).
+
+Ahmad Fatoum (11):
+  regmap: consolidate reg/val format into regmap_format
+  regmap: support formatted read and write
+  regmap: port regmap_init_spi
+  regmap: factor out regmap cdev size calculation
+  net: dsa: ksz9477: switch to regmap_init_spi
+  net: dsa: ksz9477: create regmap cdev for switch registers
+  drivers: base: regmap: introduce REGMAP_I2C
+  dev: add dev_bus_is_spi/i2c helpers
+  net: dsa: ksz9477: refactor to prepare i2c support
+  regmap: i2c: use formatted I/O
+  net: ksz9477: add I2C support
+
+ drivers/base/Kconfig               |   2 +
+ drivers/base/regmap/Kconfig        |  14 +
+ drivers/base/regmap/Makefile       |   5 +-
+ drivers/base/regmap/internal.h     |  35 +-
+ drivers/base/regmap/regmap-fmt.c   | 574 +++++++++++++++++++++++++++++
+ drivers/base/regmap/regmap-i2c.c   |  50 ++-
+ drivers/base/regmap/regmap-multi.c | 104 ++++++
+ drivers/base/regmap/regmap-spi.c   |  42 +++
+ drivers/base/regmap/regmap.c       |  66 +++-
+ drivers/mfd/Kconfig                |   4 +
+ drivers/net/Kconfig                |   4 +-
+ drivers/net/ksz9477.c              | 190 +++-------
+ drivers/net/ksz_common.h           | 154 ++++++++
+ drivers/rtc/Kconfig                |   1 +
+ drivers/video/ssd1307fb.c          |   4 +-
+ include/i2c/i2c.h                  |   5 +
+ include/regmap.h                   |  82 +++++
+ include/spi/spi.h                  |   5 +
+ 18 files changed, 1166 insertions(+), 175 deletions(-)
+ create mode 100644 drivers/base/regmap/Kconfig
+ create mode 100644 drivers/base/regmap/regmap-fmt.c
+ create mode 100644 drivers/base/regmap/regmap-multi.c
+ create mode 100644 drivers/base/regmap/regmap-spi.c
+ create mode 100644 drivers/net/ksz_common.h
+
 -- 
 2.30.2
 
