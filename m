@@ -1,60 +1,60 @@
-Delivery-date: Wed, 11 Jan 2023 18:43:02 +0100
+Delivery-date: Wed, 11 Jan 2023 18:43:14 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFf7v-0091fd-35
-	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 18:43:02 +0100
+	id 1pFf86-0091gc-OR
+	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 18:43:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFf7s-00062B-9R
-	for lore@pengutronix.de; Wed, 11 Jan 2023 18:43:01 +0100
+	id 1pFf84-0006Ag-1Z
+	for lore@pengutronix.de; Wed, 11 Jan 2023 18:43:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3q8PQJtfh1tVlRjz9W0rJahdDMJcumXeUWwe8t8KXD4=; b=n5nBQey81PgP4k2Tzd5bYE+E+X
-	htVbUKw2n65y5MxFamLZ+JAkBmEx6Y1VqFCwep3BDDKzrT0d60R7up6+jg3VafokD+Dn55+R/7Wtj
-	QIROa2cwW1LeO5JLEDr30q8hGXPGwOdbrUB85MMhOe5lJpBWZOZ+IQX+M/klNqVLoV0sAi/Fflyvl
-	3k3EQM8pCJvd64fdQNWxI2tO83fABL7p1RYjGB6H14y3PLSSewZAWnGmI2Z6qZcywTUDOhqZP3ZZg
-	9iXd1EuTr9VLT1IVf+u+u7qO55RLeVkcNr6V2F0FZlsWkkUYd8DeIU7nWWmMHj1+SokBZsUzLoI24
-	0ROBbPkQ==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=C6ifDaEfMIj+kf6DeA8zhoG96Mactz0fcULR95oMC1A=; b=tDaIBO5H5jXaTlhhs/opaqd5Iv
+	AG1VccpOdP9t4gzrXD6led4/SPfGy+inTN8q0Ax+NgA9iRasdQI9dpS+YivcplBzxR/Wf0U3wuGS1
+	JmMLmkxqqcZTLwi/wR63bt73oDRribKurnN8Xp9gjTLUNq7vr8J4/AEN1mzT/7ApXZmNJXZ0MtXiq
+	27EyTiZ0XOlNw1eccJSnH7CsbbTFOavA4K3LYOIsXiD7B74fUamGhf3ObExaUQRR3pKuPAxSKKqAa
+	UORUt83oE8O9wqMIWYUMfX1kJhzRiUy6yq9wQdI2MdH/15B7MDBMcQuUgOGbazgfF2xo7lhHoAgIY
+	QIfhIC9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFf6S-00CTrC-2c; Wed, 11 Jan 2023 17:41:32 +0000
+	id 1pFf6d-00CTwz-Uv; Wed, 11 Jan 2023 17:41:44 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFf5T-00CTI6-6J
+	id 1pFf5T-00CTI5-6m
 	for barebox@lists.infradead.org; Wed, 11 Jan 2023 17:40:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFf5R-00054I-VP; Wed, 11 Jan 2023 18:40:30 +0100
+	id 1pFf5R-00054H-Vh
+	for barebox@lists.infradead.org; Wed, 11 Jan 2023 18:40:30 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFf5R-005M6n-9a; Wed, 11 Jan 2023 18:40:29 +0100
+	id 1pFf5R-005M6m-9R
+	for barebox@lists.infradead.org; Wed, 11 Jan 2023 18:40:29 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFf5O-007DGW-Gf; Wed, 11 Jan 2023 18:40:26 +0100
+	id 1pFf5O-007DG6-DL
+	for barebox@lists.infradead.org; Wed, 11 Jan 2023 18:40:26 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 11 Jan 2023 18:40:17 +0100
-Message-Id: <20230111174023.1719129-10-a.fatoum@pengutronix.de>
+Date: Wed, 11 Jan 2023 18:40:08 +0100
+Message-Id: <20230111174023.1719129-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230111174023.1719129-1-a.fatoum@pengutronix.de>
-References: <20230111174023.1719129-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230111_094031_277356_ED8785BC 
-X-CRM114-Status: GOOD (  23.67  )
+X-CRM114-CacheID: sfid-20230111_094031_338155_E43EE379 
+X-CRM114-Status: GOOD (  13.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,217 +76,87 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 09/15] lib: provide stub Linux "generic" allocator API
+Subject: [PATCH 00/15] mtd: nand: atmel: import Linux NAND controller driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We may want to port the whole of the Linux generic allocator
-implementation in future as it would come in handy in drivers that need
-special memory for DMA. For now, support just the use case of the
-incoming Atmel NAND driver, which is mapping the whole of a mmio-sram.
+For a few years, Linux has been using the new EBI bindings for NAND
+controllers on all AT91 SoCs newer than the AT91RM2000. We have so far
+only supported the old bindings by hacking the DT, but this doesn't
+suffice for the SAMA5D4. Therefore import a new state of the Linux NAND
+controller driver. We still keep around the old barebox driver to
+support the non-DT enabled AT91 platforms.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- include/linux/genalloc.h |  36 ++++++++++++
- lib/Kconfig              |   5 ++
- lib/Makefile             |   1 +
- lib/genalloc.c           | 118 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 160 insertions(+)
+Ahmad Fatoum (15):
+  asm-generic: io.h: sync with Linux
+  mtd: nand: base: implement nand_gpio_waitrdy
+  mtd: nand: prefix enum nand_ecc_algo constants with NAND_ECC_ALGO_
+  mtd: nand: rename nand_device::eccreq to Linux' ecc.requirements
+  mtd: nand: define nand_get_(small|large)_page_ooblayout
+  mtd: nand: define nand_interface_is_sdr
+  mtd: nand: provide Linux' struct nand_ecc_ctrl::engine_type
+  driver: implement dev_request_resource
+  lib: provide stub Linux "generic" allocator API
+  memory: add Atmel EBI driver
+  mfd: add atmel-smc driver
+  mtd: nand: atmel: import Linux NAND controller driver
+  ARM: AT91: sama5d3_xplained: switch to upstream binding
+  mtd: nand: drop DT support in legacy driver
+  ARM: AT91: sama5d3: always read memory size from controller
+
+ arch/arm/dts/at91-microchip-ksz9477-evb.dts   |    4 -
+ arch/arm/dts/at91-sama5d3_xplained.dts        |   29 -
+ arch/arm/dts/sama5d3.dtsi                     |   17 +-
+ drivers/base/driver.c                         |   19 +-
+ drivers/memory/Kconfig                        |   14 +
+ drivers/memory/Makefile                       |    1 +
+ drivers/memory/atmel-ebi.c                    |  614 +++++
+ drivers/mfd/Kconfig                           |    4 +
+ drivers/mfd/Makefile                          |    1 +
+ drivers/mfd/atmel-smc.c                       |  352 +++
+ drivers/mtd/nand/Kconfig                      |   11 +-
+ drivers/mtd/nand/Makefile                     |    2 +-
+ drivers/mtd/nand/atmel/Makefile               |    3 +
+ drivers/mtd/nand/{ => atmel}/atmel_nand_ecc.h |    0
+ .../mtd/nand/{atmel_nand.c => atmel/legacy.c} |  106 +-
+ drivers/mtd/nand/atmel/nand-controller.c      | 2049 +++++++++++++++++
+ drivers/mtd/nand/atmel/pmecc.c                |  992 ++++++++
+ drivers/mtd/nand/atmel/pmecc.h                |   70 +
+ drivers/mtd/nand/nand_base.c                  |   86 +-
+ drivers/mtd/nand/nand_esmt.c                  |   10 +-
+ drivers/mtd/nand/nand_fsl_ifc.c               |    2 +-
+ drivers/mtd/nand/nand_hynix.c                 |   40 +-
+ drivers/mtd/nand/nand_jedec.c                 |    4 +-
+ drivers/mtd/nand/nand_micron.c                |   16 +-
+ drivers/mtd/nand/nand_onfi.c                  |    8 +-
+ drivers/mtd/nand/nand_samsung.c               |   18 +-
+ drivers/mtd/nand/nand_toshiba.c               |   12 +-
+ include/asm-generic/io.h                      |  401 +++-
+ include/driver.h                              |    5 +
+ include/linux/genalloc.h                      |   36 +
+ include/linux/mfd/syscon/atmel-matrix.h       |  112 +
+ include/linux/mfd/syscon/atmel-smc.h          |  119 +
+ include/linux/mtd/nand.h                      |   27 +-
+ include/linux/mtd/rawnand.h                   |   43 +-
+ include/linux/mutex.h                         |    2 +
+ include/soc/at91/atmel-sfr.h                  |    2 +
+ lib/Kconfig                                   |    5 +
+ lib/Makefile                                  |    1 +
+ lib/genalloc.c                                |  118 +
+ 39 files changed, 5074 insertions(+), 281 deletions(-)
+ create mode 100644 drivers/memory/atmel-ebi.c
+ create mode 100644 drivers/mfd/atmel-smc.c
+ create mode 100644 drivers/mtd/nand/atmel/Makefile
+ rename drivers/mtd/nand/{ => atmel}/atmel_nand_ecc.h (100%)
+ rename drivers/mtd/nand/{atmel_nand.c => atmel/legacy.c} (92%)
+ create mode 100644 drivers/mtd/nand/atmel/nand-controller.c
+ create mode 100644 drivers/mtd/nand/atmel/pmecc.c
+ create mode 100644 drivers/mtd/nand/atmel/pmecc.h
  create mode 100644 include/linux/genalloc.h
+ create mode 100644 include/linux/mfd/syscon/atmel-matrix.h
+ create mode 100644 include/linux/mfd/syscon/atmel-smc.h
  create mode 100644 lib/genalloc.c
 
-diff --git a/include/linux/genalloc.h b/include/linux/genalloc.h
-new file mode 100644
-index 000000000000..566e62d1965c
---- /dev/null
-+++ b/include/linux/genalloc.h
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/*
-+ * Basic general purpose allocator for managing special purpose
-+ * memory, for example, memory that is not managed by the regular
-+ * kmalloc/kfree interface.  Uses for this includes on-device special
-+ * memory, uncached memory etc.
-+ */
-+
-+
-+#ifndef __GENALLOC_H__
-+#define __GENALLOC_H__
-+
-+#include <linux/types.h>
-+
-+struct device_node;
-+
-+struct gen_pool;
-+
-+extern phys_addr_t gen_pool_virt_to_phys(struct gen_pool *pool, unsigned long);
-+
-+extern void *gen_pool_dma_alloc(struct gen_pool *pool, size_t size,
-+		dma_addr_t *dma);
-+
-+extern void *gen_pool_dma_zalloc(struct gen_pool *pool, size_t size, dma_addr_t *dma);
-+
-+#ifdef CONFIG_OFDEVICE
-+extern struct gen_pool *of_gen_pool_get(struct device_node *np,
-+	const char *propname, int index);
-+#else
-+static inline struct gen_pool *of_gen_pool_get(struct device_node *np,
-+	const char *propname, int index)
-+{
-+	return NULL;
-+}
-+#endif
-+#endif /* __GENALLOC_H__ */
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 5af7ea33f27b..b8bc9d63d4f0 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -210,4 +210,9 @@ config ARCH_HAS_ZERO_PAGE
- config HAVE_EFFICIENT_UNALIGNED_ACCESS
- 	bool
- 
-+config GENERIC_ALLOCATOR
-+	bool
-+	help
-+	  Support is curently limited to allocaing a complete mmio-sram at once.
-+
- endmenu
-diff --git a/lib/Makefile b/lib/Makefile
-index 4717b8aec364..38478625423b 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -75,6 +75,7 @@ obj-$(CONFIG_CRC8)	+= crc8.o
- obj-$(CONFIG_NLS)	+= nls_base.o
- obj-$(CONFIG_FSL_QE_FIRMWARE) += fsl-qe-firmware.o
- obj-$(CONFIG_UBSAN)	+= ubsan.o
-+obj-$(CONFIG_GENERIC_ALLOCATOR) += genalloc.o
- 
- # GCC library routines
- obj-$(CONFIG_GENERIC_LIB_ASHLDI3) += ashldi3.o
-diff --git a/lib/genalloc.c b/lib/genalloc.c
-new file mode 100644
-index 000000000000..906e2dd5f14b
---- /dev/null
-+++ b/lib/genalloc.c
-@@ -0,0 +1,118 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+// SPDX-FileCopyrightText: 2005 Jes Sorensen <jes@trained-monkey.org>
-+/*
-+ * Basic general purpose allocator for managing special purpose
-+ * memory, for example, memory that is not managed by the regular
-+ * kmalloc/kfree interface.  Uses for this includes on-device special
-+ * memory, uncached memory etc.
-+ */
-+
-+#include <io.h>
-+#include <linux/ioport.h>
-+#include <linux/genalloc.h>
-+#include <linux/export.h>
-+#include <of.h>
-+#include <driver.h>
-+#include <linux/string.h>
-+
-+struct gen_pool {
-+	struct resource res;
-+};
-+
-+#define res_to_gen_pool(res) \
-+	container_of(res, struct gen_pool, res)
-+
-+/**
-+ * gen_pool_virt_to_phys - return the physical address of memory
-+ * @pool: pool to allocate from
-+ * @addr: starting address of memory
-+ *
-+ * Returns the physical address on success, or -1 on error.
-+ */
-+phys_addr_t gen_pool_virt_to_phys(struct gen_pool *pool, unsigned long addr)
-+{
-+	return virt_to_phys((void *)addr);
-+}
-+EXPORT_SYMBOL(gen_pool_virt_to_phys);
-+
-+/**
-+ * gen_pool_dma_alloc - allocate special memory from the pool for DMA usage
-+ * @pool: pool to allocate from
-+ * @size: number of bytes to allocate from the pool
-+ * @dma: dma-view physical address return value.  Use %NULL if unneeded.
-+ *
-+ * Allocate the requested number of bytes from the specified pool.
-+ * Uses the pool allocation function (with first-fit algorithm by default).
-+ * Can not be used in NMI handler on architectures without
-+ * NMI-safe cmpxchg implementation.
-+ *
-+ * Return: virtual address of the allocated memory, or %NULL on failure
-+ */
-+void *gen_pool_dma_alloc(struct gen_pool *pool, size_t size, dma_addr_t *dma)
-+{
-+	unsigned long vaddr;
-+
-+	if (!pool || resource_size(&pool->res) != size)
-+		return NULL;
-+
-+	vaddr = pool->res.start;
-+
-+	if (dma)
-+		*dma = gen_pool_virt_to_phys(pool, vaddr);
-+
-+	return (void *)vaddr;
-+}
-+EXPORT_SYMBOL(gen_pool_dma_alloc);
-+
-+/**
-+ * gen_pool_dma_zalloc - allocate special zeroed memory from the pool for
-+ * DMA usage
-+ * @pool: pool to allocate from
-+ * @size: number of bytes to allocate from the pool
-+ * @dma: dma-view physical address return value.  Use %NULL if unneeded.
-+ *
-+ * Return: virtual address of the allocated zeroed memory, or %NULL on failure
-+ */
-+void *gen_pool_dma_zalloc(struct gen_pool *pool, size_t size, dma_addr_t *dma)
-+{
-+	void *vaddr = gen_pool_dma_alloc(pool, size, dma);
-+
-+	if (vaddr)
-+		memset(vaddr, 0, size);
-+
-+	return vaddr;
-+}
-+EXPORT_SYMBOL(gen_pool_dma_zalloc);
-+
-+#ifdef CONFIG_OFDEVICE
-+/**
-+ * of_gen_pool_get - find a pool by phandle property
-+ * @np: device node
-+ * @propname: property name containing phandle(s)
-+ * @index: index into the phandle array
-+ *
-+ * Returns the pool that contains the chunk starting at the physical
-+ * address of the device tree node pointed at by the phandle property,
-+ * or NULL if not found.
-+ */
-+struct gen_pool *of_gen_pool_get(struct device_node *np,
-+	const char *propname, int index)
-+{
-+	struct device *dev;
-+	struct device_node *np_pool;
-+
-+	np_pool = of_parse_phandle(np, propname, index);
-+	if (!np_pool)
-+		return NULL;
-+
-+	if (!of_device_is_compatible(np_pool, "mmio-sram"))
-+		return NULL;
-+
-+	dev = of_find_device_by_node(np_pool);
-+	if (!dev)
-+		return NULL;
-+
-+	return container_of(&dev->resource[0], struct gen_pool, res);
-+}
-+EXPORT_SYMBOL_GPL(of_gen_pool_get);
-+#endif /* CONFIG_OF */
 -- 
 2.30.2
 
