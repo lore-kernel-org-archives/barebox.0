@@ -1,60 +1,60 @@
-Delivery-date: Wed, 11 Jan 2023 18:44:12 +0100
+Delivery-date: Wed, 11 Jan 2023 18:44:32 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFf92-0091n3-Vx
-	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 18:44:12 +0100
+	id 1pFf9N-0091pW-Hl
+	for lore@lore.pengutronix.de; Wed, 11 Jan 2023 18:44:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFf8z-0006Rx-TR
-	for lore@pengutronix.de; Wed, 11 Jan 2023 18:44:11 +0100
+	id 1pFf9K-0006W0-Ii
+	for lore@pengutronix.de; Wed, 11 Jan 2023 18:44:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HOKfByDyu+fnhsUJLzMdjoFP81q0OgYLJhqd1zihDMg=; b=Yta9s0la2TA/SdP10r1Upw818Y
-	Jd7+79HnpuZU6TifVePNaEi5lB663PhOMrQBh7YD7Ljmpx4b09ecccupEX9i/VswT5soJJQ6g9KXm
-	MfDzH6wbmPiOurXIbRfwbn0UMe/vuETXPmsBG1lSzhiDTUYm/Og99w+XO/vvVHxiyj6shh8Plpngs
-	oCbWFWD3DjJmo8U0CqA77+Lhyvea3r1GcB/b5OxBbpbFSngZLVtrADTVRuW1FS/Fwz5UD0+e7VDdB
-	bjCQ9sMhc5llJsM4xONlbU/vcZ94kLrgf7YTO0bGHDi54OOQPR0EoJPC06hYNeyDHUG0llint7a3S
-	tQlh1WYw==;
+	bh=+ihRNAeGslyNt1P0B9swf9AVFNDXW4D4D6jl+ojPe50=; b=uG2xbsv4QbXimxJc13FPiVeqMm
+	hbnXrO/KFZYfL9+QYVOF+iAotATGEsz1NiZaWIWkUVBvgSliahuMqIRLD6bq4jfJNhLyF6wVVfJbX
+	2mMp5H+mjiPzWlVYy35Y8uFjTO409SLyMdZPy/gAlgf0fl2Aizfr78mGE1WytXgcTjy5yl9MjoBAh
+	T8KmXEXlQWXOy6kz8bZz93op0Vq9Z/9Kd4VaO1gnEP1crN6ZpiiB/qWO9DrzL/qHfowAY80dOZ+wb
+	dki+tJhi9XcKv43HrredmEFq6745rZayAW2TTeFjUnpiC4WfhgARwn+Kd9k5fD4BompvHoLcSUCHx
+	RuLfWnLA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFf7R-00CUSl-Ci; Wed, 11 Jan 2023 17:42:33 +0000
+	id 1pFf7j-00CUbp-Mp; Wed, 11 Jan 2023 17:42:52 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFf5a-00CTNy-I2
+	id 1pFf5a-00CTNw-Et
 	for barebox@lists.infradead.org; Wed, 11 Jan 2023 17:40:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFf5R-00053H-AW; Wed, 11 Jan 2023 18:40:29 +0100
+	id 1pFf5R-000537-67; Wed, 11 Jan 2023 18:40:29 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFf5Q-005M6U-Jb; Wed, 11 Jan 2023 18:40:28 +0100
+	id 1pFf5Q-005M6O-EX; Wed, 11 Jan 2023 18:40:28 +0100
 Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pFf5O-007DGH-F4; Wed, 11 Jan 2023 18:40:26 +0100
+	id 1pFf5O-007DGc-HX; Wed, 11 Jan 2023 18:40:26 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 11 Jan 2023 18:40:12 +0100
-Message-Id: <20230111174023.1719129-5-a.fatoum@pengutronix.de>
+Date: Wed, 11 Jan 2023 18:40:19 +0100
+Message-Id: <20230111174023.1719129-12-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230111174023.1719129-1-a.fatoum@pengutronix.de>
 References: <20230111174023.1719129-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230111_094039_018234_962374B0 
-X-CRM114-Status: GOOD (  23.17  )
+X-CRM114-CacheID: sfid-20230111_094038_927934_9C0DBDA5 
+X-CRM114-Status: GOOD (  25.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,434 +76,528 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 04/15] mtd: nand: rename nand_device::eccreq to Linux' ecc.requirements
+Subject: [PATCH 11/15] mfd: add atmel-smc driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Adopt the Linux nomenclature to make future ports easier. No functional
-change.
+Port over the Linux Atmel Static Memory Controller driver for use by the
+incoming update to the Atmel NAND controller driver
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mtd/nand/nand_base.c    | 20 ++++++++---------
- drivers/mtd/nand/nand_esmt.c    | 10 ++++-----
- drivers/mtd/nand/nand_hynix.c   | 40 ++++++++++++++++-----------------
- drivers/mtd/nand/nand_jedec.c   |  4 ++--
- drivers/mtd/nand/nand_micron.c  | 14 +++++++-----
- drivers/mtd/nand/nand_onfi.c    |  8 +++----
- drivers/mtd/nand/nand_samsung.c | 18 +++++++--------
- drivers/mtd/nand/nand_toshiba.c | 10 ++++-----
- include/linux/mtd/nand.h        | 27 ++++++++++++++++++----
- 9 files changed, 86 insertions(+), 65 deletions(-)
+ drivers/mfd/Kconfig                  |   4 +
+ drivers/mfd/Makefile                 |   1 +
+ drivers/mfd/atmel-smc.c              | 352 +++++++++++++++++++++++++++
+ include/linux/mfd/syscon/atmel-smc.h | 119 +++++++++
+ 4 files changed, 476 insertions(+)
+ create mode 100644 drivers/mfd/atmel-smc.c
+ create mode 100644 include/linux/mfd/syscon/atmel-smc.h
 
-diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/nand_base.c
-index b686cef79bc6..beb17f38a0e4 100644
---- a/drivers/mtd/nand/nand_base.c
-+++ b/drivers/mtd/nand/nand_base.c
-@@ -4673,8 +4673,8 @@ static bool find_full_id_nand(struct nand_chip *chip,
- 					   memorg->pagesize *
- 					   memorg->pages_per_eraseblock);
- 		chip->options |= type->options;
--		chip->base.eccreq.strength = NAND_ECC_STRENGTH(type);
--		chip->base.eccreq.step_size = NAND_ECC_STEP(type);
-+		chip->base.ecc.requirements.strength = NAND_ECC_STRENGTH(type);
-+		chip->base.ecc.requirements.step_size = NAND_ECC_STEP(type);
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index c33fa262236c..f1f7e27fadfe 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -129,4 +129,8 @@ config MFD_AXP20X_I2C
+ 	  management ICs (PMICs) controlled with I2C.
+ 	  This driver currently only provide a character device in /dev.
  
- 		chip->parameters.model = strdup(type->name);
- 		if (!chip->parameters.model)
-@@ -5292,8 +5292,8 @@ nand_match_ecc_req(struct nand_chip *chip,
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 	const struct nand_ecc_step_info *stepinfo;
--	int req_step = chip->base.eccreq.step_size;
--	int req_strength = chip->base.eccreq.strength;
-+	int req_step = chip->base.ecc.requirements.step_size;
-+	int req_strength = chip->base.ecc.requirements.strength;
- 	int req_corr, step_size, strength, nsteps, ecc_bytes, ecc_bytes_total;
- 	int best_step, best_strength, best_ecc_bytes;
- 	int best_ecc_bytes_total = INT_MAX;
-@@ -5486,7 +5486,7 @@ static bool nand_ecc_strength_good(struct nand_chip *chip)
- 	struct nand_ecc_ctrl *ecc = &chip->ecc;
- 	int corr, ds_corr;
- 
--	if (ecc->size == 0 || chip->base.eccreq.step_size == 0)
-+	if (ecc->size == 0 || chip->base.ecc.requirements.step_size == 0)
- 		/* Not enough information */
- 		return true;
- 
-@@ -5495,10 +5495,10 @@ static bool nand_ecc_strength_good(struct nand_chip *chip)
- 	 * the correction density.
- 	 */
- 	corr = (mtd->writesize * ecc->strength) / ecc->size;
--	ds_corr = (mtd->writesize * chip->base.eccreq.strength) /
--		  chip->base.eccreq.step_size;
-+	ds_corr = (mtd->writesize * chip->base.ecc.requirements.strength) /
-+		  chip->base.ecc.requirements.step_size;
- 
--	return corr >= ds_corr && ecc->strength >= chip->base.eccreq.strength;
-+	return corr >= ds_corr && ecc->strength >= chip->base.ecc.requirements.strength;
- }
- 
- static int rawnand_erase(struct nand_device *nand, const struct nand_pos *pos)
-@@ -5774,8 +5774,8 @@ int nand_scan_tail(struct nand_chip *chip)
- 	if (!nand_ecc_strength_good(chip))
- 		pr_warn("WARNING: %s: the ECC used on your system (%db/%dB) is too weak compared to the one required by the NAND chip (%db/%dB)\n",
- 			mtd->name, chip->ecc.strength, chip->ecc.size,
--			chip->base.eccreq.strength,
--			chip->base.eccreq.step_size);
-+			chip->base.ecc.requirements.strength,
-+			chip->base.ecc.requirements.step_size);
- 
- 	/* Allow subpage writes up to ecc.steps. Not possible for MLC flash */
- 	if (!(chip->options & NAND_NO_SUBPAGE_WRITE) && nand_is_slc(chip)) {
-diff --git a/drivers/mtd/nand/nand_esmt.c b/drivers/mtd/nand/nand_esmt.c
-index 2331eb174ebd..cd635c27efcc 100644
---- a/drivers/mtd/nand/nand_esmt.c
-+++ b/drivers/mtd/nand/nand_esmt.c
-@@ -14,20 +14,20 @@ static void esmt_nand_decode_id(struct nand_chip *chip)
- 
- 	/* Extract ECC requirements from 5th id byte. */
- 	if (chip->id.len >= 5 && nand_is_slc(chip)) {
--		chip->base.eccreq.step_size = 512;
-+		chip->base.ecc.requirements.step_size = 512;
- 		switch (chip->id.data[4] & 0x3) {
- 		case 0x0:
--			chip->base.eccreq.strength = 4;
-+			chip->base.ecc.requirements.strength = 4;
- 			break;
- 		case 0x1:
--			chip->base.eccreq.strength = 2;
-+			chip->base.ecc.requirements.strength = 2;
- 			break;
- 		case 0x2:
--			chip->base.eccreq.strength = 1;
-+			chip->base.ecc.requirements.strength = 1;
- 			break;
- 		default:
- 			WARN(1, "Could not get ECC info");
--			chip->base.eccreq.step_size = 0;
-+			chip->base.ecc.requirements.step_size = 0;
- 			break;
- 		}
- 	}
-diff --git a/drivers/mtd/nand/nand_hynix.c b/drivers/mtd/nand/nand_hynix.c
-index 0422ed53aa3a..fef92074953b 100644
---- a/drivers/mtd/nand/nand_hynix.c
-+++ b/drivers/mtd/nand/nand_hynix.c
-@@ -498,30 +498,30 @@ static void hynix_nand_extract_ecc_requirements(struct nand_chip *chip,
- 
- 	if (valid_jedecid) {
- 		/* Reference: H27UCG8T2E datasheet */
--		chip->base.eccreq.step_size = 1024;
-+		chip->base.ecc.requirements.step_size = 1024;
- 
- 		switch (ecc_level) {
- 		case 0:
--			chip->base.eccreq.step_size = 0;
--			chip->base.eccreq.strength = 0;
-+			chip->base.ecc.requirements.step_size = 0;
-+			chip->base.ecc.requirements.strength = 0;
- 			break;
- 		case 1:
--			chip->base.eccreq.strength = 4;
-+			chip->base.ecc.requirements.strength = 4;
- 			break;
- 		case 2:
--			chip->base.eccreq.strength = 24;
-+			chip->base.ecc.requirements.strength = 24;
- 			break;
- 		case 3:
--			chip->base.eccreq.strength = 32;
-+			chip->base.ecc.requirements.strength = 32;
- 			break;
- 		case 4:
--			chip->base.eccreq.strength = 40;
-+			chip->base.ecc.requirements.strength = 40;
- 			break;
- 		case 5:
--			chip->base.eccreq.strength = 50;
-+			chip->base.ecc.requirements.strength = 50;
- 			break;
- 		case 6:
--			chip->base.eccreq.strength = 60;
-+			chip->base.ecc.requirements.strength = 60;
- 			break;
- 		default:
- 			/*
-@@ -542,14 +542,14 @@ static void hynix_nand_extract_ecc_requirements(struct nand_chip *chip,
- 		if (nand_tech < 3) {
- 			/* > 26nm, reference: H27UBG8T2A datasheet */
- 			if (ecc_level < 5) {
--				chip->base.eccreq.step_size = 512;
--				chip->base.eccreq.strength = 1 << ecc_level;
-+				chip->base.ecc.requirements.step_size = 512;
-+				chip->base.ecc.requirements.strength = 1 << ecc_level;
- 			} else if (ecc_level < 7) {
- 				if (ecc_level == 5)
--					chip->base.eccreq.step_size = 2048;
-+					chip->base.ecc.requirements.step_size = 2048;
- 				else
--					chip->base.eccreq.step_size = 1024;
--				chip->base.eccreq.strength = 24;
-+					chip->base.ecc.requirements.step_size = 1024;
-+				chip->base.ecc.requirements.strength = 24;
- 			} else {
- 				/*
- 				 * We should never reach this case, but if that
-@@ -562,14 +562,14 @@ static void hynix_nand_extract_ecc_requirements(struct nand_chip *chip,
- 		} else {
- 			/* <= 26nm, reference: H27UBG8T2B datasheet */
- 			if (!ecc_level) {
--				chip->base.eccreq.step_size = 0;
--				chip->base.eccreq.strength = 0;
-+				chip->base.ecc.requirements.step_size = 0;
-+				chip->base.ecc.requirements.strength = 0;
- 			} else if (ecc_level < 5) {
--				chip->base.eccreq.step_size = 512;
--				chip->base.eccreq.strength = 1 << (ecc_level - 1);
-+				chip->base.ecc.requirements.step_size = 512;
-+				chip->base.ecc.requirements.strength = 1 << (ecc_level - 1);
- 			} else {
--				chip->base.eccreq.step_size = 1024;
--				chip->base.eccreq.strength = 24 +
-+				chip->base.ecc.requirements.step_size = 1024;
-+				chip->base.ecc.requirements.strength = 24 +
- 							(8 * (ecc_level - 5));
- 			}
- 		}
-diff --git a/drivers/mtd/nand/nand_jedec.c b/drivers/mtd/nand/nand_jedec.c
-index 48997bd5f53d..2b21e2d5b548 100644
---- a/drivers/mtd/nand/nand_jedec.c
-+++ b/drivers/mtd/nand/nand_jedec.c
-@@ -121,8 +121,8 @@ int nand_jedec_detect(struct nand_chip *chip)
- 	ecc = &p->ecc_info[0];
- 
- 	if (ecc->codeword_size >= 9) {
--		chip->base.eccreq.strength = ecc->ecc_bits;
--		chip->base.eccreq.step_size = 1 << ecc->codeword_size;
-+		chip->base.ecc.requirements.strength = ecc->ecc_bits;
-+		chip->base.ecc.requirements.step_size = 1 << ecc->codeword_size;
- 	} else {
- 		pr_warn("Invalid codeword size\n");
- 	}
-diff --git a/drivers/mtd/nand/nand_micron.c b/drivers/mtd/nand/nand_micron.c
-index 4401a55886b2..758316e68139 100644
---- a/drivers/mtd/nand/nand_micron.c
-+++ b/drivers/mtd/nand/nand_micron.c
-@@ -426,7 +426,8 @@ static int micron_supports_on_die_ecc(struct nand_chip *chip)
- 	/*
- 	 * We only support on-die ECC of 4/512 or 8/512
- 	 */
--	if  (chip->base.eccreq.strength != 4 && chip->base.eccreq.strength != 8)
-+	if  (chip->base.ecc.requirements.strength != 4 &&
-+	     chip->base.ecc.requirements.strength != 8)
- 		return MICRON_ON_DIE_UNSUPPORTED;
- 
- 	/* 0x2 means on-die ECC is available. */
-@@ -467,7 +468,8 @@ static int micron_supports_on_die_ecc(struct nand_chip *chip)
- 	/*
- 	 * We only support on-die ECC of 4/512 or 8/512
- 	 */
--	if  (chip->base.eccreq.strength != 4 && chip->base.eccreq.strength != 8)
-+	if  (chip->base.ecc.requirements.strength != 4 &&
-+	     chip->base.ecc.requirements.strength != 8)
- 		return MICRON_ON_DIE_UNSUPPORTED;
- 
- 	return MICRON_ON_DIE_SUPPORTED;
-@@ -524,7 +526,7 @@ static int micron_nand_init(struct nand_chip *chip)
- 		 * That's not needed for 8-bit ECC, because the status expose
- 		 * a better approximation of the number of bitflips in a page.
- 		 */
--		if (chip->base.eccreq.strength == 4) {
-+		if (chip->base.ecc.requirements.strength == 4) {
- 			micron->ecc.rawbuf = kmalloc(mtd->writesize +
- 						     mtd->oobsize,
- 						     GFP_KERNEL);
-@@ -534,16 +536,16 @@ static int micron_nand_init(struct nand_chip *chip)
- 			}
- 		}
- 
--		if (chip->base.eccreq.strength == 4)
-+		if (chip->base.ecc.requirements.strength == 4)
- 			mtd_set_ooblayout(mtd,
- 					  &micron_nand_on_die_4_ooblayout_ops);
- 		else
- 			mtd_set_ooblayout(mtd,
- 					  &micron_nand_on_die_8_ooblayout_ops);
- 
--		chip->ecc.bytes = chip->base.eccreq.strength * 2;
-+		chip->ecc.bytes = chip->base.ecc.requirements.strength * 2;
- 		chip->ecc.size = 512;
--		chip->ecc.strength = chip->base.eccreq.strength;
-+		chip->ecc.strength = chip->base.ecc.requirements.strength;
- 		chip->ecc.algo = NAND_ECC_ALGO_BCH;
- 		chip->ecc.read_page = micron_nand_read_page_on_die_ecc;
- 		chip->ecc.write_page = micron_nand_write_page_on_die_ecc;
-diff --git a/drivers/mtd/nand/nand_onfi.c b/drivers/mtd/nand/nand_onfi.c
-index c6b187be0285..5dd29ba6baf4 100644
---- a/drivers/mtd/nand/nand_onfi.c
-+++ b/drivers/mtd/nand/nand_onfi.c
-@@ -95,8 +95,8 @@ static int nand_flash_detect_ext_param_page(struct nand_chip *chip,
- 		goto ext_out;
- 	}
- 
--	chip->base.eccreq.strength = ecc->ecc_bits;
--	chip->base.eccreq.step_size = 1 << ecc->codeword_size;
-+	chip->base.ecc.requirements.strength = ecc->ecc_bits;
-+	chip->base.ecc.requirements.step_size = 1 << ecc->codeword_size;
- 	ret = 0;
- 
- ext_out:
-@@ -266,8 +266,8 @@ int nand_onfi_detect(struct nand_chip *chip)
- 		chip->options |= NAND_BUSWIDTH_16;
- 
- 	if (p->ecc_bits != 0xff) {
--		chip->base.eccreq.strength = p->ecc_bits;
--		chip->base.eccreq.step_size = 512;
-+		chip->base.ecc.requirements.strength = p->ecc_bits;
-+		chip->base.ecc.requirements.step_size = 512;
- 	} else if (onfi_version >= 21 &&
- 		(le16_to_cpu(p->features) & ONFI_FEATURE_EXT_PARAM_PAGE)) {
- 
-diff --git a/drivers/mtd/nand/nand_samsung.c b/drivers/mtd/nand/nand_samsung.c
-index 3a4a19e808f6..ee993af1e52f 100644
---- a/drivers/mtd/nand/nand_samsung.c
-+++ b/drivers/mtd/nand/nand_samsung.c
-@@ -71,23 +71,23 @@ static void samsung_nand_decode_id(struct nand_chip *chip)
- 		/* Extract ECC requirements from 5th id byte*/
- 		extid = (chip->id.data[4] >> 4) & 0x07;
- 		if (extid < 5) {
--			chip->base.eccreq.step_size = 512;
--			chip->base.eccreq.strength = 1 << extid;
-+			chip->base.ecc.requirements.step_size = 512;
-+			chip->base.ecc.requirements.strength = 1 << extid;
- 		} else {
--			chip->base.eccreq.step_size = 1024;
-+			chip->base.ecc.requirements.step_size = 1024;
- 			switch (extid) {
- 			case 5:
--				chip->base.eccreq.strength = 24;
-+				chip->base.ecc.requirements.strength = 24;
- 				break;
- 			case 6:
--				chip->base.eccreq.strength = 40;
-+				chip->base.ecc.requirements.strength = 40;
- 				break;
- 			case 7:
--				chip->base.eccreq.strength = 60;
-+				chip->base.ecc.requirements.strength = 60;
- 				break;
- 			default:
- 				WARN(1, "Could not decode ECC info");
--				chip->base.eccreq.step_size = 0;
-+				chip->base.ecc.requirements.step_size = 0;
- 			}
- 		}
- 	} else {
-@@ -97,8 +97,8 @@ static void samsung_nand_decode_id(struct nand_chip *chip)
- 			switch (chip->id.data[1]) {
- 			/* K9F4G08U0D-S[I|C]B0(T00) */
- 			case 0xDC:
--				chip->base.eccreq.step_size = 512;
--				chip->base.eccreq.strength = 1;
-+				chip->base.ecc.requirements.step_size = 512;
-+				chip->base.ecc.requirements.strength = 1;
- 				break;
- 
- 			/* K9F1G08U0E 21nm chips do not support subpage write */
-diff --git a/drivers/mtd/nand/nand_toshiba.c b/drivers/mtd/nand/nand_toshiba.c
-index 21a5dbc7e01b..cd29cc587293 100644
---- a/drivers/mtd/nand/nand_toshiba.c
-+++ b/drivers/mtd/nand/nand_toshiba.c
-@@ -175,20 +175,20 @@ static void toshiba_nand_decode_id(struct nand_chip *chip)
- 	 *  - 24nm: 8 bit ECC for each 512Byte is required.
- 	 */
- 	if (chip->id.len >= 6 && nand_is_slc(chip)) {
--		chip->base.eccreq.step_size = 512;
-+		chip->base.ecc.requirements.step_size = 512;
- 		switch (chip->id.data[5] & 0x7) {
- 		case 0x4:
--			chip->base.eccreq.strength = 1;
-+			chip->base.ecc.requirements.strength = 1;
- 			break;
- 		case 0x5:
--			chip->base.eccreq.strength = 4;
-+			chip->base.ecc.requirements.strength = 4;
- 			break;
- 		case 0x6:
--			chip->base.eccreq.strength = 8;
-+			chip->base.ecc.requirements.strength = 8;
- 			break;
- 		default:
- 			WARN(1, "Could not get ECC info");
--			chip->base.eccreq.step_size = 0;
-+			chip->base.ecc.requirements.step_size = 0;
- 			break;
- 		}
- 	}
-diff --git a/include/linux/mtd/nand.h b/include/linux/mtd/nand.h
-index 876849e7e806..6ce5c1d041b8 100644
---- a/include/linux/mtd/nand.h
-+++ b/include/linux/mtd/nand.h
-@@ -165,11 +165,19 @@ struct nand_ops {
- 	bool (*isbad)(struct nand_device *nand, const struct nand_pos *pos);
- };
- 
-+/**
-+ * struct nand_ecc - Information relative to the ECC
-+ * @requirements: ECC requirements from the NAND chip perspective
-+ */
-+struct nand_ecc {
-+	struct nand_ecc_props requirements;
-+};
++config MFD_ATMEL_SMC
++	bool
++	select MFD_SYSCON
 +
- /**
-  * struct nand_device - NAND device
-  * @mtd: MTD instance attached to the NAND device
-  * @memorg: memory layout
-- * @eccreq: ECC requirements
-+ * @ecc: ECC information
-  * @rowconv: position to row address converter
-  * @bbt: bad block table info
-  * @ops: NAND operations attached to the NAND device
-@@ -177,8 +185,8 @@ struct nand_ops {
-  * Generic NAND object. Specialized NAND layers (raw NAND, SPI NAND, OneNAND)
-  * should declare their own NAND object embedding a nand_device struct (that's
-  * how inheritance is done).
-- * struct_nand_device->memorg and struct_nand_device->eccreq should be filled
-- * at device detection time to reflect the NAND device
-+ * struct_nand_device->memorg and struct_nand_device->ecc.requirement should
-+ * be filled at device detection time to reflect the NAND device
-  * capabilities/requirements. Once this is done nanddev_init() can be called.
-  * It will take care of converting NAND information into MTD ones, which means
-  * the specialized NAND layers should never manually tweak
-@@ -187,7 +195,7 @@ struct nand_ops {
- struct nand_device {
- 	struct mtd_info mtd;
- 	struct nand_memory_organization memorg;
--	struct nand_ecc_props eccreq;
-+	struct nand_ecc ecc;
- 	struct nand_row_converter rowconv;
- 	struct nand_bbt bbt;
- 	const struct nand_ops *ops;
-@@ -395,6 +403,17 @@ int nanddev_init(struct nand_device *nand, const struct nand_ops *ops,
- 		 struct module *owner);
- void nanddev_cleanup(struct nand_device *nand);
- 
-+/**
-+ * nanddev_get_ecc_requirements() - Extract the ECC requirements from a NAND
-+ *                                  device
-+ * @nand: NAND device
+ endmenu
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index a3cb90e88346..b89ddab5947d 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -23,3 +23,4 @@ obj-$(CONFIG_MFD_STM32_TIMERS)	+= stm32-timers.o
+ obj-$(CONFIG_MFD_ATMEL_FLEXCOM)	+= atmel-flexcom.o
+ obj-$(CONFIG_MFD_RK808)		+= rk808.o
+ obj-$(CONFIG_MFD_AXP20X_I2C)	+= axp20x-i2c.o axp20x.o
++obj-$(CONFIG_MFD_ATMEL_SMC)	+= atmel-smc.o
+diff --git a/drivers/mfd/atmel-smc.c b/drivers/mfd/atmel-smc.c
+new file mode 100644
+index 000000000000..ed24ef650f5b
+--- /dev/null
++++ b/drivers/mfd/atmel-smc.c
+@@ -0,0 +1,352 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Atmel SMC (Static Memory Controller) helper functions.
++ *
++ * Copyright (C) 2017 Atmel
++ * Copyright (C) 2017 Free Electrons
++ *
++ * Author: Boris Brezillon <boris.brezillon@free-electrons.com>
 + */
-+static inline const struct nand_ecc_props *
-+nanddev_get_ecc_requirements(struct nand_device *nand)
++
++#include <linux/mfd/syscon/atmel-smc.h>
++#include <linux/string.h>
++#include <linux/export.h>
++
++/**
++ * atmel_smc_cs_conf_init - initialize a SMC CS conf
++ * @conf: the SMC CS conf to initialize
++ *
++ * Set all fields to 0 so that one can start defining a new config.
++ */
++void atmel_smc_cs_conf_init(struct atmel_smc_cs_conf *conf)
 +{
-+	return &nand->ecc.requirements;
++	memset(conf, 0, sizeof(*conf));
++}
++EXPORT_SYMBOL_GPL(atmel_smc_cs_conf_init);
++
++/**
++ * atmel_smc_cs_encode_ncycles - encode a number of MCK clk cycles in the
++ *				 format expected by the SMC engine
++ * @ncycles: number of MCK clk cycles
++ * @msbpos: position of the MSB part of the timing field
++ * @msbwidth: width of the MSB part of the timing field
++ * @msbfactor: factor applied to the MSB
++ * @encodedval: param used to store the encoding result
++ *
++ * This function encodes the @ncycles value as described in the datasheet
++ * (section "SMC Setup/Pulse/Cycle/Timings Register"). This is a generic
++ * helper which called with different parameter depending on the encoding
++ * scheme.
++ *
++ * If the @ncycles value is too big to be encoded, -ERANGE is returned and
++ * the encodedval is contains the maximum val. Otherwise, 0 is returned.
++ */
++static int atmel_smc_cs_encode_ncycles(unsigned int ncycles,
++				       unsigned int msbpos,
++				       unsigned int msbwidth,
++				       unsigned int msbfactor,
++				       unsigned int *encodedval)
++{
++	unsigned int lsbmask = GENMASK(msbpos - 1, 0);
++	unsigned int msbmask = GENMASK(msbwidth - 1, 0);
++	unsigned int msb, lsb;
++	int ret = 0;
++
++	msb = ncycles / msbfactor;
++	lsb = ncycles % msbfactor;
++
++	if (lsb > lsbmask) {
++		lsb = 0;
++		msb++;
++	}
++
++	/*
++	 * Let's just put the maximum we can if the requested setting does
++	 * not fit in the register field.
++	 * We still return -ERANGE in case the caller cares.
++	 */
++	if (msb > msbmask) {
++		msb = msbmask;
++		lsb = lsbmask;
++		ret = -ERANGE;
++	}
++
++	*encodedval = (msb << msbpos) | lsb;
++
++	return ret;
 +}
 +
- /**
-  * nanddev_offs_to_pos() - Convert an absolute NAND offset into a NAND position
-  * @nand: NAND device
++/**
++ * atmel_smc_cs_conf_set_timing - set the SMC CS conf Txx parameter to a
++ *				  specific value
++ * @conf: SMC CS conf descriptor
++ * @shift: the position of the Txx field in the TIMINGS register
++ * @ncycles: value (expressed in MCK clk cycles) to assign to this Txx
++ *	     parameter
++ *
++ * This function encodes the @ncycles value as described in the datasheet
++ * (section "SMC Timings Register"), and then stores the result in the
++ * @conf->timings field at @shift position.
++ *
++ * Returns -EINVAL if shift is invalid, -ERANGE if ncycles does not fit in
++ * the field, and 0 otherwise.
++ */
++int atmel_smc_cs_conf_set_timing(struct atmel_smc_cs_conf *conf,
++				 unsigned int shift, unsigned int ncycles)
++{
++	unsigned int val;
++	int ret;
++
++	if (shift != ATMEL_HSMC_TIMINGS_TCLR_SHIFT &&
++	    shift != ATMEL_HSMC_TIMINGS_TADL_SHIFT &&
++	    shift != ATMEL_HSMC_TIMINGS_TAR_SHIFT &&
++	    shift != ATMEL_HSMC_TIMINGS_TRR_SHIFT &&
++	    shift != ATMEL_HSMC_TIMINGS_TWB_SHIFT)
++		return -EINVAL;
++
++	/*
++	 * The formula described in atmel datasheets (section "HSMC Timings
++	 * Register"):
++	 *
++	 * ncycles = (Txx[3] * 64) + Txx[2:0]
++	 */
++	ret = atmel_smc_cs_encode_ncycles(ncycles, 3, 1, 64, &val);
++	conf->timings &= ~GENMASK(shift + 3, shift);
++	conf->timings |= val << shift;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(atmel_smc_cs_conf_set_timing);
++
++/**
++ * atmel_smc_cs_conf_set_setup - set the SMC CS conf xx_SETUP parameter to a
++ *				 specific value
++ * @conf: SMC CS conf descriptor
++ * @shift: the position of the xx_SETUP field in the SETUP register
++ * @ncycles: value (expressed in MCK clk cycles) to assign to this xx_SETUP
++ *	     parameter
++ *
++ * This function encodes the @ncycles value as described in the datasheet
++ * (section "SMC Setup Register"), and then stores the result in the
++ * @conf->setup field at @shift position.
++ *
++ * Returns -EINVAL if @shift is invalid, -ERANGE if @ncycles does not fit in
++ * the field, and 0 otherwise.
++ */
++int atmel_smc_cs_conf_set_setup(struct atmel_smc_cs_conf *conf,
++				unsigned int shift, unsigned int ncycles)
++{
++	unsigned int val;
++	int ret;
++
++	if (shift != ATMEL_SMC_NWE_SHIFT && shift != ATMEL_SMC_NCS_WR_SHIFT &&
++	    shift != ATMEL_SMC_NRD_SHIFT && shift != ATMEL_SMC_NCS_RD_SHIFT)
++		return -EINVAL;
++
++	/*
++	 * The formula described in atmel datasheets (section "SMC Setup
++	 * Register"):
++	 *
++	 * ncycles = (128 * xx_SETUP[5]) + xx_SETUP[4:0]
++	 */
++	ret = atmel_smc_cs_encode_ncycles(ncycles, 5, 1, 128, &val);
++	conf->setup &= ~GENMASK(shift + 7, shift);
++	conf->setup |= val << shift;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(atmel_smc_cs_conf_set_setup);
++
++/**
++ * atmel_smc_cs_conf_set_pulse - set the SMC CS conf xx_PULSE parameter to a
++ *				 specific value
++ * @conf: SMC CS conf descriptor
++ * @shift: the position of the xx_PULSE field in the PULSE register
++ * @ncycles: value (expressed in MCK clk cycles) to assign to this xx_PULSE
++ *	     parameter
++ *
++ * This function encodes the @ncycles value as described in the datasheet
++ * (section "SMC Pulse Register"), and then stores the result in the
++ * @conf->setup field at @shift position.
++ *
++ * Returns -EINVAL if @shift is invalid, -ERANGE if @ncycles does not fit in
++ * the field, and 0 otherwise.
++ */
++int atmel_smc_cs_conf_set_pulse(struct atmel_smc_cs_conf *conf,
++				unsigned int shift, unsigned int ncycles)
++{
++	unsigned int val;
++	int ret;
++
++	if (shift != ATMEL_SMC_NWE_SHIFT && shift != ATMEL_SMC_NCS_WR_SHIFT &&
++	    shift != ATMEL_SMC_NRD_SHIFT && shift != ATMEL_SMC_NCS_RD_SHIFT)
++		return -EINVAL;
++
++	/*
++	 * The formula described in atmel datasheets (section "SMC Pulse
++	 * Register"):
++	 *
++	 * ncycles = (256 * xx_PULSE[6]) + xx_PULSE[5:0]
++	 */
++	ret = atmel_smc_cs_encode_ncycles(ncycles, 6, 1, 256, &val);
++	conf->pulse &= ~GENMASK(shift + 7, shift);
++	conf->pulse |= val << shift;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(atmel_smc_cs_conf_set_pulse);
++
++/**
++ * atmel_smc_cs_conf_set_cycle - set the SMC CS conf xx_CYCLE parameter to a
++ *				 specific value
++ * @conf: SMC CS conf descriptor
++ * @shift: the position of the xx_CYCLE field in the CYCLE register
++ * @ncycles: value (expressed in MCK clk cycles) to assign to this xx_CYCLE
++ *	     parameter
++ *
++ * This function encodes the @ncycles value as described in the datasheet
++ * (section "SMC Cycle Register"), and then stores the result in the
++ * @conf->setup field at @shift position.
++ *
++ * Returns -EINVAL if @shift is invalid, -ERANGE if @ncycles does not fit in
++ * the field, and 0 otherwise.
++ */
++int atmel_smc_cs_conf_set_cycle(struct atmel_smc_cs_conf *conf,
++				unsigned int shift, unsigned int ncycles)
++{
++	unsigned int val;
++	int ret;
++
++	if (shift != ATMEL_SMC_NWE_SHIFT && shift != ATMEL_SMC_NRD_SHIFT)
++		return -EINVAL;
++
++	/*
++	 * The formula described in atmel datasheets (section "SMC Cycle
++	 * Register"):
++	 *
++	 * ncycles = (xx_CYCLE[8:7] * 256) + xx_CYCLE[6:0]
++	 */
++	ret = atmel_smc_cs_encode_ncycles(ncycles, 7, 2, 256, &val);
++	conf->cycle &= ~GENMASK(shift + 15, shift);
++	conf->cycle |= val << shift;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(atmel_smc_cs_conf_set_cycle);
++
++/**
++ * atmel_smc_cs_conf_apply - apply an SMC CS conf
++ * @regmap: the SMC regmap
++ * @cs: the CS id
++ * @conf: the SMC CS conf to apply
++ *
++ * Applies an SMC CS configuration.
++ * Only valid on at91sam9/avr32 SoCs.
++ */
++void atmel_smc_cs_conf_apply(struct regmap *regmap, int cs,
++			     const struct atmel_smc_cs_conf *conf)
++{
++	regmap_write(regmap, ATMEL_SMC_SETUP(cs), conf->setup);
++	regmap_write(regmap, ATMEL_SMC_PULSE(cs), conf->pulse);
++	regmap_write(regmap, ATMEL_SMC_CYCLE(cs), conf->cycle);
++	regmap_write(regmap, ATMEL_SMC_MODE(cs), conf->mode);
++}
++EXPORT_SYMBOL_GPL(atmel_smc_cs_conf_apply);
++
++/**
++ * atmel_hsmc_cs_conf_apply - apply an SMC CS conf
++ * @regmap: the HSMC regmap
++ * @cs: the CS id
++ * @layout: the layout of registers
++ * @conf: the SMC CS conf to apply
++ *
++ * Applies an SMC CS configuration.
++ * Only valid on post-sama5 SoCs.
++ */
++void atmel_hsmc_cs_conf_apply(struct regmap *regmap,
++			      const struct atmel_hsmc_reg_layout *layout,
++			      int cs, const struct atmel_smc_cs_conf *conf)
++{
++	regmap_write(regmap, ATMEL_HSMC_SETUP(layout, cs), conf->setup);
++	regmap_write(regmap, ATMEL_HSMC_PULSE(layout, cs), conf->pulse);
++	regmap_write(regmap, ATMEL_HSMC_CYCLE(layout, cs), conf->cycle);
++	regmap_write(regmap, ATMEL_HSMC_TIMINGS(layout, cs), conf->timings);
++	regmap_write(regmap, ATMEL_HSMC_MODE(layout, cs), conf->mode);
++}
++EXPORT_SYMBOL_GPL(atmel_hsmc_cs_conf_apply);
++
++/**
++ * atmel_smc_cs_conf_get - retrieve the current SMC CS conf
++ * @regmap: the SMC regmap
++ * @cs: the CS id
++ * @conf: the SMC CS conf object to store the current conf
++ *
++ * Retrieve the SMC CS configuration.
++ * Only valid on at91sam9/avr32 SoCs.
++ */
++void atmel_smc_cs_conf_get(struct regmap *regmap, int cs,
++			   struct atmel_smc_cs_conf *conf)
++{
++	regmap_read(regmap, ATMEL_SMC_SETUP(cs), &conf->setup);
++	regmap_read(regmap, ATMEL_SMC_PULSE(cs), &conf->pulse);
++	regmap_read(regmap, ATMEL_SMC_CYCLE(cs), &conf->cycle);
++	regmap_read(regmap, ATMEL_SMC_MODE(cs), &conf->mode);
++}
++EXPORT_SYMBOL_GPL(atmel_smc_cs_conf_get);
++
++/**
++ * atmel_hsmc_cs_conf_get - retrieve the current SMC CS conf
++ * @regmap: the HSMC regmap
++ * @cs: the CS id
++ * @layout: the layout of registers
++ * @conf: the SMC CS conf object to store the current conf
++ *
++ * Retrieve the SMC CS configuration.
++ * Only valid on post-sama5 SoCs.
++ */
++void atmel_hsmc_cs_conf_get(struct regmap *regmap,
++			    const struct atmel_hsmc_reg_layout *layout,
++			    int cs, struct atmel_smc_cs_conf *conf)
++{
++	regmap_read(regmap, ATMEL_HSMC_SETUP(layout, cs), &conf->setup);
++	regmap_read(regmap, ATMEL_HSMC_PULSE(layout, cs), &conf->pulse);
++	regmap_read(regmap, ATMEL_HSMC_CYCLE(layout, cs), &conf->cycle);
++	regmap_read(regmap, ATMEL_HSMC_TIMINGS(layout, cs), &conf->timings);
++	regmap_read(regmap, ATMEL_HSMC_MODE(layout, cs), &conf->mode);
++}
++EXPORT_SYMBOL_GPL(atmel_hsmc_cs_conf_get);
++
++static const struct atmel_hsmc_reg_layout sama5d3_reg_layout = {
++	.timing_regs_offset = 0x600,
++};
++
++static const struct atmel_hsmc_reg_layout sama5d2_reg_layout = {
++	.timing_regs_offset = 0x700,
++};
++
++static const struct of_device_id atmel_smc_ids[] = {
++	{ .compatible = "atmel,at91sam9260-smc", .data = NULL },
++	{ .compatible = "atmel,sama5d3-smc", .data = &sama5d3_reg_layout },
++	{ .compatible = "atmel,sama5d2-smc", .data = &sama5d2_reg_layout },
++	{ /* sentinel */ },
++};
++
++/**
++ * atmel_hsmc_get_reg_layout - retrieve the layout of HSMC registers
++ * @np: the HSMC regmap
++ *
++ * Retrieve the layout of HSMC registers.
++ *
++ * Returns NULL in case of SMC, a struct atmel_hsmc_reg_layout pointer
++ * in HSMC case, otherwise ERR_PTR(-EINVAL).
++ */
++const struct atmel_hsmc_reg_layout *
++atmel_hsmc_get_reg_layout(struct device_node *np)
++{
++	const struct of_device_id *match;
++
++	match = of_match_node(atmel_smc_ids, np);
++
++	return match ? match->data : ERR_PTR(-EINVAL);
++}
++EXPORT_SYMBOL_GPL(atmel_hsmc_get_reg_layout);
+diff --git a/include/linux/mfd/syscon/atmel-smc.h b/include/linux/mfd/syscon/atmel-smc.h
+new file mode 100644
+index 000000000000..881edefe4e9c
+--- /dev/null
++++ b/include/linux/mfd/syscon/atmel-smc.h
+@@ -0,0 +1,119 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Atmel SMC (Static Memory Controller) register offsets and bit definitions.
++ *
++ * Copyright (C) 2014 Atmel
++ * Copyright (C) 2014 Free Electrons
++ *
++ * Author: Boris Brezillon <boris.brezillon@free-electrons.com>
++ */
++
++#ifndef _LINUX_MFD_SYSCON_ATMEL_SMC_H_
++#define _LINUX_MFD_SYSCON_ATMEL_SMC_H_
++
++#include <linux/kernel.h>
++#include <of.h>
++#include <regmap.h>
++
++#define ATMEL_SMC_SETUP(cs)			(((cs) * 0x10))
++#define ATMEL_HSMC_SETUP(layout, cs)		\
++	((layout)->timing_regs_offset + ((cs) * 0x14))
++#define ATMEL_SMC_PULSE(cs)			(((cs) * 0x10) + 0x4)
++#define ATMEL_HSMC_PULSE(layout, cs)		\
++	((layout)->timing_regs_offset + ((cs) * 0x14) + 0x4)
++#define ATMEL_SMC_CYCLE(cs)			(((cs) * 0x10) + 0x8)
++#define ATMEL_HSMC_CYCLE(layout, cs)			\
++	((layout)->timing_regs_offset + ((cs) * 0x14) + 0x8)
++#define ATMEL_SMC_NWE_SHIFT			0
++#define ATMEL_SMC_NCS_WR_SHIFT			8
++#define ATMEL_SMC_NRD_SHIFT			16
++#define ATMEL_SMC_NCS_RD_SHIFT			24
++
++#define ATMEL_SMC_MODE(cs)			(((cs) * 0x10) + 0xc)
++#define ATMEL_HSMC_MODE(layout, cs)			\
++	((layout)->timing_regs_offset + ((cs) * 0x14) + 0x10)
++#define ATMEL_SMC_MODE_READMODE_MASK		BIT(0)
++#define ATMEL_SMC_MODE_READMODE_NCS		(0 << 0)
++#define ATMEL_SMC_MODE_READMODE_NRD		(1 << 0)
++#define ATMEL_SMC_MODE_WRITEMODE_MASK		BIT(1)
++#define ATMEL_SMC_MODE_WRITEMODE_NCS		(0 << 1)
++#define ATMEL_SMC_MODE_WRITEMODE_NWE		(1 << 1)
++#define ATMEL_SMC_MODE_EXNWMODE_MASK		GENMASK(5, 4)
++#define ATMEL_SMC_MODE_EXNWMODE_DISABLE		(0 << 4)
++#define ATMEL_SMC_MODE_EXNWMODE_FROZEN		(2 << 4)
++#define ATMEL_SMC_MODE_EXNWMODE_READY		(3 << 4)
++#define ATMEL_SMC_MODE_BAT_MASK			BIT(8)
++#define ATMEL_SMC_MODE_BAT_SELECT		(0 << 8)
++#define ATMEL_SMC_MODE_BAT_WRITE		(1 << 8)
++#define ATMEL_SMC_MODE_DBW_MASK			GENMASK(13, 12)
++#define ATMEL_SMC_MODE_DBW_8			(0 << 12)
++#define ATMEL_SMC_MODE_DBW_16			(1 << 12)
++#define ATMEL_SMC_MODE_DBW_32			(2 << 12)
++#define ATMEL_SMC_MODE_TDF_MASK			GENMASK(19, 16)
++#define ATMEL_SMC_MODE_TDF(x)			(((x) - 1) << 16)
++#define ATMEL_SMC_MODE_TDF_MAX			16
++#define ATMEL_SMC_MODE_TDF_MIN			1
++#define ATMEL_SMC_MODE_TDFMODE_OPTIMIZED	BIT(20)
++#define ATMEL_SMC_MODE_PMEN			BIT(24)
++#define ATMEL_SMC_MODE_PS_MASK			GENMASK(29, 28)
++#define ATMEL_SMC_MODE_PS_4			(0 << 28)
++#define ATMEL_SMC_MODE_PS_8			(1 << 28)
++#define ATMEL_SMC_MODE_PS_16			(2 << 28)
++#define ATMEL_SMC_MODE_PS_32			(3 << 28)
++
++#define ATMEL_HSMC_TIMINGS(layout, cs)			\
++	((layout)->timing_regs_offset + ((cs) * 0x14) + 0xc)
++#define ATMEL_HSMC_TIMINGS_OCMS			BIT(12)
++#define ATMEL_HSMC_TIMINGS_RBNSEL(x)		((x) << 28)
++#define ATMEL_HSMC_TIMINGS_NFSEL		BIT(31)
++#define ATMEL_HSMC_TIMINGS_TCLR_SHIFT		0
++#define ATMEL_HSMC_TIMINGS_TADL_SHIFT		4
++#define ATMEL_HSMC_TIMINGS_TAR_SHIFT		8
++#define ATMEL_HSMC_TIMINGS_TRR_SHIFT		16
++#define ATMEL_HSMC_TIMINGS_TWB_SHIFT		24
++
++struct atmel_hsmc_reg_layout {
++	unsigned int timing_regs_offset;
++};
++
++/**
++ * struct atmel_smc_cs_conf - SMC CS config as described in the datasheet.
++ * @setup: NCS/NWE/NRD setup timings (not applicable to at91rm9200)
++ * @pulse: NCS/NWE/NRD pulse timings (not applicable to at91rm9200)
++ * @cycle: NWE/NRD cycle timings (not applicable to at91rm9200)
++ * @timings: advanced NAND related timings (only applicable to HSMC)
++ * @mode: all kind of config parameters (see the fields definition above).
++ *	  The mode fields are different on at91rm9200
++ */
++struct atmel_smc_cs_conf {
++	u32 setup;
++	u32 pulse;
++	u32 cycle;
++	u32 timings;
++	u32 mode;
++};
++
++void atmel_smc_cs_conf_init(struct atmel_smc_cs_conf *conf);
++int atmel_smc_cs_conf_set_timing(struct atmel_smc_cs_conf *conf,
++				 unsigned int shift,
++				 unsigned int ncycles);
++int atmel_smc_cs_conf_set_setup(struct atmel_smc_cs_conf *conf,
++				unsigned int shift, unsigned int ncycles);
++int atmel_smc_cs_conf_set_pulse(struct atmel_smc_cs_conf *conf,
++				unsigned int shift, unsigned int ncycles);
++int atmel_smc_cs_conf_set_cycle(struct atmel_smc_cs_conf *conf,
++				unsigned int shift, unsigned int ncycles);
++void atmel_smc_cs_conf_apply(struct regmap *regmap, int cs,
++			     const struct atmel_smc_cs_conf *conf);
++void atmel_hsmc_cs_conf_apply(struct regmap *regmap,
++			      const struct atmel_hsmc_reg_layout *reglayout,
++			      int cs, const struct atmel_smc_cs_conf *conf);
++void atmel_smc_cs_conf_get(struct regmap *regmap, int cs,
++			   struct atmel_smc_cs_conf *conf);
++void atmel_hsmc_cs_conf_get(struct regmap *regmap,
++			    const struct atmel_hsmc_reg_layout *reglayout,
++			    int cs, struct atmel_smc_cs_conf *conf);
++const struct atmel_hsmc_reg_layout *
++atmel_hsmc_get_reg_layout(struct device_node *np);
++
++#endif /* _LINUX_MFD_SYSCON_ATMEL_SMC_H_ */
 -- 
 2.30.2
 
