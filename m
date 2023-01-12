@@ -1,52 +1,52 @@
-Delivery-date: Thu, 12 Jan 2023 15:49:23 +0100
+Delivery-date: Thu, 12 Jan 2023 15:52:02 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFytQ-009rbE-Fe
-	for lore@lore.pengutronix.de; Thu, 12 Jan 2023 15:49:23 +0100
+	id 1pFyvz-009rgx-Ki
+	for lore@lore.pengutronix.de; Thu, 12 Jan 2023 15:52:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFytO-00027y-Iv
-	for lore@pengutronix.de; Thu, 12 Jan 2023 15:49:23 +0100
+	id 1pFyvx-0002YJ-19
+	for lore@pengutronix.de; Thu, 12 Jan 2023 15:52:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=X8rWXlMkmFypbcSVyQo4fpnqqrKxgk8hB/rUEjbCVfI=; b=Ezj1Is6dWP7dZys82+nRlgRYvb
-	l0W9SkyiEKHsJvFmVWKyDTY/vpUu5kU4Hm2c0Zr0UZHwvTk+REJEeJovZ9Zt68C+f8LM8zGPik4X8
-	cdND9wzvD0hHSBDbdOB/f+IW1myxRpoEWJdXUwCepDygGZlGV/VDOrLRLFnyaSo2ZbRFssT9lM7/s
-	EMTNtXVj0jdiWXjLb+CPHRP4FgepLtNZ28e9n9Bzu5rnWXKoCiK5hVS+NShMNrh8CYnQeBns2pPDL
-	+P4YAd96d/OCH5QAbSytlF1AwYexPW8hbnkvOF8DUW1/eTTEF77tFf1AYp3HbnAyp7+LvwoSL2CfT
-	nF9bnPXw==;
+	bh=9PM7cxghwQeIFZsFWyGkRpdl97XrQJICdcmvH7g5zOg=; b=ciBz89Sh1no2+osuQNwBNIRng+
+	4oXMuGHL5ScObcOVfecIxC9/1jw9gSSfrHgmFz6JctGEwU98VjFh1jh+DU2XBY7KSqPhUpj1bCWie
+	WPfxNX+dmFht/OkP5DMhZRWugy+3gDD9b/RI6NgYBJJV0TsaayT6rudtyIgqMRDOQjDszT8qDtb9z
+	U7wXLMQ/mi8c2U4yrAK3SuYN5oUgN4hocgc0sifQmdtCNmQ4wjPonejCwbKW5S7BkxgmlUP6Rsj0l
+	tr30p0Lso8vmvNTVY7ZtJn5dhHcknGReDFmJfKyg41NjX9L+eFwrzRsD2x0cTgsmmknaIrCrflk22
+	AeZyajkQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFyrv-00FSBs-QG; Thu, 12 Jan 2023 14:47:51 +0000
+	id 1pFyuc-00FSz2-JP; Thu, 12 Jan 2023 14:50:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFyrp-00FSAj-Sr
-	for barebox@lists.infradead.org; Thu, 12 Jan 2023 14:47:47 +0000
+	id 1pFyuU-00FSxL-J4
+	for barebox@lists.infradead.org; Thu, 12 Jan 2023 14:50:34 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pFyro-0001uv-Bp; Thu, 12 Jan 2023 15:47:44 +0100
+	id 1pFyuT-0002FQ-1a; Thu, 12 Jan 2023 15:50:29 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pFyro-0002iP-3d; Thu, 12 Jan 2023 15:47:44 +0100
-Date: Thu, 12 Jan 2023 15:47:44 +0100
+	id 1pFyuS-00036U-Qh; Thu, 12 Jan 2023 15:50:28 +0100
+Date: Thu, 12 Jan 2023 15:50:28 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230112144744.GT24755@pengutronix.de>
-References: <20230111173921.1684438-1-a.fatoum@pengutronix.de>
+Message-ID: <20230112145028.GU24755@pengutronix.de>
+References: <20230111173548.1660598-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230111173921.1684438-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230111173548.1660598-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230112_064745_947989_6501E20C 
-X-CRM114-Status: GOOD (  21.07  )
+X-CRM114-CacheID: sfid-20230112_065032_732154_054D6BCB 
+X-CRM114-Status: GOOD (  21.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,41 +77,42 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] mci: atmel_mci: fix off-by-1000 in poll timeout
+Subject: Re: [PATCH v2] mtd: consult CONFIG_OFDEVICE in mtd_get_of_node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jan 11, 2023 at 06:39:20PM +0100, Ahmad Fatoum wrote:
-> read_poll_timeout assumes microsecond timeouts, not nanoseconds. One
-> second instead of a thousand is still plenty time when polling for a
-> MCI controller to change state, so use that.
+On Wed, Jan 11, 2023 at 06:35:48PM +0100, Ahmad Fatoum wrote:
+> Get barebox on non-DT platforms with NAND a tiny bit smaller by
+> directly returning NULL if CONFIG_OFDEVICE is not enabled, thereby
+> allowing more code to be discarded at compile-time in absence of
+> link-time optimization.
 > 
-> Fixes: 4fc0369b1a55 ("mci: atmel_mci: add PBL support")
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/mci/atmel_mci_common.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> v1 -> v2:
+>   - don't dereference parent device without NULL-check (Sascha)
+> ---
+>  include/linux/mtd/mtd.h | 2 ++
+>  1 file changed, 2 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/mci/atmel_mci_common.c b/drivers/mci/atmel_mci_common.c
-> index c8e21933fe51..99e65adb2cf0 100644
-> --- a/drivers/mci/atmel_mci_common.c
-> +++ b/drivers/mci/atmel_mci_common.c
-> @@ -90,8 +90,8 @@ static int atmci_poll_status(struct atmel_mci *host, u32 mask)
->  	u32 stat;
->  	int ret;
+> diff --git a/include/linux/mtd/mtd.h b/include/linux/mtd/mtd.h
+> index 6b539a9eceb5..54cb2ec64ce2 100644
+> --- a/include/linux/mtd/mtd.h
+> +++ b/include/linux/mtd/mtd.h
+> @@ -293,6 +293,8 @@ static inline void mtd_set_of_node(struct mtd_info *mtd,
 >  
-> -	ret = read_poll_timeout(atmci_readl, stat, (stat & mask), SECOND, host,
-> -				ATMCI_SR);
-> +	ret = read_poll_timeout(atmci_readl, stat, (stat & mask), USEC_PER_SEC,
-> +				host, ATMCI_SR);
->  	if (ret < 0) {
->  		dev_err(host->hw_dev, "timeout\n");
->  		host->need_reset = true;
+>  static inline struct device_node *mtd_get_of_node(struct mtd_info *mtd)
+>  {
+> +	if (!IS_ENABLED(CONFIG_OFDEVICE))
+> +		return NULL;
+>  	if (mtd->dev.of_node)
+>  		return mtd->dev.of_node;
+>  	if (mtd->dev.parent)
 > -- 
 > 2.30.2
 > 
