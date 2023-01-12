@@ -1,55 +1,61 @@
-Delivery-date: Thu, 12 Jan 2023 16:00:55 +0100
+Delivery-date: Thu, 12 Jan 2023 16:02:28 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFz4a-009sFy-Ha
-	for lore@lore.pengutronix.de; Thu, 12 Jan 2023 16:00:55 +0100
+	id 1pFz64-009sLh-Qi
+	for lore@lore.pengutronix.de; Thu, 12 Jan 2023 16:02:28 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFz4Y-000434-9h
-	for lore@pengutronix.de; Thu, 12 Jan 2023 16:00:55 +0100
+	id 1pFz62-0004XU-O5
+	for lore@pengutronix.de; Thu, 12 Jan 2023 16:02:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7gl5HI6fKsJio7yNCbOJ14jgpJUh0IhS7ag9DTBOXPg=; b=j+Kxepfiq5wKzALucsxSMrynr0
-	kQCbtZV/V3oy9BpcWsH6lj6CEx7zkp0t64RrUOY2MwVA91+/IOwxmFQoA80W3qA9w06DqtaonMjyz
-	IPXU5FsK7K3Cyq0olpR68sGp17L91ukqHgEzsEOHmkNLUf7DjGevT68UQF4dlJfxZ+6cIKULYQo/a
-	9dyhev5yS2SksLoZEG6Mccv8FQqZqTDK62wm08aTSYiH+EpdikOwym5fx0EngjKf75dB7k6AVy9nk
-	vGaj0eCyN3pHHDFsFBYb/197fGPVgitI1RucUOwHuMH8aJ8jeGolWRaZEtBwMnhXH6+Dp0Q/b1r6a
-	IqAKQ+Ag==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=SZaMMuimW4OIUDp6kb1YfYDVVOW1mfmi1GEaIkrm4C0=; b=EnkmH6l9lfJ2P7HJx79gSCnm/L
+	lImQi5r1vXiS06QWFIohreZy9iX4/3FTsuomq+iEcc46U4qn+XwntvMFg1I7VmZ/PM2Wm5h2aqNlf
+	hhfhEUui6lHLBBlhI6V7zb7wEQz/PTQLliwzaNW9RNepdz9C0dSjHLE1CJ0bEHXSDVWldaSYQgV2Z
+	pta1tW4iwOUXgcr14U9aa+huPsl5YE0HKL5ozQyj5ka8CfzdUqNi0EzS9wymXjMIO6BqZrnZ9KWnW
+	UU7HJKBRzuU7AoUUSxpx0zlHvJ5f9flExtqZutCHftjxaTFO6oX3ilfVSxOGRY76DJNKXtP1dtx4A
+	8uDqgHXQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFz39-00FVEo-Di; Thu, 12 Jan 2023 14:59:28 +0000
+	id 1pFz52-00FVjm-NP; Thu, 12 Jan 2023 15:01:24 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFz32-00FVDs-Kr
-	for barebox@lists.infradead.org; Thu, 12 Jan 2023 14:59:22 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pFz31-0003gL-1q; Thu, 12 Jan 2023 15:59:19 +0100
-Message-ID: <1a2b5147-bf48-8e37-e954-6601e376a845@pengutronix.de>
-Date: Thu, 12 Jan 2023 15:59:18 +0100
+	id 1pFz4x-00FViU-Oq
+	for barebox@lists.infradead.org; Thu, 12 Jan 2023 15:01:21 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pFz4w-0004GL-Gp; Thu, 12 Jan 2023 16:01:18 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pFz4w-0004Jn-5d; Thu, 12 Jan 2023 16:01:18 +0100
+Date: Thu, 12 Jan 2023 16:01:18 +0100
+To: Johannes Schneider <johannes.schneider@leica-geosystems.com>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230112150118.GY24755@pengutronix.de>
+References: <20230111113729.779283-1-johannes.schneider@leica-geosystems.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Content-Language: en-US
-To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
-References: <20230111182157.1702865-1-l.stach@pengutronix.de>
- <20230111182157.1702865-3-l.stach@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230111182157.1702865-3-l.stach@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230111113729.779283-1-johannes.schneider@leica-geosystems.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230112_065920_882211_CE73B92D 
-X-CRM114-Status: GOOD (  27.36  )
+X-CRM114-CacheID: sfid-20230112_070119_826964_619B2B1D 
+X-CRM114-Status: GOOD (  23.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,265 +75,113 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 3/3] net: eqos: add i.MX8MP support
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v4] ARM: i.MX8M: separate function call for clock_init
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 11.01.23 19:21, Lucas Stach wrote:
-> This adds the platform glue for the Designware EQOS ethernet interface
-> as implemented on the i.MX8MP SoC.
+On Wed, Jan 11, 2023 at 12:37:29PM +0100, Johannes Schneider wrote:
+> Add a separate function call for imx8mp_early_clock_init, to avoid
+> confusion with imx8mm.
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
+> Signed-off-by: Johannes Schneider <johannes.schneider@leica-geosystems.com>
 > ---
->  drivers/net/Kconfig           |   8 ++
->  drivers/net/Makefile          |   1 +
->  drivers/net/designware_imx8.c | 194 ++++++++++++++++++++++++++++++++++
->  3 files changed, 203 insertions(+)
->  create mode 100644 drivers/net/designware_imx8.c
+>  arch/arm/boards/nxp-imx8mp-evk/lowlevel.c       |  2 +-
+>  arch/arm/boards/tqma8mpxl/lowlevel.c            |  2 +-
+>  arch/arm/mach-imx/imx8m.c                       | 12 +++++++++---
+>  arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h |  1 +
+>  4 files changed, 12 insertions(+), 5 deletions(-)
+
+Applied, thanks
+
+Sascha
+
 > 
-> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-> index 2dafd9c7a8b9..e871b7e11af7 100644
-> --- a/drivers/net/Kconfig
-> +++ b/drivers/net/Kconfig
-> @@ -107,6 +107,14 @@ config DRIVER_NET_DESIGNWARE_EQOS
->  	  This option enables support for the Synopsys
->  	  Designware Ethernet Quality-of-Service (GMAC4).
+> diff --git a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
+> index 4f24dd4cd4..3cb24df1ca 100644
+> --- a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
+> +++ b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
+> @@ -72,7 +72,7 @@ static void power_init_board(void)
+>  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SCL__I2C1_SCL | I2C_PAD_CTRL);
+>  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SDA__I2C1_SDA | I2C_PAD_CTRL);
 >  
-> +config DRIVER_NET_DESIGNWARE_IMX8
-> +	bool "Designware EQOS i.MX8 Ethernet driver"
-> +	depends on HAS_DMA && COMMON_CLK && OFTREE && (ARCH_IMX8M || COMPILE_TEST)
-> +	select DRIVER_NET_DESIGNWARE_EQOS
-> +	help
-> +	  This option enables support for the Designware EQOS MAC implemented on
-> +	  the NXP i.MX8 SoCs.
-> +
->  config DRIVER_NET_DESIGNWARE_STM32
->  	bool "STM32 Designware Ethernet driver"
->  	depends on HAS_DMA && COMMON_CLK && OFTREE && (ARCH_STM32MP || COMPILE_TEST)
-> diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-> index 7ff330a2bf42..6a44a12bf88a 100644
-> --- a/drivers/net/Makefile
-> +++ b/drivers/net/Makefile
-> @@ -15,6 +15,7 @@ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_GENERIC) += designware_generic.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_SOCFPGA) += designware_socfpga.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_STARFIVE) += designware_starfive.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_EQOS) += designware_eqos.o
-> +obj-$(CONFIG_DRIVER_NET_DESIGNWARE_IMX8) += designware_imx8.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_STM32) += designware_stm32.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_TEGRA186) += designware_tegra186.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP) += designware_rockchip.o
-> diff --git a/drivers/net/designware_imx8.c b/drivers/net/designware_imx8.c
-> new file mode 100644
-> index 000000000000..e64fc57c3e13
-> --- /dev/null
-> +++ b/drivers/net/designware_imx8.c
-> @@ -0,0 +1,194 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include <common.h>
-> +#include <init.h>
-> +#include <net.h>
-> +#include <regmap.h>
-> +#include <mfd/syscon.h>
-> +#include <linux/clk.h>
-> +
-> +#include "designware_eqos.h"
-> +
-> +#define GPR_ENET_QOS_INTF_MODE_MASK	GENMASK(21, 16)
-> +#define GPR_ENET_QOS_INTF_SEL_MII	(0x0 << 16)
-> +#define GPR_ENET_QOS_INTF_SEL_RGMII	(0x1 << 16)
-> +#define GPR_ENET_QOS_INTF_SEL_RMII	(0x4 << 16)
-> +#define GPR_ENET_QOS_CLK_GEN_EN		BIT(19)
-> +#define GPR_ENET_QOS_CLK_TX_CLK_SEL	BIT(20)
-> +#define GPR_ENET_QOS_RGMII_EN		BIT(21)
-> +
-> +
-> +struct eqos_imx8_priv {
-> +	struct device_d *dev;
-> +	struct clk_bulk_data *clks;
-> +	int num_clks;
-> +	struct regmap *intf_regmap;
-> +	u32 intf_reg_off;
-> +	bool rmii_refclk_ext;
-> +};
-> +
-> +enum { CLK_STMMACETH, CLK_PCLK, CLK_PTP_REF, CLK_TX};
-> +static const struct clk_bulk_data imx8_clks[] = {
-> +	[CLK_STMMACETH] = { .id = "stmmaceth" },
-> +	[CLK_PCLK]      = { .id = "pclk" },
-> +	[CLK_PTP_REF]   = { .id = "ptp_ref" },
-> +	[CLK_TX]        = { .id = "tx" },
-> +};
-> +
-> +static unsigned long eqos_get_csr_clk_rate_imx8(struct eqos *eqos)
+> -	imx8mm_early_clock_init();
+> +	imx8mp_early_clock_init();
+>  	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
+>  
+>  	i2c = imx8m_i2c_early_init(IOMEM(MX8MP_I2C1_BASE_ADDR));
+> diff --git a/arch/arm/boards/tqma8mpxl/lowlevel.c b/arch/arm/boards/tqma8mpxl/lowlevel.c
+> index 0ce0e7a73b..037c7abf4b 100644
+> --- a/arch/arm/boards/tqma8mpxl/lowlevel.c
+> +++ b/arch/arm/boards/tqma8mpxl/lowlevel.c
+> @@ -73,7 +73,7 @@ static void power_init_board(void)
+>  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SCL__I2C1_SCL | I2C_PAD_CTRL);
+>  	imx8mp_setup_pad(MX8MP_PAD_I2C1_SDA__I2C1_SDA | I2C_PAD_CTRL);
+>  
+> -	imx8mm_early_clock_init();
+> +	imx8mp_early_clock_init();
+>  	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
+>  
+>  	i2c = imx8m_i2c_early_init(IOMEM(MX8MP_I2C1_BASE_ADDR));
+> diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
+> index 9758525b54..7f3856e545 100644
+> --- a/arch/arm/mach-imx/imx8m.c
+> +++ b/arch/arm/mach-imx/imx8m.c
+> @@ -182,7 +182,7 @@ int imx8mq_init(void)
+>  #define IMX8MM_CCM_ANALOG_SYS_PLL2_GEN_CTRL	0x104
+>  #define IMX8MM_CCM_ANALOG_SYS_PLL3_GEN_CTRL	0x114
+>  
+> -static void __imx8mm_early_clock_init(unsigned long pll3_freq) /* and later */
+> +static void __imx8m_early_clock_init(unsigned long pll3_freq) /* and later */
+>  {
+>  	void __iomem *ana = IOMEM(MX8M_ANATOP_BASE_ADDR);
+>  	void __iomem *ccm = IOMEM(MX8M_CCM_BASE_ADDR);
+> @@ -252,14 +252,20 @@ static void __imx8mm_early_clock_init(unsigned long pll3_freq) /* and later */
+>  
+>  void imx8mm_early_clock_init(void)
+>  {
+> -	__imx8mm_early_clock_init(750000000UL);
+> +	__imx8m_early_clock_init(750000000UL);
+>  }
+>  
+>  void imx8mn_early_clock_init(void)
+>  {
+> -	__imx8mm_early_clock_init(600000000UL);
+> +	__imx8m_early_clock_init(600000000UL);
+>  }
+>  
+> +void imx8mp_early_clock_init(void)
 > +{
-> +	struct eqos_imx8_priv *priv = eqos->priv;
-> +
-> +	return clk_get_rate(priv->clks[CLK_PCLK].clk);
+> +	__imx8m_early_clock_init(750000000UL);
 > +}
 > +
 > +
-> +static void eqos_adjust_link_imx8(struct eth_device *edev)
-> +{
-> +	struct eqos *eqos = edev->priv;
-> +	struct eqos_imx8_priv *priv = eqos->priv;
-> +	unsigned long rate;
-> +	int ret;
-> +
-> +	switch (edev->phydev->speed) {
-> +	case SPEED_10:
-> +		rate = 2500000;
-> +		break;
-> +	case SPEED_100:
-> +		rate = 25000000;
-> +		break;
-> +	case SPEED_1000:
-> +		rate = 125000000;
-> +		break;
-> +	default:
-> +		dev_err(priv->dev, "unknown speed value for GMAC speed=%d",
-> +			edev->phydev->speed);
-> +		return;
-> +	}
-> +
-> +	ret = clk_set_rate(priv->clks[CLK_TX].clk, rate);
-> +	if (ret)
-> +		dev_err(priv->dev, "set TX clk rate %ld failed %d\n",
-> +			rate, ret);
-> +
-> +	eqos_adjust_link(edev);
-> +}
-> +
-> +static void eqos_imx8_set_interface_mode(struct eqos *eqos)
-> +{
-> +	struct eqos_imx8_priv *priv = eqos->priv;
-> +	struct device_node *np = priv->dev->device_node;
-> +	int val;
-> +
-> +	if (!of_device_is_compatible(np, "nxp,imx8mp-dwmac-eqos"))
-> +		return;
-> +
-> +	switch (eqos->interface) {
-> +	case PHY_INTERFACE_MODE_MII:
-> +		val = GPR_ENET_QOS_INTF_SEL_MII;
-> +		break;
-> +	case PHY_INTERFACE_MODE_RMII:
-> +		val = GPR_ENET_QOS_INTF_SEL_RMII;
-> +		val |= (priv->rmii_refclk_ext ? 0 : GPR_ENET_QOS_CLK_TX_CLK_SEL);
-> +		break;
-> +	case PHY_INTERFACE_MODE_RGMII:
-> +	case PHY_INTERFACE_MODE_RGMII_ID:
-> +	case PHY_INTERFACE_MODE_RGMII_RXID:
-> +	case PHY_INTERFACE_MODE_RGMII_TXID:
-> +		val = GPR_ENET_QOS_INTF_SEL_RGMII |
-> +		      GPR_ENET_QOS_RGMII_EN;
-> +		break;
-> +	default:
-> +		dev_err(priv->dev, "no valid interface mode found!\n");
-> +		return;
-> +	}
-> +
-> +	val |= GPR_ENET_QOS_CLK_GEN_EN;
-> +
-> +	regmap_update_bits(priv->intf_regmap, priv->intf_reg_off,
-> +			   GPR_ENET_QOS_INTF_MODE_MASK, val);
-> +}
-> +
-> +static int eqos_init_imx8(struct device_d *dev, struct eqos *eqos)
-> +{
-> +	struct device_node *np = dev->device_node;
-> +	struct eqos_imx8_priv *priv = eqos->priv;
-> +	int ret;
-> +
-> +	priv->dev = dev;
-> +
-> +	if (of_get_property(np, "snps,rmii_refclk_ext", NULL))
-> +		priv->rmii_refclk_ext = true;
-> +
-> +	if (of_device_is_compatible(np, "nxp,imx8mp-dwmac-eqos")) {
-> +		priv->intf_regmap = syscon_regmap_lookup_by_phandle(np, "intf_mode");
-> +		if (IS_ERR(priv->intf_regmap))
-> +			return PTR_ERR(priv->intf_regmap);
-> +
-> +		ret = of_property_read_u32_index(np, "intf_mode", 1, &priv->intf_reg_off);
-> +		if (ret) {
-> +			dev_err(dev, "Can't get intf mode reg offset (%d)\n", ret);
-> +			return ret;
-> +		}
-> +	}
-> +
-> +	priv->num_clks = ARRAY_SIZE(imx8_clks);
-> +	priv->clks = xmalloc(priv->num_clks * sizeof(*priv->clks));
-> +	memcpy(priv->clks, imx8_clks, sizeof imx8_clks);
-> +
-> +	ret = clk_bulk_get(dev, priv->num_clks, priv->clks);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to get clks: %s\n", strerror(-ret));
-> +		return ret;
-> +	}
-> +
-> +	ret = clk_bulk_enable(priv->num_clks, priv->clks);
-> +	if (ret) {
-> +		dev_err(dev, "Failed to enable clks: %s\n", strerror(-ret));
-> +		return ret;
-> +	}
-> +
-> +	eqos_imx8_set_interface_mode(eqos);
-> +
-> +	return 0;
-> +}
-> +
-> +static struct eqos_ops imx8_ops = {
-> +	.init = eqos_init_imx8,
-> +	.get_ethaddr = eqos_get_ethaddr,
-> +	.set_ethaddr = eqos_set_ethaddr,
-> +	.adjust_link = eqos_adjust_link_imx8,
-> +	.get_csr_clk_rate = eqos_get_csr_clk_rate_imx8,
-> +
-> +	.clk_csr = EQOS_MDIO_ADDR_CR_250_300,
-> +	.config_mac = EQOS_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_DCB,
-> +};
-> +
-> +static int eqos_probe_imx8(struct device_d *dev)
-> +{
-> +	return eqos_probe(dev, &imx8_ops, xzalloc(sizeof(struct eqos_imx8_priv)));
-> +}
-> +
-> +static void eqos_remove_imx8(struct device_d *dev)
-> +{
-> +	struct eqos *eqos = dev->priv;
-> +	struct eqos_imx8_priv *priv = eqos->priv;
-> +
-> +	eqos_remove(dev);
-> +
-> +	clk_bulk_disable(priv->num_clks, priv->clks);
-> +	clk_bulk_put(priv->num_clks, priv->clks);
-> +}
-> +
-> +static __maybe_unused struct of_device_id eqos_imx8_ids[] = {
-> +	{ .compatible = "nxp,imx8mp-dwmac-eqos"},
-> +	{ /* sentinel */ }
-> +};
-> +
-> +static struct driver_d eqos_imx8_driver = {
-> +	.name = "eqos-imx8",
-> +	.probe = eqos_probe_imx8,
-> +	.remove = eqos_remove_imx8,
-> +	.of_compatible = DRV_OF_COMPAT(eqos_imx8_ids),
-> +};
-> +device_platform_driver(eqos_imx8_driver);
+>  #define KEEP_ALIVE			0x18
+>  #define VER_L				0x1c
+>  #define VER_H				0x20
+> diff --git a/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
+> index eeb15f4dd0..659615e1cc 100644
+> --- a/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
+> +++ b/arch/arm/mach-imx/include/mach/imx8m-ccm-regs.h
+> @@ -53,6 +53,7 @@
+>  void imx8m_early_setup_uart_clock(void);
+>  void imx8mm_early_clock_init(void);
+>  void imx8mn_early_clock_init(void);
+> +void imx8mp_early_clock_init(void);
+>  void imx8m_clock_set_target_val(int clock_id, u32 val);
+>  void imx8m_ccgr_clock_enable(int index);
+>  void imx8m_ccgr_clock_disable(int index);
+> -- 
+> 2.25.1
+> 
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
