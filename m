@@ -1,52 +1,52 @@
-Delivery-date: Thu, 12 Jan 2023 15:57:36 +0100
+Delivery-date: Thu, 12 Jan 2023 15:59:39 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFz1N-009ryD-7m
-	for lore@lore.pengutronix.de; Thu, 12 Jan 2023 15:57:36 +0100
+	id 1pFz3M-009s8z-G5
+	for lore@lore.pengutronix.de; Thu, 12 Jan 2023 15:59:39 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pFz1L-0003N7-Af
-	for lore@pengutronix.de; Thu, 12 Jan 2023 15:57:35 +0100
+	id 1pFz3K-0003if-MH
+	for lore@pengutronix.de; Thu, 12 Jan 2023 15:59:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/x9Kj83tb/p76chdelVgW1sZkHF7tBmIpUVvivf9eNY=; b=GMIYrpu6WM5ur7uwzZ62U12XD8
-	VlC9dPEAc1DpFVmPzTX9UbIhDJrCaokt06LPBZL7mdF3yH7ZarKRN25iAjcedZDzo9qP8XqeZPICU
-	T9jn2LeHsOWrGEOo1TlO0FJa99wI2HH2MlIS+xE0nye+8yavRJvugoHMUanI2ntnCxLHEuQ1cHhcf
-	yBETA7Qhn1jxY1oJCUD1c3zPOLhZNgEG9MM4aqhM2eW46DV9Bhyqh3nLR5cqvL8wugVLU79HZ0ykN
-	xdQwoVaibSCdPcO3lVZwHq+v3+XbDhXTvhEYGXTLViLCgw/f3FrifyxvHEVP+6YfmRU+UW6A7zmj7
-	hnWpBNAg==;
+	bh=k+rOi/i8urqO6AMDNtQqpNhWnrBgox3fVbQWOVsyvTk=; b=zKwRo1NbcrFZk33yZyjRcA75iX
+	wH3RbVNyIyn32COlP+ko4Leq5gszOCUJ+zynsrfMz/ryu3Da0OZqfHCCNo7djRbnZwHtcemYWbfbZ
+	kHVaeHMRYg99GAerjuCyCptBM7FM/2Rx15ZbunpLDw5xY/24pAQ1eTrR1WmdrVNp9nqDuWd9YY4Tc
+	4KIsKdfqwX5aKBxFP0E1XjMG4/VTvJxpS81625QlY0ThgAypcZZ9726ojLoqAuxiwylp5P5ZIiReE
+	toVu1XWWlaQFwHiiZ+Tet/fhZJTeSzcAga+t870SbfjFGAq29bhoQ9uHErSRsOxGtVRe07gAWt80F
+	EhBvkaFA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFz03-00FUPT-0d; Thu, 12 Jan 2023 14:56:15 +0000
+	id 1pFz1u-00FUsJ-Se; Thu, 12 Jan 2023 14:58:10 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pFyzl-00FULT-2Y
-	for barebox@lists.infradead.org; Thu, 12 Jan 2023 14:55:58 +0000
+	id 1pFz1p-00FUr5-LF
+	for barebox@lists.infradead.org; Thu, 12 Jan 2023 14:58:07 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pFyzj-00032t-MF; Thu, 12 Jan 2023 15:55:55 +0100
+	id 1pFz1o-0003YJ-9c; Thu, 12 Jan 2023 15:58:04 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pFyzj-0003Tf-E7; Thu, 12 Jan 2023 15:55:55 +0100
-Date: Thu, 12 Jan 2023 15:55:55 +0100
+	id 1pFz1o-0003aH-26; Thu, 12 Jan 2023 15:58:04 +0100
+Date: Thu, 12 Jan 2023 15:58:04 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230112145555.GW24755@pengutronix.de>
-References: <20230111152836.1548942-1-a.fatoum@pengutronix.de>
+Message-ID: <20230112145804.GX24755@pengutronix.de>
+References: <20230111132956.1153359-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230111152836.1548942-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230111132956.1153359-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230112_065557_270533_A356EC72 
-X-CRM114-Status: GOOD (  27.58  )
+X-CRM114-CacheID: sfid-20230112_065805_718483_12EE65B1 
+X-CRM114-Status: GOOD (  24.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,88 +77,73 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/2] ARM: i.MX8M: bootrom-cmd: clean up pointer casting
+Subject: Re: [PATCH v2 00/11] net: dsa: ksz9477: use regmap to add I2C
+ support next to SPI
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jan 11, 2023 at 04:28:36PM +0100, Ahmad Fatoum wrote:
-> At first glance:
+On Wed, Jan 11, 2023 at 02:29:45PM +0100, Ahmad Fatoum wrote:
+> The Linux DSA driver supports both I2C and SPI as management interface
+> by using regmaps as abstraction. barebox regmaps were not quite that
+> powerful yet, so we rework our regmaps to support optional formatting
+> and then use that to make the KSZ driver work with either I2C or SPI
+> transports.
 > 
-> 	const u32 *rom_log_addr;
-> 	kstrtoul(optarg, 0, (ulong *)&rom_log_addr) with
+> This series has been tested with both an I2C-connected KSZ8563 and
+> a SPI-connected KSZ9563, both of which are supported by the barebox
+> KSZ9477 driver.
 > 
-> looks like it would conflate u32/ulong. While the code is fine,
-> it is better to just use the correct types and forego the case.
-> 
-> While at it, let's guard against the ROM log pointer being NULL
-> as well.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
 > v1 -> v2:
->   - new patch
-> ---
->  arch/arm/mach-imx/bootrom-cmd.c | 19 ++++++++++++++-----
->  1 file changed, 14 insertions(+), 5 deletions(-)
+>   - Use cdev access size encoded in flags to arrive at correct
+>     regmap to use (md -b / md -w works correctly now)
+>   - Changed regmap_init_multi prototype to not take an array
+>   - Added option for 64bit regmap in regmap_init_multi
+>   - Have regmap_init return -ENOSYS if formatted regmap support
+>     is needed, but is not compiled in (previously it crashed).
+> 
+> Ahmad Fatoum (11):
+>   regmap: consolidate reg/val format into regmap_format
+>   regmap: support formatted read and write
+>   regmap: port regmap_init_spi
+>   regmap: factor out regmap cdev size calculation
+>   net: dsa: ksz9477: switch to regmap_init_spi
+>   net: dsa: ksz9477: create regmap cdev for switch registers
+>   drivers: base: regmap: introduce REGMAP_I2C
+>   dev: add dev_bus_is_spi/i2c helpers
+>   net: dsa: ksz9477: refactor to prepare i2c support
+>   regmap: i2c: use formatted I/O
+>   net: ksz9477: add I2C support
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/mach-imx/bootrom-cmd.c b/arch/arm/mach-imx/bootrom-cmd.c
-> index 0238d09b169f..63197e02ae2c 100644
-> --- a/arch/arm/mach-imx/bootrom-cmd.c
-> +++ b/arch/arm/mach-imx/bootrom-cmd.c
-> @@ -51,6 +51,9 @@ static int imx8m_bootrom_decode_log(const u32 *rom_log)
->  {
->  	int i;
->  
-> +	if (!rom_log)
-> +		return -ENODATA;
-> +
->  	for (i = 0; i < 128; i++) {
->  		u8 event_id = FIELD_GET(ROM_EVENT_FORMAT_V1_ID, rom_log[i]);
->  		u8 event_id_idx = FIELD_GET(ROM_EVENT_FORMAT_V1_ID_IDX, rom_log[i]);
-> @@ -178,18 +181,19 @@ static int imx8m_bootrom_decode_log(const u32 *rom_log)
->  
->  static int do_bootrom(int argc, char *argv[])
->  {
-> -	const struct imx_scratch_space *scratch = arm_mem_scratch_get();
-> -	const u32 *rom_log_addr = scratch->bootrom_log;
-> +	union {
-> +		const u32 *ptr;
-> +		ulong addr;
-> +	} rom_log = { NULL };
->  	bool log = false;
->  	int ret, opt;
->  
->  	while((opt = getopt(argc, argv, "la:")) > 0) {
->  		switch(opt) {
->  		case 'a':
-> -			ret = kstrtoul(optarg, 0, (ulong *)&rom_log_addr);
-> +			ret = kstrtoul(optarg, 0, &rom_log.addr);
->  			if (ret)
->  				return ret;
-> -			rom_log_addr = (const u32 *)rom_log_addr;
->  		case 'l':
->  			log = true;
->  			break;
-> @@ -198,8 +202,13 @@ static int do_bootrom(int argc, char *argv[])
->  		}
->  	}
->  
-> +	if (!rom_log.addr) {
-> +		const struct imx_scratch_space *scratch = arm_mem_scratch_get();
-> +		rom_log.ptr = scratch->bootrom_log;
-> +	}
-> +
->  	if (log)
-> -		return imx8m_bootrom_decode_log(rom_log_addr);
-> +		return imx8m_bootrom_decode_log(rom_log.ptr);
->  
->  	return COMMAND_ERROR_USAGE;
->  }
+>  drivers/base/Kconfig               |   2 +
+>  drivers/base/regmap/Kconfig        |  14 +
+>  drivers/base/regmap/Makefile       |   5 +-
+>  drivers/base/regmap/internal.h     |  35 +-
+>  drivers/base/regmap/regmap-fmt.c   | 574 +++++++++++++++++++++++++++++
+>  drivers/base/regmap/regmap-i2c.c   |  50 ++-
+>  drivers/base/regmap/regmap-multi.c | 104 ++++++
+>  drivers/base/regmap/regmap-spi.c   |  42 +++
+>  drivers/base/regmap/regmap.c       |  66 +++-
+>  drivers/mfd/Kconfig                |   4 +
+>  drivers/net/Kconfig                |   4 +-
+>  drivers/net/ksz9477.c              | 190 +++-------
+>  drivers/net/ksz_common.h           | 154 ++++++++
+>  drivers/rtc/Kconfig                |   1 +
+>  drivers/video/ssd1307fb.c          |   4 +-
+>  include/i2c/i2c.h                  |   5 +
+>  include/regmap.h                   |  82 +++++
+>  include/spi/spi.h                  |   5 +
+>  18 files changed, 1166 insertions(+), 175 deletions(-)
+>  create mode 100644 drivers/base/regmap/Kconfig
+>  create mode 100644 drivers/base/regmap/regmap-fmt.c
+>  create mode 100644 drivers/base/regmap/regmap-multi.c
+>  create mode 100644 drivers/base/regmap/regmap-spi.c
+>  create mode 100644 drivers/net/ksz_common.h
+> 
 > -- 
 > 2.30.2
 > 
