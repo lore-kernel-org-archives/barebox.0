@@ -1,61 +1,59 @@
-Delivery-date: Mon, 16 Jan 2023 13:43:13 +0100
+Delivery-date: Mon, 16 Jan 2023 13:56:34 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pHOpV-00DZUU-PM
-	for lore@lore.pengutronix.de; Mon, 16 Jan 2023 13:43:13 +0100
+	id 1pHP2Q-00DZrz-RG
+	for lore@lore.pengutronix.de; Mon, 16 Jan 2023 13:56:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pHOpT-0004YS-R2
-	for lore@pengutronix.de; Mon, 16 Jan 2023 13:43:12 +0100
+	id 1pHP2N-0006ev-Rt
+	for lore@pengutronix.de; Mon, 16 Jan 2023 13:56:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PqAjHklORtYvvvhVfUxaJuW/qRZrPLbrCktTUZwFxHc=; b=EhurjtJ2rXDEVKAhX/H3/sOhVq
-	JhaWAmSWzLxyv7w5QeOjx13HlPtI/uKQ7Fe9i0THHTq4VYtvPj4OFiS79Pzqm2W1vj/nTHjnbYfmx
-	XZ4cAp/EHJubKWLm19KQe+jxkyVB7paYtqWIC8GCl6fSceLWzxIckLXrrqsUDLGlp5fB6Eq57kkrY
-	xEWnpT/2qnH1uuga0fxnyQPm7xTjKePkXFYpByFkHXiS03buOQhl2Lnd3Vv9oMPHOtMjUl3N+Rj6X
-	SOgGVB7wbfOeAY8VoIYhfv4gw6rgKzcxIbzIWWNTIuyB8CtmwyJiEbONqk5xhDhsuTrgv/QyNTerD
-	m/K/NdCA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=oMw/9BmIF4+9FSc2Dah9QMnMgrXAVWtI35nyQxrgB/M=; b=pOYvgPd7LuWwUDiLkVmdUtIg5l
+	tnhJKTODGSRPsSS0y0CHUBEQtKEjQAhEVRhqOiVUcfSAwQXbXTjWfqHlLoV5EDydyI+PwFVxv7K0q
+	6Frk5UV2mEN+oy1TirkLibYKICQ1e/Epv50TuJd0icuu87Anw2MnfVprUX9XmhrX8h/5bosYrM6k3
+	SgEgPSeor73RHtx85lX3VzKW6mG4MgXbiPWDltYra7SCuPG4wVe9JXJpeXuo837Bl7PU7co35HRlv
+	O56ZcjfGUFxfqBY7gkXp2ICEX+qN+/xa5b93/XetmKbNhte9tevvXo3Tds4awVfmtcro1+S9bQmNu
+	Ch8Gajuw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pHOoJ-00A8OJ-Ct; Mon, 16 Jan 2023 12:41:59 +0000
+	id 1pHP0t-00AC6W-93; Mon, 16 Jan 2023 12:54:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pHOoE-00A8NJ-Ip
-	for barebox@lists.infradead.org; Mon, 16 Jan 2023 12:41:56 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	id 1pHP0h-00AC59-Ee
+	for barebox@lists.infradead.org; Mon, 16 Jan 2023 12:54:48 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pHOoD-0004Iz-78; Mon, 16 Jan 2023 13:41:53 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pHOoD-0004mr-05; Mon, 16 Jan 2023 13:41:53 +0100
-Date: Mon, 16 Jan 2023 13:41:52 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Denis Orlov <denorl2009@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230116124152.GD24755@pengutronix.de>
-References: <20230113140909.31769-1-denorl2009@gmail.com>
+	(envelope-from <afa@pengutronix.de>)
+	id 1pHP0f-0006BP-VA; Mon, 16 Jan 2023 13:54:46 +0100
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pHP0f-006RhT-C8; Mon, 16 Jan 2023 13:54:45 +0100
+Received: from afa by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pHP0e-002zYQ-QZ; Mon, 16 Jan 2023 13:54:44 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: uol@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 16 Jan 2023 13:54:43 +0100
+Message-Id: <20230116125443.713033-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230113140909.31769-1-denorl2009@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230116_044154_637446_4258B353 
-X-CRM114-Status: GOOD (  23.35  )
+X-CRM114-CacheID: sfid-20230116_045447_524822_E94BB429 
+X-CRM114-Status: GOOD (  15.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,66 +75,98 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] net: e1000: read EEPROM through EERD register on 8257x
- adapters
+Subject: [PATCH] state: backend: direct: open backend in read-only mode if possible
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jan 13, 2023 at 05:09:09PM +0300, Denis Orlov wrote:
-> For some reason, we would only use EERD if Flash is used as non-volatile
-> memory. However, looking at e1000e driver sources from Linux this is how
-> they are reading NVM on those cards for both EEPROM and Flash.
-> 
-> This fixes issues with reading EEPROM in driver on QEMU emulated 82574
-> PCIe card.
-> 
-> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
-> ---
->  drivers/net/e1000/eeprom.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+We unconditionally open the device backing a direct bucket in read-write
+mode. We already populate struct state_backend_storage::readonly though,
+which we could consult at device open time. Do so. This could possibly
+be done for MTD as well, but until that's tested, for now, we do it only
+for the direct backend meant for use with block devices.
 
-Applied, thanks
+This has no functional change for barebox, which calls state_new_from_node
+in the DT driver and in the EFI initcall always with readonly=false, but
+we can benefit from this in barebox_state to open a device in read-only
+mode when possible (e.g. when called to --dump).
 
-Sascha
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/state/backend_bucket_direct.c | 4 ++--
+ common/state/backend_storage.c       | 2 +-
+ common/state/state.c                 | 6 +++---
+ common/state/state.h                 | 2 +-
+ 4 files changed, 7 insertions(+), 7 deletions(-)
 
-> 
-> diff --git a/drivers/net/e1000/eeprom.c b/drivers/net/e1000/eeprom.c
-> index 27143bd6d0..c90faf3a58 100644
-> --- a/drivers/net/e1000/eeprom.c
-> +++ b/drivers/net/e1000/eeprom.c
-> @@ -495,6 +495,7 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
->  	case e1000_82571:
->  	case e1000_82572:
->  		e1000_eeprom_uses_spi(eeprom, eecd);
-> +		eeprom->read = e1000_read_eeprom_eerd;
->  		break;
->  
->  	case e1000_82573:
-> @@ -502,7 +503,6 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
->  		if (e1000_is_onboard_nvm_eeprom(hw)) {
->  			e1000_eeprom_uses_spi(eeprom, eecd);
->  		} else {
-> -			eeprom->read = e1000_read_eeprom_eerd;
->  			eeprom->type = e1000_eeprom_flash;
->  			eeprom->word_size = 2048;
->  
-> @@ -513,6 +513,7 @@ int32_t e1000_init_eeprom_params(struct e1000_hw *hw)
->  			eecd &= ~E1000_EECD_AUPDEN;
->  			e1000_write_reg(hw, E1000_EECD, eecd);
->  		}
-> +		eeprom->read = e1000_read_eeprom_eerd;
->  		break;
->  
->  	case e1000_80003es2lan:
-> -- 
-> 2.30.2
-> 
-> 
-
+diff --git a/common/state/backend_bucket_direct.c b/common/state/backend_bucket_direct.c
+index 3818c6f0b0ec..f06e14277862 100644
+--- a/common/state/backend_bucket_direct.c
++++ b/common/state/backend_bucket_direct.c
+@@ -164,12 +164,12 @@ static void state_backend_bucket_direct_free(struct
+ 
+ int state_backend_bucket_direct_create(struct device *dev, const char *path,
+ 				       struct state_backend_storage_bucket **bucket,
+-				       off_t offset, ssize_t max_size)
++				       off_t offset, ssize_t max_size, bool readonly)
+ {
+ 	int fd;
+ 	struct state_backend_storage_bucket_direct *direct;
+ 
+-	fd = open(path, O_RDWR);
++	fd = open(path, readonly ? O_RDONLY : O_RDWR);
+ 	if (fd < 0) {
+ 		dev_err(dev, "Failed to open file '%s', %d\n", path, -errno);
+ 		return -errno;
+diff --git a/common/state/backend_storage.c b/common/state/backend_storage.c
+index c55d22e37f70..df81902bf7be 100644
+--- a/common/state/backend_storage.c
++++ b/common/state/backend_storage.c
+@@ -332,7 +332,7 @@ static int state_storage_file_buckets_init(struct state_backend_storage *storage
+ 		offset = storage->offset + n * stridesize;
+ 		ret = state_backend_bucket_direct_create(storage->dev, storage->path,
+ 							 &bucket, offset,
+-							 stridesize);
++							 stridesize, storage->readonly);
+ 		if (ret) {
+ 			dev_warn(storage->dev, "Failed to create direct bucket at '%s' offset %lld\n",
+ 				 storage->path, (long long) offset);
+diff --git a/common/state/state.c b/common/state/state.c
+index a614c849c74e..cabe285fbdf3 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -653,14 +653,14 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
+ 	if (ret)
+ 		goto out_release_state;
+ 
++	if (readonly)
++		state_backend_set_readonly(state);
++
+ 	ret = state_storage_init(state, state->backend_path, offset,
+ 				 size, stridesize, storage_type);
+ 	if (ret)
+ 		goto out_release_state;
+ 
+-	if (readonly)
+-		state_backend_set_readonly(state);
+-
+ 	ret = state_from_node(state, node, 1);
+ 	if (ret) {
+ 		goto out_release_state;
+diff --git a/common/state/state.h b/common/state/state.h
+index 7eb51bbdb57d..f0c5b1de4123 100644
+--- a/common/state/state.h
++++ b/common/state/state.h
+@@ -226,7 +226,7 @@ void state_backend_set_readonly(struct state *state);
+ void state_storage_free(struct state_backend_storage *storage);
+ int state_backend_bucket_direct_create(struct device *dev, const char *path,
+ 				       struct state_backend_storage_bucket **bucket,
+-				       off_t offset, ssize_t max_size);
++				       off_t offset, ssize_t max_size, bool readonly);
+ int state_storage_write(struct state_backend_storage *storage,
+ 			const void * buf, ssize_t len);
+ int state_storage_read(struct state_backend_storage *storage,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
+
 
 
