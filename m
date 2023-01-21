@@ -3,59 +3,59 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pJF8j-0012ke-SU
+	id 1pJF8k-0012ku-Gc
 	for lore@lore.pengutronix.de; Sat, 21 Jan 2023 15:46:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pJF8h-0000Lr-2d
-	for lore@pengutronix.de; Sat, 21 Jan 2023 15:46:40 +0100
+	id 1pJF8i-0000M5-4O
+	for lore@pengutronix.de; Sat, 21 Jan 2023 15:46:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OlKyNvT8K1xSCdN2fdFSXEBJvur8By4Sy8HwEEEK9XY=; b=sxzelKJOspZb/JjiYYf+wEL9iY
-	UIfBW7lOLWCHfzBzAC5gi5yO1XFL7sHCgyWqaN6fJnGqIik9snFF2ZJ1T2shr8R7gOubit0ZD4U0n
-	CLmL9ebhybERoa55ZqoVKHz7wsmybZUsCSZs+k1dZyN3PASw6/BeOoFRHV+BqR+E1Ck48BQD6gr8i
-	ryUKpVUzNg3mpJa3f6zoJyGKXecxSheSY9H0jIVFh83pkhv5I15y//F8FySiwOy84qKsn7IZW7dSj
-	ha62BoxxSK3evMTynZXvdvKYestbKlbDa5k4wSOD6E3rOjY+AfOP/A8HDOo0eSdtTqievN6KKQFGe
-	s3E8hoGQ==;
+	bh=Ep4wrY5gNAr1lVSSGnfdOiHlD9mhgZzXiLuJ9gbBBPc=; b=Es5kjhJOZxNeaBxiJGKqGpJ5HT
+	5g1rwbWBL5XZDBauht5qb/HLOYRf618vd07zDWGRpmi2B73qzVcx/Fknp0+d7n3fqixCM1bbs4Yqo
+	UQp8Z7GUTC/RTUavVue93YwNYdOixO1xmUkuiJzb3g4zb9GyqrD15qptlXOMBh66JqF8FGCo/Ys5s
+	92qP9OEvdv5+vYIrWElipYOX8Dgvgbf6+q+zcxki3EMdd6Rdsf9HzYfGrWkrSZ/TNg/F229R443Ai
+	uPs5wFwrbAwITQjb95WRemT8jqk5C6XnQgCUCEETN89A07dKVt3f0zk0r+CazgmV2//hCDx4hPFrz
+	t+ixChuw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pJF75-00DyGu-U7; Sat, 21 Jan 2023 14:45:00 +0000
-Received: from out0.migadu.com ([2001:41d0:2:267::])
+	id 1pJF7T-00DyVD-7C; Sat, 21 Jan 2023 14:45:23 +0000
+Received: from out2.migadu.com ([188.165.223.204])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pJF70-00DyFz-CH
-	for barebox@lists.infradead.org; Sat, 21 Jan 2023 14:44:56 +0000
+	id 1pJF7N-00DyRb-TM
+	for barebox@lists.infradead.org; Sat, 21 Jan 2023 14:45:19 +0000
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jookia.org; s=key1;
-	t=1674312292;
+	t=1674312315;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OlKyNvT8K1xSCdN2fdFSXEBJvur8By4Sy8HwEEEK9XY=;
-	b=yzrJWN0AY5eM5lCtTNWSx99bXTV1XIFaGsK+RvLfqLavE9AWZQktBsq1LFDgMo7c0FUo43
-	D+b/FWjybn9pSxFLHA5UlDWAfPF4h7mWO9cX4gLzNOywqNuowVJHB2pee6s2VbhQRf0Pl8
-	8rV8BY3gf08QC6wiEtlIYMvJviR1WNaYlIDegIHJgUxR10rXUiFIa/4o9UWMqjB1oYyu8V
-	QX9yHppo7Adcj0v8wc5VagRMx5VLOPivBuIEABmOeWqcJMISI1qM1K3546CEboDZEdilAZ
-	zmGwphH7OqTo7i3U73VsYTbR+ozLZnwAEBivN6/3dz7FwspsYcERrEYuc0AoUg==
+	bh=Ep4wrY5gNAr1lVSSGnfdOiHlD9mhgZzXiLuJ9gbBBPc=;
+	b=jYNiPHC+fSuNt840XQiZhPTCN1ad8a2kf0DuDtVHyAwTPJ3zz4jTPIxA0tkVS0N2CyEkig
+	1ZPOmdF1eioZX5xXqTrQ9Wk+vTBNoQlBO0Um8K74IIcf/wTsTbJiJIpti+JzgTYBXigGuk
+	HvzIas5h3x+xGtb5g3oIkHb5z9FLlhCcAbnFxGG/AoppXYJK5sB8RQJ2W3M2bsre4C6w97
+	bkW2ksXmHPO16f/5uiRnO+OWCu7yWLbRdcxQ2ZE14/qu/1VALPdCEHvx/kJVgE+Tivx8D9
+	l2IuwYWdKrbPzK32/fltx4UoQumPFQAYfohlHKaKemadLFk/envUD09S7BRxUA==
 From: John Watts <contact@jookia.org>
 To: barebox@lists.infradead.org
 Cc: John Watts <contact@jookia.org>
-Date: Sun, 22 Jan 2023 01:44:25 +1100
-Message-Id: <20230121144429.3524905-4-contact@jookia.org>
+Date: Sun, 22 Jan 2023 01:44:29 +1100
+Message-Id: <20230121144429.3524905-8-contact@jookia.org>
 In-Reply-To: <20230121144429.3524905-1-contact@jookia.org>
 References: <20230121144429.3524905-1-contact@jookia.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230121_064454_745635_74871ED1 
-X-CRM114-Status: GOOD (  15.38  )
+X-CRM114-CacheID: sfid-20230121_064518_140028_01C4A1EF 
+X-CRM114-Status: GOOD (  13.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,240 +73,92 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/7] ddr_dimms: Move FSL dimm_params to include/ddr_dimms.h
+Subject: [PATCH 7/7] ddr_spd: Support reading SPD from DDR3 sticks
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This is in preparation for use for generic SPD calculations.
+DDR4 splits the read in two pages while other DDR types do not.
+Introduce a new parameter to indicate how to read the SPD.
 
 Signed-off-by: John Watts <contact@jookia.org>
 ---
- include/ddr_dimms.h             | 101 ++++++++++++++++++++++++++++++++
- include/soc/fsl/fsl_ddr_sdram.h |  92 +----------------------------
- 2 files changed, 102 insertions(+), 91 deletions(-)
- create mode 100644 include/ddr_dimms.h
+ arch/arm/boards/ls1046ardb/lowlevel.c |  2 +-
+ common/ddr_spd.c                      | 16 +++++++++++-----
+ include/ddr_spd.h                     |  3 ++-
+ 3 files changed, 14 insertions(+), 7 deletions(-)
 
-diff --git a/include/ddr_dimms.h b/include/ddr_dimms.h
-new file mode 100644
-index 0000000000..3ec6209ae1
---- /dev/null
-+++ b/include/ddr_dimms.h
-@@ -0,0 +1,101 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * Copyright 2008-2016 Freescale Semiconductor, Inc.
-+ * Copyright 2017-2018 NXP Semiconductor
-+ */
-+
-+#ifndef _DDR_DIMMS_H_
-+#define _DDR_DIMMS_H_
-+
-+/* Parameters for a DDR dimm computed from the SPD */
-+struct dimm_params {
-+
-+	/* DIMM organization parameters */
-+	char mpart[19];		/* guaranteed null terminated */
-+
-+	unsigned int n_ranks;
-+	unsigned int die_density;
-+	unsigned long long rank_density;
-+	unsigned long long capacity;
-+	unsigned int data_width;
-+	unsigned int primary_sdram_width;
-+	unsigned int ec_sdram_width;
-+	unsigned int registered_dimm;
-+	unsigned int package_3ds;	/* number of dies in 3DS DIMM */
-+	unsigned int device_width;	/* x4, x8, x16 components */
-+
-+	/* SDRAM device parameters */
-+	unsigned int n_row_addr;
-+	unsigned int n_col_addr;
-+	unsigned int edc_config;	/* 0 = none, 1 = parity, 2 = ECC */
-+	unsigned int bank_addr_bits; /* DDR4 */
-+	unsigned int bank_group_bits; /* DDR4 */
-+	unsigned int n_banks_per_sdram_device; /* !DDR4 */
-+	unsigned int burst_lengths_bitmask;	/* BL=4 bit 2, BL=8 = bit 3 */
-+
-+	/* used in computing base address of DIMMs */
-+	unsigned long long base_address;
-+	/* mirrored DIMMs */
-+	unsigned int mirrored_dimm;	/* only for ddr3 */
-+
-+	/* DIMM timing parameters */
-+
-+	int mtb_ps;	/* medium timebase ps */
-+	int ftb_10th_ps; /* fine timebase, in 1/10 ps */
-+	int taa_ps;	/* minimum CAS latency time */
-+	int tfaw_ps;	/* four active window delay */
-+
-+	/*
-+	 * SDRAM clock periods
-+	 * The range for these are 1000-10000 so a short should be sufficient
-+	 */
-+	int tckmin_x_ps;
-+	int tckmin_x_minus_1_ps;
-+	int tckmin_x_minus_2_ps;
-+	int tckmax_ps;
-+
-+	/* SPD-defined CAS latencies */
-+	unsigned int caslat_x;
-+	unsigned int caslat_x_minus_1;
-+	unsigned int caslat_x_minus_2;
-+
-+	unsigned int caslat_lowest_derated;	/* Derated CAS latency */
-+
-+	/* basic timing parameters */
-+	int trcd_ps;
-+	int trp_ps;
-+	int tras_ps;
-+
-+	int trfc1_ps; /* DDR4 */
-+	int trfc2_ps; /* DDR4 */
-+	int trfc4_ps; /* DDR4 */
-+	int trrds_ps; /* DDR4 */
-+	int trrdl_ps; /* DDR4 */
-+	int tccdl_ps; /* DDR4 */
-+	int trfc_slr_ps; /* DDR4 */
-+	int twr_ps;	/* !DDR4, maximum = 63750 ps */
-+	int trfc_ps;	/* max = 255 ns + 256 ns + .75 ns
-+				       = 511750 ps */
-+	int trrd_ps;	/* !DDR4, maximum = 63750 ps */
-+	int twtr_ps;	/* !DDR4, maximum = 63750 ps */
-+	int trtp_ps;	/* !DDR4, byte 38, spd->trtp */
-+
-+	int trc_ps;	/* maximum = 254 ns + .75 ns = 254750 ps */
-+
-+	int refresh_rate_ps;
-+	int extended_op_srt;
-+
-+	int tis_ps;	/* DDR1, DDR2, byte 32, spd->ca_setup */
-+	int tih_ps;	/* DDR1, DDR2, byte 33, spd->ca_hold */
-+	int tds_ps;	/* DDR1, DDR2, byte 34, spd->data_setup */
-+	int tdh_ps;	/* DDR1, DDR2, byte 35, spd->data_hold */
-+	int tdqsq_max_ps;	/* DDR1, DDR2, byte 44, spd->tdqsq */
-+	int tqhs_ps;	/* DDR1, DDR2, byte 45, spd->tqhs */
-+
-+	/* DDR3 & DDR4 RDIMM */
-+	unsigned char rcw[16];	/* Register Control Word 0-15 */
-+	unsigned int dq_mapping[18]; /* DDR4 */
-+	unsigned int dq_mapping_ors; /* DDR4 */
-+};
-+
-+#endif /* _DDR_DIMMS_H_ */
-diff --git a/include/soc/fsl/fsl_ddr_sdram.h b/include/soc/fsl/fsl_ddr_sdram.h
-index 80508ef5d5..23f0816599 100644
---- a/include/soc/fsl/fsl_ddr_sdram.h
-+++ b/include/soc/fsl/fsl_ddr_sdram.h
-@@ -8,6 +8,7 @@
- #define FSL_DDR_MEMCTL_H
+diff --git a/arch/arm/boards/ls1046ardb/lowlevel.c b/arch/arm/boards/ls1046ardb/lowlevel.c
+index 055e5f4c99..9eae032377 100644
+--- a/arch/arm/boards/ls1046ardb/lowlevel.c
++++ b/arch/arm/boards/ls1046ardb/lowlevel.c
+@@ -205,7 +205,7 @@ static noinline __noreturn void ls1046ardb_r_entry(unsigned long memsize)
+ 	IMD_USED_OF(fsl_ls1046a_rdb);
  
- #include <ddr_spd.h>
-+#include <ddr_dimms.h>
- #include <soc/fsl/fsl_immap.h>
+ 	i2c = ls1046_i2c_init(IOMEM(LSCH2_I2C1_BASE_ADDR));
+-	ret = spd_read_eeprom(i2c, 0x51, &spd_eeprom);
++	ret = spd_read_eeprom(i2c, 0x51, &spd_eeprom, SPD_MEMTYPE_DDR4);
+ 	if (ret) {
+ 		pr_err("Cannot read SPD EEPROM: %d\n", ret);
+ 		goto err;
+diff --git a/common/ddr_spd.c b/common/ddr_spd.c
+index dd3b8511e6..f7792360de 100644
+--- a/common/ddr_spd.c
++++ b/common/ddr_spd.c
+@@ -480,6 +480,7 @@ static int read_buf(struct pbl_i2c *i2c,
+  * @i2c: I2C controller handle
+  * @addr: I2C bus address for the EEPROM
+  * @buf: buffer to read the SPD data to
++ * @memtype: Memory type, such as SPD_MEMTYPE_DDR4
+  *
+  * This function takes a I2C message transfer function and reads the contents
+  * from a SPD EEPROM to the buffer provided at @buf. The buffer should at least
+@@ -487,19 +488,24 @@ static int read_buf(struct pbl_i2c *i2c,
+  * otherwise.
+  */
+ int spd_read_eeprom(struct pbl_i2c *i2c,
+-		    uint8_t addr, void *buf)
++		    uint8_t addr, void *buf,
++		    int memtype)
+ {
+ 	unsigned char *buf8 = buf;
+ 	int ret;
  
- struct common_timing_params {
-@@ -418,97 +419,6 @@ typedef struct memctl_options_s {
- #define EDC_ECC		2
- #define EDC_AC_PARITY	4
+-	ret = read_buf(i2c, addr, SPD_SPA0_ADDRESS, buf);
+-	if (ret < 0)
+-		return ret;
++	if (memtype == SPD_MEMTYPE_DDR4) {
++		ret = read_buf(i2c, addr, SPD_SPA0_ADDRESS, buf);
++		if (ret < 0)
++			return ret;
  
--/* Parameters for a DDR dimm computed from the SPD */
--struct dimm_params {
--
--	/* DIMM organization parameters */
--	char mpart[19];		/* guaranteed null terminated */
--
--	unsigned int n_ranks;
--	unsigned int die_density;
--	unsigned long long rank_density;
--	unsigned long long capacity;
--	unsigned int data_width;
--	unsigned int primary_sdram_width;
--	unsigned int ec_sdram_width;
--	unsigned int registered_dimm;
--	unsigned int package_3ds;	/* number of dies in 3DS DIMM */
--	unsigned int device_width;	/* x4, x8, x16 components */
--
--	/* SDRAM device parameters */
--	unsigned int n_row_addr;
--	unsigned int n_col_addr;
--	unsigned int edc_config;	/* 0 = none, 1 = parity, 2 = ECC */
--	unsigned int bank_addr_bits; /* DDR4 */
--	unsigned int bank_group_bits; /* DDR4 */
--	unsigned int n_banks_per_sdram_device; /* !DDR4 */
--	unsigned int burst_lengths_bitmask;	/* BL=4 bit 2, BL=8 = bit 3 */
--
--	/* used in computing base address of DIMMs */
--	unsigned long long base_address;
--	/* mirrored DIMMs */
--	unsigned int mirrored_dimm;	/* only for ddr3 */
--
--	/* DIMM timing parameters */
--
--	int mtb_ps;	/* medium timebase ps */
--	int ftb_10th_ps; /* fine timebase, in 1/10 ps */
--	int taa_ps;	/* minimum CAS latency time */
--	int tfaw_ps;	/* four active window delay */
--
--	/*
--	 * SDRAM clock periods
--	 * The range for these are 1000-10000 so a short should be sufficient
--	 */
--	int tckmin_x_ps;
--	int tckmin_x_minus_1_ps;
--	int tckmin_x_minus_2_ps;
--	int tckmax_ps;
--
--	/* SPD-defined CAS latencies */
--	unsigned int caslat_x;
--	unsigned int caslat_x_minus_1;
--	unsigned int caslat_x_minus_2;
--
--	unsigned int caslat_lowest_derated;	/* Derated CAS latency */
--
--	/* basic timing parameters */
--	int trcd_ps;
--	int trp_ps;
--	int tras_ps;
--
--	int trfc1_ps; /* DDR4 */
--	int trfc2_ps; /* DDR4 */
--	int trfc4_ps; /* DDR4 */
--	int trrds_ps; /* DDR4 */
--	int trrdl_ps; /* DDR4 */
--	int tccdl_ps; /* DDR4 */
--	int trfc_slr_ps; /* DDR4 */
--	int twr_ps;	/* !DDR4, maximum = 63750 ps */
--	int trfc_ps;	/* max = 255 ns + 256 ns + .75 ns
--				       = 511750 ps */
--	int trrd_ps;	/* !DDR4, maximum = 63750 ps */
--	int twtr_ps;	/* !DDR4, maximum = 63750 ps */
--	int trtp_ps;	/* !DDR4, byte 38, spd->trtp */
--
--	int trc_ps;	/* maximum = 254 ns + .75 ns = 254750 ps */
--
--	int refresh_rate_ps;
--	int extended_op_srt;
--
--	int tis_ps;	/* DDR1, DDR2, byte 32, spd->ca_setup */
--	int tih_ps;	/* DDR1, DDR2, byte 33, spd->ca_hold */
--	int tds_ps;	/* DDR1, DDR2, byte 34, spd->data_setup */
--	int tdh_ps;	/* DDR1, DDR2, byte 35, spd->data_hold */
--	int tdqsq_max_ps;	/* DDR1, DDR2, byte 44, spd->tdqsq */
--	int tqhs_ps;	/* DDR1, DDR2, byte 45, spd->tqhs */
--
--	/* DDR3 & DDR4 RDIMM */
--	unsigned char rcw[16];	/* Register Control Word 0-15 */
--	unsigned int dq_mapping[18]; /* DDR4 */
--	unsigned int dq_mapping_ors; /* DDR4 */
--};
--
- struct fsl_ddr_controller {
- 	int num;
- 	unsigned long ddr_freq;
+-	if (buf8[2] == SPD_MEMTYPE_DDR4) {
+ 		ret = read_buf(i2c, addr, SPD_SPA1_ADDRESS, buf + 256);
+ 		if (ret < 0)
+ 			return ret;
++	} else {
++		ret = read_buf(i2c, addr, 0, buf);
++		if (ret < 0)
++			return ret;
+ 	}
+ 
+ 	return 0;
+diff --git a/include/ddr_spd.h b/include/ddr_spd.h
+index bcc2171d2a..a96d01df85 100644
+--- a/include/ddr_spd.h
++++ b/include/ddr_spd.h
+@@ -575,6 +575,7 @@ int ddr3_spd_check(const struct ddr3_spd_eeprom *spd);
+ int ddr4_spd_check(const struct ddr4_spd_eeprom *spd);
+ 
+ int spd_read_eeprom(struct pbl_i2c *i2c,
+-		    uint8_t addr, void *buf);
++		    uint8_t addr, void *buf,
++		    int memtype);
+ 
+ #endif /* _DDR_SPD_H_ */
 -- 
 2.39.0
 
