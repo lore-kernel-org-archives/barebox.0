@@ -1,15 +1,15 @@
-Delivery-date: Mon, 23 Jan 2023 09:36:37 +0100
+Delivery-date: Mon, 23 Jan 2023 09:36:38 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pJsJi-002w3u-J1
-	for lore@lore.pengutronix.de; Mon, 23 Jan 2023 09:36:37 +0100
+	id 1pJsJi-002w3v-QD
+	for lore@lore.pengutronix.de; Mon, 23 Jan 2023 09:36:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pJsJg-0001LA-Qw
+	id 1pJsJh-0001LK-2H
 	for lore@pengutronix.de; Mon, 23 Jan 2023 09:36:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,43 +17,43 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KOybNiJb3Q5yvepNBLdfNAYbmgEP1poHwKMrn90dRGs=; b=NbbVlLIef5d23aEcVti2EWN97w
-	M9Ju/TlY7dbGOyoXeOk/UIZQqFkGDiZvEl9lU48WBKwYWFqFP2P8wZjsZmpavpSFefoBV4XEPTpCa
-	Ro6uVZGsISv4f8qcndGtV34nZTou64mYNUUyZMSfjDcayVDLL/BUHnco/UUdO/7bbvGf5LxaFa/r5
-	IjL0+hI/OMdJZiC02Cl1vQYdtwbMxyDFsmNyDbINWZ+Tmg+xwmSlxqw6koDkngJ/iObBBccpbLYM0
-	QBgRSXv5lgssqX3eZ/qWA5d5f9e1qZMjnY69isajKeCX6QneFsCGI3XYQ3rl+2b+m+FbnSDYo0lcj
-	7jK0sFuQ==;
+	bh=NdMcf+TDLd/86H/zgo8ro1dW5EsrjDwRxJeksONpuio=; b=4E7oqf9T1tx9kp4sPgKb5t1v+x
+	qTOWMhSFOInPcUnFdGtMG2hzwfFpyWhtl0VolrxLJL2Tq9/LePgINsME+vJHfoGYpzokaNHf8Gqbm
+	WERlPe2qmC39EBFxpqw7dlZMTT6GlzTsjAt/g0AsCVYFyU8mA/84bjjAcXGK+gg6ctYedkSD74Csk
+	BRoFzL2450VgV+gnRto/8ZdyxUpJcFCjnVhwOcVBtghN41m6affe7WCwIkzP2zmujur+6f2zmd2qo
+	o28CvNxmBkXKPP9erExTr40AQVmHinvFOuSrYyLwSZIA6uU0ofTMjhEpqlHZqetQ9H5AkdDo8V/6p
+	JNQ5lXmw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pJsIY-00GN5M-4H; Mon, 23 Jan 2023 08:35:26 +0000
+	id 1pJsIT-00GN4C-Hc; Mon, 23 Jan 2023 08:35:21 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pJsIN-00GN2M-EQ
+	id 1pJsIN-00GN2G-EO
 	for barebox@lists.infradead.org; Mon, 23 Jan 2023 08:35:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pJsIM-0000v9-6Y; Mon, 23 Jan 2023 09:35:14 +0100
+	id 1pJsIL-0000v7-EY; Mon, 23 Jan 2023 09:35:13 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pJsIK-0080LI-T2; Mon, 23 Jan 2023 09:35:12 +0100
+	id 1pJsIK-0080LF-Qs; Mon, 23 Jan 2023 09:35:12 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pJsIK-0049zw-6d; Mon, 23 Jan 2023 09:35:12 +0100
+	id 1pJsIK-0049zo-65; Mon, 23 Jan 2023 09:35:12 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 23 Jan 2023 09:35:11 +0100
-Message-Id: <20230123083511.991626-3-s.hauer@pengutronix.de>
+Date: Mon, 23 Jan 2023 09:35:10 +0100
+Message-Id: <20230123083511.991626-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230123083511.991626-1-s.hauer@pengutronix.de>
 References: <20230123083511.991626-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230123_003515_621265_80D23588 
-X-CRM114-Status: GOOD (  10.77  )
+X-CRM114-CacheID: sfid-20230123_003515_543273_D75DF0A3 
+X-CRM114-Status: GOOD (  10.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,33 +73,77 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] arm: rockchip_v8_defconfig: Disable PIO mode for MCI_DW
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	UPPERCASE_50_75 autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 2/3] arm: rockchip: oldconfig rockchip_v8_defconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-MCI_DW in PIO mode doesn't work for me. We should search for the
-reason, but in the end we want to do DMA anyway, which works here.
-Disable PIO mode for now.
+Just an oldconfig to make changing the defconfig easier in the next
+step.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/configs/rockchip_v8_defconfig | 1 -
- 1 file changed, 1 deletion(-)
+ arch/arm/configs/rockchip_v8_defconfig | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
 diff --git a/arch/arm/configs/rockchip_v8_defconfig b/arch/arm/configs/rockchip_v8_defconfig
-index dce22036f2..339247cc1c 100644
+index d673f7f788..dce22036f2 100644
 --- a/arch/arm/configs/rockchip_v8_defconfig
 +++ b/arch/arm/configs/rockchip_v8_defconfig
-@@ -111,7 +111,6 @@ CONFIG_MCI=y
- CONFIG_MCI_STARTUP=y
- CONFIG_MCI_MMC_BOOT_PARTITIONS=y
- CONFIG_MCI_DW=y
--CONFIG_MCI_DW_PIO=y
+@@ -26,7 +26,6 @@ CONFIG_CONSOLE_ACTIVATE_NONE=y
+ CONFIG_CONSOLE_ALLOW_COLOR=y
+ CONFIG_PBL_CONSOLE=y
+ CONFIG_PARTITION_DISK_EFI=y
+-CONFIG_DEFAULT_COMPRESSION_LZO=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_STATE=y
+ CONFIG_BOOTCHOOSER=y
+@@ -88,7 +87,6 @@ CONFIG_NET_NETCONSOLE=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_DRIVER_NET_DESIGNWARE_EQOS=y
+ CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP=y
+ CONFIG_REALTEK_PHY=y
+ CONFIG_SMSC_PHY=y
+@@ -99,6 +97,7 @@ CONFIG_NET_USB_SMSC95XX=y
+ CONFIG_NET_USB_RTL8152=y
+ CONFIG_I2C=y
+ CONFIG_I2C_GPIO=y
++CONFIG_I2C_RK3X=y
+ CONFIG_USB_HOST=y
+ CONFIG_USB_DWC3=y
+ CONFIG_USB_DWC3_DUAL_ROLE=y
+@@ -116,6 +115,7 @@ CONFIG_MCI_DW_PIO=y
  CONFIG_MCI_ROCKCHIP_DWCMSHC=y
  CONFIG_MCI_ARASAN=y
  CONFIG_MFD_ACT8846=y
++CONFIG_MFD_RK808=y
+ CONFIG_LED=y
+ CONFIG_LED_GPIO=y
+ CONFIG_LED_GPIO_OF=y
+@@ -124,10 +124,12 @@ CONFIG_WATCHDOG_POLLER=y
+ CONFIG_WATCHDOG_DW=y
+ CONFIG_REGULATOR=y
+ CONFIG_REGULATOR_FIXED=y
++CONFIG_REGULATOR_RK808=y
+ CONFIG_GENERIC_PHY=y
+ CONFIG_USB_NOP_XCEIV=y
+ CONFIG_PHY_ROCKCHIP_INNO_USB2=y
+ CONFIG_PHY_ROCKCHIP_NANENG_COMBO_PHY=y
++CONFIG_ROCKCHIP_IODOMAIN=y
+ # CONFIG_VIRTIO_MENU is not set
+ CONFIG_FS_CRAMFS=y
+ CONFIG_FS_EXT4=y
+@@ -139,7 +141,3 @@ CONFIG_FS_FAT_LFN=y
+ CONFIG_FS_BPKFS=y
+ CONFIG_FS_UIMAGEFS=y
+ CONFIG_LZO_DECOMPRESS=y
+-CONFIG_I2C_RK3X=y
+-CONFIG_MFD_RK808=y
+-CONFIG_REGULATOR_RK808=y
+-CONFIG_ROCKCHIP_IODOMAIN=y
 -- 
 2.30.2
 
