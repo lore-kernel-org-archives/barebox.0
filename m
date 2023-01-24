@@ -1,60 +1,60 @@
-Delivery-date: Tue, 24 Jan 2023 21:32:57 +0100
+Delivery-date: Tue, 24 Jan 2023 21:46:12 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKPyV-000ohr-9k
-	for lore@lore.pengutronix.de; Tue, 24 Jan 2023 21:32:57 +0100
+	id 1pKQBK-000ozW-Ch
+	for lore@lore.pengutronix.de; Tue, 24 Jan 2023 21:46:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKPyS-0002W8-I6
-	for lore@pengutronix.de; Tue, 24 Jan 2023 21:32:57 +0100
+	id 1pKQBH-00043I-NF
+	for lore@pengutronix.de; Tue, 24 Jan 2023 21:46:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=//I4QXkigMeMsH96DONnt0q6JyreNh3zUs/fAvqcgnI=; b=N6dYxmsuLcAlA6qXgaFRl8leGA
-	iDhibrNtSu2D9IMKPI14PZSdI9F/Cp55nHDtoUbxct6TXRUEVeAS+/ZfnukInkYywS7MXlhU6tZ2G
-	Ed/T04dRCg5dkgZ6UJGqtJTZ4NNJAY6sX8ULIF5Y5x+wq8uh1buK9wDjimIIPHC1s4NT4zxpQtFxz
-	x0lJvLALShFmXHkI1//UiJGPpljA9HtN6t5DfoMbLUpVcVyEfwHDfMqp691cm5IeN8N5LDhalv2KA
-	ZAaEASxiLkoLkKrnLziuf5ijn6HecxqNUOeYhklzGizwRO4bMtf5sgyIRPtLoMAYVV3bzXR4d0BWE
-	bqkI4rrg==;
+	bh=Spuz54jrQCxVB4pRWSZqtPMrzrXpwiUpSwrcZU4Is34=; b=QRGyOA6EewudsNp/CLPawyvuMf
+	Mc0M9Is/W5Tie6qstWzde8ziqSVoY6A2wj7sY5DMJM623KNKYDxpLZWCGXKN3Pt53nqLrdEwgiwAh
+	vFF9PPCVbxfeyfboxPHuV3QtTILhLeB32AuiVklfBhOkLqybloMZbIJ+zNUrwKHmTs+XQBDPokfAO
+	7jNYgPV8vaZ++eFLPYOguL1EPJS9pzUi6SJUyi/drwagA8cszXPRTNxIo20qLzpVTQ7a/rManGR2J
+	VHimlg76f3hD2EKXG8/x0/fobsFzgC1gZkwfDYdI5o7o12s8vWfAvRtM1y/KFU+c2oQf8GHWsHO/O
+	v30M9sBA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKPx4-005CxY-OT; Tue, 24 Jan 2023 20:31:30 +0000
+	id 1pKQ9z-005ErK-8G; Tue, 24 Jan 2023 20:44:51 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKPx0-005Cx2-F2
-	for barebox@lists.infradead.org; Tue, 24 Jan 2023 20:31:27 +0000
+	id 1pKQ9m-005Eoa-Gj
+	for barebox@lists.infradead.org; Tue, 24 Jan 2023 20:44:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mgr@pengutronix.de>)
-	id 1pKPwz-0002Re-0y
-	for barebox@lists.infradead.org; Tue, 24 Jan 2023 21:31:25 +0100
+	id 1pKQ9l-0003c2-2I
+	for barebox@lists.infradead.org; Tue, 24 Jan 2023 21:44:37 +0100
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <mgr@pengutronix.de>)
-	id 1pKPwz-000BgD-A0
-	for barebox@lists.infradead.org; Tue, 24 Jan 2023 21:31:24 +0100
+	id 1pKQ9l-000BhR-Be
+	for barebox@lists.infradead.org; Tue, 24 Jan 2023 21:44:36 +0100
 Received: from mgr by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <mgr@pengutronix.de>)
-	id 1pKPwx-00EdoC-Ek
-	for barebox@lists.infradead.org; Tue, 24 Jan 2023 21:31:23 +0100
+	id 1pKQ9j-00EhC4-Ku
+	for barebox@lists.infradead.org; Tue, 24 Jan 2023 21:44:35 +0100
 From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 24 Jan 2023 21:31:19 +0100
-Message-Id: <20230124203119.3489559-1-m.grzeschik@pengutronix.de>
+Date: Tue, 24 Jan 2023 21:44:34 +0100
+Message-Id: <20230124204434.3502574-1-m.grzeschik@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230124_123126_516503_EC14027D 
-X-CRM114-Status: GOOD (  12.03  )
+X-CRM114-CacheID: sfid-20230124_124438_576004_F9A5EAA9 
+X-CRM114-Status: GOOD (  12.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,11 +72,11 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] phy: stm32-usphyc: add mdelay(1) to fix timeout on some machines
+Subject: [PATCH v2] phy: stm32-usphyc: add mdelay(1) to fix timeout on some machines
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
@@ -87,23 +87,25 @@ With this short mdelay this issue was not reported again.
 
 Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
+v1 -> v2: - reworded the comment
+
  drivers/phy/phy-stm32-usbphyc.c | 9 +++++++++
  1 file changed, 9 insertions(+)
 
 diff --git a/drivers/phy/phy-stm32-usbphyc.c b/drivers/phy/phy-stm32-usbphyc.c
-index 657824405f..aff6b60d5e 100644
+index 657824405f..db4ccef920 100644
 --- a/drivers/phy/phy-stm32-usbphyc.c
 +++ b/drivers/phy/phy-stm32-usbphyc.c
 @@ -271,6 +271,15 @@ static int stm32_usbphyc_phy_init(struct phy *phy)
  		goto pll_disable;
  	}
  
-+	/* This is a workaround that seems to be necessary on some
-+	 * machines, since the monsel status does not seem to be
-+	 * accurate. On rare occasions just working with the phy after
-+	 * this pll check the usb peripheral (e.g. on the dwc2) run into
-+	 * timeout issues and leading to no functional usb. With this
-+	 * short mdelay this issue was not reported again.
++	/* This mdelay seems to be necessary on some machines, since the
++	 * monsel status does not seem to be accurate. On rare occasions
++	 * just working with the phy after this pll check the usb
++	 * peripheral (e.g. on the dwc2) run into timeout issues and
++	 * leading to no functional usb. With this short mdelay this
++	 * issue was not reported again.
 +	 */
 +	mdelay(1);
 +
