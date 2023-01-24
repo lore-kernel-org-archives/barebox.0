@@ -1,57 +1,63 @@
-Delivery-date: Tue, 24 Jan 2023 13:00:21 +0100
+Delivery-date: Tue, 24 Jan 2023 13:03:45 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKHyQ-000RnW-Kg
-	for lore@lore.pengutronix.de; Tue, 24 Jan 2023 13:00:21 +0100
+	id 1pKI1h-000Rst-94
+	for lore@lore.pengutronix.de; Tue, 24 Jan 2023 13:03:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKHyO-0006eP-2G
-	for lore@pengutronix.de; Tue, 24 Jan 2023 13:00:20 +0100
+	id 1pKI1e-0007Io-Mk
+	for lore@pengutronix.de; Tue, 24 Jan 2023 13:03:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qfzKPDN3p1g20woGWKzcLO88yQ5kvxIyl5nNcOQtsWI=; b=ucwltjrNX3r1Lc/AeNf7gXQIC9
-	SGOhq7bU6/0JdhR+XFX732zNd2hrNq0hzkrJx5kBbzqSMu90nhxUSego2YalT4HMiCtJZ+uzxy6lx
-	p23rnrtG1F0olbtvi4OYkW5XorqzVZlthSTqqxsimHiBvaPCSUYDR1s9gGXhcuzjW6GyaDgJk+rnf
-	iTdTuyoS5POlLxLKzOn6X9MDmmmYsU+X6/5bM+lGGhG24STsLwDE668jp6SYcGBxYOpJtwlC5reXx
-	rzJmlHOprVLV7Nmu1kbjRM6zEj6ZLT4oAmS1PljuH0VOiUZiI7LzerEZf8Ku7EpHYGmPjT6/1x86r
-	5oBsPW7A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=i+0h04hRekN8omaO+jcbMsW1g7kBasYldwKtihg1iZA=; b=RfjghWAQOfbp7qzrV9NRizZsqM
+	d9kyXoNm3pzTrpguYq5A7E0SEd4jZKWHfGRKn8NYs2zHU8xD1KxFSH0Pexdh7SjTOWqSJiJAisWHf
+	Jl2U4NKaAHk+cZ3Jg6pL7FPPDSYewma7lgEgkiYQlttXIEa4fsASL8SQ6lQgEJ1+5AxIJ4HEDNz3r
+	S80zGPSKaXIEWXCUx8iQj3OGpfNorbc6fJMwJw3S8OzBGTy2CHiIAi/MXfChEJlDIuSjrVwgTlRkq
+	vBEagvBG6LzYp6bI9peEbmHxVo5LLE1gbDY/J/8aMrZwmizPxNZlSMT1g2lQZx5nioAnQRk6WLaCK
+	uQoj0EXQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKHwi-003afH-PN; Tue, 24 Jan 2023 11:58:36 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1pKI0K-003bnx-LR; Tue, 24 Jan 2023 12:02:20 +0000
+Received: from out-22.mta0.migadu.com ([2001:41d0:1004:224b::16])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKHwd-003abj-PT
-	for barebox@lists.infradead.org; Tue, 24 Jan 2023 11:58:33 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pKHwM-0006Sx-GC; Tue, 24 Jan 2023 12:58:14 +0100
-Message-ID: <d4107732-a5e6-e4f9-797b-21a9fbb3b7e0@pengutronix.de>
-Date: Tue, 24 Jan 2023 12:58:13 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.5.0
-Content-Language: en-US
-To: John Watts <contact@jookia.org>
+	id 1pKI0E-003blF-Ep
+	for barebox@lists.infradead.org; Tue, 24 Jan 2023 12:02:17 +0000
+Date: Tue, 24 Jan 2023 23:01:47 +1100
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jookia.org; s=key1;
+	t=1674561730;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=i+0h04hRekN8omaO+jcbMsW1g7kBasYldwKtihg1iZA=;
+	b=QAgJGP3fHhvJmjP8R9EiLE3fOxa/iLA7qTZiDc/fzMnw9JsGkac0Uu3lK0OWW4OQa7iTph
+	T2QvgRw3JtNKjhGNak+KlYAIPFqepk++bH+IijeQWe9C5if9DGk+zmZtnkv6fYrWxlV4VL
+	xGP4V2unzk1ofAJp0WWas0khXvL9/pxvPu6dREJc7Ypk3x6Duf+RqPcVPuNzmCWWJy43V/
+	Vp9DVXbNHUatI0xGcL3lNUhVxrJUG/aqBwt21e5uH4i1FqO07B56BiAOf19H6YeKtbHjYb
+	HJvONkbVL/4VP8KPxgM++yY8nXYvUtpBjbkcBVGczPjIJiusAR8OuUPdLcidpg==
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: John Watts <contact@jookia.org>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
+Message-ID: <Y8/IqyxBWfHDdri5@novena-choice-citizen>
 References: <20230123201817.1084728-1-contact@jookia.org>
- <ab972e58-2d3a-8ee3-c251-788fe5179e1d@pengutronix.de>
- <Y8/FeZWD4ce50TTx@novena-choice-citizen>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Y8/FeZWD4ce50TTx@novena-choice-citizen>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20230123201817.1084728-2-contact@jookia.org>
+ <eb9bd043-b6ee-4338-ac56-4f7836cecd04@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <eb9bd043-b6ee-4338-ac56-4f7836cecd04@pengutronix.de>
+X-Migadu-Flow: FLOW_OUT
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230124_035831_853078_21238FB9 
-X-CRM114-Status: GOOD (  20.62  )
+X-CRM114-CacheID: sfid-20230124_040215_468439_498C0E07 
+X-CRM114-Status: GOOD (  13.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,58 +75,42 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 1/2] imx6-mmdc: Work around ERR050070
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 2/2] imx6-mmdc: Revert calibration configuration on
+ failure
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 24.01.23 12:48, John Watts wrote:
-> On Tue, Jan 24, 2023 at 09:27:42AM +0100, Ahmad Fatoum wrote:
->>> +static bool wlcalib_failed(void __iomem *ips)
->>> +{
->>> +	int i;
->>> +
->>> +	for (i = 0; i < 4; ++i) {
->>> +		if (readb(P0_IPS + MPWLHWERR + i) == 0)
->>
->> s/P0_OPS/ips/ ?
+On Tue, Jan 24, 2023 at 09:29:02AM +0100, Ahmad Fatoum wrote:
+> >  int mmdc_do_write_level_calibration(void)
+> >  {
+> > +	u32 ldectrl[4] = {0};
 > 
-> Oops, good catch! Will fix in V2.
-> 
->>
->> Also does it need to be bytewise reads? If not, you could rewrite
->> as return readl(ips + MPWLHWERR) == 0;
-> 
-> The MPWHLHWERR register contains 4 bytes giving some status for each lane,
-> that would only fail if all lanes fail which is different behaviour to
-> the existing behaviour fails if any lanes fail at calibrating.
-
-Yes. readl() would've only made sense if 0 was the success, not the
-error indicator.
-
-> 
->>
->>> +			return true;
->>
->> Write level calibration has failed when MPWLHWERR == 0 and succeeded
->> when there is some other value? That sounds odd.
-> 
-> It is odd, but that's what the data sheet says, the errata says and what
-> and what seem. Maybe I should note it down?
-
-Yes, a comment would be good.
-
+> Initial value never read back.
 > 
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Remove the = {0}?
 
+> >  	/* check for any errors on both PHYs */
+> > -	if (wlcalib_failed(P0_IPS) || wlcalib_failed(P1_IPS))
+> > +	if (wlcalib_failed(P0_IPS) || wlcalib_failed(P1_IPS)) {
+> > +		pr_debug("Calibration failed, rolling back calibration data\n");
+> 
+> Still you only restore P0 calibration data, even if it succeeded,
+> but P1 failed. Is this intended?
+
+Not quite sure what you mean. I restore both P0 and P1 calibration data I
+think?
+
+If you're asking whether it is correct behaviour to REVERT all calibration
+data, instead of for each channel, I'm not sure. It seems like the safest
+thing to do to me since it's unclear why the calibration process has failed.
+
+This is the behaviour U-Boot does and seems to work in the wild.
+
+John.
 
 
