@@ -1,61 +1,60 @@
-Delivery-date: Tue, 24 Jan 2023 21:08:02 +0100
+Delivery-date: Tue, 24 Jan 2023 21:32:57 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKPaM-000o7q-9r
-	for lore@lore.pengutronix.de; Tue, 24 Jan 2023 21:08:02 +0100
+	id 1pKPyV-000ohr-9k
+	for lore@lore.pengutronix.de; Tue, 24 Jan 2023 21:32:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKPaJ-0008Ht-M1
-	for lore@pengutronix.de; Tue, 24 Jan 2023 21:08:00 +0100
+	id 1pKPyS-0002W8-I6
+	for lore@pengutronix.de; Tue, 24 Jan 2023 21:32:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Lh++WRZ24U9xO9A554PU1q34ZcqhrBlbyPxXNio1sNs=; b=w7HSxvqlKGGcTJiEwZawSmKTcn
-	6qc5F4FSKOwTSZhvwqg3a3Pd40G863f7Q2p8QvyP6PgA5o/wimdCpxmszCBUz2L+VEjvSNUZjYtoS
-	5xeYTZEHpoe3nUHiP4oEaHQxt3j9/QTFQeMWKRuapfhh/5OSHLCSB3YKY00dvQXHxG3DyxfNdtkBQ
-	XgQvaquIjiiJFZStAD46OwW1dR12klE7mHR9MiXxNlfv1sf5F6cr3cW2FcmXNsn5/UkJoLVIy4EeY
-	Wh+H+dA2CNpxF93+Y+Tj1rzps2Q+eMD/puPsbKtGKi0IPmfyoNnhGNdlOvUG4Uq3lXIxQbG3ZVP9y
-	RTVewirw==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=//I4QXkigMeMsH96DONnt0q6JyreNh3zUs/fAvqcgnI=; b=N6dYxmsuLcAlA6qXgaFRl8leGA
+	iDhibrNtSu2D9IMKPI14PZSdI9F/Cp55nHDtoUbxct6TXRUEVeAS+/ZfnukInkYywS7MXlhU6tZ2G
+	Ed/T04dRCg5dkgZ6UJGqtJTZ4NNJAY6sX8ULIF5Y5x+wq8uh1buK9wDjimIIPHC1s4NT4zxpQtFxz
+	x0lJvLALShFmXHkI1//UiJGPpljA9HtN6t5DfoMbLUpVcVyEfwHDfMqp691cm5IeN8N5LDhalv2KA
+	ZAaEASxiLkoLkKrnLziuf5ijn6HecxqNUOeYhklzGizwRO4bMtf5sgyIRPtLoMAYVV3bzXR4d0BWE
+	bqkI4rrg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKPYx-0059ze-ED; Tue, 24 Jan 2023 20:06:35 +0000
-Received: from out-166.mta0.migadu.com ([2001:41d0:1004:224b::a6])
+	id 1pKPx4-005CxY-OT; Tue, 24 Jan 2023 20:31:30 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKPYq-0059yP-RX
-	for barebox@lists.infradead.org; Tue, 24 Jan 2023 20:06:31 +0000
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jookia.org; s=key1;
-	t=1674590784;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Lh++WRZ24U9xO9A554PU1q34ZcqhrBlbyPxXNio1sNs=;
-	b=d5Ys4IDz+jiAqTJiCa9c5xbZnLaVGCBK6HwDp77L6V0MrVvJb0cYd7WsSfKqsb0mIpDT4c
-	f8LHc0QWS2NEowUM5UHMavSl9U4pQg5pJydbPeCnLO28dPsPfMA0p605Y5SIksVTjXvvmN
-	ASnHpm058oiZlWMMdQtknz2WG1hbtr9rXaBq8Z2LeMQUdqDmja7S/THQz44xXbNsuNIPzZ
-	K/sseVbtxlpCBamphlSw1CJHDuBDCxDt3bSpHhvHTk0uHuUCHK69Ze4CuTG/7r92/xvVzL
-	InNUdAz+7Pc7qWdOuONJmfe2I24oz9NA7rocSNFK7pFlhXtXMy5yS6sI2blwuQ==
-From: John Watts <contact@jookia.org>
+	id 1pKPx0-005Cx2-F2
+	for barebox@lists.infradead.org; Tue, 24 Jan 2023 20:31:27 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1pKPwz-0002Re-0y
+	for barebox@lists.infradead.org; Tue, 24 Jan 2023 21:31:25 +0100
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1pKPwz-000BgD-A0
+	for barebox@lists.infradead.org; Tue, 24 Jan 2023 21:31:24 +0100
+Received: from mgr by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <mgr@pengutronix.de>)
+	id 1pKPwx-00EdoC-Ek
+	for barebox@lists.infradead.org; Tue, 24 Jan 2023 21:31:23 +0100
+From: Michael Grzeschik <m.grzeschik@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: John Watts <contact@jookia.org>
-Date: Wed, 25 Jan 2023 07:05:55 +1100
-Message-Id: <20230124200554.1701687-1-contact@jookia.org>
-In-Reply-To: <20230122150432.4096816-1-contact@jookia.org>
-References: <20230122150432.4096816-1-contact@jookia.org>
+Date: Tue, 24 Jan 2023 21:31:19 +0100
+Message-Id: <20230124203119.3489559-1-m.grzeschik@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230124_120629_651332_DFC2D565 
-X-CRM114-Status: GOOD (  13.45  )
+X-CRM114-CacheID: sfid-20230124_123126_516503_EC14027D 
+X-CRM114-Status: GOOD (  12.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,103 +72,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2] spi: Fix probing SPI drivers with no cs-gpios
+Subject: [PATCH] phy: stm32-usphyc: add mdelay(1) to fix timeout on some machines
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-of_gpio_named_count returns a negative value on error but this
-is discarded and cast to a u16, making error handling impossible.
+An mdelay of 1 seems to be necessary on some machines, since
+the monsel status does not seem to be accurate. On rare occasions just
+working with the phy after this pll check lead to no functional usb.
+With this short mdelay this issue was not reported again.
 
-With debug logging enabled this effectively halts booting so the board can
-print an error over serial 65534 times.
-
-Introduce of_gpio_count_csgpios which returns 0 in the case of an error
-rather than a negative value.
-
-Signed-off-by: John Watts <contact@jookia.org>
+Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 ---
-Changes v1 -> v2:
-- Refactored logic in to separate of_gpio_count_csgpios function
----
- drivers/spi/atmel_spi.c |  2 +-
- drivers/spi/imx_spi.c   |  2 +-
- drivers/spi/stm32_spi.c |  2 +-
- include/of_gpio.h       | 17 +++++++++++++++++
- 4 files changed, 20 insertions(+), 3 deletions(-)
+ drivers/phy/phy-stm32-usbphyc.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/spi/atmel_spi.c b/drivers/spi/atmel_spi.c
-index 399c47c81d..9bf85874c5 100644
---- a/drivers/spi/atmel_spi.c
-+++ b/drivers/spi/atmel_spi.c
-@@ -408,7 +408,7 @@ static int atmel_spi_probe(struct device *dev)
- 		master->num_chipselect = pdata->num_chipselect;
- 		as->cs_pins = pdata->chipselect;
- 	} else {
--		master->num_chipselect = of_gpio_named_count(node, "cs-gpios");
-+		master->num_chipselect = of_gpio_count_csgpios(node);
- 		as->cs_pins = xzalloc(sizeof(u32) * master->num_chipselect);
+diff --git a/drivers/phy/phy-stm32-usbphyc.c b/drivers/phy/phy-stm32-usbphyc.c
+index 657824405f..aff6b60d5e 100644
+--- a/drivers/phy/phy-stm32-usbphyc.c
++++ b/drivers/phy/phy-stm32-usbphyc.c
+@@ -271,6 +271,15 @@ static int stm32_usbphyc_phy_init(struct phy *phy)
+ 		goto pll_disable;
+ 	}
  
- 		for (i = 0; i < master->num_chipselect; i++) {
-diff --git a/drivers/spi/imx_spi.c b/drivers/spi/imx_spi.c
-index eb30d757d5..f81d9e851f 100644
---- a/drivers/spi/imx_spi.c
-+++ b/drivers/spi/imx_spi.c
-@@ -568,7 +568,7 @@ static int imx_spi_dt_probe(struct imx_spi *imx)
- 	if (!node)
- 		return -ENODEV;
- 
--	imx->master.num_chipselect = of_gpio_named_count(node, "cs-gpios");
-+	imx->master.num_chipselect = of_gpio_count_csgpios(node);
- 	imx->cs_array = xzalloc(sizeof(u32) * imx->master.num_chipselect);
- 
- 	for (i = 0; i < imx->master.num_chipselect; i++)
-diff --git a/drivers/spi/stm32_spi.c b/drivers/spi/stm32_spi.c
-index 821a95980f..0d7407c279 100644
---- a/drivers/spi/stm32_spi.c
-+++ b/drivers/spi/stm32_spi.c
-@@ -514,7 +514,7 @@ static void stm32_spi_dt_probe(struct stm32_spi_priv *priv)
- 	struct device_node *node = priv->master.dev->of_node;
- 	int i;
- 
--	priv->master.num_chipselect = of_gpio_named_count(node, "cs-gpios");
-+	priv->master.num_chipselect = of_gpio_count_csgpios(node);
- 	priv->cs_gpios = xzalloc(sizeof(u32) * priv->master.num_chipselect);
- 
- 	for (i = 0; i < priv->master.num_chipselect; i++)
-diff --git a/include/of_gpio.h b/include/of_gpio.h
-index 30ff204baf..794a9926cd 100644
---- a/include/of_gpio.h
-+++ b/include/of_gpio.h
-@@ -69,6 +69,23 @@ static inline int of_gpio_count(struct device_node *np)
- 	return of_gpio_named_count(np, "gpios");
- }
- 
-+/**
-+ * of_gpio_count() - Count cs-gpios for a device
-+ * @np:		device node to count cs-gpios for
-+ *
-+ * Same as of_gpio_named_count, but hard coded to use the 'cs-gpios' property
-+ * Returns 0 on error
-+ */
-+static inline int of_gpio_count_csgpios(struct device_node *np)
-+{
-+	int count = of_gpio_named_count(np, "cs-gpios");
++	/* This is a workaround that seems to be necessary on some
++	 * machines, since the monsel status does not seem to be
++	 * accurate. On rare occasions just working with the phy after
++	 * this pll check the usb peripheral (e.g. on the dwc2) run into
++	 * timeout issues and leading to no functional usb. With this
++	 * short mdelay this issue was not reported again.
++	 */
++	mdelay(1);
 +
-+	if (count > 0)
-+		return count;
-+	else
-+		return 0;
-+}
-+
- static inline int of_get_gpio_flags(struct device_node *np, int index,
- 		      enum of_gpio_flags *flags)
- {
+ 	usbphyc_phy->active = true;
+ 
+ 	return 0;
 -- 
-2.39.0
+2.30.2
 
 
 
