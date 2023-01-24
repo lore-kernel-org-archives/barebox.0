@@ -1,77 +1,61 @@
-Delivery-date: Tue, 24 Jan 2023 14:08:29 +0100
+Delivery-date: Tue, 24 Jan 2023 18:44:10 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKJ2L-000Umu-Co
-	for lore@lore.pengutronix.de; Tue, 24 Jan 2023 14:08:29 +0100
+	id 1pKNL8-000hbI-QC
+	for lore@lore.pengutronix.de; Tue, 24 Jan 2023 18:44:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKJ2F-0000Na-5F
-	for lore@pengutronix.de; Tue, 24 Jan 2023 14:08:27 +0100
+	id 1pKNL5-000849-Ua
+	for lore@pengutronix.de; Tue, 24 Jan 2023 18:44:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4v47o//Wzcy6nqOnQ+VM9FOpu20GyPvzV36WVDd2rbk=; b=ZHH3rfnDR/CrsS1INhAQTM1WJb
-	lK5ItnzSmewmevYxliIkBQwse/HZaneFGB+0Y2PiwUdQxND1oj9sP1FjPEmRpuG7OjEvOkEEp5VLQ
-	F/EdVxk6FZ6aZKs00MzqeI1iqvNLXDfC44rrfQ+o2JglolepdQEQzN/vFGsXsKU99ITB0F7J82aIp
-	4dgmhah5V/Y6Clq/ULrPFZYkuoQOrYLfHbZVklo9MmpXtjbSUv2bqFzZYbP2CXDfcpcycFhUOZXmD
-	k/YPoXlhaQ3c8VJ/GJI0ixyTgFLWhWDG/lg8Y23hCehGxO/BkGm937neHICndvqF3oV3kV6KV3yJb
-	GA3axfZQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=CaZJwirdvDmwGGbQjmThtaUowDw8NkAePsPK43nogX8=; b=GhfAqXIQOE9b7z8+N3IDkBxqoi
+	TdrxuBSfxBNvPg1BOX6IbjWXF1YE/hQ3u+u74eo3dlK8ORX34DLmxReZWgYP18rOTD3i6T7/JSn0k
+	ubx0DkZkiL6llNyr62U+qM4Kmp1DJD43jn7ZE8PNTDBr8EVbZ/+g09QwJ0RGTY2Ym3NmsQLB/R1GC
+	4gB461dK8YzGm0rx4Hmr6ZZv/E8PwOAL04rxTnNxJhAgZJHrnlc2cPNrwCqo3SG8gLcFTwegfVjgj
+	PFD4PfDABraTwRDwNd5myOi7eut3b6UAFOQBWULG84BBeWTfCGv57fNEWSdqqqT8U5VmLa+p6yrEE
+	+cv3yAVg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKJ0R-003qwX-Es; Tue, 24 Jan 2023 13:06:32 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1pKNJa-004r8j-3e; Tue, 24 Jan 2023 17:42:34 +0000
+Received: from out0.migadu.com ([2001:41d0:2:267::])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKIx9-003pVa-Ll
-	for barebox@bombadil.infradead.org; Tue, 24 Jan 2023 13:03:08 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=4v47o//Wzcy6nqOnQ+VM9FOpu20GyPvzV36WVDd2rbk=; b=qGEe7wiCp0xuehsx4FSxk9Xb7a
-	GCFhylZkk3OppMozrvVx5iqLkOV4nbWNO0RI29+htdYbdH5ntJqGZFlCybPb9DbqgELZ4nAJoivH8
-	8S2g4VW8nssPL7YEn6lH3yTc29SZkJ96DQV/8d1EiXjagTKn8jmakHdeBgYfmTa6BzPBq1tZ6XEh7
-	5A3ybpsg/z+UGvJ1DZ2gIQuJG+VyVhaSl3XImpURXOb3Ko0T9JDvZ3s2rxQxIeqL/XzZuw6u41w7x
-	ry/i/fmQE2JDUYYszdNboX8hlFlqO+0m7suzq93BlcMmF0JokgbO91gc3Xb2LnuueRk+fKNCh6JQQ
-	S5ECTczg==;
-Received: from out2.migadu.com ([188.165.223.204])
-	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pKHpN-001pTk-0L
-	for barebox@lists.infradead.org;
-	Tue, 24 Jan 2023 11:51:04 +0000
-Date: Tue, 24 Jan 2023 22:48:09 +1100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jookia.org; s=key1;
-	t=1674561086;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=4v47o//Wzcy6nqOnQ+VM9FOpu20GyPvzV36WVDd2rbk=;
-	b=NcP3bMkqFhofJ4sFyMP+Wo7mMk0P0gzNQ5BDJ1B2CNqX18PtM/bN5O3jwyfp5NaPzMuN8C
-	sf5y9ECJXjkgGtysfUZsU1PVcLBOQkRl4QMhw82EryII3FNXokvGC0CNFHAvDlkOgRyQG+
-	Qe3JODoti4MQCUzSNjzZ3Nhlk88MAZkmAxPOxZdzR+GM7D5KpbgL+c8YAFIWTnLwsfu/ZX
-	vtLf7zliCv802QKl0oJ9EX1ZEZ8e8WXiNtK/U5kXLvmFdv5DUo+mwn0GSxdLYkS2lGdHuv
-	wd6pGudVpqFRlEfMqpGnKpefBC/4pVAPvIKoc1J2Bjl+lz0yrIcPSjpOon86og==
+	id 1pKNJR-004r4V-EQ
+	for barebox@lists.infradead.org; Tue, 24 Jan 2023 17:42:27 +0000
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jookia.org; s=key1;
+	t=1674582097;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=CaZJwirdvDmwGGbQjmThtaUowDw8NkAePsPK43nogX8=;
+	b=bUOzW1S5w2MiUwzjt/fAHhtSV0yJjkEMRhvUJA6JZ+npKu4ocM+i+Zo38XK4XBzSXvxndU
+	5JZyTLRto5DvwdOXYGJ0e6KhInxtTbOI2wPnYh2Qeke8ZT3rUch612IHHXWIudQiXvVwcW
+	glRTRJyjl0ZADTJasGbwbP5YeXo9gum+b2pu6vaJQd03xPqpTikOZsyToj+Baco3xvvYwe
+	1nFrb7zNHy0v4weVR4XPPlvqYCVNy6bdvA3Rn0r4dix4wFhHt1zFKTWcwCliorbdTpH8rl
+	CbWKq98vdrOSTjYm7ljGDa10pP1/SpRujGWEBJ3aTPCUw7BpZ1B+fQxQex+wyQ==
 From: John Watts <contact@jookia.org>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Y8/FeZWD4ce50TTx@novena-choice-citizen>
+To: barebox@lists.infradead.org
+Cc: John Watts <contact@jookia.org>
+Date: Wed, 25 Jan 2023 04:41:15 +1100
+Message-Id: <20230124174115.1509216-1-contact@jookia.org>
+In-Reply-To: <20230123201817.1084728-1-contact@jookia.org>
 References: <20230123201817.1084728-1-contact@jookia.org>
- <ab972e58-2d3a-8ee3-c251-788fe5179e1d@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ab972e58-2d3a-8ee3-c251-788fe5179e1d@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230124_115102_111320_6A98F6DD 
-X-CRM114-Status: GOOD (  14.18  )
+X-CRM114-CacheID: sfid-20230124_094226_241737_7E5F5014 
+X-CRM114-Status: GOOD (  19.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,37 +77,96 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] imx6-mmdc: Work around ERR050070
+Subject: [PATCH v2 1/2] imx6-mmdc: Work around ERR050070
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Jan 24, 2023 at 09:27:42AM +0100, Ahmad Fatoum wrote:
-> > +static bool wlcalib_failed(void __iomem *ips)
-> > +{
-> > +	int i;
-> > +
-> > +	for (i = 0; i < 4; ++i) {
-> > +		if (readb(P0_IPS + MPWLHWERR + i) == 0)
-> 
-> s/P0_OPS/ips/ ?
+The MPWLGCR registers clear the error bits before software can read them,
+so rely on the MPWLHWERR registers for error reporting instead.
 
-Oops, good catch! Will fix in V2.
+This errata was announced in 2019 but it seems to apply to all chip revisions.
 
-> 
-> Also does it need to be bytewise reads? If not, you could rewrite
-> as return readl(ips + MPWLHWERR) == 0;
+U-Boot contains a different workaround where it instead checks the calibration
+data for the result 0x001F001F (maximum delay) and flag that as a failure.
+I can't find the origin of this workaround but I first saw it in the Novena
+source code, though I asked Sean Cross and he suggested it was from Freescale.
 
-The MPWHLHWERR register contains 4 bytes giving some status for each lane,
-that would only fail if all lanes fail which is different behaviour to
-the existing behaviour fails if any lanes fail at calibrating.
+While we're at it, fix the comment implying this code only checks PHY0 in x32
+configuration. This is wrong and misleading.
 
-> 
-> > +			return true;
-> 
-> Write level calibration has failed when MPWLHWERR == 0 and succeeded
-> when there is some other value? That sounds odd.
+Signed-off-by: John Watts <contact@jookia.org>
+---
+Changes v1 -> v2:
+- Added a wall of text explaining what the code does and why
+- wlcalib_failed now reads from the ips register correctly
+---
+ arch/arm/mach-imx/imx6-mmdc.c              | 30 +++++++++++++++++++---
+ arch/arm/mach-imx/include/mach/imx6-mmdc.h |  1 +
+ 2 files changed, 27 insertions(+), 4 deletions(-)
 
-It is odd, but that's what the data sheet says, the errata says and what
-and what seem. Maybe I should note it down?
+diff --git a/arch/arm/mach-imx/imx6-mmdc.c b/arch/arm/mach-imx/imx6-mmdc.c
+index 00b8d30d69..45e1b030d3 100644
+--- a/arch/arm/mach-imx/imx6-mmdc.c
++++ b/arch/arm/mach-imx/imx6-mmdc.c
+@@ -11,6 +11,30 @@
+ #include <mach/imx6-regs.h>
+ #include <mach/imx6.h>
+ 
++static bool wlcalib_failed(void __iomem *ips)
++{
++	/*
++	 * The i.MX 6 reference manual specifies that an MMDC flags reports
++	 * write calibration errors in the MPWLGCR register's HW_WL_ERR field.
++	 *
++	 * ERR050070 specifies that this doesn't work and we should check
++	 * the MPWLHWERR register instead which reports which write leveling
++	 * steps succeeded or failed on a per-byte basis.
++	 *
++	 * Check each byte to see which steps succeeded. If no steps succeeded
++	 * then declare the calibration a failure.
++	*/
++
++	int i;
++
++	for (i = 0; i < 4; ++i) {
++		if (readb(ips + MPWLHWERR + i) == 0)
++			return true;
++	}
++
++	return false;
++}
++
+ int mmdc_do_write_level_calibration(void)
+ {
+ 	u32 esdmisc_val, zq_val;
+@@ -56,11 +80,9 @@ int mmdc_do_write_level_calibration(void)
+ 	/* Upon completion of this process the MMDC de-asserts the MPWLGCR[HW_WL_EN] */
+ 	while (readl(P0_IPS + MPWLGCR) & 0x00000001);
+ 
+-	/* check for any errors: check both PHYs for x64 configuration, if x32, check only PHY0 */
+-	if ((readl(P0_IPS + MPWLGCR) & 0x00000F00) ||
+-			(readl(P1_IPS + MPWLGCR) & 0x00000F00)) {
++	/* check for any errors on both PHYs */
++	if (wlcalib_failed(P0_IPS) || wlcalib_failed(P1_IPS))
+ 		errorcount++;
+-	}
+ 
+ 	pr_debug("Write leveling calibration completed\n");
+ 
+diff --git a/arch/arm/mach-imx/include/mach/imx6-mmdc.h b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+index bda20aba17..098ba4f5bf 100644
+--- a/arch/arm/mach-imx/include/mach/imx6-mmdc.h
++++ b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+@@ -18,6 +18,7 @@
+ #define MPWLGCR		0x808
+ #define MPWLDECTRL0	0x80c
+ #define MPWLDECTRL1	0x810
++#define MPWLHWERR	0x878
+ #define MPPDCMPR1	0x88c
+ #define MPSWDAR		0x894
+ #define MPRDDLCTL	0x848
+-- 
+2.39.0
+
 
 
