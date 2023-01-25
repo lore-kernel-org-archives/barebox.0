@@ -1,90 +1,62 @@
-Delivery-date: Wed, 25 Jan 2023 16:46:26 +0100
+Delivery-date: Wed, 25 Jan 2023 16:49:51 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKhym-001e5m-6H
-	for lore@lore.pengutronix.de; Wed, 25 Jan 2023 16:46:26 +0100
+	id 1pKi24-001eD9-Q4
+	for lore@lore.pengutronix.de; Wed, 25 Jan 2023 16:49:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKhyi-0008ON-75
-	for lore@pengutronix.de; Wed, 25 Jan 2023 16:46:25 +0100
+	id 1pKi21-0000E6-C9
+	for lore@pengutronix.de; Wed, 25 Jan 2023 16:49:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:MIME-Version:References:Message-ID:Subject:To:From:
-	Date:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iPAXVl3SXyG/egNtxzykqmNpSXRjvIFTjolFFNqSVTE=; b=4IeRNdu/pyVQrJk3xIDMzXglQC
-	IWhhHPZD8Gxp7RIBzCU0R6j0IEpD4UvU7xmPdL/ayoGIB0mDz5IlWmBQZPbnuR3dX7qOOzOIg3To3
-	tgcNtIdNMejE+L5CFIGb6o6ZqC5BREN7rzzQlPMT+kiTjxaG9VtsS0kVvndfiucxW0LKyViEDlAfO
-	v2/o9UGiWuQrkWP2guAd2u8zMqTdvBYh/fehYcOnAmSuYoQA3YaW7uSdIqCeFx+HaBuYpqZASQTAP
-	j5nlC4MZD5wAenxAa8+6cECPbJD4g6mIB8q/J/eYNDkhRt1MnLb68e9uYbQmPzmrH9sqf5gZsBCLz
-	cQBp5+rA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=fxS4H/P95NGpwX/5M7x4m14sYeRFq9pt/eehdonyc7Q=; b=5GiqqB8FaUpmRK8z7vZWQ3Ox/c
+	ii7TdmBjDkBJDXVPq9c+MQTMmq7OrdzjE4oPkzy1cKmlP7IrfajCTONEQgQMyrkW1eTYDmsIlVTzF
+	hN6qthXX9ie+7/RQIcjPkw6zrM4WiWE1H0R9osaHiY5TcEybU1itmdFhJbmLKL3dN+hsSwGzNNfM9
+	/3Pb9eI7fYrUh94NBfUkkemRZZd5l2keU1RqUFrzp1vCDvvgeWtDWiFJf7E6mhoSNzq4V+6FD9tDT
+	SdmT5mqCDSumks17JeRjsXaOqDTeiXDPFibOfH6fc/6F/Uerhj+pGvjWYecX+Bb9Ad1C4ndr42tmS
+	IupW3WfQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKhxS-007r4Z-UJ; Wed, 25 Jan 2023 15:45:07 +0000
-Received: from smtpout30.security-mail.net ([85.31.212.38] helo=fx308.security-mail.net)
+	id 1pKi0l-007rTk-MH; Wed, 25 Jan 2023 15:48:31 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKhxN-007r3N-Tu
-	for barebox@lists.infradead.org; Wed, 25 Jan 2023 15:45:03 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by fx308.security-mail.net (Postfix) with ESMTP id 87C71405A13
-	for <barebox@lists.infradead.org>; Wed, 25 Jan 2023 16:45:00 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
-	s=sec-sig-email; t=1674661500;
-	bh=kBsd7QUi0WIFUX+EokTXKseYcicGP35HgrE6pW/Mrrs=;
-	h=Date:From:To:Subject:References:In-Reply-To;
-	b=4BCZFhdGkipyV414M2h8EBVW/vvY91EWJUaozSuWsxGi+TAdZ3tfXCQRCCFxtTGYm
-	 CQ5MZ5xXN1KgDpR43yf+bFaS6CC/GOeh8EmcoyAR8/Qoa66u6vTlejLxaWIVwExdp6
-	 hKJNiNJkRrJPY8zK+ugKPcv1BNuHSXcAEFRJWrnQ=
-Received: from fx308 (localhost [127.0.0.1]) by fx308.security-mail.net
- (Postfix) with ESMTP id 74959404C69 for <barebox@lists.infradead.org>; Wed,
- 25 Jan 2023 16:45:00 +0100 (CET)
-Received: from zimbra2.kalray.eu (unknown [217.181.231.53]) by
- fx308.security-mail.net (Postfix) with ESMTPS id 1AD7D405893 for
- <barebox@lists.infradead.org>; Wed, 25 Jan 2023 16:45:00 +0100 (CET)
-Received: from zimbra2.kalray.eu (localhost [127.0.0.1]) by
- zimbra2.kalray.eu (Postfix) with ESMTPS id 01DCD27E0461 for
- <barebox@lists.infradead.org>; Wed, 25 Jan 2023 16:45:00 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1]) by zimbra2.kalray.eu
- (Postfix) with ESMTP id DE32E27E0491 for <barebox@lists.infradead.org>; Wed,
- 25 Jan 2023 16:44:59 +0100 (CET)
-Received: from zimbra2.kalray.eu ([127.0.0.1]) by localhost
- (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026) with ESMTP id
- aTtxUoKdQ_j3 for <barebox@lists.infradead.org>; Wed, 25 Jan 2023 16:44:59
- +0100 (CET)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206]) by
- zimbra2.kalray.eu (Postfix) with ESMTPSA id C592927E0461 for
- <barebox@lists.infradead.org>; Wed, 25 Jan 2023 16:44:59 +0100 (CET)
-X-Virus-Scanned: E-securemail
-Secumail-id: <15acb.63d14e7c.19d61.0>
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu DE32E27E0491
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1674661499;
- bh=iPAXVl3SXyG/egNtxzykqmNpSXRjvIFTjolFFNqSVTE=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=LaIYKRMkY8arRtE9osjSmWSYZ6DoPN6VZERETkC/u428j4qsHDp/9meXcimj6+a0u
- ulocI1jd1ys8l/tqk6z1K6idYXVp2/QGEhNFiQ/COciAL4pbJ4GDBuYEHtrHoD9Rg7
- 64Dyy+7474ERdjsEerdfwHnU+vsbQYlEjqphJSTA=
-Date: Wed, 25 Jan 2023 16:44:58 +0100
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: barebox@lists.infradead.org
-Message-ID: <20230125154458.GC4155@tellis.lin.mbt.kalray.eu>
-References: <20230123102752.15444-1-jmaselbas@kalray.eu>
- <20230125153959.21987-1-jmaselbas@kalray.eu>
+	id 1pKi0g-007rTB-Nx
+	for barebox@lists.infradead.org; Wed, 25 Jan 2023 15:48:28 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pKi0e-0000AY-Lc; Wed, 25 Jan 2023 16:48:24 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pKi0e-00051Q-E8; Wed, 25 Jan 2023 16:48:24 +0100
+Date: Wed, 25 Jan 2023 16:48:24 +0100
+To: John Watts <contact@jookia.org>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230125154824.GD13319@pengutronix.de>
+References: <20230123201817.1084728-1-contact@jookia.org>
+ <20230124174115.1509216-1-contact@jookia.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230125153959.21987-1-jmaselbas@kalray.eu>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: 8bit
-X-ALTERMIMEV2_out: done
+In-Reply-To: <20230124174115.1509216-1-contact@jookia.org>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230125_074502_127597_D07E12D6 
-X-CRM114-Status: GOOD (  26.73  )
+X-CRM114-CacheID: sfid-20230125_074826_799698_3807DBA8 
+X-CRM114-Status: GOOD (  37.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -102,164 +74,114 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] ratp: Fix retransmission for header-only packets
+Subject: Re: [PATCH v2 1/2] imx6-mmdc: Work around ERR050070
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jan 25, 2023 at 04:39:59PM +0100, Jules Maselbas wrote:
-> Using sendmsg_current to detect if a packet needs to be retransmitted is
-> brittle as only packets containing data will ever be considered, packets
-> only containing a header (without data) were never being retransmitted.
+On Wed, Jan 25, 2023 at 04:41:15AM +1100, John Watts wrote:
+> The MPWLGCR registers clear the error bits before software can read them,
+> so rely on the MPWLHWERR registers for error reporting instead.
 > 
-> The sendbuf_len is used to determine if a packets is being send or not,
-> a non-zero length means that a packets is still being in the "try-send"
-> state, the length is not set to zero when a valid SN is received.
+> This errata was announced in 2019 but it seems to apply to all chip revisions.
 > 
-> Retransmission issue can be easily reproduced with a physical UART (not
-> cdc_acm over USB), by running the following command:
+> U-Boot contains a different workaround where it instead checks the calibration
+> data for the result 0x001F001F (maximum delay) and flag that as a failure.
+> I can't find the origin of this workaround but I first saw it in the Novena
+> source code, though I asked Sean Cross and he suggested it was from Freescale.
 > 
->     while ratp-barebox-cli -b 115200 -t /dev/ttyACMx -p; do :; done
+> While we're at it, fix the comment implying this code only checks PHY0 in x32
+> configuration. This is wrong and misleading.
 > 
-> Alternatively, it is possible to modify lib/ratp.c to force packets to
-> be sent by the retransmission logic with the following change:
-> 
->     @ int ratp_send_pkt(struct ratp_internal *ri, void *pkt, int length)
->                     ri->sendbuf_len = length;
->     -               ri->retransmission_timer_start = get_time_ns();
->     +               ri->retransmission_timer_start = get_time_ns() - ri->rto * MSECOND/2;
->                     ri->retransmission_count = 0;
->             }
->     -       return ri->ratp->send(ri->ratp, pkt, length);
->     +       return 0;
-> 
-> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> Signed-off-by: John Watts <contact@jookia.org>
 > ---
-> changes in v2: reset sendbuf_len to zero where appropriated (in each behavior)
-> 
-> lib/ratp.c | 25 +++++++++++++++++--------
->  1 file changed, 17 insertions(+), 8 deletions(-)
-> 
-> diff --git a/lib/ratp.c b/lib/ratp.c
-> index ce30223bac..b582e4e779 100644
-> --- a/lib/ratp.c
-> +++ b/lib/ratp.c
-> @@ -738,7 +738,7 @@ static int ratp_behaviour_c2(struct ratp_internal *ri, void *pkt)
->  		control = RATP_CONTROL_RST | RATP_CONTROL_ACK |
->  			ratp_set_sn(ratp_an(hdr)) | ratp_set_next_an(ratp_sn(hdr));
->  		ratp_send_hdr(ri, control);
-> -
-> +		ri->sendbuf_len = 0;
->  		ratp_state_change(ri, RATP_STATE_CLOSED);
->  		return 1;
->  	}
-> @@ -784,7 +784,7 @@ static int ratp_behaviour_d1(struct ratp_internal *ri, void *pkt)
->  	ri->status = -ECONNREFUSED;
->  
->  	pr_debug("Error: connection refused\n");
-> -
-> +	ri->sendbuf_len = 0;
->  	ratp_state_change(ri, RATP_STATE_CLOSED);
->  
->  	return 1;
-> @@ -812,6 +812,8 @@ static int ratp_behaviour_d2(struct ratp_internal *ri, void *pkt)
->  	ri->status = -ECONNRESET;
->  
->  	pr_debug("connection reset\n");
-> +	ri->sendbuf_len = 0;
-> +	ratp_state_change(ri, RATP_STATE_CLOSED);
->  
->  	return 0;
->  }
-> @@ -879,7 +881,7 @@ static int ratp_behaviour_e(struct ratp_internal *ri, void *pkt)
->  	ratp_send_hdr(ri, control);
->  
->  	pr_debug("connection reset\n");
-> -
-> +	ri->sendbuf_len = 0;
->  	ratp_state_change(ri, RATP_STATE_CLOSED);
->  
->  	return 1;
-> @@ -924,8 +926,10 @@ static int ratp_behaviour_f1(struct ratp_internal *ri, void *pkt)
->  	if (!(hdr->control & RATP_CONTROL_ACK))
->  		return 1;
->  
-> -	if (ratp_an_expected(ri, hdr))
-> +	if (ratp_an_expected(ri, hdr)) {
-> +		ri->sendbuf_len = 0; /* packet succesfully received */
->  		return 0;
-> +	}
->  
->  	control = RATP_CONTROL_RST | ratp_set_sn(ratp_an(hdr));
->  	ratp_send_hdr(ri, control);
-> @@ -971,6 +975,8 @@ static int ratp_behaviour_f2(struct ratp_internal *ri, void *pkt)
->  		if (ri->sendmsg_current)
->  			ratp_msg_done(ri, ri->sendmsg_current, 0);
->  		ri->sendmsg_current = NULL;
-> +		ri->sendbuf_len = 0; /* packet succesfully received */
-> +		pr_debug("Data succesfully sent 0\n");
-This pr_debug line was not intended to be included.
+> Changes v1 -> v2:
+> - Added a wall of text explaining what the code does and why
+> - wlcalib_failed now reads from the ips register correctly
+> ---
+>  arch/arm/mach-imx/imx6-mmdc.c              | 30 +++++++++++++++++++---
+>  arch/arm/mach-imx/include/mach/imx6-mmdc.h |  1 +
+>  2 files changed, 27 insertions(+), 4 deletions(-)
 
->  		return 0;
->  	} else {
->  		pr_vdebug("%s: an not expected\n", __func__);
-> @@ -1175,6 +1181,7 @@ static int ratp_behaviour_h3(struct ratp_internal *ri, void *pkt)
->  		ratp_send_hdr(ri, control);
->  		ri->status = -ECONNRESET;
->  		pr_debug("Error: Connection reset\n");
-> +		ri->sendbuf_len = 0;
->  		ratp_state_change(ri, RATP_STATE_CLOSED);
->  		return 1;
->  	}
-> @@ -1217,8 +1224,10 @@ static int ratp_behaviour_h4(struct ratp_internal *ri, void *pkt)
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/arch/arm/mach-imx/imx6-mmdc.c b/arch/arm/mach-imx/imx6-mmdc.c
+> index 00b8d30d69..45e1b030d3 100644
+> --- a/arch/arm/mach-imx/imx6-mmdc.c
+> +++ b/arch/arm/mach-imx/imx6-mmdc.c
+> @@ -11,6 +11,30 @@
+>  #include <mach/imx6-regs.h>
+>  #include <mach/imx6.h>
 >  
->  	pr_debug("%s\n", __func__);
->  
-> -	if (ratp_an_expected(ri, hdr))
-> +	if (ratp_an_expected(ri, hdr)) {
-> +		ri->sendbuf_len = 0; /* packet succesfully received */
->  		ratp_state_change(ri, RATP_STATE_CLOSED);
+> +static bool wlcalib_failed(void __iomem *ips)
+> +{
+> +	/*
+> +	 * The i.MX 6 reference manual specifies that an MMDC flags reports
+> +	 * write calibration errors in the MPWLGCR register's HW_WL_ERR field.
+> +	 *
+> +	 * ERR050070 specifies that this doesn't work and we should check
+> +	 * the MPWLHWERR register instead which reports which write leveling
+> +	 * steps succeeded or failed on a per-byte basis.
+> +	 *
+> +	 * Check each byte to see which steps succeeded. If no steps succeeded
+> +	 * then declare the calibration a failure.
+> +	*/
+> +
+> +	int i;
+> +
+> +	for (i = 0; i < 4; ++i) {
+> +		if (readb(ips + MPWLHWERR + i) == 0)
+> +			return true;
 > +	}
+> +
+> +	return false;
+> +}
+> +
+>  int mmdc_do_write_level_calibration(void)
+>  {
+>  	u32 esdmisc_val, zq_val;
+> @@ -56,11 +80,9 @@ int mmdc_do_write_level_calibration(void)
+>  	/* Upon completion of this process the MMDC de-asserts the MPWLGCR[HW_WL_EN] */
+>  	while (readl(P0_IPS + MPWLGCR) & 0x00000001);
 >  
->  	return 1;
->  }
-> @@ -1244,6 +1253,7 @@ static int ratp_behaviour_h5(struct ratp_internal *ri, void *pkt)
->  	pr_debug("%s\n", __func__);
+> -	/* check for any errors: check both PHYs for x64 configuration, if x32, check only PHY0 */
+> -	if ((readl(P0_IPS + MPWLGCR) & 0x00000F00) ||
+> -			(readl(P1_IPS + MPWLGCR) & 0x00000F00)) {
+> +	/* check for any errors on both PHYs */
+> +	if (wlcalib_failed(P0_IPS) || wlcalib_failed(P1_IPS))
+>  		errorcount++;
+> -	}
 >  
->  	if (ratp_an_expected(ri, hdr)) {
-> +		ri->sendbuf_len = 0; /* packet succesfully received */
->  		ratp_state_change(ri, RATP_STATE_TIME_WAIT);
->  		ratp_start_time_wait_timer(ri);
->  	}
-> @@ -1580,9 +1590,8 @@ int ratp_poll(struct ratp *ratp)
->  		}
->  	}
+>  	pr_debug("Write leveling calibration completed\n");
 >  
-> -	if (ri->sendmsg_current && is_timeout(ri->retransmission_timer_start,
-> +	if (ri->sendbuf_len && is_timeout(ri->retransmission_timer_start,
->  	    ri->rto * MSECOND)) {
-> -
->  		ri->retransmission_count++;
->  		if (ri->retransmission_count == ri->max_retransmission) {
->  			ri->status = ret = -ETIMEDOUT;
-> @@ -1601,7 +1610,7 @@ int ratp_poll(struct ratp *ratp)
->  			goto out;
->  	}
->  
-> -	if (!ri->sendmsg_current && !list_empty(&ri->sendmsg))
-> +	if (ri->sendbuf_len == 0 && !list_empty(&ri->sendmsg))
->  		ratp_send_next_data(ri);
->  
->  	ret = 0;
+> diff --git a/arch/arm/mach-imx/include/mach/imx6-mmdc.h b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+> index bda20aba17..098ba4f5bf 100644
+> --- a/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+> +++ b/arch/arm/mach-imx/include/mach/imx6-mmdc.h
+> @@ -18,6 +18,7 @@
+>  #define MPWLGCR		0x808
+>  #define MPWLDECTRL0	0x80c
+>  #define MPWLDECTRL1	0x810
+> +#define MPWLHWERR	0x878
+>  #define MPPDCMPR1	0x88c
+>  #define MPSWDAR		0x894
+>  #define MPRDDLCTL	0x848
 > -- 
-> 2.17.1
+> 2.39.0
+> 
+> 
 > 
 
-
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
