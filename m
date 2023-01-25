@@ -1,61 +1,61 @@
-Delivery-date: Wed, 25 Jan 2023 17:44:46 +0100
+Delivery-date: Wed, 25 Jan 2023 17:44:58 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKitE-001i1s-E9
-	for lore@lore.pengutronix.de; Wed, 25 Jan 2023 17:44:46 +0100
+	id 1pKitP-001i2l-L6
+	for lore@lore.pengutronix.de; Wed, 25 Jan 2023 17:44:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKitB-0007nt-7t
-	for lore@pengutronix.de; Wed, 25 Jan 2023 17:44:46 +0100
+	id 1pKitL-0007qY-Gf
+	for lore@pengutronix.de; Wed, 25 Jan 2023 17:44:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XYIAX2+HSJxyTIHcsXqsp/r/Zg7H/qUmbezNhXbez3E=; b=z9O5LtBkaG8w+39WynJ7/vBJG0
-	15VWvCTP1j9Tkc0WWSM/oS+W1TgH8seUJkD1YgJKr//l0oKUJws4Vh0SmJLC9dsKPcVz1rUiH902r
-	da2ZnSyE54cMUsDGovb4UOyOdQSEbfT4deHOjr7XHoY40eHSNRIB8i0d9PBte0KVqVGqZceOZg7fc
-	DzTtVPgKb0S6VtdcfVFOa9o7BN8F8bRk4/rQAOkTIER8UBrDCC/+sB7fV1LNYQzeyADJAdBLjh4sh
-	lcJxOKqFeyDMBhRNKrjWoGXVhCM3jGzG/5zLNWyJImcu5lYPredsICWaJ2jWHHJsg7pe2ynApE3Xi
-	++OpmJ4g==;
+	bh=G/4GxOGavB7hsl5ryIiG+jMt5nJNyofEo05dmyNQv0w=; b=OfPjXvqijF+mpfi7/8bjpHC3NT
+	7vTEX1QlAG+Gd7dzMrZ9Qzn8X7bJtVkDnMxljDYA2+2Q3k/yxJmruVCyJ5cVmYJPb/Rb2ODdnXaPb
+	tw6VgryaPvyrxSDxCqjgeCsowUgKfndGbhggXjC+yPwYCjYZIqif2JGE/hS92QsoG+o4XNazkXHnH
+	y7I+c9nFxqlWzChArnHFYDUcPP9XOIvOCjG/sDC0DVm40HE4gP4+v7YbiHUnPqK4BlbYVFxIoqi6I
+	aCD20OECRFkCY/HK0AQCzSWXyx9ouomII4ATcG0Ay2mKvmu0zhxNz5EYt4R6eFIcwUOcJJmbcT7AU
+	wZYHREaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKirl-0080b3-Se; Wed, 25 Jan 2023 16:43:18 +0000
-Received: from out-140.mta0.migadu.com ([91.218.175.140])
+	id 1pKirw-0080iU-8o; Wed, 25 Jan 2023 16:43:29 +0000
+Received: from out-116.mta0.migadu.com ([2001:41d0:1004:224b::74])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKirU-0080Wo-6V
-	for barebox@lists.infradead.org; Wed, 25 Jan 2023 16:43:02 +0000
+	id 1pKira-0080aY-1f
+	for barebox@lists.infradead.org; Wed, 25 Jan 2023 16:43:07 +0000
 X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jookia.org; s=key1;
-	t=1674664976;
+	t=1674664982;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XYIAX2+HSJxyTIHcsXqsp/r/Zg7H/qUmbezNhXbez3E=;
-	b=ywAG3QleLUgnamKEqtGGGbTj54LUnmp8dYc7DNC1TwOiUtvofFv9ghZ03roCLYKuXgALeE
-	1fcWU51fYZU3oXXdT9watXRnb4mq7PEY5S/GNwJTI7OMN9Q++pX56oIPNFb7yURLOjJMvO
-	DkcBbTKyDqCbkgT14TmmLeP367TbG5LDAd4+Urm/Er72H/0AzsPobiteBqrh4mCtT0qKKD
-	1wqk1LbLBzBWNVS1tCrDXNpqbgv99AncJnrPVtpjYHLtk9hCN+K5rINIEwkkfMHcmSmsva
-	fWn1MQ2W9CUB7XpAzX9zRTWH/w53WnjAhrKggFLPfJTevBbfWR6ayjhXQhBEEg==
+	bh=G/4GxOGavB7hsl5ryIiG+jMt5nJNyofEo05dmyNQv0w=;
+	b=cFfQQ44DW/9I2KugL0YGfXVg6cC68cmecyIc6/ejZasb8Fkmji+PXa4ET9jTfj06FrL6VR
+	jHZAw7t/b3iEfslSuzQ9K0noYR3+9sQVUvxT3uqqsfEK4lpYQaZAXOXi1yIDoufZPw+Zo5
+	KHoFMEYx6zSF/XXADReN9F3uSZSSSdgcmFLDrD4HnxFbA9MjsKu43ozE4ft5HniWMtPNpx
+	6gvoYbYO6xrrFaFcu4cUSMxzDWVSSCVm9qNiGtqFS7+nQPljMi4KcT30Eu1gu1bnOYTdMm
+	1lDyo1A/It+3vob8gQEmHrwGhJMyigJHkKbJGybeynzXvJtaqIguJZH1TKA06A==
 From: John Watts <contact@jookia.org>
 To: barebox@lists.infradead.org
 Cc: John Watts <contact@jookia.org>
-Date: Thu, 26 Jan 2023 03:42:28 +1100
-Message-Id: <20230125164230.2328043-3-contact@jookia.org>
+Date: Thu, 26 Jan 2023 03:42:29 +1100
+Message-Id: <20230125164230.2328043-4-contact@jookia.org>
 In-Reply-To: <20230122175141.119834-1-contact@jookia.org>
 References: <20230122175141.119834-1-contact@jookia.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Migadu-Flow: FLOW_OUT
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230125_084300_605204_AB9E97AD 
-X-CRM114-Status: GOOD (  17.80  )
+X-CRM114-CacheID: sfid-20230125_084306_268489_2C8AD910 
+X-CRM114-Status: GOOD (  13.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,194 +77,147 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/4] ARM: novena: Setup RAM using static configuration
+Subject: [PATCH v2 3/4] ARM: novena: Read Ethernet MAC address from EEPROM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The Novena laptops were shipped with a 4GB stick that can be set up
-using this DDR3 configuration.
-This isn't ideal as the stick is swappable, but it will work for
-most people.
+The Novena has an EEPROM used for storing information about the board,
+including the Ethernet MAC address.
 
-The DDR registers are copied from /board/kosagi/novena/novena_spl.c
-from the Novena U-Boot fork (tag novena-r2) with two changes:
-
-- Bank interleaving is disabled: The Novena U-Boot code disables it
-  unconditionally during execution anyway
-- Page size is set to 1KB: I'm not sure the hardware supports x16 DIMMs
-
-Mainline U-Boot has similar code, but the timing differences don't work
-on my board so I'm unable to test or port that code over.
+The reference for the EEPROM fields is the novena-eeprom source code.
 
 Signed-off-by: John Watts <contact@jookia.org>
 ---
- arch/arm/boards/novena/ddr_regs.h | 119 ++++++++++++++++++++++++++++++
- arch/arm/boards/novena/lowlevel.c |   9 +++
- 2 files changed, 128 insertions(+)
- create mode 100644 arch/arm/boards/novena/ddr_regs.h
+ arch/arm/boards/novena/board.c | 88 ++++++++++++++++++++++++++++++++++
+ arch/arm/dts/imx6q-novena.dts  | 15 ++++++
+ 2 files changed, 103 insertions(+)
 
-diff --git a/arch/arm/boards/novena/ddr_regs.h b/arch/arm/boards/novena/ddr_regs.h
-new file mode 100644
-index 0000000000..5f18d5e0e4
---- /dev/null
-+++ b/arch/arm/boards/novena/ddr_regs.h
-@@ -0,0 +1,119 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+/* SPDX-FileCopyrightText: 2014 Marek Vasut <marex@denx.de> */
-+
-+#ifndef NOVENA_DDR_REGS_H
-+#define NOVENA_DDR_REGS_H
-+
-+/* MEMORY CONTROLLER CONFIGURATION */
-+
-+static struct mx6dq_iomux_ddr_regs novena_ddr_regs = {
-+	/* SDCLK[0:1], CAS, RAS, Reset: Differential input, 40ohm */
-+	.dram_sdclk_0		= 0x00020038,
-+	.dram_sdclk_1		= 0x00020038,
-+	.dram_cas		= 0x00000038,
-+	.dram_ras		= 0x00000038,
-+	.dram_reset		= 0x00000038,
-+	/* SDCKE[0:1]: 100k pull-up */
-+	.dram_sdcke0		= 0x00003000,
-+	.dram_sdcke1		= 0x00003000,
-+	/* SDBA2: pull-up disabled */
-+	.dram_sdba2		= 0x00000000,
-+	/* SDODT[0:1]: 100k pull-up, 40 ohm */
-+	.dram_sdodt0		= 0x00000038,
-+	.dram_sdodt1		= 0x00000038,
-+	/* SDQS[0:7]: Differential input, 40 ohm */
-+	.dram_sdqs0		= 0x00000038,
-+	.dram_sdqs1		= 0x00000038,
-+	.dram_sdqs2		= 0x00000038,
-+	.dram_sdqs3		= 0x00000038,
-+	.dram_sdqs4		= 0x00000038,
-+	.dram_sdqs5		= 0x00000038,
-+	.dram_sdqs6		= 0x00000038,
-+	.dram_sdqs7		= 0x00000038,
-+
-+	/* DQM[0:7]: Differential input, 40 ohm */
-+	.dram_dqm0		= 0x00000038,
-+	.dram_dqm1		= 0x00000038,
-+	.dram_dqm2		= 0x00000038,
-+	.dram_dqm3		= 0x00000038,
-+	.dram_dqm4		= 0x00000038,
-+	.dram_dqm5		= 0x00000038,
-+	.dram_dqm6		= 0x00000038,
-+	.dram_dqm7		= 0x00000038,
-+};
-+
-+static struct mx6dq_iomux_grp_regs novena_grp_regs = {
-+	/* DDR3 */
-+	.grp_ddr_type		= 0x000c0000,
-+	.grp_ddrmode_ctl	= 0x00020000,
-+	/* Disable DDR pullups */
-+	.grp_ddrpke		= 0x00000000,
-+	/* ADDR[00:16], SDBA[0:1]: 40 ohm */
-+	.grp_addds		= 0x00000038,
-+	/* CS0/CS1/SDBA2/CKE0/CKE1/SDWE: 40 ohm */
-+	.grp_ctlds		= 0x00000038,
-+	/* DATA[00:63]: Differential input, 40 ohm */
-+	.grp_ddrmode		= 0x00020000,
-+	.grp_b0ds		= 0x00000038,
-+	.grp_b1ds		= 0x00000038,
-+	.grp_b2ds		= 0x00000038,
-+	.grp_b3ds		= 0x00000038,
-+	.grp_b4ds		= 0x00000038,
-+	.grp_b5ds		= 0x00000038,
-+	.grp_b6ds		= 0x00000038,
-+	.grp_b7ds		= 0x00000038,
-+};
-+
-+/* MEMORY STICK CONFIGURATION */
-+
-+static struct mx6_mmdc_calibration novena_mmdc_calib = {
-+	/* write leveling calibration determine */
-+	.p0_mpwldectrl0		= 0x00420048,
-+	.p0_mpwldectrl1		= 0x006f0059,
-+	.p1_mpwldectrl0		= 0x005a0104,
-+	.p1_mpwldectrl1		= 0x01070113,
-+	/* Read DQS Gating calibration */
-+	.p0_mpdgctrl0		= 0x437c040b,
-+	.p0_mpdgctrl1		= 0x0413040e,
-+	.p1_mpdgctrl0		= 0x444f0446,
-+	.p1_mpdgctrl1		= 0x044d0422,
-+	/* Read Calibration: DQS delay relative to DQ read access */
-+	.p0_mprddlctl		= 0x4c424249,
-+	.p1_mprddlctl		= 0x4e48414f,
-+	/* Write Calibration: DQ/DM delay relative to DQS write access */
-+	.p0_mpwrdlctl		= 0x42414641,
-+	.p1_mpwrdlctl		= 0x46374b43,
-+};
-+
-+static struct mx6_ddr_sysinfo novena_ddr_info = {
-+	/* Width of data bus: 0=16, 1=32, 2=64 */
-+	.dsize		= 2,
-+	/* Config for full 4GB range so that get_mem_size() works */
-+	.cs_density	= 32,	/* 32Gb per CS */
-+	/* Single chip select */
-+	.ncs		= 1,
-+	.cs1_mirror	= 0,
-+	.rtt_wr		= 1,	/* RTT_Wr = RZQ/4 */
-+	.rtt_nom	= 2,	/* RTT_Nom = RZQ/2 */
-+	.walat		= 3,	/* Write additional latency */
-+	.ralat		= 7,	/* Read additional latency */
-+	.mif3_mode	= 3,	/* Command prediction working mode */
-+	.bi_on		= 0,	/* Bank interleaving disabled */
-+	.sde_to_rst	= 0x10,	/* 14 cycles, 200us (JEDEC default) */
-+	.rst_to_cke	= 0x23,	/* 33 cycles, 500us (JEDEC default) */
-+};
-+
-+static struct mx6_ddr3_cfg novena_ddr_cfg = {
-+	.mem_speed	= 1600,
-+	.density	= 4,
-+	.width		= 64,
-+	.banks		= 8,
-+	.rowaddr	= 16,
-+	.coladdr	= 10,
-+	.pagesz		= 1,
-+	.trcd		= 1300,
-+	.trcmin		= 4900,
-+	.trasmin	= 3590,
-+};
-+
-+#endif
-diff --git a/arch/arm/boards/novena/lowlevel.c b/arch/arm/boards/novena/lowlevel.c
-index 2052ca9de8..ef8acc8600 100644
---- a/arch/arm/boards/novena/lowlevel.c
-+++ b/arch/arm/boards/novena/lowlevel.c
-@@ -7,9 +7,11 @@
- #include <mach/esdctl.h>
- #include <mach/generic.h>
- #include <mach/imx6.h>
-+#include <mach/imx6-mmdc.h>
- #include <mach/iomux-mx6.h>
- #include <mach/xload.h>
- #include <soc/fsl/fsl_udc.h>
-+#include "ddr_regs.h"
+diff --git a/arch/arm/boards/novena/board.c b/arch/arm/boards/novena/board.c
+index e247f8b8c3..24cde1c0d4 100644
+--- a/arch/arm/boards/novena/board.c
++++ b/arch/arm/boards/novena/board.c
+@@ -3,9 +3,97 @@
  
- #define MX6_OCRAM_BASE_ADDR 0x00900000
- #define STACK_TOP (MX6_OCRAM_BASE_ADDR + SZ_128K)
-@@ -31,6 +33,12 @@ static void setup_uart(void)
- 	pr_debug(">");
- }
- 
-+static void setup_ram(void)
+ #include <common.h>
+ #include <deep-probe.h>
++#include <fs.h>
++#include <libfile.h>
++#include <net.h>
++
++struct novena_eeprom {
++	uint8_t signature[6]; /* 'Novena' */
++	uint8_t version; /* 1 or 2, not checked */
++	uint8_t page_size; /* v2 only: EEPROM read/write page */
++	uint32_t serial; /* 32-bit serial number */
++	uint8_t mac[6]; /* Gigabit MAC address */
++	uint16_t features; /* features */
++	/* ... extra fields omitted ... */
++} __packed;
++
++static void power_on_audio_codec(void)
 +{
-+	mx6dq_dram_iocfg(64, &novena_ddr_regs, &novena_grp_regs);
-+	mx6_dram_cfg(&novena_ddr_info, &novena_mmdc_calib, &novena_ddr_cfg);
++	int rc = of_devices_ensure_probed_by_name("regulator-audio-codec");
++
++	if (rc < 0)
++		pr_err("Unable to power on audio codec: %s\n", strerror(-rc));
 +}
 +
- static void load_barebox(void)
++static struct novena_eeprom *novena_read_eeprom(void)
++{
++	size_t read;
++	loff_t max = sizeof(struct novena_eeprom);
++	void *eeprom;
++	int rc;
++
++	/*
++	 * When powered off the audio codec pulls down the EEPROM's I2C line.
++	 * Power it on so we can actually read data.
++	 */
++	power_on_audio_codec();
++
++	rc = of_device_ensure_probed_by_alias("eeprom0");
++	if (rc < 0) {
++		pr_err("Unable to probe eeprom0: %s\n", strerror(-rc));
++		return NULL;
++	}
++
++	rc = read_file_2("/dev/eeprom0", &read, &eeprom, max);
++
++	if (rc < 0 && rc != -EFBIG) {
++		pr_err("Unable to read Novena EEPROM: %s\n", strerror(-rc));
++		return NULL;
++	} else if (read != max) {
++		pr_err("Short read from Novena EEPROM?\n");
++		return NULL;
++	} else {
++		return eeprom;
++	}
++}
++
++static bool novena_check_eeprom(struct novena_eeprom *eeprom)
++{
++	char *sig = eeprom->signature;
++	size_t size = sizeof(eeprom->signature);
++
++	if (memcmp("Novena", sig, size) != 0) {
++		pr_err("Unknown Novena EEPROM signature\n");
++		return false;
++	}
++
++	return true;
++}
++
++static void novena_set_mac(struct novena_eeprom *eeprom)
++{
++	struct device_node *dnode;
++
++	dnode = of_find_node_by_alias(of_get_root_node(), "ethernet0");
++	if (dnode)
++		of_eth_register_ethaddr(dnode, eeprom->mac);
++	else
++		pr_err("Unable to find ethernet node\n");
++}
++
++static void novena_try_eeprom(void)
++{
++	struct novena_eeprom *eeprom = novena_read_eeprom();
++
++	if (!eeprom || !novena_check_eeprom(eeprom))
++		return;
++
++	novena_set_mac(eeprom);
++}
+ 
+ static int novena_probe(struct device *dev)
  {
- 	enum bootsource bootsrc;
-@@ -66,6 +74,7 @@ ENTRY_FUNCTION_WITHSTACK(start_imx6q_novena, STACK_TOP, r0, r1, r2)
- 	if (!running_from_ram()) {
- 		imx6_ungate_all_peripherals();
- 		setup_uart();
-+		setup_ram();
- 		load_barebox();
- 	} else {
- 		boot_barebox();
++	novena_try_eeprom();
++
+ 	return 0;
+ }
+ 
+diff --git a/arch/arm/dts/imx6q-novena.dts b/arch/arm/dts/imx6q-novena.dts
+index 07471cb132..095dcde0d5 100644
+--- a/arch/arm/dts/imx6q-novena.dts
++++ b/arch/arm/dts/imx6q-novena.dts
+@@ -2,3 +2,18 @@
+ // SPDX-FileCopyrightText: 2023 John Watts
+ 
+ #include <arm/imx6q-novena.dts>
++
++/ {
++	aliases {
++		eeprom0 = &eeprom;
++	};
++};
++
++&i2c3 {
++	eeprom: eeprom@56 {
++		compatible = "24c512";
++		reg = <0x56>;
++		pagesize = <128>;
++		status = "okay";
++	};
++};
 -- 
 2.39.0
 
