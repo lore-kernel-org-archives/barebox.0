@@ -1,58 +1,58 @@
-Delivery-date: Wed, 25 Jan 2023 20:35:52 +0100
+Delivery-date: Wed, 25 Jan 2023 20:41:10 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKlYo-001pLf-AO
-	for lore@lore.pengutronix.de; Wed, 25 Jan 2023 20:35:52 +0100
+	id 1pKldv-001pVu-Li
+	for lore@lore.pengutronix.de; Wed, 25 Jan 2023 20:41:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKlYl-0005Cl-1r
-	for lore@pengutronix.de; Wed, 25 Jan 2023 20:35:52 +0100
+	id 1pKlds-0005nk-Qr
+	for lore@pengutronix.de; Wed, 25 Jan 2023 20:41:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6Yc9dN3QNDnWiMWTcB8CgeA0CNoFYsS30wzlE9m9T44=; b=KQ3hiHsVcsdP+YeUoi6Hxc6TDs
-	shTCL6udqEuu5Pg5ygEuq6cHBfb6aJp1YirkoSnBte0TUsQsWjJC+qmW7WOiXdmiylfwTwTxfZfvg
-	NBf50uyeL9G800fF9DuDJ0Lk1RGg97DpG05EFzeNZzfFoTBcBIBwmZ8iIozE7uw6+C+4WKV6FLzj1
-	vBTQ3Ncm7rLDUUHb9AZwcHDb+qw7wG+rtxksigh6rJQaZ5UWYte8xOr3KWvIhBbeOLqxjfVo7UVC4
-	e9a7TfU/7zB+r5aw/C0XBeNU2nbgqRQTBrZ9q6kbTIr0YMB5cR+hswigCUY1/nQBosnexSTgaMXdx
-	dm66ykRQ==;
+	bh=1A9NfYMZ629UMcS9E3f+kWUM16m1Z2AcSUmyqN+eJOI=; b=ij9LeqGqXFfia5lSIU4DrSQ0jM
+	tCmFMeZ0qX0P4+Gh6O226LmIToFZ3Mp9iwC4vM3tRb+aqjJ2sfOHKPf/0tNsygXMpefX9aYSXLdBD
+	GGPYWLPTo01VgejCDBvkmDkDJd+LMkhFIrVRFLxuVWeRWl/HIsywJnC24E0+GCgRwd66At26qKFKd
+	OboNdjjNilMPoMTeEtygx17P2nKhU4ZR0R+rWqH4AEcSCP3OqQbch/qjqdm9vEbqLxeNbYqptm/8+
+	hJCVGelhp5xKXZdjn6F/S0EQblewSFmpsBc5faoudt315gRdp7Hq3RT3V0PtEF+HY/2RR96mfzwue
+	nCXE2VdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKlX5-008TlM-VX; Wed, 25 Jan 2023 19:34:08 +0000
+	id 1pKlca-008U3n-8j; Wed, 25 Jan 2023 19:39:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKlX0-008Tkj-Mp
-	for barebox@lists.infradead.org; Wed, 25 Jan 2023 19:34:04 +0000
+	id 1pKlcV-008U3P-QB
+	for barebox@lists.infradead.org; Wed, 25 Jan 2023 19:39:45 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1pKlWx-00052v-8p; Wed, 25 Jan 2023 20:33:59 +0100
+	id 1pKlcT-0005Vk-4x; Wed, 25 Jan 2023 20:39:41 +0100
 Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1pKlWv-000361-Bf; Wed, 25 Jan 2023 20:33:57 +0100
-Date: Wed, 25 Jan 2023 20:33:57 +0100
+	id 1pKlcS-0003J8-TO; Wed, 25 Jan 2023 20:39:40 +0100
+Date: Wed, 25 Jan 2023 20:39:40 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: John Watts <contact@jookia.org>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230125193357.tdtpryxe5au6vne6@pengutronix.de>
+Message-ID: <20230125193940.mrgtbxuueixridtw@pengutronix.de>
 References: <20230122175141.119834-1-contact@jookia.org>
- <20230125164230.2328043-2-contact@jookia.org>
+ <20230125164230.2328043-3-contact@jookia.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230125164230.2328043-2-contact@jookia.org>
+In-Reply-To: <20230125164230.2328043-3-contact@jookia.org>
 User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230125_113402_926267_DF609911 
-X-CRM114-Status: GOOD (  33.36  )
+X-CRM114-CacheID: sfid-20230125_113943_926929_C7787578 
+X-CRM114-Status: GOOD (  28.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,295 +74,207 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/4] ARM: novena: Add Kosagi Novena board
+Subject: Re: [PATCH v2 2/4] ARM: novena: Setup RAM using static configuration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hi John,
 
-thanks for your patch.
-
 On 23-01-26, John Watts wrote:
-> The Kosagi Novena is an open source laptop released in 2014.
+> The Novena laptops were shipped with a 4GB stick that can be set up
+> using this DDR3 configuration.
+> This isn't ideal as the stick is swappable, but it will work for
+> most people.
 > 
-> This patch adds the initial project skeleton for running the PBL
-> and debugging over the UART2 port (labeled DEBUG on the board.)
+> The DDR registers are copied from /board/kosagi/novena/novena_spl.c
+> from the Novena U-Boot fork (tag novena-r2) with two changes:
+> 
+> - Bank interleaving is disabled: The Novena U-Boot code disables it
+>   unconditionally during execution anyway
+> - Page size is set to 1KB: I'm not sure the hardware supports x16 DIMMs
+> 
+> Mainline U-Boot has similar code, but the timing differences don't work
+> on my board so I'm unable to test or port that code over.
 > 
 > Signed-off-by: John Watts <contact@jookia.org>
+
+this patch should be part of patch1 since without this one you can't
+boot the board, right?
+
 > ---
->  arch/arm/boards/Makefile                      |  1 +
->  arch/arm/boards/novena/Makefile               |  4 +
->  arch/arm/boards/novena/board.c                | 26 +++++++
->  .../boards/novena/flash-header-novena.imxcfg  |  6 ++
->  arch/arm/boards/novena/lowlevel.c             | 73 +++++++++++++++++++
->  arch/arm/configs/imx_v7_defconfig             |  1 +
->  arch/arm/dts/Makefile                         |  1 +
->  arch/arm/dts/imx6q-novena.dts                 |  4 +
->  arch/arm/mach-imx/Kconfig                     |  6 ++
->  images/Makefile.imx                           |  2 +
->  10 files changed, 124 insertions(+)
->  create mode 100644 arch/arm/boards/novena/Makefile
->  create mode 100644 arch/arm/boards/novena/board.c
->  create mode 100644 arch/arm/boards/novena/flash-header-novena.imxcfg
->  create mode 100644 arch/arm/boards/novena/lowlevel.c
->  create mode 100644 arch/arm/dts/imx6q-novena.dts
+>  arch/arm/boards/novena/ddr_regs.h | 119 ++++++++++++++++++++++++++++++
+>  arch/arm/boards/novena/lowlevel.c |   9 +++
+>  2 files changed, 128 insertions(+)
+>  create mode 100644 arch/arm/boards/novena/ddr_regs.h
 > 
-> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-> index f47aea6602..50088886eb 100644
-> --- a/arch/arm/boards/Makefile
-> +++ b/arch/arm/boards/Makefile
-> @@ -19,6 +19,7 @@ obj-$(CONFIG_MACH_BEAGLEBONE)			+= beaglebone/
->  obj-$(CONFIG_MACH_CANON_A1100)			+= canon-a1100/
->  obj-$(CONFIG_MACH_CM_FX6)			+= cm-fx6/
->  obj-$(CONFIG_MACH_NITROGEN6)			+= boundarydevices-nitrogen6/
-> +obj-$(CONFIG_MACH_NOVENA)			+= novena/
->  obj-$(CONFIG_MACH_CCMX51)			+= ccxmx51/
->  obj-$(CONFIG_MACH_CCMX53)			+= ccxmx53/
->  obj-$(CONFIG_MACH_CFA10036)			+= crystalfontz-cfa10036/
-> diff --git a/arch/arm/boards/novena/Makefile b/arch/arm/boards/novena/Makefile
+> diff --git a/arch/arm/boards/novena/ddr_regs.h b/arch/arm/boards/novena/ddr_regs.h
 > new file mode 100644
-> index 0000000000..da63d2625f
+> index 0000000000..5f18d5e0e4
 > --- /dev/null
-> +++ b/arch/arm/boards/novena/Makefile
-> @@ -0,0 +1,4 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
+> +++ b/arch/arm/boards/novena/ddr_regs.h
+> @@ -0,0 +1,119 @@
+> +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> +/* SPDX-FileCopyrightText: 2014 Marek Vasut <marex@denx.de> */
 > +
-> +obj-y += board.o
-> +lwl-y += lowlevel.o
-> diff --git a/arch/arm/boards/novena/board.c b/arch/arm/boards/novena/board.c
-> new file mode 100644
-> index 0000000000..e247f8b8c3
-> --- /dev/null
-> +++ b/arch/arm/boards/novena/board.c
-> @@ -0,0 +1,26 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +// SPDX-FileCopyrightText: 2023 John Watts
-						^
-I'm not sure if this is required, but can you add your mail address
-here as well?
-
+> +#ifndef NOVENA_DDR_REGS_H
+> +#define NOVENA_DDR_REGS_H
 > +
-> +#include <common.h>
-> +#include <deep-probe.h>
+> +/* MEMORY CONTROLLER CONFIGURATION */
 > +
-> +static int novena_probe(struct device *dev)
-> +{
-> +	return 0;
-> +}
+> +static struct mx6dq_iomux_ddr_regs novena_ddr_regs = {
+> +	/* SDCLK[0:1], CAS, RAS, Reset: Differential input, 40ohm */
+> +	.dram_sdclk_0		= 0x00020038,
+> +	.dram_sdclk_1		= 0x00020038,
+> +	.dram_cas		= 0x00000038,
+> +	.dram_ras		= 0x00000038,
+> +	.dram_reset		= 0x00000038,
+> +	/* SDCKE[0:1]: 100k pull-up */
+> +	.dram_sdcke0		= 0x00003000,
+> +	.dram_sdcke1		= 0x00003000,
+> +	/* SDBA2: pull-up disabled */
+> +	.dram_sdba2		= 0x00000000,
+> +	/* SDODT[0:1]: 100k pull-up, 40 ohm */
+> +	.dram_sdodt0		= 0x00000038,
+> +	.dram_sdodt1		= 0x00000038,
+> +	/* SDQS[0:7]: Differential input, 40 ohm */
+> +	.dram_sdqs0		= 0x00000038,
+> +	.dram_sdqs1		= 0x00000038,
+> +	.dram_sdqs2		= 0x00000038,
+> +	.dram_sdqs3		= 0x00000038,
+> +	.dram_sdqs4		= 0x00000038,
+> +	.dram_sdqs5		= 0x00000038,
+> +	.dram_sdqs6		= 0x00000038,
+> +	.dram_sdqs7		= 0x00000038,
 > +
-> +static const struct of_device_id novena_of_match[] = {
-> +	{
-> +		.compatible = "kosagi,imx6q-novena",
-> +	},
-
-Nit: could be a oneliner.
-
-> +	{ /* sentinel */ }
+> +	/* DQM[0:7]: Differential input, 40 ohm */
+> +	.dram_dqm0		= 0x00000038,
+> +	.dram_dqm1		= 0x00000038,
+> +	.dram_dqm2		= 0x00000038,
+> +	.dram_dqm3		= 0x00000038,
+> +	.dram_dqm4		= 0x00000038,
+> +	.dram_dqm5		= 0x00000038,
+> +	.dram_dqm6		= 0x00000038,
+> +	.dram_dqm7		= 0x00000038,
 > +};
 > +
-> +static struct driver novena_board_driver = {
-> +	.name = "board-novena",
-> +	.probe = novena_probe,
-> +	.of_compatible = novena_of_match,
+> +static struct mx6dq_iomux_grp_regs novena_grp_regs = {
+> +	/* DDR3 */
+> +	.grp_ddr_type		= 0x000c0000,
+> +	.grp_ddrmode_ctl	= 0x00020000,
+> +	/* Disable DDR pullups */
+> +	.grp_ddrpke		= 0x00000000,
+> +	/* ADDR[00:16], SDBA[0:1]: 40 ohm */
+> +	.grp_addds		= 0x00000038,
+> +	/* CS0/CS1/SDBA2/CKE0/CKE1/SDWE: 40 ohm */
+> +	.grp_ctlds		= 0x00000038,
+> +	/* DATA[00:63]: Differential input, 40 ohm */
+> +	.grp_ddrmode		= 0x00020000,
+> +	.grp_b0ds		= 0x00000038,
+> +	.grp_b1ds		= 0x00000038,
+> +	.grp_b2ds		= 0x00000038,
+> +	.grp_b3ds		= 0x00000038,
+> +	.grp_b4ds		= 0x00000038,
+> +	.grp_b5ds		= 0x00000038,
+> +	.grp_b6ds		= 0x00000038,
+> +	.grp_b7ds		= 0x00000038,
 > +};
-> +coredevice_platform_driver(novena_board_driver);
 > +
-> +BAREBOX_DEEP_PROBE_ENABLE(novena_of_match);
-> diff --git a/arch/arm/boards/novena/flash-header-novena.imxcfg b/arch/arm/boards/novena/flash-header-novena.imxcfg
-> new file mode 100644
-> index 0000000000..61425976ec
-> --- /dev/null
-> +++ b/arch/arm/boards/novena/flash-header-novena.imxcfg
-> @@ -0,0 +1,6 @@
-> +# SPDX-License-Identifier: GPL-2.0-only
+> +/* MEMORY STICK CONFIGURATION */
 > +
-> +loadaddr 0x00907000
-> +soc imx6
-> +max_load_size 0x11000
-> +ivtofs 0x400
+> +static struct mx6_mmdc_calibration novena_mmdc_calib = {
+> +	/* write leveling calibration determine */
+> +	.p0_mpwldectrl0		= 0x00420048,
+> +	.p0_mpwldectrl1		= 0x006f0059,
+> +	.p1_mpwldectrl0		= 0x005a0104,
+> +	.p1_mpwldectrl1		= 0x01070113,
+> +	/* Read DQS Gating calibration */
+> +	.p0_mpdgctrl0		= 0x437c040b,
+> +	.p0_mpdgctrl1		= 0x0413040e,
+> +	.p1_mpdgctrl0		= 0x444f0446,
+> +	.p1_mpdgctrl1		= 0x044d0422,
+> +	/* Read Calibration: DQS delay relative to DQ read access */
+> +	.p0_mprddlctl		= 0x4c424249,
+> +	.p1_mprddlctl		= 0x4e48414f,
+> +	/* Write Calibration: DQ/DM delay relative to DQS write access */
+> +	.p0_mpwrdlctl		= 0x42414641,
+> +	.p1_mpwrdlctl		= 0x46374b43,
+> +};
+> +
+> +static struct mx6_ddr_sysinfo novena_ddr_info = {
+> +	/* Width of data bus: 0=16, 1=32, 2=64 */
+> +	.dsize		= 2,
+> +	/* Config for full 4GB range so that get_mem_size() works */
+> +	.cs_density	= 32,	/* 32Gb per CS */
+> +	/* Single chip select */
+> +	.ncs		= 1,
+> +	.cs1_mirror	= 0,
+> +	.rtt_wr		= 1,	/* RTT_Wr = RZQ/4 */
+> +	.rtt_nom	= 2,	/* RTT_Nom = RZQ/2 */
+> +	.walat		= 3,	/* Write additional latency */
+> +	.ralat		= 7,	/* Read additional latency */
+> +	.mif3_mode	= 3,	/* Command prediction working mode */
+> +	.bi_on		= 0,	/* Bank interleaving disabled */
+> +	.sde_to_rst	= 0x10,	/* 14 cycles, 200us (JEDEC default) */
+> +	.rst_to_cke	= 0x23,	/* 33 cycles, 500us (JEDEC default) */
+> +};
+> +
+> +static struct mx6_ddr3_cfg novena_ddr_cfg = {
+> +	.mem_speed	= 1600,
+> +	.density	= 4,
+> +	.width		= 64,
+> +	.banks		= 8,
+> +	.rowaddr	= 16,
+> +	.coladdr	= 10,
+> +	.pagesz		= 1,
+> +	.trcd		= 1300,
+> +	.trcmin		= 4900,
+> +	.trasmin	= 3590,
+> +};
+> +
+> +#endif
 > diff --git a/arch/arm/boards/novena/lowlevel.c b/arch/arm/boards/novena/lowlevel.c
-> new file mode 100644
-> index 0000000000..2052ca9de8
-> --- /dev/null
+> index 2052ca9de8..ef8acc8600 100644
+> --- a/arch/arm/boards/novena/lowlevel.c
 > +++ b/arch/arm/boards/novena/lowlevel.c
-> @@ -0,0 +1,73 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +// SPDX-FileCopyrightText: 2023 John Watts
-> +
-> +#include <asm/barebox-arm.h>
-> +#include <common.h>
-> +#include <debug_ll.h>
-> +#include <mach/esdctl.h>
-> +#include <mach/generic.h>
-> +#include <mach/imx6.h>
-> +#include <mach/iomux-mx6.h>
-> +#include <mach/xload.h>
-> +#include <soc/fsl/fsl_udc.h>
-> +
-> +#define MX6_OCRAM_BASE_ADDR 0x00900000
-> +#define STACK_TOP (MX6_OCRAM_BASE_ADDR + SZ_128K)
-> +
-> +extern char __dtb_imx6q_novena_start[];
-> +
-> +static bool running_from_ram(void)
-> +{
-> +	return (get_pc() >= MX6_MMDC_PORT01_BASE_ADDR);
-> +}
-> +
-> +static void setup_uart(void)
-> +{
-> +	/* NOTE: RX is needed for TX to work on this board */
-> +	imx_setup_pad(IOMEM(MX6_IOMUXC_BASE_ADDR), MX6Q_PAD_EIM_D26__UART2_RXD);
-> +	imx_setup_pad(IOMEM(MX6_IOMUXC_BASE_ADDR), MX6Q_PAD_EIM_D27__UART2_TXD);
-
-Can we add a newline in between to make it more readable?
-
-> +	imx6_uart_setup(IOMEM(MX6_UART2_BASE_ADDR));
-> +	pbl_set_putc(imx_uart_putc, IOMEM(MX6_UART2_BASE_ADDR));
-
-Here as well.
-
-> +	pr_debug(">");
-> +}
-> +
-> +static void load_barebox(void)
-> +{
-> +	enum bootsource bootsrc;
-> +	int bootinstance;
-> +
-> +	imx6_get_boot_source(&bootsrc, &bootinstance);
-> +
-> +	if (bootsrc == BOOTSOURCE_SERIAL) {
-> +		imx6_barebox_start_usb(IOMEM(MX6_MMDC_PORT01_BASE_ADDR));
-> +	} else if (bootsrc == BOOTSOURCE_MMC) {
-> +		imx6_esdhc_start_image(bootinstance);
-> +	} else {
-> +		pr_err("Unsupported boot source %i instance %i\n",
-> +					bootsrc, bootinstance);
-> +		hang();
-> +	}
-
-We could rewrite this to:
-
-	if (bootsrc == BOOTSOURCE_SERIAL)
-		imx6_barebox_start_usb(IOMEM(MX6_MMDC_PORT01_BASE_ADDR));
-	else if (bootsrc == BOOTSOURCE_MMC)
-		imx6_esdhc_start_image(bootinstance);
-
-	pr_err("Unsupported boot source %i instance %i\n", bootsrc, bootinstance);
-	
-	hang();
-
-or use switch-case.
-
-> +}
-> +
-> +static void boot_barebox(void)
-> +{
-> +	void *fdt = __dtb_imx6q_novena_start + get_runtime_offset();
-
-The get_runtime_offset() can be dropped here since we already relocated.
-Also we could move this function into the entry_function.
-
-> +
-> +	imx6q_barebox_entry(fdt);
-> +}
-> +
-> +ENTRY_FUNCTION_WITHSTACK(start_imx6q_novena, STACK_TOP, r0, r1, r2)
-> +{
-> +	imx6_cpu_lowlevel_init();
-> +	relocate_to_current_adr();
-> +	setup_c();
-> +	barrier();
-
-After reading the setup_c() and the cache-armv7.S code I think we don't
-need the barrier() here.
-
-> +	if (!running_from_ram()) {
-> +		imx6_ungate_all_peripherals();
-> +		setup_uart();
-> +		load_barebox();
-> +	} else {
-> +		boot_barebox();
-> +	}
-
-This could be re-written to:
-
-	imx6_ungate_all_peripherals();
-
-	if (IS_ENABLED(CONFIG_DEBUG_LL))
-		setup_uart();
-
-	if (!running_from_ram())
-		load_barebox();
-	
-	boot_barebox;
-
-> +}
-> diff --git a/arch/arm/configs/imx_v7_defconfig b/arch/arm/configs/imx_v7_defconfig
-> index 6110a52e48..f8deca324a 100644
-> --- a/arch/arm/configs/imx_v7_defconfig
-> +++ b/arch/arm/configs/imx_v7_defconfig
-> @@ -25,6 +25,7 @@ CONFIG_MACH_SABRELITE=y
->  CONFIG_MACH_SABRESD=y
->  CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB=y
->  CONFIG_MACH_NITROGEN6=y
-> +CONFIG_MACH_NOVENA=y
->  CONFIG_MACH_SOLIDRUN_MICROSOM=y
->  CONFIG_MACH_TECHNEXION_PICO_HOBBIT=y
->  CONFIG_MACH_TECHNEXION_WANDBOARD=y
-> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-> index 26c4a8ab99..a01ee19f68 100644
-> --- a/arch/arm/dts/Makefile
-> +++ b/arch/arm/dts/Makefile
-> @@ -46,6 +46,7 @@ lwl-$(CONFIG_MACH_MYIRTECH_X335X) += am335x-myirtech-myd.dtb.o
->  lwl-$(CONFIG_MACH_NETGEAR_RN104) += armada-370-rn104-bb.dtb.o
->  lwl-$(CONFIG_MACH_NETGEAR_RN2120) += armada-xp-rn2120-bb.dtb.o
->  lwl-$(CONFIG_MACH_NITROGEN6) += imx6q-nitrogen6x.dtb.o imx6dl-nitrogen6x.dtb.o imx6qp-nitrogen6_max.dtb.o
-> +lwl-$(CONFIG_MACH_NOVENA) += imx6q-novena.dtb.o
->  lwl-$(CONFIG_MACH_NVIDIA_BEAVER) += tegra30-beaver.dtb.o
->  lwl-$(CONFIG_MACH_NVIDIA_JETSON) += tegra124-jetson-tk1.dtb.o
->  lwl-$(CONFIG_MACH_PCA100) += imx27-phytec-phycard-s-rdk-bb.dtb.o
-> diff --git a/arch/arm/dts/imx6q-novena.dts b/arch/arm/dts/imx6q-novena.dts
-> new file mode 100644
-> index 0000000000..07471cb132
-> --- /dev/null
-> +++ b/arch/arm/dts/imx6q-novena.dts
-> @@ -0,0 +1,4 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later OR X11
-> +// SPDX-FileCopyrightText: 2023 John Watts
-> +
-> +#include <arm/imx6q-novena.dts>
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 774c4cacb7..7993835be7 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -434,6 +434,12 @@ config MACH_NITROGEN6
->  	bool "BoundaryDevices Nitrogen6 boards"
->  	select ARCH_IMX6
+> @@ -7,9 +7,11 @@
+>  #include <mach/esdctl.h>
+>  #include <mach/generic.h>
+>  #include <mach/imx6.h>
+> +#include <mach/imx6-mmdc.h>
+>  #include <mach/iomux-mx6.h>
+>  #include <mach/xload.h>
+>  #include <soc/fsl/fsl_udc.h>
+> +#include "ddr_regs.h"
 >  
-> +config MACH_NOVENA
-> +	bool "Kosagi Novena board"
-> +	select ARCH_IMX6
-> +	select MCI_IMX_ESDHC_PBL
-> +	select USB_GADGET_DRIVER_ARC_PBL
+>  #define MX6_OCRAM_BASE_ADDR 0x00900000
+>  #define STACK_TOP (MX6_OCRAM_BASE_ADDR + SZ_128K)
+> @@ -31,6 +33,12 @@ static void setup_uart(void)
+>  	pr_debug(">");
+>  }
+>  
+> +static void setup_ram(void)
+> +{
+> +	mx6dq_dram_iocfg(64, &novena_ddr_regs, &novena_grp_regs);
+> +	mx6_dram_cfg(&novena_ddr_info, &novena_mmdc_calib, &novena_ddr_cfg);
+> +}
 > +
->  config MACH_SOLIDRUN_MICROSOM
->  	bool "SolidRun MicroSOM based devices"
->  	select ARCH_IMX6
-> diff --git a/images/Makefile.imx b/images/Makefile.imx
-> index e9f4ba64e4..65914212bf 100644
-> --- a/images/Makefile.imx
-> +++ b/images/Makefile.imx
-> @@ -258,6 +258,8 @@ $(call build_imx_habv4img, CONFIG_MACH_NITROGEN6, start_imx6dl_nitrogen6x_2g, bo
->  
->  $(call build_imx_habv4img, CONFIG_MACH_NITROGEN6, start_imx6qp_nitrogen6_max, boundarydevices-nitrogen6/flash-header-nitrogen6qp-max, boundarydevices-imx6qp-nitrogen6_max)
->  
-> +$(call build_imx_habv4img, CONFIG_MACH_NOVENA, start_imx6q_novena, novena/flash-header-novena, imx6q-novena)
-> +
->  $(call build_imx_habv4img, CONFIG_MACH_TX6X, start_imx6dl_tx6x_512m, karo-tx6x/flash-header-tx6dl-512m, karo-imx6dl-tx6x-512m)
->  
->  $(call build_imx_habv4img, CONFIG_MACH_TX6X, start_imx6dl_tx6x_1g, karo-tx6x/flash-header-tx6dl-1g, karo-imx6dl-tx6x-1g)
+>  static void load_barebox(void)
+>  {
+>  	enum bootsource bootsrc;
+> @@ -66,6 +74,7 @@ ENTRY_FUNCTION_WITHSTACK(start_imx6q_novena, STACK_TOP, r0, r1, r2)
+>  	if (!running_from_ram()) {
+>  		imx6_ungate_all_peripherals();
+>  		setup_uart();
+> +		setup_ram();
+
+Nit: You can also move the setup_ram() into the load_barebox() function.
+
+Regards,
+  Marco
+
+>  		load_barebox();
+>  	} else {
+>  		boot_barebox();
 > -- 
 > 2.39.0
 > 
