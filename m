@@ -1,57 +1,62 @@
-Delivery-date: Wed, 25 Jan 2023 10:41:10 +0100
+Delivery-date: Wed, 25 Jan 2023 10:42:34 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKcHI-001LIC-Cq
-	for lore@lore.pengutronix.de; Wed, 25 Jan 2023 10:41:10 +0100
+	id 1pKcIe-001LNz-2i
+	for lore@lore.pengutronix.de; Wed, 25 Jan 2023 10:42:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKcHF-0000ch-3E
-	for lore@pengutronix.de; Wed, 25 Jan 2023 10:41:09 +0100
+	id 1pKcIb-0000uz-9X
+	for lore@pengutronix.de; Wed, 25 Jan 2023 10:42:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=D8l88EJAQqcZlmaA5dQXVw4drOlhVSE0c5eAQsDEV9o=; b=0fW7jSIg4tsK9g4H/ulghCAGbq
-	z+HJAhmaay6sweU5crjWaXDzw4umqygH7L6zURdxqWr2qtNoC3IMXRjyzSoyYJm9jnLmp1tprj7SE
-	O1pbn2C612X1jw41dqIRs4HK0Q8dHlheTT2h6dcoiVmUVYJ9HS6TaiFUu7zsrxpcQN7eqwhPSJrBY
-	I80aOEal8FVdxU5lftezmnA9b1+m1j+XGNUSu5tco5V7z1oGuGCFdeoZZG/GHMTxRg1EIeH02LgTi
-	98/s6qwxLeKR8sToKIf+ZI1fxMOZgeUjQcxYmGvJBABShys0zmW1QXGyLaRPs1v6P4btd0Je+HXuK
-	x9wrflnw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=A/0fbM4AJkOCCqnSOFfIWZkFwHs6glBd4CpfRRab3Oc=; b=mOfTHm5Y1iwZGFkaMpJSpgNdb7
+	s+JfCUIXk6wqDYyFN5C8SnjIkrAIwi8H0TAg4GXIQ9kuxpjdTUeaRPcdVMlv4+eJboM4MatsH63xK
+	aWTyJYPp0b91NzoyagtDGlNCYx0uNH0APuPpVVLveCyOc/80XHgkLZ7szkELhQ4q/nTsvVdHND06+
+	k5GqE6tai/11emel9dACkgT7KtsL6AwNQYDik4y5CS2RrqYkNnC1O3RUBwK211RSVER9JvtNlRXOu
+	F6ZnNP5C2laLlIIfKXwqeLSG4UVXmJ86ZTZ8302QWXhowJqnG/1mDbaStZhGNsVIWm/YWb0ofM2zr
+	Z8HyTejg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKcG0-006eOI-K9; Wed, 25 Jan 2023 09:39:52 +0000
+	id 1pKcHV-006ekT-8K; Wed, 25 Jan 2023 09:41:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKcFw-006eNY-HM
-	for barebox@lists.infradead.org; Wed, 25 Jan 2023 09:39:49 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1pKcHN-006ehk-8f
+	for barebox@lists.infradead.org; Wed, 25 Jan 2023 09:41:18 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pKcFu-0000MJ-Vs; Wed, 25 Jan 2023 10:39:47 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	id 1pKcHL-0000fn-UJ; Wed, 25 Jan 2023 10:41:15 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pKcFv-000Ivy-8T; Wed, 25 Jan 2023 10:39:46 +0100
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pKcFt-00FNKJ-Oy; Wed, 25 Jan 2023 10:39:45 +0100
+	id 1pKcHL-0007LE-MV; Wed, 25 Jan 2023 10:41:15 +0100
+Date: Wed, 25 Jan 2023 10:41:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 25 Jan 2023 10:39:40 +0100
-Message-Id: <20230125093940.3663697-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20230125094115.GA13319@pengutronix.de>
+References: <20230125073739.1992152-1-s.hauer@pengutronix.de>
+ <20230125092129.nua7ipc223llsanv@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230125092129.nua7ipc223llsanv@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230125_013948_589946_60E1AD78 
-X-CRM114-Status: GOOD (  12.99  )
+X-CRM114-CacheID: sfid-20230125_014117_327321_D02B2E89 
+X-CRM114-Status: GOOD (  25.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,96 +74,50 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] i2c: i.MX: Use initialized dev for dev_dbg()
+Subject: Re: [PATCH 1/2] i2c: i.MX: Use better error code when bus recovery
+ failed
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-i2c_fsl_set_clk() is called before the i2c device has been initialized,
-so the dev_dbg() messages therein show up as:
+On Wed, Jan 25, 2023 at 10:21:29AM +0100, Marco Felsch wrote:
+> On 23-01-25, Sascha Hauer wrote:
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  drivers/i2c/busses/i2c-imx.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
+> > index e4b04327ee..3be3b158c7 100644
+> > --- a/drivers/i2c/busses/i2c-imx.c
+> > +++ b/drivers/i2c/busses/i2c-imx.c
+> > @@ -235,7 +235,7 @@ static int i2c_fsl_start(struct i2c_adapter *adapter)
+> >  	if (result) {
+> >  		result = i2c_recover_bus(&i2c_fsl->adapter);
+> >  		if (result)
+> > -			return result;
+> > +			return -EIO;
+> 
+> This would also reinterpret adap->bus_recovery_info->recover_bus()
+> errors. I didn't checked the possible error codes for this but I think
+> to say it's an IO error is fine.
 
-<NULL>: <i2c_fsl_set_clk> I2C_CLK=66000000, REQ DIV=660
+Nah, forget about this, I have sent the wrong patches. Changing the i.MX
+driver was my first approach until I saw that Linux returns a less
+confusing error code from i2c_recover_bus().
 
-Use the parent device instead for printing these messages.
+Instead of this one I ought to send "i2c: i.MX: Use initialized dev for
+dev_dbg()" which I have done now.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/i2c/busses/i2c-imx.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+Sascha
 
-diff --git a/drivers/i2c/busses/i2c-imx.c b/drivers/i2c/busses/i2c-imx.c
-index 28bd0072ad..e4b04327ee 100644
---- a/drivers/i2c/busses/i2c-imx.c
-+++ b/drivers/i2c/busses/i2c-imx.c
-@@ -102,6 +102,7 @@ struct fsl_i2c_hwdata {
- struct fsl_i2c_struct {
- 	void __iomem		*base;
- 	struct clk		*clk;
-+	struct device		*dev;
- 	struct i2c_adapter	adapter;
- 	unsigned int 		disable_delay;
- 	unsigned int		ifdr;	/* FSL_I2C_IFDR */
-@@ -295,7 +296,7 @@ static void i2c_fsl_set_clk(struct fsl_i2c_struct *i2c_fsl,
- 	 * Translate to dfsr = 5 * Frequency / 100,000,000
- 	 */
- 	dfsr = (5 * (i2c_clk / 1000)) / 100000;
--	dev_dbg(&i2c_fsl->adapter.dev,
-+	dev_dbg(i2c_fsl->dev,
- 		"<%s> requested speed:%d, i2c_clk:%d\n", __func__,
- 		rate, i2c_clk);
- 	if (!dfsr)
-@@ -314,12 +315,12 @@ static void i2c_fsl_set_clk(struct fsl_i2c_struct *i2c_fsl,
- 				bin_ga = (ga & 0x3) | ((ga & 0x4) << 3);
- 				fdr = bin_gb | bin_ga;
- 				rate = i2c_clk / est_div;
--				dev_dbg(&i2c_fsl->adapter.dev,
-+				dev_dbg(i2c_fsl->dev,
- 					"FDR:0x%.2x, div:%ld, ga:0x%x, gb:0x%x,"
- 					" a:%d, b:%d, speed:%d\n", fdr, est_div,
- 					ga, gb, a, b, rate);
- 				/* Condition 2 not accounted for */
--				dev_dbg(&i2c_fsl->adapter.dev,
-+				dev_dbg(i2c_fsl->dev,
- 					"Tr <= %d ns\n", (b - 3 * dfsr) *
- 					1000000 / (i2c_clk / 1000));
- 			}
-@@ -329,9 +330,9 @@ static void i2c_fsl_set_clk(struct fsl_i2c_struct *i2c_fsl,
- 		if (a == 24)
- 			a += 4;
- 	}
--	dev_dbg(&i2c_fsl->adapter.dev,
-+	dev_dbg(i2c_fsl->dev,
- 		"divider:%d, est_div:%ld, DFSR:%d\n", divider, est_div, dfsr);
--	dev_dbg(&i2c_fsl->adapter.dev, "FDR:0x%.2x, speed:%d\n", fdr, rate);
-+	dev_dbg(i2c_fsl->dev, "FDR:0x%.2x, speed:%d\n", fdr, rate);
- 	i2c_fsl->ifdr = fdr;
- 	i2c_fsl->dfsrr = dfsr;
- }
-@@ -368,9 +369,9 @@ static void i2c_fsl_set_clk(struct fsl_i2c_struct *i2c_fsl,
- 		(500000U * i2c_clk_div[i].div + (i2c_clk_rate / 2) - 1) /
- 		(i2c_clk_rate / 2);
- 
--	dev_dbg(&i2c_fsl->adapter.dev, "<%s> I2C_CLK=%d, REQ DIV=%d\n",
-+	dev_dbg(i2c_fsl->dev, "<%s> I2C_CLK=%d, REQ DIV=%d\n",
- 		__func__, i2c_clk_rate, div);
--	dev_dbg(&i2c_fsl->adapter.dev, "<%s> IFDR[IC]=0x%x, REAL DIV=%d\n",
-+	dev_dbg(i2c_fsl->dev, "<%s> IFDR[IC]=0x%x, REAL DIV=%d\n",
- 		__func__, i2c_clk_div[i].val, i2c_clk_div[i].div);
- }
- #endif
-@@ -564,6 +565,7 @@ static int __init i2c_fsl_probe(struct device *pdev)
- 	pdata = pdev->platform_data;
- 
- 	i2c_fsl = xzalloc(sizeof(*i2c_fsl));
-+	i2c_fsl->dev = pdev;
- 
- #ifdef CONFIG_COMMON_CLK
- 	i2c_fsl->clk = clk_get(pdev, NULL);
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
