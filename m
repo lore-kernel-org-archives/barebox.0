@@ -1,66 +1,61 @@
-Delivery-date: Wed, 25 Jan 2023 09:20:51 +0100
+Delivery-date: Wed, 25 Jan 2023 09:34:41 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKb1Y-001I3p-Qw
-	for lore@lore.pengutronix.de; Wed, 25 Jan 2023 09:20:51 +0100
+	id 1pKbEx-001IPV-8B
+	for lore@lore.pengutronix.de; Wed, 25 Jan 2023 09:34:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKb1V-0005hv-UQ
-	for lore@pengutronix.de; Wed, 25 Jan 2023 09:20:50 +0100
+	id 1pKbEu-0007mR-Ig
+	for lore@pengutronix.de; Wed, 25 Jan 2023 09:34:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iOrfSfDzFAfMVW1d0v/S8av5Y7V25BAmMNvkhUsEA40=; b=J6SQ+ZI8TdD/d8ua1gPJC2wLvU
-	/rg/0iIhM4XkCPzAkuRNc2aWDhE5E77Ghf3/9sUIHOfoqQDJnFyJQliN44wlDqoAcB7LQ9AQvSVbe
-	Gg73Ljqm0VALF0PjMVaY5pgfEIy1MYRILYW7q/ygxsNuW3TeSt8JiaaUPGnZ72o6yR+eHYRoEmsPz
-	TbtLGHBdbNLkaOpG8dxpcp7rDfZTYJzPbvtWbPZlbpAH7ssFTlqnN7JyL7ZMUOT8gWPZpuVt8rp1K
-	jEDGQmRx+ABOlY9hbNcz6SdzX2UHEutu//DweT4Jh+lKwpyOPEnCcVFd1la1/0ITxCCQp/NB9/Azg
-	2xSDDWOQ==;
+	bh=8xm+VO01iAqDInyrR0tXQrILN80AscUhokEePYrq6d8=; b=jqV2PoFF7HzKrMH2Iy5RfHYuIM
+	Va6izf6+eoi3iK2s0/Rf41C2bAIRqTK5WWFa8y0eFRGet+zf8+i7znxE5UF+OYqXM4EXzNjEDpun6
+	mBgrZPAHljkWR+ZhA2nDevFAF5wqtKOCBU29SBmH3dvEeQ9ZgwKVDsdSKartwRoqx+DnAjPaIJRTm
+	DR22nwFYOOMxpdIkR+F61DAOG35C6InejD+o6UAAYAAME5SGKT4oVcpuoi/cdH3A8j2X0DR25Jd4b
+	HF1dJ2Nb8YxQOIjzx9ZXJK5csMKboU0mfWCJ2PsD3Q863p7RVRwR6E9Dco2iGNz6Hh6OembPaI77u
+	CvxWaLQw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKb0G-006NCS-1a; Wed, 25 Jan 2023 08:19:32 +0000
+	id 1pKbDY-006RvQ-K8; Wed, 25 Jan 2023 08:33:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKb09-006N9b-OS
-	for barebox@lists.infradead.org; Wed, 25 Jan 2023 08:19:27 +0000
+	id 1pKbDM-006RsW-82
+	for barebox@lists.infradead.org; Wed, 25 Jan 2023 08:33:06 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pKb08-0005S9-9b; Wed, 25 Jan 2023 09:19:24 +0100
+	id 1pKbDK-0007Vg-SP; Wed, 25 Jan 2023 09:33:02 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pKb07-0002ja-Ly; Wed, 25 Jan 2023 09:19:23 +0100
-Date: Wed, 25 Jan 2023 09:19:23 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-To: John Watts <contact@jookia.org>
+	id 1pKbDK-0003SY-KC; Wed, 25 Jan 2023 09:33:02 +0100
+Date: Wed, 25 Jan 2023 09:33:02 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230125081923.GY24755@pengutronix.de>
-References: <20230122175141.119834-1-contact@jookia.org>
- <20230122175141.119834-5-contact@jookia.org>
- <20230123093305.GS24755@pengutronix.de>
- <Y9AlCQieCBIEOjs5@novena-choice-citizen>
- <20230125080406.GW24755@pengutronix.de>
- <Y9DkOI1yxte95PYg@novena-choice-citizen>
+Message-ID: <20230125083302.GA24755@pengutronix.de>
+References: <20230125075354.1760273-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Y9DkOI1yxte95PYg@novena-choice-citizen>
+In-Reply-To: <20230125075354.1760273-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230125_001925_816461_88881531 
-X-CRM114-Status: GOOD (  25.45  )
+X-CRM114-CacheID: sfid-20230125_003304_318713_C081132B 
+X-CRM114-Status: GOOD (  24.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,30 +77,74 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 4/5] ARM: novena: Read Ethernet MAC address from EEPROM
+Subject: Re: [PATCH master 1/2] net: dsa: realtek: support enabling only one
+ of the drivers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jan 25, 2023 at 07:11:36PM +1100, John Watts wrote:
-> On Wed, Jan 25, 2023 at 09:04:06AM +0100, Sascha Hauer wrote:
-> > It looks like something is not initialized correctly yet. Normally
-> > the usual suspects are pinctrl, clocks or regulators. Each of them
-> > should be tied in by the deep probe mechanism as needed already, at
-> > least when it's properly registered in the device tree. Clock looks
-> > correct (66MHz), for the (pfuze) regulator I can't find anything in the
-> > board code that configures something there later. You could verify
-> > that the pinctrl has been configured already by activating the debugging
-> > in drivers/pinctrl/imx-iomux-v3.c.
-> > It could be something that pulls SDA low, but I don't have an idea why
-> > it should work later.
+On Wed, Jan 25, 2023 at 08:53:53AM +0100, Ahmad Fatoum wrote:
+> We have drivers for both rtl8365mb and rtl8366rb and each uses a
+> different tagger. realtek-dsa didn't know that and caused a reference to
+> an unavailable symbol when one of them was disabled. Add IS_ENABLED()
+> guards to fix this.
 > 
-> My immediate guess is that it's the pinctrl, but shouldn't this be set up
-> for me already? Or have I found a device tree bug?
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/net/realtek-dsa/tagger.c | 16 +++++++++++-----
+>  1 file changed, 11 insertions(+), 5 deletions(-)
 
-Yes, normally it should be set up already, unless of course there is
-some needed pinctrl configuration in an unrelated device tree node.
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/drivers/net/realtek-dsa/tagger.c b/drivers/net/realtek-dsa/tagger.c
+> index 1d4461aebcb8..3a41f3b3c1b4 100644
+> --- a/drivers/net/realtek-dsa/tagger.c
+> +++ b/drivers/net/realtek-dsa/tagger.c
+> @@ -4,7 +4,7 @@
+>  
+>  int realtek_dsa_init_tagger(struct realtek_priv *priv)
+>  {
+> -	const struct dsa_device_ops *tagger_ops;
+> +	const struct dsa_device_ops *tagger_ops = NULL;
+>  	struct dsa_switch_ops *ops;
+>  
+>  	/* TODO: Tagging can be configured per port in Linux. barebox DSA core
+> @@ -14,18 +14,24 @@ int realtek_dsa_init_tagger(struct realtek_priv *priv)
+>  	 */
+>  	switch (priv->ops->get_tag_protocol(priv)) {
+>  	case DSA_TAG_PROTO_RTL4_A:
+> -		tagger_ops = &rtl4a_netdev_ops;
+> +		if (IS_ENABLED(CONFIG_NET_DSA_TAG_RTL4_A))
+> +			tagger_ops = &rtl4a_netdev_ops;
+>  		break;
+>  	case DSA_TAG_PROTO_RTL8_4:
+> -		tagger_ops = &rtl8_4_netdev_ops;
+> +		if (IS_ENABLED(CONFIG_NET_DSA_TAG_RTL8_4))
+> +			tagger_ops = &rtl8_4_netdev_ops;
+>  		break;
+>  	case DSA_TAG_PROTO_RTL8_4T:
+> -		tagger_ops = &rtl8_4t_netdev_ops;
+> +		if (IS_ENABLED(CONFIG_NET_DSA_TAG_RTL8_4))
+> +			tagger_ops = &rtl8_4t_netdev_ops;
+>  		break;
+>  	default:
+> -		return -EINVAL;
+> +		break;
+>  	}
+>  
+> +	if (!tagger_ops)
+> +		return -EINVAL;
+> +
+>  	ops = memdup(priv->ds->ops, sizeof(*priv->ds->ops));
+>  	ops->xmit = tagger_ops->xmit;
+>  	ops->rcv = tagger_ops->rcv;
+> -- 
+> 2.30.2
+> 
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
