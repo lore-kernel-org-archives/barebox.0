@@ -1,62 +1,60 @@
-Delivery-date: Thu, 26 Jan 2023 09:46:57 +0100
+Delivery-date: Thu, 26 Jan 2023 10:09:23 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKxuM-002V8A-NQ
-	for lore@lore.pengutronix.de; Thu, 26 Jan 2023 09:46:57 +0100
+	id 1pKyG5-002WXn-6z
+	for lore@lore.pengutronix.de; Thu, 26 Jan 2023 10:09:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pKxuJ-0000Rc-21
-	for lore@pengutronix.de; Thu, 26 Jan 2023 09:46:55 +0100
+	id 1pKyG2-0004pq-Al
+	for lore@pengutronix.de; Thu, 26 Jan 2023 10:09:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jADmrlukeJgX7XovCfnrTAcpplfI4fxFH4bwJldaH1Q=; b=p0ACz1dMHdQvhUEO+F4Dibk/wU
-	x1EaxVI6cWb34ikxU/YOeFRxrXw17JjNTD7EHDsSgDOxpcgp9Yf5rPSDpCqs93NXKEIsm8h8zQTFm
-	HJ7z/UjdeuBCjPtSGVy34TlrdiGhRsxwyk0UCBkJ1Fh65RathorXP9aSiymFm7N0ZSnrZYzDsI4FR
-	RzFh/Ve1bDYrpWA5nZsD8n+hxUnRgLdOYil83/kBZWNFG4df+I92uXsF0b2HQdF0ODmC38XNSCv5w
-	bmfSCHBcfqej2dL6nMDzWjviSYry+fK/tchBXkyELF3dEflQwnxpjbE8rWFuXwYHbLYMsVyhWwQqY
-	2CCf6f7Q==;
+	bh=cOiXe0SX9dOcnXLaTZX5pmKWwWNi9MMRLkD7uafQHm0=; b=ArA3CGDn5tz8AyGbjCrftzjclZ
+	pUuqzEFlW39zOznGnFnfFYcytmr2eo6BR0z7uwK3xJXuMAlr97Cyt+JGrgX0r+V41VAw4/mhAcVGs
+	BN5m6P0cByrorjqdvK4mO5LNDBpqsPgrvZpmXseRdT13344lTDAK8Ni7sC/8GcomeQEGKgxxDCF2Z
+	ZaLjjWHpt4lIIGUT3BYt5Gh7WF1PI8dVXKrh3KXLv0/SmOKe6LGGAqGumF6qg74/v0VYlIg2tRTci
+	G+PEsKIkfkj5DAi4dShkUvDAiXz76ty+OgNLphRN4kEt3ax+mI+qAfjPq1OkDjK0TwKu9gNev/7jk
+	V1JlzElw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKxso-00A4co-L1; Thu, 26 Jan 2023 08:45:23 +0000
+	id 1pKyEc-00AEUv-1j; Thu, 26 Jan 2023 09:07:54 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pKxjz-00A0ry-Hb
-	for barebox@lists.infradead.org; Thu, 26 Jan 2023 08:36:17 +0000
+	id 1pKyEV-00AET9-Vc
+	for barebox@lists.infradead.org; Thu, 26 Jan 2023 09:07:49 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pKxjy-0006mm-4f; Thu, 26 Jan 2023 09:36:14 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pKxjx-0005nA-Tp; Thu, 26 Jan 2023 09:36:13 +0100
-Date: Thu, 26 Jan 2023 09:36:13 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1pKyEU-0004R0-FX; Thu, 26 Jan 2023 10:07:46 +0100
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1pKyET-00082H-7n; Thu, 26 Jan 2023 10:07:45 +0100
+Date: Thu, 26 Jan 2023 10:07:45 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: John Watts <contact@jookia.org>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230126083613.GM13319@pengutronix.de>
-References: <20230125095236.2626065-1-a.fatoum@pengutronix.de>
- <20230125095236.2626065-2-a.fatoum@pengutronix.de>
+Message-ID: <20230126090745.rpgjxltmhvw4jod5@pengutronix.de>
+References: <20230122175141.119834-1-contact@jookia.org>
+ <20230125164230.2328043-4-contact@jookia.org>
+ <20230125200714.cxpg572weivxjeam@pengutronix.de>
+ <Y9I0YqYY2ocvAsmk@novena-choice-citizen>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230125095236.2626065-2-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <Y9I0YqYY2ocvAsmk@novena-choice-citizen>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230126_003615_644192_551B4CFD 
-X-CRM114-Status: GOOD (  16.64  )
+X-CRM114-CacheID: sfid-20230126_010748_033416_3B7A6687 
+X-CRM114-Status: GOOD (  22.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,30 +76,45 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [RFC PATCH 2/2] net: ifup: have ifup -a stop at the first
- interface
+Subject: Re: [PATCH v2 3/4] ARM: novena: Read Ethernet MAC address from EEPROM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jan 25, 2023 at 10:52:36AM +0100, Ahmad Fatoum wrote:
-> The normal use case for ifup -a is to get *some* interface working and
-> not really wait for all interfaces to come up and then timeout waiting
-> for those without link up to get their DHCP lease. Thus repurpose ifup
-> -a to mean bring up all interfaces until first success with the new
-> ifup -A restoring the old behavior.
+Hi John,
 
-I am not very keen on changing the meaning of the -a option. We should
-rather keep -a like it is and add a new option for your purpose, like
--s (for "s"ome interface) or -o ("o"ne interface).
-The occurences of "ifup -a" in the tree can/should be changed then
-accordingly as well.
+On 23-01-26, John Watts wrote:
+> On Wed, Jan 25, 2023 at 09:07:14PM +0100, Marco Felsch wrote:
+> > > +	rc = read_file_2("/dev/eeprom0", &read, &eeprom, max);
+> > 
+> > You never free the eeprom buffer.
+> 
+> Argh, I explicitly remember writing down that I need to do this then promptly
+> got distracted when searching for the correct free function to use.
+> 
+> > > +
+> > > +	if (rc < 0 && rc != -EFBIG) {
+> > > +		pr_err("Unable to read Novena EEPROM: %s\n", strerror(-rc));
+> > > +		return NULL;
 
-Sascha
+...
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > >  static int novena_probe(struct device *dev)
+> > >  {
+> > > +	novena_try_eeprom();
+> > 
+> > It's not wrong to move it into a sub-function but IMO at least this
+> > function can be part of the probe() function. Also I would do the
+> > device_ensured_probe function here and just have one function which I
+> > would call: novena_set_mac(). This way it's a bit easier to follow the
+> > code. But that's just my oppinion.
+> 
+> I'm not quite sure what you mean, could you provide an example?
+
+I meant that the content of novena_try_eeprom() can be part of the
+probe() function :) Furthermore I mean that having to much sub-functions
+isn't really helpful, but that is just my oppinion.
+
+Regards,
+  Marco
 
 
