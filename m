@@ -1,61 +1,59 @@
-Delivery-date: Mon, 30 Jan 2023 18:30:22 +0100
+Delivery-date: Mon, 30 Jan 2023 18:30:39 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMXz6-007qMs-01
-	for lore@lore.pengutronix.de; Mon, 30 Jan 2023 18:30:22 +0100
+	id 1pMXzN-007qNu-FL
+	for lore@lore.pengutronix.de; Mon, 30 Jan 2023 18:30:39 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMXz3-0005Fz-0V
-	for lore@pengutronix.de; Mon, 30 Jan 2023 18:30:21 +0100
+	id 1pMXzJ-0005Kv-JP
+	for lore@pengutronix.de; Mon, 30 Jan 2023 18:30:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zk4YV7t0bm0eglpjWb0S1WiR3RZLZtPKe5eY5RgwgQc=; b=S5/Rhi4Yn2UuRvMPUPC1c1Lqhe
-	9Jt6MozlmcrD0xswY/ETZsbCxbm70vnGD28VJ989CCJWJQuL+9s0dg1DXSWD6yavWvw99W5ZgkRbs
-	Gt1uZfDvqDSXpPTKoc2Uh+oFwqkNnkKwixuT6DOiGip1F1Lws1jh/nwQuLDI2S+lvkC+iiz8KWSb1
-	Om22SEciiiKLTHva9m9NcrY8dVr8OOegUYzs7RT2HJJqj5rWIEH/pbR5rvb8RtUG80Zoc/UxuOKWU
-	1hGaQ+ZR6L3/c8TfSsN91uy8Wclh2Mz80/QhE/tHOhKkjmxAa5FiOfjgntEbqNupDbr40YZHwt1I0
-	PlNmDDHw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=KK2Nor9OB/Pp/9LfqCbcqlNzUohnaRZFrpiqghAm8BQ=; b=jEicpm/DwY7ynq0yPtbRhsG4nG
+	nj5KYC54ubzHdWv8n7c5ESwJA2Np+2MT2b98a2sIsx/quLF/kTbeHOT+KFgPeFScBMiPdeEnWB9Do
+	UomfDt4bTw6QDgWYL4otNURpxjVksh4uqKHoeud5/WzREMp53wbMMIXIhHQsWHJXV5KFpvkpQGg7e
+	khfAoytYMr2Ieu0uKDvrXVoQHntaw/p81YA8Mwqa+BM6Ij07qoB02xgR3AZjJG1fGUnTrgQkOqRby
+	sCher91njSg+YFSvbnXOM27lW51FT+3XOZxQQd3ZBtsyASa/pLXiYEJBo5H4kTPf4MAgOPs0ts6nv
+	MlrwZVsg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMXxW-004YFo-7X; Mon, 30 Jan 2023 17:28:47 +0000
+	id 1pMXxl-004YOZ-PO; Mon, 30 Jan 2023 17:29:02 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMXsb-004Vkh-Bk
+	id 1pMXsb-004ViG-CG
 	for barebox@lists.infradead.org; Mon, 30 Jan 2023 17:23:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pMXsY-0003Iv-1q
-	for barebox@lists.infradead.org; Mon, 30 Jan 2023 18:23:38 +0100
+	id 1pMXsU-0003HU-Js
+	for barebox@lists.infradead.org; Mon, 30 Jan 2023 18:23:34 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pMOTM-001Pmu-Mp; Mon, 30 Jan 2023 08:20:59 +0100
+	id 1pMOOx-001PlH-8G; Mon, 30 Jan 2023 08:16:26 +0100
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pMOTK-0008xH-WB; Mon, 30 Jan 2023 08:20:59 +0100
+	id 1pMOOv-0008sl-Dr; Mon, 30 Jan 2023 08:16:25 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 30 Jan 2023 08:20:55 +0100
-Message-Id: <20230130072057.34349-2-a.fatoum@pengutronix.de>
+Date: Mon, 30 Jan 2023 08:16:22 +0100
+Message-Id: <20230130071622.34094-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230130072057.34349-1-a.fatoum@pengutronix.de>
-References: <20230130072057.34349-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230130_092341_686586_C6402A08 
-X-CRM114-Status: GOOD (  19.94  )
+X-CRM114-CacheID: sfid-20230130_092341_632236_32A3969B 
+X-CRM114-Status: GOOD (  23.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,267 +75,216 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/3] net: ifup: have ifup -a poll for link up in parallel
+Subject: [PATCH] mfd: add regmap driver for rohm-bd718x7
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-DHCP is usually fairly quick, but link up check timeout is 10 seconds,
-which adds up, especially on systems with bigger DSA switches.
-
-The workaround is to set ethX.mode=disabled for other ports, but let's
-improve the default a bit and have barebox poll link ups in parallel, so
-instead of (number_of_ports_wihout_link * 10s), we just wait 10s at
-most.
-
-For setups where this is a problem, users may revert to ifup in sequence
-by doing ifup -a -s.
+Rohm BD71837 is a PMIC for i.MX8MM, which is used on most boards
+supported by barebox. So far, we didn't need to change PMIC
+configuration after the initial setup in PBL, but to support future
+debugging and development, let's port the Linux MFD driver sans the
+regulators, so we get a regmap for interacting with the device.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v1 -> v2:
-  - new patch
----
- include/net.h |   3 ++
- net/eth.c     |  28 ++++++++++----
- net/ifup.c    | 103 ++++++++++++++++++++++++++++++++++++++++----------
- 3 files changed, 105 insertions(+), 29 deletions(-)
+ drivers/mfd/Kconfig        |  13 ++++
+ drivers/mfd/Makefile       |   1 +
+ drivers/mfd/rohm-bd718x7.c | 140 +++++++++++++++++++++++++++++++++++++
+ include/mfd/bd71837.h      |   3 +
+ 4 files changed, 157 insertions(+)
+ create mode 100644 drivers/mfd/rohm-bd718x7.c
 
-diff --git a/include/net.h b/include/net.h
-index 0555b0bd6bed..a7da282412fa 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -109,6 +109,7 @@ static inline int eth_send_raw(struct eth_device *edev, void *packet,
- int eth_register(struct eth_device* dev);    /* Register network device		*/
- void eth_unregister(struct eth_device* dev); /* Unregister network device	*/
- int eth_set_ethaddr(struct eth_device *edev, const char *ethaddr);
-+int eth_carrier_poll_once(struct eth_device *edev);
- int eth_open(struct eth_device *edev);
- void eth_close(struct eth_device *edev);
- int eth_send(struct eth_device *edev, void *packet, int length);	   /* Send a packet		*/
-@@ -511,6 +512,8 @@ int net_icmp_send(struct net_connection *con, int len);
- void led_trigger_network(enum led_trigger trigger);
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index f1f7e27fadfe..39a40c2a3fb5 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -129,6 +129,19 @@ config MFD_AXP20X_I2C
+ 	  management ICs (PMICs) controlled with I2C.
+ 	  This driver currently only provide a character device in /dev.
  
- #define IFUP_FLAG_FORCE		(1 << 0)
-+#define IFUP_FLAG_PARALLEL	(1 << 1)
-+#define IFUP_FLAG_SKIP_CONF	(1 << 2)
- 
- int ifup_edev(struct eth_device *edev, unsigned flags);
- int ifup(const char *name, unsigned flags);
-diff --git a/net/eth.c b/net/eth.c
-index 6fb64afea024..ccac5e2a6488 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -176,13 +176,29 @@ int eth_complete(struct string_list *sl, char *instr)
- }
- #endif
- 
-+int eth_carrier_poll_once(struct eth_device *edev)
++config MFD_ROHM_BD718XX
++	tristate "ROHM BD71837 Power Management IC"
++	depends on I2C=y
++	depends on OFDEVICE
++	select REGMAP_I2C
++	help
++	  Select this option to get support for the ROHM BD71837
++	  Power Management ICs. BD71837 is designed to power processors like
++	  NXP i.MX8. It contains 8 BUCK outputs and 7 LDOs, voltage monitoring
++	  and emergency shut down as well as 32,768KHz clock output.
++
++	  This driver currently only provide a character device in /dev.
++
+ config MFD_ATMEL_SMC
+ 	bool
+ 	select MFD_SYSCON
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index b89ddab5947d..f19bf5365533 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -24,3 +24,4 @@ obj-$(CONFIG_MFD_ATMEL_FLEXCOM)	+= atmel-flexcom.o
+ obj-$(CONFIG_MFD_RK808)		+= rk808.o
+ obj-$(CONFIG_MFD_AXP20X_I2C)	+= axp20x-i2c.o axp20x.o
+ obj-$(CONFIG_MFD_ATMEL_SMC)	+= atmel-smc.o
++obj-$(CONFIG_MFD_ROHM_BD718XX)	+= rohm-bd718x7.o
+diff --git a/drivers/mfd/rohm-bd718x7.c b/drivers/mfd/rohm-bd718x7.c
+new file mode 100644
+index 000000000000..20c572b6d766
+--- /dev/null
++++ b/drivers/mfd/rohm-bd718x7.c
+@@ -0,0 +1,140 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++//
++// Copyright (C) 2018 ROHM Semiconductors
++//
++// ROHM BD71837MWV and BD71847MWV PMIC driver
++//
++// Datasheet for BD71837MWV available from
++// https://www.rohm.com/datasheet/BD71837MWV/bd71837mwv-e
++
++#include <common.h>
++#include <i2c/i2c.h>
++#include <mfd/bd71837.h>
++#include <linux/mfd/core.h>
++#include <driver.h>
++#include <poweroff.h>
++#include <of.h>
++#include <regmap.h>
++
++static struct mfd_cell bd71837_mfd_cells[] = {
++	{ .name = "gpio-keys", },
++	{ .name = "bd71837-clk", },
++	{ .name = "bd71837-pmic", },
++};
++
++static struct mfd_cell bd71847_mfd_cells[] = {
++	{ .name = "gpio-keys", },
++	{ .name = "bd71847-clk", },
++	{ .name = "bd71847-pmic", },
++};
++
++static const struct regmap_config bd718xx_regmap_config = {
++	.reg_bits = 8,
++	.val_bits = 8,
++	.max_register = BD718XX_MAX_REGISTER - 1,
++};
++
++static int bd718xx_init_press_duration(struct regmap *regmap,
++				       struct device *dev)
 +{
++	u32 short_press_ms, long_press_ms;
++	u32 short_press_value, long_press_value;
 +	int ret;
 +
-+	if (!IS_ENABLED(CONFIG_PHYLIB))
-+		return 0;
-+
-+	if (!edev->phydev)
-+		return 0;
-+
-+	ret = phy_update_status(edev->phydev);
-+	if (ret)
-+		return ret;
-+
-+	edev->last_link_check = get_time_ns();
-+	return edev->phydev->link ? 0 : -ENETDOWN;
-+}
-+
- /*
-  * Check for link if we haven't done so for longer.
-  */
- static int eth_carrier_check(struct eth_device *edev, bool may_wait)
- {
--	int ret;
--
- 	if (!IS_ENABLED(CONFIG_PHYLIB))
- 		return 0;
- 
-@@ -190,12 +206,8 @@ static int eth_carrier_check(struct eth_device *edev, bool may_wait)
- 		return 0;
- 
- 	if (!edev->last_link_check ||
--	    is_timeout(edev->last_link_check, 5 * SECOND)) {
--		ret = phy_update_status(edev->phydev);
--		if (ret)
--			return ret;
--		edev->last_link_check = get_time_ns();
--	}
-+	    is_timeout(edev->last_link_check, 5 * SECOND))
-+		eth_carrier_poll_once(edev);
- 
- 	if (may_wait && !edev->phydev->link) {
- 		phy_wait_aneg_done(edev->phydev);
-diff --git a/net/ifup.c b/net/ifup.c
-index e4d5374db3ae..c491ea03c1c8 100644
---- a/net/ifup.c
-+++ b/net/ifup.c
-@@ -179,6 +179,28 @@ static void set_linux_bootarg(struct eth_device *edev)
- 	}
- }
- 
-+static int ifup_edev_conf(struct eth_device *edev, unsigned flags)
-+{
-+	int ret;
-+
-+	if (edev->global_mode == ETH_MODE_DHCP) {
-+		if (IS_ENABLED(CONFIG_NET_DHCP)) {
-+			ret = dhcp(edev, NULL);
-+		} else {
-+			dev_err(&edev->dev, "DHCP support not available\n");
-+			ret = -ENOSYS;
-+		}
-+		if (ret)
++	ret = of_property_read_u32(dev->of_node, "rohm,short-press-ms",
++				   &short_press_ms);
++	if (!ret) {
++		short_press_value = min(15u, (short_press_ms + 250) / 500);
++		ret = regmap_update_bits(regmap, BD718XX_PWRONCONFIG0,
++					 BD718XX_PWRBTN_PRESS_DURATION_MASK,
++					 short_press_value);
++		if (ret) {
++			dev_err(dev, "Failed to init pwron short press\n");
 +			return ret;
++		}
 +	}
 +
-+	set_linux_bootarg(edev);
-+
-+	edev->ifup = true;
++	ret = of_property_read_u32(dev->of_node, "rohm,long-press-ms",
++				   &long_press_ms);
++	if (!ret) {
++		long_press_value = min(15u, (long_press_ms + 500) / 1000);
++		ret = regmap_update_bits(regmap, BD718XX_PWRONCONFIG1,
++					 BD718XX_PWRBTN_PRESS_DURATION_MASK,
++					 long_press_value);
++		if (ret) {
++			dev_err(dev, "Failed to init pwron long press\n");
++			return ret;
++		}
++	}
 +
 +	return 0;
 +}
 +
- int ifup_edev(struct eth_device *edev, unsigned flags)
- {
- 	int ret;
-@@ -205,22 +227,10 @@ int ifup_edev(struct eth_device *edev, unsigned flags)
- 	if (ret)
- 		return ret;
- 
--	if (edev->global_mode == ETH_MODE_DHCP) {
--		if (IS_ENABLED(CONFIG_NET_DHCP)) {
--			ret = dhcp(edev, NULL);
--		} else {
--			dev_err(&edev->dev, "DHCP support not available\n");
--			ret = -ENOSYS;
--		}
--		if (ret)
--			return ret;
--	}
--
--	set_linux_bootarg(edev);
--
--	edev->ifup = true;
-+	if (flags & IFUP_FLAG_SKIP_CONF)
-+		return 1;
- 
--	return 0;
-+	return ifup_edev_conf(edev, flags);
- }
- 
- void ifdown_edev(struct eth_device *edev)
-@@ -260,9 +270,54 @@ int ifdown(const char *ethname)
- 
- static int net_ifup_force_detect;
- 
--int ifup_all(unsigned flags)
-+static bool ifup_edev_need_conf(struct eth_device *edev)
++static int bd718xx_i2c_probe(struct device *dev)
 +{
-+	return edev->active && !edev->ifup &&
-+		edev->global_mode != ETH_MODE_DISABLED;
-+}
-+
-+static void __ifup_all_parallel(unsigned flags)
- {
- 	struct eth_device *edev;
-+	unsigned netdev_count = 0;
-+	u64 start;
++	struct i2c_client *i2c = to_i2c_client(dev);
++	struct regmap *regmap;
 +	int ret;
++	unsigned int chip_type;
++	struct mfd_cell *mfd;
++	int cells;
 +
-+	for_each_netdev(edev) {
-+		ret = ifup_edev(edev, flags | IFUP_FLAG_SKIP_CONF);
-+		if (ret == 1)
-+			netdev_count++;
++	chip_type = (unsigned int)(uintptr_t)device_get_match_data(dev);
++	switch (chip_type) {
++	case ROHM_CHIP_TYPE_BD71837:
++		mfd = bd71837_mfd_cells;
++		cells = ARRAY_SIZE(bd71837_mfd_cells);
++		break;
++	case ROHM_CHIP_TYPE_BD71847:
++		mfd = bd71847_mfd_cells;
++		cells = ARRAY_SIZE(bd71847_mfd_cells);
++		break;
++	default:
++		dev_err(dev, "Unknown device type");
++		return -EINVAL;
 +	}
 +
-+	start = get_time_ns();
-+	while (netdev_count && !is_timeout(start, PHY_AN_TIMEOUT * SECOND)) {
-+		for_each_netdev(edev) {
-+			if (!ifup_edev_need_conf(edev))
-+				continue;
-+
-+			ret = eth_carrier_poll_once(edev);
-+			if (ret)
-+				continue;
-+
-+			ifup_edev_conf(edev, flags);
-+			if (!edev->ifup)
-+				continue;
-+
-+			netdev_count--;
-+		}
++	regmap = regmap_init_i2c(i2c, &bd718xx_regmap_config);
++	if (IS_ERR(regmap)) {
++		dev_err(dev, "regmap initialization failed\n");
++		return PTR_ERR(regmap);
 +	}
++
++	ret = bd718xx_init_press_duration(regmap, dev);
++	if (ret)
++		return ret;
++
++	ret = mfd_add_devices(dev, mfd, cells);
++	if (ret)
++		dev_err(dev, "Failed to create subdevices\n");
++
++	return regmap_register_cdev(regmap, NULL);
 +}
 +
-+static void __ifup_all_sequence(unsigned flags)
-+{
-+	struct eth_device *edev;
++static const struct of_device_id bd718xx_of_match[] = {
++	{
++		.compatible = "rohm,bd71837",
++		.data = (void *)ROHM_CHIP_TYPE_BD71837,
++	},
++	{
++		.compatible = "rohm,bd71847",
++		.data = (void *)ROHM_CHIP_TYPE_BD71847,
++	},
++	{
++		.compatible = "rohm,bd71850",
++		.data = (void *)ROHM_CHIP_TYPE_BD71847,
++	},
++	{ }
++};
++MODULE_DEVICE_TABLE(of, bd718xx_of_match);
 +
-+	for_each_netdev(edev)
-+		ifup_edev(edev, flags);
-+}
++static struct driver bd718xx_i2c_driver = {
++	.name = "rohm-bd718x7",
++	.of_match_table = bd718xx_of_match,
++	.probe = bd718xx_i2c_probe,
++};
++coredevice_i2c_driver(bd718xx_i2c_driver);
 +
-+int ifup_all(unsigned flags)
-+{
- 	DIR *dir;
- 	struct dirent *d;
++MODULE_AUTHOR("Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>");
++MODULE_DESCRIPTION("ROHM BD71837/BD71847 Power Management IC driver");
++MODULE_LICENSE("GPL");
+diff --git a/include/mfd/bd71837.h b/include/mfd/bd71837.h
+index 75e07e1de31e..4e285a647a92 100644
+--- a/include/mfd/bd71837.h
++++ b/include/mfd/bd71837.h
+@@ -100,4 +100,7 @@ enum {
+ #define BD71847_LDO5_RANGE_MASK		0x20
+ #define BD71837_LDO7_MASK		0x0f
  
-@@ -285,8 +340,10 @@ int ifup_all(unsigned flags)
- 	    list_empty(&netdev_list))
- 		device_detect_all();
- 
--	for_each_netdev(edev)
--		ifup_edev(edev, flags);
-+	if (flags & IFUP_FLAG_PARALLEL)
-+		__ifup_all_parallel(flags);
-+	else
-+		__ifup_all_sequence(flags);
- 
- 	return 0;
- }
-@@ -315,14 +372,17 @@ BAREBOX_MAGICVAR(global.net.ifup_force_detect,
- static int do_ifup(int argc, char *argv[])
- {
- 	int opt;
--	unsigned flags = 0;
-+	unsigned flags = IFUP_FLAG_PARALLEL;
- 	int all = 0;
- 
--	while ((opt = getopt(argc, argv, "af")) > 0) {
-+	while ((opt = getopt(argc, argv, "asf")) > 0) {
- 		switch (opt) {
- 		case 'f':
- 			flags |= IFUP_FLAG_FORCE;
- 			break;
-+		case 's':
-+			flags &= ~IFUP_FLAG_PARALLEL;
-+			break;
- 		case 'a':
- 			all = 1;
- 			break;
-@@ -346,13 +406,14 @@ BAREBOX_CMD_HELP_TEXT("/env/network/<intf> file. See Documentation/user/networki
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-a",  "bring up all interfaces")
-+BAREBOX_CMD_HELP_OPT ("-s",  "bring up interfaces in sequence, not in parallel")
- BAREBOX_CMD_HELP_OPT ("-f",  "Force. Configure even if ip already set")
- BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(ifup)
- 	.cmd		= do_ifup,
- 	BAREBOX_CMD_DESC("bring a network interface up")
--	BAREBOX_CMD_OPTS("[-af] [INTF]")
-+	BAREBOX_CMD_OPTS("[-asf] [INTF]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_NET)
- 	BAREBOX_CMD_COMPLETE(eth_complete)
- 	BAREBOX_CMD_HELP(cmd_ifup_help)
++#define BD718XX_PWRBTN_PRESS_DURATION_MASK 0xF
++
++
+ #endif
 -- 
 2.30.2
 
