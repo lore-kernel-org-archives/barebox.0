@@ -1,64 +1,51 @@
-Delivery-date: Mon, 30 Jan 2023 19:21:08 +0100
+Delivery-date: Mon, 30 Jan 2023 19:23:50 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMYmE-007siM-2h
-	for lore@lore.pengutronix.de; Mon, 30 Jan 2023 19:21:08 +0100
+	id 1pMYop-007spf-Mp
+	for lore@lore.pengutronix.de; Mon, 30 Jan 2023 19:23:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMYmB-0000qn-6t
-	for lore@pengutronix.de; Mon, 30 Jan 2023 19:21:08 +0100
+	id 1pMYom-0001Kx-HG
+	for lore@pengutronix.de; Mon, 30 Jan 2023 19:23:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZKTAFJCoxlYdytEUStZNBNq+s8ohELU9mbqM2U3i90E=; b=oC9+zi0UTE6eLyDYkS4X4hFGGh
-	Sp15nkYYp3vcavpcWSy8Dh7odQJhTWFwS3LGXDB1A1hqhV63mdEumtLZWVj3sz2vZ4KzzkpATsE8v
-	27QwEz7mOO1yLMi0rTFQTwEs14HeAS8zT5j8MKEh539bTyaW272t2eunTFYwRlyQrDxeLZu+c1CNt
-	zwgjuAVCoKpnDHtimfA8OULNJSH1NdUl0A9Moj5N/pp84gWF8tDiORbrz5bOquvzgdM/IJ0muesl9
-	6+IF0f9aSzIY4M7koltA+ekOywnupMTujhKRiIfma5jMj9d4sPW/H+te1qgf2AWy3jqs0aY3cyRLj
-	FbD45lQA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=HrWq+SIvQGGLnVuAe+pmvE1z0iQekd4ONge5++oZiVc=; b=aK0n4ljebmPgs+QH/NX3fpYb2J
+	wPd7PFI7nnyfh29xjMnY1vkY0FQVu0OvnTkfyKqbyGmtUMKJ83QzPUiCn8YQtNP4O6DKTOHIU0NL6
+	kR81L9dA1QGSBiRt8h1VhFnI0//6EYcMAhzzgDpworj+Wgaj0t5C4xjs7MfQzbPATEvuRTvd2rei/
+	GDSFUjUklplwPGEDKVJNfb9kMt3hYEfzi6UKm8KL0Jpkrt9E86GKltUnrXOTlUMFgXhfWeLAcPgb6
+	HvPHQopOq8eTTQkYw7ApBeXTzGjrOQBhbeuTIbl7TLRIOD/8+RHQxBvpLmugeM1qsIbVW82VSQT0D
+	0fmStSrA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMTE0-003UI5-Ua; Mon, 30 Jan 2023 12:25:29 +0000
-Received: from out-224.mta0.migadu.com ([2001:41d0:1004:224b::e0])
+	id 1pMOZd-002XfP-My; Mon, 30 Jan 2023 07:27:29 +0000
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMTDu-003UHE-Hl
-	for barebox@lists.infradead.org; Mon, 30 Jan 2023 12:25:24 +0000
-Date: Mon, 30 Jan 2023 23:24:55 +1100
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jookia.org; s=key1;
-	t=1675081518;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZKTAFJCoxlYdytEUStZNBNq+s8ohELU9mbqM2U3i90E=;
-	b=QQA4kG3XtOJhCbzoobHHF8csmOjA536x3fKEqtSCsxeIpIYer12D6PPH3+bNifC1O/cq8+
-	8pARpiq9qfEx1vcfDc8DRoXfJ5n/KJebzN6Ek5aJ3tr/jCuip3knX0IPv2Aqcgr2+9E5Pf
-	IhhcXoy7GeiNUwg1V+x1UFR9S9hfDwEIYVlGDipu5t87muVEETWf7VVy5W3W2gqQO/RjWs
-	SalTIyqSz2Gw+JeeIl9Zr4uR9yhN0LJ+avHLx+tDWMs6m5NeXZToltbK+NV9DUBC5AgGx2
-	QQhR2y8H8c9O9kRLU8k4jdVHgB01FlC9Vwr9bY4p+qIsKtPVrco0uhtEp2hS/A==
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: John Watts <contact@jookia.org>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Y9e3F2WtTDWOhbE0@novena-choice-citizen>
-References: <20230126185643.104049-1-contact@jookia.org>
- <20230130102727.GQ13319@pengutronix.de>
- <Y9efLdQi++e/ZFOn@novena-choice-citizen>
- <20230130121752.GR13319@pengutronix.de>
+	id 1pMOZS-002Xcw-EO
+	for barebox@lists.infradead.org; Mon, 30 Jan 2023 07:27:20 +0000
+Received: (Authenticated sender: ahmad@a3f.at)
+	by mail.gandi.net (Postfix) with ESMTPSA id 8ED531C000B;
+	Mon, 30 Jan 2023 07:27:16 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
+To: barebox@lists.infradead.org
+Cc: Adrian Negreanu <adrian.negreanu@nxp.com>
+Date: Mon, 30 Jan 2023 08:27:07 +0100
+Message-Id: <20230130072707.2423294-5-ahmad@a3f.at>
+X-Mailer: git-send-email 2.38.1
+In-Reply-To: <20230130072707.2423294-1-ahmad@a3f.at>
+References: <20230130072707.2423294-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230130121752.GR13319@pengutronix.de>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230130_042523_444307_11BB59FB 
-X-CRM114-Status: GOOD (  15.81  )
+X-CRM114-CacheID: sfid-20230129_232718_770537_0A754867 
+X-CRM114-Status: GOOD (  22.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,51 +63,277 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] I2C: i.MX: early: Use internal udelay
+Subject: [PATCH v2 4/4] video: add support for QEMU ramfb
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jan 30, 2023 at 01:17:52PM +0100, Sascha Hauer wrote:
-> On Mon, Jan 30, 2023 at 09:42:53PM +1100, John Watts wrote:
-> > On Mon, Jan 30, 2023 at 11:27:27AM +0100, Sascha Hauer wrote:
-> > > This takes around 5 times too long on a i.MX8MM and around 50 times too
-> > > long on a i.MX6Q. This was measured under a regular barebox on the
-> > > shell. In an early environment with MMU disabled it takes 730 times too
-> > > long.
-> > 
-> > Yikes! I'm glad I broke this in to its own patch then. :)
-> > 
-> > I did copy this code from these boards:
-> > 
-> > arch/arm/boards/cm-fx6/lowlevel.c
-> > arch/arm/boards/skov-imx6/lowlevel.c
-> > arch/arm/boards/technexion-wandboard/lowlevel.c
-> > arch/arm/mach-imx/xload-gpmi-nand.c
-> > arch/arm/mach-imx/imx6-mmdc.c (uses 1000 loops)
-> > 
-> > Maybe it's time for an i.MX6-wide early udelay?
-> 
-> i.MX6 is not enough, the code could run on other i.MX SoCs as well.
+From: Adrian Negreanu <adrian.negreanu@nxp.com>
 
-Do you think a patch that implements udelay in PBL using the code below with
-a fixed base and drops these implementations would be a good idea?
+QEMU's ramfb is a very simple Qemu fw_cfg protocol, where the guest
+need only write a video settings structure to /etc/ramfb to get
+DMA from the framebuffer working. We don't yet have FS support
+for fw_cfg, so we use the character device interface.
 
-> I tested this with a call to this udelay function with a sufficiently
-> great number of microseconds surrounded by a printf.
+As barebox display mode handling only supports selecting predefined
+modes and has no accommodation yet for arbitrary resolution support
+like on QEMU, for now we just provide a fixed 640x480@XRGB8888 mode.
 
-Ah okay.
+Tested with:
 
-> I briefly looked into this, but the commit history of both barebox or
-> Linux do not give a real conclusion what we are waiting here for.
-> 
-> Sascha
+	qemu-system-aarch64 -M virt -vga none -device ramfb \
+		-kernel images/barebox-dt-2nd.img -cpu cortex-a57 -serial mon:stdio
 
-I see.
+Signed-off-by: Adrian Negreanu <adrian.negreanu@nxp.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - rebased on new /dev/fw_cfg API
+  - remove Kconfig resolution setup as no other driver does this
+  - replace own PACKED definition with __packed
+  - use <video/fourcc.h> instead of duplicating DMA_FORMAT_* definitions
+  - allocate etc/ramfb buffer with dma_alloc
+  - map framebuffer coherent
+  - replaces RISC-V example in commit message with arm64, because that's
+    what I last tested with (probably too old qemu for RISC-V on my side)
+---
+ drivers/video/Kconfig  |   6 ++
+ drivers/video/Makefile |   1 +
+ drivers/video/ramfb.c  | 191 +++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 198 insertions(+)
+ create mode 100644 drivers/video/ramfb.c
 
-John.
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index a20b7bbee9b7..01bdaf47bfca 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -123,6 +123,12 @@ config DRIVER_VIDEO_SIMPLEFB
+ 	  Add support for setting up the kernel's simple framebuffer driver
+ 	  based on the active barebox framebuffer.
+ 
++config DRIVER_VIDEO_RAMFB
++	bool "QEMU RamFB support"
++	select QEMU_FW_CFG
++	help
++	  Add support for setting up a QEMU RamFB driver.
++
+ config DRIVER_VIDEO_EDID
+ 	bool "Add EDID support"
+ 	help
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index 9ec0420ccad1..d50d2d3ba562 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -25,6 +25,7 @@ obj-$(CONFIG_DRIVER_VIDEO_OMAP) += omap.o
+ obj-$(CONFIG_DRIVER_VIDEO_BCM283X) += bcm2835.o
+ obj-$(CONFIG_DRIVER_VIDEO_SIMPLEFB_CLIENT) += simplefb-client.o
+ obj-$(CONFIG_DRIVER_VIDEO_SIMPLEFB) += simplefb-fixup.o
++obj-$(CONFIG_DRIVER_VIDEO_RAMFB) += ramfb.o
+ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPUV3) += imx-ipu-v3/
+ obj-$(CONFIG_DRIVER_VIDEO_EFI_GOP) += efi_gop.o
+ obj-$(CONFIG_DRIVER_VIDEO_FB_SSD1307) += ssd1307fb.o
+diff --git a/drivers/video/ramfb.c b/drivers/video/ramfb.c
+new file mode 100644
+index 000000000000..26e01196fc02
+--- /dev/null
++++ b/drivers/video/ramfb.c
+@@ -0,0 +1,191 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-FileCopyrightText: (C) 2022 Adrian Negreanu
++
++#define pr_fmt(fmt) "ramfb: " fmt
++
++#include <common.h>
++#include <fb.h>
++#include <fcntl.h>
++#include <dma.h>
++#include <init.h>
++#include <unistd.h>
++#include <sys/ioctl.h>
++#include <fs.h>
++#include <linux/qemu_fw_cfg.h>
++#include <video/fourcc.h>
++
++struct ramfb {
++	int fd;
++	struct fb_info info;
++	dma_addr_t screen_dma;
++	struct fb_videomode mode;
++	u16 etcfb_select;
++};
++
++struct fw_cfg_etc_ramfb {
++	u64 addr;
++	u32 fourcc;
++	u32 flags;
++	u32 width;
++	u32 height;
++	u32 stride;
++} __packed;
++
++static int fw_cfg_find_file(struct device *dev, int fd, const char *filename)
++{
++	size_t filename_len = strlen(filename);
++	ssize_t ret;
++	__be32 count;
++	int i;
++
++	ioctl(fd, FW_CFG_SELECT, &(u16) { FW_CFG_FILE_DIR });
++
++	lseek(fd, 0, SEEK_SET);
++
++	ret = read(fd, &count, sizeof(count));
++	if (ret < 0)
++		return ret;
++
++	for (i = 0; i < be32_to_cpu(count); i++) {
++		struct fw_cfg_file qfile;
++
++		read(fd, &qfile, sizeof(qfile));
++
++		dev_dbg(dev, "enumerating file %s\n", qfile.name);
++
++		if (memcmp(qfile.name, filename, filename_len))
++			continue;
++
++		return be16_to_cpu(qfile.select);
++	}
++
++	return -ENOENT;
++}
++
++static void ramfb_populate_modes(struct ramfb *ramfb)
++{
++	struct fb_info *info = &ramfb->info;
++
++	ramfb->mode.name = "x8r8g8b8";
++	info->xres = ramfb->mode.xres = 640;
++	info->yres = ramfb->mode.yres = 480;
++
++	info->mode = &ramfb->mode;
++	info->bits_per_pixel = 32;
++	info->red	= (struct fb_bitfield) {16, 8};
++	info->green	= (struct fb_bitfield) {8, 8};
++	info->blue	= (struct fb_bitfield) {0, 8};
++	info->transp	= (struct fb_bitfield) {0, 0};
++}
++
++static int ramfb_activate_var(struct fb_info *fbi)
++{
++	struct ramfb *ramfb = fbi->priv;
++
++	if (fbi->screen_base)
++		dma_free_coherent(fbi->screen_base, ramfb->screen_dma, fbi->screen_size);
++
++	fbi->screen_size = fbi->xres * fbi->yres * fbi->bits_per_pixel;
++	fbi->screen_base = dma_alloc_coherent(fbi->screen_size, &ramfb->screen_dma);
++
++	return 0;
++}
++
++static void ramfb_enable(struct fb_info *fbi)
++{
++	struct ramfb *ramfb = fbi->priv;
++	struct fw_cfg_etc_ramfb *etc_ramfb;
++
++	etc_ramfb = dma_alloc(sizeof(*etc_ramfb));
++
++	etc_ramfb->addr = cpu_to_be64(ramfb->screen_dma);
++	etc_ramfb->fourcc = cpu_to_be32(DRM_FORMAT_XRGB8888);
++	etc_ramfb->flags  = cpu_to_be32(0);
++	etc_ramfb->width  = cpu_to_be32(fbi->xres);
++	etc_ramfb->height = cpu_to_be32(fbi->yres);
++	etc_ramfb->stride = cpu_to_be32(fbi->line_length);
++
++	ioctl(ramfb->fd, FW_CFG_SELECT, &ramfb->etcfb_select);
++
++	pwrite(ramfb->fd, etc_ramfb, sizeof(*etc_ramfb), 0);
++
++	dma_free(etc_ramfb);
++}
++
++static struct fb_ops ramfb_ops = {
++	.fb_activate_var = ramfb_activate_var,
++	.fb_enable = ramfb_enable,
++};
++
++static int ramfb_probe(struct device *parent_dev, int fd)
++{
++	int ret;
++	struct ramfb *ramfb;
++	struct fb_info *fbi;
++
++	ret = -ENODEV;
++
++	ramfb = xzalloc(sizeof(*ramfb));
++
++	ramfb->fd = fd;
++
++	ret = fw_cfg_find_file(parent_dev, fd, "etc/ramfb");
++	if (ret < 0) {
++		dev_err(parent_dev, "ramfb: fw_cfg (etc/ramfb) file not found\n");
++		return -ENODEV;
++	}
++
++	ramfb->etcfb_select = ret;
++	dev_dbg(parent_dev, "etc/ramfb file at slot 0x%x\n", ramfb->etcfb_select);
++
++	fbi = &ramfb->info;
++	fbi->priv = ramfb;
++	fbi->fbops = &ramfb_ops;
++	fbi->dev.parent = parent_dev;
++
++	ramfb_populate_modes(ramfb);
++
++	ret = register_framebuffer(fbi);
++	if (ret < 0) {
++		dev_err(parent_dev, "Unable to register ramfb: %d\n", ret);
++		return ret;
++	}
++
++	dev_info(parent_dev, "ramfb registered\n");
++
++	return 0;
++}
++
++static int ramfb_driver_init(void)
++{
++	struct cdev *cdev;
++	int err = 0;
++
++	for_each_cdev(cdev) {
++		int fd, ret;
++
++		if (!strstarts(cdev->name, "fw_cfg"))
++			continue;
++
++		fd = cdev_fdopen(cdev, O_RDWR);
++		if (fd < 0) {
++			err = fd;
++			continue;
++		}
++
++		ret = ramfb_probe(cdev->dev, fd);
++		if (ret == 0)
++			continue;
++		if (ret != -ENODEV && ret != -ENXIO)
++			err = ret;
++
++		close(fd);
++	}
++
++	return err;
++}
++device_initcall(ramfb_driver_init);
++
++MODULE_AUTHOR("Adrian Negreanu <adrian.negreanu@nxp.com>");
++MODULE_DESCRIPTION("QEMU RamFB driver");
++MODULE_LICENSE("GPL v2");
+-- 
+2.38.1
+
 
 
