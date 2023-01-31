@@ -1,61 +1,69 @@
-Delivery-date: Tue, 31 Jan 2023 00:46:52 +0100
+Delivery-date: Tue, 31 Jan 2023 07:16:24 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMdrS-008B4E-Cn
-	for lore@lore.pengutronix.de; Tue, 31 Jan 2023 00:46:52 +0100
+	id 1pMjwP-008VzQ-JR
+	for lore@lore.pengutronix.de; Tue, 31 Jan 2023 07:16:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMdrP-0008M7-Ez
-	for lore@pengutronix.de; Tue, 31 Jan 2023 00:46:51 +0100
+	id 1pMjwM-0001E0-Ty
+	for lore@pengutronix.de; Tue, 31 Jan 2023 07:16:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=dOkBGtLFtBc+TLgspsipWRN5ztGGGHImrCTkCh9N1CU=; b=ZCTcSzeFg4VfNRxcewe2pCHARL
-	Dpk8w88aL3VSFjPvMP8NhhP6vX7u9Zzwz0GNLiqbcnG0fcmJVRWoVRAD4AbnXyYbzXrgEy1ua0YaH
-	Hox4THY0SLRhd0arh77z8F+Qb2xOPJfHmzcH5mBA60N0LmlrMSfC4XFwSK5me+Z60yOsWUNk4N8Gq
-	Sgx2S95geYkdKZR0Z7jlCDsh4cAN4M5jelHe91fbKY1zS9ZxinseEF1U5ppg8luiNjN2+aYMEMyCX
-	3Larz3xQxWFFDMllCkm+efmIk6+Wk9IdIF1NXR7+cQvkIlRcaNStq2v2d8XWwo0Z3Cg6fyJkAQJOR
-	6Ph7a1zw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4c91OBAAAZNtqsSpp8LOp58TwTInCiBQn3XVWORAd9I=; b=qRHpmrZyH1KoXT6AUhNxqvK6IU
+	YCOAsgc/zYilqgZrlzP/i++ZPna3YTMf+Stxf+9VOZ0+LA5G05FWWEy8oslzQd4TaRwYhY0Cq8UoX
+	0jS6yHY51QVQA/NddKDbLRegGE5/lPz/2Kw2wpmmIsUHoajDeA4DTn9fbQt8mY3q7dmYdFU3Jmgl0
+	+lk/MLMLgAvI4GyrFQUm8uIK3+QttLOFlCEwcO7BQFuDg1VO8j2AlhvXvJ9O8HZeiGOCIT5UVKblX
+	TWR+lJK1Kr7K5Ctf1pYwNtZqXGvyNXD44LbHDaKhQdOWYi0XVLw8tzNJZtv73GEysTTSuONn4f5yY
+	7q6Cg/Fw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMdpo-005o4v-HD; Mon, 30 Jan 2023 23:45:12 +0000
+	id 1pMjus-006R5i-5D; Tue, 31 Jan 2023 06:14:50 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMdpj-005o4G-Gw
-	for barebox@lists.infradead.org; Mon, 30 Jan 2023 23:45:08 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	id 1pMjun-006R3Z-7K
+	for barebox@lists.infradead.org; Tue, 31 Jan 2023 06:14:47 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pMdpg-0007nW-5l
-	for barebox@lists.infradead.org; Tue, 31 Jan 2023 00:45:04 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pMdpg-001ZMQ-Fa
-	for barebox@lists.infradead.org; Tue, 31 Jan 2023 00:45:03 +0100
-Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pMdpe-004huk-RZ
-	for barebox@lists.infradead.org; Tue, 31 Jan 2023 00:45:02 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Tue, 31 Jan 2023 00:45:00 +0100
-Message-Id: <20230130234501.1122060-1-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1pMjuj-0000o1-UO; Tue, 31 Jan 2023 07:14:41 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pMjui-0007u5-5T; Tue, 31 Jan 2023 07:14:40 +0100
+Date: Tue, 31 Jan 2023 07:14:40 +0100
+From: Sascha Hauer <sha@pengutronix.de>
+To: John Watts <contact@jookia.org>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230131061440.GU13319@pengutronix.de>
+References: <20230126185643.104049-1-contact@jookia.org>
+ <20230130102727.GQ13319@pengutronix.de>
+ <Y9efLdQi++e/ZFOn@novena-choice-citizen>
+ <20230130121752.GR13319@pengutronix.de>
+ <Y9e3F2WtTDWOhbE0@novena-choice-citizen>
+ <20230130123142.GS13319@pengutronix.de>
+ <Y9e+dKTG59Y0Kxhl@novena-choice-citizen>
+ <20230130163658.GT13319@pengutronix.de>
+ <Y9gPlWk6pCA6WnQ5@novena-choice-citizen>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Y9gPlWk6pCA6WnQ5@novena-choice-citizen>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230130_154507_601401_0F7A0A99 
-X-CRM114-Status: UNSURE (   9.38  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230130_221445_303626_52F46987 
+X-CRM114-Status: GOOD (  19.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,42 +83,72 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] net: ks8851_mll: drop platform_device usage
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] I2C: i.MX: early: Use internal udelay
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The pdev member is unused neither do have barebox support for 'struct
-platform_device' so remove the usage.
+On Tue, Jan 31, 2023 at 05:42:29AM +1100, John Watts wrote:
+> On Mon, Jan 30, 2023 at 05:36:58PM +0100, Sascha Hauer wrote:
+> > You can't disable MMU during runtime, but you can compile without MMU
+> > support, just disable CONFIG_MMU. However, the early I2C code already
+> > runs with MMU disabled, can't you just put in some test code there?
+> 
+> This is going to sound really silly but I'm not sure how to time the code
+> without a clock. I guess grabserial?
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- drivers/net/ks8851_mll.c | 2 --
- 1 file changed, 2 deletions(-)
+You could udelay(10000000) and measure the time with a stopwatch.
+That should be accurate enough for this purpose already, in the end
+the time will differ anyway between SoCs.
 
-diff --git a/drivers/net/ks8851_mll.c b/drivers/net/ks8851_mll.c
-index 7609623ad1..6d74a16ac9 100644
---- a/drivers/net/ks8851_mll.c
-+++ b/drivers/net/ks8851_mll.c
-@@ -353,7 +353,6 @@
-  * struct ks_net - KS8851 driver private data
-  * @hw_addr	: start address of data register.
-  * @hw_addr_cmd	: start address of command register.
-- * @pdev	: Pointer to platform device.
-  * @bus_width	: i/o bus width.
-  * @extra_byte	: number of extra byte prepended rx pkt.
-  *
-@@ -364,7 +363,6 @@ struct ks_net {
- 	struct mii_bus	miibus;
- 	void __iomem		*hw_addr;
- 	void __iomem		*hw_addr_cmd;
--	struct platform_device	*pdev;
- 	int			bus_width;
- 	void			*rx_buf;
- };
+If you want to measure more exactly we have this little perl script
+which prints a timestamp for each line printed.
+
+Sascha
+
+------------------------8<----------------------
+
+#! /usr/bin/perl
+#
+# ptx_ts - Pengutronix' Add A Time Stamp Filter V1
+# written by Wolfram Sang, Copyright 2009 Pengutronix
+# free software - no warranty - WTFPL V2, see http://sam.zoy.org/wtfpl/
+
+use warnings;
+use strict;
+use Time::HiRes qw(gettimeofday tv_interval);
+
+my $arg = defined($ARGV[0]) ? $ARGV[0] : '(?=foo)bar'; # false-branch is a regexp that never matches
+if ($arg eq '--help') {
+        print "ptx_ts [regexp] - a filter which prepends a timestamp to every line of STDOUT; time will be reset if [regexp] matches\n";
+        print "  Example: microcom <microcom_options> | ptx_ts 'U-Boot 2.0'\n";
+        exit 0;
+}
+
+my $old;
+my $base;
+$| = 1; # Flush output immediately
+
+sub reset_time {
+        $old = 0;
+        $base = [gettimeofday()];
+}
+
+reset_time;
+while (<STDIN>) {
+        reset_time if (/$arg/o);
+        my $new = tv_interval($base);
+        my $diff = $new - $old;
+        printf("[%10.6f] <%10.6f> $_", $new, $diff);
+        $old = $new;
+}
+
+
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
