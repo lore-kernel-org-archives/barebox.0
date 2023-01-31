@@ -1,61 +1,60 @@
-Delivery-date: Tue, 31 Jan 2023 09:45:27 +0100
+Delivery-date: Tue, 31 Jan 2023 10:31:31 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMmGf-008dfl-CV
-	for lore@lore.pengutronix.de; Tue, 31 Jan 2023 09:45:27 +0100
+	id 1pMmzE-008fzV-IS
+	for lore@lore.pengutronix.de; Tue, 31 Jan 2023 10:31:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMmGc-0003Q4-80
-	for lore@pengutronix.de; Tue, 31 Jan 2023 09:45:27 +0100
+	id 1pMmzC-0004mK-1N
+	for lore@pengutronix.de; Tue, 31 Jan 2023 10:31:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xnK7cxZHMsmL0dlCRMpxMhWTM5x/7VBeT+5iOcgXpYE=; b=owZyXHo4WlkRo3H2b1hRl+nOo5
-	C3oTuyCcwMycfvtPNjk0n+wiSO4bNZxJ7Z+GBlZPBqwzT/huc5b7vjtz8x2bXSy9f/gCu4HziBT/4
-	hBLoz9c7wHu2Giyn56zfooaMVPtWCfPATFim5Mg6cjkrSBL+7UJCQ+l4+MhElS9YlJNNQHdCo3o/l
-	Do+O9vtLl7kHhGCuDfEVstceeiDVu1/4sbsu83fuy92zy/9FydeklyjxM4J+T71UlBf6iYXH0CAPF
-	BQZPgQxbECd7omI7JLSmjgOGYtAGNGXtb22TwbKrHumIlQd8YJthR0Zi57HdXI2sxX2vcC2P3qu0Z
-	gG8PIxMA==;
+	bh=EIbjKc5ICntqt+CmwHQZXPl4ltIdgds6h55eJlojrOE=; b=RHODoN/xAM8uYjg9wMTnstECfW
+	I0E3I2+QapmQLRDo52v+5u4GPKmVRALhskyHWD7+jAyOM2uq4YorMztUYbPq2PuCEog2onUaiSFfb
+	SonW8xOJVd47Z67VjMrJvXdK6Lkox+Y/wz8W6MFkJjtDpI4R33ISkeW5NlIHxDs91AiVUrDnFTNR0
+	qkftDI1Hu52lxZW7RL9WWd3tPB6ZXyrUnuuhfZNpaQo68IgKIC4VYyZcYN9pA611lk1MgezirALbm
+	B7E6QF/twlyONVdj/NmnkiYtgNMculLuwDgbkVQpCpJFRiAG4yuM1ZywJHtRVXjvlCzGobZIDZVJN
+	EQ0Nks6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMmFG-006oFB-Se; Tue, 31 Jan 2023 08:44:03 +0000
+	id 1pMmxl-0070U1-QR; Tue, 31 Jan 2023 09:30:02 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMmDK-006nTK-Jk
-	for barebox@lists.infradead.org; Tue, 31 Jan 2023 08:42:06 +0000
+	id 1pMmxf-0070S1-5h
+	for barebox@lists.infradead.org; Tue, 31 Jan 2023 09:29:56 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pMmDJ-0002co-0f; Tue, 31 Jan 2023 09:42:01 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pMmDI-0007zw-Q8; Tue, 31 Jan 2023 09:42:00 +0100
-Date: Tue, 31 Jan 2023 09:42:00 +0100
-To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1pMmxd-0004Ie-SJ; Tue, 31 Jan 2023 10:29:53 +0100
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1pMmxd-00033T-39; Tue, 31 Jan 2023 10:29:53 +0100
+Date: Tue, 31 Jan 2023 10:29:53 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: John Watts <contact@jookia.org>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230131084200.GD13319@pengutronix.de>
-References: <20230124200114.3160585-1-m.grzeschik@pengutronix.de>
+Message-ID: <20230131092953.qnu3kpu7naojqyai@pengutronix.de>
+References: <20230122175141.119834-1-contact@jookia.org>
+ <20230129232758.1799987-4-contact@jookia.org>
+ <20230130200443.mybfhzrcsywqw65v@pengutronix.de>
+ <Y9gnxmdaHL4LXklH@novena-choice-citizen>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230124200114.3160585-1-m.grzeschik@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <Y9gnxmdaHL4LXklH@novena-choice-citizen>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230131_004204_324375_BA633744 
-X-CRM114-Status: GOOD (  26.05  )
+X-CRM114-CacheID: sfid-20230131_012955_229345_A3A149FF 
+X-CRM114-Status: GOOD (  12.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,62 +76,32 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/2] ARM: dts: stm32mp15x: adjust USB OTG gadget tx
- fifo sizes
+Subject: Re: [PATCH v3 3/4] ARM: novena: Read Ethernet MAC address from EEPROM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Jan 24, 2023 at 09:01:13PM +0100, Michael Grzeschik wrote:
-> There are in sum 952 dwords available for g-rx-fifo-size,
-> g-np-tx-fifo-size and the eight entries of g-tx-fifo-size. For high
-> speed endpoints the maximal packet size is 512 (for full speed it's 64)
-> bytes. So a tx-fifo-size of more than 128 (dwords) isn't sensible.
+On 23-01-31, John Watts wrote:
+> On Mon, Jan 30, 2023 at 09:04:43PM +0100, Marco Felsch wrote:
+> > Hi John,
+> > 
+> > thanks for the patch.
 > 
-> So instead of one (too) big and several small fifos, use two big fifos
-> and to better use the remaining available space increase one of the
-> small fifos.
+> Thanks for the review as always :)
 > 
-> This patch is already discussed for the mainline kernel.
+> > This will trigger a double free since you're use of an unconditional
+> > free() during probe().
 > 
-> https://lore.kernel.org/linux-arm-kernel/20230112112013.1086787-1-u.kleine-koenig@pengutronix.de/
-> 
-> Until this is fix has reached the synced kernel dts tree in barebox we
-> fix this locally.
-> 
-> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
-> ---
-> v1 -> v2: - added this patch to solve the fifo issue on stm32 dwc2 when loading fastboot
-> 
->  arch/arm/dts/stm32mp151.dtsi | 4 ++++
->  1 file changed, 4 insertions(+)
+> It returns NULL, so probe will do a no-op.
 
-Applied, thanks
+Arg.. you're right. I shouldn't review something that late ^^
 
-Sascha
+Regards,
+  Marco
 
+> > Regards,
+> >   Marco
 > 
-> diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
-> index d3e924dc00..602bcd60b2 100644
-> --- a/arch/arm/dts/stm32mp151.dtsi
-> +++ b/arch/arm/dts/stm32mp151.dtsi
-> @@ -52,3 +52,7 @@
->  		barebox,mode-serial = <0xFF>;
->  	};
->  };
-> +
-> +&usbotg_hs {
-> +	g-tx-fifo-size = <128 128 16 16 16 16 16 16>;
-> +};
-> -- 
-> 2.30.2
+> John.
 > 
-> 
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
