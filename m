@@ -1,52 +1,52 @@
-Delivery-date: Tue, 31 Jan 2023 09:24:22 +0100
+Delivery-date: Tue, 31 Jan 2023 09:45:27 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMlwG-008chN-3g
-	for lore@lore.pengutronix.de; Tue, 31 Jan 2023 09:24:22 +0100
+	id 1pMmGf-008dfl-CV
+	for lore@lore.pengutronix.de; Tue, 31 Jan 2023 09:45:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMlwD-0008FZ-G4
-	for lore@pengutronix.de; Tue, 31 Jan 2023 09:24:22 +0100
+	id 1pMmGc-0003Q4-80
+	for lore@pengutronix.de; Tue, 31 Jan 2023 09:45:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0dFfI2r9fAS6gCV3mq3GLUh81ATPTCYN+/gs5Bad7+c=; b=BF7jly/6zocPCNq1xynjaDyjeo
-	gGqbswDaKc2ADbAUBaLUn7cZQjyjUIs3VOHJaexeQiRaelKLpHTEfc54b/b1TJrFbL199QPKM9k3w
-	2a7vS4hI8l212JYpTxffzLxOsF2y6PyEw54+eYAZGTCpmSfp0NlzMt/bXxla36XQnXOJ+pGYndQQg
-	9PkCLDqPKoXZvByLwWFZ7Ljl9AuX9fjfnB/3ln+dEQWkvLapW1hjeXRpN+16nb9syHkggzyc9xRNu
-	hIlG5rcGHugQZSBNY7hLZCeAYEGnI/vzM0l7xf6PWahv/pN1jQG97GjrAh1j3z46QZE7BiD5tKEQT
-	q0esOIZA==;
+	bh=xnK7cxZHMsmL0dlCRMpxMhWTM5x/7VBeT+5iOcgXpYE=; b=owZyXHo4WlkRo3H2b1hRl+nOo5
+	C3oTuyCcwMycfvtPNjk0n+wiSO4bNZxJ7Z+GBlZPBqwzT/huc5b7vjtz8x2bXSy9f/gCu4HziBT/4
+	hBLoz9c7wHu2Giyn56zfooaMVPtWCfPATFim5Mg6cjkrSBL+7UJCQ+l4+MhElS9YlJNNQHdCo3o/l
+	Do+O9vtLl7kHhGCuDfEVstceeiDVu1/4sbsu83fuy92zy/9FydeklyjxM4J+T71UlBf6iYXH0CAPF
+	BQZPgQxbECd7omI7JLSmjgOGYtAGNGXtb22TwbKrHumIlQd8YJthR0Zi57HdXI2sxX2vcC2P3qu0Z
+	gG8PIxMA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMlv1-006h6j-Bk; Tue, 31 Jan 2023 08:23:07 +0000
+	id 1pMmFG-006oFB-Se; Tue, 31 Jan 2023 08:44:03 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMlur-006h3k-Uq
-	for barebox@lists.infradead.org; Tue, 31 Jan 2023 08:22:59 +0000
+	id 1pMmDK-006nTK-Jk
+	for barebox@lists.infradead.org; Tue, 31 Jan 2023 08:42:06 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pMluq-000852-9x; Tue, 31 Jan 2023 09:22:56 +0100
+	id 1pMmDJ-0002co-0f; Tue, 31 Jan 2023 09:42:01 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pMluq-00072z-1M; Tue, 31 Jan 2023 09:22:56 +0100
-Date: Tue, 31 Jan 2023 09:22:56 +0100
-To: Ahmad Fatoum <ahmad@a3f.at>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20230131082256.GC13319@pengutronix.de>
-References: <20230130064510.2398689-1-ahmad@a3f.at>
+	id 1pMmDI-0007zw-Q8; Tue, 31 Jan 2023 09:42:00 +0100
+Date: Tue, 31 Jan 2023 09:42:00 +0100
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230131084200.GD13319@pengutronix.de>
+References: <20230124200114.3160585-1-m.grzeschik@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230130064510.2398689-1-ahmad@a3f.at>
+In-Reply-To: <20230124200114.3160585-1-m.grzeschik@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230131_002258_039990_8F7B10E4 
-X-CRM114-Status: GOOD (  25.35  )
+X-CRM114-CacheID: sfid-20230131_004204_324375_BA633744 
+X-CRM114-Status: GOOD (  26.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,89 +77,54 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: add DEBUG_LL support for ARM64 QEMU Virt
+Subject: Re: [PATCH v2 1/2] ARM: dts: stm32mp15x: adjust USB OTG gadget tx
+ fifo sizes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jan 30, 2023 at 07:45:10AM +0100, Ahmad Fatoum wrote:
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Tue, Jan 24, 2023 at 09:01:13PM +0100, Michael Grzeschik wrote:
+> There are in sum 952 dwords available for g-rx-fifo-size,
+> g-np-tx-fifo-size and the eight entries of g-tx-fifo-size. For high
+> speed endpoints the maximal packet size is 512 (for full speed it's 64)
+> bytes. So a tx-fifo-size of more than 128 (dwords) isn't sensible.
 > 
-> We have DEBUG_LL for the PL011 on the ARM64 QEMU Virt,
-> but it is unused. Wire it in.
+> So instead of one (too) big and several small fifos, use two big fifos
+> and to better use the remaining available space increase one of the
+> small fifos.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> This patch is already discussed for the mainline kernel.
+> 
+> https://lore.kernel.org/linux-arm-kernel/20230112112013.1086787-1-u.kleine-koenig@pengutronix.de/
+> 
+> Until this is fix has reached the synced kernel dts tree in barebox we
+> fix this locally.
+> 
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 > ---
->  arch/arm/Kconfig                |  1 +
->  arch/arm/cpu/board-dt-2nd.c     |  2 ++
->  arch/arm/include/asm/debug_ll.h | 11 +++++++++++
->  common/Kconfig                  |  4 ++++
->  4 files changed, 18 insertions(+)
->  create mode 100644 arch/arm/include/asm/debug_ll.h
+> v1 -> v2: - added this patch to solve the fifo issue on stm32 dwc2 when loading fastboot
+> 
+>  arch/arm/dts/stm32mp151.dtsi | 4 ++++
+>  1 file changed, 4 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index 759b29ee77e1..8183f6d54686 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -292,6 +292,7 @@ config ARCH_ARM64_VIRT
->  	select ARM_AMBA
->  	select BOARD_ARM_VIRT
->  	select HW_HAS_PCI
-> +	select HAS_ASM_DEBUG_LL
->  
->  endchoice
->  
-> diff --git a/arch/arm/cpu/board-dt-2nd.c b/arch/arm/cpu/board-dt-2nd.c
-> index 6f4a6f26a8c7..6f69a6dd27a2 100644
-> --- a/arch/arm/cpu/board-dt-2nd.c
-> +++ b/arch/arm/cpu/board-dt-2nd.c
-> @@ -19,6 +19,8 @@ void dt_2nd_aarch64(void *fdt)
->  {
->  	unsigned long membase, memsize;
->  
-> +	putc_ll('>');
+> diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
+> index d3e924dc00..602bcd60b2 100644
+> --- a/arch/arm/dts/stm32mp151.dtsi
+> +++ b/arch/arm/dts/stm32mp151.dtsi
+> @@ -52,3 +52,7 @@
+>  		barebox,mode-serial = <0xFF>;
+>  	};
+>  };
 > +
->  	/* entry point already set up stack */
->  
->  	arm_cpu_lowlevel_init();
-> diff --git a/arch/arm/include/asm/debug_ll.h b/arch/arm/include/asm/debug_ll.h
-> new file mode 100644
-> index 000000000000..d7b25a7fcab9
-> --- /dev/null
-> +++ b/arch/arm/include/asm/debug_ll.h
-> @@ -0,0 +1,11 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +
-> +#ifndef __ASM_DEBUG_LL_H__
-> +#define __ASM_DEBUG_LL_H__
-> +
-> +#ifdef CONFIG_DEBUG_QEMU_ARM64_VIRT
-> +#define DEBUG_LL_UART_ADDR		0x9000000
-> +#include <debug_ll/pl011.h>
-> +#endif
-> +
-> +#endif
-> diff --git a/common/Kconfig b/common/Kconfig
-> index 9e175d36c43e..d95797099341 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -1479,6 +1479,10 @@ config DEBUG_SUN20I
->  	depends on SOC_ALLWINNER_SUN20I
->  	select DEBUG_LL_NS16550
->  
-> +config DEBUG_QEMU_ARM64_VIRT
-> +	bool "QEMU ARM64 Virt PL011 console"
-> +	depends on ARCH_ARM64_VIRT
-> +
->  endchoice
->  
->  config DEBUG_LL_NS16550
+> +&usbotg_hs {
+> +	g-tx-fifo-size = <128 128 16 16 16 16 16 16>;
+> +};
 > -- 
-> 2.38.1
+> 2.30.2
 > 
 > 
 > 
