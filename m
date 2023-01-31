@@ -1,52 +1,52 @@
-Delivery-date: Tue, 31 Jan 2023 09:21:55 +0100
+Delivery-date: Tue, 31 Jan 2023 09:23:40 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMlts-008cZV-Od
-	for lore@lore.pengutronix.de; Tue, 31 Jan 2023 09:21:55 +0100
+	id 1pMlvZ-008cem-JQ
+	for lore@lore.pengutronix.de; Tue, 31 Jan 2023 09:23:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pMltq-0007uf-3Q
-	for lore@pengutronix.de; Tue, 31 Jan 2023 09:21:54 +0100
+	id 1pMlvV-00089f-TR
+	for lore@pengutronix.de; Tue, 31 Jan 2023 09:23:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WzhIqFM1f8/H2/VtAsjzcF4pu496LvNrqx3MfhCQmRQ=; b=f5rfpzUwyX7yJltfsBvLFuih33
-	AaaQX5GetIWR8IU2hW2ZZn8Un/sFn5xubzdKrlboSp+wkD+o32hHkxrVZMWpf/KSkhG+GouCTkCgC
-	BL5rJf9+Jmn2Um+nUs2tUy0Mn1v/yFb2A0ibbMRX4e1Rc4EKOqTsvBCNnyMkHqQb4b2L+dwZESRYN
-	oSfGgexvaVUUPc5Opby73uznadRhR2mU86ty3L1kAITr0N1TePaFcgn9HVul74ce9YM4eo13G0XGa
-	OVC3yPZs+ETy7uDuxpDqUWgNNMUOQtSt+6bD/P8pm/Opl9eDKYgmk6+1FETXJZzvzNIe4ssjKuKA9
-	hF0XSgHw==;
+	bh=s3hW2uZWy4HQG01Fp9k/4cvqXMgZ62Hcz2/2f9Ln2t0=; b=3LLCudJ+za0uXoGI51NM9If1yR
+	T5v6pqurnUHHIWHWLlbxpVHIaWDsNLNUILqmHKJAgCiehhM8IxuKE16Z5S4EtZfyjoqjijP0fFJfU
+	kc1Sv0rx1CNVn3Nw4xclByr1HE4BzDExyMkZZtcX6Jf/vlwZwCA3wx50kpQAjIiVjN8g/h4Igqngj
+	cNWcH58REEBsozeRil0SjMScjZdZSHWUdyWuUaTSF8UnCyO7NLQCPGuGjBDN1P1wcNrJtv+c+Fq5J
+	R/sStrpHBmfT4+sWeb9bDyDeWSRzOGQMG+bRbsj6pc0+tANNJIdrg12QpI6WLL9Pgo72xelmwnec9
+	PzKAL3dg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMlsj-006gH4-4E; Tue, 31 Jan 2023 08:20:45 +0000
+	id 1pMluC-006gmR-Qw; Tue, 31 Jan 2023 08:22:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pMlsd-006gFm-7B
-	for barebox@lists.infradead.org; Tue, 31 Jan 2023 08:20:40 +0000
+	id 1pMlu1-006gjO-87
+	for barebox@lists.infradead.org; Tue, 31 Jan 2023 08:22:08 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pMlsb-0007ZK-Rt; Tue, 31 Jan 2023 09:20:37 +0100
+	id 1pMltz-0007vg-Ut; Tue, 31 Jan 2023 09:22:03 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pMlsb-00071h-Lv; Tue, 31 Jan 2023 09:20:37 +0100
-Date: Tue, 31 Jan 2023 09:20:37 +0100
+	id 1pMltz-00072j-Na; Tue, 31 Jan 2023 09:22:03 +0100
+Date: Tue, 31 Jan 2023 09:22:03 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230131082037.GA13319@pengutronix.de>
-References: <20230130072157.34711-1-a.fatoum@pengutronix.de>
+Message-ID: <20230131082203.GB13319@pengutronix.de>
+References: <20230130071622.34094-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230130072157.34711-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230130071622.34094-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230131_002039_278282_486B6BCF 
-X-CRM114-Status: GOOD (  22.72  )
+X-CRM114-CacheID: sfid-20230131_002205_492250_35ACDD3B 
+X-CRM114-Status: GOOD (  37.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,58 +77,222 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX8MM: innocomm-wb15: use revised PMIC settings
+Subject: Re: [PATCH] mfd: add regmap driver for rohm-bd718x7
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jan 30, 2023 at 08:21:57AM +0100, Ahmad Fatoum wrote:
-> Original values used when WB15 support was upstreamed were taken from
-> EVK, but original U-Boot port, we had been running for years now, is
-> configured differently and is known to be stable. Revert to those values.
+On Mon, Jan 30, 2023 at 08:16:22AM +0100, Ahmad Fatoum wrote:
+> Rohm BD71837 is a PMIC for i.MX8MM, which is used on most boards
+> supported by barebox. So far, we didn't need to change PMIC
+> configuration after the initial setup in PBL, but to support future
+> debugging and development, let's port the Linux MFD driver sans the
+> regulators, so we get a regmap for interacting with the device.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  .../arm/boards/innocomm-imx8mm-wb15/lowlevel.c | 18 ++++++++++++++----
->  1 file changed, 14 insertions(+), 4 deletions(-)
+>  drivers/mfd/Kconfig        |  13 ++++
+>  drivers/mfd/Makefile       |   1 +
+>  drivers/mfd/rohm-bd718x7.c | 140 +++++++++++++++++++++++++++++++++++++
+>  include/mfd/bd71837.h      |   3 +
+>  4 files changed, 157 insertions(+)
+>  create mode 100644 drivers/mfd/rohm-bd718x7.c
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/boards/innocomm-imx8mm-wb15/lowlevel.c b/arch/arm/boards/innocomm-imx8mm-wb15/lowlevel.c
-> index 2077d3c88eb2..f7753bd32671 100644
-> --- a/arch/arm/boards/innocomm-imx8mm-wb15/lowlevel.c
-> +++ b/arch/arm/boards/innocomm-imx8mm-wb15/lowlevel.c
-> @@ -35,14 +35,24 @@ static void setup_uart(void)
->  }
+> diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+> index f1f7e27fadfe..39a40c2a3fb5 100644
+> --- a/drivers/mfd/Kconfig
+> +++ b/drivers/mfd/Kconfig
+> @@ -129,6 +129,19 @@ config MFD_AXP20X_I2C
+>  	  management ICs (PMICs) controlled with I2C.
+>  	  This driver currently only provide a character device in /dev.
 >  
->  static struct pmic_config bd71837_cfg[] = {
-> +	/* unlock the PMIC regs */
-> +	{ BD718XX_REGLOCK, 0x0 },
-> +	/* retry powering up indefinitely every 250ms after VR fault */
-> +	{ BD718XX_RCVCFG, 0xfc },
->  	/* decrease RESET key long push time from the default 10s to 10ms */
->  	{ BD718XX_PWRONCONFIG1, 0x0 },
-> -	/* unlock the PMIC regs */
-> -	{ BD718XX_REGLOCK, 0x1 },
-> +	/* WDOG_B: Warm Reset */
-> +	{ BD718XX_PWRCTRL0, 0xa3 },
-> +	/* READY=>SNVS on PMIC_ON_REQ, SNVS=>RUN on VSYS_UVLO */
-> +	{ BD718XX_TRANS_COND0, 0x48 },
-> +	/* WDOG_B: Go to SNVS power state after deassert */
-> +	{ BD718XX_TRANS_COND1, 0xc0 },
->  	/* Set VDD_SOC/VDD_DRAM to typical value 0.85v for nominal mode */
->  	{ BD718XX_BUCK1_VOLT_RUN, 0xf },
-> -	/* increase VDD_DRAM to 0.975v for 3Ghz DDR */
-> -	{ BD718XX_1ST_NODVS_BUCK_VOLT, 0x83 },
-> +	/* increase VDD_DRAM to 0.900v for 2400MT/s DDR */
-> +	{ BD718XX_1ST_NODVS_BUCK_VOLT, 0x02 },
-> +	/* set BUCK8 to 1.10v */
-> +	{ BD718XX_4TH_NODVS_BUCK_VOLT, 0x1e },
->  	/* lock the PMIC regs */
->  	{ BD718XX_REGLOCK, 0x11 },
->  };
+> +config MFD_ROHM_BD718XX
+> +	tristate "ROHM BD71837 Power Management IC"
+> +	depends on I2C=y
+> +	depends on OFDEVICE
+> +	select REGMAP_I2C
+> +	help
+> +	  Select this option to get support for the ROHM BD71837
+> +	  Power Management ICs. BD71837 is designed to power processors like
+> +	  NXP i.MX8. It contains 8 BUCK outputs and 7 LDOs, voltage monitoring
+> +	  and emergency shut down as well as 32,768KHz clock output.
+> +
+> +	  This driver currently only provide a character device in /dev.
+> +
+>  config MFD_ATMEL_SMC
+>  	bool
+>  	select MFD_SYSCON
+> diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+> index b89ddab5947d..f19bf5365533 100644
+> --- a/drivers/mfd/Makefile
+> +++ b/drivers/mfd/Makefile
+> @@ -24,3 +24,4 @@ obj-$(CONFIG_MFD_ATMEL_FLEXCOM)	+= atmel-flexcom.o
+>  obj-$(CONFIG_MFD_RK808)		+= rk808.o
+>  obj-$(CONFIG_MFD_AXP20X_I2C)	+= axp20x-i2c.o axp20x.o
+>  obj-$(CONFIG_MFD_ATMEL_SMC)	+= atmel-smc.o
+> +obj-$(CONFIG_MFD_ROHM_BD718XX)	+= rohm-bd718x7.o
+> diff --git a/drivers/mfd/rohm-bd718x7.c b/drivers/mfd/rohm-bd718x7.c
+> new file mode 100644
+> index 000000000000..20c572b6d766
+> --- /dev/null
+> +++ b/drivers/mfd/rohm-bd718x7.c
+> @@ -0,0 +1,140 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +//
+> +// Copyright (C) 2018 ROHM Semiconductors
+> +//
+> +// ROHM BD71837MWV and BD71847MWV PMIC driver
+> +//
+> +// Datasheet for BD71837MWV available from
+> +// https://www.rohm.com/datasheet/BD71837MWV/bd71837mwv-e
+> +
+> +#include <common.h>
+> +#include <i2c/i2c.h>
+> +#include <mfd/bd71837.h>
+> +#include <linux/mfd/core.h>
+> +#include <driver.h>
+> +#include <poweroff.h>
+> +#include <of.h>
+> +#include <regmap.h>
+> +
+> +static struct mfd_cell bd71837_mfd_cells[] = {
+> +	{ .name = "gpio-keys", },
+> +	{ .name = "bd71837-clk", },
+> +	{ .name = "bd71837-pmic", },
+> +};
+> +
+> +static struct mfd_cell bd71847_mfd_cells[] = {
+> +	{ .name = "gpio-keys", },
+> +	{ .name = "bd71847-clk", },
+> +	{ .name = "bd71847-pmic", },
+> +};
+> +
+> +static const struct regmap_config bd718xx_regmap_config = {
+> +	.reg_bits = 8,
+> +	.val_bits = 8,
+> +	.max_register = BD718XX_MAX_REGISTER - 1,
+> +};
+> +
+> +static int bd718xx_init_press_duration(struct regmap *regmap,
+> +				       struct device *dev)
+> +{
+> +	u32 short_press_ms, long_press_ms;
+> +	u32 short_press_value, long_press_value;
+> +	int ret;
+> +
+> +	ret = of_property_read_u32(dev->of_node, "rohm,short-press-ms",
+> +				   &short_press_ms);
+> +	if (!ret) {
+> +		short_press_value = min(15u, (short_press_ms + 250) / 500);
+> +		ret = regmap_update_bits(regmap, BD718XX_PWRONCONFIG0,
+> +					 BD718XX_PWRBTN_PRESS_DURATION_MASK,
+> +					 short_press_value);
+> +		if (ret) {
+> +			dev_err(dev, "Failed to init pwron short press\n");
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	ret = of_property_read_u32(dev->of_node, "rohm,long-press-ms",
+> +				   &long_press_ms);
+> +	if (!ret) {
+> +		long_press_value = min(15u, (long_press_ms + 500) / 1000);
+> +		ret = regmap_update_bits(regmap, BD718XX_PWRONCONFIG1,
+> +					 BD718XX_PWRBTN_PRESS_DURATION_MASK,
+> +					 long_press_value);
+> +		if (ret) {
+> +			dev_err(dev, "Failed to init pwron long press\n");
+> +			return ret;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int bd718xx_i2c_probe(struct device *dev)
+> +{
+> +	struct i2c_client *i2c = to_i2c_client(dev);
+> +	struct regmap *regmap;
+> +	int ret;
+> +	unsigned int chip_type;
+> +	struct mfd_cell *mfd;
+> +	int cells;
+> +
+> +	chip_type = (unsigned int)(uintptr_t)device_get_match_data(dev);
+> +	switch (chip_type) {
+> +	case ROHM_CHIP_TYPE_BD71837:
+> +		mfd = bd71837_mfd_cells;
+> +		cells = ARRAY_SIZE(bd71837_mfd_cells);
+> +		break;
+> +	case ROHM_CHIP_TYPE_BD71847:
+> +		mfd = bd71847_mfd_cells;
+> +		cells = ARRAY_SIZE(bd71847_mfd_cells);
+> +		break;
+> +	default:
+> +		dev_err(dev, "Unknown device type");
+> +		return -EINVAL;
+> +	}
+> +
+> +	regmap = regmap_init_i2c(i2c, &bd718xx_regmap_config);
+> +	if (IS_ERR(regmap)) {
+> +		dev_err(dev, "regmap initialization failed\n");
+> +		return PTR_ERR(regmap);
+> +	}
+> +
+> +	ret = bd718xx_init_press_duration(regmap, dev);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = mfd_add_devices(dev, mfd, cells);
+> +	if (ret)
+> +		dev_err(dev, "Failed to create subdevices\n");
+> +
+> +	return regmap_register_cdev(regmap, NULL);
+> +}
+> +
+> +static const struct of_device_id bd718xx_of_match[] = {
+> +	{
+> +		.compatible = "rohm,bd71837",
+> +		.data = (void *)ROHM_CHIP_TYPE_BD71837,
+> +	},
+> +	{
+> +		.compatible = "rohm,bd71847",
+> +		.data = (void *)ROHM_CHIP_TYPE_BD71847,
+> +	},
+> +	{
+> +		.compatible = "rohm,bd71850",
+> +		.data = (void *)ROHM_CHIP_TYPE_BD71847,
+> +	},
+> +	{ }
+> +};
+> +MODULE_DEVICE_TABLE(of, bd718xx_of_match);
+> +
+> +static struct driver bd718xx_i2c_driver = {
+> +	.name = "rohm-bd718x7",
+> +	.of_match_table = bd718xx_of_match,
+> +	.probe = bd718xx_i2c_probe,
+> +};
+> +coredevice_i2c_driver(bd718xx_i2c_driver);
+> +
+> +MODULE_AUTHOR("Matti Vaittinen <matti.vaittinen@fi.rohmeurope.com>");
+> +MODULE_DESCRIPTION("ROHM BD71837/BD71847 Power Management IC driver");
+> +MODULE_LICENSE("GPL");
+> diff --git a/include/mfd/bd71837.h b/include/mfd/bd71837.h
+> index 75e07e1de31e..4e285a647a92 100644
+> --- a/include/mfd/bd71837.h
+> +++ b/include/mfd/bd71837.h
+> @@ -100,4 +100,7 @@ enum {
+>  #define BD71847_LDO5_RANGE_MASK		0x20
+>  #define BD71837_LDO7_MASK		0x0f
+>  
+> +#define BD718XX_PWRBTN_PRESS_DURATION_MASK 0xF
+> +
+> +
+>  #endif
 > -- 
 > 2.30.2
 > 
