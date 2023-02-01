@@ -1,80 +1,55 @@
-Delivery-date: Wed, 01 Feb 2023 18:52:50 +0100
+Delivery-date: Wed, 01 Feb 2023 19:10:31 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pNHHw-00ANy0-3g
-	for lore@lore.pengutronix.de; Wed, 01 Feb 2023 18:52:50 +0100
+	id 1pNHZ2-00AP51-Ge
+	for lore@lore.pengutronix.de; Wed, 01 Feb 2023 19:10:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pNHHt-00072k-Br
-	for lore@pengutronix.de; Wed, 01 Feb 2023 18:52:50 +0100
+	id 1pNHYz-00014O-Uv
+	for lore@pengutronix.de; Wed, 01 Feb 2023 19:10:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
-	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZlGXKRn3FLpWvYlu8e2Q1z3w5PzLVU4tOs/xrM/gvv4=; b=FGO8pLRiVAhTd2kkDS26O5dBl6
-	TAkCRY2yxwVjOSRe9ZDlZkWsSaDiTDM4+70UvOmLhGaxZBFoYdMK+d7sMy7gVp39QAU5teeD6eVI0
-	aWAyawVRJRqII4t2Zj5CAv9PYEQdcvexUMHy7SK/Z+t7G9tnlrVkPeR4edy+64eL6PRXTnQVp5ei7
-	InmQSK9qvIHBaeMtT+r0tyaJuaE6w5vs+rJuwuPnQO8C3XJ7f55BVAmpLsQ872aSWBuoreWis+hGO
-	hvOBixvDVSIOFGMOcb3rKzJV5jNCZxGxGjS31Kh9WcPC7oz1YxVO8OSZUA+P5LcgrLj4K13chNlzG
-	dJoDsxtw==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=dgcxjumOsqwes4fVj2N8DvtvNaoCsirZJwPczs+imYY=; b=sdZSCeUPtcon5wgD1NrMX92YgY
+	5ohwRhNdrHcEPXHHs16IPWzZ1KVzYtUc4t6ygSph4vBhVEM3eotNfZ/6t9lfRiISvlZy8CsHti7hm
+	/3axc3EuEToTITxdR7BIhjBeEJ4a49Wc+PsIin6czNT9QCfMa9m/tUy1SkIMWZ0h+UI5dpHEmDDyQ
+	/9CD+G1gbuzBz1Og5ixT2V1MQ4/ws09bqYmIZh9Hr7pwZxZV18GA7IQ2rBX9VsfOUC+fVSB6biGqv
+	3bpc89djn1DZXGJWCx++kdEda5JMBgryo/0JnywGSAt/0QgLYt7rKIYd/1576Q4NIPKAvh0Rl/V3u
+	qvKU0CTA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pNHGI-00D4li-1m; Wed, 01 Feb 2023 17:51:10 +0000
-Received: from mail-pl1-x629.google.com ([2607:f8b0:4864:20::629])
+	id 1pNHXn-00D8MX-Dt; Wed, 01 Feb 2023 18:09:15 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pNHGE-00D4k7-0M
-	for barebox@lists.infradead.org; Wed, 01 Feb 2023 17:51:07 +0000
-Received: by mail-pl1-x629.google.com with SMTP id k13so19289597plg.0
-        for <barebox@lists.infradead.org>; Wed, 01 Feb 2023 09:51:02 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZlGXKRn3FLpWvYlu8e2Q1z3w5PzLVU4tOs/xrM/gvv4=;
-        b=qGN3KWhv0GXaJIrQVRHXYwgwvKLUT/fp3Z07MijLy/BlukL4juom9ZfzrdRfTMnxrP
-         9eALSWV3PkhEvAqdFOzU1j1wg4HUHNEacEocUBcTl8ifg7NpR9tToZ898emv495iDDXN
-         OCGWdv1Zm1Xq3fSG7AEe6uf7RPaNc9OZ06RDchQ38WdnLKLSngLbArsixxi43B8WVZEw
-         oSCIKkb6L7KJD/Clvl4aMrR/cQXsiImkmzhWiJ+zYSSODNqhHT04YVPV4Z71dGttOzBj
-         v+dXjZLac6H1lY6MdWTWnmcLcabClqbWy05Aq5S3Ja1ch4eKXQHtW/TbHFbaR4czxffm
-         lX7Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20210112;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ZlGXKRn3FLpWvYlu8e2Q1z3w5PzLVU4tOs/xrM/gvv4=;
-        b=HaQpqb02CNEeT5cn5cIFKuokec74pZx9lvEvFWhoC1e5C4WhVRmaVpso1G/0AfVqyA
-         vSZpcl5w+VuYP3f7LSebINGD+1Ty9VNbNBJBA8uITwpouCzmWxhgyF7Or4Cu+Wxa+X3q
-         qtw8YjfkxfcCi82VPyCDcGnUDfcH1v60j8XY75krsLiIwnZ2+PcwKcTeDIFC2d+u5ZXa
-         qPqjo+9L6eRquHXrysl7YS+GWU1/qThcbhOzr5T9Xd2BJPKT76GBm/5inu9T++7JC4UA
-         bcrIqfzSyfuLW9v1Fqteirg/syI1jJtM0Sl6dQMgnT10lH7PEcyLhrHwrlrnxW5TeYdR
-         02iQ==
-X-Gm-Message-State: AO0yUKWehmq8MwySRqn/szZ4w5GlBPDtDGAZS70pG6/mZVYd0UOjD0eZ
-	5D4LSJJYTu/aXOyl/l3aMHUd4WgtAHbrySXE8jX096ERNhE=
-X-Google-Smtp-Source: AK7set/xHGfSiKsCfeKaqAf2GpnsLx+Y0s+izvlLBudg0eY+KxqkaFB6mkVpjuMmnxCOuQ03woyh3mWjXI7kD1nYcCo=
-X-Received: by 2002:a17:90a:5146:b0:230:4096:ad44 with SMTP id
- k6-20020a17090a514600b002304096ad44mr313338pjm.130.1675273862011; Wed, 01 Feb
- 2023 09:51:02 -0800 (PST)
+	id 1pNHXi-00D8KF-Vb
+	for barebox@lists.infradead.org; Wed, 01 Feb 2023 18:09:12 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1pNHXb-0000tF-SC; Wed, 01 Feb 2023 19:09:03 +0100
+Message-ID: <9751649f-3ec5-89ca-5710-987ee2f78b6a@pengutronix.de>
+Date: Wed, 1 Feb 2023 19:09:03 +0100
 MIME-Version: 1.0
-References: <20230126185643.104049-1-contact@jookia.org>
-In-Reply-To: <20230126185643.104049-1-contact@jookia.org>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed, 1 Feb 2023 20:50:50 +0300
-Message-ID: <CAP1tNvRo98Xoo2z3GmacoYZ-vR6FTnKcJYxrop3HJZi-QnFt6Q@mail.gmail.com>
-To: John Watts <contact@jookia.org>
-Cc: barebox@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.5.0
+Content-Language: en-US
+To: Michael Grzeschik <m.grzeschik@pengutronix.de>,
+ barebox@lists.infradead.org
+References: <20230124200114.3160585-1-m.grzeschik@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230124200114.3160585-1-m.grzeschik@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230201_095106_071560_09CC5EFB 
-X-CRM114-Status: GOOD (  16.91  )
+X-CRM114-CacheID: sfid-20230201_100911_045476_1F85D734 
+X-CRM114-Status: GOOD (  24.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,66 +67,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] I2C: i.MX: early: Use internal udelay
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 1/2] ARM: dts: stm32mp15x: adjust USB OTG gadget tx
+ fifo sizes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello!
+On 24.01.23 21:01, Michael Grzeschik wrote:
+> There are in sum 952 dwords available for g-rx-fifo-size,
+> g-np-tx-fifo-size and the eight entries of g-tx-fifo-size. For high
+> speed endpoints the maximal packet size is 512 (for full speed it's 64)
+> bytes. So a tx-fifo-size of more than 128 (dwords) isn't sensible.
 
-Just a nitpick, udelay means milliseconds (udelay_(us)),
-which isn't quite right in this case,
-so I think we should use the "loops" value here (delay_loops() or so)).
+There is no driver support for this binding, so this patch achieves nothing.
 
-Thanks!
-
-=D1=87=D1=82, 26 =D1=8F=D0=BD=D0=B2. 2023 =D0=B3. =D0=B2 21:57, John Watts =
-<contact@jookia.org>:
->
-> udelay isn't provided in the PBL, so use our own definition.
->
-> This avoids boards having to define udelay in their code.
->
-> Signed-off-by: John Watts <contact@jookia.org>
+> 
+> So instead of one (too) big and several small fifos, use two big fifos
+> and to better use the remaining available space increase one of the
+> small fifos.
+> 
+> This patch is already discussed for the mainline kernel.
+> 
+> https://lore.kernel.org/linux-arm-kernel/20230112112013.1086787-1-u.kleine-koenig@pengutronix.de/
+> 
+> Until this is fix has reached the synced kernel dts tree in barebox we
+> fix this locally.
+> 
+> Signed-off-by: Michael Grzeschik <m.grzeschik@pengutronix.de>
 > ---
->  drivers/i2c/busses/i2c-imx-early.c | 9 ++++++++-
->  1 file changed, 8 insertions(+), 1 deletion(-)
->
-> diff --git a/drivers/i2c/busses/i2c-imx-early.c b/drivers/i2c/busses/i2c-=
-imx-early.c
-> index 6c8bdc7904..fcf279eff8 100644
-> --- a/drivers/i2c/busses/i2c-imx-early.c
-> +++ b/drivers/i2c/busses/i2c-imx-early.c
-> @@ -90,6 +90,13 @@ static int i2c_fsl_acked(struct fsl_i2c *fsl_i2c)
->         return i2c_fsl_poll_status(fsl_i2c, 0, I2SR_RXAK);
->  }
->
-> +static void __udelay(int us)
-> +{
-> +       volatile int i;
+> v1 -> v2: - added this patch to solve the fifo issue on stm32 dwc2 when loading fastboot
+> 
+>  arch/arm/dts/stm32mp151.dtsi | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/arch/arm/dts/stm32mp151.dtsi b/arch/arm/dts/stm32mp151.dtsi
+> index d3e924dc00..602bcd60b2 100644
+> --- a/arch/arm/dts/stm32mp151.dtsi
+> +++ b/arch/arm/dts/stm32mp151.dtsi
+> @@ -52,3 +52,7 @@
+>  		barebox,mode-serial = <0xFF>;
+>  	};
+>  };
 > +
-> +       for (i =3D 0; i < us * 1000; i++);
-> +}
-> +
->  static int i2c_fsl_start(struct fsl_i2c *fsl_i2c)
->  {
->         unsigned int temp =3D 0;
-> @@ -104,7 +111,7 @@ static int i2c_fsl_start(struct fsl_i2c *fsl_i2c)
->                           fsl_i2c, FSL_I2C_I2CR);
->
->         /* Wait controller to be stable */
-> -       udelay(100);
-> +       __udelay(100);
->
->         /* Start I2C transaction */
->         temp =3D fsl_i2c_read_reg(fsl_i2c, FSL_I2C_I2CR);
-> --
-> 2.39.1
->
->
+> +&usbotg_hs {
+> +	g-tx-fifo-size = <128 128 16 16 16 16 16 16>;
+> +};
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
