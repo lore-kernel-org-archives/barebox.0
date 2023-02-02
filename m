@@ -1,59 +1,60 @@
-Delivery-date: Thu, 02 Feb 2023 13:21:33 +0100
+Delivery-date: Thu, 02 Feb 2023 13:59:02 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pNYat-00BMKQ-6b
-	for lore@lore.pengutronix.de; Thu, 02 Feb 2023 13:21:33 +0100
+	id 1pNZBA-00BOPV-5Z
+	for lore@lore.pengutronix.de; Thu, 02 Feb 2023 13:59:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pNYaq-0001GE-D8
-	for lore@pengutronix.de; Thu, 02 Feb 2023 13:21:33 +0100
+	id 1pNZB7-0006dw-Jy
+	for lore@pengutronix.de; Thu, 02 Feb 2023 13:59:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=KNni+4ftYKX/BkIwEUMFBTbFfkh97Kdqizv95pD0Vik=; b=kEuVECxr1TEBOIZKyHa2D0q0dg
-	N5ufyBfNJomOidebE47lLFJx8J8CJrPLsKDURSastBI9eahFqd+pPS0bi5bTEUgKh6f/bm/F8WtIT
-	ZLBWyu7VEd0Yhkq0lyMSwgJBR0qhhvR5CJQAbNrexRii4gFyLiBQSNCKgL67y59vA2OwZjqEzBlzt
-	iXaK2E2p89D4ir7tfqjTFJo2bF4Hxu42RMV5xSqRmnbYez0ih243ktvQ7WwlMYGMAYx+u7KctSlxY
-	mxgztZCcYtcX5Usgfq5DOode1Ky08ASJRp+V8J5HN3y/fS83VE69cB2zrcL9CPzzShQ5Mo6OTzO75
-	qole5dvQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=QShQW5jOUhrEV04oBeZjTPzb+NhhTcKpQpj2SYNyggk=; b=KTzn1w8jKCYI2zIy3/R9wH2DJD
+	LK+KSZqxdikrKS6pUztCH+XpbJPDMxoGkr1noGugMua0EX6kpzrz8HlNxoSP1Hht4dSua6xDn1pmh
+	J+C3c/hIEVJnv67xxVG6y/jOcpaP1Vczc52y+Pfbwfa7IwlUvrNIKOxw61rmuZbBnW3xx8P48O39Y
+	MhZC1o8P6niim6Wykff05z7SO5xVENIBEiTOP/ORxmUDNkpMY9TXLEaUvgLyTQejGkdMnfv1604Bk
+	Lkd+kkJk+ETf3Tl2QBXKErotrj+H6baysYhrK3GcMgAS0UWwt8QtpwtLgbyn/1ck0mCUyRGxIIsY7
+	gK67GPmQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pNYZZ-00FkH9-Gd; Thu, 02 Feb 2023 12:20:13 +0000
+	id 1pNZ9w-00FuIz-Lo; Thu, 02 Feb 2023 12:57:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pNYZU-00FkDy-OP
-	for barebox@lists.infradead.org; Thu, 02 Feb 2023 12:20:10 +0000
+	id 1pNZ9q-00FuGy-Ok
+	for barebox@lists.infradead.org; Thu, 02 Feb 2023 12:57:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pNYZO-0000Z8-QS; Thu, 02 Feb 2023 13:20:02 +0100
+	id 1pNZ9p-0006OX-1i; Thu, 02 Feb 2023 13:57:41 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pNYZM-002AUy-WD; Thu, 02 Feb 2023 13:20:02 +0100
+	id 1pNZ9n-002Ayc-6z; Thu, 02 Feb 2023 13:57:40 +0100
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pNYZN-000oo8-As; Thu, 02 Feb 2023 13:20:01 +0100
+	id 1pNZ9n-000yfM-EF; Thu, 02 Feb 2023 13:57:39 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Marco Felsch <m.felsch@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 Feb 2023 13:20:00 +0100
-Message-Id: <20230202122000.195253-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu,  2 Feb 2023 13:57:38 +0100
+Message-Id: <20230202125738.233147-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230202125738.233147-1-a.fatoum@pengutronix.de>
+References: <20230202125738.233147-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230202_042008_811588_FCDF7083 
-X-CRM114-Status: GOOD (  11.99  )
+X-CRM114-CacheID: sfid-20230202_045742_835572_83A73870 
+X-CRM114-Status: GOOD (  11.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,45 +76,78 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] fs: align truncate return codes with POSIX
+Subject: [PATCH 3/3] include: printk: retire printk_once for pr_debug_once
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Writing past end of a file results in a cryptic error code:
+printk is just printf and KERN_DEBUG is just "", so printk_once(KERN_DEBUG
+doesn't do what's promised. Replace instead with pr_debug_once, which
+does what one would expect.
 
-  barebox@board:/ cp /dev/zero /dev/mmc0.part
-  write: Operation not permitted
-  cp: Operation not permitted
-
-Because the cdev's truncate is not implemented and as such partition
-can't be increased in size. POSIX specifies EPERM as the correct return
-code for truncate(2) in such a situation, but for write(2) it is ENOSPC.
-Thus most truncate callbacks in barebox instead return ENOSPC, when
-according to POSIX, EPERM would have been the correct error code to
-propagate.
-
-Switching all truncate drivers is a bit more involved, so for now let's
-treat EPERM and ENOSPC instead when truncate fails to enlarge a file.
-
-Reported-by: Marco Felsch <m.felsch@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c | 2 ++
- 1 file changed, 2 insertions(+)
+ include/printk.h     | 10 ----------
+ lib/list_sort.c      |  5 ++---
+ scripts/bareboxenv.c |  2 +-
+ 3 files changed, 3 insertions(+), 14 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 752688b574a0..c463466e1be0 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -441,6 +441,8 @@ static ssize_t __write(FILE *f, const void *buf, size_t count)
- 	if (f->size != FILE_SIZE_STREAM && f->pos + count > f->size) {
- 		ret = fsdev_truncate(&f->fsdev->dev, f, f->pos + count);
- 		if (ret) {
-+			if (ret == -EPERM)
-+				ret = -ENOSPC;
- 			if (ret != -ENOSPC)
- 				goto out;
- 			count = f->size - f->pos;
+diff --git a/include/printk.h b/include/printk.h
+index 90c45afd9fc7..6f8635fae2c0 100644
+--- a/include/printk.h
++++ b/include/printk.h
+@@ -31,16 +31,6 @@ void __attribute__((noreturn)) panic(const char *fmt, ...);
+ 
+ #define printk			printf
+ 
+-#define printk_once(fmt, ...)					\
+-({								\
+-	static bool __print_once	;			\
+-								\
+-	if (!__print_once) {					\
+-		__print_once = true;				\
+-		printk(fmt, ##__VA_ARGS__);			\
+-	}							\
+-})
+-
+ enum {
+ 	DUMP_PREFIX_NONE,
+ 	DUMP_PREFIX_ADDRESS,
+diff --git a/lib/list_sort.c b/lib/list_sort.c
+index 77ddadb3d6ac..eea87f834ca4 100644
+--- a/lib/list_sort.c
++++ b/lib/list_sort.c
+@@ -4,6 +4,7 @@
+ #include <linux/kernel.h>
+ #define EXPORT_SYMBOL(x)
+ #else
++#define pr_fmt(fmt) "list_sort: " fmt
+ #include <common.h>
+ #include <malloc.h>
+ #endif
+@@ -129,9 +130,7 @@ void list_sort(void *priv, struct list_head *head,
+ 		}
+ 		if (lev > max_lev) {
+ 			if (unlikely(lev >= ARRAY_SIZE(part)-1)) {
+-				printk_once(KERN_DEBUG "list passed to"
+-					" list_sort() too long for"
+-					" efficiency\n");
++				pr_debug_once("list passed to too long for efficient sorting\n");
+ 				lev--;
+ 			}
+ 			max_lev = lev;
+diff --git a/scripts/bareboxenv.c b/scripts/bareboxenv.c
+index f1706a5e175b..e954447015c5 100644
+--- a/scripts/bareboxenv.c
++++ b/scripts/bareboxenv.c
+@@ -20,7 +20,7 @@
+ #include "compiler.h"
+ 
+ #define debug(...)
+-#define printk_once(...)
++#define pr_debug_once(...)
+ 
+ /* Find out if the last character of a string matches the one given.
+  * Don't underrun the buffer if the string length is 0.
 -- 
 2.30.2
 
