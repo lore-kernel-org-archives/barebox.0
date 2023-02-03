@@ -1,53 +1,52 @@
-Delivery-date: Fri, 03 Feb 2023 09:02:24 +0100
+Delivery-date: Fri, 03 Feb 2023 09:03:01 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pNr1e-00CQ6T-95
-	for lore@lore.pengutronix.de; Fri, 03 Feb 2023 09:02:24 +0100
+	id 1pNr2E-00CQ9J-Ng
+	for lore@lore.pengutronix.de; Fri, 03 Feb 2023 09:03:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pNr1b-0002x8-Lm
-	for lore@pengutronix.de; Fri, 03 Feb 2023 09:02:24 +0100
+	id 1pNr2C-00031P-1B
+	for lore@pengutronix.de; Fri, 03 Feb 2023 09:03:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nA4jGSQTM6ugerdjbIlVzDigOl1iuPg8HonEHibJUWQ=; b=vBQ4M8y9FFfAeD9Zb8TxG+Wtkr
-	MKu68SlXMwHLW1OGvB0VITUJ0D04dVV2mIRJX7WLuBSKCMG8FE/9UP0H5t4htsguAMZgIBovFxUPy
-	GYOq+ZmvJGd2cYpQ1JkBnFMz/TF29smzWfHPG9EPJbLzjxaa/ggjhi1lfZ0IlbFYpl+Y06MaQxODi
-	GEy2cBV28Rr7V5ynEpuh/CN3DtuUBBpXjZjfDLYGDda4LGQEgUivCqxI7MuvCQglU2GPl72X1Vd06
-	OLKK8EpE5Tocy3+BzTQ5wm4wQz/B1MVR3ciSFHRRcA9np6Cf2xu6QQG8vzRSfSeFpQ2TlPSJ4K2L6
-	QXp6YYIg==;
+	bh=W85FrwLmNZhXRA4fnCx2aZbAAofIyjvs3JRycICvAAs=; b=fOF7qVmqppgDH1OgbUlkkENgWc
+	/E4LV7GsS4rXK47UDDLeyAGrde06Fg4QzTUaKNDoRbd+bYaqa3pA/Xqz7p4q9kCKYOp4gJBaCUpOf
+	mfXXy+wO3T6KuBQi8ss6rnVEG2xxe8Wumo807bFxC+k9hvt1EzGij0JYnfrOH9+7BIGxOKg8yxIa7
+	6bMIvqfixnjYCnDP3aCDhW/vUJl+zOoI6t+9kouDt8Yw5dN9C7OVcXTVpKY+O3hRWKTJxBnpi/Kx9
+	aXdIBUN+GsmkehVL/BZS76ouzdTNvB6IYa7LrHvHN6e2U9rHZBt7KKTkZfMythT65R8FueADry0R6
+	go9jIU1w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pNr0D-000uPl-T3; Fri, 03 Feb 2023 08:00:58 +0000
+	id 1pNr0x-000ueA-2E; Fri, 03 Feb 2023 08:01:43 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pNr09-000uOg-9F
-	for barebox@lists.infradead.org; Fri, 03 Feb 2023 08:00:54 +0000
+	id 1pNr0s-000ucg-Hv
+	for barebox@lists.infradead.org; Fri, 03 Feb 2023 08:01:40 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pNr08-0002WH-1l; Fri, 03 Feb 2023 09:00:52 +0100
+	id 1pNr0r-0002he-AQ; Fri, 03 Feb 2023 09:01:37 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pNr05-0005So-Um; Fri, 03 Feb 2023 09:00:49 +0100
-Date: Fri, 3 Feb 2023 09:00:49 +0100
+	id 1pNr0r-0005pK-2r; Fri, 03 Feb 2023 09:01:37 +0100
+Date: Fri, 3 Feb 2023 09:01:37 +0100
 To: John Watts <contact@jookia.org>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230203080049.GR13319@pengutronix.de>
-References: <20230201223404.1467998-1-contact@jookia.org>
- <20230202112024.2458085-1-contact@jookia.org>
+Message-ID: <20230203080137.GS13319@pengutronix.de>
+References: <20230202075741.2350028-1-contact@jookia.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230202112024.2458085-1-contact@jookia.org>
+In-Reply-To: <20230202075741.2350028-1-contact@jookia.org>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -55,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230203_000053_347917_2A7CEFA9 
-X-CRM114-Status: GOOD (  24.12  )
+X-CRM114-CacheID: sfid-20230203_000138_630467_7B6B2CE3 
+X-CRM114-Status: GOOD (  24.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,49 +77,67 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] fs: nfs: Error if a port is unregistered
+Subject: Re: [PATCH v4 0/5] Add support for the Kosagi Novena board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Feb 02, 2023 at 10:20:24PM +1100, John Watts wrote:
-> If a server doesn't provide a service the port lookup will return 0.
+On Thu, Feb 02, 2023 at 06:57:37PM +1100, John Watts wrote:
+> This patch series introduces support for the Novena board.
+> This support is basic but enough to boot Barebox.
 > 
-> Check for this, return an appropriate error code and give a hint as to
-> why this might be happening.
+> The EEPROM code here is included in anticipation for reading the features
+> flag in the future when more board features are supported.
 > 
-> This was tested by running NFS with UDP disabled, which seems to be
-> the default in Arch at least.
+> Changes v3 -> v4:
+> - Compressed device tree is now used
+> - Code style fixes
+> - Reworked DDR3 error checking to be more readable
 > 
-> Signed-off-by: John Watts <contact@jookia.org>
-> ---
+> Changes v2 -> v3:
+> - EEPROM data is freed correctly
+> - Add email to copyright headers
+> - Switched license from GPL2 to GPL2+
+> - Dropped get_runtime_offset for device tree
+> - Removed "okay" status from EEPROM in device tree
+> - Moved novena_try_eeprom code in to novena_probe
+> - Other small code re-organizations
+> - Moved OCRAM address to its own separate patch
+> - Moved udelay fix to its own patch
+> 
 > Changes v1 -> v2:
-> - Added error message
-> ---
->  fs/nfs.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+> - The board uses the driver model now
+> - Memory density is now calculated correctly
+> 
+> John Watts (4):
+>   ARM: novena: Add Kosagi Novena board
+>   ARM: novena: Setup RAM using static configuration
+>   ARM: novena: Read Ethernet MAC address from EEPROM
+>   ARM: novena: Use DDR3 information from SPD EEPROM
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/fs/nfs.c b/fs/nfs.c
-> index 446d0f7946..1a0b28442d 100644
-> --- a/fs/nfs.c
-> +++ b/fs/nfs.c
-> @@ -571,6 +571,12 @@ static int rpc_lookup_req(struct nfs_priv *npriv, uint32_t prog, uint32_t ver)
->  
->  	nfs_free_packet(nfs_packet);
->  
-> +	if (port == 0) {
-> +		pr_warn("No UDP port for RPC program %i! "
-> +		        "Is your NFS server TCP only?\n", prog);
-> +		return -ENOENT;
-> +	}
-> +
->  	return port;
->  }
->  
+>  arch/arm/boards/Makefile                      |   1 +
+>  arch/arm/boards/novena/Makefile               |   4 +
+>  arch/arm/boards/novena/board.c                | 109 +++++++++++
+>  arch/arm/boards/novena/ddr_regs.h             | 119 ++++++++++++
+>  .../boards/novena/flash-header-novena.imxcfg  |   6 +
+>  arch/arm/boards/novena/lowlevel.c             | 172 ++++++++++++++++++
+>  arch/arm/configs/imx_v7_defconfig             |   1 +
+>  arch/arm/dts/Makefile                         |   1 +
+>  arch/arm/dts/imx6q-novena.dts                 |  18 ++
+>  arch/arm/mach-imx/Kconfig                     |   9 +
+>  images/Makefile.imx                           |   2 +
+>  11 files changed, 442 insertions(+)
+>  create mode 100644 arch/arm/boards/novena/Makefile
+>  create mode 100644 arch/arm/boards/novena/board.c
+>  create mode 100644 arch/arm/boards/novena/ddr_regs.h
+>  create mode 100644 arch/arm/boards/novena/flash-header-novena.imxcfg
+>  create mode 100644 arch/arm/boards/novena/lowlevel.c
+>  create mode 100644 arch/arm/dts/imx6q-novena.dts
+> 
 > -- 
 > 2.39.1
 > 
