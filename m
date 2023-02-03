@@ -1,52 +1,53 @@
-Delivery-date: Fri, 03 Feb 2023 09:06:56 +0100
+Delivery-date: Fri, 03 Feb 2023 09:17:34 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pNr61-00CQbR-OD
-	for lore@lore.pengutronix.de; Fri, 03 Feb 2023 09:06:56 +0100
+	id 1pNrGG-00CRW0-QS
+	for lore@lore.pengutronix.de; Fri, 03 Feb 2023 09:17:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pNr5y-0003jQ-Ve
-	for lore@pengutronix.de; Fri, 03 Feb 2023 09:06:55 +0100
+	id 1pNrGE-0005MX-1T
+	for lore@pengutronix.de; Fri, 03 Feb 2023 09:17:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iZfL1oNmzgZRJXByIWySf8Kt+b9Y3nauQP9icZFod8s=; b=Ez18S7mMB9ZIZx7mj20ajg616e
-	dQKlxs46WEKsE95pPyiTpb2e7o4RGwGTbyPG3Oy/4mj4R0W/4iV87wLfH78NMMsBKQMGnfbYq3vz3
-	OZGcyAL730d9RjUcgCnerz2SEj1jTL0BT/G7TlgeLwrM3fYGTEAV4fpnK5PAjMgW46q0zBXzu9xN0
-	zsfZ+2qLlnusFvUT9epBREEKoXPlFTq0WR1tD+AqRtk4ro/n3Yn/5btvTGTvV19eTca/v1Vn/IgOw
-	uvtQQGF2w4/FkUXXr88SfirFxg0094tzW3DuL4u7bK8aSZkZKFdyx+ukqkHLT+1HKrw4r3kfheae4
-	pFTkYHxg==;
+	bh=b68JoVhGPckyynPOAk5xuh1y/aeCXNwRMWSGXl4/yUg=; b=qZeStBToFZ3es6h++4mBexlfoN
+	7rIclkmZgDZV/pYxOxngm4CYh9dSsJMR0rtABktjQQkInQ9TncHbn06sf6b40NA4lo58q61dNhQxi
+	hxc6cC6S203IP3K4X+S264Vv2p5wA5gsrHM+I7s6Tm/sjBX3wu2GEve2FTzgdh+GsiWJmuorvexTL
+	Uf8w2mbqu4C/uoNgMzIfqcHtY5+QkhsRFPqZlk4ZrHEErW7KOYib48fG7WRzEBUhdeUIjiVnwisM8
+	HglwpKjiF9lpaBUJHsf5kS4VNdGksufwOydH6kV38YcvrBNI2N/3KDEIu9hF2KhURSlQSG7LZyC7T
+	ZTnnjDOg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pNr4q-000wBR-Ub; Fri, 03 Feb 2023 08:05:45 +0000
+	id 1pNrF2-000yWS-Py; Fri, 03 Feb 2023 08:16:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pNr4l-000w9y-Vo
-	for barebox@lists.infradead.org; Fri, 03 Feb 2023 08:05:41 +0000
+	id 1pNrEx-000yVq-5S
+	for barebox@lists.infradead.org; Fri, 03 Feb 2023 08:16:12 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pNr4k-0003M1-Mt; Fri, 03 Feb 2023 09:05:38 +0100
+	id 1pNrEv-0005Al-9u; Fri, 03 Feb 2023 09:16:09 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pNr4k-0006XO-G4; Fri, 03 Feb 2023 09:05:38 +0100
-Date: Fri, 3 Feb 2023 09:05:38 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	id 1pNrEu-0007Ef-Ng; Fri, 03 Feb 2023 09:16:08 +0100
+Date: Fri, 3 Feb 2023 09:16:08 +0100
+To: Jules Maselbas <jmaselbas@kalray.eu>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230203080538.GV13319@pengutronix.de>
-References: <20230130072057.34349-1-a.fatoum@pengutronix.de>
+Message-ID: <20230203081608.GW13319@pengutronix.de>
+References: <20230123102752.15444-1-jmaselbas@kalray.eu>
+ <20230125153959.21987-1-jmaselbas@kalray.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230130072057.34349-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230125153959.21987-1-jmaselbas@kalray.eu>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +55,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230203_000540_038265_17AA71B2 
-X-CRM114-Status: GOOD (  19.58  )
+X-CRM114-CacheID: sfid-20230203_001611_224996_92CCED4D 
+X-CRM114-Status: GOOD (  35.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,53 +78,164 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 0/3] net: ifup: greatly reduce ifup -a time for
- multiple network interface
+Subject: Re: [PATCH v2] ratp: Fix retransmission for header-only packets
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jan 30, 2023 at 08:20:54AM +0100, Ahmad Fatoum wrote:
-> So far, ifup -a tries to up all non-disabled interfaces in sequence.
-> This can take a quite a while, because interfaces with the link down,
-> will be polled for 10s, before giving up on doing DHCP on them.
-> 
-> This series accelerates this in the common case by doing link up
-> check in parallel, getting down from (number_of_ports_wihout_link * 10s)
-> to 10s and then adds an optimization for the common case of automounts
-> with $global.net.server not set.
-> 
-> Times after eth_open_all has brought up CPU Ethernet and 4 DSA ports:
-> 
->   barebox$ time ifup -a -s # old behavior
->   time: 31081ms
-> 
->   barebox$ time ifup -a
->   time: 10002ms
-> 
->   barebox$ time ifup -a1
->   time: 1072ms
-> 
-> Ahmad Fatoum (3):
->   net: ifup: have ifup -a poll for link up in parallel
->   net: ifup: have ifup -a1 stop at first DHCP-set global.net.server
->   defaultenv-2: automount: use ifup -a1 for NFS/TFTP automounts
+Hi Jules,
 
-Applied, thanks
+On Wed, Jan 25, 2023 at 04:39:59PM +0100, Jules Maselbas wrote:
+> Using sendmsg_current to detect if a packet needs to be retransmitted is
+> brittle as only packets containing data will ever be considered, packets
+> only containing a header (without data) were never being retransmitted.
+> 
+> The sendbuf_len is used to determine if a packets is being send or not,
+> a non-zero length means that a packets is still being in the "try-send"
+> state, the length is not set to zero when a valid SN is received.
+> 
+> Retransmission issue can be easily reproduced with a physical UART (not
+> cdc_acm over USB), by running the following command:
+> 
+>     while ratp-barebox-cli -b 115200 -t /dev/ttyACMx -p; do :; done
+> 
+> Alternatively, it is possible to modify lib/ratp.c to force packets to
+> be sent by the retransmission logic with the following change:
+> 
+>     @ int ratp_send_pkt(struct ratp_internal *ri, void *pkt, int length)
+>                     ri->sendbuf_len = length;
+>     -               ri->retransmission_timer_start = get_time_ns();
+>     +               ri->retransmission_timer_start = get_time_ns() - ri->rto * MSECOND/2;
+>                     ri->retransmission_count = 0;
+>             }
+>     -       return ri->ratp->send(ri->ratp, pkt, length);
+>     +       return 0;
+> 
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> ---
+> changes in v2: reset sendbuf_len to zero where appropriated (in each behavior)
+> 
+> lib/ratp.c | 25 +++++++++++++++++--------
+>  1 file changed, 17 insertions(+), 8 deletions(-)
+
+Is this one still ok to be applied from your side?
+
+This doesn't fix the issue you are mentioning in the other thread,
+right?
 
 Sascha
 
 > 
->  Documentation/user/automount.rst            |   2 +-
->  defaultenv/defaultenv-2-base/boot/net       |   2 +-
->  defaultenv/defaultenv-2-base/init/automount |   4 +-
->  include/net.h                               |   5 +
->  net/eth.c                                   |  28 +++--
->  net/ifup.c                                  | 124 ++++++++++++++++----
->  net/net.c                                   |   7 +-
->  7 files changed, 138 insertions(+), 34 deletions(-)
-> 
+> diff --git a/lib/ratp.c b/lib/ratp.c
+> index ce30223bac..b582e4e779 100644
+> --- a/lib/ratp.c
+> +++ b/lib/ratp.c
+> @@ -738,7 +738,7 @@ static int ratp_behaviour_c2(struct ratp_internal *ri, void *pkt)
+>  		control = RATP_CONTROL_RST | RATP_CONTROL_ACK |
+>  			ratp_set_sn(ratp_an(hdr)) | ratp_set_next_an(ratp_sn(hdr));
+>  		ratp_send_hdr(ri, control);
+> -
+> +		ri->sendbuf_len = 0;
+>  		ratp_state_change(ri, RATP_STATE_CLOSED);
+>  		return 1;
+>  	}
+> @@ -784,7 +784,7 @@ static int ratp_behaviour_d1(struct ratp_internal *ri, void *pkt)
+>  	ri->status = -ECONNREFUSED;
+>  
+>  	pr_debug("Error: connection refused\n");
+> -
+> +	ri->sendbuf_len = 0;
+>  	ratp_state_change(ri, RATP_STATE_CLOSED);
+>  
+>  	return 1;
+> @@ -812,6 +812,8 @@ static int ratp_behaviour_d2(struct ratp_internal *ri, void *pkt)
+>  	ri->status = -ECONNRESET;
+>  
+>  	pr_debug("connection reset\n");
+> +	ri->sendbuf_len = 0;
+> +	ratp_state_change(ri, RATP_STATE_CLOSED);
+>  
+>  	return 0;
+>  }
+> @@ -879,7 +881,7 @@ static int ratp_behaviour_e(struct ratp_internal *ri, void *pkt)
+>  	ratp_send_hdr(ri, control);
+>  
+>  	pr_debug("connection reset\n");
+> -
+> +	ri->sendbuf_len = 0;
+>  	ratp_state_change(ri, RATP_STATE_CLOSED);
+>  
+>  	return 1;
+> @@ -924,8 +926,10 @@ static int ratp_behaviour_f1(struct ratp_internal *ri, void *pkt)
+>  	if (!(hdr->control & RATP_CONTROL_ACK))
+>  		return 1;
+>  
+> -	if (ratp_an_expected(ri, hdr))
+> +	if (ratp_an_expected(ri, hdr)) {
+> +		ri->sendbuf_len = 0; /* packet succesfully received */
+>  		return 0;
+> +	}
+>  
+>  	control = RATP_CONTROL_RST | ratp_set_sn(ratp_an(hdr));
+>  	ratp_send_hdr(ri, control);
+> @@ -971,6 +975,8 @@ static int ratp_behaviour_f2(struct ratp_internal *ri, void *pkt)
+>  		if (ri->sendmsg_current)
+>  			ratp_msg_done(ri, ri->sendmsg_current, 0);
+>  		ri->sendmsg_current = NULL;
+> +		ri->sendbuf_len = 0; /* packet succesfully received */
+> +		pr_debug("Data succesfully sent 0\n");
+>  		return 0;
+>  	} else {
+>  		pr_vdebug("%s: an not expected\n", __func__);
+> @@ -1175,6 +1181,7 @@ static int ratp_behaviour_h3(struct ratp_internal *ri, void *pkt)
+>  		ratp_send_hdr(ri, control);
+>  		ri->status = -ECONNRESET;
+>  		pr_debug("Error: Connection reset\n");
+> +		ri->sendbuf_len = 0;
+>  		ratp_state_change(ri, RATP_STATE_CLOSED);
+>  		return 1;
+>  	}
+> @@ -1217,8 +1224,10 @@ static int ratp_behaviour_h4(struct ratp_internal *ri, void *pkt)
+>  
+>  	pr_debug("%s\n", __func__);
+>  
+> -	if (ratp_an_expected(ri, hdr))
+> +	if (ratp_an_expected(ri, hdr)) {
+> +		ri->sendbuf_len = 0; /* packet succesfully received */
+>  		ratp_state_change(ri, RATP_STATE_CLOSED);
+> +	}
+>  
+>  	return 1;
+>  }
+> @@ -1244,6 +1253,7 @@ static int ratp_behaviour_h5(struct ratp_internal *ri, void *pkt)
+>  	pr_debug("%s\n", __func__);
+>  
+>  	if (ratp_an_expected(ri, hdr)) {
+> +		ri->sendbuf_len = 0; /* packet succesfully received */
+>  		ratp_state_change(ri, RATP_STATE_TIME_WAIT);
+>  		ratp_start_time_wait_timer(ri);
+>  	}
+> @@ -1580,9 +1590,8 @@ int ratp_poll(struct ratp *ratp)
+>  		}
+>  	}
+>  
+> -	if (ri->sendmsg_current && is_timeout(ri->retransmission_timer_start,
+> +	if (ri->sendbuf_len && is_timeout(ri->retransmission_timer_start,
+>  	    ri->rto * MSECOND)) {
+> -
+>  		ri->retransmission_count++;
+>  		if (ri->retransmission_count == ri->max_retransmission) {
+>  			ri->status = ret = -ETIMEDOUT;
+> @@ -1601,7 +1610,7 @@ int ratp_poll(struct ratp *ratp)
+>  			goto out;
+>  	}
+>  
+> -	if (!ri->sendmsg_current && !list_empty(&ri->sendmsg))
+> +	if (ri->sendbuf_len == 0 && !list_empty(&ri->sendmsg))
+>  		ratp_send_next_data(ri);
+>  
+>  	ret = 0;
 > -- 
-> 2.30.2
+> 2.17.1
 > 
 > 
 > 
