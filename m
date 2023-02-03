@@ -1,52 +1,53 @@
-Delivery-date: Fri, 03 Feb 2023 09:01:56 +0100
+Delivery-date: Fri, 03 Feb 2023 09:02:24 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pNr1B-00CQ40-OX
-	for lore@lore.pengutronix.de; Fri, 03 Feb 2023 09:01:56 +0100
+	id 1pNr1e-00CQ6T-95
+	for lore@lore.pengutronix.de; Fri, 03 Feb 2023 09:02:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pNr18-0002jv-P6
-	for lore@pengutronix.de; Fri, 03 Feb 2023 09:01:55 +0100
+	id 1pNr1b-0002x8-Lm
+	for lore@pengutronix.de; Fri, 03 Feb 2023 09:02:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7xAV/sLETd6P5TQEles6E/zemcXO4IiKEAG0WIGJ9hU=; b=rZkJE1AAWaD9Q2lViGy8ShfJR5
-	MEbfwLH+1DONrOg9qtQSPYT8itrTpGJuboAOQp1jA/LUcVkBGB7kfDHxu6KeSnzOLWNVtYkKaX6xp
-	0GAKmRQTqxQo8ZkXNGaESQF14kfrT8ppT2n5VywqPL82CBufwtpKlm3Tnt1FAKAQAfpP450VHN/sv
-	YsCobYw0pdx1nLkaOoTgOqQwJNYIV0RJLs8WO30z7zQ4zlNw1EdQDwPp0W+yLngKUDD/P1Cb4d+nU
-	zuPqvN850vnpNaGLWnd7vyWupjTolCpet+R8VBd6wdYYXpiApbD6879nMC5cTNSRFEGlT7r+Zm48w
-	GGrTlBrQ==;
+	bh=nA4jGSQTM6ugerdjbIlVzDigOl1iuPg8HonEHibJUWQ=; b=vBQ4M8y9FFfAeD9Zb8TxG+Wtkr
+	MKu68SlXMwHLW1OGvB0VITUJ0D04dVV2mIRJX7WLuBSKCMG8FE/9UP0H5t4htsguAMZgIBovFxUPy
+	GYOq+ZmvJGd2cYpQ1JkBnFMz/TF29smzWfHPG9EPJbLzjxaa/ggjhi1lfZ0IlbFYpl+Y06MaQxODi
+	GEy2cBV28Rr7V5ynEpuh/CN3DtuUBBpXjZjfDLYGDda4LGQEgUivCqxI7MuvCQglU2GPl72X1Vd06
+	OLKK8EpE5Tocy3+BzTQ5wm4wQz/B1MVR3ciSFHRRcA9np6Cf2xu6QQG8vzRSfSeFpQ2TlPSJ4K2L6
+	QXp6YYIg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pNqzd-000uDr-IH; Fri, 03 Feb 2023 08:00:21 +0000
+	id 1pNr0D-000uPl-T3; Fri, 03 Feb 2023 08:00:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pNqzW-000uBj-62
-	for barebox@lists.infradead.org; Fri, 03 Feb 2023 08:00:17 +0000
+	id 1pNr09-000uOg-9F
+	for barebox@lists.infradead.org; Fri, 03 Feb 2023 08:00:54 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pNqzU-0002L8-Qy; Fri, 03 Feb 2023 09:00:12 +0100
+	id 1pNr08-0002WH-1l; Fri, 03 Feb 2023 09:00:52 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pNqzU-00059O-JU; Fri, 03 Feb 2023 09:00:12 +0100
-Date: Fri, 3 Feb 2023 09:00:12 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Marco Felsch <m.felsch@pengutronix.de>
-Message-ID: <20230203080012.GQ13319@pengutronix.de>
-References: <20230202132734.314110-1-a.fatoum@pengutronix.de>
+	id 1pNr05-0005So-Um; Fri, 03 Feb 2023 09:00:49 +0100
+Date: Fri, 3 Feb 2023 09:00:49 +0100
+To: John Watts <contact@jookia.org>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230203080049.GR13319@pengutronix.de>
+References: <20230201223404.1467998-1-contact@jookia.org>
+ <20230202112024.2458085-1-contact@jookia.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230202132734.314110-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230202112024.2458085-1-contact@jookia.org>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +55,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230203_000014_271540_371BDCE6 
-X-CRM114-Status: GOOD (  24.68  )
+X-CRM114-CacheID: sfid-20230203_000053_347917_2A7CEFA9 
+X-CRM114-Status: GOOD (  24.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,58 +78,51 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] fs: align write return codes with POSIX
+Subject: Re: [PATCH v2] fs: nfs: Error if a port is unregistered
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Feb 02, 2023 at 02:27:34PM +0100, Ahmad Fatoum wrote:
-> Writing past end of a file results in a cryptic error code:
+On Thu, Feb 02, 2023 at 10:20:24PM +1100, John Watts wrote:
+> If a server doesn't provide a service the port lookup will return 0.
 > 
->   barebox@board:/ cp /dev/zero /dev/mmc0.part
->   write: Operation not permitted
->   cp: Operation not permitted
+> Check for this, return an appropriate error code and give a hint as to
+> why this might be happening.
 > 
-> Because the cdev's truncate is not implemented and as such partition
-> can't be increased in size. POSIX specifies EPERM as the correct return
-> code for truncate(2) in such a situation, but for write(2) it is ENOSPC.
-> Thus most truncate callbacks in barebox instead return ENOSPC, when
-> according to POSIX, EPERM would have been the correct error code to
-> propagate.
+> This was tested by running NFS with UDP disabled, which seems to be
+> the default in Arch at least.
 > 
-> Switching all truncate drivers is a bit more involved, so for now let's
-> treat EPERM and ENOSPC instead when truncate fails to enlarge a file.
-> 
-> Reported-by: Marco Felsch <m.felsch@pengutronix.de>
-> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: John Watts <contact@jookia.org>
 > ---
-> v1 -> v2:
->   - fix commit message title (s/truncate/write/)
->   - added Marco's Reviewed-by
+> Changes v1 -> v2:
+> - Added error message
 > ---
->  fs/fs.c | 2 ++
->  1 file changed, 2 insertions(+)
+>  fs/nfs.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
 
-Updated to this version of the patch.
+Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/fs/fs.c b/fs/fs.c
-> index 752688b574a0..c463466e1be0 100644
-> --- a/fs/fs.c
-> +++ b/fs/fs.c
-> @@ -441,6 +441,8 @@ static ssize_t __write(FILE *f, const void *buf, size_t count)
->  	if (f->size != FILE_SIZE_STREAM && f->pos + count > f->size) {
->  		ret = fsdev_truncate(&f->fsdev->dev, f, f->pos + count);
->  		if (ret) {
-> +			if (ret == -EPERM)
-> +				ret = -ENOSPC;
->  			if (ret != -ENOSPC)
->  				goto out;
->  			count = f->size - f->pos;
+> diff --git a/fs/nfs.c b/fs/nfs.c
+> index 446d0f7946..1a0b28442d 100644
+> --- a/fs/nfs.c
+> +++ b/fs/nfs.c
+> @@ -571,6 +571,12 @@ static int rpc_lookup_req(struct nfs_priv *npriv, uint32_t prog, uint32_t ver)
+>  
+>  	nfs_free_packet(nfs_packet);
+>  
+> +	if (port == 0) {
+> +		pr_warn("No UDP port for RPC program %i! "
+> +		        "Is your NFS server TCP only?\n", prog);
+> +		return -ENOENT;
+> +	}
+> +
+>  	return port;
+>  }
+>  
 > -- 
-> 2.30.2
+> 2.39.1
 > 
 > 
 > 
