@@ -1,58 +1,50 @@
-Delivery-date: Mon, 06 Feb 2023 14:47:43 +0100
+Delivery-date: Mon, 06 Feb 2023 22:02:17 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pP1qS-00G0Xm-Ux
-	for lore@lore.pengutronix.de; Mon, 06 Feb 2023 14:47:43 +0100
+	id 1pP8d1-00GKhb-7u
+	for lore@lore.pengutronix.de; Mon, 06 Feb 2023 22:02:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pP1qQ-0006oj-96
-	for lore@pengutronix.de; Mon, 06 Feb 2023 14:47:42 +0100
+	id 1pP8cy-0006U7-3r
+	for lore@pengutronix.de; Mon, 06 Feb 2023 22:02:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=6NnrQHf3qi1cRNq2iUB34/2oQjEWWGdMPig4MIz5ZUs=; b=4DLqS7dJQbS1l6NBJ19rW+v1aC
-	s/Lyx0ZiuDC6mCszouoT4Jp7ByQuDshEMXEKO4z4g3rGt+raZIxFoR1wZnMO+6rWbGVjz6tCzsT+0
-	Pb/ZKo8HRW9lA0OrfEyyrnkAu4hZCPf94ABY+HQAtpJuYY9yBavlM5pSepT9EtpA4o2zNg8Wy4N57
-	ezF9Pe1bP1Wci6Gg1ODK3tB5MHbPDy+Pccol5qA4wnmOSpDvqAFezm6yPNrOPHe8/EDxzApffMUvf
-	faf67vK/FvD3mkY1vnBvzl6wvCY/9JkkxPGgC5GF/pktpM8InoE2eyu2spgG96XOl2AlNAt5X5q1N
-	aXR4JL5w==;
+	bh=J8pHf8xN4cUMN+j67kHdzvcSYtJ1GKuonoLEowJlN9w=; b=EvwzX/AZWoLwXUGxesxUS8aNqJ
+	j9SKc6TQG7/kpPDesuXUW/wVP3ErGex09WDorjGeQphD5QfyQgM4XPYMKQ//yRLoQxx+dccr0QbIv
+	rl/YwcTX8jYNLRpu5cow6eSf9J1iS7zwhbuMJRK3dqx8ZI6zNb8YfQUZji6KXqPkfMtbJcJxd4QyR
+	vBg5u50fFoDXDFkEiQUr8wCLGcd7Y5OrEdbArMIo81XweGmsOd8dInzzeo8kF4MNuRnLqHTy4XKZz
+	GCBmqlPPbCa8IWH6y1pGaWW7UcwZY+qW2jEJLID01CBu3SgvGZbD86kAbM5CpscpHxMM77jBQQBnB
+	aPfFuMcw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pP1oy-008f1w-Nl; Mon, 06 Feb 2023 13:46:12 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
-	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pP1os-008f0G-Je
-	for barebox@lists.infradead.org; Mon, 06 Feb 2023 13:46:09 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1pP1ol-0006Qy-LX; Mon, 06 Feb 2023 14:45:59 +0100
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1pP1oj-0034cK-QM; Mon, 06 Feb 2023 14:45:59 +0100
-Received: from rhi by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1pP1ok-00DXkc-7H; Mon, 06 Feb 2023 14:45:58 +0100
-From: Roland Hieber <rhi@pengutronix.de>
+	id 1pP8b7-009vSd-Bd; Mon, 06 Feb 2023 21:00:21 +0000
+Received: from ns.lynxeye.de ([87.118.118.114] helo=lynxeye.de)
+	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pP8au-009vPx-ED
+	for barebox@lists.infradead.org; Mon, 06 Feb 2023 21:00:10 +0000
+Received: by lynxeye.de (Postfix, from userid 501)
+	id 26581E74012; Mon,  6 Feb 2023 21:59:32 +0100 (CET)
+Received: from astat.fritz.box (a89-183-230-33.net-htp.de [89.183.230.33])
+	by lynxeye.de (Postfix) with ESMTPA id 3E856E74008
+	for <barebox@lists.infradead.org>; Mon,  6 Feb 2023 21:59:31 +0100 (CET)
+From: Lucas Stach <l.stach@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Roland Hieber <rhi@pengutronix.de>
-Date: Mon,  6 Feb 2023 14:45:51 +0100
-Message-Id: <20230206134551.3227602-1-rhi@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+Date: Mon,  6 Feb 2023 21:59:28 +0100
+Message-Id: <20230206205928.627270-1-l.stach@pengutronix.de>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230206_054606_668130_F3F34621 
-X-CRM114-Status: GOOD (  10.72  )
+X-CRM114-CacheID: sfid-20230206_130008_684552_680C000A 
+X-CRM114-Status: GOOD (  11.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,61 +62,44 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] Documentation: networking: improve net.* variable description
+Subject: [PATCH] ARM: i.MX8MP-EVK: increase VDD_ARM to OD voltage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
----
- Documentation/user/booting-linux.rst |  2 ++
- Documentation/user/networking.rst    | 10 ++++++----
- 2 files changed, 8 insertions(+), 4 deletions(-)
+The Linux kernel or whatever is started from Barebox might switch the
+ARM frequency to OD level, without first reprogramming the PMIC as
+required. This might lead to system instability. To avoid this,
+increase VDD_ARM to OD level. When the kernel handles the PMIC properly
+it will drop the voltage back to ND level when appropriate.
 
-diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
-index 60babb513cea..1a95f87e77c4 100644
---- a/Documentation/user/booting-linux.rst
-+++ b/Documentation/user/booting-linux.rst
-@@ -232,6 +232,8 @@ device where the entry is found on. This makes it possible to use the same rootf
- image on different devices without having to specify a different root= option each
- time.
- 
-+.. _booting_linux_net:
-+
- Network boot
- ------------
- 
-diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
-index 9231ebde56ac..2306cb6a60d1 100644
---- a/Documentation/user/networking.rst
-+++ b/Documentation/user/networking.rst
-@@ -45,15 +45,17 @@ device:
- |                              |              | any directly visible subnet. May be set        |
- |                              |              | automatically by DHCP.                         |
- +------------------------------+--------------+------------------------------------------------+
--| global.net.server            | hostname or  | The default server. If unspecified, may be set |
--|                              | ipv4 address | by DHCP                                        |
-+| global.net.server            | hostname or  | The default server used by the defaultenv boot |
-+|                              | ipv4 address | scripts for NFS and TFTP; see                  |
-+|                              |              | :ref:`booting_linux_net`.                      |
-+|                              |              | If unspecified, may be set by DHCP.            |
- +------------------------------+--------------+------------------------------------------------+
- | global.net.nameserver        | ipv4 address | The DNS server used for resolving host names.  |
--|                              |              | May be set by DHCP                             |
-+|                              |              | May be set by DHCP.                            |
- +------------------------------+--------------+------------------------------------------------+
- | global.net.ifup_force_detect | boolean      | Set to true if your network device is not      |
- |                              |              | detected automatically during start (i.e. for  |
--|                              |              | USB network adapters)                          |
-+|                              |              | USB network adapters).                         |
- +------------------------------+--------------+------------------------------------------------+
- 
- The first step for networking is configuring the network device. The network
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+---
+ arch/arm/boards/nxp-imx8mp-evk/lowlevel.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
+index 3cb24df1ca3f..d6fc32e65b61 100644
+--- a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
+@@ -61,6 +61,12 @@ static struct pmic_config pca9450_cfg[] = {
+ 	{ PCA9450_BUCK1OUT_DVS0, 0x1C },
+ 	{ PCA9450_BUCK1OUT_DVS1, 0x14 },
+ 	{ PCA9450_BUCK1CTRL, 0x59 },
++	/*
++	 * Increase VDD_ARM to 0.95V to avoid issues in case software after
++	 * Barebox switches to the OD ARM frequency without reprogramming the
++	 * PMIC first.
++	 */
++	{ PCA9450_BUCK2OUT_DVS0, 0x1C },
+ 	/* set WDOG_B_CFG to cold reset */
+ 	{ PCA9450_RESET_CTRL, 0xA1 },
+ };
 -- 
-2.30.2
+2.39.1
 
 
 
