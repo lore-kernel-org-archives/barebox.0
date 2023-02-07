@@ -1,54 +1,58 @@
-Delivery-date: Tue, 07 Feb 2023 10:56:16 +0100
+Delivery-date: Tue, 07 Feb 2023 11:26:16 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pPKi2-00GtZw-CR
-	for lore@lore.pengutronix.de; Tue, 07 Feb 2023 10:56:16 +0100
+	id 1pPLB4-00GvDu-7m
+	for lore@lore.pengutronix.de; Tue, 07 Feb 2023 11:26:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pPKhz-0005SK-Mu
-	for lore@pengutronix.de; Tue, 07 Feb 2023 10:56:16 +0100
+	id 1pPLB1-0001Ja-5P
+	for lore@pengutronix.de; Tue, 07 Feb 2023 11:26:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=RGceKyZfLw1Q5SayCjR0+bUnawSXTRRUfFtSOZMDWwc=; b=1EaXF/mUYi9CY53SOmA3jnGkdu
-	ZIaybaBYuYvSPum5+AQLR0kYI1uGrL8YP84e0p/i9usoMymdJD9j1zMXxE8T9CPRcO/JJhh9Xdqev
-	EPjB2H9t1DnH0b8H7zNkGsxjjsF+c+9MxbOitgQJx2AHqrQiiZdSWNtbWO7NhNWdLjNU9ealrMbdW
-	MjHeS7einSUf2mjom0WSbS4i2YBLoGK1eU7lhuQ8gbPJUgXIYooPhVJ009y1L8Z9g6ubOoyrnk/qs
-	4U2tgTgzVqJFbROvCOalgS7en8AgKjv2VBG1MgpGAJPUIY00wMX9fj8PGYIGMzV6BzVXh/Tpq6MWz
-	pKfHYieg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=wQOV9X9zsvnFnf0vHM/4Jddv6YGaAn0NWe63p0FP+fg=; b=KyGMtbx9SEpccu2IlEs7+pRbej
+	m3K1u3wjfIkLvMvZ2AcmdKSXWx1PuPqAf5np94HjSoddWlR7/j1jAiqkHtZUt73bPHn8WVKIwlLgq
+	WBQ681mLVC1UklPBHniibQw2v5NzAn0+5gUmhIjwPetfFwITXi428SPuLT4vodeuuAzX4IH36gXGR
+	b64upOb2WPDUYRIzEDEX4UmxSHzmEJ8XBszpezizBQs7NLS0atk+Xz/ov9xaM7zGr0PIJoS8wlsxH
+	hYE97yWriGFNd0TX8XSMZouFC29NWIo5ADJdxEyPjTPfNnRM63L9RH79S6MHQhSN4WbeqIDuwpF69
+	wR2AUebg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pPKgM-00Bara-LR; Tue, 07 Feb 2023 09:54:34 +0000
+	id 1pPL9V-00Bh1V-Is; Tue, 07 Feb 2023 10:24:41 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pPKgH-00BapB-I2
-	for barebox@lists.infradead.org; Tue, 07 Feb 2023 09:54:31 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pPKgA-00055e-Fq; Tue, 07 Feb 2023 10:54:22 +0100
-Message-ID: <5cfc32b4-21d1-35fd-eb33-037471dd1960@pengutronix.de>
-Date: Tue, 7 Feb 2023 10:54:22 +0100
+	id 1pPL9R-00Bh0L-0R
+	for barebox@lists.infradead.org; Tue, 07 Feb 2023 10:24:38 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1pPL9N-0000un-SB; Tue, 07 Feb 2023 11:24:33 +0100
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1pPL9N-0007OB-LM; Tue, 07 Feb 2023 11:24:33 +0100
+Date: Tue, 7 Feb 2023 11:24:33 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230207102433.xihwow72fcxb6vzk@pengutronix.de>
+References: <20230206210004.627338-1-l.stach@pengutronix.de>
+ <20230206210004.627338-2-l.stach@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.1
-To: Lucas Stach <l.stach@pengutronix.de>, barebox@lists.infradead.org
-References: <20230206205928.627270-1-l.stach@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230206205928.627270-1-l.stach@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230206210004.627338-2-l.stach@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230207_015429_625899_7E536F18 
-X-CRM114-Status: GOOD (  22.37  )
+X-CRM114-CacheID: sfid-20230207_022437_066024_F14DDE84 
+X-CRM114-Status: GOOD (  16.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,57 +70,58 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX8MP-EVK: increase VDD_ARM to OD voltage
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 2/3] ARM: i.MX8M: esdctl: use common compatible to detect
+ i.MX8M* DDRC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Lucas,
+Hi Lucas,
 
-On 06.02.23 21:59, Lucas Stach wrote:
-> The Linux kernel or whatever is started from Barebox might switch the
-> ARM frequency to OD level, without first reprogramming the PMIC as
-> required. This might lead to system instability. To avoid this,
-> increase VDD_ARM to OD level. When the kernel handles the PMIC properly
-> it will drop the voltage back to ND level when appropriate.
+On 23-02-06, Lucas Stach wrote:
+> All i.MX8M* DDRC nodes are compatible to "fsl,imx8m-ddrc". As the memory
+> size detection works the same on all of them, there is no need to match
+> the more specific compatible.
 > 
 > Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
 > ---
->  arch/arm/boards/nxp-imx8mp-evk/lowlevel.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  arch/arm/mach-imx/esdctl.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
 > 
-> diff --git a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-> index 3cb24df1ca3f..d6fc32e65b61 100644
-> --- a/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-> +++ b/arch/arm/boards/nxp-imx8mp-evk/lowlevel.c
-> @@ -61,6 +61,12 @@ static struct pmic_config pca9450_cfg[] = {
->  	{ PCA9450_BUCK1OUT_DVS0, 0x1C },
->  	{ PCA9450_BUCK1OUT_DVS1, 0x14 },
->  	{ PCA9450_BUCK1CTRL, 0x59 },
-> +	/*
-> +	 * Increase VDD_ARM to 0.95V to avoid issues in case software after
-> +	 * Barebox switches to the OD ARM frequency without reprogramming the
-> +	 * PMIC first.
-> +	 */
-> +	{ PCA9450_BUCK2OUT_DVS0, 0x1C },
+> diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+> index 043de477a77d..2a2bc5205301 100644
+> --- a/arch/arm/mach-imx/esdctl.c
+> +++ b/arch/arm/mach-imx/esdctl.c
+> @@ -732,13 +732,7 @@ static __maybe_unused struct of_device_id imx_esdctl_dt_ids[] = {
+>  		.compatible = "fsl,vf610-ddrmc",
+>  		.data = &vf610_data
+>  	}, {
+> -		.compatible = "fsl,imx8mm-ddrc",
+> -		.data = &imx8mq_data
+> -	}, {
+> -		.compatible = "fsl,imx8mn-ddrc",
+> -		.data = &imx8mn_data
 
-We use the same PMIC on nxp-imx8mn-evk and newer nxp-imx8mm-evk
-as well. Should we do this there too? Do we need to change something
-for the i.MX8M boards using Rohm PMICs?
+The i.MX8M Nano uses a 16bit bus width according the data. I don't have
+the datasheet right now to check this. But this commit will change it to
+32 bit, is this allowed?
 
->  	/* set WDOG_B_CFG to cold reset */
->  	{ PCA9450_RESET_CTRL, 0xA1 },
->  };
+Regards,
+  Marco
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+> -	}, {
+> -		.compatible = "fsl,imx8mq-ddrc",
+> +		.compatible = "fsl,imx8m-ddrc",
+>  		.data = &imx8mq_data
+>  	}, {
+>  		.compatible = "fsl,imx7d-ddrc",
+> -- 
+> 2.39.1
+> 
+> 
+> 
 
 
