@@ -1,75 +1,75 @@
-Delivery-date: Tue, 07 Feb 2023 02:07:40 +0100
+Delivery-date: Tue, 07 Feb 2023 02:07:42 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pPCST-00GWGb-Sz
-	for lore@lore.pengutronix.de; Tue, 07 Feb 2023 02:07:40 +0100
+	id 1pPCSW-00GWH7-CE
+	for lore@lore.pengutronix.de; Tue, 07 Feb 2023 02:07:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pPCSR-0007GU-6Z
-	for lore@pengutronix.de; Tue, 07 Feb 2023 02:07:39 +0100
+	id 1pPCST-0007H7-Nj
+	for lore@pengutronix.de; Tue, 07 Feb 2023 02:07:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Xox/8Ls3V7xJ+IgRLWVBh7fSZQcWBsPmqrjxreT94h0=; b=PrTQXNDmbqIIJXREmOb25RVPec
-	z8nq6Crmd14VQG2avLNn88KehZnCho7u2G2MDtxvF88LqBHYad0noIoy+sQ2e5zd2ySULJnmthMQs
-	p8h+sbwm4RNqKm0JTgHPqDqImUgB7L3AiZN2/2ZR2tpSeUnONhc2l2XT4Fen9CJE1jSvLBjGq/CJg
-	h01J+zYgtw7QK41iJhLlX0nrJfPJGIsc3eSBNJROhrWL7C1lfUKST4IYa+DrRZI1AFIGlDRTspV1K
-	vmRvz3wETUMIyNfejue+Qf9Zrg03adVULnAd2b6EL/zlM+9wdNn37UkZxrYZTMnkKi+Asq4TL0Alg
-	kFNoQO3A==;
+	bh=bWPFv/fH0042ahP8ziopn3TZl43tGSWRgYXSHxbz5zk=; b=Q945RdG1NivPyDdlkhuklLaq2a
+	BDKIW+jEj25sEoDi3C3p4dAcnRa0Ev3+EqauFtHE9eneYAdV1seddoC9+LpgJqiAzfNS1UiUojZ6N
+	RBJklocpw+IXbOlVUg08XEgcXXXUUMMm1ibJMh2mcQ2Ildp0nldY7kNWfmKi3qV+MnYBErIjlYIJW
+	gbERFqgKsRYGEuxe6WUlNiwNAGNyspEkL6/nsJwVLoXBPad4LcGm0eU8b3fiGdgLrnoqrZuBITJcN
+	pJyNsRuYgYVsQiG5DbygCtDuEaQG2J+qacMFzGJAUuiwf8Y6F/XyeoYrwLBaVrRR/FjwNEjdt35T+
+	IRrt0hPA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pPCRI-00AKKV-NX; Tue, 07 Feb 2023 01:06:28 +0000
-Received: from mail-ej1-x636.google.com ([2a00:1450:4864:20::636])
+	id 1pPCRL-00AKLf-CP; Tue, 07 Feb 2023 01:06:31 +0000
+Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pPCRD-00AKIY-EL
-	for barebox@lists.infradead.org; Tue, 07 Feb 2023 01:06:24 +0000
-Received: by mail-ej1-x636.google.com with SMTP id hr39so9711586ejc.7
-        for <barebox@lists.infradead.org>; Mon, 06 Feb 2023 17:06:22 -0800 (PST)
+	id 1pPCRF-00AKJC-7B
+	for barebox@lists.infradead.org; Tue, 07 Feb 2023 01:06:26 +0000
+Received: by mail-ej1-x632.google.com with SMTP id mf7so39300399ejc.6
+        for <barebox@lists.infradead.org>; Mon, 06 Feb 2023 17:06:24 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Xox/8Ls3V7xJ+IgRLWVBh7fSZQcWBsPmqrjxreT94h0=;
-        b=dO+2UjeJ8XbSkTOW3OKSTvdRj1S8AB+bI/ePLumio/Dl/bUfPR1Pw4L+wLhb4hqroD
-         Jc3mlm3s/yd03W8DCUp3pPXH1ismmFCebtJ6Ells6givpCm0HUAWWpm0eFngHJEmIPX2
-         2edq4CcN+/hGehvMeKzll9tW4MWmeCNM24EbDzyoINpVGVq9JKNN2Wi3mYoXYjzdB07L
-         SVRZR3OYDTs9yPCfK1r2HQAjmmzcB/cOyi2WozEt61V4i923WKhE0yccM9TH1PHCx+0W
-         FP8kEqVSpJHgWX4qL68czlYCFO18P0YnA/GLbm34nsDTnDzAthXJf3Ol0afDjZ0JZeua
-         D5sg==
+        bh=bWPFv/fH0042ahP8ziopn3TZl43tGSWRgYXSHxbz5zk=;
+        b=PlAT9i47EGKYdlRqsY7JgjlBEP2QiDcrqs2yxwi6W2VwLvL57/mxXOpLXtb3eiwj9P
+         eXvu6o/wywN+VQN1UyIun5x41bta7hFfoYUEOTR9lMoQwS0o3ZVQQ/U2Qixgirwpf0Jv
+         AdO6JpPYo4yJH0LQou0Bzr56EtwKEDn8e442biraHWq0+pukLl7bBLgj5+y1An9esvQh
+         bAHZmwDUrQWnSBAAAiVhxAdvsjjJqU/Xintx3nOXBNFi15MZjHQXjwztEPSwER08DwnQ
+         bafLBmXmGoIfSQ/RXZR+ZQOLl/nQP9Z+AA32OrMGyBGzP6hm/4+uVUtgxpIhNlj/XQaq
+         VBpA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Xox/8Ls3V7xJ+IgRLWVBh7fSZQcWBsPmqrjxreT94h0=;
-        b=xqD5JJun+9FepIGyV2cQ/Lh9ekoW1NOSIVTeOSf9vRxD07vQ5ceZrvMKFJv9+Z+Vck
-         4fDBFlLQe2wA+nW+UhS3ygcjPch1xOuCeiXcd+M9u1R4gIiSejKVl8GmAthG2l55Wutj
-         j7QZXlCD8+2vd7iJ91jVzP8ZhJ4oLsS+j6O32oyrO8kESZrHbkyQQQQPxEwElN8BwkYy
-         ILPiaPntGGKMvodLwx7WR+kxjHYKVvlzKT40d+K/0hT5b0uWwEhCAf9Cw7/slzwqEfBd
-         BiHn36soi4HHs/79cirIK5RBxyumvZfux+jW2hfJNvl/pRf1UDyM1JeDivX0ymtQ6Ur9
-         Fg3Q==
-X-Gm-Message-State: AO0yUKVbeBvcqc1OKQqT8eMgbIgYwmYEqYdQxIEvV19M9zbP1W4RWIoN
-	1B93ZhLfXoPn2EGB+m9nD5hqoUDf1sY=
-X-Google-Smtp-Source: AK7set+CnIdFSQTFSS+pKTWNtcF78s+O5InElTnYDtRDgx4+nls/JFudInxfCLTeQdUdunbGNdg+Ow==
-X-Received: by 2002:a17:907:208c:b0:878:8249:bef6 with SMTP id pv12-20020a170907208c00b008788249bef6mr1190646ejb.59.1675731981181;
-        Mon, 06 Feb 2023 17:06:21 -0800 (PST)
+        bh=bWPFv/fH0042ahP8ziopn3TZl43tGSWRgYXSHxbz5zk=;
+        b=iOXDfyE6xMI1qyuRmthxY2g4cYpCiuAeslunSxH7BCTTNH/+L2u7XKvJ+RkoX5/lhJ
+         qRhr4vuvlyFhp0NAEefKdXzS3RRulH9TB4a0bcGPlMS3Gbh1uvz3S4eCwY6WO0PQKICB
+         HrduR0+pcvD+0qu4zBFopHHQCrx7IrxhzKQIFPC/JVqVroE2PmEH42SpWssWo8Pdb01d
+         HTVXul77hrH7F8RpT57qd68Kt3GlCMEv+t+IgM9e69QoP2HbodZ4vqbRZafGgLp/gVVG
+         YzlTmamFKjZj8w3Eige5qRYuEgg1Vl29VwCGkMFxo26XWM2uZnqBYn2s/wpXZ3nFTR8c
+         IXqw==
+X-Gm-Message-State: AO0yUKXtQlWhEpXn0lfj/3LAywaDFjstLHHrPGVVDUPr2ppXTpksOW9B
+	uGhnMxnRJQELsUUHakb4kkdIOAB+Tzo=
+X-Google-Smtp-Source: AK7set+2SLdZKvv7cgvVpOx5oi72EcINIwzdd+FGzkqiE9OOeXAUanzIn6CeeOscXz3/NI76xbllKA==
+X-Received: by 2002:a17:906:2f81:b0:888:a29:b645 with SMTP id w1-20020a1709062f8100b008880a29b645mr1366906eji.64.1675731982998;
+        Mon, 06 Feb 2023 17:06:22 -0800 (PST)
 Received: from localhost.localdomain (ip-78-45-34-87.bb.vodafone.cz. [78.45.34.87])
-        by smtp.gmail.com with ESMTPSA id f18-20020a170906391200b0088a9e083318sm6078754eje.168.2023.02.06.17.06.20
+        by smtp.gmail.com with ESMTPSA id f18-20020a170906391200b0088a9e083318sm6078754eje.168.2023.02.06.17.06.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 06 Feb 2023 17:06:20 -0800 (PST)
+        Mon, 06 Feb 2023 17:06:22 -0800 (PST)
 From: =?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>
 To: barebox@lists.infradead.org
 Cc: =?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>
-Date: Tue,  7 Feb 2023 02:05:22 +0100
-Message-Id: <20230207010525.2693-3-danek.brat@gmail.com>
+Date: Tue,  7 Feb 2023 02:05:24 +0100
+Message-Id: <20230207010525.2693-5-danek.brat@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20230207010525.2693-1-danek.brat@gmail.com>
 References: <20230207010525.2693-1-danek.brat@gmail.com>
@@ -77,8 +77,8 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230206_170623_504078_489C4E88 
-X-CRM114-Status: GOOD (  15.41  )
+X-CRM114-CacheID: sfid-20230206_170625_290228_920A5F3C 
+X-CRM114-Status: GOOD (  10.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,145 +101,66 @@ X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 2/5] ARM: rpi: add serial number readout
+Subject: [PATCH 4/5] ARM: rpi: add machine-id support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Remove querying for serial-number node from vc fdt, since it's not
-guaranteed to always be there (older firmwares dont provide it).
-Instead, retrieve board's serial number via the mbox api.
+Pass board's serial number as hashable for machine-id generation and
+enable machine-id support for rpi platform by default.
 
 Signed-off-by: Daniel Brát <danek.brat@gmail.com>
 ---
- arch/arm/boards/raspberry-pi/lowlevel.h     |  1 +
- arch/arm/boards/raspberry-pi/mbox-helpers.c | 27 +++++++++++++++++++++
- arch/arm/boards/raspberry-pi/rpi-common.c   | 21 +++++++++++-----
- arch/arm/mach-bcm283x/include/mach/mbox.h   | 13 ++++++++++
- 4 files changed, 56 insertions(+), 6 deletions(-)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 4 ++++
+ arch/arm/configs/rpi_defconfig            | 1 +
+ arch/arm/configs/rpi_v8a_defconfig        | 1 +
+ 3 files changed, 6 insertions(+)
 
-diff --git a/arch/arm/boards/raspberry-pi/lowlevel.h b/arch/arm/boards/raspberry-pi/lowlevel.h
-index 260f96c714..d2699b9b08 100644
---- a/arch/arm/boards/raspberry-pi/lowlevel.h
-+++ b/arch/arm/boards/raspberry-pi/lowlevel.h
-@@ -12,5 +12,6 @@
- ssize_t rpi_get_arm_mem(void);
- int rpi_get_ethaddr(u8 mac[6]);
- int rpi_get_board_rev(void);
-+int rpi_get_board_serial(u64 *serial);
- 
- #endif /* __ARCH_ARM_BOARDS_LOWLEVEL_H__ */
-diff --git a/arch/arm/boards/raspberry-pi/mbox-helpers.c b/arch/arm/boards/raspberry-pi/mbox-helpers.c
-index 50fc1c5b45..62c65d1267 100644
---- a/arch/arm/boards/raspberry-pi/mbox-helpers.c
-+++ b/arch/arm/boards/raspberry-pi/mbox-helpers.c
-@@ -16,6 +16,12 @@ struct msg_get_board_rev {
- 	u32 end_tag;
- };
- 
-+struct msg_get_board_serial {
-+	struct bcm2835_mbox_hdr hdr;
-+	struct bcm2835_mbox_tag_get_board_serial get_board_serial;
-+	u32 end_tag;
-+};
-+
- struct msg_get_mac_address {
- 	struct bcm2835_mbox_hdr hdr;
- 	struct bcm2835_mbox_tag_get_mac_address get_mac_address;
-@@ -71,3 +77,24 @@ int rpi_get_board_rev(void)
- 
- 	return msg->get_board_rev.body.resp.rev;
- }
-+
-+int rpi_get_board_serial(u64 *serial)
-+{
-+	int ret;
-+
-+	BCM2835_MBOX_STACK_ALIGN(struct msg_get_board_serial, msg);
-+	BCM2835_MBOX_INIT_HDR(msg);
-+	BCM2835_MBOX_INIT_TAG(&msg->get_board_serial, GET_BOARD_SERIAL);
-+
-+	if (!serial)
-+		return -EINVAL;
-+
-+	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &msg->hdr);
-+	if (ret) {
-+		pr_err("Could not query board serial\n");
-+		return ret;
-+	}
-+
-+	*serial = msg->get_board_serial.body.resp.serial;
-+	return 0;
-+}
 diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index 8d1e74acab..a8f180ae92 100644
+index 9bf6e0334d..7ddbe1c289 100644
 --- a/arch/arm/boards/raspberry-pi/rpi-common.c
 +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -60,6 +60,19 @@ struct rpi_priv {
- 	const char *name;
- };
+@@ -24,6 +24,7 @@
+ #include <globalvar.h>
+ #include <asm/system_info.h>
+ #include <reset_source.h>
++#include <machine_id.h>
+ #include <dt-bindings/gpio/gpio.h>
  
-+static void rpi_set_serial_number(void)
-+{
-+	u64 serial;
-+	char *serial_str;
+ #include <mach/core.h>
+@@ -74,6 +75,9 @@ static void rpi_set_serial_number(void)
+ 	serial_str = basprintf("%016llx", serial);
+ 	barebox_set_serial_number(serial_str);
+ 	free(serial_str);
 +
-+	if (rpi_get_board_serial(&serial))
-+		return;
-+
-+	serial_str = basprintf("%016llx", serial);
-+	barebox_set_serial_number(serial_str);
-+	free(serial_str);
-+}
-+
++	if (IS_ENABLED(CONFIG_MACHINE_ID))
++		machine_id_set_hashable(&serial, sizeof(serial));
+ }
+ 
  static void rpi_set_ethaddr(void)
- {
- 	u8 mac[ETH_ALEN];
-@@ -265,12 +278,6 @@ static void rpi_vc_fdt_parse(void *fdt)
- 	if (IS_ERR(root))
- 		return;
- 
--	str = of_read_vc_string(root, "serial-number");
--	if (str) {
--		barebox_set_serial_number(str);
--		free(str);
--	}
--
- 	str = of_read_vc_string(root, "model");
- 	if (str) {
- 		barebox_set_model(str);
-@@ -446,6 +453,8 @@ static int rpi_devices_probe(struct device *dev)
- 	if (IS_ERR(dcfg))
- 		goto free_priv;
- 
-+	rpi_set_serial_number();
-+
- 	/* construct short recognizable host name */
- 	name = of_device_get_match_compatible(priv->dev);
- 	ptr = strchr(name, ',');
-diff --git a/arch/arm/mach-bcm283x/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
-index 92cadba62c..008ea2e614 100644
---- a/arch/arm/mach-bcm283x/include/mach/mbox.h
-+++ b/arch/arm/mach-bcm283x/include/mach/mbox.h
-@@ -201,6 +201,19 @@ struct bcm2835_mbox_tag_get_mac_address {
- 	} body;
- };
- 
-+#define BCM2835_MBOX_TAG_GET_BOARD_SERIAL	0x00010004
-+
-+struct bcm2835_mbox_tag_get_board_serial {
-+	struct bcm2835_mbox_tag_hdr tag_hdr;
-+	union {
-+		struct {
-+		} req;
-+		struct __packed {
-+			u64 serial;
-+		} resp;
-+	} body;
-+};
-+
- #define BCM2835_MBOX_TAG_GET_ARM_MEMORY		0x00010005
- 
- struct bcm2835_mbox_tag_get_arm_mem {
+diff --git a/arch/arm/configs/rpi_defconfig b/arch/arm/configs/rpi_defconfig
+index 500c92a821..6019584d48 100644
+--- a/arch/arm/configs/rpi_defconfig
++++ b/arch/arm/configs/rpi_defconfig
+@@ -24,6 +24,7 @@ CONFIG_BOOTM_OFTREE=y
+ CONFIG_BLSPEC=y
+ CONFIG_CONSOLE_ALLOW_COLOR=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_MACHINE_ID=y
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
+diff --git a/arch/arm/configs/rpi_v8a_defconfig b/arch/arm/configs/rpi_v8a_defconfig
+index 75f62ddb65..1ea86c5893 100644
+--- a/arch/arm/configs/rpi_v8a_defconfig
++++ b/arch/arm/configs/rpi_v8a_defconfig
+@@ -23,6 +23,7 @@ CONFIG_CONSOLE_ACTIVATE_ALL=y
+ CONFIG_CONSOLE_ALLOW_COLOR=y
+ CONFIG_PBL_CONSOLE=y
+ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_MACHINE_ID=y
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+ CONFIG_CMD_IOMEM=y
 -- 
 2.34.1
 
