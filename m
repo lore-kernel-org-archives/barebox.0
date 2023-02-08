@@ -1,59 +1,147 @@
-Delivery-date: Wed, 08 Feb 2023 10:22:02 +0100
+Delivery-date: Wed, 08 Feb 2023 14:28:22 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pPgeS-000PvH-6I
-	for lore@lore.pengutronix.de; Wed, 08 Feb 2023 10:22:02 +0100
+	id 1pPkUp-000bAH-IR
+	for lore@lore.pengutronix.de; Wed, 08 Feb 2023 14:28:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pPgeO-0008IT-1c
-	for lore@pengutronix.de; Wed, 08 Feb 2023 10:22:01 +0100
+	id 1pPkUm-0001AU-19
+	for lore@pengutronix.de; Wed, 08 Feb 2023 14:28:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=i8ET6mNc6B9yvIu/V3Hl0NG8I3l/NyoY/gqIFUUP9VM=; b=G6/NGsR8XCN8IZIolZjgiZbfK8
-	ctEzbilWSRjkuWxGi81FryEy29t9aAC8E8LldCRc/9f3M8BkA0H/cGlKuyUJAa2tGyYZexD3X+PgA
-	QoNO5zwYC9YFEwfug7tjT5+7+BSmIhc5vbIqFcpkq5cx0Uq5SmpRRH6vQqU7u/nS2EmI5Qr2NkiO2
-	8YzPpC2DnddD7bgc3icISqCQCC7e96HUXaFJwcLkyjCKShmhvMwat1x8FeJzrYkvXM1ARjif6aU9b
-	uHUl/B6Ub1gSgXgOI1OWLL7K0kBpiGdK4ixF+5oMxipsG5B+AIqRD3KaPr70oxjJnceM+5xs2GuyL
-	0qRqWSmw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:Message-ID:Date:Subject:To:From:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=gVk/pJSN+cnnh3mnifnbVxxPGkSMW18vQy8A/3vAA7I=; b=h4Ke2C9iWUoToV
+	73EWIuOp7AdCSbqeaOAvduLoo5BDSSQtik50Ns4ghcSYzo/BnyMYUYGkz3mP/bgqyKiXGXM/I5isM
+	XIAm7rKe4sfJLENh+L9SEjVBojEPo+O5aQr8Eq+q+DSq2KD0b9yrk/mdxlqSFfGY9cNTb7QytbJ+d
+	K3NIYV5LqoohCsumYt9yRa9tNnAaqG5MjlmLBpopE3cKxdEvX9BYusrkglO7CnyYieVpSQZQRpOcG
+	OlhlrFPaDndTEY/uSmFkLkCq6GInG5Pvlui7kD6sZpSAJcdo5fxsjZBb1ryysaY6u3QMj5eNO5UWI
+	r+zkLpz4lkhrwF6sjC8Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pPgcu-00Emlu-2a; Wed, 08 Feb 2023 09:20:29 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1pPkT4-00FjbQ-VV; Wed, 08 Feb 2023 13:26:35 +0000
+Received: from mx0b-001ec801.pphosted.com ([148.163.140.146])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pPgax-00Em25-5h
-	for barebox@lists.infradead.org; Wed, 08 Feb 2023 09:18:30 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pPgav-0007c8-VA; Wed, 08 Feb 2023 10:18:25 +0100
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pPgav-0007hU-Nc; Wed, 08 Feb 2023 10:18:25 +0100
-Date: Wed, 8 Feb 2023 10:18:25 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Daniel =?utf-8?B?QnLDoXQ=?= <danek.brat@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230208091825.twj76lekfnctrour@pengutronix.de>
-References: <20230207010525.2693-1-danek.brat@gmail.com>
- <20230207010525.2693-4-danek.brat@gmail.com>
+	id 1pPkSz-00FjaK-Dd
+	for barebox@lists.infradead.org; Wed, 08 Feb 2023 13:26:31 +0000
+Received: from pps.filterd (m0163889.ppops.net [127.0.0.1])
+	by mx0b-001ec801.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3188wDsc018310
+	for <barebox@lists.infradead.org>; Wed, 8 Feb 2023 08:26:25 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ametek.com; h=from : to : subject :
+ date : message-id : content-type : content-transfer-encoding :
+ mime-version; s=pphost; bh=gVk/pJSN+cnnh3mnifnbVxxPGkSMW18vQy8A/3vAA7I=;
+ b=nyl8kxd6HQfnQQ2SbH43Fo5djH0BgEP8T4FFJxDJiif2OCEI6aBz4135Rt1RhTAlii9Y
+ 8FjcH0Dz7WrRW8K8ux1r8/aJhHTlCoX7ljCaWWxzFqn9TmhIyYqzb3mr8G9SVO8q8vIz
+ wJsWyRm8/yqq64rTTpt+Vm3DkuBZTzz/RHIWErJH0L4BRVhpHwb58O0QTzHya1JO80li
+ saUvEokqV61xVCTVhiX/p5kHEUmoG3qhSiUacMl2fJ7S82Ep9ZJZ/GKvSHUFh+xvSinU
+ 8GpELg5SkNO2EdjpsenWT7HdRPjMUH6RVVwKGk11TZ8cMaOQ5iFDeCtxGNYAReytPCH4 QA== 
+Received: from nam02-dm3-obe.outbound.protection.outlook.com (mail-dm3nam02lp2048.outbound.protection.outlook.com [104.47.56.48])
+	by mx0b-001ec801.pphosted.com (PPS) with ESMTPS id 3nhh4darkp-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <barebox@lists.infradead.org>; Wed, 08 Feb 2023 08:26:24 -0500
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=j5MPNUmdESmiL0KNV0NTrcffm4RRXwNuBHHWnxT9ZjLsQZBkDslVz4YnGX4vDZon58zWo+C8hZmUJ1VgSzwoiZKDi+Y5KIgmKDg8YkUxTIbF1+rPTwUMMFYKw4cj4vxdHiteCNpoDtK7amtozfQk6dR969IbnwEXlNXe4Jm90NS5w8Njx0w3ZaM01WBRH7alL2E8keFD77khRX1VHr9h4vXeymKe8TPXftXqgFmw1AfzSUv7ktGSN0PSMEsl1vg3qMG8mqYfwgVcQTgShbe7Q7WNiJbEB2KuiZTf7d7bhhZTJaRC7vQoB0RXUDcvgu3NYh2MTZq9t0QuQMec7HmvIQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=gVk/pJSN+cnnh3mnifnbVxxPGkSMW18vQy8A/3vAA7I=;
+ b=H0iDVF5+mOcLkhVeBay5o8AmhHcIq90RqhIQojVZ7LStK4H+dJQXNzfmkrre4ee/H7pEDjclniyrHuStKElRQuX0zu+xba/IkwPmBqnUd9JZJItcXQeUK+kAGeASwxEM9W7bIfz/1NictUn0KiOh0xeCFC2uzUbWR1A60keQbDaefNy+3kDIaW7qjuAAyYgvE4bvwGyz/K51JAKDVajvAzuOS8jiFo+GT8x97Fi4X2h0VKLcVJGF7SlsdV1D9QBRS1Ivbqf2BGtAWDz9mi9oQmzTAZB6ICRC4n85+78LU6Hk75WyDx3n6iqiv0G6BGVtazi8PCefRSbubXa8D9OZOA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ametek.com; dmarc=pass action=none header.from=ametek.com;
+ dkim=pass header.d=ametek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ametek.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=gVk/pJSN+cnnh3mnifnbVxxPGkSMW18vQy8A/3vAA7I=;
+ b=jPdadD7xbc8i99VH0FCydsOsiWch3uBJAQxvC+nG7c5Sv3bGkGasnMKoVbQRrca9yp5IJFfiQ+m7LTP0qznvhEkW77yp9uXMGbaush1zRh3AZoJPzoEl62K0ri0jUrDqQp+Pr89BopbF9Qur6anwkpWU3rle5CnXFfzfKK54aA0=
+Received: from BL0PR07MB5665.namprd07.prod.outlook.com (2603:10b6:208:80::28)
+ by BN6PR07MB3475.namprd07.prod.outlook.com (2603:10b6:405:64::26) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6064.27; Wed, 8 Feb
+ 2023 13:26:21 +0000
+Received: from BL0PR07MB5665.namprd07.prod.outlook.com
+ ([fe80::1960:8419:92d:b80e]) by BL0PR07MB5665.namprd07.prod.outlook.com
+ ([fe80::1960:8419:92d:b80e%4]) with mapi id 15.20.6064.027; Wed, 8 Feb 2023
+ 13:26:21 +0000
+From: Renaud Barbier <Renaud.Barbier@ametek.com>
+To: Barebox List <barebox@lists.infradead.org>
+Thread-Topic: [PATCH 0/2] Initial LS1021-IOT board support
+Thread-Index: Adk7v9bvPBNVfXZOQru13eL/yEG7oQ==
+Date: Wed, 8 Feb 2023 13:26:21 +0000
+Message-ID:  <BL0PR07MB566568DCB4AD086C7C4C3961ECD89@BL0PR07MB5665.namprd07.prod.outlook.com>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL0PR07MB5665:EE_|BN6PR07MB3475:EE_
+x-ms-office365-filtering-correlation-id: 96f27dcd-22ce-4be3-a002-08db09d8115b
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  nlIL43+7C5R085JrkHki2XzSropYjfT+n9GnADrUbJ7hWdGDGW+IlT4NqH5vuU71z2LlwlnL2iNrdy2D7izrqZaV72HHsdJh9t0hBIKP1H1cMiboNU4a8cK92dsAog1bQwpz6XTo9Y+T/bQz0hgoHDcJLgfy635VIBR6CWQEazgarO1AqfNykOr2/foj/RJqB8rxhyY1enNLVPz2geZdxfxpcbdBvf1TFoAYEEN/Yw98K7PiIka0Km9T4uocqTe9bhEN636jh/R8ISJc6qiiETt9iikSIdKSk9s8dQPHM3XvUz9rL5YWXho6NpPW4L5ojMV39gdrZNdXiBTqtkn8B1ZpwPFDw+m+7UlAKGliGW40NqjAD08JcAuSlit8ao6P/WJTGUuKal+/0SbCG6g435PGPWP6x7lnqSXdma3A3TmA4R50pfEdaVe/yYh3gzWOZRBcItImZhtxliUMnNG0dZtw9yalemNcWx8iabM5r/qCHtP75iFYlFERCi8B5NiiQkxQoYJdu2VKSI0cPKUEw96QnzHTiH+AjgmBhW7IvF9QwGQ/HQgnG+lcukm+gVtQDUrIMYS0yVlrXvMpKw7jLGWyKDv2Vga1Axm77m4VrQqU6O/0QAxlp1yLG6YPBSbZJroLny1cZBDq3epqUicr4wJCwK8aI0xgnWYSUFFw+KVluCGqYa/MRbJifYhb7pud
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR07MB5665.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230025)(4636009)(346002)(39860400002)(376002)(396003)(136003)(366004)(451199018)(33656002)(83380400001)(316002)(6506007)(478600001)(7696005)(186003)(26005)(9686003)(71200400001)(5660300002)(8936002)(52536014)(2906002)(86362001)(76116006)(55016003)(38070700005)(66556008)(66946007)(6916009)(8676002)(64756008)(66446008)(66476007)(122000001)(41300700001)(38100700002);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?us-ascii?Q?lTLacjh+YCQPo2BXxOolwBJZ4bGSUkQKCVYtSSZ+HbRC/DjQtVEmW7iP0e5e?=
+ =?us-ascii?Q?SmfSp93L0jAC6s+y2tHaBJr4FVYgweG02B/4zeEpbVb2ilsyiaQFopk3OfzA?=
+ =?us-ascii?Q?Jt6pbVf+fTHkcW+JaoQJX6nIrPYCOX6rrV/RVGqcpxx3GvK5Wz4gsdglMoWz?=
+ =?us-ascii?Q?qFh99w7DSBu6JZmI86+ibtI/ony40rmALaRS1OVW44ADAcDg4pYccTorHgp2?=
+ =?us-ascii?Q?tUNn9gAKEbD1dWwWZcAvtMNWRL8wSBr0K2GHiV3YDtAAr1aK8KWGzgI/3M0l?=
+ =?us-ascii?Q?3uDRNl5dl4PMcCQcO4gQ4+xVTyYYAJPBh31gjbNtWYfQsZdTLdfWlZqQI8dd?=
+ =?us-ascii?Q?2yrd9zlEogIGgJd4EIXBm1qdDxqp58xoR5w33Xx7kJMdHumMJkK3ndRLXDHw?=
+ =?us-ascii?Q?E9nORv2quRVV1IbiwIZp4bnS0Ggi3upSL1B/PZ0eeK0M3veisJ1z4hqTF6wp?=
+ =?us-ascii?Q?IGnNLZzRceTx8hGST5i6IGNAtnrqzpb0K9x2Czg5Ge5ns9tRsvxO7x+z8ycw?=
+ =?us-ascii?Q?6qSUtTFbQzYAVr7m+Y2GBmU9ClmJfR0P9osYy6a7lZ21rSJH60QxPcX6IbN1?=
+ =?us-ascii?Q?E1Z/vZbNC5baaLEkSgIvMlL6wSMNqEtBsYbTY28y0wed1ztt7qzODkWiLvhH?=
+ =?us-ascii?Q?Zwmd9h8H5XPO9gPct2rDKjGqNkmBnzWnMpnySHhP47nQrb1UZRDRDBsdot5F?=
+ =?us-ascii?Q?0DvhRzstW1LXE54pXRjc8j+fBrs5MEnVK2TntLkoNp0sFFpJWmGolfPaPCea?=
+ =?us-ascii?Q?rw3tQVI+EwiMHWGREIYYpTXE6mqzR0vMSj/ekke8OwKPOTab8ZrXHPXPpPhs?=
+ =?us-ascii?Q?xB3V1FSoYmmieudwJAzZ0Yd5C/lPXGHtfYsQRr2o+DMdP/xyNfo6XgONjrDI?=
+ =?us-ascii?Q?GekS+qXz4J+DNTSPXPfeTDN2XbhTOsWJ5E6fG8EjSZ0rTLfK0wzf0INYQlsN?=
+ =?us-ascii?Q?PtoT34qEUk/2Ig4BHQY1feIRUZEzuKg+SdCuQ7r4usH3Yg2Fbb3eI3DJaGX7?=
+ =?us-ascii?Q?hq5vrM8xjbV/7y76qaLX1OyRsy//GpA72GDdlqZFUrn1iseSGh813DAdXpib?=
+ =?us-ascii?Q?D2zoFQg2G+s2M5JWVCksyHJqboNhHyhE9EKnZe/8GAlzKXKucFDcSwdBJBcl?=
+ =?us-ascii?Q?3Bu5sDrR2+sYhU1WGMkg+VYyX2V6CEs0wQYfOFkm3Vi/cof0UUllMqkIWPx5?=
+ =?us-ascii?Q?Dpd8qAdgWctnDeZVLMzGJISA3sukGcL/Ka+MlHw/bucLH++81l7i4o6g4BpN?=
+ =?us-ascii?Q?hSWktQC6DBLeq11wKg3UEYOIiWwBKxlWz9qbfAzowDZ/tppVqqrSWJb4oRBZ?=
+ =?us-ascii?Q?8QfcNWoV9qeyP+NqaiR5Zg4RFk6mpKaugnsfEx8bxFxleBoppkOkTvQEox6M?=
+ =?us-ascii?Q?7f31Gx3MeZjOBfrXBp0UeA8WBWUGP+CEgBgp9XuSE6oNcvOinvSigj5od7p1?=
+ =?us-ascii?Q?T+i8pbyED+5Cs8HT73Tk1f3OKJBrxI0Hm2fbxrv8HCYc94I6SyCan3ihU4UO?=
+ =?us-ascii?Q?g32kHhbTEdAPLQJd4T8QYhNXomR7i+nYwlYHV16fWW/OyCk/4cJ4Shh8CJSf?=
+ =?us-ascii?Q?/W8Nh/XJvsOSEQmbHzVWzFCSGH03uo7V84jn1IQ9?=
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230207010525.2693-4-danek.brat@gmail.com>
-User-Agent: NeoMutt/20180716
+X-OriginatorOrg: ametek.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR07MB5665.namprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96f27dcd-22ce-4be3-a002-08db09d8115b
+X-MS-Exchange-CrossTenant-originalarrivaltime: 08 Feb 2023 13:26:21.1704
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 31a88536-e2ab-44b5-837e-5110158247ab
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: 551AMDl9N6DbnSMyCPdVzsy9rEr8TB+x26zipqdy1hfuDLbvhgqBMVsbYkcRrf8EM3bsHeDIUv9Bzn/ARjWINwrzn8Qk1DO9DqshMQVs8fw=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BN6PR07MB3475
+X-Proofpoint-GUID: t7wxjyIDf5ydphj9ayvAQO1f1vCsoUVY
+X-Proofpoint-ORIG-GUID: t7wxjyIDf5ydphj9ayvAQO1f1vCsoUVY
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.219,Aquarius:18.0.930,Hydra:6.0.562,FMLib:17.11.122.1
+ definitions=2023-02-08_05,2023-02-08_02,2022-06-22_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 phishscore=0 bulkscore=0
+ suspectscore=0 priorityscore=1501 clxscore=1011 malwarescore=0 spamscore=0
+ impostorscore=0 lowpriorityscore=0 adultscore=0 mlxlogscore=753 mlxscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2212070000
+ definitions=main-2302080119
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230208_011827_578819_527AB149 
-X-CRM114-Status: GOOD (  34.72  )
+X-CRM114-CacheID: sfid-20230208_052630_227158_C29A867A 
+X-CRM114-Status: GOOD (  19.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,663 +159,103 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/5] ARM: rpi: rework rpi board init code
+Subject: [PATCH 0/2] Initial LS1021-IOT board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Daniel,
+The LS1021A-IOT is NXP ARMv7 Layerscape evaluation board.
 
-thanks for your patch.
+These patches provide a basic board support with:
+	- UART
+	- boot from SPI
+	- One Ethernet port - eth1*
 
-On 23-02-07, Daniel Brát wrote:
-> Rework of init for various rpi board variants. Primarily, ethernet and
-> usb init have been generalized to better cover different variations and
-> handling of board leds changed from adding and registering 'gpio_led'
-> structures to fixing them in the device tree. This change also required
-> moving the board init code from 'late_platform_driver' to
-> 'coredevice_platform_driver' which in turn ment calling 'rpi_env_init'
-> from separate late_initcall.
+The content of the EEPROM having been lost so the MAC should be set in the
+config file
 
-Is it possible to split that patch into smaller ones?
+The code is ported from NXP U-boot 2021-04. Like U-boot, the machine suppor=
+t
+i.e mac-lxxx lives in its own directory. However, it is very similar to the=
+=20
+ls1046a machine support. This migth be merged. Please advise.
 
-Regards,
-  Marco
+Renaud Barbier (2):
+  ARM: Add Layerscape v7 support
+  ARM: Layerscape: Add LS1021A IOT board support
 
+ arch/arm/Kconfig                              |  12 +
+ arch/arm/Makefile                             |   1 +
+ arch/arm/boards/Makefile                      |   1 +
+ arch/arm/boards/ls1021aiot/Makefile           |   3 +
+ arch/arm/boards/ls1021aiot/board.c            |  83 ++++
+ arch/arm/boards/ls1021aiot/lowlevel.c         | 121 ++++++
+ arch/arm/boards/ls1021aiot/ls102xa_pbi.cfg    |  11 +
+ .../boards/ls1021aiot/ls102xa_rcw_sd_qspi.cfg |   8 +
+ arch/arm/boards/ls1021aiot/start.S            |  11 +
+ arch/arm/configs/layerscape_v7_defconfig      | 100 +++++
+ arch/arm/dts/Makefile                         |   1 +
+ arch/arm/dts/fsl-ls1021a-iot.dts              | 124 ++++++
+ arch/arm/lib32/Makefile                       |   1 +
+ arch/arm/lib32/pbl.c                          |  21 +
+ arch/arm/mach-ls102xa/Kconfig                 |  22 +
+ arch/arm/mach-ls102xa/Makefile                |   9 +
+ arch/arm/mach-ls102xa/boot.c                  |  39 ++
+ arch/arm/mach-ls102xa/errata.c                | 112 +++++
+ arch/arm/mach-ls102xa/include/mach/debug_ll.h |  36 ++
+ arch/arm/mach-ls102xa/include/mach/errata.h   |   9 +
+ arch/arm/mach-ls102xa/include/mach/fsl_epu.h  |  73 ++++
+ .../mach-ls102xa/include/mach/layerscape.h    |  11 +
+ arch/arm/mach-ls102xa/include/mach/lowlevel.h |   8 +
+ arch/arm/mach-ls102xa/include/mach/xload.h    |  14 +
+ arch/arm/mach-ls102xa/lowlevel-ls102xa.c      | 378 ++++++++++++++++
+ arch/arm/mach-ls102xa/ls102xa_stream_id.c     |  46 ++
+ arch/arm/mach-ls102xa/ls102xa_stream_id.h     |  17 +
+ arch/arm/mach-ls102xa/pblimage.c              |  60 +++
+ arch/arm/mach-ls102xa/restart.c               |  27 ++
+ arch/arm/mach-ls102xa/xload-qspi.c            |  34 ++
+ arch/arm/mach-ls102xa/xload.c                 |  22 +
+ common/Kconfig                                |   2 +-
+ drivers/clk/Makefile                          |   1 +
+ drivers/ddr/fsl/Kconfig                       |   2 +-
+ drivers/i2c/busses/Kconfig                    |   2 +-
+ drivers/net/Kconfig                           |   2 +-
+ drivers/net/gianfar.c                         | 211 ++++++++-
+ drivers/net/gianfar.h                         |  16 +-
+ images/Makefile.layerscape                    |   9 +
+ include/soc/fsl/immap_ls102xa.h               | 408 ++++++++++++++++++
+ scripts/Kconfig                               |   4 +-
+ 41 files changed, 2044 insertions(+), 28 deletions(-)
+ create mode 100644 arch/arm/boards/ls1021aiot/Makefile
+ create mode 100644 arch/arm/boards/ls1021aiot/board.c
+ create mode 100644 arch/arm/boards/ls1021aiot/lowlevel.c
+ create mode 100644 arch/arm/boards/ls1021aiot/ls102xa_pbi.cfg
+ create mode 100644 arch/arm/boards/ls1021aiot/ls102xa_rcw_sd_qspi.cfg
+ create mode 100644 arch/arm/boards/ls1021aiot/start.S
+ create mode 100644 arch/arm/configs/layerscape_v7_defconfig
+ create mode 100644 arch/arm/dts/fsl-ls1021a-iot.dts
+ create mode 100644 arch/arm/lib32/pbl.c
+ create mode 100644 arch/arm/mach-ls102xa/Kconfig
+ create mode 100644 arch/arm/mach-ls102xa/Makefile
+ create mode 100644 arch/arm/mach-ls102xa/boot.c
+ create mode 100644 arch/arm/mach-ls102xa/errata.c
+ create mode 100644 arch/arm/mach-ls102xa/include/mach/debug_ll.h
+ create mode 100644 arch/arm/mach-ls102xa/include/mach/errata.h
+ create mode 100644 arch/arm/mach-ls102xa/include/mach/fsl_epu.h
+ create mode 100644 arch/arm/mach-ls102xa/include/mach/layerscape.h
+ create mode 100644 arch/arm/mach-ls102xa/include/mach/lowlevel.h
+ create mode 100644 arch/arm/mach-ls102xa/include/mach/xload.h
+ create mode 100644 arch/arm/mach-ls102xa/lowlevel-ls102xa.c
+ create mode 100644 arch/arm/mach-ls102xa/ls102xa_stream_id.c
+ create mode 100644 arch/arm/mach-ls102xa/ls102xa_stream_id.h
+ create mode 100644 arch/arm/mach-ls102xa/pblimage.c
+ create mode 100644 arch/arm/mach-ls102xa/restart.c
+ create mode 100644 arch/arm/mach-ls102xa/xload-qspi.c
+ create mode 100644 arch/arm/mach-ls102xa/xload.c
+ create mode 100644 include/soc/fsl/immap_ls102xa.h
 
-> 
-> Signed-off-by: Daniel Brát <danek.brat@gmail.com>
-> ---
->  arch/arm/boards/raspberry-pi/rpi-common.c | 414 ++++++++++------------
->  arch/arm/dts/bcm2711-rpi-4.dts            |   5 +
->  arch/arm/dts/bcm2835-rpi.dts              |   1 +
->  arch/arm/dts/bcm2836-rpi-2.dts            |   4 +
->  arch/arm/dts/bcm2837-rpi-3.dts            |   5 +
->  5 files changed, 199 insertions(+), 230 deletions(-)
-> 
-> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-> index a8f180ae92..9bf6e0334d 100644
-> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
-> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-> @@ -24,6 +24,7 @@
->  #include <globalvar.h>
->  #include <asm/system_info.h>
->  #include <reset_source.h>
-> +#include <dt-bindings/gpio/gpio.h>
->  
->  #include <mach/core.h>
->  #include <mach/mbox.h>
-> @@ -45,19 +46,21 @@ static const char * const boot_mode_names[] = {
->  	[0x7] = "http",
->  };
->  
-> -struct rpi_priv;
->  struct rpi_machine_data {
-> -	int (*init)(struct rpi_priv *priv);
->  	u8 hw_id;
->  #define RPI_OLD_SCHEMA			BIT(0)
-> +#define RPI_SET_ETHADDR			BIT(1)
-> +#define RPI_SET_USB_OTG			BIT(2)
-> +#define RPI_LED_PWR_INV			BIT(3)
-> +#define RPI_LED_PWR_EXP			BIT(4)
-> +#define RPI_LED_ACT_INV			BIT(5)
-> +#define RPI_LED_ACT_EXP			BIT(6)
-> +#define RPI_LED_ANY_EXP			(RPI_LED_PWR_EXP | RPI_LED_ACT_EXP)
-> +#define RPI_LED_PWR_EXP_INV		(RPI_LED_PWR_EXP | RPI_LED_PWR_INV)
-> +#define RPI_LED_ACT_EXP_INV		(RPI_LED_ACT_EXP | RPI_LED_ACT_INV)
->  	u8 flags;
-> -};
-> -
-> -struct rpi_priv {
-> -	struct device *dev;
-> -	const struct rpi_machine_data *dcfg;
-> -	unsigned int hw_id;
-> -	const char *name;
-> +	int pwr_led_gpio;
-> +	int act_led_gpio;
->  };
->  
->  static void rpi_set_serial_number(void)
-> @@ -83,91 +86,74 @@ static void rpi_set_ethaddr(void)
->  	eth_register_ethaddr(0, mac);
->  }
->  
-> -static void rpi_set_usbotg(const char *alias)
-> +static void rpi_set_usbotg(void)
->  {
->  	struct device_node *usb;
->  
-> -	usb = of_find_node_by_alias(NULL, alias);
-> +	usb = of_find_node_by_alias(NULL, "usb0");
->  	if (usb)
->  		of_property_write_string(usb, "dr_mode", "otg");
->  }
->  
-> -static struct gpio_led rpi_leds[] = {
-> -	{
-> -		.gpio	= -EINVAL,
-> -		.led	= {
-> -			.name = "ACT",
-> -		},
-> -	}, {
-> -		.gpio	= -EINVAL,
-> -		.led	= {
-> -			.name = "PWR",
-> -		},
-> -	},
-> -};
-> -
-> -static void rpi_add_led(void)
-> +static int of_rpi_led_set_gpio(struct device_node *led, u32 pin,
-> +				bool exp, bool inv)
->  {
-> -	int i;
-> -	struct gpio_led *l;
-> -
-> -	for (i = 0; i < ARRAY_SIZE(rpi_leds); i++) {
-> -		l = &rpi_leds[i];
-> -
-> -		if (gpio_is_valid(l->gpio))
-> -			led_gpio_register(l);
-> -	}
-> -
-> -	l = &rpi_leds[0];
-> -	if (gpio_is_valid(l->gpio))
-> -		led_set_trigger(LED_TRIGGER_HEARTBEAT, &l->led);
-> -}
-> +	u32 gpios_prop[3];
-> +	struct device_node *gpio;
->  
-> -static int rpi_b_init(struct rpi_priv *priv)
-> -{
-> -	rpi_leds[0].gpio = 16;
-> -	rpi_leds[0].active_low = 1;
-> -	rpi_set_ethaddr();
-> -
-> -	return 0;
-> -}
-> -
-> -static int rpi_b_plus_init(struct rpi_priv *priv)
-> -{
-> -	rpi_leds[0].gpio = 47;
-> -	rpi_leds[1].gpio = 35;
-> -	rpi_set_ethaddr();
-> +	if (!led)
-> +		return -ENODEV;
->  
-> -	return 0;
-> -}
-> +	gpio = of_find_node_by_alias(NULL, exp ? "expgpio0" : "gpio0");
-> +	if (!gpio)
-> +		return -ENODEV;
->  
-> -static int rpi_0_init(struct rpi_priv *priv)
-> -{
-> -	rpi_leds[0].gpio = 47;
-> -	rpi_set_usbotg("usb0");
-> +	gpios_prop[0] = gpio->phandle;
-> +	gpios_prop[1] = pin;
-> +	gpios_prop[2] = inv ? GPIO_ACTIVE_LOW : GPIO_ACTIVE_HIGH;
->  
-> -	return 0;
-> +	return of_property_write_u32_array(led, "gpios", gpios_prop, 3);
->  }
->  
-> -static int rpi_0_w_init(struct rpi_priv *priv)
-> +static void rpi_add_leds(const struct rpi_machine_data *dcfg)
->  {
-> -	struct device_node *np;
-> -	int ret;
-> +	int flags, led_pwr, led_act, led_cnt;
-> +	struct device_node *leds, *l;
->  
-> -	rpi_0_init(priv);
-> +	if (!IS_ENABLED(CONFIG_OFDEVICE) || !IS_ENABLED(CONFIG_LED_GPIO_OF))
-> +		return;
->  
-> -	np = of_find_node_by_path("/chosen");
-> -	if (!np)
-> -		return -ENODEV;
-> +	leds = of_find_node_by_path("/leds");
-> +	if (!leds)
-> +		return;
->  
-> -	if (!of_device_enable_and_register_by_alias("serial1"))
-> -		return -ENODEV;
-> +	led_cnt = 0;
-> +	flags = dcfg->flags;
-> +	led_pwr = dcfg->pwr_led_gpio;
-> +	led_act = dcfg->act_led_gpio;
-> +
-> +	l = of_get_child_by_name(leds, "led-pwr");
-> +	if (l) {
-> +		if (led_pwr >= 0 && !of_rpi_led_set_gpio(l, led_pwr,
-> +						flags & RPI_LED_PWR_EXP,
-> +						flags & RPI_LED_PWR_INV))
-> +			led_cnt++;
-> +		else
-> +			of_delete_node(l);
-> +	}
->  
-> -	ret = of_property_write_string(np, "stdout-path", "serial1:115200n8");
-> -	if (ret)
-> -		return ret;
-> +	l = of_get_child_by_name(leds, "led-act");
-> +	if (l) {
-> +		if (led_act >= 0 && !of_rpi_led_set_gpio(l, led_act,
-> +						flags & RPI_LED_ACT_EXP,
-> +						flags & RPI_LED_ACT_INV))
-> +			led_cnt++;
-> +		else
-> +			of_delete_node(l);
-> +	}
->  
-> -	return of_device_disable_by_alias("serial0");
-> +	if (led_cnt)
-> +		of_device_enable_and_register(leds);
->  }
->  
->  static int rpi_mem_init(void)
-> @@ -213,6 +199,7 @@ static int rpi_env_init(void)
->  
->  	return 0;
->  }
-> +late_initcall(rpi_env_init);
->  
->  /* Some string properties in fdt passed to us from vc may be
->   * malformed by not being null terminated, so just create and
-> @@ -390,15 +377,22 @@ static void rpi_set_kernel_name(void) {
->  	}
->  }
->  
-> -static const struct rpi_machine_data *rpi_get_dcfg(struct rpi_priv *priv)
-> +static void rpi_set_hostname(struct device_d *dev)
->  {
-> -	const struct rpi_machine_data *dcfg;
-> +	const char *name, *ptr;
-> +	char *hostname;
->  
-> -	dcfg = of_device_get_match_data(priv->dev);
-> -	if (!dcfg) {
-> -		dev_err(priv->dev, "Unknown board. Not applying fixups\n");
-> -		return NULL;
-> -	}
-> +	name = of_device_get_match_compatible(dev);
-> +	ptr = strchr(name, ',');
-> +	hostname = basprintf("rpi-%s", ptr ? ptr + 1 : name);
-> +	barebox_set_hostname(hostname);
-> +	free(hostname);
-> +}
-> +
-> +static const struct rpi_machine_data *rpi_get_dcfg(const struct rpi_machine_data *dcfg)
-> +{
-> +	int ret;
-> +	u32 board_rev;
->  
->  	/* Comments from u-boot:
->  	 * For details of old-vs-new scheme, see:
-> @@ -412,22 +406,26 @@ static const struct rpi_machine_data *rpi_get_dcfg(struct rpi_priv *priv)
->  	 * http://www.raspberrypi.org/forums/viewtopic.php?f=31&t=20594
->  	 */
->  
-> +	ret = rpi_get_board_rev();
-> +	if (ret < 0)
-> +		return ERR_PTR(ret);
-> +	board_rev = ret;
-> +
->  	for (; dcfg->hw_id != U8_MAX; dcfg++) {
-> -		if (priv->hw_id & 0x800000) {
-> -			if (dcfg->hw_id != ((priv->hw_id >> 4) & 0xff))
-> +		if (board_rev & BIT(23)) {
-> +			if (dcfg->hw_id != ((board_rev >> 4) & 0xff))
->  				continue;
->  		} else {
->  			if (!(dcfg->flags & RPI_OLD_SCHEMA))
->  				continue;
-> -			if (dcfg->hw_id != (priv->hw_id & 0xff))
-> +			if (dcfg->hw_id != (board_rev & 0xff))
->  				continue;
->  		}
->  
->  		return dcfg;
->  	}
->  
-> -	dev_err(priv->dev, "dcfg 0x%x for board_id doesn't match DT compatible\n",
-> -		priv->hw_id);
-> +	pr_err("dcfg 0x%x for board_id doesn't match DT compatible\n", board_rev);
->  	return ERR_PTR(-ENODEV);
->  }
->  
-> @@ -435,42 +433,32 @@ static int rpi_devices_probe(struct device *dev)
->  {
->  	const struct rpi_machine_data *dcfg;
->  	struct regulator *reg;
-> -	struct rpi_priv *priv;
-> -	const char *name, *ptr;
-> -	char *hostname;
-> -	int ret;
->  
-> -	priv = xzalloc(sizeof(*priv));
-> -	priv->dev = dev;
-> +	dcfg = of_device_get_match_data(dev);
-> +	if (!dcfg)
-> +		dev_err(dev, "Unknown board, not applying fixups\n");
-> +	else {
-> +		dcfg = rpi_get_dcfg(dcfg);
-> +		if (IS_ERR(dcfg))
-> +			return PTR_ERR(dcfg);
->  
-> -	ret = rpi_get_board_rev();
-> -	if (ret < 0)
-> -		goto free_priv;
-> +		rpi_add_leds(dcfg);
->  
-> -	priv->hw_id = ret;
-> +		if (dcfg->flags & RPI_SET_ETHADDR)
-> +			rpi_set_ethaddr();
->  
-> -	dcfg = rpi_get_dcfg(priv);
-> -	if (IS_ERR(dcfg))
-> -		goto free_priv;
-> +		if (dcfg->flags & RPI_SET_USB_OTG)
-> +			rpi_set_usbotg();
-> +	}
->  
-> -	rpi_set_serial_number();
->  
-> -	/* construct short recognizable host name */
-> -	name = of_device_get_match_compatible(priv->dev);
-> -	ptr = strchr(name, ',');
-> -	hostname = basprintf("rpi-%s", ptr ? ptr + 1 : name);
-> -	barebox_set_hostname(hostname);
-> -	free(hostname);
-> +	rpi_set_serial_number();
-> +	rpi_set_hostname(dev);
-> +	rpi_set_kernel_name();
->  
-> -	rpi_add_led();
->  	bcm2835_register_fb();
->  	armlinux_set_architecture(MACH_TYPE_BCM2708);
-> -	rpi_env_init();
->  	rpi_vc_fdt();
-> -	rpi_set_kernel_name();
-> -
-> -	if (dcfg && dcfg->init)
-> -		dcfg->init(priv);
->  
->  	reg = regulator_get_name("bcm2835_usb");
->  	if (IS_ERR(reg))
-> @@ -479,134 +467,95 @@ static int rpi_devices_probe(struct device *dev)
->  	regulator_enable(reg);
->  
->  	return 0;
-> -
-> -free_priv:
-> -	kfree(priv);
-> -	return ret;
->  }
->  
-> +#define RPI_ENTRY(_id, _pwr, _act, _flags)	\
-> +	{					\
-> +		.hw_id = _id,			\
-> +		.pwr_led_gpio = _pwr,		\
-> +		.act_led_gpio = _act,		\
-> +		.flags = _flags,		\
-> +	}
-> +
-> +#define RPI_ENTRY_OLD(_id, _pwr, _act, _flags)	\
-> +	RPI_ENTRY(_id, _pwr, _act, (_flags) | RPI_OLD_SCHEMA)
-> +
-> +#if IS_ENABLED(CONFIG_MACH_RPI)
->  static const struct rpi_machine_data rpi_1_ids[] = {
-> -	{
-> -		.hw_id = BCM2835_BOARD_REV_A_7,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_A_8,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_A_9,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_A,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_A_PLUS_12,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_A_PLUS_15,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_A_PLUS,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_I2C1_4,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_I2C1_5,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_I2C1_6,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_I2C0_2,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_I2C0_3,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_REV2_d,
-> -		.flags = RPI_OLD_SCHEMA,
-> -		.init = rpi_b_init,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_REV2_e,
-> -		.flags = RPI_OLD_SCHEMA,
-> -		.init = rpi_b_init,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_REV2_f,
-> -		.flags = RPI_OLD_SCHEMA,
-> -		.init = rpi_b_init,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_PLUS_10,
-> -		.flags = RPI_OLD_SCHEMA,
-> -		.init = rpi_b_plus_init,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_PLUS_13,
-> -		.flags = RPI_OLD_SCHEMA,
-> -		.init = rpi_b_plus_init,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_B_PLUS,
-> -		.init = rpi_b_plus_init,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_CM_11,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_CM_14,
-> -		.flags = RPI_OLD_SCHEMA,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_CM1,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_ZERO,
-> -		.init = rpi_0_init,
-> -	}, {
-> -		.hw_id = BCM2835_BOARD_REV_ZERO_W,
-> -		.init = rpi_0_w_init,
-> -	}, {
-> -		.hw_id = U8_MAX
-> -	},
-> +	/*
-> +	 * New style of revision codes schemas
-> +	 * Let's keep those first since they are probably more common
-> +	 */
-> +	RPI_ENTRY(BCM2835_BOARD_REV_A,      -1, 16, RPI_LED_ACT_INV),
-> +	RPI_ENTRY(BCM2835_BOARD_REV_A_PLUS, 35, 47, RPI_LED_ACT_INV),
-> +	RPI_ENTRY(BCM2835_BOARD_REV_B,      -1, 16, RPI_LED_ACT_INV | RPI_SET_ETHADDR),
-> +	RPI_ENTRY(BCM2835_BOARD_REV_B_PLUS, 35, 47, RPI_SET_ETHADDR),
-> +	RPI_ENTRY(BCM2835_BOARD_REV_CM1,    -1, 47, RPI_LED_ACT_INV),
-> +	RPI_ENTRY(BCM2835_BOARD_REV_ZERO,   -1, 47, RPI_SET_USB_OTG),
-> +	RPI_ENTRY(BCM2835_BOARD_REV_ZERO_W, -1, 47, RPI_SET_USB_OTG | RPI_LED_ACT_INV),
-> +	/*
-> +	 * Old style of revision codes
-> +	 */
-> +	/* Raspberry Pi A */
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_A_7, -1, 16, RPI_LED_ACT_INV),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_A_8, -1, 16, RPI_LED_ACT_INV),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_A_9, -1, 16, RPI_LED_ACT_INV),
-> +	/* Raspberry Pi A+ */
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_A_PLUS_12, 35, 47, RPI_LED_ACT_INV),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_A_PLUS_15, 35, 47, RPI_LED_ACT_INV),
-> +	/* Raspberry Pi B */
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_B_I2C1_4, -1, 16, RPI_LED_ACT_INV | RPI_SET_ETHADDR),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_B_I2C1_5, -1, 16, RPI_LED_ACT_INV | RPI_SET_ETHADDR),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_B_I2C1_6, -1, 16, RPI_LED_ACT_INV | RPI_SET_ETHADDR),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_B_I2C0_2, -1, 16, RPI_LED_ACT_INV | RPI_SET_ETHADDR),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_B_I2C0_3, -1, 16, RPI_LED_ACT_INV | RPI_SET_ETHADDR),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_B_REV2_d, -1, 16, RPI_LED_ACT_INV | RPI_SET_ETHADDR),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_B_REV2_e, -1, 16, RPI_LED_ACT_INV | RPI_SET_ETHADDR),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_B_REV2_f, -1, 16, RPI_LED_ACT_INV | RPI_SET_ETHADDR),
-> +	/* Raspberry Pi B+ */
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_B_PLUS_10, 35, 47, RPI_SET_ETHADDR),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_B_PLUS_13, 35, 47, RPI_SET_ETHADDR),
-> +	/* Raspberry Pi CM1 */
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_CM_11, -1, 47, RPI_LED_ACT_INV),
-> +	RPI_ENTRY_OLD(BCM2835_BOARD_REV_CM_14, -1, 47, RPI_LED_ACT_INV),
-> +	/* sentinel */
-> +	{ .hw_id = U8_MAX }
->  };
-> +#endif
->  
-> +#if IS_ENABLED(CONFIG_MACH_RPI2)
->  static const struct rpi_machine_data rpi_2_ids[] = {
-> -	{
-> -		.hw_id = BCM2836_BOARD_REV_2_B,
-> -		.init = rpi_b_plus_init,
-> -	}, {
-> -		.hw_id = U8_MAX
-> -	},
-> +	RPI_ENTRY(BCM2836_BOARD_REV_2_B, 35, 47, RPI_SET_ETHADDR),
-> +	/* sentinel */
-> +	{ .hw_id = U8_MAX }
->  };
-> +#endif
->  
-> +#if IS_ENABLED(CONFIG_MACH_RPI3) | IS_ENABLED(CONFIG_MACH_RPI_CM3)
->  static const struct rpi_machine_data rpi_3_ids[] = {
-> -	{
-> -		.hw_id = BCM2837B0_BOARD_REV_3A_PLUS,
-> -		.init = rpi_b_plus_init,
-> -	}, {
-> -		.hw_id = BCM2837_BOARD_REV_3_B,
-> -		.init = rpi_b_init,
-> -	}, {
-> -		.hw_id = BCM2837B0_BOARD_REV_3B_PLUS,
-> -		.init = rpi_b_plus_init,
-> -	}, {
-> -		.hw_id = BCM2837_BOARD_REV_CM3,
-> -	}, {
-> -		.hw_id = BCM2837B0_BOARD_REV_CM3_PLUS,
-> -	}, {
-> -		.hw_id = BCM2837B0_BOARD_REV_ZERO_2,
-> -	}, {
-> -		.hw_id = U8_MAX
-> -	},
-> +	RPI_ENTRY(BCM2837B0_BOARD_REV_3A_PLUS,   2, 29, RPI_LED_PWR_EXP_INV),
-> +	RPI_ENTRY(BCM2837_BOARD_REV_3_B,        -1,  2, RPI_SET_ETHADDR | RPI_LED_ACT_EXP),
-> +	RPI_ENTRY(BCM2837B0_BOARD_REV_3B_PLUS,   2, 29, RPI_SET_ETHADDR | RPI_LED_PWR_EXP_INV),
-> +	RPI_ENTRY(BCM2837_BOARD_REV_CM3,        -1, -1, 0),
-> +	RPI_ENTRY(BCM2837B0_BOARD_REV_CM3_PLUS, -1, -1, 0),
-> +	RPI_ENTRY(BCM2837B0_BOARD_REV_ZERO_2,   -1, 29, RPI_LED_ACT_INV | RPI_SET_USB_OTG),
-> +	/* sentinel */
-> +	{ .hw_id = U8_MAX }
->  };
-> +#endif
->  
-> +#if IS_ENABLED(CONFIG_MACH_RPI4)
->  static const struct rpi_machine_data rpi_4_ids[] = {
-> -	{
-> -		.hw_id = BCM2711_BOARD_REV_4_B,
-> -	}, {
-> -		.hw_id = BCM2711_BOARD_REV_400,
-> -	}, {
-> -		.hw_id = BCM2711_BOARD_REV_CM4,
-> -	}, {
-> -		.hw_id = U8_MAX
-> -	},
-> +	RPI_ENTRY(BCM2711_BOARD_REV_4_B,  2, 42, RPI_LED_PWR_EXP_INV | RPI_SET_ETHADDR),
-> +	RPI_ENTRY(BCM2711_BOARD_REV_400, 42, -1, RPI_SET_ETHADDR),
-> +	RPI_ENTRY(BCM2711_BOARD_REV_CM4,  2, 42, RPI_LED_PWR_EXP_INV | RPI_SET_ETHADDR),
-> +	/* sentinel */
-> +	{ .hw_id = U8_MAX }
->  };
-> +#endif
->  
->  static const struct of_device_id rpi_of_match[] = {
-> +#if IS_ENABLED(CONFIG_MACH_RPI)
->  	/* BCM2835 based Boards */
->  	{ .compatible = "raspberrypi,model-a", .data = rpi_1_ids },
->  	{ .compatible = "raspberrypi,model-a-plus", .data = rpi_1_ids },
-> @@ -618,23 +567,28 @@ static const struct of_device_id rpi_of_match[] = {
->  	{ .compatible = "raspberrypi,compute-module", .data = rpi_1_ids },
->  	{ .compatible = "raspberrypi,model-zero", .data = rpi_1_ids },
->  	{ .compatible = "raspberrypi,model-zero-w", .data = rpi_1_ids },
-> -
-> +#endif
-> +#if IS_ENABLED(CONFIG_MACH_RPI2)
->  	/* BCM2836 based Boards */
->  	{ .compatible = "raspberrypi,2-model-b", .data = rpi_2_ids },
-> -
-> +#endif
-> +#if IS_ENABLED(CONFIG_MACH_RPI3)
->  	/* BCM2837 based Boards */
->  	{ .compatible = "raspberrypi,3-model-a-plus", .data = rpi_3_ids },
->  	{ .compatible = "raspberrypi,3-model-b", .data = rpi_3_ids },
->  	{ .compatible = "raspberrypi,3-model-b-plus", .data = rpi_3_ids },
->  	{ .compatible = "raspberrypi,model-zero-2-w", .data = rpi_3_ids },
-> +#endif
-> +#if IS_ENABLED(CONFIG_MACH_RPI_CM3)
->  	{ .compatible = "raspberrypi,3-compute-module", .data = rpi_3_ids },
->  	{ .compatible = "raspberrypi,3-compute-module-lite", .data = rpi_3_ids },
-> -
-> +#endif
-> +#if IS_ENABLED(CONFIG_MACH_RPI4)
->  	/* BCM2711 based Boards */
->  	{ .compatible = "raspberrypi,4-model-b", .data = rpi_4_ids },
->  	{ .compatible = "raspberrypi,4-compute-module", .data = rpi_4_ids },
->  	{ .compatible = "raspberrypi,400", .data = rpi_4_ids },
-> -
-> +#endif
->  	{ /* sentinel */ },
->  };
->  BAREBOX_DEEP_PROBE_ENABLE(rpi_of_match);
-> @@ -644,4 +598,4 @@ static struct driver rpi_board_driver = {
->  	.probe = rpi_devices_probe,
->  	.of_compatible = DRV_OF_COMPAT(rpi_of_match),
->  };
-> -late_platform_driver(rpi_board_driver);
-> +coredevice_platform_driver(rpi_board_driver);
-> diff --git a/arch/arm/dts/bcm2711-rpi-4.dts b/arch/arm/dts/bcm2711-rpi-4.dts
-> index 3c0caa73f8..e61514b236 100644
-> --- a/arch/arm/dts/bcm2711-rpi-4.dts
-> +++ b/arch/arm/dts/bcm2711-rpi-4.dts
-> @@ -1,5 +1,10 @@
->  #include <arm64/broadcom/bcm2711-rpi-4-b.dts>
->  
-> +&{/aliases} {
-> +	gpio0 = &gpio;
-> +	expgpio0 = &expgpio;
-> +};
-> +
->  &{/memory@0} {
->  	reg = <0x0 0x0 0x0>;
->  };
-> diff --git a/arch/arm/dts/bcm2835-rpi.dts b/arch/arm/dts/bcm2835-rpi.dts
-> index 8d352a457d..f403b5485c 100644
-> --- a/arch/arm/dts/bcm2835-rpi.dts
-> +++ b/arch/arm/dts/bcm2835-rpi.dts
-> @@ -2,6 +2,7 @@
->  
->  &{/aliases} {
->  	usb0 = &usb;
-> +	gpio0 = &gpio;
->  };
->  
->  &{/memory@0} {
-> diff --git a/arch/arm/dts/bcm2836-rpi-2.dts b/arch/arm/dts/bcm2836-rpi-2.dts
-> index c9106515ee..f211445e3b 100644
-> --- a/arch/arm/dts/bcm2836-rpi-2.dts
-> +++ b/arch/arm/dts/bcm2836-rpi-2.dts
-> @@ -1,5 +1,9 @@
->  #include <arm/bcm2836-rpi-2-b.dts>
->  
-> +&{/aliases} {
-> +	gpio0 = &gpio;
-> +};
-> +
->  &{/memory@0} {
->  	reg = <0x0 0x0>;
->  };
-> diff --git a/arch/arm/dts/bcm2837-rpi-3.dts b/arch/arm/dts/bcm2837-rpi-3.dts
-> index 38d673aec4..588b77cd78 100644
-> --- a/arch/arm/dts/bcm2837-rpi-3.dts
-> +++ b/arch/arm/dts/bcm2837-rpi-3.dts
-> @@ -1,5 +1,10 @@
->  #include <arm64/broadcom/bcm2837-rpi-3-b.dts>
->  
-> +&{/aliases} {
-> +	gpio0 = &gpio;
-> +	expgpio0 = &expgpio;
-> +};
-> +
->  &{/memory@0} {
->  	reg = <0x0 0x0>;
->  };
-> -- 
-> 2.34.1
-> 
-> 
-> 
 
 
