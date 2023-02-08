@@ -1,52 +1,52 @@
-Delivery-date: Wed, 08 Feb 2023 09:21:37 +0100
+Delivery-date: Wed, 08 Feb 2023 09:24:42 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pPfhz-000NDy-3C
-	for lore@lore.pengutronix.de; Wed, 08 Feb 2023 09:21:37 +0100
+	id 1pPfky-000NK9-FQ
+	for lore@lore.pengutronix.de; Wed, 08 Feb 2023 09:24:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pPfhw-0006Rp-Hn
-	for lore@pengutronix.de; Wed, 08 Feb 2023 09:21:37 +0100
+	id 1pPfkv-0006q1-Pb
+	for lore@pengutronix.de; Wed, 08 Feb 2023 09:24:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=igd8bTQ/BVDsAS0ib2bNHGUcdIgoqmu+mn2amheLc3c=; b=fPp27GKe+stK0NHuBKh1pqNraN
-	A9PTHLnR1gCon0w4EK3O3gdSFRqC0G0DHjzLkX/gskooUcEisgkjmN2/MJ6Oxl3DLaK85/06xEFoJ
-	a9yvfelFOivGWq4hLsTIlSGHfXWrWM4gmllUbK2fU1YKPmgdPurwxPurZo3TXrGSQeKB20GSRZYoM
-	xrTj5axuk0YrCJkcbvjhMRLEIhkdogOxAt39A/LwPD4gZSYzLn6aa+wzOWSLkheXpFTLOZCvjm4rK
-	IZejpBTsndk6+ayTK3aCIg7RwaSIHmdmcA4X4n8If+XTm4poydXxeZ+0IE4DCcZntR4wRkJCgOnYU
-	coVZTk/g==;
+	bh=wBlwaynz/pJ/kJ5Sa31zEL6Ba2Ddxe9JtOsndJX30N0=; b=iQGChUgBaT675UKJ4ml89UDWG8
+	JYw9tWl3Hj60ImkJtA2Uz8wBof3b9N5Lmsl+KTQqenemY4R/4j1+GmjXXBT8pgRj4ZYIQlQxvUGUJ
+	awF/KikbO4BO5ER5hHzSfluDCvcwq7RWDViOqtTDCDOqiD93s2eltzCOV5PCCH7kOZGWDg4IV5mZx
+	w8eVN7N0LwcmmtFCxPK0pvKA4ZUt0NnqphWAm6fACofaxOCPH8k/emf7RqPSd8dBOrcAboB3SuYvD
+	R12wYgUCO3O/hSHPydIO/yqyj5PMSlMudUcNm9nhufZ7/cbELNEwJTTW7K4jbknaSEMRDOUxqFJHh
+	SHwt9m6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pPfgk-00EZup-RX; Wed, 08 Feb 2023 08:20:22 +0000
+	id 1pPfjo-00EaUL-1f; Wed, 08 Feb 2023 08:23:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pPfgg-00EZtk-3X
-	for barebox@lists.infradead.org; Wed, 08 Feb 2023 08:20:19 +0000
+	id 1pPfjj-00EaTk-8p
+	for barebox@lists.infradead.org; Wed, 08 Feb 2023 08:23:28 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pPfge-00068F-31; Wed, 08 Feb 2023 09:20:16 +0100
+	id 1pPfjh-0006l8-VG; Wed, 08 Feb 2023 09:23:25 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pPfgd-0003eQ-Ro; Wed, 08 Feb 2023 09:20:15 +0100
-Date: Wed, 8 Feb 2023 09:20:15 +0100
-To: Lucas Stach <l.stach@pengutronix.de>
+	id 1pPfjh-0003h8-Nm; Wed, 08 Feb 2023 09:23:25 +0100
+Date: Wed, 8 Feb 2023 09:23:25 +0100
+To: Roland Hieber <rhi@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230208082015.GJ10447@pengutronix.de>
-References: <20230206210004.627338-1-l.stach@pengutronix.de>
+Message-ID: <20230208082325.GK10447@pengutronix.de>
+References: <20230206134551.3227602-1-rhi@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230206210004.627338-1-l.stach@pengutronix.de>
+In-Reply-To: <20230206134551.3227602-1-rhi@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +54,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230208_002018_168898_55EBDD68 
-X-CRM114-Status: GOOD (  25.82  )
+X-CRM114-CacheID: sfid-20230208_002327_330014_398A8E5F 
+X-CRM114-Status: GOOD (  22.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,61 +77,64 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/3] ARM: i.MX8M: esdctl: limit i.MX8MP early memory size
+Subject: Re: [PATCH] Documentation: networking: improve net.* variable
+ description
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Feb 06, 2023 at 10:00:02PM +0100, Lucas Stach wrote:
-> Limit detected early memory size to 1GB on i.MX8MP, as the default DT
-> has a reserved memory region at 0x92400000, which will conflict with
-> our malloc area in some configurations. Until we can properly parse
-> and exclude the reserved memory regions in the PBL, just avoid getting
-> near that DRAM address by limiting the detected size.
+On Mon, Feb 06, 2023 at 02:45:51PM +0100, Roland Hieber wrote:
+> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+> ---
+>  Documentation/user/booting-linux.rst |  2 ++
+>  Documentation/user/networking.rst    | 10 ++++++----
+>  2 files changed, 8 insertions(+), 4 deletions(-)
 
-The memory region reserved at 0x92400000 belongs to an audio processing
-DSP. This is unused for sure in barebox, so do we really need to handle
-this case here?
-
-Besides, who had that glorious of hardcoding that RAM area in the dtsi
-file?? Is this address dictated by the hardware? That would mean the DSP
-is not usable on machines with only 1GiB of RAM. If it's not dictated
-by the hardware, why is it in the dtsi file?
-
-This smells fishy.
+Applied, thanks
 
 Sascha
 
 > 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-> ---
->  arch/arm/mach-imx/esdctl.c | 12 +++++++++++-
->  1 file changed, 11 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-> index a704250297bb..043de477a77d 100644
-> --- a/arch/arm/mach-imx/esdctl.c
-> +++ b/arch/arm/mach-imx/esdctl.c
-> @@ -947,7 +947,17 @@ void __noreturn imx8mn_barebox_entry(void *boarddata)
+> diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+> index 60babb513cea..1a95f87e77c4 100644
+> --- a/Documentation/user/booting-linux.rst
+> +++ b/Documentation/user/booting-linux.rst
+> @@ -232,6 +232,8 @@ device where the entry is found on. This makes it possible to use the same rootf
+>  image on different devices without having to specify a different root= option each
+>  time.
 >  
->  void __noreturn imx8mp_barebox_entry(void *boarddata)
->  {
-> -	imx8m_barebox_entry(boarddata, 32);
-> +	/*
-> +	 * Limit detected early memory size to 1GB on i.MX8MP, as the default
-> +	 * DT has a reserved memory region at 0x92400000, which will conflict
-> +	 * with our malloc area in some configurations. Until we can properly
-> +	 * parse and exclude the reserved memory regions in the PBL, just avoid
-> +	 * getting near that DRAM address by limiting the detected size.
-> +	 */
-> +	barebox_arm_entry(MX8M_DDR_CSD1_BASE_ADDR,
-> +			  min_t(resource_size_t, SZ_1G,
-> +				imx8m_barebox_earlymem_size(32)),
-> +			  boarddata);
->  }
+> +.. _booting_linux_net:
+> +
+>  Network boot
+>  ------------
 >  
->  void __noreturn imx8mq_barebox_entry(void *boarddata)
+> diff --git a/Documentation/user/networking.rst b/Documentation/user/networking.rst
+> index 9231ebde56ac..2306cb6a60d1 100644
+> --- a/Documentation/user/networking.rst
+> +++ b/Documentation/user/networking.rst
+> @@ -45,15 +45,17 @@ device:
+>  |                              |              | any directly visible subnet. May be set        |
+>  |                              |              | automatically by DHCP.                         |
+>  +------------------------------+--------------+------------------------------------------------+
+> -| global.net.server            | hostname or  | The default server. If unspecified, may be set |
+> -|                              | ipv4 address | by DHCP                                        |
+> +| global.net.server            | hostname or  | The default server used by the defaultenv boot |
+> +|                              | ipv4 address | scripts for NFS and TFTP; see                  |
+> +|                              |              | :ref:`booting_linux_net`.                      |
+> +|                              |              | If unspecified, may be set by DHCP.            |
+>  +------------------------------+--------------+------------------------------------------------+
+>  | global.net.nameserver        | ipv4 address | The DNS server used for resolving host names.  |
+> -|                              |              | May be set by DHCP                             |
+> +|                              |              | May be set by DHCP.                            |
+>  +------------------------------+--------------+------------------------------------------------+
+>  | global.net.ifup_force_detect | boolean      | Set to true if your network device is not      |
+>  |                              |              | detected automatically during start (i.e. for  |
+> -|                              |              | USB network adapters)                          |
+> +|                              |              | USB network adapters).                         |
+>  +------------------------------+--------------+------------------------------------------------+
+>  
+>  The first step for networking is configuring the network device. The network
 > -- 
-> 2.39.1
+> 2.30.2
 > 
 > 
 > 
