@@ -1,58 +1,59 @@
-Delivery-date: Wed, 08 Feb 2023 09:47:20 +0100
+Delivery-date: Wed, 08 Feb 2023 10:20:09 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pPg6r-000OLs-Om
-	for lore@lore.pengutronix.de; Wed, 08 Feb 2023 09:47:20 +0100
+	id 1pPgcd-000Pre-CV
+	for lore@lore.pengutronix.de; Wed, 08 Feb 2023 10:20:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pPg6o-0001PD-VH
-	for lore@pengutronix.de; Wed, 08 Feb 2023 09:47:19 +0100
+	id 1pPgcZ-0007mN-T8
+	for lore@pengutronix.de; Wed, 08 Feb 2023 10:20:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bJbGcaDA9cfAFZkRi9IgZHsmhJkbYKSJbfPF8XRNSK0=; b=CdE9XHzVsGzzfaHmZsRTtv4bLH
-	ATWGVA50CVhqACskMQOFfJ+25awYuhP5opFKUELhc48Qf87+g3vBPzw2Eudf+XhbUQ15/nCrJ68XL
-	XI7SLn3eixZFtWTeSo1JY8w/L2Dr1sSydlJGOX7FTe6b1BcwEEnFgP3SBKZ0yjpGaPjvDGwjHe63u
-	qDaHPMgCJVefVZTwo9Qz0JvRA2/CJqXNxg32RXnwSxdNSFlLW8rtYbwh20WojIfSjVYmzzJI0hAD2
-	iK3iBA21zHSrBcHbY+q9M1DDsp+7xJePdFoN4vYdOjTs0S8kI0nOPzHArWxNpYGBT0rm92hRzkrim
-	8vtpshgA==;
+	bh=0G1vLcZexEekwH9Y0VOCK7CKz9LuCFIg+NSpMrhJasg=; b=RngbafkiPxnZjxzfaq79/Achk7
+	OBZK72G5PMb7wC7TlbUE2P9q6+gJ+9AW9u7Qc+3SZiiqB3HyF3SlR77DZ1RIiSUDuQLeCI/uWezJ1
+	OMw5tiuBaisy0U62hJ+256duWwsabNRGx+hV0Tto2l/xhrv2/Shrpg9VB21KBEH8YRZx1BBag5nTn
+	TSVnp6EdBiC+idRziOJu8iX3EN+p+wycqE0lLxO77/hWL4heblK79BGL+ok2QYIEwo/gMohx5UOCd
+	bnevqt5ozDWtcAMXfz3AVdzDCLHVwR4ZRMHBpAwOX2cCey2KEGTCj1eLCTXKVQNCh2SDy1bXrceEj
+	zACCbXoQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pPg5d-00EdkY-OM; Wed, 08 Feb 2023 08:46:05 +0000
+	id 1pPgau-00ElrA-D2; Wed, 08 Feb 2023 09:18:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pPg5Y-00Edk1-EA
-	for barebox@lists.infradead.org; Wed, 08 Feb 2023 08:46:02 +0000
+	id 1pPgZc-00ElQP-U4
+	for barebox@lists.infradead.org; Wed, 08 Feb 2023 09:17:07 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1pPg5W-00016S-I3; Wed, 08 Feb 2023 09:45:58 +0100
+	id 1pPgZb-0007O4-3B; Wed, 08 Feb 2023 10:17:03 +0100
 Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1pPg5W-0004sM-Af; Wed, 08 Feb 2023 09:45:58 +0100
-Date: Wed, 8 Feb 2023 09:45:58 +0100
+	id 1pPgZa-0007gJ-KW; Wed, 08 Feb 2023 10:17:02 +0100
+Date: Wed, 8 Feb 2023 10:17:02 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-To: Lucas Stach <l.stach@pengutronix.de>
+To: Daniel =?utf-8?B?QnLDoXQ=?= <danek.brat@gmail.com>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230208084558.ypld5b5gzgbdqlzd@pengutronix.de>
-References: <20230207200459.1078994-1-l.stach@pengutronix.de>
- <20230207200459.1078994-2-l.stach@pengutronix.de>
+Message-ID: <20230208091702.sj4lmnttzv726mep@pengutronix.de>
+References: <20230207010525.2693-1-danek.brat@gmail.com>
+ <20230207010525.2693-3-danek.brat@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20230207200459.1078994-2-l.stach@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230207010525.2693-3-danek.brat@gmail.com>
 User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230208_004600_489170_880AD714 
-X-CRM114-Status: GOOD (  16.69  )
+X-CRM114-CacheID: sfid-20230208_011705_016269_49457FD0 
+X-CRM114-Status: GOOD (  23.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,63 +75,160 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/3] ARM: i.MX8M: esdctl: use common compatible to
- detect i.MX8MQ/MM/MP DDRC
+Subject: Re: [PATCH 2/5] ARM: rpi: add serial number readout
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Lucas,
+Hi Daniel,
 
-On 23-02-07, Lucas Stach wrote:
-> All i.MX8M* DDRC nodes are compatible to "fsl,imx8m-ddrc". As the memory
-> size detection works the same on most of them, with the only exception
-> being the i.MX8MM, which only has a 16bit data bus, there is no need to
-		^
-	    i.MX8MN
+thanks for the patch.
 
-apart of this the whole series lgtm, so feel free to add my
+On 23-02-07, Daniel Brát wrote:
+> Remove querying for serial-number node from vc fdt, since it's not
+> guaranteed to always be there (older firmwares dont provide it).
+> Instead, retrieve board's serial number via the mbox api.
 
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Is this possible for all RPi's out there?
 
-> match the more specific compatibles for i.MX8MQ/MM/MP.
-> 
-> Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+> Signed-off-by: Daniel Brát <danek.brat@gmail.com>
 > ---
->  arch/arm/mach-imx/esdctl.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
+>  arch/arm/boards/raspberry-pi/lowlevel.h     |  1 +
+>  arch/arm/boards/raspberry-pi/mbox-helpers.c | 27 +++++++++++++++++++++
+>  arch/arm/boards/raspberry-pi/rpi-common.c   | 21 +++++++++++-----
+>  arch/arm/mach-bcm283x/include/mach/mbox.h   | 13 ++++++++++
+>  4 files changed, 56 insertions(+), 6 deletions(-)
 > 
-> diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
-> index 043de477a77d..fc6db25de9e4 100644
-> --- a/arch/arm/mach-imx/esdctl.c
-> +++ b/arch/arm/mach-imx/esdctl.c
-> @@ -652,7 +652,7 @@ static __maybe_unused struct imx_esdctl_data vf610_data = {
->  	.add_mem = vf610_ddrmc_add_mem,
+> diff --git a/arch/arm/boards/raspberry-pi/lowlevel.h b/arch/arm/boards/raspberry-pi/lowlevel.h
+> index 260f96c714..d2699b9b08 100644
+> --- a/arch/arm/boards/raspberry-pi/lowlevel.h
+> +++ b/arch/arm/boards/raspberry-pi/lowlevel.h
+> @@ -12,5 +12,6 @@
+>  ssize_t rpi_get_arm_mem(void);
+>  int rpi_get_ethaddr(u8 mac[6]);
+>  int rpi_get_board_rev(void);
+> +int rpi_get_board_serial(u64 *serial);
+>  
+>  #endif /* __ARCH_ARM_BOARDS_LOWLEVEL_H__ */
+> diff --git a/arch/arm/boards/raspberry-pi/mbox-helpers.c b/arch/arm/boards/raspberry-pi/mbox-helpers.c
+> index 50fc1c5b45..62c65d1267 100644
+> --- a/arch/arm/boards/raspberry-pi/mbox-helpers.c
+> +++ b/arch/arm/boards/raspberry-pi/mbox-helpers.c
+> @@ -16,6 +16,12 @@ struct msg_get_board_rev {
+>  	u32 end_tag;
 >  };
 >  
-> -static __maybe_unused struct imx_esdctl_data imx8mq_data = {
-> +static __maybe_unused struct imx_esdctl_data imx8m_data = {
->  	.base0 = MX8M_DDR_CSD1_BASE_ADDR,
->  	.add_mem = imx8m_ddrc_add_mem,
+> +struct msg_get_board_serial {
+> +	struct bcm2835_mbox_hdr hdr;
+> +	struct bcm2835_mbox_tag_get_board_serial get_board_serial;
+> +	u32 end_tag;
+> +};
+> +
+>  struct msg_get_mac_address {
+>  	struct bcm2835_mbox_hdr hdr;
+>  	struct bcm2835_mbox_tag_get_mac_address get_mac_address;
+> @@ -71,3 +77,24 @@ int rpi_get_board_rev(void)
+>  
+>  	return msg->get_board_rev.body.resp.rev;
+>  }
+> +
+> +int rpi_get_board_serial(u64 *serial)
+> +{
+> +	int ret;
+> +
+> +	BCM2835_MBOX_STACK_ALIGN(struct msg_get_board_serial, msg);
+> +	BCM2835_MBOX_INIT_HDR(msg);
+> +	BCM2835_MBOX_INIT_TAG(&msg->get_board_serial, GET_BOARD_SERIAL);
+> +
+> +	if (!serial)
+> +		return -EINVAL;
+> +
+> +	ret = bcm2835_mbox_call_prop(BCM2835_MBOX_PROP_CHAN, &msg->hdr);
+> +	if (ret) {
+> +		pr_err("Could not query board serial\n");
+> +		return ret;
+> +	}
+> +
+> +	*serial = msg->get_board_serial.body.resp.serial;
+> +	return 0;
+> +}
+> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+> index 8d1e74acab..a8f180ae92 100644
+> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
+> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+> @@ -60,6 +60,19 @@ struct rpi_priv {
+>  	const char *name;
 >  };
-> @@ -732,14 +732,11 @@ static __maybe_unused struct of_device_id imx_esdctl_dt_ids[] = {
->  		.compatible = "fsl,vf610-ddrmc",
->  		.data = &vf610_data
->  	}, {
-> -		.compatible = "fsl,imx8mm-ddrc",
-> -		.data = &imx8mq_data
-> +		.compatible = "fsl,imx8m-ddrc",
-> +		.data = &imx8m_data
->  	}, {
->  		.compatible = "fsl,imx8mn-ddrc",
->  		.data = &imx8mn_data
-> -	}, {
-> -		.compatible = "fsl,imx8mq-ddrc",
-> -		.data = &imx8mq_data
->  	}, {
->  		.compatible = "fsl,imx7d-ddrc",
->  		.data = &imx7d_data
+>  
+> +static void rpi_set_serial_number(void)
+> +{
+> +	u64 serial;
+> +	char *serial_str;
+> +
+> +	if (rpi_get_board_serial(&serial))
+> +		return;
+> +
+> +	serial_str = basprintf("%016llx", serial);
+> +	barebox_set_serial_number(serial_str);
+> +	free(serial_str);
+> +}
+> +
+>  static void rpi_set_ethaddr(void)
+>  {
+>  	u8 mac[ETH_ALEN];
+> @@ -265,12 +278,6 @@ static void rpi_vc_fdt_parse(void *fdt)
+>  	if (IS_ERR(root))
+>  		return;
+>  
+> -	str = of_read_vc_string(root, "serial-number");
+> -	if (str) {
+> -		barebox_set_serial_number(str);
+> -		free(str);
+> -	}
+> -
+>  	str = of_read_vc_string(root, "model");
+>  	if (str) {
+>  		barebox_set_model(str);
+> @@ -446,6 +453,8 @@ static int rpi_devices_probe(struct device *dev)
+>  	if (IS_ERR(dcfg))
+>  		goto free_priv;
+>  
+> +	rpi_set_serial_number();
+> +
+>  	/* construct short recognizable host name */
+>  	name = of_device_get_match_compatible(priv->dev);
+>  	ptr = strchr(name, ',');
+> diff --git a/arch/arm/mach-bcm283x/include/mach/mbox.h b/arch/arm/mach-bcm283x/include/mach/mbox.h
+> index 92cadba62c..008ea2e614 100644
+> --- a/arch/arm/mach-bcm283x/include/mach/mbox.h
+> +++ b/arch/arm/mach-bcm283x/include/mach/mbox.h
+> @@ -201,6 +201,19 @@ struct bcm2835_mbox_tag_get_mac_address {
+>  	} body;
+>  };
+>  
+> +#define BCM2835_MBOX_TAG_GET_BOARD_SERIAL	0x00010004
+> +
+> +struct bcm2835_mbox_tag_get_board_serial {
+> +	struct bcm2835_mbox_tag_hdr tag_hdr;
+> +	union {
+> +		struct {
+> +		} req;
+> +		struct __packed {
+> +			u64 serial;
+> +		} resp;
+
+Why do we need the __packed here?
+
+Regards,
+  Marco
+
+> +	} body;
+> +};
+> +
+>  #define BCM2835_MBOX_TAG_GET_ARM_MEMORY		0x00010005
+>  
+>  struct bcm2835_mbox_tag_get_arm_mem {
 > -- 
-> 2.39.1
+> 2.34.1
 > 
 > 
 > 
