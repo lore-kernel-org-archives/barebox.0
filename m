@@ -1,82 +1,82 @@
-Delivery-date: Fri, 10 Feb 2023 15:41:15 +0100
+Delivery-date: Fri, 10 Feb 2023 15:48:43 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pQUaS-0037dr-MF
-	for lore@lore.pengutronix.de; Fri, 10 Feb 2023 15:41:15 +0100
+	id 1pQUhh-00381m-99
+	for lore@lore.pengutronix.de; Fri, 10 Feb 2023 15:48:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pQUaP-0004sg-Qj
-	for lore@pengutronix.de; Fri, 10 Feb 2023 15:41:14 +0100
+	id 1pQUhe-0006Cv-Ik
+	for lore@pengutronix.de; Fri, 10 Feb 2023 15:48:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ZOj7/CIFUd/s4Wt49qBF+KvXr3RLS8UNd8V5u7nsvGQ=; b=yZYXqdcJMBLf6d
-	T1BArC/4yhg1XcjAkx0DmNWibOPKqUrp9fSsfN6coqmSKv3xEQf+UU8V4qBFPgC3fIaqaNiaJ/hk8
-	DRgS4ggsc5zCbXsv8I+Pz76YHluliZVaV7euu16zi7tnoCPvK/FqTnyAkID6iLsaiXx/sTBRzauQ1
-	CDuex3nBRgTgeLfMEX65Mrlmdl4v6vjmTnJTfczdODYK8lVArBAh4uOWQkXJjBelBaIpA0PcEapmc
-	BawNbzwgExt9mO4e1du3qFQfd1IyHpXxdO73aCC8FSNF8BAdUc0n+MNmkt24b7pSFO09gEucCwa3X
-	/xi4P7JjJM8BEOeu6iuQ==;
+	List-Owner; bh=wnR/SUtvyMvVe0RbCnSSo+dmjcPOna3Y+iN396MDTK0=; b=t6HENZ7TZiZr+x
+	SzSfp4XfFaWe4p1vdA1EEJuEPER0XklP1r8YdaWo+OdrlNC7Lp7TfWsHIwQPPwTN8YNaJ8AeyElfN
+	mw9Atlc6CXJs7VGNoFOCC2pgQ24olKoYnfqziIKgcas1l+EodNvynkHCJUNzkz2AL6hozUi0DdQ5x
+	8TMwdygp4lRRRMAHK/aUR9PhU6MlMW2IFsubTXHZ9gMLFwjk0u/FssaO3bqJr8C+cLhxMNB0Cqb2R
+	4IzlghBroHl/ixM/UbfKME5ojDghtw8S1eraVOy5fu64UdsP8Ge1tNIt3VjIpHJ1jaZFu1iWaOzKU
+	droljb93YpzwTKELheBg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pQUYz-0064PI-OV; Fri, 10 Feb 2023 14:39:45 +0000
-Received: from mail-qt1-x82d.google.com ([2607:f8b0:4864:20::82d])
+	id 1pQUgy-0066DP-Gi; Fri, 10 Feb 2023 14:48:00 +0000
+Received: from mail-qt1-x829.google.com ([2607:f8b0:4864:20::829])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pQUYu-0064Mw-RD
-	for barebox@lists.infradead.org; Fri, 10 Feb 2023 14:39:42 +0000
-Received: by mail-qt1-x82d.google.com with SMTP id w3so5897195qts.7
-        for <barebox@lists.infradead.org>; Fri, 10 Feb 2023 06:39:38 -0800 (PST)
+	id 1pQUgt-0066C4-Ps
+	for barebox@lists.infradead.org; Fri, 10 Feb 2023 14:47:57 +0000
+Received: by mail-qt1-x829.google.com with SMTP id 5so5921154qtp.9
+        for <barebox@lists.infradead.org>; Fri, 10 Feb 2023 06:47:54 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=gmail.com; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ZOj7/CIFUd/s4Wt49qBF+KvXr3RLS8UNd8V5u7nsvGQ=;
-        b=f23c0VfMKkkzzV34giZpPkh6uQVlZxpW0jeQLGg8KDa2DkWxEj40/rWH5gyX4YZR19
-         5eCOXuyCpId772Qim6PslH1e7bCQpA5w82nYhP47fKNDOXn4UkUyCtEb+BFo89M44zeT
-         8bkX6Ulv3e+NT59/FutvUfj/JIya31KkewP66I0Hl3Nuu8pWUfL/r0E1bMfVd/FMqXOB
-         P5QYeSWFqo5zVzhk1WUfPp8ixG9YQ5/tqbss86QWSP/cy7Kx8IuwjHvcU/8KGsPX+hhI
-         klaJOp76W1yaxZrcNeDDb68oTz2uHAsiaWzZUH2aCKJw8gNwnzEfeGjFdyyuT10JeYxM
-         g19w==
+        bh=wnR/SUtvyMvVe0RbCnSSo+dmjcPOna3Y+iN396MDTK0=;
+        b=mdlpuJFAFOLs/3+4Xlscd7yxLhnNrhF6AlfeobbeBgOjvn6T6eeHK7lAfuXM/fX1f2
+         w9J/786lUjXZgxzL2HbNxzD283P3RrfeRM/4kZQCgPVmjojFP/BiwM8kP/HAs70yeDB7
+         XrWdRPt7+hy/pnte7wLm+SEMAqWs5WdWXueg7aJ6O67/qc/pRMEAHFj61td5+oYplgHf
+         xBDGZPfIf1S2wvnE09hQdragwLI2qAKP64I8O5FhXfhSHqqxSrTjWXWpWQ5uE3HgPm/p
+         j8hwVMsIbOuRDAMJ9OEHrfSBNY9ghSR0hJwMgy9YNo86Mmc0r/CrjAUkakw+IORKcBnj
+         w2tQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20210112;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ZOj7/CIFUd/s4Wt49qBF+KvXr3RLS8UNd8V5u7nsvGQ=;
-        b=DOmUCJHH9KA0Co82sI9jXFONXs0idXyYVF3uSNsmgTHW+0XL2tWiZwZUszXWFvvijk
-         JSmLT2E89VIUNkGYy5nr1MC666PMGYhJxnst0R+1bRIu3wFrzH4CTf7VHSFnqMuxGV96
-         qY4P6Xb4vU4C4K8TOVEKwEjHWxcIT4pKXYiD7cVi2Am6GVm4JzdCHjFdvNevQlBNSFsj
-         x9FKF/AC4u2btw5IMxHBTZ6sSKWwTuuDlbVXfUoy9eyMaRGlonQx8wJvse5IQdcDoAFx
-         xvHkEGjKxTkgQWvrID90WLXzXPBlczs/UI8PkuMcA6ws/VvYA210YTKQm8AWDmSPG/hw
-         EagA==
-X-Gm-Message-State: AO0yUKVb8FeM9lgyWexvOOE3bn63cCM66caPPjMiXs/CqVO8TR2c4MBT
-	t+YXgZdNluyfDY3qk9HEtNck3dJIdeEpUEItFN0=
-X-Google-Smtp-Source: AK7set878TyrI/Iq4m3uJdJRxpYqQaLUpyaeOoPZE8AP97uP2A5w6N5/TPl5z1XL6vyiMXvzqpxjHA==
-X-Received: by 2002:ac8:5c08:0:b0:3b9:b6c8:6d7a with SMTP id i8-20020ac85c08000000b003b9b6c86d7amr26665048qti.29.1676039977359;
-        Fri, 10 Feb 2023 06:39:37 -0800 (PST)
+        bh=wnR/SUtvyMvVe0RbCnSSo+dmjcPOna3Y+iN396MDTK0=;
+        b=HaBISt4/4ZA4tGjJ8nYUm1xuth25FZsqjd3b0Z6BvUgu1tDmqreQn7c4IqhoGkdzD5
+         Pswzyqw4CZXutF0087sRgMYXTisRhysaXL1pSsgFRyzwOK226o76mAJWBGaFs8/0zrBY
+         lKCbOvcJULSQ9znS4AEUSLRdpnQpOvBgDTls94/rgstqC7JRYMxb38hdTVTqduVR/CLN
+         luRp9nF/xZFFTILP1p1eHlnJ8hVBL9E9Mki39IpShvx4is9QYlBxjG43SddA+JbOoLV6
+         p5lp1TZLEN6UAqQ1x/A2ZNdAGGKLXH5VpR90REyY6nt9OWzYFUWJgsXjr1Ktej/6yidZ
+         ZbCQ==
+X-Gm-Message-State: AO0yUKUkClb6b+f4Sk7bGrK08K2HasDT5Jk9HqlQfRuZIeKhtZVeF69T
+	/1kC6YtUArCEEAJvkf/vCITKde9zyXKXcMbeSvg=
+X-Google-Smtp-Source: AK7set//s7F0ZDoSaUuk5ledQo6hXFCxRR5g0q04hkwv6FuofZhdlp8t+RcuEXXhlZwj6ULzv5ZmUQ==
+X-Received: by 2002:a05:622a:64b:b0:3b8:1f33:ab57 with SMTP id a11-20020a05622a064b00b003b81f33ab57mr24736758qtb.59.1676040473036;
+        Fri, 10 Feb 2023 06:47:53 -0800 (PST)
 Received: from localhost.localdomain ([193.232.173.109])
-        by smtp.gmail.com with ESMTPSA id u1-20020ac83d41000000b003b643951117sm3442155qtf.38.2023.02.10.06.39.36
+        by smtp.gmail.com with ESMTPSA id u63-20020a379242000000b00731c30ac2e8sm3661703qkd.74.2023.02.10.06.47.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 10 Feb 2023 06:39:36 -0800 (PST)
+        Fri, 10 Feb 2023 06:47:52 -0800 (PST)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Fri, 10 Feb 2023 17:39:23 +0300
-Message-Id: <20230210143924.915149-2-denorl2009@gmail.com>
+Date: Fri, 10 Feb 2023 17:47:42 +0300
+Message-Id: <20230210144745.915720-2-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230210143924.915149-1-denorl2009@gmail.com>
-References: <20230210143924.915149-1-denorl2009@gmail.com>
+In-Reply-To: <20230210144745.915720-1-denorl2009@gmail.com>
+References: <20230210144745.915720-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230210_063940_910668_6F0052F7 
-X-CRM114-Status: GOOD (  11.33  )
+X-CRM114-CacheID: sfid-20230210_064755_853355_46FFAD45 
+X-CRM114-Status: GOOD (  13.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,66 +100,34 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] net: e1000: properly map dma allocations
+Subject: [PATCH 1/4] MIPS: dma: fix nullptr handling in dma_free_coherent
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Antony Pavlov <antonynpavlov@gmail.com>
+It is not an error to pass a null pointer to free() and as such it seems
+that dma_free_coherent() should be able to handle this situation too.
+Currently, if CONFIG_MMU option is enabled, we would convert this null
+pointer into a pointer to the beginning of CKSEG0 memory segment before
+passing it to free(), actually trying to deallocate stuff.
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 ---
- drivers/net/e1000/e1000.h | 2 ++
- drivers/net/e1000/main.c  | 8 ++++----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ arch/mips/include/asm/dma-mapping.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/e1000/e1000.h b/drivers/net/e1000/e1000.h
-index 558a4ac271..d440d7540a 100644
---- a/drivers/net/e1000/e1000.h
-+++ b/drivers/net/e1000/e1000.h
-@@ -2183,7 +2183,9 @@ struct e1000_hw {
- 	struct mii_bus miibus;
- 
- 	struct e1000_tx_desc *tx_base;
-+	dma_addr_t tx_base_phys;
- 	struct e1000_rx_desc *rx_base;
-+	dma_addr_t rx_base_phys;
- 	unsigned char *packet;
- 	dma_addr_t packet_dma;
- 
-diff --git a/drivers/net/e1000/main.c b/drivers/net/e1000/main.c
-index e00bc48417..c259d72f27 100644
---- a/drivers/net/e1000/main.c
-+++ b/drivers/net/e1000/main.c
-@@ -3267,7 +3267,7 @@ static void e1000_configure_tx(struct e1000_hw *hw)
- 	unsigned long tctl;
- 	unsigned long tipg, tarc;
- 	uint32_t ipgr1, ipgr2;
--	const unsigned long tx_base = (unsigned long)hw->tx_base;
-+	const unsigned long tx_base = (unsigned long)hw->tx_base_phys;
- 
- 	e1000_write_reg(hw, E1000_TDBAL, lower_32_bits(tx_base));
- 	e1000_write_reg(hw, E1000_TDBAH, upper_32_bits(tx_base));
-@@ -3386,7 +3386,7 @@ static void e1000_setup_rctl(struct e1000_hw *hw)
- static void e1000_configure_rx(struct e1000_hw *hw)
+diff --git a/arch/mips/include/asm/dma-mapping.h b/arch/mips/include/asm/dma-mapping.h
+index 8e6ea08168..9f6ec03e3b 100644
+--- a/arch/mips/include/asm/dma-mapping.h
++++ b/arch/mips/include/asm/dma-mapping.h
+@@ -31,7 +31,7 @@ static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+ static inline void dma_free_coherent(void *vaddr, dma_addr_t dma_handle,
+ 				     size_t size)
  {
- 	unsigned long rctl, ctrl_ext;
--	const unsigned long rx_base = (unsigned long)hw->rx_base;
-+	const unsigned long rx_base = (unsigned long)hw->rx_base_phys;
- 
- 	hw->rx_tail = 0;
- 	/* make sure receives are disabled while setting up the descriptors */
-@@ -3595,8 +3595,8 @@ static int e1000_probe(struct pci_dev *pdev, const struct pci_device_id *id)
- 
- 	hw = xzalloc(sizeof(*hw));
- 
--	hw->tx_base = dma_alloc_coherent(16 * sizeof(*hw->tx_base), DMA_ADDRESS_BROKEN);
--	hw->rx_base = dma_alloc_coherent(16 * sizeof(*hw->rx_base), DMA_ADDRESS_BROKEN);
-+	hw->tx_base = dma_alloc_coherent(16 * sizeof(*hw->tx_base), &hw->tx_base_phys);
-+	hw->rx_base = dma_alloc_coherent(16 * sizeof(*hw->rx_base), &hw->rx_base_phys);
- 
- 	edev = &hw->edev;
- 
+-	if (IS_ENABLED(CONFIG_MMU))
++	if (IS_ENABLED(CONFIG_MMU) && vaddr)
+ 		free((void *)CKSEG0ADDR(vaddr));
+ 	else
+ 		free(vaddr);
 -- 
 2.30.2
 
