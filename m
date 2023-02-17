@@ -1,56 +1,67 @@
-Delivery-date: Fri, 17 Feb 2023 15:25:37 +0100
+Delivery-date: Fri, 17 Feb 2023 15:53:10 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pT1g9-00ABJJ-Km
-	for lore@lore.pengutronix.de; Fri, 17 Feb 2023 15:25:37 +0100
+	id 1pT26o-00AC05-3m
+	for lore@lore.pengutronix.de; Fri, 17 Feb 2023 15:53:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pT1g7-0006Cl-Nb
-	for lore@pengutronix.de; Fri, 17 Feb 2023 15:25:37 +0100
+	id 1pT26m-0001Dn-Do
+	for lore@pengutronix.de; Fri, 17 Feb 2023 15:53:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZIdplm23fxX+yWtvFJMXE3g/5cZQxYM22UjDt9Zpl48=; b=wt0coVaSn39DVNHn9uH4YjH/sj
-	sC36RoPqXCwaPFHBz88YHB6zV8Pk70D+v1UlcpXgZvWiH9hVDTN1ReypF78UHGmqVtN4ztxbFz812
-	ceaWUWei6Eyo5qRr1m16VtR+o1V1R7u85ojWbGIlTHmqurHn8ABhhINVwSp9lt6ckt+qLDVBea7j9
-	1rA2tszVYVtwoG/Jyrryhip0lMwqng0ov7SBam54lOUJGiQGtIWD4EewG5BSUmStHgSQNjKQWjxuz
-	GnPeTdPM/ZXsuQBB9+zViYvEqSVHdmyv+vxSQyNcvy+HXiDja+Tkq/KgHGjMosGXrL1boV534ejwf
-	PLK+Qsgg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=+1WdzKFR2v/R4vsA4P0/ytcFvX/3EMjnA/YJOZZxwPs=; b=HoQhgnAAwmnGDtncOBmq7yDgTz
+	XeSzvsFuErNR2QP+KSvLKSa+HFXAaWyX5+yjLBF7c3EiAqMGTKYs0oO66kKKQQHsYcM41db1Os0Ij
+	I5YeMwVNEf79nRCn8NYU0hYg0OpD0uoDVVImeNTuO8T6X1RGx+5YFf1kxU87bNoWoaLrC2kIeGwic
+	7+9svy8hwuOZQPiHvMb3vwrDUJv4cXcUJ2TTwGt9PCod+ihzvT9PrMXPmhDnyW17iJ20SNbT7NG6k
+	/akG/60FsS9fKOGU0uRoqGQU5i6ruioqEv5qWfRgYHroZANZ6eZ3H4Td7dFMQO923ooSGGypjsIUb
+	8YuLl4Tg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pT1eg-00EX2U-KS; Fri, 17 Feb 2023 14:24:07 +0000
+	id 1pT25U-00EdFZ-8h; Fri, 17 Feb 2023 14:51:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pT1eO-00EX0m-5x
-	for barebox@lists.infradead.org; Fri, 17 Feb 2023 14:23:49 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pT1eM-0005sQ-Ga; Fri, 17 Feb 2023 15:23:46 +0100
-Message-ID: <d14ddbc5-5e1b-cf21-312a-b9df890b7c3e@pengutronix.de>
-Date: Fri, 17 Feb 2023 15:23:45 +0100
+	id 1pT25P-00EdEm-Lg
+	for barebox@lists.infradead.org; Fri, 17 Feb 2023 14:51:45 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pT25N-00015D-QX; Fri, 17 Feb 2023 15:51:41 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pT25M-0003Vw-Mw; Fri, 17 Feb 2023 15:51:40 +0100
+Date: Fri, 17 Feb 2023 15:51:40 +0100
+From: Sascha Hauer <sha@pengutronix.de>
+To: Renaud Barbier <Renaud.Barbier@ametek.com>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20230217145140.GT10447@pengutronix.de>
+References: <BL0PR07MB5665C75B684154A56F54D498ECD89@BL0PR07MB5665.namprd07.prod.outlook.com>
+ <20230210122306.GX10447@pengutronix.de>
+ <BL0PR07MB5665285FB23BBC620897BABEECA09@BL0PR07MB5665.namprd07.prod.outlook.com>
+ <20230216125434.GN10447@pengutronix.de>
+ <BL0PR07MB56657046F95666F3464A4BB8ECA09@BL0PR07MB5665.namprd07.prod.outlook.com>
+ <20230217093619.GP10447@pengutronix.de>
+ <BL0PR07MB5665182C6ACFFFB3B4AB456AECA19@BL0PR07MB5665.namprd07.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Content-Language: en-US
-To: Maxim Kochetkov <fido_max@inbox.ru>, barebox@lists.infradead.org
-Cc: pmamonov@gmail.com, a.kuyan@yadro.com, p.mamonov@yadro.com,
- Maxim Kochetkov <m.kochetkov@yadro.com>
-References: <20230217142006.60228-1-fido_max@inbox.ru>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230217142006.60228-1-fido_max@inbox.ru>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <BL0PR07MB5665182C6ACFFFB3B4AB456AECA19@BL0PR07MB5665.namprd07.prod.outlook.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230217_062348_277166_0F6013AA 
-X-CRM114-Status: GOOD (  19.58  )
+X-CRM114-CacheID: sfid-20230217_065143_725839_7069E48E 
+X-CRM114-Status: GOOD (  22.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,73 +79,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 1/1] serial: ns16550: move iomem/ioport init after
- clock init
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 2/2] ARM: Layerscape: Add LS1021A IOT board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 17.02.23 15:20, Maxim Kochetkov wrote:
-> While probing ns16550 clock provider may be unavailable and
-> clk_get() returns -EPROBE_DEFER. Next ns16550_probe() attempts
-> will be failed too because of dev_request_mem_resource() has already
-> acquired this resource for the device and returns -EBUSY.
-> So move resource allocation just after clock init. It will let proper
-> probe for defered clocks on boards with deep probe disabled.
+On Fri, Feb 17, 2023 at 01:44:25PM +0000, Renaud Barbier wrote:
+> > 
+> > A phy is registered in phy_register_device(). The call to register_device() in
+> > that function will end up in mdio_bus_match(). You could add some
+> > debugging there to see which phy ids are matched against each other.
+> > 
+> > An idea is that the at803x driver is not yet registered by the time
+> > phy_device_connect() is called, but I don't see how this could happen.
+> > 
+> For some reason mdio_bus_match is not called.
+> So if I understand the sequence correctly 
 > 
-> Signed-off-by: Maxim Kochetkov <m.kochetkov@yadro.com>
-> Signed-off-by: Maxim Kochetkov <fido_max@inbox.ru>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Thanks!
-Ahmad
-
-> ---
->  drivers/serial/serial_ns16550.c | 14 +++++++-------
->  1 file changed, 7 insertions(+), 7 deletions(-)
+> First phy_register is called and assign genphy to all phys
 > 
-> diff --git a/drivers/serial/serial_ns16550.c b/drivers/serial/serial_ns16550.c
-> index 16f3576645..9ce4feed43 100644
-> --- a/drivers/serial/serial_ns16550.c
-> +++ b/drivers/serial/serial_ns16550.c
-> @@ -479,13 +479,6 @@ static int ns16550_probe(struct device *dev)
->  
->  	priv = xzalloc(sizeof(*priv));
->  
-> -	ret = ns16550_init_iomem(dev, priv);
-> -	if (ret)
-> -		ret = ns16550_init_ioport(dev, priv);
-> -
-> -	if (ret)
-> -		return ret;
-> -
->  	if (plat)
->  		priv->plat = *plat;
->  	else
-> @@ -511,6 +504,13 @@ static int ns16550_probe(struct device *dev)
->  		goto err;
->  	}
->  
-> +	ret = ns16550_init_iomem(dev, priv);
-> +	if (ret)
-> +		ret = ns16550_init_ioport(dev, priv);
-> +
-> +	if (ret)
-> +		goto err;
-> +
->  	cdev = &priv->cdev;
->  	cdev->dev = dev;
->  	cdev->tstc = ns16550_tstc;
+> phy_register_device id = 0x0, register genphy_driver.drv = 0xbbe7c5fc, Generic PHY
+> phy_register_device id = 0x4dd074, register genphy_driver.drv = 0xbbe7c5fc, Generic PHY
+> phy_register_device id = 0x4dd074, register genphy_driver.drv = 0xbbe7c5fc, Generic PHY
+
+Okay, here is the problem. You registered the mdio driver at coredevice
+level, but the phy drivers are registered at device level. That means
+the at803x driver is not present when the phys are probed and then
+genphy is used as fallback.
+
+IMO the phy drivers should be moved to an earlier level, like core
+or coredevice.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
