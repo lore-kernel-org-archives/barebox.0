@@ -1,90 +1,58 @@
-Delivery-date: Fri, 17 Feb 2023 19:09:29 +0100
+Delivery-date: Fri, 17 Feb 2023 21:28:12 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pT5An-00AJDx-9r
-	for lore@lore.pengutronix.de; Fri, 17 Feb 2023 19:09:29 +0100
+	id 1pT7L2-00AOEL-HO
+	for lore@lore.pengutronix.de; Fri, 17 Feb 2023 21:28:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pT5Am-0000u8-6u
-	for lore@pengutronix.de; Fri, 17 Feb 2023 19:09:28 +0100
+	id 1pT7L1-0007i5-9l
+	for lore@pengutronix.de; Fri, 17 Feb 2023 21:28:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:MIME-Version:References:Message-ID:Subject:Cc:To:
-	From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PrGgHRvTeiqmDK9sgLpHzXSQOdr+9wZ0EjIHb1rlKmI=; b=3zgjAnA1bXhtx3PsLXubcpwkYl
-	tM1IYVNvl1qAqmh/aH4QapZDpyIwgZoPGtsu+JiF/DQelwpCh3kr5VeziqeLTajX0IZbQn0kxSzdL
-	YMzWhJyAMBFbjmQKCm6GJWuYZ2AOoewgtrgI20xjUfF57pE4jaZtvNUFTk7iatB5TGslHu1oZqnDi
-	NQ9ADjKqZY5c4a7w7UdaBAxnPzvmcMSj2b6AhV+kQlgmDs2NOlqhT83mjOdjjdN/jFIymgoMjQkg/
-	+GEovuuwryEA8ZFP9Ouf0cTlNEQ5dzelXaijpPRAOwPEenrnMWVjU8gg0JvIp8mtM/zYr0NXEkJIE
-	a0b4er9w==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=sjUGPGm8L/F022m9t8vzhNzlzyP0SZmG87PSYaYYO4A=; b=qJ3hjKC+mMS5/u/ws9CBZ2cl4W
+	21bbs0baCncibdqEZyAc+f3jQGq2C+8JZL4quUR3OTAMA+hRcCoeBuCLMJImBNO30W5ajbutRy4xA
+	9H2s6waYrsNXdemnln2ym6YgggfpYVCbEpgmESn4O63H8iG5P7qzT5GlvVd05JZiMpxJpFvSRq7zZ
+	bJZ00J1fiylj6jlcmgj10SKiDnnsPbq2YBFZDQB5C9uSf5eWXkJ0Tfj7NQ9njUSWvRtJpnLmwAvjj
+	5OUnDxe0K4tLn7su8iW4pd2v9x0Hg8N7Mo3dujRaICd0yiENFej9p2g5Q9XC19ErPNyULai46QJh3
+	86Rl5XrA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pT59g-00FM4Y-6N; Fri, 17 Feb 2023 18:08:20 +0000
-Received: from smtpout140.security-mail.net ([85.31.212.149] helo=fx409.security-mail.net)
+	id 1pT7JR-00Fckg-Qz; Fri, 17 Feb 2023 20:26:33 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pT59b-00FM3r-3d
-	for barebox@lists.infradead.org; Fri, 17 Feb 2023 18:08:17 +0000
-Received: from localhost (fx409.security-mail.net [127.0.0.1])
-	by fx409.security-mail.net (Postfix) with ESMTP id 761CE349604
-	for <barebox@lists.infradead.org>; Fri, 17 Feb 2023 19:08:09 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
-	s=sec-sig-email; t=1676657289;
-	bh=PrGgHRvTeiqmDK9sgLpHzXSQOdr+9wZ0EjIHb1rlKmI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=1dLqdYC9JMj4I5GiHmSgGGRycbNhPSTaOiGCYTBgPcz6Pt6LSqVTLFyiQM/nYokuv
-	 iMnSAuFGl8IhbolVaMfmgMTwWhv/WZiOblbF5ZloJ/NqFqDrRi+5n2lpGSASthRs+a
-	 ViszLts2KG7DWUZ7tU6B4u9pO3f9HvfuhshXAoTM=
-Received: from fx409 (fx409.security-mail.net [127.0.0.1]) by
- fx409.security-mail.net (Postfix) with ESMTP id 39FDE3494F0; Fri, 17 Feb
- 2023 19:08:09 +0100 (CET)
-Received: from zimbra2.kalray.eu (unknown [217.181.231.53]) by
- fx409.security-mail.net (Postfix) with ESMTPS id 5CA62349489; Fri, 17 Feb
- 2023 19:08:08 +0100 (CET)
-Received: from zimbra2.kalray.eu (localhost [127.0.0.1]) by
- zimbra2.kalray.eu (Postfix) with ESMTPS id 3705D27E0533; Fri, 17 Feb 2023
- 19:08:08 +0100 (CET)
-Received: from localhost (localhost [127.0.0.1]) by zimbra2.kalray.eu
- (Postfix) with ESMTP id 1DBA627E0536; Fri, 17 Feb 2023 19:08:08 +0100 (CET)
-Received: from zimbra2.kalray.eu ([127.0.0.1]) by localhost
- (zimbra2.kalray.eu [127.0.0.1]) (amavisd-new, port 10026) with ESMTP id
- o6szN_uaDNfR; Fri, 17 Feb 2023 19:08:08 +0100 (CET)
-Received: from tellis.lin.mbt.kalray.eu (unknown [192.168.36.206]) by
- zimbra2.kalray.eu (Postfix) with ESMTPSA id 08D2D27E0533; Fri, 17 Feb 2023
- 19:08:08 +0100 (CET)
-X-Virus-Scanned: E-securemail
-Secumail-id: <baa3.63efc288.5a1e9.0>
-DKIM-Filter: OpenDKIM Filter v2.10.3 zimbra2.kalray.eu 1DBA627E0536
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
- s=32AE1B44-9502-11E5-BA35-3734643DEF29; t=1676657288;
- bh=PrGgHRvTeiqmDK9sgLpHzXSQOdr+9wZ0EjIHb1rlKmI=;
- h=Date:From:To:Message-ID:MIME-Version;
- b=U5VNX1nWkdJUxgzkzLfcW/yFYgN9UrXGLz3WKG3XuGwjGupLXqswWFuNQdnpn7Bnl
- A+76DWYD4qqerHIi6G0oFmvHzICrueP66BWzXONZ1M5PGLneeBK78G0jkTya9ONEoz
- Vchz/IvtnL0PTvMFYV3aXp8mWsCBO2Q6JO2/tYLI=
-Date: Fri, 17 Feb 2023 19:08:06 +0100
-From: Jules Maselbas <jmaselbas@kalray.eu>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230217180806.GD2498@tellis.lin.mbt.kalray.eu>
-References: <20230217173057.1839835-1-a.fatoum@pengutronix.de>
- <20230217173057.1839835-9-a.fatoum@pengutronix.de>
+	id 1pT7JM-00Fcje-G4
+	for barebox@lists.infradead.org; Fri, 17 Feb 2023 20:26:31 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pT7JG-0007dP-O5; Fri, 17 Feb 2023 21:26:22 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pT7JE-005f9w-Nq; Fri, 17 Feb 2023 21:26:21 +0100
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pT7JF-00C5vW-AX; Fri, 17 Feb 2023 21:26:21 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 17 Feb 2023 21:26:20 +0100
+Message-Id: <20230217202620.2882141-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-Content-Disposition: inline
-In-Reply-To: <20230217173057.1839835-9-a.fatoum@pengutronix.de>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
-X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230217_100815_328268_5794AAFF 
-X-CRM114-Status: UNSURE (   5.40  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230217_122628_576877_7E98E5DE 
+X-CRM114-Status: GOOD (  23.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -102,24 +70,225 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1 08/20] ARM: i.MX6: gw54xx: rename watchdog nodes
+Subject: [PATCH] usb: misc: add support for new OF onboard hub binding
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Feb 17, 2023 at 06:30:45PM +0100, Ahmad Fatoum wrote:
-> Newer device trees have renamed nodes to adhere to schema. Add the new
-> node names as well. Proper way would be to add aliases in barebox DT and
-> use reproducible names, but given that I can't test my changes, do this
-> small change nad hope the new names are stable enough.
-typo s/nad/and/ ;)
+The new binding allows describing hubs that lacks a control bus (e.g.
+I2C) in the DT and thus replaces the ugly hack of specifying USB hub
+resets as gpio-hogs. It's already in use for boards we support, like the
+STM32MP13/5 Discovery kits and will be useful for the i.MX8MP Debix
+board, so port over the driver from Linux.
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/usb/core/usb.c             |  2 +
+ drivers/usb/misc/Kconfig           | 10 ++++
+ drivers/usb/misc/Makefile          |  1 +
+ drivers/usb/misc/onboard_usb_hub.c | 86 ++++++++++++++++++++++++++++++
+ drivers/usb/misc/onboard_usb_hub.h | 36 +++++++++++++
+ include/usb/usb.h                  |  8 +++
+ 6 files changed, 143 insertions(+)
+ create mode 100644 drivers/usb/misc/onboard_usb_hub.c
+ create mode 100644 drivers/usb/misc/onboard_usb_hub.h
 
-
-
+diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
+index 7c589ec06f24..a974614c062e 100644
+--- a/drivers/usb/core/usb.c
++++ b/drivers/usb/core/usb.c
+@@ -576,6 +576,8 @@ int usb_host_detect(struct usb_host *host)
+ {
+ 	int ret;
+ 
++	of_usb_host_probe_hubs(host);
++
+ 	if (!host->root_dev) {
+ 		if (host->init) {
+ 			ret = host->init(host);
+diff --git a/drivers/usb/misc/Kconfig b/drivers/usb/misc/Kconfig
+index 9799af47256e..fde57fd74309 100644
+--- a/drivers/usb/misc/Kconfig
++++ b/drivers/usb/misc/Kconfig
+@@ -14,3 +14,13 @@ config USB_HUB_USB251XB
+ 	  Microchip USB251x/xBi USB 2.0 Hub Controller series. Configuration
+ 	  parameters may be set in devicetree or platform data.
+ 	  Say Y or M here if you need to configure such a device via SMBus.
++
++config USB_ONBOARD_HUB
++	bool "Onboard USB hub support"
++	depends on OFDEVICE || COMPILE_TEST
++	help
++	  Say Y here if you want to support discrete onboard USB hubs that
++	  don't require an additional control bus for initialization, but
++	  need some non-trivial form of initialization, such as enabling a
++	  power regulator. An example for such a hub is the Realtek
++	  RTS5411.
+diff --git a/drivers/usb/misc/Makefile b/drivers/usb/misc/Makefile
+index be5c044f5a57..e00f66a5ed1c 100644
+--- a/drivers/usb/misc/Makefile
++++ b/drivers/usb/misc/Makefile
+@@ -4,3 +4,4 @@
+ # (the ones that don't fit into any other categories)
+ #
+ obj-$(CONFIG_USB_HUB_USB251XB)		+= usb251xb.o
++obj-$(CONFIG_USB_ONBOARD_HUB)		+= onboard_usb_hub.o
+diff --git a/drivers/usb/misc/onboard_usb_hub.c b/drivers/usb/misc/onboard_usb_hub.c
+new file mode 100644
+index 000000000000..0b847f06ad45
+--- /dev/null
++++ b/drivers/usb/misc/onboard_usb_hub.c
+@@ -0,0 +1,86 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Driver for onboard USB hubs
++ *
++ * Copyright (c) 2022, Google LLC
++ */
++
++#include <driver.h>
++#include <gpiod.h>
++#include <init.h>
++#include <of.h>
++#include <linux/printk.h>
++#include <of_device.h>
++#include <regulator.h>
++#include <usb/usb.h>
++
++#include "onboard_usb_hub.h"
++
++void of_usb_host_probe_hubs(struct usb_host *host)
++{
++	struct device_node *np;
++
++	np = dev_of_node(host->hw_dev);
++	if (!np)
++		return;
++
++	of_platform_populate(np, onboard_hub_match, host->hw_dev);
++}
++
++struct onboard_hub {
++	struct regulator *vdd;
++	struct device *dev;
++	const struct onboard_hub_pdata *pdata;
++	int reset_gpio;
++};
++
++static int onboard_hub_power_on(struct onboard_hub *hub)
++{
++	int err;
++
++	err = regulator_enable(hub->vdd);
++	if (err) {
++		dev_err(hub->dev, "failed to enable regulator: %pe\n",
++			ERR_PTR(err));
++		return err;
++	}
++
++	udelay(hub->pdata->reset_us);
++	gpiod_set_value(hub->reset_gpio, 0);
++
++	return 0;
++}
++
++static int onboard_hub_probe(struct device *dev)
++{
++	struct onboard_hub *hub;
++
++	hub = xzalloc(sizeof(*hub));
++
++	hub->pdata = device_get_match_data(dev);
++	if (!hub->pdata)
++		return -EINVAL;
++
++	hub->vdd = regulator_get(dev, "vdd");
++	if (IS_ERR(hub->vdd))
++		return PTR_ERR(hub->vdd);
++
++	hub->reset_gpio = gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
++	if (hub->reset_gpio < 0 && hub->reset_gpio != -ENOENT)
++		return dev_err_probe(dev, hub->reset_gpio, "failed to get reset GPIO\n");
++
++	hub->dev = dev;
++
++	return onboard_hub_power_on(hub);
++}
++
++static struct driver onboard_hub_driver = {
++	.name = "onboard-usb-hub",
++	.probe = onboard_hub_probe,
++	.of_compatible = onboard_hub_match,
++};
++device_platform_driver(onboard_hub_driver);
++
++MODULE_AUTHOR("Matthias Kaehlcke <mka@chromium.org>");
++MODULE_DESCRIPTION("Driver for discrete onboard USB hubs");
++MODULE_LICENSE("GPL v2");
+diff --git a/drivers/usb/misc/onboard_usb_hub.h b/drivers/usb/misc/onboard_usb_hub.h
+new file mode 100644
+index 000000000000..e90be47b6735
+--- /dev/null
++++ b/drivers/usb/misc/onboard_usb_hub.h
+@@ -0,0 +1,36 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright (c) 2022, Google LLC
++ */
++
++#ifndef _USB_MISC_ONBOARD_USB_HUB_H
++#define _USB_MISC_ONBOARD_USB_HUB_H
++
++struct onboard_hub_pdata {
++	unsigned long reset_us;		/* reset pulse width in us */
++};
++
++static const struct onboard_hub_pdata microchip_usb424_data = {
++	.reset_us = 1,
++};
++
++static const struct onboard_hub_pdata realtek_rts5411_data = {
++	.reset_us = 0,
++};
++
++static const struct onboard_hub_pdata ti_tusb8041_data = {
++	.reset_us = 3000,
++};
++
++const struct of_device_id onboard_hub_match[] = {
++	{ .compatible = "usb424,2514", .data = &microchip_usb424_data, },
++	{ .compatible = "usb451,8140", .data = &ti_tusb8041_data, },
++	{ .compatible = "usb451,8142", .data = &ti_tusb8041_data, },
++	{ .compatible = "usbbda,411", .data = &realtek_rts5411_data, },
++	{ .compatible = "usbbda,5411", .data = &realtek_rts5411_data, },
++	{ .compatible = "usbbda,414", .data = &realtek_rts5411_data, },
++	{ .compatible = "usbbda,5414", .data = &realtek_rts5411_data, },
++	{}
++};
++
++#endif /* _USB_MISC_ONBOARD_USB_HUB_H */
+diff --git a/include/usb/usb.h b/include/usb/usb.h
+index 9b36122436d5..717bcf935a42 100644
+--- a/include/usb/usb.h
++++ b/include/usb/usb.h
+@@ -484,4 +484,12 @@ extern struct list_head usb_device_list;
+ 
+ bool usb_hub_is_root_hub(struct usb_device *hdev);
+ 
++#ifdef CONFIG_USB_ONBOARD_HUB
++void of_usb_host_probe_hubs(struct usb_host *host);
++#else
++static inline void of_usb_host_probe_hubs(struct usb_host *host)
++{
++}
++#endif
++
+ #endif /*_USB_H_ */
+-- 
+2.30.2
 
 
 
