@@ -1,58 +1,60 @@
-Delivery-date: Fri, 17 Feb 2023 21:28:12 +0100
+Delivery-date: Fri, 17 Feb 2023 21:33:17 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pT7L2-00AOEL-HO
-	for lore@lore.pengutronix.de; Fri, 17 Feb 2023 21:28:12 +0100
+	id 1pT7Px-00AOKT-1N
+	for lore@lore.pengutronix.de; Fri, 17 Feb 2023 21:33:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pT7L1-0007i5-9l
-	for lore@pengutronix.de; Fri, 17 Feb 2023 21:28:12 +0100
+	id 1pT7Pv-0008H4-6d
+	for lore@pengutronix.de; Fri, 17 Feb 2023 21:33:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=sjUGPGm8L/F022m9t8vzhNzlzyP0SZmG87PSYaYYO4A=; b=qJ3hjKC+mMS5/u/ws9CBZ2cl4W
-	21bbs0baCncibdqEZyAc+f3jQGq2C+8JZL4quUR3OTAMA+hRcCoeBuCLMJImBNO30W5ajbutRy4xA
-	9H2s6waYrsNXdemnln2ym6YgggfpYVCbEpgmESn4O63H8iG5P7qzT5GlvVd05JZiMpxJpFvSRq7zZ
-	bJZ00J1fiylj6jlcmgj10SKiDnnsPbq2YBFZDQB5C9uSf5eWXkJ0Tfj7NQ9njUSWvRtJpnLmwAvjj
-	5OUnDxe0K4tLn7su8iW4pd2v9x0Hg8N7Mo3dujRaICd0yiENFej9p2g5Q9XC19ErPNyULai46QJh3
-	86Rl5XrA==;
+	bh=KzcZZov5sFWXrewkXzo+/inIyhSpX0dWdpp5lSV4B0M=; b=EvEEmVsM4JR4u9MUDDudtiowJK
+	UFYbBtgc0kT/ctLj4KG04o31sNIzRDI4HhNsCRVrFzCiWUlcIcjR35rEFVg019jK+ehrf5f7hCLE3
+	bSebKGaLCGXjdhOwnaoe2M7j/bYUN/AiGsKj25aPIvF0lngJRaz6S55wYQuWxYwcQKwNmACny6j8o
+	9WF5XNRimtWBvosDUeSagofcHgI0rOqyfwAq50BsG0x4pJY/sOCHKhJy5lbcq46OJK1tfFWGbObaS
+	ds1qqJ/OoIipcBm+jHrf01L9AlwT98Iw1LZrgQoAO0o53tH/fR943UTJykoJYYK05ajjA9kd0VemC
+	kicI59Gw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pT7JR-00Fckg-Qz; Fri, 17 Feb 2023 20:26:33 +0000
+	id 1pT7Oh-00Fdb4-5L; Fri, 17 Feb 2023 20:31:59 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pT7JM-00Fcje-G4
-	for barebox@lists.infradead.org; Fri, 17 Feb 2023 20:26:31 +0000
+	id 1pT7Ob-00FdaI-Dv
+	for barebox@lists.infradead.org; Fri, 17 Feb 2023 20:31:55 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pT7JG-0007dP-O5; Fri, 17 Feb 2023 21:26:22 +0100
+	id 1pT7OZ-0008Cq-HS; Fri, 17 Feb 2023 21:31:51 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pT7JE-005f9w-Nq; Fri, 17 Feb 2023 21:26:21 +0100
+	id 1pT7OX-005fAX-F1; Fri, 17 Feb 2023 21:31:50 +0100
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pT7JF-00C5vW-AX; Fri, 17 Feb 2023 21:26:21 +0100
+	id 1pT7OX-00CB0l-I5; Fri, 17 Feb 2023 21:31:49 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 17 Feb 2023 21:26:20 +0100
-Message-Id: <20230217202620.2882141-1-a.fatoum@pengutronix.de>
+Cc: =?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 17 Feb 2023 21:31:48 +0100
+Message-Id: <20230217203148.2902038-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230217_122628_576877_7E98E5DE 
-X-CRM114-Status: GOOD (  23.24  )
+X-CRM114-CacheID: sfid-20230217_123153_687084_7E456D6D 
+X-CRM114-Status: GOOD (  25.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,219 +76,266 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] usb: misc: add support for new OF onboard hub binding
+Subject: [PATCH] commands: add new of_fixup command to list and disable DT fixups
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The new binding allows describing hubs that lacks a control bus (e.g.
-I2C) in the DT and thus replaces the ugly hack of specifying USB hub
-resets as gpio-hogs. It's already in use for boards we support, like the
-STM32MP13/5 Discovery kits and will be useful for the i.MX8MP Debix
-board, so port over the driver from Linux.
+For debugging, it can be useful to disable a fixup to rule out it causing
+issues. For platforms supporting kallsyms, we can readily allow enabling
+and disabling fixups by name, so let's add a command that does just that.
 
+Suggested-by: Daniel Brát <danek.brat@gmail.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/usb/core/usb.c             |  2 +
- drivers/usb/misc/Kconfig           | 10 ++++
- drivers/usb/misc/Makefile          |  1 +
- drivers/usb/misc/onboard_usb_hub.c | 86 ++++++++++++++++++++++++++++++
- drivers/usb/misc/onboard_usb_hub.h | 36 +++++++++++++
- include/usb/usb.h                  |  8 +++
- 6 files changed, 143 insertions(+)
- create mode 100644 drivers/usb/misc/onboard_usb_hub.c
- create mode 100644 drivers/usb/misc/onboard_usb_hub.h
+ commands/Kconfig    | 15 ++++++++
+ commands/Makefile   |  1 +
+ commands/of_fixup.c | 86 +++++++++++++++++++++++++++++++++++++++++++++
+ common/kallsyms.c   |  8 ++---
+ common/oftree.c     | 17 +++++----
+ drivers/of/Kconfig  |  6 ++++
+ include/kallsyms.h  |  4 +++
+ include/of.h        | 10 ++++++
+ 8 files changed, 137 insertions(+), 10 deletions(-)
+ create mode 100644 commands/of_fixup.c
 
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index 7c589ec06f24..a974614c062e 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -576,6 +576,8 @@ int usb_host_detect(struct usb_host *host)
- {
- 	int ret;
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 7d01dddd3474..fc0df5550418 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -2266,6 +2266,21 @@ config CMD_OF_DISPLAY_TIMINGS
+ 		  -s path	select display-timings and register oftree fixup
+ 		  -f dtb	work on dtb. Has no effect on -s option
  
-+	of_usb_host_probe_hubs(host);
-+
- 	if (!host->root_dev) {
- 		if (host->init) {
- 			ret = host->init(host);
-diff --git a/drivers/usb/misc/Kconfig b/drivers/usb/misc/Kconfig
-index 9799af47256e..fde57fd74309 100644
---- a/drivers/usb/misc/Kconfig
-+++ b/drivers/usb/misc/Kconfig
-@@ -14,3 +14,13 @@ config USB_HUB_USB251XB
- 	  Microchip USB251x/xBi USB 2.0 Hub Controller series. Configuration
- 	  parameters may be set in devicetree or platform data.
- 	  Say Y or M here if you need to configure such a device via SMBus.
-+
-+config USB_ONBOARD_HUB
-+	bool "Onboard USB hub support"
-+	depends on OFDEVICE || COMPILE_TEST
++config CMD_OF_FIXUP
++	tristate
++	select OFTREE
++	select OF_FIXUP_TOGGLE
++	depends on KALLSYMS
++	prompt "of_fixup"
 +	help
-+	  Say Y here if you want to support discrete onboard USB hubs that
-+	  don't require an additional control bus for initialization, but
-+	  need some non-trivial form of initialization, such as enabling a
-+	  power regulator. An example for such a hub is the Realtek
-+	  RTS5411.
-diff --git a/drivers/usb/misc/Makefile b/drivers/usb/misc/Makefile
-index be5c044f5a57..e00f66a5ed1c 100644
---- a/drivers/usb/misc/Makefile
-+++ b/drivers/usb/misc/Makefile
-@@ -4,3 +4,4 @@
- # (the ones that don't fit into any other categories)
- #
- obj-$(CONFIG_USB_HUB_USB251XB)		+= usb251xb.o
-+obj-$(CONFIG_USB_ONBOARD_HUB)		+= onboard_usb_hub.o
-diff --git a/drivers/usb/misc/onboard_usb_hub.c b/drivers/usb/misc/onboard_usb_hub.c
++	  List and enable/disable fixups
++
++	  Usage: of_fixup [-de] [fixups...]
++
++	  Options:
++		-d		disable fixup
++	  	-e		re-enable fixup
++
+ config CMD_OF_FIXUP_STATUS
+ 	tristate
+ 	select OFTREE
+diff --git a/commands/Makefile b/commands/Makefile
+index c0b0a22b08c1..e5cc21f1970a 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -87,6 +87,7 @@ obj-$(CONFIG_CMD_OF_PROPERTY)	+= of_property.o
+ obj-$(CONFIG_CMD_OF_NODE)	+= of_node.o
+ obj-$(CONFIG_CMD_OF_DUMP)	+= of_dump.o
+ obj-$(CONFIG_CMD_OF_DISPLAY_TIMINGS)	+= of_display_timings.o
++obj-$(CONFIG_CMD_OF_FIXUP)	+= of_fixup.o
+ obj-$(CONFIG_CMD_OF_FIXUP_STATUS)	+= of_fixup_status.o
+ obj-$(CONFIG_CMD_OF_OVERLAY)	+= of_overlay.o
+ obj-$(CONFIG_CMD_MAGICVAR)	+= magicvar.o
+diff --git a/commands/of_fixup.c b/commands/of_fixup.c
 new file mode 100644
-index 000000000000..0b847f06ad45
+index 000000000000..e323b38a93ef
 --- /dev/null
-+++ b/drivers/usb/misc/onboard_usb_hub.c
++++ b/commands/of_fixup.c
 @@ -0,0 +1,86 @@
 +// SPDX-License-Identifier: GPL-2.0-only
++
 +/*
-+ * Driver for onboard USB hubs
-+ *
-+ * Copyright (c) 2022, Google LLC
++ * of_fixup.c - List and remove OF fixups
 + */
 +
-+#include <driver.h>
-+#include <gpiod.h>
-+#include <init.h>
++#include <common.h>
++#include <kallsyms.h>
 +#include <of.h>
-+#include <linux/printk.h>
-+#include <of_device.h>
-+#include <regulator.h>
-+#include <usb/usb.h>
++#include <command.h>
++#include <malloc.h>
++#include <complete.h>
++#include <getopt.h>
++#include <string.h>
 +
-+#include "onboard_usb_hub.h"
-+
-+void of_usb_host_probe_hubs(struct usb_host *host)
++static int do_of_fixup(int argc, char *argv[])
 +{
-+	struct device_node *np;
++	struct of_fixup *of_fixup;
++	int opt, enable = -1;
 +
-+	np = dev_of_node(host->hw_dev);
-+	if (!np)
-+		return;
-+
-+	of_platform_populate(np, onboard_hub_match, host->hw_dev);
-+}
-+
-+struct onboard_hub {
-+	struct regulator *vdd;
-+	struct device *dev;
-+	const struct onboard_hub_pdata *pdata;
-+	int reset_gpio;
-+};
-+
-+static int onboard_hub_power_on(struct onboard_hub *hub)
-+{
-+	int err;
-+
-+	err = regulator_enable(hub->vdd);
-+	if (err) {
-+		dev_err(hub->dev, "failed to enable regulator: %pe\n",
-+			ERR_PTR(err));
-+		return err;
++	while ((opt = getopt(argc, argv, "ed")) > 0) {
++		switch (opt) {
++		case 'e':
++			enable = 1;
++			break;
++		case 'd':
++			enable = 0;
++			break;
++		default:
++			return COMMAND_ERROR_USAGE;
++		}
 +	}
 +
-+	udelay(hub->pdata->reset_us);
-+	gpiod_set_value(hub->reset_gpio, 0);
++	argv += optind;
++	argc -= optind;
++
++	if ((enable < 0 && argc > 0) || (enable >= 0 && argc == 0))
++		return COMMAND_ERROR_USAGE;
++
++	list_for_each_entry(of_fixup, &of_fixup_list, list) {
++		int i;
++		ulong addr = (ulong)of_fixup->fixup;
++		char sym[KSYM_SYMBOL_LEN];
++		const char *name;
++
++		name = kallsyms_lookup(addr, NULL, NULL, NULL, sym);
++		if (!name) {
++			sprintf(sym, "<0x%lx>", addr);
++			name = sym;
++		}
++
++		if (enable == -1) {
++			printf("%s(0x%p)%s\n", name, of_fixup->context,
++			       of_fixup->disabled ? " [DISABELD]" : "");
++			continue;
++		}
++
++		for (i = 0; i < argc; i++) {
++			if (strcmp(name, argv[i]) != 0)
++				continue;
++
++			of_fixup->disabled = !enable;
++		}
++	}
 +
 +	return 0;
 +}
 +
-+static int onboard_hub_probe(struct device *dev)
-+{
-+	struct onboard_hub *hub;
++BAREBOX_CMD_HELP_START(of_fixup)
++BAREBOX_CMD_HELP_TEXT("Disable or re-enable an already registered fixup for the device tree.")
++BAREBOX_CMD_HELP_TEXT("Call without arguments to list all fixups")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("Options:")
++BAREBOX_CMD_HELP_OPT("-d",  "disable fixup")
++BAREBOX_CMD_HELP_OPT("-e",  "re-enable fixup")
++BAREBOX_CMD_HELP_OPT("fixups",  "List of fixups to enable or disable")
++BAREBOX_CMD_HELP_END
 +
-+	hub = xzalloc(sizeof(*hub));
-+
-+	hub->pdata = device_get_match_data(dev);
-+	if (!hub->pdata)
-+		return -EINVAL;
-+
-+	hub->vdd = regulator_get(dev, "vdd");
-+	if (IS_ERR(hub->vdd))
-+		return PTR_ERR(hub->vdd);
-+
-+	hub->reset_gpio = gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-+	if (hub->reset_gpio < 0 && hub->reset_gpio != -ENOENT)
-+		return dev_err_probe(dev, hub->reset_gpio, "failed to get reset GPIO\n");
-+
-+	hub->dev = dev;
-+
-+	return onboard_hub_power_on(hub);
-+}
-+
-+static struct driver onboard_hub_driver = {
-+	.name = "onboard-usb-hub",
-+	.probe = onboard_hub_probe,
-+	.of_compatible = onboard_hub_match,
-+};
-+device_platform_driver(onboard_hub_driver);
-+
-+MODULE_AUTHOR("Matthias Kaehlcke <mka@chromium.org>");
-+MODULE_DESCRIPTION("Driver for discrete onboard USB hubs");
-+MODULE_LICENSE("GPL v2");
-diff --git a/drivers/usb/misc/onboard_usb_hub.h b/drivers/usb/misc/onboard_usb_hub.h
-new file mode 100644
-index 000000000000..e90be47b6735
---- /dev/null
-+++ b/drivers/usb/misc/onboard_usb_hub.h
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ * Copyright (c) 2022, Google LLC
-+ */
-+
-+#ifndef _USB_MISC_ONBOARD_USB_HUB_H
-+#define _USB_MISC_ONBOARD_USB_HUB_H
-+
-+struct onboard_hub_pdata {
-+	unsigned long reset_us;		/* reset pulse width in us */
-+};
-+
-+static const struct onboard_hub_pdata microchip_usb424_data = {
-+	.reset_us = 1,
-+};
-+
-+static const struct onboard_hub_pdata realtek_rts5411_data = {
-+	.reset_us = 0,
-+};
-+
-+static const struct onboard_hub_pdata ti_tusb8041_data = {
-+	.reset_us = 3000,
-+};
-+
-+const struct of_device_id onboard_hub_match[] = {
-+	{ .compatible = "usb424,2514", .data = &microchip_usb424_data, },
-+	{ .compatible = "usb451,8140", .data = &ti_tusb8041_data, },
-+	{ .compatible = "usb451,8142", .data = &ti_tusb8041_data, },
-+	{ .compatible = "usbbda,411", .data = &realtek_rts5411_data, },
-+	{ .compatible = "usbbda,5411", .data = &realtek_rts5411_data, },
-+	{ .compatible = "usbbda,414", .data = &realtek_rts5411_data, },
-+	{ .compatible = "usbbda,5414", .data = &realtek_rts5411_data, },
-+	{}
-+};
-+
-+#endif /* _USB_MISC_ONBOARD_USB_HUB_H */
-diff --git a/include/usb/usb.h b/include/usb/usb.h
-index 9b36122436d5..717bcf935a42 100644
---- a/include/usb/usb.h
-+++ b/include/usb/usb.h
-@@ -484,4 +484,12 @@ extern struct list_head usb_device_list;
++BAREBOX_CMD_START(of_fixup)
++	.cmd	= do_of_fixup,
++	BAREBOX_CMD_DESC("list and enable/disable fixups")
++	BAREBOX_CMD_OPTS("[-de] [fixups...]")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_COMPLETE(empty_complete)
++	BAREBOX_CMD_HELP(cmd_of_fixup_help)
++BAREBOX_CMD_END
+diff --git a/common/kallsyms.c b/common/kallsyms.c
+index a9b2b9368992..3c5904f8a833 100644
+--- a/common/kallsyms.c
++++ b/common/kallsyms.c
+@@ -165,10 +165,10 @@ static unsigned long get_symbol_pos(unsigned long addr,
+  *   It resides in a module.
+  * - We also guarantee that modname will be valid until rescheduled.
+  */
+-static const char *kallsyms_lookup(unsigned long addr,
+-				   unsigned long *symbolsize,
+-				   unsigned long *offset,
+-				   char **modname, char *namebuf)
++const char *kallsyms_lookup(unsigned long addr,
++			    unsigned long *symbolsize,
++			    unsigned long *offset,
++			    char **modname, char *namebuf)
+ {
+ 	namebuf[KSYM_NAME_LEN - 1] = 0;
+ 	namebuf[0] = 0;
+diff --git a/common/oftree.c b/common/oftree.c
+index 4beadc5aaa89..86a1ba96150e 100644
+--- a/common/oftree.c
++++ b/common/oftree.c
+@@ -350,13 +350,15 @@ int of_register_set_status_fixup(const char *path, bool status)
+ 	return of_register_fixup(of_fixup_status, (void *)data);
+ }
  
- bool usb_hub_is_root_hub(struct usb_device *hdev);
+-struct of_fixup {
+-	int (*fixup)(struct device_node *, void *);
+-	void *context;
+-	struct list_head list;
+-};
++LIST_HEAD(of_fixup_list);
  
-+#ifdef CONFIG_USB_ONBOARD_HUB
-+void of_usb_host_probe_hubs(struct usb_host *host);
-+#else
-+static inline void of_usb_host_probe_hubs(struct usb_host *host)
+-static LIST_HEAD(of_fixup_list);
++static inline bool of_fixup_disabled(struct of_fixup *fixup)
 +{
-+}
-+#endif
++    if (!IS_ENABLED(CONFIG_OF_FIXUP_TOGGLE))
++	    return false;
 +
- #endif /*_USB_H_ */
++    return fixup->disabled;
++}
+ 
+ int of_register_fixup(int (*fixup)(struct device_node *, void *), void *context)
+ {
+@@ -401,6 +403,9 @@ int of_fix_tree(struct device_node *node)
+ 	of_overlay_load_firmware_clear();
+ 
+ 	list_for_each_entry(of_fixup, &of_fixup_list, list) {
++		if (of_fixup_disabled(of_fixup))
++			continue;
++
+ 		ret = of_fixup->fixup(node, of_fixup->context);
+ 		if (ret)
+ 			pr_warn("Failed to fixup node in %pS: %s\n",
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index 4dc40b27f442..1269cf8a459b 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -3,6 +3,12 @@ config OFTREE
+ 	select DTC
+ 	bool
+ 
++config OF_FIXUP_TOGGLE
++	bool
++	help
++	  This is selected when some device tree fixups may be selectively
++	  disabled.
++
+ config OFTREE_MEM_GENERIC
+ 	depends on OFTREE
+ 	depends on PPC || ARM || EFI_BOOTUP || OPENRISC || SANDBOX || RISCV || KVX
+diff --git a/include/kallsyms.h b/include/kallsyms.h
+index e0b3ff7cd503..f61efc9e0c42 100644
+--- a/include/kallsyms.h
++++ b/include/kallsyms.h
+@@ -6,6 +6,10 @@
+ #define KSYM_SYMBOL_LEN (sizeof("%s+%#lx/%#lx [%s]") + (KSYM_NAME_LEN - 1) + \
+ 		2*(BITS_PER_LONG*3/10) + (MODULE_NAME_LEN - 1) + 1)
+ unsigned long kallsyms_lookup_name(const char *name);
++const char *kallsyms_lookup(unsigned long addr,
++			    unsigned long *symbolsize,
++			    unsigned long *offset,
++			    char **modname, char *namebuf);
+ 
+ /* Look up a kernel symbol and return it in a text buffer. */
+ int sprint_symbol(char *buffer, unsigned long address);
+diff --git a/include/of.h b/include/of.h
+index 7ee1304b932b..282c11ee8c49 100644
+--- a/include/of.h
++++ b/include/of.h
+@@ -328,6 +328,16 @@ int of_find_path_by_node(struct device_node *node, char **outpath, unsigned flag
+ struct device_node *of_find_node_by_devpath(struct device_node *root, const char *path);
+ int of_register_fixup(int (*fixup)(struct device_node *, void *), void *context);
+ int of_unregister_fixup(int (*fixup)(struct device_node *, void *), void *context);
++
++struct of_fixup {
++	int (*fixup)(struct device_node *, void *);
++	void *context;
++	struct list_head list;
++	bool disabled;
++};
++
++extern struct list_head of_fixup_list;
++
+ int of_register_set_status_fixup(const char *node, bool status);
+ struct device_node *of_find_node_by_alias(struct device_node *root,
+ 		const char *alias);
 -- 
 2.30.2
 
