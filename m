@@ -1,57 +1,58 @@
-Delivery-date: Fri, 17 Feb 2023 14:04:50 +0100
+Delivery-date: Fri, 17 Feb 2023 14:22:44 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pT0Py-00A8N2-Mw
-	for lore@lore.pengutronix.de; Fri, 17 Feb 2023 14:04:50 +0100
+	id 1pT0hI-00A9I5-2F
+	for lore@lore.pengutronix.de; Fri, 17 Feb 2023 14:22:44 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pT0Px-0002Vk-H5
-	for lore@pengutronix.de; Fri, 17 Feb 2023 14:04:50 +0100
+	id 1pT0hG-0004qJ-21
+	for lore@pengutronix.de; Fri, 17 Feb 2023 14:22:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gq3gb2USSm8z6yJk9uzbkGDEScIFsiCyxmyqv7e5bw0=; b=Rb0Ay1ZTELySG04TySCmfVeRMV
-	3bMr/I7BWfXO9oZP6JNve4cnw3CDRmcaLBt3fmgKe7CEbWdhgK0ZqLk4EubUQqNtreJOhL8W8aS31
-	7g4nd01Vwk6xcWHtmYfZJ8b9q8YfBdPc26OSJmSrqdOv5I6oTv16jD72f4NKfQrbuVnOLtce+9fAN
-	q0RciLWr14nO32+ml+TH75cPKsizRvk8mwK8qQsRYLVH1qYVQ2p1+m4goTCTrc9A/Wc8410qk+NNH
-	iHRuxP5L7ACoH6BEsP5wMIzZn+nJpXtYPy6Tox5H68mxeCtkHERaarGuBDzX6wwU+6Hc4UGd4MBCK
-	9rxFQx9A==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=L7XWhx/5YPGEh9rt9XVTp1VEzzyLejLfmdM3qsa+7D0=; b=pVAdSD5W3zHxSt4TCWJMPVHmK5
+	7Kqh1I5C6TBV+XpDDS7eq3RrchZLabijw4y7DCSBnyU4wgMjv44yIcuQE11CAOswu3kkEISp7SfEz
+	REoiv/PuxDihWizyJkzOycqT83nAo9yAVuCBnE4G9bYGVH+XQ3ueqr7Amp0K8bSz0k47IaNxUGANM
+	awMoIMWi3Bb5JR3yN5ICZsIqLh8YJ8Qmg1aCD4rQy1IEP1GLcyN0j6JCc7xo1fz2VCeWVMzlfkmbc
+	RdB7ekesGsy5dQtKgWSlMz2fG9h4iPztodmuXrAcqecH8vB66jALVQVnSxWirRt/OHReuZTltAKqy
+	p+V3ZMPA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pT0OS-00EDBN-D7; Fri, 17 Feb 2023 13:03:16 +0000
+	id 1pT0gR-00EGJp-47; Fri, 17 Feb 2023 13:21:51 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pT0OM-00EDA4-Nx
-	for barebox@lists.infradead.org; Fri, 17 Feb 2023 13:03:13 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pT0OG-00027s-4p; Fri, 17 Feb 2023 14:03:04 +0100
-Message-ID: <071333d6-49e4-a247-cd79-d8d71730e055@pengutronix.de>
-Date: Fri, 17 Feb 2023 14:03:01 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
+	id 1pT0gM-00EGHn-MV
+	for barebox@lists.infradead.org; Fri, 17 Feb 2023 13:21:48 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pT0gI-0004mq-Vt; Fri, 17 Feb 2023 14:21:43 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pT0gH-005b59-5J; Fri, 17 Feb 2023 14:21:42 +0100
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pT0gH-009Oqu-NT; Fri, 17 Feb 2023 14:21:41 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20230210165353.3601175-1-a.fatoum@pengutronix.de>
- <20230210165353.3601175-4-a.fatoum@pengutronix.de>
- <20230213084512.GF10447@pengutronix.de>
-Content-Language: en-US
-In-Reply-To: <20230213084512.GF10447@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 17 Feb 2023 14:21:40 +0100
+Message-Id: <20230217132140.2240388-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230217_050310_809956_E481498F 
-X-CRM114-Status: GOOD (  30.99  )
+X-CRM114-CacheID: sfid-20230217_052146_765452_59C58515 
+X-CRM114-Status: GOOD (  15.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,130 +70,124 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 4/4] boards: qemu-virt: support passing in FIT public
- key
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v2] Documentation: i.MX8M: add EVK barebox installation documentation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Sascha,
+The barebox i.MX images have a preamble that pads the i.MX header to
+the offset expected by the BootROM. This allows writing barebox images
+directly to offset 0 on SD-Cards and eMMC user area. For some i.MX8M,
+these images can't be directly written to eMMC boot partitions and
+instead require special handling. Add a note about this to the
+documentation.
 
-On 13.02.23 09:45, Sascha Hauer wrote:
->> diff --git a/common/boards/qemu-virt/fitimage-pubkey.dts b/common/boards/qemu-virt/fitimage-pubkey.dts
->> new file mode 100644
->> index 000000000000..497799fa4b60
->> --- /dev/null
->> +++ b/common/boards/qemu-virt/fitimage-pubkey.dts
->> @@ -0,0 +1,7 @@
->> +/dts-v1/;
->> +
->> +#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
->> +#include CONFIG_BOOTM_FITIMAGE_PUBKEY
->> +#endif
-> 
-> I wonder if we've gone the wrong path here. Every board that wants to
-> put a key into the device tree needs this snippet.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - Fix typo, s/as an/at an/ (Ulrich)
+  - Fix typo, s/Power-fail installation/Power-fail-safe installation/ (Sascha)
+---
+ Documentation/boards/imx/nxp-imx8mm-evk.rst | 18 ++++++++++++++++
+ Documentation/boards/imx/nxp-imx8mn-evk.rst | 24 +++++++++++++++++++++
+ Documentation/boards/imx/nxp-imx8mp-evk.rst | 24 +++++++++++++++++++++
+ 3 files changed, 66 insertions(+)
 
-We have an alternative nowadays: put the DTS snippet into
-CONFIG_EXTERNAL_DTS_FRAGMENTS. This doesn't play nicely with overlays
-unfortunately, but that's something that should be fixed anyway.
-
-> Instead of compiling the dtsi containing the key into the barebox main
-> device tree wouldn't it be better to always create an extra dtb from
-> the dtsi provdided in CONFIG_BOOTM_FITIMAGE_PUBKEY and apply something
-> along the following?
-> 
-> What's missing is some Makefile magic to compile an extra dtb named
-> fitimage_pubkey from whatever name is provided in
-> CONFIG_BOOTM_FITIMAGE_PUBKEY, but that should be doable as well.
-
-The intention of this patch series is to provide the exact same mechanism,
-we already use in non-emulated platforms somehow for QEMU as well.
-
-I agree that in the future, we may want to generally restructure how we
-do this:
-
-Instead of decompiling mkimage output and including it into a device tree,
-let's have /env/signatures/, where the user can place any number of DTBs.
-
-All DTB within the directory would have their keys then "installed".
-
-I'll keep this in mind for when I do some secure-boot related thing the
-next time.
-
-Cheers,
-Ahmad
-
-> 
-> 
-> diff --git a/crypto/rsa.c b/crypto/rsa.c
-> index fc21efdb6d..6939513db9 100644
-> --- a/crypto/rsa.c
-> +++ b/crypto/rsa.c
-> @@ -491,16 +491,13 @@ static struct rsa_public_key *rsa_key_dup(const struct rsa_public_key *key)
->  extern const struct rsa_public_key * const __rsa_keys_start;
->  extern const struct rsa_public_key * const __rsa_keys_end;
->  
-> -static void rsa_init_keys_of(void)
-> +static void rsa_init_keys_of(struct device_node *root)
->  {
->  	struct device_node *sigs, *sig;
->  	struct rsa_public_key *key;
->  	int ret;
->  
-> -	if (!IS_ENABLED(CONFIG_OFTREE))
-> -		return;
-> -
-> -	sigs = of_find_node_by_path("/signature");
-> +	sigs = of_find_node_by_path_from(root, "/signature");
->  	if (!sigs)
->  		return;
->  
-> @@ -519,6 +516,26 @@ static void rsa_init_keys_of(void)
->  	}
->  }
->  
-> +extern char __dtb_fitimage_pubkey_start[];
-> +
-> +static void rsa_of_init_keys(void)
-> +{
-> +	struct device_node *root;
-> +
-> +	if (!IS_ENABLED(CONFIG_OFTREE))
-> +		return;
-> +
-> +	root = of_get_root_node();
-> +	if (root)
-> +		rsa_init_keys_of(root);
-> +
-> +#ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
-> +	root = of_unflatten_dtb(__dtb_fitimage_pubkey_start, INT_MAX);
-> +	if (root)
-> +		rsa_init_keys_of(root);
-> +#endif
-> +}
-> +
->  static int rsa_init_keys(void)
->  {
->  	const struct rsa_public_key * const *iter;
-> @@ -533,7 +550,7 @@ static int rsa_init_keys(void)
->  			       key->key_name_hint, strerror(-ret));
->  	}
->  
-> -	rsa_init_keys_of();
-> +	rsa_of_init_keys();
->  
->  	return 0;
->  }
-
+diff --git a/Documentation/boards/imx/nxp-imx8mm-evk.rst b/Documentation/boards/imx/nxp-imx8mm-evk.rst
+index c3cd35ae38a2..f0dfc53ed070 100644
+--- a/Documentation/boards/imx/nxp-imx8mm-evk.rst
++++ b/Documentation/boards/imx/nxp-imx8mm-evk.rst
+@@ -69,3 +69,21 @@ board for serial download mode as printed on the PCB. You can start barebox with
+ the imx-usb-loader tool that comes with barebox like this:
+ 
+ ./scripts/imx/imx-usb-loader images/barebox-nxp-imx8mm-evk.img
++
++Installing barebox
++==================
++
++When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
++consult the eMMC ext_csd register to determine whether to boot
++from the active eMMC boot partition or from the user area.
++
++The same barebox image written to the start of the SD-Card can
++be written to the start of the eMMC user area. Power-fail-safe
++installation to the eMMC boot partition requires special handling:
++
++  - The barebox image must be written to the inactive boot partition,
++    then afterwards, the newly written boot partition is activated
++    (This is controlled by the barebox ``mmcX.boot`` variable).
++
++The ``barebox_update`` command takes care of this and need just be
++supplied a barebox image as argument.
+diff --git a/Documentation/boards/imx/nxp-imx8mn-evk.rst b/Documentation/boards/imx/nxp-imx8mn-evk.rst
+index b920e22d33e9..177fc59c1085 100644
+--- a/Documentation/boards/imx/nxp-imx8mn-evk.rst
++++ b/Documentation/boards/imx/nxp-imx8mn-evk.rst
+@@ -58,3 +58,27 @@ Build barebox
+ 
+  make imx_v8_defconfig
+  make
++
++Installing barebox
++==================
++
++When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
++consult the eMMC ext_csd register to determine whether to boot
++from the active eMMC boot partition or from the user area.
++
++The same barebox image written to the start of the SD-Card can
++be written to the start of the eMMC user area. Power-fail-safe
++installation to the eMMC boot partition requires special handling:
++
++  - The barebox image must be written to the inactive boot partition,
++    then afterwards, the newly written boot partition is activated
++    (This is controlled by the barebox ``mmcX.boot`` variable).
++
++  - The barebox image includes a 32KiB preamble that allows the image
++    to be directly writable to the start of the SD-Card or eMMC user area.
++    Unlike older i.MX8M, the i.MX8MN BootROM expects the bootloader to not
++    start at an offset when booting from eMMC boot partitions, thus the first
++    32KiB must be stripped.
++
++The ``barebox_update`` command takes care of this and need just be
++supplied a barebox image as argument.
+diff --git a/Documentation/boards/imx/nxp-imx8mp-evk.rst b/Documentation/boards/imx/nxp-imx8mp-evk.rst
+index 1074992f2f88..53cdd904ab0e 100644
+--- a/Documentation/boards/imx/nxp-imx8mp-evk.rst
++++ b/Documentation/boards/imx/nxp-imx8mp-evk.rst
+@@ -66,3 +66,27 @@ Boot Configuration
+ The NXP i.MX8MP-EVK board has four switches responsible for configuring
+ bootsource/boot mode. The settings for the different boot sources are
+ printed on the board.
++
++Installing barebox
++==================
++
++When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
++consult the eMMC ext_csd register to determine whether to boot
++from the active eMMC boot partition or from the user area.
++
++The same barebox image written to the start of the SD-Card can
++be written to the start of the eMMC user area. Power-fail-safe
++installation to the eMMC boot partition requires special handling:
++
++  - The barebox image must be written to the inactive boot partition,
++    then afterwards, the newly written boot partition is activated
++    (This is controlled by the barebox ``mmcX.boot`` variable).
++
++  - The barebox image includes a 32KiB preamble that allows the image
++    to be directly writable to the start of the SD-Card or eMMC user area.
++    Unlike older i.MX8M, the i.MX8MP BootROM expects the bootloader to not
++    start at an offset when booting from eMMC boot partitions, thus the first
++    32KiB must be stripped.
++
++The ``barebox_update`` command takes care of this and need just be
++supplied a barebox image as argument.
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
 
 
 
