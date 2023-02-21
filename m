@@ -1,52 +1,53 @@
-Delivery-date: Tue, 21 Feb 2023 11:34:15 +0100
+Delivery-date: Tue, 21 Feb 2023 11:36:45 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pUPyR-00DnQp-M1
-	for lore@lore.pengutronix.de; Tue, 21 Feb 2023 11:34:15 +0100
+	id 1pUQ0r-00DnYa-2r
+	for lore@lore.pengutronix.de; Tue, 21 Feb 2023 11:36:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pUPyQ-0002Xm-5O
-	for lore@pengutronix.de; Tue, 21 Feb 2023 11:34:15 +0100
+	id 1pUQ0p-00036S-PS
+	for lore@pengutronix.de; Tue, 21 Feb 2023 11:36:44 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kiOCO1fiIesvx4MR7OWkLAYzmjqR9/Tt5oLdIYXzPxY=; b=HjU7+IJYPnmkJAvTatxNzDzHrX
-	XhtPYZspyAp0XEHKTMAcKTp2HCx43wUQi8yweNg4e3vNp6WBOmM418g3NpHBHfL8FGFPBdGJ3nGdo
-	fPH6HYXXbT1ORSe6aQHtybZ3+yV+GoLyIGcwPIlGAF+tr1uuq1zxPl4n4stU8yfpPMJVlw2xtzwxV
-	/VqB342RT3YwLxirYwoDd7ByvOSDWexAJM6bIo8IW6fl7oBmTXU3mGb3/ViPAV//iQPwBV8g3WFu4
-	pKKBXNYqqERNYcHWF7HkrbwIW33pxRSWG7M19Hrk1W3RuexUUcJu2uXoFPv8FTgFgUlPaLdcvc5AU
-	b3/3dBRw==;
+	bh=AIgUgPI/7HZAgsX8eg/URaiZRDpD0knWy9AY1t50HqM=; b=R3CvVOZODKiz4Sj8MSqvIXB83/
+	lUh2ZYWrgxoBIfFbGCQMmOscrjc/3z+y/6S7pjcBlk3P11SW9lxQliROJUDjILradUL/+YBsdKoUI
+	c5/8G07eMNs9tttPnU1aStna/iG4JidZjVmpADu2U0lgG88aaeEbb6coVRrUFMZkLoQD7a7yXgXIJ
+	IALlzBN47/9u9BluOHFYL40Li8uWC8tdik/ixJuGUSHU4s2MqTmuC5+Y3khXPrL+eNw24VIFdDuCR
+	fm2HZduIBrwxR/y/JrS7xKm+Sjj0cf2afHFk7o4F0/deXzBN+ceLHQKIyxylnWUhPFjZCxJNcryJC
+	88zh1S/Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pUPx7-007Ofn-2g; Tue, 21 Feb 2023 10:32:53 +0000
+	id 1pUPzc-007PEK-BX; Tue, 21 Feb 2023 10:35:28 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pUPx2-007Of0-3i
-	for barebox@lists.infradead.org; Tue, 21 Feb 2023 10:32:49 +0000
+	id 1pUPzX-007PDi-F7
+	for barebox@lists.infradead.org; Tue, 21 Feb 2023 10:35:25 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pUPx0-0002Lp-AR; Tue, 21 Feb 2023 11:32:46 +0100
+	id 1pUPzW-0002pr-3q; Tue, 21 Feb 2023 11:35:22 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pUPx0-0005IF-2t; Tue, 21 Feb 2023 11:32:46 +0100
-Date: Tue, 21 Feb 2023 11:32:46 +0100
+	id 1pUPzV-0005Qz-NU; Tue, 21 Feb 2023 11:35:21 +0100
+Date: Tue, 21 Feb 2023 11:35:21 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230221103246.GI10447@pengutronix.de>
-References: <20230217132140.2240388-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <ahmad@a3f.at>, barebox@lists.infradead.org
+Message-ID: <20230221103521.GJ10447@pengutronix.de>
+References: <20230221070758.1130869-1-ahmad@a3f.at>
+ <6fd0eaed-4f3c-6a73-a881-b6e63461f5a9@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230217132140.2240388-1-a.fatoum@pengutronix.de>
+In-Reply-To: <6fd0eaed-4f3c-6a73-a881-b6e63461f5a9@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -54,8 +55,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230221_023248_174687_87C60BAD 
-X-CRM114-Status: GOOD (  29.52  )
+X-CRM114-CacheID: sfid-20230221_023523_524802_BFBCC660 
+X-CRM114-Status: GOOD (  30.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,127 +78,133 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] Documentation: i.MX8M: add EVK barebox installation
- documentation
+Subject: Re: [PATCH] treewide: rename leftover device_d
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Feb 17, 2023 at 02:21:40PM +0100, Ahmad Fatoum wrote:
-> The barebox i.MX images have a preamble that pads the i.MX header to
-> the offset expected by the BootROM. This allows writing barebox images
-> directly to offset 0 on SD-Cards and eMMC user area. For some i.MX8M,
-> these images can't be directly written to eMMC boot partitions and
-> instead require special handling. Add a note about this to the
-> documentation.
+On Tue, Feb 21, 2023 at 08:14:22AM +0100, Ahmad Fatoum wrote:
+> On 21.02.23 08:07, Ahmad Fatoum wrote:
+> > We have some instances of device_d and driver_d still lingering in
+> > documentation and commented out code. Let's drop these as well.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> v1 -> v2:
->   - Fix typo, s/as an/at an/ (Ulrich)
->   - Fix typo, s/Power-fail installation/Power-fail-safe installation/ (Sascha)
-> ---
->  Documentation/boards/imx/nxp-imx8mm-evk.rst | 18 ++++++++++++++++
->  Documentation/boards/imx/nxp-imx8mn-evk.rst | 24 +++++++++++++++++++++
->  Documentation/boards/imx/nxp-imx8mp-evk.rst | 24 +++++++++++++++++++++
->  3 files changed, 66 insertions(+)
+> I see now that in the meantime some new driver_d/device_d were added.
+> I will change those at another time (unless Sascha wants to squash).
 
-Applied, thanks
+Applied this as-is for now. We can remove the newly added
+driver_d/device_d right after the next release.
 
 Sascha
 
 > 
-> diff --git a/Documentation/boards/imx/nxp-imx8mm-evk.rst b/Documentation/boards/imx/nxp-imx8mm-evk.rst
-> index c3cd35ae38a2..f0dfc53ed070 100644
-> --- a/Documentation/boards/imx/nxp-imx8mm-evk.rst
-> +++ b/Documentation/boards/imx/nxp-imx8mm-evk.rst
-> @@ -69,3 +69,21 @@ board for serial download mode as printed on the PCB. You can start barebox with
->  the imx-usb-loader tool that comes with barebox like this:
->  
->  ./scripts/imx/imx-usb-loader images/barebox-nxp-imx8mm-evk.img
-> +
-> +Installing barebox
-> +==================
-> +
-> +When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
-> +consult the eMMC ext_csd register to determine whether to boot
-> +from the active eMMC boot partition or from the user area.
-> +
-> +The same barebox image written to the start of the SD-Card can
-> +be written to the start of the eMMC user area. Power-fail-safe
-> +installation to the eMMC boot partition requires special handling:
-> +
-> +  - The barebox image must be written to the inactive boot partition,
-> +    then afterwards, the newly written boot partition is activated
-> +    (This is controlled by the barebox ``mmcX.boot`` variable).
-> +
-> +The ``barebox_update`` command takes care of this and need just be
-> +supplied a barebox image as argument.
-> diff --git a/Documentation/boards/imx/nxp-imx8mn-evk.rst b/Documentation/boards/imx/nxp-imx8mn-evk.rst
-> index b920e22d33e9..177fc59c1085 100644
-> --- a/Documentation/boards/imx/nxp-imx8mn-evk.rst
-> +++ b/Documentation/boards/imx/nxp-imx8mn-evk.rst
-> @@ -58,3 +58,27 @@ Build barebox
->  
->   make imx_v8_defconfig
->   make
-> +
-> +Installing barebox
-> +==================
-> +
-> +When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
-> +consult the eMMC ext_csd register to determine whether to boot
-> +from the active eMMC boot partition or from the user area.
-> +
-> +The same barebox image written to the start of the SD-Card can
-> +be written to the start of the eMMC user area. Power-fail-safe
-> +installation to the eMMC boot partition requires special handling:
-> +
-> +  - The barebox image must be written to the inactive boot partition,
-> +    then afterwards, the newly written boot partition is activated
-> +    (This is controlled by the barebox ``mmcX.boot`` variable).
-> +
-> +  - The barebox image includes a 32KiB preamble that allows the image
-> +    to be directly writable to the start of the SD-Card or eMMC user area.
-> +    Unlike older i.MX8M, the i.MX8MN BootROM expects the bootloader to not
-> +    start at an offset when booting from eMMC boot partitions, thus the first
-> +    32KiB must be stripped.
-> +
-> +The ``barebox_update`` command takes care of this and need just be
-> +supplied a barebox image as argument.
-> diff --git a/Documentation/boards/imx/nxp-imx8mp-evk.rst b/Documentation/boards/imx/nxp-imx8mp-evk.rst
-> index 1074992f2f88..53cdd904ab0e 100644
-> --- a/Documentation/boards/imx/nxp-imx8mp-evk.rst
-> +++ b/Documentation/boards/imx/nxp-imx8mp-evk.rst
-> @@ -66,3 +66,27 @@ Boot Configuration
->  The NXP i.MX8MP-EVK board has four switches responsible for configuring
->  bootsource/boot mode. The settings for the different boot sources are
->  printed on the board.
-> +
-> +Installing barebox
-> +==================
-> +
-> +When the EVK is strapped to boot from eMMC, the i.MX8M bootrom will
-> +consult the eMMC ext_csd register to determine whether to boot
-> +from the active eMMC boot partition or from the user area.
-> +
-> +The same barebox image written to the start of the SD-Card can
-> +be written to the start of the eMMC user area. Power-fail-safe
-> +installation to the eMMC boot partition requires special handling:
-> +
-> +  - The barebox image must be written to the inactive boot partition,
-> +    then afterwards, the newly written boot partition is activated
-> +    (This is controlled by the barebox ``mmcX.boot`` variable).
-> +
-> +  - The barebox image includes a 32KiB preamble that allows the image
-> +    to be directly writable to the start of the SD-Card or eMMC user area.
-> +    Unlike older i.MX8M, the i.MX8MP BootROM expects the bootloader to not
-> +    start at an offset when booting from eMMC boot partitions, thus the first
-> +    32KiB must be stripped.
-> +
-> +The ``barebox_update`` command takes care of this and need just be
-> +supplied a barebox image as argument.
+> > 
+> > Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> > ---
+> >  Documentation/devel/porting.rst        | 2 +-
+> >  drivers/mtd/nand/nand_omap_gpmc.c      | 2 +-
+> >  drivers/usb/musb/musb_core.h           | 2 +-
+> >  fs/cramfs/cramfs.c                     | 2 +-
+> >  include/linux/mfd/core.h               | 2 +-
+> >  include/platform_data/eth-smc911x.h    | 2 +-
+> >  include/platform_data/serial-ns16550.h | 2 +-
+> >  7 files changed, 7 insertions(+), 7 deletions(-)
+> > 
+> > diff --git a/Documentation/devel/porting.rst b/Documentation/devel/porting.rst
+> > index 8af0456ab2d5..619c5e49e00f 100644
+> > --- a/Documentation/devel/porting.rst
+> > +++ b/Documentation/devel/porting.rst
+> > @@ -258,7 +258,7 @@ tree binding, you can write a driver that matches against your board's
+> >    	{ /* sentinel */ },
+> >    };
+> >  
+> > -  static struct driver_d my_board_driver = {
+> > +  static struct driver my_board_driver = {
+> >    	.name = "board-mine",
+> >    	.probe = my_board_probe,
+> >    	.of_compatible = my_board_of_match,
+> > diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
+> > index e8e690311148..c7252ce72a27 100644
+> > --- a/drivers/mtd/nand/nand_omap_gpmc.c
+> > +++ b/drivers/mtd/nand/nand_omap_gpmc.c
+> > @@ -12,7 +12,7 @@
+> >   * A typical device registration is as follows:
+> >   *
+> >   * @code
+> > - * static struct device_d my_nand_device = {
+> > + * static struct device my_nand_device = {
+> >   *	.name = "gpmc_nand",
+> >   *	.id = some identifier you need to show.. e.g. "gpmc_nand0"
+> >   *	.resource[0].start = GPMC base address
+> > diff --git a/drivers/usb/musb/musb_core.h b/drivers/usb/musb/musb_core.h
+> > index a0467ff3c465..c9a0a8eed662 100644
+> > --- a/drivers/usb/musb/musb_core.h
+> > +++ b/drivers/usb/musb/musb_core.h
+> > @@ -324,7 +324,7 @@ struct musb {
+> >  	u16			int_rx;
+> >  	u16			int_tx;
+> >  
+> > -	//struct device_d		*phydev;
+> > +	//struct device		*phydev;
+> >  	struct usb_host		host;
+> >  	struct usb_phy		*xceiv;
+> >  
+> > diff --git a/fs/cramfs/cramfs.c b/fs/cramfs/cramfs.c
+> > index 4676af8a5515..2d1070f1a7e2 100644
+> > --- a/fs/cramfs/cramfs.c
+> > +++ b/fs/cramfs/cramfs.c
+> > @@ -168,7 +168,7 @@ static int cramfs_read(struct device *_dev, FILE *f, void *buf, size_t size)
+> >  }
+> >  
+> >  #if 0
+> > -static int cramfs_info (struct device_d *dev)
+> > +static int cramfs_info (struct device *dev)
+> >  {
+> >  	if (cramfs_read_super (dev))
+> >  		return 0;
+> > diff --git a/include/linux/mfd/core.h b/include/linux/mfd/core.h
+> > index 5175bbe3709a..18ff16a64231 100644
+> > --- a/include/linux/mfd/core.h
+> > +++ b/include/linux/mfd/core.h
+> > @@ -12,7 +12,7 @@ struct device;
+> >  /*
+> >   * This struct describes the MFD part ("cell").
+> >   * After registration the copy of this structure will become the platform data
+> > - * of the resulting device_d
+> > + * of the resulting device
+> >   */
+> >  struct mfd_cell {
+> >  	const char		*name;
+> > diff --git a/include/platform_data/eth-smc911x.h b/include/platform_data/eth-smc911x.h
+> > index c97a2967c90e..77b4f44633d1 100644
+> > --- a/include/platform_data/eth-smc911x.h
+> > +++ b/include/platform_data/eth-smc911x.h
+> > @@ -9,7 +9,7 @@
+> >  
+> >  /**
+> >   * @brief Platform dependent feature:
+> > - * Pass pointer to this structure as part of device_d -> platform_data
+> > + * Pass pointer to this structure as part of device -> platform_data
+> >   */
+> >  struct smc911x_plat {
+> >  	u32 shift;
+> > diff --git a/include/platform_data/serial-ns16550.h b/include/platform_data/serial-ns16550.h
+> > index ccf950b077a3..11a5e9c7a3ea 100644
+> > --- a/include/platform_data/serial-ns16550.h
+> > +++ b/include/platform_data/serial-ns16550.h
+> > @@ -28,7 +28,7 @@
+> >  
+> >  /**
+> >   * @brief Platform dependent feature:
+> > - * Pass pointer to this structure as part of device_d -> platform_data
+> > + * Pass pointer to this structure as part of device -> platform_data
+> >   */
+> >  struct NS16550_plat {
+> >  	/** Clock speed */
+> 
 > -- 
-> 2.30.2
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 > 
 > 
 > 
