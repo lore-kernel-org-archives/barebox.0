@@ -1,49 +1,50 @@
-Delivery-date: Tue, 21 Feb 2023 08:09:07 +0100
+Delivery-date: Tue, 21 Feb 2023 08:09:11 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pUMlv-00DbOX-2q
-	for lore@lore.pengutronix.de; Tue, 21 Feb 2023 08:09:07 +0100
+	id 1pUMlz-00DbOz-Hs
+	for lore@lore.pengutronix.de; Tue, 21 Feb 2023 08:09:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pUMlt-0007ah-QQ
-	for lore@pengutronix.de; Tue, 21 Feb 2023 08:09:06 +0100
+	id 1pUMly-0007bU-D7
+	for lore@pengutronix.de; Tue, 21 Feb 2023 08:09:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=6c4cNszsukSk9iCtaQlUgshIzg7hdLlN+OOsc/z2qvM=; b=r1hLfTKvlEdphHdMse4x+SLsI4
-	KvPu4p7UBGtl8Nyb6UYUpn7jh2bks6DJPP6uxPO6BF011INUTIytOm+7xGS/gUR/EYSkYI1UE33Va
-	CZeC0iQqLEJvUG60Z6aA2AxlUKqRJy46h0LRmlzakdO9tSnLEBxz+SQ6dehWEBCqBxD6yhlJ5UNg0
-	WRFQ8q1WUxq6mEjGW0Sn8OIu7h0n2KSIu6nAk+bwOsZtn4IT8wP/jiz8Zyo9D+YMLdO8ydPS6Q8ps
-	RvqRWAGKIHeFFrpj1cgNiwJmdp7BuNag7ZqOQEzcbjAA413/KPjfDnuxqaZPsdxWPOcQPvl7N5J5I
-	CV72C23A==;
+	bh=EjTe8C9YaPaS/TVKMnMXgi2NR2JZnpwGMdjA+/+1ABY=; b=r49OAoKI0uqjfT/dWROShnM52X
+	VqPpt6LiI2C3Sy9Hkq1eDbTyFQcfUAJ1kicsE3M7OzTg5e7PjYoLDLRjqrxbiguE5IrtwMXszrscC
+	b2B0S6mZztdsv6ZluddQSlnQC4GELwG57/yplF8/YHJXonkQqBLuODTsDAfyYkTlNfjs8gKGrFe4v
+	dWyj/iQkc5KmtMJd5HAmNdLANwW2zs5cWSPOMtOiZ46OlNZL7YXVpDoUS0tYNdbDewr86nzbL2716
+	oI3PLhLuelmmaCPaC9BEvOkoq2yOJJFCYRSrSjABHKVEnJhFcsW2VtIFHPfzjiUJvXAVOacEtiaQ0
+	OBFmHGdQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pUMkh-006pJH-1v; Tue, 21 Feb 2023 07:07:51 +0000
-Received: from relay8-d.mail.gandi.net ([217.70.183.201])
+	id 1pUMku-006pNs-KV; Tue, 21 Feb 2023 07:08:04 +0000
+Received: from relay6-d.mail.gandi.net ([2001:4b98:dc4:8::226])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pUMkb-006pHJ-Jp
-	for barebox@lists.infradead.org; Tue, 21 Feb 2023 07:07:47 +0000
+	id 1pUMkp-006pKp-BO
+	for barebox@lists.infradead.org; Tue, 21 Feb 2023 07:08:00 +0000
 Received: (Authenticated sender: ahmad@a3f.at)
-	by mail.gandi.net (Postfix) with ESMTPSA id ED90F1BF20E;
-	Tue, 21 Feb 2023 07:07:39 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 21C81C0007;
+	Tue, 21 Feb 2023 07:07:53 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Tue, 21 Feb 2023 08:07:34 +0100
-Message-Id: <20230221070735.1130600-1-ahmad@a3f.at>
+Date: Tue, 21 Feb 2023 08:07:49 +0100
+Message-Id: <20230221070749.1130753-1-ahmad@a3f.at>
 X-Mailer: git-send-email 2.38.3
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230220_230745_800851_3C138AB5 
-X-CRM114-Status: GOOD (  13.65  )
+X-CRM114-CacheID: sfid-20230220_230759_555331_CA69CCC8 
+X-CRM114-Status: UNSURE (   5.70  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -61,121 +62,34 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 1/2] of: split part of of_get_stdoutpath into of_find_node_by_chosen
+Subject: [PATCH] ARM: rockchip: add missing header to <mach/rockchip.h>
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Follow-up commit will also lookup the value of a chosen property by full
-path or alias, so factor this out into a helper function.
+The header uses error codes, so include the appropriate header.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- drivers/of/base.c | 52 +++++++++++++++++++++++++++++++++--------------
- include/of.h      |  8 ++++++++
- 2 files changed, 45 insertions(+), 15 deletions(-)
+ arch/arm/mach-rockchip/include/mach/rockchip.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index 937847f44ab7..da621ad5d1a9 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -2667,30 +2667,52 @@ void of_delete_node(struct device_node *node)
- 	free(node);
- }
+diff --git a/arch/arm/mach-rockchip/include/mach/rockchip.h b/arch/arm/mach-rockchip/include/mach/rockchip.h
+index ff8b1109f858..16a691ee8c0a 100644
+--- a/arch/arm/mach-rockchip/include/mach/rockchip.h
++++ b/arch/arm/mach-rockchip/include/mach/rockchip.h
+@@ -3,6 +3,8 @@
+ #ifndef __MACH_ROCKCHIP_H
+ #define __MACH_ROCKCHIP_H
  
--struct device_node *of_get_stdoutpath(unsigned int *baudrate)
-+/*
-+ * of_find_node_by_chosen - Find a node given a chosen property pointing at it
-+ * @propname:   the name of the property containing a path or alias
-+ *              The function will lookup the first string in the property
-+ *              value up to the first : character or till \0.
-+ * @options     The Remainder (without : or \0 at the end) will be written
-+ *              to *options if not NULL.
-+ */
-+struct device_node *of_find_node_by_chosen(const char *propname,
-+					   const char **options)
- {
-+	const char *value, *p;
-+	char *buf = NULL;
- 	struct device_node *dn;
--	const char *name;
--	const char *p;
--	char *q;
- 
--	name = of_get_property(of_chosen, "stdout-path", NULL);
--	if (!name)
--		name = of_get_property(of_chosen, "linux,stdout-path", NULL);
-+	value = of_get_property(of_chosen, propname, NULL);
-+	if (!value)
-+		return NULL;
- 
--	if (!name)
--		return 0;
-+	p = strchrnul(value, ':');
-+	if (*p)
-+		buf = xstrndup(value, p - value);
- 
--	p = strchrnul(name, ':');
-+	dn = of_find_node_by_path_or_alias(NULL, buf);
- 
--	q = xstrndup(name, p - name);
-+	free(buf);
- 
--	dn = of_find_node_by_path_or_alias(NULL, q);
-+	if (options && *p)
-+		*options = p + 1;
- 
--	free(q);
-+	return dn;
-+}
++#include <errno.h>
 +
-+struct device_node *of_get_stdoutpath(unsigned int *baudrate)
-+{
-+	const char *opts = NULL;
-+	struct device_node *dn;
-+
-+	dn = of_find_node_by_chosen("stdout-path", &opts);
-+	if (!dn)
-+		dn = of_find_node_by_chosen("linux,stdout-path", &opts);
-+	if (!dn)
-+		return NULL;
- 
--	if (baudrate && *p) {
--		unsigned rate = simple_strtoul(p + 1, NULL, 10);
-+	if (baudrate && opts) {
-+		unsigned rate = simple_strtoul(opts, NULL, 10);
- 		if (rate)
- 			*baudrate = rate;
- 	}
-diff --git a/include/of.h b/include/of.h
-index 7ee1304b932b..6d0aca0102c6 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -314,6 +314,8 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node);
- int of_parse_partitions(struct cdev *cdev, struct device_node *node);
- int of_fixup_partitions(struct device_node *np, struct cdev *cdev);
- int of_partitions_register_fixup(struct cdev *cdev);
-+struct device_node *of_find_node_by_chosen(const char *propname,
-+					   const char **options);
- struct device_node *of_get_stdoutpath(unsigned int *);
- int of_device_is_stdout_path(struct device *dev, unsigned int *baudrate);
- const char *of_get_model(void);
-@@ -369,6 +371,12 @@ static inline int of_partitions_register_fixup(struct cdev *cdev)
- 	return -ENOSYS;
- }
- 
-+static inline struct device_node *of_find_node_by_chosen(const char *propname,
-+							 const char **options)
-+{
-+	return NULL;
-+}
-+
- static inline struct device_node *of_get_stdoutpath(unsigned int *rate)
- {
- 	return NULL;
+ #ifdef CONFIG_ARCH_RK3188
+ int rk3188_init(void);
+ #else
 -- 
 2.38.3
 
