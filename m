@@ -1,57 +1,61 @@
-Delivery-date: Tue, 21 Feb 2023 11:11:43 +0100
+Delivery-date: Tue, 21 Feb 2023 11:18:04 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pUPcd-00DlGr-SN
-	for lore@lore.pengutronix.de; Tue, 21 Feb 2023 11:11:43 +0100
+	id 1pUPim-00DmDo-SJ
+	for lore@lore.pengutronix.de; Tue, 21 Feb 2023 11:18:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pUPcc-0007vn-Jm
-	for lore@pengutronix.de; Tue, 21 Feb 2023 11:11:43 +0100
+	id 1pUPil-00008k-Pa
+	for lore@pengutronix.de; Tue, 21 Feb 2023 11:18:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jd6g3ThjbAB5ShG4zcYM2sDAXP6lEMEHuqz1So5CGHk=; b=C8M4VzPuZBAWMxnbm1FUTjcWPv
-	ECnCzRpmIZV2mr3EelyyAWysPfltXqRBZG+03MrrOgZeI2xNaecfpNAIChFCjS9z01FXadsVzRchx
-	kNlzXvagnRtj/ioF51IxwRmnZOCgmM8/2R29gm6orvOs/a9uyYLi8c2rMoX4YrPmMHsNlaebzCqLX
-	ZDCyDtjAe8hhqyE/43+lQEcEEqVD/D/IIsr8EBVr/DHFkjizye2yq1MOp5lg+d7GsPq36uCxHXXyI
-	7epoJ5+lCmm2L2rI2NR7Q4bEgrTtryOnhzAMHHLFQvxQVELY07811QtqR6hHJQ1+9Q/xKaxi9kTuf
-	9zn2LdLQ==;
+	bh=UCDhMYkBH77464DWByQgt9cW1GyOxPM0FLAIP+ki1So=; b=De2PdrNJOlV3frIClymWdvn5Y0
+	AVnXzjVSMAT1q4qZxaiapU9Wcoy159YPEvHWZtz33RLJlxs6DxiAJX4WZSMR6XwPlUazJG6zrPwRl
+	5GBTA3gjb2DD6IYpfJmSWopPotG42qpMUgusV1xxi8TrQXQWHsTapUWq5GMhc/JNEJp0F8ZwyMQAm
+	4XbvO4Vb+vyQVU1xVB4WEhjIMXL7VV0QvxapCR7NiwVbRwrjd7X42TifJAqk4/AsEGHvsNKkll0WN
+	VryU7jJwPU5hpMSNWRcFopoWE8Wi+slKjTaROWbym+BgzL7lBfNw/9DOU9rjoaBXHFOjD8ffSOzaD
+	Tr1Q62Hw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pUPbR-007LVd-Kl; Tue, 21 Feb 2023 10:10:29 +0000
+	id 1pUPhS-007MOo-ND; Tue, 21 Feb 2023 10:16:42 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pUPbN-007LUS-8H
-	for barebox@lists.infradead.org; Tue, 21 Feb 2023 10:10:26 +0000
+	id 1pUPhN-007MOG-3E
+	for barebox@lists.infradead.org; Tue, 21 Feb 2023 10:16:39 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pUPbK-0007LQ-Cp; Tue, 21 Feb 2023 11:10:22 +0100
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pUPbJ-0003a4-Rl; Tue, 21 Feb 2023 11:10:21 +0100
-Date: Tue, 21 Feb 2023 11:10:21 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <ahmad@a3f.at>
+	(envelope-from <sha@pengutronix.de>)
+	id 1pUPhK-0008PH-Df; Tue, 21 Feb 2023 11:16:34 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pUPhK-0004EJ-4o; Tue, 21 Feb 2023 11:16:34 +0100
+Date: Tue, 21 Feb 2023 11:16:34 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230221101021.gqcfksllqw6e5wor@pengutronix.de>
-References: <20230221070758.1130869-1-ahmad@a3f.at>
+Message-ID: <20230221101634.GD10447@pengutronix.de>
+References: <20230217175124.1897402-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230221070758.1130869-1-ahmad@a3f.at>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20230217175124.1897402-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230221_021025_307206_C507F172 
-X-CRM114-Status: GOOD (  17.18  )
+X-CRM114-CacheID: sfid-20230221_021637_155924_FC434CC5 
+X-CRM114-Status: GOOD (  30.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,67 +77,68 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] treewide: rename leftover device_d
+Subject: Re: [PATCH master] ARM: stm32mp: much enlarge very early stack size
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Ahmad,
-
-On 23-02-21, Ahmad Fatoum wrote:
-> We have some instances of device_d and driver_d still lingering in
-> documentation and commented out code. Let's drop these as well.
+On Fri, Feb 17, 2023 at 06:51:24PM +0100, Ahmad Fatoum wrote:
+> The barebox stack is always located at a fixed offset from the end of
+> SDRAM. To determine end of SDRAM, barebox may need a stack setup, so
+> at that early time, either stack pointer set up by BootROM is reused
+> or we set up a temporary stack on some on-chip SRAM .
 > 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> On STM32MP1, TF-A runs after BootROM, so barebox runs in normal world
+> without prepared stack and TF-A is located on on-chip SRAM.
+> 
+> So what we did so far was have a small stack of 64 bytes starting behind
+> end of barebox image to cover the first function call to determine
+> actual memory size. This may have been chosen that small with the thought
+> that an overflow would give an error message anyway, because of failed
+> decompression. An overflow of exactly 4 bytes overwrites just the barebox
+> proper image size though located at the end of the barebox image, thereby
+> overflowing the size and leading to out-of-bounds access during decompression
+> in 1 of 4 cases depending on barebox size, because we align barebox
+> proper size to 16 bytes...
+> 
+> Let's just use a fully sized stack even in the early state. That's
+> usually 32K and we expect a barebox loaded into DRAM to always have
+> that much bytes following it. Another way would've been to use
+> some of the other SRAMs, but I decided to leave those alone, as not
+> to clobber data used by the coprocessor, when reloading barebox.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  Documentation/devel/porting.rst        | 2 +-
->  drivers/mtd/nand/nand_omap_gpmc.c      | 2 +-
->  drivers/usb/musb/musb_core.h           | 2 +-
->  fs/cramfs/cramfs.c                     | 2 +-
->  include/linux/mfd/core.h               | 2 +-
->  include/platform_data/eth-smc911x.h    | 2 +-
->  include/platform_data/serial-ns16550.h | 2 +-
->  7 files changed, 7 insertions(+), 7 deletions(-)
+>  arch/arm/mach-stm32mp/include/mach/entry.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+
+Applied, thanks
+
+Sascha
+
 > 
-> diff --git a/Documentation/devel/porting.rst b/Documentation/devel/porting.rst
-> index 8af0456ab2d5..619c5e49e00f 100644
-> --- a/Documentation/devel/porting.rst
-> +++ b/Documentation/devel/porting.rst
-> @@ -258,7 +258,7 @@ tree binding, you can write a driver that matches against your board's
->    	{ /* sentinel */ },
->    };
+> diff --git a/arch/arm/mach-stm32mp/include/mach/entry.h b/arch/arm/mach-stm32mp/include/mach/entry.h
+> index f8d981cca7cd..8d3adb4bdaf9 100644
+> --- a/arch/arm/mach-stm32mp/include/mach/entry.h
+> +++ b/arch/arm/mach-stm32mp/include/mach/entry.h
+> @@ -11,7 +11,7 @@ static __always_inline void stm32mp_cpu_lowlevel_init(void)
+>  	unsigned long stack_top;
+>  	arm_cpu_lowlevel_init();
 >  
-> -  static struct driver_d my_board_driver = {
-> +  static struct driver my_board_driver = {
->    	.name = "board-mine",
->    	.probe = my_board_probe,
->    	.of_compatible = my_board_of_match,
-> diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/nand_omap_gpmc.c
-> index e8e690311148..c7252ce72a27 100644
-> --- a/drivers/mtd/nand/nand_omap_gpmc.c
-> +++ b/drivers/mtd/nand/nand_omap_gpmc.c
-> @@ -12,7 +12,7 @@
->   * A typical device registration is as follows:
->   *
->   * @code
-> - * static struct device_d my_nand_device = {
-> + * static struct device my_nand_device = {
->   *	.name = "gpmc_nand",
->   *	.id = some identifier you need to show.. e.g. "gpmc_nand0"
->   *	.resource[0].start = GPMC base address
-> diff --git a/drivers/usb/musb/musb_core.h b/drivers/usb/musb/musb_core.h
-> index a0467ff3c465..c9a0a8eed662 100644
-> --- a/drivers/usb/musb/musb_core.h
-> +++ b/drivers/usb/musb/musb_core.h
-> @@ -324,7 +324,7 @@ struct musb {
->  	u16			int_rx;
->  	u16			int_tx;
->  
-> -	//struct device_d		*phydev;
-> +	//struct device		*phydev;
+> -	stack_top = (unsigned long)__image_end + get_runtime_offset() + 64;
+> +	stack_top = (unsigned long)__image_end + get_runtime_offset() + CONFIG_STACK_SIZE;
+>  	stack_top = ALIGN(stack_top, 16);
+>  	arm_setup_stack(stack_top);
+>  }
+> -- 
+> 2.30.2
+> 
+> 
+> 
 
-IMHO this line can be removed completely.
-
-Regards,
-  Marco
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
