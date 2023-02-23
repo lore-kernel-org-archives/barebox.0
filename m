@@ -1,61 +1,61 @@
-Delivery-date: Thu, 23 Feb 2023 10:33:26 +0100
+Delivery-date: Thu, 23 Feb 2023 11:23:16 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pV7yg-00GeNG-BZ
-	for lore@lore.pengutronix.de; Thu, 23 Feb 2023 10:33:26 +0100
+	id 1pV8ku-00Ghbh-82
+	for lore@lore.pengutronix.de; Thu, 23 Feb 2023 11:23:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pV7yc-0002NY-2c
-	for lore@pengutronix.de; Thu, 23 Feb 2023 10:33:25 +0100
+	id 1pV8ks-000100-C9
+	for lore@pengutronix.de; Thu, 23 Feb 2023 11:23:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:To:From:Date:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kYz9RZ4/3ZS+FMq6tCV6V1aIbbsrE0/UD9WtUssIfVw=; b=Auu04Rrr5oWsekuieboGQyLkzo
-	Yn0fgsSnZuQlHtKHM71hgKz195rCZ1vgMZzRXvjIEEx14i/BZxWBvOFOnBxY3OlSFReLMv7i/wWUm
-	5m+b7KTVt6W5l+Dy0XDVivXmJRzI60ysw06dhhBfGooXbvJmYEsD9vsDSTMOPWUTYwK8eUsrlxzq6
-	jFcJXRHZYmPo0tOljU4K6LOj7L/bzJpy94AzQTtbD/S2zDFVKPwWyL2WtNy3S6UxA8UYWeSzEOfa7
-	O2jNpyL6kaKiSfJxzB09QgW4Iy/rXWNdt85YbYv9VSn/7Wx2kBV5W26BthuVAxaOE3525pr/s+cYp
-	6UuEUJuA==;
+	bh=QNanaIHo8odUYJOMkR+0pqWdRWlOFxcp9SSu7jxi48o=; b=VeMDyBT9OQbOtikFIjNYICCSeI
+	i0/+r7DTc7FKiOgPGpIcH7y5iWmySWleu5uVyt1W4PbYPKF/OPTYMMbcRjUDXuFrtnCAzzYdGjSAz
+	tGK/ZifjQ1oJkgwgF6lkisGb/LAwEbcKZ9zZ9F6Iy5q9nUiPIOJYbanhCQrj1aMIlALaocSNRLYX0
+	Fji1uDGKf2y5PZ1x9k49+jBcIwwhsstuN+L7udpj1l8STiElmHiIwoCqFVd16J2c/hJNQwFkY2LWe
+	1Za5pn1yIWUOZKkStqtPKkgIiAfDnDVC/HIU+y5NF8a7SoPNMS6chcr5Q9ETV3rITO1f5SHh+NWPD
+	6Y1/wESw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pV7xP-00Fif8-W7; Thu, 23 Feb 2023 09:32:08 +0000
+	id 1pV8jP-00FuQf-8w; Thu, 23 Feb 2023 10:21:43 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pV7xL-00Fie9-G4
-	for barebox@lists.infradead.org; Thu, 23 Feb 2023 09:32:04 +0000
+	id 1pV8jH-00FuNL-Pe
+	for barebox@lists.infradead.org; Thu, 23 Feb 2023 10:21:38 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pV7xJ-00021V-Vq; Thu, 23 Feb 2023 10:32:01 +0100
+	id 1pV8jD-0000m9-VR; Thu, 23 Feb 2023 11:21:31 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pV7xJ-0007f9-OV; Thu, 23 Feb 2023 10:32:01 +0100
-Date: Thu, 23 Feb 2023 10:32:01 +0100
-To: Bastian Krause <bst@pengutronix.de>
-Cc: barebox@lists.infradead.org, lst@pengutronix.de, afa@pengutronix.de
-Message-ID: <20230223093201.GE32097@pengutronix.de>
-References: <20230222122320.1494205-1-bst@pengutronix.de>
+	id 1pV8jD-0002b6-OI; Thu, 23 Feb 2023 11:21:31 +0100
+Date: Thu, 23 Feb 2023 11:21:31 +0100
+From: Sascha Hauer <sha@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20230223102131.GM23347@pengutronix.de>
+References: <20230223085555.GB32097@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-15
 Content-Disposition: inline
-In-Reply-To: <20230222122320.1494205-1-bst@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230223085555.GB32097@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230223_013203_563138_6229BAAE 
-X-CRM114-Status: GOOD (  19.07  )
+X-CRM114-CacheID: sfid-20230223_022136_196636_449B677A 
+X-CRM114-Status: GOOD (  42.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,45 +77,240 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] net: make DRIVER_NET_DESIGNWARE_IMX8 select MFD_SYSCON
+Subject: Re: v2023.02.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Feb 22, 2023 at 01:23:20PM +0100, Bastian Krause wrote:
-> The driver includes mfd/syscon.h and uses
-> syscon_regmap_lookup_by_phandle():
-> 
->   eqos-imx8 30bf0000.ethernet@30bf0000.of: probe failed: Function not implemented
-> 
-> Select MFD_SYSCON to fix this.
-> 
-> Fixes: b6fb740819 ("net: eqos: add i.MX8MP support")
-> Signed-off-by: Bastian Krause <bst@pengutronix.de>
-> ---
->  drivers/net/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
+DON'T USE!
 
-Applied, thanks
+Unfortunately there is a nasty bug in this release which breaks console
+output on all boards that use the stdout-path device tree property
+without ':' to separate the port from the baudrate, which is what the
+majority of boards does.
+
+There'll be a stable update soon.
 
 Sascha
 
+On Thu, Feb 23, 2023 at 09:55:55AM +0100, Sascha Hauer wrote:
 > 
-> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-> index a9fc073d57..25b46ccb11 100644
-> --- a/drivers/net/Kconfig
-> +++ b/drivers/net/Kconfig
-> @@ -111,6 +111,7 @@ config DRIVER_NET_DESIGNWARE_IMX8
->  	bool "Designware EQOS i.MX8 Ethernet driver"
->  	depends on HAS_DMA && COMMON_CLK && OFTREE && (ARCH_IMX8M || COMPILE_TEST)
->  	select DRIVER_NET_DESIGNWARE_EQOS
-> +	select MFD_SYSCON
->  	help
->  	  This option enables support for the Designware EQOS MAC implemented on
->  	  the NXP i.MX8 SoCs.
+> barebox-2023.02.0 is out.
+> 
+> This time we have once again some progress with DSA: barebox gained
+> rtl8365mb switch support and I2C support for the ksz9477. This has
+> the nice side effect that we now have regmap_i2c and regmap_spi support.
+> Also there's a new NAND driver for Atmel SoCs with better device tree
+> support freshly imported from Linux.
+> If you ever wanted to parse JSON in barebox, you now have the
+> possibility to do so as Ahmad integrated jsmn into barebox.
+> The developer visible changes include that we dropped the _d suffix we
+> had on several struct types, most prominently struct device_d has become
+> struct device and struct driver_d has become struct driver. The old
+> name is still around as an alias, but it's a good idea to update out of
+> tree patches as the alias will be dropped at some point.
+> Also worth noting is that the default image compression algorithm
+> changed from LZO to LZ4. This has become necessary as LZO didn't see
+> any updates since 2017 and tools like Yocto begin dropping support
+> for LZO.
+> 
+> As usual, see below for a full list of changes.
+> 
+> Have Fun!
+>  Sascha
+> 
+> Ahmad Fatoum (123):
+>       RISC-V: start: print debugging info when CONFIG_DEBUG_INITCALLS
+>       pbl: Add Kconfig option to enable DEBUG globally in PBL
+>       mci: only write blocks when card out of programming mode
+>       ARM: asm: simplify arm_mem_stack_top
+>       mci: sdhci: arasan: fix probing eMMC without no-sd
+>       ARM: dts: fix wrong display-timings native-mode binding
+>       video: vpl: don't print only skipped vpl endpoints
+>       clk: imx: set CLK_SET_RATE_NO_REPARENT for all muxes
+>       clk: mux: forward round/set rate to parent if CLK_SET_RATE_PARENT
+>       ARM: i.MX6: skov: refactor LVDS/parallel device tree fixups
+>       ARM: i.MX6: skov: fix LVDS deep probe
+>       ARM: configs: imx_v7_defconfig: enable some useful options
+>       common: deep-probe: write deep probe enabled message to log
+>       net: dsa: ksz9477: fix confusing message detecting KSZ9893 compatible
+>       net: dsa: ksz9477: match microchip,ksz8563 compatible
+>       ARM: rockchip: make ATF installation optional
+>       regulator: rk808: simplify one error branch with dev_err_probe
+>       asm-generic: define IOMEM for assembly as well
+>       of: gpio: include <of.h> in <of_gpio.h>
+>       gpiolib: use signed int for gpio in gpiod_set_value
+>       gpiolib: implement dev_gpiod_get_index
+>       gpiolib: implement gpiod_get_value
+>       driver: add of_match_table as alias to of_compatible
+>       regulator: scmi: rename struct scmi_regulator::device_node to of_node
+>       vsprintf: support %pOF format specifier
+>       include: driver: make dev_(get_priv|is_probed) argument const pointer
+>       include: sync io-64-nonatomic-*.h headers with Linux
+>       clk: add prepare/unprepare helpers
+>       of: provide of_node_get and of_node_put stubs
+>       include: linux/slab.h: define krealloc/kstrdup
+>       barebox-wrapper: define MODULE_DEVICE_TABLE
+>       ARM: at91: sama5: switch to nonnaked entry functions
+>       ARM: at91: sama5d4: add entry point helpers
+>       lib: add jsmn JSON parser support
+>       lib: extend jsmn with simple JSONPath lookup helpers
+>       vsprintf: implement %pJP for printing JSONPaths
+>       test: self: add json parser test
+>       net: designware: eqos: implement set_promisc callback
+>       include: linux/iopoll.h: silence warning when timeout_us contains *
+>       pinctrl: stm32: fix pinctrl/gpio dependency ordering
+>       net: bcmgenet: fix warning when building for 32-bit
+>       ARM: rpi: defconfig: enable Raspberry Pi 4 drivers in 32-bit config
+>       ARM: switch open-coded instances to platform_mem_driver
+>       net: e1000: don't use nanosecond constants in readl_poll_timeout
+>       firmware: Kconfig: unify whitespace used for indentation
+>       mci: atmel_mci: fix off-by-1000 in poll timeout
+>       mci: atmel_mci: don't print error messages when probing SDIO
+>       mtd: consult CONFIG_OFDEVICE in mtd_get_of_node
+>       ARM: at91: sama5d4: enable for DT use
+>       net: macb: match atmel,sama5d4-gem compatible
+>       i2c: at91: extend for SAMA5D4 support
+>       eeprom: at24: add 24mac402/602 support
+>       driver: always ensure probe of RAM registered with mem_platform_driver
+>       common: deep-probe: don't build without CONFIG_OFDEVICE
+>       pinctrl: at91: make deep-probe compatible
+>       ARM: at91: make bootsource code generic to all SAMA5
+>       ARM: at91: SAMA5D4: add Wifx L1 support
+>       ARM: i.MX8M: bootrom-cmd: clean up pointer casting
+>       ARM: i.MX8M: bootrom: access OCRAM directly if running in EL3
+>       regmap: consolidate reg/val format into regmap_format
+>       regmap: support formatted read and write
+>       regmap: port regmap_init_spi
+>       regmap: factor out regmap cdev size calculation
+>       net: dsa: ksz9477: switch to regmap_init_spi
+>       net: dsa: ksz9477: create regmap cdev for switch registers
+>       drivers: base: regmap: introduce REGMAP_I2C
+>       dev: add dev_bus_is_spi/i2c helpers
+>       net: dsa: ksz9477: refactor to prepare i2c support
+>       regmap: i2c: use formatted I/O
+>       net: ksz9477: add I2C support
+>       driver: drop no longer used RW_SIZE/_MASK macros
+>       crypto: caam - sync 64-bit accessors with Linux
+>       crypto: caam - add job ring accessors from Linux
+>       crypto: caam - make command constants unsigned
+>       crypto: caam - implement early PBL init
+>       common: add new CONFIG_HAVE_OPTEE symbol
+>       ARM: i.MX8M: init CAAM when CONFIG_FSL_CAAM_RNG_PBL_INIT
+>       asm-generic: io.h: sync with Linux
+>       mtd: nand: base: implement nand_gpio_waitrdy
+>       mtd: nand: prefix enum nand_ecc_algo constants with NAND_ECC_ALGO_
+>       mtd: nand: rename nand_device::eccreq to Linux' ecc.requirements
+>       mtd: nand: define nand_get_(small|large)_page_ooblayout
+>       mtd: nand: define nand_interface_is_sdr
+>       mtd: nand: provide Linux' struct nand_ecc_ctrl::engine_type
+>       driver: implement dev_request_resource
+>       lib: provide stub Linux "generic" allocator API
+>       state: backend: direct: open backend in read-only mode if possible
+>       of: implement of_device_enable_by_alias
+>       mfd: add atmel-smc driver
+>       memory: add Atmel EBI driver
+>       mtd: nand: atmel: import Linux NAND controller driver
+>       ARM: AT91: sama5d3_xplained: switch to upstream binding
+>       mtd: nand: drop DT support in legacy driver
+>       ARM: AT91: sama5d3: always read memory size from controller
+>       of: platform: call struct device::detect in of_device_create_on_demand
+>       i2c: write debug print when registering any i2c client
+>       i2c: implement detect callback
+>       net: eth: skip opening disabled interfaces when going interactive
+>       ARM: stm32mp: odyssey-som: use upstream device trees
+>       driver: alias of_match_ptr and DRV_OF_COMPAT
+>       gpiolib: implement gpio_direction_input/output
+>       net: dsa: rename dsa_ops to dsa_switch_ops
+>       net: dsa: factor out dsa_port_alloc helper
+>       net: dsa: populate struct dsa_port::index/dev members
+>       net: dsa: always call port_pre_enable before port_enable
+>       net: dsa: add some helpers to ease porting kernel drivers
+>       net: dsa: add struct dsa_switch::priv member for driver use
+>       net: dsa: add Realtek (rtl8365mb/rtl8366rb) switch support
+>       net: dsa: realtek: support enabling only one of the drivers
+>       net: dsa: ksz8873: fix mismatched return value
+>       include: linux/printk: implement pr_*_once macros
+>       fs: tftp: print message when stack can't keep us with TFTP windowsize
+>       include: printk: retire printk_once for pr_debug_once
+>       fs: align write return codes with POSIX
+>       of: describe third arg of of_property_write_bool in kerneldoc
+>       kwboot: add missing header to fix musl build
+>       ARM: <asm/barebox-arm.h>: drop undefined barebox_arm_get_boarddata()
+>       ARM: rockchip: add missing header to <mach/rockchip.h>
+>       sandbox: fix linker warnings with newer ld
+>       of: split part of of_get_stdoutpath into of_find_node_by_chosen
+>       bootsource: use /chosen instead of /aliases/barebox,bootsource-
+>       ARM: stm32mp: much enlarge very early stack size
+>       Documentation: i.MX8M: add EVK barebox installation documentation
+> 
+> Johannes Schneider (1):
+>       ARM: i.MX8M: separate function call for clock_init
+> 
+> Kilian Strasser (1):
+>       pinctrl: rockchip: fix get_value
+> 
+> Lucas Stach (1):
+>       clk: imx8mp: add USB suspend clock
+> 
+> Marcin Niestroj (1):
+>       ARM: rpi: parse memory from vc fdt
+> 
+> Marco Felsch (1):
+>       pbl: set IMAGE_COMPRESSION per default to lz4
+> 
+> Maxim Kochetkov (1):
+>       serial: ns16550: move iomem/ioport init after clock init
+> 
+> Oleksij Rempel (8):
+>       ARM: imx6sx: udoo-neo: port to driver model
+>       ARM: imx6sx: udoo-neo: enable deep probe support
+>       ARM: imx6sx: udoo-neo: fix board compatible
+>       ARM: imx6sx: udoo-neo: configure GPIO pins for board auto detection.
+>       ARM: imx6sx: udoo-neo: add version detection support
+>       ARM: imx6sx: udoo-neo: enable memory size auto detection
+>       ARM: imx6sx: udoo-neo: fix gpt timer configuration
+>       ARM: imx6sx: udoo-neo: add barebox update handler support
+> 
+> Sascha Hauer (30):
+>       dts: update to v6.1
+>       dts: update to v6.2-rc1
+>       Rename device_d::device_node to device_d::of_node
+>       Rename struct device_d to device
+>       Rename struct driver_d to driver
+>       Rename struct fs_device_d to fs_device
+>       Rename struct fs_driver_d to fs_driver
+>       Merge branch 'for-next/struct-rename' into for-next/gpio
+>       Merge branch 'for-next/struct-rename' into for-next/kernelcode-helpers
+>       Merge branch 'for-next/struct-rename' into for-next/at91
+>       dts: update to v6.2-rc3
+>       mci: Add more respone types
+>       mci: handle SDIO cards gracefully
+>       ARM: dts: rpi3: Enable sdhci controller
+>       Merge branch 'for-next/struct-rename' into for-next/misc-struct-rename
+>       ARM: dts: remove duplicate reserved-memory nodes
+>       dts: update to v6.2-rc4
+>       Merge branch 'for-next/kernelcode-helpers' into HEAD
+>       Merge branch 'for-next/gpio' into HEAD
+>       Merge branch 'for-next/at91'
+>       Merge branch 'for-next/caam'
+>       Merge branch 'for-next/dts'
+>       Merge branch 'for-next/imx'
+>       Merge branch 'for-next/jsmn'
+>       Merge branch 'for-next/misc'
+>       Merge branch 'for-next/misc-struct-rename'
+>       Merge branch 'for-next/struct-rename'
+>       gpio: Fix unused variable warning
+>       Revert "sandbox: fix linker warnings with newer ld"
+>       Release v2023.02.0
+> 
+> Ulrich Ölmann (1):
+>       of: partition: moan if adding a partition failed
+> 
 > -- 
-> 2.30.2
-> 
-> 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 > 
 
 -- 
