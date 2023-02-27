@@ -1,53 +1,53 @@
-Delivery-date: Mon, 27 Feb 2023 09:01:59 +0100
+Delivery-date: Mon, 27 Feb 2023 11:43:36 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pWYSK-003Z3h-Mu
-	for lore@lore.pengutronix.de; Mon, 27 Feb 2023 09:01:59 +0100
+	id 1pWayl-003fBW-MW
+	for lore@lore.pengutronix.de; Mon, 27 Feb 2023 11:43:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pWYSK-0004l8-IT
-	for lore@pengutronix.de; Mon, 27 Feb 2023 09:01:57 +0100
+	id 1pWayl-0003jZ-GZ
+	for lore@pengutronix.de; Mon, 27 Feb 2023 11:43:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MVU65xI+SW4r+xya1Nn0p1NOp5QUMLXCr7zB7vY7ovg=; b=nRjySsj542cM6AFhBFjcv+InLP
-	pH4druLL9JxRnZbeoT+726d0S69mjqOcB7lykNd3qfrrud/rsTu9hJkj+e3DnzLXJISMMI5d4yG4D
-	+IY1k7y3jGGsXaV+lVWIcx6HLSCtu8ykZBqI0+GtPgLPt0R32vduIHxC/jhPqc5P+zBXXV874zYcC
-	5BNMAGjocCi1T6cf1NhuMI2Noowh1+PeSVH9ntbPm1tHkmLCthZtWGkOwd+xQej+uvkjXijNhMAaY
-	gkoP6l7GUleSQ6zj0SkIgFTe7aOCqAAdtp11Kr/TaQYv0PynhGLiJKR8ELmcrAeG/OrP89o+s54dq
-	FLozqKeg==;
+	bh=yG9WKK0xd5IWsD0x9Cr1beJEP6tlcWulWdHU3sqUT7c=; b=HF4lV2MG+EDEiyDitNolhG/aod
+	jl37G8UZ9EjuiSNxd3m4G1hPtNYCbMOQJkMbTgKEXvbzAYleQ8DUsVDpEvtovE3F0CfCWi0vmtKf7
+	XKnOPeo0GZiIW2mJXV4asYbHsBVpxQ8XZ2JusKVlDHy/17E8tTRaV3CBIKhP4N4Lm4ibsrZbpByol
+	nFP2/QReNTMOhkydn8TrqCTt0gGb64VGN6whSIw+2otfjxOXkUceV1m4jrxFEdSe+lpRZ8ECb51m5
+	+g7TeCK3bVcNwWeorPknsRXS67H8fEXZDpCA7Y2BH4CjOrxqSfdHAKKF7Pr+y4Ph6OZbBXG1RlKyA
+	hfc9Rxbg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pWYQ0-008j51-PD; Mon, 27 Feb 2023 07:59:33 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1pWaxE-009GTP-9P; Mon, 27 Feb 2023 10:42:00 +0000
+Received: from [2001:67c:670:201:290:27ff:fe1d:cc33] (helo=metis.ext.pengutronix.de)
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pWYPp-008j1q-1w
-	for barebox@lists.infradead.org; Mon, 27 Feb 2023 07:59:22 +0000
+	id 1pWawn-009GJz-SY
+	for barebox@lists.infradead.org; Mon, 27 Feb 2023 10:41:56 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pWYPh-0004I6-9N; Mon, 27 Feb 2023 08:59:13 +0100
+	id 1pWawX-0003QU-1b; Mon, 27 Feb 2023 11:41:17 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pWYPg-0002Af-NX; Mon, 27 Feb 2023 08:59:12 +0100
-Date: Mon, 27 Feb 2023 08:59:12 +0100
-To: Michael Kopfensteiner <michael.kopfensteiner@vahle.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230227075912.GK32097@pengutronix.de>
-References: <20230223153601.59357-1-michael.kopfensteiner@vahle.com>
- <20230223153601.59357-2-michael.kopfensteiner@vahle.com>
+	id 1pWawW-0002SH-QN; Mon, 27 Feb 2023 11:41:16 +0100
+Date: Mon, 27 Feb 2023 11:41:16 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, lst@pengutronix.de
+Message-ID: <20230227104116.GL32097@pengutronix.de>
+References: <20230221080524.607241-1-a.fatoum@pengutronix.de>
+ <20230221080524.607241-10-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230223153601.59357-2-michael.kopfensteiner@vahle.com>
+In-Reply-To: <20230221080524.607241-10-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -55,8 +55,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230226_235921_115166_DD46EF58 
-X-CRM114-Status: GOOD (  21.93  )
+X-CRM114-CacheID: sfid-20230227_024133_940785_0E01571C 
+X-CRM114-Status: GOOD (  34.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,90 +78,143 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 2/3] ARM: IMX8MP: add initial support for Variscite
- DT8MCustomBoard with iMX8MP
+Subject: Re: [PATCH RFC 09/12] of: populate new device_d::dma_coherent
+ attribute
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Michael,
-
-Looks good now. I squashed in some things while applying, see below.
-
-On Thu, Feb 23, 2023 at 04:36:00PM +0100, Michael Kopfensteiner wrote:
-> The Variscite DT8MCustomBoard is an eval board for the several Variscite
-> SOMs of their "DART" product line. This commit adds support for that
-> baseboard in combination with a DART-MX8M-PLUS SOM. The commit contains
-> an adapted version of the vendors device tree [1] and the vendors DDR
-> timings, taken from Variscite's public U-Boot sources [2].
+On Tue, Feb 21, 2023 at 09:05:21AM +0100, Ahmad Fatoum wrote:
+> So far, whether device DMA is coherent was a one-time global decision.
+> This is insufficient, because some platforms:
 > 
-> Both files have been slightly changed to integrate well with barebox.
+>  - are cache coherent, while the architecture isn't in general, e.g. ARM
+>    with CONFIG_MMU=y assumes non-coherent DMA, but LS1046A is coherent
 > 
-> The boardsupport added with this commit does not yet support every
-> feature of the DT8MCustomBoard. Yet it already supports all basic
-> necessities to make use of barebox.
+>  - have a mix of devices that snoop caches and devices that don't
+>    (StarFive JH7100).
 > 
-> [1] https://github.com/varigit/linux-imx/tree/3f94f35bda827e8aa06beadb10c77358cfb6dad9
-> [2] https://github.com/varigit/uboot-imx/tree/7cad2ff68a508c71c572151a85bc786711bab969
+> To enable dev_dma_(map|unmap)_single to take the correct device-specific
+> action with regards to cache maintenance, provide dev_is_dma_coherent()
+> with semantics similar to what Linux provides.
 > 
-> Signed-off-by: Michael Kopfensteiner <michael.kopfensteiner@vahle.com>
+> This admittedly looks a bit ugly, but we will refrain from making
+> dma_coherent defined independent of ifdef CONFIG_ARCH_HAS_NONCOHERENT_DMA:
+> On platforms that are cache-coherent, we will want dev->dma_coherent to
+> be true. Yet not all code allocating devices uses dev_alloc(), so adding
+> a global toggle is a bit too much refactoring effort for now.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
+>  commands/devinfo.c    |  5 +++++
+>  drivers/of/platform.c |  3 +++
+>  include/driver.h      | 28 ++++++++++++++++++++++++++++
+>  3 files changed, 36 insertions(+)
+> 
+> diff --git a/commands/devinfo.c b/commands/devinfo.c
+> index 2487786c7101..be28d02028c3 100644
+> --- a/commands/devinfo.c
+> +++ b/commands/devinfo.c
+> @@ -50,6 +50,7 @@ static int do_devinfo(int argc, char *argv[])
+>  	struct param_d *param;
+>  	int i;
+>  	int first;
+> +	int coherent;
+>  	struct resource *res;
+>  
+>  	if (argc == 1) {
+> @@ -82,6 +83,10 @@ static int do_devinfo(int argc, char *argv[])
+>  		if (dev->bus)
+>  			printf("Bus: %s\n", dev->bus->name);
+>  
+> +		coherent = dev_is_dma_coherent(dev);
+> +		if (coherent >= 0)
+> +			printf("DMA Coherent: %s\n", coherent ? "true" : "false");
 
-[...]
+'>=' doesn't seem to be quite right here.
 
-> +	gpio-leds {
-> +		compatible = "gpio-leds";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_gpio_leds>;
 > +
-> +		gp-led1 {
-> +			label = "led1";
-> +			gpios = <&pca6408_2 7 GPIO_ACTIVE_HIGH>;
-> +			linux,default-trigger = "heartbeat";
-> +			barebox,default-trigger = "heartbeat";
+>  		if (dev->info)
+>  			dev->info(dev);
+>  
+> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+> index 0982873446a6..1bd5d41ba226 100644
+> --- a/drivers/of/platform.c
+> +++ b/drivers/of/platform.c
+> @@ -128,6 +128,9 @@ static void of_dma_configure(struct device *dev, struct device_node *np)
+>  	}
+>  
+>  	dev->dma_offset = offset;
+> +#ifdef CONFIG_OF_DMA_COHERENCY
+> +	dev->dma_coherent = of_dma_is_coherent(np);
+> +#endif
+>  }
+>  
+>  /**
+> diff --git a/include/driver.h b/include/driver.h
+> index 7e25c060280b..f6301d954bb5 100644
+> --- a/include/driver.h
+> +++ b/include/driver.h
+> @@ -8,6 +8,7 @@
+>  
+>  #include <linux/list.h>
+>  #include <linux/ioport.h>
+> +#include <linux/bitops.h>
+>  #include <of.h>
+>  #include <filetype.h>
+>  
+> @@ -43,6 +44,13 @@ struct device {
+>  	 * something like eth0 or nor0. */
+>  	int id;
+>  
+> +	/*! This particular device is dma coherent, even if the
+> +         * architecture supports non-coherent devices.
+> +	 */
+> +#ifdef CONFIG_OF_DMA_COHERENCY
+> +	bool dma_coherent:1;
+> +#endif
 
-Dropped the barebox,default-trigger property. barebox evaluates the
-linux,default-trigger as well and as long as both properties don't
-differ there shouldn't be a need to have both.
+I think this patch could be easier when we add the dma_coherent field
+unconditionally.
 
-> +&i2c1 {
-> +	clock-frequency = <400000>;
-> +	pinctrl-names = "default", "gpio";
-> +	pinctrl-0 = <&pinctrl_i2c1>;
-> +	pinctrl-1 = <&pinctrl_i2c1_gpio>;
-> +	scl-gpios = <&gpio5 14 GPIO_ACTIVE_HIGH>;
-> +	sda-gpios = <&gpio5 15 GPIO_ACTIVE_HIGH>;
-> +	status = "okay";
 > +
-> +	pca9450@25 {
-> +		reg = <0x25>;
-> +		compatible = "nxp,pca9450c";
-> +		pinctrl-names = "default";
-> +		pinctrl-0 = <&pinctrl_pmic>;
-> +		interrupt-parent = <&gpio1>;
-> +		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
-> +		status = "okay";
-
-Dropped this status property, shouldn't be needed.
-
-> +&usdhc1 {
-> +	#address-cells = <1>;
-> +	#size-cells = <0>;
-> +	pinctrl-names = "default", "state_100mhz", "state_200mhz";
-> +	pinctrl-0 = <&pinctrl_usdhc1>, <&pinctrl_wifi>;
-> +	pinctrl-1 = <&pinctrl_usdhc1_100mhz>, <&pinctrl_wifi>;
-> +	pinctrl-2 = <&pinctrl_usdhc1_200mhz>, <&pinctrl_wifi>;
-> +	bus-width = <4>;
-> +	non-removable;
-> +	keep-power-in-suspend;
-> +	status = "okay";
+>  	struct resource *resource;
+>  	int num_resources;
+>  
+> @@ -652,6 +660,26 @@ static inline struct device_node *dev_of_node(struct device *dev)
+>  	return IS_ENABLED(CONFIG_OFDEVICE) ? dev->of_node : NULL;
+>  }
+>  
+> +#ifdef CONFIG_OF_DMA_COHERENCY
+> +static inline int __dev_is_dma_coherent(struct device *dev)
+> +{
+> +	return dev->dma_coherent;
+> +}
+> +#else
+> +static inline bool __dev_is_dma_coherent(struct device *dev)
+> +{
+> +	return IS_ENABLED(CONFIG_OF_DMA_DEFAULT_COHERENT);
+> +}
+> +#endif
 > +
-> +	brcmf: bcrmf@1 {
-> +		reg = <1>;
-> +		compatible = "brcm,bcm4329-fmac";
-> +		laird,regdomain = "US";
+> +static inline int dev_is_dma_coherent(struct device *dev)
+> +{
+> +	if (!dev_of_node(dev))
+> +		return -EINVAL;
+> +
+> +	return __dev_is_dma_coherent(dev);
+> +}
 
-Dropped this property. It is not evaluated by mainline Linux and it also
-doesn't make sense to compile this in statically.
+This should return bool. Either a device is DMA coherent or not.
+
+You seem to assume that a device is not cache coherent when you don't
+know:
+
+-       dma_sync_single_for_device(addr, size, dir);
++       if (dev_is_dma_coherent(dev) <= 0)
++               dma_sync_single_for_device(addr, size, dir);
+
+This assumption seems to make sense as an unnecessary cache synchronisation
+shouldn't hurt, right?
 
 Sascha
 
