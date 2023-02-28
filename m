@@ -1,57 +1,70 @@
-Delivery-date: Tue, 28 Feb 2023 16:08:16 +0100
+Delivery-date: Tue, 28 Feb 2023 18:38:56 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pX1aR-004m6g-Ps
-	for lore@lore.pengutronix.de; Tue, 28 Feb 2023 16:08:16 +0100
-Received: from bombadil.infradead.org ([198.137.202.133])
+	id 1pX3wE-004sK2-DB
+	for lore@lore.pengutronix.de; Tue, 28 Feb 2023 18:38:56 +0100
+Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pX1aR-0001d0-5J
-	for lore@pengutronix.de; Tue, 28 Feb 2023 16:08:16 +0100
+	id 1pX3wE-0003tM-BU
+	for lore@pengutronix.de; Tue, 28 Feb 2023 18:38:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cqYiTY4xI/L7wDAxdKMLP87stDy2Saq5B5JQmEO4wXQ=; b=upakywPssHsEjEO0p93wK9zu5D
-	H4iP2s1uJB77ZFhSjR51jE4y2yVgOXciBBvlaTU7hfeqN4v25xOJrRLqs/IiDznXLQuIa20UPw5Op
-	L5UvMAB71eiUSbKR/YjJmqxLFSrDPlWLgeBP0KR5syePdvCbTJM9RgHaUoBkWbYrkPIv6LvNH5X+D
-	4GSX672PMXFZPTqJhvDMp9P2sJSCHHJMMEIeWhxhEgIbXE3BT1syK3UYaGJhuIuIFrN0Aa2/EkHlX
-	S/+zCCpRPDiIbhX0Pr21KP0T4ExdDeoH/aovjYx06481gV4YTxm0O9L7HlbHqDOgyr92TsnJXF5Qz
-	i8qbEMhg==;
+	bh=EaA4eSAjKy+WpzcH8tT4JmUZCGK1F4zNbjbB89twH5w=; b=XFfhwSKje4IgQlvAy4wU5V5gUC
+	3bFTNJQg+UZxp+Y90GVbCglMDLGSC/WTwaV0QMzGR3dfRIykkZhLnvw4m3fAwsUaIY++QUvYCH8Ex
+	ntoHyUNfCV0cm5OKeZdS3GstZFOXVDOLVAdjFC/abJGVAQWGzw2b73SLQEec1gdoMrKJPMcflQUJE
+	BGUV6hLuzEMSpzdLVXGl9Sf/JKEzva9DOZyiDcF71ALkZQjR294vhuvcXDFuHEYPk6CyVXALbNDT9
+	LqpPwgyOhFO4jnSGakYOtsdF3bN3K96fHTYgSZFpMQ9ivlyoo/w2ACDc+dcYeM04WO7rDXm0xGPPz
+	LLODd2rA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pX1Yv-00DbHA-NC; Tue, 28 Feb 2023 15:06:41 +0000
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+	id 1pX3up-00Dtg3-44; Tue, 28 Feb 2023 17:37:27 +0000
+Received: from mailrelay6-1.pub.mailoutpod2-cph3.one.com ([2a02:2350:5:405::1])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pX1Yp-00DbDw-Ny
-	for barebox@lists.infradead.org; Tue, 28 Feb 2023 15:06:38 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pX1WW-0000wX-4a; Tue, 28 Feb 2023 16:04:12 +0100
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pX1WV-0004kY-T0; Tue, 28 Feb 2023 16:04:11 +0100
-Date: Tue, 28 Feb 2023 16:04:11 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
+	id 1pX3uj-00Dtcd-A9
+	for barebox@lists.infradead.org; Tue, 28 Feb 2023 17:37:23 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=rsa2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=EaA4eSAjKy+WpzcH8tT4JmUZCGK1F4zNbjbB89twH5w=;
+	b=bg+ExCvMR6YgfL72dhi0hQMlZ1x1CN41+j8vDuEx8K5/WB3YDWfEWSnkIIX+CwUaiNHT4UykstzpT
+	 aacINc3KQkxlO9CCuzeRydN8vx4RUc+r5fPcKYNRGSoC4H1sFpVVtGRRiNUqii1tSpHp316OBqvpn4
+	 tyeZbRDPtU0+G2la6jqutXIWIykSJPGxOOxgWwYeW9DDrtPDaColJYMMCVHGqyULkIYBkCCupDsxFm
+	 FC9/JliyhClN1+Pm+ZePPmGjgwqprCdZCfjfKUN5UfR5Fd+QWhFkPFKlyEQfqfMc/zUFhaVConDhcJ
+	 +7AGfKT9oyy42O0xWH/rUO+OR5w8cPQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=ed2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=EaA4eSAjKy+WpzcH8tT4JmUZCGK1F4zNbjbB89twH5w=;
+	b=K/sefISg5eAxTo14x6k9IgxTq0wMG/WkEzvRySfaWMVAjWR6GVpFN2q1BGWFP1suzYrIB7KCNPsCr
+	 Hf3nKJyAw==
+X-HalOne-ID: 8585f5ff-b78e-11ed-b607-cde5ad41a1dd
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+	by mailrelay6 (Halon) with ESMTPSA
+	id 8585f5ff-b78e-11ed-b607-cde5ad41a1dd;
+	Tue, 28 Feb 2023 17:37:09 +0000 (UTC)
+Date: Tue, 28 Feb 2023 18:37:08 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20230228150411.6fwwdx66eizfzj62@pengutronix.de>
-References: <20230228135727.1602351-1-s.hauer@pengutronix.de>
+Message-ID: <Y/47xKrQwNGDe2KU@ravnborg.org>
+References: <20230228143031.1718565-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230228135727.1602351-1-s.hauer@pengutronix.de>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20230228143031.1718565-1-s.hauer@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230228_070636_125476_4D5AC963 
-X-CRM114-Status: GOOD (  12.15  )
+X-CRM114-CacheID: sfid-20230228_093721_538670_989C9E7C 
+X-CRM114-Status: GOOD (  16.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -64,251 +77,51 @@ List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
-X-SA-Exim-Connect-IP: 198.137.202.133
+X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/5] ARM: remove Samsung arch
+Subject: Re: [PATCH 0/9] ARM: misc cleanups
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 23-02-28, Sascha Hauer wrote:
-> arch/arm/mach-samsung hasn't seen any active maintenance or interest
+Hi Sascha,
 
-Unfortunately..
+On Tue, Feb 28, 2023 at 03:30:22PM +0100, Sascha Hauer wrote:
+> I am working on making it possible to build support for multiple
+> arch/arm/mach-*/ into the same barebox. Here are some misc cleanups
+> I stumbled upon while preparing multi arch support.
+> 
+> Sascha Hauer (9):
+>   ARM: mxs: remove unused mach/clock.h
+>   ARM: imx: remove unused mach/clock.h
+>   ARM: rockchip: drop mach/timer.h
+>   ARM: i.MX: Move imxfb.h to include/platform_data/
+>   pinctrl: rockchip: Fix uninitialized var warning
+>   ARM: at91: remove unnecessary configs
+>   ARM: at91: Switch all boards to multiimage
+>   at91: consolidate usb-a963 128m images
+>   ARM: pxa: Move plat/ include files to mach/
 
-> for a long time. It starts standing in the way for further development,
-> so remove it. RIP.
-> 
-> Sascha
-> 
-> Sascha Hauer (5):
->   ARM: remove samsung arch
->   mci: remove s3c driver
->   mtd: nand: remove s3c driver
->   serial: remove s3c driver
->   video: remove s3c driver
+As much as I like the patches I think a more sane course of
+action for these old at91 boards would be to drop most of them.
+A simple algorithm would be:
+  If not supported in the kernel, drop the board.
+  
+The boards that are not in the kernel have not seen any
+activity in barebox for a long time, so it is not like
+they look maintained.
 
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+That would allow us to get rid of some legacy stuff in
+mach-at91 and maybe motivate someone like me to actually
+work on the remaining boards as it then looks
+doable to convert the remaining boards to DT.
 
->  Documentation/boards/s3c/Digi-a9m2440.rst     |  93 --
->  Documentation/boards/samsung.rst              |   8 -
->  arch/arm/Kconfig                              |  19 -
->  arch/arm/Makefile                             |  13 -
->  arch/arm/boards/a9m2410/Makefile              |   4 -
->  arch/arm/boards/a9m2410/a9m2410.c             | 136 ---
->  arch/arm/boards/a9m2410/config.h              | 109 ---
->  arch/arm/boards/a9m2410/env/bin/_update       |  36 -
->  arch/arm/boards/a9m2410/env/bin/boot          |  38 -
->  arch/arm/boards/a9m2410/env/bin/init          |  30 -
->  arch/arm/boards/a9m2410/env/bin/update_kernel |  13 -
->  arch/arm/boards/a9m2410/env/bin/update_root   |  11 -
->  arch/arm/boards/a9m2410/env/config            |  26 -
->  arch/arm/boards/a9m2410/lowlevel_init.S       |  39 -
->  arch/arm/boards/a9m2440/Makefile              |   5 -
->  arch/arm/boards/a9m2440/a9m2410dev.c          |  82 --
->  arch/arm/boards/a9m2440/a9m2440.c             | 143 ----
->  arch/arm/boards/a9m2440/baseboards.h          |   6 -
->  arch/arm/boards/a9m2440/config.h              |  60 --
->  arch/arm/boards/a9m2440/env/bin/_update       |  34 -
->  arch/arm/boards/a9m2440/env/bin/boot          |  40 -
->  arch/arm/boards/a9m2440/env/bin/init          |  30 -
->  arch/arm/boards/a9m2440/env/bin/update_kernel |  13 -
->  arch/arm/boards/a9m2440/env/bin/update_root   |  13 -
->  arch/arm/boards/a9m2440/env/config            |  26 -
->  arch/arm/boards/a9m2440/lowlevel_init.S       | 243 ------
->  arch/arm/boards/friendlyarm-mini2440/Kconfig  |  35 -
->  arch/arm/boards/friendlyarm-mini2440/Makefile |   5 -
->  arch/arm/boards/friendlyarm-mini2440/config.h | 118 ---
->  .../boards/friendlyarm-mini2440/env/boot/nand |   4 -
->  .../friendlyarm-mini2440/env/config-board     |  16 -
->  .../env/init/mtdparts-nand                    |   6 -
->  .../friendlyarm-mini2440/lowlevel_init.S      |  44 -
->  .../boards/friendlyarm-mini2440/mini2440.c    | 341 --------
->  arch/arm/boards/friendlyarm-mini6410/Makefile |   5 -
->  arch/arm/boards/friendlyarm-mini6410/config.h |  10 -
->  .../defaultenv-friendlyarm-mini6410/config    |  52 --
->  .../boards/friendlyarm-mini6410/lowlevel.c    |  13 -
->  .../boards/friendlyarm-mini6410/mini6410.c    | 302 -------
->  arch/arm/boards/friendlyarm-tiny210/Makefile  |   4 -
->  arch/arm/boards/friendlyarm-tiny210/config.h  |  21 -
->  .../arm/boards/friendlyarm-tiny210/lowlevel.c | 100 ---
->  arch/arm/boards/friendlyarm-tiny210/tiny210.c | 102 ---
->  arch/arm/boards/friendlyarm-tiny6410/Kconfig  |  21 -
->  arch/arm/boards/friendlyarm-tiny6410/Makefile |   6 -
->  arch/arm/boards/friendlyarm-tiny6410/config.h |  10 -
->  .../defaultenv-friendlyarm-tiny6410/config    |  52 --
->  .../friendlyarm-tiny6410/development-board.c  |  94 ---
->  .../boards/friendlyarm-tiny6410/lowlevel.c    |  13 -
->  .../boards/friendlyarm-tiny6410/tiny6410.c    |  72 --
->  .../boards/friendlyarm-tiny6410/tiny6410.h    |   4 -
->  arch/arm/configs/a9m2410_defconfig            |  32 -
->  arch/arm/configs/a9m2440_defconfig            |  34 -
->  .../configs/friendlyarm_mini2440_defconfig    |  41 -
->  .../configs/friendlyarm_mini6410_defconfig    |  34 -
->  .../arm/configs/friendlyarm_tiny210_defconfig |   7 -
->  .../configs/friendlyarm_tiny6410_defconfig    |  35 -
->  arch/arm/mach-samsung/Kconfig                 | 178 ----
->  arch/arm/mach-samsung/Makefile                |  14 -
->  arch/arm/mach-samsung/bbu-nand-s3c24x0.c      |  85 --
->  arch/arm/mach-samsung/clocks-s3c24xx.c        | 145 ----
->  arch/arm/mach-samsung/clocks-s3c64xx.c        | 338 --------
->  arch/arm/mach-samsung/clocks-s5pcxx.c         |  98 ---
->  arch/arm/mach-samsung/generic.c               |  51 --
->  arch/arm/mach-samsung/gpio-s3c24x0.c          | 167 ----
->  arch/arm/mach-samsung/gpio-s3c64xx.c          | 302 -------
->  arch/arm/mach-samsung/gpio-s5pcxx.c           | 124 ---
->  arch/arm/mach-samsung/include/mach/bbu.h      |  18 -
->  .../include/mach/devices-s3c24xx.h            |  55 --
->  .../include/mach/devices-s3c64xx.h            |  40 -
->  .../mach-samsung/include/mach/iomux-s3c24x0.h | 422 ---------
->  .../mach-samsung/include/mach/iomux-s3c64xx.h | 542 ------------
->  .../mach-samsung/include/mach/iomux-s5pcxx.h  | 798 ------------------
->  arch/arm/mach-samsung/include/mach/iomux.h    |  28 -
->  .../mach-samsung/include/mach/s3c-busctl.h    |  32 -
->  .../mach-samsung/include/mach/s3c-clocks.h    |  28 -
->  .../mach-samsung/include/mach/s3c-generic.h   |  62 --
->  .../arm/mach-samsung/include/mach/s3c-iomap.h |  23 -
->  arch/arm/mach-samsung/include/mach/s3c-mci.h  |  39 -
->  .../include/mach/s3c24xx-clocks.h             |  24 -
->  .../mach-samsung/include/mach/s3c24xx-fb.h    |  55 --
->  .../mach-samsung/include/mach/s3c24xx-gpio.h  |  77 --
->  .../mach-samsung/include/mach/s3c24xx-iomap.h |  65 --
->  .../mach-samsung/include/mach/s3c24xx-nand.h  |  57 --
->  .../include/mach/s3c64xx-clocks.h             |  67 --
->  .../mach-samsung/include/mach/s3c64xx-iomap.h |  51 --
->  .../mach-samsung/include/mach/s5pcxx-clocks.h |  55 --
->  .../mach-samsung/include/mach/s5pcxx-iomap.h  |  46 -
->  arch/arm/mach-samsung/lowlevel-s3c24x0.S      | 305 -------
->  arch/arm/mach-samsung/lowlevel-s5pcxx.c       |  61 --
->  arch/arm/mach-samsung/mem-s3c24x0.c           |  79 --
->  arch/arm/mach-samsung/mem-s3c64xx.c           |  66 --
->  arch/arm/mach-samsung/mem-s5pcxx.c            | 320 -------
->  arch/arm/mach-samsung/reset_source.c          |  56 --
->  arch/arm/mach-samsung/s3c-timer.c             | 119 ---
->  drivers/mci/Kconfig                           |   7 -
->  drivers/mci/Makefile                          |   1 -
->  drivers/mci/s3c.c                             | 762 -----------------
->  drivers/mtd/nand/Kconfig                      |   7 -
->  drivers/mtd/nand/Makefile                     |   2 -
->  drivers/mtd/nand/nand_s3c24xx.c               | 649 --------------
->  drivers/serial/Kconfig                        |  18 -
->  drivers/serial/Makefile                       |   1 -
->  drivers/serial/serial_s3c.c                   | 198 -----
->  drivers/video/Kconfig                         |  13 -
->  drivers/video/Makefile                        |   1 -
->  drivers/video/s3c24xx.c                       | 411 ---------
->  scripts/.gitignore                            |   1 -
->  scripts/Kconfig                               |   7 -
->  scripts/Makefile                              |   1 -
->  110 files changed, 10074 deletions(-)
->  delete mode 100644 Documentation/boards/s3c/Digi-a9m2440.rst
->  delete mode 100644 Documentation/boards/samsung.rst
->  delete mode 100644 arch/arm/boards/a9m2410/Makefile
->  delete mode 100644 arch/arm/boards/a9m2410/a9m2410.c
->  delete mode 100644 arch/arm/boards/a9m2410/config.h
->  delete mode 100644 arch/arm/boards/a9m2410/env/bin/_update
->  delete mode 100644 arch/arm/boards/a9m2410/env/bin/boot
->  delete mode 100644 arch/arm/boards/a9m2410/env/bin/init
->  delete mode 100644 arch/arm/boards/a9m2410/env/bin/update_kernel
->  delete mode 100644 arch/arm/boards/a9m2410/env/bin/update_root
->  delete mode 100644 arch/arm/boards/a9m2410/env/config
->  delete mode 100644 arch/arm/boards/a9m2410/lowlevel_init.S
->  delete mode 100644 arch/arm/boards/a9m2440/Makefile
->  delete mode 100644 arch/arm/boards/a9m2440/a9m2410dev.c
->  delete mode 100644 arch/arm/boards/a9m2440/a9m2440.c
->  delete mode 100644 arch/arm/boards/a9m2440/baseboards.h
->  delete mode 100644 arch/arm/boards/a9m2440/config.h
->  delete mode 100644 arch/arm/boards/a9m2440/env/bin/_update
->  delete mode 100644 arch/arm/boards/a9m2440/env/bin/boot
->  delete mode 100644 arch/arm/boards/a9m2440/env/bin/init
->  delete mode 100644 arch/arm/boards/a9m2440/env/bin/update_kernel
->  delete mode 100644 arch/arm/boards/a9m2440/env/bin/update_root
->  delete mode 100644 arch/arm/boards/a9m2440/env/config
->  delete mode 100644 arch/arm/boards/a9m2440/lowlevel_init.S
->  delete mode 100644 arch/arm/boards/friendlyarm-mini2440/Kconfig
->  delete mode 100644 arch/arm/boards/friendlyarm-mini2440/Makefile
->  delete mode 100644 arch/arm/boards/friendlyarm-mini2440/config.h
->  delete mode 100644 arch/arm/boards/friendlyarm-mini2440/env/boot/nand
->  delete mode 100644 arch/arm/boards/friendlyarm-mini2440/env/config-board
->  delete mode 100644 arch/arm/boards/friendlyarm-mini2440/env/init/mtdparts-nand
->  delete mode 100644 arch/arm/boards/friendlyarm-mini2440/lowlevel_init.S
->  delete mode 100644 arch/arm/boards/friendlyarm-mini2440/mini2440.c
->  delete mode 100644 arch/arm/boards/friendlyarm-mini6410/Makefile
->  delete mode 100644 arch/arm/boards/friendlyarm-mini6410/config.h
->  delete mode 100644 arch/arm/boards/friendlyarm-mini6410/defaultenv-friendlyarm-mini6410/config
->  delete mode 100644 arch/arm/boards/friendlyarm-mini6410/lowlevel.c
->  delete mode 100644 arch/arm/boards/friendlyarm-mini6410/mini6410.c
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny210/Makefile
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny210/config.h
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny210/lowlevel.c
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny210/tiny210.c
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/Kconfig
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/Makefile
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/config.h
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/defaultenv-friendlyarm-tiny6410/config
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/development-board.c
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/lowlevel.c
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/tiny6410.c
->  delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/tiny6410.h
->  delete mode 100644 arch/arm/configs/a9m2410_defconfig
->  delete mode 100644 arch/arm/configs/a9m2440_defconfig
->  delete mode 100644 arch/arm/configs/friendlyarm_mini2440_defconfig
->  delete mode 100644 arch/arm/configs/friendlyarm_mini6410_defconfig
->  delete mode 100644 arch/arm/configs/friendlyarm_tiny210_defconfig
->  delete mode 100644 arch/arm/configs/friendlyarm_tiny6410_defconfig
->  delete mode 100644 arch/arm/mach-samsung/Kconfig
->  delete mode 100644 arch/arm/mach-samsung/Makefile
->  delete mode 100644 arch/arm/mach-samsung/bbu-nand-s3c24x0.c
->  delete mode 100644 arch/arm/mach-samsung/clocks-s3c24xx.c
->  delete mode 100644 arch/arm/mach-samsung/clocks-s3c64xx.c
->  delete mode 100644 arch/arm/mach-samsung/clocks-s5pcxx.c
->  delete mode 100644 arch/arm/mach-samsung/generic.c
->  delete mode 100644 arch/arm/mach-samsung/gpio-s3c24x0.c
->  delete mode 100644 arch/arm/mach-samsung/gpio-s3c64xx.c
->  delete mode 100644 arch/arm/mach-samsung/gpio-s5pcxx.c
->  delete mode 100644 arch/arm/mach-samsung/include/mach/bbu.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/devices-s3c24xx.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/devices-s3c64xx.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/iomux-s3c24x0.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/iomux-s3c64xx.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/iomux.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-busctl.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-clocks.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-generic.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-iomap.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-mci.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-clocks.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-fb.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-gpio.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-iomap.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c64xx-clocks.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s3c64xx-iomap.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-clocks.h
->  delete mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
->  delete mode 100644 arch/arm/mach-samsung/lowlevel-s3c24x0.S
->  delete mode 100644 arch/arm/mach-samsung/lowlevel-s5pcxx.c
->  delete mode 100644 arch/arm/mach-samsung/mem-s3c24x0.c
->  delete mode 100644 arch/arm/mach-samsung/mem-s3c64xx.c
->  delete mode 100644 arch/arm/mach-samsung/mem-s5pcxx.c
->  delete mode 100644 arch/arm/mach-samsung/reset_source.c
->  delete mode 100644 arch/arm/mach-samsung/s3c-timer.c
->  delete mode 100644 drivers/mci/s3c.c
->  delete mode 100644 drivers/mtd/nand/nand_s3c24xx.c
->  delete mode 100644 drivers/serial/serial_s3c.c
->  delete mode 100644 drivers/video/s3c24xx.c
-> 
-> -- 
-> 2.30.2
-> 
-> 
-> 
+	Sam
 
 
