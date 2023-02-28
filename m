@@ -1,59 +1,59 @@
-Delivery-date: Tue, 28 Feb 2023 14:59:15 +0100
+Delivery-date: Tue, 28 Feb 2023 14:59:16 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pX0Ve-004jLp-HQ
-	for lore@lore.pengutronix.de; Tue, 28 Feb 2023 14:59:15 +0100
+	id 1pX0Vf-004jM0-3C
+	for lore@lore.pengutronix.de; Tue, 28 Feb 2023 14:59:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pX0Vd-0000NT-PO
-	for lore@pengutronix.de; Tue, 28 Feb 2023 14:59:14 +0100
+	id 1pX0Ve-0000No-Bo
+	for lore@pengutronix.de; Tue, 28 Feb 2023 14:59:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=R3I1fphFfZpdYEEi0nWAu/pP8R06YL5Q59Dx443z+qg=; b=j8bKktuomK3FgvpLwqdScSaEgh
-	k/ukOVdtI55ScVVlbVsmfVgxRzW6eB4BM/wNangK/e5CJdZcw02girDo6h1KfMGZTyg1KjB8eCfPN
-	nitdy8yyWhLIX2PNXiXwz5qxlo0TiP+4fX0cimeAotmYF70lH7AspJfjIwOZ2X6gxN9q2ISbR0IwR
-	eiNp3z81lZaZhAzZ7jIbKvKnoEKXd2QeQ41r8ogp7+2+bewv2FM/zC4/TjMb8CHeVa3Tm7jPNBIde
-	u5HKfFHWp+45rald82egugimYCD0YDk36DEuPxSkCHO9tHB+jEJHzJcd0l9LODuL1t5sL2H29LzTG
-	iiMSmuhQ==;
+	bh=dMin+1FVzbSbAydsdGer7WiuUxWdIcHi2JEN13jbv6o=; b=k0Ac0nT/0J/4y0pCYn2GPZ3Km5
+	0RaC5hDc+HKsg5Edz+ejyRDSKUN5M+qEgfjp5B+y947UHUZIeRSP49W3N5Sn9+L0iGuTXbNF86wLC
+	5vmU424GfdVdMfQUv5RrtrIm6IAYJv30pGLvA7cCzEBv/5isAIJUwPvBQo+bpFXoAqhhg8eY6Gb+C
+	po8fR8MaqIuNb/o/Qwrg48vKe4gCl1XF132dWUWgR9tXpOt+RWhRonst8/BZHAEn9ngUJTcqDgh+A
+	Xtb4pC+DNxx/FRMYtb/2wGVAojcGk3frO/U3E3RvZYH8gxIzN06BtgohUif9QQtU6YtHmHgp8gmno
+	cK4Yb6ww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pX0U7-00DMcZ-JU; Tue, 28 Feb 2023 13:57:39 +0000
+	id 1pX0UB-00DMdx-PA; Tue, 28 Feb 2023 13:57:43 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pX0U1-00DMa5-Pq
-	for barebox@lists.infradead.org; Tue, 28 Feb 2023 13:57:36 +0000
+	id 1pX0U1-00DMa6-Pt
+	for barebox@lists.infradead.org; Tue, 28 Feb 2023 13:57:38 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pX0Tz-0000AG-DL; Tue, 28 Feb 2023 14:57:31 +0100
+	id 1pX0Tz-0000AC-Cn; Tue, 28 Feb 2023 14:57:31 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pX0Ty-000sdr-Pr; Tue, 28 Feb 2023 14:57:30 +0100
+	id 1pX0Ty-000sdo-Nf; Tue, 28 Feb 2023 14:57:30 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pX0Tx-006irg-Ec; Tue, 28 Feb 2023 14:57:29 +0100
+	id 1pX0Tx-006irj-FG; Tue, 28 Feb 2023 14:57:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 28 Feb 2023 14:57:26 +0100
-Message-Id: <20230228135727.1602351-5-s.hauer@pengutronix.de>
+Date: Tue, 28 Feb 2023 14:57:27 +0100
+Message-Id: <20230228135727.1602351-6-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230228135727.1602351-1-s.hauer@pengutronix.de>
 References: <20230228135727.1602351-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230228_055734_022912_FB55D5BD 
-X-CRM114-Status: GOOD (  21.00  )
+X-CRM114-CacheID: sfid-20230228_055734_247904_CDD7170D 
+X-CRM114-Status: GOOD (  27.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,266 +75,481 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/5] serial: remove s3c driver
+Subject: [PATCH 5/5] video: remove s3c driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The Samsung architecture has been removed, remove the serial driver
+The Samsung architecture has been removed, remove the framebuffer driver
 only used on this architecture as well.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/Kconfig      |  18 ----
- drivers/serial/Makefile     |   1 -
- drivers/serial/serial_s3c.c | 198 ------------------------------------
- 3 files changed, 217 deletions(-)
- delete mode 100644 drivers/serial/serial_s3c.c
+ drivers/video/Kconfig   |  13 --
+ drivers/video/Makefile  |   1 -
+ drivers/video/s3c24xx.c | 411 ----------------------------------------
+ 3 files changed, 425 deletions(-)
+ delete mode 100644 drivers/video/s3c24xx.c
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 6fda32d44c..7c9a46845a 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -107,24 +107,6 @@ config DRIVER_SERIAL_PL010
- 	help
- 	  Enable this to get support for AMBA PL010 based serial devices
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index 01bdaf47bf..f20cc0befc 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -67,12 +67,6 @@ config DRIVER_VIDEO_STM32_LTDC
+ 	  Say 'Y' here to enable framebuffer and splash screen support for
+ 	  STM32 and STM32MP1.
  
--config DRIVER_SERIAL_S3C_IMPROVED
--	bool
--
--config DRIVER_SERIAL_S3C
--	bool "Samsung S3C serial driver"
--	depends on ARCH_SAMSUNG
--	select DRIVER_SERIAL_S3C_IMPROVED if (CPU_S5PC110 || CPU_S5PV210 || CPU_S3C6410)
--	default y
+-config DRIVER_VIDEO_S3C24XX
+-	bool "S3C244x framebuffer driver"
+-	depends on ARCH_S3C24xx
 -	help
--	  Say Y here if you want to use the CONS on a Samsung S3C CPU
+-	  Add support for the S3C244x LCD controller.
 -
--config DRIVER_SERIAL_S3C_AUTOSYNC
--	bool "Enable auto flow"
--	depends on DRIVER_SERIAL_S3C
--	help
--	  Say Y here if you want to use the auto flow feature of this
--	  UART. RTS and CTS will be handled by the hardware when enabled.
+ config DRIVER_VIDEO_OMAP
+ 	bool "OMAP framebuffer driver"
+ 	depends on ARCH_OMAP4 || COMPILE_TEST
+@@ -81,13 +75,6 @@ config DRIVER_VIDEO_OMAP
+ 	  driver only supports OMAP4 SoCs in DISPC parallel mode on
+ 	  LCD2 (MIPI DPI).
+ 
+-if DRIVER_VIDEO_S3C24XX
 -
- config DRIVER_SERIAL_PXA
- 	bool "PXA serial driver"
- 	depends on ARCH_PXA
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index 4b2bfb0537..5677dba631 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -12,7 +12,6 @@ obj-$(CONFIG_DRIVER_SERIAL_CLPS711X)		+= serial_clps711x.o
- obj-$(CONFIG_DRIVER_SERIAL_NS16550)		+= serial_ns16550.o
- obj-$(CONFIG_DRIVER_SERIAL_NS16550_PCI)		+= serial_ns16550_pci.o
- obj-$(CONFIG_DRIVER_SERIAL_PL010)		+= serial_pl010.o
--obj-$(CONFIG_DRIVER_SERIAL_S3C)			+= serial_s3c.o
- obj-$(CONFIG_DRIVER_SERIAL_STM32)		+= serial_stm32.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA)		+= serial_altera.o
- obj-$(CONFIG_DRIVER_SERIAL_ALTERA_JTAG)		+= serial_altera_jtag.o
-diff --git a/drivers/serial/serial_s3c.c b/drivers/serial/serial_s3c.c
+-config DRIVER_VIDEO_S3C_VERBOSE
+-	bool "S3C244x verbose framebuffer info"
+-
+-endif
+-
+ config DRIVER_VIDEO_SDL
+ 	bool "SDL framebuffer driver"
+ 	depends on SANDBOX
+diff --git a/drivers/video/Makefile b/drivers/video/Makefile
+index d50d2d3ba5..1b6d2986d7 100644
+--- a/drivers/video/Makefile
++++ b/drivers/video/Makefile
+@@ -18,7 +18,6 @@ obj-$(CONFIG_DRIVER_VIDEO_STM) += stm.o
+ obj-$(CONFIG_DRIVER_VIDEO_STM32_LTDC) += stm32_ltdc.o
+ obj-$(CONFIG_DRIVER_VIDEO_IMX) += imx.o
+ obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) += imx-ipu-fb.o
+-obj-$(CONFIG_DRIVER_VIDEO_S3C24XX) += s3c24xx.o
+ obj-$(CONFIG_DRIVER_VIDEO_PXA) += pxa.o
+ obj-$(CONFIG_DRIVER_VIDEO_SDL) += sdl.o
+ obj-$(CONFIG_DRIVER_VIDEO_OMAP) += omap.o
+diff --git a/drivers/video/s3c24xx.c b/drivers/video/s3c24xx.c
 deleted file mode 100644
-index 5f6f2082eb..0000000000
---- a/drivers/serial/serial_s3c.c
+index 8fd56bbc7b..0000000000
+--- a/drivers/video/s3c24xx.c
 +++ /dev/null
-@@ -1,198 +0,0 @@
+@@ -1,411 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
 -/*
-- * (c) 2009...2011 Juergen Beisert <j.beisert@pengutronix.de>
+- * Copyright (C) 2010 Juergen Beisert
+- * Copyright (C) 2011 Alexey Galakhov
 - *
-- * Based on code from:
-- * (c) 2004 Sascha Hauer <sascha@saschahauer.de>
+- * This driver is based on a patch found in the web:
+- * (C) Copyright 2006 by OpenMoko, Inc.
+- * Author: Harald Welte <laforge at openmoko.org>
 - */
 -
 -#include <common.h>
--#include <driver.h>
 -#include <init.h>
+-#include <fb.h>
+-#include <driver.h>
 -#include <malloc.h>
+-#include <errno.h>
 -#include <io.h>
 -#include <mach/s3c-generic.h>
--#include <mach/s3c-iomap.h>
+-#include <mach/s3c24xx-fb.h>
 -
--/* Note: Offsets are for little endian access */
--#define ULCON 0x00		/* line control */
--#define UCON 0x04		/* UART control */
--# define UCON_SET_CLK_SRC(x) (((x) & 0x03) << 10)
--# define UCON_GET_CLK_SRC(x) (((x) >> 10) & 0x03)
--#define UFCON 0x08		/* FIFO control */
--#define UMCON 0x0c		/* modem control */
--#define UTRSTAT 0x10		/* Rx/Tx status */
--#define UERSTAT 0x14		/* error status */
--#define UFSTAT 0x18		/* FIFO status */
--#define UMSTAT 0x1c		/* modem status */
--#define UTXH 0x20		/* transmitt */
--#define URXH 0x24		/* receive */
--#define UBRDIV 0x28		/* baudrate generator */
--#define UBRDIVSLOT 0x2c		/* baudrate slot generator */
--#define UINTM 0x38		/* interrupt mask register */
+-#define LCDCON1 0x00
+-# define PNRMODE(x) (((x) & 3) << 5)
+-# define BPPMODE(x) (((x) & 0xf) << 1)
+-# define SET_CLKVAL(x) (((x) & 0x3ff) << 8)
+-# define GET_CLKVAL(x) (((x) >> 8) & 0x3ff)
+-# define ENVID (1 << 0)
 -
--struct s3c_uart {
--	void __iomem *regs;
--	struct console_device cdev;
+-#define LCDCON2 0x04
+-# define SET_VBPD(x) (((x) & 0xff) << 24)
+-# define SET_LINEVAL(x) (((x) & 0x3ff) << 14)
+-# define SET_VFPD(x) (((x) & 0xff) << 6)
+-# define SET_VSPW(x) ((x) & 0x3f)
+-
+-#define LCDCON3 0x08
+-# define SET_HBPD(x) (((x) & 0x7f) << 19)
+-# define SET_HOZVAL(x) (((x) & 0x7ff) << 8)
+-# define SET_HFPD(x) ((x) & 0xff)
+-
+-#define LCDCON4 0x0c
+-# define SET_HSPW(x) ((x) & 0xff)
+-
+-#define LCDCON5 0x10
+-# define BPP24BL (1 << 12)
+-# define FRM565 (1 << 11)
+-# define INV_CLK (1 << 10)
+-# define INV_HS (1 << 9)
+-# define INV_VS (1 << 8)
+-# define INV_DTA (1 << 7)
+-# define INV_DE (1 << 6)
+-# define INV_PWREN (1 << 5)
+-# define INV_LEND (1 << 4)
+-# define ENA_PWREN (1 << 3)
+-# define ENA_LEND (1 << 2)
+-# define BSWP (1 << 1)
+-# define HWSWP (1 << 0)
+-
+-#define LCDSADDR1 0x14
+-# define SET_LCDBANK(x) (((x) & 0x1ff) << 21)
+-# define GET_LCDBANK(x) (((x) >> 21) & 0x1ff)
+-# define SET_LCDBASEU(x) ((x) & 0x1fffff)
+-# define GET_LCDBASEU(x) ((x) & 0x1fffff)
+-
+-#define LCDSADDR2 0x18
+-# define SET_LCDBASEL(x) ((x) & 0x1fffff)
+-# define GET_LCDBASEL(x) ((x) & 0x1fffff)
+-
+-#define LCDSADDR3 0x1c
+-# define SET_OFFSIZE(x) (((x) & 0x7ff) << 11)
+-# define GET_OFFSIZE(x) (((x) >> 11) & 0x7ff)
+-# define SET_PAGE_WIDTH(x) ((x) & 0x3ff)
+-# define GET_PAGE_WIDTH(x) ((x) & 0x3ff)
+-
+-#define RED_LUT 0x20
+-#define GREEN_LUT 0x24
+-#define BLUE_LUT 0x28
+-
+-#define DITHMODE 0x4c
+-
+-#define TPAL 0x50
+-
+-#define LCDINTPND 0x54
+-#define LCDSRCPND 0x58
+-#define LCDINTMSK 0x5c
+-# define FIWSEL (1 << 2)
+-# define INT_FrSyn (1 << 1)
+-# define INT_FiCnt (1 << 0)
+-
+-#define TCONSEL 0x60
+-
+-#define RED 0
+-#define GREEN 1
+-#define BLUE 2
+-#define TRANSP 3
+-
+-struct s3cfb_info {
+-	void __iomem *base;
+-	unsigned memory_size;
+-	struct fb_info info;
+-	struct device *hw_dev;
+-	int passive_display;
+-	void (*enable)(int enable);
 -};
 -
--#define to_s3c_uart(c)	container_of(c, struct s3c_uart, cdev)
+-/* the RGB565 true colour mode */
+-static const struct fb_bitfield def_rgb565[] = {
+-	[RED] = {
+-		.offset = 11,
+-		.length = 5,
+-	},
+-	[GREEN] = {
+-		.offset = 5,
+-		.length = 6,
+-	},
+-	[BLUE] = {
+-		.offset = 0,
+-		.length = 5,
+-	},
+-	[TRANSP] = {	/* no support for transparency */
+-		.length = 0,
+-	}
+-};
 -
--/* each architecture has a preferred reference clock for its UARTs */
--static unsigned s3c_select_arch_input_clock(void)
+-/* the RGB888 true colour mode */
+-static const struct fb_bitfield def_rgb888[] = {
+-	[RED] = {
+-		.offset = 16,
+-		.length = 8,
+-	},
+-	[GREEN] = {
+-		.offset = 8,
+-		.length = 8,
+-	},
+-	[BLUE] = {
+-		.offset = 0,
+-		.length = 8,
+-	},
+-	[TRANSP] = {	/* no support for transparency */
+-		.length = 0,
+-	}
+-};
+-
+-/**
+- * @param fb_info Framebuffer information
+- */
+-static void s3cfb_enable_controller(struct fb_info *fb_info)
 -{
--	/* S3C24xx: 0=2=PCLK, 1=UEXTCLK, 3=FCLK/n */
--	if (IS_ENABLED(CONFIG_ARCH_S3C24xx))
--		return 0;	/* use the internal PCLK */
--	/* S3C64xx: 0=2=PCLK, 1=UCLK0, 3=UCLK1 */
--	if (IS_ENABLED(CONFIG_ARCH_S3C64xx))
--		return 3;	/* use the internal UCLK1 */
--	/* S5PCxx: 0=PCLK, 1=SCLK_UART */
--	if (IS_ENABLED(CONFIG_ARCH_S5PCxx))
--		return 0;	/* use the internal PCLK */
+-	struct s3cfb_info *fbi = fb_info->priv;
+-	uint32_t con1;
+-
+-	con1 = readl(fbi->base + LCDCON1);
+-
+-	con1 |= ENVID;
+-
+-	writel(con1, fbi->base + LCDCON1);
+-
+-	if (fbi->enable)
+-		fbi->enable(1);
 -}
 -
--static unsigned s3c_get_arch_uart_input_clock(void __iomem *base)
+-/**
+- * @param fb_info Framebuffer information
+- */
+-static void s3cfb_disable_controller(struct fb_info *fb_info)
 -{
--	unsigned reg = readw(base + UCON);
--	return s3c_get_uart_clk(UCON_GET_CLK_SRC(reg));
+-	struct s3cfb_info *fbi = fb_info->priv;
+-	uint32_t con1;
+-
+-	if (fbi->enable)
+-		fbi->enable(0);
+-
+-	con1 = readl(fbi->base + LCDCON1);
+-
+-	con1 &= ~ENVID;
+-
+-	writel(con1, fbi->base + LCDCON1);
+-}
+-
+-/**
+- * Prepare the video hardware for a specified video mode
+- * @param fb_info Framebuffer information
+- * @return 0 on success
+- */
+-static int s3cfb_activate_var(struct fb_info *fb_info)
+-{
+-	struct s3cfb_info *fbi = fb_info->priv;
+-	struct fb_videomode *mode = fb_info->mode;
+-	unsigned size, hclk, div;
+-	uint32_t con1, con2, con3, con4, con5 = 0;
+-
+-	if (fbi->passive_display != 0) {
+-		dev_err(fbi->hw_dev, "Passive displays are currently not supported\n");
+-		return -EINVAL;
+-	}
+-
+-	/*
+-	 * we need at least this amount of memory for the framebuffer
+-	 */
+-	size = mode->xres * mode->yres * (fb_info->bits_per_pixel >> 3);
+-	if (fbi->memory_size != size || fb_info->screen_base == NULL) {
+-		if (fb_info->screen_base)
+-			free(fb_info->screen_base);
+-		fbi->memory_size = 0;
+-		fb_info->screen_base = malloc(size);
+-		if (! fb_info->screen_base)
+-			return -ENOMEM;
+-		memset(fb_info->screen_base, 0, size);
+-		fbi->memory_size = size;
+-	}
+-
+-	/* ensure video output is _off_ */
+-	writel(0x00000000, fbi->base + LCDCON1);
+-
+-	hclk = s3c_get_hclk() / 1000U;	/* hclk in kHz */
+-	div = hclk / PICOS2KHZ(mode->pixclock);
+-	if (div < 3)
+-		div  = 3;
+-	/* pixel clock is: (hclk) / ((div + 1) * 2) */
+-	div += 1;
+-	div >>= 1;
+-	div -= 1;
+-
+-	con1 = PNRMODE(3) | SET_CLKVAL(div);	/* PNRMODE=3 is TFT */
+-
+-	switch (fb_info->bits_per_pixel) {
+-	case 16:
+-		con1 |= BPPMODE(12);
+-		con5 |= FRM565;
+-		con5 |= HWSWP;
+-		fb_info->red = def_rgb565[RED];
+-		fb_info->green = def_rgb565[GREEN];
+-		fb_info->blue = def_rgb565[BLUE];
+-		fb_info->transp =  def_rgb565[TRANSP];
+-		break;
+-	case 24:
+-		con1 |= BPPMODE(13);
+-		/* con5 |= BPP24BL;	*/ /* FIXME maybe needed, check alignment */
+-		fb_info->red = def_rgb888[RED];
+-		fb_info->green = def_rgb888[GREEN];
+-		fb_info->blue = def_rgb888[BLUE];
+-		fb_info->transp =  def_rgb888[TRANSP];
+-		break;
+-	default:
+-		dev_err(fbi->hw_dev, "Invalid bits per pixel value: %u\n", fb_info->bits_per_pixel);
+-		return -EINVAL;
+-	}
+-
+-	/* 'normal' in register description means positive logic */
+-	if (!(mode->sync & FB_SYNC_HOR_HIGH_ACT))
+-		con5 |= INV_HS;
+-	if (!(mode->sync & FB_SYNC_VERT_HIGH_ACT))
+-		con5 |= INV_VS;
+-	if (!(mode->sync & FB_SYNC_DE_HIGH_ACT))
+-		con5 |= INV_DE;
+-	if (mode->sync & FB_SYNC_CLK_INVERT)
+-		con5 |= INV_CLK;	/* display should latch at the rising edge */
+-	if (mode->sync & FB_SYNC_DATA_INVERT)
+-		con5 |= INV_DTA;
+-	if (mode->sync & FB_SYNC_INVERT_PWREN)
+-		con5 |= INV_PWREN;
+-	if (mode->sync & FB_SYNC_INVERT_LEND)
+-		con5 |= INV_LEND;
+-	if (mode->sync & FB_SYNC_USE_PWREN)
+-		con5 |= ENA_PWREN;	/* FIXME should this be done conditionally/later? */
+-	if (mode->sync & FB_SYNC_USE_LEND)
+-		con5 |= ENA_LEND;
+-	if (mode->sync & FB_SYNC_SWAP_BYTES)
+-		con5 ^= BSWP;
+-	if (mode->sync & FB_SYNC_SWAP_HW)
+-		con5 ^= HWSWP;
+-
+-	/* vertical timing */
+-	con2 = SET_VBPD(mode->upper_margin - 1) |
+-		SET_LINEVAL(mode->yres - 1) |
+-		SET_VFPD(mode->lower_margin - 1) |
+-		SET_VSPW(mode->vsync_len - 1);
+-
+-	/* horizontal timing */
+-	con3 = SET_HBPD(mode->left_margin - 1) |
+-		SET_HOZVAL(mode->xres - 1) |
+-		SET_HFPD(mode->right_margin - 1);
+-	con4 = SET_HSPW(mode->hsync_len - 1);
+-
+-	/* basic timing setup */
+-	writel(con1, fbi->base + LCDCON1);
+-	dev_dbg(fbi->hw_dev, "writing %08X into %p (con1)\n", con1, fbi->base + LCDCON1);
+-	writel(con2, fbi->base + LCDCON2);
+-	dev_dbg(fbi->hw_dev, "writing %08X into %p (con2)\n", con2, fbi->base + LCDCON2);
+-	writel(con3, fbi->base + LCDCON3);
+-	dev_dbg(fbi->hw_dev, "writing %08X into %p (con3)\n", con3, fbi->base + LCDCON3);
+-	writel(con4, fbi->base + LCDCON4);
+-	dev_dbg(fbi->hw_dev, "writing %08X into %p (con4)\n", con4, fbi->base + LCDCON4);
+-	writel(con5, fbi->base + LCDCON5);
+-	dev_dbg(fbi->hw_dev, "writing %08X into %p (con5)\n", con5, fbi->base + LCDCON5);
+-
+-	dev_dbg(fbi->hw_dev, "setting up the fb baseadress to %p\n", fb_info->screen_base);
+-
+-	/* framebuffer memory setup */
+-	writel((unsigned)fb_info->screen_base >> 1, fbi->base + LCDSADDR1);
+-	size = mode->xres * (fb_info->bits_per_pixel >> 3) * (mode->yres);
+-	writel(SET_LCDBASEL(((unsigned)fb_info->screen_base + size) >> 1), fbi->base + LCDSADDR2);
+-	writel(SET_OFFSIZE(0) |
+-		SET_PAGE_WIDTH((mode->xres * fb_info->bits_per_pixel) >> 4),
+-		fbi->base + LCDSADDR3);
+-	writel(FIWSEL | INT_FrSyn | INT_FiCnt, fbi->base + LCDINTMSK);
+-
+-	return 0;
+-}
+-
+-/**
+- * Print some information about the current hardware state
+- * @param hw_dev S3C video device
+- */
+-static void s3cfb_info(struct device *hw_dev)
+-{
+-	uint32_t con1, addr1, addr2, addr3;
+-	struct s3cfb_info *fbi = hw_dev->priv;
+-
+-	con1 = readl(fbi->base + LCDCON1);
+-	addr1 = readl(fbi->base + LCDSADDR1);
+-	addr2 = readl(fbi->base + LCDSADDR2);
+-	addr3 = readl(fbi->base + LCDSADDR3);
+-
+-	printf(" Video hardware info:\n");
+-	printf("  Video clock is running at %u Hz\n", s3c_get_hclk() / ((GET_CLKVAL(con1) + 1) * 2));
+-	printf("  Video memory bank starts at 0x%08X\n", GET_LCDBANK(addr1) << 22);
+-	printf("  Video memory bank offset: 0x%08X\n", GET_LCDBASEU(addr1));
+-	printf("  Video memory end: 0x%08X\n", GET_LCDBASEU(addr2));
+-	printf("  Virtual screen offset size: %u half words\n", GET_OFFSIZE(addr3));
+-	printf("  Virtual screen page width: %u half words\n", GET_PAGE_WIDTH(addr3));
 -}
 -
 -/*
-- * This table takes the fractional value of the baud divisor and gives
-- * the recommended setting for the UDIVSLOT register. Refer the datasheet
-- * for further details
+- * There is only one video hardware instance available.
+- * It makes no sense to dynamically allocate this data
 - */
--static const uint16_t udivslot_table[] __maybe_unused = {
--	0x0000, 0x0080, 0x0808, 0x0888, 0x2222, 0x4924, 0x4A52, 0x54AA,
--	0x5555, 0xD555, 0xD5D5, 0xDDD5, 0xDDDD, 0xDFDD, 0xDFDF, 0xFFDF,
+-static struct fb_ops s3cfb_ops = {
+-	.fb_activate_var = s3cfb_activate_var,
+-	.fb_enable = s3cfb_enable_controller,
+-	.fb_disable = s3cfb_disable_controller,
 -};
 -
--static int s3c_serial_setbaudrate(struct console_device *cdev, int baudrate)
--{
--	struct s3c_uart *priv = to_s3c_uart(cdev);
--	void __iomem *base = priv->regs;
--	unsigned val;
+-static struct s3cfb_info fbi = {
+-	.info = {
+-		.fbops = &s3cfb_ops,
+-	},
+-};
 -
--	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_S3C_IMPROVED)) {
--		val = s3c_get_arch_uart_input_clock(base) / baudrate;
--		writew(udivslot_table[val & 15], base + UBRDIVSLOT);
--	}
--
--	val = s3c_get_arch_uart_input_clock(base) / (16 * baudrate) - 1;
--	writew(val, base + UBRDIV);
--
--	return 0;
--}
--
--static int s3c_serial_init_port(struct console_device *cdev)
--{
--	struct s3c_uart *priv = to_s3c_uart(cdev);
--	void __iomem *base = priv->regs;
--
--	/* FIFO enable, Tx/Rx FIFO clear */
--	writeb(0x07, base + UFCON);
--	writeb(0x00, base + UMCON);
--
--	/* Normal,No parity,1 stop,8 bit */
--	writeb(0x03, base + ULCON);
--
--	/*
--	 * S3C2440 SoC:
--	 *  - no clock divider
--	 * all SoCs:
--	 *  - enable receive and transmit mode
--	 */
--	writew(0x0005 | UCON_SET_CLK_SRC(s3c_select_arch_input_clock()),
--						base + UCON);
--
--	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_S3C_IMPROVED))
--		/* 'interrupt or polling mode' for both directions */
--		writeb(0xf, base + UINTM);
--
--	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_S3C_AUTOSYNC))
--		writeb(0x10, base + UMCON); /* enable auto flow control */
--	else
--		writeb(0x01, base + UMCON); /* RTS up */
--
--	return 0;
--}
--
--static void s3c_serial_putc(struct console_device *cdev, char c)
--{
--	struct s3c_uart *priv = to_s3c_uart(cdev);
--	void __iomem *base = priv->regs;
--
--	/* Wait for Tx FIFO not full */
--	while (!(readb(base + UTRSTAT) & 0x2))
--		;
--
--	writeb(c, base + UTXH);
--}
--
--static int s3c_serial_tstc(struct console_device *cdev)
--{
--	struct s3c_uart *priv = to_s3c_uart(cdev);
--	void __iomem *base = priv->regs;
--
--	/* If receive fifo is empty, return false */
--	if (readb(base + UTRSTAT) & 0x1)
--		return 1;
--
--	return 0;
--}
--
--static int s3c_serial_getc(struct console_device *cdev)
--{
--	struct s3c_uart *priv = to_s3c_uart(cdev);
--	void __iomem *base = priv->regs;
--
--	/* wait for a character */
--	while (!(readb(base + UTRSTAT) & 0x1))
--		;
--
--	return readb(base + URXH);
--}
--
--static void s3c_serial_flush(struct console_device *cdev)
--{
--	struct s3c_uart *priv = to_s3c_uart(cdev);
--	void __iomem *base = priv->regs;
--
--	while (!(readb(base + UTRSTAT) & 0x4))
--		;
--}
--
--static int s3c_serial_probe(struct device *dev)
+-static int s3cfb_probe(struct device *hw_dev)
 -{
 -	struct resource *iores;
--	struct s3c_uart *priv;
--	struct console_device *cdev;
+-	struct s3c_fb_platform_data *pdata = hw_dev->platform_data;
+-	int ret;
 -
--	priv = xzalloc(sizeof(struct s3c_uart));
--	cdev = &priv->cdev;
--	iores = dev_request_mem_resource(dev, 0);
+-	if (! pdata)
+-		return -ENODEV;
+-
+-	iores = dev_request_mem_resource(hw_dev, 0);
 -	if (IS_ERR(iores))
 -		return PTR_ERR(iores);
--	priv->regs = IOMEM(iores->start);
--	dev->priv = priv;
--	cdev->dev = dev;
--	cdev->tstc = s3c_serial_tstc;
--	cdev->putc = s3c_serial_putc;
--	cdev->getc = s3c_serial_getc;
--	cdev->flush = s3c_serial_flush;
--	cdev->setbrg = s3c_serial_setbaudrate;
+-	fbi.base = IOMEM(iores->start);
+-	writel(0, fbi.base + LCDCON1);
+-	writel(0, fbi.base + LCDCON5); /* FIXME not 0 for some displays */
 -
--	s3c_serial_init_port(cdev);
+-	/* just init */
+-	fbi.info.priv = &fbi;
 -
--	/* Enable UART */
--	console_register(cdev);
+-	/* add runtime hardware info */
+-	fbi.hw_dev = hw_dev;
+-	hw_dev->priv = &fbi;
+-
+-	/* add runtime video info */
+-	fbi.info.modes.modes = pdata->mode_list;
+-	fbi.info.modes.num_modes = pdata->mode_cnt;
+-	fbi.info.mode = &fbi.info.modes.modes[0];
+-	fbi.info.xres = fbi.info.mode->xres;
+-	fbi.info.yres = fbi.info.mode->yres;
+-	if (pdata->bits_per_pixel)
+-		fbi.info.bits_per_pixel = pdata->bits_per_pixel;
+-	else
+-		fbi.info.bits_per_pixel = 16;
+-	fbi.passive_display = pdata->passive_display;
+-	fbi.enable = pdata->enable;
+-
+-	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_S3C_VERBOSE))
+-		hw_dev->info = s3cfb_info;
+-
+-	fbi.info.dev.parent = hw_dev;
+-	ret = register_framebuffer(&fbi.info);
+-	if (ret != 0) {
+-		dev_err(hw_dev, "Failed to register framebuffer\n");
+-		return -EINVAL;
+-	}
 -
 -	return 0;
 -}
 -
--static struct driver s3c_serial_driver = {
--	.name   = "s3c_serial",
--	.probe  = s3c_serial_probe,
+-static struct driver s3cfb_driver = {
+-	.name	= "s3c_fb",
+-	.probe	= s3cfb_probe,
 -};
--console_platform_driver(s3c_serial_driver);
+-device_platform_driver(s3cfb_driver);
+-
+-/**
+- * The S3C244x LCD controller supports passive (CSTN/STN) and active (TFT) LC displays
+- *
+- * The driver itself currently supports only active TFT LC displays in the follwing manner:
+- *
+- *  * True colours
+- *    - 16 bpp
+- *    - 24 bpp (untested)
+- */
 -- 
 2.30.2
 
