@@ -3,55 +3,57 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pX0Vi-004jMg-K5
+	id 1pX0Vi-004jMf-Le
 	for lore@lore.pengutronix.de; Tue, 28 Feb 2023 14:59:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pX0Vh-0000Ov-NA
+	id 1pX0Vg-0000Oi-NS
 	for lore@pengutronix.de; Tue, 28 Feb 2023 14:59:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=FTxx0icPxjz929aWKDgyJWA3ZUuYm7GKz23vMBIeMu8=; b=nm2LXPu5wgofri3s1oPXMdsi7v
-	Tbvjpn2S3RM467KCqOyyE6YjrapIMiJW8Zgbu73GXZ6gITq4tLwnnMdMgbvIHDpbd4hprEh9qjbov
-	+GTW54A7r1+exiRfvdBprV5jH1gWnMfL5cETmxjF8UZSigBhSeRHDd6RrV5SJ+RSzUOE9xouE9xv+
-	6KmPx9N3jYi8VxfcmfLM/D+Di3CV6f8sRgqfQQFvsnVj20qfxW0pEF0QkivTYVSySWd3zxf51RHx+
-	+moP+4jPMWbS/y5+NPUYe/mOSf22LHU5C9poNZwkkjvGBqtC+YTQPrMrGOC3o9SmParzxXrrQlZ7n
-	2IfwGptg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=axtrgHbLiGY3nIziJDdAqOg/L1T5GOYDM8RUQKNHbho=; b=m6lFjmCFQbvrn/ok0BYX2KWy8v
+	x6rJPNeAye7oxWtPIj7UPnn9f/WG6IH/TMTWwy4AV7tIWvuMNtMKPnk8Gb4A+ugTw0Ns63DEY5IsL
+	7Q+jJXMmR8ySqfz2Nx1NY6Ve2mqCmgqS3PGRlWfspYp+vU7riF3lQzWhaG9l1Om8A4dpnwNMu4HkP
+	bWe2XNlrgxlTVvQH+iZIs5pkqvS7GBhUv+6WwcRMG+uYSJnjdMGsL9qBiXRCHIGj3ex4SMA12Z1vu
+	legBVg7sgayv+4qQOwVR/2qRWcFom8bAWesk6fw3VibM2eXKccx58pf3+x+7cbfwbz9JROnP6rhFu
+	1t/Cr/5g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pX0U9-00DMdP-LP; Tue, 28 Feb 2023 13:57:41 +0000
+	id 1pX0UG-00DMfY-MW; Tue, 28 Feb 2023 13:57:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pX0U1-00DMZw-Pr
-	for barebox@lists.infradead.org; Tue, 28 Feb 2023 13:57:36 +0000
+	id 1pX0U1-00DMa8-Pq
+	for barebox@lists.infradead.org; Tue, 28 Feb 2023 13:57:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pX0Ty-00009y-Ra; Tue, 28 Feb 2023 14:57:30 +0100
+	id 1pX0Tz-0000AI-H8; Tue, 28 Feb 2023 14:57:31 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pX0Ty-000sdi-5G; Tue, 28 Feb 2023 14:57:30 +0100
+	id 1pX0Ty-000sdv-RP; Tue, 28 Feb 2023 14:57:30 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pX0Tx-006irV-1f; Tue, 28 Feb 2023 14:57:29 +0100
+	id 1pX0Tx-006ira-C9; Tue, 28 Feb 2023 14:57:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 28 Feb 2023 14:57:22 +0100
-Message-Id: <20230228135727.1602351-1-s.hauer@pengutronix.de>
+Date: Tue, 28 Feb 2023 14:57:24 +0100
+Message-Id: <20230228135727.1602351-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230228135727.1602351-1-s.hauer@pengutronix.de>
+References: <20230228135727.1602351-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230228_055734_232306_C4629669 
-X-CRM114-Status: GOOD (  11.93  )
+X-CRM114-CacheID: sfid-20230228_055734_272530_8741232B 
+X-CRM114-Status: GOOD (  28.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,232 +75,819 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/5] ARM: remove Samsung arch
+Subject: [PATCH 2/5] mci: remove s3c driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-arch/arm/mach-samsung hasn't seen any active maintenance or interest
-for a long time. It starts standing in the way for further development,
-so remove it. RIP.
+The Samsung architecture has been removed, remove the mci driver
+only used on this architecture as well.
 
-Sascha
-
-Sascha Hauer (5):
-  ARM: remove samsung arch
-  mci: remove s3c driver
-  mtd: nand: remove s3c driver
-  serial: remove s3c driver
-  video: remove s3c driver
-
- Documentation/boards/s3c/Digi-a9m2440.rst     |  93 --
- Documentation/boards/samsung.rst              |   8 -
- arch/arm/Kconfig                              |  19 -
- arch/arm/Makefile                             |  13 -
- arch/arm/boards/a9m2410/Makefile              |   4 -
- arch/arm/boards/a9m2410/a9m2410.c             | 136 ---
- arch/arm/boards/a9m2410/config.h              | 109 ---
- arch/arm/boards/a9m2410/env/bin/_update       |  36 -
- arch/arm/boards/a9m2410/env/bin/boot          |  38 -
- arch/arm/boards/a9m2410/env/bin/init          |  30 -
- arch/arm/boards/a9m2410/env/bin/update_kernel |  13 -
- arch/arm/boards/a9m2410/env/bin/update_root   |  11 -
- arch/arm/boards/a9m2410/env/config            |  26 -
- arch/arm/boards/a9m2410/lowlevel_init.S       |  39 -
- arch/arm/boards/a9m2440/Makefile              |   5 -
- arch/arm/boards/a9m2440/a9m2410dev.c          |  82 --
- arch/arm/boards/a9m2440/a9m2440.c             | 143 ----
- arch/arm/boards/a9m2440/baseboards.h          |   6 -
- arch/arm/boards/a9m2440/config.h              |  60 --
- arch/arm/boards/a9m2440/env/bin/_update       |  34 -
- arch/arm/boards/a9m2440/env/bin/boot          |  40 -
- arch/arm/boards/a9m2440/env/bin/init          |  30 -
- arch/arm/boards/a9m2440/env/bin/update_kernel |  13 -
- arch/arm/boards/a9m2440/env/bin/update_root   |  13 -
- arch/arm/boards/a9m2440/env/config            |  26 -
- arch/arm/boards/a9m2440/lowlevel_init.S       | 243 ------
- arch/arm/boards/friendlyarm-mini2440/Kconfig  |  35 -
- arch/arm/boards/friendlyarm-mini2440/Makefile |   5 -
- arch/arm/boards/friendlyarm-mini2440/config.h | 118 ---
- .../boards/friendlyarm-mini2440/env/boot/nand |   4 -
- .../friendlyarm-mini2440/env/config-board     |  16 -
- .../env/init/mtdparts-nand                    |   6 -
- .../friendlyarm-mini2440/lowlevel_init.S      |  44 -
- .../boards/friendlyarm-mini2440/mini2440.c    | 341 --------
- arch/arm/boards/friendlyarm-mini6410/Makefile |   5 -
- arch/arm/boards/friendlyarm-mini6410/config.h |  10 -
- .../defaultenv-friendlyarm-mini6410/config    |  52 --
- .../boards/friendlyarm-mini6410/lowlevel.c    |  13 -
- .../boards/friendlyarm-mini6410/mini6410.c    | 302 -------
- arch/arm/boards/friendlyarm-tiny210/Makefile  |   4 -
- arch/arm/boards/friendlyarm-tiny210/config.h  |  21 -
- .../arm/boards/friendlyarm-tiny210/lowlevel.c | 100 ---
- arch/arm/boards/friendlyarm-tiny210/tiny210.c | 102 ---
- arch/arm/boards/friendlyarm-tiny6410/Kconfig  |  21 -
- arch/arm/boards/friendlyarm-tiny6410/Makefile |   6 -
- arch/arm/boards/friendlyarm-tiny6410/config.h |  10 -
- .../defaultenv-friendlyarm-tiny6410/config    |  52 --
- .../friendlyarm-tiny6410/development-board.c  |  94 ---
- .../boards/friendlyarm-tiny6410/lowlevel.c    |  13 -
- .../boards/friendlyarm-tiny6410/tiny6410.c    |  72 --
- .../boards/friendlyarm-tiny6410/tiny6410.h    |   4 -
- arch/arm/configs/a9m2410_defconfig            |  32 -
- arch/arm/configs/a9m2440_defconfig            |  34 -
- .../configs/friendlyarm_mini2440_defconfig    |  41 -
- .../configs/friendlyarm_mini6410_defconfig    |  34 -
- .../arm/configs/friendlyarm_tiny210_defconfig |   7 -
- .../configs/friendlyarm_tiny6410_defconfig    |  35 -
- arch/arm/mach-samsung/Kconfig                 | 178 ----
- arch/arm/mach-samsung/Makefile                |  14 -
- arch/arm/mach-samsung/bbu-nand-s3c24x0.c      |  85 --
- arch/arm/mach-samsung/clocks-s3c24xx.c        | 145 ----
- arch/arm/mach-samsung/clocks-s3c64xx.c        | 338 --------
- arch/arm/mach-samsung/clocks-s5pcxx.c         |  98 ---
- arch/arm/mach-samsung/generic.c               |  51 --
- arch/arm/mach-samsung/gpio-s3c24x0.c          | 167 ----
- arch/arm/mach-samsung/gpio-s3c64xx.c          | 302 -------
- arch/arm/mach-samsung/gpio-s5pcxx.c           | 124 ---
- arch/arm/mach-samsung/include/mach/bbu.h      |  18 -
- .../include/mach/devices-s3c24xx.h            |  55 --
- .../include/mach/devices-s3c64xx.h            |  40 -
- .../mach-samsung/include/mach/iomux-s3c24x0.h | 422 ---------
- .../mach-samsung/include/mach/iomux-s3c64xx.h | 542 ------------
- .../mach-samsung/include/mach/iomux-s5pcxx.h  | 798 ------------------
- arch/arm/mach-samsung/include/mach/iomux.h    |  28 -
- .../mach-samsung/include/mach/s3c-busctl.h    |  32 -
- .../mach-samsung/include/mach/s3c-clocks.h    |  28 -
- .../mach-samsung/include/mach/s3c-generic.h   |  62 --
- .../arm/mach-samsung/include/mach/s3c-iomap.h |  23 -
- arch/arm/mach-samsung/include/mach/s3c-mci.h  |  39 -
- .../include/mach/s3c24xx-clocks.h             |  24 -
- .../mach-samsung/include/mach/s3c24xx-fb.h    |  55 --
- .../mach-samsung/include/mach/s3c24xx-gpio.h  |  77 --
- .../mach-samsung/include/mach/s3c24xx-iomap.h |  65 --
- .../mach-samsung/include/mach/s3c24xx-nand.h  |  57 --
- .../include/mach/s3c64xx-clocks.h             |  67 --
- .../mach-samsung/include/mach/s3c64xx-iomap.h |  51 --
- .../mach-samsung/include/mach/s5pcxx-clocks.h |  55 --
- .../mach-samsung/include/mach/s5pcxx-iomap.h  |  46 -
- arch/arm/mach-samsung/lowlevel-s3c24x0.S      | 305 -------
- arch/arm/mach-samsung/lowlevel-s5pcxx.c       |  61 --
- arch/arm/mach-samsung/mem-s3c24x0.c           |  79 --
- arch/arm/mach-samsung/mem-s3c64xx.c           |  66 --
- arch/arm/mach-samsung/mem-s5pcxx.c            | 320 -------
- arch/arm/mach-samsung/reset_source.c          |  56 --
- arch/arm/mach-samsung/s3c-timer.c             | 119 ---
- drivers/mci/Kconfig                           |   7 -
- drivers/mci/Makefile                          |   1 -
- drivers/mci/s3c.c                             | 762 -----------------
- drivers/mtd/nand/Kconfig                      |   7 -
- drivers/mtd/nand/Makefile                     |   2 -
- drivers/mtd/nand/nand_s3c24xx.c               | 649 --------------
- drivers/serial/Kconfig                        |  18 -
- drivers/serial/Makefile                       |   1 -
- drivers/serial/serial_s3c.c                   | 198 -----
- drivers/video/Kconfig                         |  13 -
- drivers/video/Makefile                        |   1 -
- drivers/video/s3c24xx.c                       | 411 ---------
- scripts/.gitignore                            |   1 -
- scripts/Kconfig                               |   7 -
- scripts/Makefile                              |   1 -
- 110 files changed, 10074 deletions(-)
- delete mode 100644 Documentation/boards/s3c/Digi-a9m2440.rst
- delete mode 100644 Documentation/boards/samsung.rst
- delete mode 100644 arch/arm/boards/a9m2410/Makefile
- delete mode 100644 arch/arm/boards/a9m2410/a9m2410.c
- delete mode 100644 arch/arm/boards/a9m2410/config.h
- delete mode 100644 arch/arm/boards/a9m2410/env/bin/_update
- delete mode 100644 arch/arm/boards/a9m2410/env/bin/boot
- delete mode 100644 arch/arm/boards/a9m2410/env/bin/init
- delete mode 100644 arch/arm/boards/a9m2410/env/bin/update_kernel
- delete mode 100644 arch/arm/boards/a9m2410/env/bin/update_root
- delete mode 100644 arch/arm/boards/a9m2410/env/config
- delete mode 100644 arch/arm/boards/a9m2410/lowlevel_init.S
- delete mode 100644 arch/arm/boards/a9m2440/Makefile
- delete mode 100644 arch/arm/boards/a9m2440/a9m2410dev.c
- delete mode 100644 arch/arm/boards/a9m2440/a9m2440.c
- delete mode 100644 arch/arm/boards/a9m2440/baseboards.h
- delete mode 100644 arch/arm/boards/a9m2440/config.h
- delete mode 100644 arch/arm/boards/a9m2440/env/bin/_update
- delete mode 100644 arch/arm/boards/a9m2440/env/bin/boot
- delete mode 100644 arch/arm/boards/a9m2440/env/bin/init
- delete mode 100644 arch/arm/boards/a9m2440/env/bin/update_kernel
- delete mode 100644 arch/arm/boards/a9m2440/env/bin/update_root
- delete mode 100644 arch/arm/boards/a9m2440/env/config
- delete mode 100644 arch/arm/boards/a9m2440/lowlevel_init.S
- delete mode 100644 arch/arm/boards/friendlyarm-mini2440/Kconfig
- delete mode 100644 arch/arm/boards/friendlyarm-mini2440/Makefile
- delete mode 100644 arch/arm/boards/friendlyarm-mini2440/config.h
- delete mode 100644 arch/arm/boards/friendlyarm-mini2440/env/boot/nand
- delete mode 100644 arch/arm/boards/friendlyarm-mini2440/env/config-board
- delete mode 100644 arch/arm/boards/friendlyarm-mini2440/env/init/mtdparts-nand
- delete mode 100644 arch/arm/boards/friendlyarm-mini2440/lowlevel_init.S
- delete mode 100644 arch/arm/boards/friendlyarm-mini2440/mini2440.c
- delete mode 100644 arch/arm/boards/friendlyarm-mini6410/Makefile
- delete mode 100644 arch/arm/boards/friendlyarm-mini6410/config.h
- delete mode 100644 arch/arm/boards/friendlyarm-mini6410/defaultenv-friendlyarm-mini6410/config
- delete mode 100644 arch/arm/boards/friendlyarm-mini6410/lowlevel.c
- delete mode 100644 arch/arm/boards/friendlyarm-mini6410/mini6410.c
- delete mode 100644 arch/arm/boards/friendlyarm-tiny210/Makefile
- delete mode 100644 arch/arm/boards/friendlyarm-tiny210/config.h
- delete mode 100644 arch/arm/boards/friendlyarm-tiny210/lowlevel.c
- delete mode 100644 arch/arm/boards/friendlyarm-tiny210/tiny210.c
- delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/Kconfig
- delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/Makefile
- delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/config.h
- delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/defaultenv-friendlyarm-tiny6410/config
- delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/development-board.c
- delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/lowlevel.c
- delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/tiny6410.c
- delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/tiny6410.h
- delete mode 100644 arch/arm/configs/a9m2410_defconfig
- delete mode 100644 arch/arm/configs/a9m2440_defconfig
- delete mode 100644 arch/arm/configs/friendlyarm_mini2440_defconfig
- delete mode 100644 arch/arm/configs/friendlyarm_mini6410_defconfig
- delete mode 100644 arch/arm/configs/friendlyarm_tiny210_defconfig
- delete mode 100644 arch/arm/configs/friendlyarm_tiny6410_defconfig
- delete mode 100644 arch/arm/mach-samsung/Kconfig
- delete mode 100644 arch/arm/mach-samsung/Makefile
- delete mode 100644 arch/arm/mach-samsung/bbu-nand-s3c24x0.c
- delete mode 100644 arch/arm/mach-samsung/clocks-s3c24xx.c
- delete mode 100644 arch/arm/mach-samsung/clocks-s3c64xx.c
- delete mode 100644 arch/arm/mach-samsung/clocks-s5pcxx.c
- delete mode 100644 arch/arm/mach-samsung/generic.c
- delete mode 100644 arch/arm/mach-samsung/gpio-s3c24x0.c
- delete mode 100644 arch/arm/mach-samsung/gpio-s3c64xx.c
- delete mode 100644 arch/arm/mach-samsung/gpio-s5pcxx.c
- delete mode 100644 arch/arm/mach-samsung/include/mach/bbu.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/devices-s3c24xx.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/devices-s3c64xx.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/iomux-s3c24x0.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/iomux-s3c64xx.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/iomux.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-busctl.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-clocks.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-generic.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-iomap.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-mci.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-clocks.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-fb.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-gpio.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-iomap.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c64xx-clocks.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s3c64xx-iomap.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-clocks.h
- delete mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
- delete mode 100644 arch/arm/mach-samsung/lowlevel-s3c24x0.S
- delete mode 100644 arch/arm/mach-samsung/lowlevel-s5pcxx.c
- delete mode 100644 arch/arm/mach-samsung/mem-s3c24x0.c
- delete mode 100644 arch/arm/mach-samsung/mem-s3c64xx.c
- delete mode 100644 arch/arm/mach-samsung/mem-s5pcxx.c
- delete mode 100644 arch/arm/mach-samsung/reset_source.c
- delete mode 100644 arch/arm/mach-samsung/s3c-timer.c
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mci/Kconfig  |   7 -
+ drivers/mci/Makefile |   1 -
+ drivers/mci/s3c.c    | 762 -------------------------------------------
+ 3 files changed, 770 deletions(-)
  delete mode 100644 drivers/mci/s3c.c
- delete mode 100644 drivers/mtd/nand/nand_s3c24xx.c
- delete mode 100644 drivers/serial/serial_s3c.c
- delete mode 100644 drivers/video/s3c24xx.c
 
+diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+index 21d53c0c3f..bbdca67e9d 100644
+--- a/drivers/mci/Kconfig
++++ b/drivers/mci/Kconfig
+@@ -87,13 +87,6 @@ config MCI_ROCKCHIP_DWCMSHC
+ 	  Enable this entry to add support for a Rockchip derivation of the
+ 	  DWCMSHC controller found on some Rockchip SoCs like the RK3568.
+ 
+-config MCI_S3C
+-	bool "S3C"
+-	depends on ARCH_S3C24xx
+-	help
+-	  Enable this entry to add support to read and write SD cards on a
+-	  Samsung S3C24xx based system.
+-
+ config MCI_BCM283X
+ 	bool "MCI support for BCM283X"
+ 	depends on ARCH_BCM283X || COMPILE_TEST
+diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
+index 55ec97b3fe..e3dc5ad8ae 100644
+--- a/drivers/mci/Makefile
++++ b/drivers/mci/Makefile
+@@ -14,7 +14,6 @@ pbl-$(CONFIG_MCI_IMX_ESDHC_PBL)	+= imx-esdhc-pbl.o imx-esdhc-common.o
+ obj-$(CONFIG_MCI_MXS)		+= mxs.o
+ obj-$(CONFIG_MCI_OMAP_HSMMC)	+= omap_hsmmc.o
+ obj-$(CONFIG_MCI_PXA)		+= pxamci.o
+-obj-$(CONFIG_MCI_S3C)		+= s3c.o
+ obj-$(CONFIG_MCI_ROCKCHIP_DWCMSHC)	+= rockchip-dwcmshc-sdhci.o
+ obj-$(CONFIG_MCI_TEGRA)		+= tegra-sdmmc.o
+ obj-$(CONFIG_MCI_SPI)		+= mci_spi.o
+diff --git a/drivers/mci/s3c.c b/drivers/mci/s3c.c
+deleted file mode 100644
+index f1d00ecdc2..0000000000
+--- a/drivers/mci/s3c.c
++++ /dev/null
+@@ -1,762 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-// SPDX-FileCopyrightText: 2010 Juergen Beisert <juergen@kreuzholzen.de>
+-// SPDX-FileCopyrightText: 2004-2006 Thomas Kleffel <tk@maintech.de>, maintech GmbH
+-// SPDX-FileCopyrightText: 2008 Simtec Electronics <ben-linux@fluff.org>
+-// SPDX-FileCopyrightText: 2006 OpenMoko, Inc (Harald Welte <laforge@openmoko.org>)
+-// SPDX-FileCopyrightText: 2005 Thomas Kleffel
+-
+-/*
+- * This code is partially based on Linux and u-boot sources, among others the
+- * u-boot pxa MMC driver and linux/drivers/mmc/s3c2410mci.c.
+- */
+-
+-/**
+- * @file
+- * @brief MCI card host interface for S3C2440 CPU
+- */
+-
+-/* #define DEBUG */
+-
+-#include <common.h>
+-#include <init.h>
+-#include <mci.h>
+-#include <errno.h>
+-#include <clock.h>
+-#include <io.h>
+-#include <linux/err.h>
+-#include <mach/s3c-mci.h>
+-#include <mach/s3c-generic.h>
+-#include <mach/s3c-iomap.h>
+-
+-#define GET_HOST_DATA(x) (x->priv)
+-#define GET_MCI_PDATA(x) (x->platform_data)
+-
+-#define SDICON 0x0
+-# define SDICON_SDRESET (1 << 8)
+-# define SDICON_MMCCLOCK (1 << 5) /* this is a clock type SD or MMC style WTF? */
+-# define SDICON_BYTEORDER (1 << 4)
+-# define SDICON_SDIOIRQ (1 << 3)
+-# define SDICON_RWAITEN (1 << 2)
+-# define SDICON_FIFORESET (1 << 1) /* reserved bit on 2440 ????? */
+-# define SDICON_CLKEN (1 << 0) /* enable/disable external clock */
+-
+-#define SDIPRE 0x4
+-
+-#define SDICMDARG 0x8
+-
+-#define SDICMDCON 0xc
+-# define SDICMDCON_ABORT (1 << 12)
+-# define SDICMDCON_WITHDATA (1 << 11)
+-# define SDICMDCON_LONGRSP (1 << 10)
+-# define SDICMDCON_WAITRSP (1 << 9)
+-# define SDICMDCON_CMDSTART (1 << 8)
+-# define SDICMDCON_SENDERHOST (1 << 6)
+-# define SDICMDCON_INDEX (0x3f)
+-
+-#define SDICMDSTAT 0x10
+-# define SDICMDSTAT_CRCFAIL (1 << 12)
+-# define SDICMDSTAT_CMDSENT (1 << 11)
+-# define SDICMDSTAT_CMDTIMEOUT (1 << 10)
+-# define SDICMDSTAT_RSPFIN (1 << 9)
+-# define SDICMDSTAT_XFERING (1 << 8)
+-# define SDICMDSTAT_INDEX (0xff)
+-
+-#define SDIRSP0 0x14
+-#define SDIRSP1 0x18
+-#define SDIRSP2 0x1C
+-#define SDIRSP3 0x20
+-
+-#define SDITIMER 0x24
+-#define SDIBSIZE 0x28
+-
+-#define SDIDCON 0x2c
+-# define SDIDCON_DS_BYTE (0 << 22)
+-# define SDIDCON_DS_HALFWORD (1 << 22)
+-# define SDIDCON_DS_WORD (2 << 22)
+-# define SDIDCON_IRQPERIOD (1 << 21)
+-# define SDIDCON_TXAFTERRESP (1 << 20)
+-# define SDIDCON_RXAFTERCMD (1 << 19)
+-# define SDIDCON_BUSYAFTERCMD (1 << 18)
+-# define SDIDCON_BLOCKMODE (1 << 17)
+-# define SDIDCON_WIDEBUS (1 << 16)
+-# define SDIDCON_DMAEN (1 << 15)
+-# define SDIDCON_STOP (0 << 14)
+-# define SDIDCON_DATSTART (1 << 14)
+-# define SDIDCON_DATMODE (3 << 12)
+-# define SDIDCON_BLKNUM (0xfff)
+-# define SDIDCON_XFER_READY    (0 << 12)
+-# define SDIDCON_XFER_CHKSTART (1 << 12)
+-# define SDIDCON_XFER_RXSTART  (2 << 12)
+-# define SDIDCON_XFER_TXSTART  (3 << 12)
+-
+-#define SDIDCNT 0x30
+-# define SDIDCNT_BLKNUM_SHIFT 12
+-
+-#define SDIDSTA 0x34
+-# define SDIDSTA_RDYWAITREQ (1 << 10)
+-# define SDIDSTA_SDIOIRQDETECT (1 << 9)
+-# define SDIDSTA_FIFOFAIL (1 << 8) /* reserved on 2440 */
+-# define SDIDSTA_CRCFAIL (1 << 7)
+-# define SDIDSTA_RXCRCFAIL (1 << 6)
+-# define SDIDSTA_DATATIMEOUT (1 << 5)
+-# define SDIDSTA_XFERFINISH (1 << 4)
+-# define SDIDSTA_BUSYFINISH (1 << 3)
+-# define SDIDSTA_SBITERR (1 << 2) /* reserved on 2410a/2440 */
+-# define SDIDSTA_TXDATAON (1 << 1)
+-# define SDIDSTA_RXDATAON (1 << 0)
+-
+-#define SDIFSTA 0x38
+-# define SDIFSTA_FIFORESET (1<<16)
+-# define SDIFSTA_FIFOFAIL (3<<14)  /* 3 is correct (2 bits) */
+-# define SDIFSTA_TFDET (1<<13)
+-# define SDIFSTA_RFDET (1<<12)
+-# define SDIFSTA_TFHALF (1<<11)
+-# define SDIFSTA_TFEMPTY (1<<10)
+-# define SDIFSTA_RFLAST (1<<9)
+-# define SDIFSTA_RFFULL (1<<8)
+-# define SDIFSTA_RFHALF (1<<7)
+-# define SDIFSTA_COUNTMASK (0x7f)
+-
+-#define SDIIMSK 0x3C
+-# define SDIIMSK_RESPONSECRC    (1<<17)
+-# define SDIIMSK_CMDSENT        (1<<16)
+-# define SDIIMSK_CMDTIMEOUT     (1<<15)
+-# define SDIIMSK_RESPONSEND     (1<<14)
+-# define SDIIMSK_READWAIT       (1<<13)
+-# define SDIIMSK_SDIOIRQ        (1<<12)
+-# define SDIIMSK_FIFOFAIL       (1<<11)
+-# define SDIIMSK_CRCSTATUS      (1<<10)
+-# define SDIIMSK_DATACRC        (1<<9)
+-# define SDIIMSK_DATATIMEOUT    (1<<8)
+-# define SDIIMSK_DATAFINISH     (1<<7)
+-# define SDIIMSK_BUSYFINISH     (1<<6)
+-# define SDIIMSK_SBITERR        (1<<5) /* reserved 2440/2410a */
+-# define SDIIMSK_TXFIFOHALF     (1<<4)
+-# define SDIIMSK_TXFIFOEMPTY    (1<<3)
+-# define SDIIMSK_RXFIFOLAST     (1<<2)
+-# define SDIIMSK_RXFIFOFULL     (1<<1)
+-# define SDIIMSK_RXFIFOHALF     (1<<0)
+-
+-#define SDIDATA 0x40
+-
+-struct s3c_mci_host {
+-	struct mci_host	host;
+-	void __iomem	*base;
+-	int		bus_width:2; /* 0 = 1 bit, 1 = 4 bit, 2 = 8 bit */
+-	unsigned	clock;	/* current clock in Hz */
+-	unsigned	data_size;	/* data transfer in bytes */
+-};
+-
+-#define to_s3c_host(h)	container_of(h, struct s3c_mci_host, host)
+-
+-/**
+- * Finish a request
+- * @param hw_dev Host interface instance
+- *
+- * Just a little bit paranoia.
+- */
+-static void s3c_finish_request(struct s3c_mci_host *host_data)
+-{
+-	/* TODO ensure the engines are stopped */
+-}
+-
+-/**
+- * Setup a new clock frequency on this MCI bus
+- * @param hw_dev Host interface instance
+- * @param nc New clock value in Hz (can be 0)
+- * @return New clock value (may differ from 'nc')
+- */
+-static unsigned s3c_setup_clock_speed(struct s3c_mci_host *host_data, unsigned nc)
+-{
+-	unsigned clock;
+-	uint32_t mci_psc;
+-
+-	if (nc == 0)
+-		return 0;
+-
+-	clock = s3c_get_pclk();
+-	/* Calculate the required prescaler value to get the requested frequency */
+-	mci_psc = (clock + (nc >> 2)) / nc;
+-
+-	if (mci_psc > 256) {
+-		mci_psc = 256;
+-		pr_warning("SD/MMC clock might be too high!\n");
+-	}
+-
+-	writel(mci_psc - 1, host_data->base + SDIPRE);
+-
+-	return clock / mci_psc;
+-}
+-
+-/**
+- * Reset the MCI engine (the hard way)
+- * @param hw_dev Host interface instance
+- *
+- * This will reset everything in all registers of this unit!
+- */
+-static void s3c_mci_reset(struct s3c_mci_host *host_data)
+-{
+-	/* reset the hardware */
+-	writel(SDICON_SDRESET, host_data->base + SDICON);
+-	/* wait until reset it finished */
+-	while (readl(host_data->base + SDICON) & SDICON_SDRESET)
+-		;
+-}
+-
+-/**
+- * Initialize hard and software
+- * @param hw_dev Host interface instance
+- * @param mci_dev MCI device instance (might be NULL)
+- */
+-static int s3c_mci_initialize(struct s3c_mci_host *host_data,
+-			      struct device *mci_dev)
+-{
+-	s3c_mci_reset(host_data);
+-
+-	/* restore last settings */
+-	host_data->clock = s3c_setup_clock_speed(host_data, host_data->clock);
+-	writel(0x007FFFFF, host_data->base + SDITIMER);
+-	writel(SDICON_MMCCLOCK, host_data->base + SDICON);
+-	writel(512, host_data->base + SDIBSIZE);
+-
+-	return 0;
+-}
+-
+-/**
+- * Prepare engine's bits for the next command transfer
+- * @param cmd_flags MCI's command flags
+- * @param data_flags MCI's data flags
+- * @return Register bits for this transfer
+- */
+-static uint32_t s3c_prepare_command_setup(unsigned cmd_flags, unsigned data_flags)
+-{
+-	uint32_t reg;
+-
+-	/* source (=host) */
+-	reg = SDICMDCON_SENDERHOST;
+-
+-	if (cmd_flags & MMC_RSP_PRESENT) {
+-		reg |= SDICMDCON_WAITRSP;
+-		pr_debug("Command with response\n");
+-	}
+-	if (cmd_flags & MMC_RSP_136) {
+-		reg |= SDICMDCON_LONGRSP;
+-		pr_debug("Command with long response\n");
+-	}
+-	if (cmd_flags & MMC_RSP_CRC)
+-		; /* FIXME */
+-	if (cmd_flags & MMC_RSP_BUSY)
+-		; /* FIXME */
+-	if (cmd_flags & MMC_RSP_OPCODE)
+-		; /* FIXME */
+-	if (data_flags != 0)
+-		reg |= SDICMDCON_WITHDATA;
+-
+-	return reg;
+-}
+-
+-/**
+- * Prepare engine's bits for the next data transfer
+- * @param hw_dev Host interface device instance
+- * @param data_flags MCI's data flags
+- * @return Register bits for this transfer
+- */
+-static uint32_t s3c_prepare_data_setup(struct s3c_mci_host *host_data, unsigned data_flags)
+-{
+-	uint32_t reg = SDIDCON_BLOCKMODE;	/* block mode only is supported */
+-
+-	if (host_data->bus_width == 1)
+-		reg |= SDIDCON_WIDEBUS;
+-
+-	/* enable any kind of data transfers on demand only */
+-	if (data_flags & MMC_DATA_WRITE)
+-		reg |= SDIDCON_TXAFTERRESP | SDIDCON_XFER_TXSTART;
+-
+-	if (data_flags & MMC_DATA_READ)
+-		reg |= SDIDCON_RXAFTERCMD | SDIDCON_XFER_RXSTART;
+-
+-	/* TODO: Support more than the 2440 CPU */
+-	reg |= SDIDCON_DS_WORD | SDIDCON_DATSTART;
+-
+-	return reg;
+-}
+-
+-/**
+- * Terminate a current running transfer
+- * @param hw_dev Host interface device instance
+- * @return 0 on success
+- *
+- * Note: Try to stop a running transfer. This should not happen, as all
+- * transfers must complete in this driver. But who knows... ;-)
+- */
+-static int s3c_terminate_transfer(struct s3c_mci_host *host_data)
+-{
+-	unsigned stoptries = 3;
+-
+-	while (readl(host_data->base + SDIDSTA) & (SDIDSTA_TXDATAON | SDIDSTA_RXDATAON)) {
+-		pr_debug("Transfer still in progress.\n");
+-
+-		writel(SDIDCON_STOP, host_data->base + SDIDCON);
+-		s3c_mci_initialize(host_data, NULL);
+-
+-		if ((stoptries--) == 0) {
+-			pr_warning("Cannot stop the engine!\n");
+-			return -EINVAL;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-/**
+- * Setup registers for data transfer
+- * @param hw_dev Host interface device instance
+- * @param data The data information (buffer, direction aso.)
+- * @return 0 on success
+- */
+-static int s3c_prepare_data_transfer(struct s3c_mci_host *host_data, struct mci_data *data)
+-{
+-	uint32_t reg;
+-
+-	writel(data->blocksize, host_data->base + SDIBSIZE);
+-	reg = s3c_prepare_data_setup(host_data, data->flags);
+-	reg |= data->blocks & SDIDCON_BLKNUM;
+-	writel(reg, host_data->base + SDIDCON);
+-	writel(0x007FFFFF, host_data->base + SDITIMER);
+-
+-	return 0;
+-}
+-
+-/**
+- * Send a command and receive the response
+- * @param hw_dev Host interface device instance
+- * @param cmd The command to handle
+- * @param data The data information (buffer, direction aso.)
+- * @return 0 on success
+- */
+-static int s3c_send_command(struct s3c_mci_host *host_data, struct mci_cmd *cmd,
+-				struct mci_data *data)
+-{
+-	uint32_t reg, t1;
+-	int rc;
+-
+-	writel(0x007FFFFF, host_data->base + SDITIMER);
+-
+-	/* setup argument */
+-	writel(cmd->cmdarg, host_data->base + SDICMDARG);
+-
+-	/* setup command and transfer characteristic */
+-	reg = s3c_prepare_command_setup(cmd->resp_type, data != NULL ? data->flags : 0);
+-	reg |= cmd->cmdidx & SDICMDCON_INDEX;
+-
+-	/* run the command right now */
+-	writel(reg | SDICMDCON_CMDSTART, host_data->base + SDICMDCON);
+-	t1 = readl(host_data->base + SDICMDSTAT);
+-	/* wait until command is done */
+-	while (1) {
+-		reg = readl(host_data->base + SDICMDSTAT);
+-		/* done? */
+-		if (cmd->resp_type & MMC_RSP_PRESENT) {
+-			if (reg & SDICMDSTAT_RSPFIN) {
+-				writel(SDICMDSTAT_RSPFIN,
+-					host_data->base + SDICMDSTAT);
+-				rc = 0;
+-				break;
+-			}
+-		} else {
+-			if (reg & SDICMDSTAT_CMDSENT) {
+-					writel(SDICMDSTAT_CMDSENT,
+-						host_data->base + SDICMDSTAT);
+-					rc = 0;
+-					break;
+-			}
+-		}
+-		/* timeout? */
+-		if (reg & SDICMDSTAT_CMDTIMEOUT) {
+-			writel(SDICMDSTAT_CMDTIMEOUT,
+-				host_data->base + SDICMDSTAT);
+-			rc = -ETIMEDOUT;
+-			break;
+-		}
+-	}
+-
+-	if ((rc == 0) && (cmd->resp_type & MMC_RSP_PRESENT)) {
+-		cmd->response[0] = readl(host_data->base + SDIRSP0);
+-		cmd->response[1] = readl(host_data->base + SDIRSP1);
+-		cmd->response[2] = readl(host_data->base + SDIRSP2);
+-		cmd->response[3] = readl(host_data->base + SDIRSP3);
+-	}
+-	/* do not disable the clock! */
+-	return rc;
+-}
+-
+-/**
+- * Clear major registers prior a new transaction
+- * @param hw_dev Host interface device instance
+- * @return 0 on success
+- *
+- * FIFO clear is only necessary on 2440, but doesn't hurt on 2410
+- */
+-static int s3c_prepare_engine(struct s3c_mci_host *host_data)
+-{
+-	int rc;
+-
+-	rc = s3c_terminate_transfer(host_data);
+-	if (rc != 0)
+-		return rc;
+-
+-	writel(-1, host_data->base + SDICMDSTAT);
+-	writel(-1, host_data->base + SDIDSTA);
+-	writel(-1, host_data->base + SDIFSTA);
+-
+-	return 0;
+-}
+-
+-/**
+- * Handle MCI commands without data
+- * @param hw_dev Host interface device instance
+- * @param cmd The command to handle
+- * @return 0 on success
+- *
+- * This functions handles the following MCI commands:
+- * - "broadcast command (BC)" without a response
+- * - "broadcast commands with response (BCR)"
+- * - "addressed command (AC)" with response, but without data
+- */
+-static int s3c_mci_std_cmds(struct s3c_mci_host *host_data, struct mci_cmd *cmd)
+-{
+-	int rc;
+-
+-	rc = s3c_prepare_engine(host_data);
+-	if (rc != 0)
+-		return 0;
+-
+-	return s3c_send_command(host_data, cmd, NULL);
+-}
+-
+-/**
+- * Read one block of data from the FIFO
+- * @param hw_dev Host interface device instance
+- * @param data The data information (buffer, direction aso.)
+- * @return 0 on success
+- */
+-static int s3c_mci_read_block(struct s3c_mci_host *host_data, struct mci_data *data)
+-{
+-	uint32_t *p;
+-	unsigned cnt, data_size;
+-
+-#define READ_REASON_TO_FAIL (SDIDSTA_CRCFAIL | SDIDSTA_RXCRCFAIL | SDIDSTA_DATATIMEOUT)
+-
+-	p = (uint32_t*)data->dest;
+-	data_size = data->blocksize * data->blocks;
+-
+-	while (data_size > 0) {
+-
+-		/* serious error? */
+-		if (readl(host_data->base + SDIDSTA) & READ_REASON_TO_FAIL) {
+-			pr_err("Failed while reading data\n");
+-			return -EIO;
+-		}
+-
+-		/* now check the FIFO status */
+-		if (readl(host_data->base + SDIFSTA) & SDIFSTA_FIFOFAIL) {
+-			pr_err("Data loss due to FIFO overflow when reading\n");
+-			return -EIO;
+-		}
+-
+-		/* we only want to read full words */
+-		cnt = (readl(host_data->base + SDIFSTA) & SDIFSTA_COUNTMASK) >> 2;
+-
+-		/* read one chunk of data from the FIFO */
+-		while (cnt--) {
+-			*p = readl(host_data->base + SDIDATA);
+-			p++;
+-			if (data_size >= 4)
+-				data_size -= 4;
+-			else {
+-				data_size = 0;
+-				break;
+-			}
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-/**
+- * Write one block of data into the FIFO
+- * @param hw_dev Host interface device instance
+- * @param cmd The command to handle
+- * @param data The data information (buffer, direction aso.)
+- * @return 0 on success
+- *
+- * We must ensure data in the FIFO when the command phase changes into the
+- * data phase. To ensure this, the FIFO gets filled first, then the command.
+- */
+-static int s3c_mci_write_block(struct s3c_mci_host *host_data, struct mci_cmd *cmd,
+-				struct mci_data *data)
+-{
+-	const uint32_t *p = (const uint32_t*)data->src;
+-	unsigned cnt, data_size;
+-	uint32_t reg;
+-
+-#define WRITE_REASON_TO_FAIL (SDIDSTA_CRCFAIL | SDIDSTA_DATATIMEOUT)
+-
+-	data_size = data->blocksize * data->blocks;
+-	/*
+-	 * With high clock rates we must fill the FIFO as early as possible
+-	 * Its size is 16 words. We assume its empty, when this function is
+-	 * entered.
+-	 */
+-	cnt = 16;
+-	while (cnt--) {
+-		writel(*p, host_data->base + SDIDATA);
+-		p++;
+-		if (data_size >= 4)
+-			data_size -= 4;
+-		else {
+-			data_size = 0;
+-			break;
+-		}
+-	}
+-
+-	/* data is now in place and waits for transmitt. Start the command right now */
+-	s3c_send_command(host_data, cmd, data);
+-
+-	if ((reg = readl(host_data->base + SDIFSTA)) & SDIFSTA_FIFOFAIL) {
+-		pr_err("Command fails immediatly due to FIFO underrun when writing %08X\n",
+-			reg);
+-		return -EIO;
+-	}
+-
+-	while (data_size > 0) {
+-
+-		if (readl(host_data->base + SDIDSTA) & WRITE_REASON_TO_FAIL) {
+-			pr_err("Failed writing data\n");
+-			return -EIO;
+-		}
+-
+-		/* now check the FIFO status */
+-		if ((reg = readl(host_data->base + SDIFSTA)) & SDIFSTA_FIFOFAIL) {
+-			pr_err("Data loss due to FIFO underrun when writing %08X\n",
+-					reg);
+-			return -EIO;
+-		}
+-
+-		/* we only want to write full words */
+-		cnt = 16 - (((readl(host_data->base + SDIFSTA) & SDIFSTA_COUNTMASK) + 3) >> 2);
+-
+-		/* fill the FIFO if it has free entries */
+-		while (cnt--) {
+-			writel(*p, host_data->base + SDIDATA);
+-			p++;
+-			if (data_size >= 4)
+-				data_size -= 4;
+-			else {
+-				data_size = 0;
+-				break;
+-			}
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+-/**
+- * Handle MCI commands with or without data
+- * @param hw_dev Host interface device instance
+- * @param cmd The command to handle
+- * @param data The data information (buffer, direction aso.)
+- * @return 0 on success
+-*/
+-static int s3c_mci_adtc(struct s3c_mci_host *host_data, struct mci_cmd *cmd,
+-			struct mci_data *data)
+-{
+-	int rc;
+-
+-	rc = s3c_prepare_engine(host_data);
+-	if (rc != 0)
+-		return rc;
+-
+-	rc = s3c_prepare_data_transfer(host_data, data);
+-	if (rc != 0)
+-		return rc;
+-
+-	if (data->flags & MMC_DATA_READ) {
+-		s3c_send_command(host_data, cmd, data);
+-		rc = s3c_mci_read_block(host_data, data);
+-		if (rc == 0) {
+-			while (!(readl(host_data->base + SDIDSTA) & SDIDSTA_XFERFINISH))
+-				;
+-		} else
+-			s3c_terminate_transfer(host_data);
+-	}
+-
+-	if (data->flags & MMC_DATA_WRITE) {
+-		rc = s3c_mci_write_block(host_data, cmd, data);
+-		if (rc == 0) {
+-			while (!(readl(host_data->base + SDIDSTA) & SDIDSTA_XFERFINISH))
+-				;
+-		} else
+-			s3c_terminate_transfer(host_data);
+-	}
+-	writel(0, host_data->base + SDIDCON);
+-
+-	return rc;
+-}
+-
+-/* ------------------------- MCI API -------------------------------------- */
+-
+-/**
+- * Keep the attached MMC/SD unit in a well know state
+- * @param host MCI host
+- * @param mci_dev MCI device instance
+- * @return 0 on success, negative value else
+- */
+-static int mci_reset(struct mci_host *host, struct device *mci_dev)
+-{
+-	struct s3c_mci_host *host_data = to_s3c_host(host);
+-
+-	return s3c_mci_initialize(host_data, mci_dev);
+-}
+-
+-/**
+- * Process one command to the MCI card
+- * @param host MCI host
+- * @param cmd The command to process
+- * @param data The data to handle in the command (can be NULL)
+- * @return 0 on success, negative value else
+- */
+-static int mci_request(struct mci_host *host, struct mci_cmd *cmd,
+-			struct mci_data *data)
+-{
+-	struct s3c_mci_host *host_data = to_s3c_host(host);
+-	int rc;
+-
+-	/* enable clock */
+-	writel(readl(host_data->base + SDICON) | SDICON_CLKEN,
+-		host_data->base + SDICON);
+-
+-	if ((cmd->resp_type == 0) || (data == NULL))
+-		rc = s3c_mci_std_cmds(host_data, cmd);
+-	else
+-		rc = s3c_mci_adtc(host_data, cmd, data);	/* with response and data */
+-
+-	s3c_finish_request(host_data);
+-
+-	/* disable clock */
+-	writel(readl(host_data->base + SDICON) & ~SDICON_CLKEN,
+-		host_data->base + SDICON);
+-	return rc;
+-}
+-
+-/**
+- * Setup the bus width and IO speed
+- * @param host MCI host
+- * @param bus_width New bus width value (1, 4 or 8)
+- * @param clock New clock in Hz (can be '0' to disable the clock)
+- */
+-static void mci_set_ios(struct mci_host *host, struct mci_ios *ios)
+-{
+-	struct s3c_mci_host *host_data = to_s3c_host(host);
+-	uint32_t reg;
+-
+-	switch (ios->bus_width) {
+-	case MMC_BUS_WIDTH_4:
+-		host_data->bus_width = 1;
+-		break;
+-	case MMC_BUS_WIDTH_1:
+-		host_data->bus_width = 0;
+-		break;
+-	default:
+-		return;
+-	}
+-
+-	reg = readl(host_data->base + SDICON);
+-	if (ios->clock) {
+-		/* setup the IO clock frequency and enable it */
+-		host_data->clock = s3c_setup_clock_speed(host_data, ios->clock);
+-		reg |= SDICON_CLKEN;	/* enable the clock */
+-	} else {
+-		reg &= ~SDICON_CLKEN;	/* disable the clock */
+-		host_data->clock = 0;
+-	}
+-	writel(reg, host_data->base + SDICON);
+-
+-	pr_debug("IO settings: bus width=%d, frequency=%u Hz\n",
+-		host_data->bus_width, host_data->clock);
+-}
+-
+-/* ----------------------------------------------------------------------- */
+-
+-static void s3c_info(struct device *hw_dev)
+-{
+-	struct s3c_mci_host *host = hw_dev->priv;
+-	struct s3c_mci_platform_data *pd = hw_dev->platform_data;
+-
+-	printf("  Bus data width: %d bit\n", host->bus_width == 1 ? 4 : 1);
+-	printf("  Bus frequency: %u Hz\n", host->clock);
+-	printf("   Frequency limits: ");
+-	if (pd->f_min == 0)
+-		printf("no lower limit ");
+-	else
+-		printf("%u Hz lower limit ", pd->f_min);
+-	if (pd->f_max == 0)
+-		printf("- no upper limit");
+-	else
+-		printf("- %u Hz upper limit", pd->f_max);
+-	printf("\n  Card detection support: %s\n",
+-		pd->gpio_detect != 0 ? "yes" : "no");
+-}
+-
+-static int s3c_mci_probe(struct device *hw_dev)
+-{
+-	struct resource *iores;
+-	struct s3c_mci_host *s3c_host;
+-	struct s3c_mci_platform_data *pd = hw_dev->platform_data;
+-
+-	s3c_host = xzalloc(sizeof(*s3c_host));
+-	s3c_host->host.send_cmd = mci_request;
+-	s3c_host->host.set_ios = mci_set_ios;
+-	s3c_host->host.init = mci_reset;
+-
+-	/* TODO replace by the global func: enable the SDI unit clock */
+-	writel(readl(S3C_CLOCK_POWER_BASE + 0x0c) | 0x200,
+-		S3C_CLOCK_POWER_BASE + 0x0c);
+-
+-	if (pd == NULL) {
+-		pr_err("Missing platform data\n");
+-		return -EINVAL;
+-	}
+-
+-	hw_dev->priv = s3c_host;
+-	iores = dev_request_mem_resource(hw_dev, 0);
+-	if (IS_ERR(iores))
+-		return PTR_ERR(iores);
+-	s3c_host->base = IOMEM(iores->start);
+-
+-	s3c_host->host.hw_dev = hw_dev;
+-
+-	/* feed forward the platform specific values */
+-	s3c_host->host.voltages = pd->voltages;
+-	s3c_host->host.host_caps = pd->caps;
+-	s3c_host->host.f_min = pd->f_min == 0 ? s3c_get_pclk() / 256 : pd->f_min;
+-	s3c_host->host.f_max = pd->f_max == 0 ? s3c_get_pclk() / 2 : pd->f_max;
+-
+-	if (IS_ENABLED(CONFIG_MCI_INFO))
+-		hw_dev->info = s3c_info;
+-
+-	/*
+-	 * Start the clock to let the engine and the card finishes its startup
+-	 */
+-	s3c_host->clock = s3c_setup_clock_speed(s3c_host, pd->f_min);
+-	writel(SDICON_FIFORESET | SDICON_MMCCLOCK, s3c_host->base + SDICON);
+-
+-	return mci_register(&s3c_host->host);
+-}
+-
+-static struct driver s3c_mci_driver = {
+-        .name  = "s3c_mci",
+-        .probe = s3c_mci_probe,
+-};
+-device_platform_driver(s3c_mci_driver);
 -- 
 2.30.2
 
