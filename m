@@ -1,59 +1,57 @@
-Delivery-date: Tue, 28 Feb 2023 14:59:16 +0100
+Delivery-date: Tue, 28 Feb 2023 14:59:19 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pX0Vf-004jM0-3C
-	for lore@lore.pengutronix.de; Tue, 28 Feb 2023 14:59:16 +0100
+	id 1pX0Vi-004jMg-K5
+	for lore@lore.pengutronix.de; Tue, 28 Feb 2023 14:59:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pX0Ve-0000No-Bo
-	for lore@pengutronix.de; Tue, 28 Feb 2023 14:59:15 +0100
+	id 1pX0Vh-0000Ov-NA
+	for lore@pengutronix.de; Tue, 28 Feb 2023 14:59:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dMin+1FVzbSbAydsdGer7WiuUxWdIcHi2JEN13jbv6o=; b=k0Ac0nT/0J/4y0pCYn2GPZ3Km5
-	0RaC5hDc+HKsg5Edz+ejyRDSKUN5M+qEgfjp5B+y947UHUZIeRSP49W3N5Sn9+L0iGuTXbNF86wLC
-	5vmU424GfdVdMfQUv5RrtrIm6IAYJv30pGLvA7cCzEBv/5isAIJUwPvBQo+bpFXoAqhhg8eY6Gb+C
-	po8fR8MaqIuNb/o/Qwrg48vKe4gCl1XF132dWUWgR9tXpOt+RWhRonst8/BZHAEn9ngUJTcqDgh+A
-	Xtb4pC+DNxx/FRMYtb/2wGVAojcGk3frO/U3E3RvZYH8gxIzN06BtgohUif9QQtU6YtHmHgp8gmno
-	cK4Yb6ww==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=FTxx0icPxjz929aWKDgyJWA3ZUuYm7GKz23vMBIeMu8=; b=nm2LXPu5wgofri3s1oPXMdsi7v
+	Tbvjpn2S3RM467KCqOyyE6YjrapIMiJW8Zgbu73GXZ6gITq4tLwnnMdMgbvIHDpbd4hprEh9qjbov
+	+GTW54A7r1+exiRfvdBprV5jH1gWnMfL5cETmxjF8UZSigBhSeRHDd6RrV5SJ+RSzUOE9xouE9xv+
+	6KmPx9N3jYi8VxfcmfLM/D+Di3CV6f8sRgqfQQFvsnVj20qfxW0pEF0QkivTYVSySWd3zxf51RHx+
+	+moP+4jPMWbS/y5+NPUYe/mOSf22LHU5C9poNZwkkjvGBqtC+YTQPrMrGOC3o9SmParzxXrrQlZ7n
+	2IfwGptg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pX0UB-00DMdx-PA; Tue, 28 Feb 2023 13:57:43 +0000
+	id 1pX0U9-00DMdP-LP; Tue, 28 Feb 2023 13:57:41 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pX0U1-00DMa6-Pt
-	for barebox@lists.infradead.org; Tue, 28 Feb 2023 13:57:38 +0000
+	id 1pX0U1-00DMZw-Pr
+	for barebox@lists.infradead.org; Tue, 28 Feb 2023 13:57:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pX0Tz-0000AC-Cn; Tue, 28 Feb 2023 14:57:31 +0100
+	id 1pX0Ty-00009y-Ra; Tue, 28 Feb 2023 14:57:30 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pX0Ty-000sdo-Nf; Tue, 28 Feb 2023 14:57:30 +0100
+	id 1pX0Ty-000sdi-5G; Tue, 28 Feb 2023 14:57:30 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pX0Tx-006irj-FG; Tue, 28 Feb 2023 14:57:29 +0100
+	id 1pX0Tx-006irV-1f; Tue, 28 Feb 2023 14:57:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 28 Feb 2023 14:57:27 +0100
-Message-Id: <20230228135727.1602351-6-s.hauer@pengutronix.de>
+Date: Tue, 28 Feb 2023 14:57:22 +0100
+Message-Id: <20230228135727.1602351-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
-In-Reply-To: <20230228135727.1602351-1-s.hauer@pengutronix.de>
-References: <20230228135727.1602351-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230228_055734_247904_CDD7170D 
-X-CRM114-Status: GOOD (  27.83  )
+X-CRM114-CacheID: sfid-20230228_055734_232306_C4629669 
+X-CRM114-Status: GOOD (  11.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,481 +73,232 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 5/5] video: remove s3c driver
+Subject: [PATCH 0/5] ARM: remove Samsung arch
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The Samsung architecture has been removed, remove the framebuffer driver
-only used on this architecture as well.
+arch/arm/mach-samsung hasn't seen any active maintenance or interest
+for a long time. It starts standing in the way for further development,
+so remove it. RIP.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/video/Kconfig   |  13 --
- drivers/video/Makefile  |   1 -
- drivers/video/s3c24xx.c | 411 ----------------------------------------
- 3 files changed, 425 deletions(-)
+Sascha
+
+Sascha Hauer (5):
+  ARM: remove samsung arch
+  mci: remove s3c driver
+  mtd: nand: remove s3c driver
+  serial: remove s3c driver
+  video: remove s3c driver
+
+ Documentation/boards/s3c/Digi-a9m2440.rst     |  93 --
+ Documentation/boards/samsung.rst              |   8 -
+ arch/arm/Kconfig                              |  19 -
+ arch/arm/Makefile                             |  13 -
+ arch/arm/boards/a9m2410/Makefile              |   4 -
+ arch/arm/boards/a9m2410/a9m2410.c             | 136 ---
+ arch/arm/boards/a9m2410/config.h              | 109 ---
+ arch/arm/boards/a9m2410/env/bin/_update       |  36 -
+ arch/arm/boards/a9m2410/env/bin/boot          |  38 -
+ arch/arm/boards/a9m2410/env/bin/init          |  30 -
+ arch/arm/boards/a9m2410/env/bin/update_kernel |  13 -
+ arch/arm/boards/a9m2410/env/bin/update_root   |  11 -
+ arch/arm/boards/a9m2410/env/config            |  26 -
+ arch/arm/boards/a9m2410/lowlevel_init.S       |  39 -
+ arch/arm/boards/a9m2440/Makefile              |   5 -
+ arch/arm/boards/a9m2440/a9m2410dev.c          |  82 --
+ arch/arm/boards/a9m2440/a9m2440.c             | 143 ----
+ arch/arm/boards/a9m2440/baseboards.h          |   6 -
+ arch/arm/boards/a9m2440/config.h              |  60 --
+ arch/arm/boards/a9m2440/env/bin/_update       |  34 -
+ arch/arm/boards/a9m2440/env/bin/boot          |  40 -
+ arch/arm/boards/a9m2440/env/bin/init          |  30 -
+ arch/arm/boards/a9m2440/env/bin/update_kernel |  13 -
+ arch/arm/boards/a9m2440/env/bin/update_root   |  13 -
+ arch/arm/boards/a9m2440/env/config            |  26 -
+ arch/arm/boards/a9m2440/lowlevel_init.S       | 243 ------
+ arch/arm/boards/friendlyarm-mini2440/Kconfig  |  35 -
+ arch/arm/boards/friendlyarm-mini2440/Makefile |   5 -
+ arch/arm/boards/friendlyarm-mini2440/config.h | 118 ---
+ .../boards/friendlyarm-mini2440/env/boot/nand |   4 -
+ .../friendlyarm-mini2440/env/config-board     |  16 -
+ .../env/init/mtdparts-nand                    |   6 -
+ .../friendlyarm-mini2440/lowlevel_init.S      |  44 -
+ .../boards/friendlyarm-mini2440/mini2440.c    | 341 --------
+ arch/arm/boards/friendlyarm-mini6410/Makefile |   5 -
+ arch/arm/boards/friendlyarm-mini6410/config.h |  10 -
+ .../defaultenv-friendlyarm-mini6410/config    |  52 --
+ .../boards/friendlyarm-mini6410/lowlevel.c    |  13 -
+ .../boards/friendlyarm-mini6410/mini6410.c    | 302 -------
+ arch/arm/boards/friendlyarm-tiny210/Makefile  |   4 -
+ arch/arm/boards/friendlyarm-tiny210/config.h  |  21 -
+ .../arm/boards/friendlyarm-tiny210/lowlevel.c | 100 ---
+ arch/arm/boards/friendlyarm-tiny210/tiny210.c | 102 ---
+ arch/arm/boards/friendlyarm-tiny6410/Kconfig  |  21 -
+ arch/arm/boards/friendlyarm-tiny6410/Makefile |   6 -
+ arch/arm/boards/friendlyarm-tiny6410/config.h |  10 -
+ .../defaultenv-friendlyarm-tiny6410/config    |  52 --
+ .../friendlyarm-tiny6410/development-board.c  |  94 ---
+ .../boards/friendlyarm-tiny6410/lowlevel.c    |  13 -
+ .../boards/friendlyarm-tiny6410/tiny6410.c    |  72 --
+ .../boards/friendlyarm-tiny6410/tiny6410.h    |   4 -
+ arch/arm/configs/a9m2410_defconfig            |  32 -
+ arch/arm/configs/a9m2440_defconfig            |  34 -
+ .../configs/friendlyarm_mini2440_defconfig    |  41 -
+ .../configs/friendlyarm_mini6410_defconfig    |  34 -
+ .../arm/configs/friendlyarm_tiny210_defconfig |   7 -
+ .../configs/friendlyarm_tiny6410_defconfig    |  35 -
+ arch/arm/mach-samsung/Kconfig                 | 178 ----
+ arch/arm/mach-samsung/Makefile                |  14 -
+ arch/arm/mach-samsung/bbu-nand-s3c24x0.c      |  85 --
+ arch/arm/mach-samsung/clocks-s3c24xx.c        | 145 ----
+ arch/arm/mach-samsung/clocks-s3c64xx.c        | 338 --------
+ arch/arm/mach-samsung/clocks-s5pcxx.c         |  98 ---
+ arch/arm/mach-samsung/generic.c               |  51 --
+ arch/arm/mach-samsung/gpio-s3c24x0.c          | 167 ----
+ arch/arm/mach-samsung/gpio-s3c64xx.c          | 302 -------
+ arch/arm/mach-samsung/gpio-s5pcxx.c           | 124 ---
+ arch/arm/mach-samsung/include/mach/bbu.h      |  18 -
+ .../include/mach/devices-s3c24xx.h            |  55 --
+ .../include/mach/devices-s3c64xx.h            |  40 -
+ .../mach-samsung/include/mach/iomux-s3c24x0.h | 422 ---------
+ .../mach-samsung/include/mach/iomux-s3c64xx.h | 542 ------------
+ .../mach-samsung/include/mach/iomux-s5pcxx.h  | 798 ------------------
+ arch/arm/mach-samsung/include/mach/iomux.h    |  28 -
+ .../mach-samsung/include/mach/s3c-busctl.h    |  32 -
+ .../mach-samsung/include/mach/s3c-clocks.h    |  28 -
+ .../mach-samsung/include/mach/s3c-generic.h   |  62 --
+ .../arm/mach-samsung/include/mach/s3c-iomap.h |  23 -
+ arch/arm/mach-samsung/include/mach/s3c-mci.h  |  39 -
+ .../include/mach/s3c24xx-clocks.h             |  24 -
+ .../mach-samsung/include/mach/s3c24xx-fb.h    |  55 --
+ .../mach-samsung/include/mach/s3c24xx-gpio.h  |  77 --
+ .../mach-samsung/include/mach/s3c24xx-iomap.h |  65 --
+ .../mach-samsung/include/mach/s3c24xx-nand.h  |  57 --
+ .../include/mach/s3c64xx-clocks.h             |  67 --
+ .../mach-samsung/include/mach/s3c64xx-iomap.h |  51 --
+ .../mach-samsung/include/mach/s5pcxx-clocks.h |  55 --
+ .../mach-samsung/include/mach/s5pcxx-iomap.h  |  46 -
+ arch/arm/mach-samsung/lowlevel-s3c24x0.S      | 305 -------
+ arch/arm/mach-samsung/lowlevel-s5pcxx.c       |  61 --
+ arch/arm/mach-samsung/mem-s3c24x0.c           |  79 --
+ arch/arm/mach-samsung/mem-s3c64xx.c           |  66 --
+ arch/arm/mach-samsung/mem-s5pcxx.c            | 320 -------
+ arch/arm/mach-samsung/reset_source.c          |  56 --
+ arch/arm/mach-samsung/s3c-timer.c             | 119 ---
+ drivers/mci/Kconfig                           |   7 -
+ drivers/mci/Makefile                          |   1 -
+ drivers/mci/s3c.c                             | 762 -----------------
+ drivers/mtd/nand/Kconfig                      |   7 -
+ drivers/mtd/nand/Makefile                     |   2 -
+ drivers/mtd/nand/nand_s3c24xx.c               | 649 --------------
+ drivers/serial/Kconfig                        |  18 -
+ drivers/serial/Makefile                       |   1 -
+ drivers/serial/serial_s3c.c                   | 198 -----
+ drivers/video/Kconfig                         |  13 -
+ drivers/video/Makefile                        |   1 -
+ drivers/video/s3c24xx.c                       | 411 ---------
+ scripts/.gitignore                            |   1 -
+ scripts/Kconfig                               |   7 -
+ scripts/Makefile                              |   1 -
+ 110 files changed, 10074 deletions(-)
+ delete mode 100644 Documentation/boards/s3c/Digi-a9m2440.rst
+ delete mode 100644 Documentation/boards/samsung.rst
+ delete mode 100644 arch/arm/boards/a9m2410/Makefile
+ delete mode 100644 arch/arm/boards/a9m2410/a9m2410.c
+ delete mode 100644 arch/arm/boards/a9m2410/config.h
+ delete mode 100644 arch/arm/boards/a9m2410/env/bin/_update
+ delete mode 100644 arch/arm/boards/a9m2410/env/bin/boot
+ delete mode 100644 arch/arm/boards/a9m2410/env/bin/init
+ delete mode 100644 arch/arm/boards/a9m2410/env/bin/update_kernel
+ delete mode 100644 arch/arm/boards/a9m2410/env/bin/update_root
+ delete mode 100644 arch/arm/boards/a9m2410/env/config
+ delete mode 100644 arch/arm/boards/a9m2410/lowlevel_init.S
+ delete mode 100644 arch/arm/boards/a9m2440/Makefile
+ delete mode 100644 arch/arm/boards/a9m2440/a9m2410dev.c
+ delete mode 100644 arch/arm/boards/a9m2440/a9m2440.c
+ delete mode 100644 arch/arm/boards/a9m2440/baseboards.h
+ delete mode 100644 arch/arm/boards/a9m2440/config.h
+ delete mode 100644 arch/arm/boards/a9m2440/env/bin/_update
+ delete mode 100644 arch/arm/boards/a9m2440/env/bin/boot
+ delete mode 100644 arch/arm/boards/a9m2440/env/bin/init
+ delete mode 100644 arch/arm/boards/a9m2440/env/bin/update_kernel
+ delete mode 100644 arch/arm/boards/a9m2440/env/bin/update_root
+ delete mode 100644 arch/arm/boards/a9m2440/env/config
+ delete mode 100644 arch/arm/boards/a9m2440/lowlevel_init.S
+ delete mode 100644 arch/arm/boards/friendlyarm-mini2440/Kconfig
+ delete mode 100644 arch/arm/boards/friendlyarm-mini2440/Makefile
+ delete mode 100644 arch/arm/boards/friendlyarm-mini2440/config.h
+ delete mode 100644 arch/arm/boards/friendlyarm-mini2440/env/boot/nand
+ delete mode 100644 arch/arm/boards/friendlyarm-mini2440/env/config-board
+ delete mode 100644 arch/arm/boards/friendlyarm-mini2440/env/init/mtdparts-nand
+ delete mode 100644 arch/arm/boards/friendlyarm-mini2440/lowlevel_init.S
+ delete mode 100644 arch/arm/boards/friendlyarm-mini2440/mini2440.c
+ delete mode 100644 arch/arm/boards/friendlyarm-mini6410/Makefile
+ delete mode 100644 arch/arm/boards/friendlyarm-mini6410/config.h
+ delete mode 100644 arch/arm/boards/friendlyarm-mini6410/defaultenv-friendlyarm-mini6410/config
+ delete mode 100644 arch/arm/boards/friendlyarm-mini6410/lowlevel.c
+ delete mode 100644 arch/arm/boards/friendlyarm-mini6410/mini6410.c
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny210/Makefile
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny210/config.h
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny210/lowlevel.c
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny210/tiny210.c
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/Kconfig
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/Makefile
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/config.h
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/defaultenv-friendlyarm-tiny6410/config
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/development-board.c
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/lowlevel.c
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/tiny6410.c
+ delete mode 100644 arch/arm/boards/friendlyarm-tiny6410/tiny6410.h
+ delete mode 100644 arch/arm/configs/a9m2410_defconfig
+ delete mode 100644 arch/arm/configs/a9m2440_defconfig
+ delete mode 100644 arch/arm/configs/friendlyarm_mini2440_defconfig
+ delete mode 100644 arch/arm/configs/friendlyarm_mini6410_defconfig
+ delete mode 100644 arch/arm/configs/friendlyarm_tiny210_defconfig
+ delete mode 100644 arch/arm/configs/friendlyarm_tiny6410_defconfig
+ delete mode 100644 arch/arm/mach-samsung/Kconfig
+ delete mode 100644 arch/arm/mach-samsung/Makefile
+ delete mode 100644 arch/arm/mach-samsung/bbu-nand-s3c24x0.c
+ delete mode 100644 arch/arm/mach-samsung/clocks-s3c24xx.c
+ delete mode 100644 arch/arm/mach-samsung/clocks-s3c64xx.c
+ delete mode 100644 arch/arm/mach-samsung/clocks-s5pcxx.c
+ delete mode 100644 arch/arm/mach-samsung/generic.c
+ delete mode 100644 arch/arm/mach-samsung/gpio-s3c24x0.c
+ delete mode 100644 arch/arm/mach-samsung/gpio-s3c64xx.c
+ delete mode 100644 arch/arm/mach-samsung/gpio-s5pcxx.c
+ delete mode 100644 arch/arm/mach-samsung/include/mach/bbu.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/devices-s3c24xx.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/devices-s3c64xx.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/iomux-s3c24x0.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/iomux-s3c64xx.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/iomux-s5pcxx.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/iomux.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-busctl.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-clocks.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-generic.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-iomap.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c-mci.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-clocks.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-fb.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-gpio.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-iomap.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c24xx-nand.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c64xx-clocks.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s3c64xx-iomap.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-clocks.h
+ delete mode 100644 arch/arm/mach-samsung/include/mach/s5pcxx-iomap.h
+ delete mode 100644 arch/arm/mach-samsung/lowlevel-s3c24x0.S
+ delete mode 100644 arch/arm/mach-samsung/lowlevel-s5pcxx.c
+ delete mode 100644 arch/arm/mach-samsung/mem-s3c24x0.c
+ delete mode 100644 arch/arm/mach-samsung/mem-s3c64xx.c
+ delete mode 100644 arch/arm/mach-samsung/mem-s5pcxx.c
+ delete mode 100644 arch/arm/mach-samsung/reset_source.c
+ delete mode 100644 arch/arm/mach-samsung/s3c-timer.c
+ delete mode 100644 drivers/mci/s3c.c
+ delete mode 100644 drivers/mtd/nand/nand_s3c24xx.c
+ delete mode 100644 drivers/serial/serial_s3c.c
  delete mode 100644 drivers/video/s3c24xx.c
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 01bdaf47bf..f20cc0befc 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -67,12 +67,6 @@ config DRIVER_VIDEO_STM32_LTDC
- 	  Say 'Y' here to enable framebuffer and splash screen support for
- 	  STM32 and STM32MP1.
- 
--config DRIVER_VIDEO_S3C24XX
--	bool "S3C244x framebuffer driver"
--	depends on ARCH_S3C24xx
--	help
--	  Add support for the S3C244x LCD controller.
--
- config DRIVER_VIDEO_OMAP
- 	bool "OMAP framebuffer driver"
- 	depends on ARCH_OMAP4 || COMPILE_TEST
-@@ -81,13 +75,6 @@ config DRIVER_VIDEO_OMAP
- 	  driver only supports OMAP4 SoCs in DISPC parallel mode on
- 	  LCD2 (MIPI DPI).
- 
--if DRIVER_VIDEO_S3C24XX
--
--config DRIVER_VIDEO_S3C_VERBOSE
--	bool "S3C244x verbose framebuffer info"
--
--endif
--
- config DRIVER_VIDEO_SDL
- 	bool "SDL framebuffer driver"
- 	depends on SANDBOX
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index d50d2d3ba5..1b6d2986d7 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -18,7 +18,6 @@ obj-$(CONFIG_DRIVER_VIDEO_STM) += stm.o
- obj-$(CONFIG_DRIVER_VIDEO_STM32_LTDC) += stm32_ltdc.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX) += imx.o
- obj-$(CONFIG_DRIVER_VIDEO_IMX_IPU) += imx-ipu-fb.o
--obj-$(CONFIG_DRIVER_VIDEO_S3C24XX) += s3c24xx.o
- obj-$(CONFIG_DRIVER_VIDEO_PXA) += pxa.o
- obj-$(CONFIG_DRIVER_VIDEO_SDL) += sdl.o
- obj-$(CONFIG_DRIVER_VIDEO_OMAP) += omap.o
-diff --git a/drivers/video/s3c24xx.c b/drivers/video/s3c24xx.c
-deleted file mode 100644
-index 8fd56bbc7b..0000000000
---- a/drivers/video/s3c24xx.c
-+++ /dev/null
-@@ -1,411 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--/*
-- * Copyright (C) 2010 Juergen Beisert
-- * Copyright (C) 2011 Alexey Galakhov
-- *
-- * This driver is based on a patch found in the web:
-- * (C) Copyright 2006 by OpenMoko, Inc.
-- * Author: Harald Welte <laforge at openmoko.org>
-- */
--
--#include <common.h>
--#include <init.h>
--#include <fb.h>
--#include <driver.h>
--#include <malloc.h>
--#include <errno.h>
--#include <io.h>
--#include <mach/s3c-generic.h>
--#include <mach/s3c24xx-fb.h>
--
--#define LCDCON1 0x00
--# define PNRMODE(x) (((x) & 3) << 5)
--# define BPPMODE(x) (((x) & 0xf) << 1)
--# define SET_CLKVAL(x) (((x) & 0x3ff) << 8)
--# define GET_CLKVAL(x) (((x) >> 8) & 0x3ff)
--# define ENVID (1 << 0)
--
--#define LCDCON2 0x04
--# define SET_VBPD(x) (((x) & 0xff) << 24)
--# define SET_LINEVAL(x) (((x) & 0x3ff) << 14)
--# define SET_VFPD(x) (((x) & 0xff) << 6)
--# define SET_VSPW(x) ((x) & 0x3f)
--
--#define LCDCON3 0x08
--# define SET_HBPD(x) (((x) & 0x7f) << 19)
--# define SET_HOZVAL(x) (((x) & 0x7ff) << 8)
--# define SET_HFPD(x) ((x) & 0xff)
--
--#define LCDCON4 0x0c
--# define SET_HSPW(x) ((x) & 0xff)
--
--#define LCDCON5 0x10
--# define BPP24BL (1 << 12)
--# define FRM565 (1 << 11)
--# define INV_CLK (1 << 10)
--# define INV_HS (1 << 9)
--# define INV_VS (1 << 8)
--# define INV_DTA (1 << 7)
--# define INV_DE (1 << 6)
--# define INV_PWREN (1 << 5)
--# define INV_LEND (1 << 4)
--# define ENA_PWREN (1 << 3)
--# define ENA_LEND (1 << 2)
--# define BSWP (1 << 1)
--# define HWSWP (1 << 0)
--
--#define LCDSADDR1 0x14
--# define SET_LCDBANK(x) (((x) & 0x1ff) << 21)
--# define GET_LCDBANK(x) (((x) >> 21) & 0x1ff)
--# define SET_LCDBASEU(x) ((x) & 0x1fffff)
--# define GET_LCDBASEU(x) ((x) & 0x1fffff)
--
--#define LCDSADDR2 0x18
--# define SET_LCDBASEL(x) ((x) & 0x1fffff)
--# define GET_LCDBASEL(x) ((x) & 0x1fffff)
--
--#define LCDSADDR3 0x1c
--# define SET_OFFSIZE(x) (((x) & 0x7ff) << 11)
--# define GET_OFFSIZE(x) (((x) >> 11) & 0x7ff)
--# define SET_PAGE_WIDTH(x) ((x) & 0x3ff)
--# define GET_PAGE_WIDTH(x) ((x) & 0x3ff)
--
--#define RED_LUT 0x20
--#define GREEN_LUT 0x24
--#define BLUE_LUT 0x28
--
--#define DITHMODE 0x4c
--
--#define TPAL 0x50
--
--#define LCDINTPND 0x54
--#define LCDSRCPND 0x58
--#define LCDINTMSK 0x5c
--# define FIWSEL (1 << 2)
--# define INT_FrSyn (1 << 1)
--# define INT_FiCnt (1 << 0)
--
--#define TCONSEL 0x60
--
--#define RED 0
--#define GREEN 1
--#define BLUE 2
--#define TRANSP 3
--
--struct s3cfb_info {
--	void __iomem *base;
--	unsigned memory_size;
--	struct fb_info info;
--	struct device *hw_dev;
--	int passive_display;
--	void (*enable)(int enable);
--};
--
--/* the RGB565 true colour mode */
--static const struct fb_bitfield def_rgb565[] = {
--	[RED] = {
--		.offset = 11,
--		.length = 5,
--	},
--	[GREEN] = {
--		.offset = 5,
--		.length = 6,
--	},
--	[BLUE] = {
--		.offset = 0,
--		.length = 5,
--	},
--	[TRANSP] = {	/* no support for transparency */
--		.length = 0,
--	}
--};
--
--/* the RGB888 true colour mode */
--static const struct fb_bitfield def_rgb888[] = {
--	[RED] = {
--		.offset = 16,
--		.length = 8,
--	},
--	[GREEN] = {
--		.offset = 8,
--		.length = 8,
--	},
--	[BLUE] = {
--		.offset = 0,
--		.length = 8,
--	},
--	[TRANSP] = {	/* no support for transparency */
--		.length = 0,
--	}
--};
--
--/**
-- * @param fb_info Framebuffer information
-- */
--static void s3cfb_enable_controller(struct fb_info *fb_info)
--{
--	struct s3cfb_info *fbi = fb_info->priv;
--	uint32_t con1;
--
--	con1 = readl(fbi->base + LCDCON1);
--
--	con1 |= ENVID;
--
--	writel(con1, fbi->base + LCDCON1);
--
--	if (fbi->enable)
--		fbi->enable(1);
--}
--
--/**
-- * @param fb_info Framebuffer information
-- */
--static void s3cfb_disable_controller(struct fb_info *fb_info)
--{
--	struct s3cfb_info *fbi = fb_info->priv;
--	uint32_t con1;
--
--	if (fbi->enable)
--		fbi->enable(0);
--
--	con1 = readl(fbi->base + LCDCON1);
--
--	con1 &= ~ENVID;
--
--	writel(con1, fbi->base + LCDCON1);
--}
--
--/**
-- * Prepare the video hardware for a specified video mode
-- * @param fb_info Framebuffer information
-- * @return 0 on success
-- */
--static int s3cfb_activate_var(struct fb_info *fb_info)
--{
--	struct s3cfb_info *fbi = fb_info->priv;
--	struct fb_videomode *mode = fb_info->mode;
--	unsigned size, hclk, div;
--	uint32_t con1, con2, con3, con4, con5 = 0;
--
--	if (fbi->passive_display != 0) {
--		dev_err(fbi->hw_dev, "Passive displays are currently not supported\n");
--		return -EINVAL;
--	}
--
--	/*
--	 * we need at least this amount of memory for the framebuffer
--	 */
--	size = mode->xres * mode->yres * (fb_info->bits_per_pixel >> 3);
--	if (fbi->memory_size != size || fb_info->screen_base == NULL) {
--		if (fb_info->screen_base)
--			free(fb_info->screen_base);
--		fbi->memory_size = 0;
--		fb_info->screen_base = malloc(size);
--		if (! fb_info->screen_base)
--			return -ENOMEM;
--		memset(fb_info->screen_base, 0, size);
--		fbi->memory_size = size;
--	}
--
--	/* ensure video output is _off_ */
--	writel(0x00000000, fbi->base + LCDCON1);
--
--	hclk = s3c_get_hclk() / 1000U;	/* hclk in kHz */
--	div = hclk / PICOS2KHZ(mode->pixclock);
--	if (div < 3)
--		div  = 3;
--	/* pixel clock is: (hclk) / ((div + 1) * 2) */
--	div += 1;
--	div >>= 1;
--	div -= 1;
--
--	con1 = PNRMODE(3) | SET_CLKVAL(div);	/* PNRMODE=3 is TFT */
--
--	switch (fb_info->bits_per_pixel) {
--	case 16:
--		con1 |= BPPMODE(12);
--		con5 |= FRM565;
--		con5 |= HWSWP;
--		fb_info->red = def_rgb565[RED];
--		fb_info->green = def_rgb565[GREEN];
--		fb_info->blue = def_rgb565[BLUE];
--		fb_info->transp =  def_rgb565[TRANSP];
--		break;
--	case 24:
--		con1 |= BPPMODE(13);
--		/* con5 |= BPP24BL;	*/ /* FIXME maybe needed, check alignment */
--		fb_info->red = def_rgb888[RED];
--		fb_info->green = def_rgb888[GREEN];
--		fb_info->blue = def_rgb888[BLUE];
--		fb_info->transp =  def_rgb888[TRANSP];
--		break;
--	default:
--		dev_err(fbi->hw_dev, "Invalid bits per pixel value: %u\n", fb_info->bits_per_pixel);
--		return -EINVAL;
--	}
--
--	/* 'normal' in register description means positive logic */
--	if (!(mode->sync & FB_SYNC_HOR_HIGH_ACT))
--		con5 |= INV_HS;
--	if (!(mode->sync & FB_SYNC_VERT_HIGH_ACT))
--		con5 |= INV_VS;
--	if (!(mode->sync & FB_SYNC_DE_HIGH_ACT))
--		con5 |= INV_DE;
--	if (mode->sync & FB_SYNC_CLK_INVERT)
--		con5 |= INV_CLK;	/* display should latch at the rising edge */
--	if (mode->sync & FB_SYNC_DATA_INVERT)
--		con5 |= INV_DTA;
--	if (mode->sync & FB_SYNC_INVERT_PWREN)
--		con5 |= INV_PWREN;
--	if (mode->sync & FB_SYNC_INVERT_LEND)
--		con5 |= INV_LEND;
--	if (mode->sync & FB_SYNC_USE_PWREN)
--		con5 |= ENA_PWREN;	/* FIXME should this be done conditionally/later? */
--	if (mode->sync & FB_SYNC_USE_LEND)
--		con5 |= ENA_LEND;
--	if (mode->sync & FB_SYNC_SWAP_BYTES)
--		con5 ^= BSWP;
--	if (mode->sync & FB_SYNC_SWAP_HW)
--		con5 ^= HWSWP;
--
--	/* vertical timing */
--	con2 = SET_VBPD(mode->upper_margin - 1) |
--		SET_LINEVAL(mode->yres - 1) |
--		SET_VFPD(mode->lower_margin - 1) |
--		SET_VSPW(mode->vsync_len - 1);
--
--	/* horizontal timing */
--	con3 = SET_HBPD(mode->left_margin - 1) |
--		SET_HOZVAL(mode->xres - 1) |
--		SET_HFPD(mode->right_margin - 1);
--	con4 = SET_HSPW(mode->hsync_len - 1);
--
--	/* basic timing setup */
--	writel(con1, fbi->base + LCDCON1);
--	dev_dbg(fbi->hw_dev, "writing %08X into %p (con1)\n", con1, fbi->base + LCDCON1);
--	writel(con2, fbi->base + LCDCON2);
--	dev_dbg(fbi->hw_dev, "writing %08X into %p (con2)\n", con2, fbi->base + LCDCON2);
--	writel(con3, fbi->base + LCDCON3);
--	dev_dbg(fbi->hw_dev, "writing %08X into %p (con3)\n", con3, fbi->base + LCDCON3);
--	writel(con4, fbi->base + LCDCON4);
--	dev_dbg(fbi->hw_dev, "writing %08X into %p (con4)\n", con4, fbi->base + LCDCON4);
--	writel(con5, fbi->base + LCDCON5);
--	dev_dbg(fbi->hw_dev, "writing %08X into %p (con5)\n", con5, fbi->base + LCDCON5);
--
--	dev_dbg(fbi->hw_dev, "setting up the fb baseadress to %p\n", fb_info->screen_base);
--
--	/* framebuffer memory setup */
--	writel((unsigned)fb_info->screen_base >> 1, fbi->base + LCDSADDR1);
--	size = mode->xres * (fb_info->bits_per_pixel >> 3) * (mode->yres);
--	writel(SET_LCDBASEL(((unsigned)fb_info->screen_base + size) >> 1), fbi->base + LCDSADDR2);
--	writel(SET_OFFSIZE(0) |
--		SET_PAGE_WIDTH((mode->xres * fb_info->bits_per_pixel) >> 4),
--		fbi->base + LCDSADDR3);
--	writel(FIWSEL | INT_FrSyn | INT_FiCnt, fbi->base + LCDINTMSK);
--
--	return 0;
--}
--
--/**
-- * Print some information about the current hardware state
-- * @param hw_dev S3C video device
-- */
--static void s3cfb_info(struct device *hw_dev)
--{
--	uint32_t con1, addr1, addr2, addr3;
--	struct s3cfb_info *fbi = hw_dev->priv;
--
--	con1 = readl(fbi->base + LCDCON1);
--	addr1 = readl(fbi->base + LCDSADDR1);
--	addr2 = readl(fbi->base + LCDSADDR2);
--	addr3 = readl(fbi->base + LCDSADDR3);
--
--	printf(" Video hardware info:\n");
--	printf("  Video clock is running at %u Hz\n", s3c_get_hclk() / ((GET_CLKVAL(con1) + 1) * 2));
--	printf("  Video memory bank starts at 0x%08X\n", GET_LCDBANK(addr1) << 22);
--	printf("  Video memory bank offset: 0x%08X\n", GET_LCDBASEU(addr1));
--	printf("  Video memory end: 0x%08X\n", GET_LCDBASEU(addr2));
--	printf("  Virtual screen offset size: %u half words\n", GET_OFFSIZE(addr3));
--	printf("  Virtual screen page width: %u half words\n", GET_PAGE_WIDTH(addr3));
--}
--
--/*
-- * There is only one video hardware instance available.
-- * It makes no sense to dynamically allocate this data
-- */
--static struct fb_ops s3cfb_ops = {
--	.fb_activate_var = s3cfb_activate_var,
--	.fb_enable = s3cfb_enable_controller,
--	.fb_disable = s3cfb_disable_controller,
--};
--
--static struct s3cfb_info fbi = {
--	.info = {
--		.fbops = &s3cfb_ops,
--	},
--};
--
--static int s3cfb_probe(struct device *hw_dev)
--{
--	struct resource *iores;
--	struct s3c_fb_platform_data *pdata = hw_dev->platform_data;
--	int ret;
--
--	if (! pdata)
--		return -ENODEV;
--
--	iores = dev_request_mem_resource(hw_dev, 0);
--	if (IS_ERR(iores))
--		return PTR_ERR(iores);
--	fbi.base = IOMEM(iores->start);
--	writel(0, fbi.base + LCDCON1);
--	writel(0, fbi.base + LCDCON5); /* FIXME not 0 for some displays */
--
--	/* just init */
--	fbi.info.priv = &fbi;
--
--	/* add runtime hardware info */
--	fbi.hw_dev = hw_dev;
--	hw_dev->priv = &fbi;
--
--	/* add runtime video info */
--	fbi.info.modes.modes = pdata->mode_list;
--	fbi.info.modes.num_modes = pdata->mode_cnt;
--	fbi.info.mode = &fbi.info.modes.modes[0];
--	fbi.info.xres = fbi.info.mode->xres;
--	fbi.info.yres = fbi.info.mode->yres;
--	if (pdata->bits_per_pixel)
--		fbi.info.bits_per_pixel = pdata->bits_per_pixel;
--	else
--		fbi.info.bits_per_pixel = 16;
--	fbi.passive_display = pdata->passive_display;
--	fbi.enable = pdata->enable;
--
--	if (IS_ENABLED(CONFIG_DRIVER_VIDEO_S3C_VERBOSE))
--		hw_dev->info = s3cfb_info;
--
--	fbi.info.dev.parent = hw_dev;
--	ret = register_framebuffer(&fbi.info);
--	if (ret != 0) {
--		dev_err(hw_dev, "Failed to register framebuffer\n");
--		return -EINVAL;
--	}
--
--	return 0;
--}
--
--static struct driver s3cfb_driver = {
--	.name	= "s3c_fb",
--	.probe	= s3cfb_probe,
--};
--device_platform_driver(s3cfb_driver);
--
--/**
-- * The S3C244x LCD controller supports passive (CSTN/STN) and active (TFT) LC displays
-- *
-- * The driver itself currently supports only active TFT LC displays in the follwing manner:
-- *
-- *  * True colours
-- *    - 16 bpp
-- *    - 24 bpp (untested)
-- */
 -- 
 2.30.2
 
