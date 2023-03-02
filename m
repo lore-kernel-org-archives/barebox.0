@@ -1,59 +1,59 @@
-Delivery-date: Thu, 02 Mar 2023 12:18:20 +0100
+Delivery-date: Thu, 02 Mar 2023 12:18:32 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pXgx1-006Uqp-VP
-	for lore@lore.pengutronix.de; Thu, 02 Mar 2023 12:18:20 +0100
+	id 1pXgxD-006UrN-5e
+	for lore@lore.pengutronix.de; Thu, 02 Mar 2023 12:18:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pXgx0-0001wW-U2
-	for lore@pengutronix.de; Thu, 02 Mar 2023 12:18:20 +0100
+	id 1pXgxB-00022C-Ub
+	for lore@pengutronix.de; Thu, 02 Mar 2023 12:18:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0dSSmsVhYDUcRxW2yooHj3ioN9G2nrBbCCsqCbn6wyQ=; b=0u/ikToWlPOAivIusgGoxqbi+T
-	nsnu7j+v1tUseNU+amv+wG4SYjQBeAFkZ9WrEJ5bk590oLzOPRVRhR5uzgfO54Um12yQF40QE/Nbr
-	ZTbQh4vECBNuqCSlMF6wmIiOhckyAIOx6ImfBmJbTcIOWgy5EGG3D4NZ268G7B4Yhdykb6VJAFg/S
-	MLyNIdGPRMinvuW7uP9ADHixj4+2vs5AhMtAlkhE65EkyP6j/eWenlMD2ah1n5BijPJ0wMz+aWees
-	KV2tW7f+87NTG5yzqH051VNKoRcQRi0OTqe0Q0zOrclK5IXlBFHpb2EguTwFuq102x2elO46BdOFm
-	1IVt7Rpg==;
+	bh=SAzhLt7/nn0CH+vVrW9psCBQUCWMOgrzZzjG2xVKnzQ=; b=s9QyJoJgk8IdQ0ZiEn4WfIRBOj
+	/bv/lNkQuwVUP2e5DJm5pJWqEyLfqt/GdHmtOS+oi9uFkK7fxdITs9Ard5raLWvAShzh+77UafveJ
+	F0pDfqZvCcEfc4dc5qjZxmi2kD1h8G5Wle51MW2E8Ss6TsYaP/hdqSXP1Q6+PPJ55u1gNCa8vNbX6
+	xG4YK/oyBQnsY76miKNqDEXsDdzKeaGV2lhD4ZmaDDqxpk1GPBMn6baaXRjQyUbXR80NH9zuPAdNG
+	R+3pGp0j8TIyd5CmKmf0h//ND6M9veBWq5El3fMu9l76j9pig/IMbuU9KnX+a+zmrViIE3LCplBA+
+	pEdU2fYQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pXgvm-001sks-8q; Thu, 02 Mar 2023 11:17:02 +0000
+	id 1pXgvv-001sqn-Eh; Thu, 02 Mar 2023 11:17:11 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pXguy-001sGe-FQ
-	for barebox@lists.infradead.org; Thu, 02 Mar 2023 11:16:18 +0000
+	id 1pXgv6-001sL3-DJ
+	for barebox@lists.infradead.org; Thu, 02 Mar 2023 11:16:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pXgux-00019E-83; Thu, 02 Mar 2023 12:16:11 +0100
+	id 1pXgux-000194-3t; Thu, 02 Mar 2023 12:16:11 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pXguw-001JdZ-K4; Thu, 02 Mar 2023 12:16:10 +0100
+	id 1pXguw-001JdU-Gw; Thu, 02 Mar 2023 12:16:10 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pXgut-004QVI-Rn; Thu, 02 Mar 2023 12:16:07 +0100
+	id 1pXgut-004QVR-Tw; Thu, 02 Mar 2023 12:16:07 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  2 Mar 2023 12:15:55 +0100
-Message-Id: <20230302111606.1054037-3-s.hauer@pengutronix.de>
+Date: Thu,  2 Mar 2023 12:15:58 +0100
+Message-Id: <20230302111606.1054037-6-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230302111606.1054037-1-s.hauer@pengutronix.de>
 References: <20230302111606.1054037-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230302_031612_773786_9B13C2DD 
-X-CRM114-Status: GOOD (  11.84  )
+X-CRM114-CacheID: sfid-20230302_031620_549440_3FB83AD3 
+X-CRM114-Status: GOOD (  18.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,304 +75,191 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 02/13] ARM: mvebu: Use ENTRY_FUNCTION_HEAD
+Subject: [PATCH 05/13] ARM: drop CONFIG_HAS_ASM_DEBUG_LL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Use ENTRY_FUNCTION_HEAD in the mvebu boards to customize the barebox
-image header without having to hook into a generic include file.
+When CONFIG_HAS_ASM_DEBUG_LL is set then include/debug_ll.h includes
+asm/debug_ll.h, otherwise it includes mach/debug_ll.h.  Drop this option
+and instead always include asm/debug_ll.h and include mach/debug_ll.h
+from there if necessary. This also adds the missing asm/debug_ll.h for
+architectures which previously did not have that file.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                                    |  1 -
- arch/arm/boards/globalscale-guruplug/lowlevel.c     |  4 ++--
- arch/arm/boards/globalscale-mirabox/lowlevel.c      |  4 ++--
- arch/arm/boards/lenovo-ix4-300d/lowlevel.c          |  4 ++--
- arch/arm/boards/marvell-armada-xp-db/lowlevel.c     |  4 ++--
- arch/arm/boards/marvell-armada-xp-gp/lowlevel.c     |  4 ++--
- arch/arm/boards/netgear-rn104/lowlevel.c            |  4 ++--
- arch/arm/boards/netgear-rn2120/lowlevel.c           |  4 ++--
- arch/arm/boards/plathome-openblocks-a6/lowlevel.c   |  4 ++--
- arch/arm/boards/plathome-openblocks-ax3/lowlevel.c  |  4 ++--
- arch/arm/boards/solidrun-cubox/lowlevel.c           |  4 ++--
- arch/arm/boards/turris-omnia/lowlevel.c             |  4 ++--
- arch/arm/boards/usi-topkick/lowlevel.c              |  4 ++--
- arch/arm/mach-mvebu/include/mach/barebox-arm-head.h | 12 ++++--------
- 14 files changed, 28 insertions(+), 33 deletions(-)
+ arch/arm/Kconfig                 |  2 +-
+ arch/arm/include/asm/debug_ll.h  |  2 ++
+ arch/mips/include/asm/debug_ll.h |  6 ++++++
+ arch/riscv/Kconfig.socs          | 12 ++++++------
+ arch/sandbox/Kconfig             |  2 +-
+ arch/x86/include/asm/debug_ll.h  |  6 ++++++
+ common/Kconfig                   |  4 ----
+ include/debug_ll.h               |  8 ++------
+ 8 files changed, 24 insertions(+), 18 deletions(-)
+ create mode 100644 arch/mips/include/asm/debug_ll.h
+ create mode 100644 arch/x86/include/asm/debug_ll.h
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index c5645c540e..1281b8be38 100644
+index 6aa0ec4074..fccdef9d71 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -126,7 +126,6 @@ config ARCH_MVEBU
- 	select CLKDEV_LOOKUP
- 	select GPIOLIB
- 	select HAS_DEBUG_LL
--	select HAVE_MACH_ARM_HEAD
- 	select HAVE_PBL_MULTI_IMAGES
+@@ -273,7 +273,7 @@ config ARCH_ARM64_VIRT
+ 	select ARM_AMBA
+ 	select BOARD_ARM_VIRT
  	select HW_HAS_PCI
- 	select MVEBU_MBUS
-diff --git a/arch/arm/boards/globalscale-guruplug/lowlevel.c b/arch/arm/boards/globalscale-guruplug/lowlevel.c
-index 964d3510ee..35b2150960 100644
---- a/arch/arm/boards/globalscale-guruplug/lowlevel.c
-+++ b/arch/arm/boards/globalscale-guruplug/lowlevel.c
-@@ -4,12 +4,12 @@
- #include <common.h>
- #include <linux/sizes.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <mach/lowlevel.h>
+-	select HAS_ASM_DEBUG_LL
++	select HAS_DEBUG_LL
  
- extern char __dtb_kirkwood_guruplug_server_plus_bb_start[];
+ endchoice
  
--ENTRY_FUNCTION(start_globalscale_guruplug, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_globalscale_guruplug, r0, r1, r2)
- {
- 	void *fdt;
- 
-diff --git a/arch/arm/boards/globalscale-mirabox/lowlevel.c b/arch/arm/boards/globalscale-mirabox/lowlevel.c
-index 094792d461..9d03dfd418 100644
---- a/arch/arm/boards/globalscale-mirabox/lowlevel.c
-+++ b/arch/arm/boards/globalscale-mirabox/lowlevel.c
-@@ -4,12 +4,12 @@
- #include <common.h>
- #include <linux/sizes.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <mach/lowlevel.h>
- 
- extern char __dtb_armada_370_mirabox_bb_start[];
- 
--ENTRY_FUNCTION(start_globalscale_mirabox, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_globalscale_mirabox, r0, r1, r2)
- {
- 	void *fdt;
- 
-diff --git a/arch/arm/boards/lenovo-ix4-300d/lowlevel.c b/arch/arm/boards/lenovo-ix4-300d/lowlevel.c
-index c0a695908f..2ca6c6b5f9 100644
---- a/arch/arm/boards/lenovo-ix4-300d/lowlevel.c
-+++ b/arch/arm/boards/lenovo-ix4-300d/lowlevel.c
-@@ -3,13 +3,13 @@
- 
- #include <common.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <linux/sizes.h>
- #include <mach/lowlevel.h>
- 
- extern char __dtb_armada_xp_lenovo_ix4_300d_bb_start[];
- 
--ENTRY_FUNCTION(start_lenovo_ix4_300d, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_lenovo_ix4_300d, r0, r1, r2)
- {
- 	void *fdt;
- 
-diff --git a/arch/arm/boards/marvell-armada-xp-db/lowlevel.c b/arch/arm/boards/marvell-armada-xp-db/lowlevel.c
-index 4752bbf1b4..4850cf4c2f 100644
---- a/arch/arm/boards/marvell-armada-xp-db/lowlevel.c
-+++ b/arch/arm/boards/marvell-armada-xp-db/lowlevel.c
-@@ -7,13 +7,13 @@
- #include <common.h>
- #include <linux/sizes.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <mach/lowlevel.h>
- #include <io.h>
- 
- extern char __dtb_armada_xp_db_bb_start[];
- 
--ENTRY_FUNCTION(start_marvell_armada_xp_db, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_marvell_armada_xp_db, r0, r1, r2)
- {
- 	void *fdt;
- 	uint32_t reg;
-diff --git a/arch/arm/boards/marvell-armada-xp-gp/lowlevel.c b/arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
-index 43b1ba8c9a..e6242e36a7 100644
---- a/arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
-+++ b/arch/arm/boards/marvell-armada-xp-gp/lowlevel.c
-@@ -4,12 +4,12 @@
- #include <common.h>
- #include <linux/sizes.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <mach/lowlevel.h>
- 
- extern char __dtb_armada_xp_gp_bb_start[];
- 
--ENTRY_FUNCTION(start_marvell_armada_xp_gp, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_marvell_armada_xp_gp, r0, r1, r2)
- {
- 	void *fdt;
- 
-diff --git a/arch/arm/boards/netgear-rn104/lowlevel.c b/arch/arm/boards/netgear-rn104/lowlevel.c
-index c6c8e84023..5005129555 100644
---- a/arch/arm/boards/netgear-rn104/lowlevel.c
-+++ b/arch/arm/boards/netgear-rn104/lowlevel.c
-@@ -6,12 +6,12 @@
- 
- #include <common.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <mach/lowlevel.h>
- 
- extern char __dtb_armada_370_rn104_bb_start[];
- 
--ENTRY_FUNCTION(start_netgear_rn104, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_netgear_rn104, r0, r1, r2)
- {
- 	void *fdt;
- 
-diff --git a/arch/arm/boards/netgear-rn2120/lowlevel.c b/arch/arm/boards/netgear-rn2120/lowlevel.c
-index c78d3644b5..f88f46c037 100644
---- a/arch/arm/boards/netgear-rn2120/lowlevel.c
-+++ b/arch/arm/boards/netgear-rn2120/lowlevel.c
-@@ -3,14 +3,14 @@
- 
- #include <common.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <asm/io.h>
- #include <mach/lowlevel.h>
- #include <mach/common.h>
- 
- extern char __dtb_armada_xp_rn2120_bb_start[];
- 
--ENTRY_FUNCTION(start_netgear_rn2120, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_netgear_rn2120, r0, r1, r2)
- {
- 	void *fdt;
- 	void __iomem *base = mvebu_get_initial_int_reg_base();
-diff --git a/arch/arm/boards/plathome-openblocks-a6/lowlevel.c b/arch/arm/boards/plathome-openblocks-a6/lowlevel.c
-index a480c966a4..daa482dd4f 100644
---- a/arch/arm/boards/plathome-openblocks-a6/lowlevel.c
-+++ b/arch/arm/boards/plathome-openblocks-a6/lowlevel.c
-@@ -3,12 +3,12 @@
- #include <common.h>
- #include <linux/sizes.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <mach/lowlevel.h>
- 
- extern char __dtb_kirkwood_openblocks_a6_bb_start[];
- 
--ENTRY_FUNCTION(start_plathome_openblocks_a6, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_plathome_openblocks_a6, r0, r1, r2)
- {
- 	void *fdt;
- 
-diff --git a/arch/arm/boards/plathome-openblocks-ax3/lowlevel.c b/arch/arm/boards/plathome-openblocks-ax3/lowlevel.c
-index 42b291df9f..bab44590c7 100644
---- a/arch/arm/boards/plathome-openblocks-ax3/lowlevel.c
-+++ b/arch/arm/boards/plathome-openblocks-ax3/lowlevel.c
-@@ -4,12 +4,12 @@
- #include <common.h>
- #include <linux/sizes.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <mach/lowlevel.h>
- 
- extern char __dtb_armada_xp_openblocks_ax3_4_bb_start[];
- 
--ENTRY_FUNCTION(start_plathome_openblocks_ax3, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_plathome_openblocks_ax3, r0, r1, r2)
- {
- 	void *fdt;
- 
-diff --git a/arch/arm/boards/solidrun-cubox/lowlevel.c b/arch/arm/boards/solidrun-cubox/lowlevel.c
-index 94ed9a4fd7..5bcd0751fc 100644
---- a/arch/arm/boards/solidrun-cubox/lowlevel.c
-+++ b/arch/arm/boards/solidrun-cubox/lowlevel.c
-@@ -5,12 +5,12 @@
- #include <common.h>
- #include <linux/sizes.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <mach/lowlevel.h>
- 
- extern char __dtb_dove_cubox_bb_start[];
- 
--ENTRY_FUNCTION(start_solidrun_cubox, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_solidrun_cubox, r0, r1, r2)
- {
- 	void *fdt;
- 
-diff --git a/arch/arm/boards/turris-omnia/lowlevel.c b/arch/arm/boards/turris-omnia/lowlevel.c
-index b6520b5775..8ec2a0bf82 100644
---- a/arch/arm/boards/turris-omnia/lowlevel.c
-+++ b/arch/arm/boards/turris-omnia/lowlevel.c
-@@ -3,14 +3,14 @@
- 
- #include <common.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <mach/lowlevel.h>
- 
- #include <asm/io.h>
- 
- extern char __dtb_armada_385_turris_omnia_bb_start[];
- 
--ENTRY_FUNCTION(start_turris_omnia, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_turris_omnia, r0, r1, r2)
- {
- 	void *fdt;
- 
-diff --git a/arch/arm/boards/usi-topkick/lowlevel.c b/arch/arm/boards/usi-topkick/lowlevel.c
-index 0193deadbe..51aa29e047 100644
---- a/arch/arm/boards/usi-topkick/lowlevel.c
-+++ b/arch/arm/boards/usi-topkick/lowlevel.c
-@@ -4,12 +4,12 @@
- #include <common.h>
- #include <linux/sizes.h>
- #include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
-+#include <mach/barebox-arm-head.h>
- #include <mach/lowlevel.h>
- 
- extern char __dtb_kirkwood_topkick_bb_start[];
- 
--ENTRY_FUNCTION(start_usi_topkick, r0, r1, r2)
-+ENTRY_FUNCTION_MVEBU(start_usi_topkick, r0, r1, r2)
- {
- 	void *fdt;
- 
-diff --git a/arch/arm/mach-mvebu/include/mach/barebox-arm-head.h b/arch/arm/mach-mvebu/include/mach/barebox-arm-head.h
-index 2ef3377402..72afd10005 100644
---- a/arch/arm/mach-mvebu/include/mach/barebox-arm-head.h
-+++ b/arch/arm/mach-mvebu/include/mach/barebox-arm-head.h
-@@ -3,7 +3,7 @@
- #include <linux/stringify.h>
- #include <mach/common.h>
- 
--static inline void __barebox_arm_head(void)
-+static inline void __barebox_mvebu_head(void)
- {
- 	__asm__ __volatile__ (
- #ifdef CONFIG_THUMB2_BAREBOX
-@@ -53,10 +53,6 @@ static inline void __barebox_arm_head(void)
+diff --git a/arch/arm/include/asm/debug_ll.h b/arch/arm/include/asm/debug_ll.h
+index d7b25a7fca..89ca106117 100644
+--- a/arch/arm/include/asm/debug_ll.h
++++ b/arch/arm/include/asm/debug_ll.h
+@@ -6,6 +6,8 @@
+ #ifdef CONFIG_DEBUG_QEMU_ARM64_VIRT
+ #define DEBUG_LL_UART_ADDR		0x9000000
+ #include <debug_ll/pl011.h>
++#else
++#include <mach/debug_ll.h>
  #endif
- 	);
- }
--static inline void barebox_arm_head(void)
--{
--	__barebox_arm_head();
--	__asm__ __volatile__ (
--		"b barebox_arm_reset_vector\n"
--	);
--}
+ 
+ #endif
+diff --git a/arch/mips/include/asm/debug_ll.h b/arch/mips/include/asm/debug_ll.h
+new file mode 100644
+index 0000000000..96e2082dc8
+--- /dev/null
++++ b/arch/mips/include/asm/debug_ll.h
+@@ -0,0 +1,6 @@
++#ifndef __ASM_MIPS_DEBUG_LL_H
++#define __ASM_MIPS_DEBUG_LL_H
 +
-+#define ENTRY_FUNCTION_MVEBU(name, arg0, arg1, arg2) \
-+	ENTRY_FUNCTION_HEAD(name, __barebox_mvebu_head, arg0, arg1, arg2)
++#include <mach/debug_ll.h>
++
++#endif /* __ASM_MIPS_DEBUG_LL_H */
+diff --git a/arch/riscv/Kconfig.socs b/arch/riscv/Kconfig.socs
+index 0f03637a66..2cb0716cd5 100644
+--- a/arch/riscv/Kconfig.socs
++++ b/arch/riscv/Kconfig.socs
+@@ -5,7 +5,7 @@ menu "SoC selection"
+ config SOC_ERIZO
+ 	bool "Erizo SoC"
+ 	depends on ARCH_RV32I
+-	select HAS_ASM_DEBUG_LL
++	select HAS_DEBUG_LL
+ 	select HAS_NMON
+ 	select USE_COMPRESSED_DTB
+ 	select RISCV_M_MODE
+@@ -20,7 +20,7 @@ config SOC_VIRT
+ 	select RISCV_S_MODE
+ 	select BOARD_RISCV_GENERIC_DT
+ 	select HAS_CACHE
+-	select HAS_ASM_DEBUG_LL
++	select HAS_DEBUG_LL
+ 	help
+ 	  Generates an image tht can be be booted by QEMU. The image is called
+ 	  barebox-dt-2nd.img
+@@ -55,7 +55,7 @@ config SOC_SIFIVE
+ 	select CLK_SIFIVE_PRCI
+ 	select RISCV_TIMER
+ 	select HAS_MACB
+-	select HAS_ASM_DEBUG_LL
++	select HAS_DEBUG_LL
+ 	help
+ 	  This enables support for SiFive SoC platform hardware.
+ 
+@@ -72,7 +72,7 @@ config SOC_STARFIVE
+ 	bool "StarFive SoCs"
+ 	select ARCH_HAS_RESET_CONTROLLER
+ 	select RISCV_S_MODE
+-	select HAS_ASM_DEBUG_LL
++	select HAS_DEBUG_LL
+ 	select HAS_NMON
+ 	help
+ 	  This enables support for SiFive SoC platform hardware.
+@@ -113,7 +113,7 @@ endif
+ config SOC_ALLWINNER_SUN20I
+ 	bool "Allwinner Sun20i SoCs"
+ 	depends on ARCH_RV64I
+-	select HAS_ASM_DEBUG_LL
++	select HAS_DEBUG_LL
+ 	select HAS_CACHE
+ 
+ if SOC_ALLWINNER_SUN20I
+@@ -135,7 +135,7 @@ config SIFIVE_L2
+ config SOC_LITEX
+ 	bool "LiteX SoCs"
+ 	depends on ARCH_RV32I
+-	select HAS_ASM_DEBUG_LL
++	select HAS_DEBUG_LL
+ 	select HAS_NMON
+ 	select USE_COMPRESSED_DTB
+ 	select RISCV_TIMER
+diff --git a/arch/sandbox/Kconfig b/arch/sandbox/Kconfig
+index 366a1d0b52..31c4484cf1 100644
+--- a/arch/sandbox/Kconfig
++++ b/arch/sandbox/Kconfig
+@@ -16,7 +16,7 @@ config SANDBOX
+ 	select ARCH_HAS_STACK_DUMP if ASAN
+ 	select GENERIC_FIND_NEXT_BIT
+ 	select ARCH_HAS_SJLJ
+-	select HAS_ASM_DEBUG_LL
++	select HAS_DEBUG_LL
+ 	default y
+ 
+ config ARCH_TEXT_BASE
+diff --git a/arch/x86/include/asm/debug_ll.h b/arch/x86/include/asm/debug_ll.h
+new file mode 100644
+index 0000000000..e75090b4ba
+--- /dev/null
++++ b/arch/x86/include/asm/debug_ll.h
+@@ -0,0 +1,6 @@
++#ifndef __ASM_X86_DEBUG_LL_H
++#define __ASM_X86_DEBUG_LL_H
++
++#include <mach/debug_ll.h>
++
++#endif /* __ASM_X86_DEBUG_LL_H */
+diff --git a/common/Kconfig b/common/Kconfig
+index d957970993..96ab687af2 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1639,10 +1639,6 @@ source "common/efi/Kconfig"
+ config HAS_DEBUG_LL
+ 	bool
+ 
+-config HAS_ASM_DEBUG_LL
+-	bool
+-	select HAS_DEBUG_LL
+-
+ config DDR_SPD
+ 	bool
+ 	select CRC_ITU_T
+diff --git a/include/debug_ll.h b/include/debug_ll.h
+index 856a157bf5..0128ab524a 100644
+--- a/include/debug_ll.h
++++ b/include/debug_ll.h
+@@ -12,18 +12,14 @@
+ #define   __INCLUDE_DEBUG_LL_H__
+ 
+ #ifdef CONFIG_HAS_DEBUG_LL
+-#ifdef CONFIG_HAS_ASM_DEBUG_LL
+-#include <asm/debug_ll.h>
+-#else
+ /*
+- * mach/debug_ll.h should implement PUTC_LL. This can be a macro or a static
++ * asm/debug_ll.h should implement PUTC_LL. This can be a macro or a static
+  * inline function. Note that several SoCs expect the UART to be initialized
+  * by a debugger or a first stage bootloader. You won't see anything without
+  * this initialization. Depending on the PUTC_LL implementation the board might
+  * also hang in PUTC_LL without proper initialization.
+  */
+-#include <mach/debug_ll.h>
+-#endif
++#include <asm/debug_ll.h>
+ #endif
+ 
+ #if defined (CONFIG_DEBUG_LL)
 -- 
 2.30.2
 
