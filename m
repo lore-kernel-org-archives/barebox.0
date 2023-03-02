@@ -1,56 +1,72 @@
-Delivery-date: Thu, 02 Mar 2023 17:42:33 +0100
+Delivery-date: Thu, 02 Mar 2023 18:02:56 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pXm0m-006epD-C1
-	for lore@lore.pengutronix.de; Thu, 02 Mar 2023 17:42:33 +0100
+	id 1pXmKT-006fc3-Ql
+	for lore@lore.pengutronix.de; Thu, 02 Mar 2023 18:02:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pXm0l-0003eY-3v
-	for lore@pengutronix.de; Thu, 02 Mar 2023 17:42:32 +0100
+	id 1pXmKT-0006Pb-GE
+	for lore@pengutronix.de; Thu, 02 Mar 2023 18:02:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SWBJBrlB8ZCPjryjLqYSCy1e051lpL37HKqifFKDGWc=; b=ykyLXU8pfcYa+4UQg1D6XQ/CqQ
-	w8VJWv40yAY/bLNGK3EIpohkSb0u+I1uRiKgB9uWLhh5Aeb0Xi5rUsB+279/nXJr3yL5yb6sVY9yY
-	+LcbpQ9H3xpPcNXEkzc6aFeuh6SNhplDgju5LVH7BT8420ZAfsv8Kfe+dx+qvCNbhgZ+d7t8LKHbx
-	PTwEHXpfJbH2VHLPezOHkr81AVIOFTTlp7LYMmjrKQAKsi1AkioRZvJHhI0M2A5zQUzM8jtsykRvD
-	lOrOfM4gml4B/BHYCyV8EsE8WIEmx9SHnLX2QqZ3HiH6GAmJknkCYIZ/qxJ1Iv6ve7aVHWPOL7OTL
-	PoJaf2qw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=O2qJx0YLBbjWsaXUG7hwm2X7ATQwzafNlti+ZR9y3FM=; b=HMg8XOmftc0DIM3YSYqLEl+wIh
+	VjnpzQQggDY0KqKWa6QSZKToSWpfWdlKJoS22gdiEnPOzm3booFD11HxA9iRhJbtprR80JYTYfJaM
+	gr2MMgI+MkYkWwD1aerjF+eLVgl5zRg65HF7nLTPM6EwOHkXgKWQ8jk2DHgREc8CMED9TNDt2JLGP
+	RYcwwiWnPe7MrdHzl6Q8cmgh1Gst9M3swyLaYFYRtN0OIoeIkdlwuQUYglVQsNpkMeLA6IzXqhemt
+	RwYvSraq1jaoQiTP280UKpCYvGkc67MSzm0ua2Js15T1E4YnP7RQ6LLKYv0uRVDwzl/chLsYnFSEL
+	oVGOSdDw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pXlz6-002s57-ON; Thu, 02 Mar 2023 16:40:48 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1pXmJ2-002upF-AY; Thu, 02 Mar 2023 17:01:24 +0000
+Received: from mailrelay2-1.pub.mailoutpod2-cph3.one.com ([2a02:2350:5:401::1])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pXlz0-002s38-Aj
-	for barebox@lists.infradead.org; Thu, 02 Mar 2023 16:40:45 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pXlyy-0003Ku-CG; Thu, 02 Mar 2023 17:40:40 +0100
-Message-ID: <5ac1e824-d3b2-26b7-01bc-19de2755cf84@pengutronix.de>
-Date: Thu, 2 Mar 2023 17:40:40 +0100
+	id 1pXmIx-002uoE-ES
+	for barebox@lists.infradead.org; Thu, 02 Mar 2023 17:01:21 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=rsa2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=O2qJx0YLBbjWsaXUG7hwm2X7ATQwzafNlti+ZR9y3FM=;
+	b=k4z0d4X1fz13BS8qe/QPU9vUqfiIoP7zvzUy/WfSjG3LrvW+3Acr+ESHorxWLnS5RPW71gK+6bQxa
+	 ZUQb+FAGjDcGJ7Ys63LcXoYTKft68cRfCdSVfF41Zj74rPdjSqcI7uhE5b1lXgH+qYkzNVinzoO7AF
+	 lwucuywuaOuMOkJzybe1FR27PEyF5Nurjm1ZGJRgbOLUQrvfgzDJfv+tWYqaCfJXKMOBSvNQsJe16T
+	 ppVDbDeRyIZNOJJBiQdIDr2zwuMrtmVLhEj/yeLQ+/U27lEB9o5boT6U4XMEWKNn3FnYf6fz9f9FNn
+	 EL7c4GodBAyYKsrhyc0Noz5OwdBkPjA==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=ed2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=O2qJx0YLBbjWsaXUG7hwm2X7ATQwzafNlti+ZR9y3FM=;
+	b=gdlU0dgJo8BgSoY6W5WVudeZtnQESDIhFRguy57HmWpq5jk2SNPqhVoDEQFz6/6kICH9mLfuEFhfC
+	 yX2BPgnCQ==
+X-HalOne-ID: d3ff6dbf-b91b-11ed-adf4-3df7d73157c4
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+	by mailrelay2 (Halon) with ESMTPSA
+	id d3ff6dbf-b91b-11ed-adf4-3df7d73157c4;
+	Thu, 02 Mar 2023 17:01:10 +0000 (UTC)
+Date: Thu, 2 Mar 2023 18:01:09 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <ZADWVZvotcFBtKbM@ravnborg.org>
+References: <20230228143031.1718565-1-s.hauer@pengutronix.de>
+ <Y/47xKrQwNGDe2KU@ravnborg.org>
+ <20230301075324.GO32097@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20230302111606.1054037-1-s.hauer@pengutronix.de>
- <20230302111606.1054037-4-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230302111606.1054037-4-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230301075324.GO32097@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230302_084042_749145_B0974ED0 
-X-CRM114-Status: GOOD (  16.27  )
+X-CRM114-CacheID: sfid-20230302_090119_677109_20D97897 
+X-CRM114-Status: GOOD (  37.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,582 +84,141 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 03/13] ARM: at91: Use ENTRY_FUNCTION_HEAD
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 0/9] ARM: misc cleanups
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 02.03.23 12:15, Sascha Hauer wrote:
-> Use ENTRY_FUNCTION_HEAD in the at91 boards to customize the barebox
-> image header without having to hook into a generic include file.
+Hi Sascha.
+
+On Wed, Mar 01, 2023 at 08:53:24AM +0100, Sascha Hauer wrote:
+> On Tue, Feb 28, 2023 at 06:37:08PM +0100, Sam Ravnborg wrote:
+> > Hi Sascha,
+> > 
+> > On Tue, Feb 28, 2023 at 03:30:22PM +0100, Sascha Hauer wrote:
+> > > I am working on making it possible to build support for multiple
+> > > arch/arm/mach-*/ into the same barebox. Here are some misc cleanups
+> > > I stumbled upon while preparing multi arch support.
+> > > 
+> > > Sascha Hauer (9):
+> > >   ARM: mxs: remove unused mach/clock.h
+> > >   ARM: imx: remove unused mach/clock.h
+> > >   ARM: rockchip: drop mach/timer.h
+> > >   ARM: i.MX: Move imxfb.h to include/platform_data/
+> > >   pinctrl: rockchip: Fix uninitialized var warning
+> > >   ARM: at91: remove unnecessary configs
+> > >   ARM: at91: Switch all boards to multiimage
+> > >   at91: consolidate usb-a963 128m images
+> > >   ARM: pxa: Move plat/ include files to mach/
+> > 
+> > As much as I like the patches I think a more sane course of
+> > action for these old at91 boards would be to drop most of them.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  arch/arm/boards/animeo_ip/lowlevel.c               |  4 ++--
->  arch/arm/boards/at91rm9200ek/lowlevel.c            |  4 ++--
->  arch/arm/boards/at91sam9260ek/lowlevel.c           |  6 +++---
->  arch/arm/boards/at91sam9261ek/lowlevel_init.c      |  5 +++--
->  arch/arm/boards/at91sam9m10g45ek/lowlevel.c        |  4 ++--
->  arch/arm/boards/at91sam9m10ihd/lowlevel.c          |  4 ++--
->  arch/arm/boards/at91sam9n12ek/lowlevel.c           |  4 ++--
->  arch/arm/boards/dss11/lowlevel.c                   |  4 ++--
->  arch/arm/boards/haba-knx/lowlevel.c                |  4 ++--
->  arch/arm/boards/pm9261/lowlevel_init.c             |  3 ++-
->  arch/arm/boards/pm9263/lowlevel_init.c             |  3 ++-
->  arch/arm/boards/pm9g45/lowlevel.c                  |  4 ++--
->  arch/arm/boards/qil-a926x/lowlevel.c               |  6 +++---
->  arch/arm/boards/telit-evk-pro3/lowlevel.c          |  4 ++--
->  arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c     |  6 +++---
->  arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c     |  4 ++--
->  arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c     |  6 +++---
->  arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c     |  5 +++--
->  arch/arm/mach-at91/Kconfig                         |  8 --------
->  arch/arm/mach-at91/include/mach/barebox-arm-head.h | 12 ++++--------
->  20 files changed, 46 insertions(+), 54 deletions(-)
+> Agreed, and you just motivated me to look into it.
 > 
-> diff --git a/arch/arm/boards/animeo_ip/lowlevel.c b/arch/arm/boards/animeo_ip/lowlevel.c
-> index 2d443f5384..f56f59fa8e 100644
-> --- a/arch/arm/boards/animeo_ip/lowlevel.c
-> +++ b/arch/arm/boards/animeo_ip/lowlevel.c
-> @@ -7,14 +7,14 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam9_sdramc.h>
->  #include <mach/at91sam9260.h>
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_animeo_ip, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_animeo_ip, r0, r1, r2)
+> > A simple algorithm would be:
+> >   If not supported in the kernel, drop the board.
+> 
+> That algorithm doesn't bring us very far. Here is a list of boards
+> supported in barebox, the 'x' add the beginning denotes that I
+> found a device tree for it in the kernel:
+> 
+> AT91RM9200
+> ==========
+> x MACH_AT91RM9200EK	Atmel AT91RM9200-EK Evaluation Kit
+> 
+> AT91SAM9260
+> ===========
+> x MACH_ANIMEO_IP	Somfy Animeo IP
+> x MACH_AT91SAM9260EK	Atmel AT91SAM9260-EK
+> x MACH_QIL_A9260	CALAO QIL-A9260 board
+> x MACH_TNY_A9260	CALAO TNY-A9260
+> x MACH_USB_A9260	CALAO USB-A9260
+>   MACH_GE863		Telit EVK-PRO3
+> 
+> AT91SAM9261
+> ===========
+> x MACH_AT91SAM9261EK	Atmel AT91SAM9261-EK Evaluation Kit
+>   MACH_PM9261		Ronetix PM9261
+> 
+> AT91SAM9G10
+> ===========
+> x MACH_AT91SAM9G10EK	Atmel AT91SAM9G10-EK Evaluation Kit
+> 
+> AT91SAM9G20
+> ===========
+> x MACH_AT91SAM9G20EK	Atmel AT91SAM9G20-EK Evaluation Kit
+> x MACH_TNY_A9G20	CALAO TNY-A9G20
+> x MACH_USB_A9G20	CALAO USB-A9G20
+>   MACH_DSS11		aizo dSS11
+>   MACH_QIL_A9G20	CALAO QIL-A9G20 board
+>   MACH_HABA_KNX_LITE	CALAO HABA-KNX-LITE
+> 
+> AT91SAM9263
+> ===========
+>   MACH_PM9263		Ronetix PM9263
+> x MACH_TNY_A9263	CALAO TNY-A9263
+> x MACH_USB_A9263	CALAO USB-A9263
+> 
+> AT91SAM9G45 or AT91SAM9M10
+> ==========================
+>   MACH_AT91SAM9M10IHD	Atmel AT91SAM9M10IDH Tablet
+> x MACH_AT91SAM9M10G45EK	Atmel AT91SAM9M10G45-EK Evaluation Kit
+> x MACH_PM9G45		Ronetix PM9G45
+> 
+> AT91SAM9N12
+> ===========
+> x MACH_AT91SAM9N12EK	Atmel AT91SAM9N12 Evaluation Kit
+> 
+> SAMA5D3
+> =======
+> x MACH_SAMA5D3XEK	Atmel SAMA5D3X Evaluation Kit
+> 
+> SAMA5D4
+> =======
+> x MACH_SAMA5D4EK	Atmel SAMA5D4 Evaluation Kit
+> x MACH_SAMA5D4_XPLAINED	Atmel SAMA5D4 XPLAINED ULTRA Evaluation Kit
+> 
+> It seems most boards are supported in the kernel as well.
+Looking closer what I remembered was the removal of the legacy board
+support - as the boards all became DT enabled.
 
-There's SAMA5_ENTRY_FUNCTION, so it's a bit unfortunate that it's
-the other way round here.
+> 
+> >   
+> > The boards that are not in the kernel have not seen any
+> > activity in barebox for a long time, so it is not like
+> > they look maintained.
+> 
+> None of the boards has seen any activity except for those that are
+> already converted to multiboard.
+> 
+> Given that we could remove all board and SoC support that has
+> not yet been converted to multiboard support.
+> 
+> The question is: When you want to port over some more board/SoC code
+> to multiboard, does the existing code help you or would it be easier
+> to do a fresh start?
+If I for some reasons should look into adding DT support for a board, I
+would have no trouble browsing some older barebox tree.
+But I cannot see anyone would care about the older at91sam9* boards.
+Keep the sama* boards but drop the at91sam* boards that are not
+multi image enabled today.
 
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/at91rm9200ek/lowlevel.c b/arch/arm/boards/at91rm9200ek/lowlevel.c
-> index ba62f1116d..9180a484aa 100644
-> --- a/arch/arm/boards/at91rm9200ek/lowlevel.c
-> +++ b/arch/arm/boards/at91rm9200ek/lowlevel.c
-> @@ -7,7 +7,7 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91rm9200_mc.h>
-> @@ -21,7 +21,7 @@ void static inline access_sdram(void)
->  	writel(0x00000000, AT91_CHIPSELECT_1);
->  }
->  
-> -ENTRY_FUNCTION(start_at91rm9200ek, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_at91rm9200ek, r0, r1, r2)
->  {
->  	u32 r;
->  	int i;
-> diff --git a/arch/arm/boards/at91sam9260ek/lowlevel.c b/arch/arm/boards/at91sam9260ek/lowlevel.c
-> index 81fe70278b..a44cfc6b35 100644
-> --- a/arch/arm/boards/at91sam9260ek/lowlevel.c
-> +++ b/arch/arm/boards/at91sam9260ek/lowlevel.c
-> @@ -7,14 +7,14 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam9_sdramc.h>
->  #include <mach/at91sam9260.h>
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_at91sam9260ek, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_at91sam9260ek, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> @@ -25,7 +25,7 @@ ENTRY_FUNCTION(start_at91sam9260ek, r0, r1, r2)
->  			  NULL);
->  }
->  
-> -ENTRY_FUNCTION(start_at91sam9g20ek, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_at91sam9g20ek, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/at91sam9261ek/lowlevel_init.c b/arch/arm/boards/at91sam9261ek/lowlevel_init.c
-> index 47a8f21db8..1dd2a6b113 100644
-> --- a/arch/arm/boards/at91sam9261ek/lowlevel_init.c
-> +++ b/arch/arm/boards/at91sam9261ek/lowlevel_init.c
-> @@ -4,6 +4,7 @@
->   * Under GPLv2
->   */
->  
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam926x_board_init.h>
-> @@ -117,7 +118,7 @@ static void __bare_init at91sam9261ek_init(void)
->  	                  NULL);
->  }
->  
-> -ENTRY_FUNCTION(start_at91sam9261ek, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_at91sam9261ek, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> @@ -126,7 +127,7 @@ ENTRY_FUNCTION(start_at91sam9261ek, r0, r1, r2)
->  	at91sam9261ek_init();
->  }
->  
-> -ENTRY_FUNCTION(start_at91sam9g10ek, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_at91sam9g10ek, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
-> index 94732df14f..d3654df70b 100644
-> --- a/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
-> +++ b/arch/arm/boards/at91sam9m10g45ek/lowlevel.c
-> @@ -7,13 +7,13 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/hardware.h>
->  #include <mach/at91_ddrsdrc.h>
->  
-> -ENTRY_FUNCTION(start_at91sam9m10g45ek, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_at91sam9m10g45ek, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/at91sam9m10ihd/lowlevel.c b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
-> index 1dd17ee263..9ea128cd4d 100644
-> --- a/arch/arm/boards/at91sam9m10ihd/lowlevel.c
-> +++ b/arch/arm/boards/at91sam9m10ihd/lowlevel.c
-> @@ -7,14 +7,14 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91_ddrsdrc.h>
->  #include <mach/at91sam9g45.h>
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_at91sam9m10ihd, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_at91sam9m10ihd, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/at91sam9n12ek/lowlevel.c b/arch/arm/boards/at91sam9n12ek/lowlevel.c
-> index 7366e74c3c..6911840388 100644
-> --- a/arch/arm/boards/at91sam9n12ek/lowlevel.c
-> +++ b/arch/arm/boards/at91sam9n12ek/lowlevel.c
-> @@ -7,13 +7,13 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91_ddrsdrc.h>
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_at91sam9n12ek, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_at91sam9n12ek, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/dss11/lowlevel.c b/arch/arm/boards/dss11/lowlevel.c
-> index 86cc295e8b..734d4c94be 100644
-> --- a/arch/arm/boards/dss11/lowlevel.c
-> +++ b/arch/arm/boards/dss11/lowlevel.c
-> @@ -7,14 +7,14 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam9_sdramc.h>
->  #include <mach/at91sam9260.h>
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_dss11, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_dss11, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/haba-knx/lowlevel.c b/arch/arm/boards/haba-knx/lowlevel.c
-> index 3f810a396d..980cf55f83 100644
-> --- a/arch/arm/boards/haba-knx/lowlevel.c
-> +++ b/arch/arm/boards/haba-knx/lowlevel.c
-> @@ -7,14 +7,14 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam9_sdramc.h>
->  #include <mach/at91sam9260.h>
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_haba_knx_lite, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_haba_knx_lite, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/pm9261/lowlevel_init.c b/arch/arm/boards/pm9261/lowlevel_init.c
-> index 13a604ceb8..ce2fc1f507 100644
-> --- a/arch/arm/boards/pm9261/lowlevel_init.c
-> +++ b/arch/arm/boards/pm9261/lowlevel_init.c
-> @@ -4,6 +4,7 @@
->   * Under GPLv2
->   */
->  
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam926x_board_init.h>
-> @@ -111,7 +112,7 @@ static void __bare_init pm9261_init(void)
->  	                  NULL);
->  }
->  
-> -ENTRY_FUNCTION(start_pm9261, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_pm9261, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/pm9263/lowlevel_init.c b/arch/arm/boards/pm9263/lowlevel_init.c
-> index 9a690531e3..752e36a79f 100644
-> --- a/arch/arm/boards/pm9263/lowlevel_init.c
-> +++ b/arch/arm/boards/pm9263/lowlevel_init.c
-> @@ -6,6 +6,7 @@
->  
->  #include <linux/sizes.h>
->  
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam926x_board_init.h>
-> @@ -132,7 +133,7 @@ static void __bare_init pm9263_board_init(void)
->  	                  NULL);
->  }
->  
-> -ENTRY_FUNCTION(start_pm9263, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_pm9263, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/pm9g45/lowlevel.c b/arch/arm/boards/pm9g45/lowlevel.c
-> index 096bbc485a..a6d54a0627 100644
-> --- a/arch/arm/boards/pm9g45/lowlevel.c
-> +++ b/arch/arm/boards/pm9g45/lowlevel.c
-> @@ -7,14 +7,14 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91_ddrsdrc.h>
->  
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_pm9g45, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_pm9g45, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/qil-a926x/lowlevel.c b/arch/arm/boards/qil-a926x/lowlevel.c
-> index 3a233fcf17..b75d8ab761 100644
-> --- a/arch/arm/boards/qil-a926x/lowlevel.c
-> +++ b/arch/arm/boards/qil-a926x/lowlevel.c
-> @@ -7,14 +7,14 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam9_sdramc.h>
->  #include <mach/at91sam9260.h>
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_qil_a926x, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_qil_a926x, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> @@ -25,7 +25,7 @@ ENTRY_FUNCTION(start_qil_a926x, r0, r1, r2)
->  			  NULL);
->  }
->  
-> -ENTRY_FUNCTION(start_qil_a9g20, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_qil_a9g20, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/telit-evk-pro3/lowlevel.c b/arch/arm/boards/telit-evk-pro3/lowlevel.c
-> index 3a613a65a8..f4ea203283 100644
-> --- a/arch/arm/boards/telit-evk-pro3/lowlevel.c
-> +++ b/arch/arm/boards/telit-evk-pro3/lowlevel.c
-> @@ -7,14 +7,14 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam9_sdramc.h>
->  #include <mach/at91sam9260.h>
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_telit_evk_pro3, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_telit_evk_pro3, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c b/arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c
-> index e78e93528d..1cd420d902 100644
-> --- a/arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c
-> +++ b/arch/arm/boards/tny-a926x/tny_a9260_lowlevel.c
-> @@ -7,14 +7,14 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam9_sdramc.h>
->  #include <mach/at91sam9260.h>
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_tny_a9260, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_tny_a9260, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> @@ -25,7 +25,7 @@ ENTRY_FUNCTION(start_tny_a9260, r0, r1, r2)
->  			  NULL);
->  }
->  
-> -ENTRY_FUNCTION(start_tny_a9g20, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_tny_a9g20, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c b/arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c
-> index b8b813ef12..93c601c8cb 100644
-> --- a/arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c
-> +++ b/arch/arm/boards/tny-a926x/tny_a9263_lowlevel.c
-> @@ -7,7 +7,7 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam926x_board_init.h>
-> @@ -118,7 +118,7 @@ static void __bare_init tny_a9263_init(void)
->  	                  NULL);
->  }
->  
-> -ENTRY_FUNCTION(start_tny_a9263, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_tny_a9263, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c b/arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c
-> index 7e3ee80ab7..1f4febde11 100644
-> --- a/arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c
-> +++ b/arch/arm/boards/usb-a926x/usb_a9260_lowlevel.c
-> @@ -7,14 +7,14 @@
->  #include <common.h>
->  #include <init.h>
->  
-> -#include <asm/barebox-arm-head.h>
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam9_sdramc.h>
->  #include <mach/at91sam9260.h>
->  #include <mach/hardware.h>
->  
-> -ENTRY_FUNCTION(start_usb_a9260, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_usb_a9260, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> @@ -25,7 +25,7 @@ ENTRY_FUNCTION(start_usb_a9260, r0, r1, r2)
->  			  NULL);
->  }
->  
-> -ENTRY_FUNCTION(start_usb_a9g20, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_usb_a9g20, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c b/arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c
-> index 0597321084..25e63f5180 100644
-> --- a/arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c
-> +++ b/arch/arm/boards/usb-a926x/usb_a9263_lowlevel.c
-> @@ -6,6 +6,7 @@
->  
->  #include <linux/sizes.h>
->  
-> +#include <mach/barebox-arm-head.h>
->  #include <asm/barebox-arm.h>
->  
->  #include <mach/at91sam926x_board_init.h>
-> @@ -122,7 +123,7 @@ static void __bare_init usb_a9263_init(bool has_mem_128m)
->  	                  NULL);
->  }
->  
-> -ENTRY_FUNCTION(start_usb_a9263, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_usb_a9263, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> @@ -131,7 +132,7 @@ ENTRY_FUNCTION(start_usb_a9263, r0, r1, r2)
->  	usb_a9263_init(false);
->  }
->  
-> -ENTRY_FUNCTION(start_usb_a9263_128m, r0, r1, r2)
-> +ENTRY_FUNCTION_AT91(start_usb_a9263_128m, r0, r1, r2)
->  {
->  	arm_cpu_lowlevel_init();
->  
-> diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-> index caf296dfcd..b803a1185d 100644
-> --- a/arch/arm/mach-at91/Kconfig
-> +++ b/arch/arm/mach-at91/Kconfig
-> @@ -92,7 +92,6 @@ config SOC_SAMA5D2
->  	select HAVE_AT91_I2S_MUX_CLK
->  	select PINCTRL_AT91PIO4
->  	select HAS_MACB
-> -	select HAVE_MACH_ARM_HEAD
->  	select HAVE_AT91_DDRAMC
->  
->  config SOC_SAMA5D3
-> @@ -105,7 +104,6 @@ config SOC_SAMA5D3
->  	select HAVE_AT91_UTMI
->  	select PINCTRL_AT91
->  	select HAS_MACB
-> -	select HAVE_MACH_ARM_HEAD
->  
->  config SOC_SAMA5D4
->  	bool
-> @@ -118,7 +116,6 @@ config SOC_SAMA5D4
->  	select HAVE_AT91_UTMI
->  	select PINCTRL_AT91
->  	select HAS_MACB
-> -	select HAVE_MACH_ARM_HEAD
->  
->  config SOC_SAM9X60
->  	bool
-> @@ -159,7 +156,6 @@ config SOC_AT91SAM9260
->  	select SOC_AT91SAM9
->  	select HAS_MACB
->  	select PINCTRL_AT91
-> -	select HAVE_MACH_ARM_HEAD
->  	help
->  	  Select this if you are using one of Atmel's AT91SAM9260, AT91SAM9XE
->  	  or AT91SAM9G20 SoC.
-> @@ -169,7 +165,6 @@ config SOC_AT91SAM9261
->  	select SOC_AT91SAM9
->  	select PINCTRL_AT91
->  	select HAVE_AT91_LOAD_BAREBOX_SRAM
-> -	select HAVE_MACH_ARM_HEAD
->  	help
->  	  Select this if you are using one of Atmel's AT91SAM9261 or AT91SAM9G10 SoC.
->  
-> @@ -178,7 +173,6 @@ config SOC_AT91SAM9263
->  	select SOC_AT91SAM9
->  	select HAS_MACB
->  	select HAVE_AT91_LOAD_BAREBOX_SRAM
-> -	select HAVE_MACH_ARM_HEAD
->  	select PINCTRL_AT91
->  
->  config SOC_AT91SAM9G45
-> @@ -186,7 +180,6 @@ config SOC_AT91SAM9G45
->  	select SOC_AT91SAM9
->  	select HAS_MACB
->  	select PINCTRL_AT91
-> -	select HAVE_MACH_ARM_HEAD
->  	help
->  	  Select this if you are using one of Atmel's AT91SAM9G45 family SoC.
->  	  This support covers AT91SAM9G45, AT91SAM9G46, AT91SAM9M10 and AT91SAM9M11.
-> @@ -209,7 +202,6 @@ config SOC_AT91SAM9N12
->  	bool
->  	select SOC_AT91SAM9
->  	select PINCTRL_AT91
-> -	select HAVE_MACH_ARM_HEAD
->  	help
->  	  Select this if you are using Atmel's AT91SAM9N12 SoC.
->  
-> diff --git a/arch/arm/mach-at91/include/mach/barebox-arm-head.h b/arch/arm/mach-at91/include/mach/barebox-arm-head.h
-> index 4a95f89fc9..68539ea48f 100644
-> --- a/arch/arm/mach-at91/include/mach/barebox-arm-head.h
-> +++ b/arch/arm/mach-at91/include/mach/barebox-arm-head.h
-> @@ -9,7 +9,9 @@
->  #define AT91_EXV6	".word _barebox_bare_init_size\n"
->  #endif
->  
-> -static inline void __barebox_arm_head(void)
-> +#include <linux/compiler.h>
-> +
-> +static __always_inline void __barebox_at91_head(void)
->  {
->  	__asm__ __volatile__ (
->  #ifdef CONFIG_THUMB2_BAREBOX
-> @@ -36,12 +38,6 @@ static inline void __barebox_arm_head(void)
->  	);
->  }
->  
-> -static inline void barebox_arm_head(void)
-> -{
-> -	__barebox_arm_head();
-> -	__asm__ __volatile__ (
-> -		"b barebox_arm_reset_vector\n"
-> -	);
-> -}
-> +#define ENTRY_FUNCTION_AT91(fn, r0, r1, r2) ENTRY_FUNCTION_HEAD(fn, __barebox_at91_head, r0, r1, r2)
->  
->  #endif /* __MACH_ARM_HEAD_H */
+If someone shows up and needs one of the at91sam* boards it should be
+doable to add DT support as the infrastructure is in place.
+But I cannot find the motivation to do so today, as I do not see any
+potential users.
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+For the sama* boards Ahmed does a fantastic job migrating them one by
+one so we should keep all of them. This is also a much newer SoC than
+the at91sam* so there are products using this SoC where it can make
+sense to do some new development.
 
+Makes sense?
+
+	Sam
 
 
