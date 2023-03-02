@@ -1,15 +1,15 @@
-Delivery-date: Thu, 02 Mar 2023 12:18:00 +0100
+Delivery-date: Thu, 02 Mar 2023 12:18:01 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pXgwi-006Upe-1g
-	for lore@lore.pengutronix.de; Thu, 02 Mar 2023 12:18:00 +0100
+	id 1pXgwi-006Upf-Ac
+	for lore@lore.pengutronix.de; Thu, 02 Mar 2023 12:18:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pXgwg-0001hw-QD
+	id 1pXgwh-0001iR-9H
 	for lore@pengutronix.de; Thu, 02 Mar 2023 12:18:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,43 +17,43 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fiAmPBI8YU2WiKkehymVhb4HPixUxYejk/amQhxzico=; b=NF4vA9M4CWeLsMVxEkyGDzWSQg
-	o7n6CJ1T6LcUUyXuM8oBkSw3tTgE6Vgkn2Ij6L8qQVCbG9kkMgg50P7wlh8BXqReZSL4I9nazsYPW
-	2dLoCOStUpspdoRaKR7vV8QEtkliLo4QvnG0UARnRrc/UVFdU4ZhIoO0pSbbIpxyWKq0ARSHXjeIK
-	fpiifdJmRayoBEadceYf+1TkAJERR+E62R7pNFyGPctz9wjsopFdPpaVxH2evONJ/UbcdlB5C/RFY
-	MVXJIO2dX1fEIctJZxIhfBWwoRfvyEmJvWiSMnxKUiURJzO8Q1ymdvYgfLNYxmvqM7RB8itCsJlge
-	9QnZGJeg==;
+	bh=px/CKlG9nyRKdzIfg7QVtPagVQGlQnlKymD4QKA/6fE=; b=vE7Y/eVE0WQ5QJLbFm81Q1X2mc
+	Ce7kxZPv7m4kWhRmyPWKBo41y4M8lpHD4IKGuM6tJllE1ggoA72o35ibFZmPfo58uI5T2W7afTmci
+	erPEIgYpv7WMX+NHuqEE8Lr7LehhQmLV/usuyhGrGb1aqjkTkO0i0rTOuw8DYzoHROGLcYlygdInO
+	Bc5JpHb1wkKNHw625r9kMOPA4vJRKLeGnejc8tzO3vxkqJ4cGKORXkoDz3nMjE27G9tCLN5GIzyiS
+	PFEOVQduWicyikt9qwq5nhWNVPIqxyaaU2YH1CfmMR4raGmi/ceeBZK9UtnX5VDuyXkblO0Fs+yAb
+	1YdmHH8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pXgv8-001sL6-RY; Thu, 02 Mar 2023 11:16:22 +0000
+	id 1pXgvV-001sZq-UX; Thu, 02 Mar 2023 11:16:46 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pXgux-001sG6-SL
-	for barebox@lists.infradead.org; Thu, 02 Mar 2023 11:16:14 +0000
+	id 1pXguy-001sH4-Lb
+	for barebox@lists.infradead.org; Thu, 02 Mar 2023 11:16:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pXguw-00017r-Lt; Thu, 02 Mar 2023 12:16:10 +0100
+	id 1pXgux-00019Q-DT; Thu, 02 Mar 2023 12:16:11 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pXguv-001JdC-W7; Thu, 02 Mar 2023 12:16:10 +0100
+	id 1pXguw-001Jdf-Pz; Thu, 02 Mar 2023 12:16:10 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pXguu-004QVj-0o; Thu, 02 Mar 2023 12:16:08 +0100
+	id 1pXgut-004QVX-V1; Thu, 02 Mar 2023 12:16:07 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  2 Mar 2023 12:16:04 +0100
-Message-Id: <20230302111606.1054037-12-s.hauer@pengutronix.de>
+Date: Thu,  2 Mar 2023 12:16:00 +0100
+Message-Id: <20230302111606.1054037-8-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230302111606.1054037-1-s.hauer@pengutronix.de>
 References: <20230302111606.1054037-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230302_031611_951022_17A04702 
-X-CRM114-Status: GOOD (  10.34  )
+X-CRM114-CacheID: sfid-20230302_031612_806219_1717955B 
+X-CRM114-Status: GOOD (  10.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,30 +75,53 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 11/13] ARM: i.MX: Add missing include
+Subject: [PATCH 07/13] ARM: drop unused zynq code in Makefile
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-imx7-ccm-regs.h uses MX7_CCM_BASE_ADDR which is defined in imx7-regs.h,
-so include that file.
+The Zynq board in tree is converted to multi-image, thus doesn't
+need image generation in arch/arm/Makefile anymore. Drop it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/include/mach/imx7-ccm-regs.h | 1 +
- 1 file changed, 1 insertion(+)
+ Makefile          |  2 +-
+ arch/arm/Makefile | 10 ----------
+ 2 files changed, 1 insertion(+), 11 deletions(-)
 
-diff --git a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-index 96fad868fa..1ad4d4977a 100644
---- a/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-+++ b/arch/arm/mach-imx/include/mach/imx7-ccm-regs.h
-@@ -5,6 +5,7 @@
+diff --git a/Makefile b/Makefile
+index aff89bb939..bcc94cd13a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1145,7 +1145,7 @@ CLEAN_FILES +=	barebox System.map stickypage.bin include/generated/barebox_defau
+                 .tmp_version .tmp_barebox* barebox.bin barebox.map \
+ 		.tmp_kallsyms* barebox.ldr compile_commands.json \
+ 		barebox-flash-image \
+-		barebox.srec barebox.s5p barebox.ubl barebox.zynq \
++		barebox.srec barebox.s5p barebox.ubl \
+ 		barebox.uimage barebox.spi barebox.kwb barebox.kwbuart \
+ 		barebox.efi barebox.canon-a1100.bin
  
- #include <io.h>
- #include <linux/build_bug.h>
-+#include <mach/imx/imx7-regs.h>
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 861b726496..3738b4d15a 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -187,16 +187,6 @@ ifeq ($(CONFIG_OMAP_BUILD_SPI),y)
+ KBUILD_IMAGE := MLO.spi
+ endif
  
- #define IMX7_CLOCK_ROOT_INDEX(x)	(((x) - 0x8000) / 128)
- 
+-quiet_cmd_zynq_image = ZYNQ-IMG $@
+-      cmd_zynq_image = scripts/zynq_mkimage $< $@
+-
+-barebox.zynq: $(KBUILD_BINARY) FORCE
+-	$(call if_changed,zynq_image)
+-
+-ifeq ($(machine-y),zynq)
+-KBUILD_IMAGE := barebox.zynq
+-endif
+-
+ quiet_cmd_canon_a1100_image = DD      $@
+       cmd_canon_a1100_image = scripts/canon-a1100-image $< $@ || \
+ 	echo "WARNING: Couldn't create Canon A1100 image due to previous errors."
 -- 
 2.30.2
 
