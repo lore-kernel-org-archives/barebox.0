@@ -1,74 +1,74 @@
-Delivery-date: Fri, 03 Mar 2023 10:31:42 +0100
+Delivery-date: Fri, 03 Mar 2023 10:31:58 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pY1lN-007O67-NG
-	for lore@lore.pengutronix.de; Fri, 03 Mar 2023 10:31:42 +0100
+	id 1pY1ld-007O6t-8v
+	for lore@lore.pengutronix.de; Fri, 03 Mar 2023 10:31:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pY1lM-00050x-Q2
-	for lore@pengutronix.de; Fri, 03 Mar 2023 10:31:41 +0100
+	id 1pY1lc-00056P-9H
+	for lore@pengutronix.de; Fri, 03 Mar 2023 10:31:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=enxw/r1dRXP2DUXtDOmzPoektmDmwE/SsrCqGqnzG6E=; b=JOl03g8tvHar6Xgrd8N5sralDu
-	rUbLlv+5ux93KLJmrUQw8UCU1MhXK0r2boUJPa8ManZQFcMQK1NVNusac34D41CfsakNJbfgLMs/E
-	VKj+cz56bnvs2stoWRrR5mEyIo+suxY0/a5+NAEj7/wRYnjVU0VfwNfTsYYRXe5Fww+O8gYTqMzM7
-	Ymz8FWikXomurKEzk7dyNskzpEFW37vk78O0Jzs6LVEuksPlV+55562qlXLNtHUiXYJ9zt5zttW3X
-	OmX/hYs78h/dJwZ716QN7WWQqF9cP0GUYp4rQlHkp1sdzWMSX5C+63PpU6V+HCuK/FDQQcbOtwDdC
-	oHcqJK3A==;
+	bh=0aqsXV6xEixeY0qXIZThreuuXPMUWurWzEGz0Seu6Mg=; b=ephIXn/6r4l4YJMUd0Luh21ZVZ
+	en0kVc6/jQfxgXen8lilvNt1KYo3qaY9edCTfiVzyIqyufAGGWOd52rbfk3efy2G8/rh9qRaRZZR0
+	dvtInZAIF+6O4AWNwiTnx5dJWc9tM2HEVR/7y8fN2JiKJfFF7V21R5benhD2UVhr+lQhincXFWBJN
+	aNtDac1Krj3hP7GHfjCVY+0Q0VXlrJvZjpg/y2/hsJgRFxIgIc/1oyKgQTwq7qelVg7CiGyNt2mxU
+	HwtJCIkENebHC/gDm1zodhIT00G3dmGdyH3L88T+4o+YLo1ezAarqsbuo2dt5SGGx7j7JDCwbbUlF
+	P0R9todg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pY1k9-005kcZ-Rt; Fri, 03 Mar 2023 09:30:26 +0000
+	id 1pY1kO-005kqp-LM; Fri, 03 Mar 2023 09:30:40 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pY1cG-005em9-Nz
-	for barebox@bombadil.infradead.org; Fri, 03 Mar 2023 09:22:16 +0000
+	id 1pY1cL-005epV-23
+	for barebox@bombadil.infradead.org; Fri, 03 Mar 2023 09:22:21 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=enxw/r1dRXP2DUXtDOmzPoektmDmwE/SsrCqGqnzG6E=; b=Zmgvj+P6q6P19yd6drln7DFg0o
-	UOF+Cq22rpcKJ6xw40xVK3Wp1yusQZBKjpuP9Jbbgt9gOF6vkRL92qeNWrPCITDsOJlMxBqKVSCfC
-	hwMnfyVuA3pD0fzU4WqDWpZI1ixVPHAZppuEWw9bWgCUDUP1JmPR9x8SxrsEP2xFIDelPiHoU6dX+
-	OBd4Cl0yT5cCHHSHx398YruKI/ugaUCC0x0XG6p15OAlCDehhAomaeMfnpzebl1yYRYREGcKm/0qA
-	HbpEQB9LJWau6BvHsf52sS41gEBG7eVY6j+lkcksbczm5H/b4aZZHjfOO4SRzaQFyzllEnUeemCHx
-	Pn3YG06g==;
+	bh=0aqsXV6xEixeY0qXIZThreuuXPMUWurWzEGz0Seu6Mg=; b=fQziMYXLaxTjAlHSmayzG/latv
+	VgXkJ9FJVNG5YgC6y6uUfCzmRMmkE7AEQ3w26/8+ev+cXAwZ0FXEs8zWCcAGxBtlGW7hL+h0auIU7
+	isd3mIkXHe5Bh1l7mTXXjWtcFxYwoYwub9HvMa+F1QxAB6qyP07TbOQt8Je1fQ8YNXtuwfvEgiMBO
+	j+2SjnsSEZu8E0uuWxUfXtXKP/UEesiKtV+O8nmMW+0LIS2NAZLomOPuIy1iKUFvU6s6SBNDquI11
+	c+xLt6wI3fSfWJTyBQs+c5ppmKReH7W/iyHFvqckuX3PBQRLoRnDYilaXjh0gUastHzpnDV/Lm8S5
+	HjGlrhWQ==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pY1bn-00FdL7-1r
+	id 1pY1bs-00FdLE-15
 	for barebox@lists.infradead.org;
-	Fri, 03 Mar 2023 09:22:12 +0000
+	Fri, 03 Mar 2023 09:22:15 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pY1bi-0000FY-Fo; Fri, 03 Mar 2023 10:21:42 +0100
+	id 1pY1bj-0000Hn-MR; Fri, 03 Mar 2023 10:21:43 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pY1bh-001Wj4-MD; Fri, 03 Mar 2023 10:21:41 +0100
+	id 1pY1bi-001Wjf-W2; Fri, 03 Mar 2023 10:21:43 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pY1ba-00F2gX-Hw; Fri, 03 Mar 2023 10:21:34 +0100
+	id 1pY1bb-00F2kC-1S; Fri, 03 Mar 2023 10:21:35 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri,  3 Mar 2023 10:21:02 +0100
-Message-Id: <20230303092131.3063587-22-s.hauer@pengutronix.de>
+Date: Fri,  3 Mar 2023 10:21:19 +0100
+Message-Id: <20230303092131.3063587-39-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230303092131.3063587-1-s.hauer@pengutronix.de>
 References: <20230303092131.3063587-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230303_092153_704267_98EE4F47 
-X-CRM114-Status: GOOD (  13.03  )
+X-CRM114-CacheID: sfid-20230303_092153_277956_03925C05 
+X-CRM114-Status: GOOD (  11.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,130 +90,120 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 21/50] ARM: clps711x: Move mach header files to include/mach/clps711x
+Subject: [PATCH 38/50] ARM: zynqmp: Add multi-arch support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Currently arch specific headers can be included with
-longer possible as there won't be a single mach anymore.
-
-Move all clps711x specific header files to include/mach/clps711x/ to
-prepare for multi-arch support.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/clep7212/lowlevel.c                           | 2 +-
- arch/arm/include/asm/debug_ll.h                               | 2 ++
- arch/arm/mach-clps711x/clock.c                                | 2 +-
- arch/arm/mach-clps711x/common.c                               | 2 +-
- arch/arm/mach-clps711x/devices.c                              | 4 ++--
- arch/arm/mach-clps711x/lowlevel.c                             | 2 +-
- .../include/mach => include/mach/clps711x}/clps711x.h         | 0
- .../include/mach => include/mach/clps711x}/debug_ll.h         | 2 +-
- 8 files changed, 9 insertions(+), 7 deletions(-)
- rename {arch/arm/mach-clps711x/include/mach => include/mach/clps711x}/clps711x.h (100%)
- rename {arch/arm/mach-clps711x/include/mach => include/mach/clps711x}/debug_ll.h (90%)
+ arch/arm/Kconfig                | 32 ++++++++++++++++----------------
+ arch/arm/include/asm/debug_ll.h |  6 ++++--
+ arch/arm/mach-zynqmp/zynqmp.c   |  3 +++
+ common/Kconfig                  |  7 +++++++
+ 4 files changed, 30 insertions(+), 18 deletions(-)
 
-diff --git a/arch/arm/boards/clep7212/lowlevel.c b/arch/arm/boards/clep7212/lowlevel.c
-index 09f2762fac..ba402cecea 100644
---- a/arch/arm/boards/clep7212/lowlevel.c
-+++ b/arch/arm/boards/clep7212/lowlevel.c
-@@ -4,7 +4,7 @@
- #include <common.h>
- #include <asm/barebox-arm.h>
- #include <linux/sizes.h>
--#include <mach/clps711x.h>
-+#include <mach/clps711x/clps711x.h>
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 7ac24ba1de..a7b8b0da01 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -231,22 +231,6 @@ config ARCH_ZYNQ
+ 	select PBL_IMAGE
+ 	select GPIOLIB
  
- extern char __dtb_ep7212_clep7212_start[];
+-config ARCH_ZYNQMP
+-	bool "Xilinx ZynqMP-based boards"
+-	select CPU_V8
+-	select HAS_DEBUG_LL
+-	select HAVE_PBL_MULTI_IMAGES
+-	select ARM_SMCCC
+-	select COMMON_CLK
+-	select COMMON_CLK_OF_PROVIDER
+-	select CLKDEV_LOOKUP
+-	select GPIOLIB
+-	select OFDEVICE
+-	select OFTREE
+-	select RELOCATABLE
+-	select CPU_SUPPORTS_64BIT_KERNEL
+-	select HAS_MACB
+-
+ config ARCH_ARM64_VIRT
+ 	bool "ARM64 QEMU Virt board"
+ 	select CPU_V8
+@@ -296,6 +280,22 @@ config ARCH_ROCKCHIP
+ 	select HAVE_PBL_MULTI_IMAGES
+ 	select HAS_DEBUG_LL
  
++config ARCH_ZYNQMP
++	bool "Xilinx ZynqMP-based boards"
++	select CPU_V8
++	select HAS_DEBUG_LL
++	select HAVE_PBL_MULTI_IMAGES
++	select ARM_SMCCC
++	select COMMON_CLK
++	select COMMON_CLK_OF_PROVIDER
++	select CLKDEV_LOOKUP
++	select GPIOLIB
++	select OFDEVICE
++	select OFTREE
++	select RELOCATABLE
++	select CPU_SUPPORTS_64BIT_KERNEL
++	select HAS_MACB
++
+ source "arch/arm/cpu/Kconfig"
+ source "arch/arm/mach-at91/Kconfig"
+ source "arch/arm/mach-bcm283x/Kconfig"
 diff --git a/arch/arm/include/asm/debug_ll.h b/arch/arm/include/asm/debug_ll.h
-index f9a5ca7566..96350936f9 100644
+index 7c1152c6d9..8005980f28 100644
 --- a/arch/arm/include/asm/debug_ll.h
 +++ b/arch/arm/include/asm/debug_ll.h
-@@ -46,6 +46,8 @@
- #include <mach/ep93xx/debug_ll.h>
- #elif defined CONFIG_ARCH_DIGIC
- #include <mach/digic/debug_ll.h>
-+#elif defined CONFIG_ARCH_CLPS711X
-+#include <mach/clps711x/debug_ll.h>
- #else
- #ifndef CONFIG_ARCH_ARM64_VIRT
- #include <mach/debug_ll.h>
-diff --git a/arch/arm/mach-clps711x/clock.c b/arch/arm/mach-clps711x/clock.c
-index fda4e9a01d..0ddfce8269 100644
---- a/arch/arm/mach-clps711x/clock.c
-+++ b/arch/arm/mach-clps711x/clock.c
-@@ -9,7 +9,7 @@
- #include <linux/sizes.h>
- #include <dt-bindings/clock/clps711x-clock.h>
+@@ -15,11 +15,13 @@
+ #include <mach/omap/debug_ll.h>
+ #endif
  
--#include <mach/clps711x.h>
-+#include <mach/clps711x/clps711x.h>
++#ifdef CONFIG_DEBUG_ZYNQMP_UART
++#include <mach/zynqmp/debug_ll.h>
++#endif
++
+ #ifdef CONFIG_DEBUG_QEMU_ARM64_VIRT
+ #define DEBUG_LL_UART_ADDR		0x9000000
+ #include <debug_ll/pl011.h>
+-#elif defined CONFIG_ARCH_ZYNQMP
+-#include <mach/zynqmp/debug_ll.h>
+ #elif defined CONFIG_ARCH_MVEBU
+ #include <mach/mvebu/debug_ll.h>
+ #elif defined CONFIG_ARCH_DAVINCI
+diff --git a/arch/arm/mach-zynqmp/zynqmp.c b/arch/arm/mach-zynqmp/zynqmp.c
+index 312325956a..f86bda1693 100644
+--- a/arch/arm/mach-zynqmp/zynqmp.c
++++ b/arch/arm/mach-zynqmp/zynqmp.c
+@@ -147,6 +147,9 @@ static int zynqmp_init(void)
+ 	enum bootsource boot_src;
+ 	int boot_instance;
  
- #define CLPS711X_OSC_FREQ	3686400
- #define CLPS711X_EXT_FREQ	13000000
-diff --git a/arch/arm/mach-clps711x/common.c b/arch/arm/mach-clps711x/common.c
-index d27ed41ef9..ce385fdda3 100644
---- a/arch/arm/mach-clps711x/common.c
-+++ b/arch/arm/mach-clps711x/common.c
-@@ -6,7 +6,7 @@
- #include <restart.h>
- #include <asm/io.h>
- #include <asm/mmu.h>
--#include <mach/clps711x.h>
-+#include <mach/clps711x/clps711x.h>
++	if (!of_machine_is_compatible("xlnx,zynqmp"))
++		return 0;
++
+ 	zynqmp_get_bootsource(&boot_src, &boot_instance);
+ 	bootsource_set_raw(boot_src, boot_instance);
  
- #define CLPS711X_MAP_ADDR	0x90000000
+diff --git a/common/Kconfig b/common/Kconfig
+index eeb33f3042..c396c3a238 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1470,6 +1470,13 @@ config DEBUG_RPI4_MINI_UART
+ 	  Say Y here if you want low-level debugging support on
+ 	  RaspberryPi 4 board mini UART.
  
-diff --git a/arch/arm/mach-clps711x/devices.c b/arch/arm/mach-clps711x/devices.c
-index 8eacc70018..a1a261412b 100644
---- a/arch/arm/mach-clps711x/devices.c
-+++ b/arch/arm/mach-clps711x/devices.c
-@@ -14,8 +14,8 @@
- #include <asm/io.h>
- #include <asm/memory.h>
- 
--#include <mach/clps711x.h>
--#include <mach/devices.h>
-+#include <mach/clps711x/clps711x.h>
-+#include <mach/clps711x/devices.h>
- 
- static int clps711x_mem_init(void)
- {
-diff --git a/arch/arm/mach-clps711x/lowlevel.c b/arch/arm/mach-clps711x/lowlevel.c
-index 608f0778d7..2ede50538a 100644
---- a/arch/arm/mach-clps711x/lowlevel.c
-+++ b/arch/arm/mach-clps711x/lowlevel.c
-@@ -6,7 +6,7 @@
- #include <common.h>
- #include <debug_ll.h>
- #include <linux/sizes.h>
--#include <mach/clps711x.h>
-+#include <mach/clps711x/clps711x.h>
- 
- #define DEBUG_LL_BAUDRATE	(57600)
- 
-diff --git a/arch/arm/mach-clps711x/include/mach/clps711x.h b/include/mach/clps711x/clps711x.h
-similarity index 100%
-rename from arch/arm/mach-clps711x/include/mach/clps711x.h
-rename to include/mach/clps711x/clps711x.h
-diff --git a/arch/arm/mach-clps711x/include/mach/debug_ll.h b/include/mach/clps711x/debug_ll.h
-similarity index 90%
-rename from arch/arm/mach-clps711x/include/mach/debug_ll.h
-rename to include/mach/clps711x/debug_ll.h
-index 342bb7628a..1af7cb4f65 100644
---- a/arch/arm/mach-clps711x/include/mach/debug_ll.h
-+++ b/include/mach/clps711x/debug_ll.h
-@@ -5,7 +5,7 @@
- #define __MACH_DEBUG_LL_H__
- 
- #include <asm/io.h>
--#include <mach/clps711x.h>
-+#include <mach/clps711x/clps711x.h>
- 
- static inline void PUTC_LL(char c)
- {
++config DEBUG_ZYNQMP_UART
++	bool "Zynqmp Debug UART"
++	depends on ARCH_ZYNQMP
++	help
++	  Say Y here if you want kernel low-level debugging support
++	  on Zynqmp.
++
+ config DEBUG_ERIZO
+ 	bool "Erizo ns16550 port"
+ 	depends on SOC_ERIZO
 -- 
 2.30.2
 
