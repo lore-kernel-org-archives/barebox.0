@@ -1,59 +1,75 @@
-Delivery-date: Fri, 03 Mar 2023 10:26:43 +0100
+Delivery-date: Fri, 03 Mar 2023 10:26:58 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pY1gY-007Nkl-BC
-	for lore@lore.pengutronix.de; Fri, 03 Mar 2023 10:26:43 +0100
+	id 1pY1gn-007Nld-8W
+	for lore@lore.pengutronix.de; Fri, 03 Mar 2023 10:26:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pY1gX-0002s6-DC
-	for lore@pengutronix.de; Fri, 03 Mar 2023 10:26:42 +0100
+	id 1pY1gm-0002xD-Db
+	for lore@pengutronix.de; Fri, 03 Mar 2023 10:26:57 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zJ8ZPTlMJuHBzeuq7MARlGHt9D6iOwoGA6zbZ6HnxxU=; b=RnvQ9F7jQYLwU1wH5lAxB99uNl
-	w40+EghAo6iAyyj/ONgZvCvdhFWHUYFu9hhegSJTYATzBVAcBJ41cu6ZwPp0orVKbAncnlsM4KXbp
-	6e7+SXiY7a/djiqaXr1Sc3yPFBjjTyNzcnlvQfqgiRQWKA2DlTqlfRxCumsrMok+6QlSN7fT82MRi
-	8ifIt6CcyAteq2jblKKJPwHfxqjBI6kV46Pfc8In4WDaQYK1MZTDOJUe3vNFv/PvnQDx2oKzEq1pA
-	770X7TRe4St8+oqgQrDa/jTU+TVx7aRFk1sUuS6puOb6seQ9braEk0iCsfHC8/rSPwx59ybXvNxHL
-	+QkrKkIg==;
+	bh=pCi49Tc63K0El9tP6561U6E+JKJfNBcznkgDJEjcAaw=; b=2uRFBUOI6lUz/IpvkOYozLC3f4
+	/BqDT8AxQMWjBgiNzYmCPLZf34FYvnBRR27YMmu10+X0P+aCn2gPB+Vl9s3zjimAZbphIrm9BKebO
+	6NQtuIumbnqypvficOWbmn1eZZcOfbK3wxHSFm22hV9QAwlZJPCDO3vBkvecQ6A8Sll+FNurfZ7mn
+	M/qFJ7NpOzgU7Bs+/qfxjBWw4WQ61xdZJ6UyvdARmxwnpHvInA9ywbdVuCg0LLrbOJd2mz1Tj7EAU
+	VX1gtMGvI6Qr6TJWy/2Ftmm7wPFUPZIOdj0Ci2dZ0Lsjszf3uSWdESpHGI1/X+1sIj4Jm1G+RrHHE
+	y6BmlgzA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pY1fC-005gsE-5S; Fri, 03 Mar 2023 09:25:18 +0000
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+	id 1pY1fS-005h6o-IG; Fri, 03 Mar 2023 09:25:35 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pY1bl-005eQG-55
-	for barebox@lists.infradead.org; Fri, 03 Mar 2023 09:21:53 +0000
+	id 1pY1bt-005eWG-TB
+	for barebox@bombadil.infradead.org; Fri, 03 Mar 2023 09:21:53 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=pCi49Tc63K0El9tP6561U6E+JKJfNBcznkgDJEjcAaw=; b=UChhiGTlUXZNYXK4nkO5stGXFb
+	aK4nnetcSNoNXa1fVf19yunDiUP5zQujSf+F+CufV8wptL5e+yLJLpEnW+EQy7fB8xTNr8SOC+z1q
+	o6V2Euoh2MtcZzrVppkPvxdTAliH/99U9jNBL2iwuR1U7dh4JJdCuuF9nRZgnbf9RofP9jTi5i/Hb
+	nABRVTYUGStQtCT7hRAa/WiRzPcM+XZsJjomVE5HbsK+q36tFSrP1SJ26lGXvTVuuwr9h4lZeGvow
+	byO4sLRfL19jT3Xm9fCsX4KLToT64dSIURh/O2HPAONQ9eNIvCX0RJNH26o94AHmuwy5QgQZOx9n4
+	8zrAs6PQ==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1pY1bn-00FdLB-1a
+	for barebox@lists.infradead.org;
+	Fri, 03 Mar 2023 09:21:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pY1bj-0000Ga-8L; Fri, 03 Mar 2023 10:21:43 +0100
+	id 1pY1bj-0000GP-2j; Fri, 03 Mar 2023 10:21:43 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pY1bi-001WjS-Hn; Fri, 03 Mar 2023 10:21:42 +0100
+	id 1pY1bi-001WjN-CO; Fri, 03 Mar 2023 10:21:42 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pY1ba-00F2iw-TC; Fri, 03 Mar 2023 10:21:34 +0100
+	id 1pY1bb-00F2kM-26; Fri, 03 Mar 2023 10:21:35 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri,  3 Mar 2023 10:21:13 +0100
-Message-Id: <20230303092131.3063587-33-s.hauer@pengutronix.de>
+Date: Fri,  3 Mar 2023 10:21:20 +0100
+Message-Id: <20230303092131.3063587-40-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230303092131.3063587-1-s.hauer@pengutronix.de>
 References: <20230303092131.3063587-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230303_012145_357657_788E3C42 
-X-CRM114-Status: GOOD (  16.00  )
+X-CRM114-CacheID: sfid-20230303_092149_858481_8BDF1418 
+X-CRM114-Status: UNSURE (   9.89  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,129 +91,30 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 32/50] ARM: omap: usbboot: Enable USB communication when needed
+Subject: [PATCH 39/50] ARM: i.MX: Add missing include
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Instead of activating USB communication unconditionally in an initcall,
-let the users activate it once they need it. This gets us rid of an
-initcall that is not protected against running on foreign SoCs.
+atf.c needs MX8M_CAAM_BASE_ADDR which is defined in imx8m-regs.h.
+Include that file.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/archosg9/board.c      | 12 ++++++++----
- arch/arm/mach-omap/omap4_rom_usb.c    |  4 +++-
- drivers/serial/serial_omap4_usbboot.c |  6 ++++++
- fs/omap4_usbbootfs.c                  |  3 ++-
- include/mach/omap/omap4_rom_usb.h     | 13 +++++++++++++
- 5 files changed, 32 insertions(+), 6 deletions(-)
+ arch/arm/mach-imx/atf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boards/archosg9/board.c b/arch/arm/boards/archosg9/board.c
-index 8aa35262d3..547d21d6ca 100644
---- a/arch/arm/boards/archosg9/board.c
-+++ b/arch/arm/boards/archosg9/board.c
-@@ -33,13 +33,17 @@
+diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
+index 39bc1e8bac..335cc7713f 100644
+--- a/arch/arm/mach-imx/atf.c
++++ b/arch/arm/mach-imx/atf.c
+@@ -7,6 +7,7 @@
+ #include <mach/imx/generic.h>
+ #include <mach/imx/xload.h>
+ #include <mach/imx/romapi.h>
++#include <mach/imx/imx8m-regs.h>
+ #include <soc/fsl/fsl_udc.h>
+ #include <soc/fsl/caam.h>
  
- static int archosg9_console_init(void)
- {
-+	int ret;
-+
- 	barebox_set_model("Archos G9");
- 	barebox_set_hostname("g9");
- 
--	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT) &&
--			omap4_usbboot_ready()) {
--		add_generic_device("serial_omap4_usbboot", DEVICE_ID_DYNAMIC
--			, NULL, 0, 0, 0, NULL);
-+	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_OMAP4_USBBOOT)) {
-+		ret = omap4_usbboot_open();
-+		if (!ret) {
-+			add_generic_device("serial_omap4_usbboot", DEVICE_ID_DYNAMIC
-+				, NULL, 0, 0, 0, NULL);
-+		}
- 	}
- 	if (IS_ENABLED(CONFIG_DRIVER_SERIAL_NS16550)) {
- 		omap44xx_add_uart1();
-diff --git a/arch/arm/mach-omap/omap4_rom_usb.c b/arch/arm/mach-omap/omap4_rom_usb.c
-index a3e447128f..01c5565a68 100644
---- a/arch/arm/mach-omap/omap4_rom_usb.c
-+++ b/arch/arm/mach-omap/omap4_rom_usb.c
-@@ -46,6 +46,9 @@ int omap4_usbboot_open(void)
- 	int n;
- 	u32 base;
- 
-+	if (omap4_usbboot_ready())
-+		return 0;
-+
- 	if (omap4_revision() >= OMAP4460_ES1_0)
- 		base = PUBLIC_API_BASE_4460;
- 	else
-@@ -82,7 +85,6 @@ int omap4_usbboot_open(void)
- 	omap4_usbboot_puts("USB communications initialized\n");
- 	return 0;
- }
--core_initcall(omap4_usbboot_open);
- 
- int omap4_usbboot_ready(void){
- 	return omap4_usbboot_data.ready;
-diff --git a/drivers/serial/serial_omap4_usbboot.c b/drivers/serial/serial_omap4_usbboot.c
-index 463d217f97..709398966f 100644
---- a/drivers/serial/serial_omap4_usbboot.c
-+++ b/drivers/serial/serial_omap4_usbboot.c
-@@ -49,6 +49,12 @@ static int serial_omap4_usbboot_getc(struct console_device *cdev)
- static int serial_omap4_usbboot_probe(struct device *dev)
- {
- 	struct serial_omap4_usbboot_priv *priv;
-+	int ret;
-+
-+	ret = omap4_usbboot_open();
-+	if (ret)
-+		return ret;
-+	
- 	priv = xzalloc(sizeof(*priv));
- 
- 	priv->cdev.dev = dev;
-diff --git a/fs/omap4_usbbootfs.c b/fs/omap4_usbbootfs.c
-index 9b0755d539..30392d1192 100644
---- a/fs/omap4_usbbootfs.c
-+++ b/fs/omap4_usbbootfs.c
-@@ -143,8 +143,9 @@ static int omap4_usbbootfs_stat(struct device *dev, const char *filename,
- 
- static int omap4_usbbootfs_probe(struct device *dev)
- {
--	return 0;
-+	return omap4_usbboot_open();
- }
-+
- static void omap4_usbbootfs_remove(struct device *dev)
- {
- }
-diff --git a/include/mach/omap/omap4_rom_usb.h b/include/mach/omap/omap4_rom_usb.h
-index bf8bd159ad..66295eb11e 100644
---- a/include/mach/omap/omap4_rom_usb.h
-+++ b/include/mach/omap/omap4_rom_usb.h
-@@ -125,8 +125,21 @@ struct omap4_usbboot {
- 	int ready;
- };
- 
-+#ifdef CONFIG_OMAP4_USBBOOT
- int omap4_usbboot_open(void);
- int omap4_usbboot_ready(void);
-+#else
-+static inline int omap4_usbboot_open(void)
-+{
-+	return -ENODEV;
-+}
-+
-+static inline int omap4_usbboot_ready(void)
-+{
-+	return 0;
-+}
-+#endif
-+
- void omap4_usbboot_close(void);
- 
- void omap4_usbboot_queue_read(void *data, unsigned len);
 -- 
 2.30.2
 
