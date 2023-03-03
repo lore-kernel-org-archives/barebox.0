@@ -1,73 +1,59 @@
-Delivery-date: Fri, 03 Mar 2023 10:25:10 +0100
+Delivery-date: Fri, 03 Mar 2023 10:25:33 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pY1f3-007NeX-4J
-	for lore@lore.pengutronix.de; Fri, 03 Mar 2023 10:25:10 +0100
+	id 1pY1fQ-007Nfv-AQ
+	for lore@lore.pengutronix.de; Fri, 03 Mar 2023 10:25:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pY1f2-0001jq-H1
-	for lore@pengutronix.de; Fri, 03 Mar 2023 10:25:09 +0100
+	id 1pY1fO-000208-B0
+	for lore@pengutronix.de; Fri, 03 Mar 2023 10:25:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MMpS9IuXsP1p9CmZFMObQsPdQHSf3ZUtVxQxcGO10ic=; b=wtkMQ8AbgJ9tyI4r4Wb8eDF1cH
-	48NcGLl/V01jims6xMvszSeJQ975FAmpoRnnS63Hr39dyWzyZuKY3uqLFVZN7acQdH/MQM4TDGECU
-	oq9fnGLRB9H+QEiSSPZM+EtSjeJes0yg5fEAUjQRqzaM0l7+AnQ6G2jPUCaVXJ30P9G2mwiEJLHp8
-	ZfLPwVsDU3q4au0z2gqdUvVdCx6dsz8nh23qjg/P8bAsZz9ym6oYWsEFEEtdVy6hnWPDFtVhJh0sq
-	jXyKlOA9a2bk0bp+SWibNdRx9uNLNfGdFW/g92kAd7nacF2/Qpnm4bJYFCvniDkMcBXUjPj0ozJV5
-	JLrQ+OCw==;
+	bh=jYGckrB8QtovWPdk8LQnE06pZulNqKfvMrEoXUxfk3A=; b=orfhXG+1Mc11ciWMTj9IkK32Er
+	F6jH+v+mz3Ary3oUUAS1WAXgJeqeJ+ROxIEkGAAFPzb25rnzqeqGlgv98MsKLOfsW9+t7NJY/5cV/
+	F4+vF/ni41fxzNm25vfdL6ZZlF4npzdx1NCnrCTKsO8Co23Jen5wgHVyAli6o5aSJnjlCtdT/yGKU
+	hKVjy+iLKCJ9ojX5abx+feB8dbpjfDw5ixnAIxO5Y3D3LfA+/CxTSLhOQ/DhTgOJ+ARyOuBEeFDJ5
+	Sw2+MPc2tVM7L8LCOqnLxPbng1urdmSJhU85esDfFQREzJyHS+M4dAdacHZFvlquKkcb4U57jvJSM
+	ZoMyvIbw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pY1dY-005fgZ-3k; Fri, 03 Mar 2023 09:23:36 +0000
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
-	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pY1bs-005eVQ-9i
-	for barebox@bombadil.infradead.org; Fri, 03 Mar 2023 09:21:52 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=MMpS9IuXsP1p9CmZFMObQsPdQHSf3ZUtVxQxcGO10ic=; b=qExTcRI+KdRSQc1IgwPjbe8AJd
-	23Rd94tgPIQDGe4tA87F4On8Yx5TIxfIMnSXM6lpLVLgt4vlSuX26oDKabtGdINIbR+6DCK6DPfte
-	1KhhcdQa7VLPxfacUhcxcqBmbR64H4c4IAYvLeQWLrnlGYV8kT4XXhLHP8CSmbUbIVlxsqEMevFE5
-	jYhD1dN1DDZ9lQwU4UxQSn37YJLU60WcSKdcHQ/qLqPQGpJEmEdYZR5hkEQtenTTzvWpVg2HNIHTH
-	vL/XddQ+o68rAKmB8L517JwQrzUNb8UfRzHtEYBz73k8iXPEWxk0UkrZKKdMbHeM7Sz33QlwmkNIz
-	7QuQjCcg==;
+	id 1pY1dt-005fpG-CA; Fri, 03 Mar 2023 09:23:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
-	by casper.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pY1bn-0031N6-Bc
-	for barebox@lists.infradead.org; Fri, 03 Mar 2023 09:21:51 +0000
+	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1pY1bj-005eP8-Ed
+	for barebox@lists.infradead.org; Fri, 03 Mar 2023 09:21:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pY1bk-0000IS-1U; Fri, 03 Mar 2023 10:21:44 +0100
+	id 1pY1bi-0000FV-7t; Fri, 03 Mar 2023 10:21:42 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pY1bj-001Wk1-E1; Fri, 03 Mar 2023 10:21:43 +0100
+	id 1pY1bh-001Wj0-Dq; Fri, 03 Mar 2023 10:21:41 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pY1ba-00F2j7-To; Fri, 03 Mar 2023 10:21:34 +0100
+	id 1pY1bb-00F2lq-7Z; Fri, 03 Mar 2023 10:21:35 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri,  3 Mar 2023 10:21:14 +0100
-Message-Id: <20230303092131.3063587-34-s.hauer@pengutronix.de>
+Date: Fri,  3 Mar 2023 10:21:30 +0100
+Message-Id: <20230303092131.3063587-50-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230303092131.3063587-1-s.hauer@pengutronix.de>
 References: <20230303092131.3063587-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230303_092147_985431_1DFA4606 
-X-CRM114-Status: GOOD (  13.23  )
+X-CRM114-CacheID: sfid-20230303_012143_738277_999EE5CE 
+X-CRM114-Status: GOOD (  12.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,85 +73,394 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 33/50] ARM: omap: Make multi-arch safe
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	UPPERCASE_75_100 autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 49/50] ARM: Add multi_v7_defconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Make sure the initcalls do not execute on foreign SoCs.
+This adds a multi_v7_defconfig that includes support for:
+
+- i.MX
+- omap
+- Rockchip
+- bcm283x
+- vexpress
+- STM32MP
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-omap/omap_generic.c | 8 +++++++-
- arch/arm/mach-omap/xload.c        | 3 +++
- include/mach/omap/generic.h       | 6 ++++++
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ arch/arm/configs/multi_v7_defconfig | 361 ++++++++++++++++++++++++++++
+ 1 file changed, 361 insertions(+)
+ create mode 100644 arch/arm/configs/multi_v7_defconfig
 
-diff --git a/arch/arm/mach-omap/omap_generic.c b/arch/arm/mach-omap/omap_generic.c
-index 59c1ce7666..36f2e80af2 100644
---- a/arch/arm/mach-omap/omap_generic.c
-+++ b/arch/arm/mach-omap/omap_generic.c
-@@ -113,6 +113,9 @@ static struct image_handler omap_barebox_handler = {
- 
- static int omap_bootm_barebox(void)
- {
-+	if (!cpu_is_omap())
-+		return 0;
-+
- 	return register_image_handler(&omap_barebox_handler);
- }
- device_initcall(omap_bootm_barebox);
-@@ -141,6 +144,9 @@ static int omap_env_init(void)
- 	struct cdev *cdev;
- 	const char *rootpath;
- 
-+	if (!cpu_is_omap())
-+		return 0;
-+
- 	if (bootsource_get() != BOOTSOURCE_MMC)
- 		return 0;
- 
-@@ -203,7 +209,7 @@ static int omap_init(void)
- 	if (root) {
- 		__omap_cpu_type = omap_soc_from_dt();
- 		if (!__omap_cpu_type)
--			hang();
-+			return 0;
- 	}
- 
- 	if (cpu_is_omap3())
-diff --git a/arch/arm/mach-omap/xload.c b/arch/arm/mach-omap/xload.c
-index e61e2ce652..e632b53788 100644
---- a/arch/arm/mach-omap/xload.c
-+++ b/arch/arm/mach-omap/xload.c
-@@ -355,6 +355,9 @@ int omap_set_barebox_part(struct omap_barebox_part *part)
- 
- static int omap_set_xload(void)
- {
-+	if (!cpu_is_omap())
-+		return 0;
-+
- 	barebox_main = omap_xload;
- 
- 	return 0;
-diff --git a/include/mach/omap/generic.h b/include/mach/omap/generic.h
-index 8b2b7a4f0c..cb54b88211 100644
---- a/include/mach/omap/generic.h
-+++ b/include/mach/omap/generic.h
-@@ -54,6 +54,12 @@ extern unsigned int __omap_cpu_type;
- # define cpu_is_am33xx()	(0)
- #endif
- 
-+#ifdef omap_cpu_type
-+#define cpu_is_omap()			(omap_cpu_type > 0)
-+#else
-+#define cpu_is_omap()			(0)
-+#endif
-+
- struct omap_barebox_part {
- 	unsigned int nand_offset;
- 	unsigned int nand_size;
+diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
+new file mode 100644
+index 0000000000..d83e503671
+--- /dev/null
++++ b/arch/arm/configs/multi_v7_defconfig
+@@ -0,0 +1,361 @@
++CONFIG_ARCH_BCM283X=y
++CONFIG_ARCH_IMX=y
++CONFIG_ARCH_OMAP_MULTI=y
++CONFIG_ARCH_ROCKCHIP=y
++CONFIG_ARCH_STM32MP=y
++CONFIG_ARCH_VEXPRESS=y
++CONFIG_CACHE_L2X0=y
++CONFIG_MACH_RPI=y
++CONFIG_MACH_RPI2=y
++CONFIG_MACH_RPI3=y
++CONFIG_MACH_RPI_CM3=y
++CONFIG_MACH_RPI4=y
++CONFIG_MACH_KINDLE_MX50=y
++CONFIG_MACH_CCMX51=y
++CONFIG_MACH_EFIKA_MX_SMARTBOOK=y
++CONFIG_MACH_FREESCALE_MX51_PDK=y
++CONFIG_MACH_CCMX53=y
++CONFIG_MACH_FREESCALE_MX53_LOCO=y
++CONFIG_MACH_GUF_VINCELL=y
++CONFIG_MACH_TX53=y
++CONFIG_MACH_TQMA53=y
++CONFIG_MACH_FREESCALE_MX53_VMX53=y
++CONFIG_MACH_ZII_RDU1=y
++CONFIG_MACH_ADVANTECH_ROM_742X=y
++CONFIG_MACH_NITROGEN6=y
++CONFIG_MACH_CM_FX6=y
++CONFIG_MACH_REALQ7=y
++CONFIG_MACH_DFI_FS700_M60=y
++CONFIG_MACH_DIGI_CCIMX6ULSBCPRO=y
++CONFIG_MACH_ELTEC_HIPERCAM=y
++CONFIG_MACH_EMBEDSKY_E9=y
++CONFIG_MACH_EMBEST_MARSBOARD=y
++CONFIG_MACH_EMBEST_RIOTBOARD=y
++CONFIG_MACH_SABRELITE=y
++CONFIG_MACH_SABRESD=y
++CONFIG_MACH_FREESCALE_IMX6SX_SABRESDB=y
++CONFIG_MACH_UDOO=y
++CONFIG_MACH_UDOO_NEO=y
++CONFIG_MACH_GUF_SANTARO=y
++CONFIG_MACH_GW_VENTANA=y
++CONFIG_MACH_GRINN_LITEBOARD=y
++CONFIG_MACH_TX6X=y
++CONFIG_MACH_KONTRON_SAMX6I=y
++CONFIG_MACH_NOVENA=y
++CONFIG_MACH_NXP_IMX6ULL_EVK=y
++CONFIG_MACH_PHYTEC_SOM_IMX6=y
++CONFIG_MACH_PROTONIC_IMX6=y
++CONFIG_MACH_SKOV_IMX6=y
++CONFIG_MACH_SOLIDRUN_MICROSOM=y
++CONFIG_MACH_TECHNEXION_PICO_HOBBIT=y
++CONFIG_MACH_TECHNEXION_WANDBOARD=y
++CONFIG_MACH_TQMA6X=y
++CONFIG_MACH_VARISCITE_MX6=y
++CONFIG_MACH_WEBASTO_CCBV2=y
++CONFIG_MACH_GK802=y
++CONFIG_MACH_ZII_RDU2=y
++CONFIG_MACH_MEERKAT96=y
++CONFIG_MACH_AC_SXB=y
++CONFIG_MACH_WARP7=y
++CONFIG_MACH_FREESCALE_MX7_SABRESD=y
++CONFIG_MACH_PHYTEC_PHYCORE_IMX7=y
++CONFIG_MACH_ZII_IMX7D_DEV=y
++CONFIG_MACH_KAMSTRUP_MX7_CONCENTRATOR=y
++CONFIG_MACH_VF610_TWR=y
++CONFIG_MACH_ZII_VF610_DEV=y
++CONFIG_IMX_IIM_FUSE_BLOW=y
++CONFIG_BAREBOX_UPDATE_AM33XX_SPI_NOR_MLO=y
++CONFIG_BAREBOX_UPDATE_AM33XX_NAND=y
++CONFIG_BAREBOX_UPDATE_AM33XX_EMMC=y
++CONFIG_MACH_AFI_GF=y
++CONFIG_MACH_BEAGLE=y
++CONFIG_MACH_BEAGLEBONE=y
++CONFIG_MACH_MYIRTECH_X335X=y
++CONFIG_MACH_PHYTEC_SOM_AM335X=y
++CONFIG_MACH_VSCOM_BALTOS=y
++CONFIG_MACH_WAGO_PFC_AM35XX=y
++CONFIG_MACH_RADXA_ROCK=y
++CONFIG_MACH_PHYTEC_SOM_RK3288=y
++CONFIG_MACH_STM32MP13XX_DK=y
++CONFIG_MACH_STM32MP15XX_DKX=y
++CONFIG_MACH_LXA_MC1=y
++CONFIG_MACH_SEEED_ODYSSEY=y
++CONFIG_MACH_STM32MP15X_EV1=y
++CONFIG_MACH_PROTONIC_STM32MP1=y
++CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1=y
++CONFIG_MACH_VEXPRESS=y
++CONFIG_MACH_VIRT=y
++CONFIG_AEABI=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_ARM_UNWIND=y
++CONFIG_ARM_PSCI=y
++CONFIG_MMU=y
++CONFIG_MALLOC_SIZE=0x0
++CONFIG_MALLOC_TLSF=y
++CONFIG_KALLSYMS=y
++CONFIG_PROMPT="barebox> "
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_MENU=y
++# CONFIG_TIMESTAMP is not set
++CONFIG_BOOTM_SHOW_TYPE=y
++CONFIG_BOOTM_VERBOSE=y
++CONFIG_BOOTM_INITRD=y
++CONFIG_BOOTM_OFTREE=y
++CONFIG_BOOTM_OFTREE_UIMAGE=y
++CONFIG_BOOTM_AIMAGE=y
++CONFIG_BLSPEC=y
++CONFIG_CONSOLE_ACTIVATE_NONE=y
++CONFIG_CONSOLE_ALLOW_COLOR=y
++CONFIG_PBL_CONSOLE=y
++CONFIG_CONSOLE_RATP=y
++CONFIG_RATP_CMD_I2C=y
++CONFIG_RATP_CMD_GPIO=y
++CONFIG_PARTITION_DISK_EFI=y
++# CONFIG_PARTITION_DISK_EFI_GPT_NO_FORCE is not set
++# CONFIG_PARTITION_DISK_EFI_GPT_COMPARE is not set
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW_REBOOT_MODE=y
++CONFIG_STATE=y
++CONFIG_BOOTCHOOSER=y
++CONFIG_RESET_SOURCE=y
++CONFIG_MACHINE_ID=y
++CONFIG_FASTBOOT_CMD_OEM=y
++CONFIG_CMD_DMESG=y
++CONFIG_LONGHELP=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_IMD=y
++CONFIG_CMD_MEMINFO=y
++CONFIG_CMD_ARM_MMUINFO=y
++CONFIG_CMD_REGULATOR=y
++CONFIG_CMD_MMC=y
++CONFIG_CMD_MMC_EXTCSD=y
++CONFIG_CMD_FCB=y
++# CONFIG_CMD_BOOTU is not set
++CONFIG_CMD_BOOTZ=y
++CONFIG_CMD_GO=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_RESET=y
++CONFIG_CMD_UIMAGE=y
++CONFIG_CMD_BOOTCHOOSER=y
++CONFIG_CMD_PARTITION=y
++CONFIG_CMD_UBIFORMAT=y
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_DEFAULTENV=y
++CONFIG_CMD_LOADENV=y
++CONFIG_CMD_PRINTENV=y
++CONFIG_CMD_MAGICVAR=y
++CONFIG_CMD_MAGICVAR_HELP=y
++CONFIG_CMD_SAVEENV=y
++CONFIG_CMD_FILETYPE=y
++CONFIG_CMD_LN=y
++CONFIG_CMD_MD5SUM=y
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_SHA224SUM=y
++CONFIG_CMD_SHA256SUM=y
++CONFIG_CMD_UNCOMPRESS=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_READF=y
++CONFIG_CMD_SLEEP=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_MIITOOL=y
++CONFIG_CMD_PING=y
++CONFIG_CMD_TFTP=y
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_MENU=y
++CONFIG_CMD_MENU_MANAGEMENT=y
++CONFIG_CMD_MENUTREE=y
++CONFIG_CMD_SPLASH=y
++CONFIG_CMD_FBTEST=y
++CONFIG_CMD_READLINE=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_CRC=y
++CONFIG_CMD_CRC_CMP=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_CLK=y
++CONFIG_CMD_DETECT=y
++CONFIG_CMD_FLASH=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_I2C=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_NANDTEST=y
++CONFIG_CMD_POWEROFF=y
++CONFIG_CMD_SPI=y
++CONFIG_CMD_LED_TRIGGER=y
++CONFIG_CMD_USBGADGET=y
++CONFIG_CMD_WD=y
++CONFIG_CMD_BAREBOX_UPDATE=y
++CONFIG_CMD_OF_DIFF=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OF_FIXUP_STATUS=y
++CONFIG_CMD_OF_OVERLAY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_STATE=y
++CONFIG_NET=y
++CONFIG_NET_NFS=y
++CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_FASTBOOT=y
++CONFIG_OF_BAREBOX_DRIVERS=y
++CONFIG_AIODEV=y
++CONFIG_STM32_ADC=y
++CONFIG_SERIAL_AMBA_PL011=y
++CONFIG_DRIVER_SERIAL_STM32=y
++CONFIG_DRIVER_SERIAL_NS16550=y
++CONFIG_VIRTIO_CONSOLE=y
++CONFIG_DRIVER_NET_CPSW=y
++CONFIG_DRIVER_NET_DAVINCI_EMAC=y
++CONFIG_DRIVER_NET_DESIGNWARE_STM32=y
++CONFIG_DRIVER_NET_FEC_IMX=y
++CONFIG_DRIVER_NET_SMC91111=y
++CONFIG_MICREL_PHY=y
++CONFIG_REALTEK_PHY=y
++CONFIG_SMSC_PHY=y
++CONFIG_MDIO_BITBANG=y
++CONFIG_MDIO_GPIO=y
++CONFIG_MDIO_BUS_MUX_GPIO=y
++CONFIG_NET_USB=y
++CONFIG_NET_USB_ASIX=y
++CONFIG_NET_USB_SMSC95XX=y
++CONFIG_DRIVER_SPI_OMAP3=y
++CONFIG_DRIVER_SPI_STM32=y
++CONFIG_I2C_GPIO=y
++CONFIG_I2C_OMAP=y
++CONFIG_I2C_STM32=y
++CONFIG_I2C_MUX=y
++CONFIG_MTD=y
++CONFIG_MTD_RAW_DEVICE=y
++CONFIG_MTD_CONCAT=y
++CONFIG_MTD_DATAFLASH=y
++CONFIG_MTD_M25P80=y
++CONFIG_MTD_SST25L=y
++CONFIG_DRIVER_CFI=y
++CONFIG_NAND=y
++CONFIG_NAND_ALLOW_ERASE_BAD=y
++CONFIG_NAND_IMX=y
++CONFIG_NAND_MXS=y
++CONFIG_NAND_OMAP_GPMC=y
++CONFIG_MTD_UBI=y
++CONFIG_MTD_UBI_FASTMAP=y
++CONFIG_VIRTIO_BLK=y
++CONFIG_DISK_AHCI=y
++CONFIG_DISK_AHCI_IMX=y
++CONFIG_DISK_INTF_PLATFORM_IDE=y
++CONFIG_DISK_PATA_IMX=y
++CONFIG_USB_HOST=y
++CONFIG_USB_IMX_CHIPIDEA=y
++CONFIG_USB_DWC2_HOST=y
++CONFIG_USB_DWC2_GADGET=y
++CONFIG_USB_EHCI=y
++CONFIG_USB_ULPI=y
++CONFIG_USB_STORAGE=y
++CONFIG_USB_GADGET=y
++CONFIG_USB_GADGET_DFU=y
++CONFIG_USB_GADGET_SERIAL=y
++CONFIG_USB_GADGET_FASTBOOT=y
++CONFIG_USB_MUSB=y
++CONFIG_USB_MUSB_AM335X=y
++CONFIG_USB_MUSB_HOST=y
++CONFIG_USB_MUSB_GADGET=y
++CONFIG_VIDEO=y
++CONFIG_DRIVER_VIDEO_FB_SSD1307=y
++CONFIG_DRIVER_VIDEO_STM32_LTDC=y
++CONFIG_DRIVER_VIDEO_IMX_IPUV3=y
++CONFIG_DRIVER_VIDEO_IMX_IPUV3_LVDS=y
++CONFIG_DRIVER_VIDEO_IMX_IPUV3_HDMI=y
++CONFIG_DRIVER_VIDEO_IMX_IPUV3_PARALLEL=y
++CONFIG_DRIVER_VIDEO_SIMPLEFB=y
++CONFIG_DRIVER_VIDEO_EDID=y
++CONFIG_DRIVER_VIDEO_BACKLIGHT=y
++CONFIG_DRIVER_VIDEO_BACKLIGHT_PWM=y
++CONFIG_DRIVER_VIDEO_SIMPLE_PANEL=y
++CONFIG_MCI=y
++CONFIG_MCI_STARTUP=y
++CONFIG_MCI_MMC_BOOT_PARTITIONS=y
++CONFIG_MCI_DW=y
++CONFIG_MCI_DW_PIO=y
++CONFIG_MCI_BCM283X=y
++CONFIG_MCI_BCM283X_SDHOST=y
++CONFIG_MCI_IMX_ESDHC=y
++CONFIG_MCI_OMAP_HSMMC=y
++CONFIG_MCI_MMCI=y
++CONFIG_MCI_STM32_SDMMC2=y
++CONFIG_COMMON_CLK_SCMI=y
++CONFIG_MFD_DA9063=y
++CONFIG_MFD_MC34704=y
++CONFIG_MFD_MC9SDZ60=y
++CONFIG_MFD_STMPE=y
++CONFIG_MFD_STPMIC1=y
++CONFIG_MFD_STM32_TIMERS=y
++CONFIG_STATE_DRV=y
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_PWM=y
++CONFIG_LED_GPIO_OF=y
++CONFIG_LED_TRIGGERS=y
++CONFIG_EEPROM_AT25=y
++CONFIG_EEPROM_AT24=y
++CONFIG_KEYBOARD_GPIO=y
++CONFIG_INPUT_SPECIALKEYS=y
++CONFIG_WATCHDOG=y
++CONFIG_WATCHDOG_POLLER=y
++CONFIG_WATCHDOG_IMX=y
++CONFIG_WATCHDOG_OMAP=y
++CONFIG_STM32_IWDG_WATCHDOG=y
++CONFIG_STPMIC1_WATCHDOG=y
++CONFIG_PWM=y
++CONFIG_PWM_IMX=y
++CONFIG_PWM_STM32=y
++CONFIG_HWRNG=y
++CONFIG_HWRNG_STM32=y
++CONFIG_HW_RANDOM_VIRTIO=y
++CONFIG_MXS_APBH_DMA=y
++CONFIG_GPIO_GENERIC_PLATFORM=y
++CONFIG_GPIO_RASPBERRYPI_EXP=y
++CONFIG_GPIO_STMPE=y
++CONFIG_PINCTRL_SINGLE=y
++CONFIG_IMX_OCOTP_WRITE=y
++CONFIG_STM32_BSEC=y
++CONFIG_BUS_OMAP_GPMC=y
++CONFIG_REGULATOR=y
++CONFIG_REGULATOR_FIXED=y
++CONFIG_REGULATOR_STM32_PWR=y
++CONFIG_REGULATOR_STM32_VREFBUF=y
++CONFIG_REGULATOR_STPMIC1=y
++CONFIG_REGULATOR_ARM_SCMI=y
++CONFIG_REMOTEPROC=y
++CONFIG_STM32_REMOTEPROC=y
++CONFIG_ARM_SCMI_PROTOCOL=y
++CONFIG_GENERIC_PHY=y
++CONFIG_USB_NOP_XCEIV=y
++CONFIG_PHY_STM32_USBPHYC=y
++CONFIG_SYSCON_REBOOT_MODE=y
++CONFIG_POWER_RESET_SYSCON=y
++CONFIG_RESET_STM32=y
++CONFIG_VIRTIO_MMIO=y
++CONFIG_FS_CRAMFS=y
++CONFIG_FS_EXT4=y
++CONFIG_FS_TFTP=y
++CONFIG_FS_TFTP_MAX_WINDOW_SIZE=8
++CONFIG_FS_NFS=y
++CONFIG_FS_FAT=y
++CONFIG_FS_FAT_WRITE=y
++CONFIG_FS_FAT_LFN=y
++CONFIG_FS_UBIFS=y
++CONFIG_FS_UBIFS_COMPRESSION_LZO=y
++CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
++CONFIG_FS_UBIFS_COMPRESSION_ZSTD=y
++CONFIG_FS_BPKFS=y
++CONFIG_FS_UIMAGEFS=y
++CONFIG_FS_PSTORE=y
++CONFIG_FS_PSTORE_CONSOLE=y
++CONFIG_FS_PSTORE_RAMOOPS=y
++CONFIG_FS_SQUASHFS=y
++CONFIG_FS_RATP=y
++CONFIG_PNG=y
++CONFIG_DIGEST_SHA1_ARM=y
 -- 
 2.30.2
 
