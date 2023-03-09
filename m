@@ -1,56 +1,57 @@
-Delivery-date: Thu, 09 Mar 2023 15:09:21 +0100
+Delivery-date: Thu, 09 Mar 2023 15:36:53 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1paGxM-00Ew6T-Sh
-	for lore@lore.pengutronix.de; Thu, 09 Mar 2023 15:09:21 +0100
+	id 1paHO0-00Ewj6-Uy
+	for lore@lore.pengutronix.de; Thu, 09 Mar 2023 15:36:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1paGxM-0006Ik-F1
-	for lore@pengutronix.de; Thu, 09 Mar 2023 15:09:21 +0100
+	id 1paHO0-00035G-92
+	for lore@pengutronix.de; Thu, 09 Mar 2023 15:36:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yo09mm34/52sWFHbLlmaCTHvdekLjkr3jqrNhAzmRrc=; b=0kHmXwPXhm4yVvsR3kixHb5/q/
-	NuDfAGLF5sSeVtnQ2/BXUk2c4FeEdsc8T0FcT/rdg8832gM/GQnGzA+T1+SKlNJcFFpHrlPd6mz/i
-	BfGnoJROp5AU/gebQbFQVKZUFJeiGiuB8NJKXr+weBh7chrT50bX2yN1kG4Gqo1I2OZeJRkRprpdt
-	kPeDIcVxL7QXOFcEXgzkHxm8MNe+ogO9r5aopDI1cP8mID/ZuNhDefXlKfL2b3BkvRE/J6DGJBwy4
-	OMOjd1KYQhR1cAL+EZiMnz6gv7GsVlyENfAxOCrE8213up9kUN/VOTen6q33NJ32LUVNFnc9Y6kDG
-	7MQffyPQ==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=VxKFg2+FaFQsQP9/E+cqtlCfLJLUqHocuZ2u7gbIwV0=; b=fgCqZX7CXtHurNWkv2+vFADabM
+	TJYVKDXC5tn3xXEZxhD7ulxqbl46VO8zLowwMXiFB4E9PlVOoEIT146DSQT9oTfDtnIcwq3iMmOCG
+	0nAI0j6l8w5iBFm5nl4rTQNlRtZCEtYaWyuXPeHcZUOhVgY1tdeB0Q5lyjg8lMOBaVQiafd6l1r7p
+	5V1yrh8JESL7psAhXRochEekjchiPs8vVeyFRw9ojw76BuEWMda46fybu56C2V11RI9aVl9sGkJwR
+	ZlE3eTlGfJU5znomYPWKxJRl1tDthDN2fuqCYnIgPHzipx3T9rs0/Zp6eWYzss7DANBCsZ1zVTP5T
+	f40XNYkA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1paGw3-00AMWB-96; Thu, 09 Mar 2023 14:07:59 +0000
+	id 1paHMX-00AZH9-6e; Thu, 09 Mar 2023 14:35:23 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1paGvG-00AMEb-DJ
-	for barebox@lists.infradead.org; Thu, 09 Mar 2023 14:07:12 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1paGvE-0005ul-No; Thu, 09 Mar 2023 15:07:08 +0100
-Message-ID: <38a3580d-2089-77c3-d5b8-0462562d6e5a@pengutronix.de>
-Date: Thu, 9 Mar 2023 15:07:08 +0100
+	id 1paHE3-00AVbe-CJ
+	for barebox@lists.infradead.org; Thu, 09 Mar 2023 14:26:36 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1paHE1-0001LA-PV; Thu, 09 Mar 2023 15:26:33 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1paHE1-002yFm-5H; Thu, 09 Mar 2023 15:26:33 +0100
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1paHE0-001Q2e-Gc; Thu, 09 Mar 2023 15:26:32 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Thu,  9 Mar 2023 15:26:31 +0100
+Message-Id: <20230309142631.338244-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-Cc: mol@pengutronix.de
-References: <20230309135713.3874769-1-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230309135713.3874769-1-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230309_060710_503395_EE6E5EEA 
-X-CRM114-Status: GOOD (  18.54  )
+X-CRM114-CacheID: sfid-20230309_062635_460905_F700C5FC 
+X-CRM114-Status: GOOD (  12.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,49 +69,115 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] ARM: Enable frame pointers for arm64
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] ARM: Do not print exception stacktrace in panic
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 09.03.23 14:57, Sascha Hauer wrote:
-> stack unwinding on arm64 depends on framepointers, so enable them.
-> 
-> OSELAS.Toolchain-2022.10.0 now defaults to -fomit-frame-pointer whereas
-> earlier versions default to -fno-omit-frame-pointer. Fix stack
-> unwinding for new OSELAS.Toolchain and other toolchains which omit
-> frame pointers by default.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+panic() prints a stacktrace by default. When being called in a an
+exception this will print the stacktrace of the exception stack
+which is not useful, so drop it. We are printing the desired
+stacktrace anyway before calling panic().
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/cpu/interrupts.c    |  2 +-
+ arch/arm/cpu/interrupts_64.c |  2 +-
+ common/misc.c                | 29 +++++++++++++++++++++++------
+ include/printk.h             |  1 +
+ 4 files changed, 26 insertions(+), 8 deletions(-)
 
-> ---
->  arch/arm/cpu/Kconfig | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-> index 3ef3604737..f6e2ae9b8a 100644
-> --- a/arch/arm/cpu/Kconfig
-> +++ b/arch/arm/cpu/Kconfig
-> @@ -18,6 +18,7 @@ config CPU_64
->  	select HAVE_PBL_IMAGE
->  	select HAVE_PBL_MULTI_IMAGES
->  	select HAS_DMA
-> +	select ARCH_WANT_FRAME_POINTERS
->  
->  # Select CPU types depending on the architecture selected. This selects
->  # which CPUs we support in the kernel image, and the compiler instruction
-
+diff --git a/arch/arm/cpu/interrupts.c b/arch/arm/cpu/interrupts.c
+index a1728eb353..5bc790a796 100644
+--- a/arch/arm/cpu/interrupts.c
++++ b/arch/arm/cpu/interrupts.c
+@@ -68,7 +68,7 @@ static void __noreturn do_exception(struct pt_regs *pt_regs)
+ {
+ 	show_regs(pt_regs);
+ 
+-	panic("");
++	panic_no_stacktrace("");
+ }
+ 
+ /**
+diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
+index f54fdcd3dd..d844915fee 100644
+--- a/arch/arm/cpu/interrupts_64.c
++++ b/arch/arm/cpu/interrupts_64.c
+@@ -88,7 +88,7 @@ static void __noreturn do_exception(struct pt_regs *pt_regs)
+ 
+ 	unwind_backtrace(pt_regs);
+ 
+-	panic("panic: unhandled exception");
++	panic_no_stacktrace("panic: unhandled exception");
+ }
+ 
+ /**
+diff --git a/common/misc.c b/common/misc.c
+index 400c1fb48f..e266f0951e 100644
+--- a/common/misc.c
++++ b/common/misc.c
+@@ -216,15 +216,13 @@ device_initcall(of_kernel_init);
+ 
+ BAREBOX_MAGICVAR(global.of.kernel.add_machine_compatible, "Additional machine/board compatible");
+ 
+-void __noreturn panic(const char *fmt, ...)
++static void __noreturn do_panic(bool stacktrace, const char *fmt, va_list ap)
+ {
+-	va_list args;
+-	va_start(args, fmt);
+-	vprintf(fmt, args);
++	vprintf(fmt, ap);
+ 	putchar('\n');
+-	va_end(args);
+ 
+-	dump_stack();
++	if (stacktrace)
++		dump_stack();
+ 
+ 	led_trigger(LED_TRIGGER_PANIC, TRIGGER_ENABLE);
+ 
+@@ -235,4 +233,23 @@ void __noreturn panic(const char *fmt, ...)
+ 		restart_machine();
+ 	}
+ }
++
++void __noreturn panic(const char *fmt, ...)
++{
++	va_list args;
++
++	va_start(args, fmt);
++	do_panic(true, fmt, args);
++	va_end(args);
++}
+ EXPORT_SYMBOL(panic);
++
++void __noreturn panic_no_stacktrace(const char *fmt, ...)
++{
++	va_list args;
++
++	va_start(args, fmt);
++	do_panic(false, fmt, args);
++	va_end(args);
++}
++EXPORT_SYMBOL(panic_no_stacktrace);
+diff --git a/include/printk.h b/include/printk.h
+index 6f8635fae2..bf9645249d 100644
+--- a/include/printk.h
++++ b/include/printk.h
+@@ -28,6 +28,7 @@ static inline int printf(const char *fmt, ...)
+ #endif
+ 
+ void __attribute__((noreturn)) panic(const char *fmt, ...);
++void __attribute__((noreturn)) panic_no_stacktrace(const char *fmt, ...);
+ 
+ #define printk			printf
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
 
 
 
