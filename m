@@ -1,56 +1,59 @@
-Delivery-date: Thu, 09 Mar 2023 12:57:24 +0100
+Delivery-date: Thu, 09 Mar 2023 13:00:49 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1paEtf-00Eo0D-8J
-	for lore@lore.pengutronix.de; Thu, 09 Mar 2023 12:57:24 +0100
+	id 1paEwy-00Eo8S-U6
+	for lore@lore.pengutronix.de; Thu, 09 Mar 2023 13:00:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1paEte-00082G-M1
-	for lore@pengutronix.de; Thu, 09 Mar 2023 12:57:23 +0100
+	id 1paEwx-0000CF-GJ
+	for lore@pengutronix.de; Thu, 09 Mar 2023 13:00:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=u7Y2yxSowgLFuG0bjl7dbI4VHrzuCtlv3g3r5kvp+WA=; b=U8kLYlDBOjE7PUXBcGE0QNONWI
-	KgDXsBVvPcp5REtLO14Nxjp1gU08xVBqML3UyVRnosA7GGj62Cm6wQ5rafqDEQMC5Sp5aHh1W/JJ0
-	ALmMUU6GI8za9RLtVXe6t9e+HwklPhivhluIz752dnH6NcXvqwkG6OQ1YYcoabWu2JigkSKqpkXVg
-	au/3LmqEhJNT63jWhA7mF4ivQ8DOtC7bQR+ACObA1E8X1V67yBUTf/XI5uCNxiKcnov1wYblaEWgs
-	RRrdUoBqMAJfG2J6blnLaKQzMPcA/ruDDtlrZHFTse+Ey20zeEl65UEjiXjFFlxPhMJHymcpsG2Gn
-	8laoHPJg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=u7pAGhtlWhlTaoY4fvVd00eha6qCIAWstF1iVXpqtMc=; b=SZ5lpRSHl4bkZB3mCcFLt1doxi
+	lZtlovrfAZ/hA3x955Lw5+sUa2kSSAitNhqK2WGIJnJnrKc6C97zIlCyaclST0zgCW6oEmlAzrzRX
+	z5nf+vC2Jug7prgdkBVbPR2lqy+krtwrTCuBhIptAGtYAIopOvV9L5K4KuOzpobNQe2igOWe+SKvq
+	ovr7L1foIQ00OK/hqHS6yDuf5xUXZPAAn9T/ZE5s+CIwcVBpozdMYppsLhGsx4AdBvZbMVqhpFiVJ
+	HQe/7xnU3koGaaei4l5piSvVlYEODS6NzaKjJ/uoYQWya7Wf2tZNTKCQmr6k54ZNBNQZ/mZAL0O1y
+	BaW98+ww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1paEsO-009hnM-Dx; Thu, 09 Mar 2023 11:56:04 +0000
+	id 1paEvh-009jNm-9k; Thu, 09 Mar 2023 11:59:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1paEZ5-009ZHR-En
-	for barebox@lists.infradead.org; Thu, 09 Mar 2023 11:36:09 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1paEZ3-0004WH-UY; Thu, 09 Mar 2023 12:36:06 +0100
-Message-ID: <1ca140c8-7454-a319-4c4d-cebdf5a7b3d7@pengutronix.de>
-Date: Thu, 9 Mar 2023 12:36:05 +0100
+	id 1paEeD-009bde-J8
+	for barebox@lists.infradead.org; Thu, 09 Mar 2023 11:41:28 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1paEe9-0005K2-Vx; Thu, 09 Mar 2023 12:41:21 +0100
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1paEe9-0007JH-2F; Thu, 09 Mar 2023 12:41:21 +0100
+Date: Thu, 9 Mar 2023 12:41:21 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org,
+	Joacim Zetterling <joacim.zetterling@westermo.com>
+Message-ID: <20230309114121.tozmvrdtgwp5hlzt@pengutronix.de>
+References: <20230228-v2023-02-0-topic-flexspi-v1-0-7b3c3fa295f5@pengutronix.de>
+ <d5ec51f5-cf50-dbbe-6a14-e84a8cc0bd5c@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20230308140545.3366052-1-s.hauer@pengutronix.de>
- <20230308140545.3366052-4-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230308140545.3366052-4-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d5ec51f5-cf50-dbbe-6a14-e84a8cc0bd5c@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230309_033607_558551_9EB84828 
-X-CRM114-Status: GOOD (  23.75  )
+X-CRM114-CacheID: sfid-20230309_034125_671355_9D7F60C8 
+X-CRM114-Status: GOOD (  31.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,84 +71,131 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 3/7] i2c: implement rescan
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 00/21] FlexSPI image/boot/update support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Sascha,
+Hi Ahmad,
 
-On 08.03.23 15:05, Sascha Hauer wrote:
-> struct device::rescan is called by the core to let the subsystem rescan
-> the controllers device node. Implement that for I2C. Ahmad recently
-> implemented the struct device::detect hook for the very same purpose.
-> The downside of that approach was that device_detect() had to be called
-> manually and that either needs knowledge which device actually has
-> updated device nodes, or all devices were detected, like unrelated USB
-> or MMC/SD devices. The rescan hook doesn't need that manual detect call,
-> so just drop the I2C detect implementation in favour for implementing
-> rescan.
+On 23-03-09, Ahmad Fatoum wrote:
+> Hello Marco,
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/i2c/i2c.c | 16 +++-------------
->  1 file changed, 3 insertions(+), 13 deletions(-)
+> On 09.03.23 11:40, Marco Felsch wrote:
+> > Hi,
+> > 
+> > by this serie the missing FlexSPI/QSPI boot support is added. The
+> > FlexSPI boot option is available on i.MX8MM/N/P SoCs.
 > 
-> diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-> index efcad29342..aac4488b5c 100644
-> --- a/drivers/i2c/i2c.c
-> +++ b/drivers/i2c/i2c.c
-> @@ -471,15 +471,7 @@ int of_i2c_register_devices_by_node(struct device_node *node)
->  	return 0;
->  }
->  
-> -static int i2c_bus_detect(struct device *dev)
-> -{
-> -	struct i2c_adapter *adap = container_of(dev, struct i2c_adapter, dev);
-> -
-> -	of_i2c_register_devices(adap);
-> -	return 0;
-> -}
-> -
-> -static int i2c_hw_detect(struct device *dev)
-> +static int i2c_hw_rescan(struct device *dev)
->  {
->  	struct i2c_adapter *adap;
->  
-> @@ -720,7 +712,6 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
->  	}
->  
->  	adapter->dev.id = adapter->nr;
-> -	adapter->dev.detect = i2c_bus_detect;
->  	dev_set_name(&adapter->dev, "i2c");
->  
->  	ret = register_device(&adapter->dev);
-> @@ -734,9 +725,8 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
->  
->  	hw_dev = adapter->dev.parent;
->  	if (hw_dev && dev_of_node(hw_dev)) {
-> -		if (!hw_dev->detect)
-> -			hw_dev->detect = i2c_hw_detect;
-> -		i2c_hw_detect(hw_dev);
+> adding to Cc, Joacim, who authored the first series for supporting
+> i.MX8M QSPI.
 
-This breaks normal probe of child devices. You can stick a
-of_i2c_register_devices(adapter); here instead.
+thanks I forgot him..
 
-> +		if (!hw_dev->rescan)
-> +			hw_dev->rescan = i2c_hw_rescan;
->  	}
->  
->  	return 0;
+> Can I expect that the issues that were raised with implicit v1
+> are resolved here?
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+If you mean by issues:
+ - using the bootrom-loader?
+   -> No, since the loading part is now quite small (memcpy) and I
+      didn't saw the benefit of using the romloader instead since the
+      memcpy works on 8MM/N/P. Please see xload-qspi.c for more
+      information.
+ - The additional 4K size issue?
+   -> Yes please see patch ("mci: imx-esdhc-pbl: fix number of read
+      blocks").
+ - Same barebox image for SD/eMMC and QSPI
+   -> Yes, please see my cover letter
+ - Filetype detection?
+   -> New filetype was added, see ("filetype: add NXP FlexSPI filetype")
+ - Don't use a pre-generated FCFB header?
+   -> Yes, we create the FCFB during image generation. See ("scripts:
+      imx-image: add FlexSPI image support")
 
+I hope this help.
+
+Regards,
+  Marco
+
+> > The integration is done by using the single-image approach, so no
+> > special QSPI image is required. The same image which can be used for
+> > eMMC/eMMC-boot, SD, USB, chainload now supports QSPI. This is done by
+> > adding a 2nd IVT header on the appropriate place and adding a QSPI
+> > update handler.
+> > 
+> > Patch1-4: General fixes
+> > Patch7-onward: Add the FlexSPI/QSPI support
+> > 
+> > ---
+> > Marco Felsch (21):
+> >       spi: remove flash_platform_data support
+> >       bbu: make it possible to check multiple of-compatibles
+> >       ARM: i.MX8MM: add missing IMD_USED_OF image metadata entry
+> >       ARM: i.MX8MN: add missing IMD_USED_OF image metadata entries
+> >       mci: imx-esdhc-pbl: fix number of read blocks
+> >       mci: imx-esdhc-pbl: refactor the esdhc_load_image function
+> >       mci: imx-esdhc-pbl: move imx_load_image into common xload code
+> >       ARM: i.MX8M: Add QSPI image load support
+> >       ARM: i.MX8MM bootsource: fix QSPI boot source detection
+> >       ARM: i.MX8M: Add QSPI boot support
+> >       scripts: imx-image: convert flag variables into bool
+> >       scripts: imx-image: header_v2: factor out offset parameter
+> >       scripts: imx-image: header_v2: add header_len parameter
+> >       scripts: imx-image: add FlexSPI image support
+> >       filetype: add NXP FlexSPI filetype
+> >       ARM: i.MX: bbu: rename IMX_INTERNAL_FLAG_ERASE to IMX_BBU_FLAG_ERASE
+> >       ARM: i.MX: bbu: add target device offset
+> >       ARM: i.MX: bbu: add FlexSPI update handler
+> >       ARM: i.MX8M: enable FlexSPI image support
+> >       ARM: i.MX8M: add qspi barebox and barebox-environment partitions
+> >       ARM: i.MX8M: add QSPI update handler
+> > 
+> >  arch/arm/boards/nxp-imx8mm-evk/board.c             |   1 +
+> >  .../nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg  |   3 +
+> >  arch/arm/boards/nxp-imx8mm-evk/lowlevel.c          |   1 +
+> >  arch/arm/boards/nxp-imx8mn-evk/board.c             |   1 +
+> >  .../nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg  |   3 +
+> >  arch/arm/boards/nxp-imx8mn-evk/lowlevel.c          |   4 +
+> >  arch/arm/boards/nxp-imx8mp-evk/board.c             |   1 +
+> >  .../nxp-imx8mp-evk/flash-header-imx8mp-evk.imxcfg  |   3 +
+> >  arch/arm/dts/imx8mm-evk.dtsi                       |  19 +++
+> >  arch/arm/dts/imx8mn-evk.dtsi                       |  19 +++
+> >  arch/arm/dts/imx8mp-evk.dts                        |  19 +++
+> >  arch/arm/mach-imx/Makefile                         |   1 +
+> >  arch/arm/mach-imx/atf.c                            |   9 ++
+> >  arch/arm/mach-imx/boot.c                           |  17 +++
+> >  arch/arm/mach-imx/imx-bbu-internal.c               |  52 +++++++-
+> >  arch/arm/mach-imx/xload-common.c                   | 120 +++++++++++++++++
+> >  arch/arm/mach-imx/xload-qspi.c                     |  57 ++++++++
+> >  common/bbu.c                                       |  42 +++---
+> >  common/filetype.c                                  |   5 +
+> >  drivers/mci/imx-esdhc-pbl.c                        | 108 +--------------
+> >  drivers/mtd/devices/m25p80.c                       |  15 +--
+> >  drivers/mtd/devices/mtd_dataflash.c                |   4 +-
+> >  drivers/mtd/spi-nor/spi-nor.c                      |   1 -
+> >  include/filetype.h                                 |   1 +
+> >  include/mach/imx/bbu.h                             |  13 ++
+> >  include/mach/imx/imx-header.h                      | 118 +++++++++++++++++
+> >  include/mach/imx/xload.h                           |   8 ++
+> >  include/spi/flash.h                                |  31 -----
+> >  scripts/imx/imx-image.c                            | 146 +++++++++++++++++++--
+> >  scripts/imx/imx.c                                  |  26 ++++
+> >  30 files changed, 664 insertions(+), 184 deletions(-)
+> > ---
+> > base-commit: 7960c168dae7f38406c0727c4b5a275e85c2533c
+> > change-id: 20230228-v2023-02-0-topic-flexspi-c4d81e8b5b9a
+> > 
+> > Best regards,
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> 
 
 
