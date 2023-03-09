@@ -1,67 +1,67 @@
-Delivery-date: Thu, 09 Mar 2023 11:49:25 +0100
+Delivery-date: Thu, 09 Mar 2023 11:51:36 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1paDps-00Eide-Qx
-	for lore@lore.pengutronix.de; Thu, 09 Mar 2023 11:49:25 +0100
+	id 1paDrz-00EijE-QL
+	for lore@lore.pengutronix.de; Thu, 09 Mar 2023 11:51:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1paDps-00023h-Gw
-	for lore@pengutronix.de; Thu, 09 Mar 2023 11:49:25 +0100
+	id 1paDrz-0002RW-15
+	for lore@pengutronix.de; Thu, 09 Mar 2023 11:51:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZNYWAiHhDMK1fmoD+W2WoUxl8ML0Ld9Vp5drrSJaAhk=; b=QLLLfxpsYBmYKCiQ39JocdlsnO
-	K91Nr9rxooImCajD/9DPu9Sj4qYhWZlcjxRHyHp0dyMAEVe4atwbku5ZJ/g1ZMSfCVZ5W7jykqAYO
-	m/8+D9H1GkQ5Lk9lLdYT1DwEXXMYIqn0Bcin8OOscDfXeu53/hIIukKQOs80YGwN3P1FIbs1hXQIz
-	hnv/d/6ssln94W7uJHhyjU3pfueTXyyv3lbA532yK20o/8zpCSYbA86XliZdp0wsVYg2zD7LZC5Gq
-	QxqwUQasKPEy17OCpvVFcSxyI+fCiSuk6bNA7vfmAVh+5Gs6oYLtYrMftUTEgE32k9g5sNnDgRY75
-	gpFIXywA==;
+	bh=azzRdM+LkAWxz/yTlQuuA6UX3XSMpoLMNMeLpAg3Urk=; b=bQTd0U+pGmHp49Hpa/NPsIMQ8X
+	LyGmNcJLc4XSPfN4HJKGEjUZm+uYNMxNcVVzd7NGD64814iEd+JUSaJlakThgypOsHVwofENTKnb7
+	M/cSzjUd+AGF74olrL5QNLh5YVfqlirYyvffsSOIjlVZ3fZvUB+z46PxsLSG/nfhAABMtcB0R9Lx3
+	wwGnzvWkV7Es+mCKnDSaHvOZRuYtXYEF5sc+JAFFTXyMKRbvKOBz/9yA0E5mtZ6KvKTnyoMBiH0YO
+	NREbOM4vDqy7BE0mjjUnvDykxRLCITQmCkIRca8pHdrFXVssCfcK5ixNtPMDZJD3wNVwei23eXGyZ
+	+svZi/7Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1paDom-009Cw4-EY; Thu, 09 Mar 2023 10:48:16 +0000
+	id 1paDqu-009DjX-9E; Thu, 09 Mar 2023 10:50:28 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1paDoj-009Cvg-Fc
-	for barebox@bombadil.infradead.org; Thu, 09 Mar 2023 10:48:13 +0000
+	id 1paDqp-009Dib-FC
+	for barebox@bombadil.infradead.org; Thu, 09 Mar 2023 10:50:23 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=From:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ZNYWAiHhDMK1fmoD+W2WoUxl8ML0Ld9Vp5drrSJaAhk=; b=P6R1Cglb3EpKMNDErZ5utOMiAK
-	7YqUyWvZedMMDbvY0dmvUCknsfIpepeehhxzXB0mQJIYPUVY6I3nVvlLbDtAYBhSrlnTIzpACyuLP
-	0s+2HfnWBanWtURHJbkV6LQIBIzXfiUrlJciUGI1q+2ZPATpkNExNCORDRYEkICgPHe/MqBr2ctlx
-	amEl0yXjG31G5PWaKiXMxuABFVOHQ++ANhF1vBZ4r5K4xnaw39rKNsnvN4OJ61pUVun8rMqGsqdOE
-	LKoWqtVjIAiZiUjPvEewtIsv8cZrECbLTptBBVIGLFldXm7qOHf2lxIkQGoJX8SFfHa22gWt5ezug
-	Bm0QCKrQ==;
+	bh=azzRdM+LkAWxz/yTlQuuA6UX3XSMpoLMNMeLpAg3Urk=; b=qrjlAihH2Od6qpg1qHm0JD00nU
+	gnn2tDib/WTu3WJGb907H0S90gECtqaQm+3nVkxIYgsgUbIPWs1HaD8d/UYwQ1v4MVSXjBQg+zG9D
+	qNsrcmS/U5+MLCYf8hKkuFqRIEZ6sIlLlcmUP1J59WJmeVpauOnfwXhrJFIg2R4Frfsrl+7vsMIN8
+	acyiIx88zPVQ7AYt2NmnI4urhUCiavpjna7RG6ocB3LRVrbvQqaKONW9QuNpngpyKPKle9iauutjd
+	lxmTa8UnkPAZ07y1JTyhEhuX6u6VSj5VwdJws8bN+6/xFWTHxEflvThZI38fRY28BtK0uIqxQES/g
+	kO5rVYnQ==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1paDof-0005Xx-3B
+	id 1paDql-0005ZS-13
 	for barebox@lists.infradead.org;
-	Thu, 09 Mar 2023 10:48:12 +0000
+	Thu, 09 Mar 2023 10:50:21 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1paDoe-0001tl-Vs; Thu, 09 Mar 2023 11:48:08 +0100
+	id 1paDqk-0002DB-KY; Thu, 09 Mar 2023 11:50:18 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1paDoe-0004F9-4f; Thu, 09 Mar 2023 11:48:08 +0100
-Date: Thu, 9 Mar 2023 11:48:08 +0100
-To: Renaud Barbier <Renaud.Barbier@ametek.com>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20230309104808.GA5784@pengutronix.de>
-References: <BL0PR07MB566565603B9BFC2D40141142ECB79@BL0PR07MB5665.namprd07.prod.outlook.com>
+	id 1paDqk-0004Oh-D9; Thu, 09 Mar 2023 11:50:18 +0100
+Date: Thu, 9 Mar 2023 11:50:18 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230309105018.GB5784@pengutronix.de>
+References: <20230307101446.2077676-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <BL0PR07MB566565603B9BFC2D40141142ECB79@BL0PR07MB5665.namprd07.prod.outlook.com>
+In-Reply-To: <20230307101446.2077676-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -69,8 +69,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230309_104810_158042_4532E704 
-X-CRM114-Status: GOOD (  23.61  )
+X-CRM114-CacheID: sfid-20230309_105019_641936_51FAEC30 
+X-CRM114-Status: GOOD (  19.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,79 +92,40 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Subject: [PATCH 1/1] ARM:lib32: add architected timer
+Subject: Re: [PATCH master 1/5] net: dsa: realtek: rtl8365mb: add missing new
+ line to log print
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Mar 07, 2023 at 04:17:08PM +0000, Renaud Barbier wrote:
-> In preparation for the introduction of the LS1021A support,
-> add a specific timer support based on the LS1046A support so
-> that delays can be used in the PBL.
+On Tue, Mar 07, 2023 at 11:14:42AM +0100, Ahmad Fatoum wrote:
+> Line should normally not show up, but when it does, have it look nice.
 > 
-> Signed-off-by: Renaud Barbier <renaud.barbier@ametek.com>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/arm/lib32/Makefile                |  2 ++
->  arch/arm/lib32/arm_architected_timer.c | 17 +++++++++++++++++
->  include/clock.h                        |  2 ++
->  3 files changed, 21 insertions(+)
->  create mode 100644 arch/arm/lib32/arm_architected_timer.c
+>  drivers/net/realtek-dsa/rtl8365mb.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
-> index 82507fffc0..d54fb7644c 100644
-> --- a/arch/arm/lib32/Makefile
-> +++ b/arch/arm/lib32/Makefile
-> @@ -31,6 +31,8 @@ extra-y += barebox.lds
->  pbl-y	+= lib1funcs.o
->  pbl-y	+= ashldi3.o
->  pbl-y	+= div0.o
-> +pbl-$(CONFIG_CPU_32v7)	+= arm_architected_timer.o
-> +CFLAGS_arm_architected_timer.o := -march=armv7-a
+> diff --git a/drivers/net/realtek-dsa/rtl8365mb.c b/drivers/net/realtek-dsa/rtl8365mb.c
+> index 8f7d122da28f..1f11ed4ed4bc 100644
+> --- a/drivers/net/realtek-dsa/rtl8365mb.c
+> +++ b/drivers/net/realtek-dsa/rtl8365mb.c
+> @@ -1216,7 +1216,7 @@ static int rtl8365mb_detect(struct realtek_priv *priv)
 >  
->  obj-pbl-y	+= setjmp.o
->  
-> diff --git a/arch/arm/lib32/arm_architected_timer.c b/arch/arm/lib32/arm_architected_timer.c
-> new file mode 100644
-> index 0000000000..54eca13f8b
-> --- /dev/null
-> +++ b/arch/arm/lib32/arm_architected_timer.c
-> @@ -0,0 +1,17 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#include <asm/system.h>
-> +#include <clock.h>
-> +#include <common.h>
-> +
-> +/* Unlike the ARMv8, the timer is not generic to ARM32 */
-> +void arm_architected_timer_udelay(unsigned long us)
-> +{
-> +	unsigned long long ticks, cntfrq = get_cntfrq();
-> +	unsigned long long start = get_cntpct();
-> +
-> +	ticks = DIV_ROUND_DOWN_ULL((us * cntfrq), 1000000);
-> +
-> +	while ((long)(start + ticks - get_cntpct()) > 0)
-> +		;
-> +}
-> diff --git a/include/clock.h b/include/clock.h
-> index e6197e7eb0..8e07c35d37 100644
-> --- a/include/clock.h
-> +++ b/include/clock.h
-> @@ -35,6 +35,8 @@ uint32_t clocksource_hz2mult(uint32_t hz, uint32_t shift_constant);
->  int is_timeout(uint64_t start_ns, uint64_t time_offset_ns);
->  int is_timeout_non_interruptible(uint64_t start_ns, uint64_t time_offset_ns);
->  
-> +void arm_architected_timer_udelay(unsigned long us);
-> +
->  void ndelay(unsigned long nsecs);
->  void udelay(unsigned long usecs);
->  void mdelay(unsigned long msecs);
+>  	if (!mb->chip_info) {
+>  		dev_err(priv->dev,
+> -			"unrecognized switch (id=0x%04x, ver=0x%04x)", chip_id,
+> +			"unrecognized switch (id=0x%04x, ver=0x%04x)\n", chip_id,
+>  			chip_ver);
+>  		return -ENODEV;
+>  	}
 > -- 
-> 2.27.0
+> 2.30.2
+> 
 > 
 > 
 
