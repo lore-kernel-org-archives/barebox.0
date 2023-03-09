@@ -1,61 +1,55 @@
-Delivery-date: Thu, 09 Mar 2023 12:26:45 +0100
+Delivery-date: Thu, 09 Mar 2023 12:51:36 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1paEQ0-00EmG6-JA
-	for lore@lore.pengutronix.de; Thu, 09 Mar 2023 12:26:45 +0100
+	id 1paEo3-00Enkp-8h
+	for lore@lore.pengutronix.de; Thu, 09 Mar 2023 12:51:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1paEPy-0002JF-B9
-	for lore@pengutronix.de; Thu, 09 Mar 2023 12:26:44 +0100
+	id 1paEo2-00075x-9E
+	for lore@pengutronix.de; Thu, 09 Mar 2023 12:51:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1rMIEWvr10DYtvWMVDyjBnQXbk5zESqKspd40zF+tMg=; b=ZBe64QrudbiSoY+fVcb/Rtong5
-	17BYG4kIH1MMlgPRmTGgsLe2u0yheplmLahfcd9ywKJ4Aln2z0F4ln8l1yG0m6w9vVEYjJw70qfjf
-	anSlg1ulvEyBieIYvVHsRy3LU3gBLLzzedJgI6sZ7jMGH0bywUEYw5xXjLD7Kwj4aj2eCJvL/aLsG
-	ZvC5RtAzYjXtR2p5rVNGTcgSufVoMfzBovpIahqaMKoBsDCFNHdu+XisxfHbhzWyNAfVySoYnRo1k
-	thCHcXtbO3yrhOZxEKGVldd26XBZ/WGc3j1+oxFe+u5Dvk7WnJPrw3SwgBnioOuc3n1o5lCEmYavK
-	5GUpJqNQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:Cc:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=7JiFfNIcm1zIrny30G6mVC9KgQCvKy3Itsoumc0nAxw=; b=m2EgG2bO+jKVKulKIjcPAHnaL9
+	UAROjk+bjBQKhbFNqzzzaihJHlmG8OOSEwGaf7BtJ2GA/AeHLGiVv0M9SFCUsFVDIaTPHKm0xqdCm
+	y33q2S4Okg27K9OiWxfFWThIp/Tdnjf/19qsQjIAEnW5k9F4Tjwaa1/Zg4n0WH4U70M/FMOVwJfwh
+	UNq3hJCeMY/YuzHGpM7+DK/nlU6k+E8tYk6ZQr+q6r0uyuyVyeEoIMRhtgt+HddhkkxiYmpTA16MG
+	cj7SygfsaZAS/zSH904hFgWzsSAfFmPpdQHRn3Z6AjCDeUvuOA1Eb5WAFIbtD4tk8+u2H4FqlAWTO
+	LmSJ7WrQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1paEOV-009TQx-4m; Thu, 09 Mar 2023 11:25:11 +0000
+	id 1paEmX-009fCq-Nn; Thu, 09 Mar 2023 11:50:02 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1paE4X-009JPA-HJ
-	for barebox@lists.infradead.org; Thu, 09 Mar 2023 11:04:35 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1paE4R-0005nI-Rh; Thu, 09 Mar 2023 12:04:27 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1paE4R-0005vi-JI; Thu, 09 Mar 2023 12:04:27 +0100
-Date: Thu, 9 Mar 2023 12:04:27 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230309110427.GE5784@pengutronix.de>
-References: <20230307093426.1551193-1-a.fatoum@pengutronix.de>
+	id 1paERV-009VBl-K7
+	for barebox@lists.infradead.org; Thu, 09 Mar 2023 11:28:22 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1paERR-0002sn-NN; Thu, 09 Mar 2023 12:28:13 +0100
+Message-ID: <d5ec51f5-cf50-dbbe-6a14-e84a8cc0bd5c@pengutronix.de>
+Date: Thu, 9 Mar 2023 12:28:10 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230307093426.1551193-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
+References: <20230228-v2023-02-0-topic-flexspi-v1-0-7b3c3fa295f5@pengutronix.de>
+Cc: Joacim Zetterling <joacim.zetterling@westermo.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230228-v2023-02-0-topic-flexspi-v1-0-7b3c3fa295f5@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230309_030433_830614_DD3F1C20 
-X-CRM114-Status: GOOD (  25.49  )
+X-CRM114-CacheID: sfid-20230309_032817_833722_95231DBF 
+X-CRM114-Status: GOOD (  23.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,212 +67,104 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/4] ARM: i.MX8M: add option to install OP-TEE
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 00/21] FlexSPI image/boot/update support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Mar 07, 2023 at 10:34:23AM +0100, Ahmad Fatoum wrote:
-> While infrastructure for installing OP-TEE was already there, no
-> upstream boards made use of it. Let's have OP-TEE installation happen in
-> generic code, so it may be enabled for any upstream board.
+Hello Marco,
+
+On 09.03.23 11:40, Marco Felsch wrote:
+> Hi,
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> by this serie the missing FlexSPI/QSPI boot support is added. The
+> FlexSPI boot option is available on i.MX8MM/N/P SoCs.
+
+adding to Cc, Joacim, who authored the first series for supporting
+i.MX8M QSPI.
+
+Can I expect that the issues that were raised with implicit v1
+are resolved here?
+
+> The integration is done by using the single-image approach, so no
+> special QSPI image is required. The same image which can be used for
+> eMMC/eMMC-boot, SD, USB, chainload now supports QSPI. This is done by
+> adding a 2nd IVT header on the appropriate place and adding a QSPI
+> update handler.
+> 
+> Patch1-4: General fixes
+> Patch7-onward: Add the FlexSPI/QSPI support
+> 
 > ---
->  arch/arm/mach-imx/atf.c                | 50 ++++++++++++++++++++------
->  arch/arm/mach-imx/include/mach/xload.h | 16 +++++++++
->  firmware/.gitignore                    |  1 +
->  firmware/Kconfig                       | 12 +++++++
->  firmware/Makefile                      |  9 +++--
->  5 files changed, 74 insertions(+), 14 deletions(-)
-
-Applied, thanks
-
-Sascha
-
+> Marco Felsch (21):
+>       spi: remove flash_platform_data support
+>       bbu: make it possible to check multiple of-compatibles
+>       ARM: i.MX8MM: add missing IMD_USED_OF image metadata entry
+>       ARM: i.MX8MN: add missing IMD_USED_OF image metadata entries
+>       mci: imx-esdhc-pbl: fix number of read blocks
+>       mci: imx-esdhc-pbl: refactor the esdhc_load_image function
+>       mci: imx-esdhc-pbl: move imx_load_image into common xload code
+>       ARM: i.MX8M: Add QSPI image load support
+>       ARM: i.MX8MM bootsource: fix QSPI boot source detection
+>       ARM: i.MX8M: Add QSPI boot support
+>       scripts: imx-image: convert flag variables into bool
+>       scripts: imx-image: header_v2: factor out offset parameter
+>       scripts: imx-image: header_v2: add header_len parameter
+>       scripts: imx-image: add FlexSPI image support
+>       filetype: add NXP FlexSPI filetype
+>       ARM: i.MX: bbu: rename IMX_INTERNAL_FLAG_ERASE to IMX_BBU_FLAG_ERASE
+>       ARM: i.MX: bbu: add target device offset
+>       ARM: i.MX: bbu: add FlexSPI update handler
+>       ARM: i.MX8M: enable FlexSPI image support
+>       ARM: i.MX8M: add qspi barebox and barebox-environment partitions
+>       ARM: i.MX8M: add QSPI update handler
 > 
-> diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
-> index 2a3e3f53b885..640881afaaca 100644
-> --- a/arch/arm/mach-imx/atf.c
-> +++ b/arch/arm/mach-imx/atf.c
-> @@ -7,6 +7,9 @@
->  #include <mach/generic.h>
->  #include <mach/xload.h>
->  #include <mach/romapi.h>
-> +#include <mach/esdctl.h>
-> +#include <asm-generic/memory_layout.h>
-> +#include <asm/barebox-arm.h>
->  #include <soc/fsl/fsl_udc.h>
->  #include <soc/fsl/caam.h>
->  
-> @@ -133,9 +136,17 @@ void imx8mm_load_bl33(void *bl33)
->  
->  __noreturn void imx8mm_load_and_start_image_via_tfa(void)
->  {
-> -	imx8mm_save_bootrom_log();
-> -	imx8mm_load_bl33((void *)MX8M_ATF_BL33_BASE_ADDR);
-> -	imx8mm_load_and_start_tfa(imx8mm_bl31_bin);
-> +	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
-> +	void *endmem = (void *)MX8M_DDR_CSD1_BASE_ADDR +
-> +		imx8m_barebox_earlymem_size(32);
-> +
-> +	imx8m_save_bootrom_log(__arm_mem_scratch(endmem));
-> +	imx8mm_load_bl33(bl33);
-> +
-> +	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MM_OPTEE))
-> +		imx8m_load_and_start_optee_via_tfa(imx8mm, endmem - OPTEE_SIZE, bl33);
-> +	else
-> +		imx8mm_load_and_start_tfa(imx8mm_bl31_bin);
->  }
->  
->  void imx8mp_load_bl33(void *bl33)
-> @@ -168,13 +179,22 @@ void imx8mp_load_bl33(void *bl33)
->  	memcpy(bl33, __image_start, barebox_pbl_size);
->  }
->  
-> -void imx8mp_load_and_start_image_via_tfa(void)
-> +__noreturn void imx8mp_load_and_start_image_via_tfa(void)
->  {
-> -	imx8mp_save_bootrom_log();
-> -	imx8mp_load_bl33((void *)MX8M_ATF_BL33_BASE_ADDR);
-> -	imx8mp_load_and_start_tfa(imx8mp_bl31_bin);
-> +	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
-> +	void *endmem = (void *)MX8M_DDR_CSD1_BASE_ADDR +
-> +		imx8m_barebox_earlymem_size(32);
-> +
-> +	imx8m_save_bootrom_log(__arm_mem_scratch(endmem));
-> +	imx8mp_load_bl33(bl33);
-> +
-> +	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MP_OPTEE))
-> +		imx8m_load_and_start_optee_via_tfa(imx8mp, endmem - OPTEE_SIZE, bl33);
-> +	else
-> +		imx8mp_load_and_start_tfa(imx8mp_bl31_bin);
->  }
->  
-> +
->  void imx8mn_load_bl33(void *bl33)
->  {
->  	enum bootsource src;
-> @@ -205,9 +225,17 @@ void imx8mn_load_bl33(void *bl33)
->  	memcpy(bl33, __image_start, barebox_pbl_size);
->  }
->  
-> -void imx8mn_load_and_start_image_via_tfa(void)
-> +__noreturn void imx8mn_load_and_start_image_via_tfa(void)
->  {
-> -	imx8mn_save_bootrom_log();
-> -	imx8mn_load_bl33((void *)MX8M_ATF_BL33_BASE_ADDR);
-> -	imx8mn_load_and_start_tfa(imx8mn_bl31_bin);
-> +	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
-> +	void *endmem = (void *)MX8M_DDR_CSD1_BASE_ADDR +
-> +		imx8m_barebox_earlymem_size(16);
-> +
-> +	imx8m_save_bootrom_log(__arm_mem_scratch(endmem));
-> +	imx8mn_load_bl33(bl33);
-> +
-> +	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MN_OPTEE))
-> +		imx8m_load_and_start_optee_via_tfa(imx8mn, endmem - OPTEE_SIZE, bl33);
-> +	else
-> +		imx8mn_load_and_start_tfa(imx8mn_bl31_bin);
->  }
-> diff --git a/arch/arm/mach-imx/include/mach/xload.h b/arch/arm/mach-imx/include/mach/xload.h
-> index aa2fa5129a11..713fc1a8fcb7 100644
-> --- a/arch/arm/mach-imx/include/mach/xload.h
-> +++ b/arch/arm/mach-imx/include/mach/xload.h
-> @@ -5,6 +5,7 @@
->  
->  #include <linux/compiler.h>
->  #include <linux/types.h>
-> +#include <mach/tzasc.h>
->  
->  int imx53_nand_start_image(void);
->  int imx6_spi_load_image(int instance, unsigned int flash_offset, void *buf, int len);
-> @@ -42,4 +43,19 @@ struct imx_scratch_space *__imx8m_scratch_space(int ddr_buswidth);
->  #define imx8mn_scratch_space() __imx8m_scratch_space(16)
->  #define imx8mp_scratch_space() __imx8m_scratch_space(32)
->  
-> +#define imx8m_load_and_start_optee_via_tfa(soc, bl32, bl33)	\
-> +do {								\
-> +	size_t bl32_size;					\
-> +	void *bl32_image;					\
-> +								\
-> +	soc##_tzc380_init();					\
-> +	get_builtin_firmware_ext(soc##_bl32_bin,		\
-> +				 bl33, &bl32_image,		\
-> +				 &bl32_size);			\
-> +								\
-> +	memcpy(bl32, bl32_image, bl32_size);			\
-> +								\
-> +	soc##_load_and_start_tfa(soc##_bl31_bin_optee);		\
-> +} while (0)
-> +
->  #endif /* __MACH_XLOAD_H */
-> diff --git a/firmware/.gitignore b/firmware/.gitignore
-> index 4f3e56d8b719..8f9a956eb661 100644
-> --- a/firmware/.gitignore
-> +++ b/firmware/.gitignore
-> @@ -1,3 +1,4 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  
->  *.bin
-> +*.bin-optee
-> diff --git a/firmware/Kconfig b/firmware/Kconfig
-> index 1a5e1bf5142a..a12a8f304476 100644
-> --- a/firmware/Kconfig
-> +++ b/firmware/Kconfig
-> @@ -24,6 +24,18 @@ config FIRMWARE_IMX8MP_ATF
->  config FIRMWARE_IMX8MQ_ATF
->  	bool
->  
-> +config FIRMWARE_IMX8MM_OPTEE
-> +	bool "install OP-TEE on i.MX8MM boards"
-> +	depends on FIRMWARE_IMX8MM_ATF && PBL_OPTEE
-> +
-> +config FIRMWARE_IMX8MN_OPTEE
-> +	bool "install OP-TEE on i.MX8MN boards"
-> +	depends on FIRMWARE_IMX8MN_ATF && PBL_OPTEE
-> +
-> +config FIRMWARE_IMX8MP_OPTEE
-> +	bool "install OP-TEE on i.MX8MP boards"
-> +	depends on FIRMWARE_IMX8MP_ATF && PBL_OPTEE
-> +
->  config FIRMWARE_CCBV2_OPTEE
->  	bool
->  	depends on MACH_WEBASTO_CCBV2 && PBL_OPTEE
-> diff --git a/firmware/Makefile b/firmware/Makefile
-> index da341871d681..984192f030bb 100644
-> --- a/firmware/Makefile
-> +++ b/firmware/Makefile
-> @@ -12,10 +12,13 @@ firmware-$(CONFIG_FIRMWARE_IMX_DDR4_PMU_TRAIN) += \
->  	ddr4_imem_1d.bin \
->  	ddr4_imem_2d.bin
->  
-> -firmware-$(CONFIG_FIRMWARE_IMX8MM_ATF) += imx8mm-bl31.bin
-> -firmware-$(CONFIG_FIRMWARE_IMX8MN_ATF) += imx8mn-bl31.bin
-> -firmware-$(CONFIG_FIRMWARE_IMX8MP_ATF) += imx8mp-bl31.bin
-> +firmware-$(CONFIG_FIRMWARE_IMX8MM_ATF) += imx8mm-bl31.bin$(if $(CONFIG_FIRMWARE_IMX8MM_OPTEE),-optee,)
-> +firmware-$(CONFIG_FIRMWARE_IMX8MN_ATF) += imx8mn-bl31.bin$(if $(CONFIG_FIRMWARE_IMX8MN_OPTEE),-optee,)
-> +firmware-$(CONFIG_FIRMWARE_IMX8MP_ATF) += imx8mp-bl31.bin$(if $(CONFIG_FIRMWARE_IMX8MP_OPTEE),-optee,)
->  firmware-$(CONFIG_FIRMWARE_IMX8MQ_ATF) += imx8mq-bl31.bin
-> +fw-external-$(CONFIG_FIRMWARE_IMX8MM_OPTEE) += imx8mm-bl32.bin
-> +fw-external-$(CONFIG_FIRMWARE_IMX8MN_OPTEE) += imx8mn-bl32.bin
-> +fw-external-$(CONFIG_FIRMWARE_IMX8MP_OPTEE) += imx8mp-bl32.bin
->  firmware-$(CONFIG_ARCH_RK3568) += rk3568-bl31.bin
->  firmware-$(CONFIG_ARCH_RK3568_OPTEE) += rk3568-op-tee.bin
->  firmware-$(CONFIG_ARCH_RK3399) += rk3399-bl31.bin
-> -- 
-> 2.30.2
+>  arch/arm/boards/nxp-imx8mm-evk/board.c             |   1 +
+>  .../nxp-imx8mm-evk/flash-header-imx8mm-evk.imxcfg  |   3 +
+>  arch/arm/boards/nxp-imx8mm-evk/lowlevel.c          |   1 +
+>  arch/arm/boards/nxp-imx8mn-evk/board.c             |   1 +
+>  .../nxp-imx8mn-evk/flash-header-imx8mn-evk.imxcfg  |   3 +
+>  arch/arm/boards/nxp-imx8mn-evk/lowlevel.c          |   4 +
+>  arch/arm/boards/nxp-imx8mp-evk/board.c             |   1 +
+>  .../nxp-imx8mp-evk/flash-header-imx8mp-evk.imxcfg  |   3 +
+>  arch/arm/dts/imx8mm-evk.dtsi                       |  19 +++
+>  arch/arm/dts/imx8mn-evk.dtsi                       |  19 +++
+>  arch/arm/dts/imx8mp-evk.dts                        |  19 +++
+>  arch/arm/mach-imx/Makefile                         |   1 +
+>  arch/arm/mach-imx/atf.c                            |   9 ++
+>  arch/arm/mach-imx/boot.c                           |  17 +++
+>  arch/arm/mach-imx/imx-bbu-internal.c               |  52 +++++++-
+>  arch/arm/mach-imx/xload-common.c                   | 120 +++++++++++++++++
+>  arch/arm/mach-imx/xload-qspi.c                     |  57 ++++++++
+>  common/bbu.c                                       |  42 +++---
+>  common/filetype.c                                  |   5 +
+>  drivers/mci/imx-esdhc-pbl.c                        | 108 +--------------
+>  drivers/mtd/devices/m25p80.c                       |  15 +--
+>  drivers/mtd/devices/mtd_dataflash.c                |   4 +-
+>  drivers/mtd/spi-nor/spi-nor.c                      |   1 -
+>  include/filetype.h                                 |   1 +
+>  include/mach/imx/bbu.h                             |  13 ++
+>  include/mach/imx/imx-header.h                      | 118 +++++++++++++++++
+>  include/mach/imx/xload.h                           |   8 ++
+>  include/spi/flash.h                                |  31 -----
+>  scripts/imx/imx-image.c                            | 146 +++++++++++++++++++--
+>  scripts/imx/imx.c                                  |  26 ++++
+>  30 files changed, 664 insertions(+), 184 deletions(-)
+> ---
+> base-commit: 7960c168dae7f38406c0727c4b5a275e85c2533c
+> change-id: 20230228-v2023-02-0-topic-flexspi-c4d81e8b5b9a
 > 
-> 
-> 
+> Best regards,
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
