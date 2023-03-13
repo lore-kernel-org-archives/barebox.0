@@ -1,73 +1,73 @@
-Delivery-date: Mon, 13 Mar 2023 14:48:21 +0100
+Delivery-date: Mon, 13 Mar 2023 14:50:44 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pbiXE-0063Ae-3n
-	for lore@lore.pengutronix.de; Mon, 13 Mar 2023 14:48:21 +0100
+	id 1pbiZX-00642i-Lm
+	for lore@lore.pengutronix.de; Mon, 13 Mar 2023 14:50:44 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pbiXD-0006zB-4p
-	for lore@pengutronix.de; Mon, 13 Mar 2023 14:48:19 +0100
+	id 1pbiZX-0007Ia-0Q
+	for lore@pengutronix.de; Mon, 13 Mar 2023 14:50:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=I3raE3oAvauma43JFI6Sqa3v6PEQRqsMVT37DAWhpdM=; b=XV/DR9PkDAAvUkodE6DKnzEDhA
-	OHzQqRjSTNroLGjS0V8LMR91MTQAAC+qEf1NoBXupTs8vunGcgJkXYztRBxN2YFwi3gwO0jqKE6Uf
-	cdYzDEjU/40lrMFfNgYi1mmBAq+gspI7oqVt/fFijIVaH6q9uNtdpKwB58sutTe3qsgYCSqYwHBh2
-	It+JmXOfQxpqmMF5ideTsn2i6+0XYdRf+78jy208hx13sCyLyOH29aTIL2ek2bsnn+h30Y2lAbdrn
-	9sYOpe2ecddv2NNz1hcAVYxiILxRpwxYSlY4GFExsvWL3sDj1Qnay07DwJy3avaKRGO+kTvcoKU10
-	VVDPjkzg==;
+	bh=6wvY3JhpHC7psqAgMWEmuin3ekhhkYZRDLdRvNA6LU8=; b=uLljNNiPNXDNQY3gpXYYWSGp8k
+	phXl/ccw6gsjqnbz0Ls/oImysoGQG8avBT1/h/1XB9AceiZCyXadEdpo1oo9B6/3g+VUsHilmy5tI
+	eR+rEjjyXzl1LdrSRFRFhTEln9FuEFn7OhjEE/vPxoMTyUP9BhduABCUtlFB05l9vwwjkTZyiyz/L
+	DLr7gP4jVd5bZtM1/szZ37yf6GrkDoeaLEe/AgEJkk5lUFoxnEOrbgPuJjsJcp2B/AhqOjO8tTd+c
+	1KLfs7GnfgQkM++1wWqB5DoDg6gqJYDYZkZf4NZeTLuZO4ZlgPTUxZV0fAqa23CtijpnBeomYTqVK
+	deZvLwfg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pbiVz-005zQH-Jb; Mon, 13 Mar 2023 13:47:03 +0000
+	id 1pbiYM-005zsR-J5; Mon, 13 Mar 2023 13:49:30 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pbiVv-005zPd-7J
-	for barebox@bombadil.infradead.org; Mon, 13 Mar 2023 13:46:59 +0000
+	id 1pbiYI-005zsH-NP
+	for barebox@bombadil.infradead.org; Mon, 13 Mar 2023 13:49:26 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=I3raE3oAvauma43JFI6Sqa3v6PEQRqsMVT37DAWhpdM=; b=qsTXZy/sHmCWnsnHoaW7Q1eq0e
-	ptXdLtMuXmTS9KdKC9Z1O11K9xa4BJYG/I1wrWbV6Tyn3Nddz3u1gCMTPV0nTZkpJWvt74zELH+VQ
-	brOo4JTIpsyzEnOP0uLzXCZRN7TQiMBYu1/0tQoVm8fFK6MDrmi2HPVfqV5Qo4ks1b+s8XDUKNi6l
-	s9liAseNZmwCuc0mWo5wi/UIGCZt2M758bETzenSuM3iV36YisW5g8tjf97HgiEcPDpx8qnojIex+
-	5Wz9cLrmaT+ttTR00uE3XoaICuxQ7neoKcTEaZ5KUur7KCbVKMaUMbQ+RKcmHcdTJNVLHAWKOV/UX
-	WPpXrxuQ==;
+	bh=6wvY3JhpHC7psqAgMWEmuin3ekhhkYZRDLdRvNA6LU8=; b=EsRNQ7zDJ/wD1sWY5UVAM5KZ7A
+	zfZjenm+Eltm/vl3hpF1DHuU2Dt0qnKw9ji8B/0NRgvlqfXExBV4fOuDmwWx056uMqq0uiMs1+wDL
+	sgJgO2xtmt34ve1LDJYiaZUe5kBOD2drSppnJo/DiOvbMQ9SWW7PpeudJKzgFetWjJyB/pu/yvRzx
+	PqyM70GuoDeJ1i3xfT0QSKVqcFkuJWG6rmLSl4i5sRR5p7u/Shmbe3iYj11Nq0FsE8tPgubRVnwTV
+	PVaG2Ip9BT4lKzHt+VPBaGdo4ym5aDHDj5HwAmD7JTkGl7fMdbFUTNNZhOp1cdQ5flgkUsZFShatE
+	RrQd/BMw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pbiVr-001Nah-1R
+	id 1pbiYF-001Nd7-0o
 	for barebox@lists.infradead.org;
-	Mon, 13 Mar 2023 13:46:57 +0000
+	Mon, 13 Mar 2023 13:49:25 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1pbiVp-0006jZ-MQ; Mon, 13 Mar 2023 14:46:53 +0100
+	id 1pbiYE-00072q-I1; Mon, 13 Mar 2023 14:49:22 +0100
 Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1pbiVp-0006x1-E8; Mon, 13 Mar 2023 14:46:53 +0100
-Date: Mon, 13 Mar 2023 14:46:53 +0100
+	id 1pbiYE-0006yw-Aj; Mon, 13 Mar 2023 14:49:22 +0100
+Date: Mon, 13 Mar 2023 14:49:22 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-To: Lucas Stach <l.stach@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230313134653.vt23ode65j4bih4r@pengutronix.de>
+Message-ID: <20230313134922.d4xvhcibk76mkgb6@pengutronix.de>
 References: <20230312162928.2110697-1-m.felsch@pengutronix.de>
- <0fa19455f9f6473c263eced4e5d0f672e9fe135a.camel@pengutronix.de>
+ <4069572b-56f9-c63d-bb04-90e583fe9ea4@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <0fa19455f9f6473c263eced4e5d0f672e9fe135a.camel@pengutronix.de>
+In-Reply-To: <4069572b-56f9-c63d-bb04-90e583fe9ea4@pengutronix.de>
 User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230313_134655_601355_5CDAEEF8 
-X-CRM114-Status: GOOD (  21.89  )
+X-CRM114-CacheID: sfid-20230313_134923_420166_8B15C7FB 
+X-CRM114-Status: GOOD (  23.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,20 +93,30 @@ Subject: Re: [PATCH] ARM: dts: i.MX8MP: remove memory node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 23-03-13, Lucas Stach wrote:
-> Am Sonntag, dem 12.03.2023 um 17:29 +0100 schrieb Marco Felsch:
+On 23-03-13, Ahmad Fatoum wrote:
+> On 12.03.23 17:29, Marco Felsch wrote:
 > > since commit f083fffe52 ("ARM: dts: i.MX8MP: add DDRC compatibles") we
 > > make use of the esdctl driver. This cause the below error since barebox
 > > try to add the memory twice.
 > > 
-> > > imx-esdctl 3d400000.memory-controller@3d400000.of: probe failed: Device or resource busy
-> > > initcall imx_esdctl_driver_init+0x0/0x2c failed: No such device
+> > | imx-esdctl 3d400000.memory-controller@3d400000.of: probe failed: Device or resource busy
+> > | initcall imx_esdctl_driver_init+0x0/0x2c failed: No such device
+> 
+> Starting with commit 0a78ac84e9fe ("memory: fuse overlapping memory banks"),
+> this should not be leading to errors. Can you increase debugging in
+> common/resource.c and see why you run into this error?
+
+I did this and saw that memory bank ram0 is added added twice:
+ - first by generic of
+ - 2nd by esdctl
+
+Regards,
+   Marco
+
+
+> 
+> 
 > > 
-> I wonder why I didn't hit this. Probably some probe order thing.
-
-I think this is because of the fact that the boards do add the memory
-node not the 8mp.dtsi and the debix don't have such a node.
-
 > > Remove the memory node to fix this.
 > > 
 > > This behaviour was seen on a i.mx8mp-evk but the
@@ -130,19 +140,6 @@ node not the 8mp.dtsi and the debix don't have such a node.
 > >  
 > > +/delete-node/ &{/memory@40000000};
 > > +
-> Why not add this to arch/arm/dts/imx8mp.dtsi?
-
-What does the compiler if ther is no such node? If the compiler just
-ignore deleting not exisiting nodes I'm fine with your proposal. Thanks
-for the review.
-
-Regards,
-  Marco
-
-> 
-> Regards,
-> Lucas
-> 
 > >  &ethphy1 {
 > >  	reset-assert-us = <15000>;
 > >  	reset-deassert-us = <100000>;
@@ -159,6 +156,12 @@ Regards,
 > >  &usdhc2 {
 > >  	#address-cells = <1>;
 > >  	#size-cells = <1>;
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 > 
 > 
 
