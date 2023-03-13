@@ -1,54 +1,54 @@
-Delivery-date: Mon, 13 Mar 2023 14:43:54 +0100
+Delivery-date: Mon, 13 Mar 2023 14:44:01 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pbiSv-0061Tz-QA
-	for lore@lore.pengutronix.de; Mon, 13 Mar 2023 14:43:54 +0100
+	id 1pbiT2-0061WP-2G
+	for lore@lore.pengutronix.de; Mon, 13 Mar 2023 14:44:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pbiSv-0005KR-3I
-	for lore@pengutronix.de; Mon, 13 Mar 2023 14:43:54 +0100
+	id 1pbiSy-0005My-8W
+	for lore@pengutronix.de; Mon, 13 Mar 2023 14:43:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=viqKat1XU1PCntqTcQDGtvJzyn392TKaVYF5Z8lIclI=; b=AhSqUCegbGPHEYQ5QACEbPV67s
-	rL85UlyRiTrwdFpUAET/xAETXmfrq5TKUdOvM0Te6GZivllRNE9EwYd8FdB+Al4vtN2KacciBFd0j
-	2nNzmKfztc7v1+ieUS/xLbi0UGtfU+rsjqU24ai2stpjqd7seEa4yvZwb9Z6zZe5N5Fkry3O70geQ
-	xc9e26Fds7jnb8jclRdxrrJ+Tz3wWUdOGgLLTXhw9ywf0cMW1LuidqHzAOubBWGoW30OC6yeIuFkb
-	LGbfSlfzLCy3BGbG1wd9hSbLlJ3bb6PCSXkqUAYKs0OHchVBlYyZ0zEEIBjLJcOxU/j8l0m79rb1q
-	imGJwSFQ==;
+	bh=gSyCIq+ZBZW+hp4P2YHEvho8V3UKD9PMh79o/xYTU7A=; b=WJ5H2ML3nWuKWE+ttZ3sSvMSHA
+	pQ/Rx9U6R6iDbjmAqqUuqXZESm4E7KWSwKXtVsclDRhVJHZ9ulZDhGL4XUZn3qVLdCB8Wit290v9C
+	wiYLDqcWOfe6nA6btVF/zx10Rxe8GfnU4zLNDuZQklceuiXM9q/71mmMR6QqUSLBnnYFQG26zen6H
+	66gPhaw2f8efWBkdmefsUOrjvf45kWn7DRIq8Qo6LL8u51KxYBStgBK/wGjhO61odnGiSE9Vpyw1r
+	Dwg83x2AyIKowo3YUE8NUlEYInGjjiRVLt80C93Sj0/KSEUsha/+BGsoKFAfOYrtV6Xf13cnJOjpT
+	E73bZ3Uw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pbiRZ-005wDO-5L; Mon, 13 Mar 2023 13:42:29 +0000
+	id 1pbiRU-005w9T-Rm; Mon, 13 Mar 2023 13:42:24 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pbiQr-005vko-C8
+	id 1pbiQr-005vkj-00
 	for barebox@lists.infradead.org; Mon, 13 Mar 2023 13:41:50 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1pbiQq-0004N9-7J
-	for barebox@lists.infradead.org; Mon, 13 Mar 2023 14:41:44 +0100
+	id 1pbiQp-0004N9-Qc
+	for barebox@lists.infradead.org; Mon, 13 Mar 2023 14:41:43 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 13 Mar 2023 14:41:49 +0100
+Date: Mon, 13 Mar 2023 14:41:46 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230228-v2023-02-0-topic-flexspi-v2-10-3d33126d2434@pengutronix.de>
+Message-Id: <20230228-v2023-02-0-topic-flexspi-v2-7-3d33126d2434@pengutronix.de>
 References: <20230228-v2023-02-0-topic-flexspi-v2-0-3d33126d2434@pengutronix.de>
 In-Reply-To: <20230228-v2023-02-0-topic-flexspi-v2-0-3d33126d2434@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: 
 X-Mailer: b4 0.12.1
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230313_064145_505023_3B7E7834 
-X-CRM114-Status: GOOD (  11.79  )
+X-CRM114-CacheID: sfid-20230313_064145_266192_51B5C10F 
+X-CRM114-Status: GOOD (  22.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,91 +70,306 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 10/23] ARM: i.MX8MM bootsource: fix QSPI boot source
- detection
+Subject: [PATCH v2 07/23] mci: imx-esdhc-pbl: move imx_load_image into
+ common xload code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The ROM will not update the sw-info field, so we need to parse the
-SBMR1. There is just one QSPI controller so set instance to 0 to avoid
-bootsource_instance=unknown.
-
-This ports u-boot commit:
-
-| commit d4e84f24a6815957b3a218166f214ca9a1c4a7de
-| Author: Peng Fan <peng.fan@nxp.com>
-| Date:   Thu May 17 15:15:59 2018 +0800
-|
-|     imx8m: add QSPI boot dev
-|
-|     When boot type could not be detected from rom sw info,
-|     read sbmr1 to detect, here we only use it to detect FLEXSPI
-|     boot, because ROM not update it in rom sw info.
-|
-|     Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Make the function public available so we can reuse it for other boot
+mediums like QSPI. No functional changes
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-imx/boot.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ arch/arm/mach-imx/xload-common.c | 120 +++++++++++++++++++++++++++++++++++++++
+ drivers/mci/imx-esdhc-pbl.c      | 118 --------------------------------------
+ include/mach/imx/xload.h         |   5 ++
+ 3 files changed, 125 insertions(+), 118 deletions(-)
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index 6f6f7008be..c6134f35b6 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -243,6 +243,11 @@ static unsigned int imx8mp_get_bmod(uint32_t r)
- 	return FIELD_GET(IMX8MP_SRC_SBMR_BMOD, r);
- }
+diff --git a/arch/arm/mach-imx/xload-common.c b/arch/arm/mach-imx/xload-common.c
+index 5a437b185d..0d3e6be1b1 100644
+--- a/arch/arm/mach-imx/xload-common.c
++++ b/arch/arm/mach-imx/xload-common.c
+@@ -1,11 +1,13 @@
+ // SPDX-License-Identifier: GPL-2.0-only
  
-+static unsigned int imx8mm_get_bcfg(uint32_t r)
+ #include <common.h>
++#include <asm/cache.h>
+ #include <asm/sections.h>
+ #include <linux/sizes.h>
+ #include <mach/imx/xload.h>
+ #include <mach/imx/esdctl.h>
+ #include <mach/imx/imx8m-regs.h>
++#include <mach/imx/imx-header.h>
+ #include <asm/barebox-arm.h>
+ 
+ int imx_image_size(void)
+@@ -26,3 +28,121 @@ struct imx_scratch_space *__imx8m_scratch_space(int ddr_buswidth)
+ 
+ 	return (void *)__arm_mem_scratch(endmem);
+ }
++
++#define HDR_SIZE	512
++
++static int
++imx_search_header(struct imx_flash_header_v2 **header_pointer,
++		  void *buffer, u32 *offset, u32 ivt_offset,
++		  int (*read)(void *dest, size_t len, void *priv),
++		  void *priv)
 +{
-+	return FIELD_GET(BOOT_CFG2(6, 4), r);
++	int ret;
++	int i, header_count = 1;
++	void *buf = buffer;
++	struct imx_flash_header_v2 *hdr;
++
++	for (i = 0; i < header_count; i++) {
++		ret = read(buf, *offset + ivt_offset + HDR_SIZE, priv);
++		if (ret)
++			return ret;
++
++		hdr = buf + *offset + ivt_offset;
++
++		if (!is_imx_flash_header_v2(hdr)) {
++			pr_debug("No IVT header! "
++				 "Found tag: 0x%02x length: 0x%04x "
++				 "version: %02x\n",
++				 hdr->header.tag, hdr->header.length,
++				 hdr->header.version);
++			return -EINVAL;
++		}
++
++		if (IS_ENABLED(CONFIG_ARCH_IMX8MQ) &&
++		    hdr->boot_data.plugin & PLUGIN_HDMI_IMAGE) {
++			/*
++			 * In images that include signed HDMI
++			 * firmware, first v2 header would be
++			 * dedicated to that and would not contain any
++			 * useful for us information. In order for us
++			 * to pull the rest of the bootloader image
++			 * in, we need to re-read header from SD/MMC,
++			 * this time skipping anything HDMI firmware
++			 * related.
++			 */
++			*offset += hdr->boot_data.size + hdr->header.length;
++			header_count++;
++		}
++	}
++	*header_pointer = hdr;
++	return 0;
 +}
 +
- static int imx53_bootsource_internal(uint32_t r)
- {
- 	return FIELD_GET(BOOT_CFG1(7, 4), r);
-@@ -323,6 +328,7 @@ void imx53_boot_save_loc(void)
- #define IMX6_SRC_GPR10	0x44
- #define IMX6_BMOD_SERIAL	0b01
- #define IMX6_BMOD_RESERVED	0b11
-+#define IMX8MM_BCFG_FSPI	0b100
- #define IMX8MP_BMOD_FUSES	0b0000
- #define IMX8MP_BMOD_SERIAL	0b0001
- #define IMX6_BMOD_FUSES		0b00
-@@ -358,6 +364,11 @@ static bool imx8mp_bootsource_serial(uint32_t sbmr2)
- 		 !(sbmr2 & BT_FUSE_SEL));
- }
- 
-+static bool imx8mm_bootsource_qspi(uint32_t sbmr1)
++int imx_load_image(ptrdiff_t address, ptrdiff_t entry, u32 offset,
++		   u32 ivt_offset, bool start, unsigned int alignment,
++		   int (*read)(void *dest, size_t len, void *priv),
++		   void *priv)
 +{
-+	return imx8mm_get_bcfg(sbmr1) == IMX8MM_BCFG_FSPI;
-+}
 +
- static bool imx6_bootsource_serial_forced(uint32_t bootmode)
- {
- 	if (cpu_mx6_is_mx6ul() || cpu_mx6_is_mx6ull())
-@@ -692,6 +703,7 @@ void imx8mm_get_boot_source(enum bootsource *src, int *instance)
- {
- 	unsigned long addr;
- 	void __iomem *src_base = IOMEM(MX8MM_SRC_BASE_ADDR);
-+	uint32_t sbmr1 = readl(src_base + 0x58);
- 	uint32_t sbmr2 = readl(src_base + 0x70);
- 
- 	if (imx6_bootsource_serial(sbmr2)) {
-@@ -699,6 +711,12 @@ void imx8mm_get_boot_source(enum bootsource *src, int *instance)
- 		return;
- 	}
- 
-+	if (imx8mm_bootsource_qspi(sbmr1)) {
-+		*src = BOOTSOURCE_SPI; /* Really: qspi */
-+		*instance = 0;
-+		return;
++	void *buf = (void *)address;
++	struct imx_flash_header_v2 *hdr = NULL;
++	int ret, len;
++	void __noreturn (*bb)(void);
++	unsigned int ofs;
++
++	len = imx_image_size();
++	if (alignment)
++		len = ALIGN(len, alignment);
++
++	ret = imx_search_header(&hdr, buf, &offset, ivt_offset, read, priv);
++	if (ret)
++		return ret;
++
++	pr_debug("Check ok, loading image\n");
++
++	ofs = offset + hdr->entry - hdr->boot_data.start;
++
++	if (entry != address) {
++		/*
++		 * Passing entry different from address is interpreted
++		 * as a request to place the image such that its entry
++		 * point would be exactly at 'entry', that is:
++		 *
++		 *     buf + ofs = entry
++		 *
++		 * solving the above for 'buf' gives us the
++		 * adjustment that needs to be made:
++		 *
++		 *     buf = entry - ofs
++		 *
++		 */
++		if (WARN_ON(entry - ofs < address)) {
++			/*
++			 * We want to make sure we won't try to place
++			 * the start of the image before the beginning
++			 * of the memory buffer we were given in
++			 * address.
++			 */
++			return -EINVAL;
++		}
++
++		buf = (void *)(entry - ofs);
 +	}
 +
- 	addr = IMX8M_BOOT_SW_INFO_POINTER_ADDR_A0;
++	ret = read(buf, ofs + len, priv);
++	if (ret) {
++		pr_err("Loading image failed with %d\n", ret);
++		return ret;
++	}
++
++	pr_debug("Image loaded successfully\n");
++
++	if (!start)
++		return 0;
++
++	bb = buf + ofs;
++
++	sync_caches_for_execution();
++
++	bb();
++}
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 4884a68837..7c5febb7a8 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -104,124 +104,6 @@ static int esdhc_read_blocks(struct fsl_esdhc_host *host, void *dst, size_t len)
+ }
  
- 	__imx7_get_boot_source(src, instance, addr, sbmr2);
+ #ifdef CONFIG_ARCH_IMX
+-#define HDR_SIZE	512
+-
+-static int
+-imx_search_header(struct imx_flash_header_v2 **header_pointer,
+-		  void *buffer, u32 *offset, u32 ivt_offset,
+-		  int (*read)(void *dest, size_t len, void *priv),
+-		  void *priv)
+-{
+-	int ret;
+-	int i, header_count = 1;
+-	void *buf = buffer;
+-	struct imx_flash_header_v2 *hdr;
+-
+-	for (i = 0; i < header_count; i++) {
+-		ret = read(buf, *offset + ivt_offset + HDR_SIZE, priv);
+-		if (ret)
+-			return ret;
+-
+-		hdr = buf + *offset + ivt_offset;
+-
+-		if (!is_imx_flash_header_v2(hdr)) {
+-			pr_debug("No IVT header! "
+-				 "Found tag: 0x%02x length: 0x%04x "
+-				 "version: %02x\n",
+-				 hdr->header.tag, hdr->header.length,
+-				 hdr->header.version);
+-			return -EINVAL;
+-		}
+-
+-		if (IS_ENABLED(CONFIG_ARCH_IMX8MQ) &&
+-		    hdr->boot_data.plugin & PLUGIN_HDMI_IMAGE) {
+-			/*
+-			 * In images that include signed HDMI
+-			 * firmware, first v2 header would be
+-			 * dedicated to that and would not contain any
+-			 * useful for us information. In order for us
+-			 * to pull the rest of the bootloader image
+-			 * in, we need to re-read header from SD/MMC,
+-			 * this time skipping anything HDMI firmware
+-			 * related.
+-			 */
+-			*offset += hdr->boot_data.size + hdr->header.length;
+-			header_count++;
+-		}
+-	}
+-	*header_pointer = hdr;
+-	return 0;
+-}
+-
+-int imx_load_image(ptrdiff_t address, ptrdiff_t entry, u32 offset,
+-		   u32 ivt_offset, bool start, unsigned int alignment,
+-		   int (*read)(void *dest, size_t len, void *priv),
+-		   void *priv)
+-{
+-
+-	void *buf = (void *)address;
+-	struct imx_flash_header_v2 *hdr = NULL;
+-	int ret, len;
+-	void __noreturn (*bb)(void);
+-	unsigned int ofs;
+-
+-	len = imx_image_size();
+-	if (alignment)
+-		len = ALIGN(len, alignment);
+-
+-	ret = imx_search_header(&hdr, buf, &offset, ivt_offset, read, priv);
+-	if (ret)
+-		return ret;
+-
+-	pr_debug("Check ok, loading image\n");
+-
+-	ofs = offset + hdr->entry - hdr->boot_data.start;
+-
+-	if (entry != address) {
+-		/*
+-		 * Passing entry different from address is interpreted
+-		 * as a request to place the image such that its entry
+-		 * point would be exactly at 'entry', that is:
+-		 *
+-		 *     buf + ofs = entry
+-		 *
+-		 * solving the above for 'buf' gives us the
+-		 * adjustment that needs to be made:
+-		 *
+-		 *     buf = entry - ofs
+-		 *
+-		 */
+-		if (WARN_ON(entry - ofs < address)) {
+-			/*
+-			 * We want to make sure we won't try to place
+-			 * the start of the image before the beginning
+-			 * of the memory buffer we were given in
+-			 * address.
+-			 */
+-			return -EINVAL;
+-		}
+-
+-		buf = (void *)(entry - ofs);
+-	}
+-
+-	ret = read(buf, ofs + len, priv);
+-	if (ret) {
+-		pr_err("Loading image failed with %d\n", ret);
+-		return ret;
+-	}
+-
+-	pr_debug("Image loaded successfully\n");
+-
+-	if (!start)
+-		return 0;
+-
+-	bb = buf + ofs;
+-
+-	sync_caches_for_execution();
+-
+-	bb();
+-}
+-
+ static int imx_read_blocks(void *dest, size_t len, void *priv)
+ {
+ 	return esdhc_read_blocks(priv, dest, len);
+diff --git a/include/mach/imx/xload.h b/include/mach/imx/xload.h
+index 86270b03dc..e9d41adc97 100644
+--- a/include/mach/imx/xload.h
++++ b/include/mach/imx/xload.h
+@@ -25,6 +25,11 @@ void __noreturn imx8mm_load_and_start_image_via_tfa(void);
+ void __noreturn imx8mn_load_and_start_image_via_tfa(void);
+ void __noreturn imx8mp_load_and_start_image_via_tfa(void);
+ 
++int imx_load_image(ptrdiff_t address, ptrdiff_t entry, u32 offset,
++		   u32 ivt_offset, bool start, unsigned int alignment,
++		   int (*read)(void *dest, size_t len, void *priv),
++		   void *priv);
++
+ int imx_image_size(void);
+ int piggydata_size(void);
+ 
 
 -- 
 2.30.2
