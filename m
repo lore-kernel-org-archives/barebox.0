@@ -1,69 +1,69 @@
-Delivery-date: Mon, 13 Mar 2023 14:45:07 +0100
+Delivery-date: Mon, 13 Mar 2023 14:45:20 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pbiU6-0061z4-AI
-	for lore@lore.pengutronix.de; Mon, 13 Mar 2023 14:45:07 +0100
+	id 1pbiUJ-00624V-Ci
+	for lore@lore.pengutronix.de; Mon, 13 Mar 2023 14:45:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pbiU5-0005tR-3p
-	for lore@pengutronix.de; Mon, 13 Mar 2023 14:45:06 +0100
+	id 1pbiUI-00066k-U3
+	for lore@pengutronix.de; Mon, 13 Mar 2023 14:45:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=H0lxk3AM4Z2HSoWMIo+QUbBC8Utda1sFsfPl9VSVqe4=; b=K51UsXf1gaLIfEQ6rcpyQBIovn
-	pRLUTaJ6kCxnS1VnLp2w/Ys5qd5Xs+38rV1sW9OM1upDm5dFyqh2wjjmD7b9LrR1iKcuW09puiyms
-	4KJrF6sb7mV0C+8QX0oWEgSxP/MSUWG+CH7jXZcQsK8Ws7ln+5SfsdIlhVQHZiqHx7T7HPDxSEVzB
-	vGasOPdyFwXLgyewKGQRkluyxysyYUY/mexiI/hS7MTbJheqlkMOV4Vd6uBUvZDuiMwCE5Mwuyo3C
-	r0OpmiEusVseC0M5sg+ikRgjZIAHGgu87glir+lEImpqEqqrrSFobb8oYXY5EIELy5NlUybtHn+vD
-	cbXog5aA==;
+	bh=ZQ51uZoitE3iHa3r8c0G1RkdC2E37wtFoA6gR6hm/GE=; b=wsjYwi8CPu+cIhO16Yh3V7kM6d
+	f9R2GKEsU4ZIJI3TJbgSNnooduRwXb33sk68GX1rhXkNTHnUgHxA8l/O/CrRt0pq1mQ2h62ZzndJy
+	FT21CrIWW5CL6oADCjU1AXC6wSNpfEPBWPkDVul1zY6A2XPaARg9MLlPDhk6rqLTzKBvZV4RWKS06
+	aeGFQ9qvOus9EBuOcuncLgbkZMscwloTqtPfDMqLMI+1kmkD3BJ8S3OzRECfbXraSp2gyVdZm0ZKi
+	N8aHngJeeXEws1f23idHF7VNoQy/DgryikJ3dnGF1gnZ+q0Wc1qnSUPaDVVR2esHheceNCTrD+AhU
+	mC94YT8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pbiSQ-005woX-UW; Mon, 13 Mar 2023 13:43:23 +0000
+	id 1pbiSp-005wyr-Ie; Mon, 13 Mar 2023 13:43:48 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pbiR1-005vra-Ho
+	id 1pbiR1-005vrb-Ho
 	for barebox@bombadil.infradead.org; Mon, 13 Mar 2023 13:41:55 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=H0lxk3AM4Z2HSoWMIo+QUbBC8Utda1sFsfPl9VSVqe4=; b=O2ZBdJ/ICOTEtS6MAKHzn2QHTT
-	l1sf++W5kfWbAPO3lFIU4iSxf/DP4OWfGgZA+JbYDtIgON2iwUBWUarUBWS7gUoacek7BovszW3/A
-	zCcz02wEI8B9DqCAmbes+9av5DdIqoruVMWOrfB2QuiYMN/zkItV7JiODW7sASO2esRE47+E7WE9G
-	WoPcSfsA99UkRyW9jYwxKtlglzFgtBcKuSy/G/t0w+jyZG/DKH3lv0z2KXlKrknN3Y6qhdEw4sADK
-	eIVKkJ4WPMkGmlBn7CsQmWBl9NTkdvc2oiL86hTOWVAFJU8l5xtV4JZjgU6slw0Nbv2D/aqPCNn6k
-	q2Hapd1g==;
+	bh=ZQ51uZoitE3iHa3r8c0G1RkdC2E37wtFoA6gR6hm/GE=; b=Im0qQPfoPFjT4KwVTgbCCW8PdD
+	8IOlPWo8YndbXxRzBG2bQEAjzK40jmURGoGpriDDsv42rLeP2SGFqhM3esoVJSxkQMJyumyXI+XfD
+	JKAy4Tbl+aEz+LieVdTXVfnk+dwtt7I8+AV/iPnaT2XxUk5SYLfyNmZVQLzke5CuDS/QICjhJMkNt
+	UTRotlyBaTyvcb8CmYaQcHDQxUPdfA1edMdYkXnugLurXM4ubIMv8OXoIbYeFnqSOvNCZK1AkWQZ0
+	9dAZvc1Q4H2pEX5ZvfcxcNlE+qPaIqIW/MoOsmgrOMUOzD8YnVVJO6+AGzLM1wHmrLYvwMoaomkzi
+	ZrGfrd5Q==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pbiQw-001NSm-28
+	id 1pbiQw-001NSo-2I
 	for barebox@lists.infradead.org;
 	Mon, 13 Mar 2023 13:41:53 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1pbiQr-0004N9-4b
+	id 1pbiQr-0004N9-8l
 	for barebox@lists.infradead.org; Mon, 13 Mar 2023 14:41:45 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 13 Mar 2023 14:41:56 +0100
+Date: Mon, 13 Mar 2023 14:41:57 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230228-v2023-02-0-topic-flexspi-v2-17-3d33126d2434@pengutronix.de>
+Message-Id: <20230228-v2023-02-0-topic-flexspi-v2-18-3d33126d2434@pengutronix.de>
 References: <20230228-v2023-02-0-topic-flexspi-v2-0-3d33126d2434@pengutronix.de>
 In-Reply-To: <20230228-v2023-02-0-topic-flexspi-v2-0-3d33126d2434@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: 
 X-Mailer: b4 0.12.1
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230313_134150_807426_FDFF3C62 
-X-CRM114-Status: GOOD (  11.92  )
+X-CRM114-CacheID: sfid-20230313_134150_857000_DFB6F8C9 
+X-CRM114-Status: GOOD (  11.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,73 +85,74 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 17/23] ARM: i.MX: bbu: rename IMX_INTERNAL_FLAG_ERASE to
- IMX_BBU_FLAG_ERASE
+Subject: [PATCH v2 18/23] ARM: i.MX: bbu: add filetype offset
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Rename the flag to align it with the existing flags. Also move it to the
-common i.MX bbu header to avoid possible overrides.
+Make it possible to have a different filetype offset which is used
+during the filetype check. This is required for the upcoming i.MX8MM/N/P
+QSPI bbu support.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-imx/imx-bbu-internal.c | 8 +++-----
- include/mach/imx/bbu.h               | 2 ++
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/mach-imx/imx-bbu-internal.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/arch/arm/mach-imx/imx-bbu-internal.c b/arch/arm/mach-imx/imx-bbu-internal.c
-index a86bd75253..8eca0783eb 100644
+index 8eca0783eb..7c13437b61 100644
 --- a/arch/arm/mach-imx/imx-bbu-internal.c
 +++ b/arch/arm/mach-imx/imx-bbu-internal.c
-@@ -21,8 +21,6 @@
- #include <mach/imx/generic.h>
- #include <libfile.h>
- 
--#define IMX_INTERNAL_FLAG_ERASE		BIT(30)
--
- struct imx_internal_bbu_handler {
- 	struct bbu_handler handler;
+@@ -26,6 +26,7 @@ struct imx_internal_bbu_handler {
  	int (*write_device)(struct imx_internal_bbu_handler *,
-@@ -35,7 +33,7 @@ struct imx_internal_bbu_handler {
- static bool
- imx_bbu_erase_required(struct imx_internal_bbu_handler *imx_handler)
- {
--	return imx_handler->handler.flags & IMX_INTERNAL_FLAG_ERASE;
-+	return imx_handler->handler.flags & IMX_BBU_FLAG_ERASE;
- }
+ 			    struct bbu_data *);
+ 	unsigned long flash_header_offset;
++	unsigned long filetype_offset;
+ 	size_t device_size;
+ 	enum filetype expected_type;
+ };
+@@ -161,8 +162,8 @@ static int imx_bbu_check_prereq(struct imx_internal_bbu_handler *imx_handler,
+ 		if (expected_type == filetype_unknown)
+ 			break;
  
- static int imx_bbu_protect(int fd, struct imx_internal_bbu_handler *imx_handler,
-@@ -484,7 +482,7 @@ imx_bbu_internal_spi_i2c_register_handler(const char *name,
- 	struct imx_internal_bbu_handler *imx_handler;
+-		blob = data->image + imx_handler->flash_header_offset;
+-		len  = data->len   - imx_handler->flash_header_offset;
++		blob = data->image + imx_handler->filetype_offset;
++		len  = data->len   - imx_handler->filetype_offset;
+ 		type = file_detect_type(blob, len);
  
+ 		if (type != expected_type) {
+@@ -470,6 +471,7 @@ imx_bbu_internal_mmc_register_handler(const char *name, const char *devicefile,
  	imx_handler = __init_handler(name, devicefile, flags |
--				     IMX_INTERNAL_FLAG_ERASE);
-+				     IMX_BBU_FLAG_ERASE);
+ 				     IMX_BBU_FLAG_KEEP_HEAD);
  	imx_handler->flash_header_offset = imx_bbu_flash_header_offset_mmc();
++	imx_handler->filetype_offset = imx_handler->flash_header_offset;
  
  	return __register_handler(imx_handler);
-@@ -646,7 +644,7 @@ int imx_bbu_external_nor_register_handler(const char *name,
- 	struct imx_internal_bbu_handler *imx_handler;
- 
+ }
+@@ -484,6 +486,7 @@ imx_bbu_internal_spi_i2c_register_handler(const char *name,
  	imx_handler = __init_handler(name, devicefile, flags |
--				     IMX_INTERNAL_FLAG_ERASE);
-+				     IMX_BBU_FLAG_ERASE);
+ 				     IMX_BBU_FLAG_ERASE);
+ 	imx_handler->flash_header_offset = imx_bbu_flash_header_offset_mmc();
++	imx_handler->filetype_offset = imx_handler->flash_header_offset;
  
- 	imx_handler->expected_type = filetype_unknown;
+ 	return __register_handler(imx_handler);
+ }
+@@ -529,6 +532,7 @@ int imx53_bbu_internal_nand_register_handler(const char *name,
  
-diff --git a/include/mach/imx/bbu.h b/include/mach/imx/bbu.h
-index c9b239c698..34133b587c 100644
---- a/include/mach/imx/bbu.h
-+++ b/include/mach/imx/bbu.h
-@@ -26,6 +26,8 @@ struct imx_dcd_v2_entry;
-  */
- #define IMX_BBU_FLAG_PARTITION_STARTS_AT_HEADER	(1 << 17)
+ 	imx_handler = __init_handler(name, "/dev/nand0", flags);
+ 	imx_handler->flash_header_offset = imx_bbu_flash_header_offset_mmc();
++	imx_handler->filetype_offset = imx_handler->flash_header_offset;
  
-+#define IMX_BBU_FLAG_ERASE			BIT(30)
-+
- /*
-  * The upper 16 bit of the flags passes to the below functions are reserved
-  * for i.MX specific flags
+ 	imx_handler->device_size = partition_size;
+ 	imx_handler->write_device = imx_bbu_internal_v2_write_nand_dbbt;
+@@ -580,6 +584,7 @@ static int imx_bbu_internal_mmcboot_register_handler(const char *name,
+ 
+ 	imx_handler = __init_handler(name, devicefile, flags);
+ 	imx_handler->flash_header_offset = flash_header_offset;
++	imx_handler->filetype_offset = flash_header_offset;
+ 
+ 	imx_handler->handler.handler = imx_bbu_internal_mmcboot_update;
+ 
 
 -- 
 2.30.2
