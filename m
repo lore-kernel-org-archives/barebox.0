@@ -1,55 +1,61 @@
-Delivery-date: Mon, 13 Mar 2023 15:47:50 +0100
+Delivery-date: Mon, 13 Mar 2023 17:17:17 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pbjSn-006NOP-Tr
-	for lore@lore.pengutronix.de; Mon, 13 Mar 2023 15:47:50 +0100
+	id 1pbkrM-006sv6-Ik
+	for lore@lore.pengutronix.de; Mon, 13 Mar 2023 17:17:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pbjSn-000829-1Y
-	for lore@pengutronix.de; Mon, 13 Mar 2023 15:47:49 +0100
+	id 1pbkrM-0006sl-6h
+	for lore@pengutronix.de; Mon, 13 Mar 2023 17:17:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+aSXXr+DXhv522W0kqz/eZbMAvtx2I9l2KMrjCGpqBk=; b=yyUwmVSFsh/7EowVbk7AnyyHb+
-	gXotw0Id4RwyqyiFjsSuwWrDKPFfW00k3fwiFvY6sMWjJdyIbL8na2A5GSxeVnqL2rUOIQtHwt8Ik
-	+KKJkwpNrKfKSE8g57sr1L6FTWzv9iorxcam5zGwHbGJ/L/xXSJDhujP8Q3VyirokrKRMlNa3nEib
-	AtkU7D1Ty/Wufu0onkIZwiBdA3zYiDlJ2qDtDQFhsEkOLqoN6oTRnJZDZXRL4Z0iyMBzos2Q0tqp4
-	QZr0+6biZdNgqvrKaHYzXr+G4OO2IiL6E5eWnTN3ju/mRUkc2S7R8EOuDw+wOz36wHZ94IzXRDbBU
-	sFf/dMjA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=CKJuE1FQCK+7+sdbP9FOm1GXMtSKPWN9j3sBXMxdU/8=; b=ZNQoEb1OLPfQNtFsHNmbMEKHjm
+	9BI8gUjNtVosPZ5UNi2qPK6FHHkUuNcHIdc/fvEMfk9dCthA0pZR+K+fTakiE0nDLUSZFge/F/hWB
+	mSVuG96JQYSzbvS5ld+VVeZbMPq4gmHrXl/0GG76SU6gbbf8QMVjdW8ySeisDJ/P81jOH7MrDpMTn
+	f3y+/3m9rnEpQFYiSxptnO5vHVeRcErqJxuRwjJvow+LMcC81dSNXeQ55l5c4mBUWCI12vI72aEZJ
+	Yl3/P+NheMkmLdNwzMK6p9cgL7i/uSqbP7h9b9EL7nwDb2+Gx41yqLapPhttHtEXY5o/HA42mcrSs
+	UPt2OLQA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pbjRg-006CPa-5R; Mon, 13 Mar 2023 14:46:40 +0000
+	id 1pbkpa-006gAD-Gi; Mon, 13 Mar 2023 16:15:26 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pbjRQ-006CHI-3y
-	for barebox@lists.infradead.org; Mon, 13 Mar 2023 14:46:25 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pbjRO-0007fQ-Ob; Mon, 13 Mar 2023 15:46:22 +0100
-Message-ID: <1b416739-ae6e-3b6c-484a-bfba020a2fda@pengutronix.de>
-Date: Mon, 13 Mar 2023 15:46:22 +0100
+	id 1pbkiw-006dS8-Qg
+	for barebox@lists.infradead.org; Mon, 13 Mar 2023 16:08:36 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1pbkir-0005Wi-5O; Mon, 13 Mar 2023 17:08:29 +0100
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1pbkiq-0006uy-UK; Mon, 13 Mar 2023 17:08:28 +0100
+Date: Mon, 13 Mar 2023 17:08:28 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230313160828.clbmimzfhnsyuy5t@pengutronix.de>
+References: <20230312162928.2110697-1-m.felsch@pengutronix.de>
+ <4069572b-56f9-c63d-bb04-90e583fe9ea4@pengutronix.de>
+ <20230313134922.d4xvhcibk76mkgb6@pengutronix.de>
+ <ca5b298f-c6e9-ee94-7152-98d3961c397a@pengutronix.de>
+ <90842333-c3dc-898f-b88a-2853856c1290@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Michael Riesch <michael.riesch@wolfvision.net>
-References: <20230313144220.1689252-1-a.fatoum@pengutronix.de>
-In-Reply-To: <20230313144220.1689252-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <90842333-c3dc-898f-b88a-2853856c1290@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230313_074624_221533_AE79D879 
-X-CRM114-Status: GOOD (  21.43  )
+X-CRM114-CacheID: sfid-20230313_090834_922419_38C9A7B6 
+X-CRM114-Status: GOOD (  30.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,64 +73,123 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 0/3] boards: qemu-virt: support passing in FIT public
- key
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] ARM: dts: i.MX8MP: remove memory node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 13.03.23 15:42, Ahmad Fatoum wrote:
-> FIT public key is usually passed in via board DT. Usual way to use
-> barebox with QEMU Virt however is to use DT supplied by Qemu and apply
-> overlay to it. mkimage doesn't generate overlay DTB though. To make
-> barbebox Qemu Virt behave like other boards, let's define a dummy DT
-> that includes CONFIG_BOOTM_FITIMAGE_PUBKEY, which is merged with the
-> barebox live device tree.
+On 23-03-13, Ahmad Fatoum wrote:
+> On 13.03.23 14:58, Ahmad Fatoum wrote:
+> > On 13.03.23 14:49, Marco Felsch wrote:
+> >> On 23-03-13, Ahmad Fatoum wrote:
+> >>> On 12.03.23 17:29, Marco Felsch wrote:
+> >>>> since commit f083fffe52 ("ARM: dts: i.MX8MP: add DDRC compatibles") we
+> >>>> make use of the esdctl driver. This cause the below error since barebox
+> >>>> try to add the memory twice.
+> >>>>
+> >>>> | imx-esdctl 3d400000.memory-controller@3d400000.of: probe failed: Device or resource busy
+> >>>> | initcall imx_esdctl_driver_init+0x0/0x2c failed: No such device
+> >>>
+> >>> Starting with commit 0a78ac84e9fe ("memory: fuse overlapping memory banks"),
+> >>> this should not be leading to errors. Can you increase debugging in
+> >>> common/resource.c and see why you run into this error?
+> >>
+> >> I did this and saw that memory bank ram0 is added added twice:
+> >>  - first by generic of
+> >>  - 2nd by esdctl
+> > 
+> > See the first loop in barebox_add_memory_bank(). If you add
+> > two overlapping IORESOURCE_MEM banks, the function will not
 > 
-> This replaces v2 of the series available in next and fixes the
-> regressions I introduced for deep-probe systems that ensure probe in
-> other devices.
+> s/overlapping/region fully within the other region/
 
-Ah, not quite, the first patch in v2 is unchanged and I forgot to send it out.
-@Sascha, let me know if you want me to resend (provided the series is ok now).
+Thanks for the hint, I checked this and now see the issue:
+ - 1st) of_add_memory_bank() add two banks for the 6G option:
+    - ram0: 0x40000000  0xc0000000
+    - ram1: 0x100000000 0xc0000000
+
+ - 2nd) the esdctl dirver try to add only one bank for the 6G:
+    - ram0: 0x40000000 0x180000000
+
+The overlap mechanism is triggered and we enter the
+barebox_grow_memory_bank() but since we already requested ram1 we can't
+grow ram0. So the tqm8 board isn't effected and a 'lacy' approach is to
+remvoe the memory node as suggested by Lucas.
+
+Regards,
+  Marco
 
 > 
-> I dropped Jan's Tested-by, because the differences warrant it, but
-> I tested locally that a RSA key was registered as before.
+> > return an error. I think there might be a problem if you run
+> > into an error. 
+> > 
+> >>
+> >> Regards,
+> >>    Marco
+> >>
+> >>
+> >>>
+> >>>
+> >>>>
+> >>>> Remove the memory node to fix this.
+> >>>>
+> >>>> This behaviour was seen on a i.mx8mp-evk but the
+> >>>> imx8mp-tqma8mpql-mba8mpxl also has a memory node and includes the
+> >>>> barebox.dtsi.
+> >>>>
+> >>>> Fixes: f083fffe52 ("ARM: dts: i.MX8MP: add DDRC compatibles")
+> >>>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> >>>> ---
+> >>>>  arch/arm/dts/imx8mp-evk.dts                | 2 ++
+> >>>>  arch/arm/dts/imx8mp-tqma8mpql-mba8mpxl.dts | 2 ++
+> >>>>  2 files changed, 4 insertions(+)
+> >>>>
+> >>>> diff --git a/arch/arm/dts/imx8mp-evk.dts b/arch/arm/dts/imx8mp-evk.dts
+> >>>> index 0acc3731d5..c7e1f35d2d 100644
+> >>>> --- a/arch/arm/dts/imx8mp-evk.dts
+> >>>> +++ b/arch/arm/dts/imx8mp-evk.dts
+> >>>> @@ -30,6 +30,8 @@
+> >>>>  	};
+> >>>>  };
+> >>>>  
+> >>>> +/delete-node/ &{/memory@40000000};
+> >>>> +
+> >>>>  &ethphy1 {
+> >>>>  	reset-assert-us = <15000>;
+> >>>>  	reset-deassert-us = <100000>;
+> >>>> diff --git a/arch/arm/dts/imx8mp-tqma8mpql-mba8mpxl.dts b/arch/arm/dts/imx8mp-tqma8mpql-mba8mpxl.dts
+> >>>> index 6e81f58e27..bf23e40489 100644
+> >>>> --- a/arch/arm/dts/imx8mp-tqma8mpql-mba8mpxl.dts
+> >>>> +++ b/arch/arm/dts/imx8mp-tqma8mpql-mba8mpxl.dts
+> >>>> @@ -24,6 +24,8 @@
+> >>>>  	};
+> >>>>  };
+> >>>>  
+> >>>> +/delete-node/ &{/memory@40000000};
+> >>>> +
+> >>>>  &usdhc2 {
+> >>>>  	#address-cells = <1>;
+> >>>>  	#size-cells = <1>;
+> >>>
+> >>> -- 
+> >>> Pengutronix e.K.                           |                             |
+> >>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> >>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> >>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> >>>
+> >>>
+> >>
+> > 
 > 
-> v2 was here:
-> https://lore.barebox.org/barebox/20230210165353.3601175-1-a.fatoum@pengutronix.de/
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 > 
-> v2 -> v3:
->   - drop "support of_ensure_probed for top-level machine device"
->   - switch from board driver back to initcall
 > 
-> v1 -> v2:
->   - support of_ensure_probed for top-level machine device
->   - ensure qemu board driver is probed at postcore
-> 
-> Ahmad Fatoum (3):
->   boards: qemu-virt: apply overlay at postcore_initcall level
->   boards: qemu-virt: compile overlay as such
->   boards: qemu-virt: support passing in FIT public key
-> 
->  common/boards/qemu-virt/Makefile              |  2 +-
->  common/boards/qemu-virt/board.c               | 52 +++++++++++--------
->  common/boards/qemu-virt/fitimage-pubkey.dts   |  7 +++
->  .../{overlay-of-flash.dts => flash.dtso}      |  0
->  4 files changed, 38 insertions(+), 23 deletions(-)
->  create mode 100644 common/boards/qemu-virt/fitimage-pubkey.dts
->  rename common/boards/qemu-virt/{overlay-of-flash.dts => flash.dtso} (100%)
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
