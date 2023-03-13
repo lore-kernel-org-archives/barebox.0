@@ -1,55 +1,54 @@
-Delivery-date: Mon, 13 Mar 2023 14:43:28 +0100
+Delivery-date: Mon, 13 Mar 2023 14:43:32 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pbiSV-0061Hc-Sa
-	for lore@lore.pengutronix.de; Mon, 13 Mar 2023 14:43:28 +0100
+	id 1pbiSZ-0061JL-AJ
+	for lore@lore.pengutronix.de; Mon, 13 Mar 2023 14:43:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pbiST-00053w-Vz
-	for lore@pengutronix.de; Mon, 13 Mar 2023 14:43:28 +0100
+	id 1pbiSY-000566-4k
+	for lore@pengutronix.de; Mon, 13 Mar 2023 14:43:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Dq1VGUP35tN0DUM2vKMVmnELXmQ0fA+xP39iFb5mchg=; b=QnJGAESY7J791Y/dKMWBvnRPf/
-	cqSpmK4ZLncTp65O8H1f7tPd6eoXKaz20vjgwZT7qSiBxSzCzeHXMFn452ez3LMgVnv41dpcozUjn
-	mqZQ0Vr5ngSyD/vGy6YCS4ORdWTU2CFYou2xKzOnwfIK0a0GQ76kEHVI58Lvr/l5Eyo2M0v4wWEyl
-	0YxaI1WPD77sFNAZBoJFn6VlsbgV8M/qUIfnSxUp0fnSyAQEzXKeSqBxwJ3hQtTOYkYUM3F7Igs9y
-	m5sseeDoP/rV2Jxe2qnRd1HQmfuIsNDTuIJWSmJGTpLkPyto4U9MwVkwYjoG/bSdTTvTf4nw0P3fX
-	i+72oifw==;
+	bh=rJYuey6m07EFKyo4EPssLDWWmC5kJpGxoo2lxRMzmmw=; b=GYU4R0WpGWhuOe1/ycWcXb88UA
+	DoKlGpPJlZ5BapZE+uceWLGPjnsDrs2OnH39q36XeHq4fs+HYoJ6HW/HlfJ19ZzRESsjRMOtwK1Es
+	Yi46ZvB/Ip9EwSJU4YSTDlyw/ZpDIjDUNRS43yqo6gUgvJ8XWJlWflB85RWdmQ+eK/QJKedy5X8lv
+	leBtegziC/AWWJKbLCinPMqqathYsHYOjxtHFP+X1ynNDC6q5OBopVnMcgKQi5C1p+pAAWW5HtTHt
+	hx8+KlsDTIbfeEtgauCbOvTggNzVHQnaKByHH4FxKcFGDmU58c9s7ebXB9fozjpxY0Pe4rs3ts0Bw
+	UR93NzMQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pbiQx-005vpi-Sh; Mon, 13 Mar 2023 13:41:51 +0000
+	id 1pbiRI-005w0J-4d; Mon, 13 Mar 2023 13:42:12 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pbiQq-005vkf-No
-	for barebox@lists.infradead.org; Mon, 13 Mar 2023 13:41:47 +0000
+	id 1pbiQr-005vkk-4V
+	for barebox@lists.infradead.org; Mon, 13 Mar 2023 13:41:49 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1pbiQp-0004N9-9n
+	id 1pbiQp-0004N9-Uw
 	for barebox@lists.infradead.org; Mon, 13 Mar 2023 14:41:43 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Mon, 13 Mar 2023 14:41:42 +0100
+Date: Mon, 13 Mar 2023 14:41:47 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20230228-v2023-02-0-topic-flexspi-v2-3-3d33126d2434@pengutronix.de>
+Message-Id: <20230228-v2023-02-0-topic-flexspi-v2-8-3d33126d2434@pengutronix.de>
 References: <20230228-v2023-02-0-topic-flexspi-v2-0-3d33126d2434@pengutronix.de>
 In-Reply-To: <20230228-v2023-02-0-topic-flexspi-v2-0-3d33126d2434@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: 
 X-Mailer: b4 0.12.1
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230313_064144_933513_1DEE3449 
-X-CRM114-Status: UNSURE (   8.00  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230313_064145_262305_73ED8323 
+X-CRM114-Status: GOOD (  15.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,32 +70,106 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 03/23] ARM: i.MX8MM: add missing IMD_USED_OF image
- metadata entry
+Subject: [PATCH v2 08/23] ARM: i.MX8M: Add QSPI image load support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Without the entry the update must be forced if IMD is enabled. Add the
-missing IMD_USED_OF to avoid this.
+This adds the helper function which can be used to load images from the
+QSPI flash.
 
-Fixes: eba4a4eccd ("ARM: i.MX8MM: add support for 8MMINILPD4-CPU2 board")
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/boards/nxp-imx8mm-evk/lowlevel.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/mach-imx/Makefile     |  1 +
+ arch/arm/mach-imx/xload-qspi.c | 57 ++++++++++++++++++++++++++++++++++++++++++
+ include/mach/imx/xload.h       |  3 +++
+ 3 files changed, 61 insertions(+)
 
-diff --git a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-index 9983f78bab..46b5f317b5 100644
---- a/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-+++ b/arch/arm/boards/nxp-imx8mm-evk/lowlevel.c
-@@ -161,6 +161,7 @@ ENTRY_FUNCTION(start_nxp_imx8mm_evk, r0, r1, r2)
- 	setup_c();
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 5d70e79b57..f49bbea2b4 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -31,3 +31,4 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND) += imx-bbu-external-nand.o
+ obj-$(CONFIG_RESET_IMX_SRC) += src.o
+ lwl-y += cpu_init.o
+ pbl-y += xload-spi.o xload-common.o xload-imx-nand.o xload-gpmi-nand.o
++pbl-y += xload-qspi.o
+diff --git a/arch/arm/mach-imx/xload-qspi.c b/arch/arm/mach-imx/xload-qspi.c
+new file mode 100644
+index 0000000000..6bf5bba5e6
+--- /dev/null
++++ b/arch/arm/mach-imx/xload-qspi.c
+@@ -0,0 +1,57 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <common.h>
++#include <linux/sizes.h>
++#include <mach/imx/atf.h>
++#include <mach/imx/imx8m-regs.h>
++#include <mach/imx/xload.h>
++
++#define IMX8M_QSPI_MMAP		0x8000000
++
++/* Make use of AHB reads */
++static
++int imx8m_qspi_read(void *dest, size_t len, void *priv)
++{
++	void __iomem *qspi_ahb = priv;
++
++	memcpy(dest, qspi_ahb, len);
++
++	return 0;
++}
++
++/**
++ * imx8mm_qspi_start_image - Load and optionally start an image from the
++ *                           FlexSPI controller.
++ * @instance: The FlexSPI controller instance
++ * @start: Whether to directly start the loaded image
++ *
++ * This uses imx8m_qspi_load_image() to load an image from QSPI. It is assumed
++ * that the image is the currently running barebox image (This information
++ * is used to calculate the length of the image).
++ * The image is started afterwards.
++ *
++ * Return: If successful, this function does not return (if directly started)
++ * or 0. A negative error code is returned when this function fails.
++ */
++static
++int imx8m_qspi_load_image(int instance, bool start, off_t offset, off_t ivt_offset)
++{
++	void __iomem *qspi_ahb = IOMEM(IMX8M_QSPI_MMAP);
++
++	return imx_load_image(MX8M_DDR_CSD1_BASE_ADDR, MX8M_ATF_BL33_BASE_ADDR,
++			      offset, ivt_offset, start, 0,
++			      imx8m_qspi_read, qspi_ahb);
++}
++
++int imx8mm_qspi_load_image(int instance, bool start)
++{
++	return imx8m_qspi_load_image(instance, start, 0, SZ_4K);
++}
++
++int imx8mn_qspi_load_image(int instance, bool start)
++{
++	return imx8m_qspi_load_image(instance, start, SZ_4K, 0);
++}
++
++int imx8mp_qspi_load_image(int instance, bool start)
++	__alias(imx8mn_qspi_load_image);
+diff --git a/include/mach/imx/xload.h b/include/mach/imx/xload.h
+index e9d41adc97..790887c956 100644
+--- a/include/mach/imx/xload.h
++++ b/include/mach/imx/xload.h
+@@ -16,6 +16,9 @@ int imx7_nand_start_image(void);
+ int imx8m_esdhc_load_image(int instance, bool start);
+ int imx8mn_esdhc_load_image(int instance, bool start);
+ int imx8mp_esdhc_load_image(int instance, bool start);
++int imx8mm_qspi_load_image(int instance, bool start);
++int imx8mn_qspi_load_image(int instance, bool start);
++int imx8mp_qspi_load_image(int instance, bool start);
  
- 	IMD_USED_OF(imx8mm_evk);
-+	IMD_USED_OF(imx8mm_evkb);
- 
- 	nxp_imx8mm_evk_start();
- }
+ void imx8mm_load_bl33(void *bl33);
+ void imx8mn_load_bl33(void *bl33);
 
 -- 
 2.30.2
