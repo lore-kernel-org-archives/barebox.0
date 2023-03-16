@@ -1,57 +1,60 @@
-Delivery-date: Thu, 16 Mar 2023 13:53:03 +0100
+Delivery-date: Thu, 16 Mar 2023 14:43:01 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pcn6N-002hue-19
-	for lore@lore.pengutronix.de; Thu, 16 Mar 2023 13:53:03 +0100
+	id 1pcnsi-002jG4-Le
+	for lore@lore.pengutronix.de; Thu, 16 Mar 2023 14:43:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pcn6M-0006Pq-SZ
-	for lore@pengutronix.de; Thu, 16 Mar 2023 13:53:03 +0100
+	id 1pcnsi-0004rq-Lt
+	for lore@pengutronix.de; Thu, 16 Mar 2023 14:43:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:To:Subject:From:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=phKRVMYBY2Vx9xRqkvJu+lBQgLmCYxFxenVtNjudR54=; b=qN6PyYdBBW6zbZ1zY+X63nYL87
-	/3xHDosM2EebhsjtlH8UcTcBnAMbDqFF2B2/9kL0suztEuVLGvn7UNgaCoeRb/KGLG7puyagrSNlr
-	2P2q5HlRvoc41YVqF0lDloLGjPjSdodE5rfeh/2lli+SiJ72zBUMlZgYpATbpHgG9lJSuMqQKDomx
-	FrJ7GoU8E3AXJh8aYg5h/CAAkM0pMmal4kaRL7Wv1wTJ/37EZbhnPmYKKmb9CpLZ5M3IBzWKNXazh
-	AmfX4nys8k9tWXPxexXeLYgIR2Gv+lV/Ws13Ct/JVHFSmIbxnYulXA6qyeS9MaO7MHbATdmtyHSnw
-	y/ZA9sxA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=CjlvoI1AxpzbgngNob9t7pmvsB+HoDNIce/ro2fjUh0=; b=gfFGJSPs6jV5WmpCJ+zY74eUvf
+	IYJJ+qvKesqimbIEVAX0hKc7+L3k0uK09Oxa+dsE2+SGDFjQDo6j+I718sZnij5RFvySsi8tqMuun
+	u5wvTS+QqOw1iV/2JW4AMm4ypSM2NB8Mb2N+4bzF+Ed0QU+aYEOhtfBdAM6BDxbc7+eiB0D6Z4fn/
+	j4O3Oq5vNqxvHQUq+ybIoZ1ZzFv78dfGWep2ysNPg1nuFSiYqX7nelwYWD/oOj4q0Nv31kLLK4Ng8
+	ce5IwHvNRE5nZOX8XCxSAmFtaPXk1bJZ8CMBquQ3z+v2Pw3ng3VDubtm4Jc7Ruy8fNDH6A87+ctIC
+	bPhEUZZw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pcn59-00GRcj-2O;
-	Thu, 16 Mar 2023 12:51:47 +0000
+	id 1pcnrP-00GZAL-1G;
+	Thu, 16 Mar 2023 13:41:39 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pcn56-00GRc2-1Z
+	id 1pcnrN-00GZ9e-0J
 	for barebox@lists.infradead.org;
-	Thu, 16 Mar 2023 12:51:46 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pcn51-0006D5-T3; Thu, 16 Mar 2023 13:51:39 +0100
-Message-ID: <9bcfc2f8-72f4-b994-0c61-07e34ccc22a0@pengutronix.de>
-Date: Thu, 16 Mar 2023 13:51:39 +0100
+	Thu, 16 Mar 2023 13:41:38 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1pcnrJ-0004bN-IO; Thu, 16 Mar 2023 14:41:33 +0100
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1pcnrI-004YsE-UG; Thu, 16 Mar 2023 14:41:32 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1pcnrI-00H4Rp-2e; Thu, 16 Mar 2023 14:41:32 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Thu, 16 Mar 2023 14:41:31 +0100
+Message-Id: <20230316134131.4068293-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.7.2
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Konstantin Kletschke <konstantin.kletschke@inside-m2m.de>,
- barebox@lists.infradead.org
-References: <ZBMM0s2psJJj+/BI@Hephaistos.inside-m2m.de>
-Content-Language: en-US
-In-Reply-To: <ZBMM0s2psJJj+/BI@Hephaistos.inside-m2m.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230316_055144_521945_7EEE1B1B 
-X-CRM114-Status: GOOD (  18.80  )
+X-CRM114-CacheID: sfid-20230316_064137_129261_577FC228 
+X-CRM114-Status: GOOD (  11.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,67 +74,35 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: Autoboot when idling at prompt possible?
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v1] ARM: boards: protonic-imx6: fix board probe for LANMCU
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Konstantin,
+Present barebox version does not execute board probe code on LANMCU.
+Modify vendor prefix for proper functionality.
 
-On 16.03.23 13:34, Konstantin Kletschke wrote:
-> Hi there,
-> 
-> in order to get the booting more robust I already changed
-> autoboot_abort_key from "any" to "ctrl-c".
-> 
-> We wan't to keep the autoboot_timeout to be able to access the
-> bootloader prompt manually or with install tools more reliably to a non
-> zero positive value. I.e. enter prompt with timeout greater than zero
-> still should be possible.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/arm/boards/protonic-imx6/board.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-If you keep ctrl+c pressed during boot, you may abort before init runs,
-even if global.autboot_timeout=0.
-
-> Is there a mechanism already implemented or thinkable to be added as a
-> command, which boots when the prompt is idling for a couple of minutes?
-> Lets say the bootloader caught ctrl-c by accident (free serial pins in
-> headless encasing in rough EMV environment) and idles there
-> for years...
-
-You can enable watchdog before init runs, e.g. in your board code, let's
-say with a timeout of 2 minutes. If you have reason to use the shell, you
-run wd -x manually or set global.autoboot=abort and reset.
-
-You may need to enable watchdog poller support if you have a watchdog timer
-that can't be disabled and you want for barebox to periodically poll it
-instead.
-
-This is readily possible. You can still set a shorter boot watchdog timeout
-with global.boot.watchdog_timeout. Other possibilities:
-
- - Allow entering bootloader shell only after systemctl reboot loader
-   (See barebox reboot mode documentation)
-
- - Add option to have barebox password login at most increase countdown,
-   but not abort it. Users must then enter full password within specified
-   time or system autoboots
-
-Cheers,
-Ahmad
-
-> 
-> Kind Regards
-> Konstantin
-> 
-> 
-
+diff --git a/arch/arm/boards/protonic-imx6/board.c b/arch/arm/boards/protonic-imx6/board.c
+index d35d97209b..97d8bb87b2 100644
+--- a/arch/arm/boards/protonic-imx6/board.c
++++ b/arch/arm/boards/protonic-imx6/board.c
+@@ -1262,7 +1262,7 @@ static const struct of_device_id prt_imx6_of_match[] = {
+ 	{ .compatible = "kvg,vicut1", .data = &prt_imx6_cfg_vicut1 },
+ 	{ .compatible = "kvg,vicut1q", .data = &prt_imx6_cfg_vicut1q },
+ 	{ .compatible = "kvg,vicutp", .data = &prt_imx6_cfg_vicutp },
+-	{ .compatible = "lan,lanmcu", .data = &prt_imx6_cfg_lanmcu },
++	{ .compatible = "vdl,lanmcu", .data = &prt_imx6_cfg_lanmcu },
+ 	{ .compatible = "ply,plybas", .data = &prt_imx6_cfg_plybas },
+ 	{ .compatible = "ply,plym2m", .data = &prt_imx6_cfg_plym2m },
+ 	{ .compatible = "prt,prti6g", .data = &prt_imx6_cfg_prti6g },
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.30.2
 
 
 
