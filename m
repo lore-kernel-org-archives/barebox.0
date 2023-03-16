@@ -1,63 +1,63 @@
-Delivery-date: Thu, 16 Mar 2023 09:43:03 +0100
+Delivery-date: Thu, 16 Mar 2023 09:43:18 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pcjCQ-002Xt8-Su
-	for lore@lore.pengutronix.de; Thu, 16 Mar 2023 09:43:03 +0100
+	id 1pcjCf-002Xu3-Ph
+	for lore@lore.pengutronix.de; Thu, 16 Mar 2023 09:43:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pcjCQ-00038x-PN
-	for lore@pengutronix.de; Thu, 16 Mar 2023 09:43:03 +0100
+	id 1pcjCf-0003EK-Kb
+	for lore@pengutronix.de; Thu, 16 Mar 2023 09:43:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SI/gY5/Wq2/iFpdyweuGfvetO8Rd+8w55q6cD3gl3PI=; b=D4ul8rOUJngvJPN2ZCEL9m0DeD
-	iS2/YdUcGWQ1JMZNGm4qlz7USi06Yb2Y87rcNxtAw7+94fw5xf6pL79Df2iF6xNxMrkogCDjCDkkd
-	Eyqz5yI2WTxacpXSTWCoEjXgeHOK1r4/R35kH6A9Ox6vy8Vr0t0p6S3pPnphn03plCATe1fSkrDCO
-	498BzlYsNBXmlh1RonlbtDmaTCivCclAuEjKdoFfs+JZ71p5YqdQwK1s7WY4oC4OYkARFhu+wSe5m
-	10ENQVyvr9VQ7CFXGaexQ1s7wYxJoukPqttNvYdswrHob4i9FUEF6+S4KsfaCPSfBWvJLZUgNP1Ae
-	3K8CywWg==;
+	bh=vPqaBw4YjGeIfk8JFDmRllWcJsKKZv0r3YLUyTTSsUM=; b=Qs+hq076bmF2QkwHsXX/VeSbDY
+	1mEUVbQ7FkTjwwEKnjrCulPhiEqvdXc6k0qtoUdtptnTBRak95oW3xS1r1qVT8X1PsqSNpLjmvaGz
+	iE6cOsuFQq00UtfqbrSvMlvXlAlwuWylCK0dkw/q3jOD/u9MgVra5Ltw+gzMY5oPmbvbvthvEH+5I
+	hixVCcMU+IKZpN4f3N+owMuByI/mNbE2WvuBQt+jV8f2eVHyhqCPp2My2M1XlxfElGQ3sLwEjUO6s
+	YBOkqbJgGH0t+SVMa/UxtaF0V5XabFpM+Qv9Tumbp7JD9440atJ59vH2mq82rRpyhBPfbQioiqmIE
+	dgQzfK4Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pcjAz-00FhRf-0m;
-	Thu, 16 Mar 2023 08:41:33 +0000
+	id 1pcjBV-00Fhd4-1d;
+	Thu, 16 Mar 2023 08:42:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pcjAv-00FhP9-19
+	id 1pcjBT-00Fhbj-08
 	for barebox@lists.infradead.org;
-	Thu, 16 Mar 2023 08:41:31 +0000
+	Thu, 16 Mar 2023 08:42:04 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pcjAq-0002KP-AL; Thu, 16 Mar 2023 09:41:24 +0100
+	id 1pcjBR-0002P8-Os; Thu, 16 Mar 2023 09:42:01 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pcjAq-0004O4-3D; Thu, 16 Mar 2023 09:41:24 +0100
-Date: Thu, 16 Mar 2023 09:41:24 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Denis Orlov <denorl2009@gmail.com>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20230316084124.GO7446@pengutronix.de>
-References: <20230316073650.4170874-1-denorl2009@gmail.com>
+	id 1pcjBR-0004OP-HN; Thu, 16 Mar 2023 09:42:01 +0100
+Date: Thu, 16 Mar 2023 09:42:01 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230316084201.GP7446@pengutronix.de>
+References: <20230315143522.1512531-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230316073650.4170874-1-denorl2009@gmail.com>
+In-Reply-To: <20230315143522.1512531-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230316_014129_395988_32A1236A 
-X-CRM114-Status: GOOD (  27.81  )
+X-CRM114-CacheID: sfid-20230316_014203_078138_277A46BD 
+X-CRM114-Status: GOOD (  21.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,122 +79,47 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] lib: string: remove duplicated function
+Subject: Re: [PATCH master] net: dsa: abort registration when master is
+ unresolvable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Mar 16, 2023 at 10:36:50AM +0300, Denis Orlov wrote:
-> We have two functions that are doing the same thing: 'strncasecmp' and
-> 'strnicmp'. The only difference between them is that the latter is
-> correctly handling the len argument of 0. So rename it into the former
-> one ('strncasecmp', as it is the POSIX name for this function), deleting
-> the other implementation. As no one is actually using 'strnicmp', no
-> other code requires any fixes.
+On Wed, Mar 15, 2023 at 03:35:22PM +0100, Ahmad Fatoum wrote:
+> ds->edev_master is used in a lot places and if we can't populate,
+> because the Ethernet device wasn't found, we should abort instead of
+> crashing later on.
 > 
-> This change is effectively forwarded from the Linux commits
-> 'lib/string.c: remove duplicated function'
-> (hash cd514e727b18ff4d189b8e268db13729a4175091) and
-> 'lib/string.c: remove strnicmp()'
-> (hash af3cd13501eb04ca61d017ff4406f1cbffafdc04).
-> 
-> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  include/linux/string.h |  3 ---
->  lib/string.c           | 48 +++++++++++++++---------------------------
->  2 files changed, 17 insertions(+), 34 deletions(-)
+>  drivers/net/dsa.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/include/linux/string.h b/include/linux/string.h
-> index 0c79d3e5cf..cd81ab1396 100644
-> --- a/include/linux/string.h
-> +++ b/include/linux/string.h
-> @@ -58,9 +58,6 @@ extern int strcmp(const char *,const char *);
->  #ifndef __HAVE_ARCH_STRNCMP
->  extern int strncmp(const char *,const char *,__kernel_size_t);
->  #endif
-> -#ifndef __HAVE_ARCH_STRNICMP
-> -extern int strnicmp(const char *, const char *, __kernel_size_t);
-> -#endif
->  #ifndef __HAVE_ARCH_STRCASECMP
->  extern int strcasecmp(const char *s1, const char *s2);
->  #endif
-> diff --git a/lib/string.c b/lib/string.c
-> index 005f4532bb..8ea68044cc 100644
-> --- a/lib/string.c
-> +++ b/lib/string.c
-> @@ -24,14 +24,28 @@
->  #include <linux/ctype.h>
->  #include <malloc.h>
+> diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
+> index 793bbbb4f18f..6a3b829e15a4 100644
+> --- a/drivers/net/dsa.c
+> +++ b/drivers/net/dsa.c
+> @@ -400,8 +400,11 @@ static int dsa_switch_parse_ports_of(struct dsa_switch *ds,
+>  		}
 >  
-> -#ifndef __HAVE_ARCH_STRNICMP
-> +#ifndef __HAVE_ARCH_STRCASECMP
-> +int strcasecmp(const char *s1, const char *s2)
-> +{
-> +	int c1, c2;
-> +
-> +	do {
-> +		c1 = tolower(*s1++);
-> +		c2 = tolower(*s2++);
-> +	} while (c1 == c2 && c1 != 0);
-> +	return c1 - c2;
-> +}
-> +EXPORT_SYMBOL(strcasecmp);
-> +#endif
-> +
-> +#ifndef __HAVE_ARCH_STRNCASECMP
->  /**
-> - * strnicmp - Case insensitive, length-limited string comparison
-> + * strncasecmp - Case insensitive, length-limited string comparison
->   * @s1: One string
->   * @s2: The other string
->   * @len: the maximum number of characters to compare
->   */
-> -int strnicmp(const char *s1, const char *s2, size_t len)
-> +int strncasecmp(const char *s1, const char *s2, size_t len)
->  {
->  	/* Yes, Virginia, it had better be unsigned */
->  	unsigned char c1, c2;
-> @@ -53,34 +67,6 @@ int strnicmp(const char *s1, const char *s2, size_t len)
->  	} while (--len);
->  	return (int)c1 - (int)c2;
->  }
-> -EXPORT_SYMBOL(strnicmp);
-> -#endif
-> -
-> -#ifndef __HAVE_ARCH_STRCASECMP
-> -int strcasecmp(const char *s1, const char *s2)
-> -{
-> -	int c1, c2;
-> -
-> -	do {
-> -		c1 = tolower(*s1++);
-> -		c2 = tolower(*s2++);
-> -	} while (c1 == c2 && c1 != 0);
-> -	return c1 - c2;
-> -}
-> -EXPORT_SYMBOL(strcasecmp);
-> -#endif
-> -
-> -#ifndef __HAVE_ARCH_STRNCASECMP
-> -int strncasecmp(const char *s1, const char *s2, size_t n)
-> -{
-> -	int c1, c2;
-> -
-> -	do {
-> -		c1 = tolower(*s1++);
-> -		c2 = tolower(*s2++);
-> -	} while ((--n > 0) && c1 == c2 && c1 != 0);
-> -	return c1 - c2;
-> -}
->  EXPORT_SYMBOL(strncasecmp);
->  #endif
+>  		master = of_parse_phandle(port, "ethernet", 0);
+> -		if (master)
+> -			dsa_switch_register_master(ds, port, master, reg);
+> +		if (master) {
+> +			ret = dsa_switch_register_master(ds, port, master, reg);
+> +			if (ret)
+> +				return ret;
+> +		}
+>  	}
 >  
+>  	/* Now we can register regular switch ports  */
 > -- 
 > 2.30.2
+> 
 > 
 > 
 
