@@ -1,64 +1,64 @@
-Delivery-date: Thu, 16 Mar 2023 10:02:10 +0100
+Delivery-date: Thu, 16 Mar 2023 10:52:42 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pcjUw-002YNU-1W
-	for lore@lore.pengutronix.de; Thu, 16 Mar 2023 10:02:10 +0100
+	id 1pckHp-002Zz4-Lh
+	for lore@lore.pengutronix.de; Thu, 16 Mar 2023 10:52:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pcjUv-0006ik-Sk
-	for lore@pengutronix.de; Thu, 16 Mar 2023 10:02:10 +0100
+	id 1pckHp-0006Ep-EE
+	for lore@pengutronix.de; Thu, 16 Mar 2023 10:52:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MND/VUu/QpQoylnsuRaH4kOGOTe07WN6Fe+9bKXIVsY=; b=fXIPxIXFVwHVu00nAstrv8hMaa
-	S6Xi/5mChDCKWmyUsiZ5UfE0JU4Kkmc3e7D4QorFFDLHe3Zs/4DF/QpQsFq0bj52MeWeUM1TwZqMc
-	e6Vbd4eCF1JV3OXPnsVB6W2i0gk3Gzoar9DnnWfJeZPmXjgTvo0YYXgD4ju14rnHl9UKU2RJOJdbl
-	hqOeHX8L97ZLfx3dlDAKoI/lrSrMTLaVLQICs8KDTyEXGZ3stCXXHGOkp4nn20Vmtpkd2yCvDam9C
-	SeFF+9HbV7Q9c+Dz6jljEgLhG+uPnlrlmS4zkIikjdgD/k7gSZL/jkeG9B3U0H13WxAouARIT1yDd
-	XBw8JDLw==;
+	bh=VyTxtTNdPpsdFXfJ5BTGGX77IC3SLbn6FzX0QLhy1bE=; b=OUFSZY5mrH/PnHHtrGH4Ii6Uwr
+	uvD4yBdWmkvT3tfhf6E+gl+gAZlNLMorUDmYILwmMyljy3pp4xQyvtFVQvRYF4llYgCW8ukFq/xNI
+	rt2yOS976otsjmGUPvqm31o/WR6Gocc147PxjaxITNlAyqMx2ODcoPf+OxzVjDEfu2xQtsaa9F0WR
+	n3XU0MurU5fwXm8uNDOb6QnYNcVzXRn2YQCHRQmhJsCK6240eA2lbE9Agz/H4NWgQLbfym5OOKs9E
+	dCveQu5xsbmIvrWpgJDSLWjIG1zinJxmbWNFaKaC6CxH8nO9dYFoOg/1Xz702NdXkAeThGOTy2mHv
+	GTmRQb0g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pcjTj-00Fo7V-1I;
-	Thu, 16 Mar 2023 09:00:55 +0000
+	id 1pckGP-00FvOP-08;
+	Thu, 16 Mar 2023 09:51:13 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pcjTg-00Fo61-0h
+	id 1pckGL-00FvMx-33
 	for barebox@lists.infradead.org;
-	Thu, 16 Mar 2023 09:00:53 +0000
+	Thu, 16 Mar 2023 09:51:12 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pcjTe-0006BG-Il; Thu, 16 Mar 2023 10:00:50 +0100
+	id 1pckGI-0005us-0r; Thu, 16 Mar 2023 10:51:06 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pcjTe-0005PE-C6; Thu, 16 Mar 2023 10:00:50 +0100
-Date: Thu, 16 Mar 2023 10:00:50 +0100
-To: Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230316090050.GS7446@pengutronix.de>
-References: <20230315183338.78433-1-u.kleine-koenig@pengutronix.de>
+	id 1pckGH-00087K-Ew; Thu, 16 Mar 2023 10:51:05 +0100
+Date: Thu, 16 Mar 2023 10:51:05 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Denis Orlov <denorl2009@gmail.com>
+Cc: barebox@lists.infradead.org, Clement Leger <clement.leger@kalray.eu>,
+	Oleksij Rempel <o.rempel@pengutronix.de>
+Message-ID: <20230316095105.GX7446@pengutronix.de>
+References: <20230315101126.4101087-1-denorl2009@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230315183338.78433-1-u.kleine-koenig@pengutronix.de>
+In-Reply-To: <20230315101126.4101087-1-denorl2009@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230316_020052_259908_98B34AA0 
-X-CRM114-Status: GOOD (  18.25  )
+X-CRM114-CacheID: sfid-20230316_025109_985503_5D8B5837 
+X-CRM114-Status: GOOD (  27.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,30 +80,67 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] imx-usb-loader: Don't try to transfer more data than
- contained in the image
+Subject: Re: [PATCH] common: elf: use proper field to get segment memory size
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Mar 15, 2023 at 07:33:38PM +0100, Uwe Kleine-König wrote:
-> On platforms that don't have a 2nd stage (in my case i.MX25) it usually
-> happens the transfer limit for the first (and only) upload is bigger than
-> the actual file length. Then it's the right thing to load the complete
-> image (minus its header), but not more.
+On Wed, Mar 15, 2023 at 01:11:26PM +0300, Denis Orlov wrote:
+> For a program header, the value of 'p_filesz' may be less than the one
+> of 'p_memsz', in which case the leftover amount of space should be
+> filled with zeroes. This is done correctly when loading elf to memory.
+> However, when we are requesting memory beforehand we do pass the value
+> of 'p_filesz', instead of 'p_memsz', to 'request_sdram_region',
+> resulting in potentially smaller amount of memory to be reserved.
 > 
-> This fixes a failure to boot via USB on i.MX25 that ends in
+> As 'p_memsz' is always greater or equal to 'p_filesz', use only the
+> former for checking memory requirements in 'request_elf_segment'.
 > 
-> 	dl_command err=-1, last_trans=0
-> 
-> Fixes: 3367ebc55ebe ("scripts: imx-usb-loader: simplify code flow for file size calculations")
-> Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 > ---
->  scripts/imx/imx-usb-loader.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  common/elf.c | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
 Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/common/elf.c b/common/elf.c
+> index eec62cad61..c9b3d7bb37 100644
+> --- a/common/elf.c
+> +++ b/common/elf.c
+> @@ -59,14 +59,13 @@ static int request_elf_segment(struct elf_image *elf, void *phdr)
+>  {
+>  	void *dst = (void *) (phys_addr_t) elf_phdr_p_paddr(elf, phdr);
+>  	int ret;
+> -	u64 p_filesz = elf_phdr_p_filesz(elf, phdr);
+>  	u64 p_memsz = elf_phdr_p_memsz(elf, phdr);
+>  
+>  	/* we care only about PT_LOAD segments */
+>  	if (elf_phdr_p_type(elf, phdr) != PT_LOAD)
+>  		return 0;
+>  
+> -	if (!p_filesz)
+> +	if (!p_memsz)
+>  		return 0;
+>  
+>  	if (dst < elf->low_addr)
+> @@ -74,9 +73,9 @@ static int request_elf_segment(struct elf_image *elf, void *phdr)
+>  	if (dst + p_memsz > elf->high_addr)
+>  		elf->high_addr = dst + p_memsz;
+>  
+> -	pr_debug("Requesting segment 0x%p (%llu bytes)\n", dst, p_filesz);
+> +	pr_debug("Requesting segment 0x%p (%llu bytes)\n", dst, p_memsz);
+>  
+> -	ret = elf_request_region(elf, (resource_size_t)dst, p_filesz, phdr);
+> +	ret = elf_request_region(elf, (resource_size_t)dst, p_memsz, phdr);
+>  	if (ret)
+>  		return ret;
+>  
+> -- 
+> 2.30.2
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
