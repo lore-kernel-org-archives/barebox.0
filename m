@@ -1,59 +1,60 @@
-Delivery-date: Fri, 17 Mar 2023 10:46:00 +0100
+Delivery-date: Fri, 17 Mar 2023 12:09:36 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pd6et-003mOG-2a
-	for lore@lore.pengutronix.de; Fri, 17 Mar 2023 10:45:59 +0100
+	id 1pd7xn-003qjA-6e
+	for lore@lore.pengutronix.de; Fri, 17 Mar 2023 12:09:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pd6et-0007s1-1T
-	for lore@pengutronix.de; Fri, 17 Mar 2023 10:45:59 +0100
+	id 1pd7xm-0003Dg-PX
+	for lore@pengutronix.de; Fri, 17 Mar 2023 12:09:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=f7uSQNaoC9xoQd9F/023Rml6eDChlBMwsrkWOHyZtRI=; b=IWiVmEFMZ1ptuhguPxk5P0u0WS
-	sg4IkcxMO0pbY7norqBRlPRiPq08wtQNU+D+JrE/q5Gvm43IzxxRKJLwp+YeeJdNwsztO8WH97SqG
-	usHjEkxIJODSVw3MrSw2LDQOcDS6EzdfHyv6SCRCr0YLATF/0TKAFzCSG8VGkNbhzjmE6l8lqmocz
-	kSzpUifLY4HyEa3wDJNIs7l38nn1CLBWCQVFxjTDZ3lRfRxB4Z2FwUYKWazo3l1GH/vFgeA8s8v32
-	jYAzeyXPL01UFR6aJ5olyvbmrVFPZHJZ2zwdqsH+NomqwZ7OvoKtZ5bWKfAMo6h6KpMClA9UxzSHn
-	zUU9rjng==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=Ku1ASnTS4ytN4Bb0TfHvaG/YEzsj7VkJXTUBW7FWvAA=; b=yPowrC9+YFTlEc
+	GL7+tS7QkPyEakiSuaUgOdT+fxeVJPOMBrdd59zyDCskB/wbDjr705hKVW/AH7zmL1G0xV/7NiHJb
+	tJzFQ7b2/9uZC1Fvl2YqYVzoSalMoucVFdr7KA7zgrjme6Ejg1IW3SQBXkW7loiIfJDniJ7XhnEAl
+	4xH39gViIjr8M2oLSYU/Qxv2PVKXrFhvNRDE/rvFMmmokZ/urBLFdSa5BB+XNlMfgJhoRjasE0zRM
+	e3iHUZWtgrRGkJ1Hr4xIIPYmKVZkXw2OSfhCKbfqI21NmJmVNAdLs+pgQ6IRTQeOWm8ULEqP4tRBt
+	8/PNxia17wWRGVOi2L5w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pd6dX-001mgG-15;
-	Fri, 17 Mar 2023 09:44:35 +0000
+	id 1pd7wO-00209Z-2P;
+	Fri, 17 Mar 2023 11:08:08 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pd6dT-001meF-31
+	id 1pd7wI-00207A-1z
 	for barebox@lists.infradead.org;
-	Fri, 17 Mar 2023 09:44:33 +0000
+	Fri, 17 Mar 2023 11:08:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pd6dO-0007Zt-GP; Fri, 17 Mar 2023 10:44:26 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <jzi@pengutronix.de>)
+	id 1pd7wB-00034g-5q; Fri, 17 Mar 2023 12:07:55 +0100
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pd6dN-004k8m-SF; Fri, 17 Mar 2023 10:44:25 +0100
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pd6dN-00DFBP-8s; Fri, 17 Mar 2023 10:44:25 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 17 Mar 2023 10:44:20 +0100
-Message-Id: <20230317094420.3156584-1-s.hauer@pengutronix.de>
+	(envelope-from <jzi@pengutronix.de>)
+	id 1pd7wA-004knO-Ha; Fri, 17 Mar 2023 12:07:54 +0100
+Received: from jzi by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <jzi@pengutronix.de>)
+	id 1pd7w9-003VPW-I4; Fri, 17 Mar 2023 12:07:53 +0100
+From: Johannes Zink <j.zink@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Fri, 17 Mar 2023 12:07:48 +0100
+Message-Id: <20230317110748.835678-1-j.zink@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230317_024431_977389_5009AA8B 
-X-CRM114-Status: GOOD (  10.63  )
+X-CRM114-CacheID: sfid-20230317_040802_649474_3B141440 
+X-CRM114-Status: UNSURE (   9.14  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,65 +66,64 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Johannes Zink <j.zink@pengutronix.de>, afa@pengutronix.de, jzi@pengutronix.de
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: i.MX: boards: Use imx6_cpu_lowlevel_init()
+Subject: [PATCH] Documentation: devicetree: list automatic boot argument fixups
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Some i.MX6 boards still call arm_cpu_lowlevel_init() instead of
-imx6_cpu_lowlevel_init(). The latter calls arm_cpu_lowlevel_init()
-and additionally enables ARM errata workarounds applicable for i.MX6.
+Barebox automatically fixes up several entries to the root and
+chosen-node of the devicetree passed to the booted system.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+These entries contain information about the hardware, reset source
+and the barebox version string.
+
+Add documentation on how to query these information from the booted
+linux system.
+
+Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
 ---
- arch/arm/boards/cm-fx6/lowlevel.c    | 4 ++--
- arch/arm/boards/skov-imx6/lowlevel.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ Documentation/devicetree/index.rst | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/arch/arm/boards/cm-fx6/lowlevel.c b/arch/arm/boards/cm-fx6/lowlevel.c
-index 27c15f5412..3b8014b238 100644
---- a/arch/arm/boards/cm-fx6/lowlevel.c
-+++ b/arch/arm/boards/cm-fx6/lowlevel.c
-@@ -334,7 +334,7 @@ static noinline void cm_fx6_start(void)
- 
- ENTRY_FUNCTION(start_imx6_cm_fx6, r0, r1, r2)
- {
--	arm_cpu_lowlevel_init();
-+	imx6_cpu_lowlevel_init();
- 
- 	relocate_to_current_adr();
- 	setup_c();
-@@ -361,7 +361,7 @@ static noinline void utilite_start(void)
- 
- ENTRY_FUNCTION(start_imx6_utilite, r0, r1, r2)
- {
--	arm_cpu_lowlevel_init();
-+	imx6_cpu_lowlevel_init();
- 
- 	relocate_to_current_adr();
- 	setup_c();
-diff --git a/arch/arm/boards/skov-imx6/lowlevel.c b/arch/arm/boards/skov-imx6/lowlevel.c
-index ea6de36a36..68a656b7fd 100644
---- a/arch/arm/boards/skov-imx6/lowlevel.c
-+++ b/arch/arm/boards/skov-imx6/lowlevel.c
-@@ -658,7 +658,7 @@ static noinline void skov_imx6_start(void)
- 
- ENTRY_FUNCTION(start_imx6_skov_imx6, r0, r1, r2)
- {
--	arm_cpu_lowlevel_init();
-+	imx6_cpu_lowlevel_init();
- 
- 	relocate_to_current_adr();
- 	setup_c();
+diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
+index 36fa69058d1d..92a91dc35a11 100644
+--- a/Documentation/devicetree/index.rst
++++ b/Documentation/devicetree/index.rst
+@@ -151,3 +151,24 @@ Contents:
+    bindings/regulator/*
+    bindings/rtc/*
+    bindings/watchdog/*
++
++automatic boot argument fixups to the devicetree
++------------------------------------------------
++
++Barebox automatically fixes up some arguments in the devicetree.
++
++In the devicetree root barebox fixes up
++
++ * serial-number (if available)
++ * machine compatible (if available)
++
++In the ``chosen``-node barebox fixes up
++
++ * barebox-version
++ * reset-source
++ * reset-source-instance (if available)
++ * reset-source-device (phandle, only if available)
++ * bootsource
++ * boot-hartid (only on RISCV)
++
++These values can be read from the booted linux system in ``/proc/device-tree/``.
 -- 
 2.30.2
 
