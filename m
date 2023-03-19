@@ -1,67 +1,72 @@
-Delivery-date: Sun, 19 Mar 2023 16:50:36 +0100
+Delivery-date: Sun, 19 Mar 2023 19:53:32 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pdvIp-006ev6-2e
-	for lore@lore.pengutronix.de; Sun, 19 Mar 2023 16:50:35 +0100
+	id 1pdy9q-006pCs-FW
+	for lore@lore.pengutronix.de; Sun, 19 Mar 2023 19:53:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pdvIo-0002zg-SG
-	for lore@pengutronix.de; Sun, 19 Mar 2023 16:50:35 +0100
+	id 1pdy9q-0003vd-8J
+	for lore@pengutronix.de; Sun, 19 Mar 2023 19:53:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lBufwOMFkhazhdpySCOAjTLQiUwB1XefgnCwV2dexUI=; b=vQhRMErvgViu7U+aODHmUhPSpn
-	3J660u76AsKzuvLAEKErJF5GW8mULcqGMoVG/QyPdjEJFuqdDWRmJDAl0ZoxWpkmG8PUKRsFUCAB9
-	88j4qDfFaxHqsLaae8eaws+27Y+iDN4htm6C1y7UqRumCegvfebkDB8sdU93QJIpjK+jmLdcVNs1M
-	WXNZS2QMSILV1+OsiRSV8qluCXTHDG/fNLih4hRrlMAa6fAV0wlxpLd8kuyIc+PXofBdhLc8FK70W
-	MtEgIApudZfzukjX+CNYuPPD0FBjnaOZqqir72wTMz74n9jFRqPHaaeCvwtuSgVLDYVmU61ZqwiUJ
-	Lw+eikeg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=rHDlNyAprDVyXZoR7pSto9zJPnvGWmBRUN5r8FFbm8w=; b=aurZ2tGJ18EgeiJeFoQYLdsleE
+	BXbrVsuIsIlNZCA5eoSg9+I2uUjW8ThuXXKsEvMBZI0kRU6CtDIbFmqlkr78QNhWyEAEwKQAs5AOb
+	9+cKIT7xIXfY4r8rv3bj+MQ/UkMquev5c5hoJA0SEt+owFMZsobXIzYGGxcOkb6bsGfCcg0G1FmCX
+	uoZ49/3DWywyO24Ae5TVvNWUmXs3JGZI4KuZ4PgXOIWOBSa9hkq7+XlIPdZmEnEaHY+xN0ACZRqis
+	AqBL65KOq+Fsq+7yEHKFvMj1Y2fSfOwiquDBEtj6IoY3wJWhBDm2brCVBO84zyzp6WQOhGJzGPMp6
+	TbAhCyIA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pdvHn-006xjv-2g;
-	Sun, 19 Mar 2023 15:49:31 +0000
-Received: from dfw.source.kernel.org ([139.178.84.217])
+	id 1pdy8P-007COd-2o;
+	Sun, 19 Mar 2023 18:52:01 +0000
+Received: from mailrelay3-1.pub.mailoutpod2-cph3.one.com ([2a02:2350:5:402::1])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pdvHl-006xiS-02
+	id 1pdy8M-007CNm-0E
 	for barebox@lists.infradead.org;
-	Sun, 19 Mar 2023 15:49:30 +0000
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 91A8B610A3
-	for <barebox@lists.infradead.org>; Sun, 19 Mar 2023 15:49:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9950FC433D2;
-	Sun, 19 Mar 2023 15:49:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679240968;
-	bh=UCCT9n8MG4x1f/7bNLpts7XJpKJGgU+7+o1NN9GqVck=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k8oIh40ZO6mWXc0c/rrmbcAhpouInxRemRKHjNhxO9dZEcxMYjGawKyaMDITgMKR5
-	 bXkPUBddtfpxK0YhfBsat9mi7Zwx6Al3T6QEYD6eGgMJtcZHGJl2l7yier7vjqGM58
-	 klsW0QgEEVqKML0Lx7R5oe6ow+39/LgscdeiXMkfBL3FeYtiqMpzaoGHHh8Dxlzs9A
-	 BEyiCSLVMXSCrC6nCvwZnhaR1Yo4mUEQq5PNyQIEl5/mPpm5yroGTfiUmkD40Ai/v+
-	 8VuNl6EdWoj5SuRQ93QSN/adU/jbWSj0ROmMUBb2wcRg4TkR/f2RkUge0DSRGt8AeW
-	 +j09EHowszKoA==
-From: Wolfram Sang <wsa@kernel.org>
-To: barebox@lists.infradead.org
-Cc: Wolfram Sang <wsa@kernel.org>
-Date: Sun, 19 Mar 2023 16:49:09 +0100
-Message-Id: <20230319154909.24047-4-wsa@kernel.org>
-X-Mailer: git-send-email 2.35.1
-In-Reply-To: <20230319154909.24047-1-wsa@kernel.org>
+	Sun, 19 Mar 2023 18:51:59 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=rsa2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=rHDlNyAprDVyXZoR7pSto9zJPnvGWmBRUN5r8FFbm8w=;
+	b=s10ySdhL1oTkgm/0Ag6WElPZwEZlGs5CxRwhGqIKrjvGW2ZYCUiHlDP6Oeb03n2g1ULNGiPkV3pr3
+	 c3tWngvx7wKRiAuS9zLhmRegqGrwcPyx+sobPEnjBeSck1W2GdL4WFfh1RVlCSAqjA1UhPM7klP6tM
+	 HF6vONXutV8tsbYECfFyLnlQVPB+oVFU2jQ3aQG9UTKebUbnLgGo0cyZPLlyRBqXfM/Pr//erGoqs8
+	 oBNUhQ29/nkN00iREw5T52ZBfdFhJyH9bKEyxS43gmIrOBrOuv0YLUWd6QOS+lsZZmoNl339wyYwgP
+	 nFUnRRnA1R90CY5a75MN4HSxd2ckGyw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=ed2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
+	 from:date:from;
+	bh=rHDlNyAprDVyXZoR7pSto9zJPnvGWmBRUN5r8FFbm8w=;
+	b=K//2ZOuRtpOyXJyrXsHpjhlYXaldxAeg1lMuMFl5M4dYZJz8/TPrqR+et2pENuaBLISJsDIrtfWnM
+	 XhmAnwWAQ==
+X-HalOne-ID: 1b5e32aa-c687-11ed-83de-ede074c87fad
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+	by mailrelay3 (Halon) with ESMTPSA
+	id 1b5e32aa-c687-11ed-83de-ede074c87fad;
+	Sun, 19 Mar 2023 18:51:51 +0000 (UTC)
+Date: Sun, 19 Mar 2023 19:51:50 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Wolfram Sang <wsa@kernel.org>
+Cc: barebox@lists.infradead.org
+Message-ID: <ZBdZxskg+JPzUY0t@ravnborg.org>
 References: <20230319154909.24047-1-wsa@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230319154909.24047-1-wsa@kernel.org>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230319_084929_145871_3EFC5451 
-X-CRM114-Status: GOOD (  11.23  )
+X-CRM114-CacheID: sfid-20230319_115158_282396_1845DF7A 
+X-CRM114-Status: GOOD (  12.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,53 +84,28 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED,USER_IN_WELCOMELIST,USER_IN_WHITELIST
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/3] mtd: nand: atmel: legacy: remove superfluous code
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 0/3] mtd: nand: atmel: legacy: fix boot on USB-A9G20
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-54bccadddd always populates 'ecc_mode' but forgot to remove the
-code which overwrote the previously hardcoded 'NAND_ECC_SOFT'
-when needed. This is obsolete now.
+Hi Wolfram.
 
-Fixes: 54bccadddd ("mtd: atmel_nand: retrieve ecc_mode from pdata")
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
----
- drivers/mtd/nand/atmel/legacy.c | 9 ---------
- 1 file changed, 9 deletions(-)
+On Sun, Mar 19, 2023 at 04:49:06PM +0100, Wolfram Sang wrote:
+> While trying to unbrick my Calao USB-A9G20, barebox couldn't read the
+> NAND BB tables unlike the binary-only barebox from 2013. The first two
+> patches fix that. The third one is a cleanup.
 
-diff --git a/drivers/mtd/nand/atmel/legacy.c b/drivers/mtd/nand/atmel/legacy.c
-index 184cf465e3..cf402549b8 100644
---- a/drivers/mtd/nand/atmel/legacy.c
-+++ b/drivers/mtd/nand/atmel/legacy.c
-@@ -1242,21 +1242,12 @@ static int __init atmel_nand_probe(struct device *dev)
- 	nand_chip->ecc.strength = pdata->ecc_strength ? : 1;
- 	nand_chip->ecc.size = 1 << (pdata->ecc_size_shift ? : 9);
- 
--	if (pdata->ecc_mode == NAND_ECC_HW) {
--		nand_chip->ecc.mode = NAND_ECC_HW;
--	}
--
- 	if (pdata->ecc_mode == NAND_ECC_SOFT) {
- 		nand_chip->ecc.algo = NAND_ECC_ALGO_HAMMING;
- 	}
- 
- 	nand_chip->legacy.chip_delay = 40;		/* 40us command delay time */
- 
--	if (IS_ENABLED(CONFIG_NAND_ECC_BCH) &&
--			pdata->ecc_mode == NAND_ECC_SOFT_BCH) {
--		nand_chip->ecc.mode = NAND_ECC_SOFT_BCH;
--	}
--
- 	if (host->board->bus_width_16) {	/* 16-bit bus width */
- 		nand_chip->options |= NAND_BUSWIDTH_16;
- 		nand_chip->legacy.read_buf = atmel_read_buf16;
--- 
-2.35.1
+It is only a few weeks ago I argued that there was no users of the older
+at91sam* boards, and then you prove me wrong here.
 
+I will try to remember that you may be able to test should someone
+decide to move the barebox support for qil_a9g20 to DT and add PBL
+support in the process.
+
+	Sam
 
 
