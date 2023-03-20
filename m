@@ -1,62 +1,58 @@
-Delivery-date: Mon, 20 Mar 2023 16:32:14 +0100
+Delivery-date: Mon, 20 Mar 2023 16:32:25 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1peHUb-007zOi-19
-	for lore@lore.pengutronix.de; Mon, 20 Mar 2023 16:32:14 +0100
+	id 1peHUm-007zPH-4V
+	for lore@lore.pengutronix.de; Mon, 20 Mar 2023 16:32:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1peHUQ-0002IN-AR
-	for lore@pengutronix.de; Mon, 20 Mar 2023 16:32:13 +0100
+	id 1peHUh-0002Nt-GQ
+	for lore@pengutronix.de; Mon, 20 Mar 2023 16:32:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Y7nCKZ2FqAm3TLOOe8XhNXePuvXO3AuUPimm4Loe4SU=; b=bpqnCF0/GaQtq80RW8T5MbGzwo
-	DgatJnQUMqSz5hfGiV2+q6vlAaXs8PQWy2KCTWznwurGhfSu/pr0OSLWDx8O11oVweoHjB9lO/N29
-	AAI5l/r0GAXAQ+aMlps6e0mLLAU496WSJg4Pbkkv5ErdMv6jRP2vsOYO9+cQLfqIFehUMqc9JxMVz
-	IaJst9rmdALndx+VEHHocE7oqypt5mwK+twBzSqdOVJ+iylWg3NNkD8Q/iIbwgHAXXcCZFnGZNmR0
-	8xxDJkbI9PVy1MetFSJCt//mX2FD4wuOc9YuyF2U0/ilFgq7syd2yVmmavuiboPSys5aKMq4GV3Ho
-	3S/eKQZQ==;
+	bh=Ou4RQk/t/+Ya1MQrBTMRokzDAi9k0deXNThb+sb/ew4=; b=1lFLXh8uzy0Gsy8St6d3H1a0oH
+	u6/2WzbE/O57C5mkXd8OfbKpaPrSOrCdbJaWEeGr/b6vtvzzc1YZy+exPY8LntBwWMjpQK3iUxISI
+	kBBQzSogaIucoG4vMSzyp69Blc01tc/3wS4xF0TPvEDgVQ5cXqop/3hCCiq2RXXY9QFq3NmeFtWQc
+	J7ezWyZIkAUa78oKL/eX5gI2TLvWy/vaI7Jf+Ve+s3/P02tFfJyoeovJ2JOkWMUehbZJEGILRiHj1
+	DPSoxGwEkp/ippRPTribAzimcYC6lPmySm1MCAnOZnhP/ZxpOlUGmdjBjdfCE508saBFsfMuV3trT
+	58mzudYg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1peHSg-009Xw5-0N;
-	Mon, 20 Mar 2023 15:30:14 +0000
+	id 1peHSm-009Y4b-0P;
+	Mon, 20 Mar 2023 15:30:20 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1peHSI-009Xfm-2g
+	id 1peHSO-009Xke-1o
 	for barebox@lists.infradead.org;
-	Mon, 20 Mar 2023 15:30:03 +0000
+	Mon, 20 Mar 2023 15:30:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1peHSE-0000pm-2y; Mon, 20 Mar 2023 16:29:46 +0100
+	id 1peHSF-0000s9-5d; Mon, 20 Mar 2023 16:29:47 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1peHSD-005UZ5-AY; Mon, 20 Mar 2023 16:29:45 +0100
+	id 1peHSE-005UZg-HW; Mon, 20 Mar 2023 16:29:46 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1peHSB-00Dc0W-7B; Mon, 20 Mar 2023 16:29:43 +0100
+	id 1peHSB-00Dc1A-Bb; Mon, 20 Mar 2023 16:29:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 20 Mar 2023 16:29:28 +0100
-Message-Id: <20230320152941.3155428-6-s.hauer@pengutronix.de>
+Date: Mon, 20 Mar 2023 16:29:31 +0100
+Message-Id: <20230320152941.3155428-9-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230320152941.3155428-1-s.hauer@pengutronix.de>
 References: <20230320152941.3155428-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230320_082951_369049_51DC3705 
-X-CRM114-Status: GOOD (  29.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,2423 +74,3151 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 05/18] usb: ch9: Update from Linux Kernel
+Subject: [PATCH 08/18] usb: gadget: Update core to Linux-6.3-rc2
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Update ch9.h from Linux-6.3-rc2. Linux has split up the file into a
-kernel and a uapi portion. We do the same for barebox for easier
-updating in the future.
+Our usbgadget stack is quite outdated. Sync core.c with Linux-6.3-rc2.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/dwc3/debug.h     |   10 +-
- drivers/usb/dwc3/ep0.c       |   10 +-
- drivers/usb/dwc3/gadget.c    |   10 +-
- include/linux/usb/ch9.h      | 1023 +--------------------------
- include/uapi/linux/usb/ch9.h | 1265 ++++++++++++++++++++++++++++++++++
- 5 files changed, 1296 insertions(+), 1022 deletions(-)
- create mode 100644 include/uapi/linux/usb/ch9.h
+ drivers/usb/dwc2/gadget.c           |    3 +-
+ drivers/usb/dwc3/gadget.c           |    3 +-
+ drivers/usb/gadget/composite.c      |   24 +-
+ drivers/usb/gadget/udc/at91_udc.c   |    5 +-
+ drivers/usb/gadget/udc/core.c       | 1492 ++++++++++++++++++++++++---
+ drivers/usb/gadget/udc/fsl_udc.c    |    2 +-
+ drivers/usb/gadget/udc/pxa27x_udc.c |   22 +-
+ drivers/usb/gadget/usbstring.c      |    2 +-
+ drivers/usb/musb/musb_gadget.c      |   41 +-
+ include/linux/usb/gadget.h          |  827 +++++++--------
+ 10 files changed, 1737 insertions(+), 684 deletions(-)
 
-diff --git a/drivers/usb/dwc3/debug.h b/drivers/usb/dwc3/debug.h
-index 1494df261d..054f1717e1 100644
---- a/drivers/usb/dwc3/debug.h
-+++ b/drivers/usb/dwc3/debug.h
-@@ -291,19 +291,19 @@ static inline void dwc3_decode_set_clear_feature(__u8 t, __u8 b, __u16 v,
- 			v == USB_DEVICE_TEST_MODE ?
- 			({ char *s;
- 				switch (i) {
--				case TEST_J:
-+				case USB_TEST_J:
- 					s = ": TEST_J";
- 					break;
--				case TEST_K:
-+				case USB_TEST_K:
- 					s = ": TEST_K";
- 					break;
--				case TEST_SE0_NAK:
-+				case USB_TEST_SE0_NAK:
- 					s = ": TEST_SE0_NAK";
- 					break;
--				case TEST_PACKET:
-+				case USB_TEST_PACKET:
- 					s = ": TEST_PACKET";
- 					break;
--				case TEST_FORCE_EN:
-+				case USB_TEST_FORCE_ENABLE:
- 					s = ": TEST_FORCE_EN";
- 					break;
- 				default:
-diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
-index f4864d0388..a8503a2bad 100644
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -435,11 +435,11 @@ static int dwc3_ep0_handle_test(struct dwc3 *dwc, enum usb_device_state state,
- 		return -EINVAL;
+diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
+index 55d18637c7..028f3c877a 100644
+--- a/drivers/usb/dwc2/gadget.c
++++ b/drivers/usb/dwc2/gadget.c
+@@ -2533,8 +2533,7 @@ static int dwc2_gadget_udc_start(struct usb_gadget *gadget,
+ 	return 0;
+ }
  
- 	switch (wIndex >> 8) {
--	case TEST_J:
--	case TEST_K:
--	case TEST_SE0_NAK:
--	case TEST_PACKET:
--	case TEST_FORCE_EN:
-+	case USB_TEST_J:
-+	case USB_TEST_K:
-+	case USB_TEST_SE0_NAK:
-+	case USB_TEST_PACKET:
-+	case USB_TEST_FORCE_ENABLE:
- 		dwc->test_mode_nr = wIndex >> 8;
- 		dwc->test_mode = true;
- 		break;
+-static int dwc2_gadget_udc_stop(struct usb_gadget *gadget,
+-				struct usb_gadget_driver *driver)
++static int dwc2_gadget_udc_stop(struct usb_gadget *gadget)
+ {
+ 	struct dwc2 *dwc2 = to_dwc2(gadget);
+ 	unsigned long flags = 0;
 diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 1aec73c7d9..0203b7bfc1 100644
+index 0203b7bfc1..b11fccfbfc 100644
 --- a/drivers/usb/dwc3/gadget.c
 +++ b/drivers/usb/dwc3/gadget.c
-@@ -44,11 +44,11 @@ int dwc3_gadget_set_test_mode(struct dwc3 *dwc, int mode)
- 	reg &= ~DWC3_DCTL_TSTCTRL_MASK;
+@@ -1916,8 +1916,7 @@ err1:
+ 	return ret;
+ }
  
- 	switch (mode) {
--	case TEST_J:
--	case TEST_K:
--	case TEST_SE0_NAK:
--	case TEST_PACKET:
--	case TEST_FORCE_EN:
-+	case USB_TEST_J:
-+	case USB_TEST_K:
-+	case USB_TEST_SE0_NAK:
-+	case USB_TEST_PACKET:
-+	case USB_TEST_FORCE_ENABLE:
- 		reg |= mode << 1;
- 		break;
- 	default:
-diff --git a/include/linux/usb/ch9.h b/include/linux/usb/ch9.h
-index 4c1e765326..019b6c87e4 100644
---- a/include/linux/usb/ch9.h
-+++ b/include/linux/usb/ch9.h
-@@ -1,5 +1,4 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--
-+/* SPDX-License-Identifier: GPL-2.0 */
- /*
-  * This file holds USB constants and structures that are needed for
-  * USB device APIs.  These are used by the USB device model, which is
-@@ -7,13 +6,13 @@
-  * Wireless USB 1.0 (spread around).  Linux has several APIs in C that
-  * need these:
-  *
-- * - the master/host side Linux-USB kernel driver API;
-+ * - the host side Linux-USB kernel driver API;
-  * - the "usbfs" user space API; and
-- * - the Linux "gadget" slave/device/peripheral side driver API.
-+ * - the Linux "gadget" device/peripheral side driver API.
-  *
-  * USB 2.0 adds an additional "On The Go" (OTG) mode, which lets systems
-- * act either as a USB master/host or as a USB slave/device.  That means
-- * the master and slave side APIs benefit from working well together.
-+ * act either as a USB host or as a USB device.  That means the host and
-+ * device side APIs benefit from working well together.
-  *
-  * There's also "Wireless USB", using low power short range radios for
-  * peripheral interconnection but otherwise building on the USB framework.
-@@ -31,1003 +30,21 @@
-  *     someone that the two other points are non-issues for that
-  *     particular descriptor type.
-  */
-+#ifndef __LINUX_USB_CH9_H
-+#define __LINUX_USB_CH9_H
+-static int dwc3_gadget_stop(struct usb_gadget *g,
+-			    struct usb_gadget_driver *driver)
++static int dwc3_gadget_stop(struct usb_gadget *g)
+ {
+ 	struct dwc3 *dwc = gadget_to_dwc(g);
+ 	unsigned long flags;
+diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
+index 88ae191ce0..af3dee48f4 100644
+--- a/drivers/usb/gadget/composite.c
++++ b/drivers/usb/gadget/composite.c
+@@ -540,7 +540,7 @@ static int bos_desc(struct usb_composite_dev *cdev)
  
--#ifndef _UAPI__LINUX_USB_CH9_H
--#define _UAPI__LINUX_USB_CH9_H
--
--#include <linux/types.h>	/* __u8 etc */
--#include <asm/byteorder.h>	/* le16_to_cpu */
--
--/*-------------------------------------------------------------------------*/
--
--/* CONTROL REQUEST SUPPORT */
--
--/*
-- * USB directions
-- *
-- * This bit flag is used in endpoint descriptors' bEndpointAddress field.
-- * It's also one of three fields in control requests bRequestType.
-- */
--#define USB_DIR_OUT			0		/* to device */
--#define USB_DIR_IN			0x80		/* to host */
--
--/*
-- * USB types, the second of three bRequestType fields
-- */
--#define USB_TYPE_MASK			(0x03 << 5)
--#define USB_TYPE_STANDARD		(0x00 << 5)
--#define USB_TYPE_CLASS			(0x01 << 5)
--#define USB_TYPE_VENDOR			(0x02 << 5)
--#define USB_TYPE_RESERVED		(0x03 << 5)
--
--/*
-- * USB recipients, the third of three bRequestType fields
-- */
--#define USB_RECIP_MASK			0x1f
--#define USB_RECIP_DEVICE		0x00
--#define USB_RECIP_INTERFACE		0x01
--#define USB_RECIP_ENDPOINT		0x02
--#define USB_RECIP_OTHER			0x03
--/* From Wireless USB 1.0 */
--#define USB_RECIP_PORT			0x04
--#define USB_RECIP_RPIPE		0x05
--
--/*
-- * Standard requests, for the bRequest field of a SETUP packet.
-- *
-- * These are qualified by the bRequestType field, so that for example
-- * TYPE_CLASS or TYPE_VENDOR specific feature flags could be retrieved
-- * by a GET_STATUS request.
-- */
--#define USB_REQ_GET_STATUS		0x00
--#define USB_REQ_CLEAR_FEATURE		0x01
--#define USB_REQ_SET_FEATURE		0x03
--#define USB_REQ_SET_ADDRESS		0x05
--#define USB_REQ_GET_DESCRIPTOR		0x06
--#define USB_REQ_SET_DESCRIPTOR		0x07
--#define USB_REQ_GET_CONFIGURATION	0x08
--#define USB_REQ_SET_CONFIGURATION	0x09
--#define USB_REQ_GET_INTERFACE		0x0A
--#define USB_REQ_SET_INTERFACE		0x0B
--#define USB_REQ_SYNCH_FRAME		0x0C
--#define USB_REQ_SET_SEL			0x30
--#define USB_REQ_SET_ISOCH_DELAY		0x31
--
--#define USB_REQ_SET_ENCRYPTION		0x0D	/* Wireless USB */
--#define USB_REQ_GET_ENCRYPTION		0x0E
--#define USB_REQ_RPIPE_ABORT		0x0E
--#define USB_REQ_SET_HANDSHAKE		0x0F
--#define USB_REQ_RPIPE_RESET		0x0F
--#define USB_REQ_GET_HANDSHAKE		0x10
--#define USB_REQ_SET_CONNECTION		0x11
--#define USB_REQ_SET_SECURITY_DATA	0x12
--#define USB_REQ_GET_SECURITY_DATA	0x13
--#define USB_REQ_SET_WUSB_DATA		0x14
--#define USB_REQ_LOOPBACK_DATA_WRITE	0x15
--#define USB_REQ_LOOPBACK_DATA_READ	0x16
--#define USB_REQ_SET_INTERFACE_DS	0x17
--
--/* The Link Power Management (LPM) ECN defines USB_REQ_TEST_AND_SET command,
-- * used by hubs to put ports into a new L1 suspend state, except that it
-- * forgot to define its number ...
-- */
--
--/*
-- * USB feature flags are written using USB_REQ_{CLEAR,SET}_FEATURE, and
-- * are read as a bit array returned by USB_REQ_GET_STATUS.  (So there
-- * are at most sixteen features of each type.)  Hubs may also support a
-- * new USB_REQ_TEST_AND_SET_FEATURE to put ports into L1 suspend.
-- */
--#define USB_DEVICE_SELF_POWERED		0	/* (read only) */
--#define USB_DEVICE_REMOTE_WAKEUP	1	/* dev may initiate wakeup */
--#define USB_DEVICE_TEST_MODE		2	/* (wired high speed only) */
--#define USB_DEVICE_BATTERY		2	/* (wireless) */
--#define USB_DEVICE_B_HNP_ENABLE		3	/* (otg) dev may initiate HNP */
--#define USB_DEVICE_WUSB_DEVICE		3	/* (wireless)*/
--#define USB_DEVICE_A_HNP_SUPPORT	4	/* (otg) RH port supports HNP */
--#define USB_DEVICE_A_ALT_HNP_SUPPORT	5	/* (otg) other RH port does */
--#define USB_DEVICE_DEBUG_MODE		6	/* (special devices only) */
--
--/*
-- * Test Mode Selectors
-- * See USB 2.0 spec Table 9-7
-- */
--#define	TEST_J		1
--#define	TEST_K		2
--#define	TEST_SE0_NAK	3
--#define	TEST_PACKET	4
--#define	TEST_FORCE_EN	5
--
--/*
-- * New Feature Selectors as added by USB 3.0
-- * See USB 3.0 spec Table 9-7
-- */
--#define USB_DEVICE_U1_ENABLE	48	/* dev may initiate U1 transition */
--#define USB_DEVICE_U2_ENABLE	49	/* dev may initiate U2 transition */
--#define USB_DEVICE_LTM_ENABLE	50	/* dev may send LTM */
--#define USB_INTRF_FUNC_SUSPEND	0	/* function suspend */
--
--#define USB_INTR_FUNC_SUSPEND_OPT_MASK	0xFF00
--/*
-- * Suspend Options, Table 9-8 USB 3.0 spec
-- */
--#define USB_INTRF_FUNC_SUSPEND_LP	(1 << (8 + 0))
--#define USB_INTRF_FUNC_SUSPEND_RW	(1 << (8 + 1))
--
--/*
-- * Interface status, Figure 9-5 USB 3.0 spec
-- */
--#define USB_INTRF_STAT_FUNC_RW_CAP     1
--#define USB_INTRF_STAT_FUNC_RW         2
--
--#define USB_ENDPOINT_HALT		0	/* IN/OUT will STALL */
--
--/* Bit array elements as returned by the USB_REQ_GET_STATUS request. */
--#define USB_DEV_STAT_U1_ENABLED		2	/* transition into U1 state */
--#define USB_DEV_STAT_U2_ENABLED		3	/* transition into U2 state */
--#define USB_DEV_STAT_LTM_ENABLED	4	/* Latency tolerance messages */
--
--/**
-- * struct usb_ctrlrequest - SETUP data for a USB device control request
-- * @bRequestType: matches the USB bmRequestType field
-- * @bRequest: matches the USB bRequest field
-- * @wValue: matches the USB wValue field (le16 byte order)
-- * @wIndex: matches the USB wIndex field (le16 byte order)
-- * @wLength: matches the USB wLength field (le16 byte order)
-- *
-- * This structure is used to send control requests to a USB device.  It matches
-- * the different fields of the USB 2.0 Spec section 9.3, table 9-2.  See the
-- * USB spec for a fuller description of the different fields, and what they are
-- * used for.
-- *
-- * Note that the driver for any interface can issue control requests.
-- * For most devices, interfaces don't coordinate with each other, so
-- * such requests may be made at any time.
-- */
--struct usb_ctrlrequest {
--	__u8 bRequestType;
--	__u8 bRequest;
--	__le16 wValue;
--	__le16 wIndex;
--	__le16 wLength;
--} __attribute__ ((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/*
-- * STANDARD DESCRIPTORS ... as returned by GET_DESCRIPTOR, or
-- * (rarely) accepted by SET_DESCRIPTOR.
-- *
-- * Note that all multi-byte values here are encoded in little endian
-- * byte order "on the wire".  Within the kernel and when exposed
-- * through the Linux-USB APIs, they are not converted to cpu byte
-- * order; it is the responsibility of the client code to do this.
-- * The single exception is when device and configuration descriptors (but
-- * not other descriptors) are read from usbfs (i.e. /proc/bus/usb/BBB/DDD);
-- * in this case the fields are converted to host endianness by the kernel.
-- */
--
--/*
-- * Descriptor types ... USB 2.0 spec table 9.5
-- */
--#define USB_DT_DEVICE			0x01
--#define USB_DT_CONFIG			0x02
--#define USB_DT_STRING			0x03
--#define USB_DT_INTERFACE		0x04
--#define USB_DT_ENDPOINT			0x05
--#define USB_DT_DEVICE_QUALIFIER		0x06
--#define USB_DT_OTHER_SPEED_CONFIG	0x07
--#define USB_DT_INTERFACE_POWER		0x08
--/* these are from a minor usb 2.0 revision (ECN) */
--#define USB_DT_OTG			0x09
--#define USB_DT_DEBUG			0x0a
--#define USB_DT_INTERFACE_ASSOCIATION	0x0b
--/* these are from the Wireless USB spec */
--#define USB_DT_SECURITY			0x0c
--#define USB_DT_KEY			0x0d
--#define USB_DT_ENCRYPTION_TYPE		0x0e
--#define USB_DT_BOS			0x0f
--#define USB_DT_DEVICE_CAPABILITY	0x10
--#define USB_DT_WIRELESS_ENDPOINT_COMP	0x11
--#define USB_DT_WIRE_ADAPTER		0x21
--#define USB_DT_RPIPE			0x22
--#define USB_DT_CS_RADIO_CONTROL		0x23
--/* From the T10 UAS specification */
--#define USB_DT_PIPE_USAGE		0x24
--/* From the USB 3.0 spec */
--#define	USB_DT_SS_ENDPOINT_COMP		0x30
--/* From the USB 3.1 spec */
--#define	USB_DT_SSP_ISOC_ENDPOINT_COMP	0x31
--
--/* Conventional codes for class-specific descriptors.  The convention is
-- * defined in the USB "Common Class" Spec (3.11).  Individual class specs
-- * are authoritative for their usage, not the "common class" writeup.
-- */
--#define USB_DT_CS_DEVICE		(USB_TYPE_CLASS | USB_DT_DEVICE)
--#define USB_DT_CS_CONFIG		(USB_TYPE_CLASS | USB_DT_CONFIG)
--#define USB_DT_CS_STRING		(USB_TYPE_CLASS | USB_DT_STRING)
--#define USB_DT_CS_INTERFACE		(USB_TYPE_CLASS | USB_DT_INTERFACE)
--#define USB_DT_CS_ENDPOINT		(USB_TYPE_CLASS | USB_DT_ENDPOINT)
--
--/* All standard descriptors have these 2 fields at the beginning */
--struct usb_descriptor_header {
--	__u8  bLength;
--	__u8  bDescriptorType;
--} __attribute__ ((packed));
--
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_DEVICE: Device descriptor */
--struct usb_device_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 bcdUSB;
--	__u8  bDeviceClass;
--	__u8  bDeviceSubClass;
--	__u8  bDeviceProtocol;
--	__u8  bMaxPacketSize0;
--	__le16 idVendor;
--	__le16 idProduct;
--	__le16 bcdDevice;
--	__u8  iManufacturer;
--	__u8  iProduct;
--	__u8  iSerialNumber;
--	__u8  bNumConfigurations;
--} __attribute__ ((packed));
--
--#define USB_DT_DEVICE_SIZE		18
--
--
--/*
-- * Device and/or Interface Class codes
-- * as found in bDeviceClass or bInterfaceClass
-- * and defined by www.usb.org documents
-- */
--#define USB_CLASS_PER_INTERFACE		0	/* for DeviceClass */
--#define USB_CLASS_AUDIO			1
--#define USB_CLASS_COMM			2
--#define USB_CLASS_HID			3
--#define USB_CLASS_PHYSICAL		5
--#define USB_CLASS_STILL_IMAGE		6
--#define USB_CLASS_PRINTER		7
--#define USB_CLASS_MASS_STORAGE		8
--#define USB_CLASS_HUB			9
--#define USB_CLASS_CDC_DATA		0x0a
--#define USB_CLASS_CSCID			0x0b	/* chip+ smart card */
--#define USB_CLASS_CONTENT_SEC		0x0d	/* content security */
--#define USB_CLASS_VIDEO			0x0e
--#define USB_CLASS_WIRELESS_CONTROLLER	0xe0
--#define USB_CLASS_MISC			0xef
--#define USB_CLASS_APP_SPEC		0xfe
--#define USB_CLASS_VENDOR_SPEC		0xff
--
--#define USB_SUBCLASS_VENDOR_SPEC	0xff
-+#include <uapi/linux/usb/ch9.h>
+ 	/* Get Controller configuration */
+ 	if (cdev->gadget->ops->get_config_params)
+-		cdev->gadget->ops->get_config_params(&dcd_config_params);
++		cdev->gadget->ops->get_config_params(cdev->gadget, &dcd_config_params);
+ 	else {
+ 		dcd_config_params.bU1devExitLat = USB_DEFAULT_U1_DEV_EXIT_LAT;
+ 		dcd_config_params.bU2DevExitLat =
+@@ -1518,7 +1518,7 @@ done:
+ 	return value;
+ }
  
--/*-------------------------------------------------------------------------*/
-+/* USB 3.2 SuperSpeed Plus phy signaling rate generation and lane count */
+-void composite_disconnect(struct usb_gadget *gadget)
++static void __composite_disconnect(struct usb_gadget *gadget)
+ {
+ 	struct usb_composite_dev	*cdev = get_gadget_data(gadget);
  
--/* USB_DT_CONFIG: Configuration descriptor information.
-- *
-- * USB_DT_OTHER_SPEED_CONFIG is the same descriptor, except that the
-- * descriptor type is different.  Highspeed-capable devices can look
-- * different depending on what speed they're currently running.  Only
-- * devices with a USB_DT_DEVICE_QUALIFIER have any OTHER_SPEED_CONFIG
-- * descriptors.
-- */
--struct usb_config_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 wTotalLength;
--	__u8  bNumInterfaces;
--	__u8  bConfigurationValue;
--	__u8  iConfiguration;
--	__u8  bmAttributes;
--	__u8  bMaxPower;
--} __attribute__ ((packed));
--
--#define USB_DT_CONFIG_SIZE		9
--
--/* from config descriptor bmAttributes */
--#define USB_CONFIG_ATT_ONE		(1 << 7)	/* must be set */
--#define USB_CONFIG_ATT_SELFPOWER	(1 << 6)	/* self powered */
--#define USB_CONFIG_ATT_WAKEUP		(1 << 5)	/* can wakeup */
--#define USB_CONFIG_ATT_BATTERY		(1 << 4)	/* battery powered */
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_STRING: String descriptor */
--struct usb_string_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 wData[1];		/* UTF-16LE encoded */
--} __attribute__ ((packed));
--
--/* note that "string" zero is special, it holds language codes that
-- * the device supports, not Unicode characters.
-- */
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_INTERFACE: Interface descriptor */
--struct usb_interface_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bInterfaceNumber;
--	__u8  bAlternateSetting;
--	__u8  bNumEndpoints;
--	__u8  bInterfaceClass;
--	__u8  bInterfaceSubClass;
--	__u8  bInterfaceProtocol;
--	__u8  iInterface;
--} __attribute__ ((packed));
--
--#define USB_DT_INTERFACE_SIZE		9
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_ENDPOINT: Endpoint descriptor */
--struct usb_endpoint_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bEndpointAddress;
--	__u8  bmAttributes;
--	__le16 wMaxPacketSize;
--	__u8  bInterval;
--
--	/* NOTE:  these two are _only_ in audio endpoints. */
--	/* use USB_DT_ENDPOINT*_SIZE in bLength, not sizeof. */
--	__u8  bRefresh;
--	__u8  bSynchAddress;
--} __attribute__ ((packed));
--
--#define USB_DT_ENDPOINT_SIZE		7
--#define USB_DT_ENDPOINT_AUDIO_SIZE	9	/* Audio extension */
--
--
--/*
-- * Endpoints
-- */
--#define USB_ENDPOINT_NUMBER_MASK	0x0f	/* in bEndpointAddress */
--#define USB_ENDPOINT_DIR_MASK		0x80
--
--#define USB_ENDPOINT_XFERTYPE_MASK	0x03	/* in bmAttributes */
--#define USB_ENDPOINT_XFER_CONTROL	0
--#define USB_ENDPOINT_XFER_ISOC		1
--#define USB_ENDPOINT_XFER_BULK		2
--#define USB_ENDPOINT_XFER_INT		3
--#define USB_ENDPOINT_MAX_ADJUSTABLE	0x80
--
--#define USB_ENDPOINT_MAXP_MASK          0x07ff
--#define USB_EP_MAXP_MULT_SHIFT          11
--#define USB_EP_MAXP_MULT_MASK           (3 << USB_EP_MAXP_MULT_SHIFT)
--#define USB_EP_MAXP_MULT(m)             \
--	(((m) & USB_EP_MAXP_MULT_MASK) >> USB_EP_MAXP_MULT_SHIFT)
--
--/* The USB 3.0 spec redefines bits 5:4 of bmAttributes as interrupt ep type. */
--#define USB_ENDPOINT_INTRTYPE		0x30
--#define USB_ENDPOINT_INTR_PERIODIC	(0 << 4)
--#define USB_ENDPOINT_INTR_NOTIFICATION	(1 << 4)
--
--#define USB_ENDPOINT_SYNCTYPE		0x0c
--#define USB_ENDPOINT_SYNC_NONE		(0 << 2)
--#define USB_ENDPOINT_SYNC_ASYNC		(1 << 2)
--#define USB_ENDPOINT_SYNC_ADAPTIVE	(2 << 2)
--#define USB_ENDPOINT_SYNC_SYNC		(3 << 2)
--
--#define USB_ENDPOINT_USAGE_MASK		0x30
--#define USB_ENDPOINT_USAGE_DATA		0x00
--#define USB_ENDPOINT_USAGE_FEEDBACK	0x10
--#define USB_ENDPOINT_USAGE_IMPLICIT_FB	0x20	/* Implicit feedback Data endpoint */
--
--/*-------------------------------------------------------------------------*/
--
--/**
-- * usb_endpoint_num - get the endpoint's number
-- * @epd: endpoint to be checked
-- *
-- * Returns @epd's number: 0 to 15.
-- */
--static inline int usb_endpoint_num(const struct usb_endpoint_descriptor *epd)
--{
--	return epd->bEndpointAddress & USB_ENDPOINT_NUMBER_MASK;
--}
--
--/**
-- * usb_endpoint_type - get the endpoint's transfer type
-- * @epd: endpoint to be checked
-- *
-- * Returns one of USB_ENDPOINT_XFER_{CONTROL, ISOC, BULK, INT} according
-- * to @epd's transfer type.
-- */
--static inline int usb_endpoint_type(const struct usb_endpoint_descriptor *epd)
--{
--	return epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK;
--}
--
--/**
-- * usb_endpoint_dir_in - check if the endpoint has IN direction
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type IN, otherwise it returns false.
-- */
--static inline int usb_endpoint_dir_in(const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_IN);
--}
--
--/**
-- * usb_endpoint_dir_out - check if the endpoint has OUT direction
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type OUT, otherwise it returns false.
-- */
--static inline int usb_endpoint_dir_out(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_OUT);
--}
--
--/**
-- * usb_endpoint_xfer_bulk - check if the endpoint has bulk transfer type
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type bulk, otherwise it returns false.
-- */
--static inline int usb_endpoint_xfer_bulk(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
--		USB_ENDPOINT_XFER_BULK);
--}
--
--/**
-- * usb_endpoint_xfer_control - check if the endpoint has control transfer type
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type control, otherwise it returns false.
-- */
--static inline int usb_endpoint_xfer_control(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
--		USB_ENDPOINT_XFER_CONTROL);
--}
--
--/**
-- * usb_endpoint_xfer_int - check if the endpoint has interrupt transfer type
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type interrupt, otherwise it returns
-- * false.
-- */
--static inline int usb_endpoint_xfer_int(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
--		USB_ENDPOINT_XFER_INT);
--}
--
--/**
-- * usb_endpoint_xfer_isoc - check if the endpoint has isochronous transfer type
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint is of type isochronous, otherwise it returns
-- * false.
-- */
--static inline int usb_endpoint_xfer_isoc(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
--		USB_ENDPOINT_XFER_ISOC);
--}
--
--/**
-- * usb_endpoint_is_bulk_in - check if the endpoint is bulk IN
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has bulk transfer type and IN direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_bulk_in(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_bulk(epd) && usb_endpoint_dir_in(epd);
--}
--
--/**
-- * usb_endpoint_is_bulk_out - check if the endpoint is bulk OUT
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has bulk transfer type and OUT direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_bulk_out(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_bulk(epd) && usb_endpoint_dir_out(epd);
--}
--
--/**
-- * usb_endpoint_is_int_in - check if the endpoint is interrupt IN
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has interrupt transfer type and IN direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_int_in(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_int(epd) && usb_endpoint_dir_in(epd);
--}
--
--/**
-- * usb_endpoint_is_int_out - check if the endpoint is interrupt OUT
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has interrupt transfer type and OUT direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_int_out(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_int(epd) && usb_endpoint_dir_out(epd);
--}
--
--/**
-- * usb_endpoint_is_isoc_in - check if the endpoint is isochronous IN
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has isochronous transfer type and IN direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_isoc_in(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_isoc(epd) && usb_endpoint_dir_in(epd);
--}
--
--/**
-- * usb_endpoint_is_isoc_out - check if the endpoint is isochronous OUT
-- * @epd: endpoint to be checked
-- *
-- * Returns true if the endpoint has isochronous transfer type and OUT direction,
-- * otherwise it returns false.
-- */
--static inline int usb_endpoint_is_isoc_out(
--				const struct usb_endpoint_descriptor *epd)
--{
--	return usb_endpoint_xfer_isoc(epd) && usb_endpoint_dir_out(epd);
--}
--
--/**
-- * usb_endpoint_maxp - get endpoint's max packet size
-- * @epd: endpoint to be checked
-- *
-- * Returns @epd's max packet
-- */
--static inline int usb_endpoint_maxp(const struct usb_endpoint_descriptor *epd)
--{
--	return __le16_to_cpu(epd->wMaxPacketSize);
--}
--
--/**
-- * usb_endpoint_maxp_mult - get endpoint's transactional opportunities
-- * @epd: endpoint to be checked
-- *
-- * Return @epd's wMaxPacketSize[12:11] + 1
-- */
--static inline int
--usb_endpoint_maxp_mult(const struct usb_endpoint_descriptor *epd)
--{
--	int maxp = __le16_to_cpu(epd->wMaxPacketSize);
--
--	return USB_EP_MAXP_MULT(maxp) + 1;
--}
--
--static inline int usb_endpoint_interrupt_type(
--		const struct usb_endpoint_descriptor *epd)
--{
--	return epd->bmAttributes & USB_ENDPOINT_INTRTYPE;
--}
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_SS_ENDPOINT_COMP: SuperSpeed Endpoint Companion descriptor */
--struct usb_ss_ep_comp_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bMaxBurst;
--	__u8  bmAttributes;
--	__le16 wBytesPerInterval;
--} __attribute__ ((packed));
--
--#define USB_DT_SS_EP_COMP_SIZE		6
--
--/* Bits 4:0 of bmAttributes if this is a bulk endpoint */
--static inline int
--usb_ss_max_streams(const struct usb_ss_ep_comp_descriptor *comp)
--{
--	int		max_streams;
--
--	if (!comp)
--		return 0;
--
--	max_streams = comp->bmAttributes & 0x1f;
--
--	if (!max_streams)
--		return 0;
--
--	max_streams = 1 << max_streams;
--
--	return max_streams;
--}
--
--/* Bits 1:0 of bmAttributes if this is an isoc endpoint */
--#define USB_SS_MULT(p)			(1 + ((p) & 0x3))
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_DEVICE_QUALIFIER: Device Qualifier descriptor */
--struct usb_qualifier_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 bcdUSB;
--	__u8  bDeviceClass;
--	__u8  bDeviceSubClass;
--	__u8  bDeviceProtocol;
--	__u8  bMaxPacketSize0;
--	__u8  bNumConfigurations;
--	__u8  bRESERVED;
--} __attribute__ ((packed));
--
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_OTG (from OTG 1.0a supplement) */
--struct usb_otg_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bmAttributes;	/* support for HNP, SRP, etc */
--} __attribute__ ((packed));
--
--/* from usb_otg_descriptor.bmAttributes */
--#define USB_OTG_SRP		(1 << 0)
--#define USB_OTG_HNP		(1 << 1)	/* swap host/device roles */
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_DEBUG:  for special highspeed devices, replacing serial console */
--struct usb_debug_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	/* bulk endpoints with 8 byte maxpacket */
--	__u8  bDebugInEndpoint;
--	__u8  bDebugOutEndpoint;
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_INTERFACE_ASSOCIATION: groups interfaces */
--struct usb_interface_assoc_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bFirstInterface;
--	__u8  bInterfaceCount;
--	__u8  bFunctionClass;
--	__u8  bFunctionSubClass;
--	__u8  bFunctionProtocol;
--	__u8  iFunction;
--} __attribute__ ((packed));
--
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_SECURITY:  group of wireless security descriptors, including
-- * encryption types available for setting up a CC/association.
-- */
--struct usb_security_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 wTotalLength;
--	__u8  bNumEncryptionTypes;
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_KEY:  used with {GET,SET}_SECURITY_DATA; only public keys
-- * may be retrieved.
-- */
--struct usb_key_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  tTKID[3];
--	__u8  bReserved;
--	__u8  bKeyData[0];
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_ENCRYPTION_TYPE:  bundled in DT_SECURITY groups */
--struct usb_encryption_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bEncryptionType;
--#define	USB_ENC_TYPE_UNSECURE		0
--#define	USB_ENC_TYPE_WIRED		1	/* non-wireless mode */
--#define	USB_ENC_TYPE_CCM_1		2	/* aes128/cbc session */
--#define	USB_ENC_TYPE_RSA_1		3	/* rsa3072/sha1 auth */
--	__u8  bEncryptionValue;		/* use in SET_ENCRYPTION */
--	__u8  bAuthKeyIndex;
--} __attribute__((packed));
--
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_BOS:  group of device-level capabilities */
--struct usb_bos_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__le16 wTotalLength;
--	__u8  bNumDeviceCaps;
--} __attribute__((packed));
--
--#define USB_DT_BOS_SIZE		5
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_DEVICE_CAPABILITY:  grouped with BOS */
--struct usb_dev_cap_header {
--	__u8  bLength;
--	__u8  bDescriptorType;
--	__u8  bDevCapabilityType;
--} __attribute__((packed));
--
--#define	USB_CAP_TYPE_WIRELESS_USB	1
--
--struct usb_wireless_cap_descriptor {	/* Ultra Wide Band */
--	__u8  bLength;
--	__u8  bDescriptorType;
--	__u8  bDevCapabilityType;
--
--	__u8  bmAttributes;
--#define	USB_WIRELESS_P2P_DRD		(1 << 1)
--#define	USB_WIRELESS_BEACON_MASK	(3 << 2)
--#define	USB_WIRELESS_BEACON_SELF	(1 << 2)
--#define	USB_WIRELESS_BEACON_DIRECTED	(2 << 2)
--#define	USB_WIRELESS_BEACON_NONE	(3 << 2)
--	__le16 wPHYRates;	/* bit rates, Mbps */
--#define	USB_WIRELESS_PHY_53		(1 << 0)	/* always set */
--#define	USB_WIRELESS_PHY_80		(1 << 1)
--#define	USB_WIRELESS_PHY_107		(1 << 2)	/* always set */
--#define	USB_WIRELESS_PHY_160		(1 << 3)
--#define	USB_WIRELESS_PHY_200		(1 << 4)	/* always set */
--#define	USB_WIRELESS_PHY_320		(1 << 5)
--#define	USB_WIRELESS_PHY_400		(1 << 6)
--#define	USB_WIRELESS_PHY_480		(1 << 7)
--	__u8  bmTFITXPowerInfo;	/* TFI power levels */
--	__u8  bmFFITXPowerInfo;	/* FFI power levels */
--	__le16 bmBandGroup;
--	__u8  bReserved;
--} __attribute__((packed));
--
--/* USB 2.0 Extension descriptor */
--#define	USB_CAP_TYPE_EXT		2
--
--struct usb_ext_cap_descriptor {		/* Link Power Management */
--	__u8  bLength;
--	__u8  bDescriptorType;
--	__u8  bDevCapabilityType;
--	__le32 bmAttributes;
--#define USB_LPM_SUPPORT			(1 << 1)	/* supports LPM */
--#define USB_BESL_SUPPORT		(1 << 2)	/* supports BESL */
--#define USB_BESL_BASELINE_VALID		(1 << 3)	/* Baseline BESL valid*/
--#define USB_BESL_DEEP_VALID		(1 << 4)	/* Deep BESL valid */
--#define USB_GET_BESL_BASELINE(p)	(((p) & (0xf << 8)) >> 8)
--#define USB_GET_BESL_DEEP(p)		(((p) & (0xf << 12)) >> 12)
--} __attribute__((packed));
--
--#define USB_DT_USB_EXT_CAP_SIZE	7
--
--/*
-- * SuperSpeed USB Capability descriptor: Defines the set of SuperSpeed USB
-- * specific device level capabilities
-- */
--#define		USB_SS_CAP_TYPE		3
--struct usb_ss_cap_descriptor {		/* Link Power Management */
--	__u8  bLength;
--	__u8  bDescriptorType;
--	__u8  bDevCapabilityType;
--	__u8  bmAttributes;
--#define USB_LTM_SUPPORT			(1 << 1) /* supports LTM */
--	__le16 wSpeedSupported;
--#define USB_LOW_SPEED_OPERATION		(1)	 /* Low speed operation */
--#define USB_FULL_SPEED_OPERATION	(1 << 1) /* Full speed operation */
--#define USB_HIGH_SPEED_OPERATION	(1 << 2) /* High speed operation */
--#define USB_5GBPS_OPERATION		(1 << 3) /* Operation at 5Gbps */
--	__u8  bFunctionalitySupport;
--	__u8  bU1devExitLat;
--	__le16 bU2DevExitLat;
--} __attribute__((packed));
--
--#define USB_DT_USB_SS_CAP_SIZE	10
--
--/*
-- * Container ID Capability descriptor: Defines the instance unique ID used to
-- * identify the instance across all operating modes
-- */
--#define	CONTAINER_ID_TYPE	4
--struct usb_ss_container_id_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--	__u8  bDevCapabilityType;
--	__u8  bReserved;
--	__u8  ContainerID[16]; /* 128-bit number */
--} __attribute__((packed));
--
--#define USB_DT_USB_SS_CONTN_ID_SIZE	20
--/*-------------------------------------------------------------------------*/
--
--/* USB_DT_WIRELESS_ENDPOINT_COMP:  companion descriptor associated with
-- * each endpoint descriptor for a wireless device
-- */
--struct usb_wireless_ep_comp_descriptor {
--	__u8  bLength;
--	__u8  bDescriptorType;
--
--	__u8  bMaxBurst;
--	__u8  bMaxSequence;
--	__le16 wMaxStreamDelay;
--	__le16 wOverTheAirPacketSize;
--	__u8  bOverTheAirInterval;
--	__u8  bmCompAttributes;
--#define USB_ENDPOINT_SWITCH_MASK	0x03	/* in bmCompAttributes */
--#define USB_ENDPOINT_SWITCH_NO		0
--#define USB_ENDPOINT_SWITCH_SWITCH	1
--#define USB_ENDPOINT_SWITCH_SCALE	2
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_REQ_SET_HANDSHAKE is a four-way handshake used between a wireless
-- * host and a device for connection set up, mutual authentication, and
-- * exchanging short lived session keys.  The handshake depends on a CC.
-- */
--struct usb_handshake {
--	__u8 bMessageNumber;
--	__u8 bStatus;
--	__u8 tTKID[3];
--	__u8 bReserved;
--	__u8 CDID[16];
--	__u8 nonce[16];
--	__u8 MIC[8];
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB_REQ_SET_CONNECTION modifies or revokes a connection context (CC).
-- * A CC may also be set up using non-wireless secure channels (including
-- * wired USB!), and some devices may support CCs with multiple hosts.
-- */
--struct usb_connection_context {
--	__u8 CHID[16];		/* persistent host id */
--	__u8 CDID[16];		/* device id (unique w/in host context) */
--	__u8 CK[16];		/* connection key */
--} __attribute__((packed));
--
--/*-------------------------------------------------------------------------*/
--
--/* USB 2.0 defines three speeds, here's how Linux identifies them */
--
--enum usb_device_speed {
--	USB_SPEED_UNKNOWN = 0,			/* enumerating */
--	USB_SPEED_LOW, USB_SPEED_FULL,		/* usb 1.1 */
--	USB_SPEED_HIGH,				/* usb 2.0 */
--	USB_SPEED_WIRELESS,			/* wireless (usb 2.5) */
--	USB_SPEED_SUPER,			/* usb 3.0 */
--	USB_SPEED_SUPER_PLUS,			/* usb 3.1 */
--};
--
--
--enum usb_device_state {
--	/* NOTATTACHED isn't in the USB spec, and this state acts
--	 * the same as ATTACHED ... but it's clearer this way.
--	 */
--	USB_STATE_NOTATTACHED = 0,
--
--	/* chapter 9 and authentication (wireless) device states */
--	USB_STATE_ATTACHED,
--	USB_STATE_POWERED,			/* wired */
--	USB_STATE_RECONNECTING,			/* auth */
--	USB_STATE_UNAUTHENTICATED,		/* auth */
--	USB_STATE_DEFAULT,			/* limited function */
--	USB_STATE_ADDRESS,
--	USB_STATE_CONFIGURED,			/* most functions */
--
--	USB_STATE_SUSPENDED
--
--	/* NOTE:  there are actually four different SUSPENDED
--	 * states, returning to POWERED, DEFAULT, ADDRESS, or
--	 * CONFIGURED respectively when SOF tokens flow again.
--	 * At this level there's no difference between L1 and L2
--	 * suspend states.  (L2 being original USB 1.1 suspend.)
--	 */
-+enum usb_ssp_rate {
-+	USB_SSP_GEN_UNKNOWN = 0,
-+	USB_SSP_GEN_2x1,
-+	USB_SSP_GEN_1x2,
-+	USB_SSP_GEN_2x2,
+@@ -1531,6 +1531,23 @@ void composite_disconnect(struct usb_gadget *gadget)
+ 		cdev->driver->disconnect(cdev);
+ }
+ 
++void composite_disconnect(struct usb_gadget *gadget)
++{
++	usb_gadget_vbus_draw(gadget, 0);
++	__composite_disconnect(gadget);
++}
++
++static void composite_reset(struct usb_gadget *gadget)
++{
++	/*
++	 * Section 1.4.13 Standard Downstream Port of the USB battery charging
++	 * specification v1.2 states that a device connected on a SDP shall only
++	 * draw at max 100mA while in a connected, but unconfigured state.
++	 */
++	usb_gadget_vbus_draw(gadget, 100);
++	__composite_disconnect(gadget);
++}
++
+ /*-------------------------------------------------------------------------*/
+ 
+ static void __composite_unbind(struct usb_gadget *gadget, bool unbind_driver)
+@@ -1710,6 +1727,7 @@ static const struct usb_gadget_driver composite_driver_template = {
+ 	.unbind		= composite_unbind,
+ 
+ 	.setup		= composite_setup,
++	.reset		= composite_reset,
+ 	.disconnect	= composite_disconnect,
  };
  
--enum usb3_link_state {
--	USB3_LPM_U0 = 0,
--	USB3_LPM_U1,
--	USB3_LPM_U2,
--	USB3_LPM_U3
--};
--
--/*
-- * A U1 timeout of 0x0 means the parent hub will reject any transitions to U1.
-- * 0xff means the parent hub will accept transitions to U1, but will not
-- * initiate a transition.
-- *
-- * A U1 timeout of 0x1 to 0x7F also causes the hub to initiate a transition to
-- * U1 after that many microseconds.  Timeouts of 0x80 to 0xFE are reserved
-- * values.
-- *
-- * A U2 timeout of 0x0 means the parent hub will reject any transitions to U2.
-- * 0xff means the parent hub will accept transitions to U2, but will not
-- * initiate a transition.
-- *
-- * A U2 timeout of 0x1 to 0xFE also causes the hub to initiate a transition to
-- * U2 after N*256 microseconds.  Therefore a U2 timeout value of 0x1 means a U2
-- * idle timer of 256 microseconds, 0x2 means 512 microseconds, 0xFE means
-- * 65.024ms.
-- */
--#define USB3_LPM_DISABLED		0x0
--#define USB3_LPM_U1_MAX_TIMEOUT		0x7F
--#define USB3_LPM_U2_MAX_TIMEOUT		0xFE
--#define USB3_LPM_DEVICE_INITIATED	0xFF
--
--struct usb_set_sel_req {
--	__u8	u1_sel;
--	__u8	u1_pel;
--	__le16	u2_sel;
--	__le16	u2_pel;
--} __attribute__ ((packed));
--
--/*
-- * The Set System Exit Latency control transfer provides one byte each for
-- * U1 SEL and U1 PEL, so the max exit latency is 0xFF.  U2 SEL and U2 PEL each
-- * are two bytes long.
-- */
--#define USB3_LPM_MAX_U1_SEL_PEL		0xFF
--#define USB3_LPM_MAX_U2_SEL_PEL		0xFFFF
--
--/*-------------------------------------------------------------------------*/
--
--/*
-- * As per USB compliance update, a device that is actively drawing
-- * more than 100mA from USB must report itself as bus-powered in
-- * the GetStatus(DEVICE) call.
-- * http://compliance.usb.org/index.asp?UpdateFile=Electrical&Format=Standard#34
-- */
--#define USB_SELF_POWER_VBUS_MAX_DRAW		100
--
--/**
-- * usb_speed_string() - Returns human readable-name of the speed.
-- * @speed: The speed to return human-readable name for.  If it's not
-- *   any of the speeds defined in usb_device_speed enum, string for
-- *   USB_SPEED_UNKNOWN will be returned.
-- */
--const char *usb_speed_string(enum usb_device_speed speed);
-+extern const char *usb_speed_string(enum usb_device_speed speed);
+@@ -1746,7 +1764,7 @@ int usb_composite_probe(struct usb_composite_driver *driver)
+ 	gadget_driver->driver.name = driver->name;
+ 	gadget_driver->max_speed = driver->max_speed;
+ 
+-	return usb_gadget_probe_driver(gadget_driver);
++	return usb_gadget_register_driver(gadget_driver);
+ }
+ EXPORT_SYMBOL_GPL(usb_composite_probe);
+ 
+diff --git a/drivers/usb/gadget/udc/at91_udc.c b/drivers/usb/gadget/udc/at91_udc.c
+index 2a3d5765de..654362d69e 100644
+--- a/drivers/usb/gadget/udc/at91_udc.c
++++ b/drivers/usb/gadget/udc/at91_udc.c
+@@ -1240,7 +1240,7 @@ static int at91_udc_start(struct usb_gadget *gadget, struct usb_gadget_driver *d
+ 	return 0;
+ }
+ 
+-static int at91_udc_stop(struct usb_gadget *gadget, struct usb_gadget_driver *driver)
++static int at91_udc_stop(struct usb_gadget *gadget)
+ {
+ 	struct at91_udc	*udc = container_of(gadget, struct at91_udc, gadget);
+ 
+@@ -1248,7 +1248,8 @@ static int at91_udc_stop(struct usb_gadget *gadget, struct usb_gadget_driver *dr
+ 	at91_udp_write(udc, AT91_UDP_IDR, ~0);
+ 	udc->driver = NULL;
+ 
+-	DBG(udc, "unbound from %s\n", driver->function);
++	DBG(udc, "unbound\n");
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index ec3ae603e1..d4257de282 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1,37 +1,954 @@
+-// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * udc.c - Core UDC Framework
++ *
++ * Copyright (C) 2010 Texas Instruments
++ * Author: Felipe Balbi <balbi@ti.com>
++ */
++
++#define pr_fmt(fmt)	"UDC core: " fmt
++
++#include <common.h>
++#include <dma.h>
++#include <linux/usb/gadget.h>
++#include <linux/usb/ch9.h>
++
++#include <linux/kernel.h>
++#include <linux/list.h>
++#include <linux/idr.h>
++#include <linux/err.h>
++
++static int gadget_id_numbers;
++
++static struct bus_type gadget_bus_type;
++
++/**
++ * struct usb_udc - describes one usb device controller
++ * @driver: the gadget driver pointer. For use by the class code
++ * @dev: the child device to the actual controller
++ * @gadget: the gadget. For use by the class code
++ * @list: for use by the udc class driver
++ * @vbus: for udcs who care about vbus status, this value is real vbus status;
++ * for udcs who do not care about vbus status, this value is always true
++ * @started: the UDC's started state. True if the UDC had started.
++ *
++ * This represents the internal data structure which is used by the UDC-class
++ * to hold information about udc driver and gadget together.
++ */
++struct usb_udc {
++	struct usb_gadget_driver	*driver;
++	struct usb_gadget		*gadget;
++	struct device			dev;
++	struct list_head		list;
++	bool				vbus;
++	bool				started;
++	struct poller_struct		poller;
++};
++
++static LIST_HEAD(udc_list);
++
++/* Protects udc_list, udc->driver, driver->is_bound, and related calls */
++static DEFINE_MUTEX(udc_lock);
++
++/* ------------------------------------------------------------------------- */
++
++/**
++ * usb_ep_set_maxpacket_limit - set maximum packet size limit for endpoint
++ * @ep:the endpoint being configured
++ * @maxpacket_limit:value of maximum packet size limit
++ *
++ * This function should be used only in UDC drivers to initialize endpoint
++ * (usually in probe function).
++ */
++void usb_ep_set_maxpacket_limit(struct usb_ep *ep,
++					      unsigned maxpacket_limit)
++{
++	ep->maxpacket_limit = maxpacket_limit;
++	ep->maxpacket = maxpacket_limit;
++}
++EXPORT_SYMBOL_GPL(usb_ep_set_maxpacket_limit);
++
++/**
++ * usb_ep_enable - configure endpoint, making it usable
++ * @ep:the endpoint being configured.  may not be the endpoint named "ep0".
++ *	drivers discover endpoints through the ep_list of a usb_gadget.
++ *
++ * When configurations are set, or when interface settings change, the driver
++ * will enable or disable the relevant endpoints.  while it is enabled, an
++ * endpoint may be used for i/o until the driver receives a disconnect() from
++ * the host or until the endpoint is disabled.
++ *
++ * the ep0 implementation (which calls this routine) must ensure that the
++ * hardware capabilities of each endpoint match the descriptor provided
++ * for it.  for example, an endpoint named "ep2in-bulk" would be usable
++ * for interrupt transfers as well as bulk, but it likely couldn't be used
++ * for iso transfers or for endpoint 14.  some endpoints are fully
++ * configurable, with more generic names like "ep-a".  (remember that for
++ * USB, "in" means "towards the USB host".)
++ *
++ * This routine may be called in an atomic (interrupt) context.
++ *
++ * returns zero, or a negative error code.
++ */
++int usb_ep_enable(struct usb_ep *ep)
++{
++	int ret = 0;
++
++	if (ep->enabled)
++		goto out;
++
++	/* UDC drivers can't handle endpoints with maxpacket size 0 */
++	if (usb_endpoint_maxp(ep->desc) == 0) {
++		/*
++		 * We should log an error message here, but we can't call
++		 * dev_err() because there's no way to find the gadget
++		 * given only ep.
++		 */
++		ret = -EINVAL;
++		goto out;
++	}
++
++	ret = ep->ops->enable(ep, ep->desc);
++	if (ret)
++		goto out;
++
++	ep->enabled = true;
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_ep_enable);
++
++/**
++ * usb_ep_disable - endpoint is no longer usable
++ * @ep:the endpoint being unconfigured.  may not be the endpoint named "ep0".
++ *
++ * no other task may be using this endpoint when this is called.
++ * any pending and uncompleted requests will complete with status
++ * indicating disconnect (-ESHUTDOWN) before this call returns.
++ * gadget drivers must call usb_ep_enable() again before queueing
++ * requests to the endpoint.
++ *
++ * This routine may be called in an atomic (interrupt) context.
++ *
++ * returns zero, or a negative error code.
++ */
++int usb_ep_disable(struct usb_ep *ep)
++{
++	int ret = 0;
++
++	if (!ep->enabled)
++		goto out;
++
++	ret = ep->ops->disable(ep);
++	if (ret)
++		goto out;
++
++	ep->enabled = false;
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_ep_disable);
++
++/**
++ * usb_ep_alloc_request - allocate a request object to use with this endpoint
++ * @ep:the endpoint to be used with with the request
++ * @gfp_flags:GFP_* flags to use
++ *
++ * Request objects must be allocated with this call, since they normally
++ * need controller-specific setup and may even need endpoint-specific
++ * resources such as allocation of DMA descriptors.
++ * Requests may be submitted with usb_ep_queue(), and receive a single
++ * completion callback.  Free requests with usb_ep_free_request(), when
++ * they are no longer needed.
++ *
++ * Returns the request, or null if one could not be allocated.
++ */
++struct usb_request *usb_ep_alloc_request(struct usb_ep *ep)
++{
++	struct usb_request *req = NULL;
++
++	req = ep->ops->alloc_request(ep);
++
++	return req;
++}
++EXPORT_SYMBOL_GPL(usb_ep_alloc_request);
++
++/**
++ * usb_ep_free_request - frees a request object
++ * @ep:the endpoint associated with the request
++ * @req:the request being freed
++ *
++ * Reverses the effect of usb_ep_alloc_request().
++ * Caller guarantees the request is not queued, and that it will
++ * no longer be requeued (or otherwise used).
++ */
++void usb_ep_free_request(struct usb_ep *ep,
++				       struct usb_request *req)
++{
++	ep->ops->free_request(ep, req);
++}
++EXPORT_SYMBOL_GPL(usb_ep_free_request);
++
++/**
++ * usb_ep_queue - queues (submits) an I/O request to an endpoint.
++ * @ep:the endpoint associated with the request
++ * @req:the request being submitted
++ * @gfp_flags: GFP_* flags to use in case the lower level driver couldn't
++ *	pre-allocate all necessary memory with the request.
++ *
++ * This tells the device controller to perform the specified request through
++ * that endpoint (reading or writing a buffer).  When the request completes,
++ * including being canceled by usb_ep_dequeue(), the request's completion
++ * routine is called to return the request to the driver.  Any endpoint
++ * (except control endpoints like ep0) may have more than one transfer
++ * request queued; they complete in FIFO order.  Once a gadget driver
++ * submits a request, that request may not be examined or modified until it
++ * is given back to that driver through the completion callback.
++ *
++ * Each request is turned into one or more packets.  The controller driver
++ * never merges adjacent requests into the same packet.  OUT transfers
++ * will sometimes use data that's already buffered in the hardware.
++ * Drivers can rely on the fact that the first byte of the request's buffer
++ * always corresponds to the first byte of some USB packet, for both
++ * IN and OUT transfers.
++ *
++ * Bulk endpoints can queue any amount of data; the transfer is packetized
++ * automatically.  The last packet will be short if the request doesn't fill it
++ * out completely.  Zero length packets (ZLPs) should be avoided in portable
++ * protocols since not all usb hardware can successfully handle zero length
++ * packets.  (ZLPs may be explicitly written, and may be implicitly written if
++ * the request 'zero' flag is set.)  Bulk endpoints may also be used
++ * for interrupt transfers; but the reverse is not true, and some endpoints
++ * won't support every interrupt transfer.  (Such as 768 byte packets.)
++ *
++ * Interrupt-only endpoints are less functional than bulk endpoints, for
++ * example by not supporting queueing or not handling buffers that are
++ * larger than the endpoint's maxpacket size.  They may also treat data
++ * toggle differently.
++ *
++ * Control endpoints ... after getting a setup() callback, the driver queues
++ * one response (even if it would be zero length).  That enables the
++ * status ack, after transferring data as specified in the response.  Setup
++ * functions may return negative error codes to generate protocol stalls.
++ * (Note that some USB device controllers disallow protocol stall responses
++ * in some cases.)  When control responses are deferred (the response is
++ * written after the setup callback returns), then usb_ep_set_halt() may be
++ * used on ep0 to trigger protocol stalls.  Depending on the controller,
++ * it may not be possible to trigger a status-stage protocol stall when the
++ * data stage is over, that is, from within the response's completion
++ * routine.
++ *
++ * For periodic endpoints, like interrupt or isochronous ones, the usb host
++ * arranges to poll once per interval, and the gadget driver usually will
++ * have queued some data to transfer at that time.
++ *
++ * Note that @req's ->complete() callback must never be called from
++ * within usb_ep_queue() as that can create deadlock situations.
++ *
++ * This routine may be called in interrupt context.
++ *
++ * Returns zero, or a negative error code.  Endpoints that are not enabled
++ * report errors; errors will also be
++ * reported when the usb peripheral is disconnected.
++ *
++ * If and only if @req is successfully queued (the return value is zero),
++ * @req->complete() will be called exactly once, when the Gadget core and
++ * UDC are finished with the request.  When the completion function is called,
++ * control of the request is returned to the device driver which submitted it.
++ * The completion handler may then immediately free or reuse @req.
++ */
++int usb_ep_queue(struct usb_ep *ep,
++			       struct usb_request *req)
++{
++	int ret = 0;
++
++	if (WARN_ON_ONCE(!ep->enabled && ep->address)) {
++		ret = -ESHUTDOWN;
++		goto out;
++	}
++
++	ret = ep->ops->queue(ep, req);
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_ep_queue);
++
++/**
++ * usb_ep_dequeue - dequeues (cancels, unlinks) an I/O request from an endpoint
++ * @ep:the endpoint associated with the request
++ * @req:the request being canceled
++ *
++ * If the request is still active on the endpoint, it is dequeued and
++ * eventually its completion routine is called (with status -ECONNRESET);
++ * else a negative error code is returned.  This routine is asynchronous,
++ * that is, it may return before the completion routine runs.
++ *
++ * Note that some hardware can't clear out write fifos (to unlink the request
++ * at the head of the queue) except as part of disconnecting from usb. Such
++ * restrictions prevent drivers from supporting configuration changes,
++ * even to configuration zero (a "chapter 9" requirement).
++ *
++ * This routine may be called in interrupt context.
++ */
++int usb_ep_dequeue(struct usb_ep *ep, struct usb_request *req)
++{
++	int ret;
++
++	ret = ep->ops->dequeue(ep, req);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_ep_dequeue);
++
++/**
++ * usb_ep_set_halt - sets the endpoint halt feature.
++ * @ep: the non-isochronous endpoint being stalled
++ *
++ * Use this to stall an endpoint, perhaps as an error report.
++ * Except for control endpoints,
++ * the endpoint stays halted (will not stream any data) until the host
++ * clears this feature; drivers may need to empty the endpoint's request
++ * queue first, to make sure no inappropriate transfers happen.
++ *
++ * Note that while an endpoint CLEAR_FEATURE will be invisible to the
++ * gadget driver, a SET_INTERFACE will not be.  To reset endpoints for the
++ * current altsetting, see usb_ep_clear_halt().  When switching altsettings,
++ * it's simplest to use usb_ep_enable() or usb_ep_disable() for the endpoints.
++ *
++ * This routine may be called in interrupt context.
++ *
++ * Returns zero, or a negative error code.  On success, this call sets
++ * underlying hardware state that blocks data transfers.
++ * Attempts to halt IN endpoints will fail (returning -EAGAIN) if any
++ * transfer requests are still queued, or if the controller hardware
++ * (usually a FIFO) still holds bytes that the host hasn't collected.
++ */
++int usb_ep_set_halt(struct usb_ep *ep)
++{
++	int ret;
++
++	ret = ep->ops->set_halt(ep, 1);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_ep_set_halt);
++
++/**
++ * usb_ep_clear_halt - clears endpoint halt, and resets toggle
++ * @ep:the bulk or interrupt endpoint being reset
++ *
++ * Use this when responding to the standard usb "set interface" request,
++ * for endpoints that aren't reconfigured, after clearing any other state
++ * in the endpoint's i/o queue.
++ *
++ * This routine may be called in interrupt context.
++ *
++ * Returns zero, or a negative error code.  On success, this call clears
++ * the underlying hardware state reflecting endpoint halt and data toggle.
++ * Note that some hardware can't support this request (like pxa2xx_udc),
++ * and accordingly can't correctly implement interface altsettings.
++ */
++int usb_ep_clear_halt(struct usb_ep *ep)
++{
++	int ret;
++
++	ret = ep->ops->set_halt(ep, 0);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_ep_clear_halt);
++
++/**
++ * usb_ep_set_wedge - sets the halt feature and ignores clear requests
++ * @ep: the endpoint being wedged
++ *
++ * Use this to stall an endpoint and ignore CLEAR_FEATURE(HALT_ENDPOINT)
++ * requests. If the gadget driver clears the halt status, it will
++ * automatically unwedge the endpoint.
++ *
++ * This routine may be called in interrupt context.
++ *
++ * Returns zero on success, else negative errno.
++ */
++int usb_ep_set_wedge(struct usb_ep *ep)
++{
++	int ret;
++
++	if (ep->ops->set_wedge)
++		ret = ep->ops->set_wedge(ep);
++	else
++		ret = ep->ops->set_halt(ep, 1);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_ep_set_wedge);
++
++/**
++ * usb_ep_fifo_status - returns number of bytes in fifo, or error
++ * @ep: the endpoint whose fifo status is being checked.
++ *
++ * FIFO endpoints may have "unclaimed data" in them in certain cases,
++ * such as after aborted transfers.  Hosts may not have collected all
++ * the IN data written by the gadget driver (and reported by a request
++ * completion).  The gadget driver may not have collected all the data
++ * written OUT to it by the host.  Drivers that need precise handling for
++ * fault reporting or recovery may need to use this call.
++ *
++ * This routine may be called in interrupt context.
++ *
++ * This returns the number of such bytes in the fifo, or a negative
++ * errno if the endpoint doesn't use a FIFO or doesn't support such
++ * precise handling.
++ */
++int usb_ep_fifo_status(struct usb_ep *ep)
++{
++	int ret;
++
++	if (ep->ops->fifo_status)
++		ret = ep->ops->fifo_status(ep);
++	else
++		ret = -EOPNOTSUPP;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_ep_fifo_status);
++
++/**
++ * usb_ep_fifo_flush - flushes contents of a fifo
++ * @ep: the endpoint whose fifo is being flushed.
++ *
++ * This call may be used to flush the "unclaimed data" that may exist in
++ * an endpoint fifo after abnormal transaction terminations.  The call
++ * must never be used except when endpoint is not being used for any
++ * protocol translation.
++ *
++ * This routine may be called in interrupt context.
++ */
++void usb_ep_fifo_flush(struct usb_ep *ep)
++{
++	if (ep->ops->fifo_flush)
++		ep->ops->fifo_flush(ep);
++}
++EXPORT_SYMBOL_GPL(usb_ep_fifo_flush);
++
++/* ------------------------------------------------------------------------- */
++
++/**
++ * usb_gadget_frame_number - returns the current frame number
++ * @gadget: controller that reports the frame number
++ *
++ * Returns the usb frame number, normally eleven bits from a SOF packet,
++ * or negative errno if this device doesn't support this capability.
++ */
++int usb_gadget_frame_number(struct usb_gadget *gadget)
++{
++	int ret;
++
++	ret = gadget->ops->get_frame(gadget);
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_frame_number);
++
++/**
++ * usb_gadget_wakeup - tries to wake up the host connected to this gadget
++ * @gadget: controller used to wake up the host
++ *
++ * Returns zero on success, else negative error code if the hardware
++ * doesn't support such attempts, or its support has not been enabled
++ * by the usb host.  Drivers must return device descriptors that report
++ * their ability to support this, or hosts won't enable it.
++ *
++ * This may also try to use SRP to wake the host and start enumeration,
++ * even if OTG isn't otherwise in use.  OTG devices may also start
++ * remote wakeup even when hosts don't explicitly enable it.
++ */
++int usb_gadget_wakeup(struct usb_gadget *gadget)
++{
++	int ret = 0;
++
++	if (!gadget->ops->wakeup) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	ret = gadget->ops->wakeup(gadget);
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_wakeup);
++
++/**
++ * usb_gadget_set_selfpowered - sets the device selfpowered feature.
++ * @gadget:the device being declared as self-powered
++ *
++ * this affects the device status reported by the hardware driver
++ * to reflect that it now has a local power supply.
++ *
++ * returns zero on success, else negative errno.
++ */
++int usb_gadget_set_selfpowered(struct usb_gadget *gadget)
++{
++	int ret = 0;
++
++	if (!gadget->ops->set_selfpowered) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	ret = gadget->ops->set_selfpowered(gadget, 1);
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_set_selfpowered);
++
++/**
++ * usb_gadget_clear_selfpowered - clear the device selfpowered feature.
++ * @gadget:the device being declared as bus-powered
++ *
++ * this affects the device status reported by the hardware driver.
++ * some hardware may not support bus-powered operation, in which
++ * case this feature's value can never change.
++ *
++ * returns zero on success, else negative errno.
++ */
++int usb_gadget_clear_selfpowered(struct usb_gadget *gadget)
++{
++	int ret = 0;
++
++	if (!gadget->ops->set_selfpowered) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	ret = gadget->ops->set_selfpowered(gadget, 0);
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_clear_selfpowered);
++
++/**
++ * usb_gadget_vbus_connect - Notify controller that VBUS is powered
++ * @gadget:The device which now has VBUS power.
++ * Context: can sleep
++ *
++ * This call is used by a driver for an external transceiver (or GPIO)
++ * that detects a VBUS power session starting.  Common responses include
++ * resuming the controller, activating the D+ (or D-) pullup to let the
++ * host detect that a USB device is attached, and starting to draw power
++ * (8mA or possibly more, especially after SET_CONFIGURATION).
++ *
++ * Returns zero on success, else negative errno.
++ */
++int usb_gadget_vbus_connect(struct usb_gadget *gadget)
++{
++	int ret = 0;
++
++	if (!gadget->ops->vbus_session) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	ret = gadget->ops->vbus_session(gadget, 1);
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_vbus_connect);
++
++/**
++ * usb_gadget_vbus_draw - constrain controller's VBUS power usage
++ * @gadget:The device whose VBUS usage is being described
++ * @mA:How much current to draw, in milliAmperes.  This should be twice
++ *	the value listed in the configuration descriptor bMaxPower field.
++ *
++ * This call is used by gadget drivers during SET_CONFIGURATION calls,
++ * reporting how much power the device may consume.  For example, this
++ * could affect how quickly batteries are recharged.
++ *
++ * Returns zero on success, else negative errno.
++ */
++int usb_gadget_vbus_draw(struct usb_gadget *gadget, unsigned mA)
++{
++	int ret = 0;
++
++	if (!gadget->ops->vbus_draw) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	ret = gadget->ops->vbus_draw(gadget, mA);
++	if (!ret)
++		gadget->mA = mA;
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_vbus_draw);
++
++/**
++ * usb_gadget_vbus_disconnect - notify controller about VBUS session end
++ * @gadget:the device whose VBUS supply is being described
++ * Context: can sleep
++ *
++ * This call is used by a driver for an external transceiver (or GPIO)
++ * that detects a VBUS power session ending.  Common responses include
++ * reversing everything done in usb_gadget_vbus_connect().
++ *
++ * Returns zero on success, else negative errno.
++ */
++int usb_gadget_vbus_disconnect(struct usb_gadget *gadget)
++{
++	int ret = 0;
++
++	if (!gadget->ops->vbus_session) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	ret = gadget->ops->vbus_session(gadget, 0);
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_vbus_disconnect);
++
++/**
++ * usb_gadget_connect - software-controlled connect to USB host
++ * @gadget:the peripheral being connected
++ *
++ * Enables the D+ (or potentially D-) pullup.  The host will start
++ * enumerating this gadget when the pullup is active and a VBUS session
++ * is active (the link is powered).
++ *
++ * Returns zero on success, else negative errno.
++ */
++int usb_gadget_connect(struct usb_gadget *gadget)
++{
++	int ret = 0;
++
++	if (!gadget->ops->pullup) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	if (gadget->deactivated) {
++		/*
++		 * If gadget is deactivated we only save new state.
++		 * Gadget will be connected automatically after activation.
++		 */
++		gadget->connected = true;
++		goto out;
++	}
++
++	ret = gadget->ops->pullup(gadget, 1);
++	if (!ret)
++		gadget->connected = 1;
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_connect);
++
++/**
++ * usb_gadget_disconnect - software-controlled disconnect from USB host
++ * @gadget:the peripheral being disconnected
++ *
++ * Disables the D+ (or potentially D-) pullup, which the host may see
++ * as a disconnect (when a VBUS session is active).  Not all systems
++ * support software pullup controls.
++ *
++ * Following a successful disconnect, invoke the ->disconnect() callback
++ * for the current gadget driver so that UDC drivers don't need to.
++ *
++ * Returns zero on success, else negative errno.
++ */
++int usb_gadget_disconnect(struct usb_gadget *gadget)
++{
++	int ret = 0;
++
++	if (!gadget->ops->pullup) {
++		ret = -EOPNOTSUPP;
++		goto out;
++	}
++
++	if (!gadget->connected)
++		goto out;
++
++	if (gadget->deactivated) {
++		/*
++		 * If gadget is deactivated we only save new state.
++		 * Gadget will stay disconnected after activation.
++		 */
++		gadget->connected = false;
++		goto out;
++	}
++
++	ret = gadget->ops->pullup(gadget, 0);
++	if (!ret)
++		gadget->connected = 0;
++
++	mutex_lock(&udc_lock);
++	if (gadget->udc->driver)
++		gadget->udc->driver->disconnect(gadget);
++	mutex_unlock(&udc_lock);
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_disconnect);
++
++/**
++ * usb_gadget_deactivate - deactivate function which is not ready to work
++ * @gadget: the peripheral being deactivated
++ *
++ * This routine may be used during the gadget driver bind() call to prevent
++ * the peripheral from ever being visible to the USB host, unless later
++ * usb_gadget_activate() is called.  For example, user mode components may
++ * need to be activated before the system can talk to hosts.
++ *
++ * Returns zero on success, else negative errno.
++ */
++int usb_gadget_deactivate(struct usb_gadget *gadget)
++{
++	int ret = 0;
++
++	if (gadget->deactivated)
++		goto out;
++
++	if (gadget->connected) {
++		ret = usb_gadget_disconnect(gadget);
++		if (ret)
++			goto out;
++
++		/*
++		 * If gadget was being connected before deactivation, we want
++		 * to reconnect it in usb_gadget_activate().
++		 */
++		gadget->connected = true;
++	}
++	gadget->deactivated = true;
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_deactivate);
++
++/**
++ * usb_gadget_activate - activate function which is not ready to work
++ * @gadget: the peripheral being activated
++ *
++ * This routine activates gadget which was previously deactivated with
++ * usb_gadget_deactivate() call. It calls usb_gadget_connect() if needed.
++ *
++ * Returns zero on success, else negative errno.
++ */
++int usb_gadget_activate(struct usb_gadget *gadget)
++{
++	int ret = 0;
++
++	if (!gadget->deactivated)
++		goto out;
++
++	gadget->deactivated = false;
++
++	/*
++	 * If gadget has been connected before deactivation, or became connected
++	 * while it was being deactivated, we call usb_gadget_connect().
++	 */
++	if (gadget->connected)
++		ret = usb_gadget_connect(gadget);
++
++out:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_activate);
++
++/* ------------------------------------------------------------------------- */
++
++#ifdef	CONFIG_HAS_DMA
++
++int usb_gadget_map_request_by_dev(struct device *dev,
++		struct usb_request *req, int is_in)
++{
++	if (req->length == 0)
++		return 0;
++
++	req->dma = dma_map_single(dev, req->buf, req->length,
++			is_in ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
++
++	if (dma_mapping_error(dev, req->dma)) {
++		dev_err(dev, "failed to map buffer\n");
++		return -EFAULT;
++	}
++
++	req->dma_mapped = 1;
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_map_request_by_dev);
++
++int usb_gadget_map_request(struct usb_gadget *gadget,
++		struct usb_request *req, int is_in)
++{
++	return usb_gadget_map_request_by_dev(gadget->dev.parent, req, is_in);
++}
++EXPORT_SYMBOL_GPL(usb_gadget_map_request);
++
++void usb_gadget_unmap_request_by_dev(struct device *dev,
++		struct usb_request *req, int is_in)
++{
++	if (req->length == 0)
++		return;
++
++	if (req->dma_mapped) {
++		dma_unmap_single(dev, req->dma, req->length,
++				is_in ? DMA_TO_DEVICE : DMA_FROM_DEVICE);
++		req->dma_mapped = 0;
++	}
++}
++EXPORT_SYMBOL_GPL(usb_gadget_unmap_request_by_dev);
++
++void usb_gadget_unmap_request(struct usb_gadget *gadget,
++		struct usb_request *req, int is_in)
++{
++	usb_gadget_unmap_request_by_dev(gadget->dev.parent, req, is_in);
++}
++EXPORT_SYMBOL_GPL(usb_gadget_unmap_request);
++
++#endif	/* CONFIG_HAS_DMA */
++
++/* ------------------------------------------------------------------------- */
++
+ /**
+- * udc.c - Core UDC Framework
++ * usb_gadget_giveback_request - give the request back to the gadget layer
++ * @ep: the endpoint to be used with with the request
++ * @req: the request being given back
+  *
+- * Copyright (C) 2010 Texas Instruments
+- * Author: Felipe Balbi <balbi@ti.com>
++ * This is called by device controller drivers in order to return the
++ * completed request back to the gadget layer.
+  */
+-#define VERBOSE_DEBUG
+-#include <common.h>
+-#include <driver.h>
+-#include <init.h>
+-#include <poller.h>
+-#include <linux/usb/ch9.h>
+-#include <linux/usb/gadget.h>
++void usb_gadget_giveback_request(struct usb_ep *ep,
++		struct usb_request *req)
++{
++	req->complete(ep, req);
++}
++EXPORT_SYMBOL_GPL(usb_gadget_giveback_request);
++
++/* ------------------------------------------------------------------------- */
  
  /**
-  * usb_speed_by_string() - Get speed from human readable name.
-@@ -1036,12 +53,4 @@ const char *usb_speed_string(enum usb_device_speed speed);
+- * struct usb_udc - describes one usb device controller
+- * @driver - the gadget driver pointer. For use by the class code
+- * @dev - the child device to the actual controller
+- * @gadget - the gadget. For use by the class code
+- * @list - for use by the udc class driver
+- *
+- * This represents the internal data structure which is used by the UDC-class
+- * to hold information about udc driver and gadget together.
++ * gadget_find_ep_by_name - returns ep whose name is the same as sting passed
++ *	in second parameter or NULL if searched endpoint not found
++ * @g: controller to check for quirk
++ * @name: name of searched endpoint
   */
- enum usb_device_speed usb_speed_by_string(const char *string);
+-struct usb_udc {
+-	struct usb_gadget_driver	*driver;
+-	struct usb_gadget		*gadget;
+-	struct device			dev;
+-	struct list_head		list;
+-	struct poller_struct		poller;
+-};
++struct usb_ep *gadget_find_ep_by_name(struct usb_gadget *g, const char *name)
++{
++	struct usb_ep *ep;
+ 
+-static LIST_HEAD(udc_list);
++	gadget_for_each_ep(ep, g) {
++		if (!strcmp(ep->name, name))
++			return ep;
++	}
++
++	return NULL;
++}
++EXPORT_SYMBOL_GPL(gadget_find_ep_by_name);
++
++/* ------------------------------------------------------------------------- */
++
++int usb_gadget_ep_match_desc(struct usb_gadget *gadget,
++		struct usb_ep *ep, struct usb_endpoint_descriptor *desc,
++		struct usb_ss_ep_comp_descriptor *ep_comp)
++{
++	u8		type;
++	u16		max;
++	int		num_req_streams = 0;
++
++	/* endpoint already claimed? */
++	if (ep->claimed)
++		return 0;
++
++	type = usb_endpoint_type(desc);
++	max = usb_endpoint_maxp(desc);
++
++	if (usb_endpoint_dir_in(desc) && !ep->caps.dir_in)
++		return 0;
++	if (usb_endpoint_dir_out(desc) && !ep->caps.dir_out)
++		return 0;
++
++	if (max > ep->maxpacket_limit)
++		return 0;
++
++	/* "high bandwidth" works only at high speed */
++	if (!gadget_is_dualspeed(gadget) && usb_endpoint_maxp_mult(desc) > 1)
++		return 0;
++
++	switch (type) {
++	case USB_ENDPOINT_XFER_CONTROL:
++		/* only support ep0 for portable CONTROL traffic */
++		return 0;
++	case USB_ENDPOINT_XFER_ISOC:
++		if (!ep->caps.type_iso)
++			return 0;
++		/* ISO:  limit 1023 bytes full speed, 1024 high/super speed */
++		if (!gadget_is_dualspeed(gadget) && max > 1023)
++			return 0;
++		break;
++	case USB_ENDPOINT_XFER_BULK:
++		if (!ep->caps.type_bulk)
++			return 0;
++		if (ep_comp && gadget_is_superspeed(gadget)) {
++			/* Get the number of required streams from the
++			 * EP companion descriptor and see if the EP
++			 * matches it
++			 */
++			num_req_streams = ep_comp->bmAttributes & 0x1f;
++			if (num_req_streams > ep->max_streams)
++				return 0;
++		}
++		break;
++	case USB_ENDPOINT_XFER_INT:
++		/* Bulk endpoints handle interrupt transfers,
++		 * except the toggle-quirky iso-synch kind
++		 */
++		if (!ep->caps.type_int && !ep->caps.type_bulk)
++			return 0;
++		/* INT:  limit 64 bytes full speed, 1024 high/super speed */
++		if (!gadget_is_dualspeed(gadget) && max > 64)
++			return 0;
++		break;
++	}
++
++	return 1;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_ep_match_desc);
++
++/**
++ * usb_gadget_check_config - checks if the UDC can support the binded
++ *	configuration
++ * @gadget: controller to check the USB configuration
++ *
++ * Ensure that a UDC is able to support the requested resources by a
++ * configuration, and that there are no resource limitations, such as
++ * internal memory allocated to all requested endpoints.
++ *
++ * Returns zero on success, else a negative errno.
++ */
++int usb_gadget_check_config(struct usb_gadget *gadget)
++{
++	if (gadget->ops->check_config)
++		return gadget->ops->check_config(gadget);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_check_config);
+ 
+ /* ------------------------------------------------------------------------- */
+ 
+@@ -42,6 +959,36 @@ void usb_gadget_set_state(struct usb_gadget *gadget,
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
+ 
++/* ------------------------------------------------------------------------- */
++
++static void usb_udc_connect_control(struct usb_udc *udc)
++{
++	if (udc->vbus)
++		usb_gadget_connect(udc->gadget);
++	else
++		usb_gadget_disconnect(udc->gadget);
++}
++
++/**
++ * usb_udc_vbus_handler - updates the udc core vbus status, and try to
++ * connect or disconnect gadget
++ * @gadget: The gadget which vbus change occurs
++ * @status: The vbus status
++ *
++ * The udc driver calls it when it wants to connect or disconnect gadget
++ * according to vbus status.
++ */
++void usb_udc_vbus_handler(struct usb_gadget *gadget, bool status)
++{
++	struct usb_udc *udc = gadget->udc;
++
++	if (udc) {
++		udc->vbus = status;
++		usb_udc_connect_control(udc);
++	}
++}
++EXPORT_SYMBOL_GPL(usb_udc_vbus_handler);
++
+ /**
+  * usb_gadget_udc_reset - notifies the udc core that bus reset occurs
+  * @gadget: The gadget which bus reset occurs
+@@ -54,15 +1001,14 @@ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
+ void usb_gadget_udc_reset(struct usb_gadget *gadget,
+ 		struct usb_gadget_driver *driver)
+ {
++	driver->reset(gadget);
+ 	usb_gadget_set_state(gadget, USB_STATE_DEFAULT);
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_udc_reset);
+-/* ------------------------------------------------------------------------- */
+ 
+ /**
+  * usb_gadget_udc_start - tells usb device controller to start up
+- * @gadget: The gadget we want to get started
+- * @driver: The driver we want to bind to @gadget
++ * @udc: The UDC to be started
+  *
+  * This call is issued by the UDC Class driver when it's about
+  * to register a gadget driver to the device controller, before
+@@ -73,16 +1019,25 @@ EXPORT_SYMBOL_GPL(usb_gadget_udc_reset);
+  *
+  * Returns zero on success, else negative errno.
+  */
+-static inline int usb_gadget_udc_start(struct usb_gadget *gadget,
+-		struct usb_gadget_driver *driver)
++static inline int usb_gadget_udc_start(struct usb_udc *udc)
+ {
+-	return gadget->ops->udc_start(gadget, driver);
++	int ret;
++
++	if (udc->started) {
++		dev_err(&udc->dev, "UDC had already started\n");
++		return -EBUSY;
++	}
++
++	ret = udc->gadget->ops->udc_start(udc->gadget, udc->driver);
++	if (!ret)
++		udc->started = true;
++
++	return ret;
+ }
+ 
+ /**
+  * usb_gadget_udc_stop - tells usb device controller we don't need it anymore
+- * @gadget: The device we want to stop activity
+- * @driver: The driver to unbind from @gadget
++ * @udc: The UDC to be stopped
+  *
+  * This call is issued by the UDC Class driver after calling
+  * gadget driver's unbind() method.
+@@ -91,86 +1046,249 @@ static inline int usb_gadget_udc_start(struct usb_gadget *gadget,
+  * far as powering off UDC completely and disable its data
+  * line pullups.
+  */
+-static inline void usb_gadget_udc_stop(struct usb_gadget *gadget,
+-		struct usb_gadget_driver *driver)
++static inline void usb_gadget_udc_stop(struct usb_udc *udc)
+ {
+-	gadget->ops->udc_stop(gadget, driver);
++	if (!udc->started) {
++		dev_err(&udc->dev, "UDC had already stopped\n");
++		return;
++	}
++
++	udc->gadget->ops->udc_stop(udc->gadget);
++	udc->started = false;
+ }
+ 
+-int usb_gadget_poll(void)
++/**
++ * usb_gadget_udc_set_speed - tells usb device controller speed supported by
++ *    current driver
++ * @udc: The device we want to set maximum speed
++ * @speed: The maximum speed to allowed to run
++ *
++ * This call is issued by the UDC Class driver before calling
++ * usb_gadget_udc_start() in order to make sure that we don't try to
++ * connect on speeds the gadget driver doesn't support.
++ */
++static inline void usb_gadget_udc_set_speed(struct usb_udc *udc,
++					    enum usb_device_speed speed)
+ {
+-	struct usb_udc		*udc;
++	struct usb_gadget *gadget = udc->gadget;
++	enum usb_device_speed s;
+ 
+-	list_for_each_entry(udc, &udc_list, list) {
+-		if (udc->gadget->ops->udc_poll)
+-			udc->gadget->ops->udc_poll(udc->gadget);
+-	}
++	if (speed == USB_SPEED_UNKNOWN)
++		s = gadget->max_speed;
++	else
++		s = min(speed, gadget->max_speed);
+ 
+-	return 0;
++	if (s == USB_SPEED_SUPER_PLUS && gadget->ops->udc_set_ssp_rate)
++		gadget->ops->udc_set_ssp_rate(gadget, gadget->max_ssp_rate);
++	else if (gadget->ops->udc_set_speed)
++		gadget->ops->udc_set_speed(gadget, s);
+ }
+ 
+ /**
+- * usb_add_gadget_udc_release - adds a new gadget to the udc class driver list
++ * usb_gadget_enable_async_callbacks - tell usb device controller to enable asynchronous callbacks
++ * @udc: The UDC which should enable async callbacks
++ *
++ * This routine is used when binding gadget drivers.  It undoes the effect
++ * of usb_gadget_disable_async_callbacks(); the UDC driver should enable IRQs
++ * (if necessary) and resume issuing callbacks.
++ *
++ * This routine will always be called in process context.
++ */
++static inline void usb_gadget_enable_async_callbacks(struct usb_udc *udc)
++{
++	struct usb_gadget *gadget = udc->gadget;
++
++	if (gadget->ops->udc_async_callbacks)
++		gadget->ops->udc_async_callbacks(gadget, true);
++}
++
++/**
++ * usb_gadget_disable_async_callbacks - tell usb device controller to disable asynchronous callbacks
++ * @udc: The UDC which should disable async callbacks
++ *
++ * This routine is used when unbinding gadget drivers.  It prevents a race:
++ * The UDC driver doesn't know when the gadget driver's ->unbind callback
++ * runs, so unless it is told to disable asynchronous callbacks, it might
++ * issue a callback (such as ->disconnect) after the unbind has completed.
++ *
++ * After this function runs, the UDC driver must suppress all ->suspend,
++ * ->resume, ->disconnect, ->reset, and ->setup callbacks to the gadget driver
++ * until async callbacks are again enabled.  A simple-minded but effective
++ * way to accomplish this is to tell the UDC hardware not to generate any
++ * more IRQs.
++ *
++ * Request completion callbacks must still be issued.  However, it's okay
++ * to defer them until the request is cancelled, since the pull-up will be
++ * turned off during the time period when async callbacks are disabled.
++ *
++ * This routine will always be called in process context.
++ */
++static inline void usb_gadget_disable_async_callbacks(struct usb_udc *udc)
++{
++	struct usb_gadget *gadget = udc->gadget;
++
++	if (gadget->ops->udc_async_callbacks)
++		gadget->ops->udc_async_callbacks(gadget, false);
++}
++
++/**
++ * usb_initialize_gadget - initialize a gadget and its embedded struct device
+  * @parent: the parent device to this udc. Usually the controller driver's
+  * device.
+- * @gadget: the gadget to be added to the list.
++ * @gadget: the gadget to be initialized.
+  * @release: a gadget release function.
++ */
++void usb_initialize_gadget(struct device *parent, struct usb_gadget *gadget,
++		void (*release)(struct device *dev))
++{
++	gadget->dev.parent = parent;
++	gadget->dev.bus = &gadget_bus_type;
++}
++EXPORT_SYMBOL_GPL(usb_initialize_gadget);
++
++/**
++ * usb_add_gadget - adds a new gadget to the udc class driver list
++ * @gadget: the gadget to be added to the list.
+  *
+  * Returns zero on success, negative errno otherwise.
++ * Does not do a final usb_put_gadget() if an error occurs.
+  */
+-int usb_add_gadget_udc_release(struct device *parent,
+-			       struct usb_gadget *gadget,
+-			       void (*release)(struct device *dev))
++int usb_add_gadget(struct usb_gadget *gadget)
+ {
+ 	struct usb_udc		*udc;
+ 	int			ret = -ENOMEM;
+ 
+ 	udc = kzalloc(sizeof(*udc), GFP_KERNEL);
+ 	if (!udc)
+-		goto err1;
++		goto error;
+ 
+-	dev_set_name(&gadget->dev, "usbgadget");
+-	gadget->dev.id = DEVICE_ID_SINGLE;
+-	gadget->dev.parent = parent;
++	udc->dev.parent = gadget->dev.parent;
++	ret = dev_set_name(&udc->dev, "usbgadget");
++	if (ret)
++		goto err_put_udc;
++
++	udc->gadget = gadget;
++	gadget->udc = udc;
++
++	udc->started = false;
++
++	mutex_lock(&udc_lock);
++	list_add_tail(&udc->list, &udc_list);
++	mutex_unlock(&udc_lock);
++
++	ret = register_device(&udc->dev);
++	if (ret)
++		goto err_unlist_udc;
++
++	usb_gadget_set_state(gadget, USB_STATE_NOTATTACHED);
++	udc->vbus = true;
++
++	ret = gadget_id_numbers++;
++	if (ret < 0)
++		goto err_del_udc;
++	gadget->id_number = ret;
++	dev_set_name(&gadget->dev, "gadget.%d", ret);
+ 
+ 	ret = register_device(&gadget->dev);
+ 	if (ret)
+-		goto err2;
++		goto err_free_id;
+ 
+ 	dev_add_param_uint32(&gadget->dev, "product", NULL, NULL,
+-			&gadget->product_id, "0x%04x", NULL);
++			     &gadget->product_id, "0x%04x", NULL);
+ 	dev_add_param_uint32(&gadget->dev, "vendor", NULL, NULL,
+-			&gadget->vendor_id, "0x%04x", NULL);
++			     &gadget->vendor_id, "0x%04x", NULL);
+ 	gadget->manufacturer = xstrdup("barebox");
+ 	dev_add_param_string(&gadget->dev, "manufacturer", NULL, NULL,
+-			&gadget->manufacturer, NULL);
++			     &gadget->manufacturer, NULL);
+ 	gadget->productname = xstrdup(barebox_get_model());
+ 	dev_add_param_string(&gadget->dev, "productname", NULL, NULL,
+-			&gadget->productname, NULL);
++			     &gadget->productname, NULL);
+ 	gadget->serialnumber = xstrdup("");
+ 	dev_add_param_string(&gadget->dev, "serialnumber", NULL, NULL,
+-			&gadget->serialnumber, NULL);
++			     &gadget->serialnumber, NULL);
+ 
+-	dev_set_name(&udc->dev, "udc");
+-	udc->dev.id = DEVICE_ID_DYNAMIC;
++	return 0;
+ 
+-	udc->gadget = gadget;
++ err_free_id:
++ err_del_udc:
++	unregister_device(&udc->dev);
+ 
+-	list_add_tail(&udc->list, &udc_list);
++ err_unlist_udc:
++	mutex_lock(&udc_lock);
++	list_del(&udc->list);
++	mutex_unlock(&udc_lock);
+ 
+-	register_device(&udc->dev);
++ err_put_udc:
++ error:
++	return ret;
++}
++EXPORT_SYMBOL_GPL(usb_add_gadget);
+ 
+-	usb_gadget_set_state(gadget, USB_STATE_NOTATTACHED);
++int usb_gadget_poll(void)
++{
++	struct usb_udc          *udc;
++
++	list_for_each_entry(udc, &udc_list, list) {
++		if (udc->gadget->ops->udc_poll)
++			udc->gadget->ops->udc_poll(udc->gadget);
++	}
+ 
+ 	return 0;
+-err2:
+-	kfree(udc);
++}
++
++/**
++ * usb_add_gadget_udc_release - adds a new gadget to the udc class driver list
++ * @parent: the parent device to this udc. Usually the controller driver's
++ * device.
++ * @gadget: the gadget to be added to the list.
++ * @release: a gadget release function.
++ *
++ * Returns zero on success, negative errno otherwise.
++ * Calls the gadget release function in the latter case.
++ */
++int usb_add_gadget_udc_release(struct device *parent, struct usb_gadget *gadget,
++		void (*release)(struct device *dev))
++{
++	int	ret;
+ 
+-err1:
++	usb_initialize_gadget(parent, gadget, release);
++	ret = usb_add_gadget(gadget);
++	if (ret)
++		usb_put_gadget(gadget);
+ 	return ret;
+ }
+ EXPORT_SYMBOL_GPL(usb_add_gadget_udc_release);
+ 
++/**
++ * usb_get_gadget_udc_name - get the name of the first UDC controller
++ * This functions returns the name of the first UDC controller in the system.
++ * Please note that this interface is usefull only for legacy drivers which
++ * assume that there is only one UDC controller in the system and they need to
++ * get its name before initialization. There is no guarantee that the UDC
++ * of the returned name will be still available, when gadget driver registers
++ * itself.
++ *
++ * Returns pointer to string with UDC controller name on success, NULL
++ * otherwise. Caller should kfree() returned string.
++ */
++char *usb_get_gadget_udc_name(void)
++{
++	struct usb_udc *udc;
++	char *name = NULL;
++
++	/* For now we take the first available UDC */
++	mutex_lock(&udc_lock);
++	list_for_each_entry(udc, &udc_list, list) {
++		if (!udc->driver) {
++			name = kstrdup(udc->gadget->name, GFP_KERNEL);
++			break;
++		}
++	}
++	mutex_unlock(&udc_lock);
++	return name;
++}
++EXPORT_SYMBOL_GPL(usb_get_gadget_udc_name);
++
+ /**
+  * usb_add_gadget_udc - adds a new gadget to the udc class driver list
+  * @parent: the parent device to this udc. Usually the controller
+@@ -185,57 +1303,65 @@ int usb_add_gadget_udc(struct device *parent, struct usb_gadget *gadget)
+ }
+ EXPORT_SYMBOL_GPL(usb_add_gadget_udc);
+ 
+-static void usb_gadget_remove_driver(struct usb_udc *udc)
++/**
++ * usb_del_gadget - deletes a gadget and unregisters its udc
++ * @gadget: the gadget to be deleted.
++ *
++ * This will unbind @gadget, if it is bound.
++ * It will not do a final usb_put_gadget().
++ */
++void usb_del_gadget(struct usb_gadget *gadget)
+ {
+-	dev_dbg(&udc->dev, "unregistering UDC driver [%s]\n",
+-			udc->gadget->name);
++	struct usb_udc *udc = gadget->udc;
+ 
+-	if (udc->gadget->ops->udc_poll)
+-		poller_unregister(&udc->poller);
++	if (!udc)
++		return;
+ 
+-	usb_gadget_disconnect(udc->gadget);
+-	udc->driver->disconnect(udc->gadget);
+-	udc->driver->unbind(udc->gadget);
+-	usb_gadget_udc_stop(udc->gadget, NULL);
++	dev_vdbg(gadget->dev.parent, "unregistering gadget\n");
+ 
+-	udc->driver = NULL;
+-	udc->dev.driver = NULL;
+-	udc->gadget->dev.driver = NULL;
++	mutex_lock(&udc_lock);
++	list_del(&udc->list);
++	mutex_unlock(&udc_lock);
++
++	unregister_device(&gadget->dev);
++	unregister_device(&udc->dev);
+ }
++EXPORT_SYMBOL_GPL(usb_del_gadget);
+ 
+ /**
+- * usb_del_gadget_udc - deletes @udc from udc_list
+- * @gadget: the gadget to be removed.
++ * usb_del_gadget_udc - unregisters a gadget
++ * @gadget: the gadget to be unregistered.
+  *
+- * This, will call usb_gadget_unregister_driver() if
+- * the @udc is still busy.
++ * Calls usb_del_gadget() and does a final usb_put_gadget().
+  */
+ void usb_del_gadget_udc(struct usb_gadget *gadget)
+ {
+-	struct usb_udc		*udc = NULL;
+-
+-	list_for_each_entry(udc, &udc_list, list)
+-		if (udc->gadget == gadget)
+-			goto found;
+-
+-	dev_err(gadget->dev.parent, "gadget not registered.\n");
++	usb_del_gadget(gadget);
++	usb_put_gadget(gadget);
++}
++EXPORT_SYMBOL_GPL(usb_del_gadget_udc);
+ 
+-	return;
++/* ------------------------------------------------------------------------- */
+ 
+-found:
+-	dev_vdbg(gadget->dev.parent, "unregistering gadget\n");
++static int gadget_match_driver(struct device *dev, struct driver *drv)
++{
++	struct usb_gadget *gadget = dev_to_usb_gadget(dev);
++	struct usb_udc *udc = gadget->udc;
++	struct usb_gadget_driver *driver = container_of(drv,
++			struct usb_gadget_driver, driver);
+ 
+-	list_del(&udc->list);
++	/* If the driver specifies a udc_name, it must match the UDC's name */
++	if (driver->udc_name &&
++			strcmp(driver->udc_name, dev_name(&udc->dev)) != 0)
++		return -1;
+ 
+-	if (udc->driver)
+-		usb_gadget_remove_driver(udc);
++	/* If the driver is already bound to a gadget, it doesn't match */
++	if (driver->is_bound)
++		return -1;
+ 
+-	unregister_device(&udc->dev);
+-	unregister_device(&gadget->dev);
++	/* Otherwise any gadget driver matches any UDC */
++	return 0;
+ }
+-EXPORT_SYMBOL_GPL(usb_del_gadget_udc);
+-
+-/* ------------------------------------------------------------------------- */
+ 
+ static void udc_poll_driver(struct poller_struct *poller)
+ {
+@@ -244,16 +1370,26 @@ static void udc_poll_driver(struct poller_struct *poller)
+ 	udc->gadget->ops->udc_poll(udc->gadget);
+ }
+ 
+-static int udc_bind_to_driver(struct usb_udc *udc, struct usb_gadget_driver *driver)
++static int gadget_bind_driver(struct device *dev)
+ {
+-	int ret;
+-
+-	dev_dbg(&udc->dev, "registering UDC driver [%s]\n",
+-			driver->function);
++	struct usb_gadget *gadget = dev_to_usb_gadget(dev);
++	struct usb_udc *udc = gadget->udc;
++	struct usb_gadget_driver *driver = container_of(dev->driver,
++			struct usb_gadget_driver, driver);
++	int ret = 0;
+ 
++	mutex_lock(&udc_lock);
++	if (driver->is_bound) {
++		mutex_unlock(&udc_lock);
++		return -ENXIO;		/* Driver binds to only one gadget */
++	}
++	driver->is_bound = true;
+ 	udc->driver = driver;
+-	udc->dev.driver = &driver->driver;
+-	udc->gadget->dev.driver = &driver->driver;
++	mutex_unlock(&udc_lock);
++
++	dev_dbg(&udc->dev, "binding gadget driver [%s]\n", driver->function);
++
++	usb_gadget_udc_set_speed(udc, driver->max_speed);
+ 
+ 	if (udc->gadget->ops->udc_poll) {
+ 		udc->poller.func = udc_poll_driver;
+@@ -264,92 +1400,114 @@ static int udc_bind_to_driver(struct usb_udc *udc, struct usb_gadget_driver *dri
+ 
+ 	ret = driver->bind(udc->gadget, driver);
+ 	if (ret)
+-		goto err1;
++		goto err_bind;
+ 
+-	ret = usb_gadget_udc_start(udc->gadget, driver);
+-	if (ret) {
+-		driver->unbind(udc->gadget);
+-		goto err1;
+-	}
+-	usb_gadget_connect(udc->gadget);
++	ret = usb_gadget_udc_start(udc);
++	if (ret)
++		goto err_start;
++	usb_gadget_enable_async_callbacks(udc);
++	usb_udc_connect_control(udc);
+ 
+ 	return 0;
+-err1:
+-	if (udc->gadget->ops->udc_poll)
+-		poller_unregister(&udc->poller);
+ 
++ err_start:
++	driver->unbind(udc->gadget);
++
++ err_bind:
+ 	if (ret != -EISNAM)
+ 		dev_err(&udc->dev, "failed to start %s: %d\n",
+-			udc->driver->function, ret);
++			driver->function, ret);
++
++	mutex_lock(&udc_lock);
+ 	udc->driver = NULL;
+-	udc->dev.driver = NULL;
+-	udc->gadget->dev.driver = NULL;
++	driver->is_bound = false;
++	mutex_unlock(&udc_lock);
++
+ 	return ret;
+ }
+ 
+-int udc_attach_driver(const char *name, struct usb_gadget_driver *driver)
++static void gadget_unbind_driver(struct device *dev)
+ {
+-	struct usb_udc *udc = NULL;
+-	int ret = -ENODEV;
++	struct usb_gadget *gadget = dev_to_usb_gadget(dev);
++	struct usb_udc *udc = gadget->udc;
++	struct usb_gadget_driver *driver = udc->driver;
+ 
+-	list_for_each_entry(udc, &udc_list, list) {
+-		ret = strcmp(name, dev_name(&udc->dev));
+-		if (!ret)
+-			break;
+-	}
+-	if (ret) {
+-		ret = -ENODEV;
+-		goto out;
+-	}
+-	if (udc->driver) {
+-		ret = -EBUSY;
+-		goto out;
+-	}
+-	ret = udc_bind_to_driver(udc, driver);
+-out:
+-	return ret;
++	dev_dbg(&udc->dev, "unbinding gadget driver [%s]\n", driver->function);
++
++	if (udc->gadget->ops->udc_poll)
++		poller_unregister(&udc->poller);
++
++	usb_gadget_disconnect(gadget);
++	usb_gadget_disable_async_callbacks(udc);
++	udc->driver->unbind(gadget);
++	usb_gadget_udc_stop(udc);
++
++	mutex_lock(&udc_lock);
++	driver->is_bound = false;
++	udc->driver = NULL;
++	mutex_unlock(&udc_lock);
+ }
+-EXPORT_SYMBOL_GPL(udc_attach_driver);
+ 
+-int usb_gadget_probe_driver(struct usb_gadget_driver *driver)
++/* ------------------------------------------------------------------------- */
++
++int usb_gadget_register_driver(struct usb_gadget_driver *driver)
+ {
+-	struct usb_udc		*udc = NULL;
+-	int			ret;
++	int ret;
+ 
+ 	if (!driver || !driver->bind || !driver->setup)
+ 		return -EINVAL;
+ 
+-	list_for_each_entry(udc, &udc_list, list) {
+-		/* For now we take the first one */
+-		if (!udc->driver)
+-			goto found;
++	driver->driver.bus = &gadget_bus_type;
++	ret = register_driver(&driver->driver);
++	if (ret) {
++		pr_warn("%s: driver registration failed: %d\n",
++				driver->function, ret);
++		return ret;
+ 	}
+ 
+-	pr_debug("couldn't find an available UDC\n");
+-
+-	return -ENODEV;
+-found:
+-	ret = udc_bind_to_driver(udc, driver);
++	mutex_lock(&udc_lock);
++	if (!driver->is_bound) {
++		if (driver->match_existing_only) {
++			pr_warn("%s: couldn't find an available UDC or it's busy\n",
++					driver->function);
++			ret = -EBUSY;
++		} else {
++			pr_info("%s: couldn't find an available UDC\n",
++					driver->function);
++			ret = 0;
++		}
++	}
++	mutex_unlock(&udc_lock);
+ 
++	if (ret)
++		unregister_driver(&driver->driver);
+ 	return ret;
+ }
+-EXPORT_SYMBOL_GPL(usb_gadget_probe_driver);
++EXPORT_SYMBOL_GPL(usb_gadget_register_driver);
+ 
+ int usb_gadget_unregister_driver(struct usb_gadget_driver *driver)
+ {
+-	struct usb_udc		*udc = NULL;
+-	int			ret = -ENODEV;
+-
+ 	if (!driver || !driver->unbind)
+ 		return -EINVAL;
+ 
+-	list_for_each_entry(udc, &udc_list, list)
+-		if (udc->driver == driver) {
+-			usb_gadget_remove_driver(udc);
+-			ret = 0;
+-			break;
+-		}
+-
+-	return ret;
++	unregister_driver(&driver->driver);
++	return 0;
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_unregister_driver);
++
++/* ------------------------------------------------------------------------- */
++
++static struct bus_type gadget_bus_type = {
++	.name = "gadget",
++	.probe = gadget_bind_driver,
++	.remove = gadget_unbind_driver,
++	.match = gadget_match_driver,
++};
++
++static int usb_udc_init(void)
++{
++	bus_register(&gadget_bus_type);
++
++	return 0;
++}
++coredevice_initcall(usb_udc_init);
+diff --git a/drivers/usb/gadget/udc/fsl_udc.c b/drivers/usb/gadget/udc/fsl_udc.c
+index 06768bf1d0..6a1d4304df 100644
+--- a/drivers/usb/gadget/udc/fsl_udc.c
++++ b/drivers/usb/gadget/udc/fsl_udc.c
+@@ -1646,7 +1646,7 @@ static int fsl_udc_start(struct usb_gadget *gadget, struct usb_gadget_driver *dr
+ }
+ 
+ /* Disconnect from gadget driver */
+-static int fsl_udc_stop(struct usb_gadget *gadget, struct usb_gadget_driver *driver)
++static int fsl_udc_stop(struct usb_gadget *gadget)
+ {
+ 	struct fsl_udc *udc = to_fsl_udc(gadget);
+ 	struct fsl_ep *loop_ep;
+diff --git a/drivers/usb/gadget/udc/pxa27x_udc.c b/drivers/usb/gadget/udc/pxa27x_udc.c
+index ae02a1bede..67b7e28de9 100644
+--- a/drivers/usb/gadget/udc/pxa27x_udc.c
++++ b/drivers/usb/gadget/udc/pxa27x_udc.c
+@@ -869,7 +869,7 @@ static int pxa_udc_vbus_session(struct usb_gadget *_gadget, int is_active)
+ }
+ 
+ static int pxa_udc_start(struct usb_gadget *gadget, struct usb_gadget_driver *driver);
+-static int pxa_udc_stop(struct usb_gadget *gadget, struct usb_gadget_driver *driver);
++static int pxa_udc_stop(struct usb_gadget *gadget);
+ static void pxa_udc_gadget_poll(struct usb_gadget *gadget);
+ 
+ static const struct usb_gadget_ops pxa_udc_ops = {
+@@ -987,36 +987,26 @@ static int pxa_udc_start(struct usb_gadget *gadget, struct usb_gadget_driver *dr
+ 	return 0;
+ }
+ 
+-static void stop_activity(struct pxa_udc *udc, struct usb_gadget_driver *driver)
++static void stop_activity(struct pxa_udc *udc)
+ {
+ 	int i;
+ 
+-	/* don't disconnect drivers more than once */
+-	if (udc->gadget.speed == USB_SPEED_UNKNOWN)
+-		driver = NULL;
+ 	udc->gadget.speed = USB_SPEED_UNKNOWN;
+ 
+ 	for (i = 0; i < NR_USB_ENDPOINTS; i++)
+ 		pxa_ep_disable(&udc->udc_usb_ep[i].usb_ep);
+-
+-	if (driver)
+-		driver->disconnect(&udc->gadget);
+ }
+ 
+-static int pxa_udc_stop(struct usb_gadget *gadget, struct usb_gadget_driver *driver)
++static int pxa_udc_stop(struct usb_gadget *gadget)
+ {
+ 	struct pxa_udc *udc = the_controller;
+ 
+ 	if (!udc)
+ 		return -ENODEV;
+-	if (!driver || driver != udc->driver || !driver->unbind)
+-		return -EINVAL;
+ 
+-	stop_activity(udc, driver);
++	stop_activity(udc);
+ 	udc_disable(udc);
+ 
+-	driver->disconnect(&udc->gadget);
+-	driver->unbind(&udc->gadget);
+ 	udc->driver = NULL;
+ 
+ 	/*
+@@ -1348,7 +1338,7 @@ static void irq_udc_reset(struct pxa_udc *udc)
+ 
+ 	if ((udccr & UDCCR_UDA) == 0) {
+ 		dev_dbg(udc->dev, "USB reset start\n");
+-		stop_activity(udc, udc->driver);
++		stop_activity(udc);
+ 	}
+ 	udc->gadget.speed = USB_SPEED_FULL;
+ 
+@@ -1369,7 +1359,7 @@ static void pxa_udc_gadget_poll(struct usb_gadget *gadget)
+ 	if (should_enable_udc(udc))
+ 		udc_enable(udc);
+ 	if (should_disable_udc(udc)) {
+-		stop_activity(udc, udc->driver);
++		stop_activity(udc);
+ 		udc_disable(udc);
+ 	}
+ 
+diff --git a/drivers/usb/gadget/usbstring.c b/drivers/usb/gadget/usbstring.c
+index 4a0f7c09b9..58eb28ad1a 100644
+--- a/drivers/usb/gadget/usbstring.c
++++ b/drivers/usb/gadget/usbstring.c
+@@ -97,7 +97,7 @@ fail:
+  * characters (which are also widely used in C strings).
+  */
+ int
+-usb_gadget_get_string (struct usb_gadget_strings *table, int id, u8 *buf)
++usb_gadget_get_string (const struct usb_gadget_strings *table, int id, u8 *buf)
+ {
+ 	struct usb_string	*s;
+ 	int			len;
+diff --git a/drivers/usb/musb/musb_gadget.c b/drivers/usb/musb/musb_gadget.c
+index c28049c062..87d6602f74 100644
+--- a/drivers/usb/musb/musb_gadget.c
++++ b/drivers/usb/musb/musb_gadget.c
+@@ -991,8 +991,7 @@ static void musb_gadget_poll(struct usb_gadget *gadget)
+ 
+ static int musb_gadget_start(struct usb_gadget *g,
+ 		struct usb_gadget_driver *driver);
+-static int musb_gadget_stop(struct usb_gadget *g,
+-		struct usb_gadget_driver *driver);
++static int musb_gadget_stop(struct usb_gadget *g);
+ 
+ static const struct usb_gadget_ops musb_gadget_operations = {
+ 	.get_frame		= musb_gadget_get_frame,
+@@ -1167,16 +1166,9 @@ err:
+ 	return retval;
+ }
+ 
+-static void stop_activity(struct musb *musb, struct usb_gadget_driver *driver)
++static void stop_activity(struct musb *musb)
+ {
+-	int			i;
+-	struct musb_hw_ep	*hw_ep;
+-
+-	/* don't disconnect if it's not connected */
+-	if (musb->g.speed == USB_SPEED_UNKNOWN)
+-		driver = NULL;
+-	else
+-		musb->g.speed = USB_SPEED_UNKNOWN;
++	musb->g.speed = USB_SPEED_UNKNOWN;
+ 
+ 	/* deactivate the hardware */
+ 	if (musb->softconnect) {
+@@ -1184,25 +1176,6 @@ static void stop_activity(struct musb *musb, struct usb_gadget_driver *driver)
+ 		musb_pullup(musb, 0);
+ 	}
+ 	musb_stop(musb);
+-
+-	/* killing any outstanding requests will quiesce the driver;
+-	 * then report disconnect
+-	 */
+-	if (driver) {
+-		for (i = 0, hw_ep = musb->endpoints;
+-				i < musb->nr_endpoints;
+-				i++, hw_ep++) {
+-			musb_ep_select(musb->mregs, i);
+-			if (hw_ep->is_shared_fifo /* || !epnum */) {
+-				nuke(&hw_ep->ep_in, -ESHUTDOWN);
+-			} else {
+-				if (hw_ep->max_packet_sz_tx)
+-					nuke(&hw_ep->ep_in, -ESHUTDOWN);
+-				if (hw_ep->max_packet_sz_rx)
+-					nuke(&hw_ep->ep_out, -ESHUTDOWN);
+-			}
+-		}
+-	}
+ }
+ 
+ /*
+@@ -1211,8 +1184,7 @@ static void stop_activity(struct musb *musb, struct usb_gadget_driver *driver)
+  *
+  * @param driver the gadget driver to unregister
+  */
+-static int musb_gadget_stop(struct usb_gadget *g,
+-		struct usb_gadget_driver *driver)
++static int musb_gadget_stop(struct usb_gadget *g)
+ {
+ 	struct musb	*musb = gadget_to_musb(g);
+ 	unsigned long	flags;
+@@ -1226,10 +1198,7 @@ static int musb_gadget_stop(struct usb_gadget *g,
+ 
+ 	(void) musb_gadget_vbus_draw(&musb->g, 0);
+ 
+-	stop_activity(musb, driver);
+-
+-	dev_dbg(musb->controller, "unregistering driver %s\n",
+-				  driver ? driver->function : "(removed)");
++	stop_activity(musb);
+ 
+ 	musb->is_active = 0;
+ 	musb->gadget_driver = NULL;
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index 746311fddd..a9b45bb824 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -1,15 +1,15 @@
++// SPDX-License-Identifier: GPL-2.0
+ /*
+  * <linux/usb/gadget.h>
+  *
+  * We call the USB code inside a Linux-based peripheral device a "gadget"
+  * driver, except for the hardware-specific bus glue.  One USB host can
+- * master many USB gadgets, but the gadgets are only slaved to one host.
++ * talk to many USB gadgets, but the gadgets are only able to communicate
++ * to one host.
+  *
+  *
+  * (C) Copyright 2002-2004 by David Brownell
+  * All Rights Reserved.
+- *
+- * This software is licensed under the GNU GPL version 2.
+  */
+ 
+ #ifndef __LINUX_USB_GADGET_H
+@@ -20,6 +20,10 @@
+ #include <driver.h>
+ #include <linux/list.h>
+ #include <linux/usb/ch9.h>
++#include <linux/mutex.h>
++#include <work.h>
++
++#define UDC_TRACE_STR_MAX	512
+ 
+ struct usb_ep;
+ 
+@@ -35,6 +39,8 @@ struct usb_ep;
+  * @num_mapped_sgs: number of SG entries mapped to DMA (internal)
+  * @length: Length of that data
+  * @stream_id: The stream id, when USB3.0 bulk streams are being used
++ * @is_last: Indicates if this is the last request of a stream_id before
++ *	switching to a different stream (required for DWC3 controllers).
+  * @no_interrupt: If true, hints that no completion irq is needed.
+  *	Helpful sometimes with deep request queues that are handled
+  *	directly by DMA controllers.
+@@ -42,6 +48,7 @@ struct usb_ep;
+  *     by adding a zero length packet as needed;
+  * @short_not_ok: When reading data, makes short packets be
+  *     treated as errors (queue stops advancing till cleanup).
++ * @dma_mapped: Indicates if request has been mapped to DMA (internal)
+  * @complete: Function called when request completes, so this request and
+  *	its buffer may be re-used.  The function will always be called with
+  *	interrupts disabled, and it must not sleep.
+@@ -53,6 +60,8 @@ struct usb_ep;
+  *	invalidated by the error may first be dequeued.
+  * @context: For use by the completion callback
+  * @list: For use by the gadget driver.
++ * @frame_number: Reports the interval number in (micro)frame in which the
++ *	isochronous transfer was transmitted or received.
+  * @status: Reports completion code, zero or a negative errno.
+  *	Normally, faults block the transfer queue from advancing until
+  *	the completion callback returns.
+@@ -94,15 +103,19 @@ struct usb_request {
+ 	unsigned		num_mapped_sgs;
+ 
+ 	unsigned		stream_id:16;
++	unsigned		is_last:1;
+ 	unsigned		no_interrupt:1;
+ 	unsigned		zero:1;
+ 	unsigned		short_not_ok:1;
++	unsigned		dma_mapped:1;
+ 
+ 	void			(*complete)(struct usb_ep *ep,
+ 					struct usb_request *req);
+ 	void			*context;
+ 	struct list_head	list;
+ 
++	unsigned		frame_number;		/* ISO ONLY */
++
+ 	int			status;
+ 	unsigned		actual;
+ };
+@@ -120,6 +133,7 @@ struct usb_ep_ops {
+ 	int (*enable) (struct usb_ep *ep,
+ 		const struct usb_endpoint_descriptor *desc);
+ 	int (*disable) (struct usb_ep *ep);
++	void (*dispose) (struct usb_ep *ep);
+ 
+ 	struct usb_request *(*alloc_request) (struct usb_ep *ep);
+ 	void (*free_request) (struct usb_ep *ep, struct usb_request *req);
+@@ -134,14 +148,55 @@ struct usb_ep_ops {
+ 	void (*fifo_flush) (struct usb_ep *ep);
+ };
+ 
++/**
++ * struct usb_ep_caps - endpoint capabilities description
++ * @type_control:Endpoint supports control type (reserved for ep0).
++ * @type_iso:Endpoint supports isochronous transfers.
++ * @type_bulk:Endpoint supports bulk transfers.
++ * @type_int:Endpoint supports interrupt transfers.
++ * @dir_in:Endpoint supports IN direction.
++ * @dir_out:Endpoint supports OUT direction.
++ */
++struct usb_ep_caps {
++	unsigned type_control:1;
++	unsigned type_iso:1;
++	unsigned type_bulk:1;
++	unsigned type_int:1;
++	unsigned dir_in:1;
++	unsigned dir_out:1;
++};
++
++#define USB_EP_CAPS_TYPE_CONTROL     0x01
++#define USB_EP_CAPS_TYPE_ISO         0x02
++#define USB_EP_CAPS_TYPE_BULK        0x04
++#define USB_EP_CAPS_TYPE_INT         0x08
++#define USB_EP_CAPS_TYPE_ALL \
++	(USB_EP_CAPS_TYPE_ISO | USB_EP_CAPS_TYPE_BULK | USB_EP_CAPS_TYPE_INT)
++#define USB_EP_CAPS_DIR_IN           0x01
++#define USB_EP_CAPS_DIR_OUT          0x02
++#define USB_EP_CAPS_DIR_ALL  (USB_EP_CAPS_DIR_IN | USB_EP_CAPS_DIR_OUT)
++
++#define USB_EP_CAPS(_type, _dir) \
++	{ \
++		.type_control = !!(_type & USB_EP_CAPS_TYPE_CONTROL), \
++		.type_iso = !!(_type & USB_EP_CAPS_TYPE_ISO), \
++		.type_bulk = !!(_type & USB_EP_CAPS_TYPE_BULK), \
++		.type_int = !!(_type & USB_EP_CAPS_TYPE_INT), \
++		.dir_in = !!(_dir & USB_EP_CAPS_DIR_IN), \
++		.dir_out = !!(_dir & USB_EP_CAPS_DIR_OUT), \
++	}
++
+ /**
+  * struct usb_ep - device side representation of USB endpoint
+  * @name:identifier for the endpoint, such as "ep-a" or "ep9in-bulk"
+  * @ops: Function pointers used to access hardware-specific operations.
+  * @ep_list:the gadget's ep_list holds all of its endpoints
++ * @caps:The structure describing types and directions supported by endpoint.
++ * @enabled: The current endpoint enabled/disabled state.
++ * @claimed: True if this endpoint is claimed by a function.
+  * @maxpacket:The maximum packet size used on this endpoint.  The initial
+  *	value can sometimes be reduced (hardware allowing), according to
+- *      the endpoint descriptor used to configure the endpoint.
++ *	the endpoint descriptor used to configure the endpoint.
+  * @maxpacket_limit:The maximum packet size value which can be handled by this
+  *	endpoint. It's set once by UDC driver when endpoint is initialized, and
+  *	should not be changed. Should not be confused with maxpacket.
+@@ -161,12 +216,16 @@ struct usb_ep_ops {
+  * gadget->ep_list.  the control endpoint (gadget->ep0) is not in that list,
+  * and is accessed only in response to a driver setup() callback.
+  */
++
+ struct usb_ep {
+ 	void			*driver_data;
+ 
+ 	const char		*name;
+ 	const struct usb_ep_ops	*ops;
+ 	struct list_head	ep_list;
++	struct usb_ep_caps	caps;
++	bool			claimed;
++	bool			enabled;
+ 	unsigned		maxpacket:16;
+ 	unsigned		maxpacket_limit:16;
+ 	unsigned		max_streams:16;
+@@ -179,280 +238,49 @@ struct usb_ep {
+ 
+ /*-------------------------------------------------------------------------*/
  
 -/**
-- * usb_state_string - Returns human readable name for the state.
-- * @state: The state to return a human-readable name for. If it's not
-- *      any of the states devices in usb_device_state_string enum,
-- *      the string UNKNOWN will be returned.
+- * usb_ep_set_maxpacket_limit - set maximum packet size limit for endpoint
+- * @ep:the endpoint being configured
+- * @maxpacket_limit:value of maximum packet size limit
+- *
+- * This function shoud be used only in UDC drivers to initialize endpoint
+- * (usually in probe function).
 - */
--const char *usb_state_string(enum usb_device_state state);
++#if IS_ENABLED(CONFIG_USB_GADGET)
++void usb_ep_set_maxpacket_limit(struct usb_ep *ep, unsigned maxpacket_limit);
++int usb_ep_enable(struct usb_ep *ep);
++int usb_ep_disable(struct usb_ep *ep);
++struct usb_request *usb_ep_alloc_request(struct usb_ep *ep);
++void usb_ep_free_request(struct usb_ep *ep, struct usb_request *req);
++int usb_ep_queue(struct usb_ep *ep, struct usb_request *req);
++int usb_ep_dequeue(struct usb_ep *ep, struct usb_request *req);
++int usb_ep_set_halt(struct usb_ep *ep);
++int usb_ep_clear_halt(struct usb_ep *ep);
++int usb_ep_set_wedge(struct usb_ep *ep);
++int usb_ep_fifo_status(struct usb_ep *ep);
++void usb_ep_fifo_flush(struct usb_ep *ep);
++#else
+ static inline void usb_ep_set_maxpacket_limit(struct usb_ep *ep,
+-					      unsigned maxpacket_limit)
+-{
+-	ep->maxpacket_limit = maxpacket_limit;
+-	ep->maxpacket = maxpacket_limit;
+-}
 -
--#endif /* _UAPI__LINUX_USB_CH9_H */
-+#endif /* __LINUX_USB_CH9_H */
-diff --git a/include/uapi/linux/usb/ch9.h b/include/uapi/linux/usb/ch9.h
-new file mode 100644
-index 0000000000..b17e3a21b1
---- /dev/null
-+++ b/include/uapi/linux/usb/ch9.h
-@@ -0,0 +1,1265 @@
-+/* SPDX-License-Identifier: GPL-2.0 WITH Linux-syscall-note */
-+/*
-+ * This file holds USB constants and structures that are needed for
-+ * USB device APIs.  These are used by the USB device model, which is
-+ * defined in chapter 9 of the USB 2.0 specification and in the
-+ * Wireless USB 1.0 (spread around).  Linux has several APIs in C that
-+ * need these:
-+ *
-+ * - the master/host side Linux-USB kernel driver API;
-+ * - the "usbfs" user space API; and
-+ * - the Linux "gadget" slave/device/peripheral side driver API.
-+ *
-+ * USB 2.0 adds an additional "On The Go" (OTG) mode, which lets systems
-+ * act either as a USB master/host or as a USB slave/device.  That means
-+ * the master and slave side APIs benefit from working well together.
-+ *
-+ * There's also "Wireless USB", using low power short range radios for
-+ * peripheral interconnection but otherwise building on the USB framework.
-+ *
-+ * Note all descriptors are declared '__attribute__((packed))' so that:
-+ *
-+ * [a] they never get padded, either internally (USB spec writers
-+ *     probably handled that) or externally;
-+ *
-+ * [b] so that accessing bigger-than-a-bytes fields will never
-+ *     generate bus errors on any platform, even when the location of
-+ *     its descriptor inside a bundle isn't "naturally aligned", and
-+ *
-+ * [c] for consistency, removing all doubt even when it appears to
-+ *     someone that the two other points are non-issues for that
-+ *     particular descriptor type.
-+ */
+-/**
+- * usb_ep_enable - configure endpoint, making it usable
+- * @ep:the endpoint being configured.  may not be the endpoint named "ep0".
+- *	drivers discover endpoints through the ep_list of a usb_gadget.
+- *
+- * When configurations are set, or when interface settings change, the driver
+- * will enable or disable the relevant endpoints.  while it is enabled, an
+- * endpoint may be used for i/o until the driver receives a disconnect() from
+- * the host or until the endpoint is disabled.
+- *
+- * the ep0 implementation (which calls this routine) must ensure that the
+- * hardware capabilities of each endpoint match the descriptor provided
+- * for it.  for example, an endpoint named "ep2in-bulk" would be usable
+- * for interrupt transfers as well as bulk, but it likely couldn't be used
+- * for iso transfers or for endpoint 14.  some endpoints are fully
+- * configurable, with more generic names like "ep-a".  (remember that for
+- * USB, "in" means "towards the USB master".)
+- *
+- * returns zero, or a negative error code.
+- */
++		unsigned maxpacket_limit)
++{ }
+ static inline int usb_ep_enable(struct usb_ep *ep)
+-{
+-	return ep->ops->enable(ep, ep->desc);
+-}
+-
+-/**
+- * usb_ep_disable - endpoint is no longer usable
+- * @ep:the endpoint being unconfigured.  may not be the endpoint named "ep0".
+- *
+- * no other task may be using this endpoint when this is called.
+- * any pending and uncompleted requests will complete with status
+- * indicating disconnect (-ESHUTDOWN) before this call returns.
+- * gadget drivers must call usb_ep_enable() again before queueing
+- * requests to the endpoint.
+- *
+- * returns zero, or a negative error code.
+- */
++{ return 0; }
+ static inline int usb_ep_disable(struct usb_ep *ep)
+-{
+-	return ep->ops->disable(ep);
+-}
+-
+-/**
+- * usb_ep_alloc_request - allocate a request object to use with this endpoint
+- * @ep:the endpoint to be used with with the request
+- * @gfp_flags:GFP_* flags to use
+- *
+- * Request objects must be allocated with this call, since they normally
+- * need controller-specific setup and may even need endpoint-specific
+- * resources such as allocation of DMA descriptors.
+- * Requests may be submitted with usb_ep_queue(), and receive a single
+- * completion callback.  Free requests with usb_ep_free_request(), when
+- * they are no longer needed.
+- *
+- * Returns the request, or null if one could not be allocated.
+- */
+-static inline struct usb_request *usb_ep_alloc_request(struct usb_ep *ep)
+-{
+-	return ep->ops->alloc_request(ep);
+-}
+-
+-/**
+- * usb_ep_free_request - frees a request object
+- * @ep:the endpoint associated with the request
+- * @req:the request being freed
+- *
+- * Reverses the effect of usb_ep_alloc_request().
+- * Caller guarantees the request is not queued, and that it will
+- * no longer be requeued (or otherwise used).
+- */
++{ return 0; }
++static inline struct usb_request *usb_ep_alloc_request(struct usb_ep *ep,
++		gfp_t gfp_flags)
++{ return NULL; }
+ static inline void usb_ep_free_request(struct usb_ep *ep,
+-				       struct usb_request *req)
+-{
+-	ep->ops->free_request(ep, req);
+-}
+-
+-/**
+- * usb_ep_queue - queues (submits) an I/O request to an endpoint.
+- * @ep:the endpoint associated with the request
+- * @req:the request being submitted
+- * @gfp_flags: GFP_* flags to use in case the lower level driver couldn't
+- *	pre-allocate all necessary memory with the request.
+- *
+- * This tells the device controller to perform the specified request through
+- * that endpoint (reading or writing a buffer).  When the request completes,
+- * including being canceled by usb_ep_dequeue(), the request's completion
+- * routine is called to return the request to the driver.  Any endpoint
+- * (except control endpoints like ep0) may have more than one transfer
+- * request queued; they complete in FIFO order.  Once a gadget driver
+- * submits a request, that request may not be examined or modified until it
+- * is given back to that driver through the completion callback.
+- *
+- * Each request is turned into one or more packets.  The controller driver
+- * never merges adjacent requests into the same packet.  OUT transfers
+- * will sometimes use data that's already buffered in the hardware.
+- * Drivers can rely on the fact that the first byte of the request's buffer
+- * always corresponds to the first byte of some USB packet, for both
+- * IN and OUT transfers.
+- *
+- * Bulk endpoints can queue any amount of data; the transfer is packetized
+- * automatically.  The last packet will be short if the request doesn't fill it
+- * out completely.  Zero length packets (ZLPs) should be avoided in portable
+- * protocols since not all usb hardware can successfully handle zero length
+- * packets.  (ZLPs may be explicitly written, and may be implicitly written if
+- * the request 'zero' flag is set.)  Bulk endpoints may also be used
+- * for interrupt transfers; but the reverse is not true, and some endpoints
+- * won't support every interrupt transfer.  (Such as 768 byte packets.)
+- *
+- * Interrupt-only endpoints are less functional than bulk endpoints, for
+- * example by not supporting queueing or not handling buffers that are
+- * larger than the endpoint's maxpacket size.  They may also treat data
+- * toggle differently.
+- *
+- * Control endpoints ... after getting a setup() callback, the driver queues
+- * one response (even if it would be zero length).  That enables the
+- * status ack, after transferring data as specified in the response.  Setup
+- * functions may return negative error codes to generate protocol stalls.
+- * (Note that some USB device controllers disallow protocol stall responses
+- * in some cases.)  When control responses are deferred (the response is
+- * written after the setup callback returns), then usb_ep_set_halt() may be
+- * used on ep0 to trigger protocol stalls.  Depending on the controller,
+- * it may not be possible to trigger a status-stage protocol stall when the
+- * data stage is over, that is, from within the response's completion
+- * routine.
+- *
+- * For periodic endpoints, like interrupt or isochronous ones, the usb host
+- * arranges to poll once per interval, and the gadget driver usually will
+- * have queued some data to transfer at that time.
+- *
+- * Returns zero, or a negative error code.  Endpoints that are not enabled
+- * report errors; errors will also be
+- * reported when the usb peripheral is disconnected.
+- */
+-static inline int usb_ep_queue(struct usb_ep *ep,
+-			       struct usb_request *req)
+-{
+-	return ep->ops->queue(ep, req);
+-}
+-
+-/**
+- * usb_ep_dequeue - dequeues (cancels, unlinks) an I/O request from an endpoint
+- * @ep:the endpoint associated with the request
+- * @req:the request being canceled
+- *
+- * if the request is still active on the endpoint, it is dequeued and its
+- * completion routine is called (with status -ECONNRESET); else a negative
+- * error code is returned.
+- *
+- * note that some hardware can't clear out write fifos (to unlink the request
+- * at the head of the queue) except as part of disconnecting from usb.  such
+- * restrictions prevent drivers from supporting configuration changes,
+- * even to configuration zero (a "chapter 9" requirement).
+- */
++		struct usb_request *req)
++{ }
++static inline int usb_ep_queue(struct usb_ep *ep, struct usb_request *req,
++		gfp_t gfp_flags)
++{ return 0; }
+ static inline int usb_ep_dequeue(struct usb_ep *ep, struct usb_request *req)
+-{
+-	return ep->ops->dequeue(ep, req);
+-}
+-
+-/**
+- * usb_ep_set_halt - sets the endpoint halt feature.
+- * @ep: the non-isochronous endpoint being stalled
+- *
+- * Use this to stall an endpoint, perhaps as an error report.
+- * Except for control endpoints,
+- * the endpoint stays halted (will not stream any data) until the host
+- * clears this feature; drivers may need to empty the endpoint's request
+- * queue first, to make sure no inappropriate transfers happen.
+- *
+- * Note that while an endpoint CLEAR_FEATURE will be invisible to the
+- * gadget driver, a SET_INTERFACE will not be.  To reset endpoints for the
+- * current altsetting, see usb_ep_clear_halt().  When switching altsettings,
+- * it's simplest to use usb_ep_enable() or usb_ep_disable() for the endpoints.
+- *
+- * Returns zero, or a negative error code.  On success, this call sets
+- * underlying hardware state that blocks data transfers.
+- * Attempts to halt IN endpoints will fail (returning -EAGAIN) if any
+- * transfer requests are still queued, or if the controller hardware
+- * (usually a FIFO) still holds bytes that the host hasn't collected.
+- */
++{ return 0; }
+ static inline int usb_ep_set_halt(struct usb_ep *ep)
+-{
+-	return ep->ops->set_halt(ep, 1);
+-}
+-
+-/**
+- * usb_ep_clear_halt - clears endpoint halt, and resets toggle
+- * @ep:the bulk or interrupt endpoint being reset
+- *
+- * Use this when responding to the standard usb "set interface" request,
+- * for endpoints that aren't reconfigured, after clearing any other state
+- * in the endpoint's i/o queue.
+- *
+- * Returns zero, or a negative error code.  On success, this call clears
+- * the underlying hardware state reflecting endpoint halt and data toggle.
+- * Note that some hardware can't support this request (like pxa2xx_udc),
+- * and accordingly can't correctly implement interface altsettings.
+- */
++{ return 0; }
+ static inline int usb_ep_clear_halt(struct usb_ep *ep)
+-{
+-	return ep->ops->set_halt(ep, 0);
+-}
+-
+-/**
+- * usb_ep_set_wedge - sets the halt feature and ignores clear requests
+- * @ep: the endpoint being wedged
+- *
+- * Use this to stall an endpoint and ignore CLEAR_FEATURE(HALT_ENDPOINT)
+- * requests. If the gadget driver clears the halt status, it will
+- * automatically unwedge the endpoint.
+- *
+- * Returns zero on success, else negative errno.
+- */
+-static inline int
+-usb_ep_set_wedge(struct usb_ep *ep)
+-{
+-	if (ep->ops->set_wedge)
+-		return ep->ops->set_wedge(ep);
+-	else
+-		return ep->ops->set_halt(ep, 1);
+-}
+-
+-/**
+- * usb_ep_fifo_status - returns number of bytes in fifo, or error
+- * @ep: the endpoint whose fifo status is being checked.
+- *
+- * FIFO endpoints may have "unclaimed data" in them in certain cases,
+- * such as after aborted transfers.  Hosts may not have collected all
+- * the IN data written by the gadget driver (and reported by a request
+- * completion).  The gadget driver may not have collected all the data
+- * written OUT to it by the host.  Drivers that need precise handling for
+- * fault reporting or recovery may need to use this call.
+- *
+- * This returns the number of such bytes in the fifo, or a negative
+- * errno if the endpoint doesn't use a FIFO or doesn't support such
+- * precise handling.
+- */
++{ return 0; }
++static inline int usb_ep_set_wedge(struct usb_ep *ep)
++{ return 0; }
+ static inline int usb_ep_fifo_status(struct usb_ep *ep)
+-{
+-	if (ep->ops->fifo_status)
+-		return ep->ops->fifo_status(ep);
+-	else
+-		return -EOPNOTSUPP;
+-}
+-
+-/**
+- * usb_ep_fifo_flush - flushes contents of a fifo
+- * @ep: the endpoint whose fifo is being flushed.
+- *
+- * This call may be used to flush the "unclaimed data" that may exist in
+- * an endpoint fifo after abnormal transaction terminations.  The call
+- * must never be used except when endpoint is not being used for any
+- * protocol translation.
+- */
++{ return 0; }
+ static inline void usb_ep_fifo_flush(struct usb_ep *ep)
+-{
+-	if (ep->ops->fifo_flush)
+-		ep->ops->fifo_flush(ep);
+-}
+-
++{ }
++#endif /* USB_GADGET */
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+@@ -461,11 +289,15 @@ struct usb_dcd_config_params {
+ #define USB_DEFAULT_U1_DEV_EXIT_LAT	0x01	/* Less then 1 microsec */
+ 	__le16 bU2DevExitLat;	/* U2 Device exit Latency */
+ #define USB_DEFAULT_U2_DEV_EXIT_LAT	0x1F4	/* Less then 500 microsec */
++	__u8 besl_baseline;	/* Recommended baseline BESL (0-15) */
++	__u8 besl_deep;		/* Recommended deep BESL (0-15) */
++#define USB_DEFAULT_BESL_UNSPECIFIED	0xFF	/* No recommended value */
+ };
+ 
+ 
+ struct usb_gadget;
+ struct usb_gadget_driver;
++struct usb_udc;
+ 
+ /* the rest of the api to the controller hardware: device operations,
+  * which don't involve endpoints (or i/o).
+@@ -479,17 +311,26 @@ struct usb_gadget_ops {
+ 	int	(*pullup) (struct usb_gadget *, int is_on);
+ 	int	(*ioctl)(struct usb_gadget *,
+ 				unsigned code, unsigned long param);
+-	void	(*get_config_params)(struct usb_dcd_config_params *);
++	void	(*get_config_params)(struct usb_gadget *,
++				     struct usb_dcd_config_params *);
+ 	int	(*udc_start)(struct usb_gadget *,
+ 			struct usb_gadget_driver *);
+-	int	(*udc_stop)(struct usb_gadget *,
+-			struct usb_gadget_driver *);
++	int	(*udc_stop)(struct usb_gadget *);
+ 	void	(*udc_poll)(struct usb_gadget *);
++	void	(*udc_set_speed)(struct usb_gadget *, enum usb_device_speed);
++	void	(*udc_set_ssp_rate)(struct usb_gadget *gadget,
++			enum usb_ssp_rate rate);
++	void	(*udc_async_callbacks)(struct usb_gadget *gadget, bool enable);
++	struct usb_ep *(*match_ep)(struct usb_gadget *,
++			struct usb_endpoint_descriptor *,
++			struct usb_ss_ep_comp_descriptor *);
++	int	(*check_config)(struct usb_gadget *gadget);
+ };
+ 
+ /**
+- * struct usb_gadget - represents a usb slave device
++ * struct usb_gadget - represents a usb device
+  * @work: (internal use) Workqueue to be used for sysfs_notify()
++ * @udc: struct usb_udc pointer for this gadget
+  * @ops: Function pointers used to access hardware-specific operations.
+  * @ep0: Endpoint zero, used when reading or writing responses to
+  *	driver setup() requests
+@@ -497,12 +338,19 @@ struct usb_gadget_ops {
+  * @speed: Speed of current connection to USB host.
+  * @max_speed: Maximal speed the UDC can handle.  UDC must support this
+  *      and all slower speeds.
++ * @ssp_rate: Current connected SuperSpeed Plus signaling rate and lane count.
++ * @max_ssp_rate: Maximum SuperSpeed Plus signaling rate and lane count the UDC
++ *	can handle. The UDC must support this and all slower speeds and lower
++ *	number of lanes.
+  * @state: the state we are now (attached, suspended, configured, etc)
+  * @name: Identifies the controller hardware type.  Used in diagnostics
+  *	and sometimes configuration.
+  * @dev: Driver model state for this abstract device.
++ * @isoch_delay: value from Set Isoch Delay request. Only valid on SS/SSP
+  * @out_epnum: last used out ep number
+  * @in_epnum: last used in ep number
++ * @mA: last set mA value
++ * @otg_caps: OTG capabilities of this gadget.
+  * @sg_supported: true if we can handle scatter-gather
+  * @is_otg: True if the USB device port uses a Mini-AB jack, so that the
+  *	gadget driver must provide a USB OTG descriptor.
+@@ -515,8 +363,25 @@ struct usb_gadget_ops {
+  *	only supports HNP on a different root port.
+  * @b_hnp_enable: OTG device feature flag, indicating that the A-Host
+  *	enabled HNP support.
++ * @hnp_polling_support: OTG device feature flag, indicating if the OTG device
++ *	in peripheral mode can support HNP polling.
++ * @host_request_flag: OTG device feature flag, indicating if A-Peripheral
++ *	or B-Peripheral wants to take host role.
+  * @quirk_ep_out_aligned_size: epout requires buffer size to be aligned to
+  *	MaxPacketSize.
++ * @quirk_altset_not_supp: UDC controller doesn't support alt settings.
++ * @quirk_stall_not_supp: UDC controller doesn't support stalling.
++ * @quirk_zlp_not_supp: UDC controller doesn't support ZLP.
++ * @quirk_avoids_skb_reserve: udc/platform wants to avoid skb_reserve() in
++ *	u_ether.c to improve performance.
++ * @is_selfpowered: if the gadget is self-powered.
++ * @deactivated: True if gadget is deactivated - in deactivated state it cannot
++ *	be connected.
++ * @connected: True if gadget is connected.
++ * @lpm_capable: If the gadget max_speed is FULL or HIGH, this flag
++ *	indicates that it supports LPM as per the LPM ECN & errata.
++ * @irq: the interrupt number for device controller.
++ * @id_number: a unique ID number for ensuring that gadget names are distinct
+  *
+  * Gadgets have a mostly-portable "gadget driver" implementing device
+  * functions, handling all usb configurations and interfaces.  Gadget
+@@ -537,17 +402,27 @@ struct usb_gadget_ops {
+  * device is acting as a B-Peripheral (so is_a_peripheral is false).
+  */
+ struct usb_gadget {
++	struct work_struct		work;
++	struct usb_udc			*udc;
+ 	/* readonly to gadget driver */
+ 	const struct usb_gadget_ops	*ops;
+ 	struct usb_ep			*ep0;
+ 	struct list_head		ep_list;	/* of usb_ep */
+ 	enum usb_device_speed		speed;
+ 	enum usb_device_speed		max_speed;
 +
-+#ifndef _UAPI__LINUX_USB_CH9_H
-+#define _UAPI__LINUX_USB_CH9_H
++	/* USB SuperSpeed Plus only */
++	enum usb_ssp_rate		ssp_rate;
++	enum usb_ssp_rate		max_ssp_rate;
 +
-+#include <linux/types.h>	/* __u8 etc */
-+#include <asm/byteorder.h>	/* le16_to_cpu */
+ 	enum usb_device_state		state;
+ 	const char			*name;
+ 	struct device			dev;
++	unsigned			isoch_delay;
+ 	unsigned			out_epnum;
+ 	unsigned			in_epnum;
++	unsigned			mA;
++	struct usb_otg_caps		*otg_caps;
+ 
+ 	unsigned			sg_supported:1;
+ 	unsigned			is_otg:1;
+@@ -555,39 +430,79 @@ struct usb_gadget {
+ 	unsigned			b_hnp_enable:1;
+ 	unsigned			a_hnp_support:1;
+ 	unsigned			a_alt_hnp_support:1;
++	unsigned			hnp_polling_support:1;
++	unsigned			host_request_flag:1;
+ 	unsigned			quirk_ep_out_aligned_size:1;
++	unsigned			quirk_altset_not_supp:1;
++	unsigned			quirk_stall_not_supp:1;
++	unsigned			quirk_zlp_not_supp:1;
++	unsigned			quirk_avoids_skb_reserve:1;
++	unsigned			is_selfpowered:1;
++	unsigned			deactivated:1;
++	unsigned			connected:1;
++	unsigned			lpm_capable:1;
++	int				irq;
++	int				id_number;
+ 
+ 	uint32_t			vendor_id;
+ 	uint32_t			product_id;
+ 	char				*manufacturer;
+ 	char				*productname;
+ 	char				*serialnumber;
 +
-+/*-------------------------------------------------------------------------*/
++	void				*drvdata;
+ };
+ #define work_to_gadget(w)	(container_of((w), struct usb_gadget, work))
+ 
++/* Interface to the device model */
+ static inline void set_gadget_data(struct usb_gadget *gadget, void *data)
++	{ gadget->drvdata = data; }
++static inline void *get_gadget_data(struct usb_gadget *gadget)
++	{ return gadget->drvdata; }
++static inline struct usb_gadget *dev_to_usb_gadget(struct device *dev)
+ {
+-	gadget->dev.priv = data;
++	return container_of(dev, struct usb_gadget, dev);
+ }
+-
+-static inline void *get_gadget_data(struct usb_gadget *gadget)
++static inline struct usb_gadget *usb_get_gadget(struct usb_gadget *gadget)
+ {
+-	return gadget->dev.priv;
++	return gadget;
+ }
+-
+-static inline struct usb_gadget *dev_to_usb_gadget(struct device *dev)
++static inline void usb_put_gadget(struct usb_gadget *gadget)
+ {
+-	return container_of(dev, struct usb_gadget, dev);
+ }
++extern void usb_initialize_gadget(struct device *parent,
++		struct usb_gadget *gadget, void (*release)(struct device *dev));
++extern int usb_add_gadget(struct usb_gadget *gadget);
++extern void usb_del_gadget(struct usb_gadget *gadget);
 +
-+/* CONTROL REQUEST SUPPORT */
-+
-+/*
-+ * USB directions
-+ *
-+ * This bit flag is used in endpoint descriptors' bEndpointAddress field.
-+ * It's also one of three fields in control requests bRequestType.
-+ */
-+#define USB_DIR_OUT			0		/* to device */
-+#define USB_DIR_IN			0x80		/* to host */
-+
-+/*
-+ * USB types, the second of three bRequestType fields
-+ */
-+#define USB_TYPE_MASK			(0x03 << 5)
-+#define USB_TYPE_STANDARD		(0x00 << 5)
-+#define USB_TYPE_CLASS			(0x01 << 5)
-+#define USB_TYPE_VENDOR			(0x02 << 5)
-+#define USB_TYPE_RESERVED		(0x03 << 5)
-+
-+/*
-+ * USB recipients, the third of three bRequestType fields
-+ */
-+#define USB_RECIP_MASK			0x1f
-+#define USB_RECIP_DEVICE		0x00
-+#define USB_RECIP_INTERFACE		0x01
-+#define USB_RECIP_ENDPOINT		0x02
-+#define USB_RECIP_OTHER			0x03
-+/* From Wireless USB 1.0 */
-+#define USB_RECIP_PORT			0x04
-+#define USB_RECIP_RPIPE		0x05
-+
-+/*
-+ * Standard requests, for the bRequest field of a SETUP packet.
-+ *
-+ * These are qualified by the bRequestType field, so that for example
-+ * TYPE_CLASS or TYPE_VENDOR specific feature flags could be retrieved
-+ * by a GET_STATUS request.
-+ */
-+#define USB_REQ_GET_STATUS		0x00
-+#define USB_REQ_CLEAR_FEATURE		0x01
-+#define USB_REQ_SET_FEATURE		0x03
-+#define USB_REQ_SET_ADDRESS		0x05
-+#define USB_REQ_GET_DESCRIPTOR		0x06
-+#define USB_REQ_SET_DESCRIPTOR		0x07
-+#define USB_REQ_GET_CONFIGURATION	0x08
-+#define USB_REQ_SET_CONFIGURATION	0x09
-+#define USB_REQ_GET_INTERFACE		0x0A
-+#define USB_REQ_SET_INTERFACE		0x0B
-+#define USB_REQ_SYNCH_FRAME		0x0C
-+#define USB_REQ_SET_SEL			0x30
-+#define USB_REQ_SET_ISOCH_DELAY		0x31
-+
-+#define USB_REQ_SET_ENCRYPTION		0x0D	/* Wireless USB */
-+#define USB_REQ_GET_ENCRYPTION		0x0E
-+#define USB_REQ_RPIPE_ABORT		0x0E
-+#define USB_REQ_SET_HANDSHAKE		0x0F
-+#define USB_REQ_RPIPE_RESET		0x0F
-+#define USB_REQ_GET_HANDSHAKE		0x10
-+#define USB_REQ_SET_CONNECTION		0x11
-+#define USB_REQ_SET_SECURITY_DATA	0x12
-+#define USB_REQ_GET_SECURITY_DATA	0x13
-+#define USB_REQ_SET_WUSB_DATA		0x14
-+#define USB_REQ_LOOPBACK_DATA_WRITE	0x15
-+#define USB_REQ_LOOPBACK_DATA_READ	0x16
-+#define USB_REQ_SET_INTERFACE_DS	0x17
-+
-+/* specific requests for USB Power Delivery */
-+#define USB_REQ_GET_PARTNER_PDO		20
-+#define USB_REQ_GET_BATTERY_STATUS	21
-+#define USB_REQ_SET_PDO			22
-+#define USB_REQ_GET_VDM			23
-+#define USB_REQ_SEND_VDM		24
-+
-+/* The Link Power Management (LPM) ECN defines USB_REQ_TEST_AND_SET command,
-+ * used by hubs to put ports into a new L1 suspend state, except that it
-+ * forgot to define its number ...
-+ */
-+
-+/*
-+ * USB feature flags are written using USB_REQ_{CLEAR,SET}_FEATURE, and
-+ * are read as a bit array returned by USB_REQ_GET_STATUS.  (So there
-+ * are at most sixteen features of each type.)  Hubs may also support a
-+ * new USB_REQ_TEST_AND_SET_FEATURE to put ports into L1 suspend.
-+ */
-+#define USB_DEVICE_SELF_POWERED		0	/* (read only) */
-+#define USB_DEVICE_REMOTE_WAKEUP	1	/* dev may initiate wakeup */
-+#define USB_DEVICE_TEST_MODE		2	/* (wired high speed only) */
-+#define USB_DEVICE_BATTERY		2	/* (wireless) */
-+#define USB_DEVICE_B_HNP_ENABLE		3	/* (otg) dev may initiate HNP */
-+#define USB_DEVICE_WUSB_DEVICE		3	/* (wireless)*/
-+#define USB_DEVICE_A_HNP_SUPPORT	4	/* (otg) RH port supports HNP */
-+#define USB_DEVICE_A_ALT_HNP_SUPPORT	5	/* (otg) other RH port does */
-+#define USB_DEVICE_DEBUG_MODE		6	/* (special devices only) */
-+
-+/*
-+ * Test Mode Selectors
-+ * See USB 2.0 spec Table 9-7
-+ */
-+#define	USB_TEST_J		1
-+#define	USB_TEST_K		2
-+#define	USB_TEST_SE0_NAK	3
-+#define	USB_TEST_PACKET		4
-+#define	USB_TEST_FORCE_ENABLE	5
-+
-+/* Status Type */
-+#define USB_STATUS_TYPE_STANDARD	0
-+#define USB_STATUS_TYPE_PTM		1
-+
-+/*
-+ * New Feature Selectors as added by USB 3.0
-+ * See USB 3.0 spec Table 9-7
-+ */
-+#define USB_DEVICE_U1_ENABLE	48	/* dev may initiate U1 transition */
-+#define USB_DEVICE_U2_ENABLE	49	/* dev may initiate U2 transition */
-+#define USB_DEVICE_LTM_ENABLE	50	/* dev may send LTM */
-+#define USB_INTRF_FUNC_SUSPEND	0	/* function suspend */
-+
-+#define USB_INTR_FUNC_SUSPEND_OPT_MASK	0xFF00
-+/*
-+ * Suspend Options, Table 9-8 USB 3.0 spec
-+ */
-+#define USB_INTRF_FUNC_SUSPEND_LP	(1 << (8 + 0))
-+#define USB_INTRF_FUNC_SUSPEND_RW	(1 << (8 + 1))
-+
-+/*
-+ * Interface status, Figure 9-5 USB 3.0 spec
-+ */
-+#define USB_INTRF_STAT_FUNC_RW_CAP     1
-+#define USB_INTRF_STAT_FUNC_RW         2
-+
-+#define USB_ENDPOINT_HALT		0	/* IN/OUT will STALL */
-+
-+/* Bit array elements as returned by the USB_REQ_GET_STATUS request. */
-+#define USB_DEV_STAT_U1_ENABLED		2	/* transition into U1 state */
-+#define USB_DEV_STAT_U2_ENABLED		3	/* transition into U2 state */
-+#define USB_DEV_STAT_LTM_ENABLED	4	/* Latency tolerance messages */
-+
-+/*
-+ * Feature selectors from Table 9-8 USB Power Delivery spec
-+ */
-+#define USB_DEVICE_BATTERY_WAKE_MASK	40
-+#define USB_DEVICE_OS_IS_PD_AWARE	41
-+#define USB_DEVICE_POLICY_MODE		42
-+#define USB_PORT_PR_SWAP		43
-+#define USB_PORT_GOTO_MIN		44
-+#define USB_PORT_RETURN_POWER		45
-+#define USB_PORT_ACCEPT_PD_REQUEST	46
-+#define USB_PORT_REJECT_PD_REQUEST	47
-+#define USB_PORT_PORT_PD_RESET		48
-+#define USB_PORT_C_PORT_PD_CHANGE	49
-+#define USB_PORT_CABLE_PD_RESET		50
-+#define USB_DEVICE_CHARGING_POLICY	54
-+
++/* Legacy device-model interface */
++extern int usb_add_gadget_udc_release(struct device *parent,
++		struct usb_gadget *gadget, void (*release)(struct device *dev));
++extern int usb_add_gadget_udc(struct device *parent, struct usb_gadget *gadget);
++extern void usb_del_gadget_udc(struct usb_gadget *gadget);
++extern char *usb_get_gadget_udc_name(void);
+ 
+ /* iterates the non-control endpoints; 'tmp' is a struct usb_ep pointer */
+ #define gadget_for_each_ep(tmp, gadget) \
+ 	list_for_each_entry(tmp, &(gadget)->ep_list, ep_list)
+ 
 +/**
-+ * struct usb_ctrlrequest - SETUP data for a USB device control request
-+ * @bRequestType: matches the USB bmRequestType field
-+ * @bRequest: matches the USB bRequest field
-+ * @wValue: matches the USB wValue field (le16 byte order)
-+ * @wIndex: matches the USB wIndex field (le16 byte order)
-+ * @wLength: matches the USB wLength field (le16 byte order)
++ * usb_ep_align - returns @len aligned to ep's maxpacketsize.
++ * @ep: the endpoint whose maxpacketsize is used to align @len
++ * @len: buffer size's length to align to @ep's maxpacketsize
 + *
-+ * This structure is used to send control requests to a USB device.  It matches
-+ * the different fields of the USB 2.0 Spec section 9.3, table 9-2.  See the
-+ * USB spec for a fuller description of the different fields, and what they are
-+ * used for.
-+ *
-+ * Note that the driver for any interface can issue control requests.
-+ * For most devices, interfaces don't coordinate with each other, so
-+ * such requests may be made at any time.
++ * This helper is used to align buffer's size to an ep's maxpacketsize.
 + */
-+struct usb_ctrlrequest {
-+	__u8 bRequestType;
-+	__u8 bRequest;
-+	__le16 wValue;
-+	__le16 wIndex;
-+	__le16 wLength;
-+} __attribute__ ((packed));
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/*
-+ * STANDARD DESCRIPTORS ... as returned by GET_DESCRIPTOR, or
-+ * (rarely) accepted by SET_DESCRIPTOR.
-+ *
-+ * Note that all multi-byte values here are encoded in little endian
-+ * byte order "on the wire".  Within the kernel and when exposed
-+ * through the Linux-USB APIs, they are not converted to cpu byte
-+ * order; it is the responsibility of the client code to do this.
-+ * The single exception is when device and configuration descriptors (but
-+ * not other descriptors) are read from character devices
-+ * (i.e. /dev/bus/usb/BBB/DDD);
-+ * in this case the fields are converted to host endianness by the kernel.
-+ */
-+
-+/*
-+ * Descriptor types ... USB 2.0 spec table 9.5
-+ */
-+#define USB_DT_DEVICE			0x01
-+#define USB_DT_CONFIG			0x02
-+#define USB_DT_STRING			0x03
-+#define USB_DT_INTERFACE		0x04
-+#define USB_DT_ENDPOINT			0x05
-+#define USB_DT_DEVICE_QUALIFIER		0x06
-+#define USB_DT_OTHER_SPEED_CONFIG	0x07
-+#define USB_DT_INTERFACE_POWER		0x08
-+/* these are from a minor usb 2.0 revision (ECN) */
-+#define USB_DT_OTG			0x09
-+#define USB_DT_DEBUG			0x0a
-+#define USB_DT_INTERFACE_ASSOCIATION	0x0b
-+/* these are from the Wireless USB spec */
-+#define USB_DT_SECURITY			0x0c
-+#define USB_DT_KEY			0x0d
-+#define USB_DT_ENCRYPTION_TYPE		0x0e
-+#define USB_DT_BOS			0x0f
-+#define USB_DT_DEVICE_CAPABILITY	0x10
-+#define USB_DT_WIRELESS_ENDPOINT_COMP	0x11
-+#define USB_DT_WIRE_ADAPTER		0x21
-+#define USB_DT_RPIPE			0x22
-+#define USB_DT_CS_RADIO_CONTROL		0x23
-+/* From the T10 UAS specification */
-+#define USB_DT_PIPE_USAGE		0x24
-+/* From the USB 3.0 spec */
-+#define	USB_DT_SS_ENDPOINT_COMP		0x30
-+/* From the USB 3.1 spec */
-+#define	USB_DT_SSP_ISOC_ENDPOINT_COMP	0x31
-+
-+/* Conventional codes for class-specific descriptors.  The convention is
-+ * defined in the USB "Common Class" Spec (3.11).  Individual class specs
-+ * are authoritative for their usage, not the "common class" writeup.
-+ */
-+#define USB_DT_CS_DEVICE		(USB_TYPE_CLASS | USB_DT_DEVICE)
-+#define USB_DT_CS_CONFIG		(USB_TYPE_CLASS | USB_DT_CONFIG)
-+#define USB_DT_CS_STRING		(USB_TYPE_CLASS | USB_DT_STRING)
-+#define USB_DT_CS_INTERFACE		(USB_TYPE_CLASS | USB_DT_INTERFACE)
-+#define USB_DT_CS_ENDPOINT		(USB_TYPE_CLASS | USB_DT_ENDPOINT)
-+
-+/* All standard descriptors have these 2 fields at the beginning */
-+struct usb_descriptor_header {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+} __attribute__ ((packed));
-+
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_DEVICE: Device descriptor */
-+struct usb_device_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__le16 bcdUSB;
-+	__u8  bDeviceClass;
-+	__u8  bDeviceSubClass;
-+	__u8  bDeviceProtocol;
-+	__u8  bMaxPacketSize0;
-+	__le16 idVendor;
-+	__le16 idProduct;
-+	__le16 bcdDevice;
-+	__u8  iManufacturer;
-+	__u8  iProduct;
-+	__u8  iSerialNumber;
-+	__u8  bNumConfigurations;
-+} __attribute__ ((packed));
-+
-+#define USB_DT_DEVICE_SIZE		18
-+
-+
-+/*
-+ * Device and/or Interface Class codes
-+ * as found in bDeviceClass or bInterfaceClass
-+ * and defined by www.usb.org documents
-+ */
-+#define USB_CLASS_PER_INTERFACE		0	/* for DeviceClass */
-+#define USB_CLASS_AUDIO			1
-+#define USB_CLASS_COMM			2
-+#define USB_CLASS_HID			3
-+#define USB_CLASS_PHYSICAL		5
-+#define USB_CLASS_STILL_IMAGE		6
-+#define USB_CLASS_PRINTER		7
-+#define USB_CLASS_MASS_STORAGE		8
-+#define USB_CLASS_HUB			9
-+#define USB_CLASS_CDC_DATA		0x0a
-+#define USB_CLASS_CSCID			0x0b	/* chip+ smart card */
-+#define USB_CLASS_CONTENT_SEC		0x0d	/* content security */
-+#define USB_CLASS_VIDEO			0x0e
-+#define USB_CLASS_WIRELESS_CONTROLLER	0xe0
-+#define USB_CLASS_PERSONAL_HEALTHCARE	0x0f
-+#define USB_CLASS_AUDIO_VIDEO		0x10
-+#define USB_CLASS_BILLBOARD		0x11
-+#define USB_CLASS_USB_TYPE_C_BRIDGE	0x12
-+#define USB_CLASS_MISC			0xef
-+#define USB_CLASS_APP_SPEC		0xfe
-+#define USB_CLASS_VENDOR_SPEC		0xff
-+
-+#define USB_SUBCLASS_VENDOR_SPEC	0xff
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_CONFIG: Configuration descriptor information.
-+ *
-+ * USB_DT_OTHER_SPEED_CONFIG is the same descriptor, except that the
-+ * descriptor type is different.  Highspeed-capable devices can look
-+ * different depending on what speed they're currently running.  Only
-+ * devices with a USB_DT_DEVICE_QUALIFIER have any OTHER_SPEED_CONFIG
-+ * descriptors.
-+ */
-+struct usb_config_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__le16 wTotalLength;
-+	__u8  bNumInterfaces;
-+	__u8  bConfigurationValue;
-+	__u8  iConfiguration;
-+	__u8  bmAttributes;
-+	__u8  bMaxPower;
-+} __attribute__ ((packed));
-+
-+#define USB_DT_CONFIG_SIZE		9
-+
-+/* from config descriptor bmAttributes */
-+#define USB_CONFIG_ATT_ONE		(1 << 7)	/* must be set */
-+#define USB_CONFIG_ATT_SELFPOWER	(1 << 6)	/* self powered */
-+#define USB_CONFIG_ATT_WAKEUP		(1 << 5)	/* can wakeup */
-+#define USB_CONFIG_ATT_BATTERY		(1 << 4)	/* battery powered */
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB String descriptors can contain at most 126 characters. */
-+#define USB_MAX_STRING_LEN	126
-+
-+/* USB_DT_STRING: String descriptor */
-+struct usb_string_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__le16 wData[1];		/* UTF-16LE encoded */
-+} __attribute__ ((packed));
-+
-+/* note that "string" zero is special, it holds language codes that
-+ * the device supports, not Unicode characters.
-+ */
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_INTERFACE: Interface descriptor */
-+struct usb_interface_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__u8  bInterfaceNumber;
-+	__u8  bAlternateSetting;
-+	__u8  bNumEndpoints;
-+	__u8  bInterfaceClass;
-+	__u8  bInterfaceSubClass;
-+	__u8  bInterfaceProtocol;
-+	__u8  iInterface;
-+} __attribute__ ((packed));
-+
-+#define USB_DT_INTERFACE_SIZE		9
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_ENDPOINT: Endpoint descriptor */
-+struct usb_endpoint_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__u8  bEndpointAddress;
-+	__u8  bmAttributes;
-+	__le16 wMaxPacketSize;
-+	__u8  bInterval;
-+
-+	/* NOTE:  these two are _only_ in audio endpoints. */
-+	/* use USB_DT_ENDPOINT*_SIZE in bLength, not sizeof. */
-+	__u8  bRefresh;
-+	__u8  bSynchAddress;
-+} __attribute__ ((packed));
-+
-+#define USB_DT_ENDPOINT_SIZE		7
-+#define USB_DT_ENDPOINT_AUDIO_SIZE	9	/* Audio extension */
-+
-+
-+/*
-+ * Endpoints
-+ */
-+#define USB_ENDPOINT_NUMBER_MASK	0x0f	/* in bEndpointAddress */
-+#define USB_ENDPOINT_DIR_MASK		0x80
-+
-+#define USB_ENDPOINT_XFERTYPE_MASK	0x03	/* in bmAttributes */
-+#define USB_ENDPOINT_XFER_CONTROL	0
-+#define USB_ENDPOINT_XFER_ISOC		1
-+#define USB_ENDPOINT_XFER_BULK		2
-+#define USB_ENDPOINT_XFER_INT		3
-+#define USB_ENDPOINT_MAX_ADJUSTABLE	0x80
-+
-+#define USB_ENDPOINT_MAXP_MASK	0x07ff
-+#define USB_EP_MAXP_MULT_SHIFT	11
-+#define USB_EP_MAXP_MULT_MASK	(3 << USB_EP_MAXP_MULT_SHIFT)
-+#define USB_EP_MAXP_MULT(m) \
-+	(((m) & USB_EP_MAXP_MULT_MASK) >> USB_EP_MAXP_MULT_SHIFT)
-+
-+/* The USB 3.0 spec redefines bits 5:4 of bmAttributes as interrupt ep type. */
-+#define USB_ENDPOINT_INTRTYPE		0x30
-+#define USB_ENDPOINT_INTR_PERIODIC	(0 << 4)
-+#define USB_ENDPOINT_INTR_NOTIFICATION	(1 << 4)
-+
-+#define USB_ENDPOINT_SYNCTYPE		0x0c
-+#define USB_ENDPOINT_SYNC_NONE		(0 << 2)
-+#define USB_ENDPOINT_SYNC_ASYNC		(1 << 2)
-+#define USB_ENDPOINT_SYNC_ADAPTIVE	(2 << 2)
-+#define USB_ENDPOINT_SYNC_SYNC		(3 << 2)
-+
-+#define USB_ENDPOINT_USAGE_MASK		0x30
-+#define USB_ENDPOINT_USAGE_DATA		0x00
-+#define USB_ENDPOINT_USAGE_FEEDBACK	0x10
-+#define USB_ENDPOINT_USAGE_IMPLICIT_FB	0x20	/* Implicit feedback Data endpoint */
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/**
-+ * usb_endpoint_num - get the endpoint's number
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns @epd's number: 0 to 15.
-+ */
-+static inline int usb_endpoint_num(const struct usb_endpoint_descriptor *epd)
++static inline size_t usb_ep_align(struct usb_ep *ep, size_t len)
 +{
-+	return epd->bEndpointAddress & USB_ENDPOINT_NUMBER_MASK;
++	int max_packet_size = (size_t)usb_endpoint_maxp(ep->desc);
++
++	return round_up(len, max_packet_size);
 +}
-+
-+/**
-+ * usb_endpoint_type - get the endpoint's transfer type
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns one of USB_ENDPOINT_XFER_{CONTROL, ISOC, BULK, INT} according
-+ * to @epd's transfer type.
-+ */
-+static inline int usb_endpoint_type(const struct usb_endpoint_descriptor *epd)
-+{
-+	return epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK;
-+}
-+
-+/**
-+ * usb_endpoint_dir_in - check if the endpoint has IN direction
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint is of type IN, otherwise it returns false.
-+ */
-+static inline int usb_endpoint_dir_in(const struct usb_endpoint_descriptor *epd)
-+{
-+	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_IN);
-+}
-+
-+/**
-+ * usb_endpoint_dir_out - check if the endpoint has OUT direction
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint is of type OUT, otherwise it returns false.
-+ */
-+static inline int usb_endpoint_dir_out(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return ((epd->bEndpointAddress & USB_ENDPOINT_DIR_MASK) == USB_DIR_OUT);
-+}
-+
-+/**
-+ * usb_endpoint_xfer_bulk - check if the endpoint has bulk transfer type
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint is of type bulk, otherwise it returns false.
-+ */
-+static inline int usb_endpoint_xfer_bulk(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
-+		USB_ENDPOINT_XFER_BULK);
-+}
-+
-+/**
-+ * usb_endpoint_xfer_control - check if the endpoint has control transfer type
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint is of type control, otherwise it returns false.
-+ */
-+static inline int usb_endpoint_xfer_control(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
-+		USB_ENDPOINT_XFER_CONTROL);
-+}
-+
-+/**
-+ * usb_endpoint_xfer_int - check if the endpoint has interrupt transfer type
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint is of type interrupt, otherwise it returns
-+ * false.
-+ */
-+static inline int usb_endpoint_xfer_int(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
-+		USB_ENDPOINT_XFER_INT);
-+}
-+
-+/**
-+ * usb_endpoint_xfer_isoc - check if the endpoint has isochronous transfer type
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint is of type isochronous, otherwise it returns
-+ * false.
-+ */
-+static inline int usb_endpoint_xfer_isoc(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return ((epd->bmAttributes & USB_ENDPOINT_XFERTYPE_MASK) ==
-+		USB_ENDPOINT_XFER_ISOC);
-+}
-+
-+/**
-+ * usb_endpoint_is_bulk_in - check if the endpoint is bulk IN
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint has bulk transfer type and IN direction,
-+ * otherwise it returns false.
-+ */
-+static inline int usb_endpoint_is_bulk_in(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return usb_endpoint_xfer_bulk(epd) && usb_endpoint_dir_in(epd);
-+}
-+
-+/**
-+ * usb_endpoint_is_bulk_out - check if the endpoint is bulk OUT
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint has bulk transfer type and OUT direction,
-+ * otherwise it returns false.
-+ */
-+static inline int usb_endpoint_is_bulk_out(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return usb_endpoint_xfer_bulk(epd) && usb_endpoint_dir_out(epd);
-+}
-+
-+/**
-+ * usb_endpoint_is_int_in - check if the endpoint is interrupt IN
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint has interrupt transfer type and IN direction,
-+ * otherwise it returns false.
-+ */
-+static inline int usb_endpoint_is_int_in(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return usb_endpoint_xfer_int(epd) && usb_endpoint_dir_in(epd);
-+}
-+
-+/**
-+ * usb_endpoint_is_int_out - check if the endpoint is interrupt OUT
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint has interrupt transfer type and OUT direction,
-+ * otherwise it returns false.
-+ */
-+static inline int usb_endpoint_is_int_out(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return usb_endpoint_xfer_int(epd) && usb_endpoint_dir_out(epd);
-+}
-+
-+/**
-+ * usb_endpoint_is_isoc_in - check if the endpoint is isochronous IN
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint has isochronous transfer type and IN direction,
-+ * otherwise it returns false.
-+ */
-+static inline int usb_endpoint_is_isoc_in(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return usb_endpoint_xfer_isoc(epd) && usb_endpoint_dir_in(epd);
-+}
-+
-+/**
-+ * usb_endpoint_is_isoc_out - check if the endpoint is isochronous OUT
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns true if the endpoint has isochronous transfer type and OUT direction,
-+ * otherwise it returns false.
-+ */
-+static inline int usb_endpoint_is_isoc_out(
-+				const struct usb_endpoint_descriptor *epd)
-+{
-+	return usb_endpoint_xfer_isoc(epd) && usb_endpoint_dir_out(epd);
-+}
-+
-+/**
-+ * usb_endpoint_maxp - get endpoint's max packet size
-+ * @epd: endpoint to be checked
-+ *
-+ * Returns @epd's max packet bits [10:0]
-+ */
-+static inline int usb_endpoint_maxp(const struct usb_endpoint_descriptor *epd)
-+{
-+	return __le16_to_cpu(epd->wMaxPacketSize) & USB_ENDPOINT_MAXP_MASK;
-+}
-+
-+/**
-+ * usb_endpoint_maxp_mult - get endpoint's transactional opportunities
-+ * @epd: endpoint to be checked
-+ *
-+ * Return @epd's wMaxPacketSize[12:11] + 1
-+ */
-+static inline int
-+usb_endpoint_maxp_mult(const struct usb_endpoint_descriptor *epd)
-+{
-+	int maxp = __le16_to_cpu(epd->wMaxPacketSize);
-+
-+	return USB_EP_MAXP_MULT(maxp) + 1;
-+}
-+
-+static inline int usb_endpoint_interrupt_type(
-+		const struct usb_endpoint_descriptor *epd)
-+{
-+	return epd->bmAttributes & USB_ENDPOINT_INTRTYPE;
-+}
-+
+ 
+ /**
+  * usb_ep_align_maybe - returns @len aligned to ep's maxpacketsize if gadget
+- *	requires quirk_ep_out_aligned_size, otherwise reguens len.
++ *	requires quirk_ep_out_aligned_size, otherwise returns len.
+  * @g: controller to check for quirk
+  * @ep: the endpoint whose maxpacketsize is used to align @len
+  * @len: buffer size's length to align to @ep's maxpacketsize
+@@ -598,212 +513,137 @@ static inline struct usb_gadget *dev_to_usb_gadget(struct device *dev)
+ static inline size_t
+ usb_ep_align_maybe(struct usb_gadget *g, struct usb_ep *ep, size_t len)
+ {
+-	return !g->quirk_ep_out_aligned_size ? len :
+-			round_up(len, (size_t)ep->desc->wMaxPacketSize);
++	return g->quirk_ep_out_aligned_size ? usb_ep_align(ep, len) : len;
+ }
+ 
+ /**
+- * gadget_is_dualspeed - return true iff the hardware handles high speed
+- * @g: controller that might support both high and full speeds
++ * gadget_is_altset_supported - return true iff the hardware supports
++ *	altsettings
++ * @g: controller to check for quirk
+  */
+-static inline int gadget_is_dualspeed(struct usb_gadget *g)
++static inline int gadget_is_altset_supported(struct usb_gadget *g)
+ {
+-	return g->max_speed >= USB_SPEED_HIGH;
++	return !g->quirk_altset_not_supp;
+ }
+ 
+ /**
+- * gadget_is_superspeed() - return true if the hardware handles superspeed
+- * @g: controller that might support superspeed
++ * gadget_is_stall_supported - return true iff the hardware supports stalling
++ * @g: controller to check for quirk
+  */
+-static inline int gadget_is_superspeed(struct usb_gadget *g)
++static inline int gadget_is_stall_supported(struct usb_gadget *g)
+ {
+-	return g->max_speed >= USB_SPEED_SUPER;
++	return !g->quirk_stall_not_supp;
+ }
+ 
+ /**
+- * gadget_is_otg - return true iff the hardware is OTG-ready
+- * @g: controller that might have a Mini-AB connector
+- *
+- * This is a runtime test, since kernels with a USB-OTG stack sometimes
+- * run on boards which only have a Mini-B (or Mini-A) connector.
++ * gadget_is_zlp_supported - return true iff the hardware supports zlp
++ * @g: controller to check for quirk
+  */
+-static inline int gadget_is_otg(struct usb_gadget *g)
++static inline int gadget_is_zlp_supported(struct usb_gadget *g)
+ {
+-#ifdef CONFIG_USB_OTG
+-	return g->is_otg;
+-#else
+-	return 0;
+-#endif
++	return !g->quirk_zlp_not_supp;
+ }
+ 
+ /**
+- * usb_gadget_frame_number - returns the current frame number
+- * @gadget: controller that reports the frame number
+- *
+- * Returns the usb frame number, normally eleven bits from a SOF packet,
+- * or negative errno if this device doesn't support this capability.
++ * gadget_avoids_skb_reserve - return true iff the hardware would like to avoid
++ *	skb_reserve to improve performance.
++ * @g: controller to check for quirk
+  */
+-static inline int usb_gadget_frame_number(struct usb_gadget *gadget)
++static inline int gadget_avoids_skb_reserve(struct usb_gadget *g)
+ {
+-	return gadget->ops->get_frame(gadget);
++	return g->quirk_avoids_skb_reserve;
+ }
+ 
+ /**
+- * usb_gadget_wakeup - tries to wake up the host connected to this gadget
+- * @gadget: controller used to wake up the host
+- *
+- * Returns zero on success, else negative error code if the hardware
+- * doesn't support such attempts, or its support has not been enabled
+- * by the usb host.  Drivers must return device descriptors that report
+- * their ability to support this, or hosts won't enable it.
+- *
+- * This may also try to use SRP to wake the host and start enumeration,
+- * even if OTG isn't otherwise in use.  OTG devices may also start
+- * remote wakeup even when hosts don't explicitly enable it.
++ * gadget_is_dualspeed - return true iff the hardware handles high speed
++ * @g: controller that might support both high and full speeds
+  */
+-static inline int usb_gadget_wakeup(struct usb_gadget *gadget)
++static inline int gadget_is_dualspeed(struct usb_gadget *g)
+ {
+-	if (!gadget->ops->wakeup)
+-		return -EOPNOTSUPP;
+-	return gadget->ops->wakeup(gadget);
++	return g->max_speed >= USB_SPEED_HIGH;
+ }
+ 
+ /**
+- * usb_gadget_set_selfpowered - sets the device selfpowered feature.
+- * @gadget:the device being declared as self-powered
+- *
+- * this affects the device status reported by the hardware driver
+- * to reflect that it now has a local power supply.
+- *
+- * returns zero on success, else negative errno.
++ * gadget_is_superspeed() - return true if the hardware handles superspeed
++ * @g: controller that might support superspeed
+  */
+-static inline int usb_gadget_set_selfpowered(struct usb_gadget *gadget)
++static inline int gadget_is_superspeed(struct usb_gadget *g)
+ {
+-	if (!gadget->ops->set_selfpowered)
+-		return -EOPNOTSUPP;
+-	return gadget->ops->set_selfpowered(gadget, 1);
++	return g->max_speed >= USB_SPEED_SUPER;
+ }
+ 
+ /**
+- * usb_gadget_clear_selfpowered - clear the device selfpowered feature.
+- * @gadget:the device being declared as bus-powered
+- *
+- * this affects the device status reported by the hardware driver.
+- * some hardware may not support bus-powered operation, in which
+- * case this feature's value can never change.
+- *
+- * returns zero on success, else negative errno.
++ * gadget_is_superspeed_plus() - return true if the hardware handles
++ *	superspeed plus
++ * @g: controller that might support superspeed plus
+  */
+-static inline int usb_gadget_clear_selfpowered(struct usb_gadget *gadget)
++static inline int gadget_is_superspeed_plus(struct usb_gadget *g)
+ {
+-	if (!gadget->ops->set_selfpowered)
+-		return -EOPNOTSUPP;
+-	return gadget->ops->set_selfpowered(gadget, 0);
++	return g->max_speed >= USB_SPEED_SUPER_PLUS;
+ }
+ 
+ /**
+- * usb_gadget_vbus_connect - Notify controller that VBUS is powered
+- * @gadget:The device which now has VBUS power.
+- * Context: can sleep
+- *
+- * This call is used by a driver for an external transceiver (or GPIO)
+- * that detects a VBUS power session starting.  Common responses include
+- * resuming the controller, activating the D+ (or D-) pullup to let the
+- * host detect that a USB device is attached, and starting to draw power
+- * (8mA or possibly more, especially after SET_CONFIGURATION).
++ * gadget_is_otg - return true iff the hardware is OTG-ready
++ * @g: controller that might have a Mini-AB connector
+  *
+- * Returns zero on success, else negative errno.
++ * This is a runtime test, since kernels with a USB-OTG stack sometimes
++ * run on boards which only have a Mini-B (or Mini-A) connector.
+  */
+-static inline int usb_gadget_vbus_connect(struct usb_gadget *gadget)
++static inline int gadget_is_otg(struct usb_gadget *g)
+ {
+-	if (!gadget->ops->vbus_session)
+-		return -EOPNOTSUPP;
+-	return gadget->ops->vbus_session(gadget, 1);
++#ifdef CONFIG_USB_OTG
++	return g->is_otg;
++#else
++	return 0;
++#endif
+ }
+ 
+-/**
+- * usb_gadget_vbus_draw - constrain controller's VBUS power usage
+- * @gadget:The device whose VBUS usage is being described
+- * @mA:How much current to draw, in milliAmperes.  This should be twice
+- *	the value listed in the configuration descriptor bMaxPower field.
+- *
+- * This call is used by gadget drivers during SET_CONFIGURATION calls,
+- * reporting how much power the device may consume.  For example, this
+- * could affect how quickly batteries are recharged.
+- *
+- * Returns zero on success, else negative errno.
+- */
+-static inline int usb_gadget_vbus_draw(struct usb_gadget *gadget, unsigned mA)
+-{
+-	if (!gadget->ops->vbus_draw)
+-		return -EOPNOTSUPP;
+-	return gadget->ops->vbus_draw(gadget, mA);
+-}
 +/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_SSP_ISOC_ENDPOINT_COMP: SuperSpeedPlus Isochronous Endpoint Companion
-+ * descriptor
-+ */
-+struct usb_ssp_isoc_ep_comp_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+	__le16 wReseved;
-+	__le32 dwBytesPerInterval;
-+} __attribute__ ((packed));
-+
-+#define USB_DT_SSP_ISOC_EP_COMP_SIZE		8
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_SS_ENDPOINT_COMP: SuperSpeed Endpoint Companion descriptor */
-+struct usb_ss_ep_comp_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__u8  bMaxBurst;
-+	__u8  bmAttributes;
-+	__le16 wBytesPerInterval;
-+} __attribute__ ((packed));
-+
-+#define USB_DT_SS_EP_COMP_SIZE		6
-+
-+/* Bits 4:0 of bmAttributes if this is a bulk endpoint */
-+static inline int
-+usb_ss_max_streams(const struct usb_ss_ep_comp_descriptor *comp)
-+{
-+	int		max_streams;
-+
-+	if (!comp)
-+		return 0;
-+
-+	max_streams = comp->bmAttributes & 0x1f;
-+
-+	if (!max_streams)
-+		return 0;
-+
-+	max_streams = 1 << max_streams;
-+
-+	return max_streams;
-+}
-+
-+/* Bits 1:0 of bmAttributes if this is an isoc endpoint */
-+#define USB_SS_MULT(p)			(1 + ((p) & 0x3))
-+/* Bit 7 of bmAttributes if a SSP isoc endpoint companion descriptor exists */
-+#define USB_SS_SSP_ISOC_COMP(p)		((p) & (1 << 7))
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_DEVICE_QUALIFIER: Device Qualifier descriptor */
-+struct usb_qualifier_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__le16 bcdUSB;
-+	__u8  bDeviceClass;
-+	__u8  bDeviceSubClass;
-+	__u8  bDeviceProtocol;
-+	__u8  bMaxPacketSize0;
-+	__u8  bNumConfigurations;
-+	__u8  bRESERVED;
-+} __attribute__ ((packed));
-+
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_OTG (from OTG 1.0a supplement) */
-+struct usb_otg_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__u8  bmAttributes;	/* support for HNP, SRP, etc */
-+} __attribute__ ((packed));
-+
-+/* USB_DT_OTG (from OTG 2.0 supplement) */
-+struct usb_otg20_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__u8  bmAttributes;	/* support for HNP, SRP and ADP, etc */
-+	__le16 bcdOTG;		/* OTG and EH supplement release number
-+				 * in binary-coded decimal(i.e. 2.0 is 0200H)
-+				 */
-+} __attribute__ ((packed));
-+
-+/* from usb_otg_descriptor.bmAttributes */
-+#define USB_OTG_SRP		(1 << 0)
-+#define USB_OTG_HNP		(1 << 1)	/* swap host/device roles */
-+#define USB_OTG_ADP		(1 << 2)	/* support ADP */
-+
-+#define OTG_STS_SELECTOR	0xF000		/* OTG status selector */
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_DEBUG:  for special highspeed devices, replacing serial console */
-+struct usb_debug_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	/* bulk endpoints with 8 byte maxpacket */
-+	__u8  bDebugInEndpoint;
-+	__u8  bDebugOutEndpoint;
-+} __attribute__((packed));
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_INTERFACE_ASSOCIATION: groups interfaces */
-+struct usb_interface_assoc_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__u8  bFirstInterface;
-+	__u8  bInterfaceCount;
-+	__u8  bFunctionClass;
-+	__u8  bFunctionSubClass;
-+	__u8  bFunctionProtocol;
-+	__u8  iFunction;
-+} __attribute__ ((packed));
-+
-+#define USB_DT_INTERFACE_ASSOCIATION_SIZE	8
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_SECURITY:  group of wireless security descriptors, including
-+ * encryption types available for setting up a CC/association.
-+ */
-+struct usb_security_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__le16 wTotalLength;
-+	__u8  bNumEncryptionTypes;
-+} __attribute__((packed));
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_KEY:  used with {GET,SET}_SECURITY_DATA; only public keys
-+ * may be retrieved.
-+ */
-+struct usb_key_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__u8  tTKID[3];
-+	__u8  bReserved;
-+	__u8  bKeyData[];
-+} __attribute__((packed));
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_ENCRYPTION_TYPE:  bundled in DT_SECURITY groups */
-+struct usb_encryption_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__u8  bEncryptionType;
-+#define	USB_ENC_TYPE_UNSECURE		0
-+#define	USB_ENC_TYPE_WIRED		1	/* non-wireless mode */
-+#define	USB_ENC_TYPE_CCM_1		2	/* aes128/cbc session */
-+#define	USB_ENC_TYPE_RSA_1		3	/* rsa3072/sha1 auth */
-+	__u8  bEncryptionValue;		/* use in SET_ENCRYPTION */
-+	__u8  bAuthKeyIndex;
-+} __attribute__((packed));
-+
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_BOS:  group of device-level capabilities */
-+struct usb_bos_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__le16 wTotalLength;
-+	__u8  bNumDeviceCaps;
-+} __attribute__((packed));
-+
-+#define USB_DT_BOS_SIZE		5
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_DEVICE_CAPABILITY:  grouped with BOS */
-+struct usb_dev_cap_header {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+	__u8  bDevCapabilityType;
-+} __attribute__((packed));
-+
-+#define	USB_CAP_TYPE_WIRELESS_USB	1
-+
-+struct usb_wireless_cap_descriptor {	/* Ultra Wide Band */
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+	__u8  bDevCapabilityType;
-+
-+	__u8  bmAttributes;
-+#define	USB_WIRELESS_P2P_DRD		(1 << 1)
-+#define	USB_WIRELESS_BEACON_MASK	(3 << 2)
-+#define	USB_WIRELESS_BEACON_SELF	(1 << 2)
-+#define	USB_WIRELESS_BEACON_DIRECTED	(2 << 2)
-+#define	USB_WIRELESS_BEACON_NONE	(3 << 2)
-+	__le16 wPHYRates;	/* bit rates, Mbps */
-+#define	USB_WIRELESS_PHY_53		(1 << 0)	/* always set */
-+#define	USB_WIRELESS_PHY_80		(1 << 1)
-+#define	USB_WIRELESS_PHY_107		(1 << 2)	/* always set */
-+#define	USB_WIRELESS_PHY_160		(1 << 3)
-+#define	USB_WIRELESS_PHY_200		(1 << 4)	/* always set */
-+#define	USB_WIRELESS_PHY_320		(1 << 5)
-+#define	USB_WIRELESS_PHY_400		(1 << 6)
-+#define	USB_WIRELESS_PHY_480		(1 << 7)
-+	__u8  bmTFITXPowerInfo;	/* TFI power levels */
-+	__u8  bmFFITXPowerInfo;	/* FFI power levels */
-+	__le16 bmBandGroup;
-+	__u8  bReserved;
-+} __attribute__((packed));
-+
-+#define USB_DT_USB_WIRELESS_CAP_SIZE	11
-+
-+/* USB 2.0 Extension descriptor */
-+#define	USB_CAP_TYPE_EXT		2
-+
-+struct usb_ext_cap_descriptor {		/* Link Power Management */
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+	__u8  bDevCapabilityType;
-+	__le32 bmAttributes;
-+#define USB_LPM_SUPPORT			(1 << 1)	/* supports LPM */
-+#define USB_BESL_SUPPORT		(1 << 2)	/* supports BESL */
-+#define USB_BESL_BASELINE_VALID		(1 << 3)	/* Baseline BESL valid*/
-+#define USB_BESL_DEEP_VALID		(1 << 4)	/* Deep BESL valid */
-+#define USB_SET_BESL_BASELINE(p)	(((p) & 0xf) << 8)
-+#define USB_SET_BESL_DEEP(p)		(((p) & 0xf) << 12)
-+#define USB_GET_BESL_BASELINE(p)	(((p) & (0xf << 8)) >> 8)
-+#define USB_GET_BESL_DEEP(p)		(((p) & (0xf << 12)) >> 12)
-+} __attribute__((packed));
-+
-+#define USB_DT_USB_EXT_CAP_SIZE	7
-+
-+/*
-+ * SuperSpeed USB Capability descriptor: Defines the set of SuperSpeed USB
-+ * specific device level capabilities
-+ */
-+#define		USB_SS_CAP_TYPE		3
-+struct usb_ss_cap_descriptor {		/* Link Power Management */
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+	__u8  bDevCapabilityType;
-+	__u8  bmAttributes;
-+#define USB_LTM_SUPPORT			(1 << 1) /* supports LTM */
-+	__le16 wSpeedSupported;
-+#define USB_LOW_SPEED_OPERATION		(1)	 /* Low speed operation */
-+#define USB_FULL_SPEED_OPERATION	(1 << 1) /* Full speed operation */
-+#define USB_HIGH_SPEED_OPERATION	(1 << 2) /* High speed operation */
-+#define USB_5GBPS_OPERATION		(1 << 3) /* Operation at 5Gbps */
-+	__u8  bFunctionalitySupport;
-+	__u8  bU1devExitLat;
-+	__le16 bU2DevExitLat;
-+} __attribute__((packed));
-+
-+#define USB_DT_USB_SS_CAP_SIZE	10
-+
-+/*
-+ * Container ID Capability descriptor: Defines the instance unique ID used to
-+ * identify the instance across all operating modes
-+ */
-+#define	CONTAINER_ID_TYPE	4
-+struct usb_ss_container_id_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+	__u8  bDevCapabilityType;
-+	__u8  bReserved;
-+	__u8  ContainerID[16]; /* 128-bit number */
-+} __attribute__((packed));
-+
-+#define USB_DT_USB_SS_CONTN_ID_SIZE	20
-+
-+/*
-+ * Platform Device Capability descriptor: Defines platform specific device
-+ * capabilities
-+ */
-+#define	USB_PLAT_DEV_CAP_TYPE	5
-+struct usb_plat_dev_cap_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+	__u8  bDevCapabilityType;
-+	__u8  bReserved;
-+	__u8  UUID[16];
-+	__u8  CapabilityData[];
-+} __attribute__((packed));
-+
-+#define USB_DT_USB_PLAT_DEV_CAP_SIZE(capability_data_size)	(20 + capability_data_size)
-+
-+/*
-+ * SuperSpeed Plus USB Capability descriptor: Defines the set of
-+ * SuperSpeed Plus USB specific device level capabilities
-+ */
-+#define	USB_SSP_CAP_TYPE	0xa
-+struct usb_ssp_cap_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+	__u8  bDevCapabilityType;
-+	__u8  bReserved;
-+	__le32 bmAttributes;
-+#define USB_SSP_SUBLINK_SPEED_ATTRIBS	(0x1f << 0) /* sublink speed entries */
-+#define USB_SSP_SUBLINK_SPEED_IDS	(0xf << 5)  /* speed ID entries */
-+	__le16  wFunctionalitySupport;
-+#define USB_SSP_MIN_SUBLINK_SPEED_ATTRIBUTE_ID	(0xf)
-+#define USB_SSP_MIN_RX_LANE_COUNT		(0xf << 8)
-+#define USB_SSP_MIN_TX_LANE_COUNT		(0xf << 12)
-+	__le16 wReserved;
-+	__le32 bmSublinkSpeedAttr[1]; /* list of sublink speed attrib entries */
-+#define USB_SSP_SUBLINK_SPEED_SSID	(0xf)		/* sublink speed ID */
-+#define USB_SSP_SUBLINK_SPEED_LSE	(0x3 << 4)	/* Lanespeed exponent */
-+#define USB_SSP_SUBLINK_SPEED_LSE_BPS		0
-+#define USB_SSP_SUBLINK_SPEED_LSE_KBPS		1
-+#define USB_SSP_SUBLINK_SPEED_LSE_MBPS		2
-+#define USB_SSP_SUBLINK_SPEED_LSE_GBPS		3
-+
-+#define USB_SSP_SUBLINK_SPEED_ST	(0x3 << 6)	/* Sublink type */
-+#define USB_SSP_SUBLINK_SPEED_ST_SYM_RX		0
-+#define USB_SSP_SUBLINK_SPEED_ST_ASYM_RX	1
-+#define USB_SSP_SUBLINK_SPEED_ST_SYM_TX		2
-+#define USB_SSP_SUBLINK_SPEED_ST_ASYM_TX	3
-+
-+#define USB_SSP_SUBLINK_SPEED_RSVD	(0x3f << 8)	/* Reserved */
-+#define USB_SSP_SUBLINK_SPEED_LP	(0x3 << 14)	/* Link protocol */
-+#define USB_SSP_SUBLINK_SPEED_LP_SS		0
-+#define USB_SSP_SUBLINK_SPEED_LP_SSP		1
-+
-+#define USB_SSP_SUBLINK_SPEED_LSM	(0xff << 16)	/* Lanespeed mantissa */
-+} __attribute__((packed));
-+
-+/*
-+ * USB Power Delivery Capability Descriptor:
-+ * Defines capabilities for PD
-+ */
-+/* Defines the various PD Capabilities of this device */
-+#define USB_PD_POWER_DELIVERY_CAPABILITY	0x06
-+/* Provides information on each battery supported by the device */
-+#define USB_PD_BATTERY_INFO_CAPABILITY		0x07
-+/* The Consumer characteristics of a Port on the device */
-+#define USB_PD_PD_CONSUMER_PORT_CAPABILITY	0x08
-+/* The provider characteristics of a Port on the device */
-+#define USB_PD_PD_PROVIDER_PORT_CAPABILITY	0x09
-+
-+struct usb_pd_cap_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+	__u8  bDevCapabilityType; /* set to USB_PD_POWER_DELIVERY_CAPABILITY */
-+	__u8  bReserved;
-+	__le32 bmAttributes;
-+#define USB_PD_CAP_BATTERY_CHARGING	(1 << 1) /* supports Battery Charging specification */
-+#define USB_PD_CAP_USB_PD		(1 << 2) /* supports USB Power Delivery specification */
-+#define USB_PD_CAP_PROVIDER		(1 << 3) /* can provide power */
-+#define USB_PD_CAP_CONSUMER		(1 << 4) /* can consume power */
-+#define USB_PD_CAP_CHARGING_POLICY	(1 << 5) /* supports CHARGING_POLICY feature */
-+#define USB_PD_CAP_TYPE_C_CURRENT	(1 << 6) /* supports power capabilities defined in the USB Type-C Specification */
-+
-+#define USB_PD_CAP_PWR_AC		(1 << 8)
-+#define USB_PD_CAP_PWR_BAT		(1 << 9)
-+#define USB_PD_CAP_PWR_USE_V_BUS	(1 << 14)
-+
-+	__le16 bmProviderPorts; /* Bit zero refers to the UFP of the device */
-+	__le16 bmConsumerPorts;
-+	__le16 bcdBCVersion;
-+	__le16 bcdPDVersion;
-+	__le16 bcdUSBTypeCVersion;
-+} __attribute__((packed));
-+
-+struct usb_pd_cap_battery_info_descriptor {
-+	__u8 bLength;
-+	__u8 bDescriptorType;
-+	__u8 bDevCapabilityType;
-+	/* Index of string descriptor shall contain the user friendly name for this battery */
-+	__u8 iBattery;
-+	/* Index of string descriptor shall contain the Serial Number String for this battery */
-+	__u8 iSerial;
-+	__u8 iManufacturer;
-+	__u8 bBatteryId; /* uniquely identifies this battery in status Messages */
-+	__u8 bReserved;
-+	/*
-+	 * Shall contain the Battery Charge value above which this
-+	 * battery is considered to be fully charged but not necessarily
-+	 * “topped off.”
-+	 */
-+	__le32 dwChargedThreshold; /* in mWh */
-+	/*
-+	 * Shall contain the minimum charge level of this battery such
-+	 * that above this threshold, a device can be assured of being
-+	 * able to power up successfully (see Battery Charging 1.2).
-+	 */
-+	__le32 dwWeakThreshold; /* in mWh */
-+	__le32 dwBatteryDesignCapacity; /* in mWh */
-+	__le32 dwBatteryLastFullchargeCapacity; /* in mWh */
-+} __attribute__((packed));
-+
-+struct usb_pd_cap_consumer_port_descriptor {
-+	__u8 bLength;
-+	__u8 bDescriptorType;
-+	__u8 bDevCapabilityType;
-+	__u8 bReserved;
-+	__u8 bmCapabilities;
-+/* port will oerate under: */
-+#define USB_PD_CAP_CONSUMER_BC		(1 << 0) /* BC */
-+#define USB_PD_CAP_CONSUMER_PD		(1 << 1) /* PD */
-+#define USB_PD_CAP_CONSUMER_TYPE_C	(1 << 2) /* USB Type-C Current */
-+	__le16 wMinVoltage; /* in 50mV units */
-+	__le16 wMaxVoltage; /* in 50mV units */
-+	__u16 wReserved;
-+	__le32 dwMaxOperatingPower; /* in 10 mW - operating at steady state */
-+	__le32 dwMaxPeakPower; /* in 10mW units - operating at peak power */
-+	__le32 dwMaxPeakPowerTime; /* in 100ms units - duration of peak */
-+#define USB_PD_CAP_CONSUMER_UNKNOWN_PEAK_POWER_TIME 0xffff
-+} __attribute__((packed));
-+
-+struct usb_pd_cap_provider_port_descriptor {
-+	__u8 bLength;
-+	__u8 bDescriptorType;
-+	__u8 bDevCapabilityType;
-+	__u8 bReserved1;
-+	__u8 bmCapabilities;
-+/* port will oerate under: */
-+#define USB_PD_CAP_PROVIDER_BC		(1 << 0) /* BC */
-+#define USB_PD_CAP_PROVIDER_PD		(1 << 1) /* PD */
-+#define USB_PD_CAP_PROVIDER_TYPE_C	(1 << 2) /* USB Type-C Current */
-+	__u8 bNumOfPDObjects;
-+	__u8 bReserved2;
-+	__le32 wPowerDataObject[];
-+} __attribute__((packed));
-+
-+/*
-+ * Precision time measurement capability descriptor: advertised by devices and
-+ * hubs that support PTM
-+ */
-+#define	USB_PTM_CAP_TYPE	0xb
-+struct usb_ptm_cap_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+	__u8  bDevCapabilityType;
-+} __attribute__((packed));
-+
-+#define USB_DT_USB_PTM_ID_SIZE		3
-+/*
-+ * The size of the descriptor for the Sublink Speed Attribute Count
-+ * (SSAC) specified in bmAttributes[4:0]. SSAC is zero-based
-+ */
-+#define USB_DT_USB_SSP_CAP_SIZE(ssac)	(12 + (ssac + 1) * 4)
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_DT_WIRELESS_ENDPOINT_COMP:  companion descriptor associated with
-+ * each endpoint descriptor for a wireless device
-+ */
-+struct usb_wireless_ep_comp_descriptor {
-+	__u8  bLength;
-+	__u8  bDescriptorType;
-+
-+	__u8  bMaxBurst;
-+	__u8  bMaxSequence;
-+	__le16 wMaxStreamDelay;
-+	__le16 wOverTheAirPacketSize;
-+	__u8  bOverTheAirInterval;
-+	__u8  bmCompAttributes;
-+#define USB_ENDPOINT_SWITCH_MASK	0x03	/* in bmCompAttributes */
-+#define USB_ENDPOINT_SWITCH_NO		0
-+#define USB_ENDPOINT_SWITCH_SWITCH	1
-+#define USB_ENDPOINT_SWITCH_SCALE	2
-+} __attribute__((packed));
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_REQ_SET_HANDSHAKE is a four-way handshake used between a wireless
-+ * host and a device for connection set up, mutual authentication, and
-+ * exchanging short lived session keys.  The handshake depends on a CC.
-+ */
-+struct usb_handshake {
-+	__u8 bMessageNumber;
-+	__u8 bStatus;
-+	__u8 tTKID[3];
-+	__u8 bReserved;
-+	__u8 CDID[16];
-+	__u8 nonce[16];
-+	__u8 MIC[8];
-+} __attribute__((packed));
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB_REQ_SET_CONNECTION modifies or revokes a connection context (CC).
-+ * A CC may also be set up using non-wireless secure channels (including
-+ * wired USB!), and some devices may support CCs with multiple hosts.
-+ */
-+struct usb_connection_context {
-+	__u8 CHID[16];		/* persistent host id */
-+	__u8 CDID[16];		/* device id (unique w/in host context) */
-+	__u8 CK[16];		/* connection key */
-+} __attribute__((packed));
-+
-+/*-------------------------------------------------------------------------*/
-+
-+/* USB 2.0 defines three speeds, here's how Linux identifies them */
-+
-+enum usb_device_speed {
-+	USB_SPEED_UNKNOWN = 0,			/* enumerating */
-+	USB_SPEED_LOW, USB_SPEED_FULL,		/* usb 1.1 */
-+	USB_SPEED_HIGH,				/* usb 2.0 */
-+	USB_SPEED_WIRELESS,			/* wireless (usb 2.5) */
-+	USB_SPEED_SUPER,			/* usb 3.0 */
-+	USB_SPEED_SUPER_PLUS,			/* usb 3.1 */
+ 
+-/**
+- * usb_gadget_vbus_disconnect - notify controller about VBUS session end
+- * @gadget:the device whose VBUS supply is being described
+- * Context: can sleep
+- *
+- * This call is used by a driver for an external transceiver (or GPIO)
+- * that detects a VBUS power session ending.  Common responses include
+- * reversing everything done in usb_gadget_vbus_connect().
+- *
+- * Returns zero on success, else negative errno.
+- */
++#if IS_ENABLED(CONFIG_USB_GADGET)
++int usb_gadget_frame_number(struct usb_gadget *gadget);
++int usb_gadget_wakeup(struct usb_gadget *gadget);
++int usb_gadget_set_selfpowered(struct usb_gadget *gadget);
++int usb_gadget_clear_selfpowered(struct usb_gadget *gadget);
++int usb_gadget_vbus_connect(struct usb_gadget *gadget);
++int usb_gadget_vbus_draw(struct usb_gadget *gadget, unsigned mA);
++int usb_gadget_vbus_disconnect(struct usb_gadget *gadget);
++int usb_gadget_connect(struct usb_gadget *gadget);
++int usb_gadget_disconnect(struct usb_gadget *gadget);
++int usb_gadget_deactivate(struct usb_gadget *gadget);
++int usb_gadget_activate(struct usb_gadget *gadget);
++int usb_gadget_check_config(struct usb_gadget *gadget);
++#else
++static inline int usb_gadget_frame_number(struct usb_gadget *gadget)
++{ return 0; }
++static inline int usb_gadget_wakeup(struct usb_gadget *gadget)
++{ return 0; }
++static inline int usb_gadget_set_selfpowered(struct usb_gadget *gadget)
++{ return 0; }
++static inline int usb_gadget_clear_selfpowered(struct usb_gadget *gadget)
++{ return 0; }
++static inline int usb_gadget_vbus_connect(struct usb_gadget *gadget)
++{ return 0; }
++static inline int usb_gadget_vbus_draw(struct usb_gadget *gadget, unsigned mA)
++{ return 0; }
+ static inline int usb_gadget_vbus_disconnect(struct usb_gadget *gadget)
+-{
+-	if (!gadget->ops->vbus_session)
+-		return -EOPNOTSUPP;
+-	return gadget->ops->vbus_session(gadget, 0);
+-}
+-
+-/**
+- * usb_gadget_connect - software-controlled connect to USB host
+- * @gadget:the peripheral being connected
+- *
+- * Enables the D+ (or potentially D-) pullup.  The host will start
+- * enumerating this gadget when the pullup is active and a VBUS session
+- * is active (the link is powered).  This pullup is always enabled unless
+- * usb_gadget_disconnect() has been used to disable it.
+- *
+- * Returns zero on success, else negative errno.
+- */
++{ return 0; }
+ static inline int usb_gadget_connect(struct usb_gadget *gadget)
+-{
+-	if (!gadget->ops->pullup)
+-		return -EOPNOTSUPP;
+-	return gadget->ops->pullup(gadget, 1);
+-}
+-
+-/**
+- * usb_gadget_disconnect - software-controlled disconnect from USB host
+- * @gadget:the peripheral being disconnected
+- *
+- * Disables the D+ (or potentially D-) pullup, which the host may see
+- * as a disconnect (when a VBUS session is active).  Not all systems
+- * support software pullup controls.
+- *
+- * This routine may be used during the gadget driver bind() call to prevent
+- * the peripheral from ever being visible to the USB host, unless later
+- * usb_gadget_connect() is called.  For example, user mode components may
+- * need to be activated before the system can talk to hosts.
+- *
+- * Returns zero on success, else negative errno.
+- */
++{ return 0; }
+ static inline int usb_gadget_disconnect(struct usb_gadget *gadget)
+-{
+-	if (!gadget->ops->pullup)
+-		return -EOPNOTSUPP;
+-	return gadget->ops->pullup(gadget, 0);
+-}
+-
+-int usb_gadget_poll(void);
++{ return 0; }
++static inline int usb_gadget_deactivate(struct usb_gadget *gadget)
++{ return 0; }
++static inline int usb_gadget_activate(struct usb_gadget *gadget)
++{ return 0; }
++static inline int usb_gadget_check_config(struct usb_gadget *gadget)
++{ return 0; }
++#endif /* CONFIG_USB_GADGET */
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+ /**
+- * struct usb_gadget_driver - driver for usb 'slave' devices
++ * struct usb_gadget_driver - driver for usb gadget devices
+  * @function: String describing the gadget's function
+  * @max_speed: Highest speed the driver handles.
+  * @setup: Invoked for ep0 control requests that aren't handled by
+@@ -822,7 +662,14 @@ int usb_gadget_poll(void);
+  *	Called in a context that permits sleeping.
+  * @suspend: Invoked on USB suspend.  May be called in_interrupt.
+  * @resume: Invoked on USB resume.  May be called in_interrupt.
++ * @reset: Invoked on USB bus reset. It is mandatory for all gadget drivers
++ *	and should be called in_interrupt.
+  * @driver: Driver model state for this driver.
++ * @udc_name: A name of UDC this driver should be bound to. If udc_name is NULL,
++ *	this driver will be bound to any available UDC.
++ * @match_existing_only: If udc is not found, return an error and fail
++ *	the driver registration
++ * @is_bound: Allow a driver to be bound to only one gadget
+  *
+  * Devices are disabled till a gadget driver successfully bind()s, which
+  * means the driver will handle setup() requests needed to enumerate (and
+@@ -879,9 +726,14 @@ struct usb_gadget_driver {
+ 	void			(*disconnect)(struct usb_gadget *);
+ 	void			(*suspend)(struct usb_gadget *);
+ 	void			(*resume)(struct usb_gadget *);
++	void			(*reset)(struct usb_gadget *);
+ 
+ 	/* FIXME support safe rmmod */
+ 	struct driver		driver;
++
++	char			*udc_name;
++	unsigned                match_existing_only:1;
++	bool			is_bound:1;
+ };
+ 
+ 
+@@ -891,22 +743,23 @@ struct usb_gadget_driver {
+ /* driver modules register and unregister, as usual.
+  * these calls must be made in a context that can sleep.
+  *
+- * these will usually be implemented directly by the hardware-dependent
+- * usb bus interface driver, which will only support a single driver.
++ * A gadget driver can be bound to only one gadget at a time.
+  */
+ 
+ /**
+- * usb_gadget_probe_driver - probe a gadget driver
++ * usb_gadget_register_driver - register a gadget driver
+  * @driver: the driver being registered
+  * Context: can sleep
+  *
+  * Call this in your gadget driver's module initialization function,
+- * to tell the underlying usb controller driver about your driver.
++ * to tell the underlying UDC controller driver about your driver.
+  * The @bind() function will be called to bind it to a gadget before this
+  * registration call returns.  It's expected that the @bind() function will
+  * be in init sections.
++ *
++ * Use the macro defined below instead of calling this directly.
+  */
+-int usb_gadget_probe_driver(struct usb_gadget_driver *driver);
++int usb_gadget_register_driver(struct usb_gadget_driver *driver);
+ 
+ /**
+  * usb_gadget_unregister_driver - unregister a gadget driver
+@@ -919,19 +772,10 @@ int usb_gadget_probe_driver(struct usb_gadget_driver *driver);
+  * it will first disconnect().  The driver is also requested
+  * to unbind() and clean up any device state, before this procedure
+  * finally returns.  It's expected that the unbind() functions
+- * will in in exit sections, so may not be linked in some kernels.
++ * will be in exit sections, so may not be linked in some kernels.
+  */
+ int usb_gadget_unregister_driver(struct usb_gadget_driver *driver);
+ 
+-extern int usb_add_gadget_udc_release(struct device *parent,
+-				      struct usb_gadget *gadget,
+-				      void (*release)(struct device *dev));
+-extern int usb_add_gadget_udc(struct device *parent,
+-			      struct usb_gadget *gadget);
+-extern void usb_del_gadget_udc(struct usb_gadget *gadget);
+-extern int udc_attach_driver(const char *name,
+-		struct usb_gadget_driver *driver);
+-
+ /*-------------------------------------------------------------------------*/
+ 
+ /* utility to simplify dealing with string descriptors */
+@@ -964,11 +808,23 @@ struct usb_gadget_strings {
+ 
+ struct usb_gadget_string_container {
+ 	struct list_head        list;
+-	u8                      *stash[0];
++	u8                      *stash[];
+ };
+ 
+ /* put descriptor for string with that id into buf (buflen >= 256) */
+-int usb_gadget_get_string(struct usb_gadget_strings *table, int id, u8 *buf);
++int usb_gadget_get_string(const struct usb_gadget_strings *table, int id, u8 *buf);
++
++/* check if the given language identifier is valid */
++bool usb_validate_langid(u16 langid);
++
++struct gadget_string {
++	struct list_head list;
++	char string[USB_MAX_STRING_LEN];
++	struct usb_string usb_string;
 +};
 +
++#define to_gadget_string(str_item)\
++container_of(str_item, struct gadget_string, item)
+ 
+ /*-------------------------------------------------------------------------*/
+ 
+@@ -1002,6 +858,36 @@ int usb_assign_descriptors(struct usb_function *f,
+ 		struct usb_descriptor_header **ss);
+ void usb_free_all_descriptors(struct usb_function *f);
+ 
++struct usb_descriptor_header *usb_otg_descriptor_alloc(
++				struct usb_gadget *gadget);
++int usb_otg_descriptor_init(struct usb_gadget *gadget,
++		struct usb_descriptor_header *otg_desc);
++/*-------------------------------------------------------------------------*/
 +
-+enum usb_device_state {
-+	/* NOTATTACHED isn't in the USB spec, and this state acts
-+	 * the same as ATTACHED ... but it's clearer this way.
-+	 */
-+	USB_STATE_NOTATTACHED = 0,
++/* utility to simplify map/unmap of usb_requests to/from DMA */
 +
-+	/* chapter 9 and authentication (wireless) device states */
-+	USB_STATE_ATTACHED,
-+	USB_STATE_POWERED,			/* wired */
-+	USB_STATE_RECONNECTING,			/* auth */
-+	USB_STATE_UNAUTHENTICATED,		/* auth */
-+	USB_STATE_DEFAULT,			/* limited function */
-+	USB_STATE_ADDRESS,
-+	USB_STATE_CONFIGURED,			/* most functions */
++#ifdef	CONFIG_HAS_DMA
++extern int usb_gadget_map_request_by_dev(struct device *dev,
++		struct usb_request *req, int is_in);
++extern int usb_gadget_map_request(struct usb_gadget *gadget,
++		struct usb_request *req, int is_in);
 +
-+	USB_STATE_SUSPENDED
++extern void usb_gadget_unmap_request_by_dev(struct device *dev,
++		struct usb_request *req, int is_in);
++extern void usb_gadget_unmap_request(struct usb_gadget *gadget,
++		struct usb_request *req, int is_in);
++#else /* !CONFIG_HAS_DMA */
++static inline int usb_gadget_map_request_by_dev(struct device *dev,
++		struct usb_request *req, int is_in) { return -ENOSYS; }
++static inline int usb_gadget_map_request(struct usb_gadget *gadget,
++		struct usb_request *req, int is_in) { return -ENOSYS; }
 +
-+	/* NOTE:  there are actually four different SUSPENDED
-+	 * states, returning to POWERED, DEFAULT, ADDRESS, or
-+	 * CONFIGURED respectively when SOF tokens flow again.
-+	 * At this level there's no difference between L1 and L2
-+	 * suspend states.  (L2 being original USB 1.1 suspend.)
-+	 */
-+};
++static inline void usb_gadget_unmap_request_by_dev(struct device *dev,
++		struct usb_request *req, int is_in) { }
++static inline void usb_gadget_unmap_request(struct usb_gadget *gadget,
++		struct usb_request *req, int is_in) { }
++#endif /* !CONFIG_HAS_DMA */
 +
-+enum usb3_link_state {
-+	USB3_LPM_U0 = 0,
-+	USB3_LPM_U1,
-+	USB3_LPM_U2,
-+	USB3_LPM_U3
-+};
-+
-+/*
-+ * A U1 timeout of 0x0 means the parent hub will reject any transitions to U1.
-+ * 0xff means the parent hub will accept transitions to U1, but will not
-+ * initiate a transition.
-+ *
-+ * A U1 timeout of 0x1 to 0x7F also causes the hub to initiate a transition to
-+ * U1 after that many microseconds.  Timeouts of 0x80 to 0xFE are reserved
-+ * values.
-+ *
-+ * A U2 timeout of 0x0 means the parent hub will reject any transitions to U2.
-+ * 0xff means the parent hub will accept transitions to U2, but will not
-+ * initiate a transition.
-+ *
-+ * A U2 timeout of 0x1 to 0xFE also causes the hub to initiate a transition to
-+ * U2 after N*256 microseconds.  Therefore a U2 timeout value of 0x1 means a U2
-+ * idle timer of 256 microseconds, 0x2 means 512 microseconds, 0xFE means
-+ * 65.024ms.
-+ */
-+#define USB3_LPM_DISABLED		0x0
-+#define USB3_LPM_U1_MAX_TIMEOUT		0x7F
-+#define USB3_LPM_U2_MAX_TIMEOUT		0xFE
-+#define USB3_LPM_DEVICE_INITIATED	0xFF
-+
-+struct usb_set_sel_req {
-+	__u8	u1_sel;
-+	__u8	u1_pel;
-+	__le16	u2_sel;
-+	__le16	u2_pel;
-+} __attribute__ ((packed));
-+
-+/*
-+ * The Set System Exit Latency control transfer provides one byte each for
-+ * U1 SEL and U1 PEL, so the max exit latency is 0xFF.  U2 SEL and U2 PEL each
-+ * are two bytes long.
-+ */
-+#define USB3_LPM_MAX_U1_SEL_PEL		0xFF
-+#define USB3_LPM_MAX_U2_SEL_PEL		0xFFFF
+ /*-------------------------------------------------------------------------*/
+ 
+ /* utility to set gadget state properly */
+@@ -1013,7 +899,36 @@ extern void usb_gadget_set_state(struct usb_gadget *gadget,
+ 
+ /* utility to tell udc core that the bus reset occurs */
+ extern void usb_gadget_udc_reset(struct usb_gadget *gadget,
+-				 struct usb_gadget_driver *driver);
++		struct usb_gadget_driver *driver);
 +
 +/*-------------------------------------------------------------------------*/
 +
-+/*
-+ * As per USB compliance update, a device that is actively drawing
-+ * more than 100mA from USB must report itself as bus-powered in
-+ * the GetStatus(DEVICE) call.
-+ * https://compliance.usb.org/index.asp?UpdateFile=Electrical&Format=Standard#34
-+ */
-+#define USB_SELF_POWER_VBUS_MAX_DRAW		100
++/* utility to give requests back to the gadget layer */
 +
-+#endif /* _UAPI__LINUX_USB_CH9_H */
++extern void usb_gadget_giveback_request(struct usb_ep *ep,
++		struct usb_request *req);
++
++/*-------------------------------------------------------------------------*/
++
++/* utility to find endpoint by name */
++
++extern struct usb_ep *gadget_find_ep_by_name(struct usb_gadget *g,
++		const char *name);
++
++/*-------------------------------------------------------------------------*/
++
++/* utility to check if endpoint caps match descriptor needs */
++
++extern int usb_gadget_ep_match_desc(struct usb_gadget *gadget,
++		struct usb_ep *ep, struct usb_endpoint_descriptor *desc,
++		struct usb_ss_ep_comp_descriptor *ep_comp);
++
++/*-------------------------------------------------------------------------*/
++
++/* utility to update vbus status for udc core, it may be scheduled */
++extern void usb_udc_vbus_handler(struct usb_gadget *gadget, bool status);
++
++/*-------------------------------------------------------------------------*/
+ 
+ /* utility wrapping a simple endpoint selection policy */
+ 
+@@ -1025,6 +940,10 @@ extern struct usb_ep *usb_ep_autoconfig_ss(struct usb_gadget *,
+ 			struct usb_endpoint_descriptor *,
+ 			struct usb_ss_ep_comp_descriptor *);
+ 
++extern void usb_ep_autoconfig_release(struct usb_ep *);
++
+ extern void usb_ep_autoconfig_reset(struct usb_gadget *);
+ 
++int usb_gadget_poll(void);
++
+ #endif /* __LINUX_USB_GADGET_H */
 -- 
 2.30.2
 
