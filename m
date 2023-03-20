@@ -1,71 +1,59 @@
-Delivery-date: Sun, 19 Mar 2023 22:29:41 +0100
+Delivery-date: Mon, 20 Mar 2023 09:21:29 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pe0ax-006zRY-R8
-	for lore@lore.pengutronix.de; Sun, 19 Mar 2023 22:29:41 +0100
+	id 1peAlk-007aVJ-Vk
+	for lore@lore.pengutronix.de; Mon, 20 Mar 2023 09:21:29 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pe0ax-0004m3-Kr
-	for lore@pengutronix.de; Sun, 19 Mar 2023 22:29:40 +0100
+	id 1peAlk-0008P7-MV
+	for lore@pengutronix.de; Mon, 20 Mar 2023 09:21:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FoNZFPZ+kONWei+kJ5RLs7dRMeP7oy2G9b7Igr9c3bY=; b=AK389+xOooevM88+XNzaPB858r
-	O4zouS4VBaskWkcH8NSpyOodgsg0vBCyrUsDwcZY1KmcCLNbO6AYsqdU7E9uYEUxFByNMI5dar7hf
-	x7V6XQFXqsf6WtgvAsHJh0MHzFdLqwMNSwaqx8PLlytElX3xGllCQwKZrOyZaL0oBomQgR7j2/t+F
-	GLKgy3auZHHl9zEunrAXgIO7VHRZ8dKlKjqjAEaaNBS9n5FiXY9GXT4flw50dxTgbSk0CyK89pv/h
-	AaY37+IGquKKBvfwU1kIk1R88AUN8Ah2+LSyBANAdtJ9N66H4J//VQpBTStTcDSMq9JpHQGXLJMuv
-	9K0gwaHg==;
+	bh=G6gZte5uwL966sttKdxvC422U1xroVSGi40fz0WT/CE=; b=V5l3E4cH0vrV7BqZcZ/NAG460B
+	jt57WORMJw+DgOgkxfmCucWiCDrrKIqbD9g/GwsatrMfEa9fXmNR8OI+G9g+UnCuVkff1DQ+sAs1V
+	34Swe4xR7+UoavVzCylRyvqxxD1VJNWFg4lQjEh7BKmNuYiecNkdx35mwRKh+HuvvuaBMCjlHE8xP
+	P9DYEA9htSiYWlmsRMicROq5aE+NUoaIFk8/TfcvZ8VTyuJK7t8J+OM5EwTiZmfB4d7ecTmnQbiOq
+	mE3YCg1lq2oHyZm1aLYDvUBncNQJX63zaKt9AFuK77tkMOgYCXOGvL+wu+zsPFw7NqpOvGBvmADOi
+	SILOgnZw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pe0Zc-007U61-2R;
-	Sun, 19 Mar 2023 21:28:16 +0000
-Received: from ams.source.kernel.org ([145.40.68.75])
+	id 1peAkK-008MeT-1t;
+	Mon, 20 Mar 2023 08:20:00 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pe0ZY-007U5B-2A
+	id 1peAkH-008MdA-1E
 	for barebox@lists.infradead.org;
-	Sun, 19 Mar 2023 21:28:13 +0000
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 570F1B80D0B;
-	Sun, 19 Mar 2023 21:28:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7095C433D2;
-	Sun, 19 Mar 2023 21:28:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679261290;
-	bh=N9h6fh9eodMvYN/OxXEXkF9xbLZmagDqr5bNGkcFEm0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MZzsWCWIeBhqLOJywMbN5aQZcKa9cbmkSrMk1W972IcSHBuT9sOQhSeVN0YxKN1zo
-	 q4N3i+yhskmEfJgy62XqWR3BHUfWI7zMKNT3K4leelwzsPNXItqzuKNQwIAHMXpI2c
-	 anO7T0q/K/L4KS91+9JvGwuY380j7490/By5/JEtZRCdexi40x3jjcW/PZyZqasR2V
-	 71jk07qNJYS7bqPQ9KwnkqyKVh2LBej37FN5F1z82FhazxmvF0MvTvCcP+ESGZX56t
-	 cE7yBPA1kIXezoqjYzQ2Z3WepLZeUws1vafwLkhiz30Ih3WpQmJybiLLog1H1bQqQ8
-	 4edqHQGemYCvA==
-Date: Sun, 19 Mar 2023 22:28:07 +0100
-From: Wolfram Sang <wsa@kernel.org>
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <ZBd+Z+qn9rjuvp6S@sai.fritz.box>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-	Sam Ravnborg <sam@ravnborg.org>, barebox@lists.infradead.org
-References: <20230319154909.24047-1-wsa@kernel.org>
- <ZBdZxskg+JPzUY0t@ravnborg.org>
+	Mon, 20 Mar 2023 08:19:58 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1peAkA-00084M-P7; Mon, 20 Mar 2023 09:19:50 +0100
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1peAkA-0002Lw-8m; Mon, 20 Mar 2023 09:19:50 +0100
+Date: Mon, 20 Mar 2023 09:19:50 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org, Rouven Czerwinski <rouven@czerwinskis.de>
+Message-ID: <20230320081950.sjxg2st6qgqh6l4o@pengutronix.de>
+References: <20230318160635.216749-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="7iSgTpFDKj+5GbHh"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZBdZxskg+JPzUY0t@ravnborg.org>
+In-Reply-To: <20230318160635.216749-1-r.czerwinski@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230319_142812_855635_F074D3E2 
-X-CRM114-Status: GOOD (  14.76  )
+X-CRM114-CacheID: sfid-20230320_011957_415930_46C9E314 
+X-CRM114-Status: GOOD (  15.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,61 +71,85 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED,USER_IN_WELCOMELIST,USER_IN_WHITELIST
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/3] mtd: nand: atmel: legacy: fix boot on USB-A9G20
+Subject: Re: [PATCH] arm: rockchip: add support for CM3 on IO board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+Hi Rouven,
 
---7iSgTpFDKj+5GbHh
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On 23-03-18, Rouven Czerwinski wrote:
+> From: Rouven Czerwinski <rouven@czerwinskis.de>
+> 
+> Working:
+> - RKBIN DDR training (rk3566_ddr_1056MHz_v1.13.bin)
+> - RKBIN TF-A (v1.34) from RKBIN
 
-Hi Sam,
+Can please add the board to Documentation/boards/rockchip.rst?
 
-> It is only a few weeks ago I argued that there was no users of the older
-> at91sam* boards, and then you prove me wrong here.
+> - Environment storage
+> - DHCP, ping and link detection
+> 
+> Signed-off-by: Rouven Czerwinski <rouven@czerwinskis.de>
+> ---
+>  arch/arm/boards/Makefile             |  1 +
+>  arch/arm/boards/radxa-cm3/.gitignore |  1 +
+>  arch/arm/boards/radxa-cm3/Makefile   |  3 ++
+>  arch/arm/boards/radxa-cm3/board.c    | 56 ++++++++++++++++++++++++++++
+>  arch/arm/boards/radxa-cm3/lowlevel.c | 50 +++++++++++++++++++++++++
+>  arch/arm/dts/Makefile                |  1 +
+>  arch/arm/dts/rk3566-cm3-io.dts       | 55 +++++++++++++++++++++++++++
+>  arch/arm/mach-rockchip/Kconfig       |  6 +++
+>  images/Makefile.rockchip             |  7 ++++
+>  9 files changed, 180 insertions(+)
+>  create mode 100644 arch/arm/boards/radxa-cm3/.gitignore
+>  create mode 100644 arch/arm/boards/radxa-cm3/Makefile
+>  create mode 100644 arch/arm/boards/radxa-cm3/board.c
+>  create mode 100644 arch/arm/boards/radxa-cm3/lowlevel.c
+>  create mode 100644 arch/arm/dts/rk3566-cm3-io.dts
 
-At your service ;)
+...
 
-> I will try to remember that you may be able to test should someone
-> decide to move the barebox support for qil_a9g20 to DT and add PBL
-> support in the process.
+> diff --git a/arch/arm/dts/rk3566-cm3-io.dts b/arch/arm/dts/rk3566-cm3-io.dts
+> new file mode 100644
+> index 0000000000..81f896b943
+> --- /dev/null
+> +++ b/arch/arm/dts/rk3566-cm3-io.dts
+> @@ -0,0 +1,55 @@
+> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+> +
+> +/dts-v1/;
+> +
+> +#include <arm64/rockchip/rk3566-radxa-cm3-io.dts>
+> +#include "rk356x.dtsi"
+> +
+> +/ {
+> +	chosen: chosen {
+> +		environment-sd {
+> +			compatible = "barebox,environment";
+> +			device-path = &environment_sd;
+> +			status = "disabled";
+> +		};
+> +
+> +		environment-emmc {
+> +			compatible = "barebox,environment";
+> +			device-path = &environment_emmc;
+> +			status = "disabled";
+> +		};
+> +	};
+> +
+> +	memory@a00000 {
+> +		device_type = "memory";
+> +		reg = <0x0 0x00a00000 0x0 0x7f600000>;
+> +	};
 
-I am still new to at91 and barebox, but AFAICS the PBL support is only
-for MCI currently? I have an USB-A9G20-C01 and this one does not have SD
-exposed. The later version A9G20-LPW has it, but I don't own such a
-device, sadly. I really like the Calao USB form factor.
+Do we need the memoty node here? I recently encountered issues with it
+on a i.MX8MP.
 
-Happy hacking,
-
-   Wolfram
-
-
---7iSgTpFDKj+5GbHh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmQXfmMACgkQFA3kzBSg
-Kba88w//Vh0H2V1ugQwdchljM6ZeM1R6UHDmdI6BGksqFrhCQHwIOwZEuhzUmL7m
-zUfT2KlglZMGwHJOITG99PQtarxRhYyDqaIzyjIhAN1uSlu7NTq4VjnhTSRSoJ41
-twWg/B4CC48UYUIWoJBf4p3JSTxndLM/jB+fp19zziXmKMnr8XTI4mrwpFkVZTxw
-c04BK5V7iro60FEu3xwN+11VszlDcBPncSsJyTtRJ2PVB0hu1u2WZwFYOFKY8AGu
-pg1JE8Qxhsm4d0lruk3BRVtaJLMl2aFsiPIhTTGxv/SqTOEF4gF0FTK52XNpcTtc
-+UM6DGYn5FrxkxmdGafQbFLhzSqgMqySta50qiEIig+JkxXWu6b1TRQzkf/EqAhO
-JdMXinJuI5W2F+nFQc3S8hHrKlFAf7GuDaP2Lvm1Cnok5x8rOlr9OF4WpRSXDbwt
-lKbf55BeXfplpNzKv/MxVybY5m3n3FeBPzVTqifU9k1xGN+0C5Z7dJ80VpovOAlj
-JGSjealEmraJOh0Owqy8jTamYD50SthhSWZVOXhLjVj6FZm2+7ulcgEv3WshEQqE
-BfEogEqBOXq7kvJIxvvbWIwy6sFLuBTUi5VIISeGGn5HCl16kAelB49Nlo0s7Dj5
-p/F02pIleK/v6JHPVhJvJBOQfGGMvtV0EJYDmwOIoIj7W63Zeng=
-=BDhG
------END PGP SIGNATURE-----
-
---7iSgTpFDKj+5GbHh--
+Regards,
+  Marco
 
 
