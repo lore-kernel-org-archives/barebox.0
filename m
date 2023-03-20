@@ -1,61 +1,62 @@
-Delivery-date: Mon, 20 Mar 2023 16:31:49 +0100
+Delivery-date: Mon, 20 Mar 2023 16:32:08 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1peHUC-007zMi-8B
-	for lore@lore.pengutronix.de; Mon, 20 Mar 2023 16:31:49 +0100
+	id 1peHUV-007zO2-KM
+	for lore@lore.pengutronix.de; Mon, 20 Mar 2023 16:32:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1peHU9-00028J-9F
-	for lore@pengutronix.de; Mon, 20 Mar 2023 16:31:48 +0100
+	id 1peHUL-0002FW-FJ
+	for lore@pengutronix.de; Mon, 20 Mar 2023 16:32:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zlefcys9+NEx6tDZWeoHEGjYqpP9QX1R0ipNYnzwdlI=; b=Vc3EBTaBrWhwkx2XQAOfN3s+i8
-	uZi0BxfC2suqOufEzKThR8DAkDZD9Esv/yeYRaCBJq1Z22YjLAWp+hG7C6RF2JyJx1WDl4yRrlo1H
-	eNMrETdDFRMNlIIlcSrMKOdnRnlUdBkLlvEapJ2Tkn4myxsc4kMCtv65UKEH70fvI+ja3BcjQXjFE
-	wY2HSKFaDtkOxHEkjtUvu/CXyqmnhgmhYZkJuUkJJ1y7Vv5xWCGH/C1oST0pMHvk+YDaia0w8d1E4
-	awR2DBhqTRIqVOaWe3V6v11Gbna6OxSLDS7XQ+f6JOeuKUUNhdFoX/9f0RTIv5RZ2w9XsC9jCOmV5
-	33hUNAmQ==;
+	bh=Zb3QCv9Q4prYxEDiqj3CgDr+QP+Ct0PQ5i0wmjITjxA=; b=RlmFvT9V3J7KJNf2wC2japZAfA
+	gqOkvXBy+RWevDOJLC7+Q5F1kksrKhFFGoNzYVf1loW5idDIkjigE7Opbax3NHSbGEYqKe9JlC1IX
+	Pi7vmfY70EC6rmY+QmgrN8TSbr/rrMVVlhKTPWQ7o9aEeqhMtDGSFrwlOElVoQSQNXv5YZLeJPlFK
+	VcDnDNKNAVZCYPWmo32r8xy7vYUUpnXcjxWYMXxx10Kf+tY44uA1IYgJElVObE9KDV0hGCQIF/JFE
+	MZ1Q5pxTDICP4jb/3YYo866+CvEoBoL0XGBHRxn3XzljqFiTIN8IaoC/xZtdbmgmSkY8jmHGlWJin
+	RAufksyg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1peHSe-009Xuz-23;
-	Mon, 20 Mar 2023 15:30:12 +0000
+	id 1peHSj-009Y1r-1U;
+	Mon, 20 Mar 2023 15:30:17 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1peHSI-009Xfb-2r
+	id 1peHSL-009Xfr-0I
 	for barebox@lists.infradead.org;
-	Mon, 20 Mar 2023 15:30:02 +0000
+	Mon, 20 Mar 2023 15:30:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1peHSD-0000og-EY; Mon, 20 Mar 2023 16:29:45 +0100
+	id 1peHSE-0000rS-Po; Mon, 20 Mar 2023 16:29:46 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1peHSC-005UYp-Mm; Mon, 20 Mar 2023 16:29:44 +0100
+	id 1peHSE-005UZQ-3f; Mon, 20 Mar 2023 16:29:46 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1peHSB-00Dbzw-4k; Mon, 20 Mar 2023 16:29:43 +0100
+	id 1peHSB-00Dc1o-Gt; Mon, 20 Mar 2023 16:29:43 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 20 Mar 2023 16:29:27 +0100
-Message-Id: <20230320152941.3155428-5-s.hauer@pengutronix.de>
+Date: Mon, 20 Mar 2023 16:29:34 +0100
+Message-Id: <20230320152941.3155428-12-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230320152941.3155428-1-s.hauer@pengutronix.de>
 References: <20230320152941.3155428-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230320_082951_400672_E01D094C 
-X-CRM114-Status: GOOD (  14.42  )
+X-CRM114-CacheID: sfid-20230320_082953_626338_4F9B22F3 
+X-CRM114-Status: GOOD (  36.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,1565 +78,2316 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 04/18] usb: move include files to place where Linux has them
+Subject: [PATCH 11/18] usb: gadget: update composite.c from Linux-6.3-rc2
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-For easier patch merging and comparison with Linux move the usb
-gadget files to where Linux has them. For now do a plain git mv
-include/usb include/linux/usb, eventhough there might be some
-files which are purely barebox specific.
+Sync composite.c with Linux-6.3-rc2.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/beagle/board.c                     |  2 +-
- arch/arm/boards/chumby_falconwing/falconwing.c     |  2 +-
- arch/arm/boards/duckbill/board.c                   |  2 +-
- arch/arm/boards/freescale-mx23-evk/mx23-evk.c      |  2 +-
- arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c |  2 +-
- arch/arm/boards/kindle-mx50/board.c                |  2 +-
- arch/arm/boards/module-mb7707/board.c              |  2 +-
- arch/arm/boards/panda/board.c                      |  2 +-
- arch/arm/boards/phytec-phycard-imx27/pca100.c      |  2 +-
- arch/arm/boards/protonic-imx6/board.c              |  2 +-
- arch/arm/boards/toshiba-ac100/board.c              |  2 +-
- commands/dfu.c                                     |  4 ++--
- commands/usb.c                                     |  2 +-
- commands/usbgadget.c                               |  6 +++---
- commands/usbserial.c                               |  2 +-
- common/usbgadget.c                                 |  6 +++---
- drivers/input/usb_kbd.c                            |  2 +-
- drivers/net/usb/asix.c                             |  4 ++--
- drivers/net/usb/ax88179_178a.c                     |  4 ++--
- drivers/net/usb/r8152.c                            |  4 ++--
- drivers/net/usb/r8152_fw.c                         |  4 ++--
- drivers/net/usb/smsc95xx.c                         |  4 ++--
- drivers/net/usb/usbnet.c                           |  4 ++--
- drivers/phy/freescale/phy-fsl-imx8mq-usb.c         |  2 +-
- drivers/phy/phy-core.c                             |  2 +-
- drivers/phy/phy-stm32-usbphyc.c                    |  2 +-
- drivers/phy/rockchip/phy-rockchip-inno-usb2.c      |  2 +-
- drivers/phy/rockchip/phy-rockchip-naneng-combphy.c |  2 +-
- drivers/phy/usb-nop-xceiv.c                        |  2 +-
- drivers/usb/core/common.c                          |  2 +-
- drivers/usb/core/hub.c                             |  6 +++---
- drivers/usb/core/of.c                              |  4 ++--
- drivers/usb/core/usb.c                             |  4 ++--
- drivers/usb/dwc2/dwc2.h                            |  6 +++---
- drivers/usb/dwc2/gadget.c                          |  2 +-
- drivers/usb/dwc3/core.h                            |  6 +++---
- drivers/usb/dwc3/ep0.c                             |  2 +-
- drivers/usb/dwc3/gadget.c                          |  4 ++--
- drivers/usb/dwc3/gadget.h                          |  2 +-
- drivers/usb/gadget/composite.c                     |  2 +-
- drivers/usb/gadget/config.c                        |  6 +++---
- drivers/usb/gadget/epautoconf.c                    |  4 ++--
- drivers/usb/gadget/function/dfu.c                  |  8 ++++----
- drivers/usb/gadget/function/f_acm.c                |  4 ++--
- drivers/usb/gadget/function/f_fastboot.c           |  2 +-
- drivers/usb/gadget/function/f_mass_storage.c       |  6 +++---
- drivers/usb/gadget/function/storage_common.h       |  4 ++--
- drivers/usb/gadget/function/u_serial.c             |  2 +-
- drivers/usb/gadget/function/u_serial.h             |  4 ++--
- drivers/usb/gadget/functions.c                     |  2 +-
- drivers/usb/gadget/legacy/multi.c                  |  2 +-
- drivers/usb/gadget/legacy/serial.c                 |  8 ++++----
- drivers/usb/gadget/udc/at91_udc.c                  |  4 ++--
- drivers/usb/gadget/udc/core.c                      |  4 ++--
- drivers/usb/gadget/udc/fsl_udc.c                   |  6 +++---
- drivers/usb/gadget/udc/fsl_udc_pbl.c               |  2 +-
- drivers/usb/gadget/udc/pxa27x_udc.c                |  4 ++--
- drivers/usb/gadget/usbstring.c                     |  4 ++--
- drivers/usb/host/ehci-atmel.c                      |  6 +++---
- drivers/usb/host/ehci-hcd.c                        |  6 +++---
- drivers/usb/host/ehci-omap.c                       |  2 +-
- drivers/usb/host/ohci-at91.c                       |  4 ++--
- drivers/usb/host/ohci-hcd.c                        |  4 ++--
- drivers/usb/host/xhci-mem.c                        |  4 ++--
- drivers/usb/host/xhci-ring.c                       |  4 ++--
- drivers/usb/host/xhci.c                            |  4 ++--
- drivers/usb/imx/chipidea-imx.c                     | 12 ++++++------
- drivers/usb/imx/imx-usb-misc.c                     |  2 +-
- drivers/usb/imx/imx-usb-phy.c                      |  2 +-
- drivers/usb/misc/onboard_usb_hub.c                 |  2 +-
- drivers/usb/musb/musb_barebox.c                    |  4 ++--
- drivers/usb/musb/musb_core.c                       |  4 ++--
- drivers/usb/musb/musb_core.h                       |  4 ++--
- drivers/usb/musb/musb_dsps.c                       |  4 ++--
- drivers/usb/musb/musb_gadget.h                     |  2 +-
- drivers/usb/musb/musb_host.h                       |  2 +-
- drivers/usb/otg/otgdev.c                           |  2 +-
- drivers/usb/otg/twl4030.c                          |  2 +-
- drivers/usb/otg/ulpi.c                             |  2 +-
- drivers/usb/storage/usb.c                          |  4 ++--
- drivers/usb/storage/usb.h                          |  2 +-
- include/{ => linux}/usb/cdc.h                      |  0
- include/{ => linux}/usb/ch9.h                      |  0
- include/{ => linux}/usb/chipidea-imx.h             |  2 +-
- include/{ => linux}/usb/composite.h                |  4 ++--
- include/{ => linux}/usb/dfu.h                      |  2 +-
- include/{ => linux}/usb/ehci.h                     |  0
- include/{ => linux}/usb/fastboot.h                 |  2 +-
- include/{ => linux}/usb/fsl_usb2.h                 |  0
- include/{ => linux}/usb/gadget-multi.h             |  8 ++++----
- include/{ => linux}/usb/gadget.h                   |  2 +-
- include/{ => linux}/usb/mass_storage.h             |  2 +-
- include/{ => linux}/usb/musb.h                     |  0
- include/{ => linux}/usb/phy.h                      |  2 +-
- include/{ => linux}/usb/storage.h                  |  0
- include/{ => linux}/usb/twl4030.h                  |  0
- include/{ => linux}/usb/ulpi.h                     |  0
- include/{ => linux}/usb/usb.h                      |  6 +++---
- include/{ => linux}/usb/usb_defs.h                 |  0
- include/{ => linux}/usb/usbnet.h                   |  0
- include/{ => linux}/usb/usbroothubdes.h            |  0
- include/{ => linux}/usb/usbserial.h                |  0
- include/{ => linux}/usb/xhci.h                     |  0
- include/mach/imx/devices.h                         |  2 +-
- include/{ => uapi/linux}/usb/ch11.h                |  0
- 105 files changed, 156 insertions(+), 156 deletions(-)
- rename include/{ => linux}/usb/cdc.h (100%)
- rename include/{ => linux}/usb/ch9.h (100%)
- rename include/{ => linux}/usb/chipidea-imx.h (98%)
- rename include/{ => linux}/usb/composite.h (99%)
- rename include/{ => linux}/usb/dfu.h (96%)
- rename include/{ => linux}/usb/ehci.h (100%)
- rename include/{ => linux}/usb/fastboot.h (93%)
- rename include/{ => linux}/usb/fsl_usb2.h (100%)
- rename include/{ => linux}/usb/gadget-multi.h (88%)
- rename include/{ => linux}/usb/gadget.h (99%)
- rename include/{ => linux}/usb/mass_storage.h (94%)
- rename include/{ => linux}/usb/musb.h (100%)
- rename include/{ => linux}/usb/phy.h (99%)
- rename include/{ => linux}/usb/storage.h (100%)
- rename include/{ => linux}/usb/twl4030.h (100%)
- rename include/{ => linux}/usb/ulpi.h (100%)
- rename include/{ => linux}/usb/usb.h (99%)
- rename include/{ => linux}/usb/usb_defs.h (100%)
- rename include/{ => linux}/usb/usbnet.h (100%)
- rename include/{ => linux}/usb/usbroothubdes.h (100%)
- rename include/{ => linux}/usb/usbserial.h (100%)
- rename include/{ => linux}/usb/xhci.h (100%)
- rename include/{ => uapi/linux}/usb/ch11.h (100%)
+ drivers/usb/gadget/Kconfig     |    1 +
+ drivers/usb/gadget/composite.c | 1064 +++++++++++++++++++++++++++-----
+ drivers/usb/gadget/u_os_desc.h |  120 ++++
+ include/linux/usb/composite.h  |  197 +++++-
+ include/linux/usb/webusb.h     |   80 +++
+ 5 files changed, 1275 insertions(+), 187 deletions(-)
+ create mode 100644 drivers/usb/gadget/u_os_desc.h
+ create mode 100644 include/linux/usb/webusb.h
 
-diff --git a/arch/arm/boards/beagle/board.c b/arch/arm/boards/beagle/board.c
-index 53a93e1ed3..c8788f8128 100644
---- a/arch/arm/boards/beagle/board.c
-+++ b/arch/arm/boards/beagle/board.c
-@@ -18,7 +18,7 @@
- #include <mach/omap/omap3-devices.h>
- #include <i2c/i2c.h>
- #include <linux/err.h>
--#include <usb/ehci.h>
-+#include <linux/usb/ehci.h>
- #include <asm/barebox-arm.h>
+diff --git a/drivers/usb/gadget/Kconfig b/drivers/usb/gadget/Kconfig
+index 96c51768f6..ffaf355936 100644
+--- a/drivers/usb/gadget/Kconfig
++++ b/drivers/usb/gadget/Kconfig
+@@ -2,6 +2,7 @@
+ menuconfig USB_GADGET
+ 	select USB
+ 	select POLLER
++	select NLS
+ 	bool "USB gadget support"
  
- #ifdef CONFIG_DRIVER_SERIAL_NS16550
-diff --git a/arch/arm/boards/chumby_falconwing/falconwing.c b/arch/arm/boards/chumby_falconwing/falconwing.c
-index 9f51d2253b..840fd22ac1 100644
---- a/arch/arm/boards/chumby_falconwing/falconwing.c
-+++ b/arch/arm/boards/chumby_falconwing/falconwing.c
-@@ -9,7 +9,7 @@
- #include <errno.h>
- #include <mci.h>
- #include <linux/sizes.h>
--#include <usb/ehci.h>
-+#include <linux/usb/ehci.h>
- #include <asm/armlinux.h>
- #include <asm/barebox-arm.h>
- #include <io.h>
-diff --git a/arch/arm/boards/duckbill/board.c b/arch/arm/boards/duckbill/board.c
-index 4e8f564967..edb9320f0e 100644
---- a/arch/arm/boards/duckbill/board.c
-+++ b/arch/arm/boards/duckbill/board.c
-@@ -17,7 +17,7 @@
- #include <mach/mxs/ocotp.h>
- #include <mach/mxs/devices.h>
- #include <mach/mxs/usb.h>
--#include <usb/fsl_usb2.h>
-+#include <linux/usb/fsl_usb2.h>
- 
- #include <asm/armlinux.h>
- #include <asm/mmu.h>
-diff --git a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
-index b5dbe5f41a..d831bffbd9 100644
---- a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
-+++ b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
-@@ -13,7 +13,7 @@
- #include <asm/barebox-arm.h>
- #include <mach/mxs/imx-regs.h>
- #include <mach/mxs/mci.h>
--#include <usb/fsl_usb2.h>
-+#include <linux/usb/fsl_usb2.h>
- #include <mach/mxs/usb.h>
- #include <mach/mxs/iomux.h>
- 
-diff --git a/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c b/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c
-index b164364560..3a7e5354fc 100644
---- a/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c
-+++ b/arch/arm/boards/imx233-olinuxino/imx23-olinuxino.c
-@@ -18,7 +18,7 @@
- #include <mci.h>
- #include <asm/armlinux.h>
- #include <asm/barebox-arm.h>
--#include <usb/ehci.h>
-+#include <linux/usb/ehci.h>
- #include <mach/mxs/usb.h>
- #include <generated/mach-types.h>
- #include <mach/mxs/imx-regs.h>
-diff --git a/arch/arm/boards/kindle-mx50/board.c b/arch/arm/boards/kindle-mx50/board.c
-index b7b51d6209..4abd77727c 100644
---- a/arch/arm/boards/kindle-mx50/board.c
-+++ b/arch/arm/boards/kindle-mx50/board.c
-@@ -15,7 +15,7 @@
- #include <asm/armlinux.h>
- #include <generated/mach-types.h>
- #include <linux/sizes.h>
--#include <usb/fsl_usb2.h>
-+#include <linux/usb/fsl_usb2.h>
- #include <mach/imx/generic.h>
- #include <mach/imx/imx50-regs.h>
- #include <mach/imx/imx5.h>
-diff --git a/arch/arm/boards/module-mb7707/board.c b/arch/arm/boards/module-mb7707/board.c
-index 122348210d..366baddf81 100644
---- a/arch/arm/boards/module-mb7707/board.c
-+++ b/arch/arm/boards/module-mb7707/board.c
-@@ -6,7 +6,7 @@
- #include <common.h>
- #include <init.h>
- #include <driver.h>
--#include <usb/ehci.h>
-+#include <linux/usb/ehci.h>
- #include <mach/uemd/hardware.h>
- 
- static int hostname_init(void)
-diff --git a/arch/arm/boards/panda/board.c b/arch/arm/boards/panda/board.c
-index 276aeb287d..f182b14987 100644
---- a/arch/arm/boards/panda/board.c
-+++ b/arch/arm/boards/panda/board.c
-@@ -14,7 +14,7 @@
- #include <mach/omap/sys_info.h>
- #include <mach/omap/syslib.h>
- #include <mach/omap/control.h>
--#include <usb/ehci.h>
-+#include <linux/usb/ehci.h>
- #include <linux/err.h>
- #include <linux/sizes.h>
- #include <asm/mmu.h>
-diff --git a/arch/arm/boards/phytec-phycard-imx27/pca100.c b/arch/arm/boards/phytec-phycard-imx27/pca100.c
-index e64ef72026..924598d9c7 100644
---- a/arch/arm/boards/phytec-phycard-imx27/pca100.c
-+++ b/arch/arm/boards/phytec-phycard-imx27/pca100.c
-@@ -20,7 +20,7 @@
- #include <mach/imx/imx-pll.h>
- #include <platform_data/imxfb.h>
- #include <asm/mmu.h>
--#include <usb/ulpi.h>
-+#include <linux/usb/ulpi.h>
- #include <mach/imx/bbu.h>
- #include <mach/imx/iomux-mx27.h>
- #include <mach/imx/devices-imx27.h>
-diff --git a/arch/arm/boards/protonic-imx6/board.c b/arch/arm/boards/protonic-imx6/board.c
-index 97d8bb87b2..a8938a662b 100644
---- a/arch/arm/boards/protonic-imx6/board.c
-+++ b/arch/arm/boards/protonic-imx6/board.c
-@@ -24,7 +24,7 @@
- #include <sys/mount.h>
- #include <sys/stat.h>
- #include <unistd.h>
--#include <usb/usb.h>
-+#include <linux/usb/usb.h>
- 
- #define GPIO_HW_REV_ID  {\
- 	{IMX_GPIO_NR(2, 8), GPIOF_DIR_IN | GPIOF_ACTIVE_LOW, "rev_id0"}, \
-diff --git a/arch/arm/boards/toshiba-ac100/board.c b/arch/arm/boards/toshiba-ac100/board.c
-index 0248bf1cc5..7fb70ca6c9 100644
---- a/arch/arm/boards/toshiba-ac100/board.c
-+++ b/arch/arm/boards/toshiba-ac100/board.c
-@@ -5,7 +5,7 @@
- 
- #include <common.h>
- #include <init.h>
--#include <usb/ehci.h>
-+#include <linux/usb/ehci.h>
- #include <mach/tegra/iomap.h>
- 
- static struct ehci_platform_data ehci_pdata = {
-diff --git a/commands/dfu.c b/commands/dfu.c
-index 1734947fe0..2116747f68 100644
---- a/commands/dfu.c
-+++ b/commands/dfu.c
-@@ -10,8 +10,8 @@
- #include <getopt.h>
- #include <fs.h>
- #include <xfuncs.h>
--#include <usb/dfu.h>
--#include <usb/gadget-multi.h>
-+#include <linux/usb/dfu.h>
-+#include <linux/usb/gadget-multi.h>
- #include <linux/err.h>
- 
- /* dfu /dev/self0(bootloader)sr,/dev/nand0.root.bb(root)
-diff --git a/commands/usb.c b/commands/usb.c
-index ca8d3e0d52..0588ba6968 100644
---- a/commands/usb.c
-+++ b/commands/usb.c
-@@ -6,7 +6,7 @@
- #include <common.h>
- #include <command.h>
- #include <complete.h>
--#include <usb/usb.h>
-+#include <linux/usb/usb.h>
- #include <getopt.h>
- 
- /* shows the device tree recursively */
-diff --git a/commands/usbgadget.c b/commands/usbgadget.c
-index 290f33eff3..d0dcde69ce 100644
---- a/commands/usbgadget.c
-+++ b/commands/usbgadget.c
-@@ -12,9 +12,9 @@
- #include <getopt.h>
- #include <fs.h>
- #include <xfuncs.h>
--#include <usb/usbserial.h>
--#include <usb/dfu.h>
--#include <usb/gadget-multi.h>
-+#include <linux/usb/usbserial.h>
-+#include <linux/usb/dfu.h>
-+#include <linux/usb/gadget-multi.h>
- 
- static int do_usbgadget(int argc, char *argv[])
- {
-diff --git a/commands/usbserial.c b/commands/usbserial.c
-index 567018c233..17a4afec42 100644
---- a/commands/usbserial.c
-+++ b/commands/usbserial.c
-@@ -11,7 +11,7 @@
- #include <getopt.h>
- #include <fs.h>
- #include <xfuncs.h>
--#include <usb/usbserial.h>
-+#include <linux/usb/usbserial.h>
- 
- static int do_usbserial(int argc, char *argv[])
- {
-diff --git a/common/usbgadget.c b/common/usbgadget.c
-index 59b9e635f4..3713551163 100644
---- a/common/usbgadget.c
-+++ b/common/usbgadget.c
-@@ -12,9 +12,9 @@
- #include <getopt.h>
- #include <fs.h>
- #include <xfuncs.h>
--#include <usb/usbserial.h>
--#include <usb/dfu.h>
--#include <usb/gadget-multi.h>
-+#include <linux/usb/usbserial.h>
-+#include <linux/usb/dfu.h>
-+#include <linux/usb/gadget-multi.h>
- #include <globalvar.h>
- #include <magicvar.h>
- #include <system-partitions.h>
-diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
-index d950bd5039..86b48db2a7 100644
---- a/drivers/input/usb_kbd.c
-+++ b/drivers/input/usb_kbd.c
-@@ -10,7 +10,7 @@
- #include <init.h>
- #include <clock.h>
- #include <poller.h>
--#include <usb/usb.h>
-+#include <linux/usb/usb.h>
- #include <string.h>
- #include <dma.h>
- #include <input/input.h>
-diff --git a/drivers/net/usb/asix.c b/drivers/net/usb/asix.c
-index 2d7114e5b1..9d34beab0d 100644
---- a/drivers/net/usb/asix.c
-+++ b/drivers/net/usb/asix.c
-@@ -3,8 +3,8 @@
- #include <init.h>
- #include <net.h>
- #include <linux/phy.h>
--#include <usb/usb.h>
--#include <usb/usbnet.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usbnet.h>
- #include <errno.h>
- #include <malloc.h>
- #include <asm/byteorder.h>
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index fddb187144..318eb9be02 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -8,8 +8,8 @@
- #include <init.h>
- #include <net.h>
- #include <linux/phy.h>
--#include <usb/usb.h>
--#include <usb/usbnet.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usbnet.h>
- #include <errno.h>
- #include <malloc.h>
- #include <poller.h>
-diff --git a/drivers/net/usb/r8152.c b/drivers/net/usb/r8152.c
-index 0928887784..2511c524cd 100644
---- a/drivers/net/usb/r8152.c
-+++ b/drivers/net/usb/r8152.c
-@@ -8,8 +8,8 @@
- #include <linux/ethtool.h>
- #include <linux/mii.h>
- #include <linux/phy.h>
--#include <usb/usb.h>
--#include <usb/usbnet.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usbnet.h>
- #include "r8152.h"
- 
- #define R8152_TX_BURST_SIZE	512
-diff --git a/drivers/net/usb/r8152_fw.c b/drivers/net/usb/r8152_fw.c
-index ee5f7c48e4..a6d61ac0d6 100644
---- a/drivers/net/usb/r8152_fw.c
-+++ b/drivers/net/usb/r8152_fw.c
-@@ -2,8 +2,8 @@
- /* Copyright (c) 2015 Realtek Semiconductor Corp. All rights reserved. */
- 
- #include <common.h>
--#include <usb/usb.h>
--#include <usb/usbnet.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usbnet.h>
- #include "r8152.h"
- 
- static const u8 r8152b_pla_patch_a[] = {
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 3c5bd1e4ee..b6f81cfab8 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -5,8 +5,8 @@
- #include <command.h>
- #include <init.h>
- #include <net.h>
--#include <usb/usb.h>
--#include <usb/usbnet.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usbnet.h>
- #include <malloc.h>
- #include <asm/byteorder.h>
- #include <errno.h>
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 4818079523..3c3da3171b 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- #include <common.h>
--#include <usb/usb.h>
--#include <usb/usbnet.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usbnet.h>
- #include <asm/byteorder.h>
- #include <errno.h>
- #include <malloc.h>
-diff --git a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-index e0d7d7818c..c664894cdd 100644
---- a/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-+++ b/drivers/phy/freescale/phy-fsl-imx8mq-usb.c
-@@ -13,7 +13,7 @@
- #include <malloc.h>
- #include <of_device.h>
- #include <of.h>
--#include <usb/phy.h>
-+#include <linux/usb/phy.h>
- 
- 
- #define PHY_CTRL0			0x0
-diff --git a/drivers/phy/phy-core.c b/drivers/phy/phy-core.c
-index d3a7847ee8..a5dd32e666 100644
---- a/drivers/phy/phy-core.c
-+++ b/drivers/phy/phy-core.c
-@@ -11,7 +11,7 @@
- #include <common.h>
- #include <malloc.h>
- #include <linux/phy/phy.h>
--#include <usb/phy.h>
-+#include <linux/usb/phy.h>
- 
- static LIST_HEAD(phy_provider_list);
- static int phy_ida;
-diff --git a/drivers/phy/phy-stm32-usbphyc.c b/drivers/phy/phy-stm32-usbphyc.c
-index db4ccef920..3ccbc7b902 100644
---- a/drivers/phy/phy-stm32-usbphyc.c
-+++ b/drivers/phy/phy-stm32-usbphyc.c
-@@ -14,7 +14,7 @@
- #include <linux/phy/phy.h>
- #include <linux/reset.h>
- #include <linux/math64.h>
--#include <usb/phy.h>
-+#include <linux/usb/phy.h>
- 
- #define STM32_USBPHYC_PLL	0x0
- #define STM32_USBPHYC_MISC	0x8
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-index ab7d65389c..1f77d430a6 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-@@ -11,7 +11,7 @@
- #include <errno.h>
- #include <driver.h>
- #include <malloc.h>
--#include <usb/phy.h>
-+#include <linux/usb/phy.h>
- #include <linux/phy/phy.h>
- #include <linux/clk.h>
- #include <linux/err.h>
-diff --git a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-index 65869efd3f..bd5dff954e 100644
---- a/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-+++ b/drivers/phy/rockchip/phy-rockchip-naneng-combphy.c
-@@ -12,7 +12,7 @@
- #include <errno.h>
- #include <driver.h>
- #include <malloc.h>
--#include <usb/phy.h>
-+#include <linux/usb/phy.h>
- #include <linux/phy/phy.h>
- #include <linux/clk.h>
- #include <linux/err.h>
-diff --git a/drivers/phy/usb-nop-xceiv.c b/drivers/phy/usb-nop-xceiv.c
-index 7fa412cab6..80141f9def 100644
---- a/drivers/phy/usb-nop-xceiv.c
-+++ b/drivers/phy/usb-nop-xceiv.c
-@@ -9,7 +9,7 @@
- #include <errno.h>
- #include <driver.h>
- #include <malloc.h>
--#include <usb/phy.h>
-+#include <linux/usb/phy.h>
- #include <linux/phy/phy.h>
- #include <linux/clk.h>
- #include <linux/err.h>
-diff --git a/drivers/usb/core/common.c b/drivers/usb/core/common.c
-index d562b963be..61ccc13024 100644
---- a/drivers/usb/core/common.c
-+++ b/drivers/usb/core/common.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- #include <common.h>
--#include <usb/ch9.h>
-+#include <linux/usb/ch9.h>
- 
- static const char *const speed_names[] = {
- 	[USB_SPEED_UNKNOWN] = "UNKNOWN",
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 8c85b93420..650af0e884 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -9,9 +9,9 @@
- #include <init.h>
- #include <malloc.h>
- #include <errno.h>
--#include <usb/phy.h>
--#include <usb/usb.h>
--#include <usb/usb_defs.h>
-+#include <linux/usb/phy.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usb_defs.h>
- 
- #include "usb.h"
- 
-diff --git a/drivers/usb/core/of.c b/drivers/usb/core/of.c
-index acf95320c0..25203c6064 100644
---- a/drivers/usb/core/of.c
-+++ b/drivers/usb/core/of.c
-@@ -4,8 +4,8 @@
-  */
- 
- #include <common.h>
--#include <usb/usb.h>
--#include <usb/phy.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/phy.h>
- #include <of.h>
- 
- static const char *usb_dr_modes[] = {
-diff --git a/drivers/usb/core/usb.c b/drivers/usb/core/usb.c
-index a974614c06..178ddbbca5 100644
---- a/drivers/usb/core/usb.c
-+++ b/drivers/usb/core/usb.c
-@@ -38,8 +38,8 @@
- #include <init.h>
- #include <dma.h>
- 
--#include <usb/usb.h>
--#include <usb/ch9.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/ch9.h>
- 
- #include "usb.h"
- 
-diff --git a/drivers/usb/dwc2/dwc2.h b/drivers/usb/dwc2/dwc2.h
-index 3ecc359f8b..15d4b69759 100644
---- a/drivers/usb/dwc2/dwc2.h
-+++ b/drivers/usb/dwc2/dwc2.h
-@@ -1,7 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0-or-later */
--#include <usb/usb.h>
--#include <usb/usb_defs.h>
--#include <usb/gadget.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usb_defs.h>
-+#include <linux/usb/gadget.h>
- #include <linux/phy/phy.h>
- 
- #include "regs.h"
-diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
-index 7070485410..55d18637c7 100644
---- a/drivers/usb/dwc2/gadget.c
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- #include <dma.h>
--#include <usb/gadget.h>
-+#include <linux/usb/gadget.h>
- #include "dwc2.h"
- 
- #define to_dwc2 gadget_to_dwc2
-diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
-index 5ad1fea8e0..38001298b7 100644
---- a/drivers/usb/dwc3/core.h
-+++ b/drivers/usb/dwc3/core.h
-@@ -12,9 +12,9 @@
- #define __DRIVERS_USB_DWC3_CORE_H
- 
- #include <linux/spinlock.h>
--#include <usb/usb.h>
--#include <usb/phy.h>
--#include <usb/gadget.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/phy.h>
-+#include <linux/usb/gadget.h>
- 
- #define DWC3_MSG_MAX	500
- 
-diff --git a/drivers/usb/dwc3/ep0.c b/drivers/usb/dwc3/ep0.c
-index c0e316e14f..f4864d0388 100644
---- a/drivers/usb/dwc3/ep0.c
-+++ b/drivers/usb/dwc3/ep0.c
-@@ -18,7 +18,7 @@
- #include <linux/kernel.h>
- #include <linux/list.h>
- 
--#include <usb/gadget.h>
-+#include <linux/usb/gadget.h>
- 
- #include "core.h"
- #include "gadget.h"
-diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
-index 8ec1268a22..1aec73c7d9 100644
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -17,8 +17,8 @@
- #include <io.h>
- #include <linux/list.h>
- 
--#include <usb/gadget.h>
--#include <usb/ch9.h>
-+#include <linux/usb/gadget.h>
-+#include <linux/usb/ch9.h>
- 
- #include "core.h"
- #include "gadget.h"
-diff --git a/drivers/usb/dwc3/gadget.h b/drivers/usb/dwc3/gadget.h
-index 47c2d5b955..36446b98ce 100644
---- a/drivers/usb/dwc3/gadget.h
-+++ b/drivers/usb/dwc3/gadget.h
-@@ -18,7 +18,7 @@
- #ifndef __DRIVERS_USB_DWC3_GADGET_H
- #define __DRIVERS_USB_DWC3_GADGET_H
- 
--#include <usb/gadget.h>
-+#include <linux/usb/gadget.h>
- #include <linux/list.h>
- #include "io.h"
- 
+ config USB_GADGET_DRIVER_ARC_PBL
 diff --git a/drivers/usb/gadget/composite.c b/drivers/usb/gadget/composite.c
-index 396e7387a8..88ae191ce0 100644
+index af3dee48f4..58c10f1191 100644
 --- a/drivers/usb/gadget/composite.c
 +++ b/drivers/usb/gadget/composite.c
-@@ -12,7 +12,7 @@
- #include <dma.h>
+@@ -1,4 +1,4 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
++// SPDX-License-Identifier: GPL-2.0+
+ /*
+  * composite.c - infrastructure for Composite USB Gadgets
+  *
+@@ -13,10 +13,30 @@
  #include <linux/err.h>
  #include <linux/bitmap.h>
--#include <usb/composite.h>
-+#include <linux/usb/composite.h>
+ #include <linux/usb/composite.h>
++#include <linux/bitfield.h>
++#include <linux/uuid.h>
  #include <asm/unaligned.h>
  #include <asm/byteorder.h>
  
-diff --git a/drivers/usb/gadget/config.c b/drivers/usb/gadget/config.c
-index 369eb2ba5e..979cfafa70 100644
---- a/drivers/usb/gadget/config.c
-+++ b/drivers/usb/gadget/config.c
-@@ -7,9 +7,9 @@
+-static unsigned int usb_gadget_vbus_draw_ma = 2;
++#include "u_os_desc.h"
++
++#define CONFIG_USB_GADGET_VBUS_DRAW 2 /* FIXME */
++
++/**
++ * struct usb_os_string - represents OS String to be reported by a gadget
++ * @bLength: total length of the entire descritor, always 0x12
++ * @bDescriptorType: USB_DT_STRING
++ * @qwSignature: the OS String proper
++ * @bMS_VendorCode: code used by the host for subsequent requests
++ * @bPad: not used, must be zero
++ */
++struct usb_os_string {
++	__u8	bLength;
++	__u8	bDescriptorType;
++	__u8	qwSignature[OS_STRING_QW_SIGN_LEN];
++	__u8	bMS_VendorCode;
++	__u8	bPad;
++} __packed;
  
- #include <common.h>
- 
--#include <usb/ch9.h>
--#include <usb/gadget.h>
--#include <usb/composite.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/gadget.h>
-+#include <linux/usb/composite.h>
- 
- /**
-  * usb_descriptor_fillbuf - fill buffer with descriptors
-diff --git a/drivers/usb/gadget/epautoconf.c b/drivers/usb/gadget/epautoconf.c
-index 2f1b9d1a0b..ff16abaf12 100644
---- a/drivers/usb/gadget/epautoconf.c
-+++ b/drivers/usb/gadget/epautoconf.c
-@@ -11,8 +11,8 @@
- #include <linux/ctype.h>
- #include <asm/byteorder.h>
- 
--#include <usb/ch9.h>
--#include <usb/gadget.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/gadget.h>
- 
- #define gadget_is_pxa(g)                (!strcmp("pxa25x_udc", (g)->name))
- 
-diff --git a/drivers/usb/gadget/function/dfu.c b/drivers/usb/gadget/function/dfu.c
-index 0b7ca82c4a..930a10b766 100644
---- a/drivers/usb/gadget/function/dfu.c
-+++ b/drivers/usb/gadget/function/dfu.c
-@@ -26,15 +26,15 @@
- 
- #include <dma.h>
- #include <asm/byteorder.h>
--#include <usb/composite.h>
-+#include <linux/usb/composite.h>
- #include <linux/types.h>
- #include <linux/list.h>
--#include <usb/gadget.h>
-+#include <linux/usb/gadget.h>
- #include <linux/stat.h>
- #include <libfile.h>
- #include <linux/err.h>
--#include <usb/ch9.h>
--#include <usb/dfu.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/dfu.h>
- #include <config.h>
- #include <common.h>
- #include <malloc.h>
-diff --git a/drivers/usb/gadget/function/f_acm.c b/drivers/usb/gadget/function/f_acm.c
-index 3d2595edd7..1210622d96 100644
---- a/drivers/usb/gadget/function/f_acm.c
-+++ b/drivers/usb/gadget/function/f_acm.c
-@@ -12,11 +12,11 @@
- /* #define VERBOSE_DEBUG */
- 
- #include <common.h>
--#include <usb/cdc.h>
-+#include <linux/usb/cdc.h>
- #include <linux/err.h>
- #include <linux/spinlock.h>
- #include <asm/byteorder.h>
--#include <usb/composite.h>
-+#include <linux/usb/composite.h>
- 
- #include "u_serial.h"
- 
-diff --git a/drivers/usb/gadget/function/f_fastboot.c b/drivers/usb/gadget/function/f_fastboot.c
-index 078b37ce54..499262a64b 100644
---- a/drivers/usb/gadget/function/f_fastboot.c
-+++ b/drivers/usb/gadget/function/f_fastboot.c
-@@ -25,7 +25,7 @@
- #include <unistd.h>
- #include <progress.h>
- #include <fastboot.h>
--#include <usb/fastboot.h>
-+#include <linux/usb/fastboot.h>
- 
- #define FASTBOOT_INTERFACE_CLASS	0xff
- #define FASTBOOT_INTERFACE_SUB_CLASS	0x42
-diff --git a/drivers/usb/gadget/function/f_mass_storage.c b/drivers/usb/gadget/function/f_mass_storage.c
-index 1c26c4d996..61f369bd07 100644
---- a/drivers/usb/gadget/function/f_mass_storage.c
-+++ b/drivers/usb/gadget/function/f_mass_storage.c
-@@ -225,12 +225,12 @@
- #include <scsi.h>
- 
- #include <linux/err.h>
--#include <usb/mass_storage.h>
-+#include <linux/usb/mass_storage.h>
- 
- #include <asm/unaligned.h>
- #include <linux/bitops.h>
--#include <usb/gadget.h>
--#include <usb/composite.h>
-+#include <linux/usb/gadget.h>
-+#include <linux/usb/composite.h>
- #include <linux/bitmap.h>
- #include <linux/completion.h>
- #include <bthread.h>
-diff --git a/drivers/usb/gadget/function/storage_common.h b/drivers/usb/gadget/function/storage_common.h
-index bd499c9e03..3b98c82ee3 100644
---- a/drivers/usb/gadget/function/storage_common.h
-+++ b/drivers/usb/gadget/function/storage_common.h
-@@ -4,9 +4,9 @@
- #define USB_STORAGE_COMMON_H
- 
- #include <driver.h>
--#include <usb/storage.h>
-+#include <linux/usb/storage.h>
- #include <asm/unaligned.h>
--#include <usb/mass_storage.h>
-+#include <linux/usb/mass_storage.h>
- 
- #ifndef DEBUG
- #undef VERBOSE_DEBUG
-diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadget/function/u_serial.c
-index 2ce3f1c791..ac7a0b589d 100644
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -16,7 +16,7 @@
- 
- #include <common.h>
- #include <complete.h>
--#include <usb/cdc.h>
-+#include <linux/usb/cdc.h>
- #include <kfifo.h>
- #include <clock.h>
- #include <linux/err.h>
-diff --git a/drivers/usb/gadget/function/u_serial.h b/drivers/usb/gadget/function/u_serial.h
-index 80450ccc86..44fcace030 100644
---- a/drivers/usb/gadget/function/u_serial.h
-+++ b/drivers/usb/gadget/function/u_serial.h
-@@ -9,8 +9,8 @@
- #ifndef __U_SERIAL_H
- #define __U_SERIAL_H
- 
--#include <usb/composite.h>
--#include <usb/cdc.h>
-+#include <linux/usb/composite.h>
-+#include <linux/usb/cdc.h>
- 
- #define MAX_U_SERIAL_PORTS	4
- 
-diff --git a/drivers/usb/gadget/functions.c b/drivers/usb/gadget/functions.c
-index 9b08938a33..7a57915007 100644
---- a/drivers/usb/gadget/functions.c
-+++ b/drivers/usb/gadget/functions.c
-@@ -2,7 +2,7 @@
- #include <common.h>
- #include <linux/err.h>
- 
--#include <usb/composite.h>
-+#include <linux/usb/composite.h>
- 
- static LIST_HEAD(func_list);
- 
-diff --git a/drivers/usb/gadget/legacy/multi.c b/drivers/usb/gadget/legacy/multi.c
-index 6225e9a313..2c9a784cbe 100644
---- a/drivers/usb/gadget/legacy/multi.c
-+++ b/drivers/usb/gadget/legacy/multi.c
-@@ -9,7 +9,7 @@
-  */
- 
- #include <common.h>
--#include <usb/gadget-multi.h>
-+#include <linux/usb/gadget-multi.h>
- #include <linux/err.h>
- 
- #include "u_serial.h"
-diff --git a/drivers/usb/gadget/legacy/serial.c b/drivers/usb/gadget/legacy/serial.c
-index 6321f3f207..46c41f6dea 100644
---- a/drivers/usb/gadget/legacy/serial.c
-+++ b/drivers/usb/gadget/legacy/serial.c
-@@ -11,10 +11,10 @@
- #include <errno.h>
- #include <init.h>
- #include <linux/err.h>
--#include <usb/ch9.h>
--#include <usb/gadget.h>
--#include <usb/composite.h>
--#include <usb/usbserial.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/gadget.h>
-+#include <linux/usb/composite.h>
-+#include <linux/usb/usbserial.h>
- #include <asm/byteorder.h>
- 
- #include "u_serial.h"
-diff --git a/drivers/usb/gadget/udc/at91_udc.c b/drivers/usb/gadget/udc/at91_udc.c
-index fc5f24021d..2a3d5765de 100644
---- a/drivers/usb/gadget/udc/at91_udc.c
-+++ b/drivers/usb/gadget/udc/at91_udc.c
-@@ -16,8 +16,8 @@
- #include <gpio.h>
- #include <io.h>
- #include <clock.h>
--#include <usb/ch9.h>
--#include <usb/gadget.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/gadget.h>
- #include <of_gpio.h>
- 
- #include <linux/list.h>
-diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
-index 30b17dbc5a..ec3ae603e1 100644
---- a/drivers/usb/gadget/udc/core.c
-+++ b/drivers/usb/gadget/udc/core.c
-@@ -10,8 +10,8 @@
- #include <driver.h>
- #include <init.h>
- #include <poller.h>
--#include <usb/ch9.h>
--#include <usb/gadget.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/gadget.h>
- 
- /**
-  * struct usb_udc - describes one usb device controller
-diff --git a/drivers/usb/gadget/udc/fsl_udc.c b/drivers/usb/gadget/udc/fsl_udc.c
-index 2f2f4caebb..06768bf1d0 100644
---- a/drivers/usb/gadget/udc/fsl_udc.c
-+++ b/drivers/usb/gadget/udc/fsl_udc.c
-@@ -4,9 +4,9 @@
- #include <dma.h>
- #include <init.h>
- #include <clock.h>
--#include <usb/ch9.h>
--#include <usb/gadget.h>
--#include <usb/fsl_usb2.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/gadget.h>
-+#include <linux/usb/fsl_usb2.h>
- #include <io.h>
- #include <asm/byteorder.h>
- #include <linux/err.h>
-diff --git a/drivers/usb/gadget/udc/fsl_udc_pbl.c b/drivers/usb/gadget/udc/fsl_udc_pbl.c
-index 218d61db3c..6a4e0557fc 100644
---- a/drivers/usb/gadget/udc/fsl_udc_pbl.c
-+++ b/drivers/usb/gadget/udc/fsl_udc_pbl.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
- 
- #include <common.h>
--#include <usb/ch9.h>
-+#include <linux/usb/ch9.h>
- #include <soc/fsl/fsl_udc.h>
- #include <mach/imx/imx8mm-regs.h>
- #include <mach/imx/imx6-regs.h>
-diff --git a/drivers/usb/gadget/udc/pxa27x_udc.c b/drivers/usb/gadget/udc/pxa27x_udc.c
-index e5e2ca2b7c..ae02a1bede 100644
---- a/drivers/usb/gadget/udc/pxa27x_udc.c
-+++ b/drivers/usb/gadget/udc/pxa27x_udc.c
-@@ -14,8 +14,8 @@
- #include <gpio.h>
- #include <init.h>
- 
--#include <usb/ch9.h>
--#include <usb/gadget.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/gadget.h>
- 
- #include "pxa27x_udc.h"
- #include <mach/pxa/udc_pxa2xx.h>
-diff --git a/drivers/usb/gadget/usbstring.c b/drivers/usb/gadget/usbstring.c
-index 474c666e53..4a0f7c09b9 100644
---- a/drivers/usb/gadget/usbstring.c
-+++ b/drivers/usb/gadget/usbstring.c
-@@ -6,8 +6,8 @@
- #include <common.h>
- #include <errno.h>
- 
--#include <usb/ch9.h>
--#include <usb/gadget.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/gadget.h>
- 
- static inline void put_unaligned_le16(u16 val, u8 *p)
- {
-diff --git a/drivers/usb/host/ehci-atmel.c b/drivers/usb/host/ehci-atmel.c
-index 17bc896a8b..67ba7cbcc1 100644
---- a/drivers/usb/host/ehci-atmel.c
-+++ b/drivers/usb/host/ehci-atmel.c
-@@ -8,9 +8,9 @@
- #include <linux/err.h>
- #include <driver.h>
- #include <init.h>
--#include <usb/usb.h>
--#include <usb/usb_defs.h>
--#include <usb/ehci.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usb_defs.h>
-+#include <linux/usb/ehci.h>
- #include <errno.h>
- #include <io.h>
- 
-diff --git a/drivers/usb/host/ehci-hcd.c b/drivers/usb/host/ehci-hcd.c
-index 53d06a46fa..a0b8b807b6 100644
---- a/drivers/usb/host/ehci-hcd.c
-+++ b/drivers/usb/host/ehci-hcd.c
-@@ -10,7 +10,7 @@
- #include <common.h>
- #include <dma.h>
- #include <asm/byteorder.h>
--#include <usb/usb.h>
-+#include <linux/usb/usb.h>
- #include <io.h>
- #include <malloc.h>
- #include <driver.h>
-@@ -19,7 +19,7 @@
- #include <clock.h>
- #include <errno.h>
- #include <of.h>
--#include <usb/ehci.h>
-+#include <linux/usb/ehci.h>
- #include <linux/err.h>
- #include <linux/sizes.h>
- #include <linux/clk.h>
-@@ -510,7 +510,7 @@ ehci_submit_async(struct usb_device *dev, unsigned long pipe, void *buffer,
+ /*
+  * The code in this file is utility code, used to build a gadget driver
+@@ -32,40 +52,89 @@ static struct usb_gadget_strings **get_containers_gs(
  }
  
- #if defined(CONFIG_MACH_EFIKA_MX_SMARTBOOK) && defined(CONFIG_USB_ULPI)
--#include <usb/ulpi.h>
-+#include <linux/usb/ulpi.h>
- /*
-  * Add support for setting CHRGVBUS to workaround a hardware bug on efika mx/sb
-  * boards.
-diff --git a/drivers/usb/host/ehci-omap.c b/drivers/usb/host/ehci-omap.c
-index dd18c4af39..e364796a1a 100644
---- a/drivers/usb/host/ehci-omap.c
-+++ b/drivers/usb/host/ehci-omap.c
-@@ -10,7 +10,7 @@
- /*-------------------------------------------------------------------------*/
- 
- #include <mfd/twl4030.h>
--#include <usb/twl4030.h>
-+#include <linux/usb/twl4030.h>
- #include <mach/omap/ehci.h>
- #include <common.h>
- #include <io.h>
-diff --git a/drivers/usb/host/ohci-at91.c b/drivers/usb/host/ohci-at91.c
-index b1416a20d3..a7caf7ea04 100644
---- a/drivers/usb/host/ohci-at91.c
-+++ b/drivers/usb/host/ohci-at91.c
-@@ -7,8 +7,8 @@
- #include <linux/clk.h>
- #include <driver.h>
- #include <init.h>
--#include <usb/usb.h>
--#include <usb/usb_defs.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usb_defs.h>
- #include <errno.h>
- #include <gpio.h>
- #include <of_gpio.h>
-diff --git a/drivers/usb/host/ohci-hcd.c b/drivers/usb/host/ohci-hcd.c
-index fcec5eee5e..e4b69dcf62 100644
---- a/drivers/usb/host/ohci-hcd.c
-+++ b/drivers/usb/host/ohci-hcd.c
-@@ -30,8 +30,8 @@
- #include <clock.h>
- #include <dma.h>
- #include <malloc.h>
--#include <usb/usb.h>
--#include <usb/usb_defs.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usb_defs.h>
- #include <init.h>
- #include <errno.h>
- #include <linux/err.h>
-diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
-index ae20560eb5..f975b1c0a9 100644
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -20,8 +20,8 @@
- #include <io.h>
- #include <linux/err.h>
- #include <linux/sizes.h>
--#include <usb/usb.h>
--#include <usb/xhci.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/xhci.h>
- #include <asm/unaligned.h>
- 
- #include "xhci.h"
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 60764222af..4654ab1486 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -19,8 +19,8 @@
- #include <io.h>
- #include <linux/err.h>
- #include <linux/sizes.h>
--#include <usb/usb.h>
--#include <usb/xhci.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/xhci.h>
- #include <asm/unaligned.h>
- 
- #include "xhci.h"
-diff --git a/drivers/usb/host/xhci.c b/drivers/usb/host/xhci.c
-index 55f51ca951..f5cc6dac57 100644
---- a/drivers/usb/host/xhci.c
-+++ b/drivers/usb/host/xhci.c
-@@ -24,8 +24,8 @@
- #include <init.h>
- #include <io.h>
- #include <linux/err.h>
--#include <usb/usb.h>
--#include <usb/xhci.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/xhci.h>
- #include <asm/unaligned.h>
- 
- #include "xhci.h"
-diff --git a/drivers/usb/imx/chipidea-imx.c b/drivers/usb/imx/chipidea-imx.c
-index 2493e6d202..053a985a70 100644
---- a/drivers/usb/imx/chipidea-imx.c
-+++ b/drivers/usb/imx/chipidea-imx.c
-@@ -9,13 +9,13 @@
- #include <of.h>
- #include <errno.h>
- #include <driver.h>
--#include <usb/usb.h>
--#include <usb/ehci.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/ehci.h>
- #include <regulator.h>
--#include <usb/chipidea-imx.h>
--#include <usb/phy.h>
--#include <usb/ulpi.h>
--#include <usb/fsl_usb2.h>
-+#include <linux/usb/chipidea-imx.h>
-+#include <linux/usb/phy.h>
-+#include <linux/usb/ulpi.h>
-+#include <linux/usb/fsl_usb2.h>
- #include <linux/err.h>
- #include <linux/phy/phy.h>
- #include <linux/clk.h>
-diff --git a/drivers/usb/imx/imx-usb-misc.c b/drivers/usb/imx/imx-usb-misc.c
-index bd91ac2e57..b4d7011d5c 100644
---- a/drivers/usb/imx/imx-usb-misc.c
-+++ b/drivers/usb/imx/imx-usb-misc.c
-@@ -9,7 +9,7 @@
- #include <io.h>
- #include <of.h>
- #include <errno.h>
--#include <usb/chipidea-imx.h>
-+#include <linux/usb/chipidea-imx.h>
- #include <mach/imx/imx6-regs.h>
- #include <mach/imx/iomux-mx6.h>
- 
-diff --git a/drivers/usb/imx/imx-usb-phy.c b/drivers/usb/imx/imx-usb-phy.c
-index 628e569820..1e9698b98a 100644
---- a/drivers/usb/imx/imx-usb-phy.c
-+++ b/drivers/usb/imx/imx-usb-phy.c
-@@ -10,7 +10,7 @@
- #include <errno.h>
- #include <driver.h>
- #include <malloc.h>
--#include <usb/phy.h>
-+#include <linux/usb/phy.h>
- #include <linux/phy/phy.h>
- #include <linux/clk.h>
- #include <linux/err.h>
-diff --git a/drivers/usb/misc/onboard_usb_hub.c b/drivers/usb/misc/onboard_usb_hub.c
-index 0b847f06ad..b5c68098fd 100644
---- a/drivers/usb/misc/onboard_usb_hub.c
-+++ b/drivers/usb/misc/onboard_usb_hub.c
-@@ -12,7 +12,7 @@
- #include <linux/printk.h>
- #include <of_device.h>
- #include <regulator.h>
--#include <usb/usb.h>
-+#include <linux/usb/usb.h>
- 
- #include "onboard_usb_hub.h"
- 
-diff --git a/drivers/usb/musb/musb_barebox.c b/drivers/usb/musb/musb_barebox.c
-index 357a8f4281..81fdd6338f 100644
---- a/drivers/usb/musb/musb_barebox.c
-+++ b/drivers/usb/musb/musb_barebox.c
-@@ -2,8 +2,8 @@
- #include <common.h>
- #include <init.h>
- #include <clock.h>
--#include <usb/musb.h>
--#include <usb/usb.h>
-+#include <linux/usb/musb.h>
-+#include <linux/usb/usb.h>
- #include <linux/types.h>
- #include <linux/err.h>
- #include <linux/barebox-wrapper.h>
-diff --git a/drivers/usb/musb/musb_core.c b/drivers/usb/musb/musb_core.c
-index ab825553b5..76622b4d55 100644
---- a/drivers/usb/musb/musb_core.c
-+++ b/drivers/usb/musb/musb_core.c
-@@ -67,8 +67,8 @@
- #include <common.h>
- #include <init.h>
- #include <clock.h>
--#include <usb/musb.h>
--#include <usb/usb.h>
-+#include <linux/usb/musb.h>
-+#include <linux/usb/usb.h>
- #include <linux/types.h>
- #include <linux/err.h>
- #include <linux/barebox-wrapper.h>
-diff --git a/drivers/usb/musb/musb_core.h b/drivers/usb/musb/musb_core.h
-index a4e97c989b..d954719161 100644
---- a/drivers/usb/musb/musb_core.h
-+++ b/drivers/usb/musb/musb_core.h
-@@ -12,8 +12,8 @@
- 
- #include <poller.h>
- #include <notifier.h>
--#include <usb/usb.h>
--#include <usb/phy.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/phy.h>
- #include <linux/spinlock.h>
- 
- struct musb;
-diff --git a/drivers/usb/musb/musb_dsps.c b/drivers/usb/musb/musb_dsps.c
-index 910ab347aa..b677760796 100644
---- a/drivers/usb/musb/musb_dsps.c
-+++ b/drivers/usb/musb/musb_dsps.c
-@@ -17,8 +17,8 @@
- #include <common.h>
- #include <init.h>
- #include <clock.h>
--#include <usb/usb.h>
--#include <usb/musb.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/musb.h>
- #include <malloc.h>
- #include <linux/err.h>
- #include <linux/barebox-wrapper.h>
-diff --git a/drivers/usb/musb/musb_gadget.h b/drivers/usb/musb/musb_gadget.h
-index af81f062e6..bbd1a35880 100644
---- a/drivers/usb/musb/musb_gadget.h
-+++ b/drivers/usb/musb/musb_gadget.h
-@@ -11,7 +11,7 @@
- #define __MUSB_GADGET_H
- 
- #include <linux/list.h>
--#include <usb/gadget.h>
-+#include <linux/usb/gadget.h>
- 
- #if IS_ENABLED(CONFIG_USB_MUSB_GADGET)
- extern int musb_g_ep0_irq(struct musb *);
-diff --git a/drivers/usb/musb/musb_host.h b/drivers/usb/musb/musb_host.h
-index 7a7c366521..5585f2e3b5 100644
---- a/drivers/usb/musb/musb_host.h
-+++ b/drivers/usb/musb/musb_host.h
-@@ -12,7 +12,7 @@
- 
- //#include <linux/scatterlist.h>
- #include <linux/list.h>
--#include <usb/usb.h>
-+#include <linux/usb/usb.h>
- #include <asm/unaligned.h>
+ /**
+- * next_ep_desc() - advance to the next EP descriptor
++ * function_descriptors() - get function descriptors for speed
++ * @f: the function
++ * @speed: the speed
++ *
++ * Returns the descriptors or NULL if not set.
++ */
++static struct usb_descriptor_header **
++function_descriptors(struct usb_function *f,
++		     enum usb_device_speed speed)
++{
++	struct usb_descriptor_header **descriptors;
++
++	/*
++	 * NOTE: we try to help gadget drivers which might not be setting
++	 * max_speed appropriately.
++	 */
++
++	switch (speed) {
++	case USB_SPEED_SUPER_PLUS:
++		descriptors = f->ssp_descriptors;
++		if (descriptors)
++			break;
++		fallthrough;
++	case USB_SPEED_SUPER:
++		descriptors = f->ss_descriptors;
++		if (descriptors)
++			break;
++		fallthrough;
++	case USB_SPEED_HIGH:
++		descriptors = f->hs_descriptors;
++		if (descriptors)
++			break;
++		fallthrough;
++	default:
++		descriptors = f->fs_descriptors;
++	}
++
++	/*
++	 * if we can't find any descriptors at all, then this gadget deserves to
++	 * Oops with a NULL pointer dereference
++	 */
++
++	return descriptors;
++}
++
++/**
++ * next_desc() - advance to the next desc_type descriptor
+  * @t: currect pointer within descriptor array
++ * @desc_type: descriptor type
+  *
+- * Return: next EP descriptor or NULL
++ * Return: next desc_type descriptor or NULL
+  *
+- * Iterate over @t until either EP descriptor found or
++ * Iterate over @t until either desc_type descriptor found or
+  * NULL (that indicates end of list) encountered
+  */
+ static struct usb_descriptor_header**
+-next_ep_desc(struct usb_descriptor_header **t)
++next_desc(struct usb_descriptor_header **t, u8 desc_type)
+ {
+ 	for (; *t; t++) {
+-		if ((*t)->bDescriptorType == USB_DT_ENDPOINT)
++		if ((*t)->bDescriptorType == desc_type)
+ 			return t;
+ 	}
+ 	return NULL;
+ }
  
  /*
-diff --git a/drivers/usb/otg/otgdev.c b/drivers/usb/otg/otgdev.c
-index 1ac1b642ac..d0a1cecc85 100644
---- a/drivers/usb/otg/otgdev.c
-+++ b/drivers/usb/otg/otgdev.c
-@@ -2,7 +2,7 @@
+- * for_each_ep_desc()- iterate over endpoint descriptors in the
+- *		descriptors list
+- * @start:	pointer within descriptor array.
+- * @ep_desc:	endpoint descriptor to use as the loop cursor
++ * for_each_desc() - iterate over desc_type descriptors in the
++ * descriptors list
++ * @start: pointer within descriptor array.
++ * @iter_desc: desc_type descriptor to use as the loop cursor
++ * @desc_type: wanted descriptr type
+  */
+-#define for_each_ep_desc(start, ep_desc) \
+-	for (ep_desc = next_ep_desc(start); \
+-	      ep_desc; ep_desc = next_ep_desc(ep_desc+1))
++#define for_each_desc(start, iter_desc, desc_type) \
++	for (iter_desc = next_desc(start, desc_type); \
++	     iter_desc; iter_desc = next_desc(iter_desc + 1, desc_type))
  
- #include <common.h>
- #include <driver.h>
--#include <usb/usb.h>
-+#include <linux/usb/usb.h>
+ /**
+- * config_ep_by_speed() - configures the given endpoint
++ * config_ep_by_speed_and_alt() - configures the given endpoint
+  * according to gadget speed.
+  * @g: pointer to the gadget
+  * @f: usb function
+  * @_ep: the endpoint to configure
++ * @alt: alternate setting number
+  *
+  * Return: error code, 0 on success
+  *
+@@ -78,44 +147,80 @@ next_ep_desc(struct usb_descriptor_header **t)
+  * Note: the supplied function should hold all the descriptors
+  * for supported speeds
+  */
+-int config_ep_by_speed(struct usb_gadget *g,
+-			struct usb_function *f,
+-			struct usb_ep *_ep)
++int config_ep_by_speed_and_alt(struct usb_gadget *g,
++				struct usb_function *f,
++				struct usb_ep *_ep,
++				u8 alt)
+ {
+-	struct usb_composite_dev *cdev;
+ 	struct usb_endpoint_descriptor *chosen_desc = NULL;
++	struct usb_interface_descriptor *int_desc = NULL;
+ 	struct usb_descriptor_header **speed_desc = NULL;
  
- struct otg_mode {
- 	struct device dev;
-diff --git a/drivers/usb/otg/twl4030.c b/drivers/usb/otg/twl4030.c
-index cd82148b2e..5cbf734ded 100644
---- a/drivers/usb/otg/twl4030.c
-+++ b/drivers/usb/otg/twl4030.c
-@@ -24,7 +24,7 @@
+ 	struct usb_ss_ep_comp_descriptor *comp_desc = NULL;
+ 	int want_comp_desc = 0;
+ 
+ 	struct usb_descriptor_header **d_spd; /* cursor for speed desc */
++	struct usb_composite_dev *cdev;
++	bool incomplete_desc = false;
+ 
+ 	if (!g || !f || !_ep)
+ 		return -EIO;
+ 
+-	cdev = get_gadget_data(g);
+-
+ 	/* select desired speed */
+ 	switch (g->speed) {
++	case USB_SPEED_SUPER_PLUS:
++		if (gadget_is_superspeed_plus(g)) {
++			if (f->ssp_descriptors) {
++				speed_desc = f->ssp_descriptors;
++				want_comp_desc = 1;
++				break;
++			}
++			incomplete_desc = true;
++		}
++		fallthrough;
+ 	case USB_SPEED_SUPER:
+ 		if (gadget_is_superspeed(g)) {
+-			speed_desc = f->ss_descriptors;
+-			want_comp_desc = 1;
+-			break;
++			if (f->ss_descriptors) {
++				speed_desc = f->ss_descriptors;
++				want_comp_desc = 1;
++				break;
++			}
++			incomplete_desc = true;
+ 		}
+-		/* else: Fall trough */
++		fallthrough;
+ 	case USB_SPEED_HIGH:
+ 		if (gadget_is_dualspeed(g)) {
+-			speed_desc = f->hs_descriptors;
+-			break;
++			if (f->hs_descriptors) {
++				speed_desc = f->hs_descriptors;
++				break;
++			}
++			incomplete_desc = true;
+ 		}
+-		/* else: fall through */
++		fallthrough;
+ 	default:
+ 		speed_desc = f->fs_descriptors;
+ 	}
++
++	cdev = get_gadget_data(g);
++	if (incomplete_desc)
++		WARNING(cdev,
++			"%s doesn't hold the descriptors for current speed\n",
++			f->name);
++
++	/* find correct alternate setting descriptor */
++	for_each_desc(speed_desc, d_spd, USB_DT_INTERFACE) {
++		int_desc = (struct usb_interface_descriptor *)*d_spd;
++
++		if (int_desc->bAlternateSetting == alt) {
++			speed_desc = d_spd;
++			goto intf_found;
++		}
++	}
++	return -EIO;
++
++intf_found:
+ 	/* find descriptors */
+-	for_each_ep_desc(speed_desc, d_spd) {
++	for_each_desc(speed_desc, d_spd, USB_DT_ENDPOINT) {
+ 		chosen_desc = (struct usb_endpoint_descriptor *)*d_spd;
+ 		if (chosen_desc->bEndpointAddress == _ep->address)
+ 			goto ep_found;
+@@ -128,7 +233,12 @@ ep_found:
+ 	_ep->desc = chosen_desc;
+ 	_ep->comp_desc = NULL;
+ 	_ep->maxburst = 0;
+-	_ep->mult = 0;
++	_ep->mult = 1;
++
++	if (g->speed == USB_SPEED_HIGH && (usb_endpoint_xfer_isoc(_ep->desc) ||
++				usb_endpoint_xfer_int(_ep->desc)))
++		_ep->mult = usb_endpoint_maxp_mult(_ep->desc);
++
+ 	if (!want_comp_desc)
+ 		return 0;
+ 
+@@ -141,11 +251,12 @@ ep_found:
+ 	    (comp_desc->bDescriptorType != USB_DT_SS_ENDPOINT_COMP))
+ 		return -EIO;
+ 	_ep->comp_desc = comp_desc;
+-	if (g->speed == USB_SPEED_SUPER) {
++	if (g->speed >= USB_SPEED_SUPER) {
+ 		switch (usb_endpoint_type(_ep->desc)) {
+ 		case USB_ENDPOINT_XFER_ISOC:
+ 			/* mult: bits 1:0 of bmAttributes */
+-			_ep->mult = comp_desc->bmAttributes & 0x3;
++			_ep->mult = (comp_desc->bmAttributes & 0x3) + 1;
++			fallthrough;
+ 		case USB_ENDPOINT_XFER_BULK:
+ 		case USB_ENDPOINT_XFER_INT:
+ 			_ep->maxburst = comp_desc->bMaxBurst + 1;
+@@ -159,6 +270,32 @@ ep_found:
+ 	}
+ 	return 0;
+ }
++EXPORT_SYMBOL_GPL(config_ep_by_speed_and_alt);
++
++/**
++ * config_ep_by_speed() - configures the given endpoint
++ * according to gadget speed.
++ * @g: pointer to the gadget
++ * @f: usb function
++ * @_ep: the endpoint to configure
++ *
++ * Return: error code, 0 on success
++ *
++ * This function chooses the right descriptors for a given
++ * endpoint according to gadget speed and saves it in the
++ * endpoint desc field. If the endpoint already has a descriptor
++ * assigned to it - overwrites it with currently corresponding
++ * descriptor. The endpoint maxpacket field is updated according
++ * to the chosen descriptor.
++ * Note: the supplied function should hold all the descriptors
++ * for supported speeds
++ */
++int config_ep_by_speed(struct usb_gadget *g,
++			struct usb_function *f,
++			struct usb_ep *_ep)
++{
++	return config_ep_by_speed_and_alt(g, f, _ep, 0);
++}
+ EXPORT_SYMBOL_GPL(config_ep_by_speed);
+ 
+ /**
+@@ -190,6 +327,12 @@ int usb_add_function(struct usb_configuration *config,
+ 	function->config = config;
+ 	list_add_tail(&function->list, &config->functions);
+ 
++	if (function->bind_deactivated) {
++		value = usb_function_deactivate(function);
++		if (value)
++			goto done;
++	}
++
+ 	/* REVISIT *require* function->bind? */
+ 	if (function->bind) {
+ 		value = function->bind(config, function);
+@@ -211,6 +354,8 @@ int usb_add_function(struct usb_configuration *config,
+ 		config->highspeed = true;
+ 	if (!config->superspeed && function->ss_descriptors)
+ 		config->superspeed = true;
++	if (!config->superspeed_plus && function->ssp_descriptors)
++		config->superspeed_plus = true;
+ 
+ done:
+ 	if (value)
+@@ -229,6 +374,9 @@ void usb_remove_function(struct usb_configuration *c, struct usb_function *f)
+ 	list_del(&f->list);
+ 	if (f->unbind)
+ 		f->unbind(c, f);
++
++	if (f->bind_deactivated)
++		usb_function_activate(f);
+ }
+ EXPORT_SYMBOL_GPL(usb_remove_function);
+ 
+@@ -254,13 +402,20 @@ EXPORT_SYMBOL_GPL(usb_remove_function);
+ int usb_function_deactivate(struct usb_function *function)
+ {
+ 	struct usb_composite_dev	*cdev = function->config->cdev;
++	unsigned long			flags;
+ 	int				status = 0;
+ 
+-	if (cdev->deactivations == 0)
+-		status = usb_gadget_disconnect(cdev->gadget);
++	spin_lock_irqsave(&cdev->lock, flags);
++
++	if (cdev->deactivations == 0) {
++		spin_unlock_irqrestore(&cdev->lock, flags);
++		status = usb_gadget_deactivate(cdev->gadget);
++		spin_lock_irqsave(&cdev->lock, flags);
++	}
+ 	if (status == 0)
+ 		cdev->deactivations++;
+ 
++	spin_unlock_irqrestore(&cdev->lock, flags);
+ 	return status;
+ }
+ EXPORT_SYMBOL_GPL(usb_function_deactivate);
+@@ -278,16 +433,23 @@ EXPORT_SYMBOL_GPL(usb_function_deactivate);
+ int usb_function_activate(struct usb_function *function)
+ {
+ 	struct usb_composite_dev	*cdev = function->config->cdev;
++	unsigned long			flags;
+ 	int				status = 0;
+ 
++	spin_lock_irqsave(&cdev->lock, flags);
++
+ 	if (WARN_ON(cdev->deactivations == 0))
+ 		status = -EINVAL;
+ 	else {
+ 		cdev->deactivations--;
+-		if (cdev->deactivations == 0)
+-			status = usb_gadget_connect(cdev->gadget);
++		if (cdev->deactivations == 0) {
++			spin_unlock_irqrestore(&cdev->lock, flags);
++			status = usb_gadget_activate(cdev->gadget);
++			spin_lock_irqsave(&cdev->lock, flags);
++		}
+ 	}
+ 
++	spin_unlock_irqrestore(&cdev->lock, flags);
+ 	return status;
+ }
+ EXPORT_SYMBOL_GPL(usb_function_activate);
+@@ -334,18 +496,20 @@ static u8 encode_bMaxPower(enum usb_device_speed speed,
+ {
+ 	unsigned val;
+ 
+-	if (c->MaxPower)
++	if (c->MaxPower || (c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
+ 		val = c->MaxPower;
+ 	else
+-		val = usb_gadget_vbus_draw_ma;
++		val = CONFIG_USB_GADGET_VBUS_DRAW;
+ 	if (!val)
+ 		return 0;
+-	switch (speed) {
+-	case USB_SPEED_SUPER:
+-		return DIV_ROUND_UP(val, 8);
+-	default:
+-		return DIV_ROUND_UP(val, 2);
+-	}
++	if (speed < USB_SPEED_SUPER)
++		return min(val, 500U) / 2;
++	else
++		/*
++		 * USB 3.x supports up to 900mA, but since 900 isn't divisible
++		 * by 8 the integral division will effectively cap to 896mA.
++		 */
++		return min(val, 900U) / 8;
+ }
+ 
+ static int config_buf(struct usb_configuration *config,
+@@ -383,17 +547,7 @@ static int config_buf(struct usb_configuration *config,
+ 	list_for_each_entry(f, &config->functions, list) {
+ 		struct usb_descriptor_header **descriptors;
+ 
+-		switch (speed) {
+-		case USB_SPEED_SUPER:
+-			descriptors = f->ss_descriptors;
+-			break;
+-		case USB_SPEED_HIGH:
+-			descriptors = f->hs_descriptors;
+-			break;
+-		default:
+-			descriptors = f->fs_descriptors;
+-		}
+-
++		descriptors = function_descriptors(f, speed);
+ 		if (!descriptors)
+ 			continue;
+ 		status = usb_descriptor_fillbuf(next, len,
+@@ -413,10 +567,11 @@ static int config_desc(struct usb_composite_dev *cdev, unsigned w_value)
+ {
+ 	struct usb_gadget		*gadget = cdev->gadget;
+ 	struct usb_configuration	*c;
++	struct list_head		*pos;
+ 	u8				type = w_value >> 8;
+ 	enum usb_device_speed		speed = USB_SPEED_UNKNOWN;
+ 
+-	if (gadget->speed == USB_SPEED_SUPER)
++	if (gadget->speed >= USB_SPEED_SUPER)
+ 		speed = gadget->speed;
+ 	else if (gadget_is_dualspeed(gadget)) {
+ 		int	hs = 0;
+@@ -431,9 +586,26 @@ static int config_desc(struct usb_composite_dev *cdev, unsigned w_value)
+ 
+ 	/* This is a lookup by config *INDEX* */
+ 	w_value &= 0xff;
+-	list_for_each_entry(c, &cdev->configs, list) {
++
++	pos = &cdev->configs;
++	c = cdev->os_desc_config;
++	if (c)
++		goto check_config;
++
++	while ((pos = pos->next) !=  &cdev->configs) {
++		c = list_entry(pos, typeof(*c), list);
++
++		/* skip OS Descriptors config which is handled separately */
++		if (c == cdev->os_desc_config)
++			continue;
++
++check_config:
+ 		/* ignore configs that won't work at this speed */
+ 		switch (speed) {
++		case USB_SPEED_SUPER_PLUS:
++			if (!c->superspeed_plus)
++				continue;
++			break;
+ 		case USB_SPEED_SUPER:
+ 			if (!c->superspeed)
+ 				continue;
+@@ -461,18 +633,24 @@ static int count_configs(struct usb_composite_dev *cdev, unsigned type)
+ 	unsigned			count = 0;
+ 	int				hs = 0;
+ 	int				ss = 0;
++	int				ssp = 0;
+ 
+ 	if (gadget_is_dualspeed(gadget)) {
+ 		if (gadget->speed == USB_SPEED_HIGH)
+ 			hs = 1;
+ 		if (gadget->speed == USB_SPEED_SUPER)
+ 			ss = 1;
++		if (gadget->speed == USB_SPEED_SUPER_PLUS)
++			ssp = 1;
+ 		if (type == USB_DT_DEVICE_QUALIFIER)
+ 			hs = !hs;
+ 	}
+ 	list_for_each_entry(c, &cdev->configs, list) {
+ 		/* ignore configs that won't work at this speed */
+-		if (ss) {
++		if (ssp) {
++			if (!c->superspeed_plus)
++				continue;
++		} else if (ss) {
+ 			if (!c->superspeed)
+ 				continue;
+ 		} else if (hs) {
+@@ -499,9 +677,9 @@ static int count_configs(struct usb_composite_dev *cdev, unsigned type)
+ static int bos_desc(struct usb_composite_dev *cdev)
+ {
+ 	struct usb_ext_cap_descriptor	*usb_ext;
+-	struct usb_ss_cap_descriptor	*ss_cap;
+ 	struct usb_dcd_config_params	dcd_config_params;
+ 	struct usb_bos_descriptor	*bos = cdev->req->buf;
++	unsigned int			besl = 0;
+ 
+ 	bos->bLength = USB_DT_BOS_SIZE;
+ 	bos->bDescriptorType = USB_DT_BOS;
+@@ -509,45 +687,173 @@ static int bos_desc(struct usb_composite_dev *cdev)
+ 	bos->wTotalLength = cpu_to_le16(USB_DT_BOS_SIZE);
+ 	bos->bNumDeviceCaps = 0;
+ 
++	/* Get Controller configuration */
++	if (cdev->gadget->ops->get_config_params) {
++		cdev->gadget->ops->get_config_params(cdev->gadget,
++						     &dcd_config_params);
++	} else {
++		dcd_config_params.besl_baseline =
++			USB_DEFAULT_BESL_UNSPECIFIED;
++		dcd_config_params.besl_deep =
++			USB_DEFAULT_BESL_UNSPECIFIED;
++		dcd_config_params.bU1devExitLat =
++			USB_DEFAULT_U1_DEV_EXIT_LAT;
++		dcd_config_params.bU2DevExitLat =
++			cpu_to_le16(USB_DEFAULT_U2_DEV_EXIT_LAT);
++	}
++
++	if (dcd_config_params.besl_baseline != USB_DEFAULT_BESL_UNSPECIFIED)
++		besl = USB_BESL_BASELINE_VALID |
++			USB_SET_BESL_BASELINE(dcd_config_params.besl_baseline);
++
++	if (dcd_config_params.besl_deep != USB_DEFAULT_BESL_UNSPECIFIED)
++		besl |= USB_BESL_DEEP_VALID |
++			USB_SET_BESL_DEEP(dcd_config_params.besl_deep);
++
+ 	/*
+ 	 * A SuperSpeed device shall include the USB2.0 extension descriptor
+ 	 * and shall support LPM when operating in USB2.0 HS mode.
+ 	 */
+-	usb_ext = cdev->req->buf + le16_to_cpu(bos->wTotalLength);
+-	bos->bNumDeviceCaps++;
+-	le16_add_cpu(&bos->wTotalLength, USB_DT_USB_EXT_CAP_SIZE);
+-	usb_ext->bLength = USB_DT_USB_EXT_CAP_SIZE;
+-	usb_ext->bDescriptorType = USB_DT_DEVICE_CAPABILITY;
+-	usb_ext->bDevCapabilityType = USB_CAP_TYPE_EXT;
+-	usb_ext->bmAttributes = cpu_to_le32(USB_LPM_SUPPORT);
++	if (cdev->gadget->lpm_capable) {
++		usb_ext = cdev->req->buf + le16_to_cpu(bos->wTotalLength);
++		bos->bNumDeviceCaps++;
++		le16_add_cpu(&bos->wTotalLength, USB_DT_USB_EXT_CAP_SIZE);
++		usb_ext->bLength = USB_DT_USB_EXT_CAP_SIZE;
++		usb_ext->bDescriptorType = USB_DT_DEVICE_CAPABILITY;
++		usb_ext->bDevCapabilityType = USB_CAP_TYPE_EXT;
++		usb_ext->bmAttributes = cpu_to_le32(USB_LPM_SUPPORT |
++							USB_BESL_SUPPORT | besl);
++	}
+ 
+ 	/*
+ 	 * The Superspeed USB Capability descriptor shall be implemented by all
+ 	 * SuperSpeed devices.
+ 	 */
+-	ss_cap = cdev->req->buf + le16_to_cpu(bos->wTotalLength);
+-	bos->bNumDeviceCaps++;
+-	le16_add_cpu(&bos->wTotalLength, USB_DT_USB_SS_CAP_SIZE);
+-	ss_cap->bLength = USB_DT_USB_SS_CAP_SIZE;
+-	ss_cap->bDescriptorType = USB_DT_DEVICE_CAPABILITY;
+-	ss_cap->bDevCapabilityType = USB_SS_CAP_TYPE;
+-	ss_cap->bmAttributes = 0; /* LTM is not supported yet */
+-	ss_cap->wSpeedSupported = cpu_to_le16(USB_LOW_SPEED_OPERATION |
+-				USB_FULL_SPEED_OPERATION |
+-				USB_HIGH_SPEED_OPERATION |
+-				USB_5GBPS_OPERATION);
+-	ss_cap->bFunctionalitySupport = USB_LOW_SPEED_OPERATION;
++	if (gadget_is_superspeed(cdev->gadget)) {
++		struct usb_ss_cap_descriptor *ss_cap;
++
++		ss_cap = cdev->req->buf + le16_to_cpu(bos->wTotalLength);
++		bos->bNumDeviceCaps++;
++		le16_add_cpu(&bos->wTotalLength, USB_DT_USB_SS_CAP_SIZE);
++		ss_cap->bLength = USB_DT_USB_SS_CAP_SIZE;
++		ss_cap->bDescriptorType = USB_DT_DEVICE_CAPABILITY;
++		ss_cap->bDevCapabilityType = USB_SS_CAP_TYPE;
++		ss_cap->bmAttributes = 0; /* LTM is not supported yet */
++		ss_cap->wSpeedSupported = cpu_to_le16(USB_LOW_SPEED_OPERATION |
++						      USB_FULL_SPEED_OPERATION |
++						      USB_HIGH_SPEED_OPERATION |
++						      USB_5GBPS_OPERATION);
++		ss_cap->bFunctionalitySupport = USB_LOW_SPEED_OPERATION;
++		ss_cap->bU1devExitLat = dcd_config_params.bU1devExitLat;
++		ss_cap->bU2DevExitLat = dcd_config_params.bU2DevExitLat;
++	}
+ 
+-	/* Get Controller configuration */
+-	if (cdev->gadget->ops->get_config_params)
+-		cdev->gadget->ops->get_config_params(cdev->gadget, &dcd_config_params);
+-	else {
+-		dcd_config_params.bU1devExitLat = USB_DEFAULT_U1_DEV_EXIT_LAT;
+-		dcd_config_params.bU2DevExitLat =
+-			cpu_to_le16(USB_DEFAULT_U2_DEV_EXIT_LAT);
++	/* The SuperSpeedPlus USB Device Capability descriptor */
++	if (gadget_is_superspeed_plus(cdev->gadget)) {
++		struct usb_ssp_cap_descriptor *ssp_cap;
++		u8 ssac = 1;
++		u8 ssic;
++		int i;
++
++		if (cdev->gadget->max_ssp_rate == USB_SSP_GEN_2x2)
++			ssac = 3;
++
++		/*
++		 * Paired RX and TX sublink speed attributes share
++		 * the same SSID.
++		 */
++		ssic = (ssac + 1) / 2 - 1;
++
++		ssp_cap = cdev->req->buf + le16_to_cpu(bos->wTotalLength);
++		bos->bNumDeviceCaps++;
++
++		le16_add_cpu(&bos->wTotalLength, USB_DT_USB_SSP_CAP_SIZE(ssac));
++		ssp_cap->bLength = USB_DT_USB_SSP_CAP_SIZE(ssac);
++		ssp_cap->bDescriptorType = USB_DT_DEVICE_CAPABILITY;
++		ssp_cap->bDevCapabilityType = USB_SSP_CAP_TYPE;
++		ssp_cap->bReserved = 0;
++		ssp_cap->wReserved = 0;
++
++		ssp_cap->bmAttributes =
++			cpu_to_le32(FIELD_PREP(USB_SSP_SUBLINK_SPEED_ATTRIBS, ssac) |
++				    FIELD_PREP(USB_SSP_SUBLINK_SPEED_IDS, ssic));
++
++		ssp_cap->wFunctionalitySupport =
++			cpu_to_le16(FIELD_PREP(USB_SSP_MIN_SUBLINK_SPEED_ATTRIBUTE_ID, 0) |
++				    FIELD_PREP(USB_SSP_MIN_RX_LANE_COUNT, 1) |
++				    FIELD_PREP(USB_SSP_MIN_TX_LANE_COUNT, 1));
++
++		/*
++		 * Use 1 SSID if the gadget supports up to gen2x1 or not
++		 * specified:
++		 * - SSID 0 for symmetric RX/TX sublink speed of 10 Gbps.
++		 *
++		 * Use 1 SSID if the gadget supports up to gen1x2:
++		 * - SSID 0 for symmetric RX/TX sublink speed of 5 Gbps.
++		 *
++		 * Use 2 SSIDs if the gadget supports up to gen2x2:
++		 * - SSID 0 for symmetric RX/TX sublink speed of 5 Gbps.
++		 * - SSID 1 for symmetric RX/TX sublink speed of 10 Gbps.
++		 */
++		for (i = 0; i < ssac + 1; i++) {
++			u8 ssid;
++			u8 mantissa;
++			u8 type;
++
++			ssid = i >> 1;
++
++			if (cdev->gadget->max_ssp_rate == USB_SSP_GEN_2x1 ||
++			    cdev->gadget->max_ssp_rate == USB_SSP_GEN_UNKNOWN)
++				mantissa = 10;
++			else
++				mantissa = 5 << ssid;
++
++			if (i % 2)
++				type = USB_SSP_SUBLINK_SPEED_ST_SYM_TX;
++			else
++				type = USB_SSP_SUBLINK_SPEED_ST_SYM_RX;
++
++			ssp_cap->bmSublinkSpeedAttr[i] =
++				cpu_to_le32(FIELD_PREP(USB_SSP_SUBLINK_SPEED_SSID, ssid) |
++					    FIELD_PREP(USB_SSP_SUBLINK_SPEED_LSE,
++						       USB_SSP_SUBLINK_SPEED_LSE_GBPS) |
++					    FIELD_PREP(USB_SSP_SUBLINK_SPEED_ST, type) |
++					    FIELD_PREP(USB_SSP_SUBLINK_SPEED_LP,
++						       USB_SSP_SUBLINK_SPEED_LP_SSP) |
++					    FIELD_PREP(USB_SSP_SUBLINK_SPEED_LSM, mantissa));
++		}
++	}
++
++	/* The WebUSB Platform Capability descriptor */
++	if (cdev->use_webusb) {
++		struct usb_plat_dev_cap_descriptor *webusb_cap;
++		struct usb_webusb_cap_data *webusb_cap_data;
++		guid_t webusb_uuid = WEBUSB_UUID;
++
++		webusb_cap = cdev->req->buf + le16_to_cpu(bos->wTotalLength);
++		webusb_cap_data = (struct usb_webusb_cap_data *) webusb_cap->CapabilityData;
++		bos->bNumDeviceCaps++;
++		le16_add_cpu(&bos->wTotalLength,
++			USB_DT_USB_PLAT_DEV_CAP_SIZE(USB_WEBUSB_CAP_DATA_SIZE));
++
++		webusb_cap->bLength = USB_DT_USB_PLAT_DEV_CAP_SIZE(USB_WEBUSB_CAP_DATA_SIZE);
++		webusb_cap->bDescriptorType = USB_DT_DEVICE_CAPABILITY;
++		webusb_cap->bDevCapabilityType = USB_PLAT_DEV_CAP_TYPE;
++		webusb_cap->bReserved = 0;
++		export_guid(webusb_cap->UUID, &webusb_uuid);
++
++		if (cdev->bcd_webusb_version != 0)
++			webusb_cap_data->bcdVersion = cpu_to_le16(cdev->bcd_webusb_version);
++		else
++			webusb_cap_data->bcdVersion = WEBUSB_VERSION_1_00;
++
++		webusb_cap_data->bVendorCode = cdev->b_webusb_vendor_code;
++
++		if (strnlen(cdev->landing_page, sizeof(cdev->landing_page)) > 0)
++			webusb_cap_data->iLandingPage = WEBUSB_LANDING_PAGE_PRESENT;
++		else
++			webusb_cap_data->iLandingPage = WEBUSB_LANDING_PAGE_NOT_PRESENT;
+ 	}
+-	ss_cap->bU1devExitLat = dcd_config_params.bU1devExitLat;
+-	ss_cap->bU2DevExitLat = dcd_config_params.bU2DevExitLat;
+ 
+ 	return le16_to_cpu(bos->wTotalLength);
+ }
+@@ -575,45 +881,41 @@ static void reset_config(struct usb_composite_dev *cdev)
+ {
+ 	struct usb_function		*f;
+ 
+-	if (cdev->in_reset_config)
+-		return;
+-
+-	cdev->in_reset_config = 1;
+-
+ 	DBG(cdev, "reset config\n");
+ 
+ 	list_for_each_entry(f, &cdev->config->functions, list) {
+ 		if (f->disable)
+ 			f->disable(f);
++
+ 		bitmap_zero(f->endpoints, 32);
+ 	}
+ 	cdev->config = NULL;
+ 	cdev->delayed_status = 0;
+-	cdev->in_reset_config = 0;
+ }
+ 
+ static int set_config(struct usb_composite_dev *cdev,
+ 		const struct usb_ctrlrequest *ctrl, unsigned number)
+ {
+ 	struct usb_gadget	*gadget = cdev->gadget;
+-	struct usb_configuration *c = NULL;
++	struct usb_configuration *c = NULL, *iter;
+ 	int			result = -EINVAL;
+ 	unsigned		power = gadget_is_otg(gadget) ? 8 : 100;
+ 	int			tmp;
+ 
+ 	if (number) {
+-		list_for_each_entry(c, &cdev->configs, list) {
+-			if (c->bConfigurationValue == number) {
+-				/*
+-				 * We disable the FDs of the previous
+-				 * configuration only if the new configuration
+-				 * is a valid one
+-				 */
+-				if (cdev->config)
+-					reset_config(cdev);
+-				result = 0;
+-				break;
+-			}
++		list_for_each_entry(iter, &cdev->configs, list) {
++			if (iter->bConfigurationValue != number)
++				continue;
++			/*
++			 * We disable the FDs of the previous
++			 * configuration only if the new configuration
++			 * is a valid one
++			 */
++			if (cdev->config)
++				reset_config(cdev);
++			c = iter;
++			result = 0;
++			break;
+ 		}
+ 		if (result < 0)
+ 			goto done;
+@@ -624,12 +926,13 @@ static int set_config(struct usb_composite_dev *cdev,
+ 	}
+ 
+ 	INFO(cdev, "%s config #%d: %s\n",
+-	     usb_speed_string(gadget->speed),
+-	     number, c ? c->label : "unconfigured");
++	    usb_speed_string(gadget->speed),
++	    number, c ? c->label : "unconfigured");
+ 
+ 	if (!c)
+ 		goto done;
+ 
++	usb_gadget_set_state(gadget, USB_STATE_CONFIGURED);
+ 	cdev->config = c;
+ 
+ 	/* Initialize all interfaces by setting them to altsetting zero. */
+@@ -646,16 +949,7 @@ static int set_config(struct usb_composite_dev *cdev,
+ 		 * function's setup callback instead of the current
+ 		 * configuration's setup callback.
+ 		 */
+-		switch (gadget->speed) {
+-		case USB_SPEED_SUPER:
+-			descriptors = f->ss_descriptors;
+-			break;
+-		case USB_SPEED_HIGH:
+-			descriptors = f->hs_descriptors;
+-			break;
+-		default:
+-			descriptors = f->fs_descriptors;
+-		}
++		descriptors = function_descriptors(f, gadget->speed);
+ 
+ 		for (; *descriptors; ++descriptors) {
+ 			struct usb_endpoint_descriptor *ep;
+@@ -690,8 +984,21 @@ static int set_config(struct usb_composite_dev *cdev,
+ 	}
+ 
+ 	/* when we return, be sure our power usage is valid */
+-	power = c->MaxPower ? c->MaxPower : usb_gadget_vbus_draw_ma;
++	if (c->MaxPower || (c->bmAttributes & USB_CONFIG_ATT_SELFPOWER))
++		power = c->MaxPower;
++	else
++		power = CONFIG_USB_GADGET_VBUS_DRAW;
++
++	if (gadget->speed < USB_SPEED_SUPER)
++		power = min(power, 500U);
++	else
++		power = min(power, 900U);
+ done:
++	if (power <= USB_SELF_POWER_VBUS_MAX_DRAW)
++		usb_gadget_set_selfpowered(gadget);
++	else
++		usb_gadget_clear_selfpowered(gadget);
++
+ 	usb_gadget_vbus_draw(gadget, power);
+ 	if (result >= 0 && cdev->delayed_status)
+ 		result = USB_GADGET_DELAYED_STATUS;
+@@ -775,8 +1082,9 @@ int usb_add_config(struct usb_composite_dev *cdev,
+ 	} else {
+ 		unsigned	i;
+ 
+-		DBG(cdev, "cfg %d/%p speeds:%s%s%s\n",
++		DBG(cdev, "cfg %d/%p speeds:%s%s%s%s\n",
+ 			config->bConfigurationValue, config,
++			config->superspeed_plus ? " superplus" : "",
+ 			config->superspeed ? " super" : "",
+ 			config->highspeed ? " high" : "",
+ 			config->fullspeed
+@@ -795,9 +1103,7 @@ int usb_add_config(struct usb_composite_dev *cdev,
+ 		}
+ 	}
+ 
+-	/* set_alt(), or next bind(), sets up
+-	 * ep->driver_data as needed.
+-	 */
++	/* set_alt(), or next bind(), sets up ep->claimed as needed */
+ 	usb_ep_autoconfig_reset(cdev->gadget);
+ 
+ done:
+@@ -816,12 +1122,8 @@ static void remove_config(struct usb_composite_dev *cdev,
+ 
+ 		f = list_first_entry(&config->functions,
+ 				struct usb_function, list);
+-		list_del(&f->list);
+-		if (f->unbind) {
+-			DBG(cdev, "unbind function '%s'/%p\n", f->name, f);
+-			f->unbind(config, f);
+-			/* may free memory for "f" */
+-		}
++
++		usb_remove_function(config, f);
+ 	}
+ 	list_del(&config->list);
+ 	if (config->unbind) {
+@@ -843,9 +1145,15 @@ static void remove_config(struct usb_composite_dev *cdev,
+ void usb_remove_config(struct usb_composite_dev *cdev,
+ 		      struct usb_configuration *config)
+ {
++	unsigned long flags;
++
++	spin_lock_irqsave(&cdev->lock, flags);
++
+ 	if (cdev->config == config)
+ 		reset_config(cdev);
+ 
++	spin_unlock_irqrestore(&cdev->lock, flags);
++
+ 	remove_config(cdev, config);
+ }
+ 
+@@ -853,7 +1161,7 @@ void usb_remove_config(struct usb_composite_dev *cdev,
+ 
+ /* We support strings in multiple languages ... string descriptor zero
+  * says which languages are supported.  The typical case will be that
+- * only one language (probably English) is used, with I18N handled on
++ * only one language (probably English) is used, with i18n handled on
+  * the host side.
   */
  
- #include <mfd/twl4030.h>
--#include <usb/twl4030.h>
-+#include <linux/usb/twl4030.h>
- #include <clock.h>
+@@ -866,7 +1174,7 @@ static void collect_langs(struct usb_gadget_strings **sp, __le16 *buf)
+ 	while (*sp) {
+ 		s = *sp;
+ 		language = cpu_to_le16(s->language);
+-		for (tmp = buf; *tmp && tmp < &buf[126]; tmp++) {
++		for (tmp = buf; *tmp && tmp < &buf[USB_MAX_STRING_LEN]; tmp++) {
+ 			if (*tmp == language)
+ 				goto repeat;
+ 		}
+@@ -906,7 +1214,7 @@ static int get_string(struct usb_composite_dev *cdev,
+ 	struct usb_function		*f;
+ 	int				len;
  
- static int twl4030_usb_write(u8 address, u8 data)
-diff --git a/drivers/usb/otg/ulpi.c b/drivers/usb/otg/ulpi.c
-index aa9470b7ae..d231b49b08 100644
---- a/drivers/usb/otg/ulpi.c
-+++ b/drivers/usb/otg/ulpi.c
-@@ -6,7 +6,7 @@
- #include <common.h>
- #include <io.h>
- #include <errno.h>
--#include <usb/ulpi.h>
-+#include <linux/usb/ulpi.h>
+-	/* Yes, not only is USB's I18N support probably more than most
++	/* Yes, not only is USB's i18n support probably more than most
+ 	 * folk will ever care about ... also, it's all supported here.
+ 	 * (Except for UTF8 support for Unicode's "Astral Planes".)
+ 	 */
+@@ -941,7 +1249,7 @@ static int get_string(struct usb_composite_dev *cdev,
+ 			collect_langs(sp, s->wData);
+ 		}
  
- /* ULPIVIEW register bits */
- #define ULPIVW_WU		(1 << 31)	/* Wakeup */
-diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
-index 5699fc14b0..103ae293a3 100644
---- a/drivers/usb/storage/usb.c
-+++ b/drivers/usb/storage/usb.c
-@@ -12,8 +12,8 @@
- #include <malloc.h>
- #include <errno.h>
- #include <scsi.h>
--#include <usb/usb.h>
--#include <usb/usb_defs.h>
-+#include <linux/usb/usb.h>
-+#include <linux/usb/usb_defs.h>
+-		for (len = 0; len <= 126 && s->wData[len]; len++)
++		for (len = 0; len <= USB_MAX_STRING_LEN && s->wData[len]; len++)
+ 			continue;
+ 		if (!len)
+ 			return -EINVAL;
+@@ -950,6 +1258,19 @@ static int get_string(struct usb_composite_dev *cdev,
+ 		return s->bLength;
+ 	}
  
- #include <asm/unaligned.h>
++	if (cdev->use_os_string && language == 0 && id == OS_STRING_IDX) {
++		struct usb_os_string *b = buf;
++		b->bLength = sizeof(*b);
++		b->bDescriptorType = USB_DT_STRING;
++		compiletime_assert(
++			sizeof(b->qwSignature) == sizeof(cdev->qw_sign),
++			"qwSignature size must be equal to qw_sign");
++		memcpy(&b->qwSignature, cdev->qw_sign, sizeof(b->qwSignature));
++		b->bMS_VendorCode = cdev->b_vendor_code;
++		b->bPad = 0;
++		return sizeof(*b);
++	}
++
+ 	list_for_each_entry(uc, &cdev->gstrings, list) {
+ 		struct usb_gadget_strings **sp;
  
-diff --git a/drivers/usb/storage/usb.h b/drivers/usb/storage/usb.h
-index b9626b303e..ae16d7b60b 100644
---- a/drivers/usb/storage/usb.h
-+++ b/drivers/usb/storage/usb.h
-@@ -10,7 +10,7 @@
- #ifndef _STORAGE_USB_H_
- #define _STORAGE_USB_H_
+@@ -1013,7 +1334,7 @@ int usb_string_id(struct usb_composite_dev *cdev)
+ EXPORT_SYMBOL_GPL(usb_string_id);
  
--#include <usb/usb.h>
-+#include <linux/usb/usb.h>
- #include <block.h>
- #include <disks.h>
- #include <scsi.h>
-diff --git a/include/usb/cdc.h b/include/linux/usb/cdc.h
-similarity index 100%
-rename from include/usb/cdc.h
-rename to include/linux/usb/cdc.h
-diff --git a/include/usb/ch9.h b/include/linux/usb/ch9.h
-similarity index 100%
-rename from include/usb/ch9.h
-rename to include/linux/usb/ch9.h
-diff --git a/include/usb/chipidea-imx.h b/include/linux/usb/chipidea-imx.h
-similarity index 98%
-rename from include/usb/chipidea-imx.h
-rename to include/linux/usb/chipidea-imx.h
-index b0b75d3bcb..99dbd407e5 100644
---- a/include/usb/chipidea-imx.h
-+++ b/include/linux/usb/chipidea-imx.h
-@@ -3,7 +3,7 @@
- #ifndef __USB_CHIPIDEA_IMX_H
- #define __USB_CHIPIDEA_IMX_H
+ /**
+- * usb_string_ids() - allocate unused string IDs in batch
++ * usb_string_ids_tab() - allocate unused string IDs in batch
+  * @cdev: the device whose string descriptor IDs are being allocated
+  * @str: an array of usb_string objects to assign numbers to
+  * Context: single threaded during gadget setup
+@@ -1105,11 +1426,11 @@ static struct usb_gadget_string_container *copy_gadget_strings(
+  * This function will create a deep copy of usb_gadget_strings and usb_string
+  * and attach it to the cdev. The actual string (usb_string.s) will not be
+  * copied but only a referenced will be made. The struct usb_gadget_strings
+- * array may contain multiple languges and should be NULL terminated.
++ * array may contain multiple languages and should be NULL terminated.
+  * The ->language pointer of each struct usb_gadget_strings has to contain the
+  * same amount of entries.
+  * For instance: sp[0] is en-US, sp[1] is es-ES. It is expected that the first
+- * usb_string entry of es-ES containts the translation of the first usb_string
++ * usb_string entry of es-ES contains the translation of the first usb_string
+  * entry of en-US. Therefore both entries become the same id assign.
+  */
+ struct usb_string *usb_gstrings_attach(struct usb_composite_dev *cdev,
+@@ -1211,6 +1532,8 @@ static void composite_setup_complete(struct usb_ep *ep, struct usb_request *req)
  
--#include <usb/phy.h>
-+#include <linux/usb/phy.h>
+ 	if (cdev->req == req)
+ 		cdev->setup_pending = false;
++	else if (cdev->os_desc_req == req)
++		cdev->os_desc_pending = false;
+ 	else
+ 		WARN(1, "unknown request %p\n", req);
+ }
+@@ -1224,6 +1547,8 @@ static int composite_ep0_queue(struct usb_composite_dev *cdev,
+ 	if (ret == 0) {
+ 		if (cdev->req == req)
+ 			cdev->setup_pending = true;
++		else if (cdev->os_desc_req == req)
++			cdev->os_desc_pending = true;
+ 		else
+ 			WARN(1, "unknown request %p\n", req);
+ 	}
+@@ -1231,6 +1556,156 @@ static int composite_ep0_queue(struct usb_composite_dev *cdev,
+ 	return ret;
+ }
  
++static int count_ext_compat(struct usb_configuration *c)
++{
++	int i, res;
++
++	res = 0;
++	for (i = 0; i < c->next_interface_id; ++i) {
++		struct usb_function *f;
++		int j;
++
++		f = c->interface[i];
++		for (j = 0; j < f->os_desc_n; ++j) {
++			struct usb_os_desc *d;
++
++			if (i != f->os_desc_table[j].if_id)
++				continue;
++			d = f->os_desc_table[j].os_desc;
++			if (d && d->ext_compat_id)
++				++res;
++		}
++	}
++	BUG_ON(res > 255);
++	return res;
++}
++
++static int fill_ext_compat(struct usb_configuration *c, u8 *buf)
++{
++	int i, count;
++
++	count = 16;
++	buf += 16;
++	for (i = 0; i < c->next_interface_id; ++i) {
++		struct usb_function *f;
++		int j;
++
++		f = c->interface[i];
++		for (j = 0; j < f->os_desc_n; ++j) {
++			struct usb_os_desc *d;
++
++			if (i != f->os_desc_table[j].if_id)
++				continue;
++			d = f->os_desc_table[j].os_desc;
++			if (d && d->ext_compat_id) {
++				*buf++ = i;
++				*buf++ = 0x01;
++				memcpy(buf, d->ext_compat_id, 16);
++				buf += 22;
++			} else {
++				++buf;
++				*buf = 0x01;
++				buf += 23;
++			}
++			count += 24;
++			if (count + 24 >= USB_COMP_EP0_OS_DESC_BUFSIZ)
++				return count;
++		}
++	}
++
++	return count;
++}
++
++static int count_ext_prop(struct usb_configuration *c, int interface)
++{
++	struct usb_function *f;
++	int j;
++
++	f = c->interface[interface];
++	for (j = 0; j < f->os_desc_n; ++j) {
++		struct usb_os_desc *d;
++
++		if (interface != f->os_desc_table[j].if_id)
++			continue;
++		d = f->os_desc_table[j].os_desc;
++		if (d && d->ext_compat_id)
++			return d->ext_prop_count;
++	}
++	return 0;
++}
++
++static int len_ext_prop(struct usb_configuration *c, int interface)
++{
++	struct usb_function *f;
++	struct usb_os_desc *d;
++	int j, res;
++
++	res = 10; /* header length */
++	f = c->interface[interface];
++	for (j = 0; j < f->os_desc_n; ++j) {
++		if (interface != f->os_desc_table[j].if_id)
++			continue;
++		d = f->os_desc_table[j].os_desc;
++		if (d)
++			return min(res + d->ext_prop_len, 4096);
++	}
++	return res;
++}
++
++static int fill_ext_prop(struct usb_configuration *c, int interface, u8 *buf)
++{
++	struct usb_function *f;
++	struct usb_os_desc *d;
++	struct usb_os_desc_ext_prop *ext_prop;
++	int j, count, n, ret;
++
++	f = c->interface[interface];
++	count = 10; /* header length */
++	buf += 10;
++	for (j = 0; j < f->os_desc_n; ++j) {
++		if (interface != f->os_desc_table[j].if_id)
++			continue;
++		d = f->os_desc_table[j].os_desc;
++		if (d)
++			list_for_each_entry(ext_prop, &d->ext_prop, entry) {
++				n = ext_prop->data_len +
++					ext_prop->name_len + 14;
++				if (count + n >= USB_COMP_EP0_OS_DESC_BUFSIZ)
++					return count;
++				usb_ext_prop_put_size(buf, n);
++				usb_ext_prop_put_type(buf, ext_prop->type);
++				ret = usb_ext_prop_put_name(buf, ext_prop->name,
++							    ext_prop->name_len);
++				if (ret < 0)
++					return ret;
++				switch (ext_prop->type) {
++				case USB_EXT_PROP_UNICODE:
++				case USB_EXT_PROP_UNICODE_ENV:
++				case USB_EXT_PROP_UNICODE_LINK:
++					usb_ext_prop_put_unicode(buf, ret,
++							 ext_prop->data,
++							 ext_prop->data_len);
++					break;
++				case USB_EXT_PROP_BINARY:
++					usb_ext_prop_put_binary(buf, ret,
++							ext_prop->data,
++							ext_prop->data_len);
++					break;
++				case USB_EXT_PROP_LE32:
++					/* not implemented */
++				case USB_EXT_PROP_BE32:
++					/* not implemented */
++				default:
++					return -EINVAL;
++				}
++				buf += n;
++				count += n;
++			}
++	}
++
++	return count;
++}
++
  /*
-  * POTSC flags
-diff --git a/include/usb/composite.h b/include/linux/usb/composite.h
-similarity index 99%
-rename from include/usb/composite.h
-rename to include/linux/usb/composite.h
-index ec9abe7447..26e6fe5c47 100644
---- a/include/usb/composite.h
+  * The setup() callback implements all the ep0 functionality that's
+  * not handled lower down, in hardware or the hardware driver(like
+@@ -1250,8 +1725,21 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 	u16				w_value = le16_to_cpu(ctrl->wValue);
+ 	u16				w_length = le16_to_cpu(ctrl->wLength);
+ 	struct usb_function		*f = NULL;
++	struct usb_function		*iter;
+ 	u8				endp;
+ 
++	if (w_length > USB_COMP_EP0_BUFSIZ) {
++		if (ctrl->bRequestType & USB_DIR_IN) {
++			/* Cast away the const, we are going to overwrite on purpose. */
++			__le16 *temp = (__le16 *)&ctrl->wLength;
++
++			*temp = cpu_to_le16(USB_COMP_EP0_BUFSIZ);
++			w_length = USB_COMP_EP0_BUFSIZ;
++		} else {
++			goto done;
++		}
++	}
++
+ 	/* partial re-init of the response message; the function or the
+ 	 * gadget might need to intercept e.g. a control-OUT completion
+ 	 * when we delegate to it.
+@@ -1262,6 +1750,13 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 	req->length = 0;
+ 	gadget->ep0->driver_data = cdev;
+ 
++	/*
++	 * Don't let non-standard requests match any of the cases below
++	 * by accident.
++	 */
++	if ((ctrl->bRequestType & USB_TYPE_MASK) != USB_TYPE_STANDARD)
++		goto unknown;
++
+ 	switch (ctrl->bRequest) {
+ 
+ 	/* we handle all standard USB descriptors */
+@@ -1277,11 +1772,16 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 				cdev->gadget->ep0->maxpacket;
+ 			if (gadget_is_superspeed(gadget)) {
+ 				if (gadget->speed >= USB_SPEED_SUPER) {
+-					cdev->desc.bcdUSB = cpu_to_le16(0x0300);
++					cdev->desc.bcdUSB = cpu_to_le16(0x0320);
+ 					cdev->desc.bMaxPacketSize0 = 9;
+ 				} else {
+ 					cdev->desc.bcdUSB = cpu_to_le16(0x0210);
+ 				}
++			} else {
++				if (gadget->lpm_capable || cdev->use_webusb)
++					cdev->desc.bcdUSB = cpu_to_le16(0x0201);
++				else
++					cdev->desc.bcdUSB = cpu_to_le16(0x0200);
+ 			}
+ 
+ 			value = min(w_length, (u16) sizeof cdev->desc);
+@@ -1299,7 +1799,7 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 			if (!gadget_is_dualspeed(gadget) ||
+ 			    gadget->speed >= USB_SPEED_SUPER)
+ 				break;
+-			/* FALLTHROUGH */
++			fallthrough;
+ 		case USB_DT_CONFIG:
+ 			value = config_desc(cdev, w_value);
+ 			if (value >= 0)
+@@ -1312,11 +1812,32 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 				value = min(w_length, (u16) value);
+ 			break;
+ 		case USB_DT_BOS:
+-			if (gadget_is_superspeed(gadget)) {
++			if (gadget_is_superspeed(gadget) ||
++			    gadget->lpm_capable || cdev->use_webusb) {
+ 				value = bos_desc(cdev);
+ 				value = min(w_length, (u16) value);
+ 			}
+ 			break;
++		case USB_DT_OTG:
++			if (gadget_is_otg(gadget)) {
++				struct usb_configuration *config;
++				int otg_desc_len = 0;
++
++				if (cdev->config)
++					config = cdev->config;
++				else
++					config = list_first_entry(
++							&cdev->configs,
++						struct usb_configuration, list);
++				if (!config)
++					goto done;
++
++				otg_desc_len += sizeof(struct usb_otg_descriptor);
++
++				value = min_t(int, w_length, otg_desc_len);
++				memcpy(req->buf, config->descriptors[0], value);
++			}
++			break;
+ 		}
+ 		break;
+ 
+@@ -1332,7 +1853,9 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 			else
+ 				VDBG(cdev, "HNP inactive\n");
+ 		}
++		spin_lock(&cdev->lock);
+ 		value = set_config(cdev, ctrl, w_value);
++		spin_unlock(&cdev->lock);
+ 		break;
+ 	case USB_REQ_GET_CONFIGURATION:
+ 		if (ctrl->bRequestType != USB_DIR_IN)
+@@ -1344,9 +1867,7 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 		value = min(w_length, (u16) 1);
+ 		break;
+ 
+-	/* function drivers must handle get/set altsetting; if there's
+-	 * no get() method, we know only altsetting zero works.
+-	 */
++	/* function drivers must handle get/set altsetting */
+ 	case USB_REQ_SET_INTERFACE:
+ 		if (ctrl->bRequestType != USB_RECIP_INTERFACE)
+ 			goto unknown;
+@@ -1355,8 +1876,16 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 		f = cdev->config->interface[intf];
+ 		if (!f)
+ 			break;
+-		if (w_value && !f->set_alt)
++
++		/*
++		 * If there's no get_alt() method, we know only altsetting zero
++		 * works. There is no need to check if set_alt() is not NULL
++		 * as we check this in usb_add_function().
++		 */
++		if (w_value && !f->get_alt)
+ 			break;
++
++		spin_lock(&cdev->lock);
+ 		value = f->set_alt(f, w_index, w_value);
+ 		if (value == USB_GADGET_DELAYED_STATUS) {
+ 			DBG(cdev,
+@@ -1366,6 +1895,7 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 			DBG(cdev, "delayed_status count %d\n",
+ 					cdev->delayed_status);
+ 		}
++		spin_unlock(&cdev->lock);
+ 		break;
+ 	case USB_REQ_GET_INTERFACE:
+ 		if (ctrl->bRequestType != (USB_DIR_IN|USB_RECIP_INTERFACE))
+@@ -1382,15 +1912,24 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 		*((u8 *)req->buf) = value;
+ 		value = min(w_length, (u16) 1);
+ 		break;
+-
+-	/*
+-	 * USB 3.0 additions:
+-	 * Function driver should handle get_status request. If such cb
+-	 * wasn't supplied we respond with default value = 0
+-	 * Note: function driver should supply such cb only for the first
+-	 * interface of the function
+-	 */
+ 	case USB_REQ_GET_STATUS:
++		if (gadget_is_otg(gadget) && gadget->hnp_polling_support &&
++						(w_index == OTG_STS_SELECTOR)) {
++			if (ctrl->bRequestType != (USB_DIR_IN |
++							USB_RECIP_DEVICE))
++				goto unknown;
++			*((u8 *)req->buf) = gadget->host_request_flag;
++			value = 1;
++			break;
++		}
++
++		/*
++		 * USB 3.0 additions:
++		 * Function driver should handle get_status request. If such cb
++		 * wasn't supplied we respond with default value = 0
++		 * Note: function driver should supply such cb only for the
++		 * first interface of the function
++		 */
+ 		if (!gadget_is_superspeed(gadget))
+ 			goto unknown;
+ 		if (ctrl->bRequestType != (USB_DIR_IN | USB_RECIP_INTERFACE))
+@@ -1439,6 +1978,116 @@ composite_setup(struct usb_gadget *gadget, const struct usb_ctrlrequest *ctrl)
+ 		break;
+ 	default:
+ unknown:
++		/*
++		 * OS descriptors handling
++		 */
++		if (cdev->use_os_string && cdev->os_desc_config &&
++		    (ctrl->bRequestType & USB_TYPE_VENDOR) &&
++		    ctrl->bRequest == cdev->b_vendor_code) {
++			struct usb_configuration	*os_desc_cfg;
++			u8				*buf;
++			int				interface;
++			int				count = 0;
++
++			req = cdev->os_desc_req;
++			req->context = cdev;
++			req->complete = composite_setup_complete;
++			buf = req->buf;
++			os_desc_cfg = cdev->os_desc_config;
++			w_length = min_t(u16, w_length, USB_COMP_EP0_OS_DESC_BUFSIZ);
++			memset(buf, 0, w_length);
++			buf[5] = 0x01;
++			switch (ctrl->bRequestType & USB_RECIP_MASK) {
++			case USB_RECIP_DEVICE:
++				if (w_index != 0x4 || (w_value >> 8))
++					break;
++				buf[6] = w_index;
++				/* Number of ext compat interfaces */
++				count = count_ext_compat(os_desc_cfg);
++				buf[8] = count;
++				count *= 24; /* 24 B/ext compat desc */
++				count += 16; /* header */
++				put_unaligned_le32(count, buf);
++				value = w_length;
++				if (w_length > 0x10) {
++					value = fill_ext_compat(os_desc_cfg, buf);
++					value = min_t(u16, w_length, value);
++				}
++				break;
++			case USB_RECIP_INTERFACE:
++				if (w_index != 0x5 || (w_value >> 8))
++					break;
++				interface = w_value & 0xFF;
++				if (interface >= MAX_CONFIG_INTERFACES ||
++				    !os_desc_cfg->interface[interface])
++					break;
++				buf[6] = w_index;
++				count = count_ext_prop(os_desc_cfg,
++					interface);
++				put_unaligned_le16(count, buf + 8);
++				count = len_ext_prop(os_desc_cfg,
++					interface);
++				put_unaligned_le32(count, buf);
++				value = w_length;
++				if (w_length > 0x0A) {
++					value = fill_ext_prop(os_desc_cfg,
++							      interface, buf);
++					if (value >= 0)
++						value = min_t(u16, w_length, value);
++				}
++				break;
++			}
++
++			goto check_value;
++		}
++
++		/*
++		 * WebUSB URL descriptor handling, following:
++		 * https://wicg.github.io/webusb/#device-requests
++		 */
++		if (cdev->use_webusb &&
++		    ctrl->bRequestType == (USB_DIR_IN | USB_TYPE_VENDOR) &&
++		    w_index == WEBUSB_GET_URL &&
++		    w_value == WEBUSB_LANDING_PAGE_PRESENT &&
++		    ctrl->bRequest == cdev->b_webusb_vendor_code) {
++			unsigned int	landing_page_length;
++			unsigned int	landing_page_offset;
++			struct webusb_url_descriptor *url_descriptor =
++					(struct webusb_url_descriptor *)cdev->req->buf;
++
++			url_descriptor->bDescriptorType = WEBUSB_URL_DESCRIPTOR_TYPE;
++
++			if (strncasecmp(cdev->landing_page, "https://",  8) == 0) {
++				landing_page_offset = 8;
++				url_descriptor->bScheme = WEBUSB_URL_SCHEME_HTTPS;
++			} else if (strncasecmp(cdev->landing_page, "http://", 7) == 0) {
++				landing_page_offset = 7;
++				url_descriptor->bScheme = WEBUSB_URL_SCHEME_HTTP;
++			} else {
++				landing_page_offset = 0;
++				url_descriptor->bScheme = WEBUSB_URL_SCHEME_NONE;
++			}
++
++			landing_page_length = strnlen(cdev->landing_page,
++				sizeof(url_descriptor->URL)
++				- WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_offset);
++
++			if (ctrl->wLength < WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH
++					    + landing_page_length)
++				landing_page_length = ctrl->wLength
++					- WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + landing_page_offset;
++
++			memcpy(url_descriptor->URL,
++				cdev->landing_page + landing_page_offset,
++				landing_page_length - landing_page_offset);
++			url_descriptor->bLength = landing_page_length
++				- landing_page_offset + WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH;
++
++			value = url_descriptor->bLength;
++
++			goto check_value;
++		}
++
+ 		VDBG(cdev,
+ 			"non-core control req%02x.%02x v%04x i%04x l%d\n",
+ 			ctrl->bRequestType, ctrl->bRequest,
+@@ -1447,11 +2096,22 @@ unknown:
+ 		/* functions always handle their interfaces and endpoints...
+ 		 * punt other recipients (other, WUSB, ...) to the current
+ 		 * configuration code.
+-		 *
+-		 * REVISIT it could make sense to let the composite device
+-		 * take such requests too, if that's ever needed:  to work
+-		 * in config 0, etc.
+ 		 */
++		if (cdev->config) {
++			list_for_each_entry(f, &cdev->config->functions, list)
++				if (f->req_match &&
++				    f->req_match(f, ctrl, false))
++					goto try_fun_setup;
++		} else {
++			struct usb_configuration *c;
++			list_for_each_entry(c, &cdev->configs, list)
++				list_for_each_entry(f, &c->functions, list)
++					if (f->req_match &&
++					    f->req_match(f, ctrl, true))
++						goto try_fun_setup;
++		}
++		f = NULL;
++
+ 		switch (ctrl->bRequestType & USB_RECIP_MASK) {
+ 		case USB_RECIP_INTERFACE:
+ 			if (!cdev->config || intf >= MAX_CONFIG_INTERFACES)
+@@ -1460,16 +2120,18 @@ unknown:
+ 			break;
+ 
+ 		case USB_RECIP_ENDPOINT:
++			if (!cdev->config)
++				break;
+ 			endp = ((w_index & 0x80) >> 3) | (w_index & 0x0f);
+-			list_for_each_entry(f, &cdev->config->functions, list) {
+-				if (test_bit(endp, f->endpoints))
++			list_for_each_entry(iter, &cdev->config->functions, list) {
++				if (test_bit(endp, iter->endpoints)) {
++					f = iter;
+ 					break;
++				}
+ 			}
+-			if (&f->list == &cdev->config->functions)
+-				f = NULL;
+ 			break;
+ 		}
+-
++try_fun_setup:
+ 		if (f && f->setup)
+ 			value = f->setup(f, ctrl);
+ 		else {
+@@ -1497,9 +2159,11 @@ unknown:
+ 		goto done;
+ 	}
+ 
++check_value:
+ 	/* respond with data transfer before status phase? */
+ 	if (value >= 0 && value != USB_GADGET_DELAYED_STATUS) {
+ 		req->length = value;
++		req->context = cdev;
+ 		req->zero = value < w_length;
+ 		value = composite_ep0_queue(cdev, req);
+ 		if (value < 0) {
+@@ -1521,14 +2185,18 @@ done:
+ static void __composite_disconnect(struct usb_gadget *gadget)
+ {
+ 	struct usb_composite_dev	*cdev = get_gadget_data(gadget);
++	unsigned long			flags;
+ 
+ 	/* REVISIT:  should we have config and device level
+ 	 * disconnect callbacks?
+ 	 */
++	spin_lock_irqsave(&cdev->lock, flags);
++	cdev->suspended = 0;
+ 	if (cdev->config)
+ 		reset_config(cdev);
+ 	if (cdev->driver->disconnect)
+ 		cdev->driver->disconnect(cdev);
++	spin_unlock_irqrestore(&cdev->lock, flags);
+ }
+ 
+ void composite_disconnect(struct usb_gadget *gadget)
+@@ -1537,7 +2205,7 @@ void composite_disconnect(struct usb_gadget *gadget)
+ 	__composite_disconnect(gadget);
+ }
+ 
+-static void composite_reset(struct usb_gadget *gadget)
++void composite_reset(struct usb_gadget *gadget)
+ {
+ 	/*
+ 	 * Section 1.4.13 Standard Downstream Port of the USB battery charging
+@@ -1553,6 +2221,8 @@ static void composite_reset(struct usb_gadget *gadget)
+ static void __composite_unbind(struct usb_gadget *gadget, bool unbind_driver)
+ {
+ 	struct usb_composite_dev	*cdev = get_gadget_data(gadget);
++	struct usb_gadget_strings	*gstr = cdev->driver->strings[0];
++	struct usb_string		*dev_str = gstr->strings;
+ 
+ 	/* composite_disconnect() must already have been called
+ 	 * by the underlying peripheral controller driver!
+@@ -1572,6 +2242,9 @@ static void __composite_unbind(struct usb_gadget *gadget, bool unbind_driver)
+ 
+ 	composite_dev_cleanup(cdev);
+ 
++	if (dev_str[USB_GADGET_MANUFACTURER_IDX].s == cdev->def_manufacturer)
++		dev_str[USB_GADGET_MANUFACTURER_IDX].s = "";
++
+ 	kfree(cdev->def_manufacturer);
+ 	kfree(cdev);
+ 	set_gadget_data(gadget, NULL);
+@@ -1636,6 +2309,7 @@ int composite_dev_prepare(struct usb_composite_driver *composite,
+ 		goto fail;
+ 
+ 	cdev->req->complete = composite_setup_complete;
++	cdev->req->context = cdev;
+ 	gadget->ep0->driver_data = cdev;
+ 
+ 	cdev->driver = composite;
+@@ -1645,7 +2319,7 @@ int composite_dev_prepare(struct usb_composite_driver *composite,
+ 	 * more than 100mA from USB must report itself as bus-powered in
+ 	 * the GetStatus(DEVICE) call.
+ 	 */
+-	if (usb_gadget_vbus_draw_ma <= USB_SELF_POWER_VBUS_MAX_DRAW)
++	if (CONFIG_USB_GADGET_VBUS_DRAW <= USB_SELF_POWER_VBUS_MAX_DRAW)
+ 		usb_gadget_set_selfpowered(gadget);
+ 
+ 	/* interface and string IDs start at zero via kzalloc.
+@@ -1661,21 +2335,73 @@ fail:
+ 	return ret;
+ }
+ 
++int composite_os_desc_req_prepare(struct usb_composite_dev *cdev,
++				  struct usb_ep *ep0)
++{
++	int ret = 0;
++
++	cdev->os_desc_req = usb_ep_alloc_request(ep0);
++	if (!cdev->os_desc_req) {
++		ret = -ENOMEM;
++		goto end;
++	}
++
++	cdev->os_desc_req->buf = kmalloc(USB_COMP_EP0_OS_DESC_BUFSIZ,
++					 GFP_KERNEL);
++	if (!cdev->os_desc_req->buf) {
++		ret = -ENOMEM;
++		usb_ep_free_request(ep0, cdev->os_desc_req);
++		goto end;
++	}
++	cdev->os_desc_req->context = cdev;
++	cdev->os_desc_req->complete = composite_setup_complete;
++end:
++	return ret;
++}
++
+ void composite_dev_cleanup(struct usb_composite_dev *cdev)
+ {
+ 	struct usb_gadget_string_container *uc, *tmp;
++	struct usb_ep			   *ep, *tmp_ep;
+ 
+ 	list_for_each_entry_safe(uc, tmp, &cdev->gstrings, list) {
+ 		list_del(&uc->list);
+ 		kfree(uc);
+ 	}
++	if (cdev->os_desc_req) {
++		if (cdev->os_desc_pending)
++			usb_ep_dequeue(cdev->gadget->ep0, cdev->os_desc_req);
++
++		kfree(cdev->os_desc_req->buf);
++		cdev->os_desc_req->buf = NULL;
++		usb_ep_free_request(cdev->gadget->ep0, cdev->os_desc_req);
++		cdev->os_desc_req = NULL;
++	}
+ 	if (cdev->req) {
+ 		if (cdev->setup_pending)
+ 			usb_ep_dequeue(cdev->gadget->ep0, cdev->req);
++
+ 		kfree(cdev->req->buf);
++		cdev->req->buf = NULL;
+ 		usb_ep_free_request(cdev->gadget->ep0, cdev->req);
++		cdev->req = NULL;
+ 	}
+ 	cdev->next_string_id = 0;
++
++	/*
++	 * Some UDC backends have a dynamic EP allocation scheme.
++	 *
++	 * In that case, the dispose() callback is used to notify the
++	 * backend that the EPs are no longer in use.
++	 *
++	 * Note: The UDC backend can remove the EP from the ep_list as
++	 *	 a result, so we need to use the _safe list iterator.
++	 */
++	list_for_each_entry_safe(ep, tmp_ep,
++				 &cdev->gadget->ep_list, ep_list) {
++		if (ep->ops->dispose)
++			ep->ops->dispose(ep);
++	}
+ }
+ 
+ static int composite_bind(struct usb_gadget *gadget,
+@@ -1689,6 +2415,7 @@ static int composite_bind(struct usb_gadget *gadget,
+ 	if (!cdev)
+ 		return status;
+ 
++	spin_lock_init(&cdev->lock);
+ 	cdev->gadget = gadget;
+ 	set_gadget_data(gadget, cdev);
+ 	INIT_LIST_HEAD(&cdev->configs);
+@@ -1706,6 +2433,12 @@ static int composite_bind(struct usb_gadget *gadget,
+ 	if (status < 0)
+ 		goto fail;
+ 
++	if (cdev->use_os_string) {
++		status = composite_os_desc_req_prepare(cdev, gadget->ep0);
++		if (status)
++			goto fail;
++	}
++
+ 	update_unchanged_dev_desc(&cdev->desc, composite->dev);
+ 
+ 	/* has userspace failed to provide a serial number? */
+@@ -1795,8 +2528,10 @@ void usb_composite_setup_continue(struct usb_composite_dev *cdev)
+ {
+ 	int			value;
+ 	struct usb_request	*req = cdev->req;
++	unsigned long		flags;
+ 
+ 	DBG(cdev, "%s\n", __func__);
++	spin_lock_irqsave(&cdev->lock, flags);
+ 
+ 	if (cdev->delayed_status == 0) {
+ 		WARN(cdev, "%s: Unexpected call\n", __func__);
+@@ -1804,6 +2539,7 @@ void usb_composite_setup_continue(struct usb_composite_dev *cdev)
+ 	} else if (--cdev->delayed_status == 0) {
+ 		DBG(cdev, "%s: Completing delayed status\n", __func__);
+ 		req->length = 0;
++		req->context = cdev;
+ 		value = composite_ep0_queue(cdev, req);
+ 		if (value < 0) {
+ 			DBG(cdev, "ep_queue --> %d\n", value);
+@@ -1811,12 +2547,14 @@ void usb_composite_setup_continue(struct usb_composite_dev *cdev)
+ 			composite_setup_complete(cdev->gadget->ep0, req);
+ 		}
+ 	}
++
++	spin_unlock_irqrestore(&cdev->lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(usb_composite_setup_continue);
+ 
+ static char *composite_default_mfr(struct usb_gadget *gadget)
+ {
+-	return basprintf("barebox %s", gadget->name);
++	return basprintf("barebox with %s", gadget->name);
+ }
+ 
+ void usb_composite_overwrite_options(struct usb_composite_dev *cdev,
+diff --git a/drivers/usb/gadget/u_os_desc.h b/drivers/usb/gadget/u_os_desc.h
+new file mode 100644
+index 0000000000..5d7d35c8cc
+--- /dev/null
++++ b/drivers/usb/gadget/u_os_desc.h
+@@ -0,0 +1,120 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * u_os_desc.h
++ *
++ * Utility definitions for "OS Descriptors" support
++ *
++ * Copyright (c) 2014 Samsung Electronics Co., Ltd.
++ *		http://www.samsung.com
++ *
++ * Author: Andrzej Pietrasiewicz <andrzejtp2010@gmail.com>
++ */
++
++#ifndef __U_OS_DESC_H__
++#define __U_OS_DESC_H__
++
++#include <asm/unaligned.h>
++#include <linux/nls.h>
++
++#define USB_EXT_PROP_DW_SIZE			0
++#define USB_EXT_PROP_DW_PROPERTY_DATA_TYPE	4
++#define USB_EXT_PROP_W_PROPERTY_NAME_LENGTH	8
++#define USB_EXT_PROP_B_PROPERTY_NAME		10
++#define USB_EXT_PROP_DW_PROPERTY_DATA_LENGTH	10
++#define USB_EXT_PROP_B_PROPERTY_DATA		14
++
++#define USB_EXT_PROP_RESERVED			0
++#define USB_EXT_PROP_UNICODE			1
++#define USB_EXT_PROP_UNICODE_ENV		2
++#define USB_EXT_PROP_BINARY			3
++#define USB_EXT_PROP_LE32			4
++#define USB_EXT_PROP_BE32			5
++#define USB_EXT_PROP_UNICODE_LINK		6
++#define USB_EXT_PROP_UNICODE_MULTI		7
++
++static inline u8 *__usb_ext_prop_ptr(u8 *buf, size_t offset)
++{
++	return buf + offset;
++}
++
++static inline u8 *usb_ext_prop_size_ptr(u8 *buf)
++{
++	return __usb_ext_prop_ptr(buf, USB_EXT_PROP_DW_SIZE);
++}
++
++static inline u8 *usb_ext_prop_type_ptr(u8 *buf)
++{
++	return __usb_ext_prop_ptr(buf, USB_EXT_PROP_DW_PROPERTY_DATA_TYPE);
++}
++
++static inline u8 *usb_ext_prop_name_len_ptr(u8 *buf)
++{
++	return __usb_ext_prop_ptr(buf, USB_EXT_PROP_W_PROPERTY_NAME_LENGTH);
++}
++
++static inline u8 *usb_ext_prop_name_ptr(u8 *buf)
++{
++	return __usb_ext_prop_ptr(buf, USB_EXT_PROP_B_PROPERTY_NAME);
++}
++
++static inline u8 *usb_ext_prop_data_len_ptr(u8 *buf, size_t off)
++{
++	return __usb_ext_prop_ptr(buf,
++				  USB_EXT_PROP_DW_PROPERTY_DATA_LENGTH + off);
++}
++
++static inline u8 *usb_ext_prop_data_ptr(u8 *buf, size_t off)
++{
++	return __usb_ext_prop_ptr(buf, USB_EXT_PROP_B_PROPERTY_DATA + off);
++}
++
++static inline void usb_ext_prop_put_size(u8 *buf, int dw_size)
++{
++	put_unaligned_le32(dw_size, usb_ext_prop_size_ptr(buf));
++}
++
++static inline void usb_ext_prop_put_type(u8 *buf, int type)
++{
++	put_unaligned_le32(type, usb_ext_prop_type_ptr(buf));
++}
++
++static inline int usb_ext_prop_put_name(u8 *buf, const char *name, int pnl)
++{
++	int result;
++
++	put_unaligned_le16(pnl, usb_ext_prop_name_len_ptr(buf));
++	result = utf8s_to_utf16s(name, strlen(name), UTF16_LITTLE_ENDIAN,
++		(wchar_t *) usb_ext_prop_name_ptr(buf), pnl - 2);
++	if (result < 0)
++		return result;
++
++	put_unaligned_le16(0, &buf[USB_EXT_PROP_B_PROPERTY_NAME + pnl - 2]);
++
++	return pnl;
++}
++
++static inline void usb_ext_prop_put_binary(u8 *buf, int pnl, const u8 *data,
++					   int data_len)
++{
++	put_unaligned_le32(data_len, usb_ext_prop_data_len_ptr(buf, pnl));
++	memcpy(usb_ext_prop_data_ptr(buf, pnl), data, data_len);
++}
++
++static inline int usb_ext_prop_put_unicode(u8 *buf, int pnl, const char *string,
++					   int data_len)
++{
++	int result;
++	put_unaligned_le32(data_len, usb_ext_prop_data_len_ptr(buf, pnl));
++	result = utf8s_to_utf16s(string, data_len >> 1, UTF16_LITTLE_ENDIAN,
++			(wchar_t *) usb_ext_prop_data_ptr(buf, pnl),
++			data_len - 2);
++	if (result < 0)
++		return result;
++
++	put_unaligned_le16(0,
++		&buf[USB_EXT_PROP_B_PROPERTY_DATA + pnl + data_len - 2]);
++
++	return data_len;
++}
++
++#endif /* __U_OS_DESC_H__ */
+diff --git a/include/linux/usb/composite.h b/include/linux/usb/composite.h
+index 7bd89b1de1..c3ee403abf 100644
+--- a/include/linux/usb/composite.h
 +++ b/include/linux/usb/composite.h
-@@ -34,8 +34,8 @@
+@@ -1,21 +1,8 @@
++// SPDX-License-Identifier: GPL-2.0+
+ /*
+  * composite.h -- framework for usb gadgets which are composite devices
+  *
+  * Copyright (C) 2006-2008 David Brownell
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- * You should have received a copy of the GNU General Public License
+- * along with this program; if not, write to the Free Software
+- * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  */
+ 
+ #ifndef	__LINUX_USB_COMPOSITE_H
+@@ -33,12 +20,15 @@
+  * might alternatively be packaged in individual configurations, but in
   * the composite model the host can use both functions at the same time.
   */
++
  #include <init.h>
--#include <usb/ch9.h>
--#include <usb/gadget.h>
-+#include <linux/usb/ch9.h>
-+#include <linux/usb/gadget.h>
+ #include <linux/usb/ch9.h>
+ #include <linux/usb/gadget.h>
  #include <linux/log2.h>
  #include <linux/stringify.h>
  #include <linux/spinlock.h>
-diff --git a/include/usb/dfu.h b/include/linux/usb/dfu.h
-similarity index 96%
-rename from include/usb/dfu.h
-rename to include/linux/usb/dfu.h
-index 81425f7c62..3bc4204500 100644
---- a/include/usb/dfu.h
-+++ b/include/linux/usb/dfu.h
-@@ -22,7 +22,7 @@
++#include <linux/bcd.h>
++#include <linux/usb/webusb.h>
  
- #include <linux/types.h>
- #include <file-list.h>
--#include <usb/composite.h>
-+#include <linux/usb/composite.h>
+ /*
+  * USB function drivers should return USB_GADGET_DELAYED_STATUS if they
+@@ -50,11 +40,67 @@
+ #define USB_GADGET_DELAYED_STATUS       0x7fff	/* Impossibly large value */
  
- struct f_dfu_opts {
- 	struct usb_function_instance func_inst;
-diff --git a/include/usb/ehci.h b/include/linux/usb/ehci.h
-similarity index 100%
-rename from include/usb/ehci.h
-rename to include/linux/usb/ehci.h
-diff --git a/include/usb/fastboot.h b/include/linux/usb/fastboot.h
-similarity index 93%
-rename from include/usb/fastboot.h
-rename to include/linux/usb/fastboot.h
-index 7dc445455a..d0dbd0b7b7 100644
---- a/include/usb/fastboot.h
-+++ b/include/linux/usb/fastboot.h
-@@ -3,7 +3,7 @@
- #ifndef _USB_FASTBOOT_H
- #define _USB_FASTBOOT_H
+ /* big enough to hold our biggest descriptor */
+-#define USB_COMP_EP0_BUFSIZ	1024
++#define USB_COMP_EP0_BUFSIZ	4096
++
++/* OS feature descriptor length <= 4kB */
++#define USB_COMP_EP0_OS_DESC_BUFSIZ	4096
  
--#include <usb/composite.h>
-+#include <linux/usb/composite.h>
- #include <fastboot.h>
+ #define USB_MS_TO_HS_INTERVAL(x)	(ilog2((x * 1000 / 125)) + 1)
+ struct usb_configuration;
  
++/**
++ * struct usb_os_desc_ext_prop - describes one "Extended Property"
++ * @entry: used to keep a list of extended properties
++ * @type: Extended Property type
++ * @name_len: Extended Property unicode name length, including terminating '\0'
++ * @name: Extended Property name
++ * @data_len: Length of Extended Property blob (for unicode store double len)
++ * @data: Extended Property blob
++ * @item: Represents this Extended Property in configfs
++ */
++struct usb_os_desc_ext_prop {
++	struct list_head	entry;
++	u8			type;
++	int			name_len;
++	char			*name;
++	int			data_len;
++	char			*data;
++};
++
++/**
++ * struct usb_os_desc - describes OS descriptors associated with one interface
++ * @ext_compat_id: 16 bytes of "Compatible ID" and "Subcompatible ID"
++ * @ext_prop: Extended Properties list
++ * @ext_prop_len: Total length of Extended Properties blobs
++ * @ext_prop_count: Number of Extended Properties
++ * @opts_mutex: Optional mutex protecting config data of a usb_function_instance
++ * @group: Represents OS descriptors associated with an interface in configfs
++ * @owner: Module associated with this OS descriptor
++ */
++struct usb_os_desc {
++	char			*ext_compat_id;
++	struct list_head	ext_prop;
++	int			ext_prop_len;
++	int			ext_prop_count;
++	struct mutex		*opts_mutex;
++	struct module		*owner;
++};
++
++/**
++ * struct usb_os_desc_table - describes OS descriptors associated with one
++ * interface of a usb_function
++ * @if_id: Interface id
++ * @os_desc: "Extended Compatibility ID" and "Extended Properties" of the
++ *	interface
++ *
++ * Each interface can have at most one "Extended Compatibility ID" and a
++ * number of "Extended Properties".
++ */
++struct usb_os_desc_table {
++	int			if_id;
++	struct usb_os_desc	*os_desc;
++};
++
  /**
-diff --git a/include/usb/fsl_usb2.h b/include/linux/usb/fsl_usb2.h
-similarity index 100%
-rename from include/usb/fsl_usb2.h
-rename to include/linux/usb/fsl_usb2.h
-diff --git a/include/usb/gadget-multi.h b/include/linux/usb/gadget-multi.h
-similarity index 88%
-rename from include/usb/gadget-multi.h
-rename to include/linux/usb/gadget-multi.h
-index e67ca165c1..1027a10082 100644
---- a/include/usb/gadget-multi.h
-+++ b/include/linux/usb/gadget-multi.h
-@@ -4,10 +4,10 @@
- #define __USB_GADGET_MULTI_H
+  * struct usb_function - describes one function of a configuration
+  * @name: For diagnostics, identifies the function.
+@@ -70,8 +116,16 @@ struct usb_configuration;
+  *	string identifiers assigned during @bind(). If this
+  *	pointer is null after initiation, the function will not
+  *	be available at super speed.
++ * @ssp_descriptors: Table of super speed plus descriptors, using
++ *	interface and string identifiers assigned during @bind(). If
++ *	this pointer is null after initiation, the function will not
++ *	be available at super speed plus.
+  * @config: assigned when @usb_add_function() is called; this is the
+  *	configuration with which this function is associated.
++ * @os_desc_table: Table of (interface id, os descriptors) pairs. The function
++ *	can expose more than one interface. If an interface is a member of
++ *	an IAD, only the first interface of IAD has its entry in the table.
++ * @os_desc_n: Number of entries in os_desc_table
+  * @bind: Before the gadget can register, all of its functions bind() to the
+  *	available resources including string and interface identifiers used
+  *	in interface or class descriptors; endpoints; I/O buffers; and so on.
+@@ -88,6 +142,7 @@ struct usb_configuration;
+  * @disable: (REQUIRED) Indicates the function should be disabled.  Reasons
+  *	include host resetting or reconfiguring the gadget, and disconnection.
+  * @setup: Used for interface-specific control requests.
++ * @req_match: Tests if a given class request can be handled by this function.
+  * @suspend: Notifies functions when the host stops sending USB traffic.
+  * @resume: Notifies functions when the host restarts USB traffic.
+  * @get_status: Returns function status as a reply to
+@@ -129,6 +184,9 @@ struct usb_function {
  
- #include <linux/types.h>
--#include <usb/fastboot.h>
--#include <usb/dfu.h>
--#include <usb/usbserial.h>
--#include <usb/mass_storage.h>
-+#include <linux/usb/fastboot.h>
-+#include <linux/usb/dfu.h>
-+#include <linux/usb/usbserial.h>
-+#include <linux/usb/mass_storage.h>
+ 	struct usb_configuration	*config;
  
- struct f_multi_opts {
- 	struct fastboot_opts fastboot_opts;
-diff --git a/include/usb/gadget.h b/include/linux/usb/gadget.h
-similarity index 99%
-rename from include/usb/gadget.h
-rename to include/linux/usb/gadget.h
-index 830e3dfe83..746311fddd 100644
---- a/include/usb/gadget.h
-+++ b/include/linux/usb/gadget.h
-@@ -19,7 +19,7 @@
- #include <malloc.h>
- #include <driver.h>
- #include <linux/list.h>
--#include <usb/ch9.h>
-+#include <linux/usb/ch9.h>
++	struct usb_os_desc_table	*os_desc_table;
++	unsigned			os_desc_n;
++
+ 	/* REVISIT:  bind() functions can be marked __init, which
+ 	 * makes trouble for section mismatch analysis.  See if
+ 	 * we can't restructure things to avoid mismatching.
+@@ -151,6 +209,9 @@ struct usb_function {
+ 	void			(*disable)(struct usb_function *);
+ 	int			(*setup)(struct usb_function *,
+ 					const struct usb_ctrlrequest *);
++	bool			(*req_match)(struct usb_function *,
++					const struct usb_ctrlrequest *,
++					bool config0);
+ 	void			(*suspend)(struct usb_function *);
+ 	void			(*resume)(struct usb_function *);
  
- struct usb_ep;
+@@ -163,6 +224,8 @@ struct usb_function {
+ 	struct list_head		list;
+ 	DECLARE_BITMAP(endpoints, 32);
+ 	const struct usb_function_instance *fi;
++
++	unsigned int		bind_deactivated:1;
+ };
  
-diff --git a/include/usb/mass_storage.h b/include/linux/usb/mass_storage.h
-similarity index 94%
-rename from include/usb/mass_storage.h
-rename to include/linux/usb/mass_storage.h
-index 7be665ee47..5bf7fea2f3 100644
---- a/include/usb/mass_storage.h
-+++ b/include/linux/usb/mass_storage.h
-@@ -7,7 +7,7 @@
- #ifndef __USB_MASS_STORAGE_H__
- #define __USB_MASS_STORAGE_H__
+ int usb_add_function(struct usb_configuration *, struct usb_function *);
+@@ -172,6 +235,9 @@ int usb_function_activate(struct usb_function *);
  
--#include <usb/composite.h>
-+#include <linux/usb/composite.h>
+ int usb_interface_id(struct usb_configuration *, struct usb_function *);
  
- /* Wait at maximum 60 seconds for cable connection */
- #define UMS_CABLE_READY_TIMEOUT	60
-diff --git a/include/usb/musb.h b/include/linux/usb/musb.h
-similarity index 100%
-rename from include/usb/musb.h
-rename to include/linux/usb/musb.h
-diff --git a/include/usb/phy.h b/include/linux/usb/phy.h
-similarity index 99%
-rename from include/usb/phy.h
-rename to include/linux/usb/phy.h
-index 98a4ce087f..651a8824f3 100644
---- a/include/usb/phy.h
-+++ b/include/linux/usb/phy.h
-@@ -12,7 +12,7 @@
- #define __LINUX_USB_PHY_H
++int config_ep_by_speed_and_alt(struct usb_gadget *g, struct usb_function *f,
++				struct usb_ep *_ep, u8 alt);
++
+ int config_ep_by_speed(struct usb_gadget *g, struct usb_function *f,
+ 			struct usb_ep *_ep);
  
- #include <notifier.h>
--#include <usb/usb.h>
-+#include <linux/usb/usb.h>
- #include <linux/err.h>
+@@ -191,7 +257,7 @@ int config_ep_by_speed(struct usb_gadget *g, struct usb_function *f,
+  * @bConfigurationValue: Copied into configuration descriptor.
+  * @iConfiguration: Copied into configuration descriptor.
+  * @bmAttributes: Copied into configuration descriptor.
+- * @MaxPower: Power consumtion in mA. Used to compute bMaxPower in the
++ * @MaxPower: Power consumption in mA. Used to compute bMaxPower in the
+  *	configuration descriptor after considering the bus speed.
+  * @cdev: assigned by @usb_add_config() before calling @bind(); this is
+  *	the device associated with this configuration.
+@@ -250,6 +316,7 @@ struct usb_configuration {
+ 	unsigned		superspeed:1;
+ 	unsigned		highspeed:1;
+ 	unsigned		fullspeed:1;
++	unsigned		superspeed_plus:1;
+ 	struct usb_function	*interface[MAX_CONFIG_INTERFACES];
+ };
  
- enum usb_phy_interface {
-diff --git a/include/usb/storage.h b/include/linux/usb/storage.h
-similarity index 100%
-rename from include/usb/storage.h
-rename to include/linux/usb/storage.h
-diff --git a/include/usb/twl4030.h b/include/linux/usb/twl4030.h
-similarity index 100%
-rename from include/usb/twl4030.h
-rename to include/linux/usb/twl4030.h
-diff --git a/include/usb/ulpi.h b/include/linux/usb/ulpi.h
-similarity index 100%
-rename from include/usb/ulpi.h
-rename to include/linux/usb/ulpi.h
-diff --git a/include/usb/usb.h b/include/linux/usb/usb.h
-similarity index 99%
-rename from include/usb/usb.h
-rename to include/linux/usb/usb.h
-index 717bcf935a..ffeceec88f 100644
---- a/include/usb/usb.h
-+++ b/include/linux/usb/usb.h
-@@ -21,9 +21,9 @@
+@@ -324,9 +391,26 @@ struct usb_composite_driver {
  
- #include <driver.h>
- #include <slice.h>
--#include <usb/ch9.h>
--#include <usb/ch11.h>
--#include <usb/usb_defs.h>
-+#include <linux/usb/ch9.h>
-+#include <uapi/linux/usb/ch11.h>
-+#include <linux/usb/usb_defs.h>
- #include <asm/byteorder.h>
+ extern int usb_composite_probe(struct usb_composite_driver *driver);
+ extern void usb_composite_unregister(struct usb_composite_driver *driver);
++
++/**
++ * module_usb_composite_driver() - Helper macro for registering a USB gadget
++ * composite driver
++ * @__usb_composite_driver: usb_composite_driver struct
++ *
++ * Helper macro for USB gadget composite drivers which do not do anything
++ * special in module init/exit. This eliminates a lot of boilerplate. Each
++ * module may only use this macro once, and calling it replaces module_init()
++ * and module_exit()
++ */
++#define module_usb_composite_driver(__usb_composite_driver) \
++	module_driver(__usb_composite_driver, usb_composite_probe, \
++		       usb_composite_unregister)
++
+ extern void usb_composite_setup_continue(struct usb_composite_dev *cdev);
+ extern int composite_dev_prepare(struct usb_composite_driver *composite,
+ 		struct usb_composite_dev *cdev);
++extern int composite_os_desc_req_prepare(struct usb_composite_dev *cdev,
++					 struct usb_ep *ep0);
+ void composite_dev_cleanup(struct usb_composite_dev *cdev);
  
- /* Everything is aribtrary */
-diff --git a/include/usb/usb_defs.h b/include/linux/usb/usb_defs.h
-similarity index 100%
-rename from include/usb/usb_defs.h
-rename to include/linux/usb/usb_defs.h
-diff --git a/include/usb/usbnet.h b/include/linux/usb/usbnet.h
-similarity index 100%
-rename from include/usb/usbnet.h
-rename to include/linux/usb/usbnet.h
-diff --git a/include/usb/usbroothubdes.h b/include/linux/usb/usbroothubdes.h
-similarity index 100%
-rename from include/usb/usbroothubdes.h
-rename to include/linux/usb/usbroothubdes.h
-diff --git a/include/usb/usbserial.h b/include/linux/usb/usbserial.h
-similarity index 100%
-rename from include/usb/usbserial.h
-rename to include/linux/usb/usbserial.h
-diff --git a/include/usb/xhci.h b/include/linux/usb/xhci.h
-similarity index 100%
-rename from include/usb/xhci.h
-rename to include/linux/usb/xhci.h
-diff --git a/include/mach/imx/devices.h b/include/mach/imx/devices.h
-index 3d1f8eb237..ace2962fc3 100644
---- a/include/mach/imx/devices.h
-+++ b/include/mach/imx/devices.h
-@@ -8,7 +8,7 @@
- #include <platform_data/imxfb.h>
- #include <mach/imx/imx-ipu-fb.h>
- #include <platform_data/mmc-esdhc-imx.h>
--#include <usb/chipidea-imx.h>
-+#include <linux/usb/chipidea-imx.h>
+ static inline struct usb_composite_driver *to_cdriver(
+@@ -335,11 +419,25 @@ static inline struct usb_composite_driver *to_cdriver(
+ 	return container_of(gdrv, struct usb_composite_driver, gadget_driver);
+ }
  
- struct device *imx_add_fec_imx27(void *base, struct fec_platform_data *pdata);
- struct device *imx_add_fec_imx6(void *base, struct fec_platform_data *pdata);
-diff --git a/include/usb/ch11.h b/include/uapi/linux/usb/ch11.h
-similarity index 100%
-rename from include/usb/ch11.h
-rename to include/uapi/linux/usb/ch11.h
++#define OS_STRING_QW_SIGN_LEN		14
++#define OS_STRING_IDX			0xEE
++
+ /**
+- * struct usb_composite_device - represents one composite usb gadget
++ * struct usb_composite_dev - represents one composite usb gadget
+  * @gadget: read-only, abstracts the gadget's usb peripheral controller
+  * @req: used for control responses; buffer is pre-allocated
++ * @os_desc_req: used for OS descriptors responses; buffer is pre-allocated
+  * @config: the currently active configuration
++ * @qw_sign: qwSignature part of the OS string
++ * @b_vendor_code: bMS_VendorCode part of the OS string
++ * @use_os_string: false by default, interested gadgets set it
++ * @bcd_webusb_version: 0x0100 by default, WebUSB specification version
++ * @b_webusb_vendor_code: 0x0 by default, vendor code for WebUSB
++ * @landing_page: empty by default, landing page to announce in WebUSB
++ * @use_webusb:: false by default, interested gadgets set it
++ * @os_desc_config: the configuration to be used with OS descriptors
++ * @setup_pending: true when setup request is queued but not completed
++ * @os_desc_pending: true when os_desc request is queued but not completed
+  *
+  * One of these devices is allocated and initialized before the
+  * associated device driver's bind() is called.
+@@ -350,6 +448,7 @@ static inline struct usb_composite_driver *to_cdriver(
+  * sure doing that won't hurt too much.
+  *
+  * One notion for how to handle Wireless USB devices involves:
++ *
+  * (a) a second gadget here, discovery mechanism TBD, but likely
+  *     needing separate "register/unregister WUSB gadget" calls;
+  * (b) updates to usb_gadget to include flags "is it wireless",
+@@ -369,9 +468,22 @@ static inline struct usb_composite_driver *to_cdriver(
+ struct usb_composite_dev {
+ 	struct usb_gadget		*gadget;
+ 	struct usb_request		*req;
++	struct usb_request		*os_desc_req;
+ 
+ 	struct usb_configuration	*config;
+ 
++	/* OS String is a custom (yet popular) extension to the USB standard. */
++	u8				qw_sign[OS_STRING_QW_SIGN_LEN];
++	u8				b_vendor_code;
++	struct usb_configuration	*os_desc_config;
++	unsigned int			use_os_string:1;
++
++	/* WebUSB */
++	u16				bcd_webusb_version;
++	u8				b_webusb_vendor_code;
++	char				landing_page[WEBUSB_URL_RAW_MAX_LENGTH];
++	unsigned int			use_webusb:1;
++
+ 	/* private: */
+ 	/* internals */
+ 	unsigned int			suspended:1;
+@@ -381,6 +493,7 @@ struct usb_composite_dev {
+ 	struct usb_composite_driver	*driver;
+ 	u8				next_string_id;
+ 	char				*def_manufacturer;
++	struct usb_string		*usb_strings;
+ 
+ 	/* the gadget driver won't enable the data pullup
+ 	 * while the deactivation count is nonzero.
+@@ -395,10 +508,9 @@ struct usb_composite_dev {
+ 	/* protects deactivations and delayed_status counts*/
+ 	spinlock_t			lock;
+ 
+-	int in_reset_config;
+-
+ 	/* public: */
+ 	unsigned int			setup_pending:1;
++	unsigned int			os_desc_pending:1;
+ };
+ 
+ extern int usb_string_id(struct usb_composite_dev *c);
+@@ -410,8 +522,12 @@ extern struct usb_string *usb_gstrings_attach(struct usb_composite_dev *cdev,
+ extern int usb_string_ids_n(struct usb_composite_dev *c, unsigned n);
+ 
+ extern void composite_disconnect(struct usb_gadget *gadget);
++extern void composite_reset(struct usb_gadget *gadget);
++
+ extern int composite_setup(struct usb_gadget *gadget,
+ 		const struct usb_ctrlrequest *ctrl);
++extern void composite_suspend(struct usb_gadget *gadget);
++extern void composite_resume(struct usb_gadget *gadget);
+ 
+ /*
+  * Some systems will need runtime overrides for the  product identifiers
+@@ -426,14 +542,40 @@ struct usb_composite_overwrite {
+ 	char	*manufacturer;
+ 	char	*product;
+ };
++#define USB_GADGET_COMPOSITE_OPTIONS()					\
++	static struct usb_composite_overwrite coverwrite;		\
++									\
++	module_param_named(idVendor, coverwrite.idVendor, ushort, S_IRUGO); \
++	MODULE_PARM_DESC(idVendor, "USB Vendor ID");			\
++									\
++	module_param_named(idProduct, coverwrite.idProduct, ushort, S_IRUGO); \
++	MODULE_PARM_DESC(idProduct, "USB Product ID");			\
++									\
++	module_param_named(bcdDevice, coverwrite.bcdDevice, ushort, S_IRUGO); \
++	MODULE_PARM_DESC(bcdDevice, "USB Device version (BCD)");	\
++									\
++	module_param_named(iSerialNumber, coverwrite.serial_number, charp, \
++			S_IRUGO); \
++	MODULE_PARM_DESC(iSerialNumber, "SerialNumber string");		\
++									\
++	module_param_named(iManufacturer, coverwrite.manufacturer, charp, \
++			S_IRUGO); \
++	MODULE_PARM_DESC(iManufacturer, "USB Manufacturer string");	\
++									\
++	module_param_named(iProduct, coverwrite.product, charp, S_IRUGO); \
++	MODULE_PARM_DESC(iProduct, "USB Product string")
+ 
+ void usb_composite_overwrite_options(struct usb_composite_dev *cdev,
+ 		struct usb_composite_overwrite *covr);
+ 
+ static inline u16 get_default_bcdDevice(void)
+ {
+-	/* The Kernel version the current USB code is based on */
+-	return 0x0316;
++	u16 bcdDevice;
++#define LINUX_VERSION_MAJOR 6
++#define LINUX_VERSION_PATCHLEVEL 2
++	bcdDevice = bin2bcd(LINUX_VERSION_MAJOR) << 8;
++	bcdDevice |= bin2bcd(LINUX_VERSION_PATCHLEVEL);
++	return bcdDevice;
+ }
+ 
+ struct usb_function_driver {
+@@ -468,17 +610,24 @@ void usb_remove_function(struct usb_configuration *c, struct usb_function *f);
+ #define DECLARE_USB_FUNCTION(_name, _inst_alloc, _func_alloc)		\
+ 	static struct usb_function_driver _name ## usb_func = {		\
+ 		.name = __stringify(_name),				\
++		.mod  = THIS_MODULE,					\
+ 		.alloc_inst = _inst_alloc,				\
+ 		.alloc_func = _func_alloc,				\
+-	};
++	};								\
++	MODULE_ALIAS("usbfunc:"__stringify(_name));
+ 
+ #define DECLARE_USB_FUNCTION_INIT(_name, _inst_alloc, _func_alloc)	\
+ 	DECLARE_USB_FUNCTION(_name, _inst_alloc, _func_alloc)		\
+-	static int _name ## mod_init(void)				\
++	static int __init _name ## mod_init(void)			\
+ 	{								\
+ 		return usb_function_register(&_name ## usb_func);	\
+ 	}								\
+-	device_initcall(_name ## mod_init)
++	static void __exit _name ## mod_exit(void)			\
++	{								\
++		usb_function_unregister(&_name ## usb_func);		\
++	}								\
++	module_init(_name ## mod_init);					\
++	module_exit(_name ## mod_exit)
+ 
+ /* messaging utils */
+ #define DBG(d, fmt, args...) \
+diff --git a/include/linux/usb/webusb.h b/include/linux/usb/webusb.h
+new file mode 100644
+index 0000000000..f10debc924
+--- /dev/null
++++ b/include/linux/usb/webusb.h
+@@ -0,0 +1,80 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * WebUSB descriptors and constants
++ *
++ * Copyright (C) 2023 Jó Ágila Bitsch <jgilab@gmail.com>
++ */
++
++#ifndef	__LINUX_USB_WEBUSB_H
++#define	__LINUX_USB_WEBUSB_H
++
++#include "linux/usb/ch9.h"
++
++/*
++ * Little Endian PlatformCapablityUUID for WebUSB
++ * 3408b638-09a9-47a0-8bfd-a0768815b665
++ * to identify Platform Device Capability descriptors as referring to WebUSB.
++ */
++#define WEBUSB_UUID \
++	GUID_INIT(0x3408b638, 0x09a9, 0x47a0, 0x8b, 0xfd, 0xa0, 0x76, 0x88, 0x15, 0xb6, 0x65)
++
++/*
++ * WebUSB Platform Capability data
++ *
++ * A device announces support for the
++ * WebUSB command set by including the following Platform Descriptor Data in its
++ * Binary Object Store associated with the WebUSB_UUID above.
++ * See: https://wicg.github.io/webusb/#webusb-platform-capability-descriptor
++ */
++struct usb_webusb_cap_data {
++	__le16 bcdVersion;
++#define WEBUSB_VERSION_1_00	cpu_to_le16(0x0100) /* currently only version 1.00 is defined */
++	u8  bVendorCode;
++	u8  iLandingPage;
++#define WEBUSB_LANDING_PAGE_NOT_PRESENT	0
++#define WEBUSB_LANDING_PAGE_PRESENT	1 /* we chose the fixed index 1 for the URL descriptor */
++} __packed;
++
++#define USB_WEBUSB_CAP_DATA_SIZE	4
++
++/*
++ * Get URL Request
++ *
++ * The request to fetch an URL is defined in https://wicg.github.io/webusb/#get-url as:
++ * bmRequestType: (USB_DIR_IN | USB_TYPE_VENDOR) = 11000000B
++ * bRequest: bVendorCode
++ * wValue: iLandingPage
++ * wIndex: GET_URL = 2
++ * wLength: Descriptor Length (typically U8_MAX = 255)
++ * Data: URL Descriptor
++ */
++#define WEBUSB_GET_URL 2
++
++/*
++ * This descriptor contains a single URL and is returned by the Get URL request.
++ *
++ * See: https://wicg.github.io/webusb/#url-descriptor
++ */
++struct webusb_url_descriptor {
++	u8  bLength;
++#define WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH	3
++	u8  bDescriptorType;
++#define WEBUSB_URL_DESCRIPTOR_TYPE		3
++	u8  bScheme;
++#define WEBUSB_URL_SCHEME_HTTP			0
++#define WEBUSB_URL_SCHEME_HTTPS			1
++#define WEBUSB_URL_SCHEME_NONE			255
++	u8  URL[U8_MAX - WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH];
++} __packed;
++
++/*
++ * Buffer size to hold the longest URL that can be in an URL descriptor
++ *
++ * The descriptor can be U8_MAX  bytes long.
++ * WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH bytes are used for a header.
++ * Since the longest prefix that might be stripped is "https://", we may accommodate an additional
++ * 8 bytes.
++ */
++#define WEBUSB_URL_RAW_MAX_LENGTH (U8_MAX - WEBUSB_URL_DESCRIPTOR_HEADER_LENGTH + 8)
++
++#endif /* __LINUX_USB_USBNET_H */
 -- 
 2.30.2
 
