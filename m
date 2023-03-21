@@ -1,74 +1,76 @@
-Delivery-date: Tue, 21 Mar 2023 18:22:22 +0100
+Delivery-date: Tue, 21 Mar 2023 20:04:22 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pefgj-009S6l-0m
-	for lore@lore.pengutronix.de; Tue, 21 Mar 2023 18:22:22 +0100
+	id 1pehHQ-009Y9y-TY
+	for lore@lore.pengutronix.de; Tue, 21 Mar 2023 20:04:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pefgi-0000YE-Iv
-	for lore@pengutronix.de; Tue, 21 Mar 2023 18:22:21 +0100
+	id 1pehHQ-0004PO-Sd
+	for lore@pengutronix.de; Tue, 21 Mar 2023 20:04:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=D47LLeP8AOtlBfSei4c9Cz1VTUbB7q7MhfYhxUd2vS0=; b=NTv4XEaZJm6YIVqiYddEyvxhsT
-	PwnXC0vysfdA1WVtxkTQ0NpsqdzCS+VLjtjG4TBuliAyzF+kAfwJmIZt6psG+jfN/pRMrphHV8fwq
-	WgTkqSwdloMAB02Bk+0pmHo+BVu/tVO/WPW3/I06GxZEVhNDZ2dXJhPux+rv66hQwiIUp3GSv2tlj
-	UAB08o+O5wqOrAjiCzpNXnv46R654t0Wwap1KAjUI0UpaXkbggh1o29cAlaPGMGWMMe0DMqcbVvOI
-	LvxwN2Gqt/cJ9PyzHETltDy4mayzu5iZ6ryHMP+Mr//z6t80JpwZYIxFJI8ON21lK8K0CEJ2uoBZM
-	HCUVS+fg==;
+	bh=cU8NqRiFK5rmmVKtXoac0JZUrX/xU5lsRdG1cDcoSjw=; b=zJpVmXOzpYHAn8XeT+wlKrQU9y
+	l3VuCVTyeFNk3aoQ/JW+RltTJ0eedTAmsHTIvNoyfm/KTuURdAczyYsr4xUgndCfZ1Nqty4lfZqzd
+	j8ueEysOzxDaHRh9Il59oVdTckZ9228i6hpNlIWGrQYDbj1eseYFpj1HvPVuV9nqlbHxzfRhFr9oV
+	C4ihzT/FmNAoo26pqOxhvbbnj8Lmaj7Gh6TsYq2QfLWpET1CKRApKl4JNVPC820QWpFnfEldbV3Y0
+	mFsxoB1rRnj+/U6BqZpHTq2fx3dcQ66zqZGeZ83Igf4qJ/hs0zVhKcFZ5S5ircq9hZTXZw951xdjM
+	rZvwlEHA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1peffN-00DCzH-2C;
-	Tue, 21 Mar 2023 17:20:57 +0000
-Received: from ams.source.kernel.org ([145.40.68.75])
+	id 1pehG1-00DPj8-1K;
+	Tue, 21 Mar 2023 19:02:53 +0000
+Received: from mailrelay1-1.pub.mailoutpod2-cph3.one.com ([2a02:2350:5:400::1])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1peffJ-00DCyn-0T
+	id 1pehFr-00DPhQ-2C
 	for barebox@lists.infradead.org;
-	Tue, 21 Mar 2023 17:20:54 +0000
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by ams.source.kernel.org (Postfix) with ESMTPS id 1D0CFB818FF;
-	Tue, 21 Mar 2023 17:20:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A5BAC433EF;
-	Tue, 21 Mar 2023 17:20:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1679419249;
-	bh=ACxgUHi+E9lPzkuf32zSt/dSuagdEnh2TKYbTEIokUE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bhidx+E0I4biSEDk7PVm2gwCQG6r7t8bphwOjSOYgPEno8tnwinZroRdFk6VFs+PX
-	 +01xA6+SKCfxSihPWBXl8C/d1LYku6wwBOh6OZljHY0/VPLpn5k9Bmf3eRdTguQ/IK
-	 vZPPmxoM9KInYFjplFmVKJ/gMC5N3De43KMBZYAUwL4QIe5W+ZacvObTDSqF15kOKO
-	 BLJfkDvCgLwVcbu8lCF/h4evW1h7+BD1E5w70WcFz67/WGARmZCqC8qa1ZI+29Mc4L
-	 hwlUC8CZjvGZc45X3HTwRugNlFesyC8/hPyAhMa4lkgqhQRbk3fQCGtuz9XgstuHLw
-	 WDzZhUfirdV4w==
-Date: Tue, 21 Mar 2023 18:20:45 +0100
-From: Wolfram Sang <wsa@kernel.org>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: Sam Ravnborg <sam@ravnborg.org>, barebox@lists.infradead.org
-Message-ID: <ZBnnbU1SUkNm4ryz@sai.fritz.box>
-Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-	Sascha Hauer <sha@pengutronix.de>, Sam Ravnborg <sam@ravnborg.org>,
+	Tue, 21 Mar 2023 19:02:46 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=rsa2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:to:from:
+	 date:from;
+	bh=cU8NqRiFK5rmmVKtXoac0JZUrX/xU5lsRdG1cDcoSjw=;
+	b=mF2ElwpDlwZAzg3hi+5W4CvsDs0LWNo5ifNJLj9onQuOqGnulEZVzGVu3NSclXXCzRXPTi8zFTbU5
+	 Dwbd1DBck3p4bMP+9ChuAlsgWQy1UJmgGwecCpzUWF17LLM1jf1SxcG9IK0SRrKAzeff0kW7Nn2hK3
+	 2RIhMUfYk314am75F30rAsYyCwQd44WBORbuKmGACfwh4qGYe6BnoXo09Ja3DVaohblLw/OsuZD5MU
+	 z/PgaO0i1bpQrXHRXHw407CPibSs3MGDz3qH85F9mUg4tii85zpGQqpfi7I4jM38kKWwMAmkc9c7oQ
+	 KNeoLEhMUmLzwWFVI6XFF4NUPalxfFQ==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
+	d=ravnborg.org; s=ed2;
+	h=in-reply-to:content-type:mime-version:references:message-id:subject:to:from:
+	 date:from;
+	bh=cU8NqRiFK5rmmVKtXoac0JZUrX/xU5lsRdG1cDcoSjw=;
+	b=w+IvYiC61R6DLh47T6k+JFM4IYmDONqZ0xL1S0d1/i7qVRGwVrbdNjI/x5kDuG5vMGgPtPghzmJjl
+	 PhucS1RDw==
+X-HalOne-ID: ef9d4660-c81a-11ed-9560-11abd97b9443
+Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
+	by mailrelay1 (Halon) with ESMTPSA
+	id ef9d4660-c81a-11ed-9560-11abd97b9443;
+	Tue, 21 Mar 2023 19:02:35 +0000 (UTC)
+Date: Tue, 21 Mar 2023 20:02:34 +0100
+From: Sam Ravnborg <sam@ravnborg.org>
+To: Wolfram Sang <wsa@kernel.org>, Sascha Hauer <sha@pengutronix.de>,
 	barebox@lists.infradead.org
+Message-ID: <ZBn/ShAwKik7TdvZ@ravnborg.org>
 References: <20230319154909.24047-1-wsa@kernel.org>
  <ZBdZxskg+JPzUY0t@ravnborg.org>
  <ZBd+Z+qn9rjuvp6S@sai.fritz.box>
  <20230321085848.GI7446@pengutronix.de>
+ <ZBnnbU1SUkNm4ryz@sai.fritz.box>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="6d0tE3Mz7ndImtLq"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230321085848.GI7446@pengutronix.de>
+In-Reply-To: <ZBnnbU1SUkNm4ryz@sai.fritz.box>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230321_102053_499286_07FD906D 
-X-CRM114-Status: GOOD (  18.28  )
+X-CRM114-CacheID: sfid-20230321_120244_686688_7D161AED 
+X-CRM114-Status: GOOD (  29.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,75 +88,74 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-104.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED,USER_IN_WELCOMELIST,USER_IN_WHITELIST
-	autolearn=unavailable autolearn_force=no version=3.4.2
+	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
 Subject: Re: [PATCH 0/3] mtd: nand: atmel: legacy: fix boot on USB-A9G20
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+Hi Wolfram.
 
---6d0tE3Mz7ndImtLq
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+On Tue, Mar 21, 2023 at 06:20:45PM +0100, Wolfram Sang wrote:
+> Hi Sascha!
+> 
+> > Nice to hear from you here ;)
+> 
+> Yeah, it has been only 10 years... :)
+> 
+> > I have no idea how the SDRAM setup is done on the USB-A9G20. There seems
+> > to be SDRAM setup code for the USB-A9263, but not for the USB-A9G20. Is
+> > there some AT91Bootstrap required?
+> 
+> Yes. There is a bootstrap required: https://github.com/linux4sam/at91bootstrap
+> However, an old version is needed. I am still fighting the details.
+> 
+> I accidently erased it, so my journey for unbricking the device began.
+> at91bootstrap, openocd, barebox - they all once supported A9G20, but
+> nowadays all of them were broken. Well, I fixed openocd and barebox
+> mostly so far, the bootstrap is still the missing piece.
 
-Hi Sascha!
+You may be hit by the newer gcc optimize the delays in
+the sdram init code in at91bootstrap.
 
-> Nice to hear from you here ;)
+This code:
+	/* Step#4 The minimum pause of 200 us is provided to precede any single toggle */
+        for (i = 0; i < 1000; i++) ;
+Are optimized away with newer gcc's.
+You can find it repeated several times in the init code.
 
-Yeah, it has been only 10 years... :)
+I think this was the only part what broke at91bootstrap for me.
+It was Ahmad, IIRC, that told me about it - so not my finding.
 
-> I have no idea how the SDRAM setup is done on the USB-A9G20. There seems
-> to be SDRAM setup code for the USB-A9263, but not for the USB-A9G20. Is
-> there some AT91Bootstrap required?
+> 
+> Super interesting about the A9263 setup code. I missed it so far. Does
+> that mean that barebox can replace the at91bootstrap?
+Yes. The patch series I pointed at generates a bare variant that I
+successfully used to boot my board direct from ROMBOOT.
+It is a direct replacement for at91bootstrap and loads barebox as the
+next step bootloader.
+I really like the way it is all integrated and how the two barebox
+variants are built in one go.
 
-Yes. There is a bootstrap required: https://github.com/linux4sam/at91bootstrap
-However, an old version is needed. I am still fighting the details.
+	Sam
 
-I accidently erased it, so my journey for unbricking the device began.
-at91bootstrap, openocd, barebox - they all once supported A9G20, but
-nowadays all of them were broken. Well, I fixed openocd and barebox
-mostly so far, the bootstrap is still the missing piece.
+> 
+> > Anyway, what's really missing is DT support. I scribbled a patch to get
+> > you started in case you are motivated. Basically it's: Compile in the
+> 
+> Motivated? No way ;) Obliged? More so. But first, I want to unbrick my
+> device. First make it work, then make it beautiful.
+> 
+> That being said, the two patches from this series are okay? I'd think
+> they are still needed for other legacy systems even if I convert A9G20
+> to DT in some ages.
+> 
+> Thanks for your help!
+> 
+>    Wolfram
 
-Super interesting about the A9263 setup code. I missed it so far. Does
-that mean that barebox can replace the at91bootstrap?
 
-> Anyway, what's really missing is DT support. I scribbled a patch to get
-> you started in case you are motivated. Basically it's: Compile in the
-
-Motivated? No way ;) Obliged? More so. But first, I want to unbrick my
-device. First make it work, then make it beautiful.
-
-That being said, the two patches from this series are okay? I'd think
-they are still needed for other legacy systems even if I convert A9G20
-to DT in some ages.
-
-Thanks for your help!
-
-   Wolfram
-
---6d0tE3Mz7ndImtLq
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmQZ520ACgkQFA3kzBSg
-KbaNbhAAsGv7fq+YBq2AcHXNTJRm37rvlNOE4SX9gsoB01lTHrkJt5grsKI9vNLe
-ibfgIFSU9Yqg9GGMZNrdwbZg3xlcix8ZBkMh4x5CoCYWcTT9XQ3CA/Q2cfyoenlU
-Fc816nE2pOdoZX35cBipWGuAAEdOSGcvZo7OnvM0ct5t3hoJqUjGAiRtt37DKYS3
-Z7VKEcTz7rHl27EztFK2SrkGtLhxvCtk8T7bmNW025X/744J41AoOyE5qJ4z6uQx
-xQ2kSCzaEfKNHokbuODY/HFhEQOVQw239mAHUwppkNRYG4RXoMyDz05UxbdY1f5Z
-1FF9sirDb8OkQiIsruCQPB3dH63HYlYhh42Ewqz5rvdUv17J2mJseOQZ1oSTVVM6
-ruJr9IfkWhix4YOKLfqzyyI4GnGx3IeXkuhvPcItvCYuPUcJV8It6HqetYnqYlZO
-nBtPXSxuR60dRD3GMfebQvItv+4BOqJYNfYU+qb488ZhHzmXfnxAIa06PItLuDet
-BhgYHoME4/d7tmhCTCv6oqPlAjm2XulBmhn+UfuYnTvHrSLnf8Wgib71rJ+8EXT8
-s/FXaCvN0JwP6YMtmvZAkbZc5s+QOrgh0rGWOKq11I75PuIZvKMaUGFERzIje5Xt
-3xnhQ1L+8MB8ndHyg4wl4Uz2ywDcy85GgKcVWoVDySSbUwPDn0U=
-=VMbY
------END PGP SIGNATURE-----
-
---6d0tE3Mz7ndImtLq--
 
 
