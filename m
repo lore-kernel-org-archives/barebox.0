@@ -1,54 +1,54 @@
-Delivery-date: Tue, 21 Mar 2023 09:11:07 +0100
+Delivery-date: Tue, 21 Mar 2023 09:12:00 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1peX5G-008wKM-BQ
-	for lore@lore.pengutronix.de; Tue, 21 Mar 2023 09:11:07 +0100
+	id 1peX67-008wNd-5o
+	for lore@lore.pengutronix.de; Tue, 21 Mar 2023 09:12:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1peX5F-0004m3-JP
-	for lore@pengutronix.de; Tue, 21 Mar 2023 09:11:06 +0100
+	id 1peX66-0004vz-Ri
+	for lore@pengutronix.de; Tue, 21 Mar 2023 09:11:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PeM7J0P4/BmrsgNYuU+x1BJOWsrVZaS1Sr0YFpuxvNk=; b=vjdaoLjN37cUtP9rwgaoyqFXQD
-	GFQ50stxtMBo28Vp9mAo99gcw0Lo/ZPqxOvImST1qla0eigxAvm+koOJOsMFDFJ4IJ0Lx2JSsrYEF
-	pHKWNpybqaCMrvXrWUzpbdGR2lFqSoz4Wkn80GY304U7jJf48fq/pSEhFZh67ns4cu/a6Zxiyxn9u
-	agu5Iuo3n80blgAD8o56TyT8AnEcFFHu+pGeD9981NERd0iBAIOgs44nG902ZKaFdXyaRAcDfhzG9
-	9UHJhdddnTaM2IlkrYk+fvBSb0X9DxNFsZLJS9+RblQYhLFvNF9KQwDpNnmFB+8uBXBUYh03zDuho
-	I3hXvAOQ==;
+	bh=3fd/hNCt8C2sH+yCG9/Nm7cjIHtAcAFfxDsDrueMR5k=; b=h3QIO9kDoHE1CJRr2xqFCiJjir
+	MvAfBSG6EbAzCVfZO4xW1Gm9j24gFDo/NqqGnck6qYi1LYmZDOek85qBQKiDRF3UA5qBMmIZjGFPA
+	LoXo9XonWyrV1Smz9rz1szAGOZS8TUXtxOY17bA3YRGr0jKPBeWQtdmybiGPxkkQlkC2+v7NK0tzH
+	8/nvu34vL7Aa8vDXRTf4J7aQuSN0j4PFWNp7pzlKNruE4Otm/Ahc4AghDySdHVUDSRDAvsGDpgq3r
+	h++tcc3Axj2ktT9XSZht+H7nBHnheeSKlbAIQjHHQaH2FMv0r97SfBA+Jc4KI2HGhVrIiLF9T9L5u
+	dTiFwrAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1peX4E-00Bd1v-1E;
-	Tue, 21 Mar 2023 08:10:02 +0000
+	id 1peX51-00BdAl-0w;
+	Tue, 21 Mar 2023 08:10:51 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1peX4B-00Bd0v-0a
+	id 1peX4x-00Bd9y-2L
 	for barebox@lists.infradead.org;
-	Tue, 21 Mar 2023 08:10:00 +0000
+	Tue, 21 Mar 2023 08:10:49 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1peX49-0004Ub-TL; Tue, 21 Mar 2023 09:09:57 +0100
+	id 1peX4w-0004hz-CP; Tue, 21 Mar 2023 09:10:46 +0100
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1peX49-0004vs-Lv; Tue, 21 Mar 2023 09:09:57 +0100
-Date: Tue, 21 Mar 2023 09:09:57 +0100
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230321080957.GD7446@pengutronix.de>
-References: <20230316134209.4068801-1-o.rempel@pengutronix.de>
+	id 1peX4w-000537-5o; Tue, 21 Mar 2023 09:10:46 +0100
+Date: Tue, 21 Mar 2023 09:10:46 +0100
+To: Johannes Zink <j.zink@pengutronix.de>
+Cc: barebox@lists.infradead.org, afa@pengutronix.de, jzi@pengutronix.de
+Message-ID: <20230321081046.GE7446@pengutronix.de>
+References: <20230317121937.958131-1-j.zink@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230316134209.4068801-1-o.rempel@pengutronix.de>
+In-Reply-To: <20230317121937.958131-1-j.zink@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +56,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230321_010959_215612_817B1FCC 
-X-CRM114-Status: GOOD (  20.63  )
+X-CRM114-CacheID: sfid-20230321_011047_764270_D6BC0F87 
+X-CRM114-Status: GOOD (  22.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,53 +79,65 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1 1/3] net: dsa: add adjust_link support
+Subject: Re: [PATCH v2] Documentation: devicetree: list automatic boot
+ argument fixups
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Mar 16, 2023 at 02:42:07PM +0100, Oleksij Rempel wrote:
-> The required functionality is essential for cable hot plugging or
-> asynchronous link detection. In its current state, DSA will only operate
-> if the cable was connected prior to booting.
+On Fri, Mar 17, 2023 at 01:19:37PM +0100, Johannes Zink wrote:
+> Barebox automatically fixes up several properties to the root and
+> chosen node of the device tree passed to the booted system.
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> These entries contain information about the hardware, reset source
+> and the barebox version string.
+> 
+> Add documentation on how to query these information from the booted
+> linux system.
+> 
+> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
 > ---
->  drivers/net/dsa.c | 4 ++--
->  include/dsa.h     | 1 +
->  2 files changed, 3 insertions(+), 2 deletions(-)
+>  Changelog:
+> 
+>  v1 -> v2: Correct errors in content spotted by Ahmad. While at it, fix some typos.
+> 
+>  Documentation/devicetree/index.rst | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/net/dsa.c b/drivers/net/dsa.c
-> index 793bbbb4f1..9c21564876 100644
-> --- a/drivers/net/dsa.c
-> +++ b/drivers/net/dsa.c
-> @@ -104,8 +104,8 @@ static int dsa_port_start(struct eth_device *edev)
->  			return ret;
->  	}
->  
-> -	ret = phy_device_connect(edev, ds->slave_mii_bus, dp->index, NULL, 0,
-> -				 interface);
-> +	ret = phy_device_connect(edev, ds->slave_mii_bus, dp->index,
-> +				 ops->adjust_link, 0, interface);
->  	if (ret)
->  		return ret;
->  
-> diff --git a/include/dsa.h b/include/dsa.h
-> index e823bac0a7..527941c269 100644
-> --- a/include/dsa.h
-> +++ b/include/dsa.h
-> @@ -55,6 +55,7 @@ struct dsa_switch_ops {
->  
->  	int (*phy_read)(struct dsa_switch *ds, int port, int regnum);
->  	int (*phy_write)(struct dsa_switch *ds, int port, int regnum, u16 val);
-> +	void (*adjust_link)(struct eth_device *dev);
->  };
->  
->  struct dsa_port {
+> diff --git a/Documentation/devicetree/index.rst b/Documentation/devicetree/index.rst
+> index 36fa69058d1d..f85ce6608d14 100644
+> --- a/Documentation/devicetree/index.rst
+> +++ b/Documentation/devicetree/index.rst
+> @@ -151,3 +151,25 @@ Contents:
+>     bindings/regulator/*
+>     bindings/rtc/*
+>     bindings/watchdog/*
+> +
+> +Automatic Boot Argument Fixups to the Devicetree
+> +------------------------------------------------
+> +
+> +barebox automatically fixes up some boot and system information in the device tree.
+> +
+> +In the device tree root, barebox fixes up
+> +
+> + * serial-number (if available)
+> + * machine compatible (if overridden)
+> +
+> +In the ``chosen``-node, barebox fixes up
+> +
+> + * barebox-version
+> + * reset-source
+> + * reset-source-instance (if available)
+> + * reset-source-device (node-path, only if available)
+> + * bootsource
+> + * boot-hartid (only on RISC-V)
+> +
+> +These values can be read from the booted linux system in ``/proc/device-tree/``
+> +or ``/sys/firmware/devicetree/base``.
 > -- 
 > 2.30.2
 > 
