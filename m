@@ -1,63 +1,56 @@
-Delivery-date: Wed, 22 Mar 2023 08:42:22 +0100
+Delivery-date: Wed, 22 Mar 2023 09:30:08 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pet6z-00ABZJ-8s
-	for lore@lore.pengutronix.de; Wed, 22 Mar 2023 08:42:22 +0100
+	id 1petrD-00ADox-6F
+	for lore@lore.pengutronix.de; Wed, 22 Mar 2023 09:30:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pet6z-0003j0-4x
-	for lore@pengutronix.de; Wed, 22 Mar 2023 08:42:21 +0100
+	id 1petrC-0000vn-Ji
+	for lore@pengutronix.de; Wed, 22 Mar 2023 09:30:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xZSeBjU9hFR67a7lnxkcElHPLhOGTuN6kZnkLH23kLY=; b=rS9DV9rvSDKzMgdqKg5/SJWzjY
-	zDGtAJiYrLEgB11hhnlClOKmntp2W/GRmJ6yhc1et6ugqYuVxT6Wg67ra9J33UNOSpbnXYjCo2ZGD
-	v/WfyCIv2PAwbYF0UVOZKRoJapfrI4PnfGUbpdayyzuK8Fco5Gyyf8Qkgg8isXjEk4dR0Oixgq3Kf
-	tDGVlqqiMDCrnnt+Mrn9EAw0ksshwX7OhtRji+WJaFypb4u3rUeLu9T2W7q6ERHueZO/1pUuovYPL
-	jzqSW12WyRTA75PZN9YP5GQamdW1GlCAxgyF2wTTJOVKRz2w7wIg6I+zTpTXuu1LFbYTUUX2OXN0x
-	QUUGLO1A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Content-Type:References:In-Reply-To:Date:To:From:Subject:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=D+ftqD8vpFxPS5MLeoiuMAQcLfLiJ3SA9LonBNBnwz4=; b=KcQ8ZZGvElw7yGbU63es2mpXr7
+	sY+mpDmfpZLIk+KKmsN0HC3E17ZboCosu5eGSdZ9mQNTHJNMn8UAMHPFp8v05XBZ/GkSskldvSHHB
+	3ZgG8P6mfXGQer2fw6Ykv/Pf9AlMYhRWE06j5QQrcfBmIXllxDe3U7nDYwgusq4E0h48rbBVAVCA1
+	HipMuCsUJKQtn/Sxcu++Dy4AWAa5ed2ObZpu5TzVyG+4Iwh4+dDUDKYu8aKX74xaGU/U6mZEBL2g2
+	edtilIDTuZLof+AiaE8kadmFmTltrGxUWjXJ/jKGU2IslPf10APB1B+9++wNksmvCMiN1vutPuBIv
+	bAZzV15w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pet5u-00F2Do-22;
-	Wed, 22 Mar 2023 07:41:14 +0000
+	id 1petq2-00FBEH-1A;
+	Wed, 22 Mar 2023 08:28:54 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pet5r-00F2DB-0c
+	id 1petpz-00FBA2-0x
 	for barebox@lists.infradead.org;
-	Wed, 22 Mar 2023 07:41:12 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pet5p-0003eb-TT; Wed, 22 Mar 2023 08:41:09 +0100
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pet5p-00044E-J2; Wed, 22 Mar 2023 08:41:09 +0100
-Date: Wed, 22 Mar 2023 08:41:09 +0100
-To: Wolfram Sang <wsa@kernel.org>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230322074109.GN7446@pengutronix.de>
-References: <20230319154909.24047-1-wsa@kernel.org>
+	Wed, 22 Mar 2023 08:28:52 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=irc.pengutronix.de)
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <j.zink@pengutronix.de>)
+	id 1petpv-0000p9-8t; Wed, 22 Mar 2023 09:28:47 +0100
+Message-ID: <e1ff34b699e9d2df04f75d1dc90cffb03d09db06.camel@pengutronix.de>
+From: Johannes Zink <j.zink@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List
+	 <barebox@lists.infradead.org>
+Date: Wed, 22 Mar 2023 09:28:21 +0100
+In-Reply-To: <20230320152941.3155428-16-s.hauer@pengutronix.de>
+References: <20230320152941.3155428-1-s.hauer@pengutronix.de>
+	 <20230320152941.3155428-16-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+User-Agent: Evolution 3.38.3-1+deb11u1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230319154909.24047-1-wsa@kernel.org>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230322_004111_250034_5200CECE 
-X-CRM114-Status: GOOD (  17.13  )
+X-CRM114-CacheID: sfid-20230322_012851_330855_DCF5C51C 
+X-CRM114-Status: GOOD (  19.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,38 +68,106 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/3] mtd: nand: atmel: legacy: fix boot on USB-A9G20
+Subject: Re: [PATCH 15/18] usb: gadget: fastboot: Add super speed descriptors
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sun, Mar 19, 2023 at 04:49:06PM +0100, Wolfram Sang wrote:
-> While trying to unbrick my Calao USB-A9G20, barebox couldn't read the
-> NAND BB tables unlike the binary-only barebox from 2013. The first two
-> patches fix that. The third one is a cleanup.
-> 
-> Happy hacking!
-> 
-> 
-> Wolfram Sang (3):
->   mtd: nand: atmel: legacy: add 'algo' to use
->   mtd: nand: atmel: legacy: use proper ecc_shift
->   mtd: nand: atmel: legacy: remove superfluous code
-> 
->  drivers/mtd/nand/atmel/legacy.c | 11 +++--------
->  1 file changed, 3 insertions(+), 8 deletions(-)
+Hi Sascha,
 
-Applied, thanks
+there is a small typo in the commit message:
 
-Sascha
+On Mon, 2023-03-20 at 16:29 +0100, Sascha Hauer wrote:
+> Add super speed descriptors to the fasboot gadget. These are taken
+
+s/fasboot/fastboot/
+
+Best regards
+Johannes
+
+> from
+> U-Boot v2023.04-rc4.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  drivers/usb/gadget/function/f_fastboot.c | 34
+> +++++++++++++++++++++++-
+>  1 file changed, 33 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/usb/gadget/function/f_fastboot.c
+> b/drivers/usb/gadget/function/f_fastboot.c
+> index 4e9c373796..4266b78b40 100644
+> --- a/drivers/usb/gadget/function/f_fastboot.c
+> +++ b/drivers/usb/gadget/function/f_fastboot.c
+> @@ -109,6 +109,36 @@ static struct usb_descriptor_header
+> *fb_hs_descs[] = {
+>         NULL,
+>  };
+>  
+> +static struct usb_endpoint_descriptor ss_ep_in = {
+> +       .bLength                = USB_DT_ENDPOINT_SIZE,
+> +       .bDescriptorType        = USB_DT_ENDPOINT,
+> +       .bEndpointAddress       = USB_DIR_IN,
+> +       .bmAttributes           = USB_ENDPOINT_XFER_BULK,
+> +       .wMaxPacketSize         = cpu_to_le16(1024),
+> +};
+> +
+> +static struct usb_endpoint_descriptor ss_ep_out = {
+> +       .bLength                = USB_DT_ENDPOINT_SIZE,
+> +       .bDescriptorType        = USB_DT_ENDPOINT,
+> +       .bEndpointAddress       = USB_DIR_OUT,
+> +       .bmAttributes           = USB_ENDPOINT_XFER_BULK,
+> +       .wMaxPacketSize         = cpu_to_le16(1024),
+> +};
+> +
+> +static struct usb_ss_ep_comp_descriptor fb_ss_bulk_comp_desc = {
+> +       .bLength =              sizeof(fb_ss_bulk_comp_desc),
+> +       .bDescriptorType =      USB_DT_SS_ENDPOINT_COMP,
+> +};
+> +
+> +static struct usb_descriptor_header *fb_ss_descs[] = {
+> +       (struct usb_descriptor_header *)&interface_desc,
+> +       (struct usb_descriptor_header *)&ss_ep_in,
+> +       (struct usb_descriptor_header *)&fb_ss_bulk_comp_desc,
+> +       (struct usb_descriptor_header *)&ss_ep_out,
+> +       (struct usb_descriptor_header *)&fb_ss_bulk_comp_desc,
+> +       NULL,
+> +};
+> +
+>  /*
+>   * static strings, in UTF-8
+>   */
+> @@ -255,6 +285,8 @@ static int fastboot_bind(struct usb_configuration
+> *c, struct usb_function *f)
+>  
+>         hs_ep_out.bEndpointAddress = fs_ep_out.bEndpointAddress;
+>         hs_ep_in.bEndpointAddress = fs_ep_in.bEndpointAddress;
+> +       ss_ep_out.bEndpointAddress = fs_ep_out.bEndpointAddress;
+> +       ss_ep_in.bEndpointAddress = fs_ep_in.bEndpointAddress;
+>  
+>         f_fb->out_req = fastboot_alloc_request(f_fb->out_ep);
+>         if (!f_fb->out_req) {
+> @@ -266,7 +298,7 @@ static int fastboot_bind(struct usb_configuration
+> *c, struct usb_function *f)
+>         f_fb->out_req->complete = rx_handler_command;
+>         f_fb->out_req->context = f_fb;
+>  
+> -       ret = usb_assign_descriptors(f, fb_fs_descs, fb_hs_descs,
+> NULL, NULL);
+> +       ret = usb_assign_descriptors(f, fb_fs_descs, fb_hs_descs,
+> fb_ss_descs, fb_ss_descs);
+>         if (ret)
+>                 goto err_free_in_req;
+>  
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Pengutronix e.K.                | Johannes Zink                  |
+Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
+
 
 
