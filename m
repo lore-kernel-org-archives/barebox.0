@@ -1,56 +1,61 @@
-Delivery-date: Wed, 22 Mar 2023 09:30:08 +0100
+Delivery-date: Wed, 22 Mar 2023 09:33:58 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1petrD-00ADox-6F
-	for lore@lore.pengutronix.de; Wed, 22 Mar 2023 09:30:08 +0100
+	id 1petuv-00AE0Q-Uw
+	for lore@lore.pengutronix.de; Wed, 22 Mar 2023 09:33:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1petrC-0000vn-Ji
-	for lore@pengutronix.de; Wed, 22 Mar 2023 09:30:07 +0100
+	id 1petus-0001iW-I2
+	for lore@pengutronix.de; Wed, 22 Mar 2023 09:33:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Content-Type:References:In-Reply-To:Date:To:From:Subject:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=D+ftqD8vpFxPS5MLeoiuMAQcLfLiJ3SA9LonBNBnwz4=; b=KcQ8ZZGvElw7yGbU63es2mpXr7
-	sY+mpDmfpZLIk+KKmsN0HC3E17ZboCosu5eGSdZ9mQNTHJNMn8UAMHPFp8v05XBZ/GkSskldvSHHB
-	3ZgG8P6mfXGQer2fw6Ykv/Pf9AlMYhRWE06j5QQrcfBmIXllxDe3U7nDYwgusq4E0h48rbBVAVCA1
-	HipMuCsUJKQtn/Sxcu++Dy4AWAa5ed2ObZpu5TzVyG+4Iwh4+dDUDKYu8aKX74xaGU/U6mZEBL2g2
-	edtilIDTuZLof+AiaE8kadmFmTltrGxUWjXJ/jKGU2IslPf10APB1B+9++wNksmvCMiN1vutPuBIv
-	bAZzV15w==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=xNsOcb0MIBySKV/PsHYWLUHjZQyBUlRNS2WeHxMKl1I=; b=WwSqbPjZaLVvLrZ2r9Y8K5rGFK
+	9h3J3b5+yMGpE/CV4hiAWc0DyOIU2aTrNRGpaEQjYcn8xFz9b5FALRRXEbM07RZxLY8nr1SLTzvPp
+	/JqGjs6+Qzz8py+eDTy3h+953tC4DFqNVFJu7Yg2yGo88O2ufGBg/jJo/PDG6BHPgpw5gIxJzzTsq
+	xUa63XQgn8d0rcyn0YixJZ5jWl9it1HmrYZyOTEM+vEWM2Fkad60qcWYYkrtYae5BN2BzdYb7Bsn+
+	5U6WbkQg1eThjr6AaHN1JiQ+cdxyPnE0tMmChDjc56c7hOsaNvznPxbIfVrImfBkWAoAX7C5axhgp
+	0dKeYNTg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1petq2-00FBEH-1A;
-	Wed, 22 Mar 2023 08:28:54 +0000
+	id 1pettv-00FCFf-0D;
+	Wed, 22 Mar 2023 08:32:55 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1petpz-00FBA2-0x
+	id 1petto-00FCDG-35
 	for barebox@lists.infradead.org;
-	Wed, 22 Mar 2023 08:28:52 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=irc.pengutronix.de)
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <j.zink@pengutronix.de>)
-	id 1petpv-0000p9-8t; Wed, 22 Mar 2023 09:28:47 +0100
-Message-ID: <e1ff34b699e9d2df04f75d1dc90cffb03d09db06.camel@pengutronix.de>
-From: Johannes Zink <j.zink@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List
-	 <barebox@lists.infradead.org>
-Date: Wed, 22 Mar 2023 09:28:21 +0100
-In-Reply-To: <20230320152941.3155428-16-s.hauer@pengutronix.de>
-References: <20230320152941.3155428-1-s.hauer@pengutronix.de>
-	 <20230320152941.3155428-16-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.38.3-1+deb11u1 
+	Wed, 22 Mar 2023 08:32:50 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pettn-0001Sh-MK; Wed, 22 Mar 2023 09:32:47 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pettn-005sSX-1h; Wed, 22 Mar 2023 09:32:47 +0100
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pettm-001D9v-4s; Wed, 22 Mar 2023 09:32:46 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Wed, 22 Mar 2023 09:32:43 +0100
+Message-Id: <20230322083245.251340-3-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230322083245.251340-1-s.hauer@pengutronix.de>
+References: <20230322083245.251340-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230322_012851_330855_DCF5C51C 
-X-CRM114-Status: GOOD (  19.70  )
+X-CRM114-CacheID: sfid-20230322_013249_011729_2DA34F18 
+X-CRM114-Status: GOOD (  18.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,106 +73,104 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 15/18] usb: gadget: fastboot: Add super speed descriptors
+Subject: [PATCH 2/4] clk: of: drop arguments from of_clk_init()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Sascha,
+of_clk_init() should be used to register clock drivers declared with
+CLK_OF_DECLARE and nothing else, so there shouldn't be a need to call
+it with a non NULL "matches" argument.
 
-there is a small typo in the commit message:
+Also there is no point in calling this function with another device tree
+than the barebox live tree.
 
-On Mon, 2023-03-20 at 16:29 +0100, Sascha Hauer wrote:
-> Add super speed descriptors to the fasboot gadget. These are taken
+Drop both arguments.
 
-s/fasboot/fastboot/
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/clk.c   | 10 +++-------
+ drivers/of/base.c   |  2 +-
+ include/linux/clk.h |  5 ++---
+ 3 files changed, 6 insertions(+), 11 deletions(-)
 
-Best regards
-Johannes
-
-> from
-> U-Boot v2023.04-rc4.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/usb/gadget/function/f_fastboot.c | 34
-> +++++++++++++++++++++++-
->  1 file changed, 33 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/usb/gadget/function/f_fastboot.c
-> b/drivers/usb/gadget/function/f_fastboot.c
-> index 4e9c373796..4266b78b40 100644
-> --- a/drivers/usb/gadget/function/f_fastboot.c
-> +++ b/drivers/usb/gadget/function/f_fastboot.c
-> @@ -109,6 +109,36 @@ static struct usb_descriptor_header
-> *fb_hs_descs[] = {
->         NULL,
->  };
->  
-> +static struct usb_endpoint_descriptor ss_ep_in = {
-> +       .bLength                = USB_DT_ENDPOINT_SIZE,
-> +       .bDescriptorType        = USB_DT_ENDPOINT,
-> +       .bEndpointAddress       = USB_DIR_IN,
-> +       .bmAttributes           = USB_ENDPOINT_XFER_BULK,
-> +       .wMaxPacketSize         = cpu_to_le16(1024),
-> +};
-> +
-> +static struct usb_endpoint_descriptor ss_ep_out = {
-> +       .bLength                = USB_DT_ENDPOINT_SIZE,
-> +       .bDescriptorType        = USB_DT_ENDPOINT,
-> +       .bEndpointAddress       = USB_DIR_OUT,
-> +       .bmAttributes           = USB_ENDPOINT_XFER_BULK,
-> +       .wMaxPacketSize         = cpu_to_le16(1024),
-> +};
-> +
-> +static struct usb_ss_ep_comp_descriptor fb_ss_bulk_comp_desc = {
-> +       .bLength =              sizeof(fb_ss_bulk_comp_desc),
-> +       .bDescriptorType =      USB_DT_SS_ENDPOINT_COMP,
-> +};
-> +
-> +static struct usb_descriptor_header *fb_ss_descs[] = {
-> +       (struct usb_descriptor_header *)&interface_desc,
-> +       (struct usb_descriptor_header *)&ss_ep_in,
-> +       (struct usb_descriptor_header *)&fb_ss_bulk_comp_desc,
-> +       (struct usb_descriptor_header *)&ss_ep_out,
-> +       (struct usb_descriptor_header *)&fb_ss_bulk_comp_desc,
-> +       NULL,
-> +};
-> +
->  /*
->   * static strings, in UTF-8
->   */
-> @@ -255,6 +285,8 @@ static int fastboot_bind(struct usb_configuration
-> *c, struct usb_function *f)
->  
->         hs_ep_out.bEndpointAddress = fs_ep_out.bEndpointAddress;
->         hs_ep_in.bEndpointAddress = fs_ep_in.bEndpointAddress;
-> +       ss_ep_out.bEndpointAddress = fs_ep_out.bEndpointAddress;
-> +       ss_ep_in.bEndpointAddress = fs_ep_in.bEndpointAddress;
->  
->         f_fb->out_req = fastboot_alloc_request(f_fb->out_ep);
->         if (!f_fb->out_req) {
-> @@ -266,7 +298,7 @@ static int fastboot_bind(struct usb_configuration
-> *c, struct usb_function *f)
->         f_fb->out_req->complete = rx_handler_command;
->         f_fb->out_req->context = f_fb;
->  
-> -       ret = usb_assign_descriptors(f, fb_fs_descs, fb_hs_descs,
-> NULL, NULL);
-> +       ret = usb_assign_descriptors(f, fb_fs_descs, fb_hs_descs,
-> fb_ss_descs, fb_ss_descs);
->         if (ret)
->                 goto err_free_in_req;
->  
-
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 30fe43032b..c7ee6878c2 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -849,28 +849,24 @@ static int parent_ready(struct device_node *np)
+ 
+ /**
+  * of_clk_init() - Scan and init clock providers from the DT
+- * @root: parent of the first level to probe or NULL for the root of the tree
+- * @matches: array of compatible values and init functions for providers.
+  *
+  * This function scans the device tree for matching clock providers and
+  * calls their initialization functions
+  *
+  * Returns 0 on success, < 0 on failure.
+  */
+-int of_clk_init(struct device_node *root, const struct of_device_id *matches)
++int of_clk_init(void)
+ {
++	struct device_node *root = of_get_root_node();
++	const struct of_device_id *matches = __clk_of_table_start;
+ 	struct clock_provider *clk_provider, *next;
+ 	bool is_init_done;
+ 	bool force = false;
+ 	LIST_HEAD(clk_provider_list);
+ 	const struct of_device_id *match;
+ 
+-	if (!root)
+-		root = of_find_node_by_path("/");
+ 	if (!root)
+ 		return -EINVAL;
+-	if (!matches)
+-		matches = __clk_of_table_start;
+ 
+ 	/* First prepare the list of the clocks providers */
+ 	for_each_matching_node_and_match(root, matches, &match) {
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index ea4be9c512..acebba29a1 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1757,7 +1757,7 @@ int barebox_register_of(struct device_node *root)
+ 	of_fix_tree(root);
+ 
+ 	if (IS_ENABLED(CONFIG_OFDEVICE)) {
+-		of_clk_init(root, NULL);
++		of_clk_init();
+ 		if (!deep_probe_is_supported())
+ 			return of_probe();
+ 	}
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index bffed2bdcf..29c697a00b 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -686,7 +686,7 @@ struct clk *of_clk_get_from_provider(struct of_phandle_args *clkspec);
+ unsigned int of_clk_get_parent_count(struct device_node *np);
+ int of_clk_parent_fill(struct device_node *np, const char **parents,
+ 		       unsigned int size);
+-int of_clk_init(struct device_node *root, const struct of_device_id *matches);
++int of_clk_init(void);
+ int of_clk_add_provider(struct device_node *np,
+ 			struct clk *(*clk_src_get)(struct of_phandle_args *args,
+ 						   void *data),
+@@ -742,8 +742,7 @@ static inline unsigned int of_clk_get_parent_count(struct device_node *np)
+ {
+ 	return 0;
+ }
+-static inline int of_clk_init(struct device_node *root,
+-			      const struct of_device_id *matches)
++static inline int of_clk_init(void)
+ {
+ 	return 0;
+ }
 -- 
-Pengutronix e.K.                | Johannes Zink                  |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
+2.30.2
 
 
 
