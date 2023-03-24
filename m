@@ -1,59 +1,63 @@
-Delivery-date: Fri, 24 Mar 2023 13:20:09 +0100
+Delivery-date: Fri, 24 Mar 2023 13:20:13 +0100
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pfgOu-00DC5o-RL
-	for lore@lore.pengutronix.de; Fri, 24 Mar 2023 13:20:09 +0100
+	id 1pfgOy-00DC6a-Vm
+	for lore@lore.pengutronix.de; Fri, 24 Mar 2023 13:20:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pfgOu-0003fU-2t
-	for lore@pengutronix.de; Fri, 24 Mar 2023 13:20:08 +0100
+	id 1pfgOy-0003jP-SD
+	for lore@pengutronix.de; Fri, 24 Mar 2023 13:20:13 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ms1m/4jh4+CBlmR+rykNs0mLBTJTgH5xHB+dfV6ZZAo=; b=rbz4s0zallmjc9U3BFTNxbsIle
-	FuI4xP4wFnTqnkZQJngRr5WxsF6zvAHVuaoFy/NjxPVuu50Wl6JOvveCXh5KsqENQNJb+FagO8HxX
-	bxyXnAMxI2wZhUNGUUpSW1f/rz78ksPjykzeFIea0JZfwpDem3VAaen0DeUVAJgCHRauTqN3ayr1g
-	0vaYBg0Q5YEuZ324fRO2ktiUDltslBDhJQtt1QPigsVphLJdSfQFv1jieTAv74YJESHhP/Lpe8gBy
-	wgoK51LeIVlt0Vg7rN5h3KFSMqXcFckEBJap9o7U/EEUkvp+OJU4ofLsJdqo61CepIMlQi+pboRdd
-	fKxWgnGg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Gvz0RNn4hejvYiwhMORpLuGRY7AluoFwDFuK4UUsCZ8=; b=MorH54Zi8ysf2K0GlTybNEHsQW
+	0KA8Q4C+pkMGnSUQrx5NuInuJLWAbYNYIb85hiFVRhgFyPgj2aUIYHwdlT8ZXddvQP+WqNpNc/krc
+	UdD7KsvTz5sXmXn5ha+11RZIwcQLk0Hm9pBIuXCxc1ISh3qTD9rUqPTsBQz8s1tLJQQGtzfy4k2GF
+	u7lEKrr1liO1S7OSapU6EaS9B8aAZUoLwCB+n3bSipP43E+vrTtCe6l96QxYDMWrEzwvxtLymfW0x
+	v6lEgjLlLRcVuF2MidoLq7FyXU4u34b8hc/KgdkNwnEcx3geHQPLr5qO74ZjVO8/7LMRYRwFJcDEn
+	9t8Y9HkA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pfgNh-004Kba-22;
-	Fri, 24 Mar 2023 12:18:53 +0000
+	id 1pfgO1-004Kgv-24;
+	Fri, 24 Mar 2023 12:19:13 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pfgNe-004KYR-0P
+	id 1pfgNy-004KfC-0w
 	for barebox@lists.infradead.org;
-	Fri, 24 Mar 2023 12:18:51 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Fri, 24 Mar 2023 12:19:11 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pfgNX-0003Qn-5Q; Fri, 24 Mar 2023 13:18:43 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	id 1pfgNw-0003Sx-WF; Fri, 24 Mar 2023 13:19:09 +0100
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pfgNW-006Na1-HM; Fri, 24 Mar 2023 13:18:42 +0100
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pfgNV-00H4y3-HN; Fri, 24 Mar 2023 13:18:41 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 24 Mar 2023 13:18:37 +0100
-Message-Id: <20230324121840.2375026-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.30.2
+	id 1pfgNw-0008TE-OQ; Fri, 24 Mar 2023 13:19:08 +0100
+Date: Fri, 24 Mar 2023 13:19:08 +0100
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230324121908.GC19113@pengutronix.de>
+References: <20230322210322.254744-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230322210322.254744-1-m.felsch@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230324_051850_161422_75CA7368 
-X-CRM114-Status: GOOD (  10.37  )
+X-CRM114-CacheID: sfid-20230324_051910_333845_2594E640 
+X-CRM114-Status: GOOD (  19.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,103 +75,67 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/3] ARM: straighten 32bit/64bit Kconfig options
+Subject: Re: [PATCH] ARM: dts: i.MX8MP: add dual-role usb-type-c PORT1 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This straightens the 32bit/64bit support Kconfig options for ARM.
-With this the 64bit option must be enabled/disabled first in the
-toplevel menu and then only the SoCs/boards support by that choice
-are shown.
+On Wed, Mar 22, 2023 at 10:03:22PM +0100, Marco Felsch wrote:
+> Enable the dual-role support locally till we have upstream devicetree
+> support. By this patch and with the recent usb-otg patches from Sascha
+> usbgadget/fastboot does work now on the i.MX8MP-EVK as well.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  arch/arm/dts/imx8mp-evk.dts | 17 +++++++++++++++++
+>  1 file changed, 17 insertions(+)
 
-Sascha Hauer (3):
-  ARM: remove freescale-mx21-ads_defconfig
-  ARM: update defconfigs
-  ARM: cleanup 32bit/64bit support in Kconfig
+Applied, thanks
 
- arch/arm/Kconfig                              | 52 +++++++--------
- arch/arm/configs/am335x_mlo_defconfig         |  2 +-
- .../arm/configs/am35xx_pfc200_xload_defconfig |  5 --
- arch/arm/configs/animeo_ip_defconfig          |  7 +-
- arch/arm/configs/archosg9_xload_defconfig     |  2 +-
- arch/arm/configs/at91_multi_defconfig         |  1 -
- arch/arm/configs/at91rm9200ek_defconfig       |  1 -
- arch/arm/configs/at91sam9260ek_defconfig      |  7 +-
- .../configs/at91sam9261ek_bootstrap_defconfig |  6 +-
- arch/arm/configs/at91sam9261ek_defconfig      |  7 +-
- .../at91sam9261ek_first_stage_defconfig       |  7 +-
- arch/arm/configs/at91sam9g10ek_defconfig      |  7 +-
- arch/arm/configs/at91sam9g20ek_defconfig      |  7 +-
- arch/arm/configs/at91sam9m10g45ek_defconfig   |  7 +-
- arch/arm/configs/at91sam9m10ihd_defconfig     |  6 +-
- arch/arm/configs/at91sam9n12ek_defconfig      |  3 +-
- arch/arm/configs/canon-a1100_defconfig        |  2 -
- arch/arm/configs/clps711x_defconfig           |  1 -
- arch/arm/configs/dss11_defconfig              |  2 -
- arch/arm/configs/edb93xx_defconfig            |  1 -
- arch/arm/configs/freescale-mx21-ads_defconfig | 38 -----------
- arch/arm/configs/haba_knx_lite_defconfig      |  7 +-
- arch/arm/configs/imx28_defconfig              |  1 -
- arch/arm/configs/imx_defconfig                |  3 -
- arch/arm/configs/imx_v7_defconfig             | 64 +++++++++----------
- arch/arm/configs/imx_v8_defconfig             |  8 +--
- arch/arm/configs/kindle-mx50_defconfig        |  1 -
- arch/arm/configs/layerscape_defconfig         | 13 ++--
- arch/arm/configs/layerscape_v7_defconfig      | 10 +--
- arch/arm/configs/lubbock_defconfig            |  2 +-
- arch/arm/configs/mainstone_defconfig          |  2 +-
- arch/arm/configs/mioa701_defconfig            |  3 +-
- arch/arm/configs/module-mb7707_defconfig      |  1 -
- arch/arm/configs/mvebu_defconfig              |  2 +-
- arch/arm/configs/nhk8815_defconfig            |  1 -
- arch/arm/configs/omap3530_beagle_defconfig    |  2 +-
- .../configs/omap3530_beagle_xload_defconfig   |  5 --
- .../phytec-phycard-omap3-xload_defconfig      |  6 +-
- .../configs/phytec-phycard-omap3_defconfig    |  1 -
- .../phytec-phycard-omap4-xload_defconfig      |  5 --
- .../configs/phytec-phycard-omap4_defconfig    |  1 -
- ...hytec-phycore-omap4460-xload-mmc_defconfig |  2 +-
- ...ytec-phycore-omap4460-xload-nand_defconfig |  7 +-
- .../configs/phytec-phycore-omap4460_defconfig |  3 +-
- arch/arm/configs/pm9261_defconfig             |  1 -
- arch/arm/configs/pm9263_defconfig             |  1 -
- arch/arm/configs/pm9g45_defconfig             |  7 +-
- arch/arm/configs/qemu_virt64_defconfig        |  1 +
- arch/arm/configs/qil_a9260_defconfig          |  7 +-
- arch/arm/configs/qil_a9g20_defconfig          |  7 +-
- arch/arm/configs/rockchip_v7a_defconfig       |  1 -
- arch/arm/configs/sama5d3xek_defconfig         |  9 +--
- arch/arm/configs/sama5d4_xplained_defconfig   |  7 +-
- arch/arm/configs/sama5d4ek_defconfig          |  7 +-
- arch/arm/configs/socfpga-arria10_defconfig    |  2 -
- arch/arm/configs/socfpga_defconfig            |  1 -
- arch/arm/configs/stm32mp_defconfig            |  1 -
- arch/arm/configs/telit_evk_pro3_defconfig     |  6 +-
- arch/arm/configs/tny_a9260_defconfig          |  7 +-
- .../arm/configs/tny_a9263_bootstrap_defconfig |  6 +-
- arch/arm/configs/tny_a9263_defconfig          |  7 +-
- arch/arm/configs/tny_a9g20_defconfig          |  7 +-
- arch/arm/configs/usb_a9260_defconfig          |  7 +-
- .../arm/configs/usb_a9263_bootstrap_defconfig |  6 +-
- arch/arm/configs/usb_a9263_defconfig          |  7 +-
- arch/arm/configs/usb_a9g20_defconfig          |  7 +-
- .../arm/configs/versatilepb_arm1176_defconfig |  3 +-
- arch/arm/configs/versatilepb_defconfig        |  3 +-
- arch/arm/configs/virt2real_defconfig          |  1 -
- arch/arm/configs/zii_vf610_dev_defconfig      |  1 -
- arch/arm/configs/zylonite310_defconfig        |  2 +-
- arch/arm/configs/zynqmp_defconfig             |  3 +-
- arch/arm/cpu/Kconfig                          |  5 --
- arch/arm/mach-layerscape/Kconfig              |  9 ++-
- 74 files changed, 120 insertions(+), 340 deletions(-)
- delete mode 100644 arch/arm/configs/freescale-mx21-ads_defconfig
+Sascha
+
+> 
+> diff --git a/arch/arm/dts/imx8mp-evk.dts b/arch/arm/dts/imx8mp-evk.dts
+> index c7e1f35d2d..0376743068 100644
+> --- a/arch/arm/dts/imx8mp-evk.dts
+> +++ b/arch/arm/dts/imx8mp-evk.dts
+> @@ -60,6 +60,23 @@
+>  	off-on-delay-us = <20000>;
+>  };
+>  
+> +&usb3_phy0 {
+> +	status = "okay";
+> +};
+> +
+> +&usb3_0 {
+> +	status = "okay";
+> +};
+> +
+> +&usb_dwc3_0 {
+> +	dr_mode = "otg";
+> +	hnp-disable;
+> +	srp-disable;
+> +	adp-disable;
+> +	usb-role-switch;
+> +	status = "okay";
+> +};
+> +
+>  &usdhc2 {
+>  	#address-cells = <1>;
+>  	#size-cells = <1>;
+> -- 
+> 2.30.2
+> 
+> 
+> 
 
 -- 
-2.30.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
