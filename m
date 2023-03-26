@@ -1,57 +1,62 @@
-Delivery-date: Sun, 26 Mar 2023 10:37:27 +0200
+Delivery-date: Sun, 26 Mar 2023 13:23:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pgLsU-00FCqL-NB
-	for lore@lore.pengutronix.de; Sun, 26 Mar 2023 10:37:27 +0200
+	id 1pgOTL-00FMH9-Iz
+	for lore@lore.pengutronix.de; Sun, 26 Mar 2023 13:23:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pgLsU-0006sr-81
-	for lore@pengutronix.de; Sun, 26 Mar 2023 10:37:26 +0200
+	id 1pgOTL-0005Gb-Eo
+	for lore@pengutronix.de; Sun, 26 Mar 2023 13:23:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
-	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3GWRM0u2C53fGKW1iJnD5hK5y0YDsw2lQEeHt+OThkk=; b=4qmbOCVYfwMaTyAkMOGHg2O5AU
-	53BE/gmiKM2YXSD0Pwgg2YichKc9BaDRv6jwCORgnVwmMbVMuCdhK2D2MP0eqEhilbekNMOqsRtbq
-	trwexa9lrmtLK310uls52/sazLpMq+w1o6O0lvnggcgRw/w9m+Yyb08bZ0p9W39TuyLYdeTM03Z9p
-	qCKVhIHDAvKfcbz6us7ymGlJslP1kufn+muiuOq6JjrhuAuUdJYBuOggn4sCy8rsNG0/B+XOFY6LZ
-	NrPmcsaA+yeaaBbk3zqqTtZW7ec60MkLBPpR+5e7SJA+sd1nB0XfYL9ama5qw/NJ7LyDgDDH0DAUn
-	uNo3wdhw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=2O7wwtazpbxIoxRI5CWbV3yc+WTQhGs9SBIT4iFwIv4=; b=4wckXJeSWGaxDYajobWRpicNio
+	QbKxENPZI53AFeWurw/CpzLNQJtvdyzwh/Us3sVMg4/wzdenbVSppqtwwcWup6HEY6aLA72LXbjgf
+	u4+5U/L0MdGnLVB+CdN8MAl0iWrw8uNTqiuR/NMm+YMl5pgmumwOKJE45zD0N0+1UUEIS9+r/OOeL
+	RnBsv6vpGZ7/MDOaEWIUcYtEslXBSrkUxEVn+SBYHDJuLdWS2Fwpfqxs5HXv4VvQEK7tgV1lqrt9T
+	PgE+kk38Gl/HEFWSrU8+3XfFyp4zGXKJTToqZrs2S/O/jOr3rmaekBz+LEUpbxkEg7WqWTXn6OHV3
+	ProzoUvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pgLrU-008Ben-2m;
-	Sun, 26 Mar 2023 08:36:24 +0000
+	id 1pgOS7-008LmM-1D;
+	Sun, 26 Mar 2023 11:22:23 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pgLrR-008Be6-0h
+	id 1pgOS4-008Lgd-01
 	for barebox@lists.infradead.org;
-	Sun, 26 Mar 2023 08:36:22 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	Sun, 26 Mar 2023 11:22:21 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <r.czerwinski@pengutronix.de>)
-	id 1pgLrP-0006gw-Pj; Sun, 26 Mar 2023 10:36:19 +0200
-Message-ID: <d4d11e6d1eaff10c305a8219b2a42882f11d86f7.camel@pengutronix.de>
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, Barebox List
-	 <barebox@lists.infradead.org>
-Date: Sun, 26 Mar 2023 10:36:19 +0200
-In-Reply-To: <20230324140327.2154039-4-s.hauer@pengutronix.de>
-References: <20230324140327.2154039-1-s.hauer@pengutronix.de>
-	 <20230324140327.2154039-4-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 
+	(envelope-from <afa@pengutronix.de>)
+	id 1pgORy-00054r-CR; Sun, 26 Mar 2023 13:22:14 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pgORx-006pQ5-JG; Sun, 26 Mar 2023 13:22:13 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pgORw-00CARD-N9; Sun, 26 Mar 2023 13:22:12 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Christian Melki <christian.melki@t2data.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Sun, 26 Mar 2023 13:22:11 +0200
+Message-Id: <20230326112211.2900004-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230326_013621_261880_0AAD62A7 
-X-CRM114-Status: GOOD (  15.57  )
+X-CRM114-CacheID: sfid-20230326_042220_046097_58EF50E9 
+X-CRM114-Status: UNSURE (   8.97  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,98 +74,54 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/5] ARM: Rockchip: Add rk3568 specific barebox entry
- function
+Subject: [PATCH] Documentation: booting-linux: document booting specific FIT configuration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi,
+Apparently, this was so far undocumented, but it's useful in some setups
+where board type is detected dynamically. Document it.
 
-On Fri, 2023-03-24 at 15:03 +0100, Sascha Hauer wrote:
-> Add a rk3568 specific barebox entry function to simplify board
-> code.
->=20
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
-> =C2=A0arch/arm/mach-rockchip/atf.c | 22 ++++++++++++++++++++++
-> =C2=A0include/mach/rockchip/atf.h=C2=A0 |=C2=A0 2 ++
-> =C2=A02 files changed, 24 insertions(+)
->=20
-> diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-
-> rockchip/atf.c
-> index 93025faf68..a7d626226e 100644
-> --- a/arch/arm/mach-rockchip/atf.c
-> +++ b/arch/arm/mach-rockchip/atf.c
-> @@ -5,6 +5,9 @@
-> =C2=A0#include <mach/rockchip/atf.h>
-> =C2=A0#include <elf.h>
-> =C2=A0#include <asm/atf_common.h>
-> +#include <asm/barebox-arm.h>
-> +#include <mach/rockchip/dmc.h>
-> +#include <mach/rockchip/rockchip.h>
-> =C2=A0
-> =C2=A0static unsigned long load_elf64_image_phdr(const void *elf)
-> =C2=A0{
-> @@ -69,3 +72,22 @@ void rk3568_atf_load_bl31(void *fdt)
-> =C2=A0{
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0rockchip_atf_load_bl31(RK=
-3568, rk3568_bl31_bin,
-> rk3568_op_tee_bin, fdt);
-> =C2=A0}
-> +
-> +void __noreturn rk3568_barebox_entry(void *fdt)
-> +{
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0unsigned long membase, memsize=
-;
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0membase =3D RK3568_DRAM_BOTTOM=
-;
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0memsize =3D rk3568_ram0_size()=
- - RK3568_DRAM_BOTTOM;
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (current_el() =3D=3D 3) {
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0relocate_to_adr_full(RK3568_BAREBOX_LOAD_ADDRESS);
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0setup_c();
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0rk3568_lowlevel_init();
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0rk3568_atf_load_bl31(fdt);
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/user/booting-linux.rst | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-At least on my board I have to replace the fdt with a NULL pointer to
-get the downstream TF-A to work. What is the intention for barebox
-here? Do we want to support both upstream and downstream? Or do we need
-an fdt size check in the PBL to decide whether we want to pass the
-pointer?
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index 60babb513cea..a9dd0d67d350 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -19,8 +19,10 @@ architecture the bootm command handles different image types. On ARM the
+ following images are supported:
+ 
+ * ARM Linux zImage
++* ARM64 Linux Image, plain or compressed
+ * U-Boot uImage
+ * barebox images
++* FIT images, containing a zImage or Image
+ 
+ The images can either be passed directly to the bootm command as argument or
+ in the ``global.bootm.image`` variable:
+@@ -48,6 +50,14 @@ variable:
+   global.bootm.image=/path/to/zImage
+   bootm
+ 
++FIT image configurations will be matched by comparing the ``compatible`` property
++inside the configuration node with the barebox live tree's ``/compatible``.
++It's also possible to select a specific configuration explicitly:
++
++.. code-block:: sh
++
++  global.bootm.image=/dev/mmc0.fit@conf-imx8mm-evk.dtb
++
+ **NOTE:** it may happen that barebox is probed from the devicetree, but you have
+ want to start a Kernel without passing a devicetree. In this case set the
+ ``global.bootm.boot_atag`` variable to ``true``.
+-- 
+2.30.2
 
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0/* not reached when CONFIG_ARCH_ROCKCHIP_ATF */
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
-> +
-> +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0barebox_arm_entry(membase, mem=
-size, fdt);
-> +}
-> diff --git a/include/mach/rockchip/atf.h
-> b/include/mach/rockchip/atf.h
-> index e5d55af3d7..e1e68825d1 100644
-> --- a/include/mach/rockchip/atf.h
-> +++ b/include/mach/rockchip/atf.h
-> @@ -28,4 +28,6 @@ static inline void rk3568_atf_load_bl31(void *fdt)
-> { }
-> =C2=A0#endif
-> =C2=A0#endif
-> =C2=A0
-> +void __noreturn rk3568_barebox_entry(void *fdt);
-> +
-> =C2=A0#endif /* __MACH_ATF_H */
-
-Best regards,
-Rouven Czerwinski
 
 
