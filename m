@@ -1,52 +1,66 @@
-Delivery-date: Mon, 27 Mar 2023 08:08:42 +0200
+Delivery-date: Mon, 27 Mar 2023 09:34:16 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pgg25-00GAZZ-Bt
-	for lore@lore.pengutronix.de; Mon, 27 Mar 2023 08:08:42 +0200
+	id 1pghMt-00GFfn-AE
+	for lore@lore.pengutronix.de; Mon, 27 Mar 2023 09:34:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pgg25-0007Je-B2
-	for lore@pengutronix.de; Mon, 27 Mar 2023 08:08:41 +0200
+	id 1pghMs-0000k2-S4
+	for lore@pengutronix.de; Mon, 27 Mar 2023 09:34:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=yC8FCN5v7WTdQ+k8j6Wij7TG8ZJN6ktZgcfzy26HhMw=; b=ZmdncmDpeqAxSyyyxNOIOtALSA
-	FhHJvcMP5EzR8ECQHIlFeba/V97leWvTMwLF2bn8Ipskj7DCBIFUVolHpvRGtcvXtPJauFEeXyu0u
-	kuA4fgCJjIw0TDyvwMpakmikad5NE7n8tBz/KWNyNBPFDcyz19GfIkxnPG/7RtUj7+Fc3+C2XICHJ
-	QBchiAaQQGzjky3wieWRJVHMcG228wmND9sdyGlIfSfWuGEcjJ7KglIWBW6cGneuP1oD7gfBBOzbi
-	AyLXg57F61OJOC0GkOFLozroAX5dyakPMuc3WnIIw69NdiQ/Fd+ZOGq1yhI3U5mJCrDxkWvXVqx3b
-	Nr5IM7cA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3U5ZMpI12jPIDUgpGsfPJfy7MZDQ/ZOqs9GM2E0yvw0=; b=SYCk+dQjkxK8e535Cs1fyoA8l2
+	whoMVycspXuP/bwRCIVhRbMCYF2DD7CvbOu2p7MNyACGM1UiojCQEBjFwE4iwjSjrBGxE1w8eERbe
+	Wm7cnCr5W2dzfb79QL9N8Gus36DUOWhjMfzFRjQ3XPNrFbVVHt3J3SkGCEA5JN5JWqpjkF+NHSLE9
+	a2l+dukc7oCKwkuaTcUHX4Zv8ejZufkaWw83EGEa+J29PRgu41gxbbZOqHM7Im7JvjmsPQawvIbH3
+	F3NW51d4IfWSyFa07JpQ9YOvCmnRGygjk6b62MH93R057MGoksmugoAHMk0u0XtRlmSnnuDEmnkxH
+	KYXzzmYQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pgg0i-009uyM-21;
-	Mon, 27 Mar 2023 06:07:16 +0000
-Received: from relay6-d.mail.gandi.net ([217.70.183.198])
+	id 1pghLZ-00A4jc-2x;
+	Mon, 27 Mar 2023 07:32:53 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pgg0b-009urJ-0h
+	id 1pghLV-00A4iW-32
 	for barebox@lists.infradead.org;
-	Mon, 27 Mar 2023 06:07:14 +0000
-Received: (Authenticated sender: ahmad@a3f.at)
-	by mail.gandi.net (Postfix) with ESMTPSA id 453C6C000D;
-	Mon, 27 Mar 2023 06:07:01 +0000 (UTC)
-From: Ahmad Fatoum <ahmad@a3f.at>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 27 Mar 2023 08:06:52 +0200
-Message-Id: <20230327060652.2055761-1-ahmad@a3f.at>
-X-Mailer: git-send-email 2.38.3
+	Mon, 27 Mar 2023 07:32:51 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pghLS-00005o-Hc; Mon, 27 Mar 2023 09:32:46 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pghLS-0002p9-7m; Mon, 27 Mar 2023 09:32:46 +0200
+Date: Mon, 27 Mar 2023 09:32:46 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>, Ahmad Fatoum <ahmad@a3f.at>
+Message-ID: <20230327073246.GE19113@pengutronix.de>
+References: <20230324140327.2154039-1-s.hauer@pengutronix.de>
+ <20230324140327.2154039-3-s.hauer@pengutronix.de>
+ <b931ac9b682e0cf5130f428d22b2e3f42544f3a7.camel@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-15
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <b931ac9b682e0cf5130f428d22b2e3f42544f3a7.camel@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230326_230709_385548_595DAF6E 
-X-CRM114-Status: UNSURE (   8.07  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230327_003249_979460_810A73A2 
+X-CRM114-Status: GOOD (  24.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -64,58 +78,67 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] common: improve CONFIG_DEFAULT_COMPRESSION_* documentation
+Subject: Re: [PATCH 2/5] ARM: Rockchip: implement memory read out from
+ controller
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This option is only relevant to non-PBL configurations and the
-description is a bit confusing, because the default environment
-is the only in-barebox binary this option compressed.
+On Sun, Mar 26, 2023 at 10:34:55AM +0200, Rouven Czerwinski wrote:
+> Hi,
+> 
+> On Fri, 2023-03-24 at 15:03 +0100, Sascha Hauer wrote:
+> > From: Ahmad Fatoum <ahmad@a3f.at>
+> > 
+> > Add a driver to read out the amount of memory from the DDR controller.
+> > The decoding of the registers has been taken from U-Boot. Currently
+> > supported are the RK3399 and the RK3568, but decoding should work on
+> > other Rockchip SoCs as well.
+> > 
+> > Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  arch/arm/mach-rockchip/Makefile     |   1 +
+> >  arch/arm/mach-rockchip/dmc.c        | 232 ++++++++++++++++++++++++++++
+> >  include/linux/sizes.h               |   3 +
+> >  include/mach/rockchip/dmc.h         |  86 +++++++++++
+> >  include/mach/rockchip/rk3399-regs.h |   1 +
+> >  include/mach/rockchip/rk3568-regs.h |   1 +
+> >  6 files changed, 324 insertions(+)
+> >  create mode 100644 arch/arm/mach-rockchip/dmc.c
+> >  create mode 100644 include/mach/rockchip/dmc.h
+> > 
 
-Use "built-in environment" instead of "in-barebox binaries" or "default
-environment" to make this clearer.
+[...]
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
----
- common/Kconfig | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+> > +
+> > +resource_size_t rk3568_ram0_size(void)
+> > +{
+> > +       void __iomem *pmugrf = IOMEM(RK3568_PMUGRF_BASE);
+> > +       u32 sys_reg2, sys_reg3;
+> > +       resource_size_t size;
+> > +
+> > +       sys_reg2 = readl(pmugrf + RK3568_PMUGRF_OS_REG2);
+> > +       sys_reg3 = readl(pmugrf + RK3568_PMUGRF_OS_REG3);
+> > +
+> > +       size = rockchip_sdram_size(sys_reg2, sys_reg3);
+> > +       size = min_t(resource_size_t, SZ_4G - SZ_128M, size);
+>                                            this ^
+> Should be SZ_256M, The frist memory region for RK356x is from 0x0 to
+> 0xf000_0000, not 0xf800_0000. Tested on Radxa CM3 RK3566.
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 57fe5f7886de..d90b5fb88682 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -863,7 +863,7 @@ config DEFAULT_ENVIRONMENT
- 	  CONFIG_ENV_HANDLING is not enabled.
- 
- choice
--	prompt "default compression for in-barebox binaries"
-+	prompt "default compression for built-in environment"
- 	default DEFAULT_COMPRESSION_NONE if PBL_IMAGE
- 	default DEFAULT_COMPRESSION_LZO if LZO_DECOMPRESS
- 	default DEFAULT_COMPRESSION_XZ if XZ_DECOMPRESS
-@@ -872,9 +872,13 @@ choice
- 	default DEFAULT_COMPRESSION_BZIP2 if BZLIB
- 	help
- 	  For barebox builds without a prebootloader, select here the default
--	  compression for in-barebox binary files. barebox itself can't be
--	  compressed without a prebootloader, but for example the default
--	  environment will be compressed with this compression type.
-+	  compression for the built-in environment. barebox itself can't be
-+	  compressed without a prebootloader, but the built-in environment,
-+	  including any binary files placed in it (e.g. in /env/data)
-+	  will be compressed with this compression type.
-+
-+	  For barebox builds _with_ a prebootloader, the environment is
-+	  compressed as part of barebox proper (CONFIG_IMAGE_COMPRESSION).
- 
- config DEFAULT_COMPRESSION_GZIP
- 	bool "gzip"
+True. Maybe we should better write 0xf0000000, because that's the
+address value where the DDR stops.
+
+Sascha
+
 -- 
-2.38.3
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
