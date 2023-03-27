@@ -1,66 +1,79 @@
-Delivery-date: Mon, 27 Mar 2023 10:33:53 +0200
+Delivery-date: Mon, 27 Mar 2023 10:50:00 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pgiIa-00GIl1-DO
-	for lore@lore.pengutronix.de; Mon, 27 Mar 2023 10:33:53 +0200
+	id 1pgiYB-00GJXB-1G
+	for lore@lore.pengutronix.de; Mon, 27 Mar 2023 10:50:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pgiIa-00032E-0r
-	for lore@pengutronix.de; Mon, 27 Mar 2023 10:33:52 +0200
+	id 1pgiYA-00074Q-W1
+	for lore@pengutronix.de; Mon, 27 Mar 2023 10:49:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kbBqfx/dvCxWDFBjEoLDtsi8Wk5AJ5YIc9d9b6YsDkM=; b=C9v+/1D0SN6fkDayiu4SAB1w2v
-	Orxq/3KwjXN8digZS+sF6OVRzpM3XGggPRKTiQk4QP0xdUiAwa1P72mgY5kW3P1wlJUKXEle7HzC2
-	6XnoiBODBfs9fTozXIWKpWF+8+Q/G7nc4QQUpbPXleRfN648h06vKGIHmS3nVq9+HJB4sxTThhNQs
-	LVYQJB1jGNCVH/VRHIoQngijBeBUR+NDCWwSbJ5dfmdlcvLvtuTDgswj1Q2ntztsPkUxlzhS+CbeK
-	B3VHwdP/UNTi4rhYssUx/BcmbtMjfREOkSV3cRDFZ44WGxJFRJiE7A/DZY9w71DsrPKwBOZuXP51n
-	owARiHEg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=owAG3ua2b4ZSRu6sbT0bPd1fZedhqBmDWfw6a1MV9Po=; b=dr9yaK/mbP6ch/rq6dPQZbUI7A
+	wcU8mdKjBC98JW12gQ0A/X9gPQSGsZB2Ym26PG/tEs65uwcU9FZEn0sDmvbkJPNFM6CkXyzn11lwE
+	6McmkHzWPUXN3YGL5p56CgABsmj9nwNiS80icVveAFmS+5K+lWAKfk8CzTuAkKA8XsgjYc6TzxAGi
+	1TSvK7HA84JzGlyk1mn3QbpiELGl3/YAZwM0XcNRM17P6LWGdUDCpMzwufZzBGpB8wmHXUHwZs9t1
+	jfYr0Bs3iUls9SijTOvx/siVV2zFpKhvQR5GRFcDQaLkLfNNubfy9yicuzHQXRatROjlZef8oHfCG
+	C8cuSIwA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pgiGs-00AGNM-1p;
-	Mon, 27 Mar 2023 08:32:06 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1pgiWr-00ALdq-0Z;
+	Mon, 27 Mar 2023 08:48:37 +0000
+Received: from mickerik.phytec.de ([91.26.50.163])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pgiGn-00AGME-0e
+	id 1pgiWn-00ALcF-3A
 	for barebox@lists.infradead.org;
-	Mon, 27 Mar 2023 08:32:05 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pgiGl-0002ln-Go; Mon, 27 Mar 2023 10:31:59 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pgiGl-0005zh-9g; Mon, 27 Mar 2023 10:31:59 +0200
-Date: Mon, 27 Mar 2023 10:31:59 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20230327083159.GF19113@pengutronix.de>
-References: <20230324140327.2154039-1-s.hauer@pengutronix.de>
- <20230324140327.2154039-4-s.hauer@pengutronix.de>
- <d4d11e6d1eaff10c305a8219b2a42882f11d86f7.camel@pengutronix.de>
+	Mon, 27 Mar 2023 08:48:35 +0000
+DKIM-Signature: v=1; a=rsa-sha256; d=phytec.de; s=a4; c=relaxed/simple;
+	q=dns/txt; i=@phytec.de; t=1679906907; x=1682498907;
+	h=From:Sender:Reply-To:Subject:Date:Message-Id:To:Cc:MIME-Version:Content-Type:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=69cez9wpkJfAYMERJ1Fm6pucahRV0ZQb+rCxhfx5OmU=;
+	b=qZKpI9QUubWD3ikmarWDlA/RZgXDCN5PHmJc3yFVmWA2+Bake3GtchNF8/zBGCQx
+	CJMDk4XShotYyd1LV3o5XRYv42RZMz1KrV1MRZRNYsaN6A7tKH7cX65ywmfEVfvz
+	Q4b9H/IdURGn/VMg8c7TL/qBCTcU2WYWmen0brS96vw=;
+X-AuditID: ac14000a-923ff70000007ecb-1f-6421585b9178
+Received: from idefix.phytec.de (Unknown_Domain [172.25.0.20])
+	by mickerik.phytec.de (PHYTEC Mail Gateway) with SMTP id 6F.3C.32459.B5851246; Mon, 27 Mar 2023 10:48:27 +0200 (CEST)
+Received: from augenblix2.phytec.de ([172.25.0.51])
+          by idefix.phytec.de (IBM Domino Release 9.0.1FP7)
+          with ESMTP id 2023032710482723-456114 ;
+          Mon, 27 Mar 2023 10:48:27 +0200 
+From: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
+To: barebox@lists.infradead.org
+Date: Mon, 27 Mar 2023 10:48:27 +0200
+Message-Id: <20230327084827.1854478-1-a.schwarzkopf@phytec.de>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <d4d11e6d1eaff10c305a8219b2a42882f11d86f7.camel@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+X-MIMETrack: Itemize by SMTP Server on Idefix/Phytec(Release 9.0.1FP7|August  17, 2016) at
+ 27.03.2023 10:48:27,
+	Serialize by Router on Idefix/Phytec(Release 9.0.1FP7|August  17, 2016) at
+ 27.03.2023 10:48:27
+X-TNEFEvaluated: 1
+Content-Transfer-Encoding: quoted-printable
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrFJMWRmVeSWpSXmKPExsWyRpJBRDc6QjHF4NkiJYsTi/uZHRg9Ni+p
+	D2CM4rJJSc3JLEst0rdL4Mr4cL2DqeAFR8XHq6fZGxg/sHUxcnJICJhI/O1ZwtLFyMUhJLCN
+	UWLznLtQznlGif6VM5hAqtgEjCRub10MZosIyEvM3d/GCmILC9hIbJ3dxg5iswioShx4uBIs
+	zitgJ/H1yydWiA3yEjMvfWeHiAtKnJz5BGyBhMAVRokFfZehzhCSOL34LDOIzSygLbFs4Wvm
+	CYy8s5D0zEKSWsDItIpRKDczOTu1KDNbryCjsiQ1WS8ldRMjKDxEGLh2MPbN8TjEyMTBeIhR
+	goNZSYR3s7diihBvSmJlVWpRfnxRaU5q8SFGaQ4WJXHe+z1MiUIC6YklqdmpqQWpRTBZJg5O
+	qQbG7g7N7tLZ57R0C7P1tSzyvGrcTC98Pdubv4LdYF/ppaVVJwVe7819uH9ysexuqV/VURsP
+	+/1zLvnyYVP9Z/5d+q+dO761/j7tsuJVjsi2Q3NKbKRa23n8rPM3LBCuKluxkK+u8n/q3OeX
+	2Lh8E6u6rj719g85Uynq/uj35FvbLix6W3q1KjVZiaU4I9FQi7moOBEA6ur2lf0BAAA=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230327_013201_245481_278F50A4 
-X-CRM114-Status: GOOD (  31.84  )
+X-CRM114-CacheID: sfid-20230327_014834_481905_01834E26 
+X-CRM114-Status: UNSURE (   9.68  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,93 +91,53 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/5] ARM: Rockchip: Add rk3568 specific barebox entry
- function
+Subject: [PATCH] scripts: imx: Ignore ';' and '\n' in quotes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Sun, Mar 26, 2023 at 10:36:19AM +0200, Rouven Czerwinski wrote:
-> Hi,
-> 
-> On Fri, 2023-03-24 at 15:03 +0100, Sascha Hauer wrote:
-> > Add a rk3568 specific barebox entry function to simplify board
-> > code.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/mach-rockchip/atf.c | 22 ++++++++++++++++++++++
-> >  include/mach/rockchip/atf.h  |  2 ++
-> >  2 files changed, 24 insertions(+)
-> > 
-> > diff --git a/arch/arm/mach-rockchip/atf.c b/arch/arm/mach-
-> > rockchip/atf.c
-> > index 93025faf68..a7d626226e 100644
-> > --- a/arch/arm/mach-rockchip/atf.c
-> > +++ b/arch/arm/mach-rockchip/atf.c
-> > @@ -5,6 +5,9 @@
-> >  #include <mach/rockchip/atf.h>
-> >  #include <elf.h>
-> >  #include <asm/atf_common.h>
-> > +#include <asm/barebox-arm.h>
-> > +#include <mach/rockchip/dmc.h>
-> > +#include <mach/rockchip/rockchip.h>
-> >  
-> >  static unsigned long load_elf64_image_phdr(const void *elf)
-> >  {
-> > @@ -69,3 +72,22 @@ void rk3568_atf_load_bl31(void *fdt)
-> >  {
-> >         rockchip_atf_load_bl31(RK3568, rk3568_bl31_bin,
-> > rk3568_op_tee_bin, fdt);
-> >  }
-> > +
-> > +void __noreturn rk3568_barebox_entry(void *fdt)
-> > +{
-> > +       unsigned long membase, memsize;
-> > +
-> > +       membase = RK3568_DRAM_BOTTOM;
-> > +       memsize = rk3568_ram0_size() - RK3568_DRAM_BOTTOM;
-> > +
-> > +       if (current_el() == 3) {
-> > +               relocate_to_adr_full(RK3568_BAREBOX_LOAD_ADDRESS);
-> > +               setup_c();
-> > +
-> > +               rk3568_lowlevel_init();
-> > +               rk3568_atf_load_bl31(fdt);
-> 
-> At least on my board I have to replace the fdt with a NULL pointer to
-> get the downstream TF-A to work. What is the intention for barebox
-> here? Do we want to support both upstream and downstream? Or do we need
-> an fdt size check in the PBL to decide whether we want to pass the
-> pointer?
+The current behaviour treats semicolons the same as end of line.
+This breaks when they are found inside quoted strings, as is the
+case for PKCS#11 URIs for example.
 
-There are two problems here. First one is that the downstream TF-A
-cannot handle device trees that exceed a certain size. That is triggered
-with enabling CONFIG_OF_OVERLAY_LIVE.
+Ignore newlines and semicolons in quotes when parsing commands.
 
-The second one comes with this patch. Without the common barebox entry
-we had:
+Signed-off-by: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
+---
+ scripts/imx/imx.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-	relocate_to_adr_full(RK3568_BAREBOX_LOAD_ADDRESS);
-	fdt = __dtb_rk3566_quartz64_a_start;
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index 87560ad27d..fac0556308 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -675,6 +675,7 @@ static char *readcmd(struct config=5Fdata *data, FILE *=
+f)
+ 	static char *buf;
+ 	char *str;
+ 	ssize=5Ft ret;
++	int inquotes =3D 0;
+=20
+ 	if (!buf) {
+ 		buf =3D malloc(4096);
+@@ -689,8 +690,9 @@ static char *readcmd(struct config=5Fdata *data, FILE *=
+f)
+ 		ret =3D fread(str, 1, 1, f);
+ 		if (!ret)
+ 			return strlen(buf) ? buf : NULL;
+-
+-		if (*str =3D=3D '\n' || *str =3D=3D ';') {
++		if (*str =3D=3D '"') {
++			inquotes =3D !inquotes;
++		} else if ((*str =3D=3D '\n' || *str =3D=3D ';') && !inquotes) {
+ 			*str =3D 0;
+ 			return buf;
+ 		}
+--=20
+2.40.0
 
-That means the device tree is taken from the place we have just
-relocated to. With the common barebox entry the above is done the other
-way round which means the device tree is used from the binary we just
-relocated away from. It is overwritten by the TF-A.
-
-There are some possible solutions to this, I haven't sorted out yet what
-might be best.
-
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
