@@ -1,63 +1,64 @@
-Delivery-date: Tue, 28 Mar 2023 10:23:27 +0200
+Delivery-date: Tue, 28 Mar 2023 12:00:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ph4c2-00HPND-RR
-	for lore@lore.pengutronix.de; Tue, 28 Mar 2023 10:23:27 +0200
+	id 1ph681-00HU6p-HT
+	for lore@lore.pengutronix.de; Tue, 28 Mar 2023 12:00:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ph4c2-0007Ss-KK
-	for lore@pengutronix.de; Tue, 28 Mar 2023 10:23:27 +0200
+	id 1ph681-00043t-GQ
+	for lore@pengutronix.de; Tue, 28 Mar 2023 12:00:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=k7nMxbU3//MoMnt2ziPTUGlsWOGSqiDWfQqMRDDrlMI=; b=N/OnLBWfsk2GIFg4CwAUB77xtj
-	UZwC4TqZrtUz7KuUfDFNWrePxWVqAdjmAuH9gzdRA2+tDjtP9s0FRJLKqR4FvLkYjzIl/quM0CEGH
-	JkQaFJKGkE2nuxyb2FxfljrhPpcJZ5gdP16nBmaZuhlRNud1lfPyGM7RpB0wbGxO454NqSapW9ktc
-	GCo4hC/CnfP3YjSHUHwe2aOQxJjnPf8nVXg9V4LdsYL/xdOfXEHJ1p9HABtD517Lyw+Cp9yrAxyux
-	638ogpO4IG+PIK60GrqqAk9xUOrc3L4GX37CNhdhJkT0DWBTcb5oAQmZVhjtOzQvjmTtA9t2DgDZ+
-	3O85rixQ==;
+	bh=dj3VRvnf88uwkpNTPVAvWvr2Y8RF9PHU7Jm3qMjyxMA=; b=heT7hgVmPSNSXUL4jKBoZwcisO
+	P0K2l2dUm726XieyR6U8lVxHx6pcryETrZhrhXDR9aJ5ts1JGHY0ueXF4OIVp9RUs+mvcGR8tVsZx
+	QPI2rxu8slXhYD9dV7p06c5YUWTircZoPmBjOdfG+Y+9ixHx+1vArjdtOSDzjgpujhEPBNuEPNjpc
+	SaqKtlIKG+fmHhRaPDcbjugItZpU2eARrsWtEWdTcn3C7Ds9/pr5A5m3q0Z3g1zK6WAA5bRtXu98z
+	OKvZU2zFDWsLhk1LcYPuaURpghoOKou9E0TKEjkrXSqWRr5vQTvKhc/vt+WdjybgWtReBs5px5P/c
+	cvZLndzg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1ph4b0-00DZjs-0T;
-	Tue, 28 Mar 2023 08:22:22 +0000
+	id 1ph66c-00Dp4i-3B;
+	Tue, 28 Mar 2023 09:59:06 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1ph4aw-00DZiV-26
+	id 1ph66Z-00Dp2I-0U
 	for barebox@lists.infradead.org;
-	Tue, 28 Mar 2023 08:22:20 +0000
+	Tue, 28 Mar 2023 09:59:04 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ph4av-0007Gq-Cj; Tue, 28 Mar 2023 10:22:17 +0200
+	id 1ph66V-0003hI-Ay; Tue, 28 Mar 2023 11:58:59 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ph4av-0002gD-0J; Tue, 28 Mar 2023 10:22:17 +0200
-Date: Tue, 28 Mar 2023 10:22:16 +0200
-To: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230328082216.GJ19113@pengutronix.de>
-References: <20230327084827.1854478-1-a.schwarzkopf@phytec.de>
+	id 1ph66V-00072o-3a; Tue, 28 Mar 2023 11:58:59 +0200
+Date: Tue, 28 Mar 2023 11:58:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20230328095859.GK19113@pengutronix.de>
+References: <20230321095056.1333669-1-s.hauer@pengutronix.de>
+ <4a513c3345155039e8dec995e1294f4dcc3e30a5.camel@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230327084827.1854478-1-a.schwarzkopf@phytec.de>
+In-Reply-To: <4a513c3345155039e8dec995e1294f4dcc3e30a5.camel@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230328_012218_685762_FC18354D 
-X-CRM114-Status: GOOD (  22.89  )
+X-CRM114-CacheID: sfid-20230328_025903_186977_19810151 
+X-CRM114-Status: GOOD (  31.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,56 +80,69 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] scripts: imx: Ignore ';' and '\n' in quotes
+Subject: Re: [PATCH] mci: sdhci: Add and use common sdhci_wait_for_done()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Mar 27, 2023 at 10:48:27AM +0200, Albert Schwarzkopf wrote:
-> The current behaviour treats semicolons the same as end of line.
-> This breaks when they are found inside quoted strings, as is the
-> case for PKCS#11 URIs for example.
+On Mon, Mar 27, 2023 at 03:01:31PM +0200, Rouven Czerwinski wrote:
+> Hi,
 > 
-> Ignore newlines and semicolons in quotes when parsing commands.
+> On Tue, 2023-03-21 at 10:50 +0100, Sascha Hauer wrote:
+> > We have different driver specific variants of functions polling for the
+> > device ready in the tree. Add a common sdhci_wait_for_done() and use
+> > it where appropriate. This fixes a few deficiencies with the driver
+> > specific variants.
+> > 
+> > rk_sdhci_wait_for_done() didn't check the SDHCI_INT_TIMEOUT bit and
+> > returned -EPERM instead when it ought to return -ETIMEDOUT. The core
+> > tries to detect a SD card first and expects a -ETIMEDOUT for the setup
+> > command when really a eMMC is connected. Only with a -ETIMEDOUT the core
+> > tries to detect a eMMC next.
+> > 
+> > at91_sdhci_wait_for_done() returned the status instead of the expected
+> > 0 value for success.
 > 
-> Signed-off-by: Albert Schwarzkopf <a.schwarzkopf@phytec.de>
-> ---
->  scripts/imx/imx.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
+> I had to revert this commit to run barebox_update on the CM3 RK3566.
+> Otherwise writes to the boot partition would hang indefinitely.
 
-Applied, thanks
+Same here. The following fixes this.
+
+At some point during MMC initialization we probe for a SDIO card. This
+is expected to fail for non SDIO cards and we have to call sdhci_reset()
+in the error path then. It's a bit weird that the effect is that
+everything apparently works but writing to boot partitions does not.
 
 Sascha
 
-> 
-> diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-> index 87560ad27d..fac0556308 100644
-> --- a/scripts/imx/imx.c
-> +++ b/scripts/imx/imx.c
-> @@ -675,6 +675,7 @@ static char *readcmd(struct config_data *data, FILE *f)
->  	static char *buf;
->  	char *str;
->  	ssize_t ret;
-> +	int inquotes = 0;
->  
->  	if (!buf) {
->  		buf = malloc(4096);
-> @@ -689,8 +690,9 @@ static char *readcmd(struct config_data *data, FILE *f)
->  		ret = fread(str, 1, 1, f);
->  		if (!ret)
->  			return strlen(buf) ? buf : NULL;
-> -
-> -		if (*str == '\n' || *str == ';') {
-> +		if (*str == '"') {
-> +			inquotes = !inquotes;
-> +		} else if ((*str == '\n' || *str == ';') && !inquotes) {
->  			*str = 0;
->  			return buf;
->  		}
-> -- 
-> 2.40.0
-> 
-> 
-> 
+---------------------------8<---------------------------
+
+>From db92d5c12080c0ad108bd1d8bb0481584a36ae4b Mon Sep 17 00:00:00 2001
+From: Sascha Hauer <s.hauer@pengutronix.de>
+Date: Tue, 28 Mar 2023 11:43:35 +0200
+Subject: [PATCH] fixup! mci: sdhci: Add and use common sdhci_wait_for_done()
+
+---
+ drivers/mci/rockchip-dwcmshc-sdhci.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/drivers/mci/rockchip-dwcmshc-sdhci.c b/drivers/mci/rockchip-dwcmshc-sdhci.c
+index e055a8ea71..a98600cc4c 100644
+--- a/drivers/mci/rockchip-dwcmshc-sdhci.c
++++ b/drivers/mci/rockchip-dwcmshc-sdhci.c
+@@ -263,10 +263,8 @@ static int rk_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	sdhci_write16(&host->sdhci, SDHCI_COMMAND, command);
+ 
+ 	ret = sdhci_wait_for_done(&host->sdhci, SDHCI_INT_CMD_COMPLETE);
+-	if (ret == -EPERM)
++	if (ret)
+ 		goto error;
+-	else if (ret)
+-		return ret;
+ 
+ 	sdhci_read_response(&host->sdhci, cmd);
+ 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, SDHCI_INT_CMD_COMPLETE);
+-- 
+2.39.2
 
 -- 
 Pengutronix e.K.                           |                             |
