@@ -1,54 +1,53 @@
-Delivery-date: Wed, 29 Mar 2023 12:58:28 +0200
+Delivery-date: Wed, 29 Mar 2023 12:58:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phTVb-001CKs-JW
-	for lore@lore.pengutronix.de; Wed, 29 Mar 2023 12:58:28 +0200
+	id 1phTVc-001CLI-IA
+	for lore@lore.pengutronix.de; Wed, 29 Mar 2023 12:58:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phTVa-0002HV-KZ
-	for lore@pengutronix.de; Wed, 29 Mar 2023 12:58:27 +0200
+	id 1phTVc-0002IC-Fm
+	for lore@pengutronix.de; Wed, 29 Mar 2023 12:58:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Kl29a3/t5/vLIq7js1eh1+ijByNu2vodVYKb/QIqXCg=; b=h/4uIUJ/0Z6MDt193o9HzWWNnE
-	18SsZNdcrjF/vu1unTvs2kjer4bnXPnaZaAOZf5blYsECrOeveWoChxPiSSJ1MflldUiiys4WoC49
-	L3phEQKoAuOeC8KMp52TtACG4naZXFJPL3m6IrqOBd7Vo6YJQClkDdkrV69ohs90NlpBV/iv3lsmj
-	gChbxqbBcwWEOkjxFleNH5VBWYXvjPyclhmA7v5emBqn6BwdrghzAADAG8WMvfkgooEBqNPbfU6qP
-	xLUsI0L6LJH6N0ORnb10Lx8Oh5mnRR8sXq7R9iYBV5yr+9g4Io+CZwX8s9rZhFFD3Md/3zjK1KcKv
-	uPP0++DA==;
+	bh=mXhVJkSyBpEiMIrpM46Dh7t8ht83aCxtqy3ltg0+kSo=; b=IhOxpipp/H1NYjDp5Q2L3RSEee
+	f6qWeQ7BvlouniQjCVzIAZ3vL6Yi+DMcKBE7L9hw5bREyVnVXSR3JeRhrt7P78tFeVIXxWLG18qhM
+	Zbs6a+95l9xmtTPcelAhc32PBf7R+57uYEOAhf+MIVa2MNvgfjhZwN/cFjgz453BuIJhnFO3f5Q9C
+	YspnCkmkSpOw3r6FC322lHDKB7m1o4E/OaSUj+USKHt/xkSSx6o3n0D7hxxnkWdAYi6MR6XKI+HPk
+	Zl66Bq4x1vwqwGmjW0bzrACGeFAFiJ3ozcV4PW2lIMNateCHRV6lq2eR+AA5bOl9ZlE5HUIlQkJ5E
+	L7L1Ag/Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1phTUJ-00HX4J-1z;
-	Wed, 29 Mar 2023 10:57:07 +0000
+	id 1phTUG-00HX3G-1Q;
+	Wed, 29 Mar 2023 10:57:04 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1phTUC-00HWzu-2m
+	id 1phTUC-00HWzp-2m
 	for barebox@lists.infradead.org;
-	Wed, 29 Mar 2023 10:57:05 +0000
+	Wed, 29 Mar 2023 10:57:02 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1phTU6-0001sl-IH; Wed, 29 Mar 2023 12:56:54 +0200
+	id 1phTU4-0001sl-M9; Wed, 29 Mar 2023 12:56:52 +0200
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 29 Mar 2023 12:56:38 +0200
-Message-Id: <20230329105638.1258096-4-p.zabel@pengutronix.de>
+Date: Wed, 29 Mar 2023 12:56:36 +0200
+Message-Id: <20230329105638.1258096-2-p.zabel@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230329105638.1258096-1-p.zabel@pengutronix.de>
 References: <20230329105638.1258096-1-p.zabel@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230329_035701_211051_E511644B 
-X-CRM114-Status: GOOD (  31.44  )
+X-CRM114-CacheID: sfid-20230329_035700_896393_AE118774 
+X-CRM114-Status: GOOD (  12.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,401 +69,66 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/4] video: Add MIPI DBI compatible SPI driver
+Subject: [PATCH 2/4] video: Add of_get_display_timing
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Port the panel-mipi-dbi driver from the Linux kernel. It works with most
-MIPI DBI compatible SPI panels.
-This avoids adding a driver for every new MIPI DBI compatible controller
-that is to be used by Barebox. The 'compatible' Device Tree property
-with a '.bin' suffix will be used to load a firmware file that contains
-the controller configuration.
-
-Example (driver will load sainsmart18.bin):
-
-display@0 {
-        compatible = "sainsmart18", "panel-mipi-dbi-spi";
-...
-};
+Add a port of the kernel of_get_display_timing() that writes a
+struct fb_videomode instead of struct display_timing, which we
+don't have.
 
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- drivers/video/Kconfig          |  12 ++
- drivers/video/Makefile         |   1 +
- drivers/video/panel-mipi-dbi.c | 330 +++++++++++++++++++++++++++++++++
- 3 files changed, 343 insertions(+)
- create mode 100644 drivers/video/panel-mipi-dbi.c
+ drivers/video/of_display_timing.c | 22 ++++++++++++++++++++++
+ include/fb.h                      |  2 ++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 01bdaf47bfca..0e710bb25f79 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -198,4 +198,16 @@ config DRIVER_VIDEO_PANEL_ILITEK_ILI9341
- 	  QVGA (240x320) RGB panels. support serial & parallel rgb
- 	  interface.
+diff --git a/drivers/video/of_display_timing.c b/drivers/video/of_display_timing.c
+index 6fe1e1b08b6a..6082d454932d 100644
+--- a/drivers/video/of_display_timing.c
++++ b/drivers/video/of_display_timing.c
+@@ -98,6 +98,28 @@ static int of_parse_display_timing(const struct device_node *np,
+ 	return 0;
+ }
  
-+config DRIVER_VIDEO_PANEL_MIPI_DBI
-+	tristate "DRM support for MIPI DBI compatible panels"
-+	depends on OFTREE && SPI
-+	select DRIVER_VIDEO_MIPI_DBI
-+	select FIRMWARE
-+	select VIDEO_VPL
-+	help
-+          Say Y here if you want to enable support for MIPI DBI compatible
-+          panels. The controller command setup can be provided using a
-+          firmware file. For more information see
-+          https://github.com/notro/panel-mipi-dbi/wiki.
-+
- endif
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index d50d2d3ba562..7718b63f448a 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -11,6 +11,7 @@ obj-$(CONFIG_DRIVER_VIDEO_TC358767) += tc358767.o
- obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
- obj-$(CONFIG_DRIVER_VIDEO_MIPI_DBI) += mipi_dbi.o
- obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
-+obj-$(CONFIG_DRIVER_VIDEO_PANEL_MIPI_DBI) += panel-mipi-dbi.o
- 
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
-diff --git a/drivers/video/panel-mipi-dbi.c b/drivers/video/panel-mipi-dbi.c
-new file mode 100644
-index 000000000000..ac6f585be32c
---- /dev/null
-+++ b/drivers/video/panel-mipi-dbi.c
-@@ -0,0 +1,330 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * DRM driver for MIPI DBI compatible display panels
-+ *
-+ * Copyright 2022 Noralf Trønnes
-+ */
-+
-+#include <clock.h>
-+#include <common.h>
-+#include <fb.h>
-+#include <firmware.h>
-+#include <gpiod.h>
-+#include <linux/printk.h>
-+#include <of.h>
-+#include <regulator.h>
-+#include <spi/spi.h>
-+
-+#include <video/backlight.h>
-+#include <video/mipi_dbi.h>
-+#include <video/mipi_display.h>
-+
-+static const u8 panel_mipi_dbi_magic[15] = { 'M', 'I', 'P', 'I', ' ', 'D', 'B', 'I',
-+					     0, 0, 0, 0, 0, 0, 0 };
-+
-+/*
-+ * The display controller configuration is stored in a firmware file.
-+ * The Device Tree 'compatible' property value with a '.bin' suffix is passed
-+ * to request_firmware() to fetch this file.
-+ */
-+struct panel_mipi_dbi_config {
-+	/* Magic string: panel_mipi_dbi_magic */
-+	u8 magic[15];
-+
-+	/* Config file format version */
-+	u8 file_format_version;
-+
-+	/*
-+	 * MIPI commands to execute when the display pipeline is enabled.
-+	 * This is used to configure the display controller.
-+	 *
-+	 * The commands are stored in a byte array with the format:
-+	 *     command, num_parameters, [ parameter, ...], command, ...
-+	 *
-+	 * Some commands require a pause before the next command can be received.
-+	 * Inserting a delay in the command sequence is done by using the NOP command with one
-+	 * parameter: delay in miliseconds (the No Operation command is part of the MIPI Display
-+	 * Command Set where it has no parameters).
-+	 *
-+	 * Example:
-+	 *     command 0x11
-+	 *     sleep 120ms
-+	 *     command 0xb1 parameters 0x01, 0x2c, 0x2d
-+	 *     command 0x29
-+	 *
-+	 * Byte sequence:
-+	 *     0x11 0x00
-+	 *     0x00 0x01 0x78
-+	 *     0xb1 0x03 0x01 0x2c 0x2d
-+	 *     0x29 0x00
-+	 */
-+	u8 commands[];
-+};
-+
-+struct panel_mipi_dbi_commands {
-+	const u8 *buf;
-+	size_t len;
-+};
-+
-+static struct panel_mipi_dbi_commands *
-+panel_mipi_dbi_check_commands(struct device *dev, const struct firmware *fw)
++/**
++ * of_get_display_timing - parse a display_timing entry
++ * @np: device_node with the timing subnode
++ * @name: name of the timing node
++ * @mode: fb_videomode struct to fill
++ **/
++int of_get_display_timing(const struct device_node *np, const char *name,
++			  struct fb_videomode *mode)
 +{
-+	const struct panel_mipi_dbi_config *config = (struct panel_mipi_dbi_config *)fw->data;
-+	struct panel_mipi_dbi_commands *commands;
-+	size_t size = fw->size, commands_len;
-+	unsigned int i = 0;
++	struct device_node *timing_np;
 +
-+	if (size < sizeof(*config) + 2) { /* At least 1 command */
-+		dev_err(dev, "config: file size=%zu is too small\n", size);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	if (memcmp(config->magic, panel_mipi_dbi_magic, sizeof(config->magic))) {
-+		dev_err(dev, "config: Bad magic: %15ph\n", config->magic);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	if (config->file_format_version != 1) {
-+		dev_err(dev, "config: version=%u is not supported\n", config->file_format_version);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	dev_dbg(dev, "size=%zu version=%u\n", size, config->file_format_version);
-+
-+	commands_len = size - sizeof(*config);
-+
-+	while ((i + 1) < commands_len) {
-+		u8 command = config->commands[i++];
-+		u8 num_parameters = config->commands[i++];
-+		const u8 *parameters = &config->commands[i];
-+
-+		i += num_parameters;
-+		if (i > commands_len) {
-+			dev_err(dev, "config: command=0x%02x num_parameters=%u overflows\n",
-+				command, num_parameters);
-+			return ERR_PTR(-EINVAL);
-+		}
-+
-+		if (command == 0x00 && num_parameters == 1)
-+			dev_dbg(dev, "sleep %ums\n", parameters[0]);
-+		else
-+			dev_dbg(dev, "command %02x %*ph\n",
-+				command, num_parameters, parameters);
-+	}
-+
-+	if (i != commands_len) {
-+		dev_err(dev, "config: malformed command array\n");
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	commands = kzalloc(sizeof(*commands), GFP_KERNEL);
-+	if (!commands)
-+		return ERR_PTR(-ENOMEM);
-+
-+	commands->len = commands_len;
-+	commands->buf = kmemdup(config->commands, commands->len, GFP_KERNEL);
-+	if (!commands->buf)
-+		return ERR_PTR(-ENOMEM);
-+
-+	return commands;
-+}
-+
-+static struct panel_mipi_dbi_commands *panel_mipi_dbi_commands_from_fw(struct device *dev)
-+{
-+	struct panel_mipi_dbi_commands *commands;
-+	const struct firmware *fw;
-+	const char *compatible;
-+	char fw_name[40];
-+	int ret;
-+
-+	ret = of_property_read_string_index(dev->of_node, "compatible", 0, &compatible);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	snprintf(fw_name, sizeof(fw_name), "%s.bin", compatible);
-+	ret = request_firmware(&fw, fw_name, dev);
-+	if (ret) {
-+		dev_err(dev, "No config file found for compatible '%s' (error=%d)\n",
-+			compatible, ret);
-+
-+		return ERR_PTR(ret);
-+	}
-+
-+	commands = panel_mipi_dbi_check_commands(dev, fw);
-+	release_firmware(fw);
-+
-+	return commands;
-+}
-+
-+static void panel_mipi_dbi_commands_execute(struct mipi_dbi *dbi,
-+					    struct panel_mipi_dbi_commands *commands)
-+{
-+	unsigned int i = 0;
-+
-+	if (!commands)
-+		return;
-+
-+	while (i < commands->len) {
-+		u8 command = commands->buf[i++];
-+		u8 num_parameters = commands->buf[i++];
-+		const u8 *parameters = &commands->buf[i];
-+
-+		if (command == 0x00 && num_parameters == 1)
-+			mdelay(parameters[0]);
-+		else if (num_parameters)
-+			mipi_dbi_command_stackbuf(dbi, command, parameters, num_parameters);
-+		else
-+			mipi_dbi_command(dbi, command);
-+
-+		i += num_parameters;
-+	}
-+}
-+
-+static void panel_mipi_dbi_enable(struct fb_info *info)
-+{
-+	struct mipi_dbi_dev *dbidev = container_of(info, struct mipi_dbi_dev, info);
-+	struct mipi_dbi *dbi = &dbidev->dbi;
-+	int ret;
-+
-+	if (!info->mode) {
-+		dev_err(dbidev->dev, "No valid mode found\n");
-+		return;
-+	}
-+
-+	if (dbidev->backlight_node && !dbidev->backlight) {
-+		dbidev->backlight = of_backlight_find(dbidev->backlight_node);
-+		if (!dbidev->backlight)
-+			dev_err(dbidev->dev, "No backlight found\n");
-+	}
-+
-+	if (!dbidev->driver_private) {
-+		dbidev->driver_private = panel_mipi_dbi_commands_from_fw(dbidev->dev);
-+		if (IS_ERR(dbidev->driver_private)) {
-+			dbidev->driver_private = NULL;
-+			return;
-+		}
-+	}
-+
-+	ret = mipi_dbi_poweron_conditional_reset(dbidev);
-+	if (ret < 0)
-+		return;
-+	if (!ret)
-+		panel_mipi_dbi_commands_execute(dbi, dbidev->driver_private);
-+
-+	mipi_dbi_enable_flush(dbidev, info);
-+}
-+
-+
-+static struct fb_ops panel_mipi_dbi_ops = {
-+	.fb_enable = panel_mipi_dbi_enable,
-+	.fb_disable = mipi_dbi_fb_disable,
-+	.fb_flush = mipi_dbi_fb_flush,
-+};
-+
-+
-+static int panel_mipi_dbi_get_mode(struct mipi_dbi_dev *dbidev, struct fb_videomode *mode)
-+{
-+	struct device *dev = dbidev->dev;
-+	int ret;
-+
-+	ret = of_get_display_timing(dev->of_node, "panel-timing", mode);
-+	if (ret) {
-+		dev_err(dev, "%pOF: failed to get panel-timing (error=%d)\n", dev->of_node, ret);
-+		return ret;
-+	}
-+
-+	/*
-+	 * Make sure width and height are set and that only back porch and
-+	 * pixelclock are set in the other timing values. Also check that
-+	 * width and height don't exceed the 16-bit value specified by MIPI DCS.
-+	 */
-+	if (!mode->xres || !mode->yres || mode->display_flags ||
-+	    mode->right_margin || mode->hsync_len || (mode->left_margin + mode->xres) > 0xffff ||
-+	    mode->lower_margin || mode->vsync_len || (mode->upper_margin + mode->yres) > 0xffff) {
-+		dev_err(dev, "%pOF: panel-timing out of bounds\n", dev->of_node);
++	if (!np)
 +		return -EINVAL;
-+	}
 +
-+	/* The driver doesn't use the pixel clock but it is mandatory so fake one if not set */
-+	if (!mode->pixclock) {
-+		mode->pixclock =
-+			(mode->left_margin + mode->xres + mode->right_margin + mode->hsync_len) *
-+			(mode->upper_margin + mode->yres + mode->lower_margin + mode->vsync_len) *
-+			60 / 1000;
-+	}
++	timing_np = of_get_child_by_name(np, name);
++	if (!timing_np)
++		return -ENOENT;
 +
-+	return 0;
++	return of_parse_display_timing(timing_np, mode);
 +}
++EXPORT_SYMBOL_GPL(of_get_display_timing);
 +
-+static int panel_mipi_dbi_spi_probe(struct device *dev)
-+{
-+	struct mipi_dbi_dev *dbidev;
-+	struct spi_device *spi = to_spi_device(dev);
-+	struct mipi_dbi *dbi;
-+	struct fb_info *info;
-+	int dc;
-+	int ret;
-+
-+	dbidev = kzalloc(sizeof(*dbidev), GFP_KERNEL);
-+	if (!dbidev)
-+		return -ENOMEM;
-+
-+	dbidev->dev = dev;
-+	dbi = &dbidev->dbi;
-+	info = &dbidev->info;
-+
-+	ret = panel_mipi_dbi_get_mode(dbidev, &dbidev->mode);
-+	if (ret)
-+		return ret;
-+
-+	dbidev->regulator = regulator_get(dev, "power");
-+	if (IS_ERR(dbidev->regulator))
-+		return dev_err_probe(dev, PTR_ERR(dbidev->regulator),
-+				     "Failed to get regulator 'power'\n");
-+
-+	dbidev->io_regulator = regulator_get(dev, "io");
-+	if (IS_ERR(dbidev->io_regulator))
-+		return dev_err_probe(dev, PTR_ERR(dbidev->io_regulator),
-+				     "Failed to get regulator 'io'\n");
-+
-+	dbidev->backlight_node = of_parse_phandle(dev->of_node, "backlight", 0);
-+
-+	dbi->reset = gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-+	if (dbi->reset < 0 && dbi->reset != -ENOENT)
-+		return dev_err_probe(dev, dbi->reset, "Failed to get GPIO 'reset'\n");
-+
-+	dc = gpiod_get(dev, "dc", GPIOD_OUT_LOW);
-+	if (dc < 0 && dc != -ENOENT)
-+		return dev_err_probe(dev, dc, "Failed to get GPIO 'dc'\n");
-+
-+	ret = mipi_dbi_spi_init(spi, dbi, dc);
-+	if (ret)
-+		return ret;
-+
-+	ret = mipi_dbi_dev_init(dbidev, &panel_mipi_dbi_ops, &dbidev->mode);
-+	if (ret)
-+		return ret;
-+
-+	ret = register_framebuffer(info);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to register framebuffer\n");
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id panel_mipi_dbi_spi_of_match[] = {
-+	{ .compatible = "panel-mipi-dbi-spi" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, panel_mipi_dbi_spi_of_match);
-+
-+static struct driver panel_mipi_dbi_spi_driver = {
-+	.name = "panel-mipi-dbi-spi",
-+	.probe = panel_mipi_dbi_spi_probe,
-+	.of_compatible = DRV_OF_COMPAT(panel_mipi_dbi_spi_of_match),
-+};
-+device_spi_driver(panel_mipi_dbi_spi_driver);
-+
-+MODULE_DESCRIPTION("MIPI DBI compatible display panel driver");
-+MODULE_AUTHOR("Noralf Trønnes");
-+MODULE_LICENSE("GPL");
+ /**
+  * of_get_display_timings - parse all display_timing entries from a device_node
+  * @np: device_node with the subnodes
+diff --git a/include/fb.h b/include/fb.h
+index bf5f688342fd..15bb74b99576 100644
+--- a/include/fb.h
++++ b/include/fb.h
+@@ -147,6 +147,8 @@ struct fb_info {
+ 	int shadowfb;
+ };
+ 
++int of_get_display_timing(const struct device_node *np, const char *name,
++			  struct fb_videomode *mode);
+ struct display_timings *of_get_display_timings(struct device_node *np);
+ void display_timings_release(struct display_timings *);
+ 
 -- 
 2.39.2
 
