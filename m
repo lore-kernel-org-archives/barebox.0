@@ -1,54 +1,164 @@
-Delivery-date: Thu, 30 Mar 2023 14:48:31 +0200
+Delivery-date: Thu, 30 Mar 2023 15:33:10 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phrhe-002jwK-LI
-	for lore@lore.pengutronix.de; Thu, 30 Mar 2023 14:48:31 +0200
+	id 1phsOq-002lcQ-O4
+	for lore@lore.pengutronix.de; Thu, 30 Mar 2023 15:33:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phrhe-00032u-0F
-	for lore@pengutronix.de; Thu, 30 Mar 2023 14:48:31 +0200
+	id 1phsOp-0000Ue-RF
+	for lore@pengutronix.de; Thu, 30 Mar 2023 15:33:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=z9g6AaEHuYa/I9hn3hok9Y7JTJNrbBTBnaj8yEK0Ndk=; b=JsPlE9Rpv6MEUX
-	cxgDuZy+c2FavH4PNlkvtTE9QcmF6bdPvCOYdAHno0/97QOpXRZicdqABAeNlgIctfUbuC6QV96BY
-	/uqY9zkYqX6fd1bhCOnbWI/lEPuY732ByiqorFbqyh8jo6kjchmJjE5dqvoTrv57as8ILVDPWkk5b
-	9RuIL2ILg6h2rqEvug996wUSvhcF1GBeInleIp3YDAWFH1MeeE5UC37xDS9SfowK4EzGQcYc3TK3T
-	Cq8qqqxCDxNb7yzJjQSI12s0TIW9ls9/owXO70HwrVDBJBj8ojBMWJMp8GP7DGvurCiFC8phwaTBt
-	ewRrBLafbThwtE/hf4hw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
+	:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=PWAamuIz2XW83w+H4rTgoFgB8XppsguizCYOLCXH/KU=; b=ApSpsmzvMkFWNzmcwmjR2Zh897
+	2eVXrwU39KvVNFDd668ZGG3qwt11YygEJEOBNJ8KES6dcTyHWdBWNx0MjCZWG1e9MWJzFkHPJAQjs
+	fbgpSCmL4w6H/dxL6LfMY8KA+kZLhMQjzDLPf1LdpHJcQRSZ58mnxfTWk5obAm22xySeldDfTvELF
+	/xWROQcC0B+333+oELXiXk+FXpwSKYUJttCF+XALIb7SG0luF2C19gBk3v1FD/QcChmZJEjVvBnBE
+	f/lAvudnfUGmhEiwQRiIn0G9Wp9q3MfJxninknIM0L5emXB1etIHEVSIUnqEajIELaXHK2HoSLII6
+	M7glGYeA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1phrgC-003m0l-16;
-	Thu, 30 Mar 2023 12:47:00 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1phsNd-003tYK-0K;
+	Thu, 30 Mar 2023 13:31:53 +0000
+Received: from mx0b-001ec801.pphosted.com ([148.163.140.146])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1phrg5-003lwF-2H
+	id 1phsNY-003tXZ-2u
 	for barebox@lists.infradead.org;
-	Thu, 30 Mar 2023 12:46:57 +0000
-Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <p.zabel@pengutronix.de>)
-	id 1phrg1-0002Y6-1Y; Thu, 30 Mar 2023 14:46:49 +0200
-From: Philipp Zabel <p.zabel@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Thu, 30 Mar 2023 14:46:43 +0200
-Message-Id: <20230330124643.3562397-4-p.zabel@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230330124643.3562397-1-p.zabel@pengutronix.de>
-References: <20230330124643.3562397-1-p.zabel@pengutronix.de>
+	Thu, 30 Mar 2023 13:31:51 +0000
+Received: from pps.filterd (m0163890.ppops.net [127.0.0.1])
+	by mx0b-001ec801.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32UAoHKf025361;
+	Thu, 30 Mar 2023 09:31:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ametek.com; h=from : to : subject :
+ date : message-id : references : in-reply-to : content-type :
+ content-transfer-encoding : mime-version; s=pphost;
+ bh=PWAamuIz2XW83w+H4rTgoFgB8XppsguizCYOLCXH/KU=;
+ b=qIFGvOXv8dXSIpQLXm6Nt+pV2ZRdl5RpdnQdBZ1+/9LecW2tdABzvv0aYqikaGF1Y6A+
+ Qsz+zGM2y4+rSu+bP2MPyRhnJscIqrkgcYm2gJI6X+NQpPWtE7Zt+QWSFnotrQu5qUIl
+ NJd+mYtgQ3XxcaV9iO+T7Nr6cagXj/XHTtRfLL5z16uTaFCOQC0tB8vgICKsyA0MK1ew
+ nx2boD/bIi5CDPTUwZ9WK5bPfC1lhJFb1hJ75AJOblLBmwc6ftLFBKLMS8AF0SnPqSLZ
+ PP4WiXXKDMKoCUfTLq4+Lc0/2ocZO+PvsK0rMvHoNYPNfBUF31rr7Pu48jKJd3h3Jj45 /Q== 
+Received: from nam12-dm6-obe.outbound.protection.outlook.com (mail-dm6nam12lp2172.outbound.protection.outlook.com [104.47.59.172])
+	by mx0b-001ec801.pphosted.com (PPS) with ESMTPS id 3phucfxcut-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 30 Mar 2023 09:31:45 -0400
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=BzZzTYRAH15DQBNnz5pdYwNxVqmesE6y502wjzzkK4mFVoJSqLawOxy+S6S3ZLEsBbIGoz5OQf5/SZ1Fod/xLuPWwFbd7xZ6I2BRMPyYl9hZ/yzUaCOJWlC8ayVl1BvG5yUQhEk6bm0I9J7j2RKN5A8tQYxwQe7xC6z6FFr2t9IBkPz14zYtAGzANix1ykkMq6PZ/mqQoB0X8WP3jtQf7s8KMQyZfKeo/SVqhd/rfPzBgWHEY3SEQTetsArHcchPoMhpRe6BD8nNpP73ei09ufRVpJ/kxO9luDv8SQC99IghV/hY9naGjfq9GtyDCtGIJPtrDCeA2oOYDrzQiHNHlg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=PWAamuIz2XW83w+H4rTgoFgB8XppsguizCYOLCXH/KU=;
+ b=FBFTLLxtDaVi8p0Q3HK/Z0n9A8vgARu03NwqBYL2FTYBY5EZT3G8zF6s8z3Uf2F6Orpb21RgW0A+ImmiVFV+S2E//Da3IQIgZDZGNMqEdtp3N5K4Aal5Y3LSHIs39XROBpKKh3hrGp6nDhCWav6LU6ZwmzioABQhG330xm8cvEjif9alpg5qIN0CTyVJ5sZm+I2unQtoPV5fLjCEaIdY4jt8tCBsQmq+tLfRiImqVzGGLoGNiAbq+fwZDBkYqFCpg5TFX908Xi8VjhCXqxNsxY0wNd4AnGoCdKqL9qLc1i3E7ffjN5X8vRV77pnR+z3JtTB56rZ2UNvrHMQcDIt6tQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=ametek.com; dmarc=pass action=none header.from=ametek.com;
+ dkim=pass header.d=ametek.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ametek.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=PWAamuIz2XW83w+H4rTgoFgB8XppsguizCYOLCXH/KU=;
+ b=2X96aAx/VYRzlTPd2a+sGtG7XwSXmEf6QyDtsdZgOz88cnrO9tRIa0Uu2uEqDS+nYquQaG+UZ4n7efMCZbOI2/+lg5OCyhXLghJRKyRpY2U3/FxSIfxg10+JaFrhlloTqnzlm8BHpKjfb7pFbyBz2r4JquJZc6GwSs4FI/rz7lA=
+Received: from BL0PR07MB5665.namprd07.prod.outlook.com (2603:10b6:208:80::28)
+ by BYAPR07MB7943.namprd07.prod.outlook.com (2603:10b6:a03:a1::31) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6254.20; Thu, 30 Mar
+ 2023 13:31:37 +0000
+Received: from BL0PR07MB5665.namprd07.prod.outlook.com
+ ([fe80::4f11:a1e2:55ed:3f5]) by BL0PR07MB5665.namprd07.prod.outlook.com
+ ([fe80::4f11:a1e2:55ed:3f5%7]) with mapi id 15.20.6254.021; Thu, 30 Mar 2023
+ 13:31:36 +0000
+From: Renaud Barbier <Renaud.Barbier@ametek.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Barebox List
+	<barebox@lists.infradead.org>
+Thread-Topic: LS1021A performance
+Thread-Index: Adli8/MSQZh0oqFCTDGUikKl7/yNnQACTMOAAAIftgA=
+Date: Thu, 30 Mar 2023 13:31:36 +0000
+Message-ID:  <BL0PR07MB566562459F73E606BF3BB629EC8E9@BL0PR07MB5665.namprd07.prod.outlook.com>
+References:  <BL0PR07MB5665003604A904B8AFBEB466EC8E9@BL0PR07MB5665.namprd07.prod.outlook.com>
+ <9b5975a7-8b1d-0861-ce01-9206a3ddfc7d@pengutronix.de>
+In-Reply-To: <9b5975a7-8b1d-0861-ce01-9206a3ddfc7d@pengutronix.de>
+Accept-Language: en-GB, en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: BL0PR07MB5665:EE_|BYAPR07MB7943:EE_
+x-ms-office365-filtering-correlation-id: 8a6c986b-891a-49e5-7052-08db3123160a
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;
+x-microsoft-antispam-message-info:  mLAXuid4pXMmtsRcVN6dgWmLzWRCbGjrMlhrqsSvopxrDaRp2LFNBXdbkuVRLYaMLRMmNtHweJAiYDMfPI1UnA2M+UOwfXofyCoJ9klr94ZViT3EYA2ijsbbl1JaHorBhnWa4nkws8alE5J9mzk/ItpAH3M6bfTilMOMcGbZrqBnQ8xu+kYcePKNZGvA983KG1SFJ36l0Iw91F5KGG35airDeE0pYRAnBtN+eZiUcGG6qRcJNCa5GObo84rEpC+As2DcHe+MK3YoGvi8mc2f/57Lfcr7rRUqQLSrYLAVb2xigQTiHWG0uPDFkmei8/fMexnJLb5t7BbQeHODGbqn/8D5TyaMSOJtsVEDAy24rzghE3PqU0nzIDKjH41EavunMP2//0UYty/uexDgZhG1gxjDuSSgVWDHmsIHrI2RoFud9rptFv5KS9xcH+qpKtApC3ui2qOEus8d/fEWQnWgEE0mIfJCxPZ5Ep0xuummke4kemoXxRPFQT0Ge28EVc6qgbeFpony5TEHOgTNfLrE13a9v6yzrVtVPZp4lZkTg/h0XHExuO7CAXOCZYTrwkXGlIqL+QCT8HxrYNRj/WebtqdDSPXt1Ivjxh9e/YVU/mA=
+x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR07MB5665.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(346002)(39860400002)(376002)(136003)(366004)(396003)(451199021)(478600001)(7696005)(71200400001)(110136005)(316002)(19627235002)(33656002)(122000001)(38100700002)(38070700005)(55016003)(9686003)(26005)(186003)(6506007)(966005)(83380400001)(52536014)(8936002)(7116003)(5660300002)(8676002)(66946007)(66446008)(64756008)(76116006)(66556008)(66476007)(2906002)(41300700001)(86362001);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?aHdkbHFLblYveC9HOVFmV0NYYzk5THFmbFBWd1JvNFZtbU9yRm9xekplOGFL?=
+ =?utf-8?B?L3BXRENNTVB2WG9razJqbGhCb1RWZjdBamViMHZteFlNb0tZVW9uTXBwOXk0?=
+ =?utf-8?B?TFNsRXNSbkNBN05PMy95Z044QzFZWERtdnJwdW9xVmNHN0RtV2RkNnUvYk8r?=
+ =?utf-8?B?Z1RDanlnMUtZOFNQTHFtWGlIRnRYM1RHczBsUlNXODVyVS8xNmJib1RVbDJ6?=
+ =?utf-8?B?Mm14MWw4VnliRTdjZWREazdVb2dLeDhaWlFtWk9uZUtVeEZQMG9tL2VCeHRG?=
+ =?utf-8?B?WGJNdHhtMmdwbVU2Qyt3WVhKdG9Jb3pOSm0yUVBWT2MxWDFrR0VRSUxiU3Zu?=
+ =?utf-8?B?Y0F6U1VWWGVkS1N1ZEVvT3FGQ0JpTC9Fb3VONFowV3EwNmlGQ0hDd1I5Y0pp?=
+ =?utf-8?B?b2pwR1V0OXQ2VXBtS1J4c3V0Zmhwa2d1SGxIWVQ2NVRveVU5ejY1bFE5TVRu?=
+ =?utf-8?B?cWtiV0cwTDJ4ajdpclEwRkFUdjRLUDhuWldWdHdKengvN2xyL1pLL29nTGE5?=
+ =?utf-8?B?cGhtQlRMYnlsTE53MkpOdGdEajh3aTZWdkx0UFNubGQ0YWxyZVZUWllraytn?=
+ =?utf-8?B?bWJ4SUlsdFNEKzZVenMvaUZZVVF1T1FRc0YyZTZkRFpJLzJSV2krdzBOUXRK?=
+ =?utf-8?B?NnRtVXVkSTJBclBnaEMrZ1h5QmNTRnFLeWhueHNwWTZBNmdEY2FVREczSzhQ?=
+ =?utf-8?B?TnlQNVVWVXhiSUxXQnphL1pvT1hSTEVLaTZLVEpZaGhzZkF0TVNRcy9COENk?=
+ =?utf-8?B?VXVhay9YT0hselRvVWNZQWQ0OFdzckZyNzZaUXNjcFVoUDMyTUlpYUp0dW43?=
+ =?utf-8?B?Z0RXajMrOVBRbGJNajRBODZJbk9qMWE0VWYvUUZZYXMydVZySmRBS29NTmtN?=
+ =?utf-8?B?Y0ZVUmwwazhpTERQS3ZPdDNzNUZkLzUxSFR1S0xPVG9SNUxwU3djMFNTR29u?=
+ =?utf-8?B?Q01LWTFlMGZGNUQ4UkZRTm9LUzNZeC9HVFlReEpVd1M4OG4wZm92VkQ1KzJF?=
+ =?utf-8?B?SGdyV1N1NXdVb1AvK0J5MXlxVlRRcFA1dGswRXZmN0ZZWHcxNTcycHRuWXV5?=
+ =?utf-8?B?NlFrNm5KQmFOaTVDSXk4b0lpT253OWxvVlVXb2lNaHNhTFVNd3lkemw0V01S?=
+ =?utf-8?B?UThJQjlwVnZ5NjVpUzNnWVoyekRqeDZKRlpIU2E2NW1XdmVubjFaS1pYM2xP?=
+ =?utf-8?B?ZGJWZVd2Z05IMjkrV3daYXY1L3BYN1dwZXZXcjBaMERBWnpEKzVYbE9LeUdx?=
+ =?utf-8?B?eFdsUmdHcldoMUlUVUtYSFc3b0VGMVVxL3FJS0NlbUFDVlV6N3pTdVl2RlB3?=
+ =?utf-8?B?VmhkWWF3ajN2ak14bkEyd0t6dldFVHVKZGMvbk5PcHRIcUI3Smo2S1o1WUFj?=
+ =?utf-8?B?WlVqclEwK3hnWTdnQnByM3p2dU9RYUdkWFYrZkV5ZWFyc0NHT2NIbVJsTEty?=
+ =?utf-8?B?Mk9YcHV2bitncnovNkpqblRRUTFuSXRnNXRITEpzcWI5aS9hWStqK0k2dGFj?=
+ =?utf-8?B?M0NTczRwYk5wVVZkd0IzbFRQVkUyQTRPRHQrY1NndlMwb1ZNQXNwbWpUblZl?=
+ =?utf-8?B?YzJmSmFaekczTkVKTlQ2UUl0TkVlQ1pzZmlYekJtSklKaXFaQjhHUExub0Nl?=
+ =?utf-8?B?Yk50ejIxeStoOHh5MmpFcXpvUjBRM1pmeVgwTWpLam1IY2Rkd0V4YnhjSS9j?=
+ =?utf-8?B?YkRPRVJGSjFsMTFUdSthR3ZMSDJLb3V6ZEFFMjlNTXlaZ2h0Uy9ZZS9TN0RI?=
+ =?utf-8?B?Njc4MkFjZTM0QWtoYjYxdHRkYjU0V1hVRWlkQzd1S2lueEdDZGZLU2dWWDht?=
+ =?utf-8?B?M0w1M0V4WlhIRW1zTkV3TmUvZTJXdk0yU0d6a2Y0bzAwNFhYQzB0SmdyaDM1?=
+ =?utf-8?B?WHNXZ3J4R0ROWSs4K1BaNnZUN0VRY1BkblV5YWFmbEFXRlBWeFRiRU4zTC9O?=
+ =?utf-8?B?aHdDOWpYemFCSFJBUDBrMUVvem9ZcW55b3hheUpHRjFqWVY4VTB1Szc4bjEr?=
+ =?utf-8?B?K282WmFtQVk1TVZpbkRHOUowejlpZHM2YkNVR0grOG5mbzN5NVlLaE1OWkt0?=
+ =?utf-8?B?T2tGbEM3OXZzSlNpNUVIZlBOT0orclUyTldBUklDSUYyZ2R3OEZYbEtEN3Fy?=
+ =?utf-8?Q?ih2+dQrYm7Wb6e3hsH7Vpm15Q?=
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-OriginatorOrg: ametek.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR07MB5665.namprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8a6c986b-891a-49e5-7052-08db3123160a
+X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Mar 2023 13:31:36.6206
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 31a88536-e2ab-44b5-837e-5110158247ab
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: ADK4bfCGfAdT0dYhz0mpyMeYKZdQ7Ijq40AEt8ugeJwPmpU8D1j4/FKAwGxI9rEeP2Xy5HJysue1nq5NHget3H/DjwZuE7VI/Sm+oz/Z3cI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BYAPR07MB7943
+X-Proofpoint-ORIG-GUID: 38JawYRMAdYj_kcQu5lWOKf-2UMqEe78
+X-Proofpoint-GUID: 38JawYRMAdYj_kcQu5lWOKf-2UMqEe78
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
+ definitions=2023-03-30_08,2023-03-30_03,2023-02-09_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 malwarescore=0
+ phishscore=0 suspectscore=0 bulkscore=0 mlxlogscore=724 clxscore=1015
+ impostorscore=0 priorityscore=1501 lowpriorityscore=0 spamscore=0
+ mlxscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2303200000 definitions=main-2303300106
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230330_054654_095118_D7B2001A 
-X-CRM114-Status: GOOD (  31.05  )
+X-CRM114-CacheID: sfid-20230330_063149_641845_FFA1F4E6 
+X-CRM114-Status: GOOD (  20.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,415 +170,48 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 4/4] video: Add MIPI DBI compatible SPI driver
+Subject: RE: LS1021A performance
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Port the panel-mipi-dbi driver from the Linux kernel. It works with most
-MIPI DBI compatible SPI panels.
-This avoids adding a driver for every new MIPI DBI compatible controller
-that is to be used by Barebox. The 'compatible' Device Tree property
-with a '.bin' suffix will be used to load a firmware file that contains
-the controller configuration.
-
-Example (driver will load sainsmart18.bin):
-
-display@0 {
-        compatible = "sainsmart18", "panel-mipi-dbi-spi";
-...
-};
-
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/video/Kconfig          |  12 ++
- drivers/video/Makefile         |   1 +
- drivers/video/panel-mipi-dbi.c | 330 +++++++++++++++++++++++++++++++++
- 3 files changed, 343 insertions(+)
- create mode 100644 drivers/video/panel-mipi-dbi.c
-
-diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
-index 01bdaf47bfca..0e710bb25f79 100644
---- a/drivers/video/Kconfig
-+++ b/drivers/video/Kconfig
-@@ -198,4 +198,16 @@ config DRIVER_VIDEO_PANEL_ILITEK_ILI9341
- 	  QVGA (240x320) RGB panels. support serial & parallel rgb
- 	  interface.
- 
-+config DRIVER_VIDEO_PANEL_MIPI_DBI
-+	tristate "DRM support for MIPI DBI compatible panels"
-+	depends on OFTREE && SPI
-+	select DRIVER_VIDEO_MIPI_DBI
-+	select FIRMWARE
-+	select VIDEO_VPL
-+	help
-+          Say Y here if you want to enable support for MIPI DBI compatible
-+          panels. The controller command setup can be provided using a
-+          firmware file. For more information see
-+          https://github.com/notro/panel-mipi-dbi/wiki.
-+
- endif
-diff --git a/drivers/video/Makefile b/drivers/video/Makefile
-index d50d2d3ba562..7718b63f448a 100644
---- a/drivers/video/Makefile
-+++ b/drivers/video/Makefile
-@@ -11,6 +11,7 @@ obj-$(CONFIG_DRIVER_VIDEO_TC358767) += tc358767.o
- obj-$(CONFIG_DRIVER_VIDEO_SIMPLE_PANEL) += simple-panel.o
- obj-$(CONFIG_DRIVER_VIDEO_MIPI_DBI) += mipi_dbi.o
- obj-$(CONFIG_DRIVER_VIDEO_PANEL_ILITEK_ILI9341) += panel-ilitek-ili9341.o
-+obj-$(CONFIG_DRIVER_VIDEO_PANEL_MIPI_DBI) += panel-mipi-dbi.o
- 
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL) += atmel_lcdfb.o atmel_lcdfb_core.o
- obj-$(CONFIG_DRIVER_VIDEO_ATMEL_HLCD) += atmel_hlcdfb.o atmel_lcdfb_core.o
-diff --git a/drivers/video/panel-mipi-dbi.c b/drivers/video/panel-mipi-dbi.c
-new file mode 100644
-index 000000000000..ac6f585be32c
---- /dev/null
-+++ b/drivers/video/panel-mipi-dbi.c
-@@ -0,0 +1,330 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * DRM driver for MIPI DBI compatible display panels
-+ *
-+ * Copyright 2022 Noralf Trønnes
-+ */
-+
-+#include <clock.h>
-+#include <common.h>
-+#include <fb.h>
-+#include <firmware.h>
-+#include <gpiod.h>
-+#include <linux/printk.h>
-+#include <of.h>
-+#include <regulator.h>
-+#include <spi/spi.h>
-+
-+#include <video/backlight.h>
-+#include <video/mipi_dbi.h>
-+#include <video/mipi_display.h>
-+
-+static const u8 panel_mipi_dbi_magic[15] = { 'M', 'I', 'P', 'I', ' ', 'D', 'B', 'I',
-+					     0, 0, 0, 0, 0, 0, 0 };
-+
-+/*
-+ * The display controller configuration is stored in a firmware file.
-+ * The Device Tree 'compatible' property value with a '.bin' suffix is passed
-+ * to request_firmware() to fetch this file.
-+ */
-+struct panel_mipi_dbi_config {
-+	/* Magic string: panel_mipi_dbi_magic */
-+	u8 magic[15];
-+
-+	/* Config file format version */
-+	u8 file_format_version;
-+
-+	/*
-+	 * MIPI commands to execute when the display pipeline is enabled.
-+	 * This is used to configure the display controller.
-+	 *
-+	 * The commands are stored in a byte array with the format:
-+	 *     command, num_parameters, [ parameter, ...], command, ...
-+	 *
-+	 * Some commands require a pause before the next command can be received.
-+	 * Inserting a delay in the command sequence is done by using the NOP command with one
-+	 * parameter: delay in miliseconds (the No Operation command is part of the MIPI Display
-+	 * Command Set where it has no parameters).
-+	 *
-+	 * Example:
-+	 *     command 0x11
-+	 *     sleep 120ms
-+	 *     command 0xb1 parameters 0x01, 0x2c, 0x2d
-+	 *     command 0x29
-+	 *
-+	 * Byte sequence:
-+	 *     0x11 0x00
-+	 *     0x00 0x01 0x78
-+	 *     0xb1 0x03 0x01 0x2c 0x2d
-+	 *     0x29 0x00
-+	 */
-+	u8 commands[];
-+};
-+
-+struct panel_mipi_dbi_commands {
-+	const u8 *buf;
-+	size_t len;
-+};
-+
-+static struct panel_mipi_dbi_commands *
-+panel_mipi_dbi_check_commands(struct device *dev, const struct firmware *fw)
-+{
-+	const struct panel_mipi_dbi_config *config = (struct panel_mipi_dbi_config *)fw->data;
-+	struct panel_mipi_dbi_commands *commands;
-+	size_t size = fw->size, commands_len;
-+	unsigned int i = 0;
-+
-+	if (size < sizeof(*config) + 2) { /* At least 1 command */
-+		dev_err(dev, "config: file size=%zu is too small\n", size);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	if (memcmp(config->magic, panel_mipi_dbi_magic, sizeof(config->magic))) {
-+		dev_err(dev, "config: Bad magic: %15ph\n", config->magic);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	if (config->file_format_version != 1) {
-+		dev_err(dev, "config: version=%u is not supported\n", config->file_format_version);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	dev_dbg(dev, "size=%zu version=%u\n", size, config->file_format_version);
-+
-+	commands_len = size - sizeof(*config);
-+
-+	while ((i + 1) < commands_len) {
-+		u8 command = config->commands[i++];
-+		u8 num_parameters = config->commands[i++];
-+		const u8 *parameters = &config->commands[i];
-+
-+		i += num_parameters;
-+		if (i > commands_len) {
-+			dev_err(dev, "config: command=0x%02x num_parameters=%u overflows\n",
-+				command, num_parameters);
-+			return ERR_PTR(-EINVAL);
-+		}
-+
-+		if (command == 0x00 && num_parameters == 1)
-+			dev_dbg(dev, "sleep %ums\n", parameters[0]);
-+		else
-+			dev_dbg(dev, "command %02x %*ph\n",
-+				command, num_parameters, parameters);
-+	}
-+
-+	if (i != commands_len) {
-+		dev_err(dev, "config: malformed command array\n");
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	commands = kzalloc(sizeof(*commands), GFP_KERNEL);
-+	if (!commands)
-+		return ERR_PTR(-ENOMEM);
-+
-+	commands->len = commands_len;
-+	commands->buf = kmemdup(config->commands, commands->len, GFP_KERNEL);
-+	if (!commands->buf)
-+		return ERR_PTR(-ENOMEM);
-+
-+	return commands;
-+}
-+
-+static struct panel_mipi_dbi_commands *panel_mipi_dbi_commands_from_fw(struct device *dev)
-+{
-+	struct panel_mipi_dbi_commands *commands;
-+	const struct firmware *fw;
-+	const char *compatible;
-+	char fw_name[40];
-+	int ret;
-+
-+	ret = of_property_read_string_index(dev->of_node, "compatible", 0, &compatible);
-+	if (ret)
-+		return ERR_PTR(ret);
-+
-+	snprintf(fw_name, sizeof(fw_name), "%s.bin", compatible);
-+	ret = request_firmware(&fw, fw_name, dev);
-+	if (ret) {
-+		dev_err(dev, "No config file found for compatible '%s' (error=%d)\n",
-+			compatible, ret);
-+
-+		return ERR_PTR(ret);
-+	}
-+
-+	commands = panel_mipi_dbi_check_commands(dev, fw);
-+	release_firmware(fw);
-+
-+	return commands;
-+}
-+
-+static void panel_mipi_dbi_commands_execute(struct mipi_dbi *dbi,
-+					    struct panel_mipi_dbi_commands *commands)
-+{
-+	unsigned int i = 0;
-+
-+	if (!commands)
-+		return;
-+
-+	while (i < commands->len) {
-+		u8 command = commands->buf[i++];
-+		u8 num_parameters = commands->buf[i++];
-+		const u8 *parameters = &commands->buf[i];
-+
-+		if (command == 0x00 && num_parameters == 1)
-+			mdelay(parameters[0]);
-+		else if (num_parameters)
-+			mipi_dbi_command_stackbuf(dbi, command, parameters, num_parameters);
-+		else
-+			mipi_dbi_command(dbi, command);
-+
-+		i += num_parameters;
-+	}
-+}
-+
-+static void panel_mipi_dbi_enable(struct fb_info *info)
-+{
-+	struct mipi_dbi_dev *dbidev = container_of(info, struct mipi_dbi_dev, info);
-+	struct mipi_dbi *dbi = &dbidev->dbi;
-+	int ret;
-+
-+	if (!info->mode) {
-+		dev_err(dbidev->dev, "No valid mode found\n");
-+		return;
-+	}
-+
-+	if (dbidev->backlight_node && !dbidev->backlight) {
-+		dbidev->backlight = of_backlight_find(dbidev->backlight_node);
-+		if (!dbidev->backlight)
-+			dev_err(dbidev->dev, "No backlight found\n");
-+	}
-+
-+	if (!dbidev->driver_private) {
-+		dbidev->driver_private = panel_mipi_dbi_commands_from_fw(dbidev->dev);
-+		if (IS_ERR(dbidev->driver_private)) {
-+			dbidev->driver_private = NULL;
-+			return;
-+		}
-+	}
-+
-+	ret = mipi_dbi_poweron_conditional_reset(dbidev);
-+	if (ret < 0)
-+		return;
-+	if (!ret)
-+		panel_mipi_dbi_commands_execute(dbi, dbidev->driver_private);
-+
-+	mipi_dbi_enable_flush(dbidev, info);
-+}
-+
-+
-+static struct fb_ops panel_mipi_dbi_ops = {
-+	.fb_enable = panel_mipi_dbi_enable,
-+	.fb_disable = mipi_dbi_fb_disable,
-+	.fb_flush = mipi_dbi_fb_flush,
-+};
-+
-+
-+static int panel_mipi_dbi_get_mode(struct mipi_dbi_dev *dbidev, struct fb_videomode *mode)
-+{
-+	struct device *dev = dbidev->dev;
-+	int ret;
-+
-+	ret = of_get_display_timing(dev->of_node, "panel-timing", mode);
-+	if (ret) {
-+		dev_err(dev, "%pOF: failed to get panel-timing (error=%d)\n", dev->of_node, ret);
-+		return ret;
-+	}
-+
-+	/*
-+	 * Make sure width and height are set and that only back porch and
-+	 * pixelclock are set in the other timing values. Also check that
-+	 * width and height don't exceed the 16-bit value specified by MIPI DCS.
-+	 */
-+	if (!mode->xres || !mode->yres || mode->display_flags ||
-+	    mode->right_margin || mode->hsync_len || (mode->left_margin + mode->xres) > 0xffff ||
-+	    mode->lower_margin || mode->vsync_len || (mode->upper_margin + mode->yres) > 0xffff) {
-+		dev_err(dev, "%pOF: panel-timing out of bounds\n", dev->of_node);
-+		return -EINVAL;
-+	}
-+
-+	/* The driver doesn't use the pixel clock but it is mandatory so fake one if not set */
-+	if (!mode->pixclock) {
-+		mode->pixclock =
-+			(mode->left_margin + mode->xres + mode->right_margin + mode->hsync_len) *
-+			(mode->upper_margin + mode->yres + mode->lower_margin + mode->vsync_len) *
-+			60 / 1000;
-+	}
-+
-+	return 0;
-+}
-+
-+static int panel_mipi_dbi_spi_probe(struct device *dev)
-+{
-+	struct mipi_dbi_dev *dbidev;
-+	struct spi_device *spi = to_spi_device(dev);
-+	struct mipi_dbi *dbi;
-+	struct fb_info *info;
-+	int dc;
-+	int ret;
-+
-+	dbidev = kzalloc(sizeof(*dbidev), GFP_KERNEL);
-+	if (!dbidev)
-+		return -ENOMEM;
-+
-+	dbidev->dev = dev;
-+	dbi = &dbidev->dbi;
-+	info = &dbidev->info;
-+
-+	ret = panel_mipi_dbi_get_mode(dbidev, &dbidev->mode);
-+	if (ret)
-+		return ret;
-+
-+	dbidev->regulator = regulator_get(dev, "power");
-+	if (IS_ERR(dbidev->regulator))
-+		return dev_err_probe(dev, PTR_ERR(dbidev->regulator),
-+				     "Failed to get regulator 'power'\n");
-+
-+	dbidev->io_regulator = regulator_get(dev, "io");
-+	if (IS_ERR(dbidev->io_regulator))
-+		return dev_err_probe(dev, PTR_ERR(dbidev->io_regulator),
-+				     "Failed to get regulator 'io'\n");
-+
-+	dbidev->backlight_node = of_parse_phandle(dev->of_node, "backlight", 0);
-+
-+	dbi->reset = gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
-+	if (dbi->reset < 0 && dbi->reset != -ENOENT)
-+		return dev_err_probe(dev, dbi->reset, "Failed to get GPIO 'reset'\n");
-+
-+	dc = gpiod_get(dev, "dc", GPIOD_OUT_LOW);
-+	if (dc < 0 && dc != -ENOENT)
-+		return dev_err_probe(dev, dc, "Failed to get GPIO 'dc'\n");
-+
-+	ret = mipi_dbi_spi_init(spi, dbi, dc);
-+	if (ret)
-+		return ret;
-+
-+	ret = mipi_dbi_dev_init(dbidev, &panel_mipi_dbi_ops, &dbidev->mode);
-+	if (ret)
-+		return ret;
-+
-+	ret = register_framebuffer(info);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "Failed to register framebuffer\n");
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id panel_mipi_dbi_spi_of_match[] = {
-+	{ .compatible = "panel-mipi-dbi-spi" },
-+	{},
-+};
-+MODULE_DEVICE_TABLE(of, panel_mipi_dbi_spi_of_match);
-+
-+static struct driver panel_mipi_dbi_spi_driver = {
-+	.name = "panel-mipi-dbi-spi",
-+	.probe = panel_mipi_dbi_spi_probe,
-+	.of_compatible = DRV_OF_COMPAT(panel_mipi_dbi_spi_of_match),
-+};
-+device_spi_driver(panel_mipi_dbi_spi_driver);
-+
-+MODULE_DESCRIPTION("MIPI DBI compatible display panel driver");
-+MODULE_AUTHOR("Noralf Trønnes");
-+MODULE_LICENSE("GPL");
--- 
-2.39.2
-
+DQoNCiANCj4gQ2FuIHlvdSBjb21wYXJlIFNIQTI1NiBpbnN0ZWFkIGFuZCBzZWUgaWYgdGhlIGRp
+ZmZlcmVuY2UgaXMgc3RpbGwgYXMgc3Rhcms/DQo+IE1ha2Ugc3VyZSB0aGF0IENPTkZJR19ESUdF
+U1RfU0hBMjU2X0FSTSBpcyBlbmFibGVkLg0KVGhlIFNIQTI1NiBpcyBlbmFibGVkLiBTSEEyNTYg
+b24gYSAxIE1CIGZpbGU6DQpCYXJlYm94OiA4NDNtcw0KTGludXg6IA0KW3Jvb3RAb3BlbndhcmVd
+IyB0aW1lIHNoYTI1NnN1bSAvdG1wL210ZDANCmVlZjY3YTMzMjdlM2VhYTUwZWU3YjFkYWQ4Nzkw
+MTQ2NWYwMGQ3NmE2MzA4ZTM2MGEyZmVkYWI4MmM3OWY0OTMgIC90bXAvbXRkMA0KDQpyZWFsICAg
+IDBtMC4wNTlzDQp1c2VyICAgIDBtMC4wNTZzDQpzeXMgICAgIDBtMC4wMDFzDQoNCk9uIGFub3Ro
+ZXIgbm90ZSwgdGhlIGJvb3QgbG9hZGVyIHVzaW5nIHRoZSBMUzEwMjFBIGlzIG11Y2ggc2xvd2Vy
+IHRoYW4gdXNpbmcgdGhlIFBQQyBQMTAxNC4NCkkgY29tcGFyZSB0aG9zZSB0d28gYXMgd2UgdXNl
+ZCB0aGUgTFMxMDIxQSBhcyBhIHJlcGxhY2VtZW50IGZvciBQMTAxNCBvbiBhIGJvYXJkIChzYW1l
+IHBlcmlwaGVyYWxzLCBzYW1lIGJvb3Qgc2VxdWVuY2UpDQpUaGUgUDEwMTQgcmVhY2ggdGhlIHBy
+b21wdCBpbiAyMDBtcyB3aGlsZSB0aGUgTFMxMDIxIHRha2VzIDcwMG1zLg0KDQpBbHNvLCBJIG5v
+dGljZWQgdGhhdCB0aGUgcGFnZWZsYWdzIGlzIGRpZmZlcmVudCBmb3IgdGhlIEREUiBtZW1vcnkg
+b24gQmFyZWJveCBhbmQgTGludXggYXMgc2VlbiBieSB0aGUgTGF1dGVyYmFjaDoNCkJhcmVib3g6
+IHdyaXRlLWJhY2svbm8gYWxsb2NhdGUNCkxpbnV4IDogSW5uZXI6d3JpdGUtYmFjay9hbGxvY2F0
+ZSBvdXRlcjogd3JpdGUtYmFjay9hbGxvY2F0ZQ0KQ291bGQgdGhhdCBtZWFuIHRoZSBMMiBjYWNo
+ZSBJcyBub3QgdXNlZD8NCj4gDQo+IERvIGJhcmVib3ggYW5kIExpbnV4IHJ1biBhdCB0aGUgc2Ft
+ZSBDUFUgZnJlcXVlbmN5Pw0KQWNjb3JkaW5nIHRvIHRoZSBMYXV0ZXJiYWNoLCBjbG9jayByYXRp
+byBoYXZlIG5vdCBjaGFuZ2VkIGluIHRoZSBjbG9ja2luZyByZWdpc3RlcnMNCj4gDQo+IENoZWVy
+cywNCj4gQWhtYWQNCj4gDQo+ID4NCj4gPiBDaGVlcnMsDQo+ID4gUmVuYXVkDQo+ID4NCj4gPg0K
+PiA+DQo+ID4NCj4gDQo+IC0tDQo+IFBlbmd1dHJvbml4IGUuSy4gICAgICAgICAgICAgICAgICAg
+ICAgICAgICB8ICAgICAgICAgICAgICAgICAgICAgICAgICAgICB8DQo+IFN0ZXVlcndhbGRlciBT
+dHIuIDIxICAgICAgICAgICAgICAgICAgICAgICB8DQo+IGh0dHBzOi8vdXJsZGVmZW5zZS5jb20v
+djMvX19odHRwOi8vd3d3LnBlbmd1dHJvbml4LmRlL19fOyEhSEtPU1UwZyFEDQo+IDR1RmVwZ3Fu
+Z1RUSGFtcl83dGxRZVFvUkpxU0xMOG5weFRGQldGRi0NCj4ga2pwWnVIZ3ppMXF1UzZFRTFlY2pD
+S3JfT19GSkdQZmtBbldYUXlmT05LSnhxZ3J0UVEkICAgfA0KPiAzMTEzNyBIaWxkZXNoZWltLCBH
+ZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5LTUxMjEtMjA2OTE3LTAgICAgfA0K
+PiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5
+LTUxMjEtMjA2OTE3LTU1NTUgfA0KDQo=
 
 
