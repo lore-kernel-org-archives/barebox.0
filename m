@@ -3,51 +3,49 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phpdI-002esj-5a
+	id 1phpdI-002esy-VG
 	for lore@lore.pengutronix.de; Thu, 30 Mar 2023 12:35:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phpdI-0001OU-10
-	for lore@pengutronix.de; Thu, 30 Mar 2023 12:35:52 +0200
+	id 1phpdI-0001Oy-MZ
+	for lore@pengutronix.de; Thu, 30 Mar 2023 12:35:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=itIMdWq1EKPizCcV8mZqze5FJZFqC76Fy/Z+59E6WQw=; b=rL4zKfFKA8KGWY0k3a+JVo8cty
-	9k+mUtGRUBMjTrbpQBA5RwEDPQZiKVUqBY3peXwulTgC/DJWmHCX3wRp3LCRRh8VAdR6/QJz/4zM+
-	+iYRE66kKD1rbZQtS6UWav3FEbSCQPOXpSYMqdjSA1i2sMyebYwTH9iA2hJpy21JIZrgQmhWyAmpj
-	bI18kXN6SRZpabidKmvEEg6M/JBEE2/n03iTkcttmKHDBbEeSeF2XzmgmKcxy6z14ar+KMgoSbw+3
-	bH3Ejs6PmGcVJZVyYUrCgT02XlSivhIl2U9rY4WLo7hJcLDCa7gQ5eX6POIdmu2/mHPwEupnGQner
-	7EAc0ryg==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Fwz3rfNYYiyzUPxC9Qv05wd/toYuA3PQsv+H+18XfD0=; b=sC1EsTx3Wr/Kb0quDg3BZDg6++
+	J2WeNbbxZM1VpDYXG6QW4+DdUc7d8fY0i68CP3mHJvcfrI0Kb1h5G0V3BBne37gHNRnd59Co8sc+A
+	3nje73Bwni9JjKYONAncGzTUKeTqn1L6k+F6hVDK/v5lEIHflxKoGXfiRAAUI0S2F0JnWQh4hjn49
+	IrjFoprFHAYG44dJcqmXSAX2T+wm3TPEuxVd4Uwsdf9QKBN+NXNL/FVg+l3dKvkzVeX62sHNNtA92
+	oVQpPT9UZ6NuvZGvUp0g1hH/IVTWMotSB9V5QNwHfdJXFPJ3LTU7r3AgQaeabGtFbFOxejvwFTZC4
+	hT77xMWg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1phpbi-003Tqz-0x;
-	Thu, 30 Mar 2023 10:34:14 +0000
+	id 1phpbh-003Tqo-20;
+	Thu, 30 Mar 2023 10:34:13 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1phpbd-003Tni-1y
+	id 1phpbd-003Tnc-1y
 	for barebox@lists.infradead.org;
 	Thu, 30 Mar 2023 10:34:11 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1phpbY-0000yg-35; Thu, 30 Mar 2023 12:34:04 +0200
+	id 1phpbX-0000yg-8H; Thu, 30 Mar 2023 12:34:03 +0200
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 30 Mar 2023 12:33:57 +0200
-Message-Id: <20230330103359.2751080-2-p.zabel@pengutronix.de>
+Date: Thu, 30 Mar 2023 12:33:56 +0200
+Message-Id: <20230330103359.2751080-1-p.zabel@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230330103359.2751080-1-p.zabel@pengutronix.de>
-References: <20230330103359.2751080-1-p.zabel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230330_033409_668702_AB5019CC 
-X-CRM114-Status: GOOD (  15.32  )
+X-CRM114-CacheID: sfid-20230330_033409_668604_04DDDF7C 
+X-CRM114-Status: GOOD (  16.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,121 +67,74 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/4] spi: stm32: support per-transfer bits per word switching
+Subject: [PATCH 1/4] spi: add per-driver bits-per-word mask
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Allow dynamically switching data size between transfers.
+Allow SPI hosts to signal per-transfer bits-per-word switching
+support and drivers to query it with spi_is_bpw_supported().
 
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
- drivers/spi/stm32_spi.c | 50 ++++++++++++++++++++++++++++++++---------
- 1 file changed, 39 insertions(+), 11 deletions(-)
+ include/spi/spi.h | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
 
-diff --git a/drivers/spi/stm32_spi.c b/drivers/spi/stm32_spi.c
-index 0d7407c279a2..1ac86fbe11e6 100644
---- a/drivers/spi/stm32_spi.c
-+++ b/drivers/spi/stm32_spi.c
-@@ -111,6 +111,24 @@ static inline struct stm32_spi_priv *to_stm32_spi_priv(struct spi_master *master
- 	return container_of(master, struct stm32_spi_priv, master);
+diff --git a/include/spi/spi.h b/include/spi/spi.h
+index fa9329b08c80..809ebd8df1a8 100644
+--- a/include/spi/spi.h
++++ b/include/spi/spi.h
+@@ -131,6 +131,11 @@ struct spi_message;
+  *	SPI slaves, and are numbered from zero to num_chipselects.
+  *	each slave has a chipselect signal, but it's common that not
+  *	every chipselect is connected to a slave.
++ * @bits_per_word_mask: A mask indicating which values of bits_per_word are
++ *	supported by the driver. Bit n indicates that a bits_per_word n+1 is
++ *	supported. If set, the SPI core will reject any transfer with an
++ *	unsupported bits_per_word. If not set, this value is simply ignored,
++ *	and it's up to the individual driver to perform any validation.
+  * @max_speed_hz: Highest supported transfer speed
+  * @setup: updates the device mode and clocking records used by a
+  *	device's SPI controller; protocol code may call this.  This
+@@ -165,6 +170,12 @@ struct spi_controller {
+ 
+ 	/* Optimized handlers for SPI memory-like operations */
+ 	const struct spi_controller_mem_ops *mem_ops;
++
++	/* Bitmask of supported bits_per_word for transfers */
++	u32			bits_per_word_mask;
++#define SPI_BPW_MASK(bits) BIT((bits) - 1)
++#define SPI_BPW_RANGE_MASK(min, max) GENMASK((max) - 1, (min) - 1)
++
+ 	/*
+ 	 * on some hardware transfer size may be constrained
+ 	 * the limit may depend on device transfer settings
+@@ -435,6 +446,26 @@ spi_transfer_del(struct spi_transfer *t)
+ 	list_del(&t->transfer_list);
  }
  
-+static int stm32_spi_get_bpw_mask(struct stm32_spi_priv *priv)
++/**
++ * spi_is_bpw_supported - Check if bits per word is supported
++ * @spi: SPI device
++ * @bpw: Bits per word
++ *
++ * This function checks to see if the SPI controller supports @bpw.
++ *
++ * Returns:
++ * True if @bpw is supported, false otherwise.
++ */
++static inline bool spi_is_bpw_supported(struct spi_device *spi, u32 bpw)
 +{
-+	u32 cfg1, max_bpw;
++	u32 bpw_mask = spi->master->bits_per_word_mask;
 +
-+	/*
-+	 * The most significant bit at DSIZE bit field is reserved when the
-+	 * maximum data size of periperal instances is limited to 16-bit
-+	 */
-+	setbits_le32(priv->base + STM32_SPI_CFG1, SPI_CFG1_DSIZE);
++	if (bpw == 8 || (bpw <= 32 && bpw_mask & SPI_BPW_MASK(bpw)))
++		return true;
 +
-+	cfg1 = readl(priv->base + STM32_SPI_CFG1);
-+	max_bpw = FIELD_GET(SPI_CFG1_DSIZE, cfg1) + 1;
-+
-+	dev_dbg(priv->master.dev, "%d-bit maximum data frame\n", max_bpw);
-+
-+	return SPI_BPW_RANGE_MASK(4, max_bpw);
++	return false;
 +}
 +
- static void stm32_spi_write_txfifo(struct stm32_spi_priv *priv)
- {
- 	while ((priv->tx_len > 0) &&
-@@ -261,19 +279,15 @@ static void stm32_spi_set_mode(struct stm32_spi_priv *priv, unsigned mode)
- 
- static void stm32_spi_set_fthlv(struct stm32_spi_priv *priv, u32 xfer_len)
- {
--	u32 fthlv, half_fifo;
-+	u32 fthlv, packet, bpw;
- 
- 	/* data packet should not exceed 1/2 of fifo space */
--	half_fifo = (priv->fifo_size / 2);
--
--	/* data_packet should not exceed transfer length */
--	fthlv = (half_fifo > xfer_len) ? xfer_len : half_fifo;
-+	packet = clamp(xfer_len, 1U, priv->fifo_size / 2);
- 
- 	/* align packet size with data registers access */
--	fthlv -= (fthlv % 4);
-+	bpw = DIV_ROUND_UP(priv->cur_bpw, 8);
-+	fthlv = DIV_ROUND_UP(packet, bpw);
- 
--	if (!fthlv)
--		fthlv = 1;
- 	clrsetbits_le32(priv->base + STM32_SPI_CFG1, SPI_CFG1_FTHLV,
- 			(fthlv - 1) << SPI_CFG1_FTHLV_SHIFT);
- }
-@@ -344,9 +358,17 @@ static int stm32_spi_transfer_one(struct stm32_spi_priv *priv,
- 	u32 ifcr = 0;
- 	u32 mode;
- 	int xfer_status = 0;
-+	int nb_words;
- 
--	if (t->len <= SPI_CR2_TSIZE)
--		writel(t->len, priv->base + STM32_SPI_CR2);
-+	if (t->bits_per_word <= 8)
-+		nb_words = t->len;
-+	else if (t->bits_per_word <= 16)
-+		nb_words = DIV_ROUND_UP(t->len * 8, 16);
-+	else
-+		nb_words = DIV_ROUND_UP(t->len * 8, 32);
-+
-+	if (nb_words <= SPI_CR2_TSIZE)
-+		writel(nb_words, priv->base + STM32_SPI_CR2);
- 	else
- 		return -EMSGSIZE;
- 
-@@ -361,9 +383,11 @@ static int stm32_spi_transfer_one(struct stm32_spi_priv *priv,
- 	else if (!priv->rx_buf)
- 		mode = SPI_SIMPLEX_TX;
- 
--	if (priv->cur_xferlen != t->len || priv->cur_mode != mode) {
-+	if (priv->cur_xferlen != t->len || priv->cur_mode != mode ||
-+	    priv->cur_bpw != t->bits_per_word) {
- 		priv->cur_mode = mode;
- 		priv->cur_xferlen = t->len;
-+		priv->cur_bpw = t->bits_per_word;
- 
- 		/* Disable the SPI hardware to unlock CFG1/CFG2 registers */
- 		stm32_spi_disable(priv);
-@@ -373,6 +397,9 @@ static int stm32_spi_transfer_one(struct stm32_spi_priv *priv,
- 
- 		stm32_spi_set_fthlv(priv, t->len);
- 
-+		clrsetbits_le32(priv->base + STM32_SPI_CFG1, SPI_CFG1_DSIZE,
-+				priv->cur_bpw - 1);
-+
- 		/* Enable the SPI hardware */
- 		stm32_spi_enable(priv);
- 	}
-@@ -543,6 +570,7 @@ static int stm32_spi_probe(struct device *dev)
- 	master->transfer = stm32_spi_transfer;
- 	master->mem_ops = &stm32_spi_mem_ops;
- 
-+	master->bits_per_word_mask = stm32_spi_get_bpw_mask(priv);
- 	master->bus_num = -1;
- 	stm32_spi_dt_probe(priv);
- 
+ /* All these synchronous SPI transfer routines are utilities layered
+  * over the core async transfer primitive.  Here, "synchronous" means
+  * they will sleep uninterruptibly until the async transfer completes.
 -- 
 2.39.2
 
