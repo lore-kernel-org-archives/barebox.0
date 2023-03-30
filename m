@@ -1,61 +1,57 @@
-Delivery-date: Thu, 30 Mar 2023 13:40:02 +0200
+Delivery-date: Thu, 30 Mar 2023 13:46:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phqdN-002hJL-Nc
-	for lore@lore.pengutronix.de; Thu, 30 Mar 2023 13:40:02 +0200
+	id 1phqjy-002hXD-A7
+	for lore@lore.pengutronix.de; Thu, 30 Mar 2023 13:46:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phqdN-00010q-BC
-	for lore@pengutronix.de; Thu, 30 Mar 2023 13:40:01 +0200
+	id 1phqjx-0002fw-VB
+	for lore@pengutronix.de; Thu, 30 Mar 2023 13:46:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=WCqNkEGEFAyjdlRknOj+0HsYQ1U1x1gKzTyPKVmvo0g=; b=oRmyRIepV10A/pyn9jwPmINan8
-	2ssLrF1M1c/SPriQZMjHhSZl9Ns/qSjHWTxTEr33dVCAQGxLeCriMAy2mU5HkBNv5u2vE93+K0VQs
-	mCaSMeTV0DkZyWWbh73el02UGQkp/4I6xTHOv35pfVns0bEfu7JMtDftxfEXJC3gOaAzQuOYsCJbz
-	NuQxdGITAhLML+LGW1FCkhWPSSAY0hIL9QkNlEYKG4CPDK5lifCc6cD1iK0JtBIvpOx6AAccdzna+
-	1HaapSsXOka9cQ2HxXXx9aJ06yVLiuCBxebpZzFprGh5fLZjGLSF45CnI6UROl/AeCTIQbDsxNEsv
-	u/Jeoxaw==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=nxy4/pw7LB2jOsuvJLT92Zk7Aiw1fNAUDlKMFchnNQo=; b=bKJAQcOKo4BksWMTBToaYH9Bwi
+	lP19eZ1cho0NChNlIyND75tOoNJeS4XcPoMIJhKHZSBLATavjUxe9GjLNj/gU9x7TPlUjLD+YaXUb
+	7GhnNZfRzFPO+VFgGBS32hQElRrp8csz2VZEbN9jAKPOjfoDEqJGl3gvwlpjlwFffuRyVx/a8zyQH
+	No/BmzURPqtpbHUA30J3RDwpWbDmFn+AK0g10U5w90OGx5s0iGCkO7zTFtP20/q9yDnEFq388ffMv
+	Z699rrwQzpzcx62978bWBWf8mlVniPbNjPmI+L7kbdoPLSvagew+UJNckvJ+/XntvffGCmZXPHFy/
+	RxbgbCsA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1phqcP-003d7a-1Z;
-	Thu, 30 Mar 2023 11:39:01 +0000
+	id 1phqiu-003fir-2y;
+	Thu, 30 Mar 2023 11:45:44 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1phqcL-003d5W-0P
+	id 1phqis-003fhV-0v
 	for barebox@lists.infradead.org;
-	Thu, 30 Mar 2023 11:38:59 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1phqcF-0000t0-9R; Thu, 30 Mar 2023 13:38:51 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1phqcE-007ks6-6c; Thu, 30 Mar 2023 13:38:50 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1phqcD-00E1tb-Jj; Thu, 30 Mar 2023 13:38:49 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Hans Christian Lonstad <hcl@datarespons.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 30 Mar 2023 13:38:44 +0200
-Message-Id: <20230330113844.3343865-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	Thu, 30 Mar 2023 11:45:43 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1phqiq-0002NH-PD; Thu, 30 Mar 2023 13:45:40 +0200
+Message-ID: <9b5975a7-8b1d-0861-ce01-9206a3ddfc7d@pengutronix.de>
+Date: Thu, 30 Mar 2023 13:45:39 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.7.2
+Content-Language: en-US
+To: Renaud Barbier <Renaud.Barbier@ametek.com>,
+ Barebox List <barebox@lists.infradead.org>
+References: <BL0PR07MB5665003604A904B8AFBEB466EC8E9@BL0PR07MB5665.namprd07.prod.outlook.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <BL0PR07MB5665003604A904B8AFBEB466EC8E9@BL0PR07MB5665.namprd07.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230330_043857_165183_3AF918BC 
-X-CRM114-Status: GOOD (  11.35  )
+X-CRM114-CacheID: sfid-20230330_044542_327551_7B896D08 
+X-CRM114-Status: GOOD (  16.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,54 +71,54 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] ARM: dts: i.MX8MP: snps,dis-u2-freeclk-exists-quirk
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: LS1021A performance
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Linux v6.1 adds a snps,gfladj-refclk-lpm-sel-quirk property to the
-i.MX8MP DWC3 device tree nodes, which is a superset of the existing
-snps,dis-u2-freeclk-exists-quirk property. For this reason, the old
-property was dropped breaking some usages of barebox i.MX8MP DWC3.
+Hello Renaud,
 
-The proper fix would be supporting this new property, which is already
-in next as part of the DWC3 driver sync with the kernel.
 
-Until that lands in master though, let's add back the removed property
-to fix the regression. Expectation is that we can revert this commit
-as part of v2023.05.0.
+On 30.03.23 13:34, Renaud Barbier wrote:
+> Hello,
+> I am looking into the performance of the LS1021A between Linux and Barebox and a PPC P1014
 
-Link: https://github.com/saschahauer/barebox/issues/19
-Reported-by: Hans Christian Lonstad <hcl@datarespons.com>
-Fixes: 32e2176ba050 ("dts: update to v6.1-rc1")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/dts/imx8mp.dtsi | 9 +++++++++
- 1 file changed, 9 insertions(+)
+> On Linux:
+> [root@openware]# time md5sum /tmp/mtd0
+> 26d8158619e5791859519654557aeeba  /tmp/mtd0
+> 
+> real    0m0.029s
+> user    0m0.025s
+> sys     0m0.001s
+> 
+> This is almost a 20 fold difference.
+> 
+> From my In-Circuit-Emulator, the cache is enabled on both Linux and Barebox. My guess it that it comes down how the MMU is used.
+> Any input on how to speed up the boot loader would be appreciated.
 
-diff --git a/arch/arm/dts/imx8mp.dtsi b/arch/arm/dts/imx8mp.dtsi
-index 6962d11e853a..3bec8432627f 100644
---- a/arch/arm/dts/imx8mp.dtsi
-+++ b/arch/arm/dts/imx8mp.dtsi
-@@ -10,6 +10,15 @@
- 	};
- };
- 
-+/* Temporary workaround until snps,gfladj-refclk-lpm-sel-quirk is supported */
-+&usb_dwc3_0 {
-+	snps,dis-u2-freeclk-exists-quirk;
-+};
-+
-+&usb_dwc3_1 {
-+	snps,dis-u2-freeclk-exists-quirk;
-+};
-+
- /*
-  * The DSP reserved memory will collide with the Barebox malloc area for some
-  * DRAM sizes, even though the DSP itself is disabled in most configurations.
+Can you compare SHA256 instead and see if the difference is still as stark?
+Make sure that CONFIG_DIGEST_SHA256_ARM is enabled.
+
+Do barebox and Linux run at the same CPU frequency?
+
+Cheers,
+Ahmad
+
+> 
+> Cheers,
+> Renaud
+> 
+> 
+> 
+> 
+
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
