@@ -1,58 +1,65 @@
-Delivery-date: Thu, 30 Mar 2023 16:19:55 +0200
+Delivery-date: Thu, 30 Mar 2023 16:54:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pht86-002nOK-9E
-	for lore@lore.pengutronix.de; Thu, 30 Mar 2023 16:19:55 +0200
+	id 1phtfd-002pMt-Pt
+	for lore@lore.pengutronix.de; Thu, 30 Mar 2023 16:54:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pht85-00084P-Pj
-	for lore@pengutronix.de; Thu, 30 Mar 2023 16:19:54 +0200
+	id 1phtfd-0004kl-8y
+	for lore@pengutronix.de; Thu, 30 Mar 2023 16:54:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
-	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VIuTw70K79vcq1gnLpiBj8nNaUpSzl3fw6UWMyV6QXc=; b=Vi0nB2sWAhuxYxP4UV9NmkVaxX
-	u7DpUsPlHfBHfftIWhm3DelDXgg7aepJFwpbCQC1q+wiiGCFYQ5z2a+JZKxGppbOr4OXK0ThEr36/
-	Huwrr0UgObgp5LUlcu0Yp+ThTsZGb56+PSX7NAbtpdM+zn/AkppX5/yqok1+rV2186Z562qsPpnVW
-	ooii6QhaSZLtEwdq4PN8juJNWsxj12Eok1sAR/X/phgrH6eHGY5VXwPVMijmIVJVICYrDIrUmY9gx
-	ZZb/Zjuup4zDTM3T3M0t9XCROXtkHBOuQB62GCuXcXwfC4XZ4QCfL5gvk6Ho35q4BSkOurrlT4Skg
-	bYBErNsg==;
+	bh=0h6BSltP5/7iXk22oxpyhHhHo9zSiqXxoOLmq9lYWvg=; b=AGN6AQdQOk+J3jzib55pHn7rJ8
+	QQR5wk3stNCwuKhIyRwidY1Nmvso28LQEiE70TeS6Gx3X/bIS836sSqCOHbH/6c4290CxfBqE10C6
+	Ww7LEkTgOiMrZyD0dT1JWVFudj+uXwYCFj9s5++uZk63bA5SSFLOJYstXIksxmsvYQjID3puVnj0J
+	vhNvYvCpPEoSvXiLqe71RXJNgEZ9UST2F4dkHZibHtNbwHLPZNFdi1cUEgNxj2X4cja7QxNLX3/YK
+	o2V81nbtGIe3kEBOkNzq6z9gG+mdB7mEpzSvdVq8L+d72yg8anPn7OTVVXSahAHgUAa8UwIAUu1vJ
+	JnxsLEng==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pht6q-00414t-2z;
-	Thu, 30 Mar 2023 14:18:36 +0000
+	id 1phteP-0048qv-0f;
+	Thu, 30 Mar 2023 14:53:17 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pht5v-0040Po-0z
+	id 1phteK-0048qY-2A
 	for barebox@lists.infradead.org;
-	Thu, 30 Mar 2023 14:17:41 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	Thu, 30 Mar 2023 14:53:14 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1pht5p-0007Yv-TC; Thu, 30 Mar 2023 16:17:33 +0200
-Message-ID: <6bdf136861036d5c9362360db82ea153d576ec3c.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Renaud Barbier <Renaud.Barbier@ametek.com>, Ahmad Fatoum
-	 <a.fatoum@pengutronix.de>, Barebox List <barebox@lists.infradead.org>
-Date: Thu, 30 Mar 2023 16:17:32 +0200
-In-Reply-To: <BL0PR07MB566562459F73E606BF3BB629EC8E9@BL0PR07MB5665.namprd07.prod.outlook.com>
-References: 	<BL0PR07MB5665003604A904B8AFBEB466EC8E9@BL0PR07MB5665.namprd07.prod.outlook.com>
-	 <9b5975a7-8b1d-0861-ce01-9206a3ddfc7d@pengutronix.de>
-	 <BL0PR07MB566562459F73E606BF3BB629EC8E9@BL0PR07MB5665.namprd07.prod.outlook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.3 (3.46.3-1.fc37) 
+	(envelope-from <pza@pengutronix.de>)
+	id 1phteI-0004gB-5w
+	for barebox@lists.infradead.org; Thu, 30 Mar 2023 16:53:10 +0200
+Received: from pza by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <pza@pengutronix.de>)
+	id 1phteH-00024v-V2
+	for barebox@lists.infradead.org; Thu, 30 Mar 2023 16:53:09 +0200
+Date: Thu, 30 Mar 2023 16:53:09 +0200
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: barebox@lists.infradead.org
+Message-ID: <20230330145309.GA7856@pengutronix.de>
+References: <20230330103359.2751080-1-p.zabel@pengutronix.de>
+ <20230330103359.2751080-2-p.zabel@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230330103359.2751080-2-p.zabel@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230330_071739_349231_243C4C75 
-X-CRM114-Status: GOOD (  18.61  )
+X-CRM114-CacheID: sfid-20230330_075313_057776_C25BC1FA 
+X-CRM114-Status: GOOD (  15.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,83 +77,38 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: LS1021A performance
+Subject: Re: [PATCH 2/4] spi: stm32: support per-transfer bits per word
+ switching
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Renaud,
+On Thu, Mar 30, 2023 at 12:33:57PM +0200, Philipp Zabel wrote:
+> Allow dynamically switching data size between transfers.
+> 
+> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+> ---
+>  drivers/spi/stm32_spi.c | 50 ++++++++++++++++++++++++++++++++---------
+>  1 file changed, 39 insertions(+), 11 deletions(-)
+> 
+> diff --git a/drivers/spi/stm32_spi.c b/drivers/spi/stm32_spi.c
+> index 0d7407c279a2..1ac86fbe11e6 100644
+> --- a/drivers/spi/stm32_spi.c
+> +++ b/drivers/spi/stm32_spi.c
+[...]
+> @@ -543,6 +570,7 @@ static int stm32_spi_probe(struct device *dev)
+>  	master->transfer = stm32_spi_transfer;
+>  	master->mem_ops = &stm32_spi_mem_ops;
+>  
+> +	master->bits_per_word_mask = stm32_spi_get_bpw_mask(priv);
 
-Am Donnerstag, dem 30.03.2023 um 13:31 +0000 schrieb Renaud Barbier:
->=20
-> =20
-> > Can you compare SHA256 instead and see if the difference is still as st=
-ark?
-> > Make sure that CONFIG_DIGEST_SHA256_ARM is enabled.
-> The SHA256 is enabled. SHA256 on a 1 MB file:
-> Barebox: 843ms
-> Linux:=20
-> [root@openware]# time sha256sum /tmp/mtd0
-> eef67a3327e3eaa50ee7b1dad87901465f00d76a6308e360a2fedab82c79f493  /tmp/mt=
-d0
->=20
-> real    0m0.059s
-> user    0m0.056s
-> sys     0m0.001s
->=20
-> On another note, the boot loader using the LS1021A is much slower than us=
-ing the PPC P1014.
-> I compare those two as we used the LS1021A as a replacement for P1014 on =
-a board (same peripherals, same boot sequence)
-> The P1014 reach the prompt in 200ms while the LS1021 takes 700ms.
->=20
-> Also, I noticed that the pageflags is different for the DDR memory on Bar=
-ebox and Linux as seen by the Lauterbach:
-> Barebox: write-back/no allocate
-> Linux : Inner:write-back/allocate outer: write-back/allocate
-> Could that mean the L2 cache Is not used?
-> >=20
-> > Do barebox and Linux run at the same CPU frequency?
-> According to the Lauterbach, clock ratio have not changed in the clocking=
- registers
-> >=20
+This has to be moved down a few lines, after the clock is enabled and
+the device is reset. I'll fix this in v2.
 
-As the LS1021A is based on a Cortex A7 your board lowlevel init needs
-to call cortex_a7_lowlevel_init() for the caches to work properly.
-
-It's probably a good idea to add a ls1021 lowlevel init function which
-calls both of those functions together, like
-imx6ul_cpu_lowlevel_init().
-
-Regards,
-Lucas
-
-> > Cheers,
-> > Ahmad
-> >=20
-> > >=20
-> > > Cheers,
-> > > Renaud
-> > >=20
-> > >=20
-> > >=20
-> > >=20
-> >=20
-> > --
-> > Pengutronix e.K.                           |                           =
-  |
-> > Steuerwalder Str. 21                       |
-> > https://urldefense.com/v3/__http://www.pengutronix.de/__;!!HKOSU0g!D
-> > 4uFepgqngTTHamr_7tlQeQoRJqSLL8npxTFBWFF-
-> > kjpZuHgzi1quS6EE1ecjCKr_O_FJGPfkAnWXQyfONKJxqgrtQQ$   |
-> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0  =
-  |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-555=
-5 |
->=20
-
+regards
+Philipp
 
 
