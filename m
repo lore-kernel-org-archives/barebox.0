@@ -1,167 +1,53 @@
-Delivery-date: Thu, 30 Mar 2023 17:19:24 +0200
+Delivery-date: Thu, 30 Mar 2023 18:12:41 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phu3f-002qVL-Hv
-	for lore@lore.pengutronix.de; Thu, 30 Mar 2023 17:19:24 +0200
+	id 1phutE-002sWH-7U
+	for lore@lore.pengutronix.de; Thu, 30 Mar 2023 18:12:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phu3c-00085d-00
-	for lore@pengutronix.de; Thu, 30 Mar 2023 17:19:23 +0200
+	id 1phutD-0000uQ-OM
+	for lore@pengutronix.de; Thu, 30 Mar 2023 18:12:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
-	:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sAUjlxHzSKc0+tZg0/Y3HryZSZkb8LZ4N8fZTMYynkM=; b=PvKMdhk4EUKGojoAqbcBIKufQO
-	K55tihja9f0Pk0KNTc3kv3GqYL5wgyvlry9w0xk/5bG+lp8hkLXdikelS8wOdGTNZgJ2G7VM/cg33
-	stvw8Qm3LKBriKhUemxQPrP3zQeFc2+I4NGikSDQ20OdP7IS3wi9ZOhTDo1/TV1C4LTXB8zoBvz3y
-	ql3wrN35bgn4DZo0JiCRUxjsZLke0qRm+nIIiU5xr/2L4bksgG5BVdsUJdqk5yk8FMc6TtIA3hah6
-	uDIFfqA8JLjmkM/no0Gs2Sg2DdoO4HOO774x8o1imGCyZnevqfzq6WioMaJNj+ryYx4gPAAQNbDZm
-	jfMw0ieA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=dRTGpXkGVcBGXPYbMYnCCnEAg19vIza2ozdSQXe3pc8=; b=ElNZAQqJQ9gy2l/L/YU2Cj+IBO
+	FxbHuRGK/JEkqVp2bh7nlSXBUj3DwQnDks3QQULWek/uWKZ+ll6ndoXqhMJmWNRDd2QD7/9nL1jja
+	uk4EAuFr3q4+Q37cQkYDUVnyxnvrTBgbYZndfMDmbHnr0g/8MbBOj8fSldpxRc3434UYDBQhuJX9j
+	Y6WODvzLy9dDGg9rxM7FclL9w8q7k/T4k5h/deWOm8Ft/gV3fpUJ1+idwiyt11xXVVIG4CG0UDLn3
+	QWKjqDKgJ+rKKpv1ARnPWrlbsrdEDmc0Sh4yDeA9JU9cBrJdv+0UrrJfbg4wZC6b6i+eppBSvFBAs
+	pYgo/0zA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1phu1y-004CjE-14;
-	Thu, 30 Mar 2023 15:17:38 +0000
-Received: from mx0b-001ec801.pphosted.com ([148.163.140.146])
+	id 1phurq-004QSU-36;
+	Thu, 30 Mar 2023 16:11:14 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1phu1s-004Chu-1W
+	id 1phurn-004QQC-1h
 	for barebox@lists.infradead.org;
-	Thu, 30 Mar 2023 15:17:36 +0000
-Received: from pps.filterd (m0163889.ppops.net [127.0.0.1])
-	by mx0b-001ec801.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 32UElp5k010781;
-	Thu, 30 Mar 2023 11:17:30 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ametek.com; h=from : to : subject :
- date : message-id : references : in-reply-to : content-type :
- content-transfer-encoding : mime-version; s=pphost;
- bh=sAUjlxHzSKc0+tZg0/Y3HryZSZkb8LZ4N8fZTMYynkM=;
- b=smhvsMx+jkvHTfRZ/S7vUm6k+JWXWfLqsLtq4fKNzr8S2uS//ZwfGjz2OP7FV7UDrHvP
- /wOQ96tcdywRS5itOpBxw06MqjbvhKZ2cURsx3sE1xaaDrK3gwwwZymNr4gv2OV73y94
- cM3YLuaQhL9HxiahmrFc3a8SKatYGHsHm/RPSUCpw0YCKLccui7T4etKO4SJmK8cmmrd
- F8gusL65xDi08bMLicd4PcoDm4YcXVKghzV+tmb3m8BqBfK9BwknGYL1KBWJDccOsTGZ
- /F4DKjxiVKYm5oRD8d++85sWgzy3yDCegvrnMUiULuAn1Cu7yAqbht4K8ytwJOQkhCe2 YQ== 
-Received: from nam11-co1-obe.outbound.protection.outlook.com (mail-co1nam11lp2168.outbound.protection.outlook.com [104.47.56.168])
-	by mx0b-001ec801.pphosted.com (PPS) with ESMTPS id 3phsu6etyj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Mar 2023 11:17:30 -0400
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=DKg1yZZgctfES+zKuGwHmc+8te/6gt25EdH6UVIBfGicnvwjiEA+/OPCxL9qI02qFRjImIHNmt0iQUauibeSIbwTcG95WlqM5pI3ukUNgGr45Y4Qi3gscIbu4j/Vd/icH8N3/g0Dz/QOAKJfV2Sw98UdnRhFg7Bo3Y1I3EKZWtUkvryCDy4Ywl99svneJO7uM/IK0/4adM1HMAviUZL7F9ST2CgcbL7sbc2ypnQk6sVJf4zyoGBnmFtpQ0QRFMiBrQH4RJjdylNiQlVWHjcW2fUKx6cgSwYvq9GFS3b4XKL0UC12Z+DBnY8sxk23xuGLxxX36Ylh8OXHbWkxZrv2oQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sAUjlxHzSKc0+tZg0/Y3HryZSZkb8LZ4N8fZTMYynkM=;
- b=CxphrfV0KHN7XPkrX8DXaklCpACgLYKV91eutEpMwB+WgST4ktrnGit6Qe63cE9uvEVHScjfOXcXvPpy5pYA/rV8ar+Qt91vuDorg5qA1aE2LJL67AA72WrzveBxc8rfMynICa2+Ennu5rJpV/Vk7HjlXCa1LklX8OdZlhzKPcsF/nSG/MSYiGyv8BHf4IYsVnduTDZYcNYxqu1fRT1+MXzQr8f/Ah+43fCMl3/uxhyFAxkQUevRByqrI6BiJcuh7y6zjifLUuHtAQ/hGHM4l/TukHDYsd4Or3CDi4sj7/SgC+HOyvSW9pNslQcrBbD/pbHqF0TVIkEn5B/3sM+nBA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=ametek.com; dmarc=pass action=none header.from=ametek.com;
- dkim=pass header.d=ametek.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ametek.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sAUjlxHzSKc0+tZg0/Y3HryZSZkb8LZ4N8fZTMYynkM=;
- b=coEbx55smD9o2H+lvw5InbQqEmbDMLkfk6UTPWRiYwBfACI1COxEEPssVpNMgJenpXvrsddMc/kkxd9W4E/pRoPMnpR6/LCK9Er9/GMk/WABGwvS2+Qr7Ozi24+PMGor27KDOkj//DrU+Gryi//0+BvIXfMGdJSD8LNs2jCPs4g=
-Received: from BL0PR07MB5665.namprd07.prod.outlook.com (2603:10b6:208:80::28)
- by MWHPR07MB2909.namprd07.prod.outlook.com (2603:10b6:300:1e::21) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6178.41; Thu, 30 Mar
- 2023 15:17:27 +0000
-Received: from BL0PR07MB5665.namprd07.prod.outlook.com
- ([fe80::4f11:a1e2:55ed:3f5]) by BL0PR07MB5665.namprd07.prod.outlook.com
- ([fe80::4f11:a1e2:55ed:3f5%7]) with mapi id 15.20.6254.021; Thu, 30 Mar 2023
- 15:17:27 +0000
-From: Renaud Barbier <Renaud.Barbier@ametek.com>
-To: Lucas Stach <l.stach@pengutronix.de>,
-        Ahmad Fatoum
-	<a.fatoum@pengutronix.de>,
-        Barebox List <barebox@lists.infradead.org>
-Thread-Topic: LS1021A performance
-Thread-Index: Adli8/MSQZh0oqFCTDGUikKl7/yNnQACTMOAAAIftgAAAy47AAAB8XHQ
-Date: Thu, 30 Mar 2023 15:17:27 +0000
-Message-ID:  <BL0PR07MB566585849809C53B0FB60734EC8E9@BL0PR07MB5665.namprd07.prod.outlook.com>
-References:  <BL0PR07MB5665003604A904B8AFBEB466EC8E9@BL0PR07MB5665.namprd07.prod.outlook.com>
-	 <9b5975a7-8b1d-0861-ce01-9206a3ddfc7d@pengutronix.de>
-	 <BL0PR07MB566562459F73E606BF3BB629EC8E9@BL0PR07MB5665.namprd07.prod.outlook.com>
- <6bdf136861036d5c9362360db82ea153d576ec3c.camel@pengutronix.de>
-In-Reply-To: <6bdf136861036d5c9362360db82ea153d576ec3c.camel@pengutronix.de>
-Accept-Language: en-GB, en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BL0PR07MB5665:EE_|MWHPR07MB2909:EE_
-x-ms-office365-filtering-correlation-id: 25f91957-b2c4-4641-1834-08db3131df81
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info:  xqQecwRVd2zCAssVQER+ihHXkV2bGGNbN8PuSOOzNiG3wUXhOyjlLj9LI14f//9e6p+jcAGqO5rHU3bfhG9DcPesxTnbk0fFmsomdekR8yf1mlKvWokDmwJBYDMShyyhf8KmGk0scX9IYD1Ak2MHnEFxduNfgsn70zNlD8gRqAlWG9tgkDSxIaHXBDhHaOBclDVvUe4N1xbLV6fzJ9zkTwNcs2mc05T1QK34QYTOUZ1246rFCfQWDgnsh0e+aewC6zg4e/W20557DhUmch6lvfTT5mFGMNx/R2ms0XgLOzahnVNmdYUvlbB+/gFYXvZaf+QUosADgyI2MjcxFMj3lrxTLOBlwvvR870byxkExf1vcn27ESauyxA4PfAIe97EYROMUUknGDOnDUj88xKZOb1MZFPQfwIQsPt7CFMgXlIFUu0p/eNiMEkVUQi8j3kGDdY94b5oeC12xjLyw7n0Mwa37YCqPFBeaACEGL+ESK9KtBxipZh0gFsYtZkslWeVtP3tJ4/hz14tkeWgHUZgUFEjuci6R+1Jl41cU7WUWvJpxhfMX3O3DWZEFVh3RuWumXlwGgKtIwvWWu7PRdb114Dr0zS64eqI+/08MuW691zeVnfXQ2NiVy6X4UW+OJ0w
-x-forefront-antispam-report:  CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR07MB5665.namprd07.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(366004)(376002)(39860400002)(346002)(136003)(451199021)(38100700002)(55016003)(38070700005)(83380400001)(66446008)(8936002)(66476007)(66946007)(316002)(8676002)(66556008)(71200400001)(64756008)(122000001)(52536014)(86362001)(5660300002)(2906002)(41300700001)(110136005)(478600001)(33656002)(7116003)(9686003)(26005)(76116006)(186003)(6506007)(7696005);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:  =?utf-8?B?NjZLTzN0dXVzWlFIZ0pTc25UYnFKeGJRQlVjeEszMDlXVnBSZU5sSFZQV2xp?=
- =?utf-8?B?SG5lUHdnbzI2RVlWMnRLWmg4MWdTWGEvVk5nQ3JIVCttTkhvVXdCWndjdEJo?=
- =?utf-8?B?Y0JOZkJLem9jcEwzVGRDd1FHa2RUSjV3eWlGSkxkTk9URnN1K3VhUnpZVXlZ?=
- =?utf-8?B?UVlNZzBxRVRrb2QxZ0lFNlZQc1pwYnVua0NFT3UxQmxreTE1K0tVdXY4RFNr?=
- =?utf-8?B?c3g3RFZ2bnBibFFXNjVRVVU2bjl5Mnc0eEJNRmhLYWIrUWt3L1BmZFdQbFEy?=
- =?utf-8?B?N1BTR25LRFBWNmVFMjJtT1dxM3c1RHB0NEhPQnNMN3ZiZ2tLSmVSZGwzN005?=
- =?utf-8?B?SS9sRkNsUjhjbDVrTVo1amhuSmVMZHdRaVpvNTlNUzR6MWxrWEhsenFkVE5p?=
- =?utf-8?B?RE1QQVhNb2h6c1JoUFo1Q3FqbHNZZXduRWVkQmRrWU1TMkdhbnh2b1I4dmIx?=
- =?utf-8?B?RElPYzJqRFo5MmZtQVR4QWxIeUljVXk4V0hSZ1pMZmY3UHFISXFVWVlmeWJ4?=
- =?utf-8?B?SlJtZHY4N1Vvbzl4TnpzdjJUQ1VSTko0Wm04aHR2S0RsQjdER2hLYWJEaEt3?=
- =?utf-8?B?c3I3ajFOTno3TnVGWXcyc25ETzBCTnJ3cEwwTEpPRkdUNUV2S0VMaTZQOEI4?=
- =?utf-8?B?M3RpaFFKS1lZSytpV2k2cW9DN0xVMEFYSVFvRWRTbGRWMjE1dExINlFLMkRp?=
- =?utf-8?B?NUptbHFubjZwN2MyYTc2Rld5WTdKUFpaSmhMeHFwVTczNy9iQURJSVNneCt2?=
- =?utf-8?B?Qy84Q0lKbFpSOFMyeTFaRVJ6MllqNCtKSGdhWFZFdnRKNU1WblA2bWlOZ0t1?=
- =?utf-8?B?SVQzSDJKcktGWWFpYXFJZXYzcXBJUUV5TzFhZ1VyaVE2MktVcEtFbU1jR282?=
- =?utf-8?B?SVZBY1RrNHNxLzh5YnVsc1pGd2l3ZmptcjN6ZTJIZDNMcXMxTGhwY3N1N2o0?=
- =?utf-8?B?ZzNCdW92RllXYXFqZTB6S01VN01RdEJxMFBqMDdqK0RCYllIMk42WC93d05U?=
- =?utf-8?B?dG9Mcm5UMk95SzdSdWozeUNTcndtT1d2a3AzNFRSZkFqVXdVV1F1ZzdBUkxa?=
- =?utf-8?B?dU9iLzNOcDNkMlk0VGYzcVM4U1BkRVpiYnF1YTREa0RMNktIWS9iMnh4Z2lr?=
- =?utf-8?B?OWd2QS9TejFndDY3aHdZbisvbDdtM3lrOVlhcDJYQ2tWTEZuNzJ0VEJmZEZC?=
- =?utf-8?B?eVJmeFhyU3g0MDI1NmNib3RyaXRtSlJOOUc3ckFIbENiOEFNa3FZamVxRnE3?=
- =?utf-8?B?VUozWjJiOUY4SXMxT1FtcTRNcElydUs5Y1BBSUJPalY2VlUvS2RiSnQzc3Na?=
- =?utf-8?B?VFY0ZWFQa1paWjNVeW1uYUw4eDdEdUFuSlU3U1FMOWpiQjJJWmpWbDlqRnky?=
- =?utf-8?B?b0ZFOFhETWFvYk9xTlkzeUpKbkc2SWlwVWF4UGFBVDFSOFlselNzWVpXVnhF?=
- =?utf-8?B?QUVMalpid3ZZTGg1czlZaUp2UEw3NVdxWXliQ2NqK3djcm5vc2JyTndQTlQr?=
- =?utf-8?B?WXFzYnFiTVFSeVlCazFUa0Rzd0JQUVlVQ2orcFNuVVdXWnNuWG54cGFLVVQy?=
- =?utf-8?B?alhwWVVQS2w1T2V4RHRBYm8zSzQ3ZEtNd042bW03dkxxLy9EampHQ1dxMDV6?=
- =?utf-8?B?aDlSRnUyQjdHWWNNdUR6Z3JlWUNhMFVmNUhUYU1EV0laSVNXc001dDhjSkZL?=
- =?utf-8?B?WStYRXFTd0c5MkpIS0NNUVZkTkt5MVhpQnJXeEtBemxCSUVNKzNGcWdJZUlH?=
- =?utf-8?B?blQvUVpIdEdEU09FaEdtcEpzaWNaNjV6SklPZXZRaDdSbjZzcVl0TWhHTm81?=
- =?utf-8?B?UTNNZGY1ZG5TdmkycnA5SHhGOW45eldJamFnNWU1c3FzRG1iNm9vQlpweE4x?=
- =?utf-8?B?ekZ1OW0rSWQ3ZzRCVWJnT1BUb3JrN054bEpyUmJJOVdwazgxS3NZQ2JaZldk?=
- =?utf-8?B?ZWVXNDFuVGd6Kzk3RnQycW0rMHQxU01RWVYvTmNkVVFrUFBFcStBT2ovbFFo?=
- =?utf-8?B?RFZqejFrMGhKYVZaNnFFODFscFR3UkluYmxjeTBQamJ5WDhCZGN4OWFBZnlZ?=
- =?utf-8?B?cGx4dXVaV1B0aUJXRVNnMnM2ZE9kR2oxR2pHWFhwaUc0My9Xa2dPUjBPclRs?=
- =?utf-8?Q?yNnlLHOoUNJhPbc0gt7BnJYId?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	Thu, 30 Mar 2023 16:11:13 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost)
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <r.czerwinski@pengutronix.de>)
+	id 1phurj-0000hd-DH; Thu, 30 Mar 2023 18:11:07 +0200
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <rouven@czerwinskis.de>
+Date: Thu, 30 Mar 2023 18:11:01 +0200
+Message-Id: <20230330161101.58529-1-r.czerwinski@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-X-OriginatorOrg: ametek.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BL0PR07MB5665.namprd07.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 25f91957-b2c4-4641-1834-08db3131df81
-X-MS-Exchange-CrossTenant-originalarrivaltime: 30 Mar 2023 15:17:27.5745
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 31a88536-e2ab-44b5-837e-5110158247ab
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: aT1K9IiMPkDciAcD39pPd3hVKPMvVwj8Mb0UMeBOdmKUPnFgRW42RTu+FTkNV76kYJaCO5hT2MA+6UmKCGiVe/yt7y/HzNWB4Cf/eoGSCj4=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MWHPR07MB2909
-X-Proofpoint-GUID: FqRnNo9kXtBxYcAsIA7-lItmk1tnMmTN
-X-Proofpoint-ORIG-GUID: FqRnNo9kXtBxYcAsIA7-lItmk1tnMmTN
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.254,Aquarius:18.0.942,Hydra:6.0.573,FMLib:17.11.170.22
- definitions=2023-03-30_09,2023-03-30_03,2023-02-09_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 impostorscore=0 phishscore=0
- mlxscore=0 adultscore=0 clxscore=1011 lowpriorityscore=0 suspectscore=0
- malwarescore=0 spamscore=0 priorityscore=1501 mlxlogscore=693 bulkscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2303200000
- definitions=main-2303300121
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230330_081733_154881_A84FBCD1 
-X-CRM114-Status: GOOD (  25.58  )
+X-CRM114-CacheID: sfid-20230330_091111_740140_E3A176B9 
+X-CRM114-Status: GOOD (  21.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -180,43 +66,291 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: RE: LS1021A performance
+Subject: [PATCH next v2] arm: rockchip: add support for CM3 on IO board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-DQo+ID4gPiBDYW4geW91IGNvbXBhcmUgU0hBMjU2IGluc3RlYWQgYW5kIHNlZSBpZiB0aGUgZGlm
-ZmVyZW5jZSBpcyBzdGlsbCBhcyBzdGFyaz8NCj4gPiA+IE1ha2Ugc3VyZSB0aGF0IENPTkZJR19E
-SUdFU1RfU0hBMjU2X0FSTSBpcyBlbmFibGVkLg0KPiA+IFRoZSBTSEEyNTYgaXMgZW5hYmxlZC4g
-U0hBMjU2IG9uIGEgMSBNQiBmaWxlOg0KPiA+IEJhcmVib3g6IDg0M21zDQo+ID4gTGludXg6DQo+
-ID4gW3Jvb3RAb3BlbndhcmVdIyB0aW1lIHNoYTI1NnN1bSAvdG1wL210ZDANCj4gPiBlZWY2N2Ez
-MzI3ZTNlYWE1MGVlN2IxZGFkODc5MDE0NjVmMDBkNzZhNjMwOGUzNjBhMmZlZGFiODJjNzlmNDkz
-DQo+ID4gL3RtcC9tdGQwDQo+ID4NCj4gPiByZWFsICAgIDBtMC4wNTlzDQo+ID4gdXNlciAgICAw
-bTAuMDU2cw0KPiA+IHN5cyAgICAgMG0wLjAwMXMNCj4gPg0KPiA+IE9uIGFub3RoZXIgbm90ZSwg
-dGhlIGJvb3QgbG9hZGVyIHVzaW5nIHRoZSBMUzEwMjFBIGlzIG11Y2ggc2xvd2VyIHRoYW4NCj4g
-dXNpbmcgdGhlIFBQQyBQMTAxNC4NCj4gPiBJIGNvbXBhcmUgdGhvc2UgdHdvIGFzIHdlIHVzZWQg
-dGhlIExTMTAyMUEgYXMgYSByZXBsYWNlbWVudCBmb3IgUDEwMTQNCj4gPiBvbiBhIGJvYXJkIChz
-YW1lIHBlcmlwaGVyYWxzLCBzYW1lIGJvb3Qgc2VxdWVuY2UpIFRoZSBQMTAxNCByZWFjaCB0aGUN
-Cj4gcHJvbXB0IGluIDIwMG1zIHdoaWxlIHRoZSBMUzEwMjEgdGFrZXMgNzAwbXMuDQo+ID4NCj4g
-PiBBbHNvLCBJIG5vdGljZWQgdGhhdCB0aGUgcGFnZWZsYWdzIGlzIGRpZmZlcmVudCBmb3IgdGhl
-IEREUiBtZW1vcnkgb24NCj4gQmFyZWJveCBhbmQgTGludXggYXMgc2VlbiBieSB0aGUgTGF1dGVy
-YmFjaDoNCj4gPiBCYXJlYm94OiB3cml0ZS1iYWNrL25vIGFsbG9jYXRlDQo+ID4gTGludXggOiBJ
-bm5lcjp3cml0ZS1iYWNrL2FsbG9jYXRlIG91dGVyOiB3cml0ZS1iYWNrL2FsbG9jYXRlIENvdWxk
-DQo+ID4gdGhhdCBtZWFuIHRoZSBMMiBjYWNoZSBJcyBub3QgdXNlZD8NCj4gPiA+DQo+ID4gPiBE
-byBiYXJlYm94IGFuZCBMaW51eCBydW4gYXQgdGhlIHNhbWUgQ1BVIGZyZXF1ZW5jeT8NCj4gPiBB
-Y2NvcmRpbmcgdG8gdGhlIExhdXRlcmJhY2gsIGNsb2NrIHJhdGlvIGhhdmUgbm90IGNoYW5nZWQg
-aW4gdGhlDQo+ID4gY2xvY2tpbmcgcmVnaXN0ZXJzDQo+ID4gPg0KPiANCj4gQXMgdGhlIExTMTAy
-MUEgaXMgYmFzZWQgb24gYSBDb3J0ZXggQTcgeW91ciBib2FyZCBsb3dsZXZlbCBpbml0IG5lZWRz
-IHRvIGNhbGwNCj4gY29ydGV4X2E3X2xvd2xldmVsX2luaXQoKSBmb3IgdGhlIGNhY2hlcyB0byB3
-b3JrIHByb3Blcmx5Lg0KPiANCj4gSXQncyBwcm9iYWJseSBhIGdvb2QgaWRlYSB0byBhZGQgYSBs
-czEwMjEgbG93bGV2ZWwgaW5pdCBmdW5jdGlvbiB3aGljaCBjYWxscyBib3RoDQo+IG9mIHRob3Nl
-IGZ1bmN0aW9ucyB0b2dldGhlciwgbGlrZSBpbXg2dWxfY3B1X2xvd2xldmVsX2luaXQoKS4NCj4g
-DQoNCldpdGggdGhpcyBmdW5jdGlvbiBjYWxsLCB0aGUgYm9vdCBsb2FkZXIgYm9vdHMgMyB0aW1l
-cyBmYXN0ZXIgYW5kIHNoYTI1NnN1bSBmb3IgMU1CIGRyb3BwZWQgdG8gMTE4bXMgZnJvbSA4NDNt
-cw0KVGhpcyBub3cgYnJlYWtzIHRoZSBnaWFuZmFyIEV0aGVybmV0IGRyaXZlciB3aGljaCBsaWtl
-bHkgbmVlZHMgY2FjaGUgZmx1c2ggb3IgZG1hIGFsbG9jYXRlZCBkZXNjcmlwdG9ycy4NCg0KVGhh
-bmtzLg0K
+From: Rouven Czerwinski <rouven@czerwinskis.de>
+
+Working:
+- RKBIN DDR training (rk3566_ddr_1056MHz_v1.13.bin)
+- RKBIN TF-A (v1.34) from RKBIN
+- Environment storage
+- DHCP, ping and link detection
+
+Signed-off-by: Rouven Czerwinski <rouven@czerwinskis.de>
+---
+v2:
+- rebase on next and adjust to RK356x changes
+- update rockchip boards documentation
+
+ Documentation/boards/rockchip.rst    |  1 +
+ arch/arm/boards/Makefile             |  1 +
+ arch/arm/boards/radxa-cm3/.gitignore |  1 +
+ arch/arm/boards/radxa-cm3/Makefile   |  3 ++
+ arch/arm/boards/radxa-cm3/board.c    | 56 ++++++++++++++++++++++++++++
+ arch/arm/boards/radxa-cm3/lowlevel.c | 28 ++++++++++++++
+ arch/arm/dts/Makefile                |  1 +
+ arch/arm/dts/rk3566-cm3-io.dts       | 55 +++++++++++++++++++++++++++
+ arch/arm/mach-rockchip/Kconfig       |  6 +++
+ images/Makefile.rockchip             |  7 ++++
+ 10 files changed, 159 insertions(+)
+ create mode 100644 arch/arm/boards/radxa-cm3/.gitignore
+ create mode 100644 arch/arm/boards/radxa-cm3/Makefile
+ create mode 100644 arch/arm/boards/radxa-cm3/board.c
+ create mode 100644 arch/arm/boards/radxa-cm3/lowlevel.c
+ create mode 100644 arch/arm/dts/rk3566-cm3-io.dts
+
+diff --git a/Documentation/boards/rockchip.rst b/Documentation/boards/rockchip.rst
+index 0e8738bbf1..583b4f1720 100644
+--- a/Documentation/boards/rockchip.rst
++++ b/Documentation/boards/rockchip.rst
+@@ -60,6 +60,7 @@ Supported Boards
+ - Rockchip RK3568 Bananapi R2 Pro
+ - Pine64 Quartz64 Model A
+ - Radxa ROCK3 Model A
++- Radxa CM3 (RK3566) IO Board
+ 
+ The steps described in the following target the RK3568 and the RK3568 EVB but
+ generally apply to both SoCs and all boards.
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 37b1650e63..b204c257f6 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -190,3 +190,4 @@ obj-$(CONFIG_MACH_RK3568_BPI_R2PRO)			+= rockchip-rk3568-bpi-r2pro/
+ obj-$(CONFIG_MACH_PINE64_QUARTZ64)		+= pine64-quartz64/
+ obj-$(CONFIG_MACH_RADXA_ROCK3)			+= radxa-rock3/
+ obj-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP)	+= variscite-dt8mcustomboard-imx8mp/
++obj-$(CONFIG_MACH_RADXA_CM3)			+= radxa-cm3/
+diff --git a/arch/arm/boards/radxa-cm3/.gitignore b/arch/arm/boards/radxa-cm3/.gitignore
+new file mode 100644
+index 0000000000..f458f794b5
+--- /dev/null
++++ b/arch/arm/boards/radxa-cm3/.gitignore
+@@ -0,0 +1 @@
++sdram-init.bin
+diff --git a/arch/arm/boards/radxa-cm3/Makefile b/arch/arm/boards/radxa-cm3/Makefile
+new file mode 100644
+index 0000000000..b37b6c870b
+--- /dev/null
++++ b/arch/arm/boards/radxa-cm3/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/radxa-cm3/board.c b/arch/arm/boards/radxa-cm3/board.c
+new file mode 100644
+index 0000000000..14b6784179
+--- /dev/null
++++ b/arch/arm/boards/radxa-cm3/board.c
+@@ -0,0 +1,56 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <bootsource.h>
++#include <common.h>
++#include <deep-probe.h>
++#include <init.h>
++#include <mach/rockchip/bbu.h>
++
++struct cm3_model {
++	const char *name;
++	const char *shortname;
++};
++
++static int cm3_probe(struct device *dev)
++{
++	enum bootsource bootsource = bootsource_get();
++	int instance = bootsource_get_instance();
++	const struct cm3_model *model;
++
++	model = device_get_match_data(dev);
++
++	barebox_set_model(model->name);
++	barebox_set_hostname(model->shortname);
++
++	if (bootsource == BOOTSOURCE_MMC && instance == 1)
++		of_device_enable_path("/chosen/environment-sd");
++	else
++		of_device_enable_path("/chosen/environment-emmc");
++
++	rk3568_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT,
++				"/dev/mmc0");
++	rk3568_bbu_mmc_register("sd", 0, "/dev/mmc1");
++
++	return 0;
++}
++
++static const struct cm3_model cm3_io = {
++	.name = "Radxa CM3 on IO Board",
++	.shortname = "cm3-io",
++};
++
++static const struct of_device_id cm3_of_match[] = {
++	{
++		.compatible = "radxa,cm3-io",
++		.data = &cm3_io,
++	},
++	{ /* sentinel */ },
++};
++
++static struct driver cm3_io_board_driver = {
++	.name = "board-cm3-io",
++	.probe = cm3_probe,
++	.of_compatible = cm3_of_match,
++};
++coredevice_platform_driver(cm3_io_board_driver);
++
++BAREBOX_DEEP_PROBE_ENABLE(cm3_of_match);
+diff --git a/arch/arm/boards/radxa-cm3/lowlevel.c b/arch/arm/boards/radxa-cm3/lowlevel.c
+new file mode 100644
+index 0000000000..ee620c0aeb
+--- /dev/null
++++ b/arch/arm/boards/radxa-cm3/lowlevel.c
+@@ -0,0 +1,28 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <common.h>
++#include <asm/barebox-arm.h>
++#include <mach/rockchip/hardware.h>
++#include <mach/rockchip/atf.h>
++#include <debug_ll.h>
++
++extern char __dtb_rk3566_cm3_io_start[];
++
++ENTRY_FUNCTION(start_radxa_cm3_io, r0, r1, r2)
++{
++	/*
++	 * Enable vccio4 1.8V and vccio6 1.8V
++	 * Needed for GMAC to work.
++	 * FIXME: This is done by the io-domain driver as well, but there
++	 * currently is no mechanism to make sure the driver gets probed
++	 * before its consumers. Remove this setup once this issue is
++	 * resolved.
++	 */
++	writel(RK_SETBITS(0x50), 0xfdc20140);
++
++	putc_ll('>');
++
++	relocate_to_adr_full(RK3568_BAREBOX_LOAD_ADDRESS);
++	setup_c();
++
++	rk3568_barebox_entry(__dtb_rk3566_cm3_io_start);
++}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 0a7cceb461..220e1617e3 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -109,6 +109,7 @@ lwl-$(CONFIG_MACH_PROTONIC_STM32MP1) += \
+ 	stm32mp151-prtt1s.dtb.o
+ lwl-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
+ lwl-$(CONFIG_MACH_RADXA_ROCK3) += rk3568-rock-3a.dtb.o
++lwl-$(CONFIG_MACH_RADXA_CM3) += rk3566-cm3-io.dtb.o
+ lwl-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += rk3288-phycore-som.dtb.o
+ lwl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
+ lwl-$(CONFIG_MACH_RK3568_EVB) += rk3568-evb1-v10.dtb.o
+diff --git a/arch/arm/dts/rk3566-cm3-io.dts b/arch/arm/dts/rk3566-cm3-io.dts
+new file mode 100644
+index 0000000000..81f896b943
+--- /dev/null
++++ b/arch/arm/dts/rk3566-cm3-io.dts
+@@ -0,0 +1,55 @@
++// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
++
++/dts-v1/;
++
++#include <arm64/rockchip/rk3566-radxa-cm3-io.dts>
++#include "rk356x.dtsi"
++
++/ {
++	chosen: chosen {
++		environment-sd {
++			compatible = "barebox,environment";
++			device-path = &environment_sd;
++			status = "disabled";
++		};
++
++		environment-emmc {
++			compatible = "barebox,environment";
++			device-path = &environment_emmc;
++			status = "disabled";
++		};
++	};
++
++	memory@a00000 {
++		device_type = "memory";
++		reg = <0x0 0x00a00000 0x0 0x7f600000>;
++	};
++};
++
++&sdhci {
++	no-sd;
++
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <2>;
++		#size-cells = <2>;
++
++		environment_emmc: partition@408000 {
++			label = "barebox-environment";
++			reg = <0x0 0x408000 0x0 0x8000>;
++		};
++	};
++};
++
++&sdmmc0 {
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <2>;
++		#size-cells = <2>;
++
++		environment_sd: partition@408000 {
++			label = "barebox-environment";
++			reg = <0x0 0x408000 0x0 0x8000>;
++		};
++	};
++};
+diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
+index 9b4913d5da..ae08fc8ce3 100644
+--- a/arch/arm/mach-rockchip/Kconfig
++++ b/arch/arm/mach-rockchip/Kconfig
+@@ -91,6 +91,12 @@ config MACH_RADXA_ROCK3
+        help
+ 	  Say Y here if you are using a Radxa ROCK3
+ 
++config MACH_RADXA_CM3
++       select ARCH_RK3568
++       bool "Radxa CM3"
++       help
++	  Say Y here if you are using a Radxa CM3
++
+ endif
+ 
+ comment "select board features:"
+diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
+index 33c76caf79..490e1ddb4d 100644
+--- a/images/Makefile.rockchip
++++ b/images/Makefile.rockchip
+@@ -23,6 +23,9 @@ image-$(CONFIG_MACH_PINE64_QUARTZ64) += barebox-quartz64a.img
+ pblb-$(CONFIG_MACH_RADXA_ROCK3) += start_rock3a
+ image-$(CONFIG_MACH_RADXA_ROCK3) += barebox-rock3a.img
+ 
++pblb-$(CONFIG_MACH_RADXA_CM3) += start_radxa-cm3-io.img
++image-$(CONFIG_MACH_RADXA_CM3) += barebox-radxa-cm3-io.img
++
+ quiet_cmd_rkimg_image = RK-IMG $@
+       cmd_rkimg_image = $(objtree)/scripts/rkimage -o $@ $(word 2,$^) $(word 1,$^)
+ 
+@@ -41,3 +44,7 @@ $(obj)/barebox-quartz64a.img: $(obj)/start_quartz64a.pblb \
+ $(obj)/barebox-rock3a.img: $(obj)/start_rock3a.pblb \
+                 $(board)/radxa-rock3/sdram-init.bin
+ 	$(call if_changed,rkimg_image)
++
++$(obj)/barebox-radxa-cm3-io.img: $(obj)/start_radxa_cm3_io.pblb \
++                $(board)/radxa-cm3/sdram-init.bin
++	$(call if_changed,rkimg_image)
+-- 
+2.39.2
+
 
 
