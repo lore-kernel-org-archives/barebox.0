@@ -1,53 +1,64 @@
-Delivery-date: Thu, 30 Mar 2023 18:12:41 +0200
+Delivery-date: Fri, 31 Mar 2023 07:50:14 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phutE-002sWH-7U
-	for lore@lore.pengutronix.de; Thu, 30 Mar 2023 18:12:41 +0200
+	id 1pi7eP-003lAr-Q8
+	for lore@lore.pengutronix.de; Fri, 31 Mar 2023 07:50:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1phutD-0000uQ-OM
-	for lore@pengutronix.de; Thu, 30 Mar 2023 18:12:40 +0200
+	id 1pi7eP-0003fI-NS
+	for lore@pengutronix.de; Fri, 31 Mar 2023 07:50:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=dRTGpXkGVcBGXPYbMYnCCnEAg19vIza2ozdSQXe3pc8=; b=ElNZAQqJQ9gy2l/L/YU2Cj+IBO
-	FxbHuRGK/JEkqVp2bh7nlSXBUj3DwQnDks3QQULWek/uWKZ+ll6ndoXqhMJmWNRDd2QD7/9nL1jja
-	uk4EAuFr3q4+Q37cQkYDUVnyxnvrTBgbYZndfMDmbHnr0g/8MbBOj8fSldpxRc3434UYDBQhuJX9j
-	Y6WODvzLy9dDGg9rxM7FclL9w8q7k/T4k5h/deWOm8Ft/gV3fpUJ1+idwiyt11xXVVIG4CG0UDLn3
-	QWKjqDKgJ+rKKpv1ARnPWrlbsrdEDmc0Sh4yDeA9JU9cBrJdv+0UrrJfbg4wZC6b6i+eppBSvFBAs
-	pYgo/0zA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=5spUfZWo3zbNOtJNDBUgIHiT2EaMA718sdyD7SQhgyA=; b=GSbqHVOkG/FVGAllt0iVZwjvGa
+	aCi0d32Z0GzRV1wr6+VGHzsiVg0YDDi5tXUQ+gCI+y+tDcv7Zp7r9yO85w/GvG8eRKtIr1vlsRywG
+	+W/apLldjVHsBVmo1i2QoQtLEmVTbX18soyYLaV6oWsHM0NRDoEYYAE5eSTJgPPHgCQrKaUQn73IY
+	y3FtVGhLRqzF04oTDJ9RNXX1gveXTghbYkgPBmNVqF6syHJgGSJ/KGPX5jNQZScUtN9YIj68+LI8H
+	rCaBi1StQviY1BHKOP2i8f7Mv2II/h2Vw2TgaklzlLcEG1VlG6t6GmWV3y6OCVBp+7upBnNUVpxiO
+	S7cyLNJg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1phurq-004QSU-36;
-	Thu, 30 Mar 2023 16:11:14 +0000
+	id 1pi7cn-005v7m-2Z;
+	Fri, 31 Mar 2023 05:48:33 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1phurn-004QQC-1h
+	id 1pi7ck-005v6w-2A
 	for barebox@lists.infradead.org;
-	Thu, 30 Mar 2023 16:11:13 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost)
+	Fri, 31 Mar 2023 05:48:32 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <r.czerwinski@pengutronix.de>)
-	id 1phurj-0000hd-DH; Thu, 30 Mar 2023 18:11:07 +0200
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Rouven Czerwinski <rouven@czerwinskis.de>
-Date: Thu, 30 Mar 2023 18:11:01 +0200
-Message-Id: <20230330161101.58529-1-r.czerwinski@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1pi7ce-0003Rh-Oz; Fri, 31 Mar 2023 07:48:24 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pi7ce-0003sF-CN; Fri, 31 Mar 2023 07:48:24 +0200
+Date: Fri, 31 Mar 2023 07:48:24 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org,
+	Hans Christian Lonstad <hcl@datarespons.com>
+Message-ID: <20230331054824.GL19113@pengutronix.de>
+References: <20230330113844.3343865-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230330113844.3343865-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230330_091111_740140_E3A176B9 
-X-CRM114-Status: GOOD (  21.57  )
+X-CRM114-CacheID: sfid-20230330_224830_741442_41E89F94 
+X-CRM114-Status: GOOD (  25.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,292 +76,71 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH next v2] arm: rockchip: add support for CM3 on IO board
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH master] ARM: dts: i.MX8MP:
+ snps,dis-u2-freeclk-exists-quirk
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Rouven Czerwinski <rouven@czerwinskis.de>
+On Thu, Mar 30, 2023 at 01:38:44PM +0200, Ahmad Fatoum wrote:
+> Linux v6.1 adds a snps,gfladj-refclk-lpm-sel-quirk property to the
+> i.MX8MP DWC3 device tree nodes, which is a superset of the existing
+> snps,dis-u2-freeclk-exists-quirk property. For this reason, the old
+> property was dropped breaking some usages of barebox i.MX8MP DWC3.
+> 
+> The proper fix would be supporting this new property, which is already
+> in next as part of the DWC3 driver sync with the kernel.
+> 
+> Until that lands in master though, let's add back the removed property
+> to fix the regression. Expectation is that we can revert this commit
+> as part of v2023.05.0.
+> 
+> Link: https://github.com/saschahauer/barebox/issues/19
+> Reported-by: Hans Christian Lonstad <hcl@datarespons.com>
+> Fixes: 32e2176ba050 ("dts: update to v6.1-rc1")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  arch/arm/dts/imx8mp.dtsi | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 
-Working:
-- RKBIN DDR training (rk3566_ddr_1056MHz_v1.13.bin)
-- RKBIN TF-A (v1.34) from RKBIN
-- Environment storage
-- DHCP, ping and link detection
+Applied, thanks
 
-Signed-off-by: Rouven Czerwinski <rouven@czerwinskis.de>
----
-v2:
-- rebase on next and adjust to RK356x changes
-- update rockchip boards documentation
+Sascha
 
- Documentation/boards/rockchip.rst    |  1 +
- arch/arm/boards/Makefile             |  1 +
- arch/arm/boards/radxa-cm3/.gitignore |  1 +
- arch/arm/boards/radxa-cm3/Makefile   |  3 ++
- arch/arm/boards/radxa-cm3/board.c    | 56 ++++++++++++++++++++++++++++
- arch/arm/boards/radxa-cm3/lowlevel.c | 28 ++++++++++++++
- arch/arm/dts/Makefile                |  1 +
- arch/arm/dts/rk3566-cm3-io.dts       | 55 +++++++++++++++++++++++++++
- arch/arm/mach-rockchip/Kconfig       |  6 +++
- images/Makefile.rockchip             |  7 ++++
- 10 files changed, 159 insertions(+)
- create mode 100644 arch/arm/boards/radxa-cm3/.gitignore
- create mode 100644 arch/arm/boards/radxa-cm3/Makefile
- create mode 100644 arch/arm/boards/radxa-cm3/board.c
- create mode 100644 arch/arm/boards/radxa-cm3/lowlevel.c
- create mode 100644 arch/arm/dts/rk3566-cm3-io.dts
+> 
+> diff --git a/arch/arm/dts/imx8mp.dtsi b/arch/arm/dts/imx8mp.dtsi
+> index 6962d11e853a..3bec8432627f 100644
+> --- a/arch/arm/dts/imx8mp.dtsi
+> +++ b/arch/arm/dts/imx8mp.dtsi
+> @@ -10,6 +10,15 @@
+>  	};
+>  };
+>  
+> +/* Temporary workaround until snps,gfladj-refclk-lpm-sel-quirk is supported */
+> +&usb_dwc3_0 {
+> +	snps,dis-u2-freeclk-exists-quirk;
+> +};
+> +
+> +&usb_dwc3_1 {
+> +	snps,dis-u2-freeclk-exists-quirk;
+> +};
+> +
+>  /*
+>   * The DSP reserved memory will collide with the Barebox malloc area for some
+>   * DRAM sizes, even though the DSP itself is disabled in most configurations.
+> -- 
+> 2.39.2
+> 
+> 
+> 
 
-diff --git a/Documentation/boards/rockchip.rst b/Documentation/boards/rockchip.rst
-index 0e8738bbf1..583b4f1720 100644
---- a/Documentation/boards/rockchip.rst
-+++ b/Documentation/boards/rockchip.rst
-@@ -60,6 +60,7 @@ Supported Boards
- - Rockchip RK3568 Bananapi R2 Pro
- - Pine64 Quartz64 Model A
- - Radxa ROCK3 Model A
-+- Radxa CM3 (RK3566) IO Board
- 
- The steps described in the following target the RK3568 and the RK3568 EVB but
- generally apply to both SoCs and all boards.
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 37b1650e63..b204c257f6 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -190,3 +190,4 @@ obj-$(CONFIG_MACH_RK3568_BPI_R2PRO)			+= rockchip-rk3568-bpi-r2pro/
- obj-$(CONFIG_MACH_PINE64_QUARTZ64)		+= pine64-quartz64/
- obj-$(CONFIG_MACH_RADXA_ROCK3)			+= radxa-rock3/
- obj-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP)	+= variscite-dt8mcustomboard-imx8mp/
-+obj-$(CONFIG_MACH_RADXA_CM3)			+= radxa-cm3/
-diff --git a/arch/arm/boards/radxa-cm3/.gitignore b/arch/arm/boards/radxa-cm3/.gitignore
-new file mode 100644
-index 0000000000..f458f794b5
---- /dev/null
-+++ b/arch/arm/boards/radxa-cm3/.gitignore
-@@ -0,0 +1 @@
-+sdram-init.bin
-diff --git a/arch/arm/boards/radxa-cm3/Makefile b/arch/arm/boards/radxa-cm3/Makefile
-new file mode 100644
-index 0000000000..b37b6c870b
---- /dev/null
-+++ b/arch/arm/boards/radxa-cm3/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-y += board.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/radxa-cm3/board.c b/arch/arm/boards/radxa-cm3/board.c
-new file mode 100644
-index 0000000000..14b6784179
---- /dev/null
-+++ b/arch/arm/boards/radxa-cm3/board.c
-@@ -0,0 +1,56 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <bootsource.h>
-+#include <common.h>
-+#include <deep-probe.h>
-+#include <init.h>
-+#include <mach/rockchip/bbu.h>
-+
-+struct cm3_model {
-+	const char *name;
-+	const char *shortname;
-+};
-+
-+static int cm3_probe(struct device *dev)
-+{
-+	enum bootsource bootsource = bootsource_get();
-+	int instance = bootsource_get_instance();
-+	const struct cm3_model *model;
-+
-+	model = device_get_match_data(dev);
-+
-+	barebox_set_model(model->name);
-+	barebox_set_hostname(model->shortname);
-+
-+	if (bootsource == BOOTSOURCE_MMC && instance == 1)
-+		of_device_enable_path("/chosen/environment-sd");
-+	else
-+		of_device_enable_path("/chosen/environment-emmc");
-+
-+	rk3568_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT,
-+				"/dev/mmc0");
-+	rk3568_bbu_mmc_register("sd", 0, "/dev/mmc1");
-+
-+	return 0;
-+}
-+
-+static const struct cm3_model cm3_io = {
-+	.name = "Radxa CM3 on IO Board",
-+	.shortname = "cm3-io",
-+};
-+
-+static const struct of_device_id cm3_of_match[] = {
-+	{
-+		.compatible = "radxa,cm3-io",
-+		.data = &cm3_io,
-+	},
-+	{ /* sentinel */ },
-+};
-+
-+static struct driver cm3_io_board_driver = {
-+	.name = "board-cm3-io",
-+	.probe = cm3_probe,
-+	.of_compatible = cm3_of_match,
-+};
-+coredevice_platform_driver(cm3_io_board_driver);
-+
-+BAREBOX_DEEP_PROBE_ENABLE(cm3_of_match);
-diff --git a/arch/arm/boards/radxa-cm3/lowlevel.c b/arch/arm/boards/radxa-cm3/lowlevel.c
-new file mode 100644
-index 0000000000..ee620c0aeb
---- /dev/null
-+++ b/arch/arm/boards/radxa-cm3/lowlevel.c
-@@ -0,0 +1,28 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <common.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/rockchip/hardware.h>
-+#include <mach/rockchip/atf.h>
-+#include <debug_ll.h>
-+
-+extern char __dtb_rk3566_cm3_io_start[];
-+
-+ENTRY_FUNCTION(start_radxa_cm3_io, r0, r1, r2)
-+{
-+	/*
-+	 * Enable vccio4 1.8V and vccio6 1.8V
-+	 * Needed for GMAC to work.
-+	 * FIXME: This is done by the io-domain driver as well, but there
-+	 * currently is no mechanism to make sure the driver gets probed
-+	 * before its consumers. Remove this setup once this issue is
-+	 * resolved.
-+	 */
-+	writel(RK_SETBITS(0x50), 0xfdc20140);
-+
-+	putc_ll('>');
-+
-+	relocate_to_adr_full(RK3568_BAREBOX_LOAD_ADDRESS);
-+	setup_c();
-+
-+	rk3568_barebox_entry(__dtb_rk3566_cm3_io_start);
-+}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 0a7cceb461..220e1617e3 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -109,6 +109,7 @@ lwl-$(CONFIG_MACH_PROTONIC_STM32MP1) += \
- 	stm32mp151-prtt1s.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
- lwl-$(CONFIG_MACH_RADXA_ROCK3) += rk3568-rock-3a.dtb.o
-+lwl-$(CONFIG_MACH_RADXA_CM3) += rk3566-cm3-io.dtb.o
- lwl-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += rk3288-phycore-som.dtb.o
- lwl-$(CONFIG_MACH_REALQ7) += imx6q-dmo-edmqmx6.dtb.o
- lwl-$(CONFIG_MACH_RK3568_EVB) += rk3568-evb1-v10.dtb.o
-diff --git a/arch/arm/dts/rk3566-cm3-io.dts b/arch/arm/dts/rk3566-cm3-io.dts
-new file mode 100644
-index 0000000000..81f896b943
---- /dev/null
-+++ b/arch/arm/dts/rk3566-cm3-io.dts
-@@ -0,0 +1,55 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+
-+/dts-v1/;
-+
-+#include <arm64/rockchip/rk3566-radxa-cm3-io.dts>
-+#include "rk356x.dtsi"
-+
-+/ {
-+	chosen: chosen {
-+		environment-sd {
-+			compatible = "barebox,environment";
-+			device-path = &environment_sd;
-+			status = "disabled";
-+		};
-+
-+		environment-emmc {
-+			compatible = "barebox,environment";
-+			device-path = &environment_emmc;
-+			status = "disabled";
-+		};
-+	};
-+
-+	memory@a00000 {
-+		device_type = "memory";
-+		reg = <0x0 0x00a00000 0x0 0x7f600000>;
-+	};
-+};
-+
-+&sdhci {
-+	no-sd;
-+
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		environment_emmc: partition@408000 {
-+			label = "barebox-environment";
-+			reg = <0x0 0x408000 0x0 0x8000>;
-+		};
-+	};
-+};
-+
-+&sdmmc0 {
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#address-cells = <2>;
-+		#size-cells = <2>;
-+
-+		environment_sd: partition@408000 {
-+			label = "barebox-environment";
-+			reg = <0x0 0x408000 0x0 0x8000>;
-+		};
-+	};
-+};
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 9b4913d5da..ae08fc8ce3 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -91,6 +91,12 @@ config MACH_RADXA_ROCK3
-        help
- 	  Say Y here if you are using a Radxa ROCK3
- 
-+config MACH_RADXA_CM3
-+       select ARCH_RK3568
-+       bool "Radxa CM3"
-+       help
-+	  Say Y here if you are using a Radxa CM3
-+
- endif
- 
- comment "select board features:"
-diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
-index 33c76caf79..490e1ddb4d 100644
---- a/images/Makefile.rockchip
-+++ b/images/Makefile.rockchip
-@@ -23,6 +23,9 @@ image-$(CONFIG_MACH_PINE64_QUARTZ64) += barebox-quartz64a.img
- pblb-$(CONFIG_MACH_RADXA_ROCK3) += start_rock3a
- image-$(CONFIG_MACH_RADXA_ROCK3) += barebox-rock3a.img
- 
-+pblb-$(CONFIG_MACH_RADXA_CM3) += start_radxa-cm3-io.img
-+image-$(CONFIG_MACH_RADXA_CM3) += barebox-radxa-cm3-io.img
-+
- quiet_cmd_rkimg_image = RK-IMG $@
-       cmd_rkimg_image = $(objtree)/scripts/rkimage -o $@ $(word 2,$^) $(word 1,$^)
- 
-@@ -41,3 +44,7 @@ $(obj)/barebox-quartz64a.img: $(obj)/start_quartz64a.pblb \
- $(obj)/barebox-rock3a.img: $(obj)/start_rock3a.pblb \
-                 $(board)/radxa-rock3/sdram-init.bin
- 	$(call if_changed,rkimg_image)
-+
-+$(obj)/barebox-radxa-cm3-io.img: $(obj)/start_radxa_cm3_io.pblb \
-+                $(board)/radxa-cm3/sdram-init.bin
-+	$(call if_changed,rkimg_image)
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
