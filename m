@@ -1,54 +1,54 @@
-Delivery-date: Mon, 03 Apr 2023 09:06:36 +0200
+Delivery-date: Mon, 03 Apr 2023 09:12:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pjEGx-008G7O-VB
-	for lore@lore.pengutronix.de; Mon, 03 Apr 2023 09:06:36 +0200
+	id 1pjEMQ-008GnI-LJ
+	for lore@lore.pengutronix.de; Mon, 03 Apr 2023 09:12:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pjEGx-00024Z-GW
-	for lore@pengutronix.de; Mon, 03 Apr 2023 09:06:36 +0200
+	id 1pjEMQ-00038K-C1
+	for lore@pengutronix.de; Mon, 03 Apr 2023 09:12:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=h2zbdXrA4VmkyDgWL9a4mJOmxa2MyhFsHDWnrKsi+Wo=; b=x9lwC3o1a/oLcMdQhfkqFDzKt1
-	T2oz7sOagfg6f5lAUXPuCnm4pwL/7nU4BeWOmpURMJTI/fUsUSyQ6hcpfINsknkZFf98Z6wSL6uUq
-	dJobaf48R+dDku+qEJiTEQN5GyZtv1Z31ev/0LZGmI9z1gd+mKbvi/Xd108rIbFLHZVNBdffH4/hw
-	9WBPXI/laxmbDOTx4ugRRSi43b39wCVtSTrHeKh7JFRHtEwvLo5+e+cnQ8G9LuevQPLAKuGwI9dd2
-	4x2Ev9/i34fQW2LlJEw5C1dNQoZDgX77o9G17JPWuUBsu44odPzsGv6/TnEFeNvI/b1RZxt8XWD+7
-	YddJS6xA==;
+	bh=5rsJ2VlbPBIhxNc9yRryDosQyJCaJS/CKJjrLCUq0Zs=; b=w1ILeDBZ+qw3bHKzSzNgSFp0k+
+	aKdpzL7cIofiB8dhpbL2YMcHBpNu1N0i4qDSwfzRMegs2NBNhdm93GDIbZNdgviPbVzvUZ/HK+Vtu
+	PnbF4WjLohsxIZQ84DT7OPwogv2kluqipmf8GFZ+FfahDv7E0crjVYsMFJ3EEB5Ib6nz6ozt3WTFT
+	c02boyV8awH0M4Q71zep2AI+4COg47s49cBRNaEhKp8vLaHRSLh+59RdZR7zdZFemmLPXJA686Moq
+	Qz0caosIwMBsXhdaZUlfzBnnQiJk1xFA9Kq5g9ev0w4ttfkkeO3/hLKC2zFvBznT34ABFqxh0b/UT
+	11y1O56g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pjEFw-00EKJ4-0A;
-	Mon, 03 Apr 2023 07:05:32 +0000
+	id 1pjELS-00EL5t-1o;
+	Mon, 03 Apr 2023 07:11:14 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pjEFs-00EKI6-2V
+	id 1pjELM-00EL50-1u
 	for barebox@lists.infradead.org;
-	Mon, 03 Apr 2023 07:05:30 +0000
+	Mon, 03 Apr 2023 07:11:12 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pjEFr-0001pU-D0; Mon, 03 Apr 2023 09:05:27 +0200
+	id 1pjELK-000324-MG; Mon, 03 Apr 2023 09:11:06 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pjEFr-00080y-74; Mon, 03 Apr 2023 09:05:27 +0200
-Date: Mon, 3 Apr 2023 09:05:27 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230403070527.GP19113@pengutronix.de>
-References: <20230331090453.1424337-1-a.fatoum@pengutronix.de>
+	id 1pjELJ-0008DH-AX; Mon, 03 Apr 2023 09:11:05 +0200
+Date: Mon, 3 Apr 2023 09:11:05 +0200
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Cc: barebox@lists.infradead.org, Rouven Czerwinski <rouven@czerwinskis.de>
+Message-ID: <20230403071105.GQ19113@pengutronix.de>
+References: <20230330161101.58529-1-r.czerwinski@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230331090453.1424337-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230330161101.58529-1-r.czerwinski@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +56,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230403_000528_818096_7ADA1708 
-X-CRM114-Status: GOOD (  25.68  )
+X-CRM114-CacheID: sfid-20230403_001108_629108_4E01A65A 
+X-CRM114-Status: GOOD (  15.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,74 +79,36 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] of: implement of_property_present helper
+Subject: Re: [PATCH next v2] arm: rockchip: add support for CM3 on IO board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Mar 31, 2023 at 11:04:53AM +0200, Ahmad Fatoum wrote:
-> We have various code using of_find_property(np, propname, NULL) to
-> detect whether propname exists and some more that uses
-> of_property_read_bool on non-boolean properties.
+On Thu, Mar 30, 2023 at 06:11:01PM +0200, Rouven Czerwinski wrote:
+> From: Rouven Czerwinski <rouven@czerwinskis.de>
 > 
-> There's work underway in Linux to switch a lot of these instances to
-> of_property_present[1]. Let's prepare for porting Linux code that
-> uses the property by adding it.
+> Working:
+> - RKBIN DDR training (rk3566_ddr_1056MHz_v1.13.bin)
+> - RKBIN TF-A (v1.34) from RKBIN
+> - Environment storage
+> - DHCP, ping and link detection
 > 
-> [1]: https://lore.kernel.org/linux-devicetree/?q=of_property_present
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Rouven Czerwinski <rouven@czerwinskis.de>
 > ---
->  include/of.h | 20 ++++++++++++++++++--
->  1 file changed, 18 insertions(+), 2 deletions(-)
+> v2:
+> - rebase on next and adjust to RK356x changes
+> - update rockchip boards documentation
+> 
+> +	memory@a00000 {
+> +		device_type = "memory";
+> +		reg = <0x0 0x00a00000 0x0 0x7f600000>;
+> +	};
 
-Applied, thanks
+Now that we have a driver reading back the memory settings from the
+controller this shouldn't be needed anymore. I dropped the memory node
+while applying, please check if it works.
 
 Sascha
 
-> 
-> diff --git a/include/of.h b/include/of.h
-> index 3fb6ecec8dfe..22358f5579ec 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -1038,8 +1038,10 @@ static inline int of_property_read_string_index(const struct device_node *np,
->   * @np:		device node from which the property value is to be read.
->   * @propname:	name of the property to be searched.
->   *
-> - * Search for a property in a device node.
-> - * Returns true if the property exist false otherwise.
-> + * Search for a boolean property in a device node. Usage on non-boolean
-> + * property types is deprecated.
-> +
-> + * Return: true if the property exist false otherwise.
->   */
->  static inline bool of_property_read_bool(const struct device_node *np,
->  					 const char *propname)
-> @@ -1049,6 +1051,20 @@ static inline bool of_property_read_bool(const struct device_node *np,
->  	return prop ? true : false;
->  }
->  
-> +/**
-> + * of_property_present - Test if a property is present in a node
-> + * @np:		device node to search for the property.
-> + * @propname:	name of the property to be searched.
-> + *
-> + * Test for a property present in a device node.
-> + *
-> + * Return: true if the property exists false otherwise.
-> + */
-> +static inline bool of_property_present(const struct device_node *np, const char *propname)
-> +{
-> +	return of_property_read_bool(np, propname);
-> +}
-> +
->  static inline int of_property_read_u8(const struct device_node *np,
->  				       const char *propname,
->  				       u8 *out_value)
-> -- 
-> 2.39.2
-> 
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
