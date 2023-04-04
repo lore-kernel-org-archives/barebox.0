@@ -1,63 +1,60 @@
-Delivery-date: Tue, 04 Apr 2023 11:11:10 +0200
+Delivery-date: Tue, 04 Apr 2023 12:18:42 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pjch4-009Ygy-0z
-	for lore@lore.pengutronix.de; Tue, 04 Apr 2023 11:11:10 +0200
+	id 1pjdkP-009bav-H5
+	for lore@lore.pengutronix.de; Tue, 04 Apr 2023 12:18:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pjch3-0006pT-Iw
-	for lore@pengutronix.de; Tue, 04 Apr 2023 11:11:10 +0200
+	id 1pjdkP-00006r-Ff
+	for lore@pengutronix.de; Tue, 04 Apr 2023 12:18:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JlJcAUhePE9YleuvvVjghS+oQQKqwDCIkxEt75Lbn64=; b=WCCj8OypSIMC9uqbkhtZuEh5gh
-	xGD6iTjFoSZTMdrq/sOSEWHk8KVBGKBWrl6OE7PR71jgdVcynehdg0jMZl6OK4zFUZbAYkPxofdeR
-	H+qmSO3iynFA9dCO4l+qMuIfcq+pTmYMpJ/WDffG+8FRoipyXU5nbvahx7Az3ya2QJzd7jp6VCbMp
-	0XgfFa0gj91Rj0gRE6NPiCmzNGBLF/rqkJ0m5w9h0lrfCwxF2tlv7QpG7nuRupqxUT4W/2ZMqAG4i
-	Dsd3F7o7dfgWKLRmWhOI8Rqhs+BackqrSeg//xg2q44bENb5EDkE7Huhb4jTuenRoUasRC67G05l/
-	NlWOYVUg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=rCGSUoJZ3RzcoFz8tTuyktPL6/0VgRTACz/s2pOedT8=; b=JKKynwj9u5NNFM
+	N1g1CPy+H6W3jZaMCDKYYgcfspIcDV40dHt1GtXA+LjvQG4oQFK6mtKoVpnc5z8j5NF/mNZWoK9RZ
+	6Ku5X+/TNk60FN0213wpKkjA7wBxCMJkjXr6sl9Rum/mSGxZnlpDyy0QOTfg90pJ1IiUuGhKfAtlD
+	gOcuAmyfTgzRhuLUrv9DFUtxfKaoBsxKOUNtp1iF0MHEsrziXPzQvZfHlm9hYaXzn8Wl79nA9fjgi
+	O0VXEUuLl2BTCkqU874pKWf2qiO4Jm4VXI06v/VVg4BpCW7XhGTMC+tLP2xKBThURvz4WnB7JFZah
+	KHU9akBkjNk5f6lkXQPw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pjccP-000dsN-0B;
-	Tue, 04 Apr 2023 09:06:21 +0000
+	id 1pjdj8-000qPt-2r;
+	Tue, 04 Apr 2023 10:17:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pjcc4-000dlh-1G
+	id 1pjdj5-000qNg-0J
 	for barebox@lists.infradead.org;
-	Tue, 04 Apr 2023 09:06:18 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	Tue, 04 Apr 2023 10:17:20 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pjcc1-00064r-HE; Tue, 04 Apr 2023 11:05:57 +0200
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1pjcc1-0007i1-9O; Tue, 04 Apr 2023 11:05:57 +0200
-Date: Tue, 4 Apr 2023 11:05:57 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230404090557.3nqhbgpwlhi3w3fy@pengutronix.de>
-References: <20230228-v2023-02-0-topic-flexspi-v2-0-3d33126d2434@pengutronix.de>
- <20230228-v2023-02-0-topic-flexspi-v2-2-3d33126d2434@pengutronix.de>
- <20230404070417.GI15436@pengutronix.de>
- <20230404080142.itltxhz6vtagoipo@pengutronix.de>
- <20230404084900.GX19113@pengutronix.de>
+	(envelope-from <afa@pengutronix.de>)
+	id 1pjdiu-0007zp-Qw; Tue, 04 Apr 2023 12:17:08 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pjdiu-008tRH-5p; Tue, 04 Apr 2023 12:17:08 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pjdit-009O4R-5g; Tue, 04 Apr 2023 12:17:07 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Tue,  4 Apr 2023 12:17:05 +0200
+Message-Id: <20230404101706.2237453-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230404084900.GX19113@pengutronix.de>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230404_020609_314140_C77637FF 
-X-CRM114-Status: GOOD (  37.37  )
+X-CRM114-CacheID: sfid-20230404_031719_135113_60821730 
+X-CRM114-Status: UNSURE (   9.35  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,101 +66,61 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 02/23] bbu: make it possible to check multiple
- of-compatibles
+Subject: [PATCH v2 1/2] scripts: gen-dtb-s: reference OF IMD entries automatically
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 23-04-04, Sascha Hauer wrote:
-> On Tue, Apr 04, 2023 at 10:01:42AM +0200, Marco Felsch wrote:
-> > On 23-04-04, Sascha Hauer wrote:
-> > > On Mon, Mar 13, 2023 at 02:41:41PM +0100, Marco Felsch wrote:
-> > > > It is possible that one barebox can rule multiple platforms e.g.
-> > > > multiple platform revision each has a dedicated device tree and of
-> > > > compatible. While it is possible to add multiple of-compatibles via
-> > > > IMD_USED_OF() (see: zii-imx8mq-dev) we didn't allowed it to flash it
-> > > > without 'force'. Fix this by check all possible IMD_TYPE_OF_COMPATIBLE
-> > > > image metadata types.
-> > > > 
-> > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > > ---
-> > > >  common/bbu.c | 42 +++++++++++++++++++++++++++---------------
-> > > >  1 file changed, 27 insertions(+), 15 deletions(-)
-> > > > 
-> > > > diff --git a/common/bbu.c b/common/bbu.c
-> > > > index 3ec17216cb..a9b3fef7a0 100644
-> > > > --- a/common/bbu.c
-> > > > +++ b/common/bbu.c
-> > > > @@ -154,36 +154,44 @@ struct bbu_handler *bbu_find_handler_by_device(const char *devicepath)
-> > > >  	return NULL;
-> > > >  }
-> > > >  
-> > > > -static int bbu_check_of_compat(struct bbu_data *data)
-> > > > +static int bbu_check_of_compat(struct bbu_data *data, unsigned short of_compat_nr)
-> > > >  {
-> > > > +	const struct imd_header *imd = data->imd_data;
-> > > > +	const struct imd_header *of_compat;
-> > > >  	struct device_node *root_node;
-> > > >  	const char *machine, *str;
-> > > >  	int ret;
-> > > > -	const struct imd_header *of_compat;
-> > > >  
-> > > >  	if (!IS_ENABLED(CONFIG_OFDEVICE) || !IS_ENABLED(CONFIG_IMD))
-> > > >  		return 0;
-> > > 
-> > > This patch breaks barebox update when the update image doesn't contain
-> > > any IMD_TYPE_OF_COMPATIBLE entries. To fix this we need this here:
-> > > 
-> > > 	if (!of_compat_nr)
-> > > 		return 0;
-> > > 
-> > > I fixed this up.
-> > 
-> > Argh.. thanks :) To make even more robust and forcable by board we could
-> > replace it with a dedicated CONFIG_IMD_OF_COMPATIBLE.
-> 
-> Making this a compile time option is not a good idea. Should be runtime.
+We currently require IMD_OF_USED to get the DT compatible into the
+barebox image data meta section. As the PBL is already referencing the
+DT to pass it along to barebox proper, let's add a reference from the DT
+to the image data section to make IMD_OF_USED unnecessary.
 
-Yes, you're right. I thought the same after send this mail :/
+Suggested-by: Antony Pavlov <antonynpavlov@gmail.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+--
+v1 -> v2:
+  - use dword, to fix build for 64-bit (Sascha)
+  - place IMD reference before STRUCT_ALIGNMENT
+---
+ scripts/gen-dtb-s | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-> 
-> > This way boards
-> > can select it to enforce the check or we skip the check. Since just
-> > checking:
-> > 
-> >   if (!of_comat_nr)
-> >      return 0;
-> > 
-> > could also hide board code issues.
-> 
-> Indeed, yes. Ahmad has a patch in the queue which automatically adds the
-> IMD_TYPE_OF_COMPATIBLE entries for each board based on the device tree
-> that is used in the image. I suggest we wait for this patch, and with it
-> we can re-evaluate this.
+diff --git a/scripts/gen-dtb-s b/scripts/gen-dtb-s
+index c5c46a4d8675..6309a814a483 100755
+--- a/scripts/gen-dtb-s
++++ b/scripts/gen-dtb-s
+@@ -49,6 +49,9 @@ echo "__dtb_${name}_start:"
+ echo ".incbin \"$dtb\""
+ echo "__dtb_${name}_end:"
+ echo ".global __dtb_${name}_end"
++if [ "$imd" = "y" ]; then
++	echo ".dword __barebox_imd_OF_${name}"
++fi
+ echo ".balign STRUCT_ALIGNMENT"
+ 
+ compressed=$(${CONFIG_SHELL} "${srctree}/scripts/file-size.sh" $dtb.z)
+@@ -65,5 +68,8 @@ printf ".int 0x%08x\n"  $uncompressed
+ echo ".incbin \"$dtb.z\""
+ echo "__dtb_z_${name}_end:"
+ echo ".global __dtb_z_${name}_end"
++if [ "$imd" = "y" ]; then
++	echo ".dword __barebox_imd_OF_${name}"
++fi
+ echo ".balign STRUCT_ALIGNMENT"
+ echo "#endif"
+-- 
+2.39.2
 
-Sure
-
-Regards,
-  Marco
-
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
 
 
