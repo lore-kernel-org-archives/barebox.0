@@ -1,64 +1,63 @@
-Delivery-date: Wed, 05 Apr 2023 13:15:26 +0200
+Delivery-date: Wed, 05 Apr 2023 14:28:11 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pk16r-00Aoqo-SG
-	for lore@lore.pengutronix.de; Wed, 05 Apr 2023 13:15:26 +0200
+	id 1pk2FG-00As2y-VX
+	for lore@lore.pengutronix.de; Wed, 05 Apr 2023 14:28:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pk16r-0003Wk-Qp
-	for lore@pengutronix.de; Wed, 05 Apr 2023 13:15:26 +0200
+	id 1pk2FG-0005rr-Td
+	for lore@pengutronix.de; Wed, 05 Apr 2023 14:28:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
+	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=quhbUYTnCnEjoYb/zFPQC4hFtSg5caDftXCcuzhxvkM=; b=HEvWkzEMBv2Yyv9sguxwI7G7ev
-	XIKngNtpVrCsl8LUZTGTLgQbjxk0SyfbKpomzgcpMxDihe3OpceY/0bDYlzfAyadiMUokdnJkWaWz
-	sgHElZhZcsi9jA/kZQm8xVfyu70amhz2+ZOSDieuHkhsvQUOE5SYkTPE0LwkHngExr5txuDwx31nj
-	eXLmu7Ywz4KkM3196sLlTHbMKwJYnccuPM/xyHukyqGbtVCpObu1qL5M2y1SiwgFGHXW/XnKk1E0Q
-	mapxe5r/jO4sb74BAQWpwC6iPgbO/Ic8/xWUOzsFtVvAucz9USX1s9cLbkaxtC1pzzaPVT917zw5Y
-	ywVGHUZg==;
+	bh=p3c/x+pwqPJDFp12FwM6cMVtvRk8hh6YAyL7ViW61gs=; b=qkqU3sVeKxtNEib9qtWTApNxOx
+	qek5hOCEJhLjsQU9c9ck5c9XNNhCQdsB03/QUt7BFgY1y/jwci/HeaSq/Zmtnfdm06fZhPfZE3Ub8
+	6tFPulcgviMOa6vi1IVtkzLJO8jaLiZAVg6BWGhmDREI6P7CjJBoohk6t2oJRrz678tkFi6+3ef0B
+	S7m5sEgOBPqqN9Od4Hf1UGFcbP2AMTGrN7pVSj4xtjHDkkIGxH7iYq9s1Ibn3SzzsDmLjZzWWCs+r
+	RyyaeEpQketUzIy52FRCN3zI5s2gf8KR2QDDsfxxwKtUoVJD59rMOZHEPIYma//z6z9vd8tH8xfLJ
+	s5AGyoog==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pk15X-004Dca-0f;
-	Wed, 05 Apr 2023 11:14:03 +0000
+	id 1pk2E1-004OXo-0S;
+	Wed, 05 Apr 2023 12:26:53 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pk15U-004DbR-1f
+	id 1pk2Dx-004OWh-2c
 	for barebox@lists.infradead.org;
-	Wed, 05 Apr 2023 11:14:01 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	Wed, 05 Apr 2023 12:26:51 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pk15Q-00033j-Sa; Wed, 05 Apr 2023 13:13:56 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pk15Q-0005WQ-Ko; Wed, 05 Apr 2023 13:13:56 +0200
-Date: Wed, 5 Apr 2023 13:13:56 +0200
-To: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230405111356.GZ19113@pengutronix.de>
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1pk2Du-0005VA-UP; Wed, 05 Apr 2023 14:26:46 +0200
+Received: from [2a0a:edc0:0:900:1d::4e] (helo=lupine)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1pk2Du-00992d-9o; Wed, 05 Apr 2023 14:26:46 +0200
+Received: from pza by lupine with local (Exim 4.94.2)
+	(envelope-from <p.zabel@pengutronix.de>)
+	id 1pk2Dt-00062b-IX; Wed, 05 Apr 2023 14:26:45 +0200
+Message-ID: <013b899a6c8647489b3aa7c2b344c2d08cd6d36d.camel@pengutronix.de>
+From: Philipp Zabel <p.zabel@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Date: Wed, 05 Apr 2023 14:26:45 +0200
+In-Reply-To: <7a08e414-95d1-0d81-64b4-9772ceb6f680@pengutronix.de>
 References: <20230403121844.3447836-1-p.zabel@pengutronix.de>
- <20230403121844.3447836-2-p.zabel@pengutronix.de>
+	 <7a08e414-95d1-0d81-64b4-9772ceb6f680@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.38.3-1+deb11u1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230403121844.3447836-2-p.zabel@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230405_041400_550290_06EE0CDF 
-X-CRM114-Status: GOOD (  20.58  )
+X-CRM114-CacheID: sfid-20230405_052649_846958_70CD27FB 
+X-CRM114-Status: GOOD (  17.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,73 +79,73 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/3] video: fbconsole: add optional damage tracking
+Subject: Re: [PATCH 1/3] video: fb: add optional damage tracking
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Apr 03, 2023 at 02:18:43PM +0200, Philipp Zabel wrote:
-> Annotate framebuffer updates with damage rectangles so drivers may
-> implement partial updates for displays with an integrated framebuffer.
-> 
-> Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-> ---
->  drivers/video/fbconsole.c | 32 ++++++++++++++++++++++++++++----
->  1 file changed, 28 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/video/fbconsole.c b/drivers/video/fbconsole.c
-> index 070378aa2352..25d7ea685ff6 100644
-> --- a/drivers/video/fbconsole.c
-> +++ b/drivers/video/fbconsole.c
-> @@ -18,6 +18,7 @@ enum state_t {
->  struct fbc_priv {
->  	struct console_device cdev;
->  	struct fb_info *fb;
-> +	struct fb_rect rect;
->  
->  	struct screen *sc;
->  
-> @@ -60,9 +61,11 @@ static int fbc_tstc(struct console_device *cdev)
->  static void cls(struct fbc_priv *priv)
->  {
->  	void *buf = gui_screen_render_buffer(priv->sc);
-> +	struct fb_info *fb = priv->fb;
->  
->  	memset(buf, 0, priv->fb->line_length * priv->fb->yres);
->  	gu_screen_blit(priv->sc);
-> +	fb_damage(fb, &priv->rect);
->  }
->  
->  struct rgb {
-> @@ -139,13 +142,20 @@ static void drawchar(struct fbc_priv *priv, int x, int y, int c)
->  static void video_invertchar(struct fbc_priv *priv, int x, int y)
->  {
->  	void *buf;
-> +	struct fb_rect rect;
-> +
-> +	rect.x1 = x * priv->font->width;
-> +	rect.y1 = y * priv->font->height;
-> +	rect.x2 = rect.x1 + priv->font->width;
-> +	rect.y2 = rect.y1 + priv->font->height;
->  
->  	buf = gui_screen_render_buffer(priv->sc);
->  
-> -	gu_invert_area(priv->fb, buf, x * priv->font->width, y * priv->font->height,
-> +	gu_invert_area(priv->fb, buf, rect.x1, rect.y1,
->  			priv->font->width, priv->font->height);
-> -	gu_screen_blit_area(priv->sc, x * priv->font->width, y * priv->font->height,
-> +	gu_screen_blit_area(priv->sc, rect.x1, rect.y1,
->  			priv->font->width, priv->font->height);
-> +	fb_damage(priv->fb, &rect);
+On Di, 2023-04-04 at 14:24 +0200, Ahmad Fatoum wrote:
+> On 03.04.23 14:18, Philipp Zabel wrote:
+> > Add an optional fb_damage operation that drivers may use to accumulate
+> > damage on the framebuffer until fb_flush is called. The accumulated
+> > damage can be used to support partial updates for displays with an
+> > integrated framebuffer.
+> >=20
+> > Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+> > ---
+> > =C2=A0drivers/video/fb.c | 6 ++++++
+> > =C2=A0include/fb.h       | 9 +++++++++
+> > =C2=A02 files changed, 15 insertions(+)
+> >=20
+> > diff --git a/drivers/video/fb.c b/drivers/video/fb.c
+> > index 44754065e7d9..6f412d62c434 100644
+> > --- a/drivers/video/fb.c
+> > +++ b/drivers/video/fb.c
+> > @@ -43,6 +43,12 @@ static int fb_close(struct cdev *cdev)
+> > =C2=A0	return 0;
+> > =C2=A0}
+> > =C2=A0
+> >=20
+> > +void fb_damage(struct fb_info *info, struct fb_rect *rect)
+> > +{
+> > +	if (info->fbops->fb_damage)
+> > +		info->fbops->fb_damage(info, rect);
+> > +}
+> > +
+> > =C2=A0static int fb_op_flush(struct cdev *cdev)
+> > =C2=A0{
+> > =C2=A0	struct fb_info *info =3D cdev->priv;
+> > diff --git a/include/fb.h b/include/fb.h
+> > index 15bb74b99576..4e3eb611db48 100644
+> > --- a/include/fb.h
+> > +++ b/include/fb.h
+> > @@ -80,6 +80,13 @@ struct fb_bitfield {
+> > =C2=A0
+> >=20
+> > =C2=A0struct fb_info;
+> > =C2=A0
+> >=20
+> > +struct fb_rect {
+> > +	u32 x1;
+> > +	u32 y1;
+> > +	u32 x2;
+> > +	u32 y2;
+> > +};
+> > +
+> > =C2=A0struct fb_ops {
+> > =C2=A0	/* set color register */
+> > =C2=A0	int (*fb_setcolreg)(unsigned regno, unsigned red, unsigned green=
+,
+> > @@ -87,6 +94,7 @@ struct fb_ops {
+> > =C2=A0	void (*fb_enable)(struct fb_info *info);
+> > =C2=A0	void (*fb_disable)(struct fb_info *info);
+> > =C2=A0	int (*fb_activate_var)(struct fb_info *info);
+> > +	void (*fb_damage)(struct fb_info *info, struct fb_rect *rect);
+>=20
+> const struct fb_rect * ?
 
-Does it make sense to call fb_damage() from gu_screen_blit_area() and
-gu_screen_blit() instead?
+Yes, changed to const in v2.
 
-Sascha
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+regards
+Philipp
 
 
