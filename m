@@ -1,53 +1,53 @@
-Delivery-date: Wed, 05 Apr 2023 14:28:52 +0200
+Delivery-date: Wed, 05 Apr 2023 14:28:56 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pk2Fv-00As6f-Mq
-	for lore@lore.pengutronix.de; Wed, 05 Apr 2023 14:28:52 +0200
+	id 1pk2Fz-00As7H-Qj
+	for lore@lore.pengutronix.de; Wed, 05 Apr 2023 14:28:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pk2Fv-0005yU-Ie
-	for lore@pengutronix.de; Wed, 05 Apr 2023 14:28:52 +0200
+	id 1pk2Fz-0005zM-GQ
+	for lore@pengutronix.de; Wed, 05 Apr 2023 14:28:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7qC59/wvU75yHZZcScsHgo2/4j17N05V1ez31kKgyik=; b=22xFgI16iwRpQkDFZ5TXAKkSPB
-	cpCngAR2zx+2yGVECRFj04LDPhsrgsjRbrL1Ve+4OHa7VRaJlvsLtR6DEzwY1ff6g2/qSrp3OAC69
-	hMS8t4681LeBI+z7zxuuYv7yjgI3XhWNC204PD25pQW3r6aD7uUh5rwR+usapapwlVzHrA6uMXvLL
-	MvL70RPPuYOn5F0KlxzaLn9azrs5f4JUz7DBrqjopMdmoNcSYxoyPGhj28m4H2FqacMK3HS/xEph+
-	8qq4JnSYDjOqqf0S60Kp3OGArHte0fawAnYWmqbAILd5StDzF/IssYP7z3p2NgR66/GpdPH8yMIXW
-	Q6bov25Q==;
+	bh=dv3OejmIVoZLNZIj7ztLgcEFZbM1YF3WfM/+CZ29bIM=; b=lPYPNpWr9jbqauP6vnx1VD764y
+	bwU3QJtjcEmEXsj4qJ5VesXeBwBzdZXgmF9ycw6j7NpD2/hVVDETHdex8tBpiQqy73zWiR2AKLagN
+	WdcSBJTulaZYn7NBNmYRjARYM9ZZPbSBNEq6olPpZ0E+hbRgyp8zrj55mF3Xytc+SabUIbrnunTSN
+	SblP4zpdkHHp3hDtVFrE7Vmt1gCT3m81Bb0+N59bD7yGF8hOmGeYcUj/B0FHGZLCJReOso+mkOEo2
+	XHi8G/8paoyx+PbjauIo+IvphP4cewsyiJ/oGBssdH6t8//5VpiwpZI+IrZpakMtSTdoZpDNhYG0e
+	Tg7orO9w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pk2Er-004Ok3-2s;
-	Wed, 05 Apr 2023 12:27:45 +0000
+	id 1pk2Eu-004OlN-0U;
+	Wed, 05 Apr 2023 12:27:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pk2Ep-004Oj3-27
+	id 1pk2Er-004Ojd-1B
 	for barebox@lists.infradead.org;
-	Wed, 05 Apr 2023 12:27:44 +0000
+	Wed, 05 Apr 2023 12:27:46 +0000
 Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <p.zabel@pengutronix.de>)
-	id 1pk2Eo-0005i8-EA; Wed, 05 Apr 2023 14:27:42 +0200
+	id 1pk2Eq-0005i8-4c; Wed, 05 Apr 2023 14:27:44 +0200
 From: Philipp Zabel <p.zabel@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed,  5 Apr 2023 14:27:33 +0200
-Message-Id: <20230405122734.2348025-2-p.zabel@pengutronix.de>
+Date: Wed,  5 Apr 2023 14:27:34 +0200
+Message-Id: <20230405122734.2348025-3-p.zabel@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230405122734.2348025-1-p.zabel@pengutronix.de>
 References: <20230405122734.2348025-1-p.zabel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230405_052743_694112_C5C6150A 
-X-CRM114-Status: GOOD (  10.00  )
+X-CRM114-CacheID: sfid-20230405_052745_409295_8DE816A1 
+X-CRM114-Status: GOOD (  18.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,63 +69,199 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/3] graphic_utils: add optional damage tracking
+Subject: [PATCH v2 3/3] video: mipi_dbi: add damage tracking and partial updates
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Annotate framebuffer updates with damage rectangles so drivers may
-implement partial updates for displays with an integrated framebuffer.
-This can speed up fbconsole.
+Track framebuffer damage with a simple rectangle that can be used to
+issue partial updates during fb_flush. This speeds up fbconsole.
 
 Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 ---
-v2: call fb_damage() in graphic_utils instead of fbconsole
+v2: make rect parameter to fb_damage const
 ---
- lib/gui/graphic_utils.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/video/mipi_dbi.c       | 83 ++++++++++++++++++++++++++++------
+ drivers/video/panel-mipi-dbi.c |  1 +
+ include/video/mipi_dbi.h       |  6 +++
+ 3 files changed, 75 insertions(+), 15 deletions(-)
 
-diff --git a/lib/gui/graphic_utils.c b/lib/gui/graphic_utils.c
-index 92f249e722bc..d91a7f355051 100644
---- a/lib/gui/graphic_utils.c
-+++ b/lib/gui/graphic_utils.c
-@@ -313,6 +313,12 @@ void gu_screen_blit_area(struct screen *sc, int startx, int starty, int width,
- {
- 	struct fb_info *info = sc->info;
- 	int bpp = info->bits_per_pixel >> 3;
-+	struct fb_rect rect = {
-+		.x1 = startx,
-+		.y1 = starty,
-+		.x2 = startx + width,
-+		.y2 = starty + height,
-+	};
+diff --git a/drivers/video/mipi_dbi.c b/drivers/video/mipi_dbi.c
+index aab6b1243954..a2333150b9d8 100644
+--- a/drivers/video/mipi_dbi.c
++++ b/drivers/video/mipi_dbi.c
+@@ -199,19 +199,33 @@ int mipi_dbi_command_stackbuf(struct mipi_dbi *dbi, u8 cmd, const u8 *data,
+ EXPORT_SYMBOL(mipi_dbi_command_stackbuf);
  
- 	if (info->screen_base_shadow) {
- 		int y;
-@@ -325,14 +331,24 @@ void gu_screen_blit_area(struct screen *sc, int startx, int starty, int width,
- 			fboff += sc->info->line_length;
- 		}
+ /**
+- * mipi_dbi_buf_copy_swap - Copy a framebuffer swapping MSB/LSB of 16-bit values
++ * mipi_dbi_buf_copy - Copy a framebuffer, transforming it if necessary
+  * @dst: The destination buffer
+  * @info: The source framebuffer info
++ * @clip: Clipping rectangle of the area to be copied
++ * @swap: When true, swap MSB/LSB of 16-bit values
+  */
+-static void mipi_dbi_buf_copy_swap(u16 *dst, struct fb_info *info)
++static void mipi_dbi_buf_copy(u16 *dst, struct fb_info *info,
++			      struct fb_rect *clip, bool swap)
+ {
+ 	u16 *src = (u16 *)info->screen_base;
+-	size_t len = info->xres * info->yres;
+-	int i;
++	unsigned int height = clip->y2 - clip->y1;
++	unsigned int width = clip->x2 - clip->x1;
++	int x, y;
+ 
+-	for (i = 0; i < len; i++) {
+-		*dst++ = *src << 8 | *src >> 8;
+-		src++;
++	src += clip->y1 * info->xres + clip->x1;
++	if (swap) {
++		for (y = 0; y < height; y++) {
++			for (x = 0; x < width; x++)
++				*dst++ = src[x] << 8 | src[x] >> 8;
++			src += info->xres;
++		}
++	} else {
++		for (y = 0; y < height; y++) {
++			memcpy(dst, src, 2 * width);
++			dst += width;
++			src += info->xres;
++		}
  	}
-+
-+	fb_damage(info, &rect);
  }
  
- void gu_screen_blit(struct screen *sc)
+@@ -232,28 +246,38 @@ static void mipi_dbi_set_window_address(struct mipi_dbi_dev *dbidev,
+ 			 ys & 0xff, (ye >> 8) & 0xff, ye & 0xff);
+ }
+ 
+-static void mipi_dbi_fb_dirty(struct mipi_dbi_dev *dbidev, struct fb_info *info)
++static void mipi_dbi_fb_dirty(struct mipi_dbi_dev *dbidev, struct fb_info *info,
++			      struct fb_rect *rect)
  {
- 	struct fb_info *info = sc->info;
++	unsigned int height = rect->y2 - rect->y1;
++	unsigned int width = rect->x2 - rect->x1;
+ 	struct mipi_dbi *dbi = &dbidev->dbi;
+-	unsigned int height = info->yres;
+-	unsigned int width = info->xres;
+ 	bool swap = dbi->swap_bytes;
+ 	int ret;
++	bool full;
+ 	void *tr;
+ 
+-	if (swap) {
++	full = width == info->xres && height == info->yres;
++
++	if (!full || swap) {
+ 		tr = dbidev->tx_buf;
+-		mipi_dbi_buf_copy_swap(tr, info);
++		mipi_dbi_buf_copy(tr, info, rect, swap);
+ 	} else {
+ 		tr = info->screen_base;
+ 	}
+ 
+-	mipi_dbi_set_window_address(dbidev, 0, width - 1, 0, height - 1);
++	mipi_dbi_set_window_address(dbidev, rect->x1, rect->x2 - 1, rect->y1,
++				    rect->y2 - 1);
+ 
+ 	ret = mipi_dbi_command_buf(dbi, MIPI_DCS_WRITE_MEMORY_START, tr,
+ 				   width * height * 2);
+ 	if (ret)
+ 		pr_err_once("Failed to update display %d\n", ret);
++
++	dbidev->damage.x1 = 0;
++	dbidev->damage.y1 = 0;
++	dbidev->damage.x2 = 0;
++	dbidev->damage.y2 = 0;
+ }
+ 
+ /**
+@@ -267,7 +291,14 @@ static void mipi_dbi_fb_dirty(struct mipi_dbi_dev *dbidev, struct fb_info *info)
+ void mipi_dbi_enable_flush(struct mipi_dbi_dev *dbidev,
+ 			   struct fb_info *info)
+ {
+-	mipi_dbi_fb_dirty(dbidev, info);
 +	struct fb_rect rect = {
 +		.x1 = 0,
 +		.y1 = 0,
 +		.x2 = info->xres,
-+		.y2 = info->yres,
++		.y2 = info->yres
 +	};
- 
- 	if (info->screen_base_shadow)
- 		memcpy(info->screen_base, info->screen_base_shadow, sc->fbsize);
 +
-+	fb_damage(info, &rect);
- }
++	mipi_dbi_fb_dirty(dbidev, info, &rect);
  
- void gu_fill_rectangle(struct screen *sc,
+ 	if (dbidev->backlight)
+ 		backlight_set_brightness_default(dbidev->backlight);
+@@ -309,11 +340,33 @@ void mipi_dbi_fb_disable(struct fb_info *info)
+ }
+ EXPORT_SYMBOL(mipi_dbi_fb_disable);
+ 
++void mipi_dbi_fb_damage(struct fb_info *info, const struct fb_rect *rect)
++{
++	struct mipi_dbi_dev *dbidev = container_of(info, struct mipi_dbi_dev, info);
++
++	if (dbidev->damage.x2 && dbidev->damage.y2) {
++		dbidev->damage.x1 = min(dbidev->damage.x1, rect->x1);
++		dbidev->damage.y1 = min(dbidev->damage.y1, rect->y1);
++		dbidev->damage.x2 = max(dbidev->damage.x2, rect->x2);
++		dbidev->damage.y2 = max(dbidev->damage.y2, rect->y2);
++	} else {
++		dbidev->damage = *rect;
++	}
++}
++EXPORT_SYMBOL(mipi_dbi_fb_damage);
++
+ void mipi_dbi_fb_flush(struct fb_info *info)
+ {
+ 	struct mipi_dbi_dev *dbidev = container_of(info, struct mipi_dbi_dev, info);
+ 
+-	mipi_dbi_fb_dirty(dbidev, info);
++	if (!dbidev->damage.x2 || !dbidev->damage.y2) {
++		dbidev->damage.x1 = 0;
++		dbidev->damage.y1 = 0;
++		dbidev->damage.x2 = info->xres;
++		dbidev->damage.y2 = info->yres;
++	}
++
++	mipi_dbi_fb_dirty(dbidev, info, &dbidev->damage);
+ }
+ EXPORT_SYMBOL(mipi_dbi_fb_flush);
+ 
+diff --git a/drivers/video/panel-mipi-dbi.c b/drivers/video/panel-mipi-dbi.c
+index ac6f585be32c..7fada69d6f26 100644
+--- a/drivers/video/panel-mipi-dbi.c
++++ b/drivers/video/panel-mipi-dbi.c
+@@ -218,6 +218,7 @@ static void panel_mipi_dbi_enable(struct fb_info *info)
+ static struct fb_ops panel_mipi_dbi_ops = {
+ 	.fb_enable = panel_mipi_dbi_enable,
+ 	.fb_disable = mipi_dbi_fb_disable,
++	.fb_damage = mipi_dbi_fb_damage,
+ 	.fb_flush = mipi_dbi_fb_flush,
+ };
+ 
+diff --git a/include/video/mipi_dbi.h b/include/video/mipi_dbi.h
+index 917f7ddd597f..a15264c83392 100644
+--- a/include/video/mipi_dbi.h
++++ b/include/video/mipi_dbi.h
+@@ -109,6 +109,11 @@ struct mipi_dbi_dev {
+ 	 * @driver_private: Driver private data.
+ 	 */
+ 	void *driver_private;
++
++	/**
++	 * @damage: Damage rectangle.
++	 */
++	struct fb_rect damage;
+ };
+ 
+ static inline const char *mipi_dbi_name(struct mipi_dbi *dbi)
+@@ -120,6 +125,7 @@ int mipi_dbi_spi_init(struct spi_device *spi, struct mipi_dbi *dbi,
+ 		      int dc);
+ int mipi_dbi_dev_init(struct mipi_dbi_dev *dbidev,
+ 		      struct fb_ops *ops, struct fb_videomode *mode);
++void mipi_dbi_fb_damage(struct fb_info *info, const struct fb_rect *rect);
+ void mipi_dbi_fb_flush(struct fb_info *info);
+ void mipi_dbi_enable_flush(struct mipi_dbi_dev *dbidev,
+ 			   struct fb_info *info);
 -- 
 2.39.2
 
