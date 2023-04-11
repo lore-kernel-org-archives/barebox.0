@@ -1,62 +1,62 @@
-Delivery-date: Tue, 11 Apr 2023 09:16:55 +0200
+Delivery-date: Tue, 11 Apr 2023 09:16:57 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pm8FK-00HI71-Oo
-	for lore@lore.pengutronix.de; Tue, 11 Apr 2023 09:16:55 +0200
+	id 1pm8FM-00HI84-W7
+	for lore@lore.pengutronix.de; Tue, 11 Apr 2023 09:16:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pm8F9-0001gh-As
-	for lore@pengutronix.de; Tue, 11 Apr 2023 09:16:54 +0200
+	id 1pm8FA-0001hE-8J
+	for lore@pengutronix.de; Tue, 11 Apr 2023 09:16:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=B3khCo1DO2hwfEIDwNScTlxKOM3KDTAhQG5pvFa9M1I=; b=CzUSxY+dzEalZWOOx7LeIRsO0P
-	yv+7ch0kIy2fIO91AbmxiOwvFLHdQvmKCj4fxexAcS4mjoLlmy48az+UEOwPvAsbtGHlVn/8iDmOG
-	1s9N8xi+atT4JR1Z+3wEU7S+HIoH7NQ9O5mZ1TDETIvClSFgaFZRbW+RGkbcjiqmWJxePG9+vyoRH
-	W5GnB3jS1gVHbO1AjIaliPC28CbLNnsw1DZGAQAD43YSqLVh1Zh33GEx0MnBDOBp3Uxsvkw3Wt8ho
-	JKRbMbID4x2R5AiQ0NYdl/sAGxV4CziHa21UeC91FXvCBpwNC/dpxjTAoW0BVBVMtlFXA++biPG46
-	1Td5fx8A==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=4B5S2sKf+y+vNEpjVXB/QHtx+OnsflzEyGN+1/sAbaQ=; b=R0JyZO7TXoPoJz
+	SpjfG0HL7oBRH0kQ8+DLLzOhiE/hKGyhazN4kQiZk8kxNsCmIXaWzOGawM0/pSF8p/vAiNDPIgjP6
+	H+XwJVcr4DHqulkm/hkiRHt6T1qIrzdICmJBdhw0CfXamjXqR1JViTKstfZHFHxtxa+ZB9ybqB4F/
+	UIQ37Ac74MkMZFgQ94C7UQAOAFbGKPtpyczmk2zoloY8agLuSsViLirTxB1TVOowBXCyKQoz3c9Y4
+	dduH6GJxGTOXZaYCdF4a8Um0Q4qD+RSE9mtTwKyfrdn8npTLmck0GtxbrmZ8lsK7JGUM5tLywB9D+
+	FscCXJQCtAgV0hBvfKiA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pm8DR-00Gg4p-1K;
-	Tue, 11 Apr 2023 07:14:57 +0000
+	id 1pm8DX-00GgAE-0f;
+	Tue, 11 Apr 2023 07:15:03 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pm8DH-00GfxY-39
+	id 1pm8DO-00Gg2j-1B
 	for barebox@lists.infradead.org;
-	Tue, 11 Apr 2023 07:14:51 +0000
+	Tue, 11 Apr 2023 07:14:55 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pm8DF-0000sD-AA; Tue, 11 Apr 2023 09:14:45 +0200
+	id 1pm8DF-0000rl-3l; Tue, 11 Apr 2023 09:14:45 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pm8DE-00ARvo-Lm; Tue, 11 Apr 2023 09:14:44 +0200
+	id 1pm8DE-00ARvX-57; Tue, 11 Apr 2023 09:14:44 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pm8DB-006qO0-Pz; Tue, 11 Apr 2023 09:14:41 +0200
+	id 1pm8DB-006qNU-Nx; Tue, 11 Apr 2023 09:14:41 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 11 Apr 2023 09:14:33 +0200
-Message-Id: <20230411071436.1630752-12-a.fatoum@pengutronix.de>
+Date: Tue, 11 Apr 2023 09:14:25 +0200
+Message-Id: <20230411071436.1630752-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230411071436.1630752-1-a.fatoum@pengutronix.de>
 References: <20230411071436.1630752-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230411_001448_009250_B00CD99E 
-X-CRM114-Status: GOOD (  11.43  )
+X-CRM114-CacheID: sfid-20230411_001454_414351_F0E65062 
+X-CRM114-Status: UNSURE (   9.31  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,6 +68,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -78,40 +79,47 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 11/14] Kbuild: export CROSS_PKG_CONFIG
+Subject: [PATCH master 03/14] RISC-V: sifive: disable non-functional SPI nodes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-CROSS_PKG_CONFIG is referenced in both Kconfig and Makefiles. To be
-visibile everywhere, its default needs to be exported, but it wasn't.
+For some reasons,newer QEMU versions (tested v5.2.0) trigger a load
+fault at the first readl of the driver. For now disable the nodes,
+until this issue is looked into.
 
-This wasn't noticed, because usual usage was:
-
-  CROSS_PKG_CONFIG=some-pkg-config make scripts
-
-where the shell took care to export the variable. On NixOS, cross
-pkg-config is actually called ${CROSS_COMPILE}pkg-config and it didn't
-work out of the box. Fix this.
-
-Fixes: 1c1198a3f252 ("scripts: allow building USB loader tools for target as well")
+Reported-by: Antony Pavlov <antonynpavlov@gmail.com>
+Link: https://lore.barebox.org/barebox/20220830140533.deb229d3e3f32c827e6ff521@gmail.com/
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/riscv/dts/hifive-unleashed-a00.dts | 4 ++++
+ arch/riscv/dts/hifive-unmatched-a00.dts | 5 +++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/Makefile b/Makefile
-index 6f2f4ce74800..3debf5b42799 100644
---- a/Makefile
-+++ b/Makefile
-@@ -364,7 +364,7 @@ KCONFIG_CONFIG	?= .config
+diff --git a/arch/riscv/dts/hifive-unleashed-a00.dts b/arch/riscv/dts/hifive-unleashed-a00.dts
+index 65694bfd246a..3b82c16ff0f7 100644
+--- a/arch/riscv/dts/hifive-unleashed-a00.dts
++++ b/arch/riscv/dts/hifive-unleashed-a00.dts
+@@ -1,3 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR X11 */
  
- CROSS_PKG_CONFIG ?= $(CROSS_COMPILE)pkg-config
+ #include <riscv/sifive/hifive-unleashed-a00.dts>
++
++/* probing on QEMU v5.2.0 triggers load access fault @0x10040014 */
++&qspi0 { status = "disabled"; };
++&qspi2 { status = "disabled"; };
+diff --git a/arch/riscv/dts/hifive-unmatched-a00.dts b/arch/riscv/dts/hifive-unmatched-a00.dts
+index b8793e910555..24a4c798a941 100644
+--- a/arch/riscv/dts/hifive-unmatched-a00.dts
++++ b/arch/riscv/dts/hifive-unmatched-a00.dts
+@@ -1,3 +1,8 @@
+ /* SPDX-License-Identifier: GPL-2.0 OR X11 */
  
--export KCONFIG_CONFIG
-+export KCONFIG_CONFIG CROSS_PKG_CONFIG
- 
- # SHELL used by kbuild
- CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
+ #include <riscv/sifive/hifive-unmatched-a00.dts>
++
++/* probing on QEMU v5.2.0 triggers load access fault @0x10040014 */
++&qspi0 { status = "disabled"; };
++&qspi1 { status = "disabled"; };
++&spi0  { status = "disabled"; };
 -- 
 2.39.2
 
