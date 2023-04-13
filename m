@@ -1,63 +1,58 @@
-Delivery-date: Thu, 13 Apr 2023 11:22:05 +0200
+Delivery-date: Thu, 13 Apr 2023 11:41:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pmt9Y-0023nY-8U
-	for lore@lore.pengutronix.de; Thu, 13 Apr 2023 11:22:05 +0200
+	id 1pmtSZ-00251z-DZ
+	for lore@lore.pengutronix.de; Thu, 13 Apr 2023 11:41:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pmt9Y-0002mY-38
-	for lore@pengutronix.de; Thu, 13 Apr 2023 11:22:04 +0200
+	id 1pmtSZ-0005vp-1G
+	for lore@pengutronix.de; Thu, 13 Apr 2023 11:41:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=URnl3vZND5+VBAGnf/4aDpFVSoYP3nVbaUPbmSFQ0mQ=; b=yIfhEfoyZcnC0XrXFLtDE31JUa
-	JJdXq0igfaDJbbZWCfN/9CMmvOhSdGC+WD+NTDyWRYAabuvQMzYsbmFaPg89QbVvyiCf4lrnf6sxf
-	7wNX5c2inpzsCgSR9PgGgNxLpoCVE0mKeleL3g181CiNTrTA7PFtUETsRkHeZr/hAxYml/Rk2ypTq
-	90zU/gKXQM30l6mRzaB62Zj5LUkItUk0bfmcDJMuWbRQKE6DccPOQz2Yi24XbwaZP2ySm8z/sCe4p
-	thv4norqphUIx/NKo59cgY0PsnaqjnwUWILQIqybvMIO/KAe5VFARqc3tEeSZGDAB05+rukTjfMCM
-	JPkawSLA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=+fUsGUgUmh/Wp7Im+eU311VhBuI9Rg/GGlYZK9UL4Vc=; b=N3KXd9PDevORb55XEpGmovZHGt
+	25XUhAbFRLmCl/ZYFoyFTO28B/e9aA4ghHCFh6Yfai1XY9DpFQs4qOq5JnhM/Reo6PPkjO9C036ie
+	trDbZJFdONdBb/8E99AAWewzRuNyFb1ZCFjHhCbx4Hg54ae3Wsq5PXTMlfaaG9P2qVg+tZ4ROiSui
+	WMQYDYGx2OfWkNAzc96l446W1slIul9FIiRM3CT+mg30yK6+VHrODS9fWXUhIyyK2SgbbDHIyBfhm
+	TpI3Yk/yZHwBwL+nn/ZjYWg9pjZ4mzWz33UNLXemq+jMEwiMIWpw66iL5wwOMRxBB3+gtZQLAtGUs
+	9Nj2G4iA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pmt8K-005aiC-2d;
-	Thu, 13 Apr 2023 09:20:48 +0000
+	id 1pmtRL-005esC-02;
+	Thu, 13 Apr 2023 09:40:27 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pmt8H-005ahI-1X
+	id 1pmtRI-005eq9-09
 	for barebox@lists.infradead.org;
-	Thu, 13 Apr 2023 09:20:47 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pmt8F-0002a6-9L; Thu, 13 Apr 2023 11:20:43 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pmt8F-000077-3A; Thu, 13 Apr 2023 11:20:43 +0200
-Date: Thu, 13 Apr 2023 11:20:43 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, rcz@pengutronix.de, mol@pengutronix.de
-Message-ID: <20230413092043.GW19113@pengutronix.de>
-References: <20230413084547.1331906-1-a.fatoum@pengutronix.de>
+	Thu, 13 Apr 2023 09:40:25 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1pmtRE-0005hS-Qr; Thu, 13 Apr 2023 11:40:20 +0200
+Message-ID: <169e8325-9b89-5cb1-cd90-cf5a0f817b02@pengutronix.de>
+Date: Thu, 13 Apr 2023 11:40:20 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230413084547.1331906-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Content-Language: en-US
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org, rcz@pengutronix.de, mol@pengutronix.de
+References: <20230413084547.1331906-1-a.fatoum@pengutronix.de>
+ <20230413092043.GW19113@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230413092043.GW19113@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230413_022045_511150_E40C0E85 
-X-CRM114-Status: GOOD (  26.75  )
+X-CRM114-CacheID: sfid-20230413_024024_085858_944DCBD6 
+X-CRM114-Status: GOOD (  20.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,71 +70,64 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
+	version=3.4.2
 Subject: Re: [PATCH v2] kbuild: use printf instead of echo -e extension
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Ahmad,
-
-The subject seems outdated, you are not using printf at all here.
-
-On Thu, Apr 13, 2023 at 10:45:47AM +0200, Ahmad Fatoum wrote:
-> We are using echo -e, so the \n in the string being echo'd are
-> interpreted. As -e is not POSIX and dash doesn't provide it,
-> we use a strange /usr/bin/env echo -e construct hoping that
-> whatever non-builtin echo is first in the search path supports -e.
+On 13.04.23 11:20, Sascha Hauer wrote:
+> Hi Ahmad,
 > 
-> As the new lines are just used to separate CPP directives, we can
-> just pass the directives as $(CPP) flags. This has the same result,
-> but is potable and avoids NixOS complaining when building barebox.
+> The subject seems outdated, you are not using printf at all here.
 
-s/potable/portable/
+Oh right. I tried printf first, but foreach concatenates with
+spaces in-between and printf ignores everything not referenced
+by the format string...
+
+> On Thu, Apr 13, 2023 at 10:45:47AM +0200, Ahmad Fatoum wrote:
+>> We are using echo -e, so the \n in the string being echo'd are
+>> interpreted. As -e is not POSIX and dash doesn't provide it,
+>> we use a strange /usr/bin/env echo -e construct hoping that
+>> whatever non-builtin echo is first in the search path supports -e.
+>>
+>> As the new lines are just used to separate CPP directives, we can
+>> just pass the directives as $(CPP) flags. This has the same result,
+>> but is potable and avoids NixOS complaining when building barebox.
+> 
+> s/potable/portable/
+
+Will fix.
+
+> Good idea to get rid of the echo -e dependency entirely, I like it :)
+> 
+> You could replace the '-' for stdin with /dev/null and then drop the
+> echo |. Maybe this makes it a bit easier to read.
+
+I had thought about that, but deemed
+
+  In file included from <command-line>:3:
+  /home/afa/fragment1.dts:6:2: warning: #warning hey [-Wcpp]
+
+to be less confusing than it mentioning /dev/null. Now that I actually
+tried it out though, the warning also references command-line, so
+you will change for v3.
+
+Thanks,
+Ahmad
 
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> v1 -> v2:
->   - drop echo -e eltogether after Sascha pointed out why it needs
->     /usr/bin/env.
+> Sascha
 > 
-> Tested with two fragments:
->   - dts variable is defined for the DT it references
->   - fragments are included (checked with #warning)
->   - fragment change triggers rebuild
->   - original DT change triggers rebuild
->   - fragmentless case works ok
->     
->  scripts/Makefile.lib | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index 4deaa5dfa73c..befd47ed6600 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -372,8 +372,8 @@ $(obj)/%.dtb.z: $(obj)/%.dtb FORCE
->  dts-frags = $(subst $(quote),,$(CONFIG_EXTERNAL_DTS_FRAGMENTS))
->  quiet_cmd_dtc = DTC     $@
->  # For compatibility between make 4.2 and 4.3
-> -cmd_dtc = /usr/bin/env echo -e '$(pound)define $(subst -,_,$(*F))_dts 1\n'$(foreach f,$< $(2),'$(pound)include "$(f)"\n') | \
-> -	$(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) - ; \
-> +cmd_dtc = echo | $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) \
-> +	-D'$(subst -,_,$(*F))_dts=1' $(foreach f,$< $(2),-include '$(f)') - ; \
-
-Good idea to get rid of the echo -e dependency entirely, I like it :)
-
-You could replace the '-' for stdin with /dev/null and then drop the
-echo |. Maybe this makes it a bit easier to read.
-
-Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
