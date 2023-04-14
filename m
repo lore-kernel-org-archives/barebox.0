@@ -1,61 +1,61 @@
-Delivery-date: Fri, 14 Apr 2023 14:48:10 +0200
+Delivery-date: Fri, 14 Apr 2023 15:28:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pnIqX-003KGB-34
-	for lore@lore.pengutronix.de; Fri, 14 Apr 2023 14:48:10 +0200
+	id 1pnJTQ-003LeI-Td
+	for lore@lore.pengutronix.de; Fri, 14 Apr 2023 15:28:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pnIqW-0001ng-Pu
-	for lore@pengutronix.de; Fri, 14 Apr 2023 14:48:09 +0200
+	id 1pnJTQ-0007CG-SK
+	for lore@pengutronix.de; Fri, 14 Apr 2023 15:28:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ktDSN1ADh5X1EK8lKVpNv3oOegoDpNPNSxLIRGNc+Os=; b=4od1Usv6oBGSq9/3BcnbHjuMQK
-	9Xe0G4PH5YoH2b0x0KFy1gM54bdzDQRfLGuXv2xFy2Hpolk4HI41l5RU6xfMe0UxBzh3/0QGq8+Ba
-	w6rYmdH/RST1fgkK45MOPocXnsWqR3JP0QN017iWW5Rf7IMGy1I3h5Q50pKlBJbfInnpoqVMVZgi1
-	QRH4GOWCUSKsBIRJsJD+6SjrMGebvLsXQ7+JMbHQe9st5AwYPwoCQbX0BlIDaoe6PV8JWdIpzg70t
-	12SFQbBfO4WhdRU6rT5igS5Km3l+wzQVX6FETaK2OV9z5/MomuBJofuOiSjRXtjDuu0t0PQrTfUPN
-	nVuf/2sw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=69joP2Snn7fAPNNkxmUb1i5DT3tp5ejWVo/09uUuDRQ=; b=vQ8TdbxB/t6b4V3zLP1dths5Qx
+	/eV8aCh758h76NxwJArp61XfdqtyXrgdwaGj4D9rNItDv/2/YhNvOGy2ife6z80BWGFZLIzd4k6iv
+	3xb6IJruCFEGeYHOOj+G9lFPZHIPjCcjzNIwyMw7O47F+TeyAHRSqlXhe8qnMDEuBCOGCniLImUiH
+	UDSvb0rWa5Vk+PPojXdJac6nKHbtStZffW22B4YYMvD1SeixiMXTraW0UR96yNFj6kD/53y9fek7R
+	8RH5JWFpMljVpNHeGxmqsf4FcaVK7w0mHbVFIoK1Fi389lGAW0JnrBnLp37+64ua0m/UA1kPmVMne
+	rRx4cShA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pnIpP-009Ycy-06;
-	Fri, 14 Apr 2023 12:46:59 +0000
+	id 1pnJSF-009fgJ-2q;
+	Fri, 14 Apr 2023 13:27:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pnIpL-009YcD-2S
+	id 1pnJS9-009feH-0e
 	for barebox@lists.infradead.org;
-	Fri, 14 Apr 2023 12:46:57 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pnIpK-0001bm-Aj; Fri, 14 Apr 2023 14:46:54 +0200
-Message-ID: <b8847e00-0e27-c7f8-af75-977fa41fa64e@pengutronix.de>
-Date: Fri, 14 Apr 2023 14:46:54 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Content-Language: en-US
-To: Burri Markus LabTec <Markus.Burri@mt.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <20230414094020.2389226-1-markus.burri@mt.com>
- <f454aee9-3e78-c1bc-f448-3355e3613d14@pengutronix.de>
- <PA4PR03MB748854E525009BC8F015D570EF999@PA4PR03MB7488.eurprd03.prod.outlook.com>
- <7c13d1e3-452f-5b91-4511-d64c531f0145@pengutronix.de>
- <PA4PR03MB7488B5A455A50A14BB7E44A5EF999@PA4PR03MB7488.eurprd03.prod.outlook.com>
+	Fri, 14 Apr 2023 13:27:05 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pnJS3-00070s-Ve; Fri, 14 Apr 2023 15:26:56 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pnJS2-00BDAs-Cl; Fri, 14 Apr 2023 15:26:54 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1pnJS1-00797b-J0; Fri, 14 Apr 2023 15:26:53 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <PA4PR03MB7488B5A455A50A14BB7E44A5EF999@PA4PR03MB7488.eurprd03.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 14 Apr 2023 15:26:51 +0200
+Message-Id: <20230414132651.1703346-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230414_054655_802276_81180100 
-X-CRM114-Status: GOOD (  13.33  )
+X-CRM114-CacheID: sfid-20230414_062701_275594_F6A0CE87 
+X-CRM114-Status: UNSURE (   7.71  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,69 +73,39 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: EXTERNAL - [PATCH v1] Add bootchooser command option for active
- boot target
+Subject: [PATCH master] ARM: i.MX6: fix DEBUG_LL use
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Markus,
+Below mentioned commit added a select DEBUG_IMX_UART for all supported
+i.MX variants apart from the i.MX6Q. Let's do likewise there, so
+DEBUG_LL may be enabled without errors about missing PUTC_LL definition.
 
-On 14.04.23 14:41, Burri Markus LabTec wrote:
-> Hello Ahmad
-> 
-> The Idea is to run some scripts stored in the rootfs before booting the system. In our case e.g we enable led according to customer needs. This is stored in to rootfs where the customer is able to update without update barebox
-
-Once you give your customer the ability to run arbitrary code, they will run
-arbitrary code, e.g. apply an overlay to the kernel DT or tune kernel
-command line argument. With your init script approach, you could apply
-old overlays when booting a new kernel, which can lead to very surprising
-results.
-
-> The new command option will store this information in a variable where I can use this information in the init script.
-> It sound that a script as bootchooser target will fit my requirement. I didn't know that. I will try
-
-I am not opposed to give these scripts knowledge of what bootchooser target
-is executed, see untested patch below. But it should be the boot scripts
-that run hooks, not an init script on a subsequent boot.
-
-Cheers,
-Ahmad
-
+Fixes: 0fff6cb9bb4f ("ARM: i.MX: Only provide PUTC_LL() when activated")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/bootchooser.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ common/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/common/bootchooser.c b/common/bootchooser.c
-index 08d05e885250..3d400af08ef1 100644
---- a/common/bootchooser.c
-+++ b/common/bootchooser.c
-@@ -827,6 +827,7 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
-                goto out;
-        }
-
-+       globalvar_add_simple("bootchooser.active", target->name);
-        system = basprintf("bootchooser.active=%s", target->name);
-        globalvar_add_simple("linux.bootargs.bootchooser", system);
-        free(system);
-@@ -854,6 +855,7 @@ static int bootchooser_boot_one(struct bootchooser *bc, int *tryagain)
-        *tryagain = 1;
- out:
-        globalvar_set_match("linux.bootargs.bootchooser", NULL);
-+       globalvar_set_match("bootchooser.active", NULL);
-
-        bootentries_free(entries);
-
-@@ -976,3 +978,5 @@ BAREBOX_MAGICVAR(global.bootchooser.default_priority,
-                 "bootchooser: Default priority for a target");
- BAREBOX_MAGICVAR(global.bootchooser.state_prefix,
-                 "bootchooser: state name prefix, empty for nv backend");
-+BAREBOX_MAGICVAR(global.bootchooser.active,
-+                "bootchooser: holds name of active bootchooser target during boot");
+diff --git a/common/Kconfig b/common/Kconfig
+index d951947463a2..ac3df75acbc5 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1342,6 +1342,7 @@ config DEBUG_IMX53_UART
+ config DEBUG_IMX6Q_UART
+ 	bool "i.MX6Q Debug UART"
+ 	depends on ARCH_IMX6
++	select DEBUG_IMX_UART
+ 	help
+ 	  Say Y here if you want kernel low-level debugging support
+ 	  on i.MX6Q.
+-- 
+2.39.2
 
 
 
