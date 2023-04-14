@@ -1,62 +1,60 @@
-Delivery-date: Fri, 14 Apr 2023 16:54:27 +0200
+Delivery-date: Fri, 14 Apr 2023 17:22:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pnKok-003Ob6-VP
-	for lore@lore.pengutronix.de; Fri, 14 Apr 2023 16:54:27 +0200
+	id 1pnLFU-003QO8-2X
+	for lore@lore.pengutronix.de; Fri, 14 Apr 2023 17:22:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pnKok-0002AZ-SR
-	for lore@pengutronix.de; Fri, 14 Apr 2023 16:54:27 +0200
+	id 1pnLFT-0005rz-PC
+	for lore@pengutronix.de; Fri, 14 Apr 2023 17:22:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=RvZK4Lq+QNTbxjG6kNYSUZCoru+8rtUIiTQiZfftCJY=; b=KSBE1AABKpqbEKlEbUUEAmFYH4
-	d+duuE90fnDIGkppTI92JjgIZLV2AzQwEUKeFiOfJK6kp6++Y/dq44XxZ9ZomGX9sH+cW73Sf/Qpo
-	T+cA5RCwaGp5VL+UGUzWE2YBEdV1Zdj+oJIwhG6lIebAT4zGE96/1CIy8Ii1PYALlsVwgwbKPo7iY
-	jhuSC4uy5Rv0INWoc/DCqojgHDFPUbBqkqyHsWBgqVyZ9/iOjuV/O1dQutIDLL2NRCXdza6d85yxQ
-	8m8GKSoqUgYIxxH6+yxun6wYOO7Otw61Vfxtl6eNIkssSgPVu7Gchx2yqyY+H8YP1WcKyUAdGxAtX
-	pn7ox7xQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=dTq7P2nbpegWC65IqhMuaZroMjdUZ0Cu2XEtDK++w5U=; b=TG8nbqf/ZDvaVFXToPWC5QNnQS
+	4ECRaiLnObgg2Q1OGWP/5gcaKNKmU9kTYH7OsBa8zYAEQJRsuk+iX8s+fl1vOCcxAs3/R2mzx7FWh
+	vLKqIpT2Met2paBKn9tTYdEcyRI9TMviFdnSJlBEQXOTtQLkecOFqbOVYpfZUlMaUiLlxhKPB3XS+
+	DxYJ/W6fUQXFHkLG43IMVEbP3go0e3eLfe7+M95PkoaGAb2eLhhCsc91F9Beiwb25LQBWLYzZtnyy
+	WKfAoEK6VxDAwpAM7dAm0HGdFGuAA8BvayRhuKM7tifPJBY8b83c5iNLnpr7Umw0sJD9CNWEAHi/m
+	AEn3QM8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pnKnW-009sT2-1k;
-	Fri, 14 Apr 2023 14:53:10 +0000
+	id 1pnLEK-009vr5-0n;
+	Fri, 14 Apr 2023 15:20:52 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pnKnS-009sQx-1L
+	id 1pnLEH-009von-1v
 	for barebox@lists.infradead.org;
-	Fri, 14 Apr 2023 14:53:07 +0000
+	Fri, 14 Apr 2023 15:20:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pnKnQ-0001rC-V0; Fri, 14 Apr 2023 16:53:04 +0200
+	id 1pnLE2-0005hP-Gx; Fri, 14 Apr 2023 17:20:34 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pnKnQ-00BDou-9W; Fri, 14 Apr 2023 16:53:04 +0200
+	id 1pnLE1-00BEIn-SG; Fri, 14 Apr 2023 17:20:33 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pnKnO-00FM0J-T1; Fri, 14 Apr 2023 16:53:02 +0200
+	id 1pnLE1-00FsQN-6O; Fri, 14 Apr 2023 17:20:33 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 14 Apr 2023 16:52:59 +0200
-Message-Id: <20230414145259.3644816-6-a.fatoum@pengutronix.de>
+Date: Fri, 14 Apr 2023 17:20:32 +0200
+Message-Id: <20230414152032.3783908-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230414145259.3644816-1-a.fatoum@pengutronix.de>
-References: <20230414145259.3644816-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230414_075306_557197_E7C7C488 
-X-CRM114-Status: GOOD (  13.77  )
+X-CRM114-CacheID: sfid-20230414_082049_635165_BA96C331 
+X-CRM114-Status: GOOD (  10.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,71 +77,45 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 5/5] net: designware: eqos: pass physical device to DMA API
+Subject: [PATCH master] libfile: don't leak file descriptors in compare_file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The Ethernet interface device is just a child of the physical device with
-no DT node assigned. As such, it lacks all DMA settings that may be
-set in the DT. Fix this by using the hardware device instead.
+Depending on the state of environment, running
+
+  while saveenv; do true; done
+
+Can quickly lead to:
+
+  saving environment
+  could not open /dev/mmc2.barebox-environment: error 24
+  saveenv: error 24
+
+Because the leaked file descriptors gobble up the 128 we have
+preallocated. Fix this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/net/designware_eqos.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ lib/libfile.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
-index ee5a10a007e9..2e2a1cf8bff3 100644
---- a/drivers/net/designware_eqos.c
-+++ b/drivers/net/designware_eqos.c
-@@ -687,7 +687,6 @@ static void eqos_stop(struct eth_device *edev)
- static int eqos_send(struct eth_device *edev, void *packet, int length)
- {
- 	struct eqos *eqos = edev->priv;
--	struct device *dev = &eqos->netdev.dev;
- 	struct eqos_desc *tx_desc;
- 	dma_addr_t dma;
- 	u32 des3;
-@@ -697,8 +696,8 @@ static int eqos_send(struct eth_device *edev, void *packet, int length)
- 	eqos->tx_currdescnum++;
- 	eqos->tx_currdescnum %= EQOS_DESCRIPTORS_TX;
+diff --git a/lib/libfile.c b/lib/libfile.c
+index b967232d198e..ebd1de3d8e4d 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -542,8 +542,10 @@ int compare_file(const char *f1, const char *f2)
+ 	if (ret)
+ 		goto err_out2;
  
--	dma = dma_map_single(dev, packet, length, DMA_TO_DEVICE);
--	if (dma_mapping_error(dev, dma))
-+	dma = dma_map_single(edev->parent, packet, length, DMA_TO_DEVICE);
-+	if (dma_mapping_error(edev->parent, dma))
- 		return -EFAULT;
+-	if (s1.st_size != s2.st_size)
+-		return 1;
++	if (s1.st_size != s2.st_size) {
++		ret = 1;
++		goto err_out2;
++	}
  
- 	tx_desc->des0 = (unsigned long)dma;
-@@ -717,7 +716,7 @@ static int eqos_send(struct eth_device *edev, void *packet, int length)
- 				  !(des3 & EQOS_DESC3_OWN),
- 				  100 * USEC_PER_MSEC);
- 
--	dma_unmap_single(dev, dma, length, DMA_TO_DEVICE);
-+	dma_unmap_single(edev->parent, dma, length, DMA_TO_DEVICE);
- 
- 	if (ret == -ETIMEDOUT)
- 		eqos_dbg(eqos, "TX timeout\n");
-@@ -764,7 +763,7 @@ static int eqos_recv(struct eth_device *edev)
- 
- static int eqos_init_resources(struct eqos *eqos)
- {
--	struct device *dev = eqos->netdev.parent;
-+	struct eth_device *edev = &eqos->netdev;
- 	int ret = -ENOMEM;
- 	void *descs;
- 	void *p;
-@@ -785,8 +784,8 @@ static int eqos_init_resources(struct eqos *eqos)
- 		struct eqos_desc *rx_desc = &eqos->rx_descs[i];
- 		dma_addr_t dma;
- 
--		dma = dma_map_single(dev, p, EQOS_MAX_PACKET_SIZE, DMA_FROM_DEVICE);
--		if (dma_mapping_error(dev, dma)) {
-+		dma = dma_map_single(edev->parent, p, EQOS_MAX_PACKET_SIZE, DMA_FROM_DEVICE);
-+		if (dma_mapping_error(edev->parent, dma)) {
- 			ret = -EFAULT;
- 			goto err_free_rx_bufs;
- 		}
+ 	buf1 = xmalloc(RW_BUF_SIZE);
+ 	buf2 = xmalloc(RW_BUF_SIZE);
 -- 
 2.39.2
 
