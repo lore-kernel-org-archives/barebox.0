@@ -1,60 +1,63 @@
-Delivery-date: Fri, 14 Apr 2023 19:50:07 +0200
+Delivery-date: Fri, 14 Apr 2023 20:37:06 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pnNYk-003Y4r-Bs
-	for lore@lore.pengutronix.de; Fri, 14 Apr 2023 19:50:07 +0200
+	id 1pnOID-003aFJ-Jq
+	for lore@lore.pengutronix.de; Fri, 14 Apr 2023 20:37:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pnNYj-0007XP-VU
-	for lore@pengutronix.de; Fri, 14 Apr 2023 19:50:06 +0200
+	id 1pnOID-0004yp-Dx
+	for lore@pengutronix.de; Fri, 14 Apr 2023 20:37:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=wliptFL/xOrXeG0I0QWLEG2Si3B5XPHe2/DM+Br+BY8=; b=FAJ/aYU4cdbv9yApCHd2Sxglim
-	eVoy7r5hrmXvtEep73+Wtx0PybZOP4rqQsP4Sd/imsEevxG1xc9nbRxymh6aAg6ZZqjUDFbRwAy6j
-	yqprdA0flwAdEy0ex1xzNbWmn51tKSAEYKmqc+2rYDxrbYP71aPe5KzVREkd/X+Hxg+2cd7tNJfFq
-	q40fvRKUO6+aDtLkyEm57EEcCCMNeN+dUQTKy8FBFCIQabufz5z80qLgC5EJtWG/h92iyK0TDJaqV
-	6QkVPNDAJzgP7cUSb2tz5R20NStlRCjUAZ6LXERKuUJfNRSwC4SvcBa5WW469EfbzJgGqsO29N1tR
-	Z7rhPMOQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=qScYy4RzOC1hkQFSbGOs/D8/SVKSCjzfnvHq0K/jMI0=; b=y98rZDOaXfyO7CmXEC1tdWMK3y
+	I2hlnhLwdLGDY3KJrbVN/RKFHIKDo6WuOYbUO95TJGitEEUc3/pOSDzQNEL7cnCLaQ2oJGvE7cBgc
+	wO0x4WHG5qllA6NL4HrPV9A/HBg89nH7iN2VV+lOPGWPsxWGmYNBxjtzLghMOBsSjIW14OhbGqOA5
+	XFI37rJh+ddPt5DT3VN3+CQcdsojUIxVeg8EMN0HCTWC+rKowNyve+L433rX7imHGtPGPJram0yZE
+	KkzrzUi4Jtj+yWSDZKeXQ1buoki1FYeOxJ5wvj+RHW0f4shQAeW+a9F1onjVDskpmpT2A2usXp/h/
+	UHomJJzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pnNXg-00AIIa-0h;
-	Fri, 14 Apr 2023 17:49:00 +0000
+	id 1pnOH4-00ANUQ-06;
+	Fri, 14 Apr 2023 18:35:54 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pnNXd-00AII5-1R
+	id 1pnOH1-00ANTM-0Z
 	for barebox@lists.infradead.org;
-	Fri, 14 Apr 2023 17:48:58 +0000
+	Fri, 14 Apr 2023 18:35:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pnNXc-0007L1-6k; Fri, 14 Apr 2023 19:48:56 +0200
+	id 1pnOGy-0004om-S4; Fri, 14 Apr 2023 20:35:48 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pnNXb-00BFWe-Ib; Fri, 14 Apr 2023 19:48:55 +0200
+	id 1pnOGy-00BG4E-7t; Fri, 14 Apr 2023 20:35:48 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pnNXb-0085UP-1u; Fri, 14 Apr 2023 19:48:55 +0200
+	id 1pnOGx-008Yi1-Kn; Fri, 14 Apr 2023 20:35:47 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 14 Apr 2023 19:48:54 +0200
-Message-Id: <20230414174854.1927428-1-a.fatoum@pengutronix.de>
+Cc: =?UTF-8?q?Daniel=20Br=C3=A1t?= <danek.brat@gmail.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 14 Apr 2023 20:35:45 +0200
+Message-Id: <20230414183545.2039170-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230414183545.2039170-1-a.fatoum@pengutronix.de>
+References: <20230414183545.2039170-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230414_104857_487712_7755E09A 
-X-CRM114-Status: GOOD (  10.93  )
+X-CRM114-CacheID: sfid-20230414_113551_233939_6E04D94A 
+X-CRM114-Status: GOOD (  10.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,36 +80,54 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 master] mci: bcm2835: return command timeout silently
+Subject: [PATCH 2/2] ARM: rpi: fixup prefix property from VideoCore FDT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Some commands are expected to time out, for example when a non
-SDIO card is tested for being an SDIO card. Just return -ETIMEDOUT
-in that case and leave error message prints to the core.
+barebox will warn about lack of these properties when network booting.
+To make network booted barebox behave identically to flashed barebox,
+let's unconditionally copy them from VideoCore FDT into fixed up FDT.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v1 -> v2:
-  - target master
-  - reword commit message title
----
- drivers/mci/mci-bcm2835.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
 
-diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
-index bcdf1b6196de..477a3b83a0e3 100644
---- a/drivers/mci/mci-bcm2835.c
-+++ b/drivers/mci/mci-bcm2835.c
-@@ -148,7 +148,7 @@ static int bcm2835_mci_request(struct mci_host *mci, struct mci_cmd *cmd,
- 		      command << 16 | transfer_mode);
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index 3ed4510296ea..319a3d85ead5 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -256,6 +256,21 @@ static enum reset_src_type rpi_decode_pm_rsts(struct device_node *chosen,
+ 	return RESET_UKWN;
+ }
  
- 	ret = bcm2835_mci_wait_command_done(host);
--	if (ret) {
-+	if (ret && ret != -ETIMEDOUT) {
- 		dev_err(host->hw_dev, "Error while executing command %d\n",
- 				cmd->cmdidx);
- 		dev_err(host->hw_dev, "Status: 0x%X, Interrupt: 0x%X\n",
++static int rpi_vc_fdt_fixup(struct device_node *root, void *data)
++{
++	const struct device_node *vc_chosen = data;
++	struct device_node *chosen;
++
++	chosen = of_create_node(root, "/chosen");
++	if (!chosen)
++		return -ENOMEM;
++
++	of_copy_property(vc_chosen, "overlay_prefix", chosen);
++	of_copy_property(vc_chosen, "os_prefix", chosen);
++
++	return 0;
++}
++
+ static u32 rpi_boot_mode, rpi_boot_part;
+ /* Extract useful information from the VideoCore FDT we got.
+  * Some parameters are defined here:
+@@ -289,6 +304,8 @@ static void rpi_vc_fdt_parse(void *fdt)
+ 		goto out;
+ 	}
+ 
++	of_register_fixup(rpi_vc_fdt_fixup, of_dup(chosen));
++
+ 	bootloader = of_find_node_by_name(chosen, "bootloader");
+ 
+ 	str = of_read_vc_string(chosen, "bootargs");
 -- 
 2.39.2
 
