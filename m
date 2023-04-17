@@ -1,54 +1,54 @@
-Delivery-date: Mon, 17 Apr 2023 08:56:31 +0200
+Delivery-date: Mon, 17 Apr 2023 08:58:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1poIms-0060xv-Ak
-	for lore@lore.pengutronix.de; Mon, 17 Apr 2023 08:56:31 +0200
+	id 1poIoh-00612U-Ik
+	for lore@lore.pengutronix.de; Mon, 17 Apr 2023 08:58:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1poImr-0001wx-Sd
-	for lore@pengutronix.de; Mon, 17 Apr 2023 08:56:30 +0200
+	id 1poIoh-0002Jq-6K
+	for lore@pengutronix.de; Mon, 17 Apr 2023 08:58:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0GH2+DDuMiy/SNaBBMxKIRRanxhNIQjWQRO/CEd1wLw=; b=lN/gavVujtvjC/mKJmChhsNcFh
-	Q9xWo7qWBaxkY9LdGgzqEFsScoPlF1QjYiplcnNbQaok0oNZj4u4EWElthF7PPazTR6IBxi4rOQwA
-	rd5MpGSEFA3zzD5g3N9Aqn/QeRZdvzrnKbqH9iQQd1jP4SV/XF12GgGyWHkkOrSz5d+GqQUj7C1XK
-	+fE6JU1GpER8fMaLdXwKIXXv8jEUl9C6nsyvMjedRH7VisWnk3lS9SkaPwY7ccwlDYz/AwFKQoVOZ
-	grHb94tv8UD5pxqhaC9nxCVs7qNImErgkBPm0oUQnipy7cIg9mqzyGBhuH1JLiiFlhMlASgSvkyt7
-	4QkM97jg==;
+	bh=BQgWiDmlQbgLlGI5mEuzMiyp9mZBR7I6KBreNvCwFLM=; b=zJFLZtcsndNcHVmlqJNwKmn4AB
+	c537sNiwmX3l+UTDpcKtZvySEe38+zDz4yUsQwgS41CoFJmLXvE9EbhhAhxZwWl3yU+fvAdXdP7wX
+	ixGrmYREfp+u5IyRA78dh7fBwgb5gLIQ9V1Z5q8JCEAOQKahqvP8K0JKYuQQ8hMeSfZPeSLyLvKrb
+	yp5t3MS1EQa4Z4hSrzVqliytV12YkUBzCa+JOXND34NcKVkluF9HQAeMfrZ0ZniqTqIgwRntmXjmt
+	pZrDUTvX8gWCORko19Rz+k4iFYC3pHEyRxn/TNYV4uvCWYFqkv5vwbGyroCbyBaVrpnz2Ytn+ktzX
+	VLWqZbpA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1poIll-00F6pL-0o;
-	Mon, 17 Apr 2023 06:55:21 +0000
+	id 1poInW-00F78f-1o;
+	Mon, 17 Apr 2023 06:57:10 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1poIli-00F6oB-0A
+	id 1poInT-00F787-2g
 	for barebox@lists.infradead.org;
-	Mon, 17 Apr 2023 06:55:19 +0000
+	Mon, 17 Apr 2023 06:57:09 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1poIlg-0001jH-R0; Mon, 17 Apr 2023 08:55:16 +0200
+	id 1poInS-00020R-BB; Mon, 17 Apr 2023 08:57:06 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1poIlg-0004LF-Gv; Mon, 17 Apr 2023 08:55:16 +0200
-Date: Mon, 17 Apr 2023 08:55:16 +0200
+	id 1poInS-0004P2-2N; Mon, 17 Apr 2023 08:57:06 +0200
+Date: Mon, 17 Apr 2023 08:57:06 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230417065516.GE13543@pengutronix.de>
-References: <20230414171421.1745965-1-a.fatoum@pengutronix.de>
+Message-ID: <20230417065706.GF13543@pengutronix.de>
+References: <20230414152032.3783908-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230414171421.1745965-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230414152032.3783908-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +56,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230416_235518_086517_8321A2ED 
-X-CRM114-Status: GOOD (  23.86  )
+X-CRM114-CacheID: sfid-20230416_235707_872606_BAE22FB9 
+X-CRM114-Status: GOOD (  21.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,61 +80,52 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master] arm: error out if __LINUX_ARM_ARCH__ is undefined
+Subject: Re: [PATCH master] libfile: don't leak file descriptors in
+ compare_file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Apr 14, 2023 at 07:14:21PM +0200, Ahmad Fatoum wrote:
-> With recent multiarch (really, multiplatform) rework, oldconfig will
-> reask users what platforms they want to build for. The default is N,
-> so holding return (or an olddefconfig) will just disable all boards and
-> with it all CPUs leading to a cryptic torrent of:
+On Fri, Apr 14, 2023 at 05:20:32PM +0200, Ahmad Fatoum wrote:
+> Depending on the state of environment, running
 > 
->   arch/arm/include/asm/swab.h:31:28: warning: "__LINUX_ARM_ARCH__" is not defined, evaluates to 0 [-Wundef]
->      31 | #if defined(__KERNEL__) && __LINUX_ARM_ARCH__ >= 6
->         |                            ^~~~~~~~~~~~~~~~~~
+>   while saveenv; do true; done
 > 
-> Make user experience a bit better by printing an error message instead.
+> Can quickly lead to:
+> 
+>   saving environment
+>   could not open /dev/mmc2.barebox-environment: error 24
+>   saveenv: error 24
+> 
+> Because the leaked file descriptors gobble up the 128 we have
+> preallocated. Fix this.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/arm/Makefile                 | 1 +
->  arch/arm/include/asm/arch-check.h | 9 +++++++++
->  2 files changed, 10 insertions(+)
->  create mode 100644 arch/arm/include/asm/arch-check.h
+>  lib/libfile.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 9bd7db6ba9f8..a506f1e3a3e5 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -42,6 +42,7 @@ endif
->  # Note that GCC does not numerically define an architecture version
->  # macro, but instead defines a whole series of macros which makes
->  # testing for a specific architecture or later rather impossible.
-> +arch-y				:= -include asm/arch-check.h
->  arch-$(CONFIG_CPU_64v8)		:= -D__LINUX_ARM_ARCH__=8 $(call cc-option,-march=armv8-a)
->  arch-$(CONFIG_CPU_32v7)		:=-D__LINUX_ARM_ARCH__=7 $(call cc-option,-march=armv7-a,-march=armv5t -Wa$(comma)-march=armv7-a)
->  arch-$(CONFIG_CPU_32v6)		:=-D__LINUX_ARM_ARCH__=6 $(call cc-option,-march=armv6,-march=armv5t -Wa$(comma)-march=armv6)
-> diff --git a/arch/arm/include/asm/arch-check.h b/arch/arm/include/asm/arch-check.h
-> new file mode 100644
-> index 000000000000..2cf1b624a4de
-> --- /dev/null
-> +++ b/arch/arm/include/asm/arch-check.h
-> @@ -0,0 +1,9 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
-> +#ifndef __ARM_ASM_ARCH_CHECK_H__
-> +#define __ARM_ASM_ARCH_CHECK_H__
-> +
-> +#ifndef __LINUX_ARM_ARCH__
-> +#error No boards/CPUs selected in Kconfig
-> +#endif
-> +
-> +#endif
+> diff --git a/lib/libfile.c b/lib/libfile.c
+> index b967232d198e..ebd1de3d8e4d 100644
+> --- a/lib/libfile.c
+> +++ b/lib/libfile.c
+> @@ -542,8 +542,10 @@ int compare_file(const char *f1, const char *f2)
+>  	if (ret)
+>  		goto err_out2;
+>  
+> -	if (s1.st_size != s2.st_size)
+> -		return 1;
+> +	if (s1.st_size != s2.st_size) {
+> +		ret = 1;
+> +		goto err_out2;
+> +	}
+>  
+>  	buf1 = xmalloc(RW_BUF_SIZE);
+>  	buf2 = xmalloc(RW_BUF_SIZE);
 > -- 
 > 2.39.2
 > 
