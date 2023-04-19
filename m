@@ -1,62 +1,60 @@
-Delivery-date: Tue, 18 Apr 2023 11:31:57 +0200
+Delivery-date: Wed, 19 Apr 2023 09:05:07 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pohgq-007X1c-PB
-	for lore@lore.pengutronix.de; Tue, 18 Apr 2023 11:31:57 +0200
+	id 1pp1sG-008e5G-MI
+	for lore@lore.pengutronix.de; Wed, 19 Apr 2023 09:05:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pohgq-0006yc-ER
-	for lore@pengutronix.de; Tue, 18 Apr 2023 11:31:57 +0200
+	id 1pp1sG-0005AH-07
+	for lore@pengutronix.de; Wed, 19 Apr 2023 09:05:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=X3FcQ3oTigFxf6svM9v8fl+05v93G+JNCd2FUGFJMDY=; b=bFsdq05aJN0l8jSGgouGfGl/fd
-	DlGzot8aFPsWfPyLnEBjIL0LWL5GvQTid34xPW2z3IFV33phVJkB4B2avSnUmiiCg5KGtPYpUc+W9
-	Lek6N+jOp3o06mlAu/sTq0PLehcyX7gV4B2NJ28EuCp+zkyGepaw1gWcNj+MnclhwEXelxUq8ujNG
-	UvfzwNvaOia1FxqkO5UOgbbuVDWqzMxgflhlfB22Oq0mbt7TmczU9tN17ybU6lqtERzcRriBPwg/k
-	y84J3CXy80tt18I2x1l33FP9nFYkdZGEivdd1/oqBu9v0vn9aLlZyRWTcTGMQ+4LAgQkKrcM81y61
-	SB9nO1HQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:Content-Type:
+	MIME-Version:Message-ID:Subject:To:Date:Reply-To:Cc:Content-Transfer-Encoding
+	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=eQBo6pNDf26d84YiTM7sp8bhITFl1qUMxAAdOUjILxI=; b=0aksDlKvBZXG157L4rW7B/vdRf
+	8sm4OaKoeXZMdGO0eh3bCBqEBBiNx7dxqqJOwoN8nhPi4SjGGd2sw3BON2e+klJ1uE9wgUPMxGC/c
+	n8sv2+vJM64M33ZdKZoOBZlxUebM3hjNOknAIPZoECq/6bfu0WgBCmVHzurysJL42QG8z+R4EXGRU
+	7LDeWPRezfup2XgBUnVtOmxk1j6CGZ9DOBnTqYp39096YJRDe2ErWMAxjHKdTntnCpFQlUS4+s3Ze
+	o/0gmze++5/LZZjIHmXserG+IvZJQEancJaH3GbTjy768kkbEVAYtw0IBF+MyM/7mYjYtOXzyLax1
+	/CxXyMwA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pohfm-001Thi-1S;
-	Tue, 18 Apr 2023 09:30:50 +0000
+	id 1pp1qj-004LVd-2B;
+	Wed, 19 Apr 2023 07:03:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pohfg-001TeV-0J
+	id 1pp1qe-004LT4-23
 	for barebox@lists.infradead.org;
-	Tue, 18 Apr 2023 09:30:46 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Wed, 19 Apr 2023 07:03:28 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1pohfe-0006bo-N8; Tue, 18 Apr 2023 11:30:42 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1pohfe-00C4g5-2A; Tue, 18 Apr 2023 11:30:42 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1pohfd-007pUu-3r; Tue, 18 Apr 2023 11:30:41 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 18 Apr 2023 11:30:38 +0200
-Message-Id: <20230418093040.1865982-3-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230418093040.1865982-1-a.fatoum@pengutronix.de>
-References: <20230418093040.1865982-1-a.fatoum@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1pp1qX-00051n-PE; Wed, 19 Apr 2023 09:03:17 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pp1qX-0002Cr-Ev; Wed, 19 Apr 2023 09:03:17 +0200
+Date: Wed, 19 Apr 2023 09:03:17 +0200
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20230419070317.GP13543@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230418_023044_135650_8AC58FAE 
-X-CRM114-Status: GOOD (  16.33  )
+X-CRM114-CacheID: sfid-20230419_000324_854167_1EB06832 
+X-CRM114-Status: GOOD (  22.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,163 +72,253 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 3/5] mci: core: factor out MMC bus width selection for reuse
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: v2023.04.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Higher speed modes like DDR52 and HS200 can operate at both 8-bit and
-4-bit bus widths. To make it easier to support these, split up
-mci_startup_mmc, so the refactored parts can be called with different
-timings later on.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - new patch
----
- drivers/mci/mci-core.c | 95 ++++++++++++++++++++++++++++--------------
- 1 file changed, 64 insertions(+), 31 deletions(-)
+Hi all,
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 2abed0011722..bd5299e7a4f8 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1167,34 +1167,51 @@ static int mci_startup_sd(struct mci *mci)
- 	return 0;
- }
- 
--static int mci_startup_mmc(struct mci *mci)
-+static u32 mci_bus_width_ext_csd_bits(enum mci_bus_width bus_width)
-+{
-+	switch (bus_width) {
-+	case MMC_BUS_WIDTH_8:
-+		return EXT_CSD_BUS_WIDTH_8;
-+	case MMC_BUS_WIDTH_4:
-+		return EXT_CSD_BUS_WIDTH_4;
-+	case MMC_BUS_WIDTH_1:
-+	default:
-+		return EXT_CSD_BUS_WIDTH_1;
-+	}
-+}
-+
-+static int mci_mmc_try_bus_width(struct mci *mci, enum mci_bus_width bus_width)
- {
--	struct mci_host *host = mci->host;
-+	u32 ext_csd_bits;
- 	int err;
-+
-+	ext_csd_bits = mci_bus_width_ext_csd_bits(bus_width);
-+
-+	err = mci_switch(mci, EXT_CSD_BUS_WIDTH, ext_csd_bits);
-+	if (err < 0)
-+		return err;
-+
-+	mci_set_bus_width(mci, bus_width);
-+
-+	err = mmc_compare_ext_csds(mci, bus_width);
-+	if (err < 0)
-+		return err;
-+
-+	return bus_width;
-+}
-+
-+static int mci_mmc_select_bus_width(struct mci *mci)
-+{
-+	struct mci_host *host = mci->host;
-+	int ret;
- 	int idx = 0;
--	static unsigned ext_csd_bits[] = {
--		EXT_CSD_BUS_WIDTH_4,
--		EXT_CSD_BUS_WIDTH_8,
--	};
- 	static enum mci_bus_width bus_widths[] = {
- 		MMC_BUS_WIDTH_4,
- 		MMC_BUS_WIDTH_8,
- 	};
- 
--	/* if possible, speed up the transfer */
--	if (mci_caps(mci) & MMC_CAP_MMC_HIGHSPEED) {
--		if (mci->card_caps & MMC_CAP_MMC_HIGHSPEED_52MHZ)
--			mci->tran_speed = 52000000;
--		else
--			mci->tran_speed = 26000000;
--
--		host->timing = MMC_TIMING_MMC_HS;
--	}
--
--	mci_set_clock(mci, mci->tran_speed);
--
- 	if (!(host->host_caps & (MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA)))
--		return 0;
-+		return MMC_BUS_WIDTH_1;
- 
- 	/*
- 	 * Unlike SD, MMC cards dont have a configuration register to notify
-@@ -1206,7 +1223,6 @@ static int mci_startup_mmc(struct mci *mci)
- 		idx = 1;
- 
- 	for (; idx >= 0; idx--) {
--
- 		/*
- 		 * Host is capable of 8bit transfer, then switch
- 		 * the device to work in 8bit transfer mode. If the
-@@ -1214,21 +1230,38 @@ static int mci_startup_mmc(struct mci *mci)
- 		 * 4bit transfer mode. On success set the corresponding
- 		 * bus width on the host.
- 		 */
--		err = mci_switch(mci, EXT_CSD_BUS_WIDTH, ext_csd_bits[idx]);
--		if (err) {
--			if (idx == 0)
--				dev_warn(&mci->dev, "Changing MMC bus width failed: %d\n", err);
--			continue;
--		}
-+		ret = mci_mmc_try_bus_width(mci, bus_widths[idx]);
-+		if (ret > 0)
-+			break;
-+	}
- 
--		mci_set_bus_width(mci, bus_widths[idx]);
-+	return ret;
-+}
- 
--		err = mmc_compare_ext_csds(mci, bus_widths[idx]);
--		if (!err)
--			break;
-+static int mci_startup_mmc(struct mci *mci)
-+{
-+	struct mci_host *host = mci->host;
-+	int ret;
-+
-+	/* if possible, speed up the transfer */
-+	if (mci_caps(mci) & MMC_CAP_MMC_HIGHSPEED) {
-+		if (mci->card_caps & MMC_CAP_MMC_HIGHSPEED_52MHZ)
-+			mci->tran_speed = 52000000;
-+		else
-+			mci->tran_speed = 26000000;
-+
-+		host->timing = MMC_TIMING_MMC_HS;
- 	}
- 
--	return err;
-+	mci_set_clock(mci, mci->tran_speed);
-+
-+	ret = mci_mmc_select_bus_width(mci);
-+	if (ret < 0) {
-+		dev_warn(&mci->dev, "Changing MMC bus width failed: %d\n", ret);
-+		return ret;
-+	}
-+
-+	return 0;
- }
- 
- /**
+I am happy to announce barebox-2023.04.0.
+
+We have several interesting changes this time. First of all barebox now
+supports building for multiple ARM SoCs in a single config. We now have
+a multi_v7_defconfig (for bcm283x, i.MX, Omap, Rockchip, stm32mp and
+vexpress) and a multi_v8_defconfig (bcm283x, i.MX, Omap, Rockchip and
+zynqmp), more SoCs can be added later.
+Furthermore the device tree overlay support can now patch the barebox
+live tree, along with prbing additional devices enabled in an overlay.
+This can help in cases when a generic board has different runtime
+detectable extension boards detected during runtime. This works well for
+regular platform devices and also for I2C devices, not so well for SPI
+devices currently.
+With this release barebox gains NXP Layerscape LS1021A support along
+with the LS1021A IOT board support.
+Some old boards/architectures have been removed this time. the Samsung
+S3C support was removed as all supported boards were really old and
+no longer actively maintained. Also the i.MX boards which haven't been
+switched to device tree support have been removed, with this i.MX is
+now device tree only. For the AT91 architecture all boards have been
+moved over to multi image support, which allowed us to get rid of some
+defconfig files.
+
+Overall this is one of the bigger barebox releases. See below for a full
+list of changes that went into this release.
+
+Have fun!
+ Sascha
+
+--------------------------------8<----------------------------
+
+Ahmad Fatoum (35):
+      gpio: gpioinfo: use dev_name to get device name
+      gpio: pca953x: sync DT compatibles with Linux
+      gpio: pca953x: add optional support for regulator and reset GPIO
+      blspec: support higher verbosity levels for boot
+      ARM: i.MX8M: add option to install OP-TEE
+      drivers: implement of_optee_fixup helper function
+      ARM: i.MX8M: fixup op-tee nodes
+      drivers: drop unneeded CONFIG_CRYPTO_HW guard
+      of: base: factor out of_merge_nodes from of_copy_node
+      of: support of_ensure_probed for top-level machine device
+      boards: qemu-virt: ensure board driver probe at postcore_initcall level
+      boards: qemu-virt: support passing in FIT public key
+      net: dsa: abort registration when master is unresolvable
+      hush: pacify clang -Wparentheses-equality warning
+      ARM: dts: i.MX8MP: snps,dis-u2-freeclk-exists-quirk
+      pinctrl: stm32: Remove check for pins-are-numbered
+      test: riscv: fix YAMLs after defconfig rename
+      RISC-V: board-dt-2nd: fix hang in startup
+      RISC-V: sifive: disable non-functional SPI nodes
+      video: qemu-ramfb: reduce -ENODEV lo level to debug
+      gpiolib: fix gpio label generation with gpiod_get
+      test: emulate.pl: fix firmware use with non-tuxmake out-of-tree build
+      RISC-V: restrict GCC optimization some more
+      RISC-V: configs: rv64i_defconfig: disable SBI serial
+      net: dsa: realtek: include needed headers directly
+      net: linux/mdio.h: add missing init.h header
+      Kbuild: export CROSS_PKG_CONFIG
+      treewide: fix includes missed by multiarch support
+      mci: dw_mmc: make reset optional
+      treewide: add missing device tree artifact cleanup where needed
+      ARM64: setupc: don't invoke KASAN before relocation
+      mci: bcm2835: return command timeout silently
+      arm: error out if __LINUX_ARM_ARCH__ is undefined
+      libfile: don't leak file descriptors in compare_file
+      ARM: i.MX6: fix DEBUG_LL use
+
+Albert Schwarzkopf (1):
+      scripts: imx: Ignore ';' and '\n' in quotes
+
+Denis Orlov (8):
+      dma: use dma/cpu conversions correctly in dma_map/unmap_single
+      MIPS: dma-default: use virtual addresses when flushing caches
+      MIPS: dma-default: do not flush caches in dma_sync_single_* excessively
+      lib: string: remove duplicated function
+      MIPS: bootm: do not free fdt pointer that contains an error
+      MIPS: bootm: do not leak memory on error in of_overlay_load_firmware()
+      MIPS: bootm: remove unnecessary phys/virt conversions
+      common: elf: use proper field to get segment memory size
+
+Johannes Zink (1):
+      Documentation: devicetree: list automatic boot argument fixups
+
+Jules Maselbas (1):
+      usb: dwc2: Fix memory leak in probe error path
+
+Marco Felsch (1):
+      ARM: boards: protonic-imx6: fix bbu_handler device paths
+
+Oleksij Rempel (1):
+      ARM: boards: protonic-imx6: fix board probe for LANMCU
+
+Renaud Barbier (4):
+      Subject: [PATCH 1/1] ARM:lib32: add architected timer
+      ARM: add LS1021A to Layerscape machine support
+      ARM: Layerscape: Add LS1021A IOT board support
+      ARM: LS1021A: slow boot
+
+Roland Hieber (1):
+      Documentation: imx: improve reboot mode section
+
+Sam Ravnborg (2):
+      ARM: sama5d4_wifx: fix build with moved mach files
+      ARM: add sama5d4_wifx to at91_multi_defconfig
+
+Sascha Hauer (116):
+      ARM: remove samsung arch
+      mci: remove s3c driver
+      mtd: nand: remove s3c driver
+      serial: remove s3c driver
+      video: remove s3c driver
+      ARM: mxs: remove unused mach/clock.h
+      ARM: imx: remove unused mach/clock.h
+      ARM: rockchip: drop mach/timer.h
+      ARM: i.MX: Move imxfb.h to include/platform_data/
+      pinctrl: rockchip: Fix uninitialized var warning
+      ARM: at91: remove unnecessary configs
+      ARM: at91: Switch all boards to multiimage
+      at91: consolidate usb-a963 128m images
+      ARM: pxa: Move plat/ include files to mach/
+      scripts: dtc: disable interrupt_provider warnings
+      ARM: dts: digic4: Fix dtc warnings
+      ARM: dts: ep7212-clep7212: Fix dtc warnings
+      ARM: dts: Fix dtc warnings in state nodes
+      ARM: dts: Fix dtc warnings in barebox,environment nodes
+      ARM: dts: imx7d-peb-av-02: Fix dtc warning
+      ARM: dts: imx7d-peb-eval-02: Fix dtc warnings
+      ARM: dts: imx6ull-jozacp: Move regulators out of subnode
+      ARM: i.MX: Remove old boards
+      ARM: i.MX: Remove config CONFIG_ARCH_TEXT_BASE
+      ARM: i.MX: Sort board Kconfig entries
+      ARM: i.MX: let boards depend on 32/64bit
+      ARM: add ENTRY_FUNCTION_HEAD macro
+      ARM: mvebu: Use ENTRY_FUNCTION_HEAD
+      ARM: at91: Use ENTRY_FUNCTION_HEAD
+      ARM: Drop HAVE_MACH_ARM_HEAD
+      ARM: drop CONFIG_HAS_ASM_DEBUG_LL
+      regulator: pfuze: remove unused include
+      ARM: drop unused zynq code in Makefile
+      ARM: drop unused mvebu code in Makefile
+      ARM: drop unused am35xx code in Makefile
+      ARM: Makefile: Drop board-y
+      ARM: i.MX: Add missing include
+      ARM: stm32mp_defconfig: Enable remaining boards
+      usb: dwc3: Use clk_bulk_get_all()
+      mci: imx-esdhc-pbl: add missing include
+      ARM: i.MX: Move mach header files to include/mach/imx
+      ARM: Rockchip: Move mach header files to include/mach/rockchip
+      ARM: Zynqmp: Move mach header files to include/mach/zynqmp
+      ARM: mvebu: Move mach header files to include/mach/mvebu
+      ARM: davinci: Move mach header files to include/mach/davinci
+      ARM: bcm283x: Move mach header files to include/mach/bcm283x
+      ARM: stm32mp: Move mach header files to include/mach/stm32mp
+      ARM: zynq: Move mach header files to include/mach/zynq
+      ARM: vexpress: Move mach header files to include/mach/vexpress
+      ARM: versatile: Move mach header files to include/mach/versatile
+      ARM: layerscape: Move mach header files to include/mach/layerscape
+      ARM: tegra: Move mach header files to include/mach/tegra
+      ARM: uemd: Move mach header files to include/mach/uemd
+      ARM: socfpga: Move mach header files to include/mach/socfpga
+      ARM: pxa: Move mach header files to include/mach/pxa
+      ARM: omap: Move mach header files to include/mach/omap
+      ARM: nomadik: Move mach header files to include/mach/nomadik
+      ARM: mxs: Move mach header files to include/mach/mxs
+      ARM: ep93xx: Move mach header files to include/mach/ep93xx
+      ARM: digic: Move mach header files to include/mach/digic
+      ARM: clps711x: Move mach header files to include/mach/clps711x
+      ARM: at91: Move mach header files to include/mach/at91
+      ARM: Drop mach dir include path
+      include/mach/: use unique double inclusion protectors
+      ARM: i.MX: Add missing include
+      ARM: i.MX: Only provide PUTC_LL() when activated
+      debug_ll ns16550: Do not define PUTC_LL()
+      debug_ll ns16550: Use CONFIG_BAUDRATE
+      ARM: Rockchip: Use ns16550 debug_ll helper
+      ARM: Rockchip: Only provide PUTC_LL() when activated
+      ARM: omap: Use ns16550 debug_ll helper
+      ARM: omap: Only provide PUTC_LL() when activated
+      ARM: omap: usbboot: Enable USB communication when needed
+      ARM: omap: Make multi-arch safe
+      ARM: Rockchip: Make safe for multi-arch
+      pm_domains: Enable explicitly when we have power-domain providers
+      ARM: add multi-arch support
+      ARM: omap: Add support for multi-arch
+      ARM: zynqmp: Add multi-arch support
+      ARM: i.MX: move board selection into menu
+      ARM: stm32mp: Only provide PUTC_LL() when activated
+      ARM: stm32mp: Make safe for multi-arch
+      ARM: stm32mp: Add multi-arch support
+      ARM: vexpress: Drop unnecessary initcall
+      ARM: vexpress: Only provide PUTC_LL() when activated
+      ARM: vexpress: Add multi-arch support
+      ARM: bcm283x: Only provide PUTC_LL() when activated
+      ARM: bcm283x: Add multi-arch support
+      ARM: Add multi_v7_defconfig
+      ARM: Add multi_v8_defconfig
+      clk: Rockchip: Fix arrays out of bounds access
+      kbuild: Add target to build dtb overlay files
+      driver: Add rescan hook to struct device
+      i2c: implement rescan
+      spi: Directly register SPI device
+      spi: reduce scope of 'chip'
+      spi: implement rescan
+      ARM: Do not print exception stacktrace in panic
+      of_overlay: Add option to apply overlay to live tree
+      dts: update to v6.3-rc1
+      dts: update to v6.3-rc2
+      Merge branch 'for-next/arm' into next
+      Merge branch 'for-next/dtc-warnings' into next
+      Merge branch 'for-next/dts' into next
+      Merge branch 'for-next/mips' into next
+      Merge branch 'for-next/misc' into next
+      Merge branch 'for-next/of-overlay' into next
+      Merge branch 'next'
+      net: macb: Adjust zynq compatibles to upstream device trees
+      ARM: dts: rockchip: remove unused rk3568 dtsi files
+      Revert "of: support of_ensure_probed for top-level machine device"
+      Revert "boards: qemu-virt: ensure board driver probe at postcore_initcall level"
+      Revert "boards: qemu-virt: support passing in FIT public key"
+      ARM: i.MX: iim: Fix imx_iim_reg_write() return type
+      arm: rockchip: radxa-rock3: Fix SD/eMMC device numbers
+      Release v2023.04.0
+
+Wolfram Sang (5):
+      commands: edit: fix typo in Kconfig help text
+      commands: nand: add missing parameters to help
+      mtd: nand: atmel: legacy: add 'algo' to use
+      mtd: nand: atmel: legacy: use proper ecc_shift
+      mtd: nand: atmel: legacy: remove superfluous code
+
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
