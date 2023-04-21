@@ -1,63 +1,60 @@
-Delivery-date: Fri, 21 Apr 2023 08:31:14 +0200
+Delivery-date: Fri, 21 Apr 2023 08:57:06 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ppkIb-00BBvX-Bz
-	for lore@lore.pengutronix.de; Fri, 21 Apr 2023 08:31:14 +0200
+	id 1ppkhe-00BD3e-27
+	for lore@lore.pengutronix.de; Fri, 21 Apr 2023 08:57:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ppkIb-0005qf-AS
-	for lore@pengutronix.de; Fri, 21 Apr 2023 08:31:13 +0200
+	id 1ppkhd-0008Tn-Lb
+	for lore@pengutronix.de; Fri, 21 Apr 2023 08:57:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Dfgh6WhuFivSBwgjylrLJgZKzb9+J4xvFWZbj8OeWMM=; b=MVY1weGDmxob2jnhx9CVB/i7NE
-	t1NiEuNb+zKcaYxcIOgsCmKudv8WUfP2auh0u51C97ULdZkHsSYNVUdDbDSzgqNWA5g+4yssged0i
-	6BD2Gr5RJPE++fIJv+Bzt/93n02rAIeV5gXfmGmjaHB+9BaBEansaYideAo80LIv9RUzxjX3VDY8W
-	EYadv+GRg6ADIPme1ZcTWQ4jlL3Ranz7J0SuI4RsvFG1TtxW2SIOVnGWjPJQHZyra8jXQJUOjyJki
-	a7sFOwZDu8bGp5D+Jw9bcKz6qOnt6bovXgLh4mAgb4kULjg5NAyzAGJR/tUFk056MHUFUpVElIN94
-	fJ7Omzcg==;
+	bh=X3++8dVJNU9cc8Cj+QbL/SiwZPVomR4qXZDXd44uZ0Y=; b=j243Cc77dXSw++bXaTA2FH4+Ot
+	YON4qZQw6+Q+LKNy/3ijRre4rqSXCF/3icdh8oTq6FuJDPlAqu75WLnS7j7zCD9cOsaSAn9vIftbH
+	QJUL70mXE1iM5LVwT7R9oCA2lyORV4OZb1fImfG8RtGRHbyozkXdW8TVsSWMBK9Ybk3rlAAqUwD/M
+	kcfBxUS0opVZl2yFWIECxJGFUWQig9qPFr50a0GJpnMwgWAuMUSWOV6aw7R7vaA90dAMDWbrjXbRf
+	USGJL2YR63uAaWqqQzUQubt6CnXUNInLdPRv9j7jqtlyimcHdZTghEBD412Mz/zdYLYm48OJoTr9Y
+	s9WbGQTA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1ppkHZ-009pRA-1m;
-	Fri, 21 Apr 2023 06:30:09 +0000
+	id 1ppkgL-009tCx-0D;
+	Fri, 21 Apr 2023 06:55:45 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1ppkHV-009pNp-0l
+	id 1ppkgH-009tBo-2M
 	for barebox@lists.infradead.org;
-	Fri, 21 Apr 2023 06:30:06 +0000
+	Fri, 21 Apr 2023 06:55:42 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1ppkHN-0005Y0-0h; Fri, 21 Apr 2023 08:29:57 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1ppkHM-00013E-MU; Fri, 21 Apr 2023 08:29:56 +0200
-Date: Fri, 21 Apr 2023 08:29:56 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1ppkgE-0008Jy-Rn; Fri, 21 Apr 2023 08:55:38 +0200
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1ppkgE-0001zo-DI; Fri, 21 Apr 2023 08:55:38 +0200
+Date: Fri, 21 Apr 2023 08:55:38 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Andreas Kemnade <andreas@kemnade.info>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230421062956.GS13543@pengutronix.de>
-References: <20230418093040.1865982-1-a.fatoum@pengutronix.de>
+Message-ID: <20230421065538.xlb7a7nxlyapop6s@pengutronix.de>
+References: <20230420195255.1153119-1-andreas@kemnade.info>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230418093040.1865982-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230420195255.1153119-1-andreas@kemnade.info>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230420_233005_297287_837C28CA 
-X-CRM114-Status: GOOD (  19.08  )
+X-CRM114-CacheID: sfid-20230420_235541_765479_B9953D15 
+X-CRM114-Status: GOOD (  13.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,54 +77,44 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 1/5] mci: core: drop unused DDR/SDR constants
+Subject: Re: [PATCH] ARM: i.MX: bbu: fix compilation without
+ CONFIG_BAREBOX_UPDATE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Apr 18, 2023 at 11:30:36AM +0200, Ahmad Fatoum wrote:
-> These macros are unused and will be replaced by their Linux counterparts
-> in a follow up patch, so drop them.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Hi Andreas,
+
+On 23-04-20, Andreas Kemnade wrote:
+> Fix
+> include/mach/imx/bbu.h:208:1: error: expected identifier or ‘(’ before ‘{’ token
+
+argh.. thanks a lot.
+
+> Signed-off-by: Andreas Kemnade <andreas@kemnade.info>
+
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+
 > ---
-> v1 -> v2:
->   - new patch
-> ---
->  include/mci.h | 6 ------
->  1 file changed, 6 deletions(-)
-
-Applied, thanks
-
-Sascha
-
+>  include/mach/imx/bbu.h | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/include/mci.h b/include/mci.h
-> index d356f071f7f2..c38567303241 100644
-> --- a/include/mci.h
-> +++ b/include/mci.h
-> @@ -420,12 +420,6 @@ struct mci_ios {
->  #define MMC_BUS_WIDTH_8		3
+> diff --git a/include/mach/imx/bbu.h b/include/mach/imx/bbu.h
+> index 451ae15740..50657d9895 100644
+> --- a/include/mach/imx/bbu.h
+> +++ b/include/mach/imx/bbu.h
+> @@ -204,7 +204,7 @@ imx7_bbu_internal_spi_i2c_register_handler(const char *name, char *devicefile,
 >  
->  	enum mci_timing	timing;			/* timing specification used */
-> -
-> -#define MMC_SDR_MODE		0
-> -#define MMC_1_2V_DDR_MODE	1
-> -#define MMC_1_8V_DDR_MODE	2
-> -#define MMC_1_2V_SDR_MODE	3
-> -#define MMC_1_8V_SDR_MODE	4
->  };
->  
->  struct mci;
+>  static inline int
+>  imx8m_bbu_internal_flexspi_nor_register_handler(const char *name, const char *devicefile,
+> -						unsigned long flags);
+> +						unsigned long flags)
+>  {
+>  	return -ENOSYS;
+>  }
 > -- 
 > 2.39.2
 > 
 > 
 > 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
