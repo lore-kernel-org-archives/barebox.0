@@ -3,51 +3,49 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pqupK-00FXEI-K8
+	id 1pqupL-00FXEJ-1y
 	for lore@lore.pengutronix.de; Mon, 24 Apr 2023 13:57:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pqupK-0000r3-93
-	for lore@pengutronix.de; Mon, 24 Apr 2023 13:57:50 +0200
+	id 1pqupK-0000rG-Ti
+	for lore@pengutronix.de; Mon, 24 Apr 2023 13:57:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tW+JrPDz2gcGCyDEF9YAFyA8VvihDAWK1EeEQn06y2M=; b=JGUquU/Mq7sSo4GQQuDboa3XiV
-	Po4iijuVM1oWIvxiZITTBsbFvwggCjnnmrMXE3aGAnovok5Si7QqYEVhT9nvrsNd3ds7zqfbHmBoG
-	I3Zcc0R+GJyUdpwGQk5ZS3fGlI2BwoPJDECUmVHKmx6zrXom1XOrEXcPFJWvEwOvaUbkzDtIH2kaN
-	MtZH3B2bM1/6eqGM8ywtCeM4AG6TpQfxsQ0HgULoYfAEI5gZdcdjFdqy2OCr2M1cdL8HiiQw2VyVd
-	sckcUgKVbmenWmi+tXTZCaByD25+TVKEPJjwJk1o0RdXwxQUSPEad6TA0wT1uE2VNfbUPkYA/IWtf
-	xdNUDxIA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=E/h19bX37WjaKYJGSIZfZZRtmScwg34j0WFMOtgeGGc=; b=VkvMGFpdORkfScM6ui5KYEckZV
+	nHGloqiI1AJt4rR0CwyKECnJr8Ry72M8GOBKfmikqw3ckG0iWMN098qk4Tl0lFZSA4d3BfzZTT7TW
+	fLvD0AiK5Kw63lUwi8pM016mSf0XDwPTeJeAqYMrqA89W5td9xEVEATBdrbzRrY6jYlBu+lpUcLmt
+	kgADh0ue4GHyVL8CpRnV5J8yun9VECOlXP53OCi0KU/6emq/cntJHCQmDvvSD5gDJGg2n45YHKaRR
+	JQYUc43T69wv4Xj0Hym5w6IKS94wojRFo1BO8VisNDkRrzhYHG8EFoKJhl/pPGFjId5pBt966oPlA
+	vKQex1nQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pqunj-00GF7v-2w;
-	Mon, 24 Apr 2023 11:56:11 +0000
+	id 1pqunl-00GF8C-1i;
+	Mon, 24 Apr 2023 11:56:13 +0000
 Received: from relay9-d.mail.gandi.net ([217.70.183.199])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pqung-00GF79-2x
+	id 1pquni-00GF75-0W
 	for barebox@lists.infradead.org;
-	Mon, 24 Apr 2023 11:56:10 +0000
+	Mon, 24 Apr 2023 11:56:11 +0000
 Received: (Authenticated sender: ahmad@a3f.at)
-	by mail.gandi.net (Postfix) with ESMTPSA id 9E4F2FF80D;
-	Mon, 24 Apr 2023 11:56:03 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 68508FF811;
+	Mon, 24 Apr 2023 11:56:01 +0000 (UTC)
 From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <ahmad@a3f.at>
-Date: Mon, 24 Apr 2023 13:55:48 +0200
-Message-Id: <20230424115548.114858-2-ahmad@a3f.at>
+Date: Mon, 24 Apr 2023 13:55:47 +0200
+Message-Id: <20230424115548.114858-1-ahmad@a3f.at>
 X-Mailer: git-send-email 2.38.4
-In-Reply-To: <20230424115548.114858-1-ahmad@a3f.at>
-References: <20230424115548.114858-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230424_045609_106793_88D56B25 
-X-CRM114-Status: UNSURE (   9.13  )
+X-CRM114-CacheID: sfid-20230424_045610_346867_63EFB6F3 
+X-CRM114-Status: UNSURE (   6.32  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -71,90 +69,34 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/2] treewide: use non-executable stack annotations for blobs
+Subject: [PATCH 1/2] test: self: printf: compile test with -Wno-format-security
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We are building the non-sandbox platforms with -z noexecstack, because
-the ELF section attributes don't matter. This is different for sandbox,
-where we compile assembly files directly only for embedding blobs.
-This currently yields a build warning:
+For testing purposes, the test code uses a variable for the format
+string at places, which -Wformat-security doesn't like.
 
-  binutils-2.39/bin/ld: warning: defaultenv/defaultenv-2-reboot-mode.bbenv.gz.o:
-          missing .note.GNU-stack section implies executable stack
-  binutils-2.39/bin/ld: NOTE: This behaviour is deprecated and will be removed
-          in a future version of the linker
-
-Let's add the non-executable stack annotations, so sandbox may run with
-non-executable stack. This way we are left with a single linker
-warning that needs to be resolved:
-
-   binutils-2.39/bin/ld: warning: barebox has a LOAD segment with RWX permissions
+The printf test was copied over from the kernel, which sets
+-Wno-format-security globally. This may not be needed for barebox yet,
+but let's set at least for this one file.
 
 Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- lib/logo/Makefile    | 1 +
- scripts/Makefile.lib | 2 ++
- scripts/gen-dtb-s    | 1 +
- scripts/gen-dtbo-s   | 1 +
- 4 files changed, 5 insertions(+)
+ test/self/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/lib/logo/Makefile b/lib/logo/Makefile
-index 382701fb365c..9c14105e88bf 100644
---- a/lib/logo/Makefile
-+++ b/lib/logo/Makefile
-@@ -26,6 +26,7 @@ quiet_cmd_logo_S = LOGO.S  $@
- cmd_logo_S =							\
- (								\
- 	echo '\#include <asm/barebox.lds.h>';			\
-+	echo '.section .note.GNU-stack,"",%progbits';		\
- 	echo '.section .bblogo.rodata.$(subst -,_,$(*F)),"a"';	\
- 	echo '.balign STRUCT_ALIGNMENT';			\
- 	echo '.global __bblogo_$(subst -,_,$(*F))_start';	\
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 51beff56aeb8..90cfa579e5d5 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -391,6 +391,7 @@ quiet_cmd_env_S = ENV.S   $@
- cmd_env_S =							\
- (								\
- 	echo '\#include <asm/barebox.lds.h>';			\
-+	echo '.section .note.GNU-stack,"",%progbits';		\
- 	echo '.section .bbenv.rodata.$(subst -,_,$(*F)),"a"';	\
- 	echo '.balign STRUCT_ALIGNMENT';			\
- 	echo '.global __bbenv_$(subst -,_,$(*F))_start';	\
-@@ -540,6 +541,7 @@ quiet_cmd_imximage__S_dcd= DCD_S   $@
- cmd_imximage_S_dcd=						\
- (								\
- 	echo '\#include <asm/barebox.lds.h>';			\
-+	echo '.section .note.GNU-stack,"",%progbits';		\
- 	echo '.balign STRUCT_ALIGNMENT';			\
- 	echo '.global $(subst -,_,$(*F))_start';		\
- 	echo '$(subst -,_,$(*F))_start:';			\
-diff --git a/scripts/gen-dtb-s b/scripts/gen-dtb-s
-index f6fa1525933e..d6fbdd5aaf8a 100755
---- a/scripts/gen-dtb-s
-+++ b/scripts/gen-dtb-s
-@@ -6,6 +6,7 @@ imd=$3
- 
- echo "#include <asm/barebox.lds.h>"
- echo "#include <asm-generic/pointer.h>"
-+echo ".section .note.GNU-stack,\"\",%progbits"
- 
- le32() {
- 	printf ".byte 0x%02x, 0x%02x, 0x%02x, 0x%02x\n" \
-diff --git a/scripts/gen-dtbo-s b/scripts/gen-dtbo-s
-index 06f78609ed28..a7e272a0890d 100755
---- a/scripts/gen-dtbo-s
-+++ b/scripts/gen-dtbo-s
-@@ -4,6 +4,7 @@ name=$1
- dtbo=$2
- 
- echo "#include <asm/barebox.lds.h>"
-+echo ".section .note.GNU-stack,\"\",%progbits"
- 
- echo ".section .dtb.rodata.${name}_dtbo,\"a\""
- echo ".balign STRUCT_ALIGNMENT"
+diff --git a/test/self/Makefile b/test/self/Makefile
+index d55d9133be23..98ebd1fd66c1 100644
+--- a/test/self/Makefile
++++ b/test/self/Makefile
+@@ -3,6 +3,7 @@
+ obj-$(CONFIG_SELFTEST) += core.o
+ obj-$(CONFIG_SELFTEST_MALLOC) += malloc.o
+ obj-$(CONFIG_SELFTEST_PRINTF) += printf.o
++CFLAGS_printf.o += -Wno-format-security
+ obj-$(CONFIG_SELFTEST_PROGRESS_NOTIFIER) += progress-notifier.o
+ obj-$(CONFIG_SELFTEST_OF_MANIPULATION) += of_manipulation.o of_manipulation.dtb.o
+ obj-$(CONFIG_SELFTEST_ENVIRONMENT_VARIABLES) += envvar.o
 -- 
 2.38.4
 
