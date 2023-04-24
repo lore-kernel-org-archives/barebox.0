@@ -1,76 +1,53 @@
-Delivery-date: Fri, 21 Apr 2023 13:43:37 +0200
+Delivery-date: Mon, 24 Apr 2023 13:57:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pppAu-00BU6L-M9
-	for lore@lore.pengutronix.de; Fri, 21 Apr 2023 13:43:37 +0200
+	id 1pqupK-00FXEI-K8
+	for lore@lore.pengutronix.de; Mon, 24 Apr 2023 13:57:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pppAu-0004qh-MV
-	for lore@pengutronix.de; Fri, 21 Apr 2023 13:43:37 +0200
+	id 1pqupK-0000r3-93
+	for lore@pengutronix.de; Mon, 24 Apr 2023 13:57:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=LtOlMXNQ8yEj7mlq5wvIES7Yp0TWYjtxBpoYAfUK9WE=; b=UOYlTuHKtfQC/Jy/X5pnX/OZZh
-	XT/S3tMJdi5Lhq9zOxHEdIrlRK09XmXBQIBX55Shpm3NRKIbVIQPLB42VcdC/rlgwDrghhzzDC8Xx
-	watCrGJCWKqzKSBLN3lbLpuuijr6+ppnUGkZYzfkrnRnd5Bjuvotk4odeoqYJlznnoYQxmhmbEdOH
-	7H5oM8xysQJNGOTXYIkGVvpTJ5A2l60fL7tbJVVej6aj1E7oE0H29WU7CA++Lk6hxe/tCJZPQYfkz
-	KCv/CNP7K7GU3hvtI04M2/W4XMvXcvB0Rjm4K2HHuO7csm4xUeBn6QRmzznmhD5xP7DMdrDefLVw1
-	hu3Psnjw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=tW+JrPDz2gcGCyDEF9YAFyA8VvihDAWK1EeEQn06y2M=; b=JGUquU/Mq7sSo4GQQuDboa3XiV
+	Po4iijuVM1oWIvxiZITTBsbFvwggCjnnmrMXE3aGAnovok5Si7QqYEVhT9nvrsNd3ds7zqfbHmBoG
+	I3Zcc0R+GJyUdpwGQk5ZS3fGlI2BwoPJDECUmVHKmx6zrXom1XOrEXcPFJWvEwOvaUbkzDtIH2kaN
+	MtZH3B2bM1/6eqGM8ywtCeM4AG6TpQfxsQ0HgULoYfAEI5gZdcdjFdqy2OCr2M1cdL8HiiQw2VyVd
+	sckcUgKVbmenWmi+tXTZCaByD25+TVKEPJjwJk1o0RdXwxQUSPEad6TA0wT1uE2VNfbUPkYA/IWtf
+	xdNUDxIA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1ppp9r-00Akrc-1k;
-	Fri, 21 Apr 2023 11:42:31 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1pqunj-00GF7v-2w;
+	Mon, 24 Apr 2023 11:56:11 +0000
+Received: from relay9-d.mail.gandi.net ([217.70.183.199])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1ppp9p-00Akqv-0s
-	for barebox@bombadil.infradead.org;
-	Fri, 21 Apr 2023 11:42:29 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=LtOlMXNQ8yEj7mlq5wvIES7Yp0TWYjtxBpoYAfUK9WE=; b=UelVBgYzqpsqpBJ1Gz/LKSYnsK
-	0GVzBtXW+jlNGaifyM++n1BYc/hnb/Wbg6dZeJwIkBMu/m4LVJgbmZKC3kIRMX+N1R1p9sJtcIWWQ
-	WE2mcwlMx0+W5f4gYRvRF03rJTtGGz/OdABrj8BghEoiE9bijNBaK3rr7HHpie9rhYhnLLJYd1vCh
-	C1jAL6uF15dM9g978oTROIF3qUWaB9ZixY4hynAbIApDd0SNew/4LLG2F0/SgWGMu1brdgEHh8Ceo
-	qr9uUqs4k928/TTbaV7Od1mDh0ZOm8HSW/KUe1kub/nHjFhK9C/oTSTba/eJ2BO2trh8DRpGLR6uk
-	Dk6jxqHg==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
-	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1ppoD3-005GFg-0D
+	id 1pqung-00GF79-2x
 	for barebox@lists.infradead.org;
-	Fri, 21 Apr 2023 10:41:47 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1ppoD1-0005oV-Ig; Fri, 21 Apr 2023 12:41:43 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1ppoD0-00CmDF-Tn; Fri, 21 Apr 2023 12:41:42 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1ppoD0-00C5EE-6z; Fri, 21 Apr 2023 12:41:42 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Mon, 24 Apr 2023 11:56:10 +0000
+Received: (Authenticated sender: ahmad@a3f.at)
+	by mail.gandi.net (Postfix) with ESMTPSA id 9E4F2FF80D;
+	Mon, 24 Apr 2023 11:56:03 +0000 (UTC)
+From: Ahmad Fatoum <ahmad@a3f.at>
 To: barebox@lists.infradead.org
-Cc: Marco Felsch <m.felsch@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 21 Apr 2023 12:41:40 +0200
-Message-Id: <20230421104140.2879999-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+Cc: Ahmad Fatoum <ahmad@a3f.at>
+Date: Mon, 24 Apr 2023 13:55:48 +0200
+Message-Id: <20230424115548.114858-2-ahmad@a3f.at>
+X-Mailer: git-send-email 2.38.4
+In-Reply-To: <20230424115548.114858-1-ahmad@a3f.at>
+References: <20230424115548.114858-1-ahmad@a3f.at>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230421_114145_302747_2BFA55C0 
-X-CRM114-Status: UNSURE (   7.42  )
+X-CRM114-CacheID: sfid-20230424_045609_106793_88D56B25 
+X-CRM114-Status: UNSURE (   9.13  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -89,39 +66,97 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] ARM: configs: multi_v7_defconfig: enable CONFIG_USB_ONBOARD_HUB
+Subject: [PATCH 2/2] treewide: use non-executable stack annotations for blobs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This is needed for at least the STM32MP1 discovery and evaluation kits,
-which use the onboard USB hub binding to model the 3v3 voltage regulator
-supplying the on-board USB hub.
+We are building the non-sandbox platforms with -z noexecstack, because
+the ELF section attributes don't matter. This is different for sandbox,
+where we compile assembly files directly only for embedding blobs.
+This currently yields a build warning:
 
-Suggested-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+  binutils-2.39/bin/ld: warning: defaultenv/defaultenv-2-reboot-mode.bbenv.gz.o:
+          missing .note.GNU-stack section implies executable stack
+  binutils-2.39/bin/ld: NOTE: This behaviour is deprecated and will be removed
+          in a future version of the linker
+
+Let's add the non-executable stack annotations, so sandbox may run with
+non-executable stack. This way we are left with a single linker
+warning that needs to be resolved:
+
+   binutils-2.39/bin/ld: warning: barebox has a LOAD segment with RWX permissions
+
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- arch/arm/configs/multi_v7_defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ lib/logo/Makefile    | 1 +
+ scripts/Makefile.lib | 2 ++
+ scripts/gen-dtb-s    | 1 +
+ scripts/gen-dtbo-s   | 1 +
+ 4 files changed, 5 insertions(+)
 
-diff --git a/arch/arm/configs/multi_v7_defconfig b/arch/arm/configs/multi_v7_defconfig
-index d83e503671d9..f8eca18ff30c 100644
---- a/arch/arm/configs/multi_v7_defconfig
-+++ b/arch/arm/configs/multi_v7_defconfig
-@@ -254,6 +254,7 @@ CONFIG_USB_DWC2_GADGET=y
- CONFIG_USB_EHCI=y
- CONFIG_USB_ULPI=y
- CONFIG_USB_STORAGE=y
-+CONFIG_USB_ONBOARD_HUB=y
- CONFIG_USB_GADGET=y
- CONFIG_USB_GADGET_DFU=y
- CONFIG_USB_GADGET_SERIAL=y
+diff --git a/lib/logo/Makefile b/lib/logo/Makefile
+index 382701fb365c..9c14105e88bf 100644
+--- a/lib/logo/Makefile
++++ b/lib/logo/Makefile
+@@ -26,6 +26,7 @@ quiet_cmd_logo_S = LOGO.S  $@
+ cmd_logo_S =							\
+ (								\
+ 	echo '\#include <asm/barebox.lds.h>';			\
++	echo '.section .note.GNU-stack,"",%progbits';		\
+ 	echo '.section .bblogo.rodata.$(subst -,_,$(*F)),"a"';	\
+ 	echo '.balign STRUCT_ALIGNMENT';			\
+ 	echo '.global __bblogo_$(subst -,_,$(*F))_start';	\
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 51beff56aeb8..90cfa579e5d5 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -391,6 +391,7 @@ quiet_cmd_env_S = ENV.S   $@
+ cmd_env_S =							\
+ (								\
+ 	echo '\#include <asm/barebox.lds.h>';			\
++	echo '.section .note.GNU-stack,"",%progbits';		\
+ 	echo '.section .bbenv.rodata.$(subst -,_,$(*F)),"a"';	\
+ 	echo '.balign STRUCT_ALIGNMENT';			\
+ 	echo '.global __bbenv_$(subst -,_,$(*F))_start';	\
+@@ -540,6 +541,7 @@ quiet_cmd_imximage__S_dcd= DCD_S   $@
+ cmd_imximage_S_dcd=						\
+ (								\
+ 	echo '\#include <asm/barebox.lds.h>';			\
++	echo '.section .note.GNU-stack,"",%progbits';		\
+ 	echo '.balign STRUCT_ALIGNMENT';			\
+ 	echo '.global $(subst -,_,$(*F))_start';		\
+ 	echo '$(subst -,_,$(*F))_start:';			\
+diff --git a/scripts/gen-dtb-s b/scripts/gen-dtb-s
+index f6fa1525933e..d6fbdd5aaf8a 100755
+--- a/scripts/gen-dtb-s
++++ b/scripts/gen-dtb-s
+@@ -6,6 +6,7 @@ imd=$3
+ 
+ echo "#include <asm/barebox.lds.h>"
+ echo "#include <asm-generic/pointer.h>"
++echo ".section .note.GNU-stack,\"\",%progbits"
+ 
+ le32() {
+ 	printf ".byte 0x%02x, 0x%02x, 0x%02x, 0x%02x\n" \
+diff --git a/scripts/gen-dtbo-s b/scripts/gen-dtbo-s
+index 06f78609ed28..a7e272a0890d 100755
+--- a/scripts/gen-dtbo-s
++++ b/scripts/gen-dtbo-s
+@@ -4,6 +4,7 @@ name=$1
+ dtbo=$2
+ 
+ echo "#include <asm/barebox.lds.h>"
++echo ".section .note.GNU-stack,\"\",%progbits"
+ 
+ echo ".section .dtb.rodata.${name}_dtbo,\"a\""
+ echo ".balign STRUCT_ALIGNMENT"
 -- 
-2.39.2
+2.38.4
 
 
 
