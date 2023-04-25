@@ -1,59 +1,61 @@
-Delivery-date: Tue, 25 Apr 2023 15:37:14 +0200
+Delivery-date: Tue, 25 Apr 2023 15:37:19 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1prIr3-00GvQO-6m
-	for lore@lore.pengutronix.de; Tue, 25 Apr 2023 15:37:14 +0200
+	id 1prIr8-00GvQo-Ry
+	for lore@lore.pengutronix.de; Tue, 25 Apr 2023 15:37:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1prIr2-0008Vs-SQ
-	for lore@pengutronix.de; Tue, 25 Apr 2023 15:37:13 +0200
+	id 1prIr8-00004z-3H
+	for lore@pengutronix.de; Tue, 25 Apr 2023 15:37:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=zy+0lmCBrSlh4Q6ATL15WPzPXrim+bpvSbYwGJJTjhs=; b=LXBiQvU1PN1Fx1Vwsciuxi9rYo
-	jVkVgvVE+qs8RH0ymd3T2+FQ+xdBC6UEYpyQg5dlmayoGJAblwR4iSRhnZaaN82WMgtpJQeZ3C5QB
-	fiJmhgH74ytzPN6teTjZFOUzmCi4fRsP/gO86UtMJ2muEfGB8HpwKCrdxay2MIc0hfIXs7mNRitSu
-	9qaNJgVJuWlYEStKaTeG9Wb9eL3BT0wkgDZCwPdJDbn7uyeb+9XbV+TTsx0KA9qnGUObdkxD2wTQL
-	YaRzO5QVz5S51PspoTKEll3g7j8G7FklnxNQFvrh/1mYI/e5+1oeyLEB4APKKGcNJkfCkcmCo800l
-	QwWenhMw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=whvs+rImgNA3mYFsob/ohWEXUSuPXqLCk4jwxrxPqNE=; b=iT+061i+VTRiAOciwt6sM2PhVD
+	JsqVuv3DpZ4SfHkRYJZafVFD/xNW94xcLCQhfzZ0ur+HqYRzqmEt3Czza/9cE66fhe/qSi+qfQcK0
+	7FsF5feR43VjZnpNPcVFfWBqxoN5GiH+Ad2DWvbgznVYy+stfzXfsGQr7yQ3PBtmjIcoSr08s9pHW
+	xrIwmBktLAzpaMtR1RgwYiKT8Jw9MHvK4RauNEIpjk78nm5zhsLRb+I2eM4JrhZF8sacRizgSDbhW
+	sp6NtFZGyoBhbmNHStl5OwJAVbKjgrCPAszlJzYP6Krr/7v5bxIAY74o4g3sEFmhTSdHaLCVyFtSC
+	4y0f2dlg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1prIpj-001GbP-0g;
-	Tue, 25 Apr 2023 13:35:51 +0000
+	id 1prIpk-001Gbk-0N;
+	Tue, 25 Apr 2023 13:35:52 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1prIpf-001GXv-35
+	id 1prIpf-001GY5-38
 	for barebox@lists.infradead.org;
 	Tue, 25 Apr 2023 13:35:49 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1prIpX-0008Ha-Ob; Tue, 25 Apr 2023 15:35:39 +0200
+	id 1prIpY-0008Hb-G5; Tue, 25 Apr 2023 15:35:40 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1prIpX-00Di7I-1l; Tue, 25 Apr 2023 15:35:39 +0200
+	id 1prIpX-00Di7L-3L; Tue, 25 Apr 2023 15:35:39 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1prIpW-0019GO-7t; Tue, 25 Apr 2023 15:35:38 +0200
+	id 1prIpW-0019GR-8Z; Tue, 25 Apr 2023 15:35:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 25 Apr 2023 15:35:34 +0200
-Message-Id: <20230425133535.273920-1-s.hauer@pengutronix.de>
+Date: Tue, 25 Apr 2023 15:35:35 +0200
+Message-Id: <20230425133535.273920-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230425133535.273920-1-s.hauer@pengutronix.de>
+References: <20230425133535.273920-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230425_063547_991140_F67E4755 
-X-CRM114-Status: GOOD (  11.72  )
+X-CRM114-CacheID: sfid-20230425_063548_007501_7AA66FAD 
+X-CRM114-Status: GOOD (  13.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,74 +76,119 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH 1/2] ARM: vexpress: Disable non working devices
+	T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75 autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 2/2] ARM: remove vexpress_defconfig
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Disable some non working devices in the vexpress dts files to
-avoid error messages during runtime. vexpress_defconfig has the
-drivers for these devices disabled, but with multi_v7_defconfig
-the driver are enabled. To make vexpress more usable with
-multi_v7_defconfig disable the non working devices in the device
-tree.
-
-/timer@1e000600 doesn't work because our arm,cortex-a9-twd-timer
-implementation needs a clock which the dts doesn't provide. We don't
-need this as we use another timer anyway.
-
-/bus@40000000/motherboard-bus@40000000/leds/ and /leds/ are a gpio-leds
-devices which need a GPIO driver which doesn't exist in barebox
-
-/bus@40000000/motherboard-bus@40000000/iofpga@7,00000000/compact-flash@1a000/
-/bus@8000000/motherboard-bus@8000000/iofpga-bus@300000000/compact-flash@1a0000/
-are ata-generic devices. The driver times out probing the device. While
-it doesn't issue an error message it delays starting up the board for
-several seconds.
+vexpress is now covered by multi_v7_defconfig. To reduce the number of
+defconfigs remove vexpress_defconfig. While at it add a hint to the
+documentation how to build the vexpress images.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/dts/vexpress-v2p-ca15.dts |  8 ++++++++
- arch/arm/dts/vexpress-v2p-ca9.dts  | 12 ++++++++++++
- 2 files changed, 20 insertions(+)
+ Documentation/boards/arm-qemu-vexpress.rst |  3 +
+ arch/arm/configs/vexpress_defconfig        | 76 ----------------------
+ 2 files changed, 3 insertions(+), 76 deletions(-)
+ delete mode 100644 arch/arm/configs/vexpress_defconfig
 
-diff --git a/arch/arm/dts/vexpress-v2p-ca15.dts b/arch/arm/dts/vexpress-v2p-ca15.dts
-index 78d0025909..cdf7bd37d5 100644
---- a/arch/arm/dts/vexpress-v2p-ca15.dts
-+++ b/arch/arm/dts/vexpress-v2p-ca15.dts
-@@ -28,3 +28,11 @@
- 		};
- 	};
- };
+diff --git a/Documentation/boards/arm-qemu-vexpress.rst b/Documentation/boards/arm-qemu-vexpress.rst
+index 010eae04a2..335af46990 100644
+--- a/Documentation/boards/arm-qemu-vexpress.rst
++++ b/Documentation/boards/arm-qemu-vexpress.rst
+@@ -7,6 +7,9 @@ ARM Qemu vexpress
+ Running barebox on QEMU vexpress machine
+ ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+ 
++Images for the vexpress platform are built as part of the
++multi_v7_defconfig.
 +
-+&{/leds} {
-+	status = "disabled";
-+};
-+
-+&{/bus@8000000/motherboard-bus@8000000/iofpga-bus@300000000/compact-flash@1a0000/} {
-+	status = "disabled";
-+};
-diff --git a/arch/arm/dts/vexpress-v2p-ca9.dts b/arch/arm/dts/vexpress-v2p-ca9.dts
-index a43628e7ce..113548bedb 100644
---- a/arch/arm/dts/vexpress-v2p-ca9.dts
-+++ b/arch/arm/dts/vexpress-v2p-ca9.dts
-@@ -91,3 +91,15 @@
- 		};
- 	};
- };
-+
-+&{/timer@1e000600} {
-+	status = "disabled";
-+};
-+
-+&{/bus@40000000/motherboard-bus@40000000/leds/} {
-+	status = "disabled";
-+};
-+
-+&{/bus@40000000/motherboard-bus@40000000/iofpga@7,00000000/compact-flash@1a000/} {
-+	status = "disabled";
-+};
+ Usage::
+ 
+ 	$ qemu-system-arm -m 1024M \
+diff --git a/arch/arm/configs/vexpress_defconfig b/arch/arm/configs/vexpress_defconfig
+deleted file mode 100644
+index d58ca7ebd0..0000000000
+--- a/arch/arm/configs/vexpress_defconfig
++++ /dev/null
+@@ -1,76 +0,0 @@
+-CONFIG_ARCH_VEXPRESS=y
+-CONFIG_MACH_VEXPRESS=y
+-CONFIG_MACH_VIRT=y
+-CONFIG_AEABI=y
+-CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
+-CONFIG_MALLOC_SIZE=0x0
+-CONFIG_MALLOC_TLSF=y
+-CONFIG_KALLSYMS=y
+-CONFIG_PROMPT="vexpress: "
+-CONFIG_HUSH_FANCY_PROMPT=y
+-CONFIG_CMDLINE_EDITING=y
+-CONFIG_AUTO_COMPLETE=y
+-CONFIG_MENU=y
+-CONFIG_BOOTM_SHOW_TYPE=y
+-CONFIG_BOOTM_VERBOSE=y
+-CONFIG_BOOTM_INITRD=y
+-CONFIG_CONSOLE_ACTIVATE_ALL=y
+-CONFIG_CONSOLE_ALLOW_COLOR=y
+-CONFIG_PARTITION_DISK_EFI=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+-CONFIG_CMD_DMESG=y
+-CONFIG_LONGHELP=y
+-CONFIG_CMD_IOMEM=y
+-CONFIG_CMD_MEMINFO=y
+-# CONFIG_CMD_BOOTU is not set
+-CONFIG_CMD_GO=y
+-CONFIG_CMD_LOADB=y
+-CONFIG_CMD_RESET=y
+-CONFIG_CMD_UIMAGE=y
+-CONFIG_CMD_PARTITION=y
+-CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_SAVEENV=y
+-CONFIG_CMD_FILETYPE=y
+-CONFIG_CMD_UNCOMPRESS=y
+-CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_TFTP=y
+-CONFIG_CMD_ECHO_E=y
+-CONFIG_CMD_EDIT=y
+-CONFIG_CMD_LOGIN=y
+-CONFIG_CMD_MENU=y
+-CONFIG_CMD_MENU_MANAGEMENT=y
+-CONFIG_CMD_PASSWD=y
+-CONFIG_CMD_READLINE=y
+-CONFIG_CMD_TIMEOUT=y
+-CONFIG_CMD_CRC=y
+-CONFIG_CMD_CRC_CMP=y
+-CONFIG_CMD_CLK=y
+-CONFIG_CMD_DETECT=y
+-CONFIG_CMD_POWEROFF=y
+-CONFIG_CMD_OFTREE=y
+-CONFIG_NET=y
+-CONFIG_NET_NFS=y
+-CONFIG_NET_NETCONSOLE=y
+-CONFIG_OF_BAREBOX_DRIVERS=y
+-CONFIG_SERIAL_AMBA_PL011=y
+-CONFIG_VIRTIO_CONSOLE=y
+-CONFIG_DRIVER_NET_SMC91111=y
+-# CONFIG_SPI is not set
+-CONFIG_MTD=y
+-CONFIG_MTD_CONCAT=y
+-CONFIG_DRIVER_CFI=y
+-CONFIG_VIRTIO_BLK=y
+-CONFIG_MCI=y
+-CONFIG_MCI_MMCI=y
+-CONFIG_HWRNG=y
+-CONFIG_HW_RANDOM_VIRTIO=y
+-# CONFIG_PINCTRL is not set
+-CONFIG_VIRTIO_MMIO=y
+-CONFIG_FS_EXT4=y
+-CONFIG_FS_TFTP=y
+-CONFIG_FS_FAT=y
+-CONFIG_DIGEST_SHA1_GENERIC=y
+-CONFIG_DIGEST_SHA256_GENERIC=y
 -- 
 2.39.2
 
