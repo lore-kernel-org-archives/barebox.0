@@ -1,76 +1,66 @@
-Delivery-date: Wed, 26 Apr 2023 11:06:11 +0200
+Delivery-date: Wed, 26 Apr 2023 21:11:26 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1prb6I-000W8l-A4
-	for lore@lore.pengutronix.de; Wed, 26 Apr 2023 11:06:11 +0200
+	id 1prkY1-00189T-0r
+	for lore@lore.pengutronix.de; Wed, 26 Apr 2023 21:11:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1prb6I-0003TS-0M
-	for lore@pengutronix.de; Wed, 26 Apr 2023 11:06:10 +0200
+	id 1prkY0-0003Cz-JK
+	for lore@pengutronix.de; Wed, 26 Apr 2023 21:11:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LhvG2HVGSFh3t+XhBs2GcNYGrwKylFYzexPlOg2Xnn0=; b=H+/wJxaOSnDP9J1Mf89VtWcKaf
-	xAmUsZx3YdtKNhAiEnvRWqIw7HLAvG5NHo3Gyruv/XlQOd8NE2tOBSMyXJWZoZ3CFV4LSQXwK14Ts
-	P2a8drExydZ1NEcJB8S/wnIFqEZ1Ft8afndeNZz9OhgBtD+azEn24D5n0yYIaoYkCULS5JLdFk00z
-	BLITmJtFEnRI4VzuJ+E1B0+POUx5FgArJB0ruD66Vn//VLDhj4kZJUZi4siECMiCWd7E8bBW3Iemh
-	1ZiZS+Zke/Z/rse17GCeF1xL94+pp89yv3qMKsxCDPqhUz0S1kVpBJGC2sJFZrk4+V700kWEYW6ez
-	MQwfxRdw==;
+	Content-Type:MIME-Version:Message-ID:Subject:To:From:Date:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=cze6YlGV8lkGo7HBOVqYp18v1wvQ0SSiahlNJcZKJp8=; b=a9ThkAn5xnW9+Ach+wNGNvEgEY
+	wlrZN75hppnyACKAPYLoz51pG3ZEB+yqqv2y9ZpbgAVlQusWOgFTisWmNWlNLC/Ky0yZrVuW2Dph2
+	47u8kK8kZZvh00FU2F5iFLHg2LwCNHbWDEfEafEa4xeH94DSgv/ss+8+4gjqrhLJR0pQq6QlL6Oa7
+	TSIm+D9iXST535seGSzuyCZX4G2FYKUabKJ4mjPqT6eniVmKsTeuTlnc5UPIolrNDwA9J4dFkZ4OD
+	l8bE/8CNP4R9p6FbiYELUZH2ZlbMQL4mEOkgd7cX84q/sCAMDdckMmiBadgegwV4Q4Zivcsdqf3mY
+	+y3XL8Fg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1prb4k-003EA2-2A;
-	Wed, 26 Apr 2023 09:04:34 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1prkWT-004fsy-2g;
+	Wed, 26 Apr 2023 19:09:49 +0000
+Received: from mail.andi.de1.cc ([2a01:238:4321:8900:456f:ecd6:43e:202c])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1prb4i-003E9U-2m
-	for barebox@bombadil.infradead.org;
-	Wed, 26 Apr 2023 09:04:32 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=LhvG2HVGSFh3t+XhBs2GcNYGrwKylFYzexPlOg2Xnn0=; b=VKQXttdT/PnXf5AmiK+CihZ2eG
-	48SWmvBhQ5/rk6+GdALBqAFwE5DPJuLNHoyRGeCntZBcodZODIpTomvwZbwyU3a1p0kuE27v7US5V
-	EqNbjQH/mr0f1mjk4lSENSZdL3jhfmcmNZHvFWbVH6c7J4DannriTDIJ/wjpNfDZzloPNyonpwuc4
-	BsesuQhxOCAg8FV+Zs4TFKP2gUiUOw+MWkVvZGbx1rbkpzQoSpzQf0zUFfcuaxnzbwTliLXVPcqdp
-	hD94n8bfD8XdS4jy5og7NM12MfjJuOBxvQCuDl5x8dvQW7a5cIDQB4gZuBE+mfExWHSdZhWw5y3nf
-	hlEbc1kQ==;
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
-	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1prb4e-00AubI-0B
+	id 1prkWQ-004fsQ-26
 	for barebox@lists.infradead.org;
-	Wed, 26 Apr 2023 09:04:30 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1prb4Z-0002z6-DX; Wed, 26 Apr 2023 11:04:23 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1prb4Y-00DtNZ-09; Wed, 26 Apr 2023 11:04:22 +0200
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1prb4X-005nZa-6k; Wed, 26 Apr 2023 11:04:21 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 26 Apr 2023 11:03:53 +0200
-Message-Id: <20230426090354.1350981-3-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230426090354.1350981-1-s.hauer@pengutronix.de>
-References: <20230426090354.1350981-1-s.hauer@pengutronix.de>
+	Wed, 26 Apr 2023 19:09:48 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Subject:To:From:Date:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=cze6YlGV8lkGo7HBOVqYp18v1wvQ0SSiahlNJcZKJp8=; b=e9r/vM41SjWYIHwq8KFHNH5J6L
+	8VxzA76r27OysNqyOkMRa/bqYBWWvJG/gqc98RQ7L2FyGNUQwXo5Mr2pAtnQyiPW+Dq3tgmnDKxPF
+	uDgCeneApcmvrbGnkt4Am41mCW6YEEeP3uZzzMNzc3/yfdLc1zrLBYDg49sV226nV1pq3/fzj+7fo
+	MPMw2mAg82yt06gNoN57lrH8/aDaHZOuKuIsG/xBhekOABuzdWnM6eA7wmFhav9E2G7+3uLH6pcD5
+	GINZXYIo6PImZ0s+TobVZF611qNXD7l2EM7YBDzGlsmLDr1co+Fm9xoLPiV6sUHwF2iH+EuGBvN93
+	DvEt22Cg==;
+Received: from p200300ccff09c2001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff09:c200:1a3d:a2ff:febf:d33a] helo=aktux)
+	by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.89)
+	(envelope-from <andreas@kemnade.info>)
+	id 1prkWI-0007u0-Pm; Wed, 26 Apr 2023 21:09:38 +0200
+Date: Wed, 26 Apr 2023 21:09:36 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: barebox@lists.infradead.org, jbe@pengutronix.de
+Message-ID: <20230426210936.7531e177@aktux>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.24; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230426_100428_251933_C1FAF677 
-X-CRM114-Status: GOOD (  11.40  )
+X-CRM114-CacheID: sfid-20230426_120946_865643_4D0DEEE2 
+X-CRM114-Status: UNSURE (   5.67  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,69 +78,30 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/3] ARM: Rockchip: make boards only selectable when firmware is present
+Subject: rn5t618 vs. rn5t568
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The RK356x based boards need a sdram-init.bin file in the board
-directory. Make the boards selectable only when the file is present
-to avoid failing compilation when the file is missing.
+Hi,
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-rockchip/Kconfig | 11 ++++++++---
- 1 file changed, 8 insertions(+), 3 deletions(-)
+just looked a bit around in the source and stumbled across drivers/mfd/rn5t568.c
 
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 0bce83ecee..7acbd87473 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -69,30 +69,35 @@ if 64BIT
- 
- config MACH_RK3568_EVB
- 	select ARCH_RK3568
-+	depends on $(success,test -e $(srctree)/arch/arm/boards/rockchip-rk3568-evb/sdram-init.bin)
- 	bool "RK3568 EVB"
- 	help
- 	  Say Y here if you are using a RK3568 EVB
- 
- config MACH_RK3568_BPI_R2PRO
- 	select ARCH_RK3568
-+	depends on $(success,test -e $(srctree)/arch/arm/boards/rockchip-rk3568-bpi-r2pro/sdram-init.bin)
- 	bool "RK3568 BPI R2PRO"
- 	help
- 	  Say Y here if you are using a RK3568 Bananpi R2 Pro
- 
- config MACH_PINE64_QUARTZ64
- 	select ARCH_RK3568
-+	depends on $(success,test -e $(srctree)/arch/arm/boards/pine64-quartz64/sdram-init.bin)
- 	bool "Pine64 Quartz64"
- 	help
- 	  Say Y here if you are using a Pine64 Quartz64
- 
- config MACH_RADXA_ROCK3
--       select ARCH_RK3568
--       bool "Radxa ROCK3"
--       help
-+	select ARCH_RK3568
-+	depends on $(success,test -e $(srctree)/arch/arm/boards/radxa-rock3/sdram-init.bin)
-+	bool "Radxa ROCK3"
-+	help
- 	  Say Y here if you are using a Radxa ROCK3
- 
- config MACH_RADXA_CM3
- 	select ARCH_RK3568
-+	depends on $(success,test -e $(srctree)/arch/arm/boards/radxa-cm3/sdram-init.bin)
- 	bool "Radxa CM3"
- 	help
- 	  Say Y here if you are using a Radxa CM3
--- 
-2.39.2
+It contains
+ * MFD core driver for Ricoh RN5T618 PMIC
 
+but the filename is rn5t568.c That is very confusing.
+ a compatible ricoh,rn5t568 (but 567) does not exist in the kernel.
+
+So which chip this is really about? Did not analyse things deeper yet.
+
+I am also curious because I wrote most stuff in the kernel about the rn5t618/rc5t619.
+
+Regards,
+Andreas
 
 
