@@ -1,76 +1,74 @@
-Delivery-date: Thu, 27 Apr 2023 19:27:29 +0200
+Delivery-date: Thu, 27 Apr 2023 19:27:33 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ps5Oy-002WoV-DQ
-	for lore@lore.pengutronix.de; Thu, 27 Apr 2023 19:27:29 +0200
+	id 1ps5P2-002Woq-2U
+	for lore@lore.pengutronix.de; Thu, 27 Apr 2023 19:27:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ps5Oy-0004MP-92
-	for lore@pengutronix.de; Thu, 27 Apr 2023 19:27:28 +0200
+	id 1ps5P2-0004N4-0p
+	for lore@pengutronix.de; Thu, 27 Apr 2023 19:27:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4BBpx1NMTr3QYGg+P/DyiWuAS52GhWrl2SsCk7W+5Ws=; b=pK+2D7ZTXy7zstDRG2guOdQsd/
-	bxvgJ/jlAN31h+XKHO/A5JgZ7SFDelQyssd9/inANChxudBw9brHdZwb9sDySoVbdB8NvWK8qHaMv
-	Iaog4MiTBMk1/5/EQYrozZt/9ggirXhvOFsq6maCwG8S6wb1Q8F6sBjYjmT90gwEyUxgtPBgTRk+9
-	tmiK9JyX9GLorGgHVINKWB7aPCN1PUHSLFw5VWns7oYyhVl771RmpAQ9tXzsqorflZCHjKRAoW05H
-	NmBI66a0jNyMfYwAQZHlN7cMjlGWVZ2I8v7yw4xjI8x3VghicxMWICU1A3dhQm+H1l6qOyM4kJvJ5
-	ZnLYf+Pg==;
+	bh=u+LiMaOu0PoQ60IVpPy5oQkkeP4yvSMKUjIZs9hbqVI=; b=GEfNzivNJteoUdSVDGzSVHTJxO
+	wfljky6/LKMS9tOPMZTsmBzLrkKGbLz4s+T+9byF+4LcOVJeoO2UZ1Ur5jLe4b6JC4p5hUT8HBYaU
+	2EIg85I4sbv/Bn00VjfnKCgm8FUF6/87r0mILZYbnQPp53b+uW++5tvHbjCZF4vfSlo4rC2I3GJEf
+	1TxguQNAiWkNrjHZxRbTD1jtiPvvJdmO3XP+BF56GDBkfndiVti4O70/+rzh/0Oz/A75gwNJi3PrS
+	Py241IeTt7xTmdXHvdXl6Xa0+UfJb2zG4aYpnjsVx+RHzfZzdkfP+nsCjbWhgZEj0b2YQkkX45dVK
+	AavtT/1Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1ps5NX-0076nW-18;
-	Thu, 27 Apr 2023 17:25:59 +0000
-Received: from dfw.source.kernel.org ([2604:1380:4641:c500::1])
+	id 1ps5O0-0076tl-1s;
+	Thu, 27 Apr 2023 17:26:28 +0000
+Received: from dfw.source.kernel.org ([139.178.84.217])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1ps5NU-0076mt-0v
+	id 1ps5Nx-0076t3-2I
 	for barebox@lists.infradead.org;
-	Thu, 27 Apr 2023 17:25:57 +0000
+	Thu, 27 Apr 2023 17:26:26 +0000
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by dfw.source.kernel.org (Postfix) with ESMTPS id 2737460A55;
-	Thu, 27 Apr 2023 17:25:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0701C433EF;
-	Thu, 27 Apr 2023 17:25:53 +0000 (UTC)
+	by dfw.source.kernel.org (Postfix) with ESMTPS id 204A060A55;
+	Thu, 27 Apr 2023 17:26:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141F9C433D2;
+	Thu, 27 Apr 2023 17:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1682616354;
-	bh=4BBpx1NMTr3QYGg+P/DyiWuAS52GhWrl2SsCk7W+5Ws=;
+	s=k20201202; t=1682616384;
+	bh=AGaPZ/2yocKgtDgl3cvVbDi+HN3vEo7Ru5hXhuigKFg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tQfpBPnZIdoE3iHB8kZG+XsyWoAPBZBthWpa5/GvXXT49bAGcqQM2Lplt/ZGbeZLg
-	 AsuO9AAr2zAZMT8hzV5XPMdJr9WgSj98rxaMcL0hvo1jQWojnARZ6FhfBWvWUu3u8r
-	 GFWUwCLnWY6Y3hJmaFlfA/EvL5qJPxkSmDTuMfmOhQah11deUbwi/jlbCP+rLYFSjr
-	 atRBgxWb86sPzm/77JAklwVmfMNqj3xg9mxvvN6GQ+nPfIBFpGF0v5f509vQ7gc57z
-	 4JqMUxi79+r5yXA2md/TOjV+dSWGToetRppgJzVTASYhrmMDX8QhPOEgPQeB1xOzaK
-	 7x88P8p309WgQ==
-Date: Thu, 27 Apr 2023 19:25:50 +0200
+	b=CgQmn7dexOpdfDwkvLEaOR++9FAXi9yn23Y0RiiF4LC3uIib48fTAA7qS85FCdJiU
+	 U6Jw9qmxVVapFPUBeVZZkcV32Q+EiyNWrLFUUhc8YgT1TSK1p0lBI3Yt9RIyUfAqZ3
+	 +i3n666nfJGxOIITccZIJxNPzDWMEnMGqEDLFpumGLnGgwnt0y3zMYLKO7DBmVjoip
+	 saRVi/ir1FBaOrio2MOkKidXWBFcLymle+EeeO49jtEAgJuJ5xLVBh0rUtFrekEFUN
+	 h/zxaIYf3IGW+h8dXeOohRq7SBN7UZ2pDWA91WLt8ENFX+B1MNCMBM6c69nXMSnBS2
+	 Oc9ZDg24eoekw==
+Date: Thu, 27 Apr 2023 19:26:21 +0200
 From: Wolfram Sang <wsa@kernel.org>
-To: Sam Ravnborg <sam@ravnborg.org>
-Cc: Sascha Hauer <sha@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <ZEqwHm8i8z+wueOz@sai>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>, barebox@lists.infradead.org
+Message-ID: <ZEqwPa5hQFnpE584@sai>
 Mail-Followup-To: Wolfram Sang <wsa@kernel.org>,
-	Sam Ravnborg <sam@ravnborg.org>, Sascha Hauer <sha@pengutronix.de>,
+	Sascha Hauer <sha@pengutronix.de>, Sam Ravnborg <sam@ravnborg.org>,
 	barebox@lists.infradead.org
 References: <20230319154909.24047-1-wsa@kernel.org>
  <ZBdZxskg+JPzUY0t@ravnborg.org>
  <ZBd+Z+qn9rjuvp6S@sai.fritz.box>
  <20230321085848.GI7446@pengutronix.de>
- <ZBnnbU1SUkNm4ryz@sai.fritz.box>
- <ZBn/ShAwKik7TdvZ@ravnborg.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qVJvpy3vpmXSaBNU"
+	protocol="application/pgp-signature"; boundary="3igJwN1cKEACm813"
 Content-Disposition: inline
-In-Reply-To: <ZBn/ShAwKik7TdvZ@ravnborg.org>
+In-Reply-To: <20230321085848.GI7446@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230427_102556_382382_23AD5857 
-X-CRM114-Status: GOOD (  13.25  )
+X-CRM114-CacheID: sfid-20230427_102625_785706_79AA6A3E 
+X-CRM114-Status: GOOD (  14.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,49 +96,47 @@ X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 
---qVJvpy3vpmXSaBNU
+--3igJwN1cKEACm813
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
 
+Hi Sascha,
 
-> > I accidently erased it, so my journey for unbricking the device began.
-> > at91bootstrap, openocd, barebox - they all once supported A9G20, but
-> > nowadays all of them were broken. Well, I fixed openocd and barebox
-> > mostly so far, the bootstrap is still the missing piece.
->=20
-> You may be hit by the newer gcc optimize the delays in
-> the sdram init code in at91bootstrap.
+> Anyway, what's really missing is DT support. I scribbled a patch to get
+> you started in case you are motivated. Basically it's: Compile in the
+> device tree, throw away all the device registration from the board code,
+> see where it gets you and fix the fallout ;)
 
-The issue was something else: SAM-BA failed to flash the bootstrap
-because it couldn't get the SDRAM initialized before. I still didn't
-figure out why. Flashing the bootstrap with barebox never got it
-executed. I now found out that SAM-BA is modifying one vector at runtime
-before flashing. What is 'endaddress of blob in RAM' becomes 'filesize
-of blob'. If I modify my binary bootstrap like this, I can flash it with
-barebox and finally have a working device again. Phew!
+So, I tried this patch and if the fallout was just some errnos or
+devices missing, I would have fixed it. Sadly, the actual fallout is
+that the board doesn't boot without any printing. This needs more
+debugging than what I am willing to invest currently. But I can bring
+the device to Prague if someone from PTX wants to try.
 
+All the best,
 
---qVJvpy3vpmXSaBNU
+   Wolfram
+
+--3igJwN1cKEACm813
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmRKsBoACgkQFA3kzBSg
-KbYvRxAAoB1gT6PxQiduDwh6Nar6UYpyeqO16kWdaPsAhDIPaBoSHYbTbyjvGf38
-sjaKZ5QfIzq+z+nZlRCNS8ZkqHD/HslJC9P2i3xVwRCZ0d5lBJ0VgqSXxsZSOzdw
-rXOjSt34SMCKFoEeypSfG+aolhYWfAHNab9uyNkCcV8kbGspsKLv50a7rW1iEnSM
-k8XP0E/VFLqXvTmQKtSDD8b3SvvcHBKmSZ8oxvy+YS+7C5g0KvTwzNckVsvHyrGX
-mZDRcZjI0DlYfZfzG0QIBLWfnKOBtQEJHzRfUs+qpCjafjsR/Fth7hdv/rLapZjF
-Zg4raHuMKlIMaX8w5VXtnFWlO48B3hjDjViuJh6zqB0ESELhHVp7vdDqD8g2rhuI
-xH4/1sD83rqq/UQCfnCYcQl4oQRIm+MNIc52KnYjkfJnGwWdmNxzIYfKltsiyBUA
-JjuvSbZ+VAnEZI1OIRvvPDtu276SUHcAGBXa6ByN13K7OGICXW7tskMi2MULDefo
-AzV1fEtLTssS+ZgUsdpc5wo5uoTkbdi5dAifDdlGVAEIiIWtqEKmnFIIVB5ig5dh
-+CSdkiUav6051MiIXgQ0Iz7QEu2mTbOzCH+kHoh78UB25juSD2qMkjZcuWK58dEW
-Iyfmt3NMywmokjOOsX5eeC2oqh0zjFAsoG0JbjaJaUDz7WlVz5M=
-=EpWW
+iQIzBAABCgAdFiEEOZGx6rniZ1Gk92RdFA3kzBSgKbYFAmRKsD0ACgkQFA3kzBSg
+KbZYhA//cgq2qEMnbnujCeuwj0nICkFwshaM5Q6XejF1ajHyvPhN7mRslTIcGosm
+y+Dwdnfu2sBfsI+aNMWUDTB4qzp9mJ7G+QH2A9Q5MLJY+NXegx0lnNcAJTWtyzNu
+Umwq66KVmFR8VsFWKgYSTwLV/MtOUlkifzeRFRCBP0xhAE+JMMoIpIdm3CTUCv5F
+hm54kg/PS36V5yLquuP9tMivISTfcZnXGpDUGTgwUFRmkKw2gQkQEOq0JywnOXk5
+rYkNLQRaDY9p5Omx+do7WUMNpl/4ipEG9m6nSLAupT+L8ziShs8vyeCV09HboHrC
+Kaqf08Zqt72QakdnNCcezRb4zs2PxzjwNH0EHHTo5yci5YSrJ3NdDXSj7BMHNi3o
+XSJUNW/U+iK4iZsa/8Om2W+dME4nCtnuNVttrkfllBCVwma0OBbJ847B5j150Oao
+LXLFjGLi5AgEoLS+kCS3oZQIQcfVR4ohzswn/FclnGcQ5bj/F+n6GhfrBVUPtf2c
+UVcJKdvhtdNNG53AjgUw5RbWSxFYal0SSBgzav54+a1thBkSjeKTcoDTBPhUZLT/
+n64g4FnV9MdGtZ0GwMFN+zn6OV71jySL6CHjwIY1NDrLH9sUZJpoJ48GvQHkPn+f
+l2jc91v6IneIhBgfi8uNCM/EIueDCjIz33xHegJcNXZoI3G6pd8=
+=cuB2
 -----END PGP SIGNATURE-----
 
---qVJvpy3vpmXSaBNU--
+--3igJwN1cKEACm813--
 
 
