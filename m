@@ -1,54 +1,54 @@
-Delivery-date: Tue, 02 May 2023 11:35:37 +0200
+Delivery-date: Tue, 02 May 2023 11:46:19 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ptmQ6-002B4A-P9
-	for lore@lore.pengutronix.de; Tue, 02 May 2023 11:35:37 +0200
+	id 1ptmaS-002BIZ-1Z
+	for lore@lore.pengutronix.de; Tue, 02 May 2023 11:46:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ptmQ4-0005IT-Kv
-	for lore@pengutronix.de; Tue, 02 May 2023 11:35:37 +0200
+	id 1ptmaP-0006t6-OV
+	for lore@pengutronix.de; Tue, 02 May 2023 11:46:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PDqcjjKKxbf+r6p199RV4p1YUmrWBUUHcM1yLA8EThA=; b=AjuNQ+f/GJOmOrZamNrl8f/KG2
-	5vjUwvg326pNFjjuBNkiSaNQ0rnN5c3DoQtSLoKO0eS8VunM1Ez6EhHtC4JwdsU29ZWJ0k150jQd2
-	xAvUOctsLArIqsATFehQyY34KV4FpTuD7nnGKQKdzzBS6tKYNe8FXYfphdkZr+LMOKsxZBLYk43zs
-	vPFHCsQbE09KEk5bBr+mkBKy4XjPbN4hBuq3A/zPmts5CHRO86bVjhccakBrh7+d0NXHUfzC1HoY2
-	IePYKZC9DXHatElmnzanpPCMkPxSsDV7hMF3r9h1HV/96v7Py2SQkYPHnUGedKHcGVf1oNyc7Wu28
-	mCPyB1dQ==;
+	bh=6aHsrvnsPAquieAMSI2IC/x5jHbBwDi91VCryGM5z7U=; b=3pq5cBliZQeXWiSRUbFCJHWPDV
+	Qrbjt3RrwVJ2DTdeJqQLNPzDvaE8VVSZDcwoCqDSxBCn6zAuAxY95VGFjJyUYE3rv+giKs0Cy4479
+	fTnC4gL6UCb6bbXCUzcCzxGxTgcTIqEWgjibUpxZ5SO76px06yD5T7BzeXKJUvO4gVEWwQeH9O0D+
+	ut4/BQXRASJEpzqBJCHfyUUfkR6XCAt5ArFiKVcur+tonIF45LNW7pBT3ujk+8Vt5pHDSza41W9K6
+	+5aOR8PPqSuuBi5IJEqFIqqv1QBe3Br27Ic8SOW6iFWAM5ybfjyvpgep2z6wvnsapuyY27l8Tz5I5
+	4AqYqpZw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1ptmOw-000moO-1d;
-	Tue, 02 May 2023 09:34:26 +0000
+	id 1ptmZF-000oGK-2o;
+	Tue, 02 May 2023 09:45:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1ptmOs-000mnq-1l
+	id 1ptmZ9-000oFT-2C
 	for barebox@lists.infradead.org;
-	Tue, 02 May 2023 09:34:24 +0000
+	Tue, 02 May 2023 09:45:01 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ptmOq-0004xF-MN; Tue, 02 May 2023 11:34:20 +0200
+	id 1ptmZ7-0006Ts-74; Tue, 02 May 2023 11:44:57 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ptmOq-0007K3-3R; Tue, 02 May 2023 11:34:20 +0200
-Date: Tue, 2 May 2023 11:34:20 +0200
-To: Ahmad Fatoum <ahmad@a3f.at>
+	id 1ptmZ4-0007dX-Pw; Tue, 02 May 2023 11:44:54 +0200
+Date: Tue, 2 May 2023 11:44:54 +0200
+To: Michael Olbrich <m.olbrich@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230502093420.GX13543@pengutronix.de>
-References: <20230424121805.150434-1-ahmad@a3f.at>
+Message-ID: <20230502094454.GY13543@pengutronix.de>
+References: <20230426084659.4002852-1-m.olbrich@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230424121805.150434-1-ahmad@a3f.at>
+In-Reply-To: <20230426084659.4002852-1-m.olbrich@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +56,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230502_023422_578589_AE77ED5D 
-X-CRM114-Status: GOOD (  28.78  )
+X-CRM114-CacheID: sfid-20230502_024459_740411_A1B5DB5C 
+X-CRM114-Status: GOOD (  24.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,117 +80,60 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/7] sandbox: watchdog: handle missing stickypage
- gracefully
+Subject: Re: [PATCH] net: ifup: pass hostname and linuxdevname to linux with
+ DHCP
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Apr 24, 2023 at 02:17:59PM +0200, Ahmad Fatoum wrote:
-> To enable simulation of $global.system.reset in sandbox, the watchdog
-> driver writes the reset-source into the stickypage for readout during
-> subsequent barebox startup. This is an optional feature, so it should
-> happen before watchdog registration, but not break watchdog operation if
-> not available.
+On Wed, Apr 26, 2023 at 10:46:59AM +0200, Michael Olbrich wrote:
+> Barebox always uses the hostname in the DHCP request. To configure
+> kernel networking, use the long ip= syntax for DHCP and set the hostname
+> as well. This way, Barebox and Linux use the same hostname in the DHCP
+> request.
+> Also set the device if linuxdevname is configured. This is already done
+> for static configurations. Do the same for DHCP.
 > 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
 > ---
->  arch/sandbox/board/watchdog.c           | 28 +++++++++----------------
->  arch/sandbox/include/asm/reset_source.h | 16 ++++++++++++++
->  2 files changed, 26 insertions(+), 18 deletions(-)
->  create mode 100644 arch/sandbox/include/asm/reset_source.h
+>  net/ifup.c | 8 ++++++--
+>  1 file changed, 6 insertions(+), 2 deletions(-)
+
+Nice. I didn't know one can pass more parameters with ip=dhcp.
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/sandbox/board/watchdog.c b/arch/sandbox/board/watchdog.c
-> index 54e87cdde4ab..5bffad81195e 100644
-> --- a/arch/sandbox/board/watchdog.c
-> +++ b/arch/sandbox/board/watchdog.c
-> @@ -7,7 +7,7 @@
->  #include <of.h>
->  #include <watchdog.h>
->  #include <linux/nvmem-consumer.h>
-> -#include <reset_source.h>
-> +#include <asm/reset_source.h>
+> diff --git a/net/ifup.c b/net/ifup.c
+> index 1870f7401714..18ab1363c748 100644
+> --- a/net/ifup.c
+> +++ b/net/ifup.c
+> @@ -159,8 +159,8 @@ out:
 >  
->  struct sandbox_watchdog {
->  	struct watchdog wdd;
-> @@ -30,7 +30,7 @@ static int sandbox_watchdog_set_timeout(struct watchdog *wdd, unsigned int timeo
->  	if (timeout > wdd->timeout_max)
->  		return -EINVAL;
+>  static void set_linux_bootarg(struct eth_device *edev)
+>  {
+> +	char *bootarg;
+>  	if (edev->global_mode == ETH_MODE_STATIC) {
+> -		char *bootarg;
+>  		IPaddr_t serverip;
+>  		IPaddr_t gateway;
 >  
-> -	nvmem_cell_write(wd->reset_source_cell, &(u8) { RESET_WDG }, 1);
-> +	sandbox_save_reset_source(wd->reset_source_cell, RESET_WDG);
->  
->  	linux_watchdog_set_timeout(timeout);
->  	return 0;
-> @@ -41,7 +41,6 @@ static int sandbox_watchdog_probe(struct device *dev)
->  	struct device_node *np = dev->of_node;
->  	struct sandbox_watchdog *wd;
->  	struct watchdog *wdd;
-> -	int ret;
->  
->  	wd = xzalloc(sizeof(*wd));
->  
-> @@ -50,24 +49,17 @@ static int sandbox_watchdog_probe(struct device *dev)
->  	wdd->set_timeout = sandbox_watchdog_set_timeout;
->  	wdd->timeout_max = 1000;
->  
-> -	wd->cant_disable = of_property_read_bool(np, "barebox,cant-disable");
-> -
-> -	ret = watchdog_register(wdd);
-> -	if (ret) {
-> -		dev_err(dev, "Failed to register watchdog device\n");
-> -		return ret;
-> -	}
-> -
-> -	wd->reset_source_cell = of_nvmem_cell_get(dev->of_node,
-> -						  "reset-source");
-> +	wd->reset_source_cell = of_nvmem_cell_get(np, "reset-source");
->  	if (IS_ERR(wd->reset_source_cell)) {
-> -		dev_warn(dev, "No reset source info available: %pe\n", wd->reset_source_cell);
-> -		goto out;
-> +		if (PTR_ERR(wd->reset_source_cell) != -EPROBE_DEFER)
-> +			dev_warn(dev, "No reset source info available: %pe\n",
-> +				 wd->reset_source_cell);
-> +		wd->reset_source_cell = NULL;
+> @@ -176,7 +176,11 @@ static void set_linux_bootarg(struct eth_device *edev)
+>  		dev_set_param(&edev->dev, "linux.bootargs", bootarg);
+>  		free(bootarg);
+>  	} else if (edev->global_mode == ETH_MODE_DHCP) {
+> -		dev_set_param(&edev->dev, "linux.bootargs", "ip=dhcp");
+> +		bootarg = basprintf("ip=::::%s:%s:dhcp",
+> +				barebox_get_hostname(),
+> +				edev->linuxdevname ? edev->linuxdevname : "");
+> +		dev_set_param(&edev->dev, "linux.bootargs", bootarg);
+> +		free(bootarg);
 >  	}
->  
-> -out:
-> -	dev_info(dev, "probed\n");
-> -	return 0;
-> +	wd->cant_disable = of_property_read_bool(np, "barebox,cant-disable");
-> +
-> +	return watchdog_register(wdd);
 >  }
 >  
->  
-> diff --git a/arch/sandbox/include/asm/reset_source.h b/arch/sandbox/include/asm/reset_source.h
-> new file mode 100644
-> index 000000000000..1690299c4718
-> --- /dev/null
-> +++ b/arch/sandbox/include/asm/reset_source.h
-> @@ -0,0 +1,16 @@
-> +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> +
-> +#ifndef __SANDBOX_RESET_SOURCE_H
-> +#define __SANDBOX_RESET_SOURCE_H
-> +
-> +#include <reset_source.h>
-> +#include <linux/nvmem-consumer.h>
-> +
-> +static inline void sandbox_save_reset_source(struct nvmem_cell *reset_source_cell,
-> +					     enum reset_src_type src)
-> +{
-> +	if (reset_source_cell)
-> +		WARN_ON(nvmem_cell_write(reset_source_cell, &(u8) { src }, 1) <= 0);
-> +}
-> +
-> +#endif
 > -- 
-> 2.38.4
+> 2.39.2
 > 
 > 
 > 
