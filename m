@@ -1,59 +1,60 @@
-Delivery-date: Tue, 02 May 2023 14:28:22 +0200
+Delivery-date: Tue, 02 May 2023 14:31:04 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ptp7H-002HHQ-1Y
-	for lore@lore.pengutronix.de; Tue, 02 May 2023 14:28:22 +0200
+	id 1ptp9t-002HM8-3c
+	for lore@lore.pengutronix.de; Tue, 02 May 2023 14:31:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ptp7F-0004Ft-5b
-	for lore@pengutronix.de; Tue, 02 May 2023 14:28:21 +0200
+	id 1ptp9q-0004lw-Pi
+	for lore@pengutronix.de; Tue, 02 May 2023 14:31:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=zoSlgjzY0L0hVerVfrjR4IPYlQ7XcivtD/S+ihv9F80=; b=pTbDngLKmdK4lXu5MtEFtltzTP
-	G9vQ4qB8QApLcXHxyJ36MI5c1B1VHEH0MuB+xGOasclvGHxArgjAY4cxLvuGL/HDHCT24sk5aJ6WT
-	xBiOQcl/f40CEom+Lp7+6HHtiXiBOXTI3woCV8560pM49wOzeuLuLNl5/3lvO75+mfiYQbc9UwDi/
-	k5tjstx6V8RW+X2MTov0/lvusxCWiGvG/O09eDdR27jCsq9jaBbMp9Rhct4UP8dh0gUPP7gqUv8bu
-	pnXo6isfXsSFhpIi0MHENH14WDd0zxunSRddeHIt+Nuuu5sY6TNHe4YfTK1DiPjNihwQPo48QK1yZ
-	wExg4fSw==;
+	bh=uwP+AUg/fR6A5FtRNj5kTJtgJGsMHP6BPrgNorRbmag=; b=HRQyGhbu+1i9WsNbEUNuDBGiKQ
+	WHPOPKVyAhUtTUmQZTaNBq+5bXNQyg7km6KVyWxYGOfekXj0f+JqC7N0yYDJTd2BOVHzLZ2t6tiyZ
+	/qQJQVtzcoG3ln2pKyGjy6pWTUnh60B9PE4D485kLmsoLsqyXal1Z9z1450ni/k/XKBRMAvUIZgEE
+	gmy08tlJTGCpqXZWROUcxLynPqKWY5dvA7JFNnD9tmiBlJrnqgMM/a3D6R6MEGF42nxwFDhuckzm9
+	/6OXH1EyiYkJzxiE0CgJutfNrGlvTI8sdLEI+j98YPN+9ovz1hHO7X/cM2P6iR7yqnAzLDA26MHti
+	P6KsUJsA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1ptp68-001PEj-0b;
-	Tue, 02 May 2023 12:27:12 +0000
+	id 1ptp8w-001QfT-2k;
+	Tue, 02 May 2023 12:30:06 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1ptp65-001PD8-1A
+	id 1ptp8u-001Qdr-0S
 	for barebox@lists.infradead.org;
-	Tue, 02 May 2023 12:27:10 +0000
+	Tue, 02 May 2023 12:30:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ptp63-00049s-FQ; Tue, 02 May 2023 14:27:07 +0200
+	id 1ptp8s-0004Nh-Ss; Tue, 02 May 2023 14:30:02 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ptp62-000afv-Qc; Tue, 02 May 2023 14:27:06 +0200
+	id 1ptp8s-000agP-9u; Tue, 02 May 2023 14:30:02 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1ptp62-008rdC-93; Tue, 02 May 2023 14:27:06 +0200
+	id 1ptp8r-009Avf-Pc; Tue, 02 May 2023 14:30:01 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  2 May 2023 14:27:05 +0200
-Message-Id: <20230502122705.2112637-1-s.hauer@pengutronix.de>
+Date: Tue,  2 May 2023 14:30:00 +0200
+Message-Id: <20230502123000.2186637-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230502_052709_416255_E88FE417 
-X-CRM114-Status: GOOD (  10.46  )
+X-CRM114-CacheID: sfid-20230502_053004_180530_6F2EEE65 
+X-CRM114-Status: UNSURE (   8.10  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,64 +77,31 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] scripts: rkimage: Use non-deprecated functions for sha256/512
+Subject: [PATCH] ARM: NXP i.MX8MN EVK: Drop unnecessary IMD_USED_OF
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SHA256_Init() and SHA512_Init() are deprecated since OpensSSL 3.0. Use
-EVP functions instead to calculate hashes.
+IMD tags are now automatically referenced when the DT itself is
+referenced. IMD_USED_OF is no longer needed.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/rkimage.c | 22 +++++++++++++---------
- 1 file changed, 13 insertions(+), 9 deletions(-)
+ arch/arm/boards/nxp-imx8mn-evk/lowlevel.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/scripts/rkimage.c b/scripts/rkimage.c
-index 6e68d508ac..551114ed82 100644
---- a/scripts/rkimage.c
-+++ b/scripts/rkimage.c
-@@ -9,7 +9,7 @@
- #include <stdint.h>
- #include <string.h>
- #include <time.h>
--#include <openssl/sha.h>
-+#include <openssl/evp.h>
- #include <errno.h>
- #include <stdbool.h>
+diff --git a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
+index 398dfb33ae..23504ee965 100644
+--- a/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
++++ b/arch/arm/boards/nxp-imx8mn-evk/lowlevel.c
+@@ -155,8 +155,5 @@ ENTRY_FUNCTION(start_nxp_imx8mn_evk, r0, r1, r2)
+ 	relocate_to_current_adr();
+ 	setup_c();
  
-@@ -22,20 +22,24 @@
- 
- static void sha256(const void *buf, int len, void *out)
- {
--	SHA256_CTX sha256;
-+	EVP_MD_CTX *md_ctx;
- 
--	SHA256_Init(&sha256);
--	SHA256_Update(&sha256, buf, len);
--	SHA256_Final(out, &sha256);
-+	md_ctx = EVP_MD_CTX_new();
-+	EVP_DigestInit(md_ctx, EVP_sha256());
-+	EVP_DigestUpdate(md_ctx, buf, len);
-+	EVP_DigestFinal(md_ctx, out, NULL);
-+	EVP_MD_CTX_free(md_ctx);
+-	IMD_USED_OF(imx8mn_evk);
+-	IMD_USED_OF(imx8mn_ddr4_evk);
+-
+ 	nxp_imx8mn_evk_start();
  }
- 
- static void sha512(const void *buf, int len, void *out)
- {
--	SHA512_CTX sha512;
-+	EVP_MD_CTX *md_ctx;
- 
--	SHA512_Init(&sha512);
--	SHA512_Update(&sha512, buf, len);
--	SHA512_Final(out, &sha512);
-+	md_ctx = EVP_MD_CTX_new();
-+	EVP_DigestInit(md_ctx, EVP_sha512());
-+	EVP_DigestUpdate(md_ctx, buf, len);
-+	EVP_DigestFinal(md_ctx, out, NULL);
-+	EVP_MD_CTX_free(md_ctx);
- }
- 
- typedef enum {
 -- 
 2.39.2
 
