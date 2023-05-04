@@ -1,53 +1,68 @@
-Delivery-date: Thu, 04 May 2023 10:20:19 +0200
+Delivery-date: Thu, 04 May 2023 10:20:26 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1puUCK-004LR8-5E
-	for lore@lore.pengutronix.de; Thu, 04 May 2023 10:20:19 +0200
+	id 1puUCR-004LRi-8J
+	for lore@lore.pengutronix.de; Thu, 04 May 2023 10:20:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1puUCA-0002XK-J7
-	for lore@pengutronix.de; Thu, 04 May 2023 10:20:18 +0200
+	id 1puUCJ-0002cn-N8
+	for lore@pengutronix.de; Thu, 04 May 2023 10:20:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Vh5I4kvpMgtifNNzgZTN/3d6+luDbopRe5bwDzWAeZU=; b=cvrKl4ZPklEAAqdAYebAp6PR0a
-	1OKZZWY4NYi8BbeG8BDsN7FAyZxA3akALD/RSdX2hNTI4GYFOVxfYNrAD232cAS1aOEEWNVwilp5C
-	IVCplX/ZP7/vBEurdWiJ/Nvxm3V5oGlMthAvhk/v+DfAyyvbLPqXPrWm/1CebXmwQWdCJtrJHIava
-	mzkCfu/fkgSXVTCmC1QjYJH+JtRJr9hcdQ8O+KIccPwnhIyvhkUJYhFkXByRB79ScgHMw7kfvJSZu
-	XsyZgneXRMsyxBsGf0M68m74MukpNyDNJ2U9xOXxgm9cpFXwWjkGjdHeVrfgAbwRQoNdiO6hYZfaJ
-	jvChmN0w==;
+	bh=+1tigXcV2Hr5rdTHlb46m8QdqAyFYeNqjoAzjhm4TMQ=; b=PnIaaKRcUFAzcH5YGAddsDCE2G
+	Ic+8eZ6QfjkwKq/V9PjyWrZthQnzqg3iEoMx0EQK+gl4p/MYnVzpdfpNJQJ/Zrs8z059FoMhtyzPH
+	yoq/Slia4kpVhYszeYzQql4D6mQqCm5x81QJCdZiVFtwp0Q/beKaoxqUbw3pxvvuFaG9PLlW9QaqG
+	kStN6n+RygVR4AnU2M+7bgaL4vyyXQUmSzsOu48gtSTJo+hP7ueo5TH1b0p1jT1kwz9+gamBkboDj
+	5vouTdI2+nyq6eXjggE6cwtawJ0ScFM1XZNdVh/1Bcm6iXqv2dztAGSl62538nMC/TnOgLhhOqX8q
+	TLu1tgRA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1puUA9-0074ba-0j;
-	Thu, 04 May 2023 08:18:05 +0000
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+	id 1puUAQ-0074sl-3A;
+	Thu, 04 May 2023 08:18:22 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1puU9x-0074Sy-2H
+	id 1puUAL-0074nb-2o
+	for barebox@bombadil.infradead.org;
+	Thu, 04 May 2023 08:18:18 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=+1tigXcV2Hr5rdTHlb46m8QdqAyFYeNqjoAzjhm4TMQ=; b=rW3yUGK2teHJ/5gPFhJ+M5jSlX
+	dcSV450tHhzogd9JvwxHX2bfcA5Q+vjoCwoUqOKZQ2Cgzf0WmqGWItYIJ9eKRNbIbLzaIXDWpscUt
+	EtpbpMnnj/pjToHav7ZxO0USZXO0MLa4B5B4xtCMiDqJnZlkJoerZ2ZhXMBB+TmKc5UfiAY3s/Ty/
+	41mcxzSycZX7foJLfgCVePaYX2n1lMzY5+UIX+7jrE1lxsZ4v/+ZWk68JFKRKbewjTy3VCABoGNfR
+	tizoPq0eiFMpDKTQ5A0L3opQQqzEm0gUYxHx0BjZ0kF4BiHM8EyL5avL1CBDVlm+G5NUEpdOoc5O4
+	tfXMtkow==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1puUAB-001gZL-1s
 	for barebox@lists.infradead.org;
-	Thu, 04 May 2023 08:18:01 +0000
+	Thu, 04 May 2023 08:18:15 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1puU9t-0001GG-HW; Thu, 04 May 2023 10:17:49 +0200
+	id 1puU9u-0001IH-TF; Thu, 04 May 2023 10:17:51 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1puU9s-0011Ep-P0; Thu, 04 May 2023 10:17:48 +0200
+	id 1puU9u-0011FQ-79; Thu, 04 May 2023 10:17:50 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1puU9r-001Hbn-9W; Thu, 04 May 2023 10:17:47 +0200
+	id 1puU9r-001HbT-0q; Thu, 04 May 2023 10:17:47 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  4 May 2023 10:17:41 +0200
-Message-Id: <20230504081745.305841-15-s.hauer@pengutronix.de>
+Date: Thu,  4 May 2023 10:17:36 +0200
+Message-Id: <20230504081745.305841-10-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230504081745.305841-1-s.hauer@pengutronix.de>
 References: <20230504081745.305841-1-s.hauer@pengutronix.de>
@@ -75,5377 +90,3687 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 14/18] net: Update Realtek r8169 driver
+Subject: [PATCH 09/18] pinctrl: Update pinctrl-rockchip from kernel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This updates the r8169 driver from Linux-6.3-rc7. The driver code itself
-is mostly taken from the old driver, but all the initialization code and
-file structure has been taken from Linux. Tested on a RTL8125 chip.
+Update the pinctrl driver to the state of Linux-6.3-rc7. This also
+adds support for all Rockchip SoCs supported by the kernel driver.
+Unlike the Kernel driver we have some dead code elimination for
+unused SoCs.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/Kconfig            |    1 +
- drivers/net/Makefile           |    2 +-
- drivers/net/r8169.h            |   79 +
- drivers/net/r8169_firmware.c   |  237 +++
- drivers/net/r8169_firmware.h   |   36 +
- drivers/net/r8169_main.c       | 3214 ++++++++++++++++++++++++++++++++
- drivers/net/r8169_phy_config.c | 1156 ++++++++++++
- drivers/net/rtl8169.c          |  562 ------
- 8 files changed, 4724 insertions(+), 563 deletions(-)
- create mode 100644 drivers/net/r8169.h
- create mode 100644 drivers/net/r8169_firmware.c
- create mode 100644 drivers/net/r8169_firmware.h
- create mode 100644 drivers/net/r8169_main.c
- create mode 100644 drivers/net/r8169_phy_config.c
- delete mode 100644 drivers/net/rtl8169.c
+ drivers/pinctrl/pinctrl-rockchip.c | 2935 +++++++++++++++++++++++-----
+ drivers/pinctrl/pinctrl-rockchip.h |  321 ++-
+ 2 files changed, 2767 insertions(+), 489 deletions(-)
 
-diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-index 25b46ccb11..1c89cf9e41 100644
---- a/drivers/net/Kconfig
-+++ b/drivers/net/Kconfig
-@@ -251,6 +251,7 @@ config DRIVER_NET_RTL8169
- 	depends on PCI
- 	depends on HAS_DMA
- 	select PHYLIB
-+	select REALTEK_PHY
- 	help
- 	  This is a driver for the Fast Ethernet PCI network cards based on
- 	  the RTL 8169 chips.
-diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-index 84d998338a..1a272d9158 100644
---- a/drivers/net/Makefile
-+++ b/drivers/net/Makefile
-@@ -36,7 +36,7 @@ obj-$(CONFIG_DRIVER_NET_MPC5200)	+= fec_mpc5200.o
- obj-$(CONFIG_DRIVER_NET_MVNETA)		+= mvneta.o
- obj-$(CONFIG_DRIVER_NET_ORION)		+= orion-gbe.o
- obj-$(CONFIG_DRIVER_NET_RTL8139)	+= rtl8139.o
--obj-$(CONFIG_DRIVER_NET_RTL8169)	+= rtl8169.o
-+obj-$(CONFIG_DRIVER_NET_RTL8169)	+= r8169_main.o r8169_firmware.o r8169_phy_config.o
- obj-$(CONFIG_DRIVER_NET_SJA1105)	+= sja1105.o
- obj-$(CONFIG_DRIVER_NET_SMC911X)	+= smc911x.o
- obj-$(CONFIG_DRIVER_NET_SMC91111)	+= smc91111.o
-diff --git a/drivers/net/r8169.h b/drivers/net/r8169.h
-new file mode 100644
-index 0000000000..55ef8251fe
---- /dev/null
-+++ b/drivers/net/r8169.h
-@@ -0,0 +1,79 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* r8169.h: RealTek 8169/8168/8101 ethernet driver.
-+ *
-+ * Copyright (c) 2002 ShuChen <shuchen@realtek.com.tw>
-+ * Copyright (c) 2003 - 2007 Francois Romieu <romieu@fr.zoreil.com>
-+ * Copyright (c) a lot of people too. Please respect their work.
-+ *
-+ * See MAINTAINERS file for support contact information.
-+ */
+diff --git a/drivers/pinctrl/pinctrl-rockchip.c b/drivers/pinctrl/pinctrl-rockchip.c
+index 6547423261..57d676fc98 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.c
++++ b/drivers/pinctrl/pinctrl-rockchip.c
+@@ -27,7 +27,7 @@
+ 
+ #include "pinctrl-rockchip.h"
+ 
+-/**
++/*
+  * Generate a bitmask for setting a value (v) with a write mask bit in hiword
+  * register 31:16 area.
+  */
+@@ -43,12 +43,19 @@
+ #define IOMUX_UNROUTED		BIT(3)
+ #define IOMUX_WIDTH_3BIT	BIT(4)
+ #define IOMUX_WIDTH_2BIT	BIT(5)
++#define IOMUX_L_SOURCE_PMU	BIT(6)
+ 
+ #define PIN_BANK(id, pins, label)			\
+ 	{						\
+ 		.bank_num	= id,			\
+ 		.nr_pins	= pins,			\
+ 		.name		= label,		\
++		.iomux		= {			\
++			{ .offset = -1 },		\
++			{ .offset = -1 },		\
++			{ .offset = -1 },		\
++			{ .offset = -1 },		\
++		},					\
+ 	}
+ 
+ #define PIN_BANK_IOMUX_FLAGS(id, pins, label, iom0, iom1, iom2, iom3)	\
+@@ -64,6 +71,134 @@
+ 		},							\
+ 	}
+ 
++#define PIN_BANK_DRV_FLAGS(id, pins, label, type0, type1, type2, type3) \
++	{								\
++		.bank_num	= id,					\
++		.nr_pins	= pins,					\
++		.name		= label,				\
++		.iomux		= {					\
++			{ .offset = -1 },				\
++			{ .offset = -1 },				\
++			{ .offset = -1 },				\
++			{ .offset = -1 },				\
++		},							\
++		.drv		= {					\
++			{ .drv_type = type0, .offset = -1 },		\
++			{ .drv_type = type1, .offset = -1 },		\
++			{ .drv_type = type2, .offset = -1 },		\
++			{ .drv_type = type3, .offset = -1 },		\
++		},							\
++	}
 +
-+#include <linux/types.h>
-+#include <linux/phy.h>
++#define PIN_BANK_IOMUX_FLAGS_PULL_FLAGS(id, pins, label, iom0, iom1,	\
++					iom2, iom3, pull0, pull1,	\
++					pull2, pull3)			\
++	{								\
++		.bank_num	= id,					\
++		.nr_pins	= pins,					\
++		.name		= label,				\
++		.iomux		= {					\
++			{ .type = iom0, .offset = -1 },			\
++			{ .type = iom1, .offset = -1 },			\
++			{ .type = iom2, .offset = -1 },			\
++			{ .type = iom3, .offset = -1 },			\
++		},							\
++		.pull_type[0] = pull0,					\
++		.pull_type[1] = pull1,					\
++		.pull_type[2] = pull2,					\
++		.pull_type[3] = pull3,					\
++	}
 +
-+enum mac_version {
-+	/* support for ancient RTL_GIGA_MAC_VER_01 has been removed */
-+	RTL_GIGA_MAC_VER_02,
-+	RTL_GIGA_MAC_VER_03,
-+	RTL_GIGA_MAC_VER_04,
-+	RTL_GIGA_MAC_VER_05,
-+	RTL_GIGA_MAC_VER_06,
-+	RTL_GIGA_MAC_VER_07,
-+	RTL_GIGA_MAC_VER_08,
-+	RTL_GIGA_MAC_VER_09,
-+	RTL_GIGA_MAC_VER_10,
-+	RTL_GIGA_MAC_VER_11,
-+	/* RTL_GIGA_MAC_VER_12 was handled the same as VER_17 */
-+	/* RTL_GIGA_MAC_VER_13 was merged with VER_10 */
-+	RTL_GIGA_MAC_VER_14,
-+	/* RTL_GIGA_MAC_VER_16 was merged with VER_10 */
-+	RTL_GIGA_MAC_VER_17,
-+	RTL_GIGA_MAC_VER_18,
-+	RTL_GIGA_MAC_VER_19,
-+	RTL_GIGA_MAC_VER_20,
-+	RTL_GIGA_MAC_VER_21,
-+	RTL_GIGA_MAC_VER_22,
-+	RTL_GIGA_MAC_VER_23,
-+	RTL_GIGA_MAC_VER_24,
-+	RTL_GIGA_MAC_VER_25,
-+	RTL_GIGA_MAC_VER_26,
-+	/* support for RTL_GIGA_MAC_VER_27 has been removed */
-+	RTL_GIGA_MAC_VER_28,
-+	RTL_GIGA_MAC_VER_29,
-+	RTL_GIGA_MAC_VER_30,
-+	RTL_GIGA_MAC_VER_31,
-+	RTL_GIGA_MAC_VER_32,
-+	RTL_GIGA_MAC_VER_33,
-+	RTL_GIGA_MAC_VER_34,
-+	RTL_GIGA_MAC_VER_35,
-+	RTL_GIGA_MAC_VER_36,
-+	RTL_GIGA_MAC_VER_37,
-+	RTL_GIGA_MAC_VER_38,
-+	RTL_GIGA_MAC_VER_39,
-+	RTL_GIGA_MAC_VER_40,
-+	/* support for RTL_GIGA_MAC_VER_41 has been removed */
-+	RTL_GIGA_MAC_VER_42,
-+	RTL_GIGA_MAC_VER_43,
-+	RTL_GIGA_MAC_VER_44,
-+	/* support for RTL_GIGA_MAC_VER_45 has been removed */
-+	RTL_GIGA_MAC_VER_46,
-+	/* support for RTL_GIGA_MAC_VER_47 has been removed */
-+	RTL_GIGA_MAC_VER_48,
-+	/* support for RTL_GIGA_MAC_VER_49 has been removed */
-+	/* support for RTL_GIGA_MAC_VER_50 has been removed */
-+	RTL_GIGA_MAC_VER_51,
-+	RTL_GIGA_MAC_VER_52,
-+	RTL_GIGA_MAC_VER_53,
-+	/* support for RTL_GIGA_MAC_VER_60 has been removed */
-+	RTL_GIGA_MAC_VER_61,
-+	RTL_GIGA_MAC_VER_63,
-+	RTL_GIGA_MAC_NONE
-+};
++#define PIN_BANK_DRV_FLAGS_PULL_FLAGS(id, pins, label, drv0, drv1,	\
++				      drv2, drv3, pull0, pull1,		\
++				      pull2, pull3)			\
++	{								\
++		.bank_num	= id,					\
++		.nr_pins	= pins,					\
++		.name		= label,				\
++		.iomux		= {					\
++			{ .offset = -1 },				\
++			{ .offset = -1 },				\
++			{ .offset = -1 },				\
++			{ .offset = -1 },				\
++		},							\
++		.drv		= {					\
++			{ .drv_type = drv0, .offset = -1 },		\
++			{ .drv_type = drv1, .offset = -1 },		\
++			{ .drv_type = drv2, .offset = -1 },		\
++			{ .drv_type = drv3, .offset = -1 },		\
++		},							\
++		.pull_type[0] = pull0,					\
++		.pull_type[1] = pull1,					\
++		.pull_type[2] = pull2,					\
++		.pull_type[3] = pull3,					\
++	}
 +
-+struct rtl8169_private;
++#define PIN_BANK_IOMUX_FLAGS_OFFSET(id, pins, label, iom0, iom1, iom2,	\
++				    iom3, offset0, offset1, offset2,	\
++				    offset3)				\
++	{								\
++		.bank_num	= id,					\
++		.nr_pins	= pins,					\
++		.name		= label,				\
++		.iomux		= {					\
++			{ .type = iom0, .offset = offset0 },		\
++			{ .type = iom1, .offset = offset1 },		\
++			{ .type = iom2, .offset = offset2 },		\
++			{ .type = iom3, .offset = offset3 },		\
++		},							\
++	}
 +
-+void r8169_apply_firmware(struct rtl8169_private *tp);
-+u16 rtl8168h_2_get_adc_bias_ioffset(struct rtl8169_private *tp);
-+u8 rtl8168d_efuse_read(struct rtl8169_private *tp, int reg_addr);
-+void r8169_hw_phy_config(struct rtl8169_private *tp, struct phy_device *phydev,
-+			 enum mac_version ver);
-diff --git a/drivers/net/r8169_firmware.c b/drivers/net/r8169_firmware.c
-new file mode 100644
-index 0000000000..29c6be50a7
---- /dev/null
-+++ b/drivers/net/r8169_firmware.c
-@@ -0,0 +1,237 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/* r8169_firmware.c: RealTek 8169/8168/8101 ethernet driver.
-+ *
-+ * Copyright (c) 2002 ShuChen <shuchen@realtek.com.tw>
-+ * Copyright (c) 2003 - 2007 Francois Romieu <romieu@fr.zoreil.com>
-+ * Copyright (c) a lot of people too. Please respect their work.
-+ *
-+ * See MAINTAINERS file for support contact information.
-+ */
++#define PIN_BANK_IOMUX_DRV_FLAGS_OFFSET(id, pins, label, iom0, iom1,	\
++					iom2, iom3, drv0, drv1, drv2,	\
++					drv3, offset0, offset1,		\
++					offset2, offset3)		\
++	{								\
++		.bank_num	= id,					\
++		.nr_pins	= pins,					\
++		.name		= label,				\
++		.iomux		= {					\
++			{ .type = iom0, .offset = -1 },			\
++			{ .type = iom1, .offset = -1 },			\
++			{ .type = iom2, .offset = -1 },			\
++			{ .type = iom3, .offset = -1 },			\
++		},							\
++		.drv		= {					\
++			{ .drv_type = drv0, .offset = offset0 },	\
++			{ .drv_type = drv1, .offset = offset1 },	\
++			{ .drv_type = drv2, .offset = offset2 },	\
++			{ .drv_type = drv3, .offset = offset3 },	\
++		},							\
++	}
 +
-+#include <common.h>
-+#include <firmware.h>
++#define PIN_BANK_IOMUX_FLAGS_DRV_FLAGS_OFFSET_PULL_FLAGS(id, pins,	\
++					      label, iom0, iom1, iom2,  \
++					      iom3, drv0, drv1, drv2,   \
++					      drv3, offset0, offset1,   \
++					      offset2, offset3, pull0,  \
++					      pull1, pull2, pull3)	\
++	{								\
++		.bank_num	= id,					\
++		.nr_pins	= pins,					\
++		.name		= label,				\
++		.iomux		= {					\
++			{ .type = iom0, .offset = -1 },			\
++			{ .type = iom1, .offset = -1 },			\
++			{ .type = iom2, .offset = -1 },			\
++			{ .type = iom3, .offset = -1 },			\
++		},							\
++		.drv		= {					\
++			{ .drv_type = drv0, .offset = offset0 },	\
++			{ .drv_type = drv1, .offset = offset1 },	\
++			{ .drv_type = drv2, .offset = offset2 },	\
++			{ .drv_type = drv3, .offset = offset3 },	\
++		},							\
++		.pull_type[0] = pull0,					\
++		.pull_type[1] = pull1,					\
++		.pull_type[2] = pull2,					\
++		.pull_type[3] = pull3,					\
++	}
 +
-+#include "r8169_firmware.h"
+ #define PIN_BANK_MUX_ROUTE_FLAGS(ID, PIN, FUNC, REG, VAL, FLAG)		\
+ 	{								\
+ 		.bank_num	= ID,					\
+@@ -83,6 +218,9 @@
+ #define RK_MUXROUTE_PMU(ID, PIN, FUNC, REG, VAL)	\
+ 	PIN_BANK_MUX_ROUTE_FLAGS(ID, PIN, FUNC, REG, VAL, ROCKCHIP_ROUTE_PMU)
+ 
++#define RK3588_PIN_BANK_FLAGS(ID, PIN, LABEL, M, P)			\
++	PIN_BANK_IOMUX_FLAGS_PULL_FLAGS(ID, PIN, LABEL, M, M, M, M, P, P, P, P)
 +
-+enum rtl_fw_opcode {
-+	PHY_READ		= 0x0,
-+	PHY_DATA_OR		= 0x1,
-+	PHY_DATA_AND		= 0x2,
-+	PHY_BJMPN		= 0x3,
-+	PHY_MDIO_CHG		= 0x4,
-+	PHY_CLEAR_READCOUNT	= 0x7,
-+	PHY_WRITE		= 0x8,
-+	PHY_READCOUNT_EQ_SKIP	= 0x9,
-+	PHY_COMP_EQ_SKIPN	= 0xa,
-+	PHY_COMP_NEQ_SKIPN	= 0xb,
-+	PHY_WRITE_PREVIOUS	= 0xc,
-+	PHY_SKIPN		= 0xd,
-+	PHY_DELAY_MS		= 0xe,
-+};
+ enum {
+ 	RK_BIAS_DISABLE = 0,
+ 	RK_BIAS_PULL_UP,
+@@ -92,86 +230,1509 @@ enum {
+ 
+ static struct rockchip_pinctrl *to_rockchip_pinctrl(struct pinctrl_device *pdev)
+ {
+-	return container_of(pdev, struct rockchip_pinctrl, pctl_dev);
++	return container_of(pdev, struct rockchip_pinctrl, pctl_dev);
++}
 +
-+struct fw_info {
-+	u32	magic;
-+	char	version[RTL_VER_SIZE];
-+	__le32	fw_start;
-+	__le32	fw_len;
-+	u8	chksum;
-+} __packed;
-+
-+#define FW_OPCODE_SIZE sizeof_field(struct rtl_fw_phy_action, code[0])
-+
-+static bool rtl_fw_format_ok(struct rtl_fw *rtl_fw)
++static int parse_bias_config(struct device_node *np)
 +{
-+	const struct firmware *fw = rtl_fw->fw;
-+	struct fw_info *fw_info = (struct fw_info *)fw->data;
-+	struct rtl_fw_phy_action *pa = &rtl_fw->phy_action;
++	u32 val;
++ 
++	if (of_property_read_u32(np, "bias-pull-up", &val) != -EINVAL)
++		return RK_BIAS_PULL_UP;
++	else if (of_property_read_u32(np, "bias-pull-down", &val) != -EINVAL)
++		return RK_BIAS_PULL_DOWN;
++	else if (of_property_read_u32(np, "bias-bus-hold", &val) != -EINVAL)
++		return RK_BIAS_BUS_HOLD;
++	else
++		return RK_BIAS_DISABLE;
++}
 +
-+	if (fw->size < FW_OPCODE_SIZE)
++static struct rockchip_pin_bank *bank_num_to_bank(
++					struct rockchip_pinctrl *info,
++					unsigned num)
++{
++	struct rockchip_pin_bank *b = info->ctrl->pin_banks;
++	int i;
++
++	for (i = 0; i < info->ctrl->nr_banks; i++, b++) {
++		if (b->bank_num == num)
++			return b;
++	}
++
++	return ERR_PTR(-EINVAL);
++}
++
++/*
++ * Hardware access
++ */
++
++static struct rockchip_mux_recalced_data rv1108_mux_recalced_data[] = {
++	{
++		.num = 1,
++		.pin = 0,
++		.reg = 0x418,
++		.bit = 0,
++		.mask = 0x3
++	}, {
++		.num = 1,
++		.pin = 1,
++		.reg = 0x418,
++		.bit = 2,
++		.mask = 0x3
++	}, {
++		.num = 1,
++		.pin = 2,
++		.reg = 0x418,
++		.bit = 4,
++		.mask = 0x3
++	}, {
++		.num = 1,
++		.pin = 3,
++		.reg = 0x418,
++		.bit = 6,
++		.mask = 0x3
++	}, {
++		.num = 1,
++		.pin = 4,
++		.reg = 0x418,
++		.bit = 8,
++		.mask = 0x3
++	}, {
++		.num = 1,
++		.pin = 5,
++		.reg = 0x418,
++		.bit = 10,
++		.mask = 0x3
++	}, {
++		.num = 1,
++		.pin = 6,
++		.reg = 0x418,
++		.bit = 12,
++		.mask = 0x3
++	}, {
++		.num = 1,
++		.pin = 7,
++		.reg = 0x418,
++		.bit = 14,
++		.mask = 0x3
++	}, {
++		.num = 1,
++		.pin = 8,
++		.reg = 0x41c,
++		.bit = 0,
++		.mask = 0x3
++	}, {
++		.num = 1,
++		.pin = 9,
++		.reg = 0x41c,
++		.bit = 2,
++		.mask = 0x3
++	},
++};
++
++static struct rockchip_mux_recalced_data rv1126_mux_recalced_data[] = {
++	{
++		.num = 0,
++		.pin = 20,
++		.reg = 0x10000,
++		.bit = 0,
++		.mask = 0xf
++	},
++	{
++		.num = 0,
++		.pin = 21,
++		.reg = 0x10000,
++		.bit = 4,
++		.mask = 0xf
++	},
++	{
++		.num = 0,
++		.pin = 22,
++		.reg = 0x10000,
++		.bit = 8,
++		.mask = 0xf
++	},
++	{
++		.num = 0,
++		.pin = 23,
++		.reg = 0x10000,
++		.bit = 12,
++		.mask = 0xf
++	},
++};
++
++static  struct rockchip_mux_recalced_data rk3128_mux_recalced_data[] = {
++	{
++		.num = 2,
++		.pin = 20,
++		.reg = 0xe8,
++		.bit = 0,
++		.mask = 0x7
++	}, {
++		.num = 2,
++		.pin = 21,
++		.reg = 0xe8,
++		.bit = 4,
++		.mask = 0x7
++	}, {
++		.num = 2,
++		.pin = 22,
++		.reg = 0xe8,
++		.bit = 8,
++		.mask = 0x7
++	}, {
++		.num = 2,
++		.pin = 23,
++		.reg = 0xe8,
++		.bit = 12,
++		.mask = 0x7
++	}, {
++		.num = 2,
++		.pin = 24,
++		.reg = 0xd4,
++		.bit = 12,
++		.mask = 0x7
++	},
++};
++
++static struct rockchip_mux_recalced_data rk3308_mux_recalced_data[] = {
++	{
++		/* gpio1b6_sel */
++		.num = 1,
++		.pin = 14,
++		.reg = 0x28,
++		.bit = 12,
++		.mask = 0xf
++	}, {
++		/* gpio1b7_sel */
++		.num = 1,
++		.pin = 15,
++		.reg = 0x2c,
++		.bit = 0,
++		.mask = 0x3
++	}, {
++		/* gpio1c2_sel */
++		.num = 1,
++		.pin = 18,
++		.reg = 0x30,
++		.bit = 4,
++		.mask = 0xf
++	}, {
++		/* gpio1c3_sel */
++		.num = 1,
++		.pin = 19,
++		.reg = 0x30,
++		.bit = 8,
++		.mask = 0xf
++	}, {
++		/* gpio1c4_sel */
++		.num = 1,
++		.pin = 20,
++		.reg = 0x30,
++		.bit = 12,
++		.mask = 0xf
++	}, {
++		/* gpio1c5_sel */
++		.num = 1,
++		.pin = 21,
++		.reg = 0x34,
++		.bit = 0,
++		.mask = 0xf
++	}, {
++		/* gpio1c6_sel */
++		.num = 1,
++		.pin = 22,
++		.reg = 0x34,
++		.bit = 4,
++		.mask = 0xf
++	}, {
++		/* gpio1c7_sel */
++		.num = 1,
++		.pin = 23,
++		.reg = 0x34,
++		.bit = 8,
++		.mask = 0xf
++	}, {
++		/* gpio2a2_sel */
++		.num = 2,
++		.pin = 2,
++		.reg = 0x40,
++		.bit = 4,
++		.mask = 0x3
++	}, {
++		/* gpio2a3_sel */
++		.num = 2,
++		.pin = 3,
++		.reg = 0x40,
++		.bit = 6,
++		.mask = 0x3
++	}, {
++		/* gpio2c0_sel */
++		.num = 2,
++		.pin = 16,
++		.reg = 0x50,
++		.bit = 0,
++		.mask = 0x3
++	}, {
++		/* gpio3b2_sel */
++		.num = 3,
++		.pin = 10,
++		.reg = 0x68,
++		.bit = 4,
++		.mask = 0x3
++	}, {
++		/* gpio3b3_sel */
++		.num = 3,
++		.pin = 11,
++		.reg = 0x68,
++		.bit = 6,
++		.mask = 0x3
++	}, {
++		/* gpio3b4_sel */
++		.num = 3,
++		.pin = 12,
++		.reg = 0x68,
++		.bit = 8,
++		.mask = 0xf
++	}, {
++		/* gpio3b5_sel */
++		.num = 3,
++		.pin = 13,
++		.reg = 0x68,
++		.bit = 12,
++		.mask = 0xf
++	},
++};
++
++static struct rockchip_mux_recalced_data rk3328_mux_recalced_data[] = {
++	{
++		.num = 2,
++		.pin = 12,
++		.reg = 0x24,
++		.bit = 8,
++		.mask = 0x3
++	}, {
++		.num = 2,
++		.pin = 15,
++		.reg = 0x28,
++		.bit = 0,
++		.mask = 0x7
++	}, {
++		.num = 2,
++		.pin = 23,
++		.reg = 0x30,
++		.bit = 14,
++		.mask = 0x3
++	},
++};
++
++static void rockchip_get_recalced_mux(struct rockchip_pin_bank *bank, int pin,
++				      int *reg, u8 *bit, int *mask)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++	struct rockchip_pin_ctrl *ctrl = info->ctrl;
++	struct rockchip_mux_recalced_data *data = NULL;
++	int i;
++
++	for (i = 0; i < ctrl->niomux_recalced; i++) {
++		data = &ctrl->iomux_recalced[i];
++		if (data->num == bank->bank_num &&
++		    data->pin == pin)
++			break;
++	}
++
++	if (i >= ctrl->niomux_recalced)
++		return;
++
++	*reg = data->reg;
++	*mask = data->mask;
++	*bit = data->bit;
++}
++
++static struct rockchip_mux_route_data px30_mux_route_data[] = {
++	RK_MUXROUTE_SAME(2, RK_PB4, 1, 0x184, BIT(16 + 7)), /* cif-d0m0 */
++	RK_MUXROUTE_SAME(3, RK_PA1, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d0m1 */
++	RK_MUXROUTE_SAME(2, RK_PB6, 1, 0x184, BIT(16 + 7)), /* cif-d1m0 */
++	RK_MUXROUTE_SAME(3, RK_PA2, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d1m1 */
++	RK_MUXROUTE_SAME(2, RK_PA0, 1, 0x184, BIT(16 + 7)), /* cif-d2m0 */
++	RK_MUXROUTE_SAME(3, RK_PA3, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d2m1 */
++	RK_MUXROUTE_SAME(2, RK_PA1, 1, 0x184, BIT(16 + 7)), /* cif-d3m0 */
++	RK_MUXROUTE_SAME(3, RK_PA5, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d3m1 */
++	RK_MUXROUTE_SAME(2, RK_PA2, 1, 0x184, BIT(16 + 7)), /* cif-d4m0 */
++	RK_MUXROUTE_SAME(3, RK_PA7, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d4m1 */
++	RK_MUXROUTE_SAME(2, RK_PA3, 1, 0x184, BIT(16 + 7)), /* cif-d5m0 */
++	RK_MUXROUTE_SAME(3, RK_PB0, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d5m1 */
++	RK_MUXROUTE_SAME(2, RK_PA4, 1, 0x184, BIT(16 + 7)), /* cif-d6m0 */
++	RK_MUXROUTE_SAME(3, RK_PB1, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d6m1 */
++	RK_MUXROUTE_SAME(2, RK_PA5, 1, 0x184, BIT(16 + 7)), /* cif-d7m0 */
++	RK_MUXROUTE_SAME(3, RK_PB4, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d7m1 */
++	RK_MUXROUTE_SAME(2, RK_PA6, 1, 0x184, BIT(16 + 7)), /* cif-d8m0 */
++	RK_MUXROUTE_SAME(3, RK_PB6, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d8m1 */
++	RK_MUXROUTE_SAME(2, RK_PA7, 1, 0x184, BIT(16 + 7)), /* cif-d9m0 */
++	RK_MUXROUTE_SAME(3, RK_PB7, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d9m1 */
++	RK_MUXROUTE_SAME(2, RK_PB7, 1, 0x184, BIT(16 + 7)), /* cif-d10m0 */
++	RK_MUXROUTE_SAME(3, RK_PC6, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d10m1 */
++	RK_MUXROUTE_SAME(2, RK_PC0, 1, 0x184, BIT(16 + 7)), /* cif-d11m0 */
++	RK_MUXROUTE_SAME(3, RK_PC7, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-d11m1 */
++	RK_MUXROUTE_SAME(2, RK_PB0, 1, 0x184, BIT(16 + 7)), /* cif-vsyncm0 */
++	RK_MUXROUTE_SAME(3, RK_PD1, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-vsyncm1 */
++	RK_MUXROUTE_SAME(2, RK_PB1, 1, 0x184, BIT(16 + 7)), /* cif-hrefm0 */
++	RK_MUXROUTE_SAME(3, RK_PD2, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-hrefm1 */
++	RK_MUXROUTE_SAME(2, RK_PB2, 1, 0x184, BIT(16 + 7)), /* cif-clkinm0 */
++	RK_MUXROUTE_SAME(3, RK_PD3, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-clkinm1 */
++	RK_MUXROUTE_SAME(2, RK_PB3, 1, 0x184, BIT(16 + 7)), /* cif-clkoutm0 */
++	RK_MUXROUTE_SAME(3, RK_PD0, 3, 0x184, BIT(16 + 7) | BIT(7)), /* cif-clkoutm1 */
++	RK_MUXROUTE_SAME(3, RK_PC6, 2, 0x184, BIT(16 + 8)), /* pdm-m0 */
++	RK_MUXROUTE_SAME(2, RK_PC6, 1, 0x184, BIT(16 + 8) | BIT(8)), /* pdm-m1 */
++	RK_MUXROUTE_SAME(3, RK_PD3, 2, 0x184, BIT(16 + 8)), /* pdm-sdi0m0 */
++	RK_MUXROUTE_SAME(2, RK_PC5, 2, 0x184, BIT(16 + 8) | BIT(8)), /* pdm-sdi0m1 */
++	RK_MUXROUTE_SAME(1, RK_PD3, 2, 0x184, BIT(16 + 10)), /* uart2-rxm0 */
++	RK_MUXROUTE_SAME(2, RK_PB6, 2, 0x184, BIT(16 + 10) | BIT(10)), /* uart2-rxm1 */
++	RK_MUXROUTE_SAME(1, RK_PD2, 2, 0x184, BIT(16 + 10)), /* uart2-txm0 */
++	RK_MUXROUTE_SAME(2, RK_PB4, 2, 0x184, BIT(16 + 10) | BIT(10)), /* uart2-txm1 */
++	RK_MUXROUTE_SAME(0, RK_PC1, 2, 0x184, BIT(16 + 9)), /* uart3-rxm0 */
++	RK_MUXROUTE_SAME(1, RK_PB7, 2, 0x184, BIT(16 + 9) | BIT(9)), /* uart3-rxm1 */
++	RK_MUXROUTE_SAME(0, RK_PC0, 2, 0x184, BIT(16 + 9)), /* uart3-txm0 */
++	RK_MUXROUTE_SAME(1, RK_PB6, 2, 0x184, BIT(16 + 9) | BIT(9)), /* uart3-txm1 */
++	RK_MUXROUTE_SAME(0, RK_PC2, 2, 0x184, BIT(16 + 9)), /* uart3-ctsm0 */
++	RK_MUXROUTE_SAME(1, RK_PB4, 2, 0x184, BIT(16 + 9) | BIT(9)), /* uart3-ctsm1 */
++	RK_MUXROUTE_SAME(0, RK_PC3, 2, 0x184, BIT(16 + 9)), /* uart3-rtsm0 */
++	RK_MUXROUTE_SAME(1, RK_PB5, 2, 0x184, BIT(16 + 9) | BIT(9)), /* uart3-rtsm1 */
++};
++
++static struct rockchip_mux_route_data rv1126_mux_route_data[] = {
++	RK_MUXROUTE_GRF(3, RK_PD2, 1, 0x10260, WRITE_MASK_VAL(0, 0, 0)), /* I2S0_MCLK_M0 */
++	RK_MUXROUTE_GRF(3, RK_PB0, 3, 0x10260, WRITE_MASK_VAL(0, 0, 1)), /* I2S0_MCLK_M1 */
++
++	RK_MUXROUTE_GRF(0, RK_PD4, 4, 0x10260, WRITE_MASK_VAL(3, 2, 0)), /* I2S1_MCLK_M0 */
++	RK_MUXROUTE_GRF(1, RK_PD5, 2, 0x10260, WRITE_MASK_VAL(3, 2, 1)), /* I2S1_MCLK_M1 */
++	RK_MUXROUTE_GRF(2, RK_PC7, 6, 0x10260, WRITE_MASK_VAL(3, 2, 2)), /* I2S1_MCLK_M2 */
++
++	RK_MUXROUTE_GRF(1, RK_PD0, 1, 0x10260, WRITE_MASK_VAL(4, 4, 0)), /* I2S2_MCLK_M0 */
++	RK_MUXROUTE_GRF(2, RK_PB3, 2, 0x10260, WRITE_MASK_VAL(4, 4, 1)), /* I2S2_MCLK_M1 */
++
++	RK_MUXROUTE_GRF(3, RK_PD4, 2, 0x10260, WRITE_MASK_VAL(12, 12, 0)), /* PDM_CLK0_M0 */
++	RK_MUXROUTE_GRF(3, RK_PC0, 3, 0x10260, WRITE_MASK_VAL(12, 12, 1)), /* PDM_CLK0_M1 */
++
++	RK_MUXROUTE_GRF(3, RK_PC6, 1, 0x10264, WRITE_MASK_VAL(0, 0, 0)), /* CIF_CLKOUT_M0 */
++	RK_MUXROUTE_GRF(2, RK_PD1, 3, 0x10264, WRITE_MASK_VAL(0, 0, 1)), /* CIF_CLKOUT_M1 */
++
++	RK_MUXROUTE_GRF(3, RK_PA4, 5, 0x10264, WRITE_MASK_VAL(5, 4, 0)), /* I2C3_SCL_M0 */
++	RK_MUXROUTE_GRF(2, RK_PD4, 7, 0x10264, WRITE_MASK_VAL(5, 4, 1)), /* I2C3_SCL_M1 */
++	RK_MUXROUTE_GRF(1, RK_PD6, 3, 0x10264, WRITE_MASK_VAL(5, 4, 2)), /* I2C3_SCL_M2 */
++
++	RK_MUXROUTE_GRF(3, RK_PA0, 7, 0x10264, WRITE_MASK_VAL(6, 6, 0)), /* I2C4_SCL_M0 */
++	RK_MUXROUTE_GRF(4, RK_PA0, 4, 0x10264, WRITE_MASK_VAL(6, 6, 1)), /* I2C4_SCL_M1 */
++
++	RK_MUXROUTE_GRF(2, RK_PA5, 7, 0x10264, WRITE_MASK_VAL(9, 8, 0)), /* I2C5_SCL_M0 */
++	RK_MUXROUTE_GRF(3, RK_PB0, 5, 0x10264, WRITE_MASK_VAL(9, 8, 1)), /* I2C5_SCL_M1 */
++	RK_MUXROUTE_GRF(1, RK_PD0, 4, 0x10264, WRITE_MASK_VAL(9, 8, 2)), /* I2C5_SCL_M2 */
++
++	RK_MUXROUTE_GRF(3, RK_PC0, 5, 0x10264, WRITE_MASK_VAL(11, 10, 0)), /* SPI1_CLK_M0 */
++	RK_MUXROUTE_GRF(1, RK_PC6, 3, 0x10264, WRITE_MASK_VAL(11, 10, 1)), /* SPI1_CLK_M1 */
++	RK_MUXROUTE_GRF(2, RK_PD5, 6, 0x10264, WRITE_MASK_VAL(11, 10, 2)), /* SPI1_CLK_M2 */
++
++	RK_MUXROUTE_GRF(3, RK_PC0, 2, 0x10264, WRITE_MASK_VAL(12, 12, 0)), /* RGMII_CLK_M0 */
++	RK_MUXROUTE_GRF(2, RK_PB7, 2, 0x10264, WRITE_MASK_VAL(12, 12, 1)), /* RGMII_CLK_M1 */
++
++	RK_MUXROUTE_GRF(3, RK_PA1, 3, 0x10264, WRITE_MASK_VAL(13, 13, 0)), /* CAN_TXD_M0 */
++	RK_MUXROUTE_GRF(3, RK_PA7, 5, 0x10264, WRITE_MASK_VAL(13, 13, 1)), /* CAN_TXD_M1 */
++
++	RK_MUXROUTE_GRF(3, RK_PA4, 6, 0x10268, WRITE_MASK_VAL(0, 0, 0)), /* PWM8_M0 */
++	RK_MUXROUTE_GRF(2, RK_PD7, 5, 0x10268, WRITE_MASK_VAL(0, 0, 1)), /* PWM8_M1 */
++
++	RK_MUXROUTE_GRF(3, RK_PA5, 6, 0x10268, WRITE_MASK_VAL(2, 2, 0)), /* PWM9_M0 */
++	RK_MUXROUTE_GRF(2, RK_PD6, 5, 0x10268, WRITE_MASK_VAL(2, 2, 1)), /* PWM9_M1 */
++
++	RK_MUXROUTE_GRF(3, RK_PA6, 6, 0x10268, WRITE_MASK_VAL(4, 4, 0)), /* PWM10_M0 */
++	RK_MUXROUTE_GRF(2, RK_PD5, 5, 0x10268, WRITE_MASK_VAL(4, 4, 1)), /* PWM10_M1 */
++
++	RK_MUXROUTE_GRF(3, RK_PA7, 6, 0x10268, WRITE_MASK_VAL(6, 6, 0)), /* PWM11_IR_M0 */
++	RK_MUXROUTE_GRF(3, RK_PA1, 5, 0x10268, WRITE_MASK_VAL(6, 6, 1)), /* PWM11_IR_M1 */
++
++	RK_MUXROUTE_GRF(1, RK_PA5, 3, 0x10268, WRITE_MASK_VAL(8, 8, 0)), /* UART2_TX_M0 */
++	RK_MUXROUTE_GRF(3, RK_PA2, 1, 0x10268, WRITE_MASK_VAL(8, 8, 1)), /* UART2_TX_M1 */
++
++	RK_MUXROUTE_GRF(3, RK_PC6, 3, 0x10268, WRITE_MASK_VAL(11, 10, 0)), /* UART3_TX_M0 */
++	RK_MUXROUTE_GRF(1, RK_PA7, 2, 0x10268, WRITE_MASK_VAL(11, 10, 1)), /* UART3_TX_M1 */
++	RK_MUXROUTE_GRF(3, RK_PA0, 4, 0x10268, WRITE_MASK_VAL(11, 10, 2)), /* UART3_TX_M2 */
++
++	RK_MUXROUTE_GRF(3, RK_PA4, 4, 0x10268, WRITE_MASK_VAL(13, 12, 0)), /* UART4_TX_M0 */
++	RK_MUXROUTE_GRF(2, RK_PA6, 4, 0x10268, WRITE_MASK_VAL(13, 12, 1)), /* UART4_TX_M1 */
++	RK_MUXROUTE_GRF(1, RK_PD5, 3, 0x10268, WRITE_MASK_VAL(13, 12, 2)), /* UART4_TX_M2 */
++
++	RK_MUXROUTE_GRF(3, RK_PA6, 4, 0x10268, WRITE_MASK_VAL(15, 14, 0)), /* UART5_TX_M0 */
++	RK_MUXROUTE_GRF(2, RK_PB0, 4, 0x10268, WRITE_MASK_VAL(15, 14, 1)), /* UART5_TX_M1 */
++	RK_MUXROUTE_GRF(2, RK_PA0, 3, 0x10268, WRITE_MASK_VAL(15, 14, 2)), /* UART5_TX_M2 */
++
++	RK_MUXROUTE_PMU(0, RK_PB6, 3, 0x0114, WRITE_MASK_VAL(0, 0, 0)), /* PWM0_M0 */
++	RK_MUXROUTE_PMU(2, RK_PB3, 5, 0x0114, WRITE_MASK_VAL(0, 0, 1)), /* PWM0_M1 */
++
++	RK_MUXROUTE_PMU(0, RK_PB7, 3, 0x0114, WRITE_MASK_VAL(2, 2, 0)), /* PWM1_M0 */
++	RK_MUXROUTE_PMU(2, RK_PB2, 5, 0x0114, WRITE_MASK_VAL(2, 2, 1)), /* PWM1_M1 */
++
++	RK_MUXROUTE_PMU(0, RK_PC0, 3, 0x0114, WRITE_MASK_VAL(4, 4, 0)), /* PWM2_M0 */
++	RK_MUXROUTE_PMU(2, RK_PB1, 5, 0x0114, WRITE_MASK_VAL(4, 4, 1)), /* PWM2_M1 */
++
++	RK_MUXROUTE_PMU(0, RK_PC1, 3, 0x0114, WRITE_MASK_VAL(6, 6, 0)), /* PWM3_IR_M0 */
++	RK_MUXROUTE_PMU(2, RK_PB0, 5, 0x0114, WRITE_MASK_VAL(6, 6, 1)), /* PWM3_IR_M1 */
++
++	RK_MUXROUTE_PMU(0, RK_PC2, 3, 0x0114, WRITE_MASK_VAL(8, 8, 0)), /* PWM4_M0 */
++	RK_MUXROUTE_PMU(2, RK_PA7, 5, 0x0114, WRITE_MASK_VAL(8, 8, 1)), /* PWM4_M1 */
++
++	RK_MUXROUTE_PMU(0, RK_PC3, 3, 0x0114, WRITE_MASK_VAL(10, 10, 0)), /* PWM5_M0 */
++	RK_MUXROUTE_PMU(2, RK_PA6, 5, 0x0114, WRITE_MASK_VAL(10, 10, 1)), /* PWM5_M1 */
++
++	RK_MUXROUTE_PMU(0, RK_PB2, 3, 0x0114, WRITE_MASK_VAL(12, 12, 0)), /* PWM6_M0 */
++	RK_MUXROUTE_PMU(2, RK_PD4, 5, 0x0114, WRITE_MASK_VAL(12, 12, 1)), /* PWM6_M1 */
++
++	RK_MUXROUTE_PMU(0, RK_PB1, 3, 0x0114, WRITE_MASK_VAL(14, 14, 0)), /* PWM7_IR_M0 */
++	RK_MUXROUTE_PMU(3, RK_PA0, 5, 0x0114, WRITE_MASK_VAL(14, 14, 1)), /* PWM7_IR_M1 */
++
++	RK_MUXROUTE_PMU(0, RK_PB0, 1, 0x0118, WRITE_MASK_VAL(1, 0, 0)), /* SPI0_CLK_M0 */
++	RK_MUXROUTE_PMU(2, RK_PA1, 1, 0x0118, WRITE_MASK_VAL(1, 0, 1)), /* SPI0_CLK_M1 */
++	RK_MUXROUTE_PMU(2, RK_PB2, 6, 0x0118, WRITE_MASK_VAL(1, 0, 2)), /* SPI0_CLK_M2 */
++
++	RK_MUXROUTE_PMU(0, RK_PB6, 2, 0x0118, WRITE_MASK_VAL(2, 2, 0)), /* UART1_TX_M0 */
++	RK_MUXROUTE_PMU(1, RK_PD0, 5, 0x0118, WRITE_MASK_VAL(2, 2, 1)), /* UART1_TX_M1 */
++};
++
++static struct rockchip_mux_route_data rk3128_mux_route_data[] = {
++	RK_MUXROUTE_SAME(1, RK_PB2, 1, 0x144, BIT(16 + 3) | BIT(16 + 4)), /* spi-0 */
++	RK_MUXROUTE_SAME(1, RK_PD3, 3, 0x144, BIT(16 + 3) | BIT(16 + 4) | BIT(3)), /* spi-1 */
++	RK_MUXROUTE_SAME(0, RK_PB5, 2, 0x144, BIT(16 + 3) | BIT(16 + 4) | BIT(4)), /* spi-2 */
++	RK_MUXROUTE_SAME(1, RK_PA5, 1, 0x144, BIT(16 + 5)), /* i2s-0 */
++	RK_MUXROUTE_SAME(0, RK_PB6, 1, 0x144, BIT(16 + 5) | BIT(5)), /* i2s-1 */
++	RK_MUXROUTE_SAME(1, RK_PC6, 2, 0x144, BIT(16 + 6)), /* emmc-0 */
++	RK_MUXROUTE_SAME(2, RK_PA4, 2, 0x144, BIT(16 + 6) | BIT(6)), /* emmc-1 */
++};
++
++static struct rockchip_mux_route_data rk3188_mux_route_data[] = {
++	RK_MUXROUTE_SAME(0, RK_PD0, 1, 0xa0, BIT(16 + 11)), /* non-iomuxed emmc/flash pins on flash-dqs */
++	RK_MUXROUTE_SAME(0, RK_PD0, 2, 0xa0, BIT(16 + 11) | BIT(11)), /* non-iomuxed emmc/flash pins on emmc-clk */
++};
++
++static struct rockchip_mux_route_data rk3228_mux_route_data[] = {
++	RK_MUXROUTE_SAME(0, RK_PD2, 1, 0x50, BIT(16)), /* pwm0-0 */
++	RK_MUXROUTE_SAME(3, RK_PC5, 1, 0x50, BIT(16) | BIT(0)), /* pwm0-1 */
++	RK_MUXROUTE_SAME(0, RK_PD3, 1, 0x50, BIT(16 + 1)), /* pwm1-0 */
++	RK_MUXROUTE_SAME(0, RK_PD6, 2, 0x50, BIT(16 + 1) | BIT(1)), /* pwm1-1 */
++	RK_MUXROUTE_SAME(0, RK_PD4, 1, 0x50, BIT(16 + 2)), /* pwm2-0 */
++	RK_MUXROUTE_SAME(1, RK_PB4, 2, 0x50, BIT(16 + 2) | BIT(2)), /* pwm2-1 */
++	RK_MUXROUTE_SAME(3, RK_PD2, 1, 0x50, BIT(16 + 3)), /* pwm3-0 */
++	RK_MUXROUTE_SAME(1, RK_PB3, 2, 0x50, BIT(16 + 3) | BIT(3)), /* pwm3-1 */
++	RK_MUXROUTE_SAME(1, RK_PA1, 1, 0x50, BIT(16 + 4)), /* sdio-0_d0 */
++	RK_MUXROUTE_SAME(3, RK_PA2, 1, 0x50, BIT(16 + 4) | BIT(4)), /* sdio-1_d0 */
++	RK_MUXROUTE_SAME(0, RK_PB5, 2, 0x50, BIT(16 + 5)), /* spi-0_rx */
++	RK_MUXROUTE_SAME(2, RK_PA0, 2, 0x50, BIT(16 + 5) | BIT(5)), /* spi-1_rx */
++	RK_MUXROUTE_SAME(1, RK_PC6, 2, 0x50, BIT(16 + 7)), /* emmc-0_cmd */
++	RK_MUXROUTE_SAME(2, RK_PA4, 2, 0x50, BIT(16 + 7) | BIT(7)), /* emmc-1_cmd */
++	RK_MUXROUTE_SAME(1, RK_PC3, 2, 0x50, BIT(16 + 8)), /* uart2-0_rx */
++	RK_MUXROUTE_SAME(1, RK_PB2, 2, 0x50, BIT(16 + 8) | BIT(8)), /* uart2-1_rx */
++	RK_MUXROUTE_SAME(1, RK_PB2, 1, 0x50, BIT(16 + 11)), /* uart1-0_rx */
++	RK_MUXROUTE_SAME(3, RK_PB5, 1, 0x50, BIT(16 + 11) | BIT(11)), /* uart1-1_rx */
++};
++
++static struct rockchip_mux_route_data rk3288_mux_route_data[] = {
++	RK_MUXROUTE_SAME(7, RK_PC0, 2, 0x264, BIT(16 + 12) | BIT(12)), /* edphdmi_cecinoutt1 */
++	RK_MUXROUTE_SAME(7, RK_PC7, 4, 0x264, BIT(16 + 12)), /* edphdmi_cecinout */
++};
++
++static struct rockchip_mux_route_data rk3308_mux_route_data[] = {
++	RK_MUXROUTE_SAME(0, RK_PC3, 1, 0x314, BIT(16 + 0) | BIT(0)), /* rtc_clk */
++	RK_MUXROUTE_SAME(1, RK_PC6, 2, 0x314, BIT(16 + 2) | BIT(16 + 3)), /* uart2_rxm0 */
++	RK_MUXROUTE_SAME(4, RK_PD2, 2, 0x314, BIT(16 + 2) | BIT(16 + 3) | BIT(2)), /* uart2_rxm1 */
++	RK_MUXROUTE_SAME(0, RK_PB7, 2, 0x608, BIT(16 + 8) | BIT(16 + 9)), /* i2c3_sdam0 */
++	RK_MUXROUTE_SAME(3, RK_PB4, 2, 0x608, BIT(16 + 8) | BIT(16 + 9) | BIT(8)), /* i2c3_sdam1 */
++	RK_MUXROUTE_SAME(2, RK_PA0, 3, 0x608, BIT(16 + 8) | BIT(16 + 9) | BIT(9)), /* i2c3_sdam2 */
++	RK_MUXROUTE_SAME(1, RK_PA3, 2, 0x308, BIT(16 + 3)), /* i2s-8ch-1-sclktxm0 */
++	RK_MUXROUTE_SAME(1, RK_PA4, 2, 0x308, BIT(16 + 3)), /* i2s-8ch-1-sclkrxm0 */
++	RK_MUXROUTE_SAME(1, RK_PB5, 2, 0x308, BIT(16 + 3) | BIT(3)), /* i2s-8ch-1-sclktxm1 */
++	RK_MUXROUTE_SAME(1, RK_PB6, 2, 0x308, BIT(16 + 3) | BIT(3)), /* i2s-8ch-1-sclkrxm1 */
++	RK_MUXROUTE_SAME(1, RK_PA4, 3, 0x308, BIT(16 + 12) | BIT(16 + 13)), /* pdm-clkm0 */
++	RK_MUXROUTE_SAME(1, RK_PB6, 4, 0x308, BIT(16 + 12) | BIT(16 + 13) | BIT(12)), /* pdm-clkm1 */
++	RK_MUXROUTE_SAME(2, RK_PA6, 2, 0x308, BIT(16 + 12) | BIT(16 + 13) | BIT(13)), /* pdm-clkm2 */
++	RK_MUXROUTE_SAME(2, RK_PA4, 3, 0x600, BIT(16 + 2) | BIT(2)), /* pdm-clkm-m2 */
++	RK_MUXROUTE_SAME(3, RK_PB2, 3, 0x314, BIT(16 + 9)), /* spi1_miso */
++	RK_MUXROUTE_SAME(2, RK_PA4, 2, 0x314, BIT(16 + 9) | BIT(9)), /* spi1_miso_m1 */
++	RK_MUXROUTE_SAME(0, RK_PB3, 3, 0x314, BIT(16 + 10) | BIT(16 + 11)), /* owire_m0 */
++	RK_MUXROUTE_SAME(1, RK_PC6, 7, 0x314, BIT(16 + 10) | BIT(16 + 11) | BIT(10)), /* owire_m1 */
++	RK_MUXROUTE_SAME(2, RK_PA2, 5, 0x314, BIT(16 + 10) | BIT(16 + 11) | BIT(11)), /* owire_m2 */
++	RK_MUXROUTE_SAME(0, RK_PB3, 2, 0x314, BIT(16 + 12) | BIT(16 + 13)), /* can_rxd_m0 */
++	RK_MUXROUTE_SAME(1, RK_PC6, 5, 0x314, BIT(16 + 12) | BIT(16 + 13) | BIT(12)), /* can_rxd_m1 */
++	RK_MUXROUTE_SAME(2, RK_PA2, 4, 0x314, BIT(16 + 12) | BIT(16 + 13) | BIT(13)), /* can_rxd_m2 */
++	RK_MUXROUTE_SAME(1, RK_PC4, 3, 0x314, BIT(16 + 14)), /* mac_rxd0_m0 */
++	RK_MUXROUTE_SAME(4, RK_PA2, 2, 0x314, BIT(16 + 14) | BIT(14)), /* mac_rxd0_m1 */
++	RK_MUXROUTE_SAME(3, RK_PB4, 4, 0x314, BIT(16 + 15)), /* uart3_rx */
++	RK_MUXROUTE_SAME(0, RK_PC1, 3, 0x314, BIT(16 + 15) | BIT(15)), /* uart3_rx_m1 */
++};
++
++static struct rockchip_mux_route_data rk3328_mux_route_data[] = {
++	RK_MUXROUTE_SAME(1, RK_PA1, 2, 0x50, BIT(16) | BIT(16 + 1)), /* uart2dbg_rxm0 */
++	RK_MUXROUTE_SAME(2, RK_PA1, 1, 0x50, BIT(16) | BIT(16 + 1) | BIT(0)), /* uart2dbg_rxm1 */
++	RK_MUXROUTE_SAME(1, RK_PB3, 2, 0x50, BIT(16 + 2) | BIT(2)), /* gmac-m1_rxd0 */
++	RK_MUXROUTE_SAME(1, RK_PB6, 2, 0x50, BIT(16 + 10) | BIT(10)), /* gmac-m1-optimized_rxd3 */
++	RK_MUXROUTE_SAME(2, RK_PC3, 2, 0x50, BIT(16 + 3)), /* pdm_sdi0m0 */
++	RK_MUXROUTE_SAME(1, RK_PC7, 3, 0x50, BIT(16 + 3) | BIT(3)), /* pdm_sdi0m1 */
++	RK_MUXROUTE_SAME(3, RK_PA2, 4, 0x50, BIT(16 + 4) | BIT(16 + 5) | BIT(5)), /* spi_rxdm2 */
++	RK_MUXROUTE_SAME(1, RK_PD0, 1, 0x50, BIT(16 + 6)), /* i2s2_sdim0 */
++	RK_MUXROUTE_SAME(3, RK_PA2, 6, 0x50, BIT(16 + 6) | BIT(6)), /* i2s2_sdim1 */
++	RK_MUXROUTE_SAME(2, RK_PC6, 3, 0x50, BIT(16 + 7) | BIT(7)), /* card_iom1 */
++	RK_MUXROUTE_SAME(2, RK_PC0, 3, 0x50, BIT(16 + 8) | BIT(8)), /* tsp_d5m1 */
++	RK_MUXROUTE_SAME(2, RK_PC0, 4, 0x50, BIT(16 + 9) | BIT(9)), /* cif_data5m1 */
++};
++
++static struct rockchip_mux_route_data rk3399_mux_route_data[] = {
++	RK_MUXROUTE_SAME(4, RK_PB0, 2, 0xe21c, BIT(16 + 10) | BIT(16 + 11)), /* uart2dbga_rx */
++	RK_MUXROUTE_SAME(4, RK_PC0, 2, 0xe21c, BIT(16 + 10) | BIT(16 + 11) | BIT(10)), /* uart2dbgb_rx */
++	RK_MUXROUTE_SAME(4, RK_PC3, 1, 0xe21c, BIT(16 + 10) | BIT(16 + 11) | BIT(11)), /* uart2dbgc_rx */
++	RK_MUXROUTE_SAME(2, RK_PD2, 2, 0xe21c, BIT(16 + 14)), /* pcie_clkreqn */
++	RK_MUXROUTE_SAME(4, RK_PD0, 1, 0xe21c, BIT(16 + 14) | BIT(14)), /* pcie_clkreqnb */
++};
++
++static struct rockchip_mux_route_data rk3568_mux_route_data[] = {
++	RK_MUXROUTE_PMU(0, RK_PB7, 1, 0x0110, WRITE_MASK_VAL(1, 0, 0)), /* PWM0 IO mux M0 */
++	RK_MUXROUTE_PMU(0, RK_PC7, 2, 0x0110, WRITE_MASK_VAL(1, 0, 1)), /* PWM0 IO mux M1 */
++	RK_MUXROUTE_PMU(0, RK_PC0, 1, 0x0110, WRITE_MASK_VAL(3, 2, 0)), /* PWM1 IO mux M0 */
++	RK_MUXROUTE_PMU(0, RK_PB5, 4, 0x0110, WRITE_MASK_VAL(3, 2, 1)), /* PWM1 IO mux M1 */
++	RK_MUXROUTE_PMU(0, RK_PC1, 1, 0x0110, WRITE_MASK_VAL(5, 4, 0)), /* PWM2 IO mux M0 */
++	RK_MUXROUTE_PMU(0, RK_PB6, 4, 0x0110, WRITE_MASK_VAL(5, 4, 1)), /* PWM2 IO mux M1 */
++	RK_MUXROUTE_GRF(0, RK_PB3, 2, 0x0300, WRITE_MASK_VAL(0, 0, 0)), /* CAN0 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PA1, 4, 0x0300, WRITE_MASK_VAL(0, 0, 1)), /* CAN0 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA1, 3, 0x0300, WRITE_MASK_VAL(2, 2, 0)), /* CAN1 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC3, 3, 0x0300, WRITE_MASK_VAL(2, 2, 1)), /* CAN1 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PB5, 3, 0x0300, WRITE_MASK_VAL(4, 4, 0)), /* CAN2 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PB2, 4, 0x0300, WRITE_MASK_VAL(4, 4, 1)), /* CAN2 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PC4, 1, 0x0300, WRITE_MASK_VAL(6, 6, 0)), /* HPDIN IO mux M0 */
++	RK_MUXROUTE_GRF(0, RK_PC2, 2, 0x0300, WRITE_MASK_VAL(6, 6, 1)), /* HPDIN IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB1, 3, 0x0300, WRITE_MASK_VAL(8, 8, 0)), /* GMAC1 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PA7, 3, 0x0300, WRITE_MASK_VAL(8, 8, 1)), /* GMAC1 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PD1, 1, 0x0300, WRITE_MASK_VAL(10, 10, 0)), /* HDMITX IO mux M0 */
++	RK_MUXROUTE_GRF(0, RK_PC7, 1, 0x0300, WRITE_MASK_VAL(10, 10, 1)), /* HDMITX IO mux M1 */
++	RK_MUXROUTE_GRF(0, RK_PB6, 1, 0x0300, WRITE_MASK_VAL(14, 14, 0)), /* I2C2 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PB4, 1, 0x0300, WRITE_MASK_VAL(14, 14, 1)), /* I2C2 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA0, 1, 0x0304, WRITE_MASK_VAL(0, 0, 0)), /* I2C3 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PB6, 4, 0x0304, WRITE_MASK_VAL(0, 0, 1)), /* I2C3 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PB2, 1, 0x0304, WRITE_MASK_VAL(2, 2, 0)), /* I2C4 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PB1, 2, 0x0304, WRITE_MASK_VAL(2, 2, 1)), /* I2C4 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB4, 4, 0x0304, WRITE_MASK_VAL(4, 4, 0)), /* I2C5 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PD0, 2, 0x0304, WRITE_MASK_VAL(4, 4, 1)), /* I2C5 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB1, 5, 0x0304, WRITE_MASK_VAL(14, 14, 0)), /* PWM8 IO mux M0 */
++	RK_MUXROUTE_GRF(1, RK_PD5, 4, 0x0304, WRITE_MASK_VAL(14, 14, 1)), /* PWM8 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB2, 5, 0x0308, WRITE_MASK_VAL(0, 0, 0)), /* PWM9 IO mux M0 */
++	RK_MUXROUTE_GRF(1, RK_PD6, 4, 0x0308, WRITE_MASK_VAL(0, 0, 1)), /* PWM9 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB5, 5, 0x0308, WRITE_MASK_VAL(2, 2, 0)), /* PWM10 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PA1, 2, 0x0308, WRITE_MASK_VAL(2, 2, 1)), /* PWM10 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB6, 5, 0x0308, WRITE_MASK_VAL(4, 4, 0)), /* PWM11 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC0, 3, 0x0308, WRITE_MASK_VAL(4, 4, 1)), /* PWM11 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PB7, 2, 0x0308, WRITE_MASK_VAL(6, 6, 0)), /* PWM12 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC5, 1, 0x0308, WRITE_MASK_VAL(6, 6, 1)), /* PWM12 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PC0, 2, 0x0308, WRITE_MASK_VAL(8, 8, 0)), /* PWM13 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC6, 1, 0x0308, WRITE_MASK_VAL(8, 8, 1)), /* PWM13 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PC4, 1, 0x0308, WRITE_MASK_VAL(10, 10, 0)), /* PWM14 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC2, 1, 0x0308, WRITE_MASK_VAL(10, 10, 1)), /* PWM14 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PC5, 1, 0x0308, WRITE_MASK_VAL(12, 12, 0)), /* PWM15 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC3, 1, 0x0308, WRITE_MASK_VAL(12, 12, 1)), /* PWM15 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PD2, 3, 0x0308, WRITE_MASK_VAL(14, 14, 0)), /* SDMMC2 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PA5, 5, 0x0308, WRITE_MASK_VAL(14, 14, 1)), /* SDMMC2 IO mux M1 */
++	RK_MUXROUTE_GRF(0, RK_PB5, 2, 0x030c, WRITE_MASK_VAL(0, 0, 0)), /* SPI0 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PD3, 3, 0x030c, WRITE_MASK_VAL(0, 0, 1)), /* SPI0 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PB5, 3, 0x030c, WRITE_MASK_VAL(2, 2, 0)), /* SPI1 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PC3, 3, 0x030c, WRITE_MASK_VAL(2, 2, 1)), /* SPI1 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PC1, 4, 0x030c, WRITE_MASK_VAL(4, 4, 0)), /* SPI2 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PA0, 3, 0x030c, WRITE_MASK_VAL(4, 4, 1)), /* SPI2 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PB3, 4, 0x030c, WRITE_MASK_VAL(6, 6, 0)), /* SPI3 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC2, 2, 0x030c, WRITE_MASK_VAL(6, 6, 1)), /* SPI3 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PB4, 2, 0x030c, WRITE_MASK_VAL(8, 8, 0)), /* UART1 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PD6, 4, 0x030c, WRITE_MASK_VAL(8, 8, 1)), /* UART1 IO mux M1 */
++	RK_MUXROUTE_GRF(0, RK_PD1, 1, 0x030c, WRITE_MASK_VAL(10, 10, 0)), /* UART2 IO mux M0 */
++	RK_MUXROUTE_GRF(1, RK_PD5, 2, 0x030c, WRITE_MASK_VAL(10, 10, 1)), /* UART2 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA1, 2, 0x030c, WRITE_MASK_VAL(12, 12, 0)), /* UART3 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PB7, 4, 0x030c, WRITE_MASK_VAL(12, 12, 1)), /* UART3 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA6, 2, 0x030c, WRITE_MASK_VAL(14, 14, 0)), /* UART4 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PB2, 4, 0x030c, WRITE_MASK_VAL(14, 14, 1)), /* UART4 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PA2, 3, 0x0310, WRITE_MASK_VAL(0, 0, 0)), /* UART5 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PC2, 4, 0x0310, WRITE_MASK_VAL(0, 0, 1)), /* UART5 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PA4, 3, 0x0310, WRITE_MASK_VAL(2, 2, 0)), /* UART6 IO mux M0 */
++	RK_MUXROUTE_GRF(1, RK_PD5, 3, 0x0310, WRITE_MASK_VAL(2, 2, 1)), /* UART6 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PA6, 3, 0x0310, WRITE_MASK_VAL(5, 4, 0)), /* UART7 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PC4, 4, 0x0310, WRITE_MASK_VAL(5, 4, 1)), /* UART7 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PA2, 4, 0x0310, WRITE_MASK_VAL(5, 4, 2)), /* UART7 IO mux M2 */
++	RK_MUXROUTE_GRF(2, RK_PC5, 3, 0x0310, WRITE_MASK_VAL(6, 6, 0)), /* UART8 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PD7, 4, 0x0310, WRITE_MASK_VAL(6, 6, 1)), /* UART8 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PB0, 3, 0x0310, WRITE_MASK_VAL(9, 8, 0)), /* UART9 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC5, 4, 0x0310, WRITE_MASK_VAL(9, 8, 1)), /* UART9 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PA4, 4, 0x0310, WRITE_MASK_VAL(9, 8, 2)), /* UART9 IO mux M2 */
++	RK_MUXROUTE_GRF(1, RK_PA2, 1, 0x0310, WRITE_MASK_VAL(11, 10, 0)), /* I2S1 IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PC6, 4, 0x0310, WRITE_MASK_VAL(11, 10, 1)), /* I2S1 IO mux M1 */
++	RK_MUXROUTE_GRF(2, RK_PD0, 5, 0x0310, WRITE_MASK_VAL(11, 10, 2)), /* I2S1 IO mux M2 */
++	RK_MUXROUTE_GRF(2, RK_PC1, 1, 0x0310, WRITE_MASK_VAL(12, 12, 0)), /* I2S2 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PB6, 5, 0x0310, WRITE_MASK_VAL(12, 12, 1)), /* I2S2 IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PA2, 4, 0x0310, WRITE_MASK_VAL(14, 14, 0)), /* I2S3 IO mux M0 */
++	RK_MUXROUTE_GRF(4, RK_PC2, 5, 0x0310, WRITE_MASK_VAL(14, 14, 1)), /* I2S3 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA4, 3, 0x0314, WRITE_MASK_VAL(1, 0, 0)), /* PDM IO mux M0 */
++	RK_MUXROUTE_GRF(1, RK_PA6, 3, 0x0314, WRITE_MASK_VAL(1, 0, 0)), /* PDM IO mux M0 */
++	RK_MUXROUTE_GRF(3, RK_PD6, 5, 0x0314, WRITE_MASK_VAL(1, 0, 1)), /* PDM IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PA0, 4, 0x0314, WRITE_MASK_VAL(1, 0, 1)), /* PDM IO mux M1 */
++	RK_MUXROUTE_GRF(3, RK_PC4, 5, 0x0314, WRITE_MASK_VAL(1, 0, 2)), /* PDM IO mux M2 */
++	RK_MUXROUTE_GRF(0, RK_PA5, 3, 0x0314, WRITE_MASK_VAL(3, 2, 0)), /* PCIE20 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PD0, 4, 0x0314, WRITE_MASK_VAL(3, 2, 1)), /* PCIE20 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PB0, 4, 0x0314, WRITE_MASK_VAL(3, 2, 2)), /* PCIE20 IO mux M2 */
++	RK_MUXROUTE_GRF(0, RK_PA4, 3, 0x0314, WRITE_MASK_VAL(5, 4, 0)), /* PCIE30X1 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PD2, 4, 0x0314, WRITE_MASK_VAL(5, 4, 1)), /* PCIE30X1 IO mux M1 */
++	RK_MUXROUTE_GRF(1, RK_PA5, 4, 0x0314, WRITE_MASK_VAL(5, 4, 2)), /* PCIE30X1 IO mux M2 */
++	RK_MUXROUTE_GRF(0, RK_PA6, 2, 0x0314, WRITE_MASK_VAL(7, 6, 0)), /* PCIE30X2 IO mux M0 */
++	RK_MUXROUTE_GRF(2, RK_PD4, 4, 0x0314, WRITE_MASK_VAL(7, 6, 1)), /* PCIE30X2 IO mux M1 */
++	RK_MUXROUTE_GRF(4, RK_PC2, 4, 0x0314, WRITE_MASK_VAL(7, 6, 2)), /* PCIE30X2 IO mux M2 */
++};
++
++static bool rockchip_get_mux_route(struct rockchip_pin_bank *bank, int pin,
++				   int mux, u32 *loc, u32 *reg, u32 *value)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++	struct rockchip_pin_ctrl *ctrl = info->ctrl;
++	struct rockchip_mux_route_data *data = NULL;
++	int i;
++
++	for (i = 0; i < ctrl->niomux_routes; i++) {
++		data = &ctrl->iomux_routes[i];
++		if ((data->bank_num == bank->bank_num) &&
++		    (data->pin == pin) && (data->func == mux))
++			break;
++	}
++
++	if (i >= ctrl->niomux_routes)
 +		return false;
 +
-+	if (!fw_info->magic) {
-+		size_t i, size, start;
-+		u8 checksum = 0;
-+
-+		if (fw->size < sizeof(*fw_info))
-+			return false;
-+
-+		for (i = 0; i < fw->size; i++)
-+			checksum += fw->data[i];
-+		if (checksum != 0)
-+			return false;
-+
-+		start = le32_to_cpu(fw_info->fw_start);
-+		if (start > fw->size)
-+			return false;
-+
-+		size = le32_to_cpu(fw_info->fw_len);
-+		if (size > (fw->size - start) / FW_OPCODE_SIZE)
-+			return false;
-+
-+		strlcpy(rtl_fw->version, fw_info->version, RTL_VER_SIZE);
-+
-+		pa->code = (__le32 *)(fw->data + start);
-+		pa->size = size;
-+	} else {
-+		if (fw->size % FW_OPCODE_SIZE)
-+			return false;
-+
-+		strlcpy(rtl_fw->version, rtl_fw->fw_name, RTL_VER_SIZE);
-+
-+		pa->code = (__le32 *)fw->data;
-+		pa->size = fw->size / FW_OPCODE_SIZE;
-+	}
++	*loc = data->route_location;
++	*reg = data->route_offset;
++	*value = data->route_val;
 +
 +	return true;
 +}
 +
-+static bool rtl_fw_data_ok(struct rtl_fw *rtl_fw)
++static int rockchip_verify_mux(struct rockchip_pin_bank *bank,
++			       int pin, int mux)
 +{
-+	struct rtl_fw_phy_action *pa = &rtl_fw->phy_action;
-+	size_t index;
++	struct rockchip_pinctrl *info = bank->drvdata;
++	struct device *dev = info->dev;
++	int iomux_num = (pin / 8);
 +
-+	for (index = 0; index < pa->size; index++) {
-+		u32 action = le32_to_cpu(pa->code[index]);
-+		u32 val = action & 0x0000ffff;
-+		u32 regno = (action & 0x0fff0000) >> 16;
++	if (iomux_num > 3)
++		return -EINVAL;
 +
-+		switch (action >> 28) {
-+		case PHY_READ:
-+		case PHY_DATA_OR:
-+		case PHY_DATA_AND:
-+		case PHY_CLEAR_READCOUNT:
-+		case PHY_WRITE:
-+		case PHY_WRITE_PREVIOUS:
-+		case PHY_DELAY_MS:
-+			break;
-+
-+		case PHY_MDIO_CHG:
-+			if (val > 1)
-+				goto out;
-+			break;
-+
-+		case PHY_BJMPN:
-+			if (regno > index)
-+				goto out;
-+			break;
-+		case PHY_READCOUNT_EQ_SKIP:
-+			if (index + 2 >= pa->size)
-+				goto out;
-+			break;
-+		case PHY_COMP_EQ_SKIPN:
-+		case PHY_COMP_NEQ_SKIPN:
-+		case PHY_SKIPN:
-+			if (index + 1 + regno >= pa->size)
-+				goto out;
-+			break;
-+
-+		default:
-+			dev_err(rtl_fw->dev, "Invalid action 0x%08x\n", action);
-+			return false;
-+		}
++	if (bank->iomux[iomux_num].type & IOMUX_UNROUTED) {
++		dev_err(dev, "pin %d is unrouted\n", pin);
++		return -EINVAL;
 +	}
 +
-+	return true;
-+out:
-+	dev_err(rtl_fw->dev, "Out of range of firmware\n");
-+	return false;
-+}
-+
-+void rtl_fw_write_firmware(struct rtl8169_private *tp, struct rtl_fw *rtl_fw)
-+{
-+	struct rtl_fw_phy_action *pa = &rtl_fw->phy_action;
-+	rtl_fw_write_t fw_write = rtl_fw->phy_write;
-+	rtl_fw_read_t fw_read = rtl_fw->phy_read;
-+	int predata = 0, count = 0;
-+	size_t index;
-+
-+	for (index = 0; index < pa->size; index++) {
-+		u32 action = le32_to_cpu(pa->code[index]);
-+		u32 data = action & 0x0000ffff;
-+		u32 regno = (action & 0x0fff0000) >> 16;
-+		enum rtl_fw_opcode opcode = action >> 28;
-+
-+		if (!action)
-+			break;
-+
-+		switch (opcode) {
-+		case PHY_READ:
-+			predata = fw_read(tp, regno);
-+			count++;
-+			break;
-+		case PHY_DATA_OR:
-+			predata |= data;
-+			break;
-+		case PHY_DATA_AND:
-+			predata &= data;
-+			break;
-+		case PHY_BJMPN:
-+			index -= (regno + 1);
-+			break;
-+		case PHY_MDIO_CHG:
-+			if (data) {
-+				fw_write = rtl_fw->mac_mcu_write;
-+				fw_read = rtl_fw->mac_mcu_read;
-+			} else {
-+				fw_write = rtl_fw->phy_write;
-+				fw_read = rtl_fw->phy_read;
-+			}
-+
-+			break;
-+		case PHY_CLEAR_READCOUNT:
-+			count = 0;
-+			break;
-+		case PHY_WRITE:
-+			fw_write(tp, regno, data);
-+			break;
-+		case PHY_READCOUNT_EQ_SKIP:
-+			if (count == data)
-+				index++;
-+			break;
-+		case PHY_COMP_EQ_SKIPN:
-+			if (predata == data)
-+				index += regno;
-+			break;
-+		case PHY_COMP_NEQ_SKIPN:
-+			if (predata != data)
-+				index += regno;
-+			break;
-+		case PHY_WRITE_PREVIOUS:
-+			fw_write(tp, regno, predata);
-+			break;
-+		case PHY_SKIPN:
-+			index += regno;
-+			break;
-+		case PHY_DELAY_MS:
-+			mdelay(data);
-+			break;
++	if (bank->iomux[iomux_num].type & IOMUX_GPIO_ONLY) {
++		if (mux != RK_FUNC_GPIO) {
++			dev_err(dev, "pin %d only supports a gpio mux\n", pin);
++			return -ENOTSUPP;
 +		}
-+	}
-+}
-+
-+void rtl_fw_release_firmware(struct rtl_fw *rtl_fw)
-+{
-+	release_firmware(rtl_fw->fw);
-+}
-+
-+int rtl_fw_request_firmware(struct rtl_fw *rtl_fw)
-+{
-+	int rc;
-+
-+	rc = request_firmware(&rtl_fw->fw, rtl_fw->fw_name, rtl_fw->dev);
-+	if (rc < 0)
-+		goto out;
-+
-+	if (!rtl_fw_format_ok(rtl_fw) || !rtl_fw_data_ok(rtl_fw)) {
-+		release_firmware(rtl_fw->fw);
-+		rc = -EINVAL;
-+		goto out;
 +	}
 +
 +	return 0;
-+out:
-+	/* At least some NiCs work without firmware, even if there is one */
-+	dev_dbg(rtl_fw->dev, "Unable to load firmware %s (%d)\n",
-+		rtl_fw->fw_name, rc);
-+	return rc;
 +}
-diff --git a/drivers/net/r8169_firmware.h b/drivers/net/r8169_firmware.h
-new file mode 100644
-index 0000000000..8d3b037225
---- /dev/null
-+++ b/drivers/net/r8169_firmware.h
-@@ -0,0 +1,36 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+/* r8169_firmware.h: RealTek 8169/8168/8101 ethernet driver.
-+ *
-+ * Copyright (c) 2002 ShuChen <shuchen@realtek.com.tw>
-+ * Copyright (c) 2003 - 2007 Francois Romieu <romieu@fr.zoreil.com>
-+ * Copyright (c) a lot of people too. Please respect their work.
-+ *
-+ * See MAINTAINERS file for support contact information.
-+ */
 +
-+struct rtl8169_private;
-+typedef void (*rtl_fw_write_t)(struct rtl8169_private *tp, int reg, int val);
-+typedef int (*rtl_fw_read_t)(struct rtl8169_private *tp, int reg);
-+
-+#define RTL_VER_SIZE		32
-+
-+struct rtl_fw {
-+	rtl_fw_write_t phy_write;
-+	rtl_fw_read_t phy_read;
-+	rtl_fw_write_t mac_mcu_write;
-+	rtl_fw_read_t mac_mcu_read;
-+	const struct firmware *fw;
-+	const char *fw_name;
-+	struct device *dev;
-+
-+	char version[RTL_VER_SIZE];
-+
-+	struct rtl_fw_phy_action {
-+		__le32 *code;
-+		size_t size;
-+	} phy_action;
-+};
-+
-+int rtl_fw_request_firmware(struct rtl_fw *rtl_fw);
-+void rtl_fw_release_firmware(struct rtl_fw *rtl_fw);
-+void rtl_fw_write_firmware(struct rtl8169_private *tp, struct rtl_fw *rtl_fw);
-diff --git a/drivers/net/r8169_main.c b/drivers/net/r8169_main.c
-new file mode 100644
-index 0000000000..5b448fa029
---- /dev/null
-+++ b/drivers/net/r8169_main.c
-@@ -0,0 +1,3214 @@
-+// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * r8169.c: RealTek 8169/8168/8101 ethernet driver.
++ * Set a new mux function for a pin.
 + *
-+ * Copyright (c) 2002 ShuChen <shuchen@realtek.com.tw>
-+ * Copyright (c) 2003 - 2007 Francois Romieu <romieu@fr.zoreil.com>
-+ * Copyright (c) a lot of people too. Please respect their work.
-+ *
-+ * See MAINTAINERS file for support contact information.
++ * The register is divided into the upper and lower 16 bit. When changing
++ * a value, the previous register value is not read and changed. Instead
++ * it seems the changed bits are marked in the upper 16 bit, while the
++ * changed value gets set in the same offset in the lower 16 bit.
++ * All pin settings seem to be 2 bit wide in both the upper and lower
++ * parts.
++ * @bank: pin bank to change
++ * @pin: pin to change
++ * @mux: new mux function to set
 + */
-+
-+#include <common.h>
-+#include <dma.h>
-+#include <init.h>
-+#include <net.h>
-+#include <malloc.h>
-+#include <linux/pci.h>
-+#include <linux/sizes.h>
-+#include <asm/unaligned.h>
-+#include <asm/system.h>
-+
-+#include "r8169.h"
-+#include "r8169_firmware.h"
-+
-+#define FIRMWARE_8168D_1	"rtl_nic/rtl8168d-1.fw"
-+#define FIRMWARE_8168D_2	"rtl_nic/rtl8168d-2.fw"
-+#define FIRMWARE_8168E_1	"rtl_nic/rtl8168e-1.fw"
-+#define FIRMWARE_8168E_2	"rtl_nic/rtl8168e-2.fw"
-+#define FIRMWARE_8168E_3	"rtl_nic/rtl8168e-3.fw"
-+#define FIRMWARE_8168F_1	"rtl_nic/rtl8168f-1.fw"
-+#define FIRMWARE_8168F_2	"rtl_nic/rtl8168f-2.fw"
-+#define FIRMWARE_8105E_1	"rtl_nic/rtl8105e-1.fw"
-+#define FIRMWARE_8402_1		"rtl_nic/rtl8402-1.fw"
-+#define FIRMWARE_8411_1		"rtl_nic/rtl8411-1.fw"
-+#define FIRMWARE_8411_2		"rtl_nic/rtl8411-2.fw"
-+#define FIRMWARE_8106E_1	"rtl_nic/rtl8106e-1.fw"
-+#define FIRMWARE_8106E_2	"rtl_nic/rtl8106e-2.fw"
-+#define FIRMWARE_8168G_2	"rtl_nic/rtl8168g-2.fw"
-+#define FIRMWARE_8168G_3	"rtl_nic/rtl8168g-3.fw"
-+#define FIRMWARE_8168H_2	"rtl_nic/rtl8168h-2.fw"
-+#define FIRMWARE_8168FP_3	"rtl_nic/rtl8168fp-3.fw"
-+#define FIRMWARE_8107E_2	"rtl_nic/rtl8107e-2.fw"
-+#define FIRMWARE_8125A_3	"rtl_nic/rtl8125a-3.fw"
-+#define FIRMWARE_8125B_2	"rtl_nic/rtl8125b-2.fw"
-+
-+/* Maximum number of multicast addresses to filter (vs. Rx-all-multicast).
-+   The RTL chips use a 64 element hash table based on the Ethernet CRC. */
-+#define	MC_FILTER_LIMIT	32
-+
-+#define TX_DMA_BURST	7	/* Maximum PCI burst, '7' is unlimited */
-+#define InterFrameGap	0x03	/* 3 means InterFrameGap = the shortest one */
-+
-+#define R8169_REGS_SIZE		256
-+#define R8169_RX_BUF_SIZE	(SZ_16K - 1)
-+#define NUM_TX_DESC	256	/* Number of Tx descriptor registers */
-+#define NUM_RX_DESC	256	/* Number of Rx descriptor registers */
-+#define R8169_TX_RING_BYTES	(NUM_TX_DESC * sizeof(struct TxDesc))
-+#define R8169_RX_RING_BYTES	(NUM_RX_DESC * sizeof(struct RxDesc))
-+
-+#define OCP_STD_PHY_BASE	0xa400
-+
-+#define RTL_CFG_NO_GBIT	1
-+
-+/* write/read MMIO register */
-+#define RTL_W8(tp, reg, val8)	writeb((val8), tp->mmio_addr + (reg))
-+#define RTL_W16(tp, reg, val16)	writew((val16), tp->mmio_addr + (reg))
-+#define RTL_W32(tp, reg, val32)	writel((val32), tp->mmio_addr + (reg))
-+#define RTL_R8(tp, reg)		readb(tp->mmio_addr + (reg))
-+#define RTL_R16(tp, reg)		readw(tp->mmio_addr + (reg))
-+#define RTL_R32(tp, reg)		readl(tp->mmio_addr + (reg))
-+
-+#define JUMBO_4K	(4 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
-+#define JUMBO_6K	(6 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
-+#define JUMBO_7K	(7 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
-+#define JUMBO_9K	(9 * SZ_1K - VLAN_ETH_HLEN - ETH_FCS_LEN)
-+
-+static const struct {
-+	const char *name;
-+	const char *fw_name;
-+} rtl_chip_infos[] = {
-+	/* PCI devices. */
-+	[RTL_GIGA_MAC_VER_02] = {"RTL8169s"				},
-+	[RTL_GIGA_MAC_VER_03] = {"RTL8110s"				},
-+	[RTL_GIGA_MAC_VER_04] = {"RTL8169sb/8110sb"			},
-+	[RTL_GIGA_MAC_VER_05] = {"RTL8169sc/8110sc"			},
-+	[RTL_GIGA_MAC_VER_06] = {"RTL8169sc/8110sc"			},
-+	/* PCI-E devices. */
-+	[RTL_GIGA_MAC_VER_07] = {"RTL8102e"				},
-+	[RTL_GIGA_MAC_VER_08] = {"RTL8102e"				},
-+	[RTL_GIGA_MAC_VER_09] = {"RTL8102e/RTL8103e"			},
-+	[RTL_GIGA_MAC_VER_10] = {"RTL8101e/RTL8100e"			},
-+	[RTL_GIGA_MAC_VER_11] = {"RTL8168b/8111b"			},
-+	[RTL_GIGA_MAC_VER_14] = {"RTL8401"				},
-+	[RTL_GIGA_MAC_VER_17] = {"RTL8168b/8111b"			},
-+	[RTL_GIGA_MAC_VER_18] = {"RTL8168cp/8111cp"			},
-+	[RTL_GIGA_MAC_VER_19] = {"RTL8168c/8111c"			},
-+	[RTL_GIGA_MAC_VER_20] = {"RTL8168c/8111c"			},
-+	[RTL_GIGA_MAC_VER_21] = {"RTL8168c/8111c"			},
-+	[RTL_GIGA_MAC_VER_22] = {"RTL8168c/8111c"			},
-+	[RTL_GIGA_MAC_VER_23] = {"RTL8168cp/8111cp"			},
-+	[RTL_GIGA_MAC_VER_24] = {"RTL8168cp/8111cp"			},
-+	[RTL_GIGA_MAC_VER_25] = {"RTL8168d/8111d",	FIRMWARE_8168D_1},
-+	[RTL_GIGA_MAC_VER_26] = {"RTL8168d/8111d",	FIRMWARE_8168D_2},
-+	[RTL_GIGA_MAC_VER_28] = {"RTL8168dp/8111dp"			},
-+	[RTL_GIGA_MAC_VER_29] = {"RTL8105e",		FIRMWARE_8105E_1},
-+	[RTL_GIGA_MAC_VER_30] = {"RTL8105e",		FIRMWARE_8105E_1},
-+	[RTL_GIGA_MAC_VER_31] = {"RTL8168dp/8111dp"			},
-+	[RTL_GIGA_MAC_VER_32] = {"RTL8168e/8111e",	FIRMWARE_8168E_1},
-+	[RTL_GIGA_MAC_VER_33] = {"RTL8168e/8111e",	FIRMWARE_8168E_2},
-+	[RTL_GIGA_MAC_VER_34] = {"RTL8168evl/8111evl",	FIRMWARE_8168E_3},
-+	[RTL_GIGA_MAC_VER_35] = {"RTL8168f/8111f",	FIRMWARE_8168F_1},
-+	[RTL_GIGA_MAC_VER_36] = {"RTL8168f/8111f",	FIRMWARE_8168F_2},
-+	[RTL_GIGA_MAC_VER_37] = {"RTL8402",		FIRMWARE_8402_1 },
-+	[RTL_GIGA_MAC_VER_38] = {"RTL8411",		FIRMWARE_8411_1 },
-+	[RTL_GIGA_MAC_VER_39] = {"RTL8106e",		FIRMWARE_8106E_1},
-+	[RTL_GIGA_MAC_VER_40] = {"RTL8168g/8111g",	FIRMWARE_8168G_2},
-+	[RTL_GIGA_MAC_VER_42] = {"RTL8168gu/8111gu",	FIRMWARE_8168G_3},
-+	[RTL_GIGA_MAC_VER_43] = {"RTL8106eus",		FIRMWARE_8106E_2},
-+	[RTL_GIGA_MAC_VER_44] = {"RTL8411b",		FIRMWARE_8411_2 },
-+	[RTL_GIGA_MAC_VER_46] = {"RTL8168h/8111h",	FIRMWARE_8168H_2},
-+	[RTL_GIGA_MAC_VER_48] = {"RTL8107e",		FIRMWARE_8107E_2},
-+	[RTL_GIGA_MAC_VER_51] = {"RTL8168ep/8111ep"			},
-+	[RTL_GIGA_MAC_VER_52] = {"RTL8168fp/RTL8117",  FIRMWARE_8168FP_3},
-+	[RTL_GIGA_MAC_VER_53] = {"RTL8168fp/RTL8117",			},
-+	[RTL_GIGA_MAC_VER_61] = {"RTL8125A",		FIRMWARE_8125A_3},
-+	/* reserve 62 for CFG_METHOD_4 in the vendor driver */
-+	[RTL_GIGA_MAC_VER_63] = {"RTL8125B",		FIRMWARE_8125B_2},
-+};
-+
-+static const struct pci_device_id rtl8169_pci_tbl[] = {
-+	{ PCI_VDEVICE(REALTEK,	0x2502) },
-+	{ PCI_VDEVICE(REALTEK,	0x2600) },
-+	{ PCI_VDEVICE(REALTEK,	0x8129) },
-+	{ PCI_VDEVICE(REALTEK,	0x8136), RTL_CFG_NO_GBIT },
-+	{ PCI_VDEVICE(REALTEK,	0x8161) },
-+	{ PCI_VDEVICE(REALTEK,	0x8162) },
-+	{ PCI_VDEVICE(REALTEK,	0x8167) },
-+	{ PCI_VDEVICE(REALTEK,	0x8168) },
-+	{ PCI_VDEVICE(NCUBE,	0x8168) },
-+	{ PCI_VDEVICE(REALTEK,	0x8169) },
-+	{ PCI_VENDOR_ID_DLINK,	0x4300,
-+		PCI_VENDOR_ID_DLINK, 0x4b10, 0, 0 },
-+	{ PCI_VDEVICE(DLINK,	0x4300) },
-+	{ PCI_VDEVICE(DLINK,	0x4302) },
-+	{ PCI_VDEVICE(AT,	0xc107) },
-+	{ PCI_VENDOR_ID_LINKSYS, 0x1032, PCI_ANY_ID, 0x0024 },
-+	{ 0x0001, 0x8168, PCI_ANY_ID, 0x2410 },
-+	{ PCI_VDEVICE(REALTEK,	0x8125) },
-+	{ PCI_VDEVICE(REALTEK,	0x3000) },
-+	{}
-+};
-+
-+MODULE_DEVICE_TABLE(pci, rtl8169_pci_tbl);
-+
-+enum rtl_registers {
-+	MAC0		= 0,	/* Ethernet hardware address. */
-+	MAC4		= 4,
-+	MAR0		= 8,	/* Multicast filter. */
-+	CounterAddrLow		= 0x10,
-+	CounterAddrHigh		= 0x14,
-+	TxDescStartAddrLow	= 0x20,
-+	TxDescStartAddrHigh	= 0x24,
-+	TxHDescStartAddrLow	= 0x28,
-+	TxHDescStartAddrHigh	= 0x2c,
-+	FLASH		= 0x30,
-+	ERSR		= 0x36,
-+	ChipCmd		= 0x37,
-+	TxPoll		= 0x38,
-+	IntrMask	= 0x3c,
-+	IntrStatus	= 0x3e,
-+
-+	TxConfig	= 0x40,
-+#define	TXCFG_AUTO_FIFO			(1 << 7)	/* 8111e-vl */
-+#define	TXCFG_EMPTY			(1 << 11)	/* 8111e-vl */
-+
-+	RxConfig	= 0x44,
-+#define	RX128_INT_EN			(1 << 15)	/* 8111c and later */
-+#define	RX_MULTI_EN			(1 << 14)	/* 8111c only */
-+#define	RXCFG_FIFO_SHIFT		13
-+					/* No threshold before first PCI xfer */
-+#define	RX_FIFO_THRESH			(7 << RXCFG_FIFO_SHIFT)
-+#define	RX_EARLY_OFF			(1 << 11)
-+#define	RXCFG_DMA_SHIFT			8
-+					/* Unlimited maximum PCI burst. */
-+#define	RX_DMA_BURST			(7 << RXCFG_DMA_SHIFT)
-+	RxMissed	= 0x4c,
-+	Cfg9346		= 0x50,
-+	Config0		= 0x51,
-+	Config1		= 0x52,
-+	Config2		= 0x53,
-+#define PME_SIGNAL			(1 << 5)	/* 8168c and later */
-+
-+	Config3		= 0x54,
-+	Config4		= 0x55,
-+	Config5		= 0x56,
-+	PHYAR		= 0x60,
-+	PHYstatus	= 0x6c,
-+	RxMaxSize	= 0xda,
-+	CPlusCmd	= 0xe0,
-+	IntrMitigate	= 0xe2,
-+
-+#define RTL_COALESCE_TX_USECS	GENMASK(15, 12)
-+#define RTL_COALESCE_TX_FRAMES	GENMASK(11, 8)
-+#define RTL_COALESCE_RX_USECS	GENMASK(7, 4)
-+#define RTL_COALESCE_RX_FRAMES	GENMASK(3, 0)
-+
-+#define RTL_COALESCE_T_MAX	0x0fU
-+#define RTL_COALESCE_FRAME_MAX	(RTL_COALESCE_T_MAX * 4)
-+
-+	RxDescAddrLow	= 0xe4,
-+	RxDescAddrHigh	= 0xe8,
-+	EarlyTxThres	= 0xec,	/* 8169. Unit of 32 bytes. */
-+
-+#define NoEarlyTx	0x3f	/* Max value : no early transmit. */
-+
-+	MaxTxPacketSize	= 0xec,	/* 8101/8168. Unit of 128 bytes. */
-+
-+#define TxPacketMax	(8064 >> 7)
-+#define EarlySize	0x27
-+
-+	FuncEvent	= 0xf0,
-+	FuncEventMask	= 0xf4,
-+	FuncPresetState	= 0xf8,
-+	IBCR0           = 0xf8,
-+	IBCR2           = 0xf9,
-+	IBIMR0          = 0xfa,
-+	IBISR0          = 0xfb,
-+	FuncForceEvent	= 0xfc,
-+};
-+
-+enum rtl8168_8101_registers {
-+	CSIDR			= 0x64,
-+	CSIAR			= 0x68,
-+#define	CSIAR_FLAG			0x80000000
-+#define	CSIAR_WRITE_CMD			0x80000000
-+#define	CSIAR_BYTE_ENABLE		0x0000f000
-+#define	CSIAR_ADDR_MASK			0x00000fff
-+	PMCH			= 0x6f,
-+#define D3COLD_NO_PLL_DOWN		BIT(7)
-+#define D3HOT_NO_PLL_DOWN		BIT(6)
-+#define D3_NO_PLL_DOWN			(BIT(7) | BIT(6))
-+	EPHYAR			= 0x80,
-+#define	EPHYAR_FLAG			0x80000000
-+#define	EPHYAR_WRITE_CMD		0x80000000
-+#define	EPHYAR_REG_MASK			0x1f
-+#define	EPHYAR_REG_SHIFT		16
-+#define	EPHYAR_DATA_MASK		0xffff
-+	DLLPR			= 0xd0,
-+#define	PFM_EN				(1 << 6)
-+#define	TX_10M_PS_EN			(1 << 7)
-+	DBG_REG			= 0xd1,
-+#define	FIX_NAK_1			(1 << 4)
-+#define	FIX_NAK_2			(1 << 3)
-+	TWSI			= 0xd2,
-+	MCU			= 0xd3,
-+#define	NOW_IS_OOB			(1 << 7)
-+#define	TX_EMPTY			(1 << 5)
-+#define	RX_EMPTY			(1 << 4)
-+#define	RXTX_EMPTY			(TX_EMPTY | RX_EMPTY)
-+#define	EN_NDP				(1 << 3)
-+#define	EN_OOB_RESET			(1 << 2)
-+#define	LINK_LIST_RDY			(1 << 1)
-+	EFUSEAR			= 0xdc,
-+#define	EFUSEAR_FLAG			0x80000000
-+#define	EFUSEAR_WRITE_CMD		0x80000000
-+#define	EFUSEAR_READ_CMD		0x00000000
-+#define	EFUSEAR_REG_MASK		0x03ff
-+#define	EFUSEAR_REG_SHIFT		8
-+#define	EFUSEAR_DATA_MASK		0xff
-+	MISC_1			= 0xf2,
-+#define	PFM_D3COLD_EN			(1 << 6)
-+};
-+
-+enum rtl8168_registers {
-+	LED_FREQ		= 0x1a,
-+	EEE_LED			= 0x1b,
-+	ERIDR			= 0x70,
-+	ERIAR			= 0x74,
-+#define ERIAR_FLAG			0x80000000
-+#define ERIAR_WRITE_CMD			0x80000000
-+#define ERIAR_READ_CMD			0x00000000
-+#define ERIAR_ADDR_BYTE_ALIGN		4
-+#define ERIAR_TYPE_SHIFT		16
-+#define ERIAR_EXGMAC			(0x00 << ERIAR_TYPE_SHIFT)
-+#define ERIAR_MSIX			(0x01 << ERIAR_TYPE_SHIFT)
-+#define ERIAR_ASF			(0x02 << ERIAR_TYPE_SHIFT)
-+#define ERIAR_OOB			(0x02 << ERIAR_TYPE_SHIFT)
-+#define ERIAR_MASK_SHIFT		12
-+#define ERIAR_MASK_0001			(0x1 << ERIAR_MASK_SHIFT)
-+#define ERIAR_MASK_0011			(0x3 << ERIAR_MASK_SHIFT)
-+#define ERIAR_MASK_0100			(0x4 << ERIAR_MASK_SHIFT)
-+#define ERIAR_MASK_0101			(0x5 << ERIAR_MASK_SHIFT)
-+#define ERIAR_MASK_1111			(0xf << ERIAR_MASK_SHIFT)
-+	EPHY_RXER_NUM		= 0x7c,
-+	OCPDR			= 0xb0,	/* OCP GPHY access */
-+#define OCPDR_WRITE_CMD			0x80000000
-+#define OCPDR_READ_CMD			0x00000000
-+#define OCPDR_REG_MASK			0x7f
-+#define OCPDR_GPHY_REG_SHIFT		16
-+#define OCPDR_DATA_MASK			0xffff
-+	OCPAR			= 0xb4,
-+#define OCPAR_FLAG			0x80000000
-+#define OCPAR_GPHY_WRITE_CMD		0x8000f060
-+#define OCPAR_GPHY_READ_CMD		0x0000f060
-+	GPHY_OCP		= 0xb8,
-+	RDSAR1			= 0xd0,	/* 8168c only. Undocumented on 8168dp */
-+	MISC			= 0xf0,	/* 8168e only. */
-+#define TXPLA_RST			(1 << 29)
-+#define DISABLE_LAN_EN			(1 << 23) /* Enable GPIO pin */
-+#define PWM_EN				(1 << 22)
-+#define RXDV_GATED_EN			(1 << 19)
-+#define EARLY_TALLY_EN			(1 << 16)
-+};
-+
-+enum rtl8125_registers {
-+	IntrMask_8125		= 0x38,
-+	IntrStatus_8125		= 0x3c,
-+	TxPoll_8125		= 0x90,
-+	MAC0_BKP		= 0x19e0,
-+	EEE_TXIDLE_TIMER_8125	= 0x6048,
-+};
-+
-+#define RX_VLAN_INNER_8125	BIT(22)
-+#define RX_VLAN_OUTER_8125	BIT(23)
-+#define RX_VLAN_8125		(RX_VLAN_INNER_8125 | RX_VLAN_OUTER_8125)
-+
-+#define RX_FETCH_DFLT_8125	(8 << 27)
-+
-+enum rtl_register_content {
-+	/* InterruptStatusBits */
-+	SYSErr		= 0x8000,
-+	PCSTimeout	= 0x4000,
-+	SWInt		= 0x0100,
-+	TxDescUnavail	= 0x0080,
-+	RxFIFOOver	= 0x0040,
-+	LinkChg		= 0x0020,
-+	RxOverflow	= 0x0010,
-+	TxErr		= 0x0008,
-+	TxOK		= 0x0004,
-+	RxErr		= 0x0002,
-+	RxOK		= 0x0001,
-+
-+	/* RxStatusDesc */
-+	RxRWT	= (1 << 22),
-+	RxRES	= (1 << 21),
-+	RxRUNT	= (1 << 20),
-+	RxCRC	= (1 << 19),
-+
-+	/* ChipCmdBits */
-+	StopReq		= 0x80,
-+	CmdReset	= 0x10,
-+	CmdRxEnb	= 0x08,
-+	CmdTxEnb	= 0x04,
-+	RxBufEmpty	= 0x01,
-+
-+	/* TXPoll register p.5 */
-+	HPQ		= 0x80,		/* Poll cmd on the high prio queue */
-+	NPQ		= 0x40,		/* Poll cmd on the low prio queue */
-+	FSWInt		= 0x01,		/* Forced software interrupt */
-+
-+	/* Cfg9346Bits */
-+	Cfg9346_Lock	= 0x00,
-+	Cfg9346_Unlock	= 0xc0,
-+
-+	/* rx_mode_bits */
-+	AcceptErr	= 0x20,
-+	AcceptRunt	= 0x10,
-+#define RX_CONFIG_ACCEPT_ERR_MASK	0x30
-+	AcceptBroadcast	= 0x08,
-+	AcceptMulticast	= 0x04,
-+	AcceptMyPhys	= 0x02,
-+	AcceptAllPhys	= 0x01,
-+#define RX_CONFIG_ACCEPT_OK_MASK	0x0f
-+#define RX_CONFIG_ACCEPT_MASK		0x3f
-+
-+	/* TxConfigBits */
-+	TxInterFrameGapShift = 24,
-+	TxDMAShift = 8,	/* DMA burst value (0-7) is shift this many bits */
-+
-+	/* Config1 register p.24 */
-+	LEDS1		= (1 << 7),
-+	LEDS0		= (1 << 6),
-+	Speed_down	= (1 << 4),
-+	MEMMAP		= (1 << 3),
-+	IOMAP		= (1 << 2),
-+	VPD		= (1 << 1),
-+	PMEnable	= (1 << 0),	/* Power Management Enable */
-+
-+	/* Config2 register p. 25 */
-+	ClkReqEn	= (1 << 7),	/* Clock Request Enable */
-+	MSIEnable	= (1 << 5),	/* 8169 only. Reserved in the 8168. */
-+	PCI_Clock_66MHz = 0x01,
-+	PCI_Clock_33MHz = 0x00,
-+
-+	/* Config3 register p.25 */
-+	MagicPacket	= (1 << 5),	/* Wake up when receives a Magic Packet */
-+	LinkUp		= (1 << 4),	/* Wake up when the cable connection is re-established */
-+	Jumbo_En0	= (1 << 2),	/* 8168 only. Reserved in the 8168b */
-+	Rdy_to_L23	= (1 << 1),	/* L23 Enable */
-+	Beacon_en	= (1 << 0),	/* 8168 only. Reserved in the 8168b */
-+
-+	/* Config4 register */
-+	Jumbo_En1	= (1 << 1),	/* 8168 only. Reserved in the 8168b */
-+
-+	/* Config5 register p.27 */
-+	BWF		= (1 << 6),	/* Accept Broadcast wakeup frame */
-+	MWF		= (1 << 5),	/* Accept Multicast wakeup frame */
-+	UWF		= (1 << 4),	/* Accept Unicast wakeup frame */
-+	Spi_en		= (1 << 3),
-+	LanWake		= (1 << 1),	/* LanWake enable/disable */
-+	PMEStatus	= (1 << 0),	/* PME status can be reset by PCI RST# */
-+	ASPM_en		= (1 << 0),	/* ASPM enable */
-+
-+	/* CPlusCmd p.31 */
-+	EnableBist	= (1 << 15),	// 8168 8101
-+	Mac_dbgo_oe	= (1 << 14),	// 8168 8101
-+	EnAnaPLL	= (1 << 14),	// 8169
-+	Normal_mode	= (1 << 13),	// unused
-+	Force_half_dup	= (1 << 12),	// 8168 8101
-+	Force_rxflow_en	= (1 << 11),	// 8168 8101
-+	Force_txflow_en	= (1 << 10),	// 8168 8101
-+	Cxpl_dbg_sel	= (1 << 9),	// 8168 8101
-+	ASF		= (1 << 8),	// 8168 8101
-+	PktCntrDisable	= (1 << 7),	// 8168 8101
-+	Mac_dbgo_sel	= 0x001c,	// 8168
-+	RxVlan		= (1 << 6),
-+	RxChkSum	= (1 << 5),
-+	PCIDAC		= (1 << 4),
-+	PCIMulRW	= (1 << 3),
-+#define INTT_MASK	GENMASK(1, 0)
-+#define CPCMD_MASK	(Normal_mode | RxVlan | RxChkSum | INTT_MASK)
-+
-+	/* rtl8169_PHYstatus */
-+	TBI_Enable	= 0x80,
-+	TxFlowCtrl	= 0x40,
-+	RxFlowCtrl	= 0x20,
-+	_1000bpsF	= 0x10,
-+	_100bps		= 0x08,
-+	_10bps		= 0x04,
-+	LinkStatus	= 0x02,
-+	FullDup		= 0x01,
-+
-+	/* ResetCounterCommand */
-+	CounterReset	= 0x1,
-+
-+	/* DumpCounterCommand */
-+	CounterDump	= 0x8,
-+
-+	/* magic enable v2 */
-+	MagicPacket_v2	= (1 << 16),	/* Wake up when receives a Magic Packet */
-+};
-+
-+enum rtl_desc_bit {
-+	/* First doubleword. */
-+	DescOwn		= (1 << 31), /* Descriptor is owned by NIC */
-+	RingEnd		= (1 << 30), /* End of descriptor ring */
-+	FirstFrag	= (1 << 29), /* First segment of a packet */
-+	LastFrag	= (1 << 28), /* Final segment of a packet */
-+};
-+
-+/* Generic case. */
-+enum rtl_tx_desc_bit {
-+	/* First doubleword. */
-+	TD_LSO		= (1 << 27),		/* Large Send Offload */
-+#define TD_MSS_MAX			0x07ffu	/* MSS value */
-+
-+	/* Second doubleword. */
-+	TxVlanTag	= (1 << 17),		/* Add VLAN tag */
-+};
-+
-+/* 8169, 8168b and 810x except 8102e. */
-+enum rtl_tx_desc_bit_0 {
-+	/* First doubleword. */
-+#define TD0_MSS_SHIFT			16	/* MSS position (11 bits) */
-+	TD0_TCP_CS	= (1 << 16),		/* Calculate TCP/IP checksum */
-+	TD0_UDP_CS	= (1 << 17),		/* Calculate UDP/IP checksum */
-+	TD0_IP_CS	= (1 << 18),		/* Calculate IP checksum */
-+};
-+
-+/* 8102e, 8168c and beyond. */
-+enum rtl_tx_desc_bit_1 {
-+	/* First doubleword. */
-+	TD1_GTSENV4	= (1 << 26),		/* Giant Send for IPv4 */
-+	TD1_GTSENV6	= (1 << 25),		/* Giant Send for IPv6 */
-+#define GTTCPHO_SHIFT			18
-+#define GTTCPHO_MAX			0x7f
-+
-+	/* Second doubleword. */
-+#define TCPHO_SHIFT			18
-+#define TCPHO_MAX			0x3ff
-+#define TD1_MSS_SHIFT			18	/* MSS position (11 bits) */
-+	TD1_IPv6_CS	= (1 << 28),		/* Calculate IPv6 checksum */
-+	TD1_IPv4_CS	= (1 << 29),		/* Calculate IPv4 checksum */
-+	TD1_TCP_CS	= (1 << 30),		/* Calculate TCP/IP checksum */
-+	TD1_UDP_CS	= (1 << 31),		/* Calculate UDP/IP checksum */
-+};
-+
-+enum rtl_rx_desc_bit {
-+	/* Rx private */
-+	PID1		= (1 << 18), /* Protocol ID bit 1/2 */
-+	PID0		= (1 << 17), /* Protocol ID bit 0/2 */
-+
-+#define RxProtoUDP	(PID1)
-+#define RxProtoTCP	(PID0)
-+#define RxProtoIP	(PID1 | PID0)
-+#define RxProtoMask	RxProtoIP
-+
-+	IPFail		= (1 << 16), /* IP checksum failed */
-+	UDPFail		= (1 << 15), /* UDP/IP checksum failed */
-+	TCPFail		= (1 << 14), /* TCP/IP checksum failed */
-+
-+#define RxCSFailMask	(IPFail | UDPFail | TCPFail)
-+
-+	RxVlanTag	= (1 << 16), /* VLAN tag available */
-+};
-+
-+#define RTL_GSO_MAX_SIZE_V1	32000
-+#define RTL_GSO_MAX_SEGS_V1	24
-+#define RTL_GSO_MAX_SIZE_V2	64000
-+#define RTL_GSO_MAX_SEGS_V2	64
-+
-+struct TxDesc {
-+	__le32 opts1;
-+	__le32 opts2;
-+	__le64 addr;
-+};
-+
-+struct RxDesc {
-+	__le32 opts1;
-+	__le32 opts2;
-+	__le64 addr;
-+};
-+
-+struct ring_info {
-+	struct sk_buff	*skb;
-+	u32		len;
-+};
-+
-+struct rtl8169_counters {
-+	__le64	tx_packets;
-+	__le64	rx_packets;
-+	__le64	tx_errors;
-+	__le32	rx_errors;
-+	__le16	rx_missed;
-+	__le16	align_errors;
-+	__le32	tx_one_collision;
-+	__le32	tx_multi_collision;
-+	__le64	rx_unicast;
-+	__le64	rx_broadcast;
-+	__le32	rx_multicast;
-+	__le16	tx_aborted;
-+	__le16	tx_underun;
-+};
-+
-+struct rtl8169_tc_offsets {
-+	bool	inited;
-+	__le64	tx_errors;
-+	__le32	tx_multi_collision;
-+	__le16	tx_aborted;
-+	__le16	rx_missed;
-+};
-+
-+enum rtl_flag {
-+	RTL_FLAG_TASK_ENABLED = 0,
-+	RTL_FLAG_TASK_RESET_PENDING,
-+	RTL_FLAG_TASK_TX_TIMEOUT,
-+	RTL_FLAG_MAX
-+};
-+
-+enum rtl_dash_type {
-+	RTL_DASH_NONE,
-+	RTL_DASH_DP,
-+	RTL_DASH_EP,
-+};
-+
-+struct rtl8169_private {
-+	void __iomem *mmio_addr;	/* memory map physical address */
-+	struct pci_dev *pci_dev;
-+	struct device *dev;
-+	struct eth_device edev;
-+	struct phy_device *phydev;
-+	enum mac_version mac_version;
-+	enum rtl_dash_type dash_type;
-+	u32 cur_rx; /* Index into the Rx descriptor buffer of next Rx pkt. */
-+	u32 cur_tx; /* Index into the Tx descriptor buffer of next Rx pkt. */
-+	u32 dirty_tx;
-+	struct TxDesc *TxDescArray;	/* 256-aligned Tx descriptor ring */
-+	struct RxDesc *RxDescArray;	/* 256-aligned Rx descriptor ring */
-+	dma_addr_t TxPhyAddr;
-+	dma_addr_t RxPhyAddr;
-+	u16 cp_cmd;
-+	void			*tx_buf;
-+	dma_addr_t		tx_buf_phys;
-+	void			*rx_buf;
-+	dma_addr_t		rx_buf_phys;
-+
-+	unsigned supports_gmii:1;
-+	unsigned aspm_manageable:1;
-+
-+	const char *fw_name;
-+	struct rtl_fw *rtl_fw;
-+
-+	u32 ocp_base;
-+
-+	struct mii_bus miibus;
-+};
-+
-+typedef void (*rtl_generic_fct)(struct rtl8169_private *tp);
-+
-+static inline struct device *tp_to_dev(struct rtl8169_private *tp)
++static int rockchip_set_mux(struct rockchip_pin_bank *bank, int pin, int mux)
 +{
-+	return &tp->pci_dev->dev;
-+}
++	struct rockchip_pinctrl *info = bank->drvdata;
++	struct rockchip_pin_ctrl *ctrl = info->ctrl;
++	struct device *dev = info->dev;
++	int iomux_num = (pin / 8);
++	struct regmap *regmap;
++	int reg, ret, mask, mux_type;
++	u8 bit;
++	u32 data, rmask, route_location, route_reg, route_val;
 +
-+static void rtl_lock_config_regs(struct rtl8169_private *tp)
-+{
-+	RTL_W8(tp, Cfg9346, Cfg9346_Lock);
-+}
++	ret = rockchip_verify_mux(bank, pin, mux);
++	if (ret < 0)
++		return ret;
 +
-+static void rtl_unlock_config_regs(struct rtl8169_private *tp)
-+{
-+	RTL_W8(tp, Cfg9346, Cfg9346_Unlock);
-+}
-+
-+static void rtl_pci_commit(struct rtl8169_private *tp)
-+{
-+	/* Read an arbitrary register to commit a preceding PCI write */
-+	RTL_R8(tp, ChipCmd);
-+}
-+
-+static bool rtl_is_8125(struct rtl8169_private *tp)
-+{
-+	return tp->mac_version >= RTL_GIGA_MAC_VER_61;
-+}
-+
-+static bool rtl_is_8168evl_up(struct rtl8169_private *tp)
-+{
-+	return tp->mac_version >= RTL_GIGA_MAC_VER_34 &&
-+	       tp->mac_version != RTL_GIGA_MAC_VER_39 &&
-+	       tp->mac_version <= RTL_GIGA_MAC_VER_53;
-+}
-+
-+static void rtl_read_mac_from_reg(struct rtl8169_private *tp, u8 *mac, int reg)
-+{
-+	int i;
-+
-+	for (i = 0; i < ETH_ALEN; i++)
-+		mac[i] = RTL_R8(tp, reg + i);
-+}
-+
-+struct rtl_cond {
-+	bool (*check)(struct rtl8169_private *);
-+	const char *msg;
-+};
-+
-+static bool rtl_loop_wait(struct rtl8169_private *tp, const struct rtl_cond *c,
-+			  unsigned long usecs, int n, bool high)
-+{
-+	int i;
-+
-+	for (i = 0; i < n; i++) {
-+		if (c->check(tp) == high)
-+			return true;
-+		udelay(usecs);
-+	}
-+
-+	dev_err(tp->dev, "%s == %d (loop: %d, delay: %lu).\n",
-+		   c->msg, !high, n, usecs);
-+	return false;
-+}
-+
-+static bool rtl_loop_wait_high(struct rtl8169_private *tp,
-+			       const struct rtl_cond *c,
-+			       unsigned long d, int n)
-+{
-+	return rtl_loop_wait(tp, c, d, n, true);
-+}
-+
-+static bool rtl_loop_wait_low(struct rtl8169_private *tp,
-+			      const struct rtl_cond *c,
-+			      unsigned long d, int n)
-+{
-+	return rtl_loop_wait(tp, c, d, n, false);
-+}
-+
-+#define DECLARE_RTL_COND(name)				\
-+static bool name ## _check(struct rtl8169_private *);	\
-+							\
-+static const struct rtl_cond name = {			\
-+	.check	= name ## _check,			\
-+	.msg	= #name					\
-+};							\
-+							\
-+static bool name ## _check(struct rtl8169_private *tp)
-+
-+static void r8168fp_adjust_ocp_cmd(struct rtl8169_private *tp, u32 *cmd, int type)
-+{
-+	/* based on RTL8168FP_OOBMAC_BASE in vendor driver */
-+	if (type == ERIAR_OOB &&
-+	    (tp->mac_version == RTL_GIGA_MAC_VER_52 ||
-+	     tp->mac_version == RTL_GIGA_MAC_VER_53))
-+		*cmd |= 0xf70 << 18;
-+}
-+
-+DECLARE_RTL_COND(rtl_eriar_cond)
-+{
-+	return RTL_R32(tp, ERIAR) & ERIAR_FLAG;
-+}
-+
-+static void _rtl_eri_write(struct rtl8169_private *tp, int addr, u32 mask,
-+			   u32 val, int type)
-+{
-+	u32 cmd = ERIAR_WRITE_CMD | type | mask | addr;
-+
-+	if (WARN(addr & 3 || !mask, "addr: 0x%x, mask: 0x%08x\n", addr, mask))
-+		return;
-+
-+	RTL_W32(tp, ERIDR, val);
-+	r8168fp_adjust_ocp_cmd(tp, &cmd, type);
-+	RTL_W32(tp, ERIAR, cmd);
-+
-+	rtl_loop_wait_low(tp, &rtl_eriar_cond, 100, 100);
-+}
-+
-+static void rtl_eri_write(struct rtl8169_private *tp, int addr, u32 mask,
-+			  u32 val)
-+{
-+	_rtl_eri_write(tp, addr, mask, val, ERIAR_EXGMAC);
-+}
-+
-+static u32 _rtl_eri_read(struct rtl8169_private *tp, int addr, int type)
-+{
-+	u32 cmd = ERIAR_READ_CMD | type | ERIAR_MASK_1111 | addr;
-+
-+	r8168fp_adjust_ocp_cmd(tp, &cmd, type);
-+	RTL_W32(tp, ERIAR, cmd);
-+
-+	return rtl_loop_wait_high(tp, &rtl_eriar_cond, 100, 100) ?
-+		RTL_R32(tp, ERIDR) : ~0;
-+}
-+
-+static u32 rtl_eri_read(struct rtl8169_private *tp, int addr)
-+{
-+	return _rtl_eri_read(tp, addr, ERIAR_EXGMAC);
-+}
-+
-+static void rtl_w0w1_eri(struct rtl8169_private *tp, int addr, u32 p, u32 m)
-+{
-+	u32 val = rtl_eri_read(tp, addr);
-+
-+	rtl_eri_write(tp, addr, ERIAR_MASK_1111, (val & ~m) | p);
-+}
-+
-+static void rtl_eri_set_bits(struct rtl8169_private *tp, int addr, u32 p)
-+{
-+	rtl_w0w1_eri(tp, addr, p, 0);
-+}
-+
-+static void rtl_eri_clear_bits(struct rtl8169_private *tp, int addr, u32 m)
-+{
-+	rtl_w0w1_eri(tp, addr, 0, m);
-+}
-+
-+static bool rtl_ocp_reg_failure(u32 reg)
-+{
-+	return WARN_ONCE(reg & 0xffff0001, "Invalid ocp reg %x!\n", reg);
-+}
-+
-+DECLARE_RTL_COND(rtl_ocp_gphy_cond)
-+{
-+	return RTL_R32(tp, GPHY_OCP) & OCPAR_FLAG;
-+}
-+
-+static void r8168_phy_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
-+{
-+	if (rtl_ocp_reg_failure(reg))
-+		return;
-+
-+	RTL_W32(tp, GPHY_OCP, OCPAR_FLAG | (reg << 15) | data);
-+
-+	rtl_loop_wait_low(tp, &rtl_ocp_gphy_cond, 25, 10);
-+}
-+
-+static int r8168_phy_ocp_read(struct rtl8169_private *tp, u32 reg)
-+{
-+	if (rtl_ocp_reg_failure(reg))
++	if (bank->iomux[iomux_num].type & IOMUX_GPIO_ONLY)
 +		return 0;
 +
-+	RTL_W32(tp, GPHY_OCP, reg << 15);
-+
-+	return rtl_loop_wait_high(tp, &rtl_ocp_gphy_cond, 25, 10) ?
-+		(RTL_R32(tp, GPHY_OCP) & 0xffff) : -ETIMEDOUT;
-+}
-+
-+static void r8168_mac_ocp_write(struct rtl8169_private *tp, u32 reg, u32 data)
-+{
-+	if (rtl_ocp_reg_failure(reg))
-+		return;
-+
-+	RTL_W32(tp, OCPDR, OCPAR_FLAG | (reg << 15) | data);
-+}
-+
-+static u16 r8168_mac_ocp_read(struct rtl8169_private *tp, u32 reg)
-+{
-+	if (rtl_ocp_reg_failure(reg))
-+		return 0;
-+
-+	RTL_W32(tp, OCPDR, reg << 15);
-+
-+	return RTL_R32(tp, OCPDR);
-+}
-+
-+static void r8168_mac_ocp_modify(struct rtl8169_private *tp, u32 reg, u16 mask,
-+				 u16 set)
-+{
-+	u16 data = r8168_mac_ocp_read(tp, reg);
-+
-+	r8168_mac_ocp_write(tp, reg, (data & ~mask) | set);
-+}
-+
-+/* Work around a hw issue with RTL8168g PHY, the quirk disables
-+ * PHY MCU interrupts before PHY power-down.
-+ */
-+static void rtl8168g_phy_suspend_quirk(struct rtl8169_private *tp, int value)
-+{
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_40:
-+		if (value & BMCR_RESET || !(value & BMCR_PDOWN))
-+			rtl_eri_set_bits(tp, 0x1a8, 0xfc000000);
-+		else
-+			rtl_eri_clear_bits(tp, 0x1a8, 0xfc000000);
-+		break;
-+	default:
-+		break;
-+	}
-+};
-+
-+static void r8168g_mdio_write(struct rtl8169_private *tp, int reg, int value)
-+{
-+	if (reg == 0x1f) {
-+		tp->ocp_base = value ? value << 4 : OCP_STD_PHY_BASE;
-+		return;
-+	}
-+
-+	if (tp->ocp_base != OCP_STD_PHY_BASE)
-+		reg -= 0x10;
-+
-+	if (tp->ocp_base == OCP_STD_PHY_BASE && reg == MII_BMCR)
-+		rtl8168g_phy_suspend_quirk(tp, value);
-+
-+	r8168_phy_ocp_write(tp, tp->ocp_base + reg * 2, value);
-+}
-+
-+static int r8168g_mdio_read(struct rtl8169_private *tp, int reg)
-+{
-+	if (reg == 0x1f)
-+		return tp->ocp_base == OCP_STD_PHY_BASE ? 0 : tp->ocp_base >> 4;
-+
-+	if (tp->ocp_base != OCP_STD_PHY_BASE)
-+		reg -= 0x10;
-+
-+	return r8168_phy_ocp_read(tp, tp->ocp_base + reg * 2);
-+}
-+
-+static void mac_mcu_write(struct rtl8169_private *tp, int reg, int value)
-+{
-+	if (reg == 0x1f) {
-+		tp->ocp_base = value << 4;
-+		return;
-+	}
-+
-+	r8168_mac_ocp_write(tp, tp->ocp_base + reg, value);
-+}
-+
-+static int mac_mcu_read(struct rtl8169_private *tp, int reg)
-+{
-+	return r8168_mac_ocp_read(tp, tp->ocp_base + reg);
-+}
-+
-+DECLARE_RTL_COND(rtl_phyar_cond)
-+{
-+	return RTL_R32(tp, PHYAR) & 0x80000000;
-+}
-+
-+static void r8169_mdio_write(struct rtl8169_private *tp, int reg, int value)
-+{
-+	RTL_W32(tp, PHYAR, 0x80000000 | (reg & 0x1f) << 16 | (value & 0xffff));
-+
-+	rtl_loop_wait_low(tp, &rtl_phyar_cond, 25, 20);
-+	/*
-+	 * According to hardware specs a 20us delay is required after write
-+	 * complete indication, but before sending next command.
-+	 */
-+	udelay(20);
-+}
-+
-+static int r8169_mdio_read(struct rtl8169_private *tp, int reg)
-+{
-+	int value;
-+
-+	RTL_W32(tp, PHYAR, 0x0 | (reg & 0x1f) << 16);
-+
-+	value = rtl_loop_wait_high(tp, &rtl_phyar_cond, 25, 20) ?
-+		RTL_R32(tp, PHYAR) & 0xffff : -ETIMEDOUT;
-+
-+	/*
-+	 * According to hardware specs a 20us delay is required after read
-+	 * complete indication, but before sending next command.
-+	 */
-+	udelay(20);
-+
-+	return value;
-+}
-+
-+DECLARE_RTL_COND(rtl_ocpar_cond)
-+{
-+	return RTL_R32(tp, OCPAR) & OCPAR_FLAG;
-+}
-+
-+#define R8168DP_1_MDIO_ACCESS_BIT	0x00020000
-+
-+static void r8168dp_2_mdio_start(struct rtl8169_private *tp)
-+{
-+	RTL_W32(tp, 0xd0, RTL_R32(tp, 0xd0) & ~R8168DP_1_MDIO_ACCESS_BIT);
-+}
-+
-+static void r8168dp_2_mdio_stop(struct rtl8169_private *tp)
-+{
-+	RTL_W32(tp, 0xd0, RTL_R32(tp, 0xd0) | R8168DP_1_MDIO_ACCESS_BIT);
-+}
-+
-+static void r8168dp_2_mdio_write(struct rtl8169_private *tp, int reg, int value)
-+{
-+	r8168dp_2_mdio_start(tp);
-+
-+	r8169_mdio_write(tp, reg, value);
-+
-+	r8168dp_2_mdio_stop(tp);
-+}
-+
-+static int r8168dp_2_mdio_read(struct rtl8169_private *tp, int reg)
-+{
-+	int value;
-+
-+	/* Work around issue with chip reporting wrong PHY ID */
-+	if (reg == MII_PHYSID2)
-+		return 0xc912;
-+
-+	r8168dp_2_mdio_start(tp);
-+
-+	value = r8169_mdio_read(tp, reg);
-+
-+	r8168dp_2_mdio_stop(tp);
-+
-+	return value;
-+}
-+
-+static void rtl_writephy(struct rtl8169_private *tp, int location, int val)
-+{
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_28:
-+	case RTL_GIGA_MAC_VER_31:
-+		r8168dp_2_mdio_write(tp, location, val);
-+		break;
-+	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_63:
-+		r8168g_mdio_write(tp, location, val);
-+		break;
-+	default:
-+		r8169_mdio_write(tp, location, val);
-+		break;
-+	}
-+}
-+
-+static int rtl_readphy(struct rtl8169_private *tp, int location)
-+{
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_28:
-+	case RTL_GIGA_MAC_VER_31:
-+		return r8168dp_2_mdio_read(tp, location);
-+	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_63:
-+		return r8168g_mdio_read(tp, location);
-+	default:
-+		return r8169_mdio_read(tp, location);
-+	}
-+}
-+
-+DECLARE_RTL_COND(rtl_ephyar_cond)
-+{
-+	return RTL_R32(tp, EPHYAR) & EPHYAR_FLAG;
-+}
-+
-+static void rtl_ephy_write(struct rtl8169_private *tp, int reg_addr, int value)
-+{
-+	RTL_W32(tp, EPHYAR, EPHYAR_WRITE_CMD | (value & EPHYAR_DATA_MASK) |
-+		(reg_addr & EPHYAR_REG_MASK) << EPHYAR_REG_SHIFT);
-+
-+	rtl_loop_wait_low(tp, &rtl_ephyar_cond, 10, 100);
-+
-+	udelay(10);
-+}
-+
-+static u16 rtl_ephy_read(struct rtl8169_private *tp, int reg_addr)
-+{
-+	RTL_W32(tp, EPHYAR, (reg_addr & EPHYAR_REG_MASK) << EPHYAR_REG_SHIFT);
-+
-+	return rtl_loop_wait_high(tp, &rtl_ephyar_cond, 10, 100) ?
-+		RTL_R32(tp, EPHYAR) & EPHYAR_DATA_MASK : ~0;
-+}
-+
-+static u32 r8168dp_ocp_read(struct rtl8169_private *tp, u16 reg)
-+{
-+	RTL_W32(tp, OCPAR, 0x0fu << 12 | (reg & 0x0fff));
-+	return rtl_loop_wait_high(tp, &rtl_ocpar_cond, 100, 20) ?
-+		RTL_R32(tp, OCPDR) : ~0;
-+}
-+
-+static u32 r8168ep_ocp_read(struct rtl8169_private *tp, u16 reg)
-+{
-+	return _rtl_eri_read(tp, reg, ERIAR_OOB);
-+}
-+
-+static void r8168dp_ocp_write(struct rtl8169_private *tp, u8 mask, u16 reg,
-+			      u32 data)
-+{
-+	RTL_W32(tp, OCPDR, data);
-+	RTL_W32(tp, OCPAR, OCPAR_FLAG | ((u32)mask & 0x0f) << 12 | (reg & 0x0fff));
-+	rtl_loop_wait_low(tp, &rtl_ocpar_cond, 100, 20);
-+}
-+
-+static void r8168ep_ocp_write(struct rtl8169_private *tp, u8 mask, u16 reg,
-+			      u32 data)
-+{
-+	_rtl_eri_write(tp, reg, ((u32)mask & 0x0f) << ERIAR_MASK_SHIFT,
-+		       data, ERIAR_OOB);
-+}
-+
-+static void r8168dp_oob_notify(struct rtl8169_private *tp, u8 cmd)
-+{
-+	rtl_eri_write(tp, 0xe8, ERIAR_MASK_0001, cmd);
-+
-+	r8168dp_ocp_write(tp, 0x1, 0x30, 0x00000001);
-+}
-+
-+#define OOB_CMD_RESET		0x00
-+#define OOB_CMD_DRIVER_START	0x05
-+#define OOB_CMD_DRIVER_STOP	0x06
-+
-+static u16 rtl8168_get_ocp_reg(struct rtl8169_private *tp)
-+{
-+	return (tp->mac_version == RTL_GIGA_MAC_VER_31) ? 0xb8 : 0x10;
-+}
-+
-+DECLARE_RTL_COND(rtl_dp_ocp_read_cond)
-+{
-+	u16 reg;
-+
-+	reg = rtl8168_get_ocp_reg(tp);
-+
-+	return r8168dp_ocp_read(tp, reg) & 0x00000800;
-+}
-+
-+DECLARE_RTL_COND(rtl_ep_ocp_read_cond)
-+{
-+	return r8168ep_ocp_read(tp, 0x124) & 0x00000001;
-+}
-+
-+DECLARE_RTL_COND(rtl_ocp_tx_cond)
-+{
-+	return RTL_R8(tp, IBISR0) & 0x20;
-+}
-+
-+static void rtl8168ep_stop_cmac(struct rtl8169_private *tp)
-+{
-+	RTL_W8(tp, IBCR2, RTL_R8(tp, IBCR2) & ~0x01);
-+	rtl_loop_wait_high(tp, &rtl_ocp_tx_cond, 50000, 2000);
-+	RTL_W8(tp, IBISR0, RTL_R8(tp, IBISR0) | 0x20);
-+	RTL_W8(tp, IBCR0, RTL_R8(tp, IBCR0) & ~0x01);
-+}
-+
-+static void rtl8168dp_driver_start(struct rtl8169_private *tp)
-+{
-+	r8168dp_oob_notify(tp, OOB_CMD_DRIVER_START);
-+	rtl_loop_wait_high(tp, &rtl_dp_ocp_read_cond, 10000, 10);
-+}
-+
-+static void rtl8168ep_driver_start(struct rtl8169_private *tp)
-+{
-+	r8168ep_ocp_write(tp, 0x01, 0x180, OOB_CMD_DRIVER_START);
-+	r8168ep_ocp_write(tp, 0x01, 0x30, r8168ep_ocp_read(tp, 0x30) | 0x01);
-+	rtl_loop_wait_high(tp, &rtl_ep_ocp_read_cond, 10000, 10);
-+}
-+
-+static void rtl8168_driver_start(struct rtl8169_private *tp)
-+{
-+	if (tp->dash_type == RTL_DASH_DP)
-+		rtl8168dp_driver_start(tp);
++	dev_dbg(dev, "setting mux of GPIO%d-%d to %d\n", bank->bank_num, pin, mux);
++
++	if (bank->iomux[iomux_num].type & IOMUX_SOURCE_PMU)
++		regmap = info->regmap_pmu;
++	else if (bank->iomux[iomux_num].type & IOMUX_L_SOURCE_PMU)
++		regmap = (pin % 8 < 4) ? info->regmap_pmu : info->regmap_base;
 +	else
-+		rtl8168ep_driver_start(tp);
-+}
-+
-+static bool r8168dp_check_dash(struct rtl8169_private *tp)
-+{
-+	u16 reg = rtl8168_get_ocp_reg(tp);
-+
-+	return r8168dp_ocp_read(tp, reg) & BIT(15);
-+}
-+
-+static bool r8168ep_check_dash(struct rtl8169_private *tp)
-+{
-+	return r8168ep_ocp_read(tp, 0x128) & BIT(0);
-+}
-+
-+static enum rtl_dash_type rtl_check_dash(struct rtl8169_private *tp)
-+{
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_28:
-+	case RTL_GIGA_MAC_VER_31:
-+		return r8168dp_check_dash(tp) ? RTL_DASH_DP : RTL_DASH_NONE;
-+	case RTL_GIGA_MAC_VER_51 ... RTL_GIGA_MAC_VER_53:
-+		return r8168ep_check_dash(tp) ? RTL_DASH_EP : RTL_DASH_NONE;
-+	default:
-+		return RTL_DASH_NONE;
-+	}
-+}
-+
-+static void rtl_set_d3_pll_down(struct rtl8169_private *tp, bool enable)
-+{
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_25 ... RTL_GIGA_MAC_VER_26:
-+	case RTL_GIGA_MAC_VER_29 ... RTL_GIGA_MAC_VER_30:
-+	case RTL_GIGA_MAC_VER_32 ... RTL_GIGA_MAC_VER_37:
-+	case RTL_GIGA_MAC_VER_39 ... RTL_GIGA_MAC_VER_63:
-+		if (enable)
-+			RTL_W8(tp, PMCH, RTL_R8(tp, PMCH) & ~D3_NO_PLL_DOWN);
-+		else
-+			RTL_W8(tp, PMCH, RTL_R8(tp, PMCH) | D3_NO_PLL_DOWN);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static void rtl_reset_packet_filter(struct rtl8169_private *tp)
-+{
-+	rtl_eri_clear_bits(tp, 0xdc, BIT(0));
-+	rtl_eri_set_bits(tp, 0xdc, BIT(0));
-+}
-+
-+DECLARE_RTL_COND(rtl_efusear_cond)
-+{
-+	return RTL_R32(tp, EFUSEAR) & EFUSEAR_FLAG;
-+}
-+
-+u8 rtl8168d_efuse_read(struct rtl8169_private *tp, int reg_addr)
-+{
-+	RTL_W32(tp, EFUSEAR, (reg_addr & EFUSEAR_REG_MASK) << EFUSEAR_REG_SHIFT);
-+
-+	return rtl_loop_wait_high(tp, &rtl_efusear_cond, 100, 300) ?
-+		RTL_R32(tp, EFUSEAR) & EFUSEAR_DATA_MASK : ~0;
-+}
-+
-+static void rtl_link_chg_patch(struct rtl8169_private *tp)
-+{
-+	struct phy_device *phydev = tp->phydev;
-+
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_34 ||
-+	    tp->mac_version == RTL_GIGA_MAC_VER_38) {
-+		if (phydev->speed == SPEED_1000) {
-+			rtl_eri_write(tp, 0x1bc, ERIAR_MASK_1111, 0x00000011);
-+			rtl_eri_write(tp, 0x1dc, ERIAR_MASK_1111, 0x00000005);
-+		} else if (phydev->speed == SPEED_100) {
-+			rtl_eri_write(tp, 0x1bc, ERIAR_MASK_1111, 0x0000001f);
-+			rtl_eri_write(tp, 0x1dc, ERIAR_MASK_1111, 0x00000005);
-+		} else {
-+			rtl_eri_write(tp, 0x1bc, ERIAR_MASK_1111, 0x0000001f);
-+			rtl_eri_write(tp, 0x1dc, ERIAR_MASK_1111, 0x0000003f);
-+		}
-+		rtl_reset_packet_filter(tp);
-+	} else if (tp->mac_version == RTL_GIGA_MAC_VER_35 ||
-+		   tp->mac_version == RTL_GIGA_MAC_VER_36) {
-+		if (phydev->speed == SPEED_1000) {
-+			rtl_eri_write(tp, 0x1bc, ERIAR_MASK_1111, 0x00000011);
-+			rtl_eri_write(tp, 0x1dc, ERIAR_MASK_1111, 0x00000005);
-+		} else {
-+			rtl_eri_write(tp, 0x1bc, ERIAR_MASK_1111, 0x0000001f);
-+			rtl_eri_write(tp, 0x1dc, ERIAR_MASK_1111, 0x0000003f);
-+		}
-+	} else if (tp->mac_version == RTL_GIGA_MAC_VER_37) {
-+		if (phydev->speed == SPEED_10) {
-+			rtl_eri_write(tp, 0x1d0, ERIAR_MASK_0011, 0x4d02);
-+			rtl_eri_write(tp, 0x1dc, ERIAR_MASK_0011, 0x0060a);
-+		} else {
-+			rtl_eri_write(tp, 0x1d0, ERIAR_MASK_0011, 0x0000);
-+		}
-+	}
-+}
-+
-+static enum mac_version rtl8169_get_mac_version(u16 xid, bool gmii)
-+{
-+	/*
-+	 * The driver currently handles the 8168Bf and the 8168Be identically
-+	 * but they can be identified more specifically through the test below
-+	 * if needed:
-+	 *
-+	 * (RTL_R32(tp, TxConfig) & 0x700000) == 0x500000 ? 8168Bf : 8168Be
-+	 *
-+	 * Same thing for the 8101Eb and the 8101Ec:
-+	 *
-+	 * (RTL_R32(tp, TxConfig) & 0x700000) == 0x200000 ? 8101Eb : 8101Ec
-+	 */
-+	static const struct rtl_mac_info {
-+		u16 mask;
-+		u16 val;
-+		enum mac_version ver;
-+	} mac_info[] = {
-+		/* 8125B family. */
-+		{ 0x7cf, 0x641,	RTL_GIGA_MAC_VER_63 },
-+
-+		/* 8125A family. */
-+		{ 0x7cf, 0x609,	RTL_GIGA_MAC_VER_61 },
-+		/* It seems only XID 609 made it to the mass market.
-+		 * { 0x7cf, 0x608,	RTL_GIGA_MAC_VER_60 },
-+		 * { 0x7c8, 0x608,	RTL_GIGA_MAC_VER_61 },
-+		 */
-+
-+		/* RTL8117 */
-+		{ 0x7cf, 0x54b,	RTL_GIGA_MAC_VER_53 },
-+		{ 0x7cf, 0x54a,	RTL_GIGA_MAC_VER_52 },
-+
-+		/* 8168EP family. */
-+		{ 0x7cf, 0x502,	RTL_GIGA_MAC_VER_51 },
-+		/* It seems this chip version never made it to
-+		 * the wild. Let's disable detection.
-+		 * { 0x7cf, 0x501,      RTL_GIGA_MAC_VER_50 },
-+		 * { 0x7cf, 0x500,      RTL_GIGA_MAC_VER_49 },
-+		 */
-+
-+		/* 8168H family. */
-+		{ 0x7cf, 0x541,	RTL_GIGA_MAC_VER_46 },
-+		/* It seems this chip version never made it to
-+		 * the wild. Let's disable detection.
-+		 * { 0x7cf, 0x540,	RTL_GIGA_MAC_VER_45 },
-+		 */
-+
-+		/* 8168G family. */
-+		{ 0x7cf, 0x5c8,	RTL_GIGA_MAC_VER_44 },
-+		{ 0x7cf, 0x509,	RTL_GIGA_MAC_VER_42 },
-+		/* It seems this chip version never made it to
-+		 * the wild. Let's disable detection.
-+		 * { 0x7cf, 0x4c1,	RTL_GIGA_MAC_VER_41 },
-+		 */
-+		{ 0x7cf, 0x4c0,	RTL_GIGA_MAC_VER_40 },
-+
-+		/* 8168F family. */
-+		{ 0x7c8, 0x488,	RTL_GIGA_MAC_VER_38 },
-+		{ 0x7cf, 0x481,	RTL_GIGA_MAC_VER_36 },
-+		{ 0x7cf, 0x480,	RTL_GIGA_MAC_VER_35 },
-+
-+		/* 8168E family. */
-+		{ 0x7c8, 0x2c8,	RTL_GIGA_MAC_VER_34 },
-+		{ 0x7cf, 0x2c1,	RTL_GIGA_MAC_VER_32 },
-+		{ 0x7c8, 0x2c0,	RTL_GIGA_MAC_VER_33 },
-+
-+		/* 8168D family. */
-+		{ 0x7cf, 0x281,	RTL_GIGA_MAC_VER_25 },
-+		{ 0x7c8, 0x280,	RTL_GIGA_MAC_VER_26 },
-+
-+		/* 8168DP family. */
-+		/* It seems this early RTL8168dp version never made it to
-+		 * the wild. Support has been removed.
-+		 * { 0x7cf, 0x288,      RTL_GIGA_MAC_VER_27 },
-+		 */
-+		{ 0x7cf, 0x28a,	RTL_GIGA_MAC_VER_28 },
-+		{ 0x7cf, 0x28b,	RTL_GIGA_MAC_VER_31 },
-+
-+		/* 8168C family. */
-+		{ 0x7cf, 0x3c9,	RTL_GIGA_MAC_VER_23 },
-+		{ 0x7cf, 0x3c8,	RTL_GIGA_MAC_VER_18 },
-+		{ 0x7c8, 0x3c8,	RTL_GIGA_MAC_VER_24 },
-+		{ 0x7cf, 0x3c0,	RTL_GIGA_MAC_VER_19 },
-+		{ 0x7cf, 0x3c2,	RTL_GIGA_MAC_VER_20 },
-+		{ 0x7cf, 0x3c3,	RTL_GIGA_MAC_VER_21 },
-+		{ 0x7c8, 0x3c0,	RTL_GIGA_MAC_VER_22 },
-+
-+		/* 8168B family. */
-+		{ 0x7c8, 0x380,	RTL_GIGA_MAC_VER_17 },
-+		{ 0x7c8, 0x300,	RTL_GIGA_MAC_VER_11 },
-+
-+		/* 8101 family. */
-+		{ 0x7c8, 0x448,	RTL_GIGA_MAC_VER_39 },
-+		{ 0x7c8, 0x440,	RTL_GIGA_MAC_VER_37 },
-+		{ 0x7cf, 0x409,	RTL_GIGA_MAC_VER_29 },
-+		{ 0x7c8, 0x408,	RTL_GIGA_MAC_VER_30 },
-+		{ 0x7cf, 0x349,	RTL_GIGA_MAC_VER_08 },
-+		{ 0x7cf, 0x249,	RTL_GIGA_MAC_VER_08 },
-+		{ 0x7cf, 0x348,	RTL_GIGA_MAC_VER_07 },
-+		{ 0x7cf, 0x248,	RTL_GIGA_MAC_VER_07 },
-+		{ 0x7cf, 0x240,	RTL_GIGA_MAC_VER_14 },
-+		{ 0x7c8, 0x348,	RTL_GIGA_MAC_VER_09 },
-+		{ 0x7c8, 0x248,	RTL_GIGA_MAC_VER_09 },
-+		{ 0x7c8, 0x340,	RTL_GIGA_MAC_VER_10 },
-+
-+		/* 8110 family. */
-+		{ 0xfc8, 0x980,	RTL_GIGA_MAC_VER_06 },
-+		{ 0xfc8, 0x180,	RTL_GIGA_MAC_VER_05 },
-+		{ 0xfc8, 0x100,	RTL_GIGA_MAC_VER_04 },
-+		{ 0xfc8, 0x040,	RTL_GIGA_MAC_VER_03 },
-+		{ 0xfc8, 0x008,	RTL_GIGA_MAC_VER_02 },
-+
-+		/* Catch-all */
-+		{ 0x000, 0x000,	RTL_GIGA_MAC_NONE   }
-+	};
-+	const struct rtl_mac_info *p = mac_info;
-+	enum mac_version ver;
-+
-+	while ((xid & p->mask) != p->val)
-+		p++;
-+	ver = p->ver;
-+
-+	if (ver != RTL_GIGA_MAC_NONE && !gmii) {
-+		if (ver == RTL_GIGA_MAC_VER_42)
-+			ver = RTL_GIGA_MAC_VER_43;
-+		else if (ver == RTL_GIGA_MAC_VER_46)
-+			ver = RTL_GIGA_MAC_VER_48;
-+	}
-+
-+	return ver;
-+}
-+
-+void r8169_apply_firmware(struct rtl8169_private *tp)
-+{
-+	int val;
-+	u64 start;
-+
-+	/* TODO: release firmware if rtl_fw_write_firmware signals failure. */
-+	if (tp->rtl_fw) {
-+		rtl_fw_write_firmware(tp, tp->rtl_fw);
-+		/* At least one firmware doesn't reset tp->ocp_base. */
-+		tp->ocp_base = OCP_STD_PHY_BASE;
-+
-+		/* PHY soft reset may still be in progress */
-+		start = get_time_ns();
-+		while (is_timeout(start, SECOND)) {
-+			val = phy_read(tp->phydev, MII_BMCR);
-+			if (!(val & BMCR_RESET))
-+				return;
-+		}
-+	}
-+}
-+
-+static void rtl_rar_exgmac_set(struct rtl8169_private *tp, const u8 *addr)
-+{
-+	rtl_eri_write(tp, 0xe0, ERIAR_MASK_1111, get_unaligned_le32(addr));
-+	rtl_eri_write(tp, 0xe4, ERIAR_MASK_1111, get_unaligned_le16(addr + 4));
-+	rtl_eri_write(tp, 0xf0, ERIAR_MASK_1111, get_unaligned_le16(addr) << 16);
-+	rtl_eri_write(tp, 0xf4, ERIAR_MASK_1111, get_unaligned_le32(addr + 2));
-+}
-+
-+u16 rtl8168h_2_get_adc_bias_ioffset(struct rtl8169_private *tp)
-+{
-+	u16 data1, data2, ioffset;
-+
-+	r8168_mac_ocp_write(tp, 0xdd02, 0x807d);
-+	data1 = r8168_mac_ocp_read(tp, 0xdd02);
-+	data2 = r8168_mac_ocp_read(tp, 0xdd00);
-+
-+	ioffset = (data2 >> 1) & 0x7ff8;
-+	ioffset |= data2 & 0x0007;
-+	if (data1 & BIT(7))
-+		ioffset |= BIT(15);
-+
-+	return ioffset;
-+}
-+
-+static void rtl8169_init_phy(struct rtl8169_private *tp)
-+{
-+	r8169_hw_phy_config(tp, tp->phydev, tp->mac_version);
-+
-+	if (tp->mac_version <= RTL_GIGA_MAC_VER_06) {
-+		pci_write_config_byte(tp->pci_dev, PCI_LATENCY_TIMER, 0x40);
-+		pci_write_config_byte(tp->pci_dev, PCI_CACHE_LINE_SIZE, 0x08);
-+		/* set undocumented MAC Reg C+CR Offset 0x82h */
-+		RTL_W8(tp, 0x82, 0x01);
-+	}
-+}
-+
-+static void rtl_rar_set(struct rtl8169_private *tp, const u8 *addr)
-+{
-+	rtl_unlock_config_regs(tp);
-+
-+	RTL_W32(tp, MAC4, get_unaligned_le16(addr + 4));
-+	rtl_pci_commit(tp);
-+
-+	RTL_W32(tp, MAC0, get_unaligned_le32(addr));
-+	rtl_pci_commit(tp);
-+
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_34)
-+		rtl_rar_exgmac_set(tp, addr);
-+
-+	rtl_lock_config_regs(tp);
-+}
-+
-+static void rtl_init_rxcfg(struct rtl8169_private *tp)
-+{
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_02 ... RTL_GIGA_MAC_VER_06:
-+	case RTL_GIGA_MAC_VER_10 ... RTL_GIGA_MAC_VER_17:
-+		RTL_W32(tp, RxConfig, RX_FIFO_THRESH | RX_DMA_BURST);
-+		break;
-+	case RTL_GIGA_MAC_VER_18 ... RTL_GIGA_MAC_VER_24:
-+	case RTL_GIGA_MAC_VER_34 ... RTL_GIGA_MAC_VER_36:
-+	case RTL_GIGA_MAC_VER_38:
-+		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST);
-+		break;
-+	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
-+		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_MULTI_EN | RX_DMA_BURST | RX_EARLY_OFF);
-+		break;
-+	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-+		RTL_W32(tp, RxConfig, RX_FETCH_DFLT_8125 | RX_DMA_BURST);
-+		break;
-+	default:
-+		RTL_W32(tp, RxConfig, RX128_INT_EN | RX_DMA_BURST);
-+		break;
-+	}
-+}
-+
-+DECLARE_RTL_COND(rtl_chipcmd_cond)
-+{
-+	return RTL_R8(tp, ChipCmd) & CmdReset;
-+}
-+
-+static void rtl_hw_reset(struct rtl8169_private *tp)
-+{
-+	RTL_W8(tp, ChipCmd, CmdReset);
-+
-+	rtl_loop_wait_low(tp, &rtl_chipcmd_cond, 100, 100);
-+}
-+
-+static void rtl_request_firmware(struct rtl8169_private *tp)
-+{
-+	struct rtl_fw *rtl_fw;
-+
-+	/* firmware loaded already or no firmware available */
-+	if (tp->rtl_fw || !tp->fw_name)
-+		return;
-+
-+	rtl_fw = kzalloc(sizeof(*rtl_fw), GFP_KERNEL);
-+	if (!rtl_fw)
-+		return;
-+
-+	rtl_fw->phy_write = rtl_writephy;
-+	rtl_fw->phy_read = rtl_readphy;
-+	rtl_fw->mac_mcu_write = mac_mcu_write;
-+	rtl_fw->mac_mcu_read = mac_mcu_read;
-+	rtl_fw->fw_name = tp->fw_name;
-+	rtl_fw->dev = tp_to_dev(tp);
-+
-+	if (rtl_fw_request_firmware(rtl_fw))
-+		kfree(rtl_fw);
-+	else
-+		tp->rtl_fw = rtl_fw;
-+}
-+
-+static void rtl_rx_close(struct rtl8169_private *tp)
-+{
-+	RTL_W32(tp, RxConfig, RTL_R32(tp, RxConfig) & ~RX_CONFIG_ACCEPT_MASK);
-+}
-+
-+DECLARE_RTL_COND(rtl_npq_cond)
-+{
-+	return RTL_R8(tp, TxPoll) & NPQ;
-+}
-+
-+DECLARE_RTL_COND(rtl_txcfg_empty_cond)
-+{
-+	return RTL_R32(tp, TxConfig) & TXCFG_EMPTY;
-+}
-+
-+DECLARE_RTL_COND(rtl_rxtx_empty_cond)
-+{
-+	return (RTL_R8(tp, MCU) & RXTX_EMPTY) == RXTX_EMPTY;
-+}
-+
-+DECLARE_RTL_COND(rtl_rxtx_empty_cond_2)
-+{
-+	/* IntrMitigate has new functionality on RTL8125 */
-+	return (RTL_R16(tp, IntrMitigate) & 0x0103) == 0x0103;
-+}
-+
-+static void rtl_wait_txrx_fifo_empty(struct rtl8169_private *tp)
-+{
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_53:
-+		rtl_loop_wait_high(tp, &rtl_txcfg_empty_cond, 100, 42);
-+		rtl_loop_wait_high(tp, &rtl_rxtx_empty_cond, 100, 42);
-+		break;
-+	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_61:
-+		rtl_loop_wait_high(tp, &rtl_rxtx_empty_cond, 100, 42);
-+		break;
-+	case RTL_GIGA_MAC_VER_63:
-+		RTL_W8(tp, ChipCmd, RTL_R8(tp, ChipCmd) | StopReq);
-+		rtl_loop_wait_high(tp, &rtl_rxtx_empty_cond, 100, 42);
-+		rtl_loop_wait_high(tp, &rtl_rxtx_empty_cond_2, 100, 42);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static void rtl_disable_rxdvgate(struct rtl8169_private *tp)
-+{
-+	RTL_W32(tp, MISC, RTL_R32(tp, MISC) & ~RXDV_GATED_EN);
-+}
-+
-+static void rtl_enable_rxdvgate(struct rtl8169_private *tp)
-+{
-+	RTL_W32(tp, MISC, RTL_R32(tp, MISC) | RXDV_GATED_EN);
-+	udelay(2000);
-+	rtl_wait_txrx_fifo_empty(tp);
-+}
-+
-+static void rtl_set_tx_config_registers(struct rtl8169_private *tp)
-+{
-+	u32 val = TX_DMA_BURST << TxDMAShift |
-+		  InterFrameGap << TxInterFrameGapShift;
-+
-+	if (rtl_is_8168evl_up(tp))
-+		val |= TXCFG_AUTO_FIFO;
-+
-+	RTL_W32(tp, TxConfig, val);
-+}
-+
-+static void rtl_set_rx_max_size(struct rtl8169_private *tp)
-+{
-+	/* Low hurts. Let's disable the filtering. */
-+	RTL_W16(tp, RxMaxSize, R8169_RX_BUF_SIZE + 1);
-+}
-+
-+static void rtl_set_rx_tx_desc_registers(struct rtl8169_private *tp)
-+{
-+	/*
-+	 * Magic spell: some iop3xx ARM board needs the TxDescAddrHigh
-+	 * register to be written before TxDescAddrLow to work.
-+	 * Switching from MMIO to I/O access fixes the issue as well.
-+	 */
-+	RTL_W32(tp, TxDescStartAddrHigh, ((u64) tp->TxPhyAddr) >> 32);
-+	RTL_W32(tp, TxDescStartAddrLow, ((u64) tp->TxPhyAddr) & DMA_BIT_MASK(32));
-+	RTL_W32(tp, RxDescAddrHigh, ((u64) tp->RxPhyAddr) >> 32);
-+	RTL_W32(tp, RxDescAddrLow, ((u64) tp->RxPhyAddr) & DMA_BIT_MASK(32));
-+}
-+
-+static void rtl8169_set_magic_reg(struct rtl8169_private *tp)
-+{
-+	u32 val;
-+
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_05)
-+		val = 0x000fff00;
-+	else if (tp->mac_version == RTL_GIGA_MAC_VER_06)
-+		val = 0x00ffff00;
-+	else
-+		return;
-+
-+	if (RTL_R8(tp, Config2) & PCI_Clock_66MHz)
-+		val |= 0xff;
-+
-+	RTL_W32(tp, 0x7c, val);
-+}
-+
-+static void rtl_set_rx_mode(struct  rtl8169_private *tp)
-+{
-+	u32 rx_mode = AcceptBroadcast | AcceptMyPhys | AcceptMulticast;
-+	/* Multicast hash filter */
-+	u32 mc_filter[2] = { 0xffffffff, 0xffffffff };
-+	u32 tmp;
-+
-+	RTL_W32(tp, MAR0 + 4, mc_filter[1]);
-+	RTL_W32(tp, MAR0 + 0, mc_filter[0]);
-+
-+	tmp = RTL_R32(tp, RxConfig);
-+	RTL_W32(tp, RxConfig, (tmp & ~RX_CONFIG_ACCEPT_OK_MASK) | rx_mode);
-+}
-+
-+DECLARE_RTL_COND(rtl_csiar_cond)
-+{
-+	return RTL_R32(tp, CSIAR) & CSIAR_FLAG;
-+}
-+
-+static void rtl_csi_write(struct rtl8169_private *tp, int addr, int value)
-+{
-+	u32 func = PCI_FUNC(tp->pci_dev->devfn);
-+
-+	RTL_W32(tp, CSIDR, value);
-+	RTL_W32(tp, CSIAR, CSIAR_WRITE_CMD | (addr & CSIAR_ADDR_MASK) |
-+		CSIAR_BYTE_ENABLE | func << 16);
-+
-+	rtl_loop_wait_low(tp, &rtl_csiar_cond, 10, 100);
-+}
-+
-+static u32 rtl_csi_read(struct rtl8169_private *tp, int addr)
-+{
-+	u32 func = PCI_FUNC(tp->pci_dev->devfn);
-+
-+	RTL_W32(tp, CSIAR, (addr & CSIAR_ADDR_MASK) | func << 16 |
-+		CSIAR_BYTE_ENABLE);
-+
-+	return rtl_loop_wait_high(tp, &rtl_csiar_cond, 10, 100) ?
-+		RTL_R32(tp, CSIDR) : ~0;
-+}
-+
-+static void rtl_set_aspm_entry_latency(struct rtl8169_private *tp, u8 val)
-+{
-+	struct pci_dev *pdev = tp->pci_dev;
-+	u32 csi;
-+
-+	/* According to Realtek the value at config space address 0x070f
-+	 * controls the L0s/L1 entrance latency. We try standard ECAM access
-+	 * first and if it fails fall back to CSI.
-+	 * bit 0..2: L0: 0 = 1us, 1 = 2us .. 6 = 7us, 7 = 7us (no typo)
-+	 * bit 3..5: L1: 0 = 1us, 1 = 2us .. 6 = 64us, 7 = 64us
-+	 */
-+	if (pci_write_config_byte(pdev, 0x070f, val) == PCIBIOS_SUCCESSFUL)
-+		return;
-+
-+	dev_dbg(tp->dev,
-+		"No native access to PCI extended config space, falling back to CSI\n");
-+	csi = rtl_csi_read(tp, 0x070c) & 0x00ffffff;
-+	rtl_csi_write(tp, 0x070c, csi | val << 24);
-+}
-+
-+static void rtl_set_def_aspm_entry_latency(struct rtl8169_private *tp)
-+{
-+	/* L0 7us, L1 16us */
-+	rtl_set_aspm_entry_latency(tp, 0x27);
-+}
-+
-+struct ephy_info {
-+	unsigned int offset;
-+	u16 mask;
-+	u16 bits;
-+};
-+
-+static void __rtl_ephy_init(struct rtl8169_private *tp,
-+			    const struct ephy_info *e, int len)
-+{
-+	u16 w;
-+
-+	while (len-- > 0) {
-+		w = (rtl_ephy_read(tp, e->offset) & ~e->mask) | e->bits;
-+		rtl_ephy_write(tp, e->offset, w);
-+		e++;
-+	}
-+}
-+
-+#define rtl_ephy_init(tp, a) __rtl_ephy_init(tp, a, ARRAY_SIZE(a))
-+
-+static void rtl_disable_clock_request(struct rtl8169_private *tp)
-+{
-+	/* Not yet implemented */
-+}
-+
-+static void rtl_enable_clock_request(struct rtl8169_private *tp)
-+{
-+	/* Not yet implemented */
-+}
-+
-+static void rtl_pcie_state_l2l3_disable(struct rtl8169_private *tp)
-+{
-+	/* work around an issue when PCI reset occurs during L2/L3 state */
-+	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Rdy_to_L23);
-+}
-+
-+static void rtl_enable_exit_l1(struct rtl8169_private *tp)
-+{
-+	/* Bits control which events trigger ASPM L1 exit:
-+	 * Bit 12: rxdv
-+	 * Bit 11: ltr_msg
-+	 * Bit 10: txdma_poll
-+	 * Bit  9: xadm
-+	 * Bit  8: pktavi
-+	 * Bit  7: txpla
-+	 */
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_34 ... RTL_GIGA_MAC_VER_36:
-+		rtl_eri_set_bits(tp, 0xd4, 0x1f00);
-+		break;
-+	case RTL_GIGA_MAC_VER_37 ... RTL_GIGA_MAC_VER_38:
-+		rtl_eri_set_bits(tp, 0xd4, 0x0c00);
-+		break;
-+	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_63:
-+		r8168_mac_ocp_modify(tp, 0xc0ac, 0, 0x1f80);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static void rtl_disable_exit_l1(struct rtl8169_private *tp)
-+{
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_34 ... RTL_GIGA_MAC_VER_38:
-+		rtl_eri_clear_bits(tp, 0xd4, 0x1f00);
-+		break;
-+	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_63:
-+		r8168_mac_ocp_modify(tp, 0xc0ac, 0x1f80, 0);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static void rtl_hw_aspm_clkreq_enable(struct rtl8169_private *tp, bool enable)
-+{
-+	/* Don't enable ASPM in the chip if OS can't control ASPM */
-+	if (enable && tp->aspm_manageable) {
-+		RTL_W8(tp, Config5, RTL_R8(tp, Config5) | ASPM_en);
-+		RTL_W8(tp, Config2, RTL_R8(tp, Config2) | ClkReqEn);
-+
-+		switch (tp->mac_version) {
-+		case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
-+		case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-+			/* reset ephy tx/rx disable timer */
-+			r8168_mac_ocp_modify(tp, 0xe094, 0xff00, 0);
-+			/* chip can trigger L1.2 */
-+			r8168_mac_ocp_modify(tp, 0xe092, 0x00ff, BIT(2));
-+			break;
-+		default:
-+			break;
-+		}
++		regmap = info->regmap_base;
++
++	/* get basic quadrupel of mux registers and the correct reg inside */
++	mux_type = bank->iomux[iomux_num].type;
++	reg = bank->iomux[iomux_num].offset;
++	if (mux_type & IOMUX_WIDTH_4BIT) {
++		if ((pin % 8) >= 4)
++			reg += 0x4;
++		bit = (pin % 4) * 4;
++		mask = 0xf;
++	} else if (mux_type & IOMUX_WIDTH_3BIT) {
++		if ((pin % 8) >= 5)
++			reg += 0x4;
++		bit = (pin % 8 % 5) * 3;
++		mask = 0x7;
 +	} else {
-+		switch (tp->mac_version) {
-+		case RTL_GIGA_MAC_VER_46 ... RTL_GIGA_MAC_VER_48:
-+		case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-+			r8168_mac_ocp_modify(tp, 0xe092, 0x00ff, 0);
-+			break;
-+		default:
-+			break;
++		bit = (pin % 8) * 2;
++		mask = 0x3;
++	}
++
++	if (bank->recalced_mask & BIT(pin))
++		rockchip_get_recalced_mux(bank, pin, &reg, &bit, &mask);
++
++	if (ctrl->type == RK3588) {
++		if (bank->bank_num == 0) {
++			if ((pin >= RK_PB4) && (pin <= RK_PD7)) {
++				if (mux < 8) {
++					reg += 0x4000 - 0xC; /* PMU2_IOC_BASE */
++					data = (mask << (bit + 16));
++					rmask = data | (data >> 16);
++					data |= (mux & mask) << bit;
++					ret = regmap_update_bits(regmap, reg, rmask, data);
++				} else {
++					u32 reg0 = 0;
++
++					reg0 = reg + 0x4000 - 0xC; /* PMU2_IOC_BASE */
++					data = (mask << (bit + 16));
++					rmask = data | (data >> 16);
++					data |= 8 << bit;
++					ret = regmap_update_bits(regmap, reg0, rmask, data);
++
++					reg0 = reg + 0x8000; /* BUS_IOC_BASE */
++					data = (mask << (bit + 16));
++					rmask = data | (data >> 16);
++					data |= mux << bit;
++					regmap = info->regmap_base;
++					ret |= regmap_update_bits(regmap, reg0, rmask, data);
++				}
++			} else {
++				data = (mask << (bit + 16));
++				rmask = data | (data >> 16);
++				data |= (mux & mask) << bit;
++				ret = regmap_update_bits(regmap, reg, rmask, data);
++			}
++			return ret;
++		} else if (bank->bank_num > 0) {
++			reg += 0x8000; /* BUS_IOC_BASE */
 +		}
-+
-+		RTL_W8(tp, Config2, RTL_R8(tp, Config2) & ~ClkReqEn);
-+		RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~ASPM_en);
 +	}
 +
-+	udelay(10);
-+}
-+
-+static void rtl_set_fifo_size(struct rtl8169_private *tp, u16 rx_stat,
-+			      u16 tx_stat, u16 rx_dyn, u16 tx_dyn)
-+{
-+	/* Usage of dynamic vs. static FIFO is controlled by bit
-+	 * TXCFG_AUTO_FIFO. Exact meaning of FIFO values isn't known.
-+	 */
-+	rtl_eri_write(tp, 0xc8, ERIAR_MASK_1111, (rx_stat << 16) | rx_dyn);
-+	rtl_eri_write(tp, 0xe8, ERIAR_MASK_1111, (tx_stat << 16) | tx_dyn);
-+}
-+
-+static void rtl8168g_set_pause_thresholds(struct rtl8169_private *tp,
-+					  u8 low, u8 high)
-+{
-+	/* FIFO thresholds for pause flow control */
-+	rtl_eri_write(tp, 0xcc, ERIAR_MASK_0001, low);
-+	rtl_eri_write(tp, 0xd0, ERIAR_MASK_0001, high);
-+}
-+
-+static void rtl_hw_start_8168b(struct rtl8169_private *tp)
-+{
-+	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
-+}
-+
-+static void __rtl_hw_start_8168cp(struct rtl8169_private *tp)
-+{
-+	RTL_W8(tp, Config1, RTL_R8(tp, Config1) | Speed_down);
-+
-+	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
-+
-+	rtl_disable_clock_request(tp);
-+}
-+
-+static void rtl_hw_start_8168cp_1(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168cp[] = {
-+		{ 0x01, 0,	0x0001 },
-+		{ 0x02, 0x0800,	0x1000 },
-+		{ 0x03, 0,	0x0042 },
-+		{ 0x06, 0x0080,	0x0000 },
-+		{ 0x07, 0,	0x2000 }
-+	};
-+
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_ephy_init(tp, e_info_8168cp);
-+
-+	__rtl_hw_start_8168cp(tp);
-+}
-+
-+static void rtl_hw_start_8168cp_2(struct rtl8169_private *tp)
-+{
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
-+}
-+
-+static void rtl_hw_start_8168cp_3(struct rtl8169_private *tp)
-+{
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
-+
-+	/* Magic. */
-+	RTL_W8(tp, DBG_REG, 0x20);
-+}
-+
-+static void rtl_hw_start_8168c_1(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168c_1[] = {
-+		{ 0x02, 0x0800,	0x1000 },
-+		{ 0x03, 0,	0x0002 },
-+		{ 0x06, 0x0080,	0x0000 }
-+	};
-+
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	RTL_W8(tp, DBG_REG, 0x06 | FIX_NAK_1 | FIX_NAK_2);
-+
-+	rtl_ephy_init(tp, e_info_8168c_1);
-+
-+	__rtl_hw_start_8168cp(tp);
-+}
-+
-+static void rtl_hw_start_8168c_2(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168c_2[] = {
-+		{ 0x01, 0,	0x0001 },
-+		{ 0x03, 0x0400,	0x0020 }
-+	};
-+
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_ephy_init(tp, e_info_8168c_2);
-+
-+	__rtl_hw_start_8168cp(tp);
-+}
-+
-+static void rtl_hw_start_8168c_4(struct rtl8169_private *tp)
-+{
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	__rtl_hw_start_8168cp(tp);
-+}
-+
-+static void rtl_hw_start_8168d(struct rtl8169_private *tp)
-+{
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_disable_clock_request(tp);
-+}
-+
-+static void rtl_hw_start_8168d_4(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168d_4[] = {
-+		{ 0x0b, 0x0000,	0x0048 },
-+		{ 0x19, 0x0020,	0x0050 },
-+		{ 0x0c, 0x0100,	0x0020 },
-+		{ 0x10, 0x0004,	0x0000 },
-+	};
-+
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_ephy_init(tp, e_info_8168d_4);
-+
-+	rtl_enable_clock_request(tp);
-+}
-+
-+static void rtl_hw_start_8168e_1(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168e_1[] = {
-+		{ 0x00, 0x0200,	0x0100 },
-+		{ 0x00, 0x0000,	0x0004 },
-+		{ 0x06, 0x0002,	0x0001 },
-+		{ 0x06, 0x0000,	0x0030 },
-+		{ 0x07, 0x0000,	0x2000 },
-+		{ 0x00, 0x0000,	0x0020 },
-+		{ 0x03, 0x5800,	0x2000 },
-+		{ 0x03, 0x0000,	0x0001 },
-+		{ 0x01, 0x0800,	0x1000 },
-+		{ 0x07, 0x0000,	0x4000 },
-+		{ 0x1e, 0x0000,	0x2000 },
-+		{ 0x19, 0xffff,	0xfe6c },
-+		{ 0x0a, 0x0000,	0x0040 }
-+	};
-+
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_ephy_init(tp, e_info_8168e_1);
-+
-+	rtl_disable_clock_request(tp);
-+
-+	/* Reset tx FIFO pointer */
-+	RTL_W32(tp, MISC, RTL_R32(tp, MISC) | TXPLA_RST);
-+	RTL_W32(tp, MISC, RTL_R32(tp, MISC) & ~TXPLA_RST);
-+
-+	RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~Spi_en);
-+}
-+
-+static void rtl_hw_start_8168e_2(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168e_2[] = {
-+		{ 0x09, 0x0000,	0x0080 },
-+		{ 0x19, 0x0000,	0x0224 },
-+		{ 0x00, 0x0000,	0x0004 },
-+		{ 0x0c, 0x3df0,	0x0200 },
-+	};
-+
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_ephy_init(tp, e_info_8168e_2);
-+
-+	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000);
-+	rtl_eri_write(tp, 0xb8, ERIAR_MASK_1111, 0x0000);
-+	rtl_set_fifo_size(tp, 0x10, 0x10, 0x02, 0x06);
-+	rtl_eri_set_bits(tp, 0x1d0, BIT(1));
-+	rtl_reset_packet_filter(tp);
-+	rtl_eri_set_bits(tp, 0x1b0, BIT(4));
-+	rtl_eri_write(tp, 0xcc, ERIAR_MASK_1111, 0x00000050);
-+	rtl_eri_write(tp, 0xd0, ERIAR_MASK_1111, 0x07ff0060);
-+
-+	rtl_disable_clock_request(tp);
-+
-+	RTL_W8(tp, MCU, RTL_R8(tp, MCU) & ~NOW_IS_OOB);
-+
-+	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) | PFM_EN);
-+	RTL_W32(tp, MISC, RTL_R32(tp, MISC) | PWM_EN);
-+	RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~Spi_en);
-+
-+	rtl_hw_aspm_clkreq_enable(tp, true);
-+}
-+
-+static void rtl_hw_start_8168f(struct rtl8169_private *tp)
-+{
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000);
-+	rtl_eri_write(tp, 0xb8, ERIAR_MASK_1111, 0x0000);
-+	rtl_set_fifo_size(tp, 0x10, 0x10, 0x02, 0x06);
-+	rtl_reset_packet_filter(tp);
-+	rtl_eri_set_bits(tp, 0x1b0, BIT(4));
-+	rtl_eri_set_bits(tp, 0x1d0, BIT(4) | BIT(1));
-+	rtl_eri_write(tp, 0xcc, ERIAR_MASK_1111, 0x00000050);
-+	rtl_eri_write(tp, 0xd0, ERIAR_MASK_1111, 0x00000060);
-+
-+	rtl_disable_clock_request(tp);
-+
-+	RTL_W8(tp, MCU, RTL_R8(tp, MCU) & ~NOW_IS_OOB);
-+	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) | PFM_EN);
-+	RTL_W32(tp, MISC, RTL_R32(tp, MISC) | PWM_EN);
-+	RTL_W8(tp, Config5, RTL_R8(tp, Config5) & ~Spi_en);
-+}
-+
-+static void rtl_hw_start_8168f_1(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168f_1[] = {
-+		{ 0x06, 0x00c0,	0x0020 },
-+		{ 0x08, 0x0001,	0x0002 },
-+		{ 0x09, 0x0000,	0x0080 },
-+		{ 0x19, 0x0000,	0x0224 },
-+		{ 0x00, 0x0000,	0x0008 },
-+		{ 0x0c, 0x3df0,	0x0200 },
-+	};
-+
-+	rtl_hw_start_8168f(tp);
-+
-+	rtl_ephy_init(tp, e_info_8168f_1);
-+}
-+
-+static void rtl_hw_start_8411(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168f_1[] = {
-+		{ 0x06, 0x00c0,	0x0020 },
-+		{ 0x0f, 0xffff,	0x5200 },
-+		{ 0x19, 0x0000,	0x0224 },
-+		{ 0x00, 0x0000,	0x0008 },
-+		{ 0x0c, 0x3df0,	0x0200 },
-+	};
-+
-+	rtl_hw_start_8168f(tp);
-+	rtl_pcie_state_l2l3_disable(tp);
-+
-+	rtl_ephy_init(tp, e_info_8168f_1);
-+}
-+
-+static void rtl_hw_start_8168g(struct rtl8169_private *tp)
-+{
-+	rtl_set_fifo_size(tp, 0x08, 0x10, 0x02, 0x06);
-+	rtl8168g_set_pause_thresholds(tp, 0x38, 0x48);
-+
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_reset_packet_filter(tp);
-+	rtl_eri_write(tp, 0x2f8, ERIAR_MASK_0011, 0x1d8f);
-+
-+	rtl_disable_rxdvgate(tp);
-+
-+	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000);
-+	rtl_eri_write(tp, 0xb8, ERIAR_MASK_0011, 0x0000);
-+
-+	rtl_w0w1_eri(tp, 0x2fc, 0x01, 0x06);
-+	rtl_eri_clear_bits(tp, 0x1b0, BIT(12));
-+
-+	rtl_pcie_state_l2l3_disable(tp);
-+}
-+
-+static void rtl_hw_start_8168g_1(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168g_1[] = {
-+		{ 0x00, 0x0008,	0x0000 },
-+		{ 0x0c, 0x3ff0,	0x0820 },
-+		{ 0x1e, 0x0000,	0x0001 },
-+		{ 0x19, 0x8000,	0x0000 }
-+	};
-+
-+	rtl_hw_start_8168g(tp);
-+
-+	/* disable aspm and clock request before access ephy */
-+	rtl_hw_aspm_clkreq_enable(tp, false);
-+	rtl_ephy_init(tp, e_info_8168g_1);
-+	rtl_hw_aspm_clkreq_enable(tp, true);
-+}
-+
-+static void rtl_hw_start_8168g_2(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168g_2[] = {
-+		{ 0x00, 0x0008,	0x0000 },
-+		{ 0x0c, 0x3ff0,	0x0820 },
-+		{ 0x19, 0xffff,	0x7c00 },
-+		{ 0x1e, 0xffff,	0x20eb },
-+		{ 0x0d, 0xffff,	0x1666 },
-+		{ 0x00, 0xffff,	0x10a3 },
-+		{ 0x06, 0xffff,	0xf050 },
-+		{ 0x04, 0x0000,	0x0010 },
-+		{ 0x1d, 0x4000,	0x0000 },
-+	};
-+
-+	rtl_hw_start_8168g(tp);
-+
-+	/* disable aspm and clock request before access ephy */
-+	rtl_hw_aspm_clkreq_enable(tp, false);
-+	rtl_ephy_init(tp, e_info_8168g_2);
-+}
-+
-+static void rtl_hw_start_8411_2(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8411_2[] = {
-+		{ 0x00, 0x0008,	0x0000 },
-+		{ 0x0c, 0x37d0,	0x0820 },
-+		{ 0x1e, 0x0000,	0x0001 },
-+		{ 0x19, 0x8021,	0x0000 },
-+		{ 0x1e, 0x0000,	0x2000 },
-+		{ 0x0d, 0x0100,	0x0200 },
-+		{ 0x00, 0x0000,	0x0080 },
-+		{ 0x06, 0x0000,	0x0010 },
-+		{ 0x04, 0x0000,	0x0010 },
-+		{ 0x1d, 0x0000,	0x4000 },
-+	};
-+
-+	rtl_hw_start_8168g(tp);
-+
-+	/* disable aspm and clock request before access ephy */
-+	rtl_hw_aspm_clkreq_enable(tp, false);
-+	rtl_ephy_init(tp, e_info_8411_2);
-+
-+	/* The following Realtek-provided magic fixes an issue with the RX unit
-+	 * getting confused after the PHY having been powered-down.
-+	 */
-+	r8168_mac_ocp_write(tp, 0xFC28, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xFC2A, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xFC2C, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xFC2E, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xFC30, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xFC32, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xFC34, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xFC36, 0x0000);
-+	mdelay(3);
-+	r8168_mac_ocp_write(tp, 0xFC26, 0x0000);
-+
-+	r8168_mac_ocp_write(tp, 0xF800, 0xE008);
-+	r8168_mac_ocp_write(tp, 0xF802, 0xE00A);
-+	r8168_mac_ocp_write(tp, 0xF804, 0xE00C);
-+	r8168_mac_ocp_write(tp, 0xF806, 0xE00E);
-+	r8168_mac_ocp_write(tp, 0xF808, 0xE027);
-+	r8168_mac_ocp_write(tp, 0xF80A, 0xE04F);
-+	r8168_mac_ocp_write(tp, 0xF80C, 0xE05E);
-+	r8168_mac_ocp_write(tp, 0xF80E, 0xE065);
-+	r8168_mac_ocp_write(tp, 0xF810, 0xC602);
-+	r8168_mac_ocp_write(tp, 0xF812, 0xBE00);
-+	r8168_mac_ocp_write(tp, 0xF814, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xF816, 0xC502);
-+	r8168_mac_ocp_write(tp, 0xF818, 0xBD00);
-+	r8168_mac_ocp_write(tp, 0xF81A, 0x074C);
-+	r8168_mac_ocp_write(tp, 0xF81C, 0xC302);
-+	r8168_mac_ocp_write(tp, 0xF81E, 0xBB00);
-+	r8168_mac_ocp_write(tp, 0xF820, 0x080A);
-+	r8168_mac_ocp_write(tp, 0xF822, 0x6420);
-+	r8168_mac_ocp_write(tp, 0xF824, 0x48C2);
-+	r8168_mac_ocp_write(tp, 0xF826, 0x8C20);
-+	r8168_mac_ocp_write(tp, 0xF828, 0xC516);
-+	r8168_mac_ocp_write(tp, 0xF82A, 0x64A4);
-+	r8168_mac_ocp_write(tp, 0xF82C, 0x49C0);
-+	r8168_mac_ocp_write(tp, 0xF82E, 0xF009);
-+	r8168_mac_ocp_write(tp, 0xF830, 0x74A2);
-+	r8168_mac_ocp_write(tp, 0xF832, 0x8CA5);
-+	r8168_mac_ocp_write(tp, 0xF834, 0x74A0);
-+	r8168_mac_ocp_write(tp, 0xF836, 0xC50E);
-+	r8168_mac_ocp_write(tp, 0xF838, 0x9CA2);
-+	r8168_mac_ocp_write(tp, 0xF83A, 0x1C11);
-+	r8168_mac_ocp_write(tp, 0xF83C, 0x9CA0);
-+	r8168_mac_ocp_write(tp, 0xF83E, 0xE006);
-+	r8168_mac_ocp_write(tp, 0xF840, 0x74F8);
-+	r8168_mac_ocp_write(tp, 0xF842, 0x48C4);
-+	r8168_mac_ocp_write(tp, 0xF844, 0x8CF8);
-+	r8168_mac_ocp_write(tp, 0xF846, 0xC404);
-+	r8168_mac_ocp_write(tp, 0xF848, 0xBC00);
-+	r8168_mac_ocp_write(tp, 0xF84A, 0xC403);
-+	r8168_mac_ocp_write(tp, 0xF84C, 0xBC00);
-+	r8168_mac_ocp_write(tp, 0xF84E, 0x0BF2);
-+	r8168_mac_ocp_write(tp, 0xF850, 0x0C0A);
-+	r8168_mac_ocp_write(tp, 0xF852, 0xE434);
-+	r8168_mac_ocp_write(tp, 0xF854, 0xD3C0);
-+	r8168_mac_ocp_write(tp, 0xF856, 0x49D9);
-+	r8168_mac_ocp_write(tp, 0xF858, 0xF01F);
-+	r8168_mac_ocp_write(tp, 0xF85A, 0xC526);
-+	r8168_mac_ocp_write(tp, 0xF85C, 0x64A5);
-+	r8168_mac_ocp_write(tp, 0xF85E, 0x1400);
-+	r8168_mac_ocp_write(tp, 0xF860, 0xF007);
-+	r8168_mac_ocp_write(tp, 0xF862, 0x0C01);
-+	r8168_mac_ocp_write(tp, 0xF864, 0x8CA5);
-+	r8168_mac_ocp_write(tp, 0xF866, 0x1C15);
-+	r8168_mac_ocp_write(tp, 0xF868, 0xC51B);
-+	r8168_mac_ocp_write(tp, 0xF86A, 0x9CA0);
-+	r8168_mac_ocp_write(tp, 0xF86C, 0xE013);
-+	r8168_mac_ocp_write(tp, 0xF86E, 0xC519);
-+	r8168_mac_ocp_write(tp, 0xF870, 0x74A0);
-+	r8168_mac_ocp_write(tp, 0xF872, 0x48C4);
-+	r8168_mac_ocp_write(tp, 0xF874, 0x8CA0);
-+	r8168_mac_ocp_write(tp, 0xF876, 0xC516);
-+	r8168_mac_ocp_write(tp, 0xF878, 0x74A4);
-+	r8168_mac_ocp_write(tp, 0xF87A, 0x48C8);
-+	r8168_mac_ocp_write(tp, 0xF87C, 0x48CA);
-+	r8168_mac_ocp_write(tp, 0xF87E, 0x9CA4);
-+	r8168_mac_ocp_write(tp, 0xF880, 0xC512);
-+	r8168_mac_ocp_write(tp, 0xF882, 0x1B00);
-+	r8168_mac_ocp_write(tp, 0xF884, 0x9BA0);
-+	r8168_mac_ocp_write(tp, 0xF886, 0x1B1C);
-+	r8168_mac_ocp_write(tp, 0xF888, 0x483F);
-+	r8168_mac_ocp_write(tp, 0xF88A, 0x9BA2);
-+	r8168_mac_ocp_write(tp, 0xF88C, 0x1B04);
-+	r8168_mac_ocp_write(tp, 0xF88E, 0xC508);
-+	r8168_mac_ocp_write(tp, 0xF890, 0x9BA0);
-+	r8168_mac_ocp_write(tp, 0xF892, 0xC505);
-+	r8168_mac_ocp_write(tp, 0xF894, 0xBD00);
-+	r8168_mac_ocp_write(tp, 0xF896, 0xC502);
-+	r8168_mac_ocp_write(tp, 0xF898, 0xBD00);
-+	r8168_mac_ocp_write(tp, 0xF89A, 0x0300);
-+	r8168_mac_ocp_write(tp, 0xF89C, 0x051E);
-+	r8168_mac_ocp_write(tp, 0xF89E, 0xE434);
-+	r8168_mac_ocp_write(tp, 0xF8A0, 0xE018);
-+	r8168_mac_ocp_write(tp, 0xF8A2, 0xE092);
-+	r8168_mac_ocp_write(tp, 0xF8A4, 0xDE20);
-+	r8168_mac_ocp_write(tp, 0xF8A6, 0xD3C0);
-+	r8168_mac_ocp_write(tp, 0xF8A8, 0xC50F);
-+	r8168_mac_ocp_write(tp, 0xF8AA, 0x76A4);
-+	r8168_mac_ocp_write(tp, 0xF8AC, 0x49E3);
-+	r8168_mac_ocp_write(tp, 0xF8AE, 0xF007);
-+	r8168_mac_ocp_write(tp, 0xF8B0, 0x49C0);
-+	r8168_mac_ocp_write(tp, 0xF8B2, 0xF103);
-+	r8168_mac_ocp_write(tp, 0xF8B4, 0xC607);
-+	r8168_mac_ocp_write(tp, 0xF8B6, 0xBE00);
-+	r8168_mac_ocp_write(tp, 0xF8B8, 0xC606);
-+	r8168_mac_ocp_write(tp, 0xF8BA, 0xBE00);
-+	r8168_mac_ocp_write(tp, 0xF8BC, 0xC602);
-+	r8168_mac_ocp_write(tp, 0xF8BE, 0xBE00);
-+	r8168_mac_ocp_write(tp, 0xF8C0, 0x0C4C);
-+	r8168_mac_ocp_write(tp, 0xF8C2, 0x0C28);
-+	r8168_mac_ocp_write(tp, 0xF8C4, 0x0C2C);
-+	r8168_mac_ocp_write(tp, 0xF8C6, 0xDC00);
-+	r8168_mac_ocp_write(tp, 0xF8C8, 0xC707);
-+	r8168_mac_ocp_write(tp, 0xF8CA, 0x1D00);
-+	r8168_mac_ocp_write(tp, 0xF8CC, 0x8DE2);
-+	r8168_mac_ocp_write(tp, 0xF8CE, 0x48C1);
-+	r8168_mac_ocp_write(tp, 0xF8D0, 0xC502);
-+	r8168_mac_ocp_write(tp, 0xF8D2, 0xBD00);
-+	r8168_mac_ocp_write(tp, 0xF8D4, 0x00AA);
-+	r8168_mac_ocp_write(tp, 0xF8D6, 0xE0C0);
-+	r8168_mac_ocp_write(tp, 0xF8D8, 0xC502);
-+	r8168_mac_ocp_write(tp, 0xF8DA, 0xBD00);
-+	r8168_mac_ocp_write(tp, 0xF8DC, 0x0132);
-+
-+	r8168_mac_ocp_write(tp, 0xFC26, 0x8000);
-+
-+	r8168_mac_ocp_write(tp, 0xFC2A, 0x0743);
-+	r8168_mac_ocp_write(tp, 0xFC2C, 0x0801);
-+	r8168_mac_ocp_write(tp, 0xFC2E, 0x0BE9);
-+	r8168_mac_ocp_write(tp, 0xFC30, 0x02FD);
-+	r8168_mac_ocp_write(tp, 0xFC32, 0x0C25);
-+	r8168_mac_ocp_write(tp, 0xFC34, 0x00A9);
-+	r8168_mac_ocp_write(tp, 0xFC36, 0x012D);
-+
-+	rtl_hw_aspm_clkreq_enable(tp, true);
-+}
-+
-+static void rtl_hw_start_8168h_1(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168h_1[] = {
-+		{ 0x1e, 0x0800,	0x0001 },
-+		{ 0x1d, 0x0000,	0x0800 },
-+		{ 0x05, 0xffff,	0x2089 },
-+		{ 0x06, 0xffff,	0x5881 },
-+		{ 0x04, 0xffff,	0x854a },
-+		{ 0x01, 0xffff,	0x068b }
-+	};
-+	int rg_saw_cnt;
-+
-+	/* disable aspm and clock request before access ephy */
-+	rtl_hw_aspm_clkreq_enable(tp, false);
-+	rtl_ephy_init(tp, e_info_8168h_1);
-+
-+	rtl_set_fifo_size(tp, 0x08, 0x10, 0x02, 0x06);
-+	rtl8168g_set_pause_thresholds(tp, 0x38, 0x48);
-+
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_reset_packet_filter(tp);
-+
-+	rtl_eri_set_bits(tp, 0xdc, 0x001c);
-+
-+	rtl_eri_write(tp, 0x5f0, ERIAR_MASK_0011, 0x4f87);
-+
-+	rtl_disable_rxdvgate(tp);
-+
-+	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000);
-+	rtl_eri_write(tp, 0xb8, ERIAR_MASK_0011, 0x0000);
-+
-+	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~PFM_EN);
-+	RTL_W8(tp, MISC_1, RTL_R8(tp, MISC_1) & ~PFM_D3COLD_EN);
-+
-+	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~TX_10M_PS_EN);
-+
-+	rtl_eri_clear_bits(tp, 0x1b0, BIT(12));
-+
-+	rtl_pcie_state_l2l3_disable(tp);
-+
-+	rg_saw_cnt = phy_read_paged(tp->phydev, 0x0c42, 0x13) & 0x3fff;
-+	if (rg_saw_cnt > 0) {
-+		u16 sw_cnt_1ms_ini;
-+
-+		sw_cnt_1ms_ini = 16000000/rg_saw_cnt;
-+		sw_cnt_1ms_ini &= 0x0fff;
-+		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
++	if (mux > mask)
++		return -EINVAL;
++
++	if (bank->route_mask & BIT(pin)) {
++		if (rockchip_get_mux_route(bank, pin, mux, &route_location,
++					   &route_reg, &route_val)) {
++			struct regmap *route_regmap = regmap;
++
++			/* handle special locations */
++			switch (route_location) {
++			case ROCKCHIP_ROUTE_PMU:
++				route_regmap = info->regmap_pmu;
++				break;
++			case ROCKCHIP_ROUTE_GRF:
++				route_regmap = info->regmap_base;
++				break;
++			}
++
++			ret = regmap_write(route_regmap, route_reg, route_val);
++			if (ret)
++				return ret;
++		}
 +	}
 +
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
-+	r8168_mac_ocp_modify(tp, 0xe052, 0x6000, 0x8008);
-+	r8168_mac_ocp_modify(tp, 0xe0d6, 0x01ff, 0x017f);
-+	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
++	data = (mask << (bit + 16));
++	rmask = data | (data >> 16);
++	data |= (mux & mask) << bit;
++	ret = regmap_update_bits(regmap, reg, rmask, data);
 +
-+	r8168_mac_ocp_write(tp, 0xe63e, 0x0001);
-+	r8168_mac_ocp_write(tp, 0xe63e, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xc094, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xc09e, 0x0000);
-+
-+	rtl_hw_aspm_clkreq_enable(tp, true);
++	return ret;
 +}
 +
-+static void rtl_hw_start_8168ep(struct rtl8169_private *tp)
++#define PX30_PULL_PMU_OFFSET		0x10
++#define PX30_PULL_GRF_OFFSET		0x60
++#define PX30_PULL_BITS_PER_PIN		2
++#define PX30_PULL_PINS_PER_REG		8
++#define PX30_PULL_BANK_STRIDE		16
++
++static int px30_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++				      int pin_num, struct regmap **regmap,
++				      int *reg, u8 *bit)
 +{
-+	rtl8168ep_stop_cmac(tp);
++	struct rockchip_pinctrl *info = bank->drvdata;
 +
-+	rtl_set_fifo_size(tp, 0x08, 0x10, 0x02, 0x06);
-+	rtl8168g_set_pause_thresholds(tp, 0x2f, 0x5f);
++	/* The first 32 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = PX30_PULL_PMU_OFFSET;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = PX30_PULL_GRF_OFFSET;
 +
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_reset_packet_filter(tp);
-+
-+	rtl_eri_write(tp, 0x5f0, ERIAR_MASK_0011, 0x4f87);
-+
-+	rtl_disable_rxdvgate(tp);
-+
-+	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000);
-+	rtl_eri_write(tp, 0xb8, ERIAR_MASK_0011, 0x0000);
-+
-+	rtl_w0w1_eri(tp, 0x2fc, 0x01, 0x06);
-+
-+	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~TX_10M_PS_EN);
-+
-+	rtl_pcie_state_l2l3_disable(tp);
-+}
-+
-+static void rtl_hw_start_8168ep_3(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8168ep_3[] = {
-+		{ 0x00, 0x0000,	0x0080 },
-+		{ 0x0d, 0x0100,	0x0200 },
-+		{ 0x19, 0x8021,	0x0000 },
-+		{ 0x1e, 0x0000,	0x2000 },
-+	};
-+
-+	/* disable aspm and clock request before access ephy */
-+	rtl_hw_aspm_clkreq_enable(tp, false);
-+	rtl_ephy_init(tp, e_info_8168ep_3);
-+
-+	rtl_hw_start_8168ep(tp);
-+
-+	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~PFM_EN);
-+	RTL_W8(tp, MISC_1, RTL_R8(tp, MISC_1) & ~PFM_D3COLD_EN);
-+
-+	r8168_mac_ocp_modify(tp, 0xd3e2, 0x0fff, 0x0271);
-+	r8168_mac_ocp_modify(tp, 0xd3e4, 0x00ff, 0x0000);
-+	r8168_mac_ocp_modify(tp, 0xe860, 0x0000, 0x0080);
-+
-+	rtl_hw_aspm_clkreq_enable(tp, true);
-+}
-+
-+static void rtl_hw_start_8117(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8117[] = {
-+		{ 0x19, 0x0040,	0x1100 },
-+		{ 0x59, 0x0040,	0x1100 },
-+	};
-+	int rg_saw_cnt;
-+
-+	rtl8168ep_stop_cmac(tp);
-+
-+	/* disable aspm and clock request before access ephy */
-+	rtl_hw_aspm_clkreq_enable(tp, false);
-+	rtl_ephy_init(tp, e_info_8117);
-+
-+	rtl_set_fifo_size(tp, 0x08, 0x10, 0x02, 0x06);
-+	rtl8168g_set_pause_thresholds(tp, 0x2f, 0x5f);
-+
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	rtl_reset_packet_filter(tp);
-+
-+	rtl_eri_set_bits(tp, 0xd4, 0x0010);
-+
-+	rtl_eri_write(tp, 0x5f0, ERIAR_MASK_0011, 0x4f87);
-+
-+	rtl_disable_rxdvgate(tp);
-+
-+	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000);
-+	rtl_eri_write(tp, 0xb8, ERIAR_MASK_0011, 0x0000);
-+
-+	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~PFM_EN);
-+	RTL_W8(tp, MISC_1, RTL_R8(tp, MISC_1) & ~PFM_D3COLD_EN);
-+
-+	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~TX_10M_PS_EN);
-+
-+	rtl_eri_clear_bits(tp, 0x1b0, BIT(12));
-+
-+	rtl_pcie_state_l2l3_disable(tp);
-+
-+	rg_saw_cnt = phy_read_paged(tp->phydev, 0x0c42, 0x13) & 0x3fff;
-+	if (rg_saw_cnt > 0) {
-+		u16 sw_cnt_1ms_ini;
-+
-+		sw_cnt_1ms_ini = (16000000 / rg_saw_cnt) & 0x0fff;
-+		r8168_mac_ocp_modify(tp, 0xd412, 0x0fff, sw_cnt_1ms_ini);
++		/* correct the offset, as we're starting with the 2nd bank */
++		*reg -= 0x10;
++		*reg += bank->bank_num * PX30_PULL_BANK_STRIDE;
 +	}
 +
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0070);
-+	r8168_mac_ocp_write(tp, 0xea80, 0x0003);
-+	r8168_mac_ocp_modify(tp, 0xe052, 0x0000, 0x0009);
-+	r8168_mac_ocp_modify(tp, 0xd420, 0x0fff, 0x047f);
++	*reg += ((pin_num / PX30_PULL_PINS_PER_REG) * 4);
++	*bit = (pin_num % PX30_PULL_PINS_PER_REG);
++	*bit *= PX30_PULL_BITS_PER_PIN;
 +
-+	r8168_mac_ocp_write(tp, 0xe63e, 0x0001);
-+	r8168_mac_ocp_write(tp, 0xe63e, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xc094, 0x0000);
-+	r8168_mac_ocp_write(tp, 0xc09e, 0x0000);
-+
-+	/* firmware is for MAC only */
-+	r8169_apply_firmware(tp);
-+
-+	rtl_hw_aspm_clkreq_enable(tp, true);
++	return 0;
 +}
 +
-+static void rtl_hw_start_8102e_1(struct rtl8169_private *tp)
++#define PX30_DRV_PMU_OFFSET		0x20
++#define PX30_DRV_GRF_OFFSET		0xf0
++#define PX30_DRV_BITS_PER_PIN		2
++#define PX30_DRV_PINS_PER_REG		8
++#define PX30_DRV_BANK_STRIDE		16
++
++static int px30_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++				     int pin_num, struct regmap **regmap,
++				     int *reg, u8 *bit)
 +{
-+	static const struct ephy_info e_info_8102e_1[] = {
-+		{ 0x01,	0, 0x6e65 },
-+		{ 0x02,	0, 0x091f },
-+		{ 0x03,	0, 0xc2f9 },
-+		{ 0x06,	0, 0xafb5 },
-+		{ 0x07,	0, 0x0e00 },
-+		{ 0x19,	0, 0xec80 },
-+		{ 0x01,	0, 0x2e65 },
-+		{ 0x01,	0, 0x6e65 }
-+	};
-+	u8 cfg1;
++	struct rockchip_pinctrl *info = bank->drvdata;
 +
-+	rtl_set_def_aspm_entry_latency(tp);
++	/* The first 32 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = PX30_DRV_PMU_OFFSET;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = PX30_DRV_GRF_OFFSET;
 +
-+	RTL_W8(tp, DBG_REG, FIX_NAK_1);
++		/* correct the offset, as we're starting with the 2nd bank */
++		*reg -= 0x10;
++		*reg += bank->bank_num * PX30_DRV_BANK_STRIDE;
++	}
 +
-+	RTL_W8(tp, Config1,
-+	       LEDS1 | LEDS0 | Speed_down | MEMMAP | IOMAP | VPD | PMEnable);
-+	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
++	*reg += ((pin_num / PX30_DRV_PINS_PER_REG) * 4);
++	*bit = (pin_num % PX30_DRV_PINS_PER_REG);
++	*bit *= PX30_DRV_BITS_PER_PIN;
 +
-+	cfg1 = RTL_R8(tp, Config1);
-+	if ((cfg1 & LEDS0) && (cfg1 & LEDS1))
-+		RTL_W8(tp, Config1, cfg1 & ~LEDS0);
-+
-+	rtl_ephy_init(tp, e_info_8102e_1);
++	return 0;
 +}
 +
-+static void rtl_hw_start_8102e_2(struct rtl8169_private *tp)
-+{
-+	rtl_set_def_aspm_entry_latency(tp);
++#define PX30_SCHMITT_PMU_OFFSET			0x38
++#define PX30_SCHMITT_GRF_OFFSET			0xc0
++#define PX30_SCHMITT_PINS_PER_PMU_REG		16
++#define PX30_SCHMITT_BANK_STRIDE		16
++#define PX30_SCHMITT_PINS_PER_GRF_REG		8
 +
-+	RTL_W8(tp, Config1, MEMMAP | IOMAP | VPD | PMEnable);
-+	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
++static int px30_calc_schmitt_reg_and_bit(struct rockchip_pin_bank *bank,
++					 int pin_num,
++					 struct regmap **regmap,
++					 int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++	int pins_per_reg;
++
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = PX30_SCHMITT_PMU_OFFSET;
++		pins_per_reg = PX30_SCHMITT_PINS_PER_PMU_REG;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = PX30_SCHMITT_GRF_OFFSET;
++		pins_per_reg = PX30_SCHMITT_PINS_PER_GRF_REG;
++		*reg += (bank->bank_num  - 1) * PX30_SCHMITT_BANK_STRIDE;
++	}
++
++	*reg += ((pin_num / pins_per_reg) * 4);
++	*bit = pin_num % pins_per_reg;
++
++	return 0;
 +}
 +
-+static void rtl_hw_start_8102e_3(struct rtl8169_private *tp)
-+{
-+	rtl_hw_start_8102e_2(tp);
++#define RV1108_PULL_PMU_OFFSET		0x10
++#define RV1108_PULL_OFFSET		0x110
++#define RV1108_PULL_PINS_PER_REG	8
++#define RV1108_PULL_BITS_PER_PIN	2
++#define RV1108_PULL_BANK_STRIDE		16
 +
-+	rtl_ephy_write(tp, 0x03, 0xc2f9);
++static int rv1108_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	/* The first 24 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = RV1108_PULL_PMU_OFFSET;
++	} else {
++		*reg = RV1108_PULL_OFFSET;
++		*regmap = info->regmap_base;
++		/* correct the offset, as we're starting with the 2nd bank */
++		*reg -= 0x10;
++		*reg += bank->bank_num * RV1108_PULL_BANK_STRIDE;
++	}
++
++	*reg += ((pin_num / RV1108_PULL_PINS_PER_REG) * 4);
++	*bit = (pin_num % RV1108_PULL_PINS_PER_REG);
++	*bit *= RV1108_PULL_BITS_PER_PIN;
++
++	return 0;
 +}
 +
-+static void rtl_hw_start_8401(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8401[] = {
-+		{ 0x01,	0xffff, 0x6fe5 },
-+		{ 0x03,	0xffff, 0x0599 },
-+		{ 0x06,	0xffff, 0xaf25 },
-+		{ 0x07,	0xffff, 0x8e68 },
-+	};
++#define RV1108_DRV_PMU_OFFSET		0x20
++#define RV1108_DRV_GRF_OFFSET		0x210
++#define RV1108_DRV_BITS_PER_PIN		2
++#define RV1108_DRV_PINS_PER_REG		8
++#define RV1108_DRV_BANK_STRIDE		16
 +
-+	rtl_ephy_init(tp, e_info_8401);
-+	RTL_W8(tp, Config3, RTL_R8(tp, Config3) & ~Beacon_en);
++static int rv1108_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++				       int pin_num, struct regmap **regmap,
++				       int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	/* The first 24 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = RV1108_DRV_PMU_OFFSET;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = RV1108_DRV_GRF_OFFSET;
++
++		/* correct the offset, as we're starting with the 2nd bank */
++		*reg -= 0x10;
++		*reg += bank->bank_num * RV1108_DRV_BANK_STRIDE;
++	}
++
++	*reg += ((pin_num / RV1108_DRV_PINS_PER_REG) * 4);
++	*bit = pin_num % RV1108_DRV_PINS_PER_REG;
++	*bit *= RV1108_DRV_BITS_PER_PIN;
++
++	return 0;
 +}
 +
-+static void rtl_hw_start_8105e_1(struct rtl8169_private *tp)
++#define RV1108_SCHMITT_PMU_OFFSET		0x30
++#define RV1108_SCHMITT_GRF_OFFSET		0x388
++#define RV1108_SCHMITT_BANK_STRIDE		8
++#define RV1108_SCHMITT_PINS_PER_GRF_REG		16
++#define RV1108_SCHMITT_PINS_PER_PMU_REG		8
++
++static int rv1108_calc_schmitt_reg_and_bit(struct rockchip_pin_bank *bank,
++					   int pin_num,
++					   struct regmap **regmap,
++					   int *reg, u8 *bit)
 +{
-+	static const struct ephy_info e_info_8105e_1[] = {
-+		{ 0x07,	0, 0x4000 },
-+		{ 0x19,	0, 0x0200 },
-+		{ 0x19,	0, 0x0020 },
-+		{ 0x1e,	0, 0x2000 },
-+		{ 0x03,	0, 0x0001 },
-+		{ 0x19,	0, 0x0100 },
-+		{ 0x19,	0, 0x0004 },
-+		{ 0x0a,	0, 0x0020 }
-+	};
++	struct rockchip_pinctrl *info = bank->drvdata;
++	int pins_per_reg;
 +
-+	/* Force LAN exit from ASPM if Rx/Tx are not idle */
-+	RTL_W32(tp, FuncEvent, RTL_R32(tp, FuncEvent) | 0x002800);
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = RV1108_SCHMITT_PMU_OFFSET;
++		pins_per_reg = RV1108_SCHMITT_PINS_PER_PMU_REG;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = RV1108_SCHMITT_GRF_OFFSET;
++		pins_per_reg = RV1108_SCHMITT_PINS_PER_GRF_REG;
++		*reg += (bank->bank_num  - 1) * RV1108_SCHMITT_BANK_STRIDE;
++	}
++	*reg += ((pin_num / pins_per_reg) * 4);
++	*bit = pin_num % pins_per_reg;
 +
-+	/* Disable Early Tally Counter */
-+	RTL_W32(tp, FuncEvent, RTL_R32(tp, FuncEvent) & ~0x010000);
-+
-+	RTL_W8(tp, MCU, RTL_R8(tp, MCU) | EN_NDP | EN_OOB_RESET);
-+	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) | PFM_EN);
-+
-+	rtl_ephy_init(tp, e_info_8105e_1);
-+
-+	rtl_pcie_state_l2l3_disable(tp);
++	return 0;
 +}
 +
-+static void rtl_hw_start_8105e_2(struct rtl8169_private *tp)
++#define RV1126_PULL_PMU_OFFSET		0x40
++#define RV1126_PULL_GRF_GPIO1A0_OFFSET	0x10108
++#define RV1126_PULL_PINS_PER_REG	8
++#define RV1126_PULL_BITS_PER_PIN	2
++#define RV1126_PULL_BANK_STRIDE		16
++#define RV1126_GPIO_C4_D7(p)		(p >= 20 && p <= 31) /* GPIO0_C4 ~ GPIO0_D7 */
++
++static int rv1126_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
 +{
-+	rtl_hw_start_8105e_1(tp);
-+	rtl_ephy_write(tp, 0x1e, rtl_ephy_read(tp, 0x1e) | 0x8000);
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	/* The first 24 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		if (RV1126_GPIO_C4_D7(pin_num)) {
++			*regmap = info->regmap_base;
++			*reg = RV1126_PULL_GRF_GPIO1A0_OFFSET;
++			*reg -= (((31 - pin_num) / RV1126_PULL_PINS_PER_REG + 1) * 4);
++			*bit = pin_num % RV1126_PULL_PINS_PER_REG;
++			*bit *= RV1126_PULL_BITS_PER_PIN;
++			return 0;
++		}
++		*regmap = info->regmap_pmu;
++		*reg = RV1126_PULL_PMU_OFFSET;
++	} else {
++		*reg = RV1126_PULL_GRF_GPIO1A0_OFFSET;
++		*regmap = info->regmap_base;
++		*reg += (bank->bank_num - 1) * RV1126_PULL_BANK_STRIDE;
++	}
++
++	*reg += ((pin_num / RV1126_PULL_PINS_PER_REG) * 4);
++	*bit = (pin_num % RV1126_PULL_PINS_PER_REG);
++	*bit *= RV1126_PULL_BITS_PER_PIN;
++
++	return 0;
 +}
 +
-+static void rtl_hw_start_8402(struct rtl8169_private *tp)
++#define RV1126_DRV_PMU_OFFSET		0x20
++#define RV1126_DRV_GRF_GPIO1A0_OFFSET	0x10090
++#define RV1126_DRV_BITS_PER_PIN		4
++#define RV1126_DRV_PINS_PER_REG		4
++#define RV1126_DRV_BANK_STRIDE		32
++
++static int rv1126_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++				       int pin_num, struct regmap **regmap,
++				       int *reg, u8 *bit)
 +{
-+	static const struct ephy_info e_info_8402[] = {
-+		{ 0x19,	0xffff, 0xff64 },
-+		{ 0x1e,	0, 0x4000 }
-+	};
++	struct rockchip_pinctrl *info = bank->drvdata;
 +
-+	rtl_set_def_aspm_entry_latency(tp);
++	/* The first 24 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		if (RV1126_GPIO_C4_D7(pin_num)) {
++			*regmap = info->regmap_base;
++			*reg = RV1126_DRV_GRF_GPIO1A0_OFFSET;
++			*reg -= (((31 - pin_num) / RV1126_DRV_PINS_PER_REG + 1) * 4);
++			*reg -= 0x4;
++			*bit = pin_num % RV1126_DRV_PINS_PER_REG;
++			*bit *= RV1126_DRV_BITS_PER_PIN;
++			return 0;
++		}
++		*regmap = info->regmap_pmu;
++		*reg = RV1126_DRV_PMU_OFFSET;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = RV1126_DRV_GRF_GPIO1A0_OFFSET;
++		*reg += (bank->bank_num - 1) * RV1126_DRV_BANK_STRIDE;
++	}
 +
-+	/* Force LAN exit from ASPM if Rx/Tx are not idle */
-+	RTL_W32(tp, FuncEvent, RTL_R32(tp, FuncEvent) | 0x002800);
++	*reg += ((pin_num / RV1126_DRV_PINS_PER_REG) * 4);
++	*bit = pin_num % RV1126_DRV_PINS_PER_REG;
++	*bit *= RV1126_DRV_BITS_PER_PIN;
 +
-+	RTL_W8(tp, MCU, RTL_R8(tp, MCU) & ~NOW_IS_OOB);
-+
-+	rtl_ephy_init(tp, e_info_8402);
-+
-+	rtl_set_fifo_size(tp, 0x00, 0x00, 0x02, 0x06);
-+	rtl_reset_packet_filter(tp);
-+	rtl_eri_write(tp, 0xc0, ERIAR_MASK_0011, 0x0000);
-+	rtl_eri_write(tp, 0xb8, ERIAR_MASK_0011, 0x0000);
-+	rtl_w0w1_eri(tp, 0x0d4, 0x0e00, 0xff00);
-+
-+	/* disable EEE */
-+	rtl_eri_write(tp, 0x1b0, ERIAR_MASK_0011, 0x0000);
-+
-+	rtl_pcie_state_l2l3_disable(tp);
++	return 0;
 +}
 +
-+static void rtl_hw_start_8106(struct rtl8169_private *tp)
++#define RV1126_SCHMITT_PMU_OFFSET		0x60
++#define RV1126_SCHMITT_GRF_GPIO1A0_OFFSET	0x10188
++#define RV1126_SCHMITT_BANK_STRIDE		16
++#define RV1126_SCHMITT_PINS_PER_GRF_REG		8
++#define RV1126_SCHMITT_PINS_PER_PMU_REG		8
++
++static int rv1126_calc_schmitt_reg_and_bit(struct rockchip_pin_bank *bank,
++					   int pin_num,
++					   struct regmap **regmap,
++					   int *reg, u8 *bit)
 +{
-+	rtl_hw_aspm_clkreq_enable(tp, false);
++	struct rockchip_pinctrl *info = bank->drvdata;
++	int pins_per_reg;
 +
-+	/* Force LAN exit from ASPM if Rx/Tx are not idle */
-+	RTL_W32(tp, FuncEvent, RTL_R32(tp, FuncEvent) | 0x002800);
++	if (bank->bank_num == 0) {
++		if (RV1126_GPIO_C4_D7(pin_num)) {
++			*regmap = info->regmap_base;
++			*reg = RV1126_SCHMITT_GRF_GPIO1A0_OFFSET;
++			*reg -= (((31 - pin_num) / RV1126_SCHMITT_PINS_PER_GRF_REG + 1) * 4);
++			*bit = pin_num % RV1126_SCHMITT_PINS_PER_GRF_REG;
++			return 0;
++		}
++		*regmap = info->regmap_pmu;
++		*reg = RV1126_SCHMITT_PMU_OFFSET;
++		pins_per_reg = RV1126_SCHMITT_PINS_PER_PMU_REG;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = RV1126_SCHMITT_GRF_GPIO1A0_OFFSET;
++		pins_per_reg = RV1126_SCHMITT_PINS_PER_GRF_REG;
++		*reg += (bank->bank_num - 1) * RV1126_SCHMITT_BANK_STRIDE;
++	}
++	*reg += ((pin_num / pins_per_reg) * 4);
++	*bit = pin_num % pins_per_reg;
 +
-+	RTL_W32(tp, MISC, (RTL_R32(tp, MISC) | DISABLE_LAN_EN) & ~EARLY_TALLY_EN);
-+	RTL_W8(tp, MCU, RTL_R8(tp, MCU) | EN_NDP | EN_OOB_RESET);
-+	RTL_W8(tp, DLLPR, RTL_R8(tp, DLLPR) & ~PFM_EN);
-+
-+	/* L0 7us, L1 32us - needed to avoid issues with link-up detection */
-+	rtl_set_aspm_entry_latency(tp, 0x2f);
-+
-+	rtl_eri_write(tp, 0x1d0, ERIAR_MASK_0011, 0x0000);
-+
-+	/* disable EEE */
-+	rtl_eri_write(tp, 0x1b0, ERIAR_MASK_0011, 0x0000);
-+
-+	rtl_pcie_state_l2l3_disable(tp);
-+	rtl_hw_aspm_clkreq_enable(tp, true);
++	return 0;
 +}
 +
-+DECLARE_RTL_COND(rtl_mac_ocp_e00e_cond)
++#define RK3308_SCHMITT_PINS_PER_REG		8
++#define RK3308_SCHMITT_BANK_STRIDE		16
++#define RK3308_SCHMITT_GRF_OFFSET		0x1a0
++
++static int rk3308_calc_schmitt_reg_and_bit(struct rockchip_pin_bank *bank,
++				    int pin_num, struct regmap **regmap,
++				    int *reg, u8 *bit)
 +{
-+	return r8168_mac_ocp_read(tp, 0xe00e) & BIT(13);
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	*regmap = info->regmap_base;
++	*reg = RK3308_SCHMITT_GRF_OFFSET;
++
++	*reg += bank->bank_num * RK3308_SCHMITT_BANK_STRIDE;
++	*reg += ((pin_num / RK3308_SCHMITT_PINS_PER_REG) * 4);
++	*bit = pin_num % RK3308_SCHMITT_PINS_PER_REG;
++
++	return 0;
 +}
 +
-+static void rtl_hw_start_8125_common(struct rtl8169_private *tp)
++#define RK2928_PULL_OFFSET		0x118
++#define RK2928_PULL_PINS_PER_REG	16
++#define RK2928_PULL_BANK_STRIDE		8
++
++static int rk2928_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
 +{
-+	rtl_pcie_state_l2l3_disable(tp);
++	struct rockchip_pinctrl *info = bank->drvdata;
 +
-+	RTL_W16(tp, 0x382, 0x221b);
-+	RTL_W8(tp, 0x4500, 0);
-+	RTL_W16(tp, 0x4800, 0);
++	*regmap = info->regmap_base;
++	*reg = RK2928_PULL_OFFSET;
++	*reg += bank->bank_num * RK2928_PULL_BANK_STRIDE;
++	*reg += (pin_num / RK2928_PULL_PINS_PER_REG) * 4;
 +
-+	/* disable UPS */
-+	r8168_mac_ocp_modify(tp, 0xd40a, 0x0010, 0x0000);
++	*bit = pin_num % RK2928_PULL_PINS_PER_REG;
 +
-+	RTL_W8(tp, Config1, RTL_R8(tp, Config1) & ~0x10);
++	return 0;
++};
 +
-+	r8168_mac_ocp_write(tp, 0xc140, 0xffff);
-+	r8168_mac_ocp_write(tp, 0xc142, 0xffff);
++#define RK3128_PULL_OFFSET	0x118
 +
-+	r8168_mac_ocp_modify(tp, 0xd3e2, 0x0fff, 0x03a9);
-+	r8168_mac_ocp_modify(tp, 0xd3e4, 0x00ff, 0x0000);
-+	r8168_mac_ocp_modify(tp, 0xe860, 0x0000, 0x0080);
++static int rk3128_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
 +
-+	/* disable new tx descriptor format */
-+	r8168_mac_ocp_modify(tp, 0xeb58, 0x0001, 0x0000);
++	*regmap = info->regmap_base;
++	*reg = RK3128_PULL_OFFSET;
++	*reg += bank->bank_num * RK2928_PULL_BANK_STRIDE;
++	*reg += ((pin_num / RK2928_PULL_PINS_PER_REG) * 4);
 +
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_63)
-+		r8168_mac_ocp_modify(tp, 0xe614, 0x0700, 0x0200);
++	*bit = pin_num % RK2928_PULL_PINS_PER_REG;
++
++	return 0;
++}
++
++#define RK3188_PULL_OFFSET		0x164
++#define RK3188_PULL_BITS_PER_PIN	2
++#define RK3188_PULL_PINS_PER_REG	8
++#define RK3188_PULL_BANK_STRIDE		16
++#define RK3188_PULL_PMU_OFFSET		0x64
++
++static int rk3188_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	/* The first 12 pins of the first bank are located elsewhere */
++	if (bank->bank_num == 0 && pin_num < 12) {
++		*regmap = info->regmap_pmu ? info->regmap_pmu
++					   : bank->regmap_pull;
++		*reg = info->regmap_pmu ? RK3188_PULL_PMU_OFFSET : 0;
++		*reg += ((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
++		*bit = pin_num % RK3188_PULL_PINS_PER_REG;
++		*bit *= RK3188_PULL_BITS_PER_PIN;
++	} else {
++		*regmap = info->regmap_pull ? info->regmap_pull
++					    : info->regmap_base;
++		*reg = info->regmap_pull ? 0 : RK3188_PULL_OFFSET;
++
++		/* correct the offset, as it is the 2nd pull register */
++		*reg -= 4;
++		*reg += bank->bank_num * RK3188_PULL_BANK_STRIDE;
++		*reg += ((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
++
++		/*
++		 * The bits in these registers have an inverse ordering
++		 * with the lowest pin being in bits 15:14 and the highest
++		 * pin in bits 1:0
++		 */
++		*bit = 7 - (pin_num % RK3188_PULL_PINS_PER_REG);
++		*bit *= RK3188_PULL_BITS_PER_PIN;
++	}
++
++	return 0;
++}
++
++#define RK3288_PULL_OFFSET		0x140
++static int rk3288_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	/* The first 24 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = RK3188_PULL_PMU_OFFSET;
++
++		*reg += ((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
++		*bit = pin_num % RK3188_PULL_PINS_PER_REG;
++		*bit *= RK3188_PULL_BITS_PER_PIN;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = RK3288_PULL_OFFSET;
++
++		/* correct the offset, as we're starting with the 2nd bank */
++		*reg -= 0x10;
++		*reg += bank->bank_num * RK3188_PULL_BANK_STRIDE;
++		*reg += ((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
++
++		*bit = (pin_num % RK3188_PULL_PINS_PER_REG);
++		*bit *= RK3188_PULL_BITS_PER_PIN;
++	}
++
++	return 0;
++}
++
++#define RK3288_DRV_PMU_OFFSET		0x70
++#define RK3288_DRV_GRF_OFFSET		0x1c0
++#define RK3288_DRV_BITS_PER_PIN		2
++#define RK3288_DRV_PINS_PER_REG		8
++#define RK3288_DRV_BANK_STRIDE		16
++
++static int rk3288_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++				       int pin_num, struct regmap **regmap,
++				       int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	/* The first 24 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = RK3288_DRV_PMU_OFFSET;
++
++		*reg += ((pin_num / RK3288_DRV_PINS_PER_REG) * 4);
++		*bit = pin_num % RK3288_DRV_PINS_PER_REG;
++		*bit *= RK3288_DRV_BITS_PER_PIN;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = RK3288_DRV_GRF_OFFSET;
++
++		/* correct the offset, as we're starting with the 2nd bank */
++		*reg -= 0x10;
++		*reg += bank->bank_num * RK3288_DRV_BANK_STRIDE;
++		*reg += ((pin_num / RK3288_DRV_PINS_PER_REG) * 4);
++
++		*bit = (pin_num % RK3288_DRV_PINS_PER_REG);
++		*bit *= RK3288_DRV_BITS_PER_PIN;
++	}
++
++	return 0;
++}
++
++#define RK3228_PULL_OFFSET		0x100
++
++static int rk3228_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	*regmap = info->regmap_base;
++	*reg = RK3228_PULL_OFFSET;
++	*reg += bank->bank_num * RK3188_PULL_BANK_STRIDE;
++	*reg += ((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
++
++	*bit = (pin_num % RK3188_PULL_PINS_PER_REG);
++	*bit *= RK3188_PULL_BITS_PER_PIN;
++
++	return 0;
++}
++
++#define RK3228_DRV_GRF_OFFSET		0x200
++
++static int rk3228_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++				       int pin_num, struct regmap **regmap,
++				       int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	*regmap = info->regmap_base;
++	*reg = RK3228_DRV_GRF_OFFSET;
++	*reg += bank->bank_num * RK3288_DRV_BANK_STRIDE;
++	*reg += ((pin_num / RK3288_DRV_PINS_PER_REG) * 4);
++
++	*bit = (pin_num % RK3288_DRV_PINS_PER_REG);
++	*bit *= RK3288_DRV_BITS_PER_PIN;
++
++	return 0;
++}
++
++#define RK3308_PULL_OFFSET		0xa0
++
++static int rk3308_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++
++	*regmap = info->regmap_base;
++	*reg = RK3308_PULL_OFFSET;
++	*reg += bank->bank_num * RK3188_PULL_BANK_STRIDE;
++	*reg += ((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
++
++	*bit = (pin_num % RK3188_PULL_PINS_PER_REG);
++	*bit *= RK3188_PULL_BITS_PER_PIN;
++
++	return 0;
+ }
+ 
+-static struct rockchip_pin_bank *bank_num_to_bank(struct rockchip_pinctrl *info,
+-						  unsigned num)
++#define RK3308_DRV_GRF_OFFSET		0x100
++
++static int rk3308_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++				       int pin_num, struct regmap **regmap,
++				       int *reg, u8 *bit)
+ {
+-	struct rockchip_pin_bank *b = info->ctrl->pin_banks;
+-	int i;
++	struct rockchip_pinctrl *info = bank->drvdata;
+ 
+-	for (i = 0; i < info->ctrl->nr_banks; i++, b++) {
+-		if (b->bank_num == num)
+-			return b;
+-	}
++	*regmap = info->regmap_base;
++	*reg = RK3308_DRV_GRF_OFFSET;
++	*reg += bank->bank_num * RK3288_DRV_BANK_STRIDE;
++	*reg += ((pin_num / RK3288_DRV_PINS_PER_REG) * 4);
+ 
+-	return ERR_PTR(-EINVAL);
++	*bit = (pin_num % RK3288_DRV_PINS_PER_REG);
++	*bit *= RK3288_DRV_BITS_PER_PIN;
++
++	return 0;
+ }
+ 
+-static int parse_bias_config(struct device_node *np)
++#define RK3368_PULL_GRF_OFFSET		0x100
++#define RK3368_PULL_PMU_OFFSET		0x10
++
++static int rk3368_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
+ {
+-	u32 val;
++	struct rockchip_pinctrl *info = bank->drvdata;
+ 
+-	if (of_property_read_u32(np, "bias-pull-up", &val) != -EINVAL)
+-		return RK_BIAS_PULL_UP;
+-	else if (of_property_read_u32(np, "bias-pull-down", &val) != -EINVAL)
+-		return RK_BIAS_PULL_DOWN;
+-	else if (of_property_read_u32(np, "bias-bus-hold", &val) != -EINVAL)
+-		return RK_BIAS_BUS_HOLD;
+-	else
+-		return RK_BIAS_DISABLE;
+-}
++	/* The first 32 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = RK3368_PULL_PMU_OFFSET;
+ 
++		*reg += ((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
++		*bit = pin_num % RK3188_PULL_PINS_PER_REG;
++		*bit *= RK3188_PULL_BITS_PER_PIN;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = RK3368_PULL_GRF_OFFSET;
+ 
+-#define RK2928_PULL_OFFSET		0x118
+-#define RK2928_PULL_PINS_PER_REG	16
+-#define RK2928_PULL_BANK_STRIDE		8
++		/* correct the offset, as we're starting with the 2nd bank */
++		*reg -= 0x10;
++		*reg += bank->bank_num * RK3188_PULL_BANK_STRIDE;
++		*reg += ((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
++
++		*bit = (pin_num % RK3188_PULL_PINS_PER_REG);
++		*bit *= RK3188_PULL_BITS_PER_PIN;
++	}
++
++	return 0;
++}
++
++#define RK3368_DRV_PMU_OFFSET		0x20
++#define RK3368_DRV_GRF_OFFSET		0x200
+ 
+-static void rk2928_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
+-					 int pin_num, void __iomem **reg,
+-					 u8 *bit)
++static int rk3368_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++				       int pin_num, struct regmap **regmap,
++				       int *reg, u8 *bit)
+ {
+ 	struct rockchip_pinctrl *info = bank->drvdata;
+ 
+-	*reg = info->reg_base + RK2928_PULL_OFFSET;
+-	*reg += bank->bank_num * RK2928_PULL_BANK_STRIDE;
+-	*reg += (pin_num / RK2928_PULL_PINS_PER_REG) * 4;
++	/* The first 32 pins of the first bank are located in PMU */
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = RK3368_DRV_PMU_OFFSET;
+ 
+-	*bit = pin_num % RK2928_PULL_PINS_PER_REG;
+-};
++		*reg += ((pin_num / RK3288_DRV_PINS_PER_REG) * 4);
++		*bit = pin_num % RK3288_DRV_PINS_PER_REG;
++		*bit *= RK3288_DRV_BITS_PER_PIN;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = RK3368_DRV_GRF_OFFSET;
+ 
+-#define RK3188_PULL_OFFSET		0x164
+-#define RK3188_PULL_BITS_PER_PIN	2
+-#define RK3188_PULL_PINS_PER_REG	8
+-#define RK3188_PULL_BANK_STRIDE		16
+-#define RK3188_PULL_PMU_OFFSET		0x64
++		/* correct the offset, as we're starting with the 2nd bank */
++		*reg -= 0x10;
++		*reg += bank->bank_num * RK3288_DRV_BANK_STRIDE;
++		*reg += ((pin_num / RK3288_DRV_PINS_PER_REG) * 4);
++
++		*bit = (pin_num % RK3288_DRV_PINS_PER_REG);
++		*bit *= RK3288_DRV_BITS_PER_PIN;
++	}
++
++	return 0;
++}
++
++#define RK3399_PULL_GRF_OFFSET		0xe040
++#define RK3399_PULL_PMU_OFFSET		0x40
++#define RK3399_DRV_3BITS_PER_PIN	3
+ 
+-static void rk3188_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
+-					 int pin_num, void __iomem **reg,
+-					 u8 *bit)
++static int rk3399_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
+ {
+ 	struct rockchip_pinctrl *info = bank->drvdata;
+ 
+-	/* The first 12 pins of the first bank are located elsewhere */
+-	if (bank->bank_type == RK3188_BANK0 && pin_num < 12) {
+-		*reg = info->reg_pmu + RK3188_PULL_PMU_OFFSET +
+-				((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
++	/* The bank0:16 and bank1:32 pins are located in PMU */
++	if ((bank->bank_num == 0) || (bank->bank_num == 1)) {
++		*regmap = info->regmap_pmu;
++		*reg = RK3399_PULL_PMU_OFFSET;
++
++		*reg += bank->bank_num * RK3188_PULL_BANK_STRIDE;
++
++		*reg += ((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
+ 		*bit = pin_num % RK3188_PULL_PINS_PER_REG;
+ 		*bit *= RK3188_PULL_BITS_PER_PIN;
+ 	} else {
+-		*reg = info->reg_base + RK3188_PULL_OFFSET - 4;
++		*regmap = info->regmap_base;
++		*reg = RK3399_PULL_GRF_OFFSET;
++
++		/* correct the offset, as we're starting with the 3rd bank */
++		*reg -= 0x20;
+ 		*reg += bank->bank_num * RK3188_PULL_BANK_STRIDE;
+ 		*reg += ((pin_num / RK3188_PULL_PINS_PER_REG) * 4);
+ 
+-		/*
+-		 * The bits in these registers have an inverse ordering
+-		 * with the lowest pin being in bits 15:14 and the highest
+-		 * pin in bits 1:0
+-		 */
+-		*bit = 7 - (pin_num % RK3188_PULL_PINS_PER_REG);
++		*bit = (pin_num % RK3188_PULL_PINS_PER_REG);
+ 		*bit *= RK3188_PULL_BITS_PER_PIN;
+ 	}
++
++	return 0;
++}
++
++static int rk3399_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++				       int pin_num, struct regmap **regmap,
++				       int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
++	int drv_num = (pin_num / 8);
++
++	/*  The bank0:16 and bank1:32 pins are located in PMU */
++	if ((bank->bank_num == 0) || (bank->bank_num == 1))
++		*regmap = info->regmap_pmu;
 +	else
-+		r8168_mac_ocp_modify(tp, 0xe614, 0x0700, 0x0400);
++		*regmap = info->regmap_base;
 +
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_63)
-+		r8168_mac_ocp_modify(tp, 0xe63e, 0x0c30, 0x0000);
++	*reg = bank->drv[drv_num].offset;
++	if ((bank->drv[drv_num].drv_type == DRV_TYPE_IO_1V8_3V0_AUTO) ||
++	    (bank->drv[drv_num].drv_type == DRV_TYPE_IO_3V3_ONLY))
++		*bit = (pin_num % 8) * 3;
 +	else
-+		r8168_mac_ocp_modify(tp, 0xe63e, 0x0c30, 0x0020);
++		*bit = (pin_num % 8) * 2;
 +
-+	r8168_mac_ocp_modify(tp, 0xc0b4, 0x0000, 0x000c);
-+	r8168_mac_ocp_modify(tp, 0xeb6a, 0x00ff, 0x0033);
-+	r8168_mac_ocp_modify(tp, 0xeb50, 0x03e0, 0x0040);
-+	r8168_mac_ocp_modify(tp, 0xe056, 0x00f0, 0x0030);
-+	r8168_mac_ocp_modify(tp, 0xe040, 0x1000, 0x0000);
-+	r8168_mac_ocp_modify(tp, 0xea1c, 0x0003, 0x0001);
-+	r8168_mac_ocp_modify(tp, 0xe0c0, 0x4f0f, 0x4403);
-+	r8168_mac_ocp_modify(tp, 0xe052, 0x0080, 0x0068);
-+	r8168_mac_ocp_modify(tp, 0xd430, 0x0fff, 0x047f);
++	return 0;
+ }
+ 
+ #define RK3568_PULL_PMU_OFFSET		0x20
+@@ -180,27 +1741,31 @@ static void rk3188_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
+ #define RK3568_PULL_PINS_PER_REG	8
+ #define RK3568_PULL_BANK_STRIDE		0x10
+ 
+-static void rk3568_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
+-					 int pin_num, void __iomem **reg,
+-					 u8 *bit)
++static int rk3568_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
+ {
+ 	struct rockchip_pinctrl *info = bank->drvdata;
+ 
+ 	if (bank->bank_num == 0) {
+-		*reg = info->reg_pmu + RK3568_PULL_PMU_OFFSET;
++		*regmap = info->regmap_pmu;
++		*reg = RK3568_PULL_PMU_OFFSET;
+ 		*reg += bank->bank_num * RK3568_PULL_BANK_STRIDE;
+ 		*reg += ((pin_num / RK3568_PULL_PINS_PER_REG) * 4);
+ 
+ 		*bit = pin_num % RK3568_PULL_PINS_PER_REG;
+ 		*bit *= RK3568_PULL_BITS_PER_PIN;
+ 	} else {
+-		*reg = info->reg_base + RK3568_PULL_GRF_OFFSET;
++		*regmap = info->regmap_base;
++		*reg = RK3568_PULL_GRF_OFFSET;
+ 		*reg += (bank->bank_num - 1) * RK3568_PULL_BANK_STRIDE;
+ 		*reg += ((pin_num / RK3568_PULL_PINS_PER_REG) * 4);
+ 
+ 		*bit = (pin_num % RK3568_PULL_PINS_PER_REG);
+ 		*bit *= RK3568_PULL_BITS_PER_PIN;
+ 	}
 +
-+	r8168_mac_ocp_modify(tp, 0xea1c, 0x0004, 0x0000);
-+	r8168_mac_ocp_modify(tp, 0xeb54, 0x0000, 0x0001);
-+	udelay(1);
-+	r8168_mac_ocp_modify(tp, 0xeb54, 0x0001, 0x0000);
-+	RTL_W16(tp, 0x1880, RTL_R16(tp, 0x1880) & ~0x0030);
++	return 0;
+ }
+ 
+ #define RK3568_DRV_PMU_OFFSET		0x70
+@@ -209,168 +1774,212 @@ static void rk3568_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
+ #define RK3568_DRV_PINS_PER_REG		2
+ #define RK3568_DRV_BANK_STRIDE		0x40
+ 
+-static void rk3568_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
+-					int pin_num, void __iomem **reg, u8 *bit)
++static int rk3568_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++				       int pin_num, struct regmap **regmap,
++				       int *reg, u8 *bit)
+ {
+ 	struct rockchip_pinctrl *info = bank->drvdata;
+ 
+ 	/* The first 32 pins of the first bank are located in PMU */
+ 	if (bank->bank_num == 0) {
+-		*reg = info->reg_pmu + RK3568_DRV_PMU_OFFSET;
++		*regmap = info->regmap_pmu;
++		*reg = RK3568_DRV_PMU_OFFSET;
+ 		*reg += ((pin_num / RK3568_DRV_PINS_PER_REG) * 4);
+ 
+ 		*bit = pin_num % RK3568_DRV_PINS_PER_REG;
+ 		*bit *= RK3568_DRV_BITS_PER_PIN;
+ 	} else {
+-		*reg = info->reg_base + RK3568_DRV_GRF_OFFSET;
++		*regmap = info->regmap_base;
++		*reg = RK3568_DRV_GRF_OFFSET;
+ 		*reg += (bank->bank_num - 1) * RK3568_DRV_BANK_STRIDE;
+ 		*reg += ((pin_num / RK3568_DRV_PINS_PER_REG) * 4);
+ 
+ 		*bit = (pin_num % RK3568_DRV_PINS_PER_REG);
+ 		*bit *= RK3568_DRV_BITS_PER_PIN;
+ 	}
 +
-+	r8168_mac_ocp_write(tp, 0xe098, 0xc302);
++	return 0;
+ }
+ 
+-static struct rockchip_mux_route_data rk3188_mux_route_data[] = {
+-	RK_MUXROUTE_SAME(0, RK_PD0, 1, 0xa0, BIT(16 + 11)), /* non-iomuxed emmc/flash pins on flash-dqs */
+-	RK_MUXROUTE_SAME(0, RK_PD0, 2, 0xa0, BIT(16 + 11) | BIT(11)), /* non-iomuxed emmc/flash pins on emmc-clk */
++#define RK3588_PMU1_IOC_REG		(0x0000)
++#define RK3588_PMU2_IOC_REG		(0x4000)
++#define RK3588_BUS_IOC_REG		(0x8000)
++#define RK3588_VCCIO1_4_IOC_REG		(0x9000)
++#define RK3588_VCCIO3_5_IOC_REG		(0xA000)
++#define RK3588_VCCIO2_IOC_REG		(0xB000)
++#define RK3588_VCCIO6_IOC_REG		(0xC000)
++#define RK3588_EMMC_IOC_REG		(0xD000)
 +
-+	rtl_loop_wait_low(tp, &rtl_mac_ocp_e00e_cond, 1000, 10);
++static const u32 rk3588_ds_regs[][2] = {
++	{RK_GPIO0_A0, RK3588_PMU1_IOC_REG + 0x0010},
++	{RK_GPIO0_A4, RK3588_PMU1_IOC_REG + 0x0014},
++	{RK_GPIO0_B0, RK3588_PMU1_IOC_REG + 0x0018},
++	{RK_GPIO0_B4, RK3588_PMU2_IOC_REG + 0x0014},
++	{RK_GPIO0_C0, RK3588_PMU2_IOC_REG + 0x0018},
++	{RK_GPIO0_C4, RK3588_PMU2_IOC_REG + 0x001C},
++	{RK_GPIO0_D0, RK3588_PMU2_IOC_REG + 0x0020},
++	{RK_GPIO0_D4, RK3588_PMU2_IOC_REG + 0x0024},
++	{RK_GPIO1_A0, RK3588_VCCIO1_4_IOC_REG + 0x0020},
++	{RK_GPIO1_A4, RK3588_VCCIO1_4_IOC_REG + 0x0024},
++	{RK_GPIO1_B0, RK3588_VCCIO1_4_IOC_REG + 0x0028},
++	{RK_GPIO1_B4, RK3588_VCCIO1_4_IOC_REG + 0x002C},
++	{RK_GPIO1_C0, RK3588_VCCIO1_4_IOC_REG + 0x0030},
++	{RK_GPIO1_C4, RK3588_VCCIO1_4_IOC_REG + 0x0034},
++	{RK_GPIO1_D0, RK3588_VCCIO1_4_IOC_REG + 0x0038},
++	{RK_GPIO1_D4, RK3588_VCCIO1_4_IOC_REG + 0x003C},
++	{RK_GPIO2_A0, RK3588_EMMC_IOC_REG + 0x0040},
++	{RK_GPIO2_A4, RK3588_VCCIO3_5_IOC_REG + 0x0044},
++	{RK_GPIO2_B0, RK3588_VCCIO3_5_IOC_REG + 0x0048},
++	{RK_GPIO2_B4, RK3588_VCCIO3_5_IOC_REG + 0x004C},
++	{RK_GPIO2_C0, RK3588_VCCIO3_5_IOC_REG + 0x0050},
++	{RK_GPIO2_C4, RK3588_VCCIO3_5_IOC_REG + 0x0054},
++	{RK_GPIO2_D0, RK3588_EMMC_IOC_REG + 0x0058},
++	{RK_GPIO2_D4, RK3588_EMMC_IOC_REG + 0x005C},
++	{RK_GPIO3_A0, RK3588_VCCIO3_5_IOC_REG + 0x0060},
++	{RK_GPIO3_A4, RK3588_VCCIO3_5_IOC_REG + 0x0064},
++	{RK_GPIO3_B0, RK3588_VCCIO3_5_IOC_REG + 0x0068},
++	{RK_GPIO3_B4, RK3588_VCCIO3_5_IOC_REG + 0x006C},
++	{RK_GPIO3_C0, RK3588_VCCIO3_5_IOC_REG + 0x0070},
++	{RK_GPIO3_C4, RK3588_VCCIO3_5_IOC_REG + 0x0074},
++	{RK_GPIO3_D0, RK3588_VCCIO3_5_IOC_REG + 0x0078},
++	{RK_GPIO3_D4, RK3588_VCCIO3_5_IOC_REG + 0x007C},
++	{RK_GPIO4_A0, RK3588_VCCIO6_IOC_REG + 0x0080},
++	{RK_GPIO4_A4, RK3588_VCCIO6_IOC_REG + 0x0084},
++	{RK_GPIO4_B0, RK3588_VCCIO6_IOC_REG + 0x0088},
++	{RK_GPIO4_B4, RK3588_VCCIO6_IOC_REG + 0x008C},
++	{RK_GPIO4_C0, RK3588_VCCIO6_IOC_REG + 0x0090},
++	{RK_GPIO4_C2, RK3588_VCCIO3_5_IOC_REG + 0x0090},
++	{RK_GPIO4_C4, RK3588_VCCIO3_5_IOC_REG + 0x0094},
++	{RK_GPIO4_D0, RK3588_VCCIO2_IOC_REG + 0x0098},
++	{RK_GPIO4_D4, RK3588_VCCIO2_IOC_REG + 0x009C},
+ };
+ 
+-static bool rockchip_get_mux_route(struct rockchip_pin_bank *bank, int pin,
+-				   int mux, u32 *loc, u32 *reg, u32 *value)
++static const u32 rk3588_p_regs[][2] = {
++	{RK_GPIO0_A0, RK3588_PMU1_IOC_REG + 0x0020},
++	{RK_GPIO0_B0, RK3588_PMU1_IOC_REG + 0x0024},
++	{RK_GPIO0_B5, RK3588_PMU2_IOC_REG + 0x0028},
++	{RK_GPIO0_C0, RK3588_PMU2_IOC_REG + 0x002C},
++	{RK_GPIO0_D0, RK3588_PMU2_IOC_REG + 0x0030},
++	{RK_GPIO1_A0, RK3588_VCCIO1_4_IOC_REG + 0x0110},
++	{RK_GPIO1_B0, RK3588_VCCIO1_4_IOC_REG + 0x0114},
++	{RK_GPIO1_C0, RK3588_VCCIO1_4_IOC_REG + 0x0118},
++	{RK_GPIO1_D0, RK3588_VCCIO1_4_IOC_REG + 0x011C},
++	{RK_GPIO2_A0, RK3588_EMMC_IOC_REG + 0x0120},
++	{RK_GPIO2_A6, RK3588_VCCIO3_5_IOC_REG + 0x0120},
++	{RK_GPIO2_B0, RK3588_VCCIO3_5_IOC_REG + 0x0124},
++	{RK_GPIO2_C0, RK3588_VCCIO3_5_IOC_REG + 0x0128},
++	{RK_GPIO2_D0, RK3588_EMMC_IOC_REG + 0x012C},
++	{RK_GPIO3_A0, RK3588_VCCIO3_5_IOC_REG + 0x0130},
++	{RK_GPIO3_B0, RK3588_VCCIO3_5_IOC_REG + 0x0134},
++	{RK_GPIO3_C0, RK3588_VCCIO3_5_IOC_REG + 0x0138},
++	{RK_GPIO3_D0, RK3588_VCCIO3_5_IOC_REG + 0x013C},
++	{RK_GPIO4_A0, RK3588_VCCIO6_IOC_REG + 0x0140},
++	{RK_GPIO4_B0, RK3588_VCCIO6_IOC_REG + 0x0144},
++	{RK_GPIO4_C0, RK3588_VCCIO6_IOC_REG + 0x0148},
++	{RK_GPIO4_C2, RK3588_VCCIO3_5_IOC_REG + 0x0148},
++	{RK_GPIO4_D0, RK3588_VCCIO2_IOC_REG + 0x014C},
++};
 +
-+	rtl_disable_rxdvgate(tp);
-+}
++static const u32 rk3588_smt_regs[][2] = {
++	{RK_GPIO0_A0, RK3588_PMU1_IOC_REG + 0x0030},
++	{RK_GPIO0_B0, RK3588_PMU1_IOC_REG + 0x0034},
++	{RK_GPIO0_B5, RK3588_PMU2_IOC_REG + 0x0040},
++	{RK_GPIO0_C0, RK3588_PMU2_IOC_REG + 0x0044},
++	{RK_GPIO0_D0, RK3588_PMU2_IOC_REG + 0x0048},
++	{RK_GPIO1_A0, RK3588_VCCIO1_4_IOC_REG + 0x0210},
++	{RK_GPIO1_B0, RK3588_VCCIO1_4_IOC_REG + 0x0214},
++	{RK_GPIO1_C0, RK3588_VCCIO1_4_IOC_REG + 0x0218},
++	{RK_GPIO1_D0, RK3588_VCCIO1_4_IOC_REG + 0x021C},
++	{RK_GPIO2_A0, RK3588_EMMC_IOC_REG + 0x0220},
++	{RK_GPIO2_A6, RK3588_VCCIO3_5_IOC_REG + 0x0220},
++	{RK_GPIO2_B0, RK3588_VCCIO3_5_IOC_REG + 0x0224},
++	{RK_GPIO2_C0, RK3588_VCCIO3_5_IOC_REG + 0x0228},
++	{RK_GPIO2_D0, RK3588_EMMC_IOC_REG + 0x022C},
++	{RK_GPIO3_A0, RK3588_VCCIO3_5_IOC_REG + 0x0230},
++	{RK_GPIO3_B0, RK3588_VCCIO3_5_IOC_REG + 0x0234},
++	{RK_GPIO3_C0, RK3588_VCCIO3_5_IOC_REG + 0x0238},
++	{RK_GPIO3_D0, RK3588_VCCIO3_5_IOC_REG + 0x023C},
++	{RK_GPIO4_A0, RK3588_VCCIO6_IOC_REG + 0x0240},
++	{RK_GPIO4_B0, RK3588_VCCIO6_IOC_REG + 0x0244},
++	{RK_GPIO4_C0, RK3588_VCCIO6_IOC_REG + 0x0248},
++	{RK_GPIO4_C2, RK3588_VCCIO3_5_IOC_REG + 0x0248},
++	{RK_GPIO4_D0, RK3588_VCCIO2_IOC_REG + 0x024C},
++};
 +
-+static void rtl_hw_start_8125a_2(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8125a_2[] = {
-+		{ 0x04, 0xffff, 0xd000 },
-+		{ 0x0a, 0xffff, 0x8653 },
-+		{ 0x23, 0xffff, 0xab66 },
-+		{ 0x20, 0xffff, 0x9455 },
-+		{ 0x21, 0xffff, 0x99ff },
-+		{ 0x29, 0xffff, 0xfe04 },
++#define RK3588_PULL_BITS_PER_PIN		2
++#define RK3588_PULL_PINS_PER_REG		8
 +
-+		{ 0x44, 0xffff, 0xd000 },
-+		{ 0x4a, 0xffff, 0x8653 },
-+		{ 0x63, 0xffff, 0xab66 },
-+		{ 0x60, 0xffff, 0x9455 },
-+		{ 0x61, 0xffff, 0x99ff },
-+		{ 0x69, 0xffff, 0xfe04 },
-+	};
++static int rk3588_calc_pull_reg_and_bit(struct rockchip_pin_bank *bank,
++					int pin_num, struct regmap **regmap,
++					int *reg, u8 *bit)
+ {
+ 	struct rockchip_pinctrl *info = bank->drvdata;
+-	struct rockchip_pin_ctrl *ctrl = info->ctrl;
+-	struct rockchip_mux_route_data *data = NULL;
++	u8 bank_num = bank->bank_num;
++	u32 pin = bank_num * 32 + pin_num;
+ 	int i;
+ 
+-	for (i = 0; i < ctrl->niomux_routes; i++) {
+-		data = &ctrl->iomux_routes[i];
+-		if ((data->bank_num == bank->bank_num) &&
+-		    (data->pin == pin) && (data->func == mux))
+-			break;
++	for (i = ARRAY_SIZE(rk3588_p_regs) - 1; i >= 0; i--) {
++		if (pin >= rk3588_p_regs[i][0]) {
++			*reg = rk3588_p_regs[i][1];
++			*regmap = info->regmap_base;
++			*bit = pin_num % RK3588_PULL_PINS_PER_REG;
++			*bit *= RK3588_PULL_BITS_PER_PIN;
++			return 0;
++		}
+ 	}
+ 
+-	if (i >= ctrl->niomux_routes)
+-		return false;
+-
+-	*loc = data->route_location;
+-	*reg = data->route_offset;
+-	*value = data->route_val;
+-
+-	return true;
++	return -EINVAL;
+ }
+ 
+-static int rockchip_pinctrl_set_func(struct rockchip_pin_bank *bank, int pin,
+-				     int mux)
++#define RK3588_DRV_BITS_PER_PIN		4
++#define RK3588_DRV_PINS_PER_REG		4
 +
-+	rtl_set_def_aspm_entry_latency(tp);
-+
-+	/* disable aspm and clock request before access ephy */
-+	rtl_hw_aspm_clkreq_enable(tp, false);
-+	rtl_ephy_init(tp, e_info_8125a_2);
-+
-+	rtl_hw_start_8125_common(tp);
-+	rtl_hw_aspm_clkreq_enable(tp, true);
-+}
-+
-+static void rtl_hw_start_8125b(struct rtl8169_private *tp)
-+{
-+	static const struct ephy_info e_info_8125b[] = {
-+		{ 0x0b, 0xffff, 0xa908 },
-+		{ 0x1e, 0xffff, 0x20eb },
-+		{ 0x4b, 0xffff, 0xa908 },
-+		{ 0x5e, 0xffff, 0x20eb },
-+		{ 0x22, 0x0030, 0x0020 },
-+		{ 0x62, 0x0030, 0x0020 },
-+	};
-+
-+	rtl_set_def_aspm_entry_latency(tp);
-+	rtl_hw_aspm_clkreq_enable(tp, false);
-+
-+	rtl_ephy_init(tp, e_info_8125b);
-+	rtl_hw_start_8125_common(tp);
-+
-+	rtl_hw_aspm_clkreq_enable(tp, true);
-+}
-+
-+static void rtl_hw_config(struct rtl8169_private *tp)
-+{
-+	static const rtl_generic_fct hw_configs[] = {
-+		[RTL_GIGA_MAC_VER_07] = rtl_hw_start_8102e_1,
-+		[RTL_GIGA_MAC_VER_08] = rtl_hw_start_8102e_3,
-+		[RTL_GIGA_MAC_VER_09] = rtl_hw_start_8102e_2,
-+		[RTL_GIGA_MAC_VER_10] = NULL,
-+		[RTL_GIGA_MAC_VER_11] = rtl_hw_start_8168b,
-+		[RTL_GIGA_MAC_VER_14] = rtl_hw_start_8401,
-+		[RTL_GIGA_MAC_VER_17] = rtl_hw_start_8168b,
-+		[RTL_GIGA_MAC_VER_18] = rtl_hw_start_8168cp_1,
-+		[RTL_GIGA_MAC_VER_19] = rtl_hw_start_8168c_1,
-+		[RTL_GIGA_MAC_VER_20] = rtl_hw_start_8168c_2,
-+		[RTL_GIGA_MAC_VER_21] = rtl_hw_start_8168c_2,
-+		[RTL_GIGA_MAC_VER_22] = rtl_hw_start_8168c_4,
-+		[RTL_GIGA_MAC_VER_23] = rtl_hw_start_8168cp_2,
-+		[RTL_GIGA_MAC_VER_24] = rtl_hw_start_8168cp_3,
-+		[RTL_GIGA_MAC_VER_25] = rtl_hw_start_8168d,
-+		[RTL_GIGA_MAC_VER_26] = rtl_hw_start_8168d,
-+		[RTL_GIGA_MAC_VER_28] = rtl_hw_start_8168d_4,
-+		[RTL_GIGA_MAC_VER_29] = rtl_hw_start_8105e_1,
-+		[RTL_GIGA_MAC_VER_30] = rtl_hw_start_8105e_2,
-+		[RTL_GIGA_MAC_VER_31] = rtl_hw_start_8168d,
-+		[RTL_GIGA_MAC_VER_32] = rtl_hw_start_8168e_1,
-+		[RTL_GIGA_MAC_VER_33] = rtl_hw_start_8168e_1,
-+		[RTL_GIGA_MAC_VER_34] = rtl_hw_start_8168e_2,
-+		[RTL_GIGA_MAC_VER_35] = rtl_hw_start_8168f_1,
-+		[RTL_GIGA_MAC_VER_36] = rtl_hw_start_8168f_1,
-+		[RTL_GIGA_MAC_VER_37] = rtl_hw_start_8402,
-+		[RTL_GIGA_MAC_VER_38] = rtl_hw_start_8411,
-+		[RTL_GIGA_MAC_VER_39] = rtl_hw_start_8106,
-+		[RTL_GIGA_MAC_VER_40] = rtl_hw_start_8168g_1,
-+		[RTL_GIGA_MAC_VER_42] = rtl_hw_start_8168g_2,
-+		[RTL_GIGA_MAC_VER_43] = rtl_hw_start_8168g_2,
-+		[RTL_GIGA_MAC_VER_44] = rtl_hw_start_8411_2,
-+		[RTL_GIGA_MAC_VER_46] = rtl_hw_start_8168h_1,
-+		[RTL_GIGA_MAC_VER_48] = rtl_hw_start_8168h_1,
-+		[RTL_GIGA_MAC_VER_51] = rtl_hw_start_8168ep_3,
-+		[RTL_GIGA_MAC_VER_52] = rtl_hw_start_8117,
-+		[RTL_GIGA_MAC_VER_53] = rtl_hw_start_8117,
-+		[RTL_GIGA_MAC_VER_61] = rtl_hw_start_8125a_2,
-+		[RTL_GIGA_MAC_VER_63] = rtl_hw_start_8125b,
-+	};
-+
-+	if (hw_configs[tp->mac_version])
-+		hw_configs[tp->mac_version](tp);
-+}
-+
-+static void rtl_hw_start_8125(struct rtl8169_private *tp)
-+{
++static int rk3588_calc_drv_reg_and_bit(struct rockchip_pin_bank *bank,
++				       int pin_num, struct regmap **regmap,
++				       int *reg, u8 *bit)
+ {
+ 	struct rockchip_pinctrl *info = bank->drvdata;
+-	void __iomem *base, *reg;
+-	u8 bit;
+-	u32 data, route_location, route_reg, route_val;
+-	int iomux_num = (pin / 8);
+-	int mux_type;
+-	int mask;
+-
+-	base = (bank->iomux[iomux_num].type & IOMUX_SOURCE_PMU)
+-				? info->reg_pmu : info->reg_base;
+-
+-	/* get basic quadrupel of mux registers and the correct reg inside */
+-	mux_type = bank->iomux[iomux_num].type;
+-	reg = base + bank->iomux[iomux_num].offset;
+-
+-	dev_dbg(info->pctl_dev.dev, "setting func of GPIO%d-%d to %d\n",
+-		 bank->bank_num, pin, mux);
+-
+-	if (mux_type & IOMUX_WIDTH_4BIT) {
+-		if ((pin % 8) >= 4)
+-			reg += 0x4;
+-		bit = (pin % 4) * 4;
+-		mask = 0xf;
+-	} else if (mux_type & IOMUX_WIDTH_3BIT) {
+-		if ((pin % 8) >= 5)
+-			reg += 0x4;
+-		bit = (pin % 8 % 5) * 3;
+-		mask = 0x7;
+-	} else {
+-		bit = (pin % 8) * 2;
+-		mask = 0x3;
+-	}
+-
+-	if (bank->route_mask & BIT(pin)) {
+-		if (rockchip_get_mux_route(bank, pin, mux, &route_location,
+-					   &route_reg, &route_val)) {
+-			void __iomem  *route = base;
+-
+-			/* handle special locations */
+-			switch (route_location) {
+-			case ROCKCHIP_ROUTE_PMU:
+-				route = info->reg_pmu;
+-				break;
+-			case ROCKCHIP_ROUTE_GRF:
+-				route = info->reg_base;
+-				break;
+-			}
++	u8 bank_num = bank->bank_num;
++	u32 pin = bank_num * 32 + pin_num;
 +	int i;
+ 
+-			writel(route_val, route + route_reg);
++	for (i = ARRAY_SIZE(rk3588_ds_regs) - 1; i >= 0; i--) {
++		if (pin >= rk3588_ds_regs[i][0]) {
++			*reg = rk3588_ds_regs[i][1];
++			*regmap = info->regmap_base;
++			*bit = pin_num % RK3588_DRV_PINS_PER_REG;
++			*bit *= RK3588_DRV_BITS_PER_PIN;
++			return 0;
+ 		}
+ 	}
+ 
+-	data = 3 << (bit + 16);
+-	data |= (mux & 3) << bit;
+-	writel(data, reg);
+-
+-	return 0;
++	return -EINVAL;
+ }
+ 
+-static int rockchip_pinctrl_set_pull(struct rockchip_pin_bank *bank,
+-				     int pin_num, int pull)
++#define RK3588_SMT_BITS_PER_PIN		1
++#define RK3588_SMT_PINS_PER_REG		8
 +
-+	/* disable interrupt coalescing */
-+	for (i = 0xa00; i < 0xb00; i += 4)
-+		RTL_W32(tp, i, 0);
-+
-+	rtl_hw_config(tp);
-+}
-+
-+static void rtl_hw_start_8168(struct rtl8169_private *tp)
-+{
-+	if (rtl_is_8168evl_up(tp))
-+		RTL_W8(tp, MaxTxPacketSize, EarlySize);
-+	else
-+		RTL_W8(tp, MaxTxPacketSize, TxPacketMax);
-+
-+	rtl_hw_config(tp);
-+
-+	/* disable interrupt coalescing */
-+	RTL_W16(tp, IntrMitigate, 0x0000);
-+}
-+
-+static void rtl_hw_start_8169(struct rtl8169_private *tp)
-+{
-+	RTL_W8(tp, EarlyTxThres, NoEarlyTx);
-+
-+	tp->cp_cmd |= PCIMulRW;
-+
-+	if (tp->mac_version == RTL_GIGA_MAC_VER_02 ||
-+	    tp->mac_version == RTL_GIGA_MAC_VER_03)
-+		tp->cp_cmd |= EnAnaPLL;
-+
-+	RTL_W16(tp, CPlusCmd, tp->cp_cmd);
-+
-+	rtl8169_set_magic_reg(tp);
-+
-+	/* disable interrupt coalescing */
-+	RTL_W16(tp, IntrMitigate, 0x0000);
-+}
-+
-+static void rtl_hw_start(struct  rtl8169_private *tp)
-+{
-+	rtl_unlock_config_regs(tp);
-+
-+	RTL_W16(tp, CPlusCmd, tp->cp_cmd);
-+
-+	if (tp->mac_version <= RTL_GIGA_MAC_VER_06)
-+		rtl_hw_start_8169(tp);
-+	else if (rtl_is_8125(tp))
-+		rtl_hw_start_8125(tp);
-+	else
-+		rtl_hw_start_8168(tp);
-+
-+	rtl_enable_exit_l1(tp);
-+	rtl_set_rx_max_size(tp);
-+	rtl_set_rx_tx_desc_registers(tp);
-+	rtl_lock_config_regs(tp);
-+
-+	/* Initially a 10 us delay. Turned it into a PCI commit. - FR */
-+	rtl_pci_commit(tp);
-+
-+	RTL_W8(tp, ChipCmd, CmdTxEnb | CmdRxEnb);
-+	rtl_init_rxcfg(tp);
-+	rtl_set_tx_config_registers(tp);
-+	rtl_set_rx_mode(tp);
-+}
-+
-+static void rtl8169_cleanup(struct rtl8169_private *tp)
-+{
-+	rtl_rx_close(tp);
-+
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_28:
-+	case RTL_GIGA_MAC_VER_31:
-+		rtl_loop_wait_low(tp, &rtl_npq_cond, 20, 2000);
-+		break;
-+	case RTL_GIGA_MAC_VER_34 ... RTL_GIGA_MAC_VER_38:
-+		RTL_W8(tp, ChipCmd, RTL_R8(tp, ChipCmd) | StopReq);
-+		rtl_loop_wait_high(tp, &rtl_txcfg_empty_cond, 100, 666);
-+		break;
-+	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_63:
-+		rtl_enable_rxdvgate(tp);
-+		udelay(2000);
-+		break;
-+	default:
-+		RTL_W8(tp, ChipCmd, RTL_R8(tp, ChipCmd) | StopReq);
-+		udelay(100);
-+		break;
++static int rk3588_calc_schmitt_reg_and_bit(struct rockchip_pin_bank *bank,
++					   int pin_num,
++					   struct regmap **regmap,
++					   int *reg, u8 *bit)
+ {
+ 	struct rockchip_pinctrl *info = bank->drvdata;
+-	struct rockchip_pin_ctrl *ctrl = info->ctrl;
+-	void __iomem *reg;
+-	u8 bit;
+-	u32 data;
+-
+-	dev_dbg(info->pctl_dev.dev, "setting pull of GPIO%d-%d to %d\n",
+-		 bank->bank_num, pin_num, pull);
+-
+-	/* rk3066b doesn't support any pulls */
+-	if (ctrl->type == RK3066B)
+-		return pull ? -EINVAL : 0;
+-
+-	ctrl->pull_calc_reg(bank, pin_num, &reg, &bit);
+-
+-	switch (ctrl->type) {
+-	case RK2928:
+-		data = BIT(bit + 16);
+-		if (pull == RK_BIAS_DISABLE)
+-			data |= BIT(bit);
+-		writel(data, reg);
+-		break;
+-	case RK3188:
+-	case RK3568:
+-		/*
+-		 * In the TRM, pull-up being 1 for everything except the GPIO0_D0-D6,
+-		 * where that pull up value becomes 3.
+-		 */
+-		if (ctrl->type == RK3568 &&
+-		    bank->bank_num == 0 &&
+-		    pin_num >= 27 &&
+-		    pin_num <= 30 &&
+-		    pull == RK_BIAS_PULL_UP)
+-			pull = 3;
++	u8 bank_num = bank->bank_num;
++	u32 pin = bank_num * 32 + pin_num;
++	int i;
+ 
+-		data = ((1 << RK3188_PULL_BITS_PER_PIN) - 1) << (bit + 16);
+-		data |= pull << bit;
+-		writel(data, reg);
+-		break;
+-	default:
+-		dev_err(info->pctl_dev.dev, "unsupported pinctrl type\n");
+-		return -EINVAL;
++	for (i = ARRAY_SIZE(rk3588_smt_regs) - 1; i >= 0; i--) {
++		if (pin >= rk3588_smt_regs[i][0]) {
++			*reg = rk3588_smt_regs[i][1];
++			*regmap = info->regmap_base;
++			*bit = pin_num % RK3588_SMT_PINS_PER_REG;
++			*bit *= RK3588_SMT_BITS_PER_PIN;
++			return 0;
++		}
+ 	}
+ 
+-	return 0;
++	return -EINVAL;
+ }
+ 
+ static int rockchip_perpin_drv_list[DRV_TYPE_MAX][8] = {
+@@ -381,33 +1990,40 @@ static int rockchip_perpin_drv_list[DRV_TYPE_MAX][8] = {
+ 	{ 4, 7, 10, 13, 16, 19, 22, 26 }
+ };
+ 
+-#define RK3288_DRV_BITS_PER_PIN		2
+-#define RK3399_DRV_3BITS_PER_PIN	3
+-
+ static int rockchip_set_drive_perpin(struct rockchip_pin_bank *bank,
+ 				     int pin_num, int strength)
+ {
+ 	struct rockchip_pinctrl *info = bank->drvdata;
+ 	struct rockchip_pin_ctrl *ctrl = info->ctrl;
+-	int ret, i;
+-	void __iomem *reg;
+-	u32 data, rmask, rmask_bits, temp, val;
++	struct device *dev = info->dev;
++	struct regmap *regmap;
++	int reg, ret, i;
++	u32 data, rmask, rmask_bits, temp;
+ 	u8 bit;
+ 	int drv_type = bank->drv[pin_num / 8].drv_type;
+ 
+-	if (!ctrl->drv_calc_reg)
+-		return -ENOTSUPP;
+-
+-	dev_dbg(info->pctl_dev.dev, "setting drive of GPIO%d-%d to %d\n",
++	dev_dbg(dev, "setting drive of GPIO%d-%d to %d\n",
+ 		bank->bank_num, pin_num, strength);
+ 
+-	ctrl->drv_calc_reg(bank, pin_num, &reg, &bit);
+-	if (ctrl->type == RK3568) {
++	ret = ctrl->drv_calc_reg(bank, pin_num, &regmap, &reg, &bit);
++	if (ret)
++		return ret;
++	if (ctrl->type == RK3588) {
++		rmask_bits = RK3588_DRV_BITS_PER_PIN;
++		ret = strength;
++		goto config;
++	} else if (ctrl->type == RK3568) {
+ 		rmask_bits = RK3568_DRV_BITS_PER_PIN;
+ 		ret = (1 << (strength + 1)) - 1;
+ 		goto config;
+ 	}
+ 
++	if (ctrl->type == RV1126) {
++		rmask_bits = RV1126_DRV_BITS_PER_PIN;
++		ret = strength;
++		goto config;
 +	}
 +
-+	rtl_hw_reset(tp);
-+}
+ 	ret = -EINVAL;
+ 	for (i = 0; i < ARRAY_SIZE(rockchip_perpin_drv_list[drv_type]); i++) {
+ 		if (rockchip_perpin_drv_list[drv_type][i] == strength) {
+@@ -420,8 +2036,7 @@ static int rockchip_set_drive_perpin(struct rockchip_pin_bank *bank,
+ 	}
+ 
+ 	if (ret < 0) {
+-		dev_err(info->pctl_dev.dev, "unsupported driver strength %d\n",
+-			strength);
++		dev_err(dev, "unsupported driver strength %d\n", strength);
+ 		return ret;
+ 	}
+ 
+@@ -444,20 +2059,14 @@ static int rockchip_set_drive_perpin(struct rockchip_pin_bank *bank,
+ 
+ 			rmask = BIT(15) | BIT(31);
+ 			data |= BIT(31);
+-
+-			val = readl(reg);
+-			val &= ~rmask;
+-			val |= data & rmask;
+-			writel(val, reg);
++			ret = regmap_update_bits(regmap, reg, rmask, data);
++			if (ret)
++				return ret;
+ 
+ 			rmask = 0x3 | (0x3 << 16);
+ 			temp |= (0x3 << 16);
+ 			reg += 0x4;
+-
+-			val = readl(reg);
+-			val &= ~rmask;
+-			val |= temp & rmask;
+-			writel(val, reg);
++			ret = regmap_update_bits(regmap, reg, rmask, temp);
+ 
+ 			return ret;
+ 		case 18 ... 21:
+@@ -466,7 +2075,7 @@ static int rockchip_set_drive_perpin(struct rockchip_pin_bank *bank,
+ 			bit -= 16;
+ 			break;
+ 		default:
+-			dev_err(info->pctl_dev.dev, "unsupported bit: %d for pinctrl drive type: %d\n",
++			dev_err(dev, "unsupported bit: %d for pinctrl drive type: %d\n",
+ 				bit, drv_type);
+ 			return -EINVAL;
+ 		}
+@@ -477,8 +2086,7 @@ static int rockchip_set_drive_perpin(struct rockchip_pin_bank *bank,
+ 		rmask_bits = RK3288_DRV_BITS_PER_PIN;
+ 		break;
+ 	default:
+-		dev_err(info->pctl_dev.dev, "unsupported pinctrl drive type: %d\n",
+-			drv_type);
++		dev_err(dev, "unsupported pinctrl drive type: %d\n", drv_type);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -488,136 +2096,145 @@ config:
+ 	rmask = data | (data >> 16);
+ 	data |= (ret << bit);
+ 
+-	val = readl(reg);
+-	val &= ~rmask;
+-	val |= data & rmask;
+-	writel(val, reg);
++	ret = regmap_update_bits(regmap, reg, rmask, data);
+ 
+ 	return ret;
+ }
+ 
+-static int rockchip_pinctrl_set_state(struct pinctrl_device *pdev,
+-				      struct device_node *np)
++static int rockchip_set_pull(struct rockchip_pin_bank *bank,
++					int pin_num, int pull)
+ {
+-	struct rockchip_pinctrl *info = to_rockchip_pinctrl(pdev);
+-	const __be32 *list;
+-	int i, size, ret;
+-	int bank_num, pin_num, func;
++	struct rockchip_pinctrl *info = bank->drvdata;
++	struct rockchip_pin_ctrl *ctrl = info->ctrl;
++	struct device *dev = info->dev;
++	struct regmap *regmap;
++	int reg, ret;
++	u8 bit;
++	u32 data, rmask;
+ 
+-	/*
+-	 * the binding format is rockchip,pins = <bank pin mux CONFIG>,
+-	 * do sanity check and calculate pins number
+-	 */
+-	list = of_get_property(np, "rockchip,pins", &size);
+-	size /= sizeof(*list);
++	dev_dbg(dev, "setting pull of GPIO%d-%d to %d\n", bank->bank_num, pin_num, pull);
+ 
+-	if (!size || size % 4) {
+-		dev_err(pdev->dev, "wrong pins number or pins and configs should be by 4\n");
++	/* rk3066b does support any pulls */
++	if (ctrl->type == RK3066B)
++		return pull ? -EINVAL : 0;
 +
-+static void rtl_read_mac_address(struct rtl8169_private *tp,
-+				 u8 mac_addr[ETH_ALEN])
-+{
-+	/* Get MAC address */
-+	if (rtl_is_8168evl_up(tp) && tp->mac_version != RTL_GIGA_MAC_VER_34) {
-+		u32 value;
-+
-+		value = rtl_eri_read(tp, 0xe0);
-+		put_unaligned_le32(value, mac_addr);
-+		value = rtl_eri_read(tp, 0xe4);
-+		put_unaligned_le16(value, mac_addr + 4);
-+	} else if (rtl_is_8125(tp)) {
-+		rtl_read_mac_from_reg(tp, mac_addr, MAC0_BKP);
-+	}
-+}
-+
-+DECLARE_RTL_COND(rtl_link_list_ready_cond)
-+{
-+	return RTL_R8(tp, MCU) & LINK_LIST_RDY;
-+}
-+
-+static void r8168g_wait_ll_share_fifo_ready(struct rtl8169_private *tp)
-+{
-+	rtl_loop_wait_high(tp, &rtl_link_list_ready_cond, 100, 42);
-+}
-+
-+static void rtl_hw_init_8168g(struct rtl8169_private *tp)
-+{
-+	rtl_enable_rxdvgate(tp);
-+
-+	RTL_W8(tp, ChipCmd, RTL_R8(tp, ChipCmd) & ~(CmdTxEnb | CmdRxEnb));
-+	mdelay(1);
-+	RTL_W8(tp, MCU, RTL_R8(tp, MCU) & ~NOW_IS_OOB);
-+
-+	r8168_mac_ocp_modify(tp, 0xe8de, BIT(14), 0);
-+	r8168g_wait_ll_share_fifo_ready(tp);
-+
-+	r8168_mac_ocp_modify(tp, 0xe8de, 0, BIT(15));
-+	r8168g_wait_ll_share_fifo_ready(tp);
-+}
-+
-+static void rtl_hw_init_8125(struct rtl8169_private *tp)
-+{
-+	rtl_enable_rxdvgate(tp);
-+
-+	RTL_W8(tp, ChipCmd, RTL_R8(tp, ChipCmd) & ~(CmdTxEnb | CmdRxEnb));
-+	mdelay(1);
-+	RTL_W8(tp, MCU, RTL_R8(tp, MCU) & ~NOW_IS_OOB);
-+
-+	r8168_mac_ocp_modify(tp, 0xe8de, BIT(14), 0);
-+	r8168g_wait_ll_share_fifo_ready(tp);
-+
-+	r8168_mac_ocp_write(tp, 0xc0aa, 0x07d0);
-+	r8168_mac_ocp_write(tp, 0xc0a6, 0x0150);
-+	r8168_mac_ocp_write(tp, 0xc01e, 0x5555);
-+	r8168g_wait_ll_share_fifo_ready(tp);
-+}
-+
-+static void rtl_hw_initialize(struct rtl8169_private *tp)
-+{
-+	switch (tp->mac_version) {
-+	case RTL_GIGA_MAC_VER_51 ... RTL_GIGA_MAC_VER_53:
-+		rtl8168ep_stop_cmac(tp);
-+		fallthrough;
-+	case RTL_GIGA_MAC_VER_40 ... RTL_GIGA_MAC_VER_48:
-+		rtl_hw_init_8168g(tp);
-+		break;
-+	case RTL_GIGA_MAC_VER_61 ... RTL_GIGA_MAC_VER_63:
-+		rtl_hw_init_8125(tp);
-+		break;
-+	default:
-+		break;
-+	}
-+}
-+
-+static int rtl8169_init_dev(struct eth_device *edev)
-+{
-+	struct rtl8169_private *tp = edev->priv;
-+	int ret;
-+
-+	rtl_request_firmware(tp);
-+
-+	pci_set_master(tp->pci_dev);
-+
-+	tp->phydev = get_phy_device(&tp->miibus, 0);
-+	if (IS_ERR(tp->phydev))
-+		return PTR_ERR(tp->phydev);
-+
-+	ret = phy_register_device(tp->phydev);
++	ret = ctrl->pull_calc_reg(bank, pin_num, &regmap, &reg, &bit);
 +	if (ret)
 +		return ret;
 +
-+	rtl8169_init_phy(tp);
-+
-+	return 0;
-+}
-+
-+#define ETH_ZLEN        60              /* Min. octets in frame sans FCS */
-+#define PKT_BUF_SIZE   1536
-+
-+static void rtl8169_init_ring(struct rtl8169_private *tp)
-+{
-+	struct eth_device *edev = &tp->edev;
-+	int i;
-+
-+	tp->cur_rx = tp->cur_tx = 0;
-+
-+	tp->TxDescArray = dma_alloc_coherent(NUM_TX_DESC * sizeof(struct TxDesc),
-+					   &tp->TxPhyAddr);
-+	tp->tx_buf = dma_alloc(NUM_TX_DESC * PKT_BUF_SIZE);
-+	tp->tx_buf_phys = dma_map_single(edev->parent, tp->tx_buf,
-+					   NUM_TX_DESC * PKT_BUF_SIZE, DMA_TO_DEVICE);
-+
-+	tp->RxDescArray = dma_alloc_coherent(NUM_RX_DESC * sizeof(struct RxDesc),
-+					   &tp->RxPhyAddr);
-+	tp->rx_buf = dma_alloc(NUM_RX_DESC * PKT_BUF_SIZE);
-+	tp->rx_buf_phys = dma_map_single(edev->parent, tp->rx_buf,
-+					   NUM_RX_DESC * PKT_BUF_SIZE, DMA_FROM_DEVICE);
-+
-+	for (i = 0; i < NUM_RX_DESC; i++) {
-+		if (i == (NUM_RX_DESC - 1))
-+			tp->RxDescArray[i].opts1 =
-+				cpu_to_le32(DescOwn | RingEnd | PKT_BUF_SIZE);
-+		else
-+			tp->RxDescArray[i].opts1 =
-+				cpu_to_le32(DescOwn | PKT_BUF_SIZE);
-+
-+		tp->RxDescArray[i].addr =
-+				cpu_to_le64(tp->rx_buf_phys + i * PKT_BUF_SIZE);
-+	}
-+}
-+
-+static void r8169_phylink_handler(struct eth_device *edev)
-+{
-+	struct rtl8169_private *tp = edev->priv;
-+
-+	rtl_link_chg_patch(tp);
-+}
-+
-+static int rtl8169_eth_open(struct eth_device *edev)
-+{
-+	struct rtl8169_private *tp = edev->priv;
-+	int ret;
-+
-+	pci_set_master(tp->pci_dev);
-+
-+	rtl8169_init_ring(tp);
-+	rtl_hw_start(tp);
-+
-+	ret = phy_device_connect(edev, &tp->miibus, 0, r8169_phylink_handler, 0,
-+				 PHY_INTERFACE_MODE_NA);
-+
-+	return ret;
-+}
-+
-+static int rtl8169_phy_write(struct mii_bus *bus, int phyaddr, int phyreg, u16 val)
-+{
-+	struct rtl8169_private *tp = bus->priv;
-+
-+	if (phyaddr > 0)
-+		return -ENODEV;
-+
-+	rtl_writephy(tp, phyreg, val);
-+
-+	return 0;
-+}
-+
-+static int rtl8169_phy_read(struct mii_bus *bus, int phyaddr, int phyreg)
-+{
-+	struct rtl8169_private *tp = bus->priv;
-+
-+	if (phyaddr > 0)
-+		return -ENODEV;
-+
-+	return rtl_readphy(tp, phyreg);
-+}
-+
-+static void rtl8169_doorbell(struct rtl8169_private *tp)
-+{
-+	if (rtl_is_8125(tp))
-+		RTL_W16(tp, TxPoll_8125, BIT(0));
-+	else
-+		RTL_W8(tp, TxPoll, NPQ);
-+}
-+
-+static int rtl8169_eth_send(struct eth_device *edev, void *packet,
-+				int packet_length)
-+{
-+	struct rtl8169_private *tp = edev->priv;
-+	unsigned int entry;
-+	u64 start;
-+	int ret = 0;
-+
-+	entry = tp->cur_tx % NUM_TX_DESC;
-+
-+	if (packet_length < ETH_ZLEN)
-+		memset(tp->tx_buf + entry * PKT_BUF_SIZE, 0, ETH_ZLEN);
-+	memcpy(tp->tx_buf + entry * PKT_BUF_SIZE, packet, packet_length);
-+	dma_sync_single_for_device(tp->tx_buf_phys + entry *
-+				   PKT_BUF_SIZE, PKT_BUF_SIZE, DMA_TO_DEVICE);
-+
-+	tp->TxDescArray[entry].addr = cpu_to_le64(tp->tx_buf_phys + entry * PKT_BUF_SIZE);
-+
-+	if (entry != (NUM_TX_DESC - 1)) {
-+		tp->TxDescArray[entry].opts1 =
-+			cpu_to_le32(DescOwn | FirstFrag | LastFrag |
-+			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
-+	} else {
-+		tp->TxDescArray[entry].opts1 =
-+			cpu_to_le32(DescOwn | RingEnd | FirstFrag | LastFrag |
-+			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
-+	}
-+
-+	rtl8169_doorbell(tp);
-+
-+	start = get_time_ns();
-+
-+	while (le32_to_cpu(tp->TxDescArray[entry].opts1) & DescOwn) {
-+		if (is_timeout(start, 100 * MSECOND)) {
-+			ret = -ETIMEDOUT;
-+			break;
-+		}
-+	}
-+
-+	dma_sync_single_for_cpu(tp->tx_buf_phys + entry * PKT_BUF_SIZE,
-+				PKT_BUF_SIZE, DMA_TO_DEVICE);
-+
-+	tp->cur_tx++;
-+
-+	return ret;
-+}
-+
-+static int rtl8169_eth_rx(struct eth_device *edev)
-+{
-+	struct rtl8169_private *tp = edev->priv;
-+	unsigned int entry, pkt_size = 0;
-+	u8 status;
-+
-+	entry = tp->cur_rx % NUM_RX_DESC;
-+
-+	if ((le32_to_cpu(tp->RxDescArray[entry].opts1) & DescOwn) == 0) {
-+		if (!(le32_to_cpu(tp->RxDescArray[entry].opts1) & RxRES)) {
-+			pkt_size = (le32_to_cpu(tp->RxDescArray[entry].opts1) & 0x1fff) - 4;
-+
-+			dma_sync_single_for_cpu(tp->rx_buf_phys + entry * PKT_BUF_SIZE,
-+						pkt_size, DMA_FROM_DEVICE);
-+
-+			net_receive(edev, tp->rx_buf + entry * PKT_BUF_SIZE,
-+			            pkt_size);
-+
-+			dma_sync_single_for_device(tp->rx_buf_phys + entry * PKT_BUF_SIZE,
-+						   pkt_size, DMA_FROM_DEVICE);
-+
-+			if (entry == NUM_RX_DESC - 1)
-+				tp->RxDescArray[entry].opts1 = cpu_to_le32(DescOwn |
-+					RingEnd | PKT_BUF_SIZE);
-+			else
-+				tp->RxDescArray[entry].opts1 =
-+					cpu_to_le32(DescOwn | PKT_BUF_SIZE);
-+			tp->RxDescArray[entry].addr = cpu_to_le64(tp->rx_buf_phys +
-+					    entry * PKT_BUF_SIZE);
-+		} else {
-+			dev_err(&edev->dev, "rx error\n");
++	switch (ctrl->type) {
++	case RK2928:
++	case RK3128:
++		data = BIT(bit + 16);
++		if (pull == RK_BIAS_DISABLE)
++			data |= BIT(bit);
++		ret = regmap_write(regmap, reg, data);
++		break;
++	case PX30:
++	case RV1108:
++	case RV1126:
++	case RK3188:
++	case RK3288:
++	case RK3308:
++	case RK3368:
++	case RK3399:
++	case RK3568:
++	case RK3588:
++		/*
++		 * In the TRM, pull-up being 1 for everything except the GPIO0_D3-D6,
++		 * where that pull up value becomes 3.
++		 */
++		if (ctrl->type == RK3568 && bank->bank_num == 0 && pin_num >= 27 && pin_num <= 30) {
++			if (pull == RK_BIAS_PULL_UP)
++				pull = 3;
 +		}
 +
-+		tp->cur_rx++;
++		/* enable the write to the equivalent lower bits */
++		data = ((1 << RK3188_PULL_BITS_PER_PIN) - 1) << (bit + 16);
++		rmask = data | (data >> 16);
++		data |= (pull << bit);
 +
-+		return pkt_size;
-+
-+	} else {
-+		status = RTL_R8(tp, IntrStatus);
-+		RTL_W8(tp, IntrStatus, status & ~(TxErr | RxErr | SYSErr));
-+		udelay(100);	/* wait */
-+	}
-+
-+	return 0;
-+}
-+
-+static int rtl8169_get_ethaddr(struct eth_device *edev, unsigned char *mac_addr)
-+{
-+	struct rtl8169_private *tp = edev->priv;
-+
-+	rtl_read_mac_address(tp, mac_addr);
-+	if (is_valid_ether_addr(mac_addr))
-+		return 0;
-+
-+	rtl_read_mac_address(tp, mac_addr);
-+	if (is_valid_ether_addr(mac_addr))
-+		return 0;
-+
-+	rtl_read_mac_from_reg(tp, mac_addr, MAC0);
-+	if (is_valid_ether_addr(mac_addr))
-+		return 0;
-+
-+	return 0;
-+}
-+
-+static int rtl8169_set_ethaddr(struct eth_device *edev, const unsigned char *mac_addr)
-+{
-+	struct rtl8169_private *tp = edev->priv;
-+
-+	rtl_rar_set(tp, mac_addr);
-+
-+	return 0;
-+}
-+
-+static void rtl8169_eth_halt(struct eth_device *edev)
-+{
-+	struct rtl8169_private *tp = edev->priv;
-+
-+	/* Stop the chip's Tx and Rx DMA processes. */
-+	RTL_W8(tp, ChipCmd, 0x00);
-+
-+	/* Disable interrupts by clearing the interrupt mask. */
-+	RTL_W16(tp, IntrMask, 0x0000);
-+	RTL_W32(tp, RxMissed, 0);
-+
-+	pci_clear_master(tp->pci_dev);
-+	rtl_pci_commit(tp);
-+
-+	rtl8169_cleanup(tp);
-+	rtl_disable_exit_l1(tp);
-+
-+	dma_unmap_single(edev->parent, tp->tx_buf_phys, NUM_TX_DESC * PKT_BUF_SIZE,
-+			 DMA_TO_DEVICE);
-+	free(tp->tx_buf);
-+	dma_free_coherent((void *)tp->TxDescArray, tp->TxPhyAddr,
-+			  NUM_TX_DESC * sizeof(struct TxDesc));
-+
-+	dma_unmap_single(edev->parent, tp->rx_buf_phys, NUM_RX_DESC * PKT_BUF_SIZE,
-+			 DMA_FROM_DEVICE);
-+	free(tp->rx_buf);
-+	dma_free_coherent((void *)tp->RxDescArray, tp->RxPhyAddr,
-+			  NUM_RX_DESC * sizeof(struct RxDesc));
-+}
-+
-+static int rtl8169_probe(struct pci_dev *pdev, const struct pci_device_id *id)
-+{
-+	struct device *dev = &pdev->dev;
-+	struct eth_device *edev;
-+	struct rtl8169_private *tp;
-+	int region, ret;
-+	u16 xid;
-+	enum mac_version chipset;
-+
-+	/* enable pci device */
-+	pci_enable_device(pdev);
-+
-+	tp = xzalloc(sizeof(*tp));
-+
-+	edev = &tp->edev;
-+	dev->type_data = edev;
-+	edev->priv = tp;
-+
-+	tp->pci_dev = pdev;
-+	tp->dev = &pdev->dev;
-+
-+	tp->miibus.read = rtl8169_phy_read;
-+	tp->miibus.write = rtl8169_phy_write;
-+	tp->miibus.priv = tp;
-+	tp->miibus.parent = dev;
-+
-+	/* use first MMIO region */
-+	region = ffs(pci_select_bars(pdev, IORESOURCE_MEM)) - 1;
-+	if (region < 0) {
-+		dev_err(&pdev->dev, "no MMIO resource found\n");
-+		return -ENODEV;
-+	}
-+
-+	tp->mmio_addr = pci_iomap(pdev, region);
-+
-+	rtl_hw_reset(tp);
-+
-+	xid = (RTL_R32(tp, TxConfig) >> 20) & 0xfcf;
-+
-+	/* Identify chip attached to board */
-+	chipset = rtl8169_get_mac_version(xid, 1);
-+	if (chipset == RTL_GIGA_MAC_NONE) {
-+		dev_err(&pdev->dev, "unknown chip XID %03x\n", xid);
-+		return -ENODEV;
-+	}
-+
-+	dev_info(dev, "found %s (base=0x%p)\n",
-+		 rtl_chip_infos[chipset].name, tp->mmio_addr);
-+
-+	tp->mac_version = chipset;
-+
-+	tp->dash_type = rtl_check_dash(tp);
-+
-+	tp->cp_cmd = RTL_R16(tp, CPlusCmd) & CPCMD_MASK;
-+
-+	rtl_init_rxcfg(tp);
-+
-+	rtl_hw_initialize(tp);
-+
-+	tp->fw_name = rtl_chip_infos[chipset].fw_name;
-+
-+	if (tp->dash_type != RTL_DASH_NONE)
-+		rtl8168_driver_start(tp);
-+
-+	rtl_set_d3_pll_down(tp, tp->dash_type == RTL_DASH_NONE);
-+
-+	edev->init = rtl8169_init_dev;
-+	edev->open = rtl8169_eth_open;
-+	edev->send = rtl8169_eth_send;
-+	edev->recv = rtl8169_eth_rx;
-+	edev->get_ethaddr = rtl8169_get_ethaddr;
-+	edev->set_ethaddr = rtl8169_set_ethaddr;
-+	edev->halt = rtl8169_eth_halt;
-+	edev->parent = dev;
-+	tp->ocp_base = OCP_STD_PHY_BASE;
-+
-+	ret = mdiobus_register(&tp->miibus);
-+	if (ret)
-+		goto mdio_err;
-+
-+	ret = eth_register(edev);
-+	if (ret)
-+		goto eth_err;
-+
-+	return 0;
-+
-+mdio_err:
-+	eth_unregister(edev);
-+
-+eth_err:
-+	free(tp);
-+
++		ret = regmap_update_bits(regmap, reg, rmask, data);
++		break;
++	default:
++		dev_err(dev, "unsupported pinctrl type\n");
+ 		return -EINVAL;
+ 	}
+ 
+-	for (i = 0; i < size; i += 4) {
+-		const __be32 *phandle;
+-		struct device_node *np_config;
+-		struct rockchip_pin_bank *bank;
+-		u32 drive_strength;
+-
+-		bank_num = be32_to_cpu(*list++);
+-		pin_num = be32_to_cpu(*list++);
+-		func = be32_to_cpu(*list++);
+-		phandle = list++;
 +	return ret;
 +}
+ 
+-		if (!phandle)
+-			return -EINVAL;
++#define RK3328_SCHMITT_BITS_PER_PIN		1
++#define RK3328_SCHMITT_PINS_PER_REG		16
++#define RK3328_SCHMITT_BANK_STRIDE		8
++#define RK3328_SCHMITT_GRF_OFFSET		0x380
+ 
+-		np_config = of_find_node_by_phandle(be32_to_cpup(phandle));
+-		bank = bank_num_to_bank(info, bank_num);
+-		rockchip_pinctrl_set_func(bank, pin_num, func);
+-		rockchip_pinctrl_set_pull(bank, pin_num,
+-					  parse_bias_config(np_config));
++static int rk3328_calc_schmitt_reg_and_bit(struct rockchip_pin_bank *bank,
++					   int pin_num,
++					   struct regmap **regmap,
++					   int *reg, u8 *bit)
++{
++	struct rockchip_pinctrl *info = bank->drvdata;
+ 
+-		ret = of_property_read_u32(np_config, "drive-strength", &drive_strength);
+-		if (!ret)
+-			rockchip_set_drive_perpin(bank, pin_num, drive_strength);
+-	}
++	*regmap = info->regmap_base;
++	*reg = RK3328_SCHMITT_GRF_OFFSET;
 +
-+static struct pci_driver rtl8169_eth_driver = {
-+	.name = "rtl8169_eth",
-+	.id_table = rtl8169_pci_tbl,
-+	.probe = rtl8169_probe,
-+};
-+device_pci_driver(rtl8169_eth_driver);
-diff --git a/drivers/net/r8169_phy_config.c b/drivers/net/r8169_phy_config.c
-new file mode 100644
-index 0000000000..0c34a58b05
---- /dev/null
-+++ b/drivers/net/r8169_phy_config.c
-@@ -0,0 +1,1156 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++	*reg += bank->bank_num * RK3328_SCHMITT_BANK_STRIDE;
++	*reg += ((pin_num / RK3328_SCHMITT_PINS_PER_REG) * 4);
++	*bit = pin_num % RK3328_SCHMITT_PINS_PER_REG;
+ 
+ 	return 0;
+ }
+ 
+-static struct pinctrl_ops rockchip_pinctrl_ops = {
+-	.set_state = rockchip_pinctrl_set_state,
+-};
++#define RK3568_SCHMITT_BITS_PER_PIN		2
++#define RK3568_SCHMITT_PINS_PER_REG		8
++#define RK3568_SCHMITT_BANK_STRIDE		0x10
++#define RK3568_SCHMITT_GRF_OFFSET		0xc0
++#define RK3568_SCHMITT_PMUGRF_OFFSET		0x30
+ 
+-static int rockchip_get_bank_data(struct rockchip_pin_bank *bank,
+-				  struct device *dev)
++static int rk3568_calc_schmitt_reg_and_bit(struct rockchip_pin_bank *bank,
++					   int pin_num,
++					   struct regmap **regmap,
++					   int *reg, u8 *bit)
+ {
+-	struct resource node_res, *res;
+-
+-	if (of_address_to_resource(bank->of_node, 0, &node_res)) {
+-		dev_err(dev, "cannot find IO resource for bank\n");
+-		return -ENOENT;
+-	}
++	struct rockchip_pinctrl *info = bank->drvdata;
+ 
+-	res = request_iomem_region(dev_name(dev), node_res.start, node_res.end);
+-	if (IS_ERR(res)) {
+-		dev_err(dev, "cannot request iomem region %pa\n",
+-			&node_res.start);
+-		return PTR_ERR(res);
++	if (bank->bank_num == 0) {
++		*regmap = info->regmap_pmu;
++		*reg = RK3568_SCHMITT_PMUGRF_OFFSET;
++	} else {
++		*regmap = info->regmap_base;
++		*reg = RK3568_SCHMITT_GRF_OFFSET;
++		*reg += (bank->bank_num - 1) * RK3568_SCHMITT_BANK_STRIDE;
+ 	}
+ 
+-	bank->reg_base = (void __iomem *)res->start;
+-
+-	if (of_device_is_compatible(bank->of_node,
+-				    "rockchip,rk3188-gpio-bank0"))
+-		bank->bank_type = RK3188_BANK0;
+-	else
+-		bank->bank_type = COMMON_BANK;
+-
+-	bank->clk = of_clk_get(bank->of_node, 0);
+-	if (IS_ERR(bank->clk))
+-		return PTR_ERR(bank->clk);
++	*reg += ((pin_num / RK3568_SCHMITT_PINS_PER_REG) * 4);
++	*bit = pin_num % RK3568_SCHMITT_PINS_PER_REG;
++	*bit *= RK3568_SCHMITT_BITS_PER_PIN;
+ 
+-	return clk_enable(bank->clk);
++	return 0;
+ }
+ 
+-static struct of_device_id rockchip_pinctrl_dt_match[];
 +/*
-+ * r8169_phy_config.c: RealTek 8169/8168/8101 ethernet driver.
-+ *
-+ * Copyright (c) 2002 ShuChen <shuchen@realtek.com.tw>
-+ * Copyright (c) 2003 - 2007 Francois Romieu <romieu@fr.zoreil.com>
-+ * Copyright (c) a lot of people too. Please respect their work.
-+ *
-+ * See MAINTAINERS file for support contact information.
++ * Pinconf_ops handling
 + */
 +
-+#include <common.h>
-+#include <linux/phy.h>
-+#include <linux/mdio.h>
++static const struct of_device_id rockchip_pinctrl_dt_match[];
+ 
++/* retrieve the soc specific data */
+ static struct rockchip_pin_ctrl *rockchip_pinctrl_get_soc_data(
+-	struct rockchip_pinctrl *d, struct device *dev)
++						struct rockchip_pinctrl *d,
++						struct device *dev)
+ {
+-	const struct of_device_id *match;
+ 	struct device_node *node = dev->of_node;
+-	struct device_node *np;
++	const struct of_device_id *match;
+ 	struct rockchip_pin_ctrl *ctrl;
+ 	struct rockchip_pin_bank *bank;
+ 	int grf_offs, pmu_offs, drv_grf_offs, drv_pmu_offs, i, j;
+-	int gpio = 0;
+ 
+ 	match = of_match_node(rockchip_pinctrl_dt_match, node);
+ 	ctrl = (struct rockchip_pin_ctrl *)match->data;
+ 
+-	for_each_child_of_node(node, np) {
+-		int id;
+-
+-		if (!of_find_property(np, "gpio-controller", NULL))
+-			continue;
+-
+-		id = of_alias_get_id(np, "gpio");
+-		if (id < 0)
+-			id = gpio++;
+-
+-		bank = ctrl->pin_banks;
+-		for (i = 0; i < ctrl->nr_banks; ++i, ++bank) {
+-			if (bank->bank_num == id) {
+-				bank->of_node = np;
+-				if (!rockchip_get_bank_data(bank, dev))
+-					bank->valid = true;
+-
+-				break;
+-			}
+-		}
+-	}
+-
+ 	grf_offs = ctrl->grf_mux_offset;
+ 	pmu_offs = ctrl->pmu_mux_offset;
+ 	drv_pmu_offs = ctrl->pmu_drv_offset;
+@@ -641,12 +2258,14 @@ static struct rockchip_pin_ctrl *rockchip_pinctrl_get_soc_data(
+ 
+ 			/* preset iomux offset value, set new start value */
+ 			if (iom->offset >= 0) {
+-				if (iom->type & IOMUX_SOURCE_PMU)
++				if ((iom->type & IOMUX_SOURCE_PMU) ||
++				    (iom->type & IOMUX_L_SOURCE_PMU))
+ 					pmu_offs = iom->offset;
+ 				else
+ 					grf_offs = iom->offset;
+ 			} else { /* set current iomux offset */
+-				iom->offset = (iom->type & IOMUX_SOURCE_PMU) ?
++				iom->offset = ((iom->type & IOMUX_SOURCE_PMU) ||
++					       (iom->type & IOMUX_L_SOURCE_PMU)) ?
+ 							pmu_offs : grf_offs;
+ 			}
+ 
+@@ -671,7 +2290,7 @@ static struct rockchip_pin_ctrl *rockchip_pinctrl_get_soc_data(
+ 			inc = (iom->type & (IOMUX_WIDTH_4BIT |
+ 					    IOMUX_WIDTH_3BIT |
+ 					    IOMUX_WIDTH_2BIT)) ? 8 : 4;
+-			if (iom->type & IOMUX_SOURCE_PMU)
++			if ((iom->type & IOMUX_SOURCE_PMU) || (iom->type & IOMUX_L_SOURCE_PMU))
+ 				pmu_offs += inc;
+ 			else
+ 				grf_offs += inc;
+@@ -694,6 +2313,16 @@ static struct rockchip_pin_ctrl *rockchip_pinctrl_get_soc_data(
+ 			bank_pins += 8;
+ 		}
+ 
++		/* calculate the per-bank recalced_mask */
++		for (j = 0; j < ctrl->niomux_recalced; j++) {
++			int pin = 0;
 +
-+#include "r8169.h"
++			if (ctrl->iomux_recalced[j].num == bank->bank_num) {
++				pin = ctrl->iomux_recalced[j].pin;
++				bank->recalced_mask |= BIT(pin);
++			}
++		}
 +
-+typedef void (*rtl_phy_cfg_fct)(struct rtl8169_private *tp,
-+				struct phy_device *phydev);
-+
-+static void r8168d_modify_extpage(struct phy_device *phydev, int extpage,
-+				  int reg, u16 mask, u16 val)
+ 		/* calculate the per-bank route_mask */
+ 		for (j = 0; j < ctrl->niomux_routes; j++) {
+ 			int pin = 0;
+@@ -708,44 +2337,104 @@ static struct rockchip_pin_ctrl *rockchip_pinctrl_get_soc_data(
+ 	return ctrl;
+ }
+ 
++static int rockchip_pinctrl_set_state(struct pinctrl_device *pdev,
++				      struct device_node *np)
 +{
-+	int oldpage = phy_select_page(phydev, 0x0007);
++	struct rockchip_pinctrl *info = to_rockchip_pinctrl(pdev);
++	const __be32 *list;
++	int i, size, ret;
++	int bank_num, pin_num, func;
 +
-+	phy_write(phydev, 0x1e, extpage);
-+	phy_modify(phydev, reg, mask, val);
++	/*
++	 * the binding format is rockchip,pins = <bank pin mux CONFIG>,
++	 * do sanity check and calculate pins number
++	 */
++	list = of_get_property(np, "rockchip,pins", &size);
++	size /= sizeof(*list);
 +
-+	phy_restore_page(phydev, oldpage, 0);
++	if (!size || size % 4) {
++		dev_err(pdev->dev, "wrong pins number or pins and configs should be by 4\n");
++		return -EINVAL;
++	}
++
++	for (i = 0; i < size; i += 4) {
++		const __be32 *phandle;
++		struct device_node *np_config;
++		struct rockchip_pin_bank *bank;
++		u32 drive_strength;
++
++		bank_num = be32_to_cpu(*list++);
++		pin_num = be32_to_cpu(*list++);
++		func = be32_to_cpu(*list++);
++		phandle = list++;
++
++		if (!phandle)
++			return -EINVAL;
++
++		np_config = of_find_node_by_phandle(be32_to_cpup(phandle));
++		bank = bank_num_to_bank(info, bank_num);
++		rockchip_set_mux(bank, pin_num, func);
++		rockchip_set_pull(bank, pin_num, parse_bias_config(np_config));
++
++		ret = of_property_read_u32(np_config, "drive-strength", &drive_strength);
++		if (!ret)
++			rockchip_set_drive_perpin(bank, pin_num, drive_strength);
++	}
++
++	return 0;
 +}
 +
-+static void r8168d_phy_param(struct phy_device *phydev, u16 parm,
-+			     u16 mask, u16 val)
-+{
-+	int oldpage = phy_select_page(phydev, 0x0005);
-+
-+	phy_write(phydev, 0x05, parm);
-+	phy_modify(phydev, 0x06, mask, val);
-+
-+	phy_restore_page(phydev, oldpage, 0);
-+}
-+
-+static void r8168g_phy_param(struct phy_device *phydev, u16 parm,
-+			     u16 mask, u16 val)
-+{
-+	int oldpage = phy_select_page(phydev, 0x0a43);
-+
-+	phy_write(phydev, 0x13, parm);
-+	phy_modify(phydev, 0x14, mask, val);
-+
-+	phy_restore_page(phydev, oldpage, 0);
-+}
-+
-+struct phy_reg {
-+	u16 reg;
-+	u16 val;
++static struct pinctrl_ops rockchip_pinctrl_ops = {
++	.set_state = rockchip_pinctrl_set_state,
 +};
 +
-+static void __rtl_writephy_batch(struct phy_device *phydev,
-+				 const struct phy_reg *regs, int len)
-+{
-+	while (len-- > 0) {
-+		phy_write(phydev, regs->reg, regs->val);
-+		regs++;
-+	}
-+}
+ static int rockchip_pinctrl_probe(struct device *dev)
+ {
+ 	struct rockchip_pinctrl *info;
++	struct device_node *np = dev->of_node, *node;
+ 	struct rockchip_pin_ctrl *ctrl;
+ 	int ret;
+ 
+-	info = xzalloc(sizeof(struct rockchip_pinctrl));
++	if (!dev->of_node)
++		return dev_err_probe(dev, -ENODEV, "device tree node not found\n");
 +
-+#define rtl_writephy_batch(p, a) __rtl_writephy_batch(p, a, ARRAY_SIZE(a))
++	info = xzalloc(sizeof(*info));
++	if (!info)
++		return -ENOMEM;
 +
-+static void rtl8168f_config_eee_phy(struct phy_device *phydev)
-+{
-+	r8168d_modify_extpage(phydev, 0x0020, 0x15, 0, BIT(8));
-+	r8168d_phy_param(phydev, 0x8b85, 0, BIT(13));
-+}
++	info->dev = dev;
+ 
+ 	ctrl = rockchip_pinctrl_get_soc_data(info, dev);
+-	if (!ctrl) {
+-		dev_err(dev, "driver data not available\n");
+-		return -EINVAL;
+-	}
++	if (!ctrl)
++		return dev_err_probe(dev, -EINVAL, "driver data not available\n");
+ 	info->ctrl = ctrl;
+ 
+-	info->reg_base = syscon_base_lookup_by_phandle(dev->of_node,
+-						       "rockchip,grf");
+-	if (IS_ERR(info->reg_base)) {
+-		dev_err(dev, "Could not get grf syscon address\n");
+-		return -ENODEV;
+-	}
++	node = of_parse_phandle(np, "rockchip,grf", 0);
++	if (!node)
++		return -EINVAL;
+ 
+-	info->reg_pmu = syscon_base_lookup_by_phandle(dev->of_node,
+-						      "rockchip,pmu");
+-	if (IS_ERR(info->reg_pmu)) {
+-		dev_err(dev, "Could not get pmu syscon address\n");
+-		return -ENODEV;
++	info->regmap_base = syscon_node_to_regmap(node);
++	of_node_put(node);
++	if (IS_ERR(info->regmap_base))
++		return PTR_ERR(info->regmap_base);
 +
-+static void rtl8168g_config_eee_phy(struct phy_device *phydev)
-+{
-+	phy_modify_paged(phydev, 0x0a43, 0x11, 0, BIT(4));
-+}
-+
-+static void rtl8168h_config_eee_phy(struct phy_device *phydev)
-+{
-+	rtl8168g_config_eee_phy(phydev);
-+
-+	phy_modify_paged(phydev, 0xa4a, 0x11, 0x0000, 0x0200);
-+	phy_modify_paged(phydev, 0xa42, 0x14, 0x0000, 0x0080);
-+}
-+
-+static void rtl8125a_config_eee_phy(struct phy_device *phydev)
-+{
-+	rtl8168h_config_eee_phy(phydev);
-+
-+	phy_modify_paged(phydev, 0xa6d, 0x12, 0x0001, 0x0000);
-+	phy_modify_paged(phydev, 0xa6d, 0x14, 0x0010, 0x0000);
-+}
-+
-+static void rtl8125b_config_eee_phy(struct phy_device *phydev)
-+{
-+	phy_modify_paged(phydev, 0xa6d, 0x12, 0x0001, 0x0000);
-+	phy_modify_paged(phydev, 0xa6d, 0x14, 0x0010, 0x0000);
-+	phy_modify_paged(phydev, 0xa42, 0x14, 0x0080, 0x0000);
-+	phy_modify_paged(phydev, 0xa4a, 0x11, 0x0200, 0x0000);
-+}
-+
-+static void rtl8169s_hw_phy_config(struct rtl8169_private *tp,
-+				   struct phy_device *phydev)
-+{
-+	static const struct phy_reg phy_reg_init[] = {
-+		{ 0x1f, 0x0001 },
-+		{ 0x06, 0x006e },
-+		{ 0x08, 0x0708 },
-+		{ 0x15, 0x4000 },
-+		{ 0x18, 0x65c7 },
-+
-+		{ 0x1f, 0x0001 },
-+		{ 0x03, 0x00a1 },
-+		{ 0x02, 0x0008 },
-+		{ 0x01, 0x0120 },
-+		{ 0x00, 0x1000 },
-+		{ 0x04, 0x0800 },
-+		{ 0x04, 0x0000 },
-+
-+		{ 0x03, 0xff41 },
-+		{ 0x02, 0xdf60 },
-+		{ 0x01, 0x0140 },
-+		{ 0x00, 0x0077 },
-+		{ 0x04, 0x7800 },
-+		{ 0x04, 0x7000 },
-+
-+		{ 0x03, 0x802f },
-+		{ 0x02, 0x4f02 },
-+		{ 0x01, 0x0409 },
-+		{ 0x00, 0xf0f9 },
-+		{ 0x04, 0x9800 },
-+		{ 0x04, 0x9000 },
-+
-+		{ 0x03, 0xdf01 },
-+		{ 0x02, 0xdf20 },
-+		{ 0x01, 0xff95 },
-+		{ 0x00, 0xba00 },
-+		{ 0x04, 0xa800 },
-+		{ 0x04, 0xa000 },
-+
-+		{ 0x03, 0xff41 },
-+		{ 0x02, 0xdf20 },
-+		{ 0x01, 0x0140 },
-+		{ 0x00, 0x00bb },
-+		{ 0x04, 0xb800 },
-+		{ 0x04, 0xb000 },
-+
-+		{ 0x03, 0xdf41 },
-+		{ 0x02, 0xdc60 },
-+		{ 0x01, 0x6340 },
-+		{ 0x00, 0x007d },
-+		{ 0x04, 0xd800 },
-+		{ 0x04, 0xd000 },
-+
-+		{ 0x03, 0xdf01 },
-+		{ 0x02, 0xdf20 },
-+		{ 0x01, 0x100a },
-+		{ 0x00, 0xa0ff },
-+		{ 0x04, 0xf800 },
-+		{ 0x04, 0xf000 },
-+
-+		{ 0x1f, 0x0000 },
-+		{ 0x0b, 0x0000 },
-+		{ 0x00, 0x9200 }
-+	};
-+
-+	rtl_writephy_batch(phydev, phy_reg_init);
-+}
-+
-+static void rtl8169sb_hw_phy_config(struct rtl8169_private *tp,
-+				    struct phy_device *phydev)
-+{
-+	phy_write_paged(phydev, 0x0002, 0x01, 0x90d0);
-+}
-+
-+static void rtl8169scd_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	static const struct phy_reg phy_reg_init[] = {
-+		{ 0x1f, 0x0001 },
-+		{ 0x04, 0x0000 },
-+		{ 0x03, 0x00a1 },
-+		{ 0x02, 0x0008 },
-+		{ 0x01, 0x0120 },
-+		{ 0x00, 0x1000 },
-+		{ 0x04, 0x0800 },
-+		{ 0x04, 0x9000 },
-+		{ 0x03, 0x802f },
-+		{ 0x02, 0x4f02 },
-+		{ 0x01, 0x0409 },
-+		{ 0x00, 0xf099 },
-+		{ 0x04, 0x9800 },
-+		{ 0x04, 0xa000 },
-+		{ 0x03, 0xdf01 },
-+		{ 0x02, 0xdf20 },
-+		{ 0x01, 0xff95 },
-+		{ 0x00, 0xba00 },
-+		{ 0x04, 0xa800 },
-+		{ 0x04, 0xf000 },
-+		{ 0x03, 0xdf01 },
-+		{ 0x02, 0xdf20 },
-+		{ 0x01, 0x101a },
-+		{ 0x00, 0xa0ff },
-+		{ 0x04, 0xf800 },
-+		{ 0x04, 0x0000 },
-+		{ 0x1f, 0x0000 },
-+
-+		{ 0x1f, 0x0001 },
-+		{ 0x10, 0xf41b },
-+		{ 0x14, 0xfb54 },
-+		{ 0x18, 0xf5c7 },
-+		{ 0x1f, 0x0000 },
-+
-+		{ 0x1f, 0x0001 },
-+		{ 0x17, 0x0cc0 },
-+		{ 0x1f, 0x0000 }
-+	};
-+
-+	rtl_writephy_batch(phydev, phy_reg_init);
-+}
-+
-+static void rtl8169sce_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	static const struct phy_reg phy_reg_init[] = {
-+		{ 0x1f, 0x0001 },
-+		{ 0x04, 0x0000 },
-+		{ 0x03, 0x00a1 },
-+		{ 0x02, 0x0008 },
-+		{ 0x01, 0x0120 },
-+		{ 0x00, 0x1000 },
-+		{ 0x04, 0x0800 },
-+		{ 0x04, 0x9000 },
-+		{ 0x03, 0x802f },
-+		{ 0x02, 0x4f02 },
-+		{ 0x01, 0x0409 },
-+		{ 0x00, 0xf099 },
-+		{ 0x04, 0x9800 },
-+		{ 0x04, 0xa000 },
-+		{ 0x03, 0xdf01 },
-+		{ 0x02, 0xdf20 },
-+		{ 0x01, 0xff95 },
-+		{ 0x00, 0xba00 },
-+		{ 0x04, 0xa800 },
-+		{ 0x04, 0xf000 },
-+		{ 0x03, 0xdf01 },
-+		{ 0x02, 0xdf20 },
-+		{ 0x01, 0x101a },
-+		{ 0x00, 0xa0ff },
-+		{ 0x04, 0xf800 },
-+		{ 0x04, 0x0000 },
-+		{ 0x1f, 0x0000 },
-+
-+		{ 0x1f, 0x0001 },
-+		{ 0x0b, 0x8480 },
-+		{ 0x1f, 0x0000 },
-+
-+		{ 0x1f, 0x0001 },
-+		{ 0x18, 0x67c7 },
-+		{ 0x04, 0x2000 },
-+		{ 0x03, 0x002f },
-+		{ 0x02, 0x4360 },
-+		{ 0x01, 0x0109 },
-+		{ 0x00, 0x3022 },
-+		{ 0x04, 0x2800 },
-+		{ 0x1f, 0x0000 },
-+
-+		{ 0x1f, 0x0001 },
-+		{ 0x17, 0x0cc0 },
-+		{ 0x1f, 0x0000 }
-+	};
-+
-+	rtl_writephy_batch(phydev, phy_reg_init);
-+}
-+
-+static void rtl8168bb_hw_phy_config(struct rtl8169_private *tp,
-+				    struct phy_device *phydev)
-+{
-+	phy_write(phydev, 0x1f, 0x0001);
-+	phy_set_bits(phydev, 0x16, BIT(0));
-+	phy_write(phydev, 0x10, 0xf41b);
-+	phy_write(phydev, 0x1f, 0x0000);
-+}
-+
-+static void rtl8168bef_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	phy_write_paged(phydev, 0x0001, 0x10, 0xf41b);
-+}
-+
-+static void rtl8168cp_1_hw_phy_config(struct rtl8169_private *tp,
-+				      struct phy_device *phydev)
-+{
-+	phy_write(phydev, 0x1d, 0x0f00);
-+	phy_write_paged(phydev, 0x0002, 0x0c, 0x1ec8);
-+}
-+
-+static void rtl8168cp_2_hw_phy_config(struct rtl8169_private *tp,
-+				      struct phy_device *phydev)
-+{
-+	phy_set_bits(phydev, 0x14, BIT(5));
-+	phy_set_bits(phydev, 0x0d, BIT(5));
-+	phy_write_paged(phydev, 0x0001, 0x1d, 0x3d98);
-+}
-+
-+static void rtl8168c_1_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	static const struct phy_reg phy_reg_init[] = {
-+		{ 0x1f, 0x0001 },
-+		{ 0x12, 0x2300 },
-+		{ 0x1f, 0x0002 },
-+		{ 0x00, 0x88d4 },
-+		{ 0x01, 0x82b1 },
-+		{ 0x03, 0x7002 },
-+		{ 0x08, 0x9e30 },
-+		{ 0x09, 0x01f0 },
-+		{ 0x0a, 0x5500 },
-+		{ 0x0c, 0x00c8 },
-+		{ 0x1f, 0x0003 },
-+		{ 0x12, 0xc096 },
-+		{ 0x16, 0x000a },
-+		{ 0x1f, 0x0000 },
-+		{ 0x1f, 0x0000 },
-+		{ 0x09, 0x2000 },
-+		{ 0x09, 0x0000 }
-+	};
-+
-+	rtl_writephy_batch(phydev, phy_reg_init);
-+
-+	phy_set_bits(phydev, 0x14, BIT(5));
-+	phy_set_bits(phydev, 0x0d, BIT(5));
-+}
-+
-+static void rtl8168c_2_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	static const struct phy_reg phy_reg_init[] = {
-+		{ 0x1f, 0x0001 },
-+		{ 0x12, 0x2300 },
-+		{ 0x03, 0x802f },
-+		{ 0x02, 0x4f02 },
-+		{ 0x01, 0x0409 },
-+		{ 0x00, 0xf099 },
-+		{ 0x04, 0x9800 },
-+		{ 0x04, 0x9000 },
-+		{ 0x1d, 0x3d98 },
-+		{ 0x1f, 0x0002 },
-+		{ 0x0c, 0x7eb8 },
-+		{ 0x06, 0x0761 },
-+		{ 0x1f, 0x0003 },
-+		{ 0x16, 0x0f0a },
-+		{ 0x1f, 0x0000 }
-+	};
-+
-+	rtl_writephy_batch(phydev, phy_reg_init);
-+
-+	phy_set_bits(phydev, 0x16, BIT(0));
-+	phy_set_bits(phydev, 0x14, BIT(5));
-+	phy_set_bits(phydev, 0x0d, BIT(5));
-+}
-+
-+static void rtl8168c_3_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	static const struct phy_reg phy_reg_init[] = {
-+		{ 0x1f, 0x0001 },
-+		{ 0x12, 0x2300 },
-+		{ 0x1d, 0x3d98 },
-+		{ 0x1f, 0x0002 },
-+		{ 0x0c, 0x7eb8 },
-+		{ 0x06, 0x5461 },
-+		{ 0x1f, 0x0003 },
-+		{ 0x16, 0x0f0a },
-+		{ 0x1f, 0x0000 }
-+	};
-+
-+	rtl_writephy_batch(phydev, phy_reg_init);
-+
-+	phy_set_bits(phydev, 0x16, BIT(0));
-+	phy_set_bits(phydev, 0x14, BIT(5));
-+	phy_set_bits(phydev, 0x0d, BIT(5));
-+}
-+
-+static const struct phy_reg rtl8168d_1_phy_reg_init_0[] = {
-+	/* Channel Estimation */
-+	{ 0x1f, 0x0001 },
-+	{ 0x06, 0x4064 },
-+	{ 0x07, 0x2863 },
-+	{ 0x08, 0x059c },
-+	{ 0x09, 0x26b4 },
-+	{ 0x0a, 0x6a19 },
-+	{ 0x0b, 0xdcc8 },
-+	{ 0x10, 0xf06d },
-+	{ 0x14, 0x7f68 },
-+	{ 0x18, 0x7fd9 },
-+	{ 0x1c, 0xf0ff },
-+	{ 0x1d, 0x3d9c },
-+	{ 0x1f, 0x0003 },
-+	{ 0x12, 0xf49f },
-+	{ 0x13, 0x070b },
-+	{ 0x1a, 0x05ad },
-+	{ 0x14, 0x94c0 },
-+
-+	/*
-+	 * Tx Error Issue
-+	 * Enhance line driver power
-+	 */
-+	{ 0x1f, 0x0002 },
-+	{ 0x06, 0x5561 },
-+	{ 0x1f, 0x0005 },
-+	{ 0x05, 0x8332 },
-+	{ 0x06, 0x5561 },
-+
-+	/*
-+	 * Can not link to 1Gbps with bad cable
-+	 * Decrease SNR threshold form 21.07dB to 19.04dB
-+	 */
-+	{ 0x1f, 0x0001 },
-+	{ 0x17, 0x0cc0 },
-+
-+	{ 0x1f, 0x0000 },
-+	{ 0x0d, 0xf880 }
++	/* try to find the optional reference to the pmu syscon */
++	node = of_parse_phandle(np, "rockchip,pmu", 0);
++	if (node) {
++		info->regmap_pmu = syscon_node_to_regmap(node);
++		of_node_put(node);
++		if (IS_ERR(info->regmap_pmu))
++			return PTR_ERR(info->regmap_pmu);
+ 	}
+ 
+-	info->pctl_dev.dev = dev;
+-	info->pctl_dev.ops = &rockchip_pinctrl_ops;
+-
+ 	dev->priv = info;
+ 
+-	of_platform_populate(dev->of_node, NULL, dev);
++	ret = of_platform_populate(np, NULL, dev);
++	if (ret)
++		return dev_err_probe(dev, ret, "failed to register gpio device\n");
+ 
+-	if (!IS_ENABLED(CONFIG_PINCTRL))
+-		return 0;
++	info->pctl_dev.dev = dev;
++	info->pctl_dev.ops = &rockchip_pinctrl_ops;
+ 
+ 	ret = pinctrl_register(&info->pctl_dev);
+ 	if (ret)
+@@ -754,22 +2443,125 @@ static int rockchip_pinctrl_probe(struct device *dev)
+ 	return 0;
+ }
+ 
+-static struct rockchip_pin_bank rk2928_pin_banks[] = {
++static __maybe_unused struct rockchip_pin_bank px30_pin_banks[] = {
++	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU
++			    ),
++	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT
++			    ),
++	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT
++			    ),
++	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3", IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT
++			    ),
 +};
 +
-+static void rtl8168d_apply_firmware_cond(struct rtl8169_private *tp,
-+					 struct phy_device *phydev,
-+					 u16 val)
-+{
-+	u16 reg_val;
-+
-+	phy_write(phydev, 0x1f, 0x0005);
-+	phy_write(phydev, 0x05, 0x001b);
-+	reg_val = phy_read(phydev, 0x06);
-+	phy_write(phydev, 0x1f, 0x0000);
-+
-+	if (reg_val != val)
-+		dev_warn(&phydev->dev, "chipset not ready for firmware\n");
-+	else
-+		r8169_apply_firmware(tp);
-+}
-+
-+static void rtl8168d_1_common(struct phy_device *phydev)
-+{
-+	u16 val;
-+
-+	phy_write_paged(phydev, 0x0002, 0x05, 0x669a);
-+	r8168d_phy_param(phydev, 0x8330, 0xffff, 0x669a);
-+	phy_write(phydev, 0x1f, 0x0002);
-+
-+	val = phy_read(phydev, 0x0d);
-+
-+	if ((val & 0x00ff) != 0x006c) {
-+		static const u16 set[] = {
-+			0x0065, 0x0066, 0x0067, 0x0068,
-+			0x0069, 0x006a, 0x006b, 0x006c
-+		};
-+		int i;
-+
-+		val &= 0xff00;
-+		for (i = 0; i < ARRAY_SIZE(set); i++)
-+			phy_write(phydev, 0x0d, val | set[i]);
-+	}
-+}
-+
-+static void rtl8168d_1_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	rtl_writephy_batch(phydev, rtl8168d_1_phy_reg_init_0);
-+
-+	/*
-+	 * Rx Error Issue
-+	 * Fine Tune Switching regulator parameter
-+	 */
-+	phy_write(phydev, 0x1f, 0x0002);
-+	phy_modify(phydev, 0x0b, 0x00ef, 0x0010);
-+	phy_modify(phydev, 0x0c, 0x5d00, 0xa200);
-+
-+	if (rtl8168d_efuse_read(tp, 0x01) == 0xb1) {
-+		rtl8168d_1_common(phydev);
-+	} else {
-+		phy_write_paged(phydev, 0x0002, 0x05, 0x6662);
-+		r8168d_phy_param(phydev, 0x8330, 0xffff, 0x6662);
-+	}
-+
-+	/* RSET couple improve */
-+	phy_write(phydev, 0x1f, 0x0002);
-+	phy_set_bits(phydev, 0x0d, 0x0300);
-+	phy_set_bits(phydev, 0x0f, 0x0010);
-+
-+	/* Fine tune PLL performance */
-+	phy_write(phydev, 0x1f, 0x0002);
-+	phy_modify(phydev, 0x02, 0x0600, 0x0100);
-+	phy_clear_bits(phydev, 0x03, 0xe000);
-+	phy_write(phydev, 0x1f, 0x0000);
-+
-+	rtl8168d_apply_firmware_cond(tp, phydev, 0xbf00);
-+}
-+
-+static void rtl8168d_2_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	rtl_writephy_batch(phydev, rtl8168d_1_phy_reg_init_0);
-+
-+	if (rtl8168d_efuse_read(tp, 0x01) == 0xb1) {
-+		rtl8168d_1_common(phydev);
-+	} else {
-+		phy_write_paged(phydev, 0x0002, 0x05, 0x2642);
-+		r8168d_phy_param(phydev, 0x8330, 0xffff, 0x2642);
-+	}
-+
-+	/* Fine tune PLL performance */
-+	phy_write(phydev, 0x1f, 0x0002);
-+	phy_modify(phydev, 0x02, 0x0600, 0x0100);
-+	phy_clear_bits(phydev, 0x03, 0xe000);
-+	phy_write(phydev, 0x1f, 0x0000);
-+
-+	/* Switching regulator Slew rate */
-+	phy_modify_paged(phydev, 0x0002, 0x0f, 0x0000, 0x0017);
-+
-+	rtl8168d_apply_firmware_cond(tp, phydev, 0xb300);
-+}
-+
-+static void rtl8168d_4_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	phy_write_paged(phydev, 0x0001, 0x17, 0x0cc0);
-+	r8168d_modify_extpage(phydev, 0x002d, 0x18, 0xffff, 0x0040);
-+	phy_set_bits(phydev, 0x0d, BIT(5));
-+}
-+
-+static void rtl8168e_1_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	static const struct phy_reg phy_reg_init[] = {
-+		/* Channel estimation fine tune */
-+		{ 0x1f, 0x0001 },
-+		{ 0x0b, 0x6c20 },
-+		{ 0x07, 0x2872 },
-+		{ 0x1c, 0xefff },
-+		{ 0x1f, 0x0003 },
-+		{ 0x14, 0x6420 },
-+		{ 0x1f, 0x0000 },
-+	};
-+
-+	r8169_apply_firmware(tp);
-+
-+	/* Enable Delay cap */
-+	r8168d_phy_param(phydev, 0x8b80, 0xffff, 0xc896);
-+
-+	rtl_writephy_batch(phydev, phy_reg_init);
-+
-+	/* Update PFM & 10M TX idle timer */
-+	r8168d_modify_extpage(phydev, 0x002f, 0x15, 0xffff, 0x1919);
-+
-+	r8168d_modify_extpage(phydev, 0x00ac, 0x18, 0xffff, 0x0006);
-+
-+	/* DCO enable for 10M IDLE Power */
-+	r8168d_modify_extpage(phydev, 0x0023, 0x17, 0x0000, 0x0006);
-+
-+	/* For impedance matching */
-+	phy_modify_paged(phydev, 0x0002, 0x08, 0x7f00, 0x8000);
-+
-+	/* PHY auto speed down */
-+	r8168d_modify_extpage(phydev, 0x002d, 0x18, 0x0000, 0x0050);
-+	phy_set_bits(phydev, 0x14, BIT(15));
-+
-+	r8168d_phy_param(phydev, 0x8b86, 0x0000, 0x0001);
-+	r8168d_phy_param(phydev, 0x8b85, 0x2000, 0x0000);
-+
-+	r8168d_modify_extpage(phydev, 0x0020, 0x15, 0x1100, 0x0000);
-+	phy_write_paged(phydev, 0x0006, 0x00, 0x5a00);
-+
-+	phy_write_mmd_indirect(phydev, MDIO_MMD_AN, MDIO_AN_EEE_ADV, 0x0000);
-+}
-+
-+static void rtl8168e_2_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	r8169_apply_firmware(tp);
-+
-+	/* Enable Delay cap */
-+	r8168d_modify_extpage(phydev, 0x00ac, 0x18, 0xffff, 0x0006);
-+
-+	/* Channel estimation fine tune */
-+	phy_write_paged(phydev, 0x0003, 0x09, 0xa20f);
-+
-+	/* Green Setting */
-+	r8168d_phy_param(phydev, 0x8b5b, 0xffff, 0x9222);
-+	r8168d_phy_param(phydev, 0x8b6d, 0xffff, 0x8000);
-+	r8168d_phy_param(phydev, 0x8b76, 0xffff, 0x8000);
-+
-+	/* For 4-corner performance improve */
-+	phy_write(phydev, 0x1f, 0x0005);
-+	phy_write(phydev, 0x05, 0x8b80);
-+	phy_set_bits(phydev, 0x17, 0x0006);
-+	phy_write(phydev, 0x1f, 0x0000);
-+
-+	/* PHY auto speed down */
-+	r8168d_modify_extpage(phydev, 0x002d, 0x18, 0x0000, 0x0010);
-+	phy_set_bits(phydev, 0x14, BIT(15));
-+
-+	/* improve 10M EEE waveform */
-+	r8168d_phy_param(phydev, 0x8b86, 0x0000, 0x0001);
-+
-+	/* Improve 2-pair detection performance */
-+	r8168d_phy_param(phydev, 0x8b85, 0x0000, 0x4000);
-+
-+	rtl8168f_config_eee_phy(phydev);
-+
-+	/* Green feature */
-+	phy_write(phydev, 0x1f, 0x0003);
-+	phy_set_bits(phydev, 0x19, BIT(0));
-+	phy_set_bits(phydev, 0x10, BIT(10));
-+	phy_write(phydev, 0x1f, 0x0000);
-+	phy_modify_paged(phydev, 0x0005, 0x01, 0, BIT(8));
-+}
-+
-+static void rtl8168f_hw_phy_config(struct rtl8169_private *tp,
-+				   struct phy_device *phydev)
-+{
-+	/* For 4-corner performance improve */
-+	r8168d_phy_param(phydev, 0x8b80, 0x0000, 0x0006);
-+
-+	/* PHY auto speed down */
-+	r8168d_modify_extpage(phydev, 0x002d, 0x18, 0x0000, 0x0010);
-+	phy_set_bits(phydev, 0x14, BIT(15));
-+
-+	/* Improve 10M EEE waveform */
-+	r8168d_phy_param(phydev, 0x8b86, 0x0000, 0x0001);
-+
-+	rtl8168f_config_eee_phy(phydev);
-+}
-+
-+static void rtl8168f_1_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	r8169_apply_firmware(tp);
-+
-+	/* Channel estimation fine tune */
-+	phy_write_paged(phydev, 0x0003, 0x09, 0xa20f);
-+
-+	/* Modify green table for giga & fnet */
-+	r8168d_phy_param(phydev, 0x8b55, 0xffff, 0x0000);
-+	r8168d_phy_param(phydev, 0x8b5e, 0xffff, 0x0000);
-+	r8168d_phy_param(phydev, 0x8b67, 0xffff, 0x0000);
-+	r8168d_phy_param(phydev, 0x8b70, 0xffff, 0x0000);
-+	r8168d_modify_extpage(phydev, 0x0078, 0x17, 0xffff, 0x0000);
-+	r8168d_modify_extpage(phydev, 0x0078, 0x19, 0xffff, 0x00fb);
-+
-+	/* Modify green table for 10M */
-+	r8168d_phy_param(phydev, 0x8b79, 0xffff, 0xaa00);
-+
-+	/* Disable hiimpedance detection (RTCT) */
-+	phy_write_paged(phydev, 0x0003, 0x01, 0x328a);
-+
-+	rtl8168f_hw_phy_config(tp, phydev);
-+
-+	/* Improve 2-pair detection performance */
-+	r8168d_phy_param(phydev, 0x8b85, 0x0000, 0x4000);
-+}
-+
-+static void rtl8168f_2_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	r8169_apply_firmware(tp);
-+
-+	rtl8168f_hw_phy_config(tp, phydev);
-+}
-+
-+static void rtl8411_hw_phy_config(struct rtl8169_private *tp,
-+				  struct phy_device *phydev)
-+{
-+	r8169_apply_firmware(tp);
-+
-+	rtl8168f_hw_phy_config(tp, phydev);
-+
-+	/* Improve 2-pair detection performance */
-+	r8168d_phy_param(phydev, 0x8b85, 0x0000, 0x4000);
-+
-+	/* Channel estimation fine tune */
-+	phy_write_paged(phydev, 0x0003, 0x09, 0xa20f);
-+
-+	/* Modify green table for giga & fnet */
-+	r8168d_phy_param(phydev, 0x8b55, 0xffff, 0x0000);
-+	r8168d_phy_param(phydev, 0x8b5e, 0xffff, 0x0000);
-+	r8168d_phy_param(phydev, 0x8b67, 0xffff, 0x0000);
-+	r8168d_phy_param(phydev, 0x8b70, 0xffff, 0x0000);
-+	r8168d_modify_extpage(phydev, 0x0078, 0x17, 0xffff, 0x0000);
-+	r8168d_modify_extpage(phydev, 0x0078, 0x19, 0xffff, 0x00aa);
-+
-+	/* Modify green table for 10M */
-+	r8168d_phy_param(phydev, 0x8b79, 0xffff, 0xaa00);
-+
-+	/* Disable hiimpedance detection (RTCT) */
-+	phy_write_paged(phydev, 0x0003, 0x01, 0x328a);
-+
-+	/* Modify green table for giga */
-+	r8168d_phy_param(phydev, 0x8b54, 0x0800, 0x0000);
-+	r8168d_phy_param(phydev, 0x8b5d, 0x0800, 0x0000);
-+	r8168d_phy_param(phydev, 0x8a7c, 0x0100, 0x0000);
-+	r8168d_phy_param(phydev, 0x8a7f, 0x0000, 0x0100);
-+	r8168d_phy_param(phydev, 0x8a82, 0x0100, 0x0000);
-+	r8168d_phy_param(phydev, 0x8a85, 0x0100, 0x0000);
-+	r8168d_phy_param(phydev, 0x8a88, 0x0100, 0x0000);
-+
-+	/* uc same-seed solution */
-+	r8168d_phy_param(phydev, 0x8b85, 0x0000, 0x8000);
-+
-+	/* Green feature */
-+	phy_write(phydev, 0x1f, 0x0003);
-+	phy_clear_bits(phydev, 0x19, BIT(0));
-+	phy_clear_bits(phydev, 0x10, BIT(10));
-+	phy_write(phydev, 0x1f, 0x0000);
-+}
-+
-+static void rtl8168g_disable_aldps(struct phy_device *phydev)
-+{
-+	phy_modify_paged(phydev, 0x0a43, 0x10, BIT(2), 0);
-+}
-+
-+static void rtl8168g_enable_gphy_10m(struct phy_device *phydev)
-+{
-+	phy_modify_paged(phydev, 0x0a44, 0x11, 0, BIT(11));
-+}
-+
-+static void rtl8168g_phy_adjust_10m_aldps(struct phy_device *phydev)
-+{
-+	phy_modify_paged(phydev, 0x0bcc, 0x14, BIT(8), 0);
-+	phy_modify_paged(phydev, 0x0a44, 0x11, 0, BIT(7) | BIT(6));
-+	r8168g_phy_param(phydev, 0x8084, 0x6000, 0x0000);
-+	phy_modify_paged(phydev, 0x0a43, 0x10, 0x0000, 0x1003);
-+}
-+
-+static void rtl8168g_1_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	int ret;
-+
-+	r8169_apply_firmware(tp);
-+
-+	ret = phy_read_paged(phydev, 0x0a46, 0x10);
-+	if (ret & BIT(8))
-+		phy_modify_paged(phydev, 0x0bcc, 0x12, BIT(15), 0);
-+	else
-+		phy_modify_paged(phydev, 0x0bcc, 0x12, 0, BIT(15));
-+
-+	ret = phy_read_paged(phydev, 0x0a46, 0x13);
-+	if (ret & BIT(8))
-+		phy_modify_paged(phydev, 0x0c41, 0x15, 0, BIT(1));
-+	else
-+		phy_modify_paged(phydev, 0x0c41, 0x15, BIT(1), 0);
-+
-+	/* Enable PHY auto speed down */
-+	phy_modify_paged(phydev, 0x0a44, 0x11, 0, BIT(3) | BIT(2));
-+
-+	rtl8168g_phy_adjust_10m_aldps(phydev);
-+
-+	/* EEE auto-fallback function */
-+	phy_modify_paged(phydev, 0x0a4b, 0x11, 0, BIT(2));
-+
-+	/* Enable UC LPF tune function */
-+	r8168g_phy_param(phydev, 0x8012, 0x0000, 0x8000);
-+
-+	phy_modify_paged(phydev, 0x0c42, 0x11, BIT(13), BIT(14));
-+
-+	/* Improve SWR Efficiency */
-+	phy_write(phydev, 0x1f, 0x0bcd);
-+	phy_write(phydev, 0x14, 0x5065);
-+	phy_write(phydev, 0x14, 0xd065);
-+	phy_write(phydev, 0x1f, 0x0bc8);
-+	phy_write(phydev, 0x11, 0x5655);
-+	phy_write(phydev, 0x1f, 0x0bcd);
-+	phy_write(phydev, 0x14, 0x1065);
-+	phy_write(phydev, 0x14, 0x9065);
-+	phy_write(phydev, 0x14, 0x1065);
-+	phy_write(phydev, 0x1f, 0x0000);
-+
-+	rtl8168g_disable_aldps(phydev);
-+	rtl8168g_config_eee_phy(phydev);
-+}
-+
-+static void rtl8168g_2_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	r8169_apply_firmware(tp);
-+	rtl8168g_config_eee_phy(phydev);
-+}
-+
-+static void rtl8168h_2_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	u16 ioffset, rlen;
-+	u32 data;
-+
-+	r8169_apply_firmware(tp);
-+
-+	/* CHIN EST parameter update */
-+	r8168g_phy_param(phydev, 0x808a, 0x003f, 0x000a);
-+
-+	/* enable R-tune & PGA-retune function */
-+	r8168g_phy_param(phydev, 0x0811, 0x0000, 0x0800);
-+	phy_modify_paged(phydev, 0x0a42, 0x16, 0x0000, 0x0002);
-+
-+	rtl8168g_enable_gphy_10m(phydev);
-+
-+	ioffset = rtl8168h_2_get_adc_bias_ioffset(tp);
-+	if (ioffset != 0xffff)
-+		phy_write_paged(phydev, 0x0bcf, 0x16, ioffset);
-+
-+	/* Modify rlen (TX LPF corner frequency) level */
-+	data = phy_read_paged(phydev, 0x0bcd, 0x16);
-+	data &= 0x000f;
-+	rlen = 0;
-+	if (data > 3)
-+		rlen = data - 3;
-+	data = rlen | (rlen << 4) | (rlen << 8) | (rlen << 12);
-+	phy_write_paged(phydev, 0x0bcd, 0x17, data);
-+
-+	/* disable phy pfm mode */
-+	phy_modify_paged(phydev, 0x0a44, 0x11, BIT(7), 0);
-+
-+	/* disable 10m pll off */
-+	phy_modify_paged(phydev, 0x0a43, 0x10, BIT(0), 0);
-+
-+	rtl8168g_disable_aldps(phydev);
-+	rtl8168g_config_eee_phy(phydev);
-+}
-+
-+static void rtl8168ep_2_hw_phy_config(struct rtl8169_private *tp,
-+				      struct phy_device *phydev)
-+{
-+	rtl8168g_phy_adjust_10m_aldps(phydev);
-+
-+	/* Enable UC LPF tune function */
-+	r8168g_phy_param(phydev, 0x8012, 0x0000, 0x8000);
-+
-+	/* Set rg_sel_sdm_rate */
-+	phy_modify_paged(phydev, 0x0c42, 0x11, BIT(13), BIT(14));
-+
-+	/* Channel estimation parameters */
-+	r8168g_phy_param(phydev, 0x80f3, 0xff00, 0x8b00);
-+	r8168g_phy_param(phydev, 0x80f0, 0xff00, 0x3a00);
-+	r8168g_phy_param(phydev, 0x80ef, 0xff00, 0x0500);
-+	r8168g_phy_param(phydev, 0x80f6, 0xff00, 0x6e00);
-+	r8168g_phy_param(phydev, 0x80ec, 0xff00, 0x6800);
-+	r8168g_phy_param(phydev, 0x80ed, 0xff00, 0x7c00);
-+	r8168g_phy_param(phydev, 0x80f2, 0xff00, 0xf400);
-+	r8168g_phy_param(phydev, 0x80f4, 0xff00, 0x8500);
-+	r8168g_phy_param(phydev, 0x8110, 0xff00, 0xa800);
-+	r8168g_phy_param(phydev, 0x810f, 0xff00, 0x1d00);
-+	r8168g_phy_param(phydev, 0x8111, 0xff00, 0xf500);
-+	r8168g_phy_param(phydev, 0x8113, 0xff00, 0x6100);
-+	r8168g_phy_param(phydev, 0x8115, 0xff00, 0x9200);
-+	r8168g_phy_param(phydev, 0x810e, 0xff00, 0x0400);
-+	r8168g_phy_param(phydev, 0x810c, 0xff00, 0x7c00);
-+	r8168g_phy_param(phydev, 0x810b, 0xff00, 0x5a00);
-+	r8168g_phy_param(phydev, 0x80d1, 0xff00, 0xff00);
-+	r8168g_phy_param(phydev, 0x80cd, 0xff00, 0x9e00);
-+	r8168g_phy_param(phydev, 0x80d3, 0xff00, 0x0e00);
-+	r8168g_phy_param(phydev, 0x80d5, 0xff00, 0xca00);
-+	r8168g_phy_param(phydev, 0x80d7, 0xff00, 0x8400);
-+
-+	/* Force PWM-mode */
-+	phy_write(phydev, 0x1f, 0x0bcd);
-+	phy_write(phydev, 0x14, 0x5065);
-+	phy_write(phydev, 0x14, 0xd065);
-+	phy_write(phydev, 0x1f, 0x0bc8);
-+	phy_write(phydev, 0x12, 0x00ed);
-+	phy_write(phydev, 0x1f, 0x0bcd);
-+	phy_write(phydev, 0x14, 0x1065);
-+	phy_write(phydev, 0x14, 0x9065);
-+	phy_write(phydev, 0x14, 0x1065);
-+	phy_write(phydev, 0x1f, 0x0000);
-+
-+	rtl8168g_disable_aldps(phydev);
-+	rtl8168g_config_eee_phy(phydev);
-+}
-+
-+static void rtl8117_hw_phy_config(struct rtl8169_private *tp,
-+				  struct phy_device *phydev)
-+{
-+	/* CHN EST parameters adjust - fnet */
-+	r8168g_phy_param(phydev, 0x808e, 0xff00, 0x4800);
-+	r8168g_phy_param(phydev, 0x8090, 0xff00, 0xcc00);
-+	r8168g_phy_param(phydev, 0x8092, 0xff00, 0xb000);
-+
-+	r8168g_phy_param(phydev, 0x8088, 0xff00, 0x6000);
-+	r8168g_phy_param(phydev, 0x808b, 0x3f00, 0x0b00);
-+	r8168g_phy_param(phydev, 0x808d, 0x1f00, 0x0600);
-+	r8168g_phy_param(phydev, 0x808c, 0xff00, 0xb000);
-+	r8168g_phy_param(phydev, 0x80a0, 0xff00, 0x2800);
-+	r8168g_phy_param(phydev, 0x80a2, 0xff00, 0x5000);
-+	r8168g_phy_param(phydev, 0x809b, 0xf800, 0xb000);
-+	r8168g_phy_param(phydev, 0x809a, 0xff00, 0x4b00);
-+	r8168g_phy_param(phydev, 0x809d, 0x3f00, 0x0800);
-+	r8168g_phy_param(phydev, 0x80a1, 0xff00, 0x7000);
-+	r8168g_phy_param(phydev, 0x809f, 0x1f00, 0x0300);
-+	r8168g_phy_param(phydev, 0x809e, 0xff00, 0x8800);
-+	r8168g_phy_param(phydev, 0x80b2, 0xff00, 0x2200);
-+	r8168g_phy_param(phydev, 0x80ad, 0xf800, 0x9800);
-+	r8168g_phy_param(phydev, 0x80af, 0x3f00, 0x0800);
-+	r8168g_phy_param(phydev, 0x80b3, 0xff00, 0x6f00);
-+	r8168g_phy_param(phydev, 0x80b1, 0x1f00, 0x0300);
-+	r8168g_phy_param(phydev, 0x80b0, 0xff00, 0x9300);
-+
-+	r8168g_phy_param(phydev, 0x8011, 0x0000, 0x0800);
-+
-+	rtl8168g_enable_gphy_10m(phydev);
-+
-+	r8168g_phy_param(phydev, 0x8016, 0x0000, 0x0400);
-+
-+	rtl8168g_disable_aldps(phydev);
-+	rtl8168h_config_eee_phy(phydev);
-+}
-+
-+static void rtl8102e_hw_phy_config(struct rtl8169_private *tp,
-+				   struct phy_device *phydev)
-+{
-+	static const struct phy_reg phy_reg_init[] = {
-+		{ 0x1f, 0x0003 },
-+		{ 0x08, 0x441d },
-+		{ 0x01, 0x9100 },
-+		{ 0x1f, 0x0000 }
-+	};
-+
-+	phy_set_bits(phydev, 0x11, BIT(12));
-+	phy_set_bits(phydev, 0x19, BIT(13));
-+	phy_set_bits(phydev, 0x10, BIT(15));
-+
-+	rtl_writephy_batch(phydev, phy_reg_init);
-+}
-+
-+static void rtl8401_hw_phy_config(struct rtl8169_private *tp,
-+				  struct phy_device *phydev)
-+{
-+	phy_set_bits(phydev, 0x11, BIT(12));
-+	phy_modify_paged(phydev, 0x0002, 0x0f, 0x0000, 0x0003);
-+}
-+
-+static void rtl8105e_hw_phy_config(struct rtl8169_private *tp,
-+				   struct phy_device *phydev)
-+{
-+	/* Disable ALDPS before ram code */
-+	phy_write(phydev, 0x18, 0x0310);
-+	mdelay(100);
-+
-+	r8169_apply_firmware(tp);
-+
-+	phy_write_paged(phydev, 0x0005, 0x1a, 0x0000);
-+	phy_write_paged(phydev, 0x0004, 0x1c, 0x0000);
-+	phy_write_paged(phydev, 0x0001, 0x15, 0x7701);
-+}
-+
-+static void rtl8402_hw_phy_config(struct rtl8169_private *tp,
-+				  struct phy_device *phydev)
-+{
-+	/* Disable ALDPS before setting firmware */
-+	phy_write(phydev, 0x18, 0x0310);
-+	mdelay(20);
-+
-+	r8169_apply_firmware(tp);
-+
-+	/* EEE setting */
-+	phy_write(phydev, 0x1f, 0x0004);
-+	phy_write(phydev, 0x10, 0x401f);
-+	phy_write(phydev, 0x19, 0x7030);
-+	phy_write(phydev, 0x1f, 0x0000);
-+}
-+
-+static void rtl8106e_hw_phy_config(struct rtl8169_private *tp,
-+				   struct phy_device *phydev)
-+{
-+	static const struct phy_reg phy_reg_init[] = {
-+		{ 0x1f, 0x0004 },
-+		{ 0x10, 0xc07f },
-+		{ 0x19, 0x7030 },
-+		{ 0x1f, 0x0000 }
-+	};
-+
-+	/* Disable ALDPS before ram code */
-+	phy_write(phydev, 0x18, 0x0310);
-+	mdelay(100);
-+
-+	r8169_apply_firmware(tp);
-+
-+	rtl_writephy_batch(phydev, phy_reg_init);
-+}
-+
-+static void rtl8125_legacy_force_mode(struct phy_device *phydev)
-+{
-+	phy_modify_paged(phydev, 0xa5b, 0x12, BIT(15), 0);
-+}
-+
-+static void rtl8125a_2_hw_phy_config(struct rtl8169_private *tp,
-+				     struct phy_device *phydev)
-+{
-+	int i;
-+
-+	phy_modify_paged(phydev, 0xad4, 0x17, 0x0000, 0x0010);
-+	phy_modify_paged(phydev, 0xad1, 0x13, 0x03ff, 0x03ff);
-+	phy_modify_paged(phydev, 0xad3, 0x11, 0x003f, 0x0006);
-+	phy_modify_paged(phydev, 0xac0, 0x14, 0x1100, 0x0000);
-+	phy_modify_paged(phydev, 0xacc, 0x10, 0x0003, 0x0002);
-+	phy_modify_paged(phydev, 0xad4, 0x10, 0x00e7, 0x0044);
-+	phy_modify_paged(phydev, 0xac1, 0x12, 0x0080, 0x0000);
-+	phy_modify_paged(phydev, 0xac8, 0x10, 0x0300, 0x0000);
-+	phy_modify_paged(phydev, 0xac5, 0x17, 0x0007, 0x0002);
-+	phy_write_paged(phydev, 0xad4, 0x16, 0x00a8);
-+	phy_write_paged(phydev, 0xac5, 0x16, 0x01ff);
-+	phy_modify_paged(phydev, 0xac8, 0x15, 0x00f0, 0x0030);
-+
-+	phy_write(phydev, 0x1f, 0x0b87);
-+	phy_write(phydev, 0x16, 0x80a2);
-+	phy_write(phydev, 0x17, 0x0153);
-+	phy_write(phydev, 0x16, 0x809c);
-+	phy_write(phydev, 0x17, 0x0153);
-+	phy_write(phydev, 0x1f, 0x0000);
-+
-+	phy_write(phydev, 0x1f, 0x0a43);
-+	phy_write(phydev, 0x13, 0x81B3);
-+	phy_write(phydev, 0x14, 0x0043);
-+	phy_write(phydev, 0x14, 0x00A7);
-+	phy_write(phydev, 0x14, 0x00D6);
-+	phy_write(phydev, 0x14, 0x00EC);
-+	phy_write(phydev, 0x14, 0x00F6);
-+	phy_write(phydev, 0x14, 0x00FB);
-+	phy_write(phydev, 0x14, 0x00FD);
-+	phy_write(phydev, 0x14, 0x00FF);
-+	phy_write(phydev, 0x14, 0x00BB);
-+	phy_write(phydev, 0x14, 0x0058);
-+	phy_write(phydev, 0x14, 0x0029);
-+	phy_write(phydev, 0x14, 0x0013);
-+	phy_write(phydev, 0x14, 0x0009);
-+	phy_write(phydev, 0x14, 0x0004);
-+	phy_write(phydev, 0x14, 0x0002);
-+	for (i = 0; i < 25; i++)
-+		phy_write(phydev, 0x14, 0x0000);
-+	phy_write(phydev, 0x1f, 0x0000);
-+
-+	r8168g_phy_param(phydev, 0x8257, 0xffff, 0x020F);
-+	r8168g_phy_param(phydev, 0x80ea, 0xffff, 0x7843);
-+
-+	r8169_apply_firmware(tp);
-+
-+	phy_modify_paged(phydev, 0xd06, 0x14, 0x0000, 0x2000);
-+
-+	r8168g_phy_param(phydev, 0x81a2, 0x0000, 0x0100);
-+
-+	phy_modify_paged(phydev, 0xb54, 0x16, 0xff00, 0xdb00);
-+	phy_modify_paged(phydev, 0xa45, 0x12, 0x0001, 0x0000);
-+	phy_modify_paged(phydev, 0xa5d, 0x12, 0x0000, 0x0020);
-+	phy_modify_paged(phydev, 0xad4, 0x17, 0x0010, 0x0000);
-+	phy_modify_paged(phydev, 0xa86, 0x15, 0x0001, 0x0000);
-+	rtl8168g_enable_gphy_10m(phydev);
-+
-+	rtl8125a_config_eee_phy(phydev);
-+}
-+
-+static void rtl8125b_hw_phy_config(struct rtl8169_private *tp,
-+				   struct phy_device *phydev)
-+{
-+	r8169_apply_firmware(tp);
-+
-+	phy_modify_paged(phydev, 0xa44, 0x11, 0x0000, 0x0800);
-+	phy_modify_paged(phydev, 0xac4, 0x13, 0x00f0, 0x0090);
-+	phy_modify_paged(phydev, 0xad3, 0x10, 0x0003, 0x0001);
-+
-+	phy_write(phydev, 0x1f, 0x0b87);
-+	phy_write(phydev, 0x16, 0x80f5);
-+	phy_write(phydev, 0x17, 0x760e);
-+	phy_write(phydev, 0x16, 0x8107);
-+	phy_write(phydev, 0x17, 0x360e);
-+	phy_write(phydev, 0x16, 0x8551);
-+	phy_modify(phydev, 0x17, 0xff00, 0x0800);
-+	phy_write(phydev, 0x1f, 0x0000);
-+
-+	phy_modify_paged(phydev, 0xbf0, 0x10, 0xe000, 0xa000);
-+	phy_modify_paged(phydev, 0xbf4, 0x13, 0x0f00, 0x0300);
-+
-+	r8168g_phy_param(phydev, 0x8044, 0xffff, 0x2417);
-+	r8168g_phy_param(phydev, 0x804a, 0xffff, 0x2417);
-+	r8168g_phy_param(phydev, 0x8050, 0xffff, 0x2417);
-+	r8168g_phy_param(phydev, 0x8056, 0xffff, 0x2417);
-+	r8168g_phy_param(phydev, 0x805c, 0xffff, 0x2417);
-+	r8168g_phy_param(phydev, 0x8062, 0xffff, 0x2417);
-+	r8168g_phy_param(phydev, 0x8068, 0xffff, 0x2417);
-+	r8168g_phy_param(phydev, 0x806e, 0xffff, 0x2417);
-+	r8168g_phy_param(phydev, 0x8074, 0xffff, 0x2417);
-+	r8168g_phy_param(phydev, 0x807a, 0xffff, 0x2417);
-+
-+	phy_modify_paged(phydev, 0xa4c, 0x15, 0x0000, 0x0040);
-+	phy_modify_paged(phydev, 0xbf8, 0x12, 0xe000, 0xa000);
-+
-+	rtl8125_legacy_force_mode(phydev);
-+	rtl8125b_config_eee_phy(phydev);
-+}
-+
-+void r8169_hw_phy_config(struct rtl8169_private *tp, struct phy_device *phydev,
-+			 enum mac_version ver)
-+{
-+	static const rtl_phy_cfg_fct phy_configs[] = {
-+		/* PCI devices. */
-+		[RTL_GIGA_MAC_VER_02] = rtl8169s_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_03] = rtl8169s_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_04] = rtl8169sb_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_05] = rtl8169scd_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_06] = rtl8169sce_hw_phy_config,
-+		/* PCI-E devices. */
-+		[RTL_GIGA_MAC_VER_07] = rtl8102e_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_08] = rtl8102e_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_09] = rtl8102e_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_10] = NULL,
-+		[RTL_GIGA_MAC_VER_11] = rtl8168bb_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_14] = rtl8401_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_17] = rtl8168bef_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_18] = rtl8168cp_1_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_19] = rtl8168c_1_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_20] = rtl8168c_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_21] = rtl8168c_3_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_22] = rtl8168c_3_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_23] = rtl8168cp_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_24] = rtl8168cp_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_25] = rtl8168d_1_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_26] = rtl8168d_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_28] = rtl8168d_4_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_29] = rtl8105e_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_30] = rtl8105e_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_31] = NULL,
-+		[RTL_GIGA_MAC_VER_32] = rtl8168e_1_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_33] = rtl8168e_1_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_34] = rtl8168e_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_35] = rtl8168f_1_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_36] = rtl8168f_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_37] = rtl8402_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_38] = rtl8411_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_39] = rtl8106e_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_40] = rtl8168g_1_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_42] = rtl8168g_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_43] = rtl8168g_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_44] = rtl8168g_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_46] = rtl8168h_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_48] = rtl8168h_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_51] = rtl8168ep_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_52] = rtl8117_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_53] = rtl8117_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_61] = rtl8125a_2_hw_phy_config,
-+		[RTL_GIGA_MAC_VER_63] = rtl8125b_hw_phy_config,
-+	};
-+
-+	if (phy_configs[ver])
-+		phy_configs[ver](tp, phydev);
-+}
-diff --git a/drivers/net/rtl8169.c b/drivers/net/rtl8169.c
-deleted file mode 100644
-index cbcd065980..0000000000
---- a/drivers/net/rtl8169.c
-+++ /dev/null
-@@ -1,562 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/*
-- * Copyright (C) 2014 Lucas Stach <l.stach@pengutronix.de>
-- */
--
--#include <common.h>
--#include <dma.h>
--#include <init.h>
--#include <net.h>
--#include <malloc.h>
--#include <linux/pci.h>
--
--#define NUM_TX_DESC	1
--#define NUM_RX_DESC	4
--#define PKT_BUF_SIZE	1536
--#define ETH_ZLEN	60
--
--struct rtl8169_chip_info {
--	const char *name;
--	u8 version;
--	u32 RxConfigMask;
++static __maybe_unused struct rockchip_pin_ctrl px30_pin_ctrl = {
++		.pin_banks		= px30_pin_banks,
++		.nr_banks		= ARRAY_SIZE(px30_pin_banks),
++		.label			= "PX30-GPIO",
++		.type			= PX30,
++		.grf_mux_offset		= 0x0,
++		.pmu_mux_offset		= 0x0,
++		.iomux_routes		= px30_mux_route_data,
++		.niomux_routes		= ARRAY_SIZE(px30_mux_route_data),
++		.pull_calc_reg		= px30_calc_pull_reg_and_bit,
++		.drv_calc_reg		= px30_calc_drv_reg_and_bit,
++		.schmitt_calc_reg	= px30_calc_schmitt_reg_and_bit,
++};
++
++static __maybe_unused struct rockchip_pin_bank rv1108_pin_banks[] = {
++	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU),
++	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
++	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0, 0, 0, 0),
++	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3", 0, 0, 0, 0),
++};
++
++static __maybe_unused struct rockchip_pin_ctrl rv1108_pin_ctrl = {
++	.pin_banks		= rv1108_pin_banks,
++	.nr_banks		= ARRAY_SIZE(rv1108_pin_banks),
++	.label			= "RV1108-GPIO",
++	.type			= RV1108,
++	.grf_mux_offset		= 0x10,
++	.pmu_mux_offset		= 0x0,
++	.iomux_recalced		= rv1108_mux_recalced_data,
++	.niomux_recalced	= ARRAY_SIZE(rv1108_mux_recalced_data),
++	.pull_calc_reg		= rv1108_calc_pull_reg_and_bit,
++	.drv_calc_reg		= rv1108_calc_drv_reg_and_bit,
++	.schmitt_calc_reg	= rv1108_calc_schmitt_reg_and_bit,
++};
++
++static __maybe_unused struct rockchip_pin_bank rv1126_pin_banks[] = {
++	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0",
++			     IOMUX_WIDTH_4BIT | IOMUX_SOURCE_PMU,
++			     IOMUX_WIDTH_4BIT | IOMUX_SOURCE_PMU,
++			     IOMUX_WIDTH_4BIT | IOMUX_L_SOURCE_PMU,
++			     IOMUX_WIDTH_4BIT),
++	PIN_BANK_IOMUX_FLAGS_OFFSET(1, 32, "gpio1",
++				    IOMUX_WIDTH_4BIT,
++				    IOMUX_WIDTH_4BIT,
++				    IOMUX_WIDTH_4BIT,
++				    IOMUX_WIDTH_4BIT,
++				    0x10010, 0x10018, 0x10020, 0x10028),
++	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2",
++			     IOMUX_WIDTH_4BIT,
++			     IOMUX_WIDTH_4BIT,
++			     IOMUX_WIDTH_4BIT,
++			     IOMUX_WIDTH_4BIT),
++	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
++			     IOMUX_WIDTH_4BIT,
++			     IOMUX_WIDTH_4BIT,
++			     IOMUX_WIDTH_4BIT,
++			     IOMUX_WIDTH_4BIT),
++	PIN_BANK_IOMUX_FLAGS(4, 2, "gpio4",
++			     IOMUX_WIDTH_4BIT, 0, 0, 0),
++};
++
++static __maybe_unused struct rockchip_pin_ctrl rv1126_pin_ctrl = {
++	.pin_banks		= rv1126_pin_banks,
++	.nr_banks		= ARRAY_SIZE(rv1126_pin_banks),
++	.label			= "RV1126-GPIO",
++	.type			= RV1126,
++	.grf_mux_offset		= 0x10004, /* mux offset from GPIO0_D0 */
++	.pmu_mux_offset		= 0x0,
++	.iomux_routes		= rv1126_mux_route_data,
++	.niomux_routes		= ARRAY_SIZE(rv1126_mux_route_data),
++	.iomux_recalced		= rv1126_mux_recalced_data,
++	.niomux_recalced	= ARRAY_SIZE(rv1126_mux_recalced_data),
++	.pull_calc_reg		= rv1126_calc_pull_reg_and_bit,
++	.drv_calc_reg		= rv1126_calc_drv_reg_and_bit,
++	.schmitt_calc_reg	= rv1126_calc_schmitt_reg_and_bit,
++};
++
++static __maybe_unused struct rockchip_pin_bank rk3036_pin_banks[] = {
+ 	PIN_BANK(0, 32, "gpio0"),
+ 	PIN_BANK(1, 32, "gpio1"),
+ 	PIN_BANK(2, 32, "gpio2"),
+-	PIN_BANK(3, 32, "gpio3"),
+ };
+ 
+-static struct rockchip_pin_ctrl rk2928_pin_ctrl = {
+-	.pin_banks	= rk2928_pin_banks,
+-	.nr_banks	= ARRAY_SIZE(rk2928_pin_banks),
+-	.type		= RK2928,
+-	.grf_mux_offset	= 0xa8,
+-	.pull_calc_reg	= rk2928_calc_pull_reg_and_bit,
++static __maybe_unused struct rockchip_pin_ctrl rk3036_pin_ctrl = {
++		.pin_banks		= rk3036_pin_banks,
++		.nr_banks		= ARRAY_SIZE(rk3036_pin_banks),
++		.label			= "RK3036-GPIO",
++		.type			= RK2928,
++		.grf_mux_offset		= 0xa8,
++		.pull_calc_reg		= rk2928_calc_pull_reg_and_bit,
+ };
+ 
+-static struct rockchip_pin_bank rk3066a_pin_banks[] = {
++static __maybe_unused struct rockchip_pin_bank rk3066a_pin_banks[] = {
+ 	PIN_BANK(0, 32, "gpio0"),
+ 	PIN_BANK(1, 32, "gpio1"),
+ 	PIN_BANK(2, 32, "gpio2"),
+@@ -778,142 +2570,275 @@ static struct rockchip_pin_bank rk3066a_pin_banks[] = {
+ 	PIN_BANK(6, 16, "gpio6"),
+ };
+ 
+-static struct rockchip_pin_ctrl rk3066a_pin_ctrl = {
+-	.pin_banks	= rk3066a_pin_banks,
+-	.nr_banks	= ARRAY_SIZE(rk3066a_pin_banks),
+-	.type		= RK2928,
+-	.grf_mux_offset	= 0xa8,
+-	.pull_calc_reg	= rk2928_calc_pull_reg_and_bit,
++static __maybe_unused struct rockchip_pin_ctrl rk3066a_pin_ctrl = {
++		.pin_banks		= rk3066a_pin_banks,
++		.nr_banks		= ARRAY_SIZE(rk3066a_pin_banks),
++		.label			= "RK3066a-GPIO",
++		.type			= RK2928,
++		.grf_mux_offset		= 0xa8,
++		.pull_calc_reg		= rk2928_calc_pull_reg_and_bit,
+ };
+ 
+-static struct rockchip_pin_bank rk3066b_pin_banks[] = {
++static __maybe_unused struct rockchip_pin_bank rk3128_pin_banks[] = {
+ 	PIN_BANK(0, 32, "gpio0"),
+ 	PIN_BANK(1, 32, "gpio1"),
+ 	PIN_BANK(2, 32, "gpio2"),
+ 	PIN_BANK(3, 32, "gpio3"),
+ };
+ 
+-static struct rockchip_pin_ctrl rk3066b_pin_ctrl = {
+-	.pin_banks	= rk3066b_pin_banks,
+-	.nr_banks	= ARRAY_SIZE(rk3066b_pin_banks),
+-	.type		= RK3066B,
+-	.grf_mux_offset	= 0x60,
++static __maybe_unused struct rockchip_pin_ctrl rk3128_pin_ctrl = {
++		.pin_banks		= rk3128_pin_banks,
++		.nr_banks		= ARRAY_SIZE(rk3128_pin_banks),
++		.label			= "RK3128-GPIO",
++		.type			= RK3128,
++		.grf_mux_offset		= 0xa8,
++		.iomux_recalced		= rk3128_mux_recalced_data,
++		.niomux_recalced	= ARRAY_SIZE(rk3128_mux_recalced_data),
++		.iomux_routes		= rk3128_mux_route_data,
++		.niomux_routes		= ARRAY_SIZE(rk3128_mux_route_data),
++		.pull_calc_reg		= rk3128_calc_pull_reg_and_bit,
+ };
+ 
+-static struct rockchip_pin_bank rk3188_pin_banks[] = {
++static __maybe_unused struct rockchip_pin_bank rk3188_pin_banks[] = {
+ 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", IOMUX_GPIO_ONLY, 0, 0, 0),
+ 	PIN_BANK(1, 32, "gpio1"),
+ 	PIN_BANK(2, 32, "gpio2"),
+ 	PIN_BANK(3, 32, "gpio3"),
+ };
+ 
+-static struct rockchip_pin_ctrl rk3188_pin_ctrl = {
+-	.pin_banks	= rk3188_pin_banks,
+-	.nr_banks	= ARRAY_SIZE(rk3188_pin_banks),
+-	.type		= RK3188,
+-	.grf_mux_offset	= 0x60,
+-	.iomux_routes	= rk3188_mux_route_data,
+-	.niomux_routes	= ARRAY_SIZE(rk3188_mux_route_data),
+-	.pull_calc_reg	= rk3188_calc_pull_reg_and_bit,
++static __maybe_unused struct rockchip_pin_ctrl rk3188_pin_ctrl = {
++		.pin_banks		= rk3188_pin_banks,
++		.nr_banks		= ARRAY_SIZE(rk3188_pin_banks),
++		.label			= "RK3188-GPIO",
++		.type			= RK3188,
++		.grf_mux_offset		= 0x60,
++		.iomux_routes		= rk3188_mux_route_data,
++		.niomux_routes		= ARRAY_SIZE(rk3188_mux_route_data),
++		.pull_calc_reg		= rk3188_calc_pull_reg_and_bit,
+ };
+ 
+-static struct rockchip_mux_route_data rk3568_mux_route_data[] = {
+-	RK_MUXROUTE_PMU(0, RK_PB7, 1, 0x0110, WRITE_MASK_VAL(1, 0, 0)), /* PWM0 IO mux M0 */
+-	RK_MUXROUTE_PMU(0, RK_PC7, 2, 0x0110, WRITE_MASK_VAL(1, 0, 1)), /* PWM0 IO mux M1 */
+-	RK_MUXROUTE_PMU(0, RK_PC0, 1, 0x0110, WRITE_MASK_VAL(3, 2, 0)), /* PWM1 IO mux M0 */
+-	RK_MUXROUTE_PMU(0, RK_PB5, 4, 0x0110, WRITE_MASK_VAL(3, 2, 1)), /* PWM1 IO mux M1 */
+-	RK_MUXROUTE_PMU(0, RK_PC1, 1, 0x0110, WRITE_MASK_VAL(5, 4, 0)), /* PWM2 IO mux M0 */
+-	RK_MUXROUTE_PMU(0, RK_PB6, 4, 0x0110, WRITE_MASK_VAL(5, 4, 1)), /* PWM2 IO mux M1 */
+-	RK_MUXROUTE_PMU(0, RK_PB3, 2, 0x0300, WRITE_MASK_VAL(0, 0, 0)), /* CAN0 IO mux M0 */
+-	RK_MUXROUTE_GRF(2, RK_PA1, 4, 0x0300, WRITE_MASK_VAL(0, 0, 1)), /* CAN0 IO mux M1 */
+-	RK_MUXROUTE_GRF(1, RK_PA1, 3, 0x0300, WRITE_MASK_VAL(2, 2, 0)), /* CAN1 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PC3, 3, 0x0300, WRITE_MASK_VAL(2, 2, 1)), /* CAN1 IO mux M1 */
+-	RK_MUXROUTE_GRF(4, RK_PB5, 3, 0x0300, WRITE_MASK_VAL(4, 4, 0)), /* CAN2 IO mux M0 */
+-	RK_MUXROUTE_GRF(2, RK_PB2, 4, 0x0300, WRITE_MASK_VAL(4, 4, 1)), /* CAN2 IO mux M1 */
+-	RK_MUXROUTE_GRF(4, RK_PC4, 1, 0x0300, WRITE_MASK_VAL(6, 6, 0)), /* HPDIN IO mux M0 */
+-	RK_MUXROUTE_PMU(0, RK_PC2, 2, 0x0300, WRITE_MASK_VAL(6, 6, 1)), /* HPDIN IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PB1, 3, 0x0300, WRITE_MASK_VAL(8, 8, 0)), /* GMAC1 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PA7, 3, 0x0300, WRITE_MASK_VAL(8, 8, 1)), /* GMAC1 IO mux M1 */
+-	RK_MUXROUTE_GRF(4, RK_PD1, 1, 0x0300, WRITE_MASK_VAL(10, 10, 0)), /* HDMITX IO mux M0 */
+-	RK_MUXROUTE_PMU(0, RK_PC7, 1, 0x0300, WRITE_MASK_VAL(10, 10, 1)), /* HDMITX IO mux M1 */
+-	RK_MUXROUTE_PMU(0, RK_PB6, 1, 0x0300, WRITE_MASK_VAL(14, 14, 0)), /* I2C2 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PB4, 1, 0x0300, WRITE_MASK_VAL(14, 14, 1)), /* I2C2 IO mux M1 */
+-	RK_MUXROUTE_GRF(1, RK_PA0, 1, 0x0304, WRITE_MASK_VAL(0, 0, 0)), /* I2C3 IO mux M0 */
+-	RK_MUXROUTE_GRF(3, RK_PB6, 4, 0x0304, WRITE_MASK_VAL(0, 0, 1)), /* I2C3 IO mux M1 */
+-	RK_MUXROUTE_GRF(4, RK_PB2, 1, 0x0304, WRITE_MASK_VAL(2, 2, 0)), /* I2C4 IO mux M0 */
+-	RK_MUXROUTE_GRF(2, RK_PB1, 2, 0x0304, WRITE_MASK_VAL(2, 2, 1)), /* I2C4 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PB4, 4, 0x0304, WRITE_MASK_VAL(4, 4, 0)), /* I2C5 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PD0, 2, 0x0304, WRITE_MASK_VAL(4, 4, 1)), /* I2C5 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PB1, 5, 0x0304, WRITE_MASK_VAL(14, 14, 0)), /* PWM8 IO mux M0 */
+-	RK_MUXROUTE_GRF(1, RK_PD5, 4, 0x0304, WRITE_MASK_VAL(14, 14, 1)), /* PWM8 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PB2, 5, 0x0308, WRITE_MASK_VAL(0, 0, 0)), /* PWM9 IO mux M0 */
+-	RK_MUXROUTE_GRF(1, RK_PD6, 4, 0x0308, WRITE_MASK_VAL(0, 0, 1)), /* PWM9 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PB5, 5, 0x0308, WRITE_MASK_VAL(2, 2, 0)), /* PWM10 IO mux M0 */
+-	RK_MUXROUTE_GRF(2, RK_PA1, 2, 0x0308, WRITE_MASK_VAL(2, 2, 1)), /* PWM10 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PB6, 5, 0x0308, WRITE_MASK_VAL(4, 4, 0)), /* PWM11 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PC0, 3, 0x0308, WRITE_MASK_VAL(4, 4, 1)), /* PWM11 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PB7, 2, 0x0308, WRITE_MASK_VAL(6, 6, 0)), /* PWM12 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PC5, 1, 0x0308, WRITE_MASK_VAL(6, 6, 1)), /* PWM12 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PC0, 2, 0x0308, WRITE_MASK_VAL(8, 8, 0)), /* PWM13 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PC6, 1, 0x0308, WRITE_MASK_VAL(8, 8, 1)), /* PWM13 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PC4, 1, 0x0308, WRITE_MASK_VAL(10, 10, 0)), /* PWM14 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PC2, 1, 0x0308, WRITE_MASK_VAL(10, 10, 1)), /* PWM14 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PC5, 1, 0x0308, WRITE_MASK_VAL(12, 12, 0)), /* PWM15 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PC3, 1, 0x0308, WRITE_MASK_VAL(12, 12, 1)), /* PWM15 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PD2, 3, 0x0308, WRITE_MASK_VAL(14, 14, 0)), /* SDMMC2 IO mux M0 */
+-	RK_MUXROUTE_GRF(3, RK_PA5, 5, 0x0308, WRITE_MASK_VAL(14, 14, 1)), /* SDMMC2 IO mux M1 */
+-	RK_MUXROUTE_PMU(0, RK_PB5, 2, 0x030c, WRITE_MASK_VAL(0, 0, 0)), /* SPI0 IO mux M0 */
+-	RK_MUXROUTE_GRF(2, RK_PD3, 3, 0x030c, WRITE_MASK_VAL(0, 0, 1)), /* SPI0 IO mux M1 */
+-	RK_MUXROUTE_GRF(2, RK_PB5, 3, 0x030c, WRITE_MASK_VAL(2, 2, 0)), /* SPI1 IO mux M0 */
+-	RK_MUXROUTE_GRF(3, RK_PC3, 3, 0x030c, WRITE_MASK_VAL(2, 2, 1)), /* SPI1 IO mux M1 */
+-	RK_MUXROUTE_GRF(2, RK_PC1, 4, 0x030c, WRITE_MASK_VAL(4, 4, 0)), /* SPI2 IO mux M0 */
+-	RK_MUXROUTE_GRF(3, RK_PA0, 3, 0x030c, WRITE_MASK_VAL(4, 4, 1)), /* SPI2 IO mux M1 */
+-	RK_MUXROUTE_GRF(4, RK_PB3, 4, 0x030c, WRITE_MASK_VAL(6, 6, 0)), /* SPI3 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PC2, 2, 0x030c, WRITE_MASK_VAL(6, 6, 1)), /* SPI3 IO mux M1 */
+-	RK_MUXROUTE_GRF(2, RK_PB4, 2, 0x030c, WRITE_MASK_VAL(8, 8, 0)), /* UART1 IO mux M0 */
+-	RK_MUXROUTE_PMU(0, RK_PD1, 1, 0x030c, WRITE_MASK_VAL(8, 8, 1)), /* UART1 IO mux M1 */
+-	RK_MUXROUTE_PMU(0, RK_PD1, 1, 0x030c, WRITE_MASK_VAL(10, 10, 0)), /* UART2 IO mux M0 */
+-	RK_MUXROUTE_GRF(1, RK_PD5, 2, 0x030c, WRITE_MASK_VAL(10, 10, 1)), /* UART2 IO mux M1 */
+-	RK_MUXROUTE_GRF(1, RK_PA1, 2, 0x030c, WRITE_MASK_VAL(12, 12, 0)), /* UART3 IO mux M0 */
+-	RK_MUXROUTE_GRF(3, RK_PB7, 4, 0x030c, WRITE_MASK_VAL(12, 12, 1)), /* UART3 IO mux M1 */
+-	RK_MUXROUTE_GRF(1, RK_PA6, 2, 0x030c, WRITE_MASK_VAL(14, 14, 0)), /* UART4 IO mux M0 */
+-	RK_MUXROUTE_GRF(3, RK_PB2, 4, 0x030c, WRITE_MASK_VAL(14, 14, 1)), /* UART4 IO mux M1 */
+-	RK_MUXROUTE_GRF(2, RK_PA2, 3, 0x0310, WRITE_MASK_VAL(0, 0, 0)), /* UART5 IO mux M0 */
+-	RK_MUXROUTE_GRF(3, RK_PC2, 4, 0x0310, WRITE_MASK_VAL(0, 0, 1)), /* UART5 IO mux M1 */
+-	RK_MUXROUTE_GRF(2, RK_PA4, 3, 0x0310, WRITE_MASK_VAL(2, 2, 0)), /* UART6 IO mux M0 */
+-	RK_MUXROUTE_GRF(1, RK_PD5, 3, 0x0310, WRITE_MASK_VAL(2, 2, 1)), /* UART6 IO mux M1 */
+-	RK_MUXROUTE_GRF(2, RK_PA6, 3, 0x0310, WRITE_MASK_VAL(5, 4, 0)), /* UART7 IO mux M0 */
+-	RK_MUXROUTE_GRF(3, RK_PC4, 4, 0x0310, WRITE_MASK_VAL(5, 4, 1)), /* UART7 IO mux M1 */
+-	RK_MUXROUTE_GRF(4, RK_PA2, 4, 0x0310, WRITE_MASK_VAL(5, 4, 2)), /* UART7 IO mux M2 */
+-	RK_MUXROUTE_GRF(2, RK_PC5, 3, 0x0310, WRITE_MASK_VAL(6, 6, 0)), /* UART8 IO mux M0 */
+-	RK_MUXROUTE_GRF(2, RK_PD7, 4, 0x0310, WRITE_MASK_VAL(6, 6, 1)), /* UART8 IO mux M1 */
+-	RK_MUXROUTE_GRF(2, RK_PB0, 3, 0x0310, WRITE_MASK_VAL(9, 8, 0)), /* UART9 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PC5, 4, 0x0310, WRITE_MASK_VAL(9, 8, 1)), /* UART9 IO mux M1 */
+-	RK_MUXROUTE_GRF(4, RK_PA4, 4, 0x0310, WRITE_MASK_VAL(9, 8, 2)), /* UART9 IO mux M2 */
+-	RK_MUXROUTE_GRF(1, RK_PA2, 1, 0x0310, WRITE_MASK_VAL(11, 10, 0)), /* I2S1 IO mux M0 */
+-	RK_MUXROUTE_GRF(3, RK_PC6, 4, 0x0310, WRITE_MASK_VAL(11, 10, 1)), /* I2S1 IO mux M1 */
+-	RK_MUXROUTE_GRF(2, RK_PD0, 5, 0x0310, WRITE_MASK_VAL(11, 10, 2)), /* I2S1 IO mux M2 */
+-	RK_MUXROUTE_GRF(2, RK_PC1, 1, 0x0310, WRITE_MASK_VAL(12, 12, 0)), /* I2S2 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PB6, 5, 0x0310, WRITE_MASK_VAL(12, 12, 1)), /* I2S2 IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PA2, 4, 0x0310, WRITE_MASK_VAL(14, 14, 0)), /* I2S3 IO mux M0 */
+-	RK_MUXROUTE_GRF(4, RK_PC2, 5, 0x0310, WRITE_MASK_VAL(14, 14, 1)), /* I2S3 IO mux M1 */
+-	RK_MUXROUTE_GRF(1, RK_PA4, 3, 0x0314, WRITE_MASK_VAL(1, 0, 0)), /* PDM IO mux M0 */
+-	RK_MUXROUTE_GRF(1, RK_PA6, 3, 0x0314, WRITE_MASK_VAL(1, 0, 0)), /* PDM IO mux M0 */
+-	RK_MUXROUTE_GRF(3, RK_PD6, 5, 0x0314, WRITE_MASK_VAL(1, 0, 1)), /* PDM IO mux M1 */
+-	RK_MUXROUTE_GRF(4, RK_PA0, 4, 0x0314, WRITE_MASK_VAL(1, 0, 1)), /* PDM IO mux M1 */
+-	RK_MUXROUTE_GRF(3, RK_PC4, 5, 0x0314, WRITE_MASK_VAL(1, 0, 2)), /* PDM IO mux M2 */
+-	RK_MUXROUTE_PMU(0, RK_PA5, 3, 0x0314, WRITE_MASK_VAL(3, 2, 0)), /* PCIE20 IO mux M0 */
+-	RK_MUXROUTE_GRF(2, RK_PD0, 4, 0x0314, WRITE_MASK_VAL(3, 2, 1)), /* PCIE20 IO mux M1 */
+-	RK_MUXROUTE_GRF(1, RK_PB0, 4, 0x0314, WRITE_MASK_VAL(3, 2, 2)), /* PCIE20 IO mux M2 */
+-	RK_MUXROUTE_PMU(0, RK_PA4, 3, 0x0314, WRITE_MASK_VAL(5, 4, 0)), /* PCIE30X1 IO mux M0 */
+-	RK_MUXROUTE_GRF(2, RK_PD2, 4, 0x0314, WRITE_MASK_VAL(5, 4, 1)), /* PCIE30X1 IO mux M1 */
+-	RK_MUXROUTE_GRF(1, RK_PA5, 4, 0x0314, WRITE_MASK_VAL(5, 4, 2)), /* PCIE30X1 IO mux M2 */
+-	RK_MUXROUTE_PMU(0, RK_PA6, 2, 0x0314, WRITE_MASK_VAL(7, 6, 0)), /* PCIE30X2 IO mux M0 */
+-	RK_MUXROUTE_GRF(2, RK_PD4, 4, 0x0314, WRITE_MASK_VAL(7, 6, 1)), /* PCIE30X2 IO mux M1 */
+-	RK_MUXROUTE_GRF(4, RK_PC2, 4, 0x0314, WRITE_MASK_VAL(7, 6, 2)), /* PCIE30X2 IO mux M2 */
++static __maybe_unused struct rockchip_pin_bank rk3228_pin_banks[] = {
++	PIN_BANK(0, 32, "gpio0"),
++	PIN_BANK(1, 32, "gpio1"),
++	PIN_BANK(2, 32, "gpio2"),
++	PIN_BANK(3, 32, "gpio3"),
++};
++
++static __maybe_unused struct rockchip_pin_ctrl rk3228_pin_ctrl = {
++		.pin_banks		= rk3228_pin_banks,
++		.nr_banks		= ARRAY_SIZE(rk3228_pin_banks),
++		.label			= "RK3228-GPIO",
++		.type			= RK3288,
++		.grf_mux_offset		= 0x0,
++		.iomux_routes		= rk3228_mux_route_data,
++		.niomux_routes		= ARRAY_SIZE(rk3228_mux_route_data),
++		.pull_calc_reg		= rk3228_calc_pull_reg_and_bit,
++		.drv_calc_reg		= rk3228_calc_drv_reg_and_bit,
++};
++
++static __maybe_unused struct rockchip_pin_bank rk3288_pin_banks[] = {
++	PIN_BANK_IOMUX_FLAGS(0, 24, "gpio0", IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU,
++					     IOMUX_UNROUTED
++			    ),
++	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", IOMUX_UNROUTED,
++					     IOMUX_UNROUTED,
++					     IOMUX_UNROUTED,
++					     0
++			    ),
++	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0, 0, 0, IOMUX_UNROUTED),
++	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3", 0, 0, 0, IOMUX_WIDTH_4BIT),
++	PIN_BANK_IOMUX_FLAGS(4, 32, "gpio4", IOMUX_WIDTH_4BIT,
++					     IOMUX_WIDTH_4BIT,
++					     0,
++					     0
++			    ),
++	PIN_BANK_IOMUX_FLAGS(5, 32, "gpio5", IOMUX_UNROUTED,
++					     0,
++					     0,
++					     IOMUX_UNROUTED
++			    ),
++	PIN_BANK_IOMUX_FLAGS(6, 32, "gpio6", 0, 0, 0, IOMUX_UNROUTED),
++	PIN_BANK_IOMUX_FLAGS(7, 32, "gpio7", 0,
++					     0,
++					     IOMUX_WIDTH_4BIT,
++					     IOMUX_UNROUTED
++			    ),
++	PIN_BANK(8, 16, "gpio8"),
++};
++
++static __maybe_unused struct rockchip_pin_ctrl rk3288_pin_ctrl = {
++		.pin_banks		= rk3288_pin_banks,
++		.nr_banks		= ARRAY_SIZE(rk3288_pin_banks),
++		.label			= "RK3288-GPIO",
++		.type			= RK3288,
++		.grf_mux_offset		= 0x0,
++		.pmu_mux_offset		= 0x84,
++		.iomux_routes		= rk3288_mux_route_data,
++		.niomux_routes		= ARRAY_SIZE(rk3288_mux_route_data),
++		.pull_calc_reg		= rk3288_calc_pull_reg_and_bit,
++		.drv_calc_reg		= rk3288_calc_drv_reg_and_bit,
++};
++
++static __maybe_unused struct rockchip_pin_bank rk3308_pin_banks[] = {
++	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT),
++	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT),
++	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT),
++	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3", IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT),
++	PIN_BANK_IOMUX_FLAGS(4, 32, "gpio4", IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT,
++					     IOMUX_WIDTH_2BIT),
++};
++
++static __maybe_unused struct rockchip_pin_ctrl rk3308_pin_ctrl = {
++		.pin_banks		= rk3308_pin_banks,
++		.nr_banks		= ARRAY_SIZE(rk3308_pin_banks),
++		.label			= "RK3308-GPIO",
++		.type			= RK3308,
++		.grf_mux_offset		= 0x0,
++		.iomux_recalced		= rk3308_mux_recalced_data,
++		.niomux_recalced	= ARRAY_SIZE(rk3308_mux_recalced_data),
++		.iomux_routes		= rk3308_mux_route_data,
++		.niomux_routes		= ARRAY_SIZE(rk3308_mux_route_data),
++		.pull_calc_reg		= rk3308_calc_pull_reg_and_bit,
++		.drv_calc_reg		= rk3308_calc_drv_reg_and_bit,
++		.schmitt_calc_reg	= rk3308_calc_schmitt_reg_and_bit,
++};
++
++static __maybe_unused struct rockchip_pin_bank rk3328_pin_banks[] = {
++	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", 0, 0, 0, 0),
++	PIN_BANK_IOMUX_FLAGS(1, 32, "gpio1", 0, 0, 0, 0),
++	PIN_BANK_IOMUX_FLAGS(2, 32, "gpio2", 0,
++			     IOMUX_WIDTH_3BIT,
++			     IOMUX_WIDTH_3BIT,
++			     0),
++	PIN_BANK_IOMUX_FLAGS(3, 32, "gpio3",
++			     IOMUX_WIDTH_3BIT,
++			     IOMUX_WIDTH_3BIT,
++			     0,
++			     0),
++};
++
++static __maybe_unused struct rockchip_pin_ctrl rk3328_pin_ctrl = {
++		.pin_banks		= rk3328_pin_banks,
++		.nr_banks		= ARRAY_SIZE(rk3328_pin_banks),
++		.label			= "RK3328-GPIO",
++		.type			= RK3288,
++		.grf_mux_offset		= 0x0,
++		.iomux_recalced		= rk3328_mux_recalced_data,
++		.niomux_recalced	= ARRAY_SIZE(rk3328_mux_recalced_data),
++		.iomux_routes		= rk3328_mux_route_data,
++		.niomux_routes		= ARRAY_SIZE(rk3328_mux_route_data),
++		.pull_calc_reg		= rk3228_calc_pull_reg_and_bit,
++		.drv_calc_reg		= rk3228_calc_drv_reg_and_bit,
++		.schmitt_calc_reg	= rk3328_calc_schmitt_reg_and_bit,
++};
++
++static __maybe_unused struct rockchip_pin_bank rk3368_pin_banks[] = {
++	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU,
++					     IOMUX_SOURCE_PMU
++			    ),
++	PIN_BANK(1, 32, "gpio1"),
++	PIN_BANK(2, 32, "gpio2"),
++	PIN_BANK(3, 32, "gpio3"),
++};
++
++static __maybe_unused struct rockchip_pin_ctrl rk3368_pin_ctrl = {
++		.pin_banks		= rk3368_pin_banks,
++		.nr_banks		= ARRAY_SIZE(rk3368_pin_banks),
++		.label			= "RK3368-GPIO",
++		.type			= RK3368,
++		.grf_mux_offset		= 0x0,
++		.pmu_mux_offset		= 0x0,
++		.pull_calc_reg		= rk3368_calc_pull_reg_and_bit,
++		.drv_calc_reg		= rk3368_calc_drv_reg_and_bit,
++};
++
++static __maybe_unused struct rockchip_pin_bank rk3399_pin_banks[] = {
++	PIN_BANK_IOMUX_FLAGS_DRV_FLAGS_OFFSET_PULL_FLAGS(0, 32, "gpio0",
++							 IOMUX_SOURCE_PMU,
++							 IOMUX_SOURCE_PMU,
++							 IOMUX_SOURCE_PMU,
++							 IOMUX_SOURCE_PMU,
++							 DRV_TYPE_IO_1V8_ONLY,
++							 DRV_TYPE_IO_1V8_ONLY,
++							 DRV_TYPE_IO_DEFAULT,
++							 DRV_TYPE_IO_DEFAULT,
++							 0x80,
++							 0x88,
++							 -1,
++							 -1,
++							 PULL_TYPE_IO_1V8_ONLY,
++							 PULL_TYPE_IO_1V8_ONLY,
++							 PULL_TYPE_IO_DEFAULT,
++							 PULL_TYPE_IO_DEFAULT
++							),
++	PIN_BANK_IOMUX_DRV_FLAGS_OFFSET(1, 32, "gpio1", IOMUX_SOURCE_PMU,
++					IOMUX_SOURCE_PMU,
++					IOMUX_SOURCE_PMU,
++					IOMUX_SOURCE_PMU,
++					DRV_TYPE_IO_1V8_OR_3V0,
++					DRV_TYPE_IO_1V8_OR_3V0,
++					DRV_TYPE_IO_1V8_OR_3V0,
++					DRV_TYPE_IO_1V8_OR_3V0,
++					0xa0,
++					0xa8,
++					0xb0,
++					0xb8
++					),
++	PIN_BANK_DRV_FLAGS_PULL_FLAGS(2, 32, "gpio2", DRV_TYPE_IO_1V8_OR_3V0,
++				      DRV_TYPE_IO_1V8_OR_3V0,
++				      DRV_TYPE_IO_1V8_ONLY,
++				      DRV_TYPE_IO_1V8_ONLY,
++				      PULL_TYPE_IO_DEFAULT,
++				      PULL_TYPE_IO_DEFAULT,
++				      PULL_TYPE_IO_1V8_ONLY,
++				      PULL_TYPE_IO_1V8_ONLY
++				      ),
++	PIN_BANK_DRV_FLAGS(3, 32, "gpio3", DRV_TYPE_IO_3V3_ONLY,
++			   DRV_TYPE_IO_3V3_ONLY,
++			   DRV_TYPE_IO_3V3_ONLY,
++			   DRV_TYPE_IO_1V8_OR_3V0
++			   ),
++	PIN_BANK_DRV_FLAGS(4, 32, "gpio4", DRV_TYPE_IO_1V8_OR_3V0,
++			   DRV_TYPE_IO_1V8_3V0_AUTO,
++			   DRV_TYPE_IO_1V8_OR_3V0,
++			   DRV_TYPE_IO_1V8_OR_3V0
++			   ),
++};
++
++static __maybe_unused struct rockchip_pin_ctrl rk3399_pin_ctrl = {
++		.pin_banks		= rk3399_pin_banks,
++		.nr_banks		= ARRAY_SIZE(rk3399_pin_banks),
++		.label			= "RK3399-GPIO",
++		.type			= RK3399,
++		.grf_mux_offset		= 0xe000,
++		.pmu_mux_offset		= 0x0,
++		.grf_drv_offset		= 0xe100,
++		.pmu_drv_offset		= 0x80,
++		.iomux_routes		= rk3399_mux_route_data,
++		.niomux_routes		= ARRAY_SIZE(rk3399_mux_route_data),
++		.pull_calc_reg		= rk3399_calc_pull_reg_and_bit,
++		.drv_calc_reg		= rk3399_calc_drv_reg_and_bit,
+ };
+ 
+-static struct rockchip_pin_bank rk3568_pin_banks[] = {
++static __maybe_unused struct rockchip_pin_bank rk3568_pin_banks[] = {
+ 	PIN_BANK_IOMUX_FLAGS(0, 32, "gpio0", IOMUX_SOURCE_PMU | IOMUX_WIDTH_4BIT,
+ 					     IOMUX_SOURCE_PMU | IOMUX_WIDTH_4BIT,
+ 					     IOMUX_SOURCE_PMU | IOMUX_WIDTH_4BIT,
+@@ -936,7 +2861,7 @@ static struct rockchip_pin_bank rk3568_pin_banks[] = {
+ 					     IOMUX_WIDTH_4BIT),
+ };
+ 
+-static struct rockchip_pin_ctrl rk3568_pin_ctrl = {
++static __maybe_unused struct rockchip_pin_ctrl rk3568_pin_ctrl = {
+ 	.pin_banks		= rk3568_pin_banks,
+ 	.nr_banks		= ARRAY_SIZE(rk3568_pin_banks),
+ 	.label			= "RK3568-GPIO",
+@@ -949,32 +2874,94 @@ static struct rockchip_pin_ctrl rk3568_pin_ctrl = {
+ 	.niomux_routes		= ARRAY_SIZE(rk3568_mux_route_data),
+ 	.pull_calc_reg		= rk3568_calc_pull_reg_and_bit,
+ 	.drv_calc_reg		= rk3568_calc_drv_reg_and_bit,
++	.schmitt_calc_reg	= rk3568_calc_schmitt_reg_and_bit,
+ };
+ 
+-static struct of_device_id rockchip_pinctrl_dt_match[] = {
+-	{
+-		.compatible = "rockchip,rk2928-pinctrl",
+-		.data = &rk2928_pin_ctrl,
+-	},
+-	{
+-		.compatible = "rockchip,rk3066a-pinctrl",
+-		.data = &rk3066a_pin_ctrl,
+-	},
+-	{
+-		.compatible = "rockchip,rk3066b-pinctrl",
+-		.data = &rk3066b_pin_ctrl,
+-	},
+-	{
+-		.compatible = "rockchip,rk3188-pinctrl",
+-		.data = &rk3188_pin_ctrl,
+-	},
+-	{
+-		.compatible = "rockchip,rk3568-pinctrl",
+-		.data = &rk3568_pin_ctrl
+-	},
+-	{
+-		/* sentinel */
+-	}
++static __maybe_unused struct rockchip_pin_bank rk3588_pin_banks[] = {
++	RK3588_PIN_BANK_FLAGS(0, 32, "gpio0",
++			      IOMUX_WIDTH_4BIT, PULL_TYPE_IO_1V8_ONLY),
++	RK3588_PIN_BANK_FLAGS(1, 32, "gpio1",
++			      IOMUX_WIDTH_4BIT, PULL_TYPE_IO_1V8_ONLY),
++	RK3588_PIN_BANK_FLAGS(2, 32, "gpio2",
++			      IOMUX_WIDTH_4BIT, PULL_TYPE_IO_1V8_ONLY),
++	RK3588_PIN_BANK_FLAGS(3, 32, "gpio3",
++			      IOMUX_WIDTH_4BIT, PULL_TYPE_IO_1V8_ONLY),
++	RK3588_PIN_BANK_FLAGS(4, 32, "gpio4",
++			      IOMUX_WIDTH_4BIT, PULL_TYPE_IO_1V8_ONLY),
++};
++
++static __maybe_unused struct rockchip_pin_ctrl rk3588_pin_ctrl = {
++	.pin_banks		= rk3588_pin_banks,
++	.nr_banks		= ARRAY_SIZE(rk3588_pin_banks),
++	.label			= "RK3588-GPIO",
++	.type			= RK3588,
++	.pull_calc_reg		= rk3588_calc_pull_reg_and_bit,
++	.drv_calc_reg		= rk3588_calc_drv_reg_and_bit,
++	.schmitt_calc_reg	= rk3588_calc_schmitt_reg_and_bit,
++};
++
++static const struct of_device_id rockchip_pinctrl_dt_match[] = {
++#ifdef CONFIG_ARCH_PX30
++	{ .compatible = "rockchip,px30-pinctrl",
++		.data = &px30_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RV1108
++	{ .compatible = "rockchip,rv1108-pinctrl",
++		.data = &rv1108_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RV1126
++	{ .compatible = "rockchip,rv1126-pinctrl",
++		.data = &rv1126_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3036
++	{ .compatible = "rockchip,rk3036-pinctrl",
++		.data = &rk3036_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3066A
++	{ .compatible = "rockchip,rk3066a-pinctrl",
++		.data = &rk3066a_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3128
++	{ .compatible = "rockchip,rk3128-pinctrl",
++		.data = (void *)&rk3128_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3188
++	{ .compatible = "rockchip,rk3188-pinctrl",
++		.data = &rk3188_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3228
++	{ .compatible = "rockchip,rk3228-pinctrl",
++		.data = &rk3228_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3288
++	{ .compatible = "rockchip,rk3288-pinctrl",
++		.data = &rk3288_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3308
++	{ .compatible = "rockchip,rk3308-pinctrl",
++		.data = &rk3308_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3328
++	{ .compatible = "rockchip,rk3328-pinctrl",
++		.data = &rk3328_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3368
++	{ .compatible = "rockchip,rk3368-pinctrl",
++		.data = &rk3368_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3399
++	{ .compatible = "rockchip,rk3399-pinctrl",
++		.data = &rk3399_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3568
++	{ .compatible = "rockchip,rk3568-pinctrl",
++		.data = &rk3568_pin_ctrl },
++#endif
++#ifdef CONFIG_ARCH_RK3588
++	{ .compatible = "rockchip,rk3588-pinctrl",
++		.data = &rk3588_pin_ctrl },
++#endif
++	{},
+ };
+ 
+ static struct driver rockchip_pinctrl_driver = {
+diff --git a/drivers/pinctrl/pinctrl-rockchip.h b/drivers/pinctrl/pinctrl-rockchip.h
+index 5279c78439..498f4615e1 100644
+--- a/drivers/pinctrl/pinctrl-rockchip.h
++++ b/drivers/pinctrl/pinctrl-rockchip.h
+@@ -18,11 +18,221 @@
+ #ifndef _PINCTRL_ROCKCHIP_H
+ #define _PINCTRL_ROCKCHIP_H
+ 
++#define RK_GPIO0_A0	0
++#define RK_GPIO0_A1	1
++#define RK_GPIO0_A2	2
++#define RK_GPIO0_A3	3
++#define RK_GPIO0_A4	4
++#define RK_GPIO0_A5	5
++#define RK_GPIO0_A6	6
++#define RK_GPIO0_A7	7
++#define RK_GPIO0_B0	8
++#define RK_GPIO0_B1	9
++#define RK_GPIO0_B2	10
++#define RK_GPIO0_B3	11
++#define RK_GPIO0_B4	12
++#define RK_GPIO0_B5	13
++#define RK_GPIO0_B6	14
++#define RK_GPIO0_B7	15
++#define RK_GPIO0_C0	16
++#define RK_GPIO0_C1	17
++#define RK_GPIO0_C2	18
++#define RK_GPIO0_C3	19
++#define RK_GPIO0_C4	20
++#define RK_GPIO0_C5	21
++#define RK_GPIO0_C6	22
++#define RK_GPIO0_C7	23
++#define RK_GPIO0_D0	24
++#define RK_GPIO0_D1	25
++#define RK_GPIO0_D2	26
++#define RK_GPIO0_D3	27
++#define RK_GPIO0_D4	28
++#define RK_GPIO0_D5	29
++#define RK_GPIO0_D6	30
++#define RK_GPIO0_D7	31
++
++#define RK_GPIO1_A0	32
++#define RK_GPIO1_A1	33
++#define RK_GPIO1_A2	34
++#define RK_GPIO1_A3	35
++#define RK_GPIO1_A4	36
++#define RK_GPIO1_A5	37
++#define RK_GPIO1_A6	38
++#define RK_GPIO1_A7	39
++#define RK_GPIO1_B0	40
++#define RK_GPIO1_B1	41
++#define RK_GPIO1_B2	42
++#define RK_GPIO1_B3	43
++#define RK_GPIO1_B4	44
++#define RK_GPIO1_B5	45
++#define RK_GPIO1_B6	46
++#define RK_GPIO1_B7	47
++#define RK_GPIO1_C0	48
++#define RK_GPIO1_C1	49
++#define RK_GPIO1_C2	50
++#define RK_GPIO1_C3	51
++#define RK_GPIO1_C4	52
++#define RK_GPIO1_C5	53
++#define RK_GPIO1_C6	54
++#define RK_GPIO1_C7	55
++#define RK_GPIO1_D0	56
++#define RK_GPIO1_D1	57
++#define RK_GPIO1_D2	58
++#define RK_GPIO1_D3	59
++#define RK_GPIO1_D4	60
++#define RK_GPIO1_D5	61
++#define RK_GPIO1_D6	62
++#define RK_GPIO1_D7	63
++
++#define RK_GPIO2_A0	64
++#define RK_GPIO2_A1	65
++#define RK_GPIO2_A2	66
++#define RK_GPIO2_A3	67
++#define RK_GPIO2_A4	68
++#define RK_GPIO2_A5	69
++#define RK_GPIO2_A6	70
++#define RK_GPIO2_A7	71
++#define RK_GPIO2_B0	72
++#define RK_GPIO2_B1	73
++#define RK_GPIO2_B2	74
++#define RK_GPIO2_B3	75
++#define RK_GPIO2_B4	76
++#define RK_GPIO2_B5	77
++#define RK_GPIO2_B6	78
++#define RK_GPIO2_B7	79
++#define RK_GPIO2_C0	80
++#define RK_GPIO2_C1	81
++#define RK_GPIO2_C2	82
++#define RK_GPIO2_C3	83
++#define RK_GPIO2_C4	84
++#define RK_GPIO2_C5	85
++#define RK_GPIO2_C6	86
++#define RK_GPIO2_C7	87
++#define RK_GPIO2_D0	88
++#define RK_GPIO2_D1	89
++#define RK_GPIO2_D2	90
++#define RK_GPIO2_D3	91
++#define RK_GPIO2_D4	92
++#define RK_GPIO2_D5	93
++#define RK_GPIO2_D6	94
++#define RK_GPIO2_D7	95
++
++#define RK_GPIO3_A0	96
++#define RK_GPIO3_A1	97
++#define RK_GPIO3_A2	98
++#define RK_GPIO3_A3	99
++#define RK_GPIO3_A4	100
++#define RK_GPIO3_A5	101
++#define RK_GPIO3_A6	102
++#define RK_GPIO3_A7	103
++#define RK_GPIO3_B0	104
++#define RK_GPIO3_B1	105
++#define RK_GPIO3_B2	106
++#define RK_GPIO3_B3	107
++#define RK_GPIO3_B4	108
++#define RK_GPIO3_B5	109
++#define RK_GPIO3_B6	110
++#define RK_GPIO3_B7	111
++#define RK_GPIO3_C0	112
++#define RK_GPIO3_C1	113
++#define RK_GPIO3_C2	114
++#define RK_GPIO3_C3	115
++#define RK_GPIO3_C4	116
++#define RK_GPIO3_C5	117
++#define RK_GPIO3_C6	118
++#define RK_GPIO3_C7	119
++#define RK_GPIO3_D0	120
++#define RK_GPIO3_D1	121
++#define RK_GPIO3_D2	122
++#define RK_GPIO3_D3	123
++#define RK_GPIO3_D4	124
++#define RK_GPIO3_D5	125
++#define RK_GPIO3_D6	126
++#define RK_GPIO3_D7	127
++
++#define RK_GPIO4_A0	128
++#define RK_GPIO4_A1	129
++#define RK_GPIO4_A2	130
++#define RK_GPIO4_A3	131
++#define RK_GPIO4_A4	132
++#define RK_GPIO4_A5	133
++#define RK_GPIO4_A6	134
++#define RK_GPIO4_A7	135
++#define RK_GPIO4_B0	136
++#define RK_GPIO4_B1	137
++#define RK_GPIO4_B2	138
++#define RK_GPIO4_B3	139
++#define RK_GPIO4_B4	140
++#define RK_GPIO4_B5	141
++#define RK_GPIO4_B6	142
++#define RK_GPIO4_B7	143
++#define RK_GPIO4_C0	144
++#define RK_GPIO4_C1	145
++#define RK_GPIO4_C2	146
++#define RK_GPIO4_C3	147
++#define RK_GPIO4_C4	148
++#define RK_GPIO4_C5	149
++#define RK_GPIO4_C6	150
++#define RK_GPIO4_C7	151
++#define RK_GPIO4_D0	152
++#define RK_GPIO4_D1	153
++#define RK_GPIO4_D2	154
++#define RK_GPIO4_D3	155
++#define RK_GPIO4_D4	156
++#define RK_GPIO4_D5	157
++#define RK_GPIO4_D6	158
++#define RK_GPIO4_D7	159
++
+ enum rockchip_pinctrl_type {
++	PX30,
++	RV1108,
++	RV1126,
+ 	RK2928,
+ 	RK3066B,
++	RK3128,
+ 	RK3188,
++	RK3288,
++	RK3308,
++	RK3368,
++	RK3399,
+ 	RK3568,
++	RK3588,
++};
++
++/**
++ * struct rockchip_gpio_regs
++ * @port_dr: data register
++ * @port_ddr: data direction register
++ * @int_en: interrupt enable
++ * @int_mask: interrupt mask
++ * @int_type: interrupt trigger type, such as high, low, edge trriger type.
++ * @int_polarity: interrupt polarity enable register
++ * @int_bothedge: interrupt bothedge enable register
++ * @int_status: interrupt status register
++ * @int_rawstatus: int_status = int_rawstatus & int_mask
++ * @debounce: enable debounce for interrupt signal
++ * @dbclk_div_en: enable divider for debounce clock
++ * @dbclk_div_con: setting for divider of debounce clock
++ * @port_eoi: end of interrupt of the port
++ * @ext_port: port data from external
++ * @version_id: controller version register
++ */
++struct rockchip_gpio_regs {
++	u32 port_dr;
++	u32 port_ddr;
++	u32 int_en;
++	u32 int_mask;
++	u32 int_type;
++	u32 int_polarity;
++	u32 int_bothedge;
++	u32 int_status;
++	u32 int_rawstatus;
++	u32 debounce;
++	u32 dbclk_div_en;
++	u32 dbclk_div_con;
++	u32 port_eoi;
++	u32 ext_port;
++	u32 version_id;
+ };
+ 
+ /**
+@@ -72,41 +282,73 @@ struct rockchip_drv {
+ 	int				offset;
+ };
+ 
+-enum rockchip_pin_bank_type {
+-	COMMON_BANK,
+-	RK3188_BANK0,
 -};
 -
--#define BD_STAT_OWN	0x80000000
--#define BD_STAT_EOR	0x40000000
--#define BD_STAT_FS	0x20000000
--#define BD_STAT_LS	0x10000000
--#define BD_STAT_RX_RES	0x00200000
--struct bufdesc {
--	u32 status;
--	u32 vlan_tag;
--	u32 buf_addr;
--	u32 buf_Haddr;
--};
--
--struct rtl8169_priv {
--	struct eth_device	edev;
--	void __iomem		*base;
--	struct pci_dev		*pci_dev;
--	int			chipset;
--
--	volatile struct bufdesc	*tx_desc;
--	dma_addr_t		tx_desc_phys;
--	void			*tx_buf;
--	dma_addr_t		tx_buf_phys;
--	unsigned int		cur_tx;
--
--	volatile struct bufdesc	*rx_desc;
--	dma_addr_t		rx_desc_phys;
--	void			*rx_buf;
--	dma_addr_t		rx_buf_phys;
--	unsigned int		cur_rx;
--
--	struct mii_bus miibus;
--};
--
--#define MAC0 			0x00
--#define MAR0			0x08
--#define TxDescStartAddrLow	0x20
--#define TxDescStartAddrHigh	0x24
--#define TxHDescStartAddrLow	0x28
--#define TxHDescStartAddrHigh	0x2c
--#define FLASH			0x30
--#define ERSR			0x36
--#define ChipCmd			0x37
--#define  CmdReset		0x10
--#define  CmdRxEnb		0x08
--#define  CmdTxEnb		0x04
--#define  RxBufEmpty		0x01
--#define TxPoll			0x38
--#define IntrMask		0x3c
--#define IntrStatus		0x3e
--#define  SYSErr			0x8000
--#define  PCSTimeout		0x4000
--#define  SWInt			0x0100
--#define  TxDescUnavail		0x80
--#define  RxFIFOOver		0x40
--#define  RxUnderrun		0x20
--#define  RxOverflow		0x10
--#define  TxErr			0x08
--#define  TxOK			0x04
--#define  RxErr			0x02
--#define  RxOK			0x01
--#define TxConfig		0x40
--#define  TxInterFrameGapShift	24
--#define  TxDMAShift		8
--#define RxConfig		0x44
--#define  AcceptErr		0x20
--#define  AcceptRunt		0x10
--#define  AcceptBroadcast	0x08
--#define  AcceptMulticast	0x04
--#define  AcceptMyPhys		0x02
--#define  AcceptAllPhys		0x01
--#define  RxCfgFIFOShift		13
--#define  RxCfgDMAShift		8
--#define RxMissed		0x4c
--#define Cfg9346			0x50
--#define  Cfg9346_Lock		0x00
--#define  Cfg9346_Unlock		0xc0
--#define Config0			0x51
--#define Config1			0x52
--#define Config2			0x53
--#define Config3			0x54
--#define Config4			0x55
--#define Config5			0x56
--#define MultiIntr		0x5c
--#define PHYAR			0x60
--#define TBICSR			0x64
--#define TBI_ANAR		0x68
--#define TBI_LPAR		0x6a
--#define PHYstatus		0x6c
--#define RxMaxSize		0xda
--#define CPlusCmd		0xe0
--#define RxDescStartAddrLow	0xe4
--#define RxDescStartAddrHigh	0xe8
--#define EarlyTxThres		0xec
--#define FuncEvent		0xf0
--#define FuncEventMask		0xf4
--#define FuncPresetState		0xf8
--#define FuncForceEvent		0xfc
--
--/* write MMIO register */
--#define RTL_W8(priv, reg, val)	writeb(val, ((char *)(priv->base) + reg))
--#define RTL_W16(priv, reg, val)	writew(val, ((char *)(priv->base) + reg))
--#define RTL_W32(priv, reg, val)	writel(val, ((char *)(priv->base) + reg))
--
--/* read MMIO register */
--#define RTL_R8(priv, reg)	readb(((char *)(priv->base) + reg))
--#define RTL_R16(priv, reg)	readw(((char *)(priv->base) + reg))
--#define RTL_R32(priv, reg)	readl(((char *)(priv->base) + reg))
--
--static const u32 rtl8169_rx_config =
--		 (7 << RxCfgFIFOShift) | (6 << RxCfgDMAShift);
--
--static void rtl8169_chip_reset(struct rtl8169_priv *priv)
--{
--	int i;
--
--	/* Soft reset the chip. */
--	RTL_W8(priv, ChipCmd, CmdReset);
--
--	/* Check that the chip has finished the reset. */
--	for (i = 1000; i > 0; i--) {
--		if ((RTL_R8(priv, ChipCmd) & CmdReset) == 0)
--			break;
--		udelay(10);
--	}
--}
--
--static struct rtl8169_chip_info chip_info[] = {
--	{"RTL-8169",		0x00,	0xff7e1880},
--	{"RTL-8169",		0x04,	0xff7e1880},
--	{"RTL-8169",		0x00,	0xff7e1880},
--	{"RTL-8169s/8110s",	0x02,	0xff7e1880},
--	{"RTL-8169s/8110s",	0x04,	0xff7e1880},
--	{"RTL-8169sb/8110sb",	0x10,	0xff7e1880},
--	{"RTL-8169sc/8110sc",	0x18,	0xff7e1880},
--	{"RTL-8168b/8111sb",	0x30,	0xff7e1880},
--	{"RTL-8168b/8111sb",	0x38,	0xff7e1880},
--	{"RTL-8168d/8111d",	0x28,	0xff7e1880},
--	{"RTL-8168evl/8111evl",	0x2e,	0xff7e1880},
--	{"RTL-8168/8111g",	0x4c,	0xff7e1880,},
--	{"RTL-8101e",		0x34,	0xff7e1880},
--	{"RTL-8100e",		0x32,	0xff7e1880},
--};
--
--static void rtl8169_chip_identify(struct rtl8169_priv *priv)
--{
--	u32 val;
--	int i;
--
--	val = RTL_R32(priv, TxConfig);
--	val = ((val & 0x7c000000) + ((val & 0x00800000) << 2)) >> 24;
--
--	for (i = ARRAY_SIZE(chip_info) - 1; i >= 0; i--){
--		if (val == chip_info[i].version) {
--			priv->chipset = i;
--			dev_dbg(&priv->pci_dev->dev, "found %s chipset\n",
--				chip_info[i].name);
--			return;
--		}
--	}
--
--	dev_dbg(&priv->pci_dev->dev,
--		"no matching chip version found, assuming RTL-8169\n");
--	priv->chipset = 0;
--}
--
--static int rtl8169_init_dev(struct eth_device *edev)
--{
--	struct rtl8169_priv *priv = edev->priv;
--
--	rtl8169_chip_reset(priv);
--	rtl8169_chip_identify(priv);
--	pci_set_master(priv->pci_dev);
--
--	return 0;
--}
--
--static void __set_rx_mode(struct rtl8169_priv *priv)
--{
--	u32 mc_filter[2], val;
--
--	/* IFF_ALLMULTI */
--	/* Too many to filter perfectly -- accept all multicasts. */
--	mc_filter[1] = mc_filter[0] = 0xffffffff;
--
--	val = AcceptBroadcast | AcceptMulticast | AcceptMyPhys |
--	      rtl8169_rx_config | (RTL_R32(priv, RxConfig) &
--				  chip_info[priv->chipset].RxConfigMask);
--
--	RTL_W32(priv, RxConfig, val);
--	RTL_W32(priv, MAR0 + 0, mc_filter[0]);
--	RTL_W32(priv, MAR0 + 4, mc_filter[1]);
--}
--
--static void rtl8169_init_ring(struct rtl8169_priv *priv)
--{
--	struct eth_device *edev = &priv->edev;
--	int i;
--
--	priv->cur_rx = priv->cur_tx = 0;
--
--	priv->tx_desc = dma_alloc_coherent(NUM_TX_DESC * sizeof(struct bufdesc),
--					   &priv->tx_desc_phys);
--	priv->tx_buf = malloc(NUM_TX_DESC * PKT_BUF_SIZE);
--	priv->tx_buf_phys = dma_map_single(edev->parent, priv->tx_buf,
--					   NUM_TX_DESC * PKT_BUF_SIZE, DMA_TO_DEVICE);
--
--	priv->rx_desc = dma_alloc_coherent(NUM_RX_DESC * sizeof(struct bufdesc),
--					   &priv->rx_desc_phys);
--	priv->rx_buf = malloc(NUM_RX_DESC * PKT_BUF_SIZE);
--	priv->rx_buf_phys = dma_map_single(edev->parent, priv->rx_buf,
--					   NUM_RX_DESC * PKT_BUF_SIZE, DMA_FROM_DEVICE);
--
--	for (i = 0; i < NUM_RX_DESC; i++) {
--		if (i == (NUM_RX_DESC - 1))
--			priv->rx_desc[i].status =
--				cpu_to_le32(BD_STAT_OWN | BD_STAT_EOR | PKT_BUF_SIZE);
--		else
--			priv->rx_desc[i].status =
--				cpu_to_le32(BD_STAT_OWN | PKT_BUF_SIZE);
--
--		priv->rx_desc[i].buf_addr =
--				cpu_to_le32(priv->rx_buf_phys + i * PKT_BUF_SIZE);
--	}
--}
--
--static void rtl8169_hw_start(struct rtl8169_priv *priv)
--{
--	u32 val;
--
--	RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
--
--	/* RTL-8169sb/8110sb or previous version */
--	if (priv->chipset <= 5)
--		RTL_W8(priv, ChipCmd, CmdTxEnb | CmdRxEnb);
--
--	RTL_W8(priv, EarlyTxThres, 0x3f);
--
--	/* For gigabit rtl8169 */
--	RTL_W16(priv, RxMaxSize, 0x800);
--
--	/* Set Rx Config register */
--	val = rtl8169_rx_config | (RTL_R32(priv, RxConfig) &
--	      chip_info[priv->chipset].RxConfigMask);
--	RTL_W32(priv, RxConfig, val);
--
--	/* Set DMA burst size and Interframe Gap Time */
--	RTL_W32(priv, TxConfig, (6 << TxDMAShift) | (3 << TxInterFrameGapShift));
--
--	RTL_W32(priv, TxDescStartAddrLow, priv->tx_desc_phys);
--	RTL_W32(priv, TxDescStartAddrHigh, 0);
--	RTL_W32(priv, RxDescStartAddrLow, priv->rx_desc_phys);
--	RTL_W32(priv, RxDescStartAddrHigh, 0);
--
--	/* RTL-8169sc/8110sc or later version */
--	if (priv->chipset > 5)
--		RTL_W8(priv, ChipCmd, CmdTxEnb | CmdRxEnb);
--
--	RTL_W8(priv, Cfg9346, Cfg9346_Lock);
--	udelay(10);
--
--	RTL_W32(priv, RxMissed, 0);
--
--	__set_rx_mode(priv);
--
--	/* no early-rx interrupts */
--	RTL_W16(priv, MultiIntr, RTL_R16(priv, MultiIntr) & 0xf000);
--}
--
--static int rtl8169_eth_open(struct eth_device *edev)
--{
--	struct rtl8169_priv *priv = edev->priv;
--	int ret;
--
--	pci_set_master(priv->pci_dev);
--
--	rtl8169_init_ring(priv);
--	rtl8169_hw_start(priv);
--
--	ret = phy_device_connect(edev, &priv->miibus, 0, NULL, 0,
--				 PHY_INTERFACE_MODE_NA);
--
--	return ret;
--}
--
--static int rtl8169_phy_write(struct mii_bus *bus, int phy_addr,
--	int reg, u16 val)
--{
--	struct rtl8169_priv *priv = bus->priv;
--	int i;
--
--	if (phy_addr != 0)
--		return -1;
--
--	RTL_W32(priv, PHYAR, 0x80000000 | (reg & 0xff) << 16 | val);
--	mdelay(1);
--
--	for (i = 2000; i > 0; i--) {
--		if (!(RTL_R32(priv, PHYAR) & 0x80000000)) {
--			return 0;
--		} else {
--			udelay(100);
--		}
--	}
--
--	return -1;
--}
--
--static int rtl8169_phy_read(struct mii_bus *bus, int phy_addr, int reg)
--{
--	struct rtl8169_priv *priv = bus->priv;
--	int i, val = 0xffff;
--
--	RTL_W32(priv, PHYAR, 0x0 | (reg & 0xff) << 16);
--	mdelay(10);
--
--	if (phy_addr != 0)
--		return val;
--
--	for (i = 2000; i > 0; i--) {
--		if (RTL_R32(priv, PHYAR) & 0x80000000) {
--			val = (int) (RTL_R32(priv, PHYAR) & 0xffff);
--			break;
--		} else {
--			udelay(100);
--		}
--	}
--	return val;
--}
--
--static int rtl8169_eth_send(struct eth_device *edev, void *packet,
--				int packet_length)
--{
--	struct rtl8169_priv *priv = edev->priv;
--	unsigned int entry;
--
--	entry = priv->cur_tx % NUM_TX_DESC;
--
--	if (packet_length < ETH_ZLEN)
--		memset(priv->tx_buf + entry * PKT_BUF_SIZE, 0, ETH_ZLEN);
--	memcpy(priv->tx_buf + entry * PKT_BUF_SIZE, packet, packet_length);
--	dma_sync_single_for_device(priv->tx_buf_phys + entry *
--				   PKT_BUF_SIZE, PKT_BUF_SIZE, DMA_TO_DEVICE);
--
--	priv->tx_desc[entry].buf_Haddr = 0;
--	priv->tx_desc[entry].buf_addr =
--		cpu_to_le32(priv->tx_buf_phys + entry * PKT_BUF_SIZE);
--
--	if (entry != (NUM_TX_DESC - 1)) {
--		priv->tx_desc[entry].status =
--			cpu_to_le32(BD_STAT_OWN | BD_STAT_FS | BD_STAT_LS |
--			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
--	} else {
--		priv->tx_desc[entry].status =
--			cpu_to_le32(BD_STAT_OWN | BD_STAT_EOR | BD_STAT_FS | BD_STAT_LS |
--			((packet_length > ETH_ZLEN) ? packet_length : ETH_ZLEN));
--	}
--
--	RTL_W8(priv, TxPoll, 0x40);
--
--	while (le32_to_cpu(priv->tx_desc[entry].status) & BD_STAT_OWN)
--		;
--
--	dma_sync_single_for_cpu(priv->tx_buf_phys + entry * PKT_BUF_SIZE,
--				PKT_BUF_SIZE, DMA_TO_DEVICE);
--
--	priv->cur_tx++;
--
--	return 0;
--}
--
--static int rtl8169_eth_rx(struct eth_device *edev)
--{
--	struct rtl8169_priv *priv = edev->priv;
--	unsigned int entry, pkt_size = 0;
--	u8 status;
--
--	entry = priv->cur_rx % NUM_RX_DESC;
--
--	if ((le32_to_cpu(priv->rx_desc[entry].status) & BD_STAT_OWN) == 0) {
--		if (!(le32_to_cpu(priv->rx_desc[entry].status) & BD_STAT_RX_RES)) {
--			pkt_size = (le32_to_cpu(priv->rx_desc[entry].status) & 0x1fff) - 4;
--
--			dma_sync_single_for_cpu(priv->rx_buf_phys + entry * PKT_BUF_SIZE,
--						pkt_size, DMA_FROM_DEVICE);
--
--			net_receive(edev, priv->rx_buf + entry * PKT_BUF_SIZE,
--			            pkt_size);
--
--			dma_sync_single_for_device(priv->rx_buf_phys + entry * PKT_BUF_SIZE,
--						   pkt_size, DMA_FROM_DEVICE);
--
--			if (entry == NUM_RX_DESC - 1)
--				priv->rx_desc[entry].status = cpu_to_le32(BD_STAT_OWN |
--					BD_STAT_EOR | PKT_BUF_SIZE);
--			else
--				priv->rx_desc[entry].status =
--					cpu_to_le32(BD_STAT_OWN | PKT_BUF_SIZE);
--			priv->rx_desc[entry].buf_addr =
--				cpu_to_le32(priv->rx_buf_phys +
--					    entry * PKT_BUF_SIZE);
--		} else {
--			dev_err(&edev->dev, "rx error\n");
--		}
--
--		priv->cur_rx++;
--
--		return pkt_size;
--
--	} else {
--		status = RTL_R8(priv, IntrStatus);
--		RTL_W8(priv, IntrStatus, status & ~(TxErr | RxErr | SYSErr));
--		udelay(100);	/* wait */
--	}
--
--	return 0;
--}
--
--static int rtl8169_get_ethaddr(struct eth_device *edev, unsigned char *m)
--{
--	struct rtl8169_priv *priv = edev->priv;
--	int i;
--
--	for (i = 0; i < 6; i++) {
--		m[i] = RTL_R8(priv, MAC0 + i);
--	}
--
--	return 0;
--}
--
--static int rtl8169_set_ethaddr(struct eth_device *edev, const unsigned char *mac_addr)
--{
--	struct rtl8169_priv *priv = edev->priv;
--	int i;
--
--	RTL_W8(priv, Cfg9346, Cfg9346_Unlock);
--
--	for (i = 0; i < 6; i++) {
--		RTL_W8(priv, (MAC0 + i), mac_addr[i]);
--		RTL_R8(priv, mac_addr[i]);
--	}
--
--	RTL_W8(priv, Cfg9346, Cfg9346_Lock);
--
--	return 0;
--}
--
--static void rtl8169_eth_halt(struct eth_device *edev)
--{
--	struct rtl8169_priv *priv = edev->priv;
--
--	/* Stop the chip's Tx and Rx DMA processes. */
--	RTL_W8(priv, ChipCmd, 0x00);
--
--	/* Disable interrupts by clearing the interrupt mask. */
--	RTL_W16(priv, IntrMask, 0x0000);
--	RTL_W32(priv, RxMissed, 0);
--
--	pci_clear_master(priv->pci_dev);
--
--	dma_unmap_single(edev->parent, priv->tx_buf_phys, NUM_TX_DESC * PKT_BUF_SIZE,
--			 DMA_TO_DEVICE);
--	free(priv->tx_buf);
--	dma_free_coherent((void *)priv->tx_desc, priv->tx_desc_phys,
--			  NUM_TX_DESC * sizeof(struct bufdesc));
--
--	dma_unmap_single(edev->parent, priv->rx_buf_phys, NUM_RX_DESC * PKT_BUF_SIZE,
--			 DMA_FROM_DEVICE);
--	free(priv->rx_buf);
--	dma_free_coherent((void *)priv->rx_desc, priv->rx_desc_phys,
--			  NUM_RX_DESC * sizeof(struct bufdesc));
--}
--
--static int rtl8169_probe(struct pci_dev *pdev, const struct pci_device_id *id)
--{
--	struct device *dev = &pdev->dev;
--	struct eth_device *edev;
--	struct rtl8169_priv *priv;
--	int ret;
--
--	/* enable pci device */
--	pci_enable_device(pdev);
--
--	priv = xzalloc(sizeof(struct rtl8169_priv));
--
--	edev = &priv->edev;
--	dev->type_data = edev;
--	edev->priv = priv;
--
--	priv->pci_dev = pdev;
--
--	priv->miibus.read = rtl8169_phy_read;
--	priv->miibus.write = rtl8169_phy_write;
--	priv->miibus.priv = priv;
--	priv->miibus.parent = &edev->dev;
--
--	priv->base = pci_iomap(pdev, pdev->device == 0x8168 ? 2 : 1);
--
--	dev_dbg(dev, "rtl%04x (rev %02x) (base=%p)\n",
--		 pdev->device, pdev->revision, priv->base);
--
--	edev->init = rtl8169_init_dev;
--	edev->open = rtl8169_eth_open;
--	edev->send = rtl8169_eth_send;
--	edev->recv = rtl8169_eth_rx;
--	edev->get_ethaddr = rtl8169_get_ethaddr;
--	edev->set_ethaddr = rtl8169_set_ethaddr;
--	edev->halt = rtl8169_eth_halt;
--	edev->parent = dev;
--	ret = eth_register(edev);
--	if (ret)
--		goto eth_err;
--
--	ret = mdiobus_register(&priv->miibus);
--	if (ret)
--		goto mdio_err;
--
--	return 0;
--
--mdio_err:
--	eth_unregister(edev);
--
--eth_err:
--	free(priv);
--
--	return ret;
--}
--static DEFINE_PCI_DEVICE_TABLE(rtl8169_pci_tbl) = {
--	{ PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0x8167), },
--	{ PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0x8168), },
--	{ PCI_DEVICE(PCI_VENDOR_ID_REALTEK, 0x8169), },
--	{ /* sentinel */ }
--};
--
--static struct pci_driver rtl8169_eth_driver = {
--	.name = "rtl8169_eth",
--	.id_table = rtl8169_pci_tbl,
--	.probe = rtl8169_probe,
--};
--device_pci_driver(rtl8169_eth_driver);
+ /**
+  * struct rockchip_pin_bank
+- * @reg_base: register base of the gpio bank
++ * @dev: the pinctrl device bind to the bank
++ * @regmap_pull: optional separate register for additional pull settings
+  * @clk: clock of the gpio bank
++ * @db_clk: clock of the gpio debounce
++ * @irq: interrupt of the gpio bank
++ * @saved_masks: Saved content of GPIO_INTEN at suspend time.
+  * @pin_base: first pin number
+  * @nr_pins: number of pins in this bank
+  * @name: name of the bank
+  * @bank_num: number of the bank, to account for holes
+  * @iomux: array describing the 4 iomux sources of the bank
+  * @drv: array describing the 4 drive strength sources of the bank
++ * @pull_type: array describing the 4 pull type sources of the bank
+  * @valid: is all necessary information present
+  * @of_node: dt node of this bank
+  * @drvdata: common pinctrl basedata
++ * @domain: irqdomain of the gpio bank
++ * @gpio_chip: gpiolib chip
++ * @grange: gpio range
++ * @slock: spinlock for the gpio bank
++ * @toggle_edge_mode: bit mask to toggle (falling/rising) edge mode
++ * @recalced_mask: bit mask to indicate a need to recalulate the mask
+  * @route_mask: bits describing the routing pins of per bank
++ * @deferred_output: gpio output settings to be done after gpio bank probed
++ * @deferred_lock: mutex for the deferred_output shared btw gpio and pinctrl
+  */
+ struct rockchip_pin_bank {
+-	void __iomem			*reg_base;
++	struct device			*dev;
++	struct regmap			*regmap_pull;
+ 	struct clk			*clk;
++	struct clk			*db_clk;
++	int				irq;
++	u32				saved_masks;
+ 	u32				pin_base;
+ 	u8				nr_pins;
+ 	char				*name;
+ 	u8				bank_num;
+ 	struct rockchip_iomux		iomux[4];
+ 	struct rockchip_drv		drv[4];
+-	enum rockchip_pin_bank_type	bank_type;
++	enum rockchip_pin_pull_type	pull_type[4];
+ 	bool				valid;
+ 	struct device_node		*of_node;
+ 	struct rockchip_pinctrl		*drvdata;
+ 	struct bgpio_chip		bgpio_chip;
++	u32				gpio_type;
++	u32				toggle_edge_mode;
++	u32				recalced_mask;
+ 	u32				route_mask;
++	struct list_head		deferred_pins;
++};
++
++/**
++ * struct rockchip_mux_recalced_data: represent a pin iomux data.
++ * @num: bank number.
++ * @pin: pin number.
++ * @bit: index at register.
++ * @reg: register offset.
++ * @mask: mask bit
++ */
++struct rockchip_mux_recalced_data {
++	u8 num;
++	u8 pin;
++	u32 reg;
++	u8 bit;
++	u8 mask;
+ };
+ 
+ enum rockchip_mux_route_location {
+@@ -143,19 +385,68 @@ struct rockchip_pin_ctrl {
+ 	int				pmu_mux_offset;
+ 	int				grf_drv_offset;
+ 	int				pmu_drv_offset;
++	struct rockchip_mux_recalced_data *iomux_recalced;
++	u32				niomux_recalced;
+ 	struct rockchip_mux_route_data *iomux_routes;
+ 	u32				niomux_routes;
+-	void	(*pull_calc_reg)(struct rockchip_pin_bank *bank, int pin_num,
+-				 void __iomem **reg, u8 *bit);
+-	void	(*drv_calc_reg)(struct rockchip_pin_bank *bank,
+-				    int pin_num, void __iomem **reg, u8 *bit);
++
++	int	(*pull_calc_reg)(struct rockchip_pin_bank *bank,
++				    int pin_num, struct regmap **regmap,
++				    int *reg, u8 *bit);
++	int	(*drv_calc_reg)(struct rockchip_pin_bank *bank,
++				    int pin_num, struct regmap **regmap,
++				    int *reg, u8 *bit);
++	int	(*schmitt_calc_reg)(struct rockchip_pin_bank *bank,
++				    int pin_num, struct regmap **regmap,
++				    int *reg, u8 *bit);
++};
++
++struct rockchip_pin_config {
++	unsigned int		func;
++	unsigned long		*configs;
++	unsigned int		nconfigs;
++};
++
++struct rockchip_pin_deferred {
++	struct list_head head;
++	unsigned int pin;
++	u32 arg;
++};
++
++/**
++ * struct rockchip_pin_group: represent group of pins of a pinmux function.
++ * @name: name of the pin group, used to lookup the group.
++ * @pins: the pins included in this group.
++ * @npins: number of pins included in this group.
++ * @data: local pin configuration
++ */
++struct rockchip_pin_group {
++	const char			*name;
++	unsigned int			npins;
++	unsigned int			*pins;
++	struct rockchip_pin_config	*data;
++};
++
++/**
++ * struct rockchip_pmx_func: represent a pin function.
++ * @name: name of the pin function, used to lookup the function.
++ * @groups: one or more names of pin groups that provide this function.
++ * @ngroups: number of groups included in @groups.
++ */
++struct rockchip_pmx_func {
++	const char		*name;
++	const char		**groups;
++	u8			ngroups;
+ };
+ 
+ struct rockchip_pinctrl {
+-	void __iomem			*reg_base;
+-	void __iomem			*reg_pmu;
+-	struct pinctrl_device		pctl_dev;
++	struct regmap			*regmap_base;
++	int				reg_size;
++	struct regmap			*regmap_pull;
++	struct regmap			*regmap_pmu;
++	struct device			*dev;
+ 	struct rockchip_pin_ctrl	*ctrl;
++	struct pinctrl_device		pctl_dev;
+ };
+ 
+ #endif
 -- 
 2.39.2
 
