@@ -1,83 +1,70 @@
-Delivery-date: Thu, 04 May 2023 07:47:44 +0200
+Delivery-date: Thu, 04 May 2023 09:11:39 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1puRof-004Ckm-6R
-	for lore@lore.pengutronix.de; Thu, 04 May 2023 07:47:44 +0200
+	id 1puT7r-004HOE-Q0
+	for lore@lore.pengutronix.de; Thu, 04 May 2023 09:11:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1puRod-0005Jq-F9
-	for lore@pengutronix.de; Thu, 04 May 2023 07:47:43 +0200
+	id 1puT7p-00078I-TG
+	for lore@pengutronix.de; Thu, 04 May 2023 09:11:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=dCGl/ZwA6s08fO2av0kCA17Z+fYOdglUmIdaoGqZLmc=; b=SVEf0exnROMAjDsH7VuiY77nFt
-	QF0qD7QmQbTkpvqfVa2jivDjHvpfHnOQAV1ZFYowm1Bm1hwuzrMmSWeB6LKZLO2UkF3Sr+My4jGfE
-	W1hDe9OdD87uAxwcA9d8m+6iy8ITahH7afccByB+b6n/Yu3xV+Lc503MOBVmGPwHx3Yr7ZEBhhw+W
-	SMvpe1gyxn3mhA37sS8H72Gj/ZsFpnsff0V9GRYDQEyRs9tcZgK5bVQPfuBmwlQ/lE085C5NYoSLJ
-	BrlrGSG1UUUQc+jXD/Or1ZQwvhlM/c53aZ66NVROM7nBI1ilvTbZ0BMkltqeh8u1+Y90A38m4xVcT
-	37qxfmjw==;
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:
+	From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=kDMFm2qOgWTfaE4ijVvH+Wqrp+EBfogKxlYVuzfgfJA=; b=ZH61WNTpuKQw/g0xJw88CE2Nte
+	MncKQU71beHDRsJ4t1t5FkuPDcinbSOgAVLuwHjK097YekbllNSLWvEb2iOqgQnN82sNM3wz7SwAy
+	IL+nZTqICBobupyVqEYxx7xxmlOhXKegsiMN/3P3DKiXquyWhcStKI5Fm66YgHdFQLI+hm2CtmJGb
+	4V3XD143NHofjxb1d40hiKx0hnHYbxjgHHfh7KzxmrG/D/3AyfaQIrsnU3qn/GljgM+8tIFsxoaNK
+	VxD4SVU68ou+PpNW4aOQewjin0TTTVFTKC3HTFiB5kcxbLYH59To5yg9K5R1QlRnDJSJsKshigxR1
+	5W0UGtaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1puRnV-006fza-0f;
-	Thu, 04 May 2023 05:46:33 +0000
-Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
+	id 1puT6b-006qyg-04;
+	Thu, 04 May 2023 07:10:21 +0000
+Received: from mail.andi.de1.cc ([2a01:238:4321:8900:456f:ecd6:43e:202c])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1puRnS-006fzB-0z
+	id 1puT6X-006qwF-1V
 	for barebox@lists.infradead.org;
-	Thu, 04 May 2023 05:46:31 +0000
-Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2ac785015d6so949391fa.0
-        for <barebox@lists.infradead.org>; Wed, 03 May 2023 22:46:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683179188; x=1685771188;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dCGl/ZwA6s08fO2av0kCA17Z+fYOdglUmIdaoGqZLmc=;
-        b=pgeBWWJ9DnfeVE2qU2p6n5WKYyAZEWAkYMo2QIbpBt2qNDMSBJwk8PzHjy8JHsnplX
-         /NuLoSZAa+ZFm0eBz48MjmsWA5KHinpyBnkhD99GLV1LtXyHelAE30en972w8ZPEu4nL
-         USDPx0IT4E1h3M5/+Y5jRje882sD/3iny6kYrpPvGLhoUwGCAd3fDba2ZpqOYovdTR8l
-         V1Z3dDGe6xUp6aPfZd+DW41TE7Y9KXcM6Bv6fHxOTyhifwyt2U4zayw5UbsiZMcORrBO
-         qrYq3yDrf2m1wdLnieA5iJu5IFdXWFAm0veuezaf5hhBpJ38SEuHNBlwJKn5Dk/8DSvQ
-         grYw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683179188; x=1685771188;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dCGl/ZwA6s08fO2av0kCA17Z+fYOdglUmIdaoGqZLmc=;
-        b=WYErsVAXTeWHlmzP8pSefE7Eq19gA3u1MC5Vru63oaSps2r7UP8lN/3otvSvj9HpZK
-         j79qib+RtGkZjiotn1UfWbpRL2i8Kr5s/N4KYuIkScLsBbJGLTtZz3MH/+YlGp+ERwup
-         tPsCJGzbWY3WBp1zg12GgtfW7p4I1CDqxsEJlSm9SDsg9oNQSM7OmawKsosHO7FHxA8i
-         bQ5eTm7c9sRMLde4c6OlbpR5r7SSDXFMJun8i782Kp3LeNFFFJaxp9NJejFJxcVvycPW
-         Yff8zkeAhVmLAdltcPLDDWOJlhNWniJhxspJG0E9Z1J8yBXo8WyjoWbSRRRz/NfIUUgF
-         BE2g==
-X-Gm-Message-State: AC+VfDwuQhxBD4u6YEee3/MHULFGwLw0kzCXWgWFMizm49AaA1JyLlUy
-	AbjXUCvjqrJtBSq79iRra4ZoQ0sDPw8=
-X-Google-Smtp-Source: ACHHUZ6Gi3Bz3xiYNSvQ8CU45Qqr/2cV+M0UDHwTaV6hgeX4Hbv5NhUpJClLS4oPbMDM5ygQ6sG+wg==
-X-Received: by 2002:a2e:918c:0:b0:2a7:7690:8dec with SMTP id f12-20020a2e918c000000b002a776908decmr587089ljg.39.1683179187685;
-        Wed, 03 May 2023 22:46:27 -0700 (PDT)
-Received: from localhost.localdomain ([188.243.217.78])
-        by smtp.gmail.com with ESMTPSA id n21-20020a2e86d5000000b002a77792f2c5sm6245540ljj.62.2023.05.03.22.46.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 May 2023 22:46:27 -0700 (PDT)
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-To: barebox@lists.infradead.org
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Thu,  4 May 2023 08:46:18 +0300
-Message-Id: <20230504054618.5582-1-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.39.1
+	Thu, 04 May 2023 07:10:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=kemnade.info; s=20220719; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:References:In-Reply-To:Message-ID:Subject:Cc:To:From:Date:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:
+	List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=kDMFm2qOgWTfaE4ijVvH+Wqrp+EBfogKxlYVuzfgfJA=; b=gPZ/Orkjmzg3kSkdvQFcTM/P+8
+	iM59SotCw4kiFM6Xswkz4/73NYG1hK9YcA/G5YWBnDfpghbZBEH3cJ/8MaPpj2y96dzr0At/cq/gN
+	aw279fsgy9YmAFxujKbD227ie9yORKYUH6ujqQdAhRYe/oYSH+N5/Cvs7aTGqySQPKSx668KSv0rF
+	aBI6gyPsLll2UpDvcuhc5PaOlP8qcfqrgnWSWLMonRHJ+OcgSPBmgAS5QeF6xOYuB+wcmwZm6ASp+
+	br88+nzHIGurWlkA3HmzQPXkVV/W9rjeG7bwW3d6MIrQ1y4gBJd2MUKus7mzunwTsYciwdYz3iP+Y
+	5Jxli4nw==;
+Received: from p200300ccff0d59001a3da2fffebfd33a.dip0.t-ipconnect.de ([2003:cc:ff0d:5900:1a3d:a2ff:febf:d33a] helo=aktux)
+	by mail.andi.de1.cc with esmtpsa (TLS1.2:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.89)
+	(envelope-from <andreas@kemnade.info>)
+	id 1puT6P-0000Bo-8j; Thu, 04 May 2023 09:10:09 +0200
+Date: Thu, 4 May 2023 09:10:07 +0200
+From: Andreas Kemnade <andreas@kemnade.info>
+To: Juergen Borleis <jbe@pengutronix.de>
+Cc: Sascha Hauer <sha@pengutronix.de>, barebox@lists.infradead.org
+Message-ID: <20230504091007.76bfa20a@aktux>
+In-Reply-To: <9230126707a1938c0dee22efa0b3fbaab0098c7e.camel@pengutronix.de>
+References: <20230426210936.7531e177@aktux>
+	<20230427073630.GT13543@pengutronix.de>
+	<9230126707a1938c0dee22efa0b3fbaab0098c7e.camel@pengutronix.de>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.24; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230503_224630_341698_CF06CE1F 
-X-CRM114-Status: UNSURE (   8.82  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230504_001017_719717_D0941A8B 
+X-CRM114-Status: GOOD (  19.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,34 +82,62 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=ham
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: dts: am335x-myirtech: Cosmetic: Remove empty extra line
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: rn5t618 vs. rn5t568
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
----
- arch/arm/dts/am335x-myirtech-myd.dts | 1 -
- 1 file changed, 1 deletion(-)
+Hi,
 
-diff --git a/arch/arm/dts/am335x-myirtech-myd.dts b/arch/arm/dts/am335x-myirtech-myd.dts
-index 54050816fc..5061f65d2a 100644
---- a/arch/arm/dts/am335x-myirtech-myd.dts
-+++ b/arch/arm/dts/am335x-myirtech-myd.dts
-@@ -19,7 +19,6 @@
- 			device-path = &nand_environment;
- 		};
- 	};
--
- };
- 
- &nand_parts {
--- 
-2.39.1
+On Tue, 02 May 2023 10:37:08 +0200
+Juergen Borleis <jbe@pengutronix.de> wrote:
 
+> Hi,
+>=20
+> Am Donnerstag, dem 27.04.2023 um 09:36 +0200 schrieb Sascha Hauer:
+> > On Wed, Apr 26, 2023 at 09:09:36PM +0200, Andreas Kemnade wrote: =20
+> > > Hi,
+> > >=20
+> > > just looked a bit around in the source and stumbled across drivers/mf=
+d/rn5t568.c
+> > >=20
+> > > It contains
+> > > =C2=A0* MFD core driver for Ricoh RN5T618 PMIC
+> > >=20
+> > > but the filename is rn5t568.c That is very confusing.
+> > > =C2=A0a compatible ricoh,rn5t568 (but 567) does not exist in the kern=
+el. =20
+>=20
+> 567 and 568 are pin compatible. As far as I know the 568 has some fixed O=
+TP
+> settings which are used after reset. Depending on the type extension (C, =
+S, AD=E2=80=A6)
+> the I=C2=B2C address differs and the default output voltages.
+>=20
+> > > So which chip this is really about? Did not analyse things deeper yet.
+> > >=20
+> > > I am also curious because I wrote most stuff in the kernel about the =
+rn5t618/rc5t619. =20
+> >=20
+> > J=C3=BCrgen had to support the rn5t568 which is not yet supported in Li=
+nux.
+> > He took the Kernel rn5t618.c driver and adjusted it accordingly. J=C3=
+=BCrgen
+> > can't remember exactly, but he said the chips are quite similar. =20
+>=20
+> Due to the support of the 567 variant it is already supported in the kern=
+el.
+>=20
+hmm, but if you do not share dt compatibles, you need to maintain different
+devicetrees in kernel vs. barebox. I thought you try to keep them in sync as
+much a possible. Also in mainline kernel the watchdog does not have its own
+device tree node.
+
+Regards,
+Andreas
 
 
