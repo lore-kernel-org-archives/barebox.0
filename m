@@ -1,59 +1,59 @@
-Delivery-date: Fri, 05 May 2023 10:08:25 +0200
+Delivery-date: Fri, 05 May 2023 10:28:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1puqUM-005fRX-AB
-	for lore@lore.pengutronix.de; Fri, 05 May 2023 10:08:25 +0200
+	id 1puqnb-005gmy-NX
+	for lore@lore.pengutronix.de; Fri, 05 May 2023 10:28:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1puqUK-0005m5-8x
-	for lore@pengutronix.de; Fri, 05 May 2023 10:08:24 +0200
+	id 1puqnZ-00009q-QF
+	for lore@pengutronix.de; Fri, 05 May 2023 10:28:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CaJ9Kv6kHcfHfAOFCEi2nSJLyI/3Nsr9fWnnGwgnJ+c=; b=lZKS2wLcRBV6R7oOaaSt26TJq5
-	1Kna8bSTOufHcxAylxZyqml+PemoPhkwzU1+KyOnoz6d+iiQV/1/JCmz2NkpjFhHIJ6iSEcaqgltN
-	SjkKShlikSuSCurxUd1hC5lHehtezAwDMsrN1m09CuLGwEHNSYAaaPE2MhzmokUcFpNUPy24hHfeI
-	zEqjgiegNsX6F4mRYWTmgdMx6W3eRkVSagB3h1Ne1GoxLpDeZ+R/dyMF9PKrii2SfgfgK0e9XULkV
-	8I6hJdNX0e9exHoia9ds3vbwx6ubvKxR5oJrqMAp/SFZf+4TRoKE9BKOL9HRaP9A7v8Hn/akpYE1H
-	4ABJa8yQ==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=WcV87g61P5fiU6E3JP2RDH5/PRXrgICq6vheB+ZIs/s=; b=yaJhjYGCDe7vxcax12QK2bJxTj
+	MgPq4G1EcS8IWLl9ztAsTtmnQGIJRtegaMrTKQI/WPARXlR4oDNOipYYFPIkmAR27itW/VrPao8Kp
+	z30DoSDV+E4fK0e+gasFPCXecJgscRjIEkgQ4WQwt7eBzycca33zaMKDWd7PK2UyQUSahOro4W3d+
+	ok526Z7upJqpe+aUTODvdOQksk55j8fgiJmOKHUdi9fLsnaYjRYrNt46sdACRsaDFPVkuAuXEm9a5
+	+iR/hfkTBnluhpeJfSjwO3T2qLs7mb90UrjAT8BjepkOPT5fdbDherXRcGGQFuMXKykMgL/AF9TIr
+	ao0hwaXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1puqTH-009zGM-2U;
-	Fri, 05 May 2023 08:07:19 +0000
+	id 1puqmP-00A1Pv-1v;
+	Fri, 05 May 2023 08:27:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1puqTF-009zFu-0E
+	id 1puqmC-00A1Ov-1g
 	for barebox@lists.infradead.org;
-	Fri, 05 May 2023 08:07:18 +0000
+	Fri, 05 May 2023 08:26:54 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <j.zink@pengutronix.de>)
-	id 1puqTC-0005fy-07; Fri, 05 May 2023 10:07:14 +0200
-Message-ID: <b4402d4d-eebc-f91d-5cd4-f11df763615c@pengutronix.de>
-Date: Fri, 5 May 2023 10:07:13 +0200
+	id 1puqmB-0008Ve-1v
+	for barebox@lists.infradead.org; Fri, 05 May 2023 10:26:51 +0200
+Message-ID: <d1ff09f0-f337-bfda-ba75-2f5e74087d70@pengutronix.de>
+Date: Fri, 5 May 2023 10:26:50 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.0
 Content-Language: en-US, de-DE
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Cc: kernel@pengutronix.de, patchwork-jzi@pengutronix.de
+To: barebox@lists.infradead.org
 References: <20230505075308.1015157-1-j.zink@pengutronix.de>
- <20230505075308.1015157-2-j.zink@pengutronix.de>
- <32e5a633-8921-0d69-0a1e-03efa8162493@pengutronix.de>
+ <20230505075308.1015157-4-j.zink@pengutronix.de>
+ <68c294c2-e2e2-b305-acf8-5ecd14b82991@pengutronix.de>
 From: Johannes Zink <j.zink@pengutronix.de>
-In-Reply-To: <32e5a633-8921-0d69-0a1e-03efa8162493@pengutronix.de>
+In-Reply-To: <68c294c2-e2e2-b305-acf8-5ecd14b82991@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230505_010717_111170_321FF010 
-X-CRM114-Status: GOOD (  19.55  )
+X-CRM114-CacheID: sfid-20230505_012652_603286_256876AA 
+X-CRM114-Status: GOOD (  26.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,62 +76,127 @@ X-Spam-Status: No, score=-7.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v1 1/3] imx-usb-loader: error with success when displaying
- help on purpose
+Subject: Re: [PATCH v1 3/3] imx-usb-loader: add commandline option for
+ displaying version number
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hi Ahmad,
 
-thank you for your review.
+thanks for reviewing this series.
 
-On 5/5/23 09:56, Ahmad Fatoum wrote:
+On 5/5/23 10:02, Ahmad Fatoum wrote:
 > On 05.05.23 09:53, Johannes Zink wrote:
->> Previously, whenever the usage was displayed, the imx-usb-loader exited
->> with error code.
->>
->> When the usage is displayed due to invalid tool invocation, returning an
->> error code is valid behaviour, but when displaying the usage with the -h
->> command line option, success should be returned.
->>
->> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+>> For debugging purposes of the imx-usb-loader it can be helpful to
+>> display the version number as a commandline option.
 > 
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> This breaks builds outside of Kbuild, which is the only way to build a
+> (currently non-functional) imx-usb-loader for Windows. See
 > 
-> The diff doesn't show that the other usage() callsite has an exit(1)
-> following it. Please note such things in the commit message in the
-> future.
+> https://lore.barebox.org/barebox/20230411093844.1297004-1-a.fatoum@pengutronix.de/
+> 
 
-Ack, gonna add it in v2. Also, I will fix the subject line to "...exit 
-with success..." instead of "...error with success...".
+I see, I was not aware that there are users of an out-of-Kbuild build.
+
+> What you may be able to do instead is -include $(objtree)/include/generated/utsrelease.h
+> 
+> and then have an
+> 
+>    #ifndef UTS_RELEASE
+>    #define UTS_RELEASE "external" // or something
+>    #endif
+> 
+> at the start of the file?
+> 
+
+sounds good to me, gonna add this to v2. Out of interest: does the 
+outside-of-kBuild use a custom makefile? Otherwise -include would 
+probably complain that the file is unknown...
+
+> (Not sure how long GCC has had support for __has_include)
+
+I'd prefer not to use __has_include, as this might not be supported with 
+redmondish toolchains, introducing an issue to fix another does not seem 
+too appealing to me ;-)
 
 Johannes
 
 > 
->> ---
->>   scripts/imx/imx-usb-loader.c | 2 +-
->>   1 file changed, 1 insertion(+), 1 deletion(-)
+> Cheers,
+> Ahmad
+> 
 >>
+>> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+>> ---
+>>   scripts/imx/Makefile         |  2 +-
+>>   scripts/imx/imx-usb-loader.c | 21 ++++++++++++++++++++-
+>>   2 files changed, 21 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
+>> index dbfa82910a55..43584427d27d 100644
+>> --- a/scripts/imx/Makefile
+>> +++ b/scripts/imx/Makefile
+>> @@ -3,7 +3,7 @@
+>>   hostprogs-always-$(CONFIG_ARCH_IMX_IMXIMAGE)	+= imx-image
+>>   hostprogs-always-$(CONFIG_ARCH_IMX_USBLOADER)	+= imx-usb-loader
+>>   
+>> -HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0`
+>> +HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0` -I$(objtree)/include/generated
+>>   HOSTLDLIBS_imx-usb-loader  = `pkg-config --libs libusb-1.0`
+>>   
+>>   imx-usb-loader-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0`
 >> diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
->> index 41d57906c752..17b83b611765 100644
+>> index e49c0bea6ca4..d4f876bb1c99 100644
 >> --- a/scripts/imx/imx-usb-loader.c
 >> +++ b/scripts/imx/imx-usb-loader.c
->> @@ -1527,7 +1527,6 @@ static void usage(const char *prgname)
+>> @@ -32,6 +32,7 @@
+>>   #include <libusb.h>
+>>   #include <getopt.h>
+>>   #include <linux/kernel.h>
+>> +#include <utsrelease.h>
+>>   
+>>   #include "../common.h"
+>>   #include "../compiler.h"
+>> @@ -1526,9 +1527,17 @@ static void usage(const char *prgname)
+>>   		"-p <devpath> Specify device path: <bus>-<port>[.<port>]...\n"
 >>   		"-s           skip DCD included in image\n"
 >>   		"-v           verbose (give multiple times to increase)\n"
+>> +		"--version    display version number\n"
 >>   		"-h           this help\n", prgname);
->> -	exit(1);
 >>   }
 >>   
+>> +static void version(const char *prgname)
+>> +{
+>> +	fprintf(stderr, "%s %s\n",
+>> +		prgname, UTS_RELEASE);
+>> +	exit(EXIT_SUCCESS);
+>> +}
+>> +
 >>   int main(int argc, char *argv[])
->> @@ -1558,6 +1557,7 @@ int main(int argc, char *argv[])
->>   			break;
->>   		case 'h':
->>   			usage(argv[0]);
->> +			exit(0);
->>   		case 'd':
->>   			devtype = optarg;
->>   			break;
+>>   {
+>>   	libusb_device **devs;
+>> @@ -1544,10 +1553,20 @@ int main(int argc, char *argv[])
+>>   	char *initfile = NULL;
+>>   	char *devpath = NULL;
+>>   	char *devtype = NULL;
+>> +	int opt_version = 0;
+>> +	struct option long_options[] = {
+>> +		{"version", no_argument, &opt_version, 1},
+>> +		{ }
+>> +	};
+>>   
+>>   	w.do_dcd_once = 1;
+>>   
+>> -	while ((opt = getopt(argc, argv, "cvhd:i:p:s")) != -1) {
+>> +	while ((opt = getopt_long(argc, argv, "cvhd:i:p:s", long_options, NULL)) != -1) {
+>> +		if (opt_version) {
+>> +			version(argv[0]);
+>> +			exit(EXIT_SUCCESS);
+>> +		}
+>> +
+>>   		switch (opt) {
+>>   		case 'c':
+>>   			verify = 1;
 > 
 
 -- 
