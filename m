@@ -1,63 +1,62 @@
-Delivery-date: Fri, 05 May 2023 08:40:25 +0200
+Delivery-date: Fri, 05 May 2023 09:54:39 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pup7C-005Xg9-Jj
-	for lore@lore.pengutronix.de; Fri, 05 May 2023 08:40:25 +0200
+	id 1puqH1-005dpg-V5
+	for lore@lore.pengutronix.de; Fri, 05 May 2023 09:54:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pup7A-0002YD-Gv
-	for lore@pengutronix.de; Fri, 05 May 2023 08:40:25 +0200
+	id 1puqH0-00037G-3E
+	for lore@pengutronix.de; Fri, 05 May 2023 09:54:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7Aq4sS0ZAZXp6DMG6ruqky+SmsPcIRCxR2xqa2wUbtE=; b=3MgeW5wMkX/bUhj8W/Rg00ZtUJ
-	sNeM/zag/CA5h80SNiqxEgS2MDKaP4wlc0b8iAEyuOu3QYed4HtGRfXmVOfv4JylywGitzHXbtOEJ
-	sZ0X8pYcmUEUcCVPRQWmif0PkXdypvRFiBpgl7w9pIB6H+dUUVhng1iwXUDPKh2FC1NmYcLYMicuK
-	1dFNQ2QmsZI1m2mhvlHP/vj99N7IhqkHwfPzOQmM/fUWCY74IVeU3/gW7d8Zu0jqVZI+e9Fzyiurw
-	wMLNj3l91YJgudaoJbZsu7iweEos72gvBX2/aSEYx8nuELj9cBT7+9EJcW6n7pEdP1rRS+LVQfE4V
-	6MqhX8cQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Cq3/895v8pu+no/fLY4Vnd7x5tORHKR5rxRDWp7zMcI=; b=Z5mvc4PdmCOPQl/tcaIpF6Nojk
+	JR3SadLR463PTSOCBlWaNr0og3JhDCU3/tvcugIY6TBm7B9QWH9vFGhAf/3+Itfy6Gvc/FsCknM51
+	W2BauckFhxedtzPZLo/IWuX0qim3hgCD7bK42nyAiIuB6O0nJOJ0O1vqfwKTRBV4IMsrZujbwIb8Y
+	GQITw1/wa3Ru2Z3XSBm5XkPEhlPlu8G4Z+STtJX+1fthfYHSfg/gGv47rwS/CkFNGSb93QZuIzJ0f
+	/csLvvhM6wdcuG1Rr4Nj2BqgXQyu4pOOneGEBHIAEutR6kKpByjIskIAiow7Fpe3Afl2/zX8kdQQp
+	2kJx27/Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pup60-009qb4-1A;
-	Fri, 05 May 2023 06:39:12 +0000
+	id 1puqFp-009xgt-1m;
+	Fri, 05 May 2023 07:53:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pup5x-009qZv-2c
+	id 1puqFm-009xez-1B
 	for barebox@lists.infradead.org;
-	Fri, 05 May 2023 06:39:11 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	Fri, 05 May 2023 07:53:23 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pup5u-0002Bb-Ob; Fri, 05 May 2023 08:39:06 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pup5u-0004Go-74; Fri, 05 May 2023 08:39:06 +0200
-Date: Fri, 5 May 2023 08:39:06 +0200
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230505063906.GR29365@pengutronix.de>
-References: <20230503101919.1826193-1-o.rempel@pengutronix.de>
+	(envelope-from <jzi@pengutronix.de>)
+	id 1puqFh-0002iq-Bc; Fri, 05 May 2023 09:53:17 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <jzi@pengutronix.de>)
+	id 1puqFg-001FAZ-Ml; Fri, 05 May 2023 09:53:16 +0200
+Received: from jzi by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <jzi@pengutronix.de>)
+	id 1puqFf-004Gr8-NX; Fri, 05 May 2023 09:53:15 +0200
+From: Johannes Zink <j.zink@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: patchwork-jzi@pengutronix.de,
+	kernel@pengutronix.de
+Date: Fri,  5 May 2023 09:53:05 +0200
+Message-Id: <20230505075308.1015157-1-j.zink@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230503101919.1826193-1-o.rempel@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230504_233909_848074_C8B5DB1B 
-X-CRM114-Status: GOOD (  20.32  )
+X-CRM114-CacheID: sfid-20230505_005322_405445_39BA8C77 
+X-CRM114-Status: UNSURE (   9.41  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,53 +79,34 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v1 0/4] Improve USB FIFO handling and enable UMS mode on
- PRTT1L boards
+Subject: [PATCH v1 0/3] Add displaying a version number in
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, May 03, 2023 at 12:19:15PM +0200, Oleksij Rempel wrote:
-> This patch series addresses the initial issue of USB Mass Storage (UMS)
-> mode not working on PRTT1L boards by improving USB FIFO handling in the
-> DWC2 driver, fixing multiplier handling in endpoint setup, and adding
-> support for multiple gadgets, including UMS, fastboot, and ACM gadgets.
-> The changes include porting support for USB FIFO devicetree properties
-> and FIFO configuration from Linux kernel v6.3. These patches were tested
-> on a PRTT1C board (based on stm32mp151) with the following command:
-> usbgadget -S '/dev/mmc1(mmc1)' -s -A '' -b
-> 
-> Michael Grzeschik (1):
->   usb: dwc2: fix multiplier handling in endpoint setup
-> 
-> Oleksij Rempel (3):
->   usb: dwc2: Port support for USB FIFO devicetree properties from Linux
->     v6.3
->   usb: dwc2: Port FIFO configuration sync from Linux v6.3
->   arm: dts: stm32mp151-prtt1l: Configure USB gadget FIFOs for multiple
->     gadgets support
+This series adds displaying a version number in imx-usb-loader for
+easier debugging.
 
-Applied, thanks
+The first two patches add minor cleanup, while the third actually adds
+the code for displaying the version number.
 
-Sascha
+The result will look like
+$./imx-usb-loader --version
+./imx-usb-loader 2023.04.0-00210-g057705fb211a-dirty
 
-> 
->  arch/arm/dts/stm32mp151-prtt1l.dtsi |  1 +
->  drivers/usb/dwc2/core.c             | 27 ++++++++++++++++++++
->  drivers/usb/dwc2/dwc2.c             |  1 +
->  drivers/usb/dwc2/dwc2.h             |  1 +
->  drivers/usb/dwc2/gadget.c           | 38 +++++++++++------------------
->  5 files changed, 44 insertions(+), 24 deletions(-)
-> 
-> -- 
-> 2.39.2
-> 
-> 
-> 
+Happy hacking
+Johannes
+
+Johannes Zink (3):
+  imx-usb-loader: error with success when displaying help on purpose
+  imx-usb-loader: use proper return code macros
+  imx-usb-loader: add commandline option for displaying version number
+
+ scripts/imx/Makefile         |  2 +-
+ scripts/imx/imx-usb-loader.c | 29 ++++++++++++++++++++++++-----
+ 2 files changed, 25 insertions(+), 6 deletions(-)
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
