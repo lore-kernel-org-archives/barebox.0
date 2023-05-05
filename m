@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1puxlR-006IJl-Vb
+	id 1puxlS-006IJm-6A
 	for lore@lore.pengutronix.de; Fri, 05 May 2023 17:54:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1puxlQ-0002Tq-2v
+	id 1puxlQ-0002UA-BX
 	for lore@pengutronix.de; Fri, 05 May 2023 17:54:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5Bck52uNtjGY4Q7sNSXKhHgL4duehKCYJbGKWkFqoCw=; b=zWP0awKP8pFMhwrh0k0M9Nhrgw
-	GTfN+W1Hy9xKwWQzwx2d0pgAN21I3mWjC2Et/HEWW241daiWU++zkxYBYH4w0+23jICad3hWTRnWS
-	i8zMXXobMg7YqgMnaP3GrhTD2eHRxmQw5uFmOlewKiQqtB9BevPwq3Y4IthwGl/12ZxzhRBhmfD8F
-	QoEzimBDpGVs5XBXTfjyCf+Bpk6tNcSuF4SVZ9Lhod79uqIn2JUUE9cR5jTfWaOLIYiFH4cSZV8um
-	0XdL0BAItI5EeCEq14D/nsB71weWDFyPXDkl7tn67yYn3ofCaED5BldTwEnUACmKBaeDZkg7XDFgM
-	8E0LjxRg==;
+	bh=mGcqGLTDYzPvECLpeuwxtjBYRKz++4VZGjQNP0EZcMY=; b=utnWx72YE5Ic5Y/815KY3+PWFA
+	Q7vjf4CrNw9WewRPv1Brnf+p+hHcLveRwkVUPdLFHz0zbVcPUsApKZp8ifRi4aJDpOs97ahxuBNog
+	1jmxQs/WVgWFE9dStn5h6b24b566YsoLmCxKNlfbHGJMoITmC5IpoBSTmVl7EXpkFobFiNzKsNydH
+	8b8+EKNkQEL15kQO76ves70Oos2V4/vehcW67i81F13j175mpRJmnsi+MnpQc7SuYVCuNwRJCQJX2
+	dGzjoxgB9KL9Dc3G1NTJvOuj8x+RAM7k/Gs4HYFNC6gcgUtiiGS7A1GEA/srOlfst5zFfBLKJo0PU
+	NfZqt4ow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1puxk4-00BFJl-2l;
-	Fri, 05 May 2023 15:53:08 +0000
+	id 1puxk3-00BFJR-32;
+	Fri, 05 May 2023 15:53:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1puxk0-00BFHa-28
+	id 1puxk0-00BFHZ-28
 	for barebox@lists.infradead.org;
 	Fri, 05 May 2023 15:53:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <jzi@pengutronix.de>)
-	id 1puxjw-0002Hw-EU; Fri, 05 May 2023 17:53:00 +0200
+	id 1puxjw-0002Hv-Ch; Fri, 05 May 2023 17:53:00 +0200
 Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <jzi@pengutronix.de>)
-	id 1puxjv-001KX6-PU; Fri, 05 May 2023 17:52:59 +0200
+	id 1puxjv-001KX3-Nc; Fri, 05 May 2023 17:52:59 +0200
 Received: from jzi by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <jzi@pengutronix.de>)
-	id 1puxjv-009Vyj-0l; Fri, 05 May 2023 17:52:59 +0200
+	id 1puxjv-009Vyn-1S; Fri, 05 May 2023 17:52:59 +0200
 From: Johannes Zink <j.zink@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: patchwork-jzi@pengutronix.de,
 	Johannes Zink <j.zink@pengutronix.de>
-Date: Fri,  5 May 2023 17:52:46 +0200
-Message-Id: <20230505155248.2261867-2-j.zink@pengutronix.de>
+Date: Fri,  5 May 2023 17:52:47 +0200
+Message-Id: <20230505155248.2261867-3-j.zink@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230505155248.2261867-1-j.zink@pengutronix.de>
 References: <20230505155248.2261867-1-j.zink@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230505_085304_699066_F5E951D2 
-X-CRM114-Status: GOOD (  15.92  )
+X-CRM114-CacheID: sfid-20230505_085304_700765_D185FBF9 
+X-CRM114-Status: GOOD (  10.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,53 +80,58 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 1/3] imx-usb-loader: exit with success when displaying help on purpose
+Subject: [PATCH v2 2/3] imx-usb-loader: use proper return code macros
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Previously, whenever the usage was displayed, the imx-usb-loader exited
-with error code.
+It is considered good practice to use EXIT_SUCCESS and EXIT_FAILURE
+instead of hardcoding magic values.
 
-When the usage is displayed due to invalid tool invocation, returning an
-error code is valid behaviour, but when displaying the usage with the -h
-command line option, success should be returned.
-
-The other usage() callsite in the code already has an exit(1) following
-it, which is why the exit call can be removed from the usage function
-without introducing any behavioural change there.
+No functional changes.
 
 Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
 ---
-Changelog:
-
- v1 -> v2: - fixed erronous commit subject
-           - added comment in commit message why removing the exit()
-	     call is from the usage() function is valid, even when not
-	     explicitely adding an exit() call at all call sites
-
- scripts/imx/imx-usb-loader.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scripts/imx/imx-usb-loader.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-index 41d57906c752..17b83b611765 100644
+index 17b83b611765..e49c0bea6ca4 100644
 --- a/scripts/imx/imx-usb-loader.c
 +++ b/scripts/imx/imx-usb-loader.c
-@@ -1527,7 +1527,6 @@ static void usage(const char *prgname)
- 		"-s           skip DCD included in image\n"
- 		"-v           verbose (give multiple times to increase)\n"
- 		"-h           this help\n", prgname);
--	exit(1);
- }
- 
- int main(int argc, char *argv[])
-@@ -1558,6 +1557,7 @@ int main(int argc, char *argv[])
+@@ -1557,7 +1557,7 @@ int main(int argc, char *argv[])
  			break;
  		case 'h':
  			usage(argv[0]);
-+			exit(0);
+-			exit(0);
++			exit(EXIT_SUCCESS);
  		case 'd':
  			devtype = optarg;
  			break;
+@@ -1571,13 +1571,13 @@ int main(int argc, char *argv[])
+ 			w.do_dcd_once = 0;
+ 			break;
+ 		default:
+-			exit(1);
++			exit(EXIT_FAILURE);
+ 		}
+ 	}
+ 
+ 	if (devtype && strcmp(devtype, "list") == 0) {
+ 		list_imx_device_types();
+-		exit(0);
++		exit(EXIT_SUCCESS);
+ 	}
+ 
+ 	if (devtype && !devpath) {
+@@ -1587,7 +1587,7 @@ int main(int argc, char *argv[])
+ 	if (optind == argc) {
+ 		fprintf(stderr, "no filename given\n");
+ 		usage(argv[0]);
+-		exit(1);
++		exit(EXIT_FAILURE);
+ 	}
+ 
+ 	w.plug = 1;
 -- 
 2.39.2
 
