@@ -1,58 +1,63 @@
-Delivery-date: Mon, 08 May 2023 13:19:22 +0200
+Delivery-date: Mon, 08 May 2023 15:20:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pvytn-00A3US-C7
-	for lore@lore.pengutronix.de; Mon, 08 May 2023 13:19:22 +0200
+	id 1pw0ms-00AA0f-Pi
+	for lore@lore.pengutronix.de; Mon, 08 May 2023 15:20:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pvytl-0007l5-DG
-	for lore@pengutronix.de; Mon, 08 May 2023 13:19:21 +0200
+	id 1pw0mq-0006zf-8E
+	for lore@pengutronix.de; Mon, 08 May 2023 15:20:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=d0k/WlcixzTUi9ALmlShPz/789IjwFDTEWic/D6PJMQ=; b=4fxdbwEzga2qacxnKZ6xGLfIED
-	DaAw3UYjHxtB3w3AtPUi3VUIbPFfjRq5wEWdKd5ZHdaL2Z7dySKAX47tEoCj8fWAcuW9sF/3AU23P
-	Yj1v8khqPDCGnB1rRFrXaMXmfRGTDIbgf3PMaZsdE36b/7jDpk5JwI4ZlpRFhtcYRLLePsfIGhJb0
-	2jYPU5qFQ+t7X4SorTQk/EWcFY9L7+o5atFLWM1PARau7ruNIgOa8neBKAtqKJuE8btaUskAIxODz
-	aTYnF+/ZZUdmpzYfJIGYXXPO4hP9S/kJ9cRKKMPcZschn7TfkocxlIbB89tcTa3zFr+tPwGtO/jvL
-	KK1K7ZiA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=yJ9GuzF0ruQ47OF3cjcDdnIbSp6nlM+Z8210MFWOLDI=; b=dTawc5UizEWe+SaTcogx7EcIBY
+	VQ9GPbHlnBO40IuLmiaLUjvfs5kzFG/IcjmHY2kxXiSbXBLGAzlIYRfVP0Wuv2Rqe1NeLWW5wq257
+	J/9uukAfsWQxyhA46/G8Qn8zs0viDmhRX2MdV+bfPQq5a938/39W8D3nRDxfDGvIuZQ/Uj1xtKfus
+	b1kjFp1gTu7okladbmIiXPCnNHOXXmsyAijlCN11LErJNb0rUQlPwmzFnDYkCIIWRpJIpFbKYlj/Y
+	1rlUAiPslEDdLyICEbQbrlMWUplADAj4UzuX3b3VNm1sFlUCgyba7YkF/QIshAlmzh5fqR8btn+zp
+	LiW/O4SA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pvysN-000NvU-2r;
-	Mon, 08 May 2023 11:17:55 +0000
+	id 1pw0lK-000c47-30;
+	Mon, 08 May 2023 13:18:46 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pvysK-000Ntz-1K
+	id 1pw0lI-000c2j-0w
 	for barebox@lists.infradead.org;
-	Mon, 08 May 2023 11:17:54 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pvys8-0007al-KM; Mon, 08 May 2023 13:17:40 +0200
-Message-ID: <04c84b06-68df-2366-04bc-135f48ce9119@pengutronix.de>
-Date: Mon, 8 May 2023 13:17:39 +0200
+	Mon, 08 May 2023 13:18:45 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pw0lD-0006hC-4I; Mon, 08 May 2023 15:18:39 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1pw0lC-0005f7-HD; Mon, 08 May 2023 15:18:38 +0200
+Date: Mon, 8 May 2023 15:18:38 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230508131838.GX29365@pengutronix.de>
+References: <20230508074612.3313870-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Content-Language: en-US
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-Cc: Kai Assman <kai.assmann@de.bosch.com>
-References: <20230508072431.94874-1-s.trumtrar@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230508072431.94874-1-s.trumtrar@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230508074612.3313870-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230508_041752_449079_16E42329 
-X-CRM114-Status: GOOD (  22.05  )
+X-CRM114-CacheID: sfid-20230508_061844_330849_B8B8DEC8 
+X-CRM114-Status: GOOD (  18.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,64 +75,63 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] clk: zynq: eval ps-clock-frequency from DT
+Subject: Re: [PATCH master 1/2] fs: fail gracefully in
+ get_mounted_path/get_cdev_by_mountpath
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 08.05.23 09:24, Steffen Trumtrar wrote:
-> From: Kai Assman <kai.assmann@de.bosch.com>
+On Mon, May 08, 2023 at 09:46:11AM +0200, Ahmad Fatoum wrote:
+> get_fsdevice_by_path will return NULL if no file system was mounted at
+> location. Returned pointer was dereferenced unconditionally, potentially
+> leading to null pointer dereference. Fix this.
 > 
-> Currently the ps_clk_rate is locked to 33.3MHz. The devicetree
-> provides a property "ps-clock-frequency" that specifies this clock.
-> 
-> If the property is found, overwrite ps_clk_rate otherwise stay at the
-> default 33.3MHz
-
-The commit message reads as is this is an upstream binding, but I find no
-usage, documentation or driver code parsing it in Linux v6.4-rc1.
-
-Is this a new barebox-specific binding? If so, the commit message should be
-reworded to make this clear. You can also drop a short .rst file into
-Documentation/devicetree/bindings/clocks to describe your new property.
-
-> Signed-off-by: Kai Assmann <kai.assmann@de.bosch.com>
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/clk/zynq/clkc.c | 3 +++
->  1 file changed, 3 insertions(+)
+>  fs/fs.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+
+Applied, thanks
+
+Sascha
+
 > 
-> diff --git a/drivers/clk/zynq/clkc.c b/drivers/clk/zynq/clkc.c
-> index 8e4beda295..37a0fbadb5 100644
-> --- a/drivers/clk/zynq/clkc.c
-> +++ b/drivers/clk/zynq/clkc.c
-> @@ -388,6 +388,9 @@ static int zynq_clock_probe(struct device *dev)
->  			return PTR_ERR(parent_res);
+> diff --git a/fs/fs.c b/fs/fs.c
+> index 65e4c661b9ce..368458cc54f8 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -240,6 +240,8 @@ struct cdev *get_cdev_by_mountpath(const char *path)
+>  	struct fs_device *fsdev;
 >  
->  		slcr_offset = parent_res->start;
-> +
-> +		of_property_read_u32(dev->device_node, "ps-clock-frequency",
-> +				     (u32 *)&ps_clk_rate);
-
-Please do not cast compiler warnings away. You should change the type of
-ps_clk_rate instead to u32, so this code is 64-bit-safe.
-
-Cheers,
-Ahmad
-
->  	}
+>  	fsdev = get_fsdevice_by_path(path);
+> +	if (!fsdev)
+> +		return NULL;
 >  
->  	iores = request_iomem_region(dev_name(dev), iores->start + slcr_offset,
+>  	return fsdev->cdev;
+>  }
+> @@ -249,6 +251,8 @@ char *get_mounted_path(const char *path)
+>  	struct fs_device *fdev;
+>  
+>  	fdev = get_fsdevice_by_path(path);
+> +	if (!fdev)
+> +		return NULL;
+>  
+>  	return fdev->path;
+>  }
+> -- 
+> 2.39.2
+> 
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
