@@ -1,61 +1,56 @@
-Delivery-date: Tue, 09 May 2023 08:06:51 +0200
+Delivery-date: Tue, 09 May 2023 08:12:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pwGUt-00BCFi-SQ
-	for lore@lore.pengutronix.de; Tue, 09 May 2023 08:06:51 +0200
+	id 1pwGaL-00BCVL-5W
+	for lore@lore.pengutronix.de; Tue, 09 May 2023 08:12:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pwGUs-0003Rn-2z
-	for lore@pengutronix.de; Tue, 09 May 2023 08:06:50 +0200
+	id 1pwGaJ-0004PE-3G
+	for lore@pengutronix.de; Tue, 09 May 2023 08:12:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Tn9VyeHN9NokhsKVx16Ep6Ykwi4RJenrElchNPr0Lsg=; b=ky463O0SQyolTnSE8r+xOWMua8
-	A3GXecs5Se6DIffga8DuADHwMz8Gcx26J0TU4R4Zbz7eJY78V/LdnYT97JzZWSD+4ITZBmr8e8+DL
-	+o/cQ4ve6LpGmMxD8o81yKp4ZcO7L1VBJFUvPJmYeJLNmGxgJUab4Pzwz23UoyYyi6Q2nhbjo8RzA
-	NUh2DkbG2hNAzKKgipVe0b0hK3VmWRPKkQTuLyyysy+Xwo4U2OrlzWdjLldXvhgFkAtbp9ystdlC4
-	sZQBgOF7K4AiXrLrUTGfl5D2O3/tpEK64zkx9eWuEviEWsOL5V8KVC4U9vcomsTuH6V1BwcqCBX2D
-	axhaTGsA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:In-reply-to:Date:Subject:Cc:To:From:References:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=FUsnJ89Zb+YoF1/NAzYhcsHs/ld8ClY+fdjGk4chj+g=; b=Qz6cx+bE6509b+NgIFhbuvZZMV
+	cZGreh5dhgHLslw4Bf0psFHtiguS6J3QXTJPsCBZ9VxhC+XHXzg/Om44J5oC+7QBv+bw764kgVi6B
+	TXgsQqgOrpNbLfPnZ10g9/zFK58fb4fq1hf1xN6LQaphB1xmlrQD2vhvXRwBOOwVAvlky1EuruLQD
+	U820Yl0rd2LpQ8AuruN5frH0UqxsszBKvvZ79W78DmW48mLIrIwoLiEIgibsTb2UN3iNdpWYPm9EO
+	7MFvq9zHb1R9jHSaDv7dTI5iQlXpKERi4xFCfp5DfHA9ljnXJNddmSO53zlKpmYsQsx/KpbkcKaS6
+	6sZUb7HA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pwGTc-002NII-1T;
-	Tue, 09 May 2023 06:05:32 +0000
+	id 1pwGZJ-002Nry-24;
+	Tue, 09 May 2023 06:11:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pwGTZ-002NH2-37
+	id 1pwGZH-002NrX-0r
 	for barebox@lists.infradead.org;
-	Tue, 09 May 2023 06:05:31 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Tue, 09 May 2023 06:11:24 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=igor.pengutronix.de)
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <jzi@pengutronix.de>)
-	id 1pwGTV-0003G4-UJ; Tue, 09 May 2023 08:05:25 +0200
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <jzi@pengutronix.de>)
-	id 1pwGTV-002AZL-6d; Tue, 09 May 2023 08:05:25 +0200
-Received: from jzi by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <jzi@pengutronix.de>)
-	id 1pwGTU-002yHu-In; Tue, 09 May 2023 08:05:24 +0200
-From: Johannes Zink <j.zink@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: patchwork-jzi@pengutronix.de,
-	Johannes Zink <j.zink@pengutronix.de>
-Date: Tue,  9 May 2023 08:05:21 +0200
-Message-Id: <20230509060521.707205-1-j.zink@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1pwGZD-0004GB-K6; Tue, 09 May 2023 08:11:19 +0200
+References: <20230508072431.94874-1-s.trumtrar@pengutronix.de>
+ <04c84b06-68df-2366-04bc-135f48ce9119@pengutronix.de>
+User-agent: mu4e 1.10.3; emacs 30.0.50
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Kai Assman <kai.assmann@de.bosch.com>, barebox@lists.infradead.org
+Date: Tue, 09 May 2023 08:09:05 +0200
+In-reply-to: <04c84b06-68df-2366-04bc-135f48ce9119@pengutronix.de>
+Message-ID: <87pm7a2fw9.fsf@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230508_230530_006733_E6721421 
-X-CRM114-Status: GOOD (  12.89  )
+X-CRM114-CacheID: sfid-20230508_231123_328336_FC4FA05B 
+X-CRM114-Status: GOOD (  19.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,57 +68,71 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2] net: phy: print error messages to log
+Subject: Re: [PATCH] clk: zynq: eval ps-clock-frequency from DT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Previously the phy core did just print info and error messages to
-console, but they did not show up in the system log.
 
-Now the dev_info and dev_err macros are used instead of raw puts,
-they are now nicely formatted and show up in the log.
+On 2023-05-08 at 13:17 +02, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
 
-Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
----
-Changelog:
+> On 08.05.23 09:24, Steffen Trumtrar wrote:
+>> From: Kai Assman <kai.assmann@de.bosch.com>
+>>
+>> Currently the ps_clk_rate is locked to 33.3MHz. The devicetree
+>> provides a property "ps-clock-frequency" that specifies this clock.
+>>
+>> If the property is found, overwrite ps_clk_rate otherwise stay at the
+>> default 33.3MHz
+>
+> The commit message reads as is this is an upstream binding, but I find no
+> usage, documentation or driver code parsing it in Linux v6.4-rc1.
+>
+> Is this a new barebox-specific binding? If so, the commit message should be
+> reworded to make this clear. You can also drop a short .rst file into
+> Documentation/devicetree/bindings/clocks to describe your new property.
+>
 
-v1 -> v2: Worked in Ahmad's review findings:
-          - use dev_err and dev_info instead of pr_err and pr_info
+Ha, you are right. I could have sworn to have seen this binding already
+and didn't check :(
 
-          Thank you for your review!
+I'll change that.
 
- drivers/net/phy/phy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+>> Signed-off-by: Kai Assmann <kai.assmann@de.bosch.com>
+>> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+>> ---
+>>  drivers/clk/zynq/clkc.c | 3 +++
+>>  1 file changed, 3 insertions(+)
+>>
+>> diff --git a/drivers/clk/zynq/clkc.c b/drivers/clk/zynq/clkc.c
+>> index 8e4beda295..37a0fbadb5 100644
+>> --- a/drivers/clk/zynq/clkc.c
+>> +++ b/drivers/clk/zynq/clkc.c
+>> @@ -388,6 +388,9 @@ static int zynq_clock_probe(struct device *dev)
+>>  			return PTR_ERR(parent_res);
+>>
+>>  		slcr_offset = parent_res->start;
+>> +
+>> +		of_property_read_u32(dev->device_node, "ps-clock-frequency",
+>> +				     (u32 *)&ps_clk_rate);
+>
+> Please do not cast compiler warnings away. You should change the type of
+> ps_clk_rate instead to u32, so this code is 64-bit-safe.
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index 54dbbca7255a..dbc30b66b828 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -462,7 +462,7 @@ int phy_device_connect(struct eth_device *edev, struct mii_bus *bus, int addr,
- 	ret = -ENODEV;
- out:
- 	if (ret)
--		puts("Unable to find a PHY (unknown ID?)\n");
-+		dev_err(&edev->dev, "Unable to find a PHY (unknown ID?)\n");
- 
- 	return ret;
- }
-@@ -675,7 +675,7 @@ int genphy_aneg_done(struct phy_device *phydev)
- 
- 	/* Restart auto-negotiation if remote fault */
- 	if (bmsr & BMSR_RFAULT) {
--		puts("PHY remote fault detected\n"
-+		dev_info(&phydev->dev, "PHY remote fault detected\n"
- 		     "PHY restarting auto-negotiation\n");
- 		phy_write(phydev, MII_BMCR,
- 				  BMCR_ANENABLE | BMCR_ANRESTART);
--- 
-2.39.2
+Ack.
 
+
+Thanks,
+Steffen
+
+--
+Pengutronix e.K.                | Dipl.-Inform. Steffen Trumtrar |
+Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
 
 
