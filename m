@@ -3,51 +3,51 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pwtOw-00DJJX-RO
+	id 1pwtOx-00DJJm-Fg
 	for lore@lore.pengutronix.de; Thu, 11 May 2023 01:39:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pwtOu-0000z3-LK
-	for lore@pengutronix.de; Thu, 11 May 2023 01:39:17 +0200
+	id 1pwtOv-0000zE-6Q
+	for lore@pengutronix.de; Thu, 11 May 2023 01:39:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=m9llEYsILYpFjUXtTIJwja0CHnpi7K/WbqICO7pxIkc=; b=BiPQ8Sy+VvaSZBEktoYiaFXY4k
-	mStJMmE0KNgFeGN3l1ZheKK18hhN9SuxxuGeStwDtBLhIQ0AFxQLuMZlj37f3L4RTwaizYBkseNhO
-	0Z4yxpUZciBbCpDSHuugk/bLNjIyOIWj4eic83XfC/AmnR4D0xYn/6rFmNlxdYieldq1U6jKlrHTT
-	CrgOrVlZh5Q0sTUIyo+uHd42PGJLI1NJt6ikzHOAceffy1zVny6IMCqlumFnB0dmH2VXkHhPNBm1a
-	dSA2ccLcR0D7ErQuiWwjIXwWfTYPBvifQlMOrI7yP73AHHAWU7C7aRKZgPkVfwVuh7ZwzEiH+rLuX
-	LXlbRsaQ==;
+	bh=r6ziLimoQOleLWrQsF2yyPcctuWNKOUtLnBfR+yDcn8=; b=RI4coCif/lsJQUg4a0MjB9lVGB
+	Koc3sTM8ZsYW+yOa4xbWo4vXOOMxpbfeIwZ8QdE+rUJVPaRv05PfXzu7uNsl3et3Z8gg4I/Yk7v9l
+	0Za7RG34K8QhbrW2mNfXfi1r2ibs7NTJdm4Qo0Fw1xU2/0zVILhAbjwN8SBGtvufNfkuLhPjD/yL2
+	F6eVGDksHBa0LUB+i5i9JdHzi+qIQUoZRxNhhvb27owwqOP+FE4TXL2EQtJ7bbyLiSpeEMiFy/fF9
+	FZePsMkgra2uOUHEdoCWCwbIKntFknv6AJ/3ZcOP3DtTqRMYlTdcyq0J5f8y4oTd72eD4nFF719c3
+	h1B8GpAw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pwtNa-007FwN-1k;
-	Wed, 10 May 2023 23:37:54 +0000
+	id 1pwtNZ-007FvL-0y;
+	Wed, 10 May 2023 23:37:53 +0000
 Received: from relay5-d.mail.gandi.net ([217.70.183.197])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pwtNS-007Fsb-0I
+	id 1pwtNP-007Fq3-2A
 	for barebox@lists.infradead.org;
 	Wed, 10 May 2023 23:37:49 +0000
 Received: (Authenticated sender: jmaselbas@zdiv.net)
-	by mail.gandi.net (Postfix) with ESMTPSA id 5FFFD1C000C;
-	Wed, 10 May 2023 23:37:39 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 4F1C51C0005;
+	Wed, 10 May 2023 23:37:35 +0000 (UTC)
 From: Jules Maselbas <jmaselbas@zdiv.net>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Thu, 11 May 2023 01:37:10 +0200
-Message-Id: <20230510233711.37345-11-jmaselbas@zdiv.net>
+Date: Thu, 11 May 2023 01:37:01 +0200
+Message-Id: <20230510233711.37345-2-jmaselbas@zdiv.net>
 X-Mailer: git-send-email 2.40.0
 In-Reply-To: <20230510233711.37345-1-jmaselbas@zdiv.net>
 References: <20230510233711.37345-1-jmaselbas@zdiv.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230510_163746_417353_83521C16 
-X-CRM114-Status: GOOD (  18.71  )
+X-CRM114-CacheID: sfid-20230510_163743_987793_C921AEEE 
+X-CRM114-Status: GOOD (  32.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,309 +70,269 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [RFC PATCH 10/11] arm: boards: sunxi: Add initial support for the pinephone
+Subject: [RFC PATCH 01/11] scripts: Add Allwinner eGON image support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
----
- arch/arm/boards/Makefile                    |   1 +
- arch/arm/boards/pine64-pinephone/Makefile   |   2 +
- arch/arm/boards/pine64-pinephone/board.c    |   0
- arch/arm/boards/pine64-pinephone/lowlevel.c | 119 ++++++++++++++++++++
- arch/arm/configs/pinephone_defconfig        |  11 ++
- arch/arm/dts/Makefile                       |   1 +
- arch/arm/dts/sun50i-a64-pinephone-1_2.dts   |   3 +
- arch/arm/mach-sunxi/Kconfig                 |  21 ++++
- arch/arm/mach-sunxi/cpu_init.c              |  15 ++-
- images/Makefile.sunxi                       |   9 ++
- include/mach/sunxi/init.h                   |   4 +
- 11 files changed, 184 insertions(+), 2 deletions(-)
- create mode 100644 arch/arm/boards/pine64-pinephone/Makefile
- create mode 100644 arch/arm/boards/pine64-pinephone/board.c
- create mode 100644 arch/arm/boards/pine64-pinephone/lowlevel.c
- create mode 100644 arch/arm/configs/pinephone_defconfig
- create mode 100644 arch/arm/dts/sun50i-a64-pinephone-1_2.dts
+On power-up Allwinner SoC starts in boot ROM, aka BROM, which will search
+for an eGON image: first from the SD card, then from eMMC. If no image is
+found then the BROM will enter into FEL mode that can be used for initial
+programming and recovery of devices using USB.
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 37b1650e63..083ec2dce6 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -96,6 +96,7 @@ obj-$(CONFIG_MACH_PHYTEC_SOM_IMX6)		+= phytec-som-imx6/
- obj-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7)		+= phytec-phycore-imx7/
- obj-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1)	+= phytec-phycore-stm32mp1/
- obj-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ)		+= phytec-som-imx8mq/
-+obj-$(CONFIG_MACH_PINE64_PINEPHONE)		+= pine64-pinephone/
- obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
- obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+= plathome-openblocks-a6/
- obj-$(CONFIG_MACH_PM9261)			+= pm9261/
-diff --git a/arch/arm/boards/pine64-pinephone/Makefile b/arch/arm/boards/pine64-pinephone/Makefile
+The eGON header structure is adapted from u-boot: /include/sunxi_image.h,
+the header structure is also documented on https://linux-sunxi.org/EGON
+
+BROM will load, at most, the first 32KB of the image into SRAM, including
+the header itself! The jump instruction in the header needs to be patched
+accordingly with the image size.
+---
+ arch/arm/mach-sunxi/egon_header.c |  11 +++
+ include/mach/sunxi/egon.h         |  63 ++++++++++++++++
+ scripts/Kconfig                   |   7 ++
+ scripts/Makefile                  |   1 +
+ scripts/egon_mkimage.c            | 115 ++++++++++++++++++++++++++++++
+ 5 files changed, 197 insertions(+)
+ create mode 100644 arch/arm/mach-sunxi/egon_header.c
+ create mode 100644 include/mach/sunxi/egon.h
+ create mode 100644 scripts/egon_mkimage.c
+
+diff --git a/arch/arm/mach-sunxi/egon_header.c b/arch/arm/mach-sunxi/egon_header.c
 new file mode 100644
-index 0000000000..092c31d6b2
+index 0000000000..9a4822f71d
 --- /dev/null
-+++ b/arch/arm/boards/pine64-pinephone/Makefile
-@@ -0,0 +1,2 @@
-+lwl-y += lowlevel.o
-+obj-y += board.o
-diff --git a/arch/arm/boards/pine64-pinephone/board.c b/arch/arm/boards/pine64-pinephone/board.c
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/arch/arm/boards/pine64-pinephone/lowlevel.c b/arch/arm/boards/pine64-pinephone/lowlevel.c
-new file mode 100644
-index 0000000000..8e7ba1c0a9
---- /dev/null
-+++ b/arch/arm/boards/pine64-pinephone/lowlevel.c
-@@ -0,0 +1,119 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
++++ b/arch/arm/mach-sunxi/egon_header.c
+@@ -0,0 +1,11 @@
 +#include <common.h>
-+#include <debug_ll.h>
-+#include <linux/sizes.h>
-+#include <linux/bitops.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/cache.h>
-+#include <mach/sunxi/init.h>
-+#include <mach/sunxi/xload.h>
 +#include <mach/sunxi/egon.h>
-+#include <mach/sunxi/rmr_switch.h>
-+#include <mach/sunxi/sun50i-regs.h>
-+#include <mach/sunxi/sunxi-pinctrl.h>
-+
-+#define STACK_TOP   CONFIG_SUNXI_PBL_STACK_TOP
-+
-+#ifdef DEBUG
-+static void debug_led_rgb(int rgb)
-+{
-+	void __iomem *piobase = IOMEM(SUN50I_PIO_BASE_ADDR);
-+	uint32_t clr, set = 0;
-+	int r = rgb & 0xff0000;
-+	int g = rgb & 0x00ff00;
-+	int b = rgb & 0x0000ff;
-+
-+	clr = (1 << 19) | (1 << 18) | (1 << 20);
-+	set |= r ? 1 << 19 : 0;
-+	set |= g ? 1 << 18 : 0;
-+	set |= b ? 1 << 20 : 0;
-+
-+	clrsetbits_le32(piobase + PIO_PD_DATA, clr, set);
-+}
-+
-+static void debug_led_init(void)
-+{
-+	void __iomem *ccubase = IOMEM(SUN50I_CCU_BASE_ADDR);
-+	void __iomem *piobase = IOMEM(SUN50I_PIO_BASE_ADDR);
-+
-+	/* PIO clock enable */
-+	setbits_le32(ccubase + CCU_BUS_CLK_GATE2, 1u << 5);
-+	/* LED set output */
-+	clrsetbits_le32(piobase + PIO_PD_CFG2, 0x000fff00, 0x00011100);
-+}
-+#else
-+static void debug_led_rgb(int rgb) {}
-+static void debug_led_init(void) {}
++#if 0
++const struct egon_header sunxi_egon_header
++__attribute__((section(".text_egon_header"))) = {
++	 /* put a valid arm32 jump over the header, in order for images to
++	  * to work when not loaded by boot rom but by the FEL */
++	.branch = EGON_HDR_BRANCH,
++	.magic = "eGON",
++};
 +#endif
+diff --git a/include/mach/sunxi/egon.h b/include/mach/sunxi/egon.h
+new file mode 100644
+index 0000000000..f70730ee25
+--- /dev/null
++++ b/include/mach/sunxi/egon.h
+@@ -0,0 +1,63 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
-+static void setup_uart(void)
-+{
-+	void __iomem *base = IOMEM(SUN50I_PIO_BASE_ADDR);
++#ifndef SUNIX_EGON
++#define SUNIX_EGON
 +
-+	/* UART0 pinmux (PB8 + PB9) */
-+	clrsetbits_le32(base + PIO_PB_CFG1, 0x000000ff, 0x00000044);
-+
-+	debug_ll_init();
-+	putc_ll('>');
-+}
-+
-+ENTRY_FUNCTION_WITHSTACK(start_pine64_pinephone_xload, STACK_TOP, r0, r1, r2)
-+{
-+
-+	sunxi_egon_header();
-+	sunxi_switch_to_aarch64();
-+
-+	debug_led_init();
-+	debug_led_rgb(0xff0000);
-+
-+	sun50i_cpu_lowlevel_init();
-+	setup_uart();
-+	debug_led_rgb(0xffff00);
-+
-+	relocate_to_current_adr();
-+	setup_c();
-+
-+	sun50i_a64_lpddr3_dram_init();
-+
-+	debug_led_rgb(0xff0000);
-+
-+	sun50i_cpu_lowlevel_reset();
-+}
-+
-+ENTRY_FUNCTION_WITHSTACK(start_pine64_pinephone, STACK_TOP, r0, r1, r2)
-+{
-+	extern char __dtb_z_sun50i_a64_pinephone_1_2_start[];
-+	void *fdt;
-+	u32 size;
-+
-+	sunxi_switch_to_aarch64();
-+
-+	debug_led_init();
-+	debug_led_rgb(0xffff00);
-+
-+	sun50i_cpu_lowlevel_init();
-+	setup_uart();
-+
-+	relocate_to_current_adr();
-+	setup_c();
-+
-+	/* Skip SDRAM initialization if we run from it */
-+	if (get_pc() < SUN50I_DRAM_BASE_ADDR) {
-+		size = sun50i_a64_lpddr3_dram_init();
-+		if (size == 0) {
-+			puts_ll("FAIL: dram init\r\n");
-+			goto reset;
-+		}
-+		puthex_ll(size);
-+		putc_ll('\r');	putc_ll('\n');
++struct egon_header {
++	uint32_t branch; /* branch instruction to jump over the header */
++	uint8_t magic[8]; /* "eGON.BT0" or "eGON.BT1" */
++	uint32_t check_sum;
++	uint32_t length;
++	/*
++	 * We use a simplified header, only filling in what is needed
++	 * by the boot ROM. To be compatible with Allwinner tools we
++	 * would need to implement the proper fields here instead of
++	 * padding.
++	 *
++	 * Actually we want the ability to recognize our "sunxi" variant
++	 * of the SPL. To do so, let's place a special signature into the
++	 * "pub_head_size" field. We can reasonably expect Allwinner's
++	 * boot0 to always have the upper 16 bits of this set to 0 (after
++	 * all the value shouldn't be larger than the limit imposed by
++	 * SRAM size).
++	 * If the signature is present (at 0x14), then we know it's safe
++	 * to use the remaining 8 bytes (at 0x18) for our own purposes.
++	 * (E.g. sunxi-tools "fel" utility can pass information there.)
++	 */
++	union {
++		uint32_t header_size;
++		uint8_t spl_signature[4];
++	};
++	uint32_t fel_script_address;/* since v0.1, set by sunxi-fel */
++	/*
++	 * If the fel_uEnv_length member below is set to a non-zero value,
++	 * it specifies the size (byte count) of data at fel_script_address.
++	 * At the same time this indicates that the data is in uEnv.txt
++	 * compatible format, ready to be imported via "env import -t".
++	 */
++	uint32_t fel_uEnv_length;/* since v0.1, set by sunxi-fel */
++	/*
++	 * Offset of an ASCIIZ string (relative to the SPL header), which
++	 * contains the default device tree name (CONFIG_DEFAULT_DEVICE_TREE).
++	 * This is optional and may be set to NULL. Is intended to be used
++	 * by flash programming tools for providing nice informative messages
++	 * to the users.
++	 */
++	uint32_t dt_name_offset;/* since v0.2, set by mksunxiboot */
++	uint32_t dram_size;/* in MiB, since v0.3, set by SPL */
++	uint32_t boot_media;/* written here by the boot ROM */
++	/* A padding area (may be used for storing text strings) */
++	uint32_t string_pool[13];/* since v0.2, filled by mksunxiboot */
++	/* The header must be a multiple of 32 bytes (for VBAR alignment) */
++	/* And at least 64 byte (https://patchwork.ozlabs.org/patch/622173) */
++};
++#define EGON_HDR_BRANCH (0xea000000 | (sizeof(struct egon_header) / 4 - 2))
++#define sunxi_egon_header()						\
++	{								\
++		static const struct egon_header _hdr			\
++			__attribute__((section(".text_head_egon_header"))) = \
++			{ .branch = EGON_HDR_BRANCH, .magic = "eGON" };	\
++		__keep_symbolref(_hdr);					\
 +	}
 +
-+	puts_ll("now booting\r\n");
-+	fdt = __dtb_z_sun50i_a64_pinephone_1_2_start + get_runtime_offset();
-+	barebox_arm_entry(SUN50I_DRAM_BASE_ADDR, SZ_1G, fdt);
++#endif
+diff --git a/scripts/Kconfig b/scripts/Kconfig
+index dcd5f32d1d..7517f5b79f 100644
+--- a/scripts/Kconfig
++++ b/scripts/Kconfig
+@@ -56,6 +56,13 @@ config RK_IMAGE
+ 	help
+ 	  This enables building the image creation tool for Rockchip SoCs
+ 
++config EGON_IMAGE
++       bool "Allwinner eGON image tool" if COMPILE_HOST_TOOLS
++       depends on ARCH_SUNXI || COMPILE_HOST_TOOLS
++       default y if ARCH_SUNXI
++       help
++         This enables building the image creation tool for Allwinner sunxi SoCs
 +
-+reset:
-+	debug_led_rgb(0xff0000);
-+	sun50i_cpu_lowlevel_reset();
-+}
-diff --git a/arch/arm/configs/pinephone_defconfig b/arch/arm/configs/pinephone_defconfig
+ config OMAP_IMAGE
+ 	bool "TI OMAP image tools" if COMPILE_HOST_TOOLS
+ 	depends on ARCH_OMAP || COMPILE_HOST_TOOLS
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 72ad9ad7a6..13e80db7af 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -28,6 +28,7 @@ hostprogs-always-$(CONFIG_LAYERSCAPE_PBLIMAGE)		+= pblimage
+ hostprogs-always-$(CONFIG_STM32_IMAGE)			+= stm32image
+ hostprogs-always-$(CONFIG_RISCV)			+= prelink-riscv
+ hostprogs-always-$(CONFIG_RK_IMAGE)			+= rkimage
++hostprogs-always-$(CONFIG_EGON_IMAGE)			+= egon_mkimage
+ HOSTCFLAGS_rkimage = `pkg-config --cflags openssl`
+ HOSTLDLIBS_rkimage = `pkg-config --libs openssl`
+ KBUILD_HOSTCFLAGS += -I$(srctree)/scripts/include/
+diff --git a/scripts/egon_mkimage.c b/scripts/egon_mkimage.c
 new file mode 100644
-index 0000000000..b63f8c6ec7
+index 0000000000..887caa29f0
 --- /dev/null
-+++ b/arch/arm/configs/pinephone_defconfig
-@@ -0,0 +1,11 @@
-+CONFIG_ARCH_SUNXI=y
-+CONFIG_SUNXI_MULTI_BOARDS=y
-+CONFIG_MACH_PINE64_PINEPHONE=y
-+CONFIG_MACH_PINE64_PINE64=y
-+CONFIG_DEBUG_LL=y
-+CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_MCI=y
-+CONFIG_MCI_SUNXI_SMHC=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_MCI_STARTUP=y
-+CONFIG_FS_FAT=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 0a7cceb461..564a60a0d8 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -81,6 +81,7 @@ lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX6) += imx6q-phytec-phycard.dtb.o \
- lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7) += imx7d-phyboard-zeta.dtb.o
- lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1) += stm32mp157c-phycore-stm32mp1-3.dtb.o
- lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ) += imx8mq-phytec-phycore-som.dtb.o
-+lwl-$(CONFIG_MACH_PINE64_PINEPHONE) += sun50i-a64-pinephone-1_2.dtb.o
- lwl-$(CONFIG_MACH_PINE64_QUARTZ64) += rk3566-quartz64-a.dtb.o
- lwl-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += armada-xp-openblocks-ax3-4-bb.dtb.o
- lwl-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += kirkwood-openblocks_a6-bb.dtb.o
-diff --git a/arch/arm/dts/sun50i-a64-pinephone-1_2.dts b/arch/arm/dts/sun50i-a64-pinephone-1_2.dts
-new file mode 100644
-index 0000000000..ac6fba1b91
---- /dev/null
-+++ b/arch/arm/dts/sun50i-a64-pinephone-1_2.dts
-@@ -0,0 +1,3 @@
-+// SPDX-License-Identifier: GPL-2.0
++++ b/scripts/egon_mkimage.c
+@@ -0,0 +1,115 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
-+#include <arm64/allwinner/sun50i-a64-pinephone-1.2.dts>
-diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
-index 2580a9e56a..e2d236f020 100644
---- a/arch/arm/mach-sunxi/Kconfig
-+++ b/arch/arm/mach-sunxi/Kconfig
-@@ -9,6 +9,22 @@ config SUNXI_RVBAR_IOMAP
- 	default 0x017000a0  if ARCH_SUN50I_A64
- 	# default 0x09010040 if ARCH_SUN50I_H5
- 
-+config SUNXI_PBL_STACK_TOP
-+       hex
-+       default 0x00018000 if ARCH_SUN50I_A64
++#include <stdio.h>
++#include <errno.h>
++#include <stdlib.h>
++#include <stdint.h>
++#include <string.h>
 +
-+config ARCH_SUN50I_A64
-+	bool
-+	select CPU_V8
-+	select CPU_SUPPORTS_64BIT_KERNEL
-+	select CLOCKSOURCE_ARM_ARCHITECTED_TIMER
-+	select PINCTRL_SUN50I_A64
-+	select HAS_DEBUG_LL
-+	select PBL_RELOCATABLE
-+	select PBL_FULLY_PIC
-+	help
-+	  Allwiner A64 (sun50iw1) SoC
++#include "../include/mach/sunxi/egon.h"
 +
- config SUNXI_DEBUG_LL_UART_BASE
- 	hex
- 	default 0x01c28000
-@@ -20,6 +36,11 @@ menuconfig SUNXI_MULTI_BOARDS
- 
- if SUNXI_MULTI_BOARDS
- 
-+config MACH_PINE64_PINEPHONE
-+	bool "Allwinner A64 based Pine64 PinePhone"
-+	select ARCH_SUN50I_A64
-+	select ARM_USE_COMPRESSED_DTB
++#include "compiler.h"
++#include "common.h"
++#include "common.c"
 +
- endif
- 
- endif
-diff --git a/arch/arm/mach-sunxi/cpu_init.c b/arch/arm/mach-sunxi/cpu_init.c
-index f4092d8d5d..52b7a396b3 100644
---- a/arch/arm/mach-sunxi/cpu_init.c
-+++ b/arch/arm/mach-sunxi/cpu_init.c
-@@ -27,7 +27,18 @@ static void sunxi_ccu_init(void __iomem *ccu)
- 	setbits_le32(ccu + CCU_BUS_SOFT_RST4, 1u << 16);
- }
- 
--static void sunxi_cpu_lowlevel_init(void)
-+void sun50i_cpu_lowlevel_init(void)
- {
--	sunxi_ccu_init(IOMEM(SUNXI_CCU_BASE_ADDR));
-+	arm_cpu_lowlevel_init();
-+	sunxi_ccu_init(IOMEM(SUN50I_CCU_BASE_ADDR));
-+}
++#define ALIGN(x, a)		__ALIGN_MASK(x, (typeof(x))(a) - 1)
++#define __ALIGN_MASK(x, mask)	(((x) + (mask)) & ~(mask))
++#define STAMP_VALUE 0x5f0a6c39
 +
-+void sun50i_cpu_lowlevel_reset(void)
++static void mkimage(char *infile, char *outfile)
 +{
-+	void __iomem *reg = IOMEM(SUN50I_TIMER_BASE_ADDR);
-+	/* Set the watchdog for its shortest interval (.5s) and wait */
-+	writel(1, reg + 0xB4); /* reset whole system */
-+	writel(1, reg + 0xB8); /* enable */
-+	writel((0xa57 << 1) | 1, reg + 0xB0); /* restart */
-+	while (1);
- }
-diff --git a/images/Makefile.sunxi b/images/Makefile.sunxi
-index 778d6f9bdf..070b1bf00d 100644
---- a/images/Makefile.sunxi
-+++ b/images/Makefile.sunxi
-@@ -11,3 +11,12 @@ $(obj)/%.egonimg: $(obj)/% FORCE
- 	$(call if_changed,egon_image)
- 
- # ----------------------------------------------------------------------
++	struct egon_header *hdr;
++	uint32_t *p32;
++	uint32_t sum;
++	int i;
++	size_t hdr_size;
++	size_t bin_size;
++	size_t img_size;
++	char *bin;
++	int fd, ret;
 +
-+pblb-$(CONFIG_MACH_PINE64_PINEPHONE) += start_pine64_pinephone_xload
-+MAX_PBL_IMAGE_SIZE_start_pine64_pinephone_xload = 0x8000
-+FILE_barebox-pine64-pinephone_xload.img = start_pine64_pinephone_xload.pblb.egonimg
-+image-$(CONFIG_MACH_PINE64_PINEPHONE) += barebox-pine64-pinephone_xload.img
++	bin = read_file(infile, &bin_size);
++	if (!bin) {
++		perror("read_file");
++		exit(1);
++	}
 +
-+pblb-$(CONFIG_MACH_PINE64_PINEPHONE) += start_pine64_pinephone
-+FILE_barebox-pine64-pinephone.img = start_pine64_pinephone.pblb
-+image-$(CONFIG_MACH_PINE64_PINEPHONE) += barebox-pine64-pinephone.img
-diff --git a/include/mach/sunxi/init.h b/include/mach/sunxi/init.h
-index 40c072a028..441425be63 100644
---- a/include/mach/sunxi/init.h
-+++ b/include/mach/sunxi/init.h
-@@ -6,4 +6,8 @@
- unsigned long sun50i_a64_ddr3_dram_init(void);
- unsigned long sun50i_a64_lpddr3_dram_init(void);
- 
-+void sun50i_cpu_lowlevel_init(void);
++	/* the header must be a multiple of 32 bytes */
++	hdr_size = sizeof(*hdr);
 +
-+void sun50i_cpu_lowlevel_reset(void);
++	/* test if the binary has reserved space for the header */
++	hdr = (void *)bin;
++	if (hdr->branch == EGON_HDR_BRANCH && memcmp(hdr->magic, "eGON", 4) == 0) {
++		/* strip the existing header */
++		bin += hdr_size;
++		bin_size -= hdr_size;
++	}
++	hdr = calloc(1, hdr_size);
++	if (!hdr) {
++		perror("malloc");
++		exit(1);
++	}
 +
- #endif
++	/* The total image length must be a multiple of 4K bytes */
++	img_size = ALIGN(hdr_size + bin_size, 4096);
++
++	hdr->check_sum = 0;
++	hdr->branch = EGON_HDR_BRANCH;
++	hdr->length = cpu_to_le32(img_size);
++	memcpy(hdr->magic, "eGON.BT0", 8);
++	memcpy(hdr->spl_signature, "SPL", 3);
++	hdr->spl_signature[3] = 0x03; /* version 0.3 */
++
++	/* calculate the checksum */
++	sum = STAMP_VALUE;
++	for (p32 = (void *) hdr, i = 0; i < hdr_size / sizeof(uint32_t); i++)
++		sum += le32_to_cpu(p32[i]);
++	for (p32 = (void *) bin, i = 0; i < bin_size / sizeof(uint32_t); i++)
++		sum += le32_to_cpu(p32[i]);
++	hdr->check_sum = cpu_to_le32(sum);
++
++	fd = open(outfile, O_WRONLY | O_TRUNC | O_CREAT,
++		  S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
++	if (fd < 0) {
++		fprintf(stderr, "Cannot open %s: %s\n", outfile, strerror(errno));
++		exit(1);
++	}
++	/* write the header */
++	ret = write_full(fd, hdr, hdr_size);
++	if (ret < 0) {
++		perror("write_full");
++		exit(1);
++	}
++	/* write the binary */
++	ret = write_full(fd, bin, bin_size);
++	if (ret < 0) {
++		perror("write_full");
++		exit(1);
++	}
++	/* align the image */
++	ret = ftruncate(fd, img_size);
++	if (ret < 0) {
++		perror("ftruncate");
++		exit(1);
++	}
++	close(fd);
++
++	free(hdr);
++}
++
++static void usage(char *argv0)
++{
++	fprintf(stderr, "usage: %s <infile> <outfile>\n", argv0);
++}
++
++int main(int argc, char *argv[])
++{
++	if (argc != 3) {
++		usage(argv[0]);
++		return 1;
++	}
++
++	mkimage(argv[1], argv[2]);
++
++	return 0;
++}
 -- 
 2.40.0
 
