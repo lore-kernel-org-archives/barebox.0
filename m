@@ -1,64 +1,62 @@
-Delivery-date: Thu, 11 May 2023 09:40:14 +0200
+Delivery-date: Thu, 11 May 2023 10:59:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1px0uM-00Dg7n-Vj
-	for lore@lore.pengutronix.de; Thu, 11 May 2023 09:40:14 +0200
+	id 1px299-00Dkac-1R
+	for lore@lore.pengutronix.de; Thu, 11 May 2023 10:59:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1px0uL-0008MM-3m
-	for lore@pengutronix.de; Thu, 11 May 2023 09:40:13 +0200
+	id 1px297-0002R6-8U
+	for lore@pengutronix.de; Thu, 11 May 2023 10:59:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pA5CE2OBPO98WdplyfX7Y1UlBJxE3mEQ4j5eELcjiac=; b=bsN3KQCLsLXUAjNM2EB6uy+8Ij
-	lH3XQoxtgUn1TgVRPrQR7ygtLDN5Us0Pe2+NGrmNFLY4yocHwD8MXr80Y70cmLJu3JZXU3hiN5IEV
-	LU6Tqv4Vn+u6B4ol+1NDbkilJr68sXRYwu0Gesrtwbxsp5rNRbyCTO4Xxl63azH8rYwg2SNJ0KW1I
-	DzoJoO4QV5vWKC6vA2kD+vYZWH60W1Vo6Tugm0VGFjHNjjXKmiat4r+APGc5ptAJ7ALpZjjV4plZB
-	vX1eR1cOMWlLxLfVtzPEJ5cgWNxbo9W/hn7UtaB/CgGsF6yA8zQzTS1O7n0ub20D9PxRPPbBwBheC
-	UkLm4h/Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=476jN4kYuUA/cT79h9mGRlFin8PqMcEFmUo55RhL77U=; b=qWxeCgHC+bzVLBwxmilnrjkKsc
+	xE2lLt+4aoX7u9wHqcoCenSoHqbjwHcSr93vpglwIuaHBLmT6t+7pMSLxN7QHeoOw38iH05WXTIw9
+	CJOzST+my72tjcvgNwV12faxhRbjpbUAPs7UwkiPzqhC0ZYCAGhWL4IageEXBdeA66Ms+ky1LpeQb
+	FOOH39bAL7oOM7WLPeamm8xjBrR2cKUW9rZ29hoLM1LzVpUs9dnCQVWkIxGTtHvra4R/6fQLu65uj
+	Bo+hDKpoczk+cfkq0dIGuInOJrEOHEV48ZRAByAhOIPeNjCUEMpxLpd13sy5nffKxroGPQdw6TyJy
+	W5ZOmChQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1px0td-008AXU-2d;
-	Thu, 11 May 2023 07:39:29 +0000
+	id 1px27t-008HR7-2q;
+	Thu, 11 May 2023 08:58:17 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1px0tb-008AWo-08
+	id 1px27o-008HOt-0z
 	for barebox@lists.infradead.org;
-	Thu, 11 May 2023 07:39:28 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	Thu, 11 May 2023 08:58:15 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1px0tZ-0008DH-I0; Thu, 11 May 2023 09:39:25 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1px0tY-0007Fg-QL; Thu, 11 May 2023 09:39:24 +0200
-Date: Thu, 11 May 2023 09:39:24 +0200
-To: Jules Maselbas <jmaselbas@zdiv.net>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230511073924.GK29365@pengutronix.de>
-References: <20230510233711.37345-1-jmaselbas@zdiv.net>
- <20230510233711.37345-10-jmaselbas@zdiv.net>
+	(envelope-from <rhi@pengutronix.de>)
+	id 1px27i-0002BN-Jr; Thu, 11 May 2023 10:58:06 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1px27h-002gX1-U7; Thu, 11 May 2023 10:58:05 +0200
+Received: from rhi by dude04.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1px27g-001SDq-Vu; Thu, 11 May 2023 10:58:04 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <rhi@pengutronix.de>
+Date: Thu, 11 May 2023 10:58:03 +0200
+Message-Id: <20230511085803.335993-4-rhi@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230511085803.335993-1-rhi@pengutronix.de>
+References: <20230511085803.335993-1-rhi@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230510233711.37345-10-jmaselbas@zdiv.net>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230511_003927_081752_3FFB7250 
-X-CRM114-Status: GOOD (  18.26  )
+X-CRM114-CacheID: sfid-20230511_015812_413622_5FAB57EC 
+X-CRM114-Status: GOOD (  12.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,50 +74,80 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [RFC PATCH 09/11] arm: sunxi: Add sun50i SDRAM init
+Subject: [RFT][PATCH 3/3] ARM: i.MX6: TQMa6x: make tqma6x_env_init reusable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, May 11, 2023 at 01:37:09AM +0200, Jules Maselbas wrote:
-> diff --git a/arch/arm/mach-sunxi/sun50i-a64-ddr3-init.c b/arch/arm/mach-sunxi/sun50i-a64-ddr3-init.c
-> new file mode 100644
-> index 0000000000..4c54588556
-> --- /dev/null
-> +++ b/arch/arm/mach-sunxi/sun50i-a64-ddr3-init.c
-> @@ -0,0 +1,9 @@
-> +#define CONFIG_MACH_SUN50I y
-> +#define CONFIG_SUNXI_DRAM_DW y
-> +#define CONFIG_SUNXI_DRAM_DW_32BIT y
-> +#define CONFIG_SUNXI_DRAM_DDR3 y
-> +#define CONFIG_SYS_SDRAM_BASE 0x40000000
-> +
-> +#define sunxi_dram_init sun50i_a64_ddr3_dram_init
-> +
-> +#include "sun50i-sdram.c"
+The SPI flash and eMMC are hard-wired on the TQMa6x SoM, so this
+function is not specific for the mba6x baseboard but can be used on
+other boards with a TQMa6x SoM too.
 
-I wanted to mourn about the use of defines and ifdefs for configuring
-the SoC type and configuration of the SDRAM which makes it impossible to
-compile in multiple configurations, but you found a nice way to bypass
-this problem ;)
+tqma6x_enet_init is specific to the mba6x board, so rename it to reflect
+that fact.
 
-How much variation in the parameters is there in practice? Adding
-boards with CONFIG_SUNXI_DRAM_DW_16BIT would mean we have to duplicate
-these two files into four. This won't scale anymore quite fast.
-We could make these files board specific.
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+---
+ arch/arm/boards/tqma6x/board.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
-I think we should find another prefix for the CONFIG_ defines and leave
-the CONFIG_ namespace for Kconfig only.
-
-
+diff --git a/arch/arm/boards/tqma6x/board.c b/arch/arm/boards/tqma6x/board.c
+index ae339887568a..4bb7223a6e7a 100644
+--- a/arch/arm/boards/tqma6x/board.c
++++ b/arch/arm/boards/tqma6x/board.c
+@@ -53,7 +53,7 @@ static int ksz9031rn_phy_fixup(struct phy_device *dev)
+ 	return 0;
+ }
+ 
+-static int tqma6x_enet_init(void)
++static int tq_mba6x_enet_init(void)
+ {
+ 	if (!of_machine_is_compatible("tq,mba6x"))
+ 		return 0;
+@@ -77,18 +77,25 @@ static int tqma6x_enet_init(void)
+ 
+ 	return 0;
+ }
+-fs_initcall(tqma6x_enet_init);
++fs_initcall(tq_mba6x_enet_init);
+ 
+-static int tqma6x_env_init(void)
++static int tqma6x_init(void)
+ {
+-	if (!of_machine_is_compatible("tq,mba6x"))
+-		return 0;
+-
+ 	imx6_bbu_internal_spi_i2c_register_handler("spiflash", "/dev/m25p0.barebox",
+ 		BBU_HANDLER_FLAG_DEFAULT);
+ 	imx6_bbu_internal_mmcboot_register_handler("emmc", "mmc2", 0);
+ 
+-	device_detect_by_name("mmc2");
++	device_detect_by_name("mmc2"); // eMMC
++
++	return 0;
++}
++
++static int tq_mba6x_env_init(void)
++{
++	if (!of_machine_is_compatible("tq,mba6x"))
++		return 0;
++
++	tqma6x_init();
+ 
+ 	default_environment_path_set("/dev/mmc2.boot1");
+ 
+@@ -96,4 +103,4 @@ static int tqma6x_env_init(void)
+ 
+ 	return 0;
+ }
+-late_initcall(tqma6x_env_init);
++late_initcall(tq_mba6x_env_init);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
