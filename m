@@ -1,76 +1,78 @@
-Delivery-date: Fri, 12 May 2023 13:12:16 +0200
+Delivery-date: Fri, 12 May 2023 13:16:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pxQh7-00F2Z7-6c
-	for lore@lore.pengutronix.de; Fri, 12 May 2023 13:12:16 +0200
+	id 1pxQlA-00F2m1-Rm
+	for lore@lore.pengutronix.de; Fri, 12 May 2023 13:16:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pxQh2-0005QU-EQ
-	for lore@pengutronix.de; Fri, 12 May 2023 13:12:15 +0200
+	id 1pxQl8-0006dE-Pi
+	for lore@pengutronix.de; Fri, 12 May 2023 13:16:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kvscjYo8o/TebJOd450dazD2Iu/kPmQtv3CxbzxsDSM=; b=cOeY/rvZAQ/h8+/ZQN2Enjn9Ax
-	yXiXSeBVU/lBzVH19YZ/TM2/WjMsYG3+KEwZjnQzhUbiuBdu8640wsYs+RWhLdmleeHg1IMSeMGmf
-	jH3O4tt4KwPUaooIb3L5Jjxo8fK/d+f/c0Q/0hqJ6X95fKh94ZLKoJG9Pk11LRSihBrUGWzrTXTwG
-	zOYInraDzwglvdel6ZB/Srektw8qiyRqK6SaevYXzvJL35KSflHHI42xS57llpKxrFtew33C0R8qT
-	eL347zHZxkLMjfLiPzf9SjFHmkhPq7eGsUgyTxA2NtJ7bT0FPg75R3nnsBSWh3P7wZmIJ922F08aj
-	Qgj+wYlg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=phbhgZ+K+b4OOVntr/2wy+ZGyxq8VtpJVEX8lPQuLGM=; b=pppec6im0LRUZSN48MeqAxc0mI
+	Bz3kDBDH6mxkJapgyQGlhFqbPR0Fo1IlnOmsnqZ/CO811spy2oeT09+UqzD2VT4W9b3ibDaMSJKIV
+	N8xDx6kFVVAGsvPtv2THB5W5IplYJ3sntXqoF5Vx7O+90WMDElvChYw+pw1NNI/8/rwKGu8r7A235
+	3y1/PBzbT4Od5aJd2LAPJwocNPAkdK9cZ7wtzcNVzRoYkms+UI+f6JqdkBMR/KeMW9AmRnma8e2Ub
+	zQMX2eNc2kY6bOTLolu3R9sZlIKysuC8ffO1MKIyCMCPB1gB3LHCnAvoVzcF9Zj4Udh6MGdZyWLZt
+	AbNAvgyA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxQfr-00Bkc4-0s;
-	Fri, 12 May 2023 11:10:59 +0000
+	id 1pxQk4-00Bmf2-0g;
+	Fri, 12 May 2023 11:15:20 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxQfM-00Bk20-0b
+	id 1pxQk2-00Bmep-2i
 	for barebox@bombadil.infradead.org;
-	Fri, 12 May 2023 11:10:28 +0000
+	Fri, 12 May 2023 11:15:18 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=kvscjYo8o/TebJOd450dazD2Iu/kPmQtv3CxbzxsDSM=; b=JJyOPORhqeqSw1J89VoZUU94AI
-	v9BQFP4OZTGzwGmI55G0GUwxsuu+QwMja6pdYtprGnoEvynXrAiBXCBdMYQBWLCQrAaH7lpE23NpR
-	Ku7g//EIFcy2jv5yT/fOjDW/45dUmVTI+IcIQUjrFy4HihqdEAw0yTXheBuyhACdPi76++sb61+9S
-	2DEg6e/cxaGdUaF0fMoLm/G6w3qCL2NM5r/dNOLOBd4U7S/mJJngP1do4f28Tryr3+UQ0Z/9v+1Tw
-	haZ+871G1te5gJCmvcMLw5RhBnzabG+urInd+6Vt5d2ysePGrrrtgWzVXGBTZkqLSpQQUk/2AQUUv
-	/jiJQfHQ==;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=phbhgZ+K+b4OOVntr/2wy+ZGyxq8VtpJVEX8lPQuLGM=; b=alk3bCuD4jCpoeyx3bDcLWpnT+
+	PpMX5Udz8ASO6V4UhwjsIFT5jccaEoEJ32aUc8FRqszOJ8LAoPqo9qykeYCY+1HaXcunnHKvG2qTZ
+	HRMo0osq5w5dy1r3tytJW45pNDTsXfWjQptuqOQPDad/nd0zOFNWwqrU6n0Z5NxSPUPw11wThOfB+
+	GNTw2873DX0V/3k9PYhjdLXRwMtC0x7wo2pWTV5uJRK5Xu2QqhHbFpBeDWp6w07z54k+aoR8T/Y0Z
+	g51IPl2X0I7Vc192fWqUn10CMp/qZ4jiCSwOAB3eHM4amuMtsJRUPDgbXXUoVlWVoVgB/JBuFM0pw
+	lBWJ04hw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxQfF-009836-2y
+	id 1pxQjy-0098DL-0m
 	for barebox@lists.infradead.org;
-	Fri, 12 May 2023 11:10:27 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Fri, 12 May 2023 11:15:16 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pxQf9-0003gn-Fl; Fri, 12 May 2023 13:10:15 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	id 1pxQjx-0006FB-HW; Fri, 12 May 2023 13:15:13 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pxQf8-002wkS-Rn; Fri, 12 May 2023 13:10:14 +0200
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pxQf4-0055Ew-Fx; Fri, 12 May 2023 13:10:10 +0200
+	id 1pxQjw-00032E-K7; Fri, 12 May 2023 13:15:12 +0200
+Date: Fri, 12 May 2023 13:15:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 12 May 2023 13:10:05 +0200
-Message-Id: <20230512111008.1120833-25-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230512111008.1120833-1-s.hauer@pengutronix.de>
-References: <20230512111008.1120833-1-s.hauer@pengutronix.de>
+To: Denis Orlov <denorl2009@gmail.com>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <20230512111512.GM29365@pengutronix.de>
+References: <20230511124743.2878952-1-denorl2009@gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230511124743.2878952-1-denorl2009@gmail.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230512_121022_072300_2644AA0A 
-X-CRM114-Status: GOOD (  16.83  )
+X-CRM114-CacheID: sfid-20230512_121514_415484_62815407 
+X-CRM114-Status: GOOD (  24.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,174 +90,86 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 24/27] ARM: mmu32: read TTB value from register
+Subject: Re: [PATCH] video: bochs: fix IOMEM usage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Instead of relying on a variable for the location of the TTB which we
-have to initialize in both PBL and barebox proper, just read the value
-back from the hardware register.
+On Thu, May 11, 2023 at 03:47:43PM +0300, Denis Orlov wrote:
+> For the PCI version of the driver, we end up calling IOMEM() twice on
+> both the fb_map and mmio pointers. This happens because we first use
+> pci_iomap() on PCI resources in the bochs_pci_probe() and then
+> explicitly call IOMEM() in the bochs_hw_probe(). However, judging from
+> the parameters of the latter function having __iomem attributes, we
+> should not be remapping them. So, remove those IOMEM calls and instead
+> do explicit remapping in bochs_isa_detect(), which was missing it.
+> 
+> Also fix bochs_hw_probe() declaration missing one __iomem.
+> 
+> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+> ---
+>  drivers/video/bochs/bochs_hw.c  | 4 ++--
+>  drivers/video/bochs/bochs_hw.h  | 2 +-
+>  drivers/video/bochs/bochs_isa.c | 2 +-
+>  3 files changed, 4 insertions(+), 4 deletions(-)
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/cpu/mmu_32.c | 41 ++++++++++++++++++++---------------------
- 1 file changed, 20 insertions(+), 21 deletions(-)
+Applied, thanks
 
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index 2b2013a8b5..5ebceed89f 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -30,7 +30,11 @@
-  */
- #define ARM_TTB_SIZE	(SZ_4G / SZ_1M * sizeof(u32))
- 
--static uint32_t *ttb;
-+static inline uint32_t *get_ttb(void)
-+{
-+	/* Clear unpredictable bits [13:0] */
-+	return (uint32_t *)(get_ttbr() & ~0x3fff);
-+}
- 
- /*
-  * Do it the simple way for now and invalidate the entire
-@@ -83,7 +87,7 @@ static uint32_t *alloc_pte(void)
- 	if (idx * PTE_SIZE >= ARM_EARLY_PAGETABLE_SIZE)
- 		return NULL;
- 
--	return (void *)ttb + idx * PTE_SIZE;
-+	return get_ttb() + idx * PTE_SIZE;
- }
- #else
- static uint32_t *alloc_pte(void)
-@@ -95,9 +99,7 @@ static uint32_t *alloc_pte(void)
- static u32 *find_pte(unsigned long adr)
- {
- 	u32 *table;
--
--	if (!ttb)
--		arm_mmu_not_initialized_error();
-+	uint32_t *ttb = get_ttb();
- 
- 	if (!pgd_type_table(ttb[pgd_index(adr)]))
- 		return NULL;
-@@ -136,6 +138,7 @@ void dma_inv_range(void *ptr, size_t size)
-  */
- static u32 *arm_create_pte(unsigned long virt, uint32_t flags)
- {
-+	uint32_t *ttb = get_ttb();
- 	u32 *table;
- 	int i, ttb_idx;
- 
-@@ -143,9 +146,6 @@ static u32 *arm_create_pte(unsigned long virt, uint32_t flags)
- 
- 	table = alloc_pte();
- 
--	if (!ttb)
--		arm_mmu_not_initialized_error();
--
- 	ttb_idx = pgd_index(virt);
- 
- 	for (i = 0; i < PTRS_PER_PTE; i++) {
-@@ -253,6 +253,7 @@ int arch_remap_range(void *start, size_t size, unsigned map_type)
- {
- 	u32 addr = (u32)start;
- 	u32 pte_flags, pmd_flags;
-+	uint32_t *ttb = get_ttb();
- 
- 	BUG_ON(!IS_ALIGNED(addr, PAGE_SIZE));
- 
-@@ -324,9 +325,10 @@ int arch_remap_range(void *start, size_t size, unsigned map_type)
- 	return 0;
- }
- 
--static void create_sections(uint32_t *ttb, unsigned long first,
--			    unsigned long last, unsigned int flags)
-+static void create_sections(unsigned long first, unsigned long last,
-+			    unsigned int flags)
- {
-+	uint32_t *ttb = get_ttb();
- 	unsigned long ttb_start = pgd_index(first);
- 	unsigned long ttb_end = pgd_index(last) + 1;
- 	unsigned int i, addr = first;
-@@ -337,15 +339,16 @@ static void create_sections(uint32_t *ttb, unsigned long first,
- 	}
- }
- 
--static void create_flat_mapping(uint32_t *ttb)
-+static inline void create_flat_mapping(void)
- {
- 	/* create a flat mapping using 1MiB sections */
--	create_sections(ttb, 0, 0xffffffff, attrs_uncached_mem());
-+	create_sections(0, 0xffffffff, attrs_uncached_mem());
- }
- 
- void *map_io_sections(unsigned long phys, void *_start, size_t size)
- {
- 	unsigned long start = (unsigned long)_start, sec;
-+	uint32_t *ttb = get_ttb();
- 
- 	for (sec = start; sec < start + size; sec += PGDIR_SIZE, phys += PGDIR_SIZE)
- 		ttb[pgd_index(sec)] = phys | get_pmd_flags(MAP_UNCACHED);
-@@ -503,9 +506,7 @@ static void vectors_init(void)
- void __mmu_init(bool mmu_on)
- {
- 	struct memory_bank *bank;
--
--	/* Clear unpredictable bits [13:0] */
--	ttb = (uint32_t *)(get_ttbr() & ~0x3fff);
-+	uint32_t *ttb = get_ttb();
- 
- 	if (!request_sdram_region("ttb", (unsigned long)ttb, SZ_16K))
- 		/*
-@@ -523,7 +524,7 @@ void __mmu_init(bool mmu_on)
- 	vectors_init();
- 
- 	for_each_memory_bank(bank) {
--		create_sections(ttb, bank->start, bank->start + bank->size - 1,
-+		create_sections(bank->start, bank->start + bank->size - 1,
- 				PMD_SECT_DEF_CACHED);
- 		__mmu_cache_flush();
- 	}
-@@ -547,8 +548,6 @@ void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
- 	return dma_alloc_map(size, dma_handle, ARCH_MAP_WRITECOMBINE);
- }
- 
--static uint32_t *ttb;
--
- static inline void map_region(unsigned long start, unsigned long size,
- 			      uint64_t flags)
- 
-@@ -556,12 +555,12 @@ static inline void map_region(unsigned long start, unsigned long size,
- 	start = ALIGN_DOWN(start, SZ_1M);
- 	size  = ALIGN(size, SZ_1M);
- 
--	create_sections(ttb, start, start + size - 1, flags);
-+	create_sections(start, start + size - 1, flags);
- }
- 
- void mmu_early_enable(unsigned long membase, unsigned long memsize)
- {
--	ttb = (uint32_t *)arm_mem_ttb(membase, membase + memsize);
-+	uint32_t *ttb = (uint32_t *)arm_mem_ttb(membase, membase + memsize);
- 
- 	pr_debug("enabling MMU, ttb @ 0x%p\n", ttb);
- 
-@@ -577,7 +576,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize)
- 	 * This marks the whole address space as uncachable as well as
- 	 * unexecutable if possible
- 	 */
--	create_flat_mapping(ttb);
-+	create_flat_mapping();
- 
- 	/*
- 	 * There can be SoCs that have a section shared between device memory
+Sascha
+
+> 
+> diff --git a/drivers/video/bochs/bochs_hw.c b/drivers/video/bochs/bochs_hw.c
+> index f31020acd4..48de5ea0bd 100644
+> --- a/drivers/video/bochs/bochs_hw.c
+> +++ b/drivers/video/bochs/bochs_hw.c
+> @@ -158,8 +158,8 @@ int bochs_hw_probe(struct device *dev, void __iomem *fb_map,
+>  
+>  	bochs = xzalloc(sizeof(*bochs));
+>  
+> -	bochs->fb_map	= IOMEM(fb_map);
+> -	bochs->mmio	= IOMEM(mmio);
+> +	bochs->fb_map	= fb_map;
+> +	bochs->mmio	= mmio;
+>  
+>  	ret = bochs_hw_read_version(bochs);
+>  	if (ret < 0) {
+> diff --git a/drivers/video/bochs/bochs_hw.h b/drivers/video/bochs/bochs_hw.h
+> index e01ef13d47..c721113656 100644
+> --- a/drivers/video/bochs/bochs_hw.h
+> +++ b/drivers/video/bochs/bochs_hw.h
+> @@ -10,6 +10,6 @@
+>  
+>  struct device;
+>  
+> -int bochs_hw_probe(struct device *dev, void *fb_map, void __iomem *mmio);
+> +int bochs_hw_probe(struct device *dev, void __iomem *fb_map, void __iomem *mmio);
+>  
+>  #endif
+> diff --git a/drivers/video/bochs/bochs_isa.c b/drivers/video/bochs/bochs_isa.c
+> index 3cedb5c345..50fdecd9c8 100644
+> --- a/drivers/video/bochs/bochs_isa.c
+> +++ b/drivers/video/bochs/bochs_isa.c
+> @@ -26,6 +26,6 @@ static int bochs_isa_detect(void)
+>  	if (ret)
+>  		return ret;
+>  
+> -	return bochs_hw_probe(dev, (void *)0xe0000000, NULL);
+> +	return bochs_hw_probe(dev, IOMEM(0xe0000000), NULL);
+>  }
+>  device_initcall(bochs_isa_detect);
+> -- 
+> 2.30.2
+> 
+> 
+
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
