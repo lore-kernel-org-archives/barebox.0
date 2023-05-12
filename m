@@ -1,76 +1,76 @@
-Delivery-date: Fri, 12 May 2023 13:12:10 +0200
+Delivery-date: Fri, 12 May 2023 13:12:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pxQh1-00F2X0-Li
-	for lore@lore.pengutronix.de; Fri, 12 May 2023 13:12:10 +0200
+	id 1pxQh3-00F2XS-By
+	for lore@lore.pengutronix.de; Fri, 12 May 2023 13:12:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pxQgw-0005Jd-7o
-	for lore@pengutronix.de; Fri, 12 May 2023 13:12:09 +0200
+	id 1pxQgy-0005MQ-EK
+	for lore@pengutronix.de; Fri, 12 May 2023 13:12:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qPTQ0ON3Wrir+ytYKqaHTtAy6adlaiogVxKPKmvKBTg=; b=UGhqm5MZybdLQnnVbTO7d/1yis
-	jxT1BZY3HWazupwvlsCavaA46HXVvbnlSLyqvh40D3QzyG9hPOliI6SXU1h6cOvPKmWFGOlnUrFnf
-	aCMdmM6ja20lGPPUctVhrXx3qG8W/Aj8FmWDllwxJqUBAMT0DUI0y9g7O3zFvvWwnES2YwMVfptkw
-	pBvhazLNi8dmZ45c6lXMNAMZGgmvXu1JetgalTAfIa38vVE9YGP19fMWhOk/H9rFX2k8N1Wl0RGWu
-	STI0Fvr9TvXNHht9V13VG77OqdRCW/Rnh8jn8GSBQAo2lH+PGc0B1St9ozztW2Id77fnKPSe83we4
-	94Md9DdA==;
+	bh=gEYSs9DzDCAaABDTD6yj+EzomtAvHYMbDuL42uJFc/Q=; b=U0k9lmCl6MUBpveHIesHkCMPxX
+	/Ymdgi2KMCETFVeXM5Z8qEghtn+xUHpzPYUj8IVOwQ176u2tnjL8Vslx+aguvF93LBT1PChtLbNFO
+	NRPzWC6snER6dZTb0yDdGjT6iZuLYkRwFtN7p8x90+Xrrutv2jZKytTALFuXPG7tW+nodP+lOfLUd
+	q/R0fcE2I2CCLmz1GI1d0VmpMqzbP14kp42upEJ63E6EitqJkXX/CURQhSjj1BAn6hBAMiW1HdHzz
+	a98W6yhOMwE/xOgsNaWQs0tuOlZey6oerwoKB0borfIPNLsY9V9UHhl9QLHR3Pjt63nhtyuPiIE6a
+	zyN5neCg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxQfl-00BkUH-22;
-	Fri, 12 May 2023 11:10:53 +0000
+	id 1pxQfn-00BkX3-1J;
+	Fri, 12 May 2023 11:10:55 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxQfK-00Bk0y-2u
+	id 1pxQfL-00Bk1p-3B
 	for barebox@bombadil.infradead.org;
-	Fri, 12 May 2023 11:10:26 +0000
+	Fri, 12 May 2023 11:10:27 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=qPTQ0ON3Wrir+ytYKqaHTtAy6adlaiogVxKPKmvKBTg=; b=p2B2YrxCA4eakcP7Hq6kzm2Sjg
-	JA0MSnrLzbCHJyE+898lxrrmiau9716uSl0UhpDgE9USaiaoEdM8Mj2FVuKv/Ef1wVnTyRVLkZWOM
-	R3O9V4SMb4KPeGqpzCdEqtZEWuPL01jbVLRtnLczodk9rWdXj3AajU973LaUoea95aDdQx+cokWKq
-	IMmcWS3Q/acO7sBdFBf0FVkrztuTjHy2S+/Tot0qMyFTl+MoHfrdH5ayG1Hi0uy0xHt6TcQITgfZQ
-	tMtn0dRenN1r7LeX5OiLwo/pj3XczPRV5JyVb/uJH6nmo49pKkwh94KDmEYhG1WGAQrRuSnpn+VHx
-	K7Mik4dg==;
+	bh=gEYSs9DzDCAaABDTD6yj+EzomtAvHYMbDuL42uJFc/Q=; b=icewBF1IZcQ8XZ8GTLzSkFmQ0E
+	Yq8rc6mZUAdoKNVrHi+t9rVS0PIMr7WsBSU4KolNg3iNSH3RnWj2Z7XRSYDpTAFFMzDgA7UOlvp+d
+	mk+NVjbz0IbLQVfS9KXRBR2xdGb/qqzBXAbGCIB2VvK3hs3hr9MzqkzUXgnW8Pp7ic969uHqLdPo4
+	BD7Yvo1xV1l4WGRAv0+saunmKCLYN1iPyXzOnutkQTG2tbUlyKQAXXp3pT5TjefUG4yAe7tULTX1Q
+	jJx8KjPEdTIrrbrmWwHWxElgtuh+R2LLxw31mKYwBur6QAiYjR9bKTG23xKcs7vH4bLK19EcMS6uV
+	biDU8xEw==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxQfF-009832-0t
+	id 1pxQfF-009834-1W
 	for barebox@lists.infradead.org;
-	Fri, 12 May 2023 11:10:25 +0000
+	Fri, 12 May 2023 11:10:26 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pxQf9-0003fy-3o; Fri, 12 May 2023 13:10:15 +0200
+	id 1pxQf9-0003gg-CS; Fri, 12 May 2023 13:10:15 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pxQf8-002wk9-EZ; Fri, 12 May 2023 13:10:14 +0200
+	id 1pxQf8-002wkH-OT; Fri, 12 May 2023 13:10:14 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pxQf4-0055Eo-EO; Fri, 12 May 2023 13:10:10 +0200
+	id 1pxQf4-0055EA-7d; Fri, 12 May 2023 13:10:10 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 12 May 2023 13:10:03 +0200
-Message-Id: <20230512111008.1120833-23-s.hauer@pengutronix.de>
+Date: Fri, 12 May 2023 13:09:53 +0200
+Message-Id: <20230512111008.1120833-13-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230512111008.1120833-1-s.hauer@pengutronix.de>
 References: <20230512111008.1120833-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230512_121021_445394_AA04DD0E 
-X-CRM114-Status: GOOD (  15.62  )
+X-CRM114-CacheID: sfid-20230512_121021_615567_3CE467FB 
+X-CRM114-Status: GOOD (  17.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,156 +93,132 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 22/27] ARM: mmu32: add get_pte_flags, get_pmd_flags
+Subject: [PATCH 12/27] ARM: mmu: move dma_sync_single_for_device to extra file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The mmu code has several variables containing the pte/pmd values for
-different mapping types. These variables only contain the correct values
-after initializing them which makes it a bit hard to follow when the
-code is used in both PBL and barebox proper.
-
-Instead of using variables calculate the values when they are needed.
+The next patch merges the mmu.c files with their corresponding
+mmu-early.c files. Before doing that move functions which can't
+be compiled for PBL out to extra files.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/mmu_32.c | 82 +++++++++++++++++++++----------------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+ arch/arm/cpu/Makefile |  1 +
+ arch/arm/cpu/dma_32.c | 20 ++++++++++++++++++++
+ arch/arm/cpu/dma_64.c | 16 ++++++++++++++++
+ arch/arm/cpu/mmu_32.c | 18 ------------------
+ arch/arm/cpu/mmu_64.c | 13 -------------
+ 5 files changed, 37 insertions(+), 31 deletions(-)
+ create mode 100644 arch/arm/cpu/dma_32.c
+ create mode 100644 arch/arm/cpu/dma_64.c
 
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index fd1f429398..01c168e8c8 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -63,11 +63,6 @@ static inline void tlb_invalidate(void)
-  * PTE flags to set cached and uncached areas.
-  * This will be determined at runtime.
-  */
--static uint32_t pte_flags_cached;
--static uint32_t pte_flags_wc;
--static uint32_t pte_flags_uncached;
--static uint32_t pgd_flags_wc;
--static uint32_t pgd_flags_uncached;
+diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+index fef2026da5..cd5f36eb49 100644
+--- a/arch/arm/cpu/Makefile
++++ b/arch/arm/cpu/Makefile
+@@ -4,6 +4,7 @@ obj-y += cpu.o
  
- #define PTE_MASK ((1 << 12) - 1)
- 
-@@ -221,29 +216,48 @@ static u32 pte_flags_to_pmd(u32 pte)
- 	return pmd;
- }
- 
--int arch_remap_range(void *start, size_t size, unsigned flags)
-+static uint32_t get_pte_flags(int map_type)
+ obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions_$(S64_32).o interrupts_$(S64_32).o
+ obj-$(CONFIG_MMU) += mmu_$(S64_32).o mmu-common.o
++obj-$(CONFIG_MMU) += dma_$(S64_32).o
+ obj-pbl-y += lowlevel_$(S64_32).o
+ obj-pbl-$(CONFIG_MMU) += mmu-early_$(S64_32).o
+ obj-pbl-$(CONFIG_CPU_32v7) += hyp.o
+diff --git a/arch/arm/cpu/dma_32.c b/arch/arm/cpu/dma_32.c
+new file mode 100644
+index 0000000000..a66aa26b9b
+--- /dev/null
++++ b/arch/arm/cpu/dma_32.c
+@@ -0,0 +1,20 @@
++#include <dma.h>
++#include <asm/mmu.h>
++
++void dma_sync_single_for_device(dma_addr_t address, size_t size,
++				enum dma_data_direction dir)
 +{
-+	if (cpu_architecture() >= CPU_ARCH_ARMv7) {
-+		switch (map_type) {
-+		case MAP_CACHED:
-+			return PTE_FLAGS_CACHED_V7;
-+		case MAP_UNCACHED:
-+			return PTE_FLAGS_UNCACHED_V7;
-+		case ARCH_MAP_WRITECOMBINE:
-+			return PTE_FLAGS_WC_V7;
-+		case MAP_FAULT:
-+		default:
-+			return 0x0;
-+		}
++	/*
++	 * FIXME: This function needs a device argument to support non 1:1 mappings
++	 */
++
++	if (dir == DMA_FROM_DEVICE) {
++		__dma_inv_range(address, address + size);
++		if (outer_cache.inv_range)
++			outer_cache.inv_range(address, address + size);
 +	} else {
-+		switch (map_type) {
-+		case MAP_CACHED:
-+			return PTE_FLAGS_CACHED_V4;
-+		case MAP_UNCACHED:
-+		case ARCH_MAP_WRITECOMBINE:
-+			return PTE_FLAGS_UNCACHED_V4;
-+		case MAP_FAULT:
-+		default:
-+			return 0x0;
-+		}
++		__dma_clean_range(address, address + size);
++		if (outer_cache.clean_range)
++			outer_cache.clean_range(address, address + size);
 +	}
 +}
+diff --git a/arch/arm/cpu/dma_64.c b/arch/arm/cpu/dma_64.c
+new file mode 100644
+index 0000000000..b4ae736c9b
+--- /dev/null
++++ b/arch/arm/cpu/dma_64.c
+@@ -0,0 +1,16 @@
++#include <dma.h>
++#include <asm/mmu.h>
++#include <asm/cache.h>
 +
-+static uint32_t get_pmd_flags(int map_type)
++void dma_sync_single_for_device(dma_addr_t address, size_t size,
++                                enum dma_data_direction dir)
 +{
-+	return pte_flags_to_pmd(get_pte_flags(map_type));
-+}
++	/*
++	 * FIXME: This function needs a device argument to support non 1:1 mappings
++	 */
 +
-+int arch_remap_range(void *start, size_t size, unsigned map_type)
++	if (dir == DMA_FROM_DEVICE)
++		v8_inv_dcache_range(address, address + size - 1);
++	else
++		v8_flush_dcache_range(address, address + size - 1);
++}
+diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+index 7b31938ecd..10f447874c 100644
+--- a/arch/arm/cpu/mmu_32.c
++++ b/arch/arm/cpu/mmu_32.c
+@@ -494,21 +494,3 @@ void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
  {
- 	u32 addr = (u32)start;
--	u32 pte_flags;
-+	u32 pte_flags, pmd_flags;
- 
- 	BUG_ON(!IS_ALIGNED(addr, PAGE_SIZE));
- 
--	switch (flags) {
--	case MAP_CACHED:
--		pte_flags = pte_flags_cached;
--		break;
--	case MAP_UNCACHED:
--		pte_flags = pte_flags_uncached;
--		break;
--	case MAP_FAULT:
--		pte_flags = 0x0;
--		break;
--	case ARCH_MAP_WRITECOMBINE:
--		pte_flags = pte_flags_wc;
--		break;
--	default:
--		return -EINVAL;
--	}
-+	pte_flags = get_pte_flags(map_type);
-+	pmd_flags = pte_flags_to_pmd(pte_flags);
- 
- 	while (size) {
- 		const bool pgdir_size_aligned = IS_ALIGNED(addr, PGDIR_SIZE);
-@@ -257,7 +271,7 @@ int arch_remap_range(void *start, size_t size, unsigned flags)
- 			 * replace it with a section
- 			 */
- 			chunk = PGDIR_SIZE;
--			*pgd = addr | pte_flags_to_pmd(pte_flags) | PMD_TYPE_SECT;
-+			*pgd = addr | pmd_flags | PMD_TYPE_SECT;
- 			dma_flush_range(pgd, sizeof(*pgd));
- 		} else {
- 			unsigned int num_ptes;
-@@ -315,7 +329,7 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
- 	unsigned long start = (unsigned long)_start, sec;
- 
- 	for (sec = start; sec < start + size; sec += PGDIR_SIZE, phys += PGDIR_SIZE)
--		ttb[pgd_index(sec)] = phys | pgd_flags_uncached;
-+		ttb[pgd_index(sec)] = phys | get_pmd_flags(MAP_UNCACHED);
- 
- 	dma_flush_range(ttb, 0x4000);
- 	tlb_invalidate();
-@@ -356,9 +370,9 @@ static void create_vector_table(unsigned long adr)
- 		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
- 		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
- 			 vectors, adr);
--		arm_create_pte(adr, pte_flags_uncached);
-+		arm_create_pte(adr, get_pte_flags(MAP_UNCACHED));
- 		pte = find_pte(adr);
--		*pte = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
-+		*pte = (u32)vectors | PTE_TYPE_SMALL | get_pte_flags(MAP_CACHED);
- 	}
- 
- 	arm_fixup_vectors();
-@@ -471,20 +485,6 @@ void __mmu_init(bool mmu_on)
- {
- 	struct memory_bank *bank;
- 
--	if (cpu_architecture() >= CPU_ARCH_ARMv7) {
--		pte_flags_cached = PTE_FLAGS_CACHED_V7;
--		pte_flags_wc = PTE_FLAGS_WC_V7;
--		pgd_flags_wc = PGD_FLAGS_WC_V7;
--		pgd_flags_uncached = PGD_FLAGS_UNCACHED_V7;
--		pte_flags_uncached = PTE_FLAGS_UNCACHED_V7;
--	} else {
--		pte_flags_cached = PTE_FLAGS_CACHED_V4;
--		pte_flags_wc = PTE_FLAGS_UNCACHED_V4;
--		pgd_flags_wc = PMD_SECT_DEF_UNCACHED;
--		pgd_flags_uncached = PMD_SECT_DEF_UNCACHED;
--		pte_flags_uncached = PTE_FLAGS_UNCACHED_V4;
--	}
+ 	return dma_alloc_map(size, dma_handle, ARCH_MAP_WRITECOMBINE);
+ }
 -
- 	/* Clear unpredictable bits [13:0] */
- 	ttb = (uint32_t *)(get_ttbr() & ~0x3fff);
+-void dma_sync_single_for_device(dma_addr_t address, size_t size,
+-				enum dma_data_direction dir)
+-{
+-	/*
+-	 * FIXME: This function needs a device argument to support non 1:1 mappings
+-	 */
+-
+-	if (dir == DMA_FROM_DEVICE) {
+-		__dma_inv_range(address, address + size);
+-		if (outer_cache.inv_range)
+-			outer_cache.inv_range(address, address + size);
+-	} else {
+-		__dma_clean_range(address, address + size);
+-		if (outer_cache.clean_range)
+-			outer_cache.clean_range(address, address + size);
+-	}
+-}
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index c7c16b527b..9150de1676 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -241,16 +241,3 @@ void dma_flush_range(void *ptr, size_t size)
  
+ 	v8_flush_dcache_range(start, end);
+ }
+-
+-void dma_sync_single_for_device(dma_addr_t address, size_t size,
+-                                enum dma_data_direction dir)
+-{
+-	/*
+-	 * FIXME: This function needs a device argument to support non 1:1 mappings
+-	 */
+-
+-	if (dir == DMA_FROM_DEVICE)
+-		v8_inv_dcache_range(address, address + size - 1);
+-	else
+-		v8_flush_dcache_range(address, address + size - 1);
+-}
 -- 
 2.39.2
 
