@@ -1,78 +1,78 @@
-Delivery-date: Fri, 12 May 2023 13:17:13 +0200
+Delivery-date: Fri, 12 May 2023 13:18:43 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pxQlu-00F2or-Id
-	for lore@lore.pengutronix.de; Fri, 12 May 2023 13:17:13 +0200
+	id 1pxQnM-00F2sY-6X
+	for lore@lore.pengutronix.de; Fri, 12 May 2023 13:18:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pxQls-0006lU-Kx
-	for lore@pengutronix.de; Fri, 12 May 2023 13:17:13 +0200
+	id 1pxQnK-0006rw-91
+	for lore@pengutronix.de; Fri, 12 May 2023 13:18:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8b5ueelJgcjqhUiNGgRfxDxbY68KaweziJOZXAQ6y6s=; b=SaVdo8ibuPI3ZpSpqfuce3ONr3
-	klzHCwiE2f5SmH4QlBdzXD7gGQVe+wr+iCjrn5Hlc2/rM3ZB8P5JPZAUwe73h6PHQjfIUlZGEebBX
-	tC4bEEyKm/qkJVyCO1yRt1FDnh7sUy6v5djNZUcXz8oxcRPk6H2+DKTZtAPVn5F2vLxetROLBXMHB
-	z2FogYhxGW0L1pEmuBIT4XS2+3KECq+Jzny+DvCoOCqohx/zri9FOdmncZL+vJxK+v7VHM2RXVs3b
-	b7MfE0y2T1aKYvrfYRI8BsEMo8oh11sKKYV08UqusSR43dEgPqtyToejRSguewvfMu+33qSAE7Hal
-	PWXEOC4g==;
+	bh=SsrBP7wKbMifi2OsxXLqFA46zXZDVqpD6VqIr0nbE5E=; b=V8BJl5BdS3pVrXCsEIiXwNqNlM
+	5N58iF2vCMenlW6E+DeUJImn/5EDnmOJZKviH7Uy9Z2+t8oCtScGbQ6f0jdD5lk1rsckNo7IM2YSY
+	ueNc1DJ9Bg2p1qkHFliUC1rVQKfMI0OSaQyCfnJ6Kl2z2kUm2kU9ajV7rwEcyLWYc3KFm67v6hw5j
+	XQa9xFwjEeI0750/ipJ+yzXHJcsBbqqG8j/0BA6ztQG2IHUu+cTZOdGqnJyrgkwImzssoRWVee5z5
+	ploePJ9bkSZiSDyH32fQvHfXIizUVzgORziclJLr5CvJ6wc9ZjZfahMciG+LxXILAzxy17Q/J/8qE
+	FKpY6kEA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxQks-00BmjS-0C;
-	Fri, 12 May 2023 11:16:10 +0000
+	id 1pxQmG-00BnCn-1E;
+	Fri, 12 May 2023 11:17:36 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxQkq-00Bmj9-0H
+	id 1pxQmE-00BnCT-0m
 	for barebox@bombadil.infradead.org;
-	Fri, 12 May 2023 11:16:08 +0000
+	Fri, 12 May 2023 11:17:34 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8b5ueelJgcjqhUiNGgRfxDxbY68KaweziJOZXAQ6y6s=; b=cKlMRC14RpOBFHXC9ZsMTfDc+t
-	e/DXBQbZECD4/KfOTnzwJmNOVa+Z/PFDz/EwD39F9t+db246DAFBSBINnuBGuS068FPhfkVTcKSru
-	RB34I8HfsNCAv0tweWMghd39QjlI5QYBfx+kNq5R1bSXPxYAXCLLZhN108ZbWLH3r7dMLVFp2u/7b
-	fSgqQydWspBe2AQ9SSchSJzyQyu4IhzwuAsX2s45AyEHyFz4V/DTCzOesEd6hEyA9H4ejaAVQpKlk
-	utHR9kTTNR8NFK2ZBdBaHSMtSCZrbu3jnLz7KZ5rc0+ZAv1bMbtJRnCb+jOUjmXS3yvUDUCsQGPbJ
-	1OxwNJHw==;
+	bh=SsrBP7wKbMifi2OsxXLqFA46zXZDVqpD6VqIr0nbE5E=; b=jNQHUjgzK/T49xQoSXYs4BO26E
+	vK9RTbchC2HT01H423WrqAjhUqL/6ZpywulI7AK0VuNz+y7p5qsDYMmRNc/XGTAaXOJvqhdM7z/5E
+	yb7LdJEAXYKUMp4iIWnYW1CZZ1u5yOvYp2uj+TC0i9ndpczdp4ftYMUA4hOxiMiacI3nHWo6iivi6
+	qqvbKn5wPNcJD7OV5Qy1gdx2XfFVQ5MdvNhpceupQ+GbnaSn6b/qcrWajBZtB4JB/9p+GyMSH2s86
+	+uOhj+d3K7eQcfof8MN035ZbdpBKhFNFw0dFGt5ZoXig1g/n05U5lq4a2LbzS/m7LL9/uZegOMEX5
+	R/CNwCeg==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxQkm-0098Ds-2p
+	id 1pxQmB-0098Er-06
 	for barebox@lists.infradead.org;
-	Fri, 12 May 2023 11:16:06 +0000
+	Fri, 12 May 2023 11:17:32 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pxQkl-0006ZR-UY; Fri, 12 May 2023 13:16:03 +0200
+	id 1pxQmA-0006n2-HY; Fri, 12 May 2023 13:17:30 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pxQkl-00033H-8X; Fri, 12 May 2023 13:16:03 +0200
-Date: Fri, 12 May 2023 13:16:03 +0200
+	id 1pxQm9-00033o-RO; Fri, 12 May 2023 13:17:29 +0200
+Date: Fri, 12 May 2023 13:17:29 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20230512111603.GN29365@pengutronix.de>
-References: <20230512023838.1255762-1-antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230512111729.GO29365@pengutronix.de>
+References: <20230512100825.1261808-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230512023838.1255762-1-antonynpavlov@gmail.com>
+In-Reply-To: <20230512100825.1261808-1-antonynpavlov@gmail.com>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230512_121605_065950_A82113D1 
-X-CRM114-Status: GOOD (  18.60  )
+X-CRM114-CacheID: sfid-20230512_121731_174227_7792A455 
+X-CRM114-Status: GOOD (  17.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,38 +95,37 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] powerpc: Kconfig: fix reference to unknown symbol
+Subject: Re: [PATCH] crypto: imx-scc: Kconfig: drop references to unknown
+ symbols
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, May 12, 2023 at 05:38:38AM +0300, Antony Pavlov wrote:
-> In Kconfig files, the symbols don't have a CONFIG_ prefix.
-> Fix an unknown Kconfig symbol introduced in d3b8a88d34
-> ("treewide: rename CONFIG_HAS_ARCH_SJLJ to CONFIG_ARCH_HAS_SJLJ").
+On Fri, May 12, 2023 at 01:08:25PM +0300, Antony Pavlov wrote:
+> barebox has neither CRYPTO_BLKCIPHER nor CRYPTO_DES.
 > 
 > Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 > ---
->  arch/powerpc/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/crypto/imx-scc/Kconfig | 2 --
+>  1 file changed, 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-> index 4ae6d423af..ba875767b2 100644
-> --- a/arch/powerpc/Kconfig
-> +++ b/arch/powerpc/Kconfig
-> @@ -8,7 +8,7 @@ config PPC
->  	select HAS_CACHE
->  	select GENERIC_FIND_NEXT_BIT
->  	select OFTREE
-> -	select CONFIG_ARCH_HAS_SJLJ
-> +	select ARCH_HAS_SJLJ
->  	default y
->  
->  choice
+> diff --git a/drivers/crypto/imx-scc/Kconfig b/drivers/crypto/imx-scc/Kconfig
+> index c5b0ac2e83..75038fd2a5 100644
+> --- a/drivers/crypto/imx-scc/Kconfig
+> +++ b/drivers/crypto/imx-scc/Kconfig
+> @@ -2,8 +2,6 @@
+>  config CRYPTO_DEV_MXC_SCC
+>  	tristate "Support for Freescale Security Controller (SCC)"
+>  	depends on (ARCH_IMX25 || COMPILE_TEST) && OFTREE
+> -	select CRYPTO_BLKCIPHER
+> -	select CRYPTO_DES
+>  	help
+>  	  This option enables support for the Security Controller (SCC)
+>  	  found in Freescale i.MX25 chips.
 > -- 
 > 2.39.0
 > 
