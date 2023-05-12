@@ -1,43 +1,43 @@
-Delivery-date: Fri, 12 May 2023 19:20:44 +0200
+Delivery-date: Fri, 12 May 2023 19:22:56 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pxWRg-00FKZC-VK
-	for lore@lore.pengutronix.de; Fri, 12 May 2023 19:20:44 +0200
+	id 1pxWTp-00FKdq-Oo
+	for lore@lore.pengutronix.de; Fri, 12 May 2023 19:22:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pxWRe-0002XG-QE
-	for lore@pengutronix.de; Fri, 12 May 2023 19:20:43 +0200
+	id 1pxWTn-0002oQ-QE
+	for lore@pengutronix.de; Fri, 12 May 2023 19:22:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lAo3xz1YYEKcqzBBHfEiQsyaCFBdKk4qCzprkmGrQ0U=; b=PLOvwH69F3xSzVAz5fD+YbGTPl
-	n5LkxZ/ktNldfR5lpE4Oue/xMlkwzPMBLmiBChj1GUswDmI3ASzM8xTPxXWtTZzhdA4pr4GakLopu
-	7qA9gmOisuCAl0Z4Tbpaj5GfH5yZuEkiarQT5/01C89cOSeFC3QWT8xhvbsdipNH01McNyHXnfkRd
-	zhd3OL97BcNp+t7HH5vjH+xtRtX7EQWEpYIcNIP0SKKRoeYIZxfZiLe0I70ydQHokKCFrRMgJ7/tS
-	0MrDS0/BKnY8rp6LQrjh05SmBG5bAk+NIGZ4nHYC/EMX0cWQAh5aKHH+534W6k5ue4xsFOlsig5BI
-	X6E+837Q==;
+	bh=h647HUnRIM1GCFoz8yMPCR5oJiEYSdRQ6y4LHTQuwpQ=; b=L6YpTw9xg1LwQBzkEm72exwPLo
+	jf89u0Cgak1q/tYgTu7RsLkoZSMlUMj8+I8tn+ItAAwGG35X0o+CQk4M1zgxFdOkR1X6odgeQZmJt
+	aN6on61Vj2xJDgAs684PQ+KCqB447jrkgx0t5K+1SuwKFwR/dPN3M2CWm2jF65Kv3VHDi8ruhvXBU
+	3u7UGMxKtRRc7dfxBDV4el9k0nQsKsp/f4ANN2+lr2ewWi30A8sMc2155cF+YVDDdE9095J6VB2SJ
+	S07qIX12nUq5/YD1shLDHR/OEgzZOG6rpXYaKrm1Qq0n0/m6SCWFogqoi9tb9susbmMv3+7FZJvEK
+	Iq6YP5Yw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxWQa-00CZS4-0O;
-	Fri, 12 May 2023 17:19:36 +0000
+	id 1pxWSo-00CZhR-2K;
+	Fri, 12 May 2023 17:21:54 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxWQX-00CZRg-0Y
+	id 1pxWSl-00CZh0-2y
 	for barebox@lists.infradead.org;
-	Fri, 12 May 2023 17:19:34 +0000
+	Fri, 12 May 2023 17:21:53 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pxWQV-0002EF-Qj; Fri, 12 May 2023 19:19:31 +0200
-Message-ID: <fe727aa8-5d14-beca-54c8-7903320a2d2f@pengutronix.de>
-Date: Fri, 12 May 2023 19:19:30 +0200
+	id 1pxWSk-0002fV-F0; Fri, 12 May 2023 19:21:50 +0200
+Message-ID: <df7140b1-6d1d-97e7-6ade-c10bc706abea@pengutronix.de>
+Date: Fri, 12 May 2023 19:21:49 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
@@ -45,14 +45,14 @@ Content-Language: en-US
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  Barebox List <barebox@lists.infradead.org>
 References: <20230512111008.1120833-1-s.hauer@pengutronix.de>
- <20230512111008.1120833-3-s.hauer@pengutronix.de>
+ <20230512111008.1120833-4-s.hauer@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230512111008.1120833-3-s.hauer@pengutronix.de>
+In-Reply-To: <20230512111008.1120833-4-s.hauer@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230512_101933_232204_2F4CAE0B 
-X-CRM114-Status: GOOD (  27.38  )
+X-CRM114-CacheID: sfid-20230512_102151_961039_9C70FB95 
+X-CRM114-Status: GOOD (  20.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,212 +75,156 @@ X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 02/27] ARM: drop cache function initialization
+Subject: Re: [PATCH 03/27] ARM: Add _32 suffix to aarch32 specific filenames
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 On 12.05.23 13:09, Sascha Hauer wrote:
-> We need a call to arm_set_cache_functions() before the cache maintenance
-> functions can be used. Drop this call and just pick the correct
-> functions on the first call.
+> Several files in arch/arm/cpu/ have 32bit and 64bit versions. The
+> 64bit versions have a _64 suffix, but the 32bit versions have none.
+> This can be confusing sometimes as one doesn't know if a file is
+> 32bit specific or common code.
+> 
+> Add a _32 suffix to the 32bit files to avoid this confusion.
 > 
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
 > ---
->  arch/arm/cpu/cache.c         | 83 +++++++++++++++++-------------------
->  arch/arm/cpu/cache_64.c      |  5 ---
->  arch/arm/cpu/mmu-early.c     |  2 -
->  arch/arm/cpu/mmu.c           |  2 -
->  arch/arm/cpu/start.c         |  4 +-
->  arch/arm/include/asm/cache.h |  2 -
->  6 files changed, 41 insertions(+), 57 deletions(-)
+>  arch/arm/Makefile                             |  5 ++++-
+>  arch/arm/cpu/Makefile                         | 20 +++++++++----------
+>  arch/arm/cpu/{cache.c => cache_32.c}          |  0
+>  arch/arm/cpu/{entry_ll.S => entry_ll_32.S}    |  0
+>  .../arm/cpu/{exceptions.S => exceptions_32.S} |  0
+>  .../arm/cpu/{interrupts.c => interrupts_32.c} |  0
+>  arch/arm/cpu/{lowlevel.S => lowlevel_32.S}    |  0
+>  arch/arm/cpu/{mmu-early.c => mmu-early_32.c}  |  0
+>  arch/arm/cpu/{mmu.c => mmu_32.c}              |  0
+>  arch/arm/cpu/{setupc.S => setupc_32.S}        |  0
+>  .../arm/cpu/{smccc-call.S => smccc-call_32.S} |  0
+>  11 files changed, 14 insertions(+), 11 deletions(-)
+>  rename arch/arm/cpu/{cache.c => cache_32.c} (100%)
+>  rename arch/arm/cpu/{entry_ll.S => entry_ll_32.S} (100%)
+>  rename arch/arm/cpu/{exceptions.S => exceptions_32.S} (100%)
+>  rename arch/arm/cpu/{interrupts.c => interrupts_32.c} (100%)
+>  rename arch/arm/cpu/{lowlevel.S => lowlevel_32.S} (100%)
+>  rename arch/arm/cpu/{mmu-early.c => mmu-early_32.c} (100%)
+>  rename arch/arm/cpu/{mmu.c => mmu_32.c} (100%)
+>  rename arch/arm/cpu/{setupc.S => setupc_32.S} (100%)
+>  rename arch/arm/cpu/{smccc-call.S => smccc-call_32.S} (100%)
 > 
-> diff --git a/arch/arm/cpu/cache.c b/arch/arm/cpu/cache.c
-> index 24a02c68f3..4202406d0d 100644
-> --- a/arch/arm/cpu/cache.c
-> +++ b/arch/arm/cpu/cache.c
-> @@ -17,8 +17,6 @@ struct cache_fns {
->  	void (*mmu_cache_flush)(void);
->  };
+> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+> index a506f1e3a3..cb88c7b330 100644
+> --- a/arch/arm/Makefile
+> +++ b/arch/arm/Makefile
+> @@ -78,10 +78,13 @@ endif
+>  ifeq ($(CONFIG_CPU_V8), y)
+>  KBUILD_CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y)
+>  KBUILD_AFLAGS   += -include asm/unified.h
+> -export S64 = _64
+> +export S64_32 = 64
+> +export S64 = 64
+>  else
+>  KBUILD_CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y) $(CFLAGS_THUMB2)
+>  KBUILD_AFLAGS   += -include asm/unified.h -msoft-float $(AFLAGS_THUMB2)
+> +export S64_32 = 32
+> +export S32 = 32
+>  endif
 >  
-> -struct cache_fns *cache_fns;
-> -
->  #define DEFINE_CPU_FNS(arch) \
->  	void arch##_dma_clean_range(unsigned long start, unsigned long end);	\
->  	void arch##_dma_flush_range(unsigned long start, unsigned long end);	\
-> @@ -41,50 +39,13 @@ DEFINE_CPU_FNS(v5)
->  DEFINE_CPU_FNS(v6)
->  DEFINE_CPU_FNS(v7)
+>  # Machine directory name.  This list is sorted alphanumerically
+> diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+> index 7674c1464c..fef2026da5 100644
+> --- a/arch/arm/cpu/Makefile
+> +++ b/arch/arm/cpu/Makefile
+> @@ -2,15 +2,15 @@
 >  
-> -void __dma_clean_range(unsigned long start, unsigned long end)
-> -{
-> -	if (cache_fns)
-> -		cache_fns->dma_clean_range(start, end);
-> -}
-> -
-> -void __dma_flush_range(unsigned long start, unsigned long end)
-> -{
-> -	if (cache_fns)
-> -		cache_fns->dma_flush_range(start, end);
-> -}
-> -
-> -void __dma_inv_range(unsigned long start, unsigned long end)
-> -{
-> -	if (cache_fns)
-> -		cache_fns->dma_inv_range(start, end);
-> -}
-> -
-> -#ifdef CONFIG_MMU
-> -
-> -void __mmu_cache_on(void)
-> -{
-> -	if (cache_fns)
-> -		cache_fns->mmu_cache_on();
-> -}
-> -
-> -void __mmu_cache_off(void)
-> +static struct cache_fns *cache_functions(void)
->  {
-> -	if (cache_fns)
-> -		cache_fns->mmu_cache_off();
-> -}
-> +	static struct cache_fns *cache_fns;
+>  obj-y += cpu.o
 >  
-> -void __mmu_cache_flush(void)
-> -{
->  	if (cache_fns)
-> -		cache_fns->mmu_cache_flush();
-> -	if (outer_cache.flush_all)
-> -		outer_cache.flush_all();
-> -}
-> -
-> -#endif
-> +		return cache_fns;
+> -obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions$(S64).o interrupts$(S64).o
+> -obj-$(CONFIG_MMU) += mmu$(S64).o mmu-common.o
+> -obj-pbl-y += lowlevel$(S64).o
+> -obj-pbl-$(CONFIG_MMU) += mmu-early$(S64).o
+> +obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions_$(S64_32).o interrupts_$(S64_32).o
+> +obj-$(CONFIG_MMU) += mmu_$(S64_32).o mmu-common.o
+> +obj-pbl-y += lowlevel_$(S64_32).o
+> +obj-pbl-$(CONFIG_MMU) += mmu-early_$(S64_32).o
+>  obj-pbl-$(CONFIG_CPU_32v7) += hyp.o
+>  AFLAGS_hyp.o :=-Wa,-march=armv7-a -Wa,-mcpu=all
+>  AFLAGS_hyp.pbl.o :=-Wa,-march=armv7-a -Wa,-mcpu=all
 >  
-> -int arm_set_cache_functions(void)
-> -{
->  	switch (cpu_architecture()) {
->  #ifdef CONFIG_CPU_32v4T
->  	case CPU_ARCH_ARMv4T:
-> @@ -113,9 +74,45 @@ int arm_set_cache_functions(void)
->  		while(1);
->  	}
+> -obj-y += start.o entry.o entry_ll$(S64).o
+> +obj-y += start.o entry.o entry_ll_$(S64_32).o
+>  KASAN_SANITIZE_start.o := n
 >  
-> -	return 0;
-> +	return cache_fns;
-> +}
-> +
-> +void __dma_clean_range(unsigned long start, unsigned long end)
-> +{
-> +	cache_functions()->dma_clean_range(start, end);
-> +}
-> +
-> +void __dma_flush_range(unsigned long start, unsigned long end)
-> +{
-> +	cache_functions()->dma_flush_range(start, end);
-> +}
-> +
-> +void __dma_inv_range(unsigned long start, unsigned long end)
-> +{
-> +	cache_functions()->dma_inv_range(start, end);
-> +}
-> +
-> +#ifdef CONFIG_MMU
-> +
-> +void __mmu_cache_on(void)
-> +{
-> +	cache_functions()->mmu_cache_on();
-> +}
-> +
-> +void __mmu_cache_off(void)
-> +{
-> +	cache_functions()->mmu_cache_off();
->  }
+>  pbl-$(CONFIG_CPU_64) += head_64.o
+> @@ -18,7 +18,7 @@ pbl-$(CONFIG_CPU_64) += head_64.o
+>  pbl-$(CONFIG_BOARD_ARM_GENERIC_DT) += board-dt-2nd.o
+>  pbl-$(CONFIG_BOARD_ARM_GENERIC_DT_AARCH64) += board-dt-2nd-aarch64.o
 >  
-> +void __mmu_cache_flush(void)
-> +{
-> +	cache_functions()->mmu_cache_flush();
-> +	if (outer_cache.flush_all)
-> +		outer_cache.flush_all();
-> +}
-> +
-> +#endif
-> +
->  /*
->   * Early function to flush the caches. This is for use when the
->   * C environment is not yet fully initialized.
-> diff --git a/arch/arm/cpu/cache_64.c b/arch/arm/cpu/cache_64.c
-> index cb7bc0945c..3a30296128 100644
-> --- a/arch/arm/cpu/cache_64.c
-> +++ b/arch/arm/cpu/cache_64.c
-> @@ -6,11 +6,6 @@
->  #include <asm/cache.h>
->  #include <asm/system_info.h>
+> -obj-pbl-y += setupc$(S64).o cache$(S64).o
+> +obj-pbl-y += setupc_$(S64_32).o cache_$(S64_32).o
 >  
-> -int arm_set_cache_functions(void)
-> -{
-> -	return 0;
-> -}
-> -
->  /*
->   * Early function to flush the caches. This is for use when the
->   * C environment is not yet fully initialized.
-> diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early.c
-> index 0d528b9b9c..4895911cdb 100644
-> --- a/arch/arm/cpu/mmu-early.c
-> +++ b/arch/arm/cpu/mmu-early.c
-> @@ -28,8 +28,6 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize,
->  {
->  	ttb = (uint32_t *)_ttb;
+>  obj-$(CONFIG_ARM_PSCI_CLIENT) += psci-client.o
 >  
-> -	arm_set_cache_functions();
-> -
->  	set_ttbr(ttb);
+> @@ -35,9 +35,9 @@ endif
 >  
->  	/* For the XN bit to take effect, we can't be using DOMAIN_MANAGER. */
-> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu.c
-> index 6388e1bf14..78dd05577a 100644
-> --- a/arch/arm/cpu/mmu.c
-> +++ b/arch/arm/cpu/mmu.c
-> @@ -414,8 +414,6 @@ void __mmu_init(bool mmu_on)
->  {
->  	struct memory_bank *bank;
+>  obj-$(CONFIG_ARM_PSCI) += psci.o
+>  obj-$(CONFIG_ARM_PSCI_OF) += psci-of.o
+> -obj-pbl-$(CONFIG_ARM_SMCCC) += smccc-call$(S64).o
+> -AFLAGS_smccc-call$(S64).o :=-Wa,-march=armv$(if $(S64),8,7)-a
+> -AFLAGS_smccc-call$(S64).pbl.o :=-Wa,-march=armv$(if $(S64),8,7)-a
+> +obj-pbl-$(CONFIG_ARM_SMCCC) += smccc-call_$(S64_32).o
+> +AFLAGS_smccc-call_$(S64_32).o :=-Wa,-march=armv$(if $(S64),8,7)-a
+> +AFLAGS_smccc-call_$(S64_32).pbl.o :=-Wa,-march=armv$(if $(S64),8,7)-a
+>  obj-$(CONFIG_ARM_SECURE_MONITOR) += sm.o sm_as.o
+>  AFLAGS_sm_as.o		:=-Wa,-march=armv7-a
 >  
-> -	arm_set_cache_functions();
-> -
->  	if (cpu_architecture() >= CPU_ARCH_ARMv7) {
->  		pte_flags_cached = PTE_FLAGS_CACHED_V7;
->  		pte_flags_wc = PTE_FLAGS_WC_V7;
-> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-> index be303514c2..bcfc630f3b 100644
-> --- a/arch/arm/cpu/start.c
-> +++ b/arch/arm/cpu/start.c
-> @@ -170,9 +170,7 @@ __noreturn __no_sanitize_address void barebox_non_pbl_start(unsigned long membas
->  	if (IS_ENABLED(CONFIG_MMU_EARLY)) {
->  		unsigned long ttb = arm_mem_ttb(membase, endmem);
+> @@ -52,7 +52,7 @@ obj-pbl-$(CONFIG_CPU_64v8) += cache-armv8.o
+>  AFLAGS_cache-armv8.o       :=-Wa,-march=armv8-a
+>  AFLAGS-cache-armv8.pbl.o   :=-Wa,-march=armv8-a
 >  
-> -		if (IS_ENABLED(CONFIG_PBL_IMAGE)) {
-> -			arm_set_cache_functions();
-> -		} else {
-> +		if (!IS_ENABLED(CONFIG_PBL_IMAGE)) {
->  			pr_debug("enabling MMU, ttb @ 0x%08lx\n", ttb);
->  			arm_early_mmu_cache_invalidate();
->  			mmu_early_enable(membase, memsize - OPTEE_SIZE, ttb);
-> diff --git a/arch/arm/include/asm/cache.h b/arch/arm/include/asm/cache.h
-> index b63776a74a..261c30129a 100644
-> --- a/arch/arm/include/asm/cache.h
-> +++ b/arch/arm/include/asm/cache.h
-> @@ -18,8 +18,6 @@ static inline void icache_invalidate(void)
->  #endif
->  }
+> -pbl-y += entry.o entry_ll$(S64).o
+> +pbl-y += entry.o entry_ll_$(S64_32).o
+>  pbl-y += uncompress.o
+>  pbl-$(CONFIG_ARM_ATF) += atf.o
 >  
-> -int arm_set_cache_functions(void);
-> -
->  void arm_early_mmu_cache_flush(void);
->  void arm_early_mmu_cache_invalidate(void);
->  
+> diff --git a/arch/arm/cpu/cache.c b/arch/arm/cpu/cache_32.c
+> similarity index 100%
+> rename from arch/arm/cpu/cache.c
+> rename to arch/arm/cpu/cache_32.c
+> diff --git a/arch/arm/cpu/entry_ll.S b/arch/arm/cpu/entry_ll_32.S
+> similarity index 100%
+> rename from arch/arm/cpu/entry_ll.S
+> rename to arch/arm/cpu/entry_ll_32.S
+> diff --git a/arch/arm/cpu/exceptions.S b/arch/arm/cpu/exceptions_32.S
+> similarity index 100%
+> rename from arch/arm/cpu/exceptions.S
+> rename to arch/arm/cpu/exceptions_32.S
+> diff --git a/arch/arm/cpu/interrupts.c b/arch/arm/cpu/interrupts_32.c
+> similarity index 100%
+> rename from arch/arm/cpu/interrupts.c
+> rename to arch/arm/cpu/interrupts_32.c
+> diff --git a/arch/arm/cpu/lowlevel.S b/arch/arm/cpu/lowlevel_32.S
+> similarity index 100%
+> rename from arch/arm/cpu/lowlevel.S
+> rename to arch/arm/cpu/lowlevel_32.S
+> diff --git a/arch/arm/cpu/mmu-early.c b/arch/arm/cpu/mmu-early_32.c
+> similarity index 100%
+> rename from arch/arm/cpu/mmu-early.c
+> rename to arch/arm/cpu/mmu-early_32.c
+> diff --git a/arch/arm/cpu/mmu.c b/arch/arm/cpu/mmu_32.c
+> similarity index 100%
+> rename from arch/arm/cpu/mmu.c
+> rename to arch/arm/cpu/mmu_32.c
+> diff --git a/arch/arm/cpu/setupc.S b/arch/arm/cpu/setupc_32.S
+> similarity index 100%
+> rename from arch/arm/cpu/setupc.S
+> rename to arch/arm/cpu/setupc_32.S
+> diff --git a/arch/arm/cpu/smccc-call.S b/arch/arm/cpu/smccc-call_32.S
+> similarity index 100%
+> rename from arch/arm/cpu/smccc-call.S
+> rename to arch/arm/cpu/smccc-call_32.S
 
 -- 
 Pengutronix e.K.                           |                             |
