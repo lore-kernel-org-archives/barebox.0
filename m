@@ -1,81 +1,81 @@
-Delivery-date: Fri, 12 May 2023 04:39:58 +0200
+Delivery-date: Fri, 12 May 2023 12:09:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pxIhK-00Edg6-O9
-	for lore@lore.pengutronix.de; Fri, 12 May 2023 04:39:58 +0200
+	id 1pxPiR-00Ez6c-2A
+	for lore@lore.pengutronix.de; Fri, 12 May 2023 12:09:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pxIhI-0005VE-Ic
-	for lore@pengutronix.de; Fri, 12 May 2023 04:39:57 +0200
+	id 1pxPiO-0003MP-U3
+	for lore@pengutronix.de; Fri, 12 May 2023 12:09:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=P5FQLRxPemPRWmPCj0AdPs8MDoUE2/TR4DiXUFkS8ow=; b=v0YgLqWh2IMfP9
-	3R3OKPG8g8XnZ+Lj2TsbyYxMUQGszLEwCi3f57CYCWpFTje6favjyAbCP8ak0aY3bDHhfn3+k1Vcx
-	kbd+/poGO06skNEn2EBgtdJtYoQqLdb3z/oS+qpqiVqPv41Am+FQt2SLSHdwPwAqye2c1LmXv+/09
-	CxwClrfm0+TikKI7zqCD7PPJSCBlbTqIOLqTeTBPpHFTonev+MO+8YvdLKyQcn0lMF/eFT27XaKKy
-	fDH5aEIwpIL3FqwCgvgDOkyhNFUhVQLpW8V77JbC+OUv7haD372p0zCj38/CB+3/gNDM/Wz6Zq2pd
-	R1e3+UhIc0LS4Apk7/7w==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=h1Mxs8/0QrKdSp3zjjdubXqRasPPEzPyOgov7jZ9Slk=; b=THwTpj9NTxShagJlDcSOH+kM7D
+	dAohBvR5ovHDqyEs4EY7dlPZwwizcrShaxtm+hXyArRZ0HlMpFTWgWcU6vTD6j/o+Q5Q5GSnWoSae
+	mTOhe7OC+UCATFYGNM0z25H9+qmHiGmMCtTNsrIHmZHZGSEycORruqqYPnB1x8LQBGmZOAE60jKle
+	NNQKh/+P/Ae0zNdGfrBPrP7skz4F9tHl6Z+djI5P+FtSjbWEjVx9A+69IPuXvC+3Dt+4FCAAx88HN
+	ijxWKUe5/PQXdkF2CAomEVKlb+5UQgLriEmm4tkTXrcgQ0SReqpUOMYV7GCK8rslHPY2Fk62CXBFo
+	9CN1A8pA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxIfr-00AkL2-0b;
-	Fri, 12 May 2023 02:38:27 +0000
-Received: from mail-lf1-x12b.google.com ([2a00:1450:4864:20::12b])
+	id 1pxPh6-00BYOw-3D;
+	Fri, 12 May 2023 10:08:13 +0000
+Received: from mail-lj1-x233.google.com ([2a00:1450:4864:20::233])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pxIfn-00AkKE-2r
+	id 1pxPh3-00BYN2-2w
 	for barebox@lists.infradead.org;
-	Fri, 12 May 2023 02:38:25 +0000
-Received: by mail-lf1-x12b.google.com with SMTP id 2adb3069b0e04-4ec8149907aso10972376e87.1
-        for <barebox@lists.infradead.org>; Thu, 11 May 2023 19:38:22 -0700 (PDT)
+	Fri, 12 May 2023 10:08:11 +0000
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2ad89c7a84fso73853211fa.2
+        for <barebox@lists.infradead.org>; Fri, 12 May 2023 03:08:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1683859101; x=1686451101;
+        d=gmail.com; s=20221208; t=1683886086; x=1686478086;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=P5FQLRxPemPRWmPCj0AdPs8MDoUE2/TR4DiXUFkS8ow=;
-        b=q1dBUuMcJIHRtgq+A3T1JLbRZ5dx/yZF/nUciT1VVrvoxGYmxhRVBHGasqYkllh2/j
-         DvftIv/Br8AAxJcOUegl/xcgbnPohBYRM4DxKn4LgFqanyQcY2zpMlfM7tM8ePA4XfS0
-         qwJzcUmRjaYEEWFhbYwGUDoyH2a0yiP9DGep9ScgdZR71CKbCC2OhHXZKDRiIt7p/JU6
-         sLQeYfsZwuMcm9HAC5ylTVExMRkkShYRI707wxC5XN9gLD3imXDnvqEb8FZXqDVLh+Wy
-         KPhhKWn4P4D0buBMq+u3g4rQHnpRJja1rNKFPb/dbrH+Ei/IPNUoPYLRWjDTZhC2Z0cJ
-         Izvg==
+        bh=h1Mxs8/0QrKdSp3zjjdubXqRasPPEzPyOgov7jZ9Slk=;
+        b=FHbMRkG0DbNOts4xKqeUA9NwX8frqODKPovWQYIWoaeh4vIWTmlmlTw9gU4Gac2YO+
+         LSElhKG9ioTOh4Q3d9jC8NseRnAvJ03L74QRwWdxSS/98OM9hhKh6k6VYQ68rSKzpOCd
+         vkJKIA1OHrbn8FynGGGxBMBItdX353lXMVQ6fn3t4PGyezQodH/5z/dI5VfpHuAx6iRs
+         suk7B+vearTHft4gX4oNStQDXrZIMcnuig02nYM4S9vXmXKo+ua4caOlAx8qM94muXMm
+         fr+XSoNpxSxRez4ooivjchpbjI+g2kn+QtdvaaKu++Qbqt1X2xqVwcf20XjP4WMCYqvv
+         zwUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1683859101; x=1686451101;
+        d=1e100.net; s=20221208; t=1683886086; x=1686478086;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=P5FQLRxPemPRWmPCj0AdPs8MDoUE2/TR4DiXUFkS8ow=;
-        b=ldk7Te7ldVil7f7sJ45rBvoASuNyEExHpeLXvl1hCEO0Z51+MiI18NyIN/U1xBX893
-         VDfX4qDW6yLj1bvwAHMvJ8kv/ypzw/l4lSXTLVNxX2ihvf0iFU7UkpHooHOoe3KOEBKt
-         JFfEEEb8TAQMQqG0YUVcdcfJJV05mv2E+VuXw6iLcGgki/lYDerV/bpJGfPxThHCboOW
-         ECFvmhMfdBJ5iUU74BzKME1v7MiKRmLQhwmvALbSq5uvdJQgXp9ex/LtJqlZ1AkcTIv3
-         gr/FtwyULGvrci9vuePfM8Q04rtaGG/iSo5X5YsYdvWRIGtCs5MTjjduE0SXsD52Tk1F
-         I6eQ==
-X-Gm-Message-State: AC+VfDyTRaKFQxPAWxxCxn7s1KK5YqOSDKZqFeYEqaWwZLVXcwgK053q
-	sMNsrdzAyEVj7fDs3RWOLP/FPJlOZKQ=
-X-Google-Smtp-Source: ACHHUZ5ez6NVnDcUBF4zymqFWD8tUPCWdmsprk9gB9GlGg8rtNEB60io14Y8ajDIPfvMTngAMqVcKQ==
-X-Received: by 2002:ac2:494b:0:b0:4f1:408f:4fa6 with SMTP id o11-20020ac2494b000000b004f1408f4fa6mr3087684lfi.49.1683859101013;
-        Thu, 11 May 2023 19:38:21 -0700 (PDT)
-Received: from cinco.. (109-252-10-103.nat.spd-mgts.ru. [109.252.10.103])
-        by smtp.gmail.com with ESMTPSA id b6-20020ac25626000000b004edc485f86bsm1302115lff.239.2023.05.11.19.38.20
+        bh=h1Mxs8/0QrKdSp3zjjdubXqRasPPEzPyOgov7jZ9Slk=;
+        b=lgJhTqBeFIIdlKkZGxpKHfG+JIYHr3hataAkNASzuXElIWi85hnCgPwV4vvtbAprQk
+         qpamx7bVJ8adYTCIPWzKhrQbypRdp9JqlkJtttXnY1h8yxfkISRfCsnquIPqYHUzljHk
+         9pTfJI0lflk5xQlSR+H5P6/dbIwgFR5NIZQX06ryYWac+TDteLWE+XPUgHzgDiST2cuV
+         6xPiTb6ZG/Ei0QAwbqkU2E87ioDQAAUmgEm3c1D/PXFrszZ7Gj+7zLeIS0qhXxUCr2Bi
+         +L9PC4fDvMESWxEID96agcPqQuCfJYWKBAl2RGQu+jYYRWMFRM4mi4PUyv8iZFGw7YXx
+         3a1g==
+X-Gm-Message-State: AC+VfDzMxIuVaatY6GUMgNSTm/BpVETa1dEjfLwDRE/ylg6pMB5iW5KP
+	Rmg8MzZF03hLittN8w2lCwQFxsHqVHo=
+X-Google-Smtp-Source: ACHHUZ4K6rYiDjxNhqwbwah92C4QUKTTYqG3yT9gF/WLvjm8D8sNlnTyT07FQkDbdw/mfymlNIYA0w==
+X-Received: by 2002:a2e:7304:0:b0:2a7:6f82:4a87 with SMTP id o4-20020a2e7304000000b002a76f824a87mr3831547ljc.35.1683886085781;
+        Fri, 12 May 2023 03:08:05 -0700 (PDT)
+Received: from cinco.. ([176.59.172.105])
+        by smtp.gmail.com with ESMTPSA id d7-20020ac25447000000b004f1502c34d6sm1411854lfn.161.2023.05.12.03.08.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 May 2023 19:38:20 -0700 (PDT)
+        Fri, 12 May 2023 03:08:05 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Fri, 12 May 2023 05:38:38 +0300
-Message-Id: <20230512023838.1255762-1-antonynpavlov@gmail.com>
+Date: Fri, 12 May 2023 13:08:25 +0300
+Message-Id: <20230512100825.1261808-1-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230511_193823_950687_896C09AD 
-X-CRM114-Status: UNSURE (   8.62  )
+X-CRM114-CacheID: sfid-20230512_030809_965674_F9A99FA2 
+X-CRM114-Status: UNSURE (   8.11  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -88,45 +88,41 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.5 required=4.0 tests=AWL,BAYES_00,
+X-Spam-Status: No, score=-2.1 required=4.0 tests=AWL,BAYES_00,
 	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH] powerpc: Kconfig: fix reference to unknown symbol
+	RCVD_IN_DNSWL_MED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=no autolearn_force=no version=3.4.2
+Subject: [PATCH] crypto: imx-scc: Kconfig: drop references to unknown symbols
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-In Kconfig files, the symbols don't have a CONFIG_ prefix.
-Fix an unknown Kconfig symbol introduced in d3b8a88d34
-("treewide: rename CONFIG_HAS_ARCH_SJLJ to CONFIG_ARCH_HAS_SJLJ").
+barebox has neither CRYPTO_BLKCIPHER nor CRYPTO_DES.
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- arch/powerpc/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/crypto/imx-scc/Kconfig | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
-index 4ae6d423af..ba875767b2 100644
---- a/arch/powerpc/Kconfig
-+++ b/arch/powerpc/Kconfig
-@@ -8,7 +8,7 @@ config PPC
- 	select HAS_CACHE
- 	select GENERIC_FIND_NEXT_BIT
- 	select OFTREE
--	select CONFIG_ARCH_HAS_SJLJ
-+	select ARCH_HAS_SJLJ
- 	default y
- 
- choice
+diff --git a/drivers/crypto/imx-scc/Kconfig b/drivers/crypto/imx-scc/Kconfig
+index c5b0ac2e83..75038fd2a5 100644
+--- a/drivers/crypto/imx-scc/Kconfig
++++ b/drivers/crypto/imx-scc/Kconfig
+@@ -2,8 +2,6 @@
+ config CRYPTO_DEV_MXC_SCC
+ 	tristate "Support for Freescale Security Controller (SCC)"
+ 	depends on (ARCH_IMX25 || COMPILE_TEST) && OFTREE
+-	select CRYPTO_BLKCIPHER
+-	select CRYPTO_DES
+ 	help
+ 	  This option enables support for the Security Controller (SCC)
+ 	  found in Freescale i.MX25 chips.
 -- 
 2.39.0
 
