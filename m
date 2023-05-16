@@ -1,65 +1,65 @@
-Delivery-date: Tue, 16 May 2023 10:24:22 +0200
+Delivery-date: Tue, 16 May 2023 11:11:05 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pypyp-002iyy-Va
-	for lore@lore.pengutronix.de; Tue, 16 May 2023 10:24:22 +0200
+	id 1pyqi2-002lDG-OF
+	for lore@lore.pengutronix.de; Tue, 16 May 2023 11:11:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pypyn-0006Um-8J
-	for lore@pengutronix.de; Tue, 16 May 2023 10:24:21 +0200
+	id 1pyqi0-0005NR-Eo
+	for lore@pengutronix.de; Tue, 16 May 2023 11:11:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=p8XOB2j5Ly3OO8sL9Z2s7Mj9FRpnPe5DArwdQVf9Wng=; b=g7vCD/dZ8llmD9tVtGcqAJiS1m
-	S30mywGh2BHJwvOiH7SyGSV5a5/pXXOH+e29ppsZw8bmGMG4OX8xzdI25mGxavd5qAvss/EbSGXnp
-	bu8hRhebxGjFpohnJIEMKUTW/okGr26Wu2JMkdfw8YopUBTZtYGzeE3ZEPqTEa9ipWCoSFtfeQZ4H
-	MgHD1ROsozUnKEM5wQhxugVXFZJliSf5RpNvV5qrDAGQ8L8jDyyX8AWWDw2A3xTOxOLBR2Rjv1LdK
-	dWnRKHNUrCkn2/8o55MHFc132/PVmF8N0btMWkm5DVAUOxNDKPE+dG2oqLPT0hft9lKTiXoToy8Sg
-	e9Aa9yMw==;
+	bh=rHidILVxHmQud6T4VkFgGHB6pmbaaIOnsEHKZ6fqmeI=; b=HDP6JX1iZZtfG6rqPee77GvJAe
+	nxmlognmZX00tX0VvRL5UA6aPRt2cvobqvrEkAYAxS1iFoFhQmMY7pyIQt1GcjBBB7fwAssvUoztK
+	DcbTGtgD7e9pDXIntke5oxlG4sJfpK+dy57f96G7Zl7EV5CyRNHl2gblvpFK8oYZXU2u6FiVLqk4g
+	LJShurzfDG41o+SQbrXncpB63K7actXK4YKJYM9C38JROeGwN6ND1W0NUd2AVPNuQK69/QGf+ZSBV
+	1Bp32/3k+MRLcpLun9N31jzLMMhp1nU9MEPzbjFmZcVCVM3sjvf2GKZ1NN5vjYBVKZfhfunkxp1bq
+	0Dncdt4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pypxe-004puZ-2x;
-	Tue, 16 May 2023 08:23:10 +0000
+	id 1pyqgp-004zdC-3D;
+	Tue, 16 May 2023 09:09:52 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pypxc-004ptV-13
+	id 1pyqgm-004zcP-1X
 	for barebox@lists.infradead.org;
-	Tue, 16 May 2023 08:23:09 +0000
+	Tue, 16 May 2023 09:09:49 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pypxb-0006Ly-3P; Tue, 16 May 2023 10:23:07 +0200
+	id 1pyqgk-0004qu-Ja; Tue, 16 May 2023 11:09:46 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pypxa-0006Dk-Bl; Tue, 16 May 2023 10:23:06 +0200
-Date: Tue, 16 May 2023 10:23:06 +0200
+	id 1pyqgj-0001Nn-Q9; Tue, 16 May 2023 11:09:45 +0200
+Date: Tue, 16 May 2023 11:09:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20230516082306.GQ29365@pengutronix.de>
+Message-ID: <20230516090945.GR29365@pengutronix.de>
 References: <20230512111008.1120833-1-s.hauer@pengutronix.de>
- <20230512111008.1120833-11-s.hauer@pengutronix.de>
- <acf69b00-9c79-1c84-d076-a940b9a1f03a@pengutronix.de>
+ <20230512111008.1120833-13-s.hauer@pengutronix.de>
+ <2480434f-c479-97e5-10b0-a6261a146d7f@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <acf69b00-9c79-1c84-d076-a940b9a1f03a@pengutronix.de>
+In-Reply-To: <2480434f-c479-97e5-10b0-a6261a146d7f@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230516_012308_362199_F3888D8D 
-X-CRM114-Status: GOOD (  31.50  )
+X-CRM114-CacheID: sfid-20230516_020948_514332_A173E9C4 
+X-CRM114-Status: GOOD (  29.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,81 +82,77 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 10/27] ARM: i.MX: Drop HAB workaround
+Subject: Re: [PATCH 12/27] ARM: mmu: move dma_sync_single_for_device to extra
+ file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, May 12, 2023 at 08:09:06PM +0200, Ahmad Fatoum wrote:
+On Fri, May 12, 2023 at 08:30:01PM +0200, Ahmad Fatoum wrote:
 > On 12.05.23 13:09, Sascha Hauer wrote:
-> > The i.MX HAB code on i.MX6 has to jump into ROM which happens to start
-> > at 0x0. To make that possible we used to map the ROM cached and jumped
-> > to it before the MMU is initialized. Instead, remap the ROM as needed
-> > in the HAB code so that we can safely jump into ROM with MMU enabled.
+> > The next patch merges the mmu.c files with their corresponding
+> > mmu-early.c files. Before doing that move functions which can't
+> > be compiled for PBL out to extra files.
 > > 
 > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > > ---
-> >  arch/arm/cpu/mmu-early_32.c | 7 -------
-> >  drivers/hab/habv4.c         | 9 ++++++++-
-> >  2 files changed, 8 insertions(+), 8 deletions(-)
+> >  arch/arm/cpu/Makefile |  1 +
+> >  arch/arm/cpu/dma_32.c | 20 ++++++++++++++++++++
+> >  arch/arm/cpu/dma_64.c | 16 ++++++++++++++++
+> >  arch/arm/cpu/mmu_32.c | 18 ------------------
+> >  arch/arm/cpu/mmu_64.c | 13 -------------
+> >  5 files changed, 37 insertions(+), 31 deletions(-)
+> >  create mode 100644 arch/arm/cpu/dma_32.c
+> >  create mode 100644 arch/arm/cpu/dma_64.c
 > > 
-> > diff --git a/arch/arm/cpu/mmu-early_32.c b/arch/arm/cpu/mmu-early_32.c
-> > index 07c5917e6a..94bde44c9b 100644
-> > --- a/arch/arm/cpu/mmu-early_32.c
-> > +++ b/arch/arm/cpu/mmu-early_32.c
-> > @@ -58,12 +58,5 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize,
-> >  	/* maps main memory as cachable */
-> >  	map_region(membase, memsize, PMD_SECT_DEF_CACHED);
+> > diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
+> > index fef2026da5..cd5f36eb49 100644
+> > --- a/arch/arm/cpu/Makefile
+> > +++ b/arch/arm/cpu/Makefile
+> > @@ -4,6 +4,7 @@ obj-y += cpu.o
 > >  
-> > -	/*
-> > -	 * With HAB enabled we call into the ROM code later in imx6_hab_get_status().
-> > -	 * Map the ROM cached which has the effect that the XN bit is not set.
-> > -	 */
-> > -	if (IS_ENABLED(CONFIG_HABV4) && IS_ENABLED(CONFIG_ARCH_IMX6))
-> > -		map_region(0x0, SZ_1M, PMD_SECT_DEF_CACHED);
-> > -
-> >  	__mmu_cache_on();
-> >  }
-> > diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-> > index 252e38f655..d2494db114 100644
-> > --- a/drivers/hab/habv4.c
-> > +++ b/drivers/hab/habv4.c
-> > @@ -11,6 +11,9 @@
-> >  #include <hab.h>
-> >  #include <init.h>
-> >  #include <types.h>
-> > +#include <mmu.h>
-> > +#include <zero_page.h>
-> > +#include <linux/sizes.h>
-> >  #include <linux/arm-smccc.h>
-> >  #include <asm/cache.h>
-> >  
-> > @@ -613,12 +616,16 @@ static int init_imx6_hab_get_status(void)
-> >  		/* can happen in multi-image builds and is not an error */
-> >  		return 0;
-> >  
-> > +	arch_remap_range(0x0, SZ_1M, MAP_CACHED);
-> 
-> This affects SZ_1M bytes.
-> 
+> >  obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions_$(S64_32).o interrupts_$(S64_32).o
+> >  obj-$(CONFIG_MMU) += mmu_$(S64_32).o mmu-common.o
+> > +obj-$(CONFIG_MMU) += dma_$(S64_32).o
+> >  obj-pbl-y += lowlevel_$(S64_32).o
+> >  obj-pbl-$(CONFIG_MMU) += mmu-early_$(S64_32).o
+> >  obj-pbl-$(CONFIG_CPU_32v7) += hyp.o
+> > diff --git a/arch/arm/cpu/dma_32.c b/arch/arm/cpu/dma_32.c
+> > new file mode 100644
+> > index 0000000000..a66aa26b9b
+> > --- /dev/null
+> > +++ b/arch/arm/cpu/dma_32.c
+> > @@ -0,0 +1,20 @@
+> > +#include <dma.h>
+> > +#include <asm/mmu.h>
 > > +
-> >  	/*
-> >  	 * Nobody will check the return value if there were HAB errors, but the
-> >  	 * initcall will fail spectaculously with a strange error message.
-> >  	 */
-> >  	imx6_hab_get_status();
-> >  
-> > +	zero_page_faulting();
+> > +void dma_sync_single_for_device(dma_addr_t address, size_t size,
+> > +				enum dma_data_direction dir)
+> > +{
+> > +	/*
+> > +	 * FIXME: This function needs a device argument to support non 1:1 mappings
+> > +	 */
+> > +
+> > +	if (dir == DMA_FROM_DEVICE) {
+> > +		__dma_inv_range(address, address + size);
+> > +		if (outer_cache.inv_range)
+> > +			outer_cache.inv_range(address, address + size);
 > 
-> This affects only 4K. The rest of the 1M can now be speculated into :/
+> I know this is unrelated to your series, but this is wrong. The outermost
+> cache must be be invalidated before L1. Otherwise we could have this
+> unlucky constellation:
+> 
+>   - CPU is invalidating L1
+>   - HW prefetcher wants to load something into L1
+>   - Stale data in L2 is loaded into L1
+>   - Only now CPU invalidates L2
 
-Ok, I'll add a
+L1 is invalidated after the DMA transfer in dma_sync_single_for_cpu(),
+so stale data in L1 shouldn't be a problem.
 
-	arch_remap_range((void *)PAGE_SIZE, SZ_1M - PAGE_SIZE, MAP_UNCACHED);
-
-to remap the remaining space as uncached.
+However, the prefetcher could cause stale entries in L2 during the DMA
+transfer, so we have to invalidate that as well after the transfer.
 
 Sascha
-
 
 -- 
 Pengutronix e.K.                           |                             |
