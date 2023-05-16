@@ -1,65 +1,63 @@
-Delivery-date: Tue, 16 May 2023 11:11:05 +0200
+Delivery-date: Tue, 16 May 2023 12:57:11 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pyqi2-002lDG-OF
-	for lore@lore.pengutronix.de; Tue, 16 May 2023 11:11:05 +0200
+	id 1pysMj-002pqD-4W
+	for lore@lore.pengutronix.de; Tue, 16 May 2023 12:57:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pyqi0-0005NR-Eo
-	for lore@pengutronix.de; Tue, 16 May 2023 11:11:05 +0200
+	id 1pysMg-00045X-OI
+	for lore@pengutronix.de; Tue, 16 May 2023 12:57:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rHidILVxHmQud6T4VkFgGHB6pmbaaIOnsEHKZ6fqmeI=; b=HDP6JX1iZZtfG6rqPee77GvJAe
-	nxmlognmZX00tX0VvRL5UA6aPRt2cvobqvrEkAYAxS1iFoFhQmMY7pyIQt1GcjBBB7fwAssvUoztK
-	DcbTGtgD7e9pDXIntke5oxlG4sJfpK+dy57f96G7Zl7EV5CyRNHl2gblvpFK8oYZXU2u6FiVLqk4g
-	LJShurzfDG41o+SQbrXncpB63K7actXK4YKJYM9C38JROeGwN6ND1W0NUd2AVPNuQK69/QGf+ZSBV
-	1Bp32/3k+MRLcpLun9N31jzLMMhp1nU9MEPzbjFmZcVCVM3sjvf2GKZ1NN5vjYBVKZfhfunkxp1bq
-	0Dncdt4A==;
+	bh=mRVfUenRM5hLDeI1oYW/UWGrkzILCgp7kuXFs06CTMM=; b=i5E5qfiR7QnI+MNw17XQA+vmP6
+	hkho6CLTcOETrA8C3UrH3KXTl9yc/HCRlRSSlPWDUcmd5i24NF741g3JN6YTn8joQDKW8w38UU2kv
+	rmEE47w2JdNrEy7Ia9fJJEVG0l7OnP7gdWUpxL4NoplfIZei5NPIhf20H739VxC1Di+RsGONwaeO9
+	j7Vo6Kg/0P2cn6MN526q99BwrlUmi9MBTyy3a4W/fxatNYjg693/UDRiTjevtKN0H8xRXo1G8AzLU
+	D1H47oyhJehOBpkl8VoirPevsd3g6Wc5kveyfeRZVqfcj6phsKaS+qeZ7tu5cadJnRwCGqweTOW2J
+	JfdqimrQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pyqgp-004zdC-3D;
-	Tue, 16 May 2023 09:09:52 +0000
+	id 1pysLK-005Sg3-2k;
+	Tue, 16 May 2023 10:55:46 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pyqgm-004zcP-1X
+	id 1pysLH-005SbA-04
 	for barebox@lists.infradead.org;
-	Tue, 16 May 2023 09:09:49 +0000
+	Tue, 16 May 2023 10:55:44 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pyqgk-0004qu-Ja; Tue, 16 May 2023 11:09:46 +0200
+	id 1pysLC-0003tv-DR; Tue, 16 May 2023 12:55:38 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pyqgj-0001Nn-Q9; Tue, 16 May 2023 11:09:45 +0200
-Date: Tue, 16 May 2023 11:09:45 +0200
+	id 1pysLB-0005eP-Ki; Tue, 16 May 2023 12:55:37 +0200
+Date: Tue, 16 May 2023 12:55:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20230516090945.GR29365@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20230516105537.GR15436@pengutronix.de>
 References: <20230512111008.1120833-1-s.hauer@pengutronix.de>
- <20230512111008.1120833-13-s.hauer@pengutronix.de>
- <2480434f-c479-97e5-10b0-a6261a146d7f@pengutronix.de>
+ <20230512111008.1120833-28-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <2480434f-c479-97e5-10b0-a6261a146d7f@pengutronix.de>
+In-Reply-To: <20230512111008.1120833-28-s.hauer@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230516_020948_514332_A173E9C4 
-X-CRM114-Status: GOOD (  29.73  )
+X-CRM114-CacheID: sfid-20230516_035543_056513_59CB347C 
+X-CRM114-Status: GOOD (  26.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,75 +80,52 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 12/27] ARM: mmu: move dma_sync_single_for_device to extra
- file
+Subject: Re: [PATCH 27/27] ARM: mmu64: Use two level pagetables in early code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, May 12, 2023 at 08:30:01PM +0200, Ahmad Fatoum wrote:
-> On 12.05.23 13:09, Sascha Hauer wrote:
-> > The next patch merges the mmu.c files with their corresponding
-> > mmu-early.c files. Before doing that move functions which can't
-> > be compiled for PBL out to extra files.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/cpu/Makefile |  1 +
-> >  arch/arm/cpu/dma_32.c | 20 ++++++++++++++++++++
-> >  arch/arm/cpu/dma_64.c | 16 ++++++++++++++++
-> >  arch/arm/cpu/mmu_32.c | 18 ------------------
-> >  arch/arm/cpu/mmu_64.c | 13 -------------
-> >  5 files changed, 37 insertions(+), 31 deletions(-)
-> >  create mode 100644 arch/arm/cpu/dma_32.c
-> >  create mode 100644 arch/arm/cpu/dma_64.c
-> > 
-> > diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-> > index fef2026da5..cd5f36eb49 100644
-> > --- a/arch/arm/cpu/Makefile
-> > +++ b/arch/arm/cpu/Makefile
-> > @@ -4,6 +4,7 @@ obj-y += cpu.o
-> >  
-> >  obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions_$(S64_32).o interrupts_$(S64_32).o
-> >  obj-$(CONFIG_MMU) += mmu_$(S64_32).o mmu-common.o
-> > +obj-$(CONFIG_MMU) += dma_$(S64_32).o
-> >  obj-pbl-y += lowlevel_$(S64_32).o
-> >  obj-pbl-$(CONFIG_MMU) += mmu-early_$(S64_32).o
-> >  obj-pbl-$(CONFIG_CPU_32v7) += hyp.o
-> > diff --git a/arch/arm/cpu/dma_32.c b/arch/arm/cpu/dma_32.c
-> > new file mode 100644
-> > index 0000000000..a66aa26b9b
-> > --- /dev/null
-> > +++ b/arch/arm/cpu/dma_32.c
-> > @@ -0,0 +1,20 @@
-> > +#include <dma.h>
-> > +#include <asm/mmu.h>
-> > +
-> > +void dma_sync_single_for_device(dma_addr_t address, size_t size,
-> > +				enum dma_data_direction dir)
-> > +{
-> > +	/*
-> > +	 * FIXME: This function needs a device argument to support non 1:1 mappings
-> > +	 */
-> > +
-> > +	if (dir == DMA_FROM_DEVICE) {
-> > +		__dma_inv_range(address, address + size);
-> > +		if (outer_cache.inv_range)
-> > +			outer_cache.inv_range(address, address + size);
+On Fri, May 12, 2023 at 01:10:08PM +0200, Sascha Hauer wrote:
+> So far we used 1GiB sized sections in the early MMU setup. This has
+> the disadvantage that we can't use the MMU in early code when we
+> require a finer granularity. Rockchip for example keeps TF-A code
+> in the lower memory so the code just skipped MMU initialization.
+> Also we can't properly map the OP-TEE space at the end of SDRAM non
+> executable.
 > 
-> I know this is unrelated to your series, but this is wrong. The outermost
-> cache must be be invalidated before L1. Otherwise we could have this
-> unlucky constellation:
+> With this patch we now use two level page tables and can map with 4KiB
+> granularity.
 > 
->   - CPU is invalidating L1
->   - HW prefetcher wants to load something into L1
->   - Stale data in L2 is loaded into L1
->   - Only now CPU invalidates L2
+> The MMU setup in barebox proper changes as well. Instead of disabling
+> the MMU for reconfiguration we can now keep the MMU enabled and just
+> add the mappings for SDRAM banks not known to the early code.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>  arch/arm/cpu/mmu_64.c | 97 ++++++++++---------------------------------
+>  1 file changed, 21 insertions(+), 76 deletions(-)
+> 
+> diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+> index 4b75be621d..3f9b52bbdb 100644
+> --- a/arch/arm/cpu/mmu_64.c
+> +++ b/arch/arm/cpu/mmu_64.c
+> @@ -192,37 +193,25 @@ static void mmu_enable(void)
+>  void __mmu_init(bool mmu_on)
+>  {
+>  	struct memory_bank *bank;
+> -	unsigned int el;
+> -
+> -	if (mmu_on)
+> -		mmu_disable();
+> -
+> -	ttb = alloc_pte();
+> -	el = current_el();
+> -	set_ttbr_tcr_mair(el, (uint64_t)ttb, calc_tcr(el, BITS_PER_VA),
+> -			  MEMORY_ATTRIBUTES);
+>  
+> -	pr_debug("ttb: 0x%p\n", ttb);
+> +	reserve_sdram_region("OP-TEE", 0xf0000000 - OPTEE_SIZE, OPTEE_SIZE);
 
-L1 is invalidated after the DMA transfer in dma_sync_single_for_cpu(),
-so stale data in L1 shouldn't be a problem.
-
-However, the prefetcher could cause stale entries in L2 during the DMA
-transfer, so we have to invalidate that as well after the transfer.
+This line shouldn't be here. I only used that for testing.
 
 Sascha
 
