@@ -1,65 +1,58 @@
-Delivery-date: Wed, 17 May 2023 15:15:55 +0200
+Delivery-date: Wed, 17 May 2023 15:16:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzH0W-004KBD-D9
-	for lore@lore.pengutronix.de; Wed, 17 May 2023 15:15:55 +0200
+	id 1pzH0q-004KCT-Pl
+	for lore@lore.pengutronix.de; Wed, 17 May 2023 15:16:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzH0U-00057l-1z
-	for lore@pengutronix.de; Wed, 17 May 2023 15:15:54 +0200
+	id 1pzH0o-0005E7-EH
+	for lore@pengutronix.de; Wed, 17 May 2023 15:16:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FQUXah6quUYOWI1Xq7GzDCI1mGYDG3YZsA447kM0mp8=; b=CeIwu/U2CeeqOs0D6gwZknx8Kq
-	9SwZWTJ/WzO2kW57oeOorzsorckDDca8ljCMXeUj1M+UqQno4Fo9wkmejXXy0qgt6q/cLAwvrDoAO
-	PoaJeaSZG2qpZFlg9V77aNWHAKYlrHDBE0fGguDse5OK9UqRDNGDCZEt69ogQtCifG7XGr6duLnAC
-	mIFum7Q1ryveO0y38WUNtgyxXHng8GRV3GD0fwLDMLh/DMPuIQyi8ErkTL/eledt8cLhboo9J6Yyu
-	uoXStce7vGkweXtKKTtr8TYQ4fhSRuqWxXqvJd6SIgIvv7cippzSM1lJCdDg4Z7EUpI36tSkOVo6c
-	8Z5EyPkg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=U2EB8aKKNSZq+vFfkWcCKWJDLQUkXIbL2Hcezy97bxI=; b=wXHQuQ5btEtgCcKa6SEV3OP0N3
+	uC/5LuNj08LnAltNUrL8KPStgJz/YzIs8/SATJ36uY1P91/pluAIjCXap+/yh5Ven7jaoulLYSFVu
+	KNA904UMk+H59bz5XR2u7IkGwKXYhl0HeP0Uno7CIAIHg6DY3wnmeqPys66IyfP+mA9arOylxJuOa
+	hO7e2+wgYOO7qJ405fHIs0dTnMR/iERyrRIOv6FMaLVNNDpIOiPPYxGnsl2qPl99tFL0wGlc+xveZ
+	RTOuD+oP6zBVvZXK638SDv+zSUSfHMT8u1x9XTV8PvRaAPKH8fNFemMLUV/HujzxqjvL8nCQv1r8i
+	ZjQhXKDQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzGzU-009wRL-2o;
-	Wed, 17 May 2023 13:14:52 +0000
+	id 1pzGzq-009wXX-0R;
+	Wed, 17 May 2023 13:15:14 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzGzR-009wQ7-0L
+	id 1pzGzm-009wWF-11
 	for barebox@lists.infradead.org;
-	Wed, 17 May 2023 13:14:50 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pzGzP-0004b4-97; Wed, 17 May 2023 15:14:47 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1pzGzO-0005mY-FJ; Wed, 17 May 2023 15:14:46 +0200
-Date: Wed, 17 May 2023 15:14:46 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20230517131446.GZ29365@pengutronix.de>
-References: <20230517090340.3954615-1-s.hauer@pengutronix.de>
- <20230517090340.3954615-5-s.hauer@pengutronix.de>
- <88966b89-6574-4240-80e1-031137ab73c9@pengutronix.de>
+	Wed, 17 May 2023 13:15:11 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1pzGzl-0004fu-0k; Wed, 17 May 2023 15:15:09 +0200
+Message-ID: <99b0867f-99c0-7a30-78b9-916643094c0c@pengutronix.de>
+Date: Wed, 17 May 2023 15:15:07 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <88966b89-6574-4240-80e1-031137ab73c9@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Content-Language: en-US
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+References: <20230517090340.3954615-1-s.hauer@pengutronix.de>
+ <20230517090340.3954615-24-s.hauer@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230517090340.3954615-24-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230517_061449_143372_F7603D66 
-X-CRM114-Status: GOOD (  24.96  )
+X-CRM114-CacheID: sfid-20230517_061510_355757_EBCDE6CA 
+X-CRM114-Status: GOOD (  24.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,69 +70,87 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 04/34] ARM: put scratch mem area below OP-TEE
+Subject: Re: [PATCH v2 23/34] ARM: mmu64: create alloc_pte()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, May 17, 2023 at 02:48:43PM +0200, Ahmad Fatoum wrote:
-> On 17.05.23 11:03, Sascha Hauer wrote:
-> > We want to reserve memory for OP-TEE at the end of available SDRAM,
-> > so move the scratch area below OP-TEE and not above.
-> > 
-> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > ---
-> >  arch/arm/include/asm/barebox-arm.h | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
-> > index f446044be6..6e6606d005 100644
-> > --- a/arch/arm/include/asm/barebox-arm.h
-> > +++ b/arch/arm/include/asm/barebox-arm.h
-> > @@ -71,14 +71,14 @@ static inline void arm_fixup_vectors(void)
-> >  
-> >  void *barebox_arm_boot_dtb(void);
-> >  
-> > -#define arm_mem_scratch(endmem) ((endmem) - SZ_32K)
-> > +#define arm_mem_scratch(endmem) ((endmem) - OPTEE_SIZE - SZ_32K)
-> >  
-> >  static inline const void *arm_mem_scratch_get(void)
-> >  {
-> >  	return (const void *)arm_mem_scratch(arm_mem_endmem_get());
-> >  }
-> >  
-> > -#define arm_mem_stack_top(endmem) ((endmem) - SZ_64K - OPTEE_SIZE)
-> > +#define arm_mem_stack_top(endmem) ((endmem) - SZ_64K)
+On 17.05.23 11:03, Sascha Hauer wrote:
+> This is a preparation for using two level page tables in the PBL.
+> To do that we need a way to allocate page tables in PBL. As malloc
+> is not available in PBL, implement a function to allocate a page table
+> from the area we also place the TTB.
 > 
-> I don't understand why you drop OPTEE_SIZE here. Wouldn't the stack
-> now eat into the OP-TEE region?
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-I accidently thought that arm_mem_stack_top() is calculated based on the
-region above it, namely arm_mem_scratch(), but really it's calculated
-based on endmem directly.
+Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Indeed it's wrong like this, it should be:
-
-#define arm_mem_stack_top(endmem) (arm_mem_scratch(endmem) - SZ_64K)
-
-I just stumbled upon the SZ_64K here. I followed the value back to 2016
-and found 75c96bd2459e ("ARM: Do not use last 64KiB of address space for
-barebox"). I had a board that time that has SDRAM at the very end of the
-32bit address space. On that board it happened that we overwrite parts
-of the lowlevel memory with the vector table. It seems that has been
-lost over time as now we put the scratch space and possibly parts of
-OP-TEE into the last 64k.
-
-Sascha
+> ---
+>  arch/arm/cpu/mmu_64.c | 20 +++++++++++++++++---
+>  1 file changed, 17 insertions(+), 3 deletions(-)
+> 
+> diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+> index 55ada960c5..3cc5b14a46 100644
+> --- a/arch/arm/cpu/mmu_64.c
+> +++ b/arch/arm/cpu/mmu_64.c
+> @@ -32,7 +32,20 @@ static void set_table(uint64_t *pt, uint64_t *table_addr)
+>  	*pt = val;
+>  }
+>  
+> -static uint64_t *create_table(void)
+> +#ifdef __PBL__
+> +static uint64_t *alloc_pte(void)
+> +{
+> +	static unsigned int idx;
+> +
+> +	idx++;
+> +
+> +	if (idx * GRANULE_SIZE >= ARM_EARLY_PAGETABLE_SIZE)
+> +		return NULL;
+> +
+> +	return (void *)ttb + idx * GRANULE_SIZE;
+> +}
+> +#else
+> +static uint64_t *alloc_pte(void)
+>  {
+>  	uint64_t *new_table = xmemalign(GRANULE_SIZE, GRANULE_SIZE);
+>  
+> @@ -41,6 +54,7 @@ static uint64_t *create_table(void)
+>  
+>  	return new_table;
+>  }
+> +#endif
+>  
+>  static __maybe_unused uint64_t *find_pte(uint64_t addr)
+>  {
+> @@ -81,7 +95,7 @@ static void split_block(uint64_t *pte, int level)
+>  	/* level describes the parent level, we need the child ones */
+>  	levelshift = level2shift(level + 1);
+>  
+> -	new_table = create_table();
+> +	new_table = alloc_pte();
+>  
+>  	for (i = 0; i < MAX_PTE_ENTRIES; i++) {
+>  		new_table[i] = old_pte | (i << levelshift);
+> @@ -183,7 +197,7 @@ void __mmu_init(bool mmu_on)
+>  	if (mmu_on)
+>  		mmu_disable();
+>  
+> -	ttb = create_table();
+> +	ttb = alloc_pte();
+>  	el = current_el();
+>  	set_ttbr_tcr_mair(el, (uint64_t)ttb, calc_tcr(el, BITS_PER_VA),
+>  			  MEMORY_ATTRIBUTES);
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
