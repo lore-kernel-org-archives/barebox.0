@@ -1,76 +1,76 @@
-Delivery-date: Wed, 17 May 2023 11:41:46 +0200
+Delivery-date: Wed, 17 May 2023 11:41:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzDfH-0049t0-Ts
-	for lore@lore.pengutronix.de; Wed, 17 May 2023 11:41:46 +0200
+	id 1pzDfJ-0049tq-Db
+	for lore@lore.pengutronix.de; Wed, 17 May 2023 11:41:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzDfF-0002jL-H7
-	for lore@pengutronix.de; Wed, 17 May 2023 11:41:46 +0200
+	id 1pzDfG-0002kS-LE
+	for lore@pengutronix.de; Wed, 17 May 2023 11:41:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gEYSs9DzDCAaABDTD6yj+EzomtAvHYMbDuL42uJFc/Q=; b=LEKD5K5S6/OUM27n43kMPQYngM
-	Pzki/Tkc3bAJ2Gixzk+nMimzl41Lunfxah5KbGKHSVsQzAXzaT6QPArolnz+tSIXALIZMsMTrFj19
-	l2uDPeGCwwMLDnGaHf1QZnbyWdRBafjQjBcSQlV53hOO6BsMZC/ZOehOyfWYg5HxXO59puoKFyoHP
-	Dw4VfOWmQ/YZ/h3AEw8VW62DnD9wQ9fMVaDRJ8IoJOqIihrVERI6Z3hAeiORWV/1Uwso3sp9iULDw
-	b4EuABVQhCPpUrYyXUEX1iFJ9YIsLycd9tq7i1AHVHOcRmheMoYc+lDV0acecdtM7+1f5Y5goFKjL
-	bdV+PrAw==;
+	bh=k6WRjvMbpNDWTvab0g+WHggBl14zD7nx+BTqqpcCOvM=; b=dmT5MQ9vq8hYnH3Eo7UbxzFlvq
+	NrR22zJgkW3UNqvl6p7JhMlmtaeUGkWsuST1BgWFFuF7XMOD9toxrqeIAIvaz9cL3lXFXN478GF3l
+	CyPb/WXb2NKq4FdvRq6BQmmi/JnzRH/9NHTR7q5XMJcb90GbjI3mdASyEKigeht2uHeBmewaVoAMg
+	jWElxdzZI+R7fKZqj3slQk9MreZxOGW4crW6QZKlEpX7C97gG41g01T2ElqMqFLRTqgB29k8Pg1PV
+	EKLncxo/k6Rt5f+x5yjcMLjh+kF/PEeul6y7V94c1zYyrGZ07uXcGRpqUS6lxRklPTpy6woL+RqXi
+	n5TwrvAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzDeC-0096Yg-33;
-	Wed, 17 May 2023 09:40:40 +0000
+	id 1pzDeB-0096Ve-1Y;
+	Wed, 17 May 2023 09:40:39 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzDe2-0096Lj-23
+	id 1pzDe2-0096Lj-0W
 	for barebox@bombadil.infradead.org;
-	Wed, 17 May 2023 09:40:31 +0000
+	Wed, 17 May 2023 09:40:30 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=gEYSs9DzDCAaABDTD6yj+EzomtAvHYMbDuL42uJFc/Q=; b=lSXFavunzS6LzpqlX8+jrg2nWS
-	J010UfS40NVlBYg3MLHNWRcNOddD2iXBuH7K6ziGaTcozqJY+Y1/iZ8URgOMG+EqA5ZJmVtrxWFHJ
-	LWwbdZcfeVxu17byVBsDWnn/99fY+Nq9iZHzBlvDPGpChUqx1h9eZjoZXN6DgnC6nLGadd5Es3lJI
-	AYS9aWVqPFX0ITtXvrvxTjT59ZTs8CgMvpxAFTfTn39HLHFAXhcJh0jWkMaV2etQ3K4iGX/adI+0A
-	n7/o2oyP2AvA7kp14EWtjUXat0wroM1Q3MVUZYLgczE7sglF/p9N946g/+WT+YgoMcIKUooeKM1VK
-	gu40r8tg==;
+	bh=k6WRjvMbpNDWTvab0g+WHggBl14zD7nx+BTqqpcCOvM=; b=mEBuZ1RnVV/RjUqj/LdI8Jmm+i
+	ZV977tadEXMKyeNJf0AHTa8q74Uk4NrbkBWvMa+iF7TnIxxI/vAw19LVil0rMwvHa8Z7bZhEK3mkK
+	TFmCUR3dK1iNr/bgq69zsfMgqfGmUZvhUbxDcm6+wjAML3mXrtxeyRJuRgpVLLimwoBQCtd/OD9Vx
+	y1sUb2ItS8ykY8B5jQaaj5voVZQD/NptM4qzqg614U9BCbbrPE3byALPmGU3CtRhclTK8k1cNCoj5
+	v6F8yOFSso/4OfGwlRZQvCLG9XWem3vGT1IZWUuRK8xudp5dIi13gLXjKjINrMi0m0JeI8s0JBl8k
+	zrFZkVGg==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzD4Y-00DAxs-2T
+	id 1pzD4Y-00DAxv-1w
 	for barebox@lists.infradead.org;
 	Wed, 17 May 2023 09:03:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pzD4V-00040h-0T; Wed, 17 May 2023 11:03:47 +0200
+	id 1pzD4V-00040k-5z; Wed, 17 May 2023 11:03:47 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pzD4U-000o7Q-Aj; Wed, 17 May 2023 11:03:46 +0200
+	id 1pzD4U-000o7X-F6; Wed, 17 May 2023 11:03:46 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pzD4P-00Gas4-TL; Wed, 17 May 2023 11:03:41 +0200
+	id 1pzD4Q-00GasS-1o; Wed, 17 May 2023 11:03:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 17 May 2023 11:03:25 +0200
-Message-Id: <20230517090340.3954615-20-s.hauer@pengutronix.de>
+Date: Wed, 17 May 2023 11:03:31 +0200
+Message-Id: <20230517090340.3954615-26-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230517090340.3954615-1-s.hauer@pengutronix.de>
 References: <20230517090340.3954615-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230517_100351_133490_0E358D06 
-X-CRM114-Status: GOOD (  18.17  )
+X-CRM114-CacheID: sfid-20230517_100351_136548_EF6E5DDF 
+X-CRM114-Status: GOOD (  14.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -93,132 +93,68 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 19/34] ARM: mmu: move dma_sync_single_for_device to extra file
+Subject: [PATCH v2 25/34] ARM: mmu: always do MMU initialization early when MMU is enabled
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The next patch merges the mmu.c files with their corresponding
-mmu-early.c files. Before doing that move functions which can't
-be compiled for PBL out to extra files.
+Drop the CONFIG_MMU_EARLY and make early MMU initialization the default.
+
+Doing so allows us for some simplifications in the MMU code as we have
+less code pathes to care and think about.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/Makefile |  1 +
- arch/arm/cpu/dma_32.c | 20 ++++++++++++++++++++
- arch/arm/cpu/dma_64.c | 16 ++++++++++++++++
- arch/arm/cpu/mmu_32.c | 18 ------------------
- arch/arm/cpu/mmu_64.c | 13 -------------
- 5 files changed, 37 insertions(+), 31 deletions(-)
- create mode 100644 arch/arm/cpu/dma_32.c
- create mode 100644 arch/arm/cpu/dma_64.c
+ arch/arm/cpu/start.c      | 2 +-
+ arch/arm/cpu/uncompress.c | 2 +-
+ common/Kconfig            | 9 ---------
+ 3 files changed, 2 insertions(+), 11 deletions(-)
 
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index fef2026da5..cd5f36eb49 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -4,6 +4,7 @@ obj-y += cpu.o
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 165d2d94e6..2e987ec41d 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -216,7 +216,7 @@ __noreturn __no_sanitize_address void barebox_non_pbl_start(unsigned long membas
  
- obj-$(CONFIG_ARM_EXCEPTIONS) += exceptions_$(S64_32).o interrupts_$(S64_32).o
- obj-$(CONFIG_MMU) += mmu_$(S64_32).o mmu-common.o
-+obj-$(CONFIG_MMU) += dma_$(S64_32).o
- obj-pbl-y += lowlevel_$(S64_32).o
- obj-pbl-$(CONFIG_MMU) += mmu-early_$(S64_32).o
- obj-pbl-$(CONFIG_CPU_32v7) += hyp.o
-diff --git a/arch/arm/cpu/dma_32.c b/arch/arm/cpu/dma_32.c
-new file mode 100644
-index 0000000000..a66aa26b9b
---- /dev/null
-+++ b/arch/arm/cpu/dma_32.c
-@@ -0,0 +1,20 @@
-+#include <dma.h>
-+#include <asm/mmu.h>
-+
-+void dma_sync_single_for_device(dma_addr_t address, size_t size,
-+				enum dma_data_direction dir)
-+{
-+	/*
-+	 * FIXME: This function needs a device argument to support non 1:1 mappings
-+	 */
-+
-+	if (dir == DMA_FROM_DEVICE) {
-+		__dma_inv_range(address, address + size);
-+		if (outer_cache.inv_range)
-+			outer_cache.inv_range(address, address + size);
-+	} else {
-+		__dma_clean_range(address, address + size);
-+		if (outer_cache.clean_range)
-+			outer_cache.clean_range(address, address + size);
-+	}
-+}
-diff --git a/arch/arm/cpu/dma_64.c b/arch/arm/cpu/dma_64.c
-new file mode 100644
-index 0000000000..b4ae736c9b
---- /dev/null
-+++ b/arch/arm/cpu/dma_64.c
-@@ -0,0 +1,16 @@
-+#include <dma.h>
-+#include <asm/mmu.h>
-+#include <asm/cache.h>
-+
-+void dma_sync_single_for_device(dma_addr_t address, size_t size,
-+                                enum dma_data_direction dir)
-+{
-+	/*
-+	 * FIXME: This function needs a device argument to support non 1:1 mappings
-+	 */
-+
-+	if (dir == DMA_FROM_DEVICE)
-+		v8_inv_dcache_range(address, address + size - 1);
-+	else
-+		v8_flush_dcache_range(address, address + size - 1);
-+}
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index 7b31938ecd..10f447874c 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -494,21 +494,3 @@ void *dma_alloc_writecombine(size_t size, dma_addr_t *dma_handle)
- {
- 	return dma_alloc_map(size, dma_handle, ARCH_MAP_WRITECOMBINE);
- }
--
--void dma_sync_single_for_device(dma_addr_t address, size_t size,
--				enum dma_data_direction dir)
--{
--	/*
--	 * FIXME: This function needs a device argument to support non 1:1 mappings
--	 */
--
--	if (dir == DMA_FROM_DEVICE) {
--		__dma_inv_range(address, address + size);
--		if (outer_cache.inv_range)
--			outer_cache.inv_range(address, address + size);
--	} else {
--		__dma_clean_range(address, address + size);
--		if (outer_cache.clean_range)
--			outer_cache.clean_range(address, address + size);
--	}
--}
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index c7c16b527b..9150de1676 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -241,16 +241,3 @@ void dma_flush_range(void *ptr, size_t size)
+ 	mem_malloc_init((void *)malloc_start, (void *)malloc_end - 1);
  
- 	v8_flush_dcache_range(start, end);
- }
+-	if (IS_ENABLED(CONFIG_MMU_EARLY) && !IS_ENABLED(CONFIG_PBL_IMAGE)) {
++	if (IS_ENABLED(CONFIG_MMU) && !IS_ENABLED(CONFIG_PBL_IMAGE)) {
+ 		arm_early_mmu_cache_invalidate();
+ 		mmu_early_enable(membase, memsize);
+ 	}
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index e471dd87f9..a481c4634d 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -81,7 +81,7 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 
+ 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
+ 
+-	if (IS_ENABLED(CONFIG_MMU_EARLY))
++	if (IS_ENABLED(CONFIG_MMU))
+ 		mmu_early_enable(membase, memsize);
+ 
+ 	free_mem_ptr = arm_mem_early_malloc(endmem);
+diff --git a/common/Kconfig b/common/Kconfig
+index ac3df75acb..c6008f125b 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -185,15 +185,6 @@ config MMU
+ 	  to enable the data cache which depends on the MMU. See Documentation/mmu.txt
+ 	  for further information.
+ 
+-config MMU_EARLY
+-	bool "Enable MMU early"
+-	depends on ARM
+-	depends on MMU
+-	default y
+-	help
+-	  This enables the MMU during early startup. This speeds up things during startup
+-	  of barebox, but may lead to harder to debug code. If unsure say yes here.
 -
--void dma_sync_single_for_device(dma_addr_t address, size_t size,
--                                enum dma_data_direction dir)
--{
--	/*
--	 * FIXME: This function needs a device argument to support non 1:1 mappings
--	 */
--
--	if (dir == DMA_FROM_DEVICE)
--		v8_inv_dcache_range(address, address + size - 1);
--	else
--		v8_flush_dcache_range(address, address + size - 1);
--}
+ config HAVE_CONFIGURABLE_TEXT_BASE
+ 	bool
+ 
 -- 
 2.39.2
 
