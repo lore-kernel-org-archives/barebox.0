@@ -1,61 +1,59 @@
-Delivery-date: Wed, 17 May 2023 11:05:21 +0200
+Delivery-date: Wed, 17 May 2023 11:05:22 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzD62-0048aB-V9
+	id 1pzD63-0048aJ-6d
 	for lore@lore.pengutronix.de; Wed, 17 May 2023 11:05:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzD5y-0004nF-8l
-	for lore@pengutronix.de; Wed, 17 May 2023 11:05:19 +0200
+	id 1pzD5z-0004oP-KY
+	for lore@pengutronix.de; Wed, 17 May 2023 11:05:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=M+MPxAJick5pikskck4Hsjp17ObmyjEelqqXvTSk31A=; b=pGwSmJ7MA9/e+GW4ZMAvsoWNDv
-	GSOs3QQ0dbPWCVxcjNZdZ7mxoA9zpWZSJlC/G1+gdXcBa3AtNCSDrOnf7hSf7x+2Nl4fwAEl8OzP9
-	WwgUevk2biyjTH9PUKZ4cseMGrU0QC92pBRPQYtxckwUrGnMXJuHLC1h6lMlRb3Hz4teD25X1cZTr
-	LGUEkKlCNnb+DHwUB1H9NuRumJvgAt3JR4GgjOv0dnPOIS9KKGCqa0APCO8/iAF7y64Ak5vol0Gcy
-	G4LuwKosds08/lGx2TJFyITJ3Dli//w2ldOqMeMnOvJ0RNkE42MAwqJYRkFIERn1DCVUVrlZgHa0T
-	doP6bUvw==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=RiF3iKQqFlEsWAk6M8kSOQhc6/hGrLwhC3K+kJ8e7rI=; b=epRs+HbqHlfXPssiQmHBJFGbfl
+	FuKOwo7awXExQonLAzpMGkgKDuBx2aazlsN3PQkSuagBQj+G7KUhR1RO2ymicvEBBgUNrOi0waxw9
+	MhAFTgQq54k4Ur2WrNRi6wdCO04297Y+EciTql95+La0gJNxeNNSzg2xQL1bfin3utTdyca3c+1XF
+	gFqWPXvG9dYFSvqJEqbTEItxEDtKMEhiS26v7iGfRZlXg1KbvoYwwOm+OHyxJ55/4TokqkWHQ2giS
+	H1+eEvzSTjuImGpJ6YL+64BKhLP97JU3Vy/4uSPdK0cUS+wp83qjXjRcY/cLUBqtFKuXWdhG5VLms
+	LguFWnuw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzD4d-008yRi-1M;
-	Wed, 17 May 2023 09:03:55 +0000
-Received: from metis.ext.pengutronix.de ([85.220.165.71])
+	id 1pzD4g-008yTE-0Y;
+	Wed, 17 May 2023 09:03:58 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzD4Y-008yMt-14
+	id 1pzD4Y-008yMH-2F
 	for barebox@lists.infradead.org;
-	Wed, 17 May 2023 09:03:52 +0000
+	Wed, 17 May 2023 09:03:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pzD4U-0003zs-HV; Wed, 17 May 2023 11:03:46 +0200
+	id 1pzD4S-0003x1-Qt; Wed, 17 May 2023 11:03:44 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pzD4T-000o7H-Pw; Wed, 17 May 2023 11:03:45 +0200
+	id 1pzD4S-000o6d-0s; Wed, 17 May 2023 11:03:44 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pzD4Q-00Gasi-4g; Wed, 17 May 2023 11:03:42 +0200
+	id 1pzD4P-00Gaqr-EI; Wed, 17 May 2023 11:03:41 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 17 May 2023 11:03:35 +0200
-Message-Id: <20230517090340.3954615-30-s.hauer@pengutronix.de>
+Date: Wed, 17 May 2023 11:03:06 +0200
+Message-Id: <20230517090340.3954615-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230517090340.3954615-1-s.hauer@pengutronix.de>
-References: <20230517090340.3954615-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230517_020350_364677_C53E3598 
-X-CRM114-Status: GOOD (  16.10  )
+X-CRM114-CacheID: sfid-20230517_020350_733485_268AA06D 
+X-CRM114-Status: GOOD (  15.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,156 +76,116 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 29/34] ARM: mmu32: add get_pte_flags, get_pmd_flags
+Subject: [PATCH v2 00/34] ARM: MMU rework
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The mmu code has several variables containing the pte/pmd values for
-different mapping types. These variables only contain the correct values
-after initializing them which makes it a bit hard to follow when the
-code is used in both PBL and barebox proper.
+The goal of this series is to properly map SDRAM used for OP-TEE non
+executable, because otherwise the instruction prefetcher might speculate
+into the OP-TEE area. This is currently not possible because we use
+1MiB (AArch32) or 1GiB (AArch64) sections which are too coarse for that.
 
-Instead of using variables calculate the values when they are needed.
+With this series we start using two level page tables also in the early
+MMU setup.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/cpu/mmu_32.c | 82 +++++++++++++++++++++----------------------
- 1 file changed, 41 insertions(+), 41 deletions(-)
+Overall the MMU code is more consolidated now, we no longer
+differentiate between early MMU setup and non early MMU setup.
+Consequently the CONFIG_MMU_EARLY option is gone and early MMU setup is
+always done when the MMU is enabled.
 
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index 0af89ac39c..829139574c 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -57,11 +57,6 @@ static inline void tlb_invalidate(void)
-  * PTE flags to set cached and uncached areas.
-  * This will be determined at runtime.
-  */
--static uint32_t pte_flags_cached;
--static uint32_t pte_flags_wc;
--static uint32_t pte_flags_uncached;
--static uint32_t pgd_flags_wc;
--static uint32_t pgd_flags_uncached;
- 
- #define PTE_MASK ((1 << 12) - 1)
- 
-@@ -215,29 +210,48 @@ static u32 pte_flags_to_pmd(u32 pte)
- 	return pmd;
- }
- 
--int arch_remap_range(void *start, size_t size, unsigned flags)
-+static uint32_t get_pte_flags(int map_type)
-+{
-+	if (cpu_architecture() >= CPU_ARCH_ARMv7) {
-+		switch (map_type) {
-+		case MAP_CACHED:
-+			return PTE_FLAGS_CACHED_V7;
-+		case MAP_UNCACHED:
-+			return PTE_FLAGS_UNCACHED_V7;
-+		case ARCH_MAP_WRITECOMBINE:
-+			return PTE_FLAGS_WC_V7;
-+		case MAP_FAULT:
-+		default:
-+			return 0x0;
-+		}
-+	} else {
-+		switch (map_type) {
-+		case MAP_CACHED:
-+			return PTE_FLAGS_CACHED_V4;
-+		case MAP_UNCACHED:
-+		case ARCH_MAP_WRITECOMBINE:
-+			return PTE_FLAGS_UNCACHED_V4;
-+		case MAP_FAULT:
-+		default:
-+			return 0x0;
-+		}
-+	}
-+}
-+
-+static uint32_t get_pmd_flags(int map_type)
-+{
-+	return pte_flags_to_pmd(get_pte_flags(map_type));
-+}
-+
-+int arch_remap_range(void *start, size_t size, unsigned map_type)
- {
- 	u32 addr = (u32)start;
--	u32 pte_flags;
-+	u32 pte_flags, pmd_flags;
- 
- 	BUG_ON(!IS_ALIGNED(addr, PAGE_SIZE));
- 
--	switch (flags) {
--	case MAP_CACHED:
--		pte_flags = pte_flags_cached;
--		break;
--	case MAP_UNCACHED:
--		pte_flags = pte_flags_uncached;
--		break;
--	case MAP_FAULT:
--		pte_flags = 0x0;
--		break;
--	case ARCH_MAP_WRITECOMBINE:
--		pte_flags = pte_flags_wc;
--		break;
--	default:
--		return -EINVAL;
--	}
-+	pte_flags = get_pte_flags(map_type);
-+	pmd_flags = pte_flags_to_pmd(pte_flags);
- 
- 	while (size) {
- 		const bool pgdir_size_aligned = IS_ALIGNED(addr, PGDIR_SIZE);
-@@ -251,7 +265,7 @@ int arch_remap_range(void *start, size_t size, unsigned flags)
- 			 * replace it with a section
- 			 */
- 			chunk = PGDIR_SIZE;
--			*pgd = addr | pte_flags_to_pmd(pte_flags) | PMD_TYPE_SECT;
-+			*pgd = addr | pmd_flags | PMD_TYPE_SECT;
- 			dma_flush_range(pgd, sizeof(*pgd));
- 		} else {
- 			unsigned int num_ptes;
-@@ -309,7 +323,7 @@ void *map_io_sections(unsigned long phys, void *_start, size_t size)
- 	unsigned long start = (unsigned long)_start, sec;
- 
- 	for (sec = start; sec < start + size; sec += PGDIR_SIZE, phys += PGDIR_SIZE)
--		ttb[pgd_index(sec)] = phys | pgd_flags_uncached;
-+		ttb[pgd_index(sec)] = phys | get_pmd_flags(MAP_UNCACHED);
- 
- 	dma_flush_range(ttb, 0x4000);
- 	tlb_invalidate();
-@@ -350,9 +364,9 @@ static void create_vector_table(unsigned long adr)
- 		vectors = xmemalign(PAGE_SIZE, PAGE_SIZE);
- 		pr_debug("Creating vector table, virt = 0x%p, phys = 0x%08lx\n",
- 			 vectors, adr);
--		arm_create_pte(adr, pte_flags_uncached);
-+		arm_create_pte(adr, get_pte_flags(MAP_UNCACHED));
- 		pte = find_pte(adr);
--		*pte = (u32)vectors | PTE_TYPE_SMALL | pte_flags_cached;
-+		*pte = (u32)vectors | PTE_TYPE_SMALL | get_pte_flags(MAP_CACHED);
- 	}
- 
- 	arm_fixup_vectors();
-@@ -465,20 +479,6 @@ void __mmu_init(bool mmu_on)
- {
- 	struct memory_bank *bank;
- 
--	if (cpu_architecture() >= CPU_ARCH_ARMv7) {
--		pte_flags_cached = PTE_FLAGS_CACHED_V7;
--		pte_flags_wc = PTE_FLAGS_WC_V7;
--		pgd_flags_wc = PGD_FLAGS_WC_V7;
--		pgd_flags_uncached = PGD_FLAGS_UNCACHED_V7;
--		pte_flags_uncached = PTE_FLAGS_UNCACHED_V7;
--	} else {
--		pte_flags_cached = PTE_FLAGS_CACHED_V4;
--		pte_flags_wc = PTE_FLAGS_UNCACHED_V4;
--		pgd_flags_wc = PMD_SECT_DEF_UNCACHED;
--		pgd_flags_uncached = PMD_SECT_DEF_UNCACHED;
--		pte_flags_uncached = PTE_FLAGS_UNCACHED_V4;
--	}
--
- 	/* Clear unpredictable bits [13:0] */
- 	ttb = (uint32_t *)(get_ttbr() & ~0x3fff);
- 
+One nice side effect of this series is that the Rockchip RK3568 boards
+now start about a second faster. On these boards the early MMU setup
+was skipped because of the insufficient memory start alignment.
+
+Changes since v1:
+- integrate review feedback from Ahmad
+- rework arm_mem_* functions
+
+Sascha Hauer (34):
+  ARM: remove unused membase argument
+  ARM: remove unused define
+  ARM: rename __arm_mem_scratch to arm_mem_scratch
+  ARM: put scratch mem area below OP-TEE
+  ARM: add arm_mem_optee()
+  ARM: make arm_mem_scratch() a static inline function
+  ARM: define stack base consistently
+  ARM: move arm_mem_scratch_get() lower for consistency
+  ARM: drop cache function initialization
+  ARM: Add _32 suffix to aarch32 specific filenames
+  ARM: cpu.c: remove unused include
+  ARM: mmu-common.c: use common mmu include
+  ARM: mmu32: rename mmu.h to mmu_32.h
+  ARM: mmu: implement MAP_FAULT
+  ARM: mmu64: Use arch_remap_range where possible
+  ARM: mmu32: implement zero_page_*()
+  ARM: i.MX: Drop HAB workaround
+  ARM: Move early MMU after malloc initialization
+  ARM: mmu: move dma_sync_single_for_device to extra file
+  ARM: mmu: merge mmu-early_xx.c into mmu_xx.c
+  ARM: mmu: alloc 64k for early page tables
+  ARM: mmu32: create alloc_pte()
+  ARM: mmu64: create alloc_pte()
+  ARM: mmu: drop ttb argument
+  ARM: mmu: always do MMU initialization early when MMU is enabled
+  ARM: mmu32: Assume MMU is on
+  ARM: mmu32: Fix pmd_flags_to_pte() for ARMv4/5/6
+  ARM: mmu32: Add pte_flags_to_pmd()
+  ARM: mmu32: add get_pte_flags, get_pmd_flags
+  ARM: mmu32: move functions into c file
+  ARM: mmu32: read TTB value from register
+  ARM: mmu32: Use pages for early MMU setup
+  ARM: mmu32: Skip reserved ranges during initialization
+  ARM: mmu64: Use two level pagetables in early code
+
+ arch/arm/Makefile                             |   5 +-
+ arch/arm/boards/raspberry-pi/lowlevel.c       |   2 +-
+ arch/arm/cpu/Kconfig                          |   3 +-
+ arch/arm/cpu/Makefile                         |  21 +-
+ arch/arm/cpu/{cache.c => cache_32.c}          |  85 +++--
+ arch/arm/cpu/cache_64.c                       |   5 -
+ arch/arm/cpu/cpu.c                            |   2 -
+ arch/arm/cpu/dma_32.c                         |  20 ++
+ arch/arm/cpu/dma_64.c                         |  16 +
+ arch/arm/cpu/entry.c                          |   2 +-
+ arch/arm/cpu/{entry_ll.S => entry_ll_32.S}    |   0
+ .../arm/cpu/{exceptions.S => exceptions_32.S} |   0
+ .../arm/cpu/{interrupts.c => interrupts_32.c} |   0
+ arch/arm/cpu/{lowlevel.S => lowlevel_32.S}    |   0
+ arch/arm/cpu/mmu-common.c                     |  13 +-
+ arch/arm/cpu/mmu-early.c                      |  71 -----
+ arch/arm/cpu/mmu-early_64.c                   |  93 ------
+ arch/arm/cpu/{mmu.c => mmu_32.c}              | 298 +++++++++++-------
+ arch/arm/cpu/{mmu.h => mmu_32.h}              |  20 --
+ arch/arm/cpu/mmu_64.c                         | 109 ++++---
+ arch/arm/cpu/{setupc.S => setupc_32.S}        |   0
+ arch/arm/cpu/sm.c                             |   3 +-
+ .../arm/cpu/{smccc-call.S => smccc-call_32.S} |   0
+ arch/arm/cpu/start.c                          |  21 +-
+ arch/arm/cpu/uncompress.c                     |  11 +-
+ arch/arm/include/asm/barebox-arm.h            |  60 ++--
+ arch/arm/include/asm/cache.h                  |   2 -
+ arch/arm/include/asm/mmu.h                    |   3 +-
+ arch/arm/mach-imx/atf.c                       |  12 +-
+ arch/arm/mach-imx/xload-common.c              |   2 +-
+ common/Kconfig                                |   9 -
+ drivers/hab/habv4.c                           |  10 +-
+ include/mach/rockchip/bootrom.h               |   2 +-
+ include/mmu.h                                 |   1 +
+ 34 files changed, 414 insertions(+), 487 deletions(-)
+ rename arch/arm/cpu/{cache.c => cache_32.c} (89%)
+ create mode 100644 arch/arm/cpu/dma_32.c
+ create mode 100644 arch/arm/cpu/dma_64.c
+ rename arch/arm/cpu/{entry_ll.S => entry_ll_32.S} (100%)
+ rename arch/arm/cpu/{exceptions.S => exceptions_32.S} (100%)
+ rename arch/arm/cpu/{interrupts.c => interrupts_32.c} (100%)
+ rename arch/arm/cpu/{lowlevel.S => lowlevel_32.S} (100%)
+ delete mode 100644 arch/arm/cpu/mmu-early.c
+ delete mode 100644 arch/arm/cpu/mmu-early_64.c
+ rename arch/arm/cpu/{mmu.c => mmu_32.c} (67%)
+ rename arch/arm/cpu/{mmu.h => mmu_32.h} (75%)
+ rename arch/arm/cpu/{setupc.S => setupc_32.S} (100%)
+ rename arch/arm/cpu/{smccc-call.S => smccc-call_32.S} (100%)
+
 -- 
 2.39.2
 
