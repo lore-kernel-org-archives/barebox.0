@@ -3,73 +3,73 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzD65-0048cn-Vk
+	id 1pzD64-0048a9-J7
 	for lore@lore.pengutronix.de; Wed, 17 May 2023 11:05:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzD63-0004uZ-Dt
-	for lore@pengutronix.de; Wed, 17 May 2023 11:05:24 +0200
+	id 1pzD5y-0004mw-25
+	for lore@pengutronix.de; Wed, 17 May 2023 11:05:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mCI8DGMju6eKLSsBFYLUF0FZ8INP7uvcM1o6uDRqBlE=; b=Lkc4yimdi3WtJlsMIYy1ezjsuN
-	ToDPcf3v128yJc6Bc6ux3ua6qh6y/o+26GvBoW4HhLIEj1OKJYqCCrH3MU6ZweV58up9xIlKBPHYr
-	l5/vMt56czhEOtKKOiHqaoNQeOb2raffvdkSdXY1OyqDQcAOIR7Pe6vNZ3Q95CRqztlidWfLmb3Nm
-	f7aHtrGMe++Aquagf/kqq+Pv2W5+pNCnFAp9hza/QoQFnpeFErwHUmt/NHlAYa9xp5prru6QO3Vz6
-	x2/UPIyr5CKjkd1tT7Im+0zx9RyWSl10NQvyU7WrFf6SjLJD3VF0HH0wZCbBCnF+H6UMSiwNFzy1d
-	DhgUaJfw==;
+	bh=gdrmGCtGukXLlG+CQv6NkLtDW+lhZx2TAOKTZEzbEU4=; b=cvPTEKKFz+66rwCTFP9tn6C6+l
+	9yUdXlkK17e5J9uYIbZW/092JLB7G2B8WvI205iaPLaMFydF11c/gm6ekcXcCRzeWErlQXRY5hCB4
+	PBjiu/iQBfbrfZbSPOiaEp53T/EMqFv2K9LOiyeMq8J+QPLcHFmfEZubgn8nmMUjH6L856HaJhoGS
+	s0FjsZMMdAYwrOeS/en5tCouXchxvr14OTL34ODHcp7XhPD7mBgMGMoe2eKxuJT5EgT97JyUhOIdD
+	E4kPt6eUS4pwXcMTKRK0LTEm2FnoCoZ8V3AXA8hnWZ1DaU3AcpBbzHN+7nAiyjKKEahgaivp35CYn
+	UsZsI9Tg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzD4o-008yZz-0z;
-	Wed, 17 May 2023 09:04:06 +0000
+	id 1pzD4n-008yYy-1Y;
+	Wed, 17 May 2023 09:04:05 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzD4m-008yXW-11
+	id 1pzD4i-008yUz-30
 	for barebox@bombadil.infradead.org;
-	Wed, 17 May 2023 09:04:04 +0000
+	Wed, 17 May 2023 09:04:00 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=mCI8DGMju6eKLSsBFYLUF0FZ8INP7uvcM1o6uDRqBlE=; b=hCWJ4N39KFbMFUqh14+cx47aUa
-	STc5wm2kr5uVd6lLt0yXnv6wIbSKzDdnPUWhbvIXy8eMj3egjeAUDPRY+q3+VJo7Sjap0pkaUS4Zm
-	J2gjrqHgt627ipeLJTjoVpoTF/3wnXcpaspqfGifJyb17nyoIr5KQ5tfYDpQPBGjJxa4CgWiCdBQt
-	sxKLm/DSIIyE3avhEX4n1j3QZCC5B+PnUm0ozbpUUg9H2KKSGb8Cw68xfLG4hyCxCIlAv2fjs9Ki2
-	23pCum2xPTzRT/GOx1uLUGVSRQZtlRlU6E7IKKwEPSdcTLHNsoy2DLq8bE7elMREt0Em/jGurmLOS
-	INb7HYbw==;
+	bh=gdrmGCtGukXLlG+CQv6NkLtDW+lhZx2TAOKTZEzbEU4=; b=YsZ9lYVPQr7O+eXdPaNGlGTZ0V
+	Qyika92lNc06LkXSpOUli3Ash5DliPit5VmMhrRoKGTcqOL0zyxTQlBtTM62i+PoCYwZ4NNx200jy
+	STNgQurRcpQnn1NdMtSQ9yU6Xw79pVqf8Jx1dtqKkdCZiOSf4xcFE9HvtyvFxxcZlcU58Tj0/5ZdN
+	5PSjbBMzz+6erDCeFJPk6l4JJjC1aK/dYpSugiGae8LF2zlyjWNwUL5zwRAyK7Bijrj9Oe+baZ08K
+	krVl6HEuIjMIdglh3DPKSQH6e5hEgnZ52jg4gHptd4Ev/OLAHYltx6nPKBJ0WU/LTat1ciR5sm938
+	IRsi9/qA==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by casper.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1pzD4j-004wsD-2i
-	for barebox@lists.infradead.org; Wed, 17 May 2023 09:04:03 +0000
+	id 1pzD4f-004wru-J7
+	for barebox@lists.infradead.org; Wed, 17 May 2023 09:03:59 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pzD4S-0003wn-Jt; Wed, 17 May 2023 11:03:44 +0200
+	id 1pzD4Y-00045D-Ep; Wed, 17 May 2023 11:03:50 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pzD4R-000o6W-NE; Wed, 17 May 2023 11:03:43 +0200
+	id 1pzD4X-000o8c-G2; Wed, 17 May 2023 11:03:49 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1pzD4P-00Gart-RA; Wed, 17 May 2023 11:03:41 +0200
+	id 1pzD4Q-00GasK-0J; Wed, 17 May 2023 11:03:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 17 May 2023 11:03:22 +0200
-Message-Id: <20230517090340.3954615-17-s.hauer@pengutronix.de>
+Date: Wed, 17 May 2023 11:03:29 +0200
+Message-Id: <20230517090340.3954615-24-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230517090340.3954615-1-s.hauer@pengutronix.de>
 References: <20230517090340.3954615-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230517_100401_157075_25D15B37 
-X-CRM114-Status: GOOD (  14.68  )
+X-CRM114-CacheID: sfid-20230517_100357_662063_6D41A50E 
+X-CRM114-Status: GOOD (  13.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,129 +92,72 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 16/34] ARM: mmu32: implement zero_page_*()
+Subject: [PATCH v2 23/34] ARM: mmu64: create alloc_pte()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We have functions to access the zero page and to make it faulting again.
-Implement them for AArch32.
+This is a preparation for using two level page tables in the PBL.
+To do that we need a way to allocate page tables in PBL. As malloc
+is not available in PBL, implement a function to allocate a page table
+from the area we also place the TTB.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/Kconfig      |  3 ++-
- arch/arm/cpu/mmu-common.c | 11 +++++++++++
- arch/arm/cpu/mmu_32.c     |  5 ++---
- arch/arm/cpu/mmu_64.c     | 10 ----------
- 4 files changed, 15 insertions(+), 14 deletions(-)
+ arch/arm/cpu/mmu_64.c | 20 +++++++++++++++++---
+ 1 file changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
-index 26f07043fe..40dd35833a 100644
---- a/arch/arm/cpu/Kconfig
-+++ b/arch/arm/cpu/Kconfig
-@@ -11,6 +11,7 @@ config CPU_32
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAS_DMA
- 	select HAVE_PBL_IMAGE
-+	select ARCH_HAS_ZERO_PAGE
- 
- config CPU_64
- 	bool
-@@ -19,6 +20,7 @@ config CPU_64
- 	select HAVE_PBL_MULTI_IMAGES
- 	select HAS_DMA
- 	select ARCH_WANT_FRAME_POINTERS
-+	select ARCH_HAS_ZERO_PAGE
- 
- # Select CPU types depending on the architecture selected. This selects
- # which CPUs we support in the kernel image, and the compiler instruction
-@@ -92,7 +94,6 @@ config CPU_V8
- 	select ARM_EXCEPTIONS
- 	select GENERIC_FIND_NEXT_BIT
- 	select ARCH_HAS_STACK_DUMP
--	select ARCH_HAS_ZERO_PAGE
- 
- config CPU_XSC3
-         bool
-diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
-index e6cc3b974f..02f512c2c6 100644
---- a/arch/arm/cpu/mmu-common.c
-+++ b/arch/arm/cpu/mmu-common.c
-@@ -11,6 +11,7 @@
- #include <asm/system.h>
- #include <asm/barebox-arm.h>
- #include <memory.h>
-+#include <zero_page.h>
- #include "mmu-common.h"
- 
- void dma_sync_single_for_cpu(dma_addr_t address, size_t size,
-@@ -57,6 +58,16 @@ void dma_free_coherent(void *mem, dma_addr_t dma_handle, size_t size)
- 	free(mem);
- }
- 
-+void zero_page_access(void)
-+{
-+	arch_remap_range(0x0, PAGE_SIZE, MAP_CACHED);
-+}
-+
-+void zero_page_faulting(void)
-+{
-+	arch_remap_range(0x0, PAGE_SIZE, MAP_FAULT);
-+}
-+
- static int mmu_init(void)
- {
- 	if (list_empty(&memory_banks)) {
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index a1ecc49f03..7b31938ecd 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -9,6 +9,7 @@
- #include <init.h>
- #include <mmu.h>
- #include <errno.h>
-+#include <zero_page.h>
- #include <linux/sizes.h>
- #include <asm/memory.h>
- #include <asm/barebox-arm.h>
-@@ -362,7 +363,6 @@ static int set_vector_table(unsigned long adr)
- static void create_zero_page(void)
- {
- 	struct resource *zero_sdram;
--	u32 *zero;
- 
- 	zero_sdram = request_sdram_region("zero page", 0x0, PAGE_SIZE);
- 	if (zero_sdram) {
-@@ -372,8 +372,7 @@ static void create_zero_page(void)
- 		 */
- 		pr_debug("zero page is in SDRAM area, currently not supported\n");
- 	} else {
--		zero = arm_create_pte(0x0, pte_flags_uncached);
--		zero[0] = 0;
-+		zero_page_faulting();
- 		pr_debug("Created zero page\n");
- 	}
- }
 diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 0639d0f1ce..c7c16b527b 100644
+index 55ada960c5..3cc5b14a46 100644
 --- a/arch/arm/cpu/mmu_64.c
 +++ b/arch/arm/cpu/mmu_64.c
-@@ -172,16 +172,6 @@ static void mmu_enable(void)
- 	set_cr(get_cr() | CR_M | CR_C | CR_I);
+@@ -32,7 +32,20 @@ static void set_table(uint64_t *pt, uint64_t *table_addr)
+ 	*pt = val;
  }
  
--void zero_page_access(void)
--{
--	arch_remap_range(0x0, PAGE_SIZE, MAP_CACHED);
--}
--
--void zero_page_faulting(void)
--{
--	arch_remap_range(0x0, PAGE_SIZE, MAP_FAULT);
--}
--
- /*
-  * Prepare MMU for usage enable it.
-  */
+-static uint64_t *create_table(void)
++#ifdef __PBL__
++static uint64_t *alloc_pte(void)
++{
++	static unsigned int idx;
++
++	idx++;
++
++	if (idx * GRANULE_SIZE >= ARM_EARLY_PAGETABLE_SIZE)
++		return NULL;
++
++	return (void *)ttb + idx * GRANULE_SIZE;
++}
++#else
++static uint64_t *alloc_pte(void)
+ {
+ 	uint64_t *new_table = xmemalign(GRANULE_SIZE, GRANULE_SIZE);
+ 
+@@ -41,6 +54,7 @@ static uint64_t *create_table(void)
+ 
+ 	return new_table;
+ }
++#endif
+ 
+ static __maybe_unused uint64_t *find_pte(uint64_t addr)
+ {
+@@ -81,7 +95,7 @@ static void split_block(uint64_t *pte, int level)
+ 	/* level describes the parent level, we need the child ones */
+ 	levelshift = level2shift(level + 1);
+ 
+-	new_table = create_table();
++	new_table = alloc_pte();
+ 
+ 	for (i = 0; i < MAX_PTE_ENTRIES; i++) {
+ 		new_table[i] = old_pte | (i << levelshift);
+@@ -183,7 +197,7 @@ void __mmu_init(bool mmu_on)
+ 	if (mmu_on)
+ 		mmu_disable();
+ 
+-	ttb = create_table();
++	ttb = alloc_pte();
+ 	el = current_el();
+ 	set_ttbr_tcr_mair(el, (uint64_t)ttb, calc_tcr(el, BITS_PER_VA),
+ 			  MEMORY_ATTRIBUTES);
 -- 
 2.39.2
 
