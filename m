@@ -1,43 +1,43 @@
-Delivery-date: Wed, 17 May 2023 17:51:37 +0200
+Delivery-date: Wed, 17 May 2023 17:57:38 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzJRC-004THu-Sv
-	for lore@lore.pengutronix.de; Wed, 17 May 2023 17:51:37 +0200
+	id 1pzJX1-004TZw-ND
+	for lore@lore.pengutronix.de; Wed, 17 May 2023 17:57:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzJRA-0001xu-5B
-	for lore@pengutronix.de; Wed, 17 May 2023 17:51:36 +0200
+	id 1pzJWz-0002hR-Ey
+	for lore@pengutronix.de; Wed, 17 May 2023 17:57:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=V1sOpldZSX/v8T+l24Fm3+YX65QOkK0vkAm/P5if1ro=; b=gNvMJ4/NwdKMqTv4ld7lI6EuUq
-	p+nBZNubQwpo6WpqbhBYxmdULn1+zkuGM9qymMOE8sb/UbyZr6kLy6IGkS7XaGNxNxyM0aLanGYqy
-	XrR7fkly1ma+bOuZ2tncDANRuzc6NNNnSIblAtfh/whv1js9XshDs+/c2yHtxwDRqhGJEZHN5Zi9J
-	sjbfS66kh8QzkxmjC8V52xi3wsvTS1P30d5mRE05642++YosJIriaLLNz/3Xzlr1A8fbQYHXmjxAk
-	CKoocnyW/GuqUuUfbNWNFcRKWg9iZaPhgj4GpjncSZBj9AImzJZ4iEUnePLD76YwfV/qyL62sylYL
-	j4x6Ffjw==;
+	bh=bB6MklKPH65Yq6OYp99tUBq+pfWkixdGiVQZpVwfEYI=; b=sOA0U/oNLq9sgbl0o8UY/h2pO/
+	8tw4/YpvGUXgcR+Hk03n/9CyZPJ3dqia9kVugMgZ0EdfRsaqiABhj1A8YprM1tE8Eoz0wOxXjAEFU
+	1/UCySdQ2QYrzJ8ZUie+hqFTHHuSooIrtMRIaW94Bn1s9JX2S4KG8mZiYEofa1pqGa+HLAWnhOfGL
+	wIHOgXsX1VgGt0LYIrM95MCwognTmsZ4Ljo/HvnJYPdmspfhHa4denoGYg/vPS5PXPHana9Mi2VV7
+	1f4OVbX6Bu95uHAY8agV+Zqh4pHFkj9r/+9xWHAo4dzRmlqpnjBKkL88bVHK9jrhkFx7mUuKzaBMx
+	Urrw5wSA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzJPt-00AMR7-2E;
-	Wed, 17 May 2023 15:50:17 +0000
+	id 1pzJVr-00ANht-1h;
+	Wed, 17 May 2023 15:56:27 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzJPq-00AMPj-0c
+	id 1pzJVo-00ANhA-1p
 	for barebox@lists.infradead.org;
-	Wed, 17 May 2023 15:50:15 +0000
+	Wed, 17 May 2023 15:56:25 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1pzJPm-0001X5-9x; Wed, 17 May 2023 17:50:10 +0200
-Message-ID: <b394264d-0b0d-b098-b481-a1592d112fbf@pengutronix.de>
-Date: Wed, 17 May 2023 17:50:08 +0200
+	id 1pzJVl-0002dX-Qz; Wed, 17 May 2023 17:56:21 +0200
+Message-ID: <3bb1cdac-4cdf-5771-92d7-1a9f7fc9a007@pengutronix.de>
+Date: Wed, 17 May 2023 17:56:20 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
@@ -45,16 +45,16 @@ Content-Language: en-US
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
 References: <20230517090340.3954615-1-s.hauer@pengutronix.de>
- <20230517090340.3954615-5-s.hauer@pengutronix.de>
- <88966b89-6574-4240-80e1-031137ab73c9@pengutronix.de>
- <20230517131446.GZ29365@pengutronix.de>
+ <20230517090340.3954615-34-s.hauer@pengutronix.de>
+ <1caed1b5-108d-7686-4e3b-0fd3bab04a58@pengutronix.de>
+ <20230517145541.GD29365@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230517131446.GZ29365@pengutronix.de>
+In-Reply-To: <20230517145541.GD29365@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230517_085014_250860_9E5EF30A 
-X-CRM114-Status: GOOD (  23.78  )
+X-CRM114-CacheID: sfid-20230517_085624_608786_7F47BAE9 
+X-CRM114-Status: GOOD (  14.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,60 +77,28 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 04/34] ARM: put scratch mem area below OP-TEE
+Subject: Re: [PATCH v2 33/34] ARM: mmu32: Skip reserved ranges during
+ initialization
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 17.05.23 15:14, Sascha Hauer wrote:
-> On Wed, May 17, 2023 at 02:48:43PM +0200, Ahmad Fatoum wrote:
->> On 17.05.23 11:03, Sascha Hauer wrote:
->>> We want to reserve memory for OP-TEE at the end of available SDRAM,
->>> so move the scratch area below OP-TEE and not above.
->>>
->>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->>> ---
->>>  arch/arm/include/asm/barebox-arm.h | 4 ++--
->>>  1 file changed, 2 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
->>> index f446044be6..6e6606d005 100644
->>> --- a/arch/arm/include/asm/barebox-arm.h
->>> +++ b/arch/arm/include/asm/barebox-arm.h
->>> @@ -71,14 +71,14 @@ static inline void arm_fixup_vectors(void)
->>>  
->>>  void *barebox_arm_boot_dtb(void);
->>>  
->>> -#define arm_mem_scratch(endmem) ((endmem) - SZ_32K)
->>> +#define arm_mem_scratch(endmem) ((endmem) - OPTEE_SIZE - SZ_32K)
->>>  
->>>  static inline const void *arm_mem_scratch_get(void)
->>>  {
->>>  	return (const void *)arm_mem_scratch(arm_mem_endmem_get());
->>>  }
->>>  
->>> -#define arm_mem_stack_top(endmem) ((endmem) - SZ_64K - OPTEE_SIZE)
->>> +#define arm_mem_stack_top(endmem) ((endmem) - SZ_64K)
+On 17.05.23 16:55, Sascha Hauer wrote:
+> On Wed, May 17, 2023 at 04:43:39PM +0200, Ahmad Fatoum wrote:
+>> I am a bit bothered by the asymmetry here: Reserved regions in the extra memory banks
+>> will be initially uncached (because outside initmem), so this loop does the correct thing.
 >>
->> I don't understand why you drop OPTEE_SIZE here. Wouldn't the stack
->> now eat into the OP-TEE region?
+>> For reserved regions within the initial memory, only the OP-TEE region would be uncached,
+>> everything else would just be requested, but is still mapped cacheable.
+>>
+>> IMO, that's surprising behavior.
 > 
-> I accidently thought that arm_mem_stack_top() is calculated based on the
-> region above it, namely arm_mem_scratch(), but really it's calculated
-> based on endmem directly.
-> 
-> Indeed it's wrong like this, it should be:
-> 
-> #define arm_mem_stack_top(endmem) (arm_mem_scratch(endmem) - SZ_64K)
-> 
-> I just stumbled upon the SZ_64K here. I followed the value back to 2016
-> and found 75c96bd2459e ("ARM: Do not use last 64KiB of address space for
-> barebox"). I had a board that time that has SDRAM at the very end of the
-> 32bit address space. On that board it happened that we overwrite parts
-> of the lowlevel memory with the vector table. It seems that has been
-> lost over time as now we put the scratch space and possibly parts of
-> OP-TEE into the last 64k.
+> I agree. What would you suggest. Map all reserved regions uncached?
 
-Scratch space at -SZ_32K leaves 32K for IVT, which should be enough, no?
+That would be my preference, yes. Then as a future step, we could elect to parse the
+reserved entries in PBL to be able to handle OP-TEE or whatever even in middle of RAM.
+
+Cheers,
+Ahmad
 
 > 
 > Sascha
