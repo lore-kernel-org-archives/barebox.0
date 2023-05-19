@@ -1,62 +1,62 @@
-Delivery-date: Fri, 19 May 2023 12:02:44 +0200
+Delivery-date: Fri, 19 May 2023 12:02:45 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzwwg-006XqN-7O
-	for lore@lore.pengutronix.de; Fri, 19 May 2023 12:02:44 +0200
+	id 1pzwwg-006XqS-Kd
+	for lore@lore.pengutronix.de; Fri, 19 May 2023 12:02:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzwwd-0004OB-D7
-	for lore@pengutronix.de; Fri, 19 May 2023 12:02:43 +0200
+	id 1pzwwe-0004OS-3I
+	for lore@pengutronix.de; Fri, 19 May 2023 12:02:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bvHB0TbD4pI5sbw5zP+2i07slQeO2aS6aseRiAzvdOE=; b=AfLnLEHwMXGlaIVdcpIn4cA2xT
-	35tn68hmULaASWXNiQ7+AmEQeaD331MCW8va70XyJj8e9Hq+XFa2QW5IIuEpL1QBEFr34Ia6aUYSc
-	u3Awb/oSHqIlRxDGe1bMlxrU0t3vD+c81FSE8N9TzM7aEA7L7tC95rd3D0YaUNk9UXUa479AAP45W
-	8aAZW30lyaPAFpFY5+4qt6AF5S2PWMm/UHE1EjQKaoWGMDusFOxI1mpM3c5TTacVYxw7IEemq4s9j
-	sIsLUrBW5N0xvN6+SMDONZhokwSReMzyfPqJ685f2j/5RfIDiP/TvKN+cJXP3i04ktFTYVGhhsqa0
-	OcRrHLeQ==;
+	bh=YkUHGOl32bDOaVzsx0oIqL3+UFJuiVGXY9j7f0jz5gI=; b=LOiWXnf+lMkL82IPXCdOlu4pQY
+	HtT7y6LUeIymSlSBwmyuRHOiJlSjQFJsQ1w1CCXZkeVXOJpE0zNwkbCs+aQlennf3l1tOeUgWd7/V
+	pNnI+J06i/QgWQTZVa+LgbvTwTpZgKbe6hvtvUQ8xUiqITnn4yxUafHzxTNV0An/nEmvOrtFcLQic
+	jQZjtVsUhioAADUgHAsgP69OyFL99erSZJwqJBYzOpDjh5KM2NUgY3SzhK38FMt1AOP6wviY8kMbW
+	vK38BCNeI2G3ChmhQ8E6jKwSLUC2CuLmRs8HJ/6oN8ddfX9NarIRPcDWBO0ClJ/CSY1N4lydCTOyG
+	RZ2GfVCw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzwvW-00Fp1K-2T;
-	Fri, 19 May 2023 10:01:34 +0000
+	id 1pzwvS-00Fp08-2A;
+	Fri, 19 May 2023 10:01:30 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzwvP-00Foxp-0s
+	id 1pzwvP-00Foxl-0r
 	for barebox@lists.infradead.org;
-	Fri, 19 May 2023 10:01:29 +0000
+	Fri, 19 May 2023 10:01:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pzwvL-0003qh-DL; Fri, 19 May 2023 12:01:23 +0200
+	id 1pzwvL-0003qU-1F; Fri, 19 May 2023 12:01:23 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pzwvK-001HUG-P5; Fri, 19 May 2023 12:01:22 +0200
+	id 1pzwvK-001HU4-Aj; Fri, 19 May 2023 12:01:22 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1pzwvJ-009vVR-8V; Fri, 19 May 2023 12:01:21 +0200
+	id 1pzwvJ-009vVJ-7s; Fri, 19 May 2023 12:01:21 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 19 May 2023 12:01:17 +0200
-Message-Id: <20230519100120.2365970-4-a.fatoum@pengutronix.de>
+Date: Fri, 19 May 2023 12:01:15 +0200
+Message-Id: <20230519100120.2365970-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230519100120.2365970-1-a.fatoum@pengutronix.de>
 References: <20230519100120.2365970-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230519_030127_321031_CCA52633 
-X-CRM114-Status: GOOD (  11.85  )
+X-CRM114-CacheID: sfid-20230519_030127_322718_D7086348 
+X-CRM114-Status: GOOD (  12.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,53 +79,111 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 3/6] commands: of_property: use new of_read_file
+Subject: [PATCH v2 1/6] treewide: don't mix goto labels and statements on same line
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Recent addition of of_read_file also involved switching over nearly all
-open coded instances to use it. of_property seems the only remaining
-instance where of_read_file can be used, but isn't. Switch it over.
+Coding style across the project is not to indent goto labels and
+to not mix them with code on the same line. Let's fix the few outliers
+that are there.
+
+No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
   - new patch
 ---
- commands/of_property.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ common/state/state.c             | 12 ++++++++----
+ common/state/state_variables.c   |  9 ++++++---
+ drivers/usb/gadget/udc/fsl_udc.c |  3 ++-
+ 3 files changed, 16 insertions(+), 8 deletions(-)
 
-diff --git a/commands/of_property.c b/commands/of_property.c
-index b507a3541e0a..0c914c55c6bf 100644
---- a/commands/of_property.c
-+++ b/commands/of_property.c
-@@ -305,7 +305,6 @@ static int do_of_property(int argc, char *argv[])
- 	char *path, *propname;
- 	char *dtbfile = NULL;
- 	int ret = 0;
--	size_t size;
- 	struct fdt_header *fdt = NULL;
- 	struct device_node *root = NULL;
+diff --git a/common/state/state.c b/common/state/state.c
+index cabe285fbdf3..040835702b66 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -333,8 +333,10 @@ static int state_convert_node_variable(struct state *state,
+ 		goto out;
  
-@@ -340,15 +339,9 @@ static int do_of_property(int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
+ 	return 0;
+- out_free:free(name);
+- out:	return ret;
++out_free:
++	free(name);
++out:
++	return ret;
+ }
  
- 	if (dtbfile) {
--		fdt = read_file(dtbfile, &size);
--		if (!fdt) {
--			printf("unable to read %s: %m\n", dtbfile);
--			return -errno;
--		}
--
--		root = of_unflatten_dtb(fdt, size);
--
--		free(fdt);
-+		root = of_read_file(dtbfile);
-+		if (IS_ERR(root))
-+			return PTR_ERR(root);
+ struct device_node *state_to_node(struct state *state,
+@@ -361,7 +363,8 @@ struct device_node *state_to_node(struct state *state,
  	}
  
- 	if (set) {
+ 	return root;
+- out:	of_delete_node(root);
++out:
++	of_delete_node(root);
+ 	return ERR_PTR(ret);
+ }
+ 
+@@ -561,7 +564,8 @@ static int of_state_fixup(struct device_node *root, void *ctx)
+ 
+ 	return 0;
+ 
+- out:	of_delete_node(new_node);
++out:
++	of_delete_node(new_node);
+ 	return ret;
+ }
+ 
+diff --git a/common/state/state_variables.c b/common/state/state_variables.c
+index cb85f3a92602..77946206cd02 100644
+--- a/common/state/state_variables.c
++++ b/common/state/state_variables.c
+@@ -263,7 +263,8 @@ static struct state_variable *state_enum32_create(struct state *state,
+ 	}
+ 
+ 	return &enum32->var;
+- out:	for (i--; i >= 0; i--)
++out:
++	for (i--; i >= 0; i--)
+ 		free((char *)enum32->names[i]);
+ 	free(enum32->names);
+ 	free(enum32);
+@@ -329,7 +330,8 @@ static struct state_variable *state_mac_create(struct state *state,
+ 	}
+ 
+ 	return &mac->var;
+- out:	free(mac);
++out:
++	free(mac);
+ 	return ERR_PTR(ret);
+ }
+ 
+@@ -444,7 +446,8 @@ static struct state_variable *state_string_create(struct state *state,
+ 	}
+ 
+ 	return &string->var;
+- out:	free(string);
++out:
++	free(string);
+ 	return ERR_PTR(ret);
+ }
+ 
+diff --git a/drivers/usb/gadget/udc/fsl_udc.c b/drivers/usb/gadget/udc/fsl_udc.c
+index 6a1d4304df1e..81e051a073c0 100644
+--- a/drivers/usb/gadget/udc/fsl_udc.c
++++ b/drivers/usb/gadget/udc/fsl_udc.c
+@@ -980,7 +980,8 @@ static int fsl_ep_dequeue(struct usb_ep *_ep, struct usb_request *_req)
+ 	done(ep, req, -ECONNRESET);
+ 
+ 	/* Enable EP */
+-out:	epctrl = readl(&dr_regs->endptctrl[ep_num]);
++out:
++	epctrl = readl(&dr_regs->endptctrl[ep_num]);
+ 	if (ep_is_in(ep))
+ 		epctrl |= EPCTRL_TX_ENABLE;
+ 	else
 -- 
 2.39.2
 
