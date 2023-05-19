@@ -1,55 +1,55 @@
-Delivery-date: Fri, 19 May 2023 12:10:28 +0200
+Delivery-date: Fri, 19 May 2023 12:37:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzx49-006Y9y-BO
-	for lore@lore.pengutronix.de; Fri, 19 May 2023 12:10:28 +0200
+	id 1pzxUO-006ZAD-4P
+	for lore@lore.pengutronix.de; Fri, 19 May 2023 12:37:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1pzx46-0005uW-H7
-	for lore@pengutronix.de; Fri, 19 May 2023 12:10:27 +0200
+	id 1pzxUL-0000np-RY
+	for lore@pengutronix.de; Fri, 19 May 2023 12:37:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=o2rPXbL9cwn7U7MeRKRoE/wjme9NCq4lI4bfv/nySpM=; b=sG5vVdf1DOnNQk3iAVbp6TaYPY
-	ghdRnAZpVKwqBA0DTp/WvlB+mVAoU5OuyCY98jBYUvH5sCgO2SVD2Y/3IuRWFYpFMAKGI09/0WlRq
-	V0Z5aUVz7/55u1xn1PSjXPMBeapvQ6vyp18JXbT3tPivUGcPepH197FoPbBd6ApTwiS8jq4S6QGVD
-	O/6syrMJFnlKVuae1Xcpz58yEP/fiLNX4/zunvLj5xSFSteP8/IKsPKkcH742rM5HviVEeQs5kDlx
-	emMoF1fp2qCbeG5nfJG+LoV+KW7Rle5Kaljkpyezucz/tPviFEZ8YOtWbNyz8meEW5fiQBHD5tA6Z
-	P9VwndIg==;
+	bh=/a/wm5t5zhV1o1rCNO/UWdB56eC4VMcQUUyRusAJsCc=; b=4Cv69ePXHd6yh3qhSBfQdFTDQ/
+	KfB7Vscy0vnA7RkcmMFCfVetHcmvNR1BdJ9GnjH+UXkyAzAFGXorLHM3DA8gsWfhAsdnQ67LCk4eE
+	V/GrApr9pcUQJFgz8HC+gd7i/BeXRcPxsf8ArYA+Q/6/B1f8ggHjvM5DT3dBVQtxZ6knM+QH0Grey
+	bHMigCOEwdkeOSuf2b2ydAnY11utXlM2zxGudihMLR2jDyE5qjHSgmRS38VNVv/zuZOrNvzP3SZlM
+	bAa/Zto37dnQfByGI+iQEbLhrkjTFjtLnwJx1yAKotHoKQbyD/TdfjAZHDWgdSJELXGXcPzBEIfxR
+	3bbLc54Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzx2y-00Fqtw-34;
-	Fri, 19 May 2023 10:09:16 +0000
-Received: from relay4-d.mail.gandi.net ([2001:4b98:dc4:8::224])
+	id 1pzxTG-00Fuyf-1m;
+	Fri, 19 May 2023 10:36:26 +0000
+Received: from relay7-d.mail.gandi.net ([217.70.183.200])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1pzx2u-00Fqrk-13
+	id 1pzxTD-00Fuxb-0E
 	for barebox@lists.infradead.org;
-	Fri, 19 May 2023 10:09:14 +0000
+	Fri, 19 May 2023 10:36:24 +0000
 Received: (Authenticated sender: jmaselbas@zdiv.net)
-	by mail.gandi.net (Postfix) with ESMTPSA id 98027E0004;
-	Fri, 19 May 2023 10:09:06 +0000 (UTC)
-Date: Fri, 19 May 2023 12:09:05 +0200
+	by mail.gandi.net (Postfix) with ESMTPSA id 0AFAE20004;
+	Fri, 19 May 2023 10:36:17 +0000 (UTC)
+Date: Fri, 19 May 2023 12:36:16 +0200
 From: Jules Maselbas <jmaselbas@zdiv.net>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <ZGdKwXEhlxSVq3fd@tour>
+Message-ID: <ZGdRIO61IrqeuVn8@tour>
 References: <20230510233711.37345-1-jmaselbas@zdiv.net>
- <20230510233711.37345-3-jmaselbas@zdiv.net>
- <1de832ec-33e3-269c-31dc-30662d783d49@pengutronix.de>
+ <20230510233711.37345-6-jmaselbas@zdiv.net>
+ <ff0cb7f1-9487-06c4-4db0-942a13a10ecc@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1de832ec-33e3-269c-31dc-30662d783d49@pengutronix.de>
+In-Reply-To: <ff0cb7f1-9487-06c4-4db0-942a13a10ecc@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230519_030912_663129_8A2ED4C6 
-X-CRM114-Status: GOOD (  30.81  )
+X-CRM114-CacheID: sfid-20230519_033623_234609_ADBAEF28 
+X-CRM114-Status: GOOD (  17.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,301 +72,63 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [RFC PATCH 02/11] sunxi: introduce mach-sunxi
+Subject: Re: [RFC PATCH 05/11] arm: sunxi: Add debug_ll
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, May 18, 2023 at 08:46:56PM +0200, Ahmad Fatoum wrote:
+On Thu, May 18, 2023 at 09:05:21PM +0200, Ahmad Fatoum wrote:
 > On 11.05.23 01:37, Jules Maselbas wrote:
-> > Add kbuild boilerplate and some early init functions
-> > ---
-> >  arch/arm/Kconfig                   | 12 ++++++++++
-> >  arch/arm/Makefile                  |  1 +
-> >  arch/arm/mach-sunxi/Kconfig        | 16 +++++++++++++
-> >  arch/arm/mach-sunxi/Makefile       |  2 ++
-> >  arch/arm/mach-sunxi/cpu_init.c     | 33 +++++++++++++++++++++++++++
-> >  arch/arm/mach-sunxi/sunxi.c        |  0
-> >  images/Makefile                    |  1 +
-> >  images/Makefile.sunxi              | 13 +++++++++++
-> >  include/mach/sunxi/init.h          |  6 +++++
-> >  include/mach/sunxi/sun50i-regs.h   | 36 ++++++++++++++++++++++++++++++
-> >  include/mach/sunxi/sunxi-pinctrl.h | 13 +++++++++++
-> >  11 files changed, 133 insertions(+)
-> >  create mode 100644 arch/arm/mach-sunxi/Kconfig
-> >  create mode 100644 arch/arm/mach-sunxi/Makefile
-> >  create mode 100644 arch/arm/mach-sunxi/cpu_init.c
-> >  create mode 100644 arch/arm/mach-sunxi/sunxi.c
-> >  create mode 100644 images/Makefile.sunxi
-> >  create mode 100644 include/mach/sunxi/init.h
-> >  create mode 100644 include/mach/sunxi/sun50i-regs.h
-> >  create mode 100644 include/mach/sunxi/sunxi-pinctrl.h
-> > 
-> > diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> > index abe649de49..8da03e2703 100644
-> > --- a/arch/arm/Kconfig
-> > +++ b/arch/arm/Kconfig
-> > @@ -144,6 +144,17 @@ config ARCH_SOCFPGA
-> >  	select COMMON_CLK
-> >  	select CLKDEV_LOOKUP
-> >  
-> > +config ARCH_SUNXI
-> > +	bool "Allwinner SoCs"
-> 
-> depends on ARCH_MULTIARCH? :-)
-I don't recall testing a multiarch build, yet
-
-> That's the new hot stuff where you can build multiple SoC families
-> in one go. Also, no HAS_DEBUG_LL?
-low-level debug is added in a later patch. my initial though was that
-HAS_DEBUG_LL is more board specific as it depends on the acctual UART
-used for debugging, that's why it is added in ARCH_SUN50I_A64 Kconfig.
-I can change this, add HAS_DEBUG_LL to ARCH_SUNXI instead.
-
-> > +	select OFTREE
-> > +	select OFDEVICE
-> > +	select COMMON_CLK
-> > +	select COMMON_CLK_OF_PROVIDER
-> > +	select CLKDEV_LOOKUP
-> > +	select GENERIC_GPIO
-> 
-> This is implied by select GPIOLIB below.
-ack
-
-> > +	select GPIOLIB
-> > +	select PINCTRL
-> > +
-> >  config ARCH_VERSATILE
-> >  	bool "ARM Versatile boards (ARM926EJ-S)"
-> >  	select GPIOLIB
-> > @@ -311,6 +322,7 @@ source "arch/arm/mach-omap/Kconfig"
-> >  source "arch/arm/mach-pxa/Kconfig"
-> >  source "arch/arm/mach-rockchip/Kconfig"
-> >  source "arch/arm/mach-socfpga/Kconfig"
-> > +source "arch/arm/mach-sunxi/Kconfig"
-> >  source "arch/arm/mach-stm32mp/Kconfig"
-> >  source "arch/arm/mach-versatile/Kconfig"
-> >  source "arch/arm/mach-vexpress/Kconfig"
-> > diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> > index a506f1e3a3..bb61392e4c 100644
-> > --- a/arch/arm/Makefile
-> > +++ b/arch/arm/Makefile
-> > @@ -103,6 +103,7 @@ machine-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip
-> >  machine-$(CONFIG_ARCH_SAMSUNG)		+= samsung
-> >  machine-$(CONFIG_ARCH_SOCFPGA)		+= socfpga
-> >  machine-$(CONFIG_ARCH_STM32MP)		+= stm32mp
-> > +machine-$(CONFIG_ARCH_SUNXI)		+= sunxi
-> >  machine-$(CONFIG_ARCH_VERSATILE)	+= versatile
-> >  machine-$(CONFIG_ARCH_VEXPRESS)		+= vexpress
-> >  machine-$(CONFIG_ARCH_TEGRA)		+= tegra
-> > diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+snip
+> > diff --git a/include/mach/sunxi/debug_ll.h b/include/mach/sunxi/debug_ll.h
 > > new file mode 100644
-> > index 0000000000..0e8d83fedd
+> > index 0000000000..64c65a5917
 > > --- /dev/null
-> > +++ b/arch/arm/mach-sunxi/Kconfig
-> > @@ -0,0 +1,16 @@
-> > +if ARCH_SUNXI
+> > +++ b/include/mach/sunxi/debug_ll.h
+> > @@ -0,0 +1,35 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
 > > +
-> > +config ARCH_TEXT_BASE
-> > +	hex
-> > +	default 0x0
+> > +#ifndef __MACH_DEBUG_LL_H__
+> > +#define __MACH_DEBUG_LL_H__
 > > +
-> > +menuconfig SUNXI_MULTI_BOARDS
-> > +	bool "Allwinner boards"
-> > +	select HAVE_PBL_MULTI_IMAGES
-> > +	select RELOCATABLE
-> 
-> Just make this the default?
-by putting this into ARCH_SUNXI ?
-
-
-> > +
-> > +if SUNXI_MULTI_BOARDS
-> > +
-> > +endif
-> > +
-> > +endif
-> > diff --git a/arch/arm/mach-sunxi/Makefile b/arch/arm/mach-sunxi/Makefile
-> > new file mode 100644
-> > index 0000000000..d678973ca2
-> > --- /dev/null
-> > +++ b/arch/arm/mach-sunxi/Makefile
-> > @@ -0,0 +1,2 @@
-> > +obj-y += sunxi.o
-> > +lwl-y += cpu_init.o
-> > diff --git a/arch/arm/mach-sunxi/cpu_init.c b/arch/arm/mach-sunxi/cpu_init.c
-> > new file mode 100644
-> > index 0000000000..f4092d8d5d
-> > --- /dev/null
-> > +++ b/arch/arm/mach-sunxi/cpu_init.c
-> > @@ -0,0 +1,33 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> > +
-> > +#include <common.h>
-> > +#include <linux/sizes.h>
-> > +#include <asm/barebox-arm-head.h>
-> > +// #include <asm/errata.h> TODO: errata 843419 ?
 > > +#include <io.h>
-> > +#include <debug_ll.h>
-> > +#include <mach/sunxi/init.h>
-> > +#include <mach/sunxi/sun50i-regs.h>
-> > +#include <mach/sunxi/sunxi-pinctrl.h>
 > > +
-> > +static void sunxi_ccu_init(void __iomem *ccu)
+> > +#define DEBUG_LL_UART_ADDR CONFIG_SUNXI_DEBUG_LL_UART_BASE
+> > +
+> > +static inline uint8_t debug_ll_read_reg(int reg)
 > > +{
-> > +	/* APB2 = 24MHz (UART, I2C) */
-> > +	writel((1 << 24 /* src: 1=osc24 */) |
-> > +	       (0 << 16 /* pre_div (N): 0=/1 1=/2 2=/4 3=/8 */) |
-> > +	       (0 << 0) /* M-1 */,
-> > +	       ccu + CCU_APB2_CFG);
-> > +	set_cntfrq(24 * 1000 * 1000);
-> > +
-> > +	/* PIO clock enable */
-> > +	setbits_le32(ccu + CCU_BUS_CLK_GATE2, 1u << 5);
-> 
-> Nit: There's a BIT() macro that could be used here.
-ack
- 
-> > +	/* UART0 clock enable */
-> > +	setbits_le32(ccu + CCU_BUS_CLK_GATE3, 1u << 16);
-> > +	/* UART0 release reset */
-> > +	setbits_le32(ccu + CCU_BUS_SOFT_RST4, 1u << 16);
-> 
-> Can the pads UART0 uses be muxed otherwise? Is it ok to unconditionally
-To be clear: nothing touches the pin-muxes here, only clock-gate and reset
-for gpio and uart. UART0 isn't muxed by default, it can be either muxed to
-PB8/PB9 or PF2/PF4. To enable UART0 on PB8/PB9 you will to write 0x-----33-
-into PIO PB_CFG1(0x28) register. Which I didn't do here... I think that's
-because the boot ROM has done it... or i am missing something.
-
-> enable UART0 here? I'd expect this to be a separate sunxi_uart_setup(port)
-> that can be used by board code after doing lowlevel_init.
-okay
-
+> > +	return readl(IOMEM(DEBUG_LL_UART_ADDR) + reg * sizeof(uint32_t));
 > > +}
 > > +
-> > +static void sunxi_cpu_lowlevel_init(void)
+> > +static inline void debug_ll_write_reg(int reg, uint8_t val)
 > > +{
-> > +	sunxi_ccu_init(IOMEM(SUNXI_CCU_BASE_ADDR));
+> > +	writel(val, IOMEM(DEBUG_LL_UART_ADDR) + reg * sizeof(uint32_t));
 > > +}
-> > diff --git a/arch/arm/mach-sunxi/sunxi.c b/arch/arm/mach-sunxi/sunxi.c
-> > new file mode 100644
-> > index 0000000000..e69de29bb2
-> > diff --git a/images/Makefile b/images/Makefile
-> > index aa5814710f..3a10fe1abb 100644
-> > --- a/images/Makefile
-> > +++ b/images/Makefile
-> > @@ -151,6 +151,7 @@ include $(srctree)/images/Makefile.omap3
-> >  include $(srctree)/images/Makefile.rockchip
-> >  include $(srctree)/images/Makefile.socfpga
-> >  include $(srctree)/images/Makefile.stm32mp
-> > +include $(srctree)/images/Makefile.sunxi
-> >  include $(srctree)/images/Makefile.tegra
-> >  include $(srctree)/images/Makefile.vexpress
-> >  include $(srctree)/images/Makefile.xburst
-> > diff --git a/images/Makefile.sunxi b/images/Makefile.sunxi
-> > new file mode 100644
-> > index 0000000000..778d6f9bdf
-> > --- /dev/null
-> > +++ b/images/Makefile.sunxi
-> > @@ -0,0 +1,13 @@
-> > +#
-> > +# barebox image generation Makefile for Allwinner sunxi eGON boot images
-> > +#
 > > +
-> > +# %.egonimg - convert into eGON.BT0 image
-> > +# ----------------------------------------------------------------------
-> > +quiet_cmd_egon_image = EGON  $@
-> > +      cmd_egon_image = $(objtree)/scripts/egon_mkimage $< $@
+> > +#include <debug_ll/ns16550.h>
 > > +
-> > +$(obj)/%.egonimg: $(obj)/% FORCE
-> > +	$(call if_changed,egon_image)
-> > +
-> > +# ----------------------------------------------------------------------
-> > diff --git a/include/mach/sunxi/init.h b/include/mach/sunxi/init.h
-> > new file mode 100644
-> > index 0000000000..26cc022fde
-> > --- /dev/null
-> > +++ b/include/mach/sunxi/init.h
-> > @@ -0,0 +1,6 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > +
-> > +#ifndef __MACH_INIT_H
-> > +#define __MACH_INIT_H
-> > +
-> > +#endif
-> > diff --git a/include/mach/sunxi/sun50i-regs.h b/include/mach/sunxi/sun50i-regs.h
-> > new file mode 100644
-> > index 0000000000..68501fa351
-> > --- /dev/null
-> > +++ b/include/mach/sunxi/sun50i-regs.h
-> > @@ -0,0 +1,36 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > +
-> > +#ifndef __MACH_SUN50I_REGS_H
-> > +#define __MACH_SUN50I_REGS_H
+> > +static inline void debug_ll_init(void)
+> > +{
+> > +	uint16_t divisor;
 > 
-> #include <linux/sizes.h>
-> 
-> > +
-> > +#define SUN50I_SRAM_A1_BASE_ADDR 0x00000000
-> > +#define SUN50I_SRAM_A1_SIZE SZ_64K
-> > +#define SUN50I_SRAM_A2_BASE_ADDR 0x00044000
-> > +#define SUN50I_SRAM_A2_SIZE SZ_32K
-> > +
-> > +#define SUN50I_DRAM_BASE_ADDR	0x40000000
-> > +
-> > +#define SUN50I_CCU_BASE_ADDR	0x01c20000
-> > +#define SUN50I_PIO_BASE_ADDR	0x01c20800
-> > +#define SUN50I_MMC0_BASE_ADDR	0x01c0f000
-> > +#define SUN50I_MMC1_BASE_ADDR	0x01c10000
-> > +#define SUN50I_MMC2_BASE_ADDR	0x01c11000
-> > +#define SUN50I_TIMER_BASE_ADDR	0x01c20c00
-> 
-> I know much existing code doesn't, but you could already use IOMEM
-> here to avoid casts in consumer code.
-ack
-
-> > +
-> > +#define CCU_PLL_CPUX		0x00
-> > +#define CCU_PLL_PERIPH0		0x28
-> > +#define CCU_CPUX_AXI_CFG	0x50
-> > +#define CCU_AHB1_APB1_CFG	0x54
-> > +#define CCU_APB2_CFG		0x58
-> > +#define CCU_AHB2_CFG		0x5c
-> > +#define CCU_BUS_CLK_GATE0	0x60
-> > +#define CCU_BUS_CLK_GATE1	0x64
-> > +#define CCU_BUS_CLK_GATE2	0x68
-> > +#define CCU_BUS_CLK_GATE3	0x6c
-> > +#define CCU_CE_CLK		0x9c
-> > +#define CCU_MBUS_CLK		0x15c
-> > +#define CCU_BUS_SOFT_RST0	0x2c0
-> > +#define CCU_BUS_SOFT_RST4	0x2d8
-> > +#define CCU_PLL_LOCK_CTRL	0x320
-> > +
-> > +#endif
-> > diff --git a/include/mach/sunxi/sunxi-pinctrl.h b/include/mach/sunxi/sunxi-pinctrl.h
-> > new file mode 100644
-> > index 0000000000..adb2a24577
-> > --- /dev/null
-> > +++ b/include/mach/sunxi/sunxi-pinctrl.h
-> > @@ -0,0 +1,13 @@
-> > +/* pio aka "allwinner,sun8i-h3-pinctrl" */
-> 
-> No include guard?
-... this file could be merged in "sun50i-regs.h", what do you think ?
+> Call sunxi_uart_setup here?
+While taking look at this, the initial code (in sun50i_cpu_lowlevel_init)
+and now the lowlevel board code. There is bits done every where, and the
+acctual pin mux is done in lowlevel board code, in a function setup_uart.
+I think I will "fuse" setup_uart and the bits originally done by
+sun50i_cpu_lowlevel_init: lowlevel code will call sunxi_uart_setup (for
+clock gating, un-reset and pinmux).
  
 > > +
-> > +#define PIO_PA_CFG0 0x00
-> > +#define PIO_PB_CFG0 0x24
-> > +#define PIO_PB_CFG1 0x28
-> > +#define PIO_PD_CFG0 0x6c
-> > +#define PIO_PD_CFG1 0x70
-> > +#define PIO_PD_CFG2 0x74
-> > +#define PIO_PF_CFG0 0xb4
+> > +	divisor = debug_ll_ns16550_calc_divisor(24 * 1000 * 1000);
+> > +	debug_ll_ns16550_init(divisor);
+> > +}
 > > +
-> > +#define PIO_PA_PULL1 0x20
-> > +#define PIO_PB_PULL0 0x40
-> > +#define PIO_PD_DATA 0x7c
+> > +static inline void PUTC_LL(int c)
+> > +{
+> > +       debug_ll_ns16550_putc(c);
+> > +}
+> > +
+> > +#endif
 > 
 > -- 
 > Pengutronix e.K.                           |                             |
