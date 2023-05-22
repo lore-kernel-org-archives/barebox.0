@@ -1,59 +1,63 @@
-Delivery-date: Mon, 22 May 2023 12:34:12 +0200
+Delivery-date: Mon, 22 May 2023 13:30:33 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q12rm-009XnS-1L
-	for lore@lore.pengutronix.de; Mon, 22 May 2023 12:34:12 +0200
+	id 1q13kI-009adG-9o
+	for lore@lore.pengutronix.de; Mon, 22 May 2023 13:30:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q12rj-0003Gm-Ld
-	for lore@pengutronix.de; Mon, 22 May 2023 12:34:12 +0200
+	id 1q13kF-0002nj-IY
+	for lore@pengutronix.de; Mon, 22 May 2023 13:30:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=m0O0kWTIVUhqYUKWhT2EA/vppBcBJpGZJoEPqzyD1ms=; b=IBuLUVvBwvgByDG9T+kLL0xYkt
-	LgBz4cONICkb/RfhNnlNMkH0qPEMSwJ0z0X3sTsOcSYMSyWooC4nQJ6+FwxkIWDnqFNGjyBC91hBQ
-	DxkX34ASHgT0dgoDV5UX2KrUuPV1bymYMUO9txHrfxm2FKGRSju7DfYu/3XZ+lcMhXJHs2NAB1Bbb
-	/I4dR9i8Eh0hp3EFPZrccZ7yxaTF8J4kLekzrYBFEzhSE+c7GNj2mPw3lVbM7M6114yFbrr8h7d90
-	uXwGPI6xLrWywB9C3E+qvJGrAsTdIqVEiqcCvaD7NGkRBHMw9jHVB1RZltXJwWD/MozkMcX+/6LcQ
-	TMFvEMEw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=YQ8RqqStQ2ABQQzh0DYDECh4yjhwPyKhO97bKuxWRsM=; b=eV7qrxuHpFJorExntun7/2ZCuR
+	+XAwVJOM9k40/IO1Hu+cKHaXvMX3LN+u5XFOPLWN/v3FwqVYMObXULcFZLwPeqgnvwJQ2OohlaGNG
+	aayWQAUjzUw0R6m/x4oUr/AFKyHomXWlwKnQ22b/E0yy6MmZwu8km9Ntt3hpgtSa8EhgiKDhjEnei
+	iyRCkp/VNrS9uYEQHDEdwLPHTRvGaouG8YSinrwAxDTdfqgy2AvLFHb0Xa2qDks8gRS8aDJdOl4/F
+	bzQHKpay4fYEhViSAcXOTgQSH/NzBi5cCK8sGoZGD5abvQZmtTxyfnHyG6dfp20u3pCKNA3E/YQXw
+	yUpGAvXw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q12qL-005z08-1O;
-	Mon, 22 May 2023 10:32:45 +0000
+	id 1q13j1-006GC6-2e;
+	Mon, 22 May 2023 11:29:15 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q12qI-005yzN-1m
+	id 1q13iy-006GBL-0q
 	for barebox@lists.infradead.org;
-	Mon, 22 May 2023 10:32:43 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q12qG-0003C9-Sd; Mon, 22 May 2023 12:32:40 +0200
-Message-ID: <19063118-14da-33bf-7e1b-f73b5fd86d3b@pengutronix.de>
-Date: Mon, 22 May 2023 12:32:40 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Content-Language: en-US
-To: Jules Maselbas <jmaselbas@zdiv.net>
+	Mon, 22 May 2023 11:29:14 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q13iw-0002Ot-78; Mon, 22 May 2023 13:29:10 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q13iv-0004Y4-9m; Mon, 22 May 2023 13:29:09 +0200
+Date: Mon, 22 May 2023 13:29:09 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-References: <20230510233711.37345-1-jmaselbas@zdiv.net>
- <20230510233711.37345-3-jmaselbas@zdiv.net>
- <1de832ec-33e3-269c-31dc-30662d783d49@pengutronix.de> <ZGdKwXEhlxSVq3fd@tour>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <ZGdKwXEhlxSVq3fd@tour>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-ID: <20230522112909.GM29365@pengutronix.de>
+References: <20230519084009.2355024-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230519084009.2355024-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230522_033242_594157_A6C7E36B 
-X-CRM114-Status: GOOD (  19.17  )
+X-CRM114-CacheID: sfid-20230522_042912_319668_3F532155 
+X-CRM114-Status: GOOD (  20.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,66 +75,56 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [RFC PATCH 02/11] sunxi: introduce mach-sunxi
+Subject: Re: [PATCH] fixup! net: dsa: realtek: fix Kconfig selects
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 19.05.23 12:09, Jules Maselbas wrote:
-> On Thu, May 18, 2023 at 08:46:56PM +0200, Ahmad Fatoum wrote:
->> On 11.05.23 01:37, Jules Maselbas wrote:
->>> +menuconfig SUNXI_MULTI_BOARDS
->>> +	bool "Allwinner boards"
->>> +	select HAVE_PBL_MULTI_IMAGES
->>> +	select RELOCATABLE
->>
->> Just make this the default?
-> by putting this into ARCH_SUNXI ?
+On Fri, May 19, 2023 at 10:40:09AM +0200, Ahmad Fatoum wrote:
+> net: dsa: realtek: drop select of undefined REGMAP option
+> 
+> Regmap support is available unconditionally in barebox and is only
+> removed by linker garbage collection, unlike the kernel.
+> 
+> Reported-by: Antony Pavlov <antonynpavlov@gmail.com>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/net/realtek-dsa/Kconfig | 1 -
+>  1 file changed, 1 deletion(-)
 
-Just drop the SUNXI_MULTI_BOARDS and select HAVE_PBL_MULTI_IMAGES
-and RELOCATABLE directly from ARCH_SUNXI.
+Applied, thanks
 
->>> +	/* UART0 clock enable */
->>> +	setbits_le32(ccu + CCU_BUS_CLK_GATE3, 1u << 16);
->>> +	/* UART0 release reset */
->>> +	setbits_le32(ccu + CCU_BUS_SOFT_RST4, 1u << 16);
->>
->> Can the pads UART0 uses be muxed otherwise? Is it ok to unconditionally
-> To be clear: nothing touches the pin-muxes here, only clock-gate and reset
-> for gpio and uart. UART0 isn't muxed by default, it can be either muxed to
-> PB8/PB9 or PF2/PF4. To enable UART0 on PB8/PB9 you will to write 0x-----33-
-> into PIO PB_CFG1(0x28) register. Which I didn't do here... I think that's
-> because the boot ROM has done it... or i am missing something.
+I removed the fixup! as the commit to be fixed up is already in master.
 
-I see. Still it's odd that UART0 specific stuff is done in lowlevel init.
+Sascha
 
->>> diff --git a/include/mach/sunxi/sunxi-pinctrl.h b/include/mach/sunxi/sunxi-pinctrl.h
->>> new file mode 100644
->>> index 0000000000..adb2a24577
->>> --- /dev/null
->>> +++ b/include/mach/sunxi/sunxi-pinctrl.h
->>> @@ -0,0 +1,13 @@
->>> +/* pio aka "allwinner,sun8i-h3-pinctrl" */
->>
->> No include guard?
-> ... this file could be merged in "sun50i-regs.h", what do you think ?
-
-Either is fine by me.
-
-Cheers,
-Ahmad 
-
-
+> 
+> diff --git a/drivers/net/realtek-dsa/Kconfig b/drivers/net/realtek-dsa/Kconfig
+> index 0708f1ef96f4..f9404e0265ee 100644
+> --- a/drivers/net/realtek-dsa/Kconfig
+> +++ b/drivers/net/realtek-dsa/Kconfig
+> @@ -4,7 +4,6 @@ menuconfig DRIVER_NET_DSA_REALTEK
+>  	depends on DSA
+>  	select PHYLIB
+>  	select REALTEK_PHY
+> -	select REGMAP
+>  	help
+>  	  Select to enable support for Realtek Ethernet switch chips.
+>  
+> -- 
+> 2.39.2
+> 
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
