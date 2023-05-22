@@ -1,55 +1,60 @@
-Delivery-date: Fri, 19 May 2023 18:32:33 +0200
+Delivery-date: Mon, 22 May 2023 07:15:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q031u-006qcp-Ry
-	for lore@lore.pengutronix.de; Fri, 19 May 2023 18:32:33 +0200
+	id 1q0xtV-009ISU-Qm
+	for lore@lore.pengutronix.de; Mon, 22 May 2023 07:15:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q031r-0001U6-M7
-	for lore@pengutronix.de; Fri, 19 May 2023 18:32:32 +0200
+	id 1q0xtT-0000Qw-I6
+	for lore@pengutronix.de; Mon, 22 May 2023 07:15:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=y6BbgNdaC3LaLn8oiFsA762m4lPmUwJnnorEDwJRq3g=; b=Vz0oR9xFcB72IxG9+8NT6jV6Bx
-	w0Mcg9+N2ev1vOab+BQvQFcNQfCq00wJasBZFzVoutK0wiIZ1n0qfq586dFd8t77OoxOmo8sHWpDx
-	9W8DWAOwP4XKuqfhO4ZT0B9MwqXrEEU4vXRxtxVU1pu4HCEebWz5rElktkqMMMt7gGQGQnRMKDTjS
-	+OJQJaY5BQlGGpQ3vPBk9m66eYDkZmDE1n0GcxnvqQjx7yJjYDDCtn3MFahBPc8VII1KMStY/2P64
-	kBlW5VJZ5NNc405KYx/TSWxBxGnhS9EYqBd/5dXcsW8hoNcyxTMR39XYWUnNnUEwnBvMpe2gMrXpL
-	4u8rFUXg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=i9YJNdVAhqLBrm+ulZzVdKbM887s4DN4rqfB6MEFWbg=; b=wx2CX2xD94hyMM+RZHbIoeLj1e
+	HL4EtANXd5YkmNx8DQmF+/NaChRkOEAvywOiheEn0xhnjEgGdIhYptUarHRwkttvNf6v/f/6IX2nh
+	J0Zp+mUnG16dAuWvFCaHNdjXFRrZP/01hevsfQ9DOGKDrFYLePeiPWw2vtj6HhigatSmjLIJ5uhl9
+	oeVDfIgJiREDodKBL8l+hHXUT0ulPGHkKp5GWyoeB2FGPnqDk+KrMAxm5cnKQZ0EQiXWTB84delcG
+	Oniyq4+gvzTmfQFhoMUAEjnVs8agomCIQU4Gbz6vx7qsIW5GfZhtrinvF2Fws/BE9ZMIflB+isPdU
+	qZKZvHlw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q030Q-00Gj4C-2s;
-	Fri, 19 May 2023 16:31:02 +0000
-Received: from relay4-d.mail.gandi.net ([217.70.183.196])
+	id 1q0xry-005MAQ-2A;
+	Mon, 22 May 2023 05:14:06 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q030M-00Gj1T-10
+	id 1q0xrv-005M9K-1B
 	for barebox@lists.infradead.org;
-	Fri, 19 May 2023 16:31:01 +0000
-Received: (Authenticated sender: jmaselbas@zdiv.net)
-	by mail.gandi.net (Postfix) with ESMTPSA id 95364E0005;
-	Fri, 19 May 2023 16:30:53 +0000 (UTC)
-Date: Fri, 19 May 2023 18:30:52 +0200
-From: Jules Maselbas <jmaselbas@zdiv.net>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <ZGekPDv5v32eyx2j@tour>
-References: <20230510233711.37345-1-jmaselbas@zdiv.net>
- <20230510233711.37345-12-jmaselbas@zdiv.net>
- <b968544c-64c9-b89b-f736-726682610103@pengutronix.de>
+	Mon, 22 May 2023 05:14:05 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1q0xrp-0008UR-4D; Mon, 22 May 2023 07:13:57 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1q0xro-001vtI-FT; Mon, 22 May 2023 07:13:56 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1q0xrn-004LRN-My; Mon, 22 May 2023 07:13:55 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 22 May 2023 07:13:54 +0200
+Message-Id: <20230522051354.1035717-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b968544c-64c9-b89b-f736-726682610103@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230519_093058_608754_A6CBA87E 
-X-CRM114-Status: GOOD (  35.11  )
+X-CRM114-CacheID: sfid-20230521_221403_403049_D72EAF01 
+X-CRM114-Status: GOOD (  11.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,310 +72,65 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [RFC PATCH 11/11] arm: boards: sunxi: Add pine64 board
+Subject: [PATCH] fixup! ARM: rockchip: rk3588: add memsize detection
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, May 18, 2023 at 09:44:28PM +0200, Ahmad Fatoum wrote:
-> On 11.05.23 01:37, Jules Maselbas wrote:
-> > ---
-> >  arch/arm/boards/Makefile                 |   1 +
-> >  arch/arm/boards/pine64-pine64/Makefile   |   1 +
-> >  arch/arm/boards/pine64-pine64/lowlevel.c | 148 +++++++++++++++++++++++
-> >  arch/arm/dts/Makefile                    |   1 +
-> >  arch/arm/dts/sun50i-a64-pine64-plus.dts  |  18 +++
-> >  arch/arm/mach-sunxi/Kconfig              |   5 +
-> >  images/Makefile.sunxi                    |  10 ++
-> >  7 files changed, 184 insertions(+)
-> >  create mode 100644 arch/arm/boards/pine64-pine64/Makefile
-> >  create mode 100644 arch/arm/boards/pine64-pine64/lowlevel.c
-> >  create mode 100644 arch/arm/dts/sun50i-a64-pine64-plus.dts
-> > 
-> > diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-> > index 083ec2dce6..1fa1f962b3 100644
-> > --- a/arch/arm/boards/Makefile
-> > +++ b/arch/arm/boards/Makefile
-> > @@ -97,6 +97,7 @@ obj-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7)		+= phytec-phycore-imx7/
-> >  obj-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1)	+= phytec-phycore-stm32mp1/
-> >  obj-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ)		+= phytec-som-imx8mq/
-> >  obj-$(CONFIG_MACH_PINE64_PINEPHONE)		+= pine64-pinephone/
-> > +obj-$(CONFIG_MACH_PINE64_PINE64)		+= pine64-pine64/
-> 
-> That's an odd name.
-yeah... that's the name used in Linux device-trees but the actual board
-name is "Pine A64" like the SoC used...
+Extension of the Rockchip DMC driver for RK3588 support broke the
+existing support for RK3566. Patch that up.
 
-> >  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
-> >  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+= plathome-openblocks-a6/
-> >  obj-$(CONFIG_MACH_PM9261)			+= pm9261/
-> > diff --git a/arch/arm/boards/pine64-pine64/Makefile b/arch/arm/boards/pine64-pine64/Makefile
-> > new file mode 100644
-> > index 0000000000..b08c4a93ca
-> > --- /dev/null
-> > +++ b/arch/arm/boards/pine64-pine64/Makefile
-> > @@ -0,0 +1 @@
-> > +lwl-y += lowlevel.o
-> 
-> No board.c for environment and barebox_update handler? =)
-not yet i guess, I haven't looked much further than getting the SD card working
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/mach-rockchip/dmc.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-> > diff --git a/arch/arm/boards/pine64-pine64/lowlevel.c b/arch/arm/boards/pine64-pine64/lowlevel.c
-> > new file mode 100644
-> > index 0000000000..744f37a8e0
-> > --- /dev/null
-> > +++ b/arch/arm/boards/pine64-pine64/lowlevel.c
-> > @@ -0,0 +1,148 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +
-> > +#include <common.h>
-> > +#include <debug_ll.h>
-> > +#include <linux/sizes.h>
-> > +#include <linux/bitops.h>
-> > +#include <asm/barebox-arm.h>
-> > +#include <asm/cache.h>
-> > +#include <mach/sunxi/init.h>
-> > +#include <mach/sunxi/xload.h>
-> > +#include <mach/sunxi/egon.h>
-> > +#include <mach/sunxi/rmr_switch.h>
-> > +#include <mach/sunxi/sun50i-regs.h>
-> > +#include <mach/sunxi/sunxi-pinctrl.h>
-> > +
-> > +#define STACK_TOP   CONFIG_SUNXI_PBL_STACK_TOP
-> > +
-> > +#if 0
-> > +static void sun50i_pinmux_set(void __iomem *pio, u32 port, u32 pins, u8 func)
-> > +{
-> > +	u32 i, msk = 0, cfg = 0;
-> > +	for (i = 0; i < 8; i++) {
-> > +		if (pins & (1 << i)) {
-> > +			cfg |= func << (i * 4);
-> > +			msk |= 0xf << (i * 4);
-> > +		}
-> > +	}
-> > +	clrsetbits_le32(pio + port, msk, cfg);
-> > +}
-> > +#endif
-> 
-> left over?
-Yes, of an attempt to create lowlevel pinmux functions
+diff --git a/arch/arm/mach-rockchip/dmc.c b/arch/arm/mach-rockchip/dmc.c
+index 85fa8acd192f..630f0f6b7347 100644
+--- a/arch/arm/mach-rockchip/dmc.c
++++ b/arch/arm/mach-rockchip/dmc.c
+@@ -25,6 +25,7 @@
+ 
+ #define RK3399_INT_REG_START		0xf0000000
+ #define RK3568_INT_REG_START		RK3399_INT_REG_START
++#define RK3588_INT_REG_START		RK3568_INT_REG_START
+ 
+ struct rockchip_dmc_drvdata {
+ 	unsigned int os_reg2;
+@@ -228,11 +229,17 @@ static const struct rockchip_dmc_drvdata rk3399_drvdata = {
+ };
+ 
+ static const struct rockchip_dmc_drvdata rk3568_drvdata = {
++	.os_reg2 = RK3568_PMUGRF_OS_REG2,
++	.os_reg3 = RK3568_PMUGRF_OS_REG3,
++	.internal_registers_start = RK3568_INT_REG_START,
++};
++
++static const struct rockchip_dmc_drvdata rk3588_drvdata = {
+ 	.os_reg2 = RK3588_PMUGRF_OS_REG2,
+ 	.os_reg3 = RK3588_PMUGRF_OS_REG3,
+ 	.os_reg4 = RK3588_PMUGRF_OS_REG4,
+ 	.os_reg5 = RK3588_PMUGRF_OS_REG5,
+-	.internal_registers_start = RK3568_INT_REG_START,
++	.internal_registers_start = RK3588_INT_REG_START,
+ };
+ 
+ static struct of_device_id rockchip_dmc_dt_ids[] = {
+@@ -246,7 +253,7 @@ static struct of_device_id rockchip_dmc_dt_ids[] = {
+ 	},
+ 	{
+ 		.compatible = "rockchip,rk3588-dmc",
+-		.data = &rk3568_drvdata,
++		.data = &rk3588_drvdata,
+ 	},
+ 	{ /* sentinel */ }
+ };
+-- 
+2.39.2
 
-> > +
-> > +static void setup_uart(void)
-> > +{
-> > +	void __iomem *pio = IOMEM(SUN50I_PIO_BASE_ADDR);
-> > +
-> > +	/// ... uuuuhh
-> > +//	sun50i_pinmux_set(pio, PIO_PB_CFG1, BIT(0) | BIT(1), 4);
-> 
-> left over?
-yup
-
-> > +	/* UART0 pinmux (PB8 + PB9) */
-> > +	clrsetbits_le32(pio + PIO_PB_CFG1, 0x000000ff, 0x00000044);
-> > +
-> > +	debug_ll_init();
-> > +	putc_ll('>');
-> > +}
-> > +
-> > +ENTRY_FUNCTION_WITHSTACK(start_pine64_pine64, STACK_TOP, r0, r1, r2)
-> > +{
-> > +	extern char __dtb_z_sun50i_a64_pine64_plus_start[];
-> > +	void *fdt;
-> > +	u32 size;
-> > +
-> > +	sunxi_switch_to_aarch64();
-> > +
-> > +	sun50i_cpu_lowlevel_init();
-> > +	setup_uart();
-> > +
-> > +	relocate_to_current_adr();
-> > +	setup_c();
-> > +
-> > +	/* Skip SDRAM initialization if we run from it */
-> > +	if (get_pc() < SUN50I_DRAM_BASE_ADDR) {
-> > +		size = sun50i_a64_ddr3_dram_init();
-> > +		if (size == 0) {
-> > +			puts_ll("FAIL: dram init\r\n");
-> > +			goto reset;
-> > +		}
-> > +		puthex_ll(size);
-> > +		putc_ll('\r');	putc_ll('\n');
-> > +	}
-> > +
-> > +	puts_ll("now booting\r\n");
-> > +	fdt = __dtb_z_sun50i_a64_pine64_plus_start + get_runtime_offset();
-> > +	barebox_arm_entry(SUN50I_DRAM_BASE_ADDR, SZ_1G, fdt);
-> > +
-> > +reset:
-> > +	sun50i_cpu_lowlevel_reset();
-> > +}
-> > +
-> > +static void sun50i_mmc0_init(void)
-> > +{
-> > +	void __iomem *ccu = IOMEM(SUN50I_CCU_BASE_ADDR);
-> > +	void __iomem *pio = IOMEM(SUN50I_PIO_BASE_ADDR);
-> > +
-> > +	/* - configure clock gate pinctrl controller */
-> > +	/* PIO clock enable */
-> > +	setbits_le32(ccu + CCU_BUS_CLK_GATE2, BIT(5));
-> > +
-> > +	/* - configure pinctrl for mmc controller */
-> > +	/* set alt-function 2 for pins PF0 -> PF5 */
-> > +	clrsetbits_le32(pio + PIO_PF_CFG0, 0x00ffffff, 0x00222222);
-> > +//	sun50i_pinmux_set(pio, PIO_PF_CFG0, 0x3f, 2); TO BE REWORK'D
-> > +
-> > +	/* - configure clock gate mmc controller */
-> > +	/* MMC0 and MMC2 clock un-gate and reset */
-> > +	setbits_le32(ccu + 0x2c0, /* RST_BUS_MMC0 */ BIT(8) | /* RST_BUS_MMC2 */ BIT(10));
-> > +	setbits_le32(ccu + 0x060, /* CLK_BUS_MMC0 */ BIT(8) | /* CLK_BUS_MMC2 */ BIT(10));
-> > +
-> > +	writel(BIT(31), ccu + 0x88); /* MMC0 clock gate */
-> > +	writel(BIT(31), ccu + 0x90); /* MMC2 clock gate */
-> 
-> Would this be a candidate for moving into mach-sunxi, so other boards
-> can just reuse it? See for example arch/arm/mach-at91/xload-mmc.c.
-ack
-
-> > +}
-> > +
-> > +static void sunxi_fat_start_image(struct pbl_bio *bio, void *buf, size_t size)
-> > +{
-> > +	void (*start)(void) = buf;
-> > +	int ret;
-> > +
-> > +	ret = pbl_fat_load(bio, "barebox.bin", buf, size);
-> 
-> hmm, why chainload from FAT here, but not for Pinephone?
-pinephone didn't get the same attention, it should also be done on pinephone.
-
-> > +	if (ret < 0)
-> > +		return;
-> > +	sync_caches_for_execution();
-> > +	start();
-> > +}
-> > +
-> > +ENTRY_FUNCTION_WITHSTACK(start_pine64_pine64_xload, STACK_TOP, r0, r1, r2)
-> > +{
-> > +	struct pbl_bio bio;
-> > +	u32 size;
-> > +	int ret;
-> > +
-> > +	sunxi_egon_header();
-> > +	sunxi_switch_to_aarch64();
-> > +
-> > +	sun50i_cpu_lowlevel_init();
-> > +	setup_uart();
-> > +
-> > +	relocate_to_current_adr();
-> > +	setup_c();
-> > +
-> > +	size = sun50i_a64_ddr3_dram_init();
-> > +	if (size == 0) {
-> > +		puts_ll("FAIL: dram init\r\n");
-> > +		goto reset;
-> > +	}
-> > +
-> > +	/* now let's boot from sd/mmc */
-> > +	sun50i_mmc0_init();
-> > +
-> > +	/* - setup pbl mci driver */
-> > +	ret = sunxi_mmc_bio_init(&bio, IOMEM(SUN50I_MMC0_BASE_ADDR), 24000000 /*osc24M */, 0);
-> > +	if (ret)
-> > +		goto reset;
-> > +	puts_ll("bio init\r\n");
-> > +
-> > +	sunxi_fat_start_image(&bio, IOMEM(SUN50I_DRAM_BASE_ADDR), SZ_16M);
-> > +	puts_ll("fat fail\r\n");
-> > +
-> > +reset:
-> > +	sun50i_cpu_lowlevel_reset();
-> > +}
-> > diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-> > index 564a60a0d8..b3de5ff54a 100644
-> > --- a/arch/arm/dts/Makefile
-> > +++ b/arch/arm/dts/Makefile
-> > @@ -82,6 +82,7 @@ lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7) += imx7d-phyboard-zeta.dtb.o
-> >  lwl-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1) += stm32mp157c-phycore-stm32mp1-3.dtb.o
-> >  lwl-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ) += imx8mq-phytec-phycore-som.dtb.o
-> >  lwl-$(CONFIG_MACH_PINE64_PINEPHONE) += sun50i-a64-pinephone-1_2.dtb.o
-> > +lwl-$(CONFIG_MACH_PINE64_PINE64) += sun50i-a64-pine64-plus.dtb.o
-> >  lwl-$(CONFIG_MACH_PINE64_QUARTZ64) += rk3566-quartz64-a.dtb.o
-> >  lwl-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3) += armada-xp-openblocks-ax3-4-bb.dtb.o
-> >  lwl-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6) += kirkwood-openblocks_a6-bb.dtb.o
-> > diff --git a/arch/arm/dts/sun50i-a64-pine64-plus.dts b/arch/arm/dts/sun50i-a64-pine64-plus.dts
-> > new file mode 100644
-> > index 0000000000..b7856bcddf
-> > --- /dev/null
-> > +++ b/arch/arm/dts/sun50i-a64-pine64-plus.dts
-> > @@ -0,0 +1,18 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +#include <arm64/allwinner/sun50i-a64-pine64-plus.dts>
-> > +/{
-> > +	memory@40000000 {
-> > +		device_type = "memory";
-> > +		reg = <0x40000000 0x40000000>; /* 1 GB */
-> > +	};
-> > +};
-> > +&mmc0 { /* SD */
-> > +};
-> > +&mmc1 { /* PIO */
-> > +	max-frequency = <400000>;
-> > +};
-> > +&mmc2 { /* eMMC */
-> > +	max-frequency = <400000>;
-> 
-> What happens when you don't constraint this?
-that's some more leftovers... sadly I cannot get the eMMC working again :'(
-
-> > +	status = "ok";
-> > +};
-> > diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
-> > index e2d236f020..f101ae45ed 100644
-> > --- a/arch/arm/mach-sunxi/Kconfig
-> > +++ b/arch/arm/mach-sunxi/Kconfig
-> > @@ -41,6 +41,11 @@ config MACH_PINE64_PINEPHONE
-> >  	select ARCH_SUN50I_A64
-> >  	select ARM_USE_COMPRESSED_DTB
-> >  
-> > +config MACH_PINE64_PINE64
-> > +	bool "Allwinner A64 based Pine64 PINE64"
-> > +	select ARCH_SUN50I_A64
-> > +	select ARM_USE_COMPRESSED_DTB
-> > +
-> >  endif
-> >  
-> >  endif
-> > diff --git a/images/Makefile.sunxi b/images/Makefile.sunxi
-> > index 070b1bf00d..75adba7f7f 100644
-> > --- a/images/Makefile.sunxi
-> > +++ b/images/Makefile.sunxi
-> > @@ -20,3 +20,13 @@ image-$(CONFIG_MACH_PINE64_PINEPHONE) += barebox-pine64-pinephone_xload.img
-> >  pblb-$(CONFIG_MACH_PINE64_PINEPHONE) += start_pine64_pinephone
-> >  FILE_barebox-pine64-pinephone.img = start_pine64_pinephone.pblb
-> >  image-$(CONFIG_MACH_PINE64_PINEPHONE) += barebox-pine64-pinephone.img
-> > +
-> > +pblb-$(CONFIG_MACH_PINE64_PINE64) += start_pine64_pine64
-> > +FILE_barebox-pine64-pine64.img = start_pine64_pine64.pblb
-> > +image-$(CONFIG_MACH_PINE64_PINE64) += barebox-pine64-pine64.img
-> > +
-> > +pblb-$(CONFIG_MACH_PINE64_PINE64) += start_pine64_pine64_xload
-> > +MAX_PBL_IMAGE_SIZE_start_pine64_pine64_xload = 0x8000
-> > +FILE_barebox-pine64-pine64_xload.img = start_pine64_pine64_xload.pblb.egonimg
-> > +image-$(CONFIG_MACH_PINE64_PINE64) += barebox-pine64-pine64_xload.img
-> > +
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-> 
 
 
