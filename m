@@ -1,60 +1,60 @@
-Delivery-date: Mon, 22 May 2023 07:15:40 +0200
+Delivery-date: Mon, 22 May 2023 07:22:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q0xtV-009ISU-Qm
-	for lore@lore.pengutronix.de; Mon, 22 May 2023 07:15:40 +0200
+	id 1q0xzz-009Ilv-7k
+	for lore@lore.pengutronix.de; Mon, 22 May 2023 07:22:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q0xtT-0000Qw-I6
-	for lore@pengutronix.de; Mon, 22 May 2023 07:15:40 +0200
+	id 1q0xzw-00016D-U7
+	for lore@pengutronix.de; Mon, 22 May 2023 07:22:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=i9YJNdVAhqLBrm+ulZzVdKbM887s4DN4rqfB6MEFWbg=; b=wx2CX2xD94hyMM+RZHbIoeLj1e
-	HL4EtANXd5YkmNx8DQmF+/NaChRkOEAvywOiheEn0xhnjEgGdIhYptUarHRwkttvNf6v/f/6IX2nh
-	J0Zp+mUnG16dAuWvFCaHNdjXFRrZP/01hevsfQ9DOGKDrFYLePeiPWw2vtj6HhigatSmjLIJ5uhl9
-	oeVDfIgJiREDodKBL8l+hHXUT0ulPGHkKp5GWyoeB2FGPnqDk+KrMAxm5cnKQZ0EQiXWTB84delcG
-	Oniyq4+gvzTmfQFhoMUAEjnVs8agomCIQU4Gbz6vx7qsIW5GfZhtrinvF2Fws/BE9ZMIflB+isPdU
-	qZKZvHlw==;
+	bh=DKRQtiiq9QrK5LJELGjF2ptNgmvgV3bUY8reaIOAHWw=; b=dlZmt24+OUfJEvpAWV22p//83s
+	cd29vTH49h7Ne4xGct3TOrrvCuUB7zmHSFfbUw6UACqEW8KH5LtCaY/otUhKXmjNCkVIeyEeWd41S
+	mTe0W1QIrRPIpRpWboDSV7szLpnZPLuPknUS2jUUnjePcvJVT3u1aKr8YohAAl40n9i9k9QIPFihl
+	zilqSFXFXN0D4KOK/XbaO6WRmGlMCcghDqF70LFJJIzRT9NtFC2Po7sYRzYKyY9kSk7FDNekC93OU
+	D0jgQ4Cq1YWL8tpq/djByGJSXLAax/i53zbCSmyw0D0uBxzgW3+UsqklLh7eMJDG27c1UqiJGxcWL
+	dAaoCj8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q0xry-005MAQ-2A;
-	Mon, 22 May 2023 05:14:06 +0000
+	id 1q0xyg-005MvN-2b;
+	Mon, 22 May 2023 05:21:02 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q0xrv-005M9K-1B
+	id 1q0xye-005MuB-0K
 	for barebox@lists.infradead.org;
-	Mon, 22 May 2023 05:14:05 +0000
+	Mon, 22 May 2023 05:21:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q0xrp-0008UR-4D; Mon, 22 May 2023 07:13:57 +0200
+	id 1q0xyb-0000zq-Dq; Mon, 22 May 2023 07:20:57 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q0xro-001vtI-FT; Mon, 22 May 2023 07:13:56 +0200
+	id 1q0xyZ-001vtm-M4; Mon, 22 May 2023 07:20:55 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q0xrn-004LRN-My; Mon, 22 May 2023 07:13:55 +0200
+	id 1q0xyZ-004Lu2-43; Mon, 22 May 2023 07:20:55 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 22 May 2023 07:13:54 +0200
-Message-Id: <20230522051354.1035717-1-a.fatoum@pengutronix.de>
+Date: Mon, 22 May 2023 07:20:54 +0200
+Message-Id: <20230522052054.1037494-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230521_221403_403049_D72EAF01 
-X-CRM114-Status: GOOD (  11.19  )
+X-CRM114-CacheID: sfid-20230521_222100_138188_B60280B8 
+X-CRM114-Status: GOOD (  10.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,58 +77,35 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] fixup! ARM: rockchip: rk3588: add memsize detection
+Subject: [PATCH] fixup! ARM: mmu32: Use pages for early MMU setup
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Extension of the Rockchip DMC driver for RK3588 support broke the
-existing support for RK3566. Patch that up.
+ARM: mmu32: fix alignment when early remapping .text section
+
+arch_remap_range has a BUG_ON unaligned memory region start. On AM335x
+(Tested with Beaglebone Black), _stext for the second stage barebox.bin
+is not page-aligned, so this broke the boot. Use PAGE_ALIGN_DOWN to fix
+this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-rockchip/dmc.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ arch/arm/cpu/mmu_32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-rockchip/dmc.c b/arch/arm/mach-rockchip/dmc.c
-index 85fa8acd192f..630f0f6b7347 100644
---- a/arch/arm/mach-rockchip/dmc.c
-+++ b/arch/arm/mach-rockchip/dmc.c
-@@ -25,6 +25,7 @@
+diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+index dc4b0e414d57..852c5626dedd 100644
+--- a/arch/arm/cpu/mmu_32.c
++++ b/arch/arm/cpu/mmu_32.c
+@@ -583,7 +583,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize)
+ 	/* maps main memory as cachable */
+ 	arch_remap_range((void *)membase, memsize - OPTEE_SIZE, MAP_CACHED);
+ 	arch_remap_range((void *)membase + memsize - OPTEE_SIZE, OPTEE_SIZE, MAP_UNCACHED);
+-	arch_remap_range(_stext, PAGE_ALIGN(_etext - _stext), MAP_CACHED);
++	arch_remap_range((void *)PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext), MAP_CACHED);
  
- #define RK3399_INT_REG_START		0xf0000000
- #define RK3568_INT_REG_START		RK3399_INT_REG_START
-+#define RK3588_INT_REG_START		RK3568_INT_REG_START
- 
- struct rockchip_dmc_drvdata {
- 	unsigned int os_reg2;
-@@ -228,11 +229,17 @@ static const struct rockchip_dmc_drvdata rk3399_drvdata = {
- };
- 
- static const struct rockchip_dmc_drvdata rk3568_drvdata = {
-+	.os_reg2 = RK3568_PMUGRF_OS_REG2,
-+	.os_reg3 = RK3568_PMUGRF_OS_REG3,
-+	.internal_registers_start = RK3568_INT_REG_START,
-+};
-+
-+static const struct rockchip_dmc_drvdata rk3588_drvdata = {
- 	.os_reg2 = RK3588_PMUGRF_OS_REG2,
- 	.os_reg3 = RK3588_PMUGRF_OS_REG3,
- 	.os_reg4 = RK3588_PMUGRF_OS_REG4,
- 	.os_reg5 = RK3588_PMUGRF_OS_REG5,
--	.internal_registers_start = RK3568_INT_REG_START,
-+	.internal_registers_start = RK3588_INT_REG_START,
- };
- 
- static struct of_device_id rockchip_dmc_dt_ids[] = {
-@@ -246,7 +253,7 @@ static struct of_device_id rockchip_dmc_dt_ids[] = {
- 	},
- 	{
- 		.compatible = "rockchip,rk3588-dmc",
--		.data = &rk3568_drvdata,
-+		.data = &rk3588_drvdata,
- 	},
- 	{ /* sentinel */ }
- };
+ 	__mmu_cache_on();
+ }
 -- 
 2.39.2
 
