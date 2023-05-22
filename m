@@ -1,15 +1,15 @@
-Delivery-date: Mon, 22 May 2023 07:31:40 +0200
+Delivery-date: Mon, 22 May 2023 07:31:41 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q0y90-009JKi-1Q
-	for lore@lore.pengutronix.de; Mon, 22 May 2023 07:31:40 +0200
+	id 1q0y90-009JL2-JZ
+	for lore@lore.pengutronix.de; Mon, 22 May 2023 07:31:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q0y8x-0003xw-Cx
+	id 1q0y8x-0003yL-TX
 	for lore@pengutronix.de; Mon, 22 May 2023 07:31:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,46 +17,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zlgwUiQF+6grktoDckSiLaBzUHsqrL9bp7Ouk1Wh3qw=; b=vZXMw8dTMiVNnEhHRv8DzwcN26
-	S569YdfDAr0JtGsSoPOFPX0d35A43Mi+rMeh+YxfBMr2+9C+lq+AwQGwcbkM59/a+ZxYT1+LOJPcZ
-	tgCbXJwWYpcKjHc08AJQcgzy92cX8GHyegnpFw8xxkFHz8Ms9Mk5XXKrtO30sB4euxj3WC1T9nwMO
-	J6S70DJc9LqtocSCuR8v8/b1J1lg0dufL6QDLNP8QCN7ixKNJABYGTOSlBJEQWfPp0JLn0SrWvjOv
-	cCyp4X5ZjXyRtXBNUvFBQV944UV64e6RXYzRytdBK3OFw4tJM0Rq0Rknh40uspagvo1yedjQAQ1md
-	qGZy5sBA==;
+	bh=cuGlC2P0TZmiS6qaimjVutx8lsxpWFaxAHXKsYtJLRk=; b=AQ2cDyC0znLIcGPl+1p4ts+HNb
+	z3J4sdx2PByIL+HSlKT4bq7Lo2iCCPCh/N7U4yGddwttyZxEE0od14qTpkOfzfxqIyDUBZdIXPO0i
+	eigEBM0HxZzJ9f7cbWjmUF6nJoFVz3VE7tCLu1WcmSJHnbEdNzxVpuzeaSoQtQNK5IjpvKm2jvl+7
+	krZWc0VH29m6bhZmN+Z7YbmM/0aGIpcfMYU3sv9OX4cj/KqzQZixz7bWz3wEdfOhZGZWbkPv/erh/
+	ek8eCp1dU7Y88t9M7/GCv6Xqczh3FZvXmanGhTrnN9rshjqa9XNlwsIuO0UJNt8EQHgUqX290KOAS
+	MFHE5TKg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q0y8G-005Plk-1Z;
-	Mon, 22 May 2023 05:30:56 +0000
+	id 1q0y8D-005PjT-0r;
+	Mon, 22 May 2023 05:30:53 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q0y88-005PgP-1h
+	id 1q0y87-005PgC-2l
 	for barebox@lists.infradead.org;
-	Mon, 22 May 2023 05:30:51 +0000
+	Mon, 22 May 2023 05:30:49 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q0y87-0003VS-C2; Mon, 22 May 2023 07:30:47 +0200
+	id 1q0y86-0003Us-LW; Mon, 22 May 2023 07:30:46 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q0y86-001vwz-Op; Mon, 22 May 2023 07:30:46 +0200
+	id 1q0y86-001vwh-0G; Mon, 22 May 2023 07:30:46 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q0y85-004MS7-4g; Mon, 22 May 2023 07:30:45 +0200
+	id 1q0y85-004MRv-3U; Mon, 22 May 2023 07:30:45 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 22 May 2023 07:30:42 +0200
-Message-Id: <20230522053044.1039572-6-a.fatoum@pengutronix.de>
+Date: Mon, 22 May 2023 07:30:39 +0200
+Message-Id: <20230522053044.1039572-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230522053044.1039572-1-a.fatoum@pengutronix.de>
 References: <20230522053044.1039572-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230521_223048_561113_AE037B51 
-X-CRM114-Status: GOOD (  15.88  )
+X-CRM114-CacheID: sfid-20230521_223048_058746_2A3E648E 
+X-CRM114-Status: GOOD (  18.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,242 +74,256 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 5/7] ARM: asm: import Linux adr_l/ldr_l assembler.h definitions
+Subject: [PATCH 2/7] test: self: add digest test
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-These macros will come in handy to have loads in assembly routines not
-generate relocation entries.
+Later commits will touch existing digest code, so this is a good
+opportunity to add a self test to ensure MD5/SHA continues to work.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/include/asm/assembler.h | 211 +++++++++++++++++++++++++++++++
- 1 file changed, 211 insertions(+)
+ test/self/Kconfig  |   6 ++
+ test/self/Makefile |   1 +
+ test/self/digest.c | 190 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 197 insertions(+)
+ create mode 100644 test/self/digest.c
 
-diff --git a/arch/arm/include/asm/assembler.h b/arch/arm/include/asm/assembler.h
-index 7f9281b9a1a1..5db0f692eec6 100644
---- a/arch/arm/include/asm/assembler.h
-+++ b/arch/arm/include/asm/assembler.h
-@@ -130,3 +130,214 @@
- #else
- #define CPU_LE(code...) code
- #endif
+diff --git a/test/self/Kconfig b/test/self/Kconfig
+index ce5048c70ec9..641df9fece1c 100644
+--- a/test/self/Kconfig
++++ b/test/self/Kconfig
+@@ -36,6 +36,7 @@ config SELFTEST_ENABLE_ALL
+ 	imply SELFTEST_FS_RAMFS
+ 	imply SELFTEST_TFTP
+ 	imply SELFTEST_JSON
++	imply SELFTEST_DIGEST
+ 	help
+ 	  Selects all self-tests compatible with current configuration
+ 
+@@ -69,4 +70,9 @@ config SELFTEST_JSON
+ 	bool "JSON selftest"
+ 	depends on JSMN
+ 
++config SELFTEST_DIGEST
++	bool "Digest selftest"
++	depends on DIGEST
++	select PRINTF_HEXSTR
 +
-+#ifdef CONFIG_CPU_64
-+/*
-+ * Pseudo-ops for PC-relative adr/ldr/str <reg>, <symbol> where
-+ * <symbol> is within the range +/- 4 GB of the PC.
-+ */
-+	/*
-+	 * @dst: destination register (64 bit wide)
-+	 * @sym: name of the symbol
-+	 */
-+	.macro	adr_l, dst, sym
-+	adrp	\dst, \sym
-+	add	\dst, \dst, :lo12:\sym
-+	.endm
+ endif
+diff --git a/test/self/Makefile b/test/self/Makefile
+index 98ebd1fd66c1..d6cedede356e 100644
+--- a/test/self/Makefile
++++ b/test/self/Makefile
+@@ -9,6 +9,7 @@ obj-$(CONFIG_SELFTEST_OF_MANIPULATION) += of_manipulation.o of_manipulation.dtb.
+ obj-$(CONFIG_SELFTEST_ENVIRONMENT_VARIABLES) += envvar.o
+ obj-$(CONFIG_SELFTEST_FS_RAMFS) += ramfs.o
+ obj-$(CONFIG_SELFTEST_JSON) += json.o
++obj-$(CONFIG_SELFTEST_DIGEST) += digest.o
+ 
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+ clean-files += *.dtbo *.dtbo.S .*.dtso
+diff --git a/test/self/digest.c b/test/self/digest.c
+new file mode 100644
+index 000000000000..c90f860643e0
+--- /dev/null
++++ b/test/self/digest.c
+@@ -0,0 +1,190 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
-+	/*
-+	 * @dst: destination register (32 or 64 bit wide)
-+	 * @sym: name of the symbol
-+	 * @tmp: optional 64-bit scratch register to be used if <dst> is a
-+	 *       32-bit wide register, in which case it cannot be used to hold
-+	 *       the address
-+	 */
-+	.macro	ldr_l, dst, sym, tmp=
-+	.ifb	\tmp
-+	adrp	\dst, \sym
-+	ldr	\dst, [\dst, :lo12:\sym]
-+	.else
-+	adrp	\tmp, \sym
-+	ldr	\dst, [\tmp, :lo12:\sym]
-+	.endif
-+	.endm
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define DEBUG 1
++#include <common.h>
++#include <bselftest.h>
++#include <clock.h>
++#include <digest.h>
 +
-+	/*
-+	 * @src: source register (32 or 64 bit wide)
-+	 * @sym: name of the symbol
-+	 * @tmp: mandatory 64-bit scratch register to calculate the address
-+	 *       while <src> needs to be preserved.
-+	 */
-+	.macro	str_l, src, sym, tmp
-+	adrp	\tmp, \sym
-+	str	\src, [\tmp, :lo12:\sym]
-+	.endm
++BSELFTEST_GLOBALS();
 +
-+#else
++struct digest_test_case {
++	const char *name;
++	const void *buf;
++	size_t buf_size;
++	const void *digest_str;
++	u64 time_ns;
++};
 +
-+	.macro		__adldst_l, op, reg, sym, tmp, c
-+	.if		__LINUX_ARM_ARCH__ < 7
-+	ldr\c		\tmp, .La\@
-+	.subsection	1
-+	.align		2
-+.La\@:	.long		\sym - .Lpc\@
-+	.previous
-+	.else
-+	.ifnb		\c
-+ THUMB(	ittt		\c			)
-+	.endif
-+	movw\c		\tmp, #:lower16:\sym - .Lpc\@
-+	movt\c		\tmp, #:upper16:\sym - .Lpc\@
-+	.endif
++#define TEST_CASE(buf, digest_str) \
++	{ #buf, buf, sizeof(buf), digest_str }
 +
-+#ifndef CONFIG_THUMB2_BAREBOX
-+	.set		.Lpc\@, . + 8			// PC bias
-+	.ifc		\op, add
-+	add\c		\reg, \tmp, pc
-+	.else
-+	\op\c		\reg, [pc, \tmp]
-+	.endif
-+#else
-+.Lb\@:	add\c		\tmp, \tmp, pc
-+	/*
-+	 * In Thumb-2 builds, the PC bias depends on whether we are currently
-+	 * emitting into a .arm or a .thumb section. The size of the add opcode
-+	 * above will be 2 bytes when emitting in Thumb mode and 4 bytes when
-+	 * emitting in ARM mode, so let's use this to account for the bias.
-+	 */
-+	.set		.Lpc\@, . + (. - .Lb\@)
++#define test_digest(option, algo, ...) do { \
++	struct digest_test_case *t, cases[] = { __VA_ARGS__, { /* sentinel */ } }; \
++	for (t = cases; t->buf; t++) \
++		__test_digest((option), (algo), t, __func__, __LINE__); \
++	if (!__is_defined(DEBUG)) \
++		break; \
++	printf("%s:\t", algo); \
++	for (t = cases; t->buf; t++) \
++		printf(" digest(%zu bytes) = %10lluns", t->buf_size, t->time_ns); \
++	printf("\n"); \
++} while (0)
 +
-+	.ifnc		\op, add
-+	\op\c		\reg, [\tmp]
-+	.endif
-+#endif
-+	.endm
++static inline const char *digest_suffix(const char *str, const char *suffix)
++{
++	static char buf[32];
 +
-+	/*
-+	 * mov_l - move a constant value or [relocated] address into a register
-+	 */
-+	.macro		mov_l, dst:req, imm:req, cond
-+	.if		__LINUX_ARM_ARCH__ < 7
-+	ldr\cond	\dst, =\imm
-+	.else
-+	movw\cond	\dst, #:lower16:\imm
-+	movt\cond	\dst, #:upper16:\imm
-+	.endif
-+	.endm
++	if (!*suffix)
++		return str;
 +
-+	/*
-+	 * adr_l - adr pseudo-op with unlimited range
-+	 *
-+	 * @dst: destination register
-+	 * @sym: name of the symbol
-+	 * @cond: conditional opcode suffix
-+	 */
-+	.macro		adr_l, dst:req, sym:req, cond
-+	__adldst_l	add, \dst, \sym, \dst, \cond
-+	.endm
++	WARN_ON(snprintf(buf, sizeof(buf), "%s-%s", str, suffix) >= sizeof(buf));
++	return buf;
++}
 +
-+	/*
-+	 * ldr_l - ldr <literal> pseudo-op with unlimited range
-+	 *
-+	 * @dst: destination register
-+	 * @sym: name of the symbol
-+	 * @cond: conditional opcode suffix
-+	 */
-+	.macro		ldr_l, dst:req, sym:req, cond
-+	__adldst_l	ldr, \dst, \sym, \dst, \cond
-+	.endm
++static void __test_digest(bool option,
++			  const char *algo, struct digest_test_case *t,
++			  const char *func, int line)
++{
++	unsigned char *output, *digest;
++	struct digest *d;
++	int hash_len, digest_len;
++	u64 start;
++	int ret;
 +
-+	/*
-+	 * str_l - str <literal> pseudo-op with unlimited range
-+	 *
-+	 * @src: source register
-+	 * @sym: name of the symbol
-+	 * @tmp: mandatory scratch register
-+	 * @cond: conditional opcode suffix
-+	 */
-+	.macro		str_l, src:req, sym:req, tmp:req, cond
-+	__adldst_l	str, \src, \sym, \tmp, \cond
-+	.endm
++	total_tests++;
 +
-+	.macro		__ldst_va, op, reg, tmp, sym, cond, offset
-+#if __LINUX_ARM_ARCH__ >= 7 || \
-+    (defined(MODULE) && defined(CONFIG_ARM_MODULE_PLTS))
-+	mov_l		\tmp, \sym, \cond
-+#else
-+	/*
-+	 * Avoid a literal load, by emitting a sequence of ADD/LDR instructions
-+	 * with the appropriate relocations. The combined sequence has a range
-+	 * of -/+ 256 MiB, which should be sufficient for the core kernel and
-+	 * for modules loaded into the module region.
-+	 */
-+	.globl		\sym
-+	.reloc		.L0_\@, R_ARM_ALU_PC_G0_NC, \sym
-+	.reloc		.L1_\@, R_ARM_ALU_PC_G1_NC, \sym
-+	.reloc		.L2_\@, R_ARM_LDR_PC_G2, \sym
-+.L0_\@: sub\cond	\tmp, pc, #8 - \offset
-+.L1_\@: sub\cond	\tmp, \tmp, #4 - \offset
-+.L2_\@:
-+#endif
-+	\op\cond	\reg, [\tmp, #\offset]
-+	.endm
++	if (!option) {
++		skipped_tests++;
++		return;
++	}
 +
-+	/*
-+	 * ldr_va - load a 32-bit word from the virtual address of \sym
-+	 */
-+	.macro		ldr_va, rd:req, sym:req, cond, tmp, offset=0
-+	.ifnb		\tmp
-+	__ldst_va	ldr, \rd, \tmp, \sym, \cond, \offset
-+	.else
-+	__ldst_va	ldr, \rd, \rd, \sym, \cond, \offset
-+	.endif
-+	.endm
++	d = digest_alloc(algo);
++	if (!d) {
++		printf("%s:%d: failed to allocate %s digest\n", func, line, algo);
++		goto fail;
++	}
 +
-+	/*
-+	 * str_va - store a 32-bit word to the virtual address of \sym
-+	 */
-+	.macro		str_va, rn:req, sym:req, tmp:req, cond
-+	__ldst_va	str, \rn, \tmp, \sym, \cond, 0
-+	.endm
++	hash_len = digest_length(d);
++	digest_len = strlen(t->digest_str) / 2;
++	if (hash_len != digest_len) {
++		printf("%s:%d: %s digests have length %u, but %u expected\n",
++		       func, line, algo, hash_len, digest_len);
++		goto fail;
++	}
 +
-+	/*
-+	 * ldr_this_cpu - Load a 32-bit word from the per-CPU variable 'sym'
-+	 *		  into register 'rd', which may be the stack pointer,
-+	 *		  using 't1' and 't2' as general temp registers. These
-+	 *		  are permitted to overlap with 'rd' if != sp
-+	 */
-+	.macro		ldr_this_cpu, rd:req, sym:req, t1:req, t2:req
-+	ldr_va		\rd, \sym, tmp=\t1
-+	.endm
++	output = calloc(hash_len, 1);
++	if (WARN_ON(!output))
++		goto fail;
 +
-+	/*
-+	 * rev_l - byte-swap a 32-bit value
-+	 *
-+	 * @val: source/destination register
-+	 * @tmp: scratch register
-+	 */
-+	.macro		rev_l, val:req, tmp:req
-+	.if		__LINUX_ARM_ARCH__ < 6
-+	eor		\tmp, \val, \val, ror #16
-+	bic		\tmp, \tmp, #0x00ff0000
-+	mov		\val, \val, ror #8
-+	eor		\val, \val, \tmp, lsr #8
-+	.else
-+	rev		\val, \val
-+	.endif
-+	.endm
++	digest = calloc(digest_len, 1);
++	if (WARN_ON(!digest))
++		goto fail;
 +
-+	/*
-+	 * bl_r - branch and link to register
-+	 *
-+	 * @dst: target to branch to
-+	 * @c: conditional opcode suffix
-+	 */
-+	.macro		bl_r, dst:req, c
-+	.if		__LINUX_ARM_ARCH__ < 6
-+	mov\c		lr, pc
-+	mov\c		pc, \dst
-+	.else
-+	blx\c		\dst
-+	.endif
-+	.endm
-+#endif
++	ret = hex2bin(digest, t->digest_str, digest_len);
++	if (WARN_ON(ret))
++		goto fail;
++
++	start = get_time_ns();
++
++	ret = digest_digest(d, t->buf, t->buf_size, output);
++	if (ret) {
++		printf("%s:%d: error calculating %s(%s): %pe\n",
++		       func, line, algo, t->name, ERR_PTR(ret));
++		goto fail;
++	}
++
++	t->time_ns = get_time_ns() - start;
++
++	if (memcmp(output, digest, hash_len)) {
++		printf("%s:%d: mismatch calculating %s(%s):\n\tgot: %*phN\n\tbut: %*phN expected\n",
++		       func, line, algo, t->name, hash_len, output, hash_len, digest);
++		goto fail;
++	}
++
++	return;
++fail:
++	failed_tests++;
++}
++
++static const u8 zeroes7[7] = {};
++static const u8 one32[32] = { 1 };
++static u8 inc4097[4097];
++
++static void test_digest_md5(const char *suffix)
++{
++	test_digest(IS_ENABLED(CONFIG_HAVE_DIGEST_MD5), digest_suffix("md5", suffix),
++		TEST_CASE(zeroes7, "d310a40483f9399dd7ed1712e0fdd702"),
++		TEST_CASE(one32,   "b39ac6e2aa7e375c38ba7ae921b5ba89"),
++		TEST_CASE(inc4097, "70410aad262cd11e63ae854804c8024b"));
++}
++
++static void test_digests_sha12(const char *suffix)
++{
++	bool cond;
++
++	cond = !strcmp(suffix, "asm") ? IS_ENABLED(CONFIG_DIGEST_SHA1_ARM) :
++	       IS_ENABLED(CONFIG_HAVE_DIGEST_SHA1);
++
++	test_digest(cond, digest_suffix("sha1", suffix),
++		TEST_CASE(zeroes7, "77ce0377defbd11b77b1f4ad54ca40ea5ef28490"),
++		TEST_CASE(one32,   "cbd9cbfc20182e4b71e593e7ad598fc383cc6058"),
++		TEST_CASE(inc4097, "c627e736efd8bb0dff1778335c9c79cb1f27e396"));
++
++
++	cond = !strcmp(suffix, "asm") ? IS_ENABLED(CONFIG_DIGEST_SHA256_ARM) :
++	       IS_ENABLED(CONFIG_HAVE_DIGEST_SHA1);
++
++	test_digest(cond, digest_suffix("sha224", suffix),
++		TEST_CASE(zeroes7, "fbf6df85218ac5632461a8a17c6f294e6f35264cbfc0a9774a4f665b"),
++		TEST_CASE(one32,   "343cb3950305e6e6331e294b0a4925739d09ecbd2b43a2fc87c09941"),
++		TEST_CASE(inc4097, "6596b5dcfbd857f4246d6b94508b8a1a5b715a4f644a0c1e7d54c4f7"));
++
++	test_digest(cond, digest_suffix("sha256", suffix),
++		TEST_CASE(zeroes7, "837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619"),
++		TEST_CASE(one32,   "01d0fabd251fcbbe2b93b4b927b26ad2a1a99077152e45ded1e678afa45dbec5"),
++		TEST_CASE(inc4097, "1e973d029df2b2c66cb42a942c5edb45966f02abaff29fe99410e44d271d0efc"));
++}
++
++
++static void test_digests_sha35(const char *suffix)
++{
++	test_digest(IS_ENABLED(CONFIG_HAVE_DIGEST_SHA384), digest_suffix("sha384", suffix),
++		TEST_CASE(zeroes7, "b56705a73cf280f06d3a6b482c441a3d280c930d0c44b04f364dcdcedcfbc47c"
++				   "f3645a71da7b97f9e5d3a0924f6b9634"),
++		TEST_CASE(one32,   "dd606b49d7658a5eae905d593271c280819f92eb1a9a4986057aedc0a5f2eaea"
++				   "99052904718f6d83f16ad209d793f253"),
++		TEST_CASE(inc4097, "f76046b90890f20ae94066a3ad33010f5b3b2fd46977414636bbc634898b06fd"
++				   "4cb8f85e0926e8817e518300a930529e"));
++
++	test_digest(IS_ENABLED(CONFIG_HAVE_DIGEST_SHA512), digest_suffix("sha512", suffix),
++		TEST_CASE(zeroes7, "76afca18a9b81ffb967ffcf0460ed221c3605d3820057214d785fa88259bb5cb"
++				   "729576178e6edb0134f645d2e2e92cbabf1333462f3b9058692c950f51c64a92"),
++		TEST_CASE(one32,   "ce0c265ecc82dd8cee6e56ce44e45dafd7a0c5750df914b253a1fb7a8af66ddb"
++				   "99763607f0a85d0bd43669194a3a40577a528af395f4f17e06f1defcc6deb2a5"),
++		TEST_CASE(inc4097, "42eb09aca460d79b0c0aeac28187ed055a92e33602b69428461697680ff9f48f"
++				   "60a5a68aa0017e3446433349b42592b74713d7787628a58e400b7f588b9bd69b"));
++}
++
++static void test_digests(void)
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(inc4097); i++)
++		inc4097[i] = i;
++
++	test_digest_md5("generic");
++
++	test_digests_sha12("generic");
++	if (IS_ENABLED(CONFIG_CPU_32))
++		test_digests_sha12("asm");
++
++	test_digests_sha35("generic");
++
++	test_digest_md5("");
++	test_digests_sha12("");
++	test_digests_sha35("");
++
++}
++bselftest(core, test_digests);
 -- 
 2.39.2
 
