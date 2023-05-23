@@ -1,60 +1,61 @@
-Delivery-date: Tue, 23 May 2023 10:19:32 +0200
+Delivery-date: Tue, 23 May 2023 11:02:50 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q1NEz-00AY8t-9m
-	for lore@lore.pengutronix.de; Tue, 23 May 2023 10:19:32 +0200
+	id 1q1Nur-00Aamo-EB
+	for lore@lore.pengutronix.de; Tue, 23 May 2023 11:02:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q1NEw-00041v-D9
-	for lore@pengutronix.de; Tue, 23 May 2023 10:19:31 +0200
+	id 1q1Nup-0001nY-6j
+	for lore@pengutronix.de; Tue, 23 May 2023 11:02:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:Content-Type:
-	MIME-Version:Message-ID:Subject:To:Date:Reply-To:Cc:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=pjIjDBhSKWiu/YnwgJFdvgL45+QQkeufCzT/Z39lAyw=; b=xgYgAe8Z2y+nCS5e1LFQ3s5CWb
-	Ws0ib9JcOvD2H1UEHlzWpa9uX7/42p5CNlKcoDdKGQikuEjVesAZxGV9NTtghXj8Oqb9qYdeZBFOE
-	xNTD6ufYdmz+Nx3vIecX0y9qHlUiXWn7/mhIV02TUhBLdl5qO7Mh4OFJh5TQC0NxgqsigcEKBvA/h
-	ij4lREkV8ypUZ9B82ZTs9DKvr2DPqNIaJg4DLruusw/u8ZJULRw06MzNEqk2dBgOQUyi1o9DWJRzm
-	dE4Ts2ZoyBfRkf85PAeLqkOxwQglvA7HYRbSP6sNnRjJ6o+vUbe68BpACW4NoDhdvqcyIsEmg+2Fj
-	lr3pRVZw==;
+	bh=xVvusUT5psXBkvgSu1mOKAnwWGDd2bdBZniQf5uXk0E=; b=qie/KahNGlq9MS8rm+dEnTpcl0
+	FAcM1kSAnREmiuzjoIC7zDbfljUCc6TIVrHNdaLO79s77Oev2GB4r0sdtYDD6/vHMNip45NWlr8X9
+	rrtL5SNhPqVtcAdOherj8ITq67H7/1/O9BRL14f6hUvT0U5gx6dZ2sewgpOHn3q4tSOSdO2ND0HZh
+	FGw/ZvpBRJbJMZXrz69hOAbtUZEkkdXWPxgx0J3TGjbeE3p7PPooX6vtu2UxDSHK861lLJF5BLC2J
+	Ra7AmbjAbl+fVaF3n8GYb0XWZ6PqYJ7r5imAkbvJMemGy1oQ8Singu5hzBfdi8O5549gOXNBflBrY
+	gwd8Evig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q1ND7-009PUE-0a;
-	Tue, 23 May 2023 08:17:37 +0000
+	id 1q1NtM-009XUw-1G;
+	Tue, 23 May 2023 09:01:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q1ND3-009PSV-13
+	id 1q1NtI-009XSB-0X
 	for barebox@lists.infradead.org;
-	Tue, 23 May 2023 08:17:35 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	Tue, 23 May 2023 09:01:14 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q1NCp-0003p0-Ee; Tue, 23 May 2023 10:17:19 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q1NCo-0005uZ-FO; Tue, 23 May 2023 10:17:18 +0200
-Date: Tue, 23 May 2023 10:17:18 +0200
-To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20230523081718.GU15436@pengutronix.de>
+	(envelope-from <afa@pengutronix.de>)
+	id 1q1NtE-0001cJ-0p; Tue, 23 May 2023 11:01:08 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1q1NtD-002CjT-CV; Tue, 23 May 2023 11:01:07 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1q1NtC-00DwcG-ML; Tue, 23 May 2023 11:01:06 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 23 May 2023 11:01:01 +0200
+Message-Id: <20230523090101.3322778-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230523_011733_695964_3FDE65A5 
-X-CRM114-Status: GOOD (  22.34  )
+X-CRM114-CacheID: sfid-20230523_020112_203582_55069EF3 
+X-CRM114-Status: UNSURE (   6.72  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,223 +73,140 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: v2023.05.0
+	T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75 autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH master] ARM64: configs: multi_v8_defconfig: enable what qemu_virt64_defconfig had
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+qemu_virt64_defconfig was dropped before all its contents were folded
+into its multi_v8_defconfig replacement. Reinstate the missing options.
 
-Hi all,
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/configs/multi_v8_defconfig | 25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
-I am happy to announce barebox-2023.05.0. This release brings us an
-overhaul of the USB gadget framework. This is now much better in sync
-with current Linux: The core is updated and files are now where Linux
-has them as well. Furthermore the DWC3 driver is synced with the Kernel.
-
-The Kconfig selection for 32/64 bit barebox has been improved. Now we
-can first select whether a 32 bit or 64 bit barebox shall be built, and
-then all SoCs/boards can be selected for that architecture. Previously
-it was easy enough to select 32 bit boards on a 64 bit build and vice
-versa, leading to compiler errors.
-
-The MMC stack now has support for eMMC DDR52 mode when the controller
-driver supports this. Support for that mode for now is implemented only
-in the i.MX ESDHC controller, but if you are interested in faster eMMC
-modes have a look at the patches. Unlike other higher speed modes the
-DDR52 doesn't require tuning, so is relatively easy to implement.
-
-Thanks to Marco the i.MX8M now supports booting from QSPI. This includes
-generating the images as well as support for the barebox-update command.
-
-Last not least we have support for a new Rockchip board, the Radxa CM3
-board which comes with a RK3566 SoC.
-
-See below for a full list of changes that went into this release.
-
-Have Fun!
-
-  Sascha
-
-
-----------------------------------------------------------------
-Ahmad Fatoum (43):
-      Documentation: booting-linux: document booting specific FIT configuration
-      ARM: Rockchip: implement memory read out from controller
-      ARM: Rockchip: make bootsource logic generic to all SoCs
-      common: state: make barebox-state enabling in Kconfig easier
-      of: implement of_property_present helper
-      imx-usb-loader: don't depend on arpa/inet.h for endianness conversion
-      scripts: compiler.h: add Windows support
-      scripts: common: drop unused mman.h include
-      scripts: gen-dtb-s: reference OF IMD entries automatically
-      treewide: remove no-longer needed IMD_USED_OF
-      clock: implement CLOCKSOURCE_MASK in terms of GENMASK_ULL
-      commands: menu: enable help text parsing for sphinx docs
-      kbuild: drop reliance on echo -e extension for DT fragments
-      usb: misc: onboard_hub: sync compatibles with kernel
-      usb: dwc3: populate parent of xHCI dev
-      usb: xhci: pass physical device to DMA API
-      net: rtl8169: pass physical device for DMA API
-      firmware: zynqmp-fpga: pass physical device to DMA API
-      net: designware: eqos: pass physical device to DMA API
-      of: implement of_copy_property
-      ARM: rpi: fixup prefix property from VideoCore FDT
-      mci: core: drop unused DDR/SDR constants
-      mci: introduce new dedicated enum mmc_bus_width type
-      mci: core: factor out MMC bus width selection for reuse
-      mci: add eMMC DDR52 support
-      mci: imx-esdhc: add uSDHC eMMC DDR52 support
-      test: self: printf: compile test with -Wno-format-security
-      treewide: use non-executable stack annotations for blobs
-      lib: genalloc: drop reliance on mmio-sram driver
-      fs: fail gracefully in get_mounted_path/get_cdev_by_mountpath
-      block: refuse registering block devices with absurdly large blocks
-      net: dsa: realtek: fix Kconfig selects
-      efi: don't skip default efi devinfo for old EFI block revisions
-      net: dsa: realtek: fix Kconfig selects
-      .clangd: black-list -mabi=lp64 to enable LSP for 64-bit ARM
-      .gitattributes: import diff directives from Linux v6.3
-      .clang-format: import kernel coding style rules from Linux v6.3
-      test: self: ramfs: fix unintended macro identifier confusion
-      include: zero_page: hide possibly NULL pointer variable from optimizer
-      pbl: have DEBUG_PBL depend only on PBL_CONSOLE
-      meminfo: avoid out-of-bounds compiler warning
-      console: don't fixup baud rate into earlycon string
-      imx-usb-loader: Don't try to verify more data than contained in the image
-
-Alexander Shiyan (1):
-      mfd: syscon: Remove unused helper syscon_base_lookup_by_pdevname
-
-Andreas Kemnade (1):
-      ARM: i.MX: bbu: fix compilation without CONFIG_BAREBOX_UPDATE
-
-Antony Pavlov (1):
-      powerpc: Kconfig: fix reference to unknown symbol
-
-Denis Orlov (1):
-      video: bochs: fix IOMEM usage
-
-Marco Felsch (25):
-      spi: remove flash_platform_data support
-      bbu: make it possible to check multiple of-compatibles
-      ARM: i.MX8MM: add missing IMD_USED_OF image metadata entry
-      ARM: i.MX8MN: add missing IMD_USED_OF image metadata entries
-      mci: imx-esdhc-pbl: fix number of read blocks
-      mci: imx-esdhc-pbl: refactor the esdhc_load_image function
-      mci: imx-esdhc-pbl: move imx_load_image into common xload code
-      ARM: i.MX8M: Add QSPI image load support
-      ARM: i.MX bootsource: set QSPI instance
-      ARM: i.MX8MM bootsource: fix QSPI boot source detection
-      ARM: i.MX8M: Add QSPI boot support
-      scripts: imx-image: convert flag variables into bool
-      scripts: imx-image: header_v2: factor out offset parameter
-      scripts: imx-image: header_v2: add header_len parameter
-      scripts: imx-image: add FlexSPI image support
-      filetype: add NXP FlexSPI filetype
-      ARM: i.MX: bbu: rename IMX_INTERNAL_FLAG_ERASE to IMX_BBU_FLAG_ERASE
-      ARM: i.MX: bbu: add filetype offset
-      ARM: i.MX: bbu: add FlexSPI update handler
-      ARM: i.MX8M: enable FlexSPI image support
-      ARM: i.MX8M: add qspi barebox and barebox-environment partitions
-      ARM: i.MX8M: add QSPI update handler
-      Documentation: i.MX8M: add EVK QSPI NOR barebox installation documentation
-      ARM: dts: i.MX8MP: add dual-role usb-type-c PORT1 support
-      Documentation: barebox environment: recommend a partition type GUID for GPT partitions
-
-Oleksij Rempel (3):
-      net: dsa: add adjust_link support
-      net: dsa: sja1105: move port enable to adjust link code.
-      net: dsa: sja1105: fall back to default speed configuration if no link was detected
-
-Philipp Zabel (12):
-      firmware: Add request/release_firmware() calls
-      video: Add of_get_display_timing
-      video: add MIPI DBI framebuffer helpers
-      video: Add MIPI DBI compatible SPI driver
-      spi: add per-driver bits-per-word mask
-      spi: stm32: support per-transfer bits per word switching
-      video: mipi_dbi: disable byte swapping if 16-bit SPI transfers are supported
-      spi: update spi_board_info FIXME comment
-      video: fb: add optional damage tracking
-      graphic_utils: add optional damage tracking
-      video: mipi_dbi: add damage tracking and partial updates
-      video: fbconsole: implement non-fullscreen fbconsole
-
-Rouven Czerwinski (1):
-      arm: rockchip: add support for CM3 on IO board
-
-Sascha Hauer (56):
-      usb: gadget: fastboot: Allocate IN requests when needed
-      usb: gadget: drop gadget_chips.h
-      usb: gadget: move files to place where Linux has them
-      usb: move include files to place where Linux has them
-      usb: ch9: Update from Linux Kernel
-      phy: Add mode setting support
-      driver: Add unregister_driver()
-      pbl: Implement dev_printf()
-      clk: clk-gpio: Add Kconfig symbol
-      clk: clk-gpio: Turn into driver
-      clk: of: drop arguments from of_clk_init()
-      clk: of: make of_clk_init() safe for being called multiple times
-      commands: of_overlay: Allow to register clocks from overlay
-      usb: gadget: Update core to Linux-6.3-rc2
-      uuid.h: sync with Linux-6.3-rc2
-      usb: gadget: Add super-speed-plus descriptors
-      usb: gadget: update composite.c from Linux-6.3-rc2
-      Add dev_WARN_ONCE()
-      usb: dwc3: sync with Linux-6.3-rc2
-      usb: gadget: dfu: Assign super speed descriptors
-      usb: gadget: fastboot: Add super speed descriptors
-      usb: gadget: mass storage: Add super speed descriptors
-      usb: gadget: u_serial: Put back to list if shutdown
-      usb: gadget multi: support USB Super Speed
-      usb: xhci-hcd: Give it some more time to stop
-      ARM: rockchip_v8_defconfig: Enable some commands
-      usb: gadget: fastboot: Do not dequeue idle request
-      dts: update to v6.3-rc4
-      ARM: dts: rk356x: Add DMC controller node
-      ARM: Rockchip: Add rk3568 specific barebox entry function
-      ARM: Rockchip: rk3568: use rk3568_barebox_entry()
-      ARM: Rockchip: Do not pass device tree to TF-A
-      dts: update to v6.3-rc5
-      mci: sdhci: Add and use common sdhci_wait_for_done()
-      ARM: Rockchip: let boards depend on 32/64bit
-      ARM: ZynqMP: Move ZynqMP feature selection into submenu
-      ARM: remove freescale-mx21-ads_defconfig
-      ARM: update defconfigs
-      ARM: cleanup 32bit/64bit support in Kconfig
-      mci: rockchip-dwcmshc-sdhci: use sdhci_reset()
-      mci: arasan: use sdhci_reset()
-      dts: update to v6.3-rc6
-      Merge branch 'for-next/clk-of-overlay'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/imx-image'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/rockchip'
-      Merge branch 'for-next/usb'
-      ARM: multi_v7_defconfig: Enable BCM283X Pinctrl/GPIO driver
-      scripts: rkimage: Use non-deprecated functions for sha256/512
-      ARM: NXP i.MX8MN EVK: Drop unnecessary IMD_USED_OF
-      ARM: rockchip: bootm: move image to 4k alignment
-      pcie-designware: Fix dev_get_resource_by_name error check
-      ARM: rockchip: bbu: Fix getting active boot slot
-      i.MX: HABv4: Hide NULL pointers from optimizer
-      Release v2023.05.0
-
-Schoyswohl, Roland (1):
-      mmc: fix calculation of Max Enhanced Area
-
-Wolfram Sang (2):
-      ARM: at91: usb-a926x: remove nand partitions from config
-      defconfigs: usb-a9g20: update to a working version
+diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
+index 8f2d064d1988..d30158d7f880 100644
+--- a/arch/arm/configs/multi_v8_defconfig
++++ b/arch/arm/configs/multi_v8_defconfig
+@@ -50,6 +50,7 @@ CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
+ CONFIG_STATE=y
+ CONFIG_BOOTCHOOSER=y
+ CONFIG_RESET_SOURCE=y
++CONFIG_MACHINE_ID=y
+ CONFIG_FASTBOOT_SPARSE=y
+ CONFIG_CMD_DMESG=y
+ CONFIG_LONGHELP=y
+@@ -59,7 +60,10 @@ CONFIG_CMD_MEMINFO=y
+ CONFIG_CMD_ARM_MMUINFO=y
+ CONFIG_CMD_REGULATOR=y
+ CONFIG_CMD_MMC_EXTCSD=y
++CONFIG_CMD_POLLER=y
++CONFIG_CMD_SLICE=y
+ CONFIG_CMD_GO=y
++CONFIG_CMD_LOADB=y
+ CONFIG_CMD_RESET=y
+ CONFIG_CMD_UIMAGE=y
+ CONFIG_CMD_BOOTCHOOSER=y
+@@ -88,9 +92,13 @@ CONFIG_CMD_PING=y
+ CONFIG_CMD_TFTP=y
+ CONFIG_CMD_ECHO_E=y
+ CONFIG_CMD_EDIT=y
++CONFIG_CMD_LOGIN=y
+ CONFIG_CMD_MENU=y
+ CONFIG_CMD_MENU_MANAGEMENT=y
+ CONFIG_CMD_MENUTREE=y
++CONFIG_CMD_PASSWD=y
++CONFIG_CMD_SPLASH=y
++CONFIG_CMD_FBTEST=y
+ CONFIG_CMD_READLINE=y
+ CONFIG_CMD_TIMEOUT=y
+ CONFIG_CMD_CRC=y
+@@ -103,6 +111,7 @@ CONFIG_CMD_FLASH=y
+ CONFIG_CMD_GPIO=y
+ CONFIG_CMD_I2C=y
+ CONFIG_CMD_LED=y
++CONFIG_CMD_POWEROFF=y
+ CONFIG_CMD_SMC=y
+ CONFIG_CMD_LED_TRIGGER=y
+ CONFIG_CMD_USBGADGET=y
+@@ -113,12 +122,15 @@ CONFIG_CMD_OF_DIFF=y
+ CONFIG_CMD_OF_NODE=y
+ CONFIG_CMD_OF_PROPERTY=y
+ CONFIG_CMD_OF_DISPLAY_TIMINGS=y
++CONFIG_CMD_OF_FIXUP_STATUS=y
+ CONFIG_CMD_OF_OVERLAY=y
+ CONFIG_CMD_OFTREE=y
+ CONFIG_CMD_TIME=y
+ CONFIG_NET=y
+ CONFIG_NET_NFS=y
+ CONFIG_NET_NETCONSOLE=y
++CONFIG_NET_SNTP=y
++CONFIG_NET_FASTBOOT=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_OF_BAREBOX_ENV_IN_FS=y
+ CONFIG_OF_OVERLAY_LIVE=y
+@@ -151,6 +163,9 @@ CONFIG_I2C_GPIO=y
+ CONFIG_I2C_IMX=y
+ CONFIG_I2C_RK3X=y
+ CONFIG_MTD=y
++CONFIG_MTD_CONCAT=y
++CONFIG_DRIVER_CFI=y
++CONFIG_CFI_BUFFER_WRITE=y
+ CONFIG_VIRTIO_BLK=y
+ CONFIG_USB_HOST=y
+ CONFIG_USB_IMX_CHIPIDEA=y
+@@ -162,6 +177,10 @@ CONFIG_USB_GADGET=y
+ CONFIG_USB_GADGET_SERIAL=y
+ CONFIG_USB_GADGET_FASTBOOT=y
+ CONFIG_USB_GADGET_MASS_STORAGE=y
++CONFIG_VIDEO=y
++CONFIG_FRAMEBUFFER_CONSOLE=y
++CONFIG_DRIVER_VIDEO_BOCHS_PCI=y
++CONFIG_SOUND=y
+ CONFIG_MCI=y
+ CONFIG_MCI_STARTUP=y
+ CONFIG_MCI_MMC_BOOT_PARTITIONS=y
+@@ -187,12 +206,14 @@ CONFIG_HWRNG=y
+ CONFIG_HW_RANDOM_VIRTIO=y
+ CONFIG_GPIO_PCA953X=y
+ CONFIG_GPIO_ZYNQ=y
++CONFIG_NVMEM_RMEM=y
+ CONFIG_IMX_OCOTP=y
+ CONFIG_RAVE_SP_EEPROM=y
+ CONFIG_REGULATOR=y
+ CONFIG_REGULATOR_FIXED=y
+ CONFIG_REGULATOR_RK808=y
+ CONFIG_RESET_IMX7=y
++CONFIG_PCI_ECAM_GENERIC=y
+ CONFIG_RTC_CLASS=y
+ CONFIG_RTC_DRV_DS1307=y
+ CONFIG_FIRMWARE_ZYNQMP_FPGA=y
+@@ -201,7 +222,9 @@ CONFIG_USB_NOP_XCEIV=y
+ CONFIG_PHY_ROCKCHIP_INNO_USB2=y
+ CONFIG_PHY_ROCKCHIP_NANENG_COMBO_PHY=y
+ CONFIG_ROCKCHIP_IODOMAIN=y
++CONFIG_NVMEM_REBOOT_MODE=y
+ CONFIG_VIRTIO_MMIO=y
++CONFIG_VIRTIO_PCI=y
+ CONFIG_FS_CRAMFS=y
+ CONFIG_FS_EXT4=y
+ CONFIG_FS_TFTP=y
+@@ -211,5 +234,7 @@ CONFIG_FS_FAT_WRITE=y
+ CONFIG_FS_FAT_LFN=y
+ CONFIG_FS_BPKFS=y
+ CONFIG_FS_UIMAGEFS=y
++CONFIG_FS_PSTORE=y
++CONFIG_FS_PSTORE_CONSOLE=y
+ CONFIG_FS_RATP=y
+ CONFIG_LZO_DECOMPRESS=y
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
