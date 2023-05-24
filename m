@@ -1,53 +1,53 @@
-Delivery-date: Thu, 25 May 2023 01:45:18 +0200
+Delivery-date: Thu, 25 May 2023 01:45:19 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q1yAR-00CrhF-J1
-	for lore@lore.pengutronix.de; Thu, 25 May 2023 01:45:18 +0200
+	id 1q1yAS-00Crha-Mz
+	for lore@lore.pengutronix.de; Thu, 25 May 2023 01:45:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q1yAO-0007A3-MZ
-	for lore@pengutronix.de; Thu, 25 May 2023 01:45:17 +0200
+	id 1q1yAP-0007B6-Jy
+	for lore@pengutronix.de; Thu, 25 May 2023 01:45:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ecPffdnsZeShkh1oEoEKbWWI8tV1ZQDDW8Fjfq7/W2s=; b=NslO1D11IR24TvWVcTTR9J25OG
-	32K+3VnBS4MeMvoVVICAGrQHGNVyVScYoSKHz3CmnjwpHPzyacpiMo400x8VmojvaaJDc34Qj7ftX
-	apUKdaY0Q2rhi609Dwul+wA44ES8TNKmK7F8Kcyr3Oy4t54rV3N6RghmpS9Hb1iGOEEb0JeJCtrUo
-	Y+oiONUR2aAQHs6e/OJACtgdmyQYz6jWsls8cUWD4E+Daws7BN250gbYkIf70/zKpPQnNfrAtY8fB
-	Vle15eDDWjqthqAW4hv2DQQLx91YL97J7N5dpuiZufmAJNJRBcsoNaETGZQpXqan1ltaTkEmFtBen
-	omJuGJeA==;
+	bh=7PRyrTOSxaTStV07waV2gUYNnDm23y+0RvW8HdTURqk=; b=AYHMXHrKYQ1Yx1KBuBJbML3iE5
+	ViLvN2PfQE1CjT2G6v3+DUEyWeyTdSFxECtG3AKbuuympsKb02lMdNBgPIi8Z4qaf3VqAxXcIvgR6
+	ExobdGlznMnReaQNZb5kzwGe49alRHlytkNKvoH/xdHsWQe/lnOWbQM/Ic86/kOcOVU700g/gPIxm
+	sL3bYHZWIUpDKKVoRv6uAO3ofuRaqnN/2WMorsod5hSJPgRzKBy6DfmZbqF56koomqPviiOKXhQT8
+	obEGAXp8UrdZ0f5mOdrOshGCA8vYCyv30I1bloqszMUTh4ONcBdobT/NmNSkT87HPRH3vezA6lYR9
+	1mhx1nOg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q1y95-00EzNr-0t;
-	Wed, 24 May 2023 23:43:55 +0000
+	id 1q1y93-00EzMk-0G;
+	Wed, 24 May 2023 23:43:53 +0000
 Received: from relay5-d.mail.gandi.net ([217.70.183.197])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q1y8w-00EzHi-0M
+	id 1q1y8w-00EzHj-0E
 	for barebox@lists.infradead.org;
-	Wed, 24 May 2023 23:43:49 +0000
+	Wed, 24 May 2023 23:43:48 +0000
 Received: (Authenticated sender: jmaselbas@zdiv.net)
-	by mail.gandi.net (Postfix) with ESMTPSA id 108821C0009;
-	Wed, 24 May 2023 23:43:36 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 76FC51C0008;
+	Wed, 24 May 2023 23:43:37 +0000 (UTC)
 From: Jules Maselbas <jmaselbas@zdiv.net>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Thu, 25 May 2023 01:43:17 +0200
-Message-Id: <20230524234328.82741-3-jmaselbas@zdiv.net>
+Date: Thu, 25 May 2023 01:43:18 +0200
+Message-Id: <20230524234328.82741-4-jmaselbas@zdiv.net>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230524234328.82741-1-jmaselbas@zdiv.net>
 References: <20230524234328.82741-1-jmaselbas@zdiv.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230524_164346_436907_3BA832A8 
-X-CRM114-Status: GOOD (  33.38  )
+X-CRM114-CacheID: sfid-20230524_164346_392976_6AAE6683 
+X-CRM114-Status: GOOD (  18.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,263 +70,346 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 02/13] scripts: Add Allwinner eGON image support
+Subject: [PATCH v2 03/13] ARM: sunxi: introduce mach-sunxi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On power-up Allwinner SoC starts in boot ROM, aka BROM, which will search
-for an eGON image: first from the SD card, then from eMMC. If no image is
-found then the BROM will enter into FEL mode that can be used for initial
-programming and recovery of devices using USB.
-
-The eGON header, followed by the actual image, must be located at a fixed
-offset of 8192 bytes (4K) from the start of the disk, either SD; or eMMC.
-
-The eGON header structure is adapted from u-boot: /include/sunxi_image.h,
-the header structure is also documented on https://linux-sunxi.org/EGON
-
-BROM will load, at most, the first 32KB of the image into SRAM, including
-the header itself! The jump instruction in the header needs to be patched
-accordingly with the image size.
+Add kbuild boilerplate and some early init functions and lowlevel
+pinctrl functions that will be necessary for early debug uart.
 
 Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
 ---
 rfc->v2:
- - removed arch/arm/mach-sunxi/egon_header.c (unused)
- - reworked egon_mkimage.c to handle images size not multiple of 4bytes
-   and added comments
+ - removed ARCH_TEXT_BASE
+ - add lowlevel pinmux
 
- include/mach/sunxi/egon.h |  59 ++++++++++++++++++
- scripts/Kconfig           |   7 +++
- scripts/Makefile          |   1 +
- scripts/egon_mkimage.c    | 122 ++++++++++++++++++++++++++++++++++++++
- 4 files changed, 189 insertions(+)
- create mode 100644 include/mach/sunxi/egon.h
- create mode 100644 scripts/egon_mkimage.c
+ arch/arm/Kconfig                   | 14 ++++++
+ arch/arm/Makefile                  |  1 +
+ arch/arm/mach-sunxi/Kconfig        |  3 ++
+ arch/arm/mach-sunxi/Makefile       |  2 +
+ arch/arm/mach-sunxi/cpu_init.c     | 57 ++++++++++++++++++++++
+ arch/arm/mach-sunxi/sunxi.c        |  0
+ images/Makefile                    |  1 +
+ images/Makefile.sunxi              | 13 +++++
+ include/mach/sunxi/init.h          | 11 +++++
+ include/mach/sunxi/sun50i-regs.h   | 43 +++++++++++++++++
+ include/mach/sunxi/sunxi-pinctrl.h | 76 ++++++++++++++++++++++++++++++
+ 11 files changed, 221 insertions(+)
+ create mode 100644 arch/arm/mach-sunxi/Kconfig
+ create mode 100644 arch/arm/mach-sunxi/Makefile
+ create mode 100644 arch/arm/mach-sunxi/cpu_init.c
+ create mode 100644 arch/arm/mach-sunxi/sunxi.c
+ create mode 100644 images/Makefile.sunxi
+ create mode 100644 include/mach/sunxi/init.h
+ create mode 100644 include/mach/sunxi/sun50i-regs.h
+ create mode 100644 include/mach/sunxi/sunxi-pinctrl.h
 
-diff --git a/include/mach/sunxi/egon.h b/include/mach/sunxi/egon.h
-new file mode 100644
-index 0000000000..e00992eb7d
---- /dev/null
-+++ b/include/mach/sunxi/egon.h
-@@ -0,0 +1,59 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#ifndef MACH_SUNXI_EGON_H
-+#define MACH_SUNXI_EGON_H
-+
-+struct egon_header {
-+	uint32_t branch; /* branch instruction to jump over the header */
-+	uint8_t magic[8]; /* "eGON.BT0" or "eGON.BT1" */
-+	uint32_t check_sum;
-+	uint32_t length;
-+	/*
-+	 * We use a simplified header, only filling in what is needed
-+	 * by the boot ROM. To be compatible with Allwinner tools we
-+	 * would need to implement the proper fields here instead of
-+	 * padding.
-+	 *
-+	 * Actually we want the ability to recognize our "sunxi" variant
-+	 * of the SPL. To do so, let's place a special signature into the
-+	 * "pub_head_size" field. We can reasonably expect Allwinner's
-+	 * boot0 to always have the upper 16 bits of this set to 0 (after
-+	 * all the value shouldn't be larger than the limit imposed by
-+	 * SRAM size).
-+	 * If the signature is present (at 0x14), then we know it's safe
-+	 * to use the remaining 8 bytes (at 0x18) for our own purposes.
-+	 * (E.g. sunxi-tools "fel" utility can pass information there.)
-+	 */
-+	union {
-+		uint32_t header_size;
-+		uint8_t spl_signature[4];
-+	};
-+	uint32_t fel_script_address;/* since v0.1, set by sunxi-fel */
-+	/*
-+	 * If the fel_uEnv_length member below is set to a non-zero value,
-+	 * it specifies the size (byte count) of data at fel_script_address.
-+	 * At the same time this indicates that the data is in uEnv.txt
-+	 * compatible format, ready to be imported via "env import -t".
-+	 */
-+	uint32_t fel_uEnv_length;/* since v0.1, set by sunxi-fel */
-+	/*
-+	 * Offset of an ASCIIZ string (relative to the SPL header), which
-+	 * contains the default device tree name (CONFIG_DEFAULT_DEVICE_TREE).
-+	 * This is optional and may be set to NULL. Is intended to be used
-+	 * by flash programming tools for providing nice informative messages
-+	 * to the users.
-+	 */
-+	uint32_t dt_name_offset;/* since v0.2, set by mksunxiboot */
-+	uint32_t dram_size;/* in MiB, since v0.3, set by SPL */
-+	uint32_t boot_media;/* written here by the boot ROM */
-+	/* A padding area (may be used for storing text strings) */
-+	uint32_t string_pool[13];/* since v0.2, filled by mksunxiboot */
-+	/* The header must be a multiple of 32 bytes (for VBAR alignment) */
-+	/* And at least 64 byte (https://patchwork.ozlabs.org/patch/622173) */
-+};
-+#define EGON_HDR_BRANCH (0xea000000 | (sizeof(struct egon_header) / 4 - 2))
-+#define sunxi_egon_header(section) {					\
-+		__section(section) static const struct egon_header hdr= \
-+			{ .branch = EGON_HDR_BRANCH, .magic = "eGON" };	\
-+		__keep_symbolref(hdr);					\
-+	}
-+#endif
-diff --git a/scripts/Kconfig b/scripts/Kconfig
-index dcd5f32d1d..7517f5b79f 100644
---- a/scripts/Kconfig
-+++ b/scripts/Kconfig
-@@ -56,6 +56,13 @@ config RK_IMAGE
- 	help
- 	  This enables building the image creation tool for Rockchip SoCs
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 5aef8fcd3b..3c6a3133a8 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -155,6 +155,19 @@ config ARCH_SOCFPGA
+ 	select COMMON_CLK
+ 	select CLKDEV_LOOKUP
  
-+config EGON_IMAGE
-+       bool "Allwinner eGON image tool" if COMPILE_HOST_TOOLS
-+       depends on ARCH_SUNXI || COMPILE_HOST_TOOLS
-+       default y if ARCH_SUNXI
-+       help
-+         This enables building the image creation tool for Allwinner sunxi SoCs
++config ARCH_SUNXI
++	bool "Allwinner SoCs"
++	depends on 64BIT
++	select CLKDEV_LOOKUP
++	select COMMON_CLK
++	select COMMON_CLK_OF_PROVIDER
++	select GPIOLIB
++	select HAVE_PBL_MULTI_IMAGES
++	select OFDEVICE
++	select OFTREE
++	select PINCTRL
++	select RELOCATABLE
 +
- config OMAP_IMAGE
- 	bool "TI OMAP image tools" if COMPILE_HOST_TOOLS
- 	depends on ARCH_OMAP || COMPILE_HOST_TOOLS
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 72ad9ad7a6..13e80db7af 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -28,6 +28,7 @@ hostprogs-always-$(CONFIG_LAYERSCAPE_PBLIMAGE)		+= pblimage
- hostprogs-always-$(CONFIG_STM32_IMAGE)			+= stm32image
- hostprogs-always-$(CONFIG_RISCV)			+= prelink-riscv
- hostprogs-always-$(CONFIG_RK_IMAGE)			+= rkimage
-+hostprogs-always-$(CONFIG_EGON_IMAGE)			+= egon_mkimage
- HOSTCFLAGS_rkimage = `pkg-config --cflags openssl`
- HOSTLDLIBS_rkimage = `pkg-config --libs openssl`
- KBUILD_HOSTCFLAGS += -I$(srctree)/scripts/include/
-diff --git a/scripts/egon_mkimage.c b/scripts/egon_mkimage.c
+ config ARCH_VERSATILE
+ 	bool "ARM Versatile boards (ARM926EJ-S)"
+ 	depends on 32BIT
+@@ -325,6 +338,7 @@ source "arch/arm/mach-omap/Kconfig"
+ source "arch/arm/mach-pxa/Kconfig"
+ source "arch/arm/mach-rockchip/Kconfig"
+ source "arch/arm/mach-socfpga/Kconfig"
++source "arch/arm/mach-sunxi/Kconfig"
+ source "arch/arm/mach-stm32mp/Kconfig"
+ source "arch/arm/mach-versatile/Kconfig"
+ source "arch/arm/mach-vexpress/Kconfig"
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index a506f1e3a3..bb61392e4c 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -103,6 +103,7 @@ machine-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip
+ machine-$(CONFIG_ARCH_SAMSUNG)		+= samsung
+ machine-$(CONFIG_ARCH_SOCFPGA)		+= socfpga
+ machine-$(CONFIG_ARCH_STM32MP)		+= stm32mp
++machine-$(CONFIG_ARCH_SUNXI)		+= sunxi
+ machine-$(CONFIG_ARCH_VERSATILE)	+= versatile
+ machine-$(CONFIG_ARCH_VEXPRESS)		+= vexpress
+ machine-$(CONFIG_ARCH_TEGRA)		+= tegra
+diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
 new file mode 100644
-index 0000000000..5983bdb28a
+index 0000000000..6094f40e2e
 --- /dev/null
-+++ b/scripts/egon_mkimage.c
-@@ -0,0 +1,122 @@
++++ b/arch/arm/mach-sunxi/Kconfig
+@@ -0,0 +1,3 @@
++if ARCH_SUNXI
++
++endif
+diff --git a/arch/arm/mach-sunxi/Makefile b/arch/arm/mach-sunxi/Makefile
+new file mode 100644
+index 0000000000..d678973ca2
+--- /dev/null
++++ b/arch/arm/mach-sunxi/Makefile
+@@ -0,0 +1,2 @@
++obj-y += sunxi.o
++lwl-y += cpu_init.o
+diff --git a/arch/arm/mach-sunxi/cpu_init.c b/arch/arm/mach-sunxi/cpu_init.c
+new file mode 100644
+index 0000000000..aa6add243e
+--- /dev/null
++++ b/arch/arm/mach-sunxi/cpu_init.c
+@@ -0,0 +1,57 @@
 +/* SPDX-License-Identifier: GPL-2.0-or-later */
 +
-+#include <stdio.h>
-+#include <errno.h>
-+#include <stdlib.h>
-+#include <stdint.h>
-+#include <string.h>
-+#include <linux/kernel.h>
++#include <common.h>
++#include <linux/sizes.h>
++#include <asm/barebox-arm-head.h>
++// #include <asm/errata.h> TODO: errata 843419 ?
++#include <io.h>
++#include <debug_ll.h>
++#include <mach/sunxi/init.h>
++#include <mach/sunxi/sun50i-regs.h>
++#include <mach/sunxi/sunxi-pinctrl.h>
 +
-+#include "../include/mach/sunxi/egon.h"
-+
-+#include "compiler.h"
-+#include "common.h"
-+#include "common.c"
-+
-+#define STAMP_VALUE 0x5f0a6c39
-+
-+static void mkimage(char *infile, char *outfile)
++static void sunxi_ccu_init(void __iomem *ccu)
 +{
-+	struct egon_header *hdr;
-+	uint32_t *p32;
-+	uint32_t sum;
-+	int i;
-+	size_t hdr_size = sizeof(*hdr);
-+	size_t bin_size;
-+	size_t img_size;
-+	void *bin;
-+	int fd, ret;
-+
-+	bin = read_file(infile, &bin_size);
-+	if (!bin) {
-+		perror("read_file");
-+		exit(1);
-+	}
-+
-+	/* test if the binary has reserved space for the header */
-+	hdr = bin;
-+	if (hdr->branch == EGON_HDR_BRANCH && memcmp(hdr->magic, "eGON", 4) == 0) {
-+		/* strip/skip existing header */
-+		bin += hdr_size;
-+		bin_size -= hdr_size;
-+	}
-+
-+	hdr = calloc(1, hdr_size);
-+	if (!hdr) {
-+		perror("malloc");
-+		exit(1);
-+	}
-+
-+	/* total image length must be a multiple of 4K bytes */
-+	img_size = ALIGN(hdr_size + bin_size, 4096);
-+
-+	hdr->branch = EGON_HDR_BRANCH;
-+	hdr->length = cpu_to_le32(img_size);
-+	memcpy(hdr->magic, "eGON.BT0", 8);
-+	memcpy(hdr->spl_signature, "SPL", 3);
-+	hdr->spl_signature[3] = 0x03; /* version 0.3 */
-+
-+	/* calculate header checksum: */
-+	sum = STAMP_VALUE;
-+	/*  - add the header checksum */
-+	for (p32 = (void *)hdr, i = 0; i < hdr_size / sizeof(uint32_t); i++)
-+		sum += le32_to_cpu(p32[i]);
-+	/*  - add the image checksum */
-+	for (p32 = bin, i = 0; i < bin_size / sizeof(uint32_t); i++)
-+		sum += le32_to_cpu(p32[i]);
-+	/*  - handle image size not aligned on 32-bits */
-+	if (bin_size % sizeof(uint32_t)) {
-+		uint32_t tmp = 0;
-+		size_t rem = bin_size % sizeof(uint32_t);
-+		memcpy(&tmp, bin + (bin_size - rem), rem);
-+		sum += le32_to_cpu(tmp);
-+	}
-+	/* final image will be padded with zeros: doesn't change the checksum */
-+	hdr->check_sum = cpu_to_le32(sum);
-+
-+	fd = open(outfile, O_WRONLY | O_TRUNC | O_CREAT,
-+		  S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
-+	if (fd < 0) {
-+		fprintf(stderr, "Cannot open %s: %s\n", outfile, strerror(errno));
-+		exit(1);
-+	}
-+	/* write the header */
-+	ret = write_full(fd, hdr, hdr_size);
-+	if (ret < 0) {
-+		perror("write_full");
-+		exit(1);
-+	}
-+	/* write the binary */
-+	ret = write_full(fd, bin, bin_size);
-+	if (ret < 0) {
-+		perror("write_full");
-+		exit(1);
-+	}
-+	/* align the image file size on a 4K bytes multiple (img_size),
-+	 * if neccessary ftruncate will pad the end of the file with zeros */
-+	ret = ftruncate(fd, img_size);
-+	if (ret < 0) {
-+		perror("ftruncate");
-+		exit(1);
-+	}
-+	close(fd);
-+
-+	free(hdr);
++	/* running from osc24 */
++	set_cntfrq(24 * 1000 * 1000);
++	/* APB2 = 24MHz (UART, I2C) */
++	writel((1 << 24 /* src: 1=osc24 */) |
++	       (0 << 16 /* pre_div (N): 0=/1 1=/2 2=/4 3=/8 */) |
++	       (0 << 0) /* M-1 */,
++	       ccu + CCU_APB2_CFG);
 +}
 +
-+static void usage(char *argv0)
++void sun50i_cpu_lowlevel_init(void)
 +{
-+	fprintf(stderr, "usage: %s <infile> <outfile>\n", argv0);
++	arm_cpu_lowlevel_init();
++	sunxi_ccu_init(SUN50I_CCU_BASE_ADDR);
 +}
 +
-+int main(int argc, char *argv[])
++void sun50i_cpu_lowlevel_reset(void)
 +{
-+	if (argc != 3) {
-+		usage(argv[0]);
-+		return 1;
++	void __iomem *reg = SUN50I_TIMER_BASE_ADDR;
++	/* Set the watchdog for its shortest interval (.5s) and wait */
++	writel(1, reg + 0xB4); /* reset whole system */
++	writel(1, reg + 0xB8); /* enable */
++	writel((0xa57 << 1) | 1, reg + 0xB0); /* restart */
++	__hang();
++}
++
++void sun50i_uart_setup(void)
++{
++	void __iomem *ccu = SUN50I_CCU_BASE_ADDR;
++	void __iomem *pio = SUN50I_PIO_BASE_ADDR;
++
++	/* PIO clock enable */
++	setbits_le32(ccu + CCU_BUS_CLK_GATE2, BIT(5));
++	/* UART0 clock enable */
++	setbits_le32(ccu + CCU_BUS_CLK_GATE3, BIT(16));
++	/* UART0 release reset */
++	setbits_le32(ccu + CCU_BUS_SOFT_RST4, BIT(16));
++
++	/* UART0 pinmux (PB8 + PB9) */
++	sunxi_pinmux_set_func(pio, PIO_PB_CFG0, GENMASK(9, 8), 4);
++
++	debug_ll_init();
++	putc_ll('>');
++}
+diff --git a/arch/arm/mach-sunxi/sunxi.c b/arch/arm/mach-sunxi/sunxi.c
+new file mode 100644
+index 0000000000..e69de29bb2
+diff --git a/images/Makefile b/images/Makefile
+index aa5814710f..3a10fe1abb 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -151,6 +151,7 @@ include $(srctree)/images/Makefile.omap3
+ include $(srctree)/images/Makefile.rockchip
+ include $(srctree)/images/Makefile.socfpga
+ include $(srctree)/images/Makefile.stm32mp
++include $(srctree)/images/Makefile.sunxi
+ include $(srctree)/images/Makefile.tegra
+ include $(srctree)/images/Makefile.vexpress
+ include $(srctree)/images/Makefile.xburst
+diff --git a/images/Makefile.sunxi b/images/Makefile.sunxi
+new file mode 100644
+index 0000000000..778d6f9bdf
+--- /dev/null
++++ b/images/Makefile.sunxi
+@@ -0,0 +1,13 @@
++#
++# barebox image generation Makefile for Allwinner sunxi eGON boot images
++#
++
++# %.egonimg - convert into eGON.BT0 image
++# ----------------------------------------------------------------------
++quiet_cmd_egon_image = EGON  $@
++      cmd_egon_image = $(objtree)/scripts/egon_mkimage $< $@
++
++$(obj)/%.egonimg: $(obj)/% FORCE
++	$(call if_changed,egon_image)
++
++# ----------------------------------------------------------------------
+diff --git a/include/mach/sunxi/init.h b/include/mach/sunxi/init.h
+new file mode 100644
+index 0000000000..fed9afe6ba
+--- /dev/null
++++ b/include/mach/sunxi/init.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef MACH_SUNXI_INIT_H
++#define MACH_SUNXI_INIT_H
++
++void sun50i_cpu_lowlevel_init(void);
++
++void sun50i_cpu_lowlevel_reset(void);
++
++void sun50i_uart_setup(void);
++
++#endif
+diff --git a/include/mach/sunxi/sun50i-regs.h b/include/mach/sunxi/sun50i-regs.h
+new file mode 100644
+index 0000000000..23934601b4
+--- /dev/null
++++ b/include/mach/sunxi/sun50i-regs.h
+@@ -0,0 +1,43 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef MACH_SUNXI_SUN50I_REGS_H
++#define MACH_SUNXI_SUN50I_REGS_H
++
++#include <linux/sizes.h>
++
++#define SUN50I_A64_RVBAR_IOMAP	0x017000a0
++#define SUN50I_PBL_STACK_TOP	(SUN50I_SRAM_A1_ADDR + SUN50I_SRAM_A1_SIZE)
++
++#define SUN50I_SRAM_A1_ADDR	0x00010000
++#define SUN50I_SRAM_A1_SIZE	SZ_32K
++#define SUN50I_SRAM_A2_ADDR	0x00044000
++#define SUN50I_SRAM_A2_SIZE	SZ_64K
++#define SUN50I_SRAM_C_ADDR	0x00018000
++/* advertised as 160K, but only ~108K can be used */
++#define SUN50I_SRAM_C_SIZE	(108 * SZ_1K)
++
++#define SUN50I_DRAM_ADDR	0x40000000
++
++#define SUN50I_CCU_BASE_ADDR	IOMEM(0x01c20000)
++#define SUN50I_PIO_BASE_ADDR	IOMEM(0x01c20800)
++#define SUN50I_MMC0_BASE_ADDR	IOMEM(0x01c0f000)
++#define SUN50I_MMC1_BASE_ADDR	IOMEM(0x01c10000)
++#define SUN50I_MMC2_BASE_ADDR	IOMEM(0x01c11000)
++#define SUN50I_TIMER_BASE_ADDR	IOMEM(0x01c20c00)
++
++#define CCU_PLL_CPUX		0x00
++#define CCU_PLL_PERIPH0		0x28
++#define CCU_CPUX_AXI_CFG	0x50
++#define CCU_AHB1_APB1_CFG	0x54
++#define CCU_APB2_CFG		0x58
++#define CCU_AHB2_CFG		0x5c
++#define CCU_BUS_CLK_GATE0	0x60
++#define CCU_BUS_CLK_GATE1	0x64
++#define CCU_BUS_CLK_GATE2	0x68
++#define CCU_BUS_CLK_GATE3	0x6c
++#define CCU_CE_CLK		0x9c
++#define CCU_MBUS_CLK		0x15c
++#define CCU_BUS_SOFT_RST0	0x2c0
++#define CCU_BUS_SOFT_RST4	0x2d8
++#define CCU_PLL_LOCK_CTRL	0x320
++
++#endif
+diff --git a/include/mach/sunxi/sunxi-pinctrl.h b/include/mach/sunxi/sunxi-pinctrl.h
+new file mode 100644
+index 0000000000..5e796197bd
+--- /dev/null
++++ b/include/mach/sunxi/sunxi-pinctrl.h
+@@ -0,0 +1,76 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef __MACH_SUNXI_PINCTRL_H
++#define __MACH_SUNXI_PINCTRL_H
++
++/* low-level gpio "pio" defines to be used in PBL early init,
++ * pio aka "allwinner,sun8i-h3-pinctrl" */
++
++#define PIO_Pn_CFG0(n) ((n)+0x0)
++#define PIO_Pn_CFG1(n) ((n)+0x4)
++#define PIO_Pn_CFG2(n) ((n)+0x8)
++#define PIO_Pn_CFG3(n) ((n)+0xc)
++
++#define PIO_PB_BASE (0x24*1)
++#define PIO_PC_BASE (0x24*2)
++#define PIO_PD_BASE (0x24*3)
++#define PIO_PE_BASE (0x24*4)
++#define PIO_PF_BASE (0x24*5)
++#define PIO_PG_BASE (0x24*6)
++#define PIO_PH_BASE (0x24*7)
++
++/* PORT B */
++#define PIO_PB_CFG0 PIO_Pn_CFG0(PIO_PB_BASE)
++#define PIO_PB_CFG1 PIO_Pn_CFG1(PIO_PB_BASE)
++/* PORT C */
++#define PIO_PC_CFG0 PIO_Pn_CFG0(PIO_PC_BASE)
++#define PIO_PC_CFG1 PIO_Pn_CFG1(PIO_PC_BASE)
++#define PIO_PC_CFG2 PIO_Pn_CFG2(PIO_PC_BASE)
++/* PORT D */
++#define PIO_PD_CFG0 PIO_Pn_CFG0(PIO_PD_BASE)
++#define PIO_PD_CFG1 PIO_Pn_CFG1(PIO_PD_BASE)
++#define PIO_PD_CFG2 PIO_Pn_CFG2(PIO_PD_BASE)
++#define PIO_PD_CFG3 PIO_Pn_CFG3(PIO_PD_BASE)
++/* PORT E */
++#define PIO_PE_CFG0 PIO_Pn_CFG0(PIO_PE_BASE)
++#define PIO_PE_CFG1 PIO_Pn_CFG1(PIO_PE_BASE)
++#define PIO_PE_CFG2 PIO_Pn_CFG2(PIO_PE_BASE)
++/* PORT F */
++#define PIO_PF_CFG0 PIO_Pn_CFG0(PIO_PF_BASE)
++/* PORT G */
++#define PIO_PG_CFG0 PIO_Pn_CFG0(PIO_PG_BASE)
++#define PIO_PG_CFG1 PIO_Pn_CFG1(PIO_PG_BASE)
++/* PORT H */
++#define PIO_PH_CFG0 PIO_Pn_CFG0(PIO_PH_BASE)
++#define PIO_PH_CFG1 PIO_Pn_CFG1(PIO_PH_BASE)
++
++#define PIO_PA_PULL1 0x20
++#define PIO_PB_PULL0 0x40
++#define PIO_PD_DATA 0x7c
++
++/* static inline so this function can be optimized to a single "call" to clrsetbits */
++static inline void sunxi_pinmux_set_func_port(void __iomem *pio, u32 port, u32 pins, u8 func)
++{
++	u32 i, msk = 0, cfg = 0;
++
++	if (!(pins & 0xff))
++		return;
++
++	for (i = 0; i < 8; i++) {
++		if (pins & (1 << i)) {
++			cfg |= func << (i * 4);
++			msk |= 0xf << (i * 4);
++		}
 +	}
-+
-+	mkimage(argv[1], argv[2]);
-+
-+	return 0;
++	clrsetbits_le32(pio + port, msk, cfg);
 +}
++
++static inline void sunxi_pinmux_set_func(void __iomem *pio, u32 port, u32 pins, u8 func)
++{
++	sunxi_pinmux_set_func_port(pio, PIO_Pn_CFG0(port), pins, func);
++	sunxi_pinmux_set_func_port(pio, PIO_Pn_CFG1(port), pins >> 8, func);
++	sunxi_pinmux_set_func_port(pio, PIO_Pn_CFG2(port), pins >> 16, func);
++	sunxi_pinmux_set_func_port(pio, PIO_Pn_CFG3(port), pins >> 24, func);
++}
++
++#endif
 -- 
 2.40.1
 
