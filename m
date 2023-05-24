@@ -1,53 +1,53 @@
-Delivery-date: Thu, 25 May 2023 01:45:19 +0200
+Delivery-date: Thu, 25 May 2023 01:45:23 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q1yAS-00Crha-Mz
-	for lore@lore.pengutronix.de; Thu, 25 May 2023 01:45:19 +0200
+	id 1q1yAX-00CriH-5h
+	for lore@lore.pengutronix.de; Thu, 25 May 2023 01:45:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q1yAP-0007B6-Jy
-	for lore@pengutronix.de; Thu, 25 May 2023 01:45:18 +0200
+	id 1q1yAS-0007Db-BA
+	for lore@pengutronix.de; Thu, 25 May 2023 01:45:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7PRyrTOSxaTStV07waV2gUYNnDm23y+0RvW8HdTURqk=; b=AYHMXHrKYQ1Yx1KBuBJbML3iE5
-	ViLvN2PfQE1CjT2G6v3+DUEyWeyTdSFxECtG3AKbuuympsKb02lMdNBgPIi8Z4qaf3VqAxXcIvgR6
-	ExobdGlznMnReaQNZb5kzwGe49alRHlytkNKvoH/xdHsWQe/lnOWbQM/Ic86/kOcOVU700g/gPIxm
-	sL3bYHZWIUpDKKVoRv6uAO3ofuRaqnN/2WMorsod5hSJPgRzKBy6DfmZbqF56koomqPviiOKXhQT8
-	obEGAXp8UrdZ0f5mOdrOshGCA8vYCyv30I1bloqszMUTh4ONcBdobT/NmNSkT87HPRH3vezA6lYR9
-	1mhx1nOg==;
+	bh=oSLzUG/A1xqgbbmrObDebymX3Dxs8g3bxLPrIEIgfdQ=; b=e89TtBVwqd/FlZ00reSbHpWEcH
+	gI9SXNXGn4FXCUR0nsLAHQgr1EhmUENvIhgAyeMXTQ9TRQGVZgm28qVoGj9qUo7qpOqxSpTNx42U/
+	NDYDAVfLkYFBdARb8zcz+UbYBLE3balkDimiHao0TPfdLzdRa/7PuUVBMb6RUUC9LonRtWRjH0Hcp
+	JvpVevvVoAdinJXPalRCpPW3d3HweZ/4maBiYcOZKqHAVtVx7KkhOpyiK4mpxzfGf5y+vM3O4uHxb
+	LRaLyioC7QS5SEpk67eNIy4U4vimgz+GzLBzD8D+dRdQJBFuIQDNUMj4JlUUXSjCv60fr5dDHFczv
+	KI85QFYA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q1y93-00EzMk-0G;
-	Wed, 24 May 2023 23:43:53 +0000
-Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+	id 1q1y96-00EzOx-2u;
+	Wed, 24 May 2023 23:43:56 +0000
+Received: from relay5-d.mail.gandi.net ([2001:4b98:dc4:8::225])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q1y8w-00EzHj-0E
+	id 1q1y8w-00EzHt-0Q
 	for barebox@lists.infradead.org;
-	Wed, 24 May 2023 23:43:48 +0000
+	Wed, 24 May 2023 23:43:51 +0000
 Received: (Authenticated sender: jmaselbas@zdiv.net)
-	by mail.gandi.net (Postfix) with ESMTPSA id 76FC51C0008;
-	Wed, 24 May 2023 23:43:37 +0000 (UTC)
+	by mail.gandi.net (Postfix) with ESMTPSA id 0BF791C000B;
+	Wed, 24 May 2023 23:43:38 +0000 (UTC)
 From: Jules Maselbas <jmaselbas@zdiv.net>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Thu, 25 May 2023 01:43:18 +0200
-Message-Id: <20230524234328.82741-4-jmaselbas@zdiv.net>
+Date: Thu, 25 May 2023 01:43:22 +0200
+Message-Id: <20230524234328.82741-8-jmaselbas@zdiv.net>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230524234328.82741-1-jmaselbas@zdiv.net>
 References: <20230524234328.82741-1-jmaselbas@zdiv.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230524_164346_392976_6AAE6683 
-X-CRM114-Status: GOOD (  18.45  )
+X-CRM114-CacheID: sfid-20230524_164346_525347_0DDE5EF3 
+X-CRM114-Status: GOOD (  21.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,246 +70,65 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 03/13] ARM: sunxi: introduce mach-sunxi
+Subject: [PATCH v2 07/13] clk: Add clock driver for sun50i-a64
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Add kbuild boilerplate and some early init functions and lowlevel
-pinctrl functions that will be necessary for early debug uart.
+Clock driver is adapted from Linux.
+During clock init, the pll-cpu is switched to 1.2GHz, the same is done
+for the pll-periph0-2x as recommended.
 
 Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
 ---
 rfc->v2:
- - removed ARCH_TEXT_BASE
- - add lowlevel pinmux
+ - return of_clk_add_provider value on probe
 
- arch/arm/Kconfig                   | 14 ++++++
- arch/arm/Makefile                  |  1 +
- arch/arm/mach-sunxi/Kconfig        |  3 ++
- arch/arm/mach-sunxi/Makefile       |  2 +
- arch/arm/mach-sunxi/cpu_init.c     | 57 ++++++++++++++++++++++
- arch/arm/mach-sunxi/sunxi.c        |  0
- images/Makefile                    |  1 +
- images/Makefile.sunxi              | 13 +++++
- include/mach/sunxi/init.h          | 11 +++++
- include/mach/sunxi/sun50i-regs.h   | 43 +++++++++++++++++
- include/mach/sunxi/sunxi-pinctrl.h | 76 ++++++++++++++++++++++++++++++
- 11 files changed, 221 insertions(+)
- create mode 100644 arch/arm/mach-sunxi/Kconfig
- create mode 100644 arch/arm/mach-sunxi/Makefile
- create mode 100644 arch/arm/mach-sunxi/cpu_init.c
- create mode 100644 arch/arm/mach-sunxi/sunxi.c
- create mode 100644 images/Makefile.sunxi
- create mode 100644 include/mach/sunxi/init.h
- create mode 100644 include/mach/sunxi/sun50i-regs.h
- create mode 100644 include/mach/sunxi/sunxi-pinctrl.h
+ drivers/clk/Makefile               |   1 +
+ drivers/clk/sunxi/Makefile         |   2 +
+ drivers/clk/sunxi/clk-sun50i-a64.c | 315 +++++++++++++++++++++++++++++
+ drivers/clk/sunxi/clk-sun50i-a64.h |  62 ++++++
+ 4 files changed, 380 insertions(+)
+ create mode 100644 drivers/clk/sunxi/Makefile
+ create mode 100644 drivers/clk/sunxi/clk-sun50i-a64.c
+ create mode 100644 drivers/clk/sunxi/clk-sun50i-a64.h
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 5aef8fcd3b..3c6a3133a8 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -155,6 +155,19 @@ config ARCH_SOCFPGA
- 	select COMMON_CLK
- 	select CLKDEV_LOOKUP
- 
-+config ARCH_SUNXI
-+	bool "Allwinner SoCs"
-+	depends on 64BIT
-+	select CLKDEV_LOOKUP
-+	select COMMON_CLK
-+	select COMMON_CLK_OF_PROVIDER
-+	select GPIOLIB
-+	select HAVE_PBL_MULTI_IMAGES
-+	select OFDEVICE
-+	select OFTREE
-+	select PINCTRL
-+	select RELOCATABLE
-+
- config ARCH_VERSATILE
- 	bool "ARM Versatile boards (ARM926EJ-S)"
- 	depends on 32BIT
-@@ -325,6 +338,7 @@ source "arch/arm/mach-omap/Kconfig"
- source "arch/arm/mach-pxa/Kconfig"
- source "arch/arm/mach-rockchip/Kconfig"
- source "arch/arm/mach-socfpga/Kconfig"
-+source "arch/arm/mach-sunxi/Kconfig"
- source "arch/arm/mach-stm32mp/Kconfig"
- source "arch/arm/mach-versatile/Kconfig"
- source "arch/arm/mach-vexpress/Kconfig"
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index a506f1e3a3..bb61392e4c 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -103,6 +103,7 @@ machine-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip
- machine-$(CONFIG_ARCH_SAMSUNG)		+= samsung
- machine-$(CONFIG_ARCH_SOCFPGA)		+= socfpga
- machine-$(CONFIG_ARCH_STM32MP)		+= stm32mp
-+machine-$(CONFIG_ARCH_SUNXI)		+= sunxi
- machine-$(CONFIG_ARCH_VERSATILE)	+= versatile
- machine-$(CONFIG_ARCH_VEXPRESS)		+= vexpress
- machine-$(CONFIG_ARCH_TEGRA)		+= tegra
-diff --git a/arch/arm/mach-sunxi/Kconfig b/arch/arm/mach-sunxi/Kconfig
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index c865e4c274..2d87e0c244 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -29,3 +29,4 @@ obj-$(CONFIG_MACH_RPI_COMMON)	+= clk-rpi.o
+ obj-y				+= bcm/
+ obj-$(CONFIG_COMMON_CLK_SCMI)	+= clk-scmi.o
+ obj-$(CONFIG_COMMON_CLK_GPIO)   += clk-gpio.o
++obj-$(CONFIG_ARCH_SUNXI)	+= sunxi/
+diff --git a/drivers/clk/sunxi/Makefile b/drivers/clk/sunxi/Makefile
 new file mode 100644
-index 0000000000..6094f40e2e
+index 0000000000..4d1dcbebb0
 --- /dev/null
-+++ b/arch/arm/mach-sunxi/Kconfig
-@@ -0,0 +1,3 @@
-+if ARCH_SUNXI
-+
-+endif
-diff --git a/arch/arm/mach-sunxi/Makefile b/arch/arm/mach-sunxi/Makefile
-new file mode 100644
-index 0000000000..d678973ca2
---- /dev/null
-+++ b/arch/arm/mach-sunxi/Makefile
++++ b/drivers/clk/sunxi/Makefile
 @@ -0,0 +1,2 @@
-+obj-y += sunxi.o
-+lwl-y += cpu_init.o
-diff --git a/arch/arm/mach-sunxi/cpu_init.c b/arch/arm/mach-sunxi/cpu_init.c
++# SPDX-License-Identifier: GPL-2.0-only
++obj-$(CONFIG_ARCH_SUN50I_A64) += clk-sun50i-a64.o
+diff --git a/drivers/clk/sunxi/clk-sun50i-a64.c b/drivers/clk/sunxi/clk-sun50i-a64.c
 new file mode 100644
-index 0000000000..aa6add243e
+index 0000000000..c7463948ea
 --- /dev/null
-+++ b/arch/arm/mach-sunxi/cpu_init.c
-@@ -0,0 +1,57 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
++++ b/drivers/clk/sunxi/clk-sun50i-a64.c
+@@ -0,0 +1,315 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: 2022 Jules Maselbas
 +
 +#include <common.h>
-+#include <linux/sizes.h>
-+#include <asm/barebox-arm-head.h>
-+// #include <asm/errata.h> TODO: errata 843419 ?
++#include <init.h>
++#include <driver.h>
++#include <linux/clk.h>
 +#include <io.h>
-+#include <debug_ll.h>
-+#include <mach/sunxi/init.h>
-+#include <mach/sunxi/sun50i-regs.h>
-+#include <mach/sunxi/sunxi-pinctrl.h>
++#include <linux/clkdev.h>
++#include <linux/err.h>
 +
-+static void sunxi_ccu_init(void __iomem *ccu)
-+{
-+	/* running from osc24 */
-+	set_cntfrq(24 * 1000 * 1000);
-+	/* APB2 = 24MHz (UART, I2C) */
-+	writel((1 << 24 /* src: 1=osc24 */) |
-+	       (0 << 16 /* pre_div (N): 0=/1 1=/2 2=/4 3=/8 */) |
-+	       (0 << 0) /* M-1 */,
-+	       ccu + CCU_APB2_CFG);
-+}
++#define MHZ (1000 * 1000UL)
 +
-+void sun50i_cpu_lowlevel_init(void)
-+{
-+	arm_cpu_lowlevel_init();
-+	sunxi_ccu_init(SUN50I_CCU_BASE_ADDR);
-+}
-+
-+void sun50i_cpu_lowlevel_reset(void)
-+{
-+	void __iomem *reg = SUN50I_TIMER_BASE_ADDR;
-+	/* Set the watchdog for its shortest interval (.5s) and wait */
-+	writel(1, reg + 0xB4); /* reset whole system */
-+	writel(1, reg + 0xB8); /* enable */
-+	writel((0xa57 << 1) | 1, reg + 0xB0); /* restart */
-+	__hang();
-+}
-+
-+void sun50i_uart_setup(void)
-+{
-+	void __iomem *ccu = SUN50I_CCU_BASE_ADDR;
-+	void __iomem *pio = SUN50I_PIO_BASE_ADDR;
-+
-+	/* PIO clock enable */
-+	setbits_le32(ccu + CCU_BUS_CLK_GATE2, BIT(5));
-+	/* UART0 clock enable */
-+	setbits_le32(ccu + CCU_BUS_CLK_GATE3, BIT(16));
-+	/* UART0 release reset */
-+	setbits_le32(ccu + CCU_BUS_SOFT_RST4, BIT(16));
-+
-+	/* UART0 pinmux (PB8 + PB9) */
-+	sunxi_pinmux_set_func(pio, PIO_PB_CFG0, GENMASK(9, 8), 4);
-+
-+	debug_ll_init();
-+	putc_ll('>');
-+}
-diff --git a/arch/arm/mach-sunxi/sunxi.c b/arch/arm/mach-sunxi/sunxi.c
-new file mode 100644
-index 0000000000..e69de29bb2
-diff --git a/images/Makefile b/images/Makefile
-index aa5814710f..3a10fe1abb 100644
---- a/images/Makefile
-+++ b/images/Makefile
-@@ -151,6 +151,7 @@ include $(srctree)/images/Makefile.omap3
- include $(srctree)/images/Makefile.rockchip
- include $(srctree)/images/Makefile.socfpga
- include $(srctree)/images/Makefile.stm32mp
-+include $(srctree)/images/Makefile.sunxi
- include $(srctree)/images/Makefile.tegra
- include $(srctree)/images/Makefile.vexpress
- include $(srctree)/images/Makefile.xburst
-diff --git a/images/Makefile.sunxi b/images/Makefile.sunxi
-new file mode 100644
-index 0000000000..778d6f9bdf
---- /dev/null
-+++ b/images/Makefile.sunxi
-@@ -0,0 +1,13 @@
-+#
-+# barebox image generation Makefile for Allwinner sunxi eGON boot images
-+#
-+
-+# %.egonimg - convert into eGON.BT0 image
-+# ----------------------------------------------------------------------
-+quiet_cmd_egon_image = EGON  $@
-+      cmd_egon_image = $(objtree)/scripts/egon_mkimage $< $@
-+
-+$(obj)/%.egonimg: $(obj)/% FORCE
-+	$(call if_changed,egon_image)
-+
-+# ----------------------------------------------------------------------
-diff --git a/include/mach/sunxi/init.h b/include/mach/sunxi/init.h
-new file mode 100644
-index 0000000000..fed9afe6ba
---- /dev/null
-+++ b/include/mach/sunxi/init.h
-@@ -0,0 +1,11 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef MACH_SUNXI_INIT_H
-+#define MACH_SUNXI_INIT_H
-+
-+void sun50i_cpu_lowlevel_init(void);
-+
-+void sun50i_cpu_lowlevel_reset(void);
-+
-+void sun50i_uart_setup(void);
-+
-+#endif
-diff --git a/include/mach/sunxi/sun50i-regs.h b/include/mach/sunxi/sun50i-regs.h
-new file mode 100644
-index 0000000000..23934601b4
---- /dev/null
-+++ b/include/mach/sunxi/sun50i-regs.h
-@@ -0,0 +1,43 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+#ifndef MACH_SUNXI_SUN50I_REGS_H
-+#define MACH_SUNXI_SUN50I_REGS_H
-+
-+#include <linux/sizes.h>
-+
-+#define SUN50I_A64_RVBAR_IOMAP	0x017000a0
-+#define SUN50I_PBL_STACK_TOP	(SUN50I_SRAM_A1_ADDR + SUN50I_SRAM_A1_SIZE)
-+
-+#define SUN50I_SRAM_A1_ADDR	0x00010000
-+#define SUN50I_SRAM_A1_SIZE	SZ_32K
-+#define SUN50I_SRAM_A2_ADDR	0x00044000
-+#define SUN50I_SRAM_A2_SIZE	SZ_64K
-+#define SUN50I_SRAM_C_ADDR	0x00018000
-+/* advertised as 160K, but only ~108K can be used */
-+#define SUN50I_SRAM_C_SIZE	(108 * SZ_1K)
-+
-+#define SUN50I_DRAM_ADDR	0x40000000
-+
-+#define SUN50I_CCU_BASE_ADDR	IOMEM(0x01c20000)
-+#define SUN50I_PIO_BASE_ADDR	IOMEM(0x01c20800)
-+#define SUN50I_MMC0_BASE_ADDR	IOMEM(0x01c0f000)
-+#define SUN50I_MMC1_BASE_ADDR	IOMEM(0x01c10000)
-+#define SUN50I_MMC2_BASE_ADDR	IOMEM(0x01c11000)
-+#define SUN50I_TIMER_BASE_ADDR	IOMEM(0x01c20c00)
++#include "clk-sun50i-a64.h"
 +
 +#define CCU_PLL_CPUX		0x00
 +#define CCU_PLL_PERIPH0		0x28
@@ -327,89 +146,358 @@ index 0000000000..23934601b4
 +#define CCU_BUS_SOFT_RST4	0x2d8
 +#define CCU_PLL_LOCK_CTRL	0x320
 +
-+#endif
-diff --git a/include/mach/sunxi/sunxi-pinctrl.h b/include/mach/sunxi/sunxi-pinctrl.h
-new file mode 100644
-index 0000000000..5e796197bd
---- /dev/null
-+++ b/include/mach/sunxi/sunxi-pinctrl.h
-@@ -0,0 +1,76 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++static struct clk *clks[CLK_NUMBER];
++static struct clk_onecell_data clk_data = {
++	.clks = clks,
++	.clk_num = ARRAY_SIZE(clks),
++};
 +
-+#ifndef __MACH_SUNXI_PINCTRL_H
-+#define __MACH_SUNXI_PINCTRL_H
-+
-+/* low-level gpio "pio" defines to be used in PBL early init,
-+ * pio aka "allwinner,sun8i-h3-pinctrl" */
-+
-+#define PIO_Pn_CFG0(n) ((n)+0x0)
-+#define PIO_Pn_CFG1(n) ((n)+0x4)
-+#define PIO_Pn_CFG2(n) ((n)+0x8)
-+#define PIO_Pn_CFG3(n) ((n)+0xc)
-+
-+#define PIO_PB_BASE (0x24*1)
-+#define PIO_PC_BASE (0x24*2)
-+#define PIO_PD_BASE (0x24*3)
-+#define PIO_PE_BASE (0x24*4)
-+#define PIO_PF_BASE (0x24*5)
-+#define PIO_PG_BASE (0x24*6)
-+#define PIO_PH_BASE (0x24*7)
-+
-+/* PORT B */
-+#define PIO_PB_CFG0 PIO_Pn_CFG0(PIO_PB_BASE)
-+#define PIO_PB_CFG1 PIO_Pn_CFG1(PIO_PB_BASE)
-+/* PORT C */
-+#define PIO_PC_CFG0 PIO_Pn_CFG0(PIO_PC_BASE)
-+#define PIO_PC_CFG1 PIO_Pn_CFG1(PIO_PC_BASE)
-+#define PIO_PC_CFG2 PIO_Pn_CFG2(PIO_PC_BASE)
-+/* PORT D */
-+#define PIO_PD_CFG0 PIO_Pn_CFG0(PIO_PD_BASE)
-+#define PIO_PD_CFG1 PIO_Pn_CFG1(PIO_PD_BASE)
-+#define PIO_PD_CFG2 PIO_Pn_CFG2(PIO_PD_BASE)
-+#define PIO_PD_CFG3 PIO_Pn_CFG3(PIO_PD_BASE)
-+/* PORT E */
-+#define PIO_PE_CFG0 PIO_Pn_CFG0(PIO_PE_BASE)
-+#define PIO_PE_CFG1 PIO_Pn_CFG1(PIO_PE_BASE)
-+#define PIO_PE_CFG2 PIO_Pn_CFG2(PIO_PE_BASE)
-+/* PORT F */
-+#define PIO_PF_CFG0 PIO_Pn_CFG0(PIO_PF_BASE)
-+/* PORT G */
-+#define PIO_PG_CFG0 PIO_Pn_CFG0(PIO_PG_BASE)
-+#define PIO_PG_CFG1 PIO_Pn_CFG1(PIO_PG_BASE)
-+/* PORT H */
-+#define PIO_PH_CFG0 PIO_Pn_CFG0(PIO_PH_BASE)
-+#define PIO_PH_CFG1 PIO_Pn_CFG1(PIO_PH_BASE)
-+
-+#define PIO_PA_PULL1 0x20
-+#define PIO_PB_PULL0 0x40
-+#define PIO_PD_DATA 0x7c
-+
-+/* static inline so this function can be optimized to a single "call" to clrsetbits */
-+static inline void sunxi_pinmux_set_func_port(void __iomem *pio, u32 port, u32 pins, u8 func)
++static inline struct clk *
++sunxi_clk_gate(const char *name, const char *parent, void __iomem *reg, u8 shift)
 +{
-+	u32 i, msk = 0, cfg = 0;
++	return clk_gate(name, parent, reg, shift, 0, 0);
++}
 +
-+	if (!(pins & 0xff))
-+		return;
++static inline struct clk *
++sunxi_clk_mux(const char *name, const char * const *parents, u8 num_parents,
++	      void __iomem *reg, u8 shift, u8 width)
++{
++	return clk_mux(name, 0, reg, shift, width, parents, num_parents, 0);
++}
 +
-+	for (i = 0; i < 8; i++) {
-+		if (pins & (1 << i)) {
-+			cfg |= func << (i * 4);
-+			msk |= 0xf << (i * 4);
-+		}
++static inline struct clk *
++sunxi_clk_div(const char *name, const char *parent, struct clk_div_table *table,
++	      void __iomem *reg, u8 shift, u8 width)
++{
++	return clk_divider_table(name, parent, CLK_SET_RATE_PARENT, reg, shift,
++				 width, table, 0);
++}
++
++static struct clk_div_table div_apb1[] = {
++	{ .val = 0, .div = 2 },
++	{ .val = 1, .div = 2 },
++	{ .val = 2, .div = 4 },
++	{ .val = 3, .div = 8 },
++	{ /* Sentinel */ },
++};
++
++static struct clk_div_table div_N[] = {
++	{ .val = 0, .div = 1 },
++	{ .val = 1, .div = 2 },
++	{ .val = 2, .div = 4 },
++	{ .val = 3, .div = 8 },
++	{ /* Sentinel */ },
++};
++
++static const char *sel_cpux[] = {
++	"osc32k",
++	"osc24M",
++	"pll-cpux",
++};
++
++static const char *sel_ahb1[] = {
++	"osc32k",
++	"osc24M",
++	"axi",
++	"pll-periph0",
++};
++
++static const char *sel_apb2[] = {
++	"osc32k",
++	"osc24M",
++	"pll-periph0-2x",
++	"pll-periph0-2x",
++};
++
++static const char *sel_ahb2[] = {
++	"ahb1",
++	"pll-periph0",
++};
++
++static const char *sel_mmc[] = {
++	"osc24M",
++	"pll-periph0-2x",
++	"pll-periph1-2x",
++};
++
++static void sun50i_a64_resets_init(void __iomem *regs)
++{
++	u32 rst;
++
++	rst = 0 |
++		/* RST_USB_PHY0 */ BIT(0) |
++		/* RST_USB_PHY1 */ BIT(1) |
++		/* RST_USB_HSIC */ BIT(2);
++	writel(rst, regs + 0x0cc);
++
++	rst = 0 |
++		/* RST_BUS_MIPI_DSI */ BIT(1) |
++		/* RST_BUS_CE   */ BIT(5) |
++		/* RST_BUS_DMA  */ BIT(6) |
++		/* RST_BUS_MMC0 */ BIT(8) |
++		/* RST_BUS_MMC1 */ BIT(9) |
++		/* RST_BUS_MMC2 */ BIT(10) |
++		/* RST_BUS_NAND */ BIT(13) |
++		/* RST_BUS_DRAM */ BIT(14) |
++		/* RST_BUS_EMAC */ BIT(17) |
++		/* RST_BUS_TS   */ BIT(18) |
++		/* RST_BUS_HSTIMER */ BIT(19) |
++		/* RST_BUS_SPI0  */ BIT(20) |
++		/* RST_BUS_SPI1  */ BIT(21) |
++		/* RST_BUS_OTG   */ BIT(23) |
++		/* RST_BUS_EHCI0 */ BIT(24) |
++		/* RST_BUS_EHCI1 */ BIT(25) |
++		/* RST_BUS_OHCI0 */ BIT(28) |
++		/* RST_BUS_OHCI1 */ BIT(29);
++	writel(rst, regs + 0x2c0);
++
++	rst = 0 |
++		/* RST_BUS_VE    */ BIT(0) |
++		/* RST_BUS_TCON0 */ BIT(3) |
++		/* RST_BUS_TCON1 */ BIT(4) |
++		/* RST_BUS_DEINTERLACE */ BIT(5) |
++		/* RST_BUS_CSI   */ BIT(8) |
++		/* RST_BUS_HDMI0 */ BIT(10) |
++		/* RST_BUS_HDMI1 */ BIT(11) |
++		/* RST_BUS_DE    */ BIT(12) |
++		/* RST_BUS_GPU   */ BIT(20) |
++		/* RST_BUS_MSGBOX   */ BIT(21) |
++		/* RST_BUS_SPINLOCK */ BIT(22) |
++		/* RST_BUS_DBG */ BIT(31);
++	writel(rst, regs + 0x2c4);
++
++	rst = /* RST_BUS_LVDS */ BIT(0);
++	writel(rst, regs + 0x2c8);
++
++	rst = 0 |
++		/* RST_BUS_CODEC */ BIT(0) |
++		/* RST_BUS_SPDIF */ BIT(1) |
++		/* RST_BUS_THS   */ BIT(8) |
++		/* RST_BUS_I2S0  */ BIT(12) |
++		/* RST_BUS_I2S1  */ BIT(13) |
++		/* RST_BUS_I2S2  */ BIT(14);
++	writel(rst, regs + 0x2d0);
++
++	rst = 0 |
++		/* RST_BUS_I2C0 */ BIT(0) |
++		/* RST_BUS_I2C1 */ BIT(1) |
++		/* RST_BUS_I2C2 */ BIT(2) |
++		/* RST_BUS_SCR  */ BIT(5) |
++		/* RST_BUS_UART0 */ BIT(16) |
++		/* RST_BUS_UART1 */ BIT(17) |
++		/* RST_BUS_UART2 */ BIT(18) |
++		/* RST_BUS_UART3 */ BIT(19) |
++		/* RST_BUS_UART4 */ BIT(20);
++	writel(rst, regs + 0x2d8);
++}
++
++static int
++sunxi_clk_set_pll(void __iomem *reg, u32 src, u32 freq)
++{
++	/* NOTE: using u32, max freq is 4GHz
++	 * out freq: src * N * K
++	 * factor N: [1->32]
++	 * factor K: [1->4]
++	 * from the manual: give priority to the choice of K >= 2
++	 */
++	u32 mul = freq / src; /* target multiplier (N * K) */
++	u32 k, n;
++	u32 cfg = BIT(31); /* ENABLE */
++
++	for (k = 4; k > 1; k--) {
++		if ((mul % k) == 0)
++			break;
 +	}
-+	clrsetbits_le32(pio + port, msk, cfg);
++	n = mul / k;
++
++	cfg |= (k - 1) << 4;
++	cfg |= (n - 1) << 8;
++
++	writel(cfg, reg);
++	return wait_on_timeout(1 * MSECOND, readl(reg) & BIT(28));
 +}
 +
-+static inline void sunxi_pinmux_set_func(void __iomem *pio, u32 port, u32 pins, u8 func)
++static void sun50i_a64_clocks_init(struct device_node *np, void __iomem *regs)
 +{
-+	sunxi_pinmux_set_func_port(pio, PIO_Pn_CFG0(port), pins, func);
-+	sunxi_pinmux_set_func_port(pio, PIO_Pn_CFG1(port), pins >> 8, func);
-+	sunxi_pinmux_set_func_port(pio, PIO_Pn_CFG2(port), pins >> 16, func);
-+	sunxi_pinmux_set_func_port(pio, PIO_Pn_CFG3(port), pins >> 24, func);
++	sun50i_a64_resets_init(regs);
++
++	/* set pll-cpu to 1.2GHz */
++	if (sunxi_clk_set_pll(regs + CCU_PLL_CPUX, 24 * MHZ, 1200 * MHZ))
++		pr_err("fail to lock pll-cpu @ 1.2GHz\n");
++	clks[CLK_PLL_CPUX] = clk_fixed("pll-cpux", 1200 * MHZ);
++
++	/* switch cpu clock source: cpux_src: 1=24mhz 2=PLL_CPUX */
++	clks[CLK_CPUX] = sunxi_clk_mux("cpux", sel_cpux, ARRAY_SIZE(sel_cpux), regs + CCU_CPUX_AXI_CFG, 16, 2);
++	writel(0x20001, regs + CCU_CPUX_AXI_CFG); /* select pll-cpu */
++	udelay(1); /* wait 8 cycles */
++
++	/* set pll-periph0-2x to 1.2GHz, as recommended */
++	if (sunxi_clk_set_pll(regs + CCU_PLL_PERIPH0, 24 * MHZ, 2 * 600 * MHZ))
++		pr_err("fail to lock pll-periph @ 1.2GHz\n");
++
++	clks[CLK_PLL_PERIPH0]    = clk_fixed("pll-periph0", 600 * MHZ);
++	clks[CLK_PLL_PERIPH0_2X] = clk_fixed_factor("pll-periph0-2x", "pll-periph0", 2, 1, 0);
++
++	clks[CLK_AHB1] = sunxi_clk_mux("ahb1", sel_ahb1, ARRAY_SIZE(sel_ahb1), regs + 0x054, 12, 2);
++	clks[CLK_AHB2] = sunxi_clk_mux("ahb2", sel_ahb2, ARRAY_SIZE(sel_ahb2), regs + 0x05c, 0, 1);
++
++	clks[CLK_APB1] = sunxi_clk_div("apb1", "ahb1", div_apb1, regs + 0x054, 8, 2);
++	clks[CLK_APB2] = sunxi_clk_mux("apb2", sel_apb2, ARRAY_SIZE(sel_apb2), regs + 0x058, 24, 2);
++
++	clks[CLK_BUS_MIPI_DSI] = sunxi_clk_gate("bus-mipi-dsi","ahb1",regs + 0x060, 1);
++	clks[CLK_BUS_CE]    = sunxi_clk_gate("bus-ce",    "ahb1", regs + 0x060, 5);
++	clks[CLK_BUS_DMA]   = sunxi_clk_gate("bus-dma",   "ahb1", regs + 0x060, 6);
++	clks[CLK_BUS_MMC0]  = sunxi_clk_gate("bus-mmc0",  "ahb1", regs + 0x060, 8);
++	clks[CLK_BUS_MMC1]  = sunxi_clk_gate("bus-mmc1",  "ahb1", regs + 0x060, 9);
++	clks[CLK_BUS_MMC2]  = sunxi_clk_gate("bus-mmc2",  "ahb1", regs + 0x060, 10);
++	clks[CLK_BUS_NAND]  = sunxi_clk_gate("bus-nand",  "ahb1", regs + 0x060, 13);
++	clks[CLK_BUS_DRAM]  = sunxi_clk_gate("bus-dram",  "ahb1", regs + 0x060, 14);
++	clks[CLK_BUS_EMAC]  = sunxi_clk_gate("bus-emac",  "ahb2", regs + 0x060, 17);
++	clks[CLK_BUS_TS]    = sunxi_clk_gate("bus-ts",    "ahb1", regs + 0x060, 18);
++	clks[CLK_BUS_HSTIMER] = sunxi_clk_gate("bus-hstimer", "ahb1", regs + 0x060, 19);
++	clks[CLK_BUS_SPI0]  = sunxi_clk_gate("bus-spi0",  "ahb1", regs + 0x060,  20);
++	clks[CLK_BUS_SPI1]  = sunxi_clk_gate("bus-spi1",  "ahb1", regs + 0x060,  21);
++	clks[CLK_BUS_OTG]   = sunxi_clk_gate("bus-otg",   "ahb1", regs + 0x060,  23);
++	clks[CLK_BUS_EHCI0] = sunxi_clk_gate("bus-ehci0", "ahb1", regs + 0x060, 24);
++	clks[CLK_BUS_EHCI1] = sunxi_clk_gate("bus-ehci1", "ahb2", regs + 0x060, 25);
++	clks[CLK_BUS_OHCI0] = sunxi_clk_gate("bus-ohci0", "ahb1", regs + 0x060, 28);
++	clks[CLK_BUS_OHCI1] = sunxi_clk_gate("bus-ohci1", "ahb2", regs + 0x060, 29);
++
++	clks[CLK_BUS_CODEC] = sunxi_clk_gate("bus-codec", "apb1", regs + 0x068, 0);
++	clks[CLK_BUS_SPDIF] = sunxi_clk_gate("bus-spdif", "apb1", regs + 0x068, 1);
++	clks[CLK_BUS_PIO]   = sunxi_clk_gate("bus-pio",   "apb1", regs + 0x068, 5);
++	clks[CLK_BUS_THS]   = sunxi_clk_gate("bus-ths",   "apb1", regs + 0x068, 8);
++	clks[CLK_BUS_I2S0]  = sunxi_clk_gate("bus-i2s0",  "apb1", regs + 0x068, 12);
++	clks[CLK_BUS_I2S1]  = sunxi_clk_gate("bus-i2s1",  "apb1", regs + 0x068, 13);
++	clks[CLK_BUS_I2S2]  = sunxi_clk_gate("bus-i2s2",  "apb1", regs + 0x068, 14);
++
++	clks[CLK_BUS_UART0] = sunxi_clk_gate("bus-uart0", "apb2", regs + 0x06c, 16);
++	clks[CLK_BUS_UART1] = sunxi_clk_gate("bus-uart1", "apb2", regs + 0x06c, 17);
++	clks[CLK_BUS_UART2] = sunxi_clk_gate("bus-uart2", "apb2", regs + 0x06c, 18);
++	clks[CLK_BUS_UART3] = sunxi_clk_gate("bus-uart3", "apb2", regs + 0x06c, 19);
++	clks[CLK_BUS_UART4] = sunxi_clk_gate("bus-uart4", "apb2", regs + 0x06c, 20);
++
++	clks[CLK_MMC0] = clk_register_composite(
++		"mmc0",	sel_mmc, ARRAY_SIZE(sel_mmc),
++		sunxi_clk_mux("mmc0-mux", sel_mmc, ARRAY_SIZE(sel_mmc), regs + 0x088, 24, 2),
++		sunxi_clk_div("mmc0-div-n", "mmc0-gate", div_N, regs + 0x088, 16, 2),
++		sunxi_clk_gate("mmc0-gate", "mmc0-mux", regs + 0x088, 31),
++		0);
++
++	clks[CLK_MMC1] = clk_register_composite(
++		"mmc1",	sel_mmc, ARRAY_SIZE(sel_mmc),
++		sunxi_clk_mux("mmc1-mux", sel_mmc, ARRAY_SIZE(sel_mmc), regs + 0x08c, 24, 2),
++		sunxi_clk_div("mmc1-div-n", "mmc1-gate", div_N, regs + 0x08c, 16, 2),
++		sunxi_clk_gate("mmc1-gate", "mmc1-mux", regs + 0x08c, 31),
++		0);
++
++	clks[CLK_MMC2] = clk_register_composite(
++		"mmc2",	sel_mmc, ARRAY_SIZE(sel_mmc),
++		sunxi_clk_mux("mmc2-mux", sel_mmc, ARRAY_SIZE(sel_mmc), regs + 0x090, 24, 2),
++		sunxi_clk_div("mmc2-div-n", "mmc2-gate", div_N, regs + 0x090, 16, 2),
++		sunxi_clk_gate("mmc2-gate", "mmc2-mux", regs + 0x090, 31),
++		0);
++
++	/* generic set_rate doesn't support switching parent,
++	 * let's do it here for now */
++	clk_set_parent(clks[CLK_MMC0], clks[CLK_PLL_PERIPH0_2X]);
++	clk_set_parent(clks[CLK_MMC2], clks[CLK_PLL_PERIPH0_2X]);
 +}
 +
-+#endif
++static int sun50i_a64_ccu_probe(struct device *dev)
++{
++	struct resource *iores;
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	sun50i_a64_clocks_init(dev->of_node, IOMEM(iores->start));
++	return of_clk_add_provider(dev->of_node, of_clk_src_onecell_get, &clk_data);
++}
++
++static __maybe_unused struct of_device_id sun50i_a64_ccu_dt_ids[] = {
++	{
++		.compatible = "allwinner,sun50i-a64-ccu",
++	}, {
++		/* sentinel */
++	}
++};
++
++static struct driver sun50i_a64_ccu_driver = {
++	.probe	= sun50i_a64_ccu_probe,
++	.name	= "sun50i-a64-ccu",
++	.of_compatible = DRV_OF_COMPAT(sun50i_a64_ccu_dt_ids),
++};
++postcore_platform_driver(sun50i_a64_ccu_driver);
+diff --git a/drivers/clk/sunxi/clk-sun50i-a64.h b/drivers/clk/sunxi/clk-sun50i-a64.h
+new file mode 100644
+index 0000000000..a4ddc39eb8
+--- /dev/null
++++ b/drivers/clk/sunxi/clk-sun50i-a64.h
+@@ -0,0 +1,62 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
++/*
++ * Copyright 2016 Maxime Ripard
++ *
++ * Maxime Ripard <maxime.ripard@free-electrons.com>
++ */
++
++#include <dt-bindings/clock/sun50i-a64-ccu.h>
++
++#ifndef _CLK_SUN50I_A64_H_
++#define _CLK_SUN50I_A64_H_
++
++#include <dt-bindings/clock/sun50i-a64-ccu.h>
++#include <dt-bindings/reset/sun50i-a64-ccu.h>
++
++#define CLK_OSC_12M			0
++#define CLK_PLL_CPUX			1
++#define CLK_PLL_AUDIO_BASE		2
++#define CLK_PLL_AUDIO			3
++#define CLK_PLL_AUDIO_2X		4
++#define CLK_PLL_AUDIO_4X		5
++#define CLK_PLL_AUDIO_8X		6
++
++/* PLL_VIDEO0 exported for HDMI PHY */
++
++#define CLK_PLL_VIDEO0_2X		8
++#define CLK_PLL_VE			9
++#define CLK_PLL_DDR0			10
++
++/* PLL_PERIPH0 exported for PRCM */
++
++#define CLK_PLL_PERIPH0_2X		12
++#define CLK_PLL_PERIPH1			13
++#define CLK_PLL_PERIPH1_2X		14
++#define CLK_PLL_VIDEO1			15
++#define CLK_PLL_GPU			16
++#define CLK_PLL_MIPI			17
++#define CLK_PLL_HSIC			18
++#define CLK_PLL_DE			19
++#define CLK_PLL_DDR1			20
++#define CLK_AXI				22
++#define CLK_APB				23
++#define CLK_AHB1			24
++#define CLK_APB1			25
++#define CLK_APB2			26
++#define CLK_AHB2			27
++
++/* All the bus gates are exported */
++
++/* The first bunch of module clocks are exported */
++
++#define CLK_USB_OHCI0_12M		90
++
++#define CLK_USB_OHCI1_12M		92
++
++/* All the DRAM gates are exported */
++
++/* And the DSI and GPU module clock is exported */
++
++#define CLK_NUMBER			(CLK_GPU + 1)
++
++#endif /* _CLK_SUN50I_A64_H_ */
 -- 
 2.40.1
 
