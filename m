@@ -1,62 +1,53 @@
-Delivery-date: Tue, 23 May 2023 17:51:27 +0200
+Delivery-date: Thu, 25 May 2023 01:45:10 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q1UIK-00Aywq-Hv
-	for lore@lore.pengutronix.de; Tue, 23 May 2023 17:51:27 +0200
+	id 1q1yAJ-00Cre6-Tk
+	for lore@lore.pengutronix.de; Thu, 25 May 2023 01:45:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q1UII-0008QB-3g
-	for lore@pengutronix.de; Tue, 23 May 2023 17:51:26 +0200
+	id 1q1yAG-000732-VJ
+	for lore@pengutronix.de; Thu, 25 May 2023 01:45:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=EkqTp/wCiqCjLbznhbFzCmOErdBepE70hYsULFU5WRU=; b=nlM8WdOvCVIqQl
-	rsLPsE1DzbAT6xP6szRIIX2zYPkyrolhPmSZ4ckI4MYip7KZ34NnjTf58aglHlaO3J0j0FRxATv7V
-	yxKWOoNqTSSP3mgTeUqfejLigCkIMQ84BcojDwlWKaKBecISDKi3emAiY9louKJEGCcwJltGYea4h
-	s2Vl4PcLEM9m705O+pPcOw0CBAccWOBMTpHyiErqoMwgyRQFplg43jOTvrH4qKOTzhayDKMXUuypt
-	9DTDYbvcG3f6rsCuHaQL0gvlUl2AGgUuGA8o0JYKXNJ8HS3Ut63qkde4NbI2RG4uwIvRhszVquK+V
-	/XbtBeRuI5xzl9HEFt3w==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=yLAN8D31WLpA4rKJFBS9eB+W2LuUIqAWz972j+ZHxYQ=; b=sGgtyE6S4kC1zO56G1D5Sht1X9
+	WawiofAsHyFRE8IujUEr8VDy4XUd9QoYWbrMPdwdKFf3jvH/CNwwjI+eocFMziTeXA3jiplFMywtX
+	JJl21jF/bOpbGTWdPSkz7GgHzmK6uoS1UFBbmW/ycghWGHfcmMMrOZo3z2+CsY+03FK2HB59XPsYL
+	mWFXfgPO0xkXXBk8ySCZyC/QiU97s6aPIuztk2rbiS0YlOq2U5yjjmVsA2JpveIGZ6i6zAXqQT8Ea
+	sdmBtqiL7SJx14dxkSRkUQYwpoFfbW9xNKnGaCTUgVnyg4itOR+reRxZe9sl+cgxL85Unt9JiskAM
+	LLYAVgUQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q1UGp-00AgYr-1q;
-	Tue, 23 May 2023 15:49:55 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1q1y97-00EzPg-2K;
+	Wed, 24 May 2023 23:43:57 +0000
+Received: from relay5-d.mail.gandi.net ([217.70.183.197])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q1UGm-00AgXn-2A
+	id 1q1y8x-00EzKe-2r
 	for barebox@lists.infradead.org;
-	Tue, 23 May 2023 15:49:53 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1q1UGc-0007en-Ee; Tue, 23 May 2023 17:49:42 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1q1UGb-002Hma-Ov; Tue, 23 May 2023 17:49:41 +0200
-Received: from localhost ([::1] helo=blackshift.org)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1q1UGa-004aJG-W7; Tue, 23 May 2023 17:49:41 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+	Wed, 24 May 2023 23:43:51 +0000
+Received: (Authenticated sender: jmaselbas@zdiv.net)
+	by mail.gandi.net (Postfix) with ESMTPSA id E41951C0014;
+	Wed, 24 May 2023 23:43:41 +0000 (UTC)
+From: Jules Maselbas <jmaselbas@zdiv.net>
 To: barebox@lists.infradead.org
-Date: Tue, 23 May 2023 17:49:39 +0200
-Message-Id: <20230523154939.1074667-4-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230523154939.1074667-1-mkl@pengutronix.de>
-References: <20230523154939.1074667-1-mkl@pengutronix.de>
+Cc: Jules Maselbas <jmaselbas@zdiv.net>
+Date: Thu, 25 May 2023 01:43:28 +0200
+Message-Id: <20230524234328.82741-14-jmaselbas@zdiv.net>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230524234328.82741-1-jmaselbas@zdiv.net>
+References: <20230524234328.82741-1-jmaselbas@zdiv.net>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230523_084952_707039_3934EEA2 
-X-CRM114-Status: GOOD (  10.85  )
+X-CRM114-CacheID: sfid-20230524_164348_065482_E7AA07FA 
+X-CRM114-Status: GOOD (  14.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,41 +59,128 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, kernel@pengutronix.de
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 3/3] I2C: i.MX: fix guard macro comment
+Subject: [PATCH v2 13/13] ARM: sunxi: xload: Add helpers for chain-loading from SD-card
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Fixes: dbbe6037f5ca ("pbl: generalize fsl i2c_early API into pbl_i2c")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- include/pbl/i2c.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Provide sun50i_mmc0_start_image helper that can be called from PBL to
+to easily initialize mmc0 controller and chainload a barebox.bin file
+from the first FAT partition.
 
-diff --git a/include/pbl/i2c.h b/include/pbl/i2c.h
-index 32e456d46b6d..ea2ae447a39f 100644
---- a/include/pbl/i2c.h
-+++ b/include/pbl/i2c.h
-@@ -35,4 +35,4 @@ static inline int i2c_dev_probe(struct pbl_i2c *i2c, int addr, bool onebyte)
- }
+Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+---
+ arch/arm/mach-sunxi/Makefile    |  1 +
+ arch/arm/mach-sunxi/xload-mmc.c | 67 +++++++++++++++++++++++++++++++++
+ include/mach/sunxi/xload.h      |  2 +
+ 3 files changed, 70 insertions(+)
+ create mode 100644 arch/arm/mach-sunxi/xload-mmc.c
+
+diff --git a/arch/arm/mach-sunxi/Makefile b/arch/arm/mach-sunxi/Makefile
+index 0808a21605..fd38462477 100644
+--- a/arch/arm/mach-sunxi/Makefile
++++ b/arch/arm/mach-sunxi/Makefile
+@@ -2,3 +2,4 @@ obj-y += sunxi.o
+ lwl-y += cpu_init.o
+ lwl-y += sun50i-a64-ddr3-init.o
+ lwl-y += sun50i-a64-lpddr3-init.o
++pbl-y += xload-mmc.o
+diff --git a/arch/arm/mach-sunxi/xload-mmc.c b/arch/arm/mach-sunxi/xload-mmc.c
+new file mode 100644
+index 0000000000..9b2d81148e
+--- /dev/null
++++ b/arch/arm/mach-sunxi/xload-mmc.c
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: GPL-2.0+
++
++#include <common.h>
++#include <asm/cache.h>
++#include <linux/bitops.h>
++#include <mach/sunxi/sun50i-regs.h>
++#include <mach/sunxi/sunxi-pinctrl.h>
++#include <mach/sunxi/xload.h>
++
++static void sun50i_mmc0_init(void)
++{
++	void __iomem *ccu = SUN50I_CCU_BASE_ADDR;
++	void __iomem *pio = SUN50I_PIO_BASE_ADDR;
++
++	/* - clock un-gate pinctrl controller */
++	setbits_le32(ccu + CCU_BUS_CLK_GATE2, BIT(5));
++	/* - set mmc alt-function (2) for pins PF5 to PF0 */
++	sunxi_pinmux_set_func(pio, PIO_PF_CFG0, GENMASK(5, 0), 2);
++
++	/* - clock un-gate mmc controller and release reset */
++	setbits_le32(ccu + 0x2c0, /* RST_BUS_MMC0 */ BIT(8));
++	setbits_le32(ccu + 0x060, /* CLK_BUS_MMC0 */ BIT(8));
++	writel(BIT(31), ccu + 0x88); /* MMC0 clock gate */
++}
++
++#if 0 /* currently unused */
++static void sun50i_mmc2_init(void)
++{
++	void __iomem *ccu = SUN50I_CCU_BASE_ADDR;
++	void __iomem *pio = SUN50I_PIO_BASE_ADDR;
++
++	/* - clock un-gate pinctrl controller */
++	setbits_le32(ccu + CCU_BUS_CLK_GATE2, BIT(5));
++	/* - set mmc alt-function (3) for pins PC16 to PC5 */
++	sunxi_pinmux_set_func(pio, PIO_PC_BASE, GENMASK(16, 5), 3);
++
++	/* - clock un-gate mmc controller and release reset */
++	setbits_le32(ccu + 0x2c0, /* RST_BUS_MMC2 */ BIT(10));
++	setbits_le32(ccu + 0x060, /* CLK_BUS_MMC2 */ BIT(10));
++	writel(BIT(31), ccu + 0x90); /* MMC2 clock gate */
++}
++#endif
++
++static void sunxi_fat_start_image(struct pbl_bio *bio, void *buf, size_t size)
++{
++	void (*start)(void) = buf;
++	int ret;
++
++	ret = pbl_fat_load(bio, "barebox.bin", buf, size);
++	if (ret < 0)
++		return;
++	sync_caches_for_execution();
++	start();
++}
++
++void sun50i_mmc0_start_image(void)
++{
++	struct pbl_bio bio;
++	int ret;
++
++	sun50i_mmc0_init();
++
++	ret = sunxi_mmc_bio_init(&bio, SUN50I_MMC0_BASE_ADDR, 24000000, 0);
++	if (ret)
++		return;
++	sunxi_fat_start_image(&bio, IOMEM(SUN50I_DRAM_ADDR), SZ_16M);
++}
+diff --git a/include/mach/sunxi/xload.h b/include/mach/sunxi/xload.h
+index f978db4951..005f78b5c5 100644
+--- a/include/mach/sunxi/xload.h
++++ b/include/mach/sunxi/xload.h
+@@ -9,4 +9,6 @@
+ int sunxi_mmc_bio_init(struct pbl_bio *bio, void __iomem *base,
+ 		       unsigned int clock, unsigned int slot);
  
- 
--#endif /* __I2C_EARLY_H */
-+#endif /* __PBL_I2C_H */
++void sun50i_mmc0_start_image(void);
++
+ #endif
 -- 
-2.39.2
+2.40.1
 
 
 
