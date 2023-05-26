@@ -1,67 +1,59 @@
-Delivery-date: Fri, 26 May 2023 19:02:57 +0200
+Delivery-date: Fri, 26 May 2023 20:43:41 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q2aqA-00FKKb-MJ
-	for lore@lore.pengutronix.de; Fri, 26 May 2023 19:02:57 +0200
+	id 1q2cPf-00FQgA-89
+	for lore@lore.pengutronix.de; Fri, 26 May 2023 20:43:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q2aq8-0007FJ-9g
-	for lore@pengutronix.de; Fri, 26 May 2023 19:02:56 +0200
+	id 1q2cPd-0002nf-05
+	for lore@pengutronix.de; Fri, 26 May 2023 20:43:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nQgVOE44EMss8VCfLSMKqwDXKw287jhwurU2IXzwfQU=; b=z9TAV4MAtGa0KqtikcqhGMDTyR
-	9G7uG0TCGXEbz958O8NAWUSZG9kSkqdJhjqcBslekIqpOmAnxSL3OR9jTLAaFmL7OYO4KZM9Sa9ju
-	UGijRvVd+iwmhX4+OVqaUZUsVCkp7uPU724GW0GhGLWA2pH5BrGNucgsaGQa3fYyaNdP3ogxPQdMN
-	zRG18QFQCk0dEeAMUkAtz3Sncu0zV3foDB5wHD4EonxIgEJS5HqW39jA2K9qdtblWZaLUqzycbh7N
-	pDM+VMfzD170GnnC4u9z1uVpOM3Z2qk6AXbDw/vLgtlgqx8UQW9fUY/37uzC1WD8cl8KKsBKB6EBU
-	pS5vF74g==;
+	bh=yOtjDfd0HsvAXgL6szxDzqIeJ+wEUNeTWRJNY3ZN37w=; b=N4hOjTP/fFtQ0ww+Ag4xA1ZYx7
+	z0psgdA4kYc3zg4fX6Fv6+vxDgUAk0RFTBDhFPqbAaRocKMx5CkwME5FMP4NiDWDrbe6HLbRWWejt
+	54/+HKI/G6O8F1SXB7zvLbmsI6q195gypq+ZIXRytIzr6JC+HI//GevVY8y5fdvniPTu9szWWZdrl
+	lkS92GYON2+nQPc7ryFChnjGzG/4fYuuP8m5DBn3bBffvzcBucCKr3MkQ6vBr0MTx5xp8zGVb0baj
+	kxB+M6xJYyRGvD+emWVDqV+kL2BLSRlCDor1oWpWv/8vp6ObS4F37TTHBuNv+OATSh89vF2S6E02X
+	VDJP3bJA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q2aom-003DBy-1N;
-	Fri, 26 May 2023 17:01:32 +0000
+	id 1q2cOJ-003WsR-2G;
+	Fri, 26 May 2023 18:42:19 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q2aoi-003D9f-34
+	id 1q2cOG-003Wr9-0M
 	for barebox@lists.infradead.org;
-	Fri, 26 May 2023 17:01:30 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <j.zink@pengutronix.de>)
-	id 1q2aob-0006sf-Jy; Fri, 26 May 2023 19:01:21 +0200
-Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <j.zink@pengutronix.de>)
-	id 1q2aoa-002zr8-Na; Fri, 26 May 2023 19:01:20 +0200
-Received: from localhost ([::1] helo=dude03.red.stw.pengutronix.de)
-	by dude03.red.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <j.zink@pengutronix.de>)
-	id 1q2aoZ-004YJF-MQ; Fri, 26 May 2023 19:01:19 +0200
-From: Johannes Zink <j.zink@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: kernel@pengutronix.de,
-	ahmad@a3f.at,
-	afa@pengutronix.de,
-	patchwork-jzi@pengutronix.de,
-	Johannes Zink <j.zink@pengutronix.de>
-Date: Fri, 26 May 2023 18:59:48 +0200
-Message-Id: <20230526165947.1079052-3-j.zink@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230526165947.1079052-1-j.zink@pengutronix.de>
-References: <20230526165947.1079052-1-j.zink@pengutronix.de>
+	Fri, 26 May 2023 18:42:17 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1q2cO9-0002fa-0R; Fri, 26 May 2023 20:42:09 +0200
+Message-ID: <96e9652f-76c1-3577-368a-ca12f85e8808@pengutronix.de>
+Date: Fri, 26 May 2023 20:42:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Content-Language: en-US
+To: Johannes Zink <j.zink@pengutronix.de>, barebox@lists.infradead.org
+Cc: kernel@pengutronix.de, ahmad@a3f.at, afa@pengutronix.de,
+ patchwork-jzi@pengutronix.de
+References: <20230526165947.1079052-1-j.zink@pengutronix.de>
+ <20230526165947.1079052-2-j.zink@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230526165947.1079052-2-j.zink@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230526_100128_994507_4E4B130C 
-X-CRM114-Status: GOOD (  10.74  )
+X-CRM114-CacheID: sfid-20230526_114216_171563_0D2FBDE6 
+X-CRM114-Status: GOOD (  22.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,39 +71,58 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/2] imx-usb-loader: also add version information on target tool
+Subject: Re: [PATCH 1/2] imx-usb-loader: fix compilation if prepare make
+ target was not called before
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The version information was not added to the target tool, which then
-always showed "undefined" as version string. Fixed.
+On 26.05.23 18:59, Johannes Zink wrote:
+> As pointed out in [1], compilation failed if the prepare make
+> target was not called before compiling the imx-usb-loader, which caused
+> the generated file not to exist when building for the sandbox target and
+> broke the build.
+> 
+> After a discussion on the original thread, a different approach has been pursued
+> by simply adding utsrelease.h as a dependency to scripts.
+> 
+> [1] https://lore.barebox.org/barebox/20230525181320.2277320-1-ahmad@a3f.at/
+> 
+> Fixes: c1b50061f4b3 ("imx-usb-loader: add commandline option for displaying version number")
+> Reported-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Fixes: c1b50061f4b3 ("imx-usb-loader: add commandline option for displaying version number")
-Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
----
- scripts/imx/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
-index b3be3886d8eb..d0d1f17e10bd 100644
---- a/scripts/imx/Makefile
-+++ b/scripts/imx/Makefile
-@@ -6,7 +6,7 @@ hostprogs-always-$(CONFIG_ARCH_IMX_USBLOADER)	+= imx-usb-loader
- HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0` -include $(objtree)/include/generated/utsrelease.h
- HOSTLDLIBS_imx-usb-loader  = `pkg-config --libs libusb-1.0`
- 
--imx-usb-loader-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0`
-+imx-usb-loader-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0` -include $(objtree)/include/generated/utsrelease.h
- imx-usb-loader-target-userldlibs += `$(CROSS_PKG_CONFIG) --libs libusb-1.0`
- 
- HOSTCFLAGS_imx.o = -I$(srctree)/include/mach
+> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+> 
+> ---
+> ---
+>  Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/Makefile b/Makefile
+> index 471bbc2679c8..711cba7bed29 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -972,7 +972,7 @@ include/config/kernel.release: FORCE
+>  # Carefully list dependencies so we do not try to build scripts twice
+>  # in parallel
+>  PHONY += scripts
+> -scripts: scripts_basic
+> +scripts: scripts_basic include/generated/utsrelease.h
+>  	$(Q)$(MAKE) $(build)=$(@)
+>  
+>  # Things we need to do before we recursively start building the kernel
+
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
