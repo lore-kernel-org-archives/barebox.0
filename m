@@ -1,64 +1,65 @@
-Delivery-date: Fri, 26 May 2023 08:56:04 +0200
+Delivery-date: Fri, 26 May 2023 09:10:04 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q2RMs-00Ej3d-3B
-	for lore@lore.pengutronix.de; Fri, 26 May 2023 08:56:04 +0200
+	id 1q2RaQ-00EjeB-7z
+	for lore@lore.pengutronix.de; Fri, 26 May 2023 09:10:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q2RMp-0001M2-J0
-	for lore@pengutronix.de; Fri, 26 May 2023 08:56:04 +0200
+	id 1q2RaN-0002sN-QA
+	for lore@pengutronix.de; Fri, 26 May 2023 09:10:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uU25OWWNrWEj8fgRHcnHJd/0uhoPyX+hDNMxdka0jlE=; b=3AW5B5HC1E49mzNQ1LD2poHpKX
-	NbxA8aMNJ3M0JP3rdvb4l99FrnWo2yVWiHr2/4UBLy2csKM6IXeBgK+zCXirrsvhGZN1ifKs8SVKf
-	LOhz7ftNU/NYPLvCszIWa5lyBWe0jfuxk8Gt9hALV0jNc2OhIyWZv9deHRjqRDTOYLr1LA0EauHzn
-	IEXKLVQVYptr5EFaBHnS5pjcrWm5feNveeFkqD1MwFDmw/iP89W7M6Jl8pg3fIW7TthLpzSAm/KrD
-	/FWBk/X4q/9lkh5MWPhh9xRFtu0LcRAeIWM81VGum9rkbupvs65o04dkQSi/HQrMfkAP7Rd3tHrny
-	EtxhJmvg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=+pCwzpq6HZJT9rMFCGTu4UaTQsJ3jaOrQKcmDRzwUJU=; b=LMoCL4ATCpunhXT48tVZmtFXZA
+	8Jcv9/LpoT7e0jzwERs0YbEo7uQve5xph86mLuOkcUJr3ovep9LE27aPDhCSkFfHPNeNELc7EtI6/
+	fjtvCEOwLyR3WrpWNWlOesUm/SZLwj+u9d1it7CWoaMKxPxMnhrydje+5CukwHvS5YBI1CIpSflBG
+	cPCkbJOGNseHEBD9psh5r5p1qVJinfyXqUmsjRz45WG68enLa8/Ouz5ot64CpUt1S4xm5+U7nsiY9
+	1+YK/BJu6mcvMoNPvJK4VVt6EqNuf3sHOsEs+TAXXbpm86y+NsK9U9LOMylUFwKZ46N8aqu23AQVD
+	gUlmEItQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q2RLa-001KFN-1r;
-	Fri, 26 May 2023 06:54:46 +0000
+	id 1q2RZJ-001MYV-0E;
+	Fri, 26 May 2023 07:08:57 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q2RLX-001KDV-0p
+	id 1q2RZG-001MXh-01
 	for barebox@lists.infradead.org;
-	Fri, 26 May 2023 06:54:44 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	Fri, 26 May 2023 07:08:55 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q2RLQ-0000x6-R8; Fri, 26 May 2023 08:54:36 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q2RLQ-0007XK-GU; Fri, 26 May 2023 08:54:36 +0200
-Date: Fri, 26 May 2023 08:54:36 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230526065436.GQ17518@pengutronix.de>
-References: <20230526063746.1155297-1-a.fatoum@pengutronix.de>
- <20230526063746.1155297-4-a.fatoum@pengutronix.de>
+	(envelope-from <j.zink@pengutronix.de>)
+	id 1q2RZD-0002lp-QS; Fri, 26 May 2023 09:08:51 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <j.zink@pengutronix.de>)
+	id 1q2RZD-002tcQ-2K; Fri, 26 May 2023 09:08:51 +0200
+Received: from localhost ([::1] helo=dude03.red.stw.pengutronix.de)
+	by dude03.red.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <j.zink@pengutronix.de>)
+	id 1q2RZC-000Dso-3o; Fri, 26 May 2023 09:08:50 +0200
+From: Johannes Zink <j.zink@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: patchwork-jzi@pengutronix.de,
+	kernel@pengutronix.de,
+	=ahmad@a3f.at,
+	afa@pengutronix.de,
+	Johannes Zink <j.zink@pengutronix.de>
+Date: Fri, 26 May 2023 09:08:47 +0200
+Message-Id: <20230526070847.52738-1-j.zink@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230526063746.1155297-4-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230525_235443_314350_A057E7C2 
-X-CRM114-Status: GOOD (  27.49  )
+X-CRM114-CacheID: sfid-20230526_000854_063338_0EBFC6D1 
+X-CRM114-Status: GOOD (  12.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,104 +77,57 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 3/7] include: sync <linux/linkage.h> with Linux
+Subject: [PATCH] fixup! imx-usb-loader: add commandline option for displaying version number
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, May 26, 2023 at 08:37:42AM +0200, Ahmad Fatoum wrote:
-> Linux has added new SYM_ macros in the assembly code and deprecated
-> ENTRY/PROC. Import the necessary definitions to make kernel code
-> porting easier.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  common/Kconfig          |   6 +
->  include/linux/linkage.h | 321 ++++++++++++++++++++++++++++++++++++----
->  2 files changed, 298 insertions(+), 29 deletions(-)
-> 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index ce94718c848a..5346ba5a623c 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -1710,3 +1710,9 @@ config DDR_SPD
->  
->  config HAVE_ARCH_ASAN
->  	bool
-> +
-> +config ARCH_USE_SYM_ANNOTATIONS
-> +	bool
-> +	help
-> +	  This is selected by architectures that exclusively use the new SYM_
-> +	  macros in their assembly code and not the deprecated ENTRY/PROC.
-> diff --git a/include/linux/linkage.h b/include/linux/linkage.h
-> index efb2d6fa407b..c262c7b36907 100644
-> --- a/include/linux/linkage.h
-> +++ b/include/linux/linkage.h
-> @@ -3,9 +3,16 @@
->  #ifndef _LINUX_LINKAGE_H
->  #define _LINUX_LINKAGE_H
->  
-> -#include <linux/compiler.h>
-> +#include <linux/compiler_types.h>
-> +#include <linux/stringify.h>
-> +#include <linux/export.h>
+As Ahmad pointed out in [1], compilation failed if the prepare make
+target was not called before compiling the imx-usb-loader, which caused
+the generated file not to exist when building for the sandbox target and
+broke the build.
 
-This breaks compilation zylonite310_defconfig. include/linux/export.h is
-not safe for being included from assembly files when CONFIG_MODULES is
-enabled. We could drop this inclusion here as linux/export.h doesn't
-contain anything useful for assembly code. However, I added the
-following instead to not trap into this again should linux/linkage.h
-be updated again.
+As the included utsrelease file only contains a UTS_RELEASE macro
+generated from the KERNELVERSION make variable: use the variable
+directly and pass it via HOSTCFLAGS as a define. Leave the remaining
+code untouched to still support compiling the imx-usb-loader from an
+external makefile which does not define the UTS_RELEASE macro.
 
-Sascha
+while at it: also propagate the version number to the target imx-usb-loader.
 
->From 36b3448b724db0ed1888d61de7069df0ebcfcdc1 Mon Sep 17 00:00:00 2001
-From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Fri, 26 May 2023 08:48:55 +0200
-Subject: [PATCH] include: make linux/export.h safe for being included from
- assembly
+Fixes: c1b50061f4b3 ("imx-usb-loader: add commandline option for
+displaying version number")
 
-include/linux/linkage.h is included from assembly files and itself
-includes linux/export.h, so add #ifndef __ASSEMBLY__ protection
-to that file as well.
+[1] 20230525181320.2277320-1-ahmad@a3f.at
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
 ---
- include/linux/export.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ scripts/imx/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/export.h b/include/linux/export.h
-index 88d318bd8a..90f6ada2d5 100644
---- a/include/linux/export.h
-+++ b/include/linux/export.h
-@@ -2,6 +2,8 @@
- #ifndef _LINUX_EXPORT_H
- #define _LINUX_EXPORT_H
+diff --git a/scripts/imx/Makefile b/scripts/imx/Makefile
+index b3be3886d8eb..dca6be2fe1f4 100644
+--- a/scripts/imx/Makefile
++++ b/scripts/imx/Makefile
+@@ -3,10 +3,10 @@
+ hostprogs-always-$(CONFIG_ARCH_IMX_IMXIMAGE)	+= imx-image
+ hostprogs-always-$(CONFIG_ARCH_IMX_USBLOADER)	+= imx-usb-loader
  
-+#ifndef __ASSEMBLY__
-+
- #define THIS_MODULE	0
+-HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0` -include $(objtree)/include/generated/utsrelease.h
++HOSTCFLAGS_imx-usb-loader.o = `pkg-config --cflags libusb-1.0` -DUTS_RELEASE='"$(KERNELVERSION)"'
+ HOSTLDLIBS_imx-usb-loader  = `pkg-config --libs libusb-1.0`
  
- #ifdef CONFIG_MODULES
-@@ -36,4 +38,6 @@ struct kernel_symbol
+-imx-usb-loader-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0`
++imx-usb-loader-target-userccflags += `$(CROSS_PKG_CONFIG) --cflags libusb-1.0` -DUTS_RELEASE='"$(KERNELVERSION)"'
+ imx-usb-loader-target-userldlibs += `$(CROSS_PKG_CONFIG) --libs libusb-1.0`
  
- #endif /* CONFIG_MODULES */
- 
-+#endif /* __ASSEMBLY__ */
-+
- #endif /* _LINUX_EXPORT_H */
+ HOSTCFLAGS_imx.o = -I$(srctree)/include/mach
 -- 
 2.39.2
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
