@@ -1,58 +1,97 @@
-Delivery-date: Fri, 26 May 2023 11:35:31 +0200
+Delivery-date: Fri, 26 May 2023 12:49:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q2TrA-00Eshg-G6
-	for lore@lore.pengutronix.de; Fri, 26 May 2023 11:35:31 +0200
+	id 1q2V0c-00Ey9S-FE
+	for lore@lore.pengutronix.de; Fri, 26 May 2023 12:49:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q2Tr7-0007gG-Q4
-	for lore@pengutronix.de; Fri, 26 May 2023 11:35:30 +0200
+	id 1q2V0Z-0001Rk-TU
+	for lore@pengutronix.de; Fri, 26 May 2023 12:49:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fQ2va830vz6dR3lpKt6+51cUngz27ew/ToCeCE9urEw=; b=Mztr9Q2DxupMMOk/qMJ/RakbI7
-	0IutMl6QrrAsWPm4k2YvsZ9tVeX9730rdHvGEL5qBkY88rdZcIi9xaSI/Eds7OrrYrZisBisYqOdy
-	pRBoMgMMZUXqFgAQsb5ZBJ9xiXcKm0cn9Gra11AB5hj/I1mJL5pk69Fjf1Og+rFON9ggscSBf4I2D
-	remwoqDWOZBCIdYLjff51pmhOjoElgOJMfmawEHg04Da4sIR/SbeM53D035vMNlWRbqNWwgTNuHRA
-	uMH4SIMSI+GEMh8N+xC84E923lps+XGMjnAZH9mv3OA9C9Oxv3r4vDZz0+qtced4kBvb3yMa7+P5U
-	0QDjgCHQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=E7+F/cDQN6nOWPIBoP0Ilw6WHZA505Wmv0NNBqEB0eg=; b=kxrMhxC848faM+
+	WNvX/8RuGWAi8Me7AL8En6oVqrspcfD/H405jZ/ah0U3FBMS61X591iUwe9cahG/6qt4K0aGupicj
+	9G+fkkIUx03BgW06XBXMD47G1Bfz0LGa6FzCsHNL9lOF+dKy3eit06ItdIEN4NbGswFE4zCRupO22
+	X6lA4tEYOcKZhqQNbvQ/V+BwiliP9JDc1yX8yK3jX3QVilUUXS9lcEgYCDYvy0vfat/Xa0U5n60r/
+	cRdgW2I98znX4BdCgLU9y87kNOlS4+KKCWj+eCbhf0t8nW0u8y0UgZP2CK04JVikTMFyWH5A0lMeK
+	80Wviiq37wNwq2QjtRRw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q2Tpf-001pRS-1T;
-	Fri, 26 May 2023 09:33:59 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1q2Uz8-0025D6-2X;
+	Fri, 26 May 2023 10:47:50 +0000
+Received: from vmse04.mailcluster.com.au ([2401:fc00:4:1::6])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q2Tpb-001pPh-2q
+	id 1q2Uz5-0025BN-0F
 	for barebox@lists.infradead.org;
-	Fri, 26 May 2023 09:33:57 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <j.zink@pengutronix.de>)
-	id 1q2TpX-0007N7-Mw
-	for barebox@lists.infradead.org; Fri, 26 May 2023 11:33:51 +0200
-Message-ID: <26f04a40-a87c-0ddd-c2c2-19df430c4842@pengutronix.de>
-Date: Fri, 26 May 2023 11:33:47 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Content-Language: en-US, de-DE
+	Fri, 26 May 2023 10:47:48 +0000
+Received: from vmcp03.web-servers.com.au ([116.90.56.28])
+	by vmse04.mailcluster.com.au with esmtps (TLSv1.2:AES128-GCM-SHA256:128)
+	(Exim 4.92)
+	(envelope-from <marc@cpdesign.com.au>)
+	id 1q2Uyn-0000dc-Ou; Fri, 26 May 2023 20:47:36 +1000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=cpdesign.com.au; s=default; h=Content-Type:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:To:From:Sender:Reply-To:Cc:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=E7+F/cDQN6nOWPIBoP0Ilw6WHZA505Wmv0NNBqEB0eg=; b=AIT4mKxYvp2J8YQM8hSMKcbP55
+	3pgTpW2oTVWKqTEaLHNOb3dP5fjlTJG4iIHzpaKXGCAALEXJorkNQX1y4z9Gzlm4LHiTjEBaG1xGa
+	u4zDTZ6rU1kcFdzgn8JIVi9GTjcCBtUExELNC7u/RGhruv0aFWSjfOytTY5WOm2wJjq5nyHvqlbdl
+	TdAzk5OfkYolWoaJkqn0yB42kE9Af4tUt4qdJ1jRegqzTf5EztbakSdv3y8XYNOy/2Df1VX/yFQcT
+	HtyuZ077lTlcHxJo/8Jh7yQ+3b5Mp6w21IH/oP7su+Funlm+meY9N2o8USWNbHQduZFrOdS9pfMwN
+	2Z1aWLQA==;
+Received: from [125.254.26.114] (port=36944 helo=dev8.localnet)
+	by vmcp03.web-servers.com.au with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <marc@cpdesign.com.au>)
+	id 1q2Uy0-00GKsI-1n;
+	Fri, 26 May 2023 20:46:40 +1000
+From: marc@cpdesign.com.au
 To: barebox@lists.infradead.org
-References: <20230526082313.29694-1-marc@cpdesign.com.au>
- <20230526082313.29694-2-marc@cpdesign.com.au>
-From: Johannes Zink <j.zink@pengutronix.de>
-In-Reply-To: <20230526082313.29694-2-marc@cpdesign.com.au>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Date: Fri, 26 May 2023 20:46:40 +1000
+Message-ID: <10297393.nUPlyArG6x@dev8>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Authenticated-User: marc@cpdesign.com.au
+X-Authenticator: dovecot_plain
+X-Originating-IP: 116.90.56.28
+X-SpamExperts-Domain: panthur-sh-outbound0.mailcluster.com.au
+X-SpamExperts-Username: 116.90.56.28
+Authentication-Results: mailcluster.com.au; auth=pass smtp.auth=116.90.56.28@panthur-sh-outbound0.mailcluster.com.au
+X-SpamExperts-Outgoing-Class: ham
+X-SpamExperts-Outgoing-Evidence: Combined (0.05)
+X-Recommended-Action: accept
+X-Filter-ID: Pt3MvcO5N4iKaDQ5O6lkdGlMVN6RH8bjRMzItlySaT/312S4gbF1IHJxS5C+1ykgPUtbdvnXkggZ
+ 3YnVId/Y5jcf0yeVQAvfjHznO7+bT5xU2wr8oc+kSjorbvoTXOWnn9x3u48OEqFYZkyf93j/Tvxv
+ T8ga9xhohIrnWvJciyArdcQpxrY+LupHZMEATJgD4KN+AsTCbHxVUUZfje10M8YEG2cp1AZJVlEo
+ blvD9z9DAvNxHBqnmx/aE8dh3k7itS8JyqRSBX6uu5hHVyhQvC7hKTlEv1Fbdyu2mDknvyMvIKE5
+ 0j+rkoMjwzNG+n+y/B8/hIN0JouCgH6QZhVGVx+ysAsBM9SRe64PzDlhOOoBXoXqfdxZ6Xsc9abI
+ Sq4C3qQunLNBoYqI4BeQVb4Ig8yd7yQQWL3CF2XL3W4+3422Z/tWtoggnTxct1hogZAWXPgQW/lH
+ mBQYTwGUOuQtneLwejJoep85cxiiuAjU3RY8kHJPzMPBUSa80CzTeZ8JesZvUUafhLcns8UOFaES
+ xH+kGM8D/KGeI+eENfQVNan6Bfy1T3PwsUos1yNYdTOG17NirEYyqwqMBGrw8ELiqIqNP/mE1P5I
+ xc0CPo9TQOy4GoW7hSunlIPDAb8vp7vtIK/1NH5THMtlYvyHAYGOGuJw+IsbRAYC1LPVQPP+P/MU
+ IKFuyZZpeW4SbXxBSCRrOs7vsAFzVd1v1GhPoE7QP9WObiF5HtHLA13E+zSeW8yyPA2Rf2cMOwEZ
+ 9NXG2W3rTMWIOpre/nZHhi60dtLDWGLd2oovRiUq5MVCzVMhgrk1ybuxObl5Ahw2v+ZvJgiQLypP
+ fi/26oO2cauHDD/6kY8aC83qbLT/K1kXiZHNZ58TjZCHa7SYHAqkaPoNDPsTjV9FGdT+iwHmbcik
+ OnvI8xuhWtAbiqQtZGuna56P+bNTLecqPFBfD3XNbj1aLn5mQa+DJelgV85WMiMFWKhfKrIucAVu
+ QFyPsXiG9zxTA6R+pvlHhV6a5QjptwQBGybQtxyQ3oN2D6gZHaJUwSTBQTLWEPfmzwYu7mwnjKQz
+ zRqUkxE+SK4CkqqQuY/ADtB7uFLX2886rlwU91BGF/+su0Yfl00XU0weOTegbVNJ8cTeNc8dl1pm
+ DnP3+GHmbGtM1OGMrcn4QNqBtDS5lGxoeVZEhf7ni/JzoBrs+9v/N8Nai21OO0sCX7LKxbYOjL7U
+X-Report-Abuse-To: spam@vmse01.mailcluster.com.au
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230526_023355_914661_BB0AF014 
-X-CRM114-Status: GOOD (  29.30  )
+X-CRM114-CacheID: sfid-20230526_034747_136653_69DF746B 
+X-CRM114-Status: UNSURE (   8.79  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,204 +111,44 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [RFC PATCH 1/1] commands: add pwm manipulation command
+Subject: Troubles booting kernel with new imx8 board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Marc,
+Hi all, 
 
-thanks for your patch.
+I'm trying to get barebox going for a new imx8mp based board. I can 
+successfully power on and get to a barebox prompt etc and fiddle with gpios, 
+files on sd, memtest etc, but when booting to kernel it will hang. Note though 
+that the board boots ok with u-boot (using exact same kernel image).
 
-On 5/26/23 10:23, Marc Reilly wrote:
-> This introduces a command to set parameters for a pwm device.
-> 
-> Signed-off-by: Marc Reilly <marc@cpdesign.com.au>
-> ---
->   commands/Kconfig  |  11 +++++
->   commands/Makefile |   1 +
->   commands/pwm.c    | 111 ++++++++++++++++++++++++++++++++++++++++++++++
->   3 files changed, 123 insertions(+)
->   create mode 100644 commands/pwm.c
-> 
-> diff --git a/commands/Kconfig b/commands/Kconfig
-> index 4d3ff631a8..6b7d0bfd79 100644
-> --- a/commands/Kconfig
-> +++ b/commands/Kconfig
-> @@ -1929,6 +1929,17 @@ config CMD_I2C
->   		  -w		use word (16 bit) wide access
->   		  -v		verbose
->   
-> +
-> +config CMD_PWM
-> +	bool
-> +	depends on PWM
-> +	prompt "PWM commands: pwm_set"
-> +	help
-> +	  pwm_set - set pwm state
-> +
-> +	  Usage: i2c_set - set pwm parameters
+I'm trying to figure out what is different between booting via uboot and 
+barebox, I'm new to imx8 so have been going down a few rabbit holes...
 
-this should be pwm_set
+Disabling various drivers (eg imx-cpufreq-dt) in the kernel will get past the 
+hang, but result in a crash later on in the boot sequence. Disabling that may 
+get further but will result in a crash somewhere else.
+My instinct is that its something to do with sdma, but a lot of this is still 
+a black box to me.
 
-> +
-> +
->   config CMD_LED
->   	bool
->   	depends on LED
-> diff --git a/commands/Makefile b/commands/Makefile
-> index 98625a0373..011ae59427 100644
-> --- a/commands/Makefile
-> +++ b/commands/Makefile
-> @@ -69,6 +69,7 @@ obj-$(CONFIG_CMD_GPIO)		+= gpio.o
->   obj-$(CONFIG_CMD_UNCOMPRESS)	+= uncompress.o
->   obj-$(CONFIG_CMD_I2C)		+= i2c.o
->   obj-$(CONFIG_CMD_SPI)		+= spi.o
-> +obj-$(CONFIG_CMD_PWM)		+= pwm.o
->   obj-$(CONFIG_CMD_MIPI_DBI)	+= mipi_dbi.o
->   obj-$(CONFIG_CMD_UBI)		+= ubi.o
->   obj-$(CONFIG_CMD_UBIFORMAT)	+= ubiformat.o
-> diff --git a/commands/pwm.c b/commands/pwm.c
-> new file mode 100644
-> index 0000000000..8a26430e19
-> --- /dev/null
-> +++ b/commands/pwm.c
-> @@ -0,0 +1,111 @@
-> +// SPDX-License-Identifier: GPL-2.0-or-later
-> +// SPDX-FileCopyrightText: © 2023 Marc Reilly <marc@cpdesign.com.au>
-> +
-> +/* pwm - pwm commands */
-> +
-> +#include <common.h>
-> +#include <command.h>
-> +#include <errno.h>
-> +#include <malloc.h>
-> +#include <getopt.h>
-> +#include <pwm.h>
-> +
-> +#define HZ_TO_NANOSECONDS(x) (1000000000UL/(x))
-> +
-> +static int do_pwm_set(int argc, char *argv[])
-> +{
-> +	struct pwm_device *pwm = NULL;
-> +	struct pwm_state state;
-> +	int error = 0;
-> +	char namebuf[128];
-> +	char *devname = NULL;
-> +	int n = -1, polarity = -1, duty = -1, period = -1, freq = -1, opt;
-> +
-> +	while ((opt = getopt(argc, argv, "n:d:D:P:f:i:")) > 0) {
-> +		switch (opt) {
-> +		case 'n':
-> +			n = simple_strtol(optarg, NULL, 0);
-> +			break;
-> +		case 'd':
-> +			devname = optarg;
-> +			break;
-> +		case 'D':
-> +			duty = simple_strtol(optarg, NULL, 0);
-> +			break;
-> +		case 'P':
-> +			period = simple_strtol(optarg, NULL, 0);
-> +			break;
-> +		case 'f':
-> +			freq = simple_strtol(optarg, NULL, 0);
-> +			break;
-> +		case 'i':
-> +			polarity = simple_strtol(optarg, NULL, 0);
-> +			break;
-> +		}
-> +	}
-> +
-> +	if ((n < 0) && !devname) {
-> +		printf(" need to specify a device\n");
-> +		return COMMAND_ERROR_USAGE;
-> +	}
-> +	if ((freq < 0) && (duty < 0) && (period < 0)) {
-> +		printf(" need to know some timing info; freq or dury/period\n");
-> +		return COMMAND_ERROR_USAGE;
-> +	}
-> +
-> +	if (!devname) {
-> +		sprintf(namebuf, "pwm%d", n);
-> +	} else {
-> +		strcpy(namebuf, devname);
-> +	}
-> +
-> +	pwm = pwm_request(namebuf);
-> +	if (!pwm) {
-> +		printf("pwm device %s not found\n", namebuf);
-> +		return -ENODEV;
-> +	}
-> +
-> +	pwm_get_state(pwm, &state);
-> +	if (polarity >= 0)
-> +		state.polarity = polarity;
-> +
-> +	if (freq > 0) {
-> +		state.p_enable = true;
-> +		state.period_ns = HZ_TO_NANOSECONDS(freq);
-> +		pwm_set_relative_duty_cycle(&state, 50, 100);
-> +	} else if (duty > 0) {
-> +		state.p_enable = true;
-> +		state.period_ns = period;
-> +		state.duty_ns = duty;
-> +	} else {
-> +		state.p_enable = false;
+Any hints or suggestions are very welcome! (I can give more info but didn't 
+want to dump everything straight away)
 
-This is probably not doing what you expect it to do. To switch off the 
-PWM generation, you need to set
+- board is based on an imx8mp module from solidrun
+- boots kernel ok using u-boot (u-boot version provided by solidrun, based on 
+NXP versions)
+- I used the same ddr timings from u-boot
+- also using same versions of firmware-imx (8.16) and ATF (2.8)
 
-state.p_enable = true;
-state.period_ns = <something_larger_than 0>;
-state.duty_ns = 0;
+Cheers
+Marc
 
-Please see [1] for more details.
 
-Best regards,
-Johannes
 
-[1] 
-https://pengutronix.de/de/blog/2023-03-14-pulse-width-modulation-is-easy-isn-t-it-turning-it-off-and-on-again.html
 
-> +	}
-> +
-> +	error = pwm_apply_state(pwm, &state);
-> +
-> +	pwm_free(pwm);
-> +
-> +	return error;
-> +}
-> +
-> +BAREBOX_CMD_HELP_START(pwm_read)
-> +BAREBOX_CMD_HELP_TEXT("Sets a pwm device parameters.")
-> +BAREBOX_CMD_HELP_TEXT(" Specify the device either by device name or pwm number")
-> +BAREBOX_CMD_HELP_TEXT(" Timings can either be specified via period + duty (on) duration,")
-> +BAREBOX_CMD_HELP_TEXT("  or via frequency.")
-> +BAREBOX_CMD_HELP_TEXT("Options:")
-> +BAREBOX_CMD_HELP_OPT("-d number\t", "device name (eg 'pwm0')")
-> +BAREBOX_CMD_HELP_OPT("-n number\t", "pwm chip number (default 0)")
-> +BAREBOX_CMD_HELP_OPT("-D number\t", "duty cycle (ns)")
-> +BAREBOX_CMD_HELP_OPT("-P number\t", "period (ns)")
-> +BAREBOX_CMD_HELP_OPT("-f number\t", "frequency (Hz)")
-> +BAREBOX_CMD_HELP_OPT("-i number\t", "line inverted polarity")
-> +BAREBOX_CMD_HELP_END
-> +
-> +BAREBOX_CMD_START(pwm_set)
-> +	.cmd		= do_pwm_set,
-> +	BAREBOX_CMD_DESC("set pwm")
-> +	BAREBOX_CMD_OPTS("[-dnDPfp]")
-> +	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
-> +	BAREBOX_CMD_HELP(cmd_pwm_read_help)
-> +BAREBOX_CMD_END
-
--- 
-Pengutronix e.K.                | Johannes Zink                  |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
 
 
 
