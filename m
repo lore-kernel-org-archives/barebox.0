@@ -1,64 +1,68 @@
-Delivery-date: Fri, 26 May 2023 19:02:50 +0200
+Delivery-date: Fri, 26 May 2023 19:02:54 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q2aq4-00FKJS-06
-	for lore@lore.pengutronix.de; Fri, 26 May 2023 19:02:50 +0200
+	id 1q2aq8-00FKJx-5V
+	for lore@lore.pengutronix.de; Fri, 26 May 2023 19:02:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q2aq1-0007DY-Lc
-	for lore@pengutronix.de; Fri, 26 May 2023 19:02:50 +0200
+	id 1q2aq5-0007ED-Al
+	for lore@pengutronix.de; Fri, 26 May 2023 19:02:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=TuxiqjIUaeXgP9ke9vFgIPVopFt95LHHLGf2hd486yw=; b=Xm39IofxbB7ZQ1ZBhd8pKNA8ML
-	9o/+mi6AoED2lVTKFwR5T4LGs64G5cGJOi/wAxUlRT1rctc4/zBUxK2/+MHamvqeO5gAXO+w5w1uJ
-	cPtvaPagJhY6onwPBPy1KNPaQw+vtzCivPQaLYoePApOI1mPB9vIRd31NHpdGAiCZgIotrLtIZCaW
-	FwZGpGb6Qc4tuX4ZJDRHSdPQpYNFETndpjd1NBgxal5dLqIyYJloMMhQo/ocMtXTjp17WY0kFzR0A
-	RHAQ7u7a8JpMdm72Ioe19vzWdIblRvRuwUpW8CNMELl3O3H/R5RSUydP+FdFRTel3yQZ3yusHePUN
-	YEiiDonA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=BtjvfRZWG5RkmXW+ydTicnySnNNieo96ohHR2D5k9+k=; b=tlLfsBFJRHyZoNhmtWVi9w1PJ7
+	AMOviFl6/U3Vo89mlB8+AX+bw/Y5oVUzQQGoo05ffEHKKpQthci0qdCcJ6348xT9yaS4Qyk1JrelS
+	gSbMqJzepHjsMvSePbIqUDaTUpEhpxGtZgAlZHKXghufW3kYVx1Lt+uopI0J8WpXnoskdXGmpn8mP
+	5bU6Ii4VPKWJpUieOumVJc1/PWoRCBRrEojA0LiWz6JHag4FRcAfpKZdblSNBemPR2QV1GsjImGTf
+	rjGaujdoI8qZss1qWtThXum24IO5RvswKFT2thoeoalnA38bJqW2irsHRawXOZ+04rlPAt255Pvee
+	lB0OkKlQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q2aon-003DC7-05;
-	Fri, 26 May 2023 17:01:33 +0000
+	id 1q2aop-003DCt-0o;
+	Fri, 26 May 2023 17:01:35 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q2aoi-003D9h-34
+	id 1q2aol-003DBe-22
 	for barebox@lists.infradead.org;
-	Fri, 26 May 2023 17:01:30 +0000
+	Fri, 26 May 2023 17:01:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <j.zink@pengutronix.de>)
-	id 1q2aoc-0006sh-4S; Fri, 26 May 2023 19:01:22 +0200
+	id 1q2aoc-0006sg-4V; Fri, 26 May 2023 19:01:22 +0200
 Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <j.zink@pengutronix.de>)
-	id 1q2aoa-002zr6-NW; Fri, 26 May 2023 19:01:20 +0200
+	id 1q2aoa-002zr7-Nc; Fri, 26 May 2023 19:01:20 +0200
 Received: from localhost ([::1] helo=dude03.red.stw.pengutronix.de)
 	by dude03.red.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <j.zink@pengutronix.de>)
-	id 1q2aoZ-004YJF-J8; Fri, 26 May 2023 19:01:19 +0200
+	id 1q2aoZ-004YJF-Kp; Fri, 26 May 2023 19:01:19 +0200
 From: Johannes Zink <j.zink@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: kernel@pengutronix.de,
 	ahmad@a3f.at,
 	afa@pengutronix.de,
-	patchwork-jzi@pengutronix.de
-Date: Fri, 26 May 2023 18:59:46 +0200
-Message-Id: <20230526165947.1079052-1-j.zink@pengutronix.de>
+	patchwork-jzi@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Johannes Zink <j.zink@pengutronix.de>
+Date: Fri, 26 May 2023 18:59:47 +0200
+Message-Id: <20230526165947.1079052-2-j.zink@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230526165947.1079052-1-j.zink@pengutronix.de>
+References: <20230526165947.1079052-1-j.zink@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230526_100128_996951_201234DC 
-X-CRM114-Status: GOOD (  12.98  )
+X-CRM114-CacheID: sfid-20230526_100131_668441_6E1E0BA4 
+X-CRM114-Status: GOOD (  13.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,42 +85,42 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 0/2] imx-usb-loader: fixes in displaying version number
+Subject: [PATCH 1/2] imx-usb-loader: fix compilation if prepare make target was not called before
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-As Ahmad pointed out in [1], compilation failed if the prepare make
+As pointed out in [1], compilation failed if the prepare make
 target was not called before compiling the imx-usb-loader, which caused
 the generated file not to exist when building for the sandbox target and
 broke the build.
 
-Instead of continuing to pursue the approach discussed in [2], a rather
-straight-foreward approach of adding utsrelease.h as a dependency to
-scripts has been chosen, as now the already-existing infrastucture can
-be used instead of duplicating code in the Makefile.
-
-Also, the version number was only set for the Host Tool, but not in the
-target tool, which the second patch of this series fixes.
-
-As the original patch was accidentaly sent out as a fixup, and as this
-series chooses a slightly different approach, I decided to open a new
-series.
-
-Best regards
-Johannes
+After a discussion on the original thread, a different approach has been pursued
+by simply adding utsrelease.h as a dependency to scripts.
 
 [1] https://lore.barebox.org/barebox/20230525181320.2277320-1-ahmad@a3f.at/
-[2] https://lore.barebox.org/barebox/20230526070847.52738-1-j.zink@pengutronix.de/
 
-Johannes Zink (2):
-  imx-usb-loader: fix compilation if prepare make target was not called
-    before
-  imx-usb-loader: also add version information on target tool
+Fixes: c1b50061f4b3 ("imx-usb-loader: add commandline option for displaying version number")
+Reported-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
 
- Makefile             | 2 +-
- scripts/imx/Makefile | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+---
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
+diff --git a/Makefile b/Makefile
+index 471bbc2679c8..711cba7bed29 100644
+--- a/Makefile
++++ b/Makefile
+@@ -972,7 +972,7 @@ include/config/kernel.release: FORCE
+ # Carefully list dependencies so we do not try to build scripts twice
+ # in parallel
+ PHONY += scripts
+-scripts: scripts_basic
++scripts: scripts_basic include/generated/utsrelease.h
+ 	$(Q)$(MAKE) $(build)=$(@)
+ 
+ # Things we need to do before we recursively start building the kernel
 -- 
 2.39.2
 
