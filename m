@@ -1,62 +1,62 @@
-Delivery-date: Fri, 26 May 2023 08:39:05 +0200
+Delivery-date: Fri, 26 May 2023 08:39:07 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q2R6R-00EiMZ-2Z
-	for lore@lore.pengutronix.de; Fri, 26 May 2023 08:39:05 +0200
+	id 1q2R6S-00EiMu-Ad
+	for lore@lore.pengutronix.de; Fri, 26 May 2023 08:39:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q2R6O-0007IL-BW
-	for lore@pengutronix.de; Fri, 26 May 2023 08:39:05 +0200
+	id 1q2R6P-0007J1-6N
+	for lore@pengutronix.de; Fri, 26 May 2023 08:39:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5whCKL+PzazWvZrJ1TpglvmqHXDn4wkZPAPsgWSRwUQ=; b=taf8l+Te77+1PdxxpvFFUE+n9p
-	rBnGNdwq31f7jBXVNV324jZ/nq1yAz+4gcQgknR5EP04HbHr3JMDeCaIJhj1zbzwMd2zM5Bsgghg7
-	qmCCQfffQnEtYBCOKsVTHXUX2lgv+1FzP772yXnxFx/A/zKBwYRPqR6Sn58pCLCpGIqnDKHiCbbc8
-	168n+joHe5wIr1k1yA5D/5pT3Sj8DjMdonUimlFHs76bZyEzMvYxdomWNRrpCHPWgXEYLVLBOcWfH
-	bX/1IlnkTQi1GQMD8ZFPeKIjbh0ntWLXBGxRTe0vUViEaSJwfwIEXGfEd6IK9DO0kXJ9AqBAN48kP
-	rIk50Omw==;
+	bh=N7mwTBGdH1czoxLVglnjTkmPwk0wvH6phq1GXPqpVhE=; b=LLjFtne/rBJcFw08qgUUqYtZxy
+	1nM4U5GEwSeN+jvLaURYB2LVQx/PGvxKyBpHfpeD0ikTz7mDh9nGSWWI3VCLThRe/ii2nX+HtqPvU
+	ZZ2ekuEWgJajtxvZjJuMUs0wsSCewYCNAMwbeN78HYJsiXS3E1ZLCoAxg7U9V/2lEWLfPPr1UXM2F
+	CDQCeFWKzrqQJ8kNKbPcTgIVqExv2tK2R9HOCmLXAfG+SisEdfxRVRegA09eDzRGpYYedN4uVZsZ+
+	kd3u2vgj6oQK3ooE5Z/ggHEEamaKZwNc8DAiGKt8SVwai7Ys4CddsKJrRfkcFxg9FMJK855OrqXS5
+	rykwmtSg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q2R5N-001HYg-0x;
-	Fri, 26 May 2023 06:38:01 +0000
+	id 1q2R5K-001HWg-1q;
+	Fri, 26 May 2023 06:37:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q2R5K-001HW2-0x
+	id 1q2R5C-001HR4-2a
 	for barebox@lists.infradead.org;
-	Fri, 26 May 2023 06:38:00 +0000
+	Fri, 26 May 2023 06:37:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q2R5B-0006qU-1i; Fri, 26 May 2023 08:37:49 +0200
+	id 1q2R5B-0006rD-Hu; Fri, 26 May 2023 08:37:49 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q2R5A-002tWc-Bt; Fri, 26 May 2023 08:37:48 +0200
+	id 1q2R5A-002tWt-TN; Fri, 26 May 2023 08:37:48 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q2R59-004sYb-5b; Fri, 26 May 2023 08:37:47 +0200
+	id 1q2R59-004sYf-5z; Fri, 26 May 2023 08:37:47 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 26 May 2023 08:37:41 +0200
-Message-Id: <20230526063746.1155297-3-a.fatoum@pengutronix.de>
+Date: Fri, 26 May 2023 08:37:42 +0200
+Message-Id: <20230526063746.1155297-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230526063746.1155297-1-a.fatoum@pengutronix.de>
 References: <20230526063746.1155297-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230525_233758_501235_47049EEE 
-X-CRM114-Status: GOOD (  18.92  )
+X-CRM114-CacheID: sfid-20230525_233751_005995_EC153499 
+X-CRM114-Status: GOOD (  18.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,272 +79,409 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 2/7] test: self: add digest test
+Subject: [PATCH v2 3/7] include: sync <linux/linkage.h> with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Later commits will touch existing digest code, so this is a good
-opportunity to add a self test to ensure MD5/SHA continues to work.
+Linux has added new SYM_ macros in the assembly code and deprecated
+ENTRY/PROC. Import the necessary definitions to make kernel code
+porting easier.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/self/Kconfig  |   6 ++
- test/self/Makefile |   1 +
- test/self/digest.c | 211 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 218 insertions(+)
- create mode 100644 test/self/digest.c
+ common/Kconfig          |   6 +
+ include/linux/linkage.h | 321 ++++++++++++++++++++++++++++++++++++----
+ 2 files changed, 298 insertions(+), 29 deletions(-)
 
-diff --git a/test/self/Kconfig b/test/self/Kconfig
-index c130209748aa..1d6d8ab53a8d 100644
---- a/test/self/Kconfig
-+++ b/test/self/Kconfig
-@@ -36,6 +36,7 @@ config SELFTEST_ENABLE_ALL
- 	imply SELFTEST_FS_RAMFS
- 	imply SELFTEST_TFTP
- 	imply SELFTEST_JSON
-+	imply SELFTEST_DIGEST
- 	imply SELFTEST_MMU
- 	help
- 	  Selects all self-tests compatible with current configuration
-@@ -75,4 +76,9 @@ config SELFTEST_MMU
- 	select MEMTEST
- 	depends on MMU
+diff --git a/common/Kconfig b/common/Kconfig
+index ce94718c848a..5346ba5a623c 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1710,3 +1710,9 @@ config DDR_SPD
  
-+config SELFTEST_DIGEST
-+	bool "Digest selftest"
-+	depends on DIGEST
-+	select PRINTF_HEXSTR
+ config HAVE_ARCH_ASAN
+ 	bool
 +
- endif
-diff --git a/test/self/Makefile b/test/self/Makefile
-index 8c816c4299f6..269de2e10e88 100644
---- a/test/self/Makefile
-+++ b/test/self/Makefile
-@@ -9,6 +9,7 @@ obj-$(CONFIG_SELFTEST_OF_MANIPULATION) += of_manipulation.o of_manipulation.dtb.
- obj-$(CONFIG_SELFTEST_ENVIRONMENT_VARIABLES) += envvar.o
- obj-$(CONFIG_SELFTEST_FS_RAMFS) += ramfs.o
- obj-$(CONFIG_SELFTEST_JSON) += json.o
-+obj-$(CONFIG_SELFTEST_DIGEST) += digest.o
- obj-$(CONFIG_SELFTEST_MMU) += mmu.o
++config ARCH_USE_SYM_ANNOTATIONS
++	bool
++	help
++	  This is selected by architectures that exclusively use the new SYM_
++	  macros in their assembly code and not the deprecated ENTRY/PROC.
+diff --git a/include/linux/linkage.h b/include/linux/linkage.h
+index efb2d6fa407b..c262c7b36907 100644
+--- a/include/linux/linkage.h
++++ b/include/linux/linkage.h
+@@ -3,9 +3,16 @@
+ #ifndef _LINUX_LINKAGE_H
+ #define _LINUX_LINKAGE_H
  
- clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
-diff --git a/test/self/digest.c b/test/self/digest.c
-new file mode 100644
-index 000000000000..769444ad15ce
---- /dev/null
-+++ b/test/self/digest.c
-@@ -0,0 +1,211 @@
-+// SPDX-License-Identifier: GPL-2.0-only
+-#include <linux/compiler.h>
++#include <linux/compiler_types.h>
++#include <linux/stringify.h>
++#include <linux/export.h>
+ #include <asm/linkage.h>
+ 
++/* Some toolchains use other characters (e.g. '`') to mark new line in macro */
++#ifndef ASM_NL
++#define ASM_NL		 ;
++#endif
 +
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ #ifdef __cplusplus
+ #define CPP_ASMLINKAGE extern "C"
+ #else
+@@ -16,12 +23,31 @@
+ #define asmlinkage CPP_ASMLINKAGE
+ #endif
+ 
+-#ifndef asmregparm
+-# define asmregparm
++#ifndef cond_syscall
++#define cond_syscall(x)	asm(				\
++	".weak " __stringify(x) "\n\t"			\
++	".set  " __stringify(x) ","			\
++		 __stringify(sys_ni_syscall))
+ #endif
+ 
+-#define __page_aligned_data	__section(.data.page_aligned) __aligned(PAGE_SIZE)
+-#define __page_aligned_bss	__section(.bss.page_aligned) __aligned(PAGE_SIZE)
++#ifndef SYSCALL_ALIAS
++#define SYSCALL_ALIAS(alias, name) asm(			\
++	".globl " __stringify(alias) "\n\t"		\
++	".set   " __stringify(alias) ","		\
++		  __stringify(name))
++#endif
 +
-+#include <common.h>
-+#include <bselftest.h>
-+#include <clock.h>
-+#include <digest.h>
++#define __page_aligned_data	__section(".data..page_aligned") __aligned(PAGE_SIZE)
++#define __page_aligned_bss	__section(".bss..page_aligned") __aligned(PAGE_SIZE)
 +
-+BSELFTEST_GLOBALS();
++/*
++ * For assembly routines.
++ *
++ * Note when using these that you must specify the appropriate
++ * alignment directives yourself
++ */
++#define __PAGE_ALIGNED_DATA	.section ".data..page_aligned", "aw"
++#define __PAGE_ALIGNED_BSS	.section ".bss..page_aligned", "aw"
+ 
+ /*
+  * This is used by architectures to keep arguments on the stack
+@@ -44,39 +70,69 @@
+ #endif
+ 
+ #ifndef __ALIGN
+-#define __ALIGN		.align 4,0x90
+-#define __ALIGN_STR	".align 4,0x90"
++#define __ALIGN			.balign 4
++#define __ALIGN_STR		__stringify(__ALIGN)
+ #endif
+ 
+ #ifdef __ASSEMBLY__
+ 
++/* SYM_T_FUNC -- type used by assembler to mark functions */
++#ifndef SYM_T_FUNC
++#define SYM_T_FUNC				STT_FUNC
++#endif
 +
-+struct digest_test_case {
-+	const char *name;
-+	const void *buf;
-+	size_t buf_size;
-+	const void *digest_str;
-+	u64 time_ns;
-+};
++/* SYM_T_OBJECT -- type used by assembler to mark data */
++#ifndef SYM_T_OBJECT
++#define SYM_T_OBJECT				STT_OBJECT
++#endif
 +
-+#define TEST_CASE(buf, digest_str) \
-+	{ #buf, buf, sizeof(buf), digest_str }
++/* SYM_T_NONE -- type used by assembler to mark entries of unknown type */
++#ifndef SYM_T_NONE
++#define SYM_T_NONE				STT_NOTYPE
++#endif
 +
-+#define test_digest(option, algo, ...) do { \
-+	struct digest_test_case *t, cases[] = { __VA_ARGS__, { /* sentinel */ } }; \
-+	for (t = cases; t->buf; t++) \
-+		__test_digest((option), (algo), t, __func__, __LINE__); \
-+	if (!__is_defined(DEBUG)) \
-+		break; \
-+	printf("%s:\t", algo); \
-+	for (t = cases; t->buf; t++) \
-+		printf(" digest(%zu bytes) = %10lluns", t->buf_size, t->time_ns); \
-+	printf("\n"); \
-+} while (0)
++/* SYM_A_* -- align the symbol? */
++#define SYM_A_ALIGN				ALIGN
++#define SYM_A_NONE				/* nothing */
 +
-+static inline const char *digest_suffix(const char *str, const char *suffix)
-+{
-+	static char buf[32];
++/* SYM_L_* -- linkage of symbols */
++#define SYM_L_GLOBAL(name)			.globl name
++#define SYM_L_WEAK(name)			.weak name
++#define SYM_L_LOCAL(name)			/* nothing */
 +
-+	if (!*suffix)
-+		return str;
++#ifndef LINKER_SCRIPT
+ #define ALIGN __ALIGN
+ #define ALIGN_STR __ALIGN_STR
+ 
+-#ifndef ENTRY
+-#define ENTRY(name) \
+-  .globl name; \
+-  ALIGN; \
+-  name:
+-#endif
++/* === DEPRECATED annotations === */
+ 
+-#ifndef WEAK
+-#define WEAK(name)	   \
+-	.weak name;	   \
++#ifndef CONFIG_ARCH_USE_SYM_ANNOTATIONS
++#ifndef GLOBAL
++/* deprecated, use SYM_DATA*, SYM_ENTRY, or similar */
++#define GLOBAL(name) \
++	.globl name ASM_NL \
+ 	name:
+ #endif
+ 
+-#define KPROBE_ENTRY(name) \
+-  .pushsection .kprobes.text, "ax"; \
+-  ENTRY(name)
++#ifndef ENTRY
++/* deprecated, use SYM_FUNC_START */
++#define ENTRY(name) \
++	SYM_FUNC_START(name)
++#endif
++#endif /* CONFIG_ARCH_USE_SYM_ANNOTATIONS */
++#endif /* LINKER_SCRIPT */
+ 
+-#define KPROBE_END(name) \
+-  END(name);		 \
+-  .popsection
++#ifndef CONFIG_ARCH_USE_SYM_ANNOTATIONS
++#ifndef WEAK
++/* deprecated, use SYM_FUNC_START_WEAK* */
++#define WEAK(name)	   \
++	SYM_FUNC_START_WEAK(name)
++#endif
+ 
+ #ifndef END
++/* deprecated, use SYM_FUNC_END, SYM_DATA_END, or SYM_END */
+ #define END(name) \
+-  .size name, .-name
++	.size name, .-name
+ #endif
+ 
+ /* If symbol 'name' is treated as a subroutine (gets called, and returns)
+@@ -84,15 +140,222 @@
+  * static analysis tools such as stack depth analyzer.
+  */
+ #ifndef ENDPROC
++/* deprecated, use SYM_FUNC_END */
+ #define ENDPROC(name) \
+-  .type name, @function; \
+-  END(name)
++	SYM_FUNC_END(name)
++#endif
++#endif /* CONFIG_ARCH_USE_SYM_ANNOTATIONS */
 +
-+	WARN_ON(snprintf(buf, sizeof(buf), "%s-%s", str, suffix) >= sizeof(buf));
-+	return buf;
-+}
++/* === generic annotations === */
 +
-+static void __test_digest(bool option,
-+			  const char *algo, struct digest_test_case *t,
-+			  const char *func, int line)
-+{
-+	unsigned char *output, *digest;
-+	struct digest *d;
-+	int hash_len, digest_len;
-+	u64 start;
-+	int ret;
++/* SYM_ENTRY -- use only if you have to for non-paired symbols */
++#ifndef SYM_ENTRY
++#define SYM_ENTRY(name, linkage, align...)		\
++	linkage(name) ASM_NL				\
++	align ASM_NL					\
++	name:
+ #endif
+ 
++/* SYM_START -- use only if you have to */
++#ifndef SYM_START
++#define SYM_START(name, linkage, align...)		\
++	SYM_ENTRY(name, linkage, align)
+ #endif
+ 
+-#define NORET_TYPE    /**/
+-#define ATTRIB_NORET  __attribute__((noreturn))
+-#define NORET_AND     noreturn,
+-
++/* SYM_END -- use only if you have to */
++#ifndef SYM_END
++#define SYM_END(name, sym_type)				\
++	.type name sym_type ASM_NL			\
++	.set .L__sym_size_##name, .-name ASM_NL		\
++	.size name, .L__sym_size_##name
+ #endif
 +
-+	total_tests++;
++/* SYM_ALIAS -- use only if you have to */
++#ifndef SYM_ALIAS
++#define SYM_ALIAS(alias, name, linkage)			\
++	linkage(alias) ASM_NL				\
++	.set alias, name ASM_NL
++#endif
 +
-+	if (!option) {
-+		skipped_tests++;
-+		return;
-+	}
++/* === code annotations === */
 +
-+	d = digest_alloc(algo);
-+	if (!d) {
-+		printf("%s:%d: failed to allocate %s digest\n", func, line, algo);
-+		goto fail;
-+	}
++/*
++ * FUNC -- C-like functions (proper stack frame etc.)
++ * CODE -- non-C code (e.g. irq handlers with different, special stack etc.)
++ *
++ * Objtool validates stack for FUNC, but not for CODE.
++ * Objtool generates debug info for both FUNC & CODE, but needs special
++ * annotations for each CODE's start (to describe the actual stack frame).
++ *
++ * Objtool requires that all code must be contained in an ELF symbol. Symbol
++ * names that have a  .L prefix do not emit symbol table entries. .L
++ * prefixed symbols can be used within a code region, but should be avoided for
++ * denoting a range of code via ``SYM_*_START/END`` annotations.
++ *
++ * ALIAS -- does not generate debug info -- the aliased function will
++ */
 +
-+	hash_len = digest_length(d);
-+	digest_len = strlen(t->digest_str) / 2;
-+	if (hash_len != digest_len) {
-+		printf("%s:%d: %s digests have length %u, but %u expected\n",
-+		       func, line, algo, hash_len, digest_len);
-+		goto fail;
-+	}
++/* SYM_INNER_LABEL_ALIGN -- only for labels in the middle of code */
++#ifndef SYM_INNER_LABEL_ALIGN
++#define SYM_INNER_LABEL_ALIGN(name, linkage)	\
++	.type name SYM_T_NONE ASM_NL			\
++	SYM_ENTRY(name, linkage, SYM_A_ALIGN)
++#endif
 +
-+	output = calloc(hash_len, 1);
-+	if (WARN_ON(!output))
-+		goto fail;
++/* SYM_INNER_LABEL -- only for labels in the middle of code */
++#ifndef SYM_INNER_LABEL
++#define SYM_INNER_LABEL(name, linkage)		\
++	.type name SYM_T_NONE ASM_NL			\
++	SYM_ENTRY(name, linkage, SYM_A_NONE)
++#endif
 +
-+	digest = calloc(digest_len, 1);
-+	if (WARN_ON(!digest))
-+		goto fail;
++/* SYM_FUNC_START -- use for global functions */
++#ifndef SYM_FUNC_START
++#define SYM_FUNC_START(name)				\
++	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
++#endif
 +
-+	ret = hex2bin(digest, t->digest_str, digest_len);
-+	if (WARN_ON(ret))
-+		goto fail;
++/* SYM_FUNC_START_NOALIGN -- use for global functions, w/o alignment */
++#ifndef SYM_FUNC_START_NOALIGN
++#define SYM_FUNC_START_NOALIGN(name)			\
++	SYM_START(name, SYM_L_GLOBAL, SYM_A_NONE)
++#endif
 +
-+	start = get_time_ns();
++/* SYM_FUNC_START_LOCAL -- use for local functions */
++#ifndef SYM_FUNC_START_LOCAL
++#define SYM_FUNC_START_LOCAL(name)			\
++	SYM_START(name, SYM_L_LOCAL, SYM_A_ALIGN)
++#endif
 +
-+	ret = digest_digest(d, t->buf, t->buf_size, output);
-+	if (ret) {
-+		printf("%s:%d: error calculating %s(%s): %pe\n",
-+		       func, line, algo, t->name, ERR_PTR(ret));
-+		goto fail;
-+	}
++/* SYM_FUNC_START_LOCAL_NOALIGN -- use for local functions, w/o alignment */
++#ifndef SYM_FUNC_START_LOCAL_NOALIGN
++#define SYM_FUNC_START_LOCAL_NOALIGN(name)		\
++	SYM_START(name, SYM_L_LOCAL, SYM_A_NONE)
++#endif
 +
-+	t->time_ns = get_time_ns() - start;
++/* SYM_FUNC_START_WEAK -- use for weak functions */
++#ifndef SYM_FUNC_START_WEAK
++#define SYM_FUNC_START_WEAK(name)			\
++	SYM_START(name, SYM_L_WEAK, SYM_A_ALIGN)
++#endif
 +
-+	if (memcmp(output, digest, hash_len)) {
-+		printf("%s:%d: mismatch calculating %s(%s):\n\tgot: %*phN\n\tbut: %*phN expected\n",
-+		       func, line, algo, t->name, hash_len, output, hash_len, digest);
-+		goto fail;
-+	}
++/* SYM_FUNC_START_WEAK_NOALIGN -- use for weak functions, w/o alignment */
++#ifndef SYM_FUNC_START_WEAK_NOALIGN
++#define SYM_FUNC_START_WEAK_NOALIGN(name)		\
++	SYM_START(name, SYM_L_WEAK, SYM_A_NONE)
++#endif
 +
-+	return;
-+fail:
-+	failed_tests++;
-+}
++/*
++ * SYM_FUNC_END -- the end of SYM_FUNC_START_LOCAL, SYM_FUNC_START,
++ * SYM_FUNC_START_WEAK, ...
++ */
++#ifndef SYM_FUNC_END
++#define SYM_FUNC_END(name)				\
++	SYM_END(name, SYM_T_FUNC)
++#endif
 +
-+static const u8 zeroes7[7] = {};
-+static const u8 one32[32] = { 1 };
-+static u8 inc4097[4097];
++/*
++ * SYM_FUNC_ALIAS -- define a global alias for an existing function
++ */
++#ifndef SYM_FUNC_ALIAS
++#define SYM_FUNC_ALIAS(alias, name)					\
++	SYM_ALIAS(alias, name, SYM_L_GLOBAL)
++#endif
 +
-+static void test_digest_md5(const char *suffix)
-+{
-+	bool cond;
++/*
++ * SYM_FUNC_ALIAS_LOCAL -- define a local alias for an existing function
++ */
++#ifndef SYM_FUNC_ALIAS_LOCAL
++#define SYM_FUNC_ALIAS_LOCAL(alias, name)				\
++	SYM_ALIAS(alias, name, SYM_L_LOCAL)
++#endif
 +
-+	cond = !strcmp(suffix, "generic") ? IS_ENABLED(CONFIG_DIGEST_MD5_GENERIC) :
-+	       IS_ENABLED(CONFIG_HAVE_DIGEST_MD5);
++/*
++ * SYM_FUNC_ALIAS_WEAK -- define a weak global alias for an existing function
++ */
++#ifndef SYM_FUNC_ALIAS_WEAK
++#define SYM_FUNC_ALIAS_WEAK(alias, name)				\
++	SYM_ALIAS(alias, name, SYM_L_WEAK)
++#endif
 +
-+	test_digest(cond, digest_suffix("md5", suffix),
-+		TEST_CASE(zeroes7, "d310a40483f9399dd7ed1712e0fdd702"),
-+		TEST_CASE(one32,   "b39ac6e2aa7e375c38ba7ae921b5ba89"),
-+		TEST_CASE(inc4097, "70410aad262cd11e63ae854804c8024b"));
-+}
++/* SYM_CODE_START -- use for non-C (special) functions */
++#ifndef SYM_CODE_START
++#define SYM_CODE_START(name)				\
++	SYM_START(name, SYM_L_GLOBAL, SYM_A_ALIGN)
++#endif
 +
-+static void test_digests_sha12(const char *suffix)
-+{
-+	bool cond;
++/* SYM_CODE_START_NOALIGN -- use for non-C (special) functions, w/o alignment */
++#ifndef SYM_CODE_START_NOALIGN
++#define SYM_CODE_START_NOALIGN(name)			\
++	SYM_START(name, SYM_L_GLOBAL, SYM_A_NONE)
++#endif
 +
-+	cond = !strcmp(suffix, "generic") ? IS_ENABLED(CONFIG_DIGEST_SHA1_GENERIC) :
-+	       !strcmp(suffix, "asm") ? IS_ENABLED(CONFIG_DIGEST_SHA1_ARM) :
-+	       IS_ENABLED(CONFIG_HAVE_DIGEST_SHA1);
++/* SYM_CODE_START_LOCAL -- use for local non-C (special) functions */
++#ifndef SYM_CODE_START_LOCAL
++#define SYM_CODE_START_LOCAL(name)			\
++	SYM_START(name, SYM_L_LOCAL, SYM_A_ALIGN)
++#endif
 +
-+	test_digest(cond, digest_suffix("sha1", suffix),
-+		TEST_CASE(zeroes7, "77ce0377defbd11b77b1f4ad54ca40ea5ef28490"),
-+		TEST_CASE(one32,   "cbd9cbfc20182e4b71e593e7ad598fc383cc6058"),
-+		TEST_CASE(inc4097, "c627e736efd8bb0dff1778335c9c79cb1f27e396"));
++/*
++ * SYM_CODE_START_LOCAL_NOALIGN -- use for local non-C (special) functions,
++ * w/o alignment
++ */
++#ifndef SYM_CODE_START_LOCAL_NOALIGN
++#define SYM_CODE_START_LOCAL_NOALIGN(name)		\
++	SYM_START(name, SYM_L_LOCAL, SYM_A_NONE)
++#endif
 +
++/* SYM_CODE_END -- the end of SYM_CODE_START_LOCAL, SYM_CODE_START, ... */
++#ifndef SYM_CODE_END
++#define SYM_CODE_END(name)				\
++	SYM_END(name, SYM_T_NONE)
++#endif
 +
-+	cond = !strcmp(suffix, "generic") ? IS_ENABLED(CONFIG_DIGEST_SHA224_GENERIC) :
-+	       !strcmp(suffix, "asm") ? IS_ENABLED(CONFIG_DIGEST_SHA256_ARM) :
-+	       IS_ENABLED(CONFIG_HAVE_DIGEST_SHA224);
++/* === data annotations === */
 +
-+	test_digest(cond, digest_suffix("sha224", suffix),
-+		TEST_CASE(zeroes7, "fbf6df85218ac5632461a8a17c6f294e6f35264cbfc0a9774a4f665b"),
-+		TEST_CASE(one32,   "343cb3950305e6e6331e294b0a4925739d09ecbd2b43a2fc87c09941"),
-+		TEST_CASE(inc4097, "6596b5dcfbd857f4246d6b94508b8a1a5b715a4f644a0c1e7d54c4f7"));
++/* SYM_DATA_START -- global data symbol */
++#ifndef SYM_DATA_START
++#define SYM_DATA_START(name)				\
++	SYM_START(name, SYM_L_GLOBAL, SYM_A_NONE)
++#endif
 +
++/* SYM_DATA_START -- local data symbol */
++#ifndef SYM_DATA_START_LOCAL
++#define SYM_DATA_START_LOCAL(name)			\
++	SYM_START(name, SYM_L_LOCAL, SYM_A_NONE)
++#endif
 +
-+	cond = !strcmp(suffix, "generic") ? IS_ENABLED(CONFIG_DIGEST_SHA256_GENERIC) :
-+	       !strcmp(suffix, "asm") ? IS_ENABLED(CONFIG_DIGEST_SHA256_ARM) :
-+	       IS_ENABLED(CONFIG_HAVE_DIGEST_SHA256);
++/* SYM_DATA_END -- the end of SYM_DATA_START symbol */
++#ifndef SYM_DATA_END
++#define SYM_DATA_END(name)				\
++	SYM_END(name, SYM_T_OBJECT)
++#endif
 +
-+	test_digest(cond, digest_suffix("sha256", suffix),
-+		TEST_CASE(zeroes7, "837885c8f8091aeaeb9ec3c3f85a6ff470a415e610b8ba3e49f9b33c9cf9d619"),
-+		TEST_CASE(one32,   "01d0fabd251fcbbe2b93b4b927b26ad2a1a99077152e45ded1e678afa45dbec5"),
-+		TEST_CASE(inc4097, "1e973d029df2b2c66cb42a942c5edb45966f02abaff29fe99410e44d271d0efc"));
-+}
++/* SYM_DATA_END_LABEL -- the labeled end of SYM_DATA_START symbol */
++#ifndef SYM_DATA_END_LABEL
++#define SYM_DATA_END_LABEL(name, linkage, label)	\
++	linkage(label) ASM_NL				\
++	.type label SYM_T_OBJECT ASM_NL			\
++	label:						\
++	SYM_END(name, SYM_T_OBJECT)
++#endif
 +
++/* SYM_DATA -- start+end wrapper around simple global data */
++#ifndef SYM_DATA
++#define SYM_DATA(name, data...)				\
++	SYM_DATA_START(name) ASM_NL				\
++	data ASM_NL						\
++	SYM_DATA_END(name)
++#endif
 +
-+static void test_digests_sha35(const char *suffix)
-+{
-+	bool cond;
++/* SYM_DATA_LOCAL -- start+end wrapper around simple local data */
++#ifndef SYM_DATA_LOCAL
++#define SYM_DATA_LOCAL(name, data...)			\
++	SYM_DATA_START_LOCAL(name) ASM_NL			\
++	data ASM_NL						\
++	SYM_DATA_END(name)
++#endif
 +
-+	cond = !strcmp(suffix, "generic") ? IS_ENABLED(CONFIG_DIGEST_SHA384_GENERIC) :
-+	       IS_ENABLED(CONFIG_HAVE_DIGEST_SHA384);
++#endif /* __ASSEMBLY__ */
 +
-+	test_digest(cond, digest_suffix("sha384", suffix),
-+		TEST_CASE(zeroes7, "b56705a73cf280f06d3a6b482c441a3d280c930d0c44b04f364dcdcedcfbc47c"
-+				   "f3645a71da7b97f9e5d3a0924f6b9634"),
-+		TEST_CASE(one32,   "dd606b49d7658a5eae905d593271c280819f92eb1a9a4986057aedc0a5f2eaea"
-+				   "99052904718f6d83f16ad209d793f253"),
-+		TEST_CASE(inc4097, "f76046b90890f20ae94066a3ad33010f5b3b2fd46977414636bbc634898b06fd"
-+				   "4cb8f85e0926e8817e518300a930529e"));
-+
-+
-+	cond = !strcmp(suffix, "generic") ? IS_ENABLED(CONFIG_DIGEST_SHA512_GENERIC) :
-+	       IS_ENABLED(CONFIG_HAVE_DIGEST_SHA512);
-+
-+	test_digest(cond, digest_suffix("sha512", suffix),
-+		TEST_CASE(zeroes7, "76afca18a9b81ffb967ffcf0460ed221c3605d3820057214d785fa88259bb5cb"
-+				   "729576178e6edb0134f645d2e2e92cbabf1333462f3b9058692c950f51c64a92"),
-+		TEST_CASE(one32,   "ce0c265ecc82dd8cee6e56ce44e45dafd7a0c5750df914b253a1fb7a8af66ddb"
-+				   "99763607f0a85d0bd43669194a3a40577a528af395f4f17e06f1defcc6deb2a5"),
-+		TEST_CASE(inc4097, "42eb09aca460d79b0c0aeac28187ed055a92e33602b69428461697680ff9f48f"
-+				   "60a5a68aa0017e3446433349b42592b74713d7787628a58e400b7f588b9bd69b"));
-+}
-+
-+static void test_digests(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(inc4097); i++)
-+		inc4097[i] = i;
-+
-+	test_digest_md5("generic");
-+
-+	test_digests_sha12("generic");
-+	if (IS_ENABLED(CONFIG_CPU_32))
-+		test_digests_sha12("asm");
-+
-+	test_digests_sha35("generic");
-+
-+	test_digest_md5("");
-+	test_digests_sha12("");
-+	test_digests_sha35("");
-+
-+}
-+bselftest(core, test_digests);
++#endif /* _LINUX_LINKAGE_H */
 -- 
 2.39.2
 
