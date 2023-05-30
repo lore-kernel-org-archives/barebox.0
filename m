@@ -1,62 +1,64 @@
-Delivery-date: Tue, 30 May 2023 13:20:09 +0200
+Delivery-date: Tue, 30 May 2023 14:33:11 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q3xOd-002k0W-7S
-	for lore@lore.pengutronix.de; Tue, 30 May 2023 13:20:09 +0200
+	id 1q3yXI-002mgw-BN
+	for lore@lore.pengutronix.de; Tue, 30 May 2023 14:33:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q3xOa-0001dJ-Fa
-	for lore@pengutronix.de; Tue, 30 May 2023 13:20:09 +0200
+	id 1q3yXF-0006rG-QV
+	for lore@pengutronix.de; Tue, 30 May 2023 14:33:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iWhMjB2KfZ2mH4T2uwCH6RABVxDaXyi9HlD6tM4vKl0=; b=GKTCQJJu3zQ45+m6JXdS+ChPeM
-	4D6VdLkAGCpCWslhCGHo9TgeEXr+f+wzdYlcrc5NLdFsX2xsWzo5XD4XdJ1+vLJtebL4xmZkCEhiD
-	e++dqRA1uEQ7cvd1Vf4778xIYjX+O072us5dBrF3dK+g5jIIkhs1qXPBNjbtwj1K2iKRT4+qY1zII
-	fNTYm42Bo2AyRsr/rFUHXgxMiUw+Qia+sGEaRs63M5t0uiaFEskYlkWVtpMV2/YJ0pg9zPYYUtBmw
-	FwexJqvghllTpbOF2HiffBWn8eQ0T4KIW9TGJkX5HeV5TU94i3gAN+Rm97kUd2x+INUkA68QgVL1o
-	dwUySd+g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ujcuSVwn13MMpczviQpvjz6kxKohIEcXa1kes7934lI=; b=19oywdQWM0XuNlcW5vtMHSj68b
+	F0R2o0sURTZhKIKog2zbUcEnBkHSuJj3LV/+x2RGeNeyaVYZDmzBB1jmWxOXTPllTEoEikeQMWlVL
+	YCROsDq/kevDHIcym4QINjFOR+3RDO+7zq04A/ZDEh2Jms792t5iYeqRoobmX0B0MQFU0cocRLiFM
+	e9695Yv1MDc8uGhAFHm1BAAK6nhC0/yB7I4P0jkt6av9OoSTX2yHlEenLFjoWj48I/6q0R+b7ZSWM
+	d/thJpp3j00W1e4At6NcwG70rXYVET0m9GB7rTtKsRDdwWMfseMX1kTSFzrz+oUOOJ6YA/8V21MTp
+	W3hx7jkA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q3xNI-00DboF-0f;
-	Tue, 30 May 2023 11:18:48 +0000
+	id 1q3yW0-00DsTQ-0g;
+	Tue, 30 May 2023 12:31:52 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q3xNA-00Dbii-1e
+	id 1q3yVw-00DsRo-29
 	for barebox@lists.infradead.org;
-	Tue, 30 May 2023 11:18:43 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Tue, 30 May 2023 12:31:50 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1q3xN6-000148-2I; Tue, 30 May 2023 13:18:36 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	id 1q3yVu-0006Ok-4O; Tue, 30 May 2023 14:31:46 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1q3xN5-003rOU-Ay; Tue, 30 May 2023 13:18:35 +0200
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q3xN3-0082bG-Os; Tue, 30 May 2023 13:18:33 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 30 May 2023 13:18:30 +0200
-Message-Id: <20230530111832.1916542-9-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230530111832.1916542-1-s.hauer@pengutronix.de>
-References: <20230530111832.1916542-1-s.hauer@pengutronix.de>
+	id 1q3yVt-0008SO-H0; Tue, 30 May 2023 14:31:45 +0200
+Date: Tue, 30 May 2023 14:31:45 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org,
+	Masahiro Yamada <yamada.masahiro@socionext.com>
+Message-ID: <20230530123145.GD17518@pengutronix.de>
+References: <20230523094035.3452447-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230523094035.3452447-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230530_041840_607420_EC07A6FB 
-X-CRM114-Status: UNSURE (   9.01  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230530_053148_702462_9B623961 
+X-CRM114-Status: GOOD (  24.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,46 +76,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 08/10] ARM: rockchip_v8_defconfig: Enable SCMI support
+Subject: Re: [PATCH 1/2] efi: payload: iomem: add commented out #define DEBUG
+ 1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SCMI clocks are needed to support the RK3588.
+On Tue, May 23, 2023 at 11:40:34AM +0200, Ahmad Fatoum wrote:
+> The code uses __is_defined, which only works for undefined macros and
+> defined ones with a value. This is different than the debugging prints
+> that accept empty defined DEBUG, so add a commented out #define DEBUG 1
+> to alert those seeking to debug the code.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/efi/payload/iomem.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/common/efi/payload/iomem.c b/common/efi/payload/iomem.c
+> index 6b92ca993aa7..550d832668ed 100644
+> --- a/common/efi/payload/iomem.c
+> +++ b/common/efi/payload/iomem.c
+> @@ -3,6 +3,7 @@
+>  
+>  #define pr_fmt(fmt) "efi-iomem: " fmt
+>  
+> +// #define DEBUG 1
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/rockchip_v8_defconfig | 3 +++
- 1 file changed, 3 insertions(+)
+I don't like this very much.
 
-diff --git a/arch/arm/configs/rockchip_v8_defconfig b/arch/arm/configs/rockchip_v8_defconfig
-index efe6adc9dc..cc3c3c6d48 100644
---- a/arch/arm/configs/rockchip_v8_defconfig
-+++ b/arch/arm/configs/rockchip_v8_defconfig
-@@ -119,6 +119,7 @@ CONFIG_MCI_MMC_BOOT_PARTITIONS=y
- CONFIG_MCI_DW=y
- CONFIG_MCI_ROCKCHIP_DWCMSHC=y
- CONFIG_MCI_ARASAN=y
-+CONFIG_COMMON_CLK_SCMI=y
- CONFIG_MFD_ACT8846=y
- CONFIG_MFD_RK808=y
- CONFIG_LED=y
-@@ -129,7 +130,9 @@ CONFIG_WATCHDOG_POLLER=y
- CONFIG_WATCHDOG_DW=y
- CONFIG_REGULATOR=y
- CONFIG_REGULATOR_FIXED=y
-+CONFIG_REGULATOR_ARM_SCMI=y
- CONFIG_REGULATOR_RK808=y
-+CONFIG_ARM_SCMI_PROTOCOL=y
- CONFIG_GENERIC_PHY=y
- CONFIG_USB_NOP_XCEIV=y
- CONFIG_PHY_ROCKCHIP_INNO_USB2=y
+Generally being able to do this is really appealing:
+
+	if (__is_defined(DEBUG))
+		...
+
+Indeed this is so appealing that others may copy this. Having to
+remember then that there's a subtle difference between __is_defined() and
+#ifdef is not so nice though.
+
+We could add
+
+#define __ARG_PLACEHOLDER_ 0,
+
+to include/linux/kconfig.h. With this __is_defined() and #ifdef should
+do the same thing. It would even better to add this to the Linux
+upstream version of this file. I am not sure though if that has any
+unwanted side effects. Masahiro, do you have an opinion about this?
+
+Another option would be to add this somewhere:
+
+#ifdef DEBUG
+#undef DEBUG
+#define DEBUG 1
+#endif
+
+Sascha
+
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
