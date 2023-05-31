@@ -1,77 +1,77 @@
-Delivery-date: Wed, 31 May 2023 17:01:20 +0200
+Delivery-date: Wed, 31 May 2023 17:01:22 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4NKE-004OC7-2o
-	for lore@lore.pengutronix.de; Wed, 31 May 2023 17:01:20 +0200
+	id 1q4NKG-004OCy-0Q
+	for lore@lore.pengutronix.de; Wed, 31 May 2023 17:01:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4NK9-00016S-75
-	for lore@pengutronix.de; Wed, 31 May 2023 17:01:20 +0200
+	id 1q4NKA-00017d-Gp
+	for lore@pengutronix.de; Wed, 31 May 2023 17:01:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uV5KpNbCdsvXbpf7bIsurBLRdKmIntjaSH7rLJQnZ6I=; b=OX96Szd7/Mc2ibZhAF1tGYkcds
-	UkaG9WNoGTaIXtIU6AVmDSsmi8Kll10HuCtngV1DaJ7oW6jjjwd/Cjn95xdEbWmjMo8adIGOmCuSG
-	yz3AnaEU7tG6JnbDpZ5sKtYCOf73Ouh+iTnhvm6D02CMejwKu2ZX/Up4+aOXXrwyEie0QNqA7BKux
-	dxunsNwQdFmNxSm7R38RKGy/QTpbwCfptR25LJaxCStjpFP5i9PYmSqSJDrs8S+4RZl77tCs85o7f
-	KyiGt3RExwpJ8hmZdDBQWXyK3CfU0P+B6oDka4v2W3DSVJRcWkgHxQIXoh5XkA4rsg9vpg01f98nn
-	2Aiqs09g==;
+	bh=EGPqZJYg4Un9jlnHcEhTQ07nXNhfyFmlTZE4Ty21omQ=; b=OX45IjvWdhVMB6lLMCHtKO7GWX
+	tXMCOLfTvo5Cw2vauSUCUMZeBUx4YnmHGICu6d9ptsAt98McW2B8DZNFrtl4Hoeanj4Xjya37KJc0
+	/hY/1TsKSR4mJjDCPRNw+rPModYA2hDEHsxnz561oiVxA2ZcF+DHS9gt/pPME8XHtjMiA5203ATmo
+	Nhz+J8bPtHSQtaCNTOfeS2Bk8TpTO9lo8WRXpybRswkmb3qRv9es8HkYiCkY0GkbhmyD+am/3Tfhc
+	q+BRa/qMK40mK4ers+9dp0TqNXe9pgDarONJqCzpf2k9CvSj1p7enqhHR0WzyKVvm6ttkziOFLgS3
+	DdKCmr0g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4NIx-000CCT-2U;
-	Wed, 31 May 2023 15:00:03 +0000
+	id 1q4NJ0-000CGu-32;
+	Wed, 31 May 2023 15:00:06 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4NIh-000Bx3-2H
+	id 1q4NIi-000BxO-12
 	for barebox@bombadil.infradead.org;
-	Wed, 31 May 2023 14:59:47 +0000
+	Wed, 31 May 2023 14:59:48 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=uV5KpNbCdsvXbpf7bIsurBLRdKmIntjaSH7rLJQnZ6I=; b=Oxe2BGWw/0w5fsMJymD4OJXErr
-	+7iJH6uc2cD7bWfiPxAfF4sxJPwAsaGwvs9AQserNGVVjVqMWEA3GnwztFtmjyYIpk+Yo+z9Z99pK
-	4IMZbcmPpHmsJVXy8XecRYIYoUX6VIhUbrCDGGpkS6rG5iOJ1AND9+eBM3cYAThdATysuKLjdYXHx
-	8B/WPbzrti8MoTGCrqni2cUtDJNNJ1MpcbBkvgM/1RLB0ApltMcMF5JD+qRGFyX/gTxFuqv7V2PIY
-	NhyVuxbOylxjhx7bOnzdRKn41oe8bmDPUkM4941wqHthEIUwJhjDJtES6A8/gphvu8az5rzlrW8YG
-	UPr/eGUg==;
+	bh=EGPqZJYg4Un9jlnHcEhTQ07nXNhfyFmlTZE4Ty21omQ=; b=T6/Z0+ZeZ/btkzWVXcXFAs5QXV
+	FkH6DPNB+M1+bCTeYrwbwjtMKfqDXgDQH8MJGvtnetjtuu+yboj/g6tUMUPD/wpC4FTssKXlM03/+
+	eudAOO37ex14Xy+fPVkWY49OL1DbP0fBH2KwzpxTaaxrdGM84pOr400hXgvFRyrfGDO84nJQgutTe
+	13hfmfkclZ/wmD75OFr/z6T8MBL7UXgd2lANFBZINesp0WJbSDaY44kOwUWcRVdCg5gy7K0cObs6v
+	ubc9eyjKMUkFJTGVDRPsuVVn2hCtd9lkc+IyHVIAYTgREwbtRoX42fZOrcYXC3Dtjk+XldR35GqQa
+	PYIdMSPg==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4NIc-00FUiv-2t
+	id 1q4NId-00FUjY-2p
 	for barebox@lists.infradead.org;
-	Wed, 31 May 2023 14:59:46 +0000
+	Wed, 31 May 2023 14:59:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q4NIU-0008EA-5N; Wed, 31 May 2023 16:59:34 +0200
+	id 1q4NIV-0008H0-Dm; Wed, 31 May 2023 16:59:35 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q4NIS-0048HG-H1; Wed, 31 May 2023 16:59:32 +0200
+	id 1q4NIU-0048IA-Pm; Wed, 31 May 2023 16:59:34 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q4NIQ-005sCo-76; Wed, 31 May 2023 16:59:30 +0200
+	id 1q4NIQ-005sCg-6U; Wed, 31 May 2023 16:59:30 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 31 May 2023 16:59:15 +0200
-Message-Id: <20230531145927.1399282-7-a.fatoum@pengutronix.de>
+Date: Wed, 31 May 2023 16:59:13 +0200
+Message-Id: <20230531145927.1399282-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
 References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230531_155943_084958_24382B90 
-X-CRM114-Status: GOOD (  13.93  )
+X-CRM114-CacheID: sfid-20230531_155944_018997_25F78C8E 
+X-CRM114-Status: GOOD (  15.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,102 +94,76 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 06/18] driver: add new cdev_is_partition helper
+Subject: [PATCH 04/18] of: partition: support of_partition_ensure_probed on parent device
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Partitions will have cdev->master != NULL, so often code will just do
-if (cdev->master) to check if a cdev is a partition. This is suboptimal
-as it may be misinterpreted by readers as meaning that the cdev is the
-master device, while it's the other way round.
-
-Let's define cdev_is_partition instead and use it everywhere, where
-cdev->master is only checked, but not dereferenced.
+barebox-state code uses of_partition_ensure_probed to resolve the
+backend property. We want to allow backend to point directly at a
+storage device instead of a partition. We can't determine whether a DT
+device is a storage device though before it's probed, so let's have
+of_partition_ensure_probed support either case.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/base/driver.c |  2 +-
- fs/devfs-core.c       | 10 +++++-----
- include/driver.h      |  4 ++++
- 3 files changed, 10 insertions(+), 6 deletions(-)
+ drivers/of/partition.c | 26 ++++++++++++++++++++++----
+ drivers/of/platform.c  |  2 +-
+ 2 files changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index f00be99cdcbf..10d765e1a213 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -277,7 +277,7 @@ int unregister_device(struct device *old_dev)
- 	}
+diff --git a/drivers/of/partition.c b/drivers/of/partition.c
+index 40c47f554ad2..a70e503cec9e 100644
+--- a/drivers/of/partition.c
++++ b/drivers/of/partition.c
+@@ -110,14 +110,32 @@ int of_parse_partitions(struct cdev *cdev, struct device_node *node)
+ 	return 0;
+ }
  
- 	list_for_each_entry_safe(cdev, ct, &old_dev->cdevs, devices_list) {
--		if (cdev->master) {
-+		if (cdev_is_partition(cdev)) {
- 			dev_dbg(old_dev, "unregister part %s\n", cdev->name);
- 			devfs_del_partition(cdev->name);
- 		}
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index fbcf68e81597..bb66993b90f9 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -38,7 +38,7 @@ int devfs_partition_complete(struct string_list *sl, char *instr)
- 	len = strlen(instr);
++/**
++ * of_partition_ensure_probed - ensure a parition is probed
++ * @np: pointer to a partition or to a partitionable device
++ *      Unfortunately, there is no completely reliable way
++ *      to differentiate partitions from devices prior to
++ *      probing, because partitions may also have compatibles.
++ *      We only handle nvmem-cells, so anything besides that
++ *      is assumed to be a device that should be probed directly.
++ *
++ * Returns zero on success or a negative error code otherwise
++ */
+ int of_partition_ensure_probed(struct device_node *np)
+ {
+-	np = of_get_parent(np);
++	struct device_node *parent = of_get_parent(np);
  
- 	for_each_cdev(cdev) {
--		if (cdev->master &&
-+		if (cdev_is_partition(cdev) &&
- 		    !strncmp(instr, cdev->name, len)) {
- 			string_list_add_asprintf(sl, "%s ", cdev->name);
- 		}
-@@ -101,7 +101,7 @@ struct cdev *cdev_by_partuuid(const char *partuuid)
- 		return NULL;
+-	if (of_device_is_compatible(np, "fixed-partitions"))
+-		np = of_get_parent(np);
++	if (parent && of_device_is_compatible(parent, "fixed-partitions"))
++		return of_device_ensure_probed(of_get_parent(np));
  
- 	for_each_cdev(cdev) {
--		if (cdev->master && !strcasecmp(cdev->uuid, partuuid))
-+		if (cdev_is_partition(cdev) && !strcasecmp(cdev->uuid, partuuid))
- 			return cdev;
- 	}
- 	return NULL;
-@@ -115,7 +115,7 @@ struct cdev *cdev_by_diskuuid(const char *diskuuid)
- 		return NULL;
+-	return np ? of_device_ensure_probed(np) : -EINVAL;
++	if (of_get_compatible_child(np, "fixed-partitions"))
++		return of_device_ensure_probed(np);
++
++	if (!of_property_present(np, "compatible") ||
++	    of_device_is_compatible(np, "nvmem-cells"))
++		return of_device_ensure_probed(parent);
++
++	return of_device_ensure_probed(np);
+ }
+ EXPORT_SYMBOL_GPL(of_partition_ensure_probed);
  
- 	for_each_cdev(cdev) {
--		if (!cdev->master && !strcasecmp(cdev->uuid, diskuuid))
-+		if (!cdev_is_partition(cdev) && !strcasecmp(cdev->uuid, diskuuid))
- 			return cdev;
- 	}
- 	return NULL;
-@@ -393,7 +393,7 @@ int devfs_remove(struct cdev *cdev)
- 	list_for_each_entry_safe(c, tmp, &cdev->links, link_entry)
- 		devfs_remove(c);
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index ab737629325a..78b8a31331db 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -484,7 +484,7 @@ int of_device_ensure_probed(struct device_node *np)
+ {
+ 	struct device *dev;
  
--	if (cdev->master)
-+	if (cdev_is_partition(cdev))
- 		list_del(&cdev->partition_entry);
+-	if (!deep_probe_is_supported())
++	if (!np || !deep_probe_is_supported())
+ 		return 0;
  
- 	if (cdev->link)
-@@ -549,7 +549,7 @@ int devfs_del_partition(const char *name)
- 		return ret;
- 	}
- 
--	if (!cdev->master)
-+	if (!cdev_is_partition(cdev))
- 		return -EINVAL;
- 	if (cdev->flags & DEVFS_PARTITION_FIXED)
- 		return -EPERM;
-diff --git a/include/driver.h b/include/driver.h
-index e1ee3dc2dd7c..00b4a0e4af75 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -564,6 +564,10 @@ int cdev_discard_range(struct cdev*, loff_t count, loff_t offset);
- int cdev_memmap(struct cdev*, void **map, int flags);
- int cdev_truncate(struct cdev*, size_t size);
- loff_t cdev_unallocated_space(struct cdev *cdev);
-+static inline bool cdev_is_partition(const struct cdev *cdev)
-+{
-+	return cdev->master != NULL;
-+}
- 
- extern struct list_head cdev_list;
- #define for_each_cdev(cdev) \
+ 	dev = of_device_create_on_demand(np);
 -- 
 2.39.2
 
