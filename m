@@ -3,60 +3,60 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4NK3-004O7k-Gu
+	id 1q4NK3-004O71-RT
 	for lore@lore.pengutronix.de; Wed, 31 May 2023 17:01:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4NJy-0000wY-J4
-	for lore@pengutronix.de; Wed, 31 May 2023 17:01:09 +0200
+	id 1q4NJy-0000wK-9O
+	for lore@pengutronix.de; Wed, 31 May 2023 17:01:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Q2G3ZkDquJtEZfGxXzDJi3Rk9n05XMJ7nlQr+jVnuwA=; b=E7K6CHx/0zYi79+Tk+i7ciJqOb
-	unebB+0m9iUfdVYUoWrkPrODmf2rPiR3wjfO3LH1BLaC8TZ/JTyzLMCVcvmRHhfMeNWEuHCxBa5yK
-	f5+zrfnKJM5iv3mX+PFFccskpDDow9kz3WYIb3KlFZH5jteV/bthVuIYpWQ7lJMdtNWGE2BkzslNJ
-	h95xzK1cloxzrEHr3iCflt3elbbONqk8IUT1HYm8JbmHVuc332Bhx/4PVODeT/lh5Wc6eDPPzZBt6
-	oacXZS704jy3lpoEctRWSgkZ4KQjIWLiRCaCjhPd5ZMbmbaaXTyxRQXmL573wbkQ8Atns9QZw1+qG
-	+gPLUeig==;
+	bh=+lcDdkxsuQLioqQbjEXURWK7evwgWqSd0u0pTGuYZ/Q=; b=W0muc33AdLE+T7ct95irSusvWI
+	0SOOTkNZ9lDEKrowCAWTFGAbhS3avREuDHkM5f5Uyu7ZHjTwk+72bqI6SiyJ+UHXluEwmU6epuREk
+	Gr4FUlFb7Z/Yn40t0KwTfI9Vqn1+KMmiJA3EON/475vSPFhjzj5M0Y1sGYP6SqNtY3jt+N0HyJ3hz
+	o0Y/TyThTA0gJiHqxmFAq2O9V6qpMuf11iukrPzb+7RQFpLDf2eU1a60Dp3lapyl2M2ZiRT4fcx5S
+	JI0W/G/++UMTC5ZvReoHkh8nfA/63l0LHCu7VolmGGq7ybflxbkTuMxMaqBHmmgdruA5+R9wF5Lo5
+	GmiFcUDw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4NIt-000C7a-2K;
-	Wed, 31 May 2023 14:59:59 +0000
+	id 1q4NIm-000C0b-1c;
+	Wed, 31 May 2023 14:59:52 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4NIb-000BsI-1g
+	id 1q4NIb-000BsL-1h
 	for barebox@lists.infradead.org;
-	Wed, 31 May 2023 14:59:47 +0000
+	Wed, 31 May 2023 14:59:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q4NIU-0008EB-5J; Wed, 31 May 2023 16:59:34 +0200
+	id 1q4NIU-0008ED-5O; Wed, 31 May 2023 16:59:34 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q4NIS-0048HJ-Ig; Wed, 31 May 2023 16:59:32 +0200
+	id 1q4NIS-0048HQ-N3; Wed, 31 May 2023 16:59:32 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q4NIQ-005sCY-5v; Wed, 31 May 2023 16:59:30 +0200
+	id 1q4NIQ-005sDS-A8; Wed, 31 May 2023 16:59:30 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 31 May 2023 16:59:11 +0200
-Message-Id: <20230531145927.1399282-3-a.fatoum@pengutronix.de>
+Date: Wed, 31 May 2023 16:59:25 +0200
+Message-Id: <20230531145927.1399282-17-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
 References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230531_075941_681836_1413F5DF 
-X-CRM114-Status: GOOD (  13.81  )
+X-CRM114-CacheID: sfid-20230531_075941_641591_4F764929 
+X-CRM114-Status: GOOD (  13.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,57 +79,48 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 02/18] efi: define efi_guid_t as 32-bit aligned guid_t
+Subject: [PATCH 16/18] cdev: use cdev::dos_partition_type only if cdev_is_mbr_partitioned
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Let's sync definition with Linux, so we are able to pass efi_guid_t
-types to function accepting guid_t. This has the added benefit of us
-starting to observe alignment, which may become relevant with barebox
-EFI on non-x86.
+dos_partition_type == 0 can mean that either a partition is not
+a MBR partition or that it indeed has a partition type of 0x00.
+
+In preparation for using that field in a union, explicitly check if we
+have a MBR partition.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/efi.h | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ common/blspec.c | 2 +-
+ fs/fs.c         | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/efi.h b/include/efi.h
-index 3595cf05ccb7..1904caf3a4b6 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -14,6 +14,7 @@
-  */
- #include <linux/string.h>
- #include <linux/types.h>
-+#include <linux/uuid.h>
+diff --git a/common/blspec.c b/common/blspec.c
+index e95a8dba8d76..8c7970da8915 100644
+--- a/common/blspec.c
++++ b/common/blspec.c
+@@ -729,7 +729,7 @@ int blspec_scan_device(struct bootentries *bootentries, struct device *dev)
+ 		 * partition with the MBR type id of 0xEA already exists it
+ 		 * should be used as $BOOT
+ 		 */
+-		if (cdev->dos_partition_type == 0xea) {
++		if (cdev_is_mbr_partitioned(cdev->master) && cdev->dos_partition_type == 0xea) {
+ 			ret = blspec_scan_cdev(bootentries, cdev);
+ 			if (ret == 0)
+ 				ret = -ENOENT;
+diff --git a/fs/fs.c b/fs/fs.c
+index 2d2d327c5fbc..9a92e6e251e5 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -108,7 +108,7 @@ void cdev_print(const struct cdev *cdev)
  
- #ifdef CONFIG_EFI_BOOTUP
- #define EFIAPI __attribute__((ms_abi))
-@@ -66,10 +67,20 @@ typedef u16 efi_char16_t;		/* UNICODE character */
- typedef u64 efi_physical_addr_t;
- typedef void *efi_handle_t;
- 
--
--typedef struct {
--	u8 b[16];
--} efi_guid_t;
-+/*
-+ * The UEFI spec and EDK2 reference implementation both define EFI_GUID as
-+ * struct { u32 a; u16; b; u16 c; u8 d[8]; }; and so the implied alignment
-+ * is 32 bits not 8 bits like our guid_t. In some cases (i.e., on 32-bit ARM),
-+ * this means that firmware services invoked by the kernel may assume that
-+ * efi_guid_t* arguments are 32-bit aligned, and use memory accessors that
-+ * do not tolerate misalignment. So let's set the minimum alignment to 32 bits.
-+ *
-+ * Note that the UEFI spec as well as some comments in the EDK2 code base
-+ * suggest that EFI_GUID should be 64-bit aligned, but this appears to be
-+ * a mistake, given that no code seems to exist that actually enforces that
-+ * or relies on it.
-+ */
-+typedef guid_t efi_guid_t __aligned(__alignof__(u32));
- 
- #define EFI_GUID(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7) \
- ((efi_guid_t) \
+ 	if (cdev->filetype)
+ 		nbytes += printf("Filetype: %s\t", file_type_to_string(cdev->filetype));
+-	if (cdev->dos_partition_type)
++	if (cdev_is_mbr_partitioned(cdev->master))
+ 		nbytes += printf("DOS parttype: 0x%02x\t", cdev->dos_partition_type);
+ 	if (*cdev->partuuid || *cdev->diskuuid)
+ 		nbytes += printf("%sUUID: %s", cdev_is_partition(cdev) ? "PART" : "DISK",
 -- 
 2.39.2
 
