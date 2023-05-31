@@ -3,60 +3,60 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4NK3-004O71-RT
+	id 1q4NK4-004O86-3Y
 	for lore@lore.pengutronix.de; Wed, 31 May 2023 17:01:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4NJy-0000wK-9O
-	for lore@pengutronix.de; Wed, 31 May 2023 17:01:08 +0200
+	id 1q4NJy-0000wb-QY
+	for lore@pengutronix.de; Wed, 31 May 2023 17:01:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+lcDdkxsuQLioqQbjEXURWK7evwgWqSd0u0pTGuYZ/Q=; b=W0muc33AdLE+T7ct95irSusvWI
-	0SOOTkNZ9lDEKrowCAWTFGAbhS3avREuDHkM5f5Uyu7ZHjTwk+72bqI6SiyJ+UHXluEwmU6epuREk
-	Gr4FUlFb7Z/Yn40t0KwTfI9Vqn1+KMmiJA3EON/475vSPFhjzj5M0Y1sGYP6SqNtY3jt+N0HyJ3hz
-	o0Y/TyThTA0gJiHqxmFAq2O9V6qpMuf11iukrPzb+7RQFpLDf2eU1a60Dp3lapyl2M2ZiRT4fcx5S
-	JI0W/G/++UMTC5ZvReoHkh8nfA/63l0LHCu7VolmGGq7ybflxbkTuMxMaqBHmmgdruA5+R9wF5Lo5
-	GmiFcUDw==;
+	bh=HJGcdfY0smL35t5fA3zItLB7PxdjlbZiuW8pRJIm6EA=; b=XLhja4MsDlxGGgMzRIaQHVGH9P
+	RY0A1YW2+gBIvx1pIYgwzc9oI8Dj1LtlHDeL0TjYLH59ITvJtOyE7jyI8m7turTDDZgNOzLJTSRlS
+	HoPgTb/2Po5DdT+VHO8xfANxL3Df6EmRfRQutIYbPjSxj8omLAMfRb+I9q6dTQTIqgqXi8xyRBnEd
+	381ZjC6fAHweg5tEIFIZgQ7vPSjnNrQmXF53PrHTvdCotwaF6nvPjKmbUnEzKIFrKAR/hgW1qUnNM
+	vIj7lT4StyoIWi2PVz6/5X4l4m5w8Yiuggs4bMQfDTvlTG8dR+WaGq1ykPxjlzsjhhT1JSsJ3BGBb
+	Qmu4DQEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4NIm-000C0b-1c;
-	Wed, 31 May 2023 14:59:52 +0000
+	id 1q4NIs-000C5r-0G;
+	Wed, 31 May 2023 14:59:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4NIb-000BsL-1h
+	id 1q4NIb-000BsT-1g
 	for barebox@lists.infradead.org;
-	Wed, 31 May 2023 14:59:45 +0000
+	Wed, 31 May 2023 14:59:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q4NIU-0008ED-5O; Wed, 31 May 2023 16:59:34 +0200
+	id 1q4NIU-0008Eo-PC; Wed, 31 May 2023 16:59:34 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q4NIS-0048HQ-N3; Wed, 31 May 2023 16:59:32 +0200
+	id 1q4NIU-0048He-3s; Wed, 31 May 2023 16:59:34 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q4NIQ-005sDS-A8; Wed, 31 May 2023 16:59:30 +0200
+	id 1q4NIQ-005sDW-AP; Wed, 31 May 2023 16:59:30 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 31 May 2023 16:59:25 +0200
-Message-Id: <20230531145927.1399282-17-a.fatoum@pengutronix.de>
+Date: Wed, 31 May 2023 16:59:26 +0200
+Message-Id: <20230531145927.1399282-18-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
 References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230531_075941_641591_4F764929 
-X-CRM114-Status: GOOD (  13.27  )
+X-CRM114-CacheID: sfid-20230531_075941_700136_6BF7E9A1 
+X-CRM114-Status: GOOD (  14.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,48 +79,109 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 16/18] cdev: use cdev::dos_partition_type only if cdev_is_mbr_partitioned
+Subject: [PATCH 17/18] common: partitions: efi: record type UUID in cdev
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-dos_partition_type == 0 can mean that either a partition is not
-a MBR partition or that it indeed has a partition type of 0x00.
-
-In preparation for using that field in a union, explicitly check if we
-have a MBR partition.
+We already record DOS partition type in cdev, so let's do the same for
+GPT Type UUID. This will be used in a later commit to identify
+barebox-state partitions.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/blspec.c | 2 +-
- fs/fs.c         | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ common/partitions.c        | 2 +-
+ common/partitions/efi.c    | 1 +
+ common/partitions/parser.h | 5 ++++-
+ fs/fs.c                    | 2 ++
+ include/driver.h           | 6 +++++-
+ 5 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index e95a8dba8d76..8c7970da8915 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -729,7 +729,7 @@ int blspec_scan_device(struct bootentries *bootentries, struct device *dev)
- 		 * partition with the MBR type id of 0xEA already exists it
- 		 * should be used as $BOOT
- 		 */
--		if (cdev->dos_partition_type == 0xea) {
-+		if (cdev_is_mbr_partitioned(cdev->master) && cdev->dos_partition_type == 0xea) {
- 			ret = blspec_scan_cdev(bootentries, cdev);
- 			if (ret == 0)
- 				ret = -ENOENT;
+diff --git a/common/partitions.c b/common/partitions.c
+index b579559672a0..e3e8a9f3044d 100644
+--- a/common/partitions.c
++++ b/common/partitions.c
+@@ -50,7 +50,7 @@ static int register_one_partition(struct block_device *blk,
+ 
+ 	cdev->flags |= DEVFS_PARTITION_FROM_TABLE;
+ 
+-	cdev->dos_partition_type = part->dos_partition_type;
++	cdev->typeuuid = part->typeuuid;
+ 	strcpy(cdev->partuuid, part->partuuid);
+ 
+ 	free(partition_name);
+diff --git a/common/partitions/efi.c b/common/partitions/efi.c
+index df63b82afe24..2756337ab284 100644
+--- a/common/partitions/efi.c
++++ b/common/partitions/efi.c
+@@ -471,6 +471,7 @@ static void efi_partition(void *buf, struct block_device *blk,
+ 		pentry->size++;
+ 		part_set_efi_name(&ptes[i], pentry->name);
+ 		snprintf(pentry->partuuid, sizeof(pentry->partuuid), "%pUl", &ptes[i].unique_partition_guid);
++		pentry->typeuuid = ptes[i].partition_type_guid;
+ 		pd->used_entries++;
+ 	}
+ }
+diff --git a/common/partitions/parser.h b/common/partitions/parser.h
+index f2f692f7903b..9cc41a7573fe 100644
+--- a/common/partitions/parser.h
++++ b/common/partitions/parser.h
+@@ -17,10 +17,13 @@
+ 
+ struct partition {
+ 	char name[MAX_PARTITION_NAME];
+-	u8 dos_partition_type;
+ 	char partuuid[MAX_UUID_STR];
+ 	uint64_t first_sec;
+ 	uint64_t size;
++	union {
++		u8 dos_partition_type;
++		guid_t typeuuid;
++	};
+ };
+ 
+ struct partition_desc {
 diff --git a/fs/fs.c b/fs/fs.c
-index 2d2d327c5fbc..9a92e6e251e5 100644
+index 9a92e6e251e5..16cc072adfaf 100644
 --- a/fs/fs.c
 +++ b/fs/fs.c
-@@ -108,7 +108,7 @@ void cdev_print(const struct cdev *cdev)
- 
- 	if (cdev->filetype)
+@@ -110,6 +110,8 @@ void cdev_print(const struct cdev *cdev)
  		nbytes += printf("Filetype: %s\t", file_type_to_string(cdev->filetype));
--	if (cdev->dos_partition_type)
-+	if (cdev_is_mbr_partitioned(cdev->master))
+ 	if (cdev_is_mbr_partitioned(cdev->master))
  		nbytes += printf("DOS parttype: 0x%02x\t", cdev->dos_partition_type);
++	else if (cdev_is_gpt_partitioned(cdev->master))
++		nbytes += printf("GPT typeuuid: %pUl\t", &cdev->typeuuid);
  	if (*cdev->partuuid || *cdev->diskuuid)
  		nbytes += printf("%sUUID: %s", cdev_is_partition(cdev) ? "PART" : "DISK",
+ 				 cdev_is_partition(cdev) ? cdev->partuuid : cdev->diskuuid);
+diff --git a/include/driver.h b/include/driver.h
+index 5f2eae65466f..6407f7d6ba36 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -8,6 +8,7 @@
+ 
+ #include <linux/list.h>
+ #include <linux/ioport.h>
++#include <linux/uuid.h>
+ #include <of.h>
+ #include <filetype.h>
+ 
+@@ -536,12 +537,15 @@ struct cdev {
+ 	unsigned int flags;
+ 	int open;
+ 	struct mtd_info *mtd;
+-	u8 dos_partition_type;
+ 	struct cdev *link;
+ 	struct list_head link_entry, links;
+ 	struct list_head partition_entry, partitions;
+ 	struct cdev *master;
+ 	enum filetype filetype;
++	union {
++		u8 dos_partition_type;
++		guid_t typeuuid;
++	};
+ };
+ 
+ int devfs_create(struct cdev *);
 -- 
 2.39.2
 
