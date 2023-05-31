@@ -1,60 +1,61 @@
-Delivery-date: Wed, 31 May 2023 19:42:07 +0200
+Delivery-date: Wed, 31 May 2023 19:53:23 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4Ppo-004ZfW-8L
-	for lore@lore.pengutronix.de; Wed, 31 May 2023 19:42:06 +0200
+	id 1q4Q0i-004a6r-Cs
+	for lore@lore.pengutronix.de; Wed, 31 May 2023 19:53:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4Ppl-0007Tk-4M
-	for lore@pengutronix.de; Wed, 31 May 2023 19:42:05 +0200
+	id 1q4Q0f-0000LN-LS
+	for lore@pengutronix.de; Wed, 31 May 2023 19:53:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gZt6op0ZnhJ4GQ8mfDSWDf61ZoWB0uTdtJP1Cew/SRU=; b=q7AEtIbiOEjxbArY4UJgAv6hMM
-	9fkZZiIqM8lQnvlUHS0OqHa5S7WSxd53N64lQl2Y2bY9pJBruei2V9fzfULxVKb/uk5BgJGV04twR
-	Lgo3AdCruI9NSMt/BRw/Z0sNcyKKQgV5P1mn6tZPHwV3iuegHXI+9oUcxr9Cou88Qim12wCdQxYAT
-	+7BGqnAzaQrEKVMqVpP90y14F4mhpvqlnez1D4fe2+q9DSt8cTiXRfuTFrg2+7mECDeQ39eVLy2bL
-	/Cu+dLcVZmO688Yt3J5MYzD6VvUV6I2YTI/HMNM0BzfmHsUYMFNtTbaxsj5xORKGO98eupmjF7UAP
-	/VFgx12A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=BfDTSZMOVMo7mZbXraBYR4GMB9cabFY27Iak4m4jzQE=; b=ASORa+9I36xj9kfrXFRcEHxGoR
+	sOT3Fy1QJB/GZejXgGYeE0OXsoFTy6Fwx7DP+M9PWNTq348d/o57cc4w4iZpLaa131/vxHOmrqrUt
+	l+sb0SwkL3yyfI9MO/nBD4vrOWwTGfw+uFys1/bm2p+vheJuDcn12b2qHu/2gwPeAukrQwES9xHUT
+	G7mtIkcRjt1JHcv5o9nCJm9jnMo8qGXbDVPQoFbWPd/EEZphvnazD+7+VSWbrr7YRyIHoufcq+Zbh
+	OxUNE+AoWPzU/imhkzl1CLShuWtn9JYDOC21zKAimxsF2gK1jQCyXGqKhaI35eKXZmik561bHlpIZ
+	+/c5Y3cA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4Pp2-000fmJ-0Y;
-	Wed, 31 May 2023 17:41:20 +0000
+	id 1q4PzS-000hcJ-38;
+	Wed, 31 May 2023 17:52:06 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4Poy-000flB-2P
+	id 1q4PzP-000hbL-2F
 	for barebox@lists.infradead.org;
-	Wed, 31 May 2023 17:41:18 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	Wed, 31 May 2023 17:52:05 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1q4Pow-0007OB-T6; Wed, 31 May 2023 19:41:14 +0200
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1q4Pow-0005eh-Le; Wed, 31 May 2023 19:41:14 +0200
-Date: Wed, 31 May 2023 19:41:14 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230531174114.oho3djhov7vs2ipu@pengutronix.de>
-References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
- <20230531145927.1399282-15-a.fatoum@pengutronix.de>
+	(envelope-from <afa@pengutronix.de>)
+	id 1q4PzM-0000GM-Sb; Wed, 31 May 2023 19:52:00 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1q4PzL-004AiL-Ri; Wed, 31 May 2023 19:51:59 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1q4PzL-0063EX-5f; Wed, 31 May 2023 19:51:59 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Lior Weintraub <liorw@pliops.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 31 May 2023 19:51:57 +0200
+Message-Id: <20230531175157.1442379-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230531145927.1399282-15-a.fatoum@pengutronix.de>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230531_104116_789367_04B34685 
-X-CRM114-Status: GOOD (  25.24  )
+X-CRM114-CacheID: sfid-20230531_105203_739598_C2682D69 
+X-CRM114-Status: GOOD (  13.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,147 +73,107 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 14/18] of: export new of_cdev_find helper
+Subject: [PATCH RFT] ARM64: cpu: support 64-bit stack top in ENTRY_FUNCTION_WITHSTACK
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 23-05-31, Ahmad Fatoum wrote:
-> __of_find_path goes throught the hassle of determining the cdev, only to
-> discard it again and return either zero or an error code.
-> 
-> Follow up commits will need to get the cdev corresponding to a path in
-> the DT. So let's make that easier by exporting a suitable helper function.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+ENTRY_FUNCTION_WITHSTACK was written with the naive assumption that
+there will always be some memory in the first 32-bit of the address
+space to be used as early stack. There are SoCs out there though with
+sole on-chip SRAM > 4G. Accommodate this by accepting full 64-bit stack
+pointers in ENTRY_FUNCTION_WITHSTACK.
 
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/cpu/head_64.S             | 2 +-
+ arch/arm/include/asm/barebox-arm.h | 2 +-
+ arch/arm/lib/pbl.lds.S             | 7 ++++---
+ include/asm-generic/pointer.h      | 2 ++
+ 4 files changed, 8 insertions(+), 5 deletions(-)
 
-> ---
->  drivers/of/of_path.c | 59 ++++++++++++++++++++++++++++++--------------
->  include/of.h         |  1 +
->  2 files changed, 41 insertions(+), 19 deletions(-)
-> 
-> diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-> index 059690e9b8e8..4d9f7b6005af 100644
-> --- a/drivers/of/of_path.c
-> +++ b/drivers/of/of_path.c
-> @@ -27,21 +27,17 @@ struct device *of_find_device_by_node_path(const char *path)
->  }
->  
->  /**
-> - * __of_find_path
-> + * __of_cdev_find
->   *
->   * @node: The node to find the cdev for, can be the device or a
->   *        partition in the device
->   * @part: Optionally, a description of a partition of @node.  See of_find_path
-> - * @outpath: if this function returns 0 outpath will contain the path belonging
-> - *           to the input path description. Must be freed with free().
-> - * @flags: use OF_FIND_PATH_FLAGS_BB to return the .bb device if available
->   *
->   */
-> -static int __of_find_path(struct device_node *node, const char *part, char **outpath, unsigned flags)
-> +static struct cdev *__of_cdev_find(struct device_node *node, const char *part)
->  {
->  	struct device *dev;
->  	struct cdev *cdev;
-> -	bool add_bb = false;
->  
->  	of_partition_ensure_probed(node);
->  
-> @@ -56,24 +52,17 @@ static int __of_find_path(struct device_node *node, const char *part, char **out
->  
->  			/* when partuuid is specified short-circuit the search for the cdev */
->  			ret = of_property_read_string(node, "partuuid", &uuid);
-> -			if (!ret) {
-> -				cdev = cdev_by_partuuid(uuid);
-> -				if (!cdev)
-> -					return -ENODEV;
-> -
-> -				*outpath = basprintf("/dev/%s", cdev->name);
-> -
-> -				return 0;
-> -			}
-> +			if (!ret)
-> +				return cdev_by_partuuid(uuid) ?: ERR_PTR(-ENODEV);
->  		}
->  
->  		dev = of_find_device_by_node_path(devnode->full_name);
->  		if (!dev)
-> -			return -ENODEV;
-> +			return ERR_PTR(-ENODEV);
->  	}
->  
->  	if (dev->bus && !dev->driver)
-> -		return -EPROBE_DEFER;
-> +		return ERR_PTR(-EPROBE_DEFER);
->  
->  	device_detect(dev);
->  
-> @@ -82,8 +71,40 @@ static int __of_find_path(struct device_node *node, const char *part, char **out
->  	else
->  		cdev = cdev_by_device_node(node);
->  
-> -	if (!cdev)
-> -		return -ENOENT;
-> +	return cdev ?: ERR_PTR(-ENOENT);
-> +}
-> +
-> +/**
-> + * of_cdev_find
-> + *
-> + * @node: The node to find the cdev for, can be the device or a
-> + *        partition in the device
-> + *
-> + */
-> +struct cdev *of_cdev_find(struct device_node *node)
-> +{
-> +	return __of_cdev_find(node, NULL);
-> +}
-> +
-> +/**
-> + * __of_find_path
-> + *
-> + * @node: The node to find the cdev for, can be the device or a
-> + *        partition in the device
-> + * @part: Optionally, a description of a partition of @node.  See of_find_path
-> + * @outpath: if this function returns 0 outpath will contain the path belonging
-> + *           to the input path description. Must be freed with free().
-> + * @flags: use OF_FIND_PATH_FLAGS_BB to return the .bb device if available
-> + *
-> + */
-> +static int __of_find_path(struct device_node *node, const char *part, char **outpath, unsigned flags)
-> +{
-> +	bool add_bb = false;
-> +	struct cdev *cdev;
-> +
-> +	cdev = __of_cdev_find(node, part);
-> +	if (IS_ERR(cdev))
-> +		return PTR_ERR(cdev);
->  
->  	if ((flags & OF_FIND_PATH_FLAGS_BB) && cdev->mtd &&
->  	    mtd_can_have_bb(cdev->mtd))
-> diff --git a/include/of.h b/include/of.h
-> index c716f9283316..2b75ce63e185 100644
-> --- a/include/of.h
-> +++ b/include/of.h
-> @@ -331,6 +331,7 @@ int of_add_memory_bank(struct device_node *node, bool dump, int r,
->  struct device *of_find_device_by_node_path(const char *path);
->  #define OF_FIND_PATH_FLAGS_BB 1		/* return .bb device if available */
->  int of_find_path(struct device_node *node, const char *propname, char **outpath, unsigned flags);
-> +struct cdev *of_cdev_find(struct device_node *node);
->  int of_find_path_by_node(struct device_node *node, char **outpath, unsigned flags);
->  struct device_node *of_find_node_by_devpath(struct device_node *root, const char *path);
->  int of_register_fixup(int (*fixup)(struct device_node *, void *), void *context);
-> -- 
-> 2.39.2
-> 
-> 
-> 
+diff --git a/arch/arm/cpu/head_64.S b/arch/arm/cpu/head_64.S
+index 398c4d3471e0..546efc263a06 100644
+--- a/arch/arm/cpu/head_64.S
++++ b/arch/arm/cpu/head_64.S
+@@ -11,7 +11,7 @@
+ ENTRY(__barebox_arm64_head)
+ 	nop
+ 	adr x9, __pbl_board_stack_top
+-	ldr w9, [x9]
++	ldr x9, [x9]
+ 	cbz x9, 1f
+ 	mov sp, x9
+ 1:
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index eb31ca278821..aceb7fdf74f8 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -158,7 +158,7 @@ void __barebox_arm64_head(ulong x0, ulong x1, ulong x2);
+ 				(ulong r0, ulong r1, ulong r2)		\
+ 		{							\
+ 			static __section(.pbl_board_stack_top_##name)	\
+-				const u32 __stack_top = (stack_top);	\
++				const ulong __stack_top = (stack_top);	\
+ 			__keep_symbolref(__barebox_arm64_head);		\
+ 			__keep_symbolref(__stack_top);			\
+ 			__##name(r0, r1, r2);				\
+diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+index 114ec7bc8195..2b4b1d6a9513 100644
+--- a/arch/arm/lib/pbl.lds.S
++++ b/arch/arm/lib/pbl.lds.S
+@@ -4,6 +4,7 @@
+ #include <linux/sizes.h>
+ #include <asm/barebox.lds.h>
+ #include <asm-generic/memory_layout.h>
++#include <asm-generic/pointer.h>
+ 
+ #ifdef CONFIG_PBL_RELOCATABLE
+ #define BASE	0x0
+@@ -44,14 +45,14 @@ SECTIONS
+ 	. = ALIGN(4);
+ 	.rodata : { *(.rodata*) }
+ 
+-	. = ALIGN(4);
++	. = ALIGN(ASM_SZPTR);
+ 	__pbl_board_stack_top = .;
+ 	.rodata.pbl_board_stack_top : {
+ 		*(.pbl_board_stack_top_*)
+ 		/* Dummy for when BootROM sets up usable stack */
+-		LONG(0x00000000);
++		ASM_LD_PTR(0x00000000)
+ 	}
+-	ASSERT(. - __pbl_board_stack_top <= 8, "Only One PBL per Image allowed")
++	ASSERT(. - __pbl_board_stack_top <= 2 * ASM_SZPTR, "Only One PBL per Image allowed")
+ 
+ 	.barebox_imd : { BAREBOX_IMD }
+ 
+diff --git a/include/asm-generic/pointer.h b/include/asm-generic/pointer.h
+index 8b9600b02939..89817ce59ebc 100644
+--- a/include/asm-generic/pointer.h
++++ b/include/asm-generic/pointer.h
+@@ -8,6 +8,7 @@
+ #define ASM_PTR		.quad
+ #define ASM_SZPTR	8
+ #define ASM_LGPTR	3
++#define ASM_LD_PTR(x)	QUAD(x)
+ #else
+ #define ASM_PTR		".quad"
+ #define ASM_SZPTR	"8"
+@@ -18,6 +19,7 @@
+ #define ASM_PTR		.word
+ #define ASM_SZPTR	4
+ #define ASM_LGPTR	2
++#define ASM_LD_PTR(x)	LONG(x)
+ #else
+ #define ASM_PTR		".word"
+ #define ASM_SZPTR	"4"
+-- 
+2.39.2
+
 
 
