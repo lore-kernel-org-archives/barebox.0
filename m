@@ -1,60 +1,59 @@
-Delivery-date: Thu, 01 Jun 2023 08:00:13 +0200
+Delivery-date: Thu, 01 Jun 2023 08:02:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4bM7-005P5h-3C
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 08:00:13 +0200
+	id 1q4bO5-005PBg-3b
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 08:02:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4bM4-0006Yh-Jk
-	for lore@pengutronix.de; Thu, 01 Jun 2023 08:00:13 +0200
+	id 1q4bO1-0007L1-OS
+	for lore@pengutronix.de; Thu, 01 Jun 2023 08:02:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=R6vCObibU3TerwFmrIRUf9CxIMdw0Vy8efe4teiqaAE=; b=mBPGpGl+pML2O7qGRRLN4DnzCm
-	d6UXVK4mQzpLiWpSwdk71EuAV9BE6Hf5nWRS3o4udw1t8nPdIe4Nvtdg+Y4NENfr/ad8vwokyyf4r
-	j2k6agVt6n1hLh2Hjr90mUioedEnIW5UMmtEu87UDkSmCJbQ/nWDy3WqTPb7Y/0J+jlQo+6UpsGHd
-	FaHJtVUHzjvXPBCIvmngM/NUMeMscr9hjk1r8gigZJvNDIAv2vlQ5jFpQ3lKNzKD33rQ2jmcwSo84
-	GmbifMrhbBopZ6EAgEcV/RW0ypr2zXobIEWpacwlQA5pI4elw98T3qposTBkI+04XNCge81WpgLMl
-	aXDsw0Ug==;
+	bh=K0K+1oFmoDlSBAjdSKVfAQ1WrSM+Qwk/DkEulRBcw70=; b=IqpE/N8hVcGI9EKMhm8uorMzQn
+	8DT9VJDywTayzBjCMLd5Y0+q7/PtOuOT2AE3iD0iPZDoaI9s6QDgH8qfqtiFdXkxgrLW8ovxTb40X
+	42H4vu8RoM0DCh83whUt1jC0YN7GE+bFe/jxcHgEYuFG6g8ec02hYgTpgxyUj7jWB2T6dcDK1zhyr
+	h2KSLiW5+N0MI82+7IGLNF6EWwGXNlJmJk7uW8DKwH2CrVKlhn5ZSaS99FB8ZisND99oj9c2WHGjB
+	wduhLMGIZpDrp2dvGdxXOYTPE7u1SEcoe+I4xni5Xu5ksbmIHEGct88RpArcKsO5fG8WQoJ6BJy+e
+	+9dKOOcQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4bKt-0026FS-1u;
-	Thu, 01 Jun 2023 05:58:59 +0000
+	id 1q4bMj-0026ZW-0r;
+	Thu, 01 Jun 2023 06:00:53 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4bKo-0026Ef-1a
+	id 1q4bMf-0026Yu-1E
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 05:58:57 +0000
+	Thu, 01 Jun 2023 06:00:51 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q4bKj-0006J2-WD; Thu, 01 Jun 2023 07:58:50 +0200
-Message-ID: <2641ca65-8ca0-b177-ec20-f467f18662f3@pengutronix.de>
-Date: Thu, 1 Jun 2023 07:58:49 +0200
+	id 1q4bMe-0006up-3G; Thu, 01 Jun 2023 08:00:48 +0200
+Message-ID: <a24bf8d3-2d27-d18f-32df-11a6af2ab27c@pengutronix.de>
+Date: Thu, 1 Jun 2023 08:00:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
 Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Marco Felsch <m.felsch@pengutronix.de>
+To: Jules Maselbas <jmaselbas@zdiv.net>, Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
-References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
- <20230531145927.1399282-13-a.fatoum@pengutronix.de>
- <20230531173320.24m7mucy6kzhj5wq@pengutronix.de>
- <1b1fc8e7-d74b-2fa6-8e53-c4c256d7e7a5@pengutronix.de>
-In-Reply-To: <1b1fc8e7-d74b-2fa6-8e53-c4c256d7e7a5@pengutronix.de>
+References: <20230524234328.82741-1-jmaselbas@zdiv.net>
+ <20230524234328.82741-12-jmaselbas@zdiv.net>
+ <20230530084236.GY17518@pengutronix.de> <ZHgxt7mRiFRMtgDU@tour>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <ZHgxt7mRiFRMtgDU@tour>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230531_225854_554804_63C6804C 
-X-CRM114-Status: GOOD (  23.15  )
+X-CRM114-CacheID: sfid-20230531_230049_575531_5CE50C9D 
+X-CRM114-Status: GOOD (  37.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,134 +76,246 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 12/18] common: partitions: record whether disk is GPT or
- MBR partitioned
+Subject: Re: [PATCH v2 11/13] ARM: boards: sunxi: Add initial support for the
+ pinephone
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 01.06.23 07:08, Ahmad Fatoum wrote:
-> On 31.05.23 19:33, Marco Felsch wrote:
->> On 23-05-31, Ahmad Fatoum wrote:
->>> Currently, the only way to differentiate between a GPT disk and a MBR
->>> one is to check whether the cdev's device has a guid (=> GPT) or a
->>> nt_signature (=> MBR) device parameter. We already have a flag parameter
->>> though, so let's record this info there for easy retrieval.
->>>
->>> We intentionally don't use the struct cdev::filetype member, because
->>> we don't want to change behavior of file_detect_type().
->>>
->>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On 01.06.23 07:50, Jules Maselbas wrote:
+> Hi Sascha,
+> 
+> Thanks for your review
+> 
+> On Tue, May 30, 2023 at 10:42:36AM +0200, Sascha Hauer wrote:
+>> On Thu, May 25, 2023 at 01:43:26AM +0200, Jules Maselbas wrote:
+>>> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
 >>> ---
->>>  common/partitions/dos.c |  2 ++
->>>  common/partitions/efi.c |  2 ++
->>>  fs/fs.c                 |  4 ++++
->>>  include/driver.h        | 20 +++++++++++++++++---
->>>  4 files changed, 25 insertions(+), 3 deletions(-)
+>>>  arch/arm/boards/Makefile                    |   1 +
+>>>  arch/arm/boards/pine64-pinephone/Makefile   |   2 +
+>>>  arch/arm/boards/pine64-pinephone/board.c    |   0
+>>>  arch/arm/boards/pine64-pinephone/lowlevel.c | 104 ++++++++++++++++++++
+>>>  arch/arm/configs/pinephone_defconfig        |  12 +++
+>>>  arch/arm/dts/Makefile                       |   1 +
+>>>  arch/arm/dts/sun50i-a64-pinephone-1_2.dts   |   3 +
+>>>  arch/arm/mach-sunxi/Kconfig                 |  17 ++++
+>>>  images/Makefile.sunxi                       |   9 ++
+>>>  include/mach/sunxi/init.h                   |   4 +
+>>>  10 files changed, 153 insertions(+)
+>>>  create mode 100644 arch/arm/boards/pine64-pinephone/Makefile
+>>>  create mode 100644 arch/arm/boards/pine64-pinephone/board.c
+>>>  create mode 100644 arch/arm/boards/pine64-pinephone/lowlevel.c
+>>>  create mode 100644 arch/arm/configs/pinephone_defconfig
+>>>  create mode 100644 arch/arm/dts/sun50i-a64-pinephone-1_2.dts
 >>>
->>> diff --git a/common/partitions/dos.c b/common/partitions/dos.c
->>> index ad60c0b27b46..7472824b00b9 100644
->>> --- a/common/partitions/dos.c
->>> +++ b/common/partitions/dos.c
->>> @@ -185,6 +185,8 @@ static void dos_partition(void *buf, struct block_device *blk,
->>>  	if (signature)
->>>  		sprintf(blk->cdev.diskuuid, "%08x", signature);
->>>  
->>> +	blk->cdev.flags |= DEVFS_IS_MBR_PARTITIONED;
->>> +
->>>  	table = (struct partition_entry *)&buffer[446];
->>>  
->>>  	for (i = 0; i < 4; i++) {
->>> diff --git a/common/partitions/efi.c b/common/partitions/efi.c
->>> index 780a8695e8a8..df63b82afe24 100644
->>> --- a/common/partitions/efi.c
->>> +++ b/common/partitions/efi.c
->>> @@ -449,6 +449,8 @@ static void efi_partition(void *buf, struct block_device *blk,
->>>  	snprintf(blk->cdev.diskuuid, sizeof(blk->cdev.diskuuid), "%pUl", &gpt->disk_guid);
->>>  	dev_add_param_string_fixed(blk->dev, "guid", blk->cdev.diskuuid);
->>>  
->>> +	blk->cdev.flags |= DEVFS_IS_GPT_PARTITIONED;
->>> +
->>>  	nb_part = le32_to_cpu(gpt->num_partition_entries);
->>>  
->>>  	if (nb_part > MAX_PARTITION) {
->>> diff --git a/fs/fs.c b/fs/fs.c
->>> index 9d8aab268ca4..2d2d327c5fbc 100644
->>> --- a/fs/fs.c
->>> +++ b/fs/fs.c
->>> @@ -94,6 +94,10 @@ void cdev_print(const struct cdev *cdev)
->>>  			printf(" table-partition");
->>>  		if (cdev->flags & DEVFS_IS_MCI_MAIN_PART_DEV)
->>>  			printf(" mci-main-partition");
->>> +		if (cdev->flags & DEVFS_IS_GPT_PARTITIONED)
->>> +			printf(" gpt-partitioned");
->>> +		if (cdev->flags & DEVFS_IS_MBR_PARTITIONED)
->>> +			printf(" mbr-partitioned");
->>>  		if (cdev->mtd)
->>>  			printf(" mtd");
->>>  		printf(" )");
->>> diff --git a/include/driver.h b/include/driver.h
->>> index 118d2adb6750..5f2eae65466f 100644
->>> --- a/include/driver.h
->>> +++ b/include/driver.h
->>> @@ -584,9 +584,23 @@ extern struct list_head cdev_list;
->>>  #define DEVFS_PARTITION_FIXED		(1U << 0)
->>>  #define DEVFS_PARTITION_READONLY	(1U << 1)
->>>  #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
->>> -#define DEVFS_IS_MCI_MAIN_PART_DEV	(1U << 4)
->>> -#define DEVFS_PARTITION_FROM_OF		(1U << 5)
->>> -#define DEVFS_PARTITION_FROM_TABLE	(1U << 6)
->>> +#define DEVFS_PARTITION_FROM_OF		(1U << 4)
->>> +#define DEVFS_PARTITION_FROM_TABLE	(1U << 5)
->>> +#define DEVFS_IS_GPT_PARTITIONED	(1U << 6)
->>> +#define DEVFS_IS_MBR_PARTITIONED	(1U << 7)
->>> +#define DEVFS_IS_MCI_MAIN_PART_DEV	(1U << 8)
+>>> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+>>> index b204c257f6..f4796f5374 100644
+>>> --- a/arch/arm/boards/Makefile
+>>> +++ b/arch/arm/boards/Makefile
+>>> @@ -96,6 +96,7 @@ obj-$(CONFIG_MACH_PHYTEC_SOM_IMX6)		+= phytec-som-imx6/
+>>>  obj-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7)		+= phytec-phycore-imx7/
+>>>  obj-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1)	+= phytec-phycore-stm32mp1/
+>>>  obj-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ)		+= phytec-som-imx8mq/
+>>> +obj-$(CONFIG_MACH_PINE64_PINEPHONE)		+= pine64-pinephone/
+>>>  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
+>>>  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+= plathome-openblocks-a6/
+>>>  obj-$(CONFIG_MACH_PM9261)			+= pm9261/
+>>> diff --git a/arch/arm/boards/pine64-pinephone/Makefile b/arch/arm/boards/pine64-pinephone/Makefile
+>>> new file mode 100644
+>>> index 0000000000..092c31d6b2
+>>> --- /dev/null
+>>> +++ b/arch/arm/boards/pine64-pinephone/Makefile
+>>> @@ -0,0 +1,2 @@
+>>> +lwl-y += lowlevel.o
+>>> +obj-y += board.o
+>>> diff --git a/arch/arm/boards/pine64-pinephone/board.c b/arch/arm/boards/pine64-pinephone/board.c
+>>> new file mode 100644
+>>> index 0000000000..e69de29bb2
+>>> diff --git a/arch/arm/boards/pine64-pinephone/lowlevel.c b/arch/arm/boards/pine64-pinephone/lowlevel.c
+>>> new file mode 100644
+>>> index 0000000000..262d194864
+>>> --- /dev/null
+>>> +++ b/arch/arm/boards/pine64-pinephone/lowlevel.c
+>>> @@ -0,0 +1,104 @@
+>>> +// SPDX-License-Identifier: GPL-2.0+
+>>> +#include <common.h>
+>>> +#include <debug_ll.h>
+>>> +#include <linux/sizes.h>
+>>> +#include <linux/bitops.h>
+>>> +#include <mach/sunxi/barebox-arm.h>
 >>
->> Why do you reorder the bits here again?
+>> This file is missing in this series. Forgot to git add it?
+> ooops, yes forgot to add it.
+> There is almost nothing in it:
+> ```
+> #include <asm/barebox-arm.h>
 > 
-> I wanted the partition bits to be together.
+> #define SUN50I_A64_ENTRY_FUNCTION(name, arg0, arg1, arg2) \
+> 	ENTRY_FUNCTION_WITHSTACK(name, SUN50I_PBL_STACK_TOP, arg0, arg1, arg2)
+> ```
+> that's all
 
-I see what you mean now. I'll leave MCI_MAIN_PART as bit 4
-and add everything after that. Thanks.
+Can this pull in the eGON header as well? That way sun50i entry points
+can just look like normal C functions and board porters need not be aware
+of the magic.
 
 > 
+>>> +#include <mach/sunxi/init.h>
+>>> +#include <mach/sunxi/xload.h>
+>>> +#include <mach/sunxi/egon.h>
+>>> +#include <mach/sunxi/rmr_switch.h>
+>>> +#include <mach/sunxi/sun50i-regs.h>
+>>> +#include <mach/sunxi/sunxi-pinctrl.h>
 >>> +
->>> +static inline bool cdev_is_gpt_partitioned(const struct cdev *master)
+>>> +#ifdef DEBUG
+>>> +static void debug_led_rgb(int rgb)
 >>> +{
->>> +	return master && (master->flags & DEVFS_IS_GPT_PARTITIONED)
->>> +		== DEVFS_IS_GPT_PARTITIONED;
->>
->> Why not just: 'return !!(master->flags & DEVFS_IS_GPT_PARTITIONED)' ?
-> 
-> Left over from when this was more than one bit. I will change to:
-> 
->   return master && (master->flags & DEVFS_IS_GPT_PARTITIONED)
-> 
-> I want to keep the NULL check, as we only set this for the master device.
-> 
-> Cheers,
-> Ahmad
-> 
-> 
->>
->> Regards,
->>   Marco
->>
+>>> +	void __iomem *piobase = SUN50I_PIO_BASE_ADDR;
+>>> +	uint32_t clr, set = 0;
+>>> +	int r = rgb & 0xff0000;
+>>> +	int g = rgb & 0x00ff00;
+>>> +	int b = rgb & 0x0000ff;
+>>> +
+>>> +	clr = (1 << 19) | (1 << 18) | (1 << 20);
+>>> +	set |= r ? 1 << 19 : 0;
+>>> +	set |= g ? 1 << 18 : 0;
+>>> +	set |= b ? 1 << 20 : 0;
+>>> +
+>>> +	clrsetbits_le32(piobase + PIO_PD_DATA, clr, set);
 >>> +}
 >>> +
->>> +static inline bool cdev_is_mbr_partitioned(const struct cdev *master)
+>>> +static void debug_led_init(void)
 >>> +{
->>> +	return master && (master->flags & DEVFS_IS_MBR_PARTITIONED)
->>> +		== DEVFS_IS_MBR_PARTITIONED;
+>>> +	void __iomem *ccubase = SUN50I_CCU_BASE_ADDR;
+>>> +	void __iomem *piobase = SUN50I_PIO_BASE_ADDR;
+>>> +
+>>> +	/* PIO clock enable */
+>>> +	setbits_le32(ccubase + CCU_BUS_CLK_GATE2, BIT(5));
+>>> +	/* LED set output */
+>>> +	clrsetbits_le32(piobase + PIO_PD_CFG2, 0x000fff00, 0x00011100);
 >>> +}
+>>> +#else
+>>> +static void debug_led_rgb(int rgb) {}
+>>> +static void debug_led_init(void) {}
+>>> +#endif
+>>> +
+>>> +SUN50I_A64_ENTRY_FUNCTION(start_pine64_pinephone, r0, r1, r2)
+>>> +{
+>>> +	extern char __dtb_z_sun50i_a64_pinephone_1_2_start[];
+>>> +	void *fdt;
+>>> +	u32 size;
+>>> +
+>>> +	sunxi_switch_to_aarch64(.text_head_soc_header2, SUN50I_A64_RVBAR_IOMAP);
+>>> +
+>>> +	debug_led_init();
+>>> +	debug_led_rgb(0xffff00);
+>>> +
+>>> +	sun50i_cpu_lowlevel_init();
+>>> +	sun50i_uart_setup();
+>>> +
+>>> +	relocate_to_current_adr();
+>>> +	setup_c();
+>>> +
+>>> +	/* Skip SDRAM initialization if we run from it */
+>>> +	if (get_pc() < SUN50I_DRAM_ADDR) {
+>>> +		size = sun50i_a64_lpddr3_dram_init();
+>>> +		if (size == 0) {
+>>> +			puts_ll("FAIL: dram init\r\n");
+>>> +			goto reset;
+>>> +		}
+>>> +		puthex_ll(size);
+>>> +		putc_ll('\r');	putc_ll('\n');
+>>> +	}
+>>
+>> How can we get here with SDRAM uninitialized? Is this for USB or JTAG
+>> boot?
+> Yes this is when not chain loaded, when started directly from USB via fel or
+> via JTAG.
+> 
+>>> +
+>>> +	puts_ll("now booting\r\n");
+>>> +	fdt = __dtb_z_sun50i_a64_pinephone_1_2_start + get_runtime_offset();
+>>> +	barebox_arm_entry(SUN50I_DRAM_ADDR, SZ_1G, fdt);
+>>> +
+>>> +reset:
+>>> +	debug_led_rgb(0xff0000);
+>>> +	sun50i_cpu_lowlevel_reset();
+>>> +}
+>>> +
+>>> +SUN50I_A64_ENTRY_FUNCTION(start_pine64_pinephone_xload, r0, r1, r2)
+>>> +{
+>>> +
+>>> +	sunxi_egon_header(.text_head_soc_header0);
+>>> +	sunxi_switch_to_aarch64(.text_head_soc_header1, SUN50I_A64_RVBAR_IOMAP);
+>>> +
+>>> +	debug_led_init();
+>>> +	debug_led_rgb(0xff0000);
+>>> +
+>>> +	sun50i_cpu_lowlevel_init();
+>>> +	sun50i_uart_setup();
+>>> +	debug_led_rgb(0xffff00);
+>>> +
+>>> +	relocate_to_current_adr();
+>>> +	setup_c();
+>>> +
+>>> +	sun50i_a64_lpddr3_dram_init();
+>>> +
+>>> +	debug_led_rgb(0xff0000);
+>>> +
+>>
+>> You would have to place code here to continue booting, right? In that
+>> case you should add a comment to let the reader know that there's
+>> something missing here.
+> I forgot to add the code that search for barebox.bin and continue execution
+> 
+>>
+>> debug_led_rgb(0xff0000) is the same color you used at the beginning of
+>> the function. Would it make more sense to use a different color?
+> Yes, I'll remove the first red color, I want to reserved it for error conditions.
+> 
+>>> +	sun50i_cpu_lowlevel_reset();
+>>
+>> Maybe hang() here instead to give the user a chance to see the last
+>> color?
+> Yes, I put the reset so it will re-enter fel so the board could be reprogrammed
+> without needing a powercycle, but that's only true if there are no valid boot
+> entry in eMMC nor SD, IMHO this only makes sense for developpement/debugging.
+>  
+>>> +}
+>>> diff --git a/arch/arm/configs/pinephone_defconfig b/arch/arm/configs/pinephone_defconfig
+>>
+>> In the hope that the config is not only suitable for the pinephone
+>> better name it sunxi_v8_defconfig.
+> Yes, currently use this config for the pine64 board, will make this change.
+> 
+>>
+>>> +++ b/arch/arm/mach-sunxi/Kconfig
+>>> @@ -1,7 +1,24 @@
+>>>  if ARCH_SUNXI
 >>>  
->>>  struct cdev *devfs_add_partition(const char *devname, loff_t offset,
->>>  		loff_t size, unsigned int flags, const char *name);
->>> -- 
->>> 2.39.2
->>>
->>>
->>>
+>>> +config ARCH_SUN50I_A64
+>>> +	bool
+>>> +	select CPU_V8
+>>> +	select CPU_SUPPORTS_64BIT_KERNEL
+>>> +	select CLOCKSOURCE_ARM_ARCHITECTED_TIMER
+>>> +	select PINCTRL_SUN50I_A64
+>>> +	select HAS_DEBUG_LL
+>>> +	select PBL_RELOCATABLE
+>>> +	select PBL_FULLY_PIC
+>>> +	help
+>>> +	  Allwiner A64 (sun50iw1) SoC
 >>
+>> s/Allwiner/Allwinner/
+> ack
+> 
+>> Sascha
+>>
+>> -- 
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>
+> 
 > 
 
 -- 
