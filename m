@@ -1,60 +1,59 @@
-Delivery-date: Wed, 31 May 2023 22:02:55 +0200
+Delivery-date: Thu, 01 Jun 2023 06:50:08 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4S24-004hML-Vs
-	for lore@lore.pengutronix.de; Wed, 31 May 2023 22:02:55 +0200
+	id 1q4aGI-005K1c-2P
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 06:50:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4S22-0007Zo-CG
-	for lore@pengutronix.de; Wed, 31 May 2023 22:02:54 +0200
+	id 1q4aGF-0007Lg-FL
+	for lore@pengutronix.de; Thu, 01 Jun 2023 06:50:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oM6aJKaEtMUJCXwQ34zSYHpbfv4HQWhKp4LRDYD1Y88=; b=obFGsX+aXmEdFfnmYSD2M8ojvL
-	QJzl+vI6FVdJ5ZfsirMPj6Ccr5HFx/xzRTsc452wsaChLbgyAc4tTWYkPkj0puaW8T9Nn2g5YG36o
-	FaCuB9CC2HfHRAiLxQira6Ys7CAQDzSQfztnRCCLTiVTJg8orNaf2nlbQ18owOzzVFtUhUCkKIM9l
-	ES+636+vOxqrDatCHKph7XHefkMqFJzDtAIrfptOiPfkWkasEavvD1CvFDgsmsZqiq0DglpA38kKE
-	Fm7xsedROXgykdARV46/FJ4DCVOSx/c0OTRPgkLnOSQbDdn993C4yoVSmIJnejCZmUb3HVZlxLsDR
-	dJQxy/AA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=xgYyevgeFYZ/+uIbA5p6AIroRtFKeZhohH89I3f7oYU=; b=L+7R4rOCKsO5BdmBUzORQuP8b7
+	cQcsPw1Px3Loh+Sd3T8HhWjYEHbObAa1xx4g0uTNcjONnvNFfMDMDPPJPxBdszjmNjm1AScy9ZTEG
+	nYvp2Vu5OiGg++8FnAc/Xt82ntU0Qy2s9Nhxk65Qls6jFiBQa/KZEoP7/cx6YROMs7/irO0ZXZB8c
+	nUd11bvIEYMh9aBRftKr+hEo+TU/kdhbJtUwwG0RYaMjEOcoIRq8ChI3xC9yMvJSz1U2kEHSoeYL3
+	FlYQpaJy1qcbsYo/DwXjUQ85jon8di3mtk5eazXtmovcEfyf/oYjWmGrEFJEdIILVA3uv5QVdwIDN
+	Nyq2+q6w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4S0f-0011BU-2K;
-	Wed, 31 May 2023 20:01:29 +0000
+	id 1q4aEl-001xIu-2G;
+	Thu, 01 Jun 2023 04:48:35 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4S0b-0011Av-2q
+	id 1q4aEg-001xHD-3B
 	for barebox@lists.infradead.org;
-	Wed, 31 May 2023 20:01:28 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1q4S0W-0007Gi-Ee; Wed, 31 May 2023 22:01:20 +0200
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1q4S0W-0003fh-7B; Wed, 31 May 2023 22:01:20 +0200
-Date: Wed, 31 May 2023 22:01:20 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230531200120.xjp6qr372didsis5@pengutronix.de>
-References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
- <20230531145927.1399282-19-a.fatoum@pengutronix.de>
+	Thu, 01 Jun 2023 04:48:33 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1q4aEa-0007FP-Kd; Thu, 01 Jun 2023 06:48:24 +0200
+Message-ID: <0166cc41-dd9b-728c-a478-85bb8ec5b196@pengutronix.de>
+Date: Thu, 1 Jun 2023 06:48:24 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230531145927.1399282-19-a.fatoum@pengutronix.de>
-User-Agent: NeoMutt/20180716
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.9.1
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
+ <20230531145927.1399282-5-a.fatoum@pengutronix.de>
+ <20230531163056.tcjwizntvsrbekm6@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230531163056.tcjwizntvsrbekm6@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230531_130125_939200_5007D90F 
-X-CRM114-Status: GOOD (  23.00  )
+X-CRM114-CacheID: sfid-20230531_214831_024290_874A13B3 
+X-CRM114-Status: GOOD (  29.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,146 +71,133 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 18/18] state: allow lookup of barebox state partition by
- Type GUID
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 04/18] of: partition: support of_partition_ensure_probed
+ on parent device
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Ahmad,
+Hello Marco,
 
-On 23-05-31, Ahmad Fatoum wrote:
-> The backend device tree property so far always pointed at a partition.
-> Let's allow pointing it at GPT storage devices directly and lookup
-> the correct barebox state partition by the well-known type GUID:
+On 31.05.23 18:30, Marco Felsch wrote:
+> Hi Ahmad,
 > 
->   4778ed65-bf42-45fa-9c5b-287a1dc4aab1
-
-we should add an example within the Documetation/ too.
-
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  common/state/state.c | 22 ++++++++++++++++++++++
->  include/driver.h     | 17 +++++++++++++++++
->  include/state.h      |  4 ++++
->  3 files changed, 43 insertions(+)
+> On 23-05-31, Ahmad Fatoum wrote:
+>> barebox-state code uses of_partition_ensure_probed to resolve the
+>> backend property. We want to allow backend to point directly at a
+>> storage device instead of a partition. We can't determine whether a DT
+>> device is a storage device though before it's probed, so let's have
+>> of_partition_ensure_probed support either case.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  drivers/of/partition.c | 26 ++++++++++++++++++++++----
+>>  drivers/of/platform.c  |  2 +-
+>>  2 files changed, 23 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/drivers/of/partition.c b/drivers/of/partition.c
+>> index 40c47f554ad2..a70e503cec9e 100644
+>> --- a/drivers/of/partition.c
+>> +++ b/drivers/of/partition.c
+>> @@ -110,14 +110,32 @@ int of_parse_partitions(struct cdev *cdev, struct device_node *node)
+>>  	return 0;
+>>  }
+>>  
+>> +/**
+>> + * of_partition_ensure_probed - ensure a parition is probed
+>> + * @np: pointer to a partition or to a partitionable device
+>> + *      Unfortunately, there is no completely reliable way
+>> + *      to differentiate partitions from devices prior to
+>> + *      probing, because partitions may also have compatibles.
+>> + *      We only handle nvmem-cells, so anything besides that
+>> + *      is assumed to be a device that should be probed directly.
+>> + *
+>> + * Returns zero on success or a negative error code otherwise
+>> + */
+>>  int of_partition_ensure_probed(struct device_node *np)
+>>  {
+>> -	np = of_get_parent(np);
+>> +	struct device_node *parent = of_get_parent(np);
+>>  
+>> -	if (of_device_is_compatible(np, "fixed-partitions"))
+>> -		np = of_get_parent(np);
+>> +	if (parent && of_device_is_compatible(parent, "fixed-partitions"))
 > 
-> diff --git a/common/state/state.c b/common/state/state.c
-> index 88e246198fb8..8f56c60b0e82 100644
-> --- a/common/state/state.c
-> +++ b/common/state/state.c
-> @@ -21,8 +21,10 @@
->  #include <fs.h>
->  #include <crc.h>
->  #include <init.h>
-> +#include <block.h>
->  #include <linux/err.h>
->  #include <linux/list.h>
-> +#include <linux/uuid.h>
->  
->  #include <linux/mtd/mtd-abi.h>
->  #include <malloc.h>
-> @@ -595,6 +597,8 @@ static char *cdev_to_devpath(struct cdev *cdev, off_t *offset, size_t *size)
->  }
->  #endif
->  
-> +static guid_t barebox_state_partition_guid = BAREBOX_STATE_PARTITION_GUID;
-> +
->  /*
->   * state_new_from_node - create a new state instance from a device_node
->   *
-> @@ -641,6 +645,24 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
->  		goto out_release_state;
->  	}
->  
-> +	/* Is the backend referencing an on-disk partitonable block device? */
-> +	if (cdev_is_block_disk(cdev)) {
-> +		struct cdev *partcdev = NULL;
-> +
-> +		if (cdev_is_gpt_partitioned(cdev))
-> +			partcdev = cdev_find_child_by_typeuuid(cdev, &barebox_state_partition_guid);
-> +
-> +		if (!partcdev) {
-> +			ret = -EINVAL;
-> +			goto out_release_state;
-> +		}
-> +
-> +		pr_debug("%s: backend GPT partition looked up via PartitionTypeGUID\n",
-> +			 node->full_name);
-> +
-> +		cdev = partcdev;
-> +	}
+> When is the parent not present? This should only be the case when 'np'
+> points to the root_node. So in case of !parent I would return -EINVAL
+> early.
 
-What about having the above logic within a seperate function and the
-above code would be:
+will do.
 
-	if (cdev_is_block_disk(cdev))
-		cdev = get_cdev_by_typeuuid(cdev, &barebox_state_partition_guid)
-	
-	if (!cdev) {
-		ret = -EINVAL;
-		goto out_release_state;
-	}
-
-This way we would have everything in place to re-use the same logic for
-the barebox-environmnet too. What do you think?
-
-Regards,
-  Marco
-
-> +
->  	state->backend_path = cdev_to_devpath(cdev, &offset, &size);
->  
->  	pr_debug("%s: backend resolved to %s\n", node->full_name, state->backend_path);
-> diff --git a/include/driver.h b/include/driver.h
-> index 6407f7d6ba36..579b03fbac34 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -585,6 +585,23 @@ extern struct list_head cdev_list;
->  #define for_each_cdev(cdev) \
->  	list_for_each_entry(cdev, &cdev_list, list)
->  
-> +#define for_each_cdev_partition(partcdev, cdev) \
-> +	list_for_each_entry((partcdev), &(cdev)->partitions, partition_entry)
-> +
-> +
-> +static inline struct cdev *cdev_find_child_by_typeuuid(struct cdev *cdev,
-> +						       guid_t *typeuuid)
-> +{
-> +	struct cdev *partcdev;
-> +
-> +	for_each_cdev_partition(partcdev, cdev) {
-> +		if (guid_equal(&partcdev->typeuuid, typeuuid))
-> +			return partcdev;
-> +	}
-> +
-> +	return NULL;
-> +}
-> +
->  #define DEVFS_PARTITION_FIXED		(1U << 0)
->  #define DEVFS_PARTITION_READONLY	(1U << 1)
->  #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
-> diff --git a/include/state.h b/include/state.h
-> index bffcd5a9007f..3daf82c0735f 100644
-> --- a/include/state.h
-> +++ b/include/state.h
-> @@ -62,4 +62,8 @@ static inline int state_read_mac(struct state *state, const char *name, u8 *buf)
->  
->  #endif /* #if IS_ENABLED(CONFIG_STATE) / #else */
->  
-> +#define BAREBOX_STATE_PARTITION_GUID \
-> +	GUID_INIT(0x4778ed65, 0xbf42, 0x45fa, 0x9c, 0x5b, \
-> +		 0x28, 0x7a, 0x1d, 0xc4, 0xaa, 0xb1)
-> +
->  #endif /* __STATE_H */
-> -- 
-> 2.39.2
 > 
+>> +		return of_device_ensure_probed(of_get_parent(np));
+> 							     ^
+> 							   parent?
+
+Yes, You're right.
+
+> Not related to this patch but the logic would become easier if would
+> have devices for each mtd-part, like the kernel does. In such case we
+> could avoid these special handlings and just use
+> of_device_ensure_probed() at least for the mtd-parts, nvmem-cells still
+> need a special handling.
+
+How you mean? of_partition_ensure_probed can be called before there can
+be any devices at all.
+
 > 
+> Regards,
+>   Marco
 > 
+>> -	return np ? of_device_ensure_probed(np) : -EINVAL;
+>> +	if (of_get_compatible_child(np, "fixed-partitions"))
+>> +		return of_device_ensure_probed(np);
+
+I think this can be dropped, so the case falls through to the final
+of_device_ensure_probed.
+
+>> +
+>> +	if (!of_property_present(np, "compatible") ||
+>> +	    of_device_is_compatible(np, "nvmem-cells"))
+>> +		return of_device_ensure_probed(parent);
+>> +
+>> +	return of_device_ensure_probed(np);
+>>  }
+>>  EXPORT_SYMBOL_GPL(of_partition_ensure_probed);
+
+Thanks,
+Ahmad
+
+>>  
+>> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+>> index ab737629325a..78b8a31331db 100644
+>> --- a/drivers/of/platform.c
+>> +++ b/drivers/of/platform.c
+>> @@ -484,7 +484,7 @@ int of_device_ensure_probed(struct device_node *np)
+>>  {
+>>  	struct device *dev;
+>>  
+>> -	if (!deep_probe_is_supported())
+>> +	if (!np || !deep_probe_is_supported())
+>>  		return 0;
+>>  
+>>  	dev = of_device_create_on_demand(np);
+>> -- 
+>> 2.39.2
+>>
+>>
+>>
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
