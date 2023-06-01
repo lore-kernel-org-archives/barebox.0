@@ -1,60 +1,82 @@
-Delivery-date: Thu, 01 Jun 2023 10:51:26 +0200
+Delivery-date: Thu, 01 Jun 2023 10:52:31 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4e1o-005Yga-6A
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 10:51:26 +0200
+	id 1q4e2q-005Yk3-4n
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 10:52:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4e1l-0007Hj-OM
-	for lore@pengutronix.de; Thu, 01 Jun 2023 10:51:26 +0200
+	id 1q4e2n-0007RM-M6
+	for lore@pengutronix.de; Thu, 01 Jun 2023 10:52:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
+	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=D0v7xjapCd8UyKuupxkjxR9wLLl31Vl9gvAODF/Pq2Y=; b=DrxdAqxaqYhyGyOZMufuM0udMo
-	Bbg6a4qiAEFmAbFKPUhs6y0I4OhQymorQIJgHreEbOFiccKwSHmwGfoe2bmukBZll4J096E7rFqoL
-	IAPO6hU82iqmJ83KriJTgEKf0B9+MDT1M6/+ugRD4pFwqdpbnIi4vfp8Cl8KDhv+jVwH46rin9bCH
-	CWkDk4JeHjuQXp0VCnHuNapmepiW4FBKBpzVKC5g9diew8V9cBz45QV86Ieq+UvLBsFcGGO2ezNKl
-	1E0amjkCP9599ta0jncJT5Mb7YQbdSmJMzdMp92Q8EUDU+mL/cgqPfpyWPqHxA+cfudHuVfepmuzm
-	pESpv94A==;
+	bh=87mB74uPyq/Hfc0nWoQkev9ARKnezY4QFdNXXTcl6Xo=; b=BVL/tF1ngzKOgeQuRQJy7BANtO
+	jrOmRp4Wz2yZdTTiLmsRb7p33a+9iVhXka3kvwY6Pj71cUCaHeP90nSaMpSlh9dDhsGlOytX8xdAs
+	xnjohxOUCq1nU0C314XCKPfx6UOxq5ckvBwITpgP1L0UjneXZ9aoAbNLRd/S3nigA+p4GeRKEhlYp
+	vfSk8OQMMcP4Qag9pZO1JnZfm2HCio+8qxVOvKP7ih4ndNkuMclP+3xKIYcIpe2bwLhuY91JbqnAK
+	WvaHlwfUrWVgWjJdsgSu3d4O58bGn7mhf7IzqrhTMZZX4jNJ85EZvUDA581Ab5rffPcpPVknU1oRy
+	3w4WFVNQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4e0h-002cmS-1Y;
-	Thu, 01 Jun 2023 08:50:19 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1q4e1l-002czS-1N;
+	Thu, 01 Jun 2023 08:51:25 +0000
+Received: from mail-yb1-xb2b.google.com ([2607:f8b0:4864:20::b2b])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4e0e-002cld-0m
+	id 1q4e1i-002cxx-0C
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 08:50:17 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q4e0c-0006tG-S1; Thu, 01 Jun 2023 10:50:14 +0200
-Message-ID: <4318a99c-134b-bd93-d697-81a9e03faccf@pengutronix.de>
-Date: Thu, 1 Jun 2023 10:50:14 +0200
+	Thu, 01 Jun 2023 08:51:23 +0000
+Received: by mail-yb1-xb2b.google.com with SMTP id 3f1490d57ef6-bab8f66d3a2so572843276.3
+        for <barebox@lists.infradead.org>; Thu, 01 Jun 2023 01:51:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20221208; t=1685609478; x=1688201478;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=87mB74uPyq/Hfc0nWoQkev9ARKnezY4QFdNXXTcl6Xo=;
+        b=VdqbkiPG+gHENyugJZMhzXU36PMGyXCcLGyEu5BxSLP4oRYZ8MOooL0TiM3tokSV8J
+         Nl68/JfGadQ/3sZChJed8kefxE1owicfTDAWCHK04fAR4SQxWNLWY42vypWfCE5BoO5e
+         Qx3mpdc/bCLRYMW8Ok0pBQYNkHKiwwMcM9qeLsW3YBBXnuP88HCeHma4iEEl85FMDLRu
+         N1JRpn6CpMuIAY9LHOQfY9WIJvtEfuSecCW3KZ3Zsh0IMcr9ogyqn1+TRsoq4MTryKQu
+         oN6k7EnTFK+vzkHFSDMF58Q0M8wLERKuhQgI3RvA2o/LKicnRFIfubc/qmB35a8zoXwy
+         kihg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1685609478; x=1688201478;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=87mB74uPyq/Hfc0nWoQkev9ARKnezY4QFdNXXTcl6Xo=;
+        b=CcDteLk7jbc1iRjS4Uu75yRQIDcG020gEgUTzQDnmXLjzCE0D+e6XM3S4Vd9sSvABL
+         0zrLvUcFyBGZ2kfvF1RrPQdcX9nLnXYx3e8tcWAnFsNhQumEqZMZzQAAwpRu90pML5F8
+         /CKUTSOrBRFeB+uK7ONqwKQQzq6fcCdgzhkpW3BuHtrd0t3NTHR9Tfjl7QZx6pdOBwC7
+         Ah/baqSnojIRZTR0UouvxKY6QWdEwSGJrCxbqJJH0KNfy/fBqX4Wq28eN5tlii5tBs/M
+         1Zg0OeqJDAWdYWDZ1Z00FMT7JnD34+r7BlcRnu6njU0hknh5XAhey4PVTScZ4z22wSC1
+         oNxA==
+X-Gm-Message-State: AC+VfDz/Mjfd/EqMksfoCsrsPxmYVSBqs0ybB3nIg2AosYtU61zTmDUc
+	N5nrz0Au4rx5iSHefz+ywMC41KvE8RYmjqw361heW6A5coc=
+X-Google-Smtp-Source: ACHHUZ7/p6SUMqtS0d0EEhar//fZCcrlY7aZbycxT1A//GOJ5K8J4W6u3ibjL1564PhqY9AnVacmXFdq41kda1uj270=
+X-Received: by 2002:a25:4041:0:b0:b8e:cb88:1b69 with SMTP id
+ n62-20020a254041000000b00b8ecb881b69mr8427453yba.34.1685609477950; Thu, 01
+ Jun 2023 01:51:17 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Content-Language: en-US
-To: Johannes Zink <j.zink@pengutronix.de>, Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org, patchwork-jzi@pengutronix.de,
- Juergen Borleis <j.borleis@pengutronix.de>
-References: <20230601-koenigbauer-alphajet-upstreaming-v1-1-bcdcc1f1382e@pengutronix.de>
- <20230601082825.GL18491@pengutronix.de>
- <b810f8d1-97e4-9e26-0516-2575f9991fef@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <b810f8d1-97e4-9e26-0516-2575f9991fef@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20230531143500.165837-1-yegorslists@googlemail.com> <20230601081716.GK18491@pengutronix.de>
+In-Reply-To: <20230601081716.GK18491@pengutronix.de>
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Thu, 1 Jun 2023 10:51:06 +0200
+Message-ID: <CAGm1_ku_jsmK1Jji3YN+BXcnZpzDJ56tNbNf_TCnRJ8hRo2=AQ@mail.gmail.com>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230601_015016_284584_C94D6CA0 
-X-CRM114-Status: GOOD (  25.37  )
+X-CRM114-CacheID: sfid-20230601_015122_101170_1807C181 
+X-CRM114-Status: GOOD (  26.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,169 +94,134 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX8MP: add Koenig+Bauer Alphajet board
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] net: phy: add driver for MotorComm PHY
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 01.06.23 10:41, Johannes Zink wrote:
-> Hi Sascha,
-> 
-> thanks for your feedback.
-> 
-> On 6/1/23 10:28, Sascha Hauer wrote:
->> On Thu, Jun 01, 2023 at 09:40:29AM +0200, Johannes Zink wrote:
->>> Add basic support for Koenig+Bauer Alphajet, based on a Congatec QMX8MP
->>> SoM with a i.MX8MP SoC in the Industrial Temperature Grade 4GB Variant,
->>> no inline ECC used.
->>>
->>> Co-Developed-by: Juergen Borleis <j.borleis@pengutronix.de>
->>> Signed-off-by: Juergen Borleis <j.borleis@pengutronix.de>
->>> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
->>> ---
->>> Koenig+Bauer Alphajet is based on the Congatec QMX8MP, which is an
->>> i.MX8MP based SoC. Building barebox for this target requires the usual
->>> bl31 and lpddr4 training data in /firmware as described in [1].
->>>
->>> The Congatec SoM is strapped and fused to boot from QSPI NOR flash,
->>> which can easily be updated using the registered barebox update handler.
->>>
->>> [1] https://www.barebox.org/doc/latest/boards/imx/nxp-imx8mp-evk.html
->>>
->>> Best regards
->>> Johannes
->>> ---
->>> Bootlog:
->>>
->>> barebox 2023.05.0-00196-g24e000914af6-dirty #151 Thu Jun 1 09:36:02 CEST
->>> 2023
->>>
->>> Board: Koenig+Bauer Alphajet
->>> deep-probe: supported due to kb,alphajet
->>> detected i.MX8MP revision 1.1
->>> i.MX8MP unique ID: 3a13efb20002aaff
->>> netconsole: registered as netconsole-1
->>> psci psci.of: detected version 1.1
->>> imx-esdhc 30b40000.mmc@30b40000.of: registered as mmc0
->>> mmc0: detected SD card version 2.0
->>> mmc0: registered mmc0
->>> imx-esdhc 30b60000.mmc@30b60000.of: registered as mmc2
->>> mmc2: detected MMC card version 5.1
->>> mmc2: registered mmc2.boot0
->>> mmc2: registered mmc2.boot1
->>> mmc2: registered mmc2
->>> mdio_bus: miibus0: probed
->>> xHCI xHCI0: USB XHCI 1.10
->>> state: New state registered 'state'
->>> state: Using bucket 0@0x00000000
->>> malloc space: 0xbfcfbe80 -> 0xffcfbe7f (size 1 GiB)
->>> found force-builtin environment, using defaultenv
->>>
->>> Hit m for menu or any to stop autoboot:    3
->>> barebox@Koenig+Bauer Alphajet:/
->>>
->>> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
->>> ---
->>>   arch/arm/boards/Makefile                           |    1 +
->>>   arch/arm/boards/kb-imx8mp-alphajet/Makefile        |    4 +
->>>   arch/arm/boards/kb-imx8mp-alphajet/board.c         |   60 +
->>>   .../flash-header-imx8mp-cgtqx8p.imxcfg             |   10 +
->>>   arch/arm/boards/kb-imx8mp-alphajet/lowlevel.c      |  127 ++
->>>   arch/arm/boards/kb-imx8mp-alphajet/lpddr4-timing.c | 1832 ++++++++++++++++++++
->>>   arch/arm/dts/Makefile                              |    1 +
->>>   arch/arm/dts/imx8mp-cgtqx8p.dtsi                   | 1060 +++++++++++
->>>   arch/arm/dts/imx8mp-koenigbauer-alphajet.dts       |  180 ++
->>>   arch/arm/mach-imx/Kconfig                          |   10 +
->>>   images/Makefile.imx                                |    5 +
->>>   11 files changed, 3290 insertions(+)
->>>
->>> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
->>> index 2877debad535..67b2fc07a395 100644
->>> --- a/arch/arm/boards/Makefile
->>> +++ b/arch/arm/boards/Makefile
->>> @@ -81,6 +81,7 @@ obj-$(CONFIG_MACH_NXP_IMX8MQ_EVK)        += nxp-imx8mq-evk/
->>>   obj-$(CONFIG_MACH_NXP_IMX8MM_EVK)        += nxp-imx8mm-evk/
->>>   obj-$(CONFIG_MACH_NXP_IMX8MN_EVK)        += nxp-imx8mn-evk/
->>>   obj-$(CONFIG_MACH_NXP_IMX8MP_EVK)        += nxp-imx8mp-evk/
->>> +obj-$(CONFIG_MACH_KB_ALPHAJET)            += kb-imx8mp-alphajet/
->>>   obj-$(CONFIG_MACH_TQ_MBA8MPXL)            += tqma8mpxl/
->>>   obj-$(CONFIG_MACH_OMAP343xSDP)            += omap343xdsp/
->>>   obj-$(CONFIG_MACH_OMAP3EVM)            += omap3evm/
->>> diff --git a/arch/arm/boards/kb-imx8mp-alphajet/Makefile b/arch/arm/boards/kb-imx8mp-alphajet/Makefile
->>> new file mode 100644
->>> index 000000000000..b3ae72be3e3b
->>> --- /dev/null
->>> +++ b/arch/arm/boards/kb-imx8mp-alphajet/Makefile
->>> @@ -0,0 +1,4 @@
->>> +# SPDX-License-Identifier:      GPL-2.0+
->>> +
->>> +obj-y += board.o
->>> +lwl-y += lowlevel.o lpddr4-timing.o
->>> diff --git a/arch/arm/boards/kb-imx8mp-alphajet/board.c b/arch/arm/boards/kb-imx8mp-alphajet/board.c
->>> new file mode 100644
->>> index 000000000000..78cc60e2c3b1
->>> --- /dev/null
->>> +++ b/arch/arm/boards/kb-imx8mp-alphajet/board.c
->>> @@ -0,0 +1,60 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +// SPDX-FileCopyrightText: 2023 Juergen Borleis, Pengutronix
->>> +// SPDX-FileCopyrightText: 2023 Johannes Zink, Pengutronix
->>> +
->>> +#include <asm/memory.h>
->>> +#include <bootsource.h>
->>> +#include <common.h>
->>> +#include <deep-probe.h>
->>> +#include <init.h>
->>> +#include <linux/phy.h>
->>> +#include <linux/sizes.h>
->>> +#include <mach/imx/bbu.h>
->>> +#include <mach/imx/generic.h>
->>> +#include <mach/imx/iomux-mx8mp.h>
->>> +#include <gpio.h>
->>> +#include <envfs.h>
->>> +
->>> +#define EQOS_PWR_PIN IMX_GPIO_NR(1, 5) /* ENET_PWREN# */
->>> +static void setup_ethernet_phy(void)
->>> +{
->>> +    u32 val;
->>> +
->>> +    of_device_ensure_probed_by_alias("gpio0");
->>> +
->>> +    if (gpio_direction_output(EQOS_PWR_PIN, 0))
->>> +    {
->>> +        pr_err("eqos phy power: failed to request pin\n");
->>> +        return;
->>> +    }
->>
->> Should this be a fixed regulator in dt?
->>
-> 
-> Phy regulator handling in linux is broken for the mx8 eqos, as the phy-regulators are not handed down properly, which is why I cannot add it in the linux upstream dts (dts upstreaming is still to be done...).
-> 
-> I decided to use a hog there. As Marco gave me a hint that hogs are currently somewhat broken in barebox, I opted for setting the pin manually in the board code.
+Hi Sascha,
 
-Hogs are broken? Do you care to write a bug report? :)
+On Thu, Jun 1, 2023 at 10:17=E2=80=AFAM Sascha Hauer <sha@pengutronix.de> w=
+rote:
+>
+> Hi Yegor,
+>
+> On Wed, May 31, 2023 at 04:35:00PM +0200, yegorslists@googlemail.com wrot=
+e:
+> > From: Yegor Yefremov <yegorslists@googlemail.com>
+> >
+>
+> Could you add a word here on which kernel version this is based on? It
+> will help synchronizing with newer kernels later.
 
-Thanks,
-Ahmad
+The driver corresponds to the kernel 6.1.x. The upstream kernel driver
+supports more chips. But I have only this one. So, I cannot test other
+chips. Is it OK for you to merge the reduced version or should I port
+the complete one?
 
-> 
-> Johannes
-> 
->> Sascha
->>
->>
-> 
+>
+> > Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+> > ---
+> >  drivers/net/phy/Kconfig     |   5 ++
+> >  drivers/net/phy/Makefile    |   1 +
+> >  drivers/net/phy/motorcomm.c | 128 ++++++++++++++++++++++++++++++++++++
+> >  3 files changed, 134 insertions(+)
+> >  create mode 100644 drivers/net/phy/motorcomm.c
+> >
+>
+> [...]
+>
+> > +static int yt8511_config_init(struct phy_device *phydev)
+> > +{
+> > +     int oldpage, ret =3D 0;
+> > +     unsigned int ge, fe;
+> > +
+> > +     oldpage =3D phy_select_page(phydev, YT8511_EXT_CLK_GATE);
+> > +     if (oldpage < 0)
+> > +             goto err_restore_page;
+> > +
+> > +     /* set rgmii delay mode */
+> > +     switch (phydev->interface) {
+> > +     case PHY_INTERFACE_MODE_RGMII:
+> > +             ge =3D YT8511_DELAY_GE_TX_DIS;
+> > +             fe =3D YT8511_DELAY_FE_TX_DIS;
+> > +             break;
+> > +     case PHY_INTERFACE_MODE_RGMII_RXID:
+> > +             ge =3D YT8511_DELAY_RX | YT8511_DELAY_GE_TX_DIS;
+> > +             fe =3D YT8511_DELAY_FE_TX_DIS;
+> > +             break;
+> > +     case PHY_INTERFACE_MODE_RGMII_TXID:
+> > +             ge =3D YT8511_DELAY_GE_TX_EN;
+> > +             fe =3D YT8511_DELAY_FE_TX_EN;
+> > +             break;
+> > +     case PHY_INTERFACE_MODE_RGMII_ID:
+> > +             ge =3D YT8511_DELAY_RX | YT8511_DELAY_GE_TX_EN;
+> > +             fe =3D YT8511_DELAY_FE_TX_EN;
+> > +             break;
+> > +     default: /* do not support other modes */
+> > +             ret =3D -EOPNOTSUPP;
+> > +             goto err_restore_page;
+> > +     }
+> > +
+> > +     ret =3D phy_modify(phydev, YT8511_PAGE, (YT8511_DELAY_RX | YT8511=
+_DELAY_GE_TX_EN), ge);
+> > +     if (ret < 0)
+> > +             goto err_restore_page;
+> > +
+> > +     /* set clock mode to 125mhz */
+> > +     ret =3D phy_modify(phydev, YT8511_PAGE, 0, YT8511_CLK_125M);
+> > +     if (ret < 0)
+> > +             goto err_restore_page;
+> > +
+> > +     /* fast ethernet delay is in a separate page */
+> > +     ret =3D phy_write(phydev, YT8511_PAGE_SELECT, YT8511_EXT_DELAY_DR=
+IVE);
+> > +     if (ret < 0)
+> > +             goto err_restore_page;
+> > +
+> > +     ret =3D phy_modify(phydev, YT8511_PAGE, YT8511_DELAY_FE_TX_EN, fe=
+);
+> > +     if (ret < 0)
+> > +             goto err_restore_page;
+> > +
+> > +     /* leave pll enabled in sleep */
+> > +     ret =3D phy_write(phydev, YT8511_PAGE_SELECT, YT8511_EXT_SLEEP_CT=
+RL);
+> > +     if (ret < 0)
+> > +             goto err_restore_page;
+> > +
+> > +     ret =3D phy_modify(phydev, YT8511_PAGE, 0, YT8511_PLLON_SLP);
+> > +     if (ret < 0)
+> > +             goto err_restore_page;
+> > +
+> > +err_restore_page:
+> > +     return phy_restore_page(phydev, oldpage, ret);
+>
+> This should likely return 'ret' and not the return value of
+> phy_restore_page().
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+If I understand it correctly, phy_restore_page() will also propagate
+the ret it gets as a parameter [1] under some circumstances.
 
+[1] https://github.com/barebox/barebox/blob/master/drivers/net/phy/phy-core=
+.c#L91
+
+Yegor
+
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             =
+|
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
+|
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
+|
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
+|
 
 
