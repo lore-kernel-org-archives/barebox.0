@@ -1,59 +1,60 @@
-Delivery-date: Thu, 01 Jun 2023 10:42:56 +0200
+Delivery-date: Thu, 01 Jun 2023 10:50:44 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4dta-005YGW-4V
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 10:42:56 +0200
+	id 1q4e17-005Yea-Ri
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 10:50:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4dtX-0005uz-Ab
-	for lore@pengutronix.de; Thu, 01 Jun 2023 10:42:56 +0200
+	id 1q4e15-00077Z-GI
+	for lore@pengutronix.de; Thu, 01 Jun 2023 10:50:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Message-ID:In-reply-to:Date:Subject:Cc:To:From:
+	References:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yF13MaoCbGdqImPzOKX141ngRfKy+qQdbpuhKJ4tbLo=; b=xg1G6CYmdyq8Xhi80CllnVowG4
-	gf+meRlYlyCSvY1RCfpE7J/xtWpBO0eJlwd0qNpc2yrd5OC7FrO8Zke2G0VKeB1twJYluD6wZEeOA
-	fe/zembFyqoHzL3W4TllOx7V3XZOjoC+4CJFDHIrQ5DufO4gDaUDgPbEaZ/KBRGCAV791i9j55wG4
-	O309PswGpE2Zv50qVM8uB+qLZyNapth4QT5qtbIiIgb5uZkEdtiTRDhQCsCQtZUqiIks6Pwa9kg7Q
-	UNSfJ1YkYPnDsU2ldpYqHlDyB1UuE5g3f+RGVqnBwtlfBLvQwiQtwxNko2HmwHedg5LUkUBEo+Nrr
-	tbNO3u/A==;
+	bh=R9b2dERnajGlt9hhKsvTYIQNXJalZePXy2VtKL8LDDw=; b=lgAOMRcUTXpryfBDhgeOEoLr9D
+	jo0ySN9a38O8HT/4Q7TlFXM3RB9mTI6WfJjXpxIMcGQwcbVkCTNdIYBD8k9TolzxjuHE5E1RZ7CIs
+	XAsD9aZ1zzfPMcvmNx9f+OqpwySiwsU20KBnk78SjUoGF37RNqZUlxDa/o2GT8ZgcH2MvMfLaE5Hv
+	3+9W7Cm6u+kIh3ClJ0ThuFFHsoOjC0sUCVTU5aK3Y1orwSEcBoALTFmoWJVyMi3Dhob4K2ih/nlXC
+	iUVaMyQ6oTMGLbQzhfkE8avxJJDNRsdxZfkL+vfc+yBVNyBIrrfiOvITlvEKNKvSJvBzRPuo18Rob
+	26eoEgfQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4dsR-002bXM-1X;
-	Thu, 01 Jun 2023 08:41:47 +0000
+	id 1q4e02-002cdR-2b;
+	Thu, 01 Jun 2023 08:49:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4dsN-002bWO-2b
+	id 1q4dzz-002ccj-0v
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 08:41:45 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <j.zink@pengutronix.de>)
-	id 1q4dsL-0005kR-VY; Thu, 01 Jun 2023 10:41:42 +0200
-Message-ID: <b810f8d1-97e4-9e26-0516-2575f9991fef@pengutronix.de>
-Date: Thu, 1 Jun 2023 10:41:38 +0200
+	Thu, 01 Jun 2023 08:49:36 +0000
+Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <u.oelmann@pengutronix.de>)
+	id 1q4dzy-0006iA-3m; Thu, 01 Jun 2023 10:49:34 +0200
+Received: from uol by pty.hi.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <u.oelmann@pengutronix.de>)
+	id 1q4dzx-005vix-LW; Thu, 01 Jun 2023 10:49:33 +0200
+References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
+ <20230531145927.1399282-15-a.fatoum@pengutronix.de>
+User-agent: mu4e 1.6.9; emacs 29.0.50
+From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Date: Thu, 01 Jun 2023 10:41:31 +0200
+In-reply-to: <20230531145927.1399282-15-a.fatoum@pengutronix.de>
+Message-ID: <6rzg5j36ua.fsf@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.0
-Content-Language: en-US, de-DE
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org, patchwork-jzi@pengutronix.de,
- Juergen Borleis <j.borleis@pengutronix.de>
-References: <20230601-koenigbauer-alphajet-upstreaming-v1-1-bcdcc1f1382e@pengutronix.de>
- <20230601082825.GL18491@pengutronix.de>
-From: Johannes Zink <j.zink@pengutronix.de>
-In-Reply-To: <20230601082825.GL18491@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230601_014143_838046_2D83B73A 
-X-CRM114-Status: GOOD (  24.45  )
+X-CRM114-CacheID: sfid-20230601_014935_322882_A55A5C0B 
+X-CRM114-Status: GOOD (  29.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,164 +72,174 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX8MP: add Koenig+Bauer Alphajet board
+Subject: Re: [PATCH 14/18] of: export new of_cdev_find helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Sascha,
+Hi Ahmad,
 
-thanks for your feedback.
+another small typo.
 
-On 6/1/23 10:28, Sascha Hauer wrote:
-> On Thu, Jun 01, 2023 at 09:40:29AM +0200, Johannes Zink wrote:
->> Add basic support for Koenig+Bauer Alphajet, based on a Congatec QMX8MP
->> SoM with a i.MX8MP SoC in the Industrial Temperature Grade 4GB Variant,
->> no inline ECC used.
->>
->> Co-Developed-by: Juergen Borleis <j.borleis@pengutronix.de>
->> Signed-off-by: Juergen Borleis <j.borleis@pengutronix.de>
->> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
->> ---
->> Koenig+Bauer Alphajet is based on the Congatec QMX8MP, which is an
->> i.MX8MP based SoC. Building barebox for this target requires the usual
->> bl31 and lpddr4 training data in /firmware as described in [1].
->>
->> The Congatec SoM is strapped and fused to boot from QSPI NOR flash,
->> which can easily be updated using the registered barebox update handler.
->>
->> [1] https://www.barebox.org/doc/latest/boards/imx/nxp-imx8mp-evk.html
->>
->> Best regards
->> Johannes
->> ---
->> Bootlog:
->>
->> barebox 2023.05.0-00196-g24e000914af6-dirty #151 Thu Jun 1 09:36:02 CEST
->> 2023
->>
->> Board: Koenig+Bauer Alphajet
->> deep-probe: supported due to kb,alphajet
->> detected i.MX8MP revision 1.1
->> i.MX8MP unique ID: 3a13efb20002aaff
->> netconsole: registered as netconsole-1
->> psci psci.of: detected version 1.1
->> imx-esdhc 30b40000.mmc@30b40000.of: registered as mmc0
->> mmc0: detected SD card version 2.0
->> mmc0: registered mmc0
->> imx-esdhc 30b60000.mmc@30b60000.of: registered as mmc2
->> mmc2: detected MMC card version 5.1
->> mmc2: registered mmc2.boot0
->> mmc2: registered mmc2.boot1
->> mmc2: registered mmc2
->> mdio_bus: miibus0: probed
->> xHCI xHCI0: USB XHCI 1.10
->> state: New state registered 'state'
->> state: Using bucket 0@0x00000000
->> malloc space: 0xbfcfbe80 -> 0xffcfbe7f (size 1 GiB)
->> found force-builtin environment, using defaultenv
->>
->> Hit m for menu or any to stop autoboot:    3
->> barebox@Koenig+Bauer Alphajet:/
->>
->> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
->> ---
->>   arch/arm/boards/Makefile                           |    1 +
->>   arch/arm/boards/kb-imx8mp-alphajet/Makefile        |    4 +
->>   arch/arm/boards/kb-imx8mp-alphajet/board.c         |   60 +
->>   .../flash-header-imx8mp-cgtqx8p.imxcfg             |   10 +
->>   arch/arm/boards/kb-imx8mp-alphajet/lowlevel.c      |  127 ++
->>   arch/arm/boards/kb-imx8mp-alphajet/lpddr4-timing.c | 1832 ++++++++++++++++++++
->>   arch/arm/dts/Makefile                              |    1 +
->>   arch/arm/dts/imx8mp-cgtqx8p.dtsi                   | 1060 +++++++++++
->>   arch/arm/dts/imx8mp-koenigbauer-alphajet.dts       |  180 ++
->>   arch/arm/mach-imx/Kconfig                          |   10 +
->>   images/Makefile.imx                                |    5 +
->>   11 files changed, 3290 insertions(+)
->>
->> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
->> index 2877debad535..67b2fc07a395 100644
->> --- a/arch/arm/boards/Makefile
->> +++ b/arch/arm/boards/Makefile
->> @@ -81,6 +81,7 @@ obj-$(CONFIG_MACH_NXP_IMX8MQ_EVK)		+= nxp-imx8mq-evk/
->>   obj-$(CONFIG_MACH_NXP_IMX8MM_EVK)		+= nxp-imx8mm-evk/
->>   obj-$(CONFIG_MACH_NXP_IMX8MN_EVK)		+= nxp-imx8mn-evk/
->>   obj-$(CONFIG_MACH_NXP_IMX8MP_EVK)		+= nxp-imx8mp-evk/
->> +obj-$(CONFIG_MACH_KB_ALPHAJET)			+= kb-imx8mp-alphajet/
->>   obj-$(CONFIG_MACH_TQ_MBA8MPXL)			+= tqma8mpxl/
->>   obj-$(CONFIG_MACH_OMAP343xSDP)			+= omap343xdsp/
->>   obj-$(CONFIG_MACH_OMAP3EVM)			+= omap3evm/
->> diff --git a/arch/arm/boards/kb-imx8mp-alphajet/Makefile b/arch/arm/boards/kb-imx8mp-alphajet/Makefile
->> new file mode 100644
->> index 000000000000..b3ae72be3e3b
->> --- /dev/null
->> +++ b/arch/arm/boards/kb-imx8mp-alphajet/Makefile
->> @@ -0,0 +1,4 @@
->> +# SPDX-License-Identifier:      GPL-2.0+
->> +
->> +obj-y += board.o
->> +lwl-y += lowlevel.o lpddr4-timing.o
->> diff --git a/arch/arm/boards/kb-imx8mp-alphajet/board.c b/arch/arm/boards/kb-imx8mp-alphajet/board.c
->> new file mode 100644
->> index 000000000000..78cc60e2c3b1
->> --- /dev/null
->> +++ b/arch/arm/boards/kb-imx8mp-alphajet/board.c
->> @@ -0,0 +1,60 @@
->> +// SPDX-License-Identifier: GPL-2.0
->> +// SPDX-FileCopyrightText: 2023 Juergen Borleis, Pengutronix
->> +// SPDX-FileCopyrightText: 2023 Johannes Zink, Pengutronix
->> +
->> +#include <asm/memory.h>
->> +#include <bootsource.h>
->> +#include <common.h>
->> +#include <deep-probe.h>
->> +#include <init.h>
->> +#include <linux/phy.h>
->> +#include <linux/sizes.h>
->> +#include <mach/imx/bbu.h>
->> +#include <mach/imx/generic.h>
->> +#include <mach/imx/iomux-mx8mp.h>
->> +#include <gpio.h>
->> +#include <envfs.h>
->> +
->> +#define EQOS_PWR_PIN IMX_GPIO_NR(1, 5) /* ENET_PWREN# */
->> +static void setup_ethernet_phy(void)
->> +{
->> +	u32 val;
->> +
->> +	of_device_ensure_probed_by_alias("gpio0");
->> +
->> +	if (gpio_direction_output(EQOS_PWR_PIN, 0))
->> +	{
->> +		pr_err("eqos phy power: failed to request pin\n");
->> +		return;
->> +	}
-> 
-> Should this be a fixed regulator in dt?
-> 
+On Wed, May 31 2023 at 16:59 +0200, Ahmad Fatoum <a.fatoum@pengutronix.de> =
+wrote:
+> __of_find_path goes throught the hassle of determining the cdev, only to
 
-Phy regulator handling in linux is broken for the mx8 eqos, as the 
-phy-regulators are not handed down properly, which is why I cannot add it in 
-the linux upstream dts (dts upstreaming is still to be done...).
+s/throught/through/
 
-I decided to use a hog there. As Marco gave me a hint that hogs are currently 
-somewhat broken in barebox, I opted for setting the pin manually in the board code.
+Best regards
+Ulrich
 
-Johannes
 
-> Sascha
-> 
-> 
-
--- 
-Pengutronix e.K.                | Johannes Zink                  |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
-
+> discard it again and return either zero or an error code.
+>
+> Follow up commits will need to get the cdev corresponding to a path in
+> the DT. So let's make that easier by exporting a suitable helper function.
+>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/of/of_path.c | 59 ++++++++++++++++++++++++++++++--------------
+>  include/of.h         |  1 +
+>  2 files changed, 41 insertions(+), 19 deletions(-)
+>
+> diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
+> index 059690e9b8e8..4d9f7b6005af 100644
+> --- a/drivers/of/of_path.c
+> +++ b/drivers/of/of_path.c
+> @@ -27,21 +27,17 @@ struct device *of_find_device_by_node_path(const char=
+ *path)
+>  }
+>=20=20
+>  /**
+> - * __of_find_path
+> + * __of_cdev_find
+>   *
+>   * @node: The node to find the cdev for, can be the device or a
+>   *        partition in the device
+>   * @part: Optionally, a description of a partition of @node.  See of_fin=
+d_path
+> - * @outpath: if this function returns 0 outpath will contain the path be=
+longing
+> - *           to the input path description. Must be freed with free().
+> - * @flags: use OF_FIND_PATH_FLAGS_BB to return the .bb device if availab=
+le
+>   *
+>   */
+> -static int __of_find_path(struct device_node *node, const char *part, ch=
+ar **outpath, unsigned flags)
+> +static struct cdev *__of_cdev_find(struct device_node *node, const char =
+*part)
+>  {
+>  	struct device *dev;
+>  	struct cdev *cdev;
+> -	bool add_bb =3D false;
+>=20=20
+>  	of_partition_ensure_probed(node);
+>=20=20
+> @@ -56,24 +52,17 @@ static int __of_find_path(struct device_node *node, c=
+onst char *part, char **out
+>=20=20
+>  			/* when partuuid is specified short-circuit the search for the cdev */
+>  			ret =3D of_property_read_string(node, "partuuid", &uuid);
+> -			if (!ret) {
+> -				cdev =3D cdev_by_partuuid(uuid);
+> -				if (!cdev)
+> -					return -ENODEV;
+> -
+> -				*outpath =3D basprintf("/dev/%s", cdev->name);
+> -
+> -				return 0;
+> -			}
+> +			if (!ret)
+> +				return cdev_by_partuuid(uuid) ?: ERR_PTR(-ENODEV);
+>  		}
+>=20=20
+>  		dev =3D of_find_device_by_node_path(devnode->full_name);
+>  		if (!dev)
+> -			return -ENODEV;
+> +			return ERR_PTR(-ENODEV);
+>  	}
+>=20=20
+>  	if (dev->bus && !dev->driver)
+> -		return -EPROBE_DEFER;
+> +		return ERR_PTR(-EPROBE_DEFER);
+>=20=20
+>  	device_detect(dev);
+>=20=20
+> @@ -82,8 +71,40 @@ static int __of_find_path(struct device_node *node, co=
+nst char *part, char **out
+>  	else
+>  		cdev =3D cdev_by_device_node(node);
+>=20=20
+> -	if (!cdev)
+> -		return -ENOENT;
+> +	return cdev ?: ERR_PTR(-ENOENT);
+> +}
+> +
+> +/**
+> + * of_cdev_find
+> + *
+> + * @node: The node to find the cdev for, can be the device or a
+> + *        partition in the device
+> + *
+> + */
+> +struct cdev *of_cdev_find(struct device_node *node)
+> +{
+> +	return __of_cdev_find(node, NULL);
+> +}
+> +
+> +/**
+> + * __of_find_path
+> + *
+> + * @node: The node to find the cdev for, can be the device or a
+> + *        partition in the device
+> + * @part: Optionally, a description of a partition of @node.  See of_fin=
+d_path
+> + * @outpath: if this function returns 0 outpath will contain the path be=
+longing
+> + *           to the input path description. Must be freed with free().
+> + * @flags: use OF_FIND_PATH_FLAGS_BB to return the .bb device if availab=
+le
+> + *
+> + */
+> +static int __of_find_path(struct device_node *node, const char *part, ch=
+ar **outpath, unsigned flags)
+> +{
+> +	bool add_bb =3D false;
+> +	struct cdev *cdev;
+> +
+> +	cdev =3D __of_cdev_find(node, part);
+> +	if (IS_ERR(cdev))
+> +		return PTR_ERR(cdev);
+>=20=20
+>  	if ((flags & OF_FIND_PATH_FLAGS_BB) && cdev->mtd &&
+>  	    mtd_can_have_bb(cdev->mtd))
+> diff --git a/include/of.h b/include/of.h
+> index c716f9283316..2b75ce63e185 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -331,6 +331,7 @@ int of_add_memory_bank(struct device_node *node, bool=
+ dump, int r,
+>  struct device *of_find_device_by_node_path(const char *path);
+>  #define OF_FIND_PATH_FLAGS_BB 1		/* return .bb device if available */
+>  int of_find_path(struct device_node *node, const char *propname, char **=
+outpath, unsigned flags);
+> +struct cdev *of_cdev_find(struct device_node *node);
+>  int of_find_path_by_node(struct device_node *node, char **outpath, unsig=
+ned flags);
+>  struct device_node *of_find_node_by_devpath(struct device_node *root, co=
+nst char *path);
+>  int of_register_fixup(int (*fixup)(struct device_node *, void *), void *=
+context);
+--=20
+Pengutronix e.K.                           | Ulrich =C3=96lmann            =
+   |
+Industrial Linux Solutions                 | http://www.pengutronix.de/  |
+Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
