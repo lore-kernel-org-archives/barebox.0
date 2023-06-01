@@ -1,61 +1,66 @@
-Delivery-date: Thu, 01 Jun 2023 10:34:48 +0200
+Delivery-date: Thu, 01 Jun 2023 10:36:41 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4dlh-005XrE-Ff
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 10:34:48 +0200
+	id 1q4dnW-005XwQ-G6
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 10:36:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4dle-0004TX-OX
-	for lore@pengutronix.de; Thu, 01 Jun 2023 10:34:47 +0200
+	id 1q4dnU-00053Q-3w
+	for lore@pengutronix.de; Thu, 01 Jun 2023 10:36:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4pJgs1jyXImVqcUrlGVsUqtbl8rxs2z/VkVXfR0oRdw=; b=dKWKkq4vT1/3Y+5uctrh5UFDEh
-	BqPXIvi71b+MPFzmwe9HMOeYjLendudJFfwbyjQK2qBhSI9/nyjcXK/9Y8CRsOijcGPzKt/p7bt3Z
-	3L8iKwlgAJEszHDy9quji7wYQshFsFbRoQohNUcjPxk94gNdOjNI+jBy6XercObfLtRjn+KdXr291
-	dQZNGN/atmDJqbgsBvIjQiHWBa1oixz+JcTK73dDX0jTaROIpeuFejNp2CAR9kSWtv5jM57S+Cyoq
-	k1YLzmmXtHw0pQ8GO0E7bHyh+P4ttURmlCRIcbJSDUkmI9e8HHrCa9bREPvDm/puJja8KcLkThlzp
-	MMJGuPDg==;
+	bh=Up4Alqep6QC8kcjP4AHoeKlOyNlds6qtNfoaT8c/5nQ=; b=ZbUc9r8q1+lGq45NHstkn7z13L
+	5kLTpc+8j3K/0X5cgk2z9KDCFkIkk5BX4brPOQ4CVigdcpwHgW68BVjHYDo0tB32b1UExOn5VMuET
+	6DhJZ/c1cZjz5zousHBN3+cvJ7AnVnstfM6JlKSgwIFDZr9kCUDerCsTs0u1l9dbAfwYu7ufOdmb2
+	qq3j/oqo59kywDVsc1B3VR7UMG1N9jcubzbjMEmDv7EaZ3qjS9mJAKCv1PbP2hWn0ASwVW3dTguQ0
+	SN29l4HD2WLfoUsaVERMxbgBr1KancSp15gymnYT9+UqbR9iYV3rkTp7lKklapn6iQjuYQSU0mTI+
+	mjYicroQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4dkX-002ZqP-0V;
-	Thu, 01 Jun 2023 08:33:37 +0000
+	id 1q4dmX-002aWa-1Q;
+	Thu, 01 Jun 2023 08:35:41 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4dkU-002Zpi-2D
+	id 1q4dmU-002aVL-2J
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 08:33:36 +0000
+	Thu, 01 Jun 2023 08:35:40 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1q4dkT-0004K9-FN; Thu, 01 Jun 2023 10:33:33 +0200
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1q4dkT-0005Bi-7U; Thu, 01 Jun 2023 10:33:33 +0200
-Date: Thu, 1 Jun 2023 10:33:33 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <20230601083333.nkjmb7ggcttchet2@pengutronix.de>
-References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
- <20230531145927.1399282-12-a.fatoum@pengutronix.de>
- <20230601074204.GI18491@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1q4dmT-0004oG-A5; Thu, 01 Jun 2023 10:35:37 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q4dmS-0005J0-Vl; Thu, 01 Jun 2023 10:35:36 +0200
+Date: Thu, 1 Jun 2023 10:35:36 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Jules Maselbas <jmaselbas@zdiv.net>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230601083536.GM18491@pengutronix.de>
+References: <20230524234328.82741-1-jmaselbas@zdiv.net>
+ <20230524234328.82741-10-jmaselbas@zdiv.net>
+ <20230530081420.GX17518@pengutronix.de>
+ <ZHg3j6puvstgy4HT@tour>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230601074204.GI18491@pengutronix.de>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <ZHg3j6puvstgy4HT@tour>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230601_013334_725899_C6B3F2FD 
-X-CRM114-Status: GOOD (  27.16  )
+X-CRM114-CacheID: sfid-20230601_013538_755792_61DF2DC4 
+X-CRM114-Status: GOOD (  18.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,84 +83,32 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 11/18] block: parse partition table on block device
- registration
+Subject: Re: [PATCH v2 09/13] mci: Add sunxi-mmc driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 23-06-01, Sascha Hauer wrote:
-> On Wed, May 31, 2023 at 04:59:20PM +0200, Ahmad Fatoum wrote:
-> > Every instance where we register a block device, it's followed by an
-> > attempt to parse the partition table, most often with a warning when
-> > it fails. Thus let's move partition table parsing into
-> > blockdevice_register.
+On Thu, Jun 01, 2023 at 08:15:43AM +0200, Jules Maselbas wrote:
+> On Tue, May 30, 2023 at 10:14:20AM +0200, Sascha Hauer wrote:
+> > +#ifdef __PBL__
+> > > +#if 0 /* TODO: test this */
+> > > +#include <asm/system.h>
+> > > +/* TODO: test this ! */
+> > > +#define get_time_ns()		get_cntpct()
+> > > +#define is_timeout(s, t)	(s + (t * get_cntfrq() / 1000000) < get_cntpct()
 > > 
-> > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > ---
-> >  arch/sandbox/board/hostfile.c | 4 ----
-> >  common/block.c                | 6 ++++++
-> >  drivers/ata/disk_ata_drive.c  | 5 -----
-> >  drivers/block/efi-block-io.c  | 9 +--------
-> >  drivers/block/virtio_blk.c    | 8 +-------
-> >  drivers/mci/mci-core.c        | 6 ------
-> >  drivers/nvme/host/core.c      | 5 -----
-> >  drivers/usb/storage/usb.c     | 5 -----
-> >  8 files changed, 8 insertions(+), 40 deletions(-)
-> > 
-> > diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
-> > index d0f400787d7a..a1ab06b87770 100644
-> > --- a/arch/sandbox/board/hostfile.c
-> > +++ b/arch/sandbox/board/hostfile.c
-> > @@ -166,10 +166,6 @@ static int hf_probe(struct device *dev)
-> >  		if (err)
-> >  			return err;
-> >  
-> > -		err = parse_partition_table(&priv->blk);
-> > -		if (err)
-> > -			dev_warn(dev, "No partition table found\n");
-> > -
-> >  		dev_info(dev, "registered as block device\n");
-> >  	} else {
-> >  		cdev->name = np->name;
-> > diff --git a/common/block.c b/common/block.c
-> > index c39269d3a692..98adcfdf3dab 100644
-> > --- a/common/block.c
-> > +++ b/common/block.c
-> > @@ -6,6 +6,7 @@
-> >   */
-> >  #include <common.h>
-> >  #include <block.h>
-> > +#include <disks.h>
-> >  #include <malloc.h>
-> >  #include <linux/err.h>
-> >  #include <linux/list.h>
-> > @@ -408,6 +409,11 @@ int blockdevice_register(struct block_device *blk)
-> >  
-> >  	cdev_create_default_automount(&blk->cdev);
-> >  
-> > +	/* Lack of partition table is unusual, but not a failure */
-> > +	ret = parse_partition_table(blk);
-> > +	if (ret)
-> > +		dev_warn(blk->dev, "No partition table found\n");
-> 
-> This is not changed in this series, so it's ok like this, but should
-> this really be a warning? Using a raw device without a partition table
-> seems like a legitimate usecase.
+> > You could base your timeout loop on udelay which is available for
+> > Aarch64 PBL
+> Can I make a version of is_timeout for aarch64 PBl ? instead of doing a hack in
+> the mmc driver ?
 
-Good point, maybe we should use dev_notice() as compromise?
+Sure, even better.
 
-Regards,
-  Marco
+Sascha
 
-> Sascha
-> 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-> 
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
