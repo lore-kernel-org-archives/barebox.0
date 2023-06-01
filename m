@@ -1,59 +1,56 @@
-Delivery-date: Thu, 01 Jun 2023 07:50:49 +0200
+Delivery-date: Thu, 01 Jun 2023 07:52:19 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4bD0-005OkF-N1
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 07:50:49 +0200
+	id 1q4bET-005OoV-6u
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 07:52:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4bCy-0005Xw-68
-	for lore@pengutronix.de; Thu, 01 Jun 2023 07:50:48 +0200
+	id 1q4bEP-0005ic-O2
+	for lore@pengutronix.de; Thu, 01 Jun 2023 07:52:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iV2wrQV3c0iDTXZHqd9RejvzfkgBFgNUiuH7/1HSp9U=; b=pohMyRxVvcHqrTe6CpFqIzDZoY
-	tA6B13EqfuwDnar67ap4iEUGvZ6FXEYCIpHxwjjka1jksmobWuk7zZsRS1cqqomFsetv8IE27tWaU
-	4HaPB2AOl8KGaHKgPll2GyB662ky1n0XvCxQMRCxN1j/6XF/FsdT8pmS+ozU0sxebqP8iRrcpsUch
-	P26fv1CUc1xiNs2b3+2jTLFd3dQGUHe1aJO1k2LnhJrQz24+aeiTcbvlGHEw2use6A7CZb79LTJUi
-	72LqPu5WyYxho52NDLGEpc6fwNY+YsMkX0XhEuMwy/EnolPbFcHMwRFDhlMSVbD59dvfxmrR19tuC
-	2uqf8pKA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Ufo81j9H33chxdUqss4FtIqRrYq5BRkBv1lwmxOBSTQ=; b=R2CkMLyHYs1SAPR/Z/Yf8sz4J8
+	KJyLAKnF7VZu5o+TKPUm3CEhC+qlm475/7CgCs1dT6xOzU+F+FLz+1rTRpPqBX+DvqcXxy6oYIoq9
+	xm2GhC1wvISHXEaLWNwH6vJdQ7UFT72Jj3nDODuOdLcvkhJfaUgV1bXSEhP8spZAS2DZ4dDkbwhe1
+	lvwfWmYEUgVeN/W7Xd9xSPwG25DNpnRqSeREFw2tXjerXe0xAA9rYVLIGrT4paexAFxqy3JC9mHi9
+	pyGl+cM9pZ2BlinEyUzhKqUHzxjKnNXZlB6wdwZFj7HsiqG5ftWtsGBpozg7fkZdsshbJruISWJHN
+	kEUtdhCQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4bBd-00255a-0O;
-	Thu, 01 Jun 2023 05:49:25 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1q4bDF-0025Fy-22;
+	Thu, 01 Jun 2023 05:51:05 +0000
+Received: from relay2-d.mail.gandi.net ([2001:4b98:dc4:8::222])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4bBW-00254k-2J
+	id 1q4bDB-0025Eg-0o
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 05:49:23 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q4bBS-0005BQ-UJ; Thu, 01 Jun 2023 07:49:15 +0200
-Message-ID: <5df1f41d-257d-40ce-df98-27ca8e71531e@pengutronix.de>
-Date: Thu, 1 Jun 2023 07:49:14 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>
+	Thu, 01 Jun 2023 05:51:03 +0000
+X-GND-Sasl: jmaselbas@zdiv.net
+X-GND-Sasl: jmaselbas@zdiv.net
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 648AB40004;
+	Thu,  1 Jun 2023 05:50:53 +0000 (UTC)
+Date: Thu, 1 Jun 2023 07:50:47 +0200
+From: Jules Maselbas <jmaselbas@zdiv.net>
+To: Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
-References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
- <20230531145927.1399282-19-a.fatoum@pengutronix.de>
- <20230531200120.xjp6qr372didsis5@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230531200120.xjp6qr372didsis5@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Message-ID: <ZHgxt7mRiFRMtgDU@tour>
+References: <20230524234328.82741-1-jmaselbas@zdiv.net>
+ <20230524234328.82741-12-jmaselbas@zdiv.net>
+ <20230530084236.GY17518@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230530084236.GY17518@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230531_224921_727166_D5004D01 
-X-CRM114-Status: GOOD (  28.60  )
+X-CRM114-CacheID: sfid-20230531_225101_606418_A0E2F309 
+X-CRM114-Status: GOOD (  37.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,170 +70,241 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 18/18] state: allow lookup of barebox state partition by
- Type GUID
+Subject: Re: [PATCH v2 11/13] ARM: boards: sunxi: Add initial support for the
+ pinephone
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 31.05.23 22:01, Marco Felsch wrote:
-> Hi Ahmad,
+Hi Sascha,
+
+Thanks for your review
+
+On Tue, May 30, 2023 at 10:42:36AM +0200, Sascha Hauer wrote:
+> On Thu, May 25, 2023 at 01:43:26AM +0200, Jules Maselbas wrote:
+> > Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+> > ---
+> >  arch/arm/boards/Makefile                    |   1 +
+> >  arch/arm/boards/pine64-pinephone/Makefile   |   2 +
+> >  arch/arm/boards/pine64-pinephone/board.c    |   0
+> >  arch/arm/boards/pine64-pinephone/lowlevel.c | 104 ++++++++++++++++++++
+> >  arch/arm/configs/pinephone_defconfig        |  12 +++
+> >  arch/arm/dts/Makefile                       |   1 +
+> >  arch/arm/dts/sun50i-a64-pinephone-1_2.dts   |   3 +
+> >  arch/arm/mach-sunxi/Kconfig                 |  17 ++++
+> >  images/Makefile.sunxi                       |   9 ++
+> >  include/mach/sunxi/init.h                   |   4 +
+> >  10 files changed, 153 insertions(+)
+> >  create mode 100644 arch/arm/boards/pine64-pinephone/Makefile
+> >  create mode 100644 arch/arm/boards/pine64-pinephone/board.c
+> >  create mode 100644 arch/arm/boards/pine64-pinephone/lowlevel.c
+> >  create mode 100644 arch/arm/configs/pinephone_defconfig
+> >  create mode 100644 arch/arm/dts/sun50i-a64-pinephone-1_2.dts
+> > 
+> > diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+> > index b204c257f6..f4796f5374 100644
+> > --- a/arch/arm/boards/Makefile
+> > +++ b/arch/arm/boards/Makefile
+> > @@ -96,6 +96,7 @@ obj-$(CONFIG_MACH_PHYTEC_SOM_IMX6)		+= phytec-som-imx6/
+> >  obj-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7)		+= phytec-phycore-imx7/
+> >  obj-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1)	+= phytec-phycore-stm32mp1/
+> >  obj-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ)		+= phytec-som-imx8mq/
+> > +obj-$(CONFIG_MACH_PINE64_PINEPHONE)		+= pine64-pinephone/
+> >  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
+> >  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+= plathome-openblocks-a6/
+> >  obj-$(CONFIG_MACH_PM9261)			+= pm9261/
+> > diff --git a/arch/arm/boards/pine64-pinephone/Makefile b/arch/arm/boards/pine64-pinephone/Makefile
+> > new file mode 100644
+> > index 0000000000..092c31d6b2
+> > --- /dev/null
+> > +++ b/arch/arm/boards/pine64-pinephone/Makefile
+> > @@ -0,0 +1,2 @@
+> > +lwl-y += lowlevel.o
+> > +obj-y += board.o
+> > diff --git a/arch/arm/boards/pine64-pinephone/board.c b/arch/arm/boards/pine64-pinephone/board.c
+> > new file mode 100644
+> > index 0000000000..e69de29bb2
+> > diff --git a/arch/arm/boards/pine64-pinephone/lowlevel.c b/arch/arm/boards/pine64-pinephone/lowlevel.c
+> > new file mode 100644
+> > index 0000000000..262d194864
+> > --- /dev/null
+> > +++ b/arch/arm/boards/pine64-pinephone/lowlevel.c
+> > @@ -0,0 +1,104 @@
+> > +// SPDX-License-Identifier: GPL-2.0+
+> > +#include <common.h>
+> > +#include <debug_ll.h>
+> > +#include <linux/sizes.h>
+> > +#include <linux/bitops.h>
+> > +#include <mach/sunxi/barebox-arm.h>
 > 
-> On 23-05-31, Ahmad Fatoum wrote:
->> The backend device tree property so far always pointed at a partition.
->> Let's allow pointing it at GPT storage devices directly and lookup
->> the correct barebox state partition by the well-known type GUID:
->>
->>   4778ed65-bf42-45fa-9c5b-287a1dc4aab1
+> This file is missing in this series. Forgot to git add it?
+ooops, yes forgot to add it.
+There is almost nothing in it:
+```
+#include <asm/barebox-arm.h>
+
+#define SUN50I_A64_ENTRY_FUNCTION(name, arg0, arg1, arg2) \
+	ENTRY_FUNCTION_WITHSTACK(name, SUN50I_PBL_STACK_TOP, arg0, arg1, arg2)
+```
+that's all
+
+> > +#include <mach/sunxi/init.h>
+> > +#include <mach/sunxi/xload.h>
+> > +#include <mach/sunxi/egon.h>
+> > +#include <mach/sunxi/rmr_switch.h>
+> > +#include <mach/sunxi/sun50i-regs.h>
+> > +#include <mach/sunxi/sunxi-pinctrl.h>
+> > +
+> > +#ifdef DEBUG
+> > +static void debug_led_rgb(int rgb)
+> > +{
+> > +	void __iomem *piobase = SUN50I_PIO_BASE_ADDR;
+> > +	uint32_t clr, set = 0;
+> > +	int r = rgb & 0xff0000;
+> > +	int g = rgb & 0x00ff00;
+> > +	int b = rgb & 0x0000ff;
+> > +
+> > +	clr = (1 << 19) | (1 << 18) | (1 << 20);
+> > +	set |= r ? 1 << 19 : 0;
+> > +	set |= g ? 1 << 18 : 0;
+> > +	set |= b ? 1 << 20 : 0;
+> > +
+> > +	clrsetbits_le32(piobase + PIO_PD_DATA, clr, set);
+> > +}
+> > +
+> > +static void debug_led_init(void)
+> > +{
+> > +	void __iomem *ccubase = SUN50I_CCU_BASE_ADDR;
+> > +	void __iomem *piobase = SUN50I_PIO_BASE_ADDR;
+> > +
+> > +	/* PIO clock enable */
+> > +	setbits_le32(ccubase + CCU_BUS_CLK_GATE2, BIT(5));
+> > +	/* LED set output */
+> > +	clrsetbits_le32(piobase + PIO_PD_CFG2, 0x000fff00, 0x00011100);
+> > +}
+> > +#else
+> > +static void debug_led_rgb(int rgb) {}
+> > +static void debug_led_init(void) {}
+> > +#endif
+> > +
+> > +SUN50I_A64_ENTRY_FUNCTION(start_pine64_pinephone, r0, r1, r2)
+> > +{
+> > +	extern char __dtb_z_sun50i_a64_pinephone_1_2_start[];
+> > +	void *fdt;
+> > +	u32 size;
+> > +
+> > +	sunxi_switch_to_aarch64(.text_head_soc_header2, SUN50I_A64_RVBAR_IOMAP);
+> > +
+> > +	debug_led_init();
+> > +	debug_led_rgb(0xffff00);
+> > +
+> > +	sun50i_cpu_lowlevel_init();
+> > +	sun50i_uart_setup();
+> > +
+> > +	relocate_to_current_adr();
+> > +	setup_c();
+> > +
+> > +	/* Skip SDRAM initialization if we run from it */
+> > +	if (get_pc() < SUN50I_DRAM_ADDR) {
+> > +		size = sun50i_a64_lpddr3_dram_init();
+> > +		if (size == 0) {
+> > +			puts_ll("FAIL: dram init\r\n");
+> > +			goto reset;
+> > +		}
+> > +		puthex_ll(size);
+> > +		putc_ll('\r');	putc_ll('\n');
+> > +	}
 > 
-> we should add an example within the Documetation/ too.
+> How can we get here with SDRAM uninitialized? Is this for USB or JTAG
+> boot?
+Yes this is when not chain loaded, when started directly from USB via fel or
+via JTAG.
 
-I'd wait until we have a new dt-utils release with the same
-binding. Anything else would be confusing. 
+> > +
+> > +	puts_ll("now booting\r\n");
+> > +	fdt = __dtb_z_sun50i_a64_pinephone_1_2_start + get_runtime_offset();
+> > +	barebox_arm_entry(SUN50I_DRAM_ADDR, SZ_1G, fdt);
+> > +
+> > +reset:
+> > +	debug_led_rgb(0xff0000);
+> > +	sun50i_cpu_lowlevel_reset();
+> > +}
+> > +
+> > +SUN50I_A64_ENTRY_FUNCTION(start_pine64_pinephone_xload, r0, r1, r2)
+> > +{
+> > +
+> > +	sunxi_egon_header(.text_head_soc_header0);
+> > +	sunxi_switch_to_aarch64(.text_head_soc_header1, SUN50I_A64_RVBAR_IOMAP);
+> > +
+> > +	debug_led_init();
+> > +	debug_led_rgb(0xff0000);
+> > +
+> > +	sun50i_cpu_lowlevel_init();
+> > +	sun50i_uart_setup();
+> > +	debug_led_rgb(0xffff00);
+> > +
+> > +	relocate_to_current_adr();
+> > +	setup_c();
+> > +
+> > +	sun50i_a64_lpddr3_dram_init();
+> > +
+> > +	debug_led_rgb(0xff0000);
+> > +
+> 
+> You would have to place code here to continue booting, right? In that
+> case you should add a comment to let the reader know that there's
+> something missing here.
+I forgot to add the code that search for barebox.bin and continue execution
 
 > 
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  common/state/state.c | 22 ++++++++++++++++++++++
->>  include/driver.h     | 17 +++++++++++++++++
->>  include/state.h      |  4 ++++
->>  3 files changed, 43 insertions(+)
->>
->> diff --git a/common/state/state.c b/common/state/state.c
->> index 88e246198fb8..8f56c60b0e82 100644
->> --- a/common/state/state.c
->> +++ b/common/state/state.c
->> @@ -21,8 +21,10 @@
->>  #include <fs.h>
->>  #include <crc.h>
->>  #include <init.h>
->> +#include <block.h>
->>  #include <linux/err.h>
->>  #include <linux/list.h>
->> +#include <linux/uuid.h>
->>  
->>  #include <linux/mtd/mtd-abi.h>
->>  #include <malloc.h>
->> @@ -595,6 +597,8 @@ static char *cdev_to_devpath(struct cdev *cdev, off_t *offset, size_t *size)
->>  }
->>  #endif
->>  
->> +static guid_t barebox_state_partition_guid = BAREBOX_STATE_PARTITION_GUID;
->> +
->>  /*
->>   * state_new_from_node - create a new state instance from a device_node
->>   *
->> @@ -641,6 +645,24 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
->>  		goto out_release_state;
->>  	}
->>  
->> +	/* Is the backend referencing an on-disk partitonable block device? */
->> +	if (cdev_is_block_disk(cdev)) {
->> +		struct cdev *partcdev = NULL;
->> +
->> +		if (cdev_is_gpt_partitioned(cdev))
->> +			partcdev = cdev_find_child_by_typeuuid(cdev, &barebox_state_partition_guid);
->> +
->> +		if (!partcdev) {
->> +			ret = -EINVAL;
->> +			goto out_release_state;
->> +		}
->> +
->> +		pr_debug("%s: backend GPT partition looked up via PartitionTypeGUID\n",
->> +			 node->full_name);
->> +
->> +		cdev = partcdev;
->> +	}
+> debug_led_rgb(0xff0000) is the same color you used at the beginning of
+> the function. Would it make more sense to use a different color?
+Yes, I'll remove the first red color, I want to reserved it for error conditions.
+
+> > +	sun50i_cpu_lowlevel_reset();
 > 
-> What about having the above logic within a seperate function and the
-> above code would be:
+> Maybe hang() here instead to give the user a chance to see the last
+> color?
+Yes, I put the reset so it will re-enter fel so the board could be reprogrammed
+without needing a powercycle, but that's only true if there are no valid boot
+entry in eMMC nor SD, IMHO this only makes sense for developpement/debugging.
+ 
+> > +}
+> > diff --git a/arch/arm/configs/pinephone_defconfig b/arch/arm/configs/pinephone_defconfig
 > 
-> 	if (cdev_is_block_disk(cdev))
-> 		cdev = get_cdev_by_typeuuid(cdev, &barebox_state_partition_guid)
-> 	
-> 	if (!cdev) {
-> 		ret = -EINVAL;
-> 		goto out_release_state;
-> 	}
-> 
-> This way we would have everything in place to re-use the same logic for
-> the barebox-environmnet too. What do you think?
-
-cdev from of_cdev_find not being available -> -EPROBE_DEFER
-cdev GPT partition not existing,despite backend pointing at root device -> -EINVAL
-
-So the cdev check needs to be within if (cdev_is_block_disk(cdev)).
-
-I don't object to combining cdev_is_gpt_partitioned and cdev_find_child_by_typeuuid into
-cdev_find_child_by_gpt_typeuuid though.
-
-
-Thanks for all the review!
-Ahmad
+> In the hope that the config is not only suitable for the pinephone
+> better name it sunxi_v8_defconfig.
+Yes, currently use this config for the pine64 board, will make this change.
 
 > 
-> Regards,
->   Marco
+> > +++ b/arch/arm/mach-sunxi/Kconfig
+> > @@ -1,7 +1,24 @@
+> >  if ARCH_SUNXI
+> >  
+> > +config ARCH_SUN50I_A64
+> > +	bool
+> > +	select CPU_V8
+> > +	select CPU_SUPPORTS_64BIT_KERNEL
+> > +	select CLOCKSOURCE_ARM_ARCHITECTED_TIMER
+> > +	select PINCTRL_SUN50I_A64
+> > +	select HAS_DEBUG_LL
+> > +	select PBL_RELOCATABLE
+> > +	select PBL_FULLY_PIC
+> > +	help
+> > +	  Allwiner A64 (sun50iw1) SoC
 > 
->> +
->>  	state->backend_path = cdev_to_devpath(cdev, &offset, &size);
->>  
->>  	pr_debug("%s: backend resolved to %s\n", node->full_name, state->backend_path);
->> diff --git a/include/driver.h b/include/driver.h
->> index 6407f7d6ba36..579b03fbac34 100644
->> --- a/include/driver.h
->> +++ b/include/driver.h
->> @@ -585,6 +585,23 @@ extern struct list_head cdev_list;
->>  #define for_each_cdev(cdev) \
->>  	list_for_each_entry(cdev, &cdev_list, list)
->>  
->> +#define for_each_cdev_partition(partcdev, cdev) \
->> +	list_for_each_entry((partcdev), &(cdev)->partitions, partition_entry)
->> +
->> +
->> +static inline struct cdev *cdev_find_child_by_typeuuid(struct cdev *cdev,
->> +						       guid_t *typeuuid)
->> +{
->> +	struct cdev *partcdev;
->> +
->> +	for_each_cdev_partition(partcdev, cdev) {
->> +		if (guid_equal(&partcdev->typeuuid, typeuuid))
->> +			return partcdev;
->> +	}
->> +
->> +	return NULL;
->> +}
->> +
->>  #define DEVFS_PARTITION_FIXED		(1U << 0)
->>  #define DEVFS_PARTITION_READONLY	(1U << 1)
->>  #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
->> diff --git a/include/state.h b/include/state.h
->> index bffcd5a9007f..3daf82c0735f 100644
->> --- a/include/state.h
->> +++ b/include/state.h
->> @@ -62,4 +62,8 @@ static inline int state_read_mac(struct state *state, const char *name, u8 *buf)
->>  
->>  #endif /* #if IS_ENABLED(CONFIG_STATE) / #else */
->>  
->> +#define BAREBOX_STATE_PARTITION_GUID \
->> +	GUID_INIT(0x4778ed65, 0xbf42, 0x45fa, 0x9c, 0x5b, \
->> +		 0x28, 0x7a, 0x1d, 0xc4, 0xaa, 0xb1)
->> +
->>  #endif /* __STATE_H */
->> -- 
->> 2.39.2
->>
->>
->>
+> s/Allwiner/Allwinner/
+ack
+
+> Sascha
 > 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
 
 
