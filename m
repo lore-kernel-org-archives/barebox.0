@@ -1,60 +1,69 @@
-Delivery-date: Thu, 01 Jun 2023 08:38:11 +0200
+Delivery-date: Thu, 01 Jun 2023 08:47:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4bwr-005RBZ-3s
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 08:38:11 +0200
+	id 1q4c5l-005RT0-PA
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 08:47:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4bwo-0003xN-Ci
-	for lore@pengutronix.de; Thu, 01 Jun 2023 08:38:11 +0200
+	id 1q4c5j-0005FA-EN
+	for lore@pengutronix.de; Thu, 01 Jun 2023 08:47:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=le/vNp8CB6dZ6kAJfErD9Y6DI+wHxuX6LfOiLXhkMHU=; b=JKQpB3I31l/I/O9A3Zda2tUW3A
-	mm4+pvtcelU09L+k4ymj3/EAOfMwKudPAwYcSQh2gPGq91Vn8+XxdhTOAl3CK+WmNBe5/RzLOIWN4
-	tzmDJ2KLNEtQzpKPmQ9rzIWdKKQfYOGTg+7DiqPyfNyFyPyzKW90prw1LxiWTZDzA86lILyOYy/8G
-	9v2tOBAVGAW1FLTVtr6X5k9ORZFs6E/Sc/A7Vvy42cvoalqm3ad3xs9FyGMkqLtEiXGmPnlVUr+sY
-	eIKuDGrAu6LVCeynWxLzQZ7nkQ9ps7FOjqd5zxAmIKTn6pNECOMVK73PepugzLfSOT/bPiI/P4oqb
-	aWLivlmA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=YHoJC5+3TwQ7ur25BH0fCno8zOGcSIPb1I6iIRQDtBY=; b=bqtzqQyQHol9LaNqLGx7ldbV4+
+	gQuKoS7RM0GohossaHyy4KeChueq1CPEZPt7E3ArARpsEaMAJtU1OeREQfyHNPGhGIWe/6Xo2AAgc
+	aGgiyo3tmG4hhKbRHB/q5xY1GCP7BxgKVWidLVs9ME+aPkh8LzNIUgjXdYnFrLV9kLK6/DOJhm+xM
+	oFa6hF5CWdAD5ekrp5Vd2goEEl3BOYkRNhqq7RTb35UNi/h3q/LjLCCNZhSsNS7UYzMo3eQbBZbxW
+	xfOM8X6WPt40CxA+k7IYbaFDRvnmAwAEqi2UzqMcyuWvBVyNEgfUsYlL0t4TBGM/fojLIQ+qaBeVT
+	gPDvT4gw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4bve-002DrS-0B;
-	Thu, 01 Jun 2023 06:36:58 +0000
+	id 1q4c4W-002FRj-3B;
+	Thu, 01 Jun 2023 06:46:08 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4bva-002DqP-26
+	id 1q4c4U-002FR6-0H
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 06:36:56 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q4bvZ-0003s5-7z; Thu, 01 Jun 2023 08:36:53 +0200
-Message-ID: <8df9a011-5632-229e-3de7-2921c2091f33@pengutronix.de>
-Date: Thu, 1 Jun 2023 08:36:52 +0200
+	Thu, 01 Jun 2023 06:46:07 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q4c4S-00051b-Lg; Thu, 01 Jun 2023 08:46:04 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q4c4S-00089z-Da; Thu, 01 Jun 2023 08:46:04 +0200
+Date: Thu, 1 Jun 2023 08:46:04 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20230601064604.GC18491@pengutronix.de>
+References: <20230531103515.845714-1-s.hauer@pengutronix.de>
+ <20230531103515.845714-2-s.hauer@pengutronix.de>
+ <4dfbd23f-9dca-e2c6-2067-b9decbdc7977@pengutronix.de>
+ <20230531112114.GA18491@pengutronix.de>
+ <298d6a42-e074-c861-6c7f-117ea75ddeb7@pengutronix.de>
+ <20230531123840.GB18491@pengutronix.de>
+ <4f8e95c6-8279-b287-234c-01de2eaf7996@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Content-Language: en-US
-To: Jules Maselbas <jmaselbas@zdiv.net>
-Cc: Sascha Hauer <sha@pengutronix.de>, barebox@lists.infradead.org
-References: <20230524234328.82741-1-jmaselbas@zdiv.net>
- <20230524234328.82741-12-jmaselbas@zdiv.net>
- <20230530084236.GY17518@pengutronix.de> <ZHgxt7mRiFRMtgDU@tour>
- <a24bf8d3-2d27-d18f-32df-11a6af2ab27c@pengutronix.de> <ZHg4bZ0aozgjtUy0@tour>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <ZHg4bZ0aozgjtUy0@tour>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4f8e95c6-8279-b287-234c-01de2eaf7996@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230531_233654_853598_B440D713 
-X-CRM114-Status: GOOD (  37.37  )
+X-CRM114-CacheID: sfid-20230531_234606_146291_9B49FB30 
+X-CRM114-Status: GOOD (  30.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,261 +81,65 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 11/13] ARM: boards: sunxi: Add initial support for the
- pinephone
+Subject: Re: [PATCH v2 2/2] ARM: mmu_32: fix setting up zero page when it is
+ in SDRAM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 01.06.23 08:19, Jules Maselbas wrote:
-> On Thu, Jun 01, 2023 at 08:00:47AM +0200, Ahmad Fatoum wrote:
->> On 01.06.23 07:50, Jules Maselbas wrote:
->>> Hi Sascha,
->>>
->>> Thanks for your review
->>>
->>> On Tue, May 30, 2023 at 10:42:36AM +0200, Sascha Hauer wrote:
->>>> On Thu, May 25, 2023 at 01:43:26AM +0200, Jules Maselbas wrote:
->>>>> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
->>>>> ---
->>>>>  arch/arm/boards/Makefile                    |   1 +
->>>>>  arch/arm/boards/pine64-pinephone/Makefile   |   2 +
->>>>>  arch/arm/boards/pine64-pinephone/board.c    |   0
->>>>>  arch/arm/boards/pine64-pinephone/lowlevel.c | 104 ++++++++++++++++++++
->>>>>  arch/arm/configs/pinephone_defconfig        |  12 +++
->>>>>  arch/arm/dts/Makefile                       |   1 +
->>>>>  arch/arm/dts/sun50i-a64-pinephone-1_2.dts   |   3 +
->>>>>  arch/arm/mach-sunxi/Kconfig                 |  17 ++++
->>>>>  images/Makefile.sunxi                       |   9 ++
->>>>>  include/mach/sunxi/init.h                   |   4 +
->>>>>  10 files changed, 153 insertions(+)
->>>>>  create mode 100644 arch/arm/boards/pine64-pinephone/Makefile
->>>>>  create mode 100644 arch/arm/boards/pine64-pinephone/board.c
->>>>>  create mode 100644 arch/arm/boards/pine64-pinephone/lowlevel.c
->>>>>  create mode 100644 arch/arm/configs/pinephone_defconfig
->>>>>  create mode 100644 arch/arm/dts/sun50i-a64-pinephone-1_2.dts
->>>>>
->>>>> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
->>>>> index b204c257f6..f4796f5374 100644
->>>>> --- a/arch/arm/boards/Makefile
->>>>> +++ b/arch/arm/boards/Makefile
->>>>> @@ -96,6 +96,7 @@ obj-$(CONFIG_MACH_PHYTEC_SOM_IMX6)		+= phytec-som-imx6/
->>>>>  obj-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7)		+= phytec-phycore-imx7/
->>>>>  obj-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1)	+= phytec-phycore-stm32mp1/
->>>>>  obj-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ)		+= phytec-som-imx8mq/
->>>>> +obj-$(CONFIG_MACH_PINE64_PINEPHONE)		+= pine64-pinephone/
->>>>>  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
->>>>>  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+= plathome-openblocks-a6/
->>>>>  obj-$(CONFIG_MACH_PM9261)			+= pm9261/
->>>>> diff --git a/arch/arm/boards/pine64-pinephone/Makefile b/arch/arm/boards/pine64-pinephone/Makefile
->>>>> new file mode 100644
->>>>> index 0000000000..092c31d6b2
->>>>> --- /dev/null
->>>>> +++ b/arch/arm/boards/pine64-pinephone/Makefile
->>>>> @@ -0,0 +1,2 @@
->>>>> +lwl-y += lowlevel.o
->>>>> +obj-y += board.o
->>>>> diff --git a/arch/arm/boards/pine64-pinephone/board.c b/arch/arm/boards/pine64-pinephone/board.c
->>>>> new file mode 100644
->>>>> index 0000000000..e69de29bb2
->>>>> diff --git a/arch/arm/boards/pine64-pinephone/lowlevel.c b/arch/arm/boards/pine64-pinephone/lowlevel.c
->>>>> new file mode 100644
->>>>> index 0000000000..262d194864
->>>>> --- /dev/null
->>>>> +++ b/arch/arm/boards/pine64-pinephone/lowlevel.c
->>>>> @@ -0,0 +1,104 @@
->>>>> +// SPDX-License-Identifier: GPL-2.0+
->>>>> +#include <common.h>
->>>>> +#include <debug_ll.h>
->>>>> +#include <linux/sizes.h>
->>>>> +#include <linux/bitops.h>
->>>>> +#include <mach/sunxi/barebox-arm.h>
->>>>
->>>> This file is missing in this series. Forgot to git add it?
->>> ooops, yes forgot to add it.
->>> There is almost nothing in it:
->>> ```
->>> #include <asm/barebox-arm.h>
->>>
->>> #define SUN50I_A64_ENTRY_FUNCTION(name, arg0, arg1, arg2) \
->>> 	ENTRY_FUNCTION_WITHSTACK(name, SUN50I_PBL_STACK_TOP, arg0, arg1, arg2)
->>> ```
->>> that's all
->>
->> Can this pull in the eGON header as well? That way sun50i entry points
->> can just look like normal C functions and board porters need not be aware
->> of the magic.
-> well, I already spent huge amount of time trying to do so and failed so right
-> now I do not want to try to fit the headers into the entry macro again.
-> The issue was that I got multiple instances of the each headers because there
-> where two instance of the entry macro in the same lowlevel.c file...
-
-Do you have your attempt uploaded somewhere? Duplicate instances sounds like
-if the section name didn't change. This should be fixable by concatenating the
-function name at the end.
-
+On Wed, May 31, 2023 at 02:40:13PM +0200, Ahmad Fatoum wrote:
+> On 31.05.23 14:38, Sascha Hauer wrote:
+> > On Wed, May 31, 2023 at 01:58:33PM +0200, Ahmad Fatoum wrote:
+> >>> From b6e5c92682467496bd9c57918996f1feffda2dd6 Mon Sep 17 00:00:00 2001
+> >>> From: Sascha Hauer <s.hauer@pengutronix.de>
+> >>> Date: Wed, 31 May 2023 11:58:51 +0200
+> >>> Subject: [PATCH] ARM: mmu_32: fix setting up zero page when it is in SDRAM
+> >>>
+> >>> We used to skip setting the zero page to faulting when SDRAM starts at
+> >>> 0x0. As bootm code now explicitly sets the zero page accessible before
+> >>> copying ATAGs there this should no longer be necessary, so
+> >>> unconditionally set the zero page to faulting during MMU startup.  This
+> >>> also moves the zero page and vector table setup after the point the
+> >>> SDRAM has been mapped cachable, because otherwise the zero page and
+> >>> possibly the vector table mapping would be overwritten.
+> >>>
+> >>> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> >>> ---
+> >>>  arch/arm/cpu/mmu_32.c | 23 +++++++++--------------
+> >>>  1 file changed, 9 insertions(+), 14 deletions(-)
+> >>>
+> >>> diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+> >>> index c4e5a3bb0a..14775768a3 100644
+> >>> --- a/arch/arm/cpu/mmu_32.c
+> >>> +++ b/arch/arm/cpu/mmu_32.c
+> >>> @@ -461,19 +461,14 @@ static int set_vector_table(unsigned long adr)
+> >>>  
+> >>>  static void create_zero_page(void)
+> >>
+> >> Is this commit incomplete? Vectors should be set up unconditionally and
+> >> create_zero_page should be called after it.
+> > 
+> > Vectors are set up unconditionally and create_zero_page() is called the
+> > same way as before.
 > 
->>>
->>>>> +#include <mach/sunxi/init.h>
->>>>> +#include <mach/sunxi/xload.h>
->>>>> +#include <mach/sunxi/egon.h>
->>>>> +#include <mach/sunxi/rmr_switch.h>
->>>>> +#include <mach/sunxi/sun50i-regs.h>
->>>>> +#include <mach/sunxi/sunxi-pinctrl.h>
->>>>> +
->>>>> +#ifdef DEBUG
->>>>> +static void debug_led_rgb(int rgb)
->>>>> +{
->>>>> +	void __iomem *piobase = SUN50I_PIO_BASE_ADDR;
->>>>> +	uint32_t clr, set = 0;
->>>>> +	int r = rgb & 0xff0000;
->>>>> +	int g = rgb & 0x00ff00;
->>>>> +	int b = rgb & 0x0000ff;
->>>>> +
->>>>> +	clr = (1 << 19) | (1 << 18) | (1 << 20);
->>>>> +	set |= r ? 1 << 19 : 0;
->>>>> +	set |= g ? 1 << 18 : 0;
->>>>> +	set |= b ? 1 << 20 : 0;
->>>>> +
->>>>> +	clrsetbits_le32(piobase + PIO_PD_DATA, clr, set);
->>>>> +}
->>>>> +
->>>>> +static void debug_led_init(void)
->>>>> +{
->>>>> +	void __iomem *ccubase = SUN50I_CCU_BASE_ADDR;
->>>>> +	void __iomem *piobase = SUN50I_PIO_BASE_ADDR;
->>>>> +
->>>>> +	/* PIO clock enable */
->>>>> +	setbits_le32(ccubase + CCU_BUS_CLK_GATE2, BIT(5));
->>>>> +	/* LED set output */
->>>>> +	clrsetbits_le32(piobase + PIO_PD_CFG2, 0x000fff00, 0x00011100);
->>>>> +}
->>>>> +#else
->>>>> +static void debug_led_rgb(int rgb) {}
->>>>> +static void debug_led_init(void) {}
->>>>> +#endif
->>>>> +
->>>>> +SUN50I_A64_ENTRY_FUNCTION(start_pine64_pinephone, r0, r1, r2)
->>>>> +{
->>>>> +	extern char __dtb_z_sun50i_a64_pinephone_1_2_start[];
->>>>> +	void *fdt;
->>>>> +	u32 size;
->>>>> +
->>>>> +	sunxi_switch_to_aarch64(.text_head_soc_header2, SUN50I_A64_RVBAR_IOMAP);
->>>>> +
->>>>> +	debug_led_init();
->>>>> +	debug_led_rgb(0xffff00);
->>>>> +
->>>>> +	sun50i_cpu_lowlevel_init();
->>>>> +	sun50i_uart_setup();
->>>>> +
->>>>> +	relocate_to_current_adr();
->>>>> +	setup_c();
->>>>> +
->>>>> +	/* Skip SDRAM initialization if we run from it */
->>>>> +	if (get_pc() < SUN50I_DRAM_ADDR) {
->>>>> +		size = sun50i_a64_lpddr3_dram_init();
->>>>> +		if (size == 0) {
->>>>> +			puts_ll("FAIL: dram init\r\n");
->>>>> +			goto reset;
->>>>> +		}
->>>>> +		puthex_ll(size);
->>>>> +		putc_ll('\r');	putc_ll('\n');
->>>>> +	}
->>>>
->>>> How can we get here with SDRAM uninitialized? Is this for USB or JTAG
->>>> boot?
->>> Yes this is when not chain loaded, when started directly from USB via fel or
->>> via JTAG.
->>>
->>>>> +
->>>>> +	puts_ll("now booting\r\n");
->>>>> +	fdt = __dtb_z_sun50i_a64_pinephone_1_2_start + get_runtime_offset();
->>>>> +	barebox_arm_entry(SUN50I_DRAM_ADDR, SZ_1G, fdt);
->>>>> +
->>>>> +reset:
->>>>> +	debug_led_rgb(0xff0000);
->>>>> +	sun50i_cpu_lowlevel_reset();
->>>>> +}
->>>>> +
->>>>> +SUN50I_A64_ENTRY_FUNCTION(start_pine64_pinephone_xload, r0, r1, r2)
->>>>> +{
->>>>> +
->>>>> +	sunxi_egon_header(.text_head_soc_header0);
->>>>> +	sunxi_switch_to_aarch64(.text_head_soc_header1, SUN50I_A64_RVBAR_IOMAP);
->>>>> +
->>>>> +	debug_led_init();
->>>>> +	debug_led_rgb(0xff0000);
->>>>> +
->>>>> +	sun50i_cpu_lowlevel_init();
->>>>> +	sun50i_uart_setup();
->>>>> +	debug_led_rgb(0xffff00);
->>>>> +
->>>>> +	relocate_to_current_adr();
->>>>> +	setup_c();
->>>>> +
->>>>> +	sun50i_a64_lpddr3_dram_init();
->>>>> +
->>>>> +	debug_led_rgb(0xff0000);
->>>>> +
->>>>
->>>> You would have to place code here to continue booting, right? In that
->>>> case you should add a comment to let the reader know that there's
->>>> something missing here.
->>> I forgot to add the code that search for barebox.bin and continue execution
+> So zero page is requested first and then on platforms with vector at
+> address 0 requesting fails and we are left without configured IVT?
 
-I originally thought that the BootROM searches for a file in FAT, where it would
-make sense to place the follow-up boot stage in FAT as well, but apparently,
-it loads from a fixed offset and then first stage bootloader (here PBL) loads
-second stage from FAT. This makes me wonder why use FAT at all and not just do
-like we do e.g. on i.MX:
+I think you are misreading the patch. Please look at it again.
+create_zero_page() is called only when the vector table is not at 0x0.
+It has been like that without this patch, the patch doesn't change
+anything here.
 
-  - place full barebox at address where BootROM looks at
-  - use minimum PBL size to ensure barebox truncated to SRAM behaves correctly
-  - then barebox loads itself from same address into DRAM and reenters PBL
-  - either have all of this in unpartitioned space at the start or create a
-    partition around it if possible.
-
-Is this possible here as well?
-
-Also, just to be sure: barebox.bin still has a PBL right? The API between PBL
-and barebox proper may change, so each barebox proper should have its own
-PBL in front.
-
->>>
->>>>
->>>> debug_led_rgb(0xff0000) is the same color you used at the beginning of
->>>> the function. Would it make more sense to use a different color?
->>> Yes, I'll remove the first red color, I want to reserved it for error conditions.
->>>
->>>>> +	sun50i_cpu_lowlevel_reset();
->>>>
->>>> Maybe hang() here instead to give the user a chance to see the last
->>>> color?
->>> Yes, I put the reset so it will re-enter fel so the board could be reprogrammed
->>> without needing a powercycle, but that's only true if there are no valid boot
->>> entry in eMMC nor SD, IMHO this only makes sense for developpement/debugging.
-
-How about:
-
-if (IS_ENABLED(CONFIG_PANIC_HANG)) {
-	hang();
-} else {
-	/* some delay to see the LED */
-	sun50i_cpu_lowlevel_reset();
-}
-	
-
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
