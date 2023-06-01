@@ -1,66 +1,62 @@
-Delivery-date: Thu, 01 Jun 2023 10:36:41 +0200
+Delivery-date: Thu, 01 Jun 2023 10:41:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4dnW-005XwQ-G6
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 10:36:41 +0200
+	id 1q4ds5-005Y9o-DV
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 10:41:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4dnU-00053Q-3w
-	for lore@pengutronix.de; Thu, 01 Jun 2023 10:36:40 +0200
+	id 1q4ds3-0005hj-34
+	for lore@pengutronix.de; Thu, 01 Jun 2023 10:41:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Up4Alqep6QC8kcjP4AHoeKlOyNlds6qtNfoaT8c/5nQ=; b=ZbUc9r8q1+lGq45NHstkn7z13L
-	5kLTpc+8j3K/0X5cgk2z9KDCFkIkk5BX4brPOQ4CVigdcpwHgW68BVjHYDo0tB32b1UExOn5VMuET
-	6DhJZ/c1cZjz5zousHBN3+cvJ7AnVnstfM6JlKSgwIFDZr9kCUDerCsTs0u1l9dbAfwYu7ufOdmb2
-	qq3j/oqo59kywDVsc1B3VR7UMG1N9jcubzbjMEmDv7EaZ3qjS9mJAKCv1PbP2hWn0ASwVW3dTguQ0
-	SN29l4HD2WLfoUsaVERMxbgBr1KancSp15gymnYT9+UqbR9iYV3rkTp7lKklapn6iQjuYQSU0mTI+
-	mjYicroQ==;
+	bh=cY4I+K8vKnt2Mi8ucd+XZs7KRcZgeeJGuYo5IhHWMDE=; b=e5JQwU1hbz9CGFX/VurEycasOM
+	4EBdhIiqkAxPBVe/dPLqOijeDUmbahlcpjq6shlGVKewrw9zOLMC8iyCWjrjMt3hvvjLAiRN/10W5
+	6LKNXEZazNUixzedabrRqk2fUvovzg8nBq+uYq+CpmxlPpENdDugC9EhJwzljeRp13fonWfc910G4
+	nGKjSW7RqoMerbZiLjIMWVY9GPwn9anAANV9BTaP2L4wYpUVl+HMmMVklhAPrcCJixpJrkr6DArS4
+	IJPbqOTu1oFGfkIKm5jTRILHDi3ouI76wnCj54kN/o3jbmKdSSIQiXGWZYwTf/m0aO+xcyL4v9W1x
+	abCN5Zfg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4dmX-002aWa-1Q;
-	Thu, 01 Jun 2023 08:35:41 +0000
+	id 1q4dqp-002bJl-0D;
+	Thu, 01 Jun 2023 08:40:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4dmU-002aVL-2J
+	id 1q4dqm-002bIo-2Q
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 08:35:40 +0000
+	Thu, 01 Jun 2023 08:40:05 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q4dmT-0004oG-A5; Thu, 01 Jun 2023 10:35:37 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q4dmS-0005J0-Vl; Thu, 01 Jun 2023 10:35:36 +0200
-Date: Thu, 1 Jun 2023 10:35:36 +0200
-From: Sascha Hauer <sha@pengutronix.de>
-To: Jules Maselbas <jmaselbas@zdiv.net>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230601083536.GM18491@pengutronix.de>
-References: <20230524234328.82741-1-jmaselbas@zdiv.net>
- <20230524234328.82741-10-jmaselbas@zdiv.net>
- <20230530081420.GX17518@pengutronix.de>
- <ZHg3j6puvstgy4HT@tour>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1q4dql-0005HZ-5s; Thu, 01 Jun 2023 10:40:03 +0200
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1q4dqk-0005Q3-TR; Thu, 01 Jun 2023 10:40:02 +0200
+Date: Thu, 1 Jun 2023 10:40:02 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: Johannes Zink <j.zink@pengutronix.de>, barebox@lists.infradead.org,
+	patchwork-jzi@pengutronix.de,
+	Juergen Borleis <j.borleis@pengutronix.de>
+Message-ID: <20230601084002.jvs6layjwob2me3r@pengutronix.de>
+References: <20230601-koenigbauer-alphajet-upstreaming-v1-1-bcdcc1f1382e@pengutronix.de>
+ <20230601082825.GL18491@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZHg3j6puvstgy4HT@tour>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <20230601082825.GL18491@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230601_013538_755792_61DF2DC4 
-X-CRM114-Status: GOOD (  18.29  )
+X-CRM114-CacheID: sfid-20230601_014004_791823_079FEF2E 
+X-CRM114-Status: GOOD (  13.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,32 +79,37 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 09/13] mci: Add sunxi-mmc driver
+Subject: Re: [PATCH] ARM: i.MX8MP: add Koenig+Bauer Alphajet board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Jun 01, 2023 at 08:15:43AM +0200, Jules Maselbas wrote:
-> On Tue, May 30, 2023 at 10:14:20AM +0200, Sascha Hauer wrote:
-> > +#ifdef __PBL__
-> > > +#if 0 /* TODO: test this */
-> > > +#include <asm/system.h>
-> > > +/* TODO: test this ! */
-> > > +#define get_time_ns()		get_cntpct()
-> > > +#define is_timeout(s, t)	(s + (t * get_cntfrq() / 1000000) < get_cntpct()
-> > 
-> > You could base your timeout loop on udelay which is available for
-> > Aarch64 PBL
-> Can I make a version of is_timeout for aarch64 PBl ? instead of doing a hack in
-> the mmc driver ?
+Hi Sascha,
 
-Sure, even better.
+On 23-06-01, Sascha Hauer wrote:
+> On Thu, Jun 01, 2023 at 09:40:29AM +0200, Johannes Zink wrote:
 
-Sascha
+...
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > +#define EQOS_PWR_PIN IMX_GPIO_NR(1, 5) /* ENET_PWREN# */
+> > +static void setup_ethernet_phy(void)
+> > +{
+> > +	u32 val;
+> > +
+> > +	of_device_ensure_probed_by_alias("gpio0");
+> > +
+> > +	if (gpio_direction_output(EQOS_PWR_PIN, 0))
+> > +	{
+> > +		pr_err("eqos phy power: failed to request pin\n");
+> > +		return;
+> > +	}
+> 
+> Should this be a fixed regulator in dt?
+
+Sorry for stepping in here. I think the problem was that neither the
+kernel nor the barebox EQOS driver support the regulator feature. But
+you're right this should be the correct solution.
+
+Regards,
+  Marco
 
 
