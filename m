@@ -1,57 +1,60 @@
-Delivery-date: Thu, 01 Jun 2023 10:50:48 +0200
+Delivery-date: Thu, 01 Jun 2023 10:51:26 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4e1B-005YfB-DO
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 10:50:48 +0200
+	id 1q4e1o-005Yga-6A
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 10:51:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4e18-00078O-23
-	for lore@pengutronix.de; Thu, 01 Jun 2023 10:50:47 +0200
+	id 1q4e1l-0007Hj-OM
+	for lore@pengutronix.de; Thu, 01 Jun 2023 10:51:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DPsvz2G7UpNf6kV4LwCq0hS5EXN16vkNnRa06BvKVpk=; b=e6bHi7MZ3yT8L1atghvUZInRu/
-	GlCF6IVUz7mHnTUQep+c1LgqRipHqrvJgJ6mM1J7ot32q8qFVwMc0i6OpN5nE17AX1HFukC1Fz64K
-	ohP1he4dR/btEY2sI4xMHKACdm09RnH5ntBovbVV4TDVJ+tCJnZIZYd3W8rt7XsyuDpPYnVq+bvIM
-	uqDdUklvZMxTOAahzOiz6f4WNxgjkGCgiBDgbm6sP2hfm1vrj8TG49oSEvRYNtKe1z+MWCOyaib5a
-	m2xAJ3lmaVTDWXx7n7wYvcnhV8tcGCu+OKDdK/7TgLszbpUtTeAMxLcLYNcRQI+NwU+urUF+sq6F4
-	jRBzp3ug==;
+	bh=D0v7xjapCd8UyKuupxkjxR9wLLl31Vl9gvAODF/Pq2Y=; b=DrxdAqxaqYhyGyOZMufuM0udMo
+	Bbg6a4qiAEFmAbFKPUhs6y0I4OhQymorQIJgHreEbOFiccKwSHmwGfoe2bmukBZll4J096E7rFqoL
+	IAPO6hU82iqmJ83KriJTgEKf0B9+MDT1M6/+ugRD4pFwqdpbnIi4vfp8Cl8KDhv+jVwH46rin9bCH
+	CWkDk4JeHjuQXp0VCnHuNapmepiW4FBKBpzVKC5g9diew8V9cBz45QV86Ieq+UvLBsFcGGO2ezNKl
+	1E0amjkCP9599ta0jncJT5Mb7YQbdSmJMzdMp92Q8EUDU+mL/cgqPfpyWPqHxA+cfudHuVfepmuzm
+	pESpv94A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4dzz-002cck-0F;
-	Thu, 01 Jun 2023 08:49:35 +0000
+	id 1q4e0h-002cmS-1Y;
+	Thu, 01 Jun 2023 08:50:19 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4dzv-002cbp-14
+	id 1q4e0e-002cld-0m
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 08:49:33 +0000
+	Thu, 01 Jun 2023 08:50:17 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q4dzs-0006hk-Ep; Thu, 01 Jun 2023 10:49:28 +0200
-Message-ID: <e6a958d3-2ba4-95c6-23d3-a3b9d953435b@pengutronix.de>
-Date: Thu, 1 Jun 2023 10:49:25 +0200
+	id 1q4e0c-0006tG-S1; Thu, 01 Jun 2023 10:50:14 +0200
+Message-ID: <4318a99c-134b-bd93-d697-81a9e03faccf@pengutronix.de>
+Date: Thu, 1 Jun 2023 10:50:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
 Content-Language: en-US
-To: Johannes Zink <j.zink@pengutronix.de>, barebox@lists.infradead.org
-Cc: patchwork-jzi@pengutronix.de, Juergen Borleis <j.borleis@pengutronix.de>
+To: Johannes Zink <j.zink@pengutronix.de>, Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org, patchwork-jzi@pengutronix.de,
+ Juergen Borleis <j.borleis@pengutronix.de>
 References: <20230601-koenigbauer-alphajet-upstreaming-v1-1-bcdcc1f1382e@pengutronix.de>
+ <20230601082825.GL18491@pengutronix.de>
+ <b810f8d1-97e4-9e26-0516-2575f9991fef@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230601-koenigbauer-alphajet-upstreaming-v1-1-bcdcc1f1382e@pengutronix.de>
+In-Reply-To: <b810f8d1-97e4-9e26-0516-2575f9991fef@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230601_014931_524654_21AAAE93 
-X-CRM114-Status: GOOD (  31.08  )
+X-CRM114-CacheID: sfid-20230601_015016_284584_C94D6CA0 
+X-CRM114-Status: GOOD (  25.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,355 +81,154 @@ Subject: Re: [PATCH] ARM: i.MX8MP: add Koenig+Bauer Alphajet board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Johannes,
-
-On 01.06.23 09:40, Johannes Zink wrote:
-> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-> index 2877debad535..67b2fc07a395 100644
-> --- a/arch/arm/boards/Makefile
-> +++ b/arch/arm/boards/Makefile
-> @@ -81,6 +81,7 @@ obj-$(CONFIG_MACH_NXP_IMX8MQ_EVK)		+= nxp-imx8mq-evk/
->  obj-$(CONFIG_MACH_NXP_IMX8MM_EVK)		+= nxp-imx8mm-evk/
->  obj-$(CONFIG_MACH_NXP_IMX8MN_EVK)		+= nxp-imx8mn-evk/
->  obj-$(CONFIG_MACH_NXP_IMX8MP_EVK)		+= nxp-imx8mp-evk/
-> +obj-$(CONFIG_MACH_KB_ALPHAJET)			+= kb-imx8mp-alphajet/
-
-Could you rename this after the SoM instead? This would make it easier
-to share code. Alphajet specific stuff you can do by matching against
-the alphajet compatible.
-
-> +static int kb_alphajet_probe(struct device *dev)
-> +{
-> +	setup_ethernet_phy();
-> +
-> +	imx8m_bbu_internal_flexspi_nor_register_handler("QSPI", "/dev/m25p0.boot", BBU_HANDLER_FLAG_DEFAULT);
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id kb_alphajet_of_match[] = {
-> +	{ .compatible = "kb,alphajet" },
-
-Is anything of the above really alphajet specific? If both PHY and QSPI flash
-are on SOM, you should match against SoM compatible here.
-
-> +	{ /* Sentinel */ }
-> +};
-> +BAREBOX_DEEP_PROBE_ENABLE(kb_alphajet_of_match);
-> +
-> +static struct driver kb_alphajet_board_driver = {
-> +	.name = "board-kb-alphajet",
-> +	.probe = kb_alphajet_probe,
-> +	.of_compatible = kb_alphajet_of_match,
-> +};
-
-> +static void power_init_board(void)
-> +{
-> +	struct pbl_i2c *i2c;
-> +
-> +	imx8mp_setup_pad(MX8MP_PAD_I2C1_SCL__I2C1_SCL | I2C_PAD_CTRL);
-> +	imx8mp_setup_pad(MX8MP_PAD_I2C1_SDA__I2C1_SDA | I2C_PAD_CTRL);
-> +
-> +	imx8mp_early_clock_init();
-
-Move this above power_init_board(). See
-
-  https://lore.barebox.org/barebox/20230523095330.3475712-1-a.fatoum@pengutronix.de/
-
-> +	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_I2C1);
-> +
-> +	i2c = imx8m_i2c_early_init(IOMEM(MX8MP_I2C1_BASE_ADDR));
-> +
-> +	pmic_configure(i2c, 0x25, pca9450_cfg, ARRAY_SIZE(pca9450_cfg));
-> +}
-> +
-> +extern struct dram_timing_info dram_timing_4g;
-> +
-> +static void start_atf(void)
-> +{
-> +	/*
-> +	 * If we are in EL3 we are running for the first time and need to
-> +	 * initialize the DRAM and run TF-A (BL31). The TF-A will then jump
-> +	 * to DRAM in EL2.
-> +	 */
-> +	if (current_el() != 3)
-> +		return;
-> +
-> +	power_init_board();
-> +
-> +	imx8mp_ddr_init(&dram_timing_4g, DRAM_TYPE_LPDDR4);
-> +
-> +	imx8mp_load_and_start_image_via_tfa();
-> +}
-> +
-
-> diff --git a/arch/arm/dts/imx8mp-koenigbauer-alphajet.dts b/arch/arm/dts/imx8mp-koenigbauer-alphajet.dts
-> new file mode 100644
-> index 000000000000..1b2e8272aad6
-> --- /dev/null
-> +++ b/arch/arm/dts/imx8mp-koenigbauer-alphajet.dts
-
-You will have an easier time if you split this up into
-
-imx8mp-koenigbauer-alphajet.dtsi
-
-which is your kernel DT
-
-and 
-
-imx8mp-koenigbauer-alphajet.dts
-
-which just contains your barebox overrides.
-
-> @@ -0,0 +1,180 @@
-> +// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-> +/*
-> + * Copyright 2023 Pengutronix, Johannes Zink <j.zink@pengutronix.de>
-> + */
-> +/dts-v1/;
-> +
-> +#include "imx8mp-cgtqx8p.dtsi"
-> +
-> +/ {
-> +	model = "Koenig+Bauer Alphajet";
-> +	compatible = "kb,alphajet", "cgt,qxp8p", "fsl,imx8mp";
-
-
-Is 8p correct or should this be 8mp?
-
-> +
-> +	aliases {
-> +		state = &state_emmc;
-> +	};
-> +
-> +	chosen {
-> +		stdout-path = &uart1; // labeled UART0 on baseboard, on connector J12
-> +		environment-emmc {
-> +			compatible = "barebox,environment";
-> +			device-path = &env_emmc;
-> +		};
-> +	};
-> +
-> +	display {
-> +		compatible = "innolux,g101ice-l01";
-> +		backlight = <&lvds0_backlight>;
-> +		power-supply = <&reg_lfp_vdd>;
-> +
-> +		port {
-> +			panel_in_lvds0: endpoint {
-> +				remote-endpoint = <&ldb_lvds_ch0>;
-> +			};
-> +		};
-> +	};
-> +
-> +        state_emmc: state {
-> +		compatible = "barebox,state";
-> +		magic = <0xabff4b1f>;
-> +		backend-type = "raw";
-> +		backend = <&backend_state_emmc>;
-> +		backend-storage-type="direct";
-> +		backend-stridesize = <0x40>;
-> +		#address-cells = <1>;
-> +		#size-cells = <1>;
-> +
-> +		bootstate {
-> +			#address-cells = <1>;
-> +			#size-cells = <1>;
-> +
-> +			system0 {
-> +				#address-cells = <1>;
-> +				#size-cells = <1>;
-> +
-> +				remaining_attempts@0 {
-> +					reg = <0x0 0x4>;
-> +					type = "uint32";
-> +					default = <2>;
-> +				};
-> +
-> +				priority@4 {
-> +					reg = <0x4 0x4>;
-> +					type= "uint32";
-> +					default = <21>;
-> +				};
-> +			};
-> +
-> +			system1 {
-> +				#address-cells = <1>;
-> +				#size-cells = <1>;
-> +
-> +				remaining_attempts@8 {
-> +					reg = <0x8 0x4>;
-> +					type = "uint32";
-> +					default = <2>;
-> +				};
-> +
-> +				priority@c {
-> +					reg = <0xC 0x4>;
-> +					type= "uint32";
-> +					default = <20>;
-> +				};
-> +			};
-> +
-> +			last_chosen@10 {
-> +				reg = <0x10 0x4>;
-> +				type = "uint32";
-> +			};
-> +
-> +		};
-> +
-> +	};
-> +};
-> +
-> +&eqos { /* baseboard connects to on-SoM PHY  */
-> +	status = "okay";
-> +};
-> +
-> +&gpu2d {
-> +        status = "okay";
-> +};
-> +
-> +&gpu3d {
-> +        status = "okay";
-> +};
-> +
-> +&lcdif2 {
-> +	assigned-clock-rates = <0>, <995400000>; /* pin IMX8MP_VIDEO_PLL1 to provide bitclock needed by lvds panel */
-> + 	status = "okay";
-> +};
-> +
-> +&lvds0_backlight {
-> +	status = "okay";
-> +};
-> +
-> +&lvds_bridge {
-> +	status = "okay";
-> +
-> +	ports {
-> +		port@1 {
-> +			ldb_lvds_ch0: endpoint {
-> +				remote-endpoint = <&panel_in_lvds0>;
-> +			};
-> +		};
-> +	};
-> +};
-> +
-> +&pcie {
-> +	status = "okay";
-> +};
-> +
-> +&pcie_phy {
-> +	status = "okay";
-> +};
-> +
-> +
-> +&pwm2 { /* for PWM Backlight */
-> +	status = "okay";
-> +};
-> +
-> +&uart1 { /* labeled UART0 on base board */
-> +	/delete-property/ uart-has-rtscts; //not connected on baseboard
-> +	status = "okay";
-> +};
-> +
-> +&usb_dwc3_0 { /* Baseboard J13 Top Connector */
-> +	//fixme: overcurrent Pin is handled via TUSB8041 (which one?)
-> +	status = "okay";
-> +};
-> +
-> +&usdhc1 {  /* Baseboard J8 - uSD card slot  */
-> +	status = "okay";
-> +	/delete-property/ cd-gpios; /* no CD is tied to GND on baseboard */
-> +	/delete-property/ wp-gpios; /* no WP is tied to GND on baseboard */
-> +	broken-cd;                  /* do not wait for CD interrupt */
-> +};
-> +
-> +&usdhc2 { /* on-SoM micro-SD card slot is not used*/
-> +	status = "disabled";
-> +};
-> +
-> +&usdhc3 { /* on-SoM emmc */
-> +	#address-cells = <1>;
-> +	#size-cells = <1>;
-> +
-> +	partition@0 {
-> +		label = "barebox";
-> +		reg = <0x0 0xe0000>;
-> +	};
-> +
-> +	env_emmc: partition@e0000 {
-> +		label = "barebox-environment";
-> +		reg = <0xe0000 0x20000>;
-> +	};
-> +
-> +	backend_state_emmc: partition@100000 {
-> +		label = "state";
-> +		reg = <0x100000 0x20000>;
-> +	};
-> +};
-> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-> index 4c93c1244a6a..058f0625addf 100644
-> --- a/arch/arm/mach-imx/Kconfig
-> +++ b/arch/arm/mach-imx/Kconfig
-> @@ -653,6 +653,16 @@ config MACH_NXP_IMX8MQ_EVK
->  	select ARM_SMCCC
->  	select MCI_IMX_ESDHC_PBL
->  
-> +config MACH_KB_ALPHAJET
-> +	bool "Koenig+Bauer AlphaJet Board"
-> +	select ARCH_IMX8MP
-> +	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
-> +	select FIRMWARE_IMX8MP_ATF
-> +	select ARM_SMCCC
-> +	select MCI_IMX_ESDHC_PBL
-> +	select IMX8M_DRAM
-> +	select I2C_IMX_EARLY
-
-We want to avoid future boards with Congatec modules needing to duplicate
-code. Can you split this up:
-
-config MACH_CONGATEC_QX8MP
-	bool "Koenig+Bauer AlphaJet Board"
-	select ARCH_IMX8MP
-	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
-	select FIRMWARE_IMX8MP_ATF
-	select ARM_SMCCC
-	select MCI_IMX_ESDHC_PBL
-	select IMX8M_DRAM
-	select I2C_IMX_EARLY
-
-config MACH_KB_ALPHAJET
-	bool "Koenig+Bauer AlphaJet Board"
-	select MACH_CONGATEC_QX8MP
-
-> +
->  config MACH_PHYTEC_SOM_IMX8MQ
->  	bool "Phytec i.MX8M SOM"
->  	select ARCH_IMX8MQ
-> diff --git a/images/Makefile.imx b/images/Makefile.imx
-> index 9e70ba50a162..bfb2fcdd8ede 100644
-> --- a/images/Makefile.imx
-> +++ b/images/Makefile.imx
-> @@ -473,6 +473,11 @@ CFG_start_variscite_imx8mp_dart.pblb.imximg = $(board)/variscite-dt8mcustomboard
->  FILE_barebox-variscite-imx8mp-dart-cb.img = start_variscite_imx8mp_dart.pblb.pimximg
->  image-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP) += barebox-variscite-imx8mp-dart-cb.img
->  
-> +pblb-$(CONFIG_MACH_KB_ALPHAJET) += start_congatec_qx8p
-
-This is defined no where. Should this be qx8mp too?
-
-> +CFG_start_kb_alphajet.pblb.imximg = $(board)/kb-imx8mp-alphajet/flash-header-imx8mp-cgtqx8p.imxcfg
-> +FILE_barebox-kb-alphajet.img = start_kb_alphajet.pblb.pimximg
-> +image-$(CONFIG_MACH_KB_ALPHAJET) += barebox-kb-alphajet.img
-> +
->  # ----------------------- i.MX8mq based boards --------------------------
->  pblb-$(CONFIG_MACH_NXP_IMX8MQ_EVK) += start_nxp_imx8mq_evk
->  CFG_start_nxp_imx8mq_evk.pblb.imximg = $(board)/nxp-imx8mq-evk/flash-header-imx8mq-evk.imxcfg
+On 01.06.23 10:41, Johannes Zink wrote:
+> Hi Sascha,
 > 
-> ---
-> base-commit: 64c528dd0bff0953192d90fbbc34b3d45d8116d0
-> change-id: 20230601-koenigbauer-alphajet-upstreaming-2085dc8b9f77
+> thanks for your feedback.
 > 
-> Best regards,
+> On 6/1/23 10:28, Sascha Hauer wrote:
+>> On Thu, Jun 01, 2023 at 09:40:29AM +0200, Johannes Zink wrote:
+>>> Add basic support for Koenig+Bauer Alphajet, based on a Congatec QMX8MP
+>>> SoM with a i.MX8MP SoC in the Industrial Temperature Grade 4GB Variant,
+>>> no inline ECC used.
+>>>
+>>> Co-Developed-by: Juergen Borleis <j.borleis@pengutronix.de>
+>>> Signed-off-by: Juergen Borleis <j.borleis@pengutronix.de>
+>>> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+>>> ---
+>>> Koenig+Bauer Alphajet is based on the Congatec QMX8MP, which is an
+>>> i.MX8MP based SoC. Building barebox for this target requires the usual
+>>> bl31 and lpddr4 training data in /firmware as described in [1].
+>>>
+>>> The Congatec SoM is strapped and fused to boot from QSPI NOR flash,
+>>> which can easily be updated using the registered barebox update handler.
+>>>
+>>> [1] https://www.barebox.org/doc/latest/boards/imx/nxp-imx8mp-evk.html
+>>>
+>>> Best regards
+>>> Johannes
+>>> ---
+>>> Bootlog:
+>>>
+>>> barebox 2023.05.0-00196-g24e000914af6-dirty #151 Thu Jun 1 09:36:02 CEST
+>>> 2023
+>>>
+>>> Board: Koenig+Bauer Alphajet
+>>> deep-probe: supported due to kb,alphajet
+>>> detected i.MX8MP revision 1.1
+>>> i.MX8MP unique ID: 3a13efb20002aaff
+>>> netconsole: registered as netconsole-1
+>>> psci psci.of: detected version 1.1
+>>> imx-esdhc 30b40000.mmc@30b40000.of: registered as mmc0
+>>> mmc0: detected SD card version 2.0
+>>> mmc0: registered mmc0
+>>> imx-esdhc 30b60000.mmc@30b60000.of: registered as mmc2
+>>> mmc2: detected MMC card version 5.1
+>>> mmc2: registered mmc2.boot0
+>>> mmc2: registered mmc2.boot1
+>>> mmc2: registered mmc2
+>>> mdio_bus: miibus0: probed
+>>> xHCI xHCI0: USB XHCI 1.10
+>>> state: New state registered 'state'
+>>> state: Using bucket 0@0x00000000
+>>> malloc space: 0xbfcfbe80 -> 0xffcfbe7f (size 1 GiB)
+>>> found force-builtin environment, using defaultenv
+>>>
+>>> Hit m for menu or any to stop autoboot:    3
+>>> barebox@Koenig+Bauer Alphajet:/
+>>>
+>>> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+>>> ---
+>>>   arch/arm/boards/Makefile                           |    1 +
+>>>   arch/arm/boards/kb-imx8mp-alphajet/Makefile        |    4 +
+>>>   arch/arm/boards/kb-imx8mp-alphajet/board.c         |   60 +
+>>>   .../flash-header-imx8mp-cgtqx8p.imxcfg             |   10 +
+>>>   arch/arm/boards/kb-imx8mp-alphajet/lowlevel.c      |  127 ++
+>>>   arch/arm/boards/kb-imx8mp-alphajet/lpddr4-timing.c | 1832 ++++++++++++++++++++
+>>>   arch/arm/dts/Makefile                              |    1 +
+>>>   arch/arm/dts/imx8mp-cgtqx8p.dtsi                   | 1060 +++++++++++
+>>>   arch/arm/dts/imx8mp-koenigbauer-alphajet.dts       |  180 ++
+>>>   arch/arm/mach-imx/Kconfig                          |   10 +
+>>>   images/Makefile.imx                                |    5 +
+>>>   11 files changed, 3290 insertions(+)
+>>>
+>>> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+>>> index 2877debad535..67b2fc07a395 100644
+>>> --- a/arch/arm/boards/Makefile
+>>> +++ b/arch/arm/boards/Makefile
+>>> @@ -81,6 +81,7 @@ obj-$(CONFIG_MACH_NXP_IMX8MQ_EVK)        += nxp-imx8mq-evk/
+>>>   obj-$(CONFIG_MACH_NXP_IMX8MM_EVK)        += nxp-imx8mm-evk/
+>>>   obj-$(CONFIG_MACH_NXP_IMX8MN_EVK)        += nxp-imx8mn-evk/
+>>>   obj-$(CONFIG_MACH_NXP_IMX8MP_EVK)        += nxp-imx8mp-evk/
+>>> +obj-$(CONFIG_MACH_KB_ALPHAJET)            += kb-imx8mp-alphajet/
+>>>   obj-$(CONFIG_MACH_TQ_MBA8MPXL)            += tqma8mpxl/
+>>>   obj-$(CONFIG_MACH_OMAP343xSDP)            += omap343xdsp/
+>>>   obj-$(CONFIG_MACH_OMAP3EVM)            += omap3evm/
+>>> diff --git a/arch/arm/boards/kb-imx8mp-alphajet/Makefile b/arch/arm/boards/kb-imx8mp-alphajet/Makefile
+>>> new file mode 100644
+>>> index 000000000000..b3ae72be3e3b
+>>> --- /dev/null
+>>> +++ b/arch/arm/boards/kb-imx8mp-alphajet/Makefile
+>>> @@ -0,0 +1,4 @@
+>>> +# SPDX-License-Identifier:      GPL-2.0+
+>>> +
+>>> +obj-y += board.o
+>>> +lwl-y += lowlevel.o lpddr4-timing.o
+>>> diff --git a/arch/arm/boards/kb-imx8mp-alphajet/board.c b/arch/arm/boards/kb-imx8mp-alphajet/board.c
+>>> new file mode 100644
+>>> index 000000000000..78cc60e2c3b1
+>>> --- /dev/null
+>>> +++ b/arch/arm/boards/kb-imx8mp-alphajet/board.c
+>>> @@ -0,0 +1,60 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +// SPDX-FileCopyrightText: 2023 Juergen Borleis, Pengutronix
+>>> +// SPDX-FileCopyrightText: 2023 Johannes Zink, Pengutronix
+>>> +
+>>> +#include <asm/memory.h>
+>>> +#include <bootsource.h>
+>>> +#include <common.h>
+>>> +#include <deep-probe.h>
+>>> +#include <init.h>
+>>> +#include <linux/phy.h>
+>>> +#include <linux/sizes.h>
+>>> +#include <mach/imx/bbu.h>
+>>> +#include <mach/imx/generic.h>
+>>> +#include <mach/imx/iomux-mx8mp.h>
+>>> +#include <gpio.h>
+>>> +#include <envfs.h>
+>>> +
+>>> +#define EQOS_PWR_PIN IMX_GPIO_NR(1, 5) /* ENET_PWREN# */
+>>> +static void setup_ethernet_phy(void)
+>>> +{
+>>> +    u32 val;
+>>> +
+>>> +    of_device_ensure_probed_by_alias("gpio0");
+>>> +
+>>> +    if (gpio_direction_output(EQOS_PWR_PIN, 0))
+>>> +    {
+>>> +        pr_err("eqos phy power: failed to request pin\n");
+>>> +        return;
+>>> +    }
+>>
+>> Should this be a fixed regulator in dt?
+>>
+> 
+> Phy regulator handling in linux is broken for the mx8 eqos, as the phy-regulators are not handed down properly, which is why I cannot add it in the linux upstream dts (dts upstreaming is still to be done...).
+> 
+> I decided to use a hog there. As Marco gave me a hint that hogs are currently somewhat broken in barebox, I opted for setting the pin manually in the board code.
+
+Hogs are broken? Do you care to write a bug report? :)
+
+Thanks,
+Ahmad
+
+> 
+> Johannes
+> 
+>> Sascha
+>>
+>>
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
