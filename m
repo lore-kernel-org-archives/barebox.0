@@ -1,43 +1,43 @@
-Delivery-date: Thu, 01 Jun 2023 07:32:17 +0200
+Delivery-date: Thu, 01 Jun 2023 07:50:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4av5-005MzD-2w
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 07:32:17 +0200
+	id 1q4bD0-005OkF-N1
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 07:50:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4av2-00036C-N1
-	for lore@pengutronix.de; Thu, 01 Jun 2023 07:32:17 +0200
+	id 1q4bCy-0005Xw-68
+	for lore@pengutronix.de; Thu, 01 Jun 2023 07:50:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=q2tNAsU6b7kMI77Dw3tAASRIgWpO69yq0upQHmJL8mc=; b=KNOUTPBN7TqH/a3xnjmJXbAL6P
-	jZj7P42aBMMRUaP2mdzcRS0bOPU1x/egwX6nhuMzHqghThjyi1r7sbMDmGVcPNvGKMIaaWS/B/D65
-	sASk4zwy1pdtFc0Tbze/Gb5UfE2TO7BiCo8Vjv/kpwa5cBYqKw8GMEniYyPCBUYNHjY2ri47ZRCCU
-	aQ+c30LpitgnH0ZZ5CIXEjdvcgJB4tvbqMevpteK1lciFtCD3yywPrkWQkErtYSZiLSZpahIYT2cL
-	6kfM2FRmtWeH9G3HnMJh6dEKBXMnLofMIxVMu4OGUjgKcKcFnJh3QU9pu2evFCbAzxT47jbDe5h3H
-	hN+dcJEw==;
+	bh=iV2wrQV3c0iDTXZHqd9RejvzfkgBFgNUiuH7/1HSp9U=; b=pohMyRxVvcHqrTe6CpFqIzDZoY
+	tA6B13EqfuwDnar67ap4iEUGvZ6FXEYCIpHxwjjka1jksmobWuk7zZsRS1cqqomFsetv8IE27tWaU
+	4HaPB2AOl8KGaHKgPll2GyB662ky1n0XvCxQMRCxN1j/6XF/FsdT8pmS+ozU0sxebqP8iRrcpsUch
+	P26fv1CUc1xiNs2b3+2jTLFd3dQGUHe1aJO1k2LnhJrQz24+aeiTcbvlGHEw2use6A7CZb79LTJUi
+	72LqPu5WyYxho52NDLGEpc6fwNY+YsMkX0XhEuMwy/EnolPbFcHMwRFDhlMSVbD59dvfxmrR19tuC
+	2uqf8pKA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4atp-0021z2-1u;
-	Thu, 01 Jun 2023 05:31:01 +0000
+	id 1q4bBd-00255a-0O;
+	Thu, 01 Jun 2023 05:49:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4atm-0021xh-0G
+	id 1q4bBW-00254k-2J
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 05:30:59 +0000
+	Thu, 01 Jun 2023 05:49:23 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q4atj-0002zY-Co; Thu, 01 Jun 2023 07:30:55 +0200
-Message-ID: <0ee97e12-50a5-2e28-69fd-3a42d2ab9868@pengutronix.de>
-Date: Thu, 1 Jun 2023 07:30:54 +0200
+	id 1q4bBS-0005BQ-UJ; Thu, 01 Jun 2023 07:49:15 +0200
+Message-ID: <5df1f41d-257d-40ce-df98-27ca8e71531e@pengutronix.de>
+Date: Thu, 1 Jun 2023 07:49:14 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.9.1
@@ -45,15 +45,15 @@ Content-Language: en-US
 To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
 References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
- <20230531145927.1399282-17-a.fatoum@pengutronix.de>
- <20230531185442.5hvjrknlmecbcm32@pengutronix.de>
+ <20230531145927.1399282-19-a.fatoum@pengutronix.de>
+ <20230531200120.xjp6qr372didsis5@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230531185442.5hvjrknlmecbcm32@pengutronix.de>
+In-Reply-To: <20230531200120.xjp6qr372didsis5@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230531_223058_127651_1D8E2AAC 
-X-CRM114-Status: GOOD (  21.77  )
+X-CRM114-CacheID: sfid-20230531_224921_727166_D5004D01 
+X-CRM114-Status: GOOD (  28.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,75 +76,155 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 16/18] cdev: use cdev::dos_partition_type only if
- cdev_is_mbr_partitioned
+Subject: Re: [PATCH 18/18] state: allow lookup of barebox state partition by
+ Type GUID
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 31.05.23 20:54, Marco Felsch wrote:
+On 31.05.23 22:01, Marco Felsch wrote:
+> Hi Ahmad,
+> 
 > On 23-05-31, Ahmad Fatoum wrote:
->> dos_partition_type == 0 can mean that either a partition is not
->> a MBR partition or that it indeed has a partition type of 0x00.
+>> The backend device tree property so far always pointed at a partition.
+>> Let's allow pointing it at GPT storage devices directly and lookup
+>> the correct barebox state partition by the well-known type GUID:
 >>
->> In preparation for using that field in a union, explicitly check if we
->> have a MBR partition.
->>
+>>   4778ed65-bf42-45fa-9c5b-287a1dc4aab1
+> 
+> we should add an example within the Documetation/ too.
+
+I'd wait until we have a new dt-utils release with the same
+binding. Anything else would be confusing. 
+
+> 
 >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 >> ---
->>  common/blspec.c | 2 +-
->>  fs/fs.c         | 2 +-
->>  2 files changed, 2 insertions(+), 2 deletions(-)
+>>  common/state/state.c | 22 ++++++++++++++++++++++
+>>  include/driver.h     | 17 +++++++++++++++++
+>>  include/state.h      |  4 ++++
+>>  3 files changed, 43 insertions(+)
 >>
->> diff --git a/common/blspec.c b/common/blspec.c
->> index e95a8dba8d76..8c7970da8915 100644
->> --- a/common/blspec.c
->> +++ b/common/blspec.c
->> @@ -729,7 +729,7 @@ int blspec_scan_device(struct bootentries *bootentries, struct device *dev)
->>  		 * partition with the MBR type id of 0xEA already exists it
->>  		 * should be used as $BOOT
->>  		 */
->> -		if (cdev->dos_partition_type == 0xea) {
->> +		if (cdev_is_mbr_partitioned(cdev->master) && cdev->dos_partition_type == 0xea) {
+>> diff --git a/common/state/state.c b/common/state/state.c
+>> index 88e246198fb8..8f56c60b0e82 100644
+>> --- a/common/state/state.c
+>> +++ b/common/state/state.c
+>> @@ -21,8 +21,10 @@
+>>  #include <fs.h>
+>>  #include <crc.h>
+>>  #include <init.h>
+>> +#include <block.h>
+>>  #include <linux/err.h>
+>>  #include <linux/list.h>
+>> +#include <linux/uuid.h>
+>>  
+>>  #include <linux/mtd/mtd-abi.h>
+>>  #include <malloc.h>
+>> @@ -595,6 +597,8 @@ static char *cdev_to_devpath(struct cdev *cdev, off_t *offset, size_t *size)
+>>  }
+>>  #endif
+>>  
+>> +static guid_t barebox_state_partition_guid = BAREBOX_STATE_PARTITION_GUID;
+>> +
+>>  /*
+>>   * state_new_from_node - create a new state instance from a device_node
+>>   *
+>> @@ -641,6 +645,24 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
+>>  		goto out_release_state;
+>>  	}
+>>  
+>> +	/* Is the backend referencing an on-disk partitonable block device? */
+>> +	if (cdev_is_block_disk(cdev)) {
+>> +		struct cdev *partcdev = NULL;
+>> +
+>> +		if (cdev_is_gpt_partitioned(cdev))
+>> +			partcdev = cdev_find_child_by_typeuuid(cdev, &barebox_state_partition_guid);
+>> +
+>> +		if (!partcdev) {
+>> +			ret = -EINVAL;
+>> +			goto out_release_state;
+>> +		}
+>> +
+>> +		pr_debug("%s: backend GPT partition looked up via PartitionTypeGUID\n",
+>> +			 node->full_name);
+>> +
+>> +		cdev = partcdev;
+>> +	}
 > 
-> Since you already various helpers to drop priv direct access, what
-> about:
+> What about having the above logic within a seperate function and the
+> above code would be:
 > 
-> 		if (cdev_dos_partition_type(cdev) == 0xea)
+> 	if (cdev_is_block_disk(cdev))
+> 		cdev = get_cdev_by_typeuuid(cdev, &barebox_state_partition_guid)
+> 	
+> 	if (!cdev) {
+> 		ret = -EINVAL;
+> 		goto out_release_state;
+> 	}
 > 
-> Within the helper you can check for the cdev_is_mbr_partitioned().
+> This way we would have everything in place to re-use the same logic for
+> the barebox-environmnet too. What do you think?
 
-We only have a single call site and there'll be a separate series that adds:
+cdev from of_cdev_find not being available -> -EPROBE_DEFER
+cdev GPT partition not existing,despite backend pointing at root device -> -EINVAL
 
-if (cdev_is_gpt_partitioned(cdev->master) && guid_equal(&partcdev->typeuuid, blspec_xbootldr_guid))
-	/* use that */;
+So the cdev check needs to be within if (cdev_is_block_disk(cdev)).
 
-after this line. So I'd rather leave it as is.
+I don't object to combining cdev_is_gpt_partitioned and cdev_find_child_by_typeuuid into
+cdev_find_child_by_gpt_typeuuid though.
 
-Thanks,
+
+Thanks for all the review!
 Ahmad
 
-> 
-> ?
 > 
 > Regards,
 >   Marco
 > 
->>  			ret = blspec_scan_cdev(bootentries, cdev);
->>  			if (ret == 0)
->>  				ret = -ENOENT;
->> diff --git a/fs/fs.c b/fs/fs.c
->> index 2d2d327c5fbc..9a92e6e251e5 100644
->> --- a/fs/fs.c
->> +++ b/fs/fs.c
->> @@ -108,7 +108,7 @@ void cdev_print(const struct cdev *cdev)
+>> +
+>>  	state->backend_path = cdev_to_devpath(cdev, &offset, &size);
 >>  
->>  	if (cdev->filetype)
->>  		nbytes += printf("Filetype: %s\t", file_type_to_string(cdev->filetype));
->> -	if (cdev->dos_partition_type)
->> +	if (cdev_is_mbr_partitioned(cdev->master))
->>  		nbytes += printf("DOS parttype: 0x%02x\t", cdev->dos_partition_type);
->>  	if (*cdev->partuuid || *cdev->diskuuid)
->>  		nbytes += printf("%sUUID: %s", cdev_is_partition(cdev) ? "PART" : "DISK",
+>>  	pr_debug("%s: backend resolved to %s\n", node->full_name, state->backend_path);
+>> diff --git a/include/driver.h b/include/driver.h
+>> index 6407f7d6ba36..579b03fbac34 100644
+>> --- a/include/driver.h
+>> +++ b/include/driver.h
+>> @@ -585,6 +585,23 @@ extern struct list_head cdev_list;
+>>  #define for_each_cdev(cdev) \
+>>  	list_for_each_entry(cdev, &cdev_list, list)
+>>  
+>> +#define for_each_cdev_partition(partcdev, cdev) \
+>> +	list_for_each_entry((partcdev), &(cdev)->partitions, partition_entry)
+>> +
+>> +
+>> +static inline struct cdev *cdev_find_child_by_typeuuid(struct cdev *cdev,
+>> +						       guid_t *typeuuid)
+>> +{
+>> +	struct cdev *partcdev;
+>> +
+>> +	for_each_cdev_partition(partcdev, cdev) {
+>> +		if (guid_equal(&partcdev->typeuuid, typeuuid))
+>> +			return partcdev;
+>> +	}
+>> +
+>> +	return NULL;
+>> +}
+>> +
+>>  #define DEVFS_PARTITION_FIXED		(1U << 0)
+>>  #define DEVFS_PARTITION_READONLY	(1U << 1)
+>>  #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
+>> diff --git a/include/state.h b/include/state.h
+>> index bffcd5a9007f..3daf82c0735f 100644
+>> --- a/include/state.h
+>> +++ b/include/state.h
+>> @@ -62,4 +62,8 @@ static inline int state_read_mac(struct state *state, const char *name, u8 *buf)
+>>  
+>>  #endif /* #if IS_ENABLED(CONFIG_STATE) / #else */
+>>  
+>> +#define BAREBOX_STATE_PARTITION_GUID \
+>> +	GUID_INIT(0x4778ed65, 0xbf42, 0x45fa, 0x9c, 0x5b, \
+>> +		 0x28, 0x7a, 0x1d, 0xc4, 0xaa, 0xb1)
+>> +
+>>  #endif /* __STATE_H */
 >> -- 
 >> 2.39.2
 >>
