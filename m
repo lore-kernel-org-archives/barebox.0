@@ -1,59 +1,56 @@
-Delivery-date: Thu, 01 Jun 2023 08:02:15 +0200
+Delivery-date: Thu, 01 Jun 2023 08:17:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4bO5-005PBg-3b
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 08:02:15 +0200
+	id 1q4bce-005QHK-1x
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 08:17:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4bO1-0007L1-OS
-	for lore@pengutronix.de; Thu, 01 Jun 2023 08:02:14 +0200
+	id 1q4bca-0001FR-OD
+	for lore@pengutronix.de; Thu, 01 Jun 2023 08:17:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=K0K+1oFmoDlSBAjdSKVfAQ1WrSM+Qwk/DkEulRBcw70=; b=IqpE/N8hVcGI9EKMhm8uorMzQn
-	8DT9VJDywTayzBjCMLd5Y0+q7/PtOuOT2AE3iD0iPZDoaI9s6QDgH8qfqtiFdXkxgrLW8ovxTb40X
-	42H4vu8RoM0DCh83whUt1jC0YN7GE+bFe/jxcHgEYuFG6g8ec02hYgTpgxyUj7jWB2T6dcDK1zhyr
-	h2KSLiW5+N0MI82+7IGLNF6EWwGXNlJmJk7uW8DKwH2CrVKlhn5ZSaS99FB8ZisND99oj9c2WHGjB
-	wduhLMGIZpDrp2dvGdxXOYTPE7u1SEcoe+I4xni5Xu5ksbmIHEGct88RpArcKsO5fG8WQoJ6BJy+e
-	+9dKOOcQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=kivYI2nQhPld50SKDnuL64WXM5zNJEibEXRZmfMwFME=; b=BVtR4ozxiRFokIuXzNHjnv3RzT
+	AN9zCm0M41lBLJAyHjzMvi5f3vQXY6nxFGBMqfnkKSDVQFunBXpTANow3FxL07PnC13cTOJGg4p5O
+	ZOKBmlmol9cb2c25Fo4JnXVRlKufCB7gKjm5tVzL3kyqoEFupprTrX7Or2k3119bk+5zP28gOdi9b
+	McgFSIlPX9drAYsfpsxDa3OTIpzLCpsjdsr7OUOlMTOxjZN7hAYP4AlKJPXh1h0INDtYbw/TK1vUU
+	aHafQAOuxXDt5QG1f9X2tRSkjDQBBpVWCnJhBLqfgkrTlThHS7N4gZrErR99sHNLcii74KoaOTqln
+	yPKdK/ww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4bMj-0026ZW-0r;
-	Thu, 01 Jun 2023 06:00:53 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1q4bbH-0028wD-0x;
+	Thu, 01 Jun 2023 06:15:55 +0000
+Received: from relay6-d.mail.gandi.net ([217.70.183.198])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4bMf-0026Yu-1E
+	id 1q4bbB-0028uY-1P
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 06:00:51 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q4bMe-0006up-3G; Thu, 01 Jun 2023 08:00:48 +0200
-Message-ID: <a24bf8d3-2d27-d18f-32df-11a6af2ab27c@pengutronix.de>
-Date: Thu, 1 Jun 2023 08:00:47 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.9.1
-Content-Language: en-US
-To: Jules Maselbas <jmaselbas@zdiv.net>, Sascha Hauer <sha@pengutronix.de>
+	Thu, 01 Jun 2023 06:15:53 +0000
+X-GND-Sasl: jmaselbas@zdiv.net
+X-GND-Sasl: jmaselbas@zdiv.net
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 64C40C0003;
+	Thu,  1 Jun 2023 06:15:44 +0000 (UTC)
+Date: Thu, 1 Jun 2023 08:15:43 +0200
+From: Jules Maselbas <jmaselbas@zdiv.net>
+To: Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
+Message-ID: <ZHg3j6puvstgy4HT@tour>
 References: <20230524234328.82741-1-jmaselbas@zdiv.net>
- <20230524234328.82741-12-jmaselbas@zdiv.net>
- <20230530084236.GY17518@pengutronix.de> <ZHgxt7mRiFRMtgDU@tour>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <ZHgxt7mRiFRMtgDU@tour>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20230524234328.82741-10-jmaselbas@zdiv.net>
+ <20230530081420.GX17518@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230530081420.GX17518@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230531_230049_575531_5CE50C9D 
-X-CRM114-Status: GOOD (  37.31  )
+X-CRM114-CacheID: sfid-20230531_231549_765207_4DF7ED81 
+X-CRM114-Status: GOOD (  45.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,256 +70,838 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 11/13] ARM: boards: sunxi: Add initial support for the
- pinephone
+Subject: Re: [PATCH v2 09/13] mci: Add sunxi-mmc driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 01.06.23 07:50, Jules Maselbas wrote:
-> Hi Sascha,
+On Tue, May 30, 2023 at 10:14:20AM +0200, Sascha Hauer wrote:
+> On Thu, May 25, 2023 at 01:43:24AM +0200, Jules Maselbas wrote:
+> > This driver is adapted from different sources: Linux, u-boot and p-boot.
+> > The latter, p-boot (forked from u-boot), is a bootloader for pinephones.
+> > 
+> > It currently only support PIO xfer but could be further improved to also
+> > support DMA xfer. This driver is split in three source file so it can be
+> > used by PBL and barebox proper.
+> > 
+> > Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+> > ---
+> > rfc->v1:
+> >  - cleanup
+> > 
+> >  drivers/mci/Kconfig            |   6 +
+> >  drivers/mci/Makefile           |   2 +
+> >  drivers/mci/sunxi-mmc-common.c | 259 +++++++++++++++++++++++++++++++++
+> >  drivers/mci/sunxi-mmc-pbl.c    |  80 ++++++++++
+> >  drivers/mci/sunxi-mmc.c        | 173 ++++++++++++++++++++++
+> >  drivers/mci/sunxi-mmc.h        | 229 +++++++++++++++++++++++++++++
+> >  include/mach/sunxi/xload.h     |  12 ++
+> >  7 files changed, 761 insertions(+)
+> >  create mode 100644 drivers/mci/sunxi-mmc-common.c
+> >  create mode 100644 drivers/mci/sunxi-mmc-pbl.c
+> >  create mode 100644 drivers/mci/sunxi-mmc.c
+> >  create mode 100644 drivers/mci/sunxi-mmc.h
+> >  create mode 100644 include/mach/sunxi/xload.h
+> > 
+> > diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
+> > index bbdca67e9d..1de2c8edfa 100644
+> > --- a/drivers/mci/Kconfig
+> > +++ b/drivers/mci/Kconfig
+> > @@ -72,6 +72,12 @@ config MCI_DW_PIO
+> >  	help
+> >  	  Use PIO mode (instead of IDMAC) in DW MMC driver.
+> >  
+> > +config MCI_SUNXI_SMHC
+> > +	bool "Allwinner SD-MMC Memory Card Host Controller"
+> > +	help
+> > +	  Enable support for the Allwinner SD-MMC Memory Card Host Controller,
+> > +	  this provides host support for SD and MMC interfaces, in PIO mode.
+> > +
+> >  config MCI_MXS
+> >  	bool "i.MX23/i.MX28"
+> >  	depends on ARCH_MXS
+> > diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
+> > index e3dc5ad8ae..c17cd41db1 100644
+> > --- a/drivers/mci/Makefile
+> > +++ b/drivers/mci/Makefile
+> > @@ -20,4 +20,6 @@ obj-$(CONFIG_MCI_SPI)		+= mci_spi.o
+> >  obj-$(CONFIG_MCI_DW)		+= dw_mmc.o
+> >  obj-$(CONFIG_MCI_MMCI)		+= mmci.o
+> >  obj-$(CONFIG_MCI_STM32_SDMMC2)	+= stm32_sdmmc2.o
+> > +obj-$(CONFIG_MCI_SUNXI_SMHC)	+= sunxi-mmc.o
+> > +pbl-$(CONFIG_MCI_SUNXI_SMHC)	+= sunxi-mmc-pbl.o
+> >  obj-pbl-$(CONFIG_MCI_SDHCI)	+= sdhci.o
+> > diff --git a/drivers/mci/sunxi-mmc-common.c b/drivers/mci/sunxi-mmc-common.c
+> > new file mode 100644
+> > index 0000000000..845078805b
+> > --- /dev/null
+> > +++ b/drivers/mci/sunxi-mmc-common.c
+> > @@ -0,0 +1,259 @@
+> > +#include "sunxi-mmc.h"
+> > +
+> > +static int sdxc_read_data_pio(struct sunxi_mmc_host *host, struct mci_data *data);
+> > +static int sdxc_write_data_pio(struct sunxi_mmc_host *host, struct mci_data *data);
+> > +static int sunxi_mmc_send_cmd(struct sunxi_mmc_host *host, struct mci_cmd *cmd, struct mci_data *data, const char **why);
+> > +static int sunxi_mmc_set_ios(struct sunxi_mmc_host *host, struct mci_ios *ios);
+> > +static void sunxi_mmc_init(struct sunxi_mmc_host *host);
 > 
-> Thanks for your review
+> Some (all?) of these forward declarations are unnecessary.
+None of them are necessary, they will be removed
+ 
+> > +
+> > +static int sdxc_read_data_pio(struct sunxi_mmc_host *host, struct mci_data *data)
+> > +{
+> > +	size_t i, len = data->blocks * data->blocksize;
+> > +	u8 *dst = data->dest;
+> > +	u32 reg;
+> > +
+> > +	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_ACCESS_BY_AHB);
+> > +
+> > +	for (i = 0; i < len; i += 4) {
+> > +		if (wait_on_timeout(2000 * MSECOND, !sdxc_is_fifo_empty(host)))
+> > +			return -ETIMEDOUT;
+> > +		reg = sdxc_readl(host, SDXC_REG_FIFO);
+> > +		memcpy(dst + i, &reg, sizeof(reg));
 > 
-> On Tue, May 30, 2023 at 10:42:36AM +0200, Sascha Hauer wrote:
->> On Thu, May 25, 2023 at 01:43:26AM +0200, Jules Maselbas wrote:
->>> Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
->>> ---
->>>  arch/arm/boards/Makefile                    |   1 +
->>>  arch/arm/boards/pine64-pinephone/Makefile   |   2 +
->>>  arch/arm/boards/pine64-pinephone/board.c    |   0
->>>  arch/arm/boards/pine64-pinephone/lowlevel.c | 104 ++++++++++++++++++++
->>>  arch/arm/configs/pinephone_defconfig        |  12 +++
->>>  arch/arm/dts/Makefile                       |   1 +
->>>  arch/arm/dts/sun50i-a64-pinephone-1_2.dts   |   3 +
->>>  arch/arm/mach-sunxi/Kconfig                 |  17 ++++
->>>  images/Makefile.sunxi                       |   9 ++
->>>  include/mach/sunxi/init.h                   |   4 +
->>>  10 files changed, 153 insertions(+)
->>>  create mode 100644 arch/arm/boards/pine64-pinephone/Makefile
->>>  create mode 100644 arch/arm/boards/pine64-pinephone/board.c
->>>  create mode 100644 arch/arm/boards/pine64-pinephone/lowlevel.c
->>>  create mode 100644 arch/arm/configs/pinephone_defconfig
->>>  create mode 100644 arch/arm/dts/sun50i-a64-pinephone-1_2.dts
->>>
->>> diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
->>> index b204c257f6..f4796f5374 100644
->>> --- a/arch/arm/boards/Makefile
->>> +++ b/arch/arm/boards/Makefile
->>> @@ -96,6 +96,7 @@ obj-$(CONFIG_MACH_PHYTEC_SOM_IMX6)		+= phytec-som-imx6/
->>>  obj-$(CONFIG_MACH_PHYTEC_PHYCORE_IMX7)		+= phytec-phycore-imx7/
->>>  obj-$(CONFIG_MACH_PHYTEC_PHYCORE_STM32MP1)	+= phytec-phycore-stm32mp1/
->>>  obj-$(CONFIG_MACH_PHYTEC_SOM_IMX8MQ)		+= phytec-som-imx8mq/
->>> +obj-$(CONFIG_MACH_PINE64_PINEPHONE)		+= pine64-pinephone/
->>>  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_AX3)	+= plathome-openblocks-ax3/
->>>  obj-$(CONFIG_MACH_PLATHOME_OPENBLOCKS_A6)	+= plathome-openblocks-a6/
->>>  obj-$(CONFIG_MACH_PM9261)			+= pm9261/
->>> diff --git a/arch/arm/boards/pine64-pinephone/Makefile b/arch/arm/boards/pine64-pinephone/Makefile
->>> new file mode 100644
->>> index 0000000000..092c31d6b2
->>> --- /dev/null
->>> +++ b/arch/arm/boards/pine64-pinephone/Makefile
->>> @@ -0,0 +1,2 @@
->>> +lwl-y += lowlevel.o
->>> +obj-y += board.o
->>> diff --git a/arch/arm/boards/pine64-pinephone/board.c b/arch/arm/boards/pine64-pinephone/board.c
->>> new file mode 100644
->>> index 0000000000..e69de29bb2
->>> diff --git a/arch/arm/boards/pine64-pinephone/lowlevel.c b/arch/arm/boards/pine64-pinephone/lowlevel.c
->>> new file mode 100644
->>> index 0000000000..262d194864
->>> --- /dev/null
->>> +++ b/arch/arm/boards/pine64-pinephone/lowlevel.c
->>> @@ -0,0 +1,104 @@
->>> +// SPDX-License-Identifier: GPL-2.0+
->>> +#include <common.h>
->>> +#include <debug_ll.h>
->>> +#include <linux/sizes.h>
->>> +#include <linux/bitops.h>
->>> +#include <mach/sunxi/barebox-arm.h>
->>
->> This file is missing in this series. Forgot to git add it?
-> ooops, yes forgot to add it.
-> There is almost nothing in it:
-> ```
-> #include <asm/barebox-arm.h>
-> 
-> #define SUN50I_A64_ENTRY_FUNCTION(name, arg0, arg1, arg2) \
-> 	ENTRY_FUNCTION_WITHSTACK(name, SUN50I_PBL_STACK_TOP, arg0, arg1, arg2)
-> ```
-> that's all
+> Why memcpy? You can safely assume that dst is sufficiently aligned for
+> putting the register value there directly.
+I don't recall why, will remove the memcpy
 
-Can this pull in the eGON header as well? That way sun50i entry points
-can just look like normal C functions and board porters need not be aware
-of the magic.
+> > +	}
+> > +
+> > +	return i;
+> 
+> The caller is not interested in the actual count, better just return 0.
+ack
 
+> > +}
+> > +
+> > +static int sdxc_write_data_pio(struct sunxi_mmc_host *host, struct mci_data *data)
+> > +{
+> > +	size_t i, len = data->blocks * data->blocksize;
+> > +	u32 *pdata = (u32 *)data->src;
+> > +
+> > +	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_ACCESS_BY_AHB);
+> > +
+> > +	for (i = 0; i < len; i += 4, pdata++) {
+> > +		if (wait_on_timeout(2000 * MSECOND, !sdxc_is_fifo_full(host)))
+> > +			return -ETIMEDOUT;
+> > +		sdxc_writel(host, SDXC_REG_FIFO, *pdata);
+> > +	}
+> > +#if 0
+> > +	sdxc_writel(host, SDXC_RINTR, SDXC_INTMSK_TXDR);
+> > +
+> > +	if (wait_on_timeout(2000 * MSECOND, sdxc_is_fifo_empty(host))) {
+> > +		return -EIO;
+> > +	}
+> > +#endif
 > 
->>> +#include <mach/sunxi/init.h>
->>> +#include <mach/sunxi/xload.h>
->>> +#include <mach/sunxi/egon.h>
->>> +#include <mach/sunxi/rmr_switch.h>
->>> +#include <mach/sunxi/sun50i-regs.h>
->>> +#include <mach/sunxi/sunxi-pinctrl.h>
->>> +
->>> +#ifdef DEBUG
->>> +static void debug_led_rgb(int rgb)
->>> +{
->>> +	void __iomem *piobase = SUN50I_PIO_BASE_ADDR;
->>> +	uint32_t clr, set = 0;
->>> +	int r = rgb & 0xff0000;
->>> +	int g = rgb & 0x00ff00;
->>> +	int b = rgb & 0x0000ff;
->>> +
->>> +	clr = (1 << 19) | (1 << 18) | (1 << 20);
->>> +	set |= r ? 1 << 19 : 0;
->>> +	set |= g ? 1 << 18 : 0;
->>> +	set |= b ? 1 << 20 : 0;
->>> +
->>> +	clrsetbits_le32(piobase + PIO_PD_DATA, clr, set);
->>> +}
->>> +
->>> +static void debug_led_init(void)
->>> +{
->>> +	void __iomem *ccubase = SUN50I_CCU_BASE_ADDR;
->>> +	void __iomem *piobase = SUN50I_PIO_BASE_ADDR;
->>> +
->>> +	/* PIO clock enable */
->>> +	setbits_le32(ccubase + CCU_BUS_CLK_GATE2, BIT(5));
->>> +	/* LED set output */
->>> +	clrsetbits_le32(piobase + PIO_PD_CFG2, 0x000fff00, 0x00011100);
->>> +}
->>> +#else
->>> +static void debug_led_rgb(int rgb) {}
->>> +static void debug_led_init(void) {}
->>> +#endif
->>> +
->>> +SUN50I_A64_ENTRY_FUNCTION(start_pine64_pinephone, r0, r1, r2)
->>> +{
->>> +	extern char __dtb_z_sun50i_a64_pinephone_1_2_start[];
->>> +	void *fdt;
->>> +	u32 size;
->>> +
->>> +	sunxi_switch_to_aarch64(.text_head_soc_header2, SUN50I_A64_RVBAR_IOMAP);
->>> +
->>> +	debug_led_init();
->>> +	debug_led_rgb(0xffff00);
->>> +
->>> +	sun50i_cpu_lowlevel_init();
->>> +	sun50i_uart_setup();
->>> +
->>> +	relocate_to_current_adr();
->>> +	setup_c();
->>> +
->>> +	/* Skip SDRAM initialization if we run from it */
->>> +	if (get_pc() < SUN50I_DRAM_ADDR) {
->>> +		size = sun50i_a64_lpddr3_dram_init();
->>> +		if (size == 0) {
->>> +			puts_ll("FAIL: dram init\r\n");
->>> +			goto reset;
->>> +		}
->>> +		puthex_ll(size);
->>> +		putc_ll('\r');	putc_ll('\n');
->>> +	}
->>
->> How can we get here with SDRAM uninitialized? Is this for USB or JTAG
->> boot?
-> Yes this is when not chain loaded, when started directly from USB via fel or
-> via JTAG.
-> 
->>> +
->>> +	puts_ll("now booting\r\n");
->>> +	fdt = __dtb_z_sun50i_a64_pinephone_1_2_start + get_runtime_offset();
->>> +	barebox_arm_entry(SUN50I_DRAM_ADDR, SZ_1G, fdt);
->>> +
->>> +reset:
->>> +	debug_led_rgb(0xff0000);
->>> +	sun50i_cpu_lowlevel_reset();
->>> +}
->>> +
->>> +SUN50I_A64_ENTRY_FUNCTION(start_pine64_pinephone_xload, r0, r1, r2)
->>> +{
->>> +
->>> +	sunxi_egon_header(.text_head_soc_header0);
->>> +	sunxi_switch_to_aarch64(.text_head_soc_header1, SUN50I_A64_RVBAR_IOMAP);
->>> +
->>> +	debug_led_init();
->>> +	debug_led_rgb(0xff0000);
->>> +
->>> +	sun50i_cpu_lowlevel_init();
->>> +	sun50i_uart_setup();
->>> +	debug_led_rgb(0xffff00);
->>> +
->>> +	relocate_to_current_adr();
->>> +	setup_c();
->>> +
->>> +	sun50i_a64_lpddr3_dram_init();
->>> +
->>> +	debug_led_rgb(0xff0000);
->>> +
->>
->> You would have to place code here to continue booting, right? In that
->> case you should add a comment to let the reader know that there's
->> something missing here.
-> I forgot to add the code that search for barebox.bin and continue execution
-> 
->>
->> debug_led_rgb(0xff0000) is the same color you used at the beginning of
->> the function. Would it make more sense to use a different color?
-> Yes, I'll remove the first red color, I want to reserved it for error conditions.
-> 
->>> +	sun50i_cpu_lowlevel_reset();
->>
->> Maybe hang() here instead to give the user a chance to see the last
->> color?
-> Yes, I put the reset so it will re-enter fel so the board could be reprogrammed
-> without needing a powercycle, but that's only true if there are no valid boot
-> entry in eMMC nor SD, IMHO this only makes sense for developpement/debugging.
->  
->>> +}
->>> diff --git a/arch/arm/configs/pinephone_defconfig b/arch/arm/configs/pinephone_defconfig
->>
->> In the hope that the config is not only suitable for the pinephone
->> better name it sunxi_v8_defconfig.
-> Yes, currently use this config for the pine64 board, will make this change.
-> 
->>
->>> +++ b/arch/arm/mach-sunxi/Kconfig
->>> @@ -1,7 +1,24 @@
->>>  if ARCH_SUNXI
->>>  
->>> +config ARCH_SUN50I_A64
->>> +	bool
->>> +	select CPU_V8
->>> +	select CPU_SUPPORTS_64BIT_KERNEL
->>> +	select CLOCKSOURCE_ARM_ARCHITECTED_TIMER
->>> +	select PINCTRL_SUN50I_A64
->>> +	select HAS_DEBUG_LL
->>> +	select PBL_RELOCATABLE
->>> +	select PBL_FULLY_PIC
->>> +	help
->>> +	  Allwiner A64 (sun50iw1) SoC
->>
->> s/Allwiner/Allwinner/
-> ack
-> 
->> Sascha
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
-> 
-> 
+> Please drop if that's not needed (or explain why it might be needed)
+done
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> > +	return i;
+> 
+> Return 0.
+ack
 
+> > +}
+> > +
+> > +static int sunxi_mmc_send_cmd(struct sunxi_mmc_host *host, struct mci_cmd *cmd,
+> > +			      struct mci_data *data, const char **why)
+> > +{
+> > +	const char *err_why = "";
+> > +	u32 cmdval = SDXC_CMD_START;
+> > +	int ret;
+> > +
+> > +	if ((cmd->resp_type & MMC_RSP_136) && (cmd->resp_type & MMC_RSP_BUSY))
+> > +		return -EINVAL;
+> > +
+> > +	if (cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION)
+> > +		return 0; /* using ACMD12 */
+> > +	if (cmd->cmdidx == MMC_CMD_GO_IDLE_STATE)
+> > +		cmdval |= SDXC_CMD_SEND_INIT_SEQ;
+> > +
+> > +	if (cmd->resp_type & MMC_RSP_PRESENT)
+> > +		cmdval |= SDXC_CMD_RESP_EXPIRE;
+> > +	if (cmd->resp_type & MMC_RSP_136)
+> > +		cmdval |= SDXC_CMD_LONG_RESPONSE;
+> > +	if (cmd->resp_type & MMC_RSP_CRC)
+> > +		cmdval |= SDXC_CMD_CHK_RESPONSE_CRC;
+> > +
+> > +	/* clear interrupts */
+> > +	sdxc_writel(host, SDXC_REG_RINTR, 0xffffffff);
+> > +
+> > +	if (data) {
+> > +		u32 blksiz = data->blocksize;
+> > +		u32 bytcnt = data->blocks * data->blocksize;
+> > +
+> > +		cmdval |= SDXC_CMD_DATA_EXPIRE;
+> > +		cmdval |= SDXC_CMD_WAIT_PRE_OVER;
+> > +		if (data->flags & MMC_DATA_WRITE)
+> > +			cmdval |= SDXC_CMD_WRITE;
+> > +		if (data->blocks > 1)
+> > +			cmdval |= SDXC_CMD_AUTO_STOP;
+> > +
+> > +		sdxc_writel(host, SDXC_REG_TMOUT, 0xFFFFFF40);
+> > +		sdxc_writel(host, SDXC_REG_BLKSZ, blksiz);
+> > +		sdxc_writel(host, SDXC_REG_BCNTR, bytcnt);
+> > +	}
+> > +
+> > +	sdxc_writel(host, SDXC_REG_CARG, cmd->cmdarg);
+> > +	sdxc_writel(host, SDXC_REG_CMDR, cmdval | cmd->cmdidx);
+> > +	if (data) {
+> > +		if (data->flags & MMC_DATA_WRITE)
+> > +			ret = sdxc_write_data_pio(host, data);
+> > +		else
+> > +			ret = sdxc_read_data_pio(host, data);
+> > +		if (ret < 0) {
+> > +			err_why = "pio error";
+> > +			goto err;
+> > +		}
+> > +	}
+> > +
+> > +	ret = sdxc_xfer_complete(host, 1000 * MSECOND, SDXC_INT_COMMAND_DONE);
+> > +	if (ret) {
+> > +		err_why = "cmd timeout";
+> > +		goto err;
+> > +	}
+> > +
+> > +	if (data) {
+> > +		ret = sdxc_xfer_complete(host, 1000 * MSECOND, data->blocks > 1 ?
+> > +					 SDXC_INT_AUTO_COMMAND_DONE :
+> > +					 SDXC_INT_DATA_OVER);
+> > +		if (ret) {
+> > +			err_why = "data timeout";
+> > +			goto err;
+> > +		}
+> > +	}
+> > +
+> > +	if (cmd->resp_type & MMC_RSP_BUSY) {
+> > +		u32 status;
+> > +		u64 start;
+> > +		start = get_time_ns();
+> > +		do {
+> > +			status = sdxc_readl(host, SDXC_REG_STAS);
+> > +			if (is_timeout(start, 2000 * MSECOND)) {
+> > +				err_why = "resp timeout";
+> > +				ret = -ETIMEDOUT;
+> > +				goto err;
+> > +			}
+> > +		} while (status & SDXC_STATUS_BUSY);
+> > +	}
+> > +
+> > +	if (wait_on_timeout(1000 * MSECOND, !sdxc_is_card_busy(host))) {
+> > +		err_why = "card busy timeout";
+> > +		ret = -ETIMEDOUT;
+> > +		goto err;
+> > +	}
+> > +
+> > +	if (cmd->resp_type & MMC_RSP_136) {
+> > +		cmd->response[0] = sdxc_readl(host, SDXC_REG_RESP3);
+> > +		cmd->response[1] = sdxc_readl(host, SDXC_REG_RESP2);
+> > +		cmd->response[2] = sdxc_readl(host, SDXC_REG_RESP1);
+> > +		cmd->response[3] = sdxc_readl(host, SDXC_REG_RESP0);
+> > +	} else if (cmd->resp_type & MMC_RSP_PRESENT) {
+> > +		cmd->response[0] = sdxc_readl(host, SDXC_REG_RESP0);
+> > +	}
+> > +
+> > +err:
+> > +	if (why)
+> > +		*why = err_why;
+> > +	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_FIFO_RESET);
+> > +	return ret;
+> > +}
+> > +
+> > +static int sunxi_mmc_update_clk(struct sunxi_mmc_host *host)
+> > +{
+> > +	u32 cmdval;
+> > +
+> > +	cmdval = SDXC_CMD_START |
+> > +	         SDXC_CMD_UPCLK_ONLY |
+> > +	         SDXC_CMD_WAIT_PRE_OVER;
+> > +
+> > +	sdxc_writel(host, SDXC_REG_CARG, 0);
+> > +	sdxc_writel(host, SDXC_REG_CMDR, cmdval);
+> > +
+> > +	if (wait_on_timeout(2000 * MSECOND, !(sdxc_readl(host, SDXC_REG_CMDR) & SDXC_CMD_START)))
+> > +		return -ETIMEDOUT;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int sunxi_mmc_setup_clk(struct sunxi_mmc_host *host, u32 freq)
+> > +{
+> > +	u32 val, div, sclk;
+> > +	int ret;
+> > +
+> > +	sclk = host->clkrate;
+> > +	if (sclk == 0)
+> > +		return -EINVAL;
+> > +
+> > +	sclk /= 2; // WHY ????
+> > +
+> > +	/* disable card clock */
+> > +	val = sdxc_readl(host, SDXC_REG_CLKCR);
+> > +	val &= ~(SDXC_CLK_ENABLE | SDXC_CLK_LOW_POWER_ON);
+> > +	val |= SDXC_CLK_MASK_DATA0;
+> > +	sdxc_writel(host, SDXC_REG_CLKCR, val);
+> > +
+> > +	ret = sunxi_mmc_update_clk(host);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	/*
+> > +	 * Configure the controller to use the new timing mode if needed.
+> > +	 * On controllers that only support the new timing mode, such as
+> > +	 * the eMMC controller on the A64, this register does not exist,
+> > +	 * and any writes to it are ignored.
+> > +	 */
+> > +	if (host->cfg->needs_new_timings) {
+> > +		/* Don't touch the delay bits */
+> > +		val = sdxc_readl(host, SDXC_REG_NTSR);
+> > +		val |= SDXC_NTSR_2X_TIMING_MODE;
+> > +		sdxc_writel(host, SDXC_REG_NTSR, val);
+> > +	}
+> > +
+> > +	/* setup clock rate */
+> > +	div = DIV_ROUND_UP(sclk, freq);
+> > +	if (div > 510)
+> > +		div = 510;
+> > +
+> > +	/* set internal divider */
+> > +	val = sdxc_readl(host, SDXC_REG_CLKCR);
+> > +	val &= ~SDXC_CLK_DIVIDER_MASK;
+> > +	val |= div / 2; /* divisor is multiply by 2 */
+> > +	sdxc_writel(host, SDXC_REG_CLKCR, val);
+> > +
+> > +	/* enable card clock */
+> > +	val = sdxc_readl(host, SDXC_REG_CLKCR);
+> > +	val |= SDXC_CLK_ENABLE;
+> > +	val &= ~SDXC_CLK_MASK_DATA0;
+> > +	sdxc_writel(host, SDXC_REG_CLKCR, val);
+> > +
+> > +	return sunxi_mmc_update_clk(host);
+> > +}
+> > +
+> > +static int sunxi_mmc_set_ios(struct sunxi_mmc_host *host, struct mci_ios *ios)
+> > +{
+> > +	int ret = 0;
+> > +	u32 width;
+> > +
+> > +	switch (ios->bus_width) {
+> > +	case MMC_BUS_WIDTH_8:
+> > +		width = SDXC_WIDTH_8BIT;
+> > +		break;
+> > +	case MMC_BUS_WIDTH_4:
+> > +		width = SDXC_WIDTH_4BIT;
+> > +		break;
+> > +	default:
+> > +		width = SDXC_WIDTH_1BIT;
+> > +		break;
+> > +	}
+> > +	sdxc_writel(host, SDXC_REG_WIDTH, width);
+> > +
+> > +	if (ios->clock)
+> > +		ret = sunxi_mmc_setup_clk(host, ios->clock);
+> > +	return ret;
+> > +}
+> > +
+> > +static void sunxi_mmc_init(struct sunxi_mmc_host *host)
+> > +{
+> > +	/* Reset controller */
+> > +	sdxc_writel(host, SDXC_REG_GCTRL, SDXC_GCTRL_RESET);
+> > +	udelay(1000);
+> > +
+> > +	sdxc_writel(host, SDXC_REG_RINTR, 0xffffffff);
+> > +	sdxc_writel(host, SDXC_REG_IMASK, 0);
+> > +
+> > +	sdxc_writel(host, SDXC_REG_TMOUT, 0xffffff40);
+> > +}
+> > diff --git a/drivers/mci/sunxi-mmc-pbl.c b/drivers/mci/sunxi-mmc-pbl.c
+> > new file mode 100644
+> > index 0000000000..af60e7e355
+> > --- /dev/null
+> > +++ b/drivers/mci/sunxi-mmc-pbl.c
+> > @@ -0,0 +1,80 @@
+> > +#include <common.h>
+> > +
+> > +#include <mach/sunxi/xload.h>
+> > +#include "sunxi-mmc.h"
+> > +#include "sunxi-mmc-common.c"
+> > +
+> > +#define SECTOR_SIZE			512
+> > +#define SUPPORT_MAX_BLOCKS		16U
+> > +
+> > +static int sunxi_mmc_read_block(struct sunxi_mmc_host *host,
+> > +				void *dst, unsigned int blocknum,
+> > +				unsigned int blocks)
+> > +{
+> > +	struct mci_data data;
+> > +	struct mci_cmd cmd = {
+> > +		.cmdidx = (blocks > 1) ? MMC_CMD_READ_MULTIPLE_BLOCK : MMC_CMD_READ_SINGLE_BLOCK,
+> > +		 /* mci->high_capacity ? blocknum : blocknum * mci->read_bl_len, */
+> > +		 /* TODO: figured out how to detect if card is high-capacity */
+> > +//		.cmdarg = blocknum * SECTOR_SIZE,
+> > +		.cmdarg = blocknum,
+> > +		.resp_type = MMC_RSP_R1,
+> > +	};
+> > +	int ret;
+> > +
+> > +	data.dest = dst;
+> > +	data.blocks = blocks;
+> > +	data.blocksize = SECTOR_SIZE; /* compat with MMC/SD */
+> > +	data.flags = MMC_DATA_READ;
+> > +
+> > +	ret = sunxi_mmc_send_cmd(host, &cmd, &data, NULL);
+> > +
+> > +	if (ret || blocks > 1) {
+> > +		cmd.cmdidx = MMC_CMD_STOP_TRANSMISSION;
+> > +		cmd.cmdarg = 0;
+> > +		cmd.resp_type = MMC_RSP_R1b;
+> > +		sunxi_mmc_send_cmd(host, &cmd, NULL, NULL);
+> > +	}
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static int sunxi_mmc_bio_read(struct pbl_bio *bio, off_t start,
+> > +				void *buf, unsigned int nblocks)
+> > +{
+> > +	struct sunxi_mmc_host *host = bio->priv;
+> > +	unsigned int count = 0;
+> > +	unsigned int block_len = SECTOR_SIZE;
+> > +	int ret;
+> > +
+> > +	while (count < nblocks) {
+> > +		unsigned int n = min_t(unsigned int, nblocks - count, SUPPORT_MAX_BLOCKS);
+> > +
+> > +		ret = sunxi_mmc_read_block(host, buf, start, n);
+> > +		if (ret < 0)
+> > +			return ret;
+> > +
+> > +		count += n;
+> > +		start += n;
+> > +		buf += n * block_len;
+> > +	}
+> > +
+> > +	return count;
+> > +}
+> > +
+> > +int sunxi_mmc_bio_init(struct pbl_bio *bio, void __iomem *base,
+> > +		       unsigned int clock, unsigned int slot)
+> > +{
+> > +	static struct sunxi_mmc_host host;
+> > +	struct mci_ios ios = { .bus_width = MMC_BUS_WIDTH_4, .clock = 400000 };
+> > +
+> > +	host.base = base;
+> > +	host.clkrate = clock;
+> > +	bio->priv = &host;
+> > +	bio->read = sunxi_mmc_bio_read;
+> > +
+> > +	sunxi_mmc_init(&host);
+> > +	sunxi_mmc_set_ios(&host, &ios);
+> > +
+> > +	return 0;
+> > +}
+> > diff --git a/drivers/mci/sunxi-mmc.c b/drivers/mci/sunxi-mmc.c
+> > new file mode 100644
+> > index 0000000000..a537ea1a55
+> > --- /dev/null
+> > +++ b/drivers/mci/sunxi-mmc.c
+> > @@ -0,0 +1,173 @@
+> > +//#define DEBUG
+> > +// SPDX-License-Identifier: GPL-2.0-or-later
+> > +// derived from: linux/drivers/mmc/host/sunxi-mmc.c
+> > +
+> > +#define pr_fmt(fmt) "sunxi-mmc: " fmt
+> > +
+> > +#include <common.h>
+> > +#include <driver.h>
+> > +#include <malloc.h>
+> > +#include <init.h>
+> > +#include <mci.h>
+> > +
+> > +#include <gpio.h>
+> > +#include <of_gpio.h>
+> > +#include <linux/reset.h>
+> > +#include <linux/clk.h>
+> > +#include <linux/err.h>
+> > +#include <errno.h>
+> > +#include <dma.h>
+> > +
+> > +#include "sunxi-mmc.h"
+> > +#include "sunxi-mmc-common.c"
+> > +
+> > +static int sdxc_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_data *data)
+> > +{
+> > +	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
+> > +	struct device *dev = mci->hw_dev;
+> > +	const char *why;
+> > +	int ret;
+> > +
+> > +	ret = sunxi_mmc_send_cmd(host, cmd, data, &why);
+> > +	if (ret)
+> > +		dev_err(dev, "error %s CMD%d (%d)\n", why, cmd->cmdidx, ret);
+> > +
+> > +	return ret;
+> > +}
+> > +
+> > +static void sdxc_set_ios(struct mci_host *mci, struct mci_ios *ios)
+> > +{
+> > +	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
+> > +	struct device *dev = mci->hw_dev;
+> > +
+> > +	dev_dbg(dev, "buswidth = %d, clock: %d\n", ios->bus_width, ios->clock);
+> > +	sunxi_mmc_set_ios(host, ios);
+> > +}
+> > +
+> > +static int sdxc_card_present(struct mci_host *mci)
+> > +{
+> > +	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
+> > +	struct device *dev = mci->hw_dev;
+> > +	int ret;
+> > +
+> > +	/* No gpio, assume card is present */
+> > +	if (!gpio_is_valid(host->gpio_cd)) {
+> > +		dev_err(dev, "%s gpio not valid\n", __func__);
+> > +		return 1;
+> > +	}
+> > +
+> > +	ret = gpio_get_value(host->gpio_cd);
+> > +	dev_dbg(dev, "%s gpio: %d\n", __func__, ret);
+> > +
+> > +	return ret == 0 ? 1 : 0;
+> > +}
+> > +
+> > +static int sdxc_init(struct mci_host *mci, struct device *dev)
+> > +{
+> > +	struct sunxi_mmc_host *host = to_sunxi_mmc_host(mci);
+> > +
+> > +	sunxi_mmc_init(host);
+> > +
+> > +	return 0;
+> > +}
+> > +
+> > +static int sunxi_mmc_probe(struct device *dev)
+> > +{
+> > +	struct device_node *np = dev->of_node;
+> > +	struct resource *iores;
+> > +	struct sunxi_mmc_host *host;
+> > +	unsigned int f_min, f_max;
+> > +	int ret;
+> > +
+> > +	iores = dev_request_mem_resource(dev, 0);
+> > +	if (IS_ERR(iores))
+> > +		return PTR_ERR(iores);
+> > +	host = xzalloc(sizeof(*host));
+> > +	host->base = IOMEM(iores->start);
+> > +	dma_set_mask(dev, DMA_BIT_MASK(32));
+> > +	host->cfg = device_get_match_data(dev);
+> > +
+> > +	host->gpio_cd = of_get_named_gpio(np, "cd-gpios", 0);
+> > +
+> > +	host->clk_ahb = clk_get(dev, "ahb");
+> > +	if (IS_ERR(host->clk_ahb)) {
+> > +		ret = PTR_ERR(host->clk_ahb);
+> > +		goto err;
+> > +	}
+> > +
+> > +	host->clk_mmc = clk_get(dev, "mmc");
+> > +	if (IS_ERR(host->clk_mmc)) {
+> > +		ret = PTR_ERR(host->clk_mmc);
+> > +		goto err;
+> > +	}
+> > +
+> > +	clk_enable(host->clk_ahb);
+> > +	clk_enable(host->clk_mmc);
+> > +
+> > +	host->mci.hw_dev = dev;
+> > +	host->mci.send_cmd = sdxc_send_cmd;
+> > +	host->mci.set_ios = sdxc_set_ios;
+> > +	host->mci.init = sdxc_init;
+> > +	host->mci.card_present = sdxc_card_present;
+> > +	host->mci.voltages = MMC_VDD_32_33 | MMC_VDD_33_34;
+> > +	host->mci.host_caps = MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA
+> > +		| MMC_CAP_MMC_HIGHSPEED | MMC_CAP_SD_HIGHSPEED
+> > +		| MMC_CAP_MMC_HIGHSPEED_52MHZ;
+> > +
+> > +	host->clkrate = clk_get_rate(host->clk_mmc);
+> > +	f_min = host->clkrate / 510;
+> > +	f_max = host->clkrate;
+> > +	/* clock must at least support freq as low as 400K, and reach 52M */
+> > +	if (400000 < f_min || f_max < 52000000) {
+> > +		/* if not, try to get a better clock */
+> > +		clk_set_rate(host->clk_mmc, clk_round_rate(host->clk_mmc, 52000000));
+> > +		host->clkrate = clk_get_rate(host->clk_mmc);
+> > +		f_min = host->clkrate / 510;
+> > +		f_max = host->clkrate;
+> > +	}
+> > +	dev_dbg(dev, "freq: min %d max %d\n", f_min, f_max);
+> > +	mci_of_parse(&host->mci);
+> > +
+> > +	f_min = min_t(unsigned int, 400000, f_min);
+> > +	f_max = min_t(unsigned int, 52000000, f_max);
+> > +	host->mci.f_min = max_t(unsigned int, host->mci.f_min, f_min);
+> > +	host->mci.f_max = min_t(unsigned int, host->mci.f_max, f_max);
+> > +
+> > +	return mci_register(&host->mci);
+> > +err:
+> > +	if (host->clk_mmc)
+> > +		clk_put(host->clk_mmc);
+> > +	if (host->clk_ahb)
+> > +		clk_put(host->clk_ahb);
+> > +	free(host);
+> > +	release_region(iores);
+> > +	return ret;
+> > +}
+> > +
+> > +static const struct sunxi_mmc_cfg sun50i_a64_cfg = {
+> > +	.idma_des_size_bits = 16,
+> > +	.clk_delays = NULL,
+> > +	.can_calibrate = true,
+> > +	.mask_data0 = true,
+> > +	.needs_new_timings = true,
+> > +};
+> > +
+> > +static const struct sunxi_mmc_cfg sun50i_a64_emmc_cfg = {
+> > +	.idma_des_size_bits = 13,
+> > +	.clk_delays = NULL,
+> > +	.can_calibrate = true,
+> > +	.needs_new_timings = true,
+> > +};
+> > +
+> > +static __maybe_unused struct of_device_id sunxi_mmc_compatible[] = {
+> > +	{ .compatible = "allwinner,sun50i-a64-mmc", .data = &sun50i_a64_cfg },
+> > +	{ .compatible = "allwinner,sun50i-a64-emmc", .data = &sun50i_a64_emmc_cfg },
+> > +	{ /* sentinel */ }
+> > +};
+> > +
+> > +static struct driver sunxi_mmc_driver = {
+> > +	.name  = "sunxi-mmc",
+> > +	.probe = sunxi_mmc_probe,
+> > +	.of_compatible = DRV_OF_COMPAT(sunxi_mmc_compatible),
+> > +};
+> > +device_platform_driver(sunxi_mmc_driver);
+> > diff --git a/drivers/mci/sunxi-mmc.h b/drivers/mci/sunxi-mmc.h
+> > new file mode 100644
+> > index 0000000000..edfa5d853c
+> > --- /dev/null
+> > +++ b/drivers/mci/sunxi-mmc.h
+> > @@ -0,0 +1,229 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> > +/* SPDX-FileCopyrightText: 2023 Jules Maselbas  */
+> > +/* derived from: linux/drivers/mmc/host/sunxi-mmc.c */
+> > +
+> > +#ifndef SUNXI_MMC_H
+> > +#define	SUNXI_MMC_H
+> > +
+> > +#include <io.h>
+> > +#include <linux/bitops.h>
+> > +#include <clock.h>
+> > +#include <mci.h>
+> > +
+> > +#define SDXC_REG_GCTRL	(0x00) /* Global Control */
+> > +#define SDXC_REG_CLKCR	(0x04) /* Clock Control */
+> > +#define SDXC_REG_TMOUT	(0x08) /* Time Out */
+> > +#define SDXC_REG_WIDTH	(0x0C) /* Bus Width */
+> > +#define SDXC_REG_BLKSZ	(0x10) /* Block Size */
+> > +#define SDXC_REG_BCNTR	(0x14) /* Byte Count */
+> > +#define SDXC_REG_CMDR	(0x18) /* Command */
+> > +#define SDXC_REG_CARG	(0x1C) /* Argument */
+> > +#define SDXC_REG_RESP0	(0x20) /* Response 0 */
+> > +#define SDXC_REG_RESP1	(0x24) /* Response 1 */
+> > +#define SDXC_REG_RESP2	(0x28) /* Response 2 */
+> > +#define SDXC_REG_RESP3	(0x2C) /* Response 3 */
+> > +#define SDXC_REG_IMASK	(0x30) /* Interrupt Mask */
+> > +#define SDXC_REG_MISTA	(0x34) /* Masked Interrupt Status */
+> > +#define SDXC_REG_RINTR	(0x38) /* Raw Interrupt Status */
+> > +#define SDXC_REG_STAS	(0x3C) /* Status */
+> > +#define SDXC_REG_FTRGL	(0x40) /* FIFO Threshold Watermark */
+> > +#define SDXC_REG_FUNS	(0x44) /* Function Select */
+> > +#define SDXC_REG_CBCR	(0x48) /* CIU Byte Count */
+> > +#define SDXC_REG_BBCR	(0x4C) /* BIU Byte Count */
+> > +#define SDXC_REG_DBGC	(0x50) /* Debug Enable */
+> > +#define SDXC_REG_A12A	(0x58) /* Auto Command 12 Argument */
+> > +#define SDXC_REG_NTSR	(0x5C) /* SMC New Timing Set Register */
+> > +#define SDXC_REG_HWRST	(0x78) /* Card Hardware Reset */
+> > +#define SDXC_REG_DMAC	(0x80) /* IDMAC Control */
+> > +#define SDXC_REG_DLBA	(0x84) /* IDMAC Descriptor List Base Addresse */
+> > +#define SDXC_REG_IDST	(0x88) /* IDMAC Status */
+> > +#define SDXC_REG_IDIE	(0x8C) /* IDMAC Interrupt Enable */
+> > +#define SDXC_REG_CHDA	(0x90)
+> > +#define SDXC_REG_CBDA	(0x94)
+> > +
+> > +#define SDXC_REG_DRV_DL		0x140 /* Drive Delay Control Register */
+> > +#define SDXC_REG_SAMP_DL_REG	0x144 /* SMC sample delay control */
+> > +#define SDXC_REG_DS_DL_REG	0x148 /* SMC data strobe delay control */
+> > +
+> > +#define SDXC_REG_FIFO	(0x200) /* FIFO */
+> > +
+> > +#define SDXC_GCTRL_SOFT_RESET		BIT(0)
+> > +#define SDXC_GCTRL_FIFO_RESET		BIT(1)
+> > +#define SDXC_GCTRL_DMA_RESET		BIT(2)
+> > +#define SDXC_GCTRL_RESET \
+> > +	(SDXC_GCTRL_SOFT_RESET | SDXC_GCTRL_FIFO_RESET | SDXC_GCTRL_DMA_RESET)
+> > +#define SDXC_GCTRL_DMA_ENABLE		BIT(5)
+> > +#define SDXC_GCTRL_ACCESS_BY_AHB	BIT(31)
+> > +
+> > +#define SDXC_CMD_RESP_EXPIRE		BIT(6)
+> > +#define SDXC_CMD_LONG_RESPONSE		BIT(7)
+> > +#define SDXC_CMD_CHK_RESPONSE_CRC	BIT(8)
+> > +#define SDXC_CMD_DATA_EXPIRE		BIT(9)
+> > +#define SDXC_CMD_WRITE			BIT(10)
+> > +#define SDXC_CMD_AUTO_STOP		BIT(12)
+> > +#define SDXC_CMD_WAIT_PRE_OVER		BIT(13)
+> > +#define SDXC_CMD_ABORT_STOP		BIT(14)
+> > +#define SDXC_CMD_SEND_INIT_SEQ		BIT(15)
+> > +#define SDXC_CMD_UPCLK_ONLY		BIT(21)
+> > +#define SDXC_CMD_START			BIT(31)
+> > +
+> > +#define SDXC_NTSR_2X_TIMING_MODE	BIT(31)
+> > +
+> > +/* clock control bits */
+> > +#define SDXC_CLK_MASK_DATA0	BIT(31)
+> > +#define SDXC_CLK_LOW_POWER_ON	BIT(17)
+> > +#define SDXC_CLK_ENABLE		BIT(16)
+> > +#define SDXC_CLK_DIVIDER_MASK	(0xff)
+> > +
+> > +/* bus width */
+> > +#define SDXC_WIDTH_1BIT	0
+> > +#define SDXC_WIDTH_4BIT	BIT(0)
+> > +#define SDXC_WIDTH_8BIT	BIT(1)
+> > +
+> > +/* interrupt bits */
+> > +#define SDXC_INT_RESP_ERROR		BIT(1)
+> > +#define SDXC_INT_COMMAND_DONE		BIT(2)
+> > +#define SDXC_INT_DATA_OVER		BIT(3)
+> > +#define SDXC_INT_TX_DATA_REQUEST	BIT(4)
+> > +#define SDXC_INT_RX_DATA_REQUEST	BIT(5)
+> > +#define SDXC_INT_RESP_CRC_ERROR		BIT(6)
+> > +#define SDXC_INT_DATA_CRC_ERROR		BIT(7)
+> > +#define SDXC_INT_RESP_TIMEOUT		BIT(8)
+> > +#define SDXC_INT_DATA_TIMEOUT		BIT(9)
+> > +#define SDXC_INT_VOLTAGE_CHANGE_DONE	BIT(10)
+> > +#define SDXC_INT_FIFO_RUN_ERROR		BIT(11)
+> > +#define SDXC_INT_HARD_WARE_LOCKED	BIT(12)
+> > +#define SDXC_INT_START_BIT_ERROR	BIT(13)
+> > +#define SDXC_INT_AUTO_COMMAND_DONE	BIT(14)
+> > +#define SDXC_INT_END_BIT_ERROR		BIT(15)
+> > +#define SDXC_INT_SDIO_INTERRUPT		BIT(16)
+> > +#define SDXC_INT_CARD_INSERT		BIT(30)
+> > +#define SDXC_INT_CARD_REMOVE		BIT(31)
+> > +//	 SDXC_INT_FIFO_RUN_ERROR  |
+> > +#define SDXC_INTERRUPT_ERROR_BIT	\
+> > +	(SDXC_INT_RESP_ERROR |		\
+> > +	 SDXC_INT_RESP_CRC_ERROR |	\
+> > +	 SDXC_INT_DATA_CRC_ERROR |	\
+> > +	 SDXC_INT_RESP_TIMEOUT |	\
+> > +	 SDXC_INT_DATA_TIMEOUT |	\
+> > +	 SDXC_INT_HARD_WARE_LOCKED |	\
+> > +	 SDXC_INT_START_BIT_ERROR |	\
+> > +	 SDXC_INT_END_BIT_ERROR)
+> > +
+> > +#define SDXC_INTERRUPT_DONE_BIT		\
+> > +	(SDXC_INT_AUTO_COMMAND_DONE |	\
+> > +	 SDXC_INT_DATA_OVER |		\
+> > +	 SDXC_INT_COMMAND_DONE |	\
+> > +	 SDXC_INT_VOLTAGE_CHANGE_DONE)
+> > +
+> > +/* status */
+> > +#define SDXC_STATUS_FIFO_EMPTY		BIT(2)
+> > +#define SDXC_STATUS_FIFO_FULL		BIT(3)
+> > +#define SDXC_STATUS_CARD_PRESENT	BIT(8)
+> > +#define SDXC_STATUS_BUSY		BIT(9)
+> > +
+> > +struct sunxi_mmc_clk_delay {
+> > +	u32 output;
+> > +	u32 sample;
+> > +};
+> > +
+> > +struct sunxi_mmc_cfg {
+> > +	u32 idma_des_size_bits;
+> > +	u32 idma_des_shift;
+> > +	const struct sunxi_mmc_clk_delay *clk_delays;
+> > +
+> > +	/* does the IP block support autocalibration? */
+> > +	bool can_calibrate;
+> > +
+> > +	/* Does DATA0 needs to be masked while the clock is updated */
+> > +	bool mask_data0;
+> > +
+> > +	/*
+> > +	 * hardware only supports new timing mode, either due to lack of
+> > +	 * a mode switch in the clock controller, or the mmc controller
+> > +	 * is permanently configured in the new timing mode, without the
+> > +	 * NTSR mode switch.
+> > +	 */
+> > +	bool needs_new_timings;
+> > +
+> > +	/* clock hardware can switch between old and new timing modes */
+> > +	bool ccu_has_timings_switch;
+> > +};
+> > +
+> > +struct sunxi_mmc_host {
+> > +	struct mci_host mci;
+> > +	struct device *dev;
+> > +	struct clk *clk_ahb, *clk_mmc;
+> > +	void __iomem *base;
+> > +	int gpio_cd;
+> > +
+> > +	const struct sunxi_mmc_cfg *cfg;
+> > +	u32 clkrate;
+> > +};
+> > +
+> > +static inline struct sunxi_mmc_host *to_sunxi_mmc_host(struct mci_host *mci)
+> > +{
+> > +	return container_of(mci, struct sunxi_mmc_host, mci);
+> > +}
+> > +
+> > +static inline u32 sdxc_readl(struct sunxi_mmc_host *host, u32 reg)
+> > +{
+> > +	return readl(host->base + reg);
+> > +}
+> > +
+> > +static inline void sdxc_writel(struct sunxi_mmc_host *host, u32 reg, u32 val)
+> > +{
+> > +	writel(val, host->base + reg);
+> > +}
+> > +
+> > +static inline int sdxc_is_fifo_empty(struct sunxi_mmc_host *host)
+> > +{
+> > +	return sdxc_readl(host, SDXC_REG_STAS) & SDXC_STATUS_FIFO_EMPTY;
+> > +}
+> > +
+> > +static inline int sdxc_is_fifo_full(struct sunxi_mmc_host *host)
+> > +{
+> > +	return sdxc_readl(host, SDXC_REG_STAS) & SDXC_STATUS_FIFO_FULL;
+> > +}
+> > +
+> > +static inline int sdxc_is_card_busy(struct sunxi_mmc_host *host)
+> > +{
+> > +	return sdxc_readl(host, SDXC_REG_STAS) & SDXC_STATUS_BUSY;
+> > +}
+> > +
+> > +#ifdef __PBL__
+> > +#if 0 /* TODO: test this */
+> > +#include <asm/system.h>
+> > +/* TODO: test this ! */
+> > +#define get_time_ns()		get_cntpct()
+> > +#define is_timeout(s, t)	(s + (t * get_cntfrq() / 1000000) < get_cntpct()
+> 
+> You could base your timeout loop on udelay which is available for
+> Aarch64 PBL
+Can I make a version of is_timeout for aarch64 PBl ? instead of doing a hack in
+the mmc driver ?
+
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
 
 
