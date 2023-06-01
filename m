@@ -1,60 +1,63 @@
-Delivery-date: Thu, 01 Jun 2023 09:05:33 +0200
+Delivery-date: Thu, 01 Jun 2023 09:07:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4cNK-005Rnl-T6
-	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 09:05:33 +0200
+	id 1q4cOv-005RqC-KZ
+	for lore@lore.pengutronix.de; Thu, 01 Jun 2023 09:07:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4cNI-0007jO-J5
-	for lore@pengutronix.de; Thu, 01 Jun 2023 09:05:33 +0200
+	id 1q4cOt-00084a-CO
+	for lore@pengutronix.de; Thu, 01 Jun 2023 09:07:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:In-reply-to:Date:Subject:Cc:To:From:
-	References:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WMzkpxeCmuuHJM5ziWO63/yRCvE8Kbrr+TS2dSGzvyk=; b=EfYJpji6Mr1SOQRUEkratokOWS
-	j8JEmd2eYHC1SoPjw+HtBhdgQ9Q88bmufLCnCN8OVoTKVg5EmNfNWVkQNWAUwws1hgvw8wgjRqQia
-	BwFYqhG+IGzI1PWvZVZBWRzpzz1JmlnfLGyliAuIdFd8AtJK9g44E8JN+9lunHQlq9CWz+d4rpnv1
-	BQxU61mHIoeFwCwMnEMsRr/lipq/AWEHv3socqWvWW57C9sp5ACeUwlgBNbUYvOY4bHJ7Lt99QjGm
-	c3dq7BkTcGSoXdc7f/sIeOFsH0AQxVOMsopId/3BrUYGM4Hy7BTKlGNEScq+v35Dh5YVDrjmBTUdh
-	/U/bNOlg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=HFU5C8yWlRJ1mRnCEVQC9vqMK4jNp1bur8qSMZlBzP8=; b=mTr++n0cvXIQvCs0YAtO1l7cBi
+	jG9yKmZuKMhnF1UtIuZVQUZgiyHtXkaxroAfGUo+7vPJNx5wPn9g1n57MrsdOjvsecuNo9HdZO+4Q
+	hd34x0+fVwnw+NbwYTGNPTfBhEzQnxgN33qyD57+dvc19ZWgq0SetqhhK06WbhBpy1TVFnPuIFATt
+	u/xUOHkKwRikMSBep9Oc3De854uD45EZPuONeKipv+uHCpzTU9+EMpOuv/GQX5bPrjBXu8iJK8e5z
+	dq9r0Tl9dV04jaUKU1HG/C8tCKoZVZKsYg5mHUmDKJtrBcoPS6mrTrH8SCUfmKJBjFTL975DAg3jg
+	fU6U51sA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4cMF-002IbB-39;
-	Thu, 01 Jun 2023 07:04:27 +0000
+	id 1q4cNp-002Itv-2X;
+	Thu, 01 Jun 2023 07:06:05 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4cMC-002IaB-0B
+	id 1q4cNm-002Isb-1J
 	for barebox@lists.infradead.org;
-	Thu, 01 Jun 2023 07:04:25 +0000
-Received: from pty.hi.pengutronix.de ([2001:67c:670:100:1d::c5])
+	Thu, 01 Jun 2023 07:06:03 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1q4cM9-0007NR-Af; Thu, 01 Jun 2023 09:04:21 +0200
-Received: from uol by pty.hi.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <u.oelmann@pengutronix.de>)
-	id 1q4cM8-005swY-T5; Thu, 01 Jun 2023 09:04:20 +0200
-References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
- <20230531145927.1399282-6-a.fatoum@pengutronix.de>
-User-agent: mu4e 1.6.9; emacs 29.0.50
-From: Ulrich =?utf-8?Q?=C3=96lmann?= <u.oelmann@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1q4cNl-0007qw-1J; Thu, 01 Jun 2023 09:06:01 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q4cNk-0001Po-QG; Thu, 01 Jun 2023 09:06:00 +0200
+Date: Thu, 1 Jun 2023 09:06:00 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Date: Thu, 01 Jun 2023 09:00:35 +0200
-In-reply-to: <20230531145927.1399282-6-a.fatoum@pengutronix.de>
-Message-ID: <6rcz2f4qa3.fsf@pengutronix.de>
+Message-ID: <20230601070600.GE18491@pengutronix.de>
+References: <20230531132331.2152268-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230531132331.2152268-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230601_000424_092413_4BE51E47 
-X-CRM114-Status: GOOD (  21.75  )
+X-CRM114-CacheID: sfid-20230601_000602_448709_FC9D793C 
+X-CRM114-Status: GOOD (  20.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,77 +75,74 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 05/18] of: of_path: always call
- of_partition_ensure_probed before resolving
+Subject: Re: [PATCH 1/2] commands: stat: print symlink destination when
+ called without -L
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Ahmad,
-
-as it looks that you are going to create a v2 anyway, just a small typo
-fix.
-
-On Wed, May 31 2023 at 16:59 +0200, Ahmad Fatoum <a.fatoum@pengutronix.de> =
-wrote:
-> of_find_path may be called on a partition, whose parent device is not
-> yet probed. state code solves that by calling of_partition_ensure_probed
-> before of_find_path_by_nde, but really we should be doing that for all
-
-s/of_find_path_by_nde/of_find_path_by_node/
-
-Best regards
-Ulrich
-
-
-> calls to of_find_path. Do so.
->
+On Wed, May 31, 2023 at 03:23:30PM +0200, Ahmad Fatoum wrote:
+> This aligns behavior with usual implementations of stat.
+> 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  common/state/state.c | 4 ----
->  drivers/of/of_path.c | 2 ++
->  2 files changed, 2 insertions(+), 4 deletions(-)
->
-> diff --git a/common/state/state.c b/common/state/state.c
-> index 6b4acbb32bcc..11cc86ff73be 100644
-> --- a/common/state/state.c
-> +++ b/common/state/state.c
-> @@ -618,10 +618,6 @@ struct state *state_new_from_node(struct device_node=
- *node, bool readonly)
+>  fs/fs.c | 17 +++++++++++++++--
+>  1 file changed, 15 insertions(+), 2 deletions(-)
+
+Applied, thanks
+
+Sascha
+
+> 
+> diff --git a/fs/fs.c b/fs/fs.c
+> index 368458cc54f8..311571ba3088 100644
+> --- a/fs/fs.c
+> +++ b/fs/fs.c
+> @@ -130,8 +130,6 @@ void stat_print(const char *filename, const struct stat *st)
+>  		case S_IFREG:    type = "regular file"; break;
 >  	}
->=20=20
->  #ifdef __BAREBOX__
-> -	ret =3D of_partition_ensure_probed(partition_node);
-> -	if (ret)
-> -		goto out_release_state;
+>  
+> -	printf("  File: %s\n", filename);
 > -
->  	ret =3D of_find_path_by_node(partition_node, &state->backend_path, 0);
->  #else
->  	ret =3D of_get_devicepath(partition_node, &state->backend_path, &offset=
-, &size);
-> diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-> index 1268cf36ee5b..059690e9b8e8 100644
-> --- a/drivers/of/of_path.c
-> +++ b/drivers/of/of_path.c
-> @@ -43,6 +43,8 @@ static int __of_find_path(struct device_node *node, con=
-st char *part, char **out
->  	struct cdev *cdev;
->  	bool add_bb =3D false;
->=20=20
-> +	of_partition_ensure_probed(node);
+>  	if (st->st_mode & S_IFCHR) {
+>  		char *path;
+>  
+> @@ -147,6 +145,21 @@ void stat_print(const char *filename, const struct stat *st)
+>  		}
+>  	}
+>  
+> +	printf("  File: %s", filename);
 > +
->  	dev =3D of_find_device_by_node_path(node->full_name);
->  	if (!dev) {
->  		int ret;
---=20
-Pengutronix e.K.                           | Ulrich =C3=96lmann            =
-   |
-Industrial Linux Solutions                 | http://www.pengutronix.de/  |
-Peiner Str. 6-8, 31137 Hildesheim, Germany | Phone: +49-5121-206917-0    |
+> +	if (S_ISLNK(st->st_mode)) {
+> +		char realname[PATH_MAX] = {};
+> +		int ret;
+> +
+> +		ret = readlink(filename, realname, PATH_MAX - 1);
+> +		if (ret)
+> +			printf(" -> <readlink error %pe>", ERR_PTR(ret));
+> +		else
+> +			printf(" -> %s", realname);
+> +	}
+> +
+> +	printf("\n");
+> +
+>  	printf("  Size: %-20llu", st->st_size);
+>  	if (bdev)
+>  		printf("Blocks: %llu\tIO Block: %u\t",
+> -- 
+> 2.39.2
+> 
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
