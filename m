@@ -1,15 +1,15 @@
-Delivery-date: Fri, 02 Jun 2023 09:50:59 +0200
+Delivery-date: Fri, 02 Jun 2023 09:51:00 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4zYr-0070s7-5S
-	for lore@lore.pengutronix.de; Fri, 02 Jun 2023 09:50:59 +0200
+	id 1q4zYr-0070s8-FQ
+	for lore@lore.pengutronix.de; Fri, 02 Jun 2023 09:51:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4zYo-0000ru-LH
+	id 1q4zYo-0000s8-PM
 	for lore@pengutronix.de; Fri, 02 Jun 2023 09:50:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,38 +17,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1SpRhcKtHDXjaPGF/EVVPk1bWZ5HaX4iXZ2/6+sbMhg=; b=reKpz+X8ieKW/+gJnZK69dDHr5
-	VIIQUGqKv4oymQj6K5tuUhDtwTdN18R0uYSasIX++VgRh4dFxLZ9UE77ZAd7WkBPeRCjfQdeBcUM9
-	r3dGFZc2sU/CTTBbY/d3xlZB5RtkNGabw34FAqz4JTb5b+PdpwbbmeDwi9ry2zYatfk8BgVjIprGi
-	UmaXDNq3Ri/SChlNq378lUMNizV4s4JAqaCoOQkn9bBbtGCduv+p5RXGLTP4LoG/Wqbbna8Wp8Ii2
-	RTko2+vu6UKzH7Mh1Kl+/XBWX8vUXdYA2egS5APsl5W1SlWdUmy2fCo8zjj9F+TXnVx/Xvx1QHj60
-	t6bmNunA==;
+	bh=/aJAdXfVGHwn00Ks7wnAvdkRmey2RxJdCsfifZpJObk=; b=We+zIoMAgoToT8dHCcupAQL7I4
+	8djZZJvHEAcVGMIkBqWJq+x2Zg/Wq7UMeJ8ZcUzH7SJQcEn0G1PmsG8/DRzBwriNpq6Zh7WuI3Jw/
+	57FKYzcyK3sN/68SNT4dmFjbEsuOMKY+RCoclF7Grcg6Q7Q21XKWq5ObWbC8Qoxy5moACiu30rJ8l
+	+pZ1Z6j9vNFHKcNL9FN0cvNIiACYJoDC8VCuA7m63IblatITa1oF1+p8vk7yrB9AsWtK9Kwiejtej
+	IYP6Wb0bwseyS2Xv+pLnZVq5dM2Wct+xrtG+kO46xNFBjau9mypzXISoAjaubkxEWYF8MoM4900mO
+	/O4nqR7g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4zXd-0063f9-0K;
-	Fri, 02 Jun 2023 07:49:45 +0000
+	id 1q4zXe-0063fd-1H;
+	Fri, 02 Jun 2023 07:49:46 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4zXX-0063ar-0E
+	id 1q4zXX-0063aw-0E
 	for barebox@lists.infradead.org;
 	Fri, 02 Jun 2023 07:49:42 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1q4zXT-00006c-Tj; Fri, 02 Jun 2023 09:49:35 +0200
+	id 1q4zXU-00006c-HK; Fri, 02 Jun 2023 09:49:36 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Fri,  2 Jun 2023 09:49:16 +0200
-Message-Id: <20230602074921.2687669-6-m.felsch@pengutronix.de>
+Date: Fri,  2 Jun 2023 09:49:19 +0200
+Message-Id: <20230602074921.2687669-9-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230602074921.2687669-1-m.felsch@pengutronix.de>
 References: <20230602074921.2687669-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230602_004939_161796_D3207A97 
-X-CRM114-Status: GOOD (  11.40  )
+X-CRM114-CacheID: sfid-20230602_004939_189325_7F614D3A 
+X-CRM114-Status: GOOD (  12.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,39 +71,63 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 05/10] gpiolib: fix missing error check while query gpio-line-names
+Subject: [PATCH 08/10] OF: gpio: snyc of_get_named_gpio_flags variable with kernel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Don't ignore the possible error return code of
-of_property_read_string_array().
+Sync local of_phandle_args variable with the kernel to make it easier to
+see the diff between both versions. No functional change.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/gpio/gpiolib.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/of/of_gpio.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index f05e2ac735..166356c85a 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -526,8 +526,14 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
- 	if (count > 0) {
- 		const char **names = xzalloc(count * sizeof(char *));
+diff --git a/drivers/of/of_gpio.c b/drivers/of/of_gpio.c
+index 5da80e2493..c20133bbfd 100644
+--- a/drivers/of/of_gpio.c
++++ b/drivers/of/of_gpio.c
+@@ -60,26 +60,26 @@ static void of_gpio_flags_quirks(struct device_node *np,
+ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
+ 			   int index, enum of_gpio_flags *flags)
+ {
+-	struct of_phandle_args out_args;
++	struct of_phandle_args gpiospec;
+ 	struct device *dev;
+ 	int ret;
  
--		of_property_read_string_array(chip->dev->of_node,
--					      "gpio-line-names", names, count);
-+		ret = of_property_read_string_array(chip->dev->of_node,
-+						    "gpio-line-names", names,
-+						    count);
-+		if (ret < 0) {
-+			dev_warn(chip->dev, "failed to read GPIO line names\n");
-+			kfree(names);
-+			return ret;
-+		}
+ 	ret = of_parse_phandle_with_args(np, propname, "#gpio-cells",
+-					index, &out_args);
++					index, &gpiospec);
+ 	if (ret) {
+ 		pr_debug("%s: cannot parse %s property: %d\n",
+ 			__func__, propname, ret);
+ 		return ret;
+ 	}
  
- 		/*
- 		 * Since property 'gpio-line-names' cannot contains gaps, we
+-	dev = of_find_device_by_node(out_args.np);
++	dev = of_find_device_by_node(gpiospec.np);
+ 	if (!dev) {
+ 		pr_debug("%s: unable to find device of node %s\n",
+-			 __func__, out_args.np->full_name);
++			 __func__, gpiospec.np->full_name);
+ 		return -EPROBE_DEFER;
+ 	}
+ 
+-	ret = gpio_get_num(dev, out_args.args[0]);
++	ret = gpio_get_num(dev, gpiospec.args[0]);
+ 	if (ret == -EPROBE_DEFER)
+ 		return ret;
+ 	if (ret < 0) {
+@@ -89,7 +89,7 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
+ 	}
+ 
+ 	if (flags) {
+-		*flags = out_args.args[1];
++		*flags = gpiospec.args[1];
+ 		of_gpio_flags_quirks(np, propname, flags, index);
+ 	}
+ 
 -- 
 2.39.2
 
