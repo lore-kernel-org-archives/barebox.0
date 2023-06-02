@@ -3,52 +3,51 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4zYt-0070tl-Pz
+	id 1q4zYt-0070th-Uh
 	for lore@lore.pengutronix.de; Fri, 02 Jun 2023 09:51:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4zYr-0000uY-Ad
+	id 1q4zYr-0000u6-1I
 	for lore@pengutronix.de; Fri, 02 Jun 2023 09:51:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iByfQl9vAPoC+tOWtMZtoj2uO674MajAL9yVOy/Z4Qg=; b=DrAcrEaUz6CT4MIzAIFrsoQU5G
-	8BOGjte4UHapLRwifg3GiXGy6sgqfZ2dawwzPr/tQXbX+oXiBwD29CUJVChGZEnhv60qSUKweHO0L
-	Zf2ZjxpejAB6nsh+A7am6g1UXJyG6f3g+nbZq1kWdHbNeFIzU8Oz7LDqV1F7KaQaB6IrDGZJx0X+A
-	4Kd2OCvMEjIFaOs8Y1hBMIB0xbtM53E/eFpjZnlpGDCcuGMKzDHGwckrgRpCZlBG6EL2ktTONLMps
-	VSfE30hAFIlf/jJehBeT/I/ITtwVi7Nm+WhSGP+LluUaHns0H/uD3lbmXH3Z54E47UzneOfiDooe9
-	9BQvpjsg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=KWEWUmnEuP/dbVPW2Nrieh1hvFHIcAwakzsLxBWTayM=; b=zyutldAWQrbvzl78peGzOe+jBw
+	7jxZ3w9f6jfQfglb9R6ablqkvTUDgEjiTVTIGRTT5dmsGnrRMoN79LbyLrdTknzHelKwPLHEBHdzR
+	W1TRKLuaVWfWK5WhHqj/ubNzsGSMQIbBdEdlHcUwZrFMA3pjVl4mhAKXXNNo6293CnQLmTLYIG3sw
+	vb0/97cua5gx7hNY3tRI6/hZl7q0gblUnqkc7RYnEPTNKhy3RptyaaI00PyeLzzG36AMibUebu7Bl
+	Hdj6T9TTPzUQBteqw42/hWThmw9ooPVnvr2RFX8ZCPM1vmzQ8rue+DSv75bN21k1TczSsnC2B0RuJ
+	Qy5ACm3g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4zXd-0063fT-2H;
-	Fri, 02 Jun 2023 07:49:45 +0000
+	id 1q4zXb-0063dx-0N;
+	Fri, 02 Jun 2023 07:49:43 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4zXX-0063an-0E
+	id 1q4zXX-0063ag-0E
 	for barebox@lists.infradead.org;
-	Fri, 02 Jun 2023 07:49:42 +0000
+	Fri, 02 Jun 2023 07:49:40 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1q4zXT-00006c-GV; Fri, 02 Jun 2023 09:49:35 +0200
+	id 1q4zXS-00006c-Sv; Fri, 02 Jun 2023 09:49:34 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Fri,  2 Jun 2023 09:49:14 +0200
-Message-Id: <20230602074921.2687669-4-m.felsch@pengutronix.de>
+Date: Fri,  2 Jun 2023 09:49:11 +0200
+Message-Id: <20230602074921.2687669-1-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230602074921.2687669-1-m.felsch@pengutronix.de>
-References: <20230602074921.2687669-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230602_004939_164798_6C6881A8 
-X-CRM114-Status: GOOD (  11.31  )
+X-CRM114-CacheID: sfid-20230602_004939_166724_8F0000B1 
+X-CRM114-Status: UNSURE (   9.77  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,47 +70,45 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 03/10] gpiolib: rename local gpio-line-names variable
+Subject: [PATCH 00/10] Fix gpio-hogs and sync with Linux gpiolib
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This is just a cosmetic commit to align the code more with the Linux
-kernel.
+Hi,
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- drivers/gpio/gpiolib.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+the purpose of this series is to fix the gpio-hogs mechanism since this
+is broken since commit 3641d381e6 ("gpiolib: Add of_xlate support").
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 0df43c9f8f..eb2bba042e 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -524,10 +524,10 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
- 					  "gpio-line-names");
- 
- 	if (count > 0) {
--		const char **arr = xzalloc(count * sizeof(char *));
-+		const char **names = xzalloc(count * sizeof(char *));
- 
- 		of_property_read_string_array(chip->dev->of_node,
--					      "gpio-line-names", arr, count);
-+					      "gpio-line-names", names, count);
- 
- 		/*
- 		 * Since property 'gpio-line-names' cannot contains gaps, we
-@@ -538,9 +538,9 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
- 			count = chip->ngpio;
- 
- 		for (i = 0; i < count; i++)
--			gpio_desc[chip->base + i].name = xstrdup(arr[i]);
-+			gpio_desc[chip->base + i].name = xstrdup(names[i]);
- 
--		free(arr);
-+		free(names);
- 	}
- 
- 	for_each_available_child_of_node(chip->dev->of_node, np) {
+Patch1: Revert the above mentioned commit to make the gpio-hogs working
+        again.
+
+Patch2-10: Add the of_xlate support required for the upcoming sunxi
+           pinctrl driver. The mechanism is now more in sync with kernel
+           gpiolib. This allows to sync easier with the kernel gpiolib
+           in case of new features or fixes.
+
+I've tested this rework on a i.mx8mm-evk.
+
+Regards,
+  Marco
+
+Marco Felsch (10):
+  gpiolib: fix gpio-hog functionality
+  gpiolib: simplify for loop break condition
+  gpiolib: rename local gpio-line-names variable
+  gpiolib: fix gpio name memory leak
+  gpiolib: fix missing error check while query gpio-line-names
+  gpiolib: refactor gpio-line-names parsing
+  gpiolib: introduce of_gpiochip_add to bundle all of functions
+  OF: gpio: snyc of_get_named_gpio_flags variable with kernel
+  OF: gpio: fix device_node leakage
+  gpiolib: add of_xlate support
+
+ drivers/gpio/gpiolib.c | 205 ++++++++++++++++++++++++++++++-----------
+ drivers/of/of_gpio.c   |  69 ++++++++++----
+ include/gpio.h         |  29 +++++-
+ 3 files changed, 231 insertions(+), 72 deletions(-)
+
 -- 
 2.39.2
 
