@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4zYt-0070tT-FR
+	id 1q4zYt-0070tl-Pz
 	for lore@lore.pengutronix.de; Fri, 02 Jun 2023 09:51:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q4zYq-0000ts-M8
+	id 1q4zYr-0000uY-Ad
 	for lore@pengutronix.de; Fri, 02 Jun 2023 09:51:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,38 +17,38 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lS+QQ3FBZJlq3jqhWmd1N+p5TcJCSyOeRsvUXezbo+s=; b=nkQfYBEnbe7mz0jtrEmriO39gV
-	dHTfH1UBf+w3naNSG8ZP2lZbowL8S91dyu84Fyusvid2HcmthsSIcrxJovlZ/IjXH0WuKQCb0WlRM
-	G3sJ6xxZZrt95EdOVuxoFcRb+2A7i3Biba3l+F5tKed9GA2AcHeAEUK/vxXoV9jEhpTC/goI2LcqT
-	xq4jVcf/zy/qD1x68AAUvXV40bbUl4OmVpG0Zy5CJ47m6sm/V0N+JLwj4XB+yxcZNfxlf+hI8DMli
-	etBT0cDFBb0OkQtIpTbgAQbSkxBkqne7H8ReLCa79W689smidH7dWbjxXcgVI7G1VyhNKzwa2r+21
-	QRwh5yrg==;
+	bh=iByfQl9vAPoC+tOWtMZtoj2uO674MajAL9yVOy/Z4Qg=; b=DrAcrEaUz6CT4MIzAIFrsoQU5G
+	8BOGjte4UHapLRwifg3GiXGy6sgqfZ2dawwzPr/tQXbX+oXiBwD29CUJVChGZEnhv60qSUKweHO0L
+	Zf2ZjxpejAB6nsh+A7am6g1UXJyG6f3g+nbZq1kWdHbNeFIzU8Oz7LDqV1F7KaQaB6IrDGZJx0X+A
+	4Kd2OCvMEjIFaOs8Y1hBMIB0xbtM53E/eFpjZnlpGDCcuGMKzDHGwckrgRpCZlBG6EL2ktTONLMps
+	VSfE30hAFIlf/jJehBeT/I/ITtwVi7Nm+WhSGP+LluUaHns0H/uD3lbmXH3Z54E47UzneOfiDooe9
+	9BQvpjsg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4zXf-0063gE-2d;
-	Fri, 02 Jun 2023 07:49:47 +0000
+	id 1q4zXd-0063fT-2H;
+	Fri, 02 Jun 2023 07:49:45 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q4zXX-0063az-0E
+	id 1q4zXX-0063an-0E
 	for barebox@lists.infradead.org;
-	Fri, 02 Jun 2023 07:49:43 +0000
+	Fri, 02 Jun 2023 07:49:42 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1q4zXU-00006c-O3; Fri, 02 Jun 2023 09:49:36 +0200
+	id 1q4zXT-00006c-GV; Fri, 02 Jun 2023 09:49:35 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Fri,  2 Jun 2023 09:49:20 +0200
-Message-Id: <20230602074921.2687669-10-m.felsch@pengutronix.de>
+Date: Fri,  2 Jun 2023 09:49:14 +0200
+Message-Id: <20230602074921.2687669-4-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230602074921.2687669-1-m.felsch@pengutronix.de>
 References: <20230602074921.2687669-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230602_004939_218277_B202EA0E 
-X-CRM114-Status: GOOD (  10.29  )
+X-CRM114-CacheID: sfid-20230602_004939_164798_6C6881A8 
+X-CRM114-Status: GOOD (  11.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,52 +71,47 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 09/10] OF: gpio: fix device_node leakage
+Subject: [PATCH 03/10] gpiolib: rename local gpio-line-names variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Drop the device_node after we are done.
+This is just a cosmetic commit to align the code more with the Linux
+kernel.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/of/of_gpio.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/gpio/gpiolib.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/of/of_gpio.c b/drivers/of/of_gpio.c
-index c20133bbfd..76398f7542 100644
---- a/drivers/of/of_gpio.c
-+++ b/drivers/of/of_gpio.c
-@@ -76,16 +76,17 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
- 	if (!dev) {
- 		pr_debug("%s: unable to find device of node %s\n",
- 			 __func__, gpiospec.np->full_name);
--		return -EPROBE_DEFER;
-+		ret = -EPROBE_DEFER;
-+		goto out;
+diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+index 0df43c9f8f..eb2bba042e 100644
+--- a/drivers/gpio/gpiolib.c
++++ b/drivers/gpio/gpiolib.c
+@@ -524,10 +524,10 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
+ 					  "gpio-line-names");
+ 
+ 	if (count > 0) {
+-		const char **arr = xzalloc(count * sizeof(char *));
++		const char **names = xzalloc(count * sizeof(char *));
+ 
+ 		of_property_read_string_array(chip->dev->of_node,
+-					      "gpio-line-names", arr, count);
++					      "gpio-line-names", names, count);
+ 
+ 		/*
+ 		 * Since property 'gpio-line-names' cannot contains gaps, we
+@@ -538,9 +538,9 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
+ 			count = chip->ngpio;
+ 
+ 		for (i = 0; i < count; i++)
+-			gpio_desc[chip->base + i].name = xstrdup(arr[i]);
++			gpio_desc[chip->base + i].name = xstrdup(names[i]);
+ 
+-		free(arr);
++		free(names);
  	}
  
- 	ret = gpio_get_num(dev, gpiospec.args[0]);
- 	if (ret == -EPROBE_DEFER)
--		return ret;
-+		goto out;
- 	if (ret < 0) {
- 		pr_err("%s: unable to get gpio num of device %s: %d\n",
- 			__func__, dev_name(dev), ret);
--		return ret;
-+		goto out;
- 	}
- 
- 	if (flags) {
-@@ -93,6 +94,9 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
- 		of_gpio_flags_quirks(np, propname, flags, index);
- 	}
- 
-+out:
-+	of_node_put(gpiospec.np);
-+
- 	return ret;
- }
- EXPORT_SYMBOL(of_get_named_gpio_flags);
+ 	for_each_available_child_of_node(chip->dev->of_node, np) {
 -- 
 2.39.2
 
