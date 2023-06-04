@@ -3,79 +3,82 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q5vdb-00AwtF-GX
+	id 1q5vdb-00AwtE-Jz
 	for lore@lore.pengutronix.de; Sun, 04 Jun 2023 23:51:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q5vdZ-0004pj-4C
+	id 1q5vdY-0004pi-VE
 	for lore@pengutronix.de; Sun, 04 Jun 2023 23:51:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=LR9WS+oisXhqQYGd7lt2oe7hWZ3H/KfBVXEx+vdykic=; b=bH8+9Nib2k2Tox
-	EDZr54eOLnVDQsX5qGR35jIwFMd/eZVP33OZqR+N/OyySodX0/aXm3U2crvg8NNRdv+hui1InhiBY
-	D9eZZZB5Ig+Lf8IEBTv6cqBW0dU/lfjWUjqOC7RGuvWn0j5QzajjcSLfsDsktsRpe7uOb71/vLzoz
-	boRGOdgFhc1tvRPZl8xpxiRFacY5UC8ifn822o3GD0S+qAVQDfUjF5XSuAsjlqBLtVjPnF08YQ4G5
-	Pep7HUT9ixy/XJs6Twoxu4bvxsXq+bHyUsVBt485znotyZnmF32Ilhl0W7ygg/J6WDD7tGnFGTGWX
-	wVV5k1lcu2j4nmloORsw==;
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=ltMEA+suhLNfKH+Sit6q7p7mWwbI88dDh9CEqVpJ+qE=; b=eapsibnxFv7G6Z
+	oOfXmLv1g4DUp5gTDo6d8+rjKy0JzsJ+0A9Ay1qUnTgtfb2iCb5XR5SYQXx2lTdsqGYL4WmejUG42
+	aOlKMfDZ0r/CWnmoneMK+P9BHMnE/oZ9Z0zf8CWxQHHG3LzuAEYkWbIIVQWJjOTpUpXDUD6YyB2Dh
+	2rgbVPEbtVhSxI0Q4tIbMVTpeyaNRdl3mJbmtOYeJLjN7ZvBOid6UaF38EtyaIi0qz+0qlnYX8ffD
+	ugfM/9gXr/okCcxUFMxyyVsc1VnKpTimd0jSBxHk5LYLsiBP18JR/U7Rnxxxl14VK1vBrzXCgU3cQ
+	nd1GIY/mxEwq8YkTWBuQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q5vcP-00DEE3-0H;
-	Sun, 04 Jun 2023 21:50:33 +0000
-Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
+	id 1q5vcV-00DEI7-2p;
+	Sun, 04 Jun 2023 21:50:39 +0000
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q5vcM-00DECb-2X
+	id 1q5vcS-00DEEo-18
 	for barebox@lists.infradead.org;
-	Sun, 04 Jun 2023 21:50:32 +0000
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2b1badb8f9bso19175021fa.1
-        for <barebox@lists.infradead.org>; Sun, 04 Jun 2023 14:50:30 -0700 (PDT)
+	Sun, 04 Jun 2023 21:50:37 +0000
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2b1af9ef7a9so30810431fa.1
+        for <barebox@lists.infradead.org>; Sun, 04 Jun 2023 14:50:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685915428; x=1688507428;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=LR9WS+oisXhqQYGd7lt2oe7hWZ3H/KfBVXEx+vdykic=;
-        b=ga6MK6TOi2XEg1nJ4IIRsMcQRBrP3/l0UgBsxaS81uUv2a5+g+/gaA2e8D+1cZfBx0
-         dTJwzLH484iCcoajOpZbXJ2YniHDGVA6vR4SW7SaDiQxkuVLnhioQ4NFNH6kd8uLPgql
-         IbERZA/3W1H5gvcbat4UMgssRNnfbxwzwBgok5G40jcusjDwjG1QKSWnHattBZ1o7qCA
-         HFVu/vYRCAzJB2Hnrb1gJF5yFsL1TJL9GaH/Ts4nmYrn7i9UbyhMLU9xKEtytZSal8w3
-         l98naqsqmhcyq6GFXtddgMUsj5g8FZt/lYXywgJ7Oksd6qneS8L95IOVFd/9HagHLcQR
-         tqhw==
+        d=gmail.com; s=20221208; t=1685915433; x=1688507433;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ltMEA+suhLNfKH+Sit6q7p7mWwbI88dDh9CEqVpJ+qE=;
+        b=YmfTBRlyz9+v4+Jy3z5cFyAee24EJzUn3gx2uC3uK8gkDHIkQ5Vlx3ZpmJxWQ+WkqY
+         Gsb4vITZuwCWioSBitJTaFTTC+2TK14xYya9bIjFm6sLjmeymZRZU6PTFxD2zYmoxkc+
+         ihzEM80teJraSfIZn3bbaqrU8MZlJacT5MEs5YCyzPBtyHWQIUCA6hpqJvFPw7jswbGi
+         ka0jqM8TiKhLRxfGaz8qOpKApQqL9RfZW7PbO9UnvxmmFftv3Ht/BGCkxVnejyaOZB5n
+         woA2b+4I1vXGJdrB9YI22O8Kdn5Dp8SZ/xv5PpGBRR34cRP+T1yfYQ8E4F3nwx3wGJym
+         3odw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685915428; x=1688507428;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=LR9WS+oisXhqQYGd7lt2oe7hWZ3H/KfBVXEx+vdykic=;
-        b=Q/sNlRQrQSd+spL8yPsIJ4rHof94VkuB2/WCHeRtjc1XZib1Uhmjz0c6yDF3YhzdvP
-         3/r+3Da3H8J5gQLYAO5jDTwgGjxa5yOZqJhNoompL7lZYd0AEv5PSQJU0qGvBimjbVbn
-         99HkYw4mYMPS1kmJAHUntausDhHLFLSEiEnlq0+Nn28J62qLqq1mVhQWGg7FqBRniy+c
-         d8ORrLfE4N+7JpU/H8V7djtGvTE2c3fhD3qmmGdBG0m180OMJYymJ4kHBBi7c0dFEdhl
-         hJ0qPWyXf+gvr0b9ntgful/JMzcDdzfQ3weibssrwsLcAZbl7wsQLn1GeTyioXw9qcg9
-         k0Yw==
-X-Gm-Message-State: AC+VfDwIljJWwi25MpGHtc2uAIgCjfKelODoQrErgYGl6H7Oov66tdQo
-	ByekjyXSi3ELBVJ5eIOdzqT6wXaUGjEKeQ==
-X-Google-Smtp-Source: ACHHUZ4egT8BcZBukVhz8+7e1T1+72IxC+nS1Gmuj6lyyJ66KRMHEnbjn5DKxkHp+GZN68D6Ts/ntA==
-X-Received: by 2002:a2e:8783:0:b0:2ae:db65:2d01 with SMTP id n3-20020a2e8783000000b002aedb652d01mr3179752lji.23.1685915427976;
-        Sun, 04 Jun 2023 14:50:27 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1685915433; x=1688507433;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ltMEA+suhLNfKH+Sit6q7p7mWwbI88dDh9CEqVpJ+qE=;
+        b=kTUprwR5Q/1Gma4mMDpUZJ99GV33BS2KRAaY5HDc8mJN7updPnduqfQSnY8BG7o1AA
+         irBAfxMpstBD26gZlLFXtu4tKJyo/grpElOJtxlOj8aWVJVAD90maIIlVxMIzQOuPMGd
+         /GJ17Ryzg3PZQC4785gNBrAXWmcGSF9BY8pIPN8YvRS30RZkLFIvGMMXpuJJlAGQV6Qr
+         cB3BMW7ltb5PQ96Zv1PTx1i15NvZpZaaoYOVg11LFJ24r2Iy+W0FkogEbi3+0Ds00jd5
+         kJfSEIyEraxU3AUHN9Qon4+UtRdrEjur2N01iNtBQIinNx2dAn2lnoa15A1g+UquLvj3
+         iqxg==
+X-Gm-Message-State: AC+VfDwP5Wr0EDkq2rAS0I9bp91kQULfBoyP4SrYlHfpDoslU9KVjQVf
+	EajnMaztphn7dU3uwET2G1qWcPMlT7soPw==
+X-Google-Smtp-Source: ACHHUZ7bf+1Df0A3dZivL5Bs1jTtQPPnVQTQSiO2SQQJpMuPFCTPnSCkSvn+rA0tl9M6SnZJdMM3PQ==
+X-Received: by 2002:a2e:8883:0:b0:2ad:b9e0:cea with SMTP id k3-20020a2e8883000000b002adb9e00ceamr2714857lji.24.1685915433178;
+        Sun, 04 Jun 2023 14:50:33 -0700 (PDT)
 Received: from localhost.localdomain ([188.123.230.237])
-        by smtp.gmail.com with ESMTPSA id 7-20020a05651c00c700b002adc6c2cb3bsm1173561ljr.5.2023.06.04.14.50.26
+        by smtp.gmail.com with ESMTPSA id 7-20020a05651c00c700b002adc6c2cb3bsm1173561ljr.5.2023.06.04.14.50.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 04 Jun 2023 14:50:27 -0700 (PDT)
+        Sun, 04 Jun 2023 14:50:32 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Mon,  5 Jun 2023 00:45:00 +0300
-Message-ID: <20230604215002.20240-1-denorl2009@gmail.com>
+Date: Mon,  5 Jun 2023 00:45:02 +0300
+Message-ID: <20230604215002.20240-3-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230604215002.20240-1-denorl2009@gmail.com>
+References: <20230604215002.20240-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230604_145030_863876_486B6D49 
-X-CRM114-Status: GOOD (  11.86  )
+X-CRM114-CacheID: sfid-20230604_145036_388654_119A93DB 
+X-CRM114-Status: GOOD (  11.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,63 +102,32 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 0/2] dma: rework streaming DMA interface
+Subject: [PATCH 2/2] net: macb: remove const from dev pointer in macb_device
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This fixes issues with streaming DMA on MIPS and more or less properly
-fixes support for non 1-to-1 mappings via 'dma-ranges' device tree
-property.
+Otherwise, it leads to a bunch of warnings on passing those pointers to
+dma_*() functions. As every other driver seem to be having non-const dev
+pointers in their private structs, do the same here.
 
-It needs to be tested properly on non-MIPS architectures as I only
-have tested the compilation for some of those.
+Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+---
+ drivers/net/macb.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The differences from RFC include merging two parts of the patch and
-dropping changes not really related to the matter at hand.
-
-Denis Orlov (2):
-  dma: rework dma_sync_single_for_*() interface
-  net: macb: remove const from dev pointer in macb_device
-
- arch/arm/cpu/dma_32.c               | 17 +++---
- arch/arm/cpu/dma_64.c               | 13 +++--
- arch/arm/cpu/mmu-common.c           |  9 ++--
- arch/arm/include/asm/dma.h          | 12 ++---
- arch/arm/mach-bcm283x/mbox.c        |  4 +-
- arch/kvx/lib/dma-default.c          | 16 +++---
- arch/mips/lib/dma-default.c         | 18 +++----
- arch/riscv/cpu/dma.c                | 23 +++++----
- arch/sandbox/include/asm/dma.h      | 12 ++---
- arch/x86/include/asm/dma.h          | 12 ++---
- drivers/crypto/caam/caam-blobgen.c  | 28 +++++-----
- drivers/crypto/caam/caamrng.c       |  6 +--
- drivers/crypto/caam/rng_self_test.c |  6 +--
- drivers/dma/Makefile                |  1 -
- drivers/dma/map.c                   | 39 --------------
- drivers/mci/dove-sdhci.c            |  8 +--
- drivers/mci/stm32_sdmmc2.c          |  8 +--
- drivers/mci/tegra-sdmmc.c           |  8 +--
- drivers/net/ag71xx.c                |  8 +--
- drivers/net/arc_emac.c              | 10 ++--
- drivers/net/at91_ether.c            | 11 ++--
- drivers/net/bcmgenet.c              |  4 +-
- drivers/net/cpsw.c                  |  8 +--
- drivers/net/davinci_emac.c          |  8 +--
- drivers/net/designware.c            | 10 ++--
- drivers/net/designware_eqos.c       |  6 ++-
- drivers/net/e1000/main.c            |  4 +-
- drivers/net/fec_imx.c               |  4 +-
- drivers/net/fsl-fman.c              |  7 +--
- drivers/net/macb.c                  | 22 ++++----
- drivers/net/mvneta.c                |  8 +--
- drivers/net/orion-gbe.c             |  8 +--
- drivers/net/r8169_main.c            | 10 ++--
- drivers/usb/gadget/udc/fsl_udc.c    |  8 +--
- drivers/usb/host/ohci-hcd.c         |  7 +--
- include/dma.h                       | 80 ++++++++++++++++++++++-------
- 36 files changed, 237 insertions(+), 226 deletions(-)
- delete mode 100644 drivers/dma/map.c
-
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 4b89c59580..128ada7268 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -75,7 +75,7 @@ struct macb_device {
+ 	int			phy_addr;
+ 
+ 	struct clk		*pclk, *hclk, *txclk, *rxclk;
+-	const struct device	*dev;
++	struct device		*dev;
+ 	struct eth_device	netdev;
+ 
+ 	phy_interface_t		interface;
 -- 
 2.41.0
 
