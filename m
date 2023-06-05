@@ -1,82 +1,84 @@
-Delivery-date: Mon, 05 Jun 2023 22:28:19 +0200
+Delivery-date: Mon, 05 Jun 2023 22:28:20 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6GoO-00CCTH-V3
-	for lore@lore.pengutronix.de; Mon, 05 Jun 2023 22:28:19 +0200
+	id 1q6GoP-00CCTd-Pr
+	for lore@lore.pengutronix.de; Mon, 05 Jun 2023 22:28:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6GoM-00010p-E2
+	id 1q6GoM-00011W-M1
 	for lore@pengutronix.de; Mon, 05 Jun 2023 22:28:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=xRnJF7yXT9tejWnMH/ao9HMHya+sMMtRWRHljB64AzU=; b=kx6ronTO9IDWor
-	5NHYosnIczMnemuRp+mvp0UR9wVffFVRRtYnnJazqzLMl58QvR8cBe8FU5yc3BahWTe2m4/wCGBl2
-	jd29tf+5FXT8qK3Toc//qi9nt3dEMOJQSkRipOaDRq58ZNvvmheKjI0BOLYs6y+8WEP/lxo3I0y3h
-	3VFfiTV8wZcl3Nz5bgNRhseIvk8Go4Hf+f8OCl11nupi1e4FTkUFoLtlwBIfupyX6dtc5ZwnsTxfa
-	R/snPuLuVQt+o6fXIer/zstNwOjtj6LAzU+OAZDBlM/DhzY7r0uV+zrTYhhl72GQuN3pHxmtNv08n
-	Ezp07x8lxPb7oE154E5Q==;
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=kI/x1LkjB7SP9Y/5JbvYWFGp5b5guKVhOfCCDIBaqU0=; b=l4qE6kzyLUWFvd
+	9VuMIIVBMCXwldD3zEBDw3du4V7oNblWLur0FUdM+RoJw7h0XK41QlsDEx4+6BJd+IAqea7n9s4Pc
+	IlfXR/zE27vIG0JzCleygJ8BjCU+i4Swi1PZ0dFqByqN1rGUCJjo0RCR/ScBCl6g7R00V1fpJFu6R
+	OvS2EkSvV+2Vou/I+IR0vJCTJA7MdmGeAU3EiX5Ex7z6+V03ja0813XsFpbUllyqxpBuzZnnYJk1w
+	ZXUeIfDuHXI4n9xRhU20tFH2tyLqZK7ckmKFG/jW0Gv19sqZd3+cWtjFg2N3+tlU9f05QMjRvzLFA
+	Cwej2POqHHFkcGFgwBgQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6Gn0-00Gh64-2H;
-	Mon, 05 Jun 2023 20:26:54 +0000
-Received: from mail-lj1-x22f.google.com ([2a00:1450:4864:20::22f])
+	id 1q6GnC-00GhEf-0z;
+	Mon, 05 Jun 2023 20:27:06 +0000
+Received: from mail-lj1-x229.google.com ([2a00:1450:4864:20::229])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6Gmx-00Gh4Z-1q
+	id 1q6Gn7-00Gh8i-1V
 	for barebox@lists.infradead.org;
-	Mon, 05 Jun 2023 20:26:52 +0000
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2b1badb8f9bso35456511fa.1
-        for <barebox@lists.infradead.org>; Mon, 05 Jun 2023 13:26:49 -0700 (PDT)
+	Mon, 05 Jun 2023 20:27:03 +0000
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2b1b3836392so43897051fa.0
+        for <barebox@lists.infradead.org>; Mon, 05 Jun 2023 13:26:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685996807; x=1688588807;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=xRnJF7yXT9tejWnMH/ao9HMHya+sMMtRWRHljB64AzU=;
-        b=s5AHt00L9rnoJ6H1p2RB7Ov5eKWpfgo97Ua7v54jm3I3dethgFecQfLBZu6GDp4GYZ
-         iLyrNWd0CTPyHQHTaFmprQMeXhG2r4qXCKVShcz3VfXPfWmNVe6H7hlFERlgn9+WpyaY
-         8OY1cOQJp9r2nkSF5xHcrHWfHxhOxpsVMYuJnXZECkgwbUq3ByLb07UCvE5oue5q85IK
-         2R9UFf1D4YzFjp3V89EY+zzfbeH8/sUPo6bN081CpRqf/fIBtAAcoYl7r3klqi/iJBR7
-         Hfkm3xmXsA7MXqsCgMpmWtMrqkHXPvM2PirAC7RTqnA44dh2xyRNTDjsPypojB4bleqe
-         Dniw==
+        d=gmail.com; s=20221208; t=1685996818; x=1688588818;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=kI/x1LkjB7SP9Y/5JbvYWFGp5b5guKVhOfCCDIBaqU0=;
+        b=hlVEziRbdr8eSXrTfC7JCRUE013uXWHdvPOu2JLnJEpg/v9sSNNnHgub5RKuC18lSt
+         NsEr8rfOUs0vfHUzduTbJl/lzAw7pzkf8NW1cQVq+wTDYEdkdm2XVV8i4lQX+hSk519+
+         6kT7Ru0aVIl7e8JaK4LOZfSJFNKocOlE0v9ARndOWlb+ZniLqn3TYkKedB0p+8rOfJCO
+         Vwh3pnyg0mpCcRS2IIEe2NOVtfwjmgE1hBwIJIgj/gRh7+bDJYqjHTg/TThGEPamyxim
+         FhBRmqych6kNG/sbi3aCtI/VyDqNJeHf31XNjBmdp2cs0L0yP6dDYWUP4iC857VmXQl/
+         dufA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685996807; x=1688588807;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xRnJF7yXT9tejWnMH/ao9HMHya+sMMtRWRHljB64AzU=;
-        b=KLsjf5MV3adu3/F9aMrSQoxl+k43aAePKD0GTfnZ08KlCWT+gGFE8fMoPIFt1xqciI
-         PXtTC7ErpqQh/cYFLyQHYNIOhnnH565TAruNbNnjFG8mIwpsdKdefz4pmgo7lJO72UwC
-         eMehUvOfBwgfsvf6py33WHtH8iVjqhtmDaJILAGI/8YQiudUyQhtOYgOyPm9+a0SyxHy
-         4cp0YgCQWLbaGgEMa9GWmULfDl4ZsyXSx+8CIVxLng0eRkAwEo3j7TCqVec6VCMK4GYb
-         LMP7v0YlMs8IUt2ANKcVaxJE9Eq3xkQx5fHI6mroi7JJvnEa/0NeSd80Uo0XXYIDbVXz
-         PoRA==
-X-Gm-Message-State: AC+VfDwyPJHgBsiB3YNAQ8Nkqm2iqLFnBsuOxFwrLygiqm48x30/RJAz
-	ssw92lfrSTMb/p9YxTD1/hovJcDbUQFWkA==
-X-Google-Smtp-Source: ACHHUZ71TQHmAcecssGGpMeDsXPGl/7TpmyTbnNX7N5EIaEKtqXiphvkRFa/Av01/GtAxTNjfScdmg==
-X-Received: by 2002:a2e:3308:0:b0:2a7:a616:c39 with SMTP id d8-20020a2e3308000000b002a7a6160c39mr164424ljc.48.1685996807077;
-        Mon, 05 Jun 2023 13:26:47 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1685996818; x=1688588818;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kI/x1LkjB7SP9Y/5JbvYWFGp5b5guKVhOfCCDIBaqU0=;
+        b=WPxzambmA2zHirop1EDAXdhJud1ahAi4XY+ksLlH+EAqQX1W+sFXysdbrIejyEhU0u
+         H+Ip1XicnKlHnjOsy6SaRXw2jpqosCGOAHZglU8wViVlwiVPJC5NBhz0caEcmex4bg0X
+         VqonOzjWbkmpv4GQ9REmFKyyEVCW2bpoVGQ28VOGXuxJYr+OXgXdyWggTNKxH0HOvcbM
+         5rp+T47sCyhfg3Gbp4OQpLMkOb/8OJ0KP+rx22gSgm8hgr+LwhiGvIgksG2oj8ufvliY
+         ZakVWl0KJCzNbo3flPZ41CNX4HU0B5Pd7dXImuD3p+QB2og55cwwZb+wfXB+A5a3RvcE
+         5xDQ==
+X-Gm-Message-State: AC+VfDz0HCAmONCb1wlPPET0kBIBpre6+mdpj8xiZvC3lW70emi7K/Ei
+	6+EqPhV3/8HrCZWAGb8hkiD/COp7acivog==
+X-Google-Smtp-Source: ACHHUZ5MLyCIok31Ir6Jm6kpNsJa415nGpnpReTFs7nZ4WMbuABk3zOH0sFUo1mdUEc8zLSgvjxl2w==
+X-Received: by 2002:a2e:9b94:0:b0:2b1:df76:294a with SMTP id z20-20020a2e9b94000000b002b1df76294amr207778lji.43.1685996817764;
+        Mon, 05 Jun 2023 13:26:57 -0700 (PDT)
 Received: from localhost.localdomain ([188.123.230.216])
-        by smtp.gmail.com with ESMTPSA id i18-20020a2e8092000000b002a9f966f4b3sm1587087ljg.26.2023.06.05.13.26.45
+        by smtp.gmail.com with ESMTPSA id i18-20020a2e8092000000b002a9f966f4b3sm1587087ljg.26.2023.06.05.13.26.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jun 2023 13:26:46 -0700 (PDT)
+        Mon, 05 Jun 2023 13:26:57 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Mon,  5 Jun 2023 23:10:31 +0300
-Message-ID: <20230605202634.42175-1-denorl2009@gmail.com>
+Date: Mon,  5 Jun 2023 23:10:41 +0300
+Message-ID: <20230605202634.42175-11-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230605202634.42175-1-denorl2009@gmail.com>
+References: <20230605202634.42175-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230605_132651_632535_0B4C8D24 
-X-CRM114-Status: UNSURE (   9.27  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230605_132701_526932_038C2772 
+X-CRM114-Status: GOOD (  11.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,58 +102,72 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 00/17] MIPS: fix and improve 64BIT support
+Subject: [PATCH 10/17] MIPS: fix *ADDR macro usage warnings on CONFIG_64BIT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The existing 64BIT support for MIPS was somewhat incomplete with no
-board having MIPS64 CPUs specified to be available as targets. Define
-Malta as supporting those and fix all the compilation and linking
-errors. Make some optional features available with 64BIT too.
+Fixes "warning: cast from pointer to integer of different size"
+messages.
 
-Denis Orlov (17):
-  MIPS: malta: allow to choose MIPS64 target CPU in config
-  MIPS: malta: use CKSEG instead of KSEG macros
-  MIPS: reloc: fix relocation with CONFIG_64BIT enabled
-  MIPS: o32: provide ta0..ta3 register definitions
-  MIPS: pbl: use o32/n64 compatible register definitions
-  MIPS: pbl: fix linking errors with CONFIG_64BIT
-  MIPS: use MIPS32/MIPS64 generic instruction macros
-  MIPS: malta: fix GT64120 base virtual address on 64BIT
-  MIPS: fix addresses of exception vectors in 64-bit mode
-  MIPS: fix *ADDR macro usage warnings on CONFIG_64BIT
-  MIPS: Makefile: sign-extend TEXT_BASE value on CONFIG_64BIT
-  MIPS: enable 64-bit kernel segment addressing on CONFIG_64BIT
-  MIPS: traps: fix passing wrong sp when returning from exception
-  MIPS: pbl_macros: use generic load/store macros in
-    copy_to_link_location
-  MIPS: add 64-bit support for optimized string functions
-  MIPS: make setjmp/longjmp/initjmp available in 64BIT builds
-  MIPS: main_entry-pbl: fix conversion warnings on CONFIG_64BIT
+Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+---
+ arch/mips/include/asm/dma.h | 16 +++++++++-------
+ arch/mips/include/asm/io.h  |  2 +-
+ 2 files changed, 10 insertions(+), 8 deletions(-)
 
- arch/mips/Kconfig                             |  6 +-
- arch/mips/Makefile                            | 14 +++--
- arch/mips/boards/qemu-malta/lowlevel.S        |  4 +-
- arch/mips/boot/main_entry-pbl.c               | 11 ++--
- arch/mips/boot/main_entry.c                   |  2 +-
- arch/mips/boot/start.S                        |  4 +-
- arch/mips/include/asm/asm.h                   | 10 +--
- arch/mips/include/asm/debug_ll_ns16550.h      |  6 +-
- arch/mips/include/asm/dma.h                   | 16 ++---
- arch/mips/include/asm/io.h                    |  2 +-
- arch/mips/include/asm/pbl_macros.h            | 62 +++++++++++--------
- arch/mips/include/asm/pbl_nmon.h              | 10 +--
- arch/mips/include/asm/regdef.h                |  6 ++
- arch/mips/include/asm/setjmp.h                |  2 +-
- arch/mips/lib/genex.S                         |  8 +--
- arch/mips/lib/memcpy.S                        | 37 +++++++++--
- arch/mips/lib/reloc.c                         |  7 +--
- arch/mips/lib/setjmp.S                        | 48 +++++++-------
- arch/mips/lib/traps.c                         |  2 +-
- .../mach-malta/include/mach/mach-gt64120.h    |  2 +-
- arch/mips/mach-malta/pci.c                    |  2 +-
- 21 files changed, 156 insertions(+), 105 deletions(-)
-
+diff --git a/arch/mips/include/asm/dma.h b/arch/mips/include/asm/dma.h
+index 62d9c7c548..d7570cce71 100644
+--- a/arch/mips/include/asm/dma.h
++++ b/arch/mips/include/asm/dma.h
+@@ -25,18 +25,20 @@ static inline void *dma_alloc(size_t size)
+ #define dma_alloc_coherent dma_alloc_coherent
+ static inline void *dma_alloc_coherent(size_t size, dma_addr_t *dma_handle)
+ {
+-	void *ret;
++	void *ptr;
++	unsigned long virt;
+ 
+-	ret = xmemalign(PAGE_SIZE, size);
++	ptr = xmemalign(PAGE_SIZE, size);
++	memset(ptr, 0, size);
+ 
+-	memset(ret, 0, size);
++	virt = (unsigned long)ptr;
+ 
+ 	if (dma_handle)
+-		*dma_handle = CPHYSADDR(ret);
++		*dma_handle = CPHYSADDR(virt);
+ 
+-	dma_flush_range((unsigned long)ret, (unsigned long)(ret + size));
++	dma_flush_range(virt, virt + size);
+ 
+-	return (void *)CKSEG1ADDR(ret);
++	return (void *)CKSEG1ADDR(virt);
+ }
+ 
+ #define dma_free_coherent dma_free_coherent
+@@ -44,7 +46,7 @@ static inline void dma_free_coherent(void *vaddr, dma_addr_t dma_handle,
+ 				     size_t size)
+ {
+ 	if (IS_ENABLED(CONFIG_MMU) && vaddr)
+-		free((void *)CKSEG0ADDR(vaddr));
++		free((void *)CKSEG0ADDR((unsigned long)vaddr));
+ 	else
+ 		free(vaddr);
+ }
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index a3acbd7017..9c856c7b15 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -30,7 +30,7 @@ void dma_inv_range(unsigned long, unsigned long);
+ #define virt_to_phys virt_to_phys
+ static inline unsigned long virt_to_phys(const void *address)
+ {
+-	return (unsigned long)CPHYSADDR(address);
++	return CPHYSADDR((unsigned long)address);
+ }
+ 
+ /*
 -- 
 2.41.0
 
