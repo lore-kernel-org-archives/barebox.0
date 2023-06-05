@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6GoU-00CCVV-0v
+	id 1q6GoU-00CCVg-3F
 	for lore@lore.pengutronix.de; Mon, 05 Jun 2023 22:28:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6GoP-00014U-GG
+	id 1q6GoP-00014S-G4
 	for lore@pengutronix.de; Mon, 05 Jun 2023 22:28:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -17,68 +17,68 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=9f8CtG8p/soXWFetLs5M5d8f94UNcHVyCmvapqI2CxI=; b=wduv/XVd1U1xDw
-	iXT9911HeD0sVheo8Hv6gmqLWOUOCqFYKateN5JkIQkl1pwSQ3JPfqGEYxebOFvZDKQMQZne0QEIu
-	wd5oYBKdnbHIJElvjeHjjoOvhiLl03+pt4R1+3clLi/uuNjP/Siyr/JrWnlNb4mFcIKc24Ku8qMVH
-	qSOfhPYvDGv5EyahN/9VdFS3yrbMWbLpfe1eIz4efVe4UL/7WK2ZsUm/aF54qID8vKMo+LRlGqnB3
-	MfnLvRSZcqR7rH0UCp+A+uzvDhqPUEgu3XJlTrSSGVzQ2yPIzczI7iUT+KkfRDilTN66trNcocJMp
-	PTpt90z31gbnIwsl1ixg==;
+	List-Owner; bh=fDG/hrMbrVCXpBFA0uVLTFtj26XoOz2etUvACmunWPU=; b=rZZEydeSntXNLN
+	cDWSJPUXRkB0ms92ksKhBIoITPVkFO/4ZUFy8mNlrtMoKRvASuR9Aa7ZRicM9EGOV09GMZ9JnLzdC
+	mTCpfqlM0sIP/zmXU3Z/oB2NFpQ+Z2l/759v/j2s8HV2Ej04vOTTgbpZ3cWnqyxhxjB8/4HQofy3b
+	Z/UueVQGpoljtxejWfio4t8uyw2RXSZjXQg+NFrVo3gCuih278Z6WFuFQ+YgdU47e+A4u+6AbnzB/
+	OEmhMKfITPbcc+kN4lZqkneaGKv6ZDXVk1cPRf8SfZy10KjeiYcOblwK6RX0WgrMMAwB9BzOUFwbR
+	sWD0o0JvuMEXXIEfzyTw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6Gn6-00Gh9E-1W;
-	Mon, 05 Jun 2023 20:27:00 +0000
-Received: from mail-lj1-x230.google.com ([2a00:1450:4864:20::230])
+	id 1q6Gn1-00Gh6k-1F;
+	Mon, 05 Jun 2023 20:26:55 +0000
+Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6Gn2-00Gh5Y-0A
+	id 1q6Gmx-00Gh4h-2L
 	for barebox@lists.infradead.org;
-	Mon, 05 Jun 2023 20:26:57 +0000
-Received: by mail-lj1-x230.google.com with SMTP id 38308e7fff4ca-2b1afe57bdfso48316701fa.0
-        for <barebox@lists.infradead.org>; Mon, 05 Jun 2023 13:26:53 -0700 (PDT)
+	Mon, 05 Jun 2023 20:26:52 +0000
+Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2b1a46ad09fso63192031fa.2
+        for <barebox@lists.infradead.org>; Mon, 05 Jun 2023 13:26:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1685996811; x=1688588811;
+        d=gmail.com; s=20221208; t=1685996808; x=1688588808;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9f8CtG8p/soXWFetLs5M5d8f94UNcHVyCmvapqI2CxI=;
-        b=LBNY5mFLIEr0Z99J3A5BX6eJCgjkHxBxuMmMvpMX+V+dWEHNgoTb00IxVu00WMc0bs
-         6/DluORODjQq0E3GUsyeFjraBvTxNDrcBAHPCpG4GzjmVk9EgPQK9Hv/O7lzAZBdrZBM
-         CVObWA/I3j+Prqy0eQlapf4VtEXFO6v8Xm17Ekg33EFpGtXPX1HIxXH7IXYul3qRNL7X
-         oF4GQWdlb7jDuQimlLHvkvRnC0Jmnq5GCjMXALZP8ZSMwlzAwqmKISbfatxRkOcsVimG
-         eA1PQO0g5N7TGTbV9x8PXIl7AAdeQI6ZmnjRwg9ykCxVXXzEiXUPFTUAnl9gmAxea7Et
-         DMaw==
+        bh=fDG/hrMbrVCXpBFA0uVLTFtj26XoOz2etUvACmunWPU=;
+        b=jjoWa+4uDvTSrRxb6cCdn5ILtsH9NmXuN4aM5P3C15Ez1Dga7ikdtbLu2nfJs2jr8u
+         yGWOj0wnorHu4v0gViIUggrtVs6lPWerCNPPBpoQlc97wEfGgMa8r8FycvHvvN72SvUm
+         KGQ1+XjLk9p4SE7uuzmBUOGT5QsjzmP7v6gcb0cg9JiYBASoBHLH8MlaMUxpiTAj37pr
+         wfgHkw+ufNeRcN/BqwQPi8TNhWrpPUzhYmep7BFhm8ZqqftF9c+rQBGbvZMegJ02WeOh
+         Qr98XR+hjv4EnEczNKB2ZDN/N+ZxsZQqs2nmG8pCP/spL0WvWwTtvmROumypCYrgCozI
+         kfcA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1685996811; x=1688588811;
+        d=1e100.net; s=20221208; t=1685996808; x=1688588808;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9f8CtG8p/soXWFetLs5M5d8f94UNcHVyCmvapqI2CxI=;
-        b=b0IRrnvMIhSA0NSirNhOaMNCDSdzu/dD+Tndrjet3r511HOwTRyjcGG509UR7OY4rI
-         brYK4Otiuadg/moF2tOeyI6+QeblQ8X9n9cFXLLX7z06wMqbITRWYrCM80rnu6Pbnm9M
-         jZuCXiulOevb3uy0cCAYHPHTKIZ6b8ZM609vnw40R4L6r+atTBGit+djOtSRAFTTFAYT
-         EB6oL5j/+16i9JUBfHBCp7ckwbZhJPadvYfvdFpH5bzUwyQa5wuwSFoaXIucTSX0J5gA
-         h8f248a8r/iYqQromMHF9aq8l9SHJwUbZKdTJtl2X0WpikbQUAMK2BjNMcofKxJysI7f
-         shJA==
-X-Gm-Message-State: AC+VfDxxsU9Y63LEZjJOieHAJ5e//5ZyvpPtpggAqgqPtIHc1z6xWZAm
-	8bXMokxcKiabceH2Q0LmKeGFrzfesYtBvQ==
-X-Google-Smtp-Source: ACHHUZ5dlFzdEEG0AUv6PE/VHUwWuw9slHOuebV6pJKow++JA13S0t6msJeZvjja9dt8idOU13ZEMA==
-X-Received: by 2002:a05:651c:94:b0:2a7:b986:3481 with SMTP id 20-20020a05651c009400b002a7b9863481mr165207ljq.41.1685996811187;
-        Mon, 05 Jun 2023 13:26:51 -0700 (PDT)
+        bh=fDG/hrMbrVCXpBFA0uVLTFtj26XoOz2etUvACmunWPU=;
+        b=b7NdGWsA1i3aAK1l3EBzf8Bs+jY99oRRfV0OpqyF6fBgrfni3ywr09lIX+OSHAfzEb
+         Qf7PqbwCCZZ6+dbMqIa5Ipv7JJCRXdzVXCR63L3a/IH3o6KqBQYK8uWLa7qsT/If3hhX
+         N/27mqdycBUR0gKcm7Q/vzAjA+sOqgoX8T8m7sDB80TRYjRzxX93k7YaVZgRs+jKVkac
+         T+2DdoVyAAdNfGOet5hIniNy3mMVm+Us9pqE6nbiRt4bcgmq42cV52MMDzhz5StQcUdn
+         kJ4Vh0D2sst0EsMBU1Kzsrwqj2UwFYL/PSWayJ0+TgCF3g8SUC89NZ/1BCCCqTSPk8eU
+         oYQg==
+X-Gm-Message-State: AC+VfDygix8HhvlIZv8F3SnCQ+RSXRDvhQV9nBvBvHrFIOEdq0NLoRcI
+	oWbVWk0itZA4Uc3a/KwunqM9pjMYrn9YWA==
+X-Google-Smtp-Source: ACHHUZ5xD+uOx4BBa46PlxOgRKfSdKBRSI3fgPzRfs+IA38zgDr3q8hVb3mHg1E8Dbdb2a9YMW0NiQ==
+X-Received: by 2002:a05:651c:1054:b0:2b1:c111:6c29 with SMTP id x20-20020a05651c105400b002b1c1116c29mr173173ljm.32.1685996808009;
+        Mon, 05 Jun 2023 13:26:48 -0700 (PDT)
 Received: from localhost.localdomain ([188.123.230.216])
-        by smtp.gmail.com with ESMTPSA id i18-20020a2e8092000000b002a9f966f4b3sm1587087ljg.26.2023.06.05.13.26.50
+        by smtp.gmail.com with ESMTPSA id i18-20020a2e8092000000b002a9f966f4b3sm1587087ljg.26.2023.06.05.13.26.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Jun 2023 13:26:50 -0700 (PDT)
+        Mon, 05 Jun 2023 13:26:47 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Mon,  5 Jun 2023 23:10:35 +0300
-Message-ID: <20230605202634.42175-5-denorl2009@gmail.com>
+Date: Mon,  5 Jun 2023 23:10:32 +0300
+Message-ID: <20230605202634.42175-2-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230605202634.42175-1-denorl2009@gmail.com>
 References: <20230605202634.42175-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230605_132656_087299_27DFFA79 
-X-CRM114-Status: UNSURE (   8.52  )
+X-CRM114-CacheID: sfid-20230605_132651_764772_FF540E5F 
+X-CRM114-Status: UNSURE (   8.38  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -98,53 +98,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 04/17] MIPS: o32: provide ta0..ta3 register definitions
+X-Spam-Status: No, score=-3.6 required=4.0 tests=AWL,DKIM_ADSP_CUSTOM_MED,
+	DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 01/17] MIPS: malta: allow to choose MIPS64 target CPU in config
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This allows to write generic assembly code that will compile under both
-o32 and n64 ABIs, as otherwise the register definitions would conflict.
-
-Taken from Linux kernel sources, commit 'MIPS: O32: Provide definition
-of registers ta0 .. ta3.' (3ba1e543ab4b02640d396098f2f6a199560d5f2d).
+QEMU is able to emulate malta machine with a variety of MIPS CPUs,
+including MIPS64 ones, so allow to compile barebox for such
+configurations.
 
 Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 ---
- arch/mips/include/asm/regdef.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/mips/Kconfig | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/mips/include/asm/regdef.h b/arch/mips/include/asm/regdef.h
-index 1300251661..df87582e8e 100644
---- a/arch/mips/include/asm/regdef.h
-+++ b/arch/mips/include/asm/regdef.h
-@@ -3,6 +3,8 @@
-  * Copyright (C) 1985 MIPS Computer Systems, Inc.
-  * Copyright (C) 1994, 95, 99, 2003 by Ralf Baechle
-  * Copyright (C) 1990 - 1992, 1999 Silicon Graphics, Inc.
-+ * Copyright (C) 2011 Wind River Systems,
-+ *   written by Ralf Baechle <ralf@linux-mips.org>
-  */
- #ifndef _ASM_REGDEF_H
- #define _ASM_REGDEF_H
-@@ -27,9 +29,13 @@
- #define t2      $10
- #define t3      $11
- #define t4      $12
-+#define ta0     $12
- #define t5      $13
-+#define ta1     $13
- #define t6      $14
-+#define ta2     $14
- #define t7      $15
-+#define ta3     $15
- #define s0      $16     /* callee saved */
- #define s1      $17
- #define s2      $18
+diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+index 70d85690da..ab8c8cf176 100644
+--- a/arch/mips/Kconfig
++++ b/arch/mips/Kconfig
+@@ -70,8 +70,11 @@ config MACH_MIPS_MALTA
+ 	select CSRC_R4K_LIB
+ 	select DRIVER_SERIAL_NS16550
+ 	select SYS_HAS_CPU_MIPS32_R1
++	select SYS_HAS_CPU_MIPS64_R1
+ 	select SYS_HAS_CPU_MIPS32_R2
++	select SYS_HAS_CPU_MIPS64_R2
+ 	select SYS_SUPPORTS_32BIT_KERNEL
++	select SYS_SUPPORTS_64BIT_KERNEL
+ 	select SYS_SUPPORTS_BIG_ENDIAN
+ 	select SYS_SUPPORTS_LITTLE_ENDIAN
+ 	select HAS_DEBUG_LL
 -- 
 2.41.0
 
