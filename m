@@ -1,59 +1,59 @@
-Delivery-date: Tue, 06 Jun 2023 21:29:51 +0200
+Delivery-date: Tue, 06 Jun 2023 21:31:16 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6cNN-00DQ84-24
-	for lore@lore.pengutronix.de; Tue, 06 Jun 2023 21:29:51 +0200
+	id 1q6cOj-00DQF1-D6
+	for lore@lore.pengutronix.de; Tue, 06 Jun 2023 21:31:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6cNK-0002yV-Ca
-	for lore@pengutronix.de; Tue, 06 Jun 2023 21:29:51 +0200
+	id 1q6cOg-0003Vj-UV
+	for lore@pengutronix.de; Tue, 06 Jun 2023 21:31:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:Cc:References:To:Subject:MIME-Version:Date:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=k9TUUQrWaOGI65SPQto4G+M0K+pBg2K8D37K4XSPbsw=; b=TyFdylXFSgvGV7hfeOcdclopxN
-	m/CpIEfbXZKNnusDMDnU/yB3K8JdT7MKCsM9/QXFGdfEkaU+HG1ICbDDm8gPuLshrr7z7ouswBz2Q
-	Ovrl+bAwI6DPe85QxzySUXtnniP6Pu/Mu+Y4PEnfuthPTIFH67BdYxa8HYkUWypZvGearDpYBm9En
-	JkGpcfoY2Uhu7bC9hma8ZwjWW8nNlILJ8BeDwoKEmIxdFuewXLL5l/NJq9AsgqQRdSILp48cn1ygm
-	fe5g3WauRxkIbfBGRKuTOzidTpCpnnsTSUYsEnAfKerYa1J23TLTXsfxfBnlpKYItD7FeQgntiLqQ
-	eAID86VA==;
+	bh=ulCuyMd2tXEbINCZGLhmmxQveDm/HzLwJgeWf1EEmh8=; b=j53KRuFR0nwRTzns4IyYlDyypU
+	5fNsIujj6O2/tS+TeWlhGTmkAYFs15hqewIg5pH5A0yWfb4qB899nOH+ptbkgUnkGaEwMlRDsuiy3
+	X15NLe6rDa5XLq7uswziy6CRGTNFxd0dSAnVufM3cWXtP0GV6zFIYCKjneKRAfX5vPP7nXqbbylL9
+	suCiXAepdZoAbBoYeP6PXh0BweYYKW2cBVb5EJU0w6rdCKqzZrGtJNgp+aBlZcmljaP5BmNRpn9PI
+	SpuJSu97PyKrMZYUv17a12Dtjhv6CpekLWvaKvX3JDkCYjPy9hH9+vj9y29d7MjQMN97lsDV7GD4G
+	DXF87m9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6cLz-002xOk-1A;
-	Tue, 06 Jun 2023 19:28:27 +0000
+	id 1q6cNh-002yIY-0P;
+	Tue, 06 Jun 2023 19:30:13 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6cLu-002xMe-2v
+	id 1q6cNd-002yGV-0R
 	for barebox@lists.infradead.org;
-	Tue, 06 Jun 2023 19:28:24 +0000
+	Tue, 06 Jun 2023 19:30:10 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q6cLr-0002oC-Mn; Tue, 06 Jun 2023 21:28:19 +0200
-Message-ID: <5ac40228-5bfa-982a-af99-cf3aafa6016d@pengutronix.de>
-Date: Tue, 6 Jun 2023 21:28:19 +0200
+	id 1q6cNb-00036D-PV; Tue, 06 Jun 2023 21:30:07 +0200
+Message-ID: <a031910e-8c14-13bf-8b66-22a97ae056ad@pengutronix.de>
+Date: Tue, 6 Jun 2023 21:30:07 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.1
 Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
 References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
- <20230531145927.1399282-18-a.fatoum@pengutronix.de>
- <20230531193130.fgmvxm27dh3gbvhh@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+ <20230531145927.1399282-12-a.fatoum@pengutronix.de>
+ <20230601074204.GI18491@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230531193130.fgmvxm27dh3gbvhh@pengutronix.de>
+In-Reply-To: <20230601074204.GI18491@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230606_122822_963850_F32F9DAB 
-X-CRM114-Status: GOOD (  25.14  )
+X-CRM114-CacheID: sfid-20230606_123009_178866_CE13E7BA 
+X-CRM114-Status: GOOD (  23.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,142 +76,77 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 17/18] common: partitions: efi: record type UUID in cdev
+Subject: Re: [PATCH 11/18] block: parse partition table on block device
+ registration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 31.05.23 21:31, Marco Felsch wrote:
-> Hi Ahmad,
-> 
-> On 23-05-31, Ahmad Fatoum wrote:
->> We already record DOS partition type in cdev, so let's do the same for
->> GPT Type UUID. This will be used in a later commit to identify
->> barebox-state partitions.
+On 01.06.23 09:42, Sascha Hauer wrote:
+> On Wed, May 31, 2023 at 04:59:20PM +0200, Ahmad Fatoum wrote:
+>> Every instance where we register a block device, it's followed by an
+>> attempt to parse the partition table, most often with a warning when
+>> it fails. Thus let's move partition table parsing into
+>> blockdevice_register.
 >>
 >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 >> ---
->>  common/partitions.c        | 2 +-
->>  common/partitions/efi.c    | 1 +
->>  common/partitions/parser.h | 5 ++++-
->>  fs/fs.c                    | 2 ++
->>  include/driver.h           | 6 +++++-
->>  5 files changed, 13 insertions(+), 3 deletions(-)
+>>  arch/sandbox/board/hostfile.c | 4 ----
+>>  common/block.c                | 6 ++++++
+>>  drivers/ata/disk_ata_drive.c  | 5 -----
+>>  drivers/block/efi-block-io.c  | 9 +--------
+>>  drivers/block/virtio_blk.c    | 8 +-------
+>>  drivers/mci/mci-core.c        | 6 ------
+>>  drivers/nvme/host/core.c      | 5 -----
+>>  drivers/usb/storage/usb.c     | 5 -----
+>>  8 files changed, 8 insertions(+), 40 deletions(-)
 >>
->> diff --git a/common/partitions.c b/common/partitions.c
->> index b579559672a0..e3e8a9f3044d 100644
->> --- a/common/partitions.c
->> +++ b/common/partitions.c
->> @@ -50,7 +50,7 @@ static int register_one_partition(struct block_device *blk,
+>> diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
+>> index d0f400787d7a..a1ab06b87770 100644
+>> --- a/arch/sandbox/board/hostfile.c
+>> +++ b/arch/sandbox/board/hostfile.c
+>> @@ -166,10 +166,6 @@ static int hf_probe(struct device *dev)
+>>  		if (err)
+>>  			return err;
 >>  
->>  	cdev->flags |= DEVFS_PARTITION_FROM_TABLE;
->>  
->> -	cdev->dos_partition_type = part->dos_partition_type;
->> +	cdev->typeuuid = part->typeuuid;
-> 
-> Even though it's an union I would prefer to make it easier for the
-> reader (without checking the header and noticing that it is an union).
-> So the above code would be:
-> 
-> 	if (blkdev_is_gpt_partitioned(blk))
-> 		cdev->typeuuid = part->typeuuid;
-> 	else if (blkdev_is_mbr_partitioned(blk))
-> 		cdev->dos_partition_type = part->dos_partition_type;
-
-I don't think this is implementable without a runtime cost. I'd leave
-it as is.
-
-> 
-> with 
-> 
-> static inline blkdev_is_gpt_partitioned(struct block_device *blkdev)
-> {
-> 	return cdev_is_gpt_partitioned(&blkdev->cdev);
-> }
-> 
-> Regards,
->   Marco
-> 
->>  	strcpy(cdev->partuuid, part->partuuid);
->>  
->>  	free(partition_name);
->> diff --git a/common/partitions/efi.c b/common/partitions/efi.c
->> index df63b82afe24..2756337ab284 100644
->> --- a/common/partitions/efi.c
->> +++ b/common/partitions/efi.c
->> @@ -471,6 +471,7 @@ static void efi_partition(void *buf, struct block_device *blk,
->>  		pentry->size++;
->>  		part_set_efi_name(&ptes[i], pentry->name);
->>  		snprintf(pentry->partuuid, sizeof(pentry->partuuid), "%pUl", &ptes[i].unique_partition_guid);
->> +		pentry->typeuuid = ptes[i].partition_type_guid;
->>  		pd->used_entries++;
->>  	}
->>  }
->> diff --git a/common/partitions/parser.h b/common/partitions/parser.h
->> index f2f692f7903b..9cc41a7573fe 100644
->> --- a/common/partitions/parser.h
->> +++ b/common/partitions/parser.h
->> @@ -17,10 +17,13 @@
->>  
->>  struct partition {
->>  	char name[MAX_PARTITION_NAME];
->> -	u8 dos_partition_type;
->>  	char partuuid[MAX_UUID_STR];
->>  	uint64_t first_sec;
->>  	uint64_t size;
->> +	union {
->> +		u8 dos_partition_type;
->> +		guid_t typeuuid;
->> +	};
->>  };
->>  
->>  struct partition_desc {
->> diff --git a/fs/fs.c b/fs/fs.c
->> index 9a92e6e251e5..16cc072adfaf 100644
->> --- a/fs/fs.c
->> +++ b/fs/fs.c
->> @@ -110,6 +110,8 @@ void cdev_print(const struct cdev *cdev)
->>  		nbytes += printf("Filetype: %s\t", file_type_to_string(cdev->filetype));
->>  	if (cdev_is_mbr_partitioned(cdev->master))
->>  		nbytes += printf("DOS parttype: 0x%02x\t", cdev->dos_partition_type);
->> +	else if (cdev_is_gpt_partitioned(cdev->master))
->> +		nbytes += printf("GPT typeuuid: %pUl\t", &cdev->typeuuid);
->>  	if (*cdev->partuuid || *cdev->diskuuid)
->>  		nbytes += printf("%sUUID: %s", cdev_is_partition(cdev) ? "PART" : "DISK",
->>  				 cdev_is_partition(cdev) ? cdev->partuuid : cdev->diskuuid);
->> diff --git a/include/driver.h b/include/driver.h
->> index 5f2eae65466f..6407f7d6ba36 100644
->> --- a/include/driver.h
->> +++ b/include/driver.h
->> @@ -8,6 +8,7 @@
->>  
+>> -		err = parse_partition_table(&priv->blk);
+>> -		if (err)
+>> -			dev_warn(dev, "No partition table found\n");
+>> -
+>>  		dev_info(dev, "registered as block device\n");
+>>  	} else {
+>>  		cdev->name = np->name;
+>> diff --git a/common/block.c b/common/block.c
+>> index c39269d3a692..98adcfdf3dab 100644
+>> --- a/common/block.c
+>> +++ b/common/block.c
+>> @@ -6,6 +6,7 @@
+>>   */
+>>  #include <common.h>
+>>  #include <block.h>
+>> +#include <disks.h>
+>>  #include <malloc.h>
+>>  #include <linux/err.h>
 >>  #include <linux/list.h>
->>  #include <linux/ioport.h>
->> +#include <linux/uuid.h>
->>  #include <of.h>
->>  #include <filetype.h>
+>> @@ -408,6 +409,11 @@ int blockdevice_register(struct block_device *blk)
 >>  
->> @@ -536,12 +537,15 @@ struct cdev {
->>  	unsigned int flags;
->>  	int open;
->>  	struct mtd_info *mtd;
->> -	u8 dos_partition_type;
->>  	struct cdev *link;
->>  	struct list_head link_entry, links;
->>  	struct list_head partition_entry, partitions;
->>  	struct cdev *master;
->>  	enum filetype filetype;
->> +	union {
->> +		u8 dos_partition_type;
->> +		guid_t typeuuid;
->> +	};
->>  };
+>>  	cdev_create_default_automount(&blk->cdev);
 >>  
->>  int devfs_create(struct cdev *);
->> -- 
->> 2.39.2
->>
->>
->>
+>> +	/* Lack of partition table is unusual, but not a failure */
+>> +	ret = parse_partition_table(blk);
+>> +	if (ret)
+>> +		dev_warn(blk->dev, "No partition table found\n");
+> 
+> This is not changed in this series, so it's ok like this, but should
+> this really be a warning? Using a raw device without a partition table
+> seems like a legitimate usecase.
+
+parse_partition_table returns 0 when no partition table exists. Now that
+I looked into it, all errors already have an error print, so duplicating
+it is unnecessary. I will drop the dev_warn altogether for v2.
+
+> 
+> Sascha
+> 
 > 
 
 -- 
