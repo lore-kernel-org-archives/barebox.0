@@ -1,57 +1,57 @@
-Delivery-date: Tue, 06 Jun 2023 10:05:07 +0200
+Delivery-date: Tue, 06 Jun 2023 10:07:33 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6Rgj-00CnLr-15
-	for lore@lore.pengutronix.de; Tue, 06 Jun 2023 10:05:07 +0200
+	id 1q6Rj4-00Cntg-EK
+	for lore@lore.pengutronix.de; Tue, 06 Jun 2023 10:07:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6Rgg-0000Uk-66
-	for lore@pengutronix.de; Tue, 06 Jun 2023 10:05:06 +0200
+	id 1q6Rj1-00016u-HQ
+	for lore@pengutronix.de; Tue, 06 Jun 2023 10:07:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8n1t3UXIt6vn54C9t6F3/5C+ldiliRkHo4hdYH8GazY=; b=1pXAESu4hV61aMVVDY9QcX34mv
-	77aC9JJ/k8jvsTt0Xdv7HWGQD5IVTI6fctzvu5I9guv9gKW9tWXiO877Je5/8FXbgY194VpYb4l5L
-	VXtV9K2bNvCBBpe1v4oVz6oE1M6RnjFFlA/2JgLxz7IOxS+VUNhkc0JjMebP3P8bSrFASwbwQWAUd
-	bYyGtr4oYNv+xu70F9fW0k8OU9+ZMMOfVcMTC9W8Brsl6wJ6nQv9hAhkrLwOdawUUT2pjVasWV3Ip
-	9R746p0CyqIRNC6x88TekVwRn5OhodPCXxDJ1kxEm1EzKzvZqEQSwvhlbfe7lxG8Mt7PHSeo6Dzb2
-	RcIl9Khw==;
+	bh=6Zw1LAw7KUZHx/xB98YlABCfy1HxZ71haUDqTD3AvdU=; b=NOYdyISrI04qux8TAhmsmc7g4+
+	E9b/wHcvaENDR5+Ef0vzBYmg3w4xEgfEKS+UKmgHB2QikdSmHWLZuSeqfgB8whbfpeIwg/nknOXn0
+	WaFOA2nHHjikwCNjG4ktFR4lKQ+9MJZ6nbjijIMtiiV9Bv4RXisaPNL5pESqoT+52qcIDn6s1Zqf5
+	bspAp7ChRAD9FmFeWQFH2IpzE7pX+G6tLpy6XVvWadXRvw682Ipff1iiscpxoY9jY3Q/ajrU+lrXX
+	Zly4FwYzfCYExeo+nnnaYSv8w6HBMTLHYJ3zeo/zdrfkWQkgd0stGRmrMyA1I0/YJ78P/b/S4CYFc
+	1JgHIvDg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6Rfc-000ire-19;
-	Tue, 06 Jun 2023 08:04:00 +0000
+	id 1q6Rhu-000jJl-13;
+	Tue, 06 Jun 2023 08:06:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6RfY-000ir9-2H
+	id 1q6Rhq-000jIS-2g
 	for barebox@lists.infradead.org;
-	Tue, 06 Jun 2023 08:03:58 +0000
+	Tue, 06 Jun 2023 08:06:21 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q6RfX-0000Fb-2l; Tue, 06 Jun 2023 10:03:55 +0200
-Message-ID: <5d5c5f27-6c1c-8808-4db6-b7e10de500dc@pengutronix.de>
-Date: Tue, 6 Jun 2023 10:03:52 +0200
+	id 1q6Rhp-0000v8-E7; Tue, 06 Jun 2023 10:06:17 +0200
+Message-ID: <92765423-cd04-6074-1103-76cabec0ec69@pengutronix.de>
+Date: Tue, 6 Jun 2023 10:06:15 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.10.1
 Content-Language: en-US
 To: Denis Orlov <denorl2009@gmail.com>, barebox@lists.infradead.org
 References: <20230605202634.42175-1-denorl2009@gmail.com>
- <20230605202634.42175-3-denorl2009@gmail.com>
+ <20230605202634.42175-2-denorl2009@gmail.com>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230605202634.42175-3-denorl2009@gmail.com>
+In-Reply-To: <20230605202634.42175-2-denorl2009@gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230606_010356_741205_CC7E9218 
-X-CRM114-Status: GOOD (  19.55  )
+X-CRM114-CacheID: sfid-20230606_010618_866043_FDA60F54 
+X-CRM114-Status: GOOD (  15.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,57 +74,40 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 02/17] MIPS: malta: use CKSEG instead of KSEG macros
+Subject: Re: [PATCH 01/17] MIPS: malta: allow to choose MIPS64 target CPU in
+ config
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 On 05.06.23 22:10, Denis Orlov wrote:
-> KSEG macro is not available when compiling with CONFIG_64BIT enabled, so
-> use CKSEG instead.
-
-If they're interchangeable, why do we need KSEG?
-
+> QEMU is able to emulate malta machine with a variety of MIPS CPUs,
+> including MIPS64 ones, so allow to compile barebox for such
+> configurations.
 > 
 > Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
 > ---
->  arch/mips/boards/qemu-malta/lowlevel.S | 4 ++--
->  arch/mips/mach-malta/pci.c             | 2 +-
->  2 files changed, 3 insertions(+), 3 deletions(-)
+>  arch/mips/Kconfig | 3 +++
+>  1 file changed, 3 insertions(+)
 > 
-> diff --git a/arch/mips/boards/qemu-malta/lowlevel.S b/arch/mips/boards/qemu-malta/lowlevel.S
-> index 98821e0426..541d62fc2a 100644
-> --- a/arch/mips/boards/qemu-malta/lowlevel.S
-> +++ b/arch/mips/boards/qemu-malta/lowlevel.S
-> @@ -56,14 +56,14 @@ __start:
->  	 */
->  
->  	/* move GT64120 registers to 0x1be00000 */
-> -	li	t1, KSEG1ADDR(GT_DEF_BASE)
-> +	li	t1, CKSEG1ADDR(GT_DEF_BASE)
->  	li	t0, GT_LD(MIPS_GT_BASE)
->  	sw	t0, GT_ISD_OFS(t1)
->  
->  	/*
->  	 * setup MEM-to-PCI0 mapping
->  	 */
-> -	li	t1, KSEG1ADDR(MIPS_GT_BASE)
-> +	li	t1, CKSEG1ADDR(MIPS_GT_BASE)
->  
->  	/* setup PCI0 io window */
->  	li	t0, GT_LD(0x18000000)
-> diff --git a/arch/mips/mach-malta/pci.c b/arch/mips/mach-malta/pci.c
-> index 113b94fe23..0ab239f509 100644
-> --- a/arch/mips/mach-malta/pci.c
-> +++ b/arch/mips/mach-malta/pci.c
-> @@ -136,7 +136,7 @@ static int gt64xxx_pci0_pcibios_write(struct pci_bus *bus, unsigned int devfn,
->  static resource_size_t gt64xxx_res_start(struct pci_bus *bus,
->  					 resource_size_t res_addr)
->  {
-> -	return KSEG0ADDR(res_addr);
-> +	return CKSEG0ADDR(res_addr);
->  }
->  
->  struct pci_ops gt64xxx_pci0_ops = {
+> diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
+> index 70d85690da..ab8c8cf176 100644
+> --- a/arch/mips/Kconfig
+> +++ b/arch/mips/Kconfig
+> @@ -70,8 +70,11 @@ config MACH_MIPS_MALTA
+>  	select CSRC_R4K_LIB
+>  	select DRIVER_SERIAL_NS16550
+>  	select SYS_HAS_CPU_MIPS32_R1
+> +	select SYS_HAS_CPU_MIPS64_R1
+>  	select SYS_HAS_CPU_MIPS32_R2
+> +	select SYS_HAS_CPU_MIPS64_R2
+>  	select SYS_SUPPORTS_32BIT_KERNEL
+> +	select SYS_SUPPORTS_64BIT_KERNEL
+>  	select SYS_SUPPORTS_BIG_ENDIAN
+>  	select SYS_SUPPORTS_LITTLE_ENDIAN
+>  	select HAS_DEBUG_LL
 
 -- 
 Pengutronix e.K.                           |                             |
