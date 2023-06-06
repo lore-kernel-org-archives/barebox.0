@@ -1,65 +1,70 @@
-Delivery-date: Tue, 06 Jun 2023 16:34:38 +0200
+Delivery-date: Tue, 06 Jun 2023 16:36:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6Xlf-00D9BJ-IZ
-	for lore@lore.pengutronix.de; Tue, 06 Jun 2023 16:34:38 +0200
+	id 1q6XnN-00D9Hd-2R
+	for lore@lore.pengutronix.de; Tue, 06 Jun 2023 16:36:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6Xlc-00045O-6y
-	for lore@pengutronix.de; Tue, 06 Jun 2023 16:34:37 +0200
+	id 1q6XnH-0004Yi-U3
+	for lore@pengutronix.de; Tue, 06 Jun 2023 16:36:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+bBYA9pWT1X3cejsUq3Tcx1NezrPG02CymioiPRBbWM=; b=Wb511yMgTRBRF68y+yZMJV+EO5
-	VwliD+CJ2cAbDwwQmCuLzp24v+GeYOCnVAhNGvS26J4qHPOw/SAf+y0Abk0Y0run8DEjzAk7pQTUx
-	pcWtUqiGN0mYMp7hEOTODV+frI4bD5DDc3Y1Hy7E5NEwQY/5JdfhE+xXYt7MBJs3IPrySvPTBMIRR
-	5fzECivuW0bS+yhOtxL309VE3Ez2Dhny7yXQLMxZZfPqMisf21xAS72hVpo0LCedqQf3HjS+30Vue
-	Z1ODValGYMqkLtrBNFtnmsU7djdj2UeyRRnB2yL5erSOx3A+eHjnmE/O7un8AlYkWBbA8rbIYdnfx
-	UlI5Aysw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=wjWgLg/9hquh9TfhlgX+M58ZDcp71wP96qJXpzJGNoY=; b=fIDJeD9piEY2Ij1txWJkHPKy7B
+	zASqJyEsyfZkT6IlqoI4A//KAqITtHpI1CaWzqnmbt6x00SVSAvNHd/Zy8Yam29Pm64AX1UJOIZL7
+	YhHHXbNZTfw7PN9dXC7duVHNXPxiyc8TMMh4uL8pp/Ojyc51z1F63UkhHEwyyY0b/Iaxc8q6CcliL
+	5209eYHM8VAz2Y1qnCdxu3mTJ0IuJqkcA8lAfnE2Sfq+9BxPy70M0w9KFpJxzBbyVdsOaYOLq9OMj
+	yg21mC2+LTWpm0kvLejHWweUgPreYBdSTVaifwNDoirMP4c9IxiW7uIus3asPiuMBAbC2GBw9HQ1L
+	8MLwU2JA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6Xk9-002241-2M;
-	Tue, 06 Jun 2023 14:33:05 +0000
+	id 1q6Xlt-0022YT-1h;
+	Tue, 06 Jun 2023 14:34:53 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6Xk4-002228-1M
+	id 1q6Xlm-0022X3-33
 	for barebox@lists.infradead.org;
-	Tue, 06 Jun 2023 14:33:03 +0000
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1q6Xjy-0003r4-Mt; Tue, 06 Jun 2023 16:32:54 +0200
-Received: from pengutronix.de (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 18ABC1D3517;
-	Tue,  6 Jun 2023 14:32:54 +0000 (UTC)
-Date: Tue, 6 Jun 2023 16:32:53 +0200
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230606-gratitude-chemist-598b553aab88-mkl@pengutronix.de>
-References: <20230606-phytec-som-imx8mm-v1-0-b9c2bf70b766@pengutronix.de>
- <20230606-phytec-som-imx8mm-v1-2-b9c2bf70b766@pengutronix.de>
- <4430e8b6-3044-f7e0-0cee-a71fdf03838f@pengutronix.de>
+	Tue, 06 Jun 2023 14:34:52 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1q6Xll-000462-8W; Tue, 06 Jun 2023 16:34:45 +0200
+Message-ID: <381bd0cc-26b3-ad2e-1857-436932549934@pengutronix.de>
+Date: Tue, 6 Jun 2023 16:34:43 +0200
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="k2eu2eo22p2qlkzz"
-Content-Disposition: inline
-In-Reply-To: <4430e8b6-3044-f7e0-0cee-a71fdf03838f@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Content-Language: en-US
+To: Lior Weintraub <liorw@pliops.com>, Ahmad Fatoum <ahmad@a3f.at>,
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+References: <f4aae166-1cc4-6255-1fde-7a52c7872bd8@pengutronix.de>
+ <PR3P195MB05555743B13DDCB43CEBA309C34A9@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <49afe89e-6e87-d003-119a-223344b6c4c9@pengutronix.de>
+ <PR3P195MB055543898F124A46C209C170C34B9@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <23017859-57ee-8df3-cd8d-c7e4f2094cfe@pengutronix.de>
+ <AM0P195MB0548E634FB807F1501D1D716C3489@AM0P195MB0548.EURP195.PROD.OUTLOOK.COM>
+ <3448bd9c-06e3-89a9-e8de-c284d0268ca9@pengutronix.de>
+ <AM0P195MB0548337CA7A533D0456BB14CC3489@AM0P195MB0548.EURP195.PROD.OUTLOOK.COM>
+ <3340583d-12cd-1a52-4c9c-d237c58bfca7@pengutronix.de>
+ <PR3P195MB0555265E59E77AB3ABE53D03C3499@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <ffde7964-42a4-c762-d46d-93cd9d923646@pengutronix.de>
+ <PR3P195MB0555940C37560E6D01731A1BC3499@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <98480243-c1b7-a2bb-9267-2126797f52bd@pengutronix.de>
+ <PR3P195MB05554662E272B9E1A8E5655AC352A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <PR3P195MB05554662E272B9E1A8E5655AC352A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230606_073300_784406_2B9FB86E 
-X-CRM114-Status: GOOD (  42.83  )
+X-CRM114-CacheID: sfid-20230606_073447_474210_B7A0794B 
+X-CRM114-Status: GOOD (  52.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,643 +82,1800 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 2/3] common: board: phytec: import SoM detection for
- imx8m based SoM from u-boot
+Subject: Re: [PATCH v2] Porting barebox to a new SoC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+Hello Lior,
 
---k2eu2eo22p2qlkzz
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+On 06.06.23 14:54, Lior Weintraub wrote:
+> Hello Ahmad,
+> 
+> I managed to build a bl31.bin file from TF-A.
+> This is just a preliminary implementation (basically all functions I had to implement are empty) so I'm hoping it will allow running a bare minimum initial Linux kernel.
 
-On 06.06.2023 14:51:05, Ahmad Fatoum wrote:
-> On 06.06.23 12:50, Marc Kleine-Budde wrote:
-> > This patch imports and cleans up the SoM detection for imx8n based SoM
-> > from u-boot.
-> >=20
-> > Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> > ---
-> >  common/boards/Kconfig                             |   7 +
-> >  common/boards/Makefile                            |   1 +
-> >  common/boards/phytec/Makefile                     |   4 +
-> >  common/boards/phytec/phytec-som-detection.c       | 209 ++++++++++++++=
-++++++++
-> >  common/boards/phytec/phytec-som-imx8m-detection.c | 151 ++++++++++++++=
-++
-> >  include/phytec-som-detection.h                    |  69 +++++++
-> >  include/phytec-som-imx8m-detection.h              |  19 ++
-> >  7 files changed, 460 insertions(+)
-> >=20
-> > diff --git a/common/boards/Kconfig b/common/boards/Kconfig
-> > index e27273b7671d..b240548b484d 100644
-> > --- a/common/boards/Kconfig
-> > +++ b/common/boards/Kconfig
-> > @@ -2,3 +2,10 @@
-> > =20
-> >  config BOARD_QEMU_VIRT
-> >  	bool
-> > +
-> > +config BOARD_PHYTEC_SOM_DETECTION
-> > +	bool
-> > +
-> > +config BOARD_PHYTEC_SOM_IMX8M_DETECTION
-> > +	bool
-> > +	select BOARD_PHYTEC_SOM_DETECTION
-> > diff --git a/common/boards/Makefile b/common/boards/Makefile
-> > index 5b4e429c13e9..2a96ce6aec5c 100644
-> > --- a/common/boards/Makefile
-> > +++ b/common/boards/Makefile
-> > @@ -1,3 +1,4 @@
-> >  # SPDX-License-Identifier: GPL-2.0-only
-> > =20
-> >  obj-$(CONFIG_BOARD_QEMU_VIRT)	+=3D qemu-virt/
-> > +obj-y +=3D phytec/
-> > diff --git a/common/boards/phytec/Makefile b/common/boards/phytec/Makef=
-ile
-> > new file mode 100644
-> > index 000000000000..741a0e2eb704
-> > --- /dev/null
-> > +++ b/common/boards/phytec/Makefile
-> > @@ -0,0 +1,4 @@
-> > +# SPDX-License-Identifier: GPL-2.0-only
-> > +
-> > +lwl-$(CONFIG_BOARD_PHYTEC_SOM_DETECTION) +=3D phytec-som-detection.o
-> > +lwl-$(CONFIG_BOARD_PHYTEC_SOM_IMX8M_DETECTION) +=3D phytec-som-imx8m-d=
-etection.o
-> > diff --git a/common/boards/phytec/phytec-som-detection.c b/common/board=
-s/phytec/phytec-som-detection.c
-> > new file mode 100644
-> > index 000000000000..d9479f8ced69
-> > --- /dev/null
-> > +++ b/common/boards/phytec/phytec-som-detection.c
-> > @@ -0,0 +1,209 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +/*
-> > + * Copyright (C) 2020 PHYTEC Messtechnik GmbH
-> > + * Author: Teresa Remmet <t.remmet@phytec.de>
-> > + */
-> > +
-> > +#include <common.h>
-> > +#include <pbl/eeprom.h>
-> > +#include <phytec-som-imx8m-detection.h>
-> > +
-> > +struct phytec_eeprom_data eeprom_data;
-> > +
-> > +#define POLY (0x1070U << 3)
-> > +
-> > +static u8 _crc8(u16 data)
-> > +{
-> > +	int i;
-> > +
-> > +	for (i =3D 0; i < 8; i++) {
-> > +		if (data & 0x8000)
-> > +			data =3D data ^ POLY;
-> > +		data =3D data << 1;
-> > +	}
-> > +
-> > +	return data >> 8;
-> > +}
-> > +
-> > +static unsigned int crc8(unsigned int crc, const u8 *vptr, int len)
-> > +{
-> > +	int i;
-> > +
-> > +	for (i =3D 0; i < len; i++)
-> > +		crc =3D _crc8((crc ^ vptr[i]) << 8);
-> > +
-> > +	return crc;
-> > +}
->=20
-> There's already a crc8 implementation. Why can't you reuse it?
+As long as the TF-A implements the informational parts (e.g. PSCI_VERSION),
+I think that should be ok.
 
-It's a lookup table based approach and not pbl ready.
+> I tried to follow how imx8mq-bl31.bin was added into barebox and I think I got it right.
+> I have several indications that the BL31 is behaving as expected.
 
-> > +
-> > +char *phytec_get_opt(struct phytec_eeprom_data *data)
->=20
-> const return and const argument?
+Nice. A simple sanity check would be to implement SYSTEM_RESET and call it from
+barebox using the PSCI client reset driver.
 
-fixed
+> The initial implementation (without BL31) was running PBL from SRAM (address 0xC0_0000_0000), 
+> decompressed barebox into DRAM (@ 0x07E0_0000) and jumped to barebox.
+> From ARM registers inspection we can see that we are @ EL3
+> 
+> Now with the inclusion of BL31, it starts @ SRAM (as before) but then test that we are in EL3 and if so, 
+> copy full image (PBL+Barebox) into DRAM address 0x0800_0000,
 
-> > +{
-> > +	char *opt;
-> > +
-> > +	if (!data)
-> > +		data =3D &eeprom_data;
-> > +
-> > +	switch (data->api_rev) {
-> > +	case PHYTEC_API_REV0:
-> > +	case PHYTEC_API_REV1:
-> > +		opt =3D data->data.data_api0.opt;
-> > +		break;
-> > +	case PHYTEC_API_REV2:
-> > +		opt =3D data->data.data_api2.opt;
-> > +		break;
-> > +	default:
-> > +		opt =3D NULL;
-> > +		break;
-> > +	};
-> > +
-> > +	return opt;
-> > +}
-> > +
-> > +static int phytec_eeprom_data_init(struct pbl_i2c *i2c,
-> > +				   struct phytec_eeprom_data *data,
-> > +				   int addr, u8 phytec_som_type)
-> > +{
-> > +	unsigned int crc;
-> > +	char *opt;
-> > +	int *ptr;
-> > +	int ret =3D -1, i;
-> > +	u8 som;
-> > +
-> > +	if (!data)
-> > +		data =3D &eeprom_data;
-> > +
-> > +	eeprom_read(i2c, addr, I2C_ADDR_16_BIT, data, sizeof(struct phytec_ee=
-prom_data));
-> > +
-> > +	if (data->api_rev =3D=3D 0xff) {
-> > +		pr_err("%s: EEPROM is not flashed. Prototype?\n", __func__);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	for (i =3D 0, ptr =3D (int *)data;
-> > +	     i < sizeof(struct phytec_eeprom_data);
-> > +	     i +=3D sizeof(ptr), ptr++)
-> > +		if (*ptr !=3D 0x0)
-> > +			break;
-> > +
-> > +	if (i =3D=3D sizeof(struct phytec_eeprom_data)) {
-> > +		pr_err("%s: EEPROM data is all zero. Erased?\n", __func__);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	if (data->api_rev > PHYTEC_API_REV2) {
-> > +		pr_err("%s: EEPROM API revision %u not supported\n",
-> > +		       __func__, data->api_rev);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	/* We are done here for early revisions */
-> > +	if (data->api_rev <=3D PHYTEC_API_REV1)
-> > +		return 0;
-> > +
-> > +	crc =3D crc8(0, (const unsigned char *)data,
-> > +		   sizeof(struct phytec_eeprom_data));
-> > +	pr_debug("%s: crc: %x\n", __func__, crc);
-> > +
-> > +	if (crc) {
-> > +		pr_err("%s: CRC mismatch. EEPROM data is not usable\n", __func__);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	som =3D data->data.data_api2.som_no;
-> > +	pr_debug("%s: som id: %u\n", __func__, som);
-> > +	opt =3D phytec_get_opt(data);
-> > +	if (!opt)
-> > +		return -EINVAL;
-> > +
-> > +	if (IS_ENABLED(CONFIG_BOARD_PHYTEC_SOM_IMX8M_DETECTION))
->=20
-> Why is this behind CONFIG_ symbol?
+Sounds good.
 
-The original u-boot code offers the possibility to switch it off, too.
+> copy BL31.bin into DRAM address 0x1000_0000 and jumps there.
 
-> > +		ret =3D phytec_imx8m_detect(som, opt, phytec_som_type);
-> > +
-> > +	if (ret) {
-> > +		pr_err("%s: SoM ID does not match. Wrong EEPROM data?\n", __func__);
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	return 0;
-> > +}
-> > +
-> > +void phytec_print_som_info(struct phytec_eeprom_data *data)
->=20
-> const?
+You can do that, but keep in mind that BL31 will always be invoked at EL3,
+so you'll want to use hardware mechanisms to ensure that you can't
+just overwrite it from lower exception levels.
 
-fixed
+If you have a DDR firewall, you could place it into DDR, but I'd suggest
+just keeping it in SRAM. That way you only need to configure your address
+space controller so SRAM is secure-world only. This also simplifies later
+logic, because you no longer need to mark the DDR region where TF-A is as
+reserved. (If you don't do that, you risk Linux accessing it, which can lead
+to crashes).
 
->=20
-> > +{
-> > +	struct phytec_api2_data *api2;
-> > +	char pcb_sub_rev;
-> > +	unsigned int ksp_no, sub_som_type1 =3D -1, sub_som_type2 =3D -1;
-> > +
-> > +	if (!data)
-> > +		data =3D &eeprom_data;
-> > +
-> > +	if (data->api_rev < PHYTEC_API_REV2)
-> > +		return;
-> > +
-> > +	api2 =3D &data->data.data_api2;
-> > +
-> > +	/* Calculate PCB subrevision */
-> > +	pcb_sub_rev =3D api2->pcb_sub_opt_rev & 0x0f;
-> > +	pcb_sub_rev =3D pcb_sub_rev ? ((pcb_sub_rev - 1) + 'a') : ' ';
-> > +
-> > +	/* print standard product string */
-> > +	if (api2->som_type <=3D 1) {
-> > +		pr_info("SoM: %s-%03u-%s.%s PCB rev: %u%c\n",
-> > +			phytec_som_type_str[api2->som_type], api2->som_no,
-> > +			api2->opt, api2->bom_rev, api2->pcb_rev, pcb_sub_rev);
-> > +		return;
-> > +	}
-> > +	/* print KSP/KSM string */
-> > +	if (api2->som_type <=3D 3) {
-> > +		ksp_no =3D (api2->ksp_no << 8) | api2->som_no;
-> > +		pr_info("SoM: %s-%u ",
-> > +			phytec_som_type_str[api2->som_type], ksp_no);
-> > +		/* print standard product based KSP/KSM strings */
-> > +	} else {
-> > +		switch (api2->som_type) {
-> > +		case 4:
-> > +			sub_som_type1 =3D 0;
-> > +			sub_som_type2 =3D 3;
-> > +			break;
-> > +		case 5:
-> > +			sub_som_type1 =3D 0;
-> > +			sub_som_type2 =3D 2;
-> > +			break;
-> > +		case 6:
-> > +			sub_som_type1 =3D 1;
-> > +			sub_som_type2 =3D 3;
-> > +			break;
-> > +		case 7:
-> > +			sub_som_type1 =3D 1;
-> > +			sub_som_type2 =3D 2;
-> > +			break;
-> > +		default:
-> > +			break;
-> > +		};
-> > +
-> > +		pr_info("SoM: %s-%03u-%s-%03u ",
-> > +			phytec_som_type_str[sub_som_type1],
-> > +			api2->som_no, phytec_som_type_str[sub_som_type2],
-> > +			api2->ksp_no);
-> > +	}
-> > +
-> > +	pr_cont("Option: %s BOM rev: %s PCB rev: %u%c\n", api2->opt,
-> > +		api2->bom_rev, api2->pcb_rev, pcb_sub_rev);
->=20
-> pr_cont doesn't work as you'd expect in barebox if you output to log.
-> Just do a separate print.
+> The execution of BL31 does its thing and then sets execution level to EL2 and jumps to DRAM address 0x0800_0000 (hard coded address we used on BL31 TF-A compilation).
 
-fixed
+That's fine. I'd just jump to address 0 though if that's the start of your DRAM.
 
->=20
-> > +}
-> > +
-> > +int phytec_eeprom_data_setup(struct pbl_i2c *i2c, struct phytec_eeprom=
-_data *data,
-> > +			     int addr, int addr_fallback, u8 cpu_type)
-> > +{
-> > +	int ret;
-> > +
-> > +	ret =3D phytec_eeprom_data_init(i2c, data, addr, cpu_type);
-> > +	if (ret) {
-> > +		pr_err("%s: init failed. Trying fall back address 0x%x\n",
-> > +		       __func__, addr_fallback);
-> > +		ret =3D phytec_eeprom_data_init(i2c, data, addr_fallback, cpu_type);
-> > +	}
-> > +
-> > +	if (ret)
-> > +		pr_err("%s: EEPROM data init failed\n", __func__);
-> > +	else
-> > +		pr_debug("%s: init successful\n", __func__);
-> > +
-> > +	return ret;
-> > +}
-> > diff --git a/common/boards/phytec/phytec-som-imx8m-detection.c b/common=
-/boards/phytec/phytec-som-imx8m-detection.c
-> > new file mode 100644
-> > index 000000000000..cc7fb6971548
-> > --- /dev/null
-> > +++ b/common/boards/phytec/phytec-som-imx8m-detection.c
-> > @@ -0,0 +1,151 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +/*
-> > + * Copyright (C) 2020 PHYTEC Messtechnik GmbH
-> > + * Author: Teresa Remmet <t.remmet@phytec.de>
-> > + */
-> > +
-> > +#include <common.h>
-> > +#include <mach/imx/generic.h>
-> > +#include <phytec-som-imx8m-detection.h>
-> > +
-> > +extern struct phytec_eeprom_data eeprom_data;
-> > +
-> > +/* Check if the SoM is actually one of the following products:
-> > + * - i.MX8MM
-> > + * - i.MX8MN
-> > + * - i.MX8MP
-> > + * - i.MX8MQ
-> > + *
-> > + * Returns 0 in case it's a known SoM. Otherwise, returns -errno.
-> > + */
-> > +u8 phytec_imx8m_detect(u8 som, char *opt, u8 cpu_type)
->=20
-> int. Even moreso as you're returning -EINVAL in the error case.
+> We now see the PBL starts running again (now from DRAM), skips the BL31 loading (because it sees that we are not in EL3) and continue as before.
 
-fixed
+Sounds good.
 
->=20
-> > +{
-> > +	if (som =3D=3D PHYTEC_IMX8MP_SOM && cpu_type =3D=3D IMX_CPU_IMX8MP)
-> > +		return 0;
-> > +
-> > +	if (som =3D=3D PHYTEC_IMX8MM_SOM) {
-> > +		if (((opt[0] - '0') !=3D 0) &&
-> > +		    ((opt[1] - '0') =3D=3D 0) && cpu_type =3D=3D IMX_CPU_IMX8MM)
-> > +			return 0;
-> > +		else if (((opt[0] - '0') =3D=3D 0) &&
-> > +			 ((opt[1] - '0') !=3D 0) && cpu_type =3D=3D IMX_CPU_IMX8MN)
-> > +			return 0;
-> > +		return -EINVAL;
-> > +	}
-> > +
-> > +	if (som =3D=3D PHYTEC_IMX8MQ_SOM && cpu_type =3D=3D IMX_CPU_IMX8MQ)
-> > +		return 0;
-> > +
-> > +	return -EINVAL;
-> > +}
-> > +
-> > +/*
-> > + * So far all PHYTEC i.MX8M boards have RAM size definition at the
-> > + * same location.
-> > + */
-> > +u8 phytec_get_imx8m_ddr_size(struct phytec_eeprom_data *data)
-> > +{
-> > +	char *opt;
-> > +	u8 ddr_id;
-> > +
-> > +	if (!data)
-> > +		data =3D &eeprom_data;
-> > +
-> > +	opt =3D phytec_get_opt(data);
-> > +	if (opt)
-> > +		ddr_id =3D opt[2] - '0';
-> > +	else
-> > +		ddr_id =3D PHYTEC_EEPROM_INVAL;
-> > +
-> > +	pr_debug("%s: ddr id: %u\n", __func__, ddr_id);
-> > +
-> > +	return ddr_id;
-> > +}
-> > +
-> > +/*
-> > + * Filter SPI-NOR flash information. All i.MX8M boards have this at
-> > + * the same location.
-> > + * returns: 0x0 if no SPI is poulated. Otherwise a board depended
->=20
-> populated.
+> PBL decompressed barebox into DRAM address 0x07E0_0000 and jump to barebox.
 
-fixed
+Sounds even better.
 
->=20
-> > + * code for the size. PHYTEC_EEPROM_INVAL when the data is invalid.
-> > + */
-> > +u8 phytec_get_imx8m_spi(struct phytec_eeprom_data *data)
-> > +{
-> > +	char *opt;
-> > +	u8 spi;
-> > +
-> > +	if (!data)
-> > +		data =3D &eeprom_data;
-> > +
-> > +	if (data->api_rev < PHYTEC_API_REV2)
-> > +		return PHYTEC_EEPROM_INVAL;
-> > +
-> > +	opt =3D phytec_get_opt(data);
-> > +	if (opt)
-> > +		spi =3D opt[4] - '0';
-> > +	else
-> > +		spi =3D PHYTEC_EEPROM_INVAL;
->=20
-> Why not return -EINVAL? If you want to handle 0xff
-> specially, just check for it and return -EINVAL.
->=20
-> > +
-> > +	pr_debug("%s: spi: %u\n", __func__, spi);
->=20
-> Do we really need this debug print? I think the debug print should rather
-> go into the future caller.
+> From ARM registers inspection we can see that we are @ EL2
 
-This comes from the original u-boot code and it's not used here. Should
-I remove it completely?
+Nice. :-)
 
->=20
-> > +
-> > +	return spi;
-> > +}
-> > +
-> > +/*
-> > + * Filter ethernet phy information. All i.MX8M boards have this at
-> > + * the same location.
-> > + * returns: 0x0 if no ethernet phy is poulated. 0x1 if it is populated.
-> > + * PHYTEC_EEPROM_INVAL when the data is invalid.
-> > + */
-> > +u8 phytec_get_imx8m_eth(struct phytec_eeprom_data *data)
-> > +{
-> > +	char *opt;
-> > +	u8 eth;
-> > +
-> > +	if (!data)
-> > +		data =3D &eeprom_data;
-> > +
-> > +	if (data->api_rev < PHYTEC_API_REV2)
-> > +		return PHYTEC_EEPROM_INVAL;
-> > +
-> > +	opt =3D phytec_get_opt(data);
-> > +	if (opt) {
-> > +		eth =3D opt[5] - '0';
-> > +		eth &=3D 0x1;
-> > +	} else {
-> > +		eth =3D PHYTEC_EEPROM_INVAL;
-> > +	}
-> > +
-> > +	pr_debug("%s: eth: %u\n", __func__, eth);
-> > +
-> > +	return eth;
-> > +}
-> > +
-> > +/*
-> > + * Filter RTC information.
-> > + * returns: 0 if no RTC is poulated. 1 if it is populated.
-> > + * PHYTEC_EEPROM_INVAL when the data is invalid.
-> > + */
-> > +u8 phytec_get_imx8mp_rtc(struct phytec_eeprom_data *data)
-> > +{
-> > +	char *opt;
-> > +	u8 rtc;
-> > +
-> > +	if (!data)
-> > +		data =3D &eeprom_data;
-> > +
-> > +	if (data->api_rev < PHYTEC_API_REV2)
-> > +		return PHYTEC_EEPROM_INVAL;
-> > +
-> > +	opt =3D phytec_get_opt(data);
-> > +	if (opt) {
-> > +		rtc =3D opt[5] - '0';
-> > +		rtc &=3D 0x4;
-> > +		rtc =3D !(rtc >> 2);
-> > +	} else {
-> > +		rtc =3D PHYTEC_EEPROM_INVAL;
-> > +	}
-> > +
-> > +	pr_debug("%s: rtc: %u\n", __func__, rtc);
-> > +
-> > +	return rtc;
-> > +}
-> > diff --git a/include/phytec-som-detection.h b/include/phytec-som-detect=
-ion.h
-> > new file mode 100644
-> > index 000000000000..65c7cb561e1d
-> > --- /dev/null
-> > +++ b/include/phytec-som-detection.h
-> > @@ -0,0 +1,69 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> > +/*
-> > + * Copyright (C) 2020 PHYTEC Messtechnik GmbH
-> > + * Author: Teresa Remmet <t.remmet@phytec.de>
-> > + */
-> > +
-> > +#ifndef _PHYTEC_SOM_DETECTION_H
-> > +#define _PHYTEC_SOM_DETECTION_H
-> > +
-> > +#include <common.h>
-> > +#include <pbl/i2c.h>
-> > +
-> > +#define PHYTEC_MAX_OPTIONS	17
-> > +#define PHYTEC_IMX8MQ_SOM	66
-> > +#define PHYTEC_IMX8MM_SOM	69
-> > +#define PHYTEC_IMX8MP_SOM	70
-> > +
-> > +#define PHYTEC_EEPROM_INVAL	0xff
-> > +
-> > +enum {
-> > +	PHYTEC_API_REV0 =3D 0,
-> > +	PHYTEC_API_REV1,
-> > +	PHYTEC_API_REV2,
-> > +};
-> > +
-> > +static const char * const phytec_som_type_str[] =3D {
-> > +	"PCM",
-> > +	"PCL",
-> > +	"KSM",
-> > +	"KSP",
-> > +};
-> > +
-> > +struct phytec_api0_data {
-> > +	u8 pcb_rev;		/* PCB revision of SoM */
-> > +	u8 som_type;		/* SoM type */
-> > +	u8 ksp_no;		/* KSP no */
-> > +	char opt[16];		/* SoM options */
-> > +	u8 mac[6];		/* MAC address (optional) */
-> > +	u8 pad[5];		/* padding */
->=20
-> __pad
+> Few questions:
+> 1. Any comments or thoughts about the above flow?
 
-fixed
+See above, but sounds good overall.
 
-> > +	u8 cksum;		/* checksum */
-> > +} __attribute__ ((__packed__));
-> > +
-> > +struct phytec_api2_data {
-> > +	u8 pcb_rev;		/* PCB revision of SoM */
-> > +	u8 pcb_sub_opt_rev;	/* PCB subrevision and opt revision */
-> > +	u8 som_type;		/* SoM type */
-> > +	u8 som_no;		/* SoM number */
-> > +	u8 ksp_no;		/* KSP information */
-> > +	char opt[PHYTEC_MAX_OPTIONS]; /* SoM options */
-> > +	char bom_rev[2];	/* BOM revision */
-> > +	u8 mac[6];		/* MAC address (optional) */
-> > +	u8 crc8;		/* checksum */
-> > +} __attribute__ ((__packed__));
-> > +
-> > +struct phytec_eeprom_data {
-> > +	u8 api_rev;
-> > +	union {
-> > +		struct phytec_api0_data data_api0;
-> > +		struct phytec_api2_data data_api2;
-> > +	} data;
-> > +} __attribute__ ((__packed__));
-> > +
-> > +char *phytec_get_opt(struct phytec_eeprom_data *data);
-> > +int phytec_eeprom_data_setup(struct pbl_i2c *i2c, struct phytec_eeprom=
-_data *data,
-> > +			     int addr, int addr_fallback, u8 cpu_type);
-> > +
-> > +void phytec_print_som_info(struct phytec_eeprom_data *data);
-> > +
-> > +#endif /* _PHYTEC_SOM_DETECTION_H */
-> > diff --git a/include/phytec-som-imx8m-detection.h b/include/phytec-som-=
-imx8m-detection.h
-> > new file mode 100644
-> > index 000000000000..108d40bb4030
-> > --- /dev/null
-> > +++ b/include/phytec-som-imx8m-detection.h
->=20
-> include/boards/phytec/som-imx8m-detection.h or similar.
+> 2. Are we ready now to try loading kernel and rootfs? If so how?
 
-good idea!
+Did you already flesh out your DT? It needs to contain GIC, timer
+and arm,psci-1.0 at the very least. Then you need a boot medium.
 
->=20
-> > @@ -0,0 +1,19 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> > +/*
-> > + * Copyright (C) 2020 PHYTEC Messtechnik GmbH
-> > + * Author: Teresa Remmet <t.remmet@phytec.de>
-> > + */
-> > +
-> > +#ifndef _PHYTEC_SOM_IMX8M_DETECTION_H
-> > +#define _PHYTEC_SOM_IMX8M_DETECTION_H
-> > +
-> > +#include <common.h>
-> > +#include <phytec-som-detection.h>
-> > +
-> > +u8 phytec_imx8m_detect(u8 som, char *opt, u8 cpu_type);
-> > +u8 phytec_get_imx8m_ddr_size(struct phytec_eeprom_data *data);
-> > +u8 phytec_get_imx8mp_rtc(struct phytec_eeprom_data *data);
-> > +u8 phytec_get_imx8m_spi(struct phytec_eeprom_data *data);
-> > +u8 phytec_get_imx8m_eth(struct phytec_eeprom_data *data);
-> > +
-> > +#endif /* _PHYTEC_SOM_IMX8M_DETECTION_H */
-> >=20
+If it's something like eMMC, you can configure QEMU to provide
+a memory-mapped SD/MMC controller and enable the driver for that
+in barebox. If it's something more esoteric, you can just use
+virtio block or cfi-flash, both of which are supported in barebox
+and QEMU and are in used with the default QEMU virt machine.
 
-Marc
+Assuming you have a file system in a virtio block device and you
+have enabled it on QEMU side with virtio-mmio transport and
+barebox has the relevant virtio-mmio node in its device tree,
+you can then boot with:
 
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+   global.linux.bootargs.earlycon=earlycon
+   bootm -o /mnt/virtioblk0.0/boot/mydevicetree.dtb \
+         -r /mnt/virtioblk0.0/boot/myinitrd.img
+            /mnt/virtioblk0.0/boot/mykernel.gz
 
---k2eu2eo22p2qlkzz
-Content-Type: application/pgp-signature; name="signature.asc"
+(Don't forget to add stdout-path = &uart to your DT, so kernel can
+ find the console to use with earlycon)
 
------BEGIN PGP SIGNATURE-----
+If you aren't familiar with virtioblk or cfi-flash try building barebox
+for multi_v8_defconfig and then start it in QEMU to play around with it:
 
-iQEzBAABCgAdFiEEDs2BvajyNKlf9TJQvlAcSiqKBOgFAmR/Q5MACgkQvlAcSiqK
-BOhqBQf/fCNdHLiBtO5mIo664H/8N4kTkrU8VxBRvuIwwho+W+yFbqaGGUkB2Z4f
-OPF1X0M9GhOwWaVnLRrszVxo8ZT1OxpbgYsgDQEpcKYUE8Z2u/ZgJHBXNB4QXCTh
-DRZdf7lxOOjos560rAmy50kvx/T4Pn3ENB7S6oK/pYB+fcTWFozKRRaDZwGKeusQ
-wzvLVjkPe2N+NUM3C2GWd5sH2WwbYOk/9f9UVArB3Q4v54XHjtc128VjfVh6ZGQv
-XRgbUxEyGgc2VIExFYBrbse1wYPQcsTt22CseFwAakbDUNJoY9DHz0f2+j1c2mAI
-+GjRujQwjzUmGkfP8xdNDfw1z5gdAg==
-=zv+h
------END PGP SIGNATURE-----
+  qemu-system-aarch64 -M virt,highmem=off -cpu cortex-a57 -m 1024M -kernel build/images/barebox-dt-2nd.img \
+     -serial mon:stdio -trace file=/dev/null -nographic
 
---k2eu2eo22p2qlkzz--
+> 3. Is it OK (or even recommended) to change BL31 so that it will enter EL1 instead of EL2 (as we do not plan to use virtualization).
+
+Always enter kernel at EL2. Let Linux worry about going from EL2 to EL1
+ 
+> Thanks again for your kind support,
+> Cheers,
+> Lior.
+
+Cheers,
+Ahmad
+
+>   
+> 
+>> -----Original Message-----
+>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> Sent: Thursday, June 1, 2023 3:36 PM
+>> To: Lior Weintraub <liorw@pliops.com>; Ahmad Fatoum <ahmad@a3f.at>;
+>> barebox@lists.infradead.org
+>> Subject: Re: [PATCH v2] Porting barebox to a new SoC
+>>
+>> CAUTION: External Sender
+>>
+>> Hello Lior,
+>>
+>> On 01.06.23 13:45, Lior Weintraub wrote:
+>>> Hello Ahmad,
+>>>
+>>> Very interesting stuff.
+>>>
+>>> We actually did started TF-A integration few months ago and tested it on the
+>> QEMU running ARM virt machine.
+>>> The TF-A compilation didn't include BL31 image (probably this explains the
+>> "ERROR:   BL2: Failed to load image id 3").
+>>
+>> I wouldn't recommend using TF-A as BL2. I am quite content with how
+>> it's done on NXP's i.MX SoCs, which is the flow I described at the
+>> end of my last mail. Instead of loading a FIP, TF-A would just
+>> return to DRAM (or maintain LR on TF-A entry and return to it).
+>>
+>>> For this code to run we used the following QEMU command:
+>>>
+>>> qemu-system-aarch64 -nographic -machine virt,secure=on -cpu cortex-
+>> a53,rvbar=0x0000000000 \
+>>>    -smp 1 -m 1024 -bios bl1.bin -d unimp -semihosting-config
+>> enable=on,target=native \
+>>>    -monitor telnet:localhost:1235,server,nowait -gdb tcp::1236
+>>>
+>>> Output:
+>>> NOTICE:  bl1_early_platform_set
+>>> NOTICE:  Booting Trusted Firmware
+>>> NOTICE:  BL1: v2.7(debug):831de6588
+>>> NOTICE:  BL1: Built : 12:40:08, May 28 2023
+>>> INFO:    BL1: RAM 0xe0ee000 - 0xe0f6000
+>>> INFO:    BL1: cortex_a53: CPU workaround for 835769 was applied
+>>> INFO:    BL1: cortex_a53: CPU workaround for 843419 was applied
+>>> INFO:    BL1: cortex_a53: CPU workaround for 855873 was applied
+>>> INFO:    BL1: cortex_a53: CPU workaround for 1530924 was applied
+>>> INFO:    BL1: Loading BL2
+>>> WARNING: Firmware Image Package header check failed.
+>>> INFO:    Loading image id=1 at address 0xe07b000
+>>> INFO:    Image id=1 loaded: 0xe07b000 - 0xe081201
+>>> NOTICE:  BL1: Booting BL2
+>>> INFO:    Entry point address = 0xe07b000
+>>> INFO:    SPSR = 0x3c5
+>>> NOTICE:  BL2: v2.7(debug):831de6588
+>>> NOTICE:  BL2: Built : 12:40:08, May 28 2023
+>>> INFO:    BL2: Doing platform setup
+>>> INFO:    BL2: Loading image id 3
+>>> WARNING: Firmware Image Package header check failed.
+>>> WARNING: Failed to obtain reference to image id=3 (-2)
+>>> ERROR:   BL2: Failed to load image id 3 (-2)
+>>>
+>>> When we tried to modify the TF-A code to use our SoC (e.g. change the start
+>> address to 0xC0_0400_0000 and use UART on 0xD0_0030_7000) it crashed
+>> with seg. Fault.
+>>
+>> Try building your BL31 as position-independent executable. The code doing
+>> fixed text area may be hardcoded to 32-bit. See here for an example
+>> of turning on PIE:
+>>
+>> https://ddec1-0-en-
+>> ctp.trendmicro.com:443/wis/clicktime/v1/query?url=https%3a%2f%2freview
+>> .trustedfirmware.org%2fc%2fTF%2dA%2ftrusted%2dfirmware%2da%2f%2b
+>> %2f16370&umid=0b12ecfc-4ee1-4f0b-90e0-
+>> 54ceaf590ca1&auth=860a7ebb9feba264acc79b6e38eb59582349362c-
+>> c3cc24ae937d0a564120b663c7b93f60c48f01b5
+>>
+>>> We didn't continue with this development effort and decided we will write
+>> our own BootROM as BL1
+>>
+>> Ye, I don't think TF-A is a good candidate for a BL1 (are there even
+>> other users that user TF-A that way?).
+>>
+>>> and use that to load u-boot or barebox
+>>
+>> That's ok. You just need BL31 to provide you runtime services (or maintain
+>> your
+>> Linux SoC support patches for ever).
+>>
+>>> Now I understand we better go back and study how to port TF-A to our SoC.
+>>
+>> :)
+>>
+>> Cheers,
+>> Ahmad
+>>
+>>>
+>>> Cheers,
+>>> Lior.
+>>>
+>>>
+>>>> -----Original Message-----
+>>>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>> Sent: Thursday, June 1, 2023 12:29 PM
+>>>> To: Lior Weintraub <liorw@pliops.com>; Ahmad Fatoum <ahmad@a3f.at>;
+>>>> barebox@lists.infradead.org
+>>>> Subject: Re: [PATCH v2] Porting barebox to a new SoC
+>>>>
+>>>> CAUTION: External Sender
+>>>>
+>>>> Hello Lior,
+>>>>
+>>>> On 01.06.23 10:54, Lior Weintraub wrote:
+>>>>> Hi Ahmad,
+>>>>>
+>>>>> Thanks again for your great support and the patch.
+>>>>> I've checked it and it works perfectly!
+>>>>> The UART issue was solved after fixing the device tree per your
+>>>> recommendations.
+>>>>> Now I can write into barbox terminal :-)
+>>>>
+>>>> Nice!
+>>>>
+>>>>> When I type "cpuinfo" on the terminal I am getting:
+>>>>> implementer: ARM
+>>>>> architecture: v8
+>>>>> core: Cortex-A53 r0p4
+>>>>> exception level: 3
+>>>>> cache: no cache
+>>>>> Control register: P D Z DT IT U XP
+>>>>
+>>>> FYI, barebox next (or maybe master?) branch adds mmuinfo command to
+>>>> arm64.
+>>>> You can use that to check if a specific address is cached or not.
+>>>>
+>>>>> Notice that it say "no cache".
+>>>>> I tried to add cache to cpu0 but it didn't help.
+>>>>>
+>>>>> .
+>>>>> .
+>>>>>    d-cache-size = <0x8000>;
+>>>>>    d-cache-line-size = <64>;
+>>>>>    d-cache-sets = <128>; // 32KiB(size)/64(line-size)=512ways/4-way set
+>>>>>    i-cache-size = <0x8000>;
+>>>>>    i-cache-line-size = <64>;
+>>>>>    i-cache-sets = <256>; // 32KiB(size)/64(line-size)=512ways/2-way set
+>>>>>    next-level-cache = <&l2>;
+>>>>> };
+>>>>>
+>>>>> l2: l2-cache0 {
+>>>>>    compatible = "cache";
+>>>>>    cache-unified;
+>>>>>    cache-size = <0x80000>;
+>>>>>    cache-line-size = <64>;
+>>>>>    cache-sets = <512>; // 512KiB(size)/64(line-size)=8192ways/16-way set
+>>>>>    cache-level = <2>;
+>>>>> }
+>>>>
+>>>> barebox doesn't consume these nodes. What may be happening is that
+>>>> cpuinfo
+>>>> was written with the assumption that barebox executes at EL2 or EL1, so
+>>>> executing it at EL3 may end up accessing the wrong MSRs. Feel free to send
+>>>> a patch against arch/arm/cpu/cpuinfo.c, so it uses the correct register for
+>>>> EL3. current_el() will tell you which EL you are at.
+>>>>
+>>>>> Regarding Linux kernel:
+>>>>> This would be the next step but I assume that it would be a bit more
+>>>> complicated.
+>>>>
+>>>> Linux ARM64 Maintainers mandate that platforms implement the PSCI
+>>>> protocol.
+>>>> In your case with single core that means providing reset and poweroff
+>>>> handlers
+>>>> that the kernel can invoke via secure monitor call.
+>>>>
+>>>> barebox can consume psci: CONFIG_ARM_PSCI_CLIENT,
+>> CONFIG_CMD_SMC,
+>>>> but what
+>>>> you're missing is the provider side. barebox as PSCI provider is implemented
+>>>> only for a single ARM32 SoC, the i.MX7. All supported ARM64 platforms
+>> use
+>>>> TF-A as BL31 with the exception of Layerscape (which uses PPA, an NXP
+>> BL31
+>>>> implementation).
+>>>>
+>>>> What does this mean for you?
+>>>>
+>>>>   1) Either add your SoC to TF-A
+>>>>   2) Extend PSCI implementation in barebox for ARM64.
+>>>>
+>>>> While I think it would be cool to have barebox provide all of BL2, BL31 and
+>>>> BL32, I think you are better advised to use TF-A, because that's what most
+>>>> other ARM Silicon Vendors use. That means less effort for you and easier
+>>>> maintenance as you benefit from fixes done for other SoCs using the same
+>>>> IPs. barebox certainly benefits from being able to focus on being a
+>> bootloader
+>>>> and leaving the errata workarounds, GIC init stuff and runtime services
+>>>> to TF-A.
+>>>>
+>>>> The boot flow would then be:
+>>>>
+>>>>  - barebox PBL runs as BL2 in SRAM and sets up DRAM
+>>>>  - barebox PBL executes BL31 (TF-A) which was compiled into PBL
+>>>>  - TF-A installs secure monitor and returns control to DRAM in EL2
+>>>>  - barebox resumes execution in EL2 as BL33
+>>>>  - Linux is invoked in EL2 and can communicate with secure monitor.
+>>>>
+>>>> You may find this talk interesting:
+>>>> https://fosdem.org/2023/schedule/event/uboot_psci/
+>>>> Even if I disagree a bit with the takeaway.
+>>>>
+>>>>> I guess we will have to integrate the interrupt controlled (GIC-600) into
+>>>> QEMU and into the device tree for it to work.
+>>>>> Is that a valid assumption?
+>>>>
+>>>> I never had to add a new SoC to Linux, so I can't give any better
+>>>> suggestions than Yes. Where you're going, you'll need interrupts.
+>>>>
+>>>> Godspeed and keep me posted :)
+>>>> Ahmad
+>>>>
+>>>>>
+>>>>> Thanks,
+>>>>> Lior.
+>>>>>
+>>>>>
+>>>>>
+>>>>>
+>>>>>> -----Original Message-----
+>>>>>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>>>> Sent: Wednesday, May 31, 2023 8:55 PM
+>>>>>> To: Lior Weintraub <liorw@pliops.com>; Ahmad Fatoum
+>> <ahmad@a3f.at>;
+>>>>>> barebox@lists.infradead.org
+>>>>>> Subject: Re: [PATCH v2] Porting barebox to a new SoC
+>>>>>>
+>>>>>> CAUTION: External Sender
+>>>>>>
+>>>>>> Hi Lior,
+>>>>>>
+>>>>>> On 31.05.23 18:13, Lior Weintraub wrote:
+>>>>>>> Hi Ahmad,
+>>>>>>>
+>>>>>>> Using end of SRAM as PBL stack is currently not working because we
+>> need
+>>>>>> 40bit address (0xC0_0020_0000).
+>>>>>>> This needs a fix to ENTRY_FUNCTION_WITHSTACK macro.
+>>>>>>
+>>>>>> Ah, right. I just sent an (untested) patch. Would be cool if you could
+>>>>>> try it out.
+>>>>>>
+>>>>>>> I tried just to change const u32 __stack_top = (stack_top); to const u64
+>>>>>> __stack_top = (stack_top); but there were linking errors caused by:
+>>>>>>> ASSERT(. - __pbl_board_stack_top <= 8, "Only One PBL per Image
+>>>> allowed")
+>>>>>>
+>>>>>> The easy way would have been using a __attribute__((naked)) function,
+>>>> but
+>>>>>> those are only supported for arm32, not arm64. The alternative is thus
+>>>>>> writing the entry point in assembly and to make board authors life easier
+>>>>>> the linker script ensures that the stack setup entry point is invoked prior
+>>>>>> to the board entry.
+>>>>>>
+>>>>>>> Regarding the arm timer:
+>>>>>>> Adding the timer entry to DT solved the issue.
+>>>>>>>
+>>>>>>> Regarding the UART:
+>>>>>>> Indeed CONFIG_SERIAL_AMBA_PL011 was set on spider_defconfig
+>> (also
+>>>>>> verified it generated the correct entry on .config).
+>>>>>>> I also noticed that if I remove the putc_ll implementation there is no Tx
+>> at
+>>>> all
+>>>>>> from Barebox.
+>>>>>>
+>>>>>> I've led you astray. Indeed:
+>>>>>>
+>>>>>>>>> of_platform_bus_create() - skipping /soc, no compatible prop
+>>>>>>
+>>>>>> points at the issue.
+>>>>>>
+>>>>>> Try adding into /soc
+>>>>>>
+>>>>>>   compatible = "simple,bus";
+>>>>>>   ranges;
+>>>>>>   dma-ranges;
+>>>>>>
+>>>>>> This matches /soc with the simple bus driver which just instantiates
+>> devices
+>>>>>> for the
+>>>>>> contained children. Those in turn should be matched by the drivers.
+>>>>>>
+>>>>>> The ranges stuff just tells that memory and SoC peripherals exist in the
+>>>> same
+>>>>>> address space.
+>>>>>>
+>>>>>> When it probes you may need to describe the clock in the DT. Eventually,
+>>>> you
+>>>>>> will
+>>>>>> want to have a clock driver for your hardware (good news: barebox and
+>>>> Linux
+>>>>>> have
+>>>>>> basically the same API, so you only need to write it once). But for now,
+>> you
+>>>>>> can
+>>>>>> fake it using fixed-clock in the DT. Take a look at:
+>>>>>>
+>>>>>> snps,dw-apb-uart in arch/riscv/dts/jh7100.dtsi and compare with
+>>>>>> dts/src/arm/imx28.dtsi
+>>>>>> to see how to map that to PL011.
+>>>>>>
+>>>>>>> Could it be a hint?
+>>>>>>
+>>>>>> DEBUG_LL bridges the gap until a driver registers a console that's
+>> enabled. If
+>>>>>> this
+>>>>>> never happens, you are left with a non-interactive shell.
+>>>>>>
+>>>>>> Cheers,
+>>>>>> Ahmad
+>>>>>>
+>>>>>>>
+>>>>>>> Thanks,
+>>>>>>> Lior.
+>>>>>>>
+>>>>>>>> -----Original Message-----
+>>>>>>>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>>>>>> Sent: Wednesday, May 31, 2023 11:40 AM
+>>>>>>>> To: Lior Weintraub <liorw@pliops.com>; Ahmad Fatoum
+>>>> <ahmad@a3f.at>;
+>>>>>>>> barebox@lists.infradead.org
+>>>>>>>> Subject: Re: [PATCH v2] Porting barebox to a new SoC
+>>>>>>>>
+>>>>>>>> CAUTION: External Sender
+>>>>>>>>
+>>>>>>>> Hi Lior,
+>>>>>>>>
+>>>>>>>> On 31.05.23 10:05, Lior Weintraub wrote:
+>>>>>>>>> Hi Ahmad,
+>>>>>>>>>
+>>>>>>>>> Thanks again for your prompt reply and accurate tips!
+>>>>>>>>> Took the following changes:
+>>>>>>>>> 1. Increasing the DRAM size to 128MB (let barebox start from 0).
+>>>>>>>>> 2. Set PBL stack to offset 2MB from DRAM
+>>>>>>>>
+>>>>>>>> Just use end of SRAM, so you are completely independent of DRAM
+>>>>>>>> until you call barebox_arm_entry.
+>>>>>>>>
+>>>>>>>>> 3. Fix the device tree "memory" entry to have 128MB.
+>>>>>>>>
+>>>>>>>> (y)
+>>>>>>>>
+>>>>>>>>> 4. Load barebox-spider-mk1-evk.img to SRAM and run from there.
+>>>>>>>>>
+>>>>>>>>> Now I can see the following logs:
+>>>>>>>>> uncompress.c: memory at 0x00000000, size 0x08000000
+>>>>>>>>> uncompress.c: uncompressing barebox binary at
+>> 0x000000c0000021c0
+>>>>>>>> (size 0x0001e3a4) to 0x07e00000 (uncompressed size: 0x000390d0)
+>>>>>>>>> uncompress.c: jumping to uncompressed image at
+>>>>>> 0x0000000007e00000
+>>>>>>>>> start.c: memory at 0x00000000, size 0x08000000
+>>>>>>>>> start.c: found DTB in boarddata, copying to 0x07dffcc0
+>>>>>>>>> start.c: initializing malloc pool at 0x079ffcc0 (size 0x00400000)
+>>>>>>>>> start.c: starting barebox...
+>>>>>>>>> initcall-> command_slice_init+0x0/0x3c
+>>>>>>>>> initcall-> globalvar_init+0x0/0x80
+>>>>>>>>> register_device: global
+>>>>>>>>> register_device: nv
+>>>>>>>>> initcall-> platform_init+0x0/0x1c
+>>>>>>>>> register_device: platform
+>>>>>>>>> initcall-> amba_bus_init+0x0/0x1c
+>>>>>>>>> register_device: amba
+>>>>>>>>> initcall-> spi_bus_init+0x0/0x1c
+>>>>>>>>> register_device: spi
+>>>>>>>>> initcall-> gpio_desc_alloc+0x0/0x24
+>>>>>>>>> initcall-> fs_bus_init+0x0/0x1c
+>>>>>>>>> register_device: fs
+>>>>>>>>> initcall-> aarch64_init_vectors+0x0/0x50
+>>>>>>>>> initcall-> gpio_gate_clock_driver_register+0x0/0x1c
+>>>>>>>>> register_driver: gpio-gate-clock
+>>>>>>>>> initcall-> of_arm_init+0x0/0x5c
+>>>>>>>>> start.c: barebox_arm_boot_dtb: using barebox_boarddata
+>>>>>>>>> using boarddata provided DTB
+>>>>>>>>> adding DT alias:serial0: stem=serial id=0
+>>>> node=/soc/serial@d000307000
+>>>>>>>>> register_device: machine
+>>>>>>>>> of_platform_bus_create() - skipping /chosen, no compatible prop
+>>>>>>>>> of_platform_bus_create() - skipping /aliases, no compatible prop
+>>>>>>>>> of_platform_bus_create() - skipping /cpus, no compatible prop
+>>>>>>>>> of_platform_bus_create() - skipping /memory@0, no compatible
+>> prop
+>>>>>>>>> of_platform_bus_create() - skipping /soc, no compatible prop
+>>>>>>>>> initcall-> register_autoboot_vars+0x0/0x70
+>>>>>>>>> initcall-> arm_arch_timer_driver_register+0x0/0x1c
+>>>>>>>>> register_driver: arm-architected-timer
+>>>>>>>>> initcall-> of_timer_init+0x0/0x20
+>>>>>>>>> initcall-> init_fs+0x0/0x3c
+>>>>>>>>> initcall-> pl011_driver_register+0x0/0x1c
+>>>>>>>>> register_driver: uart-pl011
+>>>>>>>>> initcall-> of_stdoutpath_init+0x0/0x28
+>>>>>>>>> initcall-> of_probe_memory+0x0/0x60
+>>>>>>>>> __request_region ok: 0x00000000:0x07ffffff flags=0x0
+>>>>>>>>> initcall-> __bare_init_end+0x0/0x6c
+>>>>>>>>> register_device: mem0
+>>>>>>>>> initcall-> of_reserved_mem_walk+0x0/0x1ac
+>>>>>>>>> initcall-> mem_malloc_resource+0x0/0xa8
+>>>>>>>>> __request_region ok: 0x079ffcc0:0x07dffcbf flags=0x200
+>>>>>>>>> __request_region ok: 0x07e00000:0x07e2aeff flags=0x200
+>>>>>>>>> __request_region ok: 0x07e2af00:0x07e390cf flags=0x200
+>>>>>>>>> __request_region ok: 0x07e390d0:0x07e3adaf flags=0x200
+>>>>>>>>> initcall-> bootsource_init+0x0/0x40
+>>>>>>>>> initcall-> ramfs_init+0x0/0x1c
+>>>>>>>>> register_driver: ramfs
+>>>>>>>>> initcall-> devfs_init+0x0/0x1c
+>>>>>>>>> register_driver: devfs
+>>>>>>>>> initcall-> arm_request_stack+0x0/0x398
+>>>>>>>>> __request_region ok: 0x07ff0000:0x07ff7fff flags=0x200
+>>>>>>>>> initcall-> mount_root+0x0/0x7c
+>>>>>>>>> mount: none on / type ramfs, options=
+>>>>>>>>> register_device: ramfs0
+>>>>>>>>>     probe-> ramfs0
+>>>>>>>>> mount: none on /dev type devfs, options=
+>>>>>>>>> register_device: devfs0
+>>>>>>>>>     probe-> devfs0
+>>>>>>>>> initcall-> binfmt_sh_init+0x0/0x1c
+>>>>>>>>> initcall-> binfmt_uimage_init+0x0/0x1c
+>>>>>>>>> initcall-> console_common_init+0x0/0x48
+>>>>>>>>> initcall-> of_kernel_init+0x0/0x28
+>>>>>>>>> initcall-> console_ctrlc_init+0x0/0x30
+>>>>>>>>> initcall-> mem_init+0x0/0x90
+>>>>>>>>> register_device: mem1
+>>>>>>>>> register_driver: mem
+>>>>>>>>>     probe-> mem0
+>>>>>>>>>     probe-> mem1
+>>>>>>>>> initcall-> of_partition_init+0x0/0x48
+>>>>>>>>> initcall-> prng_init+0x0/0x40
+>>>>>>>>> initcall-> null_init+0x0/0x40
+>>>>>>>>> initcall-> full_init+0x0/0x40
+>>>>>>>>> initcall-> zero_init+0x0/0x40
+>>>>>>>>> initcall-> spider_board_driver_register+0x0/0x1c
+>>>>>>>>> register_driver: board-spider
+>>>>>>>>>     probe-> machine
+>>>>>>>>> initcall-> barebox_memory_areas_init+0x0/0x40
+>>>>>>>>> __request_region ok: 0x07dffcc0:0x07dfffce flags=0x200
+>>>>>>>>> initcall-> barebox_of_populate+0x0/0x28
+>>>>>>>>> initcall-> of_register_memory_fixup+0x0/0x20
+>>>>>>>>> initcall-> dummy_csrc_warn+0x0/0x44
+>>>>>>>>> WARNING: Warning: Using dummy clocksource
+>>>>>>>>
+>>>>>>>> Add a arm,armv8-timer node into your SoC device tree.
+>>>>>>>> This lets barebox and Linux know that you have the ARM
+>>>>>>>> architected timer available. Without that, you'll notice
+>>>>>>>> that timeouts are wrong.
+>>>>>>>>
+>>>>>>>>> initcall-> bootm_init+0x0/0xf4
+>>>>>>>>> initcall-> init_command_list+0x0/0x40
+>>>>>>>>> register command bootm
+>>>>>>>>> register command cat
+>>>>>>>>> register command cd
+>>>>>>>>> register command clear
+>>>>>>>>> register command cp
+>>>>>>>>> register command cpuinfo
+>>>>>>>>> register command devinfo
+>>>>>>>>> register command drvinfo
+>>>>>>>>> register command echo
+>>>>>>>>> register command exit
+>>>>>>>>> register command false
+>>>>>>>>> register command help
+>>>>>>>>> register command ?
+>>>>>>>>> register command ll
+>>>>>>>>> register command ls
+>>>>>>>>> register command md
+>>>>>>>>> register command memcmp
+>>>>>>>>> register command memcpy
+>>>>>>>>> register command memset
+>>>>>>>>> register command mkdir
+>>>>>>>>> register command mount
+>>>>>>>>> register command mw
+>>>>>>>>> register command pwd
+>>>>>>>>> register command rm
+>>>>>>>>> register command rmdir
+>>>>>>>>> register command setenv
+>>>>>>>>> register command sh
+>>>>>>>>> register command source
+>>>>>>>>> register command .
+>>>>>>>>> register command test
+>>>>>>>>> register command [
+>>>>>>>>> register command true
+>>>>>>>>> register command :
+>>>>>>>>> register command umount
+>>>>>>>>> register command version
+>>>>>>>>> initcall-> display_meminfo+0x0/0xa8
+>>>>>>>>> barebox code: 0x7e00000 -> 0x7e2aeff
+>>>>>>>>> bss segment:  0x7e390d0 -> 0x7e3adaf
+>>>>>>>>> malloc space: 0x079ffcc0 -> 0x07dffcbf (size 4 MiB)
+>>>>>>>>> initcall-> of_register_bootargs_fixup+0x0/0x3c
+>>>>>>>>> initcall-> device_probe_deferred+0x0/0x14c
+>>>>>>>>> initcall-> of_init_hostname+0x0/0x28
+>>>>>>>>> initcall-> aarch64_register_image_handler+0x0/0x2c
+>>>>>>>>> initcall-> load_environment+0x0/0x4c
+>>>>>>>>> loading defaultenv
+>>>>>>>>> environment load /dev/env0: No such file or directory
+>>>>>>>>> Maybe you have to create the partition.
+>>>>>>>>> initcalls done
+>>>>>>>>>
+>>>>>>>>> Hit any to stop autoboot:    0
+>>>>>>>>> boot: No such file or directory
+>>>>>>>>> barebox:/
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Few questions:
+>>>>>>>>> 1. The serial input doesn't work. i.e. I cannot type anything hence
+>>>> cannot
+>>>>>>>> interact with barebox terminal.
+>>>>>>>>
+>>>>>>>> DEBUG_LL only does otuput. For input, you will want to load the
+>> driver.
+>>>>>>>> Do you have CONFIG_SERIAL_AMBA_PL011 enabled?
+>>>>>>>>
+>>>>>>>>>      Does it require GIC and setting interrupts for it to work?
+>>>>>>>>
+>>>>>>>> No interrupts needed. barebox runs with interrupts disabled and
+>>>>>> everything
+>>>>>>>> is done cooperatively.
+>>>>>>>>
+>>>>>>>>> 2. What does "of_platform_bus_create() - skipping" means? Do I
+>> need
+>>>> to
+>>>>>> fix
+>>>>>>>> that?
+>>>>>>>>
+>>>>>>>> That's normal debugging output. Some device tree nodes are busses,
+>>>> which
+>>>>>>>> have
+>>>>>>>> children. These entries are skipped because they have no compatible.
+>>>> This is
+>>>>>>>> expected. I'd suggest you remove your VERBOSED_DEBUG define, so
+>> you
+>>>>>> are
+>>>>>>>> not
+>>>>>>>> spammed by too much debugging output.
+>>>>>>>>
+>>>>>>>>> 3. Looks like I am still missing some stuff (rootfs? Environment?
+>>>>>> Mounting?
+>>>>>>>> Partitions?)
+>>>>>>>>
+>>>>>>>> Take multi_v8_defconfig, open menuconfig and enable your SoC and
+>> use
+>>>>>> that.
+>>>>>>>> That will be quicker than enabling everything yourself. If it doesn't
+>> work
+>>>>>>>> out of the box, try imx_v8_defconfig.
+>>>>>>>>
+>>>>>>>> Once you get around to upstreaming your SoC, I'd suggest you just
+>> add it
+>>>>>>>> to multi_v8_defconfig. Not all ARMv8 SoCs are supported there, but
+>>>> those
+>>>>>>>> that are make development easier, because we don't need to build as
+>>>> many
+>>>>>>>> different configs..
+>>>>>>>>
+>>>>>>>> Cheers,
+>>>>>>>> Ahmad
+>>>>>>>>
+>>>>>>>>>
+>>>>>>>>> Thanks,
+>>>>>>>>> Have a great day,
+>>>>>>>>> Lior.
+>>>>>>>>>
+>>>>>>>>>
+>>>>>>>>>> -----Original Message-----
+>>>>>>>>>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>>>>>>>> Sent: Wednesday, May 31, 2023 9:11 AM
+>>>>>>>>>> To: Lior Weintraub <liorw@pliops.com>; Ahmad Fatoum
+>>>>>> <ahmad@a3f.at>;
+>>>>>>>>>> barebox@lists.infradead.org
+>>>>>>>>>> Subject: Re: [PATCH v2] Porting barebox to a new SoC
+>>>>>>>>>>
+>>>>>>>>>> CAUTION: External Sender
+>>>>>>>>>>
+>>>>>>>>>> Hi Lior,
+>>>>>>>>>>
+>>>>>>>>>> On 30.05.23 22:10, Lior Weintraub wrote:
+>>>>>>>>>>> Hello Ahmad,
+>>>>>>>>>>>
+>>>>>>>>>>> Thanks again for your kind support!
+>>>>>>>>>>> Your comments helped me progress and the current situation is as
+>>>>>>>> follows:
+>>>>>>>>>>> Our QEMU Spider machine is running a BL1.elf file using the
+>> following
+>>>>>>>>>> command:
+>>>>>>>>>>> QEMU_AUDIO_DRV=none qemu-system-aarch64 -M spider-soc -
+>>>> smp 1
+>>>>>> -
+>>>>>>>> m
+>>>>>>>>>> 128M -nographic \
+>>>>>>>>>>>       -device loader,file=BL1.elf -cpu cortex-
+>> a53,rvbar=0xC004000000 \
+>>>>>>>>>>>       -d unimp -semihosting-config enable=on,target=native \
+>>>>>>>>>>>       -monitor telnet:localhost:1235,server,nowait \
+>>>>>>>>>>>       -gdb tcp::1236
+>>>>>>>>>>>
+>>>>>>>>>>> The BL1.elf is our BootROM application that runs from ROM
+>> address
+>>>>>>>>>> 0xC004000000.
+>>>>>>>>>>> Just for debugging purpose we've increased the ROM size so it can
+>>>>>> include
+>>>>>>>>>> the images/barebox-spider-mk1-evk.img (as a const array).
+>>>>>>>>>>> BL1 then copy it (using memcpy) to address 0 and jumps there for
+>>>>>>>>>> execution.
+>>>>>>>>>>
+>>>>>>>>>> Sounds ok.
+>>>>>>>>>>
+>>>>>>>>>>> On the real ASIC this address will be the DRAM and indeed will need
+>>>> to
+>>>>>> be
+>>>>>>>>>> initialized before the copy but here on QEMU it is not required.
+>>>>>>>>>>
+>>>>>>>>>> I see. You could still have your bootrom move barebox into SRAM
+>> and
+>>>>>> then
+>>>>>>>>>>
+>>>>>>>>>>   barebox_arm_entry(DRAM_ADDR, SZ_128M,
+>>>>>>>> __dtb_spider_mk1_evk_start);
+>>>>>>>>>>
+>>>>>>>>>> To have PBL extract barebox to DRAM. Even if you don't need need
+>>>>>> DRAM
+>>>>>>>>>> setup in QEMU, the flow would be similar to what you will have on
+>>>> actual
+>>>>>>>>>> silicon.
+>>>>>>>>>>
+>>>>>>>>>>> The lowlevel.c of spider-evk was modified to use DRAM_ADDR
+>>>>>> 0x400000
+>>>>>>>>>> (4MB from start) and MY_STACK_TOP was set to 0x8000000
+>> (128M).
+>>>>>>>>>>
+>>>>>>>>>> That's not needed. While you don't have control where barebox PBL
+>>>> will
+>>>>>> be
+>>>>>>>>>> located
+>>>>>>>>>> (depends on BootROM), barebox will extract itself to the end of
+>> DRAM
+>>>>>>>>>> without
+>>>>>>>>>> overwriting itself, so you can just use DRAM_ADDR 0 normally.
+>>>>>> Eventually,
+>>>>>>>>>> stack
+>>>>>>>>>> top should go into SRAM, but anywhere that works is ok.
+>>>>>>>>>>
+>>>>>>>>>>> In addition, I implemented putc_ll (currently hard-coded in
+>>>>>>>>>> include/debug_ll.h) and opened log level to VERBOSE_DEBUG
+>>>> (currently
+>>>>>>>> just
+>>>>>>>>>> hard-coded in printk.h).
+>>>>>>>>>>
+>>>>>>>>>> There's CONFIG_DEBUG_PBL you can enable to get all these
+>> messages
+>>>> by
+>>>>>>>>>> default.
+>>>>>>>>>>
+>>>>>>>>>>> I see the following (which makes sense) logs on QEMU terminal:
+>>>>>>>>>>> uncompress.c: memory at 0x00400000, size 0x00200000
+>>>>>>>>>>> uncompress.c: uncompressing barebox binary at
+>>>>>> 0x0000000000002200
+>>>>>>>>>> (size 0x0001d3b2) to 0x00400000 (uncompressed size:
+>> 0x000373d0)
+>>>>>>>>>>
+>>>>>>>>>> Why pass only 2M to barebox_arm_entry? While this need not be
+>> the
+>>>>>>>> whole
+>>>>>>>>>> of RAM, this
+>>>>>>>>>> initial memory is what barebox will use for itself including its final
+>> stack
+>>>>>> and
+>>>>>>>>>> malloc area. barebox will also not place itself into the last 1M AFAIK,
+>> so
+>>>>>> 2M
+>>>>>>>>>> may not work ok. You should use the minimum possible RAM here
+>> or
+>>>> if
+>>>>>> you
+>>>>>>>>>> can detect
+>>>>>>>>>> in PBL how much RAM you have or just the whole RAM bank. I am
+>> not
+>>>>>> sure
+>>>>>>>>>> anything lower
+>>>>>>>>>> than SZ_4M would work ok. (Note this is DRAM size, not SRAM.
+>>>> barebox
+>>>>>>>> PBL
+>>>>>>>>>> is fine being
+>>>>>>>>>> called from 64K SRAMs, it just needs DRAM to extract to).
+>>>>>>>>>>
+>>>>>>>>>>> I then connect with aarch64-none-elf-gdb, load the barebox
+>> symbols
+>>>>>> (to
+>>>>>>>>>> 0x400000) and check the current execution state (program counter
+>>>> and
+>>>>>>>>>> stack).
+>>>>>>>>>>> Looks like the code is stuck on function register_autoboot_vars:
+>>>>>>>>>>> sp             0x5f7e60            0x5f7e60
+>>>>>>>>>>> pc             0x401264            0x401264 <register_autoboot_vars+24>
+>>>>>>>>>>>
+>>>>>>>>>>> Few observations:
+>>>>>>>>>>> 1. The PBL was using stack top located on 0x8000000 (which is
+>>>>>>>>>> MY_STACK_TOP). Found it be causing a breakpoint on the PBL.
+>>>>>>>>>>> 2. Barebox uses a stack top on 0x600000 which is probably
+>> calculated
+>>>>>>>> from
+>>>>>>>>>> my new DRAM_ADDR and SZ_2M given to the function call:
+>>>>>>>>>>>     barebox_arm_entry(DRAM_ADDR, SZ_2M,
+>>>>>>>> __dtb_spider_mk1_evk_start);
+>>>>>>>>>>>
+>>>>>>>>>>> This is great! I am starting to find my way.
+>>>>>>>>>>
+>>>>>>>>>> :) Ye, the ENTRY_FUNCTION_WITHSTACK is only when the BootROM
+>>>>>>>> doesn't
+>>>>>>>>>> enter
+>>>>>>>>>> with a valid stack pointer. It's overwritten as soon as barebox is told
+>>>>>>>>>> about the initial memory layout (with barebox_arm_entry).
+>>>>>>>>>>
+>>>>>>>>>>> When the barebox execution didn't print anything to the terminal I
+>>>>>>>>>> remembered that we used a place holder on the dtsi for the uart.
+>>>>>>>>>>> So now I changed it to:
+>>>>>>>>>>> uart0: serial@d000307000 {
+>>>>>>>>>>>        compatible = "arm,pl011", "arm,primecell";
+>>>>>>>>>>>        reg = <0xd0 0x307000 0 0x1000>;
+>>>>>>>>>>> }
+>>>>>>>>>>> (Our QEMU UART is currently using pl011 device.)
+>>>>>>>>>>
+>>>>>>>>>> Looks ok. Don't forget to enable the driver (via make menuconfig).
+>>>>>>>>>>
+>>>>>>>>>>> After some time (trying to debug by enabling MMU but then
+>> reverted
+>>>>>> the
+>>>>>>>>>> code back), I got to a point that when I try to run again I am getting
+>> an
+>>>>>>>>>> exception.
+>>>>>>>>>>> I can swear all code changes were reverted back to the point where
+>> I
+>>>>>> saw
+>>>>>>>> the
+>>>>>>>>>> barebox stuck on register_autoboot_vars but now it just cases an
+>>>>>>>> exception.
+>>>>>>>>>>> The exception vector code is located on our ROM (part of BL1 code)
+>>>> and
+>>>>>>>> the
+>>>>>>>>>> logs shows that the link register has the value 0x401218 which
+>> suggest
+>>>>>> the
+>>>>>>>>>> following code:
+>>>>>>>>>>> 0000000000001200 <load_environment>:
+>>>>>>>>>>> 1200: a9be7bfd        stp     x29, x30, [sp, #-32]!
+>>>>>>>>>>> 1204: 910003fd        mov     x29, sp
+>>>>>>>>>>> 1208: a90153f3        stp     x19, x20, [sp, #16]
+>>>>>>>>>>> 120c: 94000a07        bl      3a28 <default_environment_path_get>
+>>>>>>>>>>> 1210: d00000f3        adrp    x19, 1f000 <do_cpuinfo+0x1f0>
+>>>>>>>>>>> 1214: 912a7273        add     x19, x19, #0xa9c
+>>>>>>>>>>> 1218: aa0003f4        mov     x20, x0
+>>>>>>>>>>>
+>>>>>>>>>>> Any ideas or suggestions how to proceed with the debugging?
+>>>>>>>>>>
+>>>>>>>>>> You shouldn't need to touch the MMU code. If your initial memory
+>>>> setup
+>>>>>>>>>> is wonky, you may end up overwriting stuff. Try again with bigger
+>>>>>> memory.
+>>>>>>>>>>
+>>>>>>>>>>> BTW, to answer your questions:
+>>>>>>>>>>> The SRAM of 4MB is the only one we have because we assumed it
+>> is
+>>>>>> only
+>>>>>>>> for
+>>>>>>>>>> BootROM to load a PBL
+>>>>>>>>>>
+>>>>>>>>>> Ok. Sometimes there are SRAMs for use with DMA. I asked, because
+>> a
+>>>>>>>> SRAM
+>>>>>>>>>> in the first 4M
+>>>>>>>>>> would lend itself nicely as stack, but if there is none, we can adjust
+>>>>>>>>>> ENTRY_FUNCTION_WITHSTACK to accept a 64-bit parameter.
+>>>>>>>>>>
+>>>>>>>>>> Cheers,
+>>>>>>>>>> Ahmad
+>>>>>>>>>>
+>>>>>>>>>>> Thank you very much,
+>>>>>>>>>>> Cheers,
+>>>>>>>>>>> Lior.
+>>>>>>>>>>>
+>>>>>>>>>>>
+>>>>>>>>>>>> -----Original Message-----
+>>>>>>>>>>>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>>>>>>>>>> Sent: Monday, May 29, 2023 10:03 PM
+>>>>>>>>>>>> To: Lior Weintraub <liorw@pliops.com>; Ahmad Fatoum
+>>>>>>>> <ahmad@a3f.at>;
+>>>>>>>>>>>> barebox@lists.infradead.org
+>>>>>>>>>>>> Subject: Re: [PATCH v2] Porting barebox to a new SoC
+>>>>>>>>>>>>
+>>>>>>>>>>>> CAUTION: External Sender
+>>>>>>>>>>>>
+>>>>>>>>>>>> Hello Lior,
+>>>>>>>>>>>>
+>>>>>>>>>>>> On 29.05.23 15:34, Lior Weintraub wrote:
+>>>>>>>>>>>>> Hi Ahmad,
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> I have revised the addresses and used DRAM address @ 0
+>> instead:
+>>>>>>>>>>>>> #define UARTBASE        (0xD000307000)
+>>>>>>>>>>>>> #define DRAM_ADDR       (0x00000000)
+>>>>>>>>>>>>> #define MY_STACK_TOP    (0x00000000 + SZ_2M) // Set the
+>> stack
+>>>>>> 2MB
+>>>>>>>>>> from
+>>>>>>>>>>>> DRAM start
+>>>>>>>>>>>>
+>>>>>>>>>>>> Is DRAM configured by the time barebox runs? If not, you should
+>>>> keep
+>>>>>>>>>> stack
+>>>>>>>>>>>> top
+>>>>>>>>>>>> in SRAM, until you have setup memory in prebootloader (PBL). Is
+>>>> the
+>>>>>> 4M
+>>>>>>>>>>>> SRAM
+>>>>>>>>>>>> the only on-chip SRAM you have?
+>>>>>>>>>>>>
+>>>>>>>>>>>>> static inline void spider_serial_putc(void *base, int c)
+>>>>>>>>>>>>> {
+>>>>>>>>>>>>>     *((volatile unsigned *)base) = c;
+>>>>>>>>>>>>
+>>>>>>>>>>>> There's a helper for that: writel(c, base); In barebox, it's equivalent
+>>>>>>>>>>>> to the volatile access, but in Linux it involves a write memory
+>> barrier.
+>>>>>>>>>>>> We try to write code in barebox, so it's easily reusable in Linux
+>> (and
+>>>>>>>>>>>> the other way round).
+>>>>>>>>>>>>
+>>>>>>>>>>>>> }
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> I will try to test it on QEMU using an initial QEMU machine we
+>>>> made
+>>>>>> for
+>>>>>>>>>>>> Spider.
+>>>>>>>>>>>>> In this machine we only have 3 memory regions and a PL011
+>> UART:
+>>>>>>>>>>>>> spider_soc_memories soc_memories[] = {
+>>>>>>>>>>>>>     {.name = "SPIDER_GPRAM",   .add = 0xC000000000ULL, .size =
+>> 4
+>>>> *
+>>>>>>>> MiB},
+>>>>>>>>>>>>>     {.name = "SPIDER_ROM",     .add = 0xC004000000ULL, .size =
+>>>> 128 *
+>>>>>>>>>> KiB},
+>>>>>>>>>>>>>     {.name = "SPIDER_DRAM",    .add = 0x0000000000ULL, .size =
+>> 1
+>>>> *
+>>>>>>>> GiB},
+>>>>>>>>>>>>> };
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> This special QEMU machine can run our BL1 code from "ROM"
+>>>>>> address
+>>>>>>>>>> (we
+>>>>>>>>>>>> set the RVBAR to point there).
+>>>>>>>>>>>>> So my idea is to test the barebox image by the following steps:
+>>>>>>>>>>>>> 1. Modify the QEMU code to have a "ROM" with the size of
+>> 128M.
+>>>>>>>>>>>>> 2. Compile our BL1 code to include the barebox.bin as a const
+>>>> array,
+>>>>>>>> copy
+>>>>>>>>>> it
+>>>>>>>>>>>> to "DRAM" @ address 0 and jump there.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Why not map QEMU -bios option to SRAM? (Or DRAM directly, if
+>> it
+>>>>>>>> needs
+>>>>>>>>>> no
+>>>>>>>>>>>> special setup from
+>>>>>>>>>>>> barebox side).
+>>>>>>>>>>>>
+>>>>>>>>>>>>> For this to work I wanted to understand how to call (i.e. what
+>>>>>>>> arguments
+>>>>>>>>>> to
+>>>>>>>>>>>> pass) to barebox.
+>>>>>>>>>>>>
+>>>>>>>>>>>> barebox doesn't expect any arguments, because most BootROMs
+>>>>>> don't
+>>>>>>>>>> pass
+>>>>>>>>>>>> anything useful.
+>>>>>>>>>>>> Some pass information about bootsource though, so that's why
+>> the
+>>>>>>>>>>>> ENTRY_FUNCTION has
+>>>>>>>>>>>> r0, r1 and r2 as parameters, but you need not use them.
+>>>>>>>>>>>>
+>>>>>>>>>>>>> So I checked the barebox.map and found the function "start" on
+>>>>>>>> address
+>>>>>>>>>> 0.
+>>>>>>>>>>>>
+>>>>>>>>>>>> You may know that Linux on some platforms comes with a
+>>>>>> decompressor
+>>>>>>>>>> that
+>>>>>>>>>>>> is glued to the
+>>>>>>>>>>>> front of the kernel image and extracts the compressed kernel
+>> image.
+>>>>>>>>>> barebox
+>>>>>>>>>>>> has the same
+>>>>>>>>>>>> concept. The prebootloader is uncompressed and runs (starting
+>>>> from
+>>>>>>>>>>>> ENTRY_FUNCTION) and
+>>>>>>>>>>>> then does some early setup (e.g. enable clocks, configure PMIC,
+>>>> setup
+>>>>>>>>>> DRAM,
+>>>>>>>>>>>> load secure
+>>>>>>>>>>>> monitor (BL31), ...etc.) and then it decompresses barebox proper
+>>>> into
+>>>>>>>>>> DRAM.
+>>>>>>>>>>>>
+>>>>>>>>>>>> barebox.bin <- barebox proper. You don't usually need that.
+>>>>>>>>>>>> barebox.elf <- ELF binary for the above (for gdb)
+>>>>>>>>>>>> barebox.map <- map file of the above
+>>>>>>>>>>>>
+>>>>>>>>>>>> images/barebox-spider-mk1-evk.img   <- complete barebox image
+>>>> (PBL
+>>>>>> +
+>>>>>>>>>>>> barebox proper)
+>>>>>>>>>>>> images/start_spider_mk1_evk.pbl     <- ELF image for the above
+>>>>>>>>>>>> images/start_spider_mk1_evk.pbl.map <- map file of the above
+>>>>>>>>>>>>
+>>>>>>>>>>>> If you want to follow barbeox from the start, begin at
+>>>>>>>>>> start_spider_mk1_evk.
+>>>>>>>>>>>>
+>>>>>>>>>>>>> Then I went to arch/arm/cpu/start.c and realized that the code is
+>>>>>>>> compiled
+>>>>>>>>>>>> with CONFIG_PBL_IMAGE.
+>>>>>>>>>>>>> In that case I assume I need to pass 3 arguments and use this
+>>>>>> function
+>>>>>>>>>>>> prototype:
+>>>>>>>>>>>>> void start(unsigned long membase, unsigned long memsize, void
+>>>>>>>>>>>> *boarddata);
+>>>>>>>>>>>>
+>>>>>>>>>>>> barebox prebootloader takes care of this, so you don't need to do
+>>>>>>>> anything.
+>>>>>>>>>>>>
+>>>>>>>>>>>>> Few questions:
+>>>>>>>>>>>>> 1. Will that call work:
+>>>>>>>>>>>>>     typedef void (*barebox_start)(unsigned long , unsigned long ,
+>>>> void
+>>>>>> *);
+>>>>>>>>>>>>>     #define DRAM_START  (0)
+>>>>>>>>>>>>>     barebox_start p_barebox = (barebox_start)DRAM_START;
+>>>>>>>>>>>>>     p_barebox(DRAM_START, DRAM_START+SZ_2M, (void
+>>>>>>>>>>>> *)(DRAM_START+SZ_4M));
+>>>>>>>>>>>>>     This assumes that my BL1 code also copied the device tree
+>>>>>> (barebox-
+>>>>>>>> dt-
+>>>>>>>>>>>> 2nd.img? start_dt_2nd.pblb? start_spider_mk1_evk.pblb?)
+>>>>>>>>>>>>
+>>>>>>>>>>>> The device tree is built into the PBL and passed to barebox proper.
+>>>> This
+>>>>>>>>>>>> allows us to use the same barebox proper binary and link it with a
+>>>>>>>> different
+>>>>>>>>>>>> prebootloader for each SoC/board, all in the same build.
+>>>>>>>>>>>>
+>>>>>>>>>>>> barebox-dt-2nd.img is a special image that looks exactly like a
+>> Linux
+>>>>>>>> kernel:
+>>>>>>>>>>>>
+>>>>>>>>>>>>   images/barebox-dt-2nd.img: Linux kernel ARM64 boot
+>> executable
+>>>>>>>> Image,
+>>>>>>>>>>>> little-endian, 4K pages
+>>>>>>>>>>>>
+>>>>>>>>>>>> and can thus be used for booting for easy chainloading from other
+>>>>>>>>>>>> bootloaders or for running
+>>>>>>>>>>>> with QEMU -kernel. You shouldn't need it right now.
+>>>>>>>>>>>>
+>>>>>>>>>>>>> 2. Do I want to have my code compiled with
+>> CONFIG_PBL_IMAGE?
+>>>>>>>>>>>>>     If I understand correctly, it means that my code will provide a
+>> PBL
+>>>>>>>> (a.k.a
+>>>>>>>>>>>> BL2) which will set the DRAM and STACK among other things
+>>>> (MMU?).
+>>>>>>>>>>>>
+>>>>>>>>>>>> The patch I sent already builds a PBL. You will need to fill out
+>>>>>>>>>>>> start_spider_mk1_evk
+>>>>>>>>>>>> to do all the other early initialization you need. Then you call
+>>>>>>>>>>>> barebox_arm_entry
+>>>>>>>>>>>> with device tree and memory size and it will take care to do stack
+>>>> setup
+>>>>>> in
+>>>>>>>>>> new
+>>>>>>>>>>>> memory region, MMU setup (if enabled) and chainloading
+>> barebox
+>>>>>>>> proper.
+>>>>>>>>>>>>
+>>>>>>>>>>>> Note that PBL isn't necessary BL2. You can chainload barebox
+>> from
+>>>>>> within
+>>>>>>>>>>>> barebox (i.e.
+>>>>>>>>>>>> in EL2 or EL1), which is useful for debugging. You will thus often
+>> find
+>>>>>> PBL
+>>>>>>>>>> code
+>>>>>>>>>>>> that
+>>>>>>>>>>>> does
+>>>>>>>>>>>>
+>>>>>>>>>>>>   if (current_el() == 3) {
+>>>>>>>>>>>>         /* Do BL2 setup */
+>>>>>>>>>>>>         chainload();
+>>>>>>>>>>>>         __builtin_unreachable();
+>>>>>>>>>>>>   }
+>>>>>>>>>>>>
+>>>>>>>>>>>>   barebox_arm_entry(...)
+>>>>>>>>>>>>
+>>>>>>>>>>>> See for example arch/arm/boards/innocomm-imx8mm-
+>>>>>> wb15/lowlevel.c
+>>>>>>>>>>>>
+>>>>>>>>>>>> to see a real-world example of another Cortex-A53.
+>>>>>>>>>>>>
+>>>>>>>>>>>>>     In that case I assume it is OK.
+>>>>>>>>>>>>> 3. If I try to remove it by having CONFIG_PBL_IMAGE=n on
+>>>>>>>>>> spider_defconfig
+>>>>>>>>>>>> this doesn't do anything
+>>>>>>>>>>>>>     The build (make spider_defconfig) ignores it and say that " No
+>>>>>> change
+>>>>>>>> to
+>>>>>>>>>>>> .config ".
+>>>>>>>>>>>>
+>>>>>>>>>>>> Another symbol forces it to be enabled. If you are curious, run
+>> make
+>>>>>>>>>>>> menuconfig
+>>>>>>>>>>>> and then search (/) for the symbol and it will list, whether it's
+>>>> enabled
+>>>>>>>> and
+>>>>>>>>>>>> why:
+>>>>>>>>>>>>
+>>>>>>>>>>>>   Selected by [y]:
+>>>>>>>>>>>>     - PBL_MULTI_IMAGES [=y] && HAVE_PBL_MULTI_IMAGES [=y]
+>>>>>>>>>>>>
+>>>>>>>>>>>> I'd suggest you avoid modifying the .config file manually. always
+>> use
+>>>>>>>>>>>> menuconfig.
+>>>>>>>>>>>>
+>>>>>>>>>>>>> 4. I also tried to understand how to implement PUTC_LL but not
+>>>> sure
+>>>>>> I
+>>>>>>>>>>>> understand.
+>>>>>>>>>>>>>    4.1 When I set "CONFIG_DEBUG_LL=y" on spider_defconfig it is
+>>>>>> again
+>>>>>>>>>> not
+>>>>>>>>>>>> written to .config and I get " No change to .config " message.
+>>>>>>>>>>>>
+>>>>>>>>>>>> You must:
+>>>>>>>>>>>>
+>>>>>>>>>>>>   - select HAS_DEBUG_LL from MACH_SPIDER
+>>>>>>>>>>>>   - Add your arch to arch/arm/include/asm/debug_ll.h
+>>>>>>>>>>>>   - Then implement PUTC_LL in e.g. mach/spider/debug_ll.h
+>>>>>>>>>>>>
+>>>>>>>>>>>>>    4.2 Do I need to have my own debug_ll.h file?
+>>>>>>>>>>>>
+>>>>>>>>>>>> Yes. See above.
+>>>>>>>>>>>>
+>>>>>>>>>>>>> 5. When I make changes to spider_defconfig and try to
+>> regenerate
+>>>>>> the
+>>>>>>>>>>>> .config and I get " No change to .config " message, does it mean
+>> that
+>>>>>>>> those
+>>>>>>>>>>>> macros are "hidden" symbols like you said about the
+>>>>>> CONFIG_CPU_V8?
+>>>>>>>>>>>>
+>>>>>>>>>>>> Yes. Just check menuconfig to see how symbols relate to each
+>> other.
+>>>>>>>>>>>> This is 1:1 like it's in Linux, so it'll come in handy when you do
+>>>>>>>>>>>> the kernel port too ;)
+>>>>>>>>>>>>
+>>>>>>>>>>>>> Apologize for so many questions :-)
+>>>>>>>>>>>>
+>>>>>>>>>>>> No problem. Looking forward to your patches ;)
+>>>>>>>>>>>>
+>>>>>>>>>>>>
+>>>>>>>>>>>> Cheers,
+>>>>>>>>>>>> Ahmad
+>>>>>>>>>>>>
+>>>>>>>>>>>>> Cheers,
+>>>>>>>>>>>>> Lior.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> -----Original Message-----
+>>>>>>>>>>>>> From: Lior Weintraub
+>>>>>>>>>>>>> Sent: Sunday, May 28, 2023 11:16 PM
+>>>>>>>>>>>>> To: Ahmad Fatoum <ahmad@a3f.at>;
+>> barebox@lists.infradead.org
+>>>>>>>>>>>>> Subject: RE: [PATCH v2] Porting barebox to a new SoC
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Hi Ahmad,
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Thank you so much for your kind support!
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Indeed we also have a 16GB DRAM that starts from address 0
+>>>>>> (though
+>>>>>>>>>>>> currently we don't have the controller settings (under
+>>>> development)).
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> I also wrote the BootROM (BL1) for this SoC (128KB ROM @
+>>>> address
+>>>>>>>>>>>> 0xC004000000).
+>>>>>>>>>>>>> I understand now that it would be best for me to develop BL2
+>> that
+>>>>>> will
+>>>>>>>> run
+>>>>>>>>>>>> from our SRAM.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> As this BL2 code is bare-metal I have no problem or limitations
+>> with
+>>>>>> the
+>>>>>>>> 40
+>>>>>>>>>>>> bit addresses.
+>>>>>>>>>>>>> The BL2 code will initialize the DRAM controller and then copy
+>>>>>> Barebox
+>>>>>>>>>> image
+>>>>>>>>>>>> from NOR Flash to address 0 of the DRAM.
+>>>>>>>>>>>>> Our NOR Flash is 128MB in size and it is accessed via QSPI
+>>>> controller.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> I tried applying your suggested patch but got an error while
+>> doing
+>>>> so:
+>>>>>>>>>>>>> $git apply 0002-Ahmad.patch
+>>>>>>>>>>>>> 0002-Ahmad.patch:115: trailing whitespace.
+>>>>>>>>>>>>>       .of_compatible = spider_board_of_match, };
+>>>>>>>>>>>>> error: corrupt patch at line 117
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> After some digging I found that my Outlook probably messed
+>> with
+>>>>>> the
+>>>>>>>>>> patch
+>>>>>>>>>>>> format (even though I am using text only and no HTML format).
+>>>>>>>>>>>>> When I went to the web and copied the patch from there
+>> (mailing
+>>>> list
+>>>>>>>>>>>> archive) it was working well (i.e. no compilation error).
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Cheers,
+>>>>>>>>>>>>> Lior.
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> -----Original Message-----
+>>>>>>>>>>>>> From: Ahmad Fatoum <ahmad@a3f.at>
+>>>>>>>>>>>>> Sent: Sunday, May 28, 2023 6:38 PM
+>>>>>>>>>>>>> To: barebox@lists.infradead.org
+>>>>>>>>>>>>> Cc: Lior Weintraub <liorw@pliops.com>
+>>>>>>>>>>>>> Subject: [PATCH v2] Porting barebox to a new SoC
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> CAUTION: External Sender
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> From: Lior Weintraub <liorw@pliops.com>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Hi,
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> I tried to follow the porting guide on https://ddec1-0-en-
+>>>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>
+>>>>>>
+>>>>
+>> ctp.trendmicro.com:443/wis/clicktime/v1/query?url=https%3a%2f%2fwww.
+>>>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>
+>>>>>>
+>>>>
+>> barebox.org%2fdoc%2flatest%2fdevel%2fporting.html%23&umid=60097eda
+>>>>>>>>>>>> -f136-45a1-9c8e-
+>>>>>>>>>>>>
+>>>>>> cf6a76e45cf8&auth=860a7ebb9feba264acc79b6e38eb59582349362c-
+>>>>>>>>>>>> 480ae23736add41c88ab8d30c090a75517ca7f9e but couldn't
+>>>> follow
+>>>>>>>> the
+>>>>>>>>>>>> instructions.
+>>>>>>>>>>>>> I would like to port barebox to a new SoC (which is not a
+>> derivative
+>>>> of
+>>>>>>>> any
+>>>>>>>>>>>> known SoC).
+>>>>>>>>>>>>> It has the following:
+>>>>>>>>>>>>> * Single Cortex A53
+>>>>>>>>>>>>> * SRAM (4MB) located on address 0xC000000000
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> The below patch shows my initial test to try and have a starting
+>>>> point.
+>>>>>>>>>>>>> I am setting env variables:
+>>>>>>>>>>>>> export ARCH=arm64
+>>>>>>>>>>>>> export CROSS_COMPILE=/home/pliops/workspace/ARM/arm-
+>>>> gnu-
+>>>>>>>>>>>> toolchain/bin/aarch64-none-elf-
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Then I build with:
+>>>>>>>>>>>>> make spider_defconfig && make
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> This gives an error:
+>>>>>>>>>>>>> aarch64-none-elf-gcc: error: unrecognized argument in option '-
+>>>>>>>>>> mabi=apcs-
+>>>>>>>>>>>> gnu'
+>>>>>>>>>>>>> aarch64-none-elf-gcc: note: valid arguments to '-mabi=' are:
+>> ilp32
+>>>>>> lp64
+>>>>>>>>>>>>> aarch64-none-elf-gcc: error: unrecognized command-line option
+>> '-
+>>>>>>>> msoft-
+>>>>>>>>>>>> float'
+>>>>>>>>>>>>> aarch64-none-elf-gcc: error: unrecognized command-line option
+>> '-
+>>>>>> mno-
+>>>>>>>>>>>> unaligned-access'
+>>>>>>>>>>>>> /home/pliops/workspace/simplest-linux-
+>>>>>>>>>>>> demo/barebox/scripts/Makefile.build:140: recipe for target
+>>>>>>>>>>>> 'scripts/mod/empty.o' failed
+>>>>>>>>>>>>> make[2]: *** [scripts/mod/empty.o] Error 1
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> Not sure why the compiler flags get -mabi=apcs-gnu when I
+>>>> explicitly
+>>>>>> set
+>>>>>>>>>>>> CONFIG_CPU_V8 and the arch/arm/Makefile has:
+>>>>>>>>>>>>> ifeq ($(CONFIG_CPU_V8), y)
+>>>>>>>>>>>>> CFLAGS_ABI      :=-mabi=lp64
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> The changes I did:
+>>>>>>>>>>>>> >From 848b5f9b18bb1bb96d197cbc1b368ee0a729d581 Mon
+>>>> Sep
+>>>>>> 17
+>>>>>>>>>>>> 00:00:00 2001
+>>>>>>>>>>>>> ---
+>>>>>>>>>>>>>  arch/arm/Kconfig                      | 13 ++++++++
+>>>>>>>>>>>>>  arch/arm/Makefile                     |  1 +
+>>>>>>>>>>>>>  arch/arm/boards/Makefile              |  1 +
+>>>>>>>>>>>>>  arch/arm/boards/spider-evk/Makefile   |  4 +++
+>>>>>>>>>>>>>  arch/arm/boards/spider-evk/board.c    | 26 +++++++++++++++
+>>>>>>>>>>>>>  arch/arm/boards/spider-evk/lowlevel.c | 30
+>> +++++++++++++++++
+>>>>>>>>>>>>>  arch/arm/configs/spider_defconfig     |  8 +++++
+>>>>>>>>>>>>>  arch/arm/dts/Makefile                 |  1 +
+>>>>>>>>>>>>>  arch/arm/dts/spider-mk1-evk.dts       | 10 ++++++
+>>>>>>>>>>>>>  arch/arm/dts/spider-mk1.dtsi          | 46
+>>>>>>>> +++++++++++++++++++++++++++
+>>>>>>>>>>>>>  arch/arm/mach-spider/Kconfig          | 16 ++++++++++
+>>>>>>>>>>>>>  arch/arm/mach-spider/Makefile         |  1 +
+>>>>>>>>>>>>>  arch/arm/mach-spider/lowlevel.c       | 14 ++++++++
+>>>>>>>>>>>>>  images/Makefile                       |  1 +
+>>>>>>>>>>>>>  images/Makefile.spider                |  5 +++
+>>>>>>>>>>>>>  include/mach/spider/lowlevel.h        |  7 ++++
+>>>>>>>>>>>>>  16 files changed, 184 insertions(+)
+>>>>>>>>>>>>>  create mode 100644 arch/arm/boards/spider-evk/Makefile
+>>>>>>>>>>>>>  create mode 100644 arch/arm/boards/spider-evk/board.c
+>>>>>>>>>>>>>  create mode 100644 arch/arm/boards/spider-evk/lowlevel.c
+>>>>>>>>>>>>>  create mode 100644 arch/arm/configs/spider_defconfig  create
+>>>>>> mode
+>>>>>>>>>>>> 100644 arch/arm/dts/spider-mk1-evk.dts  create mode 100644
+>>>>>>>>>>>> arch/arm/dts/spider-mk1.dtsi  create mode 100644
+>>>> arch/arm/mach-
+>>>>>>>>>>>> spider/Kconfig  create mode 100644 arch/arm/mach-
+>>>> spider/Makefile
+>>>>>>>>>> create
+>>>>>>>>>>>> mode 100644 arch/arm/mach-spider/lowlevel.c  create mode
+>>>> 100644
+>>>>>>>>>>>> images/Makefile.spider  create mode 100644
+>>>>>>>>>> include/mach/spider/lowlevel.h
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig index
+>>>>>>>>>>>> e76ee0f6dfe1..e5dcf128447e 100644
+>>>>>>>>>>>>> --- a/arch/arm/Kconfig
+>>>>>>>>>>>>> +++ b/arch/arm/Kconfig
+>>>>>>>>>>>>> @@ -255,6 +255,18 @@ config ARCH_ROCKCHIP
+>>>>>>>>>>>>>         select HAS_DEBUG_LL
+>>>>>>>>>>>>>         imply GPIO_ROCKCHIP
+>>>>>>>>>>>>>
+>>>>>>>>>>>>> +config ARCH_SPIDER
+>>>>>>>>>>>>> +       bool "Pliops Spider based"
+>>>>>>>>>>>>> +       depends on 64BIT
+>>>>>>>>>>>>> +       depends on ARCH_MULTIARCH
+>>>>>>>>>>>>> +       select GPIOLIB
+>>>>>>>>>>>>> +       select HAVE_PBL_MULTI_IMAGES
+>>>>>>>>>>>>> +       select COMMON_CLK
+>>>>>>>>>>>>> +       select CLKDEV_LOOKUP
+>>>>>>>>>>>>> +       select COMMON_CLK_OF_PROVIDER
+>>>>>>>>>>>>> +       select OFTREE
+>>>>>>>>>>>>> +       select OFDEVICE
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>>  config ARCH_STM32MP
+>>>>>>>>>>>>>         bool "STMicroelectronics STM32MP"
+>>>>>>>>>>>>>         depends on 32BIT
+>>>>>>>>>>>>> @@ -331,6 +343,7 @@ source "arch/arm/mach-omap/Kconfig"
+>>>>>>>>>>>>>  source "arch/arm/mach-pxa/Kconfig"
+>>>>>>>>>>>>>  source "arch/arm/mach-rockchip/Kconfig"
+>>>>>>>>>>>>>  source "arch/arm/mach-socfpga/Kconfig"
+>>>>>>>>>>>>> +source "arch/arm/mach-spider/Kconfig"
+>>>>>>>>>>>>>  source "arch/arm/mach-stm32mp/Kconfig"
+>>>>>>>>>>>>>  source "arch/arm/mach-versatile/Kconfig"
+>>>>>>>>>>>>>  source "arch/arm/mach-vexpress/Kconfig"
+>>>>>>>>>>>>> diff --git a/arch/arm/Makefile b/arch/arm/Makefile index
+>>>>>>>>>>>> 35ebc70f44e2..4c63dfee48f4 100644
+>>>>>>>>>>>>> --- a/arch/arm/Makefile
+>>>>>>>>>>>>> +++ b/arch/arm/Makefile
+>>>>>>>>>>>>> @@ -101,6 +101,7 @@ machine-$(CONFIG_ARCH_MXS)          +=
+>>>> mxs
+>>>>>>>>>>>>>  machine-$(CONFIG_ARCH_MVEBU)           += mvebu
+>>>>>>>>>>>>>  machine-$(CONFIG_ARCH_NOMADIK)         += nomadik
+>>>>>>>>>>>>>  machine-$(CONFIG_ARCH_OMAP)            += omap
+>>>>>>>>>>>>> +machine-$(CONFIG_ARCH_SPIDER)          += spider
+>>>>>>>>>>>>>  machine-$(CONFIG_ARCH_PXA)             += pxa
+>>>>>>>>>>>>>  machine-$(CONFIG_ARCH_ROCKCHIP)                += rockchip
+>>>>>>>>>>>>>  machine-$(CONFIG_ARCH_SAMSUNG)         += samsung
+>>>>>>>>>>>>> diff --git a/arch/arm/boards/Makefile
+>>>> b/arch/arm/boards/Makefile
+>>>>>>>> index
+>>>>>>>>>>>> 2877debad535..6fe0a90c81ea 100644
+>>>>>>>>>>>>> --- a/arch/arm/boards/Makefile
+>>>>>>>>>>>>> +++ b/arch/arm/boards/Makefile
+>>>>>>>>>>>>> @@ -135,6 +135,7 @@ obj-
+>>>>>>>>>>>> $(CONFIG_MACH_SOCFPGA_TERASIC_DE10_NANO)        +=
+>> terasic-
+>>>>>>>> de10-
+>>>>>>>>>>>> nano/
+>>>>>>>>>>>>>  obj-$(CONFIG_MACH_SOCFPGA_TERASIC_SOCKIT)      +=
+>> terasic-
+>>>>>>>> sockit/
+>>>>>>>>>>>>>  obj-$(CONFIG_MACH_SOLIDRUN_CUBOX)              += solidrun-
+>>>> cubox/
+>>>>>>>>>>>>>  obj-$(CONFIG_MACH_SOLIDRUN_MICROSOM)           +=
+>> solidrun-
+>>>>>>>>>>>> microsom/
+>>>>>>>>>>>>> +obj-$(CONFIG_MACH_SPIDER_MK1_EVK)              += spider-evk/
+>>>>>>>>>>>>>  obj-$(CONFIG_MACH_STM32MP15XX_DKX)             +=
+>>>>>> stm32mp15xx-
+>>>>>>>>>> dkx/
+>>>>>>>>>>>>>  obj-$(CONFIG_MACH_STM32MP13XX_DK)              +=
+>>>> stm32mp13xx-
+>>>>>>>> dk/
+>>>>>>>>>>>>>  obj-$(CONFIG_MACH_LXA_MC1)                     += lxa-mc1/
+>>>>>>>>>>>>> diff --git a/arch/arm/boards/spider-evk/Makefile
+>>>>>>>>>>>> b/arch/arm/boards/spider-evk/Makefile
+>>>>>>>>>>>>> new file mode 100644
+>>>>>>>>>>>>> index 000000000000..da63d2625f7a
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/arch/arm/boards/spider-evk/Makefile
+>>>>>>>>>>>>> @@ -0,0 +1,4 @@
+>>>>>>>>>>>>> +# SPDX-License-Identifier: GPL-2.0-only
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +obj-y += board.o
+>>>>>>>>>>>>> +lwl-y += lowlevel.o
+>>>>>>>>>>>>> diff --git a/arch/arm/boards/spider-evk/board.c
+>>>>>>>>>> b/arch/arm/boards/spider-
+>>>>>>>>>>>> evk/board.c
+>>>>>>>>>>>>> new file mode 100644
+>>>>>>>>>>>>> index 000000000000..3920e83b457d
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/arch/arm/boards/spider-evk/board.c
+>>>>>>>>>>>>> @@ -0,0 +1,26 @@
+>>>>>>>>>>>>> +#include <bbu.h>
+>>>>>>>>>>>>> +#include <boot.h>
+>>>>>>>>>>>>> +#include <bootm.h>
+>>>>>>>>>>>>> +#include <common.h>
+>>>>>>>>>>>>> +#include <deep-probe.h>
+>>>>>>>>>>>>> +#include <environment.h>
+>>>>>>>>>>>>> +#include <fcntl.h>
+>>>>>>>>>>>>> +#include <globalvar.h>
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +static int spider_board_probe(struct device *dev) {
+>>>>>>>>>>>>> +      /* Do some board-specific setup */
+>>>>>>>>>>>>> +      return 0;
+>>>>>>>>>>>>> +}
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +static const struct of_device_id spider_board_of_match[] = {
+>>>>>>>>>>>>> +      { .compatible = "pliops,spider-mk1-evk" },
+>>>>>>>>>>>>> +      { /* sentinel */ },
+>>>>>>>>>>>>> +};
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +static struct driver spider_board_driver = {
+>>>>>>>>>>>>> +      .name = "board-spider",
+>>>>>>>>>>>>> +      .probe = spider_board_probe,
+>>>>>>>>>>>>> +      .of_compatible = spider_board_of_match, };
+>>>>>>>>>>>>> +device_platform_driver(spider_board_driver);
+>>>>>>>>>>>>> diff --git a/arch/arm/boards/spider-evk/lowlevel.c
+>>>>>>>>>>>> b/arch/arm/boards/spider-evk/lowlevel.c
+>>>>>>>>>>>>> new file mode 100644
+>>>>>>>>>>>>> index 000000000000..e36fcde4208e
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/arch/arm/boards/spider-evk/lowlevel.c
+>>>>>>>>>>>>> @@ -0,0 +1,30 @@
+>>>>>>>>>>>>> +#include <common.h>
+>>>>>>>>>>>>> +#include <asm/barebox-arm.h>
+>>>>>>>>>>>>> +#include <mach/spider/lowlevel.h>
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +#define BASE_ADDR       (0xD000307000)
+>>>>>>>>>>>>> +#define GPRAM_ADDR      (0xC000000000)
+>>>>>>>>>>>>> +#define MY_STACK_TOP    (0xC000000000 + SZ_2M) // Set the
+>>>> stack
+>>>>>>>>>> 2MB
+>>>>>>>>>>>> from GPRAM start (excatly in the middle)
+>>>>>>>>>>>>> +static inline void spider_serial_putc(void *base, int c) {
+>>>>>>>>>>>>> +//     if (!(readl(base + UCR1) & UCR1_UARTEN))
+>>>>>>>>>>>>> +//             return;
+>>>>>>>>>>>>> +//
+>>>>>>>>>>>>> +//     while (!(readl(base + USR2) & USR2_TXDC));
+>>>>>>>>>>>>> +//
+>>>>>>>>>>>>> +//     writel(c, base + URTX0);
+>>>>>>>>>>>>> +}
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +ENTRY_FUNCTION_WITHSTACK(start_spider_mk1_evk,
+>>>>>>>> MY_STACK_TOP,
+>>>>>>>>>>>> r0, r1,
+>>>>>>>>>>>>> +r2) {
+>>>>>>>>>>>>> +       extern char __dtb_spider_mk1_evk_start[];
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +       spider_lowlevel_init();
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +       relocate_to_current_adr();
+>>>>>>>>>>>>> +       setup_c();
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +       pbl_set_putc(spider_serial_putc, (void *)BASE_ADDR);
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +       barebox_arm_entry(GPRAM_ADDR, SZ_2M,
+>>>>>>>>>>>>> +__dtb_spider_mk1_evk_start); }
+>>>>>>>>>>>>> diff --git a/arch/arm/configs/spider_defconfig
+>>>>>>>>>>>> b/arch/arm/configs/spider_defconfig
+>>>>>>>>>>>>> new file mode 100644
+>>>>>>>>>>>>> index 000000000000..c91bb889d97f
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/arch/arm/configs/spider_defconfig
+>>>>>>>>>>>>> @@ -0,0 +1,8 @@
+>>>>>>>>>>>>> +CONFIG_ARCH_SPIDER=y
+>>>>>>>>>>>>> +CONFIG_MACH_SPIDER_MK1_EVK=y
+>>>>>>>>>>>>> +CONFIG_BOARD_ARM_GENERIC_DT=y
+>>>>>>>>>>>>> +CONFIG_MALLOC_TLSF=y
+>>>>>>>>>>>>> +CONFIG_KALLSYMS=y
+>>>>>>>>>>>>> +CONFIG_RELOCATABLE=y
+>>>>>>>>>>>>> +CONFIG_CONSOLE_ALLOW_COLOR=y
+>>>>>>>>>>>>> +CONFIG_PBL_CONSOLE=y
+>>>>>>>>>>>>> diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+>> index
+>>>>>>>>>>>> 98f4c4e0194b..94b304d4878f 100644
+>>>>>>>>>>>>> --- a/arch/arm/dts/Makefile
+>>>>>>>>>>>>> +++ b/arch/arm/dts/Makefile
+>>>>>>>>>>>>> @@ -134,6 +134,7 @@ lwl-
+>> $(CONFIG_MACH_SOLIDRUN_CUBOX)
+>>>>>> +=
+>>>>>>>>>> dove-
+>>>>>>>>>>>> cubox-bb.dtb.o
+>>>>>>>>>>>>>  lwl-$(CONFIG_MACH_SOLIDRUN_MICROSOM) += imx6dl-
+>>>>>>>>>>>> hummingboard.dtb.o imx6q-hummingboard.dtb.o \
+>>>>>>>>>>>>>                                 imx6dl-hummingboard2.dtb.o imx6q-
+>>>>>>>>>>>> hummingboard2.dtb.o \
+>>>>>>>>>>>>>                                 imx6q-h100.dtb.o
+>>>>>>>>>>>>> +lwl-$(CONFIG_MACH_SPIDER_MK1_EVK) += spider-mk1-
+>>>> evk.dtb.o
+>>>>>>>>>>>>>  lwl-$(CONFIG_MACH_SKOV_IMX6) += imx6s-skov-imx6.dtb.o
+>>>>>> imx6dl-
+>>>>>>>>>> skov-
+>>>>>>>>>>>> imx6.dtb.o imx6q-skov-imx6.dtb.o
+>>>>>>>>>>>>>  lwl-$(CONFIG_MACH_SKOV_ARM9CPU) += at91-skov-
+>>>>>> arm9cpu.dtb.o
+>>>>>>>>>>>>>  lwl-$(CONFIG_MACH_SEEED_ODYSSEY) += stm32mp157c-
+>>>>>>>> odyssey.dtb.o
+>>>>>>>>>>>> diff --git a/arch/arm/dts/spider-mk1-evk.dts
+>>>> b/arch/arm/dts/spider-
+>>>>>>>> mk1-
+>>>>>>>>>>>> evk.dts new file mode 100644 index
+>>>> 000000000000..b8081cb85bf8
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/arch/arm/dts/spider-mk1-evk.dts
+>>>>>>>>>>>>> @@ -0,0 +1,10 @@
+>>>>>>>>>>>>> +// SPDX-License-Identifier: GPL-2.0 OR X11
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +/dts-v1/;
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +#include "spider-mk1.dtsi"
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +/ {
+>>>>>>>>>>>>> +       model = "Pliops Spider MK-I EVK";
+>>>>>>>>>>>>> +       compatible = "pliops,spider-mk1-evk"; };
+>>>>>>>>>>>>> diff --git a/arch/arm/dts/spider-mk1.dtsi
+>> b/arch/arm/dts/spider-
+>>>>>>>> mk1.dtsi
+>>>>>>>>>>>> new file mode 100644 index 000000000000..d4613848169d
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/arch/arm/dts/spider-mk1.dtsi
+>>>>>>>>>>>>> @@ -0,0 +1,46 @@
+>>>>>>>>>>>>> +// SPDX-License-Identifier: GPL-2.0 OR X11
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +/ {
+>>>>>>>>>>>>> +       #address-cells = <2>;
+>>>>>>>>>>>>> +       #size-cells = <2>;
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +       chosen {
+>>>>>>>>>>>>> +               stdout-path = &uart0;
+>>>>>>>>>>>>> +       };
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +       aliases {
+>>>>>>>>>>>>> +               serial0 = &uart0;
+>>>>>>>>>>>>> +       };
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +       cpus {
+>>>>>>>>>>>>> +               #address-cells = <1>;
+>>>>>>>>>>>>> +               #size-cells = <0>;
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +               cpu0: cpu@0 {
+>>>>>>>>>>>>> +                       device_type = "cpu";
+>>>>>>>>>>>>> +                       compatible = "arm,cortex-a53";
+>>>>>>>>>>>>> +                       reg = <0x0>;
+>>>>>>>>>>>>> +               };
+>>>>>>>>>>>>> +       };
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +       memory@1000000 {
+>>>>>>>>>>>>> +               reg = <0x0 0x1000000 0x0 0x400000>; /* 128M */
+>>>>>>>>>>>>> +               device_type = "memory";
+>>>>>>>>>>>>> +       };
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +       soc {
+>>>>>>>>>>>>> +               #address-cells = <2>;
+>>>>>>>>>>>>> +               #size-cells = <2>;
+>>>>>>>>>>>>> +               ranges;
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +               sram@c000000000 {
+>>>>>>>>>>>>> +                       compatible = "mmio-sram";
+>>>>>>>>>>>>> +                       reg = <0xc0 0x0 0x0 0x400000>;
+>>>>>>>>>>>>> +               };
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +               uart0: serial@d000307000 {
+>>>>>>>>>>>>> +                       compatible = "pliops,spider-uart";
+>>>>>>>>>>>>> +                       reg = <0xd0 0x307000 0 0x1000>;
+>>>>>>>>>>>>> +               };
+>>>>>>>>>>>>> +       };
+>>>>>>>>>>>>> +};
+>>>>>>>>>>>>> diff --git a/arch/arm/mach-spider/Kconfig b/arch/arm/mach-
+>>>>>>>>>> spider/Kconfig
+>>>>>>>>>>>> new file mode 100644 index 000000000000..6d2f888a5fd8
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/arch/arm/mach-spider/Kconfig
+>>>>>>>>>>>>> @@ -0,0 +1,16 @@
+>>>>>>>>>>>>> +# SPDX-License-Identifier: GPL-2.0-only
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +if ARCH_SPIDER
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +config ARCH_SPIDER_MK1
+>>>>>>>>>>>>> +       bool
+>>>>>>>>>>>>> +       select CPU_V8
+>>>>>>>>>>>>> +       help
+>>>>>>>>>>>>> +         The first Cortex-A53-based SoC of the spider family.
+>>>>>>>>>>>>> +         This symbol is invisble and select by boards
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +config MACH_SPIDER_MK1_EVK
+>>>>>>>>>>>>> +       bool "Pliops Spider Reference Design Board"
+>>>>>>>>>>>>> +       select ARCH_SPIDER_MK1
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +endif
+>>>>>>>>>>>>> diff --git a/arch/arm/mach-spider/Makefile b/arch/arm/mach-
+>>>>>>>>>>>> spider/Makefile new file mode 100644 index
+>>>>>>>>>> 000000000000..b08c4a93ca27
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/arch/arm/mach-spider/Makefile
+>>>>>>>>>>>>> @@ -0,0 +1 @@
+>>>>>>>>>>>>> +lwl-y += lowlevel.o
+>>>>>>>>>>>>> diff --git a/arch/arm/mach-spider/lowlevel.c b/arch/arm/mach-
+>>>>>>>>>>>> spider/lowlevel.c new file mode 100644 index
+>>>>>>>>>>>> 000000000000..5d62ef0f39e5
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/arch/arm/mach-spider/lowlevel.c
+>>>>>>>>>>>>> @@ -0,0 +1,14 @@
+>>>>>>>>>>>>> +// SPDX-License-Identifier:     GPL-2.0+
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +#include <linux/types.h>
+>>>>>>>>>>>>> +#include <mach/spider/lowlevel.h>
+>>>>>>>>>>>>> +#include <asm/barebox-arm-head.h>
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +void spider_lowlevel_init(void)
+>>>>>>>>>>>>> +{
+>>>>>>>>>>>>> +       arm_cpu_lowlevel_init();
+>>>>>>>>>>>>> +       /*
+>>>>>>>>>>>>> +        * not yet relocated, only do writel/readl for stuff that's
+>>>>>>>>>>>>> +        * critical to run early. No global variables allowed.
+>>>>>>>>>>>>> +        */
+>>>>>>>>>>>>> +}
+>>>>>>>>>>>>> diff --git a/images/Makefile b/images/Makefile index
+>>>>>>>>>>>> c93f9e268978..97521e713228 100644
+>>>>>>>>>>>>> --- a/images/Makefile
+>>>>>>>>>>>>> +++ b/images/Makefile
+>>>>>>>>>>>>> @@ -150,6 +150,7 @@ include $(srctree)/images/Makefile.mxs
+>>>>>>>> include
+>>>>>>>>>>>> $(srctree)/images/Makefile.omap3  include
+>>>>>>>>>>>> $(srctree)/images/Makefile.rockchip
+>>>>>>>>>>>>>  include $(srctree)/images/Makefile.socfpga
+>>>>>>>>>>>>> +include $(srctree)/images/Makefile.spider
+>>>>>>>>>>>>>  include $(srctree)/images/Makefile.stm32mp
+>>>>>>>>>>>>>  include $(srctree)/images/Makefile.tegra  include
+>>>>>>>>>>>> $(srctree)/images/Makefile.versatile
+>>>>>>>>>>>>> diff --git a/images/Makefile.spider b/images/Makefile.spider
+>> new
+>>>> file
+>>>>>>>>>> mode
+>>>>>>>>>>>> 100644 index 000000000000..c32f2762df04
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/images/Makefile.spider
+>>>>>>>>>>>>> @@ -0,0 +1,5 @@
+>>>>>>>>>>>>> +# SPDX-License-Identifier: GPL-2.0-only
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +pblb-$(CONFIG_MACH_SPIDER_MK1_EVK) +=
+>>>>>> start_spider_mk1_evk
+>>>>>>>>>>>>> +FILE_barebox-spider-mk1-evk.img =
+>> start_spider_mk1_evk.pblb
+>>>>>>>>>>>>> +image-$(CONFIG_MACH_SPIDER_MK1_EVK) += barebox-
+>> spider-
+>>>>>> mk1-
+>>>>>>>>>>>> evk.img
+>>>>>>>>>>>>> diff --git a/include/mach/spider/lowlevel.h
+>>>>>>>>>>>> b/include/mach/spider/lowlevel.h new file mode 100644 index
+>>>>>>>>>>>> 000000000000..6e0ce1c77f7e
+>>>>>>>>>>>>> --- /dev/null
+>>>>>>>>>>>>> +++ b/include/mach/spider/lowlevel.h
+>>>>>>>>>>>>> @@ -0,0 +1,7 @@
+>>>>>>>>>>>>> +/* SPDX-License-Identifier: GPL-2.0+ */ #ifndef
+>>>> __MACH_SPIDER_H_
+>>>>>>>>>>>>> +#define __MACH_SPIDER_H_
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +void spider_lowlevel_init(void);
+>>>>>>>>>>>>> +
+>>>>>>>>>>>>> +#endif
+>>>>>>>>>>>>> --
+>>>>>>>>>>>>> 2.38.4
+>>>>>>>>>>>>>
+>>>>>>>>>>>>>
+>>>>>>>>>>>>
+>>>>>>>>>>>> --
+>>>>>>>>>>>> Pengutronix e.K.                           |                             |
+>>>>>>>>>>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>>>>>>>>>>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-
+>> 206917-0
+>>>>>> |
+>>>>>>>>>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-
+>> 206917-
+>>>>>> 5555
+>>>>>>>> |
+>>>>>>>>>>>
+>>>>>>>>>>
+>>>>>>>>>> --
+>>>>>>>>>> Pengutronix e.K.                           |                             |
+>>>>>>>>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>>>>>>>>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0
+>>>> |
+>>>>>>>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-
+>>>> 5555
+>>>>>> |
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> --
+>>>>>>>> Pengutronix e.K.                           |                             |
+>>>>>>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>>>>>>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0
+>> |
+>>>>>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-
+>> 5555
+>>>> |
+>>>>>>>
+>>>>>>
+>>>>>> --
+>>>>>> Pengutronix e.K.                           |                             |
+>>>>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>>>>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>>>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555
+>> |
+>>>>>
+>>>>
+>>>> --
+>>>> Pengutronix e.K.                           |                             |
+>>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>>
+>>
+>> --
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
