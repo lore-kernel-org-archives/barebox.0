@@ -3,62 +3,55 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6SgN-00Cqo9-Mh
+	id 1q6SgN-00CqoA-UZ
 	for lore@lore.pengutronix.de; Tue, 06 Jun 2023 11:08:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6SgL-0002Rp-8L
+	id 1q6SgL-0002Ro-7X
 	for lore@pengutronix.de; Tue, 06 Jun 2023 11:08:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MsF8q8iTsvlftMuAefiisSBblnO60FJiY5oikjq+two=; b=MMenc1iUWDKZ8z/70g0fQKGdj5
-	kO/hggw3m6/PynA2hJ+4q2kcI0Qk1yqi51uFyT/TSWA5u/gILMuVZUfvrxXg2yzaiJxefQUlrq9fw
-	M8G4SFNupfYKT5yJO6khbvUdu6zIWgN9rtPc0DetIvmIe6tkheRCww+V2LBdNUlBsmX/6u4h1aW8U
-	JB5BcYTY/zeRwuOItyC4wo4E1wyHO0DcEjlmfe0zyIDwH7g9odCPt7E4uq2tfkdFHwdVUM031qWjs
-	NSCbCGe7DJuZXzqcs+6GsWJPzJKVbvvYKHclJwh5lqq8l1ls+DkPEoyd47phlrtmzXoXTxx5LVD9b
-	ykdmQ5pw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8vfvv0w8vwnnwdy/ZE8yk9fC7PUf072GTzhbfE7Nmfc=; b=N4x0MLmd8KlE6zPn2Nb5/qgbZe
+	Ddle22Zg1ncJPWr2T8XjAFAD0wj6PlZMaHW6epx4i2FZbUS0uiP5le4EQ4+JSPVr5afTZJZj0esgF
+	Ig8+uCRDIc74kqErI12/ogCubFNyuWtH2u5jxXtnrfjXAcBS7mhXeJpQ695xvI3SmshuRESj1HG+a
+	O8N7w+gLj8IK8jHe2LINMYvSxX9HueZBG8Pa2CDAe0eRrCxAvt6kP9GNd/Brfk14gmifjfRZFVU0D
+	o103eSU+HgrX6uEroolcrxr0Rq/wUkGRUsQxBUpjLTmmFlPHgZKZexu9D93ilCPgwnp/ZbbJ0Fvdn
+	8ePIqyxw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6Sfd-000wfV-2o;
-	Tue, 06 Jun 2023 09:08:05 +0000
+	id 1q6SfA-000wYT-34;
+	Tue, 06 Jun 2023 09:07:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6Sfa-000wev-13
+	id 1q6Sf7-000wXG-1x
 	for barebox@lists.infradead.org;
-	Tue, 06 Jun 2023 09:08:03 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q6SfZ-0002JM-2t; Tue, 06 Jun 2023 11:08:01 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q6SfT-0002ob-6t; Tue, 06 Jun 2023 11:07:55 +0200
-Date: Tue, 6 Jun 2023 11:07:55 +0200
-To: Marc Reilly <marc@cpdesign.com.au>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230606090755.GU18491@pengutronix.de>
-References: <20230602045306.31258-1-marc@cpdesign.com.au>
- <20230602045306.31258-2-marc@cpdesign.com.au>
+	Tue, 06 Jun 2023 09:07:35 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1q6Sf6-0002Ex-BP; Tue, 06 Jun 2023 11:07:32 +0200
+Message-ID: <760edbf3-5767-55ba-3e34-13899be5e693@pengutronix.de>
+Date: Tue, 6 Jun 2023 11:07:32 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230602045306.31258-2-marc@cpdesign.com.au>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Content-Language: en-US
+To: Denis Orlov <denorl2009@gmail.com>, barebox@lists.infradead.org
+References: <20230605202634.42175-1-denorl2009@gmail.com>
+ <20230605202634.42175-15-denorl2009@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230605202634.42175-15-denorl2009@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230606_020802_363313_A5E44125 
-X-CRM114-Status: GOOD (  22.06  )
+X-CRM114-CacheID: sfid-20230606_020733_644156_D5A95C27 
+X-CRM114-Status: GOOD (  17.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,132 +69,72 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v4 1/2] commands: add pwm manipulation command
+Subject: Re: [PATCH 14/17] MIPS: pbl_macros: use generic load/store macros in
+ copy_to_link_location
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi Marc,
+On 05.06.23 22:10, Denis Orlov wrote:
+> This may speed up this code a little on MIPS64, however this also allows
+> us to get rid of unnecessary macro definition there, simplifying the
+> code a tiny bit.
+> 
+> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 
-I applied this with some small changes.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-On Fri, Jun 02, 2023 at 02:53:05PM +1000, Marc Reilly wrote:
-> +static int do_pwm_cmd(int argc, char *argv[])
-> +{
-> +	struct pwm_device *pwm = NULL;
-> +	struct pwm_state state, orig_state;
-> +	int error = 0;
-> +	char *devname = NULL;
-> +	int duty = -1, period = -1;
-> +	int freq = -1, width = -1;
-> +	bool invert_polarity = false, stop = false;
-> +	bool use_default_width = false;
-> +	bool verbose = false;
-> +	int opt;
-> +
-> +	while ((opt = getopt(argc, argv, "d:D:P:f:w:F:isv")) > 0) {
-> +		switch (opt) {
-> +		case 'd':
-> +			devname = optarg;
-> +			break;
-> +		case 'D':
-> +			duty = simple_strtol(optarg, NULL, 0);
-> +			break;
-> +		case 'P':
-> +			period = simple_strtol(optarg, NULL, 0);
-> +			break;
-> +		case 'F':
-> +			/* convenience option for changing frequency without
-> +			 * having to specify duty width */
-> +			use_default_width = true;
-> +			/* fallthrough */
-> +		case 'f':
-> +			freq = simple_strtol(optarg, NULL, 0);
-> +			break;
-> +		case 'w':
-> +			width = simple_strtol(optarg, NULL, 0);
-> +			break;
-> +		case 'i':
-> +			invert_polarity = true;
-> +			break;
-> +		case 's':
-> +			stop = true;
-> +			break;
-> +		case 'v':
-> +			verbose = true;
-> +			break;
-
-		default:
-			return COMMAND_ERROR_USAGE;
-
-> +		}
-> +	}
-> +
-> +	if (!devname) {
-> +		printf(" need to specify a device\n");
-> +		return COMMAND_ERROR_USAGE;
-> +	}
-> +	if ((freq == 0) || (period == 0)) {
-> +		printf(" period or freqency needs to be non-zero\n");
-> +		return COMMAND_ERROR_USAGE;
-> +	}
-> +	if (freq >= 0 && period >= 0) {
-> +		printf(" specify period or frequency, not both\n");
-> +		return COMMAND_ERROR_USAGE;
-> +	}
-> +	if (duty >= 0 && width >= 0) {
-> +		printf(" specify duty or width, not both\n");
-> +		return COMMAND_ERROR_USAGE;
-> +	}
-> +	if (width > 100) {
-> +		printf(" width (%% duty cycle) can't be more than 100%%\n");
-> +		return COMMAND_ERROR_USAGE;
-> +	}
-> +
-> +	pwm = pwm_request(devname);
-> +	if (!pwm) {
-> +		printf(" pwm device %s not found\n", devname);
-> +		return -ENODEV;
-> +	}
-> +
-> +	pwm_get_state(pwm, &state);
-> +
-> +	/* argc will be at least 3 with a valid devname */
-> +	if (verbose || (argc <= 3)) {
-> +		printf("pwm params for '%s':\n", devname);
-> +		printf("  period   : %u (ns)\n", state.period_ns);
-> +		printf("  duty     : %u (ns)\n", state.duty_ns);
-> +		printf("  enabled  : %d\n", state.p_enable);
-> +		printf("  polarity : %s\n", state.polarity == 0 ? "Normal" : "Inverted");
-> +		printf("  freq     : %lu (Hz)\n", HZ_FROM_NANOSECONDS(state.period_ns));
-
-This results in a division by zero crash on a disabled PWM. I changed
-this to:
-
-		if (state.period_ns)
-			printf("  freq     : %lu (Hz)\n", HZ_FROM_NANOSECONDS(state.period_ns));
-		else
-			printf("  freq     : -\n");
-
-
-> +BAREBOX_CMD_HELP_OPT("-d string", "device name (eg 'pwm0')")
-> +BAREBOX_CMD_HELP_OPT("-D number", "duty cycle (ns)")
-> +BAREBOX_CMD_HELP_OPT("-P number", "period (ns)")
-> +BAREBOX_CMD_HELP_OPT("-f number", "frequency (Hz)")
-> +BAREBOX_CMD_HELP_OPT("-w number", "duty cycle (%) - the on 'width' of each cycle")
-
-Replaced 'number' with <duty_ns> and similar.
-
-Sascha
+> ---
+>  arch/mips/include/asm/pbl_macros.h | 21 ++++++++++-----------
+>  1 file changed, 10 insertions(+), 11 deletions(-)
+> 
+> diff --git a/arch/mips/include/asm/pbl_macros.h b/arch/mips/include/asm/pbl_macros.h
+> index ce169a1554..f8629d3f2c 100644
+> --- a/arch/mips/include/asm/pbl_macros.h
+> +++ b/arch/mips/include/asm/pbl_macros.h
+> @@ -120,22 +120,21 @@
+>  	PTR_SUBU	t2, t1, t0	/* t2 <- size of pbl */
+>  	PTR_ADDU	a2, a0, t2	/* a2 <- source end address */
+>  
+> -#define WSIZE	4
+>  copy_loop:
+>  	/* copy from source address [a0] */
+> -	lw	ta0, WSIZE * 0(a0)
+> -	lw	ta1, WSIZE * 1(a0)
+> -	lw	ta2, WSIZE * 2(a0)
+> -	lw	ta3, WSIZE * 3(a0)
+> +	LONG_L	ta0, LONGSIZE * 0(a0)
+> +	LONG_L	ta1, LONGSIZE * 1(a0)
+> +	LONG_L	ta2, LONGSIZE * 2(a0)
+> +	LONG_L	ta3, LONGSIZE * 3(a0)
+>  	/* copy to target address [a1] */
+> -	sw	ta0, WSIZE * 0(a1)
+> -	sw	ta1, WSIZE * 1(a1)
+> -	sw	ta2, WSIZE * 2(a1)
+> -	sw	ta3, WSIZE * 3(a1)
+> -	PTR_ADDI	a0, WSIZE * 4
+> +	LONG_S	ta0, LONGSIZE * 0(a1)
+> +	LONG_S	ta1, LONGSIZE * 1(a1)
+> +	LONG_S	ta2, LONGSIZE * 2(a1)
+> +	LONG_S	ta3, LONGSIZE * 3(a1)
+> +	PTR_ADDI	a0, LONGSIZE * 4
+>  	PTR_SUBU	t3, a0, a2
+>  	blez	t3, copy_loop
+> -	 PTR_ADDI	a1, WSIZE * 4
+> +	 PTR_ADDI	a1, LONGSIZE * 4
+>  
+>  copy_loop_exit:
+>  
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
