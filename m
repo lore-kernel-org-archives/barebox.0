@@ -1,15 +1,15 @@
-Delivery-date: Wed, 07 Jun 2023 14:09:01 +0200
+Delivery-date: Wed, 07 Jun 2023 14:09:02 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ryJ-00EJXC-3j
+	id 1q6ryJ-00EJXD-83
 	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 14:09:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ryE-00042z-4G
+	id 1q6ryF-00043o-5j
 	for lore@pengutronix.de; Wed, 07 Jun 2023 14:09:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hBMfYnVzDEhmRApmOYAaMmaN6twxAvhoRPQvlajgy2g=; b=LU3FHcgjhQ/sIxFQ/pI6y2y6Eu
-	ZQca8NemxtHIfYzks0vRLiKLjb9NtdLZowuIBGuHv0+RCVQIpTrz6dIes7CD1UUzg+44De+RIOKiD
-	ojlEJ7hc2f+Ysv86G974KsRmDU+I0q8kS015y49Bck+D/MWiNqMMkdQjORqZn4ZjwQp+nOqoxTMTZ
-	vFw97FVWNFyJ7vOgzBSZau82IC64LlvHgGaBY+HvnqBvzsRRthzrenUCXNunN31VNqXuSW2jiER79
-	zsDZ2EVtTyFa00iQjQLHKWoFCfrIVN8gb1V+Bhi36hQkWo0pTpNamPs1qhJH9bZUVqwPsa7suHx82
-	iQL+2nNw==;
+	bh=22QivmBpMmeQgnXFWvVvKZJMzRrP7TdlBi64THTNMcQ=; b=Ov/wKU1bYRcbvqLkRKfQQL+o9P
+	270Ed/V/2ULgN4R3SrBcumAgRoj1/bP71YT+A0Mpyyzse/mBxdBboF1yUWwMtrnPONYVW0q2s5RoI
+	iUgegxOMhGUKTYt0jSaN7lEv5JxhnXhFfrzqTnQCGVt/u5d89b3duQB21tTftGQo0M6Fejzq6cWUU
+	aSIh5TkpQDGwz0npEnbO8G6MLtIPb7Cs0fI1quAu6bAmlysi59ernvKDYWu8Q4TX4jdT/erhCvfyT
+	RQKEAuNZqDIHMHcn4yT7areQ6Euuz0zvuFpSCxx6SpmZYpeR6u+dKoF6gPd6l4E7E4P9lJTvBI0Ru
+	/eV+NRjw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwz-005kxU-0H;
-	Wed, 07 Jun 2023 12:07:41 +0000
+	id 1q6rwx-005kw8-27;
+	Wed, 07 Jun 2023 12:07:39 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwl-005knh-1g
+	id 1q6rwk-005knY-2k
 	for barebox@lists.infradead.org;
-	Wed, 07 Jun 2023 12:07:33 +0000
+	Wed, 07 Jun 2023 12:07:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwi-00033d-Nm; Wed, 07 Jun 2023 14:07:24 +0200
+	id 1q6rwi-00032G-50; Wed, 07 Jun 2023 14:07:24 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwi-005jkR-0v; Wed, 07 Jun 2023 14:07:24 +0200
+	id 1q6rwh-005jkC-Ec; Wed, 07 Jun 2023 14:07:23 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwf-00CyNB-3i; Wed, 07 Jun 2023 14:07:21 +0200
+	id 1q6rwf-00CyN7-34; Wed, 07 Jun 2023 14:07:21 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Marco Felsch <m.felsch@pengutronix.de>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 Jun 2023 14:07:08 +0200
-Message-Id: <20230607120714.3083182-14-a.fatoum@pengutronix.de>
+Date: Wed,  7 Jun 2023 14:07:07 +0200
+Message-Id: <20230607120714.3083182-13-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 References: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230607_050727_553484_0AACEF73 
-X-CRM114-Status: GOOD (  13.35  )
+X-CRM114-CacheID: sfid-20230607_050726_919239_D775F53E 
+X-CRM114-Status: GOOD (  17.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,97 +80,192 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 13/19] common: partitions: record whether disk is GPT or MBR partitioned
+Subject: [PATCH v2 12/19] block: parse partition table on block device registration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Currently, the only way to differentiate between a GPT disk and a MBR
-one is to check whether the cdev's device has a guid (=> GPT) or a
-nt_signature (=> MBR) device parameter. We already have a flag parameter
-though, so let's record this info there for easy retrieval.
+Every instance of block device registration is followed by an
+attempt to parse the partition table. Thus move partition table
+parsing into blockdevice_register.
 
-We intentionally don't use the struct cdev::filetype member, because
-we don't want to change behavior of file_detect_type().
+We do away with the warning print as it's superfluous:
+parse_partition_table doesn't return an error if partition table is
+missing and all other errors already result in an error message.
 
 Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - remove unneeded == DEVFS_IS comparison, because constants are
-    single-bit (Marco)
+  - remove extra warning if parse_partition_table fails
   - Add Marco's Reviewed-by
-  - Reorder bits, to reduce diff size
 ---
- common/partitions/dos.c |  2 ++
- common/partitions/efi.c |  2 ++
- fs/fs.c                 |  4 ++++
- include/driver.h        | 12 ++++++++++++
- 4 files changed, 20 insertions(+)
+ arch/sandbox/board/hostfile.c | 4 ----
+ common/block.c                | 4 ++++
+ drivers/ata/disk_ata_drive.c  | 5 -----
+ drivers/block/efi-block-io.c  | 9 +--------
+ drivers/block/virtio_blk.c    | 8 +-------
+ drivers/mci/mci-core.c        | 6 ------
+ drivers/nvme/host/core.c      | 5 -----
+ drivers/usb/storage/usb.c     | 5 -----
+ 8 files changed, 6 insertions(+), 40 deletions(-)
 
-diff --git a/common/partitions/dos.c b/common/partitions/dos.c
-index ad60c0b27b46..7472824b00b9 100644
---- a/common/partitions/dos.c
-+++ b/common/partitions/dos.c
-@@ -185,6 +185,8 @@ static void dos_partition(void *buf, struct block_device *blk,
- 	if (signature)
- 		sprintf(blk->cdev.diskuuid, "%08x", signature);
+diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
+index d0f400787d7a..a1ab06b87770 100644
+--- a/arch/sandbox/board/hostfile.c
++++ b/arch/sandbox/board/hostfile.c
+@@ -166,10 +166,6 @@ static int hf_probe(struct device *dev)
+ 		if (err)
+ 			return err;
  
-+	blk->cdev.flags |= DEVFS_IS_MBR_PARTITIONED;
+-		err = parse_partition_table(&priv->blk);
+-		if (err)
+-			dev_warn(dev, "No partition table found\n");
+-
+ 		dev_info(dev, "registered as block device\n");
+ 	} else {
+ 		cdev->name = np->name;
+diff --git a/common/block.c b/common/block.c
+index c39269d3a692..f6eeb7f9c85f 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -6,6 +6,7 @@
+  */
+ #include <common.h>
+ #include <block.h>
++#include <disks.h>
+ #include <malloc.h>
+ #include <linux/err.h>
+ #include <linux/list.h>
+@@ -408,6 +409,9 @@ int blockdevice_register(struct block_device *blk)
+ 
+ 	cdev_create_default_automount(&blk->cdev);
+ 
++	/* Lack of partition table is unusual, but not a failure */
++	(void)parse_partition_table(blk);
 +
- 	table = (struct partition_entry *)&buffer[446];
+ 	return 0;
+ }
  
- 	for (i = 0; i < 4; i++) {
-diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-index 258e7210d2af..c5cd941a91e7 100644
---- a/common/partitions/efi.c
-+++ b/common/partitions/efi.c
-@@ -449,6 +449,8 @@ static void efi_partition(void *buf, struct block_device *blk,
- 	snprintf(blk->cdev.diskuuid, sizeof(blk->cdev.diskuuid), "%pUl", &gpt->disk_guid);
- 	dev_add_param_string_fixed(blk->dev, "guid", blk->cdev.diskuuid);
+diff --git a/drivers/ata/disk_ata_drive.c b/drivers/ata/disk_ata_drive.c
+index c1c736a0a88a..2d97710b827a 100644
+--- a/drivers/ata/disk_ata_drive.c
++++ b/drivers/ata/disk_ata_drive.c
+@@ -254,11 +254,6 @@ static int ata_port_init(struct ata_port *port)
  
-+	blk->cdev.flags |= DEVFS_IS_GPT_PARTITIONED;
-+
- 	nb_part = le32_to_cpu(gpt->num_partition_entries);
+ 	dev_info(dev, "registered /dev/%s\n", port->blk.cdev.name);
  
- 	if (nb_part > MAX_PARTITION) {
-diff --git a/fs/fs.c b/fs/fs.c
-index 952ed73dbca5..cac4bec49027 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -94,6 +94,10 @@ void cdev_print(const struct cdev *cdev)
- 			printf(" table-partition");
- 		if (cdev->flags & DEVFS_IS_MCI_MAIN_PART_DEV)
- 			printf(" mci-main-partition");
-+		if (cdev->flags & DEVFS_IS_MBR_PARTITIONED)
-+			printf(" mbr-partitioned");
-+		if (cdev->flags & DEVFS_IS_GPT_PARTITIONED)
-+			printf(" gpt-partitioned");
- 		if (cdev->mtd)
- 			printf(" mtd");
- 		printf(" )");
-diff --git a/include/driver.h b/include/driver.h
-index 2cd8a6489ee6..84cf324c7de4 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -587,6 +587,18 @@ extern struct list_head cdev_list;
- #define DEVFS_IS_MCI_MAIN_PART_DEV	(1U << 4)
- #define DEVFS_PARTITION_FROM_OF		(1U << 5)
- #define DEVFS_PARTITION_FROM_TABLE	(1U << 6)
-+#define DEVFS_IS_MBR_PARTITIONED	(1U << 7)
-+#define DEVFS_IS_GPT_PARTITIONED	(1U << 8)
-+
-+static inline bool cdev_is_mbr_partitioned(const struct cdev *master)
-+{
-+	return master && (master->flags & DEVFS_IS_MBR_PARTITIONED);
-+}
-+
-+static inline bool cdev_is_gpt_partitioned(const struct cdev *master)
-+{
-+	return master && (master->flags & DEVFS_IS_GPT_PARTITIONED);
-+}
+-	/* create partitions on demand */
+-	rc = parse_partition_table(&port->blk);
+-	if (rc != 0)
+-		dev_warn(dev, "No partition table found\n");
+-
+ 	return 0;
  
- struct cdev *devfs_add_partition(const char *devname, loff_t offset,
- 		loff_t size, unsigned int flags, const char *name);
+ on_error:
+diff --git a/drivers/block/efi-block-io.c b/drivers/block/efi-block-io.c
+index eb4981e86298..7162106ab8ea 100644
+--- a/drivers/block/efi-block-io.c
++++ b/drivers/block/efi-block-io.c
+@@ -12,7 +12,6 @@
+ #include <fcntl.h>
+ #include <efi.h>
+ #include <block.h>
+-#include <disks.h>
+ #include <efi/efi-payload.h>
+ #include <efi/efi-device.h>
+ #include <bootsource.h>
+@@ -184,16 +183,10 @@ static int efi_bio_probe(struct efi_device *efidev)
+ 
+ 	priv->media_id = media->media_id;
+ 
+-	ret = blockdevice_register(&priv->blk);
+-	if (ret)
+-		return ret;
+-
+ 	if (efi_get_bootsource() == efidev)
+ 		bootsource_set_raw_instance(instance);
+ 
+-	parse_partition_table(&priv->blk);
+-
+-	return 0;
++	return blockdevice_register(&priv->blk);
+ }
+ 
+ static struct efi_driver efi_bio_driver = {
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 660f3a7b6b9b..11e52d9e6457 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -105,13 +105,7 @@ static int virtio_blk_probe(struct virtio_device *vdev)
+ 	priv->blk.num_blocks = cap;
+ 	priv->blk.ops = &virtio_blk_ops;
+ 
+-	ret = blockdevice_register(&priv->blk);
+-	if (ret)
+-		return ret;
+-
+-	parse_partition_table(&priv->blk);
+-
+-	return 0;
++	return blockdevice_register(&priv->blk);
+ }
+ 
+ static void virtio_blk_remove(struct virtio_device *vdev)
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 6d0d6473770c..32edd5382386 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1900,12 +1900,6 @@ static int mci_register_partition(struct mci_part *part)
+ 		return 0;
+ 	}
+ 
+-	rc = parse_partition_table(&part->blk);
+-	if (rc != 0) {
+-		/* Lack of partition table is unusual, but not a failure */
+-		dev_warn(&mci->dev, "No partition table found\n");
+-	}
+-
+ 	if (np) {
+ 		of_parse_partitions(&part->blk.cdev, np);
+ 
+diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
+index bf9176ce0922..79a5f9325ef8 100644
+--- a/drivers/nvme/host/core.c
++++ b/drivers/nvme/host/core.c
+@@ -1,6 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ #include <common.h>
+-#include <disks.h>
+ 
+ #include "nvme.h"
+ 
+@@ -373,10 +372,6 @@ static void nvme_alloc_ns(struct nvme_ctrl *ctrl, unsigned nsid)
+ 		goto out_free_id;
+ 	}
+ 
+-	ret = parse_partition_table(&ns->blk);
+-	if (ret)
+-		dev_warn(ctrl->dev, "No partition table found\n");
+-
+ 	return;
+ out_free_id:
+ 	kfree(id);
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index 103ae293a3a4..dda713196071 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -420,11 +420,6 @@ static int usb_stor_add_blkdev(struct us_data *us, unsigned char lun)
+ 		goto BadDevice;
+ 	}
+ 
+-	/* create partitions on demand */
+-	result = parse_partition_table(&pblk_dev->blk);
+-	if (result != 0)
+-		dev_warn(dev, "No partition table found\n");
+-
+ 	list_add_tail(&pblk_dev->list, &us->blk_dev_list);
+ 	dev_dbg(dev, "USB disk device successfully added\n");
+ 
 -- 
 2.39.2
 
