@@ -3,60 +3,76 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ryJ-00EJXF-J2
+	id 1q6ryJ-00EJXE-IR
 	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 14:09:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ryF-00044c-Km
+	id 1q6ryG-00045P-B4
 	for lore@pengutronix.de; Wed, 07 Jun 2023 14:09:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=MlalweRpyGk2Lo14WQeC6Irhf0BB2/aGjM/0IeKjGbc=; b=JlAzQih9/Y7i5W5pyL6JHu2ME8
-	7wxRTdq0r4YkWncnT7/DeD/tLmcKWwjTlRoaebGTJ+M8kcUm8vlxDlR9r9YEfJ2uMInG7KFuUBnfP
-	NEa4FrwSZ+uTh/iYXBfLsCwZdGRdUctR+emVmNv0Fwhc73SSeUH2vkfpvkRC293j+GkG3ow0zBaeo
-	1SEKolB+vBHJKf+I1J1ElQsX6QYUDCjqlerY5Oi+VGUJCYwdqbwaV2ABRC+6uyo3hwM7HA8YAWuPI
-	90LqSkoBopz/qJO9eo1mdjTEUjlOB03X7AkgddM1wA1CyrsVLZJx3dVt9uASMhvafvnOzFUZtGu+A
-	8scs9RRA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=o8Y9yhOe7viLq8Y/oubjPBMfujXLEI5CTPpwt/Lq+aE=; b=2oG03ObUudB8OjLMQpSwMKTySs
+	fb/H2ghvth5bEVjkqwCr0LFTlzvmWo6HHZXIXngppTSuiaL6PX9kClJXbKryrgSDOInwoEFxZhoeL
+	XxwlmBX0RTHc18nYipov6/DSOlCMg3zZtDP1AGzH36yKSG9aFlUhOmvNYPwwcn97SytiZAmhW/CnM
+	XW+gDcnuZRXYHrOAfBw7ciwEbrlxZzCbgoA700uN7DlMt1WnJ0M0ma3CLKEjtgNuSJJM6wvzwOC3f
+	LV9jpOmhgnOGiv5K6+ZSQcengGOscmkqE3Yf1sFPIfGkugtr+zwbbf3fU8Mx+meEIKvIgdEou9r5+
+	YWc3obCA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwo-005krD-1i;
-	Wed, 07 Jun 2023 12:07:30 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1q6rx0-005kyo-2T;
+	Wed, 07 Jun 2023 12:07:42 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwk-005knP-2A
+	id 1q6rws-005ksm-1o
+	for barebox@bombadil.infradead.org;
+	Wed, 07 Jun 2023 12:07:34 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=o8Y9yhOe7viLq8Y/oubjPBMfujXLEI5CTPpwt/Lq+aE=; b=bsO3T7EnXwO81RQ61rXcGI0jXv
+	vIWNa83XoVKru+7BiIg3eHDNMLdH/eT6mmlgNthwuLnlLmpYGpSPdqDBN8458UtrOt3896cu/Xc7v
+	pC9WU/tkVmps3yMLWfJysDJXPWoh8Y3XyHt8SvkmJQ3viTrE1BAp3ET5aZodgqaZyyT0xTE4ciQPK
+	i1lYksUY5W8jU7yitySeuBIQ70wV9wqdoPFmygKZr1XoMtbyODAu1GQC3OZ37CuOm8ZMssKxO5gIW
+	KGnAzrH4VWO2aDr0QUQkjMgMZgEK9M3MRRqQFz+xqKbnAsXUdCKijXJo7kCQhWwQl07K1o7BkOHOK
+	TEvMfvOQ==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1q6rwn-0058p2-1S
 	for barebox@lists.infradead.org;
-	Wed, 07 Jun 2023 12:07:28 +0000
+	Wed, 07 Jun 2023 12:07:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwh-00031D-N2
-	for barebox@lists.infradead.org; Wed, 07 Jun 2023 14:07:23 +0200
+	id 1q6rwj-00034Z-6C; Wed, 07 Jun 2023 14:07:25 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwg-005jju-Rk
-	for barebox@lists.infradead.org; Wed, 07 Jun 2023 14:07:22 +0200
+	id 1q6rwi-005jkn-Ia; Wed, 07 Jun 2023 14:07:24 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwe-00CyMC-TV
-	for barebox@lists.infradead.org; Wed, 07 Jun 2023 14:07:20 +0200
+	id 1q6rwf-00CyMw-22; Wed, 07 Jun 2023 14:07:21 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed,  7 Jun 2023 14:06:55 +0200
-Message-Id: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
+Cc: Marco Felsch <m.felsch@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  7 Jun 2023 14:07:05 +0200
+Message-Id: <20230607120714.3083182-11-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
+References: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230607_050726_706254_B9B16947 
-X-CRM114-Status: GOOD (  13.16  )
+X-CRM114-CacheID: sfid-20230607_130729_623000_79A968DA 
+X-CRM114-Status: GOOD (  12.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,90 +95,85 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 00/19] state: allow lookup of barebox state partition by Type GUID
+Subject: [PATCH v2 10/19] cdev: record whether partition is parsed from OF
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-So far, we had basically three ways to reference barebox,state on block
-devices:
+Later code will make it possible to define an on-disk-described partition
+in the DT as well. For this reason, we can't assume
+DEVFS_PARTITION_FROM_TABLE to mean !DT, so let's add a dedicated flag
+for that.
 
-  - On platforms with device tree, we point at a fixed partition
-    described in the DT
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - fix typos (Ulrich)
+---
+ drivers/of/partition.c | 5 +++--
+ fs/fs.c                | 2 ++
+ include/driver.h       | 5 +++--
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-  - On platforms without device tree, we have a custom binding that
-    does a global lookup by partuuid (or a more obscure one by diskuuid).
-
-Both are less than optimal. The first clashes with the need to use
-a GPT partition for the state and the second doesn't allow relating the
-UUID with an actual device for the case where e.g. both an SD-Card and
-an eMMC are flashed with the same image.
-
-This series fixes that by:
-
-  - Supporting definition of fixed partitions that are identical to
-    GPT/MBR partitions.
-
-  - Alternatively, support pointing barebox-state backend at a
-    GPT-partitioned device and the partition with the barebox-state
-    Type GUID will be taken.
-
-Changelog written in each patch
-
-Ahmad Fatoum (19):
-  common: partitions: decouple from EFI GUID definition
-  efi: define efi_guid_t as 32-bit aligned guid_t
-  cdev: fix for_each_cdev macro
-  of: partition: support of_partition_ensure_probed on parent device
-  state: fix deep probe handling
-  of: of_path: always call of_partition_ensure_probed before resolving
-  driver: add new cdev_is_partition helper
-  commands: stat: remove code duplication for type info
-  cdev: use more descriptive struct cdev::diskuuid/partuuid
-  cdev: record whether partition is parsed from OF
-  cdev: have devfs_add_partition return existing identical partition,
-    not NULL
-  block: parse partition table on block device registration
-  common: partitions: record whether disk is GPT or MBR partitioned
-  block: add cdev_is_block_(device|partition|disk) helpers
-  of: export new of_cdev_find helper
-  state: factor device path lookup into helper function
-  cdev: use cdev::dos_partition_type only if cdev_is_mbr_partitioned
-  common: partitions: efi: record type UUID in cdev
-  state: allow lookup of barebox state partition by Type GUID
-
- arch/sandbox/board/hostfile.c  |  4 --
- common/block.c                 |  4 ++
- common/blspec.c                |  2 +-
- common/bootm.c                 |  2 +-
- common/partitions.c            |  4 +-
- common/partitions/dos.c        |  4 +-
- common/partitions/efi.c        | 11 ++++--
- common/partitions/parser.h     |  6 ++-
- common/state/state.c           | 50 ++++++++++++++++++------
- drivers/ata/disk_ata_drive.c   |  5 ---
- drivers/base/driver.c          |  2 +-
- drivers/block/efi-block-io.c   |  9 +----
- drivers/block/virtio_blk.c     |  8 +---
- drivers/mci/mci-core.c         |  6 ---
- drivers/misc/storage-by-uuid.c |  4 +-
- drivers/nvme/host/core.c       |  5 ---
- drivers/of/of_path.c           | 69 ++++++++++++++++++++++++----------
- drivers/of/partition.c         | 46 ++++++++++++++++++++---
- drivers/of/platform.c          |  2 +-
- drivers/usb/storage/usb.c      |  5 ---
- fs/devfs-core.c                | 67 +++++++++++++++++++++++++--------
- fs/fs.c                        | 33 +++++++++++-----
- include/block.h                | 15 ++++++++
- include/driver.h               | 60 ++++++++++++++++++++++++++---
- include/efi.h                  | 19 ++++++++--
- include/efi/partition.h        | 27 ++++++-------
- include/of.h                   |  1 +
- include/state.h                |  4 ++
- lib/Makefile                   |  1 +
- lib/uuid.c                     | 15 ++++++++
- 30 files changed, 351 insertions(+), 139 deletions(-)
- create mode 100644 lib/uuid.c
-
+diff --git a/drivers/of/partition.c b/drivers/of/partition.c
+index 6957e10c41bf..9ace9b437d1f 100644
+--- a/drivers/of/partition.c
++++ b/drivers/of/partition.c
+@@ -74,6 +74,7 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
+ 	}
+ 
+ 	new->device_node = node;
++	new->flags |= DEVFS_PARTITION_FROM_OF;
+ 
+ 	if (IS_ENABLED(CONFIG_NVMEM) && of_device_is_compatible(node, "nvmem-cells")) {
+ 		struct nvmem_device *nvmem = nvmem_partition_register(new);
+@@ -177,7 +178,7 @@ int of_fixup_partitions(struct device_node *np, struct cdev *cdev)
+ 		return 0;
+ 
+ 	list_for_each_entry(partcdev, &cdev->partitions, partition_entry) {
+-		if (partcdev->flags & DEVFS_PARTITION_FROM_TABLE)
++		if (!(partcdev->flags & DEVFS_PARTITION_FROM_OF))
+ 			continue;
+ 		n_parts++;
+ 	}
+@@ -228,7 +229,7 @@ int of_fixup_partitions(struct device_node *np, struct cdev *cdev)
+ 		u8 tmp[16 * 16]; /* Up to 64-bit address + 64-bit size */
+ 		loff_t partoffset;
+ 
+-		if (partcdev->flags & DEVFS_PARTITION_FROM_TABLE)
++		if (!(partcdev->flags & DEVFS_PARTITION_FROM_OF))
+ 			continue;
+ 
+ 		if (partcdev->mtd)
+diff --git a/fs/fs.c b/fs/fs.c
+index dda6e3f1d6e7..952ed73dbca5 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -88,6 +88,8 @@ void cdev_print(const struct cdev *cdev)
+ 			printf(" fixed-partition");
+ 		if (cdev->flags & DEVFS_PARTITION_READONLY)
+ 			printf(" readonly-partition");
++		if (cdev->flags & DEVFS_PARTITION_FROM_OF)
++			printf(" of-partition");
+ 		if (cdev->flags & DEVFS_PARTITION_FROM_TABLE)
+ 			printf(" table-partition");
+ 		if (cdev->flags & DEVFS_IS_MCI_MAIN_PART_DEV)
+diff --git a/include/driver.h b/include/driver.h
+index 5bdce8e8afb2..2cd8a6489ee6 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -584,8 +584,9 @@ extern struct list_head cdev_list;
+ #define DEVFS_PARTITION_FIXED		(1U << 0)
+ #define DEVFS_PARTITION_READONLY	(1U << 1)
+ #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
+-#define DEVFS_PARTITION_FROM_TABLE	(1U << 4)
+-#define DEVFS_IS_MCI_MAIN_PART_DEV	(1U << 5)
++#define DEVFS_IS_MCI_MAIN_PART_DEV	(1U << 4)
++#define DEVFS_PARTITION_FROM_OF		(1U << 5)
++#define DEVFS_PARTITION_FROM_TABLE	(1U << 6)
+ 
+ struct cdev *devfs_add_partition(const char *devname, loff_t offset,
+ 		loff_t size, unsigned int flags, const char *name);
 -- 
 2.39.2
 
