@@ -1,84 +1,59 @@
-Delivery-date: Wed, 07 Jun 2023 07:13:50 +0200
+Delivery-date: Wed, 07 Jun 2023 10:07:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6lUW-00DxNs-7k
-	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 07:13:50 +0200
+	id 1q6oCb-00E4B3-V7
+	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 10:07:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6lUT-0001Xu-NW
-	for lore@pengutronix.de; Wed, 07 Jun 2023 07:13:50 +0200
+	id 1q6oCZ-0000Dc-Id
+	for lore@pengutronix.de; Wed, 07 Jun 2023 10:07:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=4/WDxXIE3+CPrIst3jEpypjOJG+eJx8UUIDtM8hGwuU=; b=ulfLMNsiHHEbNX
-	usM3XQ7QuAdebcSUNwt+JOcgBTAqAaus8pnUMqR1SUSO0Np+zoae2D9HXwtAtrsgZJgElCM82Fu3R
-	npXkgqjeku1NA3D/SSB1vcfRQif3yM9LjpTWDwl0YRyVlRZIu9roaX1eZMPojFWH1C8SiHmNO5SPG
-	PCXjNChpPTxgiQC84PxYx8IyTrR05KG+HxO+MDZLNibvw5siujg+5L0BIUzqFzh2b8kun6G6EyE6C
-	Rb+naNKa1vZqXjDTvBTKFF7m17mJ4Jjr8ffP674G9PxRjypxJLPEg4ewFE8TxqCp7JHvdzGyibJxG
-	ny6jrQjThBkUPVree8Ow==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=GjYmd4Q1yXieBzmwfyIvBW5ShSXB4Fm8zg7jbCTc7sw=; b=PEMBO90mpvWoRG9R6o73MvJA5T
+	YxxJ9wrWpsfNc/fCW+arM2fGSXGINgvqT9i+lYhvED3QBjqTpx6NDoWF/Gfm3rJMZzqet7+i1/Dz7
+	uChFDYGpyHbysapSzCbhDx2O9KJKmQ3mqDr6+7k/9Ry1A61ewbuFsAQPrfDbs+PN2xiz+nJE0nBtK
+	K+Htapf4+BuqX7N1uQrw0yNNB3Am4w5S/nJdje7i0DeHLfGP/p/xL8L5MVekhIuLYtoP0qQrrjhff
+	EiQGWzCItaEciXmS56+qTsCRV0wXOe/XHaRYX00x18/IP5fy+idpmyOSXFTjc66mGkdLlQdX6K9xz
+	SsfFodmQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6lT6-004OlB-31;
-	Wed, 07 Jun 2023 05:12:24 +0000
-Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
+	id 1q6oBE-004rp4-1j;
+	Wed, 07 Jun 2023 08:06:08 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6lT0-004OiC-2t
+	id 1q6oBC-004rnL-04
 	for barebox@lists.infradead.org;
-	Wed, 07 Jun 2023 05:12:21 +0000
-Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2b1b66a8fd5so56502331fa.0
-        for <barebox@lists.infradead.org>; Tue, 06 Jun 2023 22:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686114730; x=1688706730;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4/WDxXIE3+CPrIst3jEpypjOJG+eJx8UUIDtM8hGwuU=;
-        b=fB3SmOA1X7u2GFYWdIP28Lb3Zna5HYa8g6NjNx1kVJ4/BjSz1DMze4M6InpBrxqPaH
-         C39inMJQwXujbO35Z/pRpSxlGtO78LLjBjSGFQ7SWyAqReAgB9hl1nSmCvav+EveQTjn
-         AsDDfFPbch0YFxpgtzSp3ngVp/eQeOYlL5JHG/qquvQcOL7HA+udskDd5nzTKvGQ0fAu
-         WWnXd6zF5pH01clRQeTG9QalrR4Q3D+7g58HdRT45hFDnunRQzYUNQDlRq3IwfcUPLJ0
-         VB2FWOZT7cs5AdSKfWZDlHSI92GpJh4fw6YAz3E7LKTT/7sjYOCJHrJBeg5RX6/8pDoG
-         19Rg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686114730; x=1688706730;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4/WDxXIE3+CPrIst3jEpypjOJG+eJx8UUIDtM8hGwuU=;
-        b=bbpP+Zp3D1hURit3LXWFFLGehBMFRBYHzo4prn0ifXieRF07cx1u2crrtd2Hv/QrkM
-         4ZgkMkSSiUh/XAlK0zk7V0ILxe72Grww/kwdwP3DQhDoLLQN47kuM54ABLZFA3TioXMQ
-         8Bck9pSLucSRXP8AdbfmPmlWdy+kerx31nkQdv/uCwWi1TLRbz757SQg/0unTe5twCO5
-         8PLq4SfCL4Bl1j27Y2ClyNgzL0d0Mkl8Db1ZzplV7KXY6LyIfuWfq9bIEBNHkwixVT0p
-         UW8MLEwO5t+e+0CRHwH7XKas6w0j1/stnBRmgR8RiOt4jcYzmWSnMVoPY8NZ6QAvs+Li
-         D9YA==
-X-Gm-Message-State: AC+VfDxqkrvdWuxOg2afIC/7yVSpIcsV4TLy7cQeQaSiBt6CWytQaec7
-	wWE7FDKyjJK0s6cSNWez6VyUW+Wdl094rA==
-X-Google-Smtp-Source: ACHHUZ6AGmMEz23pvXEmvntiglumOqGLo1ti7APjEcDRQovBdzLV0hrIbHpkznOhgD2oG1Bh3fOhiQ==
-X-Received: by 2002:a2e:9bd3:0:b0:2a7:96bd:9eb3 with SMTP id w19-20020a2e9bd3000000b002a796bd9eb3mr2242498ljj.3.1686114730117;
-        Tue, 06 Jun 2023 22:12:10 -0700 (PDT)
-Received: from localhost.localdomain ([188.123.230.211])
-        by smtp.gmail.com with ESMTPSA id a18-20020a2eb172000000b002a8ac166e55sm2110913ljm.44.2023.06.06.22.12.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 06 Jun 2023 22:12:09 -0700 (PDT)
-From: Denis Orlov <denorl2009@gmail.com>
-To: barebox@lists.infradead.org
-Date: Wed,  7 Jun 2023 07:59:38 +0300
-Message-ID: <20230607051155.3175-2-denorl2009@gmail.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230607051155.3175-1-denorl2009@gmail.com>
-References: <20230607051155.3175-1-denorl2009@gmail.com>
+	Wed, 07 Jun 2023 08:06:07 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1q6oB8-00004v-RX; Wed, 07 Jun 2023 10:06:02 +0200
+Message-ID: <99990d80-08ce-d0ff-f438-6da8c73b6e79@pengutronix.de>
+Date: Wed, 7 Jun 2023 10:06:02 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.10.1
+Content-Language: en-US
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20230531145927.1399282-1-a.fatoum@pengutronix.de>
+ <20230531145927.1399282-11-a.fatoum@pengutronix.de>
+ <20230601073601.GH18491@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230601073601.GH18491@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230606_221218_957174_CA25F141 
-X-CRM114-Status: GOOD (  11.25  )
+X-CRM114-CacheID: sfid-20230607_010606_067008_6612831B 
+X-CRM114-Status: GOOD (  21.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,129 +65,79 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Denis Orlov <denorl2009@gmail.com>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE,
-	UPPERCASE_50_75,URIBL_BLOCKED autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH 1/3] MIPS: add qemu-malta64el_defconfig
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 10/18] cdev: have devfs_add_partition return existing
+ identical partition, not NULL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This defconfig will compile barebox for Malta board and MIPS64 5KEc/5KEf
-CPUs, emulatable in QEMU. The analogous 32-bit defconfig uses big endian
-CPU as the default one. So, for the sake of variety, and to improve the
-coverage of options, set the CPU as little endian for this one.
+On 01.06.23 09:36, Sascha Hauer wrote:
+> On Wed, May 31, 2023 at 04:59:19PM +0200, Ahmad Fatoum wrote:
+>> Starting with commit 7f9f45b9bfef ("devfs: Do not create overlapping
+>> partitions"), any overlapping is disallowed. Overlapping can be useful
+>> though to bridge the gap between partition described in DT and via
+>> on-disk partition tables. Let's handle the case of identical partitions
+>> specially and have it neither be an error or a duplicate partition, but
+>> instead just return the existing partition. This existing partition will
+>> be given a device tree node and thus enabling schemes like:
+>>
+>>   &{/state} {
+>>   	backend = <&state_part>;
+>>   };
+>>
+>>   &mmc1 {
+>>          partitions {
+>>                  compatible = "fixed-partitions";
+>>                  #address-cells = <2>;
+>>                  #size-cells = <2>;
+>>
+>>                  state_part: partition@5300000 {
+>>                          label = "barebox-state";
+>> 			 /* will be folded with overlapping GPT partition if found */
+>>                          reg = <0x0 0x5300000 0x0 0x100000>;
+>>                  };
+>>          };
+>>   };
+> 
+> You introduced the DEVFS_PARTITION_FROM_OF earlier this series.
+> Depending on the order the code runs you end up with either the
+> partition from the partition table or the one created from OF with
+> DEVFS_PARTITION_FROM_OF. I am not sure about the implications of
+> this inconsistency. Can it lead to problems later?
 
-Signed-off-by: Denis Orlov <denorl2009@gmail.com>
----
- arch/mips/configs/qemu-malta64el_defconfig | 87 ++++++++++++++++++++++
- 1 file changed, 87 insertions(+)
- create mode 100644 arch/mips/configs/qemu-malta64el_defconfig
+Order is always the same: parse_partition_table is called before
+of_parse_partitions. The latter is called on the cdev populated
+by blockdevice_register at all call site.
 
-diff --git a/arch/mips/configs/qemu-malta64el_defconfig b/arch/mips/configs/qemu-malta64el_defconfig
-new file mode 100644
-index 0000000000..5fb090a646
---- /dev/null
-+++ b/arch/mips/configs/qemu-malta64el_defconfig
-@@ -0,0 +1,87 @@
-+CONFIG_BOARD_QEMU_MALTA=y
-+CONFIG_CPU_LITTLE_ENDIAN=y
-+CONFIG_CPU_MIPS64_R2=y
-+CONFIG_64BIT=y
-+CONFIG_IMAGE_COMPRESSION_XZKERN=y
-+CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x400000
-+CONFIG_STACK_SIZE=0x7000
-+CONFIG_EXPERIMENTAL=y
-+CONFIG_BAUDRATE=38400
-+CONFIG_HUSH_FANCY_PROMPT=y
-+CONFIG_CMDLINE_EDITING=y
-+CONFIG_AUTO_COMPLETE=y
-+CONFIG_MENU=y
-+CONFIG_BOOTM_SHOW_TYPE=y
-+CONFIG_CONSOLE_ALLOW_COLOR=y
-+CONFIG_PARTITION=y
-+CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
-+CONFIG_CMD_DMESG=y
-+CONFIG_LONGHELP=y
-+CONFIG_CMD_IOMEM=y
-+CONFIG_CMD_IMD=y
-+CONFIG_CMD_MEMINFO=y
-+CONFIG_CMD_GO=y
-+CONFIG_CMD_LOADB=y
-+CONFIG_CMD_LOADY=y
-+CONFIG_CMD_RESET=y
-+CONFIG_CMD_PARTITION=y
-+CONFIG_CMD_EXPORT=y
-+CONFIG_CMD_DEFAULTENV=y
-+CONFIG_CMD_LOADENV=y
-+CONFIG_CMD_PRINTENV=y
-+CONFIG_CMD_SAVEENV=y
-+CONFIG_CMD_MD5SUM=y
-+CONFIG_CMD_SHA1SUM=y
-+CONFIG_CMD_SHA256SUM=y
-+CONFIG_CMD_UNCOMPRESS=y
-+CONFIG_CMD_SLEEP=y
-+CONFIG_CMD_DHCP=y
-+CONFIG_CMD_MIITOOL=y
-+CONFIG_CMD_PING=y
-+CONFIG_CMD_TFTP=y
-+CONFIG_CMD_ECHO_E=y
-+CONFIG_CMD_EDIT=y
-+CONFIG_CMD_LOGIN=y
-+CONFIG_CMD_MENU=y
-+CONFIG_CMD_MENU_MANAGEMENT=y
-+CONFIG_CMD_PASSWD=y
-+CONFIG_CMD_FBTEST=y
-+CONFIG_CMD_READLINE=y
-+CONFIG_CMD_TIMEOUT=y
-+CONFIG_CMD_CRC=y
-+CONFIG_CMD_CRC_CMP=y
-+CONFIG_CMD_FLASH=y
-+CONFIG_CMD_GPIO=y
-+CONFIG_CMD_I2C=y
-+CONFIG_CMD_OF_NODE=y
-+CONFIG_CMD_OF_PROPERTY=y
-+CONFIG_CMD_OFTREE=y
-+CONFIG_CMD_TIME=y
-+CONFIG_NET=y
-+CONFIG_NET_NFS=y
-+CONFIG_NET_NETCONSOLE=y
-+CONFIG_OFDEVICE=y
-+CONFIG_OF_BAREBOX_DRIVERS=y
-+CONFIG_DRIVER_NET_RTL8139=y
-+# CONFIG_SPI is not set
-+CONFIG_I2C=y
-+CONFIG_I2C_GPIO=y
-+CONFIG_MTD=y
-+CONFIG_DRIVER_CFI=y
-+# CONFIG_DRIVER_CFI_AMD is not set
-+# CONFIG_DRIVER_CFI_BANK_WIDTH_1 is not set
-+# CONFIG_DRIVER_CFI_BANK_WIDTH_2 is not set
-+CONFIG_CFI_BUFFER_WRITE=y
-+CONFIG_VIDEO=y
-+CONFIG_FRAMEBUFFER_CONSOLE=y
-+CONFIG_DRIVER_VIDEO_BOCHS_PCI=y
-+CONFIG_GPIO_MALTA_FPGA_I2C=y
-+CONFIG_PCI=y
-+CONFIG_PCI_DEBUG=y
-+CONFIG_SYSCON_REBOOT_MODE=y
-+CONFIG_POWER_RESET_SYSCON=y
-+CONFIG_FS_CRAMFS=y
-+CONFIG_FS_TFTP=y
-+CONFIG_FS_FAT=y
-+CONFIG_FS_FAT_WRITE=y
-+CONFIG_FS_FAT_LFN=y
+Nevertheless, I have tested that you can reorder parse_partition_table
+and of_parse_partitions, but there's a slight change in behavior: The first
+partition that's registered is the namesake. I have adapted the code
+to call devfs_create_link(overlap, partinfo->name); in that case. That way
+we will always have all partitions in /dev regardless of order. The only
+thing that will change, is which is a real cdev and which is a link.
+
+Thanks,
+Ahmad
+
+> 
+> Sascha
+> 
+
 -- 
-2.41.0
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
