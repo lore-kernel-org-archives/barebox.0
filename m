@@ -1,15 +1,15 @@
-Delivery-date: Wed, 07 Jun 2023 14:08:54 +0200
+Delivery-date: Wed, 07 Jun 2023 14:08:55 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ryB-00EJTu-Un
-	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 14:08:54 +0200
+	id 1q6ryC-00EJUV-Vj
+	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 14:08:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ry9-0003zA-F8
+	id 1q6ry9-0003zm-TT
 	for lore@pengutronix.de; Wed, 07 Jun 2023 14:08:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,61 +17,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZjJEKnoE0ffk0UmRyKE4gcOYD2SdIAQnVFriLPe9MxQ=; b=QgVNJzjkNXe9HBpeVJIbcx2M1M
-	ZgHoEW5m8FKbhA1QknFWSDOLHIpW4c9QBiIgesd3N+3g1WC1sSmF2wnDrkjnbP6XQpK56TLoGJxgy
-	RUB5/8LZ3tknEmHLyuNY5YU+isww7TgR/FDgTJJP24PR29mzNZJ14K+WJdi9/NMPQW2jsQfhl2F3j
-	5bfxdxioF92t24bsL24VCrC4EZKab8bWZhamkGeUVq8F+7vaADJ5pMJAmrnmfXaLHc+01wlXDHUkA
-	vK9nXaqFda9Uv9u5tOaCJuE8ZwRT6eBrG9usxdbG/6wBotQ/wx0YbpzbspLdoB6cWcaUGRb0qoJB3
-	7PmDJsKw==;
+	bh=JBPpuNChKi39tMQhPBQ+u1cnLl3c/bySC7qXR6vWMo4=; b=zM0mC78s1uErotkmS9As6WOZ4n
+	9Bf1VQzd6geW+sYAI2tPnG46ooOztBzY+sB6EuMd33giFcIkHr+VyRqPM9hzoGqq2afKHRuRrtaKV
+	4rI945Vwf2iRleG9K77Tti2xEvupkKAIg02BLUtgrIZLjKQxP2nAG5iMPqfRQMwRkbha/HFxyD/sA
+	NP9VsQEGmTMwhHL+G3RHDaZS4dXLtbq7NftdCfoBNcnlLE7NUjTxURQp05amPz0V5WrnfNUSL+q3z
+	a7T6uAGVS2ldEhdl+CpwjK6phDd9BBW7VhXSQkxNhaTA1jiwarRtKfM7qYvH69yEgK3Id+CksybZ6
+	a3S+pKxA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rx6-005l6b-1n;
-	Wed, 07 Jun 2023 12:07:48 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwu-005ktj-1q
-	for barebox@bombadil.infradead.org;
-	Wed, 07 Jun 2023 12:07:36 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=ZjJEKnoE0ffk0UmRyKE4gcOYD2SdIAQnVFriLPe9MxQ=; b=SHSL19kIxYe+G7ff0h0dvIuWSl
-	vjN299TNF6ISh2HkdbrER/3mZrjuGynHlaow6gCGMifidClmKCeopdO9hQd5MRXmhJbeE6vFUPMPl
-	uKeBnPv1T4zNZXgZmUk6cVxdxy4dmoS55owQBa2A+TwQEHiM9LDnXlWReMYvLDv2Yhnf5y3Brp9Vu
-	m+Dk77aG3YKDZ15uaGQCfnVa+OJVtzt/+7muEz+JTAyoq/1YgKf7ARud00qSbWdrxUL0J6TUwd38Y
-	O7PGCo9e5w2djz/MFUIu2D0wzob5vJEVWdrbQuidJyRGRhqaP+hwMoY4Wtb34kuivuwiXcD+yVjmU
-	CzQuE8RQ==;
+	id 1q6rwq-005ks6-3B;
+	Wed, 07 Jun 2023 12:07:32 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
-	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwn-0058p4-2j
+	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1q6rwk-005knQ-2H
 	for barebox@lists.infradead.org;
-	Wed, 07 Jun 2023 12:07:35 +0000
+	Wed, 07 Jun 2023 12:07:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwi-00033t-UT; Wed, 07 Jun 2023 14:07:24 +0200
+	id 1q6rwh-00031C-LQ; Wed, 07 Jun 2023 14:07:23 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwi-005jkg-AE; Wed, 07 Jun 2023 14:07:24 +0200
+	id 1q6rwg-005jjt-R5; Wed, 07 Jun 2023 14:07:22 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwf-00CyNW-6T; Wed, 07 Jun 2023 14:07:21 +0200
+	id 1q6rwe-00CyMR-Ur; Wed, 07 Jun 2023 14:07:20 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 Jun 2023 14:07:13 +0200
-Message-Id: <20230607120714.3083182-19-a.fatoum@pengutronix.de>
+Cc: Marco Felsch <m.felsch@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  7 Jun 2023 14:06:58 +0200
+Message-Id: <20230607120714.3083182-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 References: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230607_130730_259202_5D188192 
-X-CRM114-Status: GOOD (  14.75  )
+X-CRM114-CacheID: sfid-20230607_050726_785957_C436D226 
+X-CRM114-Status: UNSURE (   9.98  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,112 +81,42 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 18/19] common: partitions: efi: record type UUID in cdev
+Subject: [PATCH v2 03/19] cdev: fix for_each_cdev macro
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We already record DOS partition type in cdev, so let's do the same for
-GPT Type UUID. This will be used in a later commit to identify
-barebox-state partitions.
+The macro parameter 'c' was never used, instead hardcoding cdev.
+It worked so far anyway, because all users of for_each_cdev used cdev
+as the argument. Fix this.
 
+While at it, surround cdev with parenthesis to avoid associativity
+issues.
+
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - no changes
+  - add parenthesis around cdev (Ulrich)
+  - add Marco's Reviewed-by
 ---
- common/partitions.c        | 2 +-
- common/partitions/efi.c    | 1 +
- common/partitions/parser.h | 5 ++++-
- fs/fs.c                    | 2 ++
- include/driver.h           | 6 +++++-
- 5 files changed, 13 insertions(+), 3 deletions(-)
+ include/driver.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/common/partitions.c b/common/partitions.c
-index b579559672a0..e3e8a9f3044d 100644
---- a/common/partitions.c
-+++ b/common/partitions.c
-@@ -50,7 +50,7 @@ static int register_one_partition(struct block_device *blk,
- 
- 	cdev->flags |= DEVFS_PARTITION_FROM_TABLE;
- 
--	cdev->dos_partition_type = part->dos_partition_type;
-+	cdev->typeuuid = part->typeuuid;
- 	strcpy(cdev->partuuid, part->partuuid);
- 
- 	free(partition_name);
-diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-index c5cd941a91e7..0add66e6e4a6 100644
---- a/common/partitions/efi.c
-+++ b/common/partitions/efi.c
-@@ -471,6 +471,7 @@ static void efi_partition(void *buf, struct block_device *blk,
- 		pentry->size++;
- 		part_set_efi_name(&ptes[i], pentry->name);
- 		snprintf(pentry->partuuid, sizeof(pentry->partuuid), "%pUl", &ptes[i].unique_partition_guid);
-+		pentry->typeuuid = ptes[i].partition_type_guid;
- 		pd->used_entries++;
- 	}
- }
-diff --git a/common/partitions/parser.h b/common/partitions/parser.h
-index f2f692f7903b..9cc41a7573fe 100644
---- a/common/partitions/parser.h
-+++ b/common/partitions/parser.h
-@@ -17,10 +17,13 @@
- 
- struct partition {
- 	char name[MAX_PARTITION_NAME];
--	u8 dos_partition_type;
- 	char partuuid[MAX_UUID_STR];
- 	uint64_t first_sec;
- 	uint64_t size;
-+	union {
-+		u8 dos_partition_type;
-+		guid_t typeuuid;
-+	};
- };
- 
- struct partition_desc {
-diff --git a/fs/fs.c b/fs/fs.c
-index e6345f4f128a..e0ab826bcaba 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -110,6 +110,8 @@ void cdev_print(const struct cdev *cdev)
- 		nbytes += printf("Filetype: %s\t", file_type_to_string(cdev->filetype));
- 	if (cdev_is_mbr_partitioned(cdev->master))
- 		nbytes += printf("DOS parttype: 0x%02x\t", cdev->dos_partition_type);
-+	else if (cdev_is_gpt_partitioned(cdev->master))
-+		nbytes += printf("GPT typeuuid: %pUl\t", &cdev->typeuuid);
- 	if (*cdev->partuuid || *cdev->diskuuid)
- 		nbytes += printf("%sUUID: %s", cdev_is_partition(cdev) ? "PART" : "DISK",
- 				 cdev_is_partition(cdev) ? cdev->partuuid : cdev->diskuuid);
 diff --git a/include/driver.h b/include/driver.h
-index 84cf324c7de4..817e9e386bc6 100644
+index d33e0fcbccc9..66ae52d0004c 100644
 --- a/include/driver.h
 +++ b/include/driver.h
-@@ -8,6 +8,7 @@
+@@ -566,8 +566,8 @@ int cdev_truncate(struct cdev*, size_t size);
+ loff_t cdev_unallocated_space(struct cdev *cdev);
  
- #include <linux/list.h>
- #include <linux/ioport.h>
-+#include <linux/uuid.h>
- #include <of.h>
- #include <filetype.h>
+ extern struct list_head cdev_list;
+-#define for_each_cdev(c) \
+-	list_for_each_entry(cdev, &cdev_list, list)
++#define for_each_cdev(cdev) \
++	list_for_each_entry((cdev), &cdev_list, list)
  
-@@ -536,12 +537,15 @@ struct cdev {
- 	unsigned int flags;
- 	int open;
- 	struct mtd_info *mtd;
--	u8 dos_partition_type;
- 	struct cdev *link;
- 	struct list_head link_entry, links;
- 	struct list_head partition_entry, partitions;
- 	struct cdev *master;
- 	enum filetype filetype;
-+	union {
-+		u8 dos_partition_type;
-+		guid_t typeuuid;
-+	};
- };
- 
- int devfs_create(struct cdev *);
+ #define DEVFS_PARTITION_FIXED		(1U << 0)
+ #define DEVFS_PARTITION_READONLY	(1U << 1)
 -- 
 2.39.2
 
