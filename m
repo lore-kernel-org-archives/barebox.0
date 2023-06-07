@@ -3,61 +3,60 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ryJ-00EJXD-83
-	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 14:09:01 +0200
+	id 1q6ryJ-00EJXF-J2
+	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 14:09:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ryF-00043o-5j
+	id 1q6ryF-00044c-Km
 	for lore@pengutronix.de; Wed, 07 Jun 2023 14:09:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=22QivmBpMmeQgnXFWvVvKZJMzRrP7TdlBi64THTNMcQ=; b=Ov/wKU1bYRcbvqLkRKfQQL+o9P
-	270Ed/V/2ULgN4R3SrBcumAgRoj1/bP71YT+A0Mpyyzse/mBxdBboF1yUWwMtrnPONYVW0q2s5RoI
-	iUgegxOMhGUKTYt0jSaN7lEv5JxhnXhFfrzqTnQCGVt/u5d89b3duQB21tTftGQo0M6Fejzq6cWUU
-	aSIh5TkpQDGwz0npEnbO8G6MLtIPb7Cs0fI1quAu6bAmlysi59ernvKDYWu8Q4TX4jdT/erhCvfyT
-	RQKEAuNZqDIHMHcn4yT7areQ6Euuz0zvuFpSCxx6SpmZYpeR6u+dKoF6gPd6l4E7E4P9lJTvBI0Ru
-	/eV+NRjw==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=MlalweRpyGk2Lo14WQeC6Irhf0BB2/aGjM/0IeKjGbc=; b=JlAzQih9/Y7i5W5pyL6JHu2ME8
+	7wxRTdq0r4YkWncnT7/DeD/tLmcKWwjTlRoaebGTJ+M8kcUm8vlxDlR9r9YEfJ2uMInG7KFuUBnfP
+	NEa4FrwSZ+uTh/iYXBfLsCwZdGRdUctR+emVmNv0Fwhc73SSeUH2vkfpvkRC293j+GkG3ow0zBaeo
+	1SEKolB+vBHJKf+I1J1ElQsX6QYUDCjqlerY5Oi+VGUJCYwdqbwaV2ABRC+6uyo3hwM7HA8YAWuPI
+	90LqSkoBopz/qJO9eo1mdjTEUjlOB03X7AkgddM1wA1CyrsVLZJx3dVt9uASMhvafvnOzFUZtGu+A
+	8scs9RRA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwx-005kw8-27;
-	Wed, 07 Jun 2023 12:07:39 +0000
+	id 1q6rwo-005krD-1i;
+	Wed, 07 Jun 2023 12:07:30 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwk-005knY-2k
+	id 1q6rwk-005knP-2A
 	for barebox@lists.infradead.org;
-	Wed, 07 Jun 2023 12:07:31 +0000
+	Wed, 07 Jun 2023 12:07:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwi-00032G-50; Wed, 07 Jun 2023 14:07:24 +0200
+	id 1q6rwh-00031D-N2
+	for barebox@lists.infradead.org; Wed, 07 Jun 2023 14:07:23 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwh-005jkC-Ec; Wed, 07 Jun 2023 14:07:23 +0200
+	id 1q6rwg-005jju-Rk
+	for barebox@lists.infradead.org; Wed, 07 Jun 2023 14:07:22 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwf-00CyN7-34; Wed, 07 Jun 2023 14:07:21 +0200
+	id 1q6rwe-00CyMC-TV
+	for barebox@lists.infradead.org; Wed, 07 Jun 2023 14:07:20 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Marco Felsch <m.felsch@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 Jun 2023 14:07:07 +0200
-Message-Id: <20230607120714.3083182-13-a.fatoum@pengutronix.de>
+Date: Wed,  7 Jun 2023 14:06:55 +0200
+Message-Id: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
-References: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230607_050726_919239_D775F53E 
-X-CRM114-Status: GOOD (  17.07  )
+X-CRM114-CacheID: sfid-20230607_050726_706254_B9B16947 
+X-CRM114-Status: GOOD (  13.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,192 +79,90 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 12/19] block: parse partition table on block device registration
+Subject: [PATCH v2 00/19] state: allow lookup of barebox state partition by Type GUID
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Every instance of block device registration is followed by an
-attempt to parse the partition table. Thus move partition table
-parsing into blockdevice_register.
+So far, we had basically three ways to reference barebox,state on block
+devices:
 
-We do away with the warning print as it's superfluous:
-parse_partition_table doesn't return an error if partition table is
-missing and all other errors already result in an error message.
+  - On platforms with device tree, we point at a fixed partition
+    described in the DT
 
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - remove extra warning if parse_partition_table fails
-  - Add Marco's Reviewed-by
----
- arch/sandbox/board/hostfile.c | 4 ----
- common/block.c                | 4 ++++
- drivers/ata/disk_ata_drive.c  | 5 -----
- drivers/block/efi-block-io.c  | 9 +--------
- drivers/block/virtio_blk.c    | 8 +-------
- drivers/mci/mci-core.c        | 6 ------
- drivers/nvme/host/core.c      | 5 -----
- drivers/usb/storage/usb.c     | 5 -----
- 8 files changed, 6 insertions(+), 40 deletions(-)
+  - On platforms without device tree, we have a custom binding that
+    does a global lookup by partuuid (or a more obscure one by diskuuid).
 
-diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
-index d0f400787d7a..a1ab06b87770 100644
---- a/arch/sandbox/board/hostfile.c
-+++ b/arch/sandbox/board/hostfile.c
-@@ -166,10 +166,6 @@ static int hf_probe(struct device *dev)
- 		if (err)
- 			return err;
- 
--		err = parse_partition_table(&priv->blk);
--		if (err)
--			dev_warn(dev, "No partition table found\n");
--
- 		dev_info(dev, "registered as block device\n");
- 	} else {
- 		cdev->name = np->name;
-diff --git a/common/block.c b/common/block.c
-index c39269d3a692..f6eeb7f9c85f 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -6,6 +6,7 @@
-  */
- #include <common.h>
- #include <block.h>
-+#include <disks.h>
- #include <malloc.h>
- #include <linux/err.h>
- #include <linux/list.h>
-@@ -408,6 +409,9 @@ int blockdevice_register(struct block_device *blk)
- 
- 	cdev_create_default_automount(&blk->cdev);
- 
-+	/* Lack of partition table is unusual, but not a failure */
-+	(void)parse_partition_table(blk);
-+
- 	return 0;
- }
- 
-diff --git a/drivers/ata/disk_ata_drive.c b/drivers/ata/disk_ata_drive.c
-index c1c736a0a88a..2d97710b827a 100644
---- a/drivers/ata/disk_ata_drive.c
-+++ b/drivers/ata/disk_ata_drive.c
-@@ -254,11 +254,6 @@ static int ata_port_init(struct ata_port *port)
- 
- 	dev_info(dev, "registered /dev/%s\n", port->blk.cdev.name);
- 
--	/* create partitions on demand */
--	rc = parse_partition_table(&port->blk);
--	if (rc != 0)
--		dev_warn(dev, "No partition table found\n");
--
- 	return 0;
- 
- on_error:
-diff --git a/drivers/block/efi-block-io.c b/drivers/block/efi-block-io.c
-index eb4981e86298..7162106ab8ea 100644
---- a/drivers/block/efi-block-io.c
-+++ b/drivers/block/efi-block-io.c
-@@ -12,7 +12,6 @@
- #include <fcntl.h>
- #include <efi.h>
- #include <block.h>
--#include <disks.h>
- #include <efi/efi-payload.h>
- #include <efi/efi-device.h>
- #include <bootsource.h>
-@@ -184,16 +183,10 @@ static int efi_bio_probe(struct efi_device *efidev)
- 
- 	priv->media_id = media->media_id;
- 
--	ret = blockdevice_register(&priv->blk);
--	if (ret)
--		return ret;
--
- 	if (efi_get_bootsource() == efidev)
- 		bootsource_set_raw_instance(instance);
- 
--	parse_partition_table(&priv->blk);
--
--	return 0;
-+	return blockdevice_register(&priv->blk);
- }
- 
- static struct efi_driver efi_bio_driver = {
-diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
-index 660f3a7b6b9b..11e52d9e6457 100644
---- a/drivers/block/virtio_blk.c
-+++ b/drivers/block/virtio_blk.c
-@@ -105,13 +105,7 @@ static int virtio_blk_probe(struct virtio_device *vdev)
- 	priv->blk.num_blocks = cap;
- 	priv->blk.ops = &virtio_blk_ops;
- 
--	ret = blockdevice_register(&priv->blk);
--	if (ret)
--		return ret;
--
--	parse_partition_table(&priv->blk);
--
--	return 0;
-+	return blockdevice_register(&priv->blk);
- }
- 
- static void virtio_blk_remove(struct virtio_device *vdev)
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 6d0d6473770c..32edd5382386 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1900,12 +1900,6 @@ static int mci_register_partition(struct mci_part *part)
- 		return 0;
- 	}
- 
--	rc = parse_partition_table(&part->blk);
--	if (rc != 0) {
--		/* Lack of partition table is unusual, but not a failure */
--		dev_warn(&mci->dev, "No partition table found\n");
--	}
--
- 	if (np) {
- 		of_parse_partitions(&part->blk.cdev, np);
- 
-diff --git a/drivers/nvme/host/core.c b/drivers/nvme/host/core.c
-index bf9176ce0922..79a5f9325ef8 100644
---- a/drivers/nvme/host/core.c
-+++ b/drivers/nvme/host/core.c
-@@ -1,6 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0-only
- #include <common.h>
--#include <disks.h>
- 
- #include "nvme.h"
- 
-@@ -373,10 +372,6 @@ static void nvme_alloc_ns(struct nvme_ctrl *ctrl, unsigned nsid)
- 		goto out_free_id;
- 	}
- 
--	ret = parse_partition_table(&ns->blk);
--	if (ret)
--		dev_warn(ctrl->dev, "No partition table found\n");
--
- 	return;
- out_free_id:
- 	kfree(id);
-diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
-index 103ae293a3a4..dda713196071 100644
---- a/drivers/usb/storage/usb.c
-+++ b/drivers/usb/storage/usb.c
-@@ -420,11 +420,6 @@ static int usb_stor_add_blkdev(struct us_data *us, unsigned char lun)
- 		goto BadDevice;
- 	}
- 
--	/* create partitions on demand */
--	result = parse_partition_table(&pblk_dev->blk);
--	if (result != 0)
--		dev_warn(dev, "No partition table found\n");
--
- 	list_add_tail(&pblk_dev->list, &us->blk_dev_list);
- 	dev_dbg(dev, "USB disk device successfully added\n");
- 
+Both are less than optimal. The first clashes with the need to use
+a GPT partition for the state and the second doesn't allow relating the
+UUID with an actual device for the case where e.g. both an SD-Card and
+an eMMC are flashed with the same image.
+
+This series fixes that by:
+
+  - Supporting definition of fixed partitions that are identical to
+    GPT/MBR partitions.
+
+  - Alternatively, support pointing barebox-state backend at a
+    GPT-partitioned device and the partition with the barebox-state
+    Type GUID will be taken.
+
+Changelog written in each patch
+
+Ahmad Fatoum (19):
+  common: partitions: decouple from EFI GUID definition
+  efi: define efi_guid_t as 32-bit aligned guid_t
+  cdev: fix for_each_cdev macro
+  of: partition: support of_partition_ensure_probed on parent device
+  state: fix deep probe handling
+  of: of_path: always call of_partition_ensure_probed before resolving
+  driver: add new cdev_is_partition helper
+  commands: stat: remove code duplication for type info
+  cdev: use more descriptive struct cdev::diskuuid/partuuid
+  cdev: record whether partition is parsed from OF
+  cdev: have devfs_add_partition return existing identical partition,
+    not NULL
+  block: parse partition table on block device registration
+  common: partitions: record whether disk is GPT or MBR partitioned
+  block: add cdev_is_block_(device|partition|disk) helpers
+  of: export new of_cdev_find helper
+  state: factor device path lookup into helper function
+  cdev: use cdev::dos_partition_type only if cdev_is_mbr_partitioned
+  common: partitions: efi: record type UUID in cdev
+  state: allow lookup of barebox state partition by Type GUID
+
+ arch/sandbox/board/hostfile.c  |  4 --
+ common/block.c                 |  4 ++
+ common/blspec.c                |  2 +-
+ common/bootm.c                 |  2 +-
+ common/partitions.c            |  4 +-
+ common/partitions/dos.c        |  4 +-
+ common/partitions/efi.c        | 11 ++++--
+ common/partitions/parser.h     |  6 ++-
+ common/state/state.c           | 50 ++++++++++++++++++------
+ drivers/ata/disk_ata_drive.c   |  5 ---
+ drivers/base/driver.c          |  2 +-
+ drivers/block/efi-block-io.c   |  9 +----
+ drivers/block/virtio_blk.c     |  8 +---
+ drivers/mci/mci-core.c         |  6 ---
+ drivers/misc/storage-by-uuid.c |  4 +-
+ drivers/nvme/host/core.c       |  5 ---
+ drivers/of/of_path.c           | 69 ++++++++++++++++++++++++----------
+ drivers/of/partition.c         | 46 ++++++++++++++++++++---
+ drivers/of/platform.c          |  2 +-
+ drivers/usb/storage/usb.c      |  5 ---
+ fs/devfs-core.c                | 67 +++++++++++++++++++++++++--------
+ fs/fs.c                        | 33 +++++++++++-----
+ include/block.h                | 15 ++++++++
+ include/driver.h               | 60 ++++++++++++++++++++++++++---
+ include/efi.h                  | 19 ++++++++--
+ include/efi/partition.h        | 27 ++++++-------
+ include/of.h                   |  1 +
+ include/state.h                |  4 ++
+ lib/Makefile                   |  1 +
+ lib/uuid.c                     | 15 ++++++++
+ 30 files changed, 351 insertions(+), 139 deletions(-)
+ create mode 100644 lib/uuid.c
+
 -- 
 2.39.2
 
