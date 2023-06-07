@@ -1,75 +1,60 @@
-Delivery-date: Wed, 07 Jun 2023 15:52:07 +0200
+Delivery-date: Wed, 07 Jun 2023 17:33:21 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ta5-00EOr6-0f
-	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 15:52:07 +0200
+	id 1q6vA2-00EWuG-MN
+	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 17:33:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ta2-0002fD-8N
-	for lore@pengutronix.de; Wed, 07 Jun 2023 15:52:06 +0200
+	id 1q6vA0-0000XE-8c
+	for lore@pengutronix.de; Wed, 07 Jun 2023 17:33:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=IbVLTO+XB7ENoJISfqunLCW2l87Y/fbPRB0IN1680Y0=; b=pYN4jBqMy18KkQ37qfPUz4WKmw
-	i1iXNWvib8QzpxCjrtAb6z0LV91hsS4PrCIp1hF24NK5yAq5Q3LQizJGl1YziLNGpGM0CV17sVJRT
-	UwDOQM8z6Fkub3COremkvb13VQArGz8UhkkvRcyelOtBk5xeeA+8oNL5erjptW5A+su2ENc9NtAiw
-	IHmKZHx8QI8kkOLLWAdep9uEQ5fpTuxGz71+NOq9Q31rS9gvZRANJbDbuUvlyhnicXKLEej9SXVq9
-	hg3ELKgnstUwofIM70IldMRdoa8IM8NwmqUu1b5r21GWqRVfD7FgC2AZ4MPke/LlTHp+WeJuL9Ir5
-	xy4wiinA==;
+	bh=NST6KpywvF2IADBE5fvODAALmcNvni5aZwExVhFkx5k=; b=2JLdkAxYAW+SLGbpLAmx/XcRg3
+	VWkl0k3IVqnS7Z3h7fvQ/0KVYUTUiv/hJ3XgW7s+xSRMri58gy44QUKPRqw5mODwok4XHcR3/Z4gV
+	He/dfuPDFZjyYRbHVFDddsaeKh4TX6CRAKTGT5jzRi9onfDeMsKWUgqOM7CRqZK+QheGlLywO14XT
+	KV+jTw6kFPE3lM5V3yWURu4lKjSnPOJf8ysU6/JOWoVn1jDxGJqTS11jE++zagYZBp2G6/pKrApv0
+	Dld6dMWf7ciFBR4q8RUlgcIgv7PKWQwx44IYOZsPy3A2OckhPR1eZn31L0BCEpy7k57NTda2Zipbr
+	moit0L8Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6tYz-0069TY-13;
-	Wed, 07 Jun 2023 13:51:01 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6tYx-0069SW-07
-	for barebox@bombadil.infradead.org;
-	Wed, 07 Jun 2023 13:50:59 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=IbVLTO+XB7ENoJISfqunLCW2l87Y/fbPRB0IN1680Y0=; b=foPUUbiBUQOWtBiEiuY5yiv/a5
-	EQpha6N4Vz2o/tIaDfR6w//RhSkYyRkBZEHu2LVpRhD/sIHZMj0wWdVj+C6xaYeZOUoDtaXAj8N9u
-	TEIia6eRKEMcGcurDcOHEWyZ6OkK38er6B+i0xyHn+RYgeNEcdegLPINvYGTgKBNJcDPd+brRtk+Q
-	2+u6l2POEnjHC/FN+V4P8vrK1bhMOSZpcm4I+N2THbO9JuBEjX4uby8wJBUMvj/Zo7rfqq9NbYecb
-	nnV9ZvFlcqpV9j0kcol5UpB/apC1bgz7p3anAlqQ0CF83wIi3ap54Ovb2MiDTCcTaZP+yDecnAlgx
-	WDjc7S+w==;
+	id 1q6v8k-006QbS-25;
+	Wed, 07 Jun 2023 15:32:02 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
-	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6s2B-005903-1g
+	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1q6v8h-006QaM-0s
 	for barebox@lists.infradead.org;
-	Wed, 07 Jun 2023 12:13:05 +0000
+	Wed, 07 Jun 2023 15:32:00 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6s2A-0005UP-8F; Wed, 07 Jun 2023 14:13:02 +0200
+	id 1q6v8c-0000PL-Tl; Wed, 07 Jun 2023 17:31:54 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6s29-005jlo-Jc; Wed, 07 Jun 2023 14:13:01 +0200
+	id 1q6v8c-005m1B-8o; Wed, 07 Jun 2023 17:31:54 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6s29-00DKEJ-12; Wed, 07 Jun 2023 14:13:01 +0200
+	id 1q6v8b-00BFSQ-CC; Wed, 07 Jun 2023 17:31:53 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 Jun 2023 14:12:59 +0200
-Message-Id: <20230607121259.3175979-1-a.fatoum@pengutronix.de>
+Date: Wed,  7 Jun 2023 17:31:51 +0200
+Message-Id: <20230607153152.2681009-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230607_131303_640380_B129C34D 
-X-CRM114-Status: GOOD (  16.77  )
+X-CRM114-CacheID: sfid-20230607_083159_328131_4DC0E8E9 
+X-CRM114-Status: GOOD (  10.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,152 +77,93 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] include: sync <linux/stddef.h> with Linux
+Subject: [PATCH 1/2] ARM: replace CONFIG_CPU_V8 with CONFIG_CPU_64 in Makefile
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Our old definition of offsetof is not an Integer Constant Expression
-with some more recent clang versions[1]. Let's adopt the Linux
-definition as well as a number of new macros that were added as part of
-the hardening of the kernel against common out-of-bound bugs:
+We use CONFIG_CPU_V8 and CONFIG_CPU_64 interchangeably in barebox,
+because we don't yet support any SoCs with ARMv9 and because we always
+target the A64 instruction set on ARMv8 processors.
 
-  - offsetofend
-  - struct_group*
-  - DECLARE_FLEX_ARRAY
+In the Makefile where we have decisions dependent on whether we are
+compiling for 64-bit or not, we should rather use CONFIG_CPU_64 though,
+because the same options would likely be applicable to ARMv9 as well.
 
-Of course, we only benefit from the new macros once we start to use
-them, but that can follow now that they are available.
+Given that the follow-up commit will introduce a number of
+CONFIG_CPU_32, let's replace the CONFIG_CPU_V8 symbols with
+CONFIG_CPU_64 for symmetry. No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/stddef.h | 109 ++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 108 insertions(+), 1 deletion(-)
+ arch/arm/Makefile | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/stddef.h b/include/linux/stddef.h
-index 1044571c3f45..88ff6f1733d2 100644
---- a/include/linux/stddef.h
-+++ b/include/linux/stddef.h
-@@ -22,7 +22,7 @@ enum {
- typedef unsigned short wchar_t;
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 35ebc70f44e2..926af7387f7f 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -4,7 +4,7 @@ KBUILD_DEFCONFIG := multi_v8_defconfig
  
- #undef offsetof
--#define offsetof(TYPE, MEMBER) ((size_t) &((TYPE *)0)->MEMBER)
-+#define offsetof(TYPE, MEMBER)	__builtin_offsetof(TYPE, MEMBER)
+ KBUILD_CPPFLAGS	+= -D__ARM__ -fno-strict-aliasing
+ # Explicitly specifiy 32-bit ARM ISA since toolchain default can be -mthumb:
+-ifeq ($(CONFIG_CPU_V8),y)
++ifeq ($(CONFIG_CPU_64),y)
+ KBUILD_CPPFLAGS	+=$(call cc-option,-maarch64,)
+ else
+ KBUILD_CPPFLAGS	+=$(call cc-option,-marm,)
+@@ -27,14 +27,14 @@ endif
+ # at least some of the code would be executed with MMU off, lets be
+ # conservative and instruct the compiler not to generate any unaligned
+ # accesses
+-ifneq ($(CONFIG_CPU_V8),y)
++ifneq ($(CONFIG_CPU_64),y)
+ KBUILD_CFLAGS += -mno-unaligned-access
+ else
+ KBUILD_CFLAGS += -mstrict-align
+ endif
  
- /**
-  * sizeof_field() - Report the size of a struct field in bytes
-@@ -32,4 +32,111 @@ typedef unsigned short wchar_t;
-  */
- #define sizeof_field(TYPE, MEMBER) sizeof((((TYPE *)0)->MEMBER))
+ # Prevent use of floating point and Advanced SIMD registers.
+-ifeq ($(CONFIG_CPU_V8),y)
++ifeq ($(CONFIG_CPU_64),y)
+ KBUILD_CFLAGS += -mgeneral-regs-only
+ endif
  
-+/**
-+ * offsetofend() - Report the offset of a struct field within the struct
-+ *
-+ * @TYPE: The type of the structure
-+ * @MEMBER: The member within the structure to get the end offset of
-+ */
-+#define offsetofend(TYPE, MEMBER) \
-+	(offsetof(TYPE, MEMBER)	+ sizeof_field(TYPE, MEMBER))
-+
-+/**
-+ * __struct_group() - Create a mirrored named and anonyomous struct
-+ *
-+ * @TAG: The tag name for the named sub-struct (usually empty)
-+ * @NAME: The identifier name of the mirrored sub-struct
-+ * @ATTRS: Any struct attributes (usually empty)
-+ * @MEMBERS: The member declarations for the mirrored structs
-+ *
-+ * Used to create an anonymous union of two structs with identical layout
-+ * and size: one anonymous and one named. The former's members can be used
-+ * normally without sub-struct naming, and the latter can be used to
-+ * reason about the start, end, and size of the group of struct members.
-+ * The named struct can also be explicitly tagged for layer reuse, as well
-+ * as both having struct attributes appended.
-+ */
-+#define __struct_group(TAG, NAME, ATTRS, MEMBERS...) \
-+	union { \
-+		struct { MEMBERS } ATTRS; \
-+		struct TAG { MEMBERS } ATTRS NAME; \
-+	}
-+
-+/**
-+ * struct_group() - Wrap a set of declarations in a mirrored struct
-+ *
-+ * @NAME: The identifier name of the mirrored sub-struct
-+ * @MEMBERS: The member declarations for the mirrored structs
-+ *
-+ * Used to create an anonymous union of two structs with identical
-+ * layout and size: one anonymous and one named. The former can be
-+ * used normally without sub-struct naming, and the latter can be
-+ * used to reason about the start, end, and size of the group of
-+ * struct members.
-+ */
-+#define struct_group(NAME, MEMBERS...)	\
-+	__struct_group(/* no tag */, NAME, /* no attrs */, MEMBERS)
-+
-+/**
-+ * struct_group_attr() - Create a struct_group() with trailing attributes
-+ *
-+ * @NAME: The identifier name of the mirrored sub-struct
-+ * @ATTRS: Any struct attributes to apply
-+ * @MEMBERS: The member declarations for the mirrored structs
-+ *
-+ * Used to create an anonymous union of two structs with identical
-+ * layout and size: one anonymous and one named. The former can be
-+ * used normally without sub-struct naming, and the latter can be
-+ * used to reason about the start, end, and size of the group of
-+ * struct members. Includes structure attributes argument.
-+ */
-+#define struct_group_attr(NAME, ATTRS, MEMBERS...) \
-+	__struct_group(/* no tag */, NAME, ATTRS, MEMBERS)
-+
-+/**
-+ * struct_group_tagged() - Create a struct_group with a reusable tag
-+ *
-+ * @TAG: The tag name for the named sub-struct
-+ * @NAME: The identifier name of the mirrored sub-struct
-+ * @MEMBERS: The member declarations for the mirrored structs
-+ *
-+ * Used to create an anonymous union of two structs with identical
-+ * layout and size: one anonymous and one named. The former can be
-+ * used normally without sub-struct naming, and the latter can be
-+ * used to reason about the start, end, and size of the group of
-+ * struct members. Includes struct tag argument for the named copy,
-+ * so the specified layout can be reused later.
-+ */
-+#define struct_group_tagged(TAG, NAME, MEMBERS...) \
-+	__struct_group(TAG, NAME, /* no attrs */, MEMBERS)
-+
-+/**
-+ * __DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
-+ *
-+ * @TYPE: The type of each flexible array element
-+ * @NAME: The name of the flexible array member
-+ *
-+ * In order to have a flexible array member in a union or alone in a
-+ * struct, it needs to be wrapped in an anonymous struct with at least 1
-+ * named member, but that member can be empty.
-+ */
-+#define __DECLARE_FLEX_ARRAY(TYPE, NAME)	\
-+	struct { \
-+		struct { } __empty_ ## NAME; \
-+		TYPE NAME[]; \
-+	}
-+
-+/**
-+ * DECLARE_FLEX_ARRAY() - Declare a flexible array usable in a union
-+ *
-+ * @TYPE: The type of each flexible array element
-+ * @NAME: The name of the flexible array member
-+ *
-+ * In order to have a flexible array member in a union or alone in a
-+ * struct, it needs to be wrapped in an anonymous struct with at least 1
-+ * named member, but that member can be empty.
-+ */
-+#define DECLARE_FLEX_ARRAY(TYPE, NAME) \
-+	__DECLARE_FLEX_ARRAY(TYPE, NAME)
-+
- #endif
+@@ -54,7 +54,7 @@ tune-$(CONFIG_CPU_ARM920T)	:=-mtune=arm9tdmi
+ tune-$(CONFIG_CPU_ARM926T)	:=-mtune=arm9tdmi
+ tune-$(CONFIG_CPU_XSCALE)	:=$(call cc-option,-mtune=xscale,-mtune=strongarm110) -Wa,-mcpu=xscale
+ 
+-ifeq ($(CONFIG_CPU_V8), y)
++ifeq ($(CONFIG_CPU_64), y)
+ CFLAGS_ABI	:=-mabi=lp64
+ else
+ ifeq ($(CONFIG_AEABI),y)
+@@ -75,7 +75,7 @@ CFLAGS_THUMB2	:=-mthumb $(AFLAGS_AUTOIT) $(AFLAGS_NOWARN)
+ AFLAGS_THUMB2	:=$(CFLAGS_THUMB2) -Wa$(comma)-mthumb
+ endif
+ 
+-ifeq ($(CONFIG_CPU_V8), y)
++ifeq ($(CONFIG_CPU_64), y)
+ KBUILD_CPPFLAGS += $(CFLAGS_ABI) $(arch-y) $(tune-y)
+ KBUILD_AFLAGS   += -include asm/unified.h
+ export S64_32 = 64
+@@ -197,7 +197,7 @@ common-y += arch/arm/boards/ $(MACH)
+ common-y += arch/arm/cpu/
+ common-y += arch/arm/crypto/
+ 
+-ifeq ($(CONFIG_CPU_V8), y)
++ifeq ($(CONFIG_CPU_64), y)
+ common-y += arch/arm/lib64/
+ else
+ common-y += arch/arm/lib32/
+@@ -205,7 +205,7 @@ endif
+ 
+ common-$(CONFIG_OFTREE) += arch/arm/dts/
+ 
+-ifeq ($(CONFIG_CPU_V8), y)
++ifeq ($(CONFIG_CPU_64), y)
+ lds-y	:= arch/arm/lib64/barebox.lds
+ else
+ lds-y	:= arch/arm/lib32/barebox.lds
 -- 
 2.39.2
 
