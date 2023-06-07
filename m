@@ -1,77 +1,77 @@
-Delivery-date: Wed, 07 Jun 2023 14:09:03 +0200
+Delivery-date: Wed, 07 Jun 2023 14:09:06 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ryK-00EJXZ-9U
-	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 14:09:02 +0200
+	id 1q6ryN-00EJYz-NH
+	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 14:09:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ryH-00046E-3r
-	for lore@pengutronix.de; Wed, 07 Jun 2023 14:09:02 +0200
+	id 1q6ryJ-00049V-OD
+	for lore@pengutronix.de; Wed, 07 Jun 2023 14:09:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WjAArfSCl8gQ7E5O5FzX7GO31pCOJyL7eBwg1TJE9QY=; b=v5WIt5zXuODPeTZTePthBp67SW
-	2xMDYG/v8wNiDJqIWguwwOyAa0tqFpA523MSiSTGSSnAlQ64lgnMJYd8GgdmZLvsPT6hBrOpbCivF
-	fFvFgPdsrS8WMXFDFNztl3L8OLUHSvVZskIKrFimgUr5TzjJYEva/qDhkE4RbQ4slTDObheiANqe7
-	8VYzXECiO6yeqrB2Ra6lRNBIBajiIOKESDGTLL2NjnCIRt80+7c+zGYI4iCvwliiKwoSIH0M24b4l
-	e6Kr4QUEDWFfIxRpKd+r7joLjDEtB8P2xJuQuuEOiCx5mTUzAeN8XNiK3/YqVJBtficvAA1mamPwa
-	rtv6uZEA==;
+	bh=/RxCP9yvBVqPyV14+wvXdL+EUxRn2NExJWjSycSq/gE=; b=QFezHZiIfgKRp6/efJxga1zl48
+	xnunDU2DwoyMA3Wn44qs/MWUzxIidMXIs1+hFQ8kD4x9NXDdXAuSkr8oAdGPHHChKIjjnlt7bRY8E
+	h+Dip+7LCeUH1BToziiAL4i/yl6DQe229+ghWUUCKdKKIiSY8lnlVzIYSS8GCVqW+2LNh0Olf7C4s
+	j2F9PHutuZkitVHghRIaHlXqtBYB32aUL8ImAHXslxxiTaevO8eSCVXLK57GV7bTd22ejeWTLVVTw
+	w1xsiRx7ZN7VNKRm3gZj0gsUIC4banbYLxRPaCNqgCW2KhtM41SUqGx+wuygF/1uGdVyPg3ItKpjf
+	IT9z0DtA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rx3-005l34-2a;
-	Wed, 07 Jun 2023 12:07:45 +0000
+	id 1q6rx7-005l87-1s;
+	Wed, 07 Jun 2023 12:07:49 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwu-005ktO-0F
+	id 1q6rwu-005kti-1T
 	for barebox@bombadil.infradead.org;
 	Wed, 07 Jun 2023 12:07:36 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=WjAArfSCl8gQ7E5O5FzX7GO31pCOJyL7eBwg1TJE9QY=; b=AbUkqHg3a9koiAU4iTCDUAk7Yk
-	MySXa71c3KHkj7oe8qiAj92hTPSIY03FiDHtVJJrFkpTXuH20iZfVqujZdXlaJ+LaQR2pRSwDRwxi
-	FIIltNvJm3zy6Q2twsFp1LP7ETR9o43GklHJvRzFp0Nh4YLYdQ91E+5sgxsHGmjd+Tm4Pqu7Ifx7z
-	YPb6WSwth/3k7pGdeGSCDzdBzzfs4zHXv9zGRjQQN1vxkQ1AQLS/gqtGOVoJPwpEdJgGqBGBbyeTT
-	ih3vHKpvWMpOMO1L1fS4Co5V70Ov6xKTyWeXRF0kKWJQuITiey+zDLKUcxPZXlbhZq597kmV2q9AO
-	1jbu0oyw==;
+	bh=/RxCP9yvBVqPyV14+wvXdL+EUxRn2NExJWjSycSq/gE=; b=TSgNmclJ4LucMaNd3GfTrKf1m0
+	iGsdTjjcLtgaitLIrWG11UDSR4BK9SAKynb9JKkb/O6TilCMw3ZZqru6SVl6oH4/Q1smc3QopVTqm
+	JHPHzD2x7yN27xEoVZ584hVFp8zhnfroZQQQDgJdIj+WCmh+7XTswN8SiF0KzvX+i6o6Jg1qg7hp+
+	eDPMPNXF/71EW9uXgkPHQLgGdusQkY9uaSco9fvm+SN76GYT0svqh109LKtqb9mzYPGkaTTzJ+3y1
+	iqFhcwN8GY3+L0gF0NvKfHmjWQL0ULxWY8jlx9rAxMWYE4sVBYkIkfedoFnODROnbEbKUktAjFGyn
+	bJ+4k5Vg==;
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwn-0058oy-1e
+	id 1q6rwn-0058p1-2H
 	for barebox@lists.infradead.org;
-	Wed, 07 Jun 2023 12:07:34 +0000
+	Wed, 07 Jun 2023 12:07:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwi-00033g-SR; Wed, 07 Jun 2023 14:07:24 +0200
+	id 1q6rwj-00034c-65; Wed, 07 Jun 2023 14:07:25 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwi-005jkY-5c; Wed, 07 Jun 2023 14:07:24 +0200
+	id 1q6rwi-005jko-Ig; Wed, 07 Jun 2023 14:07:24 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwf-00CyNR-5y; Wed, 07 Jun 2023 14:07:21 +0200
+	id 1q6rwf-00CyNa-7C; Wed, 07 Jun 2023 14:07:21 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 Jun 2023 14:07:12 +0200
-Message-Id: <20230607120714.3083182-18-a.fatoum@pengutronix.de>
+Date: Wed,  7 Jun 2023 14:07:14 +0200
+Message-Id: <20230607120714.3083182-20-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 References: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230607_130729_834483_3C70069B 
-X-CRM114-Status: GOOD (  13.66  )
+X-CRM114-CacheID: sfid-20230607_130729_929227_E61C940A 
+X-CRM114-Status: GOOD (  14.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -94,51 +94,121 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 17/19] cdev: use cdev::dos_partition_type only if cdev_is_mbr_partitioned
+Subject: [PATCH v2 19/19] state: allow lookup of barebox state partition by Type GUID
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-dos_partition_type == 0 can mean that either a partition is not
-a MBR partition or that it indeed has a partition type of 0x00.
+The backend device tree property so far always pointed at a partition.
+Let's allow pointing it at GPT storage devices directly and lookup
+the correct barebox state partition by the well-known type GUID:
 
-In preparation for using that field in a union, explicitly check if we
-have a MBR partition.
+  4778ed65-bf42-45fa-9c5b-287a1dc4aab1
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - no changes
+  - fix typo (Sascha)
+  - use new cdev_find_child_by_gpt_typeuuid() to make barebox-state
+    code more concise (Marco)
 ---
- common/blspec.c | 2 +-
- fs/fs.c         | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ common/state/state.c | 16 ++++++++++++++++
+ include/driver.h     | 19 +++++++++++++++++++
+ include/state.h      |  4 ++++
+ 3 files changed, 39 insertions(+)
 
-diff --git a/common/blspec.c b/common/blspec.c
-index e95a8dba8d76..8c7970da8915 100644
---- a/common/blspec.c
-+++ b/common/blspec.c
-@@ -729,7 +729,7 @@ int blspec_scan_device(struct bootentries *bootentries, struct device *dev)
- 		 * partition with the MBR type id of 0xEA already exists it
- 		 * should be used as $BOOT
- 		 */
--		if (cdev->dos_partition_type == 0xea) {
-+		if (cdev_is_mbr_partitioned(cdev->master) && cdev->dos_partition_type == 0xea) {
- 			ret = blspec_scan_cdev(bootentries, cdev);
- 			if (ret == 0)
- 				ret = -ENOENT;
-diff --git a/fs/fs.c b/fs/fs.c
-index cac4bec49027..e6345f4f128a 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -108,7 +108,7 @@ void cdev_print(const struct cdev *cdev)
+diff --git a/common/state/state.c b/common/state/state.c
+index 88e246198fb8..9940a91fe34c 100644
+--- a/common/state/state.c
++++ b/common/state/state.c
+@@ -21,8 +21,10 @@
+ #include <fs.h>
+ #include <crc.h>
+ #include <init.h>
++#include <block.h>
+ #include <linux/err.h>
+ #include <linux/list.h>
++#include <linux/uuid.h>
  
- 	if (cdev->filetype)
- 		nbytes += printf("Filetype: %s\t", file_type_to_string(cdev->filetype));
--	if (cdev->dos_partition_type)
-+	if (cdev_is_mbr_partitioned(cdev->master))
- 		nbytes += printf("DOS parttype: 0x%02x\t", cdev->dos_partition_type);
- 	if (*cdev->partuuid || *cdev->diskuuid)
- 		nbytes += printf("%sUUID: %s", cdev_is_partition(cdev) ? "PART" : "DISK",
+ #include <linux/mtd/mtd-abi.h>
+ #include <malloc.h>
+@@ -595,6 +597,8 @@ static char *cdev_to_devpath(struct cdev *cdev, off_t *offset, size_t *size)
+ }
+ #endif
+ 
++static guid_t barebox_state_partition_guid = BAREBOX_STATE_PARTITION_GUID;
++
+ /*
+  * state_new_from_node - create a new state instance from a device_node
+  *
+@@ -641,6 +645,18 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
+ 		goto out_release_state;
+ 	}
+ 
++	/* Is the backend referencing an on-disk partitionable block device? */
++	if (cdev_is_block_disk(cdev)) {
++		cdev = cdev_find_child_by_gpt_typeuuid(cdev, &barebox_state_partition_guid);
++		if (IS_ERR(cdev)) {
++			ret = -EINVAL;
++			goto out_release_state;
++		}
++
++		pr_debug("%s: backend GPT partition looked up via PartitionTypeGUID\n",
++			 node->full_name);
++	}
++
+ 	state->backend_path = cdev_to_devpath(cdev, &offset, &size);
+ 
+ 	pr_debug("%s: backend resolved to %s\n", node->full_name, state->backend_path);
+diff --git a/include/driver.h b/include/driver.h
+index 817e9e386bc6..d012cd006dcb 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -585,6 +585,9 @@ extern struct list_head cdev_list;
+ #define for_each_cdev(cdev) \
+ 	list_for_each_entry((cdev), &cdev_list, list)
+ 
++#define for_each_cdev_partition(partcdev, cdev) \
++	list_for_each_entry((partcdev), &(cdev)->partitions, partition_entry)
++
+ #define DEVFS_PARTITION_FIXED		(1U << 0)
+ #define DEVFS_PARTITION_READONLY	(1U << 1)
+ #define DEVFS_IS_CHARACTER_DEV		(1U << 3)
+@@ -604,6 +607,22 @@ static inline bool cdev_is_gpt_partitioned(const struct cdev *master)
+ 	return master && (master->flags & DEVFS_IS_GPT_PARTITIONED);
+ }
+ 
++static inline struct cdev *
++cdev_find_child_by_gpt_typeuuid(struct cdev *cdev, guid_t *typeuuid)
++{
++	struct cdev *partcdev;
++
++	if (!cdev_is_gpt_partitioned(cdev))
++		return ERR_PTR(-EINVAL);
++
++	for_each_cdev_partition(partcdev, cdev) {
++		if (guid_equal(&partcdev->typeuuid, typeuuid))
++			return partcdev;
++	}
++
++	return ERR_PTR(-ENOENT);
++}
++
+ struct cdev *devfs_add_partition(const char *devname, loff_t offset,
+ 		loff_t size, unsigned int flags, const char *name);
+ int devfs_del_partition(const char *name);
+diff --git a/include/state.h b/include/state.h
+index bffcd5a9007f..3daf82c0735f 100644
+--- a/include/state.h
++++ b/include/state.h
+@@ -62,4 +62,8 @@ static inline int state_read_mac(struct state *state, const char *name, u8 *buf)
+ 
+ #endif /* #if IS_ENABLED(CONFIG_STATE) / #else */
+ 
++#define BAREBOX_STATE_PARTITION_GUID \
++	GUID_INIT(0x4778ed65, 0xbf42, 0x45fa, 0x9c, 0x5b, \
++		 0x28, 0x7a, 0x1d, 0xc4, 0xaa, 0xb1)
++
+ #endif /* __STATE_H */
 -- 
 2.39.2
 
