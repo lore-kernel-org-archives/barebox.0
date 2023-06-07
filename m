@@ -3,60 +3,60 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ry9-00EJSM-CY
+	id 1q6ry9-00EJSi-V9
 	for lore@lore.pengutronix.de; Wed, 07 Jun 2023 14:08:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q6ry6-0003x1-Nz
-	for lore@pengutronix.de; Wed, 07 Jun 2023 14:08:51 +0200
+	id 1q6ry7-0003xV-At
+	for lore@pengutronix.de; Wed, 07 Jun 2023 14:08:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ECSFVv9hctXmeiKAnv+wIZTtsPHOQNMgDDT0guGcVSE=; b=EUZrVS8TS9mR3n8+o/tSf6QW4W
-	qRPRlWwGn54DCaeSluE4JeIJ5ZTH1Pv6ifEfUR7+v15CGtQ8yQdByomsflYif8rceIQti3kFkOr7E
-	QHVFzQFi2InFpXTA+SExG5DiK4nGY/YzK4a5xVX1gSkwZj3Jx0czujaGvgucK3CjUUPT2iY1p6pbL
-	JgvE27+KhUGQtbX3ZC0CCQLrwysT6NQy5/rjtQTgjQ6e7RYqfhe8IV3aaBbBJoSgdsW2YQAuu8TiU
-	5VlEJ7F1U5V2dDSCKcJfOH3QtH13BpH6dlGXfAmqcNJkxuswTh2HWdhuNAjcYO1UPxSNkh2UORWXu
-	FJC8J+Zw==;
+	bh=vwhJGOS5hXT8f5ZhUCNxPFkeBtzQUOsVqCx2TrHNdV4=; b=VGGlw5smbGYcEZi6Gra3et+Y/P
+	FKXwUVc31qQc1z9GO9BTw97XoSgce3IBDiY3royjeFRUDQPYcioIL1AK/ICIHe/kX8nzRYDlwWAx6
+	YUFOoW+HXqzrOgL2gD5s3LLfneUHzBJpNpkJq7V8gigDev/Q8sjJFntRa88bSkaG6Gl4aM4KfPAkK
+	8JMs9TlIaegltLqwBy4nDpRnFHhGPQk0ljjPmi1hLWmHQO0o8m+EKPRyKS6sdetHs6zybfDrsiKHc
+	s1zXg5TXSu7U/2TSeA4hrBiS8uJuCebDuEsGLgiqd8livahQWeNObfyyZ7CtqHst9BFkDj230A2Su
+	h0DFnpTQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwr-005ksT-2G;
-	Wed, 07 Jun 2023 12:07:33 +0000
+	id 1q6rww-005kvQ-2f;
+	Wed, 07 Jun 2023 12:07:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q6rwk-005knK-2D
+	id 1q6rwk-005knV-2J
 	for barebox@lists.infradead.org;
-	Wed, 07 Jun 2023 12:07:29 +0000
+	Wed, 07 Jun 2023 12:07:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwh-00031A-6u; Wed, 07 Jun 2023 14:07:23 +0200
+	id 1q6rwh-00031V-VT; Wed, 07 Jun 2023 14:07:24 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwg-005jjo-Be; Wed, 07 Jun 2023 14:07:22 +0200
+	id 1q6rwh-005jk6-7o; Wed, 07 Jun 2023 14:07:23 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q6rwf-00CyNN-5R; Wed, 07 Jun 2023 14:07:21 +0200
+	id 1q6rwe-00CyMV-VG; Wed, 07 Jun 2023 14:07:20 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  7 Jun 2023 14:07:11 +0200
-Message-Id: <20230607120714.3083182-17-a.fatoum@pengutronix.de>
+Date: Wed,  7 Jun 2023 14:06:59 +0200
+Message-Id: <20230607120714.3083182-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 References: <20230607120714.3083182-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230607_050726_744353_225442B4 
-X-CRM114-Status: GOOD (  12.87  )
+X-CRM114-CacheID: sfid-20230607_050726_835241_315864F2 
+X-CRM114-Status: GOOD (  17.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,87 +79,94 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 16/19] state: factor device path lookup into helper function
+Subject: [PATCH v2 04/19] of: partition: support of_partition_ensure_probed on parent device
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The #ifdef __BAREBOX__ is meant for easier synchronization with
-dt-utils. We'll keep that intact, but move it out of the function to not
-break reading flow. After sync, dt-utils would now need to implement
-
-  of_cdev_find
-  cdev_to_devpath
+barebox-state code uses of_partition_ensure_probed to resolve the
+backend property. We want to allow backend to point directly at a
+storage device instead of a partition. We can't determine whether a DT
+device is a storage device though before it's probed, so let's have
+of_partition_ensure_probed support either case.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - no changes
+  - reworked and fixed function (Marco)
 ---
- common/state/state.c | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ drivers/of/partition.c | 41 +++++++++++++++++++++++++++++++++++++----
+ drivers/of/platform.c  |  2 +-
+ 2 files changed, 38 insertions(+), 5 deletions(-)
 
-diff --git a/common/state/state.c b/common/state/state.c
-index 11cc86ff73be..88e246198fb8 100644
---- a/common/state/state.c
-+++ b/common/state/state.c
-@@ -581,6 +581,20 @@ void state_release(struct state *state)
- 	free(state);
+diff --git a/drivers/of/partition.c b/drivers/of/partition.c
+index 40c47f554ad2..6957e10c41bf 100644
+--- a/drivers/of/partition.c
++++ b/drivers/of/partition.c
+@@ -110,14 +110,47 @@ int of_parse_partitions(struct cdev *cdev, struct device_node *node)
+ 	return 0;
  }
  
-+#ifdef __BAREBOX__
-+static char *cdev_to_devpath(struct cdev *cdev, off_t *offset, size_t *size)
-+{
-+	/*
-+	 * We only accept partitions exactly mapping the barebox-state,
-+	 * but dt-utils may need to set non-zero values here
-+	 */
-+	*offset = 0;
-+	*size = 0;
-+
-+	return basprintf("/dev/%s", cdev->name);
-+}
-+#endif
-+
- /*
-  * state_new_from_node - create a new state instance from a device_node
-  *
-@@ -597,8 +611,9 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
- 	const char *alias;
- 	uint32_t stridesize;
- 	struct device_node *partition_node;
--	off_t offset = 0;
--	size_t size = 0;
-+	struct cdev *cdev;
-+	off_t offset;
-+	size_t size;
++/**
++ * of_partition_ensure_probed - ensure a parition is probed
++ * @np: pointer to a partition or to a partitionable device
++ *      Unfortunately, there is no completely reliable way
++ *      to differentiate partitions from devices prior to
++ *      probing, because partitions may also have compatibles.
++ *      We only handle nvmem-cells, so anything besides that
++ *      is assumed to be a device that should be probed directly.
++ *
++ * Returns zero on success or a negative error code otherwise
++ */
+ int of_partition_ensure_probed(struct device_node *np)
+ {
+-	np = of_get_parent(np);
++	struct device_node *parent = of_get_parent(np);
  
- 	alias = of_alias_get(node);
- 	if (!alias) {
-@@ -617,11 +632,8 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
- 		goto out_release_state;
- 	}
+-	if (of_device_is_compatible(np, "fixed-partitions"))
+-		np = of_get_parent(np);
++	/* root node is not a partition */
++	if (!parent)
++		return -EINVAL;
  
--#ifdef __BAREBOX__
--	ret = of_find_path_by_node(partition_node, &state->backend_path, 0);
--#else
--	ret = of_get_devicepath(partition_node, &state->backend_path, &offset, &size);
--#endif
-+	cdev = of_cdev_find(partition_node);
-+	ret = PTR_ERR_OR_ZERO(cdev);
- 	if (ret) {
- 		if (ret != -EPROBE_DEFER)
- 			dev_err(&state->dev, "state failed to parse path to backend: %s\n",
-@@ -629,6 +641,10 @@ struct state *state_new_from_node(struct device_node *node, bool readonly)
- 		goto out_release_state;
- 	}
- 
-+	state->backend_path = cdev_to_devpath(cdev, &offset, &size);
+-	return np ? of_device_ensure_probed(np) : -EINVAL;
++	/* Check if modern partitions binding */
++	if (of_device_is_compatible(parent, "fixed-partitions")) {
++		parent = of_get_parent(parent);
 +
-+	pr_debug("%s: backend resolved to %s\n", node->full_name, state->backend_path);
++		/*
++		 * Can't call of_partition_ensure_probed on root node.
++		 * This catches barebox-specific partuuid binding
++		 * (top-level partition node)
++		 */
++		if (!of_get_parent(parent))
++			return -EINVAL;
 +
- 	state->backend_reproducible_name = of_get_reproducible_name(partition_node);
++		return of_device_ensure_probed(parent);
++	 }
++
++	/* Check if legacy partitions binding */
++	if (!of_property_present(np, "compatible") ||
++	    of_device_is_compatible(np, "nvmem-cells"))
++		return of_device_ensure_probed(parent);
++
++	/* Doesn't look like a partition, so let's probe directly */
++	return of_device_ensure_probed(np);
+ }
+ EXPORT_SYMBOL_GPL(of_partition_ensure_probed);
  
- 	ret = of_property_read_string(node, "backend-type", &backend_type);
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index ab737629325a..78b8a31331db 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -484,7 +484,7 @@ int of_device_ensure_probed(struct device_node *np)
+ {
+ 	struct device *dev;
+ 
+-	if (!deep_probe_is_supported())
++	if (!np || !deep_probe_is_supported())
+ 		return 0;
+ 
+ 	dev = of_device_create_on_demand(np);
 -- 
 2.39.2
 
