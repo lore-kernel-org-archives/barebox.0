@@ -1,81 +1,81 @@
-Delivery-date: Fri, 09 Jun 2023 11:04:38 +0200
+Delivery-date: Fri, 09 Jun 2023 11:19:02 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q7Y2x-00GxyV-7D
-	for lore@lore.pengutronix.de; Fri, 09 Jun 2023 11:04:38 +0200
+	id 1q7YGt-00Gz0H-AH
+	for lore@lore.pengutronix.de; Fri, 09 Jun 2023 11:19:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q7Y2u-0006Kp-Vm
-	for lore@pengutronix.de; Fri, 09 Jun 2023 11:04:37 +0200
+	id 1q7YGq-0000By-Po
+	for lore@pengutronix.de; Fri, 09 Jun 2023 11:19:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=oHrp/XHJHYK9kAjKqpmE4d7ptDnN8CkCglR/Amvv3TA=; b=tYmytzbDa7VXJLxNNs4RuNi35p
-	QI7UkSi6EzPZKhPWvudjvLyl183V34tWFYTBzREkpuU0VU/j/wYiPjF8fsmMYaNtXzb++cb7xE+Jf
-	8JolLO6BAcM1lch0e3XykfV41xRuPID/vuKAiLLLmLm7uLU18d6hJdKVC66s0EdQCLmp6POfx1Vlp
-	pOeDE68VGCgih/gwCf6idn/JIggOVIHdIxtTj02nVmR/LuKm3IuY8Aii+GVOJRnUC1JMGdDJsgTuG
-	+3wdrYBIVJhHHfR1M6p6MBKsyQ4MXa4naqrlaqPMGzgxutscdxKzoq+N0jUxfj/AX3FQ7ZRThjh8V
-	XJz2t8ZQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:To:
+	Subject:Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Q+EbvBYURj/l0FXK/IGAgO6RlaGHYq/E2TQvXp9cT7k=; b=YvWeULQz/rg3ZK8RCnE3XndfYw
+	TeRvnHI2frAuyyQt7o+Y8mxqQ6bFjE9CYd/dhlWs2I4MJfDYJ102qCyhh1Kkuu8e2FEJ/+kEL0rjY
+	QxYZZggvyGLnGRDPxcAup0VaGDOFUdXVSCXLFWrxg3FQjAiDqWNcqPUjLWk2tEcW58uJbhxPGupZe
+	braTw+MApL9OsaJ18oEfqA4b2QapIhmehMCRAj3HfTjaKJm6k0ylOnh3Y1xnIcSOYqRUAON3C12Sl
+	8PZ/UKhX1yM8dCEj41849hOkg5njLsBRrTE4GK1vK32xqNtMo8slU25avzZl+V0uIlNbUT2dnY+gX
+	5bSgzVSg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7Y1Q-00CLLD-1f;
-	Fri, 09 Jun 2023 09:03:04 +0000
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+	id 1q7YFf-00CO2K-3B;
+	Fri, 09 Jun 2023 09:17:47 +0000
+Received: from mail-pj1-x1034.google.com ([2607:f8b0:4864:20::1034])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7Y1N-00CLJQ-07
+	id 1q7YFc-00CO0w-2W
 	for barebox@lists.infradead.org;
-	Fri, 09 Jun 2023 09:03:02 +0000
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-4f63ea7bfb6so1819733e87.3
-        for <barebox@lists.infradead.org>; Fri, 09 Jun 2023 02:02:57 -0700 (PDT)
+	Fri, 09 Jun 2023 09:17:46 +0000
+Received: by mail-pj1-x1034.google.com with SMTP id 98e67ed59e1d1-2566ed9328eso524159a91.2
+        for <barebox@lists.infradead.org>; Fri, 09 Jun 2023 02:17:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20221208; t=1686301376; x=1688893376;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oHrp/XHJHYK9kAjKqpmE4d7ptDnN8CkCglR/Amvv3TA=;
-        b=kYi0HPR85DyJeULBg2wsT1tHZGw9GrBc2H1RA+CmM2jIusrnvPJrgigHZlVtI1AfvS
-         490eBGbgIIPhheWOtmNMHnLaP2/ITIuWJsdE8ZSgAydhakaujUlLUpAgSengrhZC1Jxh
-         SijuxDrYc6nb55bvtBZtVNs8uOn+78T8yFcpqadgQrI01TGbXuJ40UpCPJj62rsxlyNv
-         CUh3e1VkFBq1TM0ORcOR3XKa/v9HaNaWjDkAzQndm1sGSvmuPHoqilukidUuCHGpUpFe
-         B7AgpFyU4c72xY7eq0hBMHJ60NGGkqrfiMVG3xYy58dUotiYZDZqkzfip0FaPlIrM1mo
-         /x4g==
+        d=gmail.com; s=20221208; t=1686302262; x=1688894262;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q+EbvBYURj/l0FXK/IGAgO6RlaGHYq/E2TQvXp9cT7k=;
+        b=K7Q6pkMthlTkqTcCafq0Z3rhIKsfudMZX/nPNAMPtx2BuZ7EgFGJ+aWtea9874TrQU
+         8wG1kNi8CaAzWkHKlgmD7MD64e5Jjjc58HqS+4fbZR0/WSuHJpNqFVKSlA+HzlZmZjQ2
+         mxBj4xFqM9F+HFFM7Q/MUbGahp9DZIT60I1PuPDmyYKkNW+MbixZov7DfmKBUS1ZumSB
+         gxhOzpU/4Hu/o0gNEZnpu4djd+73ckm32w2kHt8bQwwRLUdx6669+kFjsZXivpT/xGT0
+         oDDbRBQ7X/9Mg+dxSceypd2Gm5wMzksg0U/Iv9QTPcunczc1+tI0PYAWyQJgUHdWvS5u
+         z6tw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686301376; x=1688893376;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1686302262; x=1688894262;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oHrp/XHJHYK9kAjKqpmE4d7ptDnN8CkCglR/Amvv3TA=;
-        b=Idvz3vqtRMU52iq7YiYGnOwrNYkihCWzS+y+OhQRwzftG8rFcKHeu5qz+xSfmKF1nv
-         xELshkqZECFzUfiXuoR7XZxCNS8jbNV3fx/U+4emjzktn/Dt/uSTvFxiC8c1vyWW4NMC
-         PeevY4oy4mbpbdQdr3PyuE2OTO837UXC4CZAAG7TJRAD2Fpvw+vWeK+uSAX/MsPxQDxc
-         YgX9o3U4Xo5eTiBVGy+5vQG701bVwQZM4ngjVrNf4KAYxbLszlJwvZ9W/4cG9LOOMC7X
-         2oY8fUjlOkAVgaw3n634WFv8MJhRF/Yp9yT4F8MnL6ME2zaBYK70+xmMhrY7L8VG95Y6
-         XRWQ==
-X-Gm-Message-State: AC+VfDysEOHnlAXWIW1/qLWXUweB1BcAbAB0DedJZ4MvAQg6x1j/0lhv
-	5nEZNYj9HE53/kkYOTVPhGjMf4Wn5sU=
-X-Google-Smtp-Source: ACHHUZ6hSbz7cNOLfH8jGdzvIFpj8vLQtHGoXCWi0ZxYguagKsJnAW3hU+ji4s8IpToXs7wlU7LhNw==
-X-Received: by 2002:a2e:c4a:0:b0:2b1:c1b2:e2ec with SMTP id o10-20020a2e0c4a000000b002b1c1b2e2ecmr762647ljd.9.1686301375745;
-        Fri, 09 Jun 2023 02:02:55 -0700 (PDT)
-Received: from development2.visionsystems.de (mail.visionsystems.de. [213.209.99.202])
-        by smtp.gmail.com with ESMTPSA id a11-20020a170906684b00b0096a91ab434fsm1018161ejs.40.2023.06.09.02.02.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jun 2023 02:02:55 -0700 (PDT)
-From: yegorslists@googlemail.com
-To: barebox@lists.infradead.org
-Date: Fri,  9 Jun 2023 11:02:17 +0200
-Message-Id: <20230609090217.2492987-1-yegorslists@googlemail.com>
-X-Mailer: git-send-email 2.34.1
+        bh=Q+EbvBYURj/l0FXK/IGAgO6RlaGHYq/E2TQvXp9cT7k=;
+        b=EbzrIyJZeN1ul5K6qN/bpE4YlRZfeVxpg0eez7fm/sdpysvrAMOZBEIzZcwVwYQRld
+         L7miQB9+cF0hq5yeIYF4GvuzS27tEeB0YrXkoMlsdjfZQBkM+M3tL2CaOy/GUtuZS0Cz
+         0eM1OLjQ5mvszwzyLFhYNWYdcjf9IWwm4af7cjVpEzVQma4+YqmkQip5fXtHft48xBRV
+         q4xO9lIEIAu+YQfX9tFqFBs4YH57YEds8KBZmaJUQnPD6BJcg5BTz2VQwtQgXF2ddTDG
+         kT8IgaygceEHKKjcQS3uCecGNRmsv373tBa54RPbEGXkT5Ll9G3l3UdygiRpA0J4NjBu
+         3UrQ==
+X-Gm-Message-State: AC+VfDxuuvGKebLCy2w4d2RdHPPrHpXZo7fx4lO3SvxjVo1D52X59r7H
+	UhcQe24NCYGAEf8mjxwvg5LIdz9lVQG6KMKLr+Ce7dwAIzWokQ==
+X-Google-Smtp-Source: ACHHUZ51EsmElCY6bdroAS9nUnyh+qAXyaWYVRDrLS1uI0PUQ9Y1rgAg5khrDyYCXO53eYj9wNUIKPSXfiOPRUERiTU=
+X-Received: by 2002:a17:90a:f0c3:b0:253:8e59:a867 with SMTP id
+ fa3-20020a17090af0c300b002538e59a867mr666737pjb.42.1686302261718; Fri, 09 Jun
+ 2023 02:17:41 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20230607051155.3175-1-denorl2009@gmail.com> <20230607051155.3175-3-denorl2009@gmail.com>
+ <e72144bf-7523-4d5e-09a3-74f910a1ed7f@pengutronix.de> <CALHb5ujjPBenOtsmpfa-Y7LikNiAz4KK1bHOA7k3pQCjCM8n8A@mail.gmail.com>
+ <f597258b-a7fb-af4e-323c-77c6ab5b5a61@pengutronix.de>
+In-Reply-To: <f597258b-a7fb-af4e-323c-77c6ab5b5a61@pengutronix.de>
+From: Denis Orlov <denorl2009@gmail.com>
+Date: Fri, 9 Jun 2023 12:17:29 +0300
+Message-ID: <CALHb5uiDfZpwDUQGDYazBX2vZRTWEiJBEm1kcF94AJoK_Uhx9Q@mail.gmail.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230609_020301_075111_9F9BD232 
-X-CRM114-Status: GOOD (  10.20  )
+X-CRM114-CacheID: sfid-20230609_021744_819739_1976F16A 
+X-CRM114-Status: GOOD (  27.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,52 +87,118 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,
 	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] net: cpsw: increase a delay before reading the ALIVE register
+Subject: Re: [PATCH 2/3] test: mips: add QEMU Malta 64le labgrid config
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-From: Yegor Yefremov <yegorslists@googlemail.com>
+On Fri, 9 Jun 2023 at 10:21, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+>
+> On 09.06.23 09:14, Denis Orlov wrote:
+> > Hello Ahmad,
+> >
+> > On Fri, 9 Jun 2023 at 09:36, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+> >>
+> >> On 07.06.23 06:59, Denis Orlov wrote:
+> >>> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+> >>> ---
+> >>>  test/mips/qemu-malta64el_defconfig.yaml | 22 ++++++++++++++++++++++
+> >>>  1 file changed, 22 insertions(+)
+> >>>  create mode 100644 test/mips/qemu-malta64el_defconfig.yaml
+> >>>
+> >>> diff --git a/test/mips/qemu-malta64el_defconfig.yaml b/test/mips/qemu-malta64el_defconfig.yaml
+> >>> new file mode 100644
+> >>> index 0000000000..22562d5b7a
+> >>> --- /dev/null
+> >>> +++ b/test/mips/qemu-malta64el_defconfig.yaml
+> >>> @@ -0,0 +1,22 @@
+> >>> +targets:
+> >>> +  main:
+> >>> +    drivers:
+> >>> +      QEMUDriver:
+> >>> +        qemu_bin: qemu
+> >>> +        machine: malta
+> >>> +        cpu: 5KEf
+> >>> +        memory: 256M
+> >>> +        bios: barebox-qemu-malta.img.swapped
+> >>> +        extra_args: ''
+> >>> +      BareboxDriver:
+> >>> +        prompt: 'barebox@[^:]+:[^ ]+ '
+> >>> +        bootstring: 'commandline:'
+> >>> +      BareboxTestStrategy: {}
+> >>> +    features:
+> >>> +      - virtio-pci
+> >>
+> >> Did you test virtio PCI? I don't see it enabled in the defconfig.
+> >
+> > Nope, I didn't. I must have copied this from the 32-bit malta config
+> > file. However, I see that its defconfig also lacks VIRTIO_PCI, so should
+> > those be removed from both labgrid configs?
+> >
+> > Besides, judging from the virtio PCI Kconfig option depends, there seem
+> > to be some issues with virtio PCI on MIPS without CONFIG_MMU set. Is the
+> > lack of VIRTIO_PCI option in 32-bit malta defconfig related to that?
+>
+> Ah, right. test/emulate.pl reads virtio-pci feature to decide what Virt I/O
+> transport to use. Maybe the MMU incompatibility is fixed now with your
+> recent DMA rework or maybe we still have 1:1 mapping assumptions in the
+> virtio code itself. If you could give it a quick test with CONFIG_MMU=n
+> and see if it works, that would be great. Something like this should do it:
+>
+> /usr/bin/qemu-system-mips64el -M malta -cpu 5KEf -m 256M \
+>    -bios barebox-qemu-malta.img.swapped -serial mon:stdio -trace file=/dev/null \
+>    -drive if=none,file=/src/barebox-rockchip/somealigned.img,format=raw,id=hd0 \
+>    -device virtio-blk-pci,disable-legacy=on,disable-modern=off,drive=hd0
+>
+> (Above was generated by ./test/emulate.pl $config -n --blk=somealigned.img)
+>
+> You should see a /dev/virtioblk* device if everything is enabled and working.
 
-At leasr am335x, the delay is not enough to reliably detect all PHYs.
-Hence, increase the timeout.
+Yeah, it seems that this works on both CONFIG_MMU=y and CONFIG_MMU=n now.
+The drive mounts successfully and I am able to look at its contents with
+"ls". So, does this mean that we should enable the VIRTIO_PCI option in
+malta defconfigs?
 
-Tested with the followings PHYs:
-
-- MotorComm YT8511
-- Atheros AT8035
-- CPlus IP101A
-
-Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
----
- drivers/net/cpsw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index 0449240f98..fdf6ff1e8e 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -620,7 +620,7 @@ static int cpsw_mdio_probe(struct device *dev)
- 	 * silicon.  Since the effect of (b) was found to be largely
- 	 * negligible, we keep things simple here.
- 	 */
--	udelay(1000);
-+	udelay(2000);
- 
- 	start = get_time_ns();
- 	while (1) {
--- 
-2.34.1
-
+>
+> Cheers,
+> Ahmad
+>
+> >
+> > Regards,
+> > Denis
+> >
+> >>
+> >>> +images:
+> >>> +  barebox-qemu-malta.img.swapped: !template "$LG_BUILDDIR/images/barebox-qemu-malta.img.swapped"
+> >>> +tools:
+> >>> +  qemu: /usr/bin/qemu-system-mips64el
+> >>> +imports:
+> >>> +  -  ../strategy.py
+> >>
+> >> --
+> >> Pengutronix e.K.                           |                             |
+> >> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> >> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> >>
+> >
+>
+> --
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>
 
 
