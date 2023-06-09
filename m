@@ -1,63 +1,63 @@
-Delivery-date: Fri, 09 Jun 2023 08:44:45 +0200
+Delivery-date: Fri, 09 Jun 2023 08:45:55 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q7Vra-00GqWr-Qe
-	for lore@lore.pengutronix.de; Fri, 09 Jun 2023 08:44:45 +0200
+	id 1q7Vsi-00GqZo-Mu
+	for lore@lore.pengutronix.de; Fri, 09 Jun 2023 08:45:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q7VrY-0003TY-9v
-	for lore@pengutronix.de; Fri, 09 Jun 2023 08:44:44 +0200
+	id 1q7Vsf-0003vI-Pn
+	for lore@pengutronix.de; Fri, 09 Jun 2023 08:45:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gqURubSoDINxBubDBnv5F8iJXfFsFzW4AU8CYjKeJzk=; b=PVeVrfH8cR2S7kO4O34oD+Jse/
-	LTPoASgiHqhCXWfsGLdJlCLEpO1/qZpzvD6a0MZDCx8eOB0lFdhkuIa8lzQzNO5rIoGnr8e0ZQVlg
-	G/GxOvX0K1HxAjDhAv+96DPD+vRjm7RUTTRv+IVKxm5MUla+2ftMdfWqhIkiqX7BGfr6PX/C7FAEx
-	foEW2dSiW4ooDxpthKjio9LrLNz0QAKY7osHTLBYbDkvLZH4mL4/14F3VyQ4HDtwHh6SNrmdGc0x5
-	s2bf+V7BqgIM0uJYvvP4NZlxWrFhUsFRk0qBw1t1nurl3RIfO0CwWcf6dhim6QDClhAy/YplKcEwF
-	2pf9ra3w==;
+	bh=0T2lIS5VPRovID45f4k52+EsfJglyTLPYSUjflF2vjk=; b=ZZKcGjEZa7QFFrLc1QRax8rC6a
+	bJA066I5kcd/fLdZY6NnTTT8jeKn8R11rMeCd58TMxcjvl/KTBYrfyxxCjVFriFJqJWdToLRHjGSA
+	emIWUX/qvrNRIuVuiyuTnM1MVLtHKzoWQR2+Q4KfcpOmJ3/Zr9i6KsqlBlH2MDM2hM25khLbe2Jve
+	tQIMKd3YOaN6l6e3fmaCCqUAaIsbi19vcLC2E/2fX8yiiozhhsP6f9vJ5giYx6w2pGzzxVwpRvezR
+	/cH7uDnHDcxW31RaPdMPcUyXSKLtjJwDvROqmbNUqsdoE3oGEORpGj9aV5KKKdS6KEEwx/lam5Jzj
+	RHEOGLbA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7VqY-00BvfO-0b;
-	Fri, 09 Jun 2023 06:43:42 +0000
+	id 1q7Vre-00BwAA-0U;
+	Fri, 09 Jun 2023 06:44:50 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7VqU-00BvdE-2g
+	id 1q7Vra-00Bw8Y-22
 	for barebox@lists.infradead.org;
-	Fri, 09 Jun 2023 06:43:40 +0000
+	Fri, 09 Jun 2023 06:44:48 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1q7VqT-0003JY-J3; Fri, 09 Jun 2023 08:43:37 +0200
+	id 1q7VrZ-0003Tg-AI; Fri, 09 Jun 2023 08:44:45 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1q7VqT-0008Hg-23; Fri, 09 Jun 2023 08:43:37 +0200
-Date: Fri, 9 Jun 2023 08:43:37 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Denis Orlov <denorl2009@gmail.com>
+	id 1q7VrZ-0008IN-2o; Fri, 09 Jun 2023 08:44:45 +0200
+Date: Fri, 9 Jun 2023 08:44:45 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230609064337.GC15436@pengutronix.de>
-References: <20230605202634.42175-1-denorl2009@gmail.com>
+Message-ID: <20230609064445.GP18491@pengutronix.de>
+References: <20230608065805.3095109-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230605202634.42175-1-denorl2009@gmail.com>
+In-Reply-To: <20230608065805.3095109-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230608_234339_304301_C48A4EF2 
-X-CRM114-Status: GOOD (  19.23  )
+X-CRM114-CacheID: sfid-20230608_234446_667758_3AE5E635 
+X-CRM114-Status: GOOD (  29.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,66 +80,108 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 00/17] MIPS: fix and improve 64BIT support
+Subject: Re: [PATCH] ARM: dts: state-example: fix use with Phytec phyFLEX
+ i.MX6
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jun 05, 2023 at 11:10:31PM +0300, Denis Orlov wrote:
-> The existing 64BIT support for MIPS was somewhat incomplete with no
-> board having MIPS64 CPUs specified to be available as targets. Define
-> Malta as supporting those and fix all the compilation and linking
-> errors. Make some optional features available with 64BIT too.
+On Thu, Jun 08, 2023 at 08:58:05AM +0200, Ahmad Fatoum wrote:
+> The state-example.dtsi was added 5 years ago and while the binding is
+> still applicable, the imx6q-phytec-pbab01.dts device tree that it
+> extends when USE_STATE_EXAMPLE is defined has changed in a way that
+> breaks use of the state nodes.
 > 
-> Denis Orlov (17):
->   MIPS: malta: allow to choose MIPS64 target CPU in config
->   MIPS: malta: use CKSEG instead of KSEG macros
->   MIPS: reloc: fix relocation with CONFIG_64BIT enabled
->   MIPS: o32: provide ta0..ta3 register definitions
->   MIPS: pbl: use o32/n64 compatible register definitions
->   MIPS: pbl: fix linking errors with CONFIG_64BIT
->   MIPS: use MIPS32/MIPS64 generic instruction macros
->   MIPS: malta: fix GT64120 base virtual address on 64BIT
->   MIPS: fix addresses of exception vectors in 64-bit mode
->   MIPS: fix *ADDR macro usage warnings on CONFIG_64BIT
->   MIPS: Makefile: sign-extend TEXT_BASE value on CONFIG_64BIT
->   MIPS: enable 64-bit kernel segment addressing on CONFIG_64BIT
->   MIPS: traps: fix passing wrong sp when returning from exception
->   MIPS: pbl_macros: use generic load/store macros in
->     copy_to_link_location
->   MIPS: add 64-bit support for optimized string functions
->   MIPS: make setjmp/longjmp/initjmp available in 64BIT builds
->   MIPS: main_entry-pbl: fix conversion warnings on CONFIG_64BIT
+> Do the necessary to restore the examples to working order:
+> 
+>   - Reference the NOR partition inside of the fixed-partition container
+>     it's inside now
+> 
+>   - Resize the NAND, so the last 1M of the barebox 16M partition can
+>     be used for state. Also use the fixed-partition container that
+>     has been added in the meantime.
+> 
+>   - Use phandles or label-relative paths, so we get build errors
+>     if the path changes again in future
+> 
+> There's still a WARNING: state_nor: Failed to initialize desired amount
+> of buckets, only 2 of 3 succeeded, but that can be fixed separately.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> I don't know how to fix the warning. Setting backend-stridesize = <64>
+> didn't help. I've CONFIG_MTD_SPI_NOR_USE_4K_SECTORS=y
+> ---
+>  arch/arm/dts/state-example.dtsi | 41 +++++++++++++++++----------------
+>  1 file changed, 21 insertions(+), 20 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
->  arch/mips/Kconfig                             |  6 +-
->  arch/mips/Makefile                            | 14 +++--
->  arch/mips/boards/qemu-malta/lowlevel.S        |  4 +-
->  arch/mips/boot/main_entry-pbl.c               | 11 ++--
->  arch/mips/boot/main_entry.c                   |  2 +-
->  arch/mips/boot/start.S                        |  4 +-
->  arch/mips/include/asm/asm.h                   | 10 +--
->  arch/mips/include/asm/debug_ll_ns16550.h      |  6 +-
->  arch/mips/include/asm/dma.h                   | 16 ++---
->  arch/mips/include/asm/io.h                    |  2 +-
->  arch/mips/include/asm/pbl_macros.h            | 62 +++++++++++--------
->  arch/mips/include/asm/pbl_nmon.h              | 10 +--
->  arch/mips/include/asm/regdef.h                |  6 ++
->  arch/mips/include/asm/setjmp.h                |  2 +-
->  arch/mips/lib/genex.S                         |  8 +--
->  arch/mips/lib/memcpy.S                        | 37 +++++++++--
->  arch/mips/lib/reloc.c                         |  7 +--
->  arch/mips/lib/setjmp.S                        | 48 +++++++-------
->  arch/mips/lib/traps.c                         |  2 +-
->  .../mach-malta/include/mach/mach-gt64120.h    |  2 +-
->  arch/mips/mach-malta/pci.c                    |  2 +-
->  21 files changed, 156 insertions(+), 105 deletions(-)
-> 
+> diff --git a/arch/arm/dts/state-example.dtsi b/arch/arm/dts/state-example.dtsi
+> index 490ee7840b24..4572168336ae 100644
+> --- a/arch/arm/dts/state-example.dtsi
+> +++ b/arch/arm/dts/state-example.dtsi
+> @@ -89,28 +89,29 @@ state_eeprom: state_eeprom {
+>  
+>  };
+>  
+> -&ecspi3 {
+> -	flash@0 {
+> -		backend_state_nor: partition@120000 {
+> -		};
+> +backend_state_nor: &{ecspi3/flash@0/partitions/partition@120000} {
+> +};
+> +
+> +/* Reduce barebox partition size from 16M to 15M */
+> +&{gpmi/partitions/partition@0} {
+> +	reg = <0x0 0xf00000>;
+> +};
+> +
+> +&{gpmi/partitions} {
+> +	backend_state_nand: partition@f00000 {
+> +		label = "barebox-state";
+> +		reg = <0xf00000 0x100000>;
+>  	};
+>  };
+>  
+> -&gpmi {
+> -	backend_state_nand: partition@500000 {
+> -	};
+> -};
+> -
+> -&i2c1 {
+> -	eeprom@50 {
+> -		partitions {
+> -			compatible = "fixed-partitions";
+> -			#size-cells = <1>;
+> -			#address-cells = <1>;
+> -			backend_state_eeprom: state@400 {
+> -				reg = <0x400 0x400>;
+> -				label = "state-eeprom";
+> -			};
+> +&som_eeprom { /* On I2C1 */
+> +	partitions {
+> +		compatible = "fixed-partitions";
+> +		#size-cells = <1>;
+> +		#address-cells = <1>;
+> +		backend_state_eeprom: state@400 {
+> +			reg = <0x400 0x400>;
+> +			label = "state-eeprom";
+>  		};
+>  	};
+>  };
+> @@ -125,4 +126,4 @@ backend_state_usdhc: state@0x80000 {
+>  			label = "state-sd";
+>  		};
+>  	};
+> -};
+> \ No newline at end of file
+> +};
 > -- 
-> 2.41.0
+> 2.39.2
+> 
 > 
 > 
 
