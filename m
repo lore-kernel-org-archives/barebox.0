@@ -1,54 +1,54 @@
-Delivery-date: Fri, 09 Jun 2023 08:45:55 +0200
+Delivery-date: Fri, 09 Jun 2023 08:46:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q7Vsi-00GqZo-Mu
-	for lore@lore.pengutronix.de; Fri, 09 Jun 2023 08:45:55 +0200
+	id 1q7VtG-00GqbU-5I
+	for lore@lore.pengutronix.de; Fri, 09 Jun 2023 08:46:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q7Vsf-0003vI-Pn
-	for lore@pengutronix.de; Fri, 09 Jun 2023 08:45:54 +0200
+	id 1q7VtD-00041a-PB
+	for lore@pengutronix.de; Fri, 09 Jun 2023 08:46:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0T2lIS5VPRovID45f4k52+EsfJglyTLPYSUjflF2vjk=; b=ZZKcGjEZa7QFFrLc1QRax8rC6a
-	bJA066I5kcd/fLdZY6NnTTT8jeKn8R11rMeCd58TMxcjvl/KTBYrfyxxCjVFriFJqJWdToLRHjGSA
-	emIWUX/qvrNRIuVuiyuTnM1MVLtHKzoWQR2+Q4KfcpOmJ3/Zr9i6KsqlBlH2MDM2hM25khLbe2Jve
-	tQIMKd3YOaN6l6e3fmaCCqUAaIsbi19vcLC2E/2fX8yiiozhhsP6f9vJ5giYx6w2pGzzxVwpRvezR
-	/cH7uDnHDcxW31RaPdMPcUyXSKLtjJwDvROqmbNUqsdoE3oGEORpGj9aV5KKKdS6KEEwx/lam5Jzj
-	RHEOGLbA==;
+	bh=Y05tPT8eVt2n6DoMi5wC2Qo2kIFvTaV+dXjFScPtzGI=; b=jhBR+BvINhVg9CiXukoZKZg3Zw
+	P5Ilb/tr35pZcOAVO6tyI9PsOeRBHLtpeDpSeGrBLR//rUV8Zbh8rH7LdTSHPPUmaZ+0TKO1PvEeH
+	dkxfw3Jjfm6+0NdPo0rMtZG1axAnpfRzar2XwK8TUqlDfJ0ODhM8Iv1pqUnGuj7j9hZGWrHe0+uS5
+	zAg7Ks5hZGvrdeE1FdZNCqM6muBJ8PDhcIKM6meUBURP560A0XSlwDboNS1g+aIpAz0Vs+HuEU/Fb
+	WznQHluvBWSzi5UGOFEkgG4Oh0mycKk7/N7vgL/31uRSzZ4GmnHmSBEsj5TgIey9uKMIX61+Afc2F
+	35/lV8XQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7Vre-00BwAA-0U;
-	Fri, 09 Jun 2023 06:44:50 +0000
+	id 1q7VsG-00BwMY-2b;
+	Fri, 09 Jun 2023 06:45:28 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7Vra-00Bw8Y-22
+	id 1q7VsE-00BwLW-0F
 	for barebox@lists.infradead.org;
-	Fri, 09 Jun 2023 06:44:48 +0000
+	Fri, 09 Jun 2023 06:45:27 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1q7VrZ-0003Tg-AI; Fri, 09 Jun 2023 08:44:45 +0200
+	id 1q7VsC-0003oB-RQ; Fri, 09 Jun 2023 08:45:24 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1q7VrZ-0008IN-2o; Fri, 09 Jun 2023 08:44:45 +0200
-Date: Fri, 9 Jun 2023 08:44:45 +0200
+	id 1q7VsC-0008PQ-Jx; Fri, 09 Jun 2023 08:45:24 +0200
+Date: Fri, 9 Jun 2023 08:45:24 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230609064445.GP18491@pengutronix.de>
-References: <20230608065805.3095109-1-a.fatoum@pengutronix.de>
+Message-ID: <20230609064524.GQ18491@pengutronix.de>
+References: <20230608072400.3275489-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230608065805.3095109-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230608072400.3275489-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +56,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230608_234446_667758_3AE5E635 
-X-CRM114-Status: GOOD (  29.75  )
+X-CRM114-CacheID: sfid-20230608_234526_112837_2A8703DC 
+X-CRM114-Status: GOOD (  20.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,105 +80,51 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] ARM: dts: state-example: fix use with Phytec phyFLEX
- i.MX6
+Subject: Re: [PATCH] include: move PATH_MAX from fs.h to linux/limits.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Jun 08, 2023 at 08:58:05AM +0200, Ahmad Fatoum wrote:
-> The state-example.dtsi was added 5 years ago and while the binding is
-> still applicable, the imx6q-phytec-pbab01.dts device tree that it
-> extends when USE_STATE_EXAMPLE is defined has changed in a way that
-> breaks use of the state nodes.
-> 
-> Do the necessary to restore the examples to working order:
-> 
->   - Reference the NOR partition inside of the fixed-partition container
->     it's inside now
-> 
->   - Resize the NAND, so the last 1M of the barebox 16M partition can
->     be used for state. Also use the fixed-partition container that
->     has been added in the meantime.
-> 
->   - Use phandles or label-relative paths, so we get build errors
->     if the path changes again in future
-> 
-> There's still a WARNING: state_nor: Failed to initialize desired amount
-> of buckets, only 2 of 3 succeeded, but that can be fixed separately.
+On Thu, Jun 08, 2023 at 09:24:00AM +0200, Ahmad Fatoum wrote:
+> Linux defines PATH_MAX in <linux/limits.h> and code that just wants
+> PATH_MAX to format a path may not be interested in all the other stuff
+> defined in fs.h. Thus move PATH_MAX to <linux/limits.h> instead.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
-> I don't know how to fix the warning. Setting backend-stridesize = <64>
-> didn't help. I've CONFIG_MTD_SPI_NOR_USE_4K_SECTORS=y
-> ---
->  arch/arm/dts/state-example.dtsi | 41 +++++++++++++++++----------------
->  1 file changed, 21 insertions(+), 20 deletions(-)
+>  include/fs.h           | 3 +--
+>  include/linux/limits.h | 2 ++
+>  2 files changed, 3 insertions(+), 2 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/dts/state-example.dtsi b/arch/arm/dts/state-example.dtsi
-> index 490ee7840b24..4572168336ae 100644
-> --- a/arch/arm/dts/state-example.dtsi
-> +++ b/arch/arm/dts/state-example.dtsi
-> @@ -89,28 +89,29 @@ state_eeprom: state_eeprom {
->  
->  };
->  
-> -&ecspi3 {
-> -	flash@0 {
-> -		backend_state_nor: partition@120000 {
-> -		};
-> +backend_state_nor: &{ecspi3/flash@0/partitions/partition@120000} {
-> +};
-> +
-> +/* Reduce barebox partition size from 16M to 15M */
-> +&{gpmi/partitions/partition@0} {
-> +	reg = <0x0 0xf00000>;
-> +};
-> +
-> +&{gpmi/partitions} {
-> +	backend_state_nand: partition@f00000 {
-> +		label = "barebox-state";
-> +		reg = <0xf00000 0x100000>;
->  	};
->  };
->  
-> -&gpmi {
-> -	backend_state_nand: partition@500000 {
-> -	};
-> -};
+> diff --git a/include/fs.h b/include/fs.h
+> index c64e78b38cf9..a61982e59ade 100644
+> --- a/include/fs.h
+> +++ b/include/fs.h
+> @@ -12,8 +12,7 @@
+>  #include <filetype.h>
+>  #include <linux/fs.h>
+>  #include <linux/string.h>
 > -
-> -&i2c1 {
-> -	eeprom@50 {
-> -		partitions {
-> -			compatible = "fixed-partitions";
-> -			#size-cells = <1>;
-> -			#address-cells = <1>;
-> -			backend_state_eeprom: state@400 {
-> -				reg = <0x400 0x400>;
-> -				label = "state-eeprom";
-> -			};
-> +&som_eeprom { /* On I2C1 */
-> +	partitions {
-> +		compatible = "fixed-partitions";
-> +		#size-cells = <1>;
-> +		#address-cells = <1>;
-> +		backend_state_eeprom: state@400 {
-> +			reg = <0x400 0x400>;
-> +			label = "state-eeprom";
->  		};
->  	};
->  };
-> @@ -125,4 +126,4 @@ backend_state_usdhc: state@0x80000 {
->  			label = "state-sd";
->  		};
->  	};
-> -};
-> \ No newline at end of file
-> +};
+> -#define PATH_MAX       1024        /* include/linux/limits.h */
+> +#include <linux/limits.h>
+>  
+>  struct partition;
+>  struct node_d;
+> diff --git a/include/linux/limits.h b/include/linux/limits.h
+> index 17375ef5225e..8baf8494943e 100644
+> --- a/include/linux/limits.h
+> +++ b/include/linux/limits.h
+> @@ -35,4 +35,6 @@
+>  #define S64_MAX		((s64)(U64_MAX >> 1))
+>  #define S64_MIN		((s64)(-S64_MAX - 1))
+>  
+> +#define PATH_MAX       1024
+> +
+>  #endif /* _LINUX_LIMITS_H */
 > -- 
 > 2.39.2
 > 
