@@ -1,59 +1,64 @@
-Delivery-date: Fri, 09 Jun 2023 09:23:14 +0200
+Delivery-date: Fri, 09 Jun 2023 09:30:50 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q7WSq-00GsrH-7c
-	for lore@lore.pengutronix.de; Fri, 09 Jun 2023 09:23:14 +0200
+	id 1q7WaB-00GtDT-Ud
+	for lore@lore.pengutronix.de; Fri, 09 Jun 2023 09:30:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q7WSn-00083y-Jb
-	for lore@pengutronix.de; Fri, 09 Jun 2023 09:23:14 +0200
+	id 1q7Wa9-0000pS-F4
+	for lore@pengutronix.de; Fri, 09 Jun 2023 09:30:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:To:Subject
-	:MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=1Zmygapav3gn2adzQy5XzWd6RromRj/4sGowYxOR1bg=; b=t5WQXT+aUPlBM5
-	oEnVs/ihoM3TI1deb1lyTlA3x7ptBFhE0iWHzpt2Kr7UKaKlI0OMTOIgnMQH7or25xEPG/r9b4M6K
-	9fuBBob7e+lyQLqS06aHhfqmAexGFfF4NVfYiXwqeef7oDvqejIiVg042sMK54I02G0XXGUzlpAm/
-	KiIXiv4jmLM/W4ydvAtobQW6P9wTysASZYbOkz/oKi165X+bDIdzW1ALUyF3eD0XVgkqVDZ0gZfMF
-	Wc2uVtDnRaAvk15zhjXwroYnJKaYzX4FA2r9Fy4OOZdZXLUD4q2OK9GgL07w49fiKVfeWE5J3m8nE
-	uHcglWZPQuU5kmU6cQcw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=uoEAWj/W4AGDhYW4TRpH8LvIHDH+cGmyN1uesOuRzAE=; b=4OdZaD76w//CNt0pUh/zACFdes
+	m8jUdUFFrQPO+xBWZIy9VtqzbqBkmyIfmxuLBOCuoFh+9CgkgWJKVg3sygCfKSYaHx8tQxsEeEf/M
+	LfsqPw6P0q3AJzUgwdQsuOO3mQtFVdF97NGseBCZdqndUmqmNTVWh8UQcuUwn757C/T/Uwie8WqKy
+	/zQhc0n4zu/XwRqeuzwkLEEa49JkYGnq2NzxcMHOdAQW3ybXBSfxnCmKE3RajnmYLT8MH0v/XOL0Q
+	eAPMthFhKxDt4AMDDQWeuUm7twF98ohl3pbiHXfnPBvOd0eh1CceX5CmEVcMg3KtAANnYp8+DX499
+	tUnjnvVg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7WRf-00C1W7-28;
-	Fri, 09 Jun 2023 07:22:03 +0000
+	id 1q7WYx-00C2dI-0M;
+	Fri, 09 Jun 2023 07:29:35 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7WRc-00C1VC-30
+	id 1q7WYt-00C2ai-2H
 	for barebox@lists.infradead.org;
-	Fri, 09 Jun 2023 07:22:02 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q7WRZ-0007zq-9S; Fri, 09 Jun 2023 09:21:57 +0200
-Message-ID: <f597258b-a7fb-af4e-323c-77c6ab5b5a61@pengutronix.de>
-Date: Fri, 9 Jun 2023 09:21:56 +0200
+	Fri, 09 Jun 2023 07:29:33 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q7WYs-0000GV-8G; Fri, 09 Jun 2023 09:29:30 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q7WYs-0002FS-1O; Fri, 09 Jun 2023 09:29:30 +0200
+Date: Fri, 9 Jun 2023 09:29:30 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230609072930.GR18491@pengutronix.de>
+References: <20230608072418.3275633-1-a.fatoum@pengutronix.de>
+ <20230608072418.3275633-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.10.1
-Content-Language: en-US
-To: Denis Orlov <denorl2009@gmail.com>
-References: <20230607051155.3175-1-denorl2009@gmail.com>
- <20230607051155.3175-3-denorl2009@gmail.com>
- <e72144bf-7523-4d5e-09a3-74f910a1ed7f@pengutronix.de>
- <CALHb5ujjPBenOtsmpfa-Y7LikNiAz4KK1bHOA7k3pQCjCM8n8A@mail.gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <CALHb5ujjPBenOtsmpfa-Y7LikNiAz4KK1bHOA7k3pQCjCM8n8A@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230608072418.3275633-2-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230609_002200_972275_F5E1F2C9 
-X-CRM114-Status: GOOD (  23.20  )
+X-CRM114-CacheID: sfid-20230609_002931_742956_C0F4E956 
+X-CRM114-Status: GOOD (  31.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,110 +70,130 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 2/3] test: mips: add QEMU Malta 64le labgrid config
+Subject: Re: [PATCH 2/2] file-list: support special 'auto', 'block', 'nvmem'
+ specifiers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 09.06.23 09:14, Denis Orlov wrote:
-> Hello Ahmad,
+On Thu, Jun 08, 2023 at 09:24:18AM +0200, Ahmad Fatoum wrote:
+> Best practice is for each board to populate $global.system.partitions
+> or $global.fastboot.partitions with a string exporting its flashable
+> devices in a descriptive manner, e.g. "/dev/mmc0(eMMC),/dev/mmc1(SD)".
 > 
-> On Fri, 9 Jun 2023 at 09:36, Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
->>
->> On 07.06.23 06:59, Denis Orlov wrote:
->>> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
->>> ---
->>>  test/mips/qemu-malta64el_defconfig.yaml | 22 ++++++++++++++++++++++
->>>  1 file changed, 22 insertions(+)
->>>  create mode 100644 test/mips/qemu-malta64el_defconfig.yaml
->>>
->>> diff --git a/test/mips/qemu-malta64el_defconfig.yaml b/test/mips/qemu-malta64el_defconfig.yaml
->>> new file mode 100644
->>> index 0000000000..22562d5b7a
->>> --- /dev/null
->>> +++ b/test/mips/qemu-malta64el_defconfig.yaml
->>> @@ -0,0 +1,22 @@
->>> +targets:
->>> +  main:
->>> +    drivers:
->>> +      QEMUDriver:
->>> +        qemu_bin: qemu
->>> +        machine: malta
->>> +        cpu: 5KEf
->>> +        memory: 256M
->>> +        bios: barebox-qemu-malta.img.swapped
->>> +        extra_args: ''
->>> +      BareboxDriver:
->>> +        prompt: 'barebox@[^:]+:[^ ]+ '
->>> +        bootstring: 'commandline:'
->>> +      BareboxTestStrategy: {}
->>> +    features:
->>> +      - virtio-pci
->>
->> Did you test virtio PCI? I don't see it enabled in the defconfig.
+> This often goes into BSPs though, so upstream boards are left without
+> default partitions, making use a bit cumbersome. Make this easier
+> by providing three new magic specifiers:
 > 
-> Nope, I didn't. I must have copied this from the 32-bit malta config
-> file. However, I see that its defconfig also lacks VIRTIO_PCI, so should
-> those be removed from both labgrid configs?
+>   - nvmem: exports all registered NVMEM devices (e.g. EEPROMs, Fuse banks)
+>   - block: exports all registered block devices (e.g. eMMC and SD)
+>   - auto:  currently equivalent to "nvmem,block". May be extended
+>            to raw MTD and UBI in future
 > 
-> Besides, judging from the virtio PCI Kconfig option depends, there seem
-> to be some issues with virtio PCI on MIPS without CONFIG_MMU set. Is the
-> lack of VIRTIO_PCI option in 32-bit malta defconfig related to that?
-
-Ah, right. test/emulate.pl reads virtio-pci feature to decide what Virt I/O
-transport to use. Maybe the MMU incompatibility is fixed now with your
-recent DMA rework or maybe we still have 1:1 mapping assumptions in the
-virtio code itself. If you could give it a quick test with CONFIG_MMU=n
-and see if it works, that would be great. Something like this should do it:
-
-/usr/bin/qemu-system-mips64el -M malta -cpu 5KEf -m 256M \
-   -bios barebox-qemu-malta.img.swapped -serial mon:stdio -trace file=/dev/null \
-   -drive if=none,file=/src/barebox-rockchip/somealigned.img,format=raw,id=hd0 \
-   -device virtio-blk-pci,disable-legacy=on,disable-modern=off,drive=hd0
-
-(Above was generated by ./test/emulate.pl $config -n --blk=somealigned.img)
-
-You should see a /dev/virtioblk* device if everything is enabled and working.
-
-Cheers,
-Ahmad
-
+> This makes it easy to export devices on any board:
 > 
-> Regards,
-> Denis
+>   usbgadget -A auto -b
 > 
->>
->>> +images:
->>> +  barebox-qemu-malta.img.swapped: !template "$LG_BUILDDIR/images/barebox-qemu-malta.img.swapped"
->>> +tools:
->>> +  qemu: /usr/bin/qemu-system-mips64el
->>> +imports:
->>> +  -  ../strategy.py
->>
->> --
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
+> or
 > 
+>   usbgadget -S auto,/tmp/fitimage(fitimage)c
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  Documentation/user/usb.rst     | 17 +++++++++++++++++
+>  common/block.c                 | 16 ++++++++++++++++
+>  common/file-list.c             | 29 +++++++++++++++++++++++++++--
+>  drivers/nvmem/core.c           | 16 ++++++++++++++++
+>  include/block.h                |  6 ++++++
+>  include/linux/nvmem-consumer.h |  8 ++++++++
+>  6 files changed, 90 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
+> index f2f57ead98d4..6fed0f619b32 100644
+> --- a/Documentation/user/usb.rst
+> +++ b/Documentation/user/usb.rst
+> @@ -73,6 +73,23 @@ Example:
+>  
+>    /dev/nand0.barebox.bb(barebox)sr,/kernel(kernel)rc
+>  
+> +Board code authors are encouraged to provide a default environment containing
+> +partitions with descriptive names. For boards where this is not specified,
+> +there exist a number of **partition** specifiers for automatically generating entries:
+> +
+> +* ``nvmem`` exports all registered NVMEM devices (e.g. EEPROMs, Fuse banks)
+
+Blindly exporting NVMEM devices is not a good idea. As the description
+says it's used for fuse banks. These are write-once and modifying them
+is potentially dangerous. Also it's fastboot which means you can't even
+read them before modifying them and there is no way to only partially
+write them.
+
+There might be good reasons to export some specific NVMEM device, but
+then this should be explicitly exported and not by default.
+
+> +* ``block`` exports all registered block devices (e.g. eMMC and SD)
+> +* ``auto``  currently equivalent to ``nvmem,block``. May be extended to other flashable
+> +            devices, like MTD or UBI volumes in future
+> +
+> +Example usage of exporting registered block devices, barebox update
+> +handlers and a single file that is created on flashing:
+> +
+> +.. code-block:: sh
+> +
+> +     detect -a # optional. Detects everything, so auto can register it
+> +     usbgadget -A auto,/tmp/fitimage(fitimage)c -b
+> +
+>  DFU
+>  ^^^
+
+[...]
+
+> +static bool file_list_handle_spec(struct file_list *files, const char *spec)
+> +{
+> +	unsigned count = 0;
+> +
+> +	if (!strcmp(spec, "auto")) {
+> +		count += file_list_add_blockdevs(files);
+> +		count += file_list_add_nvmemdevs(files);
+> +	} else if (!strcmp(spec, "block")) {
+> +		count += file_list_add_blockdevs(files);
+> +	} else if (!strcmp(spec, "nvmem")) {
+> +		count += file_list_add_nvmemdevs(files);
+> +	} else {
+> +		return false;
+> +	}
+
+Since you are talking about future extensions you could parse "auto"
+first and set a flag variable for it:
+
+	bool auto = false;
+
+	if (!strcmp(spec, "auto"))
+		auto = true;
+	if (!strcmp(spec, "block") || auto)
+		count += file_list_add_blockdevs(files);
+	if (!strcmp(spec, "nvmem") || auto)
+		count += file_list_add_nvmemdevs(files);
+
+That would make it a bit easier to integrate the future extensions into
+the code.
+
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
