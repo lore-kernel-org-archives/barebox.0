@@ -1,84 +1,84 @@
-Delivery-date: Sat, 10 Jun 2023 12:33:29 +0200
+Delivery-date: Sat, 10 Jun 2023 12:33:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q7vuV-000xvc-2A
-	for lore@lore.pengutronix.de; Sat, 10 Jun 2023 12:33:29 +0200
+	id 1q7vuX-000xwJ-Hw
+	for lore@lore.pengutronix.de; Sat, 10 Jun 2023 12:33:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q7vuS-0006uI-Gz
-	for lore@pengutronix.de; Sat, 10 Jun 2023 12:33:29 +0200
+	id 1q7vuU-0006ut-HY
+	for lore@pengutronix.de; Sat, 10 Jun 2023 12:33:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Mh9lWBgw4yHWt67BEWMBJD4bt1u++O4jKIRYnyTK5io=; b=rRU0Tl/xLmQ4ll
-	ZCszdTtTeu0fEn10wgybx1evJ3cMZp/+7+6bUFIVuG+qrq/ae0E7D72ZsXdHCY6wsQnrnTXss5rGs
-	dPzva4VabXE4DGjmG/yolp+r506ARN7kslyNV81uzis/6flyxbeJ6WWnsUhelZXFdxgV0Rpx/Zfnc
-	pGRbb1iFdVqMs5Xn0fcMSv/wFIR0A35y7aeRAaWtQlS/3fxzSL1x0xdUmorg3KBxXo/HGCGPEv+Qs
-	260XxyrYJhGHSmJ42kGgJc3hR3QN2NUVFy6zDjxwP530CeFjQL2GMLqT+BGtDFPFkvwXYcDuTXEkV
-	KXFn2T8EyrWABFAz+mpg==;
+	List-Owner; bh=FPgemaQDaUp8Le1t4KHmzXdDfyZmWJMb/niQdwmz8nU=; b=NnNuVmbH8h1zby
+	fQEKeGJY3eyK+jkxL4y9vyLAqMbxgV3r0scW/lbmLFKSOQbd9rc4gBd4KPL/SKSwH+oequqmmSbBi
+	VHI3BDAD12RVp1fedg/41aiPxJe2RACb3qI40vuTHqWB1pItS24o20TqdWlu4inD5dVJyVu/rmoJK
+	SbGgCLXNoubo+b476J9eMJmZEFUXFAidumYAmCg4VKM+LwWvB5LLn6gvW75ds4tMotmkV7pNkFPfj
+	XntXAF6DpbSpSgyane4i6h6yNX9DdsLP6/6YSFVCyMytDV5GrYHtvq0Rq2TwmMEkalYJPVrCFHvDF
+	V4VOeieV1UVSpTX4x7mg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7vtA-00FqSR-1B;
-	Sat, 10 Jun 2023 10:32:08 +0000
+	id 1q7vtC-00FqUC-1p;
+	Sat, 10 Jun 2023 10:32:10 +0000
 Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q7vt6-00FqNW-2X
+	id 1q7vt6-00FqO8-2W
 	for barebox@lists.infradead.org;
-	Sat, 10 Jun 2023 10:32:06 +0000
-Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2b1b30445cfso29718421fa.1
-        for <barebox@lists.infradead.org>; Sat, 10 Jun 2023 03:32:02 -0700 (PDT)
+	Sat, 10 Jun 2023 10:32:07 +0000
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2b203891b2cso29569481fa.3
+        for <barebox@lists.infradead.org>; Sat, 10 Jun 2023 03:32:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1686393120; x=1688985120;
+        d=gmail.com; s=20221208; t=1686393121; x=1688985121;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Mh9lWBgw4yHWt67BEWMBJD4bt1u++O4jKIRYnyTK5io=;
-        b=OsLi+mx1V6M1EA4BV9/Fxzh5PFypbaFJTqoeglz7g1LYrrRE1JNHQQNIgroVEVRqGN
-         evNuMRHBL02rRejpVI9ENIsH9XTljRhgm7HuWNdK1VeMIt25ujXFZyvcJDSbCOYJhaA+
-         c208GytaiHklKzB0rI6AmZVO0tIN/Nwohci2FxWPSrwWSZs4Q/00ldIEVQqdVkL2RH8R
-         LBBcKOtj6hgz8UyYaS/pdsU9kwsrMj8rKH+gZJ/ZQ4dCmw2NOERquXFQyqhJyH61QsUQ
-         addT5mJO+gN/5C1fm+julwVi1R9d+c2aen2h4OLKknXkQFsMtmPpmNOcnGrbfR5ztL6M
-         godg==
+        bh=FPgemaQDaUp8Le1t4KHmzXdDfyZmWJMb/niQdwmz8nU=;
+        b=qNAoBQr59agMMWHRwK/2sFnOPrxP73SyUMTBtJTtVGXj1eK9Y7XOUTMwilDR+pPnPm
+         lpkUDQL9GQA38rZD22K58aVut8UXtcmWWpQa0Srte9oReuL0HwVC90awlvmSVMmF3fgg
+         j3o1KPo5ViDYinIIz/pnXdBtfUYGkgoGCFiNFInSSnWWZrz2AFQmIFRdrefz6gH+CiTV
+         x95pcYOsYXh3TECTka6nsLi/qW6HeDUdmLStBZSsJ4OzOJ3AnY4zgXwT/LDfQ07GOIEy
+         DnZ1DbkAis2RBXxJVU3Nj/S17UI5a22HWQfT0eT/GQxITM7qhDtSQVHs+UdXwBxZm/Sz
+         qULA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1686393120; x=1688985120;
+        d=1e100.net; s=20221208; t=1686393121; x=1688985121;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Mh9lWBgw4yHWt67BEWMBJD4bt1u++O4jKIRYnyTK5io=;
-        b=h/dv+cpOO3t/+tuHPWt3JxxXPDw8yI5N6OeOmkQRw12I0VGR/q8hWtV90W7AEf1kXP
-         3emxIQ9lExsEspX6oOiHEy3xsBAEjKuRa9wvLnzIXSwkBF//dLj3w0Cff8u728mMncUT
-         mTxk9ThoIQQ/hFtv+FireeYDYIpC892+C/hRHNncjq64FRNb9dCGwbU6NNDc5gGm0nuw
-         jxQrxeU/S0ecePUSBiZLn0fvqsiiYRtYWF1Ld8taCfI3De/cTtZj8TS5jlxOVTOLzwjK
-         ELwmHIQAOLWiRUnDAm1WytXlibIwVnEAqpbyjkcq3cgDe+Evgmdbu4Q3OQu3UFAs9QvG
-         hgHw==
-X-Gm-Message-State: AC+VfDyT5KQ5jJRHvYTSeE/YYu3uUru2FmvNDFWegXoU0AxmQGkXvzye
-	gtiW9Ggbv899iGhU2o2USzp1un1a6Vc=
-X-Google-Smtp-Source: ACHHUZ7JrRN/FCPhC4EwISONTaufnPkFqug/JYbk33MnrprN0bqxn0KrXiYc9WAKp3154jc+FUunFg==
-X-Received: by 2002:a2e:9b90:0:b0:2b1:bdf0:baa4 with SMTP id z16-20020a2e9b90000000b002b1bdf0baa4mr446287lji.51.1686393120097;
-        Sat, 10 Jun 2023 03:32:00 -0700 (PDT)
+        bh=FPgemaQDaUp8Le1t4KHmzXdDfyZmWJMb/niQdwmz8nU=;
+        b=EejitzLCg3qgVWXOcznsom9rFQ8lpjaKSiAgBHbVtL3Q3MJB70kqchQbDGPgB9nSP1
+         NV8ClUwb3dOG2WqoT4S9wyA2J2wzYbSBXAD2JqrymDFyc3flDZRkmgOfUrL1T0oMFKOM
+         VXcZ+pbfhl8svZTEReTn5WsL8fnqyL8pIuVmcjfVsjWlLuMRgF2nKuf1zpqCSiy1V8sr
+         KfNHFc5vS0uLQIZ+R21pJ6+1yM0g+Z/NIaihDWSezJIS2E4sS+l4rGx6ei+E5TbRwMSQ
+         sw8mM6DYm3hNh2fXSN7tbCSozWLIehcxQhgtilkmWlwzkJf6Of3ORTMOAKtCo4iBtLnQ
+         ld8A==
+X-Gm-Message-State: AC+VfDx/oJCI0yI/yRLuabXcRvfMyZu1+yk4cMK2UlFqLaemTCnWmCxj
+	RQNA61g/IU+D6z988OIXka2JLJTh/74=
+X-Google-Smtp-Source: ACHHUZ5NBiZB4cvkZIpfe1khGBS4XPjzYeufASjYhTYzThDdSB6/O4RQY6M2VL13eAbbUerv1DP4ow==
+X-Received: by 2002:a2e:a0ce:0:b0:2b0:2d23:79b with SMTP id f14-20020a2ea0ce000000b002b02d23079bmr521269ljm.3.1686393121169;
+        Sat, 10 Jun 2023 03:32:01 -0700 (PDT)
 Received: from cinco.. ([109.252.8.26])
-        by smtp.gmail.com with ESMTPSA id s16-20020a2e81d0000000b002adf8d948dasm792727ljg.35.2023.06.10.03.31.59
+        by smtp.gmail.com with ESMTPSA id s16-20020a2e81d0000000b002adf8d948dasm792727ljg.35.2023.06.10.03.32.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 10 Jun 2023 03:31:59 -0700 (PDT)
+        Sat, 10 Jun 2023 03:32:00 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Sat, 10 Jun 2023 13:32:17 +0300
-Message-Id: <20230610103220.566369-2-antonynpavlov@gmail.com>
+Date: Sat, 10 Jun 2023 13:32:18 +0300
+Message-Id: <20230610103220.566369-3-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.39.0
 In-Reply-To: <20230610103220.566369-1-antonynpavlov@gmail.com>
 References: <20230610103220.566369-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230610_033204_827378_DE9AB94E 
-X-CRM114-Status: GOOD (  14.54  )
+X-CRM114-CacheID: sfid-20230610_033204_832273_18E63679 
+X-CRM114-Status: GOOD (  13.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -102,101 +102,270 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [RFC 1/4] clocksource: add sc6531e driver
+Subject: [RFC 2/4] ARM: add sc6531e and F+ Ezzy 4 phone support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- drivers/clocksource/Makefile        |  1 +
- drivers/clocksource/timer-sc6531e.c | 70 +++++++++++++++++++++++++++++
- 2 files changed, 71 insertions(+)
+ arch/arm/Kconfig                          |  9 +++++
+ arch/arm/Makefile                         |  1 +
+ arch/arm/boards/Makefile                  |  1 +
+ arch/arm/boards/ezzy-4/Makefile           |  3 ++
+ arch/arm/boards/ezzy-4/env/init/automount | 27 +++++++++++++
+ arch/arm/boards/ezzy-4/lowlevel.c         | 19 +++++++++
+ arch/arm/configs/ezzy-4_defconfig         | 49 +++++++++++++++++++++++
+ arch/arm/dts/Makefile                     |  1 +
+ arch/arm/dts/ezzy-4.dts                   | 22 ++++++++++
+ arch/arm/mach-sc6531e/Kconfig             | 17 ++++++++
+ arch/arm/mach-sc6531e/Makefile            |  3 ++
+ 11 files changed, 152 insertions(+)
 
-diff --git a/drivers/clocksource/Makefile b/drivers/clocksource/Makefile
-index eceaa990d43..863a7e931cf 100644
---- a/drivers/clocksource/Makefile
-+++ b/drivers/clocksource/Makefile
-@@ -26,3 +26,4 @@ obj-$(CONFIG_CLINT_TIMER) += timer-clint.o
- obj-$(CONFIG_RISCV_TIMER) += timer-riscv.o
- obj-$(CONFIG_ARMV7M_SYSTICK) += armv7m_systick.o
- obj-$(CONFIG_CLKSRC_STM32) += timer-stm32.o
-+obj-$(CONFIG_ARCH_SC6531E) += timer-sc6531e.o
-diff --git a/drivers/clocksource/timer-sc6531e.c b/drivers/clocksource/timer-sc6531e.c
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index e76ee0f6dfe..b46d73f5084 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -84,6 +84,14 @@ config ARCH_DIGIC
+ 	help
+ 	  Support for Canon's digital cameras that use the DIGIC4 chip.
+ 
++config ARCH_SC6531E
++	bool "SC6531E-based devices"
++	depends on 32BIT
++	select CPU_ARM926T
++	select GPIOLIB
++	help
++	  Support for feature phones based on the SC6531E chipset.
++
+ config ARCH_EP93XX
+ 	bool "Cirrus Logic EP93xx"
+ 	depends on 32BIT
+@@ -330,6 +338,7 @@ source "arch/arm/mach-nomadik/Kconfig"
+ source "arch/arm/mach-omap/Kconfig"
+ source "arch/arm/mach-pxa/Kconfig"
+ source "arch/arm/mach-rockchip/Kconfig"
++source "arch/arm/mach-sc6531e/Kconfig"
+ source "arch/arm/mach-socfpga/Kconfig"
+ source "arch/arm/mach-stm32mp/Kconfig"
+ source "arch/arm/mach-versatile/Kconfig"
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 2208b071ac1..96a32aca8b4 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -104,6 +104,7 @@ machine-$(CONFIG_ARCH_OMAP)		+= omap
+ machine-$(CONFIG_ARCH_PXA)		+= pxa
+ machine-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip
+ machine-$(CONFIG_ARCH_SAMSUNG)		+= samsung
++machine-$(CONFIG_ARCH_SC6531E)		+= sc6531e
+ machine-$(CONFIG_ARCH_SOCFPGA)		+= socfpga
+ machine-$(CONFIG_ARCH_STM32MP)		+= stm32mp
+ machine-$(CONFIG_ARCH_VERSATILE)	+= versatile
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 2877debad53..8abd8872757 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -44,6 +44,7 @@ obj-$(CONFIG_MACH_EMBEST_MARSBOARD)		+= embest-marsboard/
+ obj-$(CONFIG_MACH_EMBEST_RIOTBOARD)		+= embest-riotboard/
+ obj-$(CONFIG_MACH_ELTEC_HIPERCAM)		+= eltec-hipercam/
+ obj-y						+= freescale-mx51-babbage/
++obj-$(CONFIG_MACH_EZZY4)			+= ezzy-4/
+ obj-$(CONFIG_MACH_FREESCALE_MX53_LOCO)		+= freescale-mx53-qsb/
+ obj-$(CONFIG_MACH_FREESCALE_MX53_VMX53)		+= freescale-mx53-vmx53/
+ obj-$(CONFIG_MACH_FREESCALE_MX7_SABRESD)	+= freescale-mx7-sabresd/
+diff --git a/arch/arm/boards/ezzy-4/Makefile b/arch/arm/boards/ezzy-4/Makefile
 new file mode 100644
-index 00000000000..c5f095f1a2e
+index 00000000000..458f5209008
 --- /dev/null
-+++ b/drivers/clocksource/timer-sc6531e.c
-@@ -0,0 +1,70 @@
++++ b/arch/arm/boards/ezzy-4/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
++
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/ezzy-4/env/init/automount b/arch/arm/boards/ezzy-4/env/init/automount
+new file mode 100644
+index 00000000000..6be2b6508a0
+--- /dev/null
++++ b/arch/arm/boards/ezzy-4/env/init/automount
+@@ -0,0 +1,27 @@
++#!/bin/sh
++
++version
++echo
++help
++echo
++cpuinfo
++echo
++iomem
++echo
++meminfo
++echo
++of_dump
++echo
++drvinfo
++echo
++
++timeout 3
++echo
++
++echo sleep 0
++sleep 1
++echo sleep 1
++sleep 1
++echo sleep 2
++sleep 1
++echo sleep 3
+diff --git a/arch/arm/boards/ezzy-4/lowlevel.c b/arch/arm/boards/ezzy-4/lowlevel.c
+new file mode 100644
+index 00000000000..e06ac493bc6
+--- /dev/null
++++ b/arch/arm/boards/ezzy-4/lowlevel.c
+@@ -0,0 +1,19 @@
 +// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2023 Antony Pavlov <antonynpavlov@gmail.com>
-+ *
-+ * This file is part of barebox.
-+ */
 +
 +#include <common.h>
-+#include <io.h>
-+#include <init.h>
-+#include <clock.h>
-+#include <linux/err.h>
++#include <linux/sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
 +
-+#include <debug_ll.h>
++extern char __dtb_ezzy_4_start[];
 +
-+#define SC6531E_TIMER_CLOCK 1000
-+
-+#define SYST_VALUE_SHDW 0x0c
-+
-+static void __iomem *timer_base;
-+
-+static uint64_t sc6531e_cs_read(void)
++void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
 +{
-+	return (uint64_t)readl(timer_base + SYST_VALUE_SHDW);
++	void *fdt;
++
++	arm_cpu_lowlevel_init();
++
++	fdt = __dtb_ezzy_4_start + get_runtime_offset();
++
++	barebox_arm_entry(0x14000000, SZ_4M, fdt);
 +}
+diff --git a/arch/arm/configs/ezzy-4_defconfig b/arch/arm/configs/ezzy-4_defconfig
+new file mode 100644
+index 00000000000..4701f78fc6a
+--- /dev/null
++++ b/arch/arm/configs/ezzy-4_defconfig
+@@ -0,0 +1,49 @@
++CONFIG_TEXT_BASE=0x14300000
++CONFIG_ARCH_SC6531E=y
++CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
++CONFIG_PBL_IMAGE=y
++CONFIG_IMAGE_COMPRESSION_NONE=y
++CONFIG_MALLOC_SIZE=0x100000
++CONFIG_PROMPT="ezzy-4 > "
++CONFIG_HUSH_FANCY_PROMPT=y
++CONFIG_CMDLINE_EDITING=y
++CONFIG_AUTO_COMPLETE=y
++CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
++CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/ezzy-4/env"
++CONFIG_DEBUG_LL=y
++CONFIG_DEBUG_INITCALLS=y
++CONFIG_DEBUG_PBL=y
++CONFIG_CMD_IOMEM=y
++CONFIG_CMD_MEMINFO=y
++# CONFIG_CMD_BOOTM is not set
++# CONFIG_CMD_BOOTU is not set
++CONFIG_CMD_GO=y
++# CONFIG_CMD_MOUNT is not set
++# CONFIG_CMD_UMOUNT is not set
++CONFIG_CMD_EXPORT=y
++CONFIG_CMD_MD5SUM=y
++# CONFIG_CMD_PWD is not set
++CONFIG_CMD_SHA1SUM=y
++CONFIG_CMD_LET=y
++CONFIG_CMD_MSLEEP=y
++CONFIG_CMD_SLEEP=y
++# CONFIG_CMD_CLEAR is not set
++CONFIG_CMD_ECHO_E=y
++CONFIG_CMD_EDIT=y
++CONFIG_CMD_TIMEOUT=y
++CONFIG_CMD_MEMTEST=y
++CONFIG_CMD_MM=y
++CONFIG_CMD_GPIO=y
++CONFIG_CMD_LED=y
++CONFIG_CMD_OF_NODE=y
++CONFIG_CMD_OF_PROPERTY=y
++CONFIG_CMD_OFTREE=y
++CONFIG_CMD_TIME=y
++CONFIG_CMD_UPTIME=y
++CONFIG_OFDEVICE=y
++# CONFIG_SPI is not set
++CONFIG_CLOCKSOURCE_DUMMY_RATE=2000
++CONFIG_LED=y
++CONFIG_LED_GPIO=y
++CONFIG_LED_GPIO_OF=y
++CONFIG_ZLIB=y
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 98f4c4e0194..ef21d1ab60c 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -8,6 +8,7 @@ lwl-$(CONFIG_MACH_ADVANTECH_ROM_742X) += imx6dl-advantech-rom-7421.dtb.o
+ lwl-$(CONFIG_MACH_AFI_GF) += am335x-afi-gf.dtb.o
+ lwl-$(CONFIG_MACH_BEAGLEBONE) += am335x-bone.dtb.o am335x-boneblack.dtb.o am335x-bone-common.dtb.o
+ lwl-$(CONFIG_MACH_CANON_A1100) += canon-a1100.dtb.o
++lwl-$(CONFIG_MACH_EZZY4) += ezzy-4.dtb.o
+ lwl-$(CONFIG_MACH_CLEP7212) += ep7212-clep7212.dtb.o
+ lwl-$(CONFIG_MACH_CM_FX6) += imx6dl-cm-fx6.dtb.o imx6q-cm-fx6.dtb.o imx6q-utilite.dtb.o
+ lwl-$(CONFIG_MACH_DFI_FS700_M60) += imx6q-dfi-fs700-m60-6q.dtb.o imx6dl-dfi-fs700-m60-6s.dtb.o
+diff --git a/arch/arm/dts/ezzy-4.dts b/arch/arm/dts/ezzy-4.dts
+new file mode 100644
+index 00000000000..7b326bb23c8
+--- /dev/null
++++ b/arch/arm/dts/ezzy-4.dts
+@@ -0,0 +1,22 @@
++/dts-v1/;
 +
-+static struct clocksource sc6531e_cs = {
-+	.read	= sc6531e_cs_read,
-+	.mask   = CLOCKSOURCE_MASK(32),
-+	.priority = 60,
++/ {
++	model = "F+ Ezzy 4";
++	compatible = "f+,ezzy-4";
++
++	#address-cells = <1>;
++	#size-cells = <1>;
++
++	chosen { };
++
++	memory {
++		device_type = "memory";
++		reg = <0x14000000 0x00400000>;
++	};
++
++	timer: timer@81003000 {
++		compatible = "sc6531e-timer";
++		reg = <0x81003000 0x100>;
++		status = "okay";
++	};
 +};
+diff --git a/arch/arm/mach-sc6531e/Kconfig b/arch/arm/mach-sc6531e/Kconfig
+new file mode 100644
+index 00000000000..f0c4b16550c
+--- /dev/null
++++ b/arch/arm/mach-sc6531e/Kconfig
+@@ -0,0 +1,17 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
-+static int sc6531e_timer_probe(struct device *dev)
-+{
-+	struct resource *iores;
++if ARCH_SC6531E
 +
-+	/* use only one timer */
-+	if (timer_base)
-+		return -EBUSY;
++choice
++	prompt "board type"
 +
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores)) {
-+		dev_err(dev, "could not get memory region\n");
-+		return PTR_ERR(iores);
-+	}
++config MACH_EZZY4
++	bool "F+ Ezzy 4"
 +
-+	timer_base = IOMEM(iores->start);
-+	clocks_calc_mult_shift(&sc6531e_cs.mult, &sc6531e_cs.shift,
-+		SC6531E_TIMER_CLOCK, NSEC_PER_SEC, 1);
++endchoice
 +
-+	init_clock(&sc6531e_cs);
++config ARCH_TEXT_BASE
++	hex
++	default 0x00001900 if MACH_EZZY4
 +
-+	return 0;
-+}
++endif
+diff --git a/arch/arm/mach-sc6531e/Makefile b/arch/arm/mach-sc6531e/Makefile
+new file mode 100644
+index 00000000000..1c2b374603c
+--- /dev/null
++++ b/arch/arm/mach-sc6531e/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0-only
 +
-+static __maybe_unused struct of_device_id sc6531e_timer_dt_ids[] = {
-+	{
-+		.compatible = "sc6531e-timer",
-+	}, {
-+		/* sentinel */
-+	}
-+};
-+
-+static struct driver sc6531e_timer_driver = {
-+	.probe	= sc6531e_timer_probe,
-+	.name	= "sc6531e-timer",
-+	.of_compatible = DRV_OF_COMPAT(sc6531e_timer_dt_ids),
-+};
-+
-+coredevice_platform_driver(sc6531e_timer_driver);
++obj- := __dummy__.o
 -- 
 2.39.0
 
