@@ -1,62 +1,62 @@
-Delivery-date: Mon, 12 Jun 2023 14:52:17 +0200
+Delivery-date: Mon, 12 Jun 2023 14:52:18 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8h1u-003q3F-M2
-	for lore@lore.pengutronix.de; Mon, 12 Jun 2023 14:52:17 +0200
+	id 1q8h1v-003q3P-BL
+	for lore@lore.pengutronix.de; Mon, 12 Jun 2023 14:52:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8h1s-0005rq-9z
-	for lore@pengutronix.de; Mon, 12 Jun 2023 14:52:16 +0200
+	id 1q8h1s-0005s0-Me
+	for lore@pengutronix.de; Mon, 12 Jun 2023 14:52:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qxyz5+Fgdl10IQpFDNhvlvkY9GtIPRNiIszYNkHIMlg=; b=Hj/I548DSBvUkmFYpufwfEaYaD
-	6qSvXDiaZxflaByF0iUS+4ccbJpgifCbwewOy1ox5gOoHof+8jhGoqfPFhAQNne2CCkUSViSh6pCV
-	peN7BM/LLwRMcyaE0O6lYT/AuO/b1yg4uxsPX7Z/oNRl0rgXOnUdQOSIkFkzTtQMcYfQqT9Ujcw07
-	rukgpcZw6e8MN8WWACfxW1FinPlnNVPhfYICXu4x08KZ7z5UGUiKfupnDObtyQ47RFwuTIr1UOo66
-	pLlbNfVVZCPkGOZkX/KAa+5tpqMAUFRimDlSaEXcQ56hLDyMStPdLT97eD2hAAEtswRKL/ACrHQJy
-	tlNpYHOw==;
+	bh=qL1AkvVOROB8j/VhEZwI7eN/9qD66Yq1UW19fD3K4zU=; b=C9eG3ZEv7/xyPBTVYoegl6d539
+	lT1meFMym4s4OhFXHb5qJRYUmmI0fgCVg3ARX2WBeFu5lt3kE+s7RFG4egqomFj7uUDYpGKRyr1t6
+	hnw98ixbPH6vDBonxhWfz+8lGrnMzjYkH721CbE4m1lg1rUA/Z7+A5hGR4DLD/cXpgZ4FVWl1wl5l
+	CbUIDDo5M1u2IMesa7TP4GA+Vim7biM028XYZKL9c7t0MV6hSbJM95bqgicK+gaGcjYJ1t49Y5sUF
+	0pLjqAVw/nTziLJ53blov4ai6pVelV4Ft/+VVGx8m395fQjR1B3YkEYbBl3DeG5Kkg33G2rRdoHjf
+	FVxda11g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8h0q-0044Jw-20;
-	Mon, 12 Jun 2023 12:51:12 +0000
+	id 1q8h0v-0044MQ-11;
+	Mon, 12 Jun 2023 12:51:17 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8h0m-0044Hy-37
+	id 1q8h0n-0044I1-0M
 	for barebox@lists.infradead.org;
-	Mon, 12 Jun 2023 12:51:10 +0000
+	Mon, 12 Jun 2023 12:51:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q8h0l-0005Re-P6; Mon, 12 Jun 2023 14:51:07 +0200
+	id 1q8h0l-0005S8-Uc; Mon, 12 Jun 2023 14:51:07 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q8h0l-006tSa-44; Mon, 12 Jun 2023 14:51:07 +0200
+	id 1q8h0l-006tSn-Ae; Mon, 12 Jun 2023 14:51:07 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q8h0j-004XjU-Sd; Mon, 12 Jun 2023 14:51:05 +0200
+	id 1q8h0j-004XjE-RE; Mon, 12 Jun 2023 14:51:05 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 12 Jun 2023 14:51:03 +0200
-Message-Id: <20230612125104.1082800-6-a.fatoum@pengutronix.de>
+Date: Mon, 12 Jun 2023 14:50:59 +0200
+Message-Id: <20230612125104.1082800-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230612125104.1082800-1-a.fatoum@pengutronix.de>
 References: <20230612125104.1082800-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230612_055109_006047_4EB53C09 
-X-CRM114-Status: GOOD (  10.96  )
+X-CRM114-CacheID: sfid-20230612_055109_150528_C32E76D3 
+X-CRM114-Status: GOOD (  15.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,60 +79,87 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v4 5/6] of: implement of_move_node helper
+Subject: [PATCH v4 1/6] boards: qemu-virt: apply overlay at postcore_initcall level
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Reparenting nodes can be a useful thing to do in fixups. Add a helper
-for that.
+Qemu board driver fixups should be applied very early to be able to
+influence core components, even if they are controlled directly by
+initcalls. For this reason, let's move the early board code into
+the earliest possible initcall level.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/of/base.c | 18 ++++++++++++++++++
- include/of.h      |  1 +
- 2 files changed, 19 insertions(+)
+ common/boards/qemu-virt/board.c | 51 +++++++++++++++++++--------------
+ 1 file changed, 29 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/of/base.c b/drivers/of/base.c
-index e3416b5b75a7..43a4a923d9c5 100644
---- a/drivers/of/base.c
-+++ b/drivers/of/base.c
-@@ -2695,6 +2695,24 @@ void of_delete_node(struct device_node *node)
- 	free(node);
- }
+diff --git a/common/boards/qemu-virt/board.c b/common/boards/qemu-virt/board.c
+index d0f4412cdea5..19d995aa508e 100644
+--- a/common/boards/qemu-virt/board.c
++++ b/common/boards/qemu-virt/board.c
+@@ -36,22 +36,6 @@ static inline void arm_virt_init(void) {}
  
-+void of_move_node(struct device_node *parent, struct device_node *node)
+ extern char __dtb_overlay_of_flash_start[];
+ 
+-static int virt_probe(struct device *dev)
+-{
+-	struct device_node *overlay;
+-	void (*init)(void);
+-
+-	init = device_get_match_data(dev);
+-	if (init)
+-		init();
+-
+-	overlay = of_unflatten_dtb(__dtb_overlay_of_flash_start, INT_MAX);
+-	of_overlay_apply_tree(dev->of_node, overlay);
+-	/* of_probe() will happen later at of_populate_initcall */
+-
+-	return 0;
+-}
+-
+ static const struct of_device_id virt_of_match[] = {
+ 	{ .compatible = "linux,dummy-virt", .data = arm_virt_init },
+ 	{ .compatible = "riscv-virtio" },
+@@ -59,10 +43,33 @@ static const struct of_device_id virt_of_match[] = {
+ };
+ BAREBOX_DEEP_PROBE_ENABLE(virt_of_match);
+ 
+-static struct driver virt_board_driver = {
+-	.name = "board-qemu-virt",
+-	.probe = virt_probe,
+-	.of_compatible = virt_of_match,
+-};
++/*
++ * We don't have a dedicated qemu-virt device tree and instead rely
++ * on what Qemu passes us. To be able to get fundamental changes
++ * in very early, we forego having a board driver here and do this
++ * directly in the initcall.
++ */
++static int virt_board_driver_init(void)
 +{
-+	if (!node)
-+		return;
-+
-+	list_del(&node->list);
-+	list_del(&node->parent_list);
-+
-+	free(node->full_name);
-+	node->full_name = basprintf("%s/%s", parent->full_name, node->name);
-+
-+	if (!node->parent)
-+		return;
-+
-+	list_add(&node->list, &parent->list);
-+	list_add_tail(&node->parent_list, &parent->children);
-+}
-+
- /*
-  * of_find_node_by_chosen - Find a node given a chosen property pointing at it
-  * @propname:   the name of the property containing a path or alias
-diff --git a/include/of.h b/include/of.h
-index 0037bad6c4d7..686c1632c267 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -187,6 +187,7 @@ extern struct device_node *of_create_node(struct device_node *root,
- extern void of_merge_nodes(struct device_node *np, const struct device_node *other);
- extern struct device_node *of_copy_node(struct device_node *parent,
- 				const struct device_node *other);
-+void of_move_node(struct device_node *parent, struct device_node *node);
- extern struct device_node *of_dup(const struct device_node *root);
- extern void of_delete_node(struct device_node *node);
++	struct device_node *root = of_get_root_node();
++	struct device_node *overlay;
++	const struct of_device_id *id;
++	void (*init)(void);
  
+-postcore_platform_driver(virt_board_driver);
++	id = of_match_node(virt_of_match, root);
++	if (!id)
++		return 0;
++
++	if (id->data) {
++		init = id->data;
++		init();
++	}
++
++	overlay = of_unflatten_dtb(__dtb_overlay_of_flash_start, INT_MAX);
++	of_overlay_apply_tree(root, overlay);
++
++	/* of_probe() will happen later at of_populate_initcall */
++
++	return 0;
++}
++postcore_initcall(virt_board_driver_init);
 -- 
 2.39.2
 
