@@ -1,60 +1,61 @@
-Delivery-date: Mon, 12 Jun 2023 14:48:48 +0200
+Delivery-date: Mon, 12 Jun 2023 14:48:49 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8gyX-003ptL-QX
-	for lore@lore.pengutronix.de; Mon, 12 Jun 2023 14:48:48 +0200
+	id 1q8gyZ-003pti-1V
+	for lore@lore.pengutronix.de; Mon, 12 Jun 2023 14:48:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8gyV-0004ww-Bk
-	for lore@pengutronix.de; Mon, 12 Jun 2023 14:48:47 +0200
+	id 1q8gyW-0004x8-Id
+	for lore@pengutronix.de; Mon, 12 Jun 2023 14:48:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=a7y1za80/CMcZQFGPtwf2La47w//dI5zCJD3UXbDJ+A=; b=nhTKMr49PLagp75+JssKCwhr3P
-	MwRnL2iQ7ivjXB3eBxMBnyiL3BW9UL5Z6qOiS/6lgTyc/6Ib16mtKzB7ubIjLRZtrlHzotlQEG8KN
-	TrM4/A9eRLAvmBxAAfR+UJqT9Rq3Z+qBPEr/J6QawwpmNScQdEj3N3jH9UC0ZYWSApALQybYIIQXR
-	aK3sTEfm/S4O1hqdthmhxgenmVB1ut1BVNTLmpPhKnwCCR8QmH1fGmm1AAjnIbm8chkwRsaqSmBsV
-	NGs5GP7Zqc839t5BgiL0vbNahDo39d+fP4Edo7eEhO1HUKkNQtyLSbT55Xm7WImJCjYF2/7GvMEZ6
-	HlJCcpYQ==;
+	bh=Af7MUtCrFHrQ5d3JBqZ4SvBPPs7urO2njLz0FQea61w=; b=whONo7io1G3943Q/ocOVNVhgvQ
+	XLX/XBcC5WShQNkyo9Y0zJFJPizL4z/t57uf0wD7i8E3i+cGnwzJdT2mDatnOFNLr/XHXgKDaccg+
+	C+B+Rx3YXsSk+CwKAhazpvReLofB4vt+BRFYgXTuI43sv6yiWqlcsLqKTEL8dfhtNnB5URpCHi6nH
+	DADpaDjg9pDDErnezdevczCemCt0qbfY9SyzMsSbSsuI1uW2R4m+OUrvB7xl3rvD5QEQh4NlCWQnE
+	aJBLDRt90kr5gXTZrstZnUyZmLdq11dIo5jjW+0HqDR4afLvUWA526nAMFxjvSvvOhdghe0qhTwMA
+	WosME1bA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8gxU-0043n5-2T;
-	Mon, 12 Jun 2023 12:47:44 +0000
+	id 1q8gxO-0043mI-00;
+	Mon, 12 Jun 2023 12:47:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8gxS-0043mZ-1K
+	id 1q8gxK-0043lp-2Z
 	for barebox@lists.infradead.org;
-	Mon, 12 Jun 2023 12:47:43 +0000
+	Mon, 12 Jun 2023 12:47:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q8gxR-0004i4-6E; Mon, 12 Jun 2023 14:47:41 +0200
+	id 1q8gxG-0004hq-QW; Mon, 12 Jun 2023 14:47:30 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q8gxQ-006tSD-HX; Mon, 12 Jun 2023 14:47:40 +0200
+	id 1q8gxG-006tS7-5H; Mon, 12 Jun 2023 14:47:30 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q8gxP-004X9u-RQ; Mon, 12 Jun 2023 14:47:39 +0200
+	id 1q8gxF-004X7l-6m; Mon, 12 Jun 2023 14:47:29 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 12 Jun 2023 14:47:39 +0200
-Message-Id: <20230612124739.1080762-1-a.fatoum@pengutronix.de>
+Date: Mon, 12 Jun 2023 14:47:28 +0200
+Message-Id: <20230612124728.1080623-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230612_054742_465903_19FCAA6D 
-X-CRM114-Status: GOOD (  10.17  )
+X-CRM114-CacheID: sfid-20230612_054734_835838_7482EAB2 
+X-CRM114-Status: UNSURE (   9.87  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,86 +78,34 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] MAKEALL: source defconfig after determining correct CROSS_COMPILE
+Subject: [PATCH] test/Containerfile: run wget with no-verbose flag
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-ARM 32- and 64-bit have different GCC compiler backends, but the same
-architecture in barebox. MAKEALL handles that by sourcing the defconfig
-and then looking for CONFIG_CPU_64 before continuing to build. This is
-problematic, because CROSS_COMPILE can only be set after that, so we may
-end up with more dynamic Kconfig options being wrongly set the first
-time, because CROSS_COMPILE wasn't correctly set. Fix this by always
-sourcing the defconfig again once we determine the correct
-CROSS_COMPILE.
+Container build results in a number of toolchain downloads and default
+wget behavior of updating the progress bar results in a lot of lines
+to wade through when reviewing the log. There's middle ground between
+this and quiet operation in the form of the --no-verbose or -nv flag.
+Make use of it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- MAKEALL | 30 ++++++++++++++++--------------
- 1 file changed, 16 insertions(+), 14 deletions(-)
+ test/Containerfile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/MAKEALL b/MAKEALL
-index a4e268d54cf8..d3a289fd3839 100755
---- a/MAKEALL
-+++ b/MAKEALL
-@@ -91,21 +91,9 @@ do_build_target() {
+diff --git a/test/Containerfile b/test/Containerfile
+index 8c1f2f893805..224ea2ea4804 100644
+--- a/test/Containerfile
++++ b/test/Containerfile
+@@ -51,7 +51,7 @@ RUN apt-get update && apt-get install -y \
+ ENV GCC_VERSION=13.1.0
  
- 	rm -rf "${BUILDDIR}"
- 	mkdir -p "${LOGDIR}/${target}"
--	printf "Building ${arch} ${target} \n" >&2 | tee -a "${log_report}"
--
--	tmp=$(echo "${target}" | tr - _)
- 
- 	MAKE="make -j${JOBS} ARCH=${arch} O=${BUILDDIR}"
--	${MAKE} ${target} 2>&1 > "${log_report}" | tee "${log_err}"
--	for i in ${KCONFIG_ADD}; do
--		./scripts/kconfig/merge_config.sh -m -O \
--			${BUILDDIR} ${BUILDDIR}/.config $i \
--			2>&1 > "${log_report}" | tee "${log_err}"
--	done
--	${MAKE} olddefconfig 2>&1 > "${log_report}" | tee "${log_err}"
--
--	check_pipe_status
--	configure_result="$?"
-+	${MAKE} ${target} &>/dev/null
- 
- 	if [ ${arch} = "arm" ]; then
- 		grep -q "CONFIG_CPU_64=y" ${BUILDDIR}/.config
-@@ -114,6 +102,8 @@ do_build_target() {
- 		fi
- 	fi
- 
-+	tmp=$(echo "${target}" | tr - _)
-+
- 	cross_compile=$(eval echo '$CROSS_COMPILE_'${tmp})
- 	cross_compile_set=$(eval echo '${CROSS_COMPILE_'${tmp}'+set}')
- 	if [ "${cross_compile_set}" = "" ]
-@@ -126,12 +116,24 @@ do_build_target() {
- 		fi
- 	fi
- 
-+	printf "Building ${arch} ${target} \n" >&2 | tee -a "${log_report}"
-+	MAKE="${MAKE} CROSS_COMPILE=${cross_compile}"
-+	${MAKE} ${target} 2>&1 > "${log_report}" | tee "${log_err}"
-+	for i in ${KCONFIG_ADD}; do
-+		./scripts/kconfig/merge_config.sh -m -O \
-+			${BUILDDIR} ${BUILDDIR}/.config $i \
-+			2>&1 > "${log_report}" | tee "${log_err}"
-+	done
-+	${MAKE} olddefconfig 2>&1 > "${log_report}" | tee "${log_err}"
-+
-+	check_pipe_status
-+	configure_result="$?"
-+
- 	printf "Configure: " | tee -a "${log_report}"
- 
- 	if [ "$configure_result" = "0" ]; then
- 		printf "OK     \n" | tee -a "${log_report}"
- 
--		MAKE="make -j${JOBS} CROSS_COMPILE=${cross_compile} ARCH=${arch} O=${BUILDDIR}"
- 		${MAKE} -s 2>&1 >> "${log_report}" | tee -a "${log_err}"
- 
- 		check_pipe_status
+ # Manually install the kernel.org Crosstool based toolchains
+-RUN korg_crosstool_dl() { wget -O - https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/${1}/${2}/${1}-gcc-${2}-nolibc-${3}.tar.xz | tar -C /opt -xJ ; } && \
++RUN korg_crosstool_dl() { wget -nv -O - https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/${1}/${2}/${1}-gcc-${2}-nolibc-${3}.tar.xz | tar -C /opt -xJ ; } && \
+     korg_crosstool_dl x86_64 ${GCC_VERSION} arm-linux-gnueabi && \
+     korg_crosstool_dl x86_64 ${GCC_VERSION} aarch64-linux     && \
+     korg_crosstool_dl x86_64 ${GCC_VERSION} mips-linux        && \
 -- 
 2.39.2
 
