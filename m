@@ -1,60 +1,63 @@
-Delivery-date: Mon, 12 Jun 2023 15:00:11 +0200
+Delivery-date: Mon, 12 Jun 2023 15:00:52 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8h9Y-003qPd-NN
-	for lore@lore.pengutronix.de; Mon, 12 Jun 2023 15:00:11 +0200
+	id 1q8hAD-003qRh-VE
+	for lore@lore.pengutronix.de; Mon, 12 Jun 2023 15:00:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8h9W-0007cx-7R
-	for lore@pengutronix.de; Mon, 12 Jun 2023 15:00:10 +0200
+	id 1q8hAB-00080t-Le
+	for lore@pengutronix.de; Mon, 12 Jun 2023 15:00:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=c8aC6qK57mZ/RSu+jeytqO4WaPDzKHzHqzY3MZAtHCk=; b=WnMnMHCduaFZVxbBeicOIwfDIs
-	B9vBWa8+y6+bH5tlSCfDjhWZEwHKuz/dC6ofFDqVushaIokNHAqOoaCK/yrv/3rlBAe7dWNPWljVi
-	Y3v1MiXQaj3q2AlOV/wPaRdjfOUwO4r8Tc65G+EHvKggIC2NYIMvYigwgYwFX/W6/oxmWrNy2vKM1
-	XSrAUy+FxIUmXa+zFKDapd+wqBqGGbmw5pxNDdyL50xN7KsQ+TdQzNcv+SpJ8pw6et8B41e62N48E
-	TCNAaAKAoh11Wfg8hdBT+hgkYcejRh1KaFNZPc1lO7G0uFzxJxRCauvbLjpIUa9XLpaLiq2170qyw
-	RQaFgyZg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Wj3WCRxpj7GFnCoJxVDVaRx0qoNVJiIRtayX4dGxCSc=; b=N+Mdhe1Y78dY4kjy6I8Lg/h5HB
+	+Oh22dkzsKpgbZQxnilcU4GhCFXjRPOyTdwnwnHi7PUED2lN6weVLfmOWbbsu1LXBsHBqcH4ytgMA
+	NtGEa8lCt3n/oJAP4eBA05+3BU23371oTlqgZ3oB3Fz+oyUSiz3o8OshIx5K2gs9bKREc9Ye+k9Fy
+	88sz0GCft++lPkV3Vvn4XdoINQzWfHuSCg8S9D/OcE60p9TPVkD3fIFbN6atQDgDD2VFiVNrivZ8l
+	NSAuB7WsQm+x3pNghjEP183wdSOejVd+wn+Ch02sop+1gL19BHEcm9N4gSC1x6m/Ex9jeKcS95oS9
+	4zBKblEA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8h8m-0046cS-15;
-	Mon, 12 Jun 2023 12:59:24 +0000
+	id 1q8h9V-0046o1-0k;
+	Mon, 12 Jun 2023 13:00:09 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8h8j-0046bB-1H
+	id 1q8h9S-0046nA-04
 	for barebox@lists.infradead.org;
-	Mon, 12 Jun 2023 12:59:22 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Mon, 12 Jun 2023 13:00:07 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1q8h8i-0007S5-5f; Mon, 12 Jun 2023 14:59:20 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1q8h8h-006tUk-IK; Mon, 12 Jun 2023 14:59:19 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1q8h8g-004Yu6-Rq; Mon, 12 Jun 2023 14:59:18 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 12 Jun 2023 14:59:17 +0200
-Message-Id: <20230612125917.1087470-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1q8h9Q-0007bD-QD; Mon, 12 Jun 2023 15:00:04 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q8h9Q-0005vX-HC; Mon, 12 Jun 2023 15:00:04 +0200
+Date: Mon, 12 Jun 2023 15:00:04 +0200
+To: Ahmad Fatoum <ahmad@a3f.at>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230612130004.GC18491@pengutronix.de>
+References: <20230612065741.407205-1-ahmad@a3f.at>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230612065741.407205-1-ahmad@a3f.at>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230612_055921_431925_84D58E73 
-X-CRM114-Status: GOOD (  10.55  )
+X-CRM114-CacheID: sfid-20230612_060006_058958_FF0B0473 
+X-CRM114-Status: GOOD (  18.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,54 +75,54 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] asm: align virt_to_phys definitions
+Subject: Re: [PATCH] fixup! block: parse partition table on block device
+ registration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We have two definitions of virt_to_phys: One for MIPS code accepting both
-const and non-const pointers and one for everybody else that accepts
-volatile and non-volatile pointers. Unify both to have a common
-definition with the superset of the qualifiers.
+On Mon, Jun 12, 2023 at 08:57:41AM +0200, Ahmad Fatoum wrote:
+> efi: block: drop now unused variable definition
+> 
+> We now directly return blockdevice_register(...), so the ret variable is
+> unused.
+> 
+> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+> ---
+>  drivers/block/efi-block-io.c | 1 -
+>  1 file changed, 1 deletion(-)
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/mips/include/asm/io.h | 2 +-
- include/asm-generic/io.h   | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+Appplied, thanks
 
-diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
-index 9c856c7b1552..4584eec8ca07 100644
---- a/arch/mips/include/asm/io.h
-+++ b/arch/mips/include/asm/io.h
-@@ -28,7 +28,7 @@ void dma_inv_range(unsigned long, unsigned long);
-  *     the memory address given.
-  */
- #define virt_to_phys virt_to_phys
--static inline unsigned long virt_to_phys(const void *address)
-+static inline unsigned long virt_to_phys(const volatile void *address)
- {
- 	return CPHYSADDR((unsigned long)address);
- }
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index 6e91c0aea68f..ab439026928a 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -769,7 +769,7 @@ static inline void iowrite64_rep(volatile void __iomem *addr,
-  */
- #ifndef virt_to_phys
- #define virt_to_phys virt_to_phys
--static inline unsigned long virt_to_phys(volatile void *mem)
-+static inline unsigned long virt_to_phys(const volatile void *mem)
- {
- 	return (unsigned long)mem;
- }
+Sascha
+
+> 
+> diff --git a/drivers/block/efi-block-io.c b/drivers/block/efi-block-io.c
+> index 7162106ab8ea..79a62d53d30a 100644
+> --- a/drivers/block/efi-block-io.c
+> +++ b/drivers/block/efi-block-io.c
+> @@ -146,7 +146,6 @@ static bool is_bio_usbdev(struct efi_device *efidev)
+>  
+>  static int efi_bio_probe(struct efi_device *efidev)
+>  {
+> -	int ret;
+>  	int instance;
+>  	struct efi_bio_priv *priv;
+>  	struct efi_block_io_media *media;
+> -- 
+> 2.40.1
+> 
+> 
+> 
+
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
