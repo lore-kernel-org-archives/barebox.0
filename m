@@ -1,71 +1,50 @@
-Delivery-date: Tue, 13 Jun 2023 14:40:51 +0200
+Delivery-date: Tue, 13 Jun 2023 14:52:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q93KN-005Cgx-ON
-	for lore@lore.pengutronix.de; Tue, 13 Jun 2023 14:40:51 +0200
+	id 1q93Vd-005DHU-Ih
+	for lore@lore.pengutronix.de; Tue, 13 Jun 2023 14:52:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q93KK-00078z-Uu
-	for lore@pengutronix.de; Tue, 13 Jun 2023 14:40:49 +0200
+	id 1q93Va-0000DX-RQ
+	for lore@pengutronix.de; Tue, 13 Jun 2023 14:52:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
-	:Subject:To:From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Q3STQRt9oiPJr+ZunEbb1eQAiAKNHkgK2Pr9CCtc92A=; b=lvxswKv7fWge8bVMuaxItFEOWm
-	NndghqXvW4yug4EHFVAs5eyLh+KqLhhusy+DCE69HA2eLzc/E1bFGNdooPJ9xd02hqiwbupNvUdyU
-	3+5iYMnf1dLuefKEY5af34GQioF9brBJcspYDT/EX/2xtVTilcdozJfmdDHYTgZmXODp10DhT0W0/
-	WBsWWzQQ5tgYqadOU8beD3oSPMgmTDjFTtowprk6IBLq7q7pwS5etknzfwio66Y7zS+eGKqz8uD8A
-	WPBgfAgJ60/lFmM+Y79ydtm1y85BOIaRw8PuPkFYVaC0anKsuKNO8V4/hbjXJ67H737CGEyEpc47j
-	I5LTUbKg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=C4A5FVh8GIe6Hnapq8irz0wm9qHbThc1NRlmGuccR2I=; b=waHnuHGzJgqsvA29CeBJ7mqwwU
+	1KOoWyRUWU18ycs5/rAVIRHOr3viiJi6JBN01I8+X1SdLVldzNnw8K/7b4pRh97ya3XbRG0wbDLhy
+	4S0nOiRdFKK+XT8kg62Yq4v4AfX+gNaCHuOs0A7yETF5LJRcZQtNBMGXXa6ztwRKrcm8l5W+PbHjD
+	F3BHFufmWVS09Fbt7mMCPp8nBwFqLt95hy1UMXC7X7OwW/OuvciqJlcoAVFTeZ62FWt8yOG79f0a3
+	0X1GGHROeJF1zMctJlo/yK6VVpMEa4KqHm5BwZoOFGm5PawiEk1A/YDqP+WnQHMnHzmqQyeY0F1mV
+	xiviwlWA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q93Iz-0084Wa-2A;
-	Tue, 13 Jun 2023 12:39:25 +0000
-Received: from mail-am6eur05on20629.outbound.protection.outlook.com ([2a01:111:f400:7e1b::629] helo=EUR05-AM6-obe.outbound.protection.outlook.com)
+	id 1q93UD-0085v2-2x;
+	Tue, 13 Jun 2023 12:51:01 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q93Iu-0084Uj-12
+	id 1q93U9-0085sr-3A
 	for barebox@lists.infradead.org;
-	Tue, 13 Jun 2023 12:39:23 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=iGXJlUj+9XLTNk1jJseO4mJJK/H9lpNlEezqnSzNoDGOzIlDwakXaYZ4mJH9yJLOmJM3b19bqkomXUDSfh6umvfjTTaFHfADm52S/KlazzW3w5lmXBZfVu1kpEgZKq1dBTc67z6blapo8JXkd/e9VcZ7YDnP7NIoUToLnPMcp6ZcewCHVR26e2+7qQzAFKykGB90cQX40H+fXr5R5tgDFRpGcNTP6SsNj6rx8Z/t8icOUr8bSGJwMzhnWidkt32Eada1VJVKPexTOcHzIK+oEN8NV/0kpl45lc/HxH0xlGJWGGm2LHoi0BQmv7vn0aIcF/qdvVixTmNKOBlR6dv65g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Q3STQRt9oiPJr+ZunEbb1eQAiAKNHkgK2Pr9CCtc92A=;
- b=cipa+STkhaVBJOSAZ07Xx3Mnkme9Xf6dB/3KRKg/IH46JKEWtDCiPt51UtS+euUOw1Ix7zBDiFlFtycjvBhPdg/7G/h2kehZDnD3bQAfLZ9Mo26/dJ8CX89PXVkJz9umOB4nVAfeFj5qk894jJuEDKw5pM7mDvy0PbVlAcqE27BScYakZxR6x8bdlLqTfLgdCYN41RusopJ3ep4ufhOSVfgNv8HAj6FfS214RpvBZa+VHJgTBppREIFM5qpRJdlJLb/bLxea/UEEYsbBVtDcEauKgRUjMrK+GpKRYccywFxF5e6F3O4DVM2csVELLCcR7Ck3DfEIvxFOlOBQrzNc6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=pliops.com; dmarc=pass action=none header.from=pliops.com;
- dkim=pass header.d=pliops.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=pliops.onmicrosoft.com; s=selector2-pliops-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Q3STQRt9oiPJr+ZunEbb1eQAiAKNHkgK2Pr9CCtc92A=;
- b=dVulCi8izvCvVfzU3fgk4ncbrYuXbL9bpXhqz96pmQ/Z8LuU5bmzasbEm5aMyFeL3a8Aw+g3yWXNJ2HjLGjat0orFmH62yIJoJkxJs8wtx7B7CecjoVVQiVTMUl64hTA/LqONVFjEAckP/aM5rrPvWPB23MVQMYojx7B0kYlNJ4=
-Received: from PR3P195MB0555.EURP195.PROD.OUTLOOK.COM (2603:10a6:102:30::14)
- by PR3P195MB0762.EURP195.PROD.OUTLOOK.COM (2603:10a6:102:33::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6477.29; Tue, 13 Jun
- 2023 12:39:07 +0000
-Received: from PR3P195MB0555.EURP195.PROD.OUTLOOK.COM
- ([fe80::6ef5:db8:751e:5fe9]) by PR3P195MB0555.EURP195.PROD.OUTLOOK.COM
- ([fe80::6ef5:db8:751e:5fe9%6]) with mapi id 15.20.6455.043; Tue, 13 Jun 2023
- 12:39:07 +0000
-From: Lior Weintraub <liorw@pliops.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Ahmad Fatoum <ahmad@a3f.at>,
-	"barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: [PATCH v2] Porting barebox to a new SoC
-Thread-Index: AdmRYNrtRrBKX5DDRQGPzQVQ7b/lvQAGThgAAAAP8YAACFyNQAAg73hQABAveYAAJavNEAAj7YeAAALjkCAAAlTGgAAAg88AABLfUgAAHqoWEAAB8RmAAACDPvAABgB/gADOw7IgADDadYABIp5wkAAGuZwAAABXfaAABTXJAAAoonjw
-Date: Tue, 13 Jun 2023 12:39:06 +0000
-Message-ID: <PR3P195MB055508CA0B6A5CE36DCCADD4C355A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+	Tue, 13 Jun 2023 12:51:00 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1q93U3-0008Vs-9t; Tue, 13 Jun 2023 14:50:51 +0200
+Message-ID: <f2fa8b9e-ae3e-ac89-a7ab-4710aebcdb98@pengutronix.de>
+Date: Tue, 13 Jun 2023 14:50:50 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Content-Language: en-US
+To: Lior Weintraub <liorw@pliops.com>, Ahmad Fatoum <ahmad@a3f.at>,
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 References: <f4aae166-1cc4-6255-1fde-7a52c7872bd8@pengutronix.de>
- <AM0P195MB0548E634FB807F1501D1D716C3489@AM0P195MB0548.EURP195.PROD.OUTLOOK.COM>
- <3448bd9c-06e3-89a9-e8de-c284d0268ca9@pengutronix.de>
  <AM0P195MB0548337CA7A533D0456BB14CC3489@AM0P195MB0548.EURP195.PROD.OUTLOOK.COM>
  <3340583d-12cd-1a52-4c9c-d237c58bfca7@pengutronix.de>
  <PR3P195MB0555265E59E77AB3ABE53D03C3499@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
@@ -78,75 +57,14 @@ References: <f4aae166-1cc4-6255-1fde-7a52c7872bd8@pengutronix.de>
  <d4fddd30-74bc-dab3-a6e0-a83920d2763f@pengutronix.de>
  <PR3P195MB0555C35406A3BC621BA1038EC354A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
  <15f8d795-f486-1914-9eba-e5a315bf2083@pengutronix.de>
-In-Reply-To: <15f8d795-f486-1914-9eba-e5a315bf2083@pengutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=pliops.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PR3P195MB0555:EE_|PR3P195MB0762:EE_
-x-ms-office365-filtering-correlation-id: 3d92aad2-c027-4be2-c4c2-08db6c0b2db0
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: EsGSYqlaUrzhshF8EgwVArAQmwXfKFl+ISltxBPFmMMWfa4g7flTUv2kZawXwb3Pk/Xs3HgePBPBK4YalgFWMUfjpe43R7yXZzp5xMum6Tl6Kipzw+CIiGKBgE6TEUbcVLTyOgDcTHBPxJ9iupCEBjsVijH97+0h/3gdAyTrMUNIFFDLTfMVlRzPOetzLYMhh43O8IrBxbPT9QWsN2DnKTNygHGdPOJBX3bamCoG6OPkwh9S7LU1D13tFvohqgUEJvO5Yab8edhUYvzfzH1gCQ7Wz0yFSrNoy5QPfC960kjwFd5dBygY0q3SUOCT7zVW0n5FNEGLPnpNglCmAo/v4h4QgPEQjCcakHBsoEyueVcDchU4wZp3GALIvas22AG0+ukt40K6wvSLTR8tgC/DYG79SAvSJMJsOOQ/702wXDqUGvckdup5XUmCtuzbuvmQ1Ax2lOt9B7aVzs4fH9awigmYkBaMTVhhpRaU0/SRzIVkg8UH+uWXS1Ta8+X0CsNFJmekFsn7pQpG/Y0wWMg+zYltSNAxG9NmOp20fNJByLkeKQ86ihljKY3VoSQeGpJpW/zVe+h6GNlEOn6cST0QJ4ikORKdC/j28do1I/jbv743UGhR+escPznsGHD4dHaP
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR3P195MB0555.EURP195.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(346002)(396003)(366004)(39860400002)(376002)(136003)(451199021)(316002)(64756008)(66446008)(41300700001)(76116006)(186003)(2906002)(110136005)(66476007)(66556008)(66946007)(8676002)(8936002)(5660300002)(52536014)(71200400001)(478600001)(7696005)(966005)(6506007)(122000001)(33656002)(53546011)(26005)(55016003)(83380400001)(9686003)(86362001)(38070700005)(38100700002)(505234007);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NHA5WktyVTRUQ1ZxbDE3ekd3cTNjL01maFUwMzNRczZlcUlzSlEyRnpDclRE?=
- =?utf-8?B?T3RhZThSZzVBa1h6TlJKTndqa2xnSkxSd1c3bVNnYllPbGlWREY2RHFuVU5E?=
- =?utf-8?B?UHpsQkhacUVicklYKzJzczZmU1pIMHhqTmxidmpHWVNpZDhydGhncmE3TDdw?=
- =?utf-8?B?ZTZNcE1JUC9nbE0wMHNJS1BKU29Fc3o4MER5U3pSdXJMckNiQmNCVVBaMDlj?=
- =?utf-8?B?MjlVcnBGUVRMTkJDNU90dmFBanhCQmxtY3M1cEpYQUk4dHNvcmNBVlBmeEpo?=
- =?utf-8?B?MTNLRG1tU3g2bmdTbloyWTl3MWVxVWdWVUd0SFkvcWxDL3B0TFluQ25PSWJq?=
- =?utf-8?B?ZUNIL2E3eEVqWHZkUjlwczN4WUQxTnVaQTJHSFFYS0hDYkdZcFdmV2lJVkcv?=
- =?utf-8?B?Y2t6bGxSZlZHQ1JjQ09tUmFla1dnTHh3M2t4MUNQaXZDSmlkL2ZCckg1TVFx?=
- =?utf-8?B?WjNEWk8wWlc5Wmw3cW83N0VvdW9qRE5SbnBqcE5qbDN3SE9tQXNKMjBEWUZa?=
- =?utf-8?B?NUp3V2FmNUszVXRrR3FtTmxFK0xnaWg4M25KQ3MvbFVBVFRTMk5aRzdoR2hY?=
- =?utf-8?B?ZjdKa2MyeE1EbHV4SGdrZkJBL2VOUDNJUmFhTjFoSGRITTNpWGpUUUFzdDhC?=
- =?utf-8?B?UWdJMU1xRWRXc3ZBTXFyRm4vVWZHVjlXZ0NiQXpQdSsxNTBpM2drVEhVY2Vw?=
- =?utf-8?B?MHNsL0VwRXE1NVNqTk4zNWRLN1hwUXVXeWtWOFNGRFNkNTVzODM4RGtLTEVU?=
- =?utf-8?B?RWpyMk1ZZXdFSzB0Z0RUdFdRanBUN29JNS9UY3YrdFhDZ0sra2lRV2hqTy9J?=
- =?utf-8?B?WGo0eTZrWVFLRnR2MzZDaDlnYWNFZkR2bWVaeDM2MkpwL25BdWNleDZMaHc1?=
- =?utf-8?B?YnlUQzZUUU9TYW12aHcramhjdERVT3dSMTdZdzEwNlNZbnBlZlBCb1cxSFl4?=
- =?utf-8?B?YXJ6VGJHSStNbEgwVXlOVS9rbm9xaGl2YUkvWnZ6ajZ3cFdicnphN1cwTzRr?=
- =?utf-8?B?M0lvaGUvSDJMRzNGNzlwT29ETHhYVTNiQk1JM1EvRnFUbzhIeGcwYkN1eWlQ?=
- =?utf-8?B?UGp4c2h0UTlLWlc3V251MkJPYStUamU0cFNQWmRzUFNHaEU2WnFidERNL1dJ?=
- =?utf-8?B?TU56OXN6NDdzSnJtenNpbzNPTkdlOWFKOTJBMm9QZDA3NUNHeE1pMHE2Z3Nq?=
- =?utf-8?B?SUMrTjBzWmc2U3hkelVzMVZvQU1iRTRTWHNSWHdHZ0hzeHRNMlBnaVd6aTMz?=
- =?utf-8?B?K0h6Q0pWMFJkTEp3S0NJendkU1k5T0RVZFN2eDIrM0NSV2Y5b29LTm5yOEt5?=
- =?utf-8?B?UEJTYzdpYmZ3OVRQN1lNR3dWTzdSRmhaZ1ZmMHV5b21mOFNTajhsc3orSHl0?=
- =?utf-8?B?UUtVRms0UUtGUFpIa3liZVB4ZjV2OE9qU3gxOVAzSnhjYjQrR0pGQ0JIRnh6?=
- =?utf-8?B?WWFSeGFUM1hrQ0dYVTZIb3lNcW5qWFFwTlhpQlpnVVRKc1cvVHFJT1pld2FB?=
- =?utf-8?B?Y3VFWmxyNDZVTStRc2JXL0Q4ZHJsRklwNlBVQzhBUk1sKys3Tm9BZUpIWWlv?=
- =?utf-8?B?UWZDbXo1Y3ovTTRLbDhmQ3BwRktjdjAwUXRYWURGR1B4QklQVzZiQ3B3RHE2?=
- =?utf-8?B?czRtRndGdE9MUjhxaXd0cGxwbEhsMHdNQTRJY3dOMGl2QmdTTDJMLytHT0tD?=
- =?utf-8?B?dGNYQllxQ21laVVEL3pYUkk5OFlncXF4OXR6Tmx5MytBMzNRRjIzQzNlem5n?=
- =?utf-8?B?amNWYUJVcFROb1lIUWlualljTG1IYk95cFMzZWM1d2lTazlVaFMyMU5sdk9B?=
- =?utf-8?B?NklYWUEwcXcwMGdoOElwZ09TS1lycUdkSVJoVndGMldqSjc1TUFxa1JmblFD?=
- =?utf-8?B?U2xnR0VRQXRYUWFMUXZnV3ZFUDQ4TmlKQ1hjSEhuQlo2WE10amVlcnlxWlc2?=
- =?utf-8?B?NS84Ui9ZaEVKZkVwZVBUM09Ic0ZkSjVnUFQyTWdlTUdvZXRXWEhVS2NKb3dl?=
- =?utf-8?B?dDlkNTk4SUdXbjBpTHFiQVhKU21Kb05VK2RyV1UvdVhINnBlQS9mbTZ6OGZ4?=
- =?utf-8?B?OWZlb1ErSTM3UElkek8xc0dWVWxNVllYdFp6UkR3eFV6SGRMcTBhM0dIYy9x?=
- =?utf-8?Q?+DNs=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
-MIME-Version: 1.0
-X-OriginatorOrg: pliops.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PR3P195MB0555.EURP195.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3d92aad2-c027-4be2-c4c2-08db6c0b2db0
-X-MS-Exchange-CrossTenant-originalarrivaltime: 13 Jun 2023 12:39:06.9981
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 40fe8f47-55ac-403a-a5ab-1be3dd209cf8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: NSV+rCXT4m6o9Oak43hYDrfJSHT5c682YhfhlZnXfPCH3aNFTO+rPLh1jcD5N7jO0LHZe6H/fYUO1Ga69WUHzg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PR3P195MB0762
+ <PR3P195MB055508CA0B6A5CE36DCCADD4C355A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <PR3P195MB055508CA0B6A5CE36DCCADD4C355A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230613_053920_538072_A74DF2C8 
-X-CRM114-Status: GOOD (  20.09  )
+X-CRM114-CacheID: sfid-20230613_055058_198553_9C65CC43 
+X-CRM114-Status: GOOD (  35.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -164,165 +82,273 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: RE: [PATCH v2] Porting barebox to a new SoC
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH v2] Porting barebox to a new SoC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-SGkgQWhtYWQsDQoNCkFzIHVzdWFsLCB5b3VyIGNvbW1lbnRzIGFyZSBzcG90IG9uIDotKQ0KDQpB
-ZnRlciBmaXhpbmcgdGhlIERULCBkZXZpbmZvIGNvbW1hbmQgc2hvd3MgY29ycmVjdCBmbGFzaCBu
-b2RlOg0KICAgYC0tIDIwMDAwMDAwLmZsYXNoQDAub2YNCiAgICAgIGAtLSBtdGRyb20wDQogICAg
-ICAgICBgLS0gMHgwMDAwMDAwMC0weDBmZmZmZmZmICggICAyNTYgTWlCKTogL2Rldi9tdGRyb20w
-DQogICAgICAgICBgLS0gbXRkcm9tMC5rZXJuZWwNCiAgICAgICAgICAgIGAtLSAweDAwMDAwMDAw
-LTB4MDBmZjdmZmYgKCAgICAxNiBNaUIpOiAvZGV2L210ZHJvbTAua2VybmVsDQogICAgICAgICBg
-LS0gbXRkcm9tMC5vZnRyZWUNCiAgICAgICAgICAgIGAtLSAweDAwMDAwMDAwLTB4MDAwMDdmZmYg
-KCAgICAzMiBLaUIpOiAvZGV2L210ZHJvbTAub2Z0cmVlDQogICAgICAgICBgLS0gbXRkcm9tMC5y
-b290ZnMNCiAgICAgICAgICAgIGAtLSAweDAwMDAwMDAwLTB4MDA3ZmZmZmYgKCAgICAgOCBNaUIp
-OiAvZGV2L210ZHJvbTAucm9vdGZzDQoNCkFzIGNhbiBiZSBzZWVuIGFib3ZlLCB3ZSBjaG9zZSB0
-byBtYXAgdGhpcyAiZmxhc2giIG5vZGUgb24gRFJBTSBhZGRyZXNzIDB4MjAwMDAwMDAgKG9mZnNl
-dCA1MTJNQikuDQpUaGUgQkwxIGNvZGUgY29ycmVjdGx5IGNvcHkgdGhlIDMgYXJ0aWZhY3RzIGlu
-dG8gdGhvc2UgbG9jYXRpb24gKHZlcmlmaWVkIHRoZSBjb250ZW50IHZpYSAibWQgLWwgLXMgL2Rl
-di9tdGRyb20wLmtlcm5lbCIpLg0KUnVubmluZyAiZHJ2aW5mbyIgc2hvd3M6DQptdGRyYW0NCiAg
-ICAgICAgMjAwMDAwMDAuZmxhc2hAMC5vZg0KDQpOb3cgd2hlbiBJIHRyeSB0byBydW4gImJvb3Rt
-IC1vIC9kZXYvbXRkcm9tMC5vZnRyZWUgLXIgL2Rldi9tdGRyb20wLnJvb3RmcyAvZGV2L210ZHJv
-bTAua2VybmVsIiBJIGFtIGdldHRpbmcgdGhpcyBlcnJvcjoNCg0KYmFyZWJveDovIGJvb3RtIC1v
-IC9kZXYvbXRkcm9tMC5vZnRyZWUgLXIgL2Rldi9tdGRyb20wLnJvb3RmcyAvZGV2L210ZHJvbTAu
-a2VybmVsDQpnZXRvcHQ6IG9wdGluZGV4OiAxIG5vbm9wdHM6IDAgb3B0aW5kOiAxDQpnZXRvcHQ6
-IG9wdGluZGV4OiAxIG5vbm9wdHM6IDAgb3B0aW5kOiAzDQpnZXRvcHQ6IG9wdGluZGV4OiAxIG5v
-bm9wdHM6IDAgb3B0aW5kOiA1DQptdGRyb20wLmtlcm5lbDogcmVhZCBvZnM6IDB4MDAwMDAwMDAg
-Y291bnQ6IDB4MDAwMDEwMDANCg0KTG9hZGluZyBBUk0gYWFyY2g2NCBMaW51eCBpbWFnZSAnL2Rl
-di9tdGRyb20wLmtlcm5lbCcNCmhlYWRlciAwMDAwMDAwMDogNGQgNWEgNDAgZmEgM2YgMWEgMjMg
-MTQgMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIE1aQC4/LiMuLi4uLi4uLi4NCmhlYWRlciAwMDAw
-MDAxMDogMDAgMDAgYjMgMDAgMDAgMDAgMDAgMDAgMGEgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIC4u
-Li4uLi4uLi4uLi4uLi4NCmhlYWRlciAwMDAwMDAyMDogMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAg
-MDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgIC4uLi4uLi4uLi4uLi4uLi4NCmhlYWRlciAwMDAwMDAz
-MDogMDAgMDAgMDAgMDAgMDAgMDAgMDAgMDAgNDEgNTIgNGQgNjQgNDAgMDAgMDAgMDAgIC4uLi4u
-Li4uQVJNZEAuLi4NCmhlYWRlciAwMDAwMDA0MDogNTAgNDUgMDAgMDAgNjQgYWEgMDIgMDAgMDAg
-MDAgMDAgMDAgMDAgMDAgMDAgMDAgIFBFLi5kLi4uLi4uLi4uLi4NCmJvb3RpOiBLZXJuZWwgdG8g
-YmUgbG9hZGVkIHRvIDgwMDAwMDArYjMwMDAwDQpfX3JlcXVlc3RfcmVnaW9uIG9rOiAweDA4MDAw
-MDAwOjB4MDgwMWZmZmYgZmxhZ3M9MHgyMDANCm10ZHJvbTAua2VybmVsOiByZWFkIG9mczogMHgw
-MDAwMDAwMCBjb3VudDogMHgwMDAyMDAwMA0KX19yZXF1ZXN0X3JlZ2lvbiBvazogMHgwODAwMDAw
-MDoweDA4MDNmZmZmIGZsYWdzPTB4MjAwDQptdGRyb20wLmtlcm5lbDogcmVhZCBvZnM6IDB4MDAw
-MjAwMDAgY291bnQ6IDB4MDAwMjAwMDANCi4NCi4NCm10ZHJvbTAua2VybmVsOiByZWFkIG9mczog
-MHgwMGZlMDAwMCBjb3VudDogMHgwMDAxODAwMA0KX19yZXF1ZXN0X3JlZ2lvbiBvazogMHgwODAw
-MDAwMDoweDA4ZmY3ZmZmIGZsYWdzPTB4MjAwDQptdGRyb20wLnJvb3RmczogcmVhZCBvZnM6IDB4
-MDAwMDAwMDAgY291bnQ6IDB4MDAwMDA4MDANCl9fcmVxdWVzdF9yZWdpb246IDB4MDhiMzAwMDA6
-MHgwOGI0ZmZmZiAoaW1hZ2UpIGNvbmZsaWN0cyB3aXRoIDB4MDgwMDAwMDA6MHgwOGZmN2ZmZiAo
-aW1hZ2UpDQp1bmFibGUgdG8gcmVxdWVzdCBTRFJBTSAweDA4YjMwMDAwLTB4MDhiNGZmZmYNCmhh
-bmRsZXIgZmFpbGVkIHdpdGg6IE91dCBvZiBtZW1vcnkNCg0KQXBwcmVjaWF0ZSB5b3VyIGFkdmlj
-ZSwNCkNoZWVycywNCkxpb3IuIA0KDQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4g
-RnJvbTogQWhtYWQgRmF0b3VtIDxhLmZhdG91bUBwZW5ndXRyb25peC5kZT4NCj4gU2VudDogTW9u
-ZGF5LCBKdW5lIDEyLCAyMDIzIDY6MDggUE0NCj4gVG86IExpb3IgV2VpbnRyYXViIDxsaW9yd0Bw
-bGlvcHMuY29tPjsgQWhtYWQgRmF0b3VtIDxhaG1hZEBhM2YuYXQ+Ow0KPiBiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSCB2Ml0gUG9ydGluZyBiYXJlYm94
-IHRvIGEgbmV3IFNvQw0KPiANCj4gQ0FVVElPTjogRXh0ZXJuYWwgU2VuZGVyDQo+IA0KPiBIaSwN
-Cj4gDQo+IE9uIDEyLjA2LjIzIDE2OjU5LCBMaW9yIFdlaW50cmF1YiB3cm90ZToNCj4gPiBIZWxs
-byBBaG1hZCwNCj4gPg0KPiA+IEp1c3QgZm9yIHNpbXBsZSBzaW11bGF0aW9ucyB3ZSBtYWtlIHRo
-ZSBST00gc2l6ZSAxOTJNQiBzbyBpdCBjYW4gaW5jbHVkZSBhbGwNCj4gbmVlZGVkIGFydGlmYWN0
-cy4NCj4gDQo+IEkgYW0gbm90IGNvbnZpbmNlZCB0aGF0IHRoaXMgaXMgbXVjaCBvZiBhIHNpbXBs
-aWZpY2F0aW9uIG92ZXIgaGF2aW5nDQo+IHlvdXIgUWVtdSBtYWNoaW5lIHByb3ZpZGUgY2ZpLWZs
-YXNoLg0KPiANCj4gPiBXaGVuIHdlIGdldCB0aGlzIHNpbXBsZSBzeXN0ZW0gdG8gd29yayB3ZSB3
-aWxsIG1vdmUgdGhlIHJlbGV2YW50IHBhcnRzICB0bw0KPiBCTDIuDQo+IA0KPiBPay4NCj4gDQo+
-ID4gRFJBTSBpcyBhbHNvIHNpbXVsYXRlZCBub3cgYXMgU1JBTSBzbyB3ZSBhcmUgbm90IHdvcnJp
-ZWQgYWJvdXQNCj4gaW5pdGlhbGl6YXRpb25zLg0KPiA+DQo+ID4gU28gaWYgSSB1bmRlcnN0YW5k
-IGNvcnJlY3RseSwgd2UgY2FuIGRlY2lkZSB0aGF0IGFkZHJlc3MgMHgxMDAwMDAwMCB3aWxsIGJl
-DQo+IHJlc2VydmVkIGZvciAiZmxhc2giIGFuZCBhZGQgdGhlIGZvbGxvd2luZyBub2RlOg0KPiA+
-IGZsYXNoQDAgew0KPiANCj4gZmxhc2hAMTAwMDAwMDAsIGJ1dCB0aGF0J3MganVzdCBmb3IgaW5m
-b3JtYXRpb25hbCBwdXJwb3Nlcy4NCj4gDQo+ID4gICAgIGNvbXBhdGlibGUgPSAibXRkLXJvbSI7
-DQo+ID4gICAgIHByb2JlLXR5cGUgPSAibWFwX3JvbSI7DQo+ID4gICAgIHJlZyA9IDwweDEwMDAw
-MDAwIDB4MTAwMDAwMDA+Ow0KPiA+ICAgICBiYW5rLXdpZHRoID0gPDQ+Ow0KPiA+ICAgICBkZXZp
-Y2Utd2lkdGggPSA8MT47DQo+ID4NCj4gPiAgICAgI2FkZHJlc3MtY2VsbHMgPSA8MT47DQo+ID4g
-ICAgICNzaXplLWNlbGxzID0gPDE+Ow0KPiA+ICAgICBrZXJuZWxAMCB7DQo+ID4gICAgICAgICBs
-YWJlbCA9ICJrZXJuZWwiOw0KPiA+ICAgICAgICAgcmVnID0gPDB4MCAweDAxMDAwMDAwPjsNCj4g
-PiAgICAgfTsNCj4gPiAgICAgcm9vdGZzQDEwMDAwMDAgew0KPiA+ICAgICAgICAgbGFiZWwgPSAi
-cm9vdGZzIjsNCj4gPiAgICAgICAgIHJlZyA9IDwweDAxMDAwMDAwIDB4MDA4MDAwMDA+Ow0KPiA+
-ICAgICB9Ow0KPiA+IH07DQo+ID4NCj4gPiBXaGVuIEkgdXNlIHRoaXMgbm9kZSBvbiBvdXIgRFQg
-SSBzZWUgdGhlIGZvbGxvd2luZyBkZXZpbmZvOg0KPiA+IGJhcmVib3g6LyBkZXZpbmZvDQo+ID4g
-YC0tIGdsb2JhbA0KPiA+IGAtLSBudg0KPiA+IGAtLSBwbGF0Zm9ybQ0KPiA+ICAgIGAtLSBtYWNo
-aW5lDQo+ID4gICAgYC0tIHBzY2kub2YNCj4gPiAgICBgLS0gMTAwMDAwMDAxMDAwMDAwMC5mbGFz
-aEAwLm9mDQo+IA0KPiBBcyB5b3UgY2FuIHNlZSB0aGUgYWRkcmVzcyBpcyB3cm9uZy4gVGhhdCdz
-IGJlY2F1c2UgeW91IGhhdmUNCj4gI2FkZHJlc3MtY2VsbHMgPSA8Mj47DQo+ICNzaXplLWNlbGxz
-ID0gPDI+Ow0KPiANCj4gWWV0LCB5b3Ugd3JvdGUgcmVnIGFzIGlmIGl0IHdhcyA8MT4vPDE+LiBD
-aGFuZ2UgaXQgdG8NCj4gDQo+ICAgcmVnID0gPDB4MCAweDEwMDAwMDAwIDB4MCAweDEwMDAwMDAw
-PjsNCj4gDQo+IFJlbWVtYmVyIGFsbCBkZXZpY2UgdHJlZSBpbnRlZ2VycyBhcmUgMzItYml0IGJp
-ZyBlbmRpYW4uDQo+IA0KPiA+ICAgIGAtLSBzb2Mub2YNCj4gPiAgICAgICBgLS0gYzAwMDAwMDAw
-MC5zcmFtQGMwMDAwMDAwMDAub2YNCj4gPiAgICAgICBgLS0gc29jOnBtdS5vZg0KPiA+ICAgICAg
-IGAtLSBzb2M6dGltZXIub2YNCj4gPiAgICAgICBgLS0gZTAwMDAwMDAwMC5pbnRlcnJ1cHQtY29u
-dHJvbGxlckBFMDAwMDAwMDAwLm9mDQo+ID4gICAgYC0tIG1lbTANCj4gPiAgICAgICBgLS0gMHgw
-MDAwMDAwMC0weDBmZmZmZmZmICggICAyNTYgTWlCKTogL2Rldi9yYW0wDQo+ID4gICAgYC0tIG1l
-bTENCj4gPiAgICAgICBgLS0gMHgwMDAwMDAwMC0weGZmZmZmZmZmZmZmZmZmZmYgKCAgIDAgQnl0
-ZXMpOiAvZGV2L21lbQ0KPiA+IGAtLSBhbWJhDQo+ID4gICAgYC0tIGQwMDAzMDcwMDAuc2VyaWFs
-QGQwMDAzMDcwMDAub2YNCj4gPiAgICAgICBgLS0gY3MwDQo+ID4gICAgICAgICAgYC0tIDB4MDAw
-MDAwMDAtMHhmZmZmZmZmZmZmZmZmZmZmICggICAwIEJ5dGVzKTogL2Rldi9jczANCj4gPiBgLS0g
-c3BpDQo+ID4gYC0tIGZzDQo+ID4gICAgYC0tIHJhbWZzMA0KPiA+ICAgIGAtLSBkZXZmczANCj4g
-PiAgICBgLS0gcHN0b3JlMA0KPiA+DQo+ID4gTm90IHN1cmUgaG93IHRvIHByb2NlZWQgZnJvbSBo
-ZXJlLi4uDQo+IA0KPiBUeXBlIGRydmluZm8gY29tbWFuZCB0byBzZWUgd2hhdCBkcml2ZXJzIGFy
-ZSBib3VuZCB0byB3aGF0IGRldmljZXMuDQo+IElmIHlvdSBzZWUgbm8gZHJpdmVyIGJvdW5kIHRv
-IHlvdXIgZmxhc2ggZGV2aWNlLCB0aGVuIG1heWJlIHlvdSBuZWVkDQo+IHRvIGVuYWJsZSB0aGUg
-Y29ycmVjdCBkcml2ZXIsIHRoYXQgd291bGQgYmUgQ09ORklHX01URF9NVERSQU0gKHdoaWNoDQo+
-IGhhbmRsZXMgYm90aCByZWFkLW9ubHkgYW5kIHJlYWQtd3JpdGUgbWVtb3J5IG1hcHBlZCBNVEQp
-Lg0KPiANCj4gQ2hlZXJzLA0KPiBBaG1hZA0KPiANCj4gPiBDaGVlcnMsDQo+ID4gTGlvci4NCj4g
-Pg0KPiA+PiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2UtLS0tLQ0KPiA+PiBGcm9tOiBBaG1hZCBGYXRv
-dW0gPGEuZmF0b3VtQHBlbmd1dHJvbml4LmRlPg0KPiA+PiBTZW50OiBNb25kYXksIEp1bmUgMTIs
-IDIwMjMgMzoyOSBQTQ0KPiA+PiBUbzogTGlvciBXZWludHJhdWIgPGxpb3J3QHBsaW9wcy5jb20+
-OyBBaG1hZCBGYXRvdW0gPGFobWFkQGEzZi5hdD47DQo+ID4+IGJhcmVib3hAbGlzdHMuaW5mcmFk
-ZWFkLm9yZw0KPiA+PiBTdWJqZWN0OiBSZTogW1BBVENIIHYyXSBQb3J0aW5nIGJhcmVib3ggdG8g
-YSBuZXcgU29DDQo+ID4+DQo+ID4+IENBVVRJT046IEV4dGVybmFsIFNlbmRlcg0KPiA+Pg0KPiA+
-PiBIZWxsbyBMaW9yLA0KPiA+Pg0KPiA+PiBPbiAxMi4wNi4yMyAxMToyNywgTGlvciBXZWludHJh
-dWIgd3JvdGU6DQo+ID4+PiBIaSBBaG1hZCwNCj4gPj4+DQo+ID4+PiBSZWdhcmRpbmcgdGhlIHJv
-b3RmcyBhbmQgTGludXggcnVuIHF1ZXN0aW9uOg0KPiA+Pj4gT3VyIGJvYXJkIGRvZXNuJ3QgaW5j
-bHVkZSBlTU1DXFNEIGNhcmQuDQo+ID4+PiBXZSBvbmx5IGhhdmUgb3VyIE5PUiBGbGFzaCB0byBz
-dG9yZSB0aGUgYmluYXJpZXMgYW5kIG91ciBCTDEgY29kZSB3aWxsDQo+IG1ha2UNCj4gPj4gc3Vy
-ZSB0byBjb3B5IHRob3NlIGJsb2JzIGludG8gRFJBTS4NCj4gPj4NCj4gPj4gSG93IGNvdWxkIEJM
-MSBjb3B5IGFydGlmYWN0cyBpbiBEUkFNIHdoZW4gQkwyIGZpcnN0IG5lZWRzIHRvIHNldCB1cA0K
-PiBEUkFNPw0KPiA+Pg0KPiA+Pj4gVGhlIHVzZSBvZiBRRU1VIG5lZWRzIHRvIGJlIGFzIHNpbXBs
-ZSBhcyBwb3NzaWJsZSBzbyBubyBoaWRkZW4gdmlydGlvDQo+ID4+IGRyaXZlcnMgYW5kIHN1Y2gg
-YmVjYXVzZSB3ZSB3b3VsZCBsaWtlIHRvIHNpbXVsYXRlIHRoZSByZWFsIEhXIGZsb3cuDQo+ID4+
-DQo+ID4+IGNmaS1mbGFzaCBpcyBqdXN0IG1lbW9yeS1tYXBwZWQgZmxhc2gsIHdoaWNoIGlzIHRo
-ZSBuZXh0IHNpbXBsZXN0IHRoaW5nDQo+ID4+IGFmdGVyIEJMMSBjb3BpZXMgc3R1ZmYgaW50byAo
-bGltaXRlZC10by00TSkgb24tY2hpcCBTUkFNLg0KPiA+Pg0KPiA+Pj4gT3VyIERUUyBmaWxlIG5v
-dyBpbmNsdWRlcyB0aGUgR0lDLCB0aW1lciBhbmQgYXJtLHBzY2ktMS4wLg0KPiA+Pj4gV2UgaGF2
-ZSBhbiBpbml0aWFsIGJ1aWxkIG9mIExpbnV4IGtlcm5lbCBJbWFnZSAodXNpbmcgYnVpbGRyb290
-KSBhbmQgYQ0KPiA+PiByb290ZnMuY3Bpby54ei4NCj4gPj4+IEkgYXNzdW1lIHdlIGNhbiBzb21l
-aG93IHJlc2VydmUgYSBwb3J0aW9uIG9mIHRoZSBEUkFNIHRvIHN0b3JlIHRob3NlDQo+ID4+IGJp
-bmFyaWVzIGFuZCBsZXQgYmFyZWJveCBib290IHRoaXMgTGludXguDQo+ID4+DQo+ID4+IFlvdSBj
-YW4gbWFrZSB0aGlzIHdvcmssIGJ1dCB0aGlzIGlzIG5vdCBob3cgeW91ciBhY3R1YWwgc3lzdGVt
-IHdpbGwNCj4gPj4gbG9vayBsaWtlIGFuZCB0cnlpbmcgdG8gbWFrZSB0aGlzIHdvcmsgaXMgaGFy
-ZGVyIHRoYW4gaXQgbmVlZHMgdG8gYmUuDQo+ID4+DQo+ID4+IEp1c3QgYWRkIGEgY2ZpLWZsYXNo
-IHRoYXQgY29ycmVzcG9uZHMgdG8gdGhlIExpbnV4L3Jvb3RmcyBmbGFzaCBpbg0KPiA+PiB5b3Vy
-IGFjdHVhbCBzeXN0ZW0sIHRoZW4gYm9vdCB3aXRoIGJvb3RtICh0eXBlIGhlbHAgYm9vdG0gZm9y
-IGluZm8NCj4gPj4gb24gaG93IHRvIHVzZSBpdCkuIFlvdSBkb24ndCBuZWVkIHRvIGhhcmRjb2Rl
-IHRoZSBsb2FkIGFkZHJlc3NlcywNCj4gPj4gYmFyZWJveCB3aWxsIGRldGVybWluZSB0aGVtIGF1
-dG9tYXRpY2FsbHkuDQo+ID4+DQo+ID4+PiBDYW4geW91IHBsZWFzZSBhZHZpc2UgaG93IHRvIG1h
-a2UgaXQgd29yaz8NCj4gPj4NCj4gPj4gRm9yIGNvbXBsZXRpb24ncyBzYWtlLCBpZiB5b3UgaGF2
-ZSA2NE0gb2YgUkFNIHRoYXQncyBwcmVsb2FkZWQgd2l0aA0KPiA+PiBib290IGltYWdlczoNCj4g
-Pj4NCj4gPj4gICAtIFJlbW92ZSB0aGUgNjRNIGZyb20gdGhlIGJhcmVib3ggL21lbW9yeSBub2Rl
-LiBZb3UgY2FuIHVzZSBhDQo+IGRpZmZlcmVudA0KPiA+PiAgICAgRFQgZm9yIGtlcm5lbCwgYnV0
-IGlmIHlvdSBoYXZlIG1lbW9yeSB0aGF0IGJhcmVib3ggc2hvdWxkbid0IG92ZXJyaWRlLA0KPiA+
-PiAgICAgeW91IG5lZWQgdG8gdGVsbCBpdCB0aGF0Lg0KPiA+Pg0KPiA+PiAgIC0gQWRkIGEgbXRk
-LXJvbSBub2RlIHRoYXQgZGVzY3JpYmVzIHRoZXNlIDY0TSB0aGF0IHlvdSBoYXZlLiBZb3UgY2Fu
-DQo+ID4+ICAgICBhZGQgcGFydGl0aW9ucyBmb3IgdGhlIHJlZ2lvbiB1c2VkIGZvciBrZXJuZWwg
-YW5kIG9mdHJlZQ0KPiA+Pg0KPiA+PiAgIC0gYm9vdCB3aXRoIGJvb3RtIC1vIC9kZXYvbXRkcm9t
-MC5vZnRyZWUgLXIgL2Rldi9tdGRyb20wLmluaXRyZCBcDQo+ID4+ICAgICAvZGV2L210ZHJvbTAu
-a2VybmVsDQo+ID4+DQo+ID4+IFRoYXQncyBhZG1pdHRlZGx5IGN1bWJlcnNvbWUsIGJ1dCBuZWNl
-c3NhcnksIHNvIGJhcmVib3gga25vd3Mgd2hhdA0KPiA+PiBtZW1vcnkNCj4gPj4gaXQgbWF5IHVz
-ZSBmb3IgaXRzZWxmIGFuZCB3aGF0IG1lbW9yeSBtYXkgYmUgdXNlZCBmb3IgYm9vdC4NCj4gPj4N
-Cj4gPj4gQ29ycmVjdCBzb2x1dGlvbiBpcyB0byB1c2UgY2ZpLWZsYXNoIG9yIHNpbWlsYXIuDQo+
-ID4+DQo+ID4+IENoZWVycywNCj4gPj4gQWhtYWQNCj4gPj4gLS0NCj4gPj4gUGVuZ3V0cm9uaXgg
-ZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgIHwNCj4gPj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwg
-aHR0cDovL3d3dy5wZW5ndXRyb25peC5kZS8gIHwNCj4gPj4gMzExMzcgSGlsZGVzaGVpbSwgR2Vy
-bWFueSAgICAgICAgICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwNCj4g
-Pj4gQW10c2dlcmljaHQgSGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0
-OS01MTIxLTIwNjkxNy01NTU1IHwNCj4gPg0KPiANCj4gLS0NCj4gUGVuZ3V0cm9uaXggZS5LLiAg
-ICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAgICAgICAgICAgIHwN
-Cj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAgICAgIHwgaHR0cDovL3d3
-dy5wZW5ndXRyb25peC5kZS8gIHwNCj4gMzExMzcgSGlsZGVzaGVpbSwgR2VybWFueSAgICAgICAg
-ICAgICAgICAgIHwgUGhvbmU6ICs0OS01MTIxLTIwNjkxNy0wICAgIHwNCj4gQW10c2dlcmljaHQg
-SGlsZGVzaGVpbSwgSFJBIDI2ODYgICAgICAgICAgIHwgRmF4OiAgICs0OS01MTIxLTIwNjkxNy01
-NTU1IHwNCg0K
+On 13.06.23 14:39, Lior Weintraub wrote:
+> Hi Ahmad,
+> 
+> As usual, your comments are spot on :-)
+> 
+> After fixing the DT, devinfo command shows correct flash node:
+>    `-- 20000000.flash@0.of
+>       `-- mtdrom0
+>          `-- 0x00000000-0x0fffffff (   256 MiB): /dev/mtdrom0
+>          `-- mtdrom0.kernel
+>             `-- 0x00000000-0x00ff7fff (    16 MiB): /dev/mtdrom0.kernel
+>          `-- mtdrom0.oftree
+>             `-- 0x00000000-0x00007fff (    32 KiB): /dev/mtdrom0.oftree
+>          `-- mtdrom0.rootfs
+>             `-- 0x00000000-0x007fffff (     8 MiB): /dev/mtdrom0.rootfs
+> 
+> As can be seen above, we chose to map this "flash" node on DRAM address 0x20000000 (offset 512MB).
+> The BL1 code correctly copy the 3 artifacts into those location (verified the content via "md -l -s /dev/mtdrom0.kernel").
+> Running "drvinfo" shows:
+> mtdram
+>         20000000.flash@0.of
+> 
+> Now when I try to run "bootm -o /dev/mtdrom0.oftree -r /dev/mtdrom0.rootfs /dev/mtdrom0.kernel" I am getting this error:
+> 
+> barebox:/ bootm -o /dev/mtdrom0.oftree -r /dev/mtdrom0.rootfs /dev/mtdrom0.kernel
+> getopt: optindex: 1 nonopts: 0 optind: 1
+> getopt: optindex: 1 nonopts: 0 optind: 3
+> getopt: optindex: 1 nonopts: 0 optind: 5
+> mtdrom0.kernel: read ofs: 0x00000000 count: 0x00001000
+> 
+> Loading ARM aarch64 Linux image '/dev/mtdrom0.kernel'
+> header 00000000: 4d 5a 40 fa 3f 1a 23 14 00 00 00 00 00 00 00 00  MZ@.?.#.........
+> header 00000010: 00 00 b3 00 00 00 00 00 0a 00 00 00 00 00 00 00  ................
+> header 00000020: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+> header 00000030: 00 00 00 00 00 00 00 00 41 52 4d 64 40 00 00 00  ........ARMd@...
+> header 00000040: 50 45 00 00 64 aa 02 00 00 00 00 00 00 00 00 00  PE..d...........
+> booti: Kernel to be loaded to 8000000+b30000
+
+Kernel image is relocatable and ARM64 header in hexdump says that
+load offset is zero. Yet, barebox wants to load your image to
+8000000, which is already reserved.
+
+What's the output of the iomem command before and after the failed
+boot attempt?
+
+> __request_region ok: 0x08000000:0x0801ffff flags=0x200
+> mtdrom0.kernel: read ofs: 0x00000000 count: 0x00020000
+> __request_region ok: 0x08000000:0x0803ffff flags=0x200
+> mtdrom0.kernel: read ofs: 0x00020000 count: 0x00020000
+> .
+> .
+> mtdrom0.kernel: read ofs: 0x00fe0000 count: 0x00018000
+> __request_region ok: 0x08000000:0x08ff7fff flags=0x200
+> mtdrom0.rootfs: read ofs: 0x00000000 count: 0x00000800
+> __request_region: 0x08b30000:0x08b4ffff (image) conflicts with 0x08000000:0x08ff7fff (image)
+> unable to request SDRAM 0x08b30000-0x08b4ffff
+> handler failed with: Out of memory
+
+Just to be sure: You don't set global.bootm.image.loadaddr, right?
+
+Cheers,
+Ahmad
+
+> 
+> Appreciate your advice,
+> Cheers,
+> Lior. 
+> 
+> 
+>> -----Original Message-----
+>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> Sent: Monday, June 12, 2023 6:08 PM
+>> To: Lior Weintraub <liorw@pliops.com>; Ahmad Fatoum <ahmad@a3f.at>;
+>> barebox@lists.infradead.org
+>> Subject: Re: [PATCH v2] Porting barebox to a new SoC
+>>
+>> CAUTION: External Sender
+>>
+>> Hi,
+>>
+>> On 12.06.23 16:59, Lior Weintraub wrote:
+>>> Hello Ahmad,
+>>>
+>>> Just for simple simulations we make the ROM size 192MB so it can include all
+>> needed artifacts.
+>>
+>> I am not convinced that this is much of a simplification over having
+>> your Qemu machine provide cfi-flash.
+>>
+>>> When we get this simple system to work we will move the relevant parts  to
+>> BL2.
+>>
+>> Ok.
+>>
+>>> DRAM is also simulated now as SRAM so we are not worried about
+>> initializations.
+>>>
+>>> So if I understand correctly, we can decide that address 0x10000000 will be
+>> reserved for "flash" and add the following node:
+>>> flash@0 {
+>>
+>> flash@10000000, but that's just for informational purposes.
+>>
+>>>     compatible = "mtd-rom";
+>>>     probe-type = "map_rom";
+>>>     reg = <0x10000000 0x10000000>;
+>>>     bank-width = <4>;
+>>>     device-width = <1>;
+>>>
+>>>     #address-cells = <1>;
+>>>     #size-cells = <1>;
+>>>     kernel@0 {
+>>>         label = "kernel";
+>>>         reg = <0x0 0x01000000>;
+>>>     };
+>>>     rootfs@1000000 {
+>>>         label = "rootfs";
+>>>         reg = <0x01000000 0x00800000>;
+>>>     };
+>>> };
+>>>
+>>> When I use this node on our DT I see the following devinfo:
+>>> barebox:/ devinfo
+>>> `-- global
+>>> `-- nv
+>>> `-- platform
+>>>    `-- machine
+>>>    `-- psci.of
+>>>    `-- 1000000010000000.flash@0.of
+>>
+>> As you can see the address is wrong. That's because you have
+>> #address-cells = <2>;
+>> #size-cells = <2>;
+>>
+>> Yet, you wrote reg as if it was <1>/<1>. Change it to
+>>
+>>   reg = <0x0 0x10000000 0x0 0x10000000>;
+>>
+>> Remember all device tree integers are 32-bit big endian.
+>>
+>>>    `-- soc.of
+>>>       `-- c000000000.sram@c000000000.of
+>>>       `-- soc:pmu.of
+>>>       `-- soc:timer.of
+>>>       `-- e000000000.interrupt-controller@E000000000.of
+>>>    `-- mem0
+>>>       `-- 0x00000000-0x0fffffff (   256 MiB): /dev/ram0
+>>>    `-- mem1
+>>>       `-- 0x00000000-0xffffffffffffffff (   0 Bytes): /dev/mem
+>>> `-- amba
+>>>    `-- d000307000.serial@d000307000.of
+>>>       `-- cs0
+>>>          `-- 0x00000000-0xffffffffffffffff (   0 Bytes): /dev/cs0
+>>> `-- spi
+>>> `-- fs
+>>>    `-- ramfs0
+>>>    `-- devfs0
+>>>    `-- pstore0
+>>>
+>>> Not sure how to proceed from here...
+>>
+>> Type drvinfo command to see what drivers are bound to what devices.
+>> If you see no driver bound to your flash device, then maybe you need
+>> to enable the correct driver, that would be CONFIG_MTD_MTDRAM (which
+>> handles both read-only and read-write memory mapped MTD).
+>>
+>> Cheers,
+>> Ahmad
+>>
+>>> Cheers,
+>>> Lior.
+>>>
+>>>> -----Original Message-----
+>>>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>> Sent: Monday, June 12, 2023 3:29 PM
+>>>> To: Lior Weintraub <liorw@pliops.com>; Ahmad Fatoum <ahmad@a3f.at>;
+>>>> barebox@lists.infradead.org
+>>>> Subject: Re: [PATCH v2] Porting barebox to a new SoC
+>>>>
+>>>> CAUTION: External Sender
+>>>>
+>>>> Hello Lior,
+>>>>
+>>>> On 12.06.23 11:27, Lior Weintraub wrote:
+>>>>> Hi Ahmad,
+>>>>>
+>>>>> Regarding the rootfs and Linux run question:
+>>>>> Our board doesn't include eMMC\SD card.
+>>>>> We only have our NOR Flash to store the binaries and our BL1 code will
+>> make
+>>>> sure to copy those blobs into DRAM.
+>>>>
+>>>> How could BL1 copy artifacts in DRAM when BL2 first needs to set up
+>> DRAM?
+>>>>
+>>>>> The use of QEMU needs to be as simple as possible so no hidden virtio
+>>>> drivers and such because we would like to simulate the real HW flow.
+>>>>
+>>>> cfi-flash is just memory-mapped flash, which is the next simplest thing
+>>>> after BL1 copies stuff into (limited-to-4M) on-chip SRAM.
+>>>>
+>>>>> Our DTS file now includes the GIC, timer and arm,psci-1.0.
+>>>>> We have an initial build of Linux kernel Image (using buildroot) and a
+>>>> rootfs.cpio.xz.
+>>>>> I assume we can somehow reserve a portion of the DRAM to store those
+>>>> binaries and let barebox boot this Linux.
+>>>>
+>>>> You can make this work, but this is not how your actual system will
+>>>> look like and trying to make this work is harder than it needs to be.
+>>>>
+>>>> Just add a cfi-flash that corresponds to the Linux/rootfs flash in
+>>>> your actual system, then boot with bootm (type help bootm for info
+>>>> on how to use it). You don't need to hardcode the load addresses,
+>>>> barebox will determine them automatically.
+>>>>
+>>>>> Can you please advise how to make it work?
+>>>>
+>>>> For completion's sake, if you have 64M of RAM that's preloaded with
+>>>> boot images:
+>>>>
+>>>>   - Remove the 64M from the barebox /memory node. You can use a
+>> different
+>>>>     DT for kernel, but if you have memory that barebox shouldn't override,
+>>>>     you need to tell it that.
+>>>>
+>>>>   - Add a mtd-rom node that describes these 64M that you have. You can
+>>>>     add partitions for the region used for kernel and oftree
+>>>>
+>>>>   - boot with bootm -o /dev/mtdrom0.oftree -r /dev/mtdrom0.initrd \
+>>>>     /dev/mtdrom0.kernel
+>>>>
+>>>> That's admittedly cumbersome, but necessary, so barebox knows what
+>>>> memory
+>>>> it may use for itself and what memory may be used for boot.
+>>>>
+>>>> Correct solution is to use cfi-flash or similar.
+>>>>
+>>>> Cheers,
+>>>> Ahmad
+>>>> --
+>>>> Pengutronix e.K.                           |                             |
+>>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>>
+>>
+>> --
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
