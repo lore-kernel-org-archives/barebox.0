@@ -1,61 +1,64 @@
-Delivery-date: Tue, 13 Jun 2023 10:24:11 +0200
+Delivery-date: Tue, 13 Jun 2023 10:28:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8zK1-004usm-6h
-	for lore@lore.pengutronix.de; Tue, 13 Jun 2023 10:24:11 +0200
+	id 1q8zO9-004v2g-HJ
+	for lore@lore.pengutronix.de; Tue, 13 Jun 2023 10:28:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8zJy-0001ZF-Nz
-	for lore@pengutronix.de; Tue, 13 Jun 2023 10:24:11 +0200
+	id 1q8zO7-0002EC-70
+	for lore@pengutronix.de; Tue, 13 Jun 2023 10:28:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=m8tD7wyAATDf6Wu7nRLB1lUPjP8ergUbPrHiDVvZG4k=; b=U5BE83zo6bu+vsgaCnPbi4WG+x
-	2HBM/vjQl6tvOcRyV1SDr+JGzGcE3nN50xKFXLp63ybI9mFSf+j/BAJDy5MMIMWi6aiJIWWk2LBn1
-	qHOLwtZkJcOb6dDtSSVO3jvbRsonc3hlnboZdpiRIkJhOd81PW+2ArEZbjN/qrcB3bpbkAbpL/a0h
-	CrAcI8Gnv1SBHSd//sKBuCBA/oR9psV3+2ffDxneBINnv15iHYnWV7kdF9aP7VNKe5YLDSHmkyiP2
-	2BQuMM2A9qCgqVicpY6wjJUaR3ommBoVH3sIPkECpsR2q9FLcOHL6nLvXMrlf1lvXJXsHVTwSvjAR
-	vrn0ho+w==;
+	bh=mcGjOVy6sRSNLJaWJTrjbdX0diLLErDbPxcibmeNUh0=; b=KivlPQwlY7jyE9tZzuPV4kx8oA
+	Kox/WFGbvGKFvQ7ZbjEyAKGDkdVo6qbSBDDbc2E1C/DL95O6l4CbdmWrG2yllwuGA6BOnBbXolhbA
+	Rh1EYokQO8smOwwLbGSL5J/Tls1/Tf7xIh4JIWuBUO3+PPNi5g6L/QmjMNUhnns0U3qjOK2cqfFMe
+	vPzLAeWLLphnNKCkR9kGaQ5NpA6XtWGCX0nUkh11Top/NQqL35owOrRgul/6Iw2ewSwu6U0YHZT2j
+	6cf6DTwUTuQITwNPix/UTLNSuQt9ao4mqaxOKMgNk7SXRQwOHJUmUPE6mEgWAmZojbmZ1Yl1/7jur
+	V4i/SsVA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8zIt-007MMd-24;
-	Tue, 13 Jun 2023 08:23:03 +0000
+	id 1q8zN7-007N9Y-20;
+	Tue, 13 Jun 2023 08:27:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8zIq-007MLt-0u
+	id 1q8zN4-007N91-1r
 	for barebox@lists.infradead.org;
-	Tue, 13 Jun 2023 08:23:01 +0000
+	Tue, 13 Jun 2023 08:27:24 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1q8zIo-0001OC-RD; Tue, 13 Jun 2023 10:22:58 +0200
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1q8zIo-0002Z9-Em; Tue, 13 Jun 2023 10:22:58 +0200
-Date: Tue, 13 Jun 2023 10:22:58 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1q8zN3-00029q-9p; Tue, 13 Jun 2023 10:27:21 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q8zN3-0002p8-28; Tue, 13 Jun 2023 10:27:21 +0200
+Date: Tue, 13 Jun 2023 10:27:21 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Jules Maselbas <jmaselbas@kalray.eu>
-Message-ID: <20230613082258.kxwcqjbklwmma4jl@pengutronix.de>
-References: <20230602074921.2687669-1-m.felsch@pengutronix.de>
- <20230602074921.2687669-10-m.felsch@pengutronix.de>
- <b8488721-f37e-5400-4c74-855b30eef363@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230613082721.GN18491@pengutronix.de>
+References: <20230612125104.1082800-1-a.fatoum@pengutronix.de>
+ <20230612125104.1082800-6-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <b8488721-f37e-5400-4c74-855b30eef363@pengutronix.de>
-User-Agent: NeoMutt/20180716
+In-Reply-To: <20230612125104.1082800-6-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230613_012300_320177_A699F5DA 
-X-CRM114-Status: GOOD (  20.41  )
+X-CRM114-CacheID: sfid-20230613_012722_617613_C89C0502 
+X-CRM114-Status: GOOD (  25.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,81 +81,84 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 09/10] OF: gpio: fix device_node leakage
+Subject: Re: [PATCH v4 5/6] of: implement of_move_node helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 23-06-13, Ahmad Fatoum wrote:
-> On 02.06.23 09:49, Marco Felsch wrote:
-> > Drop the device_node after we are done.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+On Mon, Jun 12, 2023 at 02:51:03PM +0200, Ahmad Fatoum wrote:
+> Reparenting nodes can be a useful thing to do in fixups. Add a helper
+> for that.
 > 
-> There's no leakage fixed here. of_node_put is a no-op in barebox
-> and even in the kernel, it only does reference counting when
-> CONFIG_OF_DYNAMIC=y.
-
-Didn't noticed that of_node_put() is a no-op but since barebox does
-start to handle of-overlays for its own devicetrees we should reconsider
-that.
-
-> I don't mind if change is to align with kernel, so with commit
-> message reworded:
-
-Sure.
-
-Regards,
-  Marco
-
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/of/base.c | 18 ++++++++++++++++++
+>  include/of.h      |  1 +
+>  2 files changed, 19 insertions(+)
 > 
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> > ---
-> >  drivers/of/of_gpio.c | 10 +++++++---
-> >  1 file changed, 7 insertions(+), 3 deletions(-)
-> > 
-> > diff --git a/drivers/of/of_gpio.c b/drivers/of/of_gpio.c
-> > index c20133bbfd..76398f7542 100644
-> > --- a/drivers/of/of_gpio.c
-> > +++ b/drivers/of/of_gpio.c
-> > @@ -76,16 +76,17 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
-> >  	if (!dev) {
-> >  		pr_debug("%s: unable to find device of node %s\n",
-> >  			 __func__, gpiospec.np->full_name);
-> > -		return -EPROBE_DEFER;
-> > +		ret = -EPROBE_DEFER;
-> > +		goto out;
-> >  	}
-> >  
-> >  	ret = gpio_get_num(dev, gpiospec.args[0]);
-> >  	if (ret == -EPROBE_DEFER)
-> > -		return ret;
-> > +		goto out;
-> >  	if (ret < 0) {
-> >  		pr_err("%s: unable to get gpio num of device %s: %d\n",
-> >  			__func__, dev_name(dev), ret);
-> > -		return ret;
-> > +		goto out;
-> >  	}
-> >  
-> >  	if (flags) {
-> > @@ -93,6 +94,9 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
-> >  		of_gpio_flags_quirks(np, propname, flags, index);
-> >  	}
-> >  
-> > +out:
-> > +	of_node_put(gpiospec.np);
-> > +
-> >  	return ret;
-> >  }
-> >  EXPORT_SYMBOL(of_get_named_gpio_flags);
-> 
+> diff --git a/drivers/of/base.c b/drivers/of/base.c
+> index e3416b5b75a7..43a4a923d9c5 100644
+> --- a/drivers/of/base.c
+> +++ b/drivers/of/base.c
+> @@ -2695,6 +2695,24 @@ void of_delete_node(struct device_node *node)
+>  	free(node);
+>  }
+>  
+> +void of_move_node(struct device_node *parent, struct device_node *node)
+> +{
+> +	if (!node)
+> +		return;
+> +
+> +	list_del(&node->list);
+> +	list_del(&node->parent_list);
+> +
+> +	free(node->full_name);
+> +	node->full_name = basprintf("%s/%s", parent->full_name, node->name);
+> +
+> +	if (!node->parent)
+> +		return;
+
+Why is the old parent relevant here? Even when node didn't have a parent
+before you should still add it to the children list of the new parent.
+
+Also node->parent should be set to the new parent.
+
+You seem to honour the case that node didn't have a parent previously.
+Does the list_del(&node->parent_list) work in this case? I can't see any
+INIT_LIST_HEAD(&node->parent_list) in the code, so I assume running a
+list_del on it results in a NULL pointer dereference.
+
+Sascha
+
+> +
+> +	list_add(&node->list, &parent->list);
+> +	list_add_tail(&node->parent_list, &parent->children);
+> +}
+> +
+>  /*
+>   * of_find_node_by_chosen - Find a node given a chosen property pointing at it
+>   * @propname:   the name of the property containing a path or alias
+> diff --git a/include/of.h b/include/of.h
+> index 0037bad6c4d7..686c1632c267 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -187,6 +187,7 @@ extern struct device_node *of_create_node(struct device_node *root,
+>  extern void of_merge_nodes(struct device_node *np, const struct device_node *other);
+>  extern struct device_node *of_copy_node(struct device_node *parent,
+>  				const struct device_node *other);
+> +void of_move_node(struct device_node *parent, struct device_node *node);
+>  extern struct device_node *of_dup(const struct device_node *root);
+>  extern void of_delete_node(struct device_node *node);
+>  
 > -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 2.39.2
 > 
 > 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
