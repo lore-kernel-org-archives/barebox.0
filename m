@@ -1,63 +1,58 @@
-Delivery-date: Tue, 13 Jun 2023 09:57:30 +0200
+Delivery-date: Tue, 13 Jun 2023 09:59:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8yuB-004tXE-Iq
-	for lore@lore.pengutronix.de; Tue, 13 Jun 2023 09:57:30 +0200
+	id 1q8yvs-004taD-TO
+	for lore@lore.pengutronix.de; Tue, 13 Jun 2023 09:59:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8yu8-0005eb-MM
-	for lore@pengutronix.de; Tue, 13 Jun 2023 09:57:29 +0200
+	id 1q8yvq-0005nt-0s
+	for lore@pengutronix.de; Tue, 13 Jun 2023 09:59:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NC0xbDLhnOCFwuYyuML8kMHgat73WOJTjNOnV/sdEFo=; b=rtc3yEuytuaw4bLzAwwyADK5T9
-	s/7Srz9/8wRjmSPcjEaGlz6+gXOQgU5phaDAp7jyfNkkbKt7NdKln0LSvTAOKpzPgvd1t4dGKhuog
-	ByE37PVghWZK2o+5I0H2cn3SFzB3tILPHl+lETX+8FqF5XgFYQg1cDk7xeyi9tZDr4vE5DemDv1Gb
-	tx6CGD71+P2JHLSOmZ5CSLyvgYxvkaUSuxO83dYpPAa9RkSjkGKcd4KRpAsgUv7aloDYL5koHpESg
-	rjTj7csw2oiwV5AvbEgi2giEW/aS+Y4+GBhi8tPW7dcNfkOopT5nfPR9qkKIJIcTQQIebHiNYUT24
-	SaLeOY0w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=YiQXGHt+UJSk0wGShKpH8DbpdnVvxrqOInmDIhMarT0=; b=taHMlqNT+mdF14xor0IykIhLa8
+	5vIAFqX0k6xkCXug9eR2i1hlxV6ab3OuWPyy3G9JPbZH3ijE/56GInUMaVws2/ixA3iAaWkx3MlKS
+	AGixs1SLTC5ZKsVE0DveKE4Bxrb248szd8tNnHPQVvsnYwLL3JxRmTZ5pYDngBKxdmdNbqOvus4cD
+	/mZtThMFl2OLucT5Txouats3DMNgKjZrescRRhlOEkimy6miGMaoLUVlvjeAbnl+HiCWefnUgGqab
+	9ghDxx+vEmrhIrArxG4pkdMwyCBaessXMRfuCxBKW4TrIimTDGSgVTyB773go5gTvlId4a1PQKjE1
+	akPrQubQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8ysz-007ICN-0i;
-	Tue, 13 Jun 2023 07:56:17 +0000
+	id 1q8yuk-007IdV-31;
+	Tue, 13 Jun 2023 07:58:06 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8ysv-007IBZ-1h
+	id 1q8yuh-007Icu-0V
 	for barebox@lists.infradead.org;
-	Tue, 13 Jun 2023 07:56:15 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q8ysu-0005I4-1a; Tue, 13 Jun 2023 09:56:12 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q8yst-0000gH-Qs; Tue, 13 Jun 2023 09:56:11 +0200
-Date: Tue, 13 Jun 2023 09:56:11 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230613075611.GL18491@pengutronix.de>
-References: <20230612125544.1085413-1-a.fatoum@pengutronix.de>
+	Tue, 13 Jun 2023 07:58:05 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1q8yuf-0005if-RW; Tue, 13 Jun 2023 09:58:01 +0200
+Message-ID: <deb0dc30-9d1f-f21a-b75a-ceeb86032e8f@pengutronix.de>
+Date: Tue, 13 Jun 2023 09:58:01 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230612125544.1085413-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
+References: <20230602074921.2687669-1-m.felsch@pengutronix.de>
+ <20230602074921.2687669-11-m.felsch@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230602074921.2687669-11-m.felsch@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230613_005613_730079_80710176 
-X-CRM114-Status: GOOD (  33.31  )
+X-CRM114-CacheID: sfid-20230613_005803_358593_8ADFEC3C 
+X-CRM114-Status: GOOD (  42.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,329 +70,263 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2] test: self: add basic regulator selftest
+Subject: Re: [PATCH 10/10] gpiolib: add of_xlate support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jun 12, 2023 at 02:55:44PM +0200, Ahmad Fatoum wrote:
-> This simple test verifies registration and always-on enabling and disabling
-> work as they should. It may be extended in future to support more
-> complex cases.
+On 02.06.23 09:49, Marco Felsch wrote:
+> The of_xlate function can be used to by drivers which need a other gpio
+> encoding than:
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> v1 -> v2:
->   - add select on OF_OVERLAY (Sascha)
->   - reorder regulators, so test succeeds
-> ---
->  test/self/Kconfig             |   7 +-
->  test/self/Makefile            |   1 +
->  test/self/regulator.c         | 188 ++++++++++++++++++++++++++++++++++
->  test/self/test_regulator.dtso |  43 ++++++++
->  4 files changed, 238 insertions(+), 1 deletion(-)
->  create mode 100644 test/self/regulator.c
->  create mode 100644 test/self/test_regulator.dtso
-
-Applied, thanks
-
-Sascha
-
+>   gpio = <&phandle gpio-nr gpio-flags>;
 > 
-> diff --git a/test/self/Kconfig b/test/self/Kconfig
-> index dcbfa85896f7..a4176ab8ffd6 100644
-> --- a/test/self/Kconfig
-> +++ b/test/self/Kconfig
-> @@ -38,9 +38,9 @@ config SELFTEST_ENABLE_ALL
->  	imply SELFTEST_JSON
->  	imply SELFTEST_DIGEST
->  	imply SELFTEST_MMU
-> -	imply SELFTEST_REGULATOR
->  	imply SELFTEST_STRING
->  	imply SELFTEST_SETJMP
-> +	imply SELFTEST_REGULATOR
->  	help
->  	  Selects all self-tests compatible with current configuration
+> The of_xlate code is as close as possible to the kernel counter part
+> which makes it easier to add 'struct gpio_desc' support later on.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+
+Small nitpicks below, but looks good:
+
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+Thanks for reworking this! Would be great if this can go into next
+before release is tagged.
+
+> ---
+>  drivers/gpio/gpiolib.c | 51 ++++++++++++++++++++++++++++++++++++++
+>  drivers/of/of_gpio.c   | 56 +++++++++++++++++++++++++++++++++---------
+>  include/gpio.h         | 25 +++++++++++++++++++
+>  3 files changed, 120 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
+> index d1087aa583..ab9a0e30be 100644
+> --- a/drivers/gpio/gpiolib.c
+> +++ b/drivers/gpio/gpiolib.c
+> @@ -592,6 +592,43 @@ static int of_gpiochip_set_names(struct gpio_chip *chip)
+>  	return 0;
+>  }
 >  
-> @@ -92,4 +92,9 @@ config SELFTEST_SETJMP
->  	bool "setjmp/longjmp library selftest"
->  	depends on ARCH_HAS_SJLJ
->  
-> +config SELFTEST_REGULATOR
-> +	bool "Regulator selftest"
-> +	depends on REGULATOR && OFDEVICE
-> +	select OF_OVERLAY
-> +
->  endif
-> diff --git a/test/self/Makefile b/test/self/Makefile
-> index b6f4395147dd..080ef303cc35 100644
-> --- a/test/self/Makefile
-> +++ b/test/self/Makefile
-> @@ -13,6 +13,7 @@ obj-$(CONFIG_SELFTEST_DIGEST) += digest.o
->  obj-$(CONFIG_SELFTEST_MMU) += mmu.o
->  obj-$(CONFIG_SELFTEST_STRING) += string.o
->  obj-$(CONFIG_SELFTEST_SETJMP) += setjmp.o
-> +obj-$(CONFIG_SELFTEST_REGULATOR) += regulator.o test_regulator.dtbo.o
->  
->  clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
->  clean-files += *.dtbo *.dtbo.S .*.dtso
-> diff --git a/test/self/regulator.c b/test/self/regulator.c
-> new file mode 100644
-> index 000000000000..e89164700ef1
-> --- /dev/null
-> +++ b/test/self/regulator.c
-> @@ -0,0 +1,188 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-> +
-> +#include <common.h>
-> +#include <bselftest.h>
-> +#include <driver.h>
-> +#include <of.h>
-> +#include <regulator.h>
-> +#include <linux/regulator/of_regulator.h>
-> +
-> +struct test_regulator {
-> +	struct device *dev;
-> +};
-> +
-> +struct test_regulator_cfg {
-> +	struct regulator_desc desc;
-> +	struct regulator_dev rdev;
-> +};
-> +
-> +BSELFTEST_GLOBALS();
-> +
-> +static bool __ok(bool cond, const char *func, int line)
+> +/**
+> + * of_gpio_simple_xlate - translate gpiospec to the GPIO number and flags
+> + * @gc:		pointer to the gpio_chip structure
+> + * @gpiospec:	GPIO specifier as found in the device tree
+> + * @flags:	a flags pointer to fill in
+> + *
+> + * This is simple translation function, suitable for the most 1:1 mapped
+> + * GPIO chips. This function performs only one sanity check: whether GPIO
+> + * is less than ngpios (that is specified in the gpio_chip).
+> + */
+> +static int of_gpio_simple_xlate(struct gpio_chip *gc,
+> +				const struct of_phandle_args *gpiospec,
+> +				u32 *flags)
 > +{
-> +	total_tests++;
-> +	if (!cond) {
-> +		failed_tests++;
-> +		printf("%s:%d: assertion failure\n", func, line);
-> +		return false;
-> +	}
-> +
-> +	return true;
-> +}
-> +
-> +#define ok(cond) \
-> +	__ok(cond, __func__, __LINE__)
-> +
-> +static void test_regulator_selfref_always_on(struct device *dev)
-> +{
-> +	ok(1 == 1);
-> +}
-> +
-> +static int test_regulator_enable_noop(struct regulator_dev *rdev)
-> +{
-> +	dev_dbg(rdev->dev, "enabling %s-supply\n", rdev->desc->supply_name);
-> +	failed_tests--;
-> +	return 0;
-> +}
-> +
-> +static int test_regulator_disable_noop(struct regulator_dev *rdev)
-> +{
-> +	dev_dbg(rdev->dev, "disabling %s-supply\n", rdev->desc->supply_name);
-> +	failed_tests--;
-> +	return 0;
-> +}
-> +
-> +static const struct regulator_ops test_regulator_ops_range = {
-> +	.enable		= test_regulator_enable_noop,
-> +	.disable	= test_regulator_disable_noop,
-> +};
-> +
-> +enum {
 > +	/*
-> +	 * Ordering LDO1 before TEST_BUCK currently fails. This needs to be fixed
+> +	 * We're discouraging gpio_cells < 2, since that way you'll have to
+> +	 * write your own xlate function (that will have to retrieve the GPIO
+> +	 * number and the flags from a single gpio cell -- this is possible,
+> +	 * but not recommended).
 > +	 */
-> +	TEST_BUCK,
-> +	TEST_LDO1,
-> +	TEST_LDO2,
-> +	TEST_REGULATORS_NUM
-> +};
-> +
-> +static struct test_regulator_cfg test_pmic_reg[] = {
-> +	[TEST_BUCK] = {{
-> +		 .supply_name = "buck",
-> +		 .ops = &test_regulator_ops_range,
-> +	}},
-> +	[TEST_LDO1] = {{
-> +		 .supply_name = "ldo1",
-> +		 .ops = &test_regulator_ops_range,
-> +	}},
-> +	[TEST_LDO2] = {{
-> +		.supply_name = "ldo2",
-> +		.ops = &test_regulator_ops_range,
-> +	}},
-> +};
-> +
-> +static struct of_regulator_match test_reg_matches[] = {
-> +	[TEST_BUCK] = { .name = "BUCK", .desc = &test_pmic_reg[TEST_BUCK].desc },
-> +	[TEST_LDO1] = { .name = "LDO1", .desc = &test_pmic_reg[TEST_LDO1].desc },
-> +	[TEST_LDO2] = { .name = "LDO2", .desc = &test_pmic_reg[TEST_LDO2].desc },
-> +};
-> +
-> +static int test_regulator_register(struct test_regulator *priv, int id,
-> +				    struct of_regulator_match *match,
-> +				    struct test_regulator_cfg *cfg)
-> +{
-> +	struct device *dev = priv->dev;
-> +	int ret;
-> +
-> +	if (!match->of_node) {
-> +		dev_warn(dev, "Skip missing DTB regulator %s\n", match->name);
-> +		return 0;
+> +	if (gc->of_gpio_n_cells < 2) {
+> +		WARN_ON(1);
+
+Nitpick: could have changed above to WARN_ON(gc->of_gpio_n_cells < 2)
+and dropped the curlies.
+
+> +		return -EINVAL;
 > +	}
 > +
-> +	cfg->rdev.desc = &cfg->desc;
-> +	cfg->rdev.dev = dev;
+> +	if (WARN_ON(gpiospec->args_count < gc->of_gpio_n_cells))
+> +		return -EINVAL;
 > +
-> +	dev_dbg(dev, "registering %s\n", match->name);
+> +	if (gpiospec->args[0] >= gc->ngpio)
+> +		return -EINVAL;
 > +
-> +	ret = of_regulator_register(&cfg->rdev, match->of_node);
-> +	if (ret)
-> +		return dev_err_probe(dev, ret, "failed to register %s regulator\n",
-> +				     match->name);
+> +	if (flags)
+> +		*flags = gpiospec->args[1];
 > +
-> +	return 0;
+> +	return gc->base + gpiospec->args[0];
 > +}
 > +
-> +static int regulator_probe(struct device *dev)
+>  static int of_gpiochip_add(struct gpio_chip *chip)
+>  {
+>  	struct device_node *np;
+> @@ -601,6 +638,20 @@ static int of_gpiochip_add(struct gpio_chip *chip)
+>  	if (!np)
+>  		return 0;
+>  
+> +	if (!chip->ops->of_xlate)
+> +		chip->ops->of_xlate = of_gpio_simple_xlate;
+> +
+> +	/*
+> +	 * Seperate check since the 'struct gpio_ops' is alawys the same for
+
+seperate, always
+
+> +	 * every 'struct gpio_chip' of the same instance (e.g. 'struct
+> +	 * imx_gpio_chip').
+> +	 */
+> +	if (chip->ops->of_xlate == of_gpio_simple_xlate)
+> +		chip->of_gpio_n_cells = 2;
+> +
+> +	if (chip->of_gpio_n_cells > MAX_PHANDLE_ARGS)
+> +		return -EINVAL;
+> +
+>  	ret = of_gpiochip_set_names(chip);
+>  	if (ret)
+>  		return ret;
+> diff --git a/drivers/of/of_gpio.c b/drivers/of/of_gpio.c
+> index 76398f7542..a1fa563a35 100644
+> --- a/drivers/of/of_gpio.c
+> +++ b/drivers/of/of_gpio.c
+> @@ -46,6 +46,44 @@ static void of_gpio_flags_quirks(struct device_node *np,
+>  
+>  }
+>  
+> +static struct gpio_chip *of_find_gpiochip_by_xlate(
+> +					struct of_phandle_args *gpiospec)
 > +{
-> +	size_t nregulators = ARRAY_SIZE(test_pmic_reg);
-> +	struct device_node *np = dev->of_node;
-> +	struct test_regulator *priv;
-> +	int ret, i;
+> +	struct gpio_chip *chip;
+> +	struct device *dev;
 > +
-> +	priv = xzalloc(sizeof(*priv));
-> +	priv->dev = dev;
-> +
-> +	total_tests += 2;
-> +	failed_tests += 2;
-> +
-> +	np = of_get_child_by_name(np, "regulators");
-> +	if (!np)
-> +		return -ENOENT;
-> +
-> +	ret = of_regulator_match(dev, np, test_reg_matches, nregulators);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ok(ret == TEST_REGULATORS_NUM);
-> +
-> +	for (i = 0; i < nregulators; i++) {
-> +		ret = test_regulator_register(priv, i, &test_reg_matches[i],
-> +					      &test_pmic_reg[i]);
-> +		ok(ret == 0);
-> +		if (ret < 0)
-> +			return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static const struct of_device_id test_regulator_of_match[] = {
-> +	{ .compatible = "barebox,regulator-self-test" },
-> +	{ /* sentintel */ },
-> +};
-> +MODULE_DEVICE_TABLE(of, test_regulator_of_match);
-> +
-> +static struct driver regulator_test_driver = {
-> +	.name = "regulator-test",
-> +	.probe = regulator_probe,
-> +	.of_match_table = test_regulator_of_match,
-> +};
-> +
-> +static struct device_d *dev;
-> +
-> +static void test_regulator(void)
-> +{
-> +	extern char __dtbo_test_regulator_start[];
-> +	struct device_node *overlay;
-> +	int ret;
-> +
+> +	dev = of_find_device_by_node(gpiospec->np);
 > +	if (!dev) {
-> +		ret = platform_driver_register(&regulator_test_driver);
-> +		if (ret)
-> +			return;
-> +
-> +		overlay = of_unflatten_dtb(__dtbo_test_regulator_start, INT_MAX);
-> +		of_overlay_apply_tree(of_get_root_node(), overlay);
-> +		of_probe();
-> +
-> +		dev = of_find_device_by_node_path("/regulator-self-test-pmic");
-> +
-> +		ok(dev->driver != NULL);
+> +		pr_debug("%s: unable to find device of node %s\n",
+> +			 __func__, gpiospec->np->full_name);
+
+Nitpick: We have %pOF for this.
+
+> +		return NULL;
 > +	}
 > +
-> +	test_regulator_selfref_always_on(dev);
+> +	chip = gpio_get_chip_by_dev(dev);
+> +	if (!chip) {
+> +		pr_debug("%s: unable to find gpiochip\n", __func__);
+> +		return NULL;
+> +	}
+> +
+> +	if (chip->ops->of_xlate &&
+> +	    chip->ops->of_xlate(chip, gpiospec, NULL) >= 0)
+> +		return chip;
+
+Very nitpicky: inverting this if and turning it into an early-exit
+would make code more readable. But if kernel does it that way, that's
+fine too.
+
+> +
+> +	pr_err("%s: failed to execute of_xlate\n", __func__);
+> +
+> +	return NULL;
 > +}
-> +bselftest(core, test_regulator);
-> diff --git a/test/self/test_regulator.dtso b/test/self/test_regulator.dtso
-> new file mode 100644
-> index 000000000000..65d2b130988d
-> --- /dev/null
-> +++ b/test/self/test_regulator.dtso
-> @@ -0,0 +1,43 @@
-> +/* SPDX-License-Identifier: GPL-2.0-only */
 > +
-> +/dts-v1/;
-> +/plugin/;
+> +static int of_xlate_and_get_gpiod_flags(struct gpio_chip *chip,
+> +					struct of_phandle_args *gpiospec,
+> +					enum of_gpio_flags *flags)
+> +{
+> +	if (chip->of_gpio_n_cells != gpiospec->args_count)
+> +		return -EINVAL;
 > +
-> +&{/} {
-> +	regulator_test_fixed: regulator-self-test-fixed {
-> +		compatible = "regulator-fixed";
-> +		regulator-name = "test_fixed";
-> +		regulator-min-microvolt = <3300000>;
-> +		regulator-max-microvolt = <3300000>;
-> +	};
+> +	return chip->ops->of_xlate(chip, gpiospec, flags);
+> +}
 > +
-> +	regulator-self-test-pmic {
-> +		compatible = "barebox,regulator-self-test";
+>  /**
+>   * of_get_named_gpio_flags() - Get a GPIO number and flags to use with GPIO API
+>   * @np:		device node to get GPIO from
+> @@ -61,7 +99,7 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
+>  			   int index, enum of_gpio_flags *flags)
+>  {
+>  	struct of_phandle_args gpiospec;
+> -	struct device *dev;
+> +	struct gpio_chip *chip;
+>  	int ret;
+>  
+>  	ret = of_parse_phandle_with_args(np, propname, "#gpio-cells",
+> @@ -72,27 +110,21 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
+>  		return ret;
+>  	}
+>  
+> -	dev = of_find_device_by_node(gpiospec.np);
+> -	if (!dev) {
+> -		pr_debug("%s: unable to find device of node %s\n",
+> -			 __func__, gpiospec.np->full_name);
+> +	chip = of_find_gpiochip_by_xlate(&gpiospec);
+> +	if (!chip) {
+>  		ret = -EPROBE_DEFER;
+>  		goto out;
+>  	}
+>  
+> -	ret = gpio_get_num(dev, gpiospec.args[0]);
+> -	if (ret == -EPROBE_DEFER)
+> -		goto out;
+> +	ret = of_xlate_and_get_gpiod_flags(chip, &gpiospec, flags);
+>  	if (ret < 0) {
+>  		pr_err("%s: unable to get gpio num of device %s: %d\n",
+> -			__func__, dev_name(dev), ret);
+> +			__func__, dev_name(chip->dev), ret);
+>  		goto out;
+>  	}
+>  
+> -	if (flags) {
+> -		*flags = gpiospec.args[1];
+> +	if (flags)
+>  		of_gpio_flags_quirks(np, propname, flags, index);
+> -	}
+>  
+>  out:
+>  	of_node_put(gpiospec.np);
+> diff --git a/include/gpio.h b/include/gpio.h
+> index 5f2c16584c..d82b4505e0 100644
+> --- a/include/gpio.h
+> +++ b/include/gpio.h
+> @@ -177,6 +177,22 @@ struct gpio_ops {
+>  	int (*get_direction)(struct gpio_chip *chip, unsigned offset);
+>  	int (*get)(struct gpio_chip *chip, unsigned offset);
+>  	void (*set)(struct gpio_chip *chip, unsigned offset, int value);
 > +
-> +		buck-supply = <&regulator_test_fixed>;
-> +		ldo1-supply = <&test_pmic_buck>;
-> +		ldo2-supply = <&test_pmic_buck>;
+> +#if defined(CONFIG_OF_GPIO)
+> +	/*
+> +	 * If CONFIG_OF_GPIO is enabled, then all GPIO controllers described in
+> +	 * the device tree automatically may have an OF translation
+> +	 */
 > +
-> +		regulators {
-> +			test_pmic_buck: BUCK {
-> +				regulator-name = "buck";
-> +				regulator-min-microvolt = <330000>;
-> +				regulator-max-microvolt = <330000>;
-> +			};
+> +	/**
+> +	 * @of_xlate:
+> +	 *
+> +	 * Callback to translate a device tree GPIO specifier into a chip-
+> +	 * relative GPIO number and flags.
+> +	 */
+> +	int (*of_xlate)(struct gpio_chip *gc,
+> +			const struct of_phandle_args *gpiospec, u32 *flags);
+> +#endif
+>  };
+>  
+>  struct gpio_chip {
+> @@ -185,6 +201,15 @@ struct gpio_chip {
+>  	int base;
+>  	int ngpio;
+>  
+> +#if defined(CONFIG_OF_GPIO)
+> +	/**
+> +	 * @of_gpio_n_cells:
+> +	 *
+> +	 * Number of cells used to form the GPIO specifier.
+> +	 */
+> +	unsigned int of_gpio_n_cells;
+> +#endif
 > +
-> +			test_pmic_ldo1: LDO1 {
-> +				regulator-name = "ldo1";
-> +				regulator-always-on;
-> +				regulator-boot-on;
-> +				regulator-min-microvolt = <180000>;
-> +				regulator-max-microvolt = <180000>;
-> +			};
-> +
-> +			test_pmic_ldo2: LDO2 {
-> +				regulator-name = "ldo2";
-> +				regulator-min-microvolt = <180000>;
-> +				regulator-max-microvolt = <180000>;
-> +			};
-> +		};
-> +	};
-> +};
-> -- 
-> 2.39.2
-> 
-> 
-> 
+>  	struct gpio_ops *ops;
+>  
+>  	struct list_head list;
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
