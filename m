@@ -1,58 +1,63 @@
-Delivery-date: Tue, 13 Jun 2023 09:59:15 +0200
+Delivery-date: Tue, 13 Jun 2023 10:00:26 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8yvs-004taD-TO
-	for lore@lore.pengutronix.de; Tue, 13 Jun 2023 09:59:15 +0200
+	id 1q8yx1-004tcL-VQ
+	for lore@lore.pengutronix.de; Tue, 13 Jun 2023 10:00:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8yvq-0005nt-0s
-	for lore@pengutronix.de; Tue, 13 Jun 2023 09:59:15 +0200
+	id 1q8ywy-0006EU-UF
+	for lore@pengutronix.de; Tue, 13 Jun 2023 10:00:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YiQXGHt+UJSk0wGShKpH8DbpdnVvxrqOInmDIhMarT0=; b=taHMlqNT+mdF14xor0IykIhLa8
-	5vIAFqX0k6xkCXug9eR2i1hlxV6ab3OuWPyy3G9JPbZH3ijE/56GInUMaVws2/ixA3iAaWkx3MlKS
-	AGixs1SLTC5ZKsVE0DveKE4Bxrb248szd8tNnHPQVvsnYwLL3JxRmTZ5pYDngBKxdmdNbqOvus4cD
-	/mZtThMFl2OLucT5Txouats3DMNgKjZrescRRhlOEkimy6miGMaoLUVlvjeAbnl+HiCWefnUgGqab
-	9ghDxx+vEmrhIrArxG4pkdMwyCBaessXMRfuCxBKW4TrIimTDGSgVTyB773go5gTvlId4a1PQKjE1
-	akPrQubQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=3E9FCBp2FmYgeWgLE1HqjGx3m7WXodCjZiJhQ16+ATk=; b=Hq9qmldBfK3IwcLtYtJYqg9SSW
+	rzky8m2uwULxO+HfevpI0FZot5Zdfka++1CEGZGrCel+nhRd+QqjBUtuVIX/mr0tq6/QP/SOl3Gxk
+	aYZoMW5PjSepy4cY791/+ITfQNdxb3bovvnbV47768cJWieeKN7HU1dB0d6vuQ13CD76o1fQflVnP
+	32P7E1rePAmlZXh0c/qAXEsnhYKcx2mALcVCxUC5LykxTKjs+JCd9rD9oF+Zzbk1rk0y6HS+86tbI
+	vV4Z3z6Q09NuncQ6Gb76LkZHlKD+k1Ee8UykW3/I/g3q75lI6cnAAIEpGT+1WP6gKrsHhVOqMWTSa
+	WiExky4Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8yuk-007IdV-31;
-	Tue, 13 Jun 2023 07:58:06 +0000
+	id 1q8yvs-007Iuj-1w;
+	Tue, 13 Jun 2023 07:59:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8yuh-007Icu-0V
+	id 1q8yvp-007ItP-1e
 	for barebox@lists.infradead.org;
-	Tue, 13 Jun 2023 07:58:05 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1q8yuf-0005if-RW; Tue, 13 Jun 2023 09:58:01 +0200
-Message-ID: <deb0dc30-9d1f-f21a-b75a-ceeb86032e8f@pengutronix.de>
-Date: Tue, 13 Jun 2023 09:58:01 +0200
+	Tue, 13 Jun 2023 07:59:14 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q8yvo-0005nL-7o; Tue, 13 Jun 2023 09:59:12 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1q8yvn-0000hi-KM; Tue, 13 Jun 2023 09:59:11 +0200
+Date: Tue, 13 Jun 2023 09:59:11 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, Jan Palus <jpalus+gnu@fastmail.com>
+Message-ID: <20230613075911.GM18491@pengutronix.de>
+References: <20230612125823.1087094-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
-Cc: Jules Maselbas <jmaselbas@kalray.eu>
-References: <20230602074921.2687669-1-m.felsch@pengutronix.de>
- <20230602074921.2687669-11-m.felsch@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230602074921.2687669-11-m.felsch@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230612125823.1087094-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230613_005803_358593_8ADFEC3C 
-X-CRM114-Status: GOOD (  42.13  )
+X-CRM114-CacheID: sfid-20230613_005913_549917_229FB6BA 
+X-CRM114-Status: GOOD (  16.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,263 +75,39 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 10/10] gpiolib: add of_xlate support
+Subject: Re: [PATCH master] kbuild: Port silent mode detection to future gnu
+ make.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 02.06.23 09:49, Marco Felsch wrote:
-> The of_xlate function can be used to by drivers which need a other gpio
-> encoding than:
+On Mon, Jun 12, 2023 at 02:58:24PM +0200, Ahmad Fatoum wrote:
+> Port silent mode detection to the future (post make-4.4) versions of gnu make.
 > 
->   gpio = <&phandle gpio-nr gpio-flags>;
+> Makefile contains the following piece of make code to detect if option -s is
+> specified on the command line.
 > 
-> The of_xlate code is as close as possible to the kernel counter part
-> which makes it easier to add 'struct gpio_desc' support later on.
+> ifneq ($(findstring s,$(filter-out --%,$(MAKEFLAGS))),)
 > 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> This code is executed by make at parse time and assumes that MAKEFLAGS
+> does not contain command line variable definitions.
+> Currently if the user defines a=s on the command line, then at build only
+> time MAKEFLAGS contains " -- a=s".
+> However, starting with commit dc2d963989b96161472b2cd38cef5d1f4851ea34
 
-Small nitpicks below, but looks good:
+To which repository does dc2d963989b96161472b2cd38cef5d1f4851ea34
+belong?
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-Thanks for reworking this! Would be great if this can go into next
-before release is tagged.
-
-> ---
->  drivers/gpio/gpiolib.c | 51 ++++++++++++++++++++++++++++++++++++++
->  drivers/of/of_gpio.c   | 56 +++++++++++++++++++++++++++++++++---------
->  include/gpio.h         | 25 +++++++++++++++++++
->  3 files changed, 120 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index d1087aa583..ab9a0e30be 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -592,6 +592,43 @@ static int of_gpiochip_set_names(struct gpio_chip *chip)
->  	return 0;
->  }
->  
-> +/**
-> + * of_gpio_simple_xlate - translate gpiospec to the GPIO number and flags
-> + * @gc:		pointer to the gpio_chip structure
-> + * @gpiospec:	GPIO specifier as found in the device tree
-> + * @flags:	a flags pointer to fill in
-> + *
-> + * This is simple translation function, suitable for the most 1:1 mapped
-> + * GPIO chips. This function performs only one sanity check: whether GPIO
-> + * is less than ngpios (that is specified in the gpio_chip).
-> + */
-> +static int of_gpio_simple_xlate(struct gpio_chip *gc,
-> +				const struct of_phandle_args *gpiospec,
-> +				u32 *flags)
-> +{
-> +	/*
-> +	 * We're discouraging gpio_cells < 2, since that way you'll have to
-> +	 * write your own xlate function (that will have to retrieve the GPIO
-> +	 * number and the flags from a single gpio cell -- this is possible,
-> +	 * but not recommended).
-> +	 */
-> +	if (gc->of_gpio_n_cells < 2) {
-> +		WARN_ON(1);
-
-Nitpick: could have changed above to WARN_ON(gc->of_gpio_n_cells < 2)
-and dropped the curlies.
-
-> +		return -EINVAL;
-> +	}
-> +
-> +	if (WARN_ON(gpiospec->args_count < gc->of_gpio_n_cells))
-> +		return -EINVAL;
-> +
-> +	if (gpiospec->args[0] >= gc->ngpio)
-> +		return -EINVAL;
-> +
-> +	if (flags)
-> +		*flags = gpiospec->args[1];
-> +
-> +	return gc->base + gpiospec->args[0];
-> +}
-> +
->  static int of_gpiochip_add(struct gpio_chip *chip)
->  {
->  	struct device_node *np;
-> @@ -601,6 +638,20 @@ static int of_gpiochip_add(struct gpio_chip *chip)
->  	if (!np)
->  		return 0;
->  
-> +	if (!chip->ops->of_xlate)
-> +		chip->ops->of_xlate = of_gpio_simple_xlate;
-> +
-> +	/*
-> +	 * Seperate check since the 'struct gpio_ops' is alawys the same for
-
-seperate, always
-
-> +	 * every 'struct gpio_chip' of the same instance (e.g. 'struct
-> +	 * imx_gpio_chip').
-> +	 */
-> +	if (chip->ops->of_xlate == of_gpio_simple_xlate)
-> +		chip->of_gpio_n_cells = 2;
-> +
-> +	if (chip->of_gpio_n_cells > MAX_PHANDLE_ARGS)
-> +		return -EINVAL;
-> +
->  	ret = of_gpiochip_set_names(chip);
->  	if (ret)
->  		return ret;
-> diff --git a/drivers/of/of_gpio.c b/drivers/of/of_gpio.c
-> index 76398f7542..a1fa563a35 100644
-> --- a/drivers/of/of_gpio.c
-> +++ b/drivers/of/of_gpio.c
-> @@ -46,6 +46,44 @@ static void of_gpio_flags_quirks(struct device_node *np,
->  
->  }
->  
-> +static struct gpio_chip *of_find_gpiochip_by_xlate(
-> +					struct of_phandle_args *gpiospec)
-> +{
-> +	struct gpio_chip *chip;
-> +	struct device *dev;
-> +
-> +	dev = of_find_device_by_node(gpiospec->np);
-> +	if (!dev) {
-> +		pr_debug("%s: unable to find device of node %s\n",
-> +			 __func__, gpiospec->np->full_name);
-
-Nitpick: We have %pOF for this.
-
-> +		return NULL;
-> +	}
-> +
-> +	chip = gpio_get_chip_by_dev(dev);
-> +	if (!chip) {
-> +		pr_debug("%s: unable to find gpiochip\n", __func__);
-> +		return NULL;
-> +	}
-> +
-> +	if (chip->ops->of_xlate &&
-> +	    chip->ops->of_xlate(chip, gpiospec, NULL) >= 0)
-> +		return chip;
-
-Very nitpicky: inverting this if and turning it into an early-exit
-would make code more readable. But if kernel does it that way, that's
-fine too.
-
-> +
-> +	pr_err("%s: failed to execute of_xlate\n", __func__);
-> +
-> +	return NULL;
-> +}
-> +
-> +static int of_xlate_and_get_gpiod_flags(struct gpio_chip *chip,
-> +					struct of_phandle_args *gpiospec,
-> +					enum of_gpio_flags *flags)
-> +{
-> +	if (chip->of_gpio_n_cells != gpiospec->args_count)
-> +		return -EINVAL;
-> +
-> +	return chip->ops->of_xlate(chip, gpiospec, flags);
-> +}
-> +
->  /**
->   * of_get_named_gpio_flags() - Get a GPIO number and flags to use with GPIO API
->   * @np:		device node to get GPIO from
-> @@ -61,7 +99,7 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
->  			   int index, enum of_gpio_flags *flags)
->  {
->  	struct of_phandle_args gpiospec;
-> -	struct device *dev;
-> +	struct gpio_chip *chip;
->  	int ret;
->  
->  	ret = of_parse_phandle_with_args(np, propname, "#gpio-cells",
-> @@ -72,27 +110,21 @@ int of_get_named_gpio_flags(struct device_node *np, const char *propname,
->  		return ret;
->  	}
->  
-> -	dev = of_find_device_by_node(gpiospec.np);
-> -	if (!dev) {
-> -		pr_debug("%s: unable to find device of node %s\n",
-> -			 __func__, gpiospec.np->full_name);
-> +	chip = of_find_gpiochip_by_xlate(&gpiospec);
-> +	if (!chip) {
->  		ret = -EPROBE_DEFER;
->  		goto out;
->  	}
->  
-> -	ret = gpio_get_num(dev, gpiospec.args[0]);
-> -	if (ret == -EPROBE_DEFER)
-> -		goto out;
-> +	ret = of_xlate_and_get_gpiod_flags(chip, &gpiospec, flags);
->  	if (ret < 0) {
->  		pr_err("%s: unable to get gpio num of device %s: %d\n",
-> -			__func__, dev_name(dev), ret);
-> +			__func__, dev_name(chip->dev), ret);
->  		goto out;
->  	}
->  
-> -	if (flags) {
-> -		*flags = gpiospec.args[1];
-> +	if (flags)
->  		of_gpio_flags_quirks(np, propname, flags, index);
-> -	}
->  
->  out:
->  	of_node_put(gpiospec.np);
-> diff --git a/include/gpio.h b/include/gpio.h
-> index 5f2c16584c..d82b4505e0 100644
-> --- a/include/gpio.h
-> +++ b/include/gpio.h
-> @@ -177,6 +177,22 @@ struct gpio_ops {
->  	int (*get_direction)(struct gpio_chip *chip, unsigned offset);
->  	int (*get)(struct gpio_chip *chip, unsigned offset);
->  	void (*set)(struct gpio_chip *chip, unsigned offset, int value);
-> +
-> +#if defined(CONFIG_OF_GPIO)
-> +	/*
-> +	 * If CONFIG_OF_GPIO is enabled, then all GPIO controllers described in
-> +	 * the device tree automatically may have an OF translation
-> +	 */
-> +
-> +	/**
-> +	 * @of_xlate:
-> +	 *
-> +	 * Callback to translate a device tree GPIO specifier into a chip-
-> +	 * relative GPIO number and flags.
-> +	 */
-> +	int (*of_xlate)(struct gpio_chip *gc,
-> +			const struct of_phandle_args *gpiospec, u32 *flags);
-> +#endif
->  };
->  
->  struct gpio_chip {
-> @@ -185,6 +201,15 @@ struct gpio_chip {
->  	int base;
->  	int ngpio;
->  
-> +#if defined(CONFIG_OF_GPIO)
-> +	/**
-> +	 * @of_gpio_n_cells:
-> +	 *
-> +	 * Number of cells used to form the GPIO specifier.
-> +	 */
-> +	unsigned int of_gpio_n_cells;
-> +#endif
-> +
->  	struct gpio_ops *ops;
->  
->  	struct list_head list;
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
