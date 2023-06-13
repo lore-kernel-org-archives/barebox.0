@@ -1,54 +1,54 @@
-Delivery-date: Tue, 13 Jun 2023 10:45:31 +0200
+Delivery-date: Tue, 13 Jun 2023 11:18:26 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8zee-004vhA-GK
-	for lore@lore.pengutronix.de; Tue, 13 Jun 2023 10:45:31 +0200
+	id 1q90AV-004y7Q-ER
+	for lore@lore.pengutronix.de; Tue, 13 Jun 2023 11:18:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q8zeb-0005P9-PB
-	for lore@pengutronix.de; Tue, 13 Jun 2023 10:45:30 +0200
+	id 1q90AT-0001dc-0H
+	for lore@pengutronix.de; Tue, 13 Jun 2023 11:18:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JhyBXntzTayoPk4fPpTKE6dk3Re79uo3YVSVBbsgnQc=; b=ItN+OKYv018AO58OMG0yLNtzCI
-	k2392VV8nFuF3PyXYWuHk4hltOZw+Lj3/dDKvJzNZ4F7gFqQuo9hD9jbHXbYuBduz/rhNlBRfbLms
-	RzWEU3vneZ82YUhNWvvzNp5kcDiFofeJHaTonyt7i0ucQvtOpBDpxvimAf5G1O+bDkKx8FCAYzkC7
-	4hMSVvSo42ypdn+YtVM9D7tUKgTgDIgMBgxU/Wn5kEBuxZ6Bd5obcGXwq+YbbF1Nnrfk29pK6qd+q
-	JaM8K407Ys5Vg1cMpaBuLxlFPlA9QpRDuf4o+SrPMp6gKwzz/n4ASZFm3vi04Jutc0gcuKQlS8q3t
-	XX/THuYQ==;
+	bh=irpwRnclH7oEL48OVOJEFQ4XTSYqJsMPl9A2HWTEZv0=; b=H55WmTtxFcxo8DaBE5aCiWC4UY
+	eCcWgrQyW++OhRpRUJBValHktrgluFa5RSu8nq/8whW5ZFYqhcJKo7kjnxg5F8IlXVhKTvqc8399v
+	ZXaAj8Qxi2tfc7JGX9IUMo76cLaGhhEzJ/bBaJ+E3uDXKXFcxW0h4fBOM5TpRCvkY3U5hJa6iHahn
+	UfzS5CFwhf/KDrm8XdbXd+YvNdfQTRmcXmHIBGRjsTguWY8BxTkxupGIwpeNiUHWS5IwuHiIwUNyY
+	88nU3M7YjVpJvfkeOjrVnZQ1h+OXtYPYtWeXwZaXojphptf+bfPLz0bjSnJ0TzOdzzJw6ev8Kzpwn
+	TWq1bwpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8zdV-007Po4-2F;
-	Tue, 13 Jun 2023 08:44:21 +0000
+	id 1q909C-007UWj-0P;
+	Tue, 13 Jun 2023 09:17:06 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q8zdS-007PnP-29
+	id 1q9096-007UUw-35
 	for barebox@lists.infradead.org;
-	Tue, 13 Jun 2023 08:44:20 +0000
+	Tue, 13 Jun 2023 09:17:04 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1q8zdR-000539-6s; Tue, 13 Jun 2023 10:44:17 +0200
+	id 1q9095-0001Sm-HW; Tue, 13 Jun 2023 11:16:59 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1q8zdQ-0003XD-L8; Tue, 13 Jun 2023 10:44:16 +0200
-Date: Tue, 13 Jun 2023 10:44:16 +0200
-To: Ahmad Fatoum <ahmad@a3f.at>
+	id 1q9095-0005kL-Az; Tue, 13 Jun 2023 11:16:59 +0200
+Date: Tue, 13 Jun 2023 11:16:59 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230613084416.GR18491@pengutronix.de>
-References: <20230612065626.387660-1-ahmad@a3f.at>
+Message-ID: <20230613091659.GS18491@pengutronix.de>
+References: <20230605063719.1431079-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230612065626.387660-1-ahmad@a3f.at>
+In-Reply-To: <20230605063719.1431079-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +56,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230613_014418_728202_843564BE 
-X-CRM114-Status: GOOD (  24.35  )
+X-CRM114-CacheID: sfid-20230613_021700_992393_E9D62784 
+X-CRM114-Status: GOOD (  26.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,86 +80,79 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] scripts: add container.sh as simple podman wrapper
+Subject: Re: [PATCH] Kbuild: include arch/ Makefile before other directories
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jun 12, 2023 at 08:56:26AM +0200, Ahmad Fatoum wrote:
-> We have a Containerfile in tree now that is used for CI, but it's not
-> completely self evident, how to use it locally. Add a simple script
-> that mounts the current working directory into the container and calls
-> its arguments inside.
+On Mon, Jun 05, 2023 at 08:37:19AM +0200, Ahmad Fatoum wrote:
+> Unless overridden by SORT*, LD will place sections matched by wildcards
+> in the order they were seen in the link. So far, this meant that
+> arch/ initcalls and device trees compiled into barebox proper, were
+> always last.
 > 
-> Example building MAKEALL (Some configs will expectedly fail due to size
-> or firmware constraints):
+> For platforms with PBL or with only one device tree in barebox proper,
+> this didn't matter much, but when enabling the of_manipulation selftest,
+> a second device tree would be built into barebox on kvx, openrisc and
+> some MIPS.
 > 
->   ./scripts/container.sh ./MAKEALL
+> Because all directories appear before arch/, this had the effect that
+> on kvx, openrisc and some MIPS, __dtb_start would end up pointing at the
+> test's device tree instead of the board device tree breaking the build.
 > 
-> Example starting a shell:
+> Switching the affected platforms to use PBL would be one fix for the
+> issue, but there's a simple one: let's do what Linux does in its
+> top-level Kbuild file and have arch/ not be the last in sequence.
 > 
->   ./scripts/container.sh /bin/bash
-> 
-> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> ---
->  scripts/container.sh | 39 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 39 insertions(+)
->  create mode 100755 scripts/container.sh
+> This may fause fallout for code that depended on specific ordering of
+> initcalls or other linker-defined lists, which would need to be fixed.
 
-Applied, thanks
+I am afraid this causes regressions that take a long time to realize and
+to sort out.
+
+We could do something along the following lines to pick the correct dtb.
+This is only meant as an example, it likely needs some sugar to work
+correctly in all cases.
 
 Sascha
 
-> 
-> diff --git a/scripts/container.sh b/scripts/container.sh
-> new file mode 100755
-> index 000000000000..4ddee7d0a90c
-> --- /dev/null
-> +++ b/scripts/container.sh
-> @@ -0,0 +1,39 @@
-> +#!/bin/sh
-> +# SPDX-License-Identifier: GPL-2.0-only
-> +
-> +CONTAINER=${CONTAINER:-ghcr.io/barebox/barebox/barebox-ci:latest}
-> +KCONFIG_ADD="$test/kconfig/disable_target_tools.kconf KCONFIG_ADD"
-> +
-> +while getopts "c:uh" opt; do
-> +	case "$opt" in
-> +	h)
-> +		echo "usage: $0 [-c CONTAINER] [command...]"
-> +		echo "This script mounts the working directory into a container"
-> +		echo "and runs the specified command inside or /bin/bash if no"
-> +		echo "command was specified."
-> +		echo "OPTIONS:"
-> +		echo "  -c <container>    container image to use (default: $CONTAINER)"
-> +		echo "  -u                pull container image updates"
-> +		echo "  -h                This help text"
-> +
-> +		exit 0
-> +		;;
-> +	u)
-> +		update=1
-> +		;;
-> +	c)
-> +		CONTAINER="$OPTARG"
-> +		;;
-> +	esac
-> +done
-> +
-> +shift $((OPTIND-1))
-> +
-> +[ -n "$update" ] && podman pull "$CONTAINER"
-> +
-> +pwd_real=$(realpath $PWD)
-> +
-> +exec podman run -it -v "$PWD:$PWD:z" -v "$pwd_real:$pwd_real:z" --rm \
-> +	-e TERM -e ARCH -e CONFIG -e JOBS -e LOGDIR -e REGEX \
-> +	-e KCONFIG_ADD -w "$PWD" --userns=keep-id \
-> +	-- "$CONTAINER" "${@:-/bin/bash}"
-> -- 
-> 2.40.1
-> 
-> 
-> 
+----------------------------------8<------------------------------
+
+diff --git a/arch/mips/boot/Makefile b/arch/mips/boot/Makefile
+index d1e27b5e6b..e114cc5d8a 100644
+--- a/arch/mips/boot/Makefile
++++ b/arch/mips/boot/Makefile
+@@ -3,6 +3,7 @@
+ obj-y += start.o
+ obj-y += main_entry.o
+ 
++CFLAGS_dtb.o += -DBUILTIN_DTB_SYMBOL=__dtb_$(patsubst "%",%,$(subst -,_,$(CONFIG_BUILTIN_DTB_NAME)))_start
+ obj-$(CONFIG_OFDEVICE) += dtb.o
+ 
+ pbl-y += main_entry-pbl.o
+diff --git a/arch/mips/boot/dtb.c b/arch/mips/boot/dtb.c
+index ece1494e5f..3afcd20a0e 100644
+--- a/arch/mips/boot/dtb.c
++++ b/arch/mips/boot/dtb.c
+@@ -34,7 +34,7 @@ int of_add_memory_bank(struct device_node *node, bool dump, int r,
+ 	return ret;
+ }
+ 
+-extern char __dtb_start[];
++extern char BUILTIN_DTB_SYMBOL[];
+ 
+ static int of_mips_init(void)
+ {
+@@ -42,7 +42,7 @@ static int of_mips_init(void)
+ 
+ 	fdt = glob_fdt;
+ 	if (!fdt)
+-		fdt = __dtb_start;
++		fdt = BUILTIN_DTB_SYMBOL;
+ 
+ 	return barebox_register_fdt(fdt);
+ }
+-- 
+2.39.2
 
 -- 
 Pengutronix e.K.                           |                             |
