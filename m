@@ -1,62 +1,62 @@
-Delivery-date: Wed, 14 Jun 2023 15:57:15 +0200
+Delivery-date: Wed, 14 Jun 2023 15:57:16 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9Qzs-006j7T-8Q
-	for lore@lore.pengutronix.de; Wed, 14 Jun 2023 15:57:15 +0200
+	id 1q9Qzt-006j7o-FL
+	for lore@lore.pengutronix.de; Wed, 14 Jun 2023 15:57:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9Qzo-0005nY-VU
-	for lore@pengutronix.de; Wed, 14 Jun 2023 15:57:14 +0200
+	id 1q9Qzp-0005oP-Ve
+	for lore@pengutronix.de; Wed, 14 Jun 2023 15:57:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KSRo6hC4yHQkFzl+zBQca9BNZdK6fl/kbODPGwSZlPg=; b=zzhshyb8kdvCPob8OaPhQo+6t6
-	Og1510z9ZLCw0z7qTsiOhFQiquU/TBubRVUfnMujsnldZS7v/LlFgAXNRTiynuRD4Jr1AsxrHV/GS
-	Cl+igXNq5OZK+VIk7Iw9tI0tLtC+7LPk941fK3P6eRAnC54AbviTV9HQcHWL3VtLjc1cewtDWK9pH
-	UOIIwcUCCbxWtMfK1BArao9Ketbhq61CFsEm8f8W8Q9PZAIzrSrUNiebZtZvXhtZHKWapLgOrzw5q
-	DEmIXl5H8d4HorGDKWuyu2KG9TMuE/Xjx/8loxeIHcZF61Yd/+/SDme2gpit4/irNB7NOUXWpzaY+
-	B29O6dGQ==;
+	bh=QsbAjZajh360QzdXcFIiIoYY4orifErM2hGSs6Fuu88=; b=S3Vi/ph7f4HBJH6Jg0CNKytpa6
+	V1NpsOq0LGNctyX3rQYTa6r3ngAsBLD9Z2GWjORyVJEHKyprZ+P+B9xu28nSgFNMIOiiCY7V5j8Fv
+	7ThcP4F6qMJ6K9Ow2Gxgq3/NvEQqGsuwEiHXLz8xaKNHY45yYxnKtKVz9sBiQv3gAksg+94MfSU9L
+	lQIpzBVfK8BCtzR8zFY0DuSF3ilEJePfNWlUGXwmJPIL7erMijdF1dSx4raaNNGyIZiZl6sCKpZyz
+	dS7lnMCHpwFgPigyZ2RfpbMM++TVVIFkHzpqvV351Ec5JuK/l1rXVeSSpNWeI6F8cqcNNHTx4VUU1
+	FgW8sULg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9Qyf-00BpCG-12;
-	Wed, 14 Jun 2023 13:56:01 +0000
+	id 1q9Qyh-00BpEI-1F;
+	Wed, 14 Jun 2023 13:56:03 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9QyV-00Bp4w-1C
+	id 1q9QyV-00Bp5Y-2w
 	for barebox@lists.infradead.org;
-	Wed, 14 Jun 2023 13:55:55 +0000
+	Wed, 14 Jun 2023 13:55:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9QyT-0005D8-LK; Wed, 14 Jun 2023 15:55:49 +0200
+	id 1q9QyU-0005E6-MA; Wed, 14 Jun 2023 15:55:50 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9QyS-007Mxe-V7; Wed, 14 Jun 2023 15:55:48 +0200
+	id 1q9QyU-007Mxx-1q; Wed, 14 Jun 2023 15:55:50 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9QyR-008D8Y-Fy; Wed, 14 Jun 2023 15:55:47 +0200
+	id 1q9QyR-008D9G-JC; Wed, 14 Jun 2023 15:55:47 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 14 Jun 2023 15:54:47 +0200
-Message-Id: <20230614135452.1884124-6-a.fatoum@pengutronix.de>
+Date: Wed, 14 Jun 2023 15:54:52 +0200
+Message-Id: <20230614135452.1884124-11-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230614135452.1884124-1-a.fatoum@pengutronix.de>
 References: <20230614135452.1884124-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230614_065551_738654_868E02DB 
-X-CRM114-Status: GOOD (  25.52  )
+X-CRM114-CacheID: sfid-20230614_065552_297466_DA2EA6F2 
+X-CRM114-Status: GOOD (  37.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,454 +79,698 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 05/10] gpiolib: export proper gpio descriptor API
+Subject: [PATCH 10/10] drivers: port Linux mux framework and gpio-mux driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Our current gpiod API doesn't return actual struct gpio_desc pointers
-that can be dereferenced by the GPIO core, like in Linux. We actually
-have all the infrastructure in place to do that, but we just aren't
-using this yet. Rename the relevant gpioinfo_ functions to gpiod_,
-document them, export them and have them observe the same semantics as
-their Linux equivalents.
+The driver builds a single multiplexer controller using a number
+of gpio pins. For N pins, there will be 2^N possible multiplexer
+states.
+
+The GPIO pins can be connected (by the hardware) to several
+multiplexers. Consumer drivers in turn can reference the mux in
+the device tree to control it. User interaction over the shell
+is possible via the .state parameter that holds the currently
+active state (or -1 if mux was not yet used). An additional .idle
+parameter informs the user whether the mux has been claimed by a
+consumer.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/gpio/gpiolib.c        | 173 ++++++++++++++++++++++++++++++----
- include/linux/gpio/consumer.h |  62 ++----------
- 2 files changed, 163 insertions(+), 72 deletions(-)
+ drivers/Kconfig      |   1 +
+ drivers/Makefile     |   1 +
+ drivers/mux/Kconfig  |  29 +++
+ drivers/mux/Makefile |  10 +
+ drivers/mux/core.c   | 472 +++++++++++++++++++++++++++++++++++++++++++
+ drivers/mux/gpio.c   | 103 ++++++++++
+ 6 files changed, 616 insertions(+)
+ create mode 100644 drivers/mux/Kconfig
+ create mode 100644 drivers/mux/Makefile
+ create mode 100644 drivers/mux/core.c
+ create mode 100644 drivers/mux/gpio.c
 
-diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index 402d408be071..25d91d250dc8 100644
---- a/drivers/gpio/gpiolib.c
-+++ b/drivers/gpio/gpiolib.c
-@@ -21,6 +21,36 @@ struct gpio_desc {
- 	const char *name;
- };
- 
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 2636eed1a3b5..aa12597df637 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -19,6 +19,7 @@ source "drivers/clk/Kconfig"
+ source "drivers/clocksource/Kconfig"
+ source "drivers/mfd/Kconfig"
+ source "drivers/misc/Kconfig"
++source "drivers/mux/Kconfig"
+ source "drivers/led/Kconfig"
+ source "drivers/eeprom/Kconfig"
+ source "drivers/input/Kconfig"
+diff --git a/drivers/Makefile b/drivers/Makefile
+index fa899a2ab8c3..61c4c9c94020 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -20,6 +20,7 @@ obj-y	+= eeprom/
+ obj-$(CONFIG_PWM) += pwm/
+ obj-y	+= input/
+ obj-y	+= misc/
++obj-$(CONFIG_MULTIPLEXER)	+= mux/
+ obj-$(CONFIG_NVMEM) += nvmem/
+ obj-y	+= dma/
+ obj-y  += watchdog/
+diff --git a/drivers/mux/Kconfig b/drivers/mux/Kconfig
+new file mode 100644
+index 000000000000..c68f1d4130ee
+--- /dev/null
++++ b/drivers/mux/Kconfig
+@@ -0,0 +1,29 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Multiplexer devices
++#
++
++config MULTIPLEXER
++	tristate
++	prompt "Multiplexer driver support" if COMPILE_TEST
++
++menu "Multiplexer drivers"
++	depends on MULTIPLEXER
++
++config MUX_GPIO
++	tristate "GPIO-controlled Multiplexer"
++	depends on GPIOLIB || COMPILE_TEST
++	help
++	  GPIO-controlled Multiplexer controller.
++
++	  The driver builds a single multiplexer controller using a number
++	  of gpio pins. For N pins, there will be 2^N possible multiplexer
++	  states. The GPIO pins can be connected (by the hardware) to several
++	  multiplexers.
++
++	  The barebox driver doesn't implement Linux' fastpath, which enables
++	  atomically switching GPIOs in the same bank where possible.
++	  This means that board code authors need to ensure that intermediate
++	  states when switching some of the GPIOs don't break anything.
++
++endmenu
+diff --git a/drivers/mux/Makefile b/drivers/mux/Makefile
+new file mode 100644
+index 000000000000..22d285ed9d4b
+--- /dev/null
++++ b/drivers/mux/Makefile
+@@ -0,0 +1,10 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Makefile for multiplexer devices.
++#
++
++mux-core-objs			:= core.o
++mux-gpio-objs			:= gpio.o
++
++obj-$(CONFIG_MULTIPLEXER)	+= mux-core.o
++obj-$(CONFIG_MUX_GPIO)		+= mux-gpio.o
+diff --git a/drivers/mux/core.c b/drivers/mux/core.c
+new file mode 100644
+index 000000000000..6d9fae423319
+--- /dev/null
++++ b/drivers/mux/core.c
+@@ -0,0 +1,472 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * This descriptor validation needs to be inserted verbatim into each
-+ * function taking a descriptor, so we need to use a preprocessor
-+ * macro to avoid endless duplication. If the desc is NULL it is an
-+ * optional GPIO and calls should just bail out.
++ * Multiplexer subsystem
++ *
++ * Copyright (C) 2017 Axentia Technologies AB
++ *
++ * Author: Peter Rosin <peda@axentia.se>
 + */
-+static int validate_desc(const struct gpio_desc *desc, const char *func)
++
++#define pr_fmt(fmt) "mux-core: " fmt
++
++#include <linux/ktime.h>
++#include <driver.h>
++#include <linux/err.h>
++#include <linux/export.h>
++#include <init.h>
++#include <module.h>
++#include <linux/mux/consumer.h>
++#include <linux/mux/driver.h>
++#include <of.h>
++#include <stdio.h>
++#include <malloc.h>
++
++/*
++ * The idle-as-is "state" is not an actual state that may be selected, it
++ * only implies that the state should not be changed. So, use that state
++ * as indication that the cached state of the multiplexer is unknown.
++ */
++#define MUX_CACHE_UNKNOWN MUX_IDLE_AS_IS
++
++/**
++ * struct mux_state -	Represents a mux controller state specific to a given
++ *			consumer.
++ * @mux:		Pointer to a mux controller.
++ * @state:		State of the mux to be selected.
++ *
++ * This structure is specific to the consumer that acquires it and has
++ * information specific to that consumer.
++ */
++struct mux_state {
++	struct mux_control *mux;
++	unsigned int state;
++};
++
++static LIST_HEAD(mux_chips);
++
++static int mux_register_dev(struct mux_chip *mux_chip, const char *name, int id)
 +{
-+	if (!desc)
-+		return 0;
-+	if (IS_ERR(desc)) {
-+		pr_warn("%s: invalid GPIO (errorpointer)\n", func);
-+		return PTR_ERR(desc);
++	mux_chip->dev.id = id;
++	dev_set_name(&mux_chip->dev, name);
++
++	return register_device(&mux_chip->dev);
++}
++
++/**
++ * mux_chip_alloc() - Allocate a mux-chip.
++ * @dev: The parent device implementing the mux interface.
++ * @controllers: The number of mux controllers to allocate for this chip.
++ * @sizeof_priv: Size of extra memory area for private use by the caller.
++ *
++ * After allocating the mux-chip with the desired number of mux controllers
++ * but before registering the chip, the mux driver is required to configure
++ * the number of valid mux states in the mux_chip->mux[N].states members and
++ * the desired idle state in the returned mux_chip->mux[N].idle_state members.
++ * The default idle state is MUX_IDLE_AS_IS. The mux driver also needs to
++ * provide a pointer to the operations struct in the mux_chip->ops member
++ * before registering the mux-chip with mux_chip_register.
++ *
++ * Return: A pointer to the new mux-chip, or an ERR_PTR with a negative errno.
++ */
++struct mux_chip *mux_chip_alloc(struct device *dev,
++				unsigned int controllers, size_t sizeof_priv)
++{
++	struct mux_chip *mux_chip;
++	int i;
++
++	if (WARN_ON(!dev || !controllers))
++		return ERR_PTR(-EINVAL);
++
++	mux_chip = kzalloc(sizeof(*mux_chip) +
++			   controllers * sizeof(*mux_chip->mux) +
++			   sizeof_priv, GFP_KERNEL);
++	if (!mux_chip)
++		return ERR_PTR(-ENOMEM);
++
++
++	mux_chip->mux = (struct mux_control *)(mux_chip + 1);
++	mux_chip->dev.parent = dev;
++	mux_chip->dev.of_node = dev->of_node;
++	mux_chip->dev.priv = mux_chip;
++
++	mux_chip->controllers = controllers;
++	for (i = 0; i < controllers; ++i) {
++		struct mux_control *mux = &mux_chip->mux[i];
++
++		mux->chip = mux_chip;
++		mux->cached_state = MUX_CACHE_UNKNOWN;
++		mux->idle_state = MUX_IDLE_AS_IS;
++		mux->idle = true;
++		mux->last_change = ktime_get();
++		mux->dev.id = i;
++		mux->dev.parent = &mux_chip->dev;
 +	}
 +
-+	return 1;
++	return mux_chip;
 +}
++EXPORT_SYMBOL_GPL(mux_chip_alloc);
 +
-+#define VALIDATE_DESC(desc) do { \
-+	int __valid = validate_desc(desc, __func__); \
-+	if (__valid <= 0) \
-+		return __valid; \
-+	} while (0)
-+
-+#define VALIDATE_DESC_VOID(desc) do { \
-+	int __valid = validate_desc(desc, __func__); \
-+	if (__valid <= 0) \
-+		return; \
-+	} while (0)
-+
- static struct gpio_desc *gpio_desc;
- 
- static int gpio_desc_alloc(void)
-@@ -50,12 +80,12 @@ static struct gpio_desc *gpio_to_desc(unsigned gpio)
- 	return NULL;
- }
- 
--static unsigned gpioinfo_chip_offset(struct gpio_desc *desc)
-+static unsigned gpioinfo_chip_offset(const struct gpio_desc *desc)
- {
- 	return (desc - gpio_desc) - desc->chip->base;
- }
- 
--static int gpio_adjust_value(struct gpio_desc *desc,
-+static int gpio_adjust_value(const struct gpio_desc *desc,
- 			     int value)
- {
- 	if (value < 0)
-@@ -159,17 +189,40 @@ void gpio_free(unsigned gpio)
- {
- 	struct gpio_desc *desc = gpio_to_desc(gpio);
- 
-+	gpioinfo_free(desc);
-+}
-+
-+/**
-+ * gpiod_put - dispose of a GPIO descriptor
-+ * @desc:	GPIO descriptor to dispose of
-+ *
-+ * No descriptor can be used after gpiod_put() has been called on it.
-+ */
-+void gpiod_put(struct gpio_desc *desc)
++static int mux_control_set(struct mux_control *mux, int state)
 +{
- 	if (!desc)
- 		return;
- 
- 	gpioinfo_free(desc);
- }
-+EXPORT_SYMBOL(gpiod_put);
- 
--static void gpioinfo_set_value(struct gpio_desc *desc, int value)
-+/**
-+ * gpiod_set_raw_value() - assign a gpio's raw value
-+ * @desc: gpio whose value will be assigned
-+ * @value: value to assign
-+ *
-+ * Set the raw value of the GPIO, i.e. the value of its physical line without
-+ * regard for its ACTIVE_LOW status.
-+ */
-+void gpiod_set_raw_value(struct gpio_desc *desc, int value)
- {
-+	VALIDATE_DESC_VOID(desc);
++	int ret = mux->chip->ops->set(mux, state);
 +
- 	if (desc->chip->ops->set)
- 		desc->chip->ops->set(desc->chip, gpioinfo_chip_offset(desc), value);
- }
-+EXPORT_SYMBOL(gpiod_set_raw_value);
- 
- void gpio_set_value(unsigned gpio, int value)
- {
-@@ -181,10 +234,25 @@ void gpio_set_value(unsigned gpio, int value)
- 	if (gpio_ensure_requested(desc, gpio))
- 		return;
- 
--	gpioinfo_set_value(desc, value);
-+	gpiod_set_raw_value(desc, value);
- }
- EXPORT_SYMBOL(gpio_set_value);
- 
-+/**
-+ * gpiod_set_value() - assign a gpio's value
-+ * @desc: gpio whose value will be assigned
-+ * @value: value to assign
-+ *
-+ * Set the logical value of the GPIO, i.e. taking its ACTIVE_LOW,
-+ * OPEN_DRAIN and OPEN_SOURCE flags into account.
-+ */
-+void gpiod_set_value(struct gpio_desc *desc, int value)
-+{
-+	VALIDATE_DESC_VOID(desc);
-+	gpiod_set_raw_value(desc, gpio_adjust_value(desc, value));
++	mux->cached_state = ret < 0 ? MUX_CACHE_UNKNOWN : state;
++	if (ret >= 0)
++		mux->last_change = ktime_get();
++
++	return ret;
 +}
-+EXPORT_SYMBOL_GPL(gpiod_set_value);
 +
- void gpio_set_active(unsigned gpio, bool value)
- {
- 	struct gpio_desc *desc = gpio_to_desc(gpio);
-@@ -192,17 +260,27 @@ void gpio_set_active(unsigned gpio, bool value)
- 	if (!desc)
- 		return;
- 
--	gpio_set_value(gpio, gpio_adjust_value(desc, value));
-+	gpiod_set_value(desc, value);
- }
- EXPORT_SYMBOL(gpio_set_active);
- 
--static int gpioinfo_get_value(struct gpio_desc *desc)
-+/**
-+ * gpiod_get_raw_value() - return a gpio's raw value
-+ * @desc: gpio whose value will be returned
-+ *
-+ * Return the GPIO's raw value, i.e. the value of the physical line disregarding
-+ * its ACTIVE_LOW status, or negative errno on failure.
-+ */
-+int gpiod_get_raw_value(const struct gpio_desc *desc)
- {
-+	VALIDATE_DESC(desc);
-+
- 	if (!desc->chip->ops->get)
- 		return -ENOSYS;
- 
- 	return desc->chip->ops->get(desc->chip, gpioinfo_chip_offset(desc));
- }
-+EXPORT_SYMBOL_GPL(gpiod_get_raw_value);
- 
- int gpio_get_value(unsigned gpio)
- {
-@@ -216,10 +294,25 @@ int gpio_get_value(unsigned gpio)
- 	if (ret)
- 		return ret;
- 
--	return gpioinfo_get_value(desc);
-+	return gpiod_get_raw_value(desc);
- }
- EXPORT_SYMBOL(gpio_get_value);
- 
-+/**
-+ * gpiod_get_value() - return a gpio's value
-+ * @desc: gpio whose value will be returned
-+ *
-+ * Return the GPIO's logical value, i.e. taking the ACTIVE_LOW status into
-+ * account, or negative errno on failure.
-+ */
-+int gpiod_get_value(const struct gpio_desc *desc)
++static int mux_control_set_param(struct param_d *param, void *priv)
 +{
-+	VALIDATE_DESC(desc);
++	struct mux_control *mux = priv;
++	int state = mux->cached_state;
 +
-+	return gpio_adjust_value(desc, gpiod_get_raw_value(desc));
++	if (state < 0 || state >= mux->states)
++		return -EINVAL;
++
++	return mux_control_set(mux, state);
 +}
-+EXPORT_SYMBOL_GPL(gpiod_get_value);
 +
- int gpio_is_active(unsigned gpio)
- {
- 	struct gpio_desc *desc = gpio_to_desc(gpio);
-@@ -227,18 +320,32 @@ int gpio_is_active(unsigned gpio)
- 	if (!desc)
- 		return -ENODEV;
- 
--	return gpio_adjust_value(desc, gpio_get_value(gpio));
-+	return gpiod_get_value(desc);
- }
- EXPORT_SYMBOL(gpio_is_active);
- 
--static int gpioinfo_direction_output(struct gpio_desc *desc, int value)
 +/**
-+ * gpiod_direction_output_raw - set the GPIO direction to output
-+ * @desc:	GPIO to set to output
-+ * @value:	initial output value of the GPIO
++ * mux_chip_register() - Register a mux-chip, thus readying the controllers
++ *			 for use.
++ * @mux_chip: The mux-chip to register.
 + *
-+ * Set the direction of the passed GPIO to output, such as gpiod_set_value() can
-+ * be called safely on it. The initial value of the output must be specified
-+ * as raw value on the physical line without regard for the ACTIVE_LOW status.
-+ *
-+ * Return 0 in case of success, else an error code.
++ * Return: Zero on success or a negative errno on error.
 + */
-+int gpiod_direction_output_raw(struct gpio_desc *desc, int value)
- {
-+	VALIDATE_DESC(desc);
++int mux_chip_register(struct mux_chip *mux_chip)
++{
++	int i;
++	int ret;
++	const char *alias;
++	struct device_node *np = mux_chip->dev.of_node;
 +
- 	if (!desc->chip->ops->direction_output)
- 		return -ENOSYS;
- 
- 	return desc->chip->ops->direction_output(desc->chip,
- 					       gpioinfo_chip_offset(desc), value);
- }
-+EXPORT_SYMBOL(gpiod_direction_output_raw);
- 
- int gpio_direction_output(unsigned gpio, int value)
- {
-@@ -252,13 +359,27 @@ int gpio_direction_output(unsigned gpio, int value)
- 	if (ret)
- 		return ret;
- 
--	return gpioinfo_direction_output(desc, value);
-+	return gpiod_direction_output_raw(desc, value);
- }
- EXPORT_SYMBOL(gpio_direction_output);
- 
--static int gpioinfo_direction_active(struct gpio_desc *desc, bool value)
++	for (i = 0; i < mux_chip->controllers; ++i) {
++		struct mux_control *mux = &mux_chip->mux[i];
++
++		if (mux->idle_state == mux->cached_state)
++			continue;
++
++		ret = mux_control_set(mux, mux->idle_state);
++		if (ret < 0) {
++			dev_err(&mux_chip->dev, "unable to set idle state\n");
++			return ret;
++		}
++	}
++
++	alias = np ? of_alias_get(np) : NULL;
++	if (alias)
++		ret = mux_register_dev(mux_chip, alias, DEVICE_ID_SINGLE);
++	if (!alias || ret)
++		ret = mux_register_dev(mux_chip, "muxchip", DEVICE_ID_DYNAMIC);
++
++	if (ret < 0) {
++		dev_err(&mux_chip->dev,
++			"register_device failed in %s: %d\n", __func__, ret);
++		return ret;
++	}
++
++	if (IS_ENABLED(CONFIG_PARAMETER)) {
++		struct device *dev = NULL;
++
++		if (mux_chip->controllers == 1)
++			dev = &mux_chip->dev;
++
++		for (i = 0; i < mux_chip->controllers; ++i) {
++			struct mux_control *mux = &mux_chip->mux[i];
++			struct device *dev;
++
++			if (mux_chip->controllers == 1) {
++				dev = &mux_chip->dev;
++			} else  {
++				dev = &mux->dev;
++				dev_set_name(dev, "muxchip%uc", mux_chip->dev.id);
++				if (register_device(dev))
++					continue;
++			}
++
++			dev_add_param_bool_ro(dev, "idle", &mux->idle);
++			dev_add_param_int(dev, "state", mux_control_set_param,
++					  NULL, &mux->cached_state, "%d", mux);
++		}
++	}
++
++	list_add(&mux_chip->list, &mux_chips);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(mux_chip_register);
++
 +/**
-+ * gpiod_direction_output - set the GPIO direction to output
-+ * @desc:	GPIO to set to output
-+ * @value:	initial output value of the GPIO
++ * mux_control_states() - Query the number of multiplexer states.
++ * @mux: The mux-control to query.
 + *
-+ * Set the direction of the passed GPIO to output, such as gpiod_set_value() can
-+ * be called safely on it. The initial value of the output must be specified
-+ * as the logical value of the GPIO, i.e. taking its ACTIVE_LOW status into
-+ * account.
-+ *
-+ * Return 0 in case of success, else an error code.
++ * Return: The number of multiplexer states.
 + */
-+int gpiod_direction_output(struct gpio_desc *desc, int value)
- {
--	return gpioinfo_direction_output(desc, gpio_adjust_value(desc, value));
-+	VALIDATE_DESC(desc);
++unsigned int mux_control_states(struct mux_control *mux)
++{
++	return mux->states;
++}
++EXPORT_SYMBOL_GPL(mux_control_states);
 +
-+	return gpiod_direction_output_raw(desc, gpio_adjust_value(desc, value));
- }
- 
- int gpio_direction_active(unsigned gpio, bool value)
-@@ -268,18 +389,30 @@ int gpio_direction_active(unsigned gpio, bool value)
- 	if (!desc)
- 		return -ENODEV;
- 
--	return gpioinfo_direction_active(desc, value);
-+	return gpiod_direction_output(desc, value);
- }
- EXPORT_SYMBOL(gpio_direction_active);
- 
--static int gpioinfo_direction_input(struct gpio_desc *desc)
++/*
++ * The mux->idle must be clear when calling this function.
++ */
++static int __mux_control_select(struct mux_control *mux, int state)
++{
++	int ret;
++
++	if (WARN_ON(state < 0 || state >= mux->states))
++		return -EINVAL;
++
++	if (mux->cached_state == state)
++		return 0;
++
++	ret = mux_control_set(mux, state);
++	if (ret >= 0)
++		return 0;
++
++	/* The mux update failed, try to revert if appropriate... */
++	if (mux->idle_state != MUX_IDLE_AS_IS)
++		mux_control_set(mux, mux->idle_state);
++
++	return ret;
++}
++
++static void mux_control_delay(struct mux_control *mux, unsigned int delay_us)
++{
++	ktime_t delayend;
++	s64 remaining;
++
++	if (!delay_us)
++		return;
++
++	delayend = ktime_add_us(mux->last_change, delay_us);
++	remaining = ktime_us_delta(delayend, ktime_get());
++	if (remaining > 0)
++		udelay(remaining);
++}
++
 +/**
-+ * gpiod_direction_input - set the GPIO direction to input
-+ * @desc:	GPIO to set to input
++ * mux_control_try_select_delay() - Try to select the given multiplexer state.
++ * @mux: The mux-control to request a change of state from.
++ * @state: The new requested state.
++ * @delay_us: The time to delay (in microseconds) if the mux state is changed.
 + *
-+ * Set the direction of the passed GPIO to input, such as gpiod_get_value() can
-+ * be called safely on it.
++ * On successfully selecting the mux-control state, it will be locked until
++ * mux_control_deselect() is called.
 + *
-+ * Return 0 in case of success, else an error code.
++ * Therefore, make sure to call mux_control_deselect() when the operation is
++ * complete and the mux-control is free for others to use, but do not call
++ * mux_control_deselect() if mux_control_try_select() fails.
++ *
++ * Return: 0 when the mux-control state has the requested state or a negative
++ * errno on error. Specifically -EBUSY if the mux-control is contended.
 + */
-+int gpiod_direction_input(struct gpio_desc *desc)
- {
-+	VALIDATE_DESC(desc);
++int mux_control_try_select_delay(struct mux_control *mux, unsigned int state,
++				 unsigned int delay_us)
++{
++	int ret;
 +
- 	if (!desc->chip->ops->direction_input)
- 		return -ENOSYS;
- 
- 	return desc->chip->ops->direction_input(desc->chip,
- 					      gpioinfo_chip_offset(desc));
- }
-+EXPORT_SYMBOL(gpiod_direction_input);
- 
- int gpio_direction_input(unsigned gpio)
- {
-@@ -293,7 +426,7 @@ int gpio_direction_input(unsigned gpio)
- 	if (ret)
- 		return ret;
- 
--	return gpioinfo_direction_input(desc);
-+	return gpiod_direction_input(desc);
- }
- EXPORT_SYMBOL(gpio_direction_input);
- 
-@@ -319,11 +452,11 @@ static int gpioinfo_request_one(struct gpio_desc *desc, unsigned long flags,
- 	desc->active_low = active_low;
- 
- 	if (dir_in)
--		err = gpioinfo_direction_input(desc);
-+		err = gpiod_direction_input(desc);
- 	else if (logical)
--		err = gpioinfo_direction_active(desc, init_active);
-+		err = gpiod_direction_output(desc, init_active);
- 	else
--		err = gpioinfo_direction_output(desc, init_high);
-+		err = gpiod_direction_output_raw(desc, init_high);
- 
- 	if (err)
- 		gpioinfo_free(desc);
-@@ -690,7 +823,7 @@ struct gpio_desc *dev_gpiod_get_index(struct device *dev,
- 		free(con_id);
- 
- 		if (gpio_is_valid(gpio)) {
--			desc = __tmp_gpio_to_desc(gpio);
-+			desc = gpio_to_desc(gpio);
- 			break;
- 		}
- 	}
-@@ -710,7 +843,7 @@ struct gpio_desc *dev_gpiod_get_index(struct device *dev,
- 			label = dev_name(dev);
- 	}
- 
--	ret = gpio_request_one(__tmp_desc_to_gpio(desc), flags, label);
-+	ret = gpioinfo_request_one(desc, flags, label);
- 	free(buf);
- 
- 	return ret ? ERR_PTR(ret): desc;
-diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
-index 577b3955848e..c89b0c48ee2b 100644
---- a/include/linux/gpio/consumer.h
-+++ b/include/linux/gpio/consumer.h
-@@ -5,8 +5,6 @@
- #include <gpio.h>
- #include <of_gpio.h>
- #include <driver.h>
--#include <linux/err.h>
--#include <errno.h>
- #include <linux/iopoll.h>
- 
- /**
-@@ -24,32 +22,10 @@ enum gpiod_flags {
- 	GPIOD_OUT_HIGH	= GPIOF_OUT_INIT_ACTIVE,
- };
- 
--#define GPIO_DESC_OK		BIT(BITS_PER_LONG - 1)
--
- #define gpiod_not_found(desc)	(IS_ERR(desc) && PTR_ERR(desc) == -ENOENT)
- 
- struct gpio_desc;
- 
--static inline int __tmp_desc_to_gpio(struct gpio_desc *desc)
--{
--	if (!desc)
--		return -ENOENT;
--	if (IS_ERR(desc))
--		return PTR_ERR(desc);
--
--	return ((ulong)desc & ~GPIO_DESC_OK);
--}
--
--static inline struct gpio_desc *__tmp_gpio_to_desc(int gpio)
--{
--	if (gpio == -ENOENT)
--		return NULL;
--	if (gpio < 0)
--		return ERR_PTR(gpio);
--
--	return (struct gpio_desc *)(gpio | GPIO_DESC_OK);
--}
--
- #ifdef CONFIG_OFDEVICE
- 
- /* returned gpio descriptor can be passed to any normal gpio_* function */
-@@ -60,7 +36,7 @@ struct gpio_desc *dev_gpiod_get_index(struct device *dev,
- 			const char *label);
- 
- #else
--static inline struct gpio_desc *dev_gpiod_get_index(struct device *dev,
-+static inline gpio_desc *dev_gpiod_get_index(struct device *dev,
- 		struct device_node *np,
- 		const char *_con_id, int index,
- 		enum gpiod_flags flags,
-@@ -79,6 +55,8 @@ static inline struct gpio_desc *dev_gpiod_get(struct device *dev,
- 	return dev_gpiod_get_index(dev, np, con_id, 0, flags, label);
- }
- 
-+void gpiod_put(struct gpio_desc *desc);
++	if (!mux->idle)
++		return -EBUSY;
++	mux->idle = false;
 +
- static inline struct gpio_desc *gpiod_get(struct device *dev,
- 			    const char *_con_id,
- 			    enum gpiod_flags flags)
-@@ -99,36 +77,16 @@ gpiod_get_optional(struct device *dev, const char *con_id,
- 	return desc;
- }
- 
--static inline int gpiod_direction_input(struct gpio_desc *gpiod)
--{
--	if (gpiod_not_found(gpiod))
--		return 0;
-+int gpiod_direction_input(struct gpio_desc *gi);
- 
--	return gpio_direction_input(__tmp_desc_to_gpio(gpiod));
--}
-+int gpiod_direction_output_raw(struct gpio_desc *desc, int value);
-+int gpiod_direction_output(struct gpio_desc *desc, int value);
- 
--static inline int gpiod_direction_output(struct gpio_desc *gpiod, bool value)
--{
--	if (gpiod_not_found(gpiod))
--		return 0;
-+void gpiod_set_raw_value(struct gpio_desc *desc, int value);
-+void gpiod_set_value(struct gpio_desc *desc, int value);
- 
--	return gpio_direction_active(__tmp_desc_to_gpio(gpiod), value);
--}
--
--static inline int gpiod_set_value(struct gpio_desc *gpiod, bool value)
--{
--	return gpiod_direction_output(gpiod, value);
--}
--
--static inline int gpiod_get_value(struct gpio_desc *gpiod)
--{
--	if (gpiod_not_found(gpiod))
--		return 0;
--	if (IS_ERR(gpiod))
--		return PTR_ERR(gpiod);
--
--	return gpio_is_active(__tmp_desc_to_gpio(gpiod));
--}
-+int gpiod_get_raw_value(const struct gpio_desc *desc);
-+int gpiod_get_value(const struct gpio_desc *desc);
- 
- /**
-  * gpiod_poll_timeout_us - poll till gpio descriptor reaches requested active state
++	ret = __mux_control_select(mux, state);
++	if (ret >= 0)
++		mux_control_delay(mux, delay_us);
++
++	if (ret < 0)
++		mux->idle = true;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mux_control_try_select_delay);
++
++/**
++ * mux_state_try_select_delay() - Try to select the given multiplexer state.
++ * @mstate: The mux-state to select.
++ * @delay_us: The time to delay (in microseconds) if the mux state is changed.
++ *
++ * On successfully selecting the mux-state, its mux-control will be locked
++ * until mux_state_deselect() is called.
++ *
++ * Therefore, make sure to call mux_state_deselect() when the operation is
++ * complete and the mux-control is free for others to use, but do not call
++ * mux_state_deselect() if mux_state_try_select() fails.
++ *
++ * Return: 0 when the mux-state has been selected or a negative errno on
++ * error. Specifically -EBUSY if the mux-control is contended.
++ */
++int mux_state_try_select_delay(struct mux_state *mstate, unsigned int delay_us)
++{
++	return mux_control_try_select_delay(mstate->mux, mstate->state, delay_us);
++}
++EXPORT_SYMBOL_GPL(mux_state_try_select_delay);
++
++/**
++ * mux_control_deselect() - Deselect the previously selected multiplexer state.
++ * @mux: The mux-control to deselect.
++ *
++ * It is required that a single call is made to mux_control_deselect() for
++ * each and every successful call made to either of mux_control_select() or
++ * mux_control_try_select().
++ *
++ * Return: 0 on success and a negative errno on error. An error can only
++ * occur if the mux has an idle state. Note that even if an error occurs, the
++ * mux-control is unlocked and is thus free for the next access.
++ */
++int mux_control_deselect(struct mux_control *mux)
++{
++	int ret = 0;
++
++	if (mux->idle_state != MUX_IDLE_AS_IS &&
++	    mux->idle_state != mux->cached_state)
++		ret = mux_control_set(mux, mux->idle_state);
++
++	mux->idle = true;
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(mux_control_deselect);
++
++/**
++ * mux_state_deselect() - Deselect the previously selected multiplexer state.
++ * @mstate: The mux-state to deselect.
++ *
++ * It is required that a single call is made to mux_state_deselect() for
++ * each and every successful call made to either of mux_state_select() or
++ * mux_state_try_select().
++ *
++ * Return: 0 on success and a negative errno on error. An error can only
++ * occur if the mux has an idle state. Note that even if an error occurs, the
++ * mux-control is unlocked and is thus free for the next access.
++ */
++int mux_state_deselect(struct mux_state *mstate)
++{
++	return mux_control_deselect(mstate->mux);
++}
++EXPORT_SYMBOL_GPL(mux_state_deselect);
++
++/* Note this function returns a reference to the mux_chip dev. */
++static struct mux_chip *of_find_mux_chip_by_node(struct device_node *np)
++{
++	struct mux_chip *chip;
++
++	list_for_each_entry(chip, &mux_chips, list) {
++		if (chip->dev.device_node == np)
++			return chip;
++	}
++
++	return NULL;
++}
++
++/*
++ * mux_get() - Get the mux-control for a device.
++ * @dev: The device that needs a mux-control.
++ * @mux_name: The name identifying the mux-control.
++ * @state: Pointer to where the requested state is returned, or NULL when
++ *         the required multiplexer states are handled by other means.
++ *
++ * Return: A pointer to the mux-control, or an ERR_PTR with a negative errno.
++ */
++static struct mux_control *mux_get(struct device *dev, const char *mux_name,
++				   unsigned int *state)
++{
++	struct device_node *np = dev->of_node;
++	struct of_phandle_args args;
++	struct mux_chip *mux_chip;
++	unsigned int controller;
++	int index = 0;
++	int ret;
++
++	if (mux_name) {
++		if (state)
++			index = of_property_match_string(np, "mux-state-names",
++							 mux_name);
++		else
++			index = of_property_match_string(np, "mux-control-names",
++							 mux_name);
++		if (index < 0) {
++			dev_err(dev, "mux controller '%s' not found\n",
++				mux_name);
++			return ERR_PTR(index);
++		}
++	}
++
++	if (state)
++		ret = of_parse_phandle_with_args(np,
++						 "mux-states", "#mux-state-cells",
++						 index, &args);
++	else
++		ret = of_parse_phandle_with_args(np,
++						 "mux-controls", "#mux-control-cells",
++						 index, &args);
++	if (ret) {
++		dev_err(dev, "%pOF: failed to get mux-%s %s(%i)\n",
++			np, state ? "state" : "control", mux_name ?: "", index);
++		return ERR_PTR(ret);
++	}
++
++	mux_chip = of_find_mux_chip_by_node(args.np);
++	of_node_put(args.np);
++	if (!mux_chip)
++		return ERR_PTR(-EPROBE_DEFER);
++
++	controller = 0;
++	if (state) {
++		if (args.args_count > 2 || args.args_count == 0 ||
++		    (args.args_count < 2 && mux_chip->controllers > 1)) {
++			dev_err(dev, "%pOF: wrong #mux-state-cells for %pOF\n",
++				np, args.np);
++			put_device(&mux_chip->dev);
++			return ERR_PTR(-EINVAL);
++		}
++
++		if (args.args_count == 2) {
++			controller = args.args[0];
++			*state = args.args[1];
++		} else {
++			*state = args.args[0];
++		}
++
++	} else {
++		if (args.args_count > 1 ||
++		    (!args.args_count && mux_chip->controllers > 1)) {
++			dev_err(dev, "%pOF: wrong #mux-control-cells for %pOF\n",
++				np, args.np);
++			put_device(&mux_chip->dev);
++			return ERR_PTR(-EINVAL);
++		}
++
++		if (args.args_count)
++			controller = args.args[0];
++	}
++
++	if (controller >= mux_chip->controllers) {
++		dev_err(dev, "%pOF: bad mux controller %u specified in %pOF\n",
++			np, controller, args.np);
++		put_device(&mux_chip->dev);
++		return ERR_PTR(-EINVAL);
++	}
++
++	return &mux_chip->mux[controller];
++}
++
++/**
++ * mux_control_get() - Get the mux-control for a device.
++ * @dev: The device that needs a mux-control.
++ * @mux_name: The name identifying the mux-control.
++ *
++ * Return: A pointer to the mux-control, or an ERR_PTR with a negative errno.
++ */
++struct mux_control *mux_control_get(struct device *dev, const char *mux_name)
++{
++	return mux_get(dev, mux_name, NULL);
++}
++EXPORT_SYMBOL_GPL(mux_control_get);
++
++MODULE_DESCRIPTION("Multiplexer subsystem");
++MODULE_AUTHOR("Peter Rosin <peda@axentia.se>");
++MODULE_LICENSE("GPL v2");
+diff --git a/drivers/mux/gpio.c b/drivers/mux/gpio.c
+new file mode 100644
+index 000000000000..10d68b63cf57
+--- /dev/null
++++ b/drivers/mux/gpio.c
+@@ -0,0 +1,103 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * GPIO-controlled multiplexer driver
++ *
++ * Copyright (C) 2017 Axentia Technologies AB
++ *
++ * Author: Peter Rosin <peda@axentia.se>
++ */
++
++#include <linux/bitmap.h>
++#include <linux/err.h>
++#include <linux/gpio/consumer.h>
++#include <linux/mod_devicetable.h>
++#include <module.h>
++#include <linux/mux/driver.h>
++#include <driver.h>
++#include <linux/property.h>
++
++struct mux_gpio {
++	struct gpio_descs *gpios;
++};
++
++static int mux_gpio_set(struct mux_control *mux, int state)
++{
++	struct mux_gpio *mux_gpio = mux_chip_priv(mux->chip);
++	DECLARE_BITMAP(values, BITS_PER_TYPE(state));
++	u32 value = state;
++
++	bitmap_from_arr32(values, &value, BITS_PER_TYPE(value));
++
++	gpiod_set_array_value(mux_gpio->gpios->ndescs,
++			      mux_gpio->gpios->desc,
++			      mux_gpio->gpios->info, values);
++
++	return 0;
++}
++
++static const struct mux_control_ops mux_gpio_ops = {
++	.set = mux_gpio_set,
++};
++
++static const struct of_device_id mux_gpio_dt_ids[] = {
++	{ .compatible = "gpio-mux", },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, mux_gpio_dt_ids);
++
++static int mux_gpio_probe(struct device *dev)
++{
++	struct mux_chip *mux_chip;
++	struct mux_gpio *mux_gpio;
++	int pins;
++	s32 idle_state;
++	int ret;
++
++	pins = gpiod_count(dev, "mux");
++	if (pins < 0)
++		return pins;
++
++	mux_chip = mux_chip_alloc(dev, 1, sizeof(*mux_gpio));
++	if (IS_ERR(mux_chip))
++		return PTR_ERR(mux_chip);
++
++	mux_gpio = mux_chip_priv(mux_chip);
++	mux_chip->ops = &mux_gpio_ops;
++
++	mux_gpio->gpios = gpiod_get_array(dev, "mux", GPIOD_OUT_LOW);
++	if (IS_ERR(mux_gpio->gpios))
++		return dev_err_probe(dev, PTR_ERR(mux_gpio->gpios),
++				     "failed to get gpios\n");
++	WARN_ON(pins != mux_gpio->gpios->ndescs);
++	mux_chip->mux->states = BIT(pins);
++
++	ret = device_property_read_u32(dev, "idle-state", (u32 *)&idle_state);
++	if (ret >= 0 && idle_state != MUX_IDLE_AS_IS) {
++		if (idle_state < 0 || idle_state >= mux_chip->mux->states) {
++			dev_err(dev, "invalid idle-state %u\n", idle_state);
++			return -EINVAL;
++		}
++
++		mux_chip->mux->idle_state = idle_state;
++	}
++
++	ret = mux_chip_register(mux_chip);
++	if (ret < 0)
++		return ret;
++
++	dev_info(dev, "%u-way mux-controller registered\n",
++		 mux_chip->mux->states);
++
++	return 0;
++}
++
++static struct driver mux_gpio_driver = {
++	.name = "gpio-mux",
++	.of_match_table	= mux_gpio_dt_ids,
++	.probe = mux_gpio_probe,
++};
++coredevice_platform_driver(mux_gpio_driver);
++
++MODULE_DESCRIPTION("GPIO-controlled multiplexer driver");
++MODULE_AUTHOR("Peter Rosin <peda@axentia.se>");
++MODULE_LICENSE("GPL v2");
 -- 
 2.39.2
 
