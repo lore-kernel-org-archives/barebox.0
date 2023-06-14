@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9NRE-006UJt-Vw
+	id 1q9NRF-006UJo-5v
 	for lore@lore.pengutronix.de; Wed, 14 Jun 2023 12:09:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9NRC-00066s-K8
+	id 1q9NRC-00066r-H2
 	for lore@pengutronix.de; Wed, 14 Jun 2023 12:09:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,48 +17,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UGKtd/SxUWoacSLudqUzEaSBHOpDcVqXzo5C03ygBeI=; b=QFmIPNo0v53+6uu4bc04lf0naz
-	CZt2Wh4jD3u3AWytbHklUBhWRfUmkx7hiKsRkwqn0dgD4esn9lSt27ALhnglKUKnABRjVz0I0rtdZ
-	xw8sbYS9CBcYeCWCgAGgOEa1isw7aIgyBQJHOGXPDm5zJXxZKKd5GxcRVJJvPpW4Y6lfpeK558FSK
-	YeR1K3NXFtN1viSlHoVm3Coq4ZhioAcS+oeZAkMwk/Kit5Lbrg9i5MnhJM+Gg8uiI1PW3vR8Y8OJU
-	Lvm2jjnKMNAShkWjon9SNMWGNpZVHbeYF5pkQvz68NOMW3WW5BXLNrUpPUOmtoeI/nP/BBqaT9DPK
-	bhfFnTvg==;
+	bh=phJyfMEhy9QDHre2GmIHAJ684dR87/i4uXJbOlgvqv8=; b=jpMlbmNwYKIrmjDhqJETyLe8p4
+	Ty/bn6/5BA5TATWXRxtJdJm0rxdMTAHWw0DO21ulPqxt2RCePhTOHrTLz/QgElNetF9enneQ6RR5m
+	EIPv+jraOjvis3FSSEj25huTqdaNmx2DZARq+uDvdiGB9qPnbLIPemBDeRSbRhK6ZZVltzg6y8Mu0
+	k8YsRVj/q+FrE3AynbhqMtq+m/CLqv83xBU5M3qYl8qfMukbVi9JEcUbtqgUyvR0Cvtgn5TnkepLq
+	SJG3ACru4vZjs0aMjTMulm1ZNo1Zyd4hwizHWNIyySqXrbE2tLCThVghMxQtyMYFSgU/sgR6vYXEk
+	g60cONvA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9NQ6-00BAVN-26;
-	Wed, 14 Jun 2023 10:08:06 +0000
+	id 1q9NQ7-00BAVh-0x;
+	Wed, 14 Jun 2023 10:08:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9NQ0-00BAQo-2s
+	id 1q9NQ0-00BAQn-2r
 	for barebox@lists.infradead.org;
-	Wed, 14 Jun 2023 10:08:03 +0000
+	Wed, 14 Jun 2023 10:08:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9NPt-0005cQ-K8; Wed, 14 Jun 2023 12:07:53 +0200
+	id 1q9NPt-0005cS-K6; Wed, 14 Jun 2023 12:07:53 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9NPs-007KbR-LC; Wed, 14 Jun 2023 12:07:52 +0200
+	id 1q9NPs-007KbT-N3; Wed, 14 Jun 2023 12:07:52 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9NPr-00E9uY-M0; Wed, 14 Jun 2023 12:07:51 +0200
+	id 1q9NPr-00E9u8-L7; Wed, 14 Jun 2023 12:07:51 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: mfe@pengutronix.de,
 	Jules Maselbas <jmaselbas@kalray.eu>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 14 Jun 2023 12:07:42 +0200
-Message-Id: <20230614100747.3368109-6-a.fatoum@pengutronix.de>
+Date: Wed, 14 Jun 2023 12:07:39 +0200
+Message-Id: <20230614100747.3368109-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230614100747.3368109-1-a.fatoum@pengutronix.de>
 References: <20230614100747.3368109-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230614_030800_982515_6A4156F8 
-X-CRM114-Status: GOOD (  11.44  )
+X-CRM114-CacheID: sfid-20230614_030800_965703_80DCED6D 
+X-CRM114-Status: GOOD (  12.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,46 +81,46 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH v2 05/10] gpiolib: fix missing error check while query gpio-line-names
+Subject: [PATCH v2 02/10] gpiolib: simplify for loop break condition
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 From: Marco Felsch <m.felsch@pengutronix.de>
 
-Don't ignore the possible error return code of
-of_property_read_string_array().
+No functional change just a simplification to align it with the Linux
+kernel. Also add the kernel comment to make the reason clear.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - drop error message as we shouldn't hit this issue
-    anyway when of_property_count_strings called before
-    succeeds.
+  - no change
 ---
- drivers/gpio/gpiolib.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/gpio/gpiolib.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index f05e2ac7356a..275fb7324331 100644
+index b4a3a4e5504c..0df43c9f8f7e 100644
 --- a/drivers/gpio/gpiolib.c
 +++ b/drivers/gpio/gpiolib.c
-@@ -526,8 +526,13 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
- 	if (count > 0) {
- 		const char **names = xzalloc(count * sizeof(char *));
+@@ -529,7 +529,15 @@ static int of_gpiochip_scan_hogs(struct gpio_chip *chip)
+ 		of_property_read_string_array(chip->dev->of_node,
+ 					      "gpio-line-names", arr, count);
  
--		of_property_read_string_array(chip->dev->of_node,
--					      "gpio-line-names", names, count);
-+		ret = of_property_read_string_array(chip->dev->of_node,
-+						    "gpio-line-names", names,
-+						    count);
-+		if (ret < 0) {
-+			kfree(names);
-+			return ret;
-+		}
+-		for (i = 0; i < chip->ngpio && i < count; i++)
++		/*
++		 * Since property 'gpio-line-names' cannot contains gaps, we
++		 * have to be sure we only assign those pins that really exists
++		 * since chip->ngpio can be less.
++		 */
++		if (count > chip->ngpio)
++			count = chip->ngpio;
++
++		for (i = 0; i < count; i++)
+ 			gpio_desc[chip->base + i].name = xstrdup(arr[i]);
  
- 		/*
- 		 * Since property 'gpio-line-names' cannot contains gaps, we
+ 		free(arr);
 -- 
 2.39.2
 
