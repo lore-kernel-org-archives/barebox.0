@@ -1,64 +1,56 @@
-Delivery-date: Wed, 14 Jun 2023 10:21:12 +0200
+Delivery-date: Wed, 14 Jun 2023 10:56:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9Lkf-006OlH-SV
-	for lore@lore.pengutronix.de; Wed, 14 Jun 2023 10:21:12 +0200
+	id 1q9MJ5-006QPc-KL
+	for lore@lore.pengutronix.de; Wed, 14 Jun 2023 10:56:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9Lkd-0004IS-JT
-	for lore@pengutronix.de; Wed, 14 Jun 2023 10:21:12 +0200
+	id 1q9MJ3-0000qA-35
+	for lore@pengutronix.de; Wed, 14 Jun 2023 10:56:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=K60FbBGzoQ2lAjPPghvTBcxxCkAI8L8VfCe3qSINpY4=; b=uPHOEMJMtpK2lJj3FQwg/S4uCC
-	55uMYdULAEy6LeWRi/LYGmyW79vNNMtvhtZIQu3+R2FAJLBEvglgE0zj2HiacTcsHNIL4C6T4LgJ6
-	9Ce2n0nF7JBzQ+PvQdP7cBaxagkPoEq35eU1PuldbivBdBxcEEC3wr7ZEjPTbjHbigtgbFLLGVAQH
-	A6/3dhn4VG0YGaAwZry6NRZqFpnajK5dteKTy/OkkQEOc1PhYTHu+wHg73kJKGHxB1iO2aFTga1HW
-	hYCdASkT68ywVhBC6JyDivOHbIzljw3TOE+SkEmN176sfT09bDbvn5h2zI9sUUXhlf6aeIhqRKevE
-	e0LQPq8Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=bxUetw1tatqKI1hMB/CWrtlLH4dSkkFgIeqrZoin5nY=; b=Pj01AGE4USggrKv1qVRA1uJtAq
+	WH9ioOCe6eyXeLK0u8mpB/H8obvgF3HDQJ/dl4wkJldS63JXSIZTDPKVoq2Ja9df0ZErLRmoi9Sf9
+	fi/Eqe36FO1//ZcxDPV1TP2rLgT2DdsgRY4ZBWBHCfb4fPUmlxomqOc0NJ1IfYUPyMXWLE4zTTGbO
+	NLb9d6s6m1C29L2Y1/lna+Wux8TQinQAQfbTd0cgJaQWOCYJA4RcZqA51FeUr3kkg08kHE31uMqBR
+	6SpxmGhl/S4eKufnbGtuFxvVTVN0nYYXA0XECctxskFUwVwseY7kBkXzN/GmRqyZiIUGKm4LNDGOZ
+	WuwFme5g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9LjT-00Argd-01;
-	Wed, 14 Jun 2023 08:19:59 +0000
+	id 1q9MHw-00AyHy-12;
+	Wed, 14 Jun 2023 08:55:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9LjP-00Arew-31
+	id 1q9MHs-00AyGe-1Q
 	for barebox@lists.infradead.org;
-	Wed, 14 Jun 2023 08:19:57 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q9LjL-0003oB-RX; Wed, 14 Jun 2023 10:19:51 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1q9LjL-0006rC-Il; Wed, 14 Jun 2023 10:19:51 +0200
-Date: Wed, 14 Jun 2023 10:19:51 +0200
-To: Ulrich =?iso-8859-15?Q?=D6lmann?= <u.oelmann@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20230614081951.GU18491@pengutronix.de>
-References: <20230614073444.3493711-1-u.oelmann@pengutronix.de>
+	Wed, 14 Jun 2023 08:55:33 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1q9MHq-0000dK-CE; Wed, 14 Jun 2023 10:55:30 +0200
+Message-ID: <833c4f35-2fe1-ede5-a305-d2d600c84e8b@pengutronix.de>
+Date: Wed, 14 Jun 2023 10:55:29 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230614073444.3493711-1-u.oelmann@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Content-Language: en-US
+To: yegorslists@googlemail.com, barebox@lists.infradead.org
+References: <20230614080919.1716578-1-yegorslists@googlemail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230614080919.1716578-1-yegorslists@googlemail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230614_011955_971057_73129B30 
-X-CRM114-Status: GOOD (  20.75  )
+X-CRM114-CacheID: sfid-20230614_015532_482245_87A3BB2F 
+X-CRM114-Status: GOOD (  19.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,49 +68,62 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] common: Kconfig: fix typo
+Subject: Re: [PATCH][RFC] lib: zstd: resolve maybe-uninitialized warning
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Jun 14, 2023 at 09:34:44AM +0200, Ulrich Ölmann wrote:
-> Signed-off-by: Ulrich Ölmann <u.oelmann@pengutronix.de>
+Hello Yegor,
+
+On 14.06.23 10:09, yegorslists@googlemail.com wrote:
+> From: Yegor Yefremov <yegorslists@googlemail.com>
+> 
+> Perform memset() at the very beginning of the ZSTD_getFrameParams()
+> routine.
+
+I saw this too a while back and I came to the conclusion that this
+is a false positive. I wasn't able to reproduce this with
+GCC 12, but saw it with GCC 11 IIRC.
+
+Cheers,
+Ahmad
+
+> 
+> Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 > ---
->  common/Kconfig | 2 +-
+>  lib/zstd/decompress.c | 2 +-
 >  1 file changed, 1 insertion(+), 1 deletion(-)
-
-Applied, thanks
-
-Sascha
-
 > 
-> diff --git a/common/Kconfig b/common/Kconfig
-> index ce94718c848a..a36d823608ac 100644
-> --- a/common/Kconfig
-> +++ b/common/Kconfig
-> @@ -711,7 +711,7 @@ config MMCBLKDEV_ROOTARG
->  	  kernel doesn't contain commit [1]. The first linux kernel release
->  	  containing that commit is v5.10-rc1.
+> diff --git a/lib/zstd/decompress.c b/lib/zstd/decompress.c
+> index 19bf712881..78df7d660a 100644
+> --- a/lib/zstd/decompress.c
+> +++ b/lib/zstd/decompress.c
+> @@ -207,6 +207,7 @@ static size_t ZSTD_frameHeaderSize(const void *src, size_t srcSize)
+>  size_t ZSTD_getFrameParams(ZSTD_frameParams *fparamsPtr, const void *src, size_t srcSize)
+>  {
+>  	const BYTE *ip = (const BYTE *)src;
+> +	memset(fparamsPtr, 0, sizeof(*fparamsPtr));
 >  
-> -	  The appending only happen if barebox 'linux.bootargs.bootm.appendroot'
-> +	  The appending only happens if barebox' 'linux.bootargs.bootm.appendroot'
->  	  variable is set or the used blspec entry contains 'linux-appendroot'.
->  
->  	  Note: It is crucial that the kernel device tree and the barebox device
-> -- 
-> 2.39.2
-> 
-> 
-> 
+>  	if (srcSize < ZSTD_frameHeaderSize_prefix)
+>  		return ZSTD_frameHeaderSize_prefix;
+> @@ -214,7 +215,6 @@ size_t ZSTD_getFrameParams(ZSTD_frameParams *fparamsPtr, const void *src, size_t
+>  		if ((ZSTD_readLE32(src) & 0xFFFFFFF0U) == ZSTD_MAGIC_SKIPPABLE_START) {
+>  			if (srcSize < ZSTD_skippableHeaderSize)
+>  				return ZSTD_skippableHeaderSize; /* magic number + skippable frame length */
+> -			memset(fparamsPtr, 0, sizeof(*fparamsPtr));
+>  			fparamsPtr->frameContentSize = ZSTD_readLE32((const char *)src + 4);
+>  			fparamsPtr->windowSize = 0; /* windowSize==0 means a frame is skippable */
+>  			return 0;
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
