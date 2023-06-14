@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9Qze-006j4P-48
+	id 1q9Qze-006j4O-6z
 	for lore@lore.pengutronix.de; Wed, 14 Jun 2023 15:57:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9Qzb-0005iZ-Mt
+	id 1q9Qzb-0005iY-J4
 	for lore@pengutronix.de; Wed, 14 Jun 2023 15:57:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,46 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=izSQ0hCE8qM5Kz1cjBiKKOVj4Ch/5waMa1wRrSvFdh4=; b=cDFT45WD0M58E4R0fX8+q1DIfE
-	QKwptE4njTNHeuEC+BSLzwtOJD3okLfwM6ARA8N4I0K1uAwe1EMqbyWlRYdzf7ifNFKciDJTYQZXd
-	o5YrByOEeMt4JxuCNLZPs8bXv3aNPiWuMwpEwt9PYEAQEGu74TO5nKj9zAlkTNE8UzQpv+1A0S3f1
-	2MqLqnIiEj/jA+XzhJPIeXCwKJwjilzmFUV8A5A5LL6TwLXIVma2R/0bQRaZeblKFGe43RM4sJKje
-	Ns30WyA9xvO83HVM77MEl2wKvyf0G4u14H/qis31m4+JUTprlo/vLiM73Bwd1zUcgNZ6+blJAAQb1
-	gwiJlInw==;
+	bh=JW2B/gprapYjb7l4ndKhj0p78lHot2Nu2FQ6kTSHF7g=; b=OldWuOhltlOExRG5O2sp07HXCj
+	bXFcq7dv2adcEIrLFRRACDisk567NJxMtPJjRHsTzwOQ+NJMLjuEk0ttnDAZO3fITyxwcja0QVsEM
+	F5rX4fFyS69qiG0U1NPrpPgEis6QnExYu685xB1nyKxJfchaiA7n4g/LPS24brpoVCkCHqVSlRj+I
+	xBl4RwKlNAg+0y47z4j019DIlTq4K1mZ5VYfXoAtKIcmIgVArLhbyHmiJlwvDF4XygXHEr8j+G11E
+	ROjMcD2W3d3YkXC2gMYk4D3Ocq2ioLWRXWJ7jayBJJOXcflr4j1js4mHECRMioM78rNFhyMh3S+89
+	m6vsl+uw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9Qyb-00Bp9c-04;
-	Wed, 14 Jun 2023 13:55:57 +0000
+	id 1q9QyZ-00Bp8q-0E;
+	Wed, 14 Jun 2023 13:55:55 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9QyV-00Bp5R-1t
+	id 1q9QyV-00Bp4b-1D
 	for barebox@lists.infradead.org;
 	Wed, 14 Jun 2023 13:55:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9QyU-0005Di-D4; Wed, 14 Jun 2023 15:55:50 +0200
+	id 1q9QyS-0005CJ-R2; Wed, 14 Jun 2023 15:55:48 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9QyT-007Mxp-OR; Wed, 14 Jun 2023 15:55:49 +0200
+	id 1q9QyS-007MxT-2x; Wed, 14 Jun 2023 15:55:48 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9QyR-008D8t-HU; Wed, 14 Jun 2023 15:55:47 +0200
+	id 1q9QyR-008D8A-Cd; Wed, 14 Jun 2023 15:55:47 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 14 Jun 2023 15:54:49 +0200
-Message-Id: <20230614135452.1884124-8-a.fatoum@pengutronix.de>
+Date: Wed, 14 Jun 2023 15:54:43 +0200
+Message-Id: <20230614135452.1884124-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230614135452.1884124-1-a.fatoum@pengutronix.de>
 References: <20230614135452.1884124-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230614_065551_627746_3A578353 
-X-CRM114-Status: GOOD (  16.53  )
+X-CRM114-CacheID: sfid-20230614_065551_422122_9AA7648B 
+X-CRM114-Status: UNSURE (   8.37  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,77 +80,30 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 07/10] commands: help: ignore options after first regular argument
+Subject: [PATCH 01/10] driver: include dev_print and family from <driver.h>
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-If some-command -n foo bar -v fails, it would be nice to be able to
-just stick help in front of the command to get help text. This doesn't
-work currently, because getopt called for help will complain about not
-knowing some-command's options. Fix this by only parsing help options up
-to the first non-option argument (i.e. one that doesn't start with `-').
+Linux drivers get dev_info and friends transitively when including
+<linux/device.h>, so have barebox follow suit.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/help.c | 19 ++++++++++++-------
- 1 file changed, 12 insertions(+), 7 deletions(-)
+ include/driver.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/commands/help.c b/commands/help.c
-index ba8542b90f01..87c1368d746d 100644
---- a/commands/help.c
-+++ b/commands/help.c
-@@ -3,7 +3,6 @@
+diff --git a/include/driver.h b/include/driver.h
+index 613a0e4cfad2..9b6f01ae41a3 100644
+--- a/include/driver.h
++++ b/include/driver.h
+@@ -10,6 +10,7 @@
+ #include <linux/ioport.h>
+ #include <linux/uuid.h>
+ #include <linux/bitops.h>
++#include <linux/printk.h>
+ #include <of.h>
+ #include <filetype.h>
  
- #include <common.h>
- #include <command.h>
--#include <getopt.h>
- #include <complete.h>
- 
- 
-@@ -72,10 +71,16 @@ static void list_commands(int verbose)
- static int do_help(int argc, char *argv[])
- {
- 	struct command *cmdtp;
--	int opt, verbose = 0, all = 0;
-+	int verbose = 0, all = 0;
-+	int argi;
- 
--	while ((opt = getopt(argc, argv, "va")) > 0) {
--		switch (opt) {
-+	/* We can't use getopt() here because we want to stop at the first
-+	 * non-option to support, so we can just prefix help in front
-+	 * of a command with options.
-+	 */
-+	argi = 1;
-+	while (argi < argc && *argv[argi] == '-') {
-+		switch (argv[argi++][1]) {
- 		case 'v':
- 			verbose = 1;
- 			break;
-@@ -93,20 +98,20 @@ static int do_help(int argc, char *argv[])
- 		return 0;
- 	}
- 
--	if (optind == argc) {	/* show list of commands */
-+	if (argi == argc) {	/* show list of commands */
- 		list_commands(verbose);
- 		return 0;
- 	}
- 
- 
- 	/* command help (long version) */
--	if ((cmdtp = find_cmd(argv[optind])) != NULL) {
-+	if ((cmdtp = find_cmd(argv[argi])) != NULL) {
- 		barebox_cmd_usage(cmdtp);
- 		return 0;
- 	} else {
- 		printf ("Unknown command '%s' - try 'help'"
- 			" without arguments for list of all"
--			" known commands\n\n", argv[optind]
-+			" known commands\n\n", argv[argi]
- 				);
- 		return 1;
- 	}
 -- 
 2.39.2
 
