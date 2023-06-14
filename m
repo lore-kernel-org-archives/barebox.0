@@ -1,62 +1,62 @@
-Delivery-date: Wed, 14 Jun 2023 15:57:05 +0200
+Delivery-date: Wed, 14 Jun 2023 15:57:08 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9Qzi-006j5j-PF
-	for lore@lore.pengutronix.de; Wed, 14 Jun 2023 15:57:05 +0200
+	id 1q9Qzl-006j6T-Dt
+	for lore@lore.pengutronix.de; Wed, 14 Jun 2023 15:57:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9Qzg-0005kJ-7H
-	for lore@pengutronix.de; Wed, 14 Jun 2023 15:57:04 +0200
+	id 1q9Qzi-0005kt-9c
+	for lore@pengutronix.de; Wed, 14 Jun 2023 15:57:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=HWXExEOdX4agbj/IyCEeD44y6NrusdtvQxB+vo2EjJI=; b=20L8m0C1TJvJXqsZsFfDMnBN4H
-	++uinBh2sQKp9fBATGvnpziN/l/I3xm5QlR4yKt1dGo1w42cE+wmzzPrdNm73U0QJvMwhdl8ObjDN
-	L30+EUEIyH2ueCjtA0Z5XOaJsHAnQEKIw++26hZp6fixuxX9bsizjj1NQZ5W/oemGgebwOcfZ4e7Z
-	CaCjhcBBsGOEc94DCCtZA5OUCfQRTaIPxARf37iTuOu/TBOzc1y9VwfgPyUToShB/L8hGL6Mc6Jjb
-	nsUnGw4jxpiDrow93u2FjYSz3WZN59Q2pZnC6rEGFooT3QGMGDPFmJreUTY4vn+taxuqBQDXCcnwT
-	hkBCKtow==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=W99fyXLy8B1kOqlo2E/oVHy9iaYO6pYrOGVzFU1mwFw=; b=Epq73b9UGY5+mBQj65YdfDHaG9
+	uzKzsMWQZN+UurLrP/NVeUumBaAArAM1kQ1iIcUQvbSjGmbQ1pgQhoo5l/oVMIxDvkM5IxcJh9VnM
+	jbeZa24imaaQjC4Lahv6gzL34c4RxEQT3ZAznp82pPyykfRUs3Mpsli4s/CFiKi/GT2CZswwpK8ir
+	26Rtd1twUObemtSdyDSMGPFke+nzPnI2J4Qt+uPrGMU/yXs3xhLx36IIRHKqbr0LmDUcc+4Ej8NkO
+	21ih0Q+GW9LG9OvRyeATC/CX7PG6A7x9iEa5MbV671GUXSIPVUE+WESTP2BxRLVHy2nDBt3szaXz0
+	XcG60Vyg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9Qyb-00Bp9t-2H;
-	Wed, 14 Jun 2023 13:55:57 +0000
+	id 1q9Qyc-00BpAH-1Y;
+	Wed, 14 Jun 2023 13:55:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9QyV-00Bp4W-1C
+	id 1q9QyV-00Bp4p-1C
 	for barebox@lists.infradead.org;
 	Wed, 14 Jun 2023 13:55:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9QyS-0005CH-MM
-	for barebox@lists.infradead.org; Wed, 14 Jun 2023 15:55:48 +0200
+	id 1q9QyT-0005CO-2e; Wed, 14 Jun 2023 15:55:49 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9QyR-007MxQ-TJ
-	for barebox@lists.infradead.org; Wed, 14 Jun 2023 15:55:47 +0200
+	id 1q9QyS-007MxW-D8; Wed, 14 Jun 2023 15:55:48 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1q9QyR-008D83-C6
-	for barebox@lists.infradead.org; Wed, 14 Jun 2023 15:55:47 +0200
+	id 1q9QyR-008D8j-Gr; Wed, 14 Jun 2023 15:55:47 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 14 Jun 2023 15:54:42 +0200
-Message-Id: <20230614135452.1884124-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 14 Jun 2023 15:54:48 +0200
+Message-Id: <20230614135452.1884124-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230614135452.1884124-1-a.fatoum@pengutronix.de>
+References: <20230614135452.1884124-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230614_065551_426073_913E5A85 
-X-CRM114-Status: GOOD (  11.64  )
+X-CRM114-CacheID: sfid-20230614_065551_576301_A3EE2594 
+X-CRM114-Status: GOOD (  19.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,84 +79,250 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 00/10] gpio: add proper gpiod API and gpio-mux support
+Subject: [PATCH 06/10] bitmap: implement bitmap_{to,from}_arr{32,64}
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The gpiod_ (GPIO descriptor) API used with Linux differs from barebox'
-normal GPIO API:
+Converting from a bitmap to a u32 or u64 array of bits and back can
+involve endianness conversions depending on platform. Import the Linux
+functions that take care of this.
 
- - gpiod handles are opaque pointers and not an integer, which users
-   have an expectation of stability for
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/linux/bitmap.h | 101 ++++++++++++++++++++++++++++++++++++++++
+ lib/bitmap.c           | 103 +++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 204 insertions(+)
 
- - gpiod API uses logic levels by default with separate raw API for
-   physical level instead of physical level by default and separate
-   API taking active level into account.
-
-The barebox gpiod_ API mimics the latter point, but still uses integers
-requiring ugly and arguably error prone conversions when porting kernel
-code.
-
-This series fixes that by adding proper struct gpio_desc API like in
-Linux and then builds upon that to port the kernel gpio-mux driver.
-
-Ahmad Fatoum (10):
-  driver: include dev_print and family from <driver.h>
-  include: linux/printk: define new dev_errp_probe
-  gpio: have gpiod_ functions return and accept pointers
-  gpio: gpiolib: rename struct gpio_info to gpio_desc
-  gpiolib: export proper gpio descriptor API
-  bitmap: implement bitmap_{to,from}_arr{32,64}
-  commands: help: ignore options after first regular argument
-  gpiolib: factor out finding gpio property
-  gpiolib: add support for requesting and setting gpiod arrays
-  drivers: port Linux mux framework and gpio-mux driver
-
- commands/help.c                          |  19 +-
- drivers/Kconfig                          |   1 +
- drivers/Makefile                         |   1 +
- drivers/gpio/gpio-pca953x.c              |   9 +-
- drivers/gpio/gpiolib.c                   | 528 +++++++++++++++++------
- drivers/mci/mci_spi.c                    |  13 +-
- drivers/mtd/nand/atmel/nand-controller.c |  40 +-
- drivers/mtd/nand/nand_base.c             |   4 +-
- drivers/mux/Kconfig                      |  29 ++
- drivers/mux/Makefile                     |  10 +
- drivers/mux/core.c                       | 472 ++++++++++++++++++++
- drivers/mux/gpio.c                       | 103 +++++
- drivers/net/designware_eqos.c            |  26 +-
- drivers/net/ksz8873.c                    |  13 +-
- drivers/net/ksz9477.c                    |  13 +-
- drivers/net/realtek-dsa/realtek-mdio.c   |  10 +-
- drivers/net/realtek-dsa/realtek-smi.c    |  18 +-
- drivers/net/realtek-dsa/realtek.h        |   6 +-
- drivers/net/sja1105.c                    |  25 +-
- drivers/nvmem/starfive-otp.c             |  12 +-
- drivers/pci/pcie-dw-rockchip.c           |  14 +-
- drivers/power/reset/gpio-poweroff.c      |  14 +-
- drivers/power/reset/gpio-restart.c       |  23 +-
- drivers/regulator/fixed.c                |  27 +-
- drivers/sound/gpio-beeper.c              |  14 +-
- drivers/usb/misc/onboard_usb_hub.c       |  11 +-
- drivers/video/mipi_dbi.c                 |   8 +-
- drivers/video/panel-ilitek-ili9341.c     |  17 +-
- drivers/video/panel-mipi-dbi.c           |  17 +-
- drivers/watchdog/gpio_wdt.c              |  22 +-
- include/driver.h                         |   1 +
- include/gpiod.h                          |  79 +---
- include/linux/bitmap.h                   | 101 +++++
- include/linux/gpio/consumer.h            | 137 ++++++
- include/linux/mtd/rawnand.h              |   4 +-
- include/linux/printk.h                   |   3 +
- include/video/mipi_dbi.h                 |   7 +-
- lib/bitmap.c                             | 103 +++++
- 38 files changed, 1559 insertions(+), 395 deletions(-)
- create mode 100644 drivers/mux/Kconfig
- create mode 100644 drivers/mux/Makefile
- create mode 100644 drivers/mux/core.c
- create mode 100644 drivers/mux/gpio.c
- create mode 100644 include/linux/gpio/consumer.h
-
+diff --git a/include/linux/bitmap.h b/include/linux/bitmap.h
+index 7d06fac68d08..9ec1ee2d1422 100644
+--- a/include/linux/bitmap.h
++++ b/include/linux/bitmap.h
+@@ -56,6 +56,10 @@
+  * bitmap_find_free_region(bitmap, bits, order)	Find and allocate bit region
+  * bitmap_release_region(bitmap, pos, order)	Free specified bit region
+  * bitmap_allocate_region(bitmap, pos, order)	Allocate specified bit region
++ * bitmap_from_arr32(dst, buf, nbits)           Copy nbits from u32[] buf to dst
++ * bitmap_from_arr64(dst, buf, nbits)           Copy nbits from u64[] buf to dst
++ * bitmap_to_arr32(buf, src, nbits)             Copy nbits from buf to u32[] dst
++ * bitmap_to_arr64(buf, src, nbits)             Copy nbits from buf to u64[] dst
+  */
+ 
+ /*
+@@ -178,6 +182,103 @@ static inline void bitmap_copy(unsigned long *dst, const unsigned long *src,
+ 	}
+ }
+ 
++/*
++ * Copy bitmap and clear tail bits in last word.
++ */
++static inline void bitmap_copy_clear_tail(unsigned long *dst,
++		const unsigned long *src, unsigned int nbits)
++{
++	bitmap_copy(dst, src, nbits);
++	if (nbits % BITS_PER_LONG)
++		dst[nbits / BITS_PER_LONG] &= BITMAP_LAST_WORD_MASK(nbits);
++}
++
++/*
++ * On 32-bit systems bitmaps are represented as u32 arrays internally. On LE64
++ * machines the order of hi and lo parts of numbers match the bitmap structure.
++ * In both cases conversion is not needed when copying data from/to arrays of
++ * u32. But in LE64 case, typecast in bitmap_copy_clear_tail() may lead
++ * to out-of-bound access. To avoid that, both LE and BE variants of 64-bit
++ * architectures are not using bitmap_copy_clear_tail().
++ */
++#if BITS_PER_LONG == 64
++void bitmap_from_arr32(unsigned long *bitmap, const u32 *buf,
++							unsigned int nbits);
++void bitmap_to_arr32(u32 *buf, const unsigned long *bitmap,
++							unsigned int nbits);
++#else
++#define bitmap_from_arr32(bitmap, buf, nbits)			\
++	bitmap_copy_clear_tail((unsigned long *) (bitmap),	\
++			(const unsigned long *) (buf), (nbits))
++#define bitmap_to_arr32(buf, bitmap, nbits)			\
++	bitmap_copy_clear_tail((unsigned long *) (buf),		\
++			(const unsigned long *) (bitmap), (nbits))
++#endif
++
++/*
++ * On 64-bit systems bitmaps are represented as u64 arrays internally. On LE32
++ * machines the order of hi and lo parts of numbers match the bitmap structure.
++ * In both cases conversion is not needed when copying data from/to arrays of
++ * u64.
++ */
++#if (BITS_PER_LONG == 32) && defined(__BIG_ENDIAN)
++void bitmap_from_arr64(unsigned long *bitmap, const u64 *buf, unsigned int nbits);
++void bitmap_to_arr64(u64 *buf, const unsigned long *bitmap, unsigned int nbits);
++#else
++#define bitmap_from_arr64(bitmap, buf, nbits)			\
++	bitmap_copy_clear_tail((unsigned long *)(bitmap), (const unsigned long *)(buf), (nbits))
++#define bitmap_to_arr64(buf, bitmap, nbits)			\
++	bitmap_copy_clear_tail((unsigned long *)(buf), (const unsigned long *)(bitmap), (nbits))
++#endif
++
++/**
++ * BITMAP_FROM_U64() - Represent u64 value in the format suitable for bitmap.
++ * @n: u64 value
++ *
++ * Linux bitmaps are internally arrays of unsigned longs, i.e. 32-bit
++ * integers in 32-bit environment, and 64-bit integers in 64-bit one.
++ *
++ * There are four combinations of endianness and length of the word in linux
++ * ABIs: LE64, BE64, LE32 and BE32.
++ *
++ * On 64-bit kernels 64-bit LE and BE numbers are naturally ordered in
++ * bitmaps and therefore don't require any special handling.
++ *
++ * On 32-bit kernels 32-bit LE ABI orders lo word of 64-bit number in memory
++ * prior to hi, and 32-bit BE orders hi word prior to lo. The bitmap on the
++ * other hand is represented as an array of 32-bit words and the position of
++ * bit N may therefore be calculated as: word #(N/32) and bit #(N%32) in that
++ * word.  For example, bit #42 is located at 10th position of 2nd word.
++ * It matches 32-bit LE ABI, and we can simply let the compiler store 64-bit
++ * values in memory as it usually does. But for BE we need to swap hi and lo
++ * words manually.
++ *
++ * With all that, the macro BITMAP_FROM_U64() does explicit reordering of hi and
++ * lo parts of u64.  For LE32 it does nothing, and for BE environment it swaps
++ * hi and lo words, as is expected by bitmap.
++ */
++#if BITS_PER_LONG == 64
++#define BITMAP_FROM_U64(n) (n)
++#else
++#define BITMAP_FROM_U64(n) ((unsigned long) ((u64)(n) & ULONG_MAX)), \
++				((unsigned long) ((u64)(n) >> 32))
++#endif
++
++/**
++ * bitmap_from_u64 - Check and swap words within u64.
++ *  @mask: source bitmap
++ *  @dst:  destination bitmap
++ *
++ * In 32-bit Big Endian kernel, when using ``(u32 *)(&val)[*]``
++ * to read u64 mask, we will get the wrong word.
++ * That is ``(u32 *)(&val)[0]`` gets the upper 32 bits,
++ * but we expect the lower 32-bits of u64.
++ */
++static inline void bitmap_from_u64(unsigned long *dst, u64 mask)
++{
++	bitmap_from_arr64(dst, &mask, 64);
++}
++
+ static inline int bitmap_and(unsigned long *dst, const unsigned long *src1,
+ 			const unsigned long *src2, int nbits)
+ {
+diff --git a/lib/bitmap.c b/lib/bitmap.c
+index dfc0f06b13c4..7614c4d21337 100644
+--- a/lib/bitmap.c
++++ b/lib/bitmap.c
+@@ -847,3 +847,106 @@ unsigned long *bitmap_xzalloc(unsigned int nbits)
+ {
+ 	return xzalloc(BITS_TO_LONGS(nbits) * sizeof(unsigned long));
+ }
++
++#if BITS_PER_LONG == 64
++/**
++ * bitmap_from_arr32 - copy the contents of u32 array of bits to bitmap
++ *	@bitmap: array of unsigned longs, the destination bitmap
++ *	@buf: array of u32 (in host byte order), the source bitmap
++ *	@nbits: number of bits in @bitmap
++ */
++void bitmap_from_arr32(unsigned long *bitmap, const u32 *buf, unsigned int nbits)
++{
++	unsigned int i, halfwords;
++
++	halfwords = DIV_ROUND_UP(nbits, 32);
++	for (i = 0; i < halfwords; i++) {
++		bitmap[i/2] = (unsigned long) buf[i];
++		if (++i < halfwords)
++			bitmap[i/2] |= ((unsigned long) buf[i]) << 32;
++	}
++
++	/* Clear tail bits in last word beyond nbits. */
++	if (nbits % BITS_PER_LONG)
++		bitmap[(halfwords - 1) / 2] &= BITMAP_LAST_WORD_MASK(nbits);
++}
++EXPORT_SYMBOL(bitmap_from_arr32);
++
++/**
++ * bitmap_to_arr32 - copy the contents of bitmap to a u32 array of bits
++ *	@buf: array of u32 (in host byte order), the dest bitmap
++ *	@bitmap: array of unsigned longs, the source bitmap
++ *	@nbits: number of bits in @bitmap
++ */
++void bitmap_to_arr32(u32 *buf, const unsigned long *bitmap, unsigned int nbits)
++{
++	unsigned int i, halfwords;
++
++	halfwords = DIV_ROUND_UP(nbits, 32);
++	for (i = 0; i < halfwords; i++) {
++		buf[i] = (u32) (bitmap[i/2] & UINT_MAX);
++		if (++i < halfwords)
++			buf[i] = (u32) (bitmap[i/2] >> 32);
++	}
++
++	/* Clear tail bits in last element of array beyond nbits. */
++	if (nbits % BITS_PER_LONG)
++		buf[halfwords - 1] &= (u32) (UINT_MAX >> ((-nbits) & 31));
++}
++EXPORT_SYMBOL(bitmap_to_arr32);
++#endif
++
++#if (BITS_PER_LONG == 32) && defined(__BIG_ENDIAN)
++/**
++ * bitmap_from_arr64 - copy the contents of u64 array of bits to bitmap
++ *	@bitmap: array of unsigned longs, the destination bitmap
++ *	@buf: array of u64 (in host byte order), the source bitmap
++ *	@nbits: number of bits in @bitmap
++ */
++void bitmap_from_arr64(unsigned long *bitmap, const u64 *buf, unsigned int nbits)
++{
++	int n;
++
++	for (n = nbits; n > 0; n -= 64) {
++		u64 val = *buf++;
++
++		*bitmap++ = val;
++		if (n > 32)
++			*bitmap++ = val >> 32;
++	}
++
++	/*
++	 * Clear tail bits in the last word beyond nbits.
++	 *
++	 * Negative index is OK because here we point to the word next
++	 * to the last word of the bitmap, except for nbits == 0, which
++	 * is tested implicitly.
++	 */
++	if (nbits % BITS_PER_LONG)
++		bitmap[-1] &= BITMAP_LAST_WORD_MASK(nbits);
++}
++EXPORT_SYMBOL(bitmap_from_arr64);
++
++/**
++ * bitmap_to_arr64 - copy the contents of bitmap to a u64 array of bits
++ *	@buf: array of u64 (in host byte order), the dest bitmap
++ *	@bitmap: array of unsigned longs, the source bitmap
++ *	@nbits: number of bits in @bitmap
++ */
++void bitmap_to_arr64(u64 *buf, const unsigned long *bitmap, unsigned int nbits)
++{
++	const unsigned long *end = bitmap + BITS_TO_LONGS(nbits);
++
++	while (bitmap < end) {
++		*buf = *bitmap++;
++		if (bitmap < end)
++			*buf |= (u64)(*bitmap++) << 32;
++		buf++;
++	}
++
++	/* Clear tail bits in the last element of array beyond nbits. */
++	if (nbits % 64)
++		buf[-1] &= GENMASK_ULL((nbits - 1) % 64, 0);
++}
++EXPORT_SYMBOL(bitmap_to_arr64);
++#endif
 -- 
 2.39.2
 
