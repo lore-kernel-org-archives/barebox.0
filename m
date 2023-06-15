@@ -1,60 +1,59 @@
-Delivery-date: Thu, 15 Jun 2023 15:38:21 +0200
+Delivery-date: Thu, 15 Jun 2023 15:56:55 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9nB8-0083Nx-DP
-	for lore@lore.pengutronix.de; Thu, 15 Jun 2023 15:38:21 +0200
+	id 1q9nT6-0084BZ-NP
+	for lore@lore.pengutronix.de; Thu, 15 Jun 2023 15:56:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1q9nB5-00006A-Kd
-	for lore@pengutronix.de; Thu, 15 Jun 2023 15:38:20 +0200
+	id 1q9nT4-0002l9-46
+	for lore@pengutronix.de; Thu, 15 Jun 2023 15:56:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=c+9rJRD/5Jw26c1RNQGNjW+8D+I9TFRIabXN3FJreKE=; b=K4ebxLiXVsb08WMNyvJImG4rsC
-	v2fHVToh0rAN6zGp90kfJ0cUXl7U8QAZ/3kunhcc3E304R1IOG8RHbByLqhNz0umgHa0j8B3sFTC2
-	wVVW1xmxdqZuzYk/chSjFUOaIuShcGBoJx9YI60Y4G25jD0qA4HXJsVEIMVhUTc5WfzsSXZcG0PtU
-	H8gOJZBEKdT0CXUa7KAK7AP/+16WbiFDOkp29SyNZJlqZ2k6SG4x2sPaJgRvyPPHnxJviZ7ts1oOS
-	N3JBcJ75OyFZ9oa+arB0cJS+Nl7IH0fZSA6TECGSQ8SmTodU7czcybwxY3gKXsbn0b4HOjBL6hCGx
-	u55uI3XQ==;
+	bh=Axe3JQzXI3W1PZBX2ITkz7sw1QSyQYWD8iKo7WE6iuk=; b=qS1Y3aLGwPwWTzJJ2RONrlBPYm
+	e+FQevtIJJxoj89ULGavTu1MqKb7OTwZOToyqdq9fByf298LH3I9zFJiTxo5gjk5TTezA3U7d2cxo
+	MXe7qnph65q1LbXczCQCWztHYLJkcnwEYbETh/7/5swfwwkJJY1dOlGqx6WPUuyMl5frJXtMf05yb
+	l2Vv/q3l8XWfU3NWYAiZGu5X71cR/50fl1VKbLgrMP8T1rfKjPTH3f365zvhe/R21hkWdqpj+C1q7
+	OGHP8XYldXQvr1LEdH7tbDBhJ04YiOdrLdQ/DYUO7WTJOD9p6/p2Hwyd55zLsvRMDz320j4ojquUT
+	giwNpOgw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9n9l-00F1jm-0k;
-	Thu, 15 Jun 2023 13:36:57 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1q9nRw-00F46N-38;
+	Thu, 15 Jun 2023 13:55:44 +0000
+Received: from smtp115.iad3b.emailsrvr.com ([146.20.161.115])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1q9n9i-00F1ip-12
+	id 1q9nRt-00F45O-2p
 	for barebox@lists.infradead.org;
-	Thu, 15 Jun 2023 13:36:55 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1q9n9f-0008Qg-C2; Thu, 15 Jun 2023 15:36:51 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1q9n9e-007bII-MZ; Thu, 15 Jun 2023 15:36:50 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1q9n9d-00HGqV-OL; Thu, 15 Jun 2023 15:36:49 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Thu, 15 Jun 2023 13:55:43 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+	s=20221208-6x11dpa4; t=1686837339;
+	bh=RER7pY+RyGdX3dWJpBAUINuvp0mmwr6VS+4ns9FTq6A=;
+	h=From:To:Subject:Date:From;
+	b=HdwgVEfu6YsCPjQf+3EjMAXzJgNHBrWqFJdEguti5RZ5BFQxKs+mauJO68MlmAgV6
+	 ae0EKDMl5NbyDmcJBACjGZRC/h6KV4D9AnKaSTumxa2UuNlPgD7ksoBSvJPbJ8m8VE
+	 g24U2PDoMQ0XhY+iwP3568zGH335YtbkF3+n/f/k=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp7.relay.iad3b.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 8542E600EF;
+	Thu, 15 Jun 2023 09:55:38 -0400 (EDT)
+From: Ian Abbott <abbotti@mev.co.uk>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 15 Jun 2023 15:36:47 +0200
-Message-Id: <20230615133647.4115139-1-a.fatoum@pengutronix.de>
+Cc: Ian Abbott <abbotti@mev.co.uk>
+Date: Thu, 15 Jun 2023 14:55:26 +0100
+Message-Id: <20230615135526.30878-1-abbotti@mev.co.uk>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Classification-ID: b3b3fb12-bef0-4058-ab69-7f86da9eca9e-1-1
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230615_063654_362756_D2D7E758 
-X-CRM114-Status: GOOD (  18.67  )
+X-CRM114-CacheID: sfid-20230615_065542_058872_A271A445 
+X-CRM114-Status: GOOD (  10.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,112 +71,57 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] Documentation: user: usb: bring up to date
+Subject: [PATCH] scripts: socfpga_import_preloader: Translate DOS line endings
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The USB support got a few features since the docs were last touched.
-Document them.
+If the handoff files were generated on a Windows system, they will have
+DOS line endings.  The `indent` program (with the options used by the
+script) does a lousy job tidying up those files, leaving ASCII CR
+characters embedded in the lines.  This is particularly bad for array
+initializers that have one value per line, because they all end up on a
+single line with embedded ASCII CR characters between each value.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Add an initial `sed` command to `copy_source()` to match and remove an
+ASCII CR character from the end of each input line.
+
+Also output a message before running `unifdef` and fix the spelling of
+"paths" in one of the other messages.
+
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
 ---
- Documentation/user/usb.rst | 35 ++++++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 9 deletions(-)
+ scripts/socfpga_import_preloader | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/user/usb.rst b/Documentation/user/usb.rst
-index eaee342956f9..402f76d8da33 100644
---- a/Documentation/user/usb.rst
-+++ b/Documentation/user/usb.rst
-@@ -13,9 +13,9 @@ devices are not disconnected while barebox is running.
- USB Networking
- ^^^^^^^^^^^^^^
+diff --git a/scripts/socfpga_import_preloader b/scripts/socfpga_import_preloader
+index bd54e1b913..156382009e 100755
+--- a/scripts/socfpga_import_preloader
++++ b/scripts/socfpga_import_preloader
+@@ -79,6 +79,10 @@ copy_source() {
  
--barebox supports ASIX-compatible devices and the SMSC95xx. After
--detection, the device shows up as eth0 and can be used like a regular network
--device.
-+barebox supports r8152, ASIX-compatible devices and the SMSC95xx. After
-+detection, the device shows up as an extra network device (e.g. eth1) and
-+can be used like a regular network device.
+ 	cp $src $tgt
  
- To use a USB network device together with the :ref:`command_ifup` command, add the
- following to ``/env/network/eth0-discover``:
-@@ -26,6 +26,9 @@ following to ``/env/network/eth0-discover``:
- 
-   usb
- 
-+Alternatively, a ``detect -a`` (all) can be forced in ``ifup`` by setting
-+``global.net.ifup_force_detect=1``.
++	echo "  Translating DOS line endings..."
++	sed -i "s/`echo -e '\r'`$//" $tgt
 +
- USB mass storage
- ^^^^^^^^^^^^^^^^
++	echo "  Fixing conditional compilation..."
+ 	unifdef -D HCX_COMPAT_MODE=1 -D ENABLE_INST_ROM_WRITE=1 $tgt -o $tgt
  
-@@ -39,18 +42,21 @@ barebox supports several different USB gadget drivers:
+ 	echo "	Fixing extern/static keywords..."
+@@ -99,7 +103,7 @@ copy_source() {
+ 	sed -i 's/alt_8/int8_t/g' $tgt
+ 	sed -i 's/#include "alt_types.h"//g' $tgt
  
- - Device Firmware Upgrade (DFU)
- - Android Fastboot
-+- USB mass storage
- - serial gadget
- 
- The recommended way to use USB gadget is with the :ref:`command_usbgadget` command.
- While there are individual commands for :ref:`command_dfu` and :ref:`command_usbserial`,
--the :ref:`command_usbgadget` commands supports registering composite gadgets.
-+the :ref:`command_usbgadget` commands supports registering composite gadgets, which
-+exports multiple functions at once. This happens in the "background" without impacting
-+use of the shell.
- 
- Partition description
- ^^^^^^^^^^^^^^^^^^^^^
- 
--The USB gadget commands for Android Fastboot and DFU take a partition description
--which describes which barebox partitions are exported via USB. The partition
--description is referred to as ``<desc>`` in the command help texts. It has
-+The USB gadget commands for Android Fastboot, DFU and the mass storage gadget
-+take a partition description which describes which barebox partitions are exported via USB.
-+The partition description is referred to as ``<desc>`` in the command help texts. It has
- the general form ``partition(name)flags,partition(name)flags,...``.
- 
- The **partition** field is the partition as accessible in barebox. This can be a
-@@ -65,7 +71,8 @@ Several **flags** are supported, each denoted by a single character:
- * ``r`` Readback. The partition is allowed to be read back (DFU specific)
- * ``c`` The file shall be created if it doesn't exist. Needed when a regular file is exported.
- * ``u`` The partition is a MTD device and shall be flashed with a UBI image.
--* ``o`` The partition is optional, i.e. if it is not available at initialization time, it is skipped instead of aborting the initialization
-+* ``o`` The partition is optional, i.e. if it is not available at initialization time, it is skipped
-+        instead of aborting the initialization. This is currently only supported for fastboot.
- 
- Example:
- 
-@@ -223,6 +230,16 @@ and initrd:
-   fi
-   timeout -k 5 3 fastboot -i 7531 oem exec -- bootm -o /devicetree -r /initrd /kernel
- 
-+USB Mass storage gadget
-+^^^^^^^^^^^^^^^^^^^^^^^
-+
-+Example exporting barebox block devices to a USB host::
-+
-+.. code-block:: sh
-+
-+  usbgadget -S /dev/mmc0(emmc),/dev/mmc1(sd)
-+
-+
- USB Composite Multifunction Gadget
- ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
- 
-@@ -244,7 +261,7 @@ after creating the gadget. The gadget can be removed with ``usbgadget -d``.
- USB OTG support
- ---------------
- 
--barebox does not have USB OTG support. However, barebox supports some USB cores in
-+barebox does not have true USB OTG support. However, barebox supports some USB cores in
- both host and device mode. If these are specified for otg in the device tree
- (dr_mode = "otg";) barebox registers a OTG device which can be used to decide which
- mode shall be used. The device has a ``mode`` parameter which by default has the
+-	echo "	Fixing include pathes..."
++	echo "	Fixing include paths..."
+ 	# Fix include pathes
+ 	sed -i 's/#include <iocsr_config_cyclone5.h>/#include <mach\/cyclone5-scan-manager.h>/g' $tgt
+ 	sed -i 's/#include <pinmux_config.h>/#include <common.h>/g' $tgt
 -- 
 2.39.2
 
