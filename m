@@ -1,61 +1,61 @@
-Delivery-date: Mon, 19 Jun 2023 11:48:10 +0200
+Delivery-date: Mon, 19 Jun 2023 11:48:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qBBUa-00D2nf-3Q
-	for lore@lore.pengutronix.de; Mon, 19 Jun 2023 11:48:10 +0200
+	id 1qBBUc-00D2oU-Ka
+	for lore@lore.pengutronix.de; Mon, 19 Jun 2023 11:48:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qBBUX-0000mm-Q9
-	for lore@pengutronix.de; Mon, 19 Jun 2023 11:48:10 +0200
+	id 1qBBUa-0000nY-AV
+	for lore@pengutronix.de; Mon, 19 Jun 2023 11:48:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=9GWhhtLqLigGPFri6jHnOz/uJoleQCtZh5k/EJHrBcI=; b=WQXM5uflhQ/eAN+gtHa9R5gPV3
-	mG7a+AJD4MxuSg0JE3RWRpMfgniT2HDOkRZgi2V6xVC00obQKuUds0mcUHk2BatcV4Y9UvqwozmRW
-	9sWeFmCcDvu4QWA2Qvz5nfGUyF9c/FG+zhLj2dvWXZdukWzNuR1JzuRwdmghPJkxiivoI9oryzeZR
-	jS5fSD7zBsKim8toYA11xuoBQd+HCT1fcjR1jAsfXHQhKpJ2E6gyfQ5ID+1uu2ffgpA8mrZjAwOfq
-	kdMMlvGDbcvhggC3LAxgr+8lGhyjZjO6yJ2IciwgVnfyyV034khN2n5ZBK3dIkmdTF2h+6s4PSX28
-	1nxm0CGQ==;
+	bh=jfSBbHYh5MPawOeM9xzvChyAJYP6o5G7BMIUgD7+xVc=; b=cRDcV0Hob3kdSWFUgeHZzxbkxG
+	nG94kqh3ztYmUzlevyN+DA4AXcw2A1qTB3YfchEaSUb27L+c49CarjOosUQJEgg6HlUryKD1kBnuX
+	Lc5YQ4WWrYv9Y2f0J2YB4/I2+lz005icTf1484ulQeGhGg1hsWsjaM3grLkM5MhCGGQaV5f3/kcjE
+	XgWyGULrCQClhaD3MfEBDXQHqruRnCIcAYUVtLIiydat+zXPK6vkGX52EzBevj0+n2Q7MxNXiK/4Q
+	eOcWf/KzdzIU0Z32qZPWrT5CKENUXyU+kqi+skgrvnv9NDd1jlFdslZzVlVaIWRB7gpk9lKmUWpph
+	Q3Rla1hQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qBBTN-0084Bw-1g;
-	Mon, 19 Jun 2023 09:46:57 +0000
+	id 1qBBTE-0084AX-1p;
+	Mon, 19 Jun 2023 09:46:48 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qBBTK-0084BK-0b
+	id 1qBBTA-00848Q-2U
 	for barebox@lists.infradead.org;
-	Mon, 19 Jun 2023 09:46:55 +0000
+	Mon, 19 Jun 2023 09:46:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qBBTI-0000VL-TC; Mon, 19 Jun 2023 11:46:52 +0200
+	id 1qBBT5-0000SR-EA; Mon, 19 Jun 2023 11:46:39 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qBBTI-008TaZ-7k; Mon, 19 Jun 2023 11:46:52 +0200
+	id 1qBBT4-008TaU-PK; Mon, 19 Jun 2023 11:46:38 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qBBTI-00HRTT-0A;
-	Mon, 19 Jun 2023 11:46:52 +0200
+	id 1qBBT4-00HMub-1V;
+	Mon, 19 Jun 2023 11:46:38 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 19 Jun 2023 11:46:51 +0200
-Message-Id: <20230619094651.4143187-1-a.fatoum@pengutronix.de>
+Date: Mon, 19 Jun 2023 11:46:37 +0200
+Message-Id: <20230619094637.4134449-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230619_024654_225852_871817E8 
-X-CRM114-Status: UNSURE (   9.33  )
+X-CRM114-CacheID: sfid-20230619_024644_807706_1E5EFE62 
+X-CRM114-Status: UNSURE (   9.91  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -79,58 +79,57 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] MAKEALL: add incremental build support
+Subject: [PATCH] ci: build: have CI build ARCH=openrisc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-MAKEALL always deletes the build directory, before starting. Add a
-command line option to make this configurable.
+qemu-system-misc ships with qemu-system-or1k and kernel.org mirrors a
+crostool toolchain capable of building barebox for running in it.
+Let's make use of that. We don't yet activate openrisc for CI test
+as it fails to boot up with SELFTEST_OF_MANIPULATION. A suggested fix
+is still under discussion[1].
+
+[1]: https://lore.barebox.org/barebox/20230605063719.1431079-1-a.fatoum@pengutronix.de/
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- MAKEALL | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ .github/workflows/build-defconfigs.yml | 2 +-
+ test/Containerfile                     | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/MAKEALL b/MAKEALL
-index a4e268d54cf8..f2e774cf88be 100755
---- a/MAKEALL
-+++ b/MAKEALL
-@@ -53,6 +53,7 @@ usage() {
- 	echo "LOGDIR      -l      log dir"
- 	echo "REGEX       -e      regex"
- 	echo "KCONFIG_ADD -k      kconfig fragment"
-+	echo "INCREMENTAL -i"
- 	echo ""
- }
+diff --git a/.github/workflows/build-defconfigs.yml b/.github/workflows/build-defconfigs.yml
+index ff9264721d87..4cf6df52d44d 100644
+--- a/.github/workflows/build-defconfigs.yml
++++ b/.github/workflows/build-defconfigs.yml
+@@ -3,7 +3,7 @@ name: build images
+ on: [push, pull_request]
  
-@@ -89,7 +90,7 @@ do_build_target() {
- 	local log_report="${LOGDIR}/${target}/report.log"
- 	local log_err="${LOGDIR}/${target}/errors.log"
+ env:
+-  ARCH: arm mips powerpc riscv sandbox x86
++  ARCH: arm mips powerpc riscv sandbox x86 openrisc
  
--	rm -rf "${BUILDDIR}"
-+	[ "$INCREMENTAL" != "1" ] && rm -rf "${BUILDDIR}"
- 	mkdir -p "${LOGDIR}/${target}"
- 	printf "Building ${arch} ${target} \n" >&2 | tee -a "${log_report}"
+ jobs:
+   defconfigs:
+diff --git a/test/Containerfile b/test/Containerfile
+index a53c00584f68..224ea2ea4804 100644
+--- a/test/Containerfile
++++ b/test/Containerfile
+@@ -55,6 +55,7 @@ RUN korg_crosstool_dl() { wget -nv -O - https://mirrors.edge.kernel.org/pub/tool
+     korg_crosstool_dl x86_64 ${GCC_VERSION} arm-linux-gnueabi && \
+     korg_crosstool_dl x86_64 ${GCC_VERSION} aarch64-linux     && \
+     korg_crosstool_dl x86_64 ${GCC_VERSION} mips-linux        && \
++    korg_crosstool_dl x86_64 ${GCC_VERSION} or1k-linux        && \
+     korg_crosstool_dl x86_64 ${GCC_VERSION} powerpc-linux     && \
+     korg_crosstool_dl x86_64 ${GCC_VERSION} riscv64-linux
  
-@@ -196,7 +197,7 @@ do_build_all() {
- 	return $build_target
- }
+@@ -74,6 +75,7 @@ RUN cd /tmp && \
+ ENV CROSS_COMPILE_arm=/opt/gcc-${GCC_VERSION}-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi-
+ ENV CROSS_COMPILE_arm64=/opt/gcc-${GCC_VERSION}-nolibc/aarch64-linux/bin/aarch64-linux-
+ ENV CROSS_COMPILE_mips=/opt/gcc-${GCC_VERSION}-nolibc/mips-linux/bin/mips-linux-
++ENV CROSS_COMPILE_openrisc=/opt/gcc-${GCC_VERSION}-nolibc/or1k-linux/bin/or1k-linux-
+ ENV CROSS_COMPILE_powerpc=/opt/gcc-${GCC_VERSION}-nolibc/powerpc-linux/bin/powerpc-linux-
+ ENV CROSS_COMPILE_riscv=/opt/gcc-${GCC_VERSION}-nolibc/riscv64-linux/bin/riscv64-linux-
  
--while getopts "hc:j:O:l:a:e:k:" Option
-+while getopts "hc:j:O:l:a:e:k:i" Option
- do
- case $Option in
- 	a )
-@@ -220,6 +221,9 @@ case $Option in
- 	k )
- 		KCONFIG_ADD="${KCONFIG_ADD} ${OPTARG}"
- 		;;
-+	i )
-+		INCREMENTAL=1
-+		;;
- 	h )
- 		usage
- 		exit 0
 -- 
 2.39.2
 
