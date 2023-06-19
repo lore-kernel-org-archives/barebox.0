@@ -1,64 +1,64 @@
-Delivery-date: Mon, 19 Jun 2023 11:54:03 +0200
+Delivery-date: Mon, 19 Jun 2023 11:54:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qBBaH-00D39w-0u
-	for lore@lore.pengutronix.de; Mon, 19 Jun 2023 11:54:03 +0200
+	id 1qBBaP-00D3Ai-GO
+	for lore@lore.pengutronix.de; Mon, 19 Jun 2023 11:54:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qBBaE-0001vR-9n
-	for lore@pengutronix.de; Mon, 19 Jun 2023 11:54:03 +0200
+	id 1qBBaM-0001zT-US
+	for lore@pengutronix.de; Mon, 19 Jun 2023 11:54:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mCe+lY6OT0HgD1OEDOCoTs8jU4WrKU+xbrmHClbDulo=; b=Mgi4N+/+W3TcMJFGxgEpEv0CTd
-	DuywZJHbQK8jmTHQtc3nLQ+AwrU7cyTQSQ3kB9UV0xyV5m4bOCitlITRdoT3oYZ92FeMmW9OH+L6I
-	UXZY9yKfxZgWiLT4eruDr6MEVCNS84Jqs3TLIN/EbrTh8/fMJVos1W5VBtdRoXaMPF2b1XCB+bZ3+
-	4CRG2NdD4JJShm00weawjDrv37zDBM4skzdYMNBXuV1yA549UmymNnvB1/+TSUVQwKD1C5Gg5H3vb
-	R/9JdoRA3NeYnVX8/ON5Dai6YKHiDFCJQhBdKuM8UAPDlUgOOo8CHL/sY+yBChp8AUztokn4QivA4
-	0blwUQow==;
+	bh=S/hdqS3byZuImpcJJPVYwj/jf+SoJLFVCCnsmxPQgPE=; b=sW5k6zAeSbTYOdgkktfbftu7ke
+	0AccvCjLN9c17nzpeB8TWb8UAFXYumcfRZ9mDSOHihaAoAqi2K21awk4C5m450xDqT1hiJWmmwS/K
+	GDYSP1nB24qkpLka+kj2xwQi4YWTzfI/UFlbF1VEuu6hyj54SYGXNsMH/VM39qM8ZGSaiHFEnbJLV
+	ZcsHVaDsj8WRtSVGHbMJ7CuUdhtOrg3l919Jm5tJwEIBmm/ROpKiSPabZAP3z8ZpaWkczH6sAbC62
+	qiKBY1oXm41GwvEWk2MWUm/uTiwWJ6C1RapZ+k0OY/Elfs61WMdn6Zt8a+6x1No8IdTUXe8C9EAbM
+	LAwWjeCQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qBBZ7-0085VA-1L;
-	Mon, 19 Jun 2023 09:52:53 +0000
+	id 1qBBZM-0085bI-1K;
+	Mon, 19 Jun 2023 09:53:08 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qBBZ3-0085Su-1V
+	id 1qBBZI-0085Zd-2i
 	for barebox@lists.infradead.org;
-	Mon, 19 Jun 2023 09:52:51 +0000
+	Mon, 19 Jun 2023 09:53:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qBBZ1-0001au-GB; Mon, 19 Jun 2023 11:52:47 +0200
+	id 1qBBZ1-0001at-GA; Mon, 19 Jun 2023 11:52:47 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qBBYz-008Tbq-QG; Mon, 19 Jun 2023 11:52:45 +0200
+	id 1qBBYz-008Tbn-MM; Mon, 19 Jun 2023 11:52:45 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qBBYy-0004bx-1N;
+	id 1qBBYy-0004c1-1P;
 	Mon, 19 Jun 2023 11:52:44 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: rcz@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 19 Jun 2023 11:52:39 +0200
-Message-Id: <20230619095240.4168216-5-a.fatoum@pengutronix.de>
+Date: Mon, 19 Jun 2023 11:52:40 +0200
+Message-Id: <20230619095240.4168216-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230619095240.4168216-1-a.fatoum@pengutronix.de>
 References: <20230619095240.4168216-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230619_025249_502674_C29D15DB 
-X-CRM114-Status: GOOD (  11.96  )
+X-CRM114-CacheID: sfid-20230619_025305_140610_BEAB0516 
+X-CRM114-Status: GOOD (  10.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,117 +81,118 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 4/5] test: add support for passing devices on command line
+Subject: [PATCH 5/5] test: don't hardcode origin of OVMF.fd
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The test/emulate.pl script support a number of options to create
-RNG, block and console devices for use inside Qemu. In preparation for
-phasing out the perl script, add these as pytest options. These
-currently fix up options into the QEMUDriver extra_args key, but the
-intention is to move the logic into upstream QEMUDriver over time.
+Labgrid will look up the bios key in images, so we had an ugly
+workaround of the "runner" (test/emulate.pl or script running in CI)
+"downloading" /usr/share/qemu/OVMF.fd into the build directory and
+referencing that.
+
+Qemu already has a search path for BIOS images (controllable by -L),
+where OVMF.fd, which would already point at /usr/share/qemu on Debian,
+so let's make use of this by passing literal -bios OVMF.fd without
+involving Labgrid automagic.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/conftest.py | 70 ++++++++++++++++++++++++++++++++++++++++++++++++
- test/strategy.py |  6 +++++
- 2 files changed, 76 insertions(+)
+ .github/workflows/test-labgrid-pytest.yml | 4 ----
+ test/x86/pc@efi_defconfig.yaml            | 6 +-----
+ test/x86/q35@efi_defconfig.yaml           | 6 +-----
+ test/x86/virtio@efi_defconfig.yaml        | 6 +-----
+ 4 files changed, 3 insertions(+), 19 deletions(-)
 
-diff --git a/test/conftest.py b/test/conftest.py
-index 794574799ff7..2bca3c37e5fb 100644
---- a/test/conftest.py
-+++ b/test/conftest.py
-@@ -33,3 +33,73 @@ def pytest_addoption(parser):
-     parser.addoption('--dry-run', action='store_const', const='qemu_dry_run',
-         dest='lg_initial_state',
-         help=('(for debugging) skip tests and just print Qemu command line'))
-+    parser.addoption('--rng', action='count', dest='qemu_rng',
-+        help=('instantiate Virt I/O random number generator'))
-+    parser.addoption('--console', action='count', dest='qemu_console', default=0,
-+        help=('Pass an extra console (Virt I/O or ns16550_pci) to emulated barebox'))
-+    parser.addoption('--blk', action='append', dest='qemu_block',
-+        default=[], metavar="FILE",
-+        help=('Pass block device to emulated barebox. Can be specified more than once'))
-+    parser.addoption('--qemu', action='append', dest='qemu_arg',
-+        default=[], metavar="option",
-+        help=('Pass option to QEMU as is'))
-+
-+@pytest.fixture(scope="session")
-+def strategy(request, target, pytestconfig):
-+    try:
-+        strategy = target.get_driver("Strategy")
-+    except NoDriverFoundError as e:
-+        pytest.exit(e)
-+
-+    try:
-+        features = target.env.config.data["targets"]["main"]["features"]
-+    except KeyError:
-+        features = []
-+
-+    virtio = None
-+
-+    if "virtio-mmio" in features:
-+        virtio = "device"
-+    if "virtio-pci" in features:
-+        virtio = "pci,disable-legacy=on,disable-modern=off"
-+        features.append("pci")
-+
-+    if virtio and pytestconfig.option.qemu_rng:
-+        for i in range(pytestconfig.option.qemu_rng):
-+            strategy.append_qemu_args("-device", f"virtio-rng-{virtio}")
-+
-+    for i in range(pytestconfig.option.qemu_console):
-+        if virtio and i == 0:
-+            strategy.append_qemu_args(
-+                "-device", f"virtio-serial-{virtio}",
-+                "-chardev", f"pty,id=virtcon{i}",
-+                "-device", f"virtconsole,chardev=virtcon{i},name=console.virtcon{i}"
-+            )
-+            continue
-+
-+        # ns16550 serial driver only works with x86 so far
-+        if 'pci' in features:
-+            strategy.append_qemu_args(
-+                "-chardev", f"pty,id=pcicon{i}",
-+                "-device", f"pci-serial,chardev=pcicon{i}"
-+            )
-+        else:
-+            pytest.exit("barebox currently supports only a single extra virtio console\n", 1)
-+
-+    for i, blk in enumerate(pytestconfig.option.qemu_block):
-+        if virtio:
-+            strategy.append_qemu_args(
-+                "-drive", f"if=none,file={blk},format=raw,id=hd{i}",
-+                "-device", f"virtio-blk-{virtio},drive=hd{i}"
-+            )
-+        else:
-+            pytest.exit("--blk unsupported for target\n", 1)
-+
-+    for arg in pytestconfig.option.qemu_arg:
-+        strategy.append_qemu_args(arg)
-+
-+    state = request.config.option.lg_initial_state
-+    if state is not None:
-+        strategy.force(state)
-+
-+    return strategy
-diff --git a/test/strategy.py b/test/strategy.py
-index 65cdae4fbf04..8aa58151f6b8 100644
---- a/test/strategy.py
-+++ b/test/strategy.py
-@@ -122,6 +122,12 @@ class BareboxTestStrategy(Strategy):
-         self.target.env.config.data["tools"][self.qemu.qemu_bin] = \
-                 shutil.which(self.qemu.qemu_bin)
+diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
+index efbb51181b18..0f34f43e8dff 100644
+--- a/.github/workflows/test-labgrid-pytest.yml
++++ b/.github/workflows/test-labgrid-pytest.yml
+@@ -56,10 +56,6 @@ jobs:
+         ./MAKEALL -O build-${{matrix.arch}} -k test/kconfig/enable_self_test.kconf \
+                 -k test/kconfig/disable_target_tools.kconf ${{matrix.defconfig}}
  
-+    def append_qemu_args(self, *args):
-+        if self.qemu is None:
-+            pytest.exit('Qemu option supplied for non-Qemu target')
-+        for arg in args:
-+            self.console.extra_args += " " + arg
-+
- def quote_cmd(cmd):
-     quoted = map(lambda s : s if s.find(" ") == -1 else "'" + s + "'", cmd)
-     return " ".join(quoted)
+-        if [ ${{matrix.arch}} = "x86" ]; then
+-          cp /usr/share/ovmf/OVMF.fd build-${{matrix.arch}}
+-        fi
+-
+         if [ ${{matrix.arch}} = "riscv" ]; then
+           cp /usr/share/qemu/opensbi-riscv32-generic-fw_dynamic.bin build-${{matrix.arch}}
+         fi
+diff --git a/test/x86/pc@efi_defconfig.yaml b/test/x86/pc@efi_defconfig.yaml
+index e818409703f8..ae06fbf69744 100644
+--- a/test/x86/pc@efi_defconfig.yaml
++++ b/test/x86/pc@efi_defconfig.yaml
+@@ -7,8 +7,7 @@ targets:
+         cpu: Nehalem
+         memory: 1024M
+         kernel: barebox.efi
+-        bios: OVMF.fd
+-        extra_args: ''
++        extra_args: '-bios OVMF.fd'
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+@@ -20,10 +19,7 @@ targets:
+       kconfig_add:
+         - CONFIG_DRIVER_SERIAL_NS16550=y
+         - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
+-      download:
+-        OVMF.fd: /usr/share/qemu/OVMF.fd
+ images:
+   barebox.efi: !template "$LG_BUILDDIR/barebox.efi"
+-  OVMF.fd: !template "$LG_BUILDDIR/OVMF.fd"
+ imports:
+   -  ../strategy.py
+diff --git a/test/x86/q35@efi_defconfig.yaml b/test/x86/q35@efi_defconfig.yaml
+index 71c44e8cd45f..578a3654fe9b 100644
+--- a/test/x86/q35@efi_defconfig.yaml
++++ b/test/x86/q35@efi_defconfig.yaml
+@@ -7,8 +7,7 @@ targets:
+         cpu: Nehalem
+         memory: 1024M
+         kernel: barebox.efi
+-        bios: OVMF.fd
+-        extra_args: -global ICH9-LPC.noreboot=false
++        extra_args: '-bios OVMF.fd -global ICH9-LPC.noreboot=false'
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+@@ -20,10 +19,7 @@ targets:
+       kconfig_add:
+         - CONFIG_DRIVER_SERIAL_NS16550=y
+         - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
+-      download:
+-        OVMF.fd: /usr/share/qemu/OVMF.fd
+ images:
+   barebox.efi: !template "$LG_BUILDDIR/barebox.efi"
+-  OVMF.fd: !template "$LG_BUILDDIR/OVMF.fd"
+ imports:
+   -  ../strategy.py
+diff --git a/test/x86/virtio@efi_defconfig.yaml b/test/x86/virtio@efi_defconfig.yaml
+index 389089363872..83340d19ddef 100644
+--- a/test/x86/virtio@efi_defconfig.yaml
++++ b/test/x86/virtio@efi_defconfig.yaml
+@@ -7,8 +7,7 @@ targets:
+         cpu: Nehalem
+         memory: 1024M
+         kernel: barebox.efi
+-        bios: OVMF.fd
+-        extra_args: ''
++        extra_args: '-bios OVMF.fd'
+       BareboxDriver:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+@@ -21,10 +20,7 @@ targets:
+         - test/kconfig/virtio-pci.cfg
+         - CONFIG_DRIVER_SERIAL_NS16550=y
+         - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
+-      download:
+-        OVMF.fd: /usr/share/qemu/OVMF.fd
+ images:
+   barebox.efi: !template "$LG_BUILDDIR/barebox.efi"
+-  OVMF.fd: !template "$LG_BUILDDIR/OVMF.fd"
+ imports:
+   -  ../strategy.py
 -- 
 2.39.2
 
