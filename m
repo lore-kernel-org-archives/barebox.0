@@ -1,60 +1,59 @@
-Delivery-date: Tue, 20 Jun 2023 07:22:11 +0200
+Delivery-date: Tue, 20 Jun 2023 07:53:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qBToi-00E22G-Ue
-	for lore@lore.pengutronix.de; Tue, 20 Jun 2023 07:22:11 +0200
+	id 1qBUIn-00E3Ld-7f
+	for lore@lore.pengutronix.de; Tue, 20 Jun 2023 07:53:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qBTog-0003xj-6q
-	for lore@pengutronix.de; Tue, 20 Jun 2023 07:22:11 +0200
+	id 1qBUIk-0006cx-Mb
+	for lore@pengutronix.de; Tue, 20 Jun 2023 07:53:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gM1rzS2HsDkb8nVhXHP2FznYAdPSMEpXJuyC1K4jhKI=; b=K0x9UEXDtarFUkvDz+7yGLabJs
-	ilmz54IRzg+jxrbCDsjWslEndty0uZzn5ZrwwDAIzQCA8KXqyY6ChqcDctmpUasqB5j2BKkEklgTY
-	ys0V3TRu2nltzClI1RQQ+/1gYnFhuo1Bp5AgS9+vlEGCOunv3Y3gUSt/4X7hyyZTWZf/t5UXiLH2c
-	JSV0kPStsz7SmUQAuyjhGjlM4JaCUNRnTva6noFZ5c7PrJyDrxpLDiiAwF6ZNgCeluFGLv43dnKu7
-	PjgfLw2H2zYZeqknHgbwmrS/NjXfklZ8WFtnZlaaFN8rGDMsNutq4jd9jAvTWgNW3Q0wSXZI05oDS
-	gPd/FEHg==;
+	bh=Y4T6fdq4HUjs1x5oyBsI0JOSCjYvgqFjQ5VTI4CYUho=; b=jml33I6wLUnEWldpUahe0JmKYw
+	H00z6ryr/IGmIEm6M04Pe8s84yQ+kNZsN5g6SevNXa3XHENDnEJOUEZalS36uhzEzMpHeTpjpwTU+
+	GbHMISrI/T9tlj+L4AlSlOP8zvdhNXkfGTeB1myl8xM4fpJyD085WPQDr77rcVyrDKx2cJ5GdQgSc
+	ejiJuHMkZzJaaSlzLiHFSIL2a119EJwu1q6tYZM4ipBspzobWBuuMCOSxoz7T1WhsOdLtQ8h10Z5A
+	tJFk4HRPBMlyCaW3+FzTPGM0Bl82BmLOfugw4sHIXjI823Inb9lYpDcjTRaiAIYhbgxBubu0OkcGS
+	RbvbGobg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qBTnR-00ABIi-0k;
-	Tue, 20 Jun 2023 05:20:53 +0000
+	id 1qBUHV-00ADdN-3D;
+	Tue, 20 Jun 2023 05:51:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qBTnN-00ABIG-1Y
+	id 1qBUHS-00ADcx-2M
 	for barebox@lists.infradead.org;
-	Tue, 20 Jun 2023 05:20:51 +0000
+	Tue, 20 Jun 2023 05:51:56 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qBTnL-0003oy-Ip; Tue, 20 Jun 2023 07:20:47 +0200
+	id 1qBUHQ-0006YW-SH; Tue, 20 Jun 2023 07:51:52 +0200
 Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qBTnJ-00084D-EJ; Tue, 20 Jun 2023 07:20:45 +0200
-Date: Tue, 20 Jun 2023 07:20:45 +0200
+	id 1qBUHQ-0000Tl-KX; Tue, 20 Jun 2023 07:51:52 +0200
+Date: Tue, 20 Jun 2023 07:51:52 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230620052045.deruonvmw3sq42is@pengutronix.de>
+Message-ID: <20230620055152.hrebzk6c23inwirf@pengutronix.de>
 References: <20230614135452.1884124-1-a.fatoum@pengutronix.de>
- <20230614135452.1884124-6-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230614135452.1884124-6-a.fatoum@pengutronix.de>
+In-Reply-To: <20230614135452.1884124-1-a.fatoum@pengutronix.de>
 User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230619_222049_709778_AA52287E 
-X-CRM114-Status: GOOD (  34.13  )
+X-CRM114-CacheID: sfid-20230619_225154_792041_461FC11E 
+X-CRM114-Status: GOOD (  17.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,331 +76,99 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 05/10] gpiolib: export proper gpio descriptor API
+Subject: Re: [PATCH 00/10] gpio: add proper gpiod API and gpio-mux support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Hi Ahmad,
 
-thanks a lot for this patchset, please see my comments below.
-
 On 23-06-14, Ahmad Fatoum wrote:
-> Our current gpiod API doesn't return actual struct gpio_desc pointers
-> that can be dereferenced by the GPIO core, like in Linux. We actually
-> have all the infrastructure in place to do that, but we just aren't
-> using this yet. Rename the relevant gpioinfo_ functions to gpiod_,
-> document them, export them and have them observe the same semantics as
-> their Linux equivalents.
+> The gpiod_ (GPIO descriptor) API used with Linux differs from barebox'
+> normal GPIO API:
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/gpio/gpiolib.c        | 173 ++++++++++++++++++++++++++++++----
->  include/linux/gpio/consumer.h |  62 ++----------
->  2 files changed, 163 insertions(+), 72 deletions(-)
+>  - gpiod handles are opaque pointers and not an integer, which users
+>    have an expectation of stability for
 > 
-> diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-> index 402d408be071..25d91d250dc8 100644
-> --- a/drivers/gpio/gpiolib.c
-> +++ b/drivers/gpio/gpiolib.c
-> @@ -21,6 +21,36 @@ struct gpio_desc {
->  	const char *name;
->  };
->  
-> +/*
-> + * This descriptor validation needs to be inserted verbatim into each
-> + * function taking a descriptor, so we need to use a preprocessor
-> + * macro to avoid endless duplication. If the desc is NULL it is an
-> + * optional GPIO and calls should just bail out.
-> + */
-> +static int validate_desc(const struct gpio_desc *desc, const char *func)
-> +{
-> +	if (!desc)
-> +		return 0;
-> +	if (IS_ERR(desc)) {
-> +		pr_warn("%s: invalid GPIO (errorpointer)\n", func);
-> +		return PTR_ERR(desc);
-> +	}
-> +
-> +	return 1;
-> +}
-> +
-> +#define VALIDATE_DESC(desc) do { \
-> +	int __valid = validate_desc(desc, __func__); \
-> +	if (__valid <= 0) \
-> +		return __valid; \
-> +	} while (0)
-> +
-> +#define VALIDATE_DESC_VOID(desc) do { \
-> +	int __valid = validate_desc(desc, __func__); \
-> +	if (__valid <= 0) \
-> +		return; \
-> +	} while (0)
-> +
->  static struct gpio_desc *gpio_desc;
->  
->  static int gpio_desc_alloc(void)
-> @@ -50,12 +80,12 @@ static struct gpio_desc *gpio_to_desc(unsigned gpio)
->  	return NULL;
->  }
->  
-> -static unsigned gpioinfo_chip_offset(struct gpio_desc *desc)
-> +static unsigned gpioinfo_chip_offset(const struct gpio_desc *desc)
+>  - gpiod API uses logic levels by default with separate raw API for
+>    physical level instead of physical level by default and separate
+>    API taking active level into account.
+> 
+> The barebox gpiod_ API mimics the latter point, but still uses integers
+> requiring ugly and arguably error prone conversions when porting kernel
+> code.
+> 
+> This series fixes that by adding proper struct gpio_desc API like in
+> Linux and then builds upon that to port the kernel gpio-mux driver.
 
-Why do we stick with gpioinfo_* here? IMHO we could use
-gpiodesc_chip_offset() since the gpioinfo is gone.
+thanks a lot for improving the code to be more aligned with Linux :)
 
->  {
->  	return (desc - gpio_desc) - desc->chip->base;
->  }
->  
-> -static int gpio_adjust_value(struct gpio_desc *desc,
-> +static int gpio_adjust_value(const struct gpio_desc *desc,
->  			     int value)
->  {
->  	if (value < 0)
-> @@ -159,17 +189,40 @@ void gpio_free(unsigned gpio)
->  {
->  	struct gpio_desc *desc = gpio_to_desc(gpio);
->  
-> +	gpioinfo_free(desc);
+Patches 1-9 lgtm, apart the minor comments in patch-5. So feel free to
+add my:
 
-Same for gpioinfo_free() which could become gpiodesc_free().
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 
-> +}
-> +
-> +/**
-> + * gpiod_put - dispose of a GPIO descriptor
-> + * @desc:	GPIO descriptor to dispose of
-> + *
-> + * No descriptor can be used after gpiod_put() has been called on it.
-> + */
-> +void gpiod_put(struct gpio_desc *desc)
-> +{
->  	if (!desc)
->  		return;
->  
->  	gpioinfo_free(desc);
->  }
-> +EXPORT_SYMBOL(gpiod_put);
->  
-> -static void gpioinfo_set_value(struct gpio_desc *desc, int value)
-> +/**
-> + * gpiod_set_raw_value() - assign a gpio's raw value
-> + * @desc: gpio whose value will be assigned
-> + * @value: value to assign
-> + *
-> + * Set the raw value of the GPIO, i.e. the value of its physical line without
-> + * regard for its ACTIVE_LOW status.
-> + */
-> +void gpiod_set_raw_value(struct gpio_desc *desc, int value)
->  {
-> +	VALIDATE_DESC_VOID(desc);
-> +
->  	if (desc->chip->ops->set)
->  		desc->chip->ops->set(desc->chip, gpioinfo_chip_offset(desc), value);
->  }
-> +EXPORT_SYMBOL(gpiod_set_raw_value);
->  
->  void gpio_set_value(unsigned gpio, int value)
->  {
-> @@ -181,10 +234,25 @@ void gpio_set_value(unsigned gpio, int value)
->  	if (gpio_ensure_requested(desc, gpio))
->  		return;
->  
-> -	gpioinfo_set_value(desc, value);
-> +	gpiod_set_raw_value(desc, value);
->  }
->  EXPORT_SYMBOL(gpio_set_value);
->  
-> +/**
-> + * gpiod_set_value() - assign a gpio's value
-> + * @desc: gpio whose value will be assigned
-> + * @value: value to assign
-> + *
-> + * Set the logical value of the GPIO, i.e. taking its ACTIVE_LOW,
-> + * OPEN_DRAIN and OPEN_SOURCE flags into account.
-> + */
-> +void gpiod_set_value(struct gpio_desc *desc, int value)
-> +{
-> +	VALIDATE_DESC_VOID(desc);
-> +	gpiod_set_raw_value(desc, gpio_adjust_value(desc, value));
-> +}
-> +EXPORT_SYMBOL_GPL(gpiod_set_value);
-> +
->  void gpio_set_active(unsigned gpio, bool value)
->  {
->  	struct gpio_desc *desc = gpio_to_desc(gpio);
-> @@ -192,17 +260,27 @@ void gpio_set_active(unsigned gpio, bool value)
->  	if (!desc)
->  		return;
->  
-> -	gpio_set_value(gpio, gpio_adjust_value(desc, value));
-> +	gpiod_set_value(desc, value);
->  }
->  EXPORT_SYMBOL(gpio_set_active);
->  
-> -static int gpioinfo_get_value(struct gpio_desc *desc)
-> +/**
-> + * gpiod_get_raw_value() - return a gpio's raw value
-> + * @desc: gpio whose value will be returned
-> + *
-> + * Return the GPIO's raw value, i.e. the value of the physical line disregarding
-> + * its ACTIVE_LOW status, or negative errno on failure.
-> + */
-> +int gpiod_get_raw_value(const struct gpio_desc *desc)
->  {
-> +	VALIDATE_DESC(desc);
-> +
->  	if (!desc->chip->ops->get)
->  		return -ENOSYS;
->  
->  	return desc->chip->ops->get(desc->chip, gpioinfo_chip_offset(desc));
->  }
-> +EXPORT_SYMBOL_GPL(gpiod_get_raw_value);
->  
->  int gpio_get_value(unsigned gpio)
->  {
-> @@ -216,10 +294,25 @@ int gpio_get_value(unsigned gpio)
->  	if (ret)
->  		return ret;
->  
-> -	return gpioinfo_get_value(desc);
-> +	return gpiod_get_raw_value(desc);
->  }
->  EXPORT_SYMBOL(gpio_get_value);
->  
-> +/**
-> + * gpiod_get_value() - return a gpio's value
-> + * @desc: gpio whose value will be returned
-> + *
-> + * Return the GPIO's logical value, i.e. taking the ACTIVE_LOW status into
-> + * account, or negative errno on failure.
-> + */
-> +int gpiod_get_value(const struct gpio_desc *desc)
-> +{
-> +	VALIDATE_DESC(desc);
-> +
-> +	return gpio_adjust_value(desc, gpiod_get_raw_value(desc));
-> +}
-> +EXPORT_SYMBOL_GPL(gpiod_get_value);
-> +
->  int gpio_is_active(unsigned gpio)
->  {
->  	struct gpio_desc *desc = gpio_to_desc(gpio);
-> @@ -227,18 +320,32 @@ int gpio_is_active(unsigned gpio)
->  	if (!desc)
->  		return -ENODEV;
->  
-> -	return gpio_adjust_value(desc, gpio_get_value(gpio));
-> +	return gpiod_get_value(desc);
->  }
->  EXPORT_SYMBOL(gpio_is_active);
->  
-> -static int gpioinfo_direction_output(struct gpio_desc *desc, int value)
-> +/**
-> + * gpiod_direction_output_raw - set the GPIO direction to output
-> + * @desc:	GPIO to set to output
-> + * @value:	initial output value of the GPIO
-> + *
-> + * Set the direction of the passed GPIO to output, such as gpiod_set_value() can
-> + * be called safely on it. The initial value of the output must be specified
-> + * as raw value on the physical line without regard for the ACTIVE_LOW status.
-> + *
-> + * Return 0 in case of success, else an error code.
-> + */
-> +int gpiod_direction_output_raw(struct gpio_desc *desc, int value)
->  {
-> +	VALIDATE_DESC(desc);
-> +
->  	if (!desc->chip->ops->direction_output)
->  		return -ENOSYS;
->  
->  	return desc->chip->ops->direction_output(desc->chip,
->  					       gpioinfo_chip_offset(desc), value);
->  }
-> +EXPORT_SYMBOL(gpiod_direction_output_raw);
->  
->  int gpio_direction_output(unsigned gpio, int value)
->  {
-> @@ -252,13 +359,27 @@ int gpio_direction_output(unsigned gpio, int value)
->  	if (ret)
->  		return ret;
->  
-> -	return gpioinfo_direction_output(desc, value);
-> +	return gpiod_direction_output_raw(desc, value);
->  }
->  EXPORT_SYMBOL(gpio_direction_output);
-
-This function should be deleted since we don't support the global 'int'
-gpio anymore.
-
-> -static int gpioinfo_direction_active(struct gpio_desc *desc, bool value)
-> +/**
-> + * gpiod_direction_output - set the GPIO direction to output
-> + * @desc:	GPIO to set to output
-> + * @value:	initial output value of the GPIO
-> + *
-> + * Set the direction of the passed GPIO to output, such as gpiod_set_value() can
-> + * be called safely on it. The initial value of the output must be specified
-> + * as the logical value of the GPIO, i.e. taking its ACTIVE_LOW status into
-> + * account.
-> + *
-> + * Return 0 in case of success, else an error code.
-> + */
-> +int gpiod_direction_output(struct gpio_desc *desc, int value)
->  {
-> -	return gpioinfo_direction_output(desc, gpio_adjust_value(desc, value));
-> +	VALIDATE_DESC(desc);
-> +
-> +	return gpiod_direction_output_raw(desc, gpio_adjust_value(desc, value));
->  }
->  
->  int gpio_direction_active(unsigned gpio, bool value)
-> @@ -268,18 +389,30 @@ int gpio_direction_active(unsigned gpio, bool value)
->  	if (!desc)
->  		return -ENODEV;
->  
-> -	return gpioinfo_direction_active(desc, value);
-> +	return gpiod_direction_output(desc, value);
->  }
->  EXPORT_SYMBOL(gpio_direction_active);
->  
-> -static int gpioinfo_direction_input(struct gpio_desc *desc)
-> +/**
-> + * gpiod_direction_input - set the GPIO direction to input
-> + * @desc:	GPIO to set to input
-> + *
-> + * Set the direction of the passed GPIO to input, such as gpiod_get_value() can
-> + * be called safely on it.
-> + *
-> + * Return 0 in case of success, else an error code.
-> + */
-> +int gpiod_direction_input(struct gpio_desc *desc)
->  {
-> +	VALIDATE_DESC(desc);
-> +
->  	if (!desc->chip->ops->direction_input)
->  		return -ENOSYS;
->  
->  	return desc->chip->ops->direction_input(desc->chip,
->  					      gpioinfo_chip_offset(desc));
->  }
-> +EXPORT_SYMBOL(gpiod_direction_input);
->  
->  int gpio_direction_input(unsigned gpio)
->  {
-> @@ -293,7 +426,7 @@ int gpio_direction_input(unsigned gpio)
->  	if (ret)
->  		return ret;
->  
-> -	return gpioinfo_direction_input(desc);
-> +	return gpiod_direction_input(desc);
->  }
->  EXPORT_SYMBOL(gpio_direction_input);
-
-gpio_direction_input should be deleted as well?
-
-Regards,
-  Marco
+> 
+> Ahmad Fatoum (10):
+>   driver: include dev_print and family from <driver.h>
+>   include: linux/printk: define new dev_errp_probe
+>   gpio: have gpiod_ functions return and accept pointers
+>   gpio: gpiolib: rename struct gpio_info to gpio_desc
+>   gpiolib: export proper gpio descriptor API
+>   bitmap: implement bitmap_{to,from}_arr{32,64}
+>   commands: help: ignore options after first regular argument
+>   gpiolib: factor out finding gpio property
+>   gpiolib: add support for requesting and setting gpiod arrays
+>   drivers: port Linux mux framework and gpio-mux driver
+> 
+>  commands/help.c                          |  19 +-
+>  drivers/Kconfig                          |   1 +
+>  drivers/Makefile                         |   1 +
+>  drivers/gpio/gpio-pca953x.c              |   9 +-
+>  drivers/gpio/gpiolib.c                   | 528 +++++++++++++++++------
+>  drivers/mci/mci_spi.c                    |  13 +-
+>  drivers/mtd/nand/atmel/nand-controller.c |  40 +-
+>  drivers/mtd/nand/nand_base.c             |   4 +-
+>  drivers/mux/Kconfig                      |  29 ++
+>  drivers/mux/Makefile                     |  10 +
+>  drivers/mux/core.c                       | 472 ++++++++++++++++++++
+>  drivers/mux/gpio.c                       | 103 +++++
+>  drivers/net/designware_eqos.c            |  26 +-
+>  drivers/net/ksz8873.c                    |  13 +-
+>  drivers/net/ksz9477.c                    |  13 +-
+>  drivers/net/realtek-dsa/realtek-mdio.c   |  10 +-
+>  drivers/net/realtek-dsa/realtek-smi.c    |  18 +-
+>  drivers/net/realtek-dsa/realtek.h        |   6 +-
+>  drivers/net/sja1105.c                    |  25 +-
+>  drivers/nvmem/starfive-otp.c             |  12 +-
+>  drivers/pci/pcie-dw-rockchip.c           |  14 +-
+>  drivers/power/reset/gpio-poweroff.c      |  14 +-
+>  drivers/power/reset/gpio-restart.c       |  23 +-
+>  drivers/regulator/fixed.c                |  27 +-
+>  drivers/sound/gpio-beeper.c              |  14 +-
+>  drivers/usb/misc/onboard_usb_hub.c       |  11 +-
+>  drivers/video/mipi_dbi.c                 |   8 +-
+>  drivers/video/panel-ilitek-ili9341.c     |  17 +-
+>  drivers/video/panel-mipi-dbi.c           |  17 +-
+>  drivers/watchdog/gpio_wdt.c              |  22 +-
+>  include/driver.h                         |   1 +
+>  include/gpiod.h                          |  79 +---
+>  include/linux/bitmap.h                   | 101 +++++
+>  include/linux/gpio/consumer.h            | 137 ++++++
+>  include/linux/mtd/rawnand.h              |   4 +-
+>  include/linux/printk.h                   |   3 +
+>  include/video/mipi_dbi.h                 |   7 +-
+>  lib/bitmap.c                             | 103 +++++
+>  38 files changed, 1559 insertions(+), 395 deletions(-)
+>  create mode 100644 drivers/mux/Kconfig
+>  create mode 100644 drivers/mux/Makefile
+>  create mode 100644 drivers/mux/core.c
+>  create mode 100644 drivers/mux/gpio.c
+>  create mode 100644 include/linux/gpio/consumer.h
+> 
+> -- 
+> 2.39.2
+> 
+> 
+> 
 
 
