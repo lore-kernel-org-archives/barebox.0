@@ -1,54 +1,54 @@
-Delivery-date: Wed, 21 Jun 2023 10:32:45 +0200
+Delivery-date: Wed, 21 Jun 2023 10:48:46 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qBtGg-00FQww-L2
-	for lore@lore.pengutronix.de; Wed, 21 Jun 2023 10:32:45 +0200
+	id 1qBtWB-00FRnQ-Ck
+	for lore@lore.pengutronix.de; Wed, 21 Jun 2023 10:48:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qBtGd-0003ZN-U3
-	for lore@pengutronix.de; Wed, 21 Jun 2023 10:32:44 +0200
+	id 1qBtW7-0005i7-S7
+	for lore@pengutronix.de; Wed, 21 Jun 2023 10:48:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oPK+Bc6i76SMwrJSiBdbka/7fnb0Mz/+IPgdOOmDXm4=; b=ipwxYhv45fgrYOQG0+fpb25oCn
-	BFpXcl9rABi+QE5xOsbU5MR/RiGbqfymepc4fGiAvxl6OaQ3VsgkPLfagn329ivf/YtUE69T+ysrn
-	UQ0ioaLcxgNw4MAj1KUha4H6+Wz4O2nszHjROLlwfwBGqCg7Y0DrcO75yHwcAli/0HsuQw/1dl/Fl
-	UBmYEKMNezDzp69kZg2QvDbSveqqpBuLITtr7wwaCQwS3/MarwHV6xkFhNicnXgt8KsH7JeJNgJt4
-	Guz858LG1dQ3UuREav/pfO+GGivJY3M2uYc2Q9UMQeeCFbhXvedDpz77XvtYFoF2oxQ6Md0xzxA1e
-	L2lhV5tg==;
+	bh=qRGa5yb60YedioCMyqggynEaWN8Ptsh7GsTf2VEg+ME=; b=ZLUXfcCVCM163Fg+OzIgqMBRe5
+	vBouCaZ5eL/uVaZ7oK+h+EMgSvFrwlfUvkixEMVhF3k4kCia7xUiPKQGNsr6X5eGbCoENq1XB4vnt
+	OsF18entx8oEecuXWyE1JxYTxpSUPihqND5EwT5p6VJb1k7/1JpaTGV8sF9FM1BprowPhckQ7dazC
+	KT17xZvSg+KimaBrDkyc4VJEHXgPDT3bFhADqInJ/sCb78IpH09jYFPrUeKzResrUsJnkAYNcwXY5
+	gxesMvTvEnmV/KtUKL5Wdle5V+9IoU2bU1e16xjC4hDOABTUfsajzxImV99TSsqsGZGfPniifNco8
+	+j2eOSUQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qBtFb-00DhdQ-1F;
-	Wed, 21 Jun 2023 08:31:39 +0000
+	id 1qBtV5-00DkMh-1d;
+	Wed, 21 Jun 2023 08:47:39 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qBtFX-00DhcI-36
+	id 1qBtV2-00DkLg-1K
 	for barebox@lists.infradead.org;
-	Wed, 21 Jun 2023 08:31:37 +0000
+	Wed, 21 Jun 2023 08:47:38 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qBtFW-0003VV-I7; Wed, 21 Jun 2023 10:31:34 +0200
+	id 1qBtV0-0005e4-RS; Wed, 21 Jun 2023 10:47:34 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qBtFW-0005qn-9J; Wed, 21 Jun 2023 10:31:34 +0200
-Date: Wed, 21 Jun 2023 10:31:34 +0200
-To: Ian Abbott <abbotti@mev.co.uk>
+	id 1qBtV0-0006Nx-KV; Wed, 21 Jun 2023 10:47:34 +0200
+Date: Wed, 21 Jun 2023 10:47:34 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230621083134.GB18491@pengutronix.de>
-References: <20230615123020.25927-1-abbotti@mev.co.uk>
+Message-ID: <20230621084734.GC18491@pengutronix.de>
+References: <20230616102031.1556138-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230615123020.25927-1-abbotti@mev.co.uk>
+In-Reply-To: <20230616102031.1556138-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +56,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230621_013136_016589_30EDCF6D 
-X-CRM114-Status: GOOD (  22.34  )
+X-CRM114-CacheID: sfid-20230621_014736_444449_3D9B937C 
+X-CRM114-Status: GOOD (  20.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,58 +80,78 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] scripts: socfpga_import_preloader: Use SDK-supplied
- Python
+Subject: Re: [PATCH master] of: define of_read_file/barebox_register_of when
+ !CONFIG_OFTREE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Jun 15, 2023 at 01:30:20PM +0100, Ian Abbott wrote:
-> Change `generate_spl()` to use the `python` bundled with the SDK (SoC
-> EDS) instead of using `python2.7`.  In version 20.1 of SoC EDS, the
-> `iswgen.py` script was updated to work with Python 3.8 and no longer
-> works with Python 2.7, leading to an error similar to this when
-> generating the SPL:
+On Fri, Jun 16, 2023 at 12:20:31PM +0200, Ahmad Fatoum wrote:
+> barebox may be built as x86 EFI payload with CONFIG_OFTREE=n. This
+> recently started to fail, because of newly added symbols that had
+> no stubs defined.
 > 
-> ```
-> Generating file: /tmp/tmp.0xSiyYqAU2//sdram//sdram_config.h...
-> Traceback (most recent call last):
->   File "/opt/intelFPGA/20.1/embedded/ip/altera/preloader/scripts/iswgen.py", line 63, in <module>
->     hps = hps.HPSGrokker(inputDir, outputDir)
->   File "/opt/intelFPGA/20.1/embedded/ip/altera/preloader/scripts/hps.py", line 54, in __init__
->     self.createFilesFromHPS()
->   File "/opt/intelFPGA/20.1/embedded/ip/altera/preloader/scripts/hps.py", line 546, in createFilesFromHPS
->     self.handleHPSPeripheralsNode(childNode)
->   File "/opt/intelFPGA/20.1/embedded/ip/altera/preloader/scripts/hps.py", line 413, in handleHPSPeripheralsNode
->     self.pinmuxHeaderBuffer.write("#define " + name + ' ' + '(' + str(used) + ')' + '\n')
-> TypeError: unicode argument expected, got 'str'
-> ```
-> 
-> Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  scripts/socfpga_import_preloader | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+>  include/of.h | 13 ++++++++++++-
+>  1 file changed, 12 insertions(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/scripts/socfpga_import_preloader b/scripts/socfpga_import_preloader
-> index bd54e1b913..a555c9174b 100755
-> --- a/scripts/socfpga_import_preloader
-> +++ b/scripts/socfpga_import_preloader
-> @@ -112,7 +112,10 @@ copy_source() {
+> diff --git a/include/of.h b/include/of.h
+> index 0037bad6c4d7..92a15f5c4a13 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -6,6 +6,7 @@
+>  #include <errno.h>
+>  #include <linux/types.h>
+>  #include <linux/list.h>
+> +#include <linux/err.h>
+>  #include <asm/byteorder.h>
+>  
+>  /* Default string compare functions */
+> @@ -116,7 +117,6 @@ int of_diff(struct device_node *a, struct device_node *b, int indent);
+>  int of_probe(void);
+>  int of_parse_dtb(struct fdt_header *fdt);
+>  struct device_node *of_unflatten_dtb(const void *fdt, int size);
+> -struct device_node *of_read_file(const char *filename);
+>  struct device_node *of_unflatten_dtb_const(const void *infdt, int size);
+>  
+>  int of_fixup_reserved_memory(struct device_node *node, void *data);
+> @@ -124,6 +124,7 @@ int of_fixup_reserved_memory(struct device_node *node, void *data);
+>  struct cdev;
+>  
+>  #ifdef CONFIG_OFTREE
+> +extern struct device_node *of_read_file(const char *filename);
+>  extern struct of_reserve_map *of_get_reserve_map(void);
+>  extern int of_bus_n_addr_cells(struct device_node *np);
+>  extern int of_n_addr_cells(struct device_node *np);
+> @@ -361,6 +362,11 @@ static inline const char *of_node_full_name(const struct device_node *np)
 >  }
 >  
->  generate_spl() {
-> -	python2.7 ${embeddedsw}/embedded/ip/altera/preloader/scripts/iswgen.py -i ${handoff} -o ${splroot}/
-> +	USE_SOCEDS_PYTHON=1 SOCEDS_DESTROY_PATH=1 \
-> +		${embeddedsw}/embedded/embedded_command_shell.sh python \
-> +		${embeddedsw}/embedded/ip/altera/preloader/scripts/iswgen.py \
-> +		-i ${handoff} -o ${splroot}/
+>  #else
+> +static inline struct device_node *of_read_file(const char *filename)
+> +{
+> +	return ERR_PTR(-ENOSYS);
+> +}
+> +
+>  static inline struct of_reserve_map *of_get_reserve_map(void)
+>  {
+>  	return NULL;
+> @@ -429,6 +435,11 @@ static inline int of_set_root_node(struct device_node *node)
+>  	return -ENOSYS;
 >  }
 >  
->  if [ -z $splroot ] || [ -z $boardroot ] || [ -z $handoff ]; then
+> +static inline int barebox_register_of(struct device_node *root)
+> +{
+> +	return -ENOSYS;
+> +}
+> +
+>  static inline struct device *of_platform_device_create(struct device_node *np,
+>  							 struct device *parent)
+>  {
 > -- 
 > 2.39.2
 > 
