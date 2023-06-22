@@ -1,64 +1,64 @@
-Delivery-date: Thu, 22 Jun 2023 09:25:18 +0200
+Delivery-date: Thu, 22 Jun 2023 09:25:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qCEgy-00GhPq-3y
-	for lore@lore.pengutronix.de; Thu, 22 Jun 2023 09:25:18 +0200
+	id 1qCEh4-00GhR9-4t
+	for lore@lore.pengutronix.de; Thu, 22 Jun 2023 09:25:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qCEgu-0001ZJ-Mg
-	for lore@pengutronix.de; Thu, 22 Jun 2023 09:25:17 +0200
+	id 1qCEh0-0001fU-Jc
+	for lore@pengutronix.de; Thu, 22 Jun 2023 09:25:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=d6TFcMd7nRB1d4Wh6RLb0YCHwcCAlOY+7EsjRTOKkzI=; b=PLJrAHkg+tGoL2x3xuCRXV4N5o
-	OqxynKkAYqnnS2B0raIN4qdfnH+BMl0HtpEH3WQGbsqC4d/ItOGKTomEidI3+tRWHye67EiEYgZ/w
-	o9hhRbb53Ry7gasRjUm5ykla4RNAG7txfMtm5L9zSD5Cj1GaIeP3YWSuGQrsIMuLAqQPqjREK9WFa
-	O72tITb5tZVccsMLvqfpjaSsMsz1l5K5LCBLlUXQx55pEDRGlyodFKmoceQJEEv3fyiBFzvm8lprR
-	cy7/grI3TLCsah2SiHYwiu5xyKZRXxZgNJKPRhRLybOvS/lAWKonOCGQD/yGBnPMZBZ5rH23GtoET
-	tAT4eG7g==;
+	bh=+5L4PKt8HERwWgNCV4Wrqp4QyEpayE4vx+FRc4rWMfA=; b=T1vgiZeMxxZwh9u9/4DHcwXl16
+	3t6mAr58jSW0gFoUUS6Atso3iPKe9PELJyqY/bGTm+4rQkaXY9GLg2GZHL2jfMawOFIu09Ycbovrx
+	l8Y9tnqltE0uxGYH4lTrkCIkHnUFAGDMa3o3ASLzd2S2YmeU/JBYPDx8tQKIhYDkpY3R0ALgChS6c
+	zMACKWGvKWgtR+iB0Q45fdvwOATHW4Sq9I+NXWWP1A8t3dNhVgxFgZI5BWo2IcPbyRtOrfyhnHP+W
+	FnPGjWSgh2k6HJ39ukY8H9X+3a2Gr7btPJwof2mFaPI2VeT+Uy3EHRsAroUBd7DK38fO0ReTBcVQU
+	f261d+rw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qCEfa-00HDvY-2g;
-	Thu, 22 Jun 2023 07:23:54 +0000
+	id 1qCEfd-00HDwZ-0n;
+	Thu, 22 Jun 2023 07:23:57 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qCEfR-00HDpq-2j
+	id 1qCEfR-00HDpz-2f
 	for barebox@lists.infradead.org;
-	Thu, 22 Jun 2023 07:23:49 +0000
+	Thu, 22 Jun 2023 07:23:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qCEfM-0000z8-9U; Thu, 22 Jun 2023 09:23:40 +0200
+	id 1qCEfM-0000zt-WC; Thu, 22 Jun 2023 09:23:41 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qCEfL-009DjT-JJ; Thu, 22 Jun 2023 09:23:39 +0200
+	id 1qCEfM-009Djq-CB; Thu, 22 Jun 2023 09:23:40 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qCEfL-005cRl-0M;
+	id 1qCEfL-005cRV-0G;
 	Thu, 22 Jun 2023 09:23:39 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Marco Felsch <m.felsch@pengutronix.de>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 22 Jun 2023 09:23:28 +0200
-Message-Id: <20230622072329.1339317-9-a.fatoum@pengutronix.de>
+Date: Thu, 22 Jun 2023 09:23:24 +0200
+Message-Id: <20230622072329.1339317-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230622072329.1339317-1-a.fatoum@pengutronix.de>
 References: <20230622072329.1339317-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230622_002346_060968_C6800740 
-X-CRM114-Status: GOOD (  24.35  )
+X-CRM114-CacheID: sfid-20230622_002346_191742_518B9111 
+X-CRM114-Status: GOOD (  16.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,255 +81,484 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 8/9] gpiolib: add support for requesting and setting gpiod arrays
+Subject: [PATCH v2 4/9] gpio: gpiolib: rename struct gpio_info to gpio_desc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The added API is aligned with the API in Linux, but has the caveat that
-barebox has no set_multiple callbacks implemented in the GPIO drivers,
-so switching may result in a bad intermediate state. We add a note about
-that and implement the API in the easiest possible way.
+We already have GPIO descriptors in use internally, but return an
+index into the array of all available GPIOs to the outside world.
+In preparation for returning a pointer, let's rename the gpio_info
+struct into gpio_desc and the gi variables into desc.
 
 Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/gpio/gpiolib.c        | 123 ++++++++++++++++++++++++++++++++++
- include/linux/gpio/consumer.h |  58 ++++++++++++++++
- 2 files changed, 181 insertions(+)
+ drivers/gpio/gpiolib.c | 206 ++++++++++++++++++++---------------------
+ 1 file changed, 103 insertions(+), 103 deletions(-)
 
 diff --git a/drivers/gpio/gpiolib.c b/drivers/gpio/gpiolib.c
-index f34337f6446f..2808ac3612fe 100644
+index ee1bc5f6156f..07ca2d31a633 100644
 --- a/drivers/gpio/gpiolib.c
 +++ b/drivers/gpio/gpiolib.c
-@@ -8,6 +8,7 @@
- #include <gpio.h>
- #include <of_gpio.h>
- #include <linux/gpio/consumer.h>
-+#include <linux/overflow.h>
- #include <errno.h>
- #include <malloc.h>
+@@ -13,7 +13,7 @@
  
-@@ -207,6 +208,21 @@ void gpiod_put(struct gpio_desc *desc)
- }
- EXPORT_SYMBOL(gpiod_put);
+ static LIST_HEAD(chip_list);
  
-+/**
-+ * gpiod_put_array - dispose of multiple GPIO descriptors
-+ * @descs:	struct gpio_descs containing an array of descriptors
-+ */
-+void gpiod_put_array(struct gpio_descs *descs)
-+{
-+	unsigned int i;
-+
-+	for (i = 0; i < descs->ndescs; i++)
-+		gpiod_put(descs->desc[i]);
-+
-+	kfree(descs);
-+}
-+EXPORT_SYMBOL_GPL(gpiod_put_array);
-+
- /**
-  * gpiod_set_raw_value() - assign a gpio's raw value
-  * @desc: gpio whose value will be assigned
-@@ -873,8 +889,115 @@ struct gpio_desc *dev_gpiod_get_index(struct device *dev,
+-struct gpio_info {
++struct gpio_desc {
+ 	struct gpio_chip *chip;
+ 	bool requested;
+ 	bool active_low;
+@@ -21,25 +21,25 @@ struct gpio_info {
+ 	const char *name;
+ };
  
- 	return ret ? ERR_PTR(ret): desc;
- }
-+
-+/**
-+ * gpiod_count - return the number of GPIOs associated with a device / function
-+ *		or -ENOENT if no GPIO has been assigned to the requested function
-+ * @dev:	GPIO consumer, can be NULL for system-global GPIOs
-+ * @_con_id:	function within the GPIO consumer
-+ */
-+int gpiod_count(struct device *dev, const char *con_id)
-+{
-+	struct device_node *np = dev_of_node(dev);
-+	struct property *pp;
-+
-+	if (!np)
-+		return -ENODEV;
-+
-+	pp = of_find_gpio_property(np, con_id);
-+	if (!pp)
-+		return -ENOENT;
-+
-+	return of_gpio_named_count(np, pp->name);
-+}
-+EXPORT_SYMBOL_GPL(gpiod_count);
-+
-+/**
-+ * gpiod_get_array - obtain multiple GPIOs from a multi-index GPIO function
-+ * @dev:	GPIO consumer, can be NULL for system-global GPIOs
-+ * @con_id:	function within the GPIO consumer
-+ * @flags:	optional GPIO initialization flags
-+ *
-+ * This function acquires all the GPIOs defined under a given function.
-+ *
-+ * Return a struct gpio_descs containing an array of descriptors, -ENOENT if
-+ * no GPIO has been assigned to the requested function, or another IS_ERR()
-+ * code if an error occurred while trying to acquire the GPIOs.
-+ */
-+struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
-+						const char *con_id,
-+						enum gpiod_flags flags)
-+{
-+	struct gpio_desc *desc;
-+	struct gpio_descs *descs;
-+	int count;
-+
-+	count = gpiod_count(dev, con_id);
-+	if (count < 0)
-+		return ERR_PTR(count);
-+
-+	descs = kzalloc(struct_size(descs, desc, count), GFP_KERNEL);
-+	if (!descs)
-+		return ERR_PTR(-ENOMEM);
-+
-+	for (descs->ndescs = 0; descs->ndescs < count; descs->ndescs++) {
-+		desc = dev_gpiod_get_index(dev, dev_of_node(dev), con_id,
-+					   descs->ndescs, flags, NULL);
-+		if (IS_ERR(desc)) {
-+			gpiod_put_array(descs);
-+			return ERR_CAST(desc);
-+		}
-+
-+		descs->desc[descs->ndescs] = desc;
-+	}
-+
-+	return descs;
-+}
-+EXPORT_SYMBOL_GPL(gpiod_get_array);
-+
- #endif
+-static struct gpio_info *gpio_desc;
++static struct gpio_desc *gpio_desc;
  
-+static int gpiod_set_array_value_complex(bool raw,
-+					 unsigned int array_size,
-+					 struct gpio_desc **desc_array,
-+					 struct gpio_array *array_info,
-+					 unsigned long *value_bitmap)
-+{
-+	int i;
-+
-+	BUG_ON(array_info != NULL);
-+
-+	for (i = 0; i < array_size; i++)
-+		gpiod_set_value(desc_array[i], test_bit(i, value_bitmap));
-+
-+	return 0;
-+}
-+
-+/**
-+ * gpiod_set_array_value() - assign values to an array of GPIOs
-+ * @array_size: number of elements in the descriptor array / value bitmap
-+ * @desc_array: array of GPIO descriptors whose values will be assigned
-+ * @array_info: information on applicability of fast bitmap processing path
-+ * @value_bitmap: bitmap of values to assign
-+ *
-+ * Set the logical values of the GPIOs, i.e. taking their ACTIVE_LOW status
-+ * into account. NOTE: This function has no special handling for GPIOs
-+ * in the same bank that could've been set atomically: GPIO sequencing
-+ * is not guaranteed to always remain in the same order.
-+ */
-+int gpiod_set_array_value(unsigned int array_size,
-+			  struct gpio_desc **desc_array,
-+			  struct gpio_array *array_info,
-+			  unsigned long *value_bitmap)
-+{
-+	if (!desc_array)
-+		return -EINVAL;
-+	return gpiod_set_array_value_complex(false, array_size,
-+					     desc_array, array_info,
-+					     value_bitmap);
-+}
-+EXPORT_SYMBOL_GPL(gpiod_set_array_value);
-+
- int gpiochip_add(struct gpio_chip *chip)
+ static int gpio_desc_alloc(void)
  {
- 	int i;
-diff --git a/include/linux/gpio/consumer.h b/include/linux/gpio/consumer.h
-index 2547e4ba7be3..531ed1472546 100644
---- a/include/linux/gpio/consumer.h
-+++ b/include/linux/gpio/consumer.h
-@@ -26,6 +26,24 @@ enum gpiod_flags {
- #define gpiod_not_found(desc)	(IS_ERR(desc) && PTR_ERR(desc) == -ENOENT)
+-	gpio_desc = xzalloc(sizeof(struct gpio_info) * ARCH_NR_GPIOS);
++	gpio_desc = xzalloc(sizeof(struct gpio_desc) * ARCH_NR_GPIOS);
  
- struct gpio_desc;
-+struct gpio_array;
-+
-+/**
-+ * struct gpio_descs - Struct containing an array of descriptors that can be
-+ *                     obtained using gpiod_get_array()
-+ *
-+ * @info:	Pointer to the opaque gpio_array structure
-+ * @ndescs:	Number of held descriptors
-+ * @desc:	Array of pointers to GPIO descriptors
-+ */
-+struct gpio_descs {
-+	unsigned int ndescs;
-+	/* info is used for fastpath, which we don't have in barebox.
-+	 * We define the member anyway, as not to change API
-+	 */
-+	struct gpio_array *info;
-+	DECLARE_FLEX_ARRAY(struct gpio_desc *, desc);
-+};
+ 	return 0;
+ }
+ pure_initcall(gpio_desc_alloc);
  
- #if defined(CONFIG_OFDEVICE) && defined(CONFIG_GPIOLIB)
+-static int gpio_ensure_requested(struct gpio_info *gi, int gpio)
++static int gpio_ensure_requested(struct gpio_desc *desc, int gpio)
+ {
+-	if (gi->requested)
++	if (desc->requested)
+ 		return 0;
  
-@@ -62,6 +80,19 @@ int gpiod_get_value(const struct gpio_desc *desc);
- 
- void gpiod_put(struct gpio_desc *desc);
- 
-+int gpiod_count(struct device *dev, const char *con_id);
-+
-+struct gpio_descs *__must_check gpiod_get_array(struct device *dev,
-+						const char *con_id,
-+						enum gpiod_flags flags);
-+
-+void gpiod_put_array(struct gpio_descs *descs);
-+
-+int gpiod_set_array_value(unsigned int array_size,
-+			  struct gpio_desc **desc_array,
-+			  struct gpio_array *array_info,
-+			  unsigned long *value_bitmap);
-+
- #else
- 
- static inline int gpiod_direction_input(struct gpio_desc *desc)
-@@ -117,6 +148,33 @@ static inline void gpiod_put(struct gpio_desc *desc)
- 	WARN_ON(desc);
+ 	return gpio_request(gpio, "gpio");
  }
  
-+static inline int gpiod_count(struct device *dev, const char *con_id)
-+{
-+	return 0;
-+}
-+
-+static inline struct gpio_descs *__must_check
-+gpiod_get_array(struct device *dev, const char *con_id, enum gpiod_flags flags)
-+{
-+	return ERR_PTR(-ENOSYS);
-+}
-+
-+static inline void gpiod_put_array(struct gpio_descs *descs)
-+{
-+	/* GPIO can never have been requested */
-+	WARN_ON(descs);
-+}
-+
-+static inline int gpiod_set_array_value(unsigned int array_size,
-+			  struct gpio_desc **desc_array,
-+			  struct gpio_array *array_info,
-+			  unsigned long *value_bitmap)
-+{
-+	/* GPIO can never have been requested */
-+	WARN_ON(desc_array);
-+	return 0;
-+}
-+
- #endif
+-static struct gpio_info *gpio_to_desc(unsigned gpio)
++static struct gpio_desc *gpio_to_desc(unsigned gpio)
+ {
+ 	if (gpio_is_valid(gpio))
+ 		if (gpio_desc[gpio].chip)
+@@ -50,46 +50,46 @@ static struct gpio_info *gpio_to_desc(unsigned gpio)
+ 	return NULL;
+ }
  
- static inline struct gpio_desc *dev_gpiod_get(struct device *dev,
+-static unsigned gpioinfo_chip_offset(struct gpio_info *gi)
++static unsigned gpioinfo_chip_offset(struct gpio_desc *desc)
+ {
+-	return (gi - gpio_desc) - gi->chip->base;
++	return (desc - gpio_desc) - desc->chip->base;
+ }
+ 
+-static int gpio_adjust_value(struct gpio_info *gi,
++static int gpio_adjust_value(struct gpio_desc *desc,
+ 			     int value)
+ {
+ 	if (value < 0)
+ 		return value;
+ 
+-	return !!value ^ gi->active_low;
++	return !!value ^ desc->active_low;
+ }
+ 
+-static int gpioinfo_request(struct gpio_info *gi, const char *label)
++static int gpioinfo_request(struct gpio_desc *desc, const char *label)
+ {
+ 	int ret;
+ 
+-	if (gi->requested) {
++	if (desc->requested) {
+ 		ret = -EBUSY;
+ 		goto done;
+ 	}
+ 
+ 	ret = 0;
+ 
+-	if (gi->chip->ops->request) {
+-		ret = gi->chip->ops->request(gi->chip,
+-					     gpioinfo_chip_offset(gi));
++	if (desc->chip->ops->request) {
++		ret = desc->chip->ops->request(desc->chip,
++					     gpioinfo_chip_offset(desc));
+ 		if (ret)
+ 			goto done;
+ 	}
+ 
+-	gi->requested = true;
+-	gi->active_low = false;
+-	gi->label = xstrdup(label);
++	desc->requested = true;
++	desc->active_low = false;
++	desc->label = xstrdup(label);
+ 
+ done:
+ 	if (ret)
+ 		pr_err("_gpio_request: gpio-%td (%s) status %d\n",
+-		       gi - gpio_desc, label ? : "?", ret);
++		       desc - gpio_desc, label ? : "?", ret);
+ 
+ 	return ret;
+ }
+@@ -99,7 +99,7 @@ int gpio_find_by_label(const char *label)
+ 	int i;
+ 
+ 	for (i = 0; i < ARCH_NR_GPIOS; i++) {
+-		struct gpio_info *info = &gpio_desc[i];
++		struct gpio_desc *info = &gpio_desc[i];
+ 
+ 		if (!info->requested || !info->chip || !info->label)
+ 			continue;
+@@ -116,7 +116,7 @@ int gpio_find_by_name(const char *name)
+ 	int i;
+ 
+ 	for (i = 0; i < ARCH_NR_GPIOS; i++) {
+-		struct gpio_info *info = &gpio_desc[i];
++		struct gpio_desc *info = &gpio_desc[i];
+ 
+ 		if (!info->chip || !info->name)
+ 			continue;
+@@ -130,174 +130,174 @@ int gpio_find_by_name(const char *name)
+ 
+ int gpio_request(unsigned gpio, const char *label)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 
+-	if (!gi) {
++	if (!desc) {
+ 		pr_err("_gpio_request: gpio-%d (%s) status %d\n",
+ 			 gpio, label ? : "?", -ENODEV);
+ 		return -ENODEV;
+ 	}
+ 
+-	return gpioinfo_request(gi, label);
++	return gpioinfo_request(desc, label);
+ }
+ 
+-static void gpioinfo_free(struct gpio_info *gi)
++static void gpioinfo_free(struct gpio_desc *desc)
+ {
+-	if (!gi->requested)
++	if (!desc->requested)
+ 		return;
+ 
+-	if (gi->chip->ops->free)
+-		gi->chip->ops->free(gi->chip, gpioinfo_chip_offset(gi));
++	if (desc->chip->ops->free)
++		desc->chip->ops->free(desc->chip, gpioinfo_chip_offset(desc));
+ 
+-	gi->requested = false;
+-	gi->active_low = false;
+-	free(gi->label);
+-	gi->label = NULL;
++	desc->requested = false;
++	desc->active_low = false;
++	free(desc->label);
++	desc->label = NULL;
+ }
+ 
+ void gpio_free(unsigned gpio)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 
+-	if (!gi)
++	if (!desc)
+ 		return;
+ 
+-	gpioinfo_free(gi);
++	gpioinfo_free(desc);
+ }
+ 
+-static void gpioinfo_set_value(struct gpio_info *gi, int value)
++static void gpioinfo_set_value(struct gpio_desc *desc, int value)
+ {
+-	if (gi->chip->ops->set)
+-		gi->chip->ops->set(gi->chip, gpioinfo_chip_offset(gi), value);
++	if (desc->chip->ops->set)
++		desc->chip->ops->set(desc->chip, gpioinfo_chip_offset(desc), value);
+ }
+ 
+ void gpio_set_value(unsigned gpio, int value)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 
+-	if (!gi)
++	if (!desc)
+ 		return;
+ 
+-	if (gpio_ensure_requested(gi, gpio))
++	if (gpio_ensure_requested(desc, gpio))
+ 		return;
+ 
+-	gpioinfo_set_value(gi, value);
++	gpioinfo_set_value(desc, value);
+ }
+ EXPORT_SYMBOL(gpio_set_value);
+ 
+ void gpio_set_active(unsigned gpio, bool value)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 
+-	if (!gi)
++	if (!desc)
+ 		return;
+ 
+-	gpio_set_value(gpio, gpio_adjust_value(gi, value));
++	gpio_set_value(gpio, gpio_adjust_value(desc, value));
+ }
+ EXPORT_SYMBOL(gpio_set_active);
+ 
+-static int gpioinfo_get_value(struct gpio_info *gi)
++static int gpioinfo_get_value(struct gpio_desc *desc)
+ {
+-	if (!gi->chip->ops->get)
++	if (!desc->chip->ops->get)
+ 		return -ENOSYS;
+ 
+-	return gi->chip->ops->get(gi->chip, gpioinfo_chip_offset(gi));
++	return desc->chip->ops->get(desc->chip, gpioinfo_chip_offset(desc));
+ }
+ 
+ int gpio_get_value(unsigned gpio)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gi)
++	if (!desc)
+ 		return -ENODEV;
+ 
+-	ret = gpio_ensure_requested(gi, gpio);
++	ret = gpio_ensure_requested(desc, gpio);
+ 	if (ret)
+ 		return ret;
+ 
+-	return gpioinfo_get_value(gi);
++	return gpioinfo_get_value(desc);
+ }
+ EXPORT_SYMBOL(gpio_get_value);
+ 
+ int gpio_is_active(unsigned gpio)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 
+-	if (!gi)
++	if (!desc)
+ 		return -ENODEV;
+ 
+-	return gpio_adjust_value(gi, gpio_get_value(gpio));
++	return gpio_adjust_value(desc, gpio_get_value(gpio));
+ }
+ EXPORT_SYMBOL(gpio_is_active);
+ 
+-static int gpioinfo_direction_output(struct gpio_info *gi, int value)
++static int gpioinfo_direction_output(struct gpio_desc *desc, int value)
+ {
+-	if (!gi->chip->ops->direction_output)
++	if (!desc->chip->ops->direction_output)
+ 		return -ENOSYS;
+ 
+-	return gi->chip->ops->direction_output(gi->chip,
+-					       gpioinfo_chip_offset(gi), value);
++	return desc->chip->ops->direction_output(desc->chip,
++					       gpioinfo_chip_offset(desc), value);
+ }
+ 
+ int gpio_direction_output(unsigned gpio, int value)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gi)
++	if (!desc)
+ 		return -ENODEV;
+ 
+-	ret = gpio_ensure_requested(gi, gpio);
++	ret = gpio_ensure_requested(desc, gpio);
+ 	if (ret)
+ 		return ret;
+ 
+-	return gpioinfo_direction_output(gi, value);
++	return gpioinfo_direction_output(desc, value);
+ }
+ EXPORT_SYMBOL(gpio_direction_output);
+ 
+-static int gpioinfo_direction_active(struct gpio_info *gi, bool value)
++static int gpioinfo_direction_active(struct gpio_desc *desc, bool value)
+ {
+-	return gpioinfo_direction_output(gi, gpio_adjust_value(gi, value));
++	return gpioinfo_direction_output(desc, gpio_adjust_value(desc, value));
+ }
+ 
+ int gpio_direction_active(unsigned gpio, bool value)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 
+-	if (!gi)
++	if (!desc)
+ 		return -ENODEV;
+ 
+-	return gpioinfo_direction_active(gi, value);
++	return gpioinfo_direction_active(desc, value);
+ }
+ EXPORT_SYMBOL(gpio_direction_active);
+ 
+-static int gpioinfo_direction_input(struct gpio_info *gi)
++static int gpioinfo_direction_input(struct gpio_desc *desc)
+ {
+-	if (!gi->chip->ops->direction_input)
++	if (!desc->chip->ops->direction_input)
+ 		return -ENOSYS;
+ 
+-	return gi->chip->ops->direction_input(gi->chip,
+-					      gpioinfo_chip_offset(gi));
++	return desc->chip->ops->direction_input(desc->chip,
++					      gpioinfo_chip_offset(desc));
+ }
+ 
+ int gpio_direction_input(unsigned gpio)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 	int ret;
+ 
+-	if (!gi)
++	if (!desc)
+ 		return -ENODEV;
+ 
+-	ret = gpio_ensure_requested(gi, gpio);
++	ret = gpio_ensure_requested(desc, gpio);
+ 	if (ret)
+ 		return ret;
+ 
+-	return gpioinfo_direction_input(gi);
++	return gpioinfo_direction_input(desc);
+ }
+ EXPORT_SYMBOL(gpio_direction_input);
+ 
+-static int gpioinfo_request_one(struct gpio_info *gi, unsigned long flags,
++static int gpioinfo_request_one(struct gpio_desc *desc, unsigned long flags,
+ 				const char *label)
+ {
+ 	int err;
+@@ -312,21 +312,21 @@ static int gpioinfo_request_one(struct gpio_info *gi, unsigned long flags,
+ 	const bool init_active = (flags & GPIOF_INIT_ACTIVE) == GPIOF_INIT_ACTIVE;
+ 	const bool init_high   = (flags & GPIOF_INIT_HIGH) == GPIOF_INIT_HIGH;
+ 
+-	err = gpioinfo_request(gi, label);
++	err = gpioinfo_request(desc, label);
+ 	if (err)
+ 		return err;
+ 
+-	gi->active_low = active_low;
++	desc->active_low = active_low;
+ 
+ 	if (dir_in)
+-		err = gpioinfo_direction_input(gi);
++		err = gpioinfo_direction_input(desc);
+ 	else if (logical)
+-		err = gpioinfo_direction_active(gi, init_active);
++		err = gpioinfo_direction_active(desc, init_active);
+ 	else
+-		err = gpioinfo_direction_output(gi, init_high);
++		err = gpioinfo_direction_output(desc, init_high);
+ 
+ 	if (err)
+-		gpioinfo_free(gi);
++		gpioinfo_free(desc);
+ 
+ 	return err;
+ }
+@@ -339,12 +339,12 @@ static int gpioinfo_request_one(struct gpio_info *gi, unsigned long flags,
+  */
+ int gpio_request_one(unsigned gpio, unsigned long flags, const char *label)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 
+-	if (!gi)
++	if (!desc)
+ 		return -ENODEV;
+ 
+-	return gpioinfo_request_one(gi, flags, label);
++	return gpioinfo_request_one(desc, flags, label);
+ }
+ EXPORT_SYMBOL_GPL(gpio_request_one);
+ 
+@@ -782,9 +782,9 @@ int gpio_get_num(struct device *dev, int gpio)
+ 
+ struct gpio_chip *gpio_get_chip(int gpio)
+ {
+-	struct gpio_info *gi = gpio_to_desc(gpio);
++	struct gpio_desc *desc = gpio_to_desc(gpio);
+ 
+-	return gi ? gi->chip : NULL;
++	return desc ? desc->chip : NULL;
+ }
+ 
+ #ifdef CONFIG_CMD_GPIO
+@@ -809,38 +809,38 @@ static int do_gpiolib(int argc, char *argv[])
+ 	}
+ 
+ 	for (i = 0; i < ARCH_NR_GPIOS; i++) {
+-		struct gpio_info *gi = &gpio_desc[i];
++		struct gpio_desc *desc = &gpio_desc[i];
+ 		int val = -1, dir = -1;
+ 		int idx;
+ 
+-		if (!gi->chip)
++		if (!desc->chip)
+ 			continue;
+ 
+-		if (chip && chip != gi->chip)
++		if (chip && chip != desc->chip)
+ 			continue;
+ 
+ 		/* print chip information and header on first gpio */
+-		if (gi->chip->base == i) {
++		if (desc->chip->base == i) {
+ 			printf("\nGPIOs %u-%u, chip %s:\n",
+-				gi->chip->base,
+-				gi->chip->base + gi->chip->ngpio - 1,
+-				dev_name(gi->chip->dev));
++				desc->chip->base,
++				desc->chip->base + desc->chip->ngpio - 1,
++				dev_name(desc->chip->dev));
+ 			printf("             %-3s %-3s %-9s %-20s %-20s\n", "dir", "val", "requested", "name", "label");
+ 		}
+ 
+-		idx = i - gi->chip->base;
++		idx = i - desc->chip->base;
+ 
+-		if (gi->chip->ops->get_direction)
+-			dir = gi->chip->ops->get_direction(gi->chip, idx);
+-		if (gi->chip->ops->get)
+-			val = gi->chip->ops->get(gi->chip, idx);
++		if (desc->chip->ops->get_direction)
++			dir = desc->chip->ops->get_direction(desc->chip, idx);
++		if (desc->chip->ops->get)
++			val = desc->chip->ops->get(desc->chip, idx);
+ 
+ 		printf("  GPIO %4d: %-3s %-3s %-9s %-20s %-20s\n", chip ? idx : i,
+ 			(dir < 0) ? "unk" : ((dir == GPIOF_DIR_IN) ? "in" : "out"),
+ 			(val < 0) ? "unk" : ((val == 0) ? "lo" : "hi"),
+-		        gi->requested ? (gi->active_low ? "active low" : "true") : "false",
+-			gi->name ? gi->name : "",
+-			gi->label ? gi->label : "");
++		        desc->requested ? (desc->active_low ? "active low" : "true") : "false",
++			desc->name ? desc->name : "",
++			desc->label ? desc->label : "");
+ 	}
+ 
+ 	return 0;
 -- 
 2.39.2
 
