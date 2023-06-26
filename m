@@ -1,54 +1,54 @@
-Delivery-date: Mon, 26 Jun 2023 11:58:11 +0200
+Delivery-date: Mon, 26 Jun 2023 12:01:48 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qDiz7-004Kb6-4c
-	for lore@lore.pengutronix.de; Mon, 26 Jun 2023 11:58:11 +0200
+	id 1qDj2b-004Kml-SE
+	for lore@lore.pengutronix.de; Mon, 26 Jun 2023 12:01:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qDiz4-0006Px-D8
-	for lore@pengutronix.de; Mon, 26 Jun 2023 11:58:10 +0200
+	id 1qDj2Z-0007FT-Cx
+	for lore@pengutronix.de; Mon, 26 Jun 2023 12:01:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DCAVu6+FnfoQiy/JEumfDlox6nFnDXtBlHnKSvPj0gU=; b=Z8KOZwUMoaX3mvrlKrvRC2lHGZ
-	JUNKxmAHnrx7fqf/VfcN7SCaMjZLAj5pBUw2UFUWNo/g3on+bh2DN1+uyCPux5LCHeRnVd2CPQrJJ
-	GAkYW6XcEp6MXZqi9tnExa7Col44yFhdHZVBW+Y3FanUkpcKwv84L1sJdEJhz6nTaVIrXD2iXgbpU
-	fIMjBiKr5Pi9xYO4YQ8B9BukSCyng6u5aZjaLjEj16iif27PG5SVP4k69Ko2/jvWWVKSrOhQzZFAf
-	MA7eEBuEXRR+fpUMxxuccfur66OWcaGUEefZb9iQex7cmTk5Z6CZuT4j0pGmB9Q5krvQBAUyNdVCV
-	WXdw4l5g==;
+	bh=3vSz8ovG+gd6lTtN++PHuvdq0rVMjJcHCTGLa/k8ic0=; b=2iwY19kpmj30gVKwcda/PmJhAf
+	7UmgtMIoBof5Tg81chxWwcMl68PPXgVdQKbLIjVW6W+wxm8yjDeVrFadUSiRWo0jIDf7BYMlmRG/G
+	YzMpxlZHwdwGDuA7AHUEqytqmyKZIGaIeMMuZ4KYNgti8bLVZuIdO7uppgIlTRlJfOK4qAm0jZkPa
+	w4M8hqIpqQA2yRgM26EnBStjm6AmMsF3jN3n/zO+mrNqkCLK5eBpqMBQphrgVqL+zEhQXeRwTToeW
+	ARNX45glFfOP8QQStDwJoJF3vq7dhrCroGz9Lz7fEqlMU4tGfYznWZirZdiv1pbnITK56msYxefgB
+	3c6MaFzA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qDixz-009mvM-1C;
-	Mon, 26 Jun 2023 09:57:03 +0000
+	id 1qDj0k-009nFi-2K;
+	Mon, 26 Jun 2023 09:59:54 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qDixv-009mul-3A
+	id 1qDj0g-009nEv-1m
 	for barebox@lists.infradead.org;
-	Mon, 26 Jun 2023 09:57:01 +0000
+	Mon, 26 Jun 2023 09:59:52 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qDixu-0006Em-CS; Mon, 26 Jun 2023 11:56:58 +0200
+	id 1qDj0f-0006UG-7Q; Mon, 26 Jun 2023 11:59:49 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qDixu-0003mo-5Y; Mon, 26 Jun 2023 11:56:58 +0200
-Date: Mon, 26 Jun 2023 11:56:58 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230626095658.GV18491@pengutronix.de>
-References: <20230626070747.815199-1-a.fatoum@pengutronix.de>
+	id 1qDj0e-0003nd-Vq; Mon, 26 Jun 2023 11:59:48 +0200
+Date: Mon, 26 Jun 2023 11:59:48 +0200
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org, mtr@pengutronix.de, str@pengutronix.de
+Message-ID: <20230626095948.GW18491@pengutronix.de>
+References: <20230623114348.26213-1-s.trumtrar@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230626070747.815199-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230623114348.26213-1-s.trumtrar@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +56,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230626_025700_016518_2CACC12C 
-X-CRM114-Status: GOOD (  21.99  )
+X-CRM114-CacheID: sfid-20230626_025950_612736_89A06037 
+X-CRM114-Status: GOOD (  34.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,67 +80,79 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] pbl: allow #include <pbl.h> from assembly
+Subject: Re: [PATCH] firmware: zynqmp: fix loading for PMU FWv1.1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jun 26, 2023 at 09:07:47AM +0200, Ahmad Fatoum wrote:
-> When compiled with obj-pbl-y, C code can either check #ifdef __PBL__ or
-> include <pbl.h> and use the IN_PBL macro that's always defined to be
-> either 0 or 1. Support doing the same from assembly by making the
-> <pbl.h> safe to include from outside C.
+On Fri, Jun 23, 2023 at 01:42:56PM +0200, Steffen Trumtrar wrote:
+> FPGA programming on ZynqMP is done by the PMU. The SoC just hands a
+> file to the PMU and lets it load this file to the FPGA.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> The bitstream that is sent to the FPGA consists of two headers, the
+> optional struct bs_header and a binary-header. See comment in driver:
+> 
+>  (...)
+>  * Bitstream can be provided with an optinal header (`struct bs_header`).
+>  * The true bitstream starts with the binary-header composed of 21 words:
+>  (...)
+> 
+> The PMUFW v1.0 had a feature for taking the bitstream only, skipping
+> the header, or including the binary-header and only skipping the
+> optional header. This is controlled via the BIT_ONLY_BIN flag. When
+> the flag is set, the complete header should be skipped.
+> 
+> The current implementation sets the flag *and* sends the binary-header
+> to the PMU:
+> 
+> 	header_length = get_header_length(mgr->buf, mgr->size);
+> 	(...)
+> 	body = (u32 *)&mgr->buf[header_length];
+> 
+> get_header_length searches for the first DUMMY_WORD, i.e. the beginning
+> of the binary header. Then we set body to this offset, skipping the
+> optional header.
+> 
+> The flag is always set to ZYNQMP_FPGA_BIT_ONLY_BIN, which is then obviously
+> incorrect. It seems like the PMUFW v1.0 was capable of still handling this
+> although the flag was set.
+> 
+> The newer PMUFW v1.1 doesn't support this and expects the flag to be
+> unset and getting handed binary-header+bitstream. This is the same as
+> the linux kernel handles bitstream loading on the ZynqMP. There the flag
+> is also always unset.
+> 
+> As this wasn't correct in the first place (although it most likely still
+> worked depending on PMUFW and its configuration), we won't break anything
+> when we just set the flag to zero as the PMUFW v1.1 expects it.
+> 
+> TLDR: set fpga_load flags to zero to fix firmwareloading with newer
+> PMUFW versions.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  include/pbl.h | 15 +++++++++------
->  1 file changed, 9 insertions(+), 6 deletions(-)
+>  drivers/firmware/zynqmp-fpga.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/include/pbl.h b/include/pbl.h
-> index 7dc4fa309257..44957f59784e 100644
-> --- a/include/pbl.h
-> +++ b/include/pbl.h
-> @@ -6,6 +6,14 @@
->  #ifndef __PBL_H__
->  #define __PBL_H__
+> diff --git a/drivers/firmware/zynqmp-fpga.c b/drivers/firmware/zynqmp-fpga.c
+> index 9c160e9098..1a9a5c1b2c 100644
+> --- a/drivers/firmware/zynqmp-fpga.c
+> +++ b/drivers/firmware/zynqmp-fpga.c
+> @@ -206,7 +206,7 @@ static int fpgamgr_program_finish(struct firmware_handler *fh)
+>  	enum xilinx_byte_order byte_order;
+>  	dma_addr_t addr;
+>  	int status = 0;
+> -	u8 flags = ZYNQMP_FPGA_BIT_ONLY_BIN;
+> +	u8 flags = 0;
 >  
-> +#ifdef __PBL__
-> +#define IN_PBL	1
-> +#else
-> +#define IN_PBL	0
-> +#endif
-> +
-> +#ifndef __ASSEMBLY__
-> +
->  #include <linux/types.h>
->  
->  extern unsigned long free_mem_ptr;
-> @@ -13,12 +21,6 @@ extern unsigned long free_mem_end_ptr;
->  
->  void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len);
->  
-> -#ifdef __PBL__
-> -#define IN_PBL	1
-> -#else
-> -#define IN_PBL	0
-> -#endif
-> -
->  void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsize);
->  
->  struct fdt_device_id {
-> @@ -32,5 +34,6 @@ fdt_device_get_match_data(const void *fdt, const char *nodepath,
->  
->  int pbl_barebox_verify(const void *compressed_start, unsigned int len,
->  		       const void *hash, unsigned int hash_len);
-> +#endif
->  
->  #endif /* __PBL_H__ */
+>  	if (!mgr->buf) {
+>  		status = -ENOBUFS;
 > -- 
-> 2.39.2
+> 2.41.0
 > 
 > 
 > 
