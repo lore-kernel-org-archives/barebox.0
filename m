@@ -1,62 +1,63 @@
-Delivery-date: Mon, 26 Jun 2023 17:35:30 +0200
+Delivery-date: Mon, 26 Jun 2023 17:35:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qDoFX-004fMl-Q8
-	for lore@lore.pengutronix.de; Mon, 26 Jun 2023 17:35:30 +0200
+	id 1qDoFb-004fNP-Ty
+	for lore@lore.pengutronix.de; Mon, 26 Jun 2023 17:35:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qDoFV-0006dx-9n
-	for lore@pengutronix.de; Mon, 26 Jun 2023 17:35:29 +0200
+	id 1qDoFZ-0006fh-6Q
+	for lore@pengutronix.de; Mon, 26 Jun 2023 17:35:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=WQluzb/fJVEafq0CDo+tXqIgVY0dJeLv/grtWJiHI5k=; b=somtuph/9gQVzA
-	mMYT6RBS1DJhes6+jpH0lqDDcwu5Q8VELdMnuhlrDGtHE131u5ynlx9K/gvldWlqEW7H7vo4L4JvX
-	FfjaTRQPDS7+3ZDCd4wSuQ79SxkgDfIxlT7otw3weDK9EprRHSORKsjUh7/6QCR5nl9koM147tgHq
-	U4WqCSoZcPJU1N8SWTbGPvPmxC4JUBe0Hfl0/NzHqCHsU7tiT/LWJBpj52YOej5Unf5U2Ewob5Uzg
-	ux9Y8ILBijzD0JiBWYdrlXjAKCvbupfEhodHDXydmdl8iLmSQwrOFHjWPM+E8Uglb3FhLG5kTs1J/
-	6zbJRQ0VlefaJVMqNspg==;
+	List-Owner; bh=UlzqRPM7tmg9xJPjW2uIMFjzNgl8EP8cXWBnGpSXfYo=; b=TtAXNeLS38+JuV
+	nboX75pv68dMBCU19ejlhZ4xBqvup6K0HNF+ztpYdFLVHSyu1c8x36B6NF6rzs8h3TNmMK2K4AURN
+	5A82DLZL3WZb7HHY76JYA+HXmJm11e9gTwH/0d85hyIfPjKQRfa+rYrd21PsbVqIrvT7/OiTOUkzS
+	ZWM0U4JvAK6A2VdO0iMtFDyLVP8O7tMILmBT2mucUOX8tykal8jPD1v1or7BEuxrn351EjAXxnPna
+	rRnQtHq2nYwmQO4gSau5WmOpqt7j9TolaeclyqVqKSMwbPvRm8+lD50S0nm98VUzy+rpk0wy6l/ge
+	UZ07WEPNAKdlKQPgnFLg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qDoEN-00AV9P-3B;
-	Mon, 26 Jun 2023 15:34:19 +0000
+	id 1qDoET-00AVCM-1F;
+	Mon, 26 Jun 2023 15:34:25 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qDoEK-00AV7C-2O
+	id 1qDoEQ-00AVAm-2j
 	for barebox@lists.infradead.org;
-	Mon, 26 Jun 2023 15:34:18 +0000
+	Mon, 26 Jun 2023 15:34:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qDoEI-00061b-5x; Mon, 26 Jun 2023 17:34:14 +0200
+	id 1qDoEO-000666-Kd; Mon, 26 Jun 2023 17:34:20 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qDoEH-00AF8X-HA; Mon, 26 Jun 2023 17:34:13 +0200
+	id 1qDoEO-00AF8q-0J; Mon, 26 Jun 2023 17:34:20 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qDoEG-00F5OJ-1D;
-	Mon, 26 Jun 2023 17:34:12 +0200
+	id 1qDoEN-00F5OR-0w;
+	Mon, 26 Jun 2023 17:34:19 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Mon, 26 Jun 2023 17:33:36 +0200
-Message-Id: <20230626153335.3592017-4-a.fatoum@pengutronix.de>
+Date: Mon, 26 Jun 2023 17:33:38 +0200
+Message-Id: <20230626153335.3592017-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230626153335.3592017-1-a.fatoum@pengutronix.de>
 References: <20230626153335.3592017-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230626_083416_778624_EDA4E18D 
-X-CRM114-Status: GOOD (  16.56  )
+X-CRM114-CacheID: sfid-20230626_083422_887954_EAA268C7 
+X-CRM114-Status: UNSURE (   9.61  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,154 +81,127 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH master v1 3/6] firmware: optionally turn missing firmware errors into warnings
+Subject: [PATCH master v1 4/6] ARM: Rockchip: gracefully handle missing firmware
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Previous commit turned compile-time errors into link-time errors.
-This commit goes a step further and allows the link to succeed
-unconditionally for build coverage and then dependent on the newly
-introduced CONFIG_MISSING_FIRMWARE_ERROR option abort the build with an
-error code and a listing of missing firmware printed to stderr.
+Unlike the Rockchip BL31 images, the sdram-init.bin for Rockchip SoCs isn't
+included via the regular firmware mechanism, but instead is passed as an
+argument to the rkimg tool. Like done for regular firmware, have the Rockchip
+image build rules handle missing firmware gracefully and update the
+.missing-firmware file to list what firmware was missing.
 
-In any case, barebox images which contain firmware in their PBL
-that's not available will be marked specially to reduce the risk
-of accidentally putting them to use:
+Example of a build with CONFIG_MACH_RADXA_ROCK3, but with both firmware
+files missing:
 
-  * They're truncated to zero size
+  $ find . -name *rock3a*.missing-firmware -exec grep -Hr . {} \;
 
-  * The final "images built:" section marks them as having firmware
-    missing
-
-  * They are omitted from the listing in the barebox-flash-images file
-
-  * Each barebox-broken.img is accompanied with a
-    barebox-broken.img.missing-firmware containing a newline delimited
-    list of missing firmware images
+  start_rock3a.pblb.missing-firmware:firmware/rk3568-bl31.bin
+  start_rock3a.pblb.rkimg.missing-firmware:arch/arm/boards/radxa-rock3/sdram-init.bin
+  barebox-rock3a.img.missing-firmware:arch/arm/boards/radxa-rock3/sdram-init.bin
+  barebox-rock3a.img.missing-firmware:firmware/rk3568-bl31.bin
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- firmware/Kconfig     | 14 ++++++++++++++
- firmware/Makefile    |  5 +++++
- images/Makefile      | 21 ++++++++++++++++-----
- scripts/Makefile.lib |  3 +++
- 4 files changed, 38 insertions(+), 5 deletions(-)
+ images/Makefile          |  2 +-
+ images/Makefile.rockchip | 68 ++++++++++++++--------------------------
+ 2 files changed, 25 insertions(+), 45 deletions(-)
 
-diff --git a/firmware/Kconfig b/firmware/Kconfig
-index 56ced00bc430..56d6d0d6c030 100644
---- a/firmware/Kconfig
-+++ b/firmware/Kconfig
-@@ -6,6 +6,20 @@ config EXTRA_FIRMWARE_DIR
- 	string "Firmware blobs root directory"
- 	default "firmware"
- 
-+config MISSING_FIRMWARE_ERROR
-+	bool "Fail the build when required firmware is missing"
-+	default y
-+	help
-+	  In-tree Defconfigs that enable multiple boards with different firmware
-+	  binary requirements would say y here, so you don't need unrelated firmware
-+	  for the build to succeed.
-+
-+	  Defconfigs custom-tailored to products would say n here as all boards
-+	  being built should be functional and have their firmware available.
-+
-+	  If in doubt, say Y and refer to the documentation on where to acquire the
-+	  needed firmware.
-+
- config HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	bool
- 	default y
-diff --git a/firmware/Makefile b/firmware/Makefile
-index c66d19c677e8..f9490a8e7a15 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -58,6 +58,11 @@ filechk_fwbin = { \
- 	echo "\#endif"						;\
- 	echo ".global _fw_$(FWSTR)_end"				;\
- 	echo "_fw_$(FWSTR)_end:"				;\
-+	echo "\#ifdef __PBL__"					;\
-+	echo "    .section .missing_fw,\"a\""			;\
-+	echo "_fwname_$(FWSTR):"				;\
-+	echo ".ascii \"firmware/$(FWNAME)\\n\""			;\
-+	echo "\#endif" 						;\
- }
- 
- __fwbin_sha = { \
 diff --git a/images/Makefile b/images/Makefile
-index c93f9e268978..16d86a5a5da4 100644
+index 16d86a5a5da4..c66f3764aa3e 100644
 --- a/images/Makefile
 +++ b/images/Makefile
-@@ -72,6 +72,8 @@ $(obj)/%.pbl: $(pbl-lds) $(BAREBOX_PBL_OBJS) $(obj)/piggy.o $(obj)/sha_sum.o FOR
- 
- $(obj)/%.pblb: $(obj)/%.pbl FORCE
- 	$(call if_changed,objcopy_bin,$(*F))
-+	$(Q)$(OBJCOPY) -O binary --only-section=.missing_fw $< $@.missing-firmware
-+	$(Q)[ -s $@.missing-firmware ] || rm -f $@.missing-firmware
- 	$(call cmd,check_file_size,$@,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
- 
- #
-@@ -127,10 +129,14 @@ $(obj)/barebox.z: $(obj)/../barebox.bin FORCE
- 
- # %.img - create a copy from another file
- # ----------------------------------------------------------------
-+
-+missing_fw = $(strip $(wildcard $(obj)/$(FILE_$(@F)).missing-firmware $(basename $(obj)/$(FILE_$(@F))).missing-firmware))
-+
- .SECONDEXPANSION:
- $(obj)/%.img: $(obj)/$$(FILE_$$(@F))
- 	$(Q)if [ -z $(FILE_$(@F)) ]; then echo "FILE_$(@F) empty!"; false; fi
--	$(call if_changed,shipped)
-+	$(Q)$(if $(missing_fw),cat $(missing_fw) >$@.missing-firmware,rm -f $@.missing-firmware)
-+	$(call if_changed,$(if $(missing_fw),0size,shipped))
- 
- board = $(srctree)/arch/$(SRCARCH)/boards
- objboard = $(objtree)/arch/$(SRCARCH)/boards
-@@ -194,10 +200,15 @@ multi-image-build:
- 
- images: $(image-y-path) $(flash-link) $(flash-list) FORCE
- 	@echo "images built:"
--	@for i in $(image-y); do echo $$i; done
-+	@for i in $(image-y); do \
-+	  if [ -s $(obj)/$$i ]; then echo $$i; \
-+	  else >&2 echo "** firmware missing for $$i **"; \
-+	  $(if $(CONFIG_MISSING_FIRMWARE_ERROR), >&2 sed 's/^/\t/' <$(obj)/$${i}.missing-firmware; missing=1;) \
-+	  fi; done; test -n "$$missing" && \
-+	echo >&2 "Firmware missing in CONFIG_MISSING_FIRMWARE_ERROR=y build" && false
- 
- __images_install: images
--	@for i in $(image-y-path); do install -t "$(INSTALL_PATH)" $$i; done
-+	@for i in $(image-y-path); do if [ -s $$i ]; then install -t "$(INSTALL_PATH)" $$i; fi; done
- 
- PHONY += __images_install
- 
-@@ -205,10 +216,10 @@ $(flash-link): $(link-dest) FORCE
- 	$(call if_changed,ln)
- 
- $(flash-list): $(image-y-path)
--	@for i in $^; do echo $$i; done > $@
-+	@for i in $^; do if [ -s $$i ]; then echo $$i; fi; done > $@
+@@ -220,6 +220,6 @@ $(flash-list): $(image-y-path)
  
  clean-files := *.pbl *.pblb *.map start_*.imximg *.img barebox.z start_*.kwbimg \
  	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
- 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
--	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped
-+	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped *.missing-firmware
+-	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
++	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd *.rkimg \
+ 	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped *.missing-firmware
  clean-files += pbl.lds
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 42ee27499561..b8fb2684421e 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -236,6 +236,9 @@ endef
- # Shipped files
- # ===========================================================================
+diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
+index 47779a7d3585..ea32af42414b 100644
+--- a/images/Makefile.rockchip
++++ b/images/Makefile.rockchip
+@@ -3,6 +3,24 @@
+ # barebox image generation Makefile for Rockchip images
+ #
  
-+quiet_cmd_0size = 0SIZE $@
-+cmd_0size = : > $@
++quiet_cmd_rkimg_image = RK-IMG $@
++      cmd_rkimg_image = $(objtree)/scripts/rkimage -o $@ $(word 2,$^) $(word 1,$^)
 +
- quiet_cmd_shipped = SHIPPED $@
- cmd_shipped = cat $< > $@
++# params: CONFIG symbol, entry point, sdram-init.bin, board identifier string
++define build_rockchip_image =
++$(eval
++ifeq ($($(strip $(1))), y)
++	pblb-y += $(strip $(2))
++	FILE_barebox-$(strip $(4)).img = $(strip $(2)).pblb.rkimg
++	image-y += barebox-$(strip $(4)).img
++
++$$(obj)/$(strip $(2)).pblb.rkimg: $$(obj)/$(strip $(2)).pblb $$(wildcard $(board)/$(strip $(3))) FORCE
++	$$(Q)$$(if $$(word 3,$$^),rm -f $$@.missing-firmware,echo arch/$(SRCARCH)/boards/$(strip $(3)) >$$@.missing-firmware)
++	$$(call if_changed,$$(if $$(word 3,$$^),rkimg_image,0size))
++endif
++)
++endef
++
+ pblb-$(CONFIG_MACH_RADXA_ROCK) += start_radxa_rock
+ FILE_barebox-radxa-rock.img = start_radxa_rock.pblb
+ image-$(CONFIG_MACH_RADXA_ROCK) += barebox-radxa-rock.img
+@@ -11,47 +29,9 @@ pblb-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += start_rk3288_phycore_som
+ FILE_barebox-rk3288-phycore-som.img = start_rk3288_phycore_som.pblb
+ image-$(CONFIG_MACH_PHYTEC_SOM_RK3288) += barebox-rk3288-phycore-som.img
  
+-pblb-$(CONFIG_MACH_RK3568_EVB) += start_rk3568_evb
+-image-$(CONFIG_MACH_RK3568_EVB) += barebox-rk3568-evb.img
+-
+-pblb-$(CONFIG_MACH_RK3568_BPI_R2PRO) += start_rk3568_bpi_r2pro
+-image-$(CONFIG_MACH_RK3568_BPI_R2PRO) += barebox-rk3568-bpi-r2pro.img
+-
+-pblb-$(CONFIG_MACH_PINE64_QUARTZ64) += start_quartz64a
+-image-$(CONFIG_MACH_PINE64_QUARTZ64) += barebox-quartz64a.img
+-
+-pblb-$(CONFIG_MACH_RADXA_ROCK3) += start_rock3a
+-image-$(CONFIG_MACH_RADXA_ROCK3) += barebox-rock3a.img
+-
+-pblb-$(CONFIG_MACH_RADXA_ROCK5) += start_rock5b
+-image-$(CONFIG_MACH_RADXA_ROCK5) += barebox-rock5b.img
+-
+-pblb-$(CONFIG_MACH_RADXA_CM3) += start_radxa-cm3-io.img
+-image-$(CONFIG_MACH_RADXA_CM3) += barebox-radxa-cm3-io.img
+-
+-quiet_cmd_rkimg_image = RK-IMG $@
+-      cmd_rkimg_image = $(objtree)/scripts/rkimage -o $@ $(word 2,$^) $(word 1,$^)
+-
+-$(obj)/barebox-rk3568-evb.img: $(obj)/start_rk3568_evb.pblb \
+-                $(board)/rockchip-rk3568-evb/sdram-init.bin
+-	$(call if_changed,rkimg_image)
+-
+-$(obj)/barebox-rk3568-bpi-r2pro.img: $(obj)/start_rk3568_bpi_r2pro.pblb \
+-                $(board)/rockchip-rk3568-bpi-r2pro/sdram-init.bin
+-	$(call if_changed,rkimg_image)
+-
+-$(obj)/barebox-quartz64a.img: $(obj)/start_quartz64a.pblb \
+-                $(board)/pine64-quartz64/sdram-init.bin
+-	$(call if_changed,rkimg_image)
+-
+-$(obj)/barebox-rock3a.img: $(obj)/start_rock3a.pblb \
+-                $(board)/radxa-rock3/sdram-init.bin
+-	$(call if_changed,rkimg_image)
+-
+-$(obj)/barebox-rock5b.img: $(obj)/start_rock5b.pblb \
+-                $(board)/radxa-rock5/sdram-init.bin
+-	$(call if_changed,rkimg_image)
+-
+-$(obj)/barebox-radxa-cm3-io.img: $(obj)/start_radxa_cm3_io.pblb \
+-                $(board)/radxa-cm3/sdram-init.bin
+-	$(call if_changed,rkimg_image)
++$(call build_rockchip_image, CONFIG_MACH_RK3568_EVB, start_rk3568_evb, rockchip-rk3568-evb/sdram-init.bin, rk3568-evb)
++$(call build_rockchip_image, CONFIG_MACH_RK3568_BPI_R2PRO, start_rk3568_bpi_r2pro, rockchip-rk3568-bpi-r2pro/sdram-init.bin, rk3568-bpi-r2pro)
++$(call build_rockchip_image, CONFIG_MACH_PINE64_QUARTZ64, start_quartz64a, pine64-quartz64/sdram-init.bin, quartz64a)
++$(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK3, start_rock3a, radxa-rock3/sdram-init.bin, rock3a)
++$(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK5, start_rock5b, radxa-rock5/sdram-init.bin, rock5b)
++$(call build_rockchip_image, CONFIG_MACH_RADXA_CM3, start_radxa_cm3_io, radxa-cm3/sdram-init.bin, radxa-cm3-io)
 -- 
 2.39.2
 
