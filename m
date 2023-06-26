@@ -1,62 +1,62 @@
-Delivery-date: Mon, 26 Jun 2023 17:35:19 +0200
+Delivery-date: Mon, 26 Jun 2023 17:35:30 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qDoFM-004fLp-Nz
-	for lore@lore.pengutronix.de; Mon, 26 Jun 2023 17:35:19 +0200
+	id 1qDoFX-004fMl-Q8
+	for lore@lore.pengutronix.de; Mon, 26 Jun 2023 17:35:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qDoFK-0006Sw-Gw
-	for lore@pengutronix.de; Mon, 26 Jun 2023 17:35:19 +0200
+	id 1qDoFV-0006dx-9n
+	for lore@pengutronix.de; Mon, 26 Jun 2023 17:35:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=c08zw/FwHnbUXERcQTbmcm5xiWk+S3CZN3rI0Ien+YQ=; b=T3xsValfD1Pp0n
-	JFagXe9EgieXW5DEs1hCyjb8Md1j7LeAX7eN8lQCmqe22Skk7JD8hQabBghWip49zh7noor04tW+L
-	cDnAlB6m9rYIXAxNvWV901ZQwu5kbvNWO5/FDo9qns2steooXr7P1gzrgsxWAKLvs5N7xcvxgBhzs
-	AdibnCM5By0sJQ0p1wtgn8qbFkl/ijCYG++c4H1EzmJrjGDHV1hgU6pzRaCZFm0mPsEUPrJd1xUV5
-	g75F21yT8afpMu4XlafCh52dUf/YlxwH6yPDILo/VOf547UHXwq3JeJ8CxW8YDVMBuSe6IL8dD18v
-	0+p2GZNPX5/dsg2IrCbg==;
+	List-Owner; bh=WQluzb/fJVEafq0CDo+tXqIgVY0dJeLv/grtWJiHI5k=; b=somtuph/9gQVzA
+	mMYT6RBS1DJhes6+jpH0lqDDcwu5Q8VELdMnuhlrDGtHE131u5ynlx9K/gvldWlqEW7H7vo4L4JvX
+	FfjaTRQPDS7+3ZDCd4wSuQ79SxkgDfIxlT7otw3weDK9EprRHSORKsjUh7/6QCR5nl9koM147tgHq
+	U4WqCSoZcPJU1N8SWTbGPvPmxC4JUBe0Hfl0/NzHqCHsU7tiT/LWJBpj52YOej5Unf5U2Ewob5Uzg
+	ux9Y8ILBijzD0JiBWYdrlXjAKCvbupfEhodHDXydmdl8iLmSQwrOFHjWPM+E8Uglb3FhLG5kTs1J/
+	6zbJRQ0VlefaJVMqNspg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qDoEE-00AV4r-0x;
-	Mon, 26 Jun 2023 15:34:10 +0000
+	id 1qDoEN-00AV9P-3B;
+	Mon, 26 Jun 2023 15:34:19 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qDoEB-00AV3C-1V
+	id 1qDoEK-00AV7C-2O
 	for barebox@lists.infradead.org;
-	Mon, 26 Jun 2023 15:34:08 +0000
+	Mon, 26 Jun 2023 15:34:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qDoE9-0005zR-8n; Mon, 26 Jun 2023 17:34:05 +0200
+	id 1qDoEI-00061b-5x; Mon, 26 Jun 2023 17:34:14 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qDoE8-00AF8L-KK; Mon, 26 Jun 2023 17:34:04 +0200
+	id 1qDoEH-00AF8X-HA; Mon, 26 Jun 2023 17:34:13 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qDoE7-00F5OB-39;
-	Mon, 26 Jun 2023 17:34:03 +0200
+	id 1qDoEG-00F5OJ-1D;
+	Mon, 26 Jun 2023 17:34:12 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Mon, 26 Jun 2023 17:33:34 +0200
-Message-Id: <20230626153335.3592017-3-a.fatoum@pengutronix.de>
+Date: Mon, 26 Jun 2023 17:33:36 +0200
+Message-Id: <20230626153335.3592017-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230626153335.3592017-1-a.fatoum@pengutronix.de>
 References: <20230626153335.3592017-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230626_083407_505623_B1D5E85F 
-X-CRM114-Status: GOOD (  11.58  )
+X-CRM114-CacheID: sfid-20230626_083416_778624_EDA4E18D 
+X-CRM114-Status: GOOD (  16.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,58 +80,154 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH master v1 2/6] firmware: turn missing firmware into linker error
+Subject: [PATCH master v1 3/6] firmware: optionally turn missing firmware errors into warnings
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Appending to firmware-y results in an assembly file being generated that
-defines a section embedding the firmware in question verbatim via .incbin.
-To update the assembly file as required, the target has a dependency on
-the firmware. When the firmware is missing, the build will abort there.
+Previous commit turned compile-time errors into link-time errors.
+This commit goes a step further and allows the link to succeed
+unconditionally for build coverage and then dependent on the newly
+introduced CONFIG_MISSING_FIRMWARE_ERROR option abort the build with an
+error code and a listing of missing firmware printed to stderr.
 
-In preparation for deferring missing PBL firmware errors till the very
-end, let's remove the firmware dependency if the missing firmware file
-is built into PBL and replace the .incbin with a reference to an ultimately
-undefined variable.
+In any case, barebox images which contain firmware in their PBL
+that's not available will be marked specially to reduce the risk
+of accidentally putting them to use:
+
+  * They're truncated to zero size
+
+  * The final "images built:" section marks them as having firmware
+    missing
+
+  * They are omitted from the listing in the barebox-flash-images file
+
+  * Each barebox-broken.img is accompanied with a
+    barebox-broken.img.missing-firmware containing a newline delimited
+    list of missing firmware images
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- firmware/Makefile | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ firmware/Kconfig     | 14 ++++++++++++++
+ firmware/Makefile    |  5 +++++
+ images/Makefile      | 21 ++++++++++++++++-----
+ scripts/Makefile.lib |  3 +++
+ 4 files changed, 38 insertions(+), 5 deletions(-)
 
+diff --git a/firmware/Kconfig b/firmware/Kconfig
+index 56ced00bc430..56d6d0d6c030 100644
+--- a/firmware/Kconfig
++++ b/firmware/Kconfig
+@@ -6,6 +6,20 @@ config EXTRA_FIRMWARE_DIR
+ 	string "Firmware blobs root directory"
+ 	default "firmware"
+ 
++config MISSING_FIRMWARE_ERROR
++	bool "Fail the build when required firmware is missing"
++	default y
++	help
++	  In-tree Defconfigs that enable multiple boards with different firmware
++	  binary requirements would say y here, so you don't need unrelated firmware
++	  for the build to succeed.
++
++	  Defconfigs custom-tailored to products would say n here as all boards
++	  being built should be functional and have their firmware available.
++
++	  If in doubt, say Y and refer to the documentation on where to acquire the
++	  needed firmware.
++
+ config HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
+ 	bool
+ 	default y
 diff --git a/firmware/Makefile b/firmware/Makefile
-index 8050d0418d33..c66d19c677e8 100644
+index c66d19c677e8..f9490a8e7a15 100644
 --- a/firmware/Makefile
 +++ b/firmware/Makefile
-@@ -41,6 +41,7 @@ obj-pbl-y := $(addsuffix .gen.o, $(firmware-y))
- 
- FWNAME    = $(patsubst $(obj)/%.extgen.S,%,$(patsubst $(obj)/%.gen.S,%,$@))
- FWSTR     = $(subst /,_,$(subst .,_,$(subst -,_,$(FWNAME))))
-+FWNAME_EXISTS = $(if $(wildcard $(fwdir)/$(FWNAME)),1,0)
- 
- filechk_fwbin = { \
- 	echo "/* Generated by $(src)/Makefile */"		;\
-@@ -50,7 +51,11 @@ filechk_fwbin = { \
- 	echo "    .p2align $(ASM_LGPTR)"			;\
- 	echo ".global _fw_$(FWSTR)_start"			;\
- 	echo "_fw_$(FWSTR)_start:"				;\
-+	echo "\#if $(FWNAME_EXISTS)"				;\
- 	echo "    .incbin \"$(fwdir)/$(FWNAME)\""		;\
-+	echo "\#else"						;\
-+	echo "ASM_PTR _fwname_$(FWSTR)"				;\
-+	echo "\#endif"						;\
+@@ -58,6 +58,11 @@ filechk_fwbin = { \
+ 	echo "\#endif"						;\
  	echo ".global _fw_$(FWSTR)_end"				;\
  	echo "_fw_$(FWSTR)_end:"				;\
++	echo "\#ifdef __PBL__"					;\
++	echo "    .section .missing_fw,\"a\""			;\
++	echo "_fwname_$(FWSTR):"				;\
++	echo ".ascii \"firmware/$(FWNAME)\\n\""			;\
++	echo "\#endif" 						;\
  }
-@@ -88,7 +93,7 @@ clean-files += *.sha.bin *.sum
- $(patsubst %.gen.o,$(obj)/%.gen.o, $(obj-pbl-y)): $(obj)/%.gen.o: $(fwdir)/%
  
- # The same for pbl:
--$(patsubst %.gen.o,$(obj)/%.gen.pbl.o, $(obj-pbl-y)): $(obj)/%.gen.pbl.o: $(fwdir)/%
-+$(patsubst %.gen.o,$(obj)/%.gen.pbl.o, $(obj-pbl-y)): $(obj)/%.gen.pbl.o: $(wildcard $(fwdir)/%)
- $(patsubst %.gen.o,$(obj)/%.extgen.pbl.o, $(pbl-y)): $(obj)/%.extgen.pbl.o: $(fwdir)/%
+ __fwbin_sha = { \
+diff --git a/images/Makefile b/images/Makefile
+index c93f9e268978..16d86a5a5da4 100644
+--- a/images/Makefile
++++ b/images/Makefile
+@@ -72,6 +72,8 @@ $(obj)/%.pbl: $(pbl-lds) $(BAREBOX_PBL_OBJS) $(obj)/piggy.o $(obj)/sha_sum.o FOR
  
- pbl-y := $(addsuffix .extgen.o, $(fw-external-y))
+ $(obj)/%.pblb: $(obj)/%.pbl FORCE
+ 	$(call if_changed,objcopy_bin,$(*F))
++	$(Q)$(OBJCOPY) -O binary --only-section=.missing_fw $< $@.missing-firmware
++	$(Q)[ -s $@.missing-firmware ] || rm -f $@.missing-firmware
+ 	$(call cmd,check_file_size,$@,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
+ 
+ #
+@@ -127,10 +129,14 @@ $(obj)/barebox.z: $(obj)/../barebox.bin FORCE
+ 
+ # %.img - create a copy from another file
+ # ----------------------------------------------------------------
++
++missing_fw = $(strip $(wildcard $(obj)/$(FILE_$(@F)).missing-firmware $(basename $(obj)/$(FILE_$(@F))).missing-firmware))
++
+ .SECONDEXPANSION:
+ $(obj)/%.img: $(obj)/$$(FILE_$$(@F))
+ 	$(Q)if [ -z $(FILE_$(@F)) ]; then echo "FILE_$(@F) empty!"; false; fi
+-	$(call if_changed,shipped)
++	$(Q)$(if $(missing_fw),cat $(missing_fw) >$@.missing-firmware,rm -f $@.missing-firmware)
++	$(call if_changed,$(if $(missing_fw),0size,shipped))
+ 
+ board = $(srctree)/arch/$(SRCARCH)/boards
+ objboard = $(objtree)/arch/$(SRCARCH)/boards
+@@ -194,10 +200,15 @@ multi-image-build:
+ 
+ images: $(image-y-path) $(flash-link) $(flash-list) FORCE
+ 	@echo "images built:"
+-	@for i in $(image-y); do echo $$i; done
++	@for i in $(image-y); do \
++	  if [ -s $(obj)/$$i ]; then echo $$i; \
++	  else >&2 echo "** firmware missing for $$i **"; \
++	  $(if $(CONFIG_MISSING_FIRMWARE_ERROR), >&2 sed 's/^/\t/' <$(obj)/$${i}.missing-firmware; missing=1;) \
++	  fi; done; test -n "$$missing" && \
++	echo >&2 "Firmware missing in CONFIG_MISSING_FIRMWARE_ERROR=y build" && false
+ 
+ __images_install: images
+-	@for i in $(image-y-path); do install -t "$(INSTALL_PATH)" $$i; done
++	@for i in $(image-y-path); do if [ -s $$i ]; then install -t "$(INSTALL_PATH)" $$i; fi; done
+ 
+ PHONY += __images_install
+ 
+@@ -205,10 +216,10 @@ $(flash-link): $(link-dest) FORCE
+ 	$(call if_changed,ln)
+ 
+ $(flash-list): $(image-y-path)
+-	@for i in $^; do echo $$i; done > $@
++	@for i in $^; do if [ -s $$i ]; then echo $$i; fi; done > $@
+ 
+ clean-files := *.pbl *.pblb *.map start_*.imximg *.img barebox.z start_*.kwbimg \
+ 	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
+ 	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
+-	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped
++	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped *.missing-firmware
+ clean-files += pbl.lds
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 42ee27499561..b8fb2684421e 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -236,6 +236,9 @@ endef
+ # Shipped files
+ # ===========================================================================
+ 
++quiet_cmd_0size = 0SIZE $@
++cmd_0size = : > $@
++
+ quiet_cmd_shipped = SHIPPED $@
+ cmd_shipped = cat $< > $@
+ 
 -- 
 2.39.2
 
