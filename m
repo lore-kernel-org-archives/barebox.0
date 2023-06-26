@@ -1,62 +1,63 @@
-Delivery-date: Mon, 26 Jun 2023 09:09:36 +0200
+Delivery-date: Mon, 26 Jun 2023 11:53:07 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qDgLw-004CAZ-4U
-	for lore@lore.pengutronix.de; Mon, 26 Jun 2023 09:09:36 +0200
+	id 1qDiuC-004KIe-V6
+	for lore@lore.pengutronix.de; Mon, 26 Jun 2023 11:53:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qDgLt-0001m7-Fe
-	for lore@pengutronix.de; Mon, 26 Jun 2023 09:09:33 +0200
+	id 1qDiuA-0005ZT-IO
+	for lore@pengutronix.de; Mon, 26 Jun 2023 11:53:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=frsJ5BFOhy/jjknDevQ9ugwJ0A5d2IHy83Ua1vw3r8E=; b=nv5kk9jS9yCt+BU+wmrSQ6Cip/
-	TzIUSK3QY28ZGAszAgNInnVguPe+UyMLPe1yvzOeDLKz6BHwChQHKf4CT3mRq+tPb8ypk9bugxx6j
-	M575v7xwf6+3xD0MbWvRyzyXm1pd3SjiCJyVA9JBLsAuxR8dWIy0buE2JxGBY6FTzswy2OmNqhOze
-	fWk5IJ0FNcLC2rX12EZRv4Yx7bddOzPbp3fewZL2z9pCR6w0CiYaoMST2DkHQXMHqTzVxwc6GJrAk
-	Dl0gKFoMhiFDgTxKr4zxx8Zwkn9DslthjUeWZXGjRAELl4ZXEcWE57J99g0p+MhWItSQBnCQqwLfy
-	yXN5OqDw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=lrQvMZ8xPbGrY5vvb5pHbmd3HoL8EH7e3qv1HU3JwbY=; b=vOsTTr47xwQ94RsYd5H7r4uISY
+	1hzmCCRKtD9e1qffM0L0AgbzNnZlAriXCbFP8guHKRC5GwTCq1sfhzPNLPI4hSG+j0TxzLhD3fDDl
+	Vh7Ch00jTPDCZuf/1JOrUPI1WdftbcifwSASESu8m+qFw1KpsTgsaHtTtAE6BlmIt97zXjRqoJmMG
+	+VJXF4WzMPw3O9JTvZvH3zydEE+dJlCAT96TcXDzKoyf+Xkj118Wb3lwFwg2Gq+dRTkdM4mOds7Uy
+	I6Au2syTSgm0aAC+MoMIHtWHSLVLlvdvDH2qYEyaFhKqwHUrCBmdvKCFsEfxJ+N2jcZUDEV3VsWf5
+	U4okdPCg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qDgKQ-009XZW-00;
-	Mon, 26 Jun 2023 07:08:02 +0000
+	id 1qDisj-009lnd-2H;
+	Mon, 26 Jun 2023 09:51:37 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qDgKM-009XYi-1o
+	id 1qDish-009lmJ-0M
 	for barebox@lists.infradead.org;
-	Mon, 26 Jun 2023 07:08:00 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	Mon, 26 Jun 2023 09:51:36 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qDgKF-0001aU-3t; Mon, 26 Jun 2023 09:07:51 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qDgKE-00A8uJ-Cn; Mon, 26 Jun 2023 09:07:50 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qDgKD-003Q4e-2n;
-	Mon, 26 Jun 2023 09:07:49 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 26 Jun 2023 09:07:47 +0200
-Message-Id: <20230626070747.815199-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1qDisf-0005R1-5e; Mon, 26 Jun 2023 11:51:33 +0200
+Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qDise-0003en-V0; Mon, 26 Jun 2023 11:51:32 +0200
+Date: Mon, 26 Jun 2023 11:51:32 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230626095132.GT18491@pengutronix.de>
+References: <20230612124739.1080762-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230612124739.1080762-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230626_000758_616498_415C76F9 
-X-CRM114-Status: UNSURE (   9.91  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230626_025135_146296_DFBA916C 
+X-CRM114-Status: GOOD (  22.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,66 +75,108 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] pbl: allow #include <pbl.h> from assembly
+Subject: Re: [PATCH] MAKEALL: source defconfig after determining correct
+ CROSS_COMPILE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-When compiled with obj-pbl-y, C code can either check #ifdef __PBL__ or
-include <pbl.h> and use the IN_PBL macro that's always defined to be
-either 0 or 1. Support doing the same from assembly by making the
-<pbl.h> safe to include from outside C.
+On Mon, Jun 12, 2023 at 02:47:39PM +0200, Ahmad Fatoum wrote:
+> ARM 32- and 64-bit have different GCC compiler backends, but the same
+> architecture in barebox. MAKEALL handles that by sourcing the defconfig
+> and then looking for CONFIG_CPU_64 before continuing to build. This is
+> problematic, because CROSS_COMPILE can only be set after that, so we may
+> end up with more dynamic Kconfig options being wrongly set the first
+> time, because CROSS_COMPILE wasn't correctly set. Fix this by always
+> sourcing the defconfig again once we determine the correct
+> CROSS_COMPILE.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  MAKEALL | 30 ++++++++++++++++--------------
+>  1 file changed, 16 insertions(+), 14 deletions(-)
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- include/pbl.h | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+Applied, thanks
 
-diff --git a/include/pbl.h b/include/pbl.h
-index 7dc4fa309257..44957f59784e 100644
---- a/include/pbl.h
-+++ b/include/pbl.h
-@@ -6,6 +6,14 @@
- #ifndef __PBL_H__
- #define __PBL_H__
- 
-+#ifdef __PBL__
-+#define IN_PBL	1
-+#else
-+#define IN_PBL	0
-+#endif
-+
-+#ifndef __ASSEMBLY__
-+
- #include <linux/types.h>
- 
- extern unsigned long free_mem_ptr;
-@@ -13,12 +21,6 @@ extern unsigned long free_mem_end_ptr;
- 
- void pbl_barebox_uncompress(void *dest, void *compressed_start, unsigned int len);
- 
--#ifdef __PBL__
--#define IN_PBL	1
--#else
--#define IN_PBL	0
--#endif
--
- void fdt_find_mem(const void *fdt, unsigned long *membase, unsigned long *memsize);
- 
- struct fdt_device_id {
-@@ -32,5 +34,6 @@ fdt_device_get_match_data(const void *fdt, const char *nodepath,
- 
- int pbl_barebox_verify(const void *compressed_start, unsigned int len,
- 		       const void *hash, unsigned int hash_len);
-+#endif
- 
- #endif /* __PBL_H__ */
+Sascha
+
+> 
+> diff --git a/MAKEALL b/MAKEALL
+> index a4e268d54cf8..d3a289fd3839 100755
+> --- a/MAKEALL
+> +++ b/MAKEALL
+> @@ -91,21 +91,9 @@ do_build_target() {
+>  
+>  	rm -rf "${BUILDDIR}"
+>  	mkdir -p "${LOGDIR}/${target}"
+> -	printf "Building ${arch} ${target} \n" >&2 | tee -a "${log_report}"
+> -
+> -	tmp=$(echo "${target}" | tr - _)
+>  
+>  	MAKE="make -j${JOBS} ARCH=${arch} O=${BUILDDIR}"
+> -	${MAKE} ${target} 2>&1 > "${log_report}" | tee "${log_err}"
+> -	for i in ${KCONFIG_ADD}; do
+> -		./scripts/kconfig/merge_config.sh -m -O \
+> -			${BUILDDIR} ${BUILDDIR}/.config $i \
+> -			2>&1 > "${log_report}" | tee "${log_err}"
+> -	done
+> -	${MAKE} olddefconfig 2>&1 > "${log_report}" | tee "${log_err}"
+> -
+> -	check_pipe_status
+> -	configure_result="$?"
+> +	${MAKE} ${target} &>/dev/null
+>  
+>  	if [ ${arch} = "arm" ]; then
+>  		grep -q "CONFIG_CPU_64=y" ${BUILDDIR}/.config
+> @@ -114,6 +102,8 @@ do_build_target() {
+>  		fi
+>  	fi
+>  
+> +	tmp=$(echo "${target}" | tr - _)
+> +
+>  	cross_compile=$(eval echo '$CROSS_COMPILE_'${tmp})
+>  	cross_compile_set=$(eval echo '${CROSS_COMPILE_'${tmp}'+set}')
+>  	if [ "${cross_compile_set}" = "" ]
+> @@ -126,12 +116,24 @@ do_build_target() {
+>  		fi
+>  	fi
+>  
+> +	printf "Building ${arch} ${target} \n" >&2 | tee -a "${log_report}"
+> +	MAKE="${MAKE} CROSS_COMPILE=${cross_compile}"
+> +	${MAKE} ${target} 2>&1 > "${log_report}" | tee "${log_err}"
+> +	for i in ${KCONFIG_ADD}; do
+> +		./scripts/kconfig/merge_config.sh -m -O \
+> +			${BUILDDIR} ${BUILDDIR}/.config $i \
+> +			2>&1 > "${log_report}" | tee "${log_err}"
+> +	done
+> +	${MAKE} olddefconfig 2>&1 > "${log_report}" | tee "${log_err}"
+> +
+> +	check_pipe_status
+> +	configure_result="$?"
+> +
+>  	printf "Configure: " | tee -a "${log_report}"
+>  
+>  	if [ "$configure_result" = "0" ]; then
+>  		printf "OK     \n" | tee -a "${log_report}"
+>  
+> -		MAKE="make -j${JOBS} CROSS_COMPILE=${cross_compile} ARCH=${arch} O=${BUILDDIR}"
+>  		${MAKE} -s 2>&1 >> "${log_report}" | tee -a "${log_err}"
+>  
+>  		check_pipe_status
+> -- 
+> 2.39.2
+> 
+> 
+> 
+
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
