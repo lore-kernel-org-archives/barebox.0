@@ -1,62 +1,60 @@
-Delivery-date: Tue, 27 Jun 2023 07:54:11 +0200
+Delivery-date: Tue, 27 Jun 2023 07:54:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qE1eW-005Qa7-PN
-	for lore@lore.pengutronix.de; Tue, 27 Jun 2023 07:54:11 +0200
+	id 1qE1eX-005QaP-E7
+	for lore@lore.pengutronix.de; Tue, 27 Jun 2023 07:54:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qE1eT-0007pQ-RO
-	for lore@pengutronix.de; Tue, 27 Jun 2023 07:54:10 +0200
+	id 1qE1eV-0007ph-2I
+	for lore@pengutronix.de; Tue, 27 Jun 2023 07:54:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=LULz/RTjeCZluq2HKtOmtq22EeN2BHGH88XPCOvz9n8=; b=cAlmpU+DYzhGiQ
-	DXOYnjdb6jDAtEWjzLlV2gS70/0Dx1VU3GJdRhZAwmDOxHww+HuS2MOkpQUyYmUuoHmI8y48lvYE4
-	x/3OlNw86hNQaJtuCSlJ6n0Dw8j5Gsb+KzMP1Dok+vPvaSygtVvariP5W+o31xL8gN65JQtCdStsa
-	rF9R19dABjnL1wrfqMpAJlQ8fwLNxEs1u+6d7Vm16CeLqP1kksCvZheUmV7/ZGQKJ56x6DnGKb8Vr
-	JISvUu74J9axXie/FxT+vNSnKWfxMfM0EnFDXEyplq85c6dq3TAE4/kRWu8eiue/Z5fdjBPBN892R
-	bb++V0GMs2r4VAVCA0iA==;
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=aCfajXFZ3Fctq8hAAbiX8boYtZZr1hRSWPseQcYg/EQ=; b=SFvh9OxIzDaNHh
+	CqtZMzqMD+37ZKPGrlpzXT6Q9K3Wy9PuuubwwvG9QyRK2PaUd2nWSMz35hG1VO6z27DyZa3ORkoxl
+	TCLQ2l7qYQ/8fGVOGL0wir4PNN+PdgGNyy7Wn/z4p7hGxwFCeqSEwfAtzalb+FfOLyeZRv9C7W8OO
+	VuxYJinYxWIalhzIy/e+hmHswE5xCTgQd/xrKL5mua23NOjwQzwrRHIrMkRLIFGk7UZjvLbaVMdBR
+	yYmQvkpo7rPJEGlanLUVoOkkbdlvBrs78swW6rvWIqAd0h+L1u+0BGuZ4Jn5cK+Mx+tsw0cfwb2+2
+	S6/lpfyPMZY9DSXjfFPw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qE1dF-00ByKH-0o;
-	Tue, 27 Jun 2023 05:52:53 +0000
+	id 1qE1d9-00ByGu-2Z;
+	Tue, 27 Jun 2023 05:52:47 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qE1d6-00ByDt-2Z
+	id 1qE1d6-00ByDZ-1C
 	for barebox@lists.infradead.org;
-	Tue, 27 Jun 2023 05:52:47 +0000
+	Tue, 27 Jun 2023 05:52:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qE1d4-0007MF-FV; Tue, 27 Jun 2023 07:52:42 +0200
+	id 1qE1d3-0007LY-T7; Tue, 27 Jun 2023 07:52:41 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qE1d3-00ANDO-M9; Tue, 27 Jun 2023 07:52:41 +0200
+	id 1qE1d3-00ANDG-9L; Tue, 27 Jun 2023 07:52:41 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qE1d2-00GOtI-17;
+	id 1qE1d2-00GOsr-0v;
 	Tue, 27 Jun 2023 07:52:40 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 27 Jun 2023 07:52:39 +0200
-Message-Id: <20230627055239.3908872-8-a.fatoum@pengutronix.de>
+Date: Tue, 27 Jun 2023 07:52:32 +0200
+Message-Id: <20230627055239.3908872-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230627055239.3908872-1-a.fatoum@pengutronix.de>
-References: <20230627055239.3908872-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230626_225244_996741_E0F0B4A2 
-X-CRM114-Status: GOOD (  11.26  )
+X-CRM114-CacheID: sfid-20230626_225244_405326_B1BA0DB3 
+X-CRM114-Status: GOOD (  15.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,7 +66,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: uol@pengutronix.de, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: uol@pengutronix.de
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -80,296 +78,87 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH master v2 7/7] firmware: don't hardcode firmware paths in srctree for existence check
+Subject: [PATCH master v2 0/7] firmware: optionally turn missing firmware errors into warnings
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Now that PBL firmware can be made optional, we can drop the existence
-checks in the Kconfig. These were flawed anyway, because they didn't
-take CONFIG_EXTRA_FIRMWARE_DIR into account and they led to issues with
-build system recipes that didn't expect firmware to be required before
-compilation step at oldconfig/menuconfig time.
+v1 -> v2:
+   - mark firmware used for PBL as pbl-only (fixes unintended build
+     error)
+   - fix escape of newline character in firmware/Makefile
+   - fix build failing even with CONFIG_MISSING_FIRMWARE_ERROR unset
 
-This effectively reverts commits:
+Many of the ARMv8 defconfigs can require firmware external to barebox
+for proper operation: TF-A as BL31, DDR PHY firmware, SDRAM setup
+or OP-TEE. This led to defconfigs that fail to build by default
+unless the user installs the firmware files into the firmware directory.
 
-  624962fb45c6 ("ARM: i.MX: make boards selectable only when firmware files are present")
-  4ff2e5510ec9 ("ARM: Rockchip: make boards only selectable when firmware is present")
-  41a89611774a ("ARM: rockchip: don't attempt building MACH_RADXA_ROCK5 without firmware")
+While this worked for the SoC-specific defconfigs, it's really annoying
+for the multi_v8_defconfig:
 
-Reported-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-imx/Kconfig      | 49 ----------------------------------
- arch/arm/mach-rockchip/Kconfig |  6 -----
- firmware/Kconfig               | 39 ---------------------------
- 3 files changed, 94 deletions(-)
+  - The user will need to install firmware even for unrelated
+    platforms
 
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 4c93c1244a6a..ef0e5fc5611b 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -555,35 +555,9 @@ if 64BIT
- 
- comment "i.MX8M boards"
- 
--if !HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--comment "LPDDR4 firmware files missing, some boards are not selectable"
--endif
--
--if !HAVE_FIRMWARE_IMX_DDR4_PMU_TRAIN
--comment "DDR4 firmware files missing, some boards are not selectable"
--endif
--
--if !HAVE_FIRMWARE_IMX8MM_ATF
--comment "i.MX8MM TF-A files missing, i.MX8MM boards are disabled"
--endif
--
--if !HAVE_FIRMWARE_IMX8MQ_ATF
--comment "i.MX8MQ TF-A files missing, i.MX8MQ boards are disabled"
--endif
--
--if !HAVE_FIRMWARE_IMX8MN_ATF
--comment "i.MX8MN TF-A files missing, i.MX8MN boards are disabled"
--endif
--
--if !HAVE_FIRMWARE_IMX8MP_ATF
--comment "i.MX8MP TF-A files missing, i.MX8MP boards are disabled"
--endif
--
- config MACH_INNOCOMM_WB15
- 	bool "InnoComm WB15 (i.MX8MM) EVK"
- 	select ARCH_IMX8MM
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MM_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MM_ATF
- 	select ARM_SMCCC
-@@ -596,8 +570,6 @@ config MACH_INNOCOMM_WB15
- config MACH_MNT_REFORM
- 	bool "MNT Reform"
- 	select ARCH_IMX8MQ
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MQ_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MQ_ATF
- 	select ARM_SMCCC
-@@ -607,8 +579,6 @@ config MACH_MNT_REFORM
- config MACH_NXP_IMX8MM_EVK
- 	bool "NXP i.MX8MM EVK Board"
- 	select ARCH_IMX8MM
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MM_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MM_ATF
- 	select ARM_SMCCC
-@@ -620,9 +590,6 @@ config MACH_NXP_IMX8MM_EVK
- config MACH_NXP_IMX8MN_EVK
- 	bool "NXP i.MX8MN EVK Board"
- 	select ARCH_IMX8MN
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX_DDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MN_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX_DDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MN_ATF
-@@ -634,8 +601,6 @@ config MACH_NXP_IMX8MN_EVK
- config MACH_NXP_IMX8MP_EVK
- 	bool "NXP i.MX8MP EVK Board"
- 	select ARCH_IMX8MP
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MP_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MP_ATF
- 	select ARM_SMCCC
-@@ -646,8 +611,6 @@ config MACH_NXP_IMX8MP_EVK
- config MACH_NXP_IMX8MQ_EVK
- 	bool "NXP i.MX8MQ EVK Board"
- 	select ARCH_IMX8MQ
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MQ_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MQ_ATF
- 	select ARM_SMCCC
-@@ -656,8 +619,6 @@ config MACH_NXP_IMX8MQ_EVK
- config MACH_PHYTEC_SOM_IMX8MQ
- 	bool "Phytec i.MX8M SOM"
- 	select ARCH_IMX8MQ
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MQ_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MQ_ATF
- 	select ARM_SMCCC
-@@ -666,8 +627,6 @@ config MACH_PHYTEC_SOM_IMX8MQ
- config MACH_POLYHEX_DEBIX
- 	bool "Polyhex DEBIX Model-A/B (i.MX8MP) Board"
- 	select ARCH_IMX8MP
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MP_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MP_ATF
- 	select ARM_SMCCC
-@@ -678,8 +637,6 @@ config MACH_POLYHEX_DEBIX
- config MACH_PROTONIC_IMX8M
- 	bool "Protonic-Holland i.MX8Mx based boards"
- 	select ARCH_IMX8MM
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MM_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MM_ATF
- 	select ARM_SMCCC
-@@ -690,8 +647,6 @@ config MACH_PROTONIC_IMX8M
- config MACH_TQ_MBA8MPXL
- 	bool "TQ i.MX8MP Dual/Quad on MBa8MPxL Board"
- 	select ARCH_IMX8MP
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MP_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MP_ATF
- 	select ARM_SMCCC
-@@ -702,8 +657,6 @@ config MACH_TQ_MBA8MPXL
- config MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP
- 	bool "Variscite DT8MCustomBoard with DART-MX8M-PLUS"
- 	select ARCH_IMX8MP
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MP_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MP_ATF
- 	select ARM_SMCCC
-@@ -714,8 +667,6 @@ config MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP
- config MACH_ZII_IMX8MQ_DEV
- 	bool "ZII i.MX8MQ based devices"
- 	select ARCH_IMX8MQ
--	depends on HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	depends on HAVE_FIRMWARE_IMX8MQ_ATF
- 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	select FIRMWARE_IMX8MQ_ATF
- 	select ARM_SMCCC
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index a71c4ae35dd9..8cdf2c28a912 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -75,42 +75,36 @@ if 64BIT
- 
- config MACH_RK3568_EVB
- 	select ARCH_RK3568
--	depends on $(success,test -e $(srctree)/arch/arm/boards/rockchip-rk3568-evb/sdram-init.bin)
- 	bool "RK3568 EVB"
- 	help
- 	  Say Y here if you are using a RK3568 EVB
- 
- config MACH_RK3568_BPI_R2PRO
- 	select ARCH_RK3568
--	depends on $(success,test -e $(srctree)/arch/arm/boards/rockchip-rk3568-bpi-r2pro/sdram-init.bin)
- 	bool "RK3568 BPI R2PRO"
- 	help
- 	  Say Y here if you are using a RK3568 Bananpi R2 Pro
- 
- config MACH_PINE64_QUARTZ64
- 	select ARCH_RK3568
--	depends on $(success,test -e $(srctree)/arch/arm/boards/pine64-quartz64/sdram-init.bin)
- 	bool "Pine64 Quartz64"
- 	help
- 	  Say Y here if you are using a Pine64 Quartz64
- 
- config MACH_RADXA_ROCK3
- 	select ARCH_RK3568
--	depends on $(success,test -e $(srctree)/arch/arm/boards/radxa-rock3/sdram-init.bin)
- 	bool "Radxa ROCK3"
- 	help
- 	  Say Y here if you are using a Radxa ROCK3
- 
- config MACH_RADXA_ROCK5
- 	select ARCH_RK3588
--	depends on $(success,test -e $(srctree)/arch/arm/boards/radxa-rock5/sdram-init.bin)
- 	bool "Radxa ROCK5"
- 	help
- 	  Say Y here if you are using a Radxa ROCK5
- 
- config MACH_RADXA_CM3
- 	select ARCH_RK3568
--	depends on $(success,test -e $(srctree)/arch/arm/boards/radxa-cm3/sdram-init.bin)
- 	bool "Radxa CM3"
- 	help
- 	  Say Y here if you are using a Radxa CM3
-diff --git a/firmware/Kconfig b/firmware/Kconfig
-index 56d6d0d6c030..3328dbc0b111 100644
---- a/firmware/Kconfig
-+++ b/firmware/Kconfig
-@@ -20,74 +20,35 @@ config MISSING_FIRMWARE_ERROR
- 	  If in doubt, say Y and refer to the documentation on where to acquire the
- 	  needed firmware.
- 
--config HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
--	bool
--	default y
--	depends on $(success,test -e $(srctree)/firmware/lpddr4_pmu_train_1d_dmem.bin)
--	depends on $(success,test -e $(srctree)/firmware/lpddr4_pmu_train_1d_imem.bin)
--	depends on $(success,test -e $(srctree)/firmware/lpddr4_pmu_train_2d_dmem.bin)
--	depends on $(success,test -e $(srctree)/firmware/lpddr4_pmu_train_2d_imem.bin)
--
- config FIRMWARE_IMX_LPDDR4_PMU_TRAIN
- 	bool
- 
--config HAVE_FIRMWARE_IMX_DDR4_PMU_TRAIN
--	bool
--	default y
--	depends on $(success,test -e $(srctree)/firmware/ddr4_dmem_1d.bin)
--	depends on $(success,test -e $(srctree)/firmware/ddr4_dmem_2d.bin)
--	depends on $(success,test -e $(srctree)/firmware/ddr4_imem_1d.bin)
--	depends on $(success,test -e $(srctree)/firmware/ddr4_imem_2d.bin)
--
- config FIRMWARE_IMX_DDR4_PMU_TRAIN
- 	bool
- 
--config HAVE_FIRMWARE_IMX8MM_ATF
--	bool
--	default y
--	depends on $(success,test -e $(srctree)/firmware/imx8mm-bl31.bin)
--
- config FIRMWARE_IMX8MM_ATF
- 	bool
- 
--config HAVE_FIRMWARE_IMX8MN_ATF
--	bool
--	default y
--	depends on $(success,test -e $(srctree)/firmware/imx8mn-bl31.bin)
--
- config FIRMWARE_IMX8MN_ATF
- 	bool
- 
--config HAVE_FIRMWARE_IMX8MP_ATF
--	bool
--	default y
--	depends on $(success,test -e $(srctree)/firmware/imx8mp-bl31.bin)
--
- config FIRMWARE_IMX8MP_ATF
- 	bool
- 
--config HAVE_FIRMWARE_IMX8MQ_ATF
--	bool
--	default y
--	depends on $(success,test -e $(srctree)/firmware/imx8mq-bl31.bin)
--
- config FIRMWARE_IMX8MQ_ATF
- 	bool
- 
- config FIRMWARE_IMX8MM_OPTEE
- 	bool "install OP-TEE on i.MX8MM boards"
- 	depends on FIRMWARE_IMX8MM_ATF && PBL_OPTEE
--	depends on $(success,test -e $(srctree)/firmware/imx8mm-bl32.bin)
- 
- config FIRMWARE_IMX8MN_OPTEE
- 	bool "install OP-TEE on i.MX8MN boards"
- 	depends on FIRMWARE_IMX8MN_ATF && PBL_OPTEE
--	depends on $(success,test -e $(srctree)/firmware/imx8mn-bl32.bin)
- 
- config FIRMWARE_IMX8MP_OPTEE
- 	bool "install OP-TEE on i.MX8MP boards"
- 	depends on FIRMWARE_IMX8MP_ATF && PBL_OPTEE
--	depends on $(success,test -e $(srctree)/firmware/imx8mp-bl32.bin)
- 
- config FIRMWARE_CCBV2_OPTEE
- 	bool
+  - Some platforms like e.g. qemu-virt64, which need no firmware to
+    be compiled into barebox, can't be built just by using the
+    defconfig
+
+For v2023.06.0, this was resolved by disabling boards that lack firmware
+through hiding their Kconfig symbol. This has a few shortcomings:
+
+  - Firmware is looked up relative to source tree and can't take
+    CONFIG_EXTRA_FIRMWARE_DIR into account that early
+
+  - Firmware needs to exist at configure stage, which breaks
+    build system recipes that install firmware after configure
+    stage
+
+  - menuconfig e.g. in Yocto's cml1.bbclass doesn't take make options
+    into account that are otherwise used for olddefconfig and build
+
+This series resolves the underlying issue differently: We record
+whether firmware is missing and just continue the build till the end
+at which time the build would succeed (with warnings) if new option
+CONFIG_MISSING_FIRMWARE_ERROR was unset.
+
+In any case, barebox images which contain firmware in their PBL
+that's not available will be marked specially to reduce the risk
+of accidentally putting them to use:
+
+  * They're truncated to zero size
+
+  * The final "images built:" section marks them as having firmware
+    missing, e.g.  ** firmware missing for barebox-rk3568-bpi-r2pro.img**
+
+  * They are omitted from the listing in the barebox-flash-images file
+
+  * Each barebox-broken.img is accompanied with a
+    barebox-broken.img.missing-firmware containing a newline delimited
+    list of missing firmware images
+
+
+Ahmad Fatoum (7):
+  firmware: reference pointer alignment defined in
+    <asm-generic/pointer.h>
+  firmware: mark firmware used in PBL as pbl-only
+  firmware: turn missing firmware into linker error
+  firmware: optionally turn missing firmware errors into warnings
+  ARM64: Rockchip: gracefully handle missing firmware
+  ARM64: unset CONFIG_MISSING_FIRMWARE_ERROR for Rockchip/i.MX
+  firmware: don't hardcode firmware paths in srctree for existence check
+
+ arch/arm/configs/imx_v8_defconfig      |  1 +
+ arch/arm/configs/multi_v8_defconfig    |  1 +
+ arch/arm/configs/rockchip_v8_defconfig |  1 +
+ arch/arm/mach-imx/Kconfig              | 49 -------------------
+ arch/arm/mach-rockchip/Kconfig         |  6 ---
+ firmware/Kconfig                       | 49 +++++--------------
+ firmware/Makefile                      | 47 +++++++++++-------
+ images/Makefile                        | 23 ++++++---
+ images/Makefile.rockchip               | 68 +++++++++-----------------
+ scripts/Makefile.lib                   |  3 ++
+ 10 files changed, 88 insertions(+), 160 deletions(-)
+
 -- 
 2.39.2
 
