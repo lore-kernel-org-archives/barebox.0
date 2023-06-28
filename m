@@ -1,54 +1,54 @@
-Delivery-date: Wed, 28 Jun 2023 10:47:02 +0200
+Delivery-date: Wed, 28 Jun 2023 10:47:36 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qEQpM-006vIg-7x
-	for lore@lore.pengutronix.de; Wed, 28 Jun 2023 10:47:02 +0200
+	id 1qEQpt-006vKf-Si
+	for lore@lore.pengutronix.de; Wed, 28 Jun 2023 10:47:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qEQpJ-0001WO-F4
-	for lore@pengutronix.de; Wed, 28 Jun 2023 10:47:02 +0200
+	id 1qEQpr-0001Z2-Gc
+	for lore@pengutronix.de; Wed, 28 Jun 2023 10:47:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+AHJmkrqv/hFkeJz1oWV7UnWgqczdkruN4e+97H/UzI=; b=h6tJJQ6a5SRtuOI1V7tMkL/gmz
-	sSN3iZLatu0rlvtG5zgTEFgfNSmQk+ECQVSHvbBVafzP0y0RBX3XuJjBEQuRCpG9lIQyTX63f7GMU
-	k+4cdfE7zR719Y6XxDMCxjNR6vacLONz15f9L6t2xOBdzcgnyV5PjQ66mWuhiroQbee8uodib3Vdx
-	rFQs2m/Kxg4PzCwwzRX3kO3IHzkVd+e2PW7xYkl07SI0VrM1PPANaSUHjizAK/EUFdZCTfilZ93gy
-	DvPL62Efo81ebD+PwK9ZuLE3ZM828HMM6RHIO1HNMAC+KFDSXH0XbDYfZ6vXkEHIAUaGOVoKtd+c7
-	s7QwAaoQ==;
+	bh=QfoNhSbbLjpWcfq8sdjFKFc5rsym5UFXssqrLgEFF24=; b=Jwq+kpzedE2a8bFqmYc8qn5kSO
+	EOvi6/oJSiB3ZM7E5sxAzESL4FE7TFAz21tk5m4d2H0AJfGYHIIF6VG5td0qJi3z0drFaF3KauDqY
+	WSK7Xw2J+fMNadHWRKBj+mscOqO8Iqnz0QtUIvztRyqiJ5eq/pCOUwzlfop4h6fJOGzuJ8I7FE7G6
+	PR/vZxdC6SPg6xmWulQ8uaCz9Eg8rzG3OPwYu3cBdjcc4ckskeB0bsbnKcu66SfIuNFmVDT4sheED
+	4yUvTqOX5aKZ2gf2n/fCGZS641z3rpZDkfT9VlctmIEce4E7pPbTmpGWtrvta1dqOQjcqXHZcRoAr
+	fdiG2CYw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qEQnx-00FBhd-2Z;
-	Wed, 28 Jun 2023 08:45:37 +0000
+	id 1qEQog-00FBle-1o;
+	Wed, 28 Jun 2023 08:46:22 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qEQnr-00FBhF-2v
+	id 1qEQod-00FBlB-2R
 	for barebox@lists.infradead.org;
-	Wed, 28 Jun 2023 08:45:35 +0000
+	Wed, 28 Jun 2023 08:46:21 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qEQnp-0001K0-TS; Wed, 28 Jun 2023 10:45:29 +0200
+	id 1qEQoc-0001Sv-Fv; Wed, 28 Jun 2023 10:46:18 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qEQnp-0005FX-EJ; Wed, 28 Jun 2023 10:45:29 +0200
-Date: Wed, 28 Jun 2023 10:45:29 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, uol@pengutronix.de
-Message-ID: <20230628084529.GA18491@pengutronix.de>
-References: <20230627055239.3908872-1-a.fatoum@pengutronix.de>
+	id 1qEQob-0005Fm-UE; Wed, 28 Jun 2023 10:46:17 +0200
+Date: Wed, 28 Jun 2023 10:46:17 +0200
+To: oss@kalray.eu
+Cc: barebox@lists.infradead.org, jmaselbas@kalray.eu, ysionneau@kalray.eu
+Message-ID: <20230628084617.GB18491@pengutronix.de>
+References: <20230627154202.8976-1-oss@kalray.eu>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230627055239.3908872-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230627154202.8976-1-oss@kalray.eu>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +56,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230628_014531_969355_024C4C1A 
-X-CRM114-Status: GOOD (  30.83  )
+X-CRM114-CacheID: sfid-20230628_014619_798563_967BBA4D 
+X-CRM114-Status: GOOD (  25.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,96 +80,59 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master v2 0/7] firmware: optionally turn missing firmware
- errors into warnings
+Subject: Re: [PATCH 1/3] kvx: Add missing include/asm/mmu.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Tue, Jun 27, 2023 at 07:52:32AM +0200, Ahmad Fatoum wrote:
-> v1 -> v2:
->    - mark firmware used for PBL as pbl-only (fixes unintended build
->      error)
->    - fix escape of newline character in firmware/Makefile
->    - fix build failing even with CONFIG_MISSING_FIRMWARE_ERROR unset
+On Tue, Jun 27, 2023 at 05:42:00PM +0200, oss@kalray.eu wrote:
+> From: Jules Maselbas <jmaselbas@kalray.eu>
+> 
+> Since the rework of remap_range each architecture is expected to have
+> the asm/mmu.h header, this wasn't the case for kvx, fix this.
+> 
+> By default the KV3-1 cpu (as found in Coolidge SoC) starts with all memory
+> uncached and MMU disabled. Data and instruction L1-caches are enabled very
+> early during barebox start code, see arch/kvx/cpu/start.S, using the wfxl
+> instruction to modify DCE and ICE (resp. Data and Instruction Cache Enable)
+> bits in PS (Processor Status) of the system register file.
+> 
+> The core MMU is not used by barebox, however there is a default mapping of
+> the memory when the MMU is disabled where only the SMEM and DDR memory are
+> cached and device-memory isn't.
+> 
+> Fixes b792124a7d ("rework remap_range")
+> 
+> Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> ---
+>  arch/kvx/include/asm/mmu.h | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>  create mode 100644 arch/kvx/include/asm/mmu.h
 
 Applied, thanks
 
 Sascha
 
 > 
-> Many of the ARMv8 defconfigs can require firmware external to barebox
-> for proper operation: TF-A as BL31, DDR PHY firmware, SDRAM setup
-> or OP-TEE. This led to defconfigs that fail to build by default
-> unless the user installs the firmware files into the firmware directory.
-> 
-> While this worked for the SoC-specific defconfigs, it's really annoying
-> for the multi_v8_defconfig:
-> 
->   - The user will need to install firmware even for unrelated
->     platforms
-> 
->   - Some platforms like e.g. qemu-virt64, which need no firmware to
->     be compiled into barebox, can't be built just by using the
->     defconfig
-> 
-> For v2023.06.0, this was resolved by disabling boards that lack firmware
-> through hiding their Kconfig symbol. This has a few shortcomings:
-> 
->   - Firmware is looked up relative to source tree and can't take
->     CONFIG_EXTRA_FIRMWARE_DIR into account that early
-> 
->   - Firmware needs to exist at configure stage, which breaks
->     build system recipes that install firmware after configure
->     stage
-> 
->   - menuconfig e.g. in Yocto's cml1.bbclass doesn't take make options
->     into account that are otherwise used for olddefconfig and build
-> 
-> This series resolves the underlying issue differently: We record
-> whether firmware is missing and just continue the build till the end
-> at which time the build would succeed (with warnings) if new option
-> CONFIG_MISSING_FIRMWARE_ERROR was unset.
-> 
-> In any case, barebox images which contain firmware in their PBL
-> that's not available will be marked specially to reduce the risk
-> of accidentally putting them to use:
-> 
->   * They're truncated to zero size
-> 
->   * The final "images built:" section marks them as having firmware
->     missing, e.g.  ** firmware missing for barebox-rk3568-bpi-r2pro.img**
-> 
->   * They are omitted from the listing in the barebox-flash-images file
-> 
->   * Each barebox-broken.img is accompanied with a
->     barebox-broken.img.missing-firmware containing a newline delimited
->     list of missing firmware images
-> 
-> 
-> Ahmad Fatoum (7):
->   firmware: reference pointer alignment defined in
->     <asm-generic/pointer.h>
->   firmware: mark firmware used in PBL as pbl-only
->   firmware: turn missing firmware into linker error
->   firmware: optionally turn missing firmware errors into warnings
->   ARM64: Rockchip: gracefully handle missing firmware
->   ARM64: unset CONFIG_MISSING_FIRMWARE_ERROR for Rockchip/i.MX
->   firmware: don't hardcode firmware paths in srctree for existence check
-> 
->  arch/arm/configs/imx_v8_defconfig      |  1 +
->  arch/arm/configs/multi_v8_defconfig    |  1 +
->  arch/arm/configs/rockchip_v8_defconfig |  1 +
->  arch/arm/mach-imx/Kconfig              | 49 -------------------
->  arch/arm/mach-rockchip/Kconfig         |  6 ---
->  firmware/Kconfig                       | 49 +++++--------------
->  firmware/Makefile                      | 47 +++++++++++-------
->  images/Makefile                        | 23 ++++++---
->  images/Makefile.rockchip               | 68 +++++++++-----------------
->  scripts/Makefile.lib                   |  3 ++
->  10 files changed, 88 insertions(+), 160 deletions(-)
-> 
+> diff --git a/arch/kvx/include/asm/mmu.h b/arch/kvx/include/asm/mmu.h
+> new file mode 100644
+> index 0000000000..d39889bd3f
+> --- /dev/null
+> +++ b/arch/kvx/include/asm/mmu.h
+> @@ -0,0 +1,8 @@
+> +/* SPDX-License-Identifier: GPL-2.0-only */
+> +
+> +#ifndef __ASM_MMU_H
+> +#define __ASM_MMU_H
+> +
+> +#define MAP_ARCH_DEFAULT MAP_CACHED
+> +
+> +#endif /* __ASM_MMU_H */
 > -- 
-> 2.39.2
+> 2.17.1
+> 
+> 
+> 
+> 
 > 
 > 
 > 
