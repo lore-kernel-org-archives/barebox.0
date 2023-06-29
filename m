@@ -1,82 +1,84 @@
-Delivery-date: Thu, 29 Jun 2023 21:58:57 +0200
+Delivery-date: Thu, 29 Jun 2023 21:58:58 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qExn8-008kfm-Iy
+	id 1qExn9-008kfn-8E
 	for lore@lore.pengutronix.de; Thu, 29 Jun 2023 21:58:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qExn6-0008Kc-Dw
-	for lore@pengutronix.de; Thu, 29 Jun 2023 21:58:56 +0200
+	id 1qExn6-0008Kd-Gp
+	for lore@pengutronix.de; Thu, 29 Jun 2023 21:58:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=+eIfO2iNm06HW0Q90v9Q9acoh36Z1QZl8riBCAalhpM=; b=xgDeYbRFbKy04y
-	vF1Ge98QRLh3K40HgZUCj9xRGQG+TFzvRD6ACPQl1PJbW5+Oye2hx97gbUZJbaYcTSmpvF17DztR3
-	T/hV3RUY232bjvpy4IJlQIHPzWyHiwiqTvGxUKbY+xwVPjQoL1Bmtacq4BPZvu+vuRd/IQ61NPjeY
-	D+77rrhzJ5oYuPHJ6M5RfV56jCgoa9WKqaY/kat2g8QpMQoxiA/hTVRzh3jpPq11w2E0eRX9SxLQf
-	Iazk7S4tG+/ZbFI2tQ1nFlQDbrQgaYC6gSZSy283gB8qVei3LxbsnuYVbotzi8ZpVIo2oeVlcSwVD
-	KpxC1VSwNkWWwOxmCo/g==;
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=BtFgOZLPeWXNWqTGtR9dXq+hQNKx2NzBZ8P130+FTpE=; b=tQDbZguPpuH34T
+	CeIU9Cl4WmSaQX38koOBxFVWKA2DUJJQ17x84LRxEUC40xfQ7E9Y+uOH3IEMZ2upvlERtqHFXldYv
+	kFGg4sLa5ypAFwdPpfsulTUaT6ZBdrhUG5/JGMUEDgGwPTXlTEqpLcfb1XljO9KkZS2eRJOA+CHsw
+	bBrKwQpojieZlN7Y/HHxv6qq75rO2QUCnnHFJ7KvOjCwyBXkDw1zcNqBbblLAPxVxIEFa9/0XJ/M+
+	WJRjOEiNnitCUKI04XKFyYfbBcEOUXeUVUKpGQRtNoAFAy6MdOppBOsYTJ2MNrp/YbbWaZ6bVD7og
+	2yPPLNhWD/bMj3t4Yhaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qExln-0020sP-2y;
-	Thu, 29 Jun 2023 19:57:35 +0000
-Received: from mail-lf1-x134.google.com ([2a00:1450:4864:20::134])
+	id 1qExlo-0020t5-1h;
+	Thu, 29 Jun 2023 19:57:36 +0000
+Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qExlk-0020r3-1g
+	id 1qExll-0020r9-12
 	for barebox@lists.infradead.org;
-	Thu, 29 Jun 2023 19:57:33 +0000
-Received: by mail-lf1-x134.google.com with SMTP id 2adb3069b0e04-4fb41682472so1779180e87.2
-        for <barebox@lists.infradead.org>; Thu, 29 Jun 2023 12:57:31 -0700 (PDT)
+	Thu, 29 Jun 2023 19:57:34 +0000
+Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-4fb9fd28025so1029771e87.2
+        for <barebox@lists.infradead.org>; Thu, 29 Jun 2023 12:57:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1688068650; x=1690660650;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+eIfO2iNm06HW0Q90v9Q9acoh36Z1QZl8riBCAalhpM=;
-        b=YjKHbv+KnVZVrQkP5xUTi4eIVm0T/+a4rGgZT7Htrb3yVFZzFE5TFDJ2SA58JaYhGR
-         fnMtsB8VRGsiCywMcodWSCBcQuH9tyAkNNUIu24YxV716WQ2ln649c7MEAGvB4Lw2fqM
-         gbLDEZbUCKEKpRFtg2rQrxJkPxO9pB2pAd2apap7zW1i2We5u+Sc8mfbl63upTl0esjE
-         lrxASG/Npce8XGcjiKkkTOzBO8JoPm8pAkwHmPrUF1t4b7JWTA+nqV/kL/XbLyfOyms5
-         dJS4Fp3Qz4fYg8Orfcacr3XAAAUCjCBdL3tLQ0Xm5ygZ6P0Xef2PAGUL5kue/D8QBLxQ
-         shuA==
+        d=gmail.com; s=20221208; t=1688068651; x=1690660651;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BtFgOZLPeWXNWqTGtR9dXq+hQNKx2NzBZ8P130+FTpE=;
+        b=RAyBqtt6XZsf8RzEpczVoxa9rqnKvaj59Ty13ap1fNPMf2WsrhYvFpwiMtKsz+RAfO
+         I9FF7wLLte4ExRza1if3i3oR6lwRZR38QVEDUChG8Iz/3kco+Q279YYeFa52dwQSGzaA
+         D05t0BQm4+yv3MFw58bkYjGoSaGnXqJuNe0ACy+/Nu6v1gQMmAB60GVkP79dQrcq6W8p
+         Xhyob4s3EwEBU3+J8ZIJkLLWs2P8sZ47QYM5aZo9hLEpVq7BnkEEu2C4nXc/FQZe8uFS
+         uTapQnCoAi0TpLV+YbxjwXjZNZnZRTYhW5rdcO0b3Z4Kbvg7vKM+bnIp9xeSnoHRz3w1
+         vn2Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1688068650; x=1690660650;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+eIfO2iNm06HW0Q90v9Q9acoh36Z1QZl8riBCAalhpM=;
-        b=aGWTw7aWtl1WGJzTW1gB9aq1Yt9aZGOgI2T4A5zhqUNaazg8KcVQhZEFxFWSXeXave
-         XPpaMYiIzyqS/fOcjuMQhZEcvfSQtycgwAVXFwvHtpjZUf/n/N0QjdMZZOQlts1DDLRz
-         yBABHHpVM8DVMCBQTyen6f3OvQ+I8BOeknVSvAOCjJqZ8zRZzXzKvEvp0bpSQQLfU4Q2
-         zE+kkhnQCz1b+nDMFzPT/HrM6ltKWzcMO60qByOK1pylaHwVuKazLkW4Z97Dy6aD+JmX
-         R87/3zORZr5adItf/UQAv9IZrTFavNnFKBXWkQN53+JJyFCbcrAiCxS88eilghTR/y6i
-         mFVw==
-X-Gm-Message-State: ABy/qLZqCbFNzFdSq/mK1SxtIk8soHo6Fr/Dc+RZ+KJNrUBgBdPFvmnM
-	9DFi8S5eSJDu1VlFOpK+JlPPzB7FtoX1YQ==
-X-Google-Smtp-Source: APBJJlH2eCNJE2oV3SIN3Xr+JXP2XelTy38JGFMLdhoYxNhyEQ9tipZeDhAQfvujts5hvmXCnz3ERw==
-X-Received: by 2002:a05:6512:1094:b0:4fa:e7e5:66e0 with SMTP id j20-20020a056512109400b004fae7e566e0mr830375lfg.48.1688068649344;
-        Thu, 29 Jun 2023 12:57:29 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1688068651; x=1690660651;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BtFgOZLPeWXNWqTGtR9dXq+hQNKx2NzBZ8P130+FTpE=;
+        b=D/UkAnULrdkmjKjTT7gduDBNQu3Y8pUUruAcJ+RW5HiPqFnkqpWoC1aSTS33lgJDLP
+         T5dkVr29OTAemndZ7sQDvgw9e65+ZMayahxLEmmQIkNEQFbp78gBVGEXzCfUW3JQ/BQg
+         Ziblils7kxzcpki15KkpyGWDM3suMR/WoTm4MwVTezWyx7W4ShPbtEKWwpchPqVmyErA
+         SsMu8rmD1Ark3xoOOl+Q0HBoKJ9ovI4Z43VIUjEQNchkCfsxZOJAU1TecEQeOyAX25eH
+         B3/VsKDMhMH5rAUs5cs+PCaX+3wsfiPxMX+QVtnwgFZwwPHby4s2RQNVl5IDBgyK1nJL
+         wYHg==
+X-Gm-Message-State: ABy/qLYtHy1lYZ4deFQF26NKsCI2dX6L+IotmC+6SQeS78aAEism+cbX
+	Glp5Ik+u7Qjvv91xNOUCEWxPtBpGhQl6mA==
+X-Google-Smtp-Source: APBJJlEIlqpRvDpnCzLf7A2TmGbVpsDLgZjUEApuyR3JLQBJDFP97xRUhTjTCDrRgCPT8B9qkq+crA==
+X-Received: by 2002:a05:6512:556:b0:4fb:748f:604e with SMTP id h22-20020a056512055600b004fb748f604emr683200lfl.36.1688068650789;
+        Thu, 29 Jun 2023 12:57:30 -0700 (PDT)
 Received: from localhost.localdomain ([188.123.230.210])
-        by smtp.gmail.com with ESMTPSA id m7-20020ac24287000000b004fb7b2e3ccasm1024123lfh.141.2023.06.29.12.57.28
+        by smtp.gmail.com with ESMTPSA id m7-20020ac24287000000b004fb7b2e3ccasm1024123lfh.141.2023.06.29.12.57.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 29 Jun 2023 12:57:28 -0700 (PDT)
+        Thu, 29 Jun 2023 12:57:30 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Thu, 29 Jun 2023 22:52:56 +0300
-Message-ID: <20230629195718.14416-1-denorl2009@gmail.com>
+Date: Thu, 29 Jun 2023 22:52:57 +0300
+Message-ID: <20230629195718.14416-2-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230629195718.14416-1-denorl2009@gmail.com>
+References: <20230629195718.14416-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230629_125732_562568_01BDFB6D 
-X-CRM114-Status: UNSURE (   5.38  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230629_125733_361136_9533BF63 
+X-CRM114-Status: GOOD (  10.77  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -100,22 +102,72 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/2] usb: small dma allocation fixes
+Subject: [PATCH 1/2] usb: storage: fix missing calls to free()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Make sure dma buffers are both properly allocated and freed (they were
-not in a few places).
+Memory allocated with xzalloc() was not actually being freed in a few
+functions, resulting in memory leaks.
 
-Denis Orlov (2):
-  usb: storage: fix missing calls to free()
-  usb: make sure dma buffers are properly allocated
+Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+---
+ drivers/usb/storage/usb.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
- drivers/usb/core/usb.c          | 16 ++++---
- drivers/usb/storage/transport.c | 74 +++++++++++++++++++--------------
- drivers/usb/storage/usb.c       | 30 ++++++++-----
- 3 files changed, 71 insertions(+), 49 deletions(-)
-
+diff --git a/drivers/usb/storage/usb.c b/drivers/usb/storage/usb.c
+index dda7131960..6cdcc348e4 100644
+--- a/drivers/usb/storage/usb.c
++++ b/drivers/usb/storage/usb.c
+@@ -169,7 +169,7 @@ static int read_capacity_16(struct us_blk_dev *usb_blkdev)
+ 
+ 	if (ret < 0) {
+ 		dev_warn(dev, "Read Capacity(16) failed\n");
+-		return ret;
++		goto fail;
+ 	}
+ 
+ 	/* Note this is logical, not physical sector size */
+@@ -181,13 +181,17 @@ static int read_capacity_16(struct us_blk_dev *usb_blkdev)
+ 
+ 	if ((data[12] & 1) == 1) {
+ 		dev_warn(dev, "Protection unsupported\n");
+-		return -ENOTSUPP;
++		ret = -ENOTSUPP;
++		goto fail;
+ 	}
+ 
+ 	usb_blkdev->blk.blockbits = SECTOR_SHIFT;
+ 	usb_blkdev->blk.num_blocks = lba + 1;
+ 
+-	return sector_size;
++	ret = sector_size;
++fail:
++	free(data);
++	return ret;
+ }
+ 
+ static int read_capacity_10(struct us_blk_dev *usb_blkdev)
+@@ -208,7 +212,7 @@ static int read_capacity_10(struct us_blk_dev *usb_blkdev)
+ 
+ 	if (ret < 0) {
+ 		dev_warn(dev, "Read Capacity(10) failed\n");
+-		return ret;
++		goto fail;
+ 	}
+ 
+ 	sector_size = be32_to_cpu(data[1]);
+@@ -223,7 +227,10 @@ static int read_capacity_10(struct us_blk_dev *usb_blkdev)
+ 	usb_blkdev->blk.num_blocks = lba + 1;
+ 	usb_blkdev->blk.blockbits = SECTOR_SHIFT;
+ 
+-	return SECTOR_SIZE;
++	ret = SECTOR_SIZE;
++fail:
++	free(data);
++	return ret;
+ }
+ 
+ static int usb_stor_io_16(struct us_blk_dev *usb_blkdev, u8 opcode,
 -- 
 2.41.0
 
