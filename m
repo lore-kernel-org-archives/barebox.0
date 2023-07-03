@@ -1,66 +1,59 @@
-Delivery-date: Mon, 03 Jul 2023 10:45:27 +0200
+Delivery-date: Mon, 03 Jul 2023 10:46:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qGFBX-00DHmI-73
-	for lore@lore.pengutronix.de; Mon, 03 Jul 2023 10:45:27 +0200
+	id 1qGFCh-00DHrN-7n
+	for lore@lore.pengutronix.de; Mon, 03 Jul 2023 10:46:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qGFBU-00087A-S0
-	for lore@pengutronix.de; Mon, 03 Jul 2023 10:45:25 +0200
+	id 1qGFCe-0008Mv-DZ
+	for lore@pengutronix.de; Mon, 03 Jul 2023 10:46:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=F6n7c8HQV4vS7DoZdhqb+6Nq140U/0RRV5E47+pn+GU=; b=iUR8OEE2Om28hPsctxXtR0z7Bh
-	N2eMA/LgFgsfmUyQf8ZsmX+LgqvtRnmS7jHvkeTEmp5CkC+vWGJs6J3p9dijZcsjas9FliaWzgPEG
-	i0SEoNNm6YdlxcMbIuODBZVedrJyM2O+0jaa9tHNKcrnbepoBDsQy3fjajmXwY+Y3a7rWQQZDQXmW
-	DQBhEWdRcSQ0fbaSu4rxMKmfAHZT08UhORYaIexNWNEmc+ukw979nGh1pl52y/4YjQVjJZyz9N0W4
-	XLKOkYjsbABGa/YUPvrerYwszuoHJHn8QtrOL8BvGFcE3DnyxlUgwgFKSoADimhy/RwluK5cwLTuC
-	C+o2BbaQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=rY5MGkAPuYJYahPxyCV0VuvX4wV1e+cQOYSAszwXIQk=; b=tWVy5phhyJ44QrXHcWQK0Agy0m
+	2NVvtXx3UyoYQxkNyDYMNqIeSignyJml8/qrTkQOI1YX1yBp48azSjPHaPEv3KQhLKkKs1BfFmjDk
+	HWKJ7/+l0763BjqzwIqITKntNuc4E51ds2neXfbX2cicjAsxo8ZXMDJsHXGQtU1egr82NvABNToBY
+	ccX6fkD/KiRr0kFeI64EXT+E/DD3NqyJXXt22YNxQL0EWmYy3SgCpL4PfPuQCy03y+tNY8sG86nY0
+	8B7jsKsXFW0zOPqvmfEJ8inGmHCMfBXAln38rKi6JNLRZHYf8JjSxJZFkFhBzC54naDYiF0A+zKv9
+	pDG8wMTQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qGFA9-009n9v-1R;
-	Mon, 03 Jul 2023 08:44:01 +0000
+	id 1qGFBW-009nKu-2U;
+	Mon, 03 Jul 2023 08:45:26 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qGFA6-009n8N-2i
+	id 1qGFBT-009nK3-0S
 	for barebox@lists.infradead.org;
-	Mon, 03 Jul 2023 08:44:00 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qGFA0-0007mx-M4; Mon, 03 Jul 2023 10:43:52 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qGFA0-0001kC-AD; Mon, 03 Jul 2023 10:43:52 +0200
-Date: Mon, 3 Jul 2023 10:43:52 +0200
-To: Denis Orlov <denorl2009@gmail.com>
-Cc: Ian Abbott <abbotti@mev.co.uk>, barebox@lists.infradead.org
-Message-ID: <20230703084352.GJ18491@pengutronix.de>
-References: <20230629201446.16679-1-denorl2009@gmail.com>
- <2174e39f-3e29-bd33-ab15-ba0eb86a58f5@mev.co.uk>
- <ab0ad661-511e-5f56-2086-f3be2a1ff6ae@gmail.com>
+	Mon, 03 Jul 2023 08:45:25 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qGFBQ-0007yp-DT; Mon, 03 Jul 2023 10:45:20 +0200
+Message-ID: <d8d0a454-353a-c778-1c6a-fb53147b7c14@pengutronix.de>
+Date: Mon, 3 Jul 2023 10:45:19 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ab0ad661-511e-5f56-2086-f3be2a1ff6ae@gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org, uol@pengutronix.de
+References: <20230626153335.3592017-1-a.fatoum@pengutronix.de>
+ <20230626153335.3592017-4-a.fatoum@pengutronix.de>
+ <20230703062510.6gqvkta3mhkd4qnd@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230703062510.6gqvkta3mhkd4qnd@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230703_014358_878024_287DCC90 
-X-CRM114-Status: GOOD (  26.68  )
+X-CRM114-CacheID: sfid-20230703_014523_359777_181ED717 
+X-CRM114-Status: GOOD (  35.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,59 +71,214 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] nios2: remove arch remains from drivers
+Subject: Re: [PATCH master v1 3/6] firmware: optionally turn missing firmware
+ errors into warnings
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Jun 30, 2023 at 09:55:29PM +0300, Denis Orlov wrote:
-> On 6/30/23 11:57, Ian Abbott wrote:
-> > On 29/06/2023 21:13, Denis Orlov wrote:
-> >> The architecture was removed back in the commit efccc13513, however some
-> >> drivers that were available exclusively for NIOS2 were left over. As it
-> >> has been impossible to compile those since then, it seems reasonable to
-> >> just get rid of them.
-> >>
-> >> Signed-off-by: Denis Orlov <denorl2009@gmail.com>
-> >> ---
-> >>   drivers/serial/Kconfig              |  10 --
-> >>   drivers/serial/Makefile             |   2 -
-> >>   drivers/serial/serial_altera.c      |  94 -----------
-> >>   drivers/serial/serial_altera_jtag.c |  99 ------------
-> >>   drivers/spi/Kconfig                 |   4 -
-> >>   drivers/spi/Makefile                |   1 -
-> >>   drivers/spi/altera_spi.c            | 236 ----------------------------
-> >>   7 files changed, 446 deletions(-)
-> >>   delete mode 100644 drivers/serial/serial_altera.c
-> >>   delete mode 100644 drivers/serial/serial_altera_jtag.c
-> >>   delete mode 100644 drivers/spi/altera_spi.c
-> >
-> > As a point of interest, none of those drivers should really depend on NIOS2.  They are usable on an ARM SoCFPGA system if the FPGA logic contains the corresponding Altera/Intel IP components.
-> >
-> > Whether or not anyone needs them in barebox is another matter, but I have certainly used them in ARM SoCFPGA Linux systems booted from barebox.
-> >
+Hello Marco,
+
+On 03.07.23 08:25, Marco Felsch wrote:
+> Hi Ahmad,
 > 
-> Hmm, maybe those drivers should rather depend on ARCH_SOCFPGA then?
-> Would be great if someone tested them in barebox running on a SoCFPGA.
-> Otherwise, they are just rotting in the source tree, with no actual
-> usage.
+> On 23-06-26, Ahmad Fatoum wrote:
+>> Previous commit turned compile-time errors into link-time errors.
+>> This commit goes a step further and allows the link to succeed
+>> unconditionally for build coverage and then dependent on the newly
+>> introduced CONFIG_MISSING_FIRMWARE_ERROR option abort the build with an
+>> error code and a listing of missing firmware printed to stderr.
+>>
+>> In any case, barebox images which contain firmware in their PBL
+>> that's not available will be marked specially to reduce the risk
+>> of accidentally putting them to use:
+>>
+>>   * They're truncated to zero size
+>>
+>>   * The final "images built:" section marks them as having firmware
+>>     missing
+>>
+>>   * They are omitted from the listing in the barebox-flash-images file
+>>
+>>   * Each barebox-broken.img is accompanied with a
+>>     barebox-broken.img.missing-firmware containing a newline delimited
+>>     list of missing firmware images
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  firmware/Kconfig     | 14 ++++++++++++++
+>>  firmware/Makefile    |  5 +++++
+>>  images/Makefile      | 21 ++++++++++++++++-----
+>>  scripts/Makefile.lib |  3 +++
+>>  4 files changed, 38 insertions(+), 5 deletions(-)
+>>
+>> diff --git a/firmware/Kconfig b/firmware/Kconfig
+>> index 56ced00bc430..56d6d0d6c030 100644
+>> --- a/firmware/Kconfig
+>> +++ b/firmware/Kconfig
+>> @@ -6,6 +6,20 @@ config EXTRA_FIRMWARE_DIR
+>>  	string "Firmware blobs root directory"
+>>  	default "firmware"
+>>  
+>> +config MISSING_FIRMWARE_ERROR
+>> +	bool "Fail the build when required firmware is missing"
+>> +	default y
+> 
+> Do we need to make this default y? IMHO multi_v8_defconfig will set this
+> to 'n' anyway and so the 'n' will become the de-facto default.
 
-To make them usable on SoCFPGA the drivers would at least need device
-tree probing support. drivers/serial/serial_altera.c needs a CPU_FREQ
-define for baudrate setting. This would have to be replaced with clk
-support. I think we can remove them from the tree for now and add them
-back in a fresh state once somebody needs them.
+Existing users will get the new default. Users that build in a BSP
+will want y too as they may not see warnings. It doesn't help people
+copying the multi defconfig and not changing it, but that's not a reason
+for having existing configs to not fail when they lack firmware.
 
-Sascha
+> 
+>> +	help
+>> +	  In-tree Defconfigs that enable multiple boards with different firmware
+>> +	  binary requirements would say y here, so you don't need unrelated firmware
+>> +	  for the build to succeed.
+>> +
+>> +	  Defconfigs custom-tailored to products would say n here as all boards
+>> +	  being built should be functional and have their firmware available.
+>> +
+>> +	  If in doubt, say Y and refer to the documentation on where to acquire the
+>> +	  needed firmware.
+>> +
+>>  config HAVE_FIRMWARE_IMX_LPDDR4_PMU_TRAIN
+>>  	bool
+>>  	default y
+>> diff --git a/firmware/Makefile b/firmware/Makefile
+>> index c66d19c677e8..f9490a8e7a15 100644
+>> --- a/firmware/Makefile
+>> +++ b/firmware/Makefile
+>> @@ -58,6 +58,11 @@ filechk_fwbin = { \
+>>  	echo "\#endif"						;\
+>>  	echo ".global _fw_$(FWSTR)_end"				;\
+>>  	echo "_fw_$(FWSTR)_end:"				;\
+>> +	echo "\#ifdef __PBL__"					;\
+>> +	echo "    .section .missing_fw,\"a\""			;\
+>> +	echo "_fwname_$(FWSTR):"				;\
+>> +	echo ".ascii \"firmware/$(FWNAME)\\n\""			;\
+>> +	echo "\#endif" 						;\
+> 
+> Shouldn't this be part of the #ifdef no-firmware? This way we do add the
+> .missing_fw section always which shouldn't be the case, right?
+
+It doesn't matter much. Linker will garbage collect the unused section.
+
+> 
+>>  }
+>>  
+>>  __fwbin_sha = { \
+>> diff --git a/images/Makefile b/images/Makefile
+>> index c93f9e268978..16d86a5a5da4 100644
+>> --- a/images/Makefile
+>> +++ b/images/Makefile
+>> @@ -72,6 +72,8 @@ $(obj)/%.pbl: $(pbl-lds) $(BAREBOX_PBL_OBJS) $(obj)/piggy.o $(obj)/sha_sum.o FOR
+>>  
+>>  $(obj)/%.pblb: $(obj)/%.pbl FORCE
+>>  	$(call if_changed,objcopy_bin,$(*F))
+>> +	$(Q)$(OBJCOPY) -O binary --only-section=.missing_fw $< $@.missing-firmware
+>> +	$(Q)[ -s $@.missing-firmware ] || rm -f $@.missing-firmware
+>>  	$(call cmd,check_file_size,$@,$(CONFIG_BAREBOX_MAX_IMAGE_SIZE))
+>>  
+>>  #
+>> @@ -127,10 +129,14 @@ $(obj)/barebox.z: $(obj)/../barebox.bin FORCE
+>>  
+>>  # %.img - create a copy from another file
+>>  # ----------------------------------------------------------------
+>> +
+>> +missing_fw = $(strip $(wildcard $(obj)/$(FILE_$(@F)).missing-firmware $(basename $(obj)/$(FILE_$(@F))).missing-firmware))
+>> +
+>>  .SECONDEXPANSION:
+>>  $(obj)/%.img: $(obj)/$$(FILE_$$(@F))
+>>  	$(Q)if [ -z $(FILE_$(@F)) ]; then echo "FILE_$(@F) empty!"; false; fi
+>> -	$(call if_changed,shipped)
+>> +	$(Q)$(if $(missing_fw),cat $(missing_fw) >$@.missing-firmware,rm -f $@.missing-firmware)
+> 
+> Okay, since we always add the missing-firmware section we need to clean
+> it up here, right? Isn't it easier to add the missing-firmware section
+> only if detected? If this is possible.
+
+It's possible and I don't feel strong one way or the other.
+
+> 
+>> +	$(call if_changed,$(if $(missing_fw),0size,shipped))
+>>  
+>>  board = $(srctree)/arch/$(SRCARCH)/boards
+>>  objboard = $(objtree)/arch/$(SRCARCH)/boards
+>> @@ -194,10 +200,15 @@ multi-image-build:
+>>  
+>>  images: $(image-y-path) $(flash-link) $(flash-list) FORCE
+>>  	@echo "images built:"
+>> -	@for i in $(image-y); do echo $$i; done
+>> +	@for i in $(image-y); do \
+>> +	  if [ -s $(obj)/$$i ]; then echo $$i; \
+>> +	  else >&2 echo "** firmware missing for $$i **"; \
+> 
+> Not sure if we should print an error if the user set
+> CONFIG_MISSING_FIRMWARE_ERROR to n.
+
+We need to alert the user somehow that the image is missing/non-functional.
+It's just a warning message.
+
+> 
+> Regards,
+>   Marco
+> 
+>> +	  $(if $(CONFIG_MISSING_FIRMWARE_ERROR), >&2 sed 's/^/\t/' <$(obj)/$${i}.missing-firmware; missing=1;) \
+>> +	  fi; done; test -n "$$missing" && \
+>> +	echo >&2 "Firmware missing in CONFIG_MISSING_FIRMWARE_ERROR=y build" && false
+>>  
+>>  __images_install: images
+>> -	@for i in $(image-y-path); do install -t "$(INSTALL_PATH)" $$i; done
+>> +	@for i in $(image-y-path); do if [ -s $$i ]; then install -t "$(INSTALL_PATH)" $$i; fi; done
+>>  
+>>  PHONY += __images_install
+>>  
+>> @@ -205,10 +216,10 @@ $(flash-link): $(link-dest) FORCE
+>>  	$(call if_changed,ln)
+>>  
+>>  $(flash-list): $(image-y-path)
+>> -	@for i in $^; do echo $$i; done > $@
+>> +	@for i in $^; do if [ -s $$i ]; then echo $$i; fi; done > $@
+>>  
+>>  clean-files := *.pbl *.pblb *.map start_*.imximg *.img barebox.z start_*.kwbimg \
+>>  	start_*.kwbuartimg *.socfpgaimg *.mlo *.t20img *.t20img.cfg *.t30img \
+>>  	*.t30img.cfg *.t124img *.t124img.cfg *.mlospi *.mlo *.mxsbs *.mxssd \
+>> -	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped
+>> +	start_*.simximg start_*.usimximg *.zynqimg *.image *.swapped *.missing-firmware
+>>  clean-files += pbl.lds
+>> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+>> index 42ee27499561..b8fb2684421e 100644
+>> --- a/scripts/Makefile.lib
+>> +++ b/scripts/Makefile.lib
+>> @@ -236,6 +236,9 @@ endef
+>>  # Shipped files
+>>  # ===========================================================================
+>>  
+>> +quiet_cmd_0size = 0SIZE $@
+>> +cmd_0size = : > $@
+>> +
+>>  quiet_cmd_shipped = SHIPPED $@
+>>  cmd_shipped = cat $< > $@
+>>  
+>> -- 
+>> 2.39.2
+>>
+>>
+>>
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
