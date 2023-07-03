@@ -1,60 +1,57 @@
-Delivery-date: Mon, 03 Jul 2023 16:22:39 +0200
+Delivery-date: Mon, 03 Jul 2023 16:45:23 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qGKRs-00Dda5-JT
-	for lore@lore.pengutronix.de; Mon, 03 Jul 2023 16:22:39 +0200
+	id 1qGKnt-00Def8-7d
+	for lore@lore.pengutronix.de; Mon, 03 Jul 2023 16:45:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qGKRq-0004Fr-3B
-	for lore@pengutronix.de; Mon, 03 Jul 2023 16:22:38 +0200
+	id 1qGKnq-0006ue-RL
+	for lore@pengutronix.de; Mon, 03 Jul 2023 16:45:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=GZnGm0Yvsq2IkIV4WRcqVJs4ggx3luYgArbOcn3aLFU=; b=hucr0jNq0qZLGj
-	Rpz4bLYnRuXia4ZEzfm0hu3lgMG1fCA1kwNLLiUXXA2pU8RldcYrOwhXtE1lJSjHjVnWiExOV83Tb
-	vVcW02cTPCIYlo4imehdNLvrp34ZEwSl2ZVke+chmO6203H6CZbyrMHomQ1ef1bTw2aCLC3hWJyc4
-	nbI3V3v4+bP8NFjLFJf34pBq//vsEgze1aU5GJ5cLVML1MhwIYe/ZnPACeQJaLf2JcD58AtnvGJrt
-	m/A9ILmi+dA7nOj5csSRShsQTFc9D8X9dfh9EyybTK9x0CqNWQ2I1n1CF3xRNhln6ouECql/7w9ix
-	SGxr9gKCYI0WTuez+RHA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=iniptH9c1mY0K4UCmOyohaejAnA4688Km02iAusXOa8=; b=rwrHRHRP7thgJZAhp9MJakVw6/
+	gqFkAGhaVh3ityTJpjC9wF3++qNwLrss0CSYRgcbScE5TcHi8+UAWaIMId/broig3hjYPSkSwwE+I
+	bSreMp5/wE4c/sEPTfQwY28pMvjktj47+ib2dKaXE70upuhdG4+qLplXeTc9PpjsdX2wzKtB6fSgl
+	Xxk8U+jHEaO+9jNu4QglSdp3dHFoxixb4cNEodla89X5q0jd6gQJl/+DOMnMGxqWouIItOFJB6Lmi
+	dP9EkeFtMeQQBEkGwLIxTtyM8YAkxVB3MuxgixOlQyjavx8B8Dy2+bWccvZUCRgOTQj2E5lv/v3PE
+	kMzQzHhw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qGKQo-00AkAa-27;
-	Mon, 03 Jul 2023 14:21:34 +0000
+	id 1qGKmd-00Am4S-1D;
+	Mon, 03 Jul 2023 14:44:07 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qGKQi-00Ak9s-2k
+	id 1qGKma-00Am3s-0A
 	for barebox@lists.infradead.org;
-	Mon, 03 Jul 2023 14:21:31 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qGKQg-00046S-Pu; Mon, 03 Jul 2023 16:21:26 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qGKQd-00BpJi-HJ; Mon, 03 Jul 2023 16:21:23 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qGKQd-006OAV-0M;
-	Mon, 03 Jul 2023 16:21:23 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Mon,  3 Jul 2023 16:21:22 +0200
-Message-Id: <20230703142122.1522533-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	Mon, 03 Jul 2023 14:44:05 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qGKmY-0006YG-Gj; Mon, 03 Jul 2023 16:44:02 +0200
+Message-ID: <1c12a8ca-b232-f67d-87f8-f7983528f017@pengutronix.de>
+Date: Mon, 3 Jul 2023 16:44:02 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.11.2
+Content-Language: en-US
+To: Sascha Hauer <sha@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+References: <20230703140834.GR18491@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230703140834.GR18491@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230703_072128_913832_1FAACFC5 
-X-CRM114-Status: UNSURE (   9.40  )
+X-CRM114-CacheID: sfid-20230703_074404_088626_F2BB2382 
+X-CRM114-Status: UNSURE (   8.83  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -67,7 +64,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -76,49 +72,28 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] firmware: fix alignment of firmware images
+Subject: Re: v2023.07.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-ASM_LGPTR is a preprocessor symbol, not a Make variable, so expanding it
-in the Makefile results in .p2align without an argument, which disables
-alignment requirement. Fix this to restore the sizeof(void *) alignment
-we had before.
+Hi,
 
-Fixes: a59e2740b4a7 ("firmware: reference pointer alignment defined in <asm-generic/pointer.h>")
-Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- firmware/Makefile | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+On 03.07.23 16:08, Sascha Hauer wrote:
+>       firmware: reference pointer alignment defined in <asm-generic/pointer.h>
 
-diff --git a/firmware/Makefile b/firmware/Makefile
-index 8d3bfb0752ff..d7f35853a404 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -49,7 +49,7 @@ filechk_fwbin = { \
- 	echo "\#include <asm-generic/pointer.h>"		;\
- 	echo ".section .note.GNU-stack,\"\",%progbits"		;\
- 	echo "    .section $2,\"$3\""				;\
--	echo "    .p2align $(ASM_LGPTR)"			;\
-+	echo "    .p2align ASM_LGPTR"				;\
- 	echo ".global _fw_$(FWSTR)_start"			;\
- 	echo "_fw_$(FWSTR)_start:"				;\
- 	echo "\#if $(FWNAME_EXISTS)"				;\
-@@ -68,7 +68,7 @@ filechk_fwbin = { \
- 
- __fwbin_sha = { \
- 	echo "    .section .rodata.$(FWSTR).sha"		;\
--	echo "    .p2align $(ASM_LGPTR)"			;\
-+	echo "    .p2align ASM_LGPTR"				;\
- 	echo ".global _fw_$(FWSTR)_sha_start"			;\
- 	echo "_fw_$(FWSTR)_sha_start:"				;\
- 	echo "    .incbin \"$(fwobjdir)/$(FWNAME).sha.bin\""	;\
+There's a possible issue here for platforms that use firmware
+built into barebox (e.g. Rockchip, i.MX8M). See:
+
+https://lore.barebox.org/barebox/20230703142122.1522533-1-a.fatoum@pengutronix.de/T/#u
+
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
