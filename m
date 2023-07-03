@@ -1,61 +1,52 @@
-Delivery-date: Mon, 03 Jul 2023 20:56:46 +0200
+Delivery-date: Tue, 04 Jul 2023 00:59:55 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qGOj9-00Du2r-Rc
-	for lore@lore.pengutronix.de; Mon, 03 Jul 2023 20:56:46 +0200
+	id 1qGSWS-00E5wG-M3
+	for lore@lore.pengutronix.de; Tue, 04 Jul 2023 00:59:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qGOj7-0001nV-Gc
-	for lore@pengutronix.de; Mon, 03 Jul 2023 20:56:46 +0200
+	id 1qGSWQ-0000Ga-9B
+	for lore@pengutronix.de; Tue, 04 Jul 2023 00:59:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=2tY0T4pYJU+1ztSik1lShkNtGFIj1JRYjskYuJ4Xv5I=; b=U1nAmmG7BK8BHo6wuZBAB22OY9
-	f/b1PDZ5U3D1JBh3gYt7qWv4ynBj3ZG45RYmk+CQqfrBE4ljZj49FEk12F+p4G83jJc2mb3ErJjwx
-	2H2aZhA4sPQDrwlXGdHU36d3pGwq37b23HyQT4xknfHA7WliGYT14wMXHBuBubFpK8tn1vcoGD6t+
-	7+XW6m9JDT4h+Npi7ZBlsLbo46g/HlJMaoJgpJ1l5IPkiKHBVAjxZVBAmCnvJJQN9jj4p7WS992Yn
-	XJwfwmTmPoTz3I84Urto9LEBA0nBwLNt6Kt+jCcotz6FIzHKCHJH0+I5MwVcvPmVlRLn5aVo63Zpl
-	GMSeplbQ==;
+	bh=JrUS95k/wHDPuP79Ftdl/6EJPtAiUVdOwl3lR31eTEI=; b=RgZNNoecdiwxXKVe5KSNuNlL0g
+	3hS/wzNDSaOagviRMs+OatOiNL2WViyYM9ky7cwwHujZQRepTxFQGe/iNgTC46C1L3jvMpVFQgLBU
+	5C1B1DMEY2Q2GwwlBgRwPc3jkv59KR1ztOSJtMd8Ez87oJ801+O8HJTf9225wCVfk7/hiF7qdzjGz
+	IZ7GUXMeuN9NVjorIyOgI2PTwtvydfS49aNafotpH6PJPBY0u7rfJvDZHXRQ/U0XbnAj/7Gm2r9iK
+	LvakY+UJ6xRRcc7ig/VKe64g8x6DZLCx1Lppu+6Fq6SPEjULa3+HJsJ2bk4ck+S6VwNLjaTZxtgt1
+	LheIzZEw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qGOho-00BFJw-01;
-	Mon, 03 Jul 2023 18:55:24 +0000
+	id 1qGSV1-00BbAR-34;
+	Mon, 03 Jul 2023 22:58:27 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qGOhl-00BFJW-1M
+	id 1qGSUy-00Bb9W-0i
 	for barebox@lists.infradead.org;
-	Mon, 03 Jul 2023 18:55:22 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qGOhh-0001RO-VK; Mon, 03 Jul 2023 20:55:18 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qGOhh-00BrfJ-B0; Mon, 03 Jul 2023 20:55:17 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qGOhg-004oaN-2y;
-	Mon, 03 Jul 2023 20:55:16 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Mon, 03 Jul 2023 22:58:25 +0000
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1qGSUs-0000B5-HF
+	for barebox@lists.infradead.org; Tue, 04 Jul 2023 00:58:18 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  3 Jul 2023 20:55:15 +0200
-Message-Id: <20230703185515.1146362-1-a.fatoum@pengutronix.de>
+Date: Tue,  4 Jul 2023 00:58:12 +0200
+Message-Id: <20230703225813.2828815-1-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230703_115521_481127_8D163F91 
-X-CRM114-Status: GOOD (  11.93  )
+X-CRM114-CacheID: sfid-20230703_155824_276151_6DF7BC8D 
+X-CRM114-Status: GOOD (  10.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,51 +64,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2] firmware: use portable newline escape
+Subject: [PATCH 1/2] commands: test: simplify argv handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-We want to print `\n' literally into the *.gen.S file, so gas turns it
-into a literal new line character. Depending on shell, the current
-scheme might not work:
+Decrement argc first before check the closing ']' to avoid the
+*argv[argc - 1]. No functional change.
 
-  $ dash -c echo\ '\\\\n'
-  \n
-  $ bash -c echo\ '\\\\n'
-  \\n
-
-Fix this by using printf instead. This fixes a cosmetic issue of non-escaped
-`\n' making it into the missing section when building without bash, e.g. on
-NixOS.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
-v1 -> v2:
-  - use printf instead of echo with single quotes as the later behaves
-    differently between bash and dash. Edited commit message
-    appropriately.
----
- firmware/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ commands/test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/firmware/Makefile b/firmware/Makefile
-index d7f35853a404..5853950dfe4e 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -62,7 +62,7 @@ filechk_fwbin = { \
- 	echo "\#ifdef __PBL__"					;\
- 	echo "    .section .missing_fw,\"a\""			;\
- 	echo "_fwname_$(FWSTR):"				;\
--	echo ".ascii \"firmware/$(FWNAME)\\\\n\""		;\
-+	printf '.ascii "%s"\n' 'firmware/$(FWNAME)\n'		;\
- 	echo "\#endif" 						;\
- }
+diff --git a/commands/test.c b/commands/test.c
+index c845cec017..c1b84c42ef 100644
+--- a/commands/test.c
++++ b/commands/test.c
+@@ -75,11 +75,11 @@ static int do_test(int argc, char *argv[])
+ 	struct stat statbuf;
  
+ 	if (*argv[0] == '[') {
+-		if (*argv[argc - 1] != ']') {
++		argc--;
++		if (*argv[argc] != ']') {
+ 			printf("[: missing `]'\n");
+ 			return 1;
+ 		}
+-		argc--;
+ 	}
+ 
+ 	/* args? */
 -- 
 2.39.2
 
