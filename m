@@ -1,63 +1,64 @@
-Delivery-date: Tue, 04 Jul 2023 09:37:14 +0200
+Delivery-date: Tue, 04 Jul 2023 09:38:25 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qGab5-00EW4q-GM
-	for lore@lore.pengutronix.de; Tue, 04 Jul 2023 09:37:14 +0200
+	id 1qGacF-00EW8z-87
+	for lore@lore.pengutronix.de; Tue, 04 Jul 2023 09:38:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qGab2-0005fr-Vz
-	for lore@pengutronix.de; Tue, 04 Jul 2023 09:37:13 +0200
+	id 1qGacD-0005sc-0C
+	for lore@pengutronix.de; Tue, 04 Jul 2023 09:38:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=z5dAt4DlH/EZZ1B8/HDZNyb9jxAFV+ZLjfvriuzS2XA=; b=o8l6zc30E6j0Ph1+lUY1TAPzZP
-	ckokG9KUmwPjpi9H9k14JpjMg/fmDYpD+7O5QuONPQvpwSmC2yN3OQ626VTTxw+jBfFqDbJG1TTt8
-	cpXcs0sP12j2UL7t6kbekN0GkTpxItHlcwPeItaVWmTlyqktAHqml0/JAV5zeyfT+S2QW8xFjoHAq
-	8p7g12+WhlhGX3UxrcXN2M4frzFoSecMoGYU4MlM/YJ1uoL4qPhzjz4U+sfSJsq9ILA0rAwv6GhOj
-	EU5rPBJP0/hYf5ITDZ35Jl3iTGJYpbdGIACRSGiP0QLlukbSGM5PRzTU1g0Rb5HFD4YWGZo+nxc4H
-	o1ZDLvtQ==;
+	bh=bOsqanhAHaTJhgjjoQyCdmc/udzeFXXN4OWmzhsgFoA=; b=Hk+RLjoMddomRTn4fI1071XxHW
+	f3p2pkEWQTQawnYdGP660fJWrGI1CBb+z9p/oZFi1nwXzjl/MbtbccM3wRvnz6a4IXZwWjdNLRuK2
+	Nwg57iFfPBC1JjgKBuXs6rSfowdMexuavDdobBL0SRBCgS+dgF6XmrVEsaYKV4MJWQY/U04Bou711
+	+2laCEdsLzVXWhb5hPPag/zQS8zC1XnCEmoAvUAFfDsbCir+l9AgaiVYycm7xUK9HmdjXE/aaQL2u
+	qHKOk2JJh6LRw4Pt13Os4ROJmAO4cBmZaRdMg7CEhx44Sn2srisGSje7pvGmSsVwU3sMFm/avqms4
+	f2h6cTTA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qGaZy-00CRfb-2y;
-	Tue, 04 Jul 2023 07:36:06 +0000
+	id 1qGabA-00CRrx-1B;
+	Tue, 04 Jul 2023 07:37:20 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qGaZw-00CReo-1x
+	id 1qGab7-00CRqa-0R
 	for barebox@lists.infradead.org;
-	Tue, 04 Jul 2023 07:36:05 +0000
+	Tue, 04 Jul 2023 07:37:18 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qGaZv-0005WY-Ae; Tue, 04 Jul 2023 09:36:03 +0200
+	id 1qGab5-0005fy-SN; Tue, 04 Jul 2023 09:37:15 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qGaZv-0002hx-4s; Tue, 04 Jul 2023 09:36:03 +0200
-Date: Tue, 4 Jul 2023 09:36:03 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
+	id 1qGab5-0002is-Kx; Tue, 04 Jul 2023 09:37:15 +0200
+Date: Tue, 4 Jul 2023 09:37:15 +0200
+From: Sascha Hauer <sha@pengutronix.de>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230704073603.GS18491@pengutronix.de>
-References: <20230703142122.1522533-1-a.fatoum@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20230704073715.GT18491@pengutronix.de>
+References: <20230703140834.GR18491@pengutronix.de>
+ <1c12a8ca-b232-f67d-87f8-f7983528f017@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230703142122.1522533-1-a.fatoum@pengutronix.de>
+In-Reply-To: <1c12a8ca-b232-f67d-87f8-f7983528f017@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230704_003604_643581_980AE28B 
-X-CRM114-Status: GOOD (  20.75  )
+X-CRM114-CacheID: sfid-20230704_003717_174316_EE87C0B0 
+X-CRM114-Status: GOOD (  13.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,59 +76,29 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] firmware: fix alignment of firmware images
+Subject: Re: v2023.07.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jul 03, 2023 at 04:21:22PM +0200, Ahmad Fatoum wrote:
-> ASM_LGPTR is a preprocessor symbol, not a Make variable, so expanding it
-> in the Makefile results in .p2align without an argument, which disables
-> alignment requirement. Fix this to restore the sizeof(void *) alignment
-> we had before.
+On Mon, Jul 03, 2023 at 04:44:02PM +0200, Ahmad Fatoum wrote:
+> Hi,
 > 
-> Fixes: a59e2740b4a7 ("firmware: reference pointer alignment defined in <asm-generic/pointer.h>")
-> Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  firmware/Makefile | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
+> On 03.07.23 16:08, Sascha Hauer wrote:
+> >       firmware: reference pointer alignment defined in <asm-generic/pointer.h>
+> 
+> There's a possible issue here for platforms that use firmware
+> built into barebox (e.g. Rockchip, i.MX8M). See:
+> 
+> https://lore.barebox.org/barebox/20230703142122.1522533-1-a.fatoum@pengutronix.de/T/#u
 
-Applied, thanks
+D'oh. Where was that lost?
 
 Sascha
-
-> 
-> diff --git a/firmware/Makefile b/firmware/Makefile
-> index 8d3bfb0752ff..d7f35853a404 100644
-> --- a/firmware/Makefile
-> +++ b/firmware/Makefile
-> @@ -49,7 +49,7 @@ filechk_fwbin = { \
->  	echo "\#include <asm-generic/pointer.h>"		;\
->  	echo ".section .note.GNU-stack,\"\",%progbits"		;\
->  	echo "    .section $2,\"$3\""				;\
-> -	echo "    .p2align $(ASM_LGPTR)"			;\
-> +	echo "    .p2align ASM_LGPTR"				;\
->  	echo ".global _fw_$(FWSTR)_start"			;\
->  	echo "_fw_$(FWSTR)_start:"				;\
->  	echo "\#if $(FWNAME_EXISTS)"				;\
-> @@ -68,7 +68,7 @@ filechk_fwbin = { \
->  
->  __fwbin_sha = { \
->  	echo "    .section .rodata.$(FWSTR).sha"		;\
-> -	echo "    .p2align $(ASM_LGPTR)"			;\
-> +	echo "    .p2align ASM_LGPTR"				;\
->  	echo ".global _fw_$(FWSTR)_sha_start"			;\
->  	echo "_fw_$(FWSTR)_sha_start:"				;\
->  	echo "    .incbin \"$(fwobjdir)/$(FWNAME).sha.bin\""	;\
-> -- 
-> 2.39.2
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
