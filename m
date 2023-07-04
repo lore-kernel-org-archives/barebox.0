@@ -1,63 +1,63 @@
-Delivery-date: Tue, 04 Jul 2023 11:00:02 +0200
+Delivery-date: Tue, 04 Jul 2023 11:11:09 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qGbtD-00EZrv-RH
-	for lore@lore.pengutronix.de; Tue, 04 Jul 2023 11:00:02 +0200
+	id 1qGc3z-00Eajz-1F
+	for lore@lore.pengutronix.de; Tue, 04 Jul 2023 11:11:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qGbtB-0001IA-FC
-	for lore@pengutronix.de; Tue, 04 Jul 2023 11:00:01 +0200
+	id 1qGc3w-0003Z2-OY
+	for lore@pengutronix.de; Tue, 04 Jul 2023 11:11:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TrmYMQtkqPR/uRpxvE2WCYbFx/tFk2Pg9bxO9WqwzMU=; b=vFr7IQjYObCpPM2h2eM3lsiQbe
-	f4TX9XZO8DtNgjLCRgE5NLe6BIFlJ5NOfjrNZSGZisdtM4xH4r1D4H185mF6of/K4A7jA6kahgm5r
-	c0X2jmoymZf0POwuyWNCGlWv4L5Bdm/AYPPe2krgulJWKlesNXVek3zAgvQvgwIvQGld/DznMHCfx
-	X/iFQBscqdI8AUcsCsT5a2hwGHO2laVBSh1dsfIzBjtjnZmFHOONbQJBANSKOGGrk77oVboJajGtA
-	ww1vKA2TEi8vrxS7Acg810kziBp0ghSg0s+MyNZueAV80KVufnh7GfEWYZou4ietLntgPmogt1iag
-	Qa00A/yQ==;
+	bh=UxLswGjANPcEYlaCCQqVVtENxPvcnYpzAW7fMTK5EUo=; b=hLbbSX6L1NBRg+cfQs0VlKsfmh
+	vCn8X2HlsO7i+mQmZYMUjsJ3SYg4kJTLv4xtMdGhZzCX1acM9exq0RRCCdo495aJ39RrDZvq5T9XZ
+	pFj1V06+Z0JriqvHCOGGEv5sT48BjOVhtSOqjWdlbWBKrapiqSWG+fFKDG+qg68nwq+32dhLlnSvo
+	ncavWD8rDtpEWo8uH2CNurEuntj+jiyfkJPY+e6lTDuFotLwYtK7V+z1bRGCMTdQ1xawOxbuVbpms
+	FqwZ5EjWdTyGVsjjRqtZbzi3pG0WVenXcce3JYtAKADDXx1WVkp8prortRsRTi9aq9RrPlBQjgKKx
+	ZGvLniDQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qGbs1-00Cdob-1F;
-	Tue, 04 Jul 2023 08:58:49 +0000
+	id 1qGc2j-00Cfdu-1l;
+	Tue, 04 Jul 2023 09:09:53 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qGbry-00Cdlk-0k
+	id 1qGc2f-00CfdL-2D
 	for barebox@lists.infradead.org;
-	Tue, 04 Jul 2023 08:58:47 +0000
+	Tue, 04 Jul 2023 09:09:50 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qGbrw-00017r-FF; Tue, 04 Jul 2023 10:58:44 +0200
+	id 1qGc2e-0003AE-8V; Tue, 04 Jul 2023 11:09:48 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qGbrw-0006Qi-7f; Tue, 04 Jul 2023 10:58:44 +0200
-Date: Tue, 4 Jul 2023 10:58:44 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230704085844.GY18491@pengutronix.de>
-References: <20230703172054.536931-1-a.fatoum@pengutronix.de>
+	id 1qGc2e-0007pc-0o; Tue, 04 Jul 2023 11:09:48 +0200
+Date: Tue, 4 Jul 2023 11:09:47 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20230704090947.GH15436@pengutronix.de>
+References: <20230703140834.GR18491@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230703172054.536931-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230703140834.GR18491@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+X-Bad-Reply: References and In-Reply-To but no 'Re:' in Subject.
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230704_015846_275585_F517BF8C 
-X-CRM114-Status: GOOD (  21.32  )
+X-CRM114-CacheID: sfid-20230704_020949_722595_968E4FA2 
+X-CRM114-Status: GOOD (  11.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,48 +80,30 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/2] soc: imx: featctrl: add help text for
- CONFIG_IMX8M_FEATCTRL
+Subject: v2023.07.1
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Jul 03, 2023 at 07:20:53PM +0200, Ahmad Fatoum wrote:
-> There's no equivalent Linux driver, so a short help text is certainly in
-> order. While at it, replace spaces with tabs for the prompt line.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/soc/imx/Kconfig | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
+Hi All,
 
-Applied, thanks
+There is a last minute bug in the v2023.07.0 Release, so here is
+a stable tag for that version.
+
+Firmware files compiled into the barebox image are not properly
+aligned in the binary resulting in corrupted firmware files, so
+when your image needs firmware compiled in, please use v2023.07.1
+instead.
 
 Sascha
 
-> 
-> diff --git a/drivers/soc/imx/Kconfig b/drivers/soc/imx/Kconfig
-> index 06513c02da2f..b11db718c2bc 100644
-> --- a/drivers/soc/imx/Kconfig
-> +++ b/drivers/soc/imx/Kconfig
-> @@ -8,9 +8,12 @@ config IMX_GPCV2_PM_DOMAINS
->  	default y if ARCH_IMX7 || ARCH_IMX8M
->  
->  config IMX8M_FEATCTRL
-> -        bool "i.MX8M feature controller"
-> +	bool "i.MX8M feature controller"
->  	depends on ARCH_IMX8M
->  	select FEATURE_CONTROLLER
->  	default y
-> +	help
-> +	  This driver disables device tree nodes that are not applicable
-> +	  to Lite variants of i.MX8M SoCs.
->  
->  endmenu
-> -- 
-> 2.39.2
-> 
-> 
-> 
+----------------------------------------------------------------
+Ahmad Fatoum (2):
+      firmware: fix alignment of firmware images
+      firmware: use portable newline escape
+
+Sascha Hauer (1):
+      Release v2023.07.1
+
 
 -- 
 Pengutronix e.K.                           |                             |
