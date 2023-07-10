@@ -1,60 +1,86 @@
-Delivery-date: Mon, 10 Jul 2023 13:09:13 +0200
+Delivery-date: Mon, 10 Jul 2023 14:11:32 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qIolX-005duN-3J
-	for lore@lore.pengutronix.de; Mon, 10 Jul 2023 13:09:13 +0200
+	id 1qIpjq-005hil-3o
+	for lore@lore.pengutronix.de; Mon, 10 Jul 2023 14:11:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qIolU-0001ha-Jo
-	for lore@pengutronix.de; Mon, 10 Jul 2023 13:09:13 +0200
+	id 1qIpjn-00012B-KO
+	for lore@pengutronix.de; Mon, 10 Jul 2023 14:11:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GOsbf9GRmaTdDLI+LRGWrGG/IsB9k0ph6beauWY/unE=; b=hSuAq1ioVVnMiTobbBDJ8b6pto
-	X6v4UcxbXaIU3OXcmhd2BBzDU9de7LH8AwXNgbZvKMW4IdjCj0T1aieY0u2nC8s1MAVszkrEsbYfn
-	dyVTEKp2rBmbi62IvWaEtTpjXHUPAxGyVIRR1nQCepsYdcmJL+lYXIDCzf6FGGxJclqnbuHZmK0/X
-	oA1GF7zZNGpEcvfY93Tea7UP+0JMjrl6JNRlzX5FyGHJAB4rtdgjPlxzSysBHXnX8fMwVDFV/G24F
-	grZ5eOYHO2dfBr3sOataR3dhd6yOl84+nYBpV4aQBkvU2hbGGP9vexd0HE+keJCaVQF+3YJK3OTPE
-	i/x/3nsA==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4xS6YzykWS9nHWe3GwIUnBYvHva2REfKf6V6yOveqc8=; b=h/QK+sRGn+hEJdkVAvnH8tDOY3
+	FjFmvu2qXFg3gnsawbj6vAJ+AqlsF9vBHTjjGYeN7K/gLD5QpBuiXJYpyGJuahEFIhRLVa4a3Hgqn
+	lUzncF0VPisw2jhEJj+iXhDoPZZ5QhQayhbrDo/cxdRE7LevGZ2ZwKPDPxfl9csYKAO9K9zCtBZe1
+	meMliTDNBSYUl/xL4rfJOHNUU6/TK2sQAkO9cuMkQpTksSb/9wI9/LBDESBA7ktHjtME2Z59oMvZr
+	yuJluze0cUoVeFfIxkwM/wDJIm14FWD2NpIKZE0r3rEu1XMiWw7Boxo2+S/h0OdxbUVPBmi5f8q7J
+	hJT+ssGA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qIokQ-00BQyz-2Z;
-	Mon, 10 Jul 2023 11:08:06 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1qIpiQ-00BYZt-2E;
+	Mon, 10 Jul 2023 12:10:06 +0000
+Received: from mout.gmx.net ([212.227.17.20])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qIokK-00BQxr-28
+	id 1qIpiM-00BYYJ-2B
 	for barebox@lists.infradead.org;
-	Mon, 10 Jul 2023 11:08:05 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qIokJ-0001Zt-7B; Mon, 10 Jul 2023 13:07:59 +0200
-Message-ID: <31878823-caa3-ca36-e0fe-634396dbd5bf@pengutronix.de>
-Date: Mon, 10 Jul 2023 13:07:58 +0200
+	Mon, 10 Jul 2023 12:10:04 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rempel-privat.de;
+ s=s31663417; t=1688990996; x=1689595796; i=linux@rempel-privat.de;
+ bh=rnwaBnQczPFFiqIo4FaQacECLB43UiwPs5dpbJp9GOk=;
+ h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+ b=tEClgq2nP3csIHf/1daG2X7TnBCFe9t9geydqR4UJ84bScU5vFWtuKgPltt7iU3Sh8IKVgZ
+ /mDud8TMyG80cs6dH+KwPRY53q7qrm7KgE6+EKuUMjTsD96OiD65YqJQnfE+NG5eYGb7kwUNh
+ RWjvqYh2ioxSr2Bs3LSE5C0Zz0vkQI+Zw2f5uocBm7x8Ri4IaoI6I8M7Uxaii7/uFY/Nt26uj
+ uu06/De+M5wJob5u3ONDRnf1SFUvme5qTGLkOnrbVYUO7ooaLLY1mDb7CkmAdd05PqD5gFSme
+ UyMpT9jC8bLseeVL6DT49IJbI3vB0WrY0ZgTHXpPTBEo2fOBTqLg==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.86.182] ([95.91.195.205]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MBUqF-1q85191wkh-00D2yy for
+ <barebox@lists.infradead.org>; Mon, 10 Jul 2023 14:09:56 +0200
+Message-ID: <d8057a76-dfc5-bdc1-3949-63933a904ecb@rempel-privat.de>
+Date: Mon, 10 Jul 2023 14:10:13 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
+ Thunderbird/102.11.0
 Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
+To: barebox@lists.infradead.org
 References: <20230710063653.660040-1-m.felsch@pengutronix.de>
- <20230710063653.660040-6-m.felsch@pengutronix.de>
- <5639fc1b-c36e-dac6-3b23-5482a9bdbac2@pengutronix.de>
- <20230710105346.fpp4qqtl6v7cg3ny@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230710105346.fpp4qqtl6v7cg3ny@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20230710063653.660040-5-m.felsch@pengutronix.de>
+ <08b0cae6-4dd5-b349-296c-e24ec761f30f@pengutronix.de>
+From: Oleksij Rempel <linux@rempel-privat.de>
+In-Reply-To: <08b0cae6-4dd5-b349-296c-e24ec761f30f@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:qfNmXq16AWjmYKREuKcraBQ2w/HMvnBZttcUiurta/9uLYORvyZ
+ UZIkM/jgy3Nm9SG0gCmpSRru5gLLQvSQB4NPYs4I3XDSHSbtdDFxDEWxx8JLKPQ1rc1XG2I
+ 8t6MUpfhsJYpQWIIwhMIRHd/yvceOqVbZgTZnT5ugTp9m+NVFJ37NSV+8i1nV1Crxjtpo30
+ hPylxnKlzNHycoQAuMS1A==
+UI-OutboundReport: notjunk:1;M01:P0:K44PlgkBsf0=;H2YQCK5ShCZy97tdMtfzGrGfZqP
+ E6rrtUjhVtwszBeKB8lDtuXbpVHHfiDEdLOAwxY9sPaqFkECbrVrRImWQoitGccXeUjA2Apry
+ D3l4fFx/ORylxvDiUwx1c4s/oxCYKNMeDn36rG/qE6ttGyC1qTpcJtsqA90ftomE60O+53AeW
+ vb/C5Joh2drEnNNpsTsCTqUlzKJk1uDHhpQK8tdy2sj/rzNB6BcwF2XwsEYO7dFTvzIF6CgwN
+ VZOUOkZb69ne+FTz8FhoaH6RL0KJLj5g9JTeLsIWfDTVFUY/+aG4/iY1ZX5Q5CzL0WbLjjw4x
+ IqmG01qVzEAYlcVIwAgYAI/UZ8ZlMpWficr3H2kcsM7/RbaUl5mP4ZjvVauLXpuDaMSFJOLJR
+ +Jvo9iMg7zD/GhzpmV7Zpp2saw0RYZxG0PjEdsAiPoZeB265bqxZySSsHcU2ru3Ji+9MFgRWH
+ rVihZQoSNjvcb8shtwNPTRBfiNDdQ6ZflFYKORvACeVZnaPFsLGAUA4rbGHbmjgu7XhQeJ6DU
+ 49xuhGZlV4Xs8OlVj91482dizOj84gQPWN92w76TADfQvf2e1J70XYntgUTQPmuEkmIHwganX
+ xcixym6BnhilLYZEd+Rjn6c9bZ68RLw6EtLmXSVWfqn6BYtfHTm2BYPDdpWzbnKFHY+SFoKma
+ oaVYJtlVsRXf6H9rlpNWHtqL/wPyR4jDY7o+Fvy40HLqMRnitkgw6s0uWITH7fq6iqTNiR+H5
+ pc/ZtePnP9JxcMUpjreT9tQzPXvy7yhVbxRrVRcs0a5CewhuWyy6k2IwEChY0PbXwFngr+XxT
+ bs4SIw+cv6RnB/qOicKucF7jByUucBuCwqQf/QIZkUt7o2hdBxuEq6eAL0veaFPX7YcGbbWCl
+ stlRJzLcy/kkk6IvTTjCjP52QF7H9ne5ryTDJxOj0dhLan2ZVB0X7JCYDEKZA1ce7la5+GFMa
+ llJZWOEaEsfaNLVOIe4+30x2dhk=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230710_040804_031544_2E4CE538 
-X-CRM114-Status: GOOD (  28.97  )
+X-CRM114-CacheID: sfid-20230710_051003_223367_760AAC84 
+X-CRM114-Status: GOOD (  13.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,150 +98,67 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 6/7] net: phy: at803x: add disable hibernation mode
- support
+Subject: Re: [PATCH 5/7] net: phy: at803x: add support for configuring
+ SmartEEE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 10.07.23 12:53, Marco Felsch wrote:
-> On 23-07-10, Ahmad Fatoum wrote:
->> On 10.07.23 08:36, Marco Felsch wrote:
->>> This commit ports Linux commit:
->>>
->>> | commit 9ecf04016c87bcb33b44e24489d33618e2592f41
->>> | Author: Wei Fang <wei.fang@nxp.com>
->>> | Date:   Thu Aug 18 11:00:54 2022 +0800
->>> |
->>> |     net: phy: at803x: add disable hibernation mode support
->>> |
->>> |     When the cable is unplugged, the Atheros AR803x PHYs will enter
->>> |     hibernation mode after about 10 seconds if the hibernation mode
->>> |     is enabled and will not provide any clock to the MAC. But for
->>> |     some MACs, this feature might cause unexpected issues due to the
->>> |     logic of MACs.
->>> |     Taking SYNP MAC (stmmac) as an example, if the cable is unplugged
->>> |     and the "eth0" interface is down, the AR803x PHY will enter
->>> |     hibernation mode. Then perform the "ifconfig eth0 up" operation,
->>> |     the stmmac can't be able to complete the software reset operation
->>> |     and fail to init it's own DMA. Therefore, the "eth0" interface is
->>> |     failed to ifconfig up. Why does it cause this issue? The truth is
->>> |     that the software reset operation of the stmmac is designed to
->>> |     depend on the RX_CLK of PHY.
->>> |     So, this patch offers an option for the user to determine whether
->>> |     to disable the hibernation mode of AR803x PHYs.
->>> |
->>> |     Signed-off-by: Wei Fang <wei.fang@nxp.com>
->>> |     Reviewed-by: Andrew Lunn <andrew@lunn.ch>
->>> |     Signed-off-by: Jakub Kicinski <kuba@kernel.org>
->>>
->>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Am 10.07.23 um 12:10 schrieb Ahmad Fatoum:
+> On 10.07.23 08:36, Marco Felsch wrote:
+>> This commit port Linux commit:
 >>
->> IMO we should just makes AT803X_DISABLE_HIBERNATION_MODE the default and
->> never hibernate the PHY. Let Linux worry about that.
-> 
-> Got your point and I'm not sure. At least for drivers I like the sources
-> to bin in sync with Linux which allows porting fixes/features more
-> easily.
-
-You can keep code mostly as-is and just replace the DT property check
-with a comment why we do this unconditionally.
-
-> Also since the API (dt-bindings) are there, so why not just
-> copy'n'paste from Linux?
-
-We don't care much for power saving during barebox runtime. We turn on
-whatever clocks are necessary and leave it to Linux to power down
-unneeded peripherals. Same thing should apply to the PHY. If the PHY
-has a power saving mode that breaks some MACs, why not just disable
-the power saving mode? It's better for code size anyway.
-
-Cheers,
-Ahmad
-
-> 
-> Regards,
->   Marco
-> 
->>> ---
->>>  drivers/net/phy/at803x.c | 24 ++++++++++++++++++++++++
->>>  1 file changed, 24 insertions(+)
->>>
->>> diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
->>> index cc425c318f..d8a9c3588f 100644
->>> --- a/drivers/net/phy/at803x.c
->>> +++ b/drivers/net/phy/at803x.c
->>> @@ -32,6 +32,9 @@
->>>  #define AT803X_DEBUG_REG_5			0x05
->>>  #define AT803X_DEBUG_TX_CLK_DLY_EN		BIT(8)
->>>  
->>> +#define AT803X_DEBUG_REG_HIB_CTRL		0x0b
->>> +#define   AT803X_DEBUG_HIB_CTRL_PS_HIB_EN	BIT(15)
->>> +
->>>  /* AT803x supports either the XTAL input pad, an internal PLL or the
->>>   * DSP as clock reference for the clock output pad. The XTAL reference
->>>   * is only used for 25 MHz output, all other frequencies need the PLL.
->>> @@ -140,6 +143,20 @@ static int at803x_disable_tx_delay(struct phy_device *phydev)
->>>  				     AT803X_DEBUG_TX_CLK_DLY_EN, 0);
->>>  }
->>>  
->>> +static int at803x_hibernation_mode_config(struct phy_device *phydev)
->>> +{
->>> +	struct at803x_priv *priv = phydev->priv;
->>> +
->>> +	/* The default after hardware reset is hibernation mode enabled. After
->>> +	 * software reset, the value is retained.
->>> +	 */
->>> +	if (!(priv->flags & AT803X_DISABLE_HIBERNATION_MODE))
->>> +		return 0;
->>> +
->>> +	return at803x_debug_reg_mask(phydev, AT803X_DEBUG_REG_HIB_CTRL,
->>> +				     AT803X_DEBUG_HIB_CTRL_PS_HIB_EN, 0);
->>> +}
->>> +
->>>  static bool at803x_match_phy_id(struct phy_device *phydev, u32 phy_id)
->>>  {
->>>  	struct phy_driver *drv = to_phy_driver(phydev->dev.driver);
->>> @@ -160,6 +177,9 @@ static int at803x_parse_dt(struct phy_device *phydev)
->>>  	if (of_property_read_bool(node, "qca,disable-smarteee"))
->>>  		priv->flags |= AT803X_DISABLE_SMARTEEE;
->>>  
->>> +	if (of_property_read_bool(node, "qca,disable-hibernation-mode"))
->>> +		priv->flags |= AT803X_DISABLE_HIBERNATION_MODE;
->>> +
->>>  	if (!of_property_read_u32(node, "qca,smarteee-tw-us-1g", &tw)) {
->>>  		if (!tw || tw > 255) {
->>>  			phydev_err(phydev, "invalid qca,smarteee-tw-us-1g\n");
->>> @@ -341,6 +361,10 @@ static int at803x_config_init(struct phy_device *phydev)
->>>  	if (ret < 0)
->>>  		return ret;
->>>  
->>> +	ret = at803x_hibernation_mode_config(phydev);
->>> +	if (ret < 0)
->>> +		return ret;
->>> +
->>>  	return 0;
->>>  }
->>>  
+>> | commit 390b4cad81484124db2b676ed20a265adc032bae
+>> | Author: Russell King <rmk+kernel@armlinux.org.uk>
+>> | Date:   Thu Jan 14 10:45:49 2021 +0000
+>> |
+>> |     net: phy: at803x: add support for configuring SmartEEE
+>> |
+>> |     SmartEEE for the atheros phy was deemed buggy by Freescale and co=
+mmits
+>> |     were added to disable it for their boards.
+>> |
+>> |     In initial testing, SolidRun found that the default settings were
+>> |     causing disconnects but by increasing the Tw buffer time we could=
+ allow
+>> |     enough time for all parts of the link to come out of a low power =
+state
+>> |     and function properly without causing a disconnect. This allows u=
+s to
+>> |     have functional power savings of between 300 and 400mW, rather th=
+an
+>> |     disabling the feature altogether.
+>> |
+>> |     This commit adds support for disabling SmartEEE and configuring t=
+he Tw
+>> |     parameters for 1G and 100M speeds.
+>> |
+>> |     Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
+>> |     Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 >>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>> I slightly adapted the at803x_config_init() as well to be more in line
+>> with the Linux code base.
 >>
->>
-> 
+>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+>
+> Same question as in follow-up commit: Can't we just disable it unconditi=
+onally?
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Most of PHYs with EEE support have EEE advertisement register on the same =
+offset. I would recommend
+to create a common function for all PHYs drivers to clear all EEE advertis=
+ing bits and call it the
+PHY framework. EEE should be never advertised by barebox. As a side effect=
+, if Atheros PHY do not
+advertise EEE, SmartEEE will not be activated.
+
+=2D-
+Regards,
+Oleksij
 
 
 
