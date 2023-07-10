@@ -1,57 +1,61 @@
-Delivery-date: Mon, 10 Jul 2023 12:11:41 +0200
+Delivery-date: Mon, 10 Jul 2023 12:38:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qInrr-005bEO-79
-	for lore@lore.pengutronix.de; Mon, 10 Jul 2023 12:11:41 +0200
+	id 1qIoHm-005cSu-OD
+	for lore@lore.pengutronix.de; Mon, 10 Jul 2023 12:38:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qInro-0002Dg-Pb
-	for lore@pengutronix.de; Mon, 10 Jul 2023 12:11:41 +0200
+	id 1qIoHk-00060a-Cf
+	for lore@pengutronix.de; Mon, 10 Jul 2023 12:38:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Sg3GwRVDdKg/Ru6Ei1DDIRn8ZBsFM8H5kYgLQiROMeo=; b=CfRchaFQmxwNfUpe26khDyr+Zh
-	LqSkoJjFTAPaEZ4bHlin8GHzwBQ9pCvJ7yqT8Ji83n136EvqDS82Uo9D3bV5CkHqB8yuAA1TvS9D1
-	5MCdtXFxe33sBoICm84MyeU4kS4pk3aHkInS+ZEufeWSE12DLqiGeSoB9ePoXE149ROOPgmrtn1Wy
-	8BfdKIDK9jsW8UrB6NI3eKFPtKbuhaLTgZgAKwKA/iQ8eCb+pIgWl/xRA0d9GveZFKXeF0bfE9Tbc
-	5m7yc4xVDgtkNJwUUkC9cJeBpJ6xaumTyEJxVnsQdvkjJMmGNZB/uivcx+P4ueOrOuroIS8Iy06Ck
-	ZO6blt6A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=tSkt/bUulMbOJqn7mrJ/SD+s7goEFaH/39Z1UVgEhUs=; b=wl2V/VlT50drjCQObG8tpkFeW1
+	QoN3bJ0l8bvmkcMgHw5GuDqqBHGKnWBxiXIXOCP/miqvIH/WDzsQwbbBKBvvU+DvIakfFTecr9z8i
+	QzWrBHgzvKm8M/e4AonfLzRUb4Vf407CZeDfIYNYGEikKuxuXkZlov0BW9xZ2QO1vOS68d0qB/ao8
+	BTvQzIkBIrgbtf1v9p3ycOHfH3Kqd0gysy2x73i4IzBZSO10D59KGoiyWurN9GWfUgjBZ9E+W6H4n
+	kIAMe7fY0YJHm97pbP640edcd6UyDLWQmp5PwkHd6Zai/GqQwpITKqXDC/tYiuCfYLlXGMAUAgN+G
+	jhqkrRdA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qInqn-00BBOo-0l;
-	Mon, 10 Jul 2023 10:10:37 +0000
+	id 1qIoGa-00BHSg-2D;
+	Mon, 10 Jul 2023 10:37:16 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qInqj-00BBO2-2M
+	id 1qIoGX-00BHNa-1B
 	for barebox@lists.infradead.org;
-	Mon, 10 Jul 2023 10:10:35 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qInqh-0001yj-Rf; Mon, 10 Jul 2023 12:10:31 +0200
-Message-ID: <08b0cae6-4dd5-b349-296c-e24ec761f30f@pengutronix.de>
-Date: Mon, 10 Jul 2023 12:10:31 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.11.2
-Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
+	Mon, 10 Jul 2023 10:37:14 +0000
+Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1qIoGR-0005iX-Oa; Mon, 10 Jul 2023 12:37:07 +0200
+Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1qIoGR-0006pK-Cd; Mon, 10 Jul 2023 12:37:07 +0200
+Date: Mon, 10 Jul 2023 12:37:07 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230710103707.wid4ci5ux44gamyw@pengutronix.de>
 References: <20230710063653.660040-1-m.felsch@pengutronix.de>
- <20230710063653.660040-5-m.felsch@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230710063653.660040-5-m.felsch@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20230710063653.660040-2-m.felsch@pengutronix.de>
+ <8c07789d-6bd5-290c-952d-befd3fb8e232@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8c07789d-6bd5-290c-952d-befd3fb8e232@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230710_031033_776647_F751D2CB 
-X-CRM114-Status: GOOD (  31.78  )
+X-CRM114-CacheID: sfid-20230710_033713_401708_9A6E522A 
+X-CRM114-Status: GOOD (  18.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,177 +73,81 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 5/7] net: phy: at803x: add support for configuring
- SmartEEE
+Subject: Re: [PATCH 2/7] net: phy: micrel: make use of MDIO_MMD register
+ defines
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 10.07.23 08:36, Marco Felsch wrote:
-> This commit port Linux commit:
+On 23-07-10, Ahmad Fatoum wrote:
+> On 10.07.23 08:36, Marco Felsch wrote:
+> > Make use of the register definition instead of having magic numbers. No
+> > functional change.
+> > 
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > 
-> | commit 390b4cad81484124db2b676ed20a265adc032bae
-> | Author: Russell King <rmk+kernel@armlinux.org.uk>
-> | Date:   Thu Jan 14 10:45:49 2021 +0000
-> |
-> |     net: phy: at803x: add support for configuring SmartEEE
-> |
-> |     SmartEEE for the atheros phy was deemed buggy by Freescale and commits
-> |     were added to disable it for their boards.
-> |
-> |     In initial testing, SolidRun found that the default settings were
-> |     causing disconnects but by increasing the Tw buffer time we could allow
-> |     enough time for all parts of the link to come out of a low power state
-> |     and function properly without causing a disconnect. This allows us to
-> |     have functional power savings of between 300 and 400mW, rather than
-> |     disabling the feature altogether.
-> |
-> |     This commit adds support for disabling SmartEEE and configuring the Tw
-> |     parameters for 1G and 100M speeds.
-> |
-> |     Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
-> |     Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> FYI, the code is taken from Linux (with arguments swapped).
+
+Patch opportunities ^^ thanks for pointing that out.
+
+Regards,
+  Marco
+
+> Change is ok though:
 > 
-> I slightly adapted the at803x_config_init() as well to be more in line
-> with the Linux code base.
+> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-
-Same question as in follow-up commit: Can't we just disable it unconditionally?
-
-> ---
->  drivers/net/phy/at803x.c | 75 ++++++++++++++++++++++++++++++++++++++--
->  1 file changed, 73 insertions(+), 2 deletions(-)
+> > ---
+> >  drivers/net/phy/micrel.c | 12 ++++++++----
+> >  1 file changed, 8 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+> > index ef1f919ae7..02d474c442 100644
+> > --- a/drivers/net/phy/micrel.c
+> > +++ b/drivers/net/phy/micrel.c
+> > @@ -447,23 +447,27 @@ static int ksz9031_config_rgmii_delay(struct phy_device *phydev)
+> >  		return 0;
+> >  	}
+> >  
+> > -	phy_write_mmd_indirect(phydev, MII_KSZ9031RN_CONTROL_PAD_SKEW, 2,
+> > +	phy_write_mmd_indirect(phydev, MII_KSZ9031RN_CONTROL_PAD_SKEW,
+> > +			       MDIO_MMD_WIS,
+> >  			       FIELD_PREP(MII_KSZ9031RN_RX_CTL_M, rx) |
+> >  			       FIELD_PREP(MII_KSZ9031RN_TX_CTL_M, tx));
+> >  
+> > -	phy_write_mmd_indirect(phydev, MII_KSZ9031RN_RX_DATA_PAD_SKEW, 2,
+> > +	phy_write_mmd_indirect(phydev, MII_KSZ9031RN_RX_DATA_PAD_SKEW,
+> > +			       MDIO_MMD_WIS,
+> >  			       FIELD_PREP(MII_KSZ9031RN_RXD3, rx) |
+> >  			       FIELD_PREP(MII_KSZ9031RN_RXD2, rx) |
+> >  			       FIELD_PREP(MII_KSZ9031RN_RXD1, rx) |
+> >  			       FIELD_PREP(MII_KSZ9031RN_RXD0, rx));
+> >  
+> > -	phy_write_mmd_indirect(phydev, MII_KSZ9031RN_TX_DATA_PAD_SKEW, 2,
+> > +	phy_write_mmd_indirect(phydev, MII_KSZ9031RN_TX_DATA_PAD_SKEW,
+> > +			       MDIO_MMD_WIS,
+> >  			       FIELD_PREP(MII_KSZ9031RN_TXD3, tx) |
+> >  			       FIELD_PREP(MII_KSZ9031RN_TXD2, tx) |
+> >  			       FIELD_PREP(MII_KSZ9031RN_TXD1, tx) |
+> >  			       FIELD_PREP(MII_KSZ9031RN_TXD0, tx));
+> >  
+> > -	phy_write_mmd_indirect(phydev, MII_KSZ9031RN_CLK_PAD_SKEW, 2,
+> > +	phy_write_mmd_indirect(phydev, MII_KSZ9031RN_CLK_PAD_SKEW,
+> > +			       MDIO_MMD_WIS,
+> >  			       FIELD_PREP(MII_KSZ9031RN_GTX_CLK, tx_clk) |
+> >  			       FIELD_PREP(MII_KSZ9031RN_RX_CLK, rx_clk));
+> >  	return 0;
 > 
-> diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
-> index 41010c58ad..cc425c318f 100644
-> --- a/drivers/net/phy/at803x.c
-> +++ b/drivers/net/phy/at803x.c
-> @@ -59,6 +59,15 @@
->   */
->  #define AT8035_CLK_OUT_MASK			GENMASK(4, 3)
->  
-> +#define AT803X_MMD3_SMARTEEE_CTL1		0x805b
-> +#define AT803X_MMD3_SMARTEEE_CTL3		0x805d
-> +#define AT803X_MMD3_SMARTEEE_CTL3_LPI_EN	BIT(8)
-> +
-> +#define AT803X_DISABLE_SMARTEEE			BIT(1)
-> +
-> +/* disable hibernation mode */
-> +#define AT803X_DISABLE_HIBERNATION_MODE		BIT(2)
-> +
->  #define AT803X_CLK_OUT_STRENGTH_MASK		GENMASK(8, 7)
->  #define AT803X_CLK_OUT_STRENGTH_FULL		0
->  #define AT803X_CLK_OUT_STRENGTH_HALF		1
-> @@ -72,8 +81,11 @@
->  #define AT8030_PHY_ID_MASK			0xffffffef
->  
->  struct at803x_priv {
-> +	int flags;
->  	u16 clk_25m_reg;
->  	u16 clk_25m_mask;
-> +	u8 smarteee_lpi_tw_1g;
-> +	u8 smarteee_lpi_tw_100m;
->  };
->  
->  static int at803x_debug_reg_read(struct phy_device *phydev, u16 reg)
-> @@ -141,10 +153,29 @@ static int at803x_parse_dt(struct phy_device *phydev)
->  	const struct device *dev = &phydev->dev;
->  	const struct device_node *node = dev->of_node;
->  	struct at803x_priv *priv = phydev->priv;
-> +	u32 freq, strength, tw;
->  	unsigned int sel;
-> -	u32 freq, strength;
->  	int ret;
->  
-> +	if (of_property_read_bool(node, "qca,disable-smarteee"))
-> +		priv->flags |= AT803X_DISABLE_SMARTEEE;
-> +
-> +	if (!of_property_read_u32(node, "qca,smarteee-tw-us-1g", &tw)) {
-> +		if (!tw || tw > 255) {
-> +			phydev_err(phydev, "invalid qca,smarteee-tw-us-1g\n");
-> +			return -EINVAL;
-> +		}
-> +		priv->smarteee_lpi_tw_1g = tw;
-> +	}
-> +
-> +	if (!of_property_read_u32(node, "qca,smarteee-tw-us-100m", &tw)) {
-> +		if (!tw || tw > 255) {
-> +			phydev_err(phydev, "invalid qca,smarteee-tw-us-100m\n");
-> +			return -EINVAL;
-> +		}
-> +		priv->smarteee_lpi_tw_100m = tw;
-> +	}
-> +
->  	ret = of_property_read_u32(node, "qca,clk-out-frequency", &freq);
->  	if (!ret) {
->  		switch (freq) {
-> @@ -221,6 +252,38 @@ static int at803x_probe(struct phy_device *phydev)
->  	return at803x_parse_dt(phydev);
->  }
->  
-> +static int at803x_smarteee_config(struct phy_device *phydev)
-> +{
-> +	struct at803x_priv *priv = phydev->priv;
-> +	u16 mask = 0, val = 0;
-> +	int ret;
-> +
-> +	if (priv->flags & AT803X_DISABLE_SMARTEEE)
-> +		return phy_modify_mmd_indirect(phydev, MDIO_MMD_PCS,
-> +					       AT803X_MMD3_SMARTEEE_CTL3,
-> +					       AT803X_MMD3_SMARTEEE_CTL3_LPI_EN, 0);
-> +
-> +	if (priv->smarteee_lpi_tw_1g) {
-> +		mask |= 0xff00;
-> +		val |= priv->smarteee_lpi_tw_1g << 8;
-> +	}
-> +	if (priv->smarteee_lpi_tw_100m) {
-> +		mask |= 0x00ff;
-> +		val |= priv->smarteee_lpi_tw_100m;
-> +	}
-> +	if (!mask)
-> +		return 0;
-> +
-> +	ret = phy_modify_mmd_indirect(phydev, MDIO_MMD_PCS, AT803X_MMD3_SMARTEEE_CTL1,
-> +				      mask, val);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return phy_modify_mmd_indirect(phydev, MDIO_MMD_PCS, AT803X_MMD3_SMARTEEE_CTL3,
-> +				       AT803X_MMD3_SMARTEEE_CTL3_LPI_EN,
-> +				       AT803X_MMD3_SMARTEEE_CTL3_LPI_EN);
-> +}
-> +
->  static int at803x_clk_out_config(struct phy_device *phydev)
->  {
->  	struct at803x_priv *priv = phydev->priv;
-> @@ -270,7 +333,15 @@ static int at803x_config_init(struct phy_device *phydev)
->  	if (ret < 0)
->  		return ret;
->  
-> -	return at803x_clk_out_config(phydev);
-> +	ret = at803x_smarteee_config(phydev);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	ret = at803x_clk_out_config(phydev);
-> +	if (ret < 0)
-> +		return ret;
-> +
-> +	return 0;
->  }
->  
->  static struct phy_driver at803x_driver[] = {
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> 
 
 
