@@ -1,87 +1,87 @@
-Delivery-date: Mon, 10 Jul 2023 19:25:22 +0200
+Delivery-date: Mon, 10 Jul 2023 19:25:26 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qIudX-0060ap-T6
-	for lore@lore.pengutronix.de; Mon, 10 Jul 2023 19:25:22 +0200
+	id 1qIudb-0060bV-JD
+	for lore@lore.pengutronix.de; Mon, 10 Jul 2023 19:25:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qIudV-00019U-4G
-	for lore@pengutronix.de; Mon, 10 Jul 2023 19:25:22 +0200
+	id 1qIudY-0001Ie-O6
+	for lore@pengutronix.de; Mon, 10 Jul 2023 19:25:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6g65QvAuFbQKsBXVftDQhoCdufJdiZ0YMEpHLvI1ajw=; b=Q49feFjsxiOqbTURXbaVeGz0h5
-	C6N0DRKnCzJDTIhF+zzr/TBRAwqb9epwbsCXJzuNCwXN9Z0gx5QC+70sPfI2Btn7CjfHyJ9gjLZo4
-	dzz81GU6cBKlkO8DzdT80agqaBL4aYjoGIQVHggLtjL8RW5dm/sTGQTqtyUnGT2h/gQeMoO0IP5+x
-	haEwT+u9ncFjseAms5dGSoy090Yi2C+rCvc2w9SRqZS0fXbxu/zyyf2WfijZkGgOemNL+G1a3PGro
-	p6jC48fzu36RpssGXPrw2/ht/84qTQWkhKdtQjIKf4L4Xt+vKw61BrMZFWjxk85SFz81BINrWe70f
-	WMwhbXTg==;
+	bh=LyLWgiQKuVHDGzt63XnNE5jICkQ9qJFNVeF/DDwoxDk=; b=ZY5DB6RCrC/F97LEgYQJGOjstI
+	7utg6MAE4JRT9Treeu0su/UQcqLrjjlGhdivf2s6qrMyVXFK7Wyn6alc6Iq9t+88MLNskA37wqGKq
+	M4i5iRsUgNGaAWHxUoxHWXri33WbDcY5wJod6+ZGXomxwnqmHS3Zeqgoif1q0tyGcpKerlvMME5i6
+	aVWxPYuGAOntmUj7oQ7Ctr0SH1NzRhRAUAmTVZjo3L24Y+jBfrVJUGJeCAoWT3h4qd4yUD4qXh42h
+	aS6VBZIrk5NM+X2nHJ5KOWuovnHetlEWWWVevXMIoLoFCj6/44bjpA8tQv+/41d9qhQBHdzcDMQaw
+	NP6czsZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qIucI-00CL83-2Q;
-	Mon, 10 Jul 2023 17:24:06 +0000
+	id 1qIucK-00CL9a-2e;
+	Mon, 10 Jul 2023 17:24:08 +0000
 Received: from smtpout140.security-mail.net ([85.31.212.149])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qIucD-00CL4N-2i
+	id 1qIucG-00CL5t-0Z
 	for barebox@lists.infradead.org;
-	Mon, 10 Jul 2023 17:24:03 +0000
+	Mon, 10 Jul 2023 17:24:06 +0000
 Received: from localhost (fx409.security-mail.net [127.0.0.1])
-	by fx409.security-mail.net (Postfix) with ESMTP id A065B349607
-	for <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:24:00 +0200 (CEST)
+	by fx409.security-mail.net (Postfix) with ESMTP id 005D834966E
+	for <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:24:02 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
-	s=sec-sig-email; t=1689009840;
-	bh=7ybYNik3n4QD3evgjPX4m+c9RgEldXV3Bj/d0uNT6r8=;
+	s=sec-sig-email; t=1689009843;
+	bh=AIWs0epMqUG2lse8c8rZLQukVvqCEtmrJbDhtsebpX8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=dRsAuaeS7PDuM06oAqZPmvulKyEtMo7tLTtbsIUob5A84XOl8lCuATyfPunEis1bl
-	 u4Qm4GNZg+vCANj4ldr1sV4A26T8cLXF67Tv3SdFBzC5JBDj5L/omyHKezICjwS8vz
-	 FwHeQZRJV+dbZZ1MQamhawpZnLHziNOV/4ZFqy/k=
+	b=QK2fT3rEa3Cvb1iP4fqajEoANDPGes+D+IVm1541Y/2nVaOj+FRR56w/qPP4nND8r
+	 Yn2l3/eY7whqT2vemdBY5yC8CBS1fSuuN5m/UvBCEYsEzBd7H8EQ5aFsHmOvO9o4Pd
+	 awnLnR+d9MKCXYn+ofTshvSeWvQpYMgGYMcmfIeA=
 Received: from fx409 (fx409.security-mail.net [127.0.0.1]) by
- fx409.security-mail.net (Postfix) with ESMTP id 666C6349666 for
- <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:24:00 +0200 (CEST)
+ fx409.security-mail.net (Postfix) with ESMTP id BB8AD349518 for
+ <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:24:02 +0200 (CEST)
 Received: from FRA01-MR2-obe.outbound.protection.outlook.com
  (mail-mr2fra01lp0107.outbound.protection.outlook.com [104.47.25.107]) by
- fx409.security-mail.net (Postfix) with ESMTPS id A2D1A34957A for
- <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:23:58 +0200 (CEST)
+ fx409.security-mail.net (Postfix) with ESMTPS id DB08C349564 for
+ <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:24:00 +0200 (CEST)
 Received: from PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:d9::11)
  by PAZP264MB2894.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e7::20) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6565.30; Mon, 10 Jul
- 2023 17:23:55 +0000
+ 2023 17:23:56 +0000
 Received: from PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM
  ([fe80::78f7:7c2d:dc8e:fc94]) by PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM
  ([fe80::78f7:7c2d:dc8e:fc94%4]) with mapi id 15.20.6565.028; Mon, 10 Jul
- 2023 17:23:55 +0000
+ 2023 17:23:56 +0000
 X-Virus-Scanned: E-securemail
-Secumail-id: <6cd4.64ac3eae.a1e66.5>
+Secumail-id: <6cd4.64ac3eb0.da246.7>
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mo2tBehSJydsKE/n2vdVlQmns5IlWKOGWwLn97VedO0DgsdZiIwunyz9BDQLe/1Hu8yYOf2ENMPO9hPisbiawEXGXxmJ2ntxzKzCq/tNCCqttq1V3JWXZgGvTm+0GtpJvsUzvLQjAhqgAvTbP6mIVMC96d5il6r+2bbITVWOvzZ0hdfSnU0USXwrJyAlMxG2XMMT2/qQ9jv3acgK9Oleeo8WqV78pOvAzJLjjoSQekpQIo5yAzT7snyMH4stuUdlQzdFHG0gWGk6yvxS1nyPuJo8p/Bk8EuqZrTnGhvqyZTgWiSV7UWKcRMyrCmUBrGTArhmTSx+PJJkB1V8rc001g==
+ b=kmQoQKHWxYg6hzQJRzPli5bFISicyEU206rJ8bhQM9xmcNSc1rfKkRXQxFvENHg8hdqxxMBtfypmhyIBytbR77iwq0VHmQzK++hsspypsVbYUPu4+7o9ZDxI4Z+6VMidm2uWwjqMqovqKztpbmJ1fUWXlfaQ3/v+dfzHhYaJ5Zc1WyfstSlDXDGDS47xvWpzHrpC4iLmUVZU/iuae/mzfLAOPS2f4VTGBhzQ9bFzcpiwuQHFGRaXSVtkhrGamuIo8wb8c8VcBuQvcNlkmmUG+HpgrX5XqWYdtzFf+ZtVKBfYOH7hlcNk3upbxY+5pcdoooZYeIqV5iRI5EqaIqCgvA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=microsoft.com; s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=6g65QvAuFbQKsBXVftDQhoCdufJdiZ0YMEpHLvI1ajw=;
- b=PTBhsJanc+kN17Hz5Nm55MCisWk3t4F7HP6FjGDqS7rhHR6sEYmHV7UBx59ms0RT9RqxKpkU4m+e5DV7FpvFNA+N0/4Jd9LVzI7vd192Ws51JWysFIPvZhwGHtAGlBkwi0mIc6f7yoLnksvTQjQgqHcYqwvH1X2aydkNUAeSuOiXA2QQWPgaWAEB9xEi1E1RjH5anCKOiiwQW+jQRw1jYeBDU/Vl/73tDJu0PmdOZlenzcSlkk9rL6oaZD3ubvPMf09oglnhldgWhNhH710Anjm94MQ/vi8ySNQsq81Zy9YR7eiAYHpzbGUSXBKRDkR7Y4b3Jm/UA6WI2xjgRngbbA==
+ bh=LyLWgiQKuVHDGzt63XnNE5jICkQ9qJFNVeF/DDwoxDk=;
+ b=lBlvSpbiuDHRtiD8QFslb1bC64uiyb1u2u+Vw0rHkk+c180qV5hFTpikMlbqa9f9q9mZigXDvb6aG75aRALT1vO8kIR9OvQXbx/2an4uDpkBdwwMGICZLBR7G0Du2RFmChmVFjezTLCMdOURREZQGFGVfYOPNHDb917unLy3ajYc9UOJqTgFibh23r+Z6PCyRI5DgQQRA3GK/KDx4oYur+P0wmBiCiTLNGPmbWU75Ick7UK33AotulWMD6jXpf1Ad+BTD2wz3JXrfRmA14OuGyx2pRkXoejGTFCuiLWKO3Qz8GIO8dG7AlC2lEhZtNlO5c4xl9wbJAhhNAJg4RTzrg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=kalrayinc.com; dmarc=pass action=none header.from=kalray.eu;
  dkim=pass header.d=kalray.eu; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=6g65QvAuFbQKsBXVftDQhoCdufJdiZ0YMEpHLvI1ajw=;
- b=wn6JnWlmeZ+TEpRPPWYqVnVR5rEqSwzmzk3l9edlf9JBwTeH9/kD1tr1DBzQXL/2LKJbBr7JE3g14Z2DTMNsd2LoHrXrGi7VausAM5DFjDZPntK/y9FVWRqGEvKV68ngUQ4J0YtcqPAON3SlQn2sK9efO96+rAN/kGvSAAN1YUFayzGzKCiLCDTfNCWLA4PHvEtiLlM3lT8/lu9PdoJ2RIGuN7bKsmq0UcIClQpMISBxeusNdhJVZEhqjAaOdtrdwnnp467M3zDveLiXErRJvN4ga/saRwDUmk63y/EHl2e/+PluMXofzr8oGQB6B3Z1TRduKWvWuDTedRLRv4sTyw==
+ bh=LyLWgiQKuVHDGzt63XnNE5jICkQ9qJFNVeF/DDwoxDk=;
+ b=RWZYP7adtdzId/qFDMKcyKyA3y7+0J8Rve1SLQFQbESUAKMc79lgMfly3oPuvekm8cmEraxS4dvoyUENIXjQGZWUpd+rAMGiW/tNvAtdbzjDy1NHOln0W95HJwjOsZe3EUnHQaoFxEiQjmrVCtGbC+FU/zS7qULL90L7ftNvoyC2c9+U7g7ujifqyDniqt6/dPEwtnzV+oI3Lmy9ON39QoCWOe1PTpHd7S9Y+kVEIp0/Wed2Cp8vJBchL+vZgiRmIgZYN5RpDOgE9Dzbq6hFtUSn3SCEw+DBusw8TsB9Ijuaz3hKb+de1l3Wnj445yFMY8zdlWj4xDoDG9IRWwJPaA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=kalray.eu;
 From: Jules Maselbas <jmaselbas@kalray.eu>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Mon, 10 Jul 2023 19:23:33 +0200
-Message-ID: <20230710172335.26701-6-jmaselbas@kalray.eu>
+Date: Mon, 10 Jul 2023 19:23:35 +0200
+Message-ID: <20230710172335.26701-8-jmaselbas@kalray.eu>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230710172335.26701-1-jmaselbas@kalray.eu>
 References: <20230710172335.26701-1-jmaselbas@kalray.eu>
@@ -92,32 +92,32 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAZP264MB3751:EE_|PAZP264MB2894:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9a81f75f-d728-46cd-16cb-08db816a6f9e
+X-MS-Office365-Filtering-Correlation-Id: 808962a0-37de-4bd7-24fb-08db816a6fef
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: FWMHizFqlld0qNdTyWCVxE2inbvmT9zluM39Djbbu0aI3ldJVOC9ZhOrYxoqkQ/HMNv4qP8iy25utSHu+T/Qeb7RUn94UL+sMibM373NaVKxPjbTNqZoVnkihj2LBto14x69V7+EW1KnJDXVzEDCj3lrvlO8SrL81ADl/h16sf3qxfTK5PEdYD3n4PPv3tCKTzQGwA5wVFIJ41jlAa7D2jlOkvzctVEJP5SQDjjQMr1A3YFgCjp8rWySf4soUAntzolVoRc7MlxFnfNoShQozoO62K7dwHhsuc4fX/WyEP40VNqO1NXEXHW/lD+VlfMMos9/wDWwL0Wqr+vUlUEmwpHfUbY2Rpa3eDmYogp1yEnL67GLSrrERNE3eREdXwyTg5FBh4puHuXi61EOuLQ3oUTLmBrrMLPdRxK/cZ9IsYpJaX7+pFRMPhZRub7tK7LhPyFlzYAYpcIjRElm+UDRI2uc9ZmGYE6KuVzxSwxZQxeyHMPlcH/uQg9ZdCRHrLrtOg1cq5Qo/6nzZBxc4oFr31EyOC0+mgr7GLtblFZK9ng3uNo1zwXcTtPjgZyecgEsFTk49YxpJgFEVBm6K3Uj/bN2a3dhPQ2eTfYwnGtNRNEWMRcwMcuGO+0ZTbRfDzoO
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(39850400004)(376002)(366004)(346002)(451199021)(186003)(42882007)(26005)(6506007)(2616005)(6512007)(1076003)(107886003)(83380400001)(41300700001)(4326008)(6916009)(66556008)(316002)(2906002)(5660300002)(66476007)(8676002)(478600001)(66946007)(8936002)(52116002)(6486002)(6666004)(36756003)(83170400001)(38100700002)(38350700002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: 0FJcJ5Et3H4JH2BpsaDzBAZFax8ntebbAhMNGcbtwmgzZ2+pjUR/DL6SnqWnihugpayqz6TQnkAjOgdCKzBBJh+Eq19b6VNS7PH72njOfN5cZLxeh7QR5+4/v02twqOIj6nFZFXvSwtOHc/hhFmfOpxUf1Mqtt8qeT2J19FwKE/HPdnBB0Uugw9FmY7qK1qV6Sv/nBdyJunlYQitaLz8B23wtgJhfvJMmfshrv10XENHIOEqeVde0ahijXhyiAU33b0NZy/bb5Wj2OPWxpPrjpPwmFMaFyGbo3abiRcKzH0oT6QOs19b3dhj610Q0kEvMT9/jGh58WSUR8HAgEuMnQbLERSlW/3fhiadvxgxQjl0zOSYvI5sAFZ6OrBv28MiWRyDgnR14XPPt++1NuhhXokOEQgZoDuVBNIfaYb1w83Nd+eLlZMw1QkMuyHl+6msFj3nqvvoXBBwyI+hhg7lsbVK0RGv1mA7EUA/RSWA1jcSZS2ako9OEF8K6ZEVH9hMkMPejE9dbWKYyHpNZovbSzaf082Xuw3z0qiGs/vwCYRLjv3RczcIUTCC2OnG1SrSZHC6QJLnMFLv2IQSV6zXYDgAyNzJ07ggBnDUKvOAptfEDPB4ePj+HunCxdQ6ootqV4mogBG+trc/kXUbtSNDcw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(39850400004)(376002)(366004)(346002)(451199021)(186003)(42882007)(26005)(6506007)(2616005)(6512007)(1076003)(107886003)(83380400001)(41300700001)(4326008)(6916009)(66556008)(316002)(2906002)(5660300002)(66476007)(8676002)(478600001)(66946007)(8936002)(52116002)(6486002)(6666004)(36756003)(83170400001)(38100700002)(38350700002)(133343001);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: OJM7l6t58wNqicmg/wGLYXj1dS2FtTiwQZpmoMwL+uqwSwXEo3060ihEW2ROdiZZbrPQuKlzgpkWx05KZQWPIKmgvZBLgLUyAkUX8xfVUJnqhHVnRaKzoYGPj1aqn4PBZ/XB4T6DvNeJq6cy0g1j5PfnYx0bjXo2EyqqKqQ3ceDvY902OD4/3IaUU5yRj1tSPi4EYu4KN3Wpg4XKnhF1LdbIGKTpSmzLprAMaXuMqbxXR+pVYnCuh2hVIk0rcJZkARsGe2HhmssIkGpw+AQJ1RE8q/7WBJl8MhQo8WL3/rJxjLSw2ghy49KyVnZijjUP0qqPBsuWYtZq+9CqB5R+kgdsZDRwWejwldJlfqLgirBR6u3K+qIC4XZVI61u7o70rjIncd3V/GZpOn3xmTg+dIm7JKJ3yspdJt0xY6P0zugvN7jwf2gjrt5BC34V/dTD1p66E2HyxFPnK2OXY1scla/kQs+RU4lSBWloxLi6YfscsnmFDHaVIJxI+fhY13/YvDtlRGGiLeqZIuWpgI1s+R9zxB2T9Rtu/veiOXnoxMrQVNGDVJlEy3Jtdpu9tbpd8dvVKyW2yfwaayZgKrqatJ++JK+qGV61cbx8MSHP+Zm0s7xseiMTV4bApHhbQYR8B+kCiXriBzlGtrZrsRpVL2gyV0rK789tNRc11/w7YFx7KxdUUerYwt8U9fwFMo0hquoyFTbDGt+pgXSHSWetCq6ny8A3RAAfCYkltE2HIEI+xg9Sqqi07W/FErspA36pDTiQGmPfL2KX8NT0fQ0CK0HvUZhsBT3lX1iwCaz0Bc/DuXWco5E3A2sj3q4Y4dv+3qPnFZ3y6zu28qNFp5bq1N9ELsj5cTjGf90i5+Eom3kgDUSmQ29eQr6i74ajUyGID9avX4dkBN68k9COqdiX0ew5djbgiAYBCPjRucM5q5dZhLSmVaBqgrHT2ID9hinT
- vNnQEDTfxMqIm97sfqgUAmUO87yT64FGYifC7cOSUFX5m1Nr+aqedkaYxf1S7oPPFIVlPD/bbLgE1HMUj9+2G8fWTZyF2ZbByk6bUSVkAdbT/33j9CJ6nnoxACOX2JwyRLf5KnqCmvOZuVcHSgnDApl3ZUIASmabA0QAr+3kTIFpJ7dj6rnVXLODQSG2evqK6PtvYSh5eGqWohlOxbQtfHDjVx3PeK0LgerMdXIKM7AzZHOaUdH/fXn4MfHBKTT+SZKVw8pDygMYccngnl6QUa3Dlqp1UDnwo4njuepWo5EZmLocuI86ygEOnCE1Lff8T2D+KpUjOIa3Xge3zQw3t2vrbYt5i++x6tXqGVfkTPWFbEqc2KbIn8EzvIy5artVlkHlVNDH7XIlAauhwGzWTSZcdfwfmefxKUdTlnwM6fCogQ3IVIPB0AKX0ir4Hh4N5bn5aIq86ZTi6+DO0lTeP3SApVEhNUoGSAOJdW+xSWYsBfBsDRGS/1pNtvvdr7pBsVkkSki8UPj0B/Kp6Do0vMnfw+bJPKNaXmRdKJdMh5jFBkMwn2g4GPaj4dFAY5bVLOyUyhCRBM1Z+OMsi9/6X/U6KTc63DHWYvdTEzsq3x0=
+X-MS-Exchange-AntiSpam-MessageData-0: nvxL+L6rPezguD1TBx+ORjTQT8XGrz/2BoHNYuEEKQaFjKzJiUklkA5Cvn0rVpT97GP5VPBkePcFfTc9IJekOyOCyjVGVWHTDh3Lq7gHe3z1lsFAkuB9aZ5c1K4rB8w3PbSepSThqLUetpBy5+xbL7ZitI55du09yCiuYfaYpWDUcM4QC2Og9mh/ETEiya9iN39lflabCNkp5yiti1bAz2pHUMws7HWGIcjxvIobwhVr8cUY5aUs+s2tG3UE7icIJuwgEafcwN1xB9iH6D2H+4ng20y7BuV3lgxVBWI8KSee0d0JwdqKMlC7s/jd04vwoxx6eCdUkKB2qe8FCT3Ah2FcLSFT1a5OHzkYdfXzFy8h/9t4x1QXZTMqR0ejtEkQ3jE+imjdty3kG/7lzEF7Hpg2lGpGv3TMJHCnh+kWFnjeCKzy6hEuGBztv4bZYPVdWex6ZeHX1l3Ps1S9s1/iVoRvsFM5zyJLOM2nuLtle9CvnmoHyliPqlOZ+bPpnHrbv/Neq4yh9sHUo7BbGlPwNJLreqZ/kFcrgPA0ZWnYXqla/3sL/8jEMIp1c88/hrxCWCrOQ41Ny6IcEcQNlTC+xeZPDKFDXstPR6A2bARL/x7oFk7el4Tbg5h2IQjFBp5dsqCmEl6hhvVy8WYxn2BGd9Kc6IGurRi46Hg2KMGYDLJuKKc2ffD78q+NpakhikTqW4QS81p5z2W1A7gy5Io3XoVOq51hMXrp2aNETjLYNvlDC1rg4KkbE+L7T/YZF9jNAZ8aHKxskD8zaPPvQIVo40/vVJ7ZT1LD7yXEb1dy4+kWEORvumCQZpwLE99t5TKzPyiN+xzYYMAqoh72TkzHhCA/INWY+kKB8WxqqMg0OY+7BIJqp5ehGj5/ongyDy9I00JoHOBPNIyx3wbJ7Tw0e/UF4t/cY+MzdkOKsi72O8ZXd6Yv6keBLuAQeQN15sBD
+ ghJP1h/AZ3+1A5UsFoojciHH882c5wfNdateulP9ck8ItPjtzHPojfHnBEERMkQwGOHsdgBHN2EHf64KU5s5Pc4S7CJdfv3mwBHt5FIF7MEsPzlBLtvBhOIYEH1Ctdroz2IUY43r73YSMGXUbsawwd4Q74U0lvWO5eJh5f18LS9qs9OBIPdiwEgmNTfZjKH/Gjf2076j3CVqtIukG+VLFr/tU8ck/zDZWZSEQHqKhbnnpCSShIS5G8CpS9owW5n5RAh0cZdxyp7iv5my2eXpF/20PwaNSCMEtR5Uk8ZvYsbrvyxAfY68gi8FtI1OcMmjzqmuwk4k4d5uDzEFYBs8v3RC5968JMGrK42cEp/zTgyKlk3+YF+M/t9+5q7er4v5uZWh6ATuOrIbSt+YOiQ8+usvB/2XYwulyRCp+Ohpma5Jz/RTO4W5Tw+dIyaVz8zQaVto3EWztNyrL6xwHekut86Lm3JWRiagjicEE3mwU6xABrL3kUTbUWInUDytvyv17RIezfMWjSYxRW21Qc22gyHdysSObszujJDhB0UX5Pj7gVFLmxSbgqSggyL0HCcB1Dw5l2lkK7ivOTVBmHb9R8N93dePEbZAMKi326MlRi4=
 X-OriginatorOrg: kalray.eu
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9a81f75f-d728-46cd-16cb-08db816a6f9e
+X-MS-Exchange-CrossTenant-Network-Message-Id: 808962a0-37de-4bd7-24fb-08db816a6fef
 X-MS-Exchange-CrossTenant-AuthSource: PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2023 17:23:54.3051
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2023 17:23:54.8552
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: FQ8TQoT5qsA/YT/gUTq7clQoHTVxNaldOYuFCCPTrvwHmM24b2sssGKOG3fLd1Vl
+X-MS-Exchange-CrossTenant-UserPrincipalName: QBLqVEbXIXbBHZgxk8R3pRl4GZpd4YQsAaJ0Y91vrvXbnaMEs7uBuvxyyToc9o+N
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB2894
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230710_102402_013367_5DD10370 
-X-CRM114-Status: GOOD (  16.55  )
+X-CRM114-CacheID: sfid-20230710_102404_488291_19F1C299 
+X-CRM114-Status: GOOD (  13.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -140,167 +140,238 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 6/8] mci: sdhci: Add 64-bit DMA addressing suport for V4
- mode
+Subject: [PATCH 8/8] mci: dwcmshc: Use sdhci_enable_v4_mode()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Adapted from Linux commit:
-8<----------------------------------------------------------------------
-commit 685e444bbaa0a5ed959f39dbb2f219eb44c30421
-Author: Chunyan Zhang <zhang.chunyan@linaro.org>
-Date:   Thu Aug 30 16:21:40 2018 +0800
-
-    mmc: sdhci: Add ADMA2 64-bit addressing support for V4 mode
-
-    ADMA2 64-bit addressing support is divided into V3 mode and V4 mode.
-    So there are two kinds of descriptors for ADMA2 64-bit addressing
-    i.e. 96-bit Descriptor for V3 mode, and 128-bit Descriptor for V4
-    mode. 128-bit Descriptor is aligned to 8-byte.
-
-    For V4 mode, ADMA2 64-bit addressing is enabled via Host Control 2
-    register.
-
-    Signed-off-by: Chunyan Zhang <zhang.chunyan@linaro.org>
-    Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-    [Ulf: Fixed conflict while applying]
-    Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-8<----------------------------------------------------------------------
+Enable the use of the common sdhci code path by using sdhci_enable_v4_mode().
+This removes a bunch of functions that configured v4_mode and 64-bit dma in
+the dwcmshc driver, which is now handled by common sdhci code.
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/mci/sdhci.c | 64 +++++++++++++++++++++++++++++++++++++++++++--
- drivers/mci/sdhci.h | 15 +++++++++++
- 2 files changed, 77 insertions(+), 2 deletions(-)
+ drivers/mci/dwcmshc-sdhci.c | 174 ++----------------------------------
+ 1 file changed, 7 insertions(+), 167 deletions(-)
 
-diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
-index bce4ff2a14..4aca3af5aa 100644
---- a/drivers/mci/sdhci.c
-+++ b/drivers/mci/sdhci.c
-@@ -111,6 +111,35 @@ void sdhci_set_bus_width(struct sdhci *host, int width)
- 	sdhci_write8(host, SDHCI_HOST_CONTROL, ctrl);
- }
+diff --git a/drivers/mci/dwcmshc-sdhci.c b/drivers/mci/dwcmshc-sdhci.c
+index 1e0af06f50..a95e3bd1e9 100644
+--- a/drivers/mci/dwcmshc-sdhci.c
++++ b/drivers/mci/dwcmshc-sdhci.c
+@@ -27,129 +27,6 @@ struct dwcmshc_host {
  
-+static inline bool sdhci_can_64bit_dma(struct sdhci *host)
-+{
-+	/*
-+	 * According to SD Host Controller spec v4.10, bit[27] added from
-+	 * version 4.10 in Capabilities Register is used as 64-bit System
-+	 * Address support for V4 mode.
-+	 */
-+	if (host->version >= SDHCI_SPEC_410 && host->v4_mode)
-+		return host->caps & SDHCI_CAN_64BIT_V4;
-+
-+	return host->caps & SDHCI_CAN_64BIT;
-+}
-+
-+
-+static void sdhci_set_adma_addr(struct sdhci *host, dma_addr_t addr)
-+{
-+	sdhci_write32(host, SDHCI_ADMA_ADDRESS, lower_32_bits(addr));
-+	if (host->flags & SDHCI_USE_64_BIT_DMA)
-+		sdhci_write32(host, SDHCI_ADMA_ADDRESS_HI, upper_32_bits(addr));
-+}
-+
-+static void sdhci_set_sdma_addr(struct sdhci *host, dma_addr_t addr)
-+{
-+	if (host->v4_mode)
-+		sdhci_set_adma_addr(host, addr);
-+	else
-+		sdhci_write32(host, SDHCI_DMA_ADDRESS, addr);
-+}
-+
- #ifdef __PBL__
- /*
-  * Stubs to make timeout logic below work in PBL
-@@ -160,6 +189,33 @@ void sdhci_setup_data_pio(struct sdhci *sdhci, struct mci_data *data)
- 		      SDHCI_TRANSFER_BLOCK_SIZE(data->blocksize) | data->blocks << 16);
- }
+ #define priv_from_mci_host(h) container_of(h, struct dwcmshc_host, mci)
  
-+static void sdhci_config_dma(struct sdhci *host)
-+{
-+	u8 ctrl;
-+	u16 ctrl2;
-+
-+	if (host->version < SDHCI_SPEC_200)
-+		return;
-+
-+	ctrl = sdhci_read8(host, SDHCI_HOST_CONTROL);
-+	/* Note if DMA Select is zero then SDMA is selected */
-+	ctrl &= ~SDHCI_CTRL_DMA_MASK;
-+	sdhci_write8(host, SDHCI_HOST_CONTROL, ctrl);
-+
-+	if (host->flags & SDHCI_USE_64_BIT_DMA) {
-+		/*
-+		 * If v4 mode, all supported DMA can be 64-bit addressing if
-+		 * controller supports 64-bit system address, otherwise only
-+		 * ADMA can support 64-bit addressing.
-+		 */
-+		if (host->v4_mode) {
-+			ctrl2 = sdhci_read16(host, SDHCI_HOST_CONTROL2);
-+			ctrl2 |= SDHCI_CTRL_64BIT_ADDR;
-+			sdhci_write16(host, SDHCI_HOST_CONTROL2, ctrl2);
-+		}
-+	}
-+}
-+
- void sdhci_setup_data_dma(struct sdhci *sdhci, struct mci_data *data,
- 			  dma_addr_t *dma)
+-static inline int dwcmshc_sdma_supported(struct dwcmshc_host *host)
+-{
+-	return host->sdhci.caps & SDHCI_CAN_DO_SDMA;
+-}
+-
+-static inline void dwcmshc_write_dma_addr(struct dwcmshc_host *host, u64 addr)
+-{
+-	sdhci_write32(&host->sdhci, SDHCI_ADMA_ADDRESS, addr & 0xffffffff);
+-	sdhci_write32(&host->sdhci, SDHCI_ADMA_ADDRESS_HI, addr >> 32);
+-}
+-
+-static inline u64 dwcmshc_read_dma_addr(struct dwcmshc_host *host)
+-{
+-	u64 addrh, addrl;
+-
+-	addrl = sdhci_read32(&host->sdhci, SDHCI_ADMA_ADDRESS);
+-	addrh = sdhci_read32(&host->sdhci, SDHCI_ADMA_ADDRESS_HI);
+-
+-	return (addrh << 32) | addrl;
+-}
+-
+-static int dwcmshc_wait_for_done(struct dwcmshc_host *host, u16 mask)
+-{
+-	u16 status;
+-	u64 start;
+-	u64 addr;
+-
+-	start = get_time_ns();
+-	while (1) {
+-		status = sdhci_read16(&host->sdhci, SDHCI_INT_NORMAL_STATUS);
+-		if (status & SDHCI_INT_ERROR) {
+-			dev_err(host->mci.hw_dev,
+-				"SDHCI_INT_ERROR, normal int status: %04x\n",
+-				status);
+-			return -EPERM;
+-		}
+-		/* this special quirk is necessary, as the dma
+-		 * engine stops on dma boundary and will only
+-		 * restart after acknowledging it this way.
+-		 */
+-		if (status & SDHCI_INT_DMA) {
+-			sdhci_write16(&host->sdhci, SDHCI_INT_NORMAL_STATUS, SDHCI_INT_DMA);
+-			addr = dwcmshc_read_dma_addr(host);
+-			dwcmshc_write_dma_addr(host, addr);
+-		}
+-		if (status & mask)
+-			break;
+-		if (is_timeout(start, 10000 * MSECOND)) {
+-			dev_err(host->mci.hw_dev, "SDHCI timeout while waiting for done\n");
+-			return -ETIMEDOUT;
+-		}
+-	}
+-	return 0;
+-}
+-
+-static int dwcmshc_wait_for_status_mask(struct dwcmshc_host *host,
+-					struct mci_cmd *cmd, u16 mask)
+-{
+-	int ret;
+-
+-	ret = dwcmshc_wait_for_done(host, mask);
+-	if (ret) {
+-		dev_err(host->mci.hw_dev, "error on command %d\n", cmd->cmdidx);
+-		dev_err(host->mci.hw_dev, "state = %04x %04x interrupt = %04x %04x\n",
+-			sdhci_read16(&host->sdhci, SDHCI_PRESENT_STATE),
+-			sdhci_read16(&host->sdhci, SDHCI_PRESENT_STATE1),
+-			sdhci_read16(&host->sdhci, SDHCI_INT_NORMAL_STATUS),
+-			sdhci_read16(&host->sdhci, SDHCI_INT_ERROR_STATUS));
+-	}
+-	sdhci_write16(&host->sdhci, SDHCI_INT_NORMAL_STATUS, mask);
+-	return ret;
+-}
+-
+-static void sdhci_rx_pio(struct sdhci *sdhci, struct mci_data *data,
+-			 unsigned int block)
+-{
+-	u32 *buf = (u32 *)data->dest;
+-	int i;
+-
+-	buf += block * data->blocksize / sizeof(u32);
+-
+-	for (i = 0; i < data->blocksize / sizeof(u32); i++)
+-		buf[i] = sdhci_read32(sdhci, SDHCI_BUFFER);
+-}
+-
+-static void sdhci_tx_pio(struct sdhci *sdhci, struct mci_data *data,
+-			 unsigned int block)
+-{
+-	const u32 *buf = (const u32 *)data->src;
+-	int i;
+-
+-	buf += block * data->blocksize / sizeof(u32);
+-
+-	for (i = 0; i < data->blocksize / sizeof(u32); i++)
+-		sdhci_write32(sdhci, SDHCI_BUFFER, buf[i]);
+-}
+-
+-static int dwcmshc_pio_xfer(struct dwcmshc_host *host, struct mci_cmd *cmd,
+-			    struct mci_data *data)
+-{
+-	unsigned int i;
+-	u16 sts;
+-	int ret;
+-
+-	if (data->flags & MMC_DATA_READ)
+-		sts = SDHCI_INT_DATA_AVAIL;
+-	else
+-		sts = SDHCI_INT_SPACE_AVAIL;
+-
+-	for (i = 0; i < data->blocks; i++) {
+-		ret = dwcmshc_wait_for_status_mask(host, cmd, sts);
+-		if (ret)
+-			return ret;
+-
+-		if (data->flags & MMC_DATA_READ)
+-			sdhci_rx_pio(&host->sdhci, data, i);
+-		else
+-			sdhci_tx_pio(&host->sdhci, data, i);
+-	}
+-
+-	return 0;
+-}
+-
+ static void mci_setup_cmd(struct mci_cmd *p, unsigned int cmd, unsigned int arg,
+ 			  unsigned int response)
  {
-@@ -188,7 +244,8 @@ void sdhci_setup_data_dma(struct sdhci *sdhci, struct mci_data *data,
- 		return;
- 	}
+@@ -257,18 +134,7 @@ static int dwcmshc_mci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
  
--	sdhci_write32(sdhci, SDHCI_DMA_ADDRESS, *dma);
-+	sdhci_config_dma(sdhci);
-+	sdhci_set_sdma_addr(sdhci, *dma);
- }
+ 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, ~0);
  
- int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_data *data,
-@@ -230,7 +287,7 @@ int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_data *data,
- 			 * the interrupt and kick the DMA engine again.
- 			 */
- 			sdhci_write32(sdhci, SDHCI_INT_STATUS, SDHCI_INT_DMA);
--			sdhci_write32(sdhci, SDHCI_DMA_ADDRESS, addr);
-+			sdhci_set_sdma_addr(sdhci, dma);
- 		}
+-	/* setup transfer data */
+-	if (data) {
+-		unsigned char hostctrl1;
+-		hostctrl1 = sdhci_read8(&host->sdhci, SDHCI_HOST_CONTROL);
+-		hostctrl1 &= ~SDHCI_CTRL_DMA_MASK; /* SDMA */
+-		sdhci_write8(&host->sdhci, SDHCI_HOST_CONTROL, hostctrl1);
+-
+-		sdhci_setup_data_dma(&host->sdhci, data, &dma);
+-
+-		if (dwcmshc_sdma_supported(host))
+-			dwcmshc_write_dma_addr(host, dma);
+-	}
++	sdhci_setup_data_dma(&host->sdhci, data, &dma);
  
- 		if (irqstat & SDHCI_INT_XFER_COMPLETE)
-@@ -594,5 +651,8 @@ int sdhci_setup_host(struct sdhci *host)
+ 	sdhci_write8(&host->sdhci, SDHCI_TIMEOUT_CONTROL, 0xe);
  
- 	host->sdma_boundary = SDHCI_DMA_BOUNDARY_512K;
+@@ -281,35 +147,14 @@ static int dwcmshc_mci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	sdhci_write32(&host->sdhci, SDHCI_ARGUMENT, cmd->cmdarg);
+ 	sdhci_write16(&host->sdhci, SDHCI_COMMAND, command);
  
-+	if (sdhci_can_64bit_dma(host))
-+		host->flags |= SDHCI_USE_64_BIT_DMA;
+-	ret = dwcmshc_wait_for_status_mask(host, cmd, SDHCI_INT_CMD_COMPLETE);
++	ret = sdhci_wait_for_done(&host->sdhci, SDHCI_INT_CMD_COMPLETE);
+ 	if (ret)
+ 		goto error;
+ 
+ 	sdhci_read_response(&host->sdhci, cmd);
+ 
+-	if (data) {
+-		if (dma_mapping_error(mci->hw_dev, dma)) {
+-			ret = dwcmshc_pio_xfer(host, cmd, data);
+-			if (ret) {
+-				dev_err(host->mci.hw_dev, "error during PIO xfer\n");
+-				goto error;
+-			}
+-		}
+-		ret = dwcmshc_wait_for_status_mask(host, cmd,
+-						SDHCI_INT_XFER_COMPLETE);
+-		if (ret)
+-			goto error;
+-	}
+-
++	ret = sdhci_transfer_data(&host->sdhci, data, dma);
+ error:
+-	if (data && !dma_mapping_error(mci->hw_dev, dma)) {
+-		u32 len = data->blocks * data->blocksize;
+-		if (data->flags & MMC_DATA_READ)
+-			dma_unmap_single(mci->hw_dev, dma, len, DMA_FROM_DEVICE);
+-		else
+-			dma_unmap_single(mci->hw_dev, dma, len, DMA_TO_DEVICE);
+-	}
+-
+ 	if (ret) {
+ 		sdhci_reset(&host->sdhci, SDHCI_RESET_CMD);
+ 		sdhci_reset(&host->sdhci, SDHCI_RESET_DATA);
+@@ -399,15 +244,7 @@ static int dwcmshc_mci_init(struct mci_host *mci, struct device *dev)
+ 	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, ~0);
+ 	sdhci_write32(&host->sdhci, SDHCI_SIGNAL_ENABLE, ~0);
+ 
+-	/* Enable host version4 */
+-	ctrl2 = sdhci_read16(&host->sdhci, SDHCI_HOST_CONTROL2);
+-	ctrl2 |= SDHCI_CTRL_V4_MODE;
+-	sdhci_write16(&host->sdhci, SDHCI_HOST_CONTROL2, ctrl2);
+-
+-	/* Enable 64-bit addressing */
+-	ctrl2 = sdhci_read16(&host->sdhci, SDHCI_HOST_CONTROL2);
+-	ctrl2 |= SDHCI_CTRL_64BIT_ADDR;
+-	sdhci_write16(&host->sdhci, SDHCI_HOST_CONTROL2, ctrl2);
++	sdhci_enable_v4_mode(&host->sdhci);
+ 
+ 	dev_dbg(host->mci.hw_dev, "host version4: %s\n",
+ 		ctrl2 & SDHCI_CTRL_V4_MODE ? "enabled" : "disabled");
+@@ -476,6 +313,9 @@ static int dwcmshc_probe(struct device *dev)
+ 	mci->card_present = dwcmshc_mci_card_present;
+ 
+ 	mci_of_parse(&host->mci);
 +
- 	return 0;
- }
-diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-index 1f5d0564fc..f3ffd62dff 100644
---- a/drivers/mci/sdhci.h
-+++ b/drivers/mci/sdhci.h
-@@ -197,6 +197,21 @@ struct sdhci {
- 	int max_clk; /* Max possible freq (Hz) */
- 	int clk_mul; /* Clock Muliplier value */
++	/* Enable host_version4 */
++	sdhci_enable_v4_mode(&host->sdhci);
+ 	sdhci_setup_host(&host->sdhci);
  
-+	int flags;		/* Host attributes */
-+#define SDHCI_USE_SDMA		(1<<0)	/* Host is SDMA capable */
-+#define SDHCI_USE_ADMA		(1<<1)	/* Host is ADMA capable */
-+#define SDHCI_REQ_USE_DMA	(1<<2)	/* Use DMA for this req. */
-+#define SDHCI_DEVICE_DEAD	(1<<3)	/* Device unresponsive */
-+#define SDHCI_SDR50_NEEDS_TUNING (1<<4)	/* SDR50 needs tuning */
-+#define SDHCI_AUTO_CMD12	(1<<6)	/* Auto CMD12 support */
-+#define SDHCI_AUTO_CMD23	(1<<7)	/* Auto CMD23 support */
-+#define SDHCI_PV_ENABLED	(1<<8)	/* Preset value enabled */
-+#define SDHCI_USE_64_BIT_DMA	(1<<12)	/* Use 64-bit DMA */
-+#define SDHCI_HS400_TUNING	(1<<13)	/* Tuning for HS400 */
-+#define SDHCI_SIGNALING_330	(1<<14)	/* Host is capable of 3.3V signaling */
-+#define SDHCI_SIGNALING_180	(1<<15)	/* Host is capable of 1.8V signaling */
-+#define SDHCI_SIGNALING_120	(1<<16)	/* Host is capable of 1.2V signaling */
-+
- 	unsigned int version; /* SDHCI spec. version */
- 
- 	enum mci_timing timing;
+ 	mci->max_req_size = 0x8000;
 -- 
 2.17.1
 
