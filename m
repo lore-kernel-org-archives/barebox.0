@@ -1,54 +1,54 @@
-Delivery-date: Mon, 10 Jul 2023 19:25:27 +0200
+Delivery-date: Mon, 10 Jul 2023 19:25:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qIudc-0060bp-EF
-	for lore@lore.pengutronix.de; Mon, 10 Jul 2023 19:25:27 +0200
+	id 1qIude-0060ct-K4
+	for lore@lore.pengutronix.de; Mon, 10 Jul 2023 19:25:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qIudZ-0001JM-K4
-	for lore@pengutronix.de; Mon, 10 Jul 2023 19:25:26 +0200
+	id 1qIudc-0001Ke-0e
+	for lore@pengutronix.de; Mon, 10 Jul 2023 19:25:28 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=t7w69a827xpawcIvEqq4dCBuit6O4d3Stt00D1+4qfE=; b=UG/EHIYa8fEvrumcwkGvixpsdo
-	3VzQbFOn90azw4tDsGzI0A+f1CuA+Sfd9jbZENJuHwslZqTsI8Zvf0JRb68fJrS6fJjNU9ZFgfXnh
-	1jfdto2sid1kF5MQD8nNXTK1UQ/9qJBMwTRssuTu2xcgDDHaDyv2+BYnT7EOPm8epMcbmbuDDP2lA
-	z4KbrkkB/G0b/460EVXShUHvdB5elMxQ5iVYreSuwVuuTQfBMODP+ZwIPVOBCTmn/2NxKZhnkd0s7
-	aUl7nOHnuFeNuUbo7KHN+SPQo0ffRD8WATnSBEe241XB8DR9BSzUNj3/HJULvU6Rst8pmHOCo7rf3
-	TzFKHkMQ==;
+	bh=TWDrMK1cg65Q7SJENOW4aEV44fX0aMtYpCTBC5J9FMo=; b=4wEmAuXb2v7L+tUL3I2NxRHQS4
+	4fUeHkoA1QvrK/xv3VnP5UVXtAlyq3sjZ55mVfJxlVeDf5MPqgPliv/ThF7PuU52qyq+eJI71Bq2l
+	ZYA9I5jvCF5dAGaU5p0bHsqUybSR4OUXlk+HAOXLQgE5ua+Sa1WOLN2leYsf7+tdpLIlS0FZjN5we
+	oiowDINXpktSC/5We3amAQ6GJz4d7b/l2xqCfSVKD4j+wrH583oOEZ7xqMRtWWZoY/LJoN0RAKWzF
+	T0fT7pM1NMO2X+Ra3u6e0vVPii+3yYDFdcOnijFSMp5d8KSSbMcb1GHHE4eX1EkQGL8Bc1MVk4cS+
+	Ev8tvA/Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qIucH-00CL75-0q;
-	Mon, 10 Jul 2023 17:24:05 +0000
+	id 1qIucJ-00CL92-1K;
+	Mon, 10 Jul 2023 17:24:07 +0000
 Received: from smtpout140.security-mail.net ([85.31.212.149])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qIucC-00CL3U-2E
+	id 1qIucF-00CL54-00
 	for barebox@lists.infradead.org;
-	Mon, 10 Jul 2023 17:24:02 +0000
+	Mon, 10 Jul 2023 17:24:04 +0000
 Received: from localhost (fx409.security-mail.net [127.0.0.1])
-	by fx409.security-mail.net (Postfix) with ESMTP id 82378349605
-	for <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:23:59 +0200 (CEST)
+	by fx409.security-mail.net (Postfix) with ESMTP id CB7B934960F
+	for <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:24:01 +0200 (CEST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
-	s=sec-sig-email; t=1689009839;
-	bh=7Zx65lg5AFIJ2pcQ95TcoDWzzs+bqFfXpq8G2f4hjFc=;
+	s=sec-sig-email; t=1689009841;
+	bh=Go64Ex3/g6XYQualDYSjPgWGunuK5VjXdkym+41PMCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=loOgvxPnWUEnWu/A5vW1AgpUAVpcG3No+fzVscTFsGdlFozhvB/EpFHDpRjXAtwYn
-	 RoIrKdMSd5P7EAtOLo9Gk1SDKxxZdWitObG5PsmonY/L6zcoAY63/85FbCMWaiD4gn
-	 XRvwA16/5Fnveq7FdPFyttVJFVb1TQgP4qfB/3cU=
+	b=VLNob7wtAtdhwhElJSULqTMljKIqvefO/QuPf/eYx3QMSoyBgHpiBC/Np7ObvZqv3
+	 ruG/84yiIYqnSgHyAELvBGPBpkf1zUC6snTOp465v/q2wb36GawnWiKb6WmvPQegmc
+	 bcPkO9HZqKGDWBbIMRlIlNW+lKerBGa0Zwfe2Y+4=
 Received: from fx409 (fx409.security-mail.net [127.0.0.1]) by
- fx409.security-mail.net (Postfix) with ESMTP id 52836349607 for
- <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:23:59 +0200 (CEST)
+ fx409.security-mail.net (Postfix) with ESMTP id 874FB349658 for
+ <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:24:01 +0200 (CEST)
 Received: from FRA01-MR2-obe.outbound.protection.outlook.com
  (mail-mr2fra01lp0107.outbound.protection.outlook.com [104.47.25.107]) by
- fx409.security-mail.net (Postfix) with ESMTPS id 8505D349518 for
- <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:23:57 +0200 (CEST)
+ fx409.security-mail.net (Postfix) with ESMTPS id BD0F7349518 for
+ <barebox@lists.infradead.org>; Mon, 10 Jul 2023 19:23:59 +0200 (CEST)
 Received: from PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:d9::11)
  by PAZP264MB2894.FRAP264.PROD.OUTLOOK.COM (2603:10a6:102:1e7::20) with
  Microsoft SMTP Server (version=TLS1_2,
@@ -59,29 +59,29 @@ Received: from PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM
  ([fe80::78f7:7c2d:dc8e:fc94%4]) with mapi id 15.20.6565.028; Mon, 10 Jul
  2023 17:23:55 +0000
 X-Virus-Scanned: E-securemail
-Secumail-id: <6cd4.64ac3ead.842e4.4>
+Secumail-id: <6cd4.64ac3eaf.bc42d.6>
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=D4eNSOy3i5pJkEY8Bacxwb3b83VkV47yprhos2bHw1T3I9el+ZKWs/cVpuvlPIH4GaolhPylfF3fxwznlNjsGu/NjrhG9Tgo6rRnT4VdWRVlSChrFWO8Z/WEW8Bl8HxP9ZA0X0C++mQjN1/XTIk+9FfqXr84inLqpXDJOtkE7ry8jARLX9Rz0U5gvyxiXSSBulOCGpKo2sCr0gPYp+drwgz+yOKIvhO0T5jWPyOFiEbb2Xr116Iw6YgQlsBeraKtOGk1lywiGIWNWVSeuOP/wRy8/n7WV7Kwlj1vvdPheovT9vJZeSaPUqqGvsteNOGM5Re2yolyWI8/cFAoQlKyfQ==
+ b=nRA4ySL+YcnaF6BGEWfF6HFu2ftmqMjrzS67xxVAlirOUjpI1120o5QuJpMPCrRXyHHE9WqzXKts/qnxdMnZl/MHl9wba88RF8t4LCsrVIgqhS0MRU83G9sDsamutqbxEnvJgKQCuTinT61tmVcw2Nc01uDmfUHKstKHomMw+MyWlQW6Zhsb3rvnBd1SSuexqtjo/G0YEyDqNCtBB+z5oHXio3QDJPgE9O4fNwGuY40LAJiQGr5Ykb+9QoFDQQeMy4uPbWWFRRsEDpo4uGRnW0i6ztODx3fRSeURgIiYBo/hb264gMFJhrjV3MMDfoMs8ky12XutHiaiEVxOitXQvQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
  d=microsoft.com; s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=t7w69a827xpawcIvEqq4dCBuit6O4d3Stt00D1+4qfE=;
- b=ISOOufJyd0ktyR1ufaob4BAqtGLFGi28qlTtk9UEze+1x7mfhfozoR/gWPUQvCvAGBRwjwuaxl8zoNdE5CgowCmRZQmCNaVVYphi9ONgFgkui0yCeUCq4IsSbma5771ZX4Zi9cuuYcEXfy4DChoev0WVE1SWhLxgZjKeYvc38HWlgUQAGSVCbeynrKt/agwqL2V3LHUggADNzI7MANGuiK8M5o4j11sGAaDnnQ39QGrdn3nev2j3rFeL0Ah7Y//5V+sZU/us8H348aO3K9676oIwuYY7CCUOPpwfgXLZGWD6acFlFEVdX6CJ+aql48HkPjZMR03RTfiLWdf/OvL8Vw==
+ bh=TWDrMK1cg65Q7SJENOW4aEV44fX0aMtYpCTBC5J9FMo=;
+ b=I7aC3MqwnIVHZEa0w1QPlTgEK8fsc4MAAT3xXphLTgp+gDMnsOGFg5V+FY08jBycDXJD5iG3oN/HSE6z0pNidxjt52T2aZyFa7jw2hV3/pQboctyOJ6UsbOqjWFYwKvD2w5XyKCN5HMAYBxzchBaUEAXFVEXaQawq4V6y8Z8p2Wb7qLw7Ha+GfTjGdV7fOj01u/ntEXuPh+LJA46LgawRwkP9WPp/b8yklQZ6zqbUJOsjY97KPANFiWnFLM3AmVSmOLQsHiIGf8Z9wwkCXjPUPfZ3dSlZs1acRR5tXcV79QHoaaPkKSEFRVqyhgj7KCPd3KD2qJWOND3oGC1ZvTytg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=kalrayinc.com; dmarc=pass action=none header.from=kalray.eu;
  dkim=pass header.d=kalray.eu; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=t7w69a827xpawcIvEqq4dCBuit6O4d3Stt00D1+4qfE=;
- b=XKHQBlRiyQP8HioK+q9ln/WZCDoHNFecOOVSmCl9QK6FkhS3ddNkc1QiqSAs9T35/gki5LPkeAKiiT5gprIZBqD2LqlRlu3HceRE2QK6HQWmNy588BuWXbUDAfxZYRBsw9Z9bXgTtWoaSsPnIAN9MCixklPiJ+qnxZL8rpIVx0otwWy7IQdhDg3A1QkHa7C6un7gP3OwJlj/MRd/qy5XrSyk+mFgle1CMRk0iPfND1GqMOJwbLWPuB9I595ln7Y4oaKMKq3comErVMUaY7qB7dkYA2ves8bNAXeK/+p07VrbTcCe/O9aUsszSq8cskEB5SpToqhZ4kotfIW28Co+hw==
+ bh=TWDrMK1cg65Q7SJENOW4aEV44fX0aMtYpCTBC5J9FMo=;
+ b=fvTelQFxPYSxpqwBaYozabHf6HK9Uap6F78zNXnZN4/TZuO6WlykC5I+hUNW3HAPLUZ+VSXDJBrI7YsJizKC7w2L32Aj9uMwkFXY3c6ZLKhAqan+3+lOk+JRm1qcsAsZYiAZz41AvwuKj/wYFr5jWHREQ4N4j5WSUq6sGPemvFy1bOT0dpOZFb4kO9t67SRgMq+7FBgdk6K+JHePrGWqPjZZoGVOB/tebUfR5ls4KW6q2UjrwvDQEOrjJL3osV8A1v7z18fEYGVSAc1uDgTG9Zz6aviJy943cRflWHfExF3b3PWnjvX8pAYvFP/TUfXTxaeBYdTPUe7z9QqDIYDEXQ==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=kalray.eu;
 From: Jules Maselbas <jmaselbas@kalray.eu>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Mon, 10 Jul 2023 19:23:32 +0200
-Message-ID: <20230710172335.26701-5-jmaselbas@kalray.eu>
+Date: Mon, 10 Jul 2023 19:23:34 +0200
+Message-ID: <20230710172335.26701-7-jmaselbas@kalray.eu>
 X-Mailer: git-send-email 2.17.1
 In-Reply-To: <20230710172335.26701-1-jmaselbas@kalray.eu>
 References: <20230710172335.26701-1-jmaselbas@kalray.eu>
@@ -92,33 +92,32 @@ MIME-Version: 1.0
 X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: PAZP264MB3751:EE_|PAZP264MB2894:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ff8a7da-e69e-429b-552a-08db816a6f7a
+X-MS-Office365-Filtering-Correlation-Id: e60db00d-2512-4e47-9d48-08db816a6fc6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: wNPFbCPHPSsiMbeOA/kWk8uDSceJLsmeFNh4bFcogAIu7YuKmRN46O1DUh/u8RbfGXcl22Do/W/Ox6TRnzH3lgaSuEq6jwPm1FQr+kk5BdzFEcLAfvwh851hym+byp6la8toNw+etC3b1AHFjORQdQUe4HpI6ZEuxXpakcicWlcuh1+Hm0HXK54B9Uc2Kw0v2o3IwTAf4rCh7s4aOtE4O+J48tW2KPpp9Iv/iO6qS6rq9eXFn2igQfDer7fGi+r9BicRfVhWVnZIVrO3cLFv6a8o8u9ZVLQpukYJAE8yhkY7jn2vk6JENPj7L2CjrEPtBGSgxlTDBlyHmFmGeIkVZTJQi+QEt1+jMiBO5zijQxGQPvhWCfScTHWt5qobStlgIO1Kro5lJ2/PVvzDOms9IYXxQfW9mVFuoYgGE5jMSPSpn4hn5FkiL09qiPRpyrzE/JEjNcL7kSmUbxOqILzDCtnHzdkSvmvzKutvZRBWhE5xKYJitRcESGiI7uYNKf8EKdhhNfIIVX+Zbj/gF/d6qGSJ0mxhCorVxEHseTGIty+y7OseAOqClmmxKx2NNdHuKCqboWaApRzv4lvnMoCd99Pqa0a4mxZVBpUIkkLWeWo0wTbRj1IRRDNZm43YN76n
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(39850400004)(376002)(366004)(346002)(451199021)(186003)(42882007)(26005)(6506007)(2616005)(6512007)(1076003)(107886003)(83380400001)(41300700001)(4326008)(6916009)(66556008)(316002)(2906002)(5660300002)(66476007)(8676002)(478600001)(66946007)(8936002)(52116002)(6486002)(6666004)(36756003)(83170400001)(38100700002)(38350700002);DIR:OUT;SFP:1102;
+X-Microsoft-Antispam-Message-Info: IQVp6rgbOmj2JrFsni6lbFYGjt4ptB1VtgRn1j+opo45QvqymCkYtKhrMTQSeuowAN8XiabILx1u4HDucRh3RA/mM6KAtoqsu87tMR5ciZ4dCTN29eaiW5p7tF9JLp3wK1gWSa/lm+kOUrZl4JRRmwT8jLyi93POOutfFT2I+oQYdxwGtaMwnG8ZJFD7Cut7vdFyBEszfr8eoZ511d3M9vWa0VySIFzGYTJ3gSKI9YZxRlHNGL4UJCskcFHKlD44ONFvgNYrtkI2VeaxukKS2o0Hq4Nk/v2IaJR0HsqfhuyMSY+KrGhnSqOcnttLZF7tD7U1yGP6wmUJaUfUixECX6eyfIptVa/gleLQ0a31Lnk5wvjWBdg0YZGqYIsA7fBV5YP0Nby1FtzKY3Zcjv1Y0aGMXvcZktGCZ/4wJyKuRi25QyCR1hvyYVWlcVZt7mVxMCyUSSsxoP/2ghwtXTRyHF8MAm9nbZaMQCH27k5geHrdeOnbXCOKA1RzFgqJE7BY57ZzNJdi09BCSF2yRzZcUDzPm+b7vJvLFkLKtuCUULoFd1672O6e1hCGlBaq+t4PXDylg99u6lC+tvzXwQ3MRS/xsjon/EV8LpFltxAECkk=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(396003)(136003)(39850400004)(376002)(366004)(346002)(451199021)(186003)(42882007)(26005)(6506007)(2616005)(966005)(6512007)(1076003)(107886003)(83380400001)(41300700001)(4326008)(6916009)(66556008)(316002)(2906002)(5660300002)(66476007)(8676002)(15650500001)(478600001)(66946007)(8936002)(52116002)(6486002)(6666004)(36756003)(83170400001)(38100700002)(38350700002);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: hbGGKl7OM6aj24Hciwab1QDCp/4jqfVvF4QLZxnebzqRXmeh2sEibBPagMSgSTBVEZqTZeFxXMlIRb1ZzZ8iM7aLdo3eMGUBCf8JzCC6AEEoJLGbr6t5L5Hk4y9d1P4+eriNRi2dFmwFYT2UtTXpcyC6vBoI9BWeL+T282tGZqqjHx+AbKBhVVp+5E9vE6aNmmeWEBplSvAtLn2HlUOHAqobbkX1V0mD1uyIcA6a80mdWPmo1i86L+yUisxj0B77yzN2B0sqddXUWhWT/F/bOWncVXIlZi2GGupQW4ZMCtfDtlbKwKNMj2/KFZriqDxw3YLCceGX/dTdgM4ZOfGY69s+7mZHbQdAwiL8y7BJgoMxfKarEcq61eUYzzQtVEE3vrNJheBOObVXBBiYn+3apoXQB3KIAqL7LW/Wda5bEnuDdvXmf95KPu0lra3V91dKgBxp/NgMK8yF0UwWI423tMxBgZPiji1h6Ncop48Kae4plyAgqD2PCG6A0jaDjLhBR/nV9iJJb1fXlH4EgB3PIRDSWI2lTDD1zcxwiXv8yiCyXYHrzwsuM9jk1KlHLF71eRlZUYop3vQnjZnzZJbW32CH7ij3NTBFN/8dJ/sJre/kWaG4VBdVhb7/lUxE80kYVGdZm5OmbQYb5aARXoBEqPDxTaGAkAWgmEcH8etU/lUwhEjNVoE1btkNDdl3A1WNP6XR7L568nUQEZ9Dk3a0WNmFxC+vFhU7cx80SLX7b3UQATD1LayFhira7T83hbAc0L7HszrWLbMuOnMhoswGCe4qZ2SAuNQ4NS/744795t8wIQIHESG81J5zEv3ySnfTg64GYs7gYPa1z0DCjD0s8iaHlBUhKzkgsxz1FuD4jqVjQzFNImFzI8E8LHojyq0o+X/cwMCueuf/CjtSV/viVQApt1W5E0hhPz1FNlkW71aKEmiMvWcnbjotxb8HPwBV
- vXClL6V/XzK5+tOx3/NTv1HuMyrme4wYgWP1t3oUZWMu2f8IOPviy9hWfSCoidSEzTFXy66VVzJhJQVR/Ts5j5/jjjM6cIdkPFSSqodv2dYVPgieOLS6ZTYGJyAfP3mty9ncbpF9Jgzqd1k67JAJU3smLJdA6AaBC2eSWLbh9soSe0mqOwdvPm2zkZZySJQZxos3p7ivdfwDtQOTeb4NPzX+KL+Yq/f6VAunrQE5KMetSEiykOHvLzexFpqf7SXC0bj4MoOpTdaY+0HZk3zIkWWQ3i4iXStIqBH3zAvfv2M0HcKQQZyEdZJlu9XJkBm0qoKY/uhSShOuOlV0RQiLznCrFoc4lGNl/x2s/fRCPtSLpyTixIoUNURwJfKYS62PZQBDMKn339s7ZTCTK9VOqXLw96Q/Hh5NsWSKBa4mT0LqZIdw7dqhL53SkNVioTcLV1z8DOHNgHF40CtApk9Fae52raMT3tE7VyifnbEjxul8flHFdDIgtkeN5V/Om9KJfSy5IsVCtY4vFnbreXYoFyIhhzzHz2V641i0HpWeJ9EraGK1J4tgjFkIYnqMMq8VFPqvlbWz6S+j+rnDS6V+7rmTJhmQPWPguIYZ/8hgGCE=
+X-MS-Exchange-AntiSpam-MessageData-0: KS3J/0H1ePWdk3yNiiUQeJhOrWWZ9FT6uPg7sZHhDiStYGH30RKHioxb+HYk3sygFYL1UHJ5AKXB8PX2el3eSV6YJgTftr8XSJF8JLDb6iIN2AmwdapysX/eGQioWS3CxkSA/jXxZ3I15ezo7LnZPdjgWGWHPPwecK9k1zCFJQGgC1yLFyJyFqCK/eIdsf9WsAFpP2EZ3e18LbcSupcWfW6g3usam4R+vUrGKbxQpR/zoeIVzWSOTFJo3RjWfOy1dvi6Ms0p4aY6CAk+mVU+73lF7lSaGnspyQJGY9b5YcaWTMCt0A+bx9wyypI3LNWfkqccpDr5qYDpe/VRqRGjYms01l0iuKglH40xdxCj1blgVj8M3kk9aIrku7fCQT0nnzhq3wEHnhhF3riSdpQcMbyY8u2DVu45VCnYRRyVNeOPRyruilhsCoUv3r8R3jI0L32DkyGtFGsDM0ajjEUhLfpGy5CLa+9cduBLgiKDBU4XZyXRY0n5Heqk/v0EsNQsh0dbVa5cMZ0Q3YQYJ95GhET/fZLZB/rpvOQS2ycCUB2nHxxL8FkSoLbQq3itZIzWWkTT6TKaVLWiQAZ9LY8lqNMNRm8QBHGSVTPOp1w57g3N+6pHCPLrytsl4+kcYze+OYJSEDEx4ADfGdWGV0xhz55v7LVl8ID10+uvVv0UlupZtYTA966/Y/8160RN2iAfpZVYQ8I98eRqwn7GUjWc+92XVcrJCZWChUK2qaIasVTShtDaS30OYXwzEb3SYCvKrDjhbyGyCFFlo6MXSTDkLf++VkbiGxRv0lBN0V5eVDUn9nwpsjqJuMvBtxBQaDCav0swWhYGbuVvNb4LhLaC/hUi1vhYdSF3KjPgOjnnq25VWqYW+kcUlTiLt6dghZs24E8SO75AhRJaJDJBkFs9ZcsdcdCCuexMoUBSJiJIF6Ows/SEQRANi0NuA9Pg/3lX
+ x251dmtsrY2HjldfVvbb8aL89zpscPHgdTSIjY0LjRyI5lvvD3r5ja3oxv1uoVFdEu0PeeK4yJm3ydjeVNQaaxZJoIq/lcbO/4m27JaiAqbaMqvjS0xHum5KfOX0jFpe5Ejdpl62gJrGiLnGY5s4N2wU3Fp35HOpc43P0GKagdvydz7htPc2NdPQ4qcXligkgo0rTjl1IS5SsozLqLzfmxAtPiUFiknttaWrUAINc0/jaRjyP+d8I3+PuE9153u/DmJfExVNJ6wtYqwasKj2RNQCZdvCl2ry/BqNHqNoiSlstr7zzzGybrLBcLhL5Z4/Tnhvf4AbhUtvxI5WO15FDN56bqZfcsrBpCccPGTm+pfrgDXmyW9cKuEA4bxBN0+2BcOCazA2DwVnWc0jYmrcfWfMgsWIVny20aTqdA1s/Z6DTXSTB+u1856xAQBE4gllgVlRFymR4mNhP1a0jARxtPmYtnAdtBDyuMlF/30E8tEHWDLr6e6ysUxV8Yipk/RwfjCI85Lk90Zx6dw0d2FAsWhoORWps9FZ5PHaT2lU1Mpkpu7LYqscnLVGnqJOfoBAmVKC6T9Z/Oj7HBWXF5tCkHKsCvsnn2129ZiARtQOsxg=
 X-OriginatorOrg: kalray.eu
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ff8a7da-e69e-429b-552a-08db816a6f7a
+X-MS-Exchange-CrossTenant-Network-Message-Id: e60db00d-2512-4e47-9d48-08db816a6fc6
 X-MS-Exchange-CrossTenant-AuthSource: PAZP264MB3751.FRAP264.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2023 17:23:54.0612
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Jul 2023 17:23:54.5867
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xUZCq/1IU3GBaENnINCguJS/kwk3s3JoYI6kT8HwX/Ok3/UpnFniWOYcy5VpsMdm
+X-MS-Exchange-CrossTenant-UserPrincipalName: faXgn+RGUbNbkj8nyNboy5s9QiI91cuKyrJXseJWR7Aqs01h7mhCB2RFXeSzTgTj
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAZP264MB2894
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
 X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230710_102400_863214_391A34AC 
-X-CRM114-Status: UNSURE (   9.78  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230710_102403_181794_FF406B70 
+X-CRM114-Status: GOOD (  15.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -141,93 +140,72 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 5/8] mci: sdhci: Add sd host v4 mode
+Subject: [PATCH 7/8] mci: sdhci: Force DMA update to the next block boundary
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+When working with 64-bit DMA the DMA addresse is stored in two 32-bit
+registers, different from the usual 32-bit one. Copy what is done by
+Linux which simple and is also a workaround for some broken controller.
+
+Note: in case the 64-bit DMA address needs to be read, it must be done
+by reading the 32-bit LSB first (SDHCI_ADMA_ADDRESS) and then the MSB
+(SDHCI_ADMA_ADDRESS_HI).
+
 Adapted from Linux commit:
 8<----------------------------------------------------------------------
-commit b3f80b434f7261c7ef8922f78589942d02e104f9
-Author: Chunyan Zhang <zhang.chunyan@linaro.org>
-Date:   Thu Aug 30 16:21:38 2018 +0800
+commit f6a03cbf43e586211f8ea088148c8ecd3fc4b5be
+Author: Mikko Vinni <mmvinni@yahoo.com>
+Date:   Tue Apr 12 09:36:18 2011 -0400
 
-    mmc: sdhci: Add sd host v4 mode
+    mmc: sdhci: work around broken dma boundary behavior
 
-    For SD host controller version 4.00 or later ones, there're two
-    modes of implementation - Version 3.00 compatible mode or
-    Version 4 mode.  This patch introduced an interface to enable
-    v4 mode.
+    Some SD host controllers (noticed on an integrated JMicron SD reader on an
+    HP Pavilion dv5-1250eo laptop) don't update the dma address register before
+    signaling a dma interrupt due to a dma boundary. Update the register
+    manually to the next boundary (by default 512KiB), at which the transfer
+    stopped.
 
-    Signed-off-by: Chunyan Zhang <zhang.chunyan@linaro.org>
-    Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-    Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+    As long as each transfer is at most 512KiB in size (guaranteed by a BUG_ON
+    in sdhci_prepare_data()) and the boundary is kept at the default value,
+    this fix is needed at most once per transfer. Smaller boundaries are taken
+    care of by counting the transferred bytes.
+
+    Fixes: https://bugzilla.kernel.org/show_bug.cgi?id=28462
+
+    Signed-off-by: Mikko Vinni <mmvinni@yahoo.com>
+    Signed-off-by: Chris Ball <cjb@laptop.org>
 8<----------------------------------------------------------------------
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/mci/sdhci.c | 21 +++++++++++++++++++++
- drivers/mci/sdhci.h |  2 ++
- 2 files changed, 23 insertions(+)
+ drivers/mci/sdhci.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
-index a980e34314..bce4ff2a14 100644
+index 4aca3af5aa..4c8e73d94d 100644
 --- a/drivers/mci/sdhci.c
 +++ b/drivers/mci/sdhci.c
-@@ -480,6 +480,24 @@ void sdhci_set_clock(struct sdhci *host, unsigned int clock, unsigned int input_
- 	sdhci_enable_clk(host, clk);
- }
+@@ -279,8 +279,18 @@ int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_data *data,
+ 			goto out;
+ 		}
  
-+static void sdhci_do_enable_v4_mode(struct sdhci *host)
-+{
-+	u16 ctrl2;
-+
-+	ctrl2 = sdhci_read16(host, SDHCI_HOST_CONTROL2);
-+	if (ctrl2 & SDHCI_CTRL_V4_MODE)
-+		return;
-+
-+	ctrl2 |= SDHCI_CTRL_V4_MODE;
-+	sdhci_write16(host, SDHCI_HOST_CONTROL2, ctrl2);
-+}
-+
-+void sdhci_enable_v4_mode(struct sdhci *host)
-+{
-+	host->v4_mode = true;
-+	sdhci_do_enable_v4_mode(host);
-+}
-+
- void __sdhci_read_caps(struct sdhci *host, const u16 *ver,
- 			const u32 *caps, const u32 *caps1)
- {
-@@ -497,6 +515,9 @@ void __sdhci_read_caps(struct sdhci *host, const u16 *ver,
++		/*
++		 * We currently don't do anything fancy with DMA
++		 * boundaries, but as we can't disable the feature
++		 * we need to at least restart the transfer.
++		 *
++		 * According to the spec sdhci_readl(host, SDHCI_DMA_ADDRESS)
++		 * should return a valid address to continue from, but as
++		 * some controllers are faulty, don't trust them.
++		 */
+ 		if (irqstat & SDHCI_INT_DMA) {
+-			u32 addr = sdhci_read32(sdhci, SDHCI_DMA_ADDRESS);
++			/* Force update to the next DMA block boundary. */
++			dma += sdhci->sdma_boundary;
  
- 	sdhci_reset(host, SDHCI_RESET_ALL);
- 
-+	if (host->v4_mode)
-+		sdhci_do_enable_v4_mode(host);
-+
- 	of_property_read_u64(np, "sdhci-caps-mask", &dt_caps_mask);
- 	of_property_read_u64(np, "sdhci-caps", &dt_caps);
- 
-diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-index 50179de0e6..1f5d0564fc 100644
---- a/drivers/mci/sdhci.h
-+++ b/drivers/mci/sdhci.h
-@@ -201,6 +201,7 @@ struct sdhci {
- 
- 	enum mci_timing timing;
- 	bool preset_enabled; /* Preset is enabled */
-+	bool v4_mode;		/* Host Version 4 Enable */
- 
- 	unsigned int quirks;
- #define SDHCI_QUIRK_MISSING_CAPS		BIT(27)
-@@ -279,6 +280,7 @@ u16 sdhci_calc_clk(struct sdhci *host, unsigned int clock,
- 		   unsigned int *actual_clock, unsigned int input_clock);
- void sdhci_set_clock(struct sdhci *host, unsigned int clock, unsigned int input_clock);
- void sdhci_enable_clk(struct sdhci *host, u16 clk);
-+void sdhci_enable_v4_mode(struct sdhci *host);
- int sdhci_setup_host(struct sdhci *host);
- void __sdhci_read_caps(struct sdhci *host, const u16 *ver,
- 			const u32 *caps, const u32 *caps1);
+ 			/*
+ 			 * DMA engine has stopped on buffer boundary. Acknowledge
 -- 
 2.17.1
 
