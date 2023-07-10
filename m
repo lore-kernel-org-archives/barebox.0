@@ -1,57 +1,57 @@
-Delivery-date: Mon, 10 Jul 2023 12:09:05 +0200
+Delivery-date: Mon, 10 Jul 2023 12:11:41 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qInpL-005b3K-6E
-	for lore@lore.pengutronix.de; Mon, 10 Jul 2023 12:09:05 +0200
+	id 1qInrr-005bEO-79
+	for lore@lore.pengutronix.de; Mon, 10 Jul 2023 12:11:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qInpI-0001U5-8q
-	for lore@pengutronix.de; Mon, 10 Jul 2023 12:09:04 +0200
+	id 1qInro-0002Dg-Pb
+	for lore@pengutronix.de; Mon, 10 Jul 2023 12:11:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=BVRF7mQcY3d2cRX5TxnH+UNt9NUzbwhmaWxL4CUA8e0=; b=qtMyqjX+ukKbRilTfQ2prnfy+B
-	G/+B1BYGhRPtOoYnfsz/ZD3dCAB4zQkQaSUexlo8xnxvExquhIBQalEg0RNR9+TIwEze1LKeBgmtO
-	fEqyGI+u8vVEvhnUP9hxyRqHYBX0KC0Sa5ZsII7B8b/sUlswSAz87nXaTtLkSuXk1DWFbsZA8OB82
-	AfUEbdXISzIPjZYAkBQ0FHvhY/Wp8540AdZTziGCnTSu/l/Mv277neDiwocPA73uEW2knmUpJ4sAn
-	Zp1DdqX+TOfx7gRiTd5VQoos3fbsVOQStBibnN2cBDfsmaNsb5B/2brSJXF/YG1cLwuWtkXD9QhYy
-	78p8Juww==;
+	bh=Sg3GwRVDdKg/Ru6Ei1DDIRn8ZBsFM8H5kYgLQiROMeo=; b=CfRchaFQmxwNfUpe26khDyr+Zh
+	LqSkoJjFTAPaEZ4bHlin8GHzwBQ9pCvJ7yqT8Ji83n136EvqDS82Uo9D3bV5CkHqB8yuAA1TvS9D1
+	5MCdtXFxe33sBoICm84MyeU4kS4pk3aHkInS+ZEufeWSE12DLqiGeSoB9ePoXE149ROOPgmrtn1Wy
+	8BfdKIDK9jsW8UrB6NI3eKFPtKbuhaLTgZgAKwKA/iQ8eCb+pIgWl/xRA0d9GveZFKXeF0bfE9Tbc
+	5m7yc4xVDgtkNJwUUkC9cJeBpJ6xaumTyEJxVnsQdvkjJMmGNZB/uivcx+P4ueOrOuroIS8Iy06Ck
+	ZO6blt6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qInoE-00BArA-2O;
-	Mon, 10 Jul 2023 10:07:58 +0000
+	id 1qInqn-00BBOo-0l;
+	Mon, 10 Jul 2023 10:10:37 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qInoC-00BAq4-0O
+	id 1qInqj-00BBO2-2M
 	for barebox@lists.infradead.org;
-	Mon, 10 Jul 2023 10:07:57 +0000
+	Mon, 10 Jul 2023 10:10:35 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qInoA-0001Jl-L8; Mon, 10 Jul 2023 12:07:54 +0200
-Message-ID: <5639fc1b-c36e-dac6-3b23-5482a9bdbac2@pengutronix.de>
-Date: Mon, 10 Jul 2023 12:07:54 +0200
+	id 1qInqh-0001yj-Rf; Mon, 10 Jul 2023 12:10:31 +0200
+Message-ID: <08b0cae6-4dd5-b349-296c-e24ec761f30f@pengutronix.de>
+Date: Mon, 10 Jul 2023 12:10:31 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.11.2
 Content-Language: en-US
 To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
 References: <20230710063653.660040-1-m.felsch@pengutronix.de>
- <20230710063653.660040-6-m.felsch@pengutronix.de>
+ <20230710063653.660040-5-m.felsch@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230710063653.660040-6-m.felsch@pengutronix.de>
+In-Reply-To: <20230710063653.660040-5-m.felsch@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230710_030756_158805_00541064 
-X-CRM114-Status: GOOD (  32.57  )
+X-CRM114-CacheID: sfid-20230710_031033_776647_F751D2CB 
+X-CRM114-Status: GOOD (  31.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,105 +74,166 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 6/7] net: phy: at803x: add disable hibernation mode
- support
+Subject: Re: [PATCH 5/7] net: phy: at803x: add support for configuring
+ SmartEEE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 On 10.07.23 08:36, Marco Felsch wrote:
-> This commit ports Linux commit:
+> This commit port Linux commit:
 > 
-> | commit 9ecf04016c87bcb33b44e24489d33618e2592f41
-> | Author: Wei Fang <wei.fang@nxp.com>
-> | Date:   Thu Aug 18 11:00:54 2022 +0800
+> | commit 390b4cad81484124db2b676ed20a265adc032bae
+> | Author: Russell King <rmk+kernel@armlinux.org.uk>
+> | Date:   Thu Jan 14 10:45:49 2021 +0000
 > |
-> |     net: phy: at803x: add disable hibernation mode support
+> |     net: phy: at803x: add support for configuring SmartEEE
 > |
-> |     When the cable is unplugged, the Atheros AR803x PHYs will enter
-> |     hibernation mode after about 10 seconds if the hibernation mode
-> |     is enabled and will not provide any clock to the MAC. But for
-> |     some MACs, this feature might cause unexpected issues due to the
-> |     logic of MACs.
-> |     Taking SYNP MAC (stmmac) as an example, if the cable is unplugged
-> |     and the "eth0" interface is down, the AR803x PHY will enter
-> |     hibernation mode. Then perform the "ifconfig eth0 up" operation,
-> |     the stmmac can't be able to complete the software reset operation
-> |     and fail to init it's own DMA. Therefore, the "eth0" interface is
-> |     failed to ifconfig up. Why does it cause this issue? The truth is
-> |     that the software reset operation of the stmmac is designed to
-> |     depend on the RX_CLK of PHY.
-> |     So, this patch offers an option for the user to determine whether
-> |     to disable the hibernation mode of AR803x PHYs.
+> |     SmartEEE for the atheros phy was deemed buggy by Freescale and commits
+> |     were added to disable it for their boards.
 > |
-> |     Signed-off-by: Wei Fang <wei.fang@nxp.com>
-> |     Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> |     In initial testing, SolidRun found that the default settings were
+> |     causing disconnects but by increasing the Tw buffer time we could allow
+> |     enough time for all parts of the link to come out of a low power state
+> |     and function properly without causing a disconnect. This allows us to
+> |     have functional power savings of between 300 and 400mW, rather than
+> |     disabling the feature altogether.
+> |
+> |     This commit adds support for disabling SmartEEE and configuring the Tw
+> |     parameters for 1G and 100M speeds.
+> |
+> |     Signed-off-by: Russell King <rmk+kernel@armlinux.org.uk>
 > |     Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+> 
+> I slightly adapted the at803x_config_init() as well to be more in line
+> with the Linux code base.
 > 
 > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 
-IMO we should just makes AT803X_DISABLE_HIBERNATION_MODE the default and
-never hibernate the PHY. Let Linux worry about that.
+Same question as in follow-up commit: Can't we just disable it unconditionally?
 
 > ---
->  drivers/net/phy/at803x.c | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
+>  drivers/net/phy/at803x.c | 75 ++++++++++++++++++++++++++++++++++++++--
+>  1 file changed, 73 insertions(+), 2 deletions(-)
 > 
 > diff --git a/drivers/net/phy/at803x.c b/drivers/net/phy/at803x.c
-> index cc425c318f..d8a9c3588f 100644
+> index 41010c58ad..cc425c318f 100644
 > --- a/drivers/net/phy/at803x.c
 > +++ b/drivers/net/phy/at803x.c
-> @@ -32,6 +32,9 @@
->  #define AT803X_DEBUG_REG_5			0x05
->  #define AT803X_DEBUG_TX_CLK_DLY_EN		BIT(8)
+> @@ -59,6 +59,15 @@
+>   */
+>  #define AT8035_CLK_OUT_MASK			GENMASK(4, 3)
 >  
-> +#define AT803X_DEBUG_REG_HIB_CTRL		0x0b
-> +#define   AT803X_DEBUG_HIB_CTRL_PS_HIB_EN	BIT(15)
+> +#define AT803X_MMD3_SMARTEEE_CTL1		0x805b
+> +#define AT803X_MMD3_SMARTEEE_CTL3		0x805d
+> +#define AT803X_MMD3_SMARTEEE_CTL3_LPI_EN	BIT(8)
 > +
->  /* AT803x supports either the XTAL input pad, an internal PLL or the
->   * DSP as clock reference for the clock output pad. The XTAL reference
->   * is only used for 25 MHz output, all other frequencies need the PLL.
-> @@ -140,6 +143,20 @@ static int at803x_disable_tx_delay(struct phy_device *phydev)
->  				     AT803X_DEBUG_TX_CLK_DLY_EN, 0);
+> +#define AT803X_DISABLE_SMARTEEE			BIT(1)
+> +
+> +/* disable hibernation mode */
+> +#define AT803X_DISABLE_HIBERNATION_MODE		BIT(2)
+> +
+>  #define AT803X_CLK_OUT_STRENGTH_MASK		GENMASK(8, 7)
+>  #define AT803X_CLK_OUT_STRENGTH_FULL		0
+>  #define AT803X_CLK_OUT_STRENGTH_HALF		1
+> @@ -72,8 +81,11 @@
+>  #define AT8030_PHY_ID_MASK			0xffffffef
+>  
+>  struct at803x_priv {
+> +	int flags;
+>  	u16 clk_25m_reg;
+>  	u16 clk_25m_mask;
+> +	u8 smarteee_lpi_tw_1g;
+> +	u8 smarteee_lpi_tw_100m;
+>  };
+>  
+>  static int at803x_debug_reg_read(struct phy_device *phydev, u16 reg)
+> @@ -141,10 +153,29 @@ static int at803x_parse_dt(struct phy_device *phydev)
+>  	const struct device *dev = &phydev->dev;
+>  	const struct device_node *node = dev->of_node;
+>  	struct at803x_priv *priv = phydev->priv;
+> +	u32 freq, strength, tw;
+>  	unsigned int sel;
+> -	u32 freq, strength;
+>  	int ret;
+>  
+> +	if (of_property_read_bool(node, "qca,disable-smarteee"))
+> +		priv->flags |= AT803X_DISABLE_SMARTEEE;
+> +
+> +	if (!of_property_read_u32(node, "qca,smarteee-tw-us-1g", &tw)) {
+> +		if (!tw || tw > 255) {
+> +			phydev_err(phydev, "invalid qca,smarteee-tw-us-1g\n");
+> +			return -EINVAL;
+> +		}
+> +		priv->smarteee_lpi_tw_1g = tw;
+> +	}
+> +
+> +	if (!of_property_read_u32(node, "qca,smarteee-tw-us-100m", &tw)) {
+> +		if (!tw || tw > 255) {
+> +			phydev_err(phydev, "invalid qca,smarteee-tw-us-100m\n");
+> +			return -EINVAL;
+> +		}
+> +		priv->smarteee_lpi_tw_100m = tw;
+> +	}
+> +
+>  	ret = of_property_read_u32(node, "qca,clk-out-frequency", &freq);
+>  	if (!ret) {
+>  		switch (freq) {
+> @@ -221,6 +252,38 @@ static int at803x_probe(struct phy_device *phydev)
+>  	return at803x_parse_dt(phydev);
 >  }
 >  
-> +static int at803x_hibernation_mode_config(struct phy_device *phydev)
+> +static int at803x_smarteee_config(struct phy_device *phydev)
 > +{
 > +	struct at803x_priv *priv = phydev->priv;
+> +	u16 mask = 0, val = 0;
+> +	int ret;
 > +
-> +	/* The default after hardware reset is hibernation mode enabled. After
-> +	 * software reset, the value is retained.
-> +	 */
-> +	if (!(priv->flags & AT803X_DISABLE_HIBERNATION_MODE))
+> +	if (priv->flags & AT803X_DISABLE_SMARTEEE)
+> +		return phy_modify_mmd_indirect(phydev, MDIO_MMD_PCS,
+> +					       AT803X_MMD3_SMARTEEE_CTL3,
+> +					       AT803X_MMD3_SMARTEEE_CTL3_LPI_EN, 0);
+> +
+> +	if (priv->smarteee_lpi_tw_1g) {
+> +		mask |= 0xff00;
+> +		val |= priv->smarteee_lpi_tw_1g << 8;
+> +	}
+> +	if (priv->smarteee_lpi_tw_100m) {
+> +		mask |= 0x00ff;
+> +		val |= priv->smarteee_lpi_tw_100m;
+> +	}
+> +	if (!mask)
 > +		return 0;
 > +
-> +	return at803x_debug_reg_mask(phydev, AT803X_DEBUG_REG_HIB_CTRL,
-> +				     AT803X_DEBUG_HIB_CTRL_PS_HIB_EN, 0);
+> +	ret = phy_modify_mmd_indirect(phydev, MDIO_MMD_PCS, AT803X_MMD3_SMARTEEE_CTL1,
+> +				      mask, val);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return phy_modify_mmd_indirect(phydev, MDIO_MMD_PCS, AT803X_MMD3_SMARTEEE_CTL3,
+> +				       AT803X_MMD3_SMARTEEE_CTL3_LPI_EN,
+> +				       AT803X_MMD3_SMARTEEE_CTL3_LPI_EN);
 > +}
 > +
->  static bool at803x_match_phy_id(struct phy_device *phydev, u32 phy_id)
+>  static int at803x_clk_out_config(struct phy_device *phydev)
 >  {
->  	struct phy_driver *drv = to_phy_driver(phydev->dev.driver);
-> @@ -160,6 +177,9 @@ static int at803x_parse_dt(struct phy_device *phydev)
->  	if (of_property_read_bool(node, "qca,disable-smarteee"))
->  		priv->flags |= AT803X_DISABLE_SMARTEEE;
->  
-> +	if (of_property_read_bool(node, "qca,disable-hibernation-mode"))
-> +		priv->flags |= AT803X_DISABLE_HIBERNATION_MODE;
-> +
->  	if (!of_property_read_u32(node, "qca,smarteee-tw-us-1g", &tw)) {
->  		if (!tw || tw > 255) {
->  			phydev_err(phydev, "invalid qca,smarteee-tw-us-1g\n");
-> @@ -341,6 +361,10 @@ static int at803x_config_init(struct phy_device *phydev)
+>  	struct at803x_priv *priv = phydev->priv;
+> @@ -270,7 +333,15 @@ static int at803x_config_init(struct phy_device *phydev)
 >  	if (ret < 0)
 >  		return ret;
 >  
-> +	ret = at803x_hibernation_mode_config(phydev);
+> -	return at803x_clk_out_config(phydev);
+> +	ret = at803x_smarteee_config(phydev);
 > +	if (ret < 0)
 > +		return ret;
 > +
->  	return 0;
+> +	ret = at803x_clk_out_config(phydev);
+> +	if (ret < 0)
+> +		return ret;
+> +
+> +	return 0;
 >  }
 >  
+>  static struct phy_driver at803x_driver[] = {
 
 -- 
 Pengutronix e.K.                           |                             |
