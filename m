@@ -1,85 +1,124 @@
-Delivery-date: Fri, 14 Jul 2023 07:17:16 +0200
+Delivery-date: Mon, 17 Jul 2023 18:56:50 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qKBB7-00AccF-LR
-	for lore@lore.pengutronix.de; Fri, 14 Jul 2023 07:17:16 +0200
+	id 1qLRWk-000n9I-81
+	for lore@lore.pengutronix.de; Mon, 17 Jul 2023 18:56:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qKBB4-0000HV-MM
-	for lore@pengutronix.de; Fri, 14 Jul 2023 07:17:15 +0200
+	id 1qLRWh-00077I-Iu
+	for lore@pengutronix.de; Mon, 17 Jul 2023 18:56:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=b7H8gi+1zWcU/nH+Cdd5+gOBqlHXe0jgkzBWykd47/A=; b=L8zL/h8rVY1zdvH0a3jZu+fMaP
-	uWkFm4UMg0HiFybfO2lBda8H+8YQaK8fXLTlJSkLATZlgQaGpRCUet8oa98n/DOPfH2EQ6UaPjTie
-	kEi/SE9UnjdKGLqWMHZR3A0H7uT5np33StAuIFwaLEYl3hVzWh8N5qKmvFBV8M8ga9TePadxfLxdW
-	rZf5DkoN0/FxmxLU/hrFVrW8RTkOJsNQX6BgM+2pH1fY7q7qToZzmJrsYqJUTZvX5MHPFwHrd0alb
-	eJJT8y6EPcaUHfBoACbufKU97+RZALQLHbSfb/vs88b/T0y9KyMNECaQ3RFSRNYtIpR208gZ9IKzM
-	52OMHIfg==;
+	bh=DKkBr/GQ+faLJ35cO7eUFJXGBPz69EWKsmvgtRcSPus=; b=XH7OdWiFLbZciZG16/GlkpUrIS
+	KmDZMSUij1OaipWUa06OK7aZiWwMP4orzIGW6EafVdObGKr0YcYFypFH2vuphnJHjREvF/HVxdC3P
+	ndPnR7V4uOlpyNKnxyMsr3+zPb7zriMBfWwvFhF9aoDwjxJ2dr3Yl3Zy6z+KiBdk+duxgJ9h+g7ZS
+	3aZJyJQSdEAasWVYvI6ODgnTpAxmoHBHSjY00BLA0r8BXMAsFV4AxWQ62qPUnespA5mJct+ATUTk6
+	rUEVUxA/FsFdCc4lQVc2FvxTo0cb0hQQI+IS6HMcTK3JAgEh/lw1UIHsO/EUHHIZGBRxY5Eep/A+r
+	nfeLINqQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qKB9b-0052sV-0K;
-	Fri, 14 Jul 2023 05:15:43 +0000
-Received: from mail-lf1-x132.google.com ([2a00:1450:4864:20::132])
+	id 1qLRVF-004bGB-2G;
+	Mon, 17 Jul 2023 16:55:17 +0000
+Received: from smtpout30.security-mail.net ([85.31.212.34])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qKB9U-0052qT-2o
+	id 1qLRUn-004bEB-2w
 	for barebox@lists.infradead.org;
-	Fri, 14 Jul 2023 05:15:40 +0000
-Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-4fb73ba3b5dso2597624e87.1
-        for <barebox@lists.infradead.org>; Thu, 13 Jul 2023 22:15:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1689311722; x=1691903722;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b7H8gi+1zWcU/nH+Cdd5+gOBqlHXe0jgkzBWykd47/A=;
-        b=AFqXpJwyxhLFSojvRyrdiZEO54t+5mDv6ObWwG1Ph3ZCn14g4UWgfsx9h/5VH/lQeh
-         4gLNRaPZ4JyXY+4DtwI5CF7v06RweTUP97ahfueqHRZdkUUEUqGCY+txXJrGdCFvZcnp
-         RsVLWretW8oIeOn53QveSOEY/8XICgVYIriQT6twG8Io6/wD8cVImC64J1yDcb9vCtZg
-         JLf57QwDzEvi/abqvN2Mm7+sO2QIaTUOzzEpy5DYDDIKLz18aqJMShmPof/c/2qI72c3
-         rtO38lVHNmxivI8/Nfu2eeEzwGA4jlKT1snbtzq+Jzk0IfggtKBsLBp46NwUI2wgxc9s
-         m8DA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1689311722; x=1691903722;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b7H8gi+1zWcU/nH+Cdd5+gOBqlHXe0jgkzBWykd47/A=;
-        b=D1fAclPoZtYapojR18UdNjFRCDQokg2nJ0JRZNyUop+fQXzMZVeA0fmdMZnIEvQi93
-         9BMtzZ159BZO0yNwwsfndj/bGFxZxPjhhkLRaBatp9etfahhprzHN438Vaqf5Lkg+i+J
-         EFz1xPWGngMb1cZN7IaWAN00W8Cfw2N5WnYulI1qEsg49PoTROz+qKtNdzwUaiBIngIK
-         hcLQqGQyZUtRhv1jjlaRzyFqgNiGDr9VYTRBd156ERGIyXKjACCMLymknjqjKo/J3S9c
-         stP/xTmqbl/mJD+u6KYfGJenqYhfOQLCtzd00hxIaYUdpwVrleCBIBgdLx32nfuH9ajH
-         J6eg==
-X-Gm-Message-State: ABy/qLYE7nTYSSPFQkQJfWBIdKKTb7zeJbpQkdTA3gKjlwPkvofJAACe
-	UCthPD60pf7lddu5lLTiMQW0SXC4fNl9Gg==
-X-Google-Smtp-Source: APBJJlG2HR/uB1C6SVhWlowtVYQwgNofrJ8byI5jLQJJZD8cPyX3SVZTVt5tlNRw29mnRyCWTXW5fw==
-X-Received: by 2002:a05:6512:3143:b0:4f8:67a5:94df with SMTP id s3-20020a056512314300b004f867a594dfmr2629682lfi.15.1689311722057;
-        Thu, 13 Jul 2023 22:15:22 -0700 (PDT)
-Received: from localhost.localdomain ([188.243.23.53])
-        by smtp.gmail.com with ESMTPSA id d15-20020ac25ecf000000b004fa52552c7csm1335893lfq.151.2023.07.13.22.15.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jul 2023 22:15:21 -0700 (PDT)
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
+	Mon, 17 Jul 2023 16:54:51 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by fx304.security-mail.net (Postfix) with ESMTP id A9C888A3B7A
+	for <barebox@lists.infradead.org>; Mon, 17 Jul 2023 18:54:46 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalray.eu;
+	s=sec-sig-email; t=1689612886;
+	bh=NesHH/6bjyUPnZbag4dnxIlRXOidOZycwPmKsPyphCI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=5nDQrdRwYvLjXPGyn2aYk+bDCTo0LHdIrSRuF5cYkXnFBstlWprhci7AEIwifdaxX
+	 0U7JSr2uxYhmIe83VaBJ0uS27C9mI5NGdIZZsGyuo8XcuuKh7G61ZySqKjqajs57Ok
+	 v47eJQWH4q9qmzeGPuj7z1AxizN9dU5//+viy2so=
+Received: from fx304 (localhost [127.0.0.1]) by fx304.security-mail.net
+ (Postfix) with ESMTP id 8E68F8A3FEA for <barebox@lists.infradead.org>; Mon,
+ 17 Jul 2023 18:54:46 +0200 (CEST)
+Received: from FRA01-MR2-obe.outbound.protection.outlook.com
+ (mail-mr2fra01lp0100.outbound.protection.outlook.com [104.47.25.100]) by
+ fx304.security-mail.net (Postfix) with ESMTPS id 2097B8A3CE6 for
+ <barebox@lists.infradead.org>; Mon, 17 Jul 2023 18:54:45 +0200 (CEST)
+Received: from PAZP264MB2606.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:1f0::15) by MRZP264MB2332.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:501:30::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6588.32; Mon, 17 Jul
+ 2023 16:54:44 +0000
+Received: from PAZP264MB2606.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::7036:a43b:43f6:bca]) by PAZP264MB2606.FRAP264.PROD.OUTLOOK.COM
+ ([fe80::7036:a43b:43f6:bca%3]) with mapi id 15.20.6588.031; Mon, 17 Jul 2023
+ 16:54:44 +0000
+X-Virus-Scanned: E-securemail
+Secumail-id: <cdaa.64b57255.1fdd1.1>
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=Zua93Rsk6IGl3j0VL3t5DBdFE1DjdubLPe95I/Rxk+Yj7LUNB1fO9qDfwJtH73lU+bc6aQMhlZGBU/kJ1zeFRbcrHQWy9nakwlLbRCJiwgQrT1oqhnD8t5iaYS1I6n9AgkJL6pbC0C88P2yEGWkc1l48a17XTkIVvX0Vt4iNfQWNl4X5pIxudgqHQvwjX2o2IJYwFOuqa7fvj5nGnPR8fxPzwyJaKrnwuxtIR/FU7svHbyhPC2Bkio0nB8T47xWzXi+sm5T2zAqdNtGfOzczuoQp6xKQwaEKFoUHH/+17vfLyMoAizNhCkIKSAIP2QbE67bQZ1oYU6O3sVO0f3/HbA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=microsoft.com; s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=DKkBr/GQ+faLJ35cO7eUFJXGBPz69EWKsmvgtRcSPus=;
+ b=Fw2tJp0nxwOFxPT6jegL3l9k0vxRIfRqVRuVCOUAZxoKoodyz5lChvIbYsb+bIUVzZF6rq36Lb0Zi1TgEKfC9+Sw/zRyxd0hpAD5kiylQJ+RvLpuQjf+FIAPR1PB5JLKNL6fiMzD4/O4slfE+D4WvwsABQGZ7OdwYvFyEFVqcRNlNilyHtLtQWiWhSKJFz63Z5hIRD/ieZxyedfjfWzK0KJPYMgsfDYPTFiw2Ovkkuqp2IAoz/uBmSFgQWVjA2tSaHk8L7FmLvgZG3ihpmpel1chsK70c4uLm71ylHCKiG6v0cXg0OuljQzdUCtkkQEbsd6xyxor8DKqkGRcX/byEg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=kalrayinc.com; dmarc=pass action=none header.from=kalray.eu;
+ dkim=pass header.d=kalray.eu; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kalray.eu;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=DKkBr/GQ+faLJ35cO7eUFJXGBPz69EWKsmvgtRcSPus=;
+ b=6ggiwx/0X8lqq1Ia339Y6jPtieBSlC5Ctz4DyOIiuzfn3petq+cORxNx+E6fXN//blOMgmOU3cVWkHhfeE4Snwyc5VWBThqp6C9R6DcUdPn7Leprz4+5btRD+tyQcP8bChCG0pkADIyKtY9wQfmwOgj38o89tC4QOypMQ/FdBGUhWf2sv2Or6GXjn5ygZ6Npl5EMsj+BHlyteQGNVOnzq2JjJlLB75lvG3FcdY7luIJUJ8aIqklq+Nh+ujRViZ+d/ogDOm756hOB0JeIwGACYepxuIQBkeydEMC5WExo8bAhjb/0Zs2D4t/1j0Ph3jah5JEQ5gZWZvyOASQHms//Eg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=kalray.eu;
+From: Jules Maselbas <jmaselbas@kalray.eu>
 To: barebox@lists.infradead.org
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 14 Jul 2023 08:15:08 +0300
-Message-Id: <20230714051510.2304-2-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.39.1
-In-Reply-To: <20230714051510.2304-1-eagle.alexander923@gmail.com>
-References: <20230714051510.2304-1-eagle.alexander923@gmail.com>
+Cc: Jules Maselbas <jmaselbas@kalray.eu>
+Date: Mon, 17 Jul 2023 18:54:27 +0200
+Message-ID: <20230717165428.27286-4-jmaselbas@kalray.eu>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20230717165428.27286-1-jmaselbas@kalray.eu>
+References: <20230717165428.27286-1-jmaselbas@kalray.eu>
+X-ClientProxiedBy: LO2P265CA0050.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:60::14) To PAZP264MB2606.FRAP264.PROD.OUTLOOK.COM
+ (2603:10a6:102:1f0::15)
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PAZP264MB2606:EE_|MRZP264MB2332:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4545df3d-814d-4804-d0e6-08db86e6850e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: L2fJX3euat2Ut5UoXNCH7y8qb6ltxwtZCjoSOeXbzUBG5GON6Y0t04ECatqis4NYXrfgdMn6SuB8e4eHyovI+leUbfuHGHPqdm8L+j29B2XPHpHNqP7y46/tCahxNoh2gFStO763D5WBsHAvuB6bakJ8IndiwQ3U1CmJqws85W8irbNDZ+OvMtk5K4Nt1xqLtFHerRLeJWbXj+F08JADkmFF4CFMRxlYKW6o8qnjOXhkMgdHf7SwNo0FAFked5rfaOleFs0YMOqb6SV3YR4NIhQlTEd8pk/7AiMLk2wlMdRZIK2WQon/38wAyhTd5ImJJV4klNG3+hppc0SDIRbM0IDVs/LZU14AXkTOfXpmNro/WrGuIheMpoYHDR9yvvwHKpvkcUHp3s8dFd1dt3+mXi2FyKItg1JoNeZZg3V6DUmNJbcVLWB8q71NmTTHCIgnOP7WQK6pmr/VqBgEG0WgpL0j1xHPTonXMrIb2IhQ8clJm/bc2ZYe2xuaEj597ulzufNwNztmmZg6VW/P1QhqSZnbPGJcmk3hRAZg84VzhvC1IMo6F09iHDgYQ/8WlXRizNaXiPSJZnYJr7gs2wVNjk0c0R8m67BhpRfoWyN8M7h0ooHK8P+roLyyUA74Gk2s
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAZP264MB2606.FRAP264.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230028)(4636009)(366004)(396003)(346002)(136003)(39850400004)(376002)(451199021)(83380400001)(478600001)(52116002)(42882007)(186003)(2616005)(6486002)(1076003)(26005)(6512007)(6506007)(107886003)(6666004)(66476007)(66946007)(38350700002)(66556008)(36756003)(38100700002)(41300700001)(83170400001)(2906002)(4326008)(8676002)(6916009)(8936002)(5660300002)(316002);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: 8vfcYO6Gi8CiKoRobGkHeIzoGqe8nJLSXGL9u5dCrKbI+2z0lzs4cwbr+3GsPIr3VywIe+kmvKLkxjNTeLjGPq1tgoZcQWnGyaWfA0IywHnzvSGwyX+Yv0pwlQoUYfreOsnOiaodmd+XCXK4fuBtbK98yxn76zjLJkS/s0YZHqMtOwuhzxbzkmppPwOzRtFNb3sCxhS/3oPpL1/vs2+WjmOT6GmQtM0XxRFrV5rNUYhMZlSAgEh+vwbpWeqMbw0PRqii/b5LhkxoG1tng8j/FNe9b4HycprI7XZ8ysGY0VyXCN+vMB1ngYryfEz0EVlmlK5pyKd96MpBdsd+pJ0d5mR5eOTgHVgA1J16IyitpCw2zoWcE1RXUNaY5f2mmHiGKUJ9T+9wMOfiXrKkmAQ1hFnSbB3JDPWLpXstt0C1vpFGjqbdToXQugRDe8pAX/+StnFWfe7i//V+hVp1ZfeRygNkOLVJe83V/ZmMbHNHjzOSMQVL4Rj/GqJJLkUEXPUmtFAGYpESRW2RueanNgiiRL7AWfYZmZ0jcqGDfVhSBXPOo2/6ybabUKGgWzuXfO5kDsgvd4t4qrwJ05YxFCiPg6RR0GxYq6Uvy5AmbcU/A/mt1RdOBHvGpASvNGS1yd+srlTdCnqDPj71Q4hY7d5ixCBBWI2djYRnFsNS+Mr9mgzqM+zrqpnXgJXa2r6dqHNswWvMiG5NL6Qs4Cc5A8IUKUGbAzzgzXCNVd98X0CrNqBxZR+jQlSBhN/WnjPSMP0TMWPSwD005U55ICAWw+nn/roG6hQAkHh2UL4KF37+iWBf1G7K5sZH2BuUbrVleGi8z6dcZK620f/3Zmt/erGloBhoATeQQ3gzK7y+HWE7C4QmkYrUZBl/9bqA7ixMZHLRrn7yLcDZ4NLX8fUk8/5d0LTjL4QT5UrivA/1zMgoRy7KA5xKXAOQ1BOzKI/1IJji
+ 3KIa2Rr/wA5Hvb0Bm87ddRYugi2KWOQksuEFcgSOBvsJR41xkmLYSP9iEijy+mgv09Il+nSTn/0o14j+8+0hxEv87PIfqrg6jwahqakDZpsYrNOqhO/SJkiMhAbxV73S+QOsgT7mNeXBTn7xYruBxaW46QE1Zj6ianzehPK78tGdNWAu/TyfP0+H/D4XEOWR42p7bFbWxb2wMC5L64vvpRvdRSirCshyXdiJnTsvGplNo2AQziefQ0L59YDbUizaL/H2INWtu+k+3sIQUyORNCuBT31LkbJChOFIDCB3yQlXYk3SjFt4aTomHUXUijkfBlEHGQ4WM338lqw1DwABxhWKlgwd1OjENsp4iKn8j/5PYoHrMJ5x6wgLYuKAUDL3yYx6fs1/1kusYfuvc1xkFp0dK011HmRbbyLZnSgAnJWUyrNLqefbQqw8yCR/8LxfzD99YnxDR1hAaMYP7fmRytyK4bE2N10/kEsSvcTgIkkXKM+fg9tVltVKWRZRRyTdD9GQaprTJp4afqLHwE5YPj7f/emRMkyK9Mkdx7nhDYx6RhEdbso8g4Sd/XsRdLIKs0HV+XuJtyWDaWTYLQOn1yBlCUL61bFifJbreSzhALA=
+X-OriginatorOrg: kalray.eu
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4545df3d-814d-4804-d0e6-08db86e6850e
+X-MS-Exchange-CrossTenant-AuthSource: PAZP264MB2606.FRAP264.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Jul 2023 16:54:43.6948
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 8931925d-7620-4a64-b7fe-20afd86363d3
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: am2isjwDMqLTlrYCSorwVnlVtY7jumBPmNQxlEo7z4vBfMOh2oko9nexOaO18k1Y
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MRZP264MB2332
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
+X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230713_221536_916955_095ACB28 
-X-CRM114-Status: GOOD (  11.85  )
+X-CRM114-CacheID: sfid-20230717_095450_341248_A7428279 
+X-CRM114-Status: UNSURE (   9.49  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,59 +136,56 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] i2c: Added feature to get bus number from alias
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH 4/5] mtd: spi-nor: move SPI_NOR_MAX_ADDR_WIDTH define to
+ spi-nor.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-For the correct assignment of the I2C bus number, let's use an alias
-from the devicetree.
+Move the SPI_NOR_MAX_ADDR_WIDTH define into spi-nor.h to be used by
+drivers.
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/i2c/i2c.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/mtd/spi-nor/spi-nor.c | 1 -
+ include/linux/mtd/spi-nor.h   | 2 ++
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 300365bd1f..df3b968a4b 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -701,17 +701,21 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
- 	int ret;
+diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+index 968fd3ea7a..ab61e7824c 100644
+--- a/drivers/mtd/spi-nor/spi-nor.c
++++ b/drivers/mtd/spi-nor/spi-nor.c
+@@ -21,7 +21,6 @@
+ #include <of.h>
  
- 	if (adapter->nr < 0) {
--		int nr;
-+		if (!adapter->dev.of_node) {
-+			int nr = adapter->dev.id;
+ #define SPI_NOR_MAX_ID_LEN	6
+-#define SPI_NOR_MAX_ADDR_WIDTH	4
  
--		for (nr = 0;; nr++)
--			if (!i2c_get_adapter(nr))
--				break;
--		adapter->nr = nr;
--	} else {
--		if (i2c_get_adapter(adapter->nr))
--			return -EBUSY;
-+			for (nr = 0;; nr++)
-+				if (!i2c_get_adapter(nr))
-+					break;
-+			adapter->nr = nr;
-+		} else
-+			adapter->nr =
-+				of_alias_get_id(adapter->dev.of_node, "i2c");
- 	}
+ /*
+  * For everything but full-chip erase; probably could be much smaller, but kept
+diff --git a/include/linux/mtd/spi-nor.h b/include/linux/mtd/spi-nor.h
+index fc7cefb55e..720b4888d4 100644
+--- a/include/linux/mtd/spi-nor.h
++++ b/include/linux/mtd/spi-nor.h
+@@ -142,6 +142,8 @@
+         SNOR_PROTO_ADDR(_addr_nbits) |                         \
+         SNOR_PROTO_DATA(_data_nbits))
  
-+	if (i2c_get_adapter(adapter->nr))
-+		return -EBUSY;
++#define SPI_NOR_MAX_ADDR_WIDTH	4
 +
- 	adapter->dev.id = adapter->nr;
- 	dev_set_name(&adapter->dev, "i2c");
- 
+ enum spi_nor_protocol {
+        SNOR_PROTO_1_1_1 = SNOR_PROTO_STR(1, 1, 1),
+        SNOR_PROTO_1_1_2 = SNOR_PROTO_STR(1, 1, 2),
 -- 
-2.38.2
+2.17.1
+
+
+
+
 
 
 
