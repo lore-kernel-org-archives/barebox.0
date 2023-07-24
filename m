@@ -1,60 +1,60 @@
-Delivery-date: Mon, 24 Jul 2023 09:54:51 +0200
+Delivery-date: Mon, 24 Jul 2023 09:59:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qNqP6-0081bH-JL
-	for lore@lore.pengutronix.de; Mon, 24 Jul 2023 09:54:51 +0200
+	id 1qNqTm-0081oa-2a
+	for lore@lore.pengutronix.de; Mon, 24 Jul 2023 09:59:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qNqP4-0002F0-0c
-	for lore@pengutronix.de; Mon, 24 Jul 2023 09:54:50 +0200
+	id 1qNqTi-0002wa-SZ
+	for lore@pengutronix.de; Mon, 24 Jul 2023 09:59:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=9YbNvYy7mZ6L4M5z6PtFXFFfsTxRf96GxkBw61TeniI=; b=vxGBeh3EDYnhfa3O7e0DDSl/a+
-	siW2WVDCME8jdSL9vWYTBeD3Cl65MftIb3xtNEhVKf0TzsNpLgjgw1I0hhz+o5ocYbBFtaaFv30nf
-	GxPz77uiK6TH1mRla1oez9aJ3euAI9gahkMqhMej7kwNz1wNG7kkKonrU5VvpNvgqFaKCh89EX5k0
-	N/my1hUIwe9FB5lEK86AF7ONQ8FFz/kfb2q9fqeTa/qrMmLEd9aTeyskns5UuJ0Zy6rBjP+v9WWBR
-	kOJzowH0pbdJDlbxPLvWMenz6EGqfZvMEpP8ImhKWfKBYWEjFd7VgaSIT9SNqkbHmgr2e/zNqTazd
-	B8TVR3tg==;
+	bh=Hmjtd5vzAysfgZx5HkESaGCeMRtTwa2e31Y+/j6UIQI=; b=yu3UXJXpvfbendnZcjmTiK4Kd/
+	xtZHa1K+wh/OeI+xq7wjR5TjSA3S0xlH1GQi4skLZgd82ip1Z3IHc8uCwWtfnmPlF9bsYytTPrP65
+	hZLnAaqn/JigumpxzjK2kBzLP/aLgW0sAwN3dqIT9tQz1kbReC2NqxvPoAqwJy60bKsi9KTsiOrjg
+	z3bIze1I9IQjoBGvZImvPYHzc4XjsxxHVc0yKHB4zJJhr3DwuJwuLHy1NGWvy5SNuh8X91Jdfsih8
+	VZLnqZSzXHnA3CoMj9S9eadccgPXS8TAmJ5g3++NNH04U6bIVjBaB6uMeC6HZA2iF3KgpMF4214kt
+	6Q6pfFXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qNqNb-0038xW-1H;
-	Mon, 24 Jul 2023 07:53:19 +0000
+	id 1qNqSW-003AIl-2N;
+	Mon, 24 Jul 2023 07:58:24 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qNqNW-0038w1-2S
+	id 1qNqST-003AHy-1r
 	for barebox@lists.infradead.org;
-	Mon, 24 Jul 2023 07:53:16 +0000
+	Mon, 24 Jul 2023 07:58:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <has@pengutronix.de>)
-	id 1qNqNQ-0001TB-G9; Mon, 24 Jul 2023 09:53:08 +0200
+	id 1qNqSR-0002jF-P6; Mon, 24 Jul 2023 09:58:19 +0200
 Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <has@pengutronix.de>)
-	id 1qNqNP-001hlC-Rj; Mon, 24 Jul 2023 09:53:07 +0200
+	id 1qNqSR-001hmR-4M; Mon, 24 Jul 2023 09:58:19 +0200
 Received: from has by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <has@pengutronix.de>)
-	id 1qNqNP-007iuh-1g; Mon, 24 Jul 2023 09:53:07 +0200
+	id 1qNqSQ-007jNT-70; Mon, 24 Jul 2023 09:58:18 +0200
 From: Holger Assmann <h.assmann@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Holger Assmann <h.assmann@pengutronix.de>
-Date: Mon, 24 Jul 2023 09:52:58 +0200
-Message-Id: <20230724075258.1840671-1-h.assmann@pengutronix.de>
+Date: Mon, 24 Jul 2023 09:58:17 +0200
+Message-Id: <20230724075817.1842693-1-h.assmann@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230724_005314_809965_DBAF9ABF 
-X-CRM114-Status: GOOD (  17.70  )
+X-CRM114-CacheID: sfid-20230724_005821_771148_CCD27D92 
+X-CRM114-Status: GOOD (  23.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,166 +72,228 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] mfd: regulator: initial support for pca9450
+Subject: [PATCH] bootchooser: honour reset source
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The PCA9450 PMIC by NXP can be communicated with via I2C; this driver uses
-that do determine the reset source that caused the PMIC to perform its
-latest power cycle.
+With some systems it is possible to determine the source that triggered
+the most recent reset (see $global.system.reset).
+
+This information can be used at the subsequent boot to evaluate whether
+the respective target works as intended by defining reset reasons that
+are to be used exclusively. Any other reset source would therefore be
+considered to be bad, which should lead to a decrease of the counter
+variable "remaining_attempts" for that target.
+Until now, such an investigation and the consecutive decision of marking
+the last boot successful has either to be done by a custom script in
+barebox or by a service that runs on the eventually booted operating
+system.
+
+Since (if supported by the system) analyzing the reset reason is
+probably the most obvious factor for the marking decision, we might as
+well integrate the functionality into bootchooser directly.
+
+This patch therefore introduces "$global.bootchooser.good_reset_sources"
+as a new variable in which good reset sources can be listed to be
+matched against the actual reset reason.
 
 Signed-off-by: Holger Assmann <h.assmann@pengutronix.de>
 ---
- drivers/mfd/Kconfig   |   7 +++
- drivers/mfd/Makefile  |   1 +
- drivers/mfd/pca9450.c | 106 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 114 insertions(+)
- create mode 100644 drivers/mfd/pca9450.c
+ Documentation/user/bootchooser.rst | 67 +++++++++++++++++++++++++-----
+ common/bootchooser.c               | 22 ++++++++++
+ 2 files changed, 79 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
-index 39a40c2a3f..5189364c2c 100644
---- a/drivers/mfd/Kconfig
-+++ b/drivers/mfd/Kconfig
-@@ -69,6 +69,13 @@ config MFD_STPMIC1
- 	help
- 	  Select this to support communication with the STPMIC1.
+diff --git a/Documentation/user/bootchooser.rst b/Documentation/user/bootchooser.rst
+index db0a4f8898..bce1aed24d 100644
+--- a/Documentation/user/bootchooser.rst
++++ b/Documentation/user/bootchooser.rst
+@@ -108,6 +108,20 @@ While the bootchooser algorithm handles attempts decrementation, retries and
+ selection of the right boot target itself, it cannot decide if the system
+ booted successfully on its own.
  
-+config MFD_PCA9450
-+	depends on I2C
-+	select REGMAP_I2C
-+	bool "PCA9450 MFD driver"
-+	help
-+	  Select this to support communication with the PCA9450 PMIC.
++However, for systems where barebox is able to detect the actual :ref:`reset reason <reset_reason>`
++(e.g. WDG), bootchooser will look for matches in ``global.bootchooser.good_reset_sources``.
++This variable may contain a space-separated list of those reset reasons that are
++considered *good*. If a matching entry is found, bootchooser will mark the last
++boot successful.
 +
- config MFD_RN568PMIC
- 	depends on I2C
- 	select REGMAP_I2C
-diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
-index f19bf53655..00f3eacf3c 100644
---- a/drivers/mfd/Makefile
-+++ b/drivers/mfd/Makefile
-@@ -25,3 +25,4 @@ obj-$(CONFIG_MFD_RK808)		+= rk808.o
- obj-$(CONFIG_MFD_AXP20X_I2C)	+= axp20x-i2c.o axp20x.o
- obj-$(CONFIG_MFD_ATMEL_SMC)	+= atmel-smc.o
- obj-$(CONFIG_MFD_ROHM_BD718XX)	+= rohm-bd718x7.o
-+obj-$(CONFIG_MFD_PCA9450)	+= pca9450.o
-diff --git a/drivers/mfd/pca9450.c b/drivers/mfd/pca9450.c
-new file mode 100644
-index 0000000000..3e4a63f398
---- /dev/null
-+++ b/drivers/mfd/pca9450.c
-@@ -0,0 +1,106 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2023 Holger Assmann, Pengutronix
-+ */
++This marking can also be performed manually or from within a script by calling
++the barebox :ref:`bootchoser command <command_bootchooser>`:: 
 +
-+#include <common.h>
-+#include <driver.h>
-+#include <errno.h>
-+#include <i2c/i2c.h>
-+#include <init.h>
-+#include <mfd/pca9450.h>
-+#include <of.h>
-+#include <regmap.h>
-+#include <reset_source.h>
++  bootchooser -s
 +
-+#define REASON_PMIC_RST		0x10
-+#define REASON_PWON		0x80
-+#define REASON_SW_RST		0x20
-+#define REASON_WDOG		0x40
++Marking the preceding boot successful will result in the ``remaining_attempts`` counter of the
++*last chosen* slot to be reset to its default value (``reset_attempts``).
 +
-+static const struct regmap_config pca9450_regmap_i2c_config = {
-+	.reg_bits = 8,
-+	.val_bits = 8,
-+	.max_register = 0x2E,
-+};
+ In case only the booted system itself knows when it is in a good state,
+ it can report this to the bootchooser from Linux userspace using the
+ *barebox-state* tool from the dt-utils_ package.::
+@@ -116,16 +130,6 @@ it can report this to the bootchooser from Linux userspace using the
+   barebox-state -n system_state -s bootstate.system1.remaining_attempts=3
+   barebox-state -s system1.remaining_attempts=3
+ 
+-If instead the bootchooser can detect a failed boot itself using the
+-:ref:`reset reason <reset_reason>` (WDG), one can mark the boot successful
+-using the barebox :ref:`bootchoser command <command_bootchooser>`::
+-
+-  bootchooser -s
+-
+-to mark the last boot successful.
+-This will reset the ``remaining_attempts`` counter of the *last chosen* slot to
+-its default value (``reset_attempts``).
+-
+ 
+ .. _dt-utils: https://git.pengutronix.de/cgit/tools/dt-utils
+ 
+@@ -147,6 +151,8 @@ options not specific to any boot target.
+   specific variable of the same name.
+ ``global.bootchooser.reset_attempts``
+   Already described in :ref:`Bootchooser Algorithm <bootchooser,algorithm>`
++``bootchooser.good_reset_sources``
++  Already described in :ref:`Bootchooser Algorithm <bootchooser,algorithm>`
+ ``global.bootchooser.reset_priorities``
+   A space-separated list of events that cause *bootchooser* to reset the priorities of
+   all boot targets. Possible values:
+@@ -268,6 +274,7 @@ are reset to their defaults and the first boot target is tried again.
+ Settings
+ ^^^^^^^^
+ - ``global.bootchooser.reset_attempts="all-zero"``
++- ``global.bootchooser.good_reset_sources=""``
+ - ``global.bootchooser.reset_priorities="all-zero"``
+ - ``global.bootchooser.disable_on_zero_attempts=0``
+ - ``global.bootchooser.retry=1``
+@@ -302,6 +309,7 @@ Settings
+ ^^^^^^^^
+ 
+ - ``global.bootchooser.reset_attempts=""``
++- ``global.bootchooser.good_reset_sources=""``
+ - ``global.bootchooser.reset_priorities=""``
+ - ``global.bootchooser.disable_on_zero_attempts=0``
+ - ``global.bootchooser.retry=1``
+@@ -337,6 +345,7 @@ Settings
+ ^^^^^^^^
+ 
+ - ``global.bootchooser.reset_attempts="power-on"``
++- ``global.bootchooser.good_reset_sources=""``
+ - ``global.bootchooser.reset_priorities=""``
+ - ``global.bootchooser.disable_on_zero_attempts=1``
+ - ``global.bootchooser.retry=1``
+@@ -358,6 +367,44 @@ through due to the lack of bootable targets. This target can be:
+ - a system that will be booted as recovery.
+ - a barebox script that will be started.
+ 
++Scenario 4
++##########
 +
-+static int pca9450_get_reset_source(struct device *dev, struct regmap *map)
-+{
-+	enum reset_src_type type;
-+	int reg;
-+	int ret;
++- a system with multiple boot targets
++- one recovery system
++- detection of the :ref:`cause of the preceding reset <reset_reason>` is
++  supported by the hardware
 +
-+	ret = regmap_read(map, PCA9450_PWRON_STAT, &reg);
-+	if (ret)
-+		return ret;
-+	
-+	switch (reg) {
-+		case REASON_PWON:
-+			dev_dbg(dev, "Power ON triggered by PMIC_ON_REQ.\n");
-+			type = RESET_POR;
-+			break;
-+		case REASON_WDOG:
-+			dev_dbg(dev, "Detected cold reset by WDOGB pin\n");
-+			type = RESET_WDG;
-+			break;
-+		case REASON_SW_RST:
-+			dev_dbg(dev, "Detected cold reset by SW_RST\n");
-+			type = RESET_RST;
-+			break;
-+		case REASON_PMIC_RST:
-+			dev_dbg(dev, "Detected cold reset by PMIC_RST_B\n");
-+			type = RESET_EXT;
-+			break;
-+		default:
-+			dev_warn(dev, "Could not determine reset reason.\n");
-+			type = RESET_UKWN;
-+	}
++  - POR (Power On Reset) and RST (ReSeT) are considered *good* causes
 +
-+	reset_source_set_device(dev, type);
++Booting a boot target three times without success disables it.
 +
-+	return 0;
-+};
-+	
-+static int __init pca9450_probe(struct device *dev)
-+{
-+	struct regmap *regmap;
-+	int reg;
-+	int ret;
++Settings
++^^^^^^^^
 +
-+	regmap = regmap_init_i2c(to_i2c_client(dev), &pca9450_regmap_i2c_config);
-+	if (IS_ERR(regmap))
-+		return PTR_ERR(regmap);
++- ``global.bootchooser.reset_attempts=""``
++- ``global.bootchooser.good_reset_sources="POR RST"``
++- ``global.bootchooser.reset_priorities=""``
++- ``global.bootchooser.disable_on_zero_attempts=1``
++- ``global.bootchooser.retry=1``
++- ``global.boot.default="bootchooser recovery"``
++- bootchooser marks as good.
 +
-+	ret = regmap_register_cdev(regmap, NULL);
-+	if (ret)
-+		return ret;
++Deployment
++^^^^^^^^^^
 +
-+	ret = regmap_read(regmap, PCA9450_REG_DEV_ID, &reg);
-+	if (ret) {
-+		dev_err(dev, "Unable to read PMIC Chip ID\n");
-+		return ret;
-+	}
++#. barebox or flash robot fills all boot targets with valid systems.
++#. barebox or flash robot marks boot targets as good.
 +
-+	/* Chip ID defined in bits [7:4] */
-+	dev_info(dev, "PMIC Chip ID: 0x%x\n", (reg >> 4));
++Recovery
++^^^^^^^^
 +
-+	pca9450_get_reset_source(dev,regmap);
++Done by 'recovery' boot target which is booted after the *bootchooser* falls
++through due to the lack of bootable targets. This target can be:
 +
-+	return of_platform_populate(dev->of_node, NULL, dev);
-+}
++- a system that will be booted as recovery.
++- a barebox script that will be started.
 +
-+static __maybe_unused struct of_device_id pca9450_dt_ids[] = {
-+	{ .compatible = "nxp,pca9450a" },
-+	{ .compatible = "nxp,pca9450b" },
-+	{ .compatible = "nxp,pca9450c" },
-+	{ /* sentinel */ }
-+};
-+MODULE_DEVICE_TABLE(of, pca9450_dt_ids);
+ .. _bootchooser,state_framework:
+ 
+ Using the *State* Framework as Backend for Run-Time Variable Data
+diff --git a/common/bootchooser.c b/common/bootchooser.c
+index eb3dda52ab..ecc9c33312 100644
+--- a/common/bootchooser.c
++++ b/common/bootchooser.c
+@@ -35,6 +35,7 @@
+ #define BOOTCHOOSER_PREFIX "global.bootchooser"
+ 
+ static char *available_targets;
++static char *global_good_reset_sources;
+ static char *state_prefix;
+ static int global_default_attempts = 3;
+ static int global_default_priority = 1;
+@@ -348,6 +349,7 @@ struct bootchooser *bootchooser_get(void)
+ {
+ 	struct bootchooser *bc;
+ 	struct bootchooser_target *target;
++	enum reset_src_type type = reset_source_get();
+ 	char *targets, *str, *freep = NULL, *delim;
+ 	int ret = -EINVAL, id = 1;
+ 	uint32_t last_chosen;
+@@ -451,6 +453,20 @@ struct bootchooser *bootchooser_get(void)
+ 		}
+ 	}
+ 
++  	/* no multiple substrings in reset_src_type */
++  	if (!last_boot_successful &&
++		strstr(global_good_reset_sources, reset_source_to_string(type))) {
++		/*
++		 * If there are reset sources defined that are considered good
++		 * and the reset source detected by the system fits an entry of
++		 * that list, we do not want to further decrement the
++		 * remaining_attempts counter.
++		 */
++  		pr_info("Good Reset '%s', marking last boot successful\n",
++  				reset_source_to_string(type));
++		last_boot_successful = true;
++  	}
 +
-+static struct driver pca9450_i2c_driver = {
-+	.name		= "pca9450-i2c",
-+	.probe		= pca9450_probe,
-+	.of_compatible	= DRV_OF_COMPAT(pca9450_dt_ids),
-+};
-+
-+coredevice_i2c_driver(pca9450_i2c_driver);
+ 	ret = getenv_u32(bc->state_prefix, "last_chosen", &last_chosen);
+ 	if (!ret && last_chosen > 0) {
+ 		bc->last_chosen = bootchooser_target_by_id(bc, last_chosen);
+@@ -925,11 +941,13 @@ static int bootchooser_init(void)
+ {
+ 	state_prefix = xstrdup("");
+ 	available_targets = xstrdup("");
++	global_good_reset_sources = xstrdup("");
+ 
+ 	globalvar_add_simple_bool("bootchooser.disable_on_zero_attempts", &disable_on_zero_attempts);
+ 	globalvar_add_simple_bool("bootchooser.retry", &retry);
+ 	globalvar_add_simple_string("bootchooser.targets", &available_targets);
+ 	globalvar_add_simple_string("bootchooser.state_prefix", &state_prefix);
++	globalvar_add_simple_string("bootchooser.good_reset_sources", &global_good_reset_sources);
+ 	globalvar_add_simple_int("bootchooser.default_attempts", &global_default_attempts, "%u");
+ 	globalvar_add_simple_int("bootchooser.default_priority", &global_default_priority, "%u");
+ 	globalvar_add_simple_bitmask("bootchooser.reset_attempts", &reset_attempts,
+@@ -951,6 +969,10 @@ BAREBOX_MAGICVAR(global.bootchooser.targets,
+ 		 "bootchooser: Space separated list of target names");
+ BAREBOX_MAGICVAR(global.bootchooser.default_attempts,
+ 		 "bootchooser: Default number of attempts for a target");
++BAREBOX_MAGICVAR(global.bootchooser.reset_attempts,
++		"bootchooser: Choose condition to reset number of attempts for all targets ('power-on', 'all-zero')");
++BAREBOX_MAGICVAR(global.bootchooser.good_reset_sources,
++		"bootchooser: Space-separated list of good reset sources consulted to not decrease remainin attempts counter");
+ BAREBOX_MAGICVAR(global.bootchooser.default_priority,
+ 		 "bootchooser: Default priority for a target");
+ BAREBOX_MAGICVAR(global.bootchooser.state_prefix,
 -- 
 2.39.2
 
