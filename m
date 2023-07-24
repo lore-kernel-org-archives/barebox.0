@@ -1,61 +1,60 @@
-Delivery-date: Fri, 21 Jul 2023 13:11:29 +0200
+Delivery-date: Mon, 24 Jul 2023 09:54:51 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qMo2k-005PRh-JL
-	for lore@lore.pengutronix.de; Fri, 21 Jul 2023 13:11:29 +0200
+	id 1qNqP6-0081bH-JL
+	for lore@lore.pengutronix.de; Mon, 24 Jul 2023 09:54:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qMo2i-000290-7P
-	for lore@pengutronix.de; Fri, 21 Jul 2023 13:11:28 +0200
+	id 1qNqP4-0002F0-0c
+	for lore@pengutronix.de; Mon, 24 Jul 2023 09:54:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=dJhBkwc7qSPrSzQrpntnVKTiLIfw9tdI6l1ixZ5PMjY=; b=veRvv2H5ceJIUtJpGsQt/VD9S2
-	z5KDIDqzwTwq3ySMh+T8a2cG7ct0+JTxNZFUi2sStSS+klMPK9yYyb00gTbcv990c1e81zAEykoee
-	MATVMUhVCwwWk8sgt12m7x/YnlFe/KZrGy1+46CIw1oqeuz0J3IUQ0ejh7f/QAKkadVZ6DNDCoVf7
-	2KzIk9GquIICfoXS03CF5TbhuDhOBaE+St2ASbGrFL7N7UGJuFT4sFzhBqdzJVyBP0jgfFanPkk/x
-	geEU3ZcdbFxhvW8czMr9Guz39Rc5gtoekRgdf9eWe1+Sf45V370JTjEXN8jlwL5+L0GaNhH370cgY
-	cdciuIhw==;
+	bh=9YbNvYy7mZ6L4M5z6PtFXFFfsTxRf96GxkBw61TeniI=; b=vxGBeh3EDYnhfa3O7e0DDSl/a+
+	siW2WVDCME8jdSL9vWYTBeD3Cl65MftIb3xtNEhVKf0TzsNpLgjgw1I0hhz+o5ocYbBFtaaFv30nf
+	GxPz77uiK6TH1mRla1oez9aJ3euAI9gahkMqhMej7kwNz1wNG7kkKonrU5VvpNvgqFaKCh89EX5k0
+	N/my1hUIwe9FB5lEK86AF7ONQ8FFz/kfb2q9fqeTa/qrMmLEd9aTeyskns5UuJ0Zy6rBjP+v9WWBR
+	kOJzowH0pbdJDlbxPLvWMenz6EGqfZvMEpP8ImhKWfKBYWEjFd7VgaSIT9SNqkbHmgr2e/zNqTazd
+	B8TVR3tg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qMo1W-00Dt5j-2d;
-	Fri, 21 Jul 2023 11:10:14 +0000
+	id 1qNqNb-0038xW-1H;
+	Mon, 24 Jul 2023 07:53:19 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qMo1T-00Dt4F-1p
+	id 1qNqNW-0038w1-2S
 	for barebox@lists.infradead.org;
-	Fri, 21 Jul 2023 11:10:12 +0000
+	Mon, 24 Jul 2023 07:53:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qMo1S-0001Yi-0X; Fri, 21 Jul 2023 13:10:10 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <has@pengutronix.de>)
+	id 1qNqNQ-0001TB-G9; Mon, 24 Jul 2023 09:53:08 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qMo1R-0012r1-CK; Fri, 21 Jul 2023 13:10:09 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qMo1Q-00FWRW-31;
-	Fri, 21 Jul 2023 13:10:08 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	(envelope-from <has@pengutronix.de>)
+	id 1qNqNP-001hlC-Rj; Mon, 24 Jul 2023 09:53:07 +0200
+Received: from has by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <has@pengutronix.de>)
+	id 1qNqNP-007iuh-1g; Mon, 24 Jul 2023 09:53:07 +0200
+From: Holger Assmann <h.assmann@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 21 Jul 2023 13:10:07 +0200
-Message-Id: <20230721111007.3699613-1-a.fatoum@pengutronix.de>
+Cc: Holger Assmann <h.assmann@pengutronix.de>
+Date: Mon, 24 Jul 2023 09:52:58 +0200
+Message-Id: <20230724075258.1840671-1-h.assmann@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230721_041011_606557_50765E7A 
-X-CRM114-Status: GOOD (  19.95  )
+X-CRM114-CacheID: sfid-20230724_005314_809965_DBAF9ABF 
+X-CRM114-Status: GOOD (  17.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,155 +72,166 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] commands: go: support passing integer arguments instead of argc/argv
+Subject: [PATCH] mfd: regulator: initial support for pca9450
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The go command accepts extra arguments, which are passed through to the
-application using two parameters: argc to hold the number of arguments
-and argv as a NULL pointer terminated array of pointers to
-nul-terminated strings.
+The PCA9450 PMIC by NXP can be communicated with via I2C; this driver uses
+that do determine the reset source that caused the PMIC to perform its
+latest power cycle.
 
-As the go command is meant to invoke bare metal applications, it is
-useful to be able to pass arguments parsed to integers using the
-default calling convention, so add a new -i argument. The old behavior
-remains the default and a new -s arguments makes it explicit for
-symmetry.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Holger Assmann <h.assmann@pengutronix.de>
 ---
- commands/Kconfig |  5 ++++-
- commands/go.c    | 54 +++++++++++++++++++++++++++++++++++++++++-------
- 2 files changed, 51 insertions(+), 8 deletions(-)
+ drivers/mfd/Kconfig   |   7 +++
+ drivers/mfd/Makefile  |   1 +
+ drivers/mfd/pca9450.c | 106 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 114 insertions(+)
+ create mode 100644 drivers/mfd/pca9450.c
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 7ca7b56fa54e..987cc286fc73 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -461,12 +461,15 @@ config CMD_GO
+diff --git a/drivers/mfd/Kconfig b/drivers/mfd/Kconfig
+index 39a40c2a3f..5189364c2c 100644
+--- a/drivers/mfd/Kconfig
++++ b/drivers/mfd/Kconfig
+@@ -69,6 +69,13 @@ config MFD_STPMIC1
  	help
- 	  Start application at address or file
+ 	  Select this to support communication with the STPMIC1.
  
--	  Usage: go ADDR [ARG...]
-+	  Usage: go [-si] ADDR [ARG...]
- 
- 	  Start application at ADDR passing ARG as arguments.
- 
- 	  If addr does not start with a digit it is interpreted as a filename
- 	  in which case the file is memmapped and executed
-+	  Options:
-+		  -s	pass all arguments as strings referenced by argc, argv arguments (default)
-+		  -i	pass up to four integer arguments using default calling convention
- 
- config CMD_LOADB
- 	depends on CONSOLE_FULL
-diff --git a/commands/go.c b/commands/go.c
-index 0c0b4cb15e4d..c0c0f5a0c562 100644
---- a/commands/go.c
-+++ b/commands/go.c
-@@ -8,21 +8,44 @@
- #include <complete.h>
- #include <fs.h>
- #include <fcntl.h>
-+#include <getopt.h>
- #include <linux/ctype.h>
- #include <errno.h>
- 
-+#define INT_ARGS_MAX	4
++config MFD_PCA9450
++	depends on I2C
++	select REGMAP_I2C
++	bool "PCA9450 MFD driver"
++	help
++	  Select this to support communication with the PCA9450 PMIC.
 +
- static int do_go(int argc, char *argv[])
- {
- 	void	*addr;
- 	int     rcode = 1;
- 	int	fd = -1;
--	int	(*func)(int argc, char *argv[]);
-+	void	(*func)(ulong r0, ulong r1, ulong r2, ulong r3);
-+	int	opt;
-+	ulong	arg[INT_ARGS_MAX] = {};
-+	bool	pass_argv = true;
- 
--	if (argc < 2)
-+	while ((opt = getopt(argc, argv, "+si")) > 0) {
-+		switch (opt) {
-+		case 's':
-+			pass_argv = true;
+ config MFD_RN568PMIC
+ 	depends on I2C
+ 	select REGMAP_I2C
+diff --git a/drivers/mfd/Makefile b/drivers/mfd/Makefile
+index f19bf53655..00f3eacf3c 100644
+--- a/drivers/mfd/Makefile
++++ b/drivers/mfd/Makefile
+@@ -25,3 +25,4 @@ obj-$(CONFIG_MFD_RK808)		+= rk808.o
+ obj-$(CONFIG_MFD_AXP20X_I2C)	+= axp20x-i2c.o axp20x.o
+ obj-$(CONFIG_MFD_ATMEL_SMC)	+= atmel-smc.o
+ obj-$(CONFIG_MFD_ROHM_BD718XX)	+= rohm-bd718x7.o
++obj-$(CONFIG_MFD_PCA9450)	+= pca9450.o
+diff --git a/drivers/mfd/pca9450.c b/drivers/mfd/pca9450.c
+new file mode 100644
+index 0000000000..3e4a63f398
+--- /dev/null
++++ b/drivers/mfd/pca9450.c
+@@ -0,0 +1,106 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2023 Holger Assmann, Pengutronix
++ */
++
++#include <common.h>
++#include <driver.h>
++#include <errno.h>
++#include <i2c/i2c.h>
++#include <init.h>
++#include <mfd/pca9450.h>
++#include <of.h>
++#include <regmap.h>
++#include <reset_source.h>
++
++#define REASON_PMIC_RST		0x10
++#define REASON_PWON		0x80
++#define REASON_SW_RST		0x20
++#define REASON_WDOG		0x40
++
++static const struct regmap_config pca9450_regmap_i2c_config = {
++	.reg_bits = 8,
++	.val_bits = 8,
++	.max_register = 0x2E,
++};
++
++static int pca9450_get_reset_source(struct device *dev, struct regmap *map)
++{
++	enum reset_src_type type;
++	int reg;
++	int ret;
++
++	ret = regmap_read(map, PCA9450_PWRON_STAT, &reg);
++	if (ret)
++		return ret;
++	
++	switch (reg) {
++		case REASON_PWON:
++			dev_dbg(dev, "Power ON triggered by PMIC_ON_REQ.\n");
++			type = RESET_POR;
 +			break;
-+		case 'i':
-+			pass_argv = false;
++		case REASON_WDOG:
++			dev_dbg(dev, "Detected cold reset by WDOGB pin\n");
++			type = RESET_WDG;
++			break;
++		case REASON_SW_RST:
++			dev_dbg(dev, "Detected cold reset by SW_RST\n");
++			type = RESET_RST;
++			break;
++		case REASON_PMIC_RST:
++			dev_dbg(dev, "Detected cold reset by PMIC_RST_B\n");
++			type = RESET_EXT;
 +			break;
 +		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
++			dev_warn(dev, "Could not determine reset reason.\n");
++			type = RESET_UKWN;
 +	}
 +
-+	/* skip options */
-+	argv += optind;
-+	argc -= optind;
++	reset_source_set_device(dev, type);
 +
-+	if (argc == 0 || (!pass_argv && argc - 1 > INT_ARGS_MAX))
- 		return COMMAND_ERROR_USAGE;
- 
--	if (!isdigit(*argv[1])) {
--		fd = open(argv[1], O_RDONLY);
-+	if (!isdigit(*argv[0])) {
-+		fd = open(argv[0], O_RDONLY);
- 		if (fd < 0) {
- 			perror("open");
- 			goto out;
-@@ -34,7 +57,7 @@ static int do_go(int argc, char *argv[])
- 			goto out;
- 		}
- 	} else
--		addr = (void *)simple_strtoul(argv[1], NULL, 16);
-+		addr = (void *)simple_strtoul(argv[0], NULL, 16);
- 
- 	printf("## Starting application at 0x%p ...\n", addr);
- 
-@@ -44,7 +67,21 @@ static int do_go(int argc, char *argv[])
- 
- 	shutdown_barebox();
- 
--	func(argc - 1, &argv[1]);
-+	if (pass_argv) {
-+		arg[0] = argc;
-+		arg[1] = (ulong)argv;
-+	} else {
-+		int i;
++	return 0;
++};
++	
++static int __init pca9450_probe(struct device *dev)
++{
++	struct regmap *regmap;
++	int reg;
++	int ret;
 +
-+		/* skip argv[0] */
-+		argc--;
-+		argv++;
++	regmap = regmap_init_i2c(to_i2c_client(dev), &pca9450_regmap_i2c_config);
++	if (IS_ERR(regmap))
++		return PTR_ERR(regmap);
 +
-+		for (i = 0; i < argc; i++)
-+			kstrtoul(argv[i], 0, &arg[i]);
++	ret = regmap_register_cdev(regmap, NULL);
++	if (ret)
++		return ret;
++
++	ret = regmap_read(regmap, PCA9450_REG_DEV_ID, &reg);
++	if (ret) {
++		dev_err(dev, "Unable to read PMIC Chip ID\n");
++		return ret;
 +	}
 +
-+	func(arg[0], arg[1], arg[2], arg[3]);
- 
- 	/*
- 	 * The application returned. Since we have shutdown barebox and
-@@ -64,12 +101,15 @@ BAREBOX_CMD_HELP_TEXT("Start application at ADDR passing ARG as arguments.")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("If addr does not start with a digit it is interpreted as a filename")
- BAREBOX_CMD_HELP_TEXT("in which case the file is memmapped and executed")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-s", "pass all arguments as strings referenced by argc, argv arguments (default)")
-+BAREBOX_CMD_HELP_OPT("-i", "pass up to four integer arguments using default calling convention")
- BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(go)
- 	.cmd		= do_go,
- 	BAREBOX_CMD_DESC("start application at address or file")
--	BAREBOX_CMD_OPTS("ADDR [ARG...]")
-+	BAREBOX_CMD_OPTS("[-si] ADDR [ARG...]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_BOOT)
- 	BAREBOX_CMD_HELP(cmd_go_help)
- 	BAREBOX_CMD_COMPLETE(command_var_complete)
++	/* Chip ID defined in bits [7:4] */
++	dev_info(dev, "PMIC Chip ID: 0x%x\n", (reg >> 4));
++
++	pca9450_get_reset_source(dev,regmap);
++
++	return of_platform_populate(dev->of_node, NULL, dev);
++}
++
++static __maybe_unused struct of_device_id pca9450_dt_ids[] = {
++	{ .compatible = "nxp,pca9450a" },
++	{ .compatible = "nxp,pca9450b" },
++	{ .compatible = "nxp,pca9450c" },
++	{ /* sentinel */ }
++};
++MODULE_DEVICE_TABLE(of, pca9450_dt_ids);
++
++static struct driver pca9450_i2c_driver = {
++	.name		= "pca9450-i2c",
++	.probe		= pca9450_probe,
++	.of_compatible	= DRV_OF_COMPAT(pca9450_dt_ids),
++};
++
++coredevice_i2c_driver(pca9450_i2c_driver);
 -- 
 2.39.2
 
