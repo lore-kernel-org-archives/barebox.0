@@ -3,82 +3,79 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOAHK-008zvJ-QK
+	id 1qOAHK-008zvm-RH
 	for lore@lore.pengutronix.de; Tue, 25 Jul 2023 07:08:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOAHG-0004Hz-8J
+	id 1qOAHH-0004Je-VC
 	for lore@pengutronix.de; Tue, 25 Jul 2023 07:08:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=6TUv1OGu+sP2DE3uZe0/AGcHT28Y9qqix/uZQgFr3UE=; b=28/qRQqVdjtElp
-	G+dmvmrwFtoSwMjN+cZ5wPLXPU+Sg90jRDRdBpu57n+6yALB79XvSVMu3mXsWymQy7ADUggZ6SMFc
-	E82NsBjb6sYuphfs0N6feMzDlQO9mK10dP7NgfcQ4fHzz4Thv6hlCpDAUuBZjS5Dtt9bdqk+o7J89
-	xQRr2+4YdAh2YmYLNLWvRkQhEegUBwdxwcpdi3cHf2VQecZYi6z1gRh/5RDigqPLucPF9ArCoB6Z6
-	ZCxpXwqTxzKWIzWyCT/5sGdMA4z3zArC1XL3ad1nIT3BZxb/tiINBRxtKncP7xAke/hl7aY4dtcib
-	ufGMMbytDfB+w1wZtDVQ==;
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=jCXxOe3Hr7ocd/bxMP0LPObF5dWP8gdAjvL51E4IXwM=; b=ftGWtvldLI+OBj
+	FasqcdKDD5cnzGomReY/PogyiBushKpXLFQH6fHGNY8pFBitIioQG050GfuxhDY0FToOstU/7jP7V
+	xt3bpVOUpwsgVWL3klSPWQsyG8g7Fdm/8azrYUt63hPdGHzyONvPHZT+2efAhlmflYfOaWerGQaOH
+	gpRHhUDAbK3PP/a9L9yCL9V9teFc20/50Laccmo2NPqJnWBNmERRZrF5VaSnYJdloBavN5jLq1X0R
+	yBphbt1T1szd3f3dPqRo8MRLr0NCmi1W6RghhUySOD+ineZnyLzRVzCIQQouEb3mBhnnwgTpFIFz4
+	j09PLGTmjONR88NmkfOA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOAFx-006FKQ-1o;
-	Tue, 25 Jul 2023 05:06:45 +0000
-Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
+	id 1qOAFq-006FGY-1d;
+	Tue, 25 Jul 2023 05:06:38 +0000
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOAFs-006FHX-2d
+	id 1qOAFm-006FEl-1w
 	for barebox@lists.infradead.org;
-	Tue, 25 Jul 2023 05:06:42 +0000
-Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-5221e487e08so4181290a12.0
-        for <barebox@lists.infradead.org>; Mon, 24 Jul 2023 22:06:40 -0700 (PDT)
+	Tue, 25 Jul 2023 05:06:36 +0000
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-52227884855so3394144a12.1
+        for <barebox@lists.infradead.org>; Mon, 24 Jul 2023 22:06:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690261599; x=1690866399;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6TUv1OGu+sP2DE3uZe0/AGcHT28Y9qqix/uZQgFr3UE=;
-        b=lj/VC67oQsUyLDHcawc+DGYBcT6B0Ngh9DLugWD08J8xNgQgpV/xOKlHZCX9WVq7+h
-         8FL83J4WGE1o4EeFChaS4xeVnHu257SSkEssKvVLtJ6GeB8Vu8rlj6nOzUpiccEMsGWr
-         UDy+Vq2pYG4fmLD+2HK7ZaKyKjlSWOmm/CvP6JLnIYSXImO9Iclee65g4MKhdTR+80LN
-         hWfZUZl7Sgff2ZwgNXshwB2kzmjFojZsV1oOy/GMn50NbGm2whqq57zS4zJQA01jzC6E
-         cweIcp1BZT4uvXiJpjf7fvkjccehhh9yC7Q9WzQmhcTb/6f0GciL4jyfFzEQVRjGAij1
-         b32g==
+        d=gmail.com; s=20221208; t=1690261590; x=1690866390;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jCXxOe3Hr7ocd/bxMP0LPObF5dWP8gdAjvL51E4IXwM=;
+        b=OW3J8ZOsCTbUq1MOBw7jE/GROqovFZsNQA6undk9RoToGKGcyAZcvilRW07bm7HQoV
+         v3ByzsHNcvVvjOaDggABYoeigy7tEghY0rISXAwRwYaiHkMQlQxriV/jNRUdpm3U+8Jy
+         ML3TcoVsK2kW70hHk7w7zQkR+WK8pwgHwUFp2mfP1k6JnIVl7mG2EvISk7Xvpc5Z4dwd
+         QT9W1xX3uAAov15vp/arHe8S5en1tWBmRl5YtgNnXLUC130ymhzE8/6hO46aUw0KWyC9
+         /BSY7J1wM0dx09zWBR47kW9mPqTnPhXcKkRrYHiDWuSODNNG+oalYs4g5H3LMHX8qwEI
+         ssfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690261599; x=1690866399;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=6TUv1OGu+sP2DE3uZe0/AGcHT28Y9qqix/uZQgFr3UE=;
-        b=aTofD3tVsRydKN4lRrZwCb4WcFbe7fRpDH87Gxo+V5PbM+1Ks1WXYQ3zNaSZK+HUV9
-         LRK5qWvgX5mX6+VTFiIQiR+l3DY8SY3UcqvTrjtimMB0faCtyNT2tY/E5wVNSkRsGXWz
-         O1J6J6imik5BSSe+2zPFCIS5645mKRKqlEPZBk8+it98EiXYtMItdsR2xNuXxA6MPvms
-         BZ3Y6UXBG0kHpz5ZJEj1UCIaItX7V+1eFXWpxDAcQm62DcMwMr9Pa426p4p22u6CD84z
-         NC4t3LrMIk67rGCca9Tu7A8s1Ob+mZJn7C/c8c2R8aXXFEnZkm6OvyxEpsBTN9olxuEx
-         /XEQ==
-X-Gm-Message-State: ABy/qLYnzfOyKUwLlkpLL8WTjfo8tXZE3XGtKvGB4Jl2oK/1cQd2xBZu
-	yn0FePSDfCroIlqWJAJpk0dIEZpPbj6be6u+/cE4bw==
-X-Google-Smtp-Source: APBJJlHyFZiuQ2Y8PeBu/xL8E/danVDMHh22DE5z0E/A/BW2s6bOke5Z7pkTjiknYjTw7uR40jpU0g==
-X-Received: by 2002:a50:ed88:0:b0:51e:253e:1e0c with SMTP id h8-20020a50ed88000000b0051e253e1e0cmr10251582edr.25.1690261599204;
-        Mon, 24 Jul 2023 22:06:39 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1690261590; x=1690866390;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jCXxOe3Hr7ocd/bxMP0LPObF5dWP8gdAjvL51E4IXwM=;
+        b=Cri1fa6k0xU7mod1CHiykKZYJK0EEB77ANzsOBFaqQ6t+pj+luX7eFInFGJi0VbP5w
+         aM2umFKfcSzPriEcOQEEMalF5fssHTZNWZY0qKIO3SrUDERlOj5HyyS63w0UyVJGyKvO
+         xW7OzzBu3DsXfh89UnPesEnf+fO7LxzqfV38TdKhaEY+augtXmK5cW16U9d79emlKM0i
+         Xy2yyfCyUk/RpOJ/CTCA3DgtCZz+GqxUJR4rxsGYMhqx4ILKxOWsXVaXc7KSRyEIcKXX
+         JGwQRtbPa9wvIhlxDU/InMVJoDuD8sDFzrHPK8tFQFXZNfJ679KHf8Ie6UF3YT74NBMe
+         2Jww==
+X-Gm-Message-State: ABy/qLY4Gs86KS56gWt3g+I7vUaS/Ar5J6G1bu65j1PXju4zjK5cJRnU
+	M4i8Gvn7i9MnPFlKSyRufidoTF/E9FLmKe+eDbiSuw==
+X-Google-Smtp-Source: APBJJlEketkhbtgoJm+bH5WxwsV7xluwEwa4ZHPd3onp89VcryqMljM4x52ftHed3QBV3gWymEXviQ==
+X-Received: by 2002:a50:fb08:0:b0:521:e544:e7 with SMTP id d8-20020a50fb08000000b00521e54400e7mr9436953edq.6.1690261589530;
+        Mon, 24 Jul 2023 22:06:29 -0700 (PDT)
 Received: from localhost.localdomain ([188.123.230.211])
-        by smtp.gmail.com with ESMTPSA id k17-20020a05640212d100b0052237dfa82fsm1730505edx.64.2023.07.24.22.06.38
+        by smtp.gmail.com with ESMTPSA id k17-20020a05640212d100b0052237dfa82fsm1730505edx.64.2023.07.24.22.06.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 22:06:38 -0700 (PDT)
+        Mon, 24 Jul 2023 22:06:28 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 25 Jul 2023 08:05:09 +0300
-Message-ID: <20230725050618.3451-9-denorl2009@gmail.com>
+Date: Tue, 25 Jul 2023 08:05:01 +0300
+Message-ID: <20230725050618.3451-1-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230725050618.3451-1-denorl2009@gmail.com>
-References: <20230725050618.3451-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230724_220640_856125_5D1F32BC 
-X-CRM114-Status: GOOD (  14.51  )
+X-CRM114-CacheID: sfid-20230724_220634_643151_5E339526 
+X-CRM114-Status: GOOD (  10.71  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -102,115 +99,66 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 08/21] MIPS: malta: merge GT64120 headers
+Subject: [PATCH 00/21] MIPS: semi-random code improvements
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The various definitions related to GT64120 system controller were split
-between two headers: 'asm/gt64120.h' and 'mach/mach-gt64120.h'. It seems
-that they were taken from Linux in this form. No reason to keep it like
-that though, so unify them into 'mach/gt64120.h'.
+Denis Orlov (21):
+  MIPS: addrspace: rectify ksseg segment naming
+  MIPS: addrspace: simplify the header
+  MIPS: main_entry-pbl: remove unused variable
+  MIPS: barebox.lds: remove extra whitespace
+  MIPS: reloc: mark relocate_code() as noreturn
+  MIPS: cpuinfo: use appropriate format specifiers in printf
+  MIPS: print BadVAddr CP0 register on exception
+  MIPS: malta: merge GT64120 headers
+  MIPS: pbl_macros: use .asciiz instead of .ascii + .byte 0
+  MIPS: malta: remove duplicated barebox magic code
+  MIPS: pbl: put mips_barebox_10h into ENTRY_FUNCTION
+  MIPS: pbl: make sure to disable interrupts/watchpoints on entry
+  MIPS: pbl: do enable 64-bit addressing in PBL
+  MIPS: clean up barebox proper entry point
+  MIPS: main_entry: properly set XTLB handler for 64-bit mode
+  MIPS: main_entry: remove exception vector array
+  MIPS: c-r4k: prettify code in __BUILD_BLAST_CACHE_RANGE
+  MIPS: c-r4k: generate blast_*cache functions via macros
+  MIPS: c-r4k: do flush secondary cache
+  MIPS: c-r4k: remove extra function declaration
+  MIPS: reloc: use IS_ALIGNED macro to check for an alignment
 
-Signed-off-by: Denis Orlov <denorl2009@gmail.com>
----
- arch/mips/boards/qemu-malta/lowlevel.S          |  5 ++---
- .../asm => mach-malta/include/mach}/gt64120.h   | 13 ++++++++-----
- .../mips/mach-malta/include/mach/mach-gt64120.h | 17 -----------------
- arch/mips/mach-malta/pci.c                      |  4 +---
- 4 files changed, 11 insertions(+), 28 deletions(-)
+ arch/mips/boards/8devices-lima/lowlevel.S     |  2 +-
+ arch/mips/boards/dlink-dir-320/lowlevel.S     |  4 +-
+ arch/mips/boards/img-ci20/lowlevel.S          |  2 +-
+ arch/mips/boards/loongson-ls1b/lowlevel.S     |  4 +-
+ arch/mips/boards/netgear-wg102/lowlevel.S     |  4 +-
+ arch/mips/boards/qemu-malta/lowlevel.S        | 17 +----
+ arch/mips/boards/ritmix-rzx50/lowlevel.S      |  2 +-
+ arch/mips/boards/tplink-wdr4300/lowlevel.S    |  2 +-
+ arch/mips/boot/main_entry-pbl.c               |  4 --
+ arch/mips/boot/main_entry.c                   | 41 +++--------
+ arch/mips/boot/start.S                        | 46 -------------
+ arch/mips/boot/start.c                        | 17 +++++
+ arch/mips/include/asm/addrspace.h             | 47 ++++++-------
+ arch/mips/include/asm/asm.h                   |  4 +-
+ arch/mips/include/asm/cacheops.h              |  5 ++
+ arch/mips/include/asm/pbl_macros.h            | 20 +++++-
+ arch/mips/include/asm/stackframe.h            |  4 ++
+ arch/mips/lib/barebox.lds.S                   |  2 -
+ arch/mips/lib/c-r4k.c                         | 68 ++++++++++---------
+ arch/mips/lib/cpuinfo.c                       |  6 +-
+ arch/mips/lib/genex.S                         | 29 +++-----
+ arch/mips/lib/reloc.c                         |  6 +-
+ arch/mips/lib/traps.c                         |  3 +-
+ .../mips/mach-ath79/include/mach/pbl_macros.h |  4 +-
+ .../asm => mach-malta/include/mach}/gt64120.h | 13 ++--
+ .../mach-malta/include/mach/mach-gt64120.h    | 17 -----
+ arch/mips/mach-malta/pci.c                    |  4 +-
+ 27 files changed, 147 insertions(+), 230 deletions(-)
+ delete mode 100644 arch/mips/boot/start.S
+ create mode 100644 arch/mips/boot/start.c
  rename arch/mips/{include/asm => mach-malta/include/mach}/gt64120.h (92%)
  delete mode 100644 arch/mips/mach-malta/include/mach/mach-gt64120.h
 
-diff --git a/arch/mips/boards/qemu-malta/lowlevel.S b/arch/mips/boards/qemu-malta/lowlevel.S
-index 541d62fc2a..09087ad916 100644
---- a/arch/mips/boards/qemu-malta/lowlevel.S
-+++ b/arch/mips/boards/qemu-malta/lowlevel.S
-@@ -11,10 +11,9 @@
- #include <asm/pbl_macros.h>
- #include <asm/pbl_nmon.h>
- #include <linux/sizes.h>
--
- #include <asm/addrspace.h>
--#include <asm/gt64120.h>
--#include <mach/mach-gt64120.h>
-+
-+#include <mach/gt64120.h>
- 
- #ifdef CONFIG_CPU_LITTLE_ENDIAN
- #define GT_CPU_TO_LE32(x) (x)
-diff --git a/arch/mips/include/asm/gt64120.h b/arch/mips/mach-malta/include/mach/gt64120.h
-similarity index 92%
-rename from arch/mips/include/asm/gt64120.h
-rename to arch/mips/mach-malta/include/mach/gt64120.h
-index 34d2382593..f8a257acb7 100644
---- a/arch/mips/include/asm/gt64120.h
-+++ b/arch/mips/mach-malta/include/mach/gt64120.h
-@@ -6,12 +6,15 @@
-  *		 Maciej W. Rozycki <macro@mips.com>
-  * Copyright (C) 2005 Ralf Baechle (ralf@linux-mips.org)
-  */
--#ifndef _ASM_GT64120_H
--#define _ASM_GT64120_H
- 
--#define MSK(n)			((1 << (n)) - 1)
-+#ifndef _MALTA_GT64120_H
-+#define _MALTA_GT64120_H
- 
--#define GT_DEF_BASE		0x14000000
-+#define GT_DEF_BASE	0x14000000
-+#define MIPS_GT_BASE	0x1be00000
-+#define GT64120_BASE	CKSEG1ADDR(MIPS_GT_BASE)
-+
-+#define MSK(n)		((1 << (n)) - 1)
- 
- /*
-  *  Register offset addresses
-@@ -85,4 +88,4 @@
- #define GT_READ(ofs)		le32_to_cpu(__GT_READ(ofs))
- #define GT_WRITE(ofs, data)	__GT_WRITE(ofs, cpu_to_le32(data))
- 
--#endif /* _ASM_GT64120_H */
-+#endif /* _MALTA_GT64120_H */
-diff --git a/arch/mips/mach-malta/include/mach/mach-gt64120.h b/arch/mips/mach-malta/include/mach/mach-gt64120.h
-deleted file mode 100644
-index 20ac4d94d6..0000000000
---- a/arch/mips/mach-malta/include/mach/mach-gt64120.h
-+++ /dev/null
-@@ -1,17 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--
--/*
-- *  This is a direct copy of the ev96100.h file, with a global
-- * search and replace.	The numbers are the same.
-- *
-- *  The reason I'm duplicating this is so that the 64120/96100
-- * defines won't be confusing in the source code.
-- */
--#ifndef _ASM_MACH_MIPS_MACH_GT64120_DEP_H
--#define _ASM_MACH_MIPS_MACH_GT64120_DEP_H
--
--#define MIPS_GT_BASE	0x1be00000
--
--#define GT64120_BASE    CKSEG1ADDR(MIPS_GT_BASE)
--
--#endif /* _ASM_MACH_MIPS_MACH_GT64120_DEP_H */
-diff --git a/arch/mips/mach-malta/pci.c b/arch/mips/mach-malta/pci.c
-index 0ab239f509..c9c1c7790b 100644
---- a/arch/mips/mach-malta/pci.c
-+++ b/arch/mips/mach-malta/pci.c
-@@ -7,11 +7,9 @@
- #include <mach/hardware.h>
- #include <asm/io.h>
- #include <asm/addrspace.h>
--
- #include <linux/pci.h>
--#include <asm/gt64120.h>
- 
--#include <mach/mach-gt64120.h>
-+#include <mach/gt64120.h>
- 
- #define PCI_ACCESS_READ  0
- #define PCI_ACCESS_WRITE 1
 -- 
 2.41.0
 
