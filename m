@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOAHM-008zwl-3u
+	id 1qOAHM-008zwj-5o
 	for lore@lore.pengutronix.de; Tue, 25 Jul 2023 07:08:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOAHI-0004Kk-UZ
+	id 1qOAHI-0004KJ-MG
 	for lore@pengutronix.de; Tue, 25 Jul 2023 07:08:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -17,68 +17,68 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=XeTiZ/mocoZaBrdHnWcG9FnZPLldmuT2bvN14/NT0p8=; b=K4LlvuT+Juk7e4
-	8/BBMUTuJbVdkqL3OQUmJMG8WalcevWJws2oUlM+NxqYDMQ7ju4qKLSVUyDqYLvSQjfql+iWRNph6
-	+XcZW5gLMCvOund/R2b/FthyKSu9jrm1NhnL61Ik0hcxD/S07tD66a9lUOu3P3Y6F73LWGVy2Mif9
-	4EDNewB8zFhjkAFWafZ6B8jN+Tau5rJteZYOn7kM7Fz+/4Boky7nPNx2yuCdm8XsGBLqEb+6aUiCi
-	dAXIEF3xZDV5NG7Er9XDY2WNQCSwxmgVk/WqZ3TIGl1M4c5+vuUiFyIctyVX/zMb0r3A0HWx4uY3M
-	J7dmmljaqmcg3rVjPZWA==;
+	List-Owner; bh=JvIkgsjvB2lk+RKed2ajgGklHt+7gJyNk6hXeEOjbAo=; b=ZdYI0fbOSzz1gd
+	os2Yy/lWXNiGn/vVavj94I+Au0J7bAebAwHbO1OnPKY9JbFFsbe3I4yJMUVXYx15d4rhuQlJvpRnI
+	nGFeIJD1DOhHTThy5RRb7EK/Z3YZcc1AuxhokKf0l3WEGIGikP+IfdkZZTyU5cuk4/BpVHJoXG+T1
+	9hOoRrxvQwV8DLLo0E1oz/aebaYYR7r7nC/u469Oi74OQobdT6MO/SYYfYs4ZoOwKuGS77BInt9ZF
+	mjhEbGBd92s3CK1S+S7AeRKxvfyHszyMDJTWSRgJwoVTaCAnJMHriAjn43GOfNceFTt3ClgPAKG5a
+	e01ZMCBmMESKBKDkrD0Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOAFy-006FLM-1w;
-	Tue, 25 Jul 2023 05:06:46 +0000
-Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
+	id 1qOAFs-006FHi-2w;
+	Tue, 25 Jul 2023 05:06:40 +0000
+Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOAFt-006FGX-0m
+	id 1qOAFn-006FF3-2k
 	for barebox@lists.infradead.org;
-	Tue, 25 Jul 2023 05:06:42 +0000
-Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-52227142a27so2824138a12.1
-        for <barebox@lists.infradead.org>; Mon, 24 Jul 2023 22:06:38 -0700 (PDT)
+	Tue, 25 Jul 2023 05:06:37 +0000
+Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-51e619bcbf9so6706478a12.3
+        for <barebox@lists.infradead.org>; Mon, 24 Jul 2023 22:06:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690261597; x=1690866397;
+        d=gmail.com; s=20221208; t=1690261593; x=1690866393;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XeTiZ/mocoZaBrdHnWcG9FnZPLldmuT2bvN14/NT0p8=;
-        b=drfg0h2Tfjt2+TSOnveEP0xAKjrKP/tAAF/9VRTJ8Tz3HvP3eWZWqX2/LU1sKFYUjY
-         MnOBn4tqPH89n9eXuh99i0YNqis9VC4uqEj7/fKPKNCuz95gaSmikrsJNSuoLpsDWkgZ
-         0bbL1oZD0pAd1KGemaSHofzA1/aJhqUGxVC9WWhJNSdfEGOdBsTerky6qd9rsqblJXRt
-         U2Slhpdiy65DAldK8j6OO6W5fig0jG4jZszwmMytY6QtAUUZSIG3AVTqOV36ShMmJnH+
-         yHcupO2tmTalfwFpon0WXt7SMn8Oj98kjSt0vCsbOBvxP6XCGFs10ypBrO1lW9kM0i1H
-         X0YA==
+        bh=JvIkgsjvB2lk+RKed2ajgGklHt+7gJyNk6hXeEOjbAo=;
+        b=bQsJd+KTrMw0FSdUpLI78DYnwQtE9viVOPo/8p4lxx7w2qfT7x39qlN85hCv64zHpd
+         iWvukvXa9kr88XcfamO2bkbWDo8h8vN5Tmj6RwntyAVxWJgZO60S3S3sjLmOyfDza+ym
+         ZOryXXSI+6B9a9hi9Jk9Bj+upSdlTQYwdbCccGOeYp8wvEsecOXh//X9SgeOtar0ni8+
+         GAobfAduRP+PVHrtgxWUrC/dOijY6FTOOkVy6oulqgbdPEcnv2+eCJDEAI4TUiBC2A0g
+         02alknHQHWdpHV0bdeWIYQQ23BfpZvOuxAIyCsy1s0cxwSvzmSKTJ6kjPMOqltDwa3Yq
+         yqAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690261597; x=1690866397;
+        d=1e100.net; s=20221208; t=1690261593; x=1690866393;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XeTiZ/mocoZaBrdHnWcG9FnZPLldmuT2bvN14/NT0p8=;
-        b=FjoKACIJOLvSF1OKfGKA23OEuZsefGcZYrS3wphoWQagam5ncWj1of2Rta7SeOlY0Z
-         8laenfBU8QzpUE25mzH8zxl6vunokxJBOAXxNHgl9Dc3QM8wBen39c6mDxIc0whVdmbK
-         dD1xLQRcAMCu8ajzKBEV0JD2pBPw775cN8OhU8AU2Mcvoz1yzSgynE3ctzZLqBA9j/gi
-         rA573ddZfn/e//rvThwT8p7KPifDtZ9YYFI21imufUbGD11kUALo3hjybEsNd/yoAORR
-         6jEzCtyBMIbVsUZ+OmGxazL9wZNkwwz5c5m3tn17/z/au5qy32Q2vZmlHqiliQuLHaI2
-         l3yg==
-X-Gm-Message-State: ABy/qLZgCbFvHCCOPhk/nX0r7stX/i3fCUmcvPj+TCsTLiSOzFpS9czL
-	a1/1bqbfWa4ro/y4wa6zS0xjXvL5zRzDi958qF6nNw==
-X-Google-Smtp-Source: APBJJlG2f4IXCw1EydKlAZpi4YMnf5taibHTs6WTVUPtKWB03FpE4a8RgImIrBe1DLkA2GTp/a/kqw==
-X-Received: by 2002:aa7:d412:0:b0:522:3a37:a463 with SMTP id z18-20020aa7d412000000b005223a37a463mr2421256edq.20.1690261596785;
-        Mon, 24 Jul 2023 22:06:36 -0700 (PDT)
+        bh=JvIkgsjvB2lk+RKed2ajgGklHt+7gJyNk6hXeEOjbAo=;
+        b=hN9hUeBys8SMKiRXrehsk7c+zpEAPqzryOmbRhr0Giun3YEnp0k0lU6/PoGQU5bj9V
+         p7Ymjw74CsGWb6hwdm2Q1Vmdru2+Zfu3dZSA/6SXgxDNcayg5+eyCUPeZwRu3+vvHNnh
+         E1A4QyzwLkPRrkfLgw5933cwltMNUMhQv8HUfEGr+trD1ykAFb1+jOr8bNegM+I6wupl
+         orU/OkAZwW95SSqt5260bSGvfTNhnDflptTSUQzkhW7ULGzrzEQA5a+NNSXGg9t4OgQA
+         VhxoBD815K10lhZWnHqkVvt4hna3wKYpJ14tArKaA/HUd0nezwpczPGavsYivxMB/5xk
+         EO1g==
+X-Gm-Message-State: ABy/qLZjA8WbUZ+9Ub1jO0Xi+0v2X3FYv3v7dEHAf8QXaaXjDN8IjO+z
+	Vu4bl7U0XGyWlf7TMLWOJz4x6QwGeQ3E2LAuKXM7Tg==
+X-Google-Smtp-Source: APBJJlGFflq5TdAgvvCYDCKD6UtN5HbFV0sc48V5Yrc7IHL2BP/IOdRHxo7dFiYX4Yo0UJrZcAFMTA==
+X-Received: by 2002:aa7:d34d:0:b0:522:2aba:bb32 with SMTP id m13-20020aa7d34d000000b005222ababb32mr3902346edr.13.1690261593310;
+        Mon, 24 Jul 2023 22:06:33 -0700 (PDT)
 Received: from localhost.localdomain ([188.123.230.211])
-        by smtp.gmail.com with ESMTPSA id k17-20020a05640212d100b0052237dfa82fsm1730505edx.64.2023.07.24.22.06.35
+        by smtp.gmail.com with ESMTPSA id k17-20020a05640212d100b0052237dfa82fsm1730505edx.64.2023.07.24.22.06.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 22:06:36 -0700 (PDT)
+        Mon, 24 Jul 2023 22:06:32 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 25 Jul 2023 08:05:07 +0300
-Message-ID: <20230725050618.3451-7-denorl2009@gmail.com>
+Date: Tue, 25 Jul 2023 08:05:04 +0300
+Message-ID: <20230725050618.3451-4-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725050618.3451-1-denorl2009@gmail.com>
 References: <20230725050618.3451-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230724_220641_286163_8DE50CD1 
-X-CRM114-Status: UNSURE (   9.39  )
+X-CRM114-CacheID: sfid-20230724_220635_886472_F7A6908C 
+X-CRM114-Status: UNSURE (   9.91  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -103,43 +103,39 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 06/21] MIPS: cpuinfo: use appropriate format specifiers in printf
+Subject: [PATCH 03/21] MIPS: main_entry-pbl: remove unused variable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
+For some reason we do set 'ttb' global variable, however we never end up
+using it.
+
 Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 ---
- arch/mips/lib/cpuinfo.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/mips/boot/main_entry-pbl.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/arch/mips/lib/cpuinfo.c b/arch/mips/lib/cpuinfo.c
-index fd27920f9b..41ec7b8d53 100644
---- a/arch/mips/lib/cpuinfo.c
-+++ b/arch/mips/lib/cpuinfo.c
-@@ -25,12 +25,12 @@ static int do_cpuinfo(int argc, char *argv[])
- 	icache_size = c->icache.sets * c->icache.ways * c->icache.linesz;
- 	dcache_size = c->dcache.sets * c->dcache.ways * c->dcache.linesz;
+diff --git a/arch/mips/boot/main_entry-pbl.c b/arch/mips/boot/main_entry-pbl.c
+index f75ec03851..78982fd995 100644
+--- a/arch/mips/boot/main_entry-pbl.c
++++ b/arch/mips/boot/main_entry-pbl.c
+@@ -20,16 +20,12 @@ unsigned long free_mem_end_ptr;
  
--	printk("Primary instruction cache %ldkB, %s, %s, linesize %d bytes.\n",
-+	printk("Primary instruction cache %ukB, %s, %s, linesize %d bytes.\n",
- 	       icache_size >> 10,
- 	       c->icache.flags & MIPS_CACHE_VTAG ? "VIVT" : "VIPT",
- 	       way_string[c->icache.ways], c->icache.linesz);
+ void pbl_main_entry(void *fdt, void *fdt_end, u32 ram_size);
  
--	printk("Primary data cache %ldkB, %s, %s, %s, linesize %d bytes\n",
-+	printk("Primary data cache %ukB, %s, %s, %s, linesize %d bytes\n",
- 	       dcache_size >> 10, way_string[c->dcache.ways],
- 	       (c->dcache.flags & MIPS_CACHE_PINDEX) ? "PIPT" : "VIPT",
- 	       (c->dcache.flags & MIPS_CACHE_ALIASES) ?
-@@ -39,7 +39,7 @@ static int do_cpuinfo(int argc, char *argv[])
- 	if (c->scache.flags & MIPS_CACHE_NOT_PRESENT)
- 		return 0;
- 	scache_size = c->scache.sets * c->scache.ways * c->scache.linesz;
--	printk("Secondary data cache %ldkB, %s, %s, %s, linesize %d bytes\n",
-+	printk("Secondary data cache %ukB, %s, %s, %s, linesize %d bytes\n",
- 	       scache_size >> 10, way_string[c->scache.ways],
- 	       (c->scache.flags & MIPS_CACHE_PINDEX) ? "PIPT" : "VIPT",
- 	       (c->scache.flags & MIPS_CACHE_ALIASES) ?
+-static unsigned long *ttb;
+-
+ static void barebox_uncompress(void *compressed_start, unsigned int len)
+ {
+ 	/* set 128 KiB at the end of the MALLOC_BASE for early malloc */
+ 	free_mem_ptr = TEXT_BASE - SZ_128K;
+ 	free_mem_end_ptr = free_mem_ptr + SZ_128K;
+ 
+-	ttb = (void *)((free_mem_ptr - 0x4000) & ~0x3fff);
+-
+ 	pbl_barebox_uncompress((void*)TEXT_BASE, compressed_start, len);
+ }
+ 
 -- 
 2.41.0
 
