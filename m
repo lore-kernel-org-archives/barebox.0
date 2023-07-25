@@ -1,15 +1,15 @@
-Delivery-date: Tue, 25 Jul 2023 07:08:10 +0200
+Delivery-date: Tue, 25 Jul 2023 07:08:11 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOAHM-008zwj-5o
-	for lore@lore.pengutronix.de; Tue, 25 Jul 2023 07:08:10 +0200
+	id 1qOAHM-008zwA-DD
+	for lore@lore.pengutronix.de; Tue, 25 Jul 2023 07:08:11 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOAHI-0004KJ-MG
+	id 1qOAHI-0004Jm-A1
 	for lore@pengutronix.de; Tue, 25 Jul 2023 07:08:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -17,69 +17,68 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=JvIkgsjvB2lk+RKed2ajgGklHt+7gJyNk6hXeEOjbAo=; b=ZdYI0fbOSzz1gd
-	os2Yy/lWXNiGn/vVavj94I+Au0J7bAebAwHbO1OnPKY9JbFFsbe3I4yJMUVXYx15d4rhuQlJvpRnI
-	nGFeIJD1DOhHTThy5RRb7EK/Z3YZcc1AuxhokKf0l3WEGIGikP+IfdkZZTyU5cuk4/BpVHJoXG+T1
-	9hOoRrxvQwV8DLLo0E1oz/aebaYYR7r7nC/u469Oi74OQobdT6MO/SYYfYs4ZoOwKuGS77BInt9ZF
-	mjhEbGBd92s3CK1S+S7AeRKxvfyHszyMDJTWSRgJwoVTaCAnJMHriAjn43GOfNceFTt3ClgPAKG5a
-	e01ZMCBmMESKBKDkrD0Q==;
+	List-Owner; bh=a1EZZt19ZMCEs3kTWZp5UXSvf/DpfGwOsUTylhITy2o=; b=gm/j/TPkKX3uwg
+	WZmJLuOsS1ZzUd97l95d3mqjFiGEtiFiW8YFTOlCMWsOiXssJZT42B8rqFMmuxkyaAed3A57qPMv7
+	tZ9/cdWTwPiEJh2eGMOStIMPTEk1bYbw3RAtUiCms0Sf6zDtXnW3P3SUJRIDppkM/HmXaRI7CEq6P
+	H3JqnySRoB3sTJS8lf5tZKM35yYizWamG2tLKn+4n/rhdbvOqsq5gXjfKKYTO+9a8pSkYmydDVn/i
+	F4rXbchbxAc010lsnqaT0gBVv6c5gBCmVOFaymWtxNEnHwqjuz6nofTV/UpGGqBz6Qq1RZeIRZKd1
+	OnVqrcZm6XA/eSSbphHA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOAFs-006FHi-2w;
-	Tue, 25 Jul 2023 05:06:40 +0000
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+	id 1qOAFw-006FJr-2u;
+	Tue, 25 Jul 2023 05:06:44 +0000
+Received: from mail-ej1-x633.google.com ([2a00:1450:4864:20::633])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOAFn-006FF3-2k
+	id 1qOAFr-006FGB-2Z
 	for barebox@lists.infradead.org;
-	Tue, 25 Jul 2023 05:06:37 +0000
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-51e619bcbf9so6706478a12.3
-        for <barebox@lists.infradead.org>; Mon, 24 Jul 2023 22:06:34 -0700 (PDT)
+	Tue, 25 Jul 2023 05:06:41 +0000
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-991ef0b464cso1310944066b.0
+        for <barebox@lists.infradead.org>; Mon, 24 Jul 2023 22:06:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690261593; x=1690866393;
+        d=gmail.com; s=20221208; t=1690261595; x=1690866395;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JvIkgsjvB2lk+RKed2ajgGklHt+7gJyNk6hXeEOjbAo=;
-        b=bQsJd+KTrMw0FSdUpLI78DYnwQtE9viVOPo/8p4lxx7w2qfT7x39qlN85hCv64zHpd
-         iWvukvXa9kr88XcfamO2bkbWDo8h8vN5Tmj6RwntyAVxWJgZO60S3S3sjLmOyfDza+ym
-         ZOryXXSI+6B9a9hi9Jk9Bj+upSdlTQYwdbCccGOeYp8wvEsecOXh//X9SgeOtar0ni8+
-         GAobfAduRP+PVHrtgxWUrC/dOijY6FTOOkVy6oulqgbdPEcnv2+eCJDEAI4TUiBC2A0g
-         02alknHQHWdpHV0bdeWIYQQ23BfpZvOuxAIyCsy1s0cxwSvzmSKTJ6kjPMOqltDwa3Yq
-         yqAQ==
+        bh=a1EZZt19ZMCEs3kTWZp5UXSvf/DpfGwOsUTylhITy2o=;
+        b=rdnTLRq5bMCTxEV7YBa62f0cJWP2C/YewLRnLFCOaNgB3MIpg6NIiJF6Zm1/N49Gbq
+         vDuG2Nbm5PK3P61VQtbKBCQZ0AoStQIp4Qom5hYnQY8sj6W//R78leNcqH7GMKVrLpwM
+         TU6ZhCRvkLlSIjJSPZfWZS5Gn243aBOEPrhZvSVHwJ+XvUTZJ/dJIFGwbm1HKumC/dgo
+         XFx6zVpAciTbIBXl71rYM974jEtY61HAYEWbPByUTpYS20PIP+uodzBfMPfyt7JFpsfg
+         ACMa3fHZBJTq7BeEO+7bpsBEC0prR8I7043jYmMZMYjc8Zz/2v3LCVaDZdcEFgeZAtfU
+         8kEQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690261593; x=1690866393;
+        d=1e100.net; s=20221208; t=1690261595; x=1690866395;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JvIkgsjvB2lk+RKed2ajgGklHt+7gJyNk6hXeEOjbAo=;
-        b=hN9hUeBys8SMKiRXrehsk7c+zpEAPqzryOmbRhr0Giun3YEnp0k0lU6/PoGQU5bj9V
-         p7Ymjw74CsGWb6hwdm2Q1Vmdru2+Zfu3dZSA/6SXgxDNcayg5+eyCUPeZwRu3+vvHNnh
-         E1A4QyzwLkPRrkfLgw5933cwltMNUMhQv8HUfEGr+trD1ykAFb1+jOr8bNegM+I6wupl
-         orU/OkAZwW95SSqt5260bSGvfTNhnDflptTSUQzkhW7ULGzrzEQA5a+NNSXGg9t4OgQA
-         VhxoBD815K10lhZWnHqkVvt4hna3wKYpJ14tArKaA/HUd0nezwpczPGavsYivxMB/5xk
-         EO1g==
-X-Gm-Message-State: ABy/qLZjA8WbUZ+9Ub1jO0Xi+0v2X3FYv3v7dEHAf8QXaaXjDN8IjO+z
-	Vu4bl7U0XGyWlf7TMLWOJz4x6QwGeQ3E2LAuKXM7Tg==
-X-Google-Smtp-Source: APBJJlGFflq5TdAgvvCYDCKD6UtN5HbFV0sc48V5Yrc7IHL2BP/IOdRHxo7dFiYX4Yo0UJrZcAFMTA==
-X-Received: by 2002:aa7:d34d:0:b0:522:2aba:bb32 with SMTP id m13-20020aa7d34d000000b005222ababb32mr3902346edr.13.1690261593310;
-        Mon, 24 Jul 2023 22:06:33 -0700 (PDT)
+        bh=a1EZZt19ZMCEs3kTWZp5UXSvf/DpfGwOsUTylhITy2o=;
+        b=hsdeGraWgp5L6gIr892nluY0DQyH4+S+zNrOS3KDIu2v5RS62JgZc3t/LMsp96prZK
+         yL0QdA7zd0SjSmC6+oRQ6XWDY2qng9pdhLHp1UURdaNjYPsO6ebdTTcL/z1/F0K7mxT+
+         DDkI2LrItb7EXRuWNsc8AxzwhF+Q2acyUeg+TjlvwNAfraF1IqZDOOsnh1K7R4UlPQ1P
+         /47L5NKvHFCFU2q0Xit9E2eyoEiuoS5eoPlbGcKeWiyY74VLdtxNnF3gHK+otw94FB98
+         JpEbccZHjsaFHcPA23/buZQpFMTnjdsUv6IeHZKRABxTq8FsVcP10fmvjWhu8DjPjGKu
+         COfA==
+X-Gm-Message-State: ABy/qLa4BO3Oggd8n86BS+NmDuvDwWjvujx/OfV3TiVgcH2VOifT6t0M
+	xE7Gg8X01exgGEuNGr3QvUbjCgTIu0J3nVOCwj4s8Q==
+X-Google-Smtp-Source: APBJJlFv4ch1iNdY2kTjPQ/OtAYbhGiG3DzYo0XpKhmT++EXahFi4PMlZ+mQuCrFjX3hDKPY03PlFQ==
+X-Received: by 2002:a17:906:ef0e:b0:974:fb94:8067 with SMTP id f14-20020a170906ef0e00b00974fb948067mr1187856ejs.23.1690261595736;
+        Mon, 24 Jul 2023 22:06:35 -0700 (PDT)
 Received: from localhost.localdomain ([188.123.230.211])
-        by smtp.gmail.com with ESMTPSA id k17-20020a05640212d100b0052237dfa82fsm1730505edx.64.2023.07.24.22.06.32
+        by smtp.gmail.com with ESMTPSA id k17-20020a05640212d100b0052237dfa82fsm1730505edx.64.2023.07.24.22.06.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 22:06:32 -0700 (PDT)
+        Mon, 24 Jul 2023 22:06:35 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 25 Jul 2023 08:05:04 +0300
-Message-ID: <20230725050618.3451-4-denorl2009@gmail.com>
+Date: Tue, 25 Jul 2023 08:05:06 +0300
+Message-ID: <20230725050618.3451-6-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725050618.3451-1-denorl2009@gmail.com>
 References: <20230725050618.3451-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230724_220635_886472_F7A6908C 
-X-CRM114-Status: UNSURE (   9.91  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230724_220639_837362_C933B38B 
+X-CRM114-Status: GOOD (  11.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -103,39 +102,41 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 03/21] MIPS: main_entry-pbl: remove unused variable
+Subject: [PATCH 05/21] MIPS: reloc: mark relocate_code() as noreturn
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-For some reason we do set 'ttb' global variable, however we never end up
-using it.
+After relocating the code we jump straight to it, with the function
+having an 'unreachable()' call at the end. So add an appropriate
+attribute.
 
 Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 ---
- arch/mips/boot/main_entry-pbl.c | 4 ----
- 1 file changed, 4 deletions(-)
+ arch/mips/lib/reloc.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/mips/boot/main_entry-pbl.c b/arch/mips/boot/main_entry-pbl.c
-index f75ec03851..78982fd995 100644
---- a/arch/mips/boot/main_entry-pbl.c
-+++ b/arch/mips/boot/main_entry-pbl.c
-@@ -20,16 +20,12 @@ unsigned long free_mem_end_ptr;
+diff --git a/arch/mips/lib/reloc.c b/arch/mips/lib/reloc.c
+index 3c845a9663..83b4040d95 100644
+--- a/arch/mips/lib/reloc.c
++++ b/arch/mips/lib/reloc.c
+@@ -41,7 +41,7 @@
+ #include <asm-generic/memory_layout.h>
  
- void pbl_main_entry(void *fdt, void *fdt_end, u32 ram_size);
+ void main_entry(void *fdt, u32 fdt_size);
+-void relocate_code(void *fdt, u32 fdt_size, u32 relocaddr);
++void __noreturn relocate_code(void *fdt, u32 fdt_size, u32 relocaddr);
  
--static unsigned long *ttb;
--
- static void barebox_uncompress(void *compressed_start, unsigned int len)
- {
- 	/* set 128 KiB at the end of the MALLOC_BASE for early malloc */
- 	free_mem_ptr = TEXT_BASE - SZ_128K;
- 	free_mem_end_ptr = free_mem_ptr + SZ_128K;
- 
--	ttb = (void *)((free_mem_ptr - 0x4000) & ~0x3fff);
--
- 	pbl_barebox_uncompress((void*)TEXT_BASE, compressed_start, len);
+ /**
+  * read_uint() - Read an unsigned integer from the buffer
+@@ -106,7 +106,7 @@ static void apply_reloc(unsigned int type, void *addr, long off)
+ 	}
  }
  
+-void relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
++void __noreturn relocate_code(void *fdt, u32 fdt_size, u32 ram_size)
+ {
+ 	unsigned long addr, length, bss_len, relocaddr, new_stack;
+ 	uint8_t *buf;
 -- 
 2.41.0
 
