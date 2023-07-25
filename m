@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOAHH-008zsu-0T
+	id 1qOAHG-008zss-N7
 	for lore@lore.pengutronix.de; Tue, 25 Jul 2023 07:08:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOAHD-0004FP-Ty
+	id 1qOAHD-0004FM-T9
 	for lore@pengutronix.de; Tue, 25 Jul 2023 07:08:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -17,68 +17,68 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=O3WI15Cjk7mGtwRY8/UNKt51QhEzsQY49IMPM+A9AA4=; b=Yu1adRn5JFzVyP
-	ge9qGHaSMF6IUefOEcEzxCKBTqYAge5Go5NeOMiWokWYrN3wFil7yQ6FB3NFBy7PdeYz2OoRprYzb
-	abRMIjdp5NuIeqxrHqZTfKagjS/nSyZPw1YEmcBB6qhWvUepxX8S2FqIWweRXxdsbHX1UoT8YvQEn
-	WAn+mI3A8S8z7pvpDWOibgAmkstCF8WC20JN4AGrj8vesp3mhW+ZQs2uhQo0QLsaxWi3mXzY8dt3H
-	caZnDc1vqYoORRvoTWPnBi2L6ghOWPX8NiSP9W1xhjd8z2l7/Re8MJ8DH+UUkkV696WV8slE/U6gh
-	SV2l0gsAFz08nMW4IuaA==;
+	List-Owner; bh=+ySUMDj3jN/bmd1YYEkrljWrazc2jREBU7PM3Bmygbc=; b=Cy9rNi6wLjsVne
+	eTvEZgI1B+cKZI54bkWpKl96qTlFSfaZSzotBMsWrHggT5GQvUhBZDpa7fB38fHCEfolM3qFxLE7I
+	4MY3p+vQzsNGkOVitJhnfYw++vWHKk0E5YkJqrsB9v0b1NQPCeWXNY2cB4s6vJd2A0Z4bSQCivnFZ
+	R7spD8vpqGToJYx3QYALr1V8Tm2qxvCPfjr3OTRc0GrcljPCzLlerXgnwMOXMO+bJGHhWiQWQHi5g
+	D7FcnAmElDSD6h5RK/Zykcf5AdU3UYQwDwSlHuXAqkUpAhmlZXAeVtKbf9v8Pg9TKduo/l9YA4vGn
+	/quTvNctuoLHjmV+mnZg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOAFw-006FJU-0M;
-	Tue, 25 Jul 2023 05:06:44 +0000
-Received: from mail-ed1-x52e.google.com ([2a00:1450:4864:20::52e])
+	id 1qOAG7-006FVt-1Q;
+	Tue, 25 Jul 2023 05:06:55 +0000
+Received: from mail-ed1-x536.google.com ([2a00:1450:4864:20::536])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOAFr-006FGy-2l
+	id 1qOAG0-006FNR-22
 	for barebox@lists.infradead.org;
-	Tue, 25 Jul 2023 05:06:41 +0000
-Received: by mail-ed1-x52e.google.com with SMTP id 4fb4d7f45d1cf-522294c0d5bso2617781a12.2
-        for <barebox@lists.infradead.org>; Mon, 24 Jul 2023 22:06:39 -0700 (PDT)
+	Tue, 25 Jul 2023 05:06:49 +0000
+Received: by mail-ed1-x536.google.com with SMTP id 4fb4d7f45d1cf-52229f084beso3089559a12.2
+        for <barebox@lists.infradead.org>; Mon, 24 Jul 2023 22:06:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1690261598; x=1690866398;
+        d=gmail.com; s=20221208; t=1690261607; x=1690866407;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=O3WI15Cjk7mGtwRY8/UNKt51QhEzsQY49IMPM+A9AA4=;
-        b=Magyt4JhOeRb9418HJMUEmtR6QsfbAqS6dJu1MWtvCWSmQRH51rGS/CCa8Vq5LdOgE
-         ZF7k4VGPDdFuRtBgyANwLQSJ3WoCWBfs2Xrd6VjSFS+RGCNa72cGUew8SHYMUqxt5CmG
-         oh1xu+fo9qnUN2IoDjTWzZCIZOLeZj+s1TIX7F528dvhk/4p0Do++lbD9F4Zj1JqsA2D
-         e7ON82NCQC6GbKgIhxUpcvCewS1+5lmDIdP53JuqntNC2rrduj80V7EqgtXVNuXLCKYo
-         zNuZHEmx9sMmmlScSrkeFJQv3oYrmmovxs4dipcpqXrSxnPqcraX2wh8Ge5CYrUsfyYb
-         t5kw==
+        bh=+ySUMDj3jN/bmd1YYEkrljWrazc2jREBU7PM3Bmygbc=;
+        b=XTYbl+Px4dFdJw6RoRhyS9sdn6kE1J/WCIpgzyN0bl3ohKOA09EBJf65z1jbDT2Seh
+         8VWd6Q2s64iz+YK6JzFiIc+V/7LMsrnT1ilPxkuK+AKM709tJpQPH2zuppq/5U++yCU8
+         +p/DHmNZyrRjsD/2ekI2nEXglNDJ2XgyH0eoiTVW8Hb3Hc39sGEE2JvC1XmENlbsNX9G
+         ZE9O4LpXvyvs/VEm2jzTm22DO6ksvhmtgYu5MNgI5qVUp27l4YyAOCqYWm9RZ1Xx/n5M
+         lAIo9e9q3Oa8jibPXJcuePdmZPl79vm/qi85B9UnY2fPMgR5p/FPxva7IT+c7chv2lpj
+         LuGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1690261598; x=1690866398;
+        d=1e100.net; s=20221208; t=1690261607; x=1690866407;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=O3WI15Cjk7mGtwRY8/UNKt51QhEzsQY49IMPM+A9AA4=;
-        b=Yig3V3rwvtu73i+9dgElG1a6rZ4RI3R/0KUg6RLSKBciNnY2CnZ8fpuv4JSV6bt65w
-         l7lbwrrADfbcZSRQO4CxTMXOIf/zr9XeGsGYbzGFHFrxLTy8l0zPzPKw3UBolZH0roxL
-         N3zB0ShJZiazgzsV4A1YeSeHrfJNL9Gsp9xgZ+yIHFRQNiFBS7JJKpr3gzTMHcmXw9am
-         8Krsddp7Twxx3exWRwmhshvLBBLCDbcRsSa1eP5hRnPPA2Muy0Q01wZfp0JZj8btuLSh
-         iQxp3JY5nZvWMUiSPBFvwUsxPB0xg/UYODAcTZWF1VTXMvP9oWw3ordQDO6HkKavmX9o
-         3dgQ==
-X-Gm-Message-State: ABy/qLbAwZBqPeCTmzedi9l44Q7SsTw18hRHnl0hwZQ0USTfc3y+o/zX
-	XPW0F9m8fU3o/C948MzVZXQ6kN2dNfr7R/TqnbvLkA==
-X-Google-Smtp-Source: APBJJlFldEnbQmtAxllSWnj/3cMB85WekAlUDBoW0dtXOfce7Ku7n4ou5tFsPN2Yy12BEq1uCY9tXg==
-X-Received: by 2002:a05:6402:782:b0:522:216a:28cd with SMTP id d2-20020a056402078200b00522216a28cdmr5696362edy.7.1690261598054;
-        Mon, 24 Jul 2023 22:06:38 -0700 (PDT)
+        bh=+ySUMDj3jN/bmd1YYEkrljWrazc2jREBU7PM3Bmygbc=;
+        b=aqJ80Gv8Ny5TINbyVbLi2209J8+zZrLb5U1NeyKdLp9dVEexsEvAYZvWIEnNj91KK4
+         8I27t3Gk7C8lEIdH1zIfdhu76N6SvPKnc9lbNr8herhI+H7Kv5S3GOi+vO1xkCy9qjfy
+         i3Xwk7OWHuM33+I9CChFsro+39vkkXUzquT3RZ+6fzd/Cba3FSeGt68skZkiALX2roJK
+         j/Mo4573P9y1fBhkts/J4XussRvASGJv2ji31jd7QvVOfQVBNMlS421kKnYeAz0drx/5
+         xRt6OS81+tXXuSNDIfxXQMJSFRkI1h+guTz+2Gd06YUs4aXGiwoKhHBvEvBrxzFKo2o4
+         P3Sw==
+X-Gm-Message-State: ABy/qLYMqNTLV1VG+gsr1uiMm09pQ+Ni6QRQEQAte2tHWE3IxZnmJlhI
+	3jZhByNTNiIFxL/Kzy/69P/h2xEDe3yMtuP4tQE=
+X-Google-Smtp-Source: APBJJlEUw9KHivkc7JANB+fHtl+p++fcaGnaR/6szF++kVQbmnKce2PWjV613OTdyOmHjorDzYYwMw==
+X-Received: by 2002:aa7:c544:0:b0:522:3849:48d8 with SMTP id s4-20020aa7c544000000b00522384948d8mr2949404edr.9.1690261606954;
+        Mon, 24 Jul 2023 22:06:46 -0700 (PDT)
 Received: from localhost.localdomain ([188.123.230.211])
-        by smtp.gmail.com with ESMTPSA id k17-20020a05640212d100b0052237dfa82fsm1730505edx.64.2023.07.24.22.06.36
+        by smtp.gmail.com with ESMTPSA id k17-20020a05640212d100b0052237dfa82fsm1730505edx.64.2023.07.24.22.06.46
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 24 Jul 2023 22:06:37 -0700 (PDT)
+        Mon, 24 Jul 2023 22:06:46 -0700 (PDT)
 From: Denis Orlov <denorl2009@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 25 Jul 2023 08:05:08 +0300
-Message-ID: <20230725050618.3451-8-denorl2009@gmail.com>
+Date: Tue, 25 Jul 2023 08:05:16 +0300
+Message-ID: <20230725050618.3451-16-denorl2009@gmail.com>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230725050618.3451-1-denorl2009@gmail.com>
 References: <20230725050618.3451-1-denorl2009@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230724_220639_900355_D76FB906 
-X-CRM114-Status: GOOD (  10.36  )
+X-CRM114-CacheID: sfid-20230724_220648_670413_79539019 
+X-CRM114-Status: GOOD (  11.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -102,62 +102,41 @@ X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/21] MIPS: print BadVAddr CP0 register on exception
+Subject: [PATCH 15/21] MIPS: main_entry: properly set XTLB handler for 64-bit mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This register contains the failing address on Address Error and some
-TLB-related exceptions, and is useful for debugging purposes.
+The offset of the TLB Load exception is different when 64-bit addressing
+is enabled - 0x80 is used instead of 0x0. To simplify things, just copy
+the handler code twice, for each of the cases.
+
+While at it, also remove the incomprehensible cpu_has_4kex check. All of
+the supported CPUs have MIPS R4K compatible exception handling scheme
+(and we even hardcode that), so what are we trying to achieve there
+anyway?
 
 Signed-off-by: Denis Orlov <denorl2009@gmail.com>
 ---
- arch/mips/include/asm/stackframe.h | 4 ++++
- arch/mips/lib/traps.c              | 3 ++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/mips/boot/main_entry.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/stackframe.h b/arch/mips/include/asm/stackframe.h
-index 2295d7f02f..64ec37478a 100644
---- a/arch/mips/include/asm/stackframe.h
-+++ b/arch/mips/include/asm/stackframe.h
-@@ -89,8 +89,10 @@
- #endif
- 		LONG_S	v1, PT_EPC(sp)
- 		LONG_S	$25, PT_R25(sp)
-+		MFC0	v1, CP0_BADVADDR
- 		LONG_S	$28, PT_R28(sp)
- 		LONG_S	$31, PT_R31(sp)
-+		LONG_S	v1, PT_BVADDR(sp)
- 		.set	pop
- 		.endm
+diff --git a/arch/mips/boot/main_entry.c b/arch/mips/boot/main_entry.c
+index 99cd2ec846..237288a337 100644
+--- a/arch/mips/boot/main_entry.c
++++ b/arch/mips/boot/main_entry.c
+@@ -50,11 +50,9 @@ static void trap_init(void)
+ 		set_except_vector(i, &handle_reserved);
+ 	}
  
-@@ -157,11 +159,13 @@
- 		MTC0	v1, CP0_EPC
- 		LONG_L	$31, PT_R31(sp)
- 		LONG_L	$28, PT_R28(sp)
-+		LONG_L	v1, PT_BVADDR(sp)
- 		LONG_L	$25, PT_R25(sp)
- #ifdef CONFIG_64BIT
- 		LONG_L	$8, PT_R8(sp)
- 		LONG_L	$9, PT_R9(sp)
- #endif
-+		MTC0	v0, CP0_BADVADDR
- 		LONG_L	$7,  PT_R7(sp)
- 		LONG_L	$6,  PT_R6(sp)
- 		LONG_L	$5,  PT_R5(sp)
-diff --git a/arch/mips/lib/traps.c b/arch/mips/lib/traps.c
-index 45694fe7ef..638a511fee 100644
---- a/arch/mips/lib/traps.c
-+++ b/arch/mips/lib/traps.c
-@@ -153,7 +153,8 @@ static void show_regs(const struct pt_regs *regs)
+-	if (!cpu_has_4kex)
+-		memcpy((void *)(ebase + 0x080), &except_vec3_generic, 0x80);
+-
+ 	/* FIXME: handle tlb */
+ 	memcpy((void *)(ebase), &except_vec3_generic, 0x80);
++	memcpy((void *)(ebase + 0x080), &except_vec3_generic, 0x80);
  
- 	printf("Status: %08x\n", (uint32_t)regs->cp0_status);
- 	printf("Cause : %08x\n", (uint32_t)regs->cp0_cause);
--	printf("Config: %08x\n\n", read_c0_config());
-+	printf("Config: %08x\n", read_c0_config());
-+	printf("BadVA : %0*lx\n\n", field, regs->cp0_badvaddr);
- }
- 
- void barebox_exc_handler(struct pt_regs *regs)
+ 	/* unset BOOT EXCEPTION VECTOR bit */
+ 	write_c0_status(read_c0_status() & ~ST0_BEV);
 -- 
 2.41.0
 
