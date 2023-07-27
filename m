@@ -1,59 +1,59 @@
-Delivery-date: Thu, 27 Jul 2023 08:19:17 +0200
+Delivery-date: Thu, 27 Jul 2023 08:27:42 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOuLG-00BluC-Jg
-	for lore@lore.pengutronix.de; Thu, 27 Jul 2023 08:19:17 +0200
+	id 1qOuTP-00BmG6-Vb
+	for lore@lore.pengutronix.de; Thu, 27 Jul 2023 08:27:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOuLE-0007ro-2T
-	for lore@pengutronix.de; Thu, 27 Jul 2023 08:19:16 +0200
+	id 1qOuTN-0000LE-Kx
+	for lore@pengutronix.de; Thu, 27 Jul 2023 08:27:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dj6olnqrdtWoZ+U6DsoQtwCzexopK6218KDZ/H2rFgg=; b=0WTUjspwDSIyRrfHwGDqp0Tj2D
-	mrchl9VSSbRzPlRXEVhj0Ql9NIZySb7Bv9RdKmS0GxDkkJh8fN1uU04tGbsNZWzooeyXlaEodttLT
-	LKoyiLD5sM04gGleye3M6MQAJyP6lQmbRbgIgTu3qKzw4IdmVhfQhiX1qscG6kfKHyqyMkFzXu2ZH
-	JQfZKIBu6a+K2XMpnNXliZHFx/78ErlLaY2Zw7/hsrjq+hwI+iiTvPymo+XGlYGuNdpzn1ahcoQ+5
-	VBGJOQ13Qus2Y5hfsR3kHJIYjGu9TfrN6yqgKpBlWAK7De97DrLYM1mUTRjNbxoqme6tee1Sdi7QC
-	ZP5czCzA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=1jfab8QXH9ttX0xEfYNvahtIw7NqwFRyXshHXIapJH8=; b=O9DL66hUmlT0iajQzlQbcsaI/1
+	D+m2BQr2BY8yiBNA741Jpry7RIlYBhCvgYhIg/dNtKZuldlGnNCn7kqVXIS7RVjE4jm163qNm/a8r
+	/MqqsWRXwuibjMA3T/uGcQtryg7VJIzYODtKn2196SCtwCA5lCCE1B/QaxSC6MYac/OUWvhcfmTjB
+	k1rjy8Mc2ZvMVf9iFFB/WFgPEc5vEnQSnaVMq9zFHHMwpOCdwAiczzb6m1BsKdXD/nX0UODzReVi6
+	qIqOw8lwixKvhDKTOfVqm4qfUK7mdpejEpkPG2ca/eWIO3385pgKmT3Ro20YpAleC/3w2Pd0JPOgi
+	sLwTBgYA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOuK5-00CIcD-1m;
-	Thu, 27 Jul 2023 06:18:05 +0000
+	id 1qOuSI-00CJcm-2l;
+	Thu, 27 Jul 2023 06:26:34 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOuK2-00CIbs-1X
+	id 1qOuSF-00CJc5-1Q
 	for barebox@lists.infradead.org;
-	Thu, 27 Jul 2023 06:18:03 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1qOuJz-0007nC-Vy; Thu, 27 Jul 2023 08:17:59 +0200
-Received: from mfe by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1qOuJz-0005MM-OK; Thu, 27 Jul 2023 08:17:59 +0200
-Date: Thu, 27 Jul 2023 08:17:59 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230727061759.ft47w3yqyqqpfzd2@pengutronix.de>
-References: <20230726192824.917472-1-a.fatoum@pengutronix.de>
+	Thu, 27 Jul 2023 06:26:32 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qOuSC-0000H6-GW; Thu, 27 Jul 2023 08:26:28 +0200
+Message-ID: <32d7716a-2b47-88e8-087d-27c145ca629f@pengutronix.de>
+Date: Thu, 27 Jul 2023 08:26:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230726192824.917472-1-a.fatoum@pengutronix.de>
-User-Agent: NeoMutt/20180716
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20230726192718.911735-1-a.fatoum@pengutronix.de>
+ <20230726192718.911735-3-a.fatoum@pengutronix.de>
+ <20230727060502.sy46mutzo4enww3s@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230727060502.sy46mutzo4enww3s@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230726_231802_534770_DEB12508 
-X-CRM114-Status: GOOD (  15.57  )
+X-CRM114-CacheID: sfid-20230726_232631_501145_0F1FE93D 
+X-CRM114-Status: GOOD (  15.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,62 +71,59 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] bootm: export bootm_set_verify_mode
+Subject: Re: [PATCH 3/4] nvmem: ocotp: handle too early calls into ocotp
+ driver gracefully
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 23-07-26, Ahmad Fatoum wrote:
-> We already have bootm_get_verify_mode() exported, so export
-> bootm_set_verify_mode() for symmetry. The same can already be achieved
-> by changing $global.bootm.verify, but direct access makes it easier to
-> set a default value that can be overridden by built-in environment.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On 27.07.23 08:05, Marco Felsch wrote:
+> On 23-07-26, Ahmad Fatoum wrote:
+>> HAB code calls into OCOTP driver by relying on a global imx_ocotp
+>> variable that's populated on driver probe.
+>>
+>> For board code that calls a HAB function to early, this may end up
+>> dereferencing a NULL pointer, so let's return -EPROBE_DEFER in that
+>> case or if deep probe is enabled, just probe the OCOTP directly.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
 
-Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+>> @@ -497,11 +498,17 @@ static void imx_ocotp_field_decode(uint32_t field, unsigned *word,
+>>  	*mask = GENMASK(width, 0);
+>>  }
+>>  
+>> +static int imx_ocotp_ensure_probed(void);
+> 
+> Nit: Move the function definition here?
 
-> ---
->  common/bootm.c  | 5 +++++
->  include/bootm.h | 1 +
->  2 files changed, 6 insertions(+)
-> 
-> diff --git a/common/bootm.c b/common/bootm.c
-> index 791d6b8fbbf1..c46b00a86f64 100644
-> --- a/common/bootm.c
-> +++ b/common/bootm.c
-> @@ -70,6 +70,11 @@ enum bootm_verify bootm_get_verify_mode(void)
->  	return bootm_verify_mode;
->  }
->  
-> +void bootm_set_verify_mode(enum bootm_verify mode)
-> +{
-> +	bootm_verify_mode = mode;
-> +}
-> +
->  static const char * const bootm_verify_names[] = {
->  #ifndef CONFIG_BOOTM_FORCE_SIGNED_IMAGES
->  	[BOOTM_VERIFY_NONE] = "none",
-> diff --git a/include/bootm.h b/include/bootm.h
-> index 655c5152d97e..ee2b574521db 100644
-> --- a/include/bootm.h
-> +++ b/include/bootm.h
-> @@ -145,6 +145,7 @@ int bootm_load_devicetree(struct image_data *data, void *fdt,
->  int bootm_get_os_size(struct image_data *data);
->  
->  enum bootm_verify bootm_get_verify_mode(void);
-> +void bootm_set_verify_mode(enum bootm_verify mode);
->  
->  #define UIMAGE_SOME_ADDRESS (UIMAGE_INVALID_ADDRESS - 1)
->  
-> -- 
-> 2.39.2
-> 
-> 
-> 
+Then I'd have to forward-declare imx_ocotp_dt_ids.
+I choose to keep the probing stuff together.
+
+
+>> +static int imx_ocotp_ensure_probed(void)
+>> +{
+>> +	if (!imx_ocotp && deep_probe_is_supported()) {
+>> +		int ret;
+>> +
+>> +		ret = of_devices_ensure_probed_by_dev_id(imx_ocotp_dt_ids);
+>> +		if (ret)
+>> +			return ret;
+>> +	}
+>> +
+>> +	return imx_ocotp ? 0 : -EPROBE_DEFER;
+>> +}
+>> +
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
