@@ -1,59 +1,64 @@
-Delivery-date: Thu, 27 Jul 2023 08:27:42 +0200
+Delivery-date: Thu, 27 Jul 2023 10:49:59 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOuTP-00BmG6-Vb
-	for lore@lore.pengutronix.de; Thu, 27 Jul 2023 08:27:42 +0200
+	id 1qOwh6-00Btye-SE
+	for lore@lore.pengutronix.de; Thu, 27 Jul 2023 10:49:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qOuTN-0000LE-Kx
-	for lore@pengutronix.de; Thu, 27 Jul 2023 08:27:42 +0200
+	id 1qOwh4-0007NO-DG
+	for lore@pengutronix.de; Thu, 27 Jul 2023 10:49:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1jfab8QXH9ttX0xEfYNvahtIw7NqwFRyXshHXIapJH8=; b=O9DL66hUmlT0iajQzlQbcsaI/1
-	D+m2BQr2BY8yiBNA741Jpry7RIlYBhCvgYhIg/dNtKZuldlGnNCn7kqVXIS7RVjE4jm163qNm/a8r
-	/MqqsWRXwuibjMA3T/uGcQtryg7VJIzYODtKn2196SCtwCA5lCCE1B/QaxSC6MYac/OUWvhcfmTjB
-	k1rjy8Mc2ZvMVf9iFFB/WFgPEc5vEnQSnaVMq9zFHHMwpOCdwAiczzb6m1BsKdXD/nX0UODzReVi6
-	qIqOw8lwixKvhDKTOfVqm4qfUK7mdpejEpkPG2ca/eWIO3385pgKmT3Ro20YpAleC/3w2Pd0JPOgi
-	sLwTBgYA==;
+	bh=gFbDuzRZl1rtmPCUj1ouyHwas8K1QfCghOZ3x6jGXtU=; b=WnBHk8LWKcCNGUI2puAheKg3SY
+	fSu4JDTIYzSymb+ZmUcK1X23rDGSHmxzh9W4O0AKG5v/WLaUFWlGbcvHfShIUQwK6VVV15zz2L8ws
+	i8qDUQOjj8Zvrh8OZ/QFaGx47iEXjSzRYfOwB2RLyKOhzrULJ685ZkoNEHMlHNnH2hGPBhZFHgdvx
+	7qtBxLhC8D1ZCsgZdoc8TfB8+utzDnr7ra8uVT6rxK8swkZvBXqwuXGYsRCHBm9VtqCsmwk9cCcDM
+	H3F2iz5HmOqJcKrLHEOibgHnFe1mAwsREJc7d0BBIBMVx22sTpY+sInb2CiOsFFeMoY7fbV3oMDYe
+	bqDUc2EA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOuSI-00CJcm-2l;
-	Thu, 27 Jul 2023 06:26:34 +0000
+	id 1qOwfh-00Ciss-0t;
+	Thu, 27 Jul 2023 08:48:33 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qOuSF-00CJc5-1Q
+	id 1qOwfa-00Ciq0-3D
 	for barebox@lists.infradead.org;
-	Thu, 27 Jul 2023 06:26:32 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qOuSC-0000H6-GW; Thu, 27 Jul 2023 08:26:28 +0200
-Message-ID: <32d7716a-2b47-88e8-087d-27c145ca629f@pengutronix.de>
-Date: Thu, 27 Jul 2023 08:26:27 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20230726192718.911735-1-a.fatoum@pengutronix.de>
- <20230726192718.911735-3-a.fatoum@pengutronix.de>
- <20230727060502.sy46mutzo4enww3s@pengutronix.de>
+	Thu, 27 Jul 2023 08:48:29 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qOwfU-00076i-FQ; Thu, 27 Jul 2023 10:48:20 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qOwfT-002R2B-Lc; Thu, 27 Jul 2023 10:48:19 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qOwfT-003oE2-1j;
+	Thu, 27 Jul 2023 10:48:19 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230727060502.sy46mutzo4enww3s@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 27 Jul 2023 10:48:12 +0200
+Message-Id: <20230727084812.880438-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230727084812.880438-1-a.fatoum@pengutronix.de>
+References: <20230727084812.880438-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230726_232631_501145_0F1FE93D 
-X-CRM114-Status: GOOD (  15.11  )
+X-CRM114-CacheID: sfid-20230727_014827_060687_7BC675F7 
+X-CRM114-Status: GOOD (  15.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,57 +78,88 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/4] nvmem: ocotp: handle too early calls into ocotp
- driver gracefully
+Subject: [PATCH 2/2] kbuild: Add environment variables for userprogs flags
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 27.07.23 08:05, Marco Felsch wrote:
-> On 23-07-26, Ahmad Fatoum wrote:
->> HAB code calls into OCOTP driver by relying on a global imx_ocotp
->> variable that's populated on driver probe.
->>
->> For board code that calls a HAB function to early, this may end up
->> dereferencing a NULL pointer, so let's return -EPROBE_DEFER in that
->> case or if deep probe is enabled, just probe the OCOTP directly.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
+From: Elliot Berman <quic_eberman@quicinc.com>
 
->> @@ -497,11 +498,17 @@ static void imx_ocotp_field_decode(uint32_t field, unsigned *word,
->>  	*mask = GENMASK(width, 0);
->>  }
->>  
->> +static int imx_ocotp_ensure_probed(void);
-> 
-> Nit: Move the function definition here?
+Build systems integrating barebox may want to pass compiler and linker
+options for when barebox is building target tools. This is especially
+important when the compiler toolchain is configured without a sysroot
+like in Yocto and the --sysroot option must be used. As there was no
+option explicitly meant for this, userccflags is sometimes abused and
+set in the environment[1][2].
 
-Then I'd have to forward-declare imx_ocotp_dt_ids.
-I choose to keep the probing stuff together.
+While this appears to work, it breaks when setting userccflags as make
+option instead of an environment variable. Let's just provide USERCFLAGS
+and USERLDFLAGS explicitly for this use case.
 
+This is an adaptation of Linux commit:
 
->> +static int imx_ocotp_ensure_probed(void)
->> +{
->> +	if (!imx_ocotp && deep_probe_is_supported()) {
->> +		int ret;
->> +
->> +		ret = of_devices_ensure_probed_by_dev_id(imx_ocotp_dt_ids);
->> +		if (ret)
->> +			return ret;
->> +	}
->> +
->> +	return imx_ocotp ? 0 : -EPROBE_DEFER;
->> +}
->> +
+    | commit f67695c9962e5f444549b3437fb8d840ec6222c8
+    | Author: Elliot Berman <quic_eberman@quicinc.com>
+    | Date:   Tue Feb 1 13:35:42 2022 -0800
+    |
+    | Allow additional arguments be passed to userprogs compilation.
+    | Reproducible clang builds need to provide a sysroot and gcc path to
+    | ensure the same toolchain is used across hosts. KCFLAGS is not currently
+    | used for any user programs compilation, so add new USERCFLAGS and
+    | USERLDFLAGS which serves similar purpose as HOSTCFLAGS/HOSTLDFLAGS.
+    |
+    | Clang might detect GCC installation on hosts which have it installed
+    | to a default location in /. With addition of these environment
+    | variables, you can specify flags such as:
+    |
+    | $ make USERCFLAGS=--sysroot=/path/to/sysroot
+    |
+    | This can also be used to specify different sysroots such as musl or
+    | bionic which may be installed on the host in paths that the compiler
+    | may not search by default.
+    |
+    | Signed-off-by: Elliot Berman <quic_eberman@quicinc.com>
 
+[1]: https://github.com/pengutronix/meta-ptx/blob/38ada68c70/recipes-bsp/barebox/barebox.inc#L91
+[2]: https://lore.kernel.org/all/20230331104025.1478393-3-ejo@pengutronix.de/
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Makefile | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index acf7b2006765..f935fd2604b2 100644
+--- a/Makefile
++++ b/Makefile
+@@ -386,11 +386,12 @@ HOST_LFS_LIBS := $(shell getconf LFS_LIBS 2>/dev/null)
+ HOSTCC       = gcc
+ HOSTCXX      = g++
+ 
+-export KBUILD_USERCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
++KBUILD_USERHOSTCFLAGS := -Wall -Wmissing-prototypes -Wstrict-prototypes \
+ 			      -O2 -fomit-frame-pointer -std=gnu89
+-export KBUILD_USERLDFLAGS :=
++KBUILD_USERCFLAGS  := $(KBUILD_USERHOSTCFLAGS) $(USERCFLAGS)
++KBUILD_USERLDFLAGS := $(USERLDFLAGS)
+ 
+-KBUILD_HOSTCFLAGS   := $(KBUILD_USERCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
++KBUILD_HOSTCFLAGS   := $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(HOSTCFLAGS)
+ KBUILD_HOSTCXXFLAGS := -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
+ KBUILD_HOSTLDFLAGS  := $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
+ KBUILD_HOSTLDLIBS   := $(HOST_LFS_LIBS) $(HOSTLDLIBS)
+@@ -475,6 +476,7 @@ export CPP AR NM STRIP OBJCOPY OBJDUMP MAKE AWK GENKSYMS PERL PYTHON3 UTS_MACHIN
+ export LEX YACC
+ export HOSTCXX CHECK CHECKFLAGS
+ export KBUILD_HOSTCXXFLAGS KBUILD_HOSTLDFLAGS KBUILD_HOSTLDLIBS LDFLAGS_MODULE
++export KBUILD_USERCFLAGS KBUILD_USERLDFLAGS
+ 
+ export KBUILD_CPPFLAGS NOSTDINC_FLAGS LINUXINCLUDE OBJCOPYFLAGS KBUILD_LDFLAGS
+ export KBUILD_CFLAGS CFLAGS_KERNEL CFLAGS_MODULE
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
