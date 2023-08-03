@@ -1,15 +1,15 @@
-Delivery-date: Thu, 03 Aug 2023 12:51:28 +0200
+Delivery-date: Thu, 03 Aug 2023 12:51:29 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRVvV-004wN6-5F
-	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 12:51:28 +0200
+	id 1qRVvW-004wMv-3Y
+	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 12:51:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRVvT-0001mh-2k
+	id 1qRVvS-0001m4-KT
 	for lore@pengutronix.de; Thu, 03 Aug 2023 12:51:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,42 +17,45 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=m1TZfi/iyHrVhd0I/A1fovGd9HuLu6HjDgRzAOqa/Yc=; b=ZUyzJ5fK2jcIZBztjZhsBR6h+X
-	UerWg2bqbkNRhh7+lGR1pULFswTTBHiJwON5iRLqs4BVjlu9/bkQq3Pp/Gp/hgsmZnIJ+FB8H90+0
-	rVnyH/ZyvfsdGeqxFNstMd+19y6j0NWqnOIzsaDR85R3IQK3uNuhDG0DxFayRd/YrNHxCc/jjJvD8
-	fHBR4GfArM2HcKv6kbGj6kX+KBq+yNpKCgLNOGn2YZzfn/UsXNnDGVbPNnLJ76nNC6sdN5X7IBUvK
-	oqWJD5tkkOHMe1e+rbXzJrb36sKp6BLii1DOndxR0LL1z0JpXGNjwJv4ybBb36VBtuAdDrsIb9xnC
-	S3dl0zyw==;
+	bh=y4VSj9u3mwZkNEHEAWxBk9Kf2GXD1SeQOY341MSxN7o=; b=zD2IxJ4YZSKKIcJrj1jRntJgt7
+	JPFrB0F56xsj5lvRcYWhuKjjZVoK3FzG+cSls0Pm1LFPu8lOUYy5TFYngj7DuqHHRmU2hOK59e8Kx
+	bILzaiVTuJ52eDMTKNof6zH2KwTzsi/TbRaFB7alcjBWGP/ml1mPinf7qQePzRT2CQTbNQVRC1P9w
+	FIZacaZwZuKOXEdN0QUP0nbQ2+k7ib/ZkTxrsP6EWGZx1qJdKeiMrpryfjF4ZyQrgYu7wjZ8VzIr1
+	fgUhYFQSAy21FPGDzagOS+JBmrjpXUa8o5lFxFxGxiykC+MBbxb8Frh7zicgFl+ujo6KJ/XmC1+3B
+	5MLmxpZg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRVuO-007UgQ-28;
-	Thu, 03 Aug 2023 10:50:20 +0000
+	id 1qRVuH-007UcR-05;
+	Thu, 03 Aug 2023 10:50:13 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRVuD-007UZC-3B
+	id 1qRVuC-007UWw-0X
 	for barebox@lists.infradead.org;
-	Thu, 03 Aug 2023 10:50:12 +0000
+	Thu, 03 Aug 2023 10:50:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVuC-0000xN-Pa; Thu, 03 Aug 2023 12:50:08 +0200
+	id 1qRVuA-0000uX-So; Thu, 03 Aug 2023 12:50:06 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVuC-000ovt-4B; Thu, 03 Aug 2023 12:50:08 +0200
+	id 1qRVuA-000ov2-44; Thu, 03 Aug 2023 12:50:06 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVu8-00HAz1-9D; Thu, 03 Aug 2023 12:50:04 +0200
+	id 1qRVu8-00HAyp-6s; Thu, 03 Aug 2023 12:50:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  3 Aug 2023 12:49:45 +0200
-Message-Id: <20230803105003.4088205-5-s.hauer@pengutronix.de>
+Date: Thu,  3 Aug 2023 12:49:42 +0200
+Message-Id: <20230803105003.4088205-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230803105003.4088205-1-s.hauer@pengutronix.de>
 References: <20230803105003.4088205-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20230803_035008_199338_E540D201 
+X-CRM114-Status: GOOD (  18.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,126 +78,134 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 04/22] ARM64: Add support for debug_ll on TI AM62x SoCs
+Subject: [PATCH 01/22] pm_domain: Add onecell support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-TI K3 SoCs have ns16550 compatible UARTs. Add lowlevel debugging support
-for the AM62x SoC from the K3 family.
+So far we only have simple translation support. Add support for onecell
+translation taken straight from Linux. This is needed for upcoming TI K3
+support.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/debug_ll.h |  2 ++
- common/Kconfig                  | 16 ++++++++++-
- include/mach/k3/debug_ll.h      | 49 +++++++++++++++++++++++++++++++++
- 3 files changed, 66 insertions(+), 1 deletion(-)
- create mode 100644 include/mach/k3/debug_ll.h
+ drivers/base/power.c | 76 ++++++++++++++++++++++++++++++++++++++++++++
+ include/pm_domain.h  |  9 ++++++
+ 2 files changed, 85 insertions(+)
 
-diff --git a/arch/arm/include/asm/debug_ll.h b/arch/arm/include/asm/debug_ll.h
-index a1d5161ccf..98a7d0d839 100644
---- a/arch/arm/include/asm/debug_ll.h
-+++ b/arch/arm/include/asm/debug_ll.h
-@@ -64,6 +64,8 @@
- #include <mach/clps711x/debug_ll.h>
- #elif defined CONFIG_ARCH_AT91
- #include <mach/at91/debug_ll.h>
-+#elif defined CONFIG_ARCH_K3
-+#include <mach/k3/debug_ll.h>
- #endif
+diff --git a/drivers/base/power.c b/drivers/base/power.c
+index 2db24329dd..699af3e5a9 100644
+--- a/drivers/base/power.c
++++ b/drivers/base/power.c
+@@ -79,6 +79,37 @@ static struct generic_pm_domain *genpd_xlate_simple(
+ 	return data;
+ }
  
- #endif
-diff --git a/common/Kconfig b/common/Kconfig
-index 50f62b9f9a..3938577987 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1552,6 +1552,10 @@ config DEBUG_SUN20I
- 	depends on SOC_ALLWINNER_SUN20I
- 	select DEBUG_LL_NS16550
++/**
++ * genpd_xlate_onecell() - Xlate function using a single index.
++ * @genpdspec: OF phandle args to map into a PM domain
++ * @data: xlate function private data - pointer to struct genpd_onecell_data
++ *
++ * This is a generic xlate function that can be used to model simple PM domain
++ * controllers that have one device tree node and provide multiple PM domains.
++ * A single cell is used as an index into an array of PM domains specified in
++ * the genpd_onecell_data struct when registering the provider.
++ */
++static struct generic_pm_domain *genpd_xlate_onecell(
++					struct of_phandle_args *genpdspec,
++					void *data)
++{
++	struct genpd_onecell_data *genpd_data = data;
++	unsigned int idx = genpdspec->args[0];
++
++	if (genpdspec->args_count != 1)
++		return ERR_PTR(-EINVAL);
++
++	if (idx >= genpd_data->num_domains) {
++		pr_err("%s: invalid domain index %u\n", __func__, idx);
++		return ERR_PTR(-EINVAL);
++	}
++
++	if (!genpd_data->domains[idx])
++		return ERR_PTR(-ENOENT);
++
++	return genpd_data->domains[idx];
++}
++
+ /**
+  * genpd_add_provider() - Register a PM domain provider for a node
+  * @np: Device node pointer associated with the PM domain provider.
+@@ -124,6 +155,51 @@ int of_genpd_add_provider_simple(struct device_node *np,
+ }
+ EXPORT_SYMBOL_GPL(of_genpd_add_provider_simple);
  
-+config DEBUG_AM62X_UART
-+	bool "Texas Instruments AM62X debug UART"
-+	depends on ARCH_K3
++/**
++ * of_genpd_add_provider_onecell() - Register a onecell PM domain provider
++ * @np: Device node pointer associated with the PM domain provider.
++ * @data: Pointer to the data associated with the PM domain provider.
++ */
++int of_genpd_add_provider_onecell(struct device_node *np,
++				  struct genpd_onecell_data *data)
++{
++	struct generic_pm_domain *genpd;
++	unsigned int i;
++	int ret = -EINVAL;
 +
- config DEBUG_QEMU_ARM64_VIRT
- 	bool "QEMU ARM64 Virt PL011 console"
- 	depends on ARCH_ARM64_VIRT
-@@ -1582,10 +1586,20 @@ config DEBUG_IMX_UART_PORT
- 	  Choose UART port on which kernel low-level debug messages
- 	  should be output.
++	if (!np || !data)
++		return -EINVAL;
++
++	if (!data->xlate)
++		data->xlate = genpd_xlate_onecell;
++
++	for (i = 0; i < data->num_domains; i++) {
++		genpd = data->domains[i];
++
++		if (!genpd)
++			continue;
++		if (!genpd_present(genpd))
++			goto error;
++	}
++
++	ret = genpd_add_provider(np, data->xlate, data);
++	if (ret < 0)
++		goto error;
++
++	return 0;
++
++error:
++	while (i--) {
++		genpd = data->domains[i];
++
++		if (!genpd)
++			continue;
++	}
++
++	return ret;
++}
++EXPORT_SYMBOL_GPL(of_genpd_add_provider_onecell);
++
+ /**
+  * genpd_get_from_provider() - Look-up PM domain
+  * @genpdspec: OF phandle args to use for look-up
+diff --git a/include/pm_domain.h b/include/pm_domain.h
+index d297053531..a7e46c86b9 100644
+--- a/include/pm_domain.h
++++ b/include/pm_domain.h
+@@ -56,6 +56,15 @@ int pm_genpd_init(struct generic_pm_domain *genpd, void *gov, bool is_off);
+ int of_genpd_add_provider_simple(struct device_node *np,
+ 				 struct generic_pm_domain *genpd);
  
-+config DEBUG_K3_UART_PORT
-+	int "K3 Debug UART Port Selection" if DEBUG_AM62X_UART
-+	default 0
-+	depends on ARCH_K3
-+	help
-+	  Choose UART port on which kernel low-level debug messages
-+	  should be output. Possible values are:
-+	  AM62x: 0 - 6
++struct genpd_onecell_data {
++	struct generic_pm_domain **domains;
++	unsigned int num_domains;
++	genpd_xlate_t xlate;
++};
 +
- config DEBUG_OMAP_UART_PORT
- 	int "OMAP Debug UART Port Selection" if DEBUG_OMAP3_UART || \
- 						DEBUG_OMAP4_UART || \
--						DEBUG_AM33XX_UART
-+						DEBUG_AM33XX_UART || \
-+						DEBUG_AM62X_UART
- 	default 1
- 	depends on ARCH_OMAP
- 	help
-diff --git a/include/mach/k3/debug_ll.h b/include/mach/k3/debug_ll.h
-new file mode 100644
-index 0000000000..2433bb8f2e
---- /dev/null
-+++ b/include/mach/k3/debug_ll.h
-@@ -0,0 +1,49 @@
-+#ifndef __MACH_K3_DEBUG_LL_H__
-+#define __MACH_K3_DEBUG_LL_H__
-+#include <io.h>
++int of_genpd_add_provider_onecell(struct device_node *np,
++				  struct genpd_onecell_data *data);
 +
-+#define AM62X_UART_UART0_BASE	0x02800000
-+#define AM62X_UART_UART1_BASE	0x02810000
-+#define AM62X_UART_UART2_BASE	0x02820000
-+#define AM62X_UART_UART3_BASE	0x02830000
-+#define AM62X_UART_UART4_BASE	0x02840000
-+#define AM62X_UART_UART5_BASE	0x02850000
-+#define AM62X_UART_UART6_BASE	0x02860000
-+
-+#if defined CONFIG_DEBUG_AM62X_UART
-+#define K3_DEBUG_SOC AM62X_UART
-+
-+#define __K3_UART_BASE(soc, num) soc##_UART##num##_BASE
-+#define K3_UART_BASE(soc, num) __K3_UART_BASE(soc, num)
-+
-+static inline uint8_t debug_ll_read_reg(int reg)
-+{
-+	void __iomem *base = (void *)K3_UART_BASE(K3_DEBUG_SOC,
-+					CONFIG_DEBUG_K3_UART_PORT);
-+
-+	return readb(base + (reg << 2));
-+}
-+
-+static inline void debug_ll_write_reg(int reg, uint8_t val)
-+{
-+	void __iomem *base = (void *)K3_UART_BASE(K3_DEBUG_SOC,
-+					CONFIG_DEBUG_K3_UART_PORT);
-+
-+	writeb(val, base + (reg << 2));
-+}
-+
-+#include <debug_ll/ns16550.h>
-+
-+static inline void debug_ll_init(void)
-+{
-+	/* already configured */
-+}
-+
-+static inline void PUTC_LL(int c)
-+{
-+	debug_ll_ns16550_putc(c);
-+}
-+
-+#endif
-+
-+#endif /* __MACH_K3_DEBUG_LL_H__ */
+ void pm_genpd_print(void);
+ 
+ #else
 -- 
 2.39.2
 
