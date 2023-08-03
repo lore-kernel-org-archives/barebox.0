@@ -1,15 +1,15 @@
-Delivery-date: Thu, 03 Aug 2023 12:51:27 +0200
+Delivery-date: Thu, 03 Aug 2023 12:51:28 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRVvU-004wMk-H8
-	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 12:51:27 +0200
+	id 1qRVvV-004wN6-5F
+	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 12:51:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRVvS-0001m0-Cy
+	id 1qRVvT-0001mh-2k
 	for lore@pengutronix.de; Thu, 03 Aug 2023 12:51:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,45 +17,42 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=T0R1AvR7MYZZ41NNzUlyncbAt6lSNRha3mVhvNG3+TE=; b=Ea/F1hXL5N8HAKYOcmx4j1IpFX
-	lnJ+u30gObF9iD59Eaikr0dFuAUDMtGabh7Ut4zJNP6czKcQxXqWLudjICTgjTSGggFcF6oLOVvsn
-	+a0AWasTwuywbnhLVcMlX+twkhbbfVbSuOYoYZnniJ3R+8Q1suNk5HEHodrvvYj66WqSXIT/OtCNL
-	6dsekMpOiusnxNW5ombT7RA5qdTU14ehrQE3Q5Y1rvmN2muvsdYSgfIOT4V3QH+/875qShg4DgyCR
-	+SYXDqpYq4F4TCKzs0fLNZq3NVa7dxOkgxiEBd0JddCi/j0P5UB2/Q4mMW1CMmW+byAmylytS4S7O
-	UqLMgD5w==;
+	bh=m1TZfi/iyHrVhd0I/A1fovGd9HuLu6HjDgRzAOqa/Yc=; b=ZUyzJ5fK2jcIZBztjZhsBR6h+X
+	UerWg2bqbkNRhh7+lGR1pULFswTTBHiJwON5iRLqs4BVjlu9/bkQq3Pp/Gp/hgsmZnIJ+FB8H90+0
+	rVnyH/ZyvfsdGeqxFNstMd+19y6j0NWqnOIzsaDR85R3IQK3uNuhDG0DxFayRd/YrNHxCc/jjJvD8
+	fHBR4GfArM2HcKv6kbGj6kX+KBq+yNpKCgLNOGn2YZzfn/UsXNnDGVbPNnLJ76nNC6sdN5X7IBUvK
+	oqWJD5tkkOHMe1e+rbXzJrb36sKp6BLii1DOndxR0LL1z0JpXGNjwJv4ybBb36VBtuAdDrsIb9xnC
+	S3dl0zyw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRVuI-007UdI-2P;
-	Thu, 03 Aug 2023 10:50:14 +0000
+	id 1qRVuO-007UgQ-28;
+	Thu, 03 Aug 2023 10:50:20 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRVuB-007UWZ-1Z
+	id 1qRVuD-007UZC-3B
 	for barebox@lists.infradead.org;
-	Thu, 03 Aug 2023 10:50:10 +0000
+	Thu, 03 Aug 2023 10:50:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVu9-0000u1-TW; Thu, 03 Aug 2023 12:50:05 +0200
+	id 1qRVuC-0000xN-Pa; Thu, 03 Aug 2023 12:50:08 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVu9-000ouq-2g; Thu, 03 Aug 2023 12:50:05 +0200
+	id 1qRVuC-000ovt-4B; Thu, 03 Aug 2023 12:50:08 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVu8-00HAyt-7g; Thu, 03 Aug 2023 12:50:04 +0200
+	id 1qRVu8-00HAz1-9D; Thu, 03 Aug 2023 12:50:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  3 Aug 2023 12:49:43 +0200
-Message-Id: <20230803105003.4088205-3-s.hauer@pengutronix.de>
+Date: Thu,  3 Aug 2023 12:49:45 +0200
+Message-Id: <20230803105003.4088205-5-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230803105003.4088205-1-s.hauer@pengutronix.de>
 References: <20230803105003.4088205-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230803_035007_532944_5DF36313 
-X-CRM114-Status: GOOD (  18.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,179 +75,126 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 02/22] gpio: davinci: Redesign driver to accommodate ngpios in one gpio chip
+Subject: [PATCH 04/22] ARM64: Add support for debug_ll on TI AM62x SoCs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-The davinci GPIO devices have up to 144 GPIOs per chip. Current driver
-creates one chip for every 32 GPIOs in a controller. With this
-translation of DT GPIO handles into GPIO chip/numbers does not work
-correctly. This patch fixes that by registering all GPIOs of a
-controller in a single GPIO chip.
-
-Based on Linux commit:
-
-commit b5cf3fd827d2e11355c126b44ea625650ebf4d39
-Author: Keerthy <j-keerthy@ti.com>
-Date:   Fri Jan 13 09:50:12 2017 +0530
-
-    gpio: davinci: Redesign driver to accommodate ngpios in one gpio chip
+TI K3 SoCs have ns16550 compatible UARTs. Add lowlevel debugging support
+for the AM62x SoC from the K3 family.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/gpio/gpio-davinci.c | 68 ++++++++++++++++---------------------
- 1 file changed, 29 insertions(+), 39 deletions(-)
+ arch/arm/include/asm/debug_ll.h |  2 ++
+ common/Kconfig                  | 16 ++++++++++-
+ include/mach/k3/debug_ll.h      | 49 +++++++++++++++++++++++++++++++++
+ 3 files changed, 66 insertions(+), 1 deletion(-)
+ create mode 100644 include/mach/k3/debug_ll.h
 
-diff --git a/drivers/gpio/gpio-davinci.c b/drivers/gpio/gpio-davinci.c
-index 6a839fb5cd..841a06e4a0 100644
---- a/drivers/gpio/gpio-davinci.c
-+++ b/drivers/gpio/gpio-davinci.c
-@@ -30,40 +30,42 @@ struct davinci_gpio_controller {
- 	struct gpio_chip	chip;
- 	/* Serialize access to GPIO registers */
- 	void __iomem		*regs;
--	void __iomem		*set_data;
--	void __iomem		*clr_data;
--	void __iomem		*in_data;
- };
+diff --git a/arch/arm/include/asm/debug_ll.h b/arch/arm/include/asm/debug_ll.h
+index a1d5161ccf..98a7d0d839 100644
+--- a/arch/arm/include/asm/debug_ll.h
++++ b/arch/arm/include/asm/debug_ll.h
+@@ -64,6 +64,8 @@
+ #include <mach/clps711x/debug_ll.h>
+ #elif defined CONFIG_ARCH_AT91
+ #include <mach/at91/debug_ll.h>
++#elif defined CONFIG_ARCH_K3
++#include <mach/k3/debug_ll.h>
+ #endif
  
- #define chip2controller(chip)	\
- 	container_of(chip, struct davinci_gpio_controller, chip)
+ #endif
+diff --git a/common/Kconfig b/common/Kconfig
+index 50f62b9f9a..3938577987 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1552,6 +1552,10 @@ config DEBUG_SUN20I
+ 	depends on SOC_ALLWINNER_SUN20I
+ 	select DEBUG_LL_NS16550
  
--static struct davinci_gpio_regs __iomem *gpio2regs(void __iomem *gpio_base,
--							unsigned gpio)
-+static struct davinci_gpio_regs __iomem *gpio2regs(struct davinci_gpio_controller *d,
-+						   unsigned gpio)
- {
- 	void __iomem *ptr;
++config DEBUG_AM62X_UART
++	bool "Texas Instruments AM62X debug UART"
++	depends on ARCH_K3
++
+ config DEBUG_QEMU_ARM64_VIRT
+ 	bool "QEMU ARM64 Virt PL011 console"
+ 	depends on ARCH_ARM64_VIRT
+@@ -1582,10 +1586,20 @@ config DEBUG_IMX_UART_PORT
+ 	  Choose UART port on which kernel low-level debug messages
+ 	  should be output.
  
- 	if (gpio < 32 * 1)
--		ptr = gpio_base + 0x10;
-+		ptr = d->regs + 0x10;
- 	else if (gpio < 32 * 2)
--		ptr = gpio_base + 0x38;
-+		ptr = d->regs + 0x38;
- 	else if (gpio < 32 * 3)
--		ptr = gpio_base + 0x60;
-+		ptr = d->regs + 0x60;
- 	else if (gpio < 32 * 4)
--		ptr = gpio_base + 0x88;
-+		ptr = d->regs + 0x88;
- 	else if (gpio < 32 * 5)
--		ptr = gpio_base + 0xb0;
-+		ptr = d->regs + 0xb0;
- 	else
- 		ptr = NULL;
- 	return ptr;
- }
- 
-+static inline u32 __gpio_mask(unsigned gpio)
++config DEBUG_K3_UART_PORT
++	int "K3 Debug UART Port Selection" if DEBUG_AM62X_UART
++	default 0
++	depends on ARCH_K3
++	help
++	  Choose UART port on which kernel low-level debug messages
++	  should be output. Possible values are:
++	  AM62x: 0 - 6
++
+ config DEBUG_OMAP_UART_PORT
+ 	int "OMAP Debug UART Port Selection" if DEBUG_OMAP3_UART || \
+ 						DEBUG_OMAP4_UART || \
+-						DEBUG_AM33XX_UART
++						DEBUG_AM33XX_UART || \
++						DEBUG_AM62X_UART
+ 	default 1
+ 	depends on ARCH_OMAP
+ 	help
+diff --git a/include/mach/k3/debug_ll.h b/include/mach/k3/debug_ll.h
+new file mode 100644
+index 0000000000..2433bb8f2e
+--- /dev/null
++++ b/include/mach/k3/debug_ll.h
+@@ -0,0 +1,49 @@
++#ifndef __MACH_K3_DEBUG_LL_H__
++#define __MACH_K3_DEBUG_LL_H__
++#include <io.h>
++
++#define AM62X_UART_UART0_BASE	0x02800000
++#define AM62X_UART_UART1_BASE	0x02810000
++#define AM62X_UART_UART2_BASE	0x02820000
++#define AM62X_UART_UART3_BASE	0x02830000
++#define AM62X_UART_UART4_BASE	0x02840000
++#define AM62X_UART_UART5_BASE	0x02850000
++#define AM62X_UART_UART6_BASE	0x02860000
++
++#if defined CONFIG_DEBUG_AM62X_UART
++#define K3_DEBUG_SOC AM62X_UART
++
++#define __K3_UART_BASE(soc, num) soc##_UART##num##_BASE
++#define K3_UART_BASE(soc, num) __K3_UART_BASE(soc, num)
++
++static inline uint8_t debug_ll_read_reg(int reg)
 +{
-+	return 1 << (gpio % 32);
++	void __iomem *base = (void *)K3_UART_BASE(K3_DEBUG_SOC,
++					CONFIG_DEBUG_K3_UART_PORT);
++
++	return readb(base + (reg << 2));
 +}
 +
- static int davinci_get_direction(struct gpio_chip *chip, unsigned offset)
- {
- 	struct davinci_gpio_controller *d = chip2controller(chip);
--	struct davinci_gpio_regs __iomem *g = d->regs;
-+	struct davinci_gpio_regs __iomem *g = gpio2regs(d, offset);
- 
--	return ((readl_relaxed(&g->dir)) & (1 << offset)) ?
-+	return ((readl_relaxed(&g->dir)) & __gpio_mask(offset)) ?
- 		GPIOF_DIR_IN : GPIOF_DIR_OUT;
- }
- 
-@@ -71,9 +73,9 @@ static inline int __davinci_direction(struct gpio_chip *chip,
- 			unsigned offset, bool out, int value)
- {
- 	struct davinci_gpio_controller *d = chip2controller(chip);
--	struct davinci_gpio_regs __iomem *g = d->regs;
-+	struct davinci_gpio_regs __iomem *g = gpio2regs(d, offset);
- 	u32 temp;
--	u32 mask = 1 << offset;
-+	u32 mask = __gpio_mask(offset);
- 
- 	temp = readl_relaxed(&g->dir);
- 	if (out) {
-@@ -108,9 +110,9 @@ davinci_direction_out(struct gpio_chip *chip, unsigned offset, int value)
- static int davinci_gpio_get(struct gpio_chip *chip, unsigned offset)
- {
- 	struct davinci_gpio_controller *d = chip2controller(chip);
--	struct davinci_gpio_regs __iomem *g = d->regs;
-+	struct davinci_gpio_regs __iomem *g = gpio2regs(d, offset);
- 
--	return ((1 << offset) & readl_relaxed(&g->in_data)) ? 1 : 0;
-+	return (__gpio_mask(offset) & readl_relaxed(&g->in_data)) ? 1 : 0;
- }
- 
- /*
-@@ -120,9 +122,9 @@ static void
- davinci_gpio_set(struct gpio_chip *chip, unsigned offset, int value)
- {
- 	struct davinci_gpio_controller *d = chip2controller(chip);
--	struct davinci_gpio_regs __iomem *g = d->regs;
-+	struct davinci_gpio_regs __iomem *g = gpio2regs(d, offset);
- 
--	writel_relaxed((1 << offset), value ? &g->set_data : &g->clr_data);
-+	writel_relaxed(__gpio_mask(offset), value ? &g->set_data : &g->clr_data);
- }
- 
- static struct gpio_ops davinci_gpio_ops = {
-@@ -139,9 +141,9 @@ static int davinci_gpio_probe(struct device *dev)
- 	void __iomem *gpio_base;
- 	int ret;
- 	u32 val;
--	int i, base;
- 	unsigned ngpio;
- 	struct davinci_gpio_controller *chips;
-+	struct gpio_chip *gc;
- 
- 	ret = of_property_read_u32(dev->of_node, "ti,ngpio", &val);
- 	if (ret) {
-@@ -154,7 +156,7 @@ static int davinci_gpio_probe(struct device *dev)
- 	if (WARN_ON(ARCH_NR_GPIOS < ngpio))
- 		ngpio = ARCH_NR_GPIOS;
- 
--	chips = xzalloc((ngpio / 32 + 1) * sizeof(*chips));
-+	chips = xzalloc(sizeof(*chips));
- 
- 	iores = dev_request_mem_resource(dev, 0);
- 	if (IS_ERR(iores)) {
-@@ -163,27 +165,15 @@ static int davinci_gpio_probe(struct device *dev)
- 	}
- 	gpio_base = IOMEM(iores->start);
- 
--	for (i = 0, base = 0; base < ngpio; i++, base += 32) {
--		struct davinci_gpio_regs __iomem *regs;
--		struct gpio_chip *gc;
-+	gc = &chips->chip;
-+	gc->ops = &davinci_gpio_ops;
-+	gc->dev = dev;
-+	gc->ngpio = ngpio;
-+	gc->base = -1;
- 
--		gc = &chips[i].chip;
--		gc->ops = &davinci_gpio_ops;
-+	chips->regs = gpio_base;
- 
--		gc->dev = dev;
--		gc->base = base;
--		gc->ngpio = ngpio - base;
--		if (gc->ngpio > 32)
--			gc->ngpio = 32;
--
--		regs = gpio2regs(gpio_base, base);
--		chips[i].regs = regs;
--		chips[i].set_data = &regs->set_data;
--		chips[i].clr_data = &regs->clr_data;
--		chips[i].in_data = &regs->in_data;
--
--		gpiochip_add(gc);
--	}
-+	gpiochip_add(gc);
- 
- 	return 0;
- }
++static inline void debug_ll_write_reg(int reg, uint8_t val)
++{
++	void __iomem *base = (void *)K3_UART_BASE(K3_DEBUG_SOC,
++					CONFIG_DEBUG_K3_UART_PORT);
++
++	writeb(val, base + (reg << 2));
++}
++
++#include <debug_ll/ns16550.h>
++
++static inline void debug_ll_init(void)
++{
++	/* already configured */
++}
++
++static inline void PUTC_LL(int c)
++{
++	debug_ll_ns16550_putc(c);
++}
++
++#endif
++
++#endif /* __MACH_K3_DEBUG_LL_H__ */
 -- 
 2.39.2
 
