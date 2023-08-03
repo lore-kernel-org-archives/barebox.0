@@ -1,61 +1,76 @@
-Delivery-date: Thu, 03 Aug 2023 12:52:12 +0200
+Delivery-date: Thu, 03 Aug 2023 12:52:13 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRVwD-004wUC-0s
-	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 12:52:12 +0200
+	id 1qRVwE-004wUa-3g
+	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 12:52:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRVw8-0002F9-44
-	for lore@pengutronix.de; Thu, 03 Aug 2023 12:52:11 +0200
+	id 1qRVw7-0002Ew-O6
+	for lore@pengutronix.de; Thu, 03 Aug 2023 12:52:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=edMaPNKP1dDQCkWJgYdpvggXmM8Oy99dZ1uW0nncj0w=; b=HflsvVOnrLNZ7U9+Bw6A7X+y+O
-	Vp3V72a031XQUlURpoOp7yDoeRBfgppflDTYL87wZger5zaeHGa6Q4b2WIk9nHBFgzV+CNljaxJl3
-	JS+eLcT2rzxOWD2700gXIlYlyxBrRoU0NLpNLzl/KvfHSP+7yaOkgT4jVIVvtTLa57kXwLrv/fHyo
-	gDfH0Ox7OFVxADCUcjq/FgjtBb5Eu9qpSJ44vwlKCzNpZ1wrA8LOXmBwcFnPNjArFUNK7J4OG711G
-	wYKeY4Ou/gTk49mIbIVCR9v2G9uQgGr4Y0CdMZhFATgBcoJXdwipnWGe43scCnvbzLqJrP0A5R3Gz
-	xe400lOg==;
+	bh=auj/auXs0V2UQIUpt1OZO+Yp5X437d1tfVjNKm29In4=; b=3RuJGsQISHTGZllBDqUAoxm+S6
+	IkquVAxAruvX2hhUu3OV/aacVk3ZEczgXM4hiO/xH9jumaDubEgEC9g42DY5A3yIKOwkpetUUkVmM
+	VdLQ7XnvvNIM81tH9dJZgpDW2U2WbYe9mv6OCShJZS+KnAvtI0HlqpPobQ6GPliRWmRUFwUJa61na
+	lSREVElj7efzO2NMpPiGgoEm7Et53m8/nLoDIN6r+0x9atHcLxmysJ/6fX1StwWLxD0FRlkG0p7rE
+	8fWaZnF4+nT2Ode9i8r0M7dboFFgUwLXe6v1Gr5ENFEpDQj9DRUoye35673V329b+9ttquTbBmGU2
+	3O17mLQw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRVus-007VBD-0B;
-	Thu, 03 Aug 2023 10:50:50 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1qRVuo-007V7D-39;
+	Thu, 03 Aug 2023 10:50:46 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRVuC-007UXV-33
+	id 1qRVuN-007UgV-1i
+	for barebox@bombadil.infradead.org;
+	Thu, 03 Aug 2023 10:50:19 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=auj/auXs0V2UQIUpt1OZO+Yp5X437d1tfVjNKm29In4=; b=q+/38IKnUTh/88NwaTsV7i2eZ5
+	XHFXBIGAeMuVYKh2OcJg0kbl+GaFUksCWzI5FfNz963mNElDA6OLoosX1O0J4bGNu4aUOWiHfmMH4
+	vl2/filureprEIWrfhiD1JNwGTjKAG7mwkRWcqlR1chlOiAkrzq/1Io6csM07vXmg6UNfxwShiW/L
+	D3zaceXKNRi8JyQZKao/NsxhajjA5MIPImgnDVM4bS9nOKz8TIfI8UVtkS28OW7FXNPJql0rP5JAO
+	Sd6GpiiNBp9MvWUBo6jU+TZILs5L6HZdRaGlVYZ/TljmuMGicVNz/l8IyIoIni/BeD1H51jLpKhRP
+	SDC5vjng==;
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1qRVuI-00GkgY-1m
 	for barebox@lists.infradead.org;
-	Thu, 03 Aug 2023 10:50:21 +0000
+	Thu, 03 Aug 2023 10:50:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVuB-0000v4-LU; Thu, 03 Aug 2023 12:50:07 +0200
+	id 1qRVuD-0000yH-8u; Thu, 03 Aug 2023 12:50:09 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVuA-000ovF-UY; Thu, 03 Aug 2023 12:50:06 +0200
+	id 1qRVuC-000ow9-Ld; Thu, 03 Aug 2023 12:50:08 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVu8-00HAzT-LL; Thu, 03 Aug 2023 12:50:04 +0200
+	id 1qRVu8-00HAzo-PM; Thu, 03 Aug 2023 12:50:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  3 Aug 2023 12:49:52 +0200
-Message-Id: <20230803105003.4088205-12-s.hauer@pengutronix.de>
+Date: Thu,  3 Aug 2023 12:49:57 +0200
+Message-Id: <20230803105003.4088205-17-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230803105003.4088205-1-s.hauer@pengutronix.de>
 References: <20230803105003.4088205-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230803_035009_141951_A65524E9 
-X-CRM114-Status: GOOD (  26.42  )
+X-CRM114-CacheID: sfid-20230803_115014_733139_C7D70848 
+X-CRM114-Status: GOOD (  25.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,267 +93,712 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 11/22] soc: ti: Add ti_sci_pm_domains driver
+Subject: [PATCH 16/22] mci: Add am654 SDHCI driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This adds a driver to control power domains on TI K3 SoCs. The driver
-is based on Linux-6.5-rc3.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/soc/Kconfig                |   1 +
- drivers/soc/Makefile               |   1 +
- drivers/soc/ti/Kconfig             |   7 ++
- drivers/soc/ti/Makefile            |   1 +
- drivers/soc/ti/ti_sci_pm_domains.c | 196 +++++++++++++++++++++++++++++
- 5 files changed, 206 insertions(+)
- create mode 100644 drivers/soc/ti/Kconfig
- create mode 100644 drivers/soc/ti/Makefile
- create mode 100644 drivers/soc/ti/ti_sci_pm_domains.c
+ drivers/mci/Makefile      |   1 +
+ drivers/mci/am654-sdhci.c | 680 ++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 681 insertions(+)
+ create mode 100644 drivers/mci/am654-sdhci.c
 
-diff --git a/drivers/soc/Kconfig b/drivers/soc/Kconfig
-index c0fe214429..cbde3c35a4 100644
---- a/drivers/soc/Kconfig
-+++ b/drivers/soc/Kconfig
-@@ -3,5 +3,6 @@ menu "SoC drivers"
- source "drivers/soc/imx/Kconfig"
- source "drivers/soc/kvx/Kconfig"
- source "drivers/soc/rockchip/Kconfig"
-+source "drivers/soc/ti/Kconfig"
- 
- endmenu
-diff --git a/drivers/soc/Makefile b/drivers/soc/Makefile
-index 9bff737b78..75ae4382ff 100644
---- a/drivers/soc/Makefile
-+++ b/drivers/soc/Makefile
-@@ -5,3 +5,4 @@ obj-$(CONFIG_KVX)		+= kvx/
- obj-$(CONFIG_ARCH_ROCKCHIP)	+= rockchip/
- obj-$(CONFIG_CPU_SIFIVE)	+= sifive/
- obj-$(CONFIG_SOC_STARFIVE)	+= starfive/
-+obj-y += ti/
-diff --git a/drivers/soc/ti/Kconfig b/drivers/soc/ti/Kconfig
+diff --git a/drivers/mci/Makefile b/drivers/mci/Makefile
+index e3dc5ad8ae..b7fdddeaed 100644
+--- a/drivers/mci/Makefile
++++ b/drivers/mci/Makefile
+@@ -21,3 +21,4 @@ obj-$(CONFIG_MCI_DW)		+= dw_mmc.o
+ obj-$(CONFIG_MCI_MMCI)		+= mmci.o
+ obj-$(CONFIG_MCI_STM32_SDMMC2)	+= stm32_sdmmc2.o
+ obj-pbl-$(CONFIG_MCI_SDHCI)	+= sdhci.o
++obj-y += am654-sdhci.o
+diff --git a/drivers/mci/am654-sdhci.c b/drivers/mci/am654-sdhci.c
 new file mode 100644
-index 0000000000..dc1ec3efb7
+index 0000000000..1d94834c1a
 --- /dev/null
-+++ b/drivers/soc/ti/Kconfig
-@@ -0,0 +1,7 @@
-+config TI_SCI_PM_DOMAINS
-+	bool "TI SCI PM Domains Driver"
-+	depends on TI_SCI_PROTOCOL
-+	depends on PM_GENERIC_DOMAINS
-+	help
-+	  Generic power domain implementation for TI device implementing
-+	  the TI SCI protocol.
-diff --git a/drivers/soc/ti/Makefile b/drivers/soc/ti/Makefile
-new file mode 100644
-index 0000000000..f87420e414
---- /dev/null
-+++ b/drivers/soc/ti/Makefile
-@@ -0,0 +1 @@
-+obj-$(CONFIG_TI_SCI_PM_DOMAINS) += ti_sci_pm_domains.o
-diff --git a/drivers/soc/ti/ti_sci_pm_domains.c b/drivers/soc/ti/ti_sci_pm_domains.c
-new file mode 100644
-index 0000000000..ab0a4d3829
---- /dev/null
-+++ b/drivers/soc/ti/ti_sci_pm_domains.c
-@@ -0,0 +1,196 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/mci/am654-sdhci.c
+@@ -0,0 +1,680 @@
++// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * TI SCI Generic Power Domain Driver
++ * Copyright (C) 2018 Texas Instruments Incorporated - http://www.ti.com/
 + *
-+ * Copyright (C) 2015-2017 Texas Instruments Incorporated - http://www.ti.com/
-+ *	J Keerthy <j-keerthy@ti.com>
-+ *	Dave Gerlach <d-gerlach@ti.com>
++ * Texas Instruments' K3 SD Host Controller Interface
 + */
-+
-+#include <of_device.h>
 +#include <common.h>
-+#include <abort.h>
-+#include <malloc.h>
-+#include <io.h>
 +#include <init.h>
-+#include <pm_domain.h>
-+#include <soc/ti/ti_sci_protocol.h>
-+#include <dt-bindings/soc/ti,sci_pm_domain.h>
++#include <driver.h>
++#include <mci.h>
++#include <clock.h>
++#include <errno.h>
++#include <io.h>
++#include <regmap.h>
++#include <linux/err.h>
++#include <linux/clk.h>
++#include "sdhci.h"
 +
-+/**
-+ * struct ti_sci_genpd_provider: holds common TI SCI genpd provider data
-+ * @ti_sci: handle to TI SCI protocol driver that provides ops to
-+ *	    communicate with system control processor.
-+ * @dev: pointer to dev for the driver for devm allocs
-+ * @pd_list: list of all the power domains on the device
-+ * @data: onecell data for genpd core
-+ */
-+struct ti_sci_genpd_provider {
-+	const struct ti_sci_handle *ti_sci;
-+	struct device *dev;
-+	struct list_head pd_list;
-+	struct genpd_onecell_data data;
++/* CTL_CFG Registers */
++#define CTL_CFG_2		0x14
++
++#define SLOTTYPE_MASK		GENMASK(31, 30)
++#define SLOTTYPE_EMBEDDED	BIT(30)
++
++/* PHY Registers */
++#define PHY_CTRL1	0x100
++#define PHY_CTRL2	0x104
++#define PHY_CTRL3	0x108
++#define PHY_CTRL4	0x10C
++#define PHY_CTRL5	0x110
++#define PHY_CTRL6	0x114
++#define PHY_STAT1	0x130
++#define PHY_STAT2	0x134
++
++#define IOMUX_ENABLE_SHIFT	31
++#define IOMUX_ENABLE_MASK	BIT(IOMUX_ENABLE_SHIFT)
++#define OTAPDLYENA_SHIFT	20
++#define OTAPDLYENA_MASK		BIT(OTAPDLYENA_SHIFT)
++#define OTAPDLYSEL_SHIFT	12
++#define OTAPDLYSEL_MASK		GENMASK(15, 12)
++#define STRBSEL_SHIFT		24
++#define STRBSEL_4BIT_MASK	GENMASK(27, 24)
++#define STRBSEL_8BIT_MASK	GENMASK(31, 24)
++#define SEL50_SHIFT		8
++#define SEL50_MASK		BIT(SEL50_SHIFT)
++#define SEL100_SHIFT		9
++#define SEL100_MASK		BIT(SEL100_SHIFT)
++#define FREQSEL_SHIFT		8
++#define FREQSEL_MASK		GENMASK(10, 8)
++#define CLKBUFSEL_SHIFT		0
++#define CLKBUFSEL_MASK		GENMASK(2, 0)
++#define DLL_TRIM_ICP_SHIFT	4
++#define DLL_TRIM_ICP_MASK	GENMASK(7, 4)
++#define DR_TY_SHIFT		20
++#define DR_TY_MASK		GENMASK(22, 20)
++#define ENDLL_SHIFT		1
++#define ENDLL_MASK		BIT(ENDLL_SHIFT)
++#define DLLRDY_SHIFT		0
++#define DLLRDY_MASK		BIT(DLLRDY_SHIFT)
++#define PDB_SHIFT		0
++#define PDB_MASK		BIT(PDB_SHIFT)
++#define CALDONE_SHIFT		1
++#define CALDONE_MASK		BIT(CALDONE_SHIFT)
++#define RETRIM_SHIFT		17
++#define RETRIM_MASK		BIT(RETRIM_SHIFT)
++#define SELDLYTXCLK_SHIFT	17
++#define SELDLYTXCLK_MASK	BIT(SELDLYTXCLK_SHIFT)
++#define SELDLYRXCLK_SHIFT	16
++#define SELDLYRXCLK_MASK	BIT(SELDLYRXCLK_SHIFT)
++#define ITAPDLYSEL_SHIFT	0
++#define ITAPDLYSEL_MASK		GENMASK(4, 0)
++#define ITAPDLYENA_SHIFT	8
++#define ITAPDLYENA_MASK		BIT(ITAPDLYENA_SHIFT)
++#define ITAPCHGWIN_SHIFT	9
++#define ITAPCHGWIN_MASK		BIT(ITAPCHGWIN_SHIFT)
++
++#define DRIVER_STRENGTH_50_OHM	0x0
++#define DRIVER_STRENGTH_33_OHM	0x1
++#define DRIVER_STRENGTH_66_OHM	0x2
++#define DRIVER_STRENGTH_100_OHM	0x3
++#define DRIVER_STRENGTH_40_OHM	0x4
++
++#define AM654_SDHCI_MIN_FREQ	400000
++#define CLOCK_TOO_SLOW_HZ	50000000
++
++#define MMC_CAP2_HS200 0
++#define MMC_CAP2_HS400 0
++#define MMC_CAP_UHS_SDR104 0
++#define MMC_CAP_UHS_SDR12 0
++#define MMC_CAP_UHS_DDR50 0
++#define MMC_CAP_UHS_SDR25 0
++#define MMC_CAP_UHS_SDR50 0
++
++struct timing_data {
++	const char *otap_binding;
++	const char *itap_binding;
++	u32 capability;
 +};
 +
-+/**
-+ * struct ti_sci_pm_domain: TI specific data needed for power domain
-+ * @idx: index of the device that identifies it with the system
-+ *	 control processor.
-+ * @exclusive: Permissions for exclusive request or shared request of the
-+ *	       device.
-+ * @pd: generic_pm_domain for use with the genpd framework
-+ * @node: link for the genpd list
-+ * @parent: link to the parent TI SCI genpd provider
-+ */
-+struct ti_sci_pm_domain {
-+	int idx;
-+	u8 exclusive;
-+	struct generic_pm_domain pd;
-+	struct list_head node;
-+	struct ti_sci_genpd_provider *parent;
++static const struct timing_data td[] = {
++	[MMC_TIMING_LEGACY]	= {
++		"ti,otap-del-sel-legacy",
++		"ti,itap-del-sel-legacy",
++		0
++	},
++	[MMC_TIMING_MMC_HS]	= {
++		"ti,otap-del-sel-mmc-hs",
++		"ti,itap-del-sel-mms-hs",
++		MMC_CAP_MMC_HIGHSPEED
++	},
++	[MMC_TIMING_SD_HS]	= {
++		"ti,otap-del-sel-sd-hs",
++		"ti,itap-del-sel-sd-hs",
++		MMC_CAP_SD_HIGHSPEED
++	},
++	[MMC_TIMING_UHS_SDR12]	= {
++		"ti,otap-del-sel-sdr12",
++		"ti,itap-del-sel-sdr12",
++		MMC_CAP_UHS_SDR12
++	},
++	[MMC_TIMING_UHS_SDR25]	= {
++		"ti,otap-del-sel-sdr25",
++		"ti,itap-del-sel-sdr25",
++		MMC_CAP_UHS_SDR25
++	},
++	[MMC_TIMING_UHS_SDR50]	= {
++		"ti,otap-del-sel-sdr50",
++		NULL,
++		MMC_CAP_UHS_SDR50
++	},
++	[MMC_TIMING_UHS_SDR104]	= {
++		"ti,otap-del-sel-sdr104",
++		NULL,
++		MMC_CAP_UHS_SDR104
++	},
++	[MMC_TIMING_UHS_DDR50]	= {
++		"ti,otap-del-sel-ddr50",
++		NULL,
++		MMC_CAP_UHS_DDR50
++	},
++	[MMC_TIMING_MMC_DDR52]	= {
++		"ti,otap-del-sel-ddr52",
++		"ti,itap-del-sel-ddr52",
++		MMC_CAP_DDR
++	},
++	[MMC_TIMING_MMC_HS200]	= {
++		"ti,otap-del-sel-hs200",
++		NULL,
++		MMC_CAP2_HS200
++	},
++	[MMC_TIMING_MMC_HS400]	= {
++		"ti,otap-del-sel-hs400",
++		NULL,
++		MMC_CAP2_HS400
++	},
 +};
 +
-+#define genpd_to_ti_sci_pd(gpd) container_of(gpd, struct ti_sci_pm_domain, pd)
++struct am654_sdhci_plat {
++	struct sdhci sdhci;
++	struct mci_host mci;
++	struct clk *clk;
++	struct clk *clk_ahb;
++	const struct am654_driver_data *soc_data;
++	bool fails_without_test_cd;
 +
-+/*
-+ * ti_sci_pd_power_off(): genpd power down hook
-+ * @domain: pointer to the powerdomain to power off
-+ */
-+static int ti_sci_pd_power_off(struct generic_pm_domain *domain)
++	struct regmap *base;
++	bool non_removable;
++	u32 otap_del_sel[ARRAY_SIZE(td)];
++	u32 itap_del_sel[ARRAY_SIZE(td)];
++	u32 trm_icp;
++	u32 drv_strength;
++	u32 strb_sel;
++	u32 clkbuf_sel;
++#define DLL_PRESENT	BIT(0)
++#define IOMUX_PRESENT	BIT(1)
++#define FREQSEL_2_BIT	BIT(2)
++#define STRBSEL_4_BIT	BIT(3)
++#define DLL_CALIB	BIT(4)
++};
++
++struct am654_driver_data {
++	int (*set_ios_post)(struct am654_sdhci_plat *plat, struct mci_ios *ios);
++	u32 flags;
++};
++
++static int am654_sdhci_setup_dll(struct am654_sdhci_plat *plat,
++				 unsigned int speed)
 +{
-+	struct ti_sci_pm_domain *pd = genpd_to_ti_sci_pd(domain);
-+	const struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
++	int sel50, sel100, freqsel;
++	u32 mask, val;
++	int ret;
 +
-+	return ti_sci->ops.dev_ops.put_device(ti_sci, pd->idx);
-+}
++	/* Disable delay chain mode */
++	regmap_update_bits(plat->base, PHY_CTRL5,
++			   SELDLYTXCLK_MASK | SELDLYRXCLK_MASK, 0);
 +
-+/*
-+ * ti_sci_pd_power_on(): genpd power up hook
-+ * @domain: pointer to the powerdomain to power on
-+ */
-+static int ti_sci_pd_power_on(struct generic_pm_domain *domain)
-+{
-+	struct ti_sci_pm_domain *pd = genpd_to_ti_sci_pd(domain);
-+	const struct ti_sci_handle *ti_sci = pd->parent->ti_sci;
++	if (plat->soc_data->flags & FREQSEL_2_BIT) {
++		switch (speed) {
++		case 200000000:
++			sel50 = 0;
++			sel100 = 0;
++			break;
++		case 100000000:
++			sel50 = 0;
++			sel100 = 1;
++			break;
++		default:
++			sel50 = 1;
++			sel100 = 0;
++		}
 +
-+	if (pd->exclusive)
-+		return ti_sci->ops.dev_ops.get_device_exclusive(ti_sci,
-+								pd->idx);
-+	else
-+		return ti_sci->ops.dev_ops.get_device(ti_sci, pd->idx);
-+}
-+
-+/*
-+ * ti_sci_pd_xlate(): translation service for TI SCI genpds
-+ * @genpdspec: DT identification data for the genpd
-+ * @data: genpd core data for all the powerdomains on the device
-+ */
-+static struct generic_pm_domain *ti_sci_pd_xlate(
-+					struct of_phandle_args *genpdspec,
-+					void *data)
-+{
-+	struct genpd_onecell_data *genpd_data = data;
-+	unsigned int idx = genpdspec->args[0];
-+
-+	if (genpdspec->args_count != 1 && genpdspec->args_count != 2)
-+		return ERR_PTR(-EINVAL);
-+
-+	if (idx >= genpd_data->num_domains) {
-+		pr_err("%s: invalid domain index %u\n", __func__, idx);
-+		return ERR_PTR(-EINVAL);
++		/* Configure PHY DLL frequency */
++		mask = SEL50_MASK | SEL100_MASK;
++		val = (sel50 << SEL50_SHIFT) | (sel100 << SEL100_SHIFT);
++		regmap_update_bits(plat->base, PHY_CTRL5, mask, val);
++	} else {
++		switch (speed) {
++		case 200000000:
++			freqsel = 0x0;
++			break;
++		default:
++			freqsel = 0x4;
++		}
++		regmap_update_bits(plat->base, PHY_CTRL5, FREQSEL_MASK,
++				   freqsel << FREQSEL_SHIFT);
 +	}
 +
-+	if (!genpd_data->domains[idx])
-+		return ERR_PTR(-ENOENT);
++	/* Configure DLL TRIM */
++	mask = DLL_TRIM_ICP_MASK;
++	val = plat->trm_icp << DLL_TRIM_ICP_SHIFT;
 +
-+	genpd_to_ti_sci_pd(genpd_data->domains[idx])->exclusive =
-+		genpdspec->args[1];
++	/* Configure DLL driver strength */
++	mask |= DR_TY_MASK;
++	val |= plat->drv_strength << DR_TY_SHIFT;
++	regmap_update_bits(plat->base, PHY_CTRL1, mask, val);
 +
-+	return genpd_data->domains[idx];
++	/* Enable DLL */
++	regmap_update_bits(plat->base, PHY_CTRL1, ENDLL_MASK,
++			   0x1 << ENDLL_SHIFT);
++	/*
++	 * Poll for DLL ready. Use a one second timeout.
++	 * Works in all experiments done so far
++	 */
++	ret = regmap_read_poll_timeout(plat->base, PHY_STAT1, val,
++				       val & DLLRDY_MASK, 1000000);
++
++	return ret;
 +}
 +
-+static const struct of_device_id ti_sci_pm_domain_matches[] = {
-+	{ .compatible = "ti,sci-pm-domain", },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, ti_sci_pm_domain_matches);
-+
-+static int ti_sci_pm_domain_probe(struct device *dev)
++static void am654_sdhci_write_itapdly(struct am654_sdhci_plat *plat,
++				      u32 itapdly)
 +{
-+	struct ti_sci_genpd_provider *pd_provider;
-+	struct ti_sci_pm_domain *pd;
-+	struct device_node *np = NULL;
-+	struct of_phandle_args args;
++	/* Set ITAPCHGWIN before writing to ITAPDLY */
++	regmap_update_bits(plat->base, PHY_CTRL4, ITAPCHGWIN_MASK,
++			   1 << ITAPCHGWIN_SHIFT);
++	regmap_update_bits(plat->base, PHY_CTRL4, ITAPDLYSEL_MASK,
++			   itapdly << ITAPDLYSEL_SHIFT);
++	regmap_update_bits(plat->base, PHY_CTRL4, ITAPCHGWIN_MASK, 0);
++}
++
++static void am654_sdhci_setup_delay_chain(struct am654_sdhci_plat *plat,
++					  int mode)
++{
++	u32 mask, val;
++
++	val = 1 << SELDLYTXCLK_SHIFT | 1 << SELDLYRXCLK_SHIFT;
++	mask = SELDLYTXCLK_MASK | SELDLYRXCLK_MASK;
++	regmap_update_bits(plat->base, PHY_CTRL5, mask, val);
++
++	am654_sdhci_write_itapdly(plat, plat->itap_del_sel[mode]);
++}
++
++static int am654_sdhci_set_ios_post(struct am654_sdhci_plat *plat, struct mci_ios *ios)
++{
++	unsigned int speed = ios->clock;
++	int mode = ios->timing;
++	u32 otap_del_sel;
++	u32 mask, val;
 +	int ret;
-+	u32 max_id = 0;
-+	int index;
 +
-+	pd_provider = xzalloc(sizeof(*pd_provider));
++	/* Reset SD Clock Enable */
++	val = sdhci_read16(&plat->sdhci, SDHCI_CLOCK_CONTROL);
++	val &= ~SDHCI_CLOCK_CARD_EN;
++	sdhci_write16(&plat->sdhci, SDHCI_CLOCK_CONTROL, val);
 +
-+	pd_provider->ti_sci = ti_sci_get_handle(dev);
-+	if (IS_ERR(pd_provider->ti_sci))
-+		return PTR_ERR(pd_provider->ti_sci);
++	regmap_update_bits(plat->base, PHY_CTRL1, ENDLL_MASK, 0);
 +
-+	pd_provider->dev = dev;
++	/* restart clock */
++	sdhci_set_clock(&plat->sdhci, speed, clk_get_rate(plat->clk));
 +
-+	INIT_LIST_HEAD(&pd_provider->pd_list);
++	/* switch phy back on */
++	otap_del_sel = plat->otap_del_sel[mode];
++	mask = OTAPDLYENA_MASK | OTAPDLYSEL_MASK;
++	val = (1 << OTAPDLYENA_SHIFT) |
++	      (otap_del_sel << OTAPDLYSEL_SHIFT);
 +
-+	/* Find highest device ID used for power domains */
-+	while (1) {
-+		np = of_find_node_with_property(np, "power-domains");
-+		if (!np)
-+			break;
++	/* Write to STRBSEL for HS400 speed mode */
++	if (mode == MMC_TIMING_MMC_HS400) {
++		if (plat->soc_data->flags & STRBSEL_4_BIT)
++			mask |= STRBSEL_4BIT_MASK;
++		else
++			mask |= STRBSEL_8BIT_MASK;
 +
-+		index = 0;
++		val |= plat->strb_sel << STRBSEL_SHIFT;
++	}
 +
-+		while (1) {
-+			ret = of_parse_phandle_with_args(np, "power-domains",
-+							 "#power-domain-cells",
-+							 index, &args);
++	regmap_update_bits(plat->base, PHY_CTRL4, mask, val);
++
++	if (mode > MMC_TIMING_UHS_SDR25 && speed >= CLOCK_TOO_SLOW_HZ) {
++		ret = am654_sdhci_setup_dll(plat, speed);
++		if (ret)
++			return ret;
++	} else {
++		am654_sdhci_setup_delay_chain(plat, mode);
++	}
++
++	regmap_update_bits(plat->base, PHY_CTRL5, CLKBUFSEL_MASK,
++			   plat->clkbuf_sel);
++
++	return 0;
++}
++
++static int am654_sdhci_init(struct mci_host *mci, struct device *dev)
++{
++	struct am654_sdhci_plat *plat = container_of(mci, struct am654_sdhci_plat, mci);
++	u32 ctl_cfg_2 = 0;
++	u32 mask, val;
++	int ret;
++
++	ret = sdhci_reset(&plat->sdhci, SDHCI_RESET_ALL);
++	if (ret)
++		return ret;
++
++	if (plat->fails_without_test_cd) {
++		val = sdhci_read8(&plat->sdhci, SDHCI_HOST_CONTROL);
++		val |= SDHCI_CTRL_CDTEST_INS | SDHCI_CTRL_CDTEST_EN;
++		sdhci_write8(&plat->sdhci, SDHCI_HOST_CONTROL, val);
++	}
++
++	sdhci_write8(&plat->sdhci, SDHCI_POWER_CONTROL,
++				SDHCI_BUS_VOLTAGE_330 | SDHCI_BUS_POWER_EN);
++	udelay(400);
++
++	sdhci_write32(&plat->sdhci, SDHCI_INT_ENABLE, ~0);
++	sdhci_write32(&plat->sdhci, SDHCI_SIGNAL_ENABLE, 0x00);
++
++	/* Reset OTAP to default value */
++	mask = OTAPDLYENA_MASK | OTAPDLYSEL_MASK;
++	regmap_update_bits(plat->base, PHY_CTRL4, mask, 0x0);
++
++	if (plat->soc_data->flags & DLL_CALIB) {
++		regmap_read(plat->base, PHY_STAT1, &val);
++		if (~val & CALDONE_MASK) {
++			/* Calibrate IO lines */
++			regmap_update_bits(plat->base, PHY_CTRL1, PDB_MASK,
++					   PDB_MASK);
++			ret = regmap_read_poll_timeout(plat->base, PHY_STAT1,
++						       val, val & CALDONE_MASK,
++						       20);
 +			if (ret)
-+				break;
-+
-+			if (args.args_count >= 1 && args.np == dev->of_node) {
-+				if (args.args[0] > max_id)
-+					max_id = args.args[0];
-+
-+				pd = xzalloc(sizeof(*pd));
-+
-+				pd->pd.name = basprintf("pd:%d", args.args[0]);
-+				if (!pd->pd.name)
-+					return -ENOMEM;
-+
-+				pd->pd.power_off = ti_sci_pd_power_off;
-+				pd->pd.power_on = ti_sci_pd_power_on;
-+				pd->idx = args.args[0];
-+				pd->parent = pd_provider;
-+
-+				pm_genpd_init(&pd->pd, NULL, true);
-+
-+				list_add(&pd->node, &pd_provider->pd_list);
-+			}
-+			index++;
++				return ret;
 +		}
 +	}
 +
-+	pd_provider->data.domains =
-+		xzalloc((max_id + 1) * sizeof(*pd_provider->data.domains));
++	/* Enable pins by setting IO mux to 0 */
++	if (plat->soc_data->flags & IOMUX_PRESENT)
++		regmap_update_bits(plat->base, PHY_CTRL1, IOMUX_ENABLE_MASK, 0);
 +
-+	pd_provider->data.num_domains = max_id + 1;
-+	pd_provider->data.xlate = ti_sci_pd_xlate;
++	/* Set slot type based on SD or eMMC */
++	if (plat->non_removable)
++		ctl_cfg_2 = SLOTTYPE_EMBEDDED;
 +
-+	list_for_each_entry(pd, &pd_provider->pd_list, node)
-+		pd_provider->data.domains[pd->idx] = &pd->pd;
++	regmap_update_bits(plat->base, CTL_CFG_2, SLOTTYPE_MASK, ctl_cfg_2);
 +
-+	return of_genpd_add_provider_onecell(dev->of_node, &pd_provider->data);
++	return 0;
 +}
 +
-+static struct driver ti_sci_pm_domains_driver = {
-+	.probe = ti_sci_pm_domain_probe,
-+	.name = "ti_sci_pm_domains",
-+	.of_match_table = ti_sci_pm_domain_matches,
++const struct am654_driver_data am654_drv_data = {
++	.flags = DLL_PRESENT | IOMUX_PRESENT | FREQSEL_2_BIT | STRBSEL_4_BIT,
 +};
-+core_platform_driver(ti_sci_pm_domains_driver);
-+MODULE_LICENSE("GPL v2");
-+MODULE_DESCRIPTION("TI System Control Interface (SCI) Power Domain driver");
-+MODULE_AUTHOR("Dave Gerlach");
++
++const struct am654_driver_data am654_sr1_drv_data = {
++	.flags = IOMUX_PRESENT | FREQSEL_2_BIT | DLL_PRESENT | DLL_CALIB |
++		 STRBSEL_4_BIT,
++};
++
++const struct am654_driver_data j721e_8bit_drv_data = {
++	.flags = DLL_PRESENT | DLL_CALIB,
++};
++
++static int j721e_4bit_sdhci_set_ios_post(struct am654_sdhci_plat *plat, struct mci_ios *ios)
++{
++	u32 otap_del_sel, mask, val;
++
++	otap_del_sel = plat->otap_del_sel[ios->timing];
++	mask = OTAPDLYENA_MASK | OTAPDLYSEL_MASK;
++	val = (1 << OTAPDLYENA_SHIFT) | (otap_del_sel << OTAPDLYSEL_SHIFT);
++	regmap_update_bits(plat->base, PHY_CTRL4, mask, val);
++
++	regmap_update_bits(plat->base, PHY_CTRL5, CLKBUFSEL_MASK,
++			   plat->clkbuf_sel);
++
++	return 0;
++}
++
++const struct am654_driver_data j721e_4bit_drv_data = {
++	.set_ios_post		= &j721e_4bit_sdhci_set_ios_post,
++	.flags = IOMUX_PRESENT,
++};
++
++static const struct am654_driver_data sdhci_am64_8bit_drvdata = {
++	.set_ios_post		= &am654_sdhci_set_ios_post,
++	.flags = DLL_PRESENT | DLL_CALIB,
++};
++
++static const struct am654_driver_data sdhci_am64_4bit_drvdata = {
++	.set_ios_post		= &j721e_4bit_sdhci_set_ios_post,
++	.flags = IOMUX_PRESENT,
++};
++
++static int sdhci_am654_get_otap_delay(struct am654_sdhci_plat *plat)
++{
++	struct device *dev = plat->mci.hw_dev;
++	struct device_node *np = dev->of_node;
++	int ret;
++	int i;
++
++	/* ti,otap-del-sel-legacy is mandatory */
++	ret = of_property_read_u32(np, "ti,otap-del-sel-legacy",
++			   &plat->otap_del_sel[0]);
++	if (ret)
++		return ret;
++	/*
++	 * Remove the corresponding capability if an otap-del-sel
++	 * value is not found
++	 */
++	for (i = MMC_TIMING_MMC_HS; i <= MMC_TIMING_MMC_HS400; i++) {
++		ret = of_property_read_u32(np, td[i].otap_binding,
++				   &plat->otap_del_sel[i]);
++		if (ret) {
++			dev_dbg(dev, "Couldn't find %s\n", td[i].otap_binding);
++			/*
++			 * Remove the corresponding capability
++			 * if an otap-del-sel value is not found
++			 */
++			plat->mci.host_caps &= ~td[i].capability;
++		}
++
++		if (td[i].itap_binding)
++			of_property_read_u32(np, td[i].itap_binding,
++				     &plat->itap_del_sel[i]);
++	}
++
++	return 0;
++}
++
++static void print_error(struct am654_sdhci_plat *host, int cmdidx)
++{
++	dev_dbg(host->mci.hw_dev,
++		"error while transfering data for command %d\n", cmdidx);
++	dev_dbg(host->mci.hw_dev, "state = 0x%08x , interrupt = 0x%08x\n",
++		sdhci_read32(&host->sdhci, SDHCI_PRESENT_STATE),
++		sdhci_read32(&host->sdhci, SDHCI_INT_NORMAL_STATUS));
++}
++
++static int am654_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
++				struct mci_data *data)
++{
++	struct am654_sdhci_plat *host = container_of(mci, struct am654_sdhci_plat, mci);
++	u32 command, xfer;
++	int ret;
++	dma_addr_t dma;
++
++	ret = sdhci_wait_idle(&host->sdhci, cmd);
++	if (ret)
++		return ret;
++
++	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, ~0);
++
++	sdhci_write8(&host->sdhci, SDHCI_TIMEOUT_CONTROL, 0xe);
++
++	sdhci_setup_data_dma(&host->sdhci, data, &dma);
++
++	sdhci_set_cmd_xfer_mode(&host->sdhci, cmd, data,
++				dma == SDHCI_NO_DMA ? false : true,
++				&command, &xfer);
++
++	sdhci_write16(&host->sdhci, SDHCI_TRANSFER_MODE, xfer);
++	sdhci_write32(&host->sdhci, SDHCI_ARGUMENT, cmd->cmdarg);
++	sdhci_write16(&host->sdhci, SDHCI_COMMAND, command);
++
++	ret = sdhci_wait_for_done(&host->sdhci, SDHCI_INT_CMD_COMPLETE);
++	if (ret)
++		goto error;
++
++	sdhci_read_response(&host->sdhci, cmd);
++	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, SDHCI_INT_CMD_COMPLETE);
++
++	ret = sdhci_transfer_data_dma(&host->sdhci, data, dma);
++
++error:
++	if (ret) {
++		print_error(host, cmd->cmdidx);
++		sdhci_reset(&host->sdhci, SDHCI_RESET_CMD);
++		sdhci_reset(&host->sdhci, SDHCI_RESET_DATA);
++	}
++
++	sdhci_write32(&host->sdhci, SDHCI_INT_STATUS, ~0);
++
++	return ret;
++}
++
++static void am654_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
++{
++	struct am654_sdhci_plat *plat = container_of(mci, struct am654_sdhci_plat, mci);
++	u32 val;
++
++	if (ios->clock)
++		sdhci_set_clock(&plat->sdhci, ios->clock, plat->sdhci.max_clk);
++
++	sdhci_set_bus_width(&plat->sdhci, ios->bus_width);
++
++	val = sdhci_read8(&plat->sdhci, SDHCI_HOST_CONTROL);
++
++	if (ios->clock > 26000000)
++		val |= SDHCI_CTRL_HISPD;
++	else
++		val &= ~SDHCI_CTRL_HISPD;
++
++	sdhci_write8(&plat->sdhci, SDHCI_HOST_CONTROL, val);
++
++	plat->soc_data->set_ios_post(plat, ios);
++}
++
++static const struct regmap_config regmap_config = {
++	.reg_bits	= 32,
++	.val_bits	= 32,
++	.reg_stride	= 4,
++	.max_register	= 0x400,
++};
++
++static int am654_sdhci_probe(struct device *dev)
++{
++	struct device_node *np = dev->of_node;
++	struct am654_sdhci_plat *plat;
++	struct mci_host *mci;
++	struct resource *iores;
++	u32 drv_strength;
++	int ret;
++
++	plat = xzalloc(sizeof(*plat));
++
++	ret = dev_get_drvdata(dev, (const void **)&plat->soc_data);
++	if (ret)
++		return ret;
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	plat->sdhci.base = IOMEM(iores->start);
++
++	iores = dev_request_mem_resource(dev, 1);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	plat->base = regmap_init_mmio(dev, IOMEM(iores->start), &regmap_config);
++        if (IS_ERR(plat->base)) {
++                dev_err(dev, "failed to init regmap: %ld\n",
++                                PTR_ERR(plat->base));
++                return PTR_ERR(plat->base);
++        }
++
++	plat->clk = clk_get(dev, "clk_xin");
++	if (IS_ERR(plat->clk)) {
++		dev_err(dev, "failed to get clock\n");
++		return ret;
++	}
++
++	clk_enable(plat->clk);
++
++	plat->clk_ahb = clk_get(dev, "clk_ahb");
++	if (IS_ERR(plat->clk_ahb)) {
++		dev_err(dev, "failed to get ahb clock\n");
++		return ret;
++	}
++
++	clk_enable(plat->clk_ahb);
++
++	mci = &plat->mci;
++	mci->f_max = clk_get_rate(plat->clk);
++	mci->f_min = 50000000 / 256;
++
++	if (plat->soc_data->flags & DLL_PRESENT) {
++		ret = of_property_read_u32(np, "ti,trm-icp", &plat->trm_icp);
++		if (ret)
++			return ret;
++
++		ret = of_property_read_u32(np, "ti,driver-strength-ohm",
++				   &drv_strength);
++		if (ret)
++			return ret;
++
++		switch (drv_strength) {
++		case 50:
++			plat->drv_strength = DRIVER_STRENGTH_50_OHM;
++			break;
++		case 33:
++			plat->drv_strength = DRIVER_STRENGTH_33_OHM;
++			break;
++		case 66:
++			plat->drv_strength = DRIVER_STRENGTH_66_OHM;
++			break;
++		case 100:
++			plat->drv_strength = DRIVER_STRENGTH_100_OHM;
++			break;
++		case 40:
++			plat->drv_strength = DRIVER_STRENGTH_40_OHM;
++			break;
++		default:
++			dev_err(dev, "Invalid driver strength\n");
++			return -EINVAL;
++		}
++	}
++
++	mci->send_cmd = am654_sdhci_send_cmd;
++	mci->set_ios = am654_sdhci_set_ios;
++	mci->init = am654_sdhci_init;
++	mci->hw_dev = dev;
++
++	of_property_read_u32(np, "ti,strobe-sel", &plat->strb_sel);
++	of_property_read_u32(np, "ti,clkbuf-sel", &plat->clkbuf_sel);
++
++	plat->fails_without_test_cd = of_property_read_bool(np, "ti,fails-without-test-cd");
++
++	mci_of_parse(&plat->mci);
++
++	ret = sdhci_am654_get_otap_delay(plat);
++	if (ret)
++		return ret;
++
++	plat->sdhci.mci = mci;
++	sdhci_setup_host(&plat->sdhci);
++
++	dev->priv = plat;
++
++	return mci_register(&plat->mci);
++}
++
++static const struct of_device_id am654_sdhci_ids[] = {
++	{
++		.compatible = "ti,am654-sdhci-5.1",
++		.data = &am654_drv_data,
++	}, {
++		.compatible = "ti,j721e-sdhci-8bit",
++		.data = &j721e_8bit_drv_data,
++	}, {
++		.compatible = "ti,j721e-sdhci-4bit",
++		.data = &j721e_4bit_drv_data,
++	}, {
++		.compatible = "ti,am64-sdhci-8bit",
++		.data = &sdhci_am64_8bit_drvdata,
++	}, {
++		.compatible = "ti,am64-sdhci-4bit",
++		.data = &sdhci_am64_4bit_drvdata,
++	}, {
++		.compatible = "ti,am62-sdhci",
++		.data = &sdhci_am64_4bit_drvdata,
++	}, {
++		/* sentinel */
++	}
++};
++MODULE_DEVICE_TABLE(of, am654_sdhci_ids);
++
++static struct driver am654_sdhc_driver = {
++        .name = "am654-sdhci",
++        .probe = am654_sdhci_probe,
++        .of_compatible = DRV_OF_COMPAT(am654_sdhci_ids),
++};
++device_platform_driver(am654_sdhc_driver);
 -- 
 2.39.2
 
