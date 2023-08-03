@@ -1,65 +1,58 @@
-Delivery-date: Thu, 03 Aug 2023 10:55:39 +0200
+Delivery-date: Thu, 03 Aug 2023 10:57:07 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRU7P-004p0Z-Qe
-	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 10:55:39 +0200
+	id 1qRU8q-004p4u-Jn
+	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 10:57:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRU7O-0000As-0y
-	for lore@pengutronix.de; Thu, 03 Aug 2023 10:55:38 +0200
+	id 1qRU8o-0000Qn-R0
+	for lore@pengutronix.de; Thu, 03 Aug 2023 10:57:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nrdedc43mxWOkyT6rVBLVGKfVcBvYy5Npk3gBIzZJus=; b=3I8/yF6UFctirUbzKWThcG3rN/
-	AINLoA0F8/jF6/OA+jDjWhneZcyiWi7WLSvv8xLoj09OBbVd3O9xiUMuS6e7gxTJaaeJYbCy4q4wL
-	De5J0mBERzvxkcjIuNXQdIDoMYKOAhSrv7SlUI4/KYjkmTmeIZ6ZnmRso4znoOamqr6oNxksNDRc3
-	AKj/RKTDf0Mx5he8zt2MwbXneJ5UU1HVkaFl4F+qCpO53HBEMixmqRyCug2VOPKXzOliR2hWGkMEZ
-	jf7ChKQc7SyOvucy5wRMrChbCB+K5GfiJ1XeCUOt+696LEASMQ0JJzzDYaUODAyvWkAif09BEQFnG
-	fzGa2ZNA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=fsH4mHEWx36WRo/yDGO49mNDzQvJHeOMFsnoRuUxA1U=; b=XPbweDC0fzLlhnqgyFplsgN1GQ
+	3m0WwreQzbj+lfxO1WSS0aV3hoW3oNVADDixqk6Z6buPjXloQ1mR5t0atvHOtsUcwnRg4yzG5Wk6f
+	ABvTAnNWNPvmcMGT457L1bOXUWlno91ef1wQxjysjdUQoHyNiSB5E/b3QPFRkFVuRQlQZT4EwRIGj
+	VQBhPl17pHWbIdORI7HJMNAz5pIDfd1PZzEPH0aVmED+3I6RIZ0Kc5q6KnzQMgPcG66G4Imu9e6yb
+	lGmOxTtSMi+xIypcH+Su20UMk27Dg6y6Wz2uW2m7x9JO3vNrXaxlA5XHpW/qnTqmwSoS+LrgavNoQ
+	vrw8ORww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRU6P-0075E0-2G;
-	Thu, 03 Aug 2023 08:54:37 +0000
+	id 1qRU7q-0075Q5-2j;
+	Thu, 03 Aug 2023 08:56:06 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRU6M-0075Dc-2F
+	id 1qRU7n-0075PU-03
 	for barebox@lists.infradead.org;
-	Thu, 03 Aug 2023 08:54:36 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qRU6L-0008MC-BX; Thu, 03 Aug 2023 10:54:33 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qRU6L-0001WX-3R; Thu, 03 Aug 2023 10:54:33 +0200
-Date: Thu, 3 Aug 2023 10:54:33 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20230803085433.GC7788@pengutronix.de>
-References: <CAP1tNvRt9ohDy3n3AJ1Fzvvqgbv_0V0iVM1urQWOzN2pT-xgpA@mail.gmail.com>
- <20230803083016.GB7788@pengutronix.de>
+	Thu, 03 Aug 2023 08:56:04 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qRU7k-0000Gp-3h; Thu, 03 Aug 2023 10:56:00 +0200
+Message-ID: <03573857-babb-adbe-4d8a-9b8a7e9fd506@pengutronix.de>
+Date: Thu, 3 Aug 2023 10:55:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230803083016.GB7788@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+References: <20230803085134.3912884-1-s.hauer@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230803085134.3912884-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230803_015434_773431_F282B3FA 
-X-CRM114-Status: GOOD (  23.71  )
+X-CRM114-CacheID: sfid-20230803_015603_085736_D00A9701 
+X-CRM114-Status: GOOD (  27.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,49 +70,100 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: Re: arm psci_probe() bug
+Subject: Re: [PATCH] of: never fixup internal live tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Aug 03, 2023 at 10:30:16AM +0200, Sascha Hauer wrote:
-> Hi Alexander,
+On 03.08.23 10:51, Sascha Hauer wrote:
+> Calling of_fix_tree() on the internal live tree has undesired side
+> effects, so refrain from doing so.
 > 
-> On Thu, Aug 03, 2023 at 11:04:36AM +0300, Alexander Shiyan wrote:
-> > Hello.
-> > 
-> > I found a bug in psci processing.
-> > Currently the kernel writes the following on boot:
-> > psci: probing for conduit method from DT.
-> > psci: invalid "method" property:
-> > ...
-> > 
-> > In the psci_probe() function we do the following:
-> > ret = of_property_read_string(dev->of_node, "method", &method);
-> > and use this (method) variable as an argument for of_psci_fixup().
-> > I suspect we are free this variable at of_property_write_string ->
-> > of_set_property > of_delete_property.
-> > 
-> > Can you confirm my thought and correct it in the right direction?
+> One of the side effects is that some parts of barebox store pointers
+> to properties in the live tree which might become invalid when during
+> of_fixup these properties are deleted or updated.
 > 
-> Are you using the internal device tree for booting? If yes, then I think
-> this can happen. As I just saw when booting with the internal device
-> tree then of_get_fixed_tree() is called with the barebox live tree as
-> argument. We shouldn't do this and use a copy instead.
+> The other is that it's unexpected that the live tree is modified
+> after a dry run boot with the live tree.
+> 
+> This changes of_get_fixed_tree() to always call of_fix_tree() on
+> a copy of the device tree and not on the device tree itself. To
+> emphasize this make the device tree argument to of_get_fixed_tree()
+> const.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-Whether or not this is your actual problem I just sent a patch
-addressing this.
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Sascha
+> ---
+>  common/oftree.c | 19 ++++++++++---------
+>  include/of.h    |  2 +-
+>  2 files changed, 11 insertions(+), 10 deletions(-)
+> 
+> diff --git a/common/oftree.c b/common/oftree.c
+> index 3e85070d11..51eebd36bd 100644
+> --- a/common/oftree.c
+> +++ b/common/oftree.c
+> @@ -416,26 +416,27 @@ void of_fix_tree(struct device_node *node)
+>   * It increases the size of the tree and applies the registered
+>   * fixups.
+>   */
+> -struct fdt_header *of_get_fixed_tree(struct device_node *node)
+> +struct fdt_header *of_get_fixed_tree(const struct device_node *node)
+>  {
+>  	struct fdt_header *fdt = NULL;
+> -	struct device_node *freenp = NULL;
+> +	struct device_node *np;
+>  
+>  	if (!node) {
+>  		node = of_get_root_node();
+>  		if (!node)
+>  			return NULL;
+> -
+> -		freenp = node = of_dup(node);
+> -		if (!node)
+> -			return NULL;
+>  	}
+>  
+> -	of_fix_tree(node);
+> +	np = of_dup(node);
+> +
+> +	if (!np)
+> +		return NULL;
+> +
+> +	of_fix_tree(np);
+>  
+> -	fdt = of_flatten_dtb(node);
+> +	fdt = of_flatten_dtb(np);
+>  
+> -	of_delete_node(freenp);
+> +	of_delete_node(np);
+>  
+>  	return fdt;
+>  }
+> diff --git a/include/of.h b/include/of.h
+> index 92a15f5c4a..0deb327971 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -75,7 +75,7 @@ int of_add_initrd(struct device_node *root, resource_size_t start,
+>  
+>  struct fdt_header *fdt_get_tree(void);
+>  
+> -struct fdt_header *of_get_fixed_tree(struct device_node *node);
+> +struct fdt_header *of_get_fixed_tree(const struct device_node *node);
+>  
+>  /* Helper to read a big number; size is in cells (not bytes) */
+>  static inline u64 of_read_number(const __be32 *cell, int size)
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
