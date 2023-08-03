@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRVvW-004wMv-3Y
+	id 1qRVvW-004wNI-3Q
 	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 12:51:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRVvS-0001m4-KT
+	id 1qRVvT-0001mj-1L
 	for lore@pengutronix.de; Thu, 03 Aug 2023 12:51:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,45 +17,45 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=y4VSj9u3mwZkNEHEAWxBk9Kf2GXD1SeQOY341MSxN7o=; b=zD2IxJ4YZSKKIcJrj1jRntJgt7
-	JPFrB0F56xsj5lvRcYWhuKjjZVoK3FzG+cSls0Pm1LFPu8lOUYy5TFYngj7DuqHHRmU2hOK59e8Kx
-	bILzaiVTuJ52eDMTKNof6zH2KwTzsi/TbRaFB7alcjBWGP/ml1mPinf7qQePzRT2CQTbNQVRC1P9w
-	FIZacaZwZuKOXEdN0QUP0nbQ2+k7ib/ZkTxrsP6EWGZx1qJdKeiMrpryfjF4ZyQrgYu7wjZ8VzIr1
-	fgUhYFQSAy21FPGDzagOS+JBmrjpXUa8o5lFxFxGxiykC+MBbxb8Frh7zicgFl+ujo6KJ/XmC1+3B
-	5MLmxpZg==;
+	bh=mou/373YeMvxtGnxSKOv61DmYIEqidNKjEBqv1L/wlQ=; b=qRNKLQOc4PC6efZV7S53BNZ/e2
+	rDSvKSM+Mq+X1V18rslFqyo/pRvKVKQBTUCq8BbA/RGBynPa8ZHuUNNLXnuf2xKl0E8HkgHFEocK3
+	fph0fKiy5+E0z/USdMYLvmJbHU43EiBItcjeKJ8PNh05LQ/HKvndsiXrgYqDRacMVrylsWSVypj3T
+	Jhg3Ttk4Y8rhPOgZMYBMbstehUYKPJVvDCGM4y33h8oYc/buue570ULWhxcCxY1GRgH8AeKBRLlqU
+	fXChd/8lpWNZzi25gq/rCBYTc7hSolN01uEpjv0DIjps0l+UU4wonf/PENVQYz2zWA27/DZ+X6LWc
+	L6Nsw+fg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRVuH-007UcR-05;
-	Thu, 03 Aug 2023 10:50:13 +0000
+	id 1qRVuM-007Uem-0f;
+	Thu, 03 Aug 2023 10:50:18 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRVuC-007UWw-0X
+	id 1qRVuB-007UWi-1g
 	for barebox@lists.infradead.org;
-	Thu, 03 Aug 2023 10:50:09 +0000
+	Thu, 03 Aug 2023 10:50:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVuA-0000uX-So; Thu, 03 Aug 2023 12:50:06 +0200
+	id 1qRVuA-0000u3-7k; Thu, 03 Aug 2023 12:50:06 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVuA-000ov2-44; Thu, 03 Aug 2023 12:50:06 +0200
+	id 1qRVu9-000ouy-Ct; Thu, 03 Aug 2023 12:50:05 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVu8-00HAyp-6s; Thu, 03 Aug 2023 12:50:04 +0200
+	id 1qRVu8-00HAz5-A4; Thu, 03 Aug 2023 12:50:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  3 Aug 2023 12:49:42 +0200
-Message-Id: <20230803105003.4088205-2-s.hauer@pengutronix.de>
+Date: Thu,  3 Aug 2023 12:49:46 +0200
+Message-Id: <20230803105003.4088205-6-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230803105003.4088205-1-s.hauer@pengutronix.de>
 References: <20230803105003.4088205-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230803_035008_199338_E540D201 
-X-CRM114-Status: GOOD (  18.78  )
+X-CRM114-CacheID: sfid-20230803_035007_588943_70C7D40A 
+X-CRM114-Status: GOOD (  21.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,134 +78,211 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 01/22] pm_domain: Add onecell support
+Subject: [PATCH 05/22] Add initial mailbox support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-So far we only have simple translation support. Add support for onecell
-translation taken straight from Linux. This is needed for upcoming TI K3
-support.
+This adds a minimum mailbox support. The code is based on the
+corresponding U-Boot code. It's currently enough to bring up
+the communication with the SCI on TI K3 SoCs.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/base/power.c | 76 ++++++++++++++++++++++++++++++++++++++++++++
- include/pm_domain.h  |  9 ++++++
- 2 files changed, 85 insertions(+)
+ drivers/Kconfig           |  1 +
+ drivers/Makefile          |  1 +
+ drivers/mailbox/Kconfig   | 10 +++++
+ drivers/mailbox/Makefile  |  1 +
+ drivers/mailbox/mailbox.c | 92 +++++++++++++++++++++++++++++++++++++++
+ include/mailbox.h         | 36 +++++++++++++++
+ 6 files changed, 141 insertions(+)
+ create mode 100644 drivers/mailbox/Kconfig
+ create mode 100644 drivers/mailbox/Makefile
+ create mode 100644 drivers/mailbox/mailbox.c
+ create mode 100644 include/mailbox.h
 
-diff --git a/drivers/base/power.c b/drivers/base/power.c
-index 2db24329dd..699af3e5a9 100644
---- a/drivers/base/power.c
-+++ b/drivers/base/power.c
-@@ -79,6 +79,37 @@ static struct generic_pm_domain *genpd_xlate_simple(
- 	return data;
- }
+diff --git a/drivers/Kconfig b/drivers/Kconfig
+index 2636eed1a3..d9c0320556 100644
+--- a/drivers/Kconfig
++++ b/drivers/Kconfig
+@@ -46,5 +46,6 @@ source "drivers/nvme/Kconfig"
+ source "drivers/ddr/Kconfig"
+ source "drivers/power/Kconfig"
+ source "drivers/virtio/Kconfig"
++source "drivers/mailbox/Kconfig"
  
-+/**
-+ * genpd_xlate_onecell() - Xlate function using a single index.
-+ * @genpdspec: OF phandle args to map into a PM domain
-+ * @data: xlate function private data - pointer to struct genpd_onecell_data
-+ *
-+ * This is a generic xlate function that can be used to model simple PM domain
-+ * controllers that have one device tree node and provide multiple PM domains.
-+ * A single cell is used as an index into an array of PM domains specified in
-+ * the genpd_onecell_data struct when registering the provider.
+ endmenu
+diff --git a/drivers/Makefile b/drivers/Makefile
+index fa899a2ab8..3f60e1b9c7 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -48,3 +48,4 @@ obj-y	+= power/
+ obj-$(CONFIG_SOUND) += sound/
+ obj-y	+= virtio/
+ obj-$(CONFIG_HAVE_OPTEE)	+= tee/optee/of.o
++obj-y	+= mailbox/
+diff --git a/drivers/mailbox/Kconfig b/drivers/mailbox/Kconfig
+new file mode 100644
+index 0000000000..7839a44729
+--- /dev/null
++++ b/drivers/mailbox/Kconfig
+@@ -0,0 +1,10 @@
++menuconfig MAILBOX
++	bool "Mailbox Hardware Support"
++	help
++	  Mailbox is a framework to control hardware communication between
++	  on-chip processors through queued messages and interrupt driven
++	  signals. Say Y if your platform supports hardware mailboxes.
++
++if MAILBOX
++
++endif
+diff --git a/drivers/mailbox/Makefile b/drivers/mailbox/Makefile
+new file mode 100644
+index 0000000000..9dec4e3b3b
+--- /dev/null
++++ b/drivers/mailbox/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_MAILBOX) += mailbox.o
+diff --git a/drivers/mailbox/mailbox.c b/drivers/mailbox/mailbox.c
+new file mode 100644
+index 0000000000..edf9481aca
+--- /dev/null
++++ b/drivers/mailbox/mailbox.c
+@@ -0,0 +1,92 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2016, NVIDIA CORPORATION.
 + */
-+static struct generic_pm_domain *genpd_xlate_onecell(
-+					struct of_phandle_args *genpdspec,
-+					void *data)
++
++#define LOG_CATEGORY UCLASS_MAILBOX
++
++#include <common.h>
++#include <mailbox.h>
++#include <deep-probe.h>
++
++int mbox_send(struct mbox_chan *chan, const void *data)
 +{
-+	struct genpd_onecell_data *genpd_data = data;
-+	unsigned int idx = genpdspec->args[0];
++	const struct mbox_chan_ops *ops = chan->mbox->ops;
 +
-+	if (genpdspec->args_count != 1)
-+		return ERR_PTR(-EINVAL);
-+
-+	if (idx >= genpd_data->num_domains) {
-+		pr_err("%s: invalid domain index %u\n", __func__, idx);
-+		return ERR_PTR(-EINVAL);
-+	}
-+
-+	if (!genpd_data->domains[idx])
-+		return ERR_PTR(-ENOENT);
-+
-+	return genpd_data->domains[idx];
++	return ops->send(chan, data);
 +}
 +
- /**
-  * genpd_add_provider() - Register a PM domain provider for a node
-  * @np: Device node pointer associated with the PM domain provider.
-@@ -124,6 +155,51 @@ int of_genpd_add_provider_simple(struct device_node *np,
- }
- EXPORT_SYMBOL_GPL(of_genpd_add_provider_simple);
- 
-+/**
-+ * of_genpd_add_provider_onecell() - Register a onecell PM domain provider
-+ * @np: Device node pointer associated with the PM domain provider.
-+ * @data: Pointer to the data associated with the PM domain provider.
-+ */
-+int of_genpd_add_provider_onecell(struct device_node *np,
-+				  struct genpd_onecell_data *data)
++int mbox_recv(struct mbox_chan *chan, void *data, unsigned long timeout_us)
 +{
-+	struct generic_pm_domain *genpd;
-+	unsigned int i;
-+	int ret = -EINVAL;
++	const struct mbox_chan_ops *ops = chan->mbox->ops;
++	u64 start;
++	int ret;
 +
-+	if (!np || !data)
-+		return -EINVAL;
++	start = get_time_ns();
 +
-+	if (!data->xlate)
-+		data->xlate = genpd_xlate_onecell;
-+
-+	for (i = 0; i < data->num_domains; i++) {
-+		genpd = data->domains[i];
-+
-+		if (!genpd)
-+			continue;
-+		if (!genpd_present(genpd))
-+			goto error;
++	for (;;) {
++		ret = ops->recv(chan, data);
++		if (ret != -ENODATA)
++			return ret;
++		if (is_timeout(start, timeout_us * 1000))
++			return -ETIMEDOUT;
 +	}
++}
 +
-+	ret = genpd_add_provider(np, data->xlate, data);
-+	if (ret < 0)
-+		goto error;
++static LIST_HEAD(mbox_cons);
++
++int mbox_controller_register(struct mbox_controller *mbox)
++{
++	list_add_tail(&mbox->node, &mbox_cons);
 +
 +	return 0;
++}
 +
-+error:
-+	while (i--) {
-+		genpd = data->domains[i];
 +
-+		if (!genpd)
-+			continue;
++struct mbox_chan *mbox_request_channel(struct device *dev, int index)
++{
++	struct of_phandle_args spec;
++	struct mbox_controller *mbox;
++	struct mbox_chan *chan = ERR_PTR(-ENODEV);
++
++	if (of_parse_phandle_with_args(dev->of_node, "mboxes",
++					"#mbox-cells", index, &spec)) {
++		return ERR_PTR(-ENODEV);
 +	}
 +
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(of_genpd_add_provider_onecell);
++	of_device_ensure_probed(spec.np);
 +
- /**
-  * genpd_get_from_provider() - Look-up PM domain
-  * @genpdspec: OF phandle args to use for look-up
-diff --git a/include/pm_domain.h b/include/pm_domain.h
-index d297053531..a7e46c86b9 100644
---- a/include/pm_domain.h
-+++ b/include/pm_domain.h
-@@ -56,6 +56,15 @@ int pm_genpd_init(struct generic_pm_domain *genpd, void *gov, bool is_off);
- int of_genpd_add_provider_simple(struct device_node *np,
- 				 struct generic_pm_domain *genpd);
- 
-+struct genpd_onecell_data {
-+	struct generic_pm_domain **domains;
-+	unsigned int num_domains;
-+	genpd_xlate_t xlate;
++	list_for_each_entry(mbox, &mbox_cons, node) {
++		if (mbox->dev->of_node != spec.np)
++			continue;
++
++		chan = mbox->of_xlate(mbox, &spec);
++		if (!IS_ERR(chan))
++			break;
++	}
++
++	return chan;
++}
++
++struct mbox_chan *mbox_request_channel_byname(struct device *dev, const char *name)
++{
++	struct device_node *np = dev->of_node;
++	struct property *prop;
++	const char *mbox_name;
++	int index = 0;
++
++	if (!np)
++		return ERR_PTR(-EINVAL);
++
++	if (!of_get_property(np, "mbox-names", NULL)) {
++		return ERR_PTR(-EINVAL);
++	}
++
++	of_property_for_each_string(np, "mbox-names", prop, mbox_name) {
++		if (!strncmp(name, mbox_name, strlen(name)))
++			return mbox_request_channel(dev, index);
++		index++;
++	}
++
++	return ERR_PTR(-ENODEV);
++}
+diff --git a/include/mailbox.h b/include/mailbox.h
+new file mode 100644
+index 0000000000..3be58ec103
+--- /dev/null
++++ b/include/mailbox.h
+@@ -0,0 +1,36 @@
++#ifndef __MAILBOX_H
++#define __MAILBOX_H
++
++struct mbox_chan {
++	struct mbox_controller *mbox;
++	struct device *dev;
++	void *con_priv;
 +};
 +
-+int of_genpd_add_provider_onecell(struct device_node *np,
-+				  struct genpd_onecell_data *data);
++/**
++ * struct mbox_ops - The functions that a mailbox driver must implement.
++ */
++struct mbox_chan_ops {
++	int (*request)(struct mbox_chan *chan);
++	int (*rfree)(struct mbox_chan *chan);
++	int (*send)(struct mbox_chan *chan, const void *data);
++	int (*recv)(struct mbox_chan *chan, void *data);
++};
 +
- void pm_genpd_print(void);
- 
- #else
++struct mbox_controller {
++	struct device *dev;
++	const struct mbox_chan_ops *ops;
++	struct mbox_chan *chans;
++	int num_chans;
++	struct mbox_chan *(*of_xlate)(struct mbox_controller *mbox,
++				      const struct of_phandle_args *sp);
++	struct list_head node;
++};
++
++int mbox_controller_register(struct mbox_controller *mbox);
++struct mbox_chan *mbox_request_channel(struct device *dev, int index);
++struct mbox_chan *mbox_request_channel_byname(struct device *dev, const char *name);
++int mbox_send(struct mbox_chan *chan, const void *data);
++int mbox_recv(struct mbox_chan *chan, void *data, unsigned long timeout_us);
++
++#endif /* __MAILBOX_H */
 -- 
 2.39.2
 
