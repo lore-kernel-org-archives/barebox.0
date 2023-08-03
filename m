@@ -1,59 +1,59 @@
-Delivery-date: Thu, 03 Aug 2023 09:01:00 +0200
+Delivery-date: Thu, 03 Aug 2023 09:19:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRSKS-004gfX-PI
-	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 09:01:00 +0200
+	id 1qRScR-004idN-CY
+	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 09:19:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRSKR-0007uz-2b
-	for lore@pengutronix.de; Thu, 03 Aug 2023 09:00:59 +0200
+	id 1qRScP-0001kL-KP
+	for lore@pengutronix.de; Thu, 03 Aug 2023 09:19:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=h9+Eb4QKqXlL4jgYZgutICGvxK+NIDHdsJer6CIY+ks=; b=EMsKo20z/5DjhHMhmbV1C7ziOp
-	iqbFksB/bHOvu9ycOTfpEkDove3yIV/wSTjyG5XLMg9jXy7mQpsdhBTfFDyAZjQLqrdootGTeoJtu
-	go9k0WoOMNQszCkIWBMq9drYV5js6k1AJHYHrv9SpQH7NqgCkQfR10VivsBZGGCFB7uxyXT1kZog0
-	/L4KG5vOP/oI3AqPpbnNTiO5GAXM9bwusfs7p0yHHO1OJ5tpPx6MnxIPz8PDe0+pwvENGHxqAHlnS
-	kugzmDR7LGclE4Qs0ezCOCfvj09u4WhFR4JKtZPL7UqxUzqivWfNozgVKgxiED/ALoUr6NKuZK0nL
-	FGzd7yLA==;
+	bh=ezFiItWPq7xMqAPkGo1la58bn9waX0fnJk9vMUZCIAw=; b=pO0SndDiZcLYRBCqYsxqrQB0BB
+	YMx7M5UT8GY6na42kLLFwJWyQkEvuJjSNPv5Qw5BtW1D1DB5xwXN9luUaKvsPpe1BEEPQ9FoXBRTK
+	//sJGvKUYKu0yvTOQ4Mh+67PBzCgFoRm1BLNRjECTySy8eoebPuAQU5cnhEOQyHyTNSnk4aNSTDyJ
+	MOBCK5ZQp73ZryeOPZIAAN55wiYB5T7uBKZ8sy8eaCx2vWBbFCmk+iZtV86U7gyX2H4spOTm9RpjL
+	YmBAExmdrn6vO9yzUgvf0pezgXvFt2nW2MUklGjrRzynwOdVUb4GCcgMROxRLY2d4ODbZnUw0yPKh
+	dXdQGh4g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRSJR-006otG-0j;
-	Thu, 03 Aug 2023 06:59:57 +0000
+	id 1qRSbN-006r04-0g;
+	Thu, 03 Aug 2023 07:18:29 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRSJN-006osB-3C
+	id 1qRSbK-006qzD-2Y
 	for barebox@lists.infradead.org;
-	Thu, 03 Aug 2023 06:59:55 +0000
+	Thu, 03 Aug 2023 07:18:27 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRSJM-0007dF-Ol; Thu, 03 Aug 2023 08:59:52 +0200
+	id 1qRSbJ-0001Qq-Bt; Thu, 03 Aug 2023 09:18:25 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRSJM-000mTr-4J; Thu, 03 Aug 2023 08:59:52 +0200
+	id 1qRSbI-000mxq-NS; Thu, 03 Aug 2023 09:18:24 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRSJL-00G3ro-I2; Thu, 03 Aug 2023 08:59:51 +0200
+	id 1qRSbI-00G9gA-0a; Thu, 03 Aug 2023 09:18:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  3 Aug 2023 08:59:50 +0200
-Message-Id: <20230803065950.3828070-1-s.hauer@pengutronix.de>
+Date: Thu,  3 Aug 2023 09:18:23 +0200
+Message-Id: <20230803071823.3850446-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230802_235954_056337_6D37FA24 
-X-CRM114-Status: GOOD (  12.67  )
+X-CRM114-CacheID: sfid-20230803_001826_834031_BAEF4828 
+X-CRM114-Status: GOOD (  10.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,35 +76,36 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH] mci: arasan: Fix reg/val argument swap in register write
+Subject: [PATCH] Documentation: bcm2835: Fix grammar
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-sdhci_write8() takes the register before the value. Fix the argument
-order.
-
-The wrong code path is only taken when the xlnx,fails-without-test-cd
-property exists which is not the case for any dts file in the tree, so
-this bugfix shouldn't have any practical consequences.
+s/barebox supports has support for/barebox has support for/
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/arasan-sdhci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Documentation/boards/bcm2835.rst | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-index 71e974c384..8965acd442 100644
---- a/drivers/mci/arasan-sdhci.c
-+++ b/drivers/mci/arasan-sdhci.c
-@@ -84,7 +84,7 @@ static int arasan_sdhci_reset(struct arasan_sdhci_host *host, u8 mask)
+diff --git a/Documentation/boards/bcm2835.rst b/Documentation/boards/bcm2835.rst
+index f6df3e9e80..cfd3bb2edb 100644
+--- a/Documentation/boards/bcm2835.rst
++++ b/Documentation/boards/bcm2835.rst
+@@ -4,10 +4,10 @@ Broadcom BCM283x
+ Raspberry Pi
+ ------------
  
- 		ctrl = sdhci_read8(&host->sdhci, SDHCI_HOST_CONTROL);
- 		ctrl |= SDHCI_CTRL_CDTEST_INS | SDHCI_CTRL_CDTEST_INS;
--		sdhci_write8(&host->sdhci, ctrl, SDHCI_HOST_CONTROL);
-+		sdhci_write8(&host->sdhci, SDHCI_HOST_CONTROL, ctrl);
- 	}
+-barebox supports has support for BCM283x-based Raspberry Pi single board
+-computers. Support is most extensive for BCM283[567]. For the newer BCM2711
+-used in the Raspberry Pi 4, only basic support is currently available
+-(Serial Port, Pinctrl/GPIO, SD-Card).
++barebox has support for BCM283x-based Raspberry Pi single board computers.
++Support is most extensive for BCM283[567]. For the newer BCM2711 used in the
++Raspberry Pi 4, only basic support is currently available (Serial Port,
++Pinctrl/GPIO, SD-Card).
  
- 	return 0;
+   1. Prepare an SD or microSD card with a FAT filesystem of at least 30 MB in size.
+ 
 -- 
 2.39.2
 
