@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRVvm-004wQq-Pg
+	id 1qRVvm-004wQr-Ug
 	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 12:51:46 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRVvk-0001xk-7h
+	id 1qRVvk-0001yC-Ll
 	for lore@pengutronix.de; Thu, 03 Aug 2023 12:51:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,45 +17,45 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=uvjkCCGS40gf3jXDu9751vug9qUxhmJPTGLeUwnT5Hw=; b=DmJJ4F2D4iSOl3Dfwca9nUQGE9
-	QtlcVbeK0I3Dqbpa+b8aM262ybeBP3tiGjmIq3Iysqj3wHlea1dkrp3SzLf/Hr21HZXbVP90V/7FQ
-	tjUCMBbRgOfQ8Gp9nyzMrv2QrroouzF6cuw5sx4FsiR0B94F8PRSU3iH4EHdP64BSTxjxACMF8eK2
-	feArUvOf3zbOm8DNjV1xiY0RpIaxS0erYSWbIl0nPG3ib03EhoCJEJLDTfv4QU8e7k5XxgEBZVUv0
-	mPoGXJQWmV43h/PB1AqmOnBe4R/gakitNFReEeXgHWhJT7EgxPS83uK55SbE1zLD9rfOyLm+IOYbw
-	lAJuscBQ==;
+	bh=2fl2caBSxfEcauleOq9Zhf5+7V3QHtJsLqXyWxl8rkc=; b=AwE4nRgsZdifb+oG/dXVsCxmY/
+	E3Zj6Z7+XMYaJwWwZzcBQJhRON9b6qVk8kVkzB1EIZtBkwP+hKuvq2N4sqbfoMMbJrCDDYhQVIDeF
+	YRXpC4uzeH6hArOpP7jDqlnlexnt14gpS6bpp57S7+fmYBryiVCFqxfUvLAOzPPVBM/aye/SVrGZ+
+	eWBuQ/dZs4d0kGV/u6VZhL3N95Ofzrs92DY7+0zSLaaq49gbTdNlVta7bAmDq6tEAVtcuI4Inmqc0
+	Xz4F7Rz+Nkw3H0RJIzIAcKAeeRZOXntwLQSnwidQjOA5LE+M2d0kWFm2e4z5PL4nhxw6NWyKcaXBr
+	I1STu9zQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRVub-007UsC-2T;
-	Thu, 03 Aug 2023 10:50:33 +0000
+	id 1qRVud-007UuO-2s;
+	Thu, 03 Aug 2023 10:50:36 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRVuD-007UY0-0v
+	id 1qRVuD-007UXj-0M
 	for barebox@lists.infradead.org;
 	Thu, 03 Aug 2023 10:50:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVuC-0000va-1h; Thu, 03 Aug 2023 12:50:08 +0200
+	id 1qRVuB-0000vK-Qo; Thu, 03 Aug 2023 12:50:07 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVuB-000ovR-9R; Thu, 03 Aug 2023 12:50:07 +0200
+	id 1qRVuB-000ovI-26; Thu, 03 Aug 2023 12:50:07 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRVu8-00HAzX-MN; Thu, 03 Aug 2023 12:50:04 +0200
+	id 1qRVu8-00HAyx-8Q; Thu, 03 Aug 2023 12:50:04 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  3 Aug 2023 12:49:53 +0200
-Message-Id: <20230803105003.4088205-13-s.hauer@pengutronix.de>
+Date: Thu,  3 Aug 2023 12:49:44 +0200
+Message-Id: <20230803105003.4088205-4-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230803105003.4088205-1-s.hauer@pengutronix.de>
 References: <20230803105003.4088205-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230803_035009_327838_D03538D9 
-X-CRM114-Status: GOOD (  11.80  )
+X-CRM114-CacheID: sfid-20230803_035009_170482_830489A0 
+X-CRM114-Status: GOOD (  15.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,32 +78,47 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 12/22] mci: fix define
+Subject: [PATCH 03/22] gpio: davinci: Add support for GPIO controllers on TI K3 SoCs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-MMC_CAP_*_DDR defines do not exist, should be MMC_CAP_MMC_*_DDR.
+With the previous fix this is only a matter of adding the missing
+compatible strings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/mci.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpio/Kconfig        | 4 ++--
+ drivers/gpio/gpio-davinci.c | 2 ++
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/mci.h b/include/mci.h
-index 3e93f378e4..4c197fad6c 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -54,8 +54,8 @@
- #define MMC_CAP_MMC_3_3V_DDR		(1 << 7)	/* Host supports eMMC DDR 3.3V */
- #define MMC_CAP_MMC_1_8V_DDR		(1 << 8)	/* Host supports eMMC DDR 1.8V */
- #define MMC_CAP_MMC_1_2V_DDR		(1 << 9)	/* Host supports eMMC DDR 1.2V */
--#define MMC_CAP_DDR			(MMC_CAP_3_3V_DDR | MMC_CAP_1_8V_DDR | \
--					 MMC_CAP_1_2V_DDR)
-+#define MMC_CAP_DDR			(MMC_CAP_MMC_3_3V_DDR | MMC_CAP_MMC_1_8V_DDR | \
-+					 MMC_CAP_MMC_1_2V_DDR)
- /* Mask of all caps for bus width */
- #define MMC_CAP_BIT_DATA_MASK		(MMC_CAP_4_BIT_DATA | MMC_CAP_8_BIT_DATA)
+diff --git a/drivers/gpio/Kconfig b/drivers/gpio/Kconfig
+index e19f5a5aba..d5467261e5 100644
+--- a/drivers/gpio/Kconfig
++++ b/drivers/gpio/Kconfig
+@@ -45,8 +45,8 @@ config GPIO_CLPS711X
  
+ config GPIO_DAVINCI
+ 	bool "TI Davinci/Keystone GPIO support"
+-	default y if ARCH_DAVINCI
+-	depends on (ARM && ARCH_DAVINCI) || COMPILE_TEST
++	default y if ARCH_DAVINCI || ARCH_K3
++	depends on (ARM && (ARCH_DAVINCI || ARCH_K3)) || COMPILE_TEST
+ 	help
+ 	  Say yes here to enable GPIO support for TI Davinci/Keystone SoCs.
+ 
+diff --git a/drivers/gpio/gpio-davinci.c b/drivers/gpio/gpio-davinci.c
+index 841a06e4a0..831da2fc7f 100644
+--- a/drivers/gpio/gpio-davinci.c
++++ b/drivers/gpio/gpio-davinci.c
+@@ -179,6 +179,8 @@ static int davinci_gpio_probe(struct device *dev)
+ }
+ 
+ static struct of_device_id davinci_gpio_ids[] = {
++	{ .compatible = "ti,keystone-gpio", },
++	{ .compatible = "ti,am654-gpio", },
+ 	{ .compatible = "ti,dm6441-gpio", },
+ 	{ /* sentinel */ },
+ };
 -- 
 2.39.2
 
