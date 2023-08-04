@@ -1,54 +1,54 @@
-Delivery-date: Fri, 04 Aug 2023 10:34:41 +0200
+Delivery-date: Fri, 04 Aug 2023 10:35:50 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRqGg-006xDC-0N
-	for lore@lore.pengutronix.de; Fri, 04 Aug 2023 10:34:41 +0200
+	id 1qRqHn-006xH9-0R
+	for lore@lore.pengutronix.de; Fri, 04 Aug 2023 10:35:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRqGe-0000qE-4N
-	for lore@pengutronix.de; Fri, 04 Aug 2023 10:34:40 +0200
+	id 1qRqHl-00015X-CN
+	for lore@pengutronix.de; Fri, 04 Aug 2023 10:35:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sCj9mLxFaUi432cvV/hSrK3GIvxYyFB+t8VtfDy7lqg=; b=s7tnqcxw1XjJN5KgPfhTkyIUZE
-	+u2JNY+WG33XqYbf+q4C6FT4wyQpptmzAbkOUwykPOkOOmJ86XbAqZ4aOEIKs8bIEREahzvbwRvJK
-	5b44ZB6/bK7BOj+o3H8tA/S/vBJv21PMZCjTdzIItHx8PUG7ukbtX1xgQC31xKdxpnhHWclDf4AXF
-	8Eb4N/O26mLTBr41tLrsTretDiYVCBIUy90m68C1bbA5tqnPCdXgP606WEjT4MCRGoBMFm/oRELKU
-	Wg7a5BV0R1tS2OpxygK5ptNLPV+PGtfXSt0MarlzrWtbCK6MeAkhGaP3Bi3bSiXHYbYGg9Vf2bgXS
-	itjLKxgA==;
+	bh=i/Iob8DSgmZ9Mhr5wT3cmuwUo+a0iIygtGYHnalKd/w=; b=tmNqXlOvV0wLyWzXO9pnCX8lj+
+	ntLg8hY/JYexnjttusGTRY3GTZcYHKggjW4M/uJoj96JA9U7tzdzOE/DubPDAkyh9YuYwSW2FOEAZ
+	J1xZlAVzPmB/wjkca6Efq6oJHlANRU57nZoaOHxhsKznIUvKnO1/S5ILOqViBdV+0uTKVovOB2GHp
+	cvzpSZD9DXY4FKvoiFgSIvW7sGtXyW4m6C8pu9Lhy33qszGLlZuFggb1quoaEgjwOtZvTb+ILvBvq
+	5t3XBGVbzd4RJLmviARNIvWpshYJxIhI4dmp2e+86iYJhSbDdxO5R6C7FWGoNVsfGUyqS19ntC4dk
+	9F5UWA5w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRqFZ-00BtjH-02;
-	Fri, 04 Aug 2023 08:33:33 +0000
+	id 1qRqGc-00Btue-15;
+	Fri, 04 Aug 2023 08:34:38 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRqFU-00BtiC-0E
+	id 1qRqGZ-00Btu3-18
 	for barebox@lists.infradead.org;
-	Fri, 04 Aug 2023 08:33:30 +0000
+	Fri, 04 Aug 2023 08:34:36 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRqFS-0000bE-Ra; Fri, 04 Aug 2023 10:33:26 +0200
+	id 1qRqGX-0000pG-TK; Fri, 04 Aug 2023 10:34:33 +0200
 Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qRqFS-0000br-Jj; Fri, 04 Aug 2023 10:33:26 +0200
-Date: Fri, 4 Aug 2023 10:33:26 +0200
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
+	id 1qRqGX-0000dz-Lu; Fri, 04 Aug 2023 10:34:33 +0200
+Date: Fri, 4 Aug 2023 10:34:33 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230804083326.GE26314@pengutronix.de>
-References: <20230803133935.90026-1-eagle.alexander923@gmail.com>
+Message-ID: <20230804083433.GF26314@pengutronix.de>
+References: <20230803134332.1763059-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230803133935.90026-1-eagle.alexander923@gmail.com>
+In-Reply-To: <20230803134332.1763059-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -56,8 +56,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230804_013328_104173_A16535AC 
-X-CRM114-Status: GOOD (  17.71  )
+X-CRM114-CacheID: sfid-20230804_013435_384357_D73E7472 
+X-CRM114-Status: GOOD (  23.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,36 +79,100 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH RESEND] mfd: rk808: Add missing RK809 chip ID to poweroff
- handler
+Subject: Re: [PATCH v2] commands: rm: add -f option to ignore nonexistent
+ files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Aug 03, 2023 at 04:39:35PM +0300, Alexander Shiyan wrote:
-> Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+On Thu, Aug 03, 2023 at 03:43:32PM +0200, Ahmad Fatoum wrote:
+> rm supports multiple arguments, but will stop at the first nonexistent
+> file and print an error message that can't be silenced. Mimic other
+> implementations and implement -f for silently ignoring nonexistent files.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/mfd/rk808.c | 1 +
->  1 file changed, 1 insertion(+)
+> v1 -> v2:
+>   - only ignore -ENOENT and not all error codes
+> ---
+>  commands/Kconfig |  3 ++-
+>  commands/rm.c    | 16 +++++++++++-----
+>  2 files changed, 13 insertions(+), 6 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/mfd/rk808.c b/drivers/mfd/rk808.c
-> index 738ba305ac..1361bb7101 100644
-> --- a/drivers/mfd/rk808.c
-> +++ b/drivers/mfd/rk808.c
-> @@ -224,6 +224,7 @@ static void rk808_poweroff(struct poweroff_handler *handler)
->  		reg = RK808_DEVCTRL_REG,
->  		bit = DEV_OFF_RST;
->  		break;
-> +	case RK809_ID:
->  	case RK817_ID:
->  		reg = RK817_SYS_CFG(3);
->  		bit = DEV_OFF;
+> diff --git a/commands/Kconfig b/commands/Kconfig
+> index 844f7046282b..eb95b2a5fbcc 100644
+> --- a/commands/Kconfig
+> +++ b/commands/Kconfig
+> @@ -1031,10 +1031,11 @@ config CMD_RM
+>  	help
+>  	  Remove files
+>  
+> -	  Usage: rm [-r] FILES...
+> +	  Usage: rm [-rf] FILES...
+>  
+>  	  Options:
+>  		  -r	remove directories and their contents recursively
+> +		  -f	ignore nonexistent files
+>  
+>  config CMD_RMDIR
+>  	tristate
+> diff --git a/commands/rm.c b/commands/rm.c
+> index be5c19222141..c35cf2d2d412 100644
+> --- a/commands/rm.c
+> +++ b/commands/rm.c
+> @@ -12,13 +12,16 @@
+>  
+>  static int do_rm(int argc, char *argv[])
+>  {
+> -	int i, opt, recursive = 0;
+> +	int i, opt, recursive = 0, force = 0;
+>  
+> -	while ((opt = getopt(argc, argv, "r")) > 0) {
+> +	while ((opt = getopt(argc, argv, "rf")) > 0) {
+>  		switch (opt) {
+>  		case 'r':
+>  			recursive = 1;
+>  			break;
+> +		case 'f':
+> +			force = 1;
+> +			break;
+>  		default:
+>  			return COMMAND_ERROR_USAGE;
+>  		}
+> @@ -37,8 +40,10 @@ static int do_rm(int argc, char *argv[])
+>  		else
+>  			ret = unlink(argv[i]);
+>  		if (ret) {
+> -			printf("could not remove %s: %m\n", argv[i]);
+> -			return 1;
+> +			if (!force || ret != -ENOENT)
+> +				printf("could not remove %s: %m\n", argv[i]);
+> +			if (!force)
+> +				return 1;
+>  		}
+>  		i++;
+>  	}
+> @@ -49,12 +54,13 @@ static int do_rm(int argc, char *argv[])
+>  BAREBOX_CMD_HELP_START(rm)
+>  BAREBOX_CMD_HELP_TEXT("Options:")
+>  BAREBOX_CMD_HELP_OPT ("-r", "remove directories and their contents recursively")
+> +BAREBOX_CMD_HELP_OPT ("-f", "ignore nonexistent files")
+>  BAREBOX_CMD_HELP_END
+>  
+>  BAREBOX_CMD_START(rm)
+>  	.cmd		= do_rm,
+>  	BAREBOX_CMD_DESC("remove files")
+> -	BAREBOX_CMD_OPTS("[-r] FILES...")
+> +	BAREBOX_CMD_OPTS("[-rf] FILES...")
+>  	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
+>  	BAREBOX_CMD_HELP(cmd_rm_help)
+>  BAREBOX_CMD_END
 > -- 
-> 2.38.2
+> 2.39.2
 > 
 > 
 > 
