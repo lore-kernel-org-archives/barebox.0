@@ -1,61 +1,63 @@
-Delivery-date: Thu, 03 Aug 2023 15:53:36 +0200
+Delivery-date: Fri, 04 Aug 2023 10:13:27 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRYlk-00593c-Mz
-	for lore@lore.pengutronix.de; Thu, 03 Aug 2023 15:53:36 +0200
+	id 1qRpw7-006vs4-Qw
+	for lore@lore.pengutronix.de; Fri, 04 Aug 2023 10:13:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qRYli-0003yD-NI
-	for lore@pengutronix.de; Thu, 03 Aug 2023 15:53:35 +0200
+	id 1qRpw6-0006TY-4g
+	for lore@pengutronix.de; Fri, 04 Aug 2023 10:13:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=jI4y2iYlPSAdk2lPPOylcg/Hz5z0Zpm817E1UiIaYNc=; b=kucW1/D78SauxxPCmElmcwMMXJ
-	9z2W+2/mju8b4mnlhpnleXTHIzdwLQRaF40tAzletyx77aB31FVWuHWgVYf+n5yydg6hk5kU67b0y
-	ymOT9HuHQKGiVTjXyv7YrAWFYJHeyjP8X863dwY0ctYxc+AymxnImkKRVtGF3G0UbiOY9cKy4vFeG
-	+8z1Zo9qVnkWmlDLvvC5acM5x6Z3tibVMeHK2mGyqu36yQkCRcDWgV6MAt1gOwzmAK47MpdsAc4vx
-	dgSkCaNfnB4LfwZ2SzCphp/bX7VaRspWBVeR7w+6Kjya9dxSGNE4beckca1LKO6eLwf6341U3Rynh
-	0Zz9o8YQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=jrE87NaOzliwsmlFQS2HXYY+IsIlfzhXYpZ9FmTZXcQ=; b=NDphksnNZdkRZjqPNFKoLMDIoK
+	Z2nU7AK5fWATfJSkA1dN6TBpkJIqL0opt9OMB/dvR+buXw3U/BADcxWBilhy6F7PFvHZvgEP1HhD8
+	Y4DSr3jqF21Mai9Hd8jbiTfg8h3E8gb14r/gRtU9K+xkfsAKNhb1d3BAZVbvOJLBfDKq3ji+ePBYj
+	Cex3q+UurV/gS27bqZ0Vwc+zLHaQkOY/LQuK9GXbF7g8QOPOXhwM8M/HytfPCOns63tQDJhsTrhM0
+	7Rrbc2PSdjlLwrPLHwo4k94yx1tHTyPqeqO2rpMKl0TH2yhw0rSg197ZbMqoSy+iN4uFEsCeFYQvq
+	bVoNd/2Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRYkg-009Ggv-39;
-	Thu, 03 Aug 2023 13:52:31 +0000
+	id 1qRpug-00Bqxf-32;
+	Fri, 04 Aug 2023 08:11:58 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qRYkb-009Gdw-0Y
+	id 1qRpud-00Bqvs-2L
 	for barebox@lists.infradead.org;
-	Thu, 03 Aug 2023 13:52:27 +0000
+	Fri, 04 Aug 2023 08:11:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qRYkZ-0003qc-O0; Thu, 03 Aug 2023 15:52:23 +0200
+	id 1qRpuZ-0006Le-7z; Fri, 04 Aug 2023 10:11:51 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qRYkY-000r8F-Tu; Thu, 03 Aug 2023 15:52:22 +0200
+	id 1qRpuY-0011qt-In; Fri, 04 Aug 2023 10:11:50 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qRYkY-007QUl-1h;
-	Thu, 03 Aug 2023 15:52:22 +0200
+	id 1qRpuY-002ODV-08;
+	Fri, 04 Aug 2023 10:11:50 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  3 Aug 2023 15:52:17 +0200
-Message-Id: <20230803135217.1770111-1-a.fatoum@pengutronix.de>
+Date: Fri,  4 Aug 2023 10:11:47 +0200
+Message-Id: <20230804081147.559379-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230804081147.559379-1-a.fatoum@pengutronix.de>
+References: <20230804081147.559379-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230803_065225_921052_49A28973 
-X-CRM114-Status: GOOD (  14.65  )
+X-CRM114-CacheID: sfid-20230804_011155_764225_EA1459BD 
+X-CRM114-Status: GOOD (  14.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,74 +77,90 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 X-Spam-Level: 
 X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,URIBL_BLOCKED autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] boot: support running scripts when doing a dry run
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 2/2] console: allocate only once instead of twice per log message
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Dry runs are quite useful for debugging or for time measurement, but so
-far they weren't useful with scripts as they just did a very early exit.
+We do two allocations for each log message, one for the log message
+string itself and another for the struct log_entry referencing it.
 
-This is understandable as scripts don't necessarily observe the
-convention that everything done before the dry run should not have an
-impact on later boot runs. For the cases, where the bootscript is vetted
-to behave properly under a dry run, support specifing dryrun twice, so
-the script is executed, but the automatic bootm afterwards isn't.
+We could just make the log message directly follow the log entry and
+save the space for the pointer and the time to do a second allocation.
+
+No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/boot.c | 4 ++--
- common/boot.c   | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ common/console_common.c | 14 +++++++-------
+ include/linux/printk.h  |  2 +-
+ 2 files changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/commands/boot.c b/commands/boot.c
-index 5fd59f8642f8..e4699520e8f5 100644
---- a/commands/boot.c
-+++ b/commands/boot.c
-@@ -44,7 +44,7 @@ static int do_boot(int argc, char *argv[])
- 			do_list = 1;
- 			break;
- 		case 'd':
--			dryrun = 1;
-+			dryrun++;
- 			break;
- 		case 'M':
- 			/* To simplify scripting, an empty string is treated as 1 */
-@@ -145,7 +145,7 @@ BAREBOX_CMD_HELP_TEXT("one succeeds.")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT ("-v","Increase verbosity")
--BAREBOX_CMD_HELP_OPT ("-d","Dryrun. See what happens but do no actually boot")
-+BAREBOX_CMD_HELP_OPT ("-d","Dryrun. See what happens but do no actually boot (pass twice to run scripts)")
- BAREBOX_CMD_HELP_OPT ("-l","List available boot sources")
- BAREBOX_CMD_HELP_OPT ("-m","Show a menu with boot options")
- BAREBOX_CMD_HELP_OPT ("-M INDEX","Show a menu with boot options with entry INDEX preselected")
-diff --git a/common/boot.c b/common/boot.c
-index 4edea682219b..76bf52b52902 100644
---- a/common/boot.c
-+++ b/common/boot.c
-@@ -75,7 +75,7 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+diff --git a/common/console_common.c b/common/console_common.c
+index 866a7cbf65dc..c78581299248 100644
+--- a/common/console_common.c
++++ b/common/console_common.c
+@@ -10,6 +10,7 @@
+ #include <errno.h>
+ #include <console.h>
+ #include <init.h>
++#include <string.h>
+ #include <environment.h>
+ #include <globalvar.h>
+ #include <magicvar.h>
+@@ -19,6 +20,7 @@
+ #include <malloc.h>
+ #include <linux/pstore.h>
+ #include <linux/math64.h>
++#include <linux/overflow.h>
  
- 	struct bootm_data data = {};
+ #ifndef CONFIG_CONSOLE_NONE
  
--	if (dryrun) {
-+	if (dryrun == 1) {
- 		printf("Would run %s\n", bs->scriptpath);
- 		return 0;
- 	}
-@@ -94,8 +94,8 @@ static int bootscript_boot(struct bootentry *entry, int verbose, int dryrun)
+@@ -39,7 +41,6 @@ static int barebox_log_max_messages = 1000;
  
- 	if (verbose)
- 		data.verbose = verbose;
--	if (dryrun)
--		data.dryrun = dryrun;
-+	if (dryrun >= 2)
-+		data.dryrun = dryrun - 1;
+ static void log_del(struct log_entry *log)
+ {
+-	free(log->msg);
+ 	list_del(&log->list);
+ 	free(log);
+ 	barebox_logbuf_num_messages--;
+@@ -89,15 +90,14 @@ static void pr_puts(int level, const char *str)
+ 			log_clean(barebox_log_max_messages - 1);
  
- 	return bootm_boot(&data);
- }
+ 		if (barebox_log_max_messages >= 0) {
+-			log = malloc(sizeof(*log));
++			int msglen;
++
++			msglen = strlen(str);
++			log = malloc(struct_size(log, msg, msglen + 1));
+ 			if (!log)
+ 				goto nolog;
+ 
+-			log->msg = strdup(str);
+-			if (!log->msg) {
+-				free(log);
+-				goto nolog;
+-			}
++			memcpy(log->msg, str, msglen + 1);
+ 
+ 			log->timestamp = get_time_ns();
+ 			log->level = level;
+diff --git a/include/linux/printk.h b/include/linux/printk.h
+index 76cdb15d5b4c..cd4c3cb68edb 100644
+--- a/include/linux/printk.h
++++ b/include/linux/printk.h
+@@ -148,9 +148,9 @@ int __pr_memory_display(int level, const void *addr, loff_t offs, unsigned nbyte
+ 
+ struct log_entry {
+ 	struct list_head list;
+-	char *msg;
+ 	uint64_t timestamp;
+ 	int level;
++	char msg[];
+ };
+ 
+ extern struct list_head barebox_logbuf;
 -- 
 2.39.2
 
