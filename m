@@ -1,58 +1,52 @@
-Delivery-date: Wed, 09 Aug 2023 10:48:53 +0200
+Delivery-date: Wed, 09 Aug 2023 12:07:34 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qTesA-00DYEp-6w
-	for lore@lore.pengutronix.de; Wed, 09 Aug 2023 10:48:53 +0200
+	id 1qTg6J-00Dbuc-5o
+	for lore@lore.pengutronix.de; Wed, 09 Aug 2023 12:07:34 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qTes8-0008CF-7B
-	for lore@pengutronix.de; Wed, 09 Aug 2023 10:48:52 +0200
+	id 1qTg6H-00014m-EU
+	for lore@pengutronix.de; Wed, 09 Aug 2023 12:07:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vq9GlFKvmJCrqLdre46w6kBdbY7WO8wP2VPMCA+cRwQ=; b=gRUtVYmnvXvPvl8XN6A3S4Mk6C
-	PjOIT01zCnA2Oy06ubqYBehGbKyzBCOLrLgCNH/GDyhNFE5A99pg5lFumNUZDdjolWZE00CuySJOz
-	i8hOXKKJCMZbunnqYGH+eB+1GJc4f89uz02GphAgCAt90Vg86SqgkSnR7PF5fsMWnb+wVYWJyK0GP
-	AlKRcBesK5601cR3EoE0GSfte1HcfTBBFS8kx2+nH6wZxLuTitjrqXrmmqlPQNNxSQNuw0J1AXc0C
-	Fv2u7IrP5uo8CcQi3HrbZKscpggtPmkD6tLx7N0KHEi+5JUgLT8MCQjsORo0hFNqwG+o7YEz8mQhw
-	yrqCIQrQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=n9PwcpHmGSlmwdo4KTtjzg9zN0MHDS8TpabRSZhiaH4=; b=Z3hZAi+Erzy1DOdLgHzeetf8mz
+	OVcMm/o9QRIZZ8rRPtkic/WZo+97QU1ILNzqkrl76ewXbqzULS0pIEcf8Roc9HaOufXrPAlh1lkLt
+	lYndAtOoUCdq6wgCJF0ywmEa1ZK+y6Np6vNSpnGTu+UunnK7YsRlPXh1Ewr8Sik9876rCZV74Emhp
+	KryoZCXTy2cxLEKZz6daEXJKF/B3ErqQupWgC/lUUdDbnbV8iSO2XoaNlGPEbsdO1ec2qoLj5tqhZ
+	ka/lYymbO2tkdJHu0ON6yO9KOvNtUPhDqGGctAj4V1RJ0bH7FjII2pWX/pChyg3C9oV9YU9V8OXCg
+	kQdVUA3w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qTeqs-004Ocg-0f;
-	Wed, 09 Aug 2023 08:47:34 +0000
+	id 1qTg4x-004VOB-1j;
+	Wed, 09 Aug 2023 10:06:11 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qTeqp-004ObC-0U
+	id 1qTg4r-004VLI-2v
 	for barebox@lists.infradead.org;
-	Wed, 09 Aug 2023 08:47:32 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Wed, 09 Aug 2023 10:06:09 +0000
+Received: from dude05.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::54])
 	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qTeqm-00086e-1z; Wed, 09 Aug 2023 10:47:28 +0200
-Message-ID: <81ff53e3-f249-4ada-28fb-14ee72679bcf@pengutronix.de>
-Date: Wed, 9 Aug 2023 10:47:27 +0200
+	(envelope-from <m.tretter@pengutronix.de>)
+	id 1qTg4l-0000tQ-G9; Wed, 09 Aug 2023 12:05:59 +0200
+From: Michael Tretter <m.tretter@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: mtr@pengutronix.de
+Date: Wed,  9 Aug 2023 12:05:59 +0200
+Message-Id: <20230809100559.2505416-1-m.tretter@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Marc Kleine-Budde <mkl@pengutronix.de>, barebox@lists.infradead.org
-Cc: afa@pengutronix.de
-References: <20230809-phytec-som-imx8mm-v4-0-b9d4759582d8@pengutronix.de>
- <20230809-phytec-som-imx8mm-v4-1-b9d4759582d8@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230809-phytec-som-imx8mm-v4-1-b9d4759582d8@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230809_014731_185240_AFF78C13 
-X-CRM114-Status: GOOD (  21.21  )
+X-CRM114-CacheID: sfid-20230809_030605_939611_AD137E75 
+X-CRM114-Status: GOOD (  13.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,72 +64,51 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v4 1/3] i2c: add <pbl/eeprom.h> for PBL use
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH v2] of_firmware: fix lookup of fpga manager
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On 09.08.23 09:26, Marc Kleine-Budde wrote:
-> Add a small helper to read a single page of EEPROM data.
-> 
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+The of_parse_phandle() looks for the phandle in the root device tree,
+but as np is resolved for the target device tree, the phandle refers to
+the target device tree and may return a wrong node in the root tree.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Therefore, we must ensure that we look for the manager-node in the
+target device tree, which is the root node of np, and look for the
+manager with that name.
 
-> ---
->  include/pbl/eeprom.h | 34 ++++++++++++++++++++++++++++++++++
->  1 file changed, 34 insertions(+)
-> 
-> diff --git a/include/pbl/eeprom.h b/include/pbl/eeprom.h
-> new file mode 100644
-> index 000000000000..df868b1a37fb
-> --- /dev/null
-> +++ b/include/pbl/eeprom.h
-> @@ -0,0 +1,34 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef __PBL_EEPROM_H_
-> +#define __PBL_EEPROM_H_
-> +
-> +#include <common.h>
-> +#include <pbl/i2c.h>
-> +
-> +static inline void eeprom_read(struct pbl_i2c *i2c, u16 client_addr, u32 addr, void *buf, u16 count)
-> +{
-> +	u8 msgbuf[2];
-> +	struct i2c_msg msg[] = {
-> +		{
-> +			.addr = client_addr,
-> +			.buf = msgbuf,
-> +		}, {
-> +			.addr = client_addr,
-> +			.flags = I2C_M_RD,
-> +			.buf = buf,
-> +			.len = count,
-> +		},
-> +	};
-> +	int ret, i = 0;
-> +
-> +	if (addr & I2C_ADDR_16_BIT)
-> +		msgbuf[i++] = addr >> 8;
-> +	msgbuf[i++] = addr;
-> +	msg[0].len = i;
-> +
-> +	ret = pbl_i2c_xfer(i2c, msg, ARRAY_SIZE(msg));
-> +	if (ret != ARRAY_SIZE(msg))
-> +		pr_err("Failed to read from eeprom@%x: %d\n", client_addr, ret);
-> +}
-> +
-> +#endif
-> 
+firmwaremgr_find_by_node already uses the name for the lookup.
 
+Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
+---
+Changelog:
+
+v1 -> v2:
+
+- Use of_parse_phandle_from instead of open coding the phandle lookup
+---
+ drivers/of/of_firmware.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/of/of_firmware.c b/drivers/of/of_firmware.c
+index 80feb3b90dba..c1b69aac045c 100644
+--- a/drivers/of/of_firmware.c
++++ b/drivers/of/of_firmware.c
+@@ -11,7 +11,8 @@ static struct firmware_mgr *of_node_get_mgr(struct device_node *np)
+ 	struct device_node *mgr_node;
+ 
+ 	do {
+-		mgr_node = of_parse_phandle(np, "fpga-mgr", 0);
++		mgr_node = of_parse_phandle_from(np, of_find_root_node(np),
++						 "fpga-mgr", 0);
+ 		if (mgr_node)
+ 			return firmwaremgr_find_by_node(mgr_node);
+ 	} while ((np = of_get_parent(np)) != NULL);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
