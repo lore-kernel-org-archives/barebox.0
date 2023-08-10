@@ -1,63 +1,55 @@
-Delivery-date: Thu, 10 Aug 2023 07:31:28 +0200
+Delivery-date: Thu, 10 Aug 2023 17:22:50 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qTyGf-00El7E-Cb
-	for lore@lore.pengutronix.de; Thu, 10 Aug 2023 07:31:28 +0200
+	id 1qU7Ux-00FOq9-Eg
+	for lore@lore.pengutronix.de; Thu, 10 Aug 2023 17:22:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qTyGd-0005eV-9z
-	for lore@pengutronix.de; Thu, 10 Aug 2023 07:31:27 +0200
+	id 1qU7Uv-0006pV-NB
+	for lore@pengutronix.de; Thu, 10 Aug 2023 17:22:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+FTdxlgXvzKw2xysRpD7hm8Ns4+yJ9TQjGEEBUeLe0U=; b=T733Od+sAyYP05ZPg7bKX+h/Zw
-	IreGgi8nXXA/RfMDf0NTaiU4AMUWDMg50ihBy2ynxvqfO/xEYx4dZOlwnmfVBJryp//OjQ0BuItXg
-	VxevrihKm9mbheKKxsUUeAWKTRT/fG2rGIg0x4GyEEAY/UcpkHO6+ZjDgr1hmZNmPLkMoDtYjOj38
-	moRYkDSrtO8A+++cVEkC07Yv8/MZ5rnzPtS0B0AfHZxmxQUHKgYAM+vgZtnc8T3ZHhjpAzNkZo8+m
-	/yQ9kJFIV+CpL3zEruHilrBuJxfmd5ayDAKGkAmQc3+pZ9EsyV22ekdo6fvmrx78UT/NPyJMLEKg/
-	Vkhxhw3w==;
+	bh=L8rOUTKfbWjUcnbBDC5EyTmcfBiVdqMc18SKfljEj40=; b=Dhrdu4IYFfv1UiZybBKiG6ckmU
+	6K8EhsfN1qSNNQsUfWdf8Jex//QmF0l4JFnwwd01DiVl2V8TUbMmEorcK9Z4Pvjg0OxPSrSRreyAk
+	yuiwODaDIfyDlMywZhEdiwveNBfHVKkTF24l2h/BJhYih3DLgiMd3b6l6IPE4rjJjvbMtmR0AQTPt
+	INlq02KiBiOqe6jsyNgyJk9bUea+rGZORICc/U2cZoXgeCz4e1V5ymqC/PYza5HCRSinijapcDdEy
+	40F9pzt1fJI9be1fk3sCCARDKvDU3/dDaNEbDVfBvGQhCC2DOrHxG0D5TN4kldiIV0LstLMJBj1fU
+	SvIr0GRA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qTyFB-006Zwi-3C;
-	Thu, 10 Aug 2023 05:29:57 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1qU7TP-00827W-2A;
+	Thu, 10 Aug 2023 15:21:15 +0000
+Received: from relay9-d.mail.gandi.net ([2001:4b98:dc4:8::229])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qTyF9-006ZvC-0T
+	id 1qU7TL-00826N-1y
 	for barebox@lists.infradead.org;
-	Thu, 10 Aug 2023 05:29:56 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qTyF5-0005Hb-Eq; Thu, 10 Aug 2023 07:29:51 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qTyF5-0000t3-83; Thu, 10 Aug 2023 07:29:51 +0200
-Date: Thu, 10 Aug 2023 07:29:51 +0200
-To: Michael Tretter <m.tretter@pengutronix.de>
-Cc: barebox@lists.infradead.org, mtr@pengutronix.de
-Message-ID: <20230810052951.GU26314@pengutronix.de>
-References: <20230809100559.2505416-1-m.tretter@pengutronix.de>
+	Thu, 10 Aug 2023 15:21:13 +0000
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 82399FF80A;
+	Thu, 10 Aug 2023 15:21:05 +0000 (UTC)
+Date: Thu, 10 Aug 2023 17:20:08 +0200
+From: Jules Maselbas <jmaselbas@zdiv.net>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <ZNTl8Y2syTlCdZnP@tour>
+References: <20230717165428.27286-1-jmaselbas@kalray.eu>
+ <20230717165428.27286-5-jmaselbas@kalray.eu>
+ <20230726113912.GL18491@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230809100559.2505416-1-m.tretter@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+In-Reply-To: <20230726113912.GL18491@pengutronix.de>
+X-GND-Sasl: jmaselbas@zdiv.net
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230809_222955_183298_5E42BECD 
-X-CRM114-Status: GOOD (  25.67  )
+X-CRM114-CacheID: sfid-20230810_082111_961652_48E760ED 
+X-CRM114-Status: GOOD (  32.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,65 +67,129 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] of_firmware: fix lookup of fpga manager
+Subject: Re: [PATCH 5/5] mtd: spi-nor: Add Synopsys DesignWare Octal SPI
+ driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Wed, Aug 09, 2023 at 12:05:59PM +0200, Michael Tretter wrote:
-> The of_parse_phandle() looks for the phandle in the root device tree,
-> but as np is resolved for the target device tree, the phandle refers to
-> the target device tree and may return a wrong node in the root tree.
-> 
-> Therefore, we must ensure that we look for the manager-node in the
-> target device tree, which is the root node of np, and look for the
-> manager with that name.
-> 
-> firmwaremgr_find_by_node already uses the name for the lookup.
-> 
-> Signed-off-by: Michael Tretter <m.tretter@pengutronix.de>
-> ---
-> Changelog:
-> 
-> v1 -> v2:
-> 
-> - Use of_parse_phandle_from instead of open coding the phandle lookup
-> ---
->  drivers/of/of_firmware.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+Hi Sascha,
 
-Applied, thanks
+On Wed, Jul 26, 2023 at 01:39:12PM +0200, Sascha Hauer wrote:
+> Hi Jules,
+> 
+> On Mon, Jul 17, 2023 at 06:54:28PM +0200, Jules Maselbas wrote:
+> > Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
+> > ---
+> >  drivers/mtd/spi-nor/Kconfig       |   6 +
+> >  drivers/mtd/spi-nor/Makefile      |   1 +
+> >  drivers/mtd/spi-nor/dw-ospi-nor.c | 960 ++++++++++++++++++++++++++++++
+> >  3 files changed, 967 insertions(+)
+> >  create mode 100644 drivers/mtd/spi-nor/dw-ospi-nor.c
+> > 
+> > diff --git a/drivers/mtd/spi-nor/Kconfig b/drivers/mtd/spi-nor/Kconfig
+> > index 2beb26006e..b34c69203e 100644
+> > --- a/drivers/mtd/spi-nor/Kconfig
+> > +++ b/drivers/mtd/spi-nor/Kconfig
+> > @@ -26,4 +26,10 @@ config SPI_CADENCE_QUADSPI
+> >  	help
+> >  	  This enables support for the Cadence Quad SPI controller and NOR flash.
+> >  
+> > +config SPI_SYNOPSYS_OCTALSPI_NOR
+> > +	tristate "Synopsys DesignWare Octal SPI controller"
+> > +	help
+> > +	  This enables support for the Synopsys DesignWare Octal SPI controller
+> > +	  and NOR flash.
+> > +
+> >  endif
+> > diff --git a/drivers/mtd/spi-nor/Makefile b/drivers/mtd/spi-nor/Makefile
+> > index 457a2f0488..61cf789182 100644
+> > --- a/drivers/mtd/spi-nor/Makefile
+> > +++ b/drivers/mtd/spi-nor/Makefile
+> > @@ -1,3 +1,4 @@
+> >  # SPDX-License-Identifier: GPL-2.0-only
+> >  obj-$(CONFIG_MTD_SPI_NOR)		+= spi-nor.o
+> >  obj-$(CONFIG_SPI_CADENCE_QUADSPI)	+= cadence-quadspi.o
+> > +obj-$(CONFIG_SPI_SYNOPSYS_OCTALSPI_NOR) += dw-ospi-nor.o
+> > diff --git a/drivers/mtd/spi-nor/dw-ospi-nor.c b/drivers/mtd/spi-nor/dw-ospi-nor.c
+> > new file mode 100644
+> > index 0000000000..13033f9500
+> > --- /dev/null
+> > +static int dw_spi_find_chipselect(struct spi_nor *nor)
+> > +{
+> > +	int cs = -1;
+> > +	struct dw_spi_nor *dw_spi = nor->priv;
+> 
+> Better put a pointer to dw_spi_flash_pdata into nor->priv...
+> (or use container_of() to get dw_spi_flash_pdata from *nor)
 
-Sascha
+Yeah, I am going to use container_of to get dw_spi_flash_pdata,
+and keep dw_spi in priv.
+> 
+> > +
+> > +	for (cs = 0; cs < dw_spi->supported_cs; cs++)
+> > +		if (nor == &dw_spi->f_pdata[cs].nor)
+> > +			break;
+> > +	return cs;
+> > +}
+> 
+> ...and put cs into struct dw_spi_flash_pdata. This way you don't have to
+> iterate to get the current chip select.
+> 
+> > +static int dw_spi_write_reg(struct spi_nor *nor, u8 opcode, u8 *buf, int len)
+> > +{
+> > +	int i, ret;
+> > +
+> > +	dev_dbg(nor->dev, "write_reg opcode 0x%02x: ", opcode);
+> > +	for (i = 0; i < len; i++)
+> > +		pr_debug("%02x ", buf[i]);
+> > +	pr_debug("\n");
+> > +
+> > +	if (!IS_ENABLED(CONFIG_MTD_WRITE))
+> > +		return -ENOTSUPP;
+> 
+> This function looks like it's supposed to write a register. Are you sure
+> this is not needed when MTD write support is disabled?
 
-> 
-> diff --git a/drivers/of/of_firmware.c b/drivers/of/of_firmware.c
-> index 80feb3b90dba..c1b69aac045c 100644
-> --- a/drivers/of/of_firmware.c
-> +++ b/drivers/of/of_firmware.c
-> @@ -11,7 +11,8 @@ static struct firmware_mgr *of_node_get_mgr(struct device_node *np)
->  	struct device_node *mgr_node;
->  
->  	do {
-> -		mgr_node = of_parse_phandle(np, "fpga-mgr", 0);
-> +		mgr_node = of_parse_phandle_from(np, of_find_root_node(np),
-> +						 "fpga-mgr", 0);
->  		if (mgr_node)
->  			return firmwaremgr_find_by_node(mgr_node);
->  	} while ((np = of_get_parent(np)) != NULL);
-> -- 
-> 2.39.2
-> 
-> 
-> 
+I am not sure about this, this looks exactly the same in the cadence-quadspi
+driver. I though adding a condition to only refuse writing to the "write enable"
+register, like so:
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+-       if (!IS_ENABLED(CONFIG_MTD_WRITE))
++       if (!IS_ENABLED(CONFIG_MTD_WRITE) && opcode == SPINOR_OP_WREN)
+
+But I think it should not be handled at the driver level... and it is probably
+already handled by core spi-nor driver... In the end I think I'll remove theses
+from this driver.
+
+> > +
+> > +	ret = dw_spi_prep_std(nor, SPI_TMOD_TO);
+> > +	if (ret)
+> > +		return ret;
+> > +
+> > +	return dw_spi_write_std(nor, &opcode, 1, buf, len);
+> > +}
+> 
+> [...]
+> 
+> > +
+> > +	if (!dev->of_node) {
+> > +		f_pdata = &dw_spi->f_pdata[0];
+> > +
+> > +		ret = dw_spi_setup_flash(dev, f_pdata, np);
+> > +		if (ret)
+> > +			goto probe_failed;
+> 
+> Do we need probing without device tree? If not, please remove this case.
+
+Only device-tree probing is needed, this likely is a copy-paste from cadence-quadspi
+driver.
+
+
+Best,
+Jules
 
 
