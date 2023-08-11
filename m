@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qUNif-00GMBp-0z
+	id 1qUNif-00GMBo-8E
 	for lore@lore.pengutronix.de; Fri, 11 Aug 2023 10:42:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qUNid-0007Mm-5B
+	id 1qUNic-0007MZ-Kt
 	for lore@pengutronix.de; Fri, 11 Aug 2023 10:42:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,47 +17,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ODBBfmLvEGU1pby8Xk6sOTAhdu59DID166CdBaKisCw=; b=LyNhuwJrO9FaIvBZvFcEwVeJYn
-	laZg8NaRUj43Q3qm3bAqtG5D0oWtVCUEE29OEoRdpwPn/4MjFsd/N4jItmiyL9cKBeZW+5HB/Ur2y
-	/CucWjjt05z1wdXBoW8E8dJCuCAkjs0u1U7w4Kvao9yigalnRFIA5+R/xx1knTPbKSLV7jJcWFzl/
-	9CKVy0UZJluJqjq6ZM6MMf72Q7A4cGRz0FIWGGZmklZiSdpEpaXXegdnp2HQHVVFyXuGn5Vv+qxsC
-	zxjbih25kTzJukAhgnx93tgiI3DZY17cEsSlxrXBuO1R9wRLXJRzBQjzHAqGlMg656f2Bm6//P68M
-	jxLSPaUw==;
+	bh=4InzGKREDkzkanc1pZ8BPTWhySlkCu6Lbhm3F3fioDo=; b=GXhH1Z94WnEGKxOveGoE24Kzjj
+	szUYNuVIVmokg/9luqXbnWd7rhsArIwGEI+tQ8MQwDx+4aW42V3AR25VDZPUIsefgbDx5qK3Gz3Ug
+	ME+mN4qMpfcfD0kvB+QS9b6HrcPqbuLP4xtw4do242RUhhITFjVWa6LcdX05IpJ0ARmbowePQo/Df
+	+g/UZsT9O4JjAXtwExPqI+NGTEWZ3cQ3e3Bl1hEhta3ZNHdIoBvWoxef5fyE0ASILaWTSy0DmliqI
+	2SCvRkpPF/nCCaY6EZtSFtex78WFwZxPLSg7hf76SrfE6UyKxPUZrIOTa599QuHpMtMwWOSuhmncb
+	428LB4gg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qUNhJ-009sDj-0q;
-	Fri, 11 Aug 2023 08:40:41 +0000
+	id 1qUNhM-009sEl-2Z;
+	Fri, 11 Aug 2023 08:40:44 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qUNhF-009sAi-22
+	id 1qUNhF-009sAl-1v
 	for barebox@lists.infradead.org;
-	Fri, 11 Aug 2023 08:40:39 +0000
+	Fri, 11 Aug 2023 08:40:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1qUNh8-00070a-PG; Fri, 11 Aug 2023 10:40:30 +0200
+	id 1qUNh9-000715-7i; Fri, 11 Aug 2023 10:40:31 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1qUNh8-002fJ1-4k; Fri, 11 Aug 2023 10:40:30 +0200
+	id 1qUNh8-002fJ5-Ig; Fri, 11 Aug 2023 10:40:30 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1qUNh7-00B287-1T;
+	id 1qUNh7-00B28B-1V;
 	Fri, 11 Aug 2023 10:40:29 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Fri, 11 Aug 2023 10:40:26 +0200
-Message-Id: <20230811084028.2629771-3-o.rempel@pengutronix.de>
+Date: Fri, 11 Aug 2023 10:40:27 +0200
+Message-Id: <20230811084028.2629771-4-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230811084028.2629771-1-o.rempel@pengutronix.de>
 References: <20230811084028.2629771-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230811_014037_674009_E4DC8A69 
-X-CRM114-Status: GOOD (  11.68  )
+X-CRM114-CacheID: sfid-20230811_014037_803600_A18A15D9 
+X-CRM114-Status: GOOD (  24.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,34 +79,220 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/5] net: designware: eqos: add comment about external clock dependencies for the soft reset
+Subject: [PATCH 4/5] net: designware: eqos: fix NULL pointer dereference on LLDP packets
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-This part of code is not error proof and may fail depending on
-implementation state of external HW. I hope this note help to find bugs
-later.
+If promisc mode is enabled (which is enabled for DSA switches by default) a
+LLDP frame received by barebox will trigger following panic:
+ DABT (current EL) exception (ESR 0x9600014b) at 0x0000000000000000
+ elr: 00000000bfd967d8 lr : 00000000bfd963e0
+ x0 : 0000000000000000 x1 : 00000000000000e9
+ x2 : 0000000000000040 x3 : 000000000000003f
+ x4 : 0000000000000000 x5 : 00000000000001a0
+ x6 : 0000000000000005 x7 : 0000000030200000
+ x8 : 000000007feda6a8 x9 : 0000000000000000
+ x10: 0000000000000000 x11: 00000000fffffffa
+ x12: 00000000fffffffa x13: 0000000000000020
+ x14: 0000000000000000 x15: 0000000000000001
+ x16: 00000000bfff74c8 x17: 0000000000000001
+ x18: 00000000bfff7a60 x19: 000000007fee20c0
+ x20: 0000000000000000 x21: 000000007fee0dc8
+ x22: 000000007fee0dc8 x23: 00000000000000ea
+ x24: 0000000000000080 x25: 0000000000000000
+ x26: 00000000000000ea x27: 000000007fee2040
+ x28: 0000000000000000 x29: 00000000bfff7a60
+ Call trace:
+ [<bfd967d8>] (v8_inv_dcache_range+0x1c/0x34) from [<bfd953fc>] (arch_sync_dma_for_cpu+0x14/0x20)
+ [<bfd953fc>] (arch_sync_dma_for_cpu+0x14/0x20) from [<bfd25a64>] (eqos_recv+0x78/0x104)
+ [<bfd25a64>] (eqos_recv+0x78/0x104) from [<bfd80724>] (eth_rx+0xd0/0x160)
+ [<bfd80724>] (eth_rx+0xd0/0x160) from [<bfd80b84>] (net_poll+0x24/0x34)
+ [<bfd80b84>] (net_poll+0x24/0x34) from [<bfd80bbc>] (__net_poll+0x28/0x3c)
+ [<bfd80bbc>] (__net_poll+0x28/0x3c) from [<bfd0ec7c>] (poller_call+0x58/0x68)
+ [<bfd0ec7c>] (poller_call+0x58/0x68) from [<bfd0ea98>] (resched+0x38/0x48)
+ [<bfd0ea98>] (resched+0x38/0x48) from [<bfd77be0>] (readline+0xb4/0x89c)
+ [<bfd77be0>] (readline+0xb4/0x89c) from [<bfd0f17c>] (file_get+0x94/0x1d8)
+ [<bfd0f17c>] (file_get+0x94/0x1d8) from [<bfd0f92c>] (parse_stream.constprop.0+0x40/0x534)
+ [<bfd0f92c>] (parse_stream.constprop.0+0x40/0x534) from [<bfd0ff10>] (parse_stream_outer+0xf0/0x1ec)
+ [<bfd0ff10>] (parse_stream_outer+0xf0/0x1ec) from [<bfd10e0c>] (run_shell+0x60/0x98)
+ [<bfd10e0c>] (run_shell+0x60/0x98) from [<bfd01854>] (run_init+0x170/0x2b0)
+ [<bfd01854>] (run_init+0x170/0x2b0) from [<bfd019e4>] (start_barebox+0x50/0x8c)
+ [<bfd019e4>] (start_barebox+0x50/0x8c) from [<bfd95794>] (barebox_non_pbl_start+0x11c/0x150)
+ [<bfd95794>] (barebox_non_pbl_start+0x11c/0x150) from [<bfd0000c>] (__bare_init_start+0x0/0x4)
+ [<bfd0000c>] (__bare_init_start+0x0/0x4) from [<402041fc>] (0x402041fc)
+ [<402041fc>] (0x402041fc) from [<40203bac>] (0x40203bac)
+ panic: unhandled exception
+
+This issue can be reproduced by using following command and link partner:
+mausezahn enp1s0f1 01:80:c2:00:00:0e:08:60:6e:1f:a3:9c:88:cc
+
+The problem caused this issue is wrong or may be different (depending on the HW)
+interpretation of DMA RX buffers.  The DMA descriptors have distinct formats
+depending on their direction: Read Format for CPU-to-DMA and Write-Back Format
+for DMA-to-CPU. Previously, the driver did not distinguish between these,
+leading to misinterpretations of the descriptor fields. For example the
+driver expected a DMA buffer pointer in the Write-Back desc0 which is
+actually a VLAN tag descriptor and contains artifacts of DMA buffer
+pointer only by accident. To fix it we should store DMA buffer pointers
+in a separate array and use them. To prevent more of misunderstandings,
+i renamed variables to make it visible what format of DMA buffer we
+actually using.
 
 Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/net/designware_eqos.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/designware_eqos.c | 55 ++++++++++++++++++++++-------------
+ drivers/net/designware_eqos.h |  4 +++
+ 2 files changed, 39 insertions(+), 20 deletions(-)
 
 diff --git a/drivers/net/designware_eqos.c b/drivers/net/designware_eqos.c
-index 6caf3a436f..4489725e87 100644
+index 4489725e87..825c8e0140 100644
 --- a/drivers/net/designware_eqos.c
 +++ b/drivers/net/designware_eqos.c
-@@ -427,6 +427,10 @@ static int eqos_start(struct eth_device *edev)
- 	if (ret)
- 		return ret;
+@@ -172,8 +172,6 @@ struct eqos_dma_regs {
+ #define EQOS_DESCRIPTOR_SIZE	(EQOS_DESCRIPTOR_WORDS * 4)
+ /* We assume ARCH_DMA_MINALIGN >= 16; 16 is the EQOS HW minimum */
+ #define EQOS_DESCRIPTOR_ALIGN	64
+-#define EQOS_DESCRIPTORS_TX	4
+-#define EQOS_DESCRIPTORS_RX	64
+ #define EQOS_DESCRIPTORS_NUM	(EQOS_DESCRIPTORS_TX + EQOS_DESCRIPTORS_RX)
+ #define EQOS_DESCRIPTORS_SIZE	ALIGN(EQOS_DESCRIPTORS_NUM * \
+ 				      EQOS_DESCRIPTOR_SIZE, EQOS_DESCRIPTOR_ALIGN)
+@@ -416,7 +414,7 @@ static int eqos_start(struct eth_device *edev)
+ {
+ 	struct eqos *eqos = edev->priv;
+ 	u32 val, tx_fifo_sz, rx_fifo_sz, tqs, rqs, pbl;
+-	unsigned long last_rx_desc;
++	unsigned long last_rx_rf_desc;
+ 	unsigned long rate;
+ 	u32 mode_set;
+ 	int ret;
+@@ -626,9 +624,9 @@ static int eqos_start(struct eth_device *edev)
+ 	eqos->tx_currdescnum = eqos->rx_currdescnum = 0;
  
-+	/* In some cases where PHY or DSA switch is the clock provider for
-+	 * EQOS, we need to probe and configure them before issuing software
-+	 * reset here.
+ 	for (i = 0; i < EQOS_DESCRIPTORS_RX; i++) {
+-		struct eqos_desc *rx_desc = &eqos->rx_descs[i];
++		struct eqos_desc *rx_rf_desc = &eqos->rx_descs[i];
+ 
+-		writel(EQOS_DESC3_BUF1V | EQOS_DESC3_OWN, &rx_desc->des3);
++		writel(EQOS_DESC3_BUF1V | EQOS_DESC3_OWN, &rx_rf_desc->des3);
+ 	}
+ 
+ 	writel(0, &eqos->dma_regs->ch0_txdesc_list_haddress);
+@@ -658,8 +656,8 @@ static int eqos_start(struct eth_device *edev)
+ 	 * that's not distinguishable from none of the descriptors being
+ 	 * available.
+ 	 */
+-	last_rx_desc = (ulong)&eqos->rx_descs[(EQOS_DESCRIPTORS_RX - 1)];
+-	writel(last_rx_desc, &eqos->dma_regs->ch0_rxdesc_tail_pointer);
++	last_rx_rf_desc = (ulong)&eqos->rx_descs[(EQOS_DESCRIPTORS_RX - 1)];
++	writel(last_rx_rf_desc, &eqos->dma_regs->ch0_rxdesc_tail_pointer);
+ 
+ 	return 0;
+ }
+@@ -746,16 +744,30 @@ static int eqos_send(struct eth_device *edev, void *packet, int length)
+ static int eqos_recv(struct eth_device *edev)
+ {
+ 	struct eqos *eqos = edev->priv;
+-	struct eqos_desc *rx_desc;
++	struct eqos_desc *rx_wbf_desc, *rx_rf_desc;
++	dma_addr_t dma;
+ 	void *frame;
+ 	int length;
+ 
+-	rx_desc = &eqos->rx_descs[eqos->rx_currdescnum];
+-	if (readl(&rx_desc->des3) & EQOS_DESC3_OWN)
++	/* We have two types of RX descriptors at some pointer: Read and
++	 * Write-Back:
++	 * All RX descriptors are prepared by the software and given to the
++	 * DMA as "Normal" Descriptors with the content as shown in Receive
++	 * Normal Descriptor (Read Format). The DMA reads this descriptor and
++	 * after transferring a received packet (or part of) to the buffers
++	 * indicated by the descriptor, the Rx DMA will close the descriptor
++	 * with the corresponding packet status. The format of this status is
++	 * given in the "Receive Normal Descriptor (Write-Back Format)"
 +	 */
- 	setbits_le32(&eqos->dma_regs->mode, EQOS_DMA_MODE_SWR);
++
++	/* Write-Back Format RX descriptor */
++	rx_wbf_desc = &eqos->rx_descs[eqos->rx_currdescnum];
++	if (readl(&rx_wbf_desc->des3) & EQOS_DESC3_OWN)
+ 		return 0;
  
- 	ret = readl_poll_timeout(&eqos->dma_regs->mode, mode_set,
+-	frame = phys_to_virt(rx_desc->des0);
+-	length = rx_desc->des3 & 0x7fff;
++	dma = eqos->dma_rx_buf[eqos->rx_currdescnum];
++	frame = phys_to_virt(dma);
++	length = rx_wbf_desc->des3 & 0x7fff;
+ 
+ 	dma_sync_single_for_cpu(edev->parent, (unsigned long)frame,
+ 				length, DMA_FROM_DEVICE);
+@@ -763,18 +775,20 @@ static int eqos_recv(struct eth_device *edev)
+ 	dma_sync_single_for_device(edev->parent, (unsigned long)frame,
+ 				   length, DMA_FROM_DEVICE);
+ 
+-	rx_desc->des0 = (unsigned long)frame;
+-	rx_desc->des1 = 0;
+-	rx_desc->des2 = 0;
++	/* Read Format RX descriptor */
++	rx_rf_desc = &eqos->rx_descs[eqos->rx_currdescnum];
++	rx_rf_desc->des0 = dma;
++	rx_rf_desc->des1 = 0;
++	rx_rf_desc->des2 = 0;
+ 	/*
+ 	 * Make sure that if HW sees the _OWN write below, it will see all the
+ 	 * writes to the rest of the descriptor too.
+ 	 */
+-	rx_desc->des3 |= EQOS_DESC3_BUF1V;
+-	rx_desc->des3 |= EQOS_DESC3_OWN;
++	rx_rf_desc->des3 |= EQOS_DESC3_BUF1V;
++	rx_rf_desc->des3 |= EQOS_DESC3_OWN;
+ 	barrier();
+ 
+-	writel((ulong)rx_desc, &eqos->dma_regs->ch0_rxdesc_tail_pointer);
++	writel((ulong)rx_rf_desc, &eqos->dma_regs->ch0_rxdesc_tail_pointer);
+ 
+ 	eqos->rx_currdescnum++;
+ 	eqos->rx_currdescnum %= EQOS_DESCRIPTORS_RX;
+@@ -802,7 +816,7 @@ static int eqos_init_resources(struct eqos *eqos)
+ 		goto err_free_desc;
+ 
+ 	for (i = 0; i < EQOS_DESCRIPTORS_RX; i++) {
+-		struct eqos_desc *rx_desc = &eqos->rx_descs[i];
++		struct eqos_desc *rx_rf_desc = &eqos->rx_descs[i];
+ 		dma_addr_t dma;
+ 
+ 		dma = dma_map_single(edev->parent, p, EQOS_MAX_PACKET_SIZE, DMA_FROM_DEVICE);
+@@ -811,7 +825,8 @@ static int eqos_init_resources(struct eqos *eqos)
+ 			goto err_free_rx_bufs;
+ 		}
+ 
+-		rx_desc->des0 = dma;
++		rx_rf_desc->des0 = dma;
++		eqos->dma_rx_buf[i] = dma;
+ 
+ 		p += EQOS_MAX_PACKET_SIZE;
+ 	}
+diff --git a/drivers/net/designware_eqos.h b/drivers/net/designware_eqos.h
+index 58ba912cd0..951565e8f9 100644
+--- a/drivers/net/designware_eqos.h
++++ b/drivers/net/designware_eqos.h
+@@ -40,6 +40,9 @@ struct eqos_dma_regs;
+ struct eqos_mac_regs;
+ struct eqos_mtl_regs;
+ 
++#define EQOS_DESCRIPTORS_TX	4
++#define EQOS_DESCRIPTORS_RX	64
++
+ struct eqos {
+ 	struct eth_device netdev;
+ 	struct mii_bus miibus;
+@@ -49,6 +52,7 @@ struct eqos {
+ 	u32 tx_currdescnum, rx_currdescnum;
+ 
+ 	struct eqos_desc *tx_descs, *rx_descs;
++	dma_addr_t dma_rx_buf[EQOS_DESCRIPTORS_RX];
+ 
+ 	void __iomem *regs;
+ 	struct eqos_mac_regs __iomem *mac_regs;
 -- 
 2.39.2
 
