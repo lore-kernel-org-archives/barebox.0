@@ -1,63 +1,64 @@
-Delivery-date: Mon, 14 Aug 2023 08:21:11 +0200
+Delivery-date: Mon, 14 Aug 2023 10:36:14 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qVQwy-003R9I-5p
-	for lore@lore.pengutronix.de; Mon, 14 Aug 2023 08:21:11 +0200
+	id 1qVT3f-003YO8-8C
+	for lore@lore.pengutronix.de; Mon, 14 Aug 2023 10:36:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qVQww-0004b3-7W
-	for lore@pengutronix.de; Mon, 14 Aug 2023 08:21:10 +0200
+	id 1qVT3d-0004Y9-5J
+	for lore@pengutronix.de; Mon, 14 Aug 2023 10:36:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dhjjr+xkO8qJ2ln/BG/EgZmuq4QfCfQ+Ly8sDbTtEd0=; b=tMSSGoO7gHsPa/EpdXDnhPTz8r
-	cijsoB+IaX0qBo9DgKzzUOV2zhNMkxQSGtk9L0K9eNEdsYBoqAv/rTf/4bqozAdO788Vuxaxp5pf3
-	59feCIYoqv95MnZzPgqtHnX2+FukYfyaEH302jJeMWk0UB+ZvuKLkgKOlze//X3h1DGgNZaQ3qv7j
-	p29Ch6RhYhDVKHSp6QITa9ho630PCS4BpGkC9Fu84I2sLL3HHcQjx+zgj8XbQ8nfHBqw2wOeO8FJP
-	w/fcJlCJIDHsjC1j03JYhRs/S9hYHJmOiuz1lpydZ45hlnuM1yf9xKFYEgKXwHDacifxEIJEqqPJq
-	6JpcX0rA==;
+	bh=ujSO6W1YCI1N/h6sJLw/Vosj3NFgWcgfaE0JhwigYiM=; b=rEEjvSewhqkqwmfvW44PCzL3cv
+	0DLADGLfT8Vp2ULLjUMAV0d2n59tolqCnmWVitqXrTT0513dHdsiZM4Pq8Oa1n453W8NmuSYNIjXG
+	v4pe0rSjbIZBcA4MS5XXG/pTHuxOaP1DDyQD32Q9MhYwpIbarioclA2HiD/eMJ0Nsst5NxQX2AXzl
+	Yw/MfOto4vKfHWLQ6CEdTYh7qMWxGBx/vpGlCEDtCS6HXte4Siznfz+T15yGyVFJBI6Rle5kLvJPS
+	0OnTVrFUCQN0LoIcr0truqssLi7hYsKMnnrYygff2KEYTXXRt33YnybRBw6AicWyiw8haoNo5gnEY
+	7TuxQLNg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qVQve-00GGZH-19;
-	Mon, 14 Aug 2023 06:19:50 +0000
+	id 1qVT2H-00GXQH-1u;
+	Mon, 14 Aug 2023 08:34:49 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qVQvb-00GGYo-0h
+	id 1qVT2B-00GXO0-2o
 	for barebox@lists.infradead.org;
-	Mon, 14 Aug 2023 06:19:48 +0000
+	Mon, 14 Aug 2023 08:34:47 +0000
 Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qVQvZ-0004J0-Q1; Mon, 14 Aug 2023 08:19:45 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qVQvZ-0004CN-Iy; Mon, 14 Aug 2023 08:19:45 +0200
-Date: Mon, 14 Aug 2023 08:19:45 +0200
-To: Marco Felsch <m.felsch@pengutronix.de>
+	(envelope-from <ore@pengutronix.de>)
+	id 1qVT29-0004Dw-Sh; Mon, 14 Aug 2023 10:34:41 +0200
+Received: from ore by ptx.hi.pengutronix.de with local (Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1qVT29-0003AC-LC; Mon, 14 Aug 2023 10:34:41 +0200
+Date: Mon, 14 Aug 2023 10:34:41 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230814061945.GB26314@pengutronix.de>
-References: <20230811102657.271931-1-m.felsch@pengutronix.de>
+Message-ID: <20230814083441.GC26389@pengutronix.de>
+References: <20230811114819.2646027-1-o.rempel@pengutronix.de>
+ <24507806-3299-67de-966a-9537b21a03d3@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230811102657.271931-1-m.felsch@pengutronix.de>
+In-Reply-To: <24507806-3299-67de-966a-9537b21a03d3@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230813_231947_251671_6C79C100 
-X-CRM114-Status: GOOD (  20.41  )
+X-CRM114-CacheID: sfid-20230814_013443_911656_3E75CBF7 
+X-CRM114-Status: GOOD (  20.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,171 +76,63 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 01/11] ARM: boards: make use of MDIO_MMD register
- defines
+Subject: Re: [PATCH v1] ARM: add Skov i'MX8MP based board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Fri, Aug 11, 2023 at 12:26:47PM +0200, Marco Felsch wrote:
-> Make use of the register definition instead of having magic numbers. No
-> functional change.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> v2:
-> - added afa's rb
+Hallo Ahmad,
 
-Applied, thanks
+On Fri, Aug 11, 2023 at 02:50:07PM +0200, Ahmad Fatoum wrote:
+> Hello Oleksij,
+> 
+> On 11.08.23 13:48, Oleksij Rempel wrote:
+> > +static const struct of_device_id skov_imx8m_of_match[] = {
+> > +	{ .compatible = "skov,imx8mp" },
+> 
+> Are you sure, you don't want to have a -someboard suffix in case you need
+> to differentiate future variants?
 
-Sascha
+Yes, it is same way as it is done for the skov,imx6 boards. There is one
+in barebox devicetree which is generic for all. Then board code reads
+version from gpio pins and detect precise version.
+
+This patch provide only initial support, version detection will be added
+later.
 
 > 
->  arch/arm/boards/datamodul-edm-qmx6/board.c   | 7 ++++---
->  arch/arm/boards/embest-marsboard/board.c     | 7 ++++---
->  arch/arm/boards/terasic-de0-nano-soc/board.c | 7 ++++---
->  arch/arm/boards/terasic-de10-nano/board.c    | 7 ++++---
->  arch/arm/boards/tqma6x/board.c               | 7 ++++---
->  5 files changed, 20 insertions(+), 15 deletions(-)
+> > +	pmic@25 {
+> > +		compatible = "nxp,pca9450c";
 > 
-> diff --git a/arch/arm/boards/datamodul-edm-qmx6/board.c b/arch/arm/boards/datamodul-edm-qmx6/board.c
-> index 9adb3ee0f898..366b64d35aca 100644
-> --- a/arch/arm/boards/datamodul-edm-qmx6/board.c
-> +++ b/arch/arm/boards/datamodul-edm-qmx6/board.c
-> @@ -11,6 +11,7 @@
->  #include <gpio.h>
->  #include <of.h>
->  
-> +#include <linux/mdio.h>
->  #include <linux/micrel_phy.h>
->  #include <mfd/stmpe-i2c.h>
->  
-> @@ -48,9 +49,9 @@ static int ksz9031rn_phy_fixup(struct phy_device *dev)
->  	 * min rx data delay, max rx/tx clock delay,
->  	 * min rx/tx control delay
->  	 */
-> -	phy_write_mmd_indirect(dev, 4, 2, 0);
-> -	phy_write_mmd_indirect(dev, 5, 2, 0);
-> -	phy_write_mmd_indirect(dev, 8, 2, 0x03ff);
-> +	phy_write_mmd_indirect(dev, 4, MDIO_MMD_WIS, 0);
-> +	phy_write_mmd_indirect(dev, 5, MDIO_MMD_WIS, 0);
-> +	phy_write_mmd_indirect(dev, 8, MDIO_MMD_WIS, 0x03ff);
->  
->  	return 0;
->  }
-> diff --git a/arch/arm/boards/embest-marsboard/board.c b/arch/arm/boards/embest-marsboard/board.c
-> index 7835a9265a3d..7274595e2a76 100644
-> --- a/arch/arm/boards/embest-marsboard/board.c
-> +++ b/arch/arm/boards/embest-marsboard/board.c
-> @@ -9,6 +9,7 @@
->  #include <init.h>
->  #include <envfs.h>
->  #include <mach/imx/bbu.h>
-> +#include <linux/mdio.h>
->  #include <linux/phy.h>
->  #include <deep-probe.h>
->  
-> @@ -19,13 +20,13 @@ static int ar8035_phy_fixup(struct phy_device *dev)
->  	/* Ar803x phy SmartEEE feature cause link status generates glitch,
->  	 * which cause ethernet link down/up issue, so disable SmartEEE
->  	 */
-> -	val = phy_read_mmd_indirect(dev, 0x805d, 0x3);
-> +	val = phy_read_mmd_indirect(dev, 0x805d, MDIO_MMD_PCS);
->  	phy_write(dev, MII_MMD_DATA, val & ~(1 << 8));
->  
-> -	val = phy_read_mmd_indirect(dev, 0x4003, 0x3);
-> +	val = phy_read_mmd_indirect(dev, 0x4003, MDIO_MMD_PCS);
->  	phy_write(dev, MII_MMD_DATA, val & ~(1 << 8));
->  
-> -	val = phy_read_mmd_indirect(dev, 0x4007, 0x3);
-> +	val = phy_read_mmd_indirect(dev, 0x4007, MDIO_MMD_PCS);
->  	val &= 0xffe3;
->  	val |= 0x18;
->  	phy_write(dev, MII_MMD_DATA, val);
-> diff --git a/arch/arm/boards/terasic-de0-nano-soc/board.c b/arch/arm/boards/terasic-de0-nano-soc/board.c
-> index 19f74b784c12..832160c595fa 100644
-> --- a/arch/arm/boards/terasic-de0-nano-soc/board.c
-> +++ b/arch/arm/boards/terasic-de0-nano-soc/board.c
-> @@ -5,6 +5,7 @@
->  #include <driver.h>
->  #include <init.h>
->  #include <asm/armlinux.h>
-> +#include <linux/mdio.h>
->  #include <linux/micrel_phy.h>
->  #include <linux/phy.h>
->  #include <linux/sizes.h>
-> @@ -18,9 +19,9 @@ static int phy_fixup(struct phy_device *dev)
->  	 * min rx data delay, max rx/tx clock delay,
->  	 * min rx/tx control delay
->  	 */
-> -	phy_write_mmd_indirect(dev, 4, 2, 0);
-> -	phy_write_mmd_indirect(dev, 5, 2, 0);
-> -	phy_write_mmd_indirect(dev, 8, 2, 0x003ff);
-> +	phy_write_mmd_indirect(dev, 4, MDIO_MMD_WIS, 0);
-> +	phy_write_mmd_indirect(dev, 5, MDIO_MMD_WIS, 0);
-> +	phy_write_mmd_indirect(dev, 8, MDIO_MMD_WIS, 0x003ff);
->  	return 0;
->  }
->  
-> diff --git a/arch/arm/boards/terasic-de10-nano/board.c b/arch/arm/boards/terasic-de10-nano/board.c
-> index 580c8980129f..e47d9ac841d1 100644
-> --- a/arch/arm/boards/terasic-de10-nano/board.c
-> +++ b/arch/arm/boards/terasic-de10-nano/board.c
-> @@ -5,6 +5,7 @@
->  #include <driver.h>
->  #include <init.h>
->  #include <asm/armlinux.h>
-> +#include <linux/mdio.h>
->  #include <linux/micrel_phy.h>
->  #include <linux/phy.h>
->  #include <linux/sizes.h>
-> @@ -18,9 +19,9 @@ static int phy_fixup(struct phy_device *dev)
->  	 * min rx data delay, max rx/tx clock delay,
->  	 * min rx/tx control delay
->  	 */
-> -	phy_write_mmd_indirect(dev, 4, 2, 0);
-> -	phy_write_mmd_indirect(dev, 5, 2, 0);
-> -	phy_write_mmd_indirect(dev, 8, 2, 0x003ff);
-> +	phy_write_mmd_indirect(dev, 4, MDIO_MMD_WIS, 0);
-> +	phy_write_mmd_indirect(dev, 5, MDIO_MMD_WIS, 0);
-> +	phy_write_mmd_indirect(dev, 8, MDIO_MMD_WIS, 0x003ff);
->  	return 0;
->  }
->  
-> diff --git a/arch/arm/boards/tqma6x/board.c b/arch/arm/boards/tqma6x/board.c
-> index 4bb7223a6e7a..8a91ad652a98 100644
-> --- a/arch/arm/boards/tqma6x/board.c
-> +++ b/arch/arm/boards/tqma6x/board.c
-> @@ -11,6 +11,7 @@
->  #include <gpio.h>
->  #include <of.h>
->  
-> +#include <linux/mdio.h>
->  #include <linux/micrel_phy.h>
->  #include <mfd/stmpe-i2c.h>
->  
-> @@ -46,9 +47,9 @@ static int ksz9031rn_phy_fixup(struct phy_device *dev)
->  	 * min rx data delay, max rx/tx clock delay,
->  	 * min rx/tx control delay
->  	 */
-> -	phy_write_mmd_indirect(dev, 4, 2, 0);
-> -	phy_write_mmd_indirect(dev, 5, 2, 0);
-> -	phy_write_mmd_indirect(dev, 8, 2, 0x003ff);
-> +	phy_write_mmd_indirect(dev, 4, MDIO_MMD_WIS, 0);
-> +	phy_write_mmd_indirect(dev, 5, MDIO_MMD_WIS, 0);
-> +	phy_write_mmd_indirect(dev, 8, MDIO_MMD_WIS, 0x003ff);
->  
->  	return 0;
->  }
-> -- 
-> 2.39.2
+> FYI, there is a driver here:
+> https://lore.barebox.org/barebox/20230724075258.1840671-1-h.assmann@pengutronix.de/
 > 
+> That would allow you to get $global.system.reset if that's something that's
+> intereting to you.
+
+Yes, this can be added later if needed.
+
 > 
+> > +config MACH_SKOV_IMX8M
+> > +	bool "Skov IMX8Mx based boards"
+> > +	select ARCH_IMX8MP
+> > +	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
+> > +	select FIRMWARE_IMX8MP_ATF
+> > +	select ARM_SMCCC
+> > +	select MCI_IMX_ESDHC_PBL
+> > +	select IMX8M_DRAM
+> > +	select I2C_IMX_EARLY
+> > +	select DSA
+> > +	select DRIVER_NET_KSZ9477
 > 
+> Please drop last two selects. You should only select what's actually required
+> for booting. At most, you could do an imply here. Also, please enable in defconfig
+> for compile coverage. There you can enable DSA and KSZ9477 support.
+
+Ok.
 
 -- 
 Pengutronix e.K.                           |                             |
