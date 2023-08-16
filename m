@@ -1,62 +1,61 @@
-Delivery-date: Mon, 14 Aug 2023 16:13:04 +0200
+Delivery-date: Wed, 16 Aug 2023 07:57:24 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qVYJc-003qBM-ON
-	for lore@lore.pengutronix.de; Mon, 14 Aug 2023 16:13:04 +0200
+	id 1qW9X3-005uI7-1w
+	for lore@lore.pengutronix.de; Wed, 16 Aug 2023 07:57:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qVYJb-0006bT-30
-	for lore@pengutronix.de; Mon, 14 Aug 2023 16:13:03 +0200
+	id 1qW9X0-0005v8-Gd
+	for lore@pengutronix.de; Wed, 16 Aug 2023 07:57:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=R5GowhnHOrn0KE0P+EWCSKlixg4I4pWCmrpgWENSQAk=; b=rV80k+8DX9GZtkuh4EWaCsQVeF
-	Lj2Us3WLGP/hHhv2Zi7jGKAQWCndcPDSBMggqOorYDRqVTStrE9blaGPg9YCChbvkYJhok0fKoFPn
-	3V53yN/Gn3Qk/2WqaYZsJd/mbyL+4nBOg2S6+JIh71pqixU13XfnirpB6uOE+qTYC6sz2cszSL0b9
-	+FXcW22CAFE5UCyc9UfjDmiQQ/9MiSawpHewSG4o9XLvHPqjEOvo7+KHHG29LkId8ct7nE1CM8/U7
-	WQrYghqbp3lOaFm/Bi90KWO7hlTLTZ1QxQrHWiD9IE3XV3ZqdXZ5jCk2XHe/fKz6ZhOWPnE+JZle6
-	7ovGP7Nw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=K0XtTfTZAwHPP7JD6UR+ckCsJYUVnwak1po7vn4CF0s=; b=LgIQNMeyE28OVi
+	rRp1kykyqfQi2ZGWaMjza263r0Rv0Z3XTrm0rVRoCmSoaSDg0catommxIB6AmHcq+oYzkd6eOSD10
+	dQynQ9pYnwu2ssouAOv9TV+avemfn7y9RBHIin6IEzU3cpSRa8QYo/PWR6/fMBw6M7rmHB1pYq/KO
+	pRHTee7ty905lNTov64yZmPniPiWHODB7PePuVb9L8wAsOF8v5mH7MeKNaQEwAh1WjIV7OhFEvGjP
+	K4oMVDUvoN7bgJ0nXa8i66DkOJLIUS1DawbsL+Wmmc86BvX6FNxBuZR6cf6HSi9oYGBHoMK+u6P/D
+	SDl2+sLhz6Rj3EV5RARA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qVYIF-00HFMr-1d;
-	Mon, 14 Aug 2023 14:11:39 +0000
+	id 1qW9VY-003GEZ-0t;
+	Wed, 16 Aug 2023 05:55:52 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qVYIC-00HFLU-35
+	id 1qW9VT-003GDL-10
 	for barebox@lists.infradead.org;
-	Mon, 14 Aug 2023 14:11:38 +0000
+	Wed, 16 Aug 2023 05:55:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1qVYI6-0006II-7v; Mon, 14 Aug 2023 16:11:30 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	(envelope-from <uol@pengutronix.de>)
+	id 1qW9VN-0005iX-NF; Wed, 16 Aug 2023 07:55:41 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1qVYI5-000bMO-JZ; Mon, 14 Aug 2023 16:11:29 +0200
-Received: from rhi by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1qVYI5-002NWf-1A;
-	Mon, 14 Aug 2023 16:11:29 +0200
-From: Roland Hieber <rhi@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Roland Hieber <rhi@pengutronix.de>
-Date: Mon, 14 Aug 2023 16:11:13 +0200
-Message-Id: <20230814141112.567070-1-rhi@pengutronix.de>
+	(envelope-from <uol@pengutronix.de>)
+	id 1qW9VN-000yDL-0M; Wed, 16 Aug 2023 07:55:41 +0200
+Received: from uol by dude03.red.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <uol@pengutronix.de>)
+	id 1qW9VM-009gBG-0y; Wed, 16 Aug 2023 07:55:40 +0200
+From: =?UTF-8?q?Ulrich=20=C3=96lmann?= <u.oelmann@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Wed, 16 Aug 2023 07:55:36 +0200
+Message-Id: <20230816055536.2307080-2-u.oelmann@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230816055536.2307080-1-u.oelmann@pengutronix.de>
+References: <20230816055536.2307080-1-u.oelmann@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230814_071136_992207_30D05A14 
-X-CRM114-Status: UNSURE (   8.31  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230815_225547_682833_80418B60 
+X-CRM114-Status: GOOD (  18.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,46 +67,451 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: =?UTF-8?q?S=C3=B8ren=20Andersen?= <san@skov.dk>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] commands: global: document usage without parameters
+Subject: [PATCH 2/2] ARM: skov-imx6: Add new calibration values for i.MX6S
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
----
- commands/global.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-diff --git a/commands/global.c b/commands/global.c
-index cf8e9a5b4894..a8ff5ea18fb0 100644
---- a/commands/global.c
-+++ b/commands/global.c
-@@ -50,6 +50,7 @@ static int do_global(int argc, char *argv[])
+Update to new DDR3 calibration values. The values are taken from the
+NXP DDR Stress Test (3.0.0) on a board variant 19 (ptx internal
+inventory skov-K-00-02685).
+
+The DRAM controller settings and IOMUX settings have been taken from
+the MX6DL_DDR3_register_programming_aid_v2.2.xlxs file.
+
+DDR setup debug output:
+-----------------------
+density:4 Gb (2 Gb per chip)
+clock: 400MHz (2500 ps)
+memspd:800
+tcke=2
+tcksrx=5
+tcksre=5
+taofpd=0
+taonpd=0
+todtlon=3
+tanpd=3
+taxpd=3
+trfc=63
+txs=67
+txp=2
+txpdll=9
+tfaw=19
+tcl=3
+trcd=5
+trp=5
+trc=19
+tras=13
+twr=5
+tmrd=11
+tcwl=3
+tdllk=511
+trtp=3
+twtr=3
+trrd=3
+txpr=67
+cs0_end=23
+ncs=1
+Rtt_wr=0
+Rtt_nom=2
+SRT=0
+tcl=3
+twr=5
+MR2 CS0: 0x00008032
+MR3 CS0: 0x00008033
+MR1 CS0: 0x00408031
+MR0 CS0: 0x15208030
+
+============================================
+        DDR Stress Test (3.0.0)
+        Build: Dec 14 2018, 14:20:16
+        NXP Semiconductors.
+============================================
+
+============================================
+        Chip ID
+CHIP ID = i.MX6 Solo/DualLite (0x61)
+Internal Revision = TO1.2
+============================================
+
+============================================
+        Boot Configuration
+SRC_SBMR1(0x020d8004) = 0x28003032
+SRC_SBMR2(0x020d801c) = 0x02000001
+============================================
+
+What ARM core speed would you like to run?
+Type 1 for 800MHz, 2 for 1GHz
+ARM Clock set to 800MHz
+
+============================================
+        DDR configuration
+BOOT_CFG3[5-4]: 0x00, Single DDR channel.
+DDR type is DDR3
+Data width: 32, bank num: 8
+Row size: 14, col size: 10
+Chip select CSD0 is used
+Density per chip select: 512MB
+============================================
+
+Current Temperature: 50
+============================================
+
+Please select the DDR density per chip select (in bytes) on the board
+Type 0 for 2GB; 1 for 1GB; 2 for 512MB; 3 for 256MB; 4 for 128MB; 5 for 64MB; 6 for 32MB
+For maximum supported density (4GB), we can only access up to 3.75GB.  Type 7 to select this
+  DDR density selected (MB): 128
+
+Would do you want to change VDD_SOC_CAP/VDD_ARM_CAP voltage? Type 'y' to run and 'n' to skip
+
+Would do you want run DDR Calibration? Type 'y' to run and 'n' to skip
+
+Calibration will run at DDR frequency 400MHz. Type 'y' to continue.
+If you want to run at other DDR frequency. Type 'n'
+  Please enter the MR1 value on the initilization script
+  This will be re-programmed into MR1 after write leveling calibration
+  Enter as a 4-digit HEX value, example 0004, then hit enter
+0040DDR Freq: 396 MHz
+
+ddr_mr1=0x00000040
+Start write leveling calibration...
+running Write level HW calibration
+  MPWLHWERR register read out for factory diagnostics:
+  MPWLHWERR PHY0 = 0x78787878
+
+Write leveling calibration completed, update the following registers in your initialization script
+    MMDC_MPWLDECTRL0 ch0 (0x021b080c) = 0x004A004B
+    MMDC_MPWLDECTRL1 ch0 (0x021b0810) = 0x00420046
+Write DQS delay result:
+   Write DQS0 delay: 75/256 CK
+   Write DQS1 delay: 74/256 CK
+   Write DQS2 delay: 70/256 CK
+   Write DQS3 delay: 66/256 CK
+
+WARNING: write-leveling calibration value is greater than 1/8 CK.
+        Per the reference manual, WALAT must be set to 1 in the register MDMISC(0x021B0018).
+        This has been performed automatically.
+        However, in addition to updating the calibration values in your DDR initialization,
+        it is also REQUIRED change the value of MDMISC in their DDR initialization as follows:
+
+    MMDC_MDMISC (0x021b0018) =  0x00091740
+
+Starting DQS gating calibration
+. HC_DEL=0x00000000     result[00]=0x00000001
+. HC_DEL=0x00000001     result[01]=0x00000001
+. HC_DEL=0x00000002     result[02]=0x00000000
+. HC_DEL=0x00000003     result[03]=0x00000000
+. HC_DEL=0x00000004     result[04]=0x00001111
+. HC_DEL=0x00000005     result[05]=0x00001111
+. HC_DEL=0x00000006     result[06]=0x00001111
+. HC_DEL=0x00000007     result[07]=0x00001111
+. HC_DEL=0x00000008     result[08]=0x00001111
+. HC_DEL=0x00000009     result[09]=0x00001111
+. HC_DEL=0x0000000A     result[0A]=0x00001111
+. HC_DEL=0x0000000B     result[0B]=0x00001111
+. HC_DEL=0x0000000C     result[0C]=0x00001111
+. HC_DEL=0x0000000D     result[0D]=0x00001111
+DQS HC delay value low1 = 0x00000002, high1=0x03030303
+
+loop ABS offset to get HW_DG_LOW
+. ABS_OFFSET=0x00000000 result[00]=0x00000001
+. ABS_OFFSET=0x00000004 result[01]=0x00000001
+. ABS_OFFSET=0x00000008 result[02]=0x00000000
+. ABS_OFFSET=0x0000000C result[03]=0x00000000
+. ABS_OFFSET=0x00000010 result[04]=0x00000000
+. ABS_OFFSET=0x00000014 result[05]=0x00000000
+. ABS_OFFSET=0x00000018 result[06]=0x00000000
+. ABS_OFFSET=0x0000001C result[07]=0x00000000
+. ABS_OFFSET=0x00000020 result[08]=0x00000000
+. ABS_OFFSET=0x00000024 result[09]=0x00000000
+. ABS_OFFSET=0x00000028 result[0A]=0x00000000
+. ABS_OFFSET=0x0000002C result[0B]=0x00000000
+. ABS_OFFSET=0x00000030 result[0C]=0x00000000
+. ABS_OFFSET=0x00000034 result[0D]=0x00000000
+. ABS_OFFSET=0x00000038 result[0E]=0x00000000
+. ABS_OFFSET=0x0000003C result[0F]=0x00000000
+. ABS_OFFSET=0x00000040 result[10]=0x00000000
+. ABS_OFFSET=0x00000044 result[11]=0x00000000
+. ABS_OFFSET=0x00000048 result[12]=0x00000000
+. ABS_OFFSET=0x0000004C result[13]=0x00000000
+. ABS_OFFSET=0x00000050 result[14]=0x00000000
+. ABS_OFFSET=0x00000054 result[15]=0x00000000
+. ABS_OFFSET=0x00000058 result[16]=0x00000000
+. ABS_OFFSET=0x0000005C result[17]=0x00000000
+. ABS_OFFSET=0x00000060 result[18]=0x00000000
+. ABS_OFFSET=0x00000064 result[19]=0x00000000
+. ABS_OFFSET=0x00000068 result[1A]=0x00000000
+. ABS_OFFSET=0x0000006C result[1B]=0x00000000
+. ABS_OFFSET=0x00000070 result[1C]=0x00000000
+. ABS_OFFSET=0x00000074 result[1D]=0x00000000
+. ABS_OFFSET=0x00000078 result[1E]=0x00000000
+. ABS_OFFSET=0x0000007C result[1F]=0x00000000
+
+loop ABS offset to get HW_DG_HIGH
+. ABS_OFFSET=0x00000000 result[00]=0x00000000
+. ABS_OFFSET=0x00000004 result[01]=0x00000000
+. ABS_OFFSET=0x00000008 result[02]=0x00000000
+. ABS_OFFSET=0x0000000C result[03]=0x00000000
+. ABS_OFFSET=0x00000010 result[04]=0x00000000
+. ABS_OFFSET=0x00000014 result[05]=0x00000000
+. ABS_OFFSET=0x00000018 result[06]=0x00000000
+. ABS_OFFSET=0x0000001C result[07]=0x00000000
+. ABS_OFFSET=0x00000020 result[08]=0x00000000
+. ABS_OFFSET=0x00000024 result[09]=0x00000000
+. ABS_OFFSET=0x00000028 result[0A]=0x00000000
+. ABS_OFFSET=0x0000002C result[0B]=0x00000000
+. ABS_OFFSET=0x00000030 result[0C]=0x00000000
+. ABS_OFFSET=0x00000034 result[0D]=0x00001100
+. ABS_OFFSET=0x00000038 result[0E]=0x00001100
+. ABS_OFFSET=0x0000003C result[0F]=0x00001100
+. ABS_OFFSET=0x00000040 result[10]=0x00001100
+. ABS_OFFSET=0x00000044 result[11]=0x00001111
+. ABS_OFFSET=0x00000048 result[12]=0x00001111
+. ABS_OFFSET=0x0000004C result[13]=0x00001111
+. ABS_OFFSET=0x00000050 result[14]=0x00001111
+. ABS_OFFSET=0x00000054 result[15]=0x00001111
+. ABS_OFFSET=0x00000058 result[16]=0x00001111
+. ABS_OFFSET=0x0000005C result[17]=0x00001111
+. ABS_OFFSET=0x00000060 result[18]=0x00001111
+. ABS_OFFSET=0x00000064 result[19]=0x00001111
+. ABS_OFFSET=0x00000068 result[1A]=0x00001111
+. ABS_OFFSET=0x0000006C result[1B]=0x00001111
+. ABS_OFFSET=0x00000070 result[1C]=0x00001111
+. ABS_OFFSET=0x00000074 result[1D]=0x00001111
+. ABS_OFFSET=0x00000078 result[1E]=0x00001111
+. ABS_OFFSET=0x0000007C result[1F]=0x00001111
+
+BYTE 0:
+        Start:           HC=0x01 ABS=0x08
+        End:             HC=0x03 ABS=0x40
+        Mean:            HC=0x02 ABS=0x24
+        End-0.5*tCK:     HC=0x02 ABS=0x40
+        Final:           HC=0x02 ABS=0x40
+BYTE 1:
+        Start:           HC=0x00 ABS=0x00
+        End:             HC=0x03 ABS=0x40
+        Mean:            HC=0x01 ABS=0x5F
+        End-0.5*tCK:     HC=0x02 ABS=0x40
+        Final:           HC=0x02 ABS=0x40
+BYTE 2:
+        Start:           HC=0x00 ABS=0x00
+        End:             HC=0x03 ABS=0x30
+        Mean:            HC=0x01 ABS=0x57
+        End-0.5*tCK:     HC=0x02 ABS=0x30
+        Final:           HC=0x02 ABS=0x30
+BYTE 3:
+        Start:           HC=0x00 ABS=0x00
+        End:             HC=0x03 ABS=0x30
+        Mean:            HC=0x01 ABS=0x57
+        End-0.5*tCK:     HC=0x02 ABS=0x30
+        Final:           HC=0x02 ABS=0x30
+
+DQS calibration MMDC0 MPDGCTRL0 = 0x42400240, MPDGCTRL1 = 0x02300230
+
+Note: Array result[] holds the DRAM test result of each byte.
+      0: test pass.  1: test fail
+      4 bits respresent the result of 1 byte.
+      result 0001:byte 0 fail.
+      result 0011:byte 0, 1 fail.
+
+Starting Read calibration...
+
+ABS_OFFSET=0x00000000   result[00]=0x1111
+ABS_OFFSET=0x04040404   result[01]=0x1111
+ABS_OFFSET=0x08080808   result[02]=0x1111
+ABS_OFFSET=0x0C0C0C0C   result[03]=0x1111
+ABS_OFFSET=0x10101010   result[04]=0x1111
+ABS_OFFSET=0x14141414   result[05]=0x1111
+ABS_OFFSET=0x18181818   result[06]=0x1111
+ABS_OFFSET=0x1C1C1C1C   result[07]=0x0111
+ABS_OFFSET=0x20202020   result[08]=0x0000
+ABS_OFFSET=0x24242424   result[09]=0x0000
+ABS_OFFSET=0x28282828   result[0A]=0x0000
+ABS_OFFSET=0x2C2C2C2C   result[0B]=0x0000
+ABS_OFFSET=0x30303030   result[0C]=0x0000
+ABS_OFFSET=0x34343434   result[0D]=0x0000
+ABS_OFFSET=0x38383838   result[0E]=0x0000
+ABS_OFFSET=0x3C3C3C3C   result[0F]=0x0000
+ABS_OFFSET=0x40404040   result[10]=0x0000
+ABS_OFFSET=0x44444444   result[11]=0x0000
+ABS_OFFSET=0x48484848   result[12]=0x0000
+ABS_OFFSET=0x4C4C4C4C   result[13]=0x0000
+ABS_OFFSET=0x50505050   result[14]=0x0000
+ABS_OFFSET=0x54545454   result[15]=0x0000
+ABS_OFFSET=0x58585858   result[16]=0x0000
+ABS_OFFSET=0x5C5C5C5C   result[17]=0x0000
+ABS_OFFSET=0x60606060   result[18]=0x0000
+ABS_OFFSET=0x64646464   result[19]=0x0000
+ABS_OFFSET=0x68686868   result[1A]=0x0000
+ABS_OFFSET=0x6C6C6C6C   result[1B]=0x0000
+ABS_OFFSET=0x70707070   result[1C]=0x0000
+ABS_OFFSET=0x74747474   result[1D]=0x1000
+ABS_OFFSET=0x78787878   result[1E]=0x1111
+ABS_OFFSET=0x7C7C7C7C   result[1F]=0x1111
+
+Byte 0: (0x20 - 0x74), middle value:0x4a
+Byte 1: (0x20 - 0x74), middle value:0x4a
+Byte 2: (0x20 - 0x74), middle value:0x4a
+Byte 3: (0x1c - 0x70), middle value:0x46
+
+MMDC0 MPRDDLCTL = 0x464A4A4A
+
+Starting Write calibration...
+
+ABS_OFFSET=0x00000000   result[00]=0x0100
+ABS_OFFSET=0x04040404   result[01]=0x0000
+ABS_OFFSET=0x08080808   result[02]=0x0000
+ABS_OFFSET=0x0C0C0C0C   result[03]=0x0000
+ABS_OFFSET=0x10101010   result[04]=0x0000
+ABS_OFFSET=0x14141414   result[05]=0x0000
+ABS_OFFSET=0x18181818   result[06]=0x0000
+ABS_OFFSET=0x1C1C1C1C   result[07]=0x0000
+ABS_OFFSET=0x20202020   result[08]=0x0000
+ABS_OFFSET=0x24242424   result[09]=0x0000
+ABS_OFFSET=0x28282828   result[0A]=0x0000
+ABS_OFFSET=0x2C2C2C2C   result[0B]=0x0000
+ABS_OFFSET=0x30303030   result[0C]=0x0000
+ABS_OFFSET=0x34343434   result[0D]=0x0000
+ABS_OFFSET=0x38383838   result[0E]=0x0000
+ABS_OFFSET=0x3C3C3C3C   result[0F]=0x0000
+ABS_OFFSET=0x40404040   result[10]=0x0000
+ABS_OFFSET=0x44444444   result[11]=0x0000
+ABS_OFFSET=0x48484848   result[12]=0x0000
+ABS_OFFSET=0x4C4C4C4C   result[13]=0x0000
+ABS_OFFSET=0x50505050   result[14]=0x0000
+ABS_OFFSET=0x54545454   result[15]=0x0000
+ABS_OFFSET=0x58585858   result[16]=0x0010
+ABS_OFFSET=0x5C5C5C5C   result[17]=0x0010
+ABS_OFFSET=0x60606060   result[18]=0x0010
+ABS_OFFSET=0x64646464   result[19]=0x0010
+ABS_OFFSET=0x68686868   result[1A]=0x1111
+ABS_OFFSET=0x6C6C6C6C   result[1B]=0x1111
+ABS_OFFSET=0x70707070   result[1C]=0x1111
+ABS_OFFSET=0x74747474   result[1D]=0x1111
+ABS_OFFSET=0x78787878   result[1E]=0x1111
+ABS_OFFSET=0x7C7C7C7C   result[1F]=0x1111
+
+Byte 0: (0x00 - 0x64), middle value:0x32
+Byte 1: (0x00 - 0x54), middle value:0x2a
+Byte 2: (0x04 - 0x64), middle value:0x34
+Byte 3: (0x00 - 0x64), middle value:0x32
+
+MMDC0 MPWRDLCTL = 0x32342A32
+
+   MMDC registers updated from calibration
+
+   Write leveling calibration
+   MMDC_MPWLDECTRL0 ch0 (0x021b080c) = 0x004A004B
+   MMDC_MPWLDECTRL1 ch0 (0x021b0810) = 0x00420046
+
+   Read DQS Gating calibration
+   MPDGCTRL0 PHY0 (0x021b083c) = 0x42400240
+   MPDGCTRL1 PHY0 (0x021b0840) = 0x02300230
+
+   Read calibration
+   MPRDDLCTL PHY0 (0x021b0848) = 0x464A4A4A
+
+   Write calibration
+   MPWRDLCTL PHY0 (0x021b0850) = 0x32342A32
+
+Success: DDR calibration completed!!!
+
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ arch/arm/boards/skov-imx6/lowlevel.c | 54 ++++++++++++++--------------
+ 1 file changed, 27 insertions(+), 27 deletions(-)
+
+diff --git a/arch/arm/boards/skov-imx6/lowlevel.c b/arch/arm/boards/skov-imx6/lowlevel.c
+index 842e3af6db77..c9a695ced4d7 100644
+--- a/arch/arm/boards/skov-imx6/lowlevel.c
++++ b/arch/arm/boards/skov-imx6/lowlevel.c
+@@ -296,25 +296,25 @@ static const struct mx6_ddr_sysinfo skov_imx6_sysinfo_2x128Mb_800MHz = {
+ 	.dsize = 1, /* 32 bit wide = 2 devices, 16 bit each */
+ 	.cs_density = 4, /* two 2 GBit devices connected */
+ 	.ncs = 1, /* one CS line for all devices */
+-	.cs1_mirror = 1, /* TODO */
+-	.bi_on = 1, /* TODO */
++	.cs1_mirror = 1,
++	.bi_on = 1,
+ 	.rtt_nom = 1, /* MX6_MMDC_P0_MPODTCTRL -> 0x00022227 */
+ 	.rtt_wr = 0, /* is LW_EN is 0 in their code */
+-	.ralat = 5, /* TODO */
+-	.walat = 1, /* TODO */
+-	.mif3_mode = 3, /* TODO */
+-	.rst_to_cke = 0x23, /* used in their code as well */
+-	.sde_to_rst = 0x10, /* used in their code as well */
+-	.pd_fast_exit = 0, /* TODO */
++	.ralat = 5,
++	.walat = 0,
++	.mif3_mode = 3,
++	.rst_to_cke = 0x23,
++	.sde_to_rst = 0x10,
++	.pd_fast_exit = 1,
+ };
  
- BAREBOX_CMD_HELP_START(global)
- BAREBOX_CMD_HELP_TEXT("Add a new global variable named VAR, optionally set to VALUE.")
-+BAREBOX_CMD_HELP_TEXT("Without options, print all global and env (prefixed with *) variables.")
- BAREBOX_CMD_HELP_TEXT("")
- BAREBOX_CMD_HELP_TEXT("Options:")
- BAREBOX_CMD_HELP_OPT("-r", "Remove globalvars")
-@@ -58,7 +59,7 @@ BAREBOX_CMD_HELP_END
- BAREBOX_CMD_START(global)
- 	.cmd		= do_global,
- 	BAREBOX_CMD_DESC("create or set global variables")
--	BAREBOX_CMD_OPTS("[-r] VAR[=VALUE] ...")
-+	BAREBOX_CMD_OPTS("[-r] [VAR[=VALUE] ...]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_ENV)
- 	BAREBOX_CMD_HELP(cmd_global_help)
- 	BAREBOX_CMD_COMPLETE(global_complete)
+ static const struct mx6_mmdc_calibration skov_imx6_calib_2x128Mb_800MHz = {
+-	.p0_mpwldectrl0 = 0x0040003C,
+-	.p0_mpwldectrl1 = 0x0032003E,
+-	.p0_mpdgctrl0 = 0x42350231,
+-	.p0_mpdgctrl1 = 0x021A0218,
+-	.p0_mprddlctl = 0x4B4B4E49,
+-	.p0_mpwrdlctl = 0x3F3F3035,
++	.p0_mpwldectrl0 = 0x004A004B,
++	.p0_mpwldectrl1 = 0x00420046,
++	.p0_mpdgctrl0 = 0x42400240,
++	.p0_mpdgctrl1 = 0x02300230,
++	.p0_mprddlctl = 0x464A4A4A,
++	.p0_mpwrdlctl = 0x32342A32,
+ };
+ 
+ /* ------------------------------------------------------------------------ */
+@@ -328,21 +328,21 @@ static const struct mx6sdl_iomux_ddr_regs ddr_iomux_s = {
+ 	.dram_sdqs5 = 0x00000030,
+ 	.dram_sdqs6 = 0x00000030,
+ 	.dram_sdqs7 = 0x00000030,
+-	.dram_dqm0 = 0x00020030,
+-	.dram_dqm1 = 0x00020030,
+-	.dram_dqm2 = 0x00020030,
+-	.dram_dqm3 = 0x00020030,
+-	.dram_dqm4 = 0x00020030,
+-	.dram_dqm5 = 0x00020030,
+-	.dram_dqm6 = 0x00020030,
+-	.dram_dqm7 = 0x00020030,
+-	.dram_cas = 0x00020030,
+-	.dram_ras = 0x00020030,
+-	.dram_sdclk_0 = 0x00020030,
+-	.dram_sdclk_1 = 0x00020030,
++	.dram_dqm0 = 0x00000030,
++	.dram_dqm1 = 0x00000030,
++	.dram_dqm2 = 0x00000030,
++	.dram_dqm3 = 0x00000030,
++	.dram_dqm4 = 0x00000030,
++	.dram_dqm5 = 0x00000030,
++	.dram_dqm6 = 0x00000030,
++	.dram_dqm7 = 0x00000030,
++	.dram_cas = 0x00000030,
++	.dram_ras = 0x00000030,
++	.dram_sdclk_0 = 0x00000030,
++	.dram_sdclk_1 = 0x0000030,
+ 	.dram_sdcke0 = 0x00003000,
+ 	.dram_sdcke1 = 0x00003000,
+-	.dram_reset = 0x00020030,
++	.dram_reset = 0x00000030,
+ 	.dram_sdba2 = 0x00000000,
+ 	.dram_sdodt0 = 0x00003030,
+ 	.dram_sdodt1 = 0x00003030,
 -- 
 2.39.2
 
