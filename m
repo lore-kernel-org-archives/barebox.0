@@ -3,13 +3,13 @@ Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qX0PF-009XTk-FV
+	id 1qX0PF-009XTj-IC
 	for lore@lore.pengutronix.de; Fri, 18 Aug 2023 16:24:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qX0PD-00086Q-Or
+	id 1qX0PD-00086O-PA
 	for lore@pengutronix.de; Fri, 18 Aug 2023 16:24:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,28 +17,28 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6LuTzKqk2EhCh9wn6X3nuatmP81UR3Vh/Y8G7+BRE9I=; b=czCSnzhLuuW+SKBvy00A8U01ME
-	zqDMkREBC6wmEDrs2AG/PlXyHt98nabg5mcUmyGCkvsa5QDDUYzJqAmCy5brov/DxrqRItKXslncO
-	SSRkaPlUke9TUh79uZfvYXQyhiYF5Vepm3gTizwcpVI1Lgi+nV6zPQxQXGw07UuRLh+BctYAee4RS
-	9/eMvcOJRmJ9RSQ9GXKtUajoG/4gbxUyjPm2kHq9wZnqAVXRmelcnY4+tLvOi2AGbowZ0S2XxLsDX
-	fIU8ynbCtMKk8yzRIGwUYHpgejGMm/wPC+m2DbCrUrKcYCgLhGzko6buYlHLGAfbULujHAF1GE8KI
-	+PZ+fl5A==;
+	bh=EtkYANCODTPfhK8RxLwxG7XVIS0GVk9DykE+UGCs+Po=; b=HB4xs5y5KHzZ+wZIXvoRBkWB0e
+	X4r0fEoDidZ/93xRlTPF//6TkWeZGlZyZhPaSy+4yVMxeaNjr9GBTyfYU8RXObTF23eujcDLfcrlc
+	hPESctC6/cTaZNkrQcUYpxcpon9FnUdUarUWF8sKcL03bCUHeQFm6Og3MVzqADI41eK3j/AtBUma8
+	sxJ2Vs//46n7alM3Gkm1Eh1l5miI/35Ny8f21bMt4RkLZdH5kC2twxvWR7qlgcit7yAlkAqQLdMR7
+	iMBW5StHOlt9UgwD6pvHcPL4c/27pXrGmkX7EBOuBr3kUlpTGdm8Avo9ETAQZx/l2SuehQmCvBya7
+	5w+AhuDg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qX0O4-009URy-0S;
-	Fri, 18 Aug 2023 14:23:40 +0000
-Received: from relay1-d.mail.gandi.net ([217.70.183.193])
+	id 1qX0O3-009URo-1F;
+	Fri, 18 Aug 2023 14:23:39 +0000
+Received: from relay1-d.mail.gandi.net ([2001:4b98:dc4:8::221])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qX0Nx-009UP5-1v
+	id 1qX0Nx-009UOy-1w
 	for barebox@lists.infradead.org;
 	Fri, 18 Aug 2023 14:23:35 +0000
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 054A4240004;
-	Fri, 18 Aug 2023 14:23:28 +0000 (UTC)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 3503624000A;
+	Fri, 18 Aug 2023 14:23:27 +0000 (UTC)
 From: Jules Maselbas <jmaselbas@kalray.eu>
 To: barebox@lists.infradead.org
 Cc: Jules Maselbas <jmaselbas@kalray.eu>
-Date: Fri, 18 Aug 2023 16:22:43 +0200
-Message-ID: <20230818142244.17157-6-jmaselbas@kalray.eu>
+Date: Fri, 18 Aug 2023 16:22:39 +0200
+Message-ID: <20230818142244.17157-2-jmaselbas@kalray.eu>
 X-Mailer: git-send-email 2.41.0
 In-Reply-To: <20230818142244.17157-1-jmaselbas@kalray.eu>
 References: <20230818142244.17157-1-jmaselbas@kalray.eu>
@@ -46,8 +46,9 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-GND-Sasl: jmaselbas@zdiv.net
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230818_072333_785644_1ACA24B8 
-X-CRM114-Status: GOOD (  11.36  )
+X-CRM114-CacheID: sfid-20230818_072333_803222_FEAA2C9A 
+X-CRM114-Status: UNSURE (   6.41  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,41 +70,39 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	URIBL_BLOCKED autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 6/7] mci: sdhci: Force DMA update to the next block boundary
+Subject: [PATCH v3 2/7] mci: sdhci: Add registers defines
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
 Signed-off-by: Jules Maselbas <jmaselbas@kalray.eu>
 ---
- drivers/mci/sdhci.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/mci/sdhci.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
-index 4aca3af5aa..b0b83bfaa9 100644
---- a/drivers/mci/sdhci.c
-+++ b/drivers/mci/sdhci.c
-@@ -279,8 +279,20 @@ int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_data *data,
- 			goto out;
- 		}
+diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
+index fe8c25cb9c..50179de0e6 100644
+--- a/drivers/mci/sdhci.h
++++ b/drivers/mci/sdhci.h
+@@ -117,6 +117,9 @@
+ #define SDHCI_INT_ERROR_ENABLE					0x36
+ #define SDHCI_SIGNAL_ENABLE					0x38
+ #define SDHCI_ACMD12_ERR__HOST_CONTROL2				0x3C
++#define SDHCI_HOST_CONTROL2					0x3E
++#define  SDHCI_CTRL_64BIT_ADDR			BIT(13)
++#define  SDHCI_CTRL_V4_MODE			BIT(12)
+ #define SDHCI_CAPABILITIES					0x40
+ #define  SDHCI_TIMEOUT_CLK_MASK			GENMASK(5, 0)
+ #define  SDHCI_TIMEOUT_CLK_UNIT			0x00000080
+@@ -173,6 +176,9 @@
  
-+		/*
-+		 * We currently don't do anything fancy with DMA
-+		 * boundaries, but as we can't disable the feature
-+		 * we need to at least restart the transfer.
-+		 *
-+		 * According to the spec sdhci_readl(host, SDHCI_DMA_ADDRESS)
-+		 * should return a valid address to continue from, but as
-+		 * some controllers are faulty, don't trust them.
-+		 */
- 		if (irqstat & SDHCI_INT_DMA) {
--			u32 addr = sdhci_read32(sdhci, SDHCI_DMA_ADDRESS);
-+			int boundary_cfg = (sdhci->sdma_boundary >> 12) & 0x7;
-+			dma_addr_t boundary_size = 4096 << boundary_cfg;
-+			/* Force update to the next DMA block boundary. */
-+			dma = (dma & ~(boundary_size - 1)) + boundary_size;
+ #define  SDHCI_CLOCK_MUL_SHIFT	16
  
- 			/*
- 			 * DMA engine has stopped on buffer boundary. Acknowledge
++#define SDHCI_ADMA_ADDRESS					0x58
++#define SDHCI_ADMA_ADDRESS_HI					0x5c
++
+ #define SDHCI_MMC_BOOT						0xC4
+ 
+ #define SDHCI_MAX_DIV_SPEC_200	256
 -- 
 2.41.0
 
