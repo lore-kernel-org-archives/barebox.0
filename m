@@ -1,60 +1,110 @@
-Delivery-date: Wed, 23 Aug 2023 08:32:27 +0200
+Delivery-date: Wed, 23 Aug 2023 17:10:12 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qYhPo-005qEV-G8
-	for lore@lore.pengutronix.de; Wed, 23 Aug 2023 08:32:27 +0200
+	id 1qYpUr-006KLv-EY
+	for lore@lore.pengutronix.de; Wed, 23 Aug 2023 17:10:12 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qYhPm-00037i-6v
-	for lore@pengutronix.de; Wed, 23 Aug 2023 08:32:26 +0200
+	id 1qYpUp-0003mu-9d
+	for lore@pengutronix.de; Wed, 23 Aug 2023 17:10:11 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:Content-Type:
-	MIME-Version:Message-ID:Subject:To:Date:Reply-To:Cc:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=MfndPG58YEzLmyZEQSS+PassTDynWhlxlKzYAr3P1Qw=; b=gskoj7ssFB8fA/A4Hm4beeOTh4
-	uCcIIajxl6odK+TE2JW9+Znfoez0f7a+h7qXOOCzIEALJYOCmYwXC6xDeokCTWk5QHPUprXIxzkbg
-	+c6u3gWvtRWct/wiK0HQ2fIVKsnP/1kp9TBGphV/E7Na6hEEdhXHkOfxuM0KmjaUM5ccR6YJAEGB1
-	U29X+uXgV08Enx1EAj1bO52sBLdI2LbIHWeY55RZTXaOugyJUZwyTBk8iI0wNWBwd1nrWBUV163+y
-	hMhgqJb8zhhISFfWJBAPFx0yv3+/H9tJNrlN/xaCeo9z54AFyowvVejReIFiWZSBWoMphUcVyw3Pi
-	CDB8EqHQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:CC:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=//Mz4NxYHTPOh+di0LEyoloQcq1/2po2OX0MyuiHdog=; b=mxjhG3g+KOEZVsEKqPrs1Wojkw
+	d60XEahWdMh1bKlx4H89u58dEsF0MUBHIJtQN/wSvtFhKt70dhJP6Pc/fCfHfnGeaoZqE2kkGx4uh
+	1steiqlOJrxLZJgdI6re3IqTf4BYJNsJF/dzn4iiZe49WgZh3mbZ6AWWNfqMbcyvaIa4XbBNvedHi
+	tAe2N6MQ71dVAK/HXBBGxEOJX2yIdPW1Xf7jWwG5QoWOhm1rcswEpP1wMIhsws51qPn2P2Gcox29k
+	WKmsbGjzWcKiHEwjjgrP1nz7iIxWfK84BF2SkU1cqvZJrS018E2ceJogWhWa/q0bikQC7w+6+Bkh2
+	hvYx3fHw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qYhOg-00HOer-20;
-	Wed, 23 Aug 2023 06:31:18 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1qYpTO-000v6F-2Y;
+	Wed, 23 Aug 2023 15:08:42 +0000
+Received: from mail-he1eur04on070f.outbound.protection.outlook.com ([2a01:111:f400:fe0d::70f] helo=EUR04-HE1-obe.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qYhOd-00HOe5-0q
+	id 1qYpTL-000v4v-2R
 	for barebox@lists.infradead.org;
-	Wed, 23 Aug 2023 06:31:16 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qYhOb-00034q-Sm; Wed, 23 Aug 2023 08:31:13 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qYhOb-0004np-LD; Wed, 23 Aug 2023 08:31:13 +0200
-Date: Wed, 23 Aug 2023 08:31:13 +0200
-To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20230823063113.GE16522@pengutronix.de>
+	Wed, 23 Aug 2023 15:08:41 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OG3M1y5/pZdqrJ22b9Jrxv+FuJpy6e7LM3BGZWviMpNR5Omkdb67FxxoWeXz/071NqB6BFZraois6XhywS3//wIsvPuVLAtXoTUzswafkGI5QtcrtDsKxaW0YVioMAKp1Yd/9HWszhUOGnYaoDAn7OQkpGmVIucHtO8H9YmPKAJ2OqVxhfu4I2Gg4lqz7J/S+AUAcvJZGhqG5obzaNSg9yKCElXRyZLZKaIAqIidOFCOlGd0nzmx+T4xLWb/3+vVRC86KmIQtEBU18gaLhRrWJyWbhT/ldgGcH0jbARM8O2c4khpOAqT/ddTK+jyMEV/DdjxJ9SlhDnyyyAP2mcPXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=//Mz4NxYHTPOh+di0LEyoloQcq1/2po2OX0MyuiHdog=;
+ b=YxvbDmXD5dz0D0XKqBVEjzpqo/z8jpnsHwbmRlQYSQPEvNgbR96SqusSMp05i+5SbQHWzeBdF0Ab1kKmpyhMxhD97bwF1eGF6Ezh/e5YRJWoTzzwLI5aOCLOIClLu4ru5L8VNAJm7bohGnfwl0y28gTbK86T88/HzhUf5a4bSq4319yHGhQUBORqEYx1p4Wpeh9tbzni73/jSgIsf298cxCmlpVB+CSqP1d/Rx4daJAT4IfZL2YeL9O62fp7u4nVAsTX5MlhH8dqbwtrtkH4a5XT4SbLcotzMgXJZerkUKWZcKZ1YUEMd4y59LDJbUBQbMMW+PH+eiS4sKT/d4uZGA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=fail (sender ip is
+ 217.111.95.7) smtp.rcpttodomain=pengutronix.de smtp.mailfrom=arri.de;
+ dmarc=none action=none header.from=arri.de; dkim=none (message not signed);
+ arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+ d=arrigroup.onmicrosoft.com; s=selector1-arrigroup-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=//Mz4NxYHTPOh+di0LEyoloQcq1/2po2OX0MyuiHdog=;
+ b=k2W8gmIoP61JK7ss9p1aEgSO2yalfhTC/rsRYROcvoQHlr+QJm6SxNhzGoXdxQKoWqn+OZhacwXHBR6nTG9cnCv4U14BKwh6okQ95taiZwH9cEe2sL+rL1jAdRUQmvlYqrgK3Dc+ySEorENKc/AML61cYNN7PbSUvXbBohm1kSA=
+Received: from AS9PR0301CA0041.eurprd03.prod.outlook.com
+ (2603:10a6:20b:469::32) by DU2PR07MB8329.eurprd07.prod.outlook.com
+ (2603:10a6:10:2e4::15) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Wed, 23 Aug
+ 2023 14:53:04 +0000
+Received: from AM0EUR02FT059.eop-EUR02.prod.protection.outlook.com
+ (2603:10a6:20b:469:cafe::eb) by AS9PR0301CA0041.outlook.office365.com
+ (2603:10a6:20b:469::32) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.26 via Frontend
+ Transport; Wed, 23 Aug 2023 14:53:04 +0000
+X-MS-Exchange-Authentication-Results: spf=fail (sender IP is 217.111.95.7)
+ smtp.mailfrom=arri.de; dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=arri.de;
+Received-SPF: Fail (protection.outlook.com: domain of arri.de does not
+ designate 217.111.95.7 as permitted sender) receiver=protection.outlook.com;
+ client-ip=217.111.95.7; helo=mta.arri.de;
+Received: from mta.arri.de (217.111.95.7) by
+ AM0EUR02FT059.mail.protection.outlook.com (10.13.54.184) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6723.16 via Frontend Transport; Wed, 23 Aug 2023 14:53:04 +0000
+Received: from n95hx1g2.localnet (10.30.5.31) by mta.arri.de (10.10.18.5) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2375.34; Wed, 23 Aug
+ 2023 16:53:04 +0200
+From: Christian Eggers <ceggers@arri.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+CC: <barebox@lists.infradead.org>
+Date: Wed, 23 Aug 2023 16:53:04 +0200
+Message-ID: <5977114.lOV4Wx5bFT@n95hx1g2>
+Organization: Arnold & Richter Cine Technik GmbH & Co. Betriebs KG
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
+X-Originating-IP: [10.30.5.31]
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM0EUR02FT059:EE_|DU2PR07MB8329:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6a8a9e6b-f96f-4acd-6a10-08dba3e8a7c5
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: j0TDMDa3MeV1JqxZcHyIvxsJmtynSYkgzv0IHWkeoh5QdAG9GJQZBblnnlhTUq5fyaT581yaHRrHm+v722pWm/TiIjpGN+b1F2HGIKQUswc0SC/w1bVLnQQT+/pam14rTL1SfsvP7W+17IM0jINpE3GKNBiABlMFDFTzU0Zd5ekp4/BKXLAz/f/0fvdo3LIw/r3yQFeyymUcSWkJyOXeFRfpO4EXhrbu4LrlfbhWuMkuK/eFKtSFE1Jx3ktKkUfa0+cGI88HGBa//TzdOxWdHzTJKbNsl9CGrpMog7JORPew+/FL+3r/0oMhXHHVAknGa7L+lpTitFkoUI8XRSA4hTSuMLUjZHLXCHjWwJRL0XFV1eT8+vhZouLmQtttuOPWAbAjDDb2YwmqUYzGl06WvrpIdJluZacA8V+kpKyxFhkaC0yt2VNSm+jw402mSC9qS+2+LiJqwYUbYwRxpp84fJaziz4yFCiTvtJOfKkGm/08M+w07Wv9RP5050DZA36R1PyzOKWVkfrgo8tEib+svmHnlwwQNixfNKbUv2906npouReSupvdS/n+R6OXhkZLG6YewS0wewLp0X3Vcg2jq54MR4JsswlLVxePDEJwZdzqkhJ3wOpvUrG1XaOzkXvtCYcztWfJQO8gLO1e2SJsCGOYgLvfHC9WHVdqHUvdZeUODvDdubXc1Yxam8q9Z20mSq+0JVbl6fpUQ+640DBQ6MskkrLieFtuLBp4bimmBWOW+uurZFkvIKlkjczwgTOamc8EwLif+vHLm8j+GuRqOh2b9ggP9Z+dAYyrZEnu0NhLzJyTK66SsO16DT2skHUY8coLVKmMv9A805U6rAerg/GTtsozBO86+1c42BUQxDk=
+X-Forefront-Antispam-Report: CIP:217.111.95.7;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mta.arri.de;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(39850400004)(136003)(396003)(346002)(376002)(451199024)(186009)(1800799009)(82310400011)(46966006)(36840700001)(478600001)(9686003)(41300700001)(12101799020)(33716001)(86362001)(70586007)(316002)(70206006)(36916002)(40480700001)(81166007)(9576002)(5660300002)(336012)(6862004)(8676002)(4326008)(8936002)(16526019)(26005)(426003)(4744005)(2906002)(36860700001)(82740400003)(47076005)(356005)(39026012)(36900700001);DIR:OUT;SFP:1102;
+X-OriginatorOrg: arri.de
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Aug 2023 14:53:04.5217
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6a8a9e6b-f96f-4acd-6a10-08dba3e8a7c5
+X-MS-Exchange-CrossTenant-Id: e6a73a5a-614d-4c51-b3e3-53b660a9433a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=e6a73a5a-614d-4c51-b3e3-53b660a9433a;Ip=[217.111.95.7];Helo=[mta.arri.de]
+X-MS-Exchange-CrossTenant-AuthSource: AM0EUR02FT059.eop-EUR02.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DU2PR07MB8329
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230822_233115_300186_EFA7C804 
-X-CRM114-Status: GOOD (  13.49  )
+X-CRM114-CacheID: sfid-20230823_080839_793364_6FA09F99 
+X-CRM114-Status: UNSURE (   7.36  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,97 +122,54 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: v2023.08.0
+X-Spam-Status: No, score=-4.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: aiodev: imx7_adc driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hi all,
+Hi Ahmad,
 
-I am happy to announce barebox-2023.08.0. Writing the release message is
-easy this time, there hasn't been much happening since the last release.
-The only new feature in this release is the support for the 8GiB
-variants of the i.MX8MP DEBIX SOM A. The remaining patches are all
-bugfixes and other small improvemtents, see below for a full list.
+I am currently porting the vf610_adc driver from Linux to Barebox.
+Must thing can be done similar as for the imx7_adc driver.
 
-Have fun!
- Sascha
+I have one question about the reference voltage:
 
-Ahmad Fatoum (27):
-      MAKEALL: source defconfig after determining correct CROSS_COMPILE
-      test: add pytest.ini with defaults
-      test: have pytest --interactive start interactive Qemu session
-      test: lookup qemu binary in path if no tools key exists
-      test: add support for passing devices on command line
-      test: don't hardcode origin of OVMF.fd
-      pbl: allow #include <pbl.h> from assembly
-      blspec: support boot /dev/disk0.rootfs to mean boot disk0.rootfs
-      Kbuild: include arch/ Makefile before test/ directory
-      ci: pytest: have CI build and test ARCH=openrisc
-      firmware: fix alignment of firmware images
-      firmware: use portable newline escape
-      soc: imx: featctrl: add help text for CONFIG_IMX8M_FEATCTRL
-      soc: imx: have IMX8M_FEATCTRL select IMX_OCOTP
-      Documentation: use current link to bootloader spec spec
-      drivers: hab: work-around GCC -Wmaybe-uninitialized false-positive
-      usb: gadget: multi: do not double free on error
-      commands: usbserial: prevent double free
-      usb: gadget: return error on missing UDC
-      crypto: clarify relationship of CONFIG_{BOOTM_FITIMAGE_PUBKEY,RSA_KEY}
-      scripts: fix pkg-config use for rsatoc/rkimage hosttools
-      envfs: fix defaultenv_append_directory macro definition
-      test: arm: make multi_v8_defconfig.yaml a symlink to virt@
-      sandbox: store stickypage in runtime dir
-      param: drop priv from dev_add_param_string_ro
-      restart: fix restart_handler_get_by_name documentation
-      boards: qemu-virt: apply state/env overlay only if flash exists
+static int imx7d_adc_enable(struct imx7d_adc *info)
+{
+...
+	ret = regulator_get_voltage(info->vref);
+...
+}
 
-Alexander Shiyan (1):
-      include/gpiod.h: Fixed path in error string
+What type of regulator do you use? I have declared a
+fixed regulator in my device tree:
 
-Assmann Kai (1):
-      ARM: zynq: get ps_clk_rate from dt
+	reg_adc_vref_3v3: regulator-3v3-adc {
+		compatible = "regulator-fixed";
+		regulator-name = "vref-3v3";
+		regulator-min-microvolt = <3300000>;
+		regulator-max-microvolt = <3300000>;
+	};
 
-Christian Melki (1):
-      net.c: Don't forget about the first fragment.
+	&adc2 {
+		pinctrl-names = "default";
+		pinctrl-0 = <&pinctrl_adc2>;
+		vref-supply = <&reg_adc_vref_3v3>;
+	...
+	};
 
-Denis Orlov (3):
-      usb: storage: fix missing calls to free()
-      usb: make sure dma buffers are properly allocated
-      nios2: remove arch remains from drivers
+But it looks like the fixed regulator driver in Barebox
+doesn't support reading the voltage (the Linux driver
+reports the value from "regulator-min-microvolt")?
 
-Marco Felsch (5):
-      usb: misc: onboard_hub: add support for Genesys USB3.1 hub
-      ARM: i.MX8MP: Debix: refactor lowlevel setup functions
-      ARM: i.MX8MP: Add DEBIX SOM A and SOM A I/O Board support
-      ARM: i.MX8MP: Add help text in Kconfig
-      ARM64: configs: multi_v8_defconfig: enable onboard usb hub support
+regards,
+Christian
 
-Roland Hieber (5):
-      Convert License Identifiers to SPDX 3.0 for files originating from LiMon
-      doc: dt-bindings: barebox,environment: fix typo
-      doc: dt-bindings: improve docs for barebox 'partuuid' property
-      doc: user: state: update note about redefining existing partitions
-      doc: user: state: document backend references using GPT/MBR partitions
 
-Sascha Hauer (10):
-      dts: update to v6.4
-      treewide: Print device nodes with %pOF
-      Release v2023.07.1
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/pytest'
-      Add SPDX License identifier for files originating from LiMon
-      test/self/mmu.c: Fix typo in SPDX License Identifier
-      scripts: fix pkg-config use for mksimage hosttool
-      Release v2023.08.0
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
+
 
 
