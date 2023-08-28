@@ -1,63 +1,61 @@
-Delivery-date: Mon, 28 Aug 2023 10:03:19 +0200
+Delivery-date: Mon, 28 Aug 2023 10:19:15 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qaXDU-00BmWm-9a
-	for lore@lore.pengutronix.de; Mon, 28 Aug 2023 10:03:19 +0200
+	id 1qaXSu-00Bny0-Nj
+	for lore@lore.pengutronix.de; Mon, 28 Aug 2023 10:19:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qaXDR-00010D-Jd
-	for lore@pengutronix.de; Mon, 28 Aug 2023 10:03:18 +0200
+	id 1qaXSs-0003OH-81
+	for lore@pengutronix.de; Mon, 28 Aug 2023 10:19:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ge/2J0Nn45R67Q7PzgYsXgVFL2gBgYRHSngVF68/M7E=; b=iTq0s2Tyf9DmtnU20aJUrp12V+
-	1UyQrsOdre5QsTbOf5RVmsTcsFsKor8Lw+8I2rCO0+iKaCrF7GFFRiEvEQ9t1+OlkOgEzf7DD35w9
-	jYOxKPLKLmdNbl605V+VNsardhABl4bQp5XFFgBoErujXBARk71I+M91zYSBu7IITUXh08PHc7ZBh
-	PDAj2tvplgXonDb8opdjrqAMX1XmIcCeQC7hed4yMsaMrjWzGg4B/6tqUz4AM2admP6K64NZi20zS
-	6CjflyxKk7uycYkVDECLkWO4+aNOhAlU+jSag6RqD4OoodRsT4ANMgp/55KU8ihSMesRxOYAR/ebF
-	zNen41AA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=j1NicD9zKCypndxxNrVIriEviSUlgl+4r4h3b8S+tIo=; b=ScOSWDbpQRfKofSPXexsuU1Mtt
+	11x+4Uy4EbPDackqt1usilkjQA1IUuNAjzKLBuHY44DAc+oGrqsidt8HTIT4j5w4Q7zZb1lbKTy/P
+	lzNlBUOEJhHSBt5v6K39wY0ci8nmcWGHUJLOHFMwcDU1NsHt9rBvnFwiGEWJ9rj6ECyTlgaHxe3Pu
+	AhXzLepXm3IWfm0crs0vbdppmR5R/Tbg/fny8GaTkeMLukjtHHRKI2xau9TFFmdihz+j9SXOEkBxx
+	T1AcoTrskZEXz79y0tBkAcljBfxEqPDurRZ1nUFcdVLMgOwHvGKwuglJNJ23KTLR7NRS/MvzWXI2g
+	/8gKBb9A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qaXCS-0096O0-3D;
-	Mon, 28 Aug 2023 08:02:17 +0000
+	id 1qaXRj-0097uL-0c;
+	Mon, 28 Aug 2023 08:18:03 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qaXCQ-0096NX-0W
+	id 1qaXRg-0097tB-0J
 	for barebox@lists.infradead.org;
-	Mon, 28 Aug 2023 08:02:15 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	Mon, 28 Aug 2023 08:18:01 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qaXCO-0000kv-V7; Mon, 28 Aug 2023 10:02:12 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qaXCO-0005Em-OR; Mon, 28 Aug 2023 10:02:12 +0200
-Date: Mon, 28 Aug 2023 10:02:12 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230828080212.GK16522@pengutronix.de>
-References: <20230824135939.1614716-1-a.fatoum@pengutronix.de>
+	(envelope-from <afa@pengutronix.de>)
+	id 1qaXRd-0003Fr-0f; Mon, 28 Aug 2023 10:17:57 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qaXRc-002AZY-BP; Mon, 28 Aug 2023 10:17:56 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qaXRc-00Bkde-0K;
+	Mon, 28 Aug 2023 10:17:56 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 28 Aug 2023 10:17:55 +0200
+Message-Id: <20230828081755.2800855-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230824135939.1614716-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230828_010214_196233_76F106E3 
-X-CRM114-Status: GOOD (  25.45  )
+X-CRM114-CacheID: sfid-20230828_011800_135675_430509ED 
+X-CRM114-Status: GOOD (  17.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,80 +73,122 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mci: sdhci: don't hang indefinitely waiting for DMA
- completion
+Subject: [PATCH v2] fastboot: scale default sparse max_download_size with available memory
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Thu, Aug 24, 2023 at 03:59:39PM +0200, Ahmad Fatoum wrote:
-> barebox was observed to hang on an i.MX8MP while reading ext_csd from
-> a broken eMMC that even bootROM refused to boot from. For PIO, we
-> already have a maximum wait time of 10s. Do the same for DMA.
-> 
-> It's unlikely that in that state any further communication with the card
-> will work, but at least, the system isn't stuck and the shell can be
-> reached. The reset is done on the off-chance that the DMA would've completed
-> after the 10s and corrupted memory if not disabled.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/mci/sdhci.c | 10 ++++++++++
->  1 file changed, 10 insertions(+)
+The fastboot host tool chokes when asked to sparse images that are not
+4K-aligned:
 
-Applied, thanks
+  error: write_sparse_skip_chunk: don't care size 4280912 is not a multiple
+  of the block size 4096
 
-Sascha
+This is often not a problem, because disk images tend to be 4K-aligned
+and are best converted to sparse images properly explicitly anyway, so
+don't care holes are preserved.
 
-> 
-> diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
-> index b0b83bfaa9a7..9829a78cb6c5 100644
-> --- a/drivers/mci/sdhci.c
-> +++ b/drivers/mci/sdhci.c
-> @@ -252,6 +252,7 @@ int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_data *data,
->  			    dma_addr_t dma)
->  {
->  	struct device *dev = sdhci->mci->hw_dev;
-> +	u64 start;
->  	int nbytes;
->  	u32 irqstat;
->  	int ret;
-> @@ -261,6 +262,8 @@ int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_data *data,
->  
->  	nbytes = data->blocks * data->blocksize;
->  
-> +	start = get_time_ns();
-> +
->  	do {
->  		irqstat = sdhci_read32(sdhci, SDHCI_INT_STATUS);
->  
-> @@ -304,6 +307,13 @@ int sdhci_transfer_data_dma(struct sdhci *sdhci, struct mci_data *data,
->  
->  		if (irqstat & SDHCI_INT_XFER_COMPLETE)
->  			break;
-> +
-> +		if (is_timeout(start, 10 * SECOND)) {
-> +			dev_alert(dev, "DMA wait timed out. Resetting, but recovery unlikely\n");
-> +			sdhci_reset(sdhci, SDHCI_RESET_ALL);
-> +			ret = -ETIMEDOUT;
-> +			goto out;
-> +		}
->  	} while (1);
->  
->  	ret = 0;
-> -- 
-> 2.39.2
-> 
-> 
-> 
+Bootloader binaries on the other hand are smaller than the default
+fastboot.max_download_size of 8M, so they are downloaded as a single
+chunk without problems.
 
+Situation is different for kernel and FIT images, which aren't
+necessarily 4K aligned, usually bigger than 8M, and are usually
+compressed, so explicitly sparsing them doesn't save time and thus is
+usually not done.
+
+Short of fixing the fastboot host tool, users can skip sparsing kernel
+images as well by choosing a suitable larger fastboot.max_download_size
+than the 8M default.
+
+To improve user experience, let's scale max_download_size with the
+available memory. The minimum default value remains 8M, but the value
+can go up to 128M now and is computed by dividing available malloc
+area by 8 (roughly 1/16th of total SDRAM). For ARM systems, buffer
+sizes would now look like this:
+
+  SDRAM Size	Fastboot Buffer size
+
+  1024M		64M
+   512M		32M
+   256M		16M
+   128M		8M
+
+To err on the side of caution, we only generate powers-of-two sizes.
+This only affects the default value and users can as before override
+it in the environment.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - squash fixup fixing off by one in mem_malloc_size
+  - drop SZ_8M leftover in fastboot_max_download_size initialization.
+    It'll always be overridden anyway.
+---
+ common/fastboot.c | 11 +++++++++--
+ include/memory.h  |  5 +++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/common/fastboot.c b/common/fastboot.c
+index f91f398d7a95..65d1d30f9092 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -30,7 +30,9 @@
+ #include <ubiformat.h>
+ #include <unistd.h>
+ #include <magicvar.h>
++#include <linux/log2.h>
+ #include <linux/sizes.h>
++#include <memory.h>
+ #include <progress.h>
+ #include <environment.h>
+ #include <globalvar.h>
+@@ -45,7 +47,7 @@
+ 
+ #define FASTBOOT_VERSION		"0.4"
+ 
+-static unsigned int fastboot_max_download_size = SZ_8M;
++static unsigned int fastboot_max_download_size;
+ static int fastboot_bbu;
+ static char *fastboot_partitions;
+ 
+@@ -940,9 +942,14 @@ struct file_list *get_fastboot_partitions(void)
+ 
+ static int fastboot_globalvars_init(void)
+ {
+-	if (IS_ENABLED(CONFIG_FASTBOOT_SPARSE))
++	if (IS_ENABLED(CONFIG_FASTBOOT_SPARSE)) {
++		fastboot_max_download_size
++			= roundup_pow_of_two(clamp_t(ulong, mem_malloc_size() / 8,
++						     SZ_8M, SZ_128M));
+ 		globalvar_add_simple_int("fastboot.max_download_size",
+ 				 &fastboot_max_download_size, "%u");
++	}
++
+ 	globalvar_add_simple_bool("fastboot.bbu", &fastboot_bbu);
+ 	globalvar_add_simple_string("fastboot.partitions",
+ 				    &fastboot_partitions);
+diff --git a/include/memory.h b/include/memory.h
+index ffd66db02ba0..9c2a037610b6 100644
+--- a/include/memory.h
++++ b/include/memory.h
+@@ -10,6 +10,11 @@ void mem_malloc_init(void *start, void *end);
+ ulong mem_malloc_start(void);
+ ulong mem_malloc_end(void);
+ 
++static inline ulong mem_malloc_size(void)
++{
++	return mem_malloc_end() - mem_malloc_start() + 1;
++}
++
+ struct memory_bank {
+ 	struct list_head list;
+ 	unsigned long start;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
