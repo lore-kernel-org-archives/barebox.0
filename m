@@ -1,61 +1,57 @@
-Delivery-date: Fri, 25 Aug 2023 20:19:12 +0200
+Delivery-date: Mon, 28 Aug 2023 08:21:37 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qZbOr-008jLb-Mq
-	for lore@lore.pengutronix.de; Fri, 25 Aug 2023 20:19:12 +0200
+	id 1qaVd2-00BhOn-3o
+	for lore@lore.pengutronix.de; Mon, 28 Aug 2023 08:21:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qZbOp-0002oK-Hg
-	for lore@pengutronix.de; Fri, 25 Aug 2023 20:19:12 +0200
+	id 1qaVcz-0005uY-U1
+	for lore@pengutronix.de; Mon, 28 Aug 2023 08:21:34 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=8ulWvc7mnd9VMq3/JwLGXPRWHL1VkJFfUmfdW9fyt6o=; b=4qKv6FDWqT6e8rlkZa+vNHmArS
-	Fkx0RVRsWyH116ngRTNA5bn5FPvOv8+c9hNDANcTZVNo7D5QkdveQhFSFYnWhvBZ9PXHT+vqwXumG
-	ema1C9rgZ1wkv+4TAcowrYTJ4OR3DTw41c3sIXbeYCMPlLb6ZDH/vElOUaCz9HKU6hOgTqK8m/6xy
-	nC3iawXA6yzswwnNUmRiGejxubOWQqI6J/oIz+rESO0ySTNtdDaR8F3DqfbKRxwF0nt6dqTxk35U+
-	eQqg8zluTUpH8iFZFCa5UF8Q1moRH1siqqluxTFKwvrIokM53pFg2eci0emjUNn3gIFtitq5QP0L7
-	s7a9bppw==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=+UHJRjXr+GiVuusWE1OaWgX7WZRFDrLAOnd9lNMqyhI=; b=Gt1Aeu0ncZUmjS80iEvUNopoej
+	/i66m9jKUwPUhUWOZYBVqZe0n7VOB9PcKTPEc8RsWQUvSvz/vbG+NLHQln78g4suMjHopV7O9sN4A
+	gqNzglnpcycXY6V7KLtjcF4057uTvORafhNHmvoRCYiPayuu5zISEJLtGN6rEBM8/8ERi8ajHyTZG
+	a85wYT4hm8qAn3d6BpLbApBoVDWCzZr+kB6qeLqohIcW+ySLW7asuTv2FzcAeTWZcoTpjWhyd87eo
+	W5ouFTYPSm0kpFPfJnSXQwnvkoym7y+7mQuiziXxznS+yaYMCQDQYxOyBpfKxRPrMCL28WVcvbpPQ
+	LQx/dslA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qZbNc-005qsi-2f;
-	Fri, 25 Aug 2023 18:17:56 +0000
+	id 1qaVbe-008wkh-0g;
+	Mon, 28 Aug 2023 06:20:10 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qZbNZ-005qrs-1F
+	id 1qaVba-008wjQ-12
 	for barebox@lists.infradead.org;
-	Fri, 25 Aug 2023 18:17:54 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qZbNX-0002jY-VP; Fri, 25 Aug 2023 20:17:52 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qZbNX-001ZQt-AQ; Fri, 25 Aug 2023 20:17:51 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qZbNW-00C0TI-1r;
-	Fri, 25 Aug 2023 20:17:50 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 25 Aug 2023 20:17:49 +0200
-Message-Id: <20230825181749.2861735-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	Mon, 28 Aug 2023 06:20:08 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <j.zink@pengutronix.de>)
+	id 1qaVbU-0005UN-QU; Mon, 28 Aug 2023 08:20:00 +0200
+Message-ID: <b3093699-65ac-1860-513d-02232c8fb873@pengutronix.de>
+Date: Mon, 28 Aug 2023 08:19:48 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
+Cc: rhi@pengutronix.de, jzi@pengutronix.de, ejo@pengutronix.de
+References: <20230825172250.2857448-1-a.fatoum@pengutronix.de>
+Content-Language: en-US, de-DE
+From: Johannes Zink <j.zink@pengutronix.de>
+In-Reply-To: <20230825172250.2857448-1-a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230825_111753_424616_87E122C2 
-X-CRM114-Status: GOOD (  12.07  )
+X-CRM114-CacheID: sfid-20230827_232006_362518_1C5D9D0E 
+X-CRM114-Status: GOOD (  31.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,75 +69,119 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] crypto: crc32: use uint32_t instead of ulong
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] fastboot: scale default sparse max_download_size with
+ available memory
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Using ulong just wastes space on 64-bit platforms, so use fixed size
-32-bit integers instead.
+On 8/25/23 19:22, Ahmad Fatoum wrote:
+> The fastboot host tool chokes when asked to sparse images that are not
+> 4K-aligned:
+> 
+>    error: write_sparse_skip_chunk: don't care size 4280912 is not a multiple
+>    of the block size 4096
+> 
+> This is often not a problem, because disk images tend to be 4K-aligned
+> and are best converted to sparse images properly explicitly anyway, so
+> don't care holes are preserved.
+> 
+> Bootloader binaries on the other hand are smaller than the default
+> fastboot.max_download_size of 8M, so they are downloaded as a single
+> chunk without problems.
+> 
+> Situation is different for kernel and FIT images, which aren't
+> necessarily 4K aligned, usually bigger than 8M, and are usually
+> compressed, so explicitly sparsing them doesn't save time and thus is
+> usually not done.
+> 
+> Short of fixing the fastboot host tool, users can skip sparsing kernel
+> images as well by choosing a suitable larger fastboot.max_download_size
+> than the 8M default.
+> 
+> To improve user experience, let's scale max_download_size with the
+> available memory. The minimum default value remains 8M, but the value
+> can go up to 128M now and is computed by dividing available malloc
+> area by 8 (roughly 1/16th of total SDRAM). For ARM systems, buffer
+> sizes would now look like this:
+> 
+>    SDRAM Size	Fastboot Buffer size
+> 
+>    1024M		64M
+>     512M		32M
+>     256M		16M
+>     128M		8M
+> 
+> To err on the side of caution, we only generate powers-of-two sizes.
+> This only affects the default value and users can as before override
+> it in the environment.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- crypto/crc32.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+LGTM
 
-diff --git a/crypto/crc32.c b/crypto/crc32.c
-index 998cbc9de297..95cb2212db2b 100644
---- a/crypto/crc32.c
-+++ b/crypto/crc32.c
-@@ -24,7 +24,7 @@
- 
- #ifdef CONFIG_DYNAMIC_CRC_TABLE
- 
--static ulong *crc_table;
-+static uint32_t *crc_table;
- 
- /*
-   Generate a table for a byte-wise 32-bit CRC calculation on the polynomial:
-@@ -52,22 +52,22 @@ static ulong *crc_table;
- */
- static void make_crc_table(void)
- {
--  ulong c;
-+  uint32_t c;
-   int n, k;
--  ulong poly;            /* polynomial exclusive-or pattern */
-+  uint32_t poly;            /* polynomial exclusive-or pattern */
-   /* terms of polynomial defining this crc (except x^32): */
-   static const char p[] = {0,1,2,4,5,7,8,10,11,12,16,22,23,26};
- 
-   /* make exclusive-or pattern from polynomial (0xedb88320L) */
--  poly = 0L;
-+  poly = 0;
-   for (n = 0; n < sizeof(p)/sizeof(char); n++)
--    poly |= 1L << (31 - p[n]);
-+    poly |= 1U << (31 - p[n]);
- 
--  crc_table = xmalloc(sizeof(ulong) * 256);
-+  crc_table = xmalloc(sizeof(uint32_t) * 256);
- 
-   for (n = 0; n < 256; n++)
-   {
--    c = (ulong)n;
-+    c = (uint32_t)n;
-     for (k = 0; k < 8; k++)
-       c = c & 1 ? poly ^ (c >> 1) : c >> 1;
-     crc_table[n] = c;
-@@ -77,7 +77,7 @@ static void make_crc_table(void)
- /* ========================================================================
-  * Table of CRC-32's of all single-byte values (made by make_crc_table)
-  */
--static const ulong crc_table[256] = {
-+static const uint32_t crc_table[256] = {
-   0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
-   0x706af48fL, 0xe963a535L, 0x9e6495a3L, 0x0edb8832L, 0x79dcb8a4L,
-   0xe0d5e91eL, 0x97d2d988L, 0x09b64c2bL, 0x7eb17cbdL, 0xe7b82d07L,
+Reviewed-by: Johannes Zink <j.zink@pengutronix.de>
+
+> ---
+>   common/fastboot.c | 9 ++++++++-
+>   include/memory.h  | 5 +++++
+>   2 files changed, 13 insertions(+), 1 deletion(-)
+> 
+> diff --git a/common/fastboot.c b/common/fastboot.c
+> index f91f398d7a95..645aaa6a9f3f 100644
+> --- a/common/fastboot.c
+> +++ b/common/fastboot.c
+> @@ -30,7 +30,9 @@
+>   #include <ubiformat.h>
+>   #include <unistd.h>
+>   #include <magicvar.h>
+> +#include <linux/log2.h>
+>   #include <linux/sizes.h>
+> +#include <memory.h>
+>   #include <progress.h>
+>   #include <environment.h>
+>   #include <globalvar.h>
+> @@ -940,9 +942,14 @@ struct file_list *get_fastboot_partitions(void)
+>   
+>   static int fastboot_globalvars_init(void)
+>   {
+> -	if (IS_ENABLED(CONFIG_FASTBOOT_SPARSE))
+> +	if (IS_ENABLED(CONFIG_FASTBOOT_SPARSE)) {
+> +		fastboot_max_download_size
+> +			= roundup_pow_of_two(clamp_t(ulong, mem_malloc_size() / 8,
+> +						     SZ_8M, SZ_128M));
+>   		globalvar_add_simple_int("fastboot.max_download_size",
+>   				 &fastboot_max_download_size, "%u");
+> +	}
+> +
+>   	globalvar_add_simple_bool("fastboot.bbu", &fastboot_bbu);
+>   	globalvar_add_simple_string("fastboot.partitions",
+>   				    &fastboot_partitions);
+> diff --git a/include/memory.h b/include/memory.h
+> index ffd66db02ba0..73642dd5aaa5 100644
+> --- a/include/memory.h
+> +++ b/include/memory.h
+> @@ -10,6 +10,11 @@ void mem_malloc_init(void *start, void *end);
+>   ulong mem_malloc_start(void);
+>   ulong mem_malloc_end(void);
+>   
+> +static inline ulong mem_malloc_size(void)
+> +{
+> +	return mem_malloc_end() - mem_malloc_start();
+> +}
+> +
+>   struct memory_bank {
+>   	struct list_head list;
+>   	unsigned long start;
+
 -- 
-2.39.2
+Pengutronix e.K.                | Johannes Zink                  |
+Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
 
 
 
