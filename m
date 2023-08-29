@@ -1,63 +1,66 @@
-Delivery-date: Mon, 28 Aug 2023 11:46:32 +0200
+Delivery-date: Tue, 29 Aug 2023 11:31:06 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qaYpN-00BsUw-8l
-	for lore@lore.pengutronix.de; Mon, 28 Aug 2023 11:46:32 +0200
+	id 1qav3z-00D9uU-JS
+	for lore@lore.pengutronix.de; Tue, 29 Aug 2023 11:31:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qaYpK-0007JF-W1
-	for lore@pengutronix.de; Mon, 28 Aug 2023 11:46:31 +0200
+	id 1qav3x-0004TQ-CR
+	for lore@pengutronix.de; Tue, 29 Aug 2023 11:31:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OoN65b3M5APGbibNF9I8cXDLlpNOLHhMwe5QVDwPivw=; b=hC/hm6cX6A/vJ3PsBZIt2/sz7j
-	24kA8VKE6OwmYY98Nvj5ErjKAnlxjWoXSWXJHAFByAUS5WJN2ru1f6uyw2oWKfbJJPAkgY8guNQCy
-	wufG2MFm79pTVSfFPygUkk3l0CmdEJHxcLpgmkmmWVkvuPb4F6cEWIfh9FBA1n7HSkWGky32hfY/G
-	mfLzHYlzZOSc3p3jFPKhff0a6m6nr/6BsGKyuRANijt5qqb4vnluATYMCX8kBG6JyvOvrbS0ijqBD
-	crHRjir5LqDS37hhaSMfmlkZugNvh9kkz+6F87P/1yAd6NecPZutcu4iOSm4muPRXuHEilvXVtaU3
-	vVXu0tAA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=QhFZtaZD1FLAhyvD/ihpn0JaHtEkt7OMbTuoF9Mis/k=; b=bt8h+r5l5gcxcSJ032x4pPpM/U
+	8n8Co0Hmhf4h12ls1UFDBSTDHdMSG521uEG+2VH1H/wA2lHA0Q0TjruSfx0ahsL+jlJRxXn2xqYmY
+	iWGG4fjjGC1KdjPbxNeZZhyni8vnBugaVxYv3JLK2VODkGqUoL/261qtlnSyYdtUYXBNjfcIr1q9W
+	4p9M5Hd8VsFmb7Cm7/wbNYXeUimp2UhSsuUUIoQuxFVwC3lc5tyO65y0rJAD9nVRPhMieSCDjbuZ2
+	DsOx3uEk+knRBWh88Byzn6va5IALiWhnVfHfyMkMMjLNGJK1vLheQ/zJBpuLkfcZ/FCa6UZiy/LHY
+	7x6EFZYg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qaYny-009FkC-25;
-	Mon, 28 Aug 2023 09:45:06 +0000
+	id 1qav2M-00B96B-1m;
+	Tue, 29 Aug 2023 09:29:26 +0000
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qaYnt-009Fgb-30
+	id 1qav2I-00B92L-1u
 	for barebox@lists.infradead.org;
-	Mon, 28 Aug 2023 09:45:05 +0000
-Received: from ptx.hi.pengutronix.de ([2001:67c:670:100:1d::c0])
+	Tue, 29 Aug 2023 09:29:24 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qaYnl-0006vz-Sp; Mon, 28 Aug 2023 11:44:53 +0200
-Received: from sha by ptx.hi.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qaYnl-0002qX-LB; Mon, 28 Aug 2023 11:44:53 +0200
-Date: Mon, 28 Aug 2023 11:44:53 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230828094453.GL16522@pengutronix.de>
-References: <20230828081755.2800855-1-a.fatoum@pengutronix.de>
+	(envelope-from <j.zink@pengutronix.de>)
+	id 1qav2B-00044h-Eu; Tue, 29 Aug 2023 11:29:15 +0200
+Received: from [2a0a:edc0:0:1101:1d::39] (helo=dude03.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <j.zink@pengutronix.de>)
+	id 1qav2A-002Q2L-Pv; Tue, 29 Aug 2023 11:29:14 +0200
+Received: from localhost ([::1] helo=dude03.red.stw.pengutronix.de)
+	by dude03.red.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <j.zink@pengutronix.de>)
+	id 1qav29-003gFN-Ur; Tue, 29 Aug 2023 11:29:13 +0200
+From: Johannes Zink <j.zink@pengutronix.de>
+Date: Tue, 29 Aug 2023 11:28:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230828081755.2800855-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20230829-crc32_in_pbl-v1-1-6a3e01a74c8d@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAFq67WQC/x2NWwqDQAwAryL57oKNi2ivIkX2ETWwRMnSUhDv3
+ uDnDAxzQiVlqvBqTlD6cuVdDJ6PBtIWZCXH2Riwxa4dcHRJU4czy3zE4nwe0Pc4Zk8IlsRQyUU
+ NkjaL5FOKyUNp4d/9mN7X9QfYdJaTcwAAAA==
+To: patchwork-jzi@pengutronix.de
+Cc: Johannes Zink <j.zink@pengutronix.de>, 
+ Barebox Mailing List <barebox@lists.infradead.org>
+X-Mailer: b4 0.12.2
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230828_024501_980553_661CAAC5 
-X-CRM114-Status: GOOD (  28.09  )
+X-CRM114-CacheID: sfid-20230829_022922_627118_DB50823E 
+X-CRM114-Status: GOOD (  11.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,71 +82,92 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] fastboot: scale default sparse max_download_size with
- available memory
+Subject: [PATCH] crypto: crc32: make crc32 available in PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-On Mon, Aug 28, 2023 at 10:17:55AM +0200, Ahmad Fatoum wrote:
-> The fastboot host tool chokes when asked to sparse images that are not
-> 4K-aligned:
-> 
->   error: write_sparse_skip_chunk: don't care size 4280912 is not a multiple
->   of the block size 4096
-> 
-> This is often not a problem, because disk images tend to be 4K-aligned
-> and are best converted to sparse images properly explicitly anyway, so
-> don't care holes are preserved.
-> 
-> Bootloader binaries on the other hand are smaller than the default
-> fastboot.max_download_size of 8M, so they are downloaded as a single
-> chunk without problems.
-> 
-> Situation is different for kernel and FIT images, which aren't
-> necessarily 4K aligned, usually bigger than 8M, and are usually
-> compressed, so explicitly sparsing them doesn't save time and thus is
-> usually not done.
-> 
-> Short of fixing the fastboot host tool, users can skip sparsing kernel
-> images as well by choosing a suitable larger fastboot.max_download_size
-> than the 8M default.
-> 
-> To improve user experience, let's scale max_download_size with the
-> available memory. The minimum default value remains 8M, but the value
-> can go up to 128M now and is computed by dividing available malloc
-> area by 8 (roughly 1/16th of total SDRAM). For ARM systems, buffer
-> sizes would now look like this:
-> 
->   SDRAM Size	Fastboot Buffer size
-> 
->   1024M		64M
->    512M		32M
->    256M		16M
->    128M		8M
-> 
-> To err on the side of caution, we only generate powers-of-two sizes.
-> This only affects the default value and users can as before override
-> it in the environment.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
-> v1 -> v2:
->   - squash fixup fixing off by one in mem_malloc_size
->   - drop SZ_8M leftover in fastboot_max_download_size initialization.
->     It'll always be overridden anyway.
-> ---
->  common/fastboot.c | 11 +++++++++--
->  include/memory.h  |  5 +++++
->  2 files changed, 14 insertions(+), 2 deletions(-)
+crc32 may be required in PBL for checking data integrity. Add
+CONFIG_CRC32_EARLY to kconfig which allows adding crc32 also in the PBL.
 
-Applied, thanks
+As the PBL has no dynamic allocation, do not use dynamic CRC table
+generation when CRC32 is added in PBL.
 
-Sascha
+Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
+---
+To: Barebox Mailing List <barebox@lists.infradead.org>
+Cc: Johannes Zink <j.zink@pengutronix.de>
+Cc: patchwork-jzi@pengutronix.de
+---
+ crypto/Kconfig  | 3 +++
+ crypto/Makefile | 1 +
+ crypto/crc32.c  | 6 +++---
+ 3 files changed, 7 insertions(+), 3 deletions(-)
 
+diff --git a/crypto/Kconfig b/crypto/Kconfig
+index 04e5ef43705b..6e18b5868061 100644
+--- a/crypto/Kconfig
++++ b/crypto/Kconfig
+@@ -5,6 +5,9 @@ menu "Crypto support"
+ config CRC32
+ 	bool
+ 
++config CRC32_EARLY
++	bool
++
+ config CRC_ITU_T
+ 	bool
+ 
+diff --git a/crypto/Makefile b/crypto/Makefile
+index 22035d4f69ee..24e1f3d91797 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -11,6 +11,7 @@ obj-$(CONFIG_DIGEST_SHA1_GENERIC)	+= sha1.o
+ obj-$(CONFIG_DIGEST_SHA224_GENERIC)	+= sha2.o
+ obj-$(CONFIG_DIGEST_SHA256_GENERIC)	+= sha2.o
+ pbl-y					+= sha2.o digest.o
++lwl-$(CONFIG_CRC32_EARLY)		+= crc32.o
+ obj-$(CONFIG_DIGEST_SHA384_GENERIC)	+= sha4.o
+ obj-$(CONFIG_DIGEST_SHA512_GENERIC)	+= sha4.o
+ obj-y	+= memneq.o
+diff --git a/crypto/crc32.c b/crypto/crc32.c
+index 95cb2212db2b..284d39351682 100644
+--- a/crypto/crc32.c
++++ b/crypto/crc32.c
+@@ -22,7 +22,7 @@
+ #define STATIC static inline
+ #endif
+ 
+-#ifdef CONFIG_DYNAMIC_CRC_TABLE
++#if defined(CONFIG_DYNAMIC_CRC_TABLE) && !defined(__PBL__)
+ 
+ static uint32_t *crc_table;
+ 
+@@ -145,7 +145,7 @@ STATIC uint32_t crc32(uint32_t crc, const void *_buf, unsigned int len)
+ {
+     const unsigned char *buf = _buf;
+ 
+-#ifdef CONFIG_DYNAMIC_CRC_TABLE
++#if defined(CONFIG_DYNAMIC_CRC_TABLE) && !defined(__PBL__)
+ 	if (!crc_table)
+ 		make_crc_table();
+ #endif
+@@ -171,7 +171,7 @@ STATIC uint32_t crc32_no_comp(uint32_t crc, const void *_buf, unsigned int len)
+ {
+    const unsigned char *buf = _buf;
+ 
+-#ifdef CONFIG_DYNAMIC_CRC_TABLE
++#if defined(CONFIG_DYNAMIC_CRC_TABLE) && !defined(__PBL__)
+ 	if (!crc_table)
+ 		make_crc_table();
+ #endif
+
+---
+base-commit: bef38b18eeb5d2f1fac334fb8b831e47261e099c
+change-id: 20230829-crc32_in_pbl-4d824629d4e2
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Johannes Zink <j.zink@pengutronix.de>
+
 
 
