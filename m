@@ -1,77 +1,57 @@
-Delivery-date: Wed, 30 Aug 2023 16:04:07 +0200
+Delivery-date: Wed, 30 Aug 2023 16:26:40 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qbLni-00Eho5-Fd
-	for lore@lore.pengutronix.de; Wed, 30 Aug 2023 16:04:07 +0200
+	id 1qbM9Z-00EjFU-GV
+	for lore@lore.pengutronix.de; Wed, 30 Aug 2023 16:26:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qbLnf-0002dg-LN
-	for lore@pengutronix.de; Wed, 30 Aug 2023 16:04:04 +0200
+	id 1qbM9W-0005nH-W7
+	for lore@pengutronix.de; Wed, 30 Aug 2023 16:26:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:To:Subject:
-	Message-ID:Date:From:MIME-Version:Reply-To:Cc:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GoEP6Q0Hvm0T760E/36Md0Yrsl0lToH5WWd3IAwb7yE=; b=DrYVe3b2U/0IiWjawJEh/ytG3a
-	2GK6+HC+KZ2vOMdUVlgmvHwPsRKBXR2d80bOGs56XxEQ+rCgL1ii/UJ0dYsus+lIkhekj/JNXOzfx
-	6Ho0oBKxVI1pjJpuPy3IzBJqfxTCkEhtKWbOhvCz7NBReihIGv49GcpsFfmFTkBhsMQTgnOUeb1BW
-	WfO18ZAjWs8jUQhgLD2ktrdY9NfnfkwaBvPu0fr+p3TljYjPuVE7awylfGj16zUgGbEchyd/R1JdY
-	DLV+++zKyjRl8vxBNOJ6aY5df8YapNLgScWZlFlb4SmrTLwIe2PeW4MKJnd9x3YqFe4P5eoX+TEXK
-	y9gZG4pA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=tsa3P1CevVZI6oTWzWuS5zY+WXs4VOvU1LnNkxRbGn4=; b=0GUo2Lepm/JUffjjRNtriFSxva
+	h7XsL3TXWnkBX8GrTqm6Em9gI5dHqrbOpOJZUeqgDDb9CS4HA/mN5/0wDc6YG36RhjndRWADEDZOW
+	0yq2kuoNj79ZCFNuTeViTIeG+pzXb6vJWVF0X4dU3ECpWyhsj0DNJDhC4IF5C0I9rU//0+ZwYRlP9
+	uQ4jxBtQMqN6Z77bQGWwMUxLTdWSq5Sfnt59b+FMZEVIZhcYg7YoffS0HfOJieKdZL1OA4vBNslQ5
+	nqJLhJIQ+wX3M7QlRspxTaQZGLDcEuDc0hzC9mjVjex+RSDff+EMWWb5BpIeSHKF7VwIholfQxGQ+
+	RhkAL15Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qbLmN-00Ddi4-1K;
-	Wed, 30 Aug 2023 14:02:43 +0000
-Received: from mail-pl1-x62c.google.com ([2607:f8b0:4864:20::62c])
+	id 1qbM8G-00DfaN-2q;
+	Wed, 30 Aug 2023 14:25:20 +0000
+Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qbLmK-00Ddgz-1S
+	id 1qbM8C-00DfZN-2o
 	for barebox@lists.infradead.org;
-	Wed, 30 Aug 2023 14:02:41 +0000
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1bf7423ef3eso34818055ad.3
-        for <barebox@lists.infradead.org>; Wed, 30 Aug 2023 07:02:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693404157; x=1694008957; darn=lists.infradead.org;
-        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=GoEP6Q0Hvm0T760E/36Md0Yrsl0lToH5WWd3IAwb7yE=;
-        b=nXX2SnKOvjN6hbxQ4f5fQv8IIsAgahpEyMZFTNDi44iV7M5V0jcPtkV0eHdnztB0yA
-         SceibQzcYfA+K4cszbOjfrUfcKrxR55jEKWBCbocQJVfnRS8W/SGSc3YAFIi6uX97Kor
-         r/Qf9umu9e4VZJKCMA9u085sKppPJIcYJHj+ZuXcnNw19LnWzDtYrh1rOd4qxow4M4Qs
-         /rO/5mdFTuq/egtn9Je/+OVa9ecoGrf/un0Z2cs5xAfoErTeemGtAm9Z0fiRFO5BimqQ
-         8mbRD3Cwo8UEd06/Gk3RiTXtkYo98fpq4sYJpIPwE/Tn6pXx01XcmipHiaMl/cR5xmD3
-         FTKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693404157; x=1694008957;
-        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=GoEP6Q0Hvm0T760E/36Md0Yrsl0lToH5WWd3IAwb7yE=;
-        b=SzjZMv0H94+eMyZ23kgmk5x0U5Wdaxy07BEaEL0J1m18sxifZmbbQKEqWQFNBqjVAu
-         iPKrObvGdE+ptQSGOWFi8lobXTWe7SQb2TPtye40LA/UJTMWx3O1EhOpNZX+rZAL8xzv
-         acMguv2r9amFMBjkf9693/tQEcUCRagPmhn1ZGdT7v9h+/qW5ShTjh9YwN49hCIPTFdL
-         2WlzyDw6i4ojKxX3uxQRy1jYzizmBY6Uc/rsWijALapXgxT4dXmCKaHua4J8WsrCTbz+
-         7MtfZ1hG1cH1ks7QGlcPq3y6EzZGA10ZVHrbd/uuKjnVPYzdZiPufpcleHGYCD8Nk1lw
-         1Iiw==
-X-Gm-Message-State: AOJu0Yy2ntV+KzI7dS1PVU5K156K+YTNrXreDi9NMVOctgfXm5chVCUv
-	a10aYHIsj+q2vMUJuC/tMYYSTv6ey/IyK9gMUqYGbSXnCcaLp8n4
-X-Google-Smtp-Source: AGHT+IE3DgTb3t5wSd4Z0HABSivv0wJKUcONbWXNeQpZn1nRCuboROu18TNhhoHXTAzHuMn36oUUJ7YiM7t81N1X5Gc=
-X-Received: by 2002:a17:902:ce8e:b0:1bc:8c6c:217d with SMTP id
- f14-20020a170902ce8e00b001bc8c6c217dmr2200614plg.61.1693404157299; Wed, 30
- Aug 2023 07:02:37 -0700 (PDT)
+	Wed, 30 Aug 2023 14:25:19 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qbM87-0005XJ-9T; Wed, 30 Aug 2023 16:25:11 +0200
+Message-ID: <76a7bbec-5dff-c138-5c70-9b152558fe2f@pengutronix.de>
+Date: Wed, 30 Aug 2023 16:25:10 +0200
 MIME-Version: 1.0
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed, 30 Aug 2023 17:02:26 +0300
-Message-ID: <CAP1tNvThyufaTqyj8smDj89WeDeh-cggusnRYKMjB0ExAZ=94g@mail.gmail.com>
-To: Barebox List <barebox@lists.infradead.org>
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Alexander Shiyan <eagle.alexander923@gmail.com>,
+ Barebox List <barebox@lists.infradead.org>
+References: <CAP1tNvThyufaTqyj8smDj89WeDeh-cggusnRYKMjB0ExAZ=94g@mail.gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <CAP1tNvThyufaTqyj8smDj89WeDeh-cggusnRYKMjB0ExAZ=94g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230830_070240_530801_82EBA1CE 
-X-CRM114-Status: UNSURE (   5.61  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230830_072516_930601_013B2DE8 
+X-CRM114-Status: GOOD (  18.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,46 +69,85 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.2
-Subject: imx8mm & genimage
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: imx8mm & genimage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello.
+Hello Alexander,
 
-I can't figure out how to correctly write the configuration for
-genimage for the imx8mm CPU.
-This way of writing works fine:
-dd if=barebox-nxp-imx8mm-mgqs.img of=/dev/sdc bs=1024 seek=33 skip=33
+On 30.08.23 16:02, Alexander Shiyan wrote:
+> Hello.
+> 
+> I can't figure out how to correctly write the configuration for
+> genimage for the imx8mm CPU.
+> This way of writing works fine:
+> dd if=barebox-nxp-imx8mm-mgqs.img of=/dev/sdc bs=1024 seek=33 skip=33
+> 
+> For genimage I use the following but it doesn't work...
 
-For genimage I use the following but it doesn't work...
+What doesn't work? I would have assumed that genimage refused to build
+an image with below description.
 
-image imx8mm-mgqs-sdcard.img {
-hdimage {
-partition-table-type = "gpt"
-}
+> 
+> image imx8mm-mgqs-sdcard.img {
+> hdimage {
+> partition-table-type = "gpt"
+> }
+> 
+> partition boot {
+> image = "barebox-nxp-imx8mm-mgqs.img"
+> holes = {"(0; 33K)"}
+> offset = 0
+> partition-type-uuid = 0fc63daf-8483-4772-8e79-3d69d8477de4
 
-partition boot {
-image = "barebox-nxp-imx8mm-mgqs.img"
-holes = {"(0; 33K)"}
-offset = 0
-partition-type-uuid = 0fc63daf-8483-4772-8e79-3d69d8477de4
-}
+I don't think a GPT partition can exist at offset 0, because that would
+overlap the GPT header itself. What you want instead is either:
 
-partition env {
-image = "/dev/null"
-offset = 8M
-partition-type-uuid = 6c3737f2-07f8-45d1-ad45-15d260aab24d
-size = 32K
-}
+  - add barebox in non-partitioned space outside of the partition table:
+    That is done with in-partition-table = false, see e.g. DistroKit[1]
 
-partition root {
-image = "rootfs.ext4"
-partition-type-uuid = b921b045-1df0-41c3-af44-4c6f280d3fae
-}
-}
+  - add barebox in a GPT partition at the correct offset (32K?) and strip away
+    its first 32K bytes. The only way to achieve this currently with genimage
+    is to add an explicit file rule and use
+    exec-post = "dd ... of=$IMAGEOUTFILE.skipped && mv $IMAGEOUTFILE.skipped $IMAGEOUTFILE"
+    It would surely be nice to give genimage a partition { skip = [...] } option,
+    if you feel inclined :-)
+
+For eMMC, the barebox update handler will take care to switch on the
+eMMC boot and install barebox and do any skipping of bytes if necessary (e.g. on i.MX8MN/P).
+
+[1]: https://git.pengutronix.de/cgit/DistroKit/tree/configs/platform-v8a/config/images/imx8m.config?h=next&id=d4e41181cc388d528bbccb5e9ba96a6120980a55
+
+Cheers,
+Ahmad
+    
+
+> }
+> 
+> partition env {
+> image = "/dev/null"
+> offset = 8M
+> partition-type-uuid = 6c3737f2-07f8-45d1-ad45-15d260aab24d
+> size = 32K
+> }
+> 
+> partition root {
+> image = "rootfs.ext4"
+> partition-type-uuid = b921b045-1df0-41c3-af44-4c6f280d3fae
+> }
+> }
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
