@@ -1,59 +1,81 @@
-Delivery-date: Wed, 30 Aug 2023 16:46:46 +0200
+Delivery-date: Thu, 31 Aug 2023 08:41:59 +0200
 Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qbMT1-00Ek8M-GZ
-	for lore@lore.pengutronix.de; Wed, 30 Aug 2023 16:46:46 +0200
+	id 1qbbNQ-00Fbe1-MY
+	for lore@lore.pengutronix.de; Thu, 31 Aug 2023 08:41:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.ext.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qbMSy-00089W-Ts
-	for lore@pengutronix.de; Wed, 30 Aug 2023 16:46:45 +0200
+	id 1qbbNO-0008FT-7n
+	for lore@pengutronix.de; Thu, 31 Aug 2023 08:41:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OFHxnDhhyncjEeLUFuHcpgrTQRaPvJZfSNKdBM+pEEA=; b=KbQfUzbWFXSUt546Tq15011NHw
-	lt099n7Wz2Ev0kcApdw9Tlth5bzdYPck7pnM7/J0Fj38teefjCvkh9AkwLGVtmNsF/4oZzxM4zcm7
-	Nx8rNBARJiwBfNdKN64ojqYuG73C+Mdl6/oHD4StXo9K2c/vQHMYdcJfStdVXtViS1J5NdIyYfU3P
-	7M++LWBq7/U9a8hGCGL/ePxx4hYqCIvbas/5hZ+j4+AsFId+mFEbCcXKmawbRUp+AJ6oZUV8BpGrY
-	XIRO67Fzs0zOahkfso885CuUFGtK6zw99HsRUltcFc6Q8fexQZXJDszhjUMKCvFA+ivQk4JyHVkaQ
-	VT/PN1vw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
+	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=1piDWR4WlCPSbso+39YCG+cYyQcat5gZSZyLu0iIFNw=; b=mehCyghoi9XE9uBvBF2nKGikZX
+	K0VAugPTwgcQIC2i9+XCWzUBu2w6wQgOkDqBSy1ZA++kX7IQIaLZNJ0D3yeIk2C+aYrgKsTMJAQFX
+	DeTiYfBsZxdOJ2OaTYdvGa8eSfRXBmh2cuz8TyfUaQOo26jkE8flUqM3Vkej2riE/0Fn+j1SxaBsh
+	qGMOU43LRdiXs5oFfQvDKNth1huUTvJstza7sHclYv5Aiiai4iGZqXLhfrA6kdwFHcCfE4R88yjld
+	E6jxLDXzScnY6d6aV+gVeRVxlL6WdoJBepMTXyVU8pkV9/Y/dvcMf1kn3+rWDgcuELd+IhfjWKDfA
+	Ow75SUCw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qbMRy-00DhAx-38;
-	Wed, 30 Aug 2023 14:45:42 +0000
-Received: from metis.ext.pengutronix.de ([2001:67c:670:201:290:27ff:fe1d:cc33])
+	id 1qbbM2-00Elfm-0d;
+	Thu, 31 Aug 2023 06:40:34 +0000
+Received: from mail-pg1-x530.google.com ([2607:f8b0:4864:20::530])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qbMRv-00DhAT-1V
+	id 1qbbLy-00ElfN-2n
 	for barebox@lists.infradead.org;
-	Wed, 30 Aug 2023 14:45:40 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.ext.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qbMRu-0007uD-7l; Wed, 30 Aug 2023 16:45:38 +0200
-Message-ID: <0a2a2679-8e4f-eaf9-4b2e-096ef1d1f040@pengutronix.de>
-Date: Wed, 30 Aug 2023 16:45:37 +0200
+	Thu, 31 Aug 2023 06:40:32 +0000
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-56b2e689828so421438a12.1
+        for <barebox@lists.infradead.org>; Wed, 30 Aug 2023 23:40:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693464028; x=1694068828; darn=lists.infradead.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1piDWR4WlCPSbso+39YCG+cYyQcat5gZSZyLu0iIFNw=;
+        b=BuYp32PAmGELmPBneVaHNZD6WuWAzdHwu9Bo3h1vGzOeOXzAJeSVSnZAW7pZV18h8j
+         n69FKWaI0k2o2T51i+4Idye6taCcsdAd5v/wGDWKMsAtTImPQL2XhdPkT5yFwe9oCXpK
+         mEyNe9/LTu2AVD+L93zf8LIXd7esUPskZM667V/Ighhjn3n3TXwHNdWkXDhkfbEW84J2
+         qlKkoTOKYmNFbr8VRLRYp+Jq6jKPg0WETjWxVrRBrCVJiCWRYflp9kID8ebTbW83zF36
+         gPPVvvkAfyIP5AHVd2Ixzu/MVWeqi/LppE3cGlPNLOtbO3VFYhfOhLaK7EuMb0E45x4q
+         mNSA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693464028; x=1694068828;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1piDWR4WlCPSbso+39YCG+cYyQcat5gZSZyLu0iIFNw=;
+        b=MHaI0UFPU/8KOTtqHB5GBq1pGx0I6oZwu/ec9TL4BXo7BLe1cScX+23n5tS92I/hMU
+         nVfvZN63qv2ejUhnsNisKbMngRZUiDEtTIrg5xX2cEdoLs80cMi84LKbRfkIdbm7yLJj
+         Yw0ARbOg4SNXdN71aV4qanQtl1mAhZ9gONMVoWPXIAzSC7ApKCY84fl+TkjXSnm5t3l8
+         pLhtcsTfnnJkwe9OFN2wFl5j6B5f34tCzfu5iBXNkpiCJaU7+6Zr2QybFPmPJPAe2Rfm
+         iDVwq6Imk3iL+HlZTnPl/ql/bLn2HGlIDYhl6kWllWtNW8KlgDLiYtOHXh12sep1Aqpm
+         ADdg==
+X-Gm-Message-State: AOJu0YwwwenVALCjcrhK9gU/8A2KBdONpY77675LFCp46DJkir8qJb6C
+	R0ioDg4fkm8bviFdu9khtViGAcBYJNSk7uDCwXd0/n8fuGH6Uf6V
+X-Google-Smtp-Source: AGHT+IGPo8rMYlsTp8ZtxGm8tzPihJtfIPEzlNM8YcF65FH7mdtSA22ORhnqsjGuqrNX6j7oLSjfOl5yagn2RDIqhgE=
+X-Received: by 2002:a17:90a:be06:b0:26b:3a18:3559 with SMTP id
+ a6-20020a17090abe0600b0026b3a183559mr4286831pjs.4.1693464027816; Wed, 30 Aug
+ 2023 23:40:27 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: Barebox List <barebox@lists.infradead.org>
-References: <CAP1tNvThyufaTqyj8smDj89WeDeh-cggusnRYKMjB0ExAZ=94g@mail.gmail.com>
- <76a7bbec-5dff-c138-5c70-9b152558fe2f@pengutronix.de>
- <CAP1tNvRaVfTmUhTTCq755PkdTPgb9H1MEa-SQXjeKw8KQuvPhA@mail.gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <CAP1tNvRaVfTmUhTTCq755PkdTPgb9H1MEa-SQXjeKw8KQuvPhA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20230830104747.43193-1-eagle.alexander923@gmail.com>
+ <20230830104747.43193-3-eagle.alexander923@gmail.com> <aa20d72f-8cb6-7b51-9ae6-2f8d15d6c690@pengutronix.de>
+In-Reply-To: <aa20d72f-8cb6-7b51-9ae6-2f8d15d6c690@pengutronix.de>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Thu, 31 Aug 2023 09:40:16 +0300
+Message-ID: <CAP1tNvQdQUhy_YcY_afTYQyHhgRsvhY5BEdu+p6Y+3oXVUX9nA@mail.gmail.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230830_074539_499406_35D486B2 
-X-CRM114-Status: GOOD (  22.28  )
+X-CRM114-CacheID: sfid-20230830_234030_907178_F1CA3F1B 
+X-CRM114-Status: GOOD (  13.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,117 +93,43 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.ext.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: imx8mm & genimage
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 3/3] ARM: boards: Add MyirTech MYD-YA15XC-T development
+ board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.ext.pengutronix.de)
 
-Hello Alexander,
+Hello Ahmad.
 
-On 30.08.23 16:41, Alexander Shiyan wrote:
-> Hello Ahmad.
-> 
-> "in-partition-table = false" helps me, now boot OK.
-> 33K is valid offset for imx8mm, and we do not overlap GPT (or MBR) due
-> to the "holes" option.
+> Thanks for your patch. A few comments below.
+...
+> > +ENTRY_FUNCTION(start_stm32mp15x_myir, r0, r1, r2)
+> > +{
+> > +     void *fdt;
+> > +
+> > +     stm32mp_cpu_lowlevel_init();
+> > +
+> > +     if (IS_ENABLED(CONFIG_DEBUG_LL))
+> > +             setup_uart();
+> > +
+> > +     fdt = __dtb_z_stm32mp15x_myirtech_myd_start + get_runtime_offset();
+> > +
+> > +     stm32mp1_barebox_entry(fdt);
+>
+> Same question: Do you use an old TF-A or why do you need a specific entry
+> point instead of barebox-stm32mp-generic-bl33.img?
 
-I think it would be nicer though to have barebox on SD-Card sit inside
-a regular GPT partition now that this is possible without holes shenanigans,
-but I haven't found the time to do it in DistroKit (actual customer products
-boot from eMMC or NOR).
+Initially, I used the old version of TF-A, to facilitate the first
+start-up of the board.
+Now I'm using new version and FIP, so yes, this piece of code can be removed.
 
-Cheers,
-Ahmad
+Thanks for the comments on the patch, I'll rework some parts of the code.
 
-
-
-> 
-> Thanks!
-> 
-> ср, 30 авг. 2023 г. в 17:25, Ahmad Fatoum <a.fatoum@pengutronix.de>:
->>
->> Hello Alexander,
->>
->> On 30.08.23 16:02, Alexander Shiyan wrote:
->>> Hello.
->>>
->>> I can't figure out how to correctly write the configuration for
->>> genimage for the imx8mm CPU.
->>> This way of writing works fine:
->>> dd if=barebox-nxp-imx8mm-mgqs.img of=/dev/sdc bs=1024 seek=33 skip=33
->>>
->>> For genimage I use the following but it doesn't work...
->>
->> What doesn't work? I would have assumed that genimage refused to build
->> an image with below description.
->>
->>>
->>> image imx8mm-mgqs-sdcard.img {
->>> hdimage {
->>> partition-table-type = "gpt"
->>> }
->>>
->>> partition boot {
->>> image = "barebox-nxp-imx8mm-mgqs.img"
->>> holes = {"(0; 33K)"}
->>> offset = 0
->>> partition-type-uuid = 0fc63daf-8483-4772-8e79-3d69d8477de4
->>
->> I don't think a GPT partition can exist at offset 0, because that would
->> overlap the GPT header itself. What you want instead is either:
->>
->>   - add barebox in non-partitioned space outside of the partition table:
->>     That is done with in-partition-table = false, see e.g. DistroKit[1]
->>
->>   - add barebox in a GPT partition at the correct offset (32K?) and strip away
->>     its first 32K bytes. The only way to achieve this currently with genimage
->>     is to add an explicit file rule and use
->>     exec-post = "dd ... of=$IMAGEOUTFILE.skipped && mv $IMAGEOUTFILE.skipped $IMAGEOUTFILE"
->>     It would surely be nice to give genimage a partition { skip = [...] } option,
->>     if you feel inclined :-)
->>
->> For eMMC, the barebox update handler will take care to switch on the
->> eMMC boot and install barebox and do any skipping of bytes if necessary (e.g. on i.MX8MN/P).
->>
->> [1]: https://git.pengutronix.de/cgit/DistroKit/tree/configs/platform-v8a/config/images/imx8m.config?h=next&id=d4e41181cc388d528bbccb5e9ba96a6120980a55
->>
->> Cheers,
->> Ahmad
->>
->>
->>> }
->>>
->>> partition env {
->>> image = "/dev/null"
->>> offset = 8M
->>> partition-type-uuid = 6c3737f2-07f8-45d1-ad45-15d260aab24d
->>> size = 32K
->>> }
->>>
->>> partition root {
->>> image = "rootfs.ext4"
->>> partition-type-uuid = b921b045-1df0-41c3-af44-4c6f280d3fae
->>> }
->>> }
->>>
->>>
->>
->> --
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+2 Sascha: Is it possible to commit the first two parts of the patch
+now to minimize the overall work?
 
 
