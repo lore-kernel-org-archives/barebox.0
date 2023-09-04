@@ -1,70 +1,58 @@
-Delivery-date: Mon, 04 Sep 2023 09:18:56 +0200
+Delivery-date: Mon, 04 Sep 2023 10:20:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qd3rN-003QG1-T4
-	for lore@lore.pengutronix.de; Mon, 04 Sep 2023 09:18:56 +0200
+	id 1qd4oW-003SuD-Pc
+	for lore@lore.pengutronix.de; Mon, 04 Sep 2023 10:20:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qd3rL-0001r6-UJ
-	for lore@pengutronix.de; Mon, 04 Sep 2023 09:18:56 +0200
+	id 1qd4oU-0004ju-PH
+	for lore@pengutronix.de; Mon, 04 Sep 2023 10:20:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/WOU0Mzhgi8pe/VUgrqK78KjEBRA8fSnpZAFy9g5f+s=; b=ZtghBbeOTpV9npCUnywihIHScS
-	4mg4dD6Ew5KX4laojRG0YpUSYys1LKvn+NRv3vJvEE1X092OndaTSThLXxUw4aER8jPTEpGPzBe+n
-	+5JFxfHKMsBIxl9WOd5iZ1hZrTfhZauIg7rEOeSHYZT0kjdNxCPG7Zp83dUo/C8+MFzSK30KM6l52
-	RU0BMOVpec3NF3UoJJcEZo+wZTApROaqbMM25Xf3dStGeb5Aj7QNYy5R1alCk26fj/v9AwWc7bun4
-	RGwzH0RLmvkQCswjGkq13jOJwlMEvzCdKFCjSQOyu0OJiH9CF+CPXLsOe91uizhkHOl+ZQpNf2e7a
-	oP9nYcWA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=rGY46n8gEn8rI97doNSxwdxGE49r+M3brZUuHppCihY=; b=b1MptOU6bDPYJD
+	uCDeFC/RsU7QyZ4sBHLvaJqj+U4W24sUpTCLrm6VdonjVvHCgbi+nNPuFotv5Yd9W9yASCDUOP2GB
+	3KBhbjhAcBN1tbRvTZFBVYwC1OkIFzkzuh8NfeoRWcFZ4ooXsqVuZ4fkJ7h1HqFYdiIzbbExJ8Z3V
+	Tc4EYBhQ9Kl1XgTT05//0aDzCoRUwjWk94nz67Kro9QuOKwwbiVAKoF6lV76S81KzXjbAxnWUi4k2
+	x94sywmUN3RuVjsnp/llOyPNs9ciTCkPxK5x9Y3kNCP6743luRRVCFsYLRhotCSwn5MmZiuX1YEMH
+	sVKVgcUcRHHxmj0Q2jWQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qd3q7-003Sz9-1G;
-	Mon, 04 Sep 2023 07:17:39 +0000
+	id 1qd4nI-003Yds-0I;
+	Mon, 04 Sep 2023 08:18:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qd3q3-003Syc-2Z
+	id 1qd4nD-003YcJ-1C
 	for barebox@lists.infradead.org;
-	Mon, 04 Sep 2023 07:17:37 +0000
+	Mon, 04 Sep 2023 08:18:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qd3q1-0000bi-30; Mon, 04 Sep 2023 09:17:33 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
+	id 1qd4n9-00030I-Ux; Mon, 04 Sep 2023 10:18:39 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qd3q0-003p9N-GA; Mon, 04 Sep 2023 09:17:32 +0200
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	id 1qd4n9-003pk2-CA; Mon, 04 Sep 2023 10:18:39 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qd3pz-000uEq-CO; Mon, 04 Sep 2023 09:17:31 +0200
-Date: Mon, 4 Sep 2023 09:17:31 +0200
-To: Alexander Shiyan <eagle.alexander923@gmail.com>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <20230904071731.GA189379@pengutronix.de>
-References: <20230830104747.43193-1-eagle.alexander923@gmail.com>
- <20230830104747.43193-3-eagle.alexander923@gmail.com>
- <aa20d72f-8cb6-7b51-9ae6-2f8d15d6c690@pengutronix.de>
- <CAP1tNvQdQUhy_YcY_afTYQyHhgRsvhY5BEdu+p6Y+3oXVUX9nA@mail.gmail.com>
+	id 1qd4n8-008Nl3-ES; Mon, 04 Sep 2023 10:18:38 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon,  4 Sep 2023 10:18:22 +0200
+Message-Id: <20230904081825.1997618-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAP1tNvQdQUhy_YcY_afTYQyHhgRsvhY5BEdu+p6Y+3oXVUX9nA@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230904_001735_855989_4B9C8620 
-X-CRM114-Status: GOOD (  23.05  )
+X-CRM114-CacheID: sfid-20230904_011843_435595_3BF31F3E 
+X-CRM114-Status: GOOD (  10.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,61 +64,155 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Johannes Zink <j.zink@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/3] ARM: boards: Add MyirTech MYD-YA15XC-T development
- board support
+Subject: [PATCH 1/4] crypto: crc32: Drop CONFIG_DYNAMIC_CRC_TABLE option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Alexander,
+Generating the crc table on a not-so-powerfull i.MX6q SoC takes
+around 100us. This is negligible and not worth bothering the user with
+an extra Kconfig option. Just drop the option and make it the default.
 
-On Thu, Aug 31, 2023 at 09:40:16AM +0300, Alexander Shiyan wrote:
-> Hello Ahmad.
-> 
-> > Thanks for your patch. A few comments below.
-> ...
-> > > +ENTRY_FUNCTION(start_stm32mp15x_myir, r0, r1, r2)
-> > > +{
-> > > +     void *fdt;
-> > > +
-> > > +     stm32mp_cpu_lowlevel_init();
-> > > +
-> > > +     if (IS_ENABLED(CONFIG_DEBUG_LL))
-> > > +             setup_uart();
-> > > +
-> > > +     fdt = __dtb_z_stm32mp15x_myirtech_myd_start + get_runtime_offset();
-> > > +
-> > > +     stm32mp1_barebox_entry(fdt);
-> >
-> > Same question: Do you use an old TF-A or why do you need a specific entry
-> > point instead of barebox-stm32mp-generic-bl33.img?
-> 
-> Initially, I used the old version of TF-A, to facilitate the first
-> start-up of the board.
-> Now I'm using new version and FIP, so yes, this piece of code can be removed.
-> 
-> Thanks for the comments on the patch, I'll rework some parts of the code.
-> 
-> 2 Sascha: Is it possible to commit the first two parts of the patch
-> now to minimize the overall work?
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ common/Kconfig |  9 -------
+ crypto/crc32.c | 66 --------------------------------------------------
+ 2 files changed, 75 deletions(-)
 
-Just did that.
-
-Sascha
-
+diff --git a/common/Kconfig b/common/Kconfig
+index 50f62b9f9a..afa591cb76 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -519,15 +519,6 @@ endchoice
+ 
+ endif
+ 
+-config DYNAMIC_CRC_TABLE
+-	bool
+-	depends on CRC32
+-	prompt "Generate the crc32 table dynamically"
+-	default y
+-	help
+-	  Saying yes to this option saves around 800 bytes of binary size.
+-	  If unsure say yes.
+-
+ config ERRNO_MESSAGES
+ 	bool
+ 	prompt "print error values as text"
+diff --git a/crypto/crc32.c b/crypto/crc32.c
+index 95cb2212db..ff5c429ad1 100644
+--- a/crypto/crc32.c
++++ b/crypto/crc32.c
+@@ -22,8 +22,6 @@
+ #define STATIC static inline
+ #endif
+ 
+-#ifdef CONFIG_DYNAMIC_CRC_TABLE
+-
+ static uint32_t *crc_table;
+ 
+ /*
+@@ -73,66 +71,6 @@ static void make_crc_table(void)
+     crc_table[n] = c;
+   }
+ }
+-#else
+-/* ========================================================================
+- * Table of CRC-32's of all single-byte values (made by make_crc_table)
+- */
+-static const uint32_t crc_table[256] = {
+-  0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
+-  0x706af48fL, 0xe963a535L, 0x9e6495a3L, 0x0edb8832L, 0x79dcb8a4L,
+-  0xe0d5e91eL, 0x97d2d988L, 0x09b64c2bL, 0x7eb17cbdL, 0xe7b82d07L,
+-  0x90bf1d91L, 0x1db71064L, 0x6ab020f2L, 0xf3b97148L, 0x84be41deL,
+-  0x1adad47dL, 0x6ddde4ebL, 0xf4d4b551L, 0x83d385c7L, 0x136c9856L,
+-  0x646ba8c0L, 0xfd62f97aL, 0x8a65c9ecL, 0x14015c4fL, 0x63066cd9L,
+-  0xfa0f3d63L, 0x8d080df5L, 0x3b6e20c8L, 0x4c69105eL, 0xd56041e4L,
+-  0xa2677172L, 0x3c03e4d1L, 0x4b04d447L, 0xd20d85fdL, 0xa50ab56bL,
+-  0x35b5a8faL, 0x42b2986cL, 0xdbbbc9d6L, 0xacbcf940L, 0x32d86ce3L,
+-  0x45df5c75L, 0xdcd60dcfL, 0xabd13d59L, 0x26d930acL, 0x51de003aL,
+-  0xc8d75180L, 0xbfd06116L, 0x21b4f4b5L, 0x56b3c423L, 0xcfba9599L,
+-  0xb8bda50fL, 0x2802b89eL, 0x5f058808L, 0xc60cd9b2L, 0xb10be924L,
+-  0x2f6f7c87L, 0x58684c11L, 0xc1611dabL, 0xb6662d3dL, 0x76dc4190L,
+-  0x01db7106L, 0x98d220bcL, 0xefd5102aL, 0x71b18589L, 0x06b6b51fL,
+-  0x9fbfe4a5L, 0xe8b8d433L, 0x7807c9a2L, 0x0f00f934L, 0x9609a88eL,
+-  0xe10e9818L, 0x7f6a0dbbL, 0x086d3d2dL, 0x91646c97L, 0xe6635c01L,
+-  0x6b6b51f4L, 0x1c6c6162L, 0x856530d8L, 0xf262004eL, 0x6c0695edL,
+-  0x1b01a57bL, 0x8208f4c1L, 0xf50fc457L, 0x65b0d9c6L, 0x12b7e950L,
+-  0x8bbeb8eaL, 0xfcb9887cL, 0x62dd1ddfL, 0x15da2d49L, 0x8cd37cf3L,
+-  0xfbd44c65L, 0x4db26158L, 0x3ab551ceL, 0xa3bc0074L, 0xd4bb30e2L,
+-  0x4adfa541L, 0x3dd895d7L, 0xa4d1c46dL, 0xd3d6f4fbL, 0x4369e96aL,
+-  0x346ed9fcL, 0xad678846L, 0xda60b8d0L, 0x44042d73L, 0x33031de5L,
+-  0xaa0a4c5fL, 0xdd0d7cc9L, 0x5005713cL, 0x270241aaL, 0xbe0b1010L,
+-  0xc90c2086L, 0x5768b525L, 0x206f85b3L, 0xb966d409L, 0xce61e49fL,
+-  0x5edef90eL, 0x29d9c998L, 0xb0d09822L, 0xc7d7a8b4L, 0x59b33d17L,
+-  0x2eb40d81L, 0xb7bd5c3bL, 0xc0ba6cadL, 0xedb88320L, 0x9abfb3b6L,
+-  0x03b6e20cL, 0x74b1d29aL, 0xead54739L, 0x9dd277afL, 0x04db2615L,
+-  0x73dc1683L, 0xe3630b12L, 0x94643b84L, 0x0d6d6a3eL, 0x7a6a5aa8L,
+-  0xe40ecf0bL, 0x9309ff9dL, 0x0a00ae27L, 0x7d079eb1L, 0xf00f9344L,
+-  0x8708a3d2L, 0x1e01f268L, 0x6906c2feL, 0xf762575dL, 0x806567cbL,
+-  0x196c3671L, 0x6e6b06e7L, 0xfed41b76L, 0x89d32be0L, 0x10da7a5aL,
+-  0x67dd4accL, 0xf9b9df6fL, 0x8ebeeff9L, 0x17b7be43L, 0x60b08ed5L,
+-  0xd6d6a3e8L, 0xa1d1937eL, 0x38d8c2c4L, 0x4fdff252L, 0xd1bb67f1L,
+-  0xa6bc5767L, 0x3fb506ddL, 0x48b2364bL, 0xd80d2bdaL, 0xaf0a1b4cL,
+-  0x36034af6L, 0x41047a60L, 0xdf60efc3L, 0xa867df55L, 0x316e8eefL,
+-  0x4669be79L, 0xcb61b38cL, 0xbc66831aL, 0x256fd2a0L, 0x5268e236L,
+-  0xcc0c7795L, 0xbb0b4703L, 0x220216b9L, 0x5505262fL, 0xc5ba3bbeL,
+-  0xb2bd0b28L, 0x2bb45a92L, 0x5cb36a04L, 0xc2d7ffa7L, 0xb5d0cf31L,
+-  0x2cd99e8bL, 0x5bdeae1dL, 0x9b64c2b0L, 0xec63f226L, 0x756aa39cL,
+-  0x026d930aL, 0x9c0906a9L, 0xeb0e363fL, 0x72076785L, 0x05005713L,
+-  0x95bf4a82L, 0xe2b87a14L, 0x7bb12baeL, 0x0cb61b38L, 0x92d28e9bL,
+-  0xe5d5be0dL, 0x7cdcefb7L, 0x0bdbdf21L, 0x86d3d2d4L, 0xf1d4e242L,
+-  0x68ddb3f8L, 0x1fda836eL, 0x81be16cdL, 0xf6b9265bL, 0x6fb077e1L,
+-  0x18b74777L, 0x88085ae6L, 0xff0f6a70L, 0x66063bcaL, 0x11010b5cL,
+-  0x8f659effL, 0xf862ae69L, 0x616bffd3L, 0x166ccf45L, 0xa00ae278L,
+-  0xd70dd2eeL, 0x4e048354L, 0x3903b3c2L, 0xa7672661L, 0xd06016f7L,
+-  0x4969474dL, 0x3e6e77dbL, 0xaed16a4aL, 0xd9d65adcL, 0x40df0b66L,
+-  0x37d83bf0L, 0xa9bcae53L, 0xdebb9ec5L, 0x47b2cf7fL, 0x30b5ffe9L,
+-  0xbdbdf21cL, 0xcabac28aL, 0x53b39330L, 0x24b4a3a6L, 0xbad03605L,
+-  0xcdd70693L, 0x54de5729L, 0x23d967bfL, 0xb3667a2eL, 0xc4614ab8L,
+-  0x5d681b02L, 0x2a6f2b94L, 0xb40bbe37L, 0xc30c8ea1L, 0x5a05df1bL,
+-  0x2d02ef8dL
+-};
+-#endif
+-
+ 
+ /* ========================================================================= */
+ #define DO1(buf) crc = crc_table[((int)crc ^ (*buf++)) & 0xff] ^ (crc >> 8);
+@@ -145,10 +83,8 @@ STATIC uint32_t crc32(uint32_t crc, const void *_buf, unsigned int len)
+ {
+     const unsigned char *buf = _buf;
+ 
+-#ifdef CONFIG_DYNAMIC_CRC_TABLE
+ 	if (!crc_table)
+ 		make_crc_table();
+-#endif
+     crc = crc ^ 0xffffffffL;
+     while (len >= 8)
+     {
+@@ -171,10 +107,8 @@ STATIC uint32_t crc32_no_comp(uint32_t crc, const void *_buf, unsigned int len)
+ {
+    const unsigned char *buf = _buf;
+ 
+-#ifdef CONFIG_DYNAMIC_CRC_TABLE
+ 	if (!crc_table)
+ 		make_crc_table();
+-#endif
+     while (len >= 8)
+     {
+       DO8(buf);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
