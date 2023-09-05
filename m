@@ -1,68 +1,71 @@
-Delivery-date: Tue, 05 Sep 2023 14:25:15 +0200
+Delivery-date: Tue, 05 Sep 2023 14:27:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qdV7M-004vYF-E6
-	for lore@lore.pengutronix.de; Tue, 05 Sep 2023 14:25:15 +0200
+	id 1qdV9s-004vcm-PB
+	for lore@lore.pengutronix.de; Tue, 05 Sep 2023 14:27:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qdV7K-0005FF-CZ
-	for lore@pengutronix.de; Tue, 05 Sep 2023 14:25:15 +0200
+	id 1qdV9q-0006rr-Ad
+	for lore@pengutronix.de; Tue, 05 Sep 2023 14:27:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cT0ic3btX5I1hEzXMdrPAhj6JHaY4wobpKRYdvkvIi4=; b=k42KOA51tEocHZafCW/sRUY1Jd
-	mZyZ8wT6eChn48RGHUvdSRo2kfvCP8z/9ljK7sYhy512NmVU3cNSMZ3zwHSphpxJAKfVZRJJJ1q17
-	OIpPemcTO1xNBg22LnikDbKo2H291SxPjblly92ER3RLomzfZ5W2D/WIrfZojNguHePe/1VU5jrs7
-	bbia51S59QeX787OwF1uX1GLzVKmB5L5H/4g8MNRVDqBem1Ep+ZE4LwJYNo/DuFqPrjbU52vGWWMg
-	9uWszI1BEqL2kePItlmV3G5aPoH86qRZmNStMKNXbKQ1v1NMw1HkM1g5WzvVh95IKVp3PUIIs7+s4
-	mK6fzTzw==;
+	bh=wkfSt6cjyv3hv2D1boKReYICItABS1SMyL44Gp2Z7o4=; b=j4tVUjuWAIUQwbTwTHy4tWK90q
+	vK/xuP5jK4FjcIjlIKdEKdlh74kQAhKhEQFNZbGcHBED2pzysZM1i6crUdDgsC2vKaS/Uj6d2qZdu
+	xr4aSP+A+G5JJgVtsZpyHlJQ4AaciAT4X6OWnNobmcixGEs9pnSw5Te6cwrNF/rXgIV6IR5QfZJEr
+	e4ajyUCseM97mQ5ywXCoxU1jHnQSlXJZIm8ls6+zES6Jv7cwN81M7KccZPTAQVZQGZGf2bmNK7PJZ
+	ha0B3Q3WAoomwbHpf1e63eRwdrDTKzXU56hOZfIy7rYzyg526xw2m9ApsLOdkfolzuu8mNR7yw60r
+	2WBa0fow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qdV5y-00602N-0g;
-	Tue, 05 Sep 2023 12:23:50 +0000
+	id 1qdV8k-0060MH-2K;
+	Tue, 05 Sep 2023 12:26:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qdV5v-00600X-1J
+	id 1qdV8h-0060Lj-04
 	for barebox@lists.infradead.org;
-	Tue, 05 Sep 2023 12:23:48 +0000
+	Tue, 05 Sep 2023 12:26:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qdV5l-000424-1s; Tue, 05 Sep 2023 14:23:37 +0200
+	id 1qdV8f-000679-L5; Tue, 05 Sep 2023 14:26:37 +0200
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qdV5k-004BtU-Lt; Tue, 05 Sep 2023 14:23:36 +0200
+	id 1qdV8f-004Btk-8G; Tue, 05 Sep 2023 14:26:37 +0200
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qdV5k-001cvk-Fx; Tue, 05 Sep 2023 14:23:36 +0200
-Date: Tue, 5 Sep 2023 14:23:36 +0200
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230905122336.GL189379@pengutronix.de>
-References: <20230829124356.4178308-1-m.felsch@pengutronix.de>
+	id 1qdV8e-001cwh-Sb; Tue, 05 Sep 2023 14:26:36 +0200
+Date: Tue, 5 Sep 2023 14:26:36 +0200
+From: Sascha Hauer <sha@pengutronix.de>
+To: Johannes Zink <j.zink@pengutronix.de>
+Cc: patchwork-jzi@pengutronix.de,
+	Barebox Mailing List <barebox@lists.infradead.org>
+Message-ID: <20230905122636.GM189379@pengutronix.de>
+References: <20230829-crc32_in_pbl-v2-1-8a0a575b360a@pengutronix.de>
+ <20230904081944.GB189379@pengutronix.de>
+ <930ff968-e07b-d427-4253-a433435e26b8@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230829124356.4178308-1-m.felsch@pengutronix.de>
+In-Reply-To: <930ff968-e07b-d427-4253-a433435e26b8@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230905_052347_442656_0E067D9D 
-X-CRM114-Status: GOOD (  16.37  )
+X-CRM114-CacheID: sfid-20230905_052639_063760_827D8606 
+X-CRM114-Status: GOOD (  22.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,25 +87,33 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/4] ARM: boards: polyhex-debix: fix RGMII pin setup
+Subject: Re: [PATCH v2] crypto: crc32: make crc32 available in PBL
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Aug 29, 2023 at 02:43:53PM +0200, Marco Felsch wrote:
-> On the Debix SBC the EQOS interface is used as primary interface, the
-> FEC pins are routed to the extension header. On the other hand the Debix
-> SoM/Baseboard combination both interfaces are used. So fix the RGMII pin
-> setup by adding the EQOS pin as well and keep the FEC.
+On Tue, Sep 05, 2023 at 09:57:21AM +0200, Johannes Zink wrote:
+> Hi Sascha,
 > 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  arch/arm/boards/polyhex-debix/board.c | 3 ++-
->  include/mach/imx/iomux-mx8mp.h        | 1 +
->  2 files changed, 3 insertions(+), 1 deletion(-)
+> On 9/4/23 10:19, Sascha Hauer wrote:
+> > On Tue, Aug 29, 2023 at 04:38:32PM +0200, Johannes Zink wrote:
+> > > crc32 may be required in PBL for checking data integrity. Add it to PBL
+> > > when CONFIG_CRC32 is enabled.
+> > > 
+> > > To save some memory use a slower-but-smaller variant of the crc32 algorithm
+> > > in the PBL.
+> > 
+> > I've just sent an alternative patch series. Please check if that works
+> > for you.
+> 
+> What did you base the series on? Maybe I am holding it wrong, but it does
+> neither apply on v2023.07.1 which I use in my customer project nor on
+> upstream/next.
 
-Applied, thanks
+It's already included in next. I had to re-order the patches though
+because my original order caused some compile failures in between.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
