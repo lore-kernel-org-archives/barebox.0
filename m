@@ -1,59 +1,65 @@
-Delivery-date: Tue, 05 Sep 2023 09:59:37 +0200
+Delivery-date: Tue, 05 Sep 2023 10:11:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qdQyI-004i7l-4k
-	for lore@lore.pengutronix.de; Tue, 05 Sep 2023 09:59:37 +0200
+	id 1qdR9g-004jFF-HE
+	for lore@lore.pengutronix.de; Tue, 05 Sep 2023 10:11:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qdQyG-0000Fj-6v
-	for lore@pengutronix.de; Tue, 05 Sep 2023 09:59:36 +0200
+	id 1qdR9e-0007UW-Em
+	for lore@pengutronix.de; Tue, 05 Sep 2023 10:11:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=eBDhG4+zIuUSxnUVZ3578FCedzmWZUYNfS6VDxZ+UcI=; b=Fg0yJrxHk5jk9fuN0Bt6s0Pk56
-	gEsRoaidNHa8T5RQutJzeBsA9V1BLA2op7FiSilzxbFVPCBFBmlvqg4Ca21RaMwv7q9nHKa++6lwy
-	Awm70m0yPr8EI2oCMJHVsEfZPu/i268zGFaiDTOzwc6xdaec0n+CYVyipHXKUCG8VDCT+H7XvQ572
-	PNOh4oKgtK7E79NACiimnvY37+GMetxoPalN5VG94/UqjdVD3frs1mlfU/xYcmDkHti+EH341r5Sj
-	fiXLR7fmlfsRgwg1Da7ltkjDuW3tiBDxmeLvdH4OFvMC7a9c2p3Pj0ZvEOzsfdVBPKbyN1ADI92FA
-	RxAxy7GA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=xHj/lTQFGcR49iHy2q2aOezBeJSLfzWNS5BcAuXybOM=; b=4A6c+efM4NdcfZItNVlLLMCfka
+	snc8faxQ+eHTMLdtQAI2zIFzPnCnFJ26S/nXp2RCANUY12g1Dlx5+Ff8DdViU2rPGyxwbRetDlf7L
+	Eo4kg4eVu0B0x0f/WHMwJYGOO/4S4vpl7vvf0QKXZxRWjpG/XSOdPf3UVQzPRFO30xAo4qc64i/MS
+	nnlwvpHlW4l1pjdNGZbtyLtX7Cj8wySaY/kcaLTD+qVDdMHqckU0b07NnsKxfDIMH5Iz1+HDKzpV0
+	dDgKqJtFn7W9cRz906BNYiwe8CQ8MqcO/uL+PqOlIKguUp6bzgABwiMDUqPv+Uc2zqoJKOxDsmhij
+	JjgcRtiQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qdQwU-005U0Z-2A;
-	Tue, 05 Sep 2023 07:57:46 +0000
+	id 1qdR8R-005Uth-2T;
+	Tue, 05 Sep 2023 08:10:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qdQwQ-005TyX-2U
+	id 1qdR8O-005Usn-24
 	for barebox@lists.infradead.org;
-	Tue, 05 Sep 2023 07:57:45 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <j.zink@pengutronix.de>)
-	id 1qdQwJ-0007Pa-LZ; Tue, 05 Sep 2023 09:57:35 +0200
-Message-ID: <930ff968-e07b-d427-4253-a433435e26b8@pengutronix.de>
-Date: Tue, 5 Sep 2023 09:57:21 +0200
+	Tue, 05 Sep 2023 08:10:06 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1qdR8L-0006nL-0R; Tue, 05 Sep 2023 10:10:01 +0200
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1qdR8K-0044lh-KS; Tue, 05 Sep 2023 10:10:00 +0200
+Received: from mfe by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1qdR8K-001WU9-8T; Tue, 05 Sep 2023 10:10:00 +0200
+Date: Tue, 5 Sep 2023 10:10:00 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230905081000.mqk2wfum5d4zhuck@pengutronix.de>
+References: <20230831144724.3424405-1-m.felsch@pengutronix.de>
+ <8b7680a0-5d97-411f-e7e1-ae1dd8e26d71@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Content-Language: en-US, de-DE
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: patchwork-jzi@pengutronix.de,
- Barebox Mailing List <barebox@lists.infradead.org>
-References: <20230829-crc32_in_pbl-v2-1-8a0a575b360a@pengutronix.de>
- <20230904081944.GB189379@pengutronix.de>
-From: Johannes Zink <j.zink@pengutronix.de>
-In-Reply-To: <20230904081944.GB189379@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8b7680a0-5d97-411f-e7e1-ae1dd8e26d71@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230905_005742_813548_1B78D7D0 
-X-CRM114-Status: GOOD (  29.24  )
+X-CRM114-CacheID: sfid-20230905_011004_701284_E43EFDF5 
+X-CRM114-Status: GOOD (  28.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,182 +77,98 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2] crypto: crc32: make crc32 available in PBL
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2] ARM: i.MX8M: esdctl: split memory banks for devices
+ with >4G
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Sascha,
-
-On 9/4/23 10:19, Sascha Hauer wrote:
-> On Tue, Aug 29, 2023 at 04:38:32PM +0200, Johannes Zink wrote:
->> crc32 may be required in PBL for checking data integrity. Add it to PBL
->> when CONFIG_CRC32 is enabled.
->>
->> To save some memory use a slower-but-smaller variant of the crc32 algorithm
->> in the PBL.
+On 23-09-04, Ahmad Fatoum wrote:
+> On 31.08.23 16:47, Marco Felsch wrote:
+> > At the moment the whole available memory is added to one single memory
+> > bank "ram0". This can cause barebox chainload issues on devices with a
+> > huge amount of memory like the i.MX8MP-EVK which has 6G of RAM if the
+> > barebox pbl binary is to large.
+> > 
+> > The reason for this issues is that memory_bank_first_find_space()
+> > returns the memory area with the largest amount of free space on the
+> > first memory bank. So in case of Debix SOM-A 8G and i.MX8MP-EVK 6G this
+> > is the area crossing the 4G boundary. This cause the barebox pbl code to
+> > trigger a MMU exception once the early MMU gets enabled which is
+> > configured for sizes <=4G.
+> > 
+> > Split the memory space into two memory banks: "ram0" and "ram1" to fix
+> > this issue.
+> > 
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > ---
+> > v2:
+> > - drop add_mem() usage and use arm_add_mem_device() directly
+> > 
+> >  arch/arm/mach-imx/esdctl.c | 23 +++++++++++++++++++----
+> >  1 file changed, 19 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+> > index 1798ad48e50a..7f313b2337ae 100644
+> > --- a/arch/arm/mach-imx/esdctl.c
+> > +++ b/arch/arm/mach-imx/esdctl.c
+> > @@ -510,16 +510,31 @@ static resource_size_t imx8m_ddrc_sdram_size(void __iomem *ddrc, unsigned buswid
+> >  				   reduced_adress_space, mstr);
+> >  }
+> >  
+> > +static int _imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data,
+> > +			       unsigned int buswidth)
+> > +{
+> > +	resource_size_t size = imx8m_ddrc_sdram_size(mmdcbase, buswidth);
+> > +	resource_size_t size0, size1;
+> > +	int ret;
+> > +
+> > +	size0 = min_t(resource_size_t, SZ_4G - MX8M_DDR_CSD1_BASE_ADDR, size);
+> > +	size1 = size - size0;
+> > +
+> > +	ret = arm_add_mem_device("ram0", data->base0, size0);
+> > +	if (ret || size1 == 0)
+> > +		return ret;
+> > +
+> > +	return arm_add_mem_device("ram1", SZ_4G, size1);
 > 
-> I've just sent an alternative patch series. Please check if that works
-> for you.
+> This gives a warning when compiling the file for 32-bit, because resource_size_t
+> is 32-bit there, while SZ_4G is always an unsigned long long.
 
-What did you base the series on? Maybe I am holding it wrong, but it does 
-neither apply on v2023.07.1 which I use in my customer project nor on 
-upstream/next.
+Thanks for this info. Size >= 4G on 32-bit systems is useless anyways. I
+will guard this by an #ifdef CONFIG_64BIT and add a comment.
 
-Johannes
+Regards,
+  Marco
 
 > 
-> Sascha
+> > +}
+> > +
+> >  static int imx8m_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+> >  {
+> > -	return arm_add_mem_device("ram0", data->base0,
+> > -			   imx8m_ddrc_sdram_size(mmdcbase, 32));
+> > +	return _imx8m_ddrc_add_mem(mmdcbase, data, 32);
+> >  }
+> >  
+> >  static int imx8mn_ddrc_add_mem(void *mmdcbase, struct imx_esdctl_data *data)
+> >  {
+> > -	return arm_add_mem_device("ram0", data->base0,
+> > -			   imx8m_ddrc_sdram_size(mmdcbase, 16));
+> > +	return _imx8m_ddrc_add_mem(mmdcbase, data, 16);
+> >  }
+> >  
+> >  static resource_size_t imx7d_ddrc_sdram_size(void __iomem *ddrc)
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 > 
 > 
->>
->> Signed-off-by: Johannes Zink <j.zink@pengutronix.de>
->> ---
->> To: Barebox Mailing List <barebox@lists.infradead.org>
->> Cc: Johannes Zink <j.zink@pengutronix.de>
->> Cc: patchwork-jzi@pengutronix.de
->> ---
->>
->> Changes:
->>
->> v1->v2: Worked in Ahmad's review (thank you for reviewing my patch):
->>    - instead of using CRC32_EARLY, always add crc32.o to obj and pbl if
->>      CONFIG_CRC is set and rely on LTO to remove unused symbols instead
->>    - use a CRC32 implementation without a prepopulated Lookup Table,
->>      which trades in speed for code size in the PBL, analogously to what
->>      Sascha implemented in [1]
->>    - add hints on some of the #endifs for better readability of nested
->>      ifdef blocks
->>    - reword commit message to reflect on the changes made
->>
->>      [1] 2d13b856604b ("crc: Add PBL variant for crc_itu_t()")
->> ---
->>   crypto/Makefile |  2 +-
->>   crypto/crc32.c  | 34 ++++++++++++++++++++++++++++------
->>   2 files changed, 29 insertions(+), 7 deletions(-)
->>
->> diff --git a/crypto/Makefile b/crypto/Makefile
->> index 22035d4f69ee..4a1c7e9615b8 100644
->> --- a/crypto/Makefile
->> +++ b/crypto/Makefile
->> @@ -1,6 +1,6 @@
->>   # SPDX-License-Identifier: GPL-2.0-only
->>   
->> -obj-$(CONFIG_CRC32)	+= crc32.o
->> +obj-pbl-$(CONFIG_CRC32)	+= crc32.o
->>   obj-pbl-$(CONFIG_CRC_ITU_T)	+= crc-itu-t.o
->>   obj-$(CONFIG_CRC7)	+= crc7.o
->>   obj-$(CONFIG_DIGEST)	+= digest.o
->> diff --git a/crypto/crc32.c b/crypto/crc32.c
->> index 95cb2212db2b..2cf13144c1d2 100644
->> --- a/crypto/crc32.c
->> +++ b/crypto/crc32.c
->> @@ -22,7 +22,7 @@
->>   #define STATIC static inline
->>   #endif
->>   
->> -#ifdef CONFIG_DYNAMIC_CRC_TABLE
->> +#if defined(CONFIG_DYNAMIC_CRC_TABLE) && !defined(__PBL__)
->>   
->>   static uint32_t *crc_table;
->>   
->> @@ -73,7 +73,7 @@ static void make_crc_table(void)
->>       crc_table[n] = c;
->>     }
->>   }
->> -#else
->> +#elif !defined(__PBL__)
->>   /* ========================================================================
->>    * Table of CRC-32's of all single-byte values (made by make_crc_table)
->>    */
->> @@ -131,9 +131,30 @@ static const uint32_t crc_table[256] = {
->>     0x5d681b02L, 0x2a6f2b94L, 0xb40bbe37L, 0xc30c8ea1L, 0x5a05df1bL,
->>     0x2d02ef8dL
->>   };
->> -#endif
->> +#endif /* defined(CONFIG_DYNAMIC_CRC_TABLE) && !defined(__PBL__) */
->> +
->> +
->> +
->> +#ifdef __PBL__
->> +#define CRC32_POLY 0xEDB88320L
->> +STATIC uint32_t crc32(uint32_t crc, const void *_buf, unsigned int len)
->> +{
->> +	int i, j;
->> +	const unsigned char *buf = _buf;
->>   
->> +	crc = crc ^ 0xffffffffL;
->>   
->> +	for (i=0; i< len; i++) {
->> +		crc ^= buf[i];
->> +		for (j = 0; j < 8; j++) {
->> +			crc = (crc >> 1) ^ ((crc & 1) ? CRC32_POLY : 0);
->> +		}
->> +	}
->> +
->> +	crc = crc ^ 0xffffffffL;
->> +	return crc;
->> +}
->> +#else
->>   /* ========================================================================= */
->>   #define DO1(buf) crc = crc_table[((int)crc ^ (*buf++)) & 0xff] ^ (crc >> 8);
->>   #define DO2(buf)  DO1(buf); DO1(buf);
->> @@ -148,7 +169,7 @@ STATIC uint32_t crc32(uint32_t crc, const void *_buf, unsigned int len)
->>   #ifdef CONFIG_DYNAMIC_CRC_TABLE
->>   	if (!crc_table)
->>   		make_crc_table();
->> -#endif
->> +#endif /* CONFIG_DYNAMIC_CRC_TABLE */
->>       crc = crc ^ 0xffffffffL;
->>       while (len >= 8)
->>       {
->> @@ -162,7 +183,7 @@ STATIC uint32_t crc32(uint32_t crc, const void *_buf, unsigned int len)
->>   }
->>   #ifdef __BAREBOX__
->>   EXPORT_SYMBOL(crc32);
->> -#endif
->> +#endif /* __BAREBOX__ */
->>   
->>   /* No ones complement version. JFFS2 (and other things ?)
->>    * don't use ones compliment in their CRC calculations.
->> @@ -174,7 +195,7 @@ STATIC uint32_t crc32_no_comp(uint32_t crc, const void *_buf, unsigned int len)
->>   #ifdef CONFIG_DYNAMIC_CRC_TABLE
->>   	if (!crc_table)
->>   		make_crc_table();
->> -#endif
->> +#endif /* CONFIG_DYNAMIC_CRC_TABLE */
->>       while (len >= 8)
->>       {
->>         DO8(buf);
->> @@ -186,6 +207,7 @@ STATIC uint32_t crc32_no_comp(uint32_t crc, const void *_buf, unsigned int len)
->>   
->>       return crc;
->>   }
->> +#endif /* __PBL__ */
->>   
->>   STATIC uint32_t crc32_be(uint32_t crc, const void *_buf, unsigned int len)
->>   {
->>
->> ---
->> base-commit: bef38b18eeb5d2f1fac334fb8b831e47261e099c
->> change-id: 20230829-crc32_in_pbl-4d824629d4e2
->>
->> Best regards,
->> -- 
->> Johannes Zink <j.zink@pengutronix.de>
->>
->>
->>
-> 
-
--- 
-Pengutronix e.K.                | Johannes Zink                  |
-Steuerwalder Str. 21            | https://www.pengutronix.de/    |
-31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
-Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
-
 
 
