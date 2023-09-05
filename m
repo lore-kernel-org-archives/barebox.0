@@ -1,64 +1,61 @@
-Delivery-date: Tue, 05 Sep 2023 16:25:07 +0200
+Delivery-date: Tue, 05 Sep 2023 16:27:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qdWzM-005196-JL
-	for lore@lore.pengutronix.de; Tue, 05 Sep 2023 16:25:07 +0200
+	id 1qdX27-0051Hi-13
+	for lore@lore.pengutronix.de; Tue, 05 Sep 2023 16:27:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qdWzK-0000D5-CT
-	for lore@pengutronix.de; Tue, 05 Sep 2023 16:25:07 +0200
+	id 1qdX24-0002PX-Vg
+	for lore@pengutronix.de; Tue, 05 Sep 2023 16:27:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=1Rr+MMF0yjHUNKFa8LAW7MZft2BBCl6xyh8Ux2OWWQs=; b=iRjgNpHOStUAJVEMNtoq5WISPS
-	pX+uenVOhjXXiREnI6JFLIW9t1/fstFqrCFGd5wcV9ei98dcMo7befE0PT53PxFPUxa7xE9xpT6rn
-	FOOp9XujEUeGG9foG6lHDITgO674VrjdxRfTezS42WRxCPFkz0nN4fS3Cra2B4h8NKcxjYQyNt3/t
-	kV4dc1QTlWGCHGe+kZ3BScgN11V0U6T/3VeEsNDeUZsEf75miaM2kvg7qrvjl3BJxtUPNzzgbbX/o
-	7rPFEYoRoWRZeGPy+4kXtwTOwTbLq5yi1BpE9GFUpGqPZ1oSJRgEmO3nDvxdv7mfdzKe9+vr5h356
-	E/q7T41g==;
+	bh=oq9FXK/K5Q/XW0nCPHAuOIkEcvd0GiYzWJa7GBB2fik=; b=f4pAxU/1HFZc4KkKqRWVBiLEfE
+	WM3xqGbLaX2je+SFcjIanEiE7509jgKO6IHREkYxVz6E/9DCzWhWeOs+tqnWHf5chqjoqnYEThdZU
+	bwnv0jlU3UoIOURT2bd6KC/Hkrjb+oyAstcUhOHseVe3vD8FQPvEDd+aD55Oa/aZI1e2ijWVPok8N
+	JaK5weZP+6f+KH2q5YBhE92fW8AWotmnExXYeQxrXclmnlikRJ370OQpgM5ET4Fu05Wx5NRktSN78
+	YqtXOghq3FnUE7Zh3i42H20Dpw+CW7mBOB/F4E6V1oSRgk1Xm2N7DVS4JhAye7/+dJf7+zpiBAcYy
+	2/1lOgGA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qdWxs-006A7k-2n;
-	Tue, 05 Sep 2023 14:23:36 +0000
+	id 1qdX13-006Apz-0u;
+	Tue, 05 Sep 2023 14:26:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qdWxp-006A78-2F
+	id 1qdX10-006ApJ-3C
 	for barebox@lists.infradead.org;
-	Tue, 05 Sep 2023 14:23:35 +0000
+	Tue, 05 Sep 2023 14:26:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qdWxm-0007XA-VJ; Tue, 05 Sep 2023 16:23:30 +0200
+	id 1qdX0z-0001g8-Nc; Tue, 05 Sep 2023 16:26:49 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qdWxm-004DgF-Il; Tue, 05 Sep 2023 16:23:30 +0200
+	id 1qdX0z-004DgZ-BC; Tue, 05 Sep 2023 16:26:49 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qdWxl-00CJZf-37;
-	Tue, 05 Sep 2023 16:23:29 +0200
+	id 1qdX0z-00CJrF-0A;
+	Tue, 05 Sep 2023 16:26:49 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: mfe@pengutronix.de,
-	rcz@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  5 Sep 2023 16:23:28 +0200
-Message-Id: <20230905142328.2935148-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  5 Sep 2023 16:26:48 +0200
+Message-Id: <20230905142648.2936237-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230905_072333_732550_A147DD7E 
-X-CRM114-Status: UNSURE (   9.23  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230905_072651_028972_4881D749 
+X-CRM114-Status: GOOD (  10.18  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,45 +77,50 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] firmware: fix dependency tracking for PBL firmware files
+Subject: [PATCH master] ARM: i.MX8M: romapi: reserve scratch space
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-$(wildcard $(fwdir)/%) was added to allow for optional firmware, but in
-return it broke dependency tracking, because it was evaluated before the
-static pattern rule it's a part of.
+We have 32K of RAM at the end of the initial memory, where a
+prebootloader can place data for future use. i.MX8M is currently the
+only user and currently uses it to save the ROM API log, which is
+located in SRAM and is inaccessible by the time barebox proper runs
+in EL2. This area was so far not reserved, which can lead to clobbering
+it when chainloading barebox. Avoid this by requesting the region.
 
-Fix the dependency tracking by only evaluating it in a secondary
-expansion. That this works as expected can be verified with:
-
-  make -p | grep 'imx8mn-bl31.bin.gen.pbl.o:.*imx8mn-bl31.bin '
-
-Which will return no result before this patch, but with it applied, it
-will correctly show the dependency. Manual touching and rebuilding also
-builds the firmware now as expected:
-
-  AS [P]  firmware/imx8mm-bl31.bin.gen.pbl.o
-
-Fixes: 5b171b7b7eda ("firmware: turn missing firmware into linker error")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- firmware/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/romapi.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/firmware/Makefile b/firmware/Makefile
-index 5853950dfe4e..4fca83f808f6 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -99,7 +99,8 @@ clean-files += *.sha.bin *.sum
- $(patsubst %.gen.o,$(obj)/%.gen.o, $(obj-pbl-y)): $(obj)/%.gen.o: $(fwdir)/%
+diff --git a/arch/arm/mach-imx/romapi.c b/arch/arm/mach-imx/romapi.c
+index 2fd803b0d998..aef0ff0534c9 100644
+--- a/arch/arm/mach-imx/romapi.c
++++ b/arch/arm/mach-imx/romapi.c
+@@ -10,6 +10,8 @@
+ #include <mach/imx/xload.h>
+ #include <asm/barebox-arm.h>
+ #include <zero_page.h>
++#include <memory.h>
++#include <init.h>
+ #include <pbl.h>
  
- # The same for pbl:
--$(patsubst %.gen.o,$(obj)/%.gen.pbl.o, $(obj-pbl-y) $(pbl-y)): $(obj)/%.gen.pbl.o: $(wildcard $(fwdir)/%)
-+.SECONDEXPANSION:
-+$(patsubst %.gen.o,$(obj)/%.gen.pbl.o, $(obj-pbl-y) $(pbl-y)): $(obj)/%.gen.pbl.o: $$(wildcard $(fwdir)/%)
- $(patsubst %.gen.o,$(obj)/%.extgen.pbl.o, $(pbl-y)): $(obj)/%.extgen.pbl.o: $(fwdir)/%
+ static int imx8m_bootrom_load(struct rom_api *rom_api, void *adr, size_t size)
+@@ -84,6 +86,14 @@ const u32 *imx8m_get_bootrom_log(void)
+ 	return NULL;
+ }
  
- pbl-y += $(addsuffix .extgen.o, $(fw-external-y))
++static int imx8m_reserve_scratch_area(void)
++{
++	return PTR_ERR_OR_ZERO(request_sdram_region("scratch area",
++				    (ulong)arm_mem_scratch_get(),
++				    sizeof(struct imx_scratch_space)));
++}
++device_initcall(imx8m_reserve_scratch_area);
++
+ void imx8m_save_bootrom_log(void *dest)
+ {
+ 	const u32 *rom_log;
 -- 
 2.39.2
 
