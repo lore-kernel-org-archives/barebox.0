@@ -1,59 +1,59 @@
-Delivery-date: Wed, 06 Sep 2023 16:14:22 +0200
+Delivery-date: Wed, 06 Sep 2023 16:15:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qdtIV-006350-R8
-	for lore@lore.pengutronix.de; Wed, 06 Sep 2023 16:14:22 +0200
+	id 1qdtJH-00637Q-Vj
+	for lore@lore.pengutronix.de; Wed, 06 Sep 2023 16:15:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qdtIT-0000Q0-Rg
-	for lore@pengutronix.de; Wed, 06 Sep 2023 16:14:22 +0200
+	id 1qdtJF-0000kM-Tl
+	for lore@pengutronix.de; Wed, 06 Sep 2023 16:15:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dT/OorXwxH0iuQJI3QIKJ35fw43cQRDgGnIIRFsc/Fs=; b=J92iEK8RAJPU/gaTDZUaN3PAvF
-	tQevg8JCTSAovd9t6dQs+cVYjdvlaz+QsBkaSQ2AyQkDKQuzpI0DpXyzhSxuIfGryq/1uK9VgAa8k
-	aewE3m51bLwJi1Ge4LHW5Aj6DqN731/mrHjpLUgUsiwPGiOszOfe1OxHsEaFD1/A8GjiUXBmUhK/p
-	FTWeMwjl4wNtZskwvQXHsXRNFiJYQJaRoH9741Ot+T4sTH2PU/e2jgD/TVIltABAkRhb0SZZN1YXy
-	R0VC55gEuOU+s9O9nQi3KWqg74Qh7TWlGmrNi0l1T1o0pyvGcx7wNyC1OZX2aEf5g+vMQOwJ+f0rJ
-	YqyUWhYA==;
+	bh=E0GJSi6H+QXFQPDa2r9CSm2ZOngk6jsnqN3B0yhGbfM=; b=VjwWM8nzPF7OkKCErWb9C3CUxi
+	viAtYOiS1c9FV6J+qNBVnvQKLy+DhGp0R1uaYD9dzyKYvQztCvgl/kWNuI/SMYLywgZ0Jmvd4BGzh
+	IoH4sy4eoiTMBToYGB+4LXRY84Eidtoh9B2XtihBCBLWhV/QEQNI0FEPpnAFid/8QTRuFrwvJJUcy
+	wOdBcTbnxrm2xIvxpPjop35pQvPP4GESVtivKEXzZfWwoTsfJqN6U4x2yL9gPeZYnPAdiLgfIETLY
+	s8m4Cc5UZIJRB2Pkw5TRrDAFqkW4JLDE761Mnojl0jrCUlIPOkamed2VeyeJqGM81bB5B6+XbD1CQ
+	JzGw4mvA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qdtHQ-00ACDh-2q;
-	Wed, 06 Sep 2023 14:13:16 +0000
+	id 1qdtIF-00ACSD-15;
+	Wed, 06 Sep 2023 14:14:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qdtHM-00ACCM-36
+	id 1qdtIC-00ACRI-1s
 	for barebox@lists.infradead.org;
-	Wed, 06 Sep 2023 14:13:14 +0000
+	Wed, 06 Sep 2023 14:14:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qdtHL-0008Tx-Op; Wed, 06 Sep 2023 16:13:11 +0200
+	id 1qdtIB-0000Ic-Cq; Wed, 06 Sep 2023 16:14:03 +0200
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qdtHL-004Rl9-Ce; Wed, 06 Sep 2023 16:13:11 +0200
+	id 1qdtIB-004RlD-0V; Wed, 06 Sep 2023 16:14:03 +0200
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qdtHL-002GFa-0f; Wed, 06 Sep 2023 16:13:11 +0200
-Date: Wed, 6 Sep 2023 16:13:11 +0200
-To: Bastian Krause <bst@pengutronix.de>
-Cc: barebox@lists.infradead.org, afa@pengutronix.de
-Message-ID: <20230906141311.GE492117@pengutronix.de>
-References: <20230906132623.1608529-1-bst@pengutronix.de>
+	id 1qdtIA-002GFx-NN; Wed, 06 Sep 2023 16:14:02 +0200
+Date: Wed, 6 Sep 2023 16:14:02 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, mfe@pengutronix.de, rcz@pengutronix.de
+Message-ID: <20230906141402.GF492117@pengutronix.de>
+References: <20230905142328.2935148-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230906132623.1608529-1-bst@pengutronix.de>
+In-Reply-To: <20230905142328.2935148-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -61,8 +61,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230906_071313_019219_C84ABB91 
-X-CRM114-Status: GOOD (  25.96  )
+X-CRM114-CacheID: sfid-20230906_071404_624642_683DE956 
+X-CRM114-Status: GOOD (  22.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,94 +84,52 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] commands: pwm: add option to list registered PWMs
+Subject: Re: [PATCH master] firmware: fix dependency tracking for PBL
+ firmware files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Sep 06, 2023 at 03:26:23PM +0200, Bastian Krause wrote:
-> It's useful to be able to list all registered PWMs, especially
-> considering these might be aliased. So add such an option to the pwm
-> command.
+On Tue, Sep 05, 2023 at 04:23:28PM +0200, Ahmad Fatoum wrote:
+> $(wildcard $(fwdir)/%) was added to allow for optional firmware, but in
+> return it broke dependency tracking, because it was evaluated before the
+> static pattern rule it's a part of.
 > 
-> Signed-off-by: Bastian Krause <bst@pengutronix.de>
+> Fix the dependency tracking by only evaluating it in a secondary
+> expansion. That this works as expected can be verified with:
+> 
+>   make -p | grep 'imx8mn-bl31.bin.gen.pbl.o:.*imx8mn-bl31.bin '
+> 
+> Which will return no result before this patch, but with it applied, it
+> will correctly show the dependency. Manual touching and rebuilding also
+> builds the firmware now as expected:
+> 
+>   AS [P]  firmware/imx8mm-bl31.bin.gen.pbl.o
+> 
+> Fixes: 5b171b7b7eda ("firmware: turn missing firmware into linker error")
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  commands/pwm.c     | 8 ++++++--
->  drivers/pwm/core.c | 9 +++++++++
->  include/pwm.h      | 2 ++
->  3 files changed, 17 insertions(+), 2 deletions(-)
+>  firmware/Makefile | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/commands/pwm.c b/commands/pwm.c
-> index 68d7988886e..5d41fa8ff42 100644
-> --- a/commands/pwm.c
-> +++ b/commands/pwm.c
-> @@ -34,8 +34,11 @@ static int do_pwm_cmd(int argc, char *argv[])
->  	bool verbose = false;
->  	int opt;
+> diff --git a/firmware/Makefile b/firmware/Makefile
+> index 5853950dfe4e..4fca83f808f6 100644
+> --- a/firmware/Makefile
+> +++ b/firmware/Makefile
+> @@ -99,7 +99,8 @@ clean-files += *.sha.bin *.sum
+>  $(patsubst %.gen.o,$(obj)/%.gen.o, $(obj-pbl-y)): $(obj)/%.gen.o: $(fwdir)/%
 >  
-> -	while ((opt = getopt(argc, argv, "d:D:P:f:w:F:isv")) > 0) {
-> +	while ((opt = getopt(argc, argv, "ld:D:P:f:w:F:isv")) > 0) {
->  		switch (opt) {
-> +		case 'l':
-> +			pwm_print();
-> +			return 0;
->  		case 'd':
->  			devname = optarg;
->  			break;
-> @@ -189,6 +192,7 @@ BAREBOX_CMD_HELP_TEXT("  (although note this will not by itself stop the pwm run
->  BAREBOX_CMD_HELP_TEXT(" Stopping the pwm device does not necessarily set the output to inactive,")
->  BAREBOX_CMD_HELP_TEXT("  but stop is handled last, so can be done in addition to other changes.")
->  BAREBOX_CMD_HELP_TEXT("Options:")
-> +BAREBOX_CMD_HELP_OPT("-l\t", "list registered PWMs")
->  BAREBOX_CMD_HELP_OPT("-d <name>", "device name (eg 'pwm0')")
->  BAREBOX_CMD_HELP_OPT("-D <duty_ns>", "duty cycle (ns)")
->  BAREBOX_CMD_HELP_OPT("-P <period_ns>", "period (ns)")
-> @@ -202,7 +206,7 @@ BAREBOX_CMD_HELP_END
->  BAREBOX_CMD_START(pwm)
->  	.cmd		= do_pwm_cmd,
->  	BAREBOX_CMD_DESC("pwm")
-> -	BAREBOX_CMD_OPTS("[-dDPfwisv]")
-> +	BAREBOX_CMD_OPTS("[-ldDPfwisv]")
->  	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
->  	BAREBOX_CMD_HELP(cmd_pwm_help)
->  BAREBOX_CMD_END
-> diff --git a/drivers/pwm/core.c b/drivers/pwm/core.c
-> index 2237dad4537..a3f27708e6e 100644
-> --- a/drivers/pwm/core.c
-> +++ b/drivers/pwm/core.c
-> @@ -44,6 +44,15 @@ struct pwm_device {
+>  # The same for pbl:
+> -$(patsubst %.gen.o,$(obj)/%.gen.pbl.o, $(obj-pbl-y) $(pbl-y)): $(obj)/%.gen.pbl.o: $(wildcard $(fwdir)/%)
+> +.SECONDEXPANSION:
+> +$(patsubst %.gen.o,$(obj)/%.gen.pbl.o, $(obj-pbl-y) $(pbl-y)): $(obj)/%.gen.pbl.o: $$(wildcard $(fwdir)/%)
+>  $(patsubst %.gen.o,$(obj)/%.extgen.pbl.o, $(pbl-y)): $(obj)/%.extgen.pbl.o: $(fwdir)/%
 >  
->  static LIST_HEAD(pwm_list);
->  
-> +void pwm_print(void)
-> +{
-> +	struct pwm_device *pwm;
-> +
-> +	list_for_each_entry(pwm, &pwm_list, node)
-> +		printf("%s\n", pwm->chip->devname);
-> +}
-> +EXPORT_SYMBOL(pwm_print);
-> +
->  static struct pwm_device *_find_pwm(const char *devname)
->  {
->  	struct pwm_device *pwm;
-> diff --git a/include/pwm.h b/include/pwm.h
-> index 02af7d0a5f3..4d403fe1746 100644
-> --- a/include/pwm.h
-> +++ b/include/pwm.h
-> @@ -24,6 +24,8 @@ struct pwm_state {
->  	unsigned int p_enable;
->  };
->  
-> +void pwm_print(void);
-> +
->  /*
->   * pwm_request - request a PWM device
->   */
+>  pbl-y += $(addsuffix .extgen.o, $(fw-external-y))
 > -- 
 > 2.39.2
 > 
