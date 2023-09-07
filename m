@@ -1,61 +1,71 @@
-Delivery-date: Thu, 07 Sep 2023 10:32:18 +0200
+Delivery-date: Thu, 07 Sep 2023 10:33:52 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qeAR1-006ubR-Kv
-	for lore@lore.pengutronix.de; Thu, 07 Sep 2023 10:32:18 +0200
+	id 1qeASX-006uf8-D2
+	for lore@lore.pengutronix.de; Thu, 07 Sep 2023 10:33:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qeAQz-0001mv-9Z
-	for lore@pengutronix.de; Thu, 07 Sep 2023 10:32:18 +0200
+	id 1qeASU-0002JK-RN
+	for lore@pengutronix.de; Thu, 07 Sep 2023 10:33:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lnzHH5jA8IyUiVmt84BFs7Ff/kVBczRLDlUOMBETmCI=; b=VR3PTApDwveQB5lgXr0IOSPYPY
-	hWyC6EGZAPb/BMNkUqAjuOMlxdr//PbOJEv7TLVwfnigX1zXgn5rCf6+YppApLfXNo4fvU+1qXuwF
-	v7Pi8y2nOuX6WOUIVRiK/PdHdeWlaHfzsZOLVZslsOw5d25l96XGTOUowp9E4AGclfzxG+IYIEhSk
-	bvitnxFqHv20XRYZW2SdODrpOX0wRqCEdq7kHsNMB4Rt5PPsSxDXeHxFqESCLtDxxnYiQJMup15DE
-	ddkH0R3qwkTrJ7ar5x9oO7soEHAXzvxPhVW+oEmzXVGA6mHLvUZPAcH2LgCQzb9dFRbagJ+L/3iVr
-	uX0NLDHw==;
+	bh=D4WTV9h03xQdWikl3bC3aKdY1x4OkXspMpSj55Gr87Q=; b=WrPqjZKLDMHHsFKwEEDeHehxbc
+	2lYaktqF5RiGz3I9pFv3WrQYdZIHvUyW84p2kT9kYBXsL+KfhQdBtvy1JtzovELYLvYncS376nbYM
+	OtUr8vuBitP5rgVlYB7TsEahtLYi3qJlr+y6qTsirDVCb9IN0Y2hCxLzywdoFpXGe7Il6OzFyiPM2
+	EJMfXHtmGjlLnZV/GeKVSSoJcYAChOCFWTPBGwfuu/SRTf8ZMz1p16yYkH5HCuBmCKUEXi4E9+qyN
+	rwCvGE6DC7J52UACYuoZHjMDNF1YaMwnujhpFkzD/n50RnX9jX+Z/P8jCa6vNjBR8l8PXm3Aq8YNT
+	mIKxGjTQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qeAPy-00Bauv-2d;
-	Thu, 07 Sep 2023 08:31:14 +0000
+	id 1qeARQ-00Bb5u-2N;
+	Thu, 07 Sep 2023 08:32:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qeAPv-00BauI-0i
+	id 1qeARN-00Bb5U-0m
 	for barebox@lists.infradead.org;
-	Thu, 07 Sep 2023 08:31:13 +0000
+	Thu, 07 Sep 2023 08:32:43 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qeAPt-0001TF-Ri; Thu, 07 Sep 2023 10:31:09 +0200
-Message-ID: <3704dd53-42de-ab00-7101-786e2d5b2245@pengutronix.de>
-Date: Thu, 7 Sep 2023 10:31:09 +0200
+	id 1qeARL-0001tP-E9; Thu, 07 Sep 2023 10:32:39 +0200
+Message-ID: <18205fbc-7165-e3bc-49a0-f23dbbe4a555@pengutronix.de>
+Date: Thu, 7 Sep 2023 10:32:38 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
 Content-Language: en-US
-To: Lior Weintraub <liorw@pliops.com>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <PR3P195MB0555EE60DE17128F9831C028C31AA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
- <20230817071736.GJ5650@pengutronix.de>
- <PR3P195MB0555ED3DE92FAB5706C2E458C31AA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
- <PR3P195MB0555E881ABD36783C5557EB9C31AA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
- <PR3P195MB05558441FD995F0F06CE132AC31EA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+To: Lior Weintraub <liorw@pliops.com>
+Cc: Ahmad Fatoum <ahmad@a3f.at>,
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+References: <f4aae166-1cc4-6255-1fde-7a52c7872bd8@pengutronix.de>
+ <15f8d795-f486-1914-9eba-e5a315bf2083@pengutronix.de>
+ <PR3P195MB055508CA0B6A5CE36DCCADD4C355A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <f2fa8b9e-ae3e-ac89-a7ab-4710aebcdb98@pengutronix.de>
+ <PR3P195MB0555E76684395257F4C32426C355A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <PR3P195MB0555565681087967FFAA3CBEC35AA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <7023e1e4-f383-49aa-e194-3c61be33c9fe@pengutronix.de>
+ <PR3P195MB0555BA90F8CC6FDAAD775C50C35FA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <2dd1dcef-8c63-5360-365d-c4ac29dad38c@pengutronix.de>
+ <PR3P195MB05559F58793017F19F9AD1F3C321A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <0623c749-be9a-423a-d79d-e21a8513af88@pengutronix.de>
+ <PR3P195MB055558F7BAAF81999ED46D29C308A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <19bbb913-64d9-2d71-81b3-8cbac346b66d@pengutronix.de>
+ <PR3P195MB0555881A5E4A6EDD452E0BD6C31FA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <PR3P195MB05558441FD995F0F06CE132AC31EA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+In-Reply-To: <PR3P195MB0555881A5E4A6EDD452E0BD6C31FA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230907_013111_412018_D6759799 
-X-CRM114-Status: GOOD (  39.34  )
+X-CRM114-CacheID: sfid-20230907_013241_426208_70ECE618 
+X-CRM114-Status: GOOD (  41.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,223 +87,285 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: ARM: mmu_early_enable
+Subject: Re: [PATCH v2] Porting barebox to a new SoC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Hello Lior,
 
-On 21.08.23 16:29, Lior Weintraub wrote:
-> Hi Sascha,
-> 
-> After further digging into the mmu_early_enable function I found that level 0 is set with block type (PTE_TYPE_BLOCK) but AFAIK level 0 must have a table type.
-> Only level 1-3 can be either table or block but not level 0.
-> I think that until now this wasn't an issue because all (I assume) implementations\porting that enabled the use of MMU also gave the barebox a starting address that is within the first 512GB range.
+On 22.08.23 10:48, Lior Weintraub wrote:
+> Thanks Ahmad, I Will try to post same question on Linux mailing list.
 
-That's most certainly the case. Most implementations even place barebox
-in the first 4G to be on the safe side in regard to DMA limitations of
-the devices.
+I am curious to follow the discussion. Did you already post somewhere?
+I can't find a recent mail on lore.kernel.org.
 
-> As a result, the current implementation replaced the first entry of level 0 to point into level 1 table.
-> In our case, where the memory used is above the first 512GB we got an exception. 
-> 
-> I suggest that the initial setting of flat 1:1 mapping of all 40 bits will have:
-> 2 Entries of Level 0 which point to level1 tables.
-> 512 Entries of level 1 each of which define a block of 1GB to map the first 512GB.
-> 512 Entries of level 1 each of which define a block of 1GB to map the second 512GB.
-
-How much extra memory would that cost us for the early TTB?
-
-> The reason 40 bits is used (1TB) is because this is what currently barebox set by default for the physical address (see function calc_tcr on mmu_64.h where ips is set to 2).
-> The below patch suggestion assumes this will always be the case.
-> We can make it more generic by introducing a new settings that will set the total physical address bits.
-> We then can derive from this configuration how to set the IPS value and how many tables of level 0 needs to be initialized.
-> Let me know what you think.
-
-At least a CONFIG option that can be selected by architectures requiring it
-would be apt, I think.
+Feel free to Cc me when you post.
 
 Cheers,
 Ahmad
 
 > 
-> Cheers,
-> Lior.
-> 
-> 
-> diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-> index cdc4825422..28358dd7d9 100644
-> --- a/arch/arm/cpu/mmu_64.c
-> +++ b/arch/arm/cpu/mmu_64.c
-> @@ -245,6 +245,19 @@ void dma_flush_range(void *ptr, size_t size)
->  	v8_flush_dcache_range(start, end);
->  }
->  
-> +void init_range(void *virt_addr, size_t size)
-> +{
-> +    uint64_t *ttb = get_ttb();
-> +    uint64_t addr = (uint64_t)virt_addr;
-> +    while(size) {
-> +        remap_range((void *)addr, L0_XLAT_SIZE, MAP_UNCACHED);
-> +        split_block(ttb,0);
-> +        size -= L0_XLAT_SIZE;
-> +        addr += L0_XLAT_SIZE;
-> +        ttb++;
-> +    }
-> +}
-> +
->  void mmu_early_enable(unsigned long membase, unsigned long memsize)
->  {
->  	int el;
-> @@ -257,7 +270,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize)
->  
->  	memset((void *)ttb, 0, GRANULE_SIZE);
->  
-> -	remap_range(0, 1UL << (BITS_PER_VA - 1), MAP_UNCACHED);
-> +    init_range(0, 2*L0_XLAT_SIZE); // Setting 2 entries of 512GB to cover 1TB memory space
->  	remap_range((void *)membase, memsize - OPTEE_SIZE, MAP_CACHED);
->  	remap_range((void *)membase + memsize - OPTEE_SIZE, OPTEE_SIZE, MAP_FAULT);
->  
-> 
->   
-> 
-> 
 >> -----Original Message-----
->> From: Lior Weintraub
->> Sent: Thursday, August 17, 2023 4:50 PM
->> To: Sascha Hauer <s.hauer@pengutronix.de>
->> Cc: barebox@lists.infradead.org
->> Subject: RE: ARM: mmu_early_enable
+>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> Sent: Tuesday, August 22, 2023 11:01 AM
+>> To: Lior Weintraub <liorw@pliops.com>
+>> Cc: Ahmad Fatoum <ahmad@a3f.at>; barebox@lists.infradead.org
+>> Subject: Re: [PATCH v2] Porting barebox to a new SoC
 >>
->> Hi Sascha,
+>> CAUTION: External Sender
 >>
->> I read your answer again and realized my misunderstanding.
->> So essentially what you say is that all 48 bits of the address space would be set
->> as flat 1:1 un-cached and only the SRAM region will be set as cached.
->> In that case the UART at address 0xD0_0030_7000 and our ROM at address
->> 0xC0_0400_0000 should be OK to access.
->> We will further investigate and try to figure out what went wrong.
+>> Hello Lior,
 >>
->> Thanks,
->> Lior.
->>
->>
->>> -----Original Message-----
->>> From: Lior Weintraub
->>> Sent: Thursday, August 17, 2023 10:32 AM
->>> To: Sascha Hauer <s.hauer@pengutronix.de>
->>> Cc: barebox@lists.infradead.org
->>> Subject: RE: ARM: mmu_early_enable
+>> On 03.08.23 13:17, Lior Weintraub wrote:
+>>> Hi Ahmad,
 >>>
->>> But the UART is set on a total different memory space.
->>> The SRAM where barebox runs and also given as membase and memsize is in
->>> the region of 0xC0_0000_0000
->>> The UART is in the region of 0xD0_0030_7000.
+>>> Hope you had a great time on EOSS 2023 :-)
+>>
+>> Thanks and sorry for the late answer.
+>>
+>>> Quick recap and additional info on the current issue:
 >>>
->>> According the tarmac log, it looks like access to this location caused the
->>> exception:
->>>     3505306 ns  ES  (000000c0000814ac:910003fd) O el3h:	mov	x29,
->>> 	sp 	(console_putc)
->>>                     R X29 (AARCH64) 000000c0 00377ac0
->>>     3505306 ns  ES  (000000c0000814b0:f9400460) O el3h:	ldr	x0,
->>> 	[x3,	#8] 	(console_putc)
->>>                     LD 000000c0000825d0  ........ ........ 000000d0 00307000
->>> S:c0000825d0
->>>                     R X0 (AARCH64) 000000d0 00307000
->>>     3505307 ns  ES  (000000c0000814b4:d63f0040) O el3h:	blr	x2
->>> 	(console_putc)
->>>                     R X30 (AARCH64) 000000c0 000814b8
->>>     3505371 ns  ES  (000000c000000b5c:b9000001) O el3h:	str	w1,
->>> 	[x0] 	(spider_serial_putc)
->>>                     EXC [0x200] Synchronous Current EL with SP_ELx
->>>                     R FAR_EL3 (AARCH64) 000000c0 00000b5c
->>>                     R ESR_EL3 (AARCH64) 8600000f
->>>                     R CPSR 200003cd
->>>                     R SPSR_EL3 (AARCH64) 200003cd
->>>                     R ELR_EL3 (AARCH64) 000000c0 00000b5c
->>>     3505443 ns  ES  (000000c004000a00:14000586) O el3h:	b
->>> 	c004002018	<exception_entry> 	(Vectors)
->>>                     EXC [0x200] Synchronous Current EL with SP_ELx
->>>                     R FAR_EL3 (AARCH64) 000000c0 04000a00
->>>                     R ESR_EL3 (AARCH64) 8600000e
->>>                     R CPSR 200003cd
->>>                     R SPSR_EL3 (AARCH64) 200003cd
->>>                     R ELR_EL3 (AARCH64) 000000c0 04000a00
+>>> 1.
+>>> The spider-soc QEMU with the additional GICv3 and Timers was tested with
+>> a bare-metal code and proved to be OK.
+>>> This bare-metal code sets the A53 timers and GICv3 to handle interrupts on
+>> various execution levels as well as various security levels:
+>>> EL1_NS_PHYSICAL_TIMER set as GROUP1_NON_SECURE
+>>> EL1_SCR_PHYSICAL_TIMER set as GROUP1_SECURE
+>>> EL2_PHYSICAL_TIMER set as GROUP1_SECURE
+>>> VIRTUAL_TIMER set as GROUP1_NON_SECURE
+>>
+>> ok.
+>>
+>>> 2.
+>>> The kernel we build with Buildroot runs OK on virt QEMU but gets stuck in
+>> the middle when we use our spider-soc QEMU.
+>>> There are few differences between those runs:
+>>> a.
+>>> The virt QEMU is executed with -kernel switch and hence the QEMU itself
+>> implements the "bootloader" and prepares the DT given to the Kernel.
+>>> When the Kernel starts on this platforms it starts at EL1.
+>>
+>> This can be influenced e.g. on Virt with -M virt,virtualization=on, I think.
+>>
+>>> b.
+>>> The spider-soc QEMU is executed with -device loader,file=spider-soc-bl1.elf
+>>> Just for easy execution and testing, this executable includes all the needed
+>> binaries (as const data blobs) and it copies the binaries into correct locations
+>> before jumping to Barebox execution.
+>>> The list of binaries includes the barebox, kernel, dt, and rootfs.
+>>> As you recall, BL31 is compiled via Trusted-Firmware-A and has all it's
+>> functions as empty stubs because we currently don't care about CPU power
+>> states.
+>>> The prove that BL31 is executed correctly is that Barebox now runs at EL2.
+>>
+>> Good.
+>>
+>>> At that point the Linux kernel is starting and as I mentioned gets stuck in the
+>> middle (cpu_do_idle function. more details to follow).
 >>>
->>> BTW, In addition to the UART, there seems to be another issue.
->>> The Vectors themselves are located in our ROM location which also resides
->> on
->>> a different memory area (0xC0_0400_0000 space).
->>> Once the UART access caused an exception, the jump to Vectors caused
->>> another exception so we are in a loop.
+>>> Debugging the kernel with GDB revealed few differences:
+>>> 1. When running with Barebox, the kernel starts at EL2 and at some point
+>> moves to EL1.
+>>> Not sure if that has some impact on the following issue but thought it is
+>> worth mentioning.
+>>> (We get a "CPU: All CPU(s) started at EL2" trace)
+>>
+>> I get the same on an i.MX8M as well (multi-core Cortex-A53 SoC).
+>>
+>>> Another difference that might be related to this execution level is that timers
+>> setting shows that it uses the physical timer (as oppose to virt QEMU run that
+>> uses the virtual timer):
+>>> The spider-soc QEMU Timers dump:
+>>> CNTFRQ_EL0 = 0x3b9aca0
+>>> CNTP_CTL_EL0 = 0x5
+>>> CNTV_CTL_EL0 = 0x0
+>>> CNTP_TVAL_EL0 = 0xff1f2ad5
+>>> CNTP_CVAL_EL0 = 0xac5c3240
+>>> CNTV_TVAL_EL0 = 0x52c2d916
+>>> CNTV_CVAL_EL0 = 0x0
 >>>
->>> Looks like a catch22 to me.
->>> On one hand the barebox wanted to start clean and disabled the MMU but
->> on
->>> the other hand the mmu_early_enable sets a partial MMU which causes
->>> exceptions.
->>> What do you think needs to be the best solution here?
+>>> The virt QEMU Timers dump:
+>>> CNTFRQ_EL0 = 0x3b9aca0
+>>> CNTP_CTL_EL0 = 0x0
+>>> CNTV_CTL_EL0 = 0x5
+>>> CNTP_TVAL_EL0 = 0xb8394fbc
+>>> CNTP_CVAL_EL0 = 0x0
+>>> CNTV_TVAL_EL0 = 0xffd18e39
+>>> CNTV_CVAL_EL0 = 0x479858aa
+>>>
+>>> 2. When running with Barebox, the kernel fails to correctly set the GICv3
+>> registers.
+>>> So in other words, there are no timer events and hence the scheduler is not
+>> running.
+>>> The code get stuck on cpu_do_idle but we also found that the RCU cb_list is
+>> not empty (probably explains why scheduler haven't started (just a guess)).
+>>> We placed a breakpoint just before calling wait_for_completion (from
+>> function rcu_barrier on kernel/rcu/tree.c) and found:
+>>> bt
+>>> #0  rcu_barrier () at kernel/rcu/tree.c:4064
+>>> #1  0xffffffc08059e1b4 in mark_readonly () at init/main.c:1789
+>>> #2  kernel_init (unused=<optimized out>) at init/main.c:1838
+>>> #3  0xffffffc080015e48 in ret_from_fork () at
+>> arch/arm64/kernel/entry.S:853
+>>>
+>>> At that point rcu_state.barrier_cpu_count.counter is 1 (as oppose to virt
+>> QEMU where it is 0 at that point)
+>>> If we place the breakpoint a bit earlier in this rcu_barrier function (just
+>> before the for_each_possible_cpu loop) and run few more steps (to get the
+>> rdp) we see that rdp->cblist.len is 0x268 (616):
+>>> p/x rdp->cblist
+>>> $1 = {head = 0xffffffc0808f06d0, tails = {0xffffff802fe55a78,
+>> 0xffffff802fe55a78, 0xffffff802fe55a78, 0xffffff80001c22c8}, gp_seq = {0x0,
+>> 0x0, 0x0, 0x0}, len = 0x268, seglen = {0x0, 0x0, 0x0, 0x268}, flags = 0x1}
+>>>
+>>> When we compare that with virt QEMU we see that the rdp->cblist.len is 0
+>> there.
+>>>
+>>> IMHO, this all is a result of the GICv3 settings that were not applied properly.
+>>> As a result there are no timer interrupts.
+>>>
+>>> Further debugging on the GICv3 settings showed that the code (function
+>> gic_cpu_init on drivers/irqchip/irq-gic-v3.c) tries to write 0xffffffff to
+>> GICR_IGROUPR0 (Configure SGIs/PPIs as non-secure Group-1) but when we
+>> try to read it back we get all zeros.
+>>> Dumping GICv3 settings after the call to init_IRQ:
+>>> Showing only the differences:
+>>>                       Spider-SoC QEMU virt QEMU
+>>> GICD_CTLR =           0x00000012              0x00000053
+>>> GICD_TYPER =          0x037a0402              0x037a0007
+>>> GICR0_IGROUPR0 =      0x00000000              0xffffffff
+>>> GICR0_ISENABLER0 =    0x00000000              0x0000007f
+>>> GICR0_ICENABLER0 =    0x00000000              0x0000007f
+>>> GICR0_ICFGR0 =        0x00000000              0xaaaaaaaa
+>>>
+>>> Any thoughts?
+>>> As always, your support is much appreciated!
+>>
+>> Sorry to disappoint, but I have no hands-on experience with the GIC.
+>> My guess would be that you are missing initialization in the TF-A...
+>>
+>> Cheers,
+>> Ahmad
+>>
 >>>
 >>> Cheers,
 >>> Lior.
 >>>
+>>>
 >>>> -----Original Message-----
->>>> From: Sascha Hauer <s.hauer@pengutronix.de>
->>>> Sent: Thursday, August 17, 2023 10:18 AM
->>>> To: Lior Weintraub <liorw@pliops.com>
->>>> Cc: barebox@lists.infradead.org
->>>> Subject: Re: ARM: mmu_early_enable
+>>>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>>>> Sent: Friday, June 30, 2023 8:53 AM
+>>>> To: Lior Weintraub <liorw@pliops.com>; Ahmad Fatoum <ahmad@a3f.at>;
+>>>> barebox@lists.infradead.org
+>>>> Subject: Re: [PATCH v2] Porting barebox to a new SoC
 >>>>
 >>>> CAUTION: External Sender
 >>>>
->>>> On Thu, Aug 17, 2023 at 06:22:50AM +0000, Lior Weintraub wrote:
->>>>> Hi Sascha,
+>>>> Hi Lior,
+>>>>
+>>>> On 25.06.23 22:33, Lior Weintraub wrote:
+>>>>> Hello Ahmad,
+>>>>
+>>>> [Sorry for the delay, we're at EOSS 2023 currently]
+>>>>
+>>>>> I failed to reproduce this issue on virt because the addresses and
+>> peripherals
+>>>> on virt machine are different and it is difficult to change our code to match
+>>>> that.
+>>>>> If you think this is critical I will make extra effort to make it work.
+>>>>> AFAIU, this suggestion was made to debug the "conflict" issue.
+>>>>
+>>>> It's not critical, but I'd have liked to understand this, so I can check
+>>>> if it's perhaps a barebox bug.
+>>>>
+>>>>> Currently the workaround I am using is just to set the size of the kernel
+>>>> partition to match the exact size of the "Image" file.
 >>>>>
->>>>> I think I found an issue with the CONFIG_MMU feature.
->>>>> When the code under barebox_pbl_start calls mmu_early_enable, the
->>> MMU
->>>>> is set such that only the given SRAM is defined (membase, memsize).
->>>>> But then, if DEBUG_LL is in use and the function pr_debug is called we
->>>>> get an exception because the UART address is not included in the MMU.
+>>>>> The other issue I am facing is that Kernel seems stuck on cpu_do_idle and
+>>>> there is no login prompt from the kernel.
 >>>>
->>>> That shouldn't happen. See the code in mmu_early_enable():
+>>>> Does it call into PSCI during idle?
 >>>>
->>>>         early_remap_range(0, 1UL << (BITS_PER_VA - 1), MAP_UNCACHED);
->>>>         early_remap_range(membase, memsize - OPTEE_SIZE, MAP_CACHED);
->>>>         early_remap_range(membase + memsize - OPTEE_SIZE, OPTEE_SIZE,
->>>> MAP_FAULT);
+>>>>> As you recall, I am running on a custom QEMU that tries to emulate our
+>>>> platform.
+>>>>> I suspect that I did something wrong with the GICv3 and Timers
+>> connectivity.
+>>>>> The code I used was based on examples I saw on sbsa-ref.c and virt.c.
+>>>>> In addition, I declared the GICv3 and timers on our device tree.
+>>>>>
+>>>>> I running QEMU with "-d int" so I am also getting trace of exceptions and
+>>>> interrupts.
 >>>>
->>>> The first line maps the whole address space uncached in a flat 1:1
->>>> mapping. The second and third lines map the SDRAM (SRAM in your case)
->>>> cached.
+>>>> Nice. Didn't know about this option.
 >>>>
->>>> Your availabe memory is quite small (3MiB) and by skipping the
->>>> relocation your SRAM layout is not standard. Could it be that something
->>>> overwrites your page tables?
+>>>> [snip]
 >>>>
->>>> Sascha
+>>>>> Exception return from AArch64 EL3 to AArch64 EL1 PC
+>> 0xffffffc00802112c
+>>>>> Taking exception 13 [Secure Monitor Call] on CPU 0
+>>>>> ...from EL1 to EL3
+>>>>> ...with ESR 0x17/0x5e000000
+>>>>> ...with ELR 0xffffffc008021640
+>>>>> ...to EL3 PC 0x10005400 PSTATE 0x3cd
+>>>>> Exception return from AArch64 EL3 to AArch64 EL1 PC
+>> 0xffffffc008021640
+>>>>
+>>>> Looks fine so far? Doesn't look like it's hanging in EL1.
+>>>>
+>>>> [snip]
+>>>>
+>>>>> Segment Routing with IPv6
+>>>>> In-situ OAM (IOAM) with IPv6
+>>>>> sit: IPv6, IPv4 and MPLS over IPv4 tunneling driver
+>>>>> NET: Registered PF_PACKET protocol family
+>>>>> NET: Registered PF_KEY protocol family
+>>>>> NET: Registered PF_VSOCK protocol family
+>>>>> registered taskstats version 1
+>>>>> clk: Disabling unused clocks
+>>>>> Freeing unused kernel memory: 1664K
+>>>>
+>>>> Not sure. Normally, I'd try again with pd_ignore_unused clk_ignore_unused
+>> in
+>>>> the
+>>>> kernel arguments, but I think you define no clocks or power domains yet in
+>>>> the DT?
+>>>>
+>>>> You can try again with kernel command line option initcall_debug and see
+>>>> what the
+>>>> initcall is that is getting stuck. If nothing helps, maybe attach a hardware
+>>>> debugger?
+>>>>
+>>>> Cheers,
+>>>> Ahmad
 >>>>
 >>>> --
 >>>> Pengutronix e.K.                           |                             |
 >>>> Steuerwalder Str. 21                       | http://secure-
->>>> web.cisco.com/1OEKFl2BnNpoLNUlGA--QcqTLOmehOhRYUZN-
->>>> THBCB91kVNePMy2om4tD5Nv-
->>>>
->>>
->> _isTZzlwD1lXGQLUMWmqHlBH9dEe0vcctRC7gn_a6v7IxQu5RV7VCRo5Rl7Tylx
->>>> vh1hfoYe3c1lCTbGAEE5kXKVZLdKBs7oNP9Xn4ml3gy7I78-
->>>>
->>>
->> c_QsTMlZ4xNZj06ORqpIvkGFgk72fNMsGjjLXZP6zTk2yEI2gjapDB8ClJ0mVtAl
->>>> oiP9YHbgjuY0qbUbZfQq-UuasUtCi2rRo0Pu2jKm7sqnlCFb16xbdfl-
->>>>
->>>
->> JN9oqUXAy8l3lHq0yGyfhYZnzWTxH/http%3A%2F%2Fwww.pengutronix.de%
->>>> 2F  |
+>> web.cisco.com/1RKlXzLFuAdOeswlWvHRCbVHHvoQssFo7iVFqyvv8Yn0sP-
+>> MsWtfVRf2HW_4AXhQNuR5kNBuKLHNWkQfzg5qQhZ2AYhdNYqrfmNM7Isb
+>> bDhybYe7C21TIR6Du5pxC7TSTbhhg4oBK3J9y2XyMtJNhBKeliNv2I5G4mlnB_
+>> 57ph9x9tlPHstmZ8SL22VzM9RxLoj-5LddbVSsB69VGG-
+>> O3Hw57EyoSFWKWmjNjOHDmuU1R3SwOX2tkDMmiLPauqbBc-
+>> FP9cAFpclCgrOIJu2Jfef0-
+>> sVV346BmbxC1SOFAKCI/http%3A%2F%2Fwww.pengutronix.de%2F  |
 >>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 >>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
-> 
+>>>
+>>
+>> --
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://secure-
+>> web.cisco.com/1RKlXzLFuAdOeswlWvHRCbVHHvoQssFo7iVFqyvv8Yn0sP-
+>> MsWtfVRf2HW_4AXhQNuR5kNBuKLHNWkQfzg5qQhZ2AYhdNYqrfmNM7Isb
+>> bDhybYe7C21TIR6Du5pxC7TSTbhhg4oBK3J9y2XyMtJNhBKeliNv2I5G4mlnB_
+>> 57ph9x9tlPHstmZ8SL22VzM9RxLoj-5LddbVSsB69VGG-
+>> O3Hw57EyoSFWKWmjNjOHDmuU1R3SwOX2tkDMmiLPauqbBc-
+>> FP9cAFpclCgrOIJu2Jfef0-
+>> sVV346BmbxC1SOFAKCI/http%3A%2F%2Fwww.pengutronix.de%2F  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>
 > 
 
 -- 
