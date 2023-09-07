@@ -1,54 +1,57 @@
-Delivery-date: Wed, 06 Sep 2023 17:10:39 +0200
+Delivery-date: Thu, 07 Sep 2023 07:50:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qduAy-00663O-K8
-	for lore@lore.pengutronix.de; Wed, 06 Sep 2023 17:10:39 +0200
+	id 1qe7uQ-006n1z-OI
+	for lore@lore.pengutronix.de; Thu, 07 Sep 2023 07:50:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qduAw-00087y-Ic
-	for lore@pengutronix.de; Wed, 06 Sep 2023 17:10:39 +0200
+	id 1qe7uO-0008O7-Pt
+	for lore@pengutronix.de; Thu, 07 Sep 2023 07:50:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=073h8CP6HoRdxEA4o6AAlfHix8ppGNebmL6JhyiS2gU=; b=ZdXpaRd1uIXCsl3n08FiS9ZRlJ
-	iXl1G+YYxyMyBjgozHOnEK8SEDrAckn1uGL6FNJ9FkNxDqv/xMoHJhGC41PTjSRO/si7ZWaYvZKhE
-	9EBMETXokrGS3KlcXlvFWnuTT5e+ppBzm2ztm4c1A82nUqcwiwa+8hNGCTZnA8pbpBIqYN4jI1E4S
-	fWD2vVoIlzsxJEyScepQZq7JscI1t2Nz+/6lBdYjl/cypSxGI1E7hu+jEczEQwEcXJ+7W3TzrjTFl
-	VxFP9iXp+2JAl5nGbQawOuKUNSX7c4au8PDFpZWjjCoNSvx2kGk0ryn61a2jNRJ9u/sAIpdX5U4ZW
-	tdgmy1VA==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Sx55Rqmg5F7baCyMWt40tZ5T0UwuTPt3MFIRporlaso=; b=Yj6wC53XFKPFeZ2kZTIs1fqyJm
+	hQCb2Vu68935rXzcPjSxfeyUrVnHXb39Pd1UqJjEpcjzhNGloA2j/bEexbsZpTxdwouEFF6t42x5p
+	B1WlR833Z9Hh9jIwgpi42OYz5RphlHl/XeV1gqR/ah6x4FnbyE8xXksod2JcwtZN9fFJ+dHenMHSb
+	6N/PpkMEJQjzUYlzJzz5IEyrrQk9igP9QXqz8MA8gZQlhtLjKkqk3XBTAi+JMmT4oIWazFKjwxzPC
+	vWf6qCvjLfgNslRFlj1Az02r1R/HstYSHYS2BL2FLVx6YNZ1rp5f2iSojc/VNGdOpfzrX+LvmOKCr
+	NoMZxQ4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qdu9i-00AMei-1l;
-	Wed, 06 Sep 2023 15:09:22 +0000
-Received: from relay5-d.mail.gandi.net ([217.70.183.197])
+	id 1qe7sy-00BO8K-14;
+	Thu, 07 Sep 2023 05:49:00 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qdu9e-00AMd5-0h
+	id 1qe7st-00BO7y-2Q
 	for barebox@lists.infradead.org;
-	Wed, 06 Sep 2023 15:09:21 +0000
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 1BC3A1C000E;
-	Wed,  6 Sep 2023 15:09:13 +0000 (UTC)
-From: Jules Maselbas <jmaselbas@zdiv.net>
-To: barebox@lists.infradead.org
-Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Wed,  6 Sep 2023 17:08:56 +0200
-Message-ID: <20230906150857.32035-2-jmaselbas@zdiv.net>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230906150857.32035-1-jmaselbas@zdiv.net>
-References: <20230906150857.32035-1-jmaselbas@zdiv.net>
+	Thu, 07 Sep 2023 05:48:58 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <j.zink@pengutronix.de>)
+	id 1qe7so-00085r-6w; Thu, 07 Sep 2023 07:48:50 +0200
+Message-ID: <fd10db7e-6b24-0aab-a9bd-47a6b68fc719@pengutronix.de>
+Date: Thu, 7 Sep 2023 07:48:36 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: jmaselbas@zdiv.net
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ Barebox List <barebox@lists.infradead.org>
+References: <20230904081825.1997618-1-s.hauer@pengutronix.de>
+Content-Language: en-US, de-DE
+From: Johannes Zink <j.zink@pengutronix.de>
+In-Reply-To: <20230904081825.1997618-1-s.hauer@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230906_080918_388528_58425662 
-X-CRM114-Status: UNSURE (   9.07  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230906_224855_811099_75904582 
+X-CRM114-Status: GOOD (  20.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -66,45 +69,158 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] scripts: Select XZ --arm64 BCJ filter for 64-bit arm
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/4] crypto: crc32: Drop CONFIG_DYNAMIC_CRC_TABLE option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This change will select the arm64 BCJ filter for aarch64 instead of
-the arm filter which was always selected for arm based architectures.
+Even though I am too late: tested and verified entire series on ARM64
 
-The selected filter is also tested, by looking if it is present in
-the long help message of xz, this is because the arm64 BCJ filter is
-a recent addition to xz.
+Tested-by: Johannes Zink <j.zink@pengutronix.de>
 
-Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
----
- scripts/xz_wrap.sh | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/xz_wrap.sh b/scripts/xz_wrap.sh
-index 7a2d372f48..5b5f3adcff 100755
---- a/scripts/xz_wrap.sh
-+++ b/scripts/xz_wrap.sh
-@@ -16,8 +16,11 @@ case $SRCARCH in
- 	x86)            BCJ=--x86 ;;
- 	powerpc)        BCJ=--powerpc ;;
- 	ia64)           BCJ=--ia64; LZMA2OPTS=pb=4 ;;
--	arm)            BCJ=--arm ;;
-+	arm)            BCJ=--arm$S64 ;;
- 	sparc)          BCJ=--sparc ;;
- esac
- 
-+# clear BCJ filter if unsupported
-+xz -H | grep -q -- $BCJ || BCJ=
-+
- exec xz --check=crc32 $BCJ --lzma2=$LZMA2OPTS,dict=32MiB
+On 9/4/23 10:18, Sascha Hauer wrote:
+> Generating the crc table on a not-so-powerfull i.MX6q SoC takes
+> around 100us. This is negligible and not worth bothering the user with
+> an extra Kconfig option. Just drop the option and make it the default.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> ---
+>   common/Kconfig |  9 -------
+>   crypto/crc32.c | 66 --------------------------------------------------
+>   2 files changed, 75 deletions(-)
+> 
+> diff --git a/common/Kconfig b/common/Kconfig
+> index 50f62b9f9a..afa591cb76 100644
+> --- a/common/Kconfig
+> +++ b/common/Kconfig
+> @@ -519,15 +519,6 @@ endchoice
+>   
+>   endif
+>   
+> -config DYNAMIC_CRC_TABLE
+> -	bool
+> -	depends on CRC32
+> -	prompt "Generate the crc32 table dynamically"
+> -	default y
+> -	help
+> -	  Saying yes to this option saves around 800 bytes of binary size.
+> -	  If unsure say yes.
+> -
+>   config ERRNO_MESSAGES
+>   	bool
+>   	prompt "print error values as text"
+> diff --git a/crypto/crc32.c b/crypto/crc32.c
+> index 95cb2212db..ff5c429ad1 100644
+> --- a/crypto/crc32.c
+> +++ b/crypto/crc32.c
+> @@ -22,8 +22,6 @@
+>   #define STATIC static inline
+>   #endif
+>   
+> -#ifdef CONFIG_DYNAMIC_CRC_TABLE
+> -
+>   static uint32_t *crc_table;
+>   
+>   /*
+> @@ -73,66 +71,6 @@ static void make_crc_table(void)
+>       crc_table[n] = c;
+>     }
+>   }
+> -#else
+> -/* ========================================================================
+> - * Table of CRC-32's of all single-byte values (made by make_crc_table)
+> - */
+> -static const uint32_t crc_table[256] = {
+> -  0x00000000L, 0x77073096L, 0xee0e612cL, 0x990951baL, 0x076dc419L,
+> -  0x706af48fL, 0xe963a535L, 0x9e6495a3L, 0x0edb8832L, 0x79dcb8a4L,
+> -  0xe0d5e91eL, 0x97d2d988L, 0x09b64c2bL, 0x7eb17cbdL, 0xe7b82d07L,
+> -  0x90bf1d91L, 0x1db71064L, 0x6ab020f2L, 0xf3b97148L, 0x84be41deL,
+> -  0x1adad47dL, 0x6ddde4ebL, 0xf4d4b551L, 0x83d385c7L, 0x136c9856L,
+> -  0x646ba8c0L, 0xfd62f97aL, 0x8a65c9ecL, 0x14015c4fL, 0x63066cd9L,
+> -  0xfa0f3d63L, 0x8d080df5L, 0x3b6e20c8L, 0x4c69105eL, 0xd56041e4L,
+> -  0xa2677172L, 0x3c03e4d1L, 0x4b04d447L, 0xd20d85fdL, 0xa50ab56bL,
+> -  0x35b5a8faL, 0x42b2986cL, 0xdbbbc9d6L, 0xacbcf940L, 0x32d86ce3L,
+> -  0x45df5c75L, 0xdcd60dcfL, 0xabd13d59L, 0x26d930acL, 0x51de003aL,
+> -  0xc8d75180L, 0xbfd06116L, 0x21b4f4b5L, 0x56b3c423L, 0xcfba9599L,
+> -  0xb8bda50fL, 0x2802b89eL, 0x5f058808L, 0xc60cd9b2L, 0xb10be924L,
+> -  0x2f6f7c87L, 0x58684c11L, 0xc1611dabL, 0xb6662d3dL, 0x76dc4190L,
+> -  0x01db7106L, 0x98d220bcL, 0xefd5102aL, 0x71b18589L, 0x06b6b51fL,
+> -  0x9fbfe4a5L, 0xe8b8d433L, 0x7807c9a2L, 0x0f00f934L, 0x9609a88eL,
+> -  0xe10e9818L, 0x7f6a0dbbL, 0x086d3d2dL, 0x91646c97L, 0xe6635c01L,
+> -  0x6b6b51f4L, 0x1c6c6162L, 0x856530d8L, 0xf262004eL, 0x6c0695edL,
+> -  0x1b01a57bL, 0x8208f4c1L, 0xf50fc457L, 0x65b0d9c6L, 0x12b7e950L,
+> -  0x8bbeb8eaL, 0xfcb9887cL, 0x62dd1ddfL, 0x15da2d49L, 0x8cd37cf3L,
+> -  0xfbd44c65L, 0x4db26158L, 0x3ab551ceL, 0xa3bc0074L, 0xd4bb30e2L,
+> -  0x4adfa541L, 0x3dd895d7L, 0xa4d1c46dL, 0xd3d6f4fbL, 0x4369e96aL,
+> -  0x346ed9fcL, 0xad678846L, 0xda60b8d0L, 0x44042d73L, 0x33031de5L,
+> -  0xaa0a4c5fL, 0xdd0d7cc9L, 0x5005713cL, 0x270241aaL, 0xbe0b1010L,
+> -  0xc90c2086L, 0x5768b525L, 0x206f85b3L, 0xb966d409L, 0xce61e49fL,
+> -  0x5edef90eL, 0x29d9c998L, 0xb0d09822L, 0xc7d7a8b4L, 0x59b33d17L,
+> -  0x2eb40d81L, 0xb7bd5c3bL, 0xc0ba6cadL, 0xedb88320L, 0x9abfb3b6L,
+> -  0x03b6e20cL, 0x74b1d29aL, 0xead54739L, 0x9dd277afL, 0x04db2615L,
+> -  0x73dc1683L, 0xe3630b12L, 0x94643b84L, 0x0d6d6a3eL, 0x7a6a5aa8L,
+> -  0xe40ecf0bL, 0x9309ff9dL, 0x0a00ae27L, 0x7d079eb1L, 0xf00f9344L,
+> -  0x8708a3d2L, 0x1e01f268L, 0x6906c2feL, 0xf762575dL, 0x806567cbL,
+> -  0x196c3671L, 0x6e6b06e7L, 0xfed41b76L, 0x89d32be0L, 0x10da7a5aL,
+> -  0x67dd4accL, 0xf9b9df6fL, 0x8ebeeff9L, 0x17b7be43L, 0x60b08ed5L,
+> -  0xd6d6a3e8L, 0xa1d1937eL, 0x38d8c2c4L, 0x4fdff252L, 0xd1bb67f1L,
+> -  0xa6bc5767L, 0x3fb506ddL, 0x48b2364bL, 0xd80d2bdaL, 0xaf0a1b4cL,
+> -  0x36034af6L, 0x41047a60L, 0xdf60efc3L, 0xa867df55L, 0x316e8eefL,
+> -  0x4669be79L, 0xcb61b38cL, 0xbc66831aL, 0x256fd2a0L, 0x5268e236L,
+> -  0xcc0c7795L, 0xbb0b4703L, 0x220216b9L, 0x5505262fL, 0xc5ba3bbeL,
+> -  0xb2bd0b28L, 0x2bb45a92L, 0x5cb36a04L, 0xc2d7ffa7L, 0xb5d0cf31L,
+> -  0x2cd99e8bL, 0x5bdeae1dL, 0x9b64c2b0L, 0xec63f226L, 0x756aa39cL,
+> -  0x026d930aL, 0x9c0906a9L, 0xeb0e363fL, 0x72076785L, 0x05005713L,
+> -  0x95bf4a82L, 0xe2b87a14L, 0x7bb12baeL, 0x0cb61b38L, 0x92d28e9bL,
+> -  0xe5d5be0dL, 0x7cdcefb7L, 0x0bdbdf21L, 0x86d3d2d4L, 0xf1d4e242L,
+> -  0x68ddb3f8L, 0x1fda836eL, 0x81be16cdL, 0xf6b9265bL, 0x6fb077e1L,
+> -  0x18b74777L, 0x88085ae6L, 0xff0f6a70L, 0x66063bcaL, 0x11010b5cL,
+> -  0x8f659effL, 0xf862ae69L, 0x616bffd3L, 0x166ccf45L, 0xa00ae278L,
+> -  0xd70dd2eeL, 0x4e048354L, 0x3903b3c2L, 0xa7672661L, 0xd06016f7L,
+> -  0x4969474dL, 0x3e6e77dbL, 0xaed16a4aL, 0xd9d65adcL, 0x40df0b66L,
+> -  0x37d83bf0L, 0xa9bcae53L, 0xdebb9ec5L, 0x47b2cf7fL, 0x30b5ffe9L,
+> -  0xbdbdf21cL, 0xcabac28aL, 0x53b39330L, 0x24b4a3a6L, 0xbad03605L,
+> -  0xcdd70693L, 0x54de5729L, 0x23d967bfL, 0xb3667a2eL, 0xc4614ab8L,
+> -  0x5d681b02L, 0x2a6f2b94L, 0xb40bbe37L, 0xc30c8ea1L, 0x5a05df1bL,
+> -  0x2d02ef8dL
+> -};
+> -#endif
+> -
+>   
+>   /* ========================================================================= */
+>   #define DO1(buf) crc = crc_table[((int)crc ^ (*buf++)) & 0xff] ^ (crc >> 8);
+> @@ -145,10 +83,8 @@ STATIC uint32_t crc32(uint32_t crc, const void *_buf, unsigned int len)
+>   {
+>       const unsigned char *buf = _buf;
+>   
+> -#ifdef CONFIG_DYNAMIC_CRC_TABLE
+>   	if (!crc_table)
+>   		make_crc_table();
+> -#endif
+>       crc = crc ^ 0xffffffffL;
+>       while (len >= 8)
+>       {
+> @@ -171,10 +107,8 @@ STATIC uint32_t crc32_no_comp(uint32_t crc, const void *_buf, unsigned int len)
+>   {
+>      const unsigned char *buf = _buf;
+>   
+> -#ifdef CONFIG_DYNAMIC_CRC_TABLE
+>   	if (!crc_table)
+>   		make_crc_table();
+> -#endif
+>       while (len >= 8)
+>       {
+>         DO8(buf);
+
 -- 
-2.41.0
+Pengutronix e.K.                | Johannes Zink                  |
+Steuerwalder Str. 21            | https://www.pengutronix.de/    |
+31137 Hildesheim, Germany       | Phone: +49-5121-206917-0       |
+Amtsgericht Hildesheim, HRA 2686| Fax:   +49-5121-206917-5555    |
 
 
 
