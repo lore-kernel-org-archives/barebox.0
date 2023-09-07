@@ -1,64 +1,60 @@
-Delivery-date: Thu, 07 Sep 2023 10:23:22 +0200
+Delivery-date: Thu, 07 Sep 2023 10:27:47 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qeAIN-006uJy-6u
-	for lore@lore.pengutronix.de; Thu, 07 Sep 2023 10:23:22 +0200
+	id 1qeAMe-006uSA-KC
+	for lore@lore.pengutronix.de; Thu, 07 Sep 2023 10:27:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qeAIJ-0007mw-DH
-	for lore@pengutronix.de; Thu, 07 Sep 2023 10:23:21 +0200
+	id 1qeAMc-0000Yh-5R
+	for lore@pengutronix.de; Thu, 07 Sep 2023 10:27:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0XGgnQqubVJKpRJQRN//RhzTVkI16J78UvsaLShqhk4=; b=hmNg9ykIjReYIJyGeJGLXvS39z
-	CTk5G8N5PBUi+z/DWaQVGVWaGejbVBe6XlVzhd6UBuIOLUesF3S2SgjVOtwM3FGOgp7hNrpic4FGr
-	d8MeQXpCX0ajM+ZZCBNzGMHautT5FfFqFx7tGPAQYRvTSnIR1KkLbcak/eXJ9DjuZNAxP00lVhsu+
-	czfudrFta1OxgSyHszhIuGqucC5JiDYRhUe2aoerem4C4ma6jdn+NLmvyepKw1bjVKzyKZe+vboae
-	HquY/gykoRRDWzoKZPK0ZVNEuKKg16xVT1my+FbGPtDhSAJ9ov3o5qAaiE3ohWE7HjRBx3O/nq/SD
-	bXqSrBZw==;
+	bh=4rW10DxBESE6NgYOTjcCSnzACXPJ6TXhZ/0rB9FnoxE=; b=fK0vKsJBCBczMmz3M88KAdIXdD
+	xeav8s8Ct3N6GLOLtvtUga6wGBHnjaEz7r0hiibKbBlL9CDdAkyT9iJ1vPjaZ1K/FVVMvYsoXN8oL
+	wHlt5qfNdnFHmRbiJxARrf49YcG378hEjMplyd37cpzjZ7fz7B2M5K3DuahQsY9QBd/O7sAZlmEhN
+	5Xn6XUPOH++a+C/aOJy9oeT9C6jzXxdDpUTmSp2xA6UF8MmSb5ev4WvOKsWcrKPehuGqvZrl8HS5Y
+	6Kxst8tWedcYXQlruCVhL5gPQz9LQKSQhIIpS1IVjCsgcYYjqx9eUUkWPqchrj9ZTCIAsQjaxSEAR
+	NnjmIA6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qeAH1-00Ba0O-0o;
-	Thu, 07 Sep 2023 08:21:59 +0000
+	id 1qeALa-00BaXW-0S;
+	Thu, 07 Sep 2023 08:26:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qeAGx-00BZz8-0R
+	id 1qeALW-00BaWp-2a
 	for barebox@lists.infradead.org;
-	Thu, 07 Sep 2023 08:21:57 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qeAGs-0007E5-8O; Thu, 07 Sep 2023 10:21:50 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qeAGr-004buK-Rc; Thu, 07 Sep 2023 10:21:49 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qeAGr-009zoA-1w;
-	Thu, 07 Sep 2023 10:21:49 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: mfe@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  7 Sep 2023 10:21:26 +0200
-Message-Id: <20230907082126.2326381-3-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230907082126.2326381-1-a.fatoum@pengutronix.de>
-References: <20230907082126.2326381-1-a.fatoum@pengutronix.de>
+	Thu, 07 Sep 2023 08:26:40 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qeALT-0000GJ-Mk; Thu, 07 Sep 2023 10:26:35 +0200
+Message-ID: <1051bfae-680e-b4d9-3036-87802801710a@pengutronix.de>
+Date: Thu, 7 Sep 2023 10:26:33 +0200
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Lior Weintraub <liorw@pliops.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "andrew.smirnov@gmail.com" <andrew.smirnov@gmail.com>,
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+References: <PR3P195MB0555C0CAAE5F70743B7DC534C317A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <20230816100146.GF5650@pengutronix.de>
+ <PR3P195MB0555474B08A4CAF79B7AF804C315A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <PR3P195MB0555474B08A4CAF79B7AF804C315A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230907_012155_169178_81354C08 
-X-CRM114-Status: GOOD (  15.05  )
+X-CRM114-CacheID: sfid-20230907_012638_843877_80CB13E4 
+X-CRM114-Status: GOOD (  26.70  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,82 +72,121 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] console: pbl: correctly handle relocate_to_adr after pbl_set_putc
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: ARM: aarch64: lowlevel: potential bug in arm_cpu_lowlevel_init
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-pbl_set_putc may be called by a PBL entry point to store the absolute
-address of a routine to be used for printing out a character.
+Hello Lior,
 
-If barebox happens to be located outside of the initially known RAM,
-it will be relocated into it by means of relocate_to_adr(), but nothing
-will take care to update the function pointer stored by pbl_set_putc.
+On 16.08.23 12:14, Lior Weintraub wrote:
+> Thanks Sascha!
+> 
+> Actually the bootloader is still under development so there is no problem to change and work without MMU.
+> (or at lease disable it before jumping to Barebox).
+> I totally agree that if virtual mapping was used it would be impossible to disable the MMU.
+> Just thought that it is totally harmless to add `dsb sy`.
 
-This will usually continue to work until barebox sets up the MMU and
-everything not known to be RAM is marked as eXecute Never. After that,
-the next PBL console print will trigger an instruction abort.
+as Sascha mentioned, we expect MMU to be off, but some BootROMs fail to
+do that in some error cases. I thus think if a barrier would save us
+in such a case, we should have it in arm_cpu_lowlevel_init().
 
-Fix this by not storing the putc function pointer, but instead an offset
-relative to _text.
+Cheers,
+Ahmad
 
-This is the second part of fixing barebox hanging on i.MX8M when located
-at an address greater than 4G.
+> 
+> Cheers,
+> Lior.
+> 
+>> -----Original Message-----
+>> From: Sascha Hauer <s.hauer@pengutronix.de>
+>> Sent: Wednesday, August 16, 2023 1:02 PM
+>> To: Lior Weintraub <liorw@pliops.com>
+>> Cc: andrew.smirnov@gmail.com; barebox@lists.infradead.org; Ahmad
+>> Fatoum <a.fatoum@pengutronix.de>
+>> Subject: Re: ARM: aarch64: lowlevel: potential bug in arm_cpu_lowlevel_init
+>>
+>> CAUTION: External Sender
+>>
+>> Hi Lior,
+>>
+>> On Mon, Aug 14, 2023 at 11:35:05AM +0000, Lior Weintraub wrote:
+>>>    Link: [1]File-List
+>>>    Hi Andrew,
+>>>
+>>>    I am asking about a patch you've introduced about 4 years ago:
+>>>    Commit: cd6e1857a6a824d562bd27379d191602c074f6b7
+>>>
+>>>    ENTRY(arm_cpu_lowlevel_init)
+>>>                    switch_el x1, 3f, 2f, 1f
+>>>
+>>>    3:
+>>>                    mov       x0, #1                                    /*
+>>>    Non-Secure EL0/1 */
+>>>                    orr          x0, x0, #(1 << 10)              /* 64-bit EL2
+>>>    */
+>>>                    msr        scr_el3, x0
+>>>                    msr        cptr_el3, xzr
+>>>
+>>>                    mrs        x0, sctlr_el3
+>>>                    ldr           x1, =SCTLR_ELx_FLAGS
+>>>                    bic          x0, x0, x1
+>>>                    msr        sctlr_el3, x0
+>>>                    isb
+>>>
+>>>                    b             done
+>>>
+>>>    This code has introduced a bug in our barebox porting.
+>>>    It could be our mistake but then again we couldn't find any prerequisites
+>>>    conditions that bootloaders need to meet before passing control to
+>> barebox
+>>>    pbl.
+>>>    There are 2 bugs that can happen here:
+>>>     1. The bootloader enabled MMU and set the SRAM (given to barebox) as
+>>>        non-secure – This issue can be resolved with adding "dsb sy" command
+>>>        before the "isb"
+>>>     2. The bootloader enabled MMU and dcache on SRAM (given to barebox)
+>> as
+>>>        non-secure – This is a bit harder to solve because it needs to call
+>>>        cache invalidate on the stack.
+>>
+>> Eventhough it might not be explicitly documented, barebox normally
+>> expects to be called with MMU disabled.
+>>
+>> When the MMU is enabled it could have virtually any mapping and there's
+>> no sane way to disable the MMU then.
+>>
+>> If your bootloader enables the MMU and there is no way to change that,
+>> then it's up to your board entry code to disable the MMU before calling into
+>> barebox. That said, when there's something can change in
+>> arm_cpu_lowlevel_init()
+>> to help you with your case, then we can do that, but I wouldn't consider
+>> this a bug in barebox.
+>>
+>> Sascha
+>>
+>> --
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://secure-
+>> web.cisco.com/17RdScP_TBoXqc1IerwhZX8kAHhqutjAnByPiUM5lNZJyN6OD
+>> jkdTnyYCzrqpRZ9mdLg4wp-dZiElAak3iS7lf-YQwNFSattw-4zxIt6ro_qHh-
+>> 8ovK33TBdMnr5qL5qPKFUriYYQ8bLMAnMHa4bKtTIfhZI2eSXUr6hqjDcnoKZ
+>> GKUO2dbBDXceX3NT-ql9GBlwdH-mmkhd9fgYV2r0UtR4ot5d58hg45JTJ-
+>> LsuvNVMsKrFZd1Iu3AiMSjmi4E5BDc6KpQx_MgAD410FQWC0HpDavhSc1DC
+>> BgdMO2RlGrZk0L-
+>> St3n_yH_QZvH4UfjY/http%3A%2F%2Fwww.pengutronix.de%2F  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
 
-This change has been tested on both i.MX8M (AArch64) and i.MX6 (Thumb2).
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- pbl/console.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/pbl/console.c b/pbl/console.c
-index 1a6e839c1559..d81bf580d52f 100644
---- a/pbl/console.c
-+++ b/pbl/console.c
-@@ -2,13 +2,14 @@
- 
- #include <common.h>
- #include <debug_ll.h>
-+#include <asm/sections.h>
- #include <linux/err.h>
- 
- /*
-  * Put these in the data section so that they survive the clearing of the
-  * BSS segment.
-  */
--static __attribute__ ((section(".data"))) void (*__putc)(void *ctx, int c);
-+static __attribute__ ((section(".data"))) ulong putc_offset;
- static __attribute__ ((section(".data"))) void *putc_ctx;
- 
- /**
-@@ -21,13 +22,19 @@ static __attribute__ ((section(".data"))) void *putc_ctx;
-  */
- void pbl_set_putc(void (*putcf)(void *ctx, int c), void *ctx)
- {
--	__putc = putcf;
-+	putc_offset = (ulong)putcf - (ulong)_text;
- 	putc_ctx = ctx;
- }
- 
-+static void __putc(void *ctx, int c)
-+{
-+	void (*putc)(void *, int) = (void *)_text + putc_offset;
-+	putc(ctx, c);
-+}
-+
- void console_putc(unsigned int ch, char c)
- {
--	if (__putc)
-+	if (putc_offset)
- 		__putc(putc_ctx, c);
- 	else
- 		putc_ll(c);
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
