@@ -1,144 +1,61 @@
-Delivery-date: Thu, 07 Sep 2023 10:31:58 +0200
+Delivery-date: Thu, 07 Sep 2023 10:32:18 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qeAQh-006uaG-1b
-	for lore@lore.pengutronix.de; Thu, 07 Sep 2023 10:31:58 +0200
+	id 1qeAR1-006ubR-Kv
+	for lore@lore.pengutronix.de; Thu, 07 Sep 2023 10:32:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qeAQe-0001gX-O4
-	for lore@pengutronix.de; Thu, 07 Sep 2023 10:31:57 +0200
+	id 1qeAQz-0001mv-9Z
+	for lore@pengutronix.de; Thu, 07 Sep 2023 10:32:18 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:References:Message-ID:Date
-	:Subject:CC:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oGslBm+N1yia0cosB4bmOiKKJT6SWJI8xJgYplsgdys=; b=J7cNSmEX8tEaunzezby5UO+tIa
-	9jQm3A6HxbcRuf+sCtw4REZgOP1l7oGr/7HsamdbBc28uRHIprbGkx7DnAaL5sZT8Eqyd31eIf/pr
-	fugN9c1+C/M1AbKpsDfRhLR3tQ/lDuIUOUBSaVQUsFe0grnsYYrWadv0HcDk4MgX+E7c+Hd15/Oiv
-	UZp5du3CUZHtfbVc00SYKeh5f5/7667a9imNUConChegrw7FCfu0OtMrWOhkGZwZ7yvz2ZXGDrPDE
-	TEmmAwg3bZ7joLEtstgpEiXPQiayO7cbwoAb+aC8MJ41YmghkI0DDKf6ynYaL3wp2g9ULsNXTYXuH
-	8GSFAq6w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=lnzHH5jA8IyUiVmt84BFs7Ff/kVBczRLDlUOMBETmCI=; b=VR3PTApDwveQB5lgXr0IOSPYPY
+	hWyC6EGZAPb/BMNkUqAjuOMlxdr//PbOJEv7TLVwfnigX1zXgn5rCf6+YppApLfXNo4fvU+1qXuwF
+	v7Pi8y2nOuX6WOUIVRiK/PdHdeWlaHfzsZOLVZslsOw5d25l96XGTOUowp9E4AGclfzxG+IYIEhSk
+	bvitnxFqHv20XRYZW2SdODrpOX0wRqCEdq7kHsNMB4Rt5PPsSxDXeHxFqESCLtDxxnYiQJMup15DE
+	ddkH0R3qwkTrJ7ar5x9oO7soEHAXzvxPhVW+oEmzXVGA6mHLvUZPAcH2LgCQzb9dFRbagJ+L/3iVr
+	uX0NLDHw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qeAPW-00Barh-1a;
-	Thu, 07 Sep 2023 08:30:46 +0000
-Received: from mail-vi1eur04on0619.outbound.protection.outlook.com ([2a01:111:f400:fe0e::619] helo=EUR04-VI1-obe.outbound.protection.outlook.com)
+	id 1qeAPy-00Bauv-2d;
+	Thu, 07 Sep 2023 08:31:14 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qeAPT-00BaqJ-0y
+	id 1qeAPv-00BauI-0i
 	for barebox@lists.infradead.org;
-	Thu, 07 Sep 2023 08:30:45 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=gtEjrEIgY5+1f/r9zgdnrycHe3GSzPH2ptm/m37PQep12qqioKaP83lMmIuBEdhOTBL76dFXMsvSY/zBiIyYrtK35ynlpISLS3pqekMjcCY2IVhLUP6I/1U7+Bd93VhWAxWWvVkZjcqfo4ePhDRsbCG/0iq/MDIDXspYVrFjDDs3iG8j+u/yglkaezCgC0n6UUBNfBE2iaFiX4suPAs/Sjd160YFnFZQimnULzpsSwfiFUIC2Xtj9RKhRpFEbdIqRQKJc98aZulER+Hpy6fc5NbdziMPEqPiU0Dv9+MCA592RaHLV17kyQn0BDmEQEtR4UXrlTP8Lw364h3mNfKpnA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oGslBm+N1yia0cosB4bmOiKKJT6SWJI8xJgYplsgdys=;
- b=HkoOeZkKC9Zw59dHuDa8bjEMyoedrZKYqlNn/m/Oyh6ECihvNjxAqHANjO1X27l0lWo12NcO7e7ZlkcbZ8uzK+qvlr/j0BI0sQtYCm2J6eqBMeXjLnUO6eC4SIL5ki6Tf0105TAdthvHR5qIWM/IDmhScr5huQZ+LcAZ/lUbSa6Rn9Y6MeoARIAwJ8/Zz2fiElQJZRzWI5j+nHhGETJ9sRRaSfItgxt4ip+o/gGlHz9eLXc0OH2hgD0taoqJ5HKQgHjhv9ph2rueS/m0qPwuN6vEgJ2z1vgLVW5K2LqHoAxv+Uj4U+O3OAot6GwrYOlZeMpieZ/jUMxvFuNe/sRbSg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=pliops.com; dmarc=pass action=none header.from=pliops.com;
- dkim=pass header.d=pliops.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=pliops.onmicrosoft.com; s=selector2-pliops-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oGslBm+N1yia0cosB4bmOiKKJT6SWJI8xJgYplsgdys=;
- b=dHTdZcUNnZg5ovK/DzL/4qPj2DZ6C2d+/wIBhZMcclWc07BEFufd8ebCSjMbgCvtnwskt1AsoizdGJ7PTmILYWBs1FkftvNFqpCExMgczhz3NA8PC9z+qQw60TkTOxgxIBDSPkzmYpRI5h5VLk/yFpSq/1dGmMzzxBl7Qf1hTW4=
-Received: from PR3P195MB0555.EURP195.PROD.OUTLOOK.COM (2603:10a6:102:30::14)
- by DBAP195MB1081.EURP195.PROD.OUTLOOK.COM (2603:10a6:10:1ca::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34; Thu, 7 Sep
- 2023 08:30:35 +0000
-Received: from PR3P195MB0555.EURP195.PROD.OUTLOOK.COM
- ([fe80::bfee:8874:23dc:3f82]) by PR3P195MB0555.EURP195.PROD.OUTLOOK.COM
- ([fe80::bfee:8874:23dc:3f82%4]) with mapi id 15.20.6745.034; Thu, 7 Sep 2023
- 08:30:35 +0000
-From: Lior Weintraub <liorw@pliops.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Sascha Hauer
-	<s.hauer@pengutronix.de>
-CC: "andrew.smirnov@gmail.com" <andrew.smirnov@gmail.com>,
-	"barebox@lists.infradead.org" <barebox@lists.infradead.org>
-Thread-Topic: ARM: aarch64: lowlevel: potential bug in arm_cpu_lowlevel_init
-Thread-Index: AdnOnQXgXYDt2cKZSYekXmjH6b9DyABi6SAAAAA+kyAETtdlgAAAHtAQ
-Date: Thu, 7 Sep 2023 08:30:34 +0000
-Message-ID: <PR3P195MB0555BADA6D384623482DC8D1C3EEA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
-References: <PR3P195MB0555C0CAAE5F70743B7DC534C317A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
- <20230816100146.GF5650@pengutronix.de>
- <PR3P195MB0555474B08A4CAF79B7AF804C315A@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
- <1051bfae-680e-b4d9-3036-87802801710a@pengutronix.de>
-In-Reply-To: <1051bfae-680e-b4d9-3036-87802801710a@pengutronix.de>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=pliops.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: PR3P195MB0555:EE_|DBAP195MB1081:EE_
-x-ms-office365-filtering-correlation-id: b618da8f-b9b4-4e7b-ef88-08dbaf7cb4f1
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: Vlp2eAXCawcbYeDQ3AJNwqSprt1qlA184yyAUltYfogcI0tefTroAhafvV2RNl0kv/p2M5bdz/asUEAAjXtFdHS1EljjJ8dCyWl60sh9G6aG/DJZISRGtmVF1iAoWHSTIkq0R8TYtUHmG5mQwY7cetn20O62gv04sP+sk6uDjT6rroV1xJBCE9NM/14VCV42Bc8zqgYBxeYPhxHl6Qo3q3CvcQoAz3kEoQKY9gS+KuCWqzd/yLOGG8xANoKT/8HLIhCqhLR5RXTKOs0aEGsNi0TKXt86B0UQYjrT/cZRonMYGKv5ajgZJsz+7SEF4c0mFqUCiFqlG7mdZ8Xkxvjsd4MyjFL0viMCYTLNZO9trAOJDkudAnSaaOC9p2IIQf7tYRyNMIggfK8DDfLp2/WMdql/M2/VFG1/GT/YVmzoRpFu21rvOrTjkDg3t58xYFl2M0fBykeiqAy3HM0gdFbbcuZRa8Pd/4qi1oNoEBteOXGRfuUDTtR7LNYjAXN1wZwEpQY//dqGT0ANyr0tFCyuPuIZ7pwpgDL17xvySuFJ5ISUa8JE1zRjI7fcB5HETVmc1iCnV2RnotJI0C1ymfEQSMTD3ZCQufZzgAz/YH2aZPY=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PR3P195MB0555.EURP195.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230031)(39830400003)(376002)(136003)(396003)(346002)(366004)(451199024)(1800799009)(186009)(41300700001)(33656002)(8936002)(8676002)(4326008)(86362001)(38070700005)(38100700002)(76116006)(52536014)(64756008)(66946007)(54906003)(66476007)(66556008)(66446008)(122000001)(110136005)(316002)(5660300002)(19627235002)(966005)(478600001)(84970400001)(71200400001)(2906002)(53546011)(9686003)(6506007)(7696005)(83380400001)(55016003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NENFKzVEV1pzSkdocnhtTmFuNytYeFVMZ1MwUEhKUmNKd1ZuZ1RWcWI4b1pC?=
- =?utf-8?B?S3kzRXlPc01LQitocmVnN3NFZ2UzMEhGZ281OWRGWEUzUmRZQlVxM2NlMURm?=
- =?utf-8?B?TnN4S1BtMklyQlo3TlhXOVZPblFHbGN0YjNVSWx6OGdFb2piaUVVcElCdDln?=
- =?utf-8?B?cHMycUhEeFhLNDF6ekhmUDFRNURacmlaWTdtNUpCMDgxRjhhOUVveUpvc0hX?=
- =?utf-8?B?aU5ITDdKNXlLVTIxZU4vRnNZdk5tK2x6amVHcnBvTUtjbWNYcEptMVkxTnd4?=
- =?utf-8?B?R1dBR05zWmxmM0w4MEE4TUJ6ckpzTHdEcno2RHB2bFhYRXZVTHp6RnROUnJ0?=
- =?utf-8?B?SE9KTUpBMkN3NGZ1ZE5WdXE4TjRIVFkvamVZeVM4ZUhHdWRRWW01MEVsV3hI?=
- =?utf-8?B?TmFEa1NCZlVsR3pwemhpY0dCNFZRa09MQlJmQnlhckhWL1BFUDRXUkY5SllZ?=
- =?utf-8?B?NmdHWG1tU0l4aE5hQlVINllKWjFNYkZDUllWYkJLL1d0U0Q1d21FcUg3ZEpB?=
- =?utf-8?B?UGIvYks1bGRucXFkZzRIcGZOVENsL0ZYSnZ6R2NDdnJmVWNFdmZnZTd4bkdj?=
- =?utf-8?B?SGZMVU92WWx0Qm5QTzB2NHBPWXlEN2JFT0t0UFY5U09JejY4aFlqbmdLOTlk?=
- =?utf-8?B?NHkrZ1JNL2lqQ0RiRFlPMFZHV0w2S0V0THlNMG9QT2p2T202U1orS0ozMzB3?=
- =?utf-8?B?U2s5S0xKYlRMYzlibUxtblI0YlBTcndWelNzRS90eHZWZ01xN0laV05YYUZi?=
- =?utf-8?B?TkFtV0dhYnZxeWM2RTF6UWF4eWZiZWNDUEI2U1VYcFMvcnhOSmxWYmo4QTFw?=
- =?utf-8?B?WS9pMm9hOUVudlI2NEN2c2VQMEVEcGhFZDBONkxOZ0pJL29lQ1gwK0Z0TmdN?=
- =?utf-8?B?cFVZcU5oQXdmb1FBQWs3OVROUmk0VUVvMHE4NUxwNUIzVmhkeTQ2eUhHSFJV?=
- =?utf-8?B?MEFDbHQ1NnZZdVpQNG5xMzFzMkR5U2N0VFkreDFMUTBSS1lNUzBPSFRCQUtl?=
- =?utf-8?B?Zzdmd1JBZXJpVHpORFFsM1FpWExVOUUrTjlPV3pEVHZ2eFJ2RTEzbmhTNzBx?=
- =?utf-8?B?ZGVNRU9rQzl1NnZ1YkpndHBjd3RCUnFJMXFhY3plMUQ2Q2d4R256TDFwM0hR?=
- =?utf-8?B?dmtlN3pDclVjdHdNRnhtSjBVWmRIUE5IclhBVWw1elBBWDBKUE1MVit2aEJK?=
- =?utf-8?B?RHBnaFRPS0FzUHYwaFZoVXRCVmRwVXEzNE40SGZja0dLejBMQ1k5ZDlUcmNr?=
- =?utf-8?B?RW5tR1BPU2VtYW9xVzVQalVKMFpZYXdrQUhpOXVWZFBaUmlRaUhwaGp0RXBr?=
- =?utf-8?B?UUdaZ1lWU085Tm8yaFRjT21rVWJvQUtVNS96anVsTlJQMGxtdmZPUE94M0Rw?=
- =?utf-8?B?RmRFTjNGQW9Td3J2SVNFQTVWcjcvQjVxWFU2TERsWE1CeGZ5UUx2OXJ2V1Zq?=
- =?utf-8?B?YjRoc2FaWlNvTS95SEVmR2RTakg0WG42MkZzNXhtOGcwbmtXb2JkUURXazRw?=
- =?utf-8?B?cmFiSE9rT0ppVnNRNm43U2JVYkRNTHY4OXNObHc1c1ozaGJBeW5xMTBXS1Yr?=
- =?utf-8?B?UUtLS0dsSzFMMVFiWm5jNmZJWHEvRUVaNS9rTVo4RjVnVXFEbGN4eVA3SlEy?=
- =?utf-8?B?UUpKMkdnSW92U0JUaXczNnVMKzdOVUU5NEZrd1VqTDJvcW5QWW9FeCt0WEYz?=
- =?utf-8?B?cGxXVGE3b2NSazVzQ056eWY2M3RXeUY5RDlTMlRzeXE1RTk4akxVWWNUSDJu?=
- =?utf-8?B?T0FKaldJenRWVnVHSThYNGVQblhKUTU3ODg0dTNwb3hFcHR6QmdjWDBMbFh3?=
- =?utf-8?B?UUY3dkpPSzZhMzBabEZSZUpuYytvbzc3VjRFTHpkWmVYckw4U0xqdXdPNnVk?=
- =?utf-8?B?MUxnU3Z2YXEvbkN3cUV0cTZRWC9uK0g2a1lJeVRmeTNBN0F5cWZJR3ZhUlVx?=
- =?utf-8?B?UDBxQlBlam5vWHo2bStuVXFTTkpTN0NmYXBWaWlldmxudzZsOTRNcVZYSUJL?=
- =?utf-8?B?RERsRGxYMzRYd1pPOHY0ZW12dzY2NThSb0tKVU0razFVUFBoL0NwMVk2Wkli?=
- =?utf-8?B?bytXVkZhdjhsc1lON2tOTVpsTlRLeG5OU0FWMVB4N3Q0TThLekVDOEIzTmxF?=
- =?utf-8?B?Wk54aEhDcXVCVnBxUkhlckIxOWZ2RzZuVW4xUnprOEYvMUFIZXhpYjlUaFhL?=
- =?utf-8?Q?jOSWZS2P23bbtGvT17FeYUk=3D?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	Thu, 07 Sep 2023 08:31:13 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qeAPt-0001TF-Ri; Thu, 07 Sep 2023 10:31:09 +0200
+Message-ID: <3704dd53-42de-ab00-7101-786e2d5b2245@pengutronix.de>
+Date: Thu, 7 Sep 2023 10:31:09 +0200
 MIME-Version: 1.0
-X-OriginatorOrg: pliops.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: PR3P195MB0555.EURP195.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: b618da8f-b9b4-4e7b-ef88-08dbaf7cb4f1
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 Sep 2023 08:30:34.9455
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 40fe8f47-55ac-403a-a5ab-1be3dd209cf8
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: brq5U9cHe9ObOxSkamlhw4IdOlfr+1Njc82HMUI6uvy3G7/89ibuL1VXI73j1dj8LwkByYv2hTrIr7oXTqzqNQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DBAP195MB1081
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Lior Weintraub <liorw@pliops.com>, Sascha Hauer <s.hauer@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+References: <PR3P195MB0555EE60DE17128F9831C028C31AA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <20230817071736.GJ5650@pengutronix.de>
+ <PR3P195MB0555ED3DE92FAB5706C2E458C31AA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <PR3P195MB0555E881ABD36783C5557EB9C31AA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+ <PR3P195MB05558441FD995F0F06CE132AC31EA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <PR3P195MB05558441FD995F0F06CE132AC31EA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230907_013043_561919_7B1701F4 
-X-CRM114-Status: GOOD (  35.27  )
+X-CRM114-CacheID: sfid-20230907_013111_412018_D6759799 
+X-CRM114-Status: GOOD (  39.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -156,108 +73,234 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: RE: ARM: aarch64: lowlevel: potential bug in arm_cpu_lowlevel_init
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: ARM: mmu_early_enable
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-VGhhbmtzIEFobWFkLA0KQ2hlZXJzLA0KTGlvci4NCg0KPiAtLS0tLU9yaWdpbmFsIE1lc3NhZ2Ut
-LS0tLQ0KPiBGcm9tOiBBaG1hZCBGYXRvdW0gPGEuZmF0b3VtQHBlbmd1dHJvbml4LmRlPg0KPiBT
-ZW50OiBUaHVyc2RheSwgU2VwdGVtYmVyIDcsIDIwMjMgMTE6MjcgQU0NCj4gVG86IExpb3IgV2Vp
-bnRyYXViIDxsaW9yd0BwbGlvcHMuY29tPjsgU2FzY2hhIEhhdWVyDQo+IDxzLmhhdWVyQHBlbmd1
-dHJvbml4LmRlPg0KPiBDYzogYW5kcmV3LnNtaXJub3ZAZ21haWwuY29tOyBiYXJlYm94QGxpc3Rz
-LmluZnJhZGVhZC5vcmcNCj4gU3ViamVjdDogUmU6IEFSTTogYWFyY2g2NDogbG93bGV2ZWw6IHBv
-dGVudGlhbCBidWcgaW4gYXJtX2NwdV9sb3dsZXZlbF9pbml0DQo+IA0KPiBDQVVUSU9OOiBFeHRl
-cm5hbCBTZW5kZXINCj4gDQo+IEhlbGxvIExpb3IsDQo+IA0KPiBPbiAxNi4wOC4yMyAxMjoxNCwg
-TGlvciBXZWludHJhdWIgd3JvdGU6DQo+ID4gVGhhbmtzIFNhc2NoYSENCj4gPg0KPiA+IEFjdHVh
-bGx5IHRoZSBib290bG9hZGVyIGlzIHN0aWxsIHVuZGVyIGRldmVsb3BtZW50IHNvIHRoZXJlIGlz
-IG5vIHByb2JsZW0gdG8NCj4gY2hhbmdlIGFuZCB3b3JrIHdpdGhvdXQgTU1VLg0KPiA+IChvciBh
-dCBsZWFzZSBkaXNhYmxlIGl0IGJlZm9yZSBqdW1waW5nIHRvIEJhcmVib3gpLg0KPiA+IEkgdG90
-YWxseSBhZ3JlZSB0aGF0IGlmIHZpcnR1YWwgbWFwcGluZyB3YXMgdXNlZCBpdCB3b3VsZCBiZSBp
-bXBvc3NpYmxlIHRvDQo+IGRpc2FibGUgdGhlIE1NVS4NCj4gPiBKdXN0IHRob3VnaHQgdGhhdCBp
-dCBpcyB0b3RhbGx5IGhhcm1sZXNzIHRvIGFkZCBgZHNiIHN5YC4NCj4gDQo+IGFzIFNhc2NoYSBt
-ZW50aW9uZWQsIHdlIGV4cGVjdCBNTVUgdG8gYmUgb2ZmLCBidXQgc29tZSBCb290Uk9NcyBmYWls
-IHRvDQo+IGRvIHRoYXQgaW4gc29tZSBlcnJvciBjYXNlcy4gSSB0aHVzIHRoaW5rIGlmIGEgYmFy
-cmllciB3b3VsZCBzYXZlIHVzDQo+IGluIHN1Y2ggYSBjYXNlLCB3ZSBzaG91bGQgaGF2ZSBpdCBp
-biBhcm1fY3B1X2xvd2xldmVsX2luaXQoKS4NCj4gDQo+IENoZWVycywNCj4gQWhtYWQNCj4gDQo+
-ID4NCj4gPiBDaGVlcnMsDQo+ID4gTGlvci4NCj4gPg0KPiA+PiAtLS0tLU9yaWdpbmFsIE1lc3Nh
-Z2UtLS0tLQ0KPiA+PiBGcm9tOiBTYXNjaGEgSGF1ZXIgPHMuaGF1ZXJAcGVuZ3V0cm9uaXguZGU+
-DQo+ID4+IFNlbnQ6IFdlZG5lc2RheSwgQXVndXN0IDE2LCAyMDIzIDE6MDIgUE0NCj4gPj4gVG86
-IExpb3IgV2VpbnRyYXViIDxsaW9yd0BwbGlvcHMuY29tPg0KPiA+PiBDYzogYW5kcmV3LnNtaXJu
-b3ZAZ21haWwuY29tOyBiYXJlYm94QGxpc3RzLmluZnJhZGVhZC5vcmc7IEFobWFkDQo+ID4+IEZh
-dG91bSA8YS5mYXRvdW1AcGVuZ3V0cm9uaXguZGU+DQo+ID4+IFN1YmplY3Q6IFJlOiBBUk06IGFh
-cmNoNjQ6IGxvd2xldmVsOiBwb3RlbnRpYWwgYnVnIGluDQo+IGFybV9jcHVfbG93bGV2ZWxfaW5p
-dA0KPiA+Pg0KPiA+PiBDQVVUSU9OOiBFeHRlcm5hbCBTZW5kZXINCj4gPj4NCj4gPj4gSGkgTGlv
-ciwNCj4gPj4NCj4gPj4gT24gTW9uLCBBdWcgMTQsIDIwMjMgYXQgMTE6MzU6MDVBTSArMDAwMCwg
-TGlvciBXZWludHJhdWIgd3JvdGU6DQo+ID4+PiAgICBMaW5rOiBbMV1GaWxlLUxpc3QNCj4gPj4+
-ICAgIEhpIEFuZHJldywNCj4gPj4+DQo+ID4+PiAgICBJIGFtIGFza2luZyBhYm91dCBhIHBhdGNo
-IHlvdSd2ZSBpbnRyb2R1Y2VkIGFib3V0IDQgeWVhcnMgYWdvOg0KPiA+Pj4gICAgQ29tbWl0OiBj
-ZDZlMTg1N2E2YTgyNGQ1NjJiZDI3Mzc5ZDE5MTYwMmMwNzRmNmI3DQo+ID4+Pg0KPiA+Pj4gICAg
-RU5UUlkoYXJtX2NwdV9sb3dsZXZlbF9pbml0KQ0KPiA+Pj4gICAgICAgICAgICAgICAgICAgIHN3
-aXRjaF9lbCB4MSwgM2YsIDJmLCAxZg0KPiA+Pj4NCj4gPj4+ICAgIDM6DQo+ID4+PiAgICAgICAg
-ICAgICAgICAgICAgbW92ICAgICAgIHgwLCAjMSAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
-ICAgICAgIC8qDQo+ID4+PiAgICBOb24tU2VjdXJlIEVMMC8xICovDQo+ID4+PiAgICAgICAgICAg
-ICAgICAgICAgb3JyICAgICAgICAgIHgwLCB4MCwgIygxIDw8IDEwKSAgICAgICAgICAgICAgLyog
-NjQtYml0IEVMMg0KPiA+Pj4gICAgKi8NCj4gPj4+ICAgICAgICAgICAgICAgICAgICBtc3IgICAg
-ICAgIHNjcl9lbDMsIHgwDQo+ID4+PiAgICAgICAgICAgICAgICAgICAgbXNyICAgICAgICBjcHRy
-X2VsMywgeHpyDQo+ID4+Pg0KPiA+Pj4gICAgICAgICAgICAgICAgICAgIG1ycyAgICAgICAgeDAs
-IHNjdGxyX2VsMw0KPiA+Pj4gICAgICAgICAgICAgICAgICAgIGxkciAgICAgICAgICAgeDEsID1T
-Q1RMUl9FTHhfRkxBR1MNCj4gPj4+ICAgICAgICAgICAgICAgICAgICBiaWMgICAgICAgICAgeDAs
-IHgwLCB4MQ0KPiA+Pj4gICAgICAgICAgICAgICAgICAgIG1zciAgICAgICAgc2N0bHJfZWwzLCB4
-MA0KPiA+Pj4gICAgICAgICAgICAgICAgICAgIGlzYg0KPiA+Pj4NCj4gPj4+ICAgICAgICAgICAg
-ICAgICAgICBiICAgICAgICAgICAgIGRvbmUNCj4gPj4+DQo+ID4+PiAgICBUaGlzIGNvZGUgaGFz
-IGludHJvZHVjZWQgYSBidWcgaW4gb3VyIGJhcmVib3ggcG9ydGluZy4NCj4gPj4+ICAgIEl0IGNv
-dWxkIGJlIG91ciBtaXN0YWtlIGJ1dCB0aGVuIGFnYWluIHdlIGNvdWxkbid0IGZpbmQgYW55IHBy
-ZXJlcXVpc2l0ZXMNCj4gPj4+ICAgIGNvbmRpdGlvbnMgdGhhdCBib290bG9hZGVycyBuZWVkIHRv
-IG1lZXQgYmVmb3JlIHBhc3NpbmcgY29udHJvbCB0bw0KPiA+PiBiYXJlYm94DQo+ID4+PiAgICBw
-YmwuDQo+ID4+PiAgICBUaGVyZSBhcmUgMiBidWdzIHRoYXQgY2FuIGhhcHBlbiBoZXJlOg0KPiA+
-Pj4gICAgIDEuIFRoZSBib290bG9hZGVyIGVuYWJsZWQgTU1VIGFuZCBzZXQgdGhlIFNSQU0gKGdp
-dmVuIHRvIGJhcmVib3gpDQo+IGFzDQo+ID4+PiAgICAgICAgbm9uLXNlY3VyZSDigJMgVGhpcyBp
-c3N1ZSBjYW4gYmUgcmVzb2x2ZWQgd2l0aCBhZGRpbmcgImRzYiBzeSINCj4gY29tbWFuZA0KPiA+
-Pj4gICAgICAgIGJlZm9yZSB0aGUgImlzYiINCj4gPj4+ICAgICAyLiBUaGUgYm9vdGxvYWRlciBl
-bmFibGVkIE1NVSBhbmQgZGNhY2hlIG9uIFNSQU0gKGdpdmVuIHRvDQo+IGJhcmVib3gpDQo+ID4+
-IGFzDQo+ID4+PiAgICAgICAgbm9uLXNlY3VyZSDigJMgVGhpcyBpcyBhIGJpdCBoYXJkZXIgdG8g
-c29sdmUgYmVjYXVzZSBpdCBuZWVkcyB0byBjYWxsDQo+ID4+PiAgICAgICAgY2FjaGUgaW52YWxp
-ZGF0ZSBvbiB0aGUgc3RhY2suDQo+ID4+DQo+ID4+IEV2ZW50aG91Z2ggaXQgbWlnaHQgbm90IGJl
-IGV4cGxpY2l0bHkgZG9jdW1lbnRlZCwgYmFyZWJveCBub3JtYWxseQ0KPiA+PiBleHBlY3RzIHRv
-IGJlIGNhbGxlZCB3aXRoIE1NVSBkaXNhYmxlZC4NCj4gPj4NCj4gPj4gV2hlbiB0aGUgTU1VIGlz
-IGVuYWJsZWQgaXQgY291bGQgaGF2ZSB2aXJ0dWFsbHkgYW55IG1hcHBpbmcgYW5kIHRoZXJlJ3MN
-Cj4gPj4gbm8gc2FuZSB3YXkgdG8gZGlzYWJsZSB0aGUgTU1VIHRoZW4uDQo+ID4+DQo+ID4+IElm
-IHlvdXIgYm9vdGxvYWRlciBlbmFibGVzIHRoZSBNTVUgYW5kIHRoZXJlIGlzIG5vIHdheSB0byBj
-aGFuZ2UgdGhhdCwNCj4gPj4gdGhlbiBpdCdzIHVwIHRvIHlvdXIgYm9hcmQgZW50cnkgY29kZSB0
-byBkaXNhYmxlIHRoZSBNTVUgYmVmb3JlIGNhbGxpbmcgaW50bw0KPiA+PiBiYXJlYm94LiBUaGF0
-IHNhaWQsIHdoZW4gdGhlcmUncyBzb21ldGhpbmcgY2FuIGNoYW5nZSBpbg0KPiA+PiBhcm1fY3B1
-X2xvd2xldmVsX2luaXQoKQ0KPiA+PiB0byBoZWxwIHlvdSB3aXRoIHlvdXIgY2FzZSwgdGhlbiB3
-ZSBjYW4gZG8gdGhhdCwgYnV0IEkgd291bGRuJ3QgY29uc2lkZXINCj4gPj4gdGhpcyBhIGJ1ZyBp
-biBiYXJlYm94Lg0KPiA+Pg0KPiA+PiBTYXNjaGENCj4gPj4NCj4gPj4gLS0NCj4gPj4gUGVuZ3V0
-cm9uaXggZS5LLiAgICAgICAgICAgICAgICAgICAgICAgICAgIHwgICAgICAgICAgICAgICAgICAg
-ICAgICAgICAgIHwNCj4gPj4gU3RldWVyd2FsZGVyIFN0ci4gMjEgICAgICAgICAgICAgICAgICAg
-ICAgIHwgaHR0cDovL3NlY3VyZS0NCj4gPj4NCj4gd2ViLmNpc2NvLmNvbS8xN1JkU2NQX1RCb1hx
-YzFJZXJ3aFpYOGtBSGhxdXRqQW5CeVBpVU01bE5aSnlONk9EDQo+ID4+IGprZFRueVlDenJxcFJa
-OW1kTGc0d3AtZFppRWxBYWszaVM3bGYtWVF3TkZTYXR0dy00enhJdDZyb19xSGgtDQo+ID4+DQo+
-IDhvdkszM1RCZE1ucjVxTDVxUEtGVXJpWVlROGJMTUFuTUhhNGJLdFRJZmhaSTJlU1hVcjZocWpE
-Y25vS1oNCj4gPj4gR0tVTzJkYkJEWGNlWDNOVC1xbDlHQmx3ZEgtbW1raGQ5ZmdZVjJyMFV0UjRv
-dDVkNThoZzQ1SlRKLQ0KPiA+Pg0KPiBMc3V2TlZNc0tyRlpkMUl1M0FpTVNqbWk0RTVCRGM2S3BR
-eF9NZ0FENDEwRlFXQzBIcERhdmhTYzFEQw0KPiA+PiBCZ2RNTzJSbEdyWmswTC0NCj4gPj4gU3Qz
-bl95SF9RWnZINFVmalkvaHR0cCUzQSUyRiUyRnd3dy5wZW5ndXRyb25peC5kZSUyRiAgfA0KPiA+
-PiAzMTEzNyBIaWxkZXNoZWltLCBHZXJtYW55ICAgICAgICAgICAgICAgICAgfCBQaG9uZTogKzQ5
-LTUxMjEtMjA2OTE3LTAgICAgfA0KPiA+PiBBbXRzZ2VyaWNodCBIaWxkZXNoZWltLCBIUkEgMjY4
-NiAgICAgICAgICAgfCBGYXg6ICAgKzQ5LTUxMjEtMjA2OTE3LTU1NTUgfA0KPiA+DQo+IA0KPiAt
-LQ0KPiBQZW5ndXRyb25peCBlLksuICAgICAgICAgICAgICAgICAgICAgICAgICAgfCAgICAgICAg
-ICAgICAgICAgICAgICAgICAgICAgfA0KPiBTdGV1ZXJ3YWxkZXIgU3RyLiAyMSAgICAgICAgICAg
-ICAgICAgICAgICAgfCBodHRwOi8vc2VjdXJlLQ0KPiB3ZWIuY2lzY28uY29tLzFTSFVTX3A5RVlU
-akVnVXZaWEtycTlOdm54Qk1tR2FjaXRqZFNFQVNoNGJVQWlrM3lrDQo+IGk1eUw1eTVubHV2UWI3
-RGtyTHVxR19JUEN6WnFIOFRTYVdkT3ZKSXlyVmJ2Y0dKNHBPdFEwTlY0aW1vSlpVWA0KPiByMzdF
-NC13NVN5bWpSeHBzNzZXVmF0Xzdhem0tDQo+IE96bTZjZURoUWJsZ01Ub25mbDdWdmk4WkJ3OEZR
-c3VSS0NrR3I4dDVScmVVOW9leG8tDQo+IHFzdnpYUEFOR3pGenZ2OUlsM21tbVJFM1I4TTBwX1F4
-SlY4eHZTNEFrWXo3SVI2NFh2N09saDZ6NUk4Vmd5DQo+IFFCeFZ5QjNkRVhYbWhwWTZVb2plX2tz
-dWVpM3ZNdE5RMGFQZ1lzc213VldvbHlJaDFOS1BvcnBGeWtjdw0KPiBWaGpMOXoxay9odHRwJTNB
-JTJGJTJGd3d3LnBlbmd1dHJvbml4LmRlJTJGICB8DQo+IDMxMTM3IEhpbGRlc2hlaW0sIEdlcm1h
-bnkgICAgICAgICAgICAgICAgICB8IFBob25lOiArNDktNTEyMS0yMDY5MTctMCAgICB8DQo+IEFt
-dHNnZXJpY2h0IEhpbGRlc2hlaW0sIEhSQSAyNjg2ICAgICAgICAgICB8IEZheDogICArNDktNTEy
-MS0yMDY5MTctNTU1NSB8DQo+IA0KDQo=
+Hello Lior,
+
+On 21.08.23 16:29, Lior Weintraub wrote:
+> Hi Sascha,
+> 
+> After further digging into the mmu_early_enable function I found that level 0 is set with block type (PTE_TYPE_BLOCK) but AFAIK level 0 must have a table type.
+> Only level 1-3 can be either table or block but not level 0.
+> I think that until now this wasn't an issue because all (I assume) implementations\porting that enabled the use of MMU also gave the barebox a starting address that is within the first 512GB range.
+
+That's most certainly the case. Most implementations even place barebox
+in the first 4G to be on the safe side in regard to DMA limitations of
+the devices.
+
+> As a result, the current implementation replaced the first entry of level 0 to point into level 1 table.
+> In our case, where the memory used is above the first 512GB we got an exception. 
+> 
+> I suggest that the initial setting of flat 1:1 mapping of all 40 bits will have:
+> 2 Entries of Level 0 which point to level1 tables.
+> 512 Entries of level 1 each of which define a block of 1GB to map the first 512GB.
+> 512 Entries of level 1 each of which define a block of 1GB to map the second 512GB.
+
+How much extra memory would that cost us for the early TTB?
+
+> The reason 40 bits is used (1TB) is because this is what currently barebox set by default for the physical address (see function calc_tcr on mmu_64.h where ips is set to 2).
+> The below patch suggestion assumes this will always be the case.
+> We can make it more generic by introducing a new settings that will set the total physical address bits.
+> We then can derive from this configuration how to set the IPS value and how many tables of level 0 needs to be initialized.
+> Let me know what you think.
+
+At least a CONFIG option that can be selected by architectures requiring it
+would be apt, I think.
+
+Cheers,
+Ahmad
+
+> 
+> Cheers,
+> Lior.
+> 
+> 
+> diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+> index cdc4825422..28358dd7d9 100644
+> --- a/arch/arm/cpu/mmu_64.c
+> +++ b/arch/arm/cpu/mmu_64.c
+> @@ -245,6 +245,19 @@ void dma_flush_range(void *ptr, size_t size)
+>  	v8_flush_dcache_range(start, end);
+>  }
+>  
+> +void init_range(void *virt_addr, size_t size)
+> +{
+> +    uint64_t *ttb = get_ttb();
+> +    uint64_t addr = (uint64_t)virt_addr;
+> +    while(size) {
+> +        remap_range((void *)addr, L0_XLAT_SIZE, MAP_UNCACHED);
+> +        split_block(ttb,0);
+> +        size -= L0_XLAT_SIZE;
+> +        addr += L0_XLAT_SIZE;
+> +        ttb++;
+> +    }
+> +}
+> +
+>  void mmu_early_enable(unsigned long membase, unsigned long memsize)
+>  {
+>  	int el;
+> @@ -257,7 +270,7 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize)
+>  
+>  	memset((void *)ttb, 0, GRANULE_SIZE);
+>  
+> -	remap_range(0, 1UL << (BITS_PER_VA - 1), MAP_UNCACHED);
+> +    init_range(0, 2*L0_XLAT_SIZE); // Setting 2 entries of 512GB to cover 1TB memory space
+>  	remap_range((void *)membase, memsize - OPTEE_SIZE, MAP_CACHED);
+>  	remap_range((void *)membase + memsize - OPTEE_SIZE, OPTEE_SIZE, MAP_FAULT);
+>  
+> 
+>   
+> 
+> 
+>> -----Original Message-----
+>> From: Lior Weintraub
+>> Sent: Thursday, August 17, 2023 4:50 PM
+>> To: Sascha Hauer <s.hauer@pengutronix.de>
+>> Cc: barebox@lists.infradead.org
+>> Subject: RE: ARM: mmu_early_enable
+>>
+>> Hi Sascha,
+>>
+>> I read your answer again and realized my misunderstanding.
+>> So essentially what you say is that all 48 bits of the address space would be set
+>> as flat 1:1 un-cached and only the SRAM region will be set as cached.
+>> In that case the UART at address 0xD0_0030_7000 and our ROM at address
+>> 0xC0_0400_0000 should be OK to access.
+>> We will further investigate and try to figure out what went wrong.
+>>
+>> Thanks,
+>> Lior.
+>>
+>>
+>>> -----Original Message-----
+>>> From: Lior Weintraub
+>>> Sent: Thursday, August 17, 2023 10:32 AM
+>>> To: Sascha Hauer <s.hauer@pengutronix.de>
+>>> Cc: barebox@lists.infradead.org
+>>> Subject: RE: ARM: mmu_early_enable
+>>>
+>>> But the UART is set on a total different memory space.
+>>> The SRAM where barebox runs and also given as membase and memsize is in
+>>> the region of 0xC0_0000_0000
+>>> The UART is in the region of 0xD0_0030_7000.
+>>>
+>>> According the tarmac log, it looks like access to this location caused the
+>>> exception:
+>>>     3505306 ns  ES  (000000c0000814ac:910003fd) O el3h:	mov	x29,
+>>> 	sp 	(console_putc)
+>>>                     R X29 (AARCH64) 000000c0 00377ac0
+>>>     3505306 ns  ES  (000000c0000814b0:f9400460) O el3h:	ldr	x0,
+>>> 	[x3,	#8] 	(console_putc)
+>>>                     LD 000000c0000825d0  ........ ........ 000000d0 00307000
+>>> S:c0000825d0
+>>>                     R X0 (AARCH64) 000000d0 00307000
+>>>     3505307 ns  ES  (000000c0000814b4:d63f0040) O el3h:	blr	x2
+>>> 	(console_putc)
+>>>                     R X30 (AARCH64) 000000c0 000814b8
+>>>     3505371 ns  ES  (000000c000000b5c:b9000001) O el3h:	str	w1,
+>>> 	[x0] 	(spider_serial_putc)
+>>>                     EXC [0x200] Synchronous Current EL with SP_ELx
+>>>                     R FAR_EL3 (AARCH64) 000000c0 00000b5c
+>>>                     R ESR_EL3 (AARCH64) 8600000f
+>>>                     R CPSR 200003cd
+>>>                     R SPSR_EL3 (AARCH64) 200003cd
+>>>                     R ELR_EL3 (AARCH64) 000000c0 00000b5c
+>>>     3505443 ns  ES  (000000c004000a00:14000586) O el3h:	b
+>>> 	c004002018	<exception_entry> 	(Vectors)
+>>>                     EXC [0x200] Synchronous Current EL with SP_ELx
+>>>                     R FAR_EL3 (AARCH64) 000000c0 04000a00
+>>>                     R ESR_EL3 (AARCH64) 8600000e
+>>>                     R CPSR 200003cd
+>>>                     R SPSR_EL3 (AARCH64) 200003cd
+>>>                     R ELR_EL3 (AARCH64) 000000c0 04000a00
+>>>
+>>> BTW, In addition to the UART, there seems to be another issue.
+>>> The Vectors themselves are located in our ROM location which also resides
+>> on
+>>> a different memory area (0xC0_0400_0000 space).
+>>> Once the UART access caused an exception, the jump to Vectors caused
+>>> another exception so we are in a loop.
+>>>
+>>> Looks like a catch22 to me.
+>>> On one hand the barebox wanted to start clean and disabled the MMU but
+>> on
+>>> the other hand the mmu_early_enable sets a partial MMU which causes
+>>> exceptions.
+>>> What do you think needs to be the best solution here?
+>>>
+>>> Cheers,
+>>> Lior.
+>>>
+>>>> -----Original Message-----
+>>>> From: Sascha Hauer <s.hauer@pengutronix.de>
+>>>> Sent: Thursday, August 17, 2023 10:18 AM
+>>>> To: Lior Weintraub <liorw@pliops.com>
+>>>> Cc: barebox@lists.infradead.org
+>>>> Subject: Re: ARM: mmu_early_enable
+>>>>
+>>>> CAUTION: External Sender
+>>>>
+>>>> On Thu, Aug 17, 2023 at 06:22:50AM +0000, Lior Weintraub wrote:
+>>>>> Hi Sascha,
+>>>>>
+>>>>> I think I found an issue with the CONFIG_MMU feature.
+>>>>> When the code under barebox_pbl_start calls mmu_early_enable, the
+>>> MMU
+>>>>> is set such that only the given SRAM is defined (membase, memsize).
+>>>>> But then, if DEBUG_LL is in use and the function pr_debug is called we
+>>>>> get an exception because the UART address is not included in the MMU.
+>>>>
+>>>> That shouldn't happen. See the code in mmu_early_enable():
+>>>>
+>>>>         early_remap_range(0, 1UL << (BITS_PER_VA - 1), MAP_UNCACHED);
+>>>>         early_remap_range(membase, memsize - OPTEE_SIZE, MAP_CACHED);
+>>>>         early_remap_range(membase + memsize - OPTEE_SIZE, OPTEE_SIZE,
+>>>> MAP_FAULT);
+>>>>
+>>>> The first line maps the whole address space uncached in a flat 1:1
+>>>> mapping. The second and third lines map the SDRAM (SRAM in your case)
+>>>> cached.
+>>>>
+>>>> Your availabe memory is quite small (3MiB) and by skipping the
+>>>> relocation your SRAM layout is not standard. Could it be that something
+>>>> overwrites your page tables?
+>>>>
+>>>> Sascha
+>>>>
+>>>> --
+>>>> Pengutronix e.K.                           |                             |
+>>>> Steuerwalder Str. 21                       | http://secure-
+>>>> web.cisco.com/1OEKFl2BnNpoLNUlGA--QcqTLOmehOhRYUZN-
+>>>> THBCB91kVNePMy2om4tD5Nv-
+>>>>
+>>>
+>> _isTZzlwD1lXGQLUMWmqHlBH9dEe0vcctRC7gn_a6v7IxQu5RV7VCRo5Rl7Tylx
+>>>> vh1hfoYe3c1lCTbGAEE5kXKVZLdKBs7oNP9Xn4ml3gy7I78-
+>>>>
+>>>
+>> c_QsTMlZ4xNZj06ORqpIvkGFgk72fNMsGjjLXZP6zTk2yEI2gjapDB8ClJ0mVtAl
+>>>> oiP9YHbgjuY0qbUbZfQq-UuasUtCi2rRo0Pu2jKm7sqnlCFb16xbdfl-
+>>>>
+>>>
+>> JN9oqUXAy8l3lHq0yGyfhYZnzWTxH/http%3A%2F%2Fwww.pengutronix.de%
+>>>> 2F  |
+>>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
