@@ -1,53 +1,68 @@
-Delivery-date: Thu, 07 Sep 2023 23:06:20 +0200
+Delivery-date: Fri, 08 Sep 2023 09:00:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qeMCj-007Tn6-Og
-	for lore@lore.pengutronix.de; Thu, 07 Sep 2023 23:06:20 +0200
+	id 1qeVTm-007xQ6-5e
+	for lore@lore.pengutronix.de; Fri, 08 Sep 2023 09:00:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qeMCh-0007EM-9b
-	for lore@pengutronix.de; Thu, 07 Sep 2023 23:06:19 +0200
+	id 1qeVTk-0003cW-5h
+	for lore@pengutronix.de; Fri, 08 Sep 2023 09:00:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UpgphnAiprjeuudF6D327gMrLdfF4aY+W43TjLJvPfU=; b=EQAL2Dd1G3Hf5Gsd4fEW8ZYJSy
-	t4DmVEst72tsBTyejkjGOh307IE4vbw8th2bIOx0ECQjN+UZFmYVTpYrLS8i1ShFgid7jHfOCykpe
-	w7oqiud7fMcQJOSISZJLvAKrMlBAtSqEChTmrHzeY15Tr/zoj72CucT5ulUnP4JVms9u+ArGkFcYO
-	rNrFM2hmvMb9UhUp9VghikNgGHhfbL8D/+HJTty6Dsc/h3K3VQVjSPGlLOV1NxhXqzRfmhoeVzJu5
-	n73iP+t82oqw11lDJKrKHrhc13fOdv5risVU1BkKfCw5x3AKz/mcmfeStDYQZ4PqLh9/97eXYyV25
-	cZoQrqug==;
+	bh=KCG+sMC9F2xLPycuYaDvt6LczgH46Uir6w8rMPhFEoU=; b=I0/8tYVfKLoJd3WXEOwR+FY6PU
+	zn1q3mptvawKdCuE+InsedtNL65GLnVlkinazy98JM3Fx5qVQ/UDnp6dqnmUz7WC6GZB+ZQsA8ulP
+	ROctLi/EjAEbFmUjY5I9OTVbFtcksb/1WLLL5w8qtCfSwjLY3lK35M+t6nnTwmWl0ZwrDPI9OBnRb
+	HikjcJmzfcqu7sHo0Kpzpd6sVhPBJyTJ3/RVUVLRD6HAp214Nlqo67wbd9Faai3lPef+CBlrtmTmp
+	vML+83sfHIvI1YWaWrNUW+ZS2/N0XqANkWUeJdaQXPbOKs7UP1B/J1Wz9aR7FmTtU/35LIjjZDQsx
+	yoy5hq0Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qeMB6-00Cgbw-32;
-	Thu, 07 Sep 2023 21:04:40 +0000
-Received: from relay3-d.mail.gandi.net ([2001:4b98:dc4:8::223])
+	id 1qeVSF-00DD0A-0E;
+	Fri, 08 Sep 2023 06:58:59 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qeMB3-00Cgaq-0j
+	id 1qeVSA-00DCz8-2Y
 	for barebox@lists.infradead.org;
-	Thu, 07 Sep 2023 21:04:38 +0000
-Received: by mail.gandi.net (Postfix) with ESMTPSA id 131C460005
-	for <barebox@lists.infradead.org>; Thu,  7 Sep 2023 21:04:27 +0000 (UTC)
-Date: Thu, 7 Sep 2023 23:03:32 +0200
-From: Jules Maselbas <jmaselbas@zdiv.net>
-To: barebox@lists.infradead.org
-Message-ID: <ZPo6pGwAwVJr5b7U@tour>
-References: <20230907152047.102747-1-jmaselbas@zdiv.net>
+	Fri, 08 Sep 2023 06:58:56 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qeVS6-0003AO-H1; Fri, 08 Sep 2023 08:58:50 +0200
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qeVS6-004ov7-4f; Fri, 08 Sep 2023 08:58:50 +0200
+Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qeVS5-003CKY-UJ; Fri, 08 Sep 2023 08:58:49 +0200
+Date: Fri, 8 Sep 2023 08:58:49 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, mfe@pengutronix.de
+Message-ID: <20230908065849.GD637806@pengutronix.de>
+References: <20230907082126.2326381-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230907152047.102747-1-jmaselbas@zdiv.net>
-X-GND-Sasl: jmaselbas@zdiv.net
+In-Reply-To: <20230907082126.2326381-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230907_140437_434721_5C5FE478 
-X-CRM114-Status: UNSURE (   4.91  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230907_235854_827612_7646EE9B 
+X-CRM114-Status: GOOD (  24.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,22 +80,63 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/3] decompressors: Update xz to include ARM64 BCJ
- decoder
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 0/2] console: pbl: correctly handle relocate_to_adr after
+ pbl_set_putc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-> +config XZ_DEC_ARM64
-> +	bool "ARM64 BCJ filter decoder"
-I've just noticied that this string makes this config entry visible
-in menuconfig, while all others are not.
-It should be only: `bool` without anything else afterward.
+On Thu, Sep 07, 2023 at 10:21:24AM +0200, Ahmad Fatoum wrote:
+> pbl_set_putc may be called by a PBL entry point to store the absolute
+> address of a routine to be used for printing out a character.
+> 
+> If barebox happens to be located outside of the initially known RAM,
+> it will be relocated into it by means of relocate_to_adr(), but nothing
+> will take care to update the function pointer stored by pbl_set_putc.
+> 
+> This will usually continue to work until barebox sets up the MMU and
+> everything not known to be RAM is marked as eXecute Never. After that,
+> the next PBL console print will trigger an instruction abort.
+> 
+> Fix this by not storing the putc function pointer, but instead an offset
+> relative to _text.
+> 
+> This fixes the issue of barebox hanging on i.MX8M when located at an address
+> greater than 4G.
+> 
+> 
+> I thought about going further and make pbl_set_putc callable, even
+> before relocation. The problem here is that runtime_address() may
+> not be called on global variables defined in the same file for good
+> reasons described in its documentation. So that's left as future
+> exercise.
+> 
+> Ahmad Fatoum (2):
+>   ARM: mmu64: mark barebox text section executable during early init
+>   console: pbl: correctly handle relocate_to_adr after pbl_set_putc
 
-cheers
-Jules
+Applied, thanks
+
+Sascha
+
+> 
+>  arch/arm/cpu/mmu_64.c |  1 +
+>  pbl/console.c         | 13 ++++++++++---
+>  2 files changed, 11 insertions(+), 3 deletions(-)
+> 
+> -- 
+> 2.39.2
+> 
+> 
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
