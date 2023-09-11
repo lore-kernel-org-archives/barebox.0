@@ -1,15 +1,15 @@
-Delivery-date: Mon, 11 Sep 2023 17:26:04 +0200
+Delivery-date: Mon, 11 Sep 2023 17:26:05 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfind-00Bddj-CP
+	id 1qfind-00Bddx-Ps
 	for lore@lore.pengutronix.de; Mon, 11 Sep 2023 17:26:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfina-0007RI-2D
+	id 1qfinb-0007SV-CI
 	for lore@pengutronix.de; Mon, 11 Sep 2023 17:26:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,47 +17,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3svNaDSthqtA09NwKMT/rmBfYdY290LhYvqKTSYaTi0=; b=0/QgI7pRC/xA/cNHS1kG8BX3pP
-	fvc6F1aI5CM9AGSwCtfsXcTjTrRtM/OJzi/FAXBEO81MXlj51IULt0mewXhrJRsB0//AO2kn7Dn/9
-	q9O/T/jY3yX4tm3ywEvlA6Q2S0tSswkHEd5CHwcOMcCQbqV8hZJxPLRwpKTY5ZvY5Uiv+mOeJ2Y4b
-	B92utBkxCkUynKJPfhdnJ8yKNnlO3aZ9eaGPIKkHCo59cfhWBqfei0ZCouY/J4PQcZDCq/ZfJStxT
-	9ekktAcxn8WJSzGfVE6F4n52mqcqboNnJF1bpN6IKkpZG+4ssMrurYlyncqb9ZhXHFkqXqqxEzgYJ
-	SXKcljuw==;
+	bh=2RRUrDRCZhQbVMS2zXMagrQA/PHCr/FxLQHTFWXKL7s=; b=b69fsvxB2uVEQ3sM4pt9VkhpEW
+	wseRjXV5njUOz9GZAqxJG7g41zkPmavPgPkbP8y5IJgT+iE26lqD6b7ewCy2pMnJHjPvtLWe/r9/F
+	J/8Gppn/x78MdJOuzW5SnRC+kFTVQJcXjYpAKMC8rBBHprbelK1glQzmD6L/KksBTIt1UHRtbHO5y
+	5/+2WO20k1Pevgz+KtN3xDD/i8zO8a3X1LPAp6F+j7/y3rMUYl34uxK8U/VMkFHo8bgLJZub6j0zu
+	/RngXI5qcDamPqODc0QyfbJPkw+MOQSL+SW4dLLe2Ppkqc/Y6ycuw6TvB+KXbgxT1J7bBhrelgJmF
+	HnydZWWA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfimU-000sCz-29;
-	Mon, 11 Sep 2023 15:24:54 +0000
+	id 1qfimT-000sCi-3C;
+	Mon, 11 Sep 2023 15:24:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfimO-000s9I-2A
+	id 1qfimO-000s9G-1r
 	for barebox@lists.infradead.org;
 	Mon, 11 Sep 2023 15:24:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qfimN-00071a-IF; Mon, 11 Sep 2023 17:24:47 +0200
+	id 1qfimN-00071O-Ex; Mon, 11 Sep 2023 17:24:47 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qfimN-005a97-4y; Mon, 11 Sep 2023 17:24:47 +0200
+	id 1qfimM-005a93-P3; Mon, 11 Sep 2023 17:24:46 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qfimL-00FHKs-2Q;
+	id 1qfimL-00FHKg-2J;
 	Mon, 11 Sep 2023 17:24:45 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 11 Sep 2023 17:24:33 +0200
-Message-Id: <20230911152433.3640781-8-a.fatoum@pengutronix.de>
+Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 11 Sep 2023 17:24:30 +0200
+Message-Id: <20230911152433.3640781-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230911152433.3640781-1-a.fatoum@pengutronix.de>
 References: <20230911152433.3640781-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230911_082448_716989_EC5F42EA 
-X-CRM114-Status: GOOD (  11.33  )
+X-CRM114-CacheID: sfid-20230911_082448_621687_F97943A8 
+X-CRM114-Status: GOOD (  14.45  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,66 +80,103 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 7/7] test: self: malloc: fix memory leaks
+Subject: [PATCH v2 4/7] tlsf: give malloc 8-byte alignment on 32-bit as well
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The test shouldn't leak memory, even if it fails. Fix the leaks.
+The current alignment of 4 bytes is too low. Access to 64-bit data via
+ldrd/strd requires at least an eight byte alignment:
 
+  | Prior to ARMv6, if the memory address is not 64-bit aligned, the
+  | data read from memory is UNPREDICTABLE. Alignment checking (taking
+  | a data abort), and support for a big-endian (BE-32) data format are
+  | implementation options.
+
+We already have at least an 8 byte alignment for dlmalloc, so have TLSF
+follow suit by aligning the accounting structures appropriately.
+
+Instead of adding manual padding, we could also enlarge block_header_t::size
+to an uint64_t unconditionally, but mark block_header_t __packed. This
+comes with a runtime cost though or ugly __builtin_assume_aligned
+annotations, so we stick to the simpler version.
+
+Reported-by: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
+Link: https://lore.barebox.org/barebox/ly7d1z1qvs.fsf@ensc-pc.intern.sigma-chemnitz.de/
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/self/malloc.c | 14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ common/tlsf.c          | 12 ++++++------
+ include/linux/bitops.h |  1 +
+ 2 files changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/test/self/malloc.c b/test/self/malloc.c
-index 6b3002ff0996..47c225ac6a10 100644
---- a/test/self/malloc.c
-+++ b/test/self/malloc.c
-@@ -85,7 +85,8 @@ static void test_malloc(void)
- 	free(p);
+diff --git a/common/tlsf.c b/common/tlsf.c
+index 0986c7c457e3..692dabbdedd9 100644
+--- a/common/tlsf.c
++++ b/common/tlsf.c
+@@ -30,13 +30,8 @@ enum tlsf_public
+ /* Private constants: do not modify. */
+ enum tlsf_private
+ {
+-#if defined (TLSF_64BIT)
+ 	/* All allocation sizes and addresses are aligned to 8 bytes. */
+ 	ALIGN_SIZE_LOG2 = 3,
+-#else
+-	/* All allocation sizes and addresses are aligned to 4 bytes. */
+-	ALIGN_SIZE_LOG2 = 2,
+-#endif
+ 	ALIGN_SIZE = (1 << ALIGN_SIZE_LOG2),
  
- 	if (mem_malloc_size) {
--		expect_alloc_fail(malloc(SIZE_MAX));
-+		tmp = expect_alloc_fail(malloc(SIZE_MAX));
-+		free(tmp);
+ 	/*
+@@ -122,6 +117,7 @@ typedef struct block_header_t
  
- 		if (0xf0000000 > mem_malloc_size) {
- 			tmp = expect_alloc_fail(malloc(0xf0000000));
-@@ -95,7 +96,7 @@ static void test_malloc(void)
- 		skipped_tests += 2;
- 	}
+ 	/* The size of this block, excluding the block header. */
+ 	size_t size;
++	u32 : BYTES_TO_BITS(ALIGN_SIZE - sizeof(size_t));
  
--	p = realloc(NULL, 1);
-+	free(realloc(NULL, 1));
- 	p = expect_alloc_ok(realloc(NULL, 1));
+ 	/* Next and previous free blocks. */
+ 	struct block_header_t* next_free;
+@@ -142,7 +138,7 @@ typedef struct block_header_t
+ ** The prev_phys_block field is stored *inside* the previous free block.
+ */
+ #define block_header_shift		offsetof(block_header_t, size)
+-#define block_header_overhead		sizeof(size_t)
++#define block_header_overhead		ALIGN_SIZE
  
- 	*p = 0x42;
-@@ -107,11 +108,15 @@ static void test_malloc(void)
+ /* User data starts directly after the size field in a used block. */
+ #define block_start_offset		(block_header_shift + block_header_overhead)
+@@ -155,6 +151,8 @@ typedef struct block_header_t
+ #define block_size_min			(sizeof(block_header_t) - sizeof(block_header_t*))
+ #define block_size_max			(tlsf_cast(size_t, 1) << FL_INDEX_MAX)
  
- 	if (mem_malloc_size) {
- 		tmp = expect_alloc_fail(realloc(p, mem_malloc_size));
-+		free(tmp);
++tlsf_static_assert(block_size_min % ALIGN_SIZE == 0);
++tlsf_static_assert(block_size_max % ALIGN_SIZE == 0);
  
--		if (0xf0000000 > mem_malloc_size)
-+		if (0xf0000000 > mem_malloc_size) {
- 			tmp = expect_alloc_fail(realloc(p, 0xf0000000));
-+			free(tmp);
-+		}
+ /* The TLSF control structure. */
+ typedef struct control_t
+@@ -165,10 +163,12 @@ typedef struct control_t
+ 	/* Bitmaps for free lists. */
+ 	unsigned int fl_bitmap;
+ 	unsigned int sl_bitmap[FL_INDEX_COUNT];
++	u32 : BYTES_TO_BITS(ALIGN_SIZE - sizeof(size_t));
  
- 		tmp = expect_alloc_fail(realloc(p, SIZE_MAX));
-+		free(tmp);
+ 	/* Head of free lists. */
+ 	block_header_t* blocks[FL_INDEX_COUNT][SL_INDEX_COUNT];
+ } control_t;
++tlsf_static_assert(sizeof(control_t) % ALIGN_SIZE == 0);
  
- 	} else {
- 		skipped_tests += 3;
-@@ -123,5 +128,8 @@ static void test_malloc(void)
- 	tmp = expect_alloc_ok(malloc(0));
+ /* A type used for casting when doing pointer arithmetic. */
+ typedef ptrdiff_t tlsfptr_t;
+diff --git a/include/linux/bitops.h b/include/linux/bitops.h
+index a5f6ac6545ee..b0d6ca6ac87f 100644
+--- a/include/linux/bitops.h
++++ b/include/linux/bitops.h
+@@ -19,6 +19,7 @@
+ #define BITS_TO_U64(nr)		DIV_ROUND_UP(nr, BITS_PER_TYPE(u64))
+ #define BITS_TO_U32(nr)		DIV_ROUND_UP(nr, BITS_PER_TYPE(u32))
+ #define BITS_TO_BYTES(nr)	DIV_ROUND_UP(nr, BITS_PER_TYPE(char))
++#define BYTES_TO_BITS(nb)	(((BITS_PER_LONG * (nb)) / sizeof(long)))
+ #endif
  
- 	__expect_cond(p != tmp, true, "allocate distinct 0-size buffers", __func__, __LINE__);
-+
-+	free(p);
-+	free(tmp);
- }
- bselftest(core, test_malloc);
+ /*
 -- 
 2.39.2
 
