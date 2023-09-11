@@ -3,61 +3,61 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfiYg-00Bcvh-DM
+	id 1qfiYg-00Bcw4-Qo
 	for lore@lore.pengutronix.de; Mon, 11 Sep 2023 17:10:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfiYe-0005PJ-74
-	for lore@pengutronix.de; Mon, 11 Sep 2023 17:10:36 +0200
+	id 1qfiYe-0005PI-4i
+	for lore@pengutronix.de; Mon, 11 Sep 2023 17:10:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=x3V7giSBb8SeF03svGvcjykcw7Kw+99XYqLVZEFK1oI=; b=brxi/5CMFcHSn3R2GMvvK7hdim
-	jwhp92OrKv+kiKPWfWvrcvAeT7VE2HLbZRkitz08yiSPkq5YV8anvneBvZmnZ5IV99CVducE96lkD
-	uvkuparScstWhvDPstxczFIfXAd0zvtWmZiQt02857LwPLm5x4qG11rl7jvLCeoQXWisbdCPxstC3
-	rX7ZiZHrl1d1B/GL+XEI6aJSgcIbRoI0daIUQn8bq0Wszc41tjTyPtinI3qwceL9SOeE3VHOhcyzD
-	zBbfIcHUcZgugF2K/FOe4cxjzUeeRc9GxPn6ndMjqPVZnqmQNYObvGCLeaLtDGj19GIiJTBG8EFVS
-	5XcNRdQQ==;
+	bh=sB4v1E0zqz5Ox1AeWTC77PfhfzfDGAsk9+p5usRZnEw=; b=V8NhmOvLOJGPyWplQSDiIbe8ay
+	rKAcGyHOooO/kltxuYaeRe2ipShOh2rBHRzY7lp4kImkXoA0Pvx2GiMcICjmKnDbD5J4qV0KcaPwe
+	Mu6a79iiGJYnb1clhX9wTapkVG2xtrUwNzshO1u3KqC2tK2FdO7usApxcEjoURGjX/5KYTJnkBJzl
+	VJDIdPwb5jFI33sXKxOKNS8F/5pInwGZYr6RQMmdu8UgUYsxRR0Yn7UmQIoGFU2Y8v91/sRknXABr
+	eQ6Jm0FfQsINvdnyXnDUd5sOEnQbVmz3oZAHDbfQvvQvJVcYIIBye+x3CrWJEuImo4jvgCg68WEDr
+	H5qx6GKw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfiXN-000pT9-1U;
-	Mon, 11 Sep 2023 15:09:17 +0000
+	id 1qfiXJ-000pRV-0J;
+	Mon, 11 Sep 2023 15:09:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfiXI-000pRM-2d
+	id 1qfiXG-000pOo-12
 	for barebox@lists.infradead.org;
-	Mon, 11 Sep 2023 15:09:14 +0000
+	Mon, 11 Sep 2023 15:09:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qfiX9-0004xV-Mb; Mon, 11 Sep 2023 17:09:03 +0200
+	id 1qfiX9-0004xT-Il; Mon, 11 Sep 2023 17:09:03 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qfiX9-005a6G-8l; Mon, 11 Sep 2023 17:09:03 +0200
+	id 1qfiX9-005a6A-54; Mon, 11 Sep 2023 17:09:03 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qfiX8-00F2rm-2S;
+	id 1qfiX8-00F2rW-2I;
 	Mon, 11 Sep 2023 17:09:02 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 11 Sep 2023 17:09:00 +0200
-Message-Id: <20230911150900.3584523-6-a.fatoum@pengutronix.de>
+Date: Mon, 11 Sep 2023 17:08:56 +0200
+Message-Id: <20230911150900.3584523-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230911150900.3584523-1-a.fatoum@pengutronix.de>
 References: <20230911150900.3584523-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230911_080912_862387_54697D34 
-X-CRM114-Status: GOOD (  16.71  )
+X-CRM114-CacheID: sfid-20230911_080910_361269_4DB71C74 
+X-CRM114-Status: GOOD (  10.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,118 +75,72 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-3.9 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 5/5] commands: add stacksmash command for causing stack overflows
+Subject: [PATCH 1/5] include: move PAGE_ definitions into linux/pagemap.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that we have two mechanisms for detecting stack overflows, add a
-command to intentionally trigger stack frame and stack region overflow
-to verify their correct operation.
+<common.h> is a fat header and we shouldn't need to include it just to
+get a definition for PAGE_SIZE. In Linux PAGE_SIZE is defined per
+architecture, but in barebox we only have 4K pages so far, so let's move
+it into <linux/pagemap.h>.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/Kconfig      |  6 +++++
- commands/Makefile     |  1 +
- commands/stacksmash.c | 58 +++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 65 insertions(+)
- create mode 100644 commands/stacksmash.c
+ include/common.h        | 6 +-----
+ include/linux/pagemap.h | 8 +++++++-
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index eb95b2a5fbcc..c1bba22443e6 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -2401,6 +2401,12 @@ config CMD_UBSAN
- 	  This is a test command for the undefined behavior sanitizer.
- 	  It triggers various undefined behavior, and detect it.
+diff --git a/include/common.h b/include/common.h
+index cf3e0447a09a..b7b4d9e35094 100644
+--- a/include/common.h
++++ b/include/common.h
+@@ -16,6 +16,7 @@
+ #include <linux/string.h>
+ #include <linux/kernel.h>
+ #include <linux/stddef.h>
++#include <linux/pagemap.h>
+ #include <asm/common.h>
+ #include <asm/io.h>
+ #include <linux/printk.h>
+@@ -105,11 +106,6 @@ void shutdown_barebox(void);
+ 	char __##name[sizeof(type) * (size) + (align) - 1];	\
+ 	type *name = (type *)ALIGN((uintptr_t)__##name, align)
  
-+config CMD_STACKSMASH
-+	tristate "stacksmash"
-+	help
-+	  This commands trashes the stack to test stackprotector and
-+	  guard page. This command does not return.
-+
- # end Miscellaneous commands
- endmenu
+-#define PAGE_SIZE	4096
+-#define PAGE_SHIFT	12
+-#define PAGE_ALIGN(s)	ALIGN(s, PAGE_SIZE)
+-#define PAGE_ALIGN_DOWN(x) ALIGN_DOWN(x, PAGE_SIZE)
+-
+ int mem_parse_options(int argc, char *argv[], char *optstr, int *mode,
+ 		char **sourcefile, char **destfile, int *swab);
+ int memcpy_parse_options(int argc, char *argv[], int *sourcefd,
+diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
+index 20c38a0b8912..01cbfc17c57b 100644
+--- a/include/linux/pagemap.h
++++ b/include/linux/pagemap.h
+@@ -3,11 +3,17 @@
+ #ifndef _LINUX_PAGEMAP_H
+ #define _LINUX_PAGEMAP_H
  
-diff --git a/commands/Makefile b/commands/Makefile
-index 4b083a852d83..4924755500e3 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -145,5 +145,6 @@ obj-$(CONFIG_CMD_BTHREAD)	+= bthread.o
- obj-$(CONFIG_CMD_UBSAN)		+= ubsan.o
- obj-$(CONFIG_CMD_SELFTEST)	+= selftest.o
- obj-$(CONFIG_CMD_TUTORIAL)	+= tutorial.o
-+obj-$(CONFIG_CMD_STACKSMASH)	+= stacksmash.o
++#include <linux/kernel.h>
++
+ /*
+  * Copyright 1995 Linus Torvalds
+  */
  
- UBSAN_SANITIZE_ubsan.o := y
-diff --git a/commands/stacksmash.c b/commands/stacksmash.c
-new file mode 100644
-index 000000000000..1e9be0d40e15
---- /dev/null
-+++ b/commands/stacksmash.c
-@@ -0,0 +1,58 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
+-#include <common.h>
 +
-+#include <common.h>
-+#include <command.h>
-+#include <complete.h>
-+#include <linux/compiler.h>
-+#include <string.h>
-+
-+static noinline void stack_overflow_frame(void)
-+{
-+	volatile int length = 512;
-+	char a[128] = {};
-+
-+	/*
-+	 * In order to avoid having the compiler optimize away the stack smashing
-+	 * we need to do a little something here.
-+	 */
-+	OPTIMIZER_HIDE_VAR(length);
-+
-+	memset(a, 0xa5, length);
-+
-+	printf("We have smashed our stack as this should not exceed 128: sizeof(a) = %zu\n",
-+	       strlen(a));
-+}
-+
-+static noinline void stack_overflow_region(u64 i)
-+{
-+	volatile char a[1024] = {};
-+
-+	if (ctrlc())
-+		return;
-+
-+	RELOC_HIDE(&a, 0);
-+
-+	stack_overflow_region(0);
-+
-+	printf("%*ph", 1024, a);
-+}
-+
-+static int do_stacksmash(int argc, char *argv[])
-+{
-+	if (argc != 2)
-+		return COMMAND_ERROR_USAGE;
-+
-+	if (!strcmp(argv[1], "frame"))
-+		stack_overflow_frame();
-+	else if (!strcmp(argv[1], "region"))
-+		stack_overflow_region(0);
-+
-+	panic("Stack smashing of %s not caught\n", argv[1]);
-+}
-+BAREBOX_CMD_START(stacksmash)
-+        .cmd            = do_stacksmash,
-+        BAREBOX_CMD_DESC("Run stack smashing tests")
-+	BAREBOX_CMD_OPTS("[frame | region]")
-+        BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+        BAREBOX_CMD_COMPLETE(empty_complete)
-+BAREBOX_CMD_END
++#define PAGE_SIZE	4096
++#define PAGE_SHIFT	12
++#define PAGE_ALIGN(s)	ALIGN(s, PAGE_SIZE)
++#define PAGE_ALIGN_DOWN(x) ALIGN_DOWN(x, PAGE_SIZE)
+ 
+ #define PAGE_CACHE_SHIFT        PAGE_SHIFT
+ #define PAGE_CACHE_SIZE         PAGE_SIZE
 -- 
 2.39.2
 
