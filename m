@@ -1,61 +1,62 @@
-Delivery-date: Mon, 11 Sep 2023 14:16:40 +0200
+Delivery-date: Mon, 11 Sep 2023 14:18:42 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qffqL-00BTWo-IE
-	for lore@lore.pengutronix.de; Mon, 11 Sep 2023 14:16:40 +0200
+	id 1qffsJ-00BTdi-70
+	for lore@lore.pengutronix.de; Mon, 11 Sep 2023 14:18:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qffqJ-00020j-5c
-	for lore@pengutronix.de; Mon, 11 Sep 2023 14:16:39 +0200
+	id 1qffsG-0002KE-P5
+	for lore@pengutronix.de; Mon, 11 Sep 2023 14:18:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=koDEoMUQaEHPSBatJRUJ18DWvwV0doWAXr1AVj5CRDA=; b=2+GizFJPg6Ndqk1I5qQTpH6dS2
-	uhNf6/42ikblx5SzgcJSSFKJ7WlUu/l9En+DO9y83OFtv4moO6TTYzhadeHRWVoVgZ+uVF0mgjj6N
-	n1K2I53kB6TN6ggn96ggOdV0QbRPAgCK2oSB0g/BNMu09bjc7Ko7AIB9thYLAAzzx0uGVpSYl23Dz
-	7+07qidID0kx2zXfsfsFSX/AFYTcBjYM19I8bGmEI3Ji2jCvAqAokuMvqSs0UfIJObFsHnVdxzwXm
-	VXbX+cVf/IRj9XQdL3Wq43STiAtJ27z1jlAWQitexftDSYzQBn9KMwJvXBamn35l4aeRAJunFTEvY
-	hNXah+ew==;
+	bh=NERVboq4UiUEKcAx3vmuZWM2OuvfxVuS6FS5KZva/b4=; b=eWHusRnGyXmJVz1E6gVTRDIuwM
+	XwgcIckD1QEGxhOYLlpHweto74guyafLuu97QQGVwbiUAY+vXmDaRMx2KmDMYV0+s/4gQsEEhKwAB
+	0UUapZM8Chi9dgJX96iKdtecBbN56+P/OOGDD9Q0SV83kile9fvJFZ0PslpfKc5PE1Y1ZEVA5IMXe
+	KaV4b/mLz1OtcpMdCz+TWFLqnjdVJsM6/KREx5ydG8Vw/gsWK6/trIkd4eWq9CLPPXXRIRVxCrrcB
+	3epGNXPcY2WyoqpYo/haOm9izgHOuI6EIvEHMG9HnClUrqH/0ZIxGSNrC0QvdQsIdX2XGYjPxzQ9W
+	2+C9iTeg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qffpD-000SxP-0v;
-	Mon, 11 Sep 2023 12:15:31 +0000
+	id 1qffrG-000TLj-2X;
+	Mon, 11 Sep 2023 12:17:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qffp9-000Swx-3C
+	id 1qffrC-000TKk-2w
 	for barebox@lists.infradead.org;
-	Mon, 11 Sep 2023 12:15:29 +0000
+	Mon, 11 Sep 2023 12:17:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qffp7-0001oU-V7; Mon, 11 Sep 2023 14:15:25 +0200
+	id 1qffrB-0002DA-Iq; Mon, 11 Sep 2023 14:17:33 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qffp7-005XsE-Iw; Mon, 11 Sep 2023 14:15:25 +0200
+	id 1qffrB-005XtP-6R; Mon, 11 Sep 2023 14:17:33 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qffp6-00B7m1-31;
-	Mon, 11 Sep 2023 14:15:24 +0200
+	id 1qffrA-00BARW-26;
+	Mon, 11 Sep 2023 14:17:32 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 11 Sep 2023 14:15:24 +0200
-Message-Id: <20230911121524.2650416-1-a.fatoum@pengutronix.de>
+Date: Mon, 11 Sep 2023 14:17:31 +0200
+Message-Id: <20230911121731.2661717-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230911_051528_027627_6535E935 
-X-CRM114-Status: GOOD (  10.54  )
+X-CRM114-CacheID: sfid-20230911_051734_946420_3D9DF94E 
+X-CRM114-Status: UNSURE (   7.31  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,33 +78,30 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] KAsan: support including header from PBL
+Subject: [PATCH] lib: random: make linux/hw_random.h header self-contained
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-It can be sometimes useful to add manual poisoning with KASAN to track
-down errant accesses. This is complicated a bit, because some files are
-build for both PBL and barebox proper. To make such debugging easier,
-let's allow <linux/kasan.h> to be included from PBL code.
+struct hwrng defined in the file embeds a struct device, so inclusion
+of the header defining it is in order.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/kasan.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/hw_random.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/kasan.h b/include/linux/kasan.h
-index 7c184cd0e234..54fb993f38ba 100644
---- a/include/linux/kasan.h
-+++ b/include/linux/kasan.h
-@@ -42,7 +42,7 @@
- #define KASAN_ALLOCA_LEFT	0xCA
- #define KASAN_ALLOCA_RIGHT	0xCB
+diff --git a/include/linux/hw_random.h b/include/linux/hw_random.h
+index fad41b688063..9143ba1f8d4c 100644
+--- a/include/linux/hw_random.h
++++ b/include/linux/hw_random.h
+@@ -14,6 +14,7 @@
+ #define LINUX_HWRANDOM_H_
  
--#ifdef CONFIG_KASAN
-+#if defined(CONFIG_KASAN) && !defined(__PBL__)
+ #include <linux/list.h>
++#include <driver.h>
  
- extern unsigned long kasan_shadow_start;
- extern unsigned long kasan_shadow_base;
+ /**
+  * struct hwrng - Hardware Random Number Generator driver
 -- 
 2.39.2
 
