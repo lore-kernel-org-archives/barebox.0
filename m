@@ -1,59 +1,61 @@
-Delivery-date: Mon, 11 Sep 2023 18:11:12 +0200
+Delivery-date: Mon, 11 Sep 2023 18:23:54 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfjVJ-00BgF6-EM
-	for lore@lore.pengutronix.de; Mon, 11 Sep 2023 18:11:12 +0200
+	id 1qfjhb-00BghH-Dy
+	for lore@lore.pengutronix.de; Mon, 11 Sep 2023 18:23:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfjVH-00065Y-Eo
-	for lore@pengutronix.de; Mon, 11 Sep 2023 18:11:12 +0200
+	id 1qfjhY-0007Jg-OX
+	for lore@pengutronix.de; Mon, 11 Sep 2023 18:23:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/yLM8zaaakWWGVfCRoUOrCqaauk+36GbsuGxu2PRcsg=; b=vAP/ihjJnjEpEhIur6KaXWNUrH
-	fNwcNSithh8fIBBzjSBVnckYULVkFq7Z/dRDbVzrsOzxO8dAAOVj2K/dhjNmPl/woXxlwHAHNA1KT
-	y07zGcvRWnuIDxehbhs1pbydHICec+DEd4ItRHfs68wFHWVVvD2CU3HJXnzk97vYHkCJsdZsC/ORR
-	L7jt95yJtolmwDedkyIBVUtDYkA+th/GZQZjVlx/FmdkCvGa/UiTbHGMgoO6z9xg/+AYyO+Krig9z
-	9D1pgs5BDm7h7ZUSeMWvHLD5e7gWJPJB6LeDboRa4PW0JcAg8FM84gUzTn94awcXcW0XjlevPo6M8
-	P4Jc9Hhg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=SWnwD9ff6K2tV4bvaUUo4t7kn1mRCOD4GCks8nRmi8M=; b=SdFy0EBxNM5lA/vQp7fG5rWI3j
+	6qTKKPNxKs+ho+mneNs5VRgPXuoMh2DDwBNsEdFC5vlb9raoIpQLy3PakyBc+XXTEeoZtUiVcdyft
+	neWRFTslg+A0U+VJ9GwQMAlM72HpdnQEBgRm0GaL0zyDwRbKzQ8La0m9GMKsvRDqBCUUURord9ivf
+	KjgaMmVn8BMLoNUO1XsO+6yaL1kWHrg2SWS8q4ANW3OEBZCWSmepzMIRA4e00kpkUQdwQRCqdNPec
+	jOIyCKpWxySBOHBi7O7UC8ueY2/Gn9extV1JqCyLvxkFGFSFb+dyghOxWbwnPMwIubybgONAIuw1/
+	RIMmybrw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfjU2-000yZD-2Z;
-	Mon, 11 Sep 2023 16:09:54 +0000
+	id 1qfjgR-000zZE-1d;
+	Mon, 11 Sep 2023 16:22:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfjTz-000yYc-0b
+	id 1qfjgO-000zYo-06
 	for barebox@lists.infradead.org;
-	Mon, 11 Sep 2023 16:09:52 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qfjTu-0005uJ-OZ; Mon, 11 Sep 2023 18:09:46 +0200
-Message-ID: <8fe43887-c444-870c-5d2d-f4b412e85d16@pengutronix.de>
-Date: Mon, 11 Sep 2023 18:09:46 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
+	Mon, 11 Sep 2023 16:22:41 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qfjgM-00079w-Lr; Mon, 11 Sep 2023 18:22:38 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qfjgM-005akG-9i; Mon, 11 Sep 2023 18:22:38 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qfjgM-00Fvpj-09;
+	Mon, 11 Sep 2023 18:22:38 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Alexander Shiyan <eagle.alexander923@gmail.com>,
- barebox@lists.infradead.org
-References: <20230830104747.43193-1-eagle.alexander923@gmail.com>
- <20230830104747.43193-3-eagle.alexander923@gmail.com>
- <aa20d72f-8cb6-7b51-9ae6-2f8d15d6c690@pengutronix.de>
-In-Reply-To: <aa20d72f-8cb6-7b51-9ae6-2f8d15d6c690@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 11 Sep 2023 18:22:37 +0200
+Message-Id: <20230911162237.3797218-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230911_090951_242553_B5F394A8 
-X-CRM114-Status: GOOD (  19.37  )
+X-CRM114-CacheID: sfid-20230911_092240_072735_ECDB348D 
+X-CRM114-Status: GOOD (  10.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,79 +73,43 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/3] ARM: boards: Add MyirTech MYD-YA15XC-T development
- board support
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH master] boards: qemu-virt: rescan aliases after merging DT fragment
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+barebox now compiles an initially empty device tree that's combined with
+the device tree passed by Qemu. That device tree can hold the FIT public
+key or if CONFIG_EXTERNAL_DTS_FRAGMENTS is enabled, device tree nodes
+passed at build time. If this device tree fragment adds an alias, it
+won't be registered, which can be surprising. Therefore call
+of_alias_scan after merging the device trees.
 
-On 30.08.23 16:41, Ahmad Fatoum wrote:
-> On 30.08.23 12:47, Alexander Shiyan wrote:
->> +
->> +	len = (eeprom.sn[0] - '0');
->> +	if ((len < 8) || (len > 64)) {
->> +		pr_err("Unable to get product serial\n");
->> +		return -EINVAL;
->> +	}
->> +
->> +	strncpy(str, &eeprom.sn[1], len);
->> +	str[len] = '\0';
->> +	pr_info("Product serial: %s\n", str);
-> 
-> Would barebox_set_serial_number() work for you?
-> 
->> +	machine_id_set_hashable(str, len);
-> 
-> Any particular reason why not to just use the SoC serial?
+Fixes: 484a0d281408 ("boards: qemu-virt: support passing in FIT public key")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/boards/qemu-virt/board.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-We had a discussion two years ago[1], where it turned out that the unique
-ID on STM32MP1 SoCs wasn't randomized, so it's probably better board vendors
-indeed set their own if that would have more entropy. The ugly thing about
-that is that the last call to machine_id_set_hasable wins, so I wanted to
-change it to be set in device tree instead, e.g.:
-
-  /chosen { barebox,machine-id-path = &bsec; }.
-
-Alas I never sent a v2. Anyways, existing users will have to be grandfathered
-in, so it's fine for me if you choose to call machine_id_set_hashable from
-your board code.
-
-[1]: https://lore.barebox.org/barebox/dad3cc59-5a25-9889-88a5-58467f576d8e@pengutronix.de/
-
->> +ENTRY_FUNCTION(start_stm32mp15x_myir, r0, r1, r2)
->> +{
->> +	void *fdt;
->> +
->> +	stm32mp_cpu_lowlevel_init();
->> +
->> +	if (IS_ENABLED(CONFIG_DEBUG_LL))
->> +		setup_uart();
->> +
->> +	fdt = __dtb_z_stm32mp15x_myirtech_myd_start + get_runtime_offset();
->> +
->> +	stm32mp1_barebox_entry(fdt);
-> 
-> Same question: Do you use an old TF-A or why do you need a specific entry
-> point instead of barebox-stm32mp-generic-bl33.img?
-
-Rethinking this, such an image is the only way to chainload barebox over
-the network. So you may want to keep it until barebox can boot FIP images..
-
-Cheers,
-Ahmad
-
-
-
+diff --git a/common/boards/qemu-virt/board.c b/common/boards/qemu-virt/board.c
+index b9df129834d9..4f2f7374c56a 100644
+--- a/common/boards/qemu-virt/board.c
++++ b/common/boards/qemu-virt/board.c
+@@ -80,6 +80,9 @@ static int virt_board_driver_init(void)
+ 	pubkey = of_unflatten_dtb(__dtb_fitimage_pubkey_start, INT_MAX);
+ 	of_merge_nodes(root, pubkey);
+ 
++	/* fragment may have added aliases to the DT */
++	of_alias_scan();
++
+ 	/* of_probe() will happen later at of_populate_initcall */
+ 
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
