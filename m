@@ -1,64 +1,62 @@
-Delivery-date: Mon, 11 Sep 2023 18:00:46 +0200
+Delivery-date: Mon, 11 Sep 2023 18:00:47 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfjLD-00BfS0-8v
-	for lore@lore.pengutronix.de; Mon, 11 Sep 2023 18:00:46 +0200
+	id 1qfjLE-00BfSQ-6J
+	for lore@lore.pengutronix.de; Mon, 11 Sep 2023 18:00:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfjLB-0004Lk-GP
+	id 1qfjLC-0004MH-8t
 	for lore@pengutronix.de; Mon, 11 Sep 2023 18:00:46 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/YJwfnrYYYj4WXshNFIPKC2GkElfIbJfLqYPTj6CGZQ=; b=0LEBsG/TJCFlqzlbE3uDxU+bpz
-	MxU2Ec3Jq0vX0PM9q21B2fCH4FYuaSIv3yKXMKZ4bUMdzBkSUI1Kx6FELAc1RZ1sJC2FfUMpdH5K2
-	dTntzFskunGRVyqPzOF44FnEKURVDKoV5NKYbCVJvvbHhpJgXM4jYlOhN1nBMONpOwoZ+Rbf/BqN9
-	iLvBfzVzGbSc1s2W1+KTVPlRWPHpSTKQz0R0IkpDFJCgwJ1TFDVhIGi5nc8vKvsbZyqJhV6rfWewr
-	3NrdW6Mw8IANbVVwgnY3h+GmcWN8n9HLQ2e5qlstP3p+XNe57Qkhqo/pP5d5xxFoKvYoUX1iEhlH9
-	ojHfvoyQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=7uuIGaJAQGynjy8cqrsitmX2ATtcsPgpVhzZBf1yuXE=; b=fuqEi5mncnWtahdULd6x7vkMKs
+	rI/AvqnCvWxs7DG2P8JeBNF56yd6+xgzx5TPNgI+5mo2WHcP8YluAjUVm6kgA6mMRCF0AfL6vhX+O
+	JhB1XyQ9WIeqjsCrv0DihRCOenFwB96HiktEV8wIQJLu1F27FNBhF3UcYiul41uLIHjSbux8wsHTl
+	UD6q1juuYGAhNjlmgqU82f3hBHTZSjD2hQRxQtCbtyNccTv+zVmc6hKRkcGBbSiAMvmQfkj1C913l
+	CZn2/nVSpSrND+G/ylN9s8GXfB1LHoztDN0qQ1PCIXBN4Uw032YQYdCK+qxAmWJ398+Fr6IEb4HKz
+	ALkgCUGA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfjK4-000xJv-2h;
-	Mon, 11 Sep 2023 15:59:36 +0000
+	id 1qfjK5-000xKC-1j;
+	Mon, 11 Sep 2023 15:59:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfjK1-000xIV-1x
+	id 1qfjK1-000xIX-1w
 	for barebox@lists.infradead.org;
-	Mon, 11 Sep 2023 15:59:34 +0000
+	Mon, 11 Sep 2023 15:59:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qfjK0-0003yg-3O; Mon, 11 Sep 2023 17:59:32 +0200
+	id 1qfjK0-0003z8-A5; Mon, 11 Sep 2023 17:59:32 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qfjJz-005aH2-5b; Mon, 11 Sep 2023 17:59:31 +0200
+	id 1qfjJz-005aH8-Ty; Mon, 11 Sep 2023 17:59:31 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qfjJy-00Ft0S-2h;
+	id 1qfjJy-00Ft0P-2e;
 	Mon, 11 Sep 2023 17:59:30 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 11 Sep 2023 17:59:26 +0200
-Message-Id: <20230911155927.3786335-2-a.fatoum@pengutronix.de>
+Date: Mon, 11 Sep 2023 17:59:25 +0200
+Message-Id: <20230911155927.3786335-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230911155927.3786335-1-a.fatoum@pengutronix.de>
-References: <20230911155927.3786335-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230911_085933_641300_D7342C0B 
-X-CRM114-Status: GOOD (  13.05  )
+X-CRM114-CacheID: sfid-20230911_085933_641619_644FBEC3 
+X-CRM114-Status: GOOD (  19.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,100 +78,185 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/3] net: import Linux eth_addr_inc/dec/add helpers
+Subject: [PATCH 1/3] common: machine_id: support deriving app specific UUIDs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Linux has a number of helpers to do arithmetic on Ethernet addresses,
-which are useful for generating sequential MAC addresses. Import them.
+libsystemd provides a sd_id128_get_machine_app_specific() function that
+allows deriving an application specific UUID without directly leaking
+the machine ID.
+
+Let's provide an equivalent for barebox that will be used in a following
+commit to generate a stable MAC instead of randomizing it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/net.h | 71 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 71 insertions(+)
+ common/machine_id.c  | 84 ++++++++++++++++++++++++++++++++++++++++++--
+ include/linux/uuid.h |  8 +++++
+ include/machine_id.h | 10 ++++++
+ 3 files changed, 100 insertions(+), 2 deletions(-)
 
-diff --git a/include/net.h b/include/net.h
-index 5e029c71f29e..a0ef8bee0404 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -449,6 +449,77 @@ static inline int is_valid_ether_addr(const u8 *addr)
- 	return !is_multicast_ether_addr(addr) && !is_zero_ether_addr(addr);
+diff --git a/common/machine_id.c b/common/machine_id.c
+index 8c273b934989..edc8ad0ac156 100644
+--- a/common/machine_id.c
++++ b/common/machine_id.c
+@@ -13,17 +13,96 @@
+ 
+ #define MACHINE_ID_LENGTH 32
+ 
++static bool __machine_id_initialized;
+ static void *__machine_id_hashable;
+ static size_t __machine_id_hashable_length;
+ 
+-
++/**
++ * machine_id_set_hashable - Provide per-board unique data
++ * @hashable: Buffer
++ * @len: size of buffer
++ *
++ * The data supplied to the last call of this function prior to
++ * late_initcall will be hashed and stored into global.machine_id,
++ * which can be later used for fixup into the kernel command line
++ * or for deriving application specific unique IDs via
++ * machine_id_get_app_specific().
++ */
+ void machine_id_set_hashable(const void *hashable, size_t len)
+ {
+-
+ 	__machine_id_hashable = xmemdup(hashable, len);
+ 	__machine_id_hashable_length = len;
  }
  
 +/**
-+ * ether_addr_to_u64 - Convert an Ethernet address into a u64 value.
-+ * @addr: Pointer to a six-byte array containing the Ethernet address
++ * machine_id_get_app_specific - Generates an application-specific UUID
++ * @result: UUID output of the function
++ * @...: pairs of (const void *, size_t) arguments of data to factor
++ * into the UUID followed by a NULL sentinel value.
 + *
-+ * Return a u64 value of the address
++ * Combines the machine ID with the application specific varargs data
++ * to arrive at an application-specific and board-specific UUID that is
++ * stable and unique.
++ *
++ * The function returns 0 if a UUID was successfully written into @result
++ * and a negative error code otherwise.
 + */
-+static inline u64 ether_addr_to_u64(const u8 *addr)
++int machine_id_get_app_specific(uuid_t *result, ...)
 +{
-+	u64 u = 0;
-+	int i;
++	static u8 hmac[SHA256_DIGEST_SIZE];
++	const void *data;
++	size_t size;
++	va_list args;
++	struct digest *d;
++	int ret;
 +
-+	for (i = 0; i < ETH_ALEN; i++)
-+		u = u << 8 | addr[i];
++	if (!__machine_id_initialized)
++		return -ENODATA;
 +
-+	return u;
-+}
++	d = digest_alloc("hmac(sha256)");
++	if (!d)
++		return -ENOSYS;
 +
-+/**
-+ * u64_to_ether_addr - Convert a u64 to an Ethernet address.
-+ * @u: u64 to convert to an Ethernet MAC address
-+ * @addr: Pointer to a six-byte array to contain the Ethernet address
-+ */
-+static inline void u64_to_ether_addr(u64 u, u8 *addr)
-+{
-+	int i;
++	ret = digest_set_key(d, __machine_id_hashable, __machine_id_hashable_length);
++	if (ret)
++		goto out;
 +
-+	for (i = ETH_ALEN - 1; i >= 0; i--) {
-+		addr[i] = u & 0xff;
-+		u = u >> 8;
++	ret = digest_init(d);
++	if (ret)
++		goto out;
++
++	ret = -ENODATA;
++
++	va_start(args, result);
++
++	while ((data = va_arg(args, const void *))) {
++		size = va_arg(args, size_t);
++
++		ret = digest_update(d, data, size);
++		if (ret)
++			break;
 +	}
++
++	va_end(args);
++
++	if (ret)
++		goto out;
++
++	ret = digest_final(d, hmac);
++	if (ret)
++		goto out;
++
++	/* Take only the first half. */
++	memcpy(result, hmac, min(sizeof(hmac), sizeof(*result)));
++
++	uuid_make_v4(result);
++
++out:
++	digest_free(d);
++
++	return ret;
 +}
 +
-+/**
-+ * eth_addr_dec - Decrement the given MAC address
-+ *
-+ * @addr: Pointer to a six-byte array containing Ethernet address to decrement
-+ */
-+static inline void eth_addr_dec(u8 *addr)
-+{
-+	u64 u = ether_addr_to_u64(addr);
-+
-+	u--;
-+	u64_to_ether_addr(u, addr);
-+}
-+
-+/**
-+ * eth_addr_inc() - Increment the given MAC address.
-+ * @addr: Pointer to a six-byte array containing Ethernet address to increment.
-+ */
-+static inline void eth_addr_inc(u8 *addr)
-+{
-+	u64 u = ether_addr_to_u64(addr);
-+
-+	u++;
-+	u64_to_ether_addr(u, addr);
-+}
-+
-+/**
-+ * eth_addr_add() - Add (or subtract) an offset to/from the given MAC address.
-+ *
-+ * @offset: Offset to add.
-+ * @addr: Pointer to a six-byte array containing Ethernet address to increment.
-+ */
-+static inline void eth_addr_add(u8 *addr, long offset)
-+{
-+	u64 u = ether_addr_to_u64(addr);
-+
-+	u += offset;
-+	u64_to_ether_addr(u, addr);
-+}
-+
- typedef void rx_handler_f(void *ctx, char *packet, unsigned int len);
+ static int machine_id_set_globalvar(void)
+ {
+ 	struct digest *digest = NULL;
+@@ -61,6 +140,7 @@ static int machine_id_set_globalvar(void)
+ 	env_machine_id = basprintf("%.*s", MACHINE_ID_LENGTH, hex_machine_id);
+ 	globalvar_add_simple("machine_id", env_machine_id);
+ 	free(env_machine_id);
++	__machine_id_initialized = true;
  
- struct eth_device *eth_get_byname(const char *name);
+ out:
+ 	digest_free(digest);
+diff --git a/include/linux/uuid.h b/include/linux/uuid.h
+index 6b1a3efa1e0b..1e4ffb343452 100644
+--- a/include/linux/uuid.h
++++ b/include/linux/uuid.h
+@@ -107,6 +107,14 @@ extern const u8 uuid_index[16];
+ int guid_parse(const char *uuid, guid_t *u);
+ int uuid_parse(const char *uuid, uuid_t *u);
+ 
++static inline void uuid_make_v4(uuid_t *u) {
++	/* Set UUID version to 4 --- truly random generation */
++	u->b[6] = (u->b[6] & 0x0F) | 0x40;
++
++	/* Set the UUID variant to DCE */
++	u->b[8] = (u->b[8] & 0x3F) | 0x80;
++}
++
+ /* MEI UUID type, don't use anywhere else */
+ #include <uapi/linux/uuid.h>
+ 
+diff --git a/include/machine_id.h b/include/machine_id.h
+index e30bbada1acd..0ed4052ec47c 100644
+--- a/include/machine_id.h
++++ b/include/machine_id.h
+@@ -3,9 +3,13 @@
+ #ifndef __MACHINE_ID_H__
+ #define __MACHINE_ID_H__
+ 
++#include <linux/types.h>
++#include <linux/uuid.h>
++
+ #if IS_ENABLED(CONFIG_MACHINE_ID)
+ 
+ void machine_id_set_hashable(const void *hashable, size_t len);
++int machine_id_get_app_specific(uuid_t *result, ...) __attribute__((__sentinel__));
+ 
+ #else
+ 
+@@ -13,6 +17,12 @@ static inline void machine_id_set_hashable(const void *hashable, size_t len)
+ {
+ }
+ 
++static inline int machine_id_get_app_specific(uuid_t *result, ...)
++	__attribute__((__sentinel__));
++{
++	return -ENOSYS;
++}
++
+ #endif /* CONFIG_MACHINE_ID */
+ 
+ #endif  /* __MACHINE_ID_H__ */
 -- 
 2.39.2
 
