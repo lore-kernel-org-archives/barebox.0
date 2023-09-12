@@ -1,59 +1,60 @@
-Delivery-date: Tue, 12 Sep 2023 14:22:39 +0200
+Delivery-date: Tue, 12 Sep 2023 14:35:48 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qg2Pg-00CcqG-H6
-	for lore@lore.pengutronix.de; Tue, 12 Sep 2023 14:22:39 +0200
+	id 1qg2cP-00CdTM-HZ
+	for lore@lore.pengutronix.de; Tue, 12 Sep 2023 14:35:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qg2Pe-0002O0-Gw
-	for lore@pengutronix.de; Tue, 12 Sep 2023 14:22:39 +0200
+	id 1qg2cN-00050I-JL
+	for lore@pengutronix.de; Tue, 12 Sep 2023 14:35:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zE1kUBzi/8SWny5TurGleVZcSEgXe9wpHdt6jPJPEY4=; b=fugZOnlaestD6hOyi5M1rJLbtg
-	IZcpGtjqNUx17pUaqvH9a71rdO/n1hK+8hLArfK094wa8KbqEZ3+gwmjV4/9uTVXiSylECIBS/E1+
-	xUt6Ftf7UIoWqIwqNuS2C7hb8OSz75iMzpn1g+GsG+jTK6tSp6/YaXwz3LtyZ4LNjjkyZBCOQEpBz
-	e06NU6wkPGqHnS8Yy3jYJVuJUyj/j/L1rmknFOkIwiC5czIfOa7UOy6seolKaVXW+9X5re246I032
-	+a1SixE4AD8RnetLfKZRpZPhLgTSHBjcQMVf6F6yyDYKTwU1QSbpnZx1tDgei1iIJ9/5IRa0pGuEB
-	f8YSQjHA==;
+	bh=bZhm3X3bo/IOCjPCiSGdVCAFKjxVVeL+qZtEq2UsRZ0=; b=O7T8kmvSxNIlVXlDxfbVZBCXgz
+	Y2LMmfad80hihys16ndHl9w0cyJ/k8GeJym+dQA3rD7yJUt0KqnpBzWxQOLr9hXFdIpPzuZAy0BMm
+	7ttwOB8MVF1xhoyT4J2auAOd46q+U+lcjNxWIjVon1IBCro5REBiMvaxvYHV6IUwELmI7Cyia+rKl
+	xT3u+pmOOsSKFaHkItfrEAIlDFnCuN3i9hB9Xgi8anPesdAgs85CbX6UN+/PA5KWlhgNT7sdK//1L
+	pVegadbGqysBXDHLQCuOlSZ/yLxn9+KvQNYhXdLEXz9Q3jb3Vb/TqQGvXrpQNDnNWe0KDagJ1us34
+	oraIvYdg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qg2OH-003Jt1-2V;
-	Tue, 12 Sep 2023 12:21:13 +0000
+	id 1qg2bB-003LHY-0u;
+	Tue, 12 Sep 2023 12:34:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qg2OC-003JsZ-2l
+	id 1qg2b7-003LH6-2o
 	for barebox@lists.infradead.org;
-	Tue, 12 Sep 2023 12:21:11 +0000
+	Tue, 12 Sep 2023 12:34:31 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qg2O7-000295-Ch; Tue, 12 Sep 2023 14:21:03 +0200
-Message-ID: <bdc3df39-e8ca-3b97-0a17-396fa8cfa303@pengutronix.de>
-Date: Tue, 12 Sep 2023 14:21:03 +0200
+	id 1qg2b6-0004lC-EB; Tue, 12 Sep 2023 14:34:28 +0200
+Message-ID: <87e96b20-ae2c-9679-29e4-1c54ee24948a@pengutronix.de>
+Date: Tue, 12 Sep 2023 14:34:28 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
 Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-Cc: Gerald Loacker <gerald.loacker@wolfvision.net>
-References: <20230908130401.1735831-1-s.hauer@pengutronix.de>
- <20230908130401.1735831-3-s.hauer@pengutronix.de>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org,
+ Alexander Shiyan <eagle.alexander923@gmail.com>
+References: <20230911155927.3786335-1-a.fatoum@pengutronix.de>
+ <20230911155927.3786335-3-a.fatoum@pengutronix.de>
+ <20230912104903.GA637806@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230908130401.1735831-3-s.hauer@pengutronix.de>
+In-Reply-To: <20230912104903.GA637806@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230912_052108_909403_B15AAD8B 
-X-CRM114-Status: GOOD (  19.97  )
+X-CRM114-CacheID: sfid-20230912_053429_927610_9FE73D69 
+X-CRM114-Status: GOOD (  39.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,43 +76,116 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/3] net: ksz9477: Add mdio bus slice dependency to
- i2c/spi device
+Subject: Re: [PATCH 3/3] net: add generic MAC address derivation from machine
+ ID
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 08.09.23 15:04, Sascha Hauer wrote:
-> On mdio busses the attached phys check for link status in a poller.
-> Add a slice dependency from the mdio bus to the I2C/SPI controller
-> so that we do not end up doing bus accesses while we are in a
-> I2C/SPI access on the same bus already.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  drivers/net/ksz9477.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/net/ksz9477.c b/drivers/net/ksz9477.c
-> index 9665e0f723..1abea9d040 100644
-> --- a/drivers/net/ksz9477.c
-> +++ b/drivers/net/ksz9477.c
-> @@ -464,6 +464,13 @@ static int microchip_switch_probe(struct device *dev)
->  	if (ret)
->  		return ret;
->  
-> +	if (priv->i2c)
-> +		slice_depends_on(mdiobus_slice(ds->slave_mii_bus),
-> +				 i2c_client_slice(priv->i2c));
-> +	else
-> +		slice_depends_on(mdiobus_slice(ds->slave_mii_bus),
-> +				 spi_device_slice(priv->spi));
+Hi Sascha,
 
-Is there no way to do this in the core?
+On 12.09.23 12:49, Sascha Hauer wrote:
+> On Mon, Sep 11, 2023 at 05:59:27PM +0200, Ahmad Fatoum wrote:
+>> From: Ahmad Fatoum <ahmad@a3f.at>
+>>
+>> Especially during development, devices often lack a MAC address. While a
+>> MAC address can be easily added to the environment:
+>>
+>>   nv dev.eth0.ethaddr="aa:bb:cc:dd:ee:ff"
+>>
+>> It's easily lost when flashing complete new images, e.g. from CI.
+>> Make the development experience neater by deriving a stable MAC address
+>> if possible.
+> 
+> I like this, because my Fritzbox network overview is full of duplicate
+> entries coming from boards with random MAC addresses.
 
-> +
->  	return regmap_multi_register_cdev(priv->regmap[0], priv->regmap[1],
->  					  priv->regmap[2], NULL);
->  }
+Glad you like it. If you are ok with the first two patches, can you take
+those until I respin this?
+
+> 
+> 
+>> @@ -558,6 +559,7 @@ static int of_populate_ethaddr(void)
+> 
+> This function should be renamed. When reviewing this patch I asked
+> myself why you limit generating a fixed MAC address to the DT case until
+> I realized that you actually don't. I was just confused by the function
+> name.
+
+Ah, didn't notice that. Will rename.
+
+> 
+>>  {
+>>  	char str[sizeof("xx:xx:xx:xx:xx:xx")];
+>>  	struct eth_device *edev;
+>> +	bool generated = false;
+>>  	int ret;
+>>  
+>>  	list_for_each_entry(edev, &netdev_list, list) {
+>> @@ -566,11 +568,18 @@ static int of_populate_ethaddr(void)
+>>  
+>>  		ret = of_get_mac_addr_nvmem(edev->parent->of_node,
+>>  					    edev->ethaddr);
+>> +		if (ret && IS_ENABLED(CONFIG_NET_ETHADDR_FROM_MACHINE_ID)) {
+> 
+> This check doesn't seem to be needed, generate_ether_addr() already
+> returns -ENOSYS when this option is not enabled.
+
+Until we have LTO, I'd like to keep this in, so the function need not be called.
+In this instance, I find it is a less ugly alternative to have #ifdef and static inline..
+
+>> @@ -381,9 +419,16 @@ static struct net_connection *net_new(struct eth_device *edev, IPaddr_t dest,
+>>  
+>>  	if (!is_valid_ether_addr(edev->ethaddr)) {
+>>  		char str[sizeof("xx:xx:xx:xx:xx:xx")];
+>> -		random_ether_addr(edev->ethaddr);
+>> +
+>> +		ret = generate_ether_addr(edev->ethaddr, edev->dev.id);
+> 
+> For most network devices we won't get here because of_populate_ethaddr()
+> will already have done it for us. It's only used for devices that are
+> probed after postenvironment_initcall(), namely USB devices.
+
+Or those that don't have CONFIG_NET_ETHADDR_FROM_MACHINE_ID enabled
+or don't have a machine ID set.
+
+> I think this deserves a cleanup before we merge this. The original
+> reason to introduce a postenvironment_initcall() for getting the MAC
+> address from nvmem was:
+> 
+>> We do this in a very late initcall, because we don't want to enforce a
+>> probe a probe order between nvmem providers and network devices. We
+>> can't do it at randomization time, because we need to fixup Ethernet mac
+>> addresses, even when barebox itself doesn't ifup the netdev.
+> 
+> I think we should have one centralized function that retrieves the MAC
+> address for an ethernet device. That should be called when we actually
+> need that MAC address, so once in net_new() and once at of_fixup time.
+> 
+> Right now the behaviour is inconsistent with regard to random MAC
+> addresses. Currently we propagate the random MAC address to the Linux
+> device tree when we use ethernet in barebox, but we don't propagate it
+> when we do not use ethernet in barebox. We should decide what the
+> desired behaviour is and do it consistently regardless if we use
+> ethernet in barebox or not. This could be cleaned up along the way.
+
+Randomized MAC addresses are a necessary evil when barebox needs to do
+networking and doesn't have a stable address. If we have a stable address,
+we shouldn't randomize.
+
+Fixing up a randomized MAC address is a lesser evil than having different
+MAC addresses for barebox and Linux. If we don't need a MAC address in barebox,
+we shouldn't generate a random one just to fix it up.
+
+If we have a stable address, we should tell Linux about it.
+
+That's the logic of the current code and it's sensible to me. Why change it?
+
+Cheers,
+Ahmad
+
+> 
+> Sascha
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
