@@ -1,59 +1,59 @@
-Delivery-date: Tue, 12 Sep 2023 10:40:20 +0200
+Delivery-date: Tue, 12 Sep 2023 10:46:46 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfywX-00CRUh-2r
-	for lore@lore.pengutronix.de; Tue, 12 Sep 2023 10:40:20 +0200
+	id 1qfz2l-00CRsc-2l
+	for lore@lore.pengutronix.de; Tue, 12 Sep 2023 10:46:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfywU-0006UF-Pe
-	for lore@pengutronix.de; Tue, 12 Sep 2023 10:40:19 +0200
+	id 1qfz2j-0007XH-8U
+	for lore@pengutronix.de; Tue, 12 Sep 2023 10:46:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6lQ1+/spAqTK0iMPsltxwNdwh9fruquwQFjsx/9ccRU=; b=uO8Iu5oX+NSvX7yRG2WBe6CQUq
-	162DpJ0zNIxLmbPSpQWRCFFpRCMFe5kPknZDndPoVSkUkgkwUSgXwf7eghlg5RmwmHKeH1AWfs7oG
-	HWf+UVGfaC0fRIO7Rr8f2yFRf/lJG2dEhAe2LNH1otqR0mgy9aucpITcOJrDp+bah3ertuzk+fEri
-	qTZHiCt8iOYHHGoUND0qzui2PSodPC7cPxcZPUIwGHkpCEMIs5a50FmcGEv554t9nLCxnwr7YtYWN
-	2Hc8M/6XS3PDOFv4WcMG/aHYtw+Nhm8BPAFb8goeL+BNDlHMxlQNFwmeB75Z+dKpS4MCBfbAjMwYy
-	PRRNvMwg==;
+	bh=kqA6hjFGXJqQ4oYwMorB1h4zkqD/cHkcjD7OVH1Ccnc=; b=lwnZXeeUZTD0Zc0NeJqrM5S5d8
+	aW6azOllEdx5hua/tiQb0X9HZ1HKzcO2Xs0enUS9Cl/S/tOCq1tgQV35RCpw3rCLHC6sDBoxxxc2x
+	0Iw9eAN66khD6GmSmT+T9AHODc9kyWvo3aA/w/p8Y/tRDvaM3PeUcFFAFT9YeA+yT8xz/3JOq+50+
+	Pgn6ZX2qkhKNPtOYU6p3Y1tCJjSU6PRb7dPjTEUS8o0hlrzxafgSq13mNR7t7lgjtqX2YuMjDawYc
+	GRH1xlV1GFUk6L6U1vuqkEHt05K4D8MBiHIYRGXN1MYq2Tvn4niVv5JOdiPY0IAWF5L08yu2hKoJV
+	yn+EXBXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfyv7-002bSJ-0j;
-	Tue, 12 Sep 2023 08:38:53 +0000
+	id 1qfz1c-002cNj-0w;
+	Tue, 12 Sep 2023 08:45:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfyv3-002bQt-22
+	id 1qfz1Z-002cMt-0M
 	for barebox@lists.infradead.org;
-	Tue, 12 Sep 2023 08:38:51 +0000
+	Tue, 12 Sep 2023 08:45:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qfyuz-0006Gg-Te; Tue, 12 Sep 2023 10:38:45 +0200
+	id 1qfz1X-0007Kt-J3; Tue, 12 Sep 2023 10:45:31 +0200
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qfyuz-005jnb-H2; Tue, 12 Sep 2023 10:38:45 +0200
+	id 1qfz1X-005jow-6g; Tue, 12 Sep 2023 10:45:31 +0200
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qfyuy-005YQT-W9; Tue, 12 Sep 2023 10:38:45 +0200
-Date: Tue, 12 Sep 2023 10:38:44 +0200
+	id 1qfz1X-005YSP-00; Tue, 12 Sep 2023 10:45:31 +0200
+Date: Tue, 12 Sep 2023 10:45:30 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230912083844.GQ637806@pengutronix.de>
-References: <20230911122504.2720431-1-a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org, mfe@pengutronix.de
+Message-ID: <20230912084530.GR637806@pengutronix.de>
+References: <20230911124808.2748160-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230911122504.2720431-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230911124808.2748160-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -61,8 +61,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230912_013849_669242_EFCF1A75 
-X-CRM114-Status: GOOD (  21.00  )
+X-CRM114-CacheID: sfid-20230912_014533_147492_56FBDFAB 
+X-CRM114-Status: GOOD (  18.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,44 +84,31 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fs: ext4: initialize variable to silence GCC
- false-positive
+Subject: Re: [PATCH v2] aiodev: imx_thermal: fix breakage after device tree
+ sync
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Sep 11, 2023 at 02:25:04PM +0200, Ahmad Fatoum wrote:
-> GCC complains about ino not being defined in some cases, which appears
-> to be a false positive. Nevertheless, initialize it to the same fallback
-> value used in ext4fs_get_ino, which is called below.
+On Mon, Sep 11, 2023 at 02:48:08PM +0200, Ahmad Fatoum wrote:
+> fsl,tempmon-data is a deprecated property that has been replaced
+> upstream by a NVMEM cell pointing at the calibration value and so
+> made it into barebox breaking the driver.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  fs/ext4/ext_barebox.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> Switch to using the new property to fix the regression.
+> 
+> We do not keep support for the old binding around as it would be dead code:
+> barebox, unlike Linux, is always bundled with a device tree originating
+> from its build tree and so we only need to ensure the driver matches that
+> version.
 
-Applied, thanks
+This is not entirely true. With board-dt-2nd you would still be able
+to start a barebox with another dt possibly using the old binding.
+
+Nevertheless I think this rather exotic case doesn't justify carrying
+around compatibility cruft, so: Applied, thanks
 
 Sascha
 
-> 
-> diff --git a/fs/ext4/ext_barebox.c b/fs/ext4/ext_barebox.c
-> index 93dc9b4b1471..df82b629cd05 100644
-> --- a/fs/ext4/ext_barebox.c
-> +++ b/fs/ext4/ext_barebox.c
-> @@ -118,7 +118,7 @@ static struct dentry *ext_lookup(struct inode *dir, struct dentry *dentry,
->  				 unsigned int flags)
->  {
->  	struct ext2fs_node *e2dir = to_ext2_node(dir);
-> -	int ret, ino;
-> +	int ret, ino = 0;
->  	struct inode *inode;
->  
->  	ret = ext4fs_get_ino(e2dir, &dentry->d_name, &ino);
-> -- 
-> 2.39.2
-> 
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
