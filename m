@@ -1,68 +1,61 @@
-Delivery-date: Tue, 12 Sep 2023 11:37:54 +0200
+Delivery-date: Tue, 12 Sep 2023 11:59:39 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfzqF-00CUoA-Al
-	for lore@lore.pengutronix.de; Tue, 12 Sep 2023 11:37:54 +0200
+	id 1qg0BI-00CVtY-6U
+	for lore@lore.pengutronix.de; Tue, 12 Sep 2023 11:59:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfzqD-00088Q-2p
-	for lore@pengutronix.de; Tue, 12 Sep 2023 11:37:53 +0200
+	id 1qg0BF-0002KB-VV
+	for lore@pengutronix.de; Tue, 12 Sep 2023 11:59:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DeIUIOa6IaVBDzgv5dmce0OJLVm3u4O4YTseePxKdeM=; b=hSzHV8YLNXTWwhu3I6f8lh1plY
-	umUub3esAP53TLkZ9I61/SuGltcXSSyQgGWyJJ/Yf59msLCU9gcPc+/ANkvCBLk6Z5Ji0rKs6ymmA
-	nsZalNo6fsLbrpDWdmucWZmgfCsFouC9KrtsmjMMNeWkt15wLwinGEI9fhFUPL1yWZRNKDEI6tSjg
-	5yRPX/gUwm9CS2cXtMa9JQ0Cc2kYm+bLUShvadtZ8GX2c9ONfP/z2bBO5gWlqQhKFJ9WX2OHgRBFs
-	u8B099D+XtYsIxONCVujZMzHfObBSJAVAguvCWsfIjXVvvVN67NO7OHVrNBBfajAOeoAzJ5alV1Tq
-	3Eknsljg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=czOKdVlWt80fDvO4dq1REsqllS0WCml9kUYBgqtWvVg=; b=WcSq9Xcvo2wmVbvJ9MTuyua8NS
+	5XCMfUsLJn2jfjndhogbCJiUoP+E6IrRGlsAZGaXpA43eKirdkbUjmy4fFom9DIFlRrOW82AjIEuQ
+	LkPQPCFrAFxG4+SUSM5cRbWqqJoRjfhIw/hrTcIA2Pz79WqMYKSjR2RKLHzVVW8fSIf4/+WQgVJjR
+	K3l4e+cU4uw5OdA4oKduNqgGwnG43KhanU+3lIehaYu6NIzKDhF/AK7AhafqOGXjhFby2J3XlUN+g
+	lptX3x2GzYDaybzKFYZM+dr3fLheLU1S7uZTOYrk9uIWyTfL8zakDrE3ozwcQeingEz/8LCS8mt80
+	ZYRFyndA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfzp7-002le2-07;
-	Tue, 12 Sep 2023 09:36:45 +0000
+	id 1qg09x-002owd-37;
+	Tue, 12 Sep 2023 09:58:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfzp1-002lb4-2i
+	id 1qg09u-002owB-2k
 	for barebox@lists.infradead.org;
-	Tue, 12 Sep 2023 09:36:41 +0000
+	Tue, 12 Sep 2023 09:58:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qfzp0-0007nY-Ky; Tue, 12 Sep 2023 11:36:38 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qfzp0-005kOr-8j; Tue, 12 Sep 2023 11:36:38 +0200
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qfzp0-005Ztp-3l; Tue, 12 Sep 2023 11:36:38 +0200
-Date: Tue, 12 Sep 2023 11:36:38 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230912093638.GZ637806@pengutronix.de>
-References: <20230911125619.2782229-1-a.fatoum@pengutronix.de>
+	(envelope-from <afa@pengutronix.de>)
+	id 1qg09s-00029o-2i; Tue, 12 Sep 2023 11:58:12 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qg09r-005kR8-Mn; Tue, 12 Sep 2023 11:58:11 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qg09r-001Cjy-0R;
+	Tue, 12 Sep 2023 11:58:11 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 12 Sep 2023 11:58:09 +0200
+Message-Id: <20230912095809.287289-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230911125619.2782229-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230912_023639_874107_9EFCD683 
-X-CRM114-Status: GOOD (  16.64  )
+X-CRM114-CacheID: sfid-20230912_025814_910574_C6F47426 
+X-CRM114-Status: GOOD (  10.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,47 +73,38 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/4] KASan: print output directly to stderr
+Subject: [PATCH] MIPS: bootm: fix format string type mismatch
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Sep 11, 2023 at 02:56:15PM +0200, Ahmad Fatoum wrote:
-> I recently hunted down a heap memory corruption and this was somewhat
-> complicated by KASan and dump_stack() themselves allocating memory
-> off the heap. This series switches them to directly write to the
-> consoles associated with stderr, while skipping the log.
-> 
-> Ahmad Fatoum (4):
->   ARM: unwind: don't allocate while printing stack trace
->   ARM64: backtrace: print stacktrace to stderr
->   KASan: only print to stderr
->   KASan: don't allocate memory while printing report
+While we always have sizeof (struct device_node *) == sizeof(ulong),
+clangd warns about mixing them as arguments to functions with printf-style
+format strings. Add a cast to silence the warning.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/mips/lib/bootm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Sascha
-
-> 
->  arch/arm/lib32/unwind.c     | 20 ++++++++++----------
->  arch/arm/lib64/stacktrace.c |  6 +++---
->  lib/kasan/generic.c         |  2 --
->  lib/kasan/report.c          | 22 +++++++++++-----------
->  4 files changed, 24 insertions(+), 26 deletions(-)
-> 
-> -- 
-> 2.39.2
-> 
-> 
-> 
-
+diff --git a/arch/mips/lib/bootm.c b/arch/mips/lib/bootm.c
+index 19d82ec37530..a5bfc6c88c17 100644
+--- a/arch/mips/lib/bootm.c
++++ b/arch/mips/lib/bootm.c
+@@ -62,7 +62,7 @@ static int do_bootm_elf(struct image_data *data)
+ 	}
+ 
+ 	pr_info("Starting application at 0x%08lx, dts 0x%08lx...\n",
+-		data->os_address, data->of_root_node);
++		data->os_address, (ulong)data->of_root_node);
+ 
+ 	if (data->dryrun)
+ 		goto bootm_free_fdt;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
