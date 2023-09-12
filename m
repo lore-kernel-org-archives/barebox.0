@@ -1,59 +1,68 @@
-Delivery-date: Tue, 12 Sep 2023 11:36:59 +0200
+Delivery-date: Tue, 12 Sep 2023 11:37:54 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfzpM-00CUkx-75
-	for lore@lore.pengutronix.de; Tue, 12 Sep 2023 11:36:59 +0200
+	id 1qfzqF-00CUoA-Al
+	for lore@lore.pengutronix.de; Tue, 12 Sep 2023 11:37:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qfzpK-0007ur-92
-	for lore@pengutronix.de; Tue, 12 Sep 2023 11:36:58 +0200
+	id 1qfzqD-00088Q-2p
+	for lore@pengutronix.de; Tue, 12 Sep 2023 11:37:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=e3iF/huieKLf6XaM1EMzhWaAbgWg5r1fO17Q+MW4HuE=; b=L4FmroevTAC9pAEQyGHj8MBYhM
-	A3OHq6XRcXrfuNiZiK4cZLoS+WXRag1xGkseUJSL2BZAWaVL0GALg6fS6C/x5XLvU1+z6nRaG7e4C
-	HXo4gxHopJLfWFG537YYjlHkgTKSigPhC/7rt6uo/SovZwyvvNVBgxFXqTLtnAbQhenS7cINqOvQc
-	77wtnqs3X7CaRW6Nzl+hPSmGenAn/+lDEbMyVaMIsgiSjMAR8twGaV+ZeGBirjBuwPYFE32lHTWqV
-	rnicKJP3JmDMQHa68Aie0PcAy/wkd1c78y+csFq0SwNkyZ8R2x7jd7Fzv6ng2ax5j9CgBvXwmWjlr
-	rEy13xEg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=DeIUIOa6IaVBDzgv5dmce0OJLVm3u4O4YTseePxKdeM=; b=hSzHV8YLNXTWwhu3I6f8lh1plY
+	umUub3esAP53TLkZ9I61/SuGltcXSSyQgGWyJJ/Yf59msLCU9gcPc+/ANkvCBLk6Z5Ji0rKs6ymmA
+	nsZalNo6fsLbrpDWdmucWZmgfCsFouC9KrtsmjMMNeWkt15wLwinGEI9fhFUPL1yWZRNKDEI6tSjg
+	5yRPX/gUwm9CS2cXtMa9JQ0Cc2kYm+bLUShvadtZ8GX2c9ONfP/z2bBO5gWlqQhKFJ9WX2OHgRBFs
+	u8B099D+XtYsIxONCVujZMzHfObBSJAVAguvCWsfIjXVvvVN67NO7OHVrNBBfajAOeoAzJ5alV1Tq
+	3Eknsljg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfzoF-002lRt-1G;
-	Tue, 12 Sep 2023 09:35:51 +0000
+	id 1qfzp7-002le2-07;
+	Tue, 12 Sep 2023 09:36:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qfzoC-002lRG-1A
+	id 1qfzp1-002lb4-2i
 	for barebox@lists.infradead.org;
-	Tue, 12 Sep 2023 09:35:50 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qfzoB-0007cq-3t; Tue, 12 Sep 2023 11:35:47 +0200
-Message-ID: <7f1f8e0f-0da1-170d-78ea-967e1c546558@pengutronix.de>
-Date: Tue, 12 Sep 2023 11:35:46 +0200
+	Tue, 12 Sep 2023 09:36:41 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qfzp0-0007nY-Ky; Tue, 12 Sep 2023 11:36:38 +0200
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qfzp0-005kOr-8j; Tue, 12 Sep 2023 11:36:38 +0200
+Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qfzp0-005Ztp-3l; Tue, 12 Sep 2023 11:36:38 +0200
+Date: Tue, 12 Sep 2023 11:36:38 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20230912093638.GZ637806@pengutronix.de>
+References: <20230911125619.2782229-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Denis Osterland-Heim <denis.osterland@gmail.com>,
- barebox@lists.infradead.org
-Cc: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
-References: <20230801104417.8941-1-denis.osterland@gmail.com>
- <c030c5f45f0e3206cfa99d99dc62813df7dac6aa.camel@gmail.com>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <c030c5f45f0e3206cfa99d99dc62813df7dac6aa.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230911125619.2782229-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230912_023548_393897_9CDF2AAB 
-X-CRM114-Status: GOOD (  22.47  )
+X-CRM114-CacheID: sfid-20230912_023639_874107_9EFCD683 
+X-CRM114-Status: GOOD (  16.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,107 +80,47 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] raspi: fixup additional vc created nodes
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 0/4] KASan: print output directly to stderr
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 02.08.23 12:50, Denis Osterland-Heim wrote:
-> From: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
+On Mon, Sep 11, 2023 at 02:56:15PM +0200, Ahmad Fatoum wrote:
+> I recently hunted down a heap memory corruption and this was somewhat
+> complicated by KASan and dump_stack() themselves allocating memory
+> off the heap. This series switches them to directly write to the
+> consoles associated with stderr, while skipping the log.
 > 
-> The video core creates some additional nodes.
-> This code takes over this values.
-> The /hat node is only there if an raspi hat with EEPROM is detected.
-> 
-> Signed-off-by: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
+> Ahmad Fatoum (4):
+>   ARM: unwind: don't allocate while printing stack trace
+>   ARM64: backtrace: print stacktrace to stderr
+>   KASan: only print to stderr
+>   KASan: don't allocate memory while printing report
 
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Applied, thanks
 
-> ---
->  arch/arm/boards/raspberry-pi/rpi-common.c | 38 +++++++++++++++++------
->  1 file changed, 29 insertions(+), 9 deletions(-)
+Sascha
+
 > 
-> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c
-> b/arch/arm/boards/raspberry-pi/rpi-common.c
-> index 2f525e7d70..9c85c85d14 100644
-> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
-> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-> @@ -264,19 +264,36 @@ static enum reset_src_type
-> rpi_decode_pm_rsts(struct device_node *chosen,
->  
->  static int rpi_vc_fdt_fixup(struct device_node *root, void *data)
->  {
-> -       const struct device_node *vc_chosen = data;
-> -       struct device_node *chosen;
-> +       const struct device_node *vc_node = data;
-> +       struct device_node *node;
-> +       struct property *pp;
->  
-> -       chosen = of_create_node(root, "/chosen");
-> -       if (!chosen)
-> +       node = of_create_node(root, vc_node->full_name);
-> +       if (!node)
->                 return -ENOMEM;
->  
-> -       of_copy_property(vc_chosen, "overlay_prefix", chosen);
-> -       of_copy_property(vc_chosen, "os_prefix", chosen);
-> +       for_each_property_of_node(vc_node, pp)
-> +               of_copy_property(vc_node, pp->name, node);
->  
->         return 0;
->  }
->  
-> +static struct device_node *register_vc_fixup(struct device_node *root,
-> const char *path)
-> +{
-> +       struct device_node *ret, *tmp;
-> +
-> +       ret = of_find_node_by_path_from(root, path);
-> +       if (ret) {
-> +               tmp = of_dup(ret);
-> +               tmp->full_name = xstrdup(ret->full_name);
-> +               of_register_fixup(rpi_vc_fdt_fixup, tmp);
-> +       } else {
-> +               pr_info("no '%s' node found in vc fdt\n", path);
-> +       }
-> +
-> +       return ret;
-> +}
-> +
->  static u32 rpi_boot_mode, rpi_boot_part;
->  /* Extract useful information from the VideoCore FDT we got.
->   * Some parameters are defined here:
-> @@ -300,14 +317,17 @@ static void rpi_vc_fdt_parse(struct device_node
-> *root)
->                 free(str);
->         }
->  
-> -       chosen = of_find_node_by_path_from(root, "/chosen");
-> +       register_vc_fixup(root, "/system");
-> +       register_vc_fixup(root, "/axi");
-> +       register_vc_fixup(root, "/reserved-memory");
-> +       register_vc_fixup(root, "/hat");
-> +       register_vc_fixup(root, "/chosen/bootloader");
-> +       chosen = register_vc_fixup(root, "/chosen");
->         if (!chosen) {
->                 pr_err("no '/chosen' node found in vc fdt\n");
->                 goto out;
->         }
->  
-> -       of_register_fixup(rpi_vc_fdt_fixup, of_dup(chosen));
-> -
->         bootloader = of_find_node_by_name(chosen, "bootloader");
->  
->         str = of_read_vc_string(chosen, "bootargs");
+>  arch/arm/lib32/unwind.c     | 20 ++++++++++----------
+>  arch/arm/lib64/stacktrace.c |  6 +++---
+>  lib/kasan/generic.c         |  2 --
+>  lib/kasan/report.c          | 22 +++++++++++-----------
+>  4 files changed, 24 insertions(+), 26 deletions(-)
+> 
+> -- 
+> 2.39.2
+> 
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
