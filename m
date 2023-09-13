@@ -3,59 +3,61 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qgOYd-00Djio-Dn
+	id 1qgOYd-00Djip-IA
 	for lore@lore.pengutronix.de; Wed, 13 Sep 2023 14:01:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qgOYb-0008J5-9F
-	for lore@pengutronix.de; Wed, 13 Sep 2023 14:01:21 +0200
+	id 1qgOYb-0008JE-Ms
+	for lore@pengutronix.de; Wed, 13 Sep 2023 14:01:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=uYN6EnjPdsXH6t0zPjcAJbAoxONYJpXMKiB/d5ZElow=; b=NZBM9WRlZZQAmtEGiDvmwJ098I
-	7egk17+RN7Xxwb0zpbcvS8CrK8CoiJ8SRgV2zThrHPwSWwetsh7eCFio+CM7/ypZqmPR9oO1ikoQ3
-	tQUhMPPWHyJYIUEE7xkJ3UMdERWuLIji0PehhTFI8qNMw7DLrBq7fjjGjKZ7CgquUSwBi+qs6ac0q
-	vVI3pioLZ4/lf6GB9iRogRVdP2xkTJ11mCHRHIpYGvlrHQ2O2PgWvxSDTyvMPmmUigVuELkpS15Bu
-	GcuaHDX1+ePEziGKid1Ym1arg8H2omtAjKhLOAs3AT2d2lkqgxcZ5wqzuqAvmibgqbmi0C4fTovF2
-	GpQvsqfA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=MQ7PACEB9z96zjQbqLVkZ6Ll/vmat25aXSg8ljyL3Io=; b=KOqkK1Ez1ddFq1u8az7OmONPH4
+	cC/6tC9Egp3UQUDb0tFSNPW3aTac5uuWrxZukP6rwUd+ej/PxA/MCMC5rVNqrKTHpUyFXHT+ykZ6S
+	WMrdHifP2MSzE3q6bf5sMxRWPgpoa1ydFAKOqqHzCREdkvw/B9ZXa0z7gjv8jSr65w8PfeSlxUpXY
+	1C/wLRhP9hMs039RnjjkKl20x8bLvr0dDJSE67ttUHuCmCvE6ekCHHPyGK2gznYCOtE+hraOzHnG3
+	nGJwHfNNe8QkCbMPz5Y1nmUKIzUgu8Q2C6bCtRtzdusjgbFdwPkbSIV77ALct4Dmyfg4NVjduResb
+	pxDpTG2g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qgOXV-005nb5-0H;
-	Wed, 13 Sep 2023 12:00:13 +0000
+	id 1qgOXM-005nZu-39;
+	Wed, 13 Sep 2023 12:00:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qgOXQ-005naH-3A
+	id 1qgOXJ-005nYu-10
 	for barebox@lists.infradead.org;
-	Wed, 13 Sep 2023 12:00:10 +0000
+	Wed, 13 Sep 2023 12:00:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qgOXH-0007pL-Sg; Wed, 13 Sep 2023 13:59:59 +0200
+	id 1qgOXH-0007pK-Sg; Wed, 13 Sep 2023 13:59:59 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qgOXH-0063YU-8p; Wed, 13 Sep 2023 13:59:59 +0200
+	id 1qgOXH-0063YV-9B; Wed, 13 Sep 2023 13:59:59 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qgOXH-007nTi-0i;
+	id 1qgOXH-007nTl-0m;
 	Wed, 13 Sep 2023 13:59:59 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 13 Sep 2023 13:59:57 +0200
-Message-Id: <20230913115958.1858470-1-a.fatoum@pengutronix.de>
+Date: Wed, 13 Sep 2023 13:59:58 +0200
+Message-Id: <20230913115958.1858470-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230913115958.1858470-1-a.fatoum@pengutronix.de>
+References: <20230913115958.1858470-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230913_050009_050822_7B7203FD 
-X-CRM114-Status: GOOD (  13.56  )
+X-CRM114-CacheID: sfid-20230913_050001_345933_22D04B3E 
+X-CRM114-Status: GOOD (  13.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,132 +79,124 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] commands: test: support signed comparisons
+Subject: [PATCH 2/2] test: self: add some test cases for test command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-So far signed integers in binary comparisons were accepted, but compared
-unsigned resulting in [ "-1" -gt 0 ] returning true.
+With the rework to how arithmetic comparisons are conducted in the test
+command, some tests are in order.
 
-Rework this, so that:
+Prior to the rework, following test cases failed:
 
-  - If one side is signed, the comparison is signed
-  - If both sides are unsigned, the comparison is unsigned
+  test_test_command:42: [ -1 -le  1 ]: assertion failure, ret=1
+  test_test_command:45: [ -9223372036854775808 -lt 9223372036854775807 ]: assertion failure, ret=1
+  test_test_command:46: [ -9223372036854775808 -gt 9223372036854775807 ]: assertion failure, ret=0
 
-The latter is not required by POSIX, but it ensures that we don't break
-users who so far did comparisons with integers > LONG_MAX without issue.
-
-While at it, we start checking that the arguments in arithmetic
-comparisons are indeed integers. This has the result that e.g.
-[ "1x" -eq "1x" ] will no longer return success, but that aligns us with
-usual shell behavior and protects the users from silent truncation when
-a number > LONG_MAX is compared with a negative number.
+But now they all succeed.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/test.c | 66 ++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 51 insertions(+), 15 deletions(-)
+ test/self/Kconfig        |  4 +++
+ test/self/Makefile       |  1 +
+ test/self/test_command.c | 64 ++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 69 insertions(+)
+ create mode 100644 test/self/test_command.c
 
-diff --git a/commands/test.c b/commands/test.c
-index 1130bf2e5bd6..13005b97deb3 100644
---- a/commands/test.c
-+++ b/commands/test.c
-@@ -78,11 +78,56 @@ static int string_comp(const char *left_op, const char *right_op, bool bash_test
- 	return strcmp(left_op, right_op);
- }
+diff --git a/test/self/Kconfig b/test/self/Kconfig
+index a4176ab8ffd6..15e00f0244b5 100644
+--- a/test/self/Kconfig
++++ b/test/self/Kconfig
+@@ -97,4 +97,8 @@ config SELFTEST_REGULATOR
+ 	depends on REGULATOR && OFDEVICE
+ 	select OF_OVERLAY
  
-+static int parse_number(const char *str, long *num, bool signedcmp)
++config SELFTEST_TEST_COMMAND
++	bool "test command selftest"
++	depends on CMD_TEST
++
+ endif
+diff --git a/test/self/Makefile b/test/self/Makefile
+index 78a337810d1f..8168abf26278 100644
+--- a/test/self/Makefile
++++ b/test/self/Makefile
+@@ -14,6 +14,7 @@ obj-$(CONFIG_SELFTEST_MMU) += mmu.o
+ obj-$(CONFIG_SELFTEST_STRING) += string.o
+ obj-$(CONFIG_SELFTEST_SETJMP) += setjmp.o
+ obj-$(CONFIG_SELFTEST_REGULATOR) += regulator.o test_regulator.dtbo.o
++obj-$(CONFIG_SELFTEST_TEST_COMMAND) += test_command.o
+ 
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+ clean-files += *.dtbo *.dtbo.S .*.dtso
+diff --git a/test/self/test_command.c b/test/self/test_command.c
+new file mode 100644
+index 000000000000..7a26f724f3ce
+--- /dev/null
++++ b/test/self/test_command.c
+@@ -0,0 +1,64 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++
++#include <bselftest.h>
++#include <command.h>
++
++BSELFTEST_GLOBALS();
++
++#if __LONG_MAX__ == 0x7ffffffff
++#define LONG_MIN_STR		"-2147483648"
++#define LONG_MIN_PLUS_1_STR	"-2147483647"
++#define LONG_MAX_STR		 "2147483647"
++#define LONG_MAX_PLUS_1_STR	 "2147483648"
++#else
++#define LONG_MIN_STR		"-9223372036854775808"
++#define LONG_MIN_PLUS_1_STR	"-9223372036854775807"
++#define LONG_MAX_STR		 "9223372036854775807"
++#define LONG_MAX_PLUS_1_STR	 "9223372036854775808"
++#endif
++
++static void __assert_eq(const char *expr, bool result, const char *func, int line)
 +{
 +	int ret;
 +
-+	ret = signedcmp ? kstrtol(str, 0, num) : kstrtoul(str, 0, num);
-+	if (ret)
-+		printf("test: %s: integer expression expected\n", str);
++	total_tests++;
 +
-+	return ret;
-+}
-+
-+#define __do_arith_cmp(x, op, y, signedcmp) \
-+	((signedcmp) ? (long)(x) op (long)(y) : (x) op (y))
-+
-+static int arith_comp(const char *a_str, const char *b_str, int op)
-+{
-+	ulong a, b;
-+	bool signedcmp = a_str[0] == '-' || b_str[0] == '-';
-+	int ret;
-+
-+	ret = parse_number(a_str, &a, signedcmp);
-+	if (ret)
-+		return ret;
-+
-+	ret = parse_number(b_str, &b, signedcmp);
-+	if (ret)
-+		return ret;
-+
-+	switch (op) {
-+	case OPT_ARITH_EQUAL:
-+		return __do_arith_cmp(a, ==, b, signedcmp);
-+	case OPT_ARITH_NOT_EQUAL:
-+		return __do_arith_cmp(a, !=, b, signedcmp);
-+	case OPT_ARITH_GREATER_EQUAL:
-+		return __do_arith_cmp(a, >=, b, signedcmp);
-+	case OPT_ARITH_GREATER_THAN:
-+		return __do_arith_cmp(a,  >, b, signedcmp);
-+	case OPT_ARITH_LESS_EQUAL:
-+		return __do_arith_cmp(a, <=, b, signedcmp);
-+	case OPT_ARITH_LESS_THAN:
-+		return __do_arith_cmp(a,  <, b, signedcmp);
++	ret = run_command(expr);
++	if ((result && ret != 0) || (!result && ret != 1)) {
++		failed_tests++;
++		printf("%s:%d: %s: assertion failure, ret=%d\n", func, line, expr, ret);
 +	}
-+
-+	return -EINVAL;
 +}
 +
- static int do_test(int argc, char *argv[])
- {
- 	char **ap;
- 	int left, adv, expr, last_expr, neg, last_cmp, opt, zero;
--	ulong a, b;
- 	struct stat statbuf;
- 	bool bash_test = false;
- 
-@@ -199,9 +244,8 @@ static int do_test(int argc, char *argv[])
- 			if (left < 3)
- 				break;
- 
--			a = simple_strtol(ap[0], NULL, 0);
--			b = simple_strtol(ap[2], NULL, 0);
--			switch (parse_opt(ap[1])) {
-+			opt = parse_opt(ap[1]);
-+			switch (opt) {
- 			case OPT_EQUAL:
- 			case OPT_EQUAL_BASH:
- 				expr = string_comp(ap[0], ap[2], bash_test) == 0;
-@@ -210,22 +254,14 @@ static int do_test(int argc, char *argv[])
- 				expr = string_comp(ap[0], ap[2], bash_test) != 0;
- 				break;
- 			case OPT_ARITH_EQUAL:
--				expr = a == b;
--				break;
- 			case OPT_ARITH_NOT_EQUAL:
--				expr = a != b;
--				break;
- 			case OPT_ARITH_LESS_THAN:
--				expr = a < b;
--				break;
- 			case OPT_ARITH_LESS_EQUAL:
--				expr = a <= b;
--				break;
- 			case OPT_ARITH_GREATER_THAN:
--				expr = a > b;
--				break;
- 			case OPT_ARITH_GREATER_EQUAL:
--				expr = a >= b;
-+				expr = arith_comp(ap[0], ap[2], opt);
-+				if (expr < 0)
-+					return 1;
- 				break;
- 			default:
- 				expr = 1;
++#define assert_eq(expr, result) __assert_eq(expr, result, __func__, __LINE__)
++
++static void test_test_command(void)
++{
++	assert_eq("[  0 -eq  0 ]", true);
++	assert_eq("[  0 -eq  1 ]", false);
++	assert_eq("[ -1 -le  1 ]", true);
++	assert_eq("[ -1 -ge -5 ]", true);
++
++	assert_eq("[ " LONG_MIN_STR " -lt " LONG_MAX_STR " ]", true);
++	assert_eq("[ " LONG_MIN_STR " -gt " LONG_MAX_STR " ]", false);
++
++	assert_eq("[ " LONG_MIN_STR " -eq " LONG_MIN_STR " ]", true);
++	assert_eq("[ " LONG_MAX_STR " -eq " LONG_MAX_STR " ]", true);
++	assert_eq("[ " LONG_MIN_STR " -ne " LONG_MIN_STR " ]", false);
++	assert_eq("[ " LONG_MAX_STR " -ne " LONG_MAX_STR " ]", false);
++
++	assert_eq("[ " LONG_MIN_PLUS_1_STR " -eq " LONG_MIN_PLUS_1_STR " ]", true);
++	assert_eq("[ " LONG_MAX_PLUS_1_STR " -eq " LONG_MAX_PLUS_1_STR " ]", true);
++	assert_eq("[ " LONG_MIN_PLUS_1_STR " -ne " LONG_MIN_PLUS_1_STR " ]", false);
++	assert_eq("[ " LONG_MAX_PLUS_1_STR " -ne " LONG_MAX_PLUS_1_STR " ]", false);
++
++	assert_eq("[ " LONG_MIN_PLUS_1_STR " -gt " LONG_MIN_STR " ]", true);
++	assert_eq("[ " LONG_MAX_PLUS_1_STR " -gt " LONG_MAX_STR " ]", true);
++	assert_eq("[ " LONG_MIN_PLUS_1_STR " -lt " LONG_MIN_STR " ]", false);
++	assert_eq("[ " LONG_MAX_PLUS_1_STR " -lt " LONG_MAX_STR " ]", false);
++	assert_eq("[ " LONG_MIN_STR " -le " LONG_MIN_PLUS_1_STR " ]", true);
++	assert_eq("[ " LONG_MAX_STR " -le " LONG_MAX_PLUS_1_STR " ]", true);
++}
++bselftest(core, test_test_command);
 -- 
 2.39.2
 
