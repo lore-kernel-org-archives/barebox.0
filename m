@@ -1,61 +1,63 @@
-Delivery-date: Wed, 13 Sep 2023 14:03:15 +0200
+Delivery-date: Wed, 13 Sep 2023 14:09:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qgOaS-00Djmw-M4
-	for lore@lore.pengutronix.de; Wed, 13 Sep 2023 14:03:15 +0200
+	id 1qgOgN-00Djyv-MW
+	for lore@lore.pengutronix.de; Wed, 13 Sep 2023 14:09:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qgOaQ-0000cx-KV
-	for lore@pengutronix.de; Wed, 13 Sep 2023 14:03:15 +0200
+	id 1qgOgL-0001Ea-Lj
+	for lore@pengutronix.de; Wed, 13 Sep 2023 14:09:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=1+8ssvwdLZMFcIhB70jpkhwbH0x/V1/WxAYNSm40yEU=; b=GKGF7lZ7YWHP318jH2o7tNoutn
-	3YQcANmkvgxrB3TggUQMFwlL/uun3W/7Borww/m+5j1ejrsrLBzlQhmc7iyyvGcbOWh3AUI3qQCE7
-	XSrInkDSzThbD+4/ucb91U2OIOyUDfWkU37RRfTNCUGKScz0vGjFMhMypLnlU3ZomqvsbxWQtpWXd
-	xmoL6HbYpl6lHc42g8AU2fMkeNmqLkM0JOSRFK/ScYJn5cofZrTUfY7TvfJtRDPdLqDuMqrerxfVE
-	fWzkXk68CJPoUfov5UojPalJh6ybnP1FVg0fRX35KGjSnjRiA+Bpr4DtkEw1gNgWkt56afIi8R4M7
-	jddkbLrg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=UOJ3WsFXO46YyJLYcfyW114y1qOtMTvHZJMr8qtZoE0=; b=R4Ylb3WKVxuC36p60But9xE7GO
+	BAb0ZBctuLQT3vxwslvrl9sp8uBBut63H4PgR0hLB4Dzz+iM+QJ6jqKezJG1cBKdq5QFoJxFZ2wxB
+	O26Pz2PggxGFq6hzLHGn8/ZBW112Sf15MelDmizV+EKCPjJOq/UNAODeW1nEcWDDohrRWZ728OlVm
+	Avc/KQKPSobMgpDvCRr7Eh48awgJ8PzOIpuJNG+imzpRXJjhhfKhFvSE1BajJGH9o8iImlPpSES6T
+	bNFrAV6GAjwueJeMrJHmn7pcBq/XeYtAklaC2N+g4BWDKqUgHU1e34ulPFEUMKNLLRdShfzwIyTNg
+	Sw4NyaUw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qgOZJ-005nuG-0Y;
-	Wed, 13 Sep 2023 12:02:05 +0000
+	id 1qgOfM-005oaS-1r;
+	Wed, 13 Sep 2023 12:08:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qgOZD-005ntq-1o
+	id 1qgOfI-005oZY-0B
 	for barebox@lists.infradead.org;
-	Wed, 13 Sep 2023 12:02:00 +0000
+	Wed, 13 Sep 2023 12:08:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qgOZC-00009C-CH; Wed, 13 Sep 2023 14:01:58 +0200
+	id 1qgOfG-0000zr-Q4; Wed, 13 Sep 2023 14:08:14 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qgOZB-0063Yk-PI; Wed, 13 Sep 2023 14:01:57 +0200
+	id 1qgOfG-0063bY-6w; Wed, 13 Sep 2023 14:08:14 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qgOZB-007nft-2M;
-	Wed, 13 Sep 2023 14:01:57 +0200
+	id 1qgOfG-007qPb-0X;
+	Wed, 13 Sep 2023 14:08:14 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 13 Sep 2023 14:01:57 +0200
-Message-Id: <20230913120157.1859226-1-a.fatoum@pengutronix.de>
+Date: Wed, 13 Sep 2023 14:08:06 +0200
+Message-Id: <20230913120807.1869600-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230913120807.1869600-1-a.fatoum@pengutronix.de>
+References: <20230913120807.1869600-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230913_050159_603298_9448C9F2 
-X-CRM114-Status: UNSURE (   8.69  )
+X-CRM114-CacheID: sfid-20230913_050816_112790_C5E71977 
+X-CRM114-Status: UNSURE (   9.94  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -78,47 +80,57 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: Zynqmp: define cdns_serial_putc for use with pbl_set_putc
+Subject: [PATCH 1/2] clk: implement clk_get_enabled helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Unlike other debug_ll headers, such as i.MX's or AT91, the ZynqMP header
-only defined PUTC_LL, but no function suitable for use with
-pbl_set_putc.
-
-Remedy that, so PBL entry points can benefit from CONFIG_PBL_CONSOLE.
+Kernel code increasingly uses devm_clk_get_enabled to make driver code
+more compact. Port a devres-less version to barebox to make porting such
+Linux code easier.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/mach/zynqmp/debug_ll.h | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ include/linux/clk.h | 29 +++++++++++++++++++++++++++++
+ 1 file changed, 29 insertions(+)
 
-diff --git a/include/mach/zynqmp/debug_ll.h b/include/mach/zynqmp/debug_ll.h
-index 7642e37a4ed5..cc94d3ce54b4 100644
---- a/include/mach/zynqmp/debug_ll.h
-+++ b/include/mach/zynqmp/debug_ll.h
-@@ -15,9 +15,9 @@
- #define ZYNQMP_UART_STS_TFUL	(1 << 4)
- #define ZYNQMP_UART_TXDIS		(1 << 5)
- 
--static inline void PUTC_LL(int c)
-+static inline void cdns_serial_putc(void *ctx, int c)
- {
--	void __iomem *base = (void __iomem *)ZYNQMP_DEBUG_LL_UART_BASE;
-+	void __iomem *base = ctx;
- 
- 	if (readl(base) & ZYNQMP_UART_TXDIS)
- 		return;
-@@ -28,4 +28,9 @@ static inline void PUTC_LL(int c)
- 	writel(c, base + 0x30);
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 82022e78e39d..398427eca676 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -951,4 +951,33 @@ static inline struct clk *clk_get_optional(struct device *dev, const char *id)
+ 	return clk;
  }
  
-+static inline void PUTC_LL(int c)
++/**
++ * clk_get_enabled - clk_get() + clk_prepare_enable()
++ * @dev: device for clock "consumer"
++ * @id: clock consumer ID
++ *
++ * Return: a struct clk corresponding to the clock producer, or
++ * valid IS_ERR() condition containing errno.  The implementation
++ * uses @dev and @id to determine the clock consumer, and thereby
++ * the clock producer.  (IOW, @id may be identical strings, but
++ * clk_get may return different clock producers depending on @dev.)
++ *
++ * The returned clk (if valid) is enabled.
++ */
++static inline struct clk *clk_get_enabled(struct device *dev, const char *id)
 +{
-+	cdns_serial_putc(IOMEM(ZYNQMP_DEBUG_LL_UART_BASE), c);
++	struct clk *clk;
++	int ret;
++
++	clk = clk_get(dev, id);
++	if (IS_ERR(clk))
++		return clk;
++
++	ret = clk_enable(clk);
++	if (ret)
++		return ERR_PTR(ret);
++
++	return clk;
 +}
 +
- #endif /* __MACH_ZYNQMP_DEBUG_LL_H__ */
+ #endif
 -- 
 2.39.2
 
