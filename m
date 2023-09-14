@@ -1,63 +1,65 @@
-Delivery-date: Thu, 14 Sep 2023 12:00:24 +0200
+Delivery-date: Thu, 14 Sep 2023 12:00:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qgj97-00EsEc-N1
-	for lore@lore.pengutronix.de; Thu, 14 Sep 2023 12:00:24 +0200
+	id 1qgj98-00EsEo-6S
+	for lore@lore.pengutronix.de; Thu, 14 Sep 2023 12:00:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qgj93-0008W1-Ht
+	id 1qgj95-00005I-Vc
 	for lore@pengutronix.de; Thu, 14 Sep 2023 12:00:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=bwiwDNvS2Os9wSXIs1r1eDk+WHsAG7Lxj/guMZhqpuc=; b=HXkRZKaED9th/b2JKdNxeZP9QT
-	wa7uX1sDmIpZVk9lno1tnGumDj+5vAm/hk84RsmsVW4IlOoVdnaXATNrGQ3iWNfi9rgnKhmBH658T
-	1K4x/rjNdTTnsc7zKRPAcPwq6D971LseZEwuTNkuJmE/77nLQIgzMweNlDGCKp8U4m2fIom6E4lFY
-	Hewktf4z6C9srOTPxC4a1/Ix27kXXl9BISSgvLnrTBcL+vfflulJb88+G5QfAkxk3YQvOgTjMkbfr
-	zmRUMWmTLvaccsj1fxFqM+WkF588HcSffrjPB7pNZ6thSQppwGrVoyG+EKAihWBtaM+ltrfqLpGvk
-	4Pu3QsLQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=f/Tgqb3unBrkDRczIwW+GiZCFgyK+LgCCqH7zESIAoQ=; b=jzGThuwQZg/2yb+yx1Pj1QWIjx
+	qzBRp6x4g64CdYw5SNN4WOR463IeGqh8wbvOZTsovBoZIOrtBPXY0G5ttvBMIrgpaivfMg1plp8uS
+	idTzI6c+Pyo3GE+T0++65XqLaJq91JIiCzarlulxqn+4n98mn8ZHyThvhiIIb+x2hJZmW2NAyw2fE
+	wzP5omEPXui+WA7e+tFtu02tIjonW/i0p/SrHhbpPLkxY/SBfzUKpanDwduocRhs55VROHWAXapL4
+	+aDRuvQM+xSdhE21/6QOUOtG7bFI2MrYNihi1PPUquf++jCPF/69kH7vDoPOiLN/j21FBrqOr+HrF
+	8c9LU/pA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qgj7r-007uCi-0y;
+	id 1qgj7r-007uCs-2q;
 	Thu, 14 Sep 2023 09:59:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qgj7n-007uBz-00
+	id 1qgj7n-007uC0-00
 	for barebox@lists.infradead.org;
 	Thu, 14 Sep 2023 09:59:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <jbe@pengutronix.de>)
-	id 1qgj7k-0007gi-7u
+	id 1qgj7k-0007gj-A3
 	for barebox@lists.infradead.org; Thu, 14 Sep 2023 11:59:00 +0200
 Received: from [2a0a:edc0:0:900:1d::45] (helo=ginster)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <jbe@pengutronix.de>)
-	id 1qgj7j-006Gv0-RK
+	id 1qgj7j-006Gv1-Ra
 	for barebox@lists.infradead.org; Thu, 14 Sep 2023 11:58:59 +0200
 Received: from jbe by ginster with local (Exim 4.94.2)
 	(envelope-from <jbe@pengutronix.de>)
-	id 1qgj7j-0005mJ-IB
+	id 1qgj7j-0005mL-Ik
 	for barebox@lists.infradead.org; Thu, 14 Sep 2023 11:58:59 +0200
 From: Juergen Borleis <jbe@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 14 Sep 2023 11:58:58 +0200
-Message-Id: <20230914095859.22166-1-jbe@pengutronix.de>
+Date: Thu, 14 Sep 2023 11:58:59 +0200
+Message-Id: <20230914095859.22166-2-jbe@pengutronix.de>
 X-Mailer: git-send-email 2.30.2
+In-Reply-To: <20230914095859.22166-1-jbe@pengutronix.de>
+References: <20230914095859.22166-1-jbe@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230914_025903_041224_13039D4A 
-X-CRM114-Status: GOOD (  10.62  )
+X-CRM114-CacheID: sfid-20230914_025903_041562_0B7B687C 
+X-CRM114-Status: GOOD (  16.92  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,70 +81,141 @@ X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] sparse_image_fd: add function to re-use a file descriptor
+Subject: [PATCH 2/2] uncompress: add Android sparse image support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+An Android sparse image file generated by the 'genimage' tool can be seen as a
+kind of compression, since it contains only the data which should really be
+written to a device.
+
+This implementation writes only the intended content and skips anything else.
+
 Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
- include/image-sparse.h |  1 +
- lib/image-sparse.c     | 17 +++++++++++------
- 2 files changed, 12 insertions(+), 6 deletions(-)
+ lib/uncompress.c | 82 +++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 78 insertions(+), 4 deletions(-)
 
-diff --git a/include/image-sparse.h b/include/image-sparse.h
-index 6bff844..d969ca1 100644
---- a/include/image-sparse.h
-+++ b/include/image-sparse.h
-@@ -59,6 +59,7 @@ static inline int is_sparse_image(const void *buf)
- struct sparse_image_ctx;
+diff --git a/lib/uncompress.c b/lib/uncompress.c
+index 0608e9f..f17e9ce 100644
+--- a/lib/uncompress.c
++++ b/lib/uncompress.c
+@@ -25,6 +25,10 @@
+ #include <malloc.h>
+ #include <fs.h>
+ #include <libfile.h>
++#ifdef CONFIG_IMAGE_SPARSE
++#include <image-sparse.h>
++#include <linux/sizes.h>
++#endif
  
- struct sparse_image_ctx *sparse_image_open(const char *path);
-+struct sparse_image_ctx *sparse_image_fd(int infd);
- int sparse_image_read(struct sparse_image_ctx *si, void *buf,
- 		      loff_t *pos, size_t len, size_t *retlen);
- void sparse_image_close(struct sparse_image_ctx *si);
-diff --git a/lib/image-sparse.c b/lib/image-sparse.c
-index eb5242e..b686d25 100644
---- a/lib/image-sparse.c
-+++ b/lib/image-sparse.c
-@@ -146,7 +146,7 @@ loff_t sparse_image_size(struct sparse_image_ctx *si)
- 	return (loff_t)si->sparse.blk_sz * si->sparse.total_blks;
+ static void *uncompress_buf;
+ static unsigned int uncompress_size;
+@@ -60,6 +64,71 @@ static int uncompress_fill(void *buf, unsigned int len)
+ 	return total;
  }
  
--struct sparse_image_ctx *sparse_image_open(const char *path)
-+struct sparse_image_ctx *sparse_image_fd(int infd)
- {
- 	struct sparse_image_ctx *si;
- 	loff_t offs;
-@@ -154,11 +154,7 @@ struct sparse_image_ctx *sparse_image_open(const char *path)
- 
- 	si = xzalloc(sizeof(*si));
- 
--	si->fd = open(path, O_RDONLY);
--	if (si->fd < 0) {
--		ret = -errno;
--		goto out;
--	}
-+	si->fd = infd;
- 
- 	/* Read and skip over sparse image header */
- 	read(si->fd, &si->sparse, sizeof(struct sparse_header));
-@@ -186,6 +182,15 @@ struct sparse_image_ctx *sparse_image_open(const char *path)
- 	return ERR_PTR(ret);
- }
- 
-+struct sparse_image_ctx *sparse_image_open(const char *path)
++#ifdef CONFIG_IMAGE_SPARSE
++static int uncompress_sparse(int source, int destination)
 +{
-+	int fd = open(path, O_RDONLY);
-+	if (fd < 0)
-+		return ERR_PTR(-errno);
++	int ret = 0;
++	struct sparse_image_ctx *sparse;
 +
-+	return sparse_image_fd(fd);
++	/* rewind after checking the file type */
++	lseek(source, 0, SEEK_SET);
++
++	sparse = sparse_image_fd(source);
++	if (IS_ERR(sparse)) {
++		pr_err("Failed to open or interpret sparse image file: %m\n");
++		ret = 1;
++		goto on_error_dev;
++	}
++
++	const size_t transfer_buffer_length = SZ_128K;
++	unsigned char *buf = malloc(transfer_buffer_length);
++	if (!buf) {
++		pr_err("Failed to alloc memory for the transfers\n");
++		ret = 1;
++		goto on_error_sparse;
++	}
++
++	while (1) {
++		loff_t write_offset;
++		size_t write_length;
++
++		int rc = sparse_image_read(sparse, buf, &write_offset, transfer_buffer_length, &write_length);
++		if (rc) {
++			ret = 1;
++			goto on_error_memory;
++		}
++		if (!write_length)
++			break;
++
++		discard_range(destination, write_length, write_offset);
++
++		write_offset = lseek(destination, write_offset, SEEK_SET);
++		if (write_offset == -1) {
++			pr_err("Failed to set next data's destination offset: %m\n");
++			ret = 1;
++			goto on_error_memory;
++
++		}
++
++		rc = write_full(destination, buf, write_length);
++		if (rc < 0) {
++			pr_err("Failed to write destination's next data: %m\n");
++			ret = 1;
++			goto on_error_memory;
++		}
++	}
++
++on_error_memory:
++	free(buf);
++on_error_sparse:
++	free(sparse); /* Note: sparse_image_close(sparse); would also close the input file descriptor */
++on_error_dev:
++	return ret;
 +}
++#endif
 +
- int sparse_image_read(struct sparse_image_ctx *si, void *buf, loff_t *pos,
- 		      size_t len, size_t *retlen)
++static int uncompress_infd, uncompress_outfd;
++
+ int uncompress(unsigned char *inbuf, int len,
+ 	   int(*fill)(void*, unsigned int),
+ 	   int(*flush)(void*, unsigned int),
+@@ -121,6 +190,10 @@ int uncompress(unsigned char *inbuf, int len,
+ 	case filetype_xz_compressed:
+ 		compfn = decompress_unxz;
+ 		break;
++#endif
++#ifdef CONFIG_IMAGE_SPARSE
++	case filetype_android_sparse:
++		break;
+ #endif
+ 	default:
+ 		err = basprintf("cannot handle filetype %s",
+@@ -131,16 +204,17 @@ int uncompress(unsigned char *inbuf, int len,
+ 		goto err;
+ 	}
+ 
+-	ret = compfn(inbuf, len, fill ? uncompress_fill : NULL,
+-			flush, output, pos, error_fn);
++	if (ft == filetype_android_sparse)
++		ret = uncompress_sparse(uncompress_infd, uncompress_outfd);
++	else
++		ret = compfn(inbuf, len, fill ? uncompress_fill : NULL,
++			     flush, output, pos, error_fn);
+ err:
+ 	free(uncompress_buf);
+ 
+ 	return ret;
+ }
+ 
+-static int uncompress_infd, uncompress_outfd;
+-
+ static int fill_fd(void *buf, unsigned int len)
  {
+ 	return read_full(uncompress_infd, buf, len);
 -- 
 2.30.2
 
