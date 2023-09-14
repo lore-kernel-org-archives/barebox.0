@@ -1,59 +1,62 @@
-Delivery-date: Thu, 14 Sep 2023 13:06:48 +0200
+Delivery-date: Thu, 14 Sep 2023 15:22:05 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qgkBN-00Ew3a-Me
-	for lore@lore.pengutronix.de; Thu, 14 Sep 2023 13:06:48 +0200
+	id 1qgmII-00F4WJ-Tv
+	for lore@lore.pengutronix.de; Thu, 14 Sep 2023 15:22:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qgkBL-0005oi-LL
-	for lore@pengutronix.de; Thu, 14 Sep 2023 13:06:48 +0200
+	id 1qgmIG-0000IY-NN
+	for lore@pengutronix.de; Thu, 14 Sep 2023 15:22:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3ZN0YQGJCSnyo08wuNLEXTNsWlAAbMnSp3nPhDdNibA=; b=nbKdtIZkINwtdi89vKtjTWUkZl
-	gP2JYnEw7EqQ6BZLtQ2JIRqHJPaMM5IvYHYkGLPVu06+njuyrV5tvLwLGFoFRD00JZuEORXQKxnyo
-	4M+LJWG/lps03BpchfJIV8PbwAcEabilB5yVn5y5DXfJFlYtIaJGbxCkCUTaM/pE4QkKM5dTNIRYg
-	K5FNhnL4/ynZoKD6jbaGuzltP7Yh0iGMSF4VeIFSnpxjvGIXCgt16OLr/6F2oMqwDUTPTFIIGI25A
-	zsf86/bKRQTl7fdcIFxk0afLTz/0DQtlxqasbsl4zBaSbtUOWREhG8EuFm+QB+dnwahDG3hZ47W9L
-	P+S8vNLQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=QfyNBK2JxvJFLqDld4XNKYBX8SbSZicF56D05u2e3z8=; b=s8MQOZ+rXCeB9bLqGbAIq8qKj8
+	9Ogqs8wbLilZPNaqKC80C8SJiCZnNI5KmsCLX6uw1HER+kAWBAmCETkeBS86T2JZWQZCXo1+DYDRD
+	Pmp8C5VYgqfiBct6x2OzK/3I/psr654Zcmx/BCqk4GytQKsYxs42nvEC30VnsCrenuS10k2nSNa8W
+	Js5XHCCuINhfD1GMN9Q3VjbjrZ6Oq3ygNtKhgmaBMApqJPOnNKqlhVbqkhH32gLkT0jrpRfjhW03f
+	x6uw9zA1ttk5j3oeemwtuwbozIvovTq27mb5z9EafmXaXjEbEziJYGRuInjYqzu0u8cAnE+LAgRoo
+	IDoWBxiw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qgkA7-0089RA-1Q;
-	Thu, 14 Sep 2023 11:05:31 +0000
+	id 1qgmGs-008RG2-2n;
+	Thu, 14 Sep 2023 13:20:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qgkA3-0089NN-1A
+	id 1qgmGp-008RFT-2m
 	for barebox@lists.infradead.org;
-	Thu, 14 Sep 2023 11:05:29 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qgkA0-00052w-OX; Thu, 14 Sep 2023 13:05:24 +0200
-Message-ID: <440ba82f-5dcc-67e3-5f40-0a35f7a4af97@pengutronix.de>
-Date: Thu, 14 Sep 2023 13:05:24 +0200
+	Thu, 14 Sep 2023 13:20:37 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1qgmGn-0007vw-6P; Thu, 14 Sep 2023 15:20:33 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1qgmGm-006JVF-QA; Thu, 14 Sep 2023 15:20:32 +0200
+Received: from rhi by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <rhi@pengutronix.de>)
+	id 1qgmGm-000D7Z-2Q;
+	Thu, 14 Sep 2023 15:20:32 +0200
+From: Roland Hieber <rhi@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Roland Hieber <rhi@pengutronix.de>
+Date: Thu, 14 Sep 2023 15:20:28 +0200
+Message-Id: <20230914132028.50261-1-rhi@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Thorsten Scherer <T.Scherer@eckelmann.de>
-Cc: barebox@lists.infradead.org
-References: <20230911150900.3584523-1-a.fatoum@pengutronix.de>
- <20230914091438.125965-1-a.fatoum@pengutronix.de>
- <20230914102247.ijaw2q7salq6h7ng@nb821.eckelmann.group>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230914102247.ijaw2q7salq6h7ng@nb821.eckelmann.group>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230914_040527_400450_F0D2D7FC 
-X-CRM114-Status: GOOD (  18.02  )
+X-CRM114-CacheID: sfid-20230914_062035_897049_CB2BA764 
+X-CRM114-Status: GOOD (  17.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,77 +74,99 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fixup! commands: add stacksmash command for causing stack
- overflows
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] doc: booting-linux: improve Bootloader spec section
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 14.09.23 12:22, Thorsten Scherer wrote:
-> Hi Ahmad,
-> 
-> sha just applied four of the five patches and stacksmash isn't in next
-> yet.
-> 
-> Refer,
-> 
->     Message-ID: <20230912093638.GZ637806@pengutronix.de>
+Improve language and clarity of the text, and add formatting.
 
-He did? 20230912093638.GZ637806@pengutronix.de is an unrelated series:
+Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+---
+ Documentation/user/booting-linux.rst | 36 ++++++++++++++--------------
+ 1 file changed, 18 insertions(+), 18 deletions(-)
 
-https://lore.barebox.org/barebox/20230912093638.GZ637806@pengutronix.de/
-
-Cheers,
-Ahmad
-
-> 
-> Best regards,
-> Thorsten
-> 
-> On Thu, Sep 14, 2023 at 11:14:38AM +0200, Ahmad Fatoum wrote:
->> commands: stacksmash: fix whitespace in command description
->>
->> Command description mixed spaces and tabs. Fix it to have tabs only.
->>
->> Cc: Thorsten Scherer <T.Scherer@eckelmann.de>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->> Thanks, Thorsten!
->> ---
->>  commands/stacksmash.c | 8 ++++----
->>  1 file changed, 4 insertions(+), 4 deletions(-)
->>
->> diff --git a/commands/stacksmash.c b/commands/stacksmash.c
->> index 1e9be0d40e15..b812d945e215 100644
->> --- a/commands/stacksmash.c
->> +++ b/commands/stacksmash.c
->> @@ -50,9 +50,9 @@ static int do_stacksmash(int argc, char *argv[])
->>  	panic("Stack smashing of %s not caught\n", argv[1]);
->>  }
->>  BAREBOX_CMD_START(stacksmash)
->> -        .cmd            = do_stacksmash,
->> -        BAREBOX_CMD_DESC("Run stack smashing tests")
->> +	.cmd            = do_stacksmash,
->> +	BAREBOX_CMD_DESC("Run stack smashing tests")
->>  	BAREBOX_CMD_OPTS("[frame | region]")
->> -        BAREBOX_CMD_GROUP(CMD_GRP_MISC)
->> -        BAREBOX_CMD_COMPLETE(empty_complete)
->> +	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
->> +	BAREBOX_CMD_COMPLETE(empty_complete)
->>  BAREBOX_CMD_END
->> -- 
->> 2.39.2
->>
-> 
-
+diff --git a/Documentation/user/booting-linux.rst b/Documentation/user/booting-linux.rst
+index 0ba6229797cd..76883862b938 100644
+--- a/Documentation/user/booting-linux.rst
++++ b/Documentation/user/booting-linux.rst
+@@ -172,13 +172,14 @@ https://uapi-group.org/specifications/specs/boot_loader_specification/
+ 
+ It follows another philosophy than the :ref:`boot_entries`. With Boot Entries
+ booting is completely configured in the bootloader. Bootloader Spec Entries
+-on the other hand the boot entries are on a boot medium. This gives a boot medium
+-the possibility to describe where a Kernel is and what parameters it needs.
++on the other hand are part of the boot medium. This gives a boot medium
++the possibility to describe where a kernel is located and which parameters are
++needed to boot it.
+ 
+-All Bootloader Spec Entries are in a partition on the boot medium under ``/loader/entries/*.conf``.
+-In the Bootloader Spec a boot medium has a dedicated partition to use for
+-boot entries. barebox is less strict, it accepts Bootloader Spec Entries on
+-every partition barebox can read.
++All Bootloader Spec Entries are located in a partition on the boot medium under
++``/loader/entries/*.conf``. According to the Bootloader Spec, a boot medium has
++to use a dedicated partition for boot entries. barebox is less strict, it
++accepts Bootloader Spec Entries on every partition that barebox can read.
+ 
+ A Bootloader Spec Entry consists of key value pairs::
+ 
+@@ -194,7 +195,7 @@ A Bootloader Spec Entry consists of key value pairs::
+ All paths are absolute paths in the partition. Bootloader Spec Entries can
+ be created manually, but there also is the ``scripts/kernel-install`` tool to
+ create/list/modify entries directly on a MMC/SD card or other media. To use
+-it create a SD card / USB memory stick with a /boot partition with type 0xea.
++it, create an SD card / USB memory stick with a ``/boot`` partition with type ``0xea``.
+ The partition can be formatted with FAT or EXT4 filesystem. If you wish to write
+ to it from barebox later you must use FAT. The following creates a Bootloader
+ Spec Entry on a SD card:
+@@ -206,7 +207,7 @@ Spec Entry on a SD card:
+                 --kernel=/home/sha/linux/arch/arm/boot/zImage --add-root-option \
+                 --root=/dev/mmcblk0p1 -o "console=ttymxc0,115200"
+ 
+-The entry can be listed with the -l option:
++The entry can be listed with the ``-l`` option:
+ 
+ .. code-block:: sh
+ 
+@@ -219,23 +220,22 @@ The entry can be listed with the -l option:
+         options:    console=ttymxc0,115200 root=PARTUUID=0007CB20-01
+         linux:      11ab7c89d02c4f66a4e2474ea25b2b84.15/linux
+ 
+-When on barebox the SD card shows up as ``mmc1`` then this entry can be booted with
+-``boot mmc1`` or with setting ``global.boot.default`` to ``mmc1``.
++When the SD card shows up as ``mmc1`` in barebox, this entry can be booted with
++``boot mmc1`` or by setting ``global.boot.default`` to ``mmc1``.
+ 
+-``machine-id`` is an optional key. If ``global.boot.machine_id`` variable is set to
+-non-empty value, then barebox accepts only Bootloader Spec entries with ``machine-id``
+-key. In case if value of global variable and Bootloader Spec key match each other,
+-barebox will choose the boot entry for booting. All other Bootloader Spec entries will
+-be ignored.
++``machine-id`` is an optional key. If the ``global.boot.machine_id`` variable
++is set to a non-empty value, barebox will only boot the Bootloader Spec Entry
++whose ``machine-id`` key matches the ``global.boot.machine_id`` variable.
++All other Bootloader Spec entries will be ignored.
+ 
+-A bootloader spec entry can also reside on an NFS server in which case a RFC2224
+-compatible NFS URI string must be passed to the boot command:
++A bootloader spec entry can also reside on an NFS server in which case an
++RFC2224-compatible NFS URI string must be passed to the boot command:
+ 
+ .. code-block:: sh
+ 
+   boot nfs://nfshost[:port]//path/
+ 
+-Additionally to the options defined in the original spec barebox understands the
++In addition to the options defined in the original spec barebox understands the
+ ``linux-appendroot`` option. This is a boolean value and if set to ``true`` barebox
+ will automatically append a ``root=`` string to the Linux commandline based on the
+ device where the entry is found on. This makes it possible to use the same rootfs
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
