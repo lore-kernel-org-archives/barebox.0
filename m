@@ -1,66 +1,63 @@
-Delivery-date: Thu, 14 Sep 2023 11:15:47 +0200
+Delivery-date: Thu, 14 Sep 2023 12:00:24 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qgiRw-00EpwB-IB
-	for lore@lore.pengutronix.de; Thu, 14 Sep 2023 11:15:47 +0200
+	id 1qgj97-00EsEc-N1
+	for lore@lore.pengutronix.de; Thu, 14 Sep 2023 12:00:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qgiRu-000807-Ej
-	for lore@pengutronix.de; Thu, 14 Sep 2023 11:15:47 +0200
+	id 1qgj93-0008W1-Ht
+	for lore@pengutronix.de; Thu, 14 Sep 2023 12:00:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qvjDFqzFgeioN+/Tz/4uaaHY5/qsRb+WCEEqhrlPFXc=; b=29v+sH6UV87rWzKc43YLPA9ivs
-	OASqQSN+nNxb/SR0VIYVdfsWaPyitnkWhn3AuBr19eRNWRwAucFtGVypyx3svf78s/0wrgQJyIjtT
-	izm9XSsjx0qgWZrCFkBm7D0J05/hIZ4M3ziKe38qGsn5zj3rr1ps85SYZKn34h4uhJWz9lDR1JFQ5
-	Nfxicaobd5CuiMR08J38IHkiDdbQtcKK3Ti++42I4FWpMuUfHEeEe9PSCMpqzC7NFVJReuPWCx+iY
-	8qPTdFsKiScN+92gS+EnyzGWV59mpevH3cwgjzIIjnSXou9a2fJgLUjrFXey0xMa3LkzstFKDEWU6
-	gFHsJvkA==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=bwiwDNvS2Os9wSXIs1r1eDk+WHsAG7Lxj/guMZhqpuc=; b=HXkRZKaED9th/b2JKdNxeZP9QT
+	wa7uX1sDmIpZVk9lno1tnGumDj+5vAm/hk84RsmsVW4IlOoVdnaXATNrGQ3iWNfi9rgnKhmBH658T
+	1K4x/rjNdTTnsc7zKRPAcPwq6D971LseZEwuTNkuJmE/77nLQIgzMweNlDGCKp8U4m2fIom6E4lFY
+	Hewktf4z6C9srOTPxC4a1/Ix27kXXl9BISSgvLnrTBcL+vfflulJb88+G5QfAkxk3YQvOgTjMkbfr
+	zmRUMWmTLvaccsj1fxFqM+WkF588HcSffrjPB7pNZ6thSQppwGrVoyG+EKAihWBtaM+ltrfqLpGvk
+	4Pu3QsLQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qgiQu-007ol3-1u;
-	Thu, 14 Sep 2023 09:14:44 +0000
+	id 1qgj7r-007uCi-0y;
+	Thu, 14 Sep 2023 09:59:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qgiQr-007okH-30
+	id 1qgj7n-007uBz-00
 	for barebox@lists.infradead.org;
-	Thu, 14 Sep 2023 09:14:43 +0000
+	Thu, 14 Sep 2023 09:59:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qgiQq-0007Ih-P6; Thu, 14 Sep 2023 11:14:40 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <jbe@pengutronix.de>)
+	id 1qgj7k-0007gi-7u
+	for barebox@lists.infradead.org; Thu, 14 Sep 2023 11:59:00 +0200
+Received: from [2a0a:edc0:0:900:1d::45] (helo=ginster)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qgiQq-006GkB-9V; Thu, 14 Sep 2023 11:14:40 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qgiQq-000XGH-0n;
-	Thu, 14 Sep 2023 11:14:40 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	(envelope-from <jbe@pengutronix.de>)
+	id 1qgj7j-006Gv0-RK
+	for barebox@lists.infradead.org; Thu, 14 Sep 2023 11:58:59 +0200
+Received: from jbe by ginster with local (Exim 4.94.2)
+	(envelope-from <jbe@pengutronix.de>)
+	id 1qgj7j-0005mJ-IB
+	for barebox@lists.infradead.org; Thu, 14 Sep 2023 11:58:59 +0200
+From: Juergen Borleis <jbe@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Thorsten Scherer <T.Scherer@eckelmann.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 14 Sep 2023 11:14:38 +0200
-Message-Id: <20230914091438.125965-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230911150900.3584523-1-a.fatoum@pengutronix.de>
-References: <20230911150900.3584523-1-a.fatoum@pengutronix.de>
+Date: Thu, 14 Sep 2023 11:58:58 +0200
+Message-Id: <20230914095859.22166-1-jbe@pengutronix.de>
+X-Mailer: git-send-email 2.30.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230914_021441_964189_19F4C849 
-X-CRM114-Status: UNSURE (   8.57  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230914_025903_041224_13039D4A 
+X-CRM114-Status: GOOD (  10.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,46 +75,76 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-3.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! commands: add stacksmash command for causing stack overflows
+Subject: [PATCH 1/2] sparse_image_fd: add function to re-use a file descriptor
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-commands: stacksmash: fix whitespace in command description
-
-Command description mixed spaces and tabs. Fix it to have tabs only.
-
-Cc: Thorsten Scherer <T.Scherer@eckelmann.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
 ---
-Thanks, Thorsten!
----
- commands/stacksmash.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/image-sparse.h |  1 +
+ lib/image-sparse.c     | 17 +++++++++++------
+ 2 files changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/commands/stacksmash.c b/commands/stacksmash.c
-index 1e9be0d40e15..b812d945e215 100644
---- a/commands/stacksmash.c
-+++ b/commands/stacksmash.c
-@@ -50,9 +50,9 @@ static int do_stacksmash(int argc, char *argv[])
- 	panic("Stack smashing of %s not caught\n", argv[1]);
+diff --git a/include/image-sparse.h b/include/image-sparse.h
+index 6bff844..d969ca1 100644
+--- a/include/image-sparse.h
++++ b/include/image-sparse.h
+@@ -59,6 +59,7 @@ static inline int is_sparse_image(const void *buf)
+ struct sparse_image_ctx;
+ 
+ struct sparse_image_ctx *sparse_image_open(const char *path);
++struct sparse_image_ctx *sparse_image_fd(int infd);
+ int sparse_image_read(struct sparse_image_ctx *si, void *buf,
+ 		      loff_t *pos, size_t len, size_t *retlen);
+ void sparse_image_close(struct sparse_image_ctx *si);
+diff --git a/lib/image-sparse.c b/lib/image-sparse.c
+index eb5242e..b686d25 100644
+--- a/lib/image-sparse.c
++++ b/lib/image-sparse.c
+@@ -146,7 +146,7 @@ loff_t sparse_image_size(struct sparse_image_ctx *si)
+ 	return (loff_t)si->sparse.blk_sz * si->sparse.total_blks;
  }
- BAREBOX_CMD_START(stacksmash)
--        .cmd            = do_stacksmash,
--        BAREBOX_CMD_DESC("Run stack smashing tests")
-+	.cmd            = do_stacksmash,
-+	BAREBOX_CMD_DESC("Run stack smashing tests")
- 	BAREBOX_CMD_OPTS("[frame | region]")
--        BAREBOX_CMD_GROUP(CMD_GRP_MISC)
--        BAREBOX_CMD_COMPLETE(empty_complete)
-+	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
-+	BAREBOX_CMD_COMPLETE(empty_complete)
- BAREBOX_CMD_END
+ 
+-struct sparse_image_ctx *sparse_image_open(const char *path)
++struct sparse_image_ctx *sparse_image_fd(int infd)
+ {
+ 	struct sparse_image_ctx *si;
+ 	loff_t offs;
+@@ -154,11 +154,7 @@ struct sparse_image_ctx *sparse_image_open(const char *path)
+ 
+ 	si = xzalloc(sizeof(*si));
+ 
+-	si->fd = open(path, O_RDONLY);
+-	if (si->fd < 0) {
+-		ret = -errno;
+-		goto out;
+-	}
++	si->fd = infd;
+ 
+ 	/* Read and skip over sparse image header */
+ 	read(si->fd, &si->sparse, sizeof(struct sparse_header));
+@@ -186,6 +182,15 @@ struct sparse_image_ctx *sparse_image_open(const char *path)
+ 	return ERR_PTR(ret);
+ }
+ 
++struct sparse_image_ctx *sparse_image_open(const char *path)
++{
++	int fd = open(path, O_RDONLY);
++	if (fd < 0)
++		return ERR_PTR(-errno);
++
++	return sparse_image_fd(fd);
++}
++
+ int sparse_image_read(struct sparse_image_ctx *si, void *buf, loff_t *pos,
+ 		      size_t len, size_t *retlen)
+ {
 -- 
-2.39.2
+2.30.2
 
 
 
