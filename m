@@ -1,59 +1,59 @@
-Delivery-date: Thu, 14 Sep 2023 10:04:37 +0200
+Delivery-date: Thu, 14 Sep 2023 10:07:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qghL4-00EmZU-W2
-	for lore@lore.pengutronix.de; Thu, 14 Sep 2023 10:04:37 +0200
+	id 1qghNo-00EmgS-02
+	for lore@lore.pengutronix.de; Thu, 14 Sep 2023 10:07:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qghL2-0001Ke-Qz
-	for lore@pengutronix.de; Thu, 14 Sep 2023 10:04:37 +0200
+	id 1qghNl-0002qD-Py
+	for lore@pengutronix.de; Thu, 14 Sep 2023 10:07:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NUuuf9NI7TfTN6csmYOCdzRdzmO7VX4cGOb0QoKpyDY=; b=MTgEo8zclct9cKBfNz3QG8a3ch
-	ykAcFrLUnquKeA2wNxq63Cx2FenSfzdQVzw32+zD8mPcHkqTLzUPIp45HdscxdX6vdO8ySG1hBSQj
-	8HS1po13Cs8pGosL9Zk2qPwdpH/OILON2cw8kfZsDFaH9OX0a9uOESrFRD15JNXE4Hb200sDEAeX1
-	kUD2ylyxAmzKfRF8Cfh2wy8xglp039PbLaH1zX0TMRQ1uFfsfT0ZurpD+ROnujeFAHbpT0JD3cGbN
-	MgGUo/lyHqvbhxOV4ME/EGzAidt2UO+AfZXB71t+xxCKrnxzXHriZBEr3SGxLdfbmVQCfQXgA4VeX
-	GcnqcmSQ==;
+	bh=7Z6oaBq2RAXuautR7H1/i5CrM8uhTjx+ajwN083XnNs=; b=sh+YbOLykH0A39pmCmFwNjLrx0
+	L+zDLY5FKbKx6rV+pO6SixBsEx7obnq8IP9GwE0IvW6/dbWxFFdh2g+hOKDWXY/QfuFPCqzj0B1eS
+	1Tt98wxNIFMBokCG49b1PgFDgWR0YLV28obtfIj3FMqMPETV/pIU785F0UKxH9Xm+E2wKeHL2q6JT
+	OM7auk9hE0P1H1F/e8bMbfwquLdCKsv8zjdLK376GzNd3Bki4o8iLuPJJo204P2SjQS/nouKYW1Wl
+	4AExyub2b3ocmNFIRpeMDTNNilHyr9MHqTnBIAWp6WcEw4ItAhpbPBwmcT/fSo4bfK3CKJEVPy5Ov
+	y3xmvHhQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qghK0-007eM3-1Z;
-	Thu, 14 Sep 2023 08:03:32 +0000
+	id 1qghMj-007eha-2k;
+	Thu, 14 Sep 2023 08:06:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qghJx-007eLK-1u
+	id 1qghMg-007egh-0q
 	for barebox@lists.infradead.org;
-	Thu, 14 Sep 2023 08:03:30 +0000
+	Thu, 14 Sep 2023 08:06:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qghJw-0000gI-EQ; Thu, 14 Sep 2023 10:03:28 +0200
+	id 1qghMe-0002EH-U7; Thu, 14 Sep 2023 10:06:16 +0200
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qghJw-006FfL-29; Thu, 14 Sep 2023 10:03:28 +0200
+	id 1qghMe-006Fhn-Hk; Thu, 14 Sep 2023 10:06:16 +0200
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qghJv-006g6j-W6; Thu, 14 Sep 2023 10:03:28 +0200
-Date: Thu, 14 Sep 2023 10:03:27 +0200
+	id 1qghMe-006g8g-FT; Thu, 14 Sep 2023 10:06:16 +0200
+Date: Thu, 14 Sep 2023 10:06:16 +0200
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20230914080327.GM637806@pengutronix.de>
-References: <20230913103552.1644839-1-a.fatoum@pengutronix.de>
+Message-ID: <20230914080616.GN637806@pengutronix.de>
+References: <20230913114230.1853679-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230913103552.1644839-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20230913114230.1853679-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -61,8 +61,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230914_010329_628368_A8AA8F40 
-X-CRM114-Status: GOOD (  20.65  )
+X-CRM114-CacheID: sfid-20230914_010618_296166_2A6B77D1 
+X-CRM114-Status: GOOD (  22.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,44 +84,67 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fs: fat: enable VFAT long file names by default
+Subject: Re: [PATCH] treewide: remove remaining _d suffixes from struct
+ driver_d/device_d
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Sep 13, 2023 at 12:35:52PM +0200, Ahmad Fatoum wrote:
-> Apparently, this option defaulted to 'n' since the very beginning, so
-> users newly enabling FAT may unwittingly run into a cryptic:
-> 
->   barebox@board:/ cp something /mnt/mmc0.0/freertos-main.elf
->   could not open /mnt/mmc0.0/freertos-main.elf: Invalid argument
-> 
-> As FAT file systems nowadays are VFAT by default and allow up to 255
-> characters in file names, there's no reason to restrict barebox to
-> classic 8.3 file names by default.
+On Wed, Sep 13, 2023 at 01:42:30PM +0200, Ahmad Fatoum wrote:
+> Some drivers made their way upstream during the switch to removal
+> of the _d suffix. There's a define to support the old naming still,
+> so there was no breakage, but let's use the modern naming everywhere.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  fs/fat/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/firmware/qemu_fw_cfg.c | 2 +-
+>  drivers/net/designware_imx8.c  | 2 +-
+>  test/self/regulator.c          | 2 +-
+>  3 files changed, 3 insertions(+), 3 deletions(-)
 
-Applied, thanks
+Applied, thanks.
 
 Sascha
 
 > 
-> diff --git a/fs/fat/Kconfig b/fs/fat/Kconfig
-> index 8cd3b604baeb..53f784ee54d5 100644
-> --- a/fs/fat/Kconfig
-> +++ b/fs/fat/Kconfig
-> @@ -16,7 +16,7 @@ config FS_FAT_WRITE
+> diff --git a/drivers/firmware/qemu_fw_cfg.c b/drivers/firmware/qemu_fw_cfg.c
+> index 4c7d90815be2..1ba81d1b5002 100644
+> --- a/drivers/firmware/qemu_fw_cfg.c
+> +++ b/drivers/firmware/qemu_fw_cfg.c
+> @@ -289,7 +289,7 @@ static const struct of_device_id qemu_fw_cfg_of_match[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, qemu_fw_cfg_of_match);
 >  
+> -static struct driver_d qemu_fw_cfg_drv = {
+> +static struct driver qemu_fw_cfg_drv = {
+>  	.name = "fw_cfg",
+>  	.probe  = fw_cfg_probe,
+>  	.of_compatible = of_match_ptr(qemu_fw_cfg_of_match),
+> diff --git a/drivers/net/designware_imx8.c b/drivers/net/designware_imx8.c
+> index d81dd499ab29..3dbe5824e6ce 100644
+> --- a/drivers/net/designware_imx8.c
+> +++ b/drivers/net/designware_imx8.c
+> @@ -186,7 +186,7 @@ static __maybe_unused struct of_device_id eqos_imx8_ids[] = {
+>  };
+>  MODULE_DEVICE_TABLE(of, eqos_imx8_ids);
 >  
->  config FS_FAT_LFN
-> -	bool
-> +	def_bool y
->  	prompt "Support long filenames"
->  	help
->  	  Enable support for file names other than 8.3.
+> -static struct driver_d eqos_imx8_driver = {
+> +static struct driver eqos_imx8_driver = {
+>  	.name = "eqos-imx8",
+>  	.probe = eqos_probe_imx8,
+>  	.remove = eqos_remove_imx8,
+> diff --git a/test/self/regulator.c b/test/self/regulator.c
+> index e89164700ef1..08073cfc9158 100644
+> --- a/test/self/regulator.c
+> +++ b/test/self/regulator.c
+> @@ -161,7 +161,7 @@ static struct driver regulator_test_driver = {
+>  	.of_match_table = test_regulator_of_match,
+>  };
+>  
+> -static struct device_d *dev;
+> +static struct device *dev;
+>  
+>  static void test_regulator(void)
+>  {
 > -- 
 > 2.39.2
 > 
