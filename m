@@ -1,65 +1,63 @@
-Delivery-date: Sat, 16 Sep 2023 18:03:03 +0200
+Delivery-date: Mon, 18 Sep 2023 18:19:36 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qhXlA-00HWsl-SH
-	for lore@lore.pengutronix.de; Sat, 16 Sep 2023 18:03:03 +0200
+	id 1qiGyH-002F29-Uq
+	for lore@lore.pengutronix.de; Mon, 18 Sep 2023 18:19:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qhXl8-0000lX-Np
-	for lore@pengutronix.de; Sat, 16 Sep 2023 18:03:03 +0200
+	id 1qiGyE-0005ew-PV
+	for lore@pengutronix.de; Mon, 18 Sep 2023 18:19:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lEktouOYEsm3Y9+bnab46tSwhtnE9cZKPiuXYXtA9go=; b=dKPNCcs6giL7jFCfEWT+DuGi+M
-	d1E73+F/sYZRRHt4HCnbPcEQ73ztnO6cHIgwWI9EBDRYlwdcG4A9fL4Awg8sinELaDryZAwsg63OB
-	qywi1LxWzIMNtKSrWRPnP4Jz97a+D7viXBdxip0eEsHMdCf48XY2y0uRFKLKdu8hKODFKKhQKG8Pf
-	kOG83UsrB0+kmrYd8dxrjkjYktm/Mc/f8emjUHQbIVnKBCqC7jQm7V+S0coHGCnes+E3jCiJlARz7
-	/zhNractkHvX5jxhS3qBrSm7Fw0MgPaZxUYx3vbBbt4/PXe4uRubqVdCYWIbDEiz5h9SH4we8EpRG
-	3FttW5Kg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=mo5UyMXeJ5OS0+hKrf3n/0MMPBHeGtjeFtfCF0tU9ro=; b=HkjELNBfIsqltvH7hrfrt3IIOh
+	8wuz7xZj9sbu48VJWrv+MgULLiX039r+IZ2V4ZIy95iSrf1Qq4Hi0orR+kddw0YQMWn3cBdA1frH/
+	KFtcrdxD4jq3U6SanDHMRDh9adpjlUYKQ7UvoV6SyzZuUtsyfUCJa9G0/25QMKlMw+NopY+l9SgC2
+	gipasHbpPbNpUjDlaFr47RpeZSFusI43BrG4bPoraAoJCKy+V+GmmaccYUs+eUJ0o3w/maxhpffaW
+	h7b13yHgPI2hyqGK5XzYishgyfcUthPuFKgQVOkr8MdVa4ssYKPXsbpu/fAIxV6XFlxMTDR9D6VqV
+	YgYVSyEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qhXjX-00CdV8-38;
-	Sat, 16 Sep 2023 16:01:23 +0000
+	id 1qiGwh-00FqiP-0Y;
+	Mon, 18 Sep 2023 16:17:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qhXjT-00CdU9-0j
+	id 1qiGwc-00Fqfq-3D
 	for barebox@lists.infradead.org;
-	Sat, 16 Sep 2023 16:01:21 +0000
+	Mon, 18 Sep 2023 16:17:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qhXjQ-00009R-04; Sat, 16 Sep 2023 18:01:16 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qiGwY-0003F0-KJ; Mon, 18 Sep 2023 18:17:50 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qhXjP-006nEu-Jo; Sat, 16 Sep 2023 18:01:15 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1qhXjP-0027vr-Ab; Sat, 16 Sep 2023 18:01:15 +0200
-Date: Sat, 16 Sep 2023 18:01:15 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Juergen Borleis <jbe@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230916160115.mp23mo2mxdfxfwix@pengutronix.de>
-References: <20230914095859.22166-1-jbe@pengutronix.de>
- <20230914095859.22166-2-jbe@pengutronix.de>
+	(envelope-from <afa@pengutronix.de>)
+	id 1qiGwY-007GJm-7q; Mon, 18 Sep 2023 18:17:50 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qiGwY-0004jL-0Z;
+	Mon, 18 Sep 2023 18:17:50 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 18 Sep 2023 18:17:49 +0200
+Message-Id: <20230918161749.18170-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="mnolfcpgl4uox4i5"
-Content-Disposition: inline
-In-Reply-To: <20230914095859.22166-2-jbe@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230916_090119_266805_2BE65692 
-X-CRM114-Status: GOOD (  27.27  )
+X-CRM114-CacheID: sfid-20230918_091755_049014_2421A898 
+X-CRM114-Status: UNSURE (   8.12  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,185 +75,37 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] uncompress: add Android sparse image support
+Subject: [PATCH master] Documentation: remove info about bridging to matrix
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+The matrix bridge has been temporarily suspended last month and is not
+back up again. Remove reference it in the documentation to avoid
+confusion until it's back up.
 
---mnolfcpgl4uox4i5
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Documentation/user/introduction.rst | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-On Thu, Sep 14, 2023 at 11:58:59AM +0200, Juergen Borleis wrote:
-> An Android sparse image file generated by the 'genimage' tool can be seen=
- as a
-> kind of compression, since it contains only the data which should really =
-be
-> written to a device.
->=20
-> This implementation writes only the intended content and skips anything e=
-lse.
->=20
-> Signed-off-by: Juergen Borleis <jbe@pengutronix.de>
+diff --git a/Documentation/user/introduction.rst b/Documentation/user/introduction.rst
+index e7388b8bc95e..ceafcbb6d7ec 100644
+--- a/Documentation/user/introduction.rst
++++ b/Documentation/user/introduction.rst
+@@ -35,6 +35,4 @@ Patch series sent there can be fetched with `b4 <https://pypi.org/project/b4/>`_
+    git config b4.linkmask https://lore.barebox.org/%s
+    b4 am https://lore.barebox.org/$messageid # replace with link
+ 
+-There's also an IRC channel, which is
+-`bridged to Matrix  <https://app.element.io/#/room/#barebox:matrix.org>`_:
+-#barebox on Libera Chat
++There's also an IRC channel: #barebox on Libera Chat
+-- 
+2.39.2
 
-Tested-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-
-while this obviously works, I still have a comment below:
-
-> ---
->  lib/uncompress.c | 82 +++++++++++++++++++++++++++++++++++++++++++++---
->  1 file changed, 78 insertions(+), 4 deletions(-)
->=20
-> diff --git a/lib/uncompress.c b/lib/uncompress.c
-> index 0608e9f..f17e9ce 100644
-> --- a/lib/uncompress.c
-> +++ b/lib/uncompress.c
-> @@ -25,6 +25,10 @@
->  #include <malloc.h>
->  #include <fs.h>
->  #include <libfile.h>
-> +#ifdef CONFIG_IMAGE_SPARSE
-> +#include <image-sparse.h>
-> +#include <linux/sizes.h>
-> +#endif
-> =20
->  static void *uncompress_buf;
->  static unsigned int uncompress_size;
-> @@ -60,6 +64,71 @@ static int uncompress_fill(void *buf, unsigned int len)
->  	return total;
->  }
-> =20
-> +#ifdef CONFIG_IMAGE_SPARSE
-> +static int uncompress_sparse(int source, int destination)
-> +{
-> +	int ret =3D 0;
-> +	struct sparse_image_ctx *sparse;
-> +
-> +	/* rewind after checking the file type */
-> +	lseek(source, 0, SEEK_SET);
-> +
-> +	sparse =3D sparse_image_fd(source);
-> +	if (IS_ERR(sparse)) {
-> +		pr_err("Failed to open or interpret sparse image file: %m\n");
-> +		ret =3D 1;
-> +		goto on_error_dev;
-> +	}
-> +
-> +	const size_t transfer_buffer_length =3D SZ_128K;
-> +	unsigned char *buf =3D malloc(transfer_buffer_length);
-> +	if (!buf) {
-> +		pr_err("Failed to alloc memory for the transfers\n");
-> +		ret =3D 1;
-> +		goto on_error_sparse;
-> +	}
-> +
-> +	while (1) {
-> +		loff_t write_offset;
-> +		size_t write_length;
-> +
-> +		int rc =3D sparse_image_read(sparse, buf, &write_offset, transfer_buff=
-er_length, &write_length);
-> +		if (rc) {
-> +			ret =3D 1;
-> +			goto on_error_memory;
-> +		}
-> +		if (!write_length)
-> +			break;
-> +
-> +		discard_range(destination, write_length, write_offset);
-> +
-> +		write_offset =3D lseek(destination, write_offset, SEEK_SET);
-> +		if (write_offset =3D=3D -1) {
-> +			pr_err("Failed to set next data's destination offset: %m\n");
-> +			ret =3D 1;
-> +			goto on_error_memory;
-> +
-> +		}
-> +
-> +		rc =3D write_full(destination, buf, write_length);
-> +		if (rc < 0) {
-> +			pr_err("Failed to write destination's next data: %m\n");
-> +			ret =3D 1;
-> +			goto on_error_memory;
-> +		}
-> +	}
-> +
-> +on_error_memory:
-> +	free(buf);
-> +on_error_sparse:
-> +	free(sparse); /* Note: sparse_image_close(sparse); would also close the=
- input file descriptor */
-> +on_error_dev:
-> +	return ret;
-> +}
-> +#endif
-> +
-> +static int uncompress_infd, uncompress_outfd;
-> +
->  int uncompress(unsigned char *inbuf, int len,
->  	   int(*fill)(void*, unsigned int),
->  	   int(*flush)(void*, unsigned int),
-> @@ -121,6 +190,10 @@ int uncompress(unsigned char *inbuf, int len,
->  	case filetype_xz_compressed:
->  		compfn =3D decompress_unxz;
->  		break;
-> +#endif
-> +#ifdef CONFIG_IMAGE_SPARSE
-> +	case filetype_android_sparse:
-> +		break;
->  #endif
->  	default:
->  		err =3D basprintf("cannot handle filetype %s",
-> @@ -131,16 +204,17 @@ int uncompress(unsigned char *inbuf, int len,
->  		goto err;
->  	}
-> =20
-> -	ret =3D compfn(inbuf, len, fill ? uncompress_fill : NULL,
-> -			flush, output, pos, error_fn);
-> +	if (ft =3D=3D filetype_android_sparse)
-> +		ret =3D uncompress_sparse(uncompress_infd, uncompress_outfd);
-> +	else
-> +		ret =3D compfn(inbuf, len, fill ? uncompress_fill : NULL,
-> +			     flush, output, pos, error_fn);
-
-Wouldn't it be more natural to make uncompress_sparse use the same
-prototype as the other uncompress functions and then just have:
-
-#ifdef CONFIG_IMAGE_SPARSE
-	case filetype_android_sparse:
-		compfn =3D decompress_sparse;
-		break;
-#endif
-
-Without the need to adapt the compfn call?
-
-Best regards
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---mnolfcpgl4uox4i5
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmUF0UoACgkQj4D7WH0S
-/k4xIggArVxR1ppd+K0jxT9Qdirq0GyyELDfzgdeYA6wW5Z0XdcKKWChJOkBLmEZ
-IxFnZ4WeeKt5yyJ8ZEQMHo+fUPRD+evwdKnIYEioPeZIO7tQJAF1zxURwqmcARa9
-3pyCah5kd7uHuJlZcKz3/jFS1bAv2w+x4M4jNG5BRb4a9bf2LkHagxRSmdj/kxaH
-p105uMu8ifLQftGIVn9AmDEgZegTGlnMrzzmA3vnyFPBBg5foHTb3oIhC7Br0Qyt
-wBQnkK/mBAeKKV51aF7/XpGzy5NOsQkEwuuU+IGdbtadPDu6oq8YfFR9s1/j376T
-eSzDuyNYrVd1J4SOxZV2zMjGYCIqNg==
-=NpBg
------END PGP SIGNATURE-----
-
---mnolfcpgl4uox4i5--
 
 
