@@ -1,63 +1,62 @@
-Delivery-date: Wed, 20 Sep 2023 12:34:49 +0200
+Delivery-date: Wed, 20 Sep 2023 12:34:50 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qiuXi-004Wnc-Rh
-	for lore@lore.pengutronix.de; Wed, 20 Sep 2023 12:34:49 +0200
+	id 1qiuXj-004Wo9-2D
+	for lore@lore.pengutronix.de; Wed, 20 Sep 2023 12:34:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qiuXf-00058X-MK
-	for lore@pengutronix.de; Wed, 20 Sep 2023 12:34:48 +0200
+	id 1qiuXh-00059g-0G
+	for lore@pengutronix.de; Wed, 20 Sep 2023 12:34:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MpF8dGnhQio1LdrsS3CZOu/OHBPZcjfbT/P3+Cx9GG8=; b=rAi8D/rKTHClDEqEtCUKKLpF62
-	H8SvspiZwnNgVc5lBsYfWI+fD2y25oNt3htELQgm7Mw/7u1V9UZ2YYX+tRYBzezl9i3vFhAe5a9RO
-	qkX0ntzuwzF332MEmtkpd8w4vjiDtNVwuYv2dyImrs2PZBGD/PKGrx9u09lKIuMek8rVC7+TIGcic
-	WZYV46OrH02oa0mOSrI1DIXDFWhMKgRP8AY+STCabYXtMQcB4BR/a6c2LpKK0vN/NbxR/v9VHnOk3
-	PUHCXz+GwbmVbZLc49y4PBzljRd/Ko0d2EvG3XXzYWMaCtOZxfIO3NMzZ2oipJY/a2MdREK8UHyDy
-	arD4Gb6Q==;
+	bh=CP94QNMcXrQv5lu9InXiPArONsU5TWgYOyUPvM/0H6s=; b=xwHjMm8MQZFTvIWI7FqBvLKK63
+	uJRm0NH5wufrRdJYivY65oQ89ZZsDhbra+xgJv0obbYl1ON2vtc09sPdmZU6+DRmo8RQ8uX2tXQW+
+	4QFBzIxf0EbB+hUhRQ2SmSN6WnTbL9pCKOARpC+IeZdfr+RHUMTWwJKnOFLuOPDf8UQTwve+GMRuI
+	j058TOpB/8XR6khJtxgams4KkRiDIGRrt7ia9zy8Zf/ztspq+W5VoC9d8JyRbLdrz82qLkso80ON8
+	WTk30JZINtSxFfD/8y7UGG8/oF3k5eDmcxuiLGebMZGk2nihtdoAKL8qIk71wW4PTs5TB15kJbyqW
+	uPbIn3vw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qiuWQ-002cyS-1X;
-	Wed, 20 Sep 2023 10:33:30 +0000
+	id 1qiuWM-002cwM-2q;
+	Wed, 20 Sep 2023 10:33:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qiuWN-002cwS-1C
+	id 1qiuWG-002csu-2Y
 	for barebox@lists.infradead.org;
-	Wed, 20 Sep 2023 10:33:28 +0000
+	Wed, 20 Sep 2023 10:33:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qiuWE-0004UK-6J; Wed, 20 Sep 2023 12:33:18 +0200
+	id 1qiuWE-0004Ut-96; Wed, 20 Sep 2023 12:33:18 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qiuWD-007fJl-NN; Wed, 20 Sep 2023 12:33:17 +0200
+	id 1qiuWD-007fJx-Pz; Wed, 20 Sep 2023 12:33:17 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qiuWD-00BZyJ-Ef; Wed, 20 Sep 2023 12:33:17 +0200
+	id 1qiuWD-00BZyZ-HW; Wed, 20 Sep 2023 12:33:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 20 Sep 2023 12:33:12 +0200
-Message-Id: <20230920103316.2758383-8-s.hauer@pengutronix.de>
+Date: Wed, 20 Sep 2023 12:33:16 +0200
+Message-Id: <20230920103316.2758383-12-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230920103316.2758383-1-s.hauer@pengutronix.de>
 References: <20230920103316.2758383-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230920_033327_413389_16ECEDD0 
-X-CRM114-Status: UNSURE (   8.99  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20230920_033320_833243_57570EBB 
+X-CRM114-Status: GOOD (  12.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,86 +78,84 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/11] regulator: stpmic1: add .supply_name
+Subject: [PATCH 11/11] regulator: print regulator tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add .supply_name to the regulator descriptors, otherwise the supplies
-are never enabled.
+Regulators have a tree structure, so print them as a tree to show the
+users their dependencies.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/regulator/stpmic1_regulator.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/regulator/core.c | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/regulator/stpmic1_regulator.c b/drivers/regulator/stpmic1_regulator.c
-index ef8cc7f145..1e8c1b23ac 100644
---- a/drivers/regulator/stpmic1_regulator.c
-+++ b/drivers/regulator/stpmic1_regulator.c
-@@ -185,6 +185,7 @@ static const struct regulator_ops stpmic1_switch_regul_ops = {
- 	.enable_mask = LDO_ENABLE_MASK, \
- 	.enable_val = 1, \
- 	.disable_val = 0, \
-+	.supply_name = #base, \
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 7fe264a133..a861d14cd2 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -15,6 +15,7 @@ static LIST_HEAD(regulator_list);
+ 
+ struct regulator {
+ 	struct regulator_dev *rdev;
++	struct regulator_dev *rdev_consumer;
+ 	struct list_head list;
+ 	struct device *dev;
+ };
+@@ -183,7 +184,11 @@ static int regulator_resolve_supply(struct regulator_dev *rdev)
+ 		return 0;
+ 	}
+ 
++	if (supply)
++		supply->rdev_consumer = rdev;
++
+ 	rdev->supply = supply;
++
+ 	return 0;
  }
  
- #define REG_LDO3(ids, base) { \
-@@ -198,6 +199,7 @@ static const struct regulator_ops stpmic1_switch_regul_ops = {
- 	.enable_mask = LDO_ENABLE_MASK, \
- 	.enable_val = 1, \
- 	.disable_val = 0, \
-+	.supply_name = #base, \
+@@ -716,17 +721,22 @@ int regulator_get_voltage(struct regulator *regulator)
+ }
+ EXPORT_SYMBOL_GPL(regulator_get_voltage);
+ 
+-static void regulator_print_one(struct regulator_dev *rdev)
++static void regulator_print_one(struct regulator_dev *rdev, int level)
+ {
+ 	struct regulator *r;
+ 
+-	printf("%-20s %6d %10d %10d\n", rdev->name, rdev->enable_count, rdev->min_uv, rdev->max_uv);
++	if (!rdev)
++		return;
+ 
+-	if (!list_empty(&rdev->consumer_list)) {
+-		printf(" consumers:\n");
++	printf("%*s%-*s %6d %10d %10d\n", level * 3, "",
++	       30 - level * 3,
++	       rdev->name, rdev->enable_count, rdev->min_uv, rdev->max_uv);
+ 
+-		list_for_each_entry(r, &rdev->consumer_list, list)
+-			printf("   %s\n", r->dev ? dev_name(r->dev) : "none");
++	list_for_each_entry(r, &rdev->consumer_list, list) {
++		if (r->rdev_consumer)
++			regulator_print_one(r->rdev_consumer, level + 1);
++		else
++			printf("%*s%s\n", (level + 1) * 3, "", r->dev ? dev_name(r->dev) : "none");
+ 	}
  }
  
- #define REG_LDO4(ids, base) { \
-@@ -208,6 +210,7 @@ static const struct regulator_ops stpmic1_switch_regul_ops = {
- 	.enable_mask = LDO_ENABLE_MASK, \
- 	.enable_val = 1, \
- 	.disable_val = 0, \
-+	.supply_name = #base, \
- }
+@@ -737,7 +747,9 @@ void regulators_print(void)
+ {
+ 	struct regulator_dev *rdev;
  
- #define REG_BUCK(ids, base) { \
-@@ -221,6 +224,7 @@ static const struct regulator_ops stpmic1_switch_regul_ops = {
- 	.enable_mask = BUCK_ENABLE_MASK, \
- 	.enable_val = 1, \
- 	.disable_val = 0, \
-+	.supply_name = #base, \
+-	printf("%-20s %6s %10s %10s\n", "name", "enable", "min_uv", "max_uv");
+-	list_for_each_entry(rdev, &regulator_list, list)
+-		regulator_print_one(rdev);
++	printf("%-30s %6s %10s %10s\n", "name", "enable", "min_uv", "max_uv");
++	list_for_each_entry(rdev, &regulator_list, list) {
++		if (!rdev->supply)
++			regulator_print_one(rdev, 0);
++	}
  }
- 
- #define REG_VREF_DDR(ids, base) { \
-@@ -231,6 +235,7 @@ static const struct regulator_ops stpmic1_switch_regul_ops = {
- 	.enable_mask = BUCK_ENABLE_MASK, \
- 	.enable_val = 1, \
- 	.disable_val = 0, \
-+	.supply_name = #base, \
- }
- 
- #define REG_BOOST(ids, base) { \
-@@ -241,6 +246,7 @@ static const struct regulator_ops stpmic1_switch_regul_ops = {
- 	.enable_mask = BOOST_ENABLED, \
- 	.enable_val = BOOST_ENABLED, \
- 	.disable_val = 0, \
-+	.supply_name = #base, \
- }
- 
- #define REG_VBUS_OTG(ids, base) { \
-@@ -251,6 +257,7 @@ static const struct regulator_ops stpmic1_switch_regul_ops = {
- 	.enable_mask = USBSW_OTG_SWITCH_ENABLED, \
- 	.enable_val = USBSW_OTG_SWITCH_ENABLED, \
- 	.disable_val = 0, \
-+	.supply_name = #base, \
- }
- 
- #define REG_SW_OUT(ids, base) { \
-@@ -261,6 +268,7 @@ static const struct regulator_ops stpmic1_switch_regul_ops = {
- 	.enable_mask = SWIN_SWOUT_ENABLED, \
- 	.enable_val = SWIN_SWOUT_ENABLED, \
- 	.disable_val = 0, \
-+	.supply_name = #base, \
- }
- 
- static struct stpmic1_regulator_cfg stpmic1_regulator_cfgs[] = {
 -- 
 2.39.2
 
