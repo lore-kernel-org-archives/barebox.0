@@ -3,13 +3,13 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qiuXh-004Wmz-HR
+	id 1qiuXh-004Wmr-Kp
 	for lore@lore.pengutronix.de; Wed, 20 Sep 2023 12:34:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qiuXf-000587-2U
+	id 1qiuXe-00057o-Se
 	for lore@pengutronix.de; Wed, 20 Sep 2023 12:34:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,46 +17,46 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Lwbxh5R5DZH4l3ZpmUF+0MT+gukBeZ2sfrly0JAwpbg=; b=Euqb/Cv1qJBn0NIzZhn96PgPHg
-	WVIOwcqSTi/uca4Vsymv5NTEWN7rjScFqejTm1IoYHXsv52K7H0Izt7/DgtmFENq4MZ1mYrKeKXlc
-	Robxvi65tgcWdbSHndW8Cx1Z4eQDBA9dnREfVDlpK1Vfvp/qizKL1jOG5n7B1GqT2F+Fx7sSnc5AP
-	o1+1eUygV/14b+LE4Fp1BSaDZEKS3Ro3mEBEjluMneBchfkzCTXUnhnv+UACNExW3T8AbZl4CRLTo
-	3ohY8UnkoSgj4S1TWU4gbJVAaNee6Vx3Iz/H3wK87fKx/nOFkaNo+9j2IXqXipBTHVbRAfW+yJ2az
-	ecbIQxzQ==;
+	bh=pb273YLmQzhih/HAhAac/osUBiGcXsEhZ1sDw4hZhDA=; b=njd8BejL6WhdHq7QpaHyK8cGJi
+	L2HBlM3fO8qtnPuS667pODAzmrn6yY14QWoRWibhgLwzs+OxPAXJWcPBEZP9fvpeFduaiCS7gYl2l
+	6Xd2bN/mAkmVPvp9WciLYls/aAh10WK0Hx/2ZzOspr1Sjs33A0c62KGIzbZtPzSjYHBfii0w2LMs8
+	Q3V9Oty6gRZnFDU8eQnL9QzPVRCAJ0omnZXHMZkUVhZunD/gYjT+ZfkKOPJ4KPasUZCCuE4jSHe7I
+	y22P4/J0UaM8zj7fluNAqNMdJiejXWG9ztAYs8x34wDRzEdplN+oeYhvcuuvQVmzB6WA/Ac4n9mWh
+	QS6WBrlQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qiuWP-002cxc-0Q;
-	Wed, 20 Sep 2023 10:33:29 +0000
+	id 1qiuWO-002cxT-1C;
+	Wed, 20 Sep 2023 10:33:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qiuWG-002csw-2c
+	id 1qiuWG-002css-1v
 	for barebox@lists.infradead.org;
-	Wed, 20 Sep 2023 10:33:24 +0000
+	Wed, 20 Sep 2023 10:33:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qiuWE-0004Ug-7q; Wed, 20 Sep 2023 12:33:18 +0200
+	id 1qiuWE-0004UD-0i; Wed, 20 Sep 2023 12:33:18 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qiuWD-007fJp-Ov; Wed, 20 Sep 2023 12:33:17 +0200
+	id 1qiuWD-007fJc-KI; Wed, 20 Sep 2023 12:33:17 +0200
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qiuWD-00BZyR-G3; Wed, 20 Sep 2023 12:33:17 +0200
+	id 1qiuWD-00BZy3-Bg; Wed, 20 Sep 2023 12:33:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 20 Sep 2023 12:33:14 +0200
-Message-Id: <20230920103316.2758383-10-s.hauer@pengutronix.de>
+Date: Wed, 20 Sep 2023 12:33:08 +0200
+Message-Id: <20230920103316.2758383-4-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230920103316.2758383-1-s.hauer@pengutronix.de>
 References: <20230920103316.2758383-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230920_033320_848930_099BEC5B 
-X-CRM114-Status: GOOD (  14.65  )
+X-CRM114-CacheID: sfid-20230920_033320_630401_8877506C 
+X-CRM114-Status: GOOD (  14.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,97 +78,82 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 09/11] regulator: Set initial voltage
+Subject: [PATCH 03/11] regulator: introduce regulator logging functions.
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When voltage constraints are given in the device tree then we should
-set the regulator to a valid voltage before enabling it. Without it
-we can end up with invalid voltages.
+dev_* functions only print the struct device * as context, but often
+a single struct device * implements multiple regulators. Add rdev_*
+logging functions which allow to to print one specific regulator as
+context.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/regulator/core.c | 60 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 60 insertions(+)
+ drivers/regulator/core.c | 12 ++++++++++--
+ include/regulator.h      | 13 +++++++++++++
+ 2 files changed, 23 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index d08df1dc68..00a2aefce7 100644
+index 41a3378ac8..8ef5a2372c 100644
 --- a/drivers/regulator/core.c
 +++ b/drivers/regulator/core.c
-@@ -187,6 +187,62 @@ static int regulator_resolve_supply(struct regulator_dev *rdev)
- 	return 0;
- }
+@@ -19,6 +19,14 @@ struct regulator {
+ 	struct device *dev;
+ };
  
-+static int regulator_init_voltage(struct regulator_dev *rdev)
++const char *rdev_get_name(struct regulator_dev *rdev)
 +{
-+	int target_min, target_max, current_uV, ret;
++	if (rdev->name)
++		return rdev->name;
 +
-+	if (!rdev->min_uv || !rdev->max_uv)
-+		return 0;
-+
-+	current_uV = regulator_get_voltage_internal(rdev);
-+	if (current_uV < 0) {
-+		/* This regulator can't be read and must be initialized */
-+		rdev_info(rdev, "Setting %d-%duV\n", rdev->min_uv, rdev->max_uv);
-+		regulator_set_voltage_internal(rdev, rdev->min_uv, rdev->max_uv);
-+		current_uV = regulator_get_voltage_internal(rdev);
-+	}
-+
-+	if (current_uV < 0) {
-+		if (current_uV != -EPROBE_DEFER)
-+			rdev_err(rdev,
-+				 "failed to get the current voltage: %pe\n",
-+				 ERR_PTR(current_uV));
-+		return current_uV;
-+	}
-+
-+	/*
-+	 * If we're below the minimum voltage move up to the
-+	 * minimum voltage, if we're above the maximum voltage
-+	 * then move down to the maximum.
-+	 */
-+	target_min = current_uV;
-+	target_max = current_uV;
-+
-+	if (current_uV < rdev->min_uv) {
-+		target_min = rdev->min_uv;
-+		target_max = rdev->min_uv;
-+	}
-+
-+	if (current_uV > rdev->max_uv) {
-+		target_min = rdev->max_uv;
-+		target_max = rdev->max_uv;
-+	}
-+
-+	if (target_min != current_uV || target_max != current_uV) {
-+		rdev_info(rdev, "Bringing %duV into %d-%duV\n",
-+			  current_uV, target_min, target_max);
-+		ret = regulator_set_voltage_internal(rdev, target_min, target_max);
-+		if (ret < 0) {
-+			rdev_err(rdev,
-+				"failed to apply %d-%duV constraint: %pe\n",
-+				target_min, target_max, ERR_PTR(ret));
-+			return ret;
-+		}
-+	}
-+
-+	return 0;
++	return "";
 +}
 +
- static int __regulator_register(struct regulator_dev *rdev, const char *name)
+ static int regulator_map_voltage(struct regulator_dev *rdev, int min_uV,
+ 				 int max_uV)
  {
- 	int ret;
-@@ -198,6 +254,10 @@ static int __regulator_register(struct regulator_dev *rdev, const char *name)
- 	if (name)
- 		rdev->name = xstrdup(name);
+@@ -125,7 +133,7 @@ static int regulator_resolve_supply(struct regulator_dev *rdev)
+ 	if (!supply_name)
+ 		return 0;
  
-+	ret = regulator_init_voltage(rdev);
-+	if (ret)
-+		goto err;
+-	dev_dbg(rdev->dev, "resolving %s\n", supply_name);
++	rdev_dbg(rdev, "resolving %s\n", supply_name);
+ 
+ 	supply = regulator_get(rdev->dev, supply_name);
+ 	if (IS_ERR(supply)) {
+@@ -141,7 +149,7 @@ static int regulator_resolve_supply(struct regulator_dev *rdev)
+ 		 * we couldn't. If you want to get rid of this warning, consider
+ 		 * migrating your platform to have deep probe support.
+ 		 */
+-		dev_warn(rdev->dev, "Failed to get '%s' regulator (ignored).\n",
++		rdev_warn(rdev, "Failed to get '%s' regulator (ignored).\n",
+ 			 supply_name);
+ 		return 0;
+ 	}
+diff --git a/include/regulator.h b/include/regulator.h
+index 5eb236e602..d02ea8ffd0 100644
+--- a/include/regulator.h
++++ b/include/regulator.h
+@@ -159,6 +159,19 @@ int dev_regulator_register(struct regulator_dev *rd, const char * name,
+ 
+ void regulators_print(void);
+ 
++const char *rdev_get_name(struct regulator_dev *rdev);
 +
- 	if (rdev->boot_on || rdev->always_on) {
- 		ret = regulator_resolve_supply(rdev);
- 		if (ret < 0)
++#define rdev_crit(rdev, fmt, ...)                                       \
++        pr_crit("%s: " fmt, rdev_get_name(rdev), ##__VA_ARGS__)
++#define rdev_err(rdev, fmt, ...)                                        \
++        pr_err("%s: " fmt, rdev_get_name(rdev), ##__VA_ARGS__)
++#define rdev_warn(rdev, fmt, ...)                                       \
++        pr_warn("%s: " fmt, rdev_get_name(rdev), ##__VA_ARGS__)
++#define rdev_info(rdev, fmt, ...)                                       \
++        pr_info("%s: " fmt, rdev_get_name(rdev), ##__VA_ARGS__)
++#define rdev_dbg(rdev, fmt, ...)                                        \
++        pr_debug("%s: " fmt, rdev_get_name(rdev), ##__VA_ARGS__)
++
+ #ifdef CONFIG_REGULATOR
+ 
+ struct regulator *regulator_get(struct device *, const char *);
 -- 
 2.39.2
 
