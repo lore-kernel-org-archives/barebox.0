@@ -1,64 +1,62 @@
-Delivery-date: Thu, 21 Sep 2023 10:53:31 +0200
+Delivery-date: Thu, 21 Sep 2023 11:27:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjFRE-005h4o-OG
-	for lore@lore.pengutronix.de; Thu, 21 Sep 2023 10:53:31 +0200
+	id 1qjFxr-005ii0-Mb
+	for lore@lore.pengutronix.de; Thu, 21 Sep 2023 11:27:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjFRC-0005gu-Nd
-	for lore@pengutronix.de; Thu, 21 Sep 2023 10:53:31 +0200
+	id 1qjFxp-00053c-OI
+	for lore@pengutronix.de; Thu, 21 Sep 2023 11:27:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6Dj+gXPRvLENKrbYkTGBuh7d6flzkU8HPjvWnXwE+yg=; b=i6PW+KjK4sBHVocLc/MBWvMnFM
-	lW315OCFYTaxUE0/1O8M9ofAhOBqbTMEoil+gjIh8JjgGmn/tA1vfQQRlIWpjU41jXLiTQOsx54OD
-	tgXf6rnTr558qUXjnU+xjHBLwyo2bWDhTfispw2qNNfE8GIS1KtgYaqWvnU1V8h2gA6IKNNSZHyDw
-	de3Dx9Y6Tk9avrDcohtxaL/w842o/fPYN6gIKr6usjBnjzu7PuFBwdcQI6nz5PpIDe8qU8H5cstT1
-	tcXWBA9PzSipxq7LBsaPupv/JHMLplWnMgGeLpOOamKegaAGA5Nbb4nV0/zUyIws1mJ24a8j4d3Nl
-	nvukhwdg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=8cZPFO2TwmUJfAcX9xrDoM8qxNkjH+01EgBga/kRvKc=; b=Ykohx4WmU9XNfvFvWTjhyML6YL
+	7woaQKJ9fnnSdq3fibMMwgyCbarEb3PebD3fFseeTUu4XufXW4S+4izrY7abS6s1zCuFFCrChnhJt
+	XpY+ECUwCnVUpgPfCppLcp66vu9nhvADuyuv7la9rL3UHDDqPJYudl6wQjI7cLCn4o9NuUyfMXy7i
+	G9n9dk6g9oqnLGTE1a/pJTCBZBAq46BjkZQRPprsWt2B4Y00BpDWVKwYAMsJTcZFdrz4mHL20+aBu
+	tQXUHT3lQCPZcY6UtWhcuTWHwGHR8Nj58qqpHbmx6CI2yB7RVHATT51OxVMHKTODWP6ugulyYvFlv
+	k/+FMJaQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjFQC-005WdN-0H;
-	Thu, 21 Sep 2023 08:52:28 +0000
+	id 1qjFwZ-005aYy-39;
+	Thu, 21 Sep 2023 09:25:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjFQ8-005WcE-1C
+	id 1qjFwW-005aYX-2x
 	for barebox@lists.infradead.org;
-	Thu, 21 Sep 2023 08:52:25 +0000
+	Thu, 21 Sep 2023 09:25:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qjFQ7-0005Kc-6w; Thu, 21 Sep 2023 10:52:23 +0200
+	id 1qjFwV-0004iF-Hw; Thu, 21 Sep 2023 11:25:51 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qjFQ6-007su0-QY; Thu, 21 Sep 2023 10:52:22 +0200
+	id 1qjFwV-007tPh-4w; Thu, 21 Sep 2023 11:25:51 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qjFQ6-00H3YI-2W;
-	Thu, 21 Sep 2023 10:52:22 +0200
+	id 1qjFwV-00HO95-0K;
+	Thu, 21 Sep 2023 11:25:51 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 21 Sep 2023 10:52:19 +0200
-Message-Id: <20230921085219.4065181-1-a.fatoum@pengutronix.de>
+Date: Thu, 21 Sep 2023 11:25:38 +0200
+Message-Id: <20230921092539.4142293-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230911150900.3584523-4-a.fatoum@pengutronix.de>
-References: <20230911150900.3584523-4-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230921_015224_411811_E73946CE 
-X-CRM114-Status: GOOD (  10.51  )
+X-CRM114-CacheID: sfid-20230921_022552_959511_1AC3E5A1 
+X-CRM114-Status: GOOD (  12.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,36 +78,34 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! lib: add stackprotector support
+Subject: [PATCH 1/2] startup: don't skip countdown if consoles were runtime enabled
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-lib: stackprot: annotate stackprot_randomize_guard with __no_stack_protector
-
-stackprot_randomize_guard() changes the stack protector, so it's
-important that it can't make use of the stackprotector itself.
+Systems with verified boot will disable at least console input by
+default, but when presented with an unlock token, they may elect to
+enable the console. Currently, the user needs to be really quick with
+ctrl+c to abort the boot on the active console, so let's make the system
+have a normal count down if a console has been activated by board code.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Not a problem in practice unless we use stackprotector-all, which we
-don't.
----
- lib/stackprot.c | 2 +-
+ common/startup.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/stackprot.c b/lib/stackprot.c
-index ca89b37d9042..aa0e88603aae 100644
---- a/lib/stackprot.c
-+++ b/lib/stackprot.c
-@@ -25,7 +25,7 @@ noinstr void __stack_chk_fail(void)
- }
- EXPORT_SYMBOL(__stack_chk_fail);
+diff --git a/common/startup.c b/common/startup.c
+index f96cff41429d..bbba72f89255 100644
+--- a/common/startup.c
++++ b/common/startup.c
+@@ -174,7 +174,7 @@ enum autoboot_state do_autoboot_countdown(void)
+ 	if (autoboot_state != AUTOBOOT_UNKNOWN)
+ 		return autoboot_state;
  
--static int stackprot_randomize_guard(void)
-+static __no_stack_protector int stackprot_randomize_guard(void)
- {
- 	return get_crypto_bytes(&__stack_chk_guard, sizeof(__stack_chk_guard));
- }
+-	if (IS_ENABLED(CONFIG_CONSOLE_DISABLE_INPUT)) {
++	if (!console_get_first_active()) {
+ 		printf("\nNon-interactive console, booting system\n");
+ 		return autoboot_state = AUTOBOOT_BOOT;
+ 	}
 -- 
 2.39.2
 
