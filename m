@@ -3,60 +3,62 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjFxr-005ii0-Mb
+	id 1qjFxr-005ihz-MS
 	for lore@lore.pengutronix.de; Thu, 21 Sep 2023 11:27:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjFxp-00053c-OI
-	for lore@pengutronix.de; Thu, 21 Sep 2023 11:27:14 +0200
+	id 1qjFxp-00053S-5N
+	for lore@pengutronix.de; Thu, 21 Sep 2023 11:27:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=8cZPFO2TwmUJfAcX9xrDoM8qxNkjH+01EgBga/kRvKc=; b=Ykohx4WmU9XNfvFvWTjhyML6YL
-	7woaQKJ9fnnSdq3fibMMwgyCbarEb3PebD3fFseeTUu4XufXW4S+4izrY7abS6s1zCuFFCrChnhJt
-	XpY+ECUwCnVUpgPfCppLcp66vu9nhvADuyuv7la9rL3UHDDqPJYudl6wQjI7cLCn4o9NuUyfMXy7i
-	G9n9dk6g9oqnLGTE1a/pJTCBZBAq46BjkZQRPprsWt2B4Y00BpDWVKwYAMsJTcZFdrz4mHL20+aBu
-	tQXUHT3lQCPZcY6UtWhcuTWHwGHR8Nj58qqpHbmx6CI2yB7RVHATT51OxVMHKTODWP6ugulyYvFlv
-	k/+FMJaQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=UvFJXzj3e52ybbqzOFJJHEbqHRYA/On6TxMEH28w1FE=; b=kAABcjzsa7Nb/n/QU8DGHd2lnN
+	kDZ6EZW2kRz/i3n27Os3UCH18bqtlFbm/quG432wnN461bs7me1nthkfmP5pb4o604CZ/qhCp4uOt
+	b4rBUP1hug8XwcxLWWGGdh9ZQL3fdM1SSuuSEvb5bPSxc9rPuqPcY+NUSKNs1EwqBCjBhREL/G+WW
+	pXnjRcAuxU9t5Qkje8e4wPWTjpA5LncSIKQx31BnE8YjI9n0eA1MoG/mfPsla1hEV3/GNJMPtmWdS
+	LftxWv2kdZ284uOrMtaicxZx+DrrAuZdgfiTJsPQYHmuRPyhOCgkp3K1MIJWdytvHyzmBB78KXW8/
+	jX73UYlQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjFwZ-005aYy-39;
-	Thu, 21 Sep 2023 09:25:55 +0000
+	id 1qjFwh-005abN-2Z;
+	Thu, 21 Sep 2023 09:26:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjFwW-005aYX-2x
+	id 1qjFwe-005aZq-29
 	for barebox@lists.infradead.org;
-	Thu, 21 Sep 2023 09:25:54 +0000
+	Thu, 21 Sep 2023 09:26:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qjFwV-0004iF-Hw; Thu, 21 Sep 2023 11:25:51 +0200
+	id 1qjFwV-0004iG-I1; Thu, 21 Sep 2023 11:25:51 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qjFwV-007tPh-4w; Thu, 21 Sep 2023 11:25:51 +0200
+	id 1qjFwV-007tPi-5G; Thu, 21 Sep 2023 11:25:51 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qjFwV-00HO95-0K;
+	id 1qjFwV-00HO9B-0N;
 	Thu, 21 Sep 2023 11:25:51 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 21 Sep 2023 11:25:38 +0200
-Message-Id: <20230921092539.4142293-1-a.fatoum@pengutronix.de>
+Date: Thu, 21 Sep 2023 11:25:39 +0200
+Message-Id: <20230921092539.4142293-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20230921092539.4142293-1-a.fatoum@pengutronix.de>
+References: <20230921092539.4142293-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230921_022552_959511_1AC3E5A1 
-X-CRM114-Status: GOOD (  12.78  )
+X-CRM114-CacheID: sfid-20230921_022600_700681_15F094A3 
+X-CRM114-Status: GOOD (  10.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,34 +80,59 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] startup: don't skip countdown if consoles were runtime enabled
+Subject: [PATCH 2/2] console: implement of_console_by_stdout_path helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Systems with verified boot will disable at least console input by
-default, but when presented with an unlock token, they may elect to
-enable the console. Currently, the user needs to be really quick with
-ctrl+c to abort the boot on the active console, so let's make the system
-have a normal count down if a console has been activated by board code.
+Board code may want to get a handle on the standard console to disable
+or enable some of its stream. Add a helper function for that.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/startup.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/console.c  | 17 +++++++++++++++++
+ include/console.h |  1 +
+ 2 files changed, 18 insertions(+)
 
-diff --git a/common/startup.c b/common/startup.c
-index f96cff41429d..bbba72f89255 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -174,7 +174,7 @@ enum autoboot_state do_autoboot_countdown(void)
- 	if (autoboot_state != AUTOBOOT_UNKNOWN)
- 		return autoboot_state;
+diff --git a/common/console.c b/common/console.c
+index 768550eb7df9..7e43a9b5fc0e 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -254,6 +254,23 @@ static void console_set_stdoutpath(struct console_device *cdev, unsigned baudrat
+ 	free(str);
+ }
  
--	if (IS_ENABLED(CONFIG_CONSOLE_DISABLE_INPUT)) {
-+	if (!console_get_first_active()) {
- 		printf("\nNon-interactive console, booting system\n");
- 		return autoboot_state = AUTOBOOT_BOOT;
- 	}
++struct console_device *of_console_by_stdout_path(void)
++{
++	struct console_device *console;
++	struct device_node *stdout_np;
++
++	stdout_np = of_get_stdoutpath(NULL);
++	if (!stdout_np)
++		return NULL;
++
++	for_each_console(console) {
++		if (dev_of_node(console->dev) == stdout_np)
++			return console;
++	}
++
++	return NULL;
++}
++
+ static int __console_puts(struct console_device *cdev, const char *s,
+ 			  size_t nbytes)
+ {
+diff --git a/include/console.h b/include/console.h
+index d3b08722b01a..586b68f73301 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -109,6 +109,7 @@ unsigned console_get_active(struct console_device *cdev);
+ int console_set_baudrate(struct console_device *cdev, unsigned baudrate);
+ unsigned console_get_baudrate(struct console_device *cdev);
+ 
++struct console_device *of_console_by_stdout_path(void);
+ 
+ /**
+  * console_fifo_fill - fill FIFO with as much console data as possible
 -- 
 2.39.2
 
