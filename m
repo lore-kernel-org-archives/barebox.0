@@ -1,64 +1,66 @@
-Delivery-date: Thu, 21 Sep 2023 12:24:30 +0200
+Delivery-date: Thu, 21 Sep 2023 12:24:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjGrH-005lAQ-Ij
-	for lore@lore.pengutronix.de; Thu, 21 Sep 2023 12:24:30 +0200
+	id 1qjGrI-005lAv-KD
+	for lore@lore.pengutronix.de; Thu, 21 Sep 2023 12:24:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjGrF-0002Ez-Gl
+	id 1qjGrE-0002Ee-RZ
 	for lore@pengutronix.de; Thu, 21 Sep 2023 12:24:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=H6lUaQDoqBmMeTxSCXe/FamcDKMjBichHYrQ9D1g1fk=; b=NjMZD4t81/Am4GqTyxesnrC0jp
-	xFFV/8ztXk6lABw8Os+ft14R/ENL/GWwct5pPS3C6WjHGRv/M86+659bYYRjPM6Bm7dgPBqo+uGHE
-	zI5wGBxEae1NWPcUCr3mOHSN/rqa3MSjmS2X7KXAwPKQ/SQlCoj4iBMtsLcN8tamYwcJCyoRwrDBB
-	NZyKhu0UT0JCNNsXySsg+mZyIjLxMRsgfNi2013OdwVlaervdms/jQ/q/mrroPi9qGyVXelfjFdVB
-	zU54DyoFcXrjkseK0vZkdQNqJzrcWen/3s/J+c8sbViNB7xmnS3sBO4k8CmOpLofjvdS3V9gUELks
-	2PvQnE0Q==;
+	bh=4EFEATl1oIAxPmAhZ5wKFGVNb01bJAG+X73UW3zKdmE=; b=Zk7VBr0fWGvrvRBYdpTrD7emQh
+	2VfCLXIsropsCU7JE6TrWApYNWKBWRmgFF1JF0pH0NTThFN/pnoFlF4pWHAxFejae/+7oBdyKsZxw
+	PGE8uHj3MOGvNDeO6cObsfIZbE/e9WmqofxejwAhHcvz2fnLZonEklf4mpUzTOK1DLEbIy2vEBGcV
+	vkAEcRzqLkjc5kwmDlNnHl7z4HisEdAT6fF672RyjCUPsfHC6CTXgXG5iTLkewtNqb4qqNba8YnCS
+	2JUzyI6YgfRdtR+weN60x3NdX21qClkeHBD7xnKJ6K3y65rIpJTiigRqZGRRETlT8zqIwZvigp+pG
+	abULZshA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjGqE-005hdb-1o;
-	Thu, 21 Sep 2023 10:23:26 +0000
+	id 1qjGqA-005hcA-2q;
+	Thu, 21 Sep 2023 10:23:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjGqC-005hcP-01
+	id 1qjGq4-005hZD-0R
 	for barebox@lists.infradead.org;
-	Thu, 21 Sep 2023 10:23:25 +0000
+	Thu, 21 Sep 2023 10:23:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qjGq2-0001lD-Tl; Thu, 21 Sep 2023 12:23:14 +0200
+	id 1qjGq2-0001l9-S7
+	for barebox@lists.infradead.org; Thu, 21 Sep 2023 12:23:14 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qjGq2-007u1n-Ei; Thu, 21 Sep 2023 12:23:14 +0200
+	id 1qjGq2-007u1j-CP
+	for barebox@lists.infradead.org; Thu, 21 Sep 2023 12:23:14 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qjGq2-004eRP-1E;
+	id 1qjGq2-004eR9-14
+	for barebox@lists.infradead.org;
 	Thu, 21 Sep 2023 12:23:14 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 21 Sep 2023 12:23:10 +0200
-Message-Id: <20230921102310.1108543-6-a.fatoum@pengutronix.de>
+Date: Thu, 21 Sep 2023 12:23:06 +0200
+Message-Id: <20230921102310.1108543-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20230921102310.1108543-1-a.fatoum@pengutronix.de>
 References: <20230921102310.1108543-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230921_032324_043166_869F57D2 
-X-CRM114-Status: GOOD (  15.45  )
+X-CRM114-CacheID: sfid-20230921_032316_181002_A1103E87 
+X-CRM114-Status: GOOD (  10.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,127 +82,38 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 5/5] rsatoc: support generating standalone keys unreferenced by FIT keyring
+Subject: [PATCH 1/5] rsa: escape pkcs11 string passed to RSA command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-By default, all keys generated by rsatoc and included into barebox,
-whether as C code or device tree snippets are added to the single key
-ring that's used for FIT image verification. Users may want to add other
-keys by the same means, but not have them available to FIT image
-verification.
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Support this use case by adding a -s option that generates standalone
-keys. These are unreferenced by the key ring and automatic DT parsing
-and expect the user to manually reference them, either via global
-variable with a symbol name equal __key_${hint} or by looking into
-/signature-standalone/key-${hint}.
+Escape the pkcs11 string that can be passed to the rsatoc script.
+Otherwise the sh -c invocation for commands will interpret the pkcs11
+URI semicolon separator as the end of the command.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Fixes: b39100bcea12 ("rsa: Allow to directly compile in rsa public keys")
+
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Link: https://lore.barebox.org/20230719134630.174215-1-r.czerwinski@pengutronix.de
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- scripts/Makefile.lib |  2 +-
- scripts/rsatoc.c     | 34 ++++++++++++++++++++++++++--------
- 2 files changed, 27 insertions(+), 9 deletions(-)
+ scripts/Makefile.lib | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index fe77c83ba230..680dc486fd76 100644
+index f04c09f9e280..fe77c83ba230 100644
 --- a/scripts/Makefile.lib
 +++ b/scripts/Makefile.lib
 @@ -625,7 +625,7 @@ quiet_cmd_b64dec = B64DEC  $@
  # target file.
  quiet_cmd_rsa_keys = RSAKEY  $@
  cmd_rsa_keys = \
--	$(objtree)/scripts/rsatoc -o $@.tmp "$(2)" &&			\
-+	$(objtree)/scripts/rsatoc -o $@.tmp "$(2)" $(3) &&		\
+-	$(objtree)/scripts/rsatoc -o $@.tmp $(2) &&			\
++	$(objtree)/scripts/rsatoc -o $@.tmp "$(2)" &&			\
  	if cmp -s $@.tmp $@; then					\
  		rm $@.tmp;						\
  	else								\
-diff --git a/scripts/rsatoc.c b/scripts/rsatoc.c
-index f5b0ba27f9bc..6d10dca4169c 100644
---- a/scripts/rsatoc.c
-+++ b/scripts/rsatoc.c
-@@ -18,7 +18,7 @@
- #include <openssl/evp.h>
- #include <openssl/engine.h>
- 
--static int dts;
-+static int dts, standalone;
- 
- static int rsa_err(const char *msg)
- {
-@@ -454,17 +454,24 @@ static int gen_key(const char *keyname, const char *path)
- 		print_bignum(r_squared, bits);
- 		fprintf(outfilep, "\n};\n\n");
- 
--		fprintf(outfilep, "static struct rsa_public_key %s = {\n", key_name_c);
-+		if (standalone) {
-+			fprintf(outfilep, "struct rsa_public_key __key_%s;\n", key_name_c);
-+			fprintf(outfilep, "struct rsa_public_key __key_%s = {\n", key_name_c);
-+		} else {
-+			fprintf(outfilep, "static struct rsa_public_key %s = {\n", key_name_c);
-+		}
-+
- 		fprintf(outfilep, "\t.len = %d,\n", bits / 32);
- 		fprintf(outfilep, "\t.n0inv = 0x%0x,\n", n0_inv);
- 		fprintf(outfilep, "\t.modulus = %s_modulus,\n", key_name_c);
- 		fprintf(outfilep, "\t.rr = %s_rr,\n", key_name_c);
- 		fprintf(outfilep, "\t.exponent = 0x%0lx,\n", exponent);
- 		fprintf(outfilep, "\t.key_name_hint = \"%s\",\n", keyname);
--		fprintf(outfilep, "};\n\n");
-+		fprintf(outfilep, "};\n");
- 
--		fprintf(outfilep, "struct rsa_public_key *%sp __attribute__((section(\".rsa_keys.rodata.%s\"))) = &%s;\n",
--			key_name_c, key_name_c, key_name_c);
-+		if (!standalone)
-+			fprintf(outfilep, "\nstruct rsa_public_key *%sp __attribute__((section(\".rsa_keys.rodata.%s\"))) = &%s;\n",
-+				key_name_c, key_name_c, key_name_c);
- 	}
- 
- 	return 0;
-@@ -478,7 +485,7 @@ int main(int argc, char *argv[])
- 
- 	outfilep = stdout;
- 
--	while ((opt = getopt(argc, argv, "o:d")) > 0) {
-+	while ((opt = getopt(argc, argv, "o:ds")) > 0) {
- 		switch (opt) {
- 		case 'o':
- 			outfile = optarg;
-@@ -486,6 +493,9 @@ int main(int argc, char *argv[])
- 		case 'd':
- 			dts = 1;
- 			break;
-+		case 's':
-+			standalone = 1;
-+			break;
- 		}
- 	}
- 
-@@ -499,14 +509,22 @@ int main(int argc, char *argv[])
- 	}
- 
- 	if (optind == argc) {
--		fprintf(stderr, "Usage: %s <key_name_hint>:<crt> ...\n", argv[0]);
-+		fprintf(stderr, "Usage: %s [-ods]  OUTFIE<key_name_hint>:<crt> ...\n", argv[0]);
-+		fprintf(stderr, "\t-o FILE\twrite output into FILE instead of stdout\n");
-+		fprintf(stderr, "\t-d\tgenerate device tree snippet instead of C code\n");
-+		fprintf(stderr, "\t-s\tgenerate standalone key outside FIT image keyring\n");
- 		exit(1);
- 	}
- 
- 	if (dts) {
- 		fprintf(outfilep, "/dts-v1/;\n");
- 		fprintf(outfilep, "/ {\n");
--		fprintf(outfilep, "\tsignature {\n");
-+		if (standalone)
-+			fprintf(outfilep, "\tsignature-standalone {\n");
-+		else
-+			fprintf(outfilep, "\tsignature {\n");
-+	} else if (standalone) {
-+		fprintf(outfilep, "#include <rsa.h>\n");
- 	}
- 
- 	for (i = optind; i < argc; i++) {
 -- 
 2.39.2
 
