@@ -1,68 +1,57 @@
-Delivery-date: Thu, 21 Sep 2023 14:33:19 +0200
+Delivery-date: Thu, 21 Sep 2023 14:34:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjIrw-005s17-8x
-	for lore@lore.pengutronix.de; Thu, 21 Sep 2023 14:33:19 +0200
+	id 1qjIsj-005s2t-HC
+	for lore@lore.pengutronix.de; Thu, 21 Sep 2023 14:34:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjIru-0002pC-6c
-	for lore@pengutronix.de; Thu, 21 Sep 2023 14:33:18 +0200
+	id 1qjIsh-00039g-Id
+	for lore@pengutronix.de; Thu, 21 Sep 2023 14:34:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oXrF4wTKAQvS0jDnGRv6JUAkoCbCjOgXamjpifLOqdI=; b=vyJDvCPNBbdicRcCYAX+T+X43Z
-	jnRzFy8r2GZvuckBXU3oLnTeyZFj7sb4lxeiF6RS+EQWFpsDPeTeDOugisttqbsdMV1Sjpzm5ow56
-	epFNAfpdh3BURszPHIM/r6kgvGFSF3vlWEgV9DsOWX/Kpgp90bHQkYlC42gL8pCvi3Qs85pj5pn56
-	DYoQV4+PXar5dThAXOlf2kitRoTd21Evgas+6yre1HIZ0x9xkx12mlE2u7MmWjAUOBW108a2TkkQH
-	RhSZtNB7WOKTYvfL+Bdl86erfgIKN5/AWae56TQ10u3Vh+nT5HFwy+80nDll8Ryu4Q5SscKbkbxrF
-	DtT3pFZg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=sSsPRZw12zNeLGv5NkxQkOtGFPPvCptmLAyQLT+Htk8=; b=VEauZMov0CKRQvnQ2W2XVfJHBV
+	2hDhGWAoeqJ2LpblEdel1UznzKeB14Kg9wpc0mM06UUkIusXHHK86ircdWqaFnjwNfpcBcgO82BU3
+	STgL2Atzoy5uF/WBF0IdzQL/zdy/DnEazpgDMtHUtX/XogbUIkoedsvU0IX4qWYz9YCJs4HRJy+4k
+	iK9Esrzk2V/NYdE0ZpUVcjaPnT4232dvGG1sV7YPYZmyriraPSsLjUjgpD5W5JcFCAxh8cAkEJDBU
+	ERBJ/mkCfQ7hoX3NkVPLXr7wuatcXXQNA5QLWalbAfikpXJw2/dGxFHVNDfhHJUgt7rl/88fdzKIP
+	rceXfFkA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjIql-0061gz-1R;
-	Thu, 21 Sep 2023 12:32:07 +0000
+	id 1qjIri-0061nO-1q;
+	Thu, 21 Sep 2023 12:33:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjIqi-0061gX-29
+	id 1qjIrf-0061ml-1D
 	for barebox@lists.infradead.org;
-	Thu, 21 Sep 2023 12:32:06 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qjIqh-0002Sq-AK; Thu, 21 Sep 2023 14:32:03 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qjIqg-007vIj-S9; Thu, 21 Sep 2023 14:32:02 +0200
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qjIqg-00Al20-Py; Thu, 21 Sep 2023 14:32:02 +0200
-Date: Thu, 21 Sep 2023 14:32:02 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230921123202.GN637806@pengutronix.de>
-References: <20230921102310.1108543-1-a.fatoum@pengutronix.de>
+	Thu, 21 Sep 2023 12:33:04 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qjIrc-0002jj-Tu; Thu, 21 Sep 2023 14:33:00 +0200
+Message-ID: <2a8fbd5c-ad49-d37d-9914-463b174199fc@pengutronix.de>
+Date: Thu, 21 Sep 2023 14:33:00 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230921102310.1108543-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Rouven Czerwinski <r.czerwinski@pengutronix.de>,
+ barebox@lists.infradead.org
+References: <20230920123720.767063-1-r.czerwinski@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230920123720.767063-1-r.czerwinski@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230921_053204_725570_83C89EB4 
-X-CRM114-Status: GOOD (  13.91  )
+X-CRM114-CacheID: sfid-20230921_053303_416352_C861BBED 
+X-CRM114-Status: GOOD (  18.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,38 +69,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 0/5] rsatoc: make useful for standalone RSA keys
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/3] blspec: take compatible name as argument
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Sep 21, 2023 at 12:23:05PM +0200, Ahmad Fatoum wrote:
-> Standalone RSA public keys are those that aren't part of the default
-> keyring used for FIT verification. This can be useful if barebox is to
-> do board-specific RSA verification of e.g. unlock tokens.
+On 20.09.23 14:37, Rouven Czerwinski wrote:
+> Instead of retrieving the root compatible itself, let
+> entry_is_of_compatible take the compatible as an argument. Pass in
+> of_get_machine_compatible for now, no functional changes.
 > 
-> This series lays first ground work.
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> ---
+>  common/blspec.c | 9 ++-------
+>  1 file changed, 2 insertions(+), 7 deletions(-)
 > 
-> Ahmad Fatoum (4):
->   scripts: allow user to build rsatoc if COMPILE_HOST_TOOLS
->   rsatoc: support extracting RSA public key from X.509 SPKI format
->   rsa: fix typos and missing type definitions
->   rsatoc: support generating standalone keys unreferenced by FIT keyring
-> 
-> Rouven Czerwinski (1):
->   rsa: escape pkcs11 string passed to RSA command
+> diff --git a/common/blspec.c b/common/blspec.c
+> index b70332a54c..f8d47f20d2 100644
+> --- a/common/blspec.c
+> +++ b/common/blspec.c
+> @@ -422,13 +422,12 @@ static char *parse_nfs_url(const char *url)
+>   *
+>   * returns true if the entry is compatible, false otherwise
+>   */
+> -static bool entry_is_of_compatible(struct blspec_entry *entry)
+> +static bool entry_is_of_compatible(struct blspec_entry *entry, const char* compat)
+>  {
+>  	const char *devicetree;
+>  	const char *abspath;
+>  	int ret;
+>  	struct device_node *root = NULL, *barebox_root;
+> -	const char *compat;
+>  	char *filename;
+>  
+>  	/* If the entry doesn't specify a devicetree we are compatible */
+> @@ -444,10 +443,6 @@ static bool entry_is_of_compatible(struct blspec_entry *entry)
+>  	if (!barebox_root)
+>  		return true;
+>  
+> -	ret = of_property_read_string(barebox_root, "compatible", &compat);
+> -	if (ret)
+> -		return false;
+> -
+>  	if (entry->rootpath)
+>  		abspath = entry->rootpath;
+>  	else
+> @@ -521,7 +516,7 @@ int blspec_scan_file(struct bootentries *bootentries, const char *root,
+>  	entry->configpath = xstrdup(configname);
+>  	entry->cdev = get_cdev_by_mountpath(root);
+>  
+> -	if (!entry_is_of_compatible(entry)) {
+> +	if (!entry_is_of_compatible(entry, of_get_machine_compatible())) {
 
-Applied, thanks
+of_get_machine_compatible has an unfortunate name, as it strips away the vendor prefix,
+so this change does introduce breakage.
 
-Sascha
+>  		blspec_entry_free(&entry->entry);
+>  		return -ENODEV;
+>  	}
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
