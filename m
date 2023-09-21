@@ -1,83 +1,63 @@
-Delivery-date: Thu, 21 Sep 2023 15:11:08 +0200
+Delivery-date: Thu, 21 Sep 2023 16:18:44 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjJSX-005tof-5L
-	for lore@lore.pengutronix.de; Thu, 21 Sep 2023 15:11:08 +0200
+	id 1qjKVx-005xqP-9g
+	for lore@lore.pengutronix.de; Thu, 21 Sep 2023 16:18:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjJST-0005sn-SS
-	for lore@pengutronix.de; Thu, 21 Sep 2023 15:11:07 +0200
+	id 1qjKVv-0001yZ-8v
+	for lore@pengutronix.de; Thu, 21 Sep 2023 16:18:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9kzVhQihBNtSa+30kI2Yh6Ionf8OTvhJ0lUkIEKn2PA=; b=s67vHWbq8FHh+zeS4BJ9m3xZKJ
-	0Fdw86KaEDqBMuwI7fobeAA3aLNlY64jWHwBg/x2xRVOJLKBaJkBQvNSpSU50D8uXkH+TCoYWntmD
-	CpNZnLdz5dHQQn9soF8pOnmE1AKzLqlqMozQw4QkEF+sqe57Lws/l0QyRXQ00FnrJytox7VLEWLxH
-	kK4LfnJygbdzZJKWDijQIdp2wRT63kfZHdMY/fqcfTT9gJaHJotfm0SAuhYH/EBTzQOYtxs3fQhvG
-	1pm6S43fc4ZMnRWj9H+W23ReTw9GPfXTj/E0OalOfFY5yW3nMEvIyjUtT97CWCyUG8F6E8rvHjDgg
-	BM6GyZ0Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=o+HtQtgWJVsQeZXsq+QKeYEKwSQ0kpeiIuyPlAmfS5c=; b=HvmgeiPl8l1+723T+HanzB4d1J
+	T2rTgJk/GV54CuGmWdr2S4gQqxI9APBiWfsCoDaynmHvOKeF5nGJNYxerslebQgdqs5cGImrfJ8kX
+	P8B3fsiKZpD25DufP0h+s4QCkF4O0fvcweLF4lghuU2CpnsefHxdnIVEYV3cBGcPAoPyELIJ2ouYf
+	3weTDpMnJ+JA+n+/OZ4W1l9mgmvhMovddiFhF1issXfC06VSHh92VpU7Q7BhwMT4lMznw1oeNthqX
+	9BckbcOM4loUPRA8PVPPkxoNHBt8MuApXW5iuOQlNHPfVEawCF8Bv07hl9leHrArwVAOAtctOyU6D
+	GRM/U96g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjJRJ-0066IE-34;
-	Thu, 21 Sep 2023 13:09:53 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjJRI-0066I0-2D
-	for barebox@bombadil.infradead.org;
-	Thu, 21 Sep 2023 13:09:52 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=From:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=9kzVhQihBNtSa+30kI2Yh6Ionf8OTvhJ0lUkIEKn2PA=; b=UkePviR++3cQGtptiOGio623H8
-	ntPsALKUa8N8JRCAmQQLzfhoJgscALmzk9R9XTiXDelmtAi7McykKCiq+ZpYk9eadLb6tx9XUS04l
-	s6jK01Yt+e6i+fol26RxP/EFOYSzfqZ9+eSBH6zWzXvMtF3jnJmkoEAfpOfQ+//lbdj/un3o4z2aK
-	M+ACG/R8IHg4xgexAZ1S5NUlzCG/w6ER4gTTDx1zXo/XLQJcf/YF56eshpV9oShvmasQ4/NA2WZNx
-	xHk/fY3SNRYFv6u+MvvV1Y2b5Xq+JT/d2vtzeH5Q0PbzGopHWpeLh4yy/PlwGqD516KUbcEZSWDvv
-	jdHVg4kg==;
+	id 1qjKUT-006EhZ-35;
+	Thu, 21 Sep 2023 14:17:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjJRD-00FO29-3D
+	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1qjKUN-006Eg5-2n
 	for barebox@lists.infradead.org;
-	Thu, 21 Sep 2023 13:09:51 +0000
+	Thu, 21 Sep 2023 14:17:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qjJRF-0005NZ-1y; Thu, 21 Sep 2023 15:09:49 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qjKUL-0001TY-Ob; Thu, 21 Sep 2023 16:17:05 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qjJRE-007wGS-Lb; Thu, 21 Sep 2023 15:09:48 +0200
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qjJRE-00Amsz-JK; Thu, 21 Sep 2023 15:09:48 +0200
-Date: Thu, 21 Sep 2023 15:09:48 +0200
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20230921130948.GS637806@pengutronix.de>
-References: <20230921102446.1109545-1-a.fatoum@pengutronix.de>
+	(envelope-from <afa@pengutronix.de>)
+	id 1qjKUL-007wzs-CC; Thu, 21 Sep 2023 16:17:05 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qjKUL-001AG4-15;
+	Thu, 21 Sep 2023 16:17:05 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 21 Sep 2023 16:16:28 +0200
+Message-Id: <20230921141628.277661-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230921102446.1109545-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230921_140949_715016_D0E20A09 
-X-CRM114-Status: GOOD (  18.76  )
+X-CRM114-CacheID: sfid-20230921_071707_934364_620DB908 
+X-CRM114-Status: UNSURE (   9.52  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -95,54 +75,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] digest: add digest_algo helper
+Subject: [PATCH] globalvar: add a globalvar_get helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Sep 21, 2023 at 12:24:46PM +0200, Ahmad Fatoum wrote:
-> Code handling different digest types may want easy access to the digest
-> algorithm currently in use. Add a simple inline helper for this.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  include/digest.h | 5 +++++
->  1 file changed, 5 insertions(+)
+We have functions to set global variables, but none to get them, but
+having a globalvar_get helper could be useful to get code size down when
+global variables are disabled, as globalvar_get("var") would be optimized
+out, while getenv("global.var") wouldn't. Therefore, add the helper.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/globalvar.h | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Sascha
-
-> 
-> diff --git a/include/digest.h b/include/digest.h
-> index b984d57d778e..2816ddffaed2 100644
-> --- a/include/digest.h
-> +++ b/include/digest.h
-> @@ -161,6 +161,11 @@ static inline const char *digest_name(struct digest *d)
->  	return d->algo->base.name;
->  }
->  
-> +static inline enum hash_algo digest_algo(struct digest *d)
-> +{
-> +	return d->algo->base.algo;
-> +}
-> +
->  static inline void* digest_ctx(struct digest *d)
->  {
->  	return d->ctx;
-> -- 
-> 2.39.2
-> 
-> 
-> 
-
+diff --git a/include/globalvar.h b/include/globalvar.h
+index 36a7c7006c76..5fdb70fca911 100644
+--- a/include/globalvar.h
++++ b/include/globalvar.h
+@@ -10,6 +10,12 @@
+ extern struct device global_device;
+ 
+ #ifdef CONFIG_GLOBALVAR
++
++static inline const char *globalvar_get(const char *name)
++{
++	return dev_get_param(&global_device, name);
++}
++
+ int globalvar_add_simple(const char *name, const char *value);
+ 
+ void globalvar_remove(const char *name);
+@@ -41,6 +47,11 @@ void dev_param_init_from_nv(struct device *dev, const char *name);
+ void globalvar_alias_deprecated(const char *newname, const char *oldname);
+ 
+ #else
++static inline const char *globalvar_get(const char *name)
++{
++	return NULL;
++}
++
+ static inline int globalvar_add_simple(const char *name, const char *value)
+ {
+ 	return 0;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
