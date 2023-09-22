@@ -1,59 +1,69 @@
-Delivery-date: Fri, 22 Sep 2023 07:20:42 +0200
+Delivery-date: Fri, 22 Sep 2023 11:47:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjYap-006gJZ-Hz
-	for lore@lore.pengutronix.de; Fri, 22 Sep 2023 07:20:42 +0200
+	id 1qjckn-006rHR-3W
+	for lore@lore.pengutronix.de; Fri, 22 Sep 2023 11:47:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qjYan-00083B-EW
-	for lore@pengutronix.de; Fri, 22 Sep 2023 07:20:42 +0200
+	id 1qjckk-0006PJ-Tc
+	for lore@pengutronix.de; Fri, 22 Sep 2023 11:47:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dTSnkxFiKYcE7c0b8e6YN8IEspJxRv3AMo15gVgWfBI=; b=Nhb6BwWsK4L0GRAta52ibqfyJ9
-	951SgxWphoDRHWL/9jp4ncmr6VUR3HE2F14rg4+OKQ8CW95gHU5wPaIblyGQG6G0m/IulwnmrSQvp
-	odvvh1d2twInK8buPEmJeC/jWtPSreTNVOgzcmgGzEQtQymIndYRQGhLlNhwm4VhivyREy0q9HlM7
-	RklXmufjn7JIzbdWdFmDNel0TDUNZGZFaTDgxdWUV37RdQfVGzui6VQnxwzPLo1uGL/yt9NXDHqjk
-	tocLKDnxi1XmCyGG55hwPAXgLvTyMr1zmXIzfbZaFqAjVcUn7TxDy64ldvAX24EOECo4edzUNFrXp
-	Vc8/2QKg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ahIc/TEVWF2lNHJ4LhZdTCBC1QH/aC486bogr8tLqps=; b=RtTRCcRMwkjHYFor3K7f4eL8Db
+	N4ATlA60fKU854zqomnyKlVueWOC3NBDjEpontcRscGNPBVcu0nsLaW4lclXXO3PD2DjouXDrsfn+
+	TqK0JUanQIELY3XmLdo/zJStDU1rw9FS7nwG7HN0DfCKXdk/ErpdJLM8P35o/eBea7BuS/mihkXe/
+	NPMo8TkGQjMbxf7rX94SJNrXe0InQUf9Sg5vXwJdZScOdupwjgDb+gHyozcE9TINR3TvcYlYw1yWL
+	1A9uIat82a2ph0i6Qlk8AkBAZ4BzVCGEENBguZuM+z9MAmtzn1xil2D5D76tZkiIr7uszOvkdcy98
+	dAapJjgA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjYZR-007uCg-0H;
-	Fri, 22 Sep 2023 05:19:17 +0000
+	id 1qjcjL-008cmx-2j;
+	Fri, 22 Sep 2023 09:45:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qjYZM-007uBx-37
+	id 1qjcjH-008clk-38
 	for barebox@lists.infradead.org;
-	Fri, 22 Sep 2023 05:19:15 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qjYZI-0007ff-Ny; Fri, 22 Sep 2023 07:19:08 +0200
-Message-ID: <df9db1d4-85cf-fae2-96ff-c2594b1d9f73@pengutronix.de>
-Date: Fri, 22 Sep 2023 07:19:09 +0200
+	Fri, 22 Sep 2023 09:45:46 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qjcjF-0005uL-C9; Fri, 22 Sep 2023 11:45:41 +0200
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qjcjE-0088Gr-TW; Fri, 22 Sep 2023 11:45:40 +0200
+Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qjcjE-00AwHM-Qk; Fri, 22 Sep 2023 11:45:40 +0200
+Date: Fri, 22 Sep 2023 11:45:40 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org,
+	Alexander Shiyan <eagle.alexander923@gmail.com>
+Message-ID: <20230922094540.GE235829@pengutronix.de>
+References: <20230911155927.3786335-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>,
- barebox@lists.infradead.org
-References: <20230920123720.767063-1-r.czerwinski@pengutronix.de>
- <20230920123720.767063-2-r.czerwinski@pengutronix.de>
- <44d292e5-729c-f22b-9309-c0c54c7aac71@pengutronix.de>
-In-Reply-To: <44d292e5-729c-f22b-9309-c0c54c7aac71@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230911155927.3786335-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230921_221913_007244_240D03F0 
-X-CRM114-Status: GOOD (  28.88  )
+X-CRM114-CacheID: sfid-20230922_024544_010309_4B0FAAB7 
+X-CRM114-Status: GOOD (  36.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,139 +81,202 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/3] blspec: add new blspec.compatible.extra variable
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/3] common: machine_id: support deriving app specific
+ UUIDs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Hi Ahmad,
 
-On 21.09.23 14:37, Ahmad Fatoum wrote:
-> On 20.09.23 14:37, Rouven Czerwinski wrote:
->> The blspec.compatible.extra variable will be used to specify extra
-> 
-> As this is only relevant when booting. Maybe prefix with boot.?
-> Not sure if that wouldn't be too long..
+Reverted this one as a general please-test-your-static-inline-stubs
+reminder ;)
 
-We may also want to use this for other stuff than blspec in future,
-e.g. FIT or matching overlays by compatible, so I think we should do away
-with both blspec and boot and call it maybe global.of.compatible.extra?
+Sascha
 
-If you agree, please define the variable in common/misc.c or some other
-common location.
-
+On Mon, Sep 11, 2023 at 05:59:25PM +0200, Ahmad Fatoum wrote:
+> libsystemd provides a sd_id128_get_machine_app_specific() function that
+> allows deriving an application specific UUID without directly leaking
+> the machine ID.
 > 
->> compatibles that are also used to match during bootloader specification
->> entry parsing. This means that even if your internal barebox device tree
->> machine compatible is "vendor,bareboxcompatible", but your bootloader
->> specification device tree contains "vendor,linuxcompatible", it is
->> possible to boot this entry by setting blspec.compatible.extra to
->> "vendor,linuxcompatible".
->>
->> More than one compatible is possible as well, the compatibles will need
->> to be space separated (since "," is already used for the vendor hardware
->> distinction).
->>
->> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
->> ---
->>  common/blspec.c | 56 +++++++++++++++++++++++++++++++++++++++++++++++++
->>  1 file changed, 56 insertions(+)
->>
->> diff --git a/common/blspec.c b/common/blspec.c
->> index f8d47f20d2..e361a02333 100644
->> --- a/common/blspec.c
->> +++ b/common/blspec.c
->> @@ -19,10 +19,20 @@
->>  #include <net.h>
->>  #include <fs.h>
->>  #include <of.h>
->> +#include <magicvar.h>
->> +#include <linux/list.h>
->>  #include <linux/stat.h>
->>  #include <linux/err.h>
->>  #include <mtd/ubi-user.h>
->>  
->> +struct list_head *blspec_extra_list;
->> +char *blspec_extra_string;
->> +
->> +struct blspec_extra_entry {
->> +	char *compatible;
->> +	struct list_head list;
->> +};
->> +
->>  /*
->>   * blspec_entry_var_set - set a variable to a value
->>   */
->> @@ -830,8 +840,54 @@ static int blspec_bootentry_provider(struct bootentries *bootentries,
->>  	return found;
->>  }
->>  
->> +static int blspec_extra_set(struct param_d *p, void *priv)
->> +{
->> +	struct blspec_extra_entry *entry, *tmp;
->> +	char *str = blspec_extra_string;
->> +	char *temp = str;
->> +	unsigned int len;
->> +
->> +	if (blspec_extra_list) {
->> +		list_for_each_entry_safe(entry, tmp, blspec_extra_list, list) {
->> +			list_del(&entry->list);
->> +			free(entry->compatible);
->> +			free(entry);
->> +		}
->> +		blspec_extra_list = NULL;
->> +	}
->> +
->> +	while(str++) {
->> +		if (*str == ' ' || *str == 0) {
+> Let's provide an equivalent for barebox that will be used in a following
+> commit to generate a stable MAC instead of randomizing it.
 > 
-> Please use strsep (or strsep_unescaped) as elsewhere in blspec.c. 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/machine_id.c  | 84 ++++++++++++++++++++++++++++++++++++++++++--
+>  include/linux/uuid.h |  8 +++++
+>  include/machine_id.h | 10 ++++++
+>  3 files changed, 100 insertions(+), 2 deletions(-)
 > 
->> +			len = temp - str;
->> +			if(len > 126) {
->> +				len = 127;
->> +			}
->> +			entry = calloc(1, sizeof(struct blspec_extra_entry));
+> diff --git a/common/machine_id.c b/common/machine_id.c
+> index 8c273b934989..edc8ad0ac156 100644
+> --- a/common/machine_id.c
+> +++ b/common/machine_id.c
+> @@ -13,17 +13,96 @@
+>  
+>  #define MACHINE_ID_LENGTH 32
+>  
+> +static bool __machine_id_initialized;
+>  static void *__machine_id_hashable;
+>  static size_t __machine_id_hashable_length;
+>  
+> -
+> +/**
+> + * machine_id_set_hashable - Provide per-board unique data
+> + * @hashable: Buffer
+> + * @len: size of buffer
+> + *
+> + * The data supplied to the last call of this function prior to
+> + * late_initcall will be hashed and stored into global.machine_id,
+> + * which can be later used for fixup into the kernel command line
+> + * or for deriving application specific unique IDs via
+> + * machine_id_get_app_specific().
+> + */
+>  void machine_id_set_hashable(const void *hashable, size_t len)
+>  {
+> -
+>  	__machine_id_hashable = xmemdup(hashable, len);
+>  	__machine_id_hashable_length = len;
+>  }
+>  
+> +/**
+> + * machine_id_get_app_specific - Generates an application-specific UUID
+> + * @result: UUID output of the function
+> + * @...: pairs of (const void *, size_t) arguments of data to factor
+> + * into the UUID followed by a NULL sentinel value.
+> + *
+> + * Combines the machine ID with the application specific varargs data
+> + * to arrive at an application-specific and board-specific UUID that is
+> + * stable and unique.
+> + *
+> + * The function returns 0 if a UUID was successfully written into @result
+> + * and a negative error code otherwise.
+> + */
+> +int machine_id_get_app_specific(uuid_t *result, ...)
+> +{
+> +	static u8 hmac[SHA256_DIGEST_SIZE];
+> +	const void *data;
+> +	size_t size;
+> +	va_list args;
+> +	struct digest *d;
+> +	int ret;
+> +
+> +	if (!__machine_id_initialized)
+> +		return -ENODATA;
+> +
+> +	d = digest_alloc("hmac(sha256)");
+> +	if (!d)
+> +		return -ENOSYS;
+> +
+> +	ret = digest_set_key(d, __machine_id_hashable, __machine_id_hashable_length);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = digest_init(d);
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = -ENODATA;
+> +
+> +	va_start(args, result);
+> +
+> +	while ((data = va_arg(args, const void *))) {
+> +		size = va_arg(args, size_t);
+> +
+> +		ret = digest_update(d, data, size);
+> +		if (ret)
+> +			break;
+> +	}
+> +
+> +	va_end(args);
+> +
+> +	if (ret)
+> +		goto out;
+> +
+> +	ret = digest_final(d, hmac);
+> +	if (ret)
+> +		goto out;
+> +
+> +	/* Take only the first half. */
+> +	memcpy(result, hmac, min(sizeof(hmac), sizeof(*result)));
+> +
+> +	uuid_make_v4(result);
+> +
+> +out:
+> +	digest_free(d);
+> +
+> +	return ret;
+> +}
+> +
+>  static int machine_id_set_globalvar(void)
+>  {
+>  	struct digest *digest = NULL;
+> @@ -61,6 +140,7 @@ static int machine_id_set_globalvar(void)
+>  	env_machine_id = basprintf("%.*s", MACHINE_ID_LENGTH, hex_machine_id);
+>  	globalvar_add_simple("machine_id", env_machine_id);
+>  	free(env_machine_id);
+> +	__machine_id_initialized = true;
+>  
+>  out:
+>  	digest_free(digest);
+> diff --git a/include/linux/uuid.h b/include/linux/uuid.h
+> index 6b1a3efa1e0b..1e4ffb343452 100644
+> --- a/include/linux/uuid.h
+> +++ b/include/linux/uuid.h
+> @@ -107,6 +107,14 @@ extern const u8 uuid_index[16];
+>  int guid_parse(const char *uuid, guid_t *u);
+>  int uuid_parse(const char *uuid, uuid_t *u);
+>  
+> +static inline void uuid_make_v4(uuid_t *u) {
+> +	/* Set UUID version to 4 --- truly random generation */
+> +	u->b[6] = (u->b[6] & 0x0F) | 0x40;
+> +
+> +	/* Set the UUID variant to DCE */
+> +	u->b[8] = (u->b[8] & 0x3F) | 0x80;
+> +}
+> +
+>  /* MEI UUID type, don't use anywhere else */
+>  #include <uapi/linux/uuid.h>
+>  
+> diff --git a/include/machine_id.h b/include/machine_id.h
+> index e30bbada1acd..0ed4052ec47c 100644
+> --- a/include/machine_id.h
+> +++ b/include/machine_id.h
+> @@ -3,9 +3,13 @@
+>  #ifndef __MACHINE_ID_H__
+>  #define __MACHINE_ID_H__
+>  
+> +#include <linux/types.h>
+> +#include <linux/uuid.h>
+> +
+>  #if IS_ENABLED(CONFIG_MACHINE_ID)
+>  
+>  void machine_id_set_hashable(const void *hashable, size_t len);
+> +int machine_id_get_app_specific(uuid_t *result, ...) __attribute__((__sentinel__));
+>  
+>  #else
+>  
+> @@ -13,6 +17,12 @@ static inline void machine_id_set_hashable(const void *hashable, size_t len)
+>  {
+>  }
+>  
+> +static inline int machine_id_get_app_specific(uuid_t *result, ...)
+> +	__attribute__((__sentinel__));
+> +{
+> +	return -ENOSYS;
+> +}
+> +
+>  #endif /* CONFIG_MACHINE_ID */
+>  
+>  #endif  /* __MACHINE_ID_H__ */
+> -- 
+> 2.39.2
 > 
-> xzalloc if you don't check for !NULL.
 > 
->> +			entry->compatible = xzalloc(len + 1);
->> +			memcpy(entry->compatible, temp, len);
-> 
-> But here you could just use xstrdup?
-> 
->> +
->> +			if (blspec_extra_list == NULL) {
->> +				INIT_LIST_HEAD(&entry->list);
->> +				blspec_extra_list = &entry->list;
-> 
-> This is unusal. Why not have blspec_extra_list be a list_head instead of a pointer?
-> 
->> +			} else {
->> +				list_add_tail(&entry->list, blspec_extra_list);
->> +			}
->> +
->> +			temp = str + 1;
->> +		}
->> +		if (*str == 0)
->> +			break;
->> +	}
->> +
->> +	return 0;
->> +}
->> +
->>  static int blspec_init(void)
->>  {
->> +	dev_add_param_string(&global_device, "blspec.compatible.extra",
->> +			     blspec_extra_set, NULL, &blspec_extra_string, blspec_extra_list);
->>  	return bootentry_register_provider(blspec_bootentry_provider);
->>  }
->>  device_initcall(blspec_init);
->> +
->> +BAREBOX_MAGICVAR(global.blspec.compatible.extra, "Extra compatible to also match during bootloader entry matching");
 > 
 
 -- 
@@ -211,6 +284,5 @@ Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
