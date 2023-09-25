@@ -1,65 +1,84 @@
-Delivery-date: Mon, 25 Sep 2023 12:37:56 +0200
+Delivery-date: Mon, 25 Sep 2023 13:10:58 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qkiyR-00ARf3-8K
-	for lore@lore.pengutronix.de; Mon, 25 Sep 2023 12:37:56 +0200
+	id 1qkjUQ-00ATX8-Uu
+	for lore@lore.pengutronix.de; Mon, 25 Sep 2023 13:10:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qkiyO-0004rF-Bj
-	for lore@pengutronix.de; Mon, 25 Sep 2023 12:37:53 +0200
+	id 1qkjUO-0004p5-T9
+	for lore@pengutronix.de; Mon, 25 Sep 2023 13:10:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:Content-Type:
-	MIME-Version:Message-ID:Subject:To:Date:Reply-To:Cc:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Res6JojdPvxwtcgaBm4k94CUacyNH/uJd9QB1POqSBg=; b=Hxc2k2a7f+tRW8nS2NAuEoyt+f
-	5WpWp3m7bXHP6ZlvP6sQbDGdpz4zhBrmUEtijj61vo508CSErgntx9nCQ3R6q/3RKdQevzncgUF6p
-	MKtX7yo9mx/ZQQHjmkxV0Bgi9xuwJ/eyX+qMGscvHH5EFIalYhSYB6tz0YZunBhVXaZkTZKYIB1lo
-	rxRFpJ61RTRkuFWIPSnLqLeAl5UrfT+DtYevQX2W8R4mRsCWlaZ+A8UHj2N5V+An7mTWd+eUrvfSF
-	gOwOSMnEjc+L8cGf2uK5fwW4FQccaauvKy85zOqLK19CtKBM8mfMRn0cp8mY/6E9gK/jsOGWmcujy
-	gsc06S0g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:Date:To:From:Subject:Message-ID:
+	Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=ba35ELbdiiGzti91zRYOtCgq2H9z6vwcPiPC34z9Gw8=; b=NmRyfx+mfCV6f3
+	DGXn9Rvg0nLVB6tFhwOUMQ6c/9FztwLpY+Lbihu8byrfwghaZKypiOs7ZJjAt3HCCmNjRupfoN7+i
+	YriwOYrYzxISEnVtxccyOkD9p8ClUkSg080Hd/z3Mbw5Ly85Bhf6H7IPBb0gsg9d4rjzxh9zOFiaY
+	mAcAB+p5rL9idBNIFthQBv9nTXZDF0+LV6An4kmKPLqTORaiSR7802If5nSXKLv9kFqBb4sNc+uiC
+	BnWZGHpfeCCxD4B1jnqSNUhin6EFNSeEZVJDziEK56iiBWtwsTVB1AGtVlH2/Dj9svWd+L1YyQdf9
+	xioI/19MtWzBIhOivl/w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qkiwr-00DzCA-1c;
-	Mon, 25 Sep 2023 10:36:17 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1qkjTC-00E8u3-3D;
+	Mon, 25 Sep 2023 11:09:43 +0000
+Received: from mail-ej1-x62c.google.com ([2a00:1450:4864:20::62c])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qkiwn-00DzAY-2D
+	id 1qkjTA-00E8tV-0H
 	for barebox@lists.infradead.org;
-	Mon, 25 Sep 2023 10:36:15 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qkiwk-0004Qk-0U; Mon, 25 Sep 2023 12:36:10 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qkiwj-008qa5-KC; Mon, 25 Sep 2023 12:36:09 +0200
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qkiwj-00BOqI-Hu; Mon, 25 Sep 2023 12:36:09 +0200
-Date: Mon, 25 Sep 2023 12:36:09 +0200
-To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20230925103609.GY637806@pengutronix.de>
+	Mon, 25 Sep 2023 11:09:41 +0000
+Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-9a58dbd5daeso763993166b.2
+        for <barebox@lists.infradead.org>; Mon, 25 Sep 2023 04:09:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1695640178; x=1696244978; darn=lists.infradead.org;
+        h=mime-version:user-agent:content-transfer-encoding:date:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=ba35ELbdiiGzti91zRYOtCgq2H9z6vwcPiPC34z9Gw8=;
+        b=Q5drXdWjtZvBQDdCVmL+tMnM1N+WdhcHI1jIVipp41SCS9sHWzHHeo0uoyVDG13/r0
+         Qvb0ldmCGpgzkX4/sDJHFP4yeYkAYNEKhjw5k4WD7A0jAX6nx6oIUuTVh0nYznkjMJyp
+         cDQgtANjjELgd861T5RJmRUTmBaeOg9iiAabSJxu8S5/8MMS1umfnsK1fvtf+vf0iNyR
+         62zMpTB2i8Hva/GqvbyFrBy+tettCBON04F5vkcUEL32vcpG2TVH/Im1ymSAT0gOkl4V
+         IpyoC6X7NB+hH6LDTUFg6gzT9KF5q4XiYpZdzYuAQ+YXPx7eM1fgPTF8lhV74eZV3+CY
+         T55A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1695640178; x=1696244978;
+        h=mime-version:user-agent:content-transfer-encoding:date:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ba35ELbdiiGzti91zRYOtCgq2H9z6vwcPiPC34z9Gw8=;
+        b=KvlOr13IsMj/lITEMeshWszyZH+ssA+JAikCDxPpBKtXJ3uYFLtcjUqX1lFcmSLav7
+         3aBOY3VKlcx3jpb2ayDw36U9L3IOj769FKUNNM6TNyePT8nJbLkYDcEvBDm+lg7R9Gje
+         RmwIWLl1cmliyybFG94TcGvsIr5rxswRjDQraUQXlvEmldXHuZ05iueHd3M7r8xw7cEG
+         xMBW6gbqGfu4Uk3b1DfH3glLDokrxtQwi9c39cnGUOlamxyUp4elnqprJZCEMUX+dWyb
+         cAdPZTECLj1D5Z3qfPK4gGl2gYVs0w9G1Gr5mzHHskzudjQWbL94rNVlqIOo280YI8if
+         NFbA==
+X-Gm-Message-State: AOJu0YxCx7XF7Fpsb0XOfzddKhNnCJkjmTApYtpJUcihyGnE2dN9dlWm
+	FyfM6r5HbZa+vCfw6HZhq60sMLcQZCM=
+X-Google-Smtp-Source: AGHT+IFzZtwllwIVVu1T3+vxj8RgfgRss1Yv6B6sTnwGob9CyK9oP9CQjmhvlzBUCnJGEAF6NVOWTg==
+X-Received: by 2002:a17:906:cc55:b0:9ad:e2c8:1741 with SMTP id mm21-20020a170906cc5500b009ade2c81741mr5044437ejb.58.1695640177826;
+        Mon, 25 Sep 2023 04:09:37 -0700 (PDT)
+Received: from lifebook.fritz.box (p200300da6717b70030ba293c6b339dee.dip0.t-ipconnect.de. [2003:da:6717:b700:30ba:293c:6b33:9dee])
+        by smtp.gmail.com with ESMTPSA id j19-20020a170906051300b009937e7c4e54sm6175086eja.39.2023.09.25.04.09.36
+        for <barebox@lists.infradead.org>
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 Sep 2023 04:09:37 -0700 (PDT)
+Message-ID: <9282a3854372e58d9641993d5fb0bada29818415.camel@gmail.com>
+From: Denis Osterland-Heim <denis.osterland@gmail.com>
+To: barebox@lists.infradead.org
+Date: Mon, 25 Sep 2023 13:09:36 +0200
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.1-0ubuntu1 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230925_033613_881253_C5CB71C1 
-X-CRM114-Status: GOOD (  21.48  )
+X-CRM114-CacheID: sfid-20230925_040940_121580_6D38BCCB 
+X-CRM114-Status: UNSURE (   4.13  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,205 +96,28 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: v2023.09.0
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH v2 0/2] raspi: pass additional VC values via dtb
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+v2: fix whitespace error, add acked-by of Ahmad, fix line of 80 chars
 
-Hi All,
+Denis OSTERLAND-HEIM (2):
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 raspi: support to read vc values via dt-2nd =
+boot
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 raspi: fixup additional vc created nodes
 
-I am happy to announce barebox-2023.09.0. It's not a big release, but
-there are some things worth telling. Marco has worked on network phy
-support. We now have phy_{read,write,modify}_mmd() helpers working
-consistently with Linux. This and other changes make it easier to adopt
-Linux phy driver to barebox. Oleksij has worked on switch support and
-now we have the ksz9893 in the family of supported switches in barebox.
-There are some changes in the bootm code. We now longer modify the
-barebox live device tree in the bootm command which avoids surprises
-when calling bootm (dryrun) multiple times and possibly of_diff
-afterwards.
+=C2=A0arch/arm/boards/raspberry-pi/rpi-common.c | 69 ++++++++++++++++++++++=
+-
+--------
+=C2=A01 file changed, 49 insertions(+), 20 deletions(-)
 
-As usual there are lots of other changes listed below.
 
-Have fun!
- Sascha
 
-----------------------------------------------------------------
-Ahmad Fatoum (39):
-      net: ifup: check for ctrl+c during ifup
-      net: ifup: don't redo ifup -a1 if we have a gateway
-      common: bootm: support locating kernel in FIT image in zero page
-      commands: go: support passing integer arguments instead of argc/argv
-      ddr: imx8m: add comment and print out prior to first DDRC read
-      Makefile: allow setting pkg-config binary via PKG_CONFIG
-      bootm: export bootm_set_verify_mode
-      commands: hab: check for error in imx_hab_device_locked_down
-      HAB: guard against NULL imx_hab_ops in imx_hab_device_locked_down()
-      nvmem: ocotp: handle too early calls into ocotp driver gracefully
-      hab: habv4: export function to query HAB state
-      FIT: don't verify signature of non-signature nodes
-      state: backend_bucket_direct: add debug prints on read/write
-      linux/printk.h: drop unused log_entry::dummy member
-      console: allocate only once instead of twice per log message
-      commands: rm: add -f option to ignore nonexistent files
-      ARM: socfpga: fix include after upstream DT reorganization
-      ARM: i.MX25: image: consult pkg-config for openssl cflags
-      boot: support running scripts when doing a dry run
-      PCI: populate struct pci_device subsystem_device, subsystem_vendor
-      virtio: pci: add support for transitional devices
-      test: pytest: have --qemu gobble up all remaining arguments
-      test: pytest: support formats besides raw for --blk
-      FIT: refactor compression handling into separate function
-      FIT: do not decompress ramdisks even if asked
-      ARM: mmu32: mark whole early pagetable region as reserved
-      clk: implement clk_get_optional helper
-      pwm: imx: enable clocks during PWM register accesses
-      firmware: fix dependency tracking for PBL firmware files
-      ARM: i.MX8M: romapi: reserve scratch space
-      fs: ext4: initialize variable to silence GCC false-positive
-      aiodev: imx_thermal: fix breakage after device tree sync
-      boards: qemu-virt: rescan aliases after merging DT fragment
-      mci: sdhci: unmap the DMA buffers actually used
-      mci: sdhci: hardcode SDMA boundary for DMA
-      MIPS: bootm: fix format string type mismatch
-      Documentation: boards: imx: add some HAB documentation
-      Documentation: user: introduction: suggest b4 shazam
-      Documentation: remove info about bridging to matrix
-
-Alexander Shiyan (3):
-      .gitignore: Add generated scripts/rkimage to .gitignore
-      mfd: rk808: Add missing RK809 chip ID to poweroff handler
-      i2c: stm32: Update driver
-
-Clement Leger (1):
-      mtd: spi-nor: enable {dual,quad}-read and quad-write for w25q256
-
-Denis Orlov (21):
-      MIPS: addrspace: rectify ksseg segment naming
-      MIPS: addrspace: simplify the header
-      MIPS: main_entry-pbl: remove unused variable
-      MIPS: barebox.lds: remove extra whitespace
-      MIPS: reloc: mark relocate_code() as noreturn
-      MIPS: cpuinfo: use appropriate format specifiers in printf
-      MIPS: print BadVAddr CP0 register on exception
-      MIPS: malta: merge GT64120 headers
-      MIPS: pbl_macros: use .asciiz instead of .ascii + .byte 0
-      MIPS: malta: remove duplicated barebox magic code
-      MIPS: pbl: put mips_barebox_10h into ENTRY_FUNCTION
-      MIPS: pbl: make sure to disable interrupts/watchpoints on entry
-      MIPS: pbl: do enable 64-bit addressing in PBL
-      MIPS: clean up barebox proper entry point
-      MIPS: main_entry: properly set XTLB handler for 64-bit mode
-      MIPS: main_entry: remove exception vector array
-      MIPS: c-r4k: prettify code in __BUILD_BLAST_CACHE_RANGE
-      MIPS: c-r4k: generate blast_*cache functions via macros
-      MIPS: c-r4k: do flush secondary cache
-      MIPS: c-r4k: remove extra function declaration
-      MIPS: reloc: use IS_ALIGNED macro to check for an alignment
-
-Elliot Berman (1):
-      kbuild: Add environment variables for userprogs flags
-
-Enrico Scholz (1):
-      fdt: copy terminating '\0' in lstrcpy()
-
-Jules Maselbas (15):
-      soc: kvx: Rename function to match global variable
-      soc: kvx: Fix memory leaks
-      soc: kvx: Add board_sn global var from OTP
-      kvx: Remove unused defines
-      mtd: spi-nor: Add SPI_NOR_QUAD_WRITE hwcap
-      mtd: spi-nor: enable quad-write for is25lp01g
-      mtd: spi-nor: move SPI_NOR_MAX_ADDR_WIDTH define to spi-nor.h
-      mtd: spi-nor: Add Synopsys DesignWare Octal SPI driver
-      mci: sdhci: Set 8-bit host caps
-      mci: sdhci: Add registers defines
-      mci: sdhci: Actually return the error code instead of 0
-      mci: sdhci: Add sd host v4 mode
-      mci: sdhci: Add 64-bit DMA addressing suport for V4 mode
-      mci: sdhci: Force DMA update to the next block boundary
-      mci: Add dwcmshc-sdhci driver
-
-Marco Felsch (15):
-      mci: imx-esdhc-pbl: fix image load in DDR mode
-      commands: test: simplify argv handling
-      commands: test: add based support for bash-test style
-      ARM: boards: make use of MDIO_MMD register defines
-      net: phy: micrel: make use of MDIO_MMD register defines
-      net: phy: fix struct member comments
-      net: phy: mmd_phy_indirect: align parameters with Linux
-      net: phy: add phydev_{err,err_probe,info,warn,dbg} macros
-      net: phy: import phy_{read,write,modify}_mmd helpers from Linux
-      net: phy: replace phy_{write,read,modify}_mmd_indirect with phy_{write,read,modify}_mmd
-      net: phy: add deprecation warning to phy_{read,write,modify}_mmd_indirect
-      net: phy: at803x: disable SmartEEE
-      net: phy: at803x: add disable hibernation mode support
-      net: phy: at803x: disable extended next page bit
-      ARM: i.MX8M: esdctl: split memory banks for devices with >4G
-
-Michael Tretter (1):
-      of_firmware: fix lookup of fpga manager
-
-Oleksij Rempel (11):
-      ARM: at91: enable ddramc for sama5d3 and sama5d4
-      ARM: at91: add support for SAMA5D3 - Ethernet Development System Board
-      ARM: at91: microchip-ksz9477-evb: migrate to sama5d3_barebox_entry()
-      net: designware: eqos: initialize MAC address specific DMA channel configuration
-      net: designware: eqos: fix non-working promisc mode when set before interface start
-      net: designware: eqos: add comment about external clock dependencies for the soft reset
-      net: designware: eqos: fix NULL pointer dereference on LLDP packets
-      net: designware: eqos: do not receive pause frames
-      net: ksz9477: add support for ksz9893 switch
-      net: ksz9477: do not advertise EEE support
-      ARM: add Skov i.MX8MP based board support
-
-Roland Hieber (2):
-      commands: global: document usage without parameters
-      doc: booting-linux: improve Bootloader spec section
-
-Rouven Czerwinski (1):
-      rsa: escape pkcs11 string passed to RSA command
-
-Sascha Hauer (30):
-      dts: update to v6.5-rc1
-      dts: update to v6.5-rc2
-      Documentation: bcm2835: Fix grammar
-      of: never fixup internal live tree
-      Drop mkimage tool
-      mci: arasan: Fix reg/val argument swap in register write
-      dts: update to v6.5-rc3
-      ARM: socfpga_defconfig: Enable more boards
-      dts: update to v6.5-rc5
-      dts: update to v6.5-rc6
-      ARM: rockchip_v8_defconfig: Enable PCI and RTL8169 support
-      ARM: skov-imx6: Add new calibration values for i.MX6Q
-      ARM: skov-imx6: Add new calibration values for i.MX6S
-      filetype: return error and pass filetype as pointer argument
-      lib: open_and_lseek(): return error code on error
-      lib: open_and_lseek(): move error messages to callers
-      dts: update to v6.5-rc7
-      Merge branch 'for-next/at91'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/dwcmshc-sdhci'
-      Merge branch 'for-next/eqos'
-      Merge branch 'for-next/kvx'
-      Merge branch 'for-next/mips'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/phy'
-      Merge branch 'for-next/spi-nor'
-      bootm: always put a copy into data->of_root_node
-      bootm: fix printing kernel command line
-      of: Add static inline wrapper for of_dup()
-      Release v2023.09.0
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
