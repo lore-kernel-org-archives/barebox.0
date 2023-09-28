@@ -1,63 +1,62 @@
-Delivery-date: Thu, 28 Sep 2023 14:12:38 +0200
+Delivery-date: Thu, 28 Sep 2023 14:22:59 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qlpsl-00F6Fv-LD
-	for lore@lore.pengutronix.de; Thu, 28 Sep 2023 14:12:38 +0200
+	id 1qlq2m-00F6bJ-D5
+	for lore@lore.pengutronix.de; Thu, 28 Sep 2023 14:22:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qlpsj-0007pG-O8
-	for lore@pengutronix.de; Thu, 28 Sep 2023 14:12:38 +0200
+	id 1qlq2k-0000zL-8o
+	for lore@pengutronix.de; Thu, 28 Sep 2023 14:22:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=G/slzjGSeC2sPRp5XhM1GblAjEc6kYtZ5OpcwtN34m4=; b=XhHGBMknaGxHtqWBI/LRDIZORf
-	nhdwkjZtscEZd8+PLdun6AvvpqkhZAE80ImmXMrgOY7TJ+PJvELQnzWd5ZytUda2K+7UX6Fw0q/0L
-	z2j37laZSXABP0080GCpjXiOjPOwBwYMO1Zj3Iq3vRY3+WZnBHZr0lJ09z1NiVJCQW4PkKFnTVXqe
-	n8dY+wV3UrtttGuJ4EFjpmeCMCO+imn0HRC+1zjlf1rZJ8crvjGGNLXr4h/M7cFmJuuBBcu7rkuId
-	FMzapzFjSr4OPebMSsYl6tx/L44eeWPmmD72O3GEWU1JQuoJ1QKVrF4WDzkMFcQm5m66t+HYod9Le
-	1yYmZgOA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Z/D3cfrA8kIRFZHaIP+iXwq3MHFnNtUC+RxcctKJCaI=; b=z2outsQS+krmELlj5YXzkTFdkU
+	5xY4TR3CJ/r6dgTvNpLdT+ld38r9hW0zWB9PwyiVMvtOYjELobo4Kvp9U5puSH9xFjIcmMb6B6WC0
+	qZ//SVMv2Tu2b2zWPTpTFhA10DeblDX/Mgm2pBJLt/ZmL/zASv/1m97f8rWDTPZS5bAyuCM8dHaZK
+	tHa224lgcupQLDkflumeBBanyr1mwuo2aOXe5tbmf/zmIVee+yZq1LM/DiyBozo3uKHXUpMw0vrLv
+	HSZZdG6s9pGLaEFZv0c7uhBbci07GYmqJtDsMKj8z0lRg9qJyp2Y6NfZ/5Ct94aaQZDIgXqw8QcKq
+	dBjtgqXg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qlprW-003aqM-2B;
-	Thu, 28 Sep 2023 12:11:22 +0000
+	id 1qlq1V-003gjW-28;
+	Thu, 28 Sep 2023 12:21:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qlprR-003an3-34
+	id 1qlq1S-003gh1-0X
 	for barebox@lists.infradead.org;
-	Thu, 28 Sep 2023 12:11:20 +0000
+	Thu, 28 Sep 2023 12:21:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1qlprI-0007bG-QF; Thu, 28 Sep 2023 14:11:08 +0200
+	id 1qlq1Q-0000nz-Q1; Thu, 28 Sep 2023 14:21:36 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1qlprI-009Zdz-Dh; Thu, 28 Sep 2023 14:11:08 +0200
+	id 1qlq1O-009ZfW-MI; Thu, 28 Sep 2023 14:21:34 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1qlprI-00AqPh-1D;
-	Thu, 28 Sep 2023 14:11:08 +0200
+	id 1qlq1O-00Ar3C-24;
+	Thu, 28 Sep 2023 14:21:34 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 28 Sep 2023 14:11:06 +0200
-Message-Id: <20230928121106.2584743-2-o.rempel@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 28 Sep 2023 14:21:33 +0200
+Message-Id: <20230928122133.2587197-1-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230928121106.2584743-1-o.rempel@pengutronix.de>
-References: <20230928121106.2584743-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230928_051117_995945_945D1141 
-X-CRM114-Status: GOOD (  12.58  )
+X-CRM114-CacheID: sfid-20230928_052138_204190_59441FCA 
+X-CRM114-Status: GOOD (  11.79  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,173 +78,56 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v1 2/2] ARM: skov-imx6: Remove unused board variants
+Subject: [PATCH v1] video: edid: print debug message on EDID read out error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-The board variants 12 and 18 are no longer used. Remove them.
+EDID readout errors happen often, e.g. because the HDMI port doesn't
+have a display connected. However, when a monitor is connected, but some
+other error occurs, barebox is silent. Add a debug message with an error
+code for this.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/skov-imx6/lowlevel.c | 136 ---------------------------
- 1 file changed, 136 deletions(-)
+ drivers/video/edid.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boards/skov-imx6/lowlevel.c b/arch/arm/boards/skov-imx6/lowlevel.c
-index c9a695ced4..16809dd4a6 100644
---- a/arch/arm/boards/skov-imx6/lowlevel.c
-+++ b/arch/arm/boards/skov-imx6/lowlevel.c
-@@ -28,122 +28,6 @@ static void __udelay(int us)
+diff --git a/drivers/video/edid.c b/drivers/video/edid.c
+index d2757185f6..2baf6646d9 100644
+--- a/drivers/video/edid.c
++++ b/drivers/video/edid.c
+@@ -852,20 +852,27 @@ edid_do_read_i2c(struct i2c_adapter *adapter, unsigned char *buf,
+ 		ret = i2c_transfer(adapter, &msgs[3 - xfers], xfers);
+ 	} while (ret != xfers && --retries);
  
- /* ------------------------------------------------------------------------ */
+-	return ret == xfers ? 0 : -1;
++	if (ret == 0)
++		ret = -EPROTO;
++
++	return ret == xfers ? 0 : ret;
+ }
  
--/*
-- * Micron MT41K512M16HA-125 IT:E ->  8 GBit = 64 Meg x 16 x 8 banks
-- *
-- * Speed Grade   Data Rate (MT/s)  tRCD-tRP-CL   tRCD(ns)  tRP(ns)  CL(ns)
-- *    -125          1600            11-11-11      13.75     13.75   13.75
-- *               (=800 MHz)
-- *
-- * Memory configuration used by variant:
-- * - "Max Performance", 64 bit data bus, 1066 MHz, 4 GiB memory
-- */
--static const struct mx6_ddr3_cfg skov_imx6_cfg_4x512Mb_1066MHz = {
--	.mem_speed = 1066,
--	.density = 8, /* GiBit */
--	.width = 16, /* 16 bit data per device */
--	.banks = 8,
--	.rowaddr = 16, /* 64 k */
--	.coladdr = 10, /* 1 k */
--	.pagesz = 2, /* [kiB] */
--	.trcd = 1375, /* 13.75 ns = 11 clocks @ 1.6 GHz */
--	.trcmin = 4875, /* 48.75 ns = 39 clocks @ 1.6 GHz */
--	.trasmin = 3500, /* 35 ns = 28 clocks @ 1.6 GHz */
--	.SRT = 0,
--};
--
--static const struct mx6_ddr_sysinfo skov_imx6_sysinfo_4x512Mb_1066MHz = {
--	.dsize = 2, /* 64 bit wide = 4 devices, 16 bit each */
--	.cs_density = 32, /* four 8 GBit devices connected */
--	.ncs = 1, /* one CS line for all devices */
--	.cs1_mirror = 1, /* TODO */
--	.bi_on = 1, /* TODO */
--	.rtt_nom = 1, /* MX6_MMDC_P0_MPODTCTRL -> 0x00022227 */
--	.rtt_wr = 0, /* is LW_EN is 0 in their code */
--	.ralat = 5, /* TODO */
--	.walat = 1, /* TODO */
--	.mif3_mode = 3, /* TODO */
--	.rst_to_cke = 0x23, /* used in their code as well */
--	.sde_to_rst = 0x10, /* used in their code as well */
--	.pd_fast_exit = 0, /* TODO */
--};
--
--static const struct mx6_mmdc_calibration skov_imx6_calib_4x512Mb_1066MHz = {
--	.p0_mpwldectrl0 = 0x001a0017,
--	.p0_mpwldectrl1 = 0x001F001F,
--	.p0_mpdgctrl0 = 0x43040319,
--	.p0_mpdgctrl1 = 0x03040279,
--	.p0_mprddlctl = 0x4d434248,
--	.p0_mpwrdlctl = 0x34424543,
--
--	.p1_mpwldectrl0 = 0x00170027,
--	.p1_mpwldectrl1 = 0x000a001f,
--	.p1_mpdgctrl0 = 0x43040321,
--	.p1_mpdgctrl1 = 0x03030251,
--	.p1_mprddlctl = 0x42413c4d,
--	.p1_mpwrdlctl = 0x49324933,
--};
--
--/* ------------------------------------------------------------------------ */
--
--/*
-- * Micron MT41K256M16HA-125 IT:E ->  4 GBit = 32 Meg x 16 x 8 banks
-- *
-- * Speed Grade   Data Rate (MT/s)  tRCD-tRP-CL   tRCD(ns)  tRP(ns)  CL(ns)
-- *    -125          1600            11-11-11      13.75     13.75   13.75
-- *               (=800 MHz)
-- *
-- * Memory configuration used by variant:
-- * - "Max Performance", 64 bit data bus, 1066 MHz, 2 GiB memory
-- */
--static const struct mx6_ddr3_cfg skov_imx6_cfg_4x256Mb_1066MHz = {
--	.mem_speed = 1066,
--	.density = 4, /* GiBit */
--	.width = 16, /* 16 bit data per device */
--	.banks = 8,
--	.rowaddr = 15, /* 32 k */
--	.coladdr = 10, /* 1 k */
--	.pagesz = 2, /* [kiB] */
--	.trcd = 1375, /* 13.75 ns = 11 clocks @ 1.6 GHz */
--	.trcmin = 4875, /* 48.75 ns = 39 clocks @ 1.6 GHz */
--	.trasmin = 3500, /* 35 ns = 28 clocks @ 1.6 GHz */
--	.SRT = 0,
--};
--
--static const struct mx6_ddr_sysinfo skov_imx6_sysinfo_4x256Mb_1066MHz = {
--	.dsize = 2, /* 64 bit wide = 4 devices, 16 bit each */
--	.cs_density = 16, /* four 4 GBit devices connected */
--	.ncs = 1, /* one CS line for all devices */
--	.cs1_mirror = 1, /* TODO */
--	.bi_on = 1, /* TODO */
--	.rtt_nom = 1, /* MX6_MMDC_P0_MPODTCTRL -> 0x00022227 */
--	.rtt_wr = 0, /* is LW_EN is 0 in their code */
--	.ralat = 5, /* TODO */
--	.walat = 1, /* TODO */
--	.mif3_mode = 3, /* TODO */
--	.rst_to_cke = 0x23, /* used in their code as well */
--	.sde_to_rst = 0x10, /* used in their code as well */
--	.pd_fast_exit = 0, /* TODO */
--};
--
--static const struct mx6_mmdc_calibration skov_imx6_calib_4x256Mb_1066MHz = {
--	.p0_mpwldectrl0 = 0x001a0017,
--	.p0_mpwldectrl1 = 0x001F001F,
--	.p0_mpdgctrl0 = 0x43040319,
--	.p0_mpdgctrl1 = 0x03040279,
--	.p0_mprddlctl = 0x4d434248,
--	.p0_mpwrdlctl = 0x34424543,
--
--	.p1_mpwldectrl0 = 0x00170027,
--	.p1_mpwldectrl1 = 0x000a001f,
--	.p1_mpdgctrl0 = 0x43040321,
--	.p1_mpdgctrl1 = 0x03030251,
--	.p1_mprddlctl = 0x42413c4d,
--	.p1_mpwrdlctl = 0x49324933,
--};
--
--/* ------------------------------------------------------------------------ */
--
- /*
-  * Micron MT41K128M16JT-125 IT:K ->  2 GBit = 16 Meg x 16 x 8 banks
-  *
-@@ -530,26 +414,6 @@ static void skov_imx6_init(int cpu_type, unsigned board_variant)
- 	int instance;
+ void *edid_read_i2c(struct i2c_adapter *adapter)
+ {
+ 	u8 *block;
++	int ret;
  
- 	switch (board_variant) {
--	case 12: /* P2 i.MX6Q, max performance */
--		if (cpu_type != IMX6_CPUTYPE_IMX6Q) {
--			pr_err("Invalid SoC! i.MX6Q expected\n");
--			return;
--		}
--		pr_debug("Initializing a P2 max performance system...\n");
--		spl_imx6q_dram_init(&skov_imx6_sysinfo_4x256Mb_1066MHz,
--					&skov_imx6_calib_4x256Mb_1066MHz,
--					&skov_imx6_cfg_4x256Mb_1066MHz);
--		break;
--	case 18: /* i.MX6Q+ */
--		if (cpu_type != IMX6_CPUTYPE_IMX6Q) {
--			pr_err("Invalid SoC! i.MX6Q expected\n");
--			return;
--		}
--		pr_debug("Initializing board variant 18\n");
--		spl_imx6q_dram_init(&skov_imx6_sysinfo_4x512Mb_1066MHz,
--					&skov_imx6_calib_4x512Mb_1066MHz,
--					&skov_imx6_cfg_4x512Mb_1066MHz);
--		break;
- 	case 19: /* i.MX6S "Solo_R512M_F2G" */
- 		if (cpu_type != IMX6_CPUTYPE_IMX6S) {
- 			pr_err("Invalid SoC! i.MX6S expected\n");
+ 	if (!IS_ENABLED(CONFIG_I2C))
+ 		return NULL;
+ 
+ 	block = xmalloc(EDID_LENGTH);
+ 
+-	if (edid_do_read_i2c(adapter, block, 0, EDID_LENGTH))
++	ret = edid_do_read_i2c(adapter, block, 0, EDID_LENGTH);
++	if (ret) {
++		dev_dbg(&adapter->dev, "EDID readout failed: %pe\n", ERR_PTR(ret));
+ 		goto out;
++	}
+ 
+ 	return block;
+ out:
 -- 
 2.39.2
 
