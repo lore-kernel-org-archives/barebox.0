@@ -1,64 +1,64 @@
-Delivery-date: Mon, 02 Oct 2023 11:22:23 +0200
+Delivery-date: Mon, 02 Oct 2023 12:18:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qnF8C-001rRZ-BG
-	for lore@lore.pengutronix.de; Mon, 02 Oct 2023 11:22:23 +0200
+	id 1qnG0Q-001uF0-VT
+	for lore@lore.pengutronix.de; Mon, 02 Oct 2023 12:18:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qnF88-0005Tn-M9
-	for lore@pengutronix.de; Mon, 02 Oct 2023 11:22:22 +0200
+	id 1qnG0O-0003yU-VL
+	for lore@pengutronix.de; Mon, 02 Oct 2023 12:18:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JCZ2YYw2pdMz40u24FJOCwVfrU4I0J9kcec27JxQI9w=; b=EZSopkDb5fiZD28SeC2nlWuX96
-	2kJ5OO9Eqz2gwcgN3Gh9aXKux8TIaPpxCQxM8VIVqU7fNiFG+kDEeB4taJs3GqyMLchdhBOQB9Jxs
-	QiqGgpQZsHAWfrObhhHICR7QLWxyslruvUNvA9sJYEXhw6zYeokZmIV+HWOAo05XG+3q/nGoSO+zV
-	p43iRtsmKg55tHastD/ofYTsnrnCCug2iHNzJqcgmxojcdP5Tdx0Cx+++fnOyZbdiLowFpKFubNAx
-	hXaaMnYojfAH1JYl2GUFuDxS9ejF7ws3XLShKKyCCha5ogLoN7bRGSNBP79T2OzvSBe7Ausa9KuvQ
-	OewjUiSQ==;
+	bh=Del8Gkx4ezejKkMXs/tkjDAkZphQQyxhZIgDJ/xC6C0=; b=T6C6Qv+cQdS7FPd7Qo/ey2W02y
+	P4aHdqWLTqccQifpUSk+xajm+/6U2dMMNIGuBFHWVMJ+IUq0/8rTN6dBJQXuI8gGCj5HxJtP7xgQV
+	s3oMkEna41JN0hjWAIeQuXhgNsxtPfXK2LXyvDlBVTBU25rEjKwgBTzCCl/eMaNiOvV9QXpCl/kqY
+	GMnmHiOHv3vf6cyNvMWIY5fxv9aF07SGB914XJkPb28csLiCVGuj29ILY2Rp+tvpO9R36kYjK2Pdo
+	FAkPO5VRZpYw3zqlCwW1iBLGv8J/Z0dXgpFFjbWLPCc3ZeXCB3N8f8nXujqYUPxVdit5kD4vPSrUz
+	Hrc+jEzQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qnF6j-00CDfK-14;
-	Mon, 02 Oct 2023 09:20:53 +0000
+	id 1qnFzH-00CIlN-24;
+	Mon, 02 Oct 2023 10:17:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qnF6g-00CDeW-07
+	id 1qnFz8-00CIh5-2o
 	for barebox@lists.infradead.org;
-	Mon, 02 Oct 2023 09:20:51 +0000
+	Mon, 02 Oct 2023 10:17:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qnF6c-0005C1-Nq; Mon, 02 Oct 2023 11:20:46 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <ore@pengutronix.de>)
+	id 1qnFz6-0003TW-BK; Mon, 02 Oct 2023 12:17:04 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qnF6c-00AUQy-Ao; Mon, 02 Oct 2023 11:20:46 +0200
-Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <afa@pengutronix.de>)
-	id 1qnF6c-00D1NQ-0x;
-	Mon, 02 Oct 2023 11:20:46 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	(envelope-from <ore@pengutronix.de>)
+	id 1qnFz5-00AV2T-Ox; Mon, 02 Oct 2023 12:17:03 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1qnFz5-009xLV-28;
+	Mon, 02 Oct 2023 12:17:03 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  2 Oct 2023 11:20:43 +0200
-Message-Id: <20231002092043.3097587-3-a.fatoum@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon,  2 Oct 2023 12:16:53 +0200
+Message-Id: <20231002101654.2373000-10-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231002092043.3097587-1-a.fatoum@pengutronix.de>
-References: <20231002092043.3097587-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20231002101654.2373000-1-o.rempel@pengutronix.de>
+References: <20231002101654.2373000-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231002_022050_068673_DC5E8AAE 
-X-CRM114-Status: GOOD (  12.30  )
+X-CRM114-CacheID: sfid-20231002_031706_908793_95325E8D 
+X-CRM114-Status: GOOD (  11.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,81 +76,72 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] HAB: extend fuse information with i.MX8M
+Subject: [PATCH v2 09/10] net: lib: add ether_addr_inc() helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Add helper function to calculate Ethernet address by incriminating it.
+This helper can be used for multiport devices like switches to generate
+address for each port based on one stored address.
 
-The i.MX8M family of processors moved the SEC_CONFIG_1 fuse to a
-different location. Extend the hab driver with the new location and take
-care of the DIR_BT_DIS fuse which only needs to be burned on i.MX8MQ.
-
-Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/hab/hab.c | 32 +++++++++++++++++++++++++++-----
- 1 file changed, 27 insertions(+), 5 deletions(-)
+ include/net.h |  1 +
+ net/lib.c     | 25 +++++++++++++++++++++++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
-index aa848979b467..ee402352f243 100644
---- a/drivers/hab/hab.c
-+++ b/drivers/hab/hab.c
-@@ -150,23 +150,45 @@ static int imx_hab_permanent_write_enable_ocotp(int enable)
- 	return imx_ocotp_permanent_write(enable);
+diff --git a/include/net.h b/include/net.h
+index a0ef8bee04..fe82451cc9 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -360,6 +360,7 @@ int setenv_ip(const char *name, IPaddr_t ip);
+ 
+ int string_to_ethaddr(const char *str, u8 enetaddr[6]);
+ void ethaddr_to_string(const u8 enetaddr[6], char *str);
++void ether_addr_inc(u8 *dst_addr, const u8 *src_addr, u32 increment);
+ 
+ #ifdef CONFIG_NET_RESOLV
+ int resolv(const char *host, IPaddr_t *ip);
+diff --git a/net/lib.c b/net/lib.c
+index d4536441bd..dc7d83bc6d 100644
+--- a/net/lib.c
++++ b/net/lib.c
+@@ -44,6 +44,31 @@ void ethaddr_to_string(const u8 enetaddr[ETH_ALEN], char *str)
+ 		 enetaddr[4], enetaddr[5]);
  }
  
-+static uint32_t get_sec_config_fuse(void) {
-+	if (cpu_is_mx6()) {
-+		return OCOTP_SEC_CONFIG_1;
-+	} else {
-+		return MX8M_OCOTP_SEC_CONFIG_1;
++/**
++ * ether_addr_inc - Increment an Ethernet address.
++ * @dst_addr: Destination address to store the incremented address.
++ * @src_addr: Source address to be incremented.
++ * @increment: Value by which to increment the source address.
++ *
++ * This function increments the given source Ethernet address by
++ * the specified increment value, storing the result in the
++ * destination address.
++ */
++void ether_addr_inc(u8 *dst_addr, const u8 *src_addr, u32 increment)
++{
++	u32 value;
++	int i;
++
++	for(i = 0; i < 6; ++i)
++		dst_addr[i] = src_addr[i];
++
++	for(i = 5; i >= 0 && increment; --i) {
++		value = dst_addr[i] + increment;
++		dst_addr[i] = value & 0xFF;
++		increment = value >> 8;
 +	}
 +}
 +
- static int imx_hab_lockdown_device_ocotp(void)
+ int string_to_ip(const char *s, IPaddr_t *ip)
  {
- 	int ret;
-+	uint32_t dis_fuse;
-+	uint32_t sec_fuse;
- 
--	ret = imx_ocotp_write_field(OCOTP_DIR_BT_DIS, 1);
--	if (ret < 0)
--		return ret;
-+	if (cpu_is_mx6() || cpu_is_mx8mq()) {
-+		if (cpu_is_mx6()) {
-+			dis_fuse = OCOTP_DIR_BT_DIS;
-+		} else {
-+			dis_fuse = MX8MQ_OCOTP_DIR_BT_DIS;
-+		}
-+		ret = imx_ocotp_write_field(dis_fuse, 1);
-+		if (ret < 0)
-+			return ret;
-+	}
- 
--	return imx_ocotp_write_field(OCOTP_SEC_CONFIG_1, 1);
-+	sec_fuse = get_sec_config_fuse();
-+
-+	return imx_ocotp_write_field(sec_fuse, 1);
- }
- 
- static int imx_hab_device_locked_down_ocotp(void)
- {
- 	int ret;
-+	uint32_t fuse;
- 	unsigned int v;
- 
--	ret = imx_ocotp_read_field(OCOTP_SEC_CONFIG_1, &v);
-+	fuse = get_sec_config_fuse();
-+
-+	ret = imx_ocotp_read_field(fuse, &v);
- 	if (ret < 0)
- 		return ret;
- 
+ 	IPaddr_t addr = 0;
 -- 
 2.39.2
 
