@@ -1,83 +1,64 @@
-Delivery-date: Sat, 30 Sep 2023 11:12:05 +0200
+Delivery-date: Mon, 02 Oct 2023 11:22:19 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qmW18-00HF1h-9c
-	for lore@lore.pengutronix.de; Sat, 30 Sep 2023 11:12:05 +0200
+	id 1qnF88-001rQs-TE
+	for lore@lore.pengutronix.de; Mon, 02 Oct 2023 11:22:19 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qmW16-00016W-3z
-	for lore@pengutronix.de; Sat, 30 Sep 2023 11:12:04 +0200
+	id 1qnF83-0005Sl-OW
+	for lore@pengutronix.de; Mon, 02 Oct 2023 11:22:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Mime-Version:Message-Id:Subject:Cc:To:From:Date:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=AWAd7hlfsjxiri17Cmv5Eh7frN15o1PT7rfogsq3Doo=; b=p4GBYHD27bKa40pEsh/Jixfmlp
-	HhKevUZwODtjrCAL0iWMJZOJYN6LhYRyu4qB/trNRX0gfv+Ql2vzbbRX37kB+NqegcfShubtjdV5e
-	u1FJNtQb1mDjkJi5zHYZyGFifOvNEK3okTDB3mXm+N20pHxDBL72RFyaefU7xfNqOsZONk7rKJvP5
-	eXZwfEMUSaaxLUh7l7uvlXAYNDcsnK6Jar4O9G4uuRb8E2CHvk5jKPn8G3dSrktDmr/4UQwqNSzwW
-	WTXpO7znxyxy9I+TiA881cdy+3riSq8E9P5YUEibJrXikt6yKAX/qDJ/HMWYpCWQsd2mA38a0qxFW
-	miA6q5uw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4shyxj2ykXlnGgB/I9+laTM2Bea76ZW4boX7YcA5MoI=; b=pefSyL0ElsYM+GyO8qzvuDgcyk
+	6mCl34votP1otzgLTgxO7lecFKhqc2VcC3ox2ZiVPe9++b4TLDDfuxowofsGhdhukhPMHu4FwNac0
+	liKpETA6LTM1uiEfHM9qH74wRn9+kC5DHRug+NZy2pvAYPxmLFJ+dgAAxV74de5u4snZAOindLPpg
+	X+Uos14uhPsDQDIdPFZELNWnj1M91gmQP09d79/YzDKrZysib4FIPinpG37Bh1ASxOo35f6f8vct8
+	EHtFnQsoOaclzd/q7SYlT2qeyhC5SSZs5UXFBF4lgbCovl9JXcUxipEsDjvNf0YSdnFTkT/G6YuLT
+	VS753YvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qmVzV-009Dq4-1s;
-	Sat, 30 Sep 2023 09:10:25 +0000
-Received: from mail-lj1-x232.google.com ([2a00:1450:4864:20::232])
+	id 1qnF6p-00CDgN-0K;
+	Mon, 02 Oct 2023 09:20:59 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qmVzR-009Dp6-2e
+	id 1qnF6l-00CDfV-2i
 	for barebox@lists.infradead.org;
-	Sat, 30 Sep 2023 09:10:23 +0000
-Received: by mail-lj1-x232.google.com with SMTP id 38308e7fff4ca-2c131ddfeb8so225454181fa.3
-        for <barebox@lists.infradead.org>; Sat, 30 Sep 2023 02:10:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696065018; x=1696669818; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AWAd7hlfsjxiri17Cmv5Eh7frN15o1PT7rfogsq3Doo=;
-        b=AclvGZ5VJlU2YhleoZT7+B7lNEwUnJufDlhs0DnEboFiTYN6EQU6WNed2/DK9eQv9b
-         N5Tf9P7RP+Piy+ArnCPH0FCNEXs0y3pnkhR5kYN44mg0c5YsCAEWdeASbUhfXJCtdSDm
-         HKG4MKVTwC+vaGlLSX9XlM7xb6PaYoITN7Q7vej2VLlsjl0cqxmHnkMnuArDpPWM5uQ+
-         BKMKEZilwbqEB3DAM37HkhZLV8UHCGSDeFutWXOrJAOtdn60KG6Li++Ehj1xiovVJ6/I
-         Z9ExlDTNMQmQUTAODEddF2VHvIlnN/UwX80dmmFosWsT7k08s3TO7y1kRgh9VAYkQrAz
-         h/Yw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696065018; x=1696669818;
-        h=content-transfer-encoding:mime-version:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AWAd7hlfsjxiri17Cmv5Eh7frN15o1PT7rfogsq3Doo=;
-        b=IYrpIozg62OPIzGD7i/U4+PrK/4XOl1SYMTEWVNVHcvl1ULvfiOS5MUSh7n0HYLbf8
-         pytSrpWhsEbwY8kr3GA5Tg4SNRGkhKE6uMwNZar14jF+tG9wCrbL5+FwywP2B/eil+hn
-         gSBLZkmjpuDihFhLwiPxq5nMT170vrgFifqKvDDp1IuxC2j/rHFmVm6HzNFAUlH8YvKG
-         52tDmEEKAq1XR/RhUWX99fzxhhRlRDZbITHJ3ejZQySTAjNkEnMrFK/8htz6gFihu0ka
-         O/imuWX4Hc9YcKnzWedAyzpc2IDkDhG3brwIDhZHHh1dG/6WKfb2ah69dPfG5J9Q3HIs
-         fnOg==
-X-Gm-Message-State: AOJu0Yx/lm0f/SNHCI2HdT54wUJHbSSI2gHN7gghMGOOQZH7PZ4GfnB7
-	ut0udKKk6f+bTSwSwlOn/YE=
-X-Google-Smtp-Source: AGHT+IF0H4W5BvCiwhlCOhzhePgja/cRw71NFWj3qdbxPjiZV0GDs5ZxqMGwzz19ItbZbpHNN4i5XA==
-X-Received: by 2002:a2e:9609:0:b0:2c0:3186:8efa with SMTP id v9-20020a2e9609000000b002c031868efamr5266727ljh.11.1696065018099;
-        Sat, 30 Sep 2023 02:10:18 -0700 (PDT)
-Received: from flare ([146.185.218.236])
-        by smtp.gmail.com with ESMTPSA id j3-20020a2eb703000000b002c0414c3b6csm4376892ljo.121.2023.09.30.02.10.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 30 Sep 2023 02:10:17 -0700 (PDT)
-Date: Sat, 30 Sep 2023 12:17:20 +0300
-From: Antony Pavlov <antonynpavlov@gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Sascha Hauer <sha@pengutronix.de>, barebox@lists.infradead.org
-Message-Id: <20230930121720.770d90611fc199200445dda3@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; i686-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: quoted-printable
+	Mon, 02 Oct 2023 09:20:57 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qnF6c-0005C0-NU; Mon, 02 Oct 2023 11:20:46 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qnF6c-00AUQx-Ab; Mon, 02 Oct 2023 11:20:46 +0200
+Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <afa@pengutronix.de>)
+	id 1qnF6c-00D1NL-0v;
+	Mon, 02 Oct 2023 11:20:46 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  2 Oct 2023 11:20:42 +0200
+Message-Id: <20231002092043.3097587-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231002092043.3097587-1-a.fatoum@pengutronix.de>
+References: <20231002092043.3097587-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20230930_021021_879764_1C9F72D0 
-X-CRM114-Status: UNSURE (   5.65  )
+X-CRM114-CacheID: sfid-20231002_022055_879397_F584F01F 
+X-CRM114-Status: UNSURE (   8.72  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -96,27 +77,44 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: barebox.org browser demo uses barebox-v2022.02
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 1/2] ARM: i.MX: fusemap-ocotp: add sec fuses for i.MX8M
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad!
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-barebox browser demo (https://www.barebox.org/jsbarebox/) looks very impres=
-sive.
-But it uses old barebox-v2022.02. Could you update it please.
+For i.MX8M devices, the security config 1 fuse was moved to 0x470[25].
+Additionally, all devices except the i.MX8MQ have the DIR_BT_DIS fused
+within the factory, see [1].
 
-As barebox browser demo runs on top of RISC-V machine can we add RISC-V men=
-tion
-to barebox.org/index.html page?
+[1]: https://community.nxp.com/t5/i-MX-Processors/DIR-BT-DIS-and-others/m-p/1220615/highlight/true#M168363
 
---=20
-Best regards,
-=A0 Antony Pavlov
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/mach/imx/ocotp-fusemap.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/mach/imx/ocotp-fusemap.h b/include/mach/imx/ocotp-fusemap.h
+index 6ba794c16619..02ac5d8e73bb 100644
+--- a/include/mach/imx/ocotp-fusemap.h
++++ b/include/mach/imx/ocotp-fusemap.h
+@@ -53,5 +53,9 @@
+ #define OCOTP_GP1			(OCOTP_WORD(0x660) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+ #define OCOTP_GP2			(OCOTP_WORD(0x670) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+ #define OCOTP_PAD_SETTINGS		(OCOTP_WORD(0x6d0) | OCOTP_BIT(0) | OCOTP_WIDTH(6))
++/* i.MX8M moved the security related fuses */
++#define MX8M_OCOTP_SEC_CONFIG_1		(OCOTP_WORD(0x470) | OCOTP_BIT(25) | OCOTP_WIDTH(1))
++/* Only MX8MQ requires fusing of DIR_BT_DIS */
++#define MX8MQ_OCOTP_DIR_BT_DIS		(OCOTP_WORD(0x470) | OCOTP_BIT(27) | OCOTP_WIDTH(1))
+ 
+ #endif /* __MACH_IMX_OCOTP_FUSEMAP_H */
+-- 
+2.39.2
+
 
 
