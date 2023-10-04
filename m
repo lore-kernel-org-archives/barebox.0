@@ -1,59 +1,60 @@
-Delivery-date: Wed, 04 Oct 2023 09:41:41 +0200
+Delivery-date: Wed, 04 Oct 2023 09:44:04 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qnwVp-004cXa-NC
-	for lore@lore.pengutronix.de; Wed, 04 Oct 2023 09:41:41 +0200
+	id 1qnwY8-004chN-0y
+	for lore@lore.pengutronix.de; Wed, 04 Oct 2023 09:44:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qnwVo-0005oj-1B
-	for lore@pengutronix.de; Wed, 04 Oct 2023 09:41:41 +0200
+	id 1qnwY6-00069R-Eb
+	for lore@pengutronix.de; Wed, 04 Oct 2023 09:44:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lJjoz1mTd+8F/QpXcOmy/S4ggsd7HTC3OIvRQOFkF7s=; b=Zuhscf1Vet+4e2Rsxj2Cw8NLMj
-	htMccn4UqxEILXbVTeAm4meErgabA9g/Lm8Neg1jZcrN4jCF02xOmzuR0oDPVx7F172/9h7piixxf
-	6kdjCN0ptXge9S6+SdWtg5QJ2gSVhakmUZnOtIOCrE5j56UL4DHl+VjeF++cZ1UzreNN4/a0fCCuz
-	rQBD5PszfkRCmw9jG9wdvFcguA9lzFKTwnZLDfJ7R5zuffiGhDePtqo3yV9xxu5EoTK1IGwbqSQ7R
-	aDKOCq3nUgPOPap2pw+B9vDHya1qDFNfvEaxOQqVRgU/NFYoYyWHa8bl5OrJvsYqMY/i0UftU5BfC
-	rlf9AUdA==;
+	bh=GMlEcwkhH8lazAQOR6OvJ9dSJ4guiPkb2kx4NAxViIU=; b=XeiTzC0CmB/5rmBMDnAMYuYY+v
+	1QARDFVg+7CbeeeHRDeNmvFLp9HQCUOVLWfDvbnsimANR9km5mpu8FBBVUX368lKt7vS9WWaIqfxU
+	HEQf34udqy5/pqPavKrsC4udL50NQK5bQcghY7dM+wPgcqr3DVQLC86Du1SZg4msnLZWiUC9opmn5
+	fD7+y8UjHPtosnXZDeJMVdGOOPM4WfJv4hTavFAJA3gFSgOpA1yERAV8VwBBuF+Cj8WLqWPQjDeRX
+	lewpg2H1UdCxbeBGZvKy2p2iGtdzuia3iLHI7UZxe4aqAZVh2ipixVEposuQV1P784NDSuoaLlXxE
+	Ihg7wg3w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qnwUd-00GdsM-2H;
-	Wed, 04 Oct 2023 07:40:27 +0000
+	id 1qnwWw-00GeWX-33;
+	Wed, 04 Oct 2023 07:42:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qnwUZ-00GdrG-1x
+	id 1qnwWs-00GeV3-2Q
 	for barebox@lists.infradead.org;
-	Wed, 04 Oct 2023 07:40:25 +0000
+	Wed, 04 Oct 2023 07:42:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qnwUY-0005cF-DI; Wed, 04 Oct 2023 09:40:22 +0200
+	id 1qnwWq-0005z7-GZ; Wed, 04 Oct 2023 09:42:44 +0200
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qnwUY-00AySi-0p; Wed, 04 Oct 2023 09:40:22 +0200
+	id 1qnwWq-00AyTo-4F; Wed, 04 Oct 2023 09:42:44 +0200
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1qnwUX-00CisI-Un; Wed, 04 Oct 2023 09:40:21 +0200
-Date: Wed, 4 Oct 2023 09:40:21 +0200
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20231004074021.GJ637806@pengutronix.de>
-References: <20230928122133.2587197-1-o.rempel@pengutronix.de>
+	id 1qnwWq-00Cit5-20; Wed, 04 Oct 2023 09:42:44 +0200
+Date: Wed, 4 Oct 2023 09:42:44 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20231004074244.GF235829@pengutronix.de>
+References: <20231002092043.3097587-1-a.fatoum@pengutronix.de>
+ <20231002092043.3097587-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230928122133.2587197-1-o.rempel@pengutronix.de>
+In-Reply-To: <20231002092043.3097587-2-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -61,8 +62,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231004_004023_645053_23DFCD2E 
-X-CRM114-Status: GOOD (  22.52  )
+X-CRM114-CacheID: sfid-20231004_004246_788423_080CB340 
+X-CRM114-Status: GOOD (  19.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,68 +85,41 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v1] video: edid: print debug message on EDID read out
- error
+Subject: Re: [PATCH 1/2] ARM: i.MX: fusemap-ocotp: add sec fuses for i.MX8M
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Sep 28, 2023 at 02:21:33PM +0200, Oleksij Rempel wrote:
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+On Mon, Oct 02, 2023 at 11:20:42AM +0200, Ahmad Fatoum wrote:
+> From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > 
-> EDID readout errors happen often, e.g. because the HDMI port doesn't
-> have a display connected. However, when a monitor is connected, but some
-> other error occurs, barebox is silent. Add a debug message with an error
-> code for this.
+> For i.MX8M devices, the security config 1 fuse was moved to 0x470[25].
+> Additionally, all devices except the i.MX8MQ have the DIR_BT_DIS fused
+> within the factory, see [1].
 > 
+> [1]: https://community.nxp.com/t5/i-MX-Processors/DIR-BT-DIS-and-others/m-p/1220615/highlight/true#M168363
+> 
+> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/video/edid.c | 11 +++++++++--
->  1 file changed, 9 insertions(+), 2 deletions(-)
+>  include/mach/imx/ocotp-fusemap.h | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/include/mach/imx/ocotp-fusemap.h b/include/mach/imx/ocotp-fusemap.h
+> index 6ba794c16619..02ac5d8e73bb 100644
+> --- a/include/mach/imx/ocotp-fusemap.h
+> +++ b/include/mach/imx/ocotp-fusemap.h
+> @@ -53,5 +53,9 @@
+>  #define OCOTP_GP1			(OCOTP_WORD(0x660) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+>  #define OCOTP_GP2			(OCOTP_WORD(0x670) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+>  #define OCOTP_PAD_SETTINGS		(OCOTP_WORD(0x6d0) | OCOTP_BIT(0) | OCOTP_WIDTH(6))
+> +/* i.MX8M moved the security related fuses */
+> +#define MX8M_OCOTP_SEC_CONFIG_1		(OCOTP_WORD(0x470) | OCOTP_BIT(25) | OCOTP_WIDTH(1))
+> +/* Only MX8MQ requires fusing of DIR_BT_DIS */
+> +#define MX8MQ_OCOTP_DIR_BT_DIS		(OCOTP_WORD(0x470) | OCOTP_BIT(27) | OCOTP_WIDTH(1))
 
-Applied, thanks
+You can merge this into the patch using the defines.
 
 Sascha
-
-> 
-> diff --git a/drivers/video/edid.c b/drivers/video/edid.c
-> index d2757185f6..2baf6646d9 100644
-> --- a/drivers/video/edid.c
-> +++ b/drivers/video/edid.c
-> @@ -852,20 +852,27 @@ edid_do_read_i2c(struct i2c_adapter *adapter, unsigned char *buf,
->  		ret = i2c_transfer(adapter, &msgs[3 - xfers], xfers);
->  	} while (ret != xfers && --retries);
->  
-> -	return ret == xfers ? 0 : -1;
-> +	if (ret == 0)
-> +		ret = -EPROTO;
-> +
-> +	return ret == xfers ? 0 : ret;
->  }
->  
->  void *edid_read_i2c(struct i2c_adapter *adapter)
->  {
->  	u8 *block;
-> +	int ret;
->  
->  	if (!IS_ENABLED(CONFIG_I2C))
->  		return NULL;
->  
->  	block = xmalloc(EDID_LENGTH);
->  
-> -	if (edid_do_read_i2c(adapter, block, 0, EDID_LENGTH))
-> +	ret = edid_do_read_i2c(adapter, block, 0, EDID_LENGTH);
-> +	if (ret) {
-> +		dev_dbg(&adapter->dev, "EDID readout failed: %pe\n", ERR_PTR(ret));
->  		goto out;
-> +	}
->  
->  	return block;
->  out:
-> -- 
-> 2.39.2
-> 
-> 
-> 
 
 -- 
 Pengutronix e.K.                           |                             |
