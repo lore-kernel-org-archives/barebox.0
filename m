@@ -1,58 +1,57 @@
-Delivery-date: Thu, 05 Oct 2023 08:54:30 +0200
+Delivery-date: Thu, 05 Oct 2023 08:55:13 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qoIFi-006MmN-EE
-	for lore@lore.pengutronix.de; Thu, 05 Oct 2023 08:54:30 +0200
+	id 1qoIGP-006MqL-Lc
+	for lore@lore.pengutronix.de; Thu, 05 Oct 2023 08:55:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qoIFf-00062T-VV
-	for lore@pengutronix.de; Thu, 05 Oct 2023 08:54:30 +0200
+	id 1qoIGN-0006Ex-Tg
+	for lore@pengutronix.de; Thu, 05 Oct 2023 08:55:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Content-Type:In-Reply-To:From:Cc:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GVZJf8+Nfb65RbHOS2rkSahevsZkcvItXsux5uznGzY=; b=ReMz/qmVcMP+z10WDMzYUEI7VY
-	GUFq5POLhiaX1onafaK7/OFSUa+Xl7orCpCem3s656l1kW5J5USSGUwV3JLdER5HBipzlXRVI7uMV
-	Wcs5ehtQRvJiBJxuDFkrnjl+6Fu3Xlvo3BxjQUp5v0f9JjxOOJKY9WdmDvPmM7zMVdg5w78+ywnN4
-	osOCAYYi+c2l2mnbcW7PR20AZ2OqVNUND7C+lMZm+ZHbv8SFQ9vQUEDTmmG2NU6DiEbO0kypt/zBe
-	QnNaBwfX9rMcvrKJ6Amts5QklMkySffASFZ5CfL1i41097cnl/V3AtHnufXcKUOv7XulFMbHd+FIs
-	QXj+Zpjw==;
+	bh=2hzg37OPQ0fO6UrbZVA7WK8dR0qwHJLzP/NNhjBcKNY=; b=gqvoZ+5Y3HzmaE7oa3vWHN2GvK
+	w2VD52+MOwOB38Fjg5pS/cEF3iOsEogzJa3T6CkUWsgBRhVcJPc76AuS709+2rA1ddZUWFYfiXBb1
+	xEFy6iXzUAKIBpP9j5p2Khk8VERN/EiyM4vgeeyp/xgzhkUXT2uqn+s+JgyGc55GdM0379S6XHfEn
+	tkQUlNzKZwrOIZu/bJtRdx51I7w4TV6iQJbiRYH3dmC4r4v5INilaB76TwkrM87YUFI3WxhYk1U23
+	6e+6Sk0W7b865oeEqyylPuf6GT4RsI/fFqSrl3pkCieJT295786Na2/yrbcjQBQtEK8LQiVJa3DEb
+	FTzsvtMw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qoIEZ-001Y2i-1a;
-	Thu, 05 Oct 2023 06:53:19 +0000
+	id 1qoIFI-001Y8O-1N;
+	Thu, 05 Oct 2023 06:54:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qoIEW-001Y2A-1c
+	id 1qoIFD-001Y7k-0S
 	for barebox@lists.infradead.org;
-	Thu, 05 Oct 2023 06:53:17 +0000
+	Thu, 05 Oct 2023 06:54:02 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qoIEV-0005hR-8x; Thu, 05 Oct 2023 08:53:15 +0200
-Message-ID: <9d7b22f9-ee56-6ab2-c193-4f2b8e02fa39@pengutronix.de>
-Date: Thu, 5 Oct 2023 08:53:15 +0200
+	id 1qoIFB-0005tS-U6; Thu, 05 Oct 2023 08:53:57 +0200
+Message-ID: <94c6f8f0-5f55-0f17-8636-06d4a874a51e@pengutronix.de>
+Date: Thu, 5 Oct 2023 08:53:57 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
 Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20230914073018.3462650-1-a.fatoum@pengutronix.de>
- <20230926113853.GC637806@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+References: <20230921141628.277661-1-a.fatoum@pengutronix.de>
+Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20230926113853.GC637806@pengutronix.de>
+In-Reply-To: <20230921141628.277661-1-a.fatoum@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231004_235316_540078_B2FADF93 
-X-CRM114-Status: GOOD (  22.96  )
+X-CRM114-CacheID: sfid-20231004_235359_181110_743A8DB5 
+X-CRM114-Status: GOOD (  18.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,64 +73,53 @@ X-Spam-Status: No, score=-7.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] of: platform: don't fail of_find_device_by_node() if no
- driver bound
+Subject: Re: [PATCH] globalvar: add a globalvar_get helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
+On 21.09.23 16:16, Ahmad Fatoum wrote:
+> We have functions to set global variables, but none to get them, but
+> having a globalvar_get helper could be useful to get code size down when
+> global variables are disabled, as globalvar_get("var") would be optimized
+> out, while getenv("global.var") wouldn't. Therefore, add the helper.
 
-On 26.09.23 13:38, Sascha Hauer wrote:
-> On Thu, Sep 14, 2023 at 09:30:18AM +0200, Ahmad Fatoum wrote:
->> of_find_device_by_node() may be called by a driver following
->> of_platform_populate in order to bind the children to drivers.
->> It's thus wrong to return NULL when a device has been found, but no
->> driver was registered. That also aligns the function with the
->> expectation resulting from its name: A device is found and devices may
->> be bound or not.
-> 
-> I hesitated applying this one because I am not sure if some users expect
-> to have a driver bound when of_find_device_by_node() returns a valid
-> pointer.
-> 
-> I applied it now, let's see what happens.
-
-I ran into this porting the CAAM driver to work on i.MX8M. I don't know
-if existing drivers are affected, but it's the correct thing to do.
+Gentle ping.
 
 > 
-> Sascha
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  include/globalvar.h | 11 +++++++++++
+>  1 file changed, 11 insertions(+)
 > 
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  drivers/of/platform.c | 6 ++----
->>  1 file changed, 2 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
->> index bd5f2ad82c6b..1f79a539f541 100644
->> --- a/drivers/of/platform.c
->> +++ b/drivers/of/platform.c
->> @@ -23,11 +23,9 @@
->>  struct device *of_find_device_by_node(struct device_node *np)
->>  {
->>  	struct device *dev;
->> -	int ret;
->>  
->> -	ret = of_device_ensure_probed(np);
->> -	if (ret)
->> -		return NULL;
->> +	/* Not having a driver is not an error here */
->> +	(void)of_device_ensure_probed(np);
->>  
->>  	if (deep_probe_is_supported())
->>  		return np->dev;
->> -- 
->> 2.39.2
->>
->>
->>
-> 
+> diff --git a/include/globalvar.h b/include/globalvar.h
+> index 36a7c7006c76..5fdb70fca911 100644
+> --- a/include/globalvar.h
+> +++ b/include/globalvar.h
+> @@ -10,6 +10,12 @@
+>  extern struct device global_device;
+>  
+>  #ifdef CONFIG_GLOBALVAR
+> +
+> +static inline const char *globalvar_get(const char *name)
+> +{
+> +	return dev_get_param(&global_device, name);
+> +}
+> +
+>  int globalvar_add_simple(const char *name, const char *value);
+>  
+>  void globalvar_remove(const char *name);
+> @@ -41,6 +47,11 @@ void dev_param_init_from_nv(struct device *dev, const char *name);
+>  void globalvar_alias_deprecated(const char *newname, const char *oldname);
+>  
+>  #else
+> +static inline const char *globalvar_get(const char *name)
+> +{
+> +	return NULL;
+> +}
+> +
+>  static inline int globalvar_add_simple(const char *name, const char *value)
+>  {
+>  	return 0;
 
 -- 
 Pengutronix e.K.                           |                             |
