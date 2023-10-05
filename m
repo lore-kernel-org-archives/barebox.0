@@ -1,87 +1,56 @@
-Delivery-date: Wed, 04 Oct 2023 17:37:27 +0200
+Delivery-date: Thu, 05 Oct 2023 08:46:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qo3wE-005AWf-Vy
-	for lore@lore.pengutronix.de; Wed, 04 Oct 2023 17:37:27 +0200
+	id 1qoI7d-006M4m-3M
+	for lore@lore.pengutronix.de; Thu, 05 Oct 2023 08:46:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qo3wD-00052J-3i
-	for lore@pengutronix.de; Wed, 04 Oct 2023 17:37:26 +0200
+	id 1qoI7b-0004AA-Gx
+	for lore@pengutronix.de; Thu, 05 Oct 2023 08:46:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Content-Type:References:In-Reply-To:Date:To:From:Subject:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cRIQS+SNX3gY2g76YQpR4hu9j1oYGSJ25h2yQsPXae0=; b=FttVKH6Mq14u+RD6xN/5ZV8+KW
-	G/CiGKVlgCDoan+HoLuUhZoiNowf8+y/ePbTtLWtFmHbBX6Lp7o07blzk/6sI/9JniBB9Ytj4ePpZ
-	5OZA0zOo5By9lDE20ncko0nabi4gpS0g08rN5mmi2o3UbT0baAOgERKFXvBf0IgnZgSo9dM1/TeBf
-	IlcsXDe1qw2MNiW3nWoNdAHWzaR82r6OjSHopT0xATlQT9CcUzTGvxQtfAA2m5t2HjvEPx0hqEphT
-	XzKt/VBIXDw2HDF6QxMaTct0VAeLlNQ6jmIa2wI56glVFom7ypeptTDTZmlSOgySTWLVeaaXWEGvy
-	JwD6vDWQ==;
+	bh=fTEuD8iUJ79vL6za1+FesbnVaQGKZLHNgxKpjBfI1tY=; b=xjdPHbrHjxZnGW1hp3r7AoeW0S
+	b/sZt3NZSUhNUDnngRhiNYmWOWlPqu1q7FEdLoVE4XPO3uce5sx/cYrboGp4K+5jZdpg/SB2fQ60k
+	Ct601dz9hWoDOGT6gObQp/DbxHiIvXEFxwPRhkzdMmbyOycnRRtkCgPLYWvKujNOqFnAPoUbK9NO5
+	pzhkC16Z+REZ522bkX16ZeLe7XO7FdYAsnokSIiwlnYyLrw3YA10LUJf8YntKuxBbsp1s2qi8ZzZC
+	SfjOeIqw8Js4bXDg+u/lLU98vtmEl4tm6F+wCD+EhATx1J0c0NNGb6JsFZbzMUBFbg/CDIrwTcabi
+	ElAWU8yQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qo3v2-000N0H-1U;
-	Wed, 04 Oct 2023 15:36:12 +0000
-Received: from mail-wm1-x332.google.com ([2a00:1450:4864:20::332])
+	id 1qoI64-001XLV-31;
+	Thu, 05 Oct 2023 06:44:32 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qo3ux-000MzV-19
+	id 1qoI61-001XL5-11
 	for barebox@lists.infradead.org;
-	Wed, 04 Oct 2023 15:36:10 +0000
-Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-406618d080eso23327905e9.2
-        for <barebox@lists.infradead.org>; Wed, 04 Oct 2023 08:36:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696433765; x=1697038565; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cRIQS+SNX3gY2g76YQpR4hu9j1oYGSJ25h2yQsPXae0=;
-        b=BfHMmU1fxtuL/Gh+NPu9WFw/09TCXGAi+PdIfmdGiRkGjV98LN8P4h4u3Ei3gGudPi
-         P6/3pGpTuACbfs6eDe82mbUKs7OY2+dWx79UdVLxi7kvVRlVUetpWAHBjG3VTEcLgNeg
-         nWsmR6oIyuPFOfx/XhwXjUw6QYIc/fZGGra4tCrEnJotAYHvX0pc3F0pooOX0EXZgQOQ
-         C5tMfehpphwCkGel88VIqCWG8tnEuv1MxmMuiCJZGRRt7f11+8V75oXjYTxqKdDetKcX
-         WRmNB6tqOO/pV2CVbI5sB/9Hg7QbfBb5XyzizmnZq5q4l4+q7vTfB41EwCi4rdsrby8U
-         6DoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696433765; x=1697038565;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=cRIQS+SNX3gY2g76YQpR4hu9j1oYGSJ25h2yQsPXae0=;
-        b=w+SbQt6gtBfhfW1FFF0Lna6czmQeCK7enjLLKijkN2SOfRYxECI9W+JqMwp+uAHduN
-         5eIAKi7ZEEIbbZjnoi4tDAKg6+FA0EOaey3+Wfle5otu9r4BAsO5C1XvdctZsZdCBKg8
-         9Tp/x07eXoUNmXWxRxA9BgiUZ+fd8m07W92vyC0SbIEN5YLgCcT7si2kzsmiST77P9LE
-         JwjIqUG6ROGAIXGBGxN2es5lRoayXmffE0CfCn5oPLgsAMLec/qu/hCPpM9CfzrgyLh3
-         SAOir6Wk+JMtt/pTMzlU4YJI7YI8BjtS4e/OL6Vlq7LC91bQtv/C7ZDgJQu8p+7bpUA2
-         Pe0g==
-X-Gm-Message-State: AOJu0YxcM5BIVMwzximWScTCPbggLDFgVmoIpYAwwiRaWXdXj3nZf7pD
-	bA7pIj70ac9B9x4r2V1WaKHgPH5Ns7s=
-X-Google-Smtp-Source: AGHT+IEOim8OG9jF3MJSubwaC+uYIh1ziQguz2uCKGRRxlkukHGhnmJ6XzJUsWrs13vVsXO3nOSzsQ==
-X-Received: by 2002:a05:600c:252:b0:402:f536:2d3e with SMTP id 18-20020a05600c025200b00402f5362d3emr2640522wmj.14.1696433765075;
-        Wed, 04 Oct 2023 08:36:05 -0700 (PDT)
-Received: from lifebook.fritz.box (p200300da674f2d002c8094b9b12534ba.dip0.t-ipconnect.de. [2003:da:674f:2d00:2c80:94b9:b125:34ba])
-        by smtp.gmail.com with ESMTPSA id g23-20020a7bc4d7000000b004055858e7d8sm1825943wmk.7.2023.10.04.08.36.04
-        for <barebox@lists.infradead.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 04 Oct 2023 08:36:04 -0700 (PDT)
-Message-ID: <de60ec21d9baea3fce92ba5cbb3c1ed8ff07ca1f.camel@gmail.com>
-From: Denis Osterland-Heim <denis.osterland@gmail.com>
-To: barebox@lists.infradead.org
-Date: Wed, 04 Oct 2023 17:36:03 +0200
-In-Reply-To: <a308192d641c20d4a4576234e145b82c0e5f9d74.camel@gmail.com>
-References: <20231004152051.618427-1-denis.osterland@gmail.com>
-	 <a308192d641c20d4a4576234e145b82c0e5f9d74.camel@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.48.1-0ubuntu1 
+	Thu, 05 Oct 2023 06:44:31 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qoI5z-0003pL-RN; Thu, 05 Oct 2023 08:44:27 +0200
+Message-ID: <3e92ee2a-92b5-e21e-30ee-3ffb6eec6fdf@pengutronix.de>
+Date: Thu, 5 Oct 2023 08:44:26 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
+References: <20230928122133.2587197-1-o.rempel@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20230928122133.2587197-1-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231004_083607_396248_2C55E7CB 
-X-CRM114-Status: GOOD (  12.90  )
+X-CRM114-CacheID: sfid-20231004_234429_359929_E9EBEFD9 
+X-CRM114-Status: GOOD (  20.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,45 +68,74 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH v2 2/2] fixup! raspi: fixup additional vc created nodes
+X-Spam-Status: No, score=-7.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v1] video: edid: print debug message on EDID read out
+ error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+Hello Oleksij,
 
-Looks broken again, sorry.
-
-Regards, Denis
-
-Am Mittwoch, dem 04.10.2023 um 17:22 +0200 schrieb Denis Osterland-
-Heim:
-> From: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
+On 28.09.23 14:21, Oleksij Rempel wrote:
+> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > 
+> EDID readout errors happen often, e.g. because the HDMI port doesn't
+> have a display connected. However, when a monitor is connected, but some
+> other error occurs, barebox is silent. Add a debug message with an error
+> code for this.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+This patch had been posted before and Marco had an objection to it:
+https://lore.barebox.org/barebox/20221223090605.zis4mcft72crswfm@pengutronix.de/
+
 > ---
->  arch/arm/boards/raspberry-pi/rpi-common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/video/edid.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
 > 
-> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c
-> b/arch/arm/boards/raspberry-pi/rpi-common.c
-> index ea3c72fb94..713fad78c9 100644
-> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
-> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-> @@ -289,7 +289,7 @@ static struct device_node
-> *register_vc_fixup(struct
-> device_node *root,
->                 tmp->full_name = xstrdup(ret->full_name);
->                 of_register_fixup(rpi_vc_fdt_fixup, tmp);
->         } else {
-> -               pr_info("no '%s' node found in vc fdtn", path);
-> +               pr_info("no '%s' node found in vc fdtn", path);
->         }
->  
->         return ret;
+> diff --git a/drivers/video/edid.c b/drivers/video/edid.c
+> index d2757185f6..2baf6646d9 100644
+> --- a/drivers/video/edid.c
+> +++ b/drivers/video/edid.c
+> @@ -852,20 +852,27 @@ edid_do_read_i2c(struct i2c_adapter *adapter, unsigned char *buf,
+>  		ret = i2c_transfer(adapter, &msgs[3 - xfers], xfers);
+>  	} while (ret != xfers && --retries);
+>  
+> -	return ret == xfers ? 0 : -1;
+> +	if (ret == 0)
+> +		ret = -EPROTO;
+> +
+> +	return ret == xfers ? 0 : ret;
+>  }
+>  
+>  void *edid_read_i2c(struct i2c_adapter *adapter)
+>  {
+>  	u8 *block;
+> +	int ret;
+>  
+>  	if (!IS_ENABLED(CONFIG_I2C))
+>  		return NULL;
+>  
+>  	block = xmalloc(EDID_LENGTH);
+>  
+> -	if (edid_do_read_i2c(adapter, block, 0, EDID_LENGTH))
+> +	ret = edid_do_read_i2c(adapter, block, 0, EDID_LENGTH);
+> +	if (ret) {
+> +		dev_dbg(&adapter->dev, "EDID readout failed: %pe\n", ERR_PTR(ret));
+>  		goto out;
+> +	}
+>  
+>  	return block;
+>  out:
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
