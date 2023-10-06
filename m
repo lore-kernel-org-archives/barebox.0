@@ -1,80 +1,57 @@
-Delivery-date: Fri, 06 Oct 2023 12:01:48 +0200
+Delivery-date: Fri, 06 Oct 2023 12:05:24 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qoheW-008DhH-NP
-	for lore@lore.pengutronix.de; Fri, 06 Oct 2023 12:01:48 +0200
+	id 1qohi0-008DuL-4Q
+	for lore@lore.pengutronix.de; Fri, 06 Oct 2023 12:05:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qoheW-0007Js-3w
-	for lore@pengutronix.de; Fri, 06 Oct 2023 12:01:48 +0200
+	id 1qohhx-0008Ir-TQ
+	for lore@pengutronix.de; Fri, 06 Oct 2023 12:05:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
-	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+0Zy2Tg+Bzvw+U3Rt3R4TCoDLMSUuWr0Z0U4rP4bLSM=; b=pJugQZu7T/VoTMkoLLmWcMw+ri
-	nBjhDnf5yzni2vJYf8DxEOcQD1Ijka19KCVGqawuUWQyJEtTQBmatF8gV30Mj6H+JJ+7FlMs2rQMA
-	00byqxydiI4/IcNxwQthQ7u1MWjia1xCxYiBqt6dFY/t1FpZamFlpyBWzRFP9kwIbol2jOSOYFxjA
-	nIwPvUjkzf/EtRmRJclJlyL+BrGQnKZ6annjxuUZqqN7N8hsD3Kgi4MMo5HPh56yoSMvZsTGdx8bX
-	62NssZoD8+osBRCgCHeL6Jjttg/BZRAqCPAyXL45U4rbAITCfIP//JSv9zokN9eKasmRVOy5Rm2Hh
-	ss+fyfjQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=JWKQ2hlwlenZZjdyzOcVfqSbC38STYsrPjKCneFJpHA=; b=Bq1C0aUQEG37RY7li/FtCgT9xO
+	G2tWD8+EVXDTlkYyp1a5iFTg34MrXg94KaGJXmUBZZUp7g9kMlJLLLB1fIEMxdlU96k9DjeB/vt9x
+	8YEBRgUi2lItQyjAX8PYfehT6xmX2Ayfvho8hDl7PtbhCFAVkLnMmkkXUusg3EiMDhuz2ZPpMe1ox
+	6rrs0KJiiK3fi9unH3eIIg0jO5l353Y/fngFcv2opMe7QN1ytSC5bqRwMSe6+6ScImIW1kvKQ7kd9
+	ha+YVn2HyoNaLRhgk9FaW/PgosZouBNM6JCFh6tW1d/AFMWYuahDiouo8QOqQDr9exHca9SbTlyiw
+	34fKUscg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qohdC-005RBN-0q;
-	Fri, 06 Oct 2023 10:00:26 +0000
-Received: from mail-pj1-x102c.google.com ([2607:f8b0:4864:20::102c])
+	id 1qohgp-005S2K-1H;
+	Fri, 06 Oct 2023 10:04:11 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qohd7-005R8j-2N
+	id 1qohgl-005S1f-0S
 	for barebox@lists.infradead.org;
-	Fri, 06 Oct 2023 10:00:24 +0000
-Received: by mail-pj1-x102c.google.com with SMTP id 98e67ed59e1d1-2773f2e599cso1401686a91.1
-        for <barebox@lists.infradead.org>; Fri, 06 Oct 2023 03:00:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696586418; x=1697191218; darn=lists.infradead.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=+0Zy2Tg+Bzvw+U3Rt3R4TCoDLMSUuWr0Z0U4rP4bLSM=;
-        b=H4qWdFgDOfkSGRa+cyoyb5pyT2jTawbmBdmPuWLNR2Il8SNQee+eH6CeU1zLRnCiCQ
-         aLJ09POrhwyCt03a0Olc+3tsWT+0W5/JerGjI/L7XHC9vObg/GnLU9N61fV8TorhHzOS
-         tkG9QO/4O+800BXdNFk5yOiualgcvqYo3Z8rLBSUl4kM+4m9ZVbe86XbWzMxxI3INHGO
-         zWw8MgRX/2ciqiLsFuWLFNV1Qzd6MSm/RaimuLW93o9fYXGuT65gDYH1Khs80AAjCupT
-         EFnYxQGkVEn3qkSzPnrcxawSpTyl4myszugxHntEqb+eHf8nb8sKTm1mmLuqzY6tsOMR
-         xXfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696586418; x=1697191218;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+0Zy2Tg+Bzvw+U3Rt3R4TCoDLMSUuWr0Z0U4rP4bLSM=;
-        b=TvUjlLB7EsJA3F0GW0UW2qNgWLDLoSkK7IkiWKzE4pMYYcKzi59NlbsZIzuciupd6w
-         wzl1gqDv2bb+EiMEdpwJMlH3m4v4y86thczUL+ftxfBULuL3JP1bzkikks4kQ6bYJc4X
-         MquusRfvFFJ1mPhnD6QEwDeUZfypNvc5hQQUiTzVXb/Fw5sz3869aILCC3YxSpMDP6T+
-         cHbvwVUl3JHRLZKTnAVk9jx1KeNtDm1Dv44xc6dFDt+Nj/fwL4cFJM9YK17sNs95yTp4
-         H5o8Cz3lJH+Kjy1vcdVMdnsmipMybHQw3BrIK+YPCqVpOaN3roXJ9YLMLERXtKRDBQnY
-         BK3A==
-X-Gm-Message-State: AOJu0YzE3NkkIwAWd3gWIMs9qARYGueJf3rJpJUH8lz0JGltwIW+PBmX
-	enNTOZvSmFjJ8XwVutxIgsdyKHJvTsR/Q5EftlsWUvIk29poAw==
-X-Google-Smtp-Source: AGHT+IGVHqxJx9DsAQ+6FFQQhIxGymStByRIoOwnYB172jsO752v6GT70oU7dfOYuqEt0DbNytX7tJi7kZNMEi6XFeA=
-X-Received: by 2002:a17:90a:630a:b0:269:6c5:11a7 with SMTP id
- e10-20020a17090a630a00b0026906c511a7mr7602030pjj.17.1696586417863; Fri, 06
- Oct 2023 03:00:17 -0700 (PDT)
+	Fri, 06 Oct 2023 10:04:09 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qohgj-00080Y-7P; Fri, 06 Oct 2023 12:04:05 +0200
+Message-ID: <4820f5dc-6e80-2970-864c-852739f4163e@pengutronix.de>
+Date: Fri, 6 Oct 2023 12:04:05 +0200
 MIME-Version: 1.0
-References: <20231006052821.3246-1-eagle.alexander923@gmail.com> <bebb4782-d1cb-e870-6837-7b00133193ca@pengutronix.de>
-In-Reply-To: <bebb4782-d1cb-e870-6837-7b00133193ca@pengutronix.de>
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri, 6 Oct 2023 13:00:05 +0300
-Message-ID: <CAP1tNvQS9A-+B4NCVQ75ct+ZqUaskRkqzBLBrg+cyB5YeSqOSg@mail.gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Alexander Shiyan <eagle.alexander923@gmail.com>,
+ barebox@lists.infradead.org
+References: <20231006054812.4343-1-eagle.alexander923@gmail.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20231006054812.4343-1-eagle.alexander923@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231006_030021_791807_B4D1FF01 
-X-CRM114-Status: GOOD (  16.94  )
+X-CRM114-CacheID: sfid-20231006_030407_174949_AC2179B1 
+X-CRM114-Status: GOOD (  17.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,35 +69,125 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] clk: Fix return value of of_clk_get_by_name()
+X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/2] nvmem: Add Rockchip OTP controller driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-> On 06.10.23 07:28, Alexander Shiyan wrote:
-> > of_clk_get_by_name() is used by clk_bulk_get_optional() => clk_get() function,
-> > so in case some clocks are missing we should return -ENOENT error code,
-> > as this is normal for optional clocks.
-> > The current implementation of of_clk_get_by_name() returns the -EINVAL error
-> > that comes from of_clk_get() with index <0 if the clock is not described
-> > in the device tree.
->
-> I stumbled upon the same problem and found that of_clk_get_by_name() returning
-> ERR_PTR(-EINVAL) in this case is documented Linux behavior (for of_parse_clkspec()).
->
-> The correct solution is thus to leave of_clk_get_by_name() alone and align
-> clk_get return values with Linux.
->
-> I did this in
-> https://lore.barebox.org/barebox/20230921080236.GX637806@pengutronix.de/T/#t
->
-> Can you test with that and see if it solves your issue?
+Hi Alexander,
 
-Hello Ahmad.
-Yes, this patch works. Thanks!
+On 06.10.23 07:48, Alexander Shiyan wrote:
+> +static __maybe_unused const struct of_device_id rockchip_otp_match[] = {
+> +	{
+> +		.compatible = "rockchip,px30-otp",
+> +		.data = &px30_data,
+> +	},
+> +	{
+> +		.compatible = "rockchip,rk3308-otp",
+> +		.data = &px30_data,
+> +	},
+> +	{
+> +		.compatible = "rockchip,rk3568-otp",
+> +		.data = &rk3568_data,
+> +	},
+> +	{
+> +		.compatible = "rockchip,rk3588-otp",
+> +		.data = &rk3588_data,
+> +	},
+
+Just out of curiosity: Which SoC of these are you using?
+
+Cheers,
+Ahmad
+
+> +	{ /* sentinel */ },
+> +};
+> +MODULE_DEVICE_TABLE(of, rockchip_otp_match);
+> +
+> +static int rockchip_otp_probe(struct device *dev)
+> +{
+> +	struct rockchip_otp *otp;
+> +	const struct rockchip_data *data;
+> +	struct nvmem_device *nvmem;
+> +	struct resource *res;
+> +	int ret, i;
+> +
+> +	data = of_device_get_match_data(dev);
+> +	if (!data)
+> +		return dev_err_probe(dev, -EINVAL, "failed to get match data\n");
+> +
+> +	otp = kzalloc(sizeof(*otp), GFP_KERNEL);
+> +	if (!otp)
+> +		return -ENOMEM;
+> +
+> +	res = dev_request_mem_resource(dev, 0);
+> +	if (IS_ERR(res)) {
+> +		ret = PTR_ERR(res);
+> +		goto err_free;
+> +	}
+> +
+> +	otp->data = data;
+> +	otp->dev = dev;
+> +	otp->base = IOMEM(res->start);
+> +
+> +	otp->clks = kcalloc(data->num_clks, sizeof(*otp->clks), GFP_KERNEL);
+> +	if (!otp->clks) {
+> +		ret = -ENOMEM;
+> +		goto err_free;
+> +	}
+> +
+> +	for (i = 0; i < data->num_clks; ++i)
+> +		otp->clks[i].id = data->clks[i];
+> +
+> +	ret = clk_bulk_get_optional(dev, data->num_clks, otp->clks);
+> +	if (ret)
+> +		goto err_clk;
+> +
+> +	otp->rst = reset_control_get(dev, NULL);
+> +	if (IS_ERR(otp->rst)) {
+> +		ret = PTR_ERR(otp->rst);
+> +		goto err_rst;
+> +	}
+> +
+> +	otp_config.size = data->size;
+> +	otp_config.priv = otp;
+> +	otp_config.dev = dev;
+> +
+> +	nvmem = nvmem_register(&otp_config);
+> +	if (!IS_ERR(nvmem))
+> +		return 0;
+> +
+> +	ret = PTR_ERR(nvmem);
+> +
+> +	reset_control_put(otp->rst);
+> +
+> +err_rst:
+> +	clk_bulk_put_all(data->num_clks, otp->clks);
+> +
+> +err_clk:
+> +	kfree(otp->clks);
+> +
+> +err_free:
+> +	kfree(otp);
+> +
+> +	return ret;
+> +}
+> +
+> +static struct driver rockchip_otp_driver = {
+> +	.name	= "rockchip-otp",
+> +	.probe	= rockchip_otp_probe,
+> +	.of_compatible = DRV_OF_COMPAT(rockchip_otp_match),
+> +};
+> +device_platform_driver(rockchip_otp_driver);
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
