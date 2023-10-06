@@ -1,82 +1,86 @@
-Delivery-date: Fri, 06 Oct 2023 07:30:14 +0200
+Delivery-date: Fri, 06 Oct 2023 07:49:50 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qodPi-007wRo-3M
-	for lore@lore.pengutronix.de; Fri, 06 Oct 2023 07:30:14 +0200
+	id 1qodif-007yCV-Vj
+	for lore@lore.pengutronix.de; Fri, 06 Oct 2023 07:49:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qodPg-0006fK-KO
-	for lore@pengutronix.de; Fri, 06 Oct 2023 07:30:13 +0200
+	id 1qodie-0007wC-R8
+	for lore@pengutronix.de; Fri, 06 Oct 2023 07:49:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ARtSCfS2SBzWbVjfa7Z4VYPeCWVMw7vffadZMDMmy3M=; b=tEAyMSeUMsgkK58KSl4CVpnTSS
-	3qQgQbQyayHsqblDrGC6ejaVOUTPLk4PTv0689urrc0y9F+q+BqUY3raEoTevMZUxc2MkZVsraV9p
-	Ubn9klEmamsX7UAvUHiQYYYJxzlNs4VxIfovsdxwyHQLeIUAXiPkVvmpdizHSRqxAavKvMhOl+m9G
-	PzPUlCEvYaFS6A7qKiJ+iGpbs1KIdcmMqWCCLRjygyIO9bc2Mf/Uf20d+phd5TU6YlB+/qKn/pWdW
-	Un2lyf2qe12GzYjKM5zV5ZM5fKB86tCsdS0BcCkjNqhAqhp3NnGnlHdMn79eRVJeZM8vbKQygbbbT
-	bhpOeleA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=/DeLhGV0GOqOQdlXRJTt4t1UrZ62tCjKkGrMNYok8ak=; b=cT2wXc35v+jCpx08qoTlb0SjYw
+	MEuo73BdVBzGPQwkHglCBU4RD9YAzTZ9vGpTtx4e45qpQfxVLjt9Vo/T2RqMEGEFahCcnNzArFEmU
+	o8jA4dsHZ3vLKhCSnBjCHJCYAQ3SSa/RgtsbrM+XYfsHyH6UT02YyaOiSDZyUMLWxN08Blo+6P6uF
+	djkJYlxQ1VUq9bEd+Tr4uNdmp001XgdzbRJZ3b1xna21Tzghdb+zhNwG48j4T8rgi+PCxd7Wak/7S
+	jp8eq7qJ04HtZwRZ5hFXcnM3KRRnMh6p7Nmz4NeEyae+ZDyBoHGIkWzA1M+Q4jMH9M5Kw2vgZCIFd
+	5WrMm/0Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qodOB-0050Nk-2p;
-	Fri, 06 Oct 2023 05:28:39 +0000
-Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
+	id 1qodhO-0051KM-37;
+	Fri, 06 Oct 2023 05:48:30 +0000
+Received: from mail-lf1-x131.google.com ([2a00:1450:4864:20::131])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qodO8-0050N2-03
+	id 1qodhL-0051JH-31
 	for barebox@lists.infradead.org;
-	Fri, 06 Oct 2023 05:28:37 +0000
-Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-50336768615so2282637e87.0
-        for <barebox@lists.infradead.org>; Thu, 05 Oct 2023 22:28:34 -0700 (PDT)
+	Fri, 06 Oct 2023 05:48:29 +0000
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-50435ad51bbso2200630e87.2
+        for <barebox@lists.infradead.org>; Thu, 05 Oct 2023 22:48:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1696570113; x=1697174913; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ARtSCfS2SBzWbVjfa7Z4VYPeCWVMw7vffadZMDMmy3M=;
-        b=DsXLcoilbmi4M0W9ircHWBteAFruABW8RuU2PxVNjG5rjZuxFFmLtSiZuTR8c/3e8P
-         MVKU+4V3dFLpAG9DfpAw1broBPJtBip4XgjWgqdLLFYfWGblTCdhjZMqkMOlI7m1wUJC
-         z43V5q3QQ10Tn+fVMZdCpZxQ0Qrip9lMC+cLqdlF5kE8XlvmkydEeUR3MnLcVDH7TluY
-         68GjfXJzBZaeeAzqDP3XgzUaq4ZMCxTU+QsqvEHbdH4rffl0wRWpQwhIY0nLeQXxLpJq
-         q44M6wg1mdrX+zRJrAcjg+Buvs7X1wAdo6/ZOnATHZRur5+L6HLRqUBccmBfv+/luswG
-         +GDw==
+        d=gmail.com; s=20230601; t=1696571304; x=1697176104; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/DeLhGV0GOqOQdlXRJTt4t1UrZ62tCjKkGrMNYok8ak=;
+        b=dVBnEH2vJM6WcjQyCDitnCD1eUHbvpEpI8x/loS7ENtbtBdvGyX+HKd0zyiG+YdmeT
+         bPgy+9q2H5qRYbkuZIIqj4Yl1uve5nLpoGfLTkshrILauApQvKyq9FzQsSu+tqNtZVzM
+         yG3bgOUNbvrIDsWkWcxMqUeCgPNLFMpMl8C+uMvbGaDU9iwKQv0QvGN8aXnzDStS7t5y
+         uXHn+twYI3GHMu0syaR2DhALte8iHKjeJFDu8zc0WBprhbwk0wBEEV8Ns3PeAPJ3lwFR
+         Z1XXKf+BRpMZxYHU+W7x1aUD7tSSshgUefNBciXzng1MLxbP9byg2/ttt+YGxZmwDVNn
+         MVMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1696570113; x=1697174913;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ARtSCfS2SBzWbVjfa7Z4VYPeCWVMw7vffadZMDMmy3M=;
-        b=igNoU6wloKlpr4lbQdrF/D6fe7XrEOtIJXBeTrlUPWBrL+xRAXPlUS8sJKqbFHNg5N
-         1lJak5VfY3EbPQGvUKJ6P1Jstg4LCU2VarDKWKozW3q2P0CaIKmjg5j7Ir+6Wj9y+aqM
-         yi+JQdf3VMNnOFtbIGlIQqwyFVKeZ8AXK2AHXCxfKk71ybXMriDAVzuSKYcZTJ5Z4nCU
-         y8YQgannwIYRqeIyCD/N5wApDsy4nb6PSoWZiTmBwsFH0u5Y+OGtXHjK2azXesF4Xl8Q
-         MC+x/MrG05G/BwSAlpXvzqkuyp4AxXIVwsPOgf0WRysfqDmBqYX4uzeIXi4kn7T3iqz9
-         djKA==
-X-Gm-Message-State: AOJu0YxnWT/v8PpCBnek15G11u5Svy0EPkphXj0qZ53iIhQBENiBON9U
-	k7ZgUd7jtI209yB1WeDfcSedwYSNp3I=
-X-Google-Smtp-Source: AGHT+IG47NybggVOAxN30yr1ImH5Dbis2/86NXBASWOHcaNLA2Wp7DI/Ut+3xXy6K3kTp8ET2zbNvQ==
-X-Received: by 2002:a19:6d1a:0:b0:4fe:7e1f:766a with SMTP id i26-20020a196d1a000000b004fe7e1f766amr5874451lfc.24.1696570112754;
-        Thu, 05 Oct 2023 22:28:32 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1696571304; x=1697176104;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/DeLhGV0GOqOQdlXRJTt4t1UrZ62tCjKkGrMNYok8ak=;
+        b=PgPg/auN864JrbOTowDHA23rTzzRLMFHy9kmXDUSr2QTzCsrd3x0HleLGOQkR7qwpb
+         U39CErz6SsZKkmuJUatrRZ+6SbLIGla59XSOBYBc9eMZ0KI22E8w939/T8ElAdNYavxN
+         GvV1x2Eo14ebP/VOwN9c2Ox84g7HpnLj42mCanN5Q36rdaFXke25qPbnET8RqfPaLwm3
+         dgvSSoBNux/2/gZeoV7QV+mMMQwizVjwHTY4cQiaB6ZvCQG/QyDa8229n1gzvhjy4jnz
+         hT+Xga3OYwhk+6iAFPD5d5qXgcdy1ukHrlOWI9km4PrBg62HeHMBMBUQS+RfrDEmWQXA
+         aW/Q==
+X-Gm-Message-State: AOJu0Yw7xjhd2WirozeFQqJF1RAr86Sfzt6kdJMxxjnhvxuZ3uUC5h0X
+	TlmUARxb0oKJNSzn4Eo1ROZqLlG+SNQ=
+X-Google-Smtp-Source: AGHT+IEA/oRRT+QCwui++dwTGqqLDpjcUVq7FL3tRsWU2ExLKTb9k5YTFiohXHrJ8ErvsrBDT/jcKA==
+X-Received: by 2002:ac2:58cf:0:b0:503:3803:9e99 with SMTP id u15-20020ac258cf000000b0050338039e99mr5413580lfo.15.1696571303603;
+        Thu, 05 Oct 2023 22:48:23 -0700 (PDT)
 Received: from localhost.localdomain ([188.243.23.53])
-        by smtp.gmail.com with ESMTPSA id w4-20020a05651204c400b005056d0f000dsm149545lfq.155.2023.10.05.22.28.31
+        by smtp.gmail.com with ESMTPSA id r5-20020ac252a5000000b00503041fc2dfsm164866lfm.0.2023.10.05.22.48.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 05 Oct 2023 22:28:32 -0700 (PDT)
+        Thu, 05 Oct 2023 22:48:23 -0700 (PDT)
 From: Alexander Shiyan <eagle.alexander923@gmail.com>
 To: barebox@lists.infradead.org
 Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Fri,  6 Oct 2023 08:28:21 +0300
-Message-Id: <20231006052821.3246-1-eagle.alexander923@gmail.com>
+Date: Fri,  6 Oct 2023 08:48:12 +0300
+Message-Id: <20231006054812.4343-2-eagle.alexander923@gmail.com>
 X-Mailer: git-send-email 2.39.1
+In-Reply-To: <20231006054812.4343-1-eagle.alexander923@gmail.com>
+References: <20231006054812.4343-1-eagle.alexander923@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231005_222836_060652_4D746F96 
-X-CRM114-Status: GOOD (  15.75  )
+X-CRM114-CacheID: sfid-20231005_224827_995549_1E5EC955 
+X-CRM114-Status: UNSURE (   9.16  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,63 +103,35 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] clk: Fix return value of of_clk_get_by_name()
+Subject: [PATCH 2/2] dts: rk356x: Add devicetree node for OTP
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-of_clk_get_by_name() is used by clk_bulk_get_optional() => clk_get() function,
-so in case some clocks are missing we should return -ENOENT error code,
-as this is normal for optional clocks.
-The current implementation of of_clk_get_by_name() returns the -EINVAL error
-that comes from of_clk_get() with index <0 if the clock is not described
-in the device tree.
-
 Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
 ---
- drivers/clk/clkdev.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm/dts/rk356x.dtsi | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
-index dbe998b6af..f6c2fcdf10 100644
---- a/drivers/clk/clkdev.c
-+++ b/drivers/clk/clkdev.c
-@@ -52,10 +52,9 @@ EXPORT_SYMBOL(of_clk_get);
-  */
- struct clk *of_clk_get_by_name(struct device_node *np, const char *name)
- {
--	struct clk *clk = ERR_PTR(-ENOENT);
--
- 	/* Walk up the tree of devices looking for a clock that matches */
- 	while (np) {
-+		struct clk *clk;
- 		int index = 0;
- 
- 		/*
-@@ -68,11 +67,12 @@ struct clk *of_clk_get_by_name(struct device_node *np, const char *name)
- 							 name);
- 		clk = of_clk_get(np, index);
- 		if (!IS_ERR(clk))
--			break;
--		else if (name && index >= 0) {
-+			return clk;
+diff --git a/arch/arm/dts/rk356x.dtsi b/arch/arm/dts/rk356x.dtsi
+index 4de2404b50..195b42a8b0 100644
+--- a/arch/arm/dts/rk356x.dtsi
++++ b/arch/arm/dts/rk356x.dtsi
+@@ -11,4 +11,15 @@ dmc: memory-controller {
+ 		compatible = "rockchip,rk3568-dmc";
+ 		rockchip,pmu = <&pmugrf>;
+ 	};
 +
-+		if (name && index >= 0) {
- 			pr_err("ERROR: could not get clock %pOF:%s(%i)\n",
- 				np, name ? name : "", index);
--			return clk;
-+			return ERR_PTR(-ENOENT);
- 		}
- 
- 		/*
-@@ -85,7 +85,7 @@ struct clk *of_clk_get_by_name(struct device_node *np, const char *name)
- 			break;
- 	}
- 
--	return clk;
-+	return ERR_PTR(-ENOENT);
- }
- EXPORT_SYMBOL(of_clk_get_by_name);
- #endif
++	otp: nvmem@fe38c000 {
++		compatible = "rockchip,rk3568-otp";
++		reg = <0x0 0xfe38c000 0x0 0x4000>;
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		cpu_id: id@a {
++			reg = <0x0a 0x10>;
++		};
++	};
+ };
 -- 
 2.39.1
 
