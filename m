@@ -1,71 +1,82 @@
-Delivery-date: Thu, 05 Oct 2023 09:08:35 +0200
+Delivery-date: Fri, 06 Oct 2023 07:30:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qoITL-006OTr-Rm
-	for lore@lore.pengutronix.de; Thu, 05 Oct 2023 09:08:35 +0200
+	id 1qodPi-007wRo-3M
+	for lore@lore.pengutronix.de; Fri, 06 Oct 2023 07:30:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qoITJ-0000bE-0T
-	for lore@pengutronix.de; Thu, 05 Oct 2023 09:08:35 +0200
+	id 1qodPg-0006fK-KO
+	for lore@pengutronix.de; Fri, 06 Oct 2023 07:30:13 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=l18z9V8eonI6P4ikp64lWt98q9T1SFC6tSikv287Dd0=; b=jfcMsC7CUCnVfsyaY70ZgSZLCW
-	CcSAeQlZaNLxWBF+XPH9oPqlY/Qmbwbeyc7jZNlhqwUDS0qfgSY/U/RtqcE3HPyC3G0Y95RycHkTD
-	W1G2lSkt8fHCC6+ByfQgwQJYOWSsFExlpP2kfnNFgjkYutxH9Jxvs0DCIIB1jkVoO/dcuT4lgER0k
-	mN14Nx7UwN6rHwUuIFl/rh6TMrHamMfXhhftNKpfO7+hyx6U+AXxoF17rOpTxmnQ+9y7nrZDQrRI9
-	BOBxKTZG0wxWi3xehfZHq8fNKzf5IbAR65EnY9VDKxGq5pMfyzqhMSlttjtkoxuPIuDkcxSznW25C
-	OS8Hv2/Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ARtSCfS2SBzWbVjfa7Z4VYPeCWVMw7vffadZMDMmy3M=; b=tEAyMSeUMsgkK58KSl4CVpnTSS
+	3qQgQbQyayHsqblDrGC6ejaVOUTPLk4PTv0689urrc0y9F+q+BqUY3raEoTevMZUxc2MkZVsraV9p
+	Ubn9klEmamsX7UAvUHiQYYYJxzlNs4VxIfovsdxwyHQLeIUAXiPkVvmpdizHSRqxAavKvMhOl+m9G
+	PzPUlCEvYaFS6A7qKiJ+iGpbs1KIdcmMqWCCLRjygyIO9bc2Mf/Uf20d+phd5TU6YlB+/qKn/pWdW
+	Un2lyf2qe12GzYjKM5zV5ZM5fKB86tCsdS0BcCkjNqhAqhp3NnGnlHdMn79eRVJeZM8vbKQygbbbT
+	bhpOeleA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qoISC-001ZSV-0m;
-	Thu, 05 Oct 2023 07:07:24 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1qodOB-0050Nk-2p;
+	Fri, 06 Oct 2023 05:28:39 +0000
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qoIS9-001ZR7-0e
+	id 1qodO8-0050N2-03
 	for barebox@lists.infradead.org;
-	Thu, 05 Oct 2023 07:07:22 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1qoIS6-0000J3-19; Thu, 05 Oct 2023 09:07:18 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1qoIS5-00BCme-IS; Thu, 05 Oct 2023 09:07:17 +0200
-Received: from ore by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1qoIS5-00Csia-Es; Thu, 05 Oct 2023 09:07:17 +0200
-Date: Thu, 5 Oct 2023 09:07:17 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Sascha Hauer <sha@pengutronix.de>, barebox@lists.infradead.org
-Message-ID: <20231005070717.GA3069731@pengutronix.de>
-References: <20231002101654.2373000-1-o.rempel@pengutronix.de>
- <20231002101654.2373000-10-o.rempel@pengutronix.de>
- <20231004064156.GG637806@pengutronix.de>
- <6eab50a1-e490-3abf-5009-e1b8165c1cbb@pengutronix.de>
+	Fri, 06 Oct 2023 05:28:37 +0000
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-50336768615so2282637e87.0
+        for <barebox@lists.infradead.org>; Thu, 05 Oct 2023 22:28:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1696570113; x=1697174913; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=ARtSCfS2SBzWbVjfa7Z4VYPeCWVMw7vffadZMDMmy3M=;
+        b=DsXLcoilbmi4M0W9ircHWBteAFruABW8RuU2PxVNjG5rjZuxFFmLtSiZuTR8c/3e8P
+         MVKU+4V3dFLpAG9DfpAw1broBPJtBip4XgjWgqdLLFYfWGblTCdhjZMqkMOlI7m1wUJC
+         z43V5q3QQ10Tn+fVMZdCpZxQ0Qrip9lMC+cLqdlF5kE8XlvmkydEeUR3MnLcVDH7TluY
+         68GjfXJzBZaeeAzqDP3XgzUaq4ZMCxTU+QsqvEHbdH4rffl0wRWpQwhIY0nLeQXxLpJq
+         q44M6wg1mdrX+zRJrAcjg+Buvs7X1wAdo6/ZOnATHZRur5+L6HLRqUBccmBfv+/luswG
+         +GDw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1696570113; x=1697174913;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ARtSCfS2SBzWbVjfa7Z4VYPeCWVMw7vffadZMDMmy3M=;
+        b=igNoU6wloKlpr4lbQdrF/D6fe7XrEOtIJXBeTrlUPWBrL+xRAXPlUS8sJKqbFHNg5N
+         1lJak5VfY3EbPQGvUKJ6P1Jstg4LCU2VarDKWKozW3q2P0CaIKmjg5j7Ir+6Wj9y+aqM
+         yi+JQdf3VMNnOFtbIGlIQqwyFVKeZ8AXK2AHXCxfKk71ybXMriDAVzuSKYcZTJ5Z4nCU
+         y8YQgannwIYRqeIyCD/N5wApDsy4nb6PSoWZiTmBwsFH0u5Y+OGtXHjK2azXesF4Xl8Q
+         MC+x/MrG05G/BwSAlpXvzqkuyp4AxXIVwsPOgf0WRysfqDmBqYX4uzeIXi4kn7T3iqz9
+         djKA==
+X-Gm-Message-State: AOJu0YxnWT/v8PpCBnek15G11u5Svy0EPkphXj0qZ53iIhQBENiBON9U
+	k7ZgUd7jtI209yB1WeDfcSedwYSNp3I=
+X-Google-Smtp-Source: AGHT+IG47NybggVOAxN30yr1ImH5Dbis2/86NXBASWOHcaNLA2Wp7DI/Ut+3xXy6K3kTp8ET2zbNvQ==
+X-Received: by 2002:a19:6d1a:0:b0:4fe:7e1f:766a with SMTP id i26-20020a196d1a000000b004fe7e1f766amr5874451lfc.24.1696570112754;
+        Thu, 05 Oct 2023 22:28:32 -0700 (PDT)
+Received: from localhost.localdomain ([188.243.23.53])
+        by smtp.gmail.com with ESMTPSA id w4-20020a05651204c400b005056d0f000dsm149545lfq.155.2023.10.05.22.28.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 05 Oct 2023 22:28:32 -0700 (PDT)
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+To: barebox@lists.infradead.org
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Fri,  6 Oct 2023 08:28:21 +0300
+Message-Id: <20231006052821.3246-1-eagle.alexander923@gmail.com>
+X-Mailer: git-send-email 2.39.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <6eab50a1-e490-3abf-5009-e1b8165c1cbb@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231005_000721_257231_39025E6B 
-X-CRM114-Status: GOOD (  17.38  )
+X-CRM114-CacheID: sfid-20231005_222836_060652_4D746F96 
+X-CRM114-Status: GOOD (  15.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,47 +94,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 09/10] net: lib: add ether_addr_inc() helper
+X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] clk: Fix return value of of_clk_get_by_name()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Oct 05, 2023 at 08:48:46AM +0200, Ahmad Fatoum wrote:
-> >> +void ether_addr_inc(u8 *dst_addr, const u8 *src_addr, u32 increment)
-> >> +{
-> >> +	u32 value;
-> >> +	int i;
-> >> +
-> >> +	for(i = 0; i < 6; ++i)
-> >> +		dst_addr[i] = src_addr[i];
-> >> +
-> >> +	for(i = 5; i >= 0 && increment; --i) {
-> >> +		value = dst_addr[i] + increment;
-> >> +		dst_addr[i] = value & 0xFF;
-> >> +		increment = value >> 8;
-> >> +	}
-> >> +}
-> > 
-> > The Kernel already has eth_addr_add() and more helpers. How about
-> > adopting these instead?
-> 
-> I had copied them over here: https://lore.barebox.org/barebox/20230911155927.3786335-2-a.fatoum@pengutronix.de/
-> They got reverted along with patch 1/3 in that series, but they have no dependency, so could be reinstated.
+of_clk_get_by_name() is used by clk_bulk_get_optional() => clk_get() function,
+so in case some clocks are missing we should return -ENOENT error code,
+as this is normal for optional clocks.
+The current implementation of of_clk_get_by_name() returns the -EINVAL error
+that comes from of_clk_get() with index <0 if the clock is not described
+in the device tree.
 
-Ok, it looks like two last patches need some more work. I'll drop them
-for now and respin it in a next time slot.
+Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+---
+ drivers/clk/clkdev.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-@Sascha, should I resend first 8 patches separately?
-
-Regards,
-Oleskij
+diff --git a/drivers/clk/clkdev.c b/drivers/clk/clkdev.c
+index dbe998b6af..f6c2fcdf10 100644
+--- a/drivers/clk/clkdev.c
++++ b/drivers/clk/clkdev.c
+@@ -52,10 +52,9 @@ EXPORT_SYMBOL(of_clk_get);
+  */
+ struct clk *of_clk_get_by_name(struct device_node *np, const char *name)
+ {
+-	struct clk *clk = ERR_PTR(-ENOENT);
+-
+ 	/* Walk up the tree of devices looking for a clock that matches */
+ 	while (np) {
++		struct clk *clk;
+ 		int index = 0;
+ 
+ 		/*
+@@ -68,11 +67,12 @@ struct clk *of_clk_get_by_name(struct device_node *np, const char *name)
+ 							 name);
+ 		clk = of_clk_get(np, index);
+ 		if (!IS_ERR(clk))
+-			break;
+-		else if (name && index >= 0) {
++			return clk;
++
++		if (name && index >= 0) {
+ 			pr_err("ERROR: could not get clock %pOF:%s(%i)\n",
+ 				np, name ? name : "", index);
+-			return clk;
++			return ERR_PTR(-ENOENT);
+ 		}
+ 
+ 		/*
+@@ -85,7 +85,7 @@ struct clk *of_clk_get_by_name(struct device_node *np, const char *name)
+ 			break;
+ 	}
+ 
+-	return clk;
++	return ERR_PTR(-ENOENT);
+ }
+ EXPORT_SYMBOL(of_clk_get_by_name);
+ #endif
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.1
+
 
 
