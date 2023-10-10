@@ -3,52 +3,53 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qqDp1-003BIF-F1
+	id 1qqDp2-003BIP-1b
 	for lore@lore.pengutronix.de; Tue, 10 Oct 2023 16:34:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qqDoy-0008M0-3i
-	for lore@pengutronix.de; Tue, 10 Oct 2023 16:34:54 +0200
+	id 1qqDoz-0008NB-4n
+	for lore@pengutronix.de; Tue, 10 Oct 2023 16:34:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=egjtI0jqqrw9lHnXJ2xp/mfkUQDPB1uLBAGM5O3bRtA=; b=TIJ+DkvGgF0ASDqH5oUY/L7Z8P
-	eI65K0iFwwWkcn0jIQyQsIYZQj6GalYnrjdPSUIGdBM0iv0Odbddcai/G8ZCR+0Y3aDr+hv1vLywI
-	9QBO57CdGekPeGCloqI5xY3gdxNzvsxfwGWmKYzBOc1FX+Kvp020tQTsMMEy+PtW5kJOlxkBy0XxG
-	lDs5AcgCY9aor3yeCnDndEiiH66RbfxY2G45H7nEv6uMdIgE/h1vkXZrfVwVa8i+4AIMaQ7+hX8R0
-	cBERQXe7Oj/eXHapE6mG7B5X4ZUkSZFi/Y5Vh8DRBPMkf2t9GQA0XDllhVW09Fgg/gszOvy+4aY8U
-	veltqv4Q==;
+	bh=tZJTgFQI5LLL+Vz/qaavGAStpETYX7jdV1lNfs7y4C0=; b=3GLOoemxYS4aIQjB6x21BB8BPl
+	xXvAy8GXPSg8qjuACRm8Zp6HNigfz+lOsgCmT4eEiA/oVKrFYC2d3zR9nd185nnhEPXLdIxVr8L7F
+	OU0T98J7M/8VGajttf0YIhpFbOe3tDUkDPAxIN2CaOaaMHZh/j8sw+cDZj3ZphTU8HAWUAzWhO4Hx
+	68By30r5PTIlZsuhYW5XcD2DK164NqGYoGR3Jyf6uKb660P2wK/mPx1qu3C8T79nR6eRsJiDIHmv+
+	yp7Jei1Uvamh3hmP6casefXd+b+mP5MWPA7pk2uwX6JApXKFvcUjp+wSDPAhOwqoQKDmaH9ttFJlm
+	z7gg0c/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qqDnh-00DZZR-1z;
-	Tue, 10 Oct 2023 14:33:33 +0000
+	id 1qqDnk-00DZcN-2G;
+	Tue, 10 Oct 2023 14:33:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qqDnY-00DZQI-1O
+	id 1qqDnY-00DZQA-3A
 	for barebox@lists.infradead.org;
-	Tue, 10 Oct 2023 14:33:27 +0000
+	Tue, 10 Oct 2023 14:33:29 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1qqDnV-0007Dl-Hn
+	id 1qqDnV-0007Dl-9J
 	for barebox@lists.infradead.org; Tue, 10 Oct 2023 16:33:21 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 10 Oct 2023 16:33:04 +0200
-Message-Id: <20231010143314.2031253-17-m.felsch@pengutronix.de>
+Date: Tue, 10 Oct 2023 16:32:56 +0200
+Message-Id: <20231010143314.2031253-9-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231010143314.2031253-1-m.felsch@pengutronix.de>
 References: <20231010143314.2031253-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231010_073324_470194_FBFD0B51 
-X-CRM114-Status: GOOD (  10.05  )
+X-CRM114-CacheID: sfid-20231010_073325_015945_599137B6 
+X-CRM114-Status: UNSURE (   7.32  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,64 +71,45 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 16/26] scripts: imx: move flexspi_image() into header
+Subject: [PATCH 08/26] ARM: i.MX: introduce build_imx8m_habv4img
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Move the flexspi_image() into the imx.h header to make the code reusable
-between imx.c and imx-image.c. No functional change.
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Similar to the helper for i.MX6, this allows us to build HAB enabled
+images by selecting KConfig symbols. So far I have only tested signed
+images, so there is no support for usb-signed or encrypted images yet.
+
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- scripts/imx/imx-image.c | 12 ------------
- scripts/imx/imx.h       | 13 +++++++++++++
- 2 files changed, 13 insertions(+), 12 deletions(-)
+ images/Makefile.imx | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
-index 1f96b383901f..ecb16187de17 100644
---- a/scripts/imx/imx-image.c
-+++ b/scripts/imx/imx-image.c
-@@ -290,18 +290,6 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, in
- 	return 0;
- }
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 8f6e8740d165..76a0f606fe35 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -21,6 +21,19 @@ endif
+ )
+ endef
  
--static bool flexspi_image(const struct config_data *data)
--{
--	/*
--	 *           | FlexSPI-FCFB  | FlexSPI-IVT
--	 * -----------------------------------------
--	 * i.MX8MM   |   0x0         |  0x1000
--	 * i.MX8MN/P |   0x400       |  0x0
--	 */
--
--	return data->image_flexspi_ivt_offset || data->image_flexspi_fcfb_offset;
--}
--
- /*
-  * ============================================================================
-  * i.MX flash header v2 handling. Found on i.MX50, i.MX53 and i.MX6
-diff --git a/scripts/imx/imx.h b/scripts/imx/imx.h
-index 08cdf8321a09..65697a9b0d43 100644
---- a/scripts/imx/imx.h
-+++ b/scripts/imx/imx.h
-@@ -15,4 +15,17 @@ static inline int cpu_is_mx8m(const struct config_data *data)
- 	}
- }
++define build_imx8m_habv4img =
++$(eval
++ifeq ($($(strip $(1))), y)
++	pblb-y += $(strip $(2))
++	CFG_$(strip $(2)).pblb.imximg = $(board)/$(strip $(3)).imxcfg
++	FILE_barebox-$(strip $(4)).img    = $(strip $(2)).pblb.pimximg
++	FILE_barebox-$(strip $(4))-s.img  = $(strip $(2)).pblb.psimximg
++	image-y += barebox-$(strip $(4)).img
++	image-$(CONFIG_HABV4_IMAGE_SIGNED) += barebox-$(strip $(4))-s.img
++endif
++)
++endef
++
+ # %.imximg - convert into i.MX image
+ # ----------------------------------------------------------------
  
-+static inline bool flexspi_image(const struct config_data *data)
-+{
-+	/*
-+	 *           | FlexSPI-FCFB  | FlexSPI-IVT
-+	 * -----------------------------------------
-+	 * i.MX8MM   |   0x0         |  0x1000
-+	 * i.MX8MN/P |   0x400       |  0x0
-+	 */
-+
-+	return data->image_flexspi_ivt_offset ||
-+	       data->image_flexspi_fcfb_offset;
-+}
-+
- int parse_config(struct config_data *data, const char *filename);
 -- 
 2.39.2
 
