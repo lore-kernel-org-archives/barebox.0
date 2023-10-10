@@ -1,15 +1,15 @@
-Delivery-date: Tue, 10 Oct 2023 16:35:15 +0200
+Delivery-date: Tue, 10 Oct 2023 16:35:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qqDpL-003BOM-Qn
-	for lore@lore.pengutronix.de; Tue, 10 Oct 2023 16:35:15 +0200
+	id 1qqDpM-003BOX-Ip
+	for lore@lore.pengutronix.de; Tue, 10 Oct 2023 16:35:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qqDpG-0000AE-GZ
+	id 1qqDpG-0000Br-PH
 	for lore@pengutronix.de; Tue, 10 Oct 2023 16:35:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -17,53 +17,53 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=QsM5Nus6KBPfwSvlt6N4Mn2xNCfEqzXoQ5FEBFyxhv0=; b=sQbEjiOpw3s4AsL7Og5WU9flr1
-	7r4op0WF1GAdRW0bA/wc80elFZbt46YTqBfoN31TCs0K37ohTmmQL84LqBo2nEsT5lKDvUUg5Z77f
-	D+Sro2zbn9Or+XBAFTwq4/EupF48K9pI5WmgUAj9byey07md2kTb0TP/0fUc44KaZtWs17ugjv1xp
-	0r4QyB19xtl9uTnQXUW+18yZgyW7RNAdZeDTDILxqN4tZtxu0CWntx7Js5th5cPyG3klpv0Da8jwi
-	qGgOA4ftybzMRcDBp4hjXytNGsy2KfD8hWSK9vqIv7ig9Bi9VUDH0k/Q2r46VFGglwgyjQDsJdmfT
-	2AYhcrqQ==;
+	bh=KVstDDWfQw6QgwxMWXMXLKVqtglVTcJqRcD53TKBMtw=; b=SZNU8RufkVcVeYrGsludOvPzEV
+	qsGWDNn7ZGuyMrkd+urdljwfgGed+j4reQyCtiDWeps2+y899+C6Ku8RSq4qqLvUywIU+zsqxgt12
+	ptgiKrAvlToxCrqlid9yfRlJy086WnudWByvGwrYZL19IMmgj0yqA2PbPT2fQJtcz1Lhy6a6C6viQ
+	T/DHNRrwS0b+9HSXiPraPJ89l/I9RMoqWmPVoWng2ELozBLV8Tn5D6imGYdxgd1TyAq2Vn8j0t1Hs
+	6ZTkh0lv1u3ZxlzF4gQVS7YhwiEsFb1uGVg3Y5kwf0hY9slyhMlsj9Ai+sfczdjiz4tU+2C+M28pu
+	0ckj5y1Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qqDnz-00DZuz-0D;
-	Tue, 10 Oct 2023 14:33:51 +0000
+	id 1qqDnt-00DZnr-2Q;
+	Tue, 10 Oct 2023 14:33:45 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qqDns-00DZlZ-0Z
+	id 1qqDno-00DZgt-2Y
 	for barebox@bombadil.infradead.org;
-	Tue, 10 Oct 2023 14:33:44 +0000
+	Tue, 10 Oct 2023 14:33:40 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
 	Content-Type:Content-ID:Content-Description;
-	bh=QsM5Nus6KBPfwSvlt6N4Mn2xNCfEqzXoQ5FEBFyxhv0=; b=ANxbFEG12dPZWKbGA2H6YT8x8e
-	HGditxtq6f5P5l6Jv3uSODnV750Nb86pA/qXzc8fazlQN2J2XyGb7bhBypp6an6m5mNV3H7dPz6EJ
-	JB4wL55esNJeg8nVKtjumYvVy7KCTzSWVlfm1Q8V54944b7BEVoc6IqEtXWG9o+7E3eeh0cRJb2pJ
-	yAdJbf9hihq2ep5pj53SGr1RG42igzvADC/UPtr2dvS6RJk856D4+EsHphcssuKuevdJaFJYLORxS
-	rrpykEQGIoAt794gPLXYKWiWOwGSzYfPE28O0qdWljuzFl1N3TsbbriTGXzOFXpPh/QOztB54+iwA
-	O8DsB6oA==;
+	bh=KVstDDWfQw6QgwxMWXMXLKVqtglVTcJqRcD53TKBMtw=; b=Xb8/CE/Zwg01r6cjVRpzLFUoy6
+	W0i7XFcfiSzBndPfhdP90uG/f0cf6Fzu+0ZpQP99Jg7p3X4kuMoE9uPovZS++se51gBpnSIRjr8Jo
+	Vmo8FoOuoBrWh4drJEI7Ga+o3mdkjL2nZY7HowFMzlLduSAQDtRHI0diN+79jZPqziI3O/Lc0srOe
+	3zMZgefDp4+N9WMKhHOkdEefj/mz8AS1QOujXhVGcx7djXTk29gSB2mEkXmlJsUMzkYabO5A8zaRe
+	VCZK5Bm/aUpYTKmey3oPQjMmv4YPcqKkX1+0rY0j8tgzsAYeMroW0Pant5KtsHsT7TZ5HK2AMSW4+
+	QQjN7Kpw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qqDnh-00GvG1-1M
+	id 1qqDnh-00GvFv-0s
 	for barebox@lists.infradead.org;
-	Tue, 10 Oct 2023 14:33:42 +0000
+	Tue, 10 Oct 2023 14:33:39 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1qqDnV-0007Dl-R5
+	id 1qqDnV-0007Dl-Kk
 	for barebox@lists.infradead.org; Tue, 10 Oct 2023 16:33:21 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 10 Oct 2023 16:33:13 +0200
-Message-Id: <20231010143314.2031253-26-m.felsch@pengutronix.de>
+Date: Tue, 10 Oct 2023 16:33:07 +0200
+Message-Id: <20231010143314.2031253-20-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231010143314.2031253-1-m.felsch@pengutronix.de>
 References: <20231010143314.2031253-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231010_153335_035968_A8FEC0E0 
-X-CRM114-Status: GOOD (  10.52  )
+X-CRM114-CacheID: sfid-20231010_153334_869375_993B43B3 
+X-CRM114-Status: GOOD (  10.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,43 +85,59 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 25/26] Documentation: boards: imx: replace i.MX8MQ with i.MX8M
+Subject: [PATCH 19/26] scripts: imx-image: header_v2: add CSF slots
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Some parts of the documentation refer to the i.MX8MQ which are valid for
-all i.MX8M SoCs. Also rename the i.MX8 to i.MX8M to make it clear which
-family we meant.
+Place the MMC/SD CSF data int slot-0 and the FlexSPI CSF data into
+slot-1. This must be done since the MMC/SD and FlexSPI CSF data are
+different.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- Documentation/boards/imx.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ scripts/imx/imx-image.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
-index c64446aff640..a8f014dd1b91 100644
---- a/Documentation/boards/imx.rst
-+++ b/Documentation/boards/imx.rst
-@@ -21,7 +21,7 @@ The Internal Boot Mode is supported on:
- * i.MX53
- * i.MX6
- * i.MX7
--* i.MX8MQ
-+* i.MX8M
+diff --git a/scripts/imx/imx-image.c b/scripts/imx/imx-image.c
+index 01da4cc36467..e9eded7f0828 100644
+--- a/scripts/imx/imx-image.c
++++ b/scripts/imx/imx-image.c
+@@ -298,7 +298,7 @@ static int write_mem_v1(uint32_t addr, uint32_t val, int width, int set_bits, in
  
- With the Internal Boot Mode, the images contain a header which describes
- where the binary shall be loaded and started. These headers also contain
-@@ -64,8 +64,8 @@ of the image to the card, use:
+ static size_t
+ add_header_v2(const struct config_data *data, void *buf, uint32_t offset,
+-	      size_t header_len)
++	      size_t header_len, unsigned int csf_slot)
+ {
+ 	struct imx_flash_header_v2 *hdr;
+ 	int dcdsize = curdcd * sizeof(uint32_t);
+@@ -341,7 +341,7 @@ add_header_v2(const struct config_data *data, void *buf, uint32_t offset,
+ 		hdr->boot_data.size	= imagesize;
  
-   dd if=images/barebox-freescale-imx51-babbage.img of=/dev/sdd bs=1024 skip=1 seek=1
+ 	if (data->sign_image) {
+-		hdr->csf = loadaddr + imagesize;
++		hdr->csf = loadaddr + imagesize + (csf_slot * CSF_LEN);
+ 		hdr->boot_data.size += CSF_LEN;
+ 	} else if (data->pbl_code_size && data->csf) {
+ 		/*
+@@ -463,7 +463,7 @@ add_flexspi_header(const struct config_data *data, void **_buf, size_t *header_l
+ 	    data->cpu_type == IMX_CPU_IMX8MN)
+ 		buf += SZ_4K;
  
--Note that MaskROM on i.MX8 expects the image to start at the +33KiB mark, so the
--following command has to be used instead:
-+Note that MaskROM on i.MX8M expects the image to start at the +33KiB mark, so
-+the following command has to be used instead:
+-	size += add_header_v2(data, buf, ivt_offset, len);
++	size += add_header_v2(data, buf, ivt_offset, len, 1);
  
- .. code-block:: sh
+ 	*header_len += FLEXSPI_HEADER_LEN;
  
+@@ -1018,7 +1018,7 @@ int main(int argc, char *argv[])
+ 		barebox_image_size += add_flexspi_header(&data, &buf, &header_len);
+ 		barebox_image_size += add_header_v2(&data, buf +
+ 						    signed_hdmi_firmware_size,
+-						    data.image_ivt_offset, header_len);
++						    data.image_ivt_offset, header_len, 0);
+ 		break;
+ 	default:
+ 		fprintf(stderr, "Congratulations! You're welcome to implement header version %d\n",
 -- 
 2.39.2
 
