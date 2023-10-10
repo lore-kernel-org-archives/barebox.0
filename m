@@ -1,69 +1,83 @@
-Delivery-date: Tue, 10 Oct 2023 16:35:18 +0200
+Delivery-date: Tue, 10 Oct 2023 16:35:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qqDpP-003BPV-29
-	for lore@lore.pengutronix.de; Tue, 10 Oct 2023 16:35:18 +0200
+	id 1qqDpR-003BQ1-Cv
+	for lore@lore.pengutronix.de; Tue, 10 Oct 2023 16:35:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qqDpL-0000H5-SB
-	for lore@pengutronix.de; Tue, 10 Oct 2023 16:35:18 +0200
+	id 1qqDpN-0000Hm-Fa
+	for lore@pengutronix.de; Tue, 10 Oct 2023 16:35:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WFU77D5LAHeArOKsspWiuYjWF98TChsQJB5Fwj9ODF0=; b=ST/ylfglUuxcL1f4gkxrVRM00I
-	i8GMRjks8oXJv1mroH/GSXVr0+f+ZsvPBfHP/Iy448yAuNrrFEffy5ftkd22b+CrJpt6P2mVo8RxE
-	sig56Vn+OyCdH0GIt1IxL4TBhI8W43sKz38K31M9YncL3tYkTQRzI41GrwEMNEZkkxAjZrLiwurzD
-	hPF0q2ct45XV8gNhFgaETZcoSgNuX9TFit2NPBO17NrKpEsATEZLjxD/W0/KoXPMmGStAIebLOr7C
-	NdUdQ3eCkAI/AA/aG89trHCek7u2rkZ5SJd7MUoX8XifnarXiTqvaYBj+E6TR/TYm9HTvOlTC/QUA
-	2REHl2lg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Ql1UdRRoKOzwqbHCKk5f4wzlnOodgd0V9I0BBi9nncE=; b=nTUi9409VHjAGQPhzgDu2ZU1Ds
+	xYKyWfucytVuXQwu0304NYuWBh6rQYPCgBAf9KEF7gPyZa654MDvJZUoEx4A810K28+vBwHHptMo0
+	N6u1b1g/zfNtVwpm6rLy6d788HDxWygImCRHkSdAaJ+mrMZZaBOnFEvG06cPgtd9AdKVWoxcdBXdW
+	uXLQ2gsOc7C3C0b7XWACcD0m3RuMZgcuoaPSdWTK6OGhb1MCOf5mdIOkc0BvkOL2sKspo0yaG+kBj
+	/43uIVRSGXXMhSOBpH4ziUUGSaAIrODYUzTus3etC9jucBAyoMtKsnK2njdcEZBB2dibUEK2laSaE
+	oYK8M0gg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qqDo0-00DZwy-0J;
-	Tue, 10 Oct 2023 14:33:52 +0000
+	id 1qqDo2-00Da0I-0Q;
+	Tue, 10 Oct 2023 14:33:54 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qqDnt-00DZnF-1E
+	id 1qqDnt-00DZnI-1Q
 	for barebox@bombadil.infradead.org;
 	Tue, 10 Oct 2023 14:33:45 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
-	Content-Type:Content-ID:Content-Description;
-	bh=WFU77D5LAHeArOKsspWiuYjWF98TChsQJB5Fwj9ODF0=; b=MzGICYNY96ac2BpVkYMF8PNRfz
-	GacUhEtITc7io2iJFCzjcP1ZOn2/2Ibobaa232E2J6RgG6MKbvQooIJNFYjhPqsnNnecJMPnYS1kU
-	v0/AyfLuLyW92eTFX6UkYD+82g8hiEcftp9v/wtPktnhZ+98p3yKLwnuT5s+/Rco4/vJn4tl47ftv
-	CexJZhoGBuYlmezLOSOHUX8eHH2yUnmeqd/HWYOWy2/UeehFOROgAafceIdTnX0tOElxqFyWbEsKh
-	/tGtgtIDBJPjPweKnrZtnpYaUnThcQ5+agUvmW3GdZcaXfKei0tqSwPaWsVVpDukUa5djU7K/ddOD
-	gPpI6E9A==;
+	d=infradead.org; s=desiato.20200630; h=From:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ql1UdRRoKOzwqbHCKk5f4wzlnOodgd0V9I0BBi9nncE=; b=NhevGC6Wk/as3Rir/BccHHDyJe
+	LkBiP5N11sy++EJEEaAnH4PMB5oenqaJnhy3oiCtRKqmiITgm3dI9Qh4ojtTvQ80LetAr6SiP5e4S
+	KN2a5i51HXN1Rs4A04WiRavW5ZNTscOlTPlDPgzDzowyocJZ8EYdVdhaNQWTsSQ5jLyRLhx37MO+Y
+	Aq5kxdTuDG/qaYCOv9qtVVYB/WpnSKqWAEBroRznZKYbhG0UJ4ZGiAc9QAYAHWGNFP8epMdv0YZd4
+	796ZSs+uaytjTvX8Je3MCgAe1gkPTYI/NgIwdHdsL4l+mDUnHaqJ+88TriIZtTgmLSWeD6ieNcDMh
+	YKWw7tMg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qqDnh-00GvG2-0P
+	id 1qqDno-00GvIv-1f
 	for barebox@lists.infradead.org;
-	Tue, 10 Oct 2023 14:33:43 +0000
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1qqDnV-0007Dl-Gi
-	for barebox@lists.infradead.org; Tue, 10 Oct 2023 16:33:21 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Tue, 10 Oct 2023 16:33:03 +0200
-Message-Id: <20231010143314.2031253-16-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231010143314.2031253-1-m.felsch@pengutronix.de>
-References: <20231010143314.2031253-1-m.felsch@pengutronix.de>
+	Tue, 10 Oct 2023 14:33:44 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qqDno-0007O4-RB; Tue, 10 Oct 2023 16:33:40 +0200
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qqDno-000gYU-Em; Tue, 10 Oct 2023 16:33:40 +0200
+Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1qqDno-00Dl1x-CK; Tue, 10 Oct 2023 16:33:40 +0200
+Date: Tue, 10 Oct 2023 16:33:40 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20231010143340.GF3114228@pengutronix.de>
+References: <20231009115316.2418494-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20231009115316.2418494-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231010_153334_747593_0A2F1055 
-X-CRM114-Status: GOOD (  10.85  )
+X-CRM114-CacheID: sfid-20231010_153342_105176_B8FEC192 
+X-CRM114-Status: GOOD (  22.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,57 +95,77 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 15/26] scripts: imx: force flexspi and hab option order
+Subject: Re: [PATCH] commands: keystore: work around missing initialization
+ false positive
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Force the order to ensure that the hab options are parsed after the
-flexspi options. This is important since we need to know which memory
-regions need to be verified and/or en-/decrypted and with the flexspi
-support a 2nd header is added in between the first header and the
-barebox pbl binary.
+On Mon, Oct 09, 2023 at 01:53:16PM +0200, Ahmad Fatoum wrote:
+> clang is unhappy about this. While I can't see how s_len could be used
+> uninitialized, there's value in silencing these warnings, so the real
+> issues are not as easy to overlook.
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- scripts/imx/imx.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+Well we have:
 
-diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
-index e3169bace6a6..32488455b7a8 100644
---- a/scripts/imx/imx.c
-+++ b/scripts/imx/imx.c
-@@ -614,6 +614,12 @@ static int do_flexspi_ivtofs(struct config_data *data, int argc, char *argv[])
- 	if (argc < 2)
- 		return -EINVAL;
- 
-+	if (data->csf) {
-+		fprintf(stderr, "#include <mach/imx/flexspi-imx8m*-cfg.h> must be placed in front "
-+				"of #include <mach/imx/habv4-imx8-gencsf.h>\n");
-+		return -EINVAL;
-+	}
-+
- 	data->image_flexspi_ivt_offset = strtoul(argv[1], NULL, 0);
- 
- 	return 0;
-@@ -624,6 +630,12 @@ static int do_flexspi_fcfbofs(struct config_data *data, int argc, char *argv[])
- 	if (argc < 2)
- 		return -EINVAL;
- 
-+	if (data->csf) {
-+		fprintf(stderr, "#include <mach/imx/flexspi-imx8m*-cfg.h> must be placed in front "
-+				"of #include <mach/imx/habv4-imx8-gencsf.h>\n");
-+		return -EINVAL;
-+	}
-+
- 	data->image_flexspi_fcfb_offset = strtoul(argv[1], NULL, 0);
- 
- 	return 0;
+	if (file)
+		read_file_2(file, &s_len, (void *)&secret_str, FILESIZE_MAX);
+	else if (secret_str)
+		s_len = strlen(secret_str);
+
+So s_len could be uninitialized after this when both file and secret_str
+are NULL. This can't happen due to:
+
+	if (!do_remove && !file && !secret_str)
+		return COMMAND_ERROR_USAGE;
+
+and later:
+
+	if (do_remove) {
+		...
+		return 0;
+	}
+
+While I agree that s_len shouldn't slip through uninitialized this is
+really buried in the code and I do not wonder when a compiler doesn't
+catch this correctly.
+
+Anyway, applied, thanks
+
+Sascha
+
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  commands/keystore.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/commands/keystore.c b/commands/keystore.c
+> index 4922cf1bebe9..40bcb7105d75 100644
+> --- a/commands/keystore.c
+> +++ b/commands/keystore.c
+> @@ -17,7 +17,7 @@ static int do_keystore(int argc, char *argv[])
+>  	const char *file = NULL;
+>  	char *secret_str = NULL;
+>  	void *secret;
+> -	size_t s_len;
+> +	size_t s_len = 0;
+>  
+>  	while ((opt = getopt(argc, argv, "rs:f:")) > 0) {
+>  		switch (opt) {
+> -- 
+> 2.39.2
+> 
+> 
+> 
+
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
