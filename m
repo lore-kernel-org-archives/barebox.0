@@ -1,66 +1,66 @@
-Delivery-date: Mon, 16 Oct 2023 07:47:06 +0200
+Delivery-date: Mon, 16 Oct 2023 07:51:43 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qsGRX-00AEGX-1l
-	for lore@lore.pengutronix.de; Mon, 16 Oct 2023 07:47:06 +0200
+	id 1qsGVz-00AET4-JE
+	for lore@lore.pengutronix.de; Mon, 16 Oct 2023 07:51:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qsGRU-0006Pq-QP
-	for lore@pengutronix.de; Mon, 16 Oct 2023 07:47:06 +0200
+	id 1qsGVx-0007Go-Em
+	for lore@pengutronix.de; Mon, 16 Oct 2023 07:51:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MENA0qg8M7vrJoy5xCX8x5DZw6CgIuT8j3MPRD2y7UE=; b=TrxQCWqFb1srzljQjyz9jPNppz
-	cpLRF+p4aHWRNfKsELSCgYiHuXp3RolwXol1+7IHlHhbM+4jo4UC9KvmMCOdPRaUpVLhpZinysMmD
-	QfV2LZM5/5FPZy3T89X7aa7PSy0TiJXVEd4j68l+v3A08QpSnR7H0C68Azbd0jvnDtI2notu00tnz
-	s2W0CbJeQUpxLEzC1DkdKHU6jIgwqe/TT8aJlwZY3KMjttvFB1W/mLu6q8TlA8rdI3MQwyjRYFIS7
-	OmIfgI7/U8txu2EJfMwIzP7X1A2rLmwBbSIoBHU7SDpcGAJKkysOmeT8ALOA6H+JtfU+3WQumw8/D
-	WjgwQJww==;
+	bh=JMM9E0PYzuordwrh2h0lh3nlJS6R2nSvI2BwrUIApfU=; b=WYN07B6QZxFh6tMzBRKvSULYtN
+	EcAIoL9SnwbQr4B2nTGY/LC9TptvcvObS+l+b0l6k14L3h/Z7Dodp0M/Dh3NU5yg27OoogPbBZVNx
+	SrEXsPJdtY4DNYcOTpL1JnjCtYBdiMe9gd3pWHKO87vHIlE2Z+pJ2tCBz7Orb8LKwzKn0DcRhA8w2
+	E7o7e2i/ssfGS1wyt7Q2viBAuDVglUl5hm5QvZdWfRnnzePnWoK9PYYMkjxxzsFcBNNtN9PhakoM7
+	pJmzw68CcbwRPHoP14/kPM8vx770aRxBdgx5l4+zaIEOEja5sFjyiJPN8XeB7sC3sM7M4twfWowa1
+	tZDpx82w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qsGQK-008QGP-1w;
-	Mon, 16 Oct 2023 05:45:52 +0000
+	id 1qsGUo-008SK9-19;
+	Mon, 16 Oct 2023 05:50:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qsGQH-008QFK-0w
+	id 1qsGUl-008SJ6-16
 	for barebox@lists.infradead.org;
-	Mon, 16 Oct 2023 05:45:50 +0000
+	Mon, 16 Oct 2023 05:50:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qsGQG-0006Bp-2W; Mon, 16 Oct 2023 07:45:48 +0200
+	id 1qsGUj-00077b-W2; Mon, 16 Oct 2023 07:50:26 +0200
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qsGQF-0020kU-MN; Mon, 16 Oct 2023 07:45:47 +0200
+	id 1qsGUj-0020l8-Jm; Mon, 16 Oct 2023 07:50:25 +0200
 Received: from mfe by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qsGQF-00EgMp-KA; Mon, 16 Oct 2023 07:45:47 +0200
-Date: Mon, 16 Oct 2023 07:45:47 +0200
+	id 1qsGUj-00EgOQ-Hb; Mon, 16 Oct 2023 07:50:25 +0200
+Date: Mon, 16 Oct 2023 07:50:25 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20231016054547.aqohhitkpsc54icp@pengutronix.de>
+Message-ID: <20231016055025.7kpbyiviqykrwy4k@pengutronix.de>
 References: <20231010143314.2031253-1-m.felsch@pengutronix.de>
- <20231010143314.2031253-15-m.felsch@pengutronix.de>
- <20231013063759.GL3359458@pengutronix.de>
+ <20231010143314.2031253-22-m.felsch@pengutronix.de>
+ <20231013072859.GM3359458@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231013063759.GL3359458@pengutronix.de>
+In-Reply-To: <20231013072859.GM3359458@pengutronix.de>
 User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231015_224549_329640_2F471BD4 
-X-CRM114-Status: GOOD (  28.14  )
+X-CRM114-CacheID: sfid-20231015_225027_387190_E9BDCE97 
+X-CRM114-Status: GOOD (  25.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,59 +82,91 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 14/26] ARM: lds: add support for a 2nd CSF area
+Subject: Re: [PATCH 21/26] scripts: imx: add helper to write CSF Blocks
+ command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 23-10-13, Sascha Hauer wrote:
-> On Tue, Oct 10, 2023 at 04:33:02PM +0200, Marco Felsch wrote:
-> > Extend the CSF area to be able two store two CSF slots. The 2nd CSF slot
-> > is required in case of FlexSPI HAB boot support. The first slot is used
-> > for the MMC-IVT + barebox-pbl; the 2nd slot is used for the FlexSPI-IVT
-> > + barebox-pbl. This is necessary because of the fact that the HAB ROM
-> > code requires that the IVT is signed as well.
+> On Tue, Oct 10, 2023 at 04:33:09PM +0200, Marco Felsch wrote:
+> > The upcoming commit fixes the HAB support for FlexSPI enabled barebox
+> > images. This commit prepares the source to keep the diff smaller.
 > > 
-> > Use the CONFIG_SPI_NXP_FLEXSPI Kconfig symbol to decide if we need to
-> > add the support for FlexSPI image signatures as well since early SRAM
-> > space is limited and 4K can make a difference here.
-> > 
-> > Please check the documentation for a more detailed information about the
-> > i.MX8M image layout.
+> > For the upcoming fix we need a 2nd CSF command sequence which is
+> > basically the same as the first except for the "Blocks = ...." command.
+> > Therefore we need to handle the blocks command separately which is done
+> > by this commit. At the moment there is no functional change.
 > > 
 > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > > ---
-> >  arch/arm/lib/pbl.lds.S | 4 ++++
-> >  1 file changed, 4 insertions(+)
+> >  scripts/imx/imx.c | 22 ++++++++++++++++++++--
+> >  1 file changed, 20 insertions(+), 2 deletions(-)
 > > 
-> > diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
-> > index 898d6be33b54..9ab6d22eb59d 100644
-> > --- a/arch/arm/lib/pbl.lds.S
-> > +++ b/arch/arm/lib/pbl.lds.S
-> > @@ -12,7 +12,11 @@
-> >  #define BASE	(TEXT_BASE - SZ_2M)
-> >  #endif
+> > diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+> > index 933019eba449..acc8424e547d 100644
+> > --- a/scripts/imx/imx.c
+> > +++ b/scripts/imx/imx.c
+> > @@ -296,6 +296,24 @@ static int hab_add_str(struct config_data *data, const char *str)
+> >  	return 0;
+> >  }
 > >  
-> > +#ifdef CONFIG_SPI_NXP_FLEXSPI
-> > +#define HAB_CSF_LEN	0x4000
-> > +#else
-> >  #define HAB_CSF_LEN	0x2000
-> > +#endif
+> > +static int hab_add_barebox_blocks(struct config_data *data,
+> > +				  const char *csf_str,
+> > +				  const char *flexspi_csf_str)
+> > +{
+> > +	int len = strlen(csf_str);
+> > +
+> > +	if (data->csf_space < len)
+> > +		return -ENOMEM;
+> > +
+> > +	strcat(data->csf, csf_str);
+> > +	if (flexspi_csf_str)
+> > +		strcat(data->flexspi_csf, flexspi_csf_str);
 > 
-> No. Enabling/Disabling the FlexSPI driver shouldn't influence the image
-> layout.
-> 
-> Having the driver enabled doesn't necessarily mean you want to use it
-> for booting. Having the driver disabled doesn't necessarily mean you are
-> *not* booting from it.
+> Do we need a space check here as well?
 
-You're right, it's a bit to simple. I will rework that.
+To be 100% accurate yes since the strings can have different lengths
+albeit the difference would be <5 chars. I will rework that, thanks for
+the review.
 
 Regards,
   Marco
 
-
 > 
 > Sascha
+> 
+> > +
+> > +	data->csf_space -= len;
+> > +
+> > +	return 0;
+> > +}
+> > +
+> >  static int do_hab(struct config_data *data, int argc, char *argv[])
+> >  {
+> >  	int i, ret;
+> > @@ -343,7 +361,7 @@ imx8m_get_offset_size(struct config_data *data,
+> >  
+> >  static int do_hab_blocks(struct config_data *data, int argc, char *argv[])
+> >  {
+> > -	char *str;
+> > +	char *str, *flexspi_str = NULL;
+> >  	int ret;
+> >  	int i;
+> >  	uint32_t signed_size = data->load_size;
+> > @@ -378,7 +396,7 @@ static int do_hab_blocks(struct config_data *data, int argc, char *argv[])
+> >  	if (ret < 0)
+> >  		return -ENOMEM;
+> >  
+> > -	ret = hab_add_str(data, str);
+> > +	ret = hab_add_barebox_blocks(data, str, flexspi_str);
+> >  	free(str);
+> >  	if (ret)
+> >  		return ret;
+> > -- 
+> > 2.39.2
+> > 
+> > 
+> > 
 > 
 > -- 
 > Pengutronix e.K.                           |                             |
