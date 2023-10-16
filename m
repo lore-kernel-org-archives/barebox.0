@@ -1,66 +1,66 @@
-Delivery-date: Mon, 16 Oct 2023 07:46:41 +0200
+Delivery-date: Mon, 16 Oct 2023 07:47:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qsGR8-00AEFA-8O
-	for lore@lore.pengutronix.de; Mon, 16 Oct 2023 07:46:41 +0200
+	id 1qsGRX-00AEGX-1l
+	for lore@lore.pengutronix.de; Mon, 16 Oct 2023 07:47:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qsGR6-0006Lo-Vz
-	for lore@pengutronix.de; Mon, 16 Oct 2023 07:46:41 +0200
+	id 1qsGRU-0006Pq-QP
+	for lore@pengutronix.de; Mon, 16 Oct 2023 07:47:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+2kEG/75vjO5R2U1Bo9zzJE0XBEVhL1q86KlrCCva7w=; b=LYQo7+mZCe6V1HM+qoNuxQQYKJ
-	6I3DNLuAmB9AVIEPRuLK4wWVD8XqaxXLgyYS/GKBRML01KDUIbUa3NIQwC/plu51hBD2LSdYv18kE
-	G30z/Op7zbyYwpnL9ol1qwJXUjNIvCKNDCJNfCcZOF0fpz4eYwpTSG7iyW2lyWq9kbErR0PUuvV0m
-	Qoe2JzzIyOvG5fSQpn1C6DFTTiyc09V7WksDALd/vHlk02WwOH4k9WgeKoI7kSh+190K1xRMDU1uh
-	lFMr7t0Oo9KdOnvLCpMpOSEInTUwT2H1fzcnRtvi2ogSotqIhri4C4UERz9Qo30kBcmU31CDsptiz
-	UTCcUgWQ==;
+	bh=MENA0qg8M7vrJoy5xCX8x5DZw6CgIuT8j3MPRD2y7UE=; b=TrxQCWqFb1srzljQjyz9jPNppz
+	cpLRF+p4aHWRNfKsELSCgYiHuXp3RolwXol1+7IHlHhbM+4jo4UC9KvmMCOdPRaUpVLhpZinysMmD
+	QfV2LZM5/5FPZy3T89X7aa7PSy0TiJXVEd4j68l+v3A08QpSnR7H0C68Azbd0jvnDtI2notu00tnz
+	s2W0CbJeQUpxLEzC1DkdKHU6jIgwqe/TT8aJlwZY3KMjttvFB1W/mLu6q8TlA8rdI3MQwyjRYFIS7
+	OmIfgI7/U8txu2EJfMwIzP7X1A2rLmwBbSIoBHU7SDpcGAJKkysOmeT8ALOA6H+JtfU+3WQumw8/D
+	WjgwQJww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qsGPS-008QAC-1h;
-	Mon, 16 Oct 2023 05:44:58 +0000
+	id 1qsGQK-008QGP-1w;
+	Mon, 16 Oct 2023 05:45:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qsGPO-008Q8m-1e
+	id 1qsGQH-008QFK-0w
 	for barebox@lists.infradead.org;
-	Mon, 16 Oct 2023 05:44:56 +0000
+	Mon, 16 Oct 2023 05:45:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qsGPJ-00063e-SP; Mon, 16 Oct 2023 07:44:49 +0200
+	id 1qsGQG-0006Bp-2W; Mon, 16 Oct 2023 07:45:48 +0200
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qsGPJ-0020kM-Ft; Mon, 16 Oct 2023 07:44:49 +0200
+	id 1qsGQF-0020kU-MN; Mon, 16 Oct 2023 07:45:47 +0200
 Received: from mfe by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qsGPJ-00EgMK-De; Mon, 16 Oct 2023 07:44:49 +0200
-Date: Mon, 16 Oct 2023 07:44:49 +0200
+	id 1qsGQF-00EgMp-KA; Mon, 16 Oct 2023 07:45:47 +0200
+Date: Mon, 16 Oct 2023 07:45:47 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <sha@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20231016054449.xiwwqwrulhv5tfr7@pengutronix.de>
+Message-ID: <20231016054547.aqohhitkpsc54icp@pengutronix.de>
 References: <20231010143314.2031253-1-m.felsch@pengutronix.de>
- <20231010143314.2031253-12-m.felsch@pengutronix.de>
- <20231013062749.GK3359458@pengutronix.de>
+ <20231010143314.2031253-15-m.felsch@pengutronix.de>
+ <20231013063759.GL3359458@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231013062749.GK3359458@pengutronix.de>
+In-Reply-To: <20231013063759.GL3359458@pengutronix.de>
 User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231015_224454_551048_AA72B7AA 
-X-CRM114-Status: GOOD (  23.70  )
+X-CRM114-CacheID: sfid-20231015_224549_329640_2F471BD4 
+X-CRM114-Status: GOOD (  28.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,80 +82,59 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 11/26] ARM: i.MX8M: add flexspi-imx8m{m,p}-cfg.h header
+Subject: Re: [PATCH 14/26] ARM: lds: add support for a 2nd CSF area
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 23-10-13, Sascha Hauer wrote:
-> On Tue, Oct 10, 2023 at 04:32:59PM +0200, Marco Felsch wrote:
-> > Add dedicated configuration headers which guard the flexspi_* options
-> > like it is done for the HABV4 configuration block to be more
-> > user-friendly.
+> On Tue, Oct 10, 2023 at 04:33:02PM +0200, Marco Felsch wrote:
+> > Extend the CSF area to be able two store two CSF slots. The 2nd CSF slot
+> > is required in case of FlexSPI HAB boot support. The first slot is used
+> > for the MMC-IVT + barebox-pbl; the 2nd slot is used for the FlexSPI-IVT
+> > + barebox-pbl. This is necessary because of the fact that the HAB ROM
+> > code requires that the IVT is signed as well.
+> > 
+> > Use the CONFIG_SPI_NXP_FLEXSPI Kconfig symbol to decide if we need to
+> > add the support for FlexSPI image signatures as well since early SRAM
+> > space is limited and 4K can make a difference here.
+> > 
+> > Please check the documentation for a more detailed information about the
+> > i.MX8M image layout.
 > > 
 > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > > ---
-> >  include/mach/imx/flexspi-imx8mm-cfg.h | 10 ++++++++++
-> >  include/mach/imx/flexspi-imx8mp-cfg.h | 10 ++++++++++
-> >  2 files changed, 20 insertions(+)
-> >  create mode 100644 include/mach/imx/flexspi-imx8mm-cfg.h
-> >  create mode 100644 include/mach/imx/flexspi-imx8mp-cfg.h
+> >  arch/arm/lib/pbl.lds.S | 4 ++++
+> >  1 file changed, 4 insertions(+)
 > > 
-> > diff --git a/include/mach/imx/flexspi-imx8mm-cfg.h b/include/mach/imx/flexspi-imx8mm-cfg.h
-> > new file mode 100644
-> > index 000000000000..f7f0310a57f4
-> > --- /dev/null
-> > +++ b/include/mach/imx/flexspi-imx8mm-cfg.h
-> > @@ -0,0 +1,10 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > +
-> > +/*
-> > + * This snippet can be included from a i.MX flash header configuration
-> > + * file for generating FlexSPI compatible images.
-> > + */
-> > +#if defined(CONFIG_SPI_NXP_FLEXSPI)
-> > +flexspi_ivtofs 0x1000
-> > +flexspi_fcfbofs 0x0
+> > diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+> > index 898d6be33b54..9ab6d22eb59d 100644
+> > --- a/arch/arm/lib/pbl.lds.S
+> > +++ b/arch/arm/lib/pbl.lds.S
+> > @@ -12,7 +12,11 @@
+> >  #define BASE	(TEXT_BASE - SZ_2M)
+> >  #endif
+> >  
+> > +#ifdef CONFIG_SPI_NXP_FLEXSPI
+> > +#define HAB_CSF_LEN	0x4000
+> > +#else
+> >  #define HAB_CSF_LEN	0x2000
 > > +#endif
 > 
-> What's this #ifdef good for?
+> No. Enabling/Disabling the FlexSPI driver shouldn't influence the image
+> layout.
 > 
-> CONFIG_SPI_NXP_FLEXSPI enables the flexspi driver, but this is not
-> necessary to boot from it, right?
+> Having the driver enabled doesn't necessarily mean you want to use it
+> for booting. Having the driver disabled doesn't necessarily mean you are
+> *not* booting from it.
 
-The flexspi_* options are used to decide if the barebox image should be
-flexspi compatible. It also influence the HAB CSF generation since it
-adds a 2nd CSF slot depending if enabled.
-
-We can drop this guard as you already NACKed to use the
-CONFIG_SPI_NXP_FLEXSPI for HAB decisions.
+You're right, it's a bit to simple. I will rework that.
 
 Regards,
   Marco
 
+
 > 
 > Sascha
-> 
-> > diff --git a/include/mach/imx/flexspi-imx8mp-cfg.h b/include/mach/imx/flexspi-imx8mp-cfg.h
-> > new file mode 100644
-> > index 000000000000..bbc061241748
-> > --- /dev/null
-> > +++ b/include/mach/imx/flexspi-imx8mp-cfg.h
-> > @@ -0,0 +1,10 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > +
-> > +/*
-> > + * This snippet can be included from a i.MX flash header configuration
-> > + * file for generating FlexSPI compatible images.
-> > + */
-> > +#if defined(CONFIG_SPI_NXP_FLEXSPI)
-> > +flexspi_ivtofs 0x0
-> > +flexspi_fcfbofs 0x400
-> > +#endif
-> > -- 
-> > 2.39.2
-> > 
-> > 
-> > 
 > 
 > -- 
 > Pengutronix e.K.                           |                             |
