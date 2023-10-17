@@ -1,65 +1,66 @@
-Delivery-date: Tue, 17 Oct 2023 23:37:32 +0200
+Delivery-date: Tue, 17 Oct 2023 23:37:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qsrkq-00CDJQ-QK
-	for lore@lore.pengutronix.de; Tue, 17 Oct 2023 23:37:32 +0200
+	id 1qsrks-00CDJz-2Z
+	for lore@lore.pengutronix.de; Tue, 17 Oct 2023 23:37:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qsrkp-0008Ir-JH
+	id 1qsrkq-0008JM-Bi
 	for lore@pengutronix.de; Tue, 17 Oct 2023 23:37:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=7Hw7fjpm7xUbp4r6bhWvA6tg/fRgpXvNMZ3HWSwy03s=; b=Cs7Nty+oZ7D30Oe1+5TegrPOzX
-	mRiaZuEcCKypFgYxbNe8WXlltCnifrGT7F5mHa7O4uIQvDO0CMpI/OiMOiJP+/3yh4SSFT8brwcVN
-	WiUBGmYhvIUUlbali9WzX8eWnRR7X5kAihFYOT2DAxb0N13XMvCd7pK7VmlSJjQnZnjF+xIJvTvau
-	xwWxzFfc1ecHjNVYN2O8kYHeM4X97xFqQmQqdogy7NBZy1gSgTiA3EFT7U95IAgFMY2xPTAi3jfh2
-	68TX/U+arOv+2FPtACiypke9ywgvS9ukR0POC4yvd/Z+rhkYZYWOqEXXbiFaErLfL5S+HgbFXaYSx
-	tHNKzEbw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=cx63SPkRLoInTgZxzb9c6f+QDtA+HoURK/0SQOZs7Sk=; b=DWXlupZU75jC5MyxTeqLmP6r13
+	lUeFCgfKlLdTSpGcXOdM+ja0vupwHRd1fG0HR7gWqrmjJtvliv3VttKgz+iDbtCoOXR3zndcbKNNS
+	l/vQ3OUpLzECAp8expAB7zC4ziVuQSo8SfqB7w3LIhgj7JCie5s6Dg3Rof9n2UhAzjXc01T7x+ASa
+	WIEwglNQt6beHSA8211iuVLQTUBDEL4P6TiG9DqzzEvF1az6uW1KBfqwE5T0nSBuAsGFOXxds6S52
+	q2qOdPEuVfNF2yA9q1uOv1w3ypcHoLtlMQmkueRQBbSyP2KpezRYPjqXJzyrmeW70tev2EGE70ZJI
+	nU4pAxWA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qsrjf-00DJCB-1w;
-	Tue, 17 Oct 2023 21:36:19 +0000
+	id 1qsrjg-00DJCO-2o;
+	Tue, 17 Oct 2023 21:36:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qsrja-00DJA2-0c
+	id 1qsrja-00DJA8-0W
 	for barebox@lists.infradead.org;
 	Tue, 17 Oct 2023 21:36:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qsrjW-0007wN-Sa
+	id 1qsrjW-0007wR-Uo
 	for barebox@lists.infradead.org; Tue, 17 Oct 2023 23:36:10 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qsrjW-002PIV-Fe
+	id 1qsrjW-002PIa-IJ
 	for barebox@lists.infradead.org; Tue, 17 Oct 2023 23:36:10 +0200
 Received: from mfe by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1qsrjW-00Ef1f-1M
+	id 1qsrjW-00Ef1u-1c
 	for barebox@lists.infradead.org;
 	Tue, 17 Oct 2023 23:36:10 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 17 Oct 2023 23:36:04 +0200
-Message-Id: <20231017213608.3494255-1-m.felsch@pengutronix.de>
+Date: Tue, 17 Oct 2023 23:36:08 +0200
+Message-Id: <20231017213608.3494255-5-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231017213608.3494255-1-m.felsch@pengutronix.de>
+References: <20231017213608.3494255-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231017_143614_237552_468CBA4C 
-X-CRM114-Status: UNSURE (   6.15  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20231017_143614_205338_BFC61FF6 
+X-CRM114-Status: GOOD (  17.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,29 +82,85 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/4] i.MX USB Loader Windows Fixes
+Subject: [PATCH 4/4] imx-usb-loader: fix windows usage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi all,
+This ports commit 561f0377db5e ("Transfer always specified report 2
+length") from imx_usb_loader[1] to our implementation.
 
-this small series enable our imx-usb-loader and barebox-pbl
-implementation to get loaded via Windows.
+| commit 561f0377db5e1a36f5ab5e17f97d774f9f1e22ab
+| Author: Stefan Agner <stefan.agner@toradex.com>
+| Date:   Wed Nov 2 16:51:24 2016 -0700
+|
+|     Transfer always specified report 2 length
+|
+|     The Windows HIDAPI is very strict when it comes to packet lengths:
+|     The API always expect the length specified by the device and rejects
+|     the transfer otherwise. The report size is specified by the HID
+|     Report Descriptor. The i.MX 6 SoC reports a report 2 size of 1024.
+|     Currently, imx_usb reads the length from the device specific config
+|     files and stores it in max_transfer. This change uses max_transfer
+|     for report 2 when using the HID API.
+|
+|     The boot ROM handles too long transfers just fine. Also NXP's
+|     sb_loader transfers always complete reports. The change has been
+|     successfully tested on Linux and Windows.
+|
+|     Given that the device reports the size, it is probably also "the
+|     right thing to do"...
+|
+|     With that change, we might end up transferring up to 1023 bytes
+|     more than actually necessary. Make sure that DoIRomDownload does
+|     not print an error message and returns successfully even if too
+|     many bytes have been transferred (this now typically happens at the
+|     end of every file).
+|
+|     In write_dcd use a signed length variable to keep track of remaining
+|     bytes. Continue transfer loop only if more than 0 bytes are left to
+|     transfer. Also drop the m_ prefix, m_ is usually used for member
+|     variables but this is a local variable.
+|
+|     Signed-off-by: Stefan Agner <stefan.agner@toradex.com>
 
-Regards,
-  Marco
+[1] https://github.com/boundarydevices/imx_usb_loader/commit/561f0377db5e1a36f5ab5e17f97d774f9f1e22ab
 
-Marco Felsch (4):
-  scripts: common: fix read_file_2 for windows
-  scripts: common: fix buffer freeing
-  usb: gadget: fsl_udc: lower state_complete constraints
-  imx-usb-loader: fix windows usage
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ scripts/imx/imx-usb-loader.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
- drivers/usb/gadget/udc/fsl_udc_pbl.c | 2 +-
- scripts/common.c                     | 5 +++--
- scripts/imx/imx-usb-loader.c         | 8 ++++++--
- 3 files changed, 10 insertions(+), 5 deletions(-)
-
+diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
+index 676f077c25..ece4603b2b 100644
+--- a/scripts/imx/imx-usb-loader.c
++++ b/scripts/imx/imx-usb-loader.c
+@@ -484,12 +484,16 @@ static int transfer(int report, void *p, unsigned cnt, int *last_trans)
+ 		err = libusb_bulk_transfer(usb_dev_handle,
+ 					   (report < 3) ? 1 : 2 + EP_IN, p, cnt, last_trans, 1000);
+ 	} else {
+-		unsigned char tmp[1028];
++		unsigned char tmp[1028] = { 0 };
+ 
+ 		tmp[0] = (unsigned char)report;
+ 
+ 		if (report < 3) {
+ 			memcpy(&tmp[1], p, cnt);
++
++			if (report == 2)
++				cnt = mach_id->max_transfer;
++
+ 			if (mach_id->hid_endpoint) {
+ 				int trans;
+ 				err = libusb_interrupt_transfer(usb_dev_handle,
+@@ -739,7 +743,7 @@ static int send_buf(void *buf, unsigned len)
+ 	while (1) {
+ 		int now = get_min(cnt, mach_id->max_transfer);
+ 
+-		if (!now)
++		if (now <= 0)
+ 			break;
+ 
+ 		err = transfer(2, p, now, &now);
 -- 
 2.41.0
 
