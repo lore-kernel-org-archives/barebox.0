@@ -3,67 +3,67 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qslTg-00BshS-HB
+	id 1qslTh-00Bshz-2P
 	for lore@lore.pengutronix.de; Tue, 17 Oct 2023 16:55:24 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qslTe-0003sf-7j
-	for lore@pengutronix.de; Tue, 17 Oct 2023 16:55:23 +0200
+	id 1qslTf-0003vA-P7
+	for lore@pengutronix.de; Tue, 17 Oct 2023 16:55:24 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=e8tx4l+NbuyBPuoHRQ+rCboSnjz2NleKBZIlOPhYCP8=; b=3mge2bnwba9jRexZqrYJfO8v6r
-	OeiUnGDQfztWgcHHp4kYeH5rBx0iS9X59XtfqrYU/rFzlroUuHveA1YUd4ZBtSr4WNIGfBTTweZQ4
-	Sa6XbsRIJlhUsqa6fu6SrqeShA7CsKxszIv/CdwvLsixOs+36Lg8v0x2KUtfIgvCluwNta3Scqmih
-	Mvbt0hGxUOPaq/IK53UyqthvWQXkcMQjYdhpVZTrXMYdQCv/zsCtEGULwnKQ1HSitKLOZB4/ZTQkT
-	Os/R+qBTWyHJs/kTDkV/yx+iGtveGobBL3uPkktFjHWA/xy7tvZ2em2QMh40Jz3peQFejajHSzWfH
-	BB+cXxeQ==;
+	bh=Vgki0U2fAqSIEgXV5GgZHzvkRSfBDv7rmunTJYCeGH4=; b=TLIGM1EcrfrOE6dLqs0Z/ZMdmi
+	gx6c+8a9B8gL04YkPD+huaSKwdaDX7BuienLgL4C3ARkHO/Gp/n/j18FKVOcLyejtVCPrNIR00uYp
+	zmOaIfyGvAMDEnuDYLTT6PURq3DAhH0J1OzPQujAgs/VEXd6wMEedhh+429A1v8Ewu2a6+wz0Japk
+	v25aeWXoCu7QulFoFZQCS6Ku+umv7+owK9zrJsF9MyeoWMGE8+oau12P76JvEPovuBfTO56dr48T3
+	grUpj4sl1cQtWLcYccrHL251aw7E9+mneStqBOkmRpaYe06XU/aM8ebl7JTzL0gTlXD9GTt8Ggoin
+	tkIYb3eQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qslSQ-00Cevj-13;
-	Tue, 17 Oct 2023 14:54:06 +0000
+	id 1qslST-00Cey2-17;
+	Tue, 17 Oct 2023 14:54:09 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qslQB-00Ccba-1N
+	id 1qslQB-00Ccc2-2J
 	for barebox@bombadil.infradead.org;
 	Tue, 17 Oct 2023 14:51:47 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
 	Content-Type:Content-ID:Content-Description;
-	bh=e8tx4l+NbuyBPuoHRQ+rCboSnjz2NleKBZIlOPhYCP8=; b=rFSbVaqE6Aib0pA2u0KDRbkKPF
-	IUA11pD+A7gg9A+qJy8IwN137VQPoRCBt5DyOZ4JQsoBLqTeg6gLsKNX6WSPRyzgA2b7WRdKcKooP
-	nZtNASm2HOadKsBo8jcQdRZYjGT2Ap/bRD8rG+uEJWz2pm7LuwnBOAMHBs/+kTm+CQP4drx7ezew/
-	eG2olnNXX6/FTDMZAtnlT1PbFgpL8h6LiVJ/B5qTjyND6T1P9t8+gAJvf6zyBAFW3WeqLqdvdPj58
-	19NRJjfBvD9oF6zAHPIUWeCzXh1XFLEhTnDsPfuXF6dPV2z/c/8JIuk+O3YrZkc73IzMaLNdpNAHU
-	f5nrbHoA==;
+	bh=Vgki0U2fAqSIEgXV5GgZHzvkRSfBDv7rmunTJYCeGH4=; b=M2NkOPYH9VYVkez/Ogm88xAwsM
+	X6UwFozZy80YdJuVvwNO9n16bOcSNZn33CrcLFct69b6yuMH8kF8yYLUV7k6lD55CsmU4qW4JCR2D
+	wfSWNshDVCUEh4f2hi/A69nawCyD6n3+lT63AWKeKXCUIh0zlHb1R3xgmHJ3qxLXuWx/Mpyp9X6G3
+	NN4F4yMiyg9EatG7beXSGxcCV13BdnnotGG7Mv8jMIWe1NvqUh6gJxALrECCQ6chv6TPnSDKxkerX
+	rL5G75tLjXu0cH4/Ex6aM/aoHgSwrlu+jBlizCdVKzLKb4hiWdg52ZlQgRtk49QJnp6Gjtk31XkL0
+	8hPD12gg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qslQ5-007AEZ-33
+	id 1qslQ5-007AEa-2U
 	for barebox@lists.infradead.org;
 	Tue, 17 Oct 2023 14:51:46 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1qslPy-0001wJ-RM
+	id 1qslPy-0001wJ-SU
 	for barebox@lists.infradead.org; Tue, 17 Oct 2023 16:51:34 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 17 Oct 2023 16:51:16 +0200
-Message-Id: <20231017145131.3069283-15-m.felsch@pengutronix.de>
+Date: Tue, 17 Oct 2023 16:51:17 +0200
+Message-Id: <20231017145131.3069283-16-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231017145131.3069283-1-m.felsch@pengutronix.de>
 References: <20231017145131.3069283-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231017_155142_206081_CB4A3DCA 
-X-CRM114-Status: GOOD (  11.14  )
+X-CRM114-CacheID: sfid-20231017_155141_978812_307CF4B0 
+X-CRM114-Status: GOOD (  10.83  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,66 +85,56 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 14/29] ARM: lds: add support for a 2nd CSF area
+Subject: [PATCH v2 15/29] scripts: imx: force flexspi and hab option order
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Extend the CSF area to be able two store two CSF slots. The 2nd CSF slot
-is required in case of FlexSPI HAB boot support. The first slot is used
-for the MMC-IVT + barebox-pbl; the 2nd slot is used for the FlexSPI-IVT
-+ barebox-pbl. This is necessary because of the fact that the HAB ROM
-code requires that the IVT is signed as well.
-
-Make the 2nd CSF slot optional since early SRAM space is limited and 4K
-can make a difference here.
-
-Please check the documentation for a more detailed information about the
-i.MX8M image layout.
+Force the order to ensure that the hab options are parsed after the
+flexspi options. This is important since we need to know which memory
+regions need to be verified and/or en-/decrypted and with the flexspi
+support a 2nd header is added in between the first header and the
+barebox pbl binary.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
 Changelog:
 v2:
-- add new Kconfig entry to select QSPI HAB support
+- unchanged
 - v1-link: https://lore.barebox.org/barebox/20231010143314.2031253-1-m.felsch@pengutronix.de/T/#t
 
- arch/arm/lib/pbl.lds.S    | 4 ++++
- arch/arm/mach-imx/Kconfig | 6 ++++++
- 2 files changed, 10 insertions(+)
+ scripts/imx/imx.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
-index 898d6be33b54..cafb27b2d55e 100644
---- a/arch/arm/lib/pbl.lds.S
-+++ b/arch/arm/lib/pbl.lds.S
-@@ -12,7 +12,11 @@
- #define BASE	(TEXT_BASE - SZ_2M)
- #endif
+diff --git a/scripts/imx/imx.c b/scripts/imx/imx.c
+index e3169bace6a6..32488455b7a8 100644
+--- a/scripts/imx/imx.c
++++ b/scripts/imx/imx.c
+@@ -614,6 +614,12 @@ static int do_flexspi_ivtofs(struct config_data *data, int argc, char *argv[])
+ 	if (argc < 2)
+ 		return -EINVAL;
  
-+#ifdef CONFIG_HABV4_QSPI
-+#define HAB_CSF_LEN	0x4000
-+#else
- #define HAB_CSF_LEN	0x2000
-+#endif
- 
- OUTPUT_FORMAT(BAREBOX_OUTPUT_FORMAT)
- OUTPUT_ARCH(BAREBOX_OUTPUT_ARCH)
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index c60f1f949232..6a7d90e2c853 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -750,6 +750,12 @@ config HABV4
- 	help
- 	  High Assurance Boot, as found on i.MX28/i.MX6/i.MX8M.
- 
-+config HABV4_QSPI
-+	depends on HABV4
-+	bool "HABv4 QPSI support"
-+	help
-+	  Enable this option to build signed QSPI/FlexSPI images.
++	if (data->csf) {
++		fprintf(stderr, "#include <mach/imx/flexspi-imx8m*-cfg.h> must be placed in front "
++				"of #include <mach/imx/habv4-imx8-gencsf.h>\n");
++		return -EINVAL;
++	}
 +
- config HAB_CERTS_ENV
- 	depends on HAB
- 	bool "Specify certificates in environment"
+ 	data->image_flexspi_ivt_offset = strtoul(argv[1], NULL, 0);
+ 
+ 	return 0;
+@@ -624,6 +630,12 @@ static int do_flexspi_fcfbofs(struct config_data *data, int argc, char *argv[])
+ 	if (argc < 2)
+ 		return -EINVAL;
+ 
++	if (data->csf) {
++		fprintf(stderr, "#include <mach/imx/flexspi-imx8m*-cfg.h> must be placed in front "
++				"of #include <mach/imx/habv4-imx8-gencsf.h>\n");
++		return -EINVAL;
++	}
++
+ 	data->image_flexspi_fcfb_offset = strtoul(argv[1], NULL, 0);
+ 
+ 	return 0;
 -- 
 2.39.2
 
