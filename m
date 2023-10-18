@@ -1,62 +1,52 @@
-Delivery-date: Wed, 18 Oct 2023 16:38:09 +0200
+Delivery-date: Wed, 18 Oct 2023 16:41:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qt7gX-00D5C5-Tl
-	for lore@lore.pengutronix.de; Wed, 18 Oct 2023 16:38:09 +0200
+	id 1qt7k7-00D5KE-PF
+	for lore@lore.pengutronix.de; Wed, 18 Oct 2023 16:41:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qt7gW-0005Pb-H3
-	for lore@pengutronix.de; Wed, 18 Oct 2023 16:38:09 +0200
+	id 1qt7k6-00060n-A4
+	for lore@pengutronix.de; Wed, 18 Oct 2023 16:41:50 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tRlgNXXu1u+kEAPdimYHQHL+qRjalppyZIkD86JgraE=; b=xyp7hLJj5Sxl5GFZE+BpxnB/si
-	cqtwb6e7Hdj0TCfjxcAp44hp7zR7yBmSRswMzMCYBpSNcas45XfKB3F44GdoACKUCyy3hHj2oBP+n
-	o3+3GcXQMEC+e/WopszdtEhjnuFHp2XYeCM4wimFXaFTSKfVYvbE642fUEd1c8ilVgr/tsOCv8a9K
-	GpmMpArPYutjCE/q4TA8i83jDRqrGv3WEQyE50CPk0pbhEMGJBHZbcjPeH5vFZfgmLboB/d2hCbxL
-	+fGf50v2VWzQIEEf4pSx3RqdAwTkdGK7KVSTaiw+NPeqFff4DNycN1o8rg5kEx3u8Cr/tPutk0NfG
-	+BByo1Ow==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=isxI6bZ2SUFj67rMH4tj68Hjiju/fJpSmIxp2C0S8fE=; b=NA4GAqU3udwu2hUHmh5A3n4xUY
+	yht82m/r5PBXdoNNL+E9adLgxZVAOevsbv45LA5TT0jP5gqYG8g5HDFvALRK95SYvtk0CgANae56i
+	P1IRpe2Be7lCtqlEH23JfYX0YaJrBEGh0BafVU/IW9H7voUeQyRjE+rK7q3REgBZMWhHX0D4N6j2o
+	Nr8ybYC4kfMTnwiuLJ1N2oZ7+IBEdEvOVShNHJhtU2CcL7JckCqWkWKM/IM9baomXiD9lDfSQKCoG
+	hlcBxxtwczHKlYLXtDWiOkWm0BoVpTyxFvPMHanDPALETj6fnI3Nu7LwKj3Vh1uojHhd8J5EcAsTs
+	wTR+S7mw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qt7fT-00Evc2-0V;
-	Wed, 18 Oct 2023 14:37:03 +0000
+	id 1qt7j3-00EwFZ-1Y;
+	Wed, 18 Oct 2023 14:40:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qt7fP-00EvbP-1R
+	id 1qt7iz-00EwEY-2M
 	for barebox@lists.infradead.org;
-	Wed, 18 Oct 2023 14:37:01 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Wed, 18 Oct 2023 14:40:43 +0000
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qt7fO-00053k-8q; Wed, 18 Oct 2023 16:36:58 +0200
-Message-ID: <70fa4042-3978-18c3-e5fe-23ec14122c4b@pengutronix.de>
-Date: Wed, 18 Oct 2023 16:36:58 +0200
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1qt7iy-0005pS-DC
+	for barebox@lists.infradead.org; Wed, 18 Oct 2023 16:40:40 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Wed, 18 Oct 2023 16:40:38 +0200
+Message-Id: <20231018144038.504641-1-m.felsch@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: =?UTF-8?Q?Hans_Christian_L=c3=b8nstad?= <hcl@datarespons.no>
-Cc: Barebox List <barebox@lists.infradead.org>
-References: <EE0A8E0F-465F-46D1-A366-676E9047EA0C@datarespons.no>
- <52fa194d-441c-8827-00ac-49db2cd72661@pengutronix.de>
- <99FA6255-7807-4790-BA19-5BE02346DBF7@datarespons.no>
- <56A3F2CD-4EE3-4157-B821-2BD8917155AC@datarespons.no>
- <2df69458-e538-1505-13dd-3ba87e697f3c@pengutronix.de>
- <2FCD3543-D1C9-4A48-B325-19F51C84FFC8@datarespons.no>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <2FCD3543-D1C9-4A48-B325-19F51C84FFC8@datarespons.no>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231018_073659_479772_E215816E 
-X-CRM114-Status: GOOD (  25.09  )
+X-CRM114-CacheID: sfid-20231018_074041_768924_416B5BAB 
+X-CRM114-Status: GOOD (  11.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,150 +64,85 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: IMX8M and Optee support
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] scripts: imx: add Makefile.mingw64
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Hans,
+Add a small Makfile for building the imx-usb-loader.exe outside the
+Kbuild system. The user can compile the tool for windows by:
 
-On 18.10.23 16:06, Hans Christian Lønstad wrote:
-> The ATF for imx8 is quite convoluted requiring fixed memory locations for images and device trees. The ATF itself supports transferring parameters
-> Using 4 unsigned long arguments. These are unfortunately zeroed out by a misconfiguration for IMX8:
-> 
-> RESET_TO_BL31 := 1
-> and not at the same time setting
-> RESET_TO_BL31_WITH_PARAMS := 1
-> 
-> As demoed below this can be made to work.
-> ———><——
-> 
-> Uart initialized
-> Run level 3
-> Init power
-> Init DDR
-> Handover to ATF
-> imx8mp_load_and_start_image_via_tfa: Expect OPTEE at 0xbe000000
-> CH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
-> IH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
->                                                                    CAAM early init successful
-> imx8m_atf_start_bl31: Callout BL31 with 1, 2, 3, 4
-> NOTICE:  Do not release JR0 to NS as it can be used by HAB
-> INFO:    bl31_early_platform_setup2: args are 0x00000001, 0x00000002, 0x00000003, 0x00000004
-> NOTICE:  BL31: v2.8(debug):lf-6.1.36-2.1.0-0-g1a3beeab6-dirty
-> NOTICE:  BL31: Built : 15:49:38, Oct 18 2023
-> 
-> ——><——
-> 
-> The "best" approach is likely to patch ATFs imx8mX_bl31_setup.c replacing preprocessor values with values
-> handed over from Barebox. Adding these parameters will be compatible with unpatched ATFs anyway.
+  make -f scripts/imx/Makfile.mingw64 LIBUSB_DIR=~/libusb-1.0.26
 
-There's void bl31_entry(uintptr_t bl31_entry, uintptr_t bl32_entry,
-		        uintptr_t bl33_entry, uintptr_t fdt_addr)
+or by
 
-which is used for RK3568/RK3588 platforms. AFAIU, future SoCs will likely
-use a linked list of hand over blocks to transfer this same information.
+  make -f scripts/imx/Makfile.mingw64 LIBUSB_DIR=~/libusb-1.0.26 O=win
 
-Any of these two approaches would be better than what we have now on i.MX.
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ scripts/imx/Makefile.mingw64 | 48 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 48 insertions(+)
+ create mode 100644 scripts/imx/Makefile.mingw64
 
-I am still not sure how this relates to OP-TEE hanging. Can you configure
-your OP-TEE to not expect a FDT?
-
-Cheers,
-Ahmad
-
-> 
-> Hans
-> 
-> 
->> 18. okt. 2023 kl. 15:04 skrev Ahmad Fatoum <a.fatoum@pengutronix.de>:
->>
->> Hello,
->>
->> On 18.10.23 14:31, Hans Christian Lønstad wrote:
->>> I may have gotten this wrong, but should not the device tree be passed over to ATF which again pass it over to Optee?
->>>
->>> The bl31() wrapper in imx8m_atf_start_bl31 should do this using register call parameters?
->>
->> I am using a quite antiquated imx-atf v2.4 and optee-os-3.2.0.imx in my setup and
->> haven't come around to update them. I know that barebox works fine with newer TF-A
->> versions (especially after https://review.trustedfirmware.org/c/TF-A/trusted-firmware-a/+/16370),
->> but I haven't tested a newer OP-TEE, so if your OP-TEE configuration/version expects
->> a device tree, this may indeed be the culprit.
->>
->>>> 18. okt. 2023 kl. 13:29 skrev Hans Christian Lønstad <hcl@datarespons.no>:
->>>>
->>>> We have a 2GB IMX8MP system using 32MB OPTEEE_SIZE, so expect to find Optee blob at 0xBE000000.
->>>>
->>>> ATF compiled with:
->>>> make PLAT=imx8mp BL32_BASE=0xBE000000 IMX_BOOT_UART_BASE=0x30890000 SPD=opteed DEBUG=1 -j
->>>>
->>>> Optee compiled with:
->>>>
->>>> CFG_DDR_SIZE ?= UL(0x80000000)
->>>> CFG_UART_BASE ?= UART2_BASE
->>>> CFG_TZDRAM_START ?= 0xBE000000
->>>> undefine CFG_NS_ENTRY_ADDR
->>>>
->>>> Barebox compiled with:
->>>> CONFIG_HAVE_OPTEE=y CONFIG_OPTEE_SIZE=0x02000000 # CONFIG_BOOTM_OPTEE is not set CONFIG_PBL_OPTEE=y CONFIG_FIRMWARE_IMX8MP_OPTEE=y
->>
->> barebox configuration looks ok assuming board code calls imx8mp_load_and_start_image_via_tfa().
->>
->>>>
->>>> This produces the following on boot:
->>>> —————————————————><--------------
->>>>
->>>> Uart initialized
->>>> Run level 3
->>>> Init power
->>>> Init DDR
->>>> Handover to ATF
->>>> imx8mp_load_and_start_image_via_tfa: Expect OPTEE at 0xbe000000
->>>> CH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
->>>> IH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
->>>>                                                                  NOTICE:  Do not release JR0 to NS as it can be used by HAB
->>>> NOTICE:  BL31: v2.8(debug):lf-6.1.36-2.1.0-0-g1a3beeab6-dirty
->>>> NOTICE:  BL31: Built : 13:14:09, Oct 18 2023
->>>> INFO:    GICv3 with legacy support detected.
->>>> INFO:    ARM GICv3 driver initialized in EL3
->>>> INFO:    Maximum SPI INTID supported: 191
->>>> INFO:    BL31: Initializing runtime services
->>>> INFO:    bl31_plat_get_next_image_ep_info: want image 0
->>>> INFO:    bl31_plat_get_next_image_ep_info: bl32 PC is 0xbe000000
->>>> INFO:    BL31: cortex_a53: CPU workaround for 855873 was applied
->>>> WARNING: BL31: cortex_a53: CPU workaround for 1530924 was missing!
->>>> INFO:    BL31: Initializing BL32
->>>> INFO:    bl31_plat_get_next_image_ep_info: want image 0
->>>> INFO:    bl31_plat_get_next_image_ep_info: bl32 PC is 0xbe000000
->>>> INFO:    opteed_init: 176 - calling <opteed_synchronous_sp_entry>
->>>> INFO:    opteed_synchronous_sp_entry: 79 - calling <opteed_enter_sp>
->>
->> Try compiling op-tee with CFG_TEE_CORE_LOG_LEVEL=4 and see how far it gets.
->>
->>>> I´m not sure why it asks for the same image twice and if this implies anything …
->>
->> No idea..
->>
->> Cheers,
->> Ahmad
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
-> 
-
+diff --git a/scripts/imx/Makefile.mingw64 b/scripts/imx/Makefile.mingw64
+new file mode 100644
+index 000000000000..e012d833f1b4
+--- /dev/null
++++ b/scripts/imx/Makefile.mingw64
+@@ -0,0 +1,48 @@
++ifeq ($(strip $(LIBUSB_DIR)),)
++$(error Please specify LIBUSB_DIR e.g. LIBUSB_DIR=~/libusb-1.0.26-binaries)
++endif
++
++CC := x86_64-w64-mingw32-gcc
++ifeq ($(shell which $(CC)),)
++$(error "No $(CC) in $(PATH) found")
++endif
++
++LIBUSB_MINGW := $(LIBUSB_DIR)/libusb-MinGW-x64
++ifeq ($(wildcard $(strip $(LIBUSB_MINGW))),)
++$(error "$(LIBUSB_MINGW) not found")
++endif
++
++src := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
++
++# Do we want to change the working directory?
++ifeq ("$(origin O)", "command line")
++  OUTPUT := $(O)
++else
++  OUTPUT := $(src)/imx-usb-loader-windows
++endif # ifneq ($(OUTPUT),)
++
++# Make's built-in functions such as $(abspath ...), $(realpath ...) cannot
++# expand a shell special character '~'. We use a somewhat tedious way here.
++obj := $(shell mkdir -p $(OUTPUT) && cd $(OUTPUT) && pwd)
++$(if $(obj),, \
++     $(error failed to create output directory "$(OUTPUT)"))
++
++# $(realpath ...) resolves symlinks
++obj := $(realpath $(obj))
++
++CPPFLAGS := -I $(LIBUSB_MINGW)/include/libusb-1.0 -I $(src)/../include/ -I $(src)/../../include/mach/
++LDFLAGS := -L $(LIBUSB_MINGW)/lib -lusb-1.0 -static
++
++OBJECTS := $(addprefix $(obj)/, imx.o imx-usb-loader.o)
++
++$(obj)/%.o: $(src)/%.c
++	@$(CC) -c -o $@ $< $(CPPFLAGS)
++
++$(obj)/imx-usb-loader.exe: $(OBJECTS)
++	@$(CC) -o $@ $(OBJECTS) $(LDFLAGS)
++
++all: $(obj)/imx-usb-loader.exe
++
++.PHONY: clean
++clean:
++	@rm -rf $(obj)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
