@@ -1,68 +1,62 @@
-Delivery-date: Wed, 18 Oct 2023 16:33:44 +0200
+Delivery-date: Wed, 18 Oct 2023 16:38:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qt7cH-00D52A-3G
-	for lore@lore.pengutronix.de; Wed, 18 Oct 2023 16:33:44 +0200
+	id 1qt7gX-00D5C5-Tl
+	for lore@lore.pengutronix.de; Wed, 18 Oct 2023 16:38:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qt7cF-0004Ny-IV
-	for lore@pengutronix.de; Wed, 18 Oct 2023 16:33:44 +0200
+	id 1qt7gW-0005Pb-H3
+	for lore@pengutronix.de; Wed, 18 Oct 2023 16:38:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/UklYYxKeik6Y2yqQ+Wbl0nlf2+p6Va6qdsAC0Dq7kQ=; b=FjJeri3LUyDrXXxjjnZXxR9VaI
-	NZbJY43r2XBIKiJhqw/6GfV3K1D09PYaHALNZTfboUcHjWNCGMxS4CmVqqGOHtntmM7OCzOm/Zdul
-	i5SRe4R7fWvu9s+hSh+KrtHiyBM3y0Ks+xjHxtvxLq1KShMN9T9IhM+4C9inHXcxfeEhaYL0dIrMx
-	JxE105KU1SbDFGOA5Y6/AANRBlrkypEigqDHiPCdwf3sH175uJb0MiFhItd3U59xe1J8Bua8/sB9F
-	dWCTph6a4vd+HJK8FfXlgu/9tOTvbYtR88U4pCIDIudwE7+sKK3uIx/WMx3t7NMV1Iu6GTYm+sZRE
-	+PUc9x3w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=tRlgNXXu1u+kEAPdimYHQHL+qRjalppyZIkD86JgraE=; b=xyp7hLJj5Sxl5GFZE+BpxnB/si
+	cqtwb6e7Hdj0TCfjxcAp44hp7zR7yBmSRswMzMCYBpSNcas45XfKB3F44GdoACKUCyy3hHj2oBP+n
+	o3+3GcXQMEC+e/WopszdtEhjnuFHp2XYeCM4wimFXaFTSKfVYvbE642fUEd1c8ilVgr/tsOCv8a9K
+	GpmMpArPYutjCE/q4TA8i83jDRqrGv3WEQyE50CPk0pbhEMGJBHZbcjPeH5vFZfgmLboB/d2hCbxL
+	+fGf50v2VWzQIEEf4pSx3RqdAwTkdGK7KVSTaiw+NPeqFff4DNycN1o8rg5kEx3u8Cr/tPutk0NfG
+	+BByo1Ow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qt7b1-00EuiT-0r;
-	Wed, 18 Oct 2023 14:32:27 +0000
+	id 1qt7fT-00Evc2-0V;
+	Wed, 18 Oct 2023 14:37:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qt7ax-00Euhc-2a
+	id 1qt7fP-00EvbP-1R
 	for barebox@lists.infradead.org;
-	Wed, 18 Oct 2023 14:32:25 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1qt7aq-00042Y-L4; Wed, 18 Oct 2023 16:32:16 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1qt7aq-002Zqt-8j; Wed, 18 Oct 2023 16:32:16 +0200
-Received: from mfe by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1qt7aq-00F7Ve-6P; Wed, 18 Oct 2023 16:32:16 +0200
-Date: Wed, 18 Oct 2023 16:32:16 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20231018143216.oq4k2bqhskurjv5k@pengutronix.de>
-References: <20231017213608.3494255-1-m.felsch@pengutronix.de>
- <20231017213608.3494255-5-m.felsch@pengutronix.de>
- <cdc0c007-63fd-8261-26d3-bac17fb8cac3@pengutronix.de>
- <20231018125341.zdsymavtt7qszclf@pengutronix.de>
- <139e779b-7c76-699b-d5e2-6ea3fdb69e85@pengutronix.de>
+	Wed, 18 Oct 2023 14:37:01 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qt7fO-00053k-8q; Wed, 18 Oct 2023 16:36:58 +0200
+Message-ID: <70fa4042-3978-18c3-e5fe-23ec14122c4b@pengutronix.de>
+Date: Wed, 18 Oct 2023 16:36:58 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <139e779b-7c76-699b-d5e2-6ea3fdb69e85@pengutronix.de>
-User-Agent: NeoMutt/20180716
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: =?UTF-8?Q?Hans_Christian_L=c3=b8nstad?= <hcl@datarespons.no>
+Cc: Barebox List <barebox@lists.infradead.org>
+References: <EE0A8E0F-465F-46D1-A366-676E9047EA0C@datarespons.no>
+ <52fa194d-441c-8827-00ac-49db2cd72661@pengutronix.de>
+ <99FA6255-7807-4790-BA19-5BE02346DBF7@datarespons.no>
+ <56A3F2CD-4EE3-4157-B821-2BD8917155AC@datarespons.no>
+ <2df69458-e538-1505-13dd-3ba87e697f3c@pengutronix.de>
+ <2FCD3543-D1C9-4A48-B325-19F51C84FFC8@datarespons.no>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <2FCD3543-D1C9-4A48-B325-19F51C84FFC8@datarespons.no>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231018_073223_864480_30038BBF 
-X-CRM114-Status: GOOD (  37.62  )
+X-CRM114-CacheID: sfid-20231018_073659_479772_E215816E 
+X-CRM114-Status: GOOD (  25.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,146 +74,150 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 4/4] imx-usb-loader: fix windows usage
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: IMX8M and Optee support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 23-10-18, Ahmad Fatoum wrote:
-> On 18.10.23 14:53, Marco Felsch wrote:
-> > On 23-10-18, Ahmad Fatoum wrote:
-> >> On 17.10.23 23:36, Marco Felsch wrote:
-> >>> This ports commit 561f0377db5e ("Transfer always specified report 2
-> >>> length") from imx_usb_loader[1] to our implementation.
-> >>>
-> >>> | commit 561f0377db5e1a36f5ab5e17f97d774f9f1e22ab
-> >>> | Author: Stefan Agner <stefan.agner@toradex.com>
-> >>> | Date:   Wed Nov 2 16:51:24 2016 -0700
-> >>> |
-> >>> |     Transfer always specified report 2 length
-> >>> |
-> >>> |     The Windows HIDAPI is very strict when it comes to packet lengths:
-> >>> |     The API always expect the length specified by the device and rejects
-> >>> |     the transfer otherwise. The report size is specified by the HID
-> >>> |     Report Descriptor. The i.MX 6 SoC reports a report 2 size of 1024.
-> >>> |     Currently, imx_usb reads the length from the device specific config
-> >>> |     files and stores it in max_transfer. This change uses max_transfer
-> >>> |     for report 2 when using the HID API.
-> >>> |
-> >>> |     The boot ROM handles too long transfers just fine. Also NXP's
-> >>> |     sb_loader transfers always complete reports. The change has been
-> >>> |     successfully tested on Linux and Windows.
-> >>> |
-> >>> |     Given that the device reports the size, it is probably also "the
-> >>> |     right thing to do"...
-> >>> |
-> >>> |     With that change, we might end up transferring up to 1023 bytes
-> >>> |     more than actually necessary. Make sure that DoIRomDownload does
-> >>> |     not print an error message and returns successfully even if too
-> >>> |     many bytes have been transferred (this now typically happens at the
-> >>> |     end of every file).
-> >>> |
-> >>> |     In write_dcd use a signed length variable to keep track of remaining
-> >>> |     bytes. Continue transfer loop only if more than 0 bytes are left to
-> >>> |     transfer. Also drop the m_ prefix, m_ is usually used for member
-> >>> |     variables but this is a local variable.
-> >>> |
-> >>> |     Signed-off-by: Stefan Agner <stefan.agner@toradex.com>
-> >>>
-> >>> [1] https://github.com/boundarydevices/imx_usb_loader/commit/561f0377db5e1a36f5ab5e17f97d774f9f1e22ab
-> >>>
-> >>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> >>> ---
-> >>>  scripts/imx/imx-usb-loader.c | 8 ++++++--
-> >>>  1 file changed, 6 insertions(+), 2 deletions(-)
-> >>>
-> >>> diff --git a/scripts/imx/imx-usb-loader.c b/scripts/imx/imx-usb-loader.c
-> >>> index 676f077c25..ece4603b2b 100644
-> >>> --- a/scripts/imx/imx-usb-loader.c
-> >>> +++ b/scripts/imx/imx-usb-loader.c
-> >>> @@ -484,12 +484,16 @@ static int transfer(int report, void *p, unsigned cnt, int *last_trans)
-> >>>  		err = libusb_bulk_transfer(usb_dev_handle,
-> >>>  					   (report < 3) ? 1 : 2 + EP_IN, p, cnt, last_trans, 1000);
-> >>>  	} else {
-> >>> -		unsigned char tmp[1028];
-> >>> +		unsigned char tmp[1028] = { 0 };
-> >>>  
-> >>>  		tmp[0] = (unsigned char)report;
-> >>>  
-> >>>  		if (report < 3) {
-> >>>  			memcpy(&tmp[1], p, cnt);
-> >>> +
-> >>> +			if (report == 2)
-> >>> +				cnt = mach_id->max_transfer;
-> >>
-> >> Did you verify that this can't result in an out-of-bounds read?
-> > 
-> > How should that be possible? The tmp-array is always 1028-byte and we
-> > already do limit cnt to max_transfer if cnt is larger than max_transfer.
+Hello Hans,
+
+On 18.10.23 16:06, Hans Christian Lønstad wrote:
+> The ATF for imx8 is quite convoluted requiring fixed memory locations for images and device trees. The ATF itself supports transferring parameters
+> Using 4 unsigned long arguments. These are unfortunately zeroed out by a misconfiguration for IMX8:
 > 
-> In the case that cnt < mach_id->max_transfer, we increase cnt to
-> mach_id->max_transfer and pass that to libusb. Are we guaranteed
-> that libusb won't read out of bounds, i.e. buf + cnt - 1 is always
-> inside tmp?
-
-At the moment it is guaranteed that mach_id->max_transfer is always
-smaller than 1028. libusb always start to read at &tmp[0] so the last
-read may transfer useless bytes (0) but we are always within the tmp
-buffer. So no out-of-bound reads.
-
-> >> I'd have expected either an adjustment to tmp's size or a description
-> >> why a buffer overread can't happen in the commit message.
-> > 
-> > Sorry but can you elaborate where a buffer overrread can happen?
+> RESET_TO_BL31 := 1
+> and not at the same time setting
+> RESET_TO_BL31_WITH_PARAMS := 1
 > 
-> You groked the code and wrote the patch, so I hoped you could tell me
-> "no, buffer overflow can't happen because ...".
+> As demoed below this can be made to work.
+> ———><——
+> 
+> Uart initialized
+> Run level 3
+> Init power
+> Init DDR
+> Handover to ATF
+> imx8mp_load_and_start_image_via_tfa: Expect OPTEE at 0xbe000000
+> CH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
+> IH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
+>                                                                    CAAM early init successful
+> imx8m_atf_start_bl31: Callout BL31 with 1, 2, 3, 4
+> NOTICE:  Do not release JR0 to NS as it can be used by HAB
+> INFO:    bl31_early_platform_setup2: args are 0x00000001, 0x00000002, 0x00000003, 0x00000004
+> NOTICE:  BL31: v2.8(debug):lf-6.1.36-2.1.0-0-g1a3beeab6-dirty
+> NOTICE:  BL31: Built : 15:49:38, Oct 18 2023
+> 
+> ——><——
+> 
+> The "best" approach is likely to patch ATFs imx8mX_bl31_setup.c replacing preprocessor values with values
+> handed over from Barebox. Adding these parameters will be compatible with unpatched ATFs anyway.
 
-Please see above.
+There's void bl31_entry(uintptr_t bl31_entry, uintptr_t bl32_entry,
+		        uintptr_t bl33_entry, uintptr_t fdt_addr)
 
-Regards,
-  Marco
+which is used for RK3568/RK3588 platforms. AFAIU, future SoCs will likely
+use a linked list of hand over blocks to transfer this same information.
+
+Any of these two approaches would be better than what we have now on i.MX.
+
+I am still not sure how this relates to OP-TEE hanging. Can you configure
+your OP-TEE to not expect a FDT?
+
+Cheers,
+Ahmad
 
 > 
-> Cheers,
-> Ahmad
-> 
-> > 
-> > Regards,
-> >   Marco
-> > 
-> >>> +
-> >>>  			if (mach_id->hid_endpoint) {
-> >>>  				int trans;
-> >>>  				err = libusb_interrupt_transfer(usb_dev_handle,
-> >>> @@ -739,7 +743,7 @@ static int send_buf(void *buf, unsigned len)
-> >>>  	while (1) {
-> >>>  		int now = get_min(cnt, mach_id->max_transfer);
-> >>>  
-> >>> -		if (!now)
-> >>> +		if (now <= 0)
-> >>>  			break;
-> >>>  
-> >>>  		err = transfer(2, p, now, &now);
-> >>
-> >> -- 
-> >> Pengutronix e.K.                           |                             |
-> >> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> >> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> >>
-> >>
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> Hans
 > 
 > 
+>> 18. okt. 2023 kl. 15:04 skrev Ahmad Fatoum <a.fatoum@pengutronix.de>:
+>>
+>> Hello,
+>>
+>> On 18.10.23 14:31, Hans Christian Lønstad wrote:
+>>> I may have gotten this wrong, but should not the device tree be passed over to ATF which again pass it over to Optee?
+>>>
+>>> The bl31() wrapper in imx8m_atf_start_bl31 should do this using register call parameters?
+>>
+>> I am using a quite antiquated imx-atf v2.4 and optee-os-3.2.0.imx in my setup and
+>> haven't come around to update them. I know that barebox works fine with newer TF-A
+>> versions (especially after https://review.trustedfirmware.org/c/TF-A/trusted-firmware-a/+/16370),
+>> but I haven't tested a newer OP-TEE, so if your OP-TEE configuration/version expects
+>> a device tree, this may indeed be the culprit.
+>>
+>>>> 18. okt. 2023 kl. 13:29 skrev Hans Christian Lønstad <hcl@datarespons.no>:
+>>>>
+>>>> We have a 2GB IMX8MP system using 32MB OPTEEE_SIZE, so expect to find Optee blob at 0xBE000000.
+>>>>
+>>>> ATF compiled with:
+>>>> make PLAT=imx8mp BL32_BASE=0xBE000000 IMX_BOOT_UART_BASE=0x30890000 SPD=opteed DEBUG=1 -j
+>>>>
+>>>> Optee compiled with:
+>>>>
+>>>> CFG_DDR_SIZE ?= UL(0x80000000)
+>>>> CFG_UART_BASE ?= UART2_BASE
+>>>> CFG_TZDRAM_START ?= 0xBE000000
+>>>> undefine CFG_NS_ENTRY_ADDR
+>>>>
+>>>> Barebox compiled with:
+>>>> CONFIG_HAVE_OPTEE=y CONFIG_OPTEE_SIZE=0x02000000 # CONFIG_BOOTM_OPTEE is not set CONFIG_PBL_OPTEE=y CONFIG_FIRMWARE_IMX8MP_OPTEE=y
+>>
+>> barebox configuration looks ok assuming board code calls imx8mp_load_and_start_image_via_tfa().
+>>
+>>>>
+>>>> This produces the following on boot:
+>>>> —————————————————><--------------
+>>>>
+>>>> Uart initialized
+>>>> Run level 3
+>>>> Init power
+>>>> Init DDR
+>>>> Handover to ATF
+>>>> imx8mp_load_and_start_image_via_tfa: Expect OPTEE at 0xbe000000
+>>>> CH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
+>>>> IH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
+>>>>                                                                  NOTICE:  Do not release JR0 to NS as it can be used by HAB
+>>>> NOTICE:  BL31: v2.8(debug):lf-6.1.36-2.1.0-0-g1a3beeab6-dirty
+>>>> NOTICE:  BL31: Built : 13:14:09, Oct 18 2023
+>>>> INFO:    GICv3 with legacy support detected.
+>>>> INFO:    ARM GICv3 driver initialized in EL3
+>>>> INFO:    Maximum SPI INTID supported: 191
+>>>> INFO:    BL31: Initializing runtime services
+>>>> INFO:    bl31_plat_get_next_image_ep_info: want image 0
+>>>> INFO:    bl31_plat_get_next_image_ep_info: bl32 PC is 0xbe000000
+>>>> INFO:    BL31: cortex_a53: CPU workaround for 855873 was applied
+>>>> WARNING: BL31: cortex_a53: CPU workaround for 1530924 was missing!
+>>>> INFO:    BL31: Initializing BL32
+>>>> INFO:    bl31_plat_get_next_image_ep_info: want image 0
+>>>> INFO:    bl31_plat_get_next_image_ep_info: bl32 PC is 0xbe000000
+>>>> INFO:    opteed_init: 176 - calling <opteed_synchronous_sp_entry>
+>>>> INFO:    opteed_synchronous_sp_entry: 79 - calling <opteed_enter_sp>
+>>
+>> Try compiling op-tee with CFG_TEE_CORE_LOG_LEVEL=4 and see how far it gets.
+>>
+>>>> I´m not sure why it asks for the same image twice and if this implies anything …
+>>
+>> No idea..
+>>
+>> Cheers,
+>> Ahmad
+>>
+>> -- 
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>
+> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
