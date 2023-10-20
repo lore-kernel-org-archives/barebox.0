@@ -1,65 +1,63 @@
-Delivery-date: Fri, 20 Oct 2023 15:39:00 +0200
+Delivery-date: Fri, 20 Oct 2023 20:10:45 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qtpiO-00FaVq-NF
-	for lore@lore.pengutronix.de; Fri, 20 Oct 2023 15:39:00 +0200
+	id 1qttxN-00Fq0m-Cy
+	for lore@lore.pengutronix.de; Fri, 20 Oct 2023 20:10:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qtpiN-0003J8-8U
-	for lore@pengutronix.de; Fri, 20 Oct 2023 15:39:00 +0200
+	id 1qttxM-0001q2-1U
+	for lore@pengutronix.de; Fri, 20 Oct 2023 20:10:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sgqmBXFoI32534LP68IwbbA6OPXmMILt3WwZHRjgknY=; b=iFM+zpF20zQVKW4tAt3lLZZJ78
-	o9DZKQJzCHqZRPSBP/lVMCL94NcKnoMTzP4VML4T9D1MM0BibgEm7drXXNmLVh0c1tDRh+pNyeL9i
-	GC+wKy+YVMEu7dQZuZqvyfL3E4EixuaSWRkO3NJjwWxdVHEZsmeFKoKyeZEfqKmrrXs15gCC76P9R
-	saHPjRo7BOySSt1jg0v53vXW01dPXR2fe9mYEnED47Rwfpn9VOzV1QQSog5it3EXjOLszhfOMOHO5
-	vfjI7xy3zx7r8NbfuozJOBgFVgH+jDahTwDBkHn1PUqvt9jSVWF7l/28sXgNEc/yvzcr+QIKTpnUt
-	7VvP9FQg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=QWdJVT+DkvG7YNeS1Ije9hB4d76e3+Uk601OjAV7quI=; b=JDgHCHH+hAaXJ2cFPSfi4mgL+d
+	RoNit2xlw8ffhj1t7kYMc0hnlSWoH6MZCCzIwmN5uS9rhmr5hy0QoP3Sd7TygTYSm+KIcrUgMPjqc
+	WOWGZ90UCYED+nMI7t15XyXsvXV7P2yok4+BLQCXDaYmulTLmEHB1kM2CSuIHEX6IEDglYILWHSbX
+	EKHUh8Sb3RIY62Qtr53hNimcTV28jriwepdK/x6c2wOTTYqIiW32Zac106B6wTqmFpgRm+4jz4Fma
+	hrYG+R2bEQTJ5jQBoWsGFItaLxjJcAW3x+lUd6q6SXTzpvPj8ce6CcNBqfsOF0vuJOCDq9JGjsh9h
+	SYOCGXkg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qtphI-002O7p-37;
-	Fri, 20 Oct 2023 13:37:52 +0000
+	id 1qttw0-002ph5-1i;
+	Fri, 20 Oct 2023 18:09:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qtphD-002O62-1O
+	id 1qttvx-002pgb-0d
 	for barebox@lists.infradead.org;
-	Fri, 20 Oct 2023 13:37:50 +0000
+	Fri, 20 Oct 2023 18:09:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qtphC-0002zh-3P; Fri, 20 Oct 2023 15:37:46 +0200
+	id 1qttvt-0001Zw-Ff; Fri, 20 Oct 2023 20:09:13 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qtphB-0032VZ-NQ; Fri, 20 Oct 2023 15:37:45 +0200
+	id 1qttvt-0035IY-3A; Fri, 20 Oct 2023 20:09:13 +0200
 Received: from afa by dude05.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <afa@pengutronix.de>)
-	id 1qtphB-002Luw-1y;
-	Fri, 20 Oct 2023 15:37:45 +0200
+	id 1qttvt-00CEZj-06;
+	Fri, 20 Oct 2023 20:09:13 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Robert Schwebel <rsc@pengutronix.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 20 Oct 2023 15:37:44 +0200
-Message-Id: <20231020133744.555063-2-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 20 Oct 2023 20:09:12 +0200
+Message-Id: <20231020180912.2914428-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20231020133744.555063-1-a.fatoum@pengutronix.de>
-References: <20231020133744.555063-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231020_063747_471787_3A924313 
-X-CRM114-Status: GOOD (  21.05  )
+X-CRM114-CacheID: sfid-20231020_110917_229882_6CB2A345 
+X-CRM114-Status: UNSURE (   8.99  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,142 +79,52 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 2/2] remoteproc: stm32: fix breakage after DT sync with upstream
+Subject: [PATCH] decompress: xz: enable armthumb BCJ filter for Thumb-2 barebox
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Once more, a device tree sync with Linux breaks a barebox driver.
+The XZ decompressor in barebox has BCJ filter support for THUMB, but
+like Linux, it's unused and instead the ARM BCJ filter is used.
 
-This time, the STM32 remoteproc driver ported from Linux was broken by
-the upstream stm32mp151.dtsi removing the st,syscfg-tz property.
+Fixing that lets us save a few kilobytes, which is especially useful for
+legacy configuration that fit a whole barebox into limited on-chip SRAM
+(and not only the prebootloader). For example, with this patch applied
+barebox-am33xx-beaglebone-mlo.img is shrinked 3K from 109236 to 106028 bytes.
 
-This property is only needed for the SiP secure monitor call case,
-but was so far always specified and the driver required its presence,
-even if it went unused.
-
-The Linux driver has since removed this hard requirement and added a new
-third way to do co-processor reset: Besides direct access to hardware
-and Silicon Provider specific secure monitor call, there's also support
-for doing it over SCMI now.
-
-Sync that part with the Linux driver to fix following boot-time error
-message:
-
-  ERROR: stm32-rproc 10000000.m4@10000000.of: failed to get tz syscfg
-
-Reported-by: Robert Schwebel <rsc@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/remoteproc/stm32_rproc.c | 72 ++++++++++++++++++++++----------
- 1 file changed, 51 insertions(+), 21 deletions(-)
+ lib/decompress_unxz.c | 2 ++
+ scripts/xz_wrap.sh    | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/remoteproc/stm32_rproc.c b/drivers/remoteproc/stm32_rproc.c
-index b2282f2fac5b..a7df29e57051 100644
---- a/drivers/remoteproc/stm32_rproc.c
-+++ b/drivers/remoteproc/stm32_rproc.c
-@@ -30,8 +30,9 @@ struct stm32_syscon {
+diff --git a/lib/decompress_unxz.c b/lib/decompress_unxz.c
+index 132ab4a239b3..ad6a5f20ba28 100644
+--- a/lib/decompress_unxz.c
++++ b/lib/decompress_unxz.c
+@@ -133,6 +133,8 @@
+ #ifdef CONFIG_ARM
+ #	ifdef CONFIG_CPU_64
+ #		define XZ_DEC_ARM64
++#	elif defined CONFIG_THUMB2_BAREBOX
++#		define XZ_DEC_ARMTHUMB
+ #	else
+ #		define XZ_DEC_ARM
+ #	endif
+diff --git a/scripts/xz_wrap.sh b/scripts/xz_wrap.sh
+index 5b5f3adcff6d..a6373a748168 100755
+--- a/scripts/xz_wrap.sh
++++ b/scripts/xz_wrap.sh
+@@ -20,6 +20,10 @@ case $SRCARCH in
+ 	sparc)          BCJ=--sparc ;;
+ esac
  
- struct stm32_rproc {
- 	struct reset_control *rst;
-+	struct reset_control *hold_boot_rst;
- 	struct stm32_syscon hold_boot;
--	bool secured_soc;
-+	bool hold_boot_smc;
- };
- 
- static void *stm32_rproc_da_to_va(struct rproc *rproc, u64 da, int len)
-@@ -54,13 +55,28 @@ static int stm32_rproc_set_hold_boot(struct rproc *rproc, bool hold)
- 	struct arm_smccc_res smc_res;
- 	int val, err;
- 
-+	/*
-+	 * Three ways to manage the hold boot
-+	 * - using SCMI: the hold boot is managed as a reset,
-+	 * - using Linux(no SCMI): the hold boot is managed as a syscon register
-+	 * - using SMC call (deprecated): use SMC reset interface
-+	 */
++if grep -q '^CONFIG_THUMB2_BAREBOX=y$' include/config/auto.conf; then
++	BCJ=--armthumb
++fi
 +
- 	val = hold ? HOLD_BOOT : RELEASE_BOOT;
+ # clear BCJ filter if unsupported
+ xz -H | grep -q -- $BCJ || BCJ=
  
--	if (IS_ENABLED(CONFIG_ARM_SMCCC) && ddata->secured_soc) {
-+	if (ddata->hold_boot_rst) {
-+		/* Use the SCMI reset controller */
-+		if (!hold)
-+			err = reset_control_deassert(ddata->hold_boot_rst);
-+		else
-+			err =  reset_control_assert(ddata->hold_boot_rst);
-+	} else if (IS_ENABLED(CONFIG_HAVE_ARM_SMCCC) && ddata->hold_boot_smc) {
-+		/* Use the SMC call */
- 		arm_smccc_smc(STM32_SMC_RCC, STM32_SMC_REG_WRITE,
- 			      hold_boot->reg, val, 0, 0, 0, 0, &smc_res);
- 		err = smc_res.a0;
- 	} else {
-+		/* Use syscon */
- 		err = regmap_update_bits(hold_boot->map, hold_boot->reg,
- 					 hold_boot->mask, val);
- 	}
-@@ -142,28 +158,42 @@ static int stm32_rproc_parse_dt(struct device *dev, struct stm32_rproc *ddata)
- 	}
- 
- 	/*
--	 * if platform is secured the hold boot bit must be written by
--	 * smc call and read normally.
--	 * if not secure the hold boot bit could be read/write normally
-+	 * Three ways to manage the hold boot
-+	 * - using SCMI: the hold boot is managed as a reset
-+	 *    The DT "reset-mames" property should be defined with 2 items:
-+	 *        reset-names = "mcu_rst", "hold_boot";
-+	 * - using SMC call (deprecated): use SMC reset interface
-+	 *    The DT "reset-mames" property is optional, "st,syscfg-tz" is required
-+	 * - default(no SCMI, no SMC): the hold boot is managed as a syscon register
-+	 *    The DT "reset-mames" property is optional, "st,syscfg-holdboot" is required
- 	 */
--	err = stm32_rproc_get_syscon(np, "st,syscfg-tz", &tz);
--	if (err) {
--		dev_err(dev, "failed to get tz syscfg\n");
--		return err;
-+
-+	ddata->hold_boot_rst = reset_control_get_optional(dev, "hold_boot");
-+	if (IS_ERR(ddata->hold_boot_rst))
-+		return dev_err_probe(dev, PTR_ERR(ddata->hold_boot_rst),
-+				     "failed to get hold_boot reset\n");
-+
-+	if (!ddata->hold_boot_rst && IS_ENABLED(CONFIG_HAVE_ARM_SMCCC)) {
-+		/* Manage the MCU_BOOT using SMC call */
-+		err = stm32_rproc_get_syscon(np, "st,syscfg-tz", &tz);
-+		if (!err) {
-+			err = regmap_read(tz.map, tz.reg, &tzen);
-+			if (err) {
-+				dev_err(dev, "failed to read tzen\n");
-+				return err;
-+			}
-+			ddata->hold_boot_smc = tzen & tz.mask;
-+		}
- 	}
- 
--	err = regmap_read(tz.map, tz.reg, &tzen);
--	if (err) {
--		dev_err(dev, "failed to read tzen\n");
--		return err;
--	}
--	ddata->secured_soc = tzen & tz.mask;
--
--	err = stm32_rproc_get_syscon(np, "st,syscfg-holdboot",
--				     &ddata->hold_boot);
--	if (err) {
--		dev_err(dev, "failed to get hold boot\n");
--		return err;
-+	if (!ddata->hold_boot_rst && !ddata->hold_boot_smc) {
-+		/* Default: hold boot manage it through the syscon controller */
-+		err = stm32_rproc_get_syscon(np, "st,syscfg-holdboot",
-+					     &ddata->hold_boot);
-+		if (err) {
-+			dev_err(dev, "failed to get hold boot\n");
-+			return err;
-+		}
- 	}
- 
- 	return 0;
 -- 
 2.39.2
 
