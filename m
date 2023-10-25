@@ -1,65 +1,87 @@
-Delivery-date: Tue, 24 Oct 2023 11:31:13 +0200
+Delivery-date: Wed, 25 Oct 2023 09:45:15 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qvDko-00288L-3H
-	for lore@lore.pengutronix.de; Tue, 24 Oct 2023 11:31:13 +0200
+	id 1qvYZn-0039FS-7n
+	for lore@lore.pengutronix.de; Wed, 25 Oct 2023 09:45:15 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qvDkl-0002xZ-JY
-	for lore@pengutronix.de; Tue, 24 Oct 2023 11:31:12 +0200
+	id 1qvYZl-0003T6-Ti
+	for lore@pengutronix.de; Wed, 25 Oct 2023 09:45:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:Content-Type:
-	MIME-Version:Message-ID:Subject:To:Date:Reply-To:Cc:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=arifn7DzL3RGKHiknRBdzPeGzdvNs3d8QUAsLt/972U=; b=qW08WOo0UL3LBlqpMDgHCy0LnC
-	Ft2llTGZKn74ZgPa2J8fAv96NolYPbt6NBaJLxi+F0z1884WmouB1CB61GS48v8jvM90jzP/LS0m+
-	3JKp4/TZAy+MCv9MrPN/MUvT9cKLc9cLrycMMUN2qWeJMhAvaMOEDN3NuE2piVwpGFzRmkJDsu1wf
-	L0PJ03Zj7QXdsap8ofMwWvrXuOz/krL9FhfpfIzMggODxjCycQ1TYKwU/6temhRdL9XtOgHnEjYvl
-	qEEPiUENNdgd6ILJyDuNtFcigpS7vWdEf04EFMRDNjiVkTXviNcndEk9tBkbGqBpf7c7c8vi4eo5R
-	8pVBZ4pg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:Mime-Version:References:In-Reply-To:Message-Id:Subject:Cc:To:
+	From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=R/CP4S/2ukDlyOdcW1LiW66tOM2pA4ufmwsKIWMbKE8=; b=H7igWOE7TM/Jc56W8e4CqleleG
+	sJtxdINCml6JyHT+8Pbx0XqwJoQPw8Fu1wO1N7s0Up+aY0r9lQiXbVoHW0z9XwnG7PvDsDCZ05J3I
+	sPBJlNSBcPmbJI64r8AY95sORQloJK0hgKwXPvoAJXGffZ9fw9XLBYK2O2h0srSUvNs6iCrr0tGYg
+	nLPXL8+doWMdF+vVo3lLExSqK6oR/uNZ3Xtsk7j0U1+TTJI3PQwEEA6xseeyjOtaCW6ZztPPtOm1R
+	xOC+ZbC7kNeTcVIVO8A8Uqu+2EztdGNllWprymvBZZtb5miLNRelOOI7lUDuyXL7nkDF8hHjhPaN1
+	Jy226ocg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qvDir-009Jzr-20;
-	Tue, 24 Oct 2023 09:29:13 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1qvYXn-00Bbcc-11;
+	Wed, 25 Oct 2023 07:43:11 +0000
+Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qvDio-009Jwy-03
+	id 1qvYXj-00Bbc8-21
 	for barebox@lists.infradead.org;
-	Tue, 24 Oct 2023 09:29:12 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qvDij-0002ZF-Dh; Tue, 24 Oct 2023 11:29:05 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qvDij-003ug8-11; Tue, 24 Oct 2023 11:29:05 +0200
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qvDii-00G6JJ-V2; Tue, 24 Oct 2023 11:29:04 +0200
-Date: Tue, 24 Oct 2023 11:29:04 +0200
-To: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20231024092904.GV3359458@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+	Wed, 25 Oct 2023 07:43:09 +0000
+Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-507a29c7eefso7982505e87.1
+        for <barebox@lists.infradead.org>; Wed, 25 Oct 2023 00:43:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1698219785; x=1698824585; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=R/CP4S/2ukDlyOdcW1LiW66tOM2pA4ufmwsKIWMbKE8=;
+        b=L378cA5hL8G92kaeFObH7IoQqsorkU+VzreetoMb18C8xMpYmQK1VeE3OU44NFeNlj
+         jgTGfsKc4XUERaRLFZVIn3OvD1NAOenQIYNjHOD33cRK3UKNW5ckiLfxEI4uo4mD22EJ
+         Db0J4Q81uhQf6UWOc5k8BdAECOYbpUFDvpvlXiZP7hFosFxcvK/1bridBiL2AMZqFehK
+         KH1n8HKnXz9QgsbSObJCamzUzF8v23casX4yqGjdEji1S6oVcDvAY/PM4PJOSgMvBhL/
+         vazFKpCDVp9GKOMz7K2IT7wxzAfzoNoVot7gA5vsxAqmDQSgPSJvjsssr5f0UO84Wo0H
+         qJZQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1698219785; x=1698824585;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R/CP4S/2ukDlyOdcW1LiW66tOM2pA4ufmwsKIWMbKE8=;
+        b=Hhw3qbb7ijbfZNRYelxdGxh6JoYUCfS8R9yW3iohCxMz2UHC0uIWUAKiDnuDfQzeyM
+         mCjCZaOuIsjZZpRTnmG3NIePg+L9Fntr4cwR9fjx1kc6QTJY9u+G89aXy/nZfTHuMGVe
+         5DCSBiOKNCeGlrL8c5j3WQIjV+xBmUyo7EkXPA6KQ2ikyVSN+ElXsoPZdCWanlN1g+/4
+         sSk0ONBeVs4r8yhUFmu1Rrv61R27SI+RmP9Mr1AjRWp4Df95f8iQQdtXxK88kmPnLU77
+         B+TWrI7PmDjPHBsPnHfoiIa/AzvbHAgCmhvPdHi9cayXRJOGO2pjsJ+S2WQbIA2lrRq0
+         Sbow==
+X-Gm-Message-State: AOJu0YwAV2vyxNj3aGt333fznKicBlxOv0XCbBq9opyGk+0+SAhmlkK0
+	juFzh75+eWN/lVNP992ze11cMXDnPKE=
+X-Google-Smtp-Source: AGHT+IHhFBAatgWkKfJVcj5oczJ3mDxz87tIprhTm+g9WopjV2VeSlQ4B7nrANqeesbRIFaqxK24JA==
+X-Received: by 2002:a05:6512:3c8f:b0:507:f103:a69a with SMTP id h15-20020a0565123c8f00b00507f103a69amr9514337lfv.37.1698219784498;
+        Wed, 25 Oct 2023 00:43:04 -0700 (PDT)
+Received: from flare ([146.185.218.236])
+        by smtp.gmail.com with ESMTPSA id eo25-20020a056512481900b004fe10276bbfsm2436109lfb.296.2023.10.25.00.43.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Oct 2023 00:43:04 -0700 (PDT)
+Date: Wed, 25 Oct 2023 10:50:37 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-Id: <20231025105037.d22b218a917ef079bd5f6830@gmail.com>
+In-Reply-To: <20231024092904.GV3359458@pengutronix.de>
+References: <20231024092904.GV3359458@pengutronix.de>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231024_022910_208886_C91D40B1 
-X-CRM114-Status: GOOD (  19.00  )
+X-CRM114-CacheID: sfid-20231025_004307_666494_826FB04B 
+X-CRM114-Status: UNSURE (   7.79  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,169 +99,27 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: v2023.10.0
+X-Spam-Status: No, score=-6.7 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: v2023.10.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi All,
+On Tue, 24 Oct 2023 11:29:04 +0200
+Sascha Hauer <sha@pengutronix.de> wrote:
 
-We finally have a release for October.
+> Hi All,
+>=20
+> We finally have a release for October.
 
-There are some nice new things in this release. First of all we now have
-stackprotector support, so we can be sure now we do not overflow our
-stacks. Along with it there is a stacksmash command to test if
-stackprotector support is working as expected.
-The regulator support has undergone some changes. Most important in some
-cases is that we not only enable the always-on regulators, but we also
-set the correct voltage before enabling them. The 'regulator' command
-now shows the regulators in a tree structure to give a better overview.
-We have some new boards as well, namely the Phytec i.MX8MM SoM and
-ZynqMP ZCU102. New drivers this time are NAND support for STM32MP SoCs
-and a vf610-adc driver which can be used on i.MX6SX and i.MX6UL SoCs.
+I see the v2023.10.0 tag in the https://github.com/barebox/barebox repo
+but no such tag in the git://git.pengutronix.de/git/barebox.git repo.
 
-For the full list of changes see below.
-
-Have fun!
- Sascha
-
-----------------------------------8<---------------------------------
-
-Ahmad Fatoum (57):
-      crypto: crc32: use uint32_t instead of ulong
-      mci: sdhci: don't hang indefinitely waiting for DMA completion
-      fastboot: scale default sparse max_download_size with available memory
-      ARM: stm32mp: phycore: register barebox update handlers
-      ARM: mmu64: mark barebox text section executable during early init
-      console: pbl: correctly handle relocate_to_adr after pbl_set_putc
-      Documentation: dt-bindings: ocotp: deprecate barebox,provide-mac-address
-      lib: random: make linux/hw_random.h header self-contained
-      KAsan: support including header from PBL
-      include: linux/kernel.h: define PTR_ALIGN_DOWN/PTR_IS_ALIGNED
-      ARM: unwind: don't allocate while printing stack trace
-      ARM64: backtrace: print stacktrace to stderr
-      KASan: only print to stderr
-      KASan: don't allocate memory while printing report
-      ARM: Zynqmp: define cdns_serial_putc for use with pbl_set_putc
-      clk: implement clk_get_enabled helper
-      watchdog: add Cadence watchdog support for Xilinx SoCs
-      ARM: drop unreferenced left-over lib/Makefile
-      fs: fat: enable VFAT long file names by default
-      treewide: remove remaining _d suffixes from struct driver_d/device_d
-      commands: test: support signed comparisons
-      test: self: add some test cases for test command
-      remoteproc: imx: don't re-request reserved SDRAM region
-      remoteproc: update Kconfig text for IMX_REMOTEPROC symbol
-      include: move PAGE_ definitions into linux/pagemap.h
-      ARM: mark early C setup functions as __prereloc
-      ARM: i.MX: HABv4: point out i.MX6 specifics in docs and Kconfig help text
-      clk: have clk_get always return -ENOENT on missing clock
-      ARM: stm32mp: don't generate .img symlinks for .stm32 binaries
-      ARM: ZynqMP: Add ZCU102 support
-      ARM: zynqmp: defconfig: enable zcu106
-      common: elf: support loading to address 0
-      ARM: add support for booting ELF executables
-      kbuild: support generating stripped ELF files for PBL
-      lib: add stackprotector support
-      ARM: mmu: catch stack overflowing into TTB with stack guard page
-      commands: add stacksmash command for causing stack overflows
-      net: import Linux eth_addr_inc/dec/add helpers
-      startup: don't skip countdown if consoles were runtime enabled
-      console: implement of_console_by_stdout_path helper
-      include: linux/spinlock: add stubs for Linux _bh variants
-      include: asm-generic/atomic.h: always define atomic/atomic_64
-      include: add linux/atomic.h header
-      scripts: allow user to build rsatoc if COMPILE_HOST_TOOLS
-      rsatoc: support extracting RSA public key from X.509 SPKI format
-      rsa: fix typos and missing type definitions
-      rsatoc: support generating standalone keys unreferenced by FIT keyring
-      lib: jsmn: add and use new jsmn_token_size helper
-      lib: jsmn: add helper for allocating tokens
-      lib: jsmn: add case-insensitive comparison
-      lib: rename json_strcpy to json_strdup
-      digest: add digest_algo helper
-      driver: add support for device aliases
-      firmware-zynqmp: export functions for setting GGS/PGGS
-      firmware-zynqmp: add device parameters for ggs/pggs
-      remoteproc: stm32: fix typo in Kconfig symbol
-      remoteproc: stm32: fix breakage after DT sync with upstream
-
-Alexander Shiyan (4):
-      memory: Add driver for FMC2 External Bus Interface on STM32MP SoCs
-      mtd: nand: Add driver for NAND controller on STM32MP SoCs
-      imx: Fix Kconfig dependency
-      ARM: imx: Fix build error without CONFIG_USB_GADGET_DRIVER_ARC_PBL
-
-Bastian Krause (2):
-      ARM: dts: i.MX8: add pwm aliases
-      commands: pwm: add option to list registered PWMs
-
-Christian Eggers (1):
-      aiodev: port Linux vf610-adc driver
-
-Jules Maselbas (3):
-      decompressors: Update xz to include ARM64 BCJ decoder
-      scripts: Select XZ --arm64 BCJ filter for 64-bit arm
-      kbuild: remove duplicated xz compressions target
-
-Marc Kleine-Budde (3):
-      i2c: add <pbl/eeprom.h> for PBL use
-      common: board: phytec: import SoM detection for imx8m based SoM from u-boot
-      ARM: i.MX8MM: add Phytec i.MX8MM SoM support
-
-Marco Felsch (4):
-      ARM: boards: polyhex-debix: fix RGMII pin setup
-      ARM: boards: polyhex-debix: add SoM/Baseboard combination compatible
-      ARM: boards: polyhex-debix: add support to read MAC addresses
-      ARM: dts: imx8mp-debix-som-a-bmb-08-upstream: sync with mainlined kernel version
-
-Roland Hieber (1):
-      doc: booting-linux: improve bootspec chapter
-
-Sascha Hauer (35):
-      crypto: crc32: Lindent
-      crypto: crc32: allocate crc_table statically
-      crypto: crc32: Drop CONFIG_DYNAMIC_CRC_TABLE option
-      crypto: crc32: enable for PBL
-      i2c: Add slices for I2C adapters
-      spi: Add slices for SPI controllers
-      net: ksz9477: Add mdio bus slice dependency to i2c/spi device
-      clk: imx8mp: Drop SAI4 clk
-      dts: update to v6.6-rc1
-      regulator: rename variable rd to rdev
-      regulator: merge struct regulator_internal fields into struct regulator_dev
-      regulator: introduce regulator logging functions.
-      regulator: add regulator_get_voltage_internal()
-      regulator: Add missing cases in regulator_map_voltage()
-      regulator: stpmic1: add .get_voltage_sel
-      regulator: stpmic1: add .supply_name
-      regulator: register regulator as last step in of_regulator_register()
-      regulator: Set initial voltage
-      regulator: drop struct regulator_dev::supply_name
-      regulator: print regulator tree
-      regulator: replace _internal suffix by _rdev
-      net: phy: Add phy_(set|clear)_bits_mmd()
-      net: phy: dp83867: Sync with Linux
-      ARM: dts: phycore-stm32mp15: Use upstream dts
-      Merge branch 'for-next/arm-stackprotector'
-      Merge branch 'for-next/dts'
-      Merge branch 'for-next/dump-stack-stderr'
-      Merge branch 'for-next/i2c-spi-slices'
-      Merge branch 'for-next/imx'
-      Merge branch 'for-next/misc'
-      Merge branch 'for-next/regulator'
-      Merge branch 'for-next/stm32'
-      Merge branch 'for-next/zynqmp'
-      test: self: Fix testing test on 32bit architectures
-      Release v2023.10.0
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+--=20
+Best regards,
+=A0 Antony Pavlov
 
 
