@@ -1,66 +1,60 @@
-Delivery-date: Thu, 26 Oct 2023 16:28:20 +0200
+Delivery-date: Thu, 26 Oct 2023 16:30:48 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qw1LQ-004dZn-US
-	for lore@lore.pengutronix.de; Thu, 26 Oct 2023 16:28:20 +0200
+	id 1qw1No-004dga-PG
+	for lore@lore.pengutronix.de; Thu, 26 Oct 2023 16:30:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qw1LP-0001uX-Q5
-	for lore@pengutronix.de; Thu, 26 Oct 2023 16:28:20 +0200
+	id 1qw1Nn-0002ST-59
+	for lore@pengutronix.de; Thu, 26 Oct 2023 16:30:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=u8VlTrNkA+YHAMmLhP/AAopE/BerILJGLusoizfq9DQ=; b=A5Ux1j+BnVSdlXBv6ymS1Dk8If
-	+MkTk24K44FQgDmlojkPsgYsnIBSe3mTrX49gG9OpYVi6wsn8PXYDCUuwo6kuIMEU2JM0O5LtnJ7i
-	qJM9dk/Wpr1iHyzxM8mps7ZKnljJU2uX3ygjesGhMM4V4jWzNC0Zp4VQe6JYkHMoDkMyqSKE8R5gp
-	MD8mmxUx/mWghR60bEuY8JaCSTS9eWi4lTygjtYCJ1K2yPocEflF3Rn4LpUchUge+TOGre0JxHdDl
-	1CKuC7HCaNaMB/jpo5gMQiIM91jh8OeV/J8gfIKTGfCDhmUSR0jYysRFtvztiV9V4k8iE/nVxcsur
-	YTmHGgqA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Ysu/HNhQLrCwzUVoNeacqfOk/T5y/gHZANP5Ay9+oss=; b=FIkzhYB3eNSzyeEtonDqLY8BU/
+	if5PJW8R7b96LS2jAkWnJnLym+6H1DF9xChfLb9b+otIiMFeHXyl+nkiBcr6kNYaEJgk4UMR3bXeI
+	OrYOt6niFsXFOsdb5V4MkpM+LDZhgF8u2vN/24j5raCKQXkl6qgH8/NMrAQG+nWZ6DyoRMa0Ry1mS
+	VgsjpoGSsf7BE1ybGbPT/w3hgbS5IpkK80uhOO4V4Dy4AyiEJCMQbOroBHkDq6kz0ZitqyjSA/jVD
+	/uQMhkd8IExynHJFTG+gfQf+vCc5oJpEofYLtBndljPX2N4ble9tOezqPSg4IVKvQ1d4Vn5bKVNY2
+	vwPTL7Gg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qw1KM-00EfTB-2n;
-	Thu, 26 Oct 2023 14:27:14 +0000
+	id 1qw1Ml-00Efyl-1B;
+	Thu, 26 Oct 2023 14:29:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qw1KK-00EfSj-17
+	id 1qw1Mi-00Efxo-0B
 	for barebox@lists.infradead.org;
-	Thu, 26 Oct 2023 14:27:13 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1qw1KH-0001M8-1Q; Thu, 26 Oct 2023 16:27:09 +0200
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1qw1KG-004Ql2-LU; Thu, 26 Oct 2023 16:27:08 +0200
-Received: from mfe by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1qw1KG-00GT1f-JB; Thu, 26 Oct 2023 16:27:08 +0200
-Date: Thu, 26 Oct 2023 16:27:08 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Thu, 26 Oct 2023 14:29:41 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1qw1Mg-0002BG-Ra; Thu, 26 Oct 2023 16:29:38 +0200
+Message-ID: <f6245eb6-d2be-ab06-eccf-74714559efbd@pengutronix.de>
+Date: Thu, 26 Oct 2023 16:29:36 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20231026142708.wyz6vsgkb3lasyhz@pengutronix.de>
 References: <20231026124623.4054582-1-m.felsch@pengutronix.de>
  <20231026124623.4054582-2-m.felsch@pengutronix.de>
  <177c9c80-df41-0e53-0613-929e7c3fa38f@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <177c9c80-df41-0e53-0613-929e7c3fa38f@pengutronix.de>
-User-Agent: NeoMutt/20180716
+ <20231026142708.wyz6vsgkb3lasyhz@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20231026142708.wyz6vsgkb3lasyhz@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231026_072712_382289_BCB75E2B 
-X-CRM114-Status: GOOD (  16.90  )
+X-CRM114-CacheID: sfid-20231026_072940_089056_0D624D40 
+X-CRM114-Status: GOOD (  16.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,54 +72,71 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
 Subject: Re: [PATCH 2/2] scripts: get_maintainers: drop --status enforcement
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 23-10-26, Ahmad Fatoum wrote:
-> On 26.10.23 14:46, Marco Felsch wrote:
-> > The status parameter is never used so drop it and stop bother the user
-> > of the script.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+On 26.10.23 16:27, Marco Felsch wrote:
+> On 23-10-26, Ahmad Fatoum wrote:
+>> On 26.10.23 14:46, Marco Felsch wrote:
+>>> The status parameter is never used so drop it and stop bother the user
+>>> of the script.
+>>>
+>>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+>>
+>> Our get_maintainer.pl script doesn't have the same breadth of features
+>> as the kernel's and only --status is implemented, thus the check.
 > 
-> Our get_maintainer.pl script doesn't have the same breadth of features
-> as the kernel's and only --status is implemented, thus the check.
+> Where? I see only 'print << 'EOT' <text> EOT'
 
-Where? I see only 'print << 'EOT' <text> EOT'
+Ye, the output is similar to what you'd get with the kernel's --status.
+The script is just here, because checkpatch depends on it and calls
+it with --status.
 
-Regards,
-  Marco
+Cheers,
+Ahmad
 
 > 
-> > ---
-> >  scripts/get_maintainer.pl | 2 --
-> >  1 file changed, 2 deletions(-)
-> > 
-> > diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
-> > index 7c0d50333400..a19c0e7305d0 100755
-> > --- a/scripts/get_maintainer.pl
-> > +++ b/scripts/get_maintainer.pl
-> > @@ -2,8 +2,6 @@
-> >  # SPDX-License-Identifier: GPL-2.0-only
-> >  # Dummy get_maintainer.pl script for checkpatch.pl to use
-> >  
-> > -die "USAGE: get_maintainer.pl --status\n" unless grep /--status/, @ARGV;
-> > -
-> >  print <<'EOT'
-> >  Sascha Hauer <s.hauer@pengutronix.de> (maintainer:BAREBOX)
-> >  barebox@lists.infradead.org (open list:BAREBOX)
+> Regards,
+>   Marco
 > 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>
+>>> ---
+>>>  scripts/get_maintainer.pl | 2 --
+>>>  1 file changed, 2 deletions(-)
+>>>
+>>> diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
+>>> index 7c0d50333400..a19c0e7305d0 100755
+>>> --- a/scripts/get_maintainer.pl
+>>> +++ b/scripts/get_maintainer.pl
+>>> @@ -2,8 +2,6 @@
+>>>  # SPDX-License-Identifier: GPL-2.0-only
+>>>  # Dummy get_maintainer.pl script for checkpatch.pl to use
+>>>  
+>>> -die "USAGE: get_maintainer.pl --status\n" unless grep /--status/, @ARGV;
+>>> -
+>>>  print <<'EOT'
+>>>  Sascha Hauer <s.hauer@pengutronix.de> (maintainer:BAREBOX)
+>>>  barebox@lists.infradead.org (open list:BAREBOX)
+>>
+>> -- 
+>> Pengutronix e.K.                           |                             |
+>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>>
+>>
 > 
-> 
+
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+
 
 
