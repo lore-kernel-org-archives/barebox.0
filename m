@@ -1,60 +1,65 @@
-Delivery-date: Thu, 26 Oct 2023 16:30:48 +0200
+Delivery-date: Thu, 26 Oct 2023 16:33:00 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qw1No-004dga-PG
-	for lore@lore.pengutronix.de; Thu, 26 Oct 2023 16:30:48 +0200
+	id 1qw1Pw-004dmx-Iw
+	for lore@lore.pengutronix.de; Thu, 26 Oct 2023 16:33:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qw1Nn-0002ST-59
-	for lore@pengutronix.de; Thu, 26 Oct 2023 16:30:47 +0200
+	id 1qw1Pv-0002xS-7J
+	for lore@pengutronix.de; Thu, 26 Oct 2023 16:32:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ysu/HNhQLrCwzUVoNeacqfOk/T5y/gHZANP5Ay9+oss=; b=FIkzhYB3eNSzyeEtonDqLY8BU/
-	if5PJW8R7b96LS2jAkWnJnLym+6H1DF9xChfLb9b+otIiMFeHXyl+nkiBcr6kNYaEJgk4UMR3bXeI
-	OrYOt6niFsXFOsdb5V4MkpM+LDZhgF8u2vN/24j5raCKQXkl6qgH8/NMrAQG+nWZ6DyoRMa0Ry1mS
-	VgsjpoGSsf7BE1ybGbPT/w3hgbS5IpkK80uhOO4V4Dy4AyiEJCMQbOroBHkDq6kz0ZitqyjSA/jVD
-	/uQMhkd8IExynHJFTG+gfQf+vCc5oJpEofYLtBndljPX2N4ble9tOezqPSg4IVKvQ1d4Vn5bKVNY2
-	vwPTL7Gg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=BNvrpV4pZofwxar9eA1PUdEpuW5aLW5AgcikYVs4z40=; b=uiY6Iz8ojnqvqClIIkI0JGOw36
+	snQKtf8sKY4Ea/B9mNKnvein+6pw4ffH7DtNuVyL62mS7a00SHkOpSphElfg94dQEcEVKbiCQEG6p
+	rMenhY7X1rL48WHsEVAK+C30BshtS+0zi7FkpWqOTwsIfcdqh6dGGgu4WNkkV/wDKsTYO3DsXoyug
+	9pw3LcHBWZtZD8UFOqjlnDteOcmgK2aWGHMDnq0lLrfI92JdwSNqwYujhNwqrLIcXYO+hFUN04mMY
+	naIm+wMZPXW5hB2Of35VSPR7SepJyGGxj7/8+V6ud0V8pVPJfQKOnG5WcUQOc5/u1UJsirSr+Zk/N
+	U8vvMuHA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qw1Ml-00Efyl-1B;
-	Thu, 26 Oct 2023 14:29:43 +0000
+	id 1qw1Ot-00Eggr-14;
+	Thu, 26 Oct 2023 14:31:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qw1Mi-00Efxo-0B
+	id 1qw1Oi-00Ega6-0O
 	for barebox@lists.infradead.org;
-	Thu, 26 Oct 2023 14:29:41 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1qw1Mg-0002BG-Ra; Thu, 26 Oct 2023 16:29:38 +0200
-Message-ID: <f6245eb6-d2be-ab06-eccf-74714559efbd@pengutronix.de>
-Date: Thu, 26 Oct 2023 16:29:36 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>
+	Thu, 26 Oct 2023 14:31:45 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1qw1Og-0002cx-UY; Thu, 26 Oct 2023 16:31:42 +0200
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1qw1Og-004Qlc-Hl; Thu, 26 Oct 2023 16:31:42 +0200
+Received: from mfe by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1qw1Og-00GT3e-FZ; Thu, 26 Oct 2023 16:31:42 +0200
+Date: Thu, 26 Oct 2023 16:31:42 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
+Message-ID: <20231026143142.6dlijrwabwgj4kfb@pengutronix.de>
 References: <20231026124623.4054582-1-m.felsch@pengutronix.de>
- <20231026124623.4054582-2-m.felsch@pengutronix.de>
- <177c9c80-df41-0e53-0613-929e7c3fa38f@pengutronix.de>
- <20231026142708.wyz6vsgkb3lasyhz@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20231026142708.wyz6vsgkb3lasyhz@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <2e8afb0f-8ac4-575e-3029-9c1fffdb71fc@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2e8afb0f-8ac4-575e-3029-9c1fffdb71fc@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231026_072940_089056_0D624D40 
-X-CRM114-Status: GOOD (  16.12  )
+X-CRM114-CacheID: sfid-20231026_073144_164287_C06615CF 
+X-CRM114-Status: GOOD (  16.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,71 +77,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] scripts: get_maintainers: drop --status enforcement
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH 1/2] usb: gadget: initialize serialnumber as empty string
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 26.10.23 16:27, Marco Felsch wrote:
-> On 23-10-26, Ahmad Fatoum wrote:
->> On 26.10.23 14:46, Marco Felsch wrote:
->>> The status parameter is never used so drop it and stop bother the user
->>> of the script.
->>>
->>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
->>
->> Our get_maintainer.pl script doesn't have the same breadth of features
->> as the kernel's and only --status is implemented, thus the check.
+On 23-10-26, Ahmad Fatoum wrote:
+> Hello Marco,
 > 
-> Where? I see only 'print << 'EOT' <text> EOT'
-
-Ye, the output is similar to what you'd get with the kernel's --status.
-The script is just here, because checkpatch depends on it and calls
-it with --status.
-
-Cheers,
-Ahmad
-
+> On 26.10.23 14:46, Marco Felsch wrote:
+> > Windows hosts do require the serial number to be set to any ascii string
+> > to enumerate correctly. Set the serial number to "empty" to provide a
+> > sane default which works for both hosts. Users can still override this
+> > via the gadget.serialnumber variable.
+> > 
+> > Reported-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > ---
+> >  drivers/usb/gadget/udc/core.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+> > index b58498680ad1..dc5d1daa14bf 100644
+> > --- a/drivers/usb/gadget/udc/core.c
+> > +++ b/drivers/usb/gadget/udc/core.c
+> > @@ -1204,7 +1204,7 @@ int usb_add_gadget(struct usb_gadget *gadget)
+> >  	gadget->productname = xstrdup(barebox_get_model());
+> >  	dev_add_param_string(&gadget->dev, "productname", NULL, NULL,
+> >  			     &gadget->productname, NULL);
+> > -	gadget->serialnumber = xstrdup("");
+> > +	gadget->serialnumber = xstrdup("empty");
 > 
-> Regards,
->   Marco
+> Given that we initialize productname to model, it makes sense to initialize
+> serialnumber to global.serial_number now that we have that generic variable.
 > 
->>
->>> ---
->>>  scripts/get_maintainer.pl | 2 --
->>>  1 file changed, 2 deletions(-)
->>>
->>> diff --git a/scripts/get_maintainer.pl b/scripts/get_maintainer.pl
->>> index 7c0d50333400..a19c0e7305d0 100755
->>> --- a/scripts/get_maintainer.pl
->>> +++ b/scripts/get_maintainer.pl
->>> @@ -2,8 +2,6 @@
->>>  # SPDX-License-Identifier: GPL-2.0-only
->>>  # Dummy get_maintainer.pl script for checkpatch.pl to use
->>>  
->>> -die "USAGE: get_maintainer.pl --status\n" unless grep /--status/, @ARGV;
->>> -
->>>  print <<'EOT'
->>>  Sascha Hauer <s.hauer@pengutronix.de> (maintainer:BAREBOX)
->>>  barebox@lists.infradead.org (open list:BAREBOX)
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
->>
-> 
+> If that's unset, you can use a fixed value, I'd prefer "unset" though
+> instead of "empty".
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+I will adapt it, thanks.
 
+Regards,
+  Marco
 
 
