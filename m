@@ -1,68 +1,63 @@
-Delivery-date: Fri, 03 Nov 2023 08:39:56 +0100
+Delivery-date: Fri, 03 Nov 2023 17:00:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qyoma-00GjtT-T9
-	for lore@lore.pengutronix.de; Fri, 03 Nov 2023 08:39:56 +0100
+	id 1qywb8-00HJ9I-FQ
+	for lore@lore.pengutronix.de; Fri, 03 Nov 2023 17:00:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1qyomW-0000qj-Lf
-	for lore@pengutronix.de; Fri, 03 Nov 2023 08:39:56 +0100
+	id 1qywb4-0004Ql-QU
+	for lore@pengutronix.de; Fri, 03 Nov 2023 17:00:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KRT/RLSFxJr4QXdmV5OOIoX+E1yrXFYgzAytW63qwy0=; b=kzVd/qTV7UygiJuuCUgffz/cXu
-	ZcA439mW5S/nRUN/+QnaX3/yBvcKpAZMhsCwqMQ6dQcM5UsU1j3boKii6taxyz1tWaC8nAWrjsmBU
-	I1iqV1+lW95mcyGjo5PWfS37o926Inue/H0OF/NlX82QAxyb2QTLrB565h2K3sqMOdt8CTwOXzvgK
-	Ddg9tALR83RYKQgbl+LZiHFKHXnePdKuM1WYpJ00fsSboPc5K5ByO2ZMa9Fe05khfnPKC9OBTnUCi
-	i99lIYvhMjFZGSCS1z2MnSrCqCe6TxvI7RCUYyaao2ZCLOQgA0Tsy6XgbUBbzQMemIoVU+s6z7MHE
-	ZIJK814A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=McJR7zLMZ0Ud0BLsE9EdzPwYcuK7I9nRqHbHAhiJmaM=; b=25N2bK9ZoqlnNxISdb6WzQ7kiD
+	yr6KY8Tx91aarYZdSfFW58URAmvOplFOUJvt4uULrLwAu40PhEXVR4lJSwjCJG7+SE6+7VUWA1Gli
+	OXPQXKKXst6Z71+ajJwaJtKIzUUGgw1nnWX9V0CXqRcAf+ep9E//Yp0RQQiq8a30LUs1QRjvapXcW
+	caQjxvmXCENqyUQa8vA4Bwr8vmylnez9FvS48xcByEcTf5tj+0IWIylrDYDFGhWapYnxyNnkbk1U5
+	6ZyH45PP8uMMIl9DLbQ4TMYMBReJtJIdhISXhZNU8kgALqN1f9glYz2y+gLp+lLGGAzE9s7E+Bub7
+	+0l0whrg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1qyolA-00Atuf-0I;
-	Fri, 03 Nov 2023 07:38:28 +0000
+	id 1qywZF-00BjLi-2w;
+	Fri, 03 Nov 2023 15:58:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1qyol4-00AttW-1G
+	id 1qywZC-00BjL2-0W
 	for barebox@lists.infradead.org;
-	Fri, 03 Nov 2023 07:38:26 +0000
+	Fri, 03 Nov 2023 15:58:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qyol3-0000XU-7P; Fri, 03 Nov 2023 08:38:21 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	(envelope-from <mol@pengutronix.de>)
+	id 1qywZ8-00043O-3e; Fri, 03 Nov 2023 16:58:34 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qyol2-006GL8-RW; Fri, 03 Nov 2023 08:38:20 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1qyol2-0009jx-PI; Fri, 03 Nov 2023 08:38:20 +0100
-Date: Fri, 3 Nov 2023 08:38:20 +0100
-To: Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20231103073820.GP3359458@pengutronix.de>
-References: <20231102080307.2960858-1-o.rempel@pengutronix.de>
+	(envelope-from <mol@pengutronix.de>)
+	id 1qywZ7-006LrN-Na; Fri, 03 Nov 2023 16:58:33 +0100
+Received: from mol by dude05.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mol@pengutronix.de>)
+	id 1qywZ7-000fO5-2C;
+	Fri, 03 Nov 2023 16:58:33 +0100
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Fri,  3 Nov 2023 16:58:31 +0100
+Message-Id: <20231103155831.152488-1-m.olbrich@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231102080307.2960858-1-o.rempel@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231103_003822_426893_FCCE5EB0 
-X-CRM114-Status: GOOD (  16.81  )
+X-CRM114-CacheID: sfid-20231103_085838_195971_3D5D98BF 
+X-CRM114-Status: UNSURE (   9.91  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,50 +75,55 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v1] arm: dts: imx8mp-skov: fix reset reason detection
+Subject: [PATCH] x86: efi: add IMD data to the EFI binary
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Nov 02, 2023 at 09:03:07AM +0100, Oleksij Rempel wrote:
-> Set PMIC as default reset source to fix reset reason detection.
-> 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> ---
->  arch/arm/dts/imx8mp-skov.dts | 1 +
->  1 file changed, 1 insertion(+)
+It it currently missing so the imd command and the bareboximd tool do
+not work.
 
-Applied, thanks
+Add the .barebox_imd section to the linker script and copy it to the EFI
+binary.
 
-Sascha
+Signed-off-by: Michael Olbrich <m.olbrich@pengutronix.de>
+---
+ arch/x86/Makefile                      | 2 +-
+ arch/x86/mach-efi/elf_x86_64_efi.lds.S | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-> 
-> diff --git a/arch/arm/dts/imx8mp-skov.dts b/arch/arm/dts/imx8mp-skov.dts
-> index 885ffe6a24..27768c61e7 100644
-> --- a/arch/arm/dts/imx8mp-skov.dts
-> +++ b/arch/arm/dts/imx8mp-skov.dts
-> @@ -231,6 +231,7 @@ pmic@25 {
->  		pinctrl-0 = <&pinctrl_pmic>;
->  		interrupt-parent = <&gpio1>;
->  		interrupts = <3 IRQ_TYPE_EDGE_RISING>;
-> +		reset-source-priority = <500>;
->  
->  		regulators {
->  			buck1: BUCK1 {
-> -- 
-> 2.39.2
-> 
-> 
-> 
-
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index a0ce8c17f181..019c1adb7781 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -60,7 +60,7 @@ KBUILD_LDFLAGS := --no-undefined
+ 
+ OBJCOPYFLAGS_barebox.efi = \
+ 	-j .text -j .sdata -j .data -j .dynamic -j .dynsym -j .rel -j .rela \
+-	-j .reloc -j .bbenv.* -j .bblogo.* --target=$(TARGET)
++	-j .reloc -j .bbenv.* -j .bblogo.* -j .barebox_imd --target=$(TARGET)
+ 
+ barebox.efi: $(KBUILD_BINARY) FORCE
+ 	$(call if_changed,objcopy)
+diff --git a/arch/x86/mach-efi/elf_x86_64_efi.lds.S b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+index ab4a9e815c00..52a0d3db2d6c 100644
+--- a/arch/x86/mach-efi/elf_x86_64_efi.lds.S
++++ b/arch/x86/mach-efi/elf_x86_64_efi.lds.S
+@@ -56,6 +56,8 @@ SECTIONS
+ 	}
+ 	_edata = .;
+ 
++	.barebox_imd : { BAREBOX_IMD }
++
+ 	. = ALIGN(4096);
+ 	.dynamic : { *(.dynamic) }
+ 	. = ALIGN(4096);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
