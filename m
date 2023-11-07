@@ -1,62 +1,62 @@
-Delivery-date: Mon, 06 Nov 2023 15:23:33 +0100
+Delivery-date: Tue, 07 Nov 2023 15:17:47 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r00Vo-000F0G-1v
+	id 1r0Mtl-001OV5-05
 	for lore@lore.pengutronix.de;
-	Mon, 06 Nov 2023 15:23:33 +0100
+	Tue, 07 Nov 2023 15:17:47 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r00Vo-0001t1-FR
-	for lore@pengutronix.de; Mon, 06 Nov 2023 15:23:33 +0100
+	id 1r0Mtl-0005Mg-2g
+	for lore@pengutronix.de; Tue, 07 Nov 2023 15:17:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=iVrmDaOCeAjQktqDiQycvYp9mUpR+rT+J0BesVSt3L8=; b=GayS4CDtCo6z8+7sLIYd+2H1a3
-	M+i6i3Wx6R1VEKCpQoqiOKnKrcHFV5PI75KQ/k80RH629BnkYM3Lfl7Z7gyiPm9l9fe5nIFrQFTJB
-	GUtIOC10jNHWePFk6kl1Y4YU8vRheWBGP9WC99svzpDuZuPp6pvH3zC71erbHFcHb2r9u3pkImiJG
-	NltYjSjJunbNyUDy7UJBW7y3PS9wTCravDpSyQTVqKvg9r9L+hh/Gt9nt7Az7LW44jsP079sNimUI
-	Th9UB59vngW4rKPbYDhDqY3lCdiIlmepdA9bjBG57gjpv6QJD+Js8Q3+66r2yYXzj2lRP6s3XPQoL
-	CquHy5+w==;
+	bh=02opXXUPJnkabQmpaUZPr2wX3v7nRYeOEi8vBbL5z8E=; b=HuBsPj/mtiDj/Vklox7co7Vhhu
+	Eeq8VODFfYeQa4poMR8RkHi3fNuSsLxsqmFcgsY1woqRMls/3hcDgSpV9z2DELghete6p3/ymqSzv
+	sasC9Rcc7M9EoQqsVTsRMyl3Z6i5gGvK/A2JyvpZg3i8RNwiUzcepYIfNiJSdIwbFF+hvHjGT2xd2
+	ylu0HXSO38/wF8r6ncrktyLaPAeerWA7RbXa+nUPyHa8jPriUby7DDPSpVM3Fs8+24nohpdVTEuVz
+	2OMaYyav0Ypr0PHxCMpct82Ge0hfDCl7ABhRfXfPuJVHaSsQP5fyn4ZpKMisIo3hpfaQs52IkIiSU
+	T3J003xw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r00UN-00Gp1q-1O;
-	Mon, 06 Nov 2023 14:22:03 +0000
+	id 1r0MsF-001i40-2H;
+	Tue, 07 Nov 2023 14:16:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r00UK-00Gp0J-0m
+	id 1r0MsB-001i3S-2t
 	for barebox@lists.infradead.org;
-	Mon, 06 Nov 2023 14:22:01 +0000
+	Tue, 07 Nov 2023 14:16:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r00UH-0001aY-HF; Mon, 06 Nov 2023 15:21:57 +0100
+	id 1r0Ms4-00054B-Ln; Tue, 07 Nov 2023 15:16:00 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r00UH-00740B-4p; Mon, 06 Nov 2023 15:21:57 +0100
+	id 1r0Ms4-007JPK-9P; Tue, 07 Nov 2023 15:16:00 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r00UH-007fbz-0H;
-	Mon, 06 Nov 2023 15:21:57 +0100
+	id 1r0Ms4-00BRtY-0i;
+	Tue, 07 Nov 2023 15:16:00 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon,  6 Nov 2023 15:21:56 +0100
-Message-Id: <20231106142156.1828102-1-s.hauer@pengutronix.de>
+Date: Tue,  7 Nov 2023 15:15:59 +0100
+Message-Id: <20231107141559.2728828-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231106_062200_298019_765CE96C 
-X-CRM114-Status: GOOD (  10.30  )
+X-CRM114-CacheID: sfid-20231107_061607_959739_7D54D2AC 
+X-CRM114-Status: GOOD (  11.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,35 +74,53 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] net: mvneta: increase RX ring size
+Subject: [PATCH] spi: spi-nxp-fspi: Fix error checks
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To better cope with bigger TFTP window sizes increase the RX ring size.
+We have to check dev_request_mem_resource() for errors, not the resource
+address it returns.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/mvneta.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-nxp-fspi.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/mvneta.c b/drivers/net/mvneta.c
-index ba32eeabdc..1e176dbdc2 100644
---- a/drivers/net/mvneta.c
-+++ b/drivers/net/mvneta.c
-@@ -166,7 +166,7 @@
+diff --git a/drivers/spi/spi-nxp-fspi.c b/drivers/spi/spi-nxp-fspi.c
+index 1d6604fee3..d8675779da 100644
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -993,18 +993,19 @@ static int nxp_fspi_probe(struct device *dev)
  
- #define MVNETA_MH_SIZE		2
- #define TXQ_NUM			8
--#define RX_RING_SIZE		4
-+#define RX_RING_SIZE		128
- #define TRANSFER_TIMEOUT	(10 * MSECOND)
+ 	/* find the resources */
+ 	res = dev_request_mem_resource(dev, 0);
+-	f->iobase = IOMEM(res->start);
+-	if (IS_ERR(f->iobase)) {
+-		ret = PTR_ERR(f->iobase);
++	if (IS_ERR(res)) {
++		ret = PTR_ERR(res);
+ 		goto err_put_ctrl;
+ 	}
  
- struct rxdesc {
++	f->iobase = IOMEM(res->start);
++
+ 	res = dev_request_mem_resource(dev, 1);
+-	f->ahb_addr = IOMEM(res->start);
+-	if (IS_ERR(f->ahb_addr)) {
+-		ret = PTR_ERR(f->ahb_addr);
++	if (IS_ERR(res)) {
++		ret = PTR_ERR(res);
+ 		goto err_put_ctrl;
+ 	}
++	f->ahb_addr = IOMEM(res->start);
+ 
+ 	/* assign memory mapped starting address and mapped size. */
+ 	f->memmap_phy = res->start;
 -- 
 2.39.2
 
