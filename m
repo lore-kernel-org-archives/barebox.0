@@ -1,66 +1,66 @@
-Delivery-date: Thu, 09 Nov 2023 13:27:04 +0100
+Delivery-date: Thu, 09 Nov 2023 13:27:05 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r147j-004BHz-2O
+	id 1r147k-004BIQ-2L
 	for lore@lore.pengutronix.de;
-	Thu, 09 Nov 2023 13:27:04 +0100
+	Thu, 09 Nov 2023 13:27:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r147j-0003PY-Lw
-	for lore@pengutronix.de; Thu, 09 Nov 2023 13:27:04 +0100
+	id 1r147k-0003Pj-NN
+	for lore@pengutronix.de; Thu, 09 Nov 2023 13:27:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WKphMbfEAiLv9yekvagkJ3zt9pwQjxK60TZjAtLPS+0=; b=P7t/dPdRWxzTdnm4klkQY5u8fO
-	f0LuVSWryDEUtchI9E0ZHXmlIoMPlCSbfXO4oIiDp7N8ih2dGTDPIG/+yLGjrjaxD+MgiFnqD/5HQ
-	u4cGldij5o0vfcjbsu6WnxjznVtH0kiStLbdI9zwIP6Lytr+iWn5u+L2Vpbd+l98dI6zDINDPJHvT
-	SepCAlDmNIcXmYIV6mDbzp8sGmqT0A9Ecq26nHiuGZ6XGhnhXyPzTaqefQOQ2O/xJlSDOFsIc5fAS
-	Eyb4hrGNZjZPRFmkNdODtQBSdeyMaSSqdha3MEhW6kFK/t6YgfyNbiRli5GO4Xejrz185SxuObaun
-	Em+Ey/BQ==;
+	bh=ZSBLai7+oGOxFfsyNluhModgADyX7BouBCL5QGojgdM=; b=rYYBAarIu2oGTuKItmm2ZUPAZx
+	VSoreJqQbelFpaQuI20B6Svn4AW7uSPOHLtgja1vNA06wnN/vmwKW5zKSQkww89P8jvd05KA/IUyW
+	FJ+b5PcDjPjLtoYkpuGpDr3xuo75+LuV2lgjDvkzyhX5PJsZVMZZrtT+A1h+y5SYP1T7Fz6GQa90l
+	BO/rw2YCiWU5rrszPTaADkks4L/BxZLSTAhuABLvLTIIx/dC8NDVjawrXt8GK8xt2WucIaEDjnClc
+	25IY3BSZ76XtF/w/ScnoJ6rGcxuxS7z2J0GnxfhHO9hZyefFa9+2qN8qeS4MqwvL/73x5hqnX4Nsf
+	uU36VxRw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r146h-006JM8-0y;
-	Thu, 09 Nov 2023 12:25:59 +0000
+	id 1r146g-006JM2-2C;
+	Thu, 09 Nov 2023 12:25:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r146d-006JKk-0Y
+	id 1r146d-006JKl-0Y
 	for barebox@lists.infradead.org;
 	Thu, 09 Nov 2023 12:25:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r146b-00034e-Ao; Thu, 09 Nov 2023 13:25:53 +0100
+	id 1r146b-00034f-CG; Thu, 09 Nov 2023 13:25:53 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r146a-007m8Z-Uf; Thu, 09 Nov 2023 13:25:52 +0100
+	id 1r146a-007m8c-W6; Thu, 09 Nov 2023 13:25:53 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r146a-006EaX-2l;
+	id 1r146a-006EaX-2u;
 	Thu, 09 Nov 2023 13:25:52 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  9 Nov 2023 13:25:50 +0100
-Message-Id: <20231109122551.1486020-2-a.fatoum@pengutronix.de>
+Date: Thu,  9 Nov 2023 13:25:51 +0100
+Message-Id: <20231109122551.1486020-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231109122551.1486020-1-a.fatoum@pengutronix.de>
 References: <20231109122551.1486020-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231109_042555_206595_FDD39FF8 
-X-CRM114-Status: GOOD (  14.85  )
+X-CRM114-CacheID: sfid-20231109_042555_207385_089EB4F1 
+X-CRM114-Status: GOOD (  13.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,169 +83,112 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 2/3] complete: add support for spaces in completions
+Subject: [PATCH v2 3/3] commands: drvinfo: support filtering by driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Drivers have spaces inside their names, which makes tab completion
-tricky as it restarts for every separate argument.
+drvinfo can be very long especially for the in-tree defconfigs.
 
-Support for doing this in readline and hush landed in commits
-1498093ccd11 ("readline: Complete strings containing whitespaces correctly")
-and 70e0885229d2 ("hush: Fix handling '\ '") respectively.
+Make it more convenient to use by add optional filtering support:
 
-This only goes one way though, escape a completion suggestion. The
-suggestion needs to be unescaped again, so repeated <Tab> usage after
-modifying the prompt is understood.
+  barebox@board:/ drvinfo '*imx7d*'
+  Driver  Device(s)
+  --------------------
+  imx7d-src
+          30390000.reset-controller@30390000.of
+  imx7d_adc
+          30610000.adc@30610000.of
+          30620000.adc@30620000.of
 
-For this to work, skip backslashes in the argument being completed.
+  Use 'devinfo DEVICE' for more information
+
+Furthermore, tab completion for driver names is now supported as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - new patch to prepare completing driver names with spaces
----
- common/complete.c | 70 +++++++++++++++++++++++++++++++++++------------
- 1 file changed, 52 insertions(+), 18 deletions(-)
+  - use fnmatch to support glob patterns for driver names (Sascha)
+  - add functional autocomplete despite spaces (Sascha)
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ commands/drvinfo.c |  8 ++++++++
+ common/complete.c  | 15 +++++++++++++++
+ include/complete.h |  1 +
+ 3 files changed, 24 insertions(+)
+
+diff --git a/commands/drvinfo.c b/commands/drvinfo.c
+index b984b9472585..e13b04870ee4 100644
+--- a/commands/drvinfo.c
++++ b/commands/drvinfo.c
+@@ -5,15 +5,21 @@
+ #include <common.h>
+ #include <command.h>
+ #include <driver.h>
++#include <complete.h>
++#include <fnmatch.h>
+ 
+ static int do_drvinfo(int argc, char *argv[])
+ {
++	char *pattern = argv[1];
+ 	struct driver *drv;
+ 	struct device *dev;
+ 
+ 	printf("Driver\tDevice(s)\n");
+ 	printf("--------------------\n");
+ 	for_each_driver(drv) {
++		if (pattern && fnmatch(pattern, drv->name, 0))
++			continue;
++
+ 		printf("%s\n",drv->name);
+ 		for_each_device(dev) {
+ 			if (dev->driver == drv)
+@@ -31,5 +37,7 @@ static int do_drvinfo(int argc, char *argv[])
+ BAREBOX_CMD_START(drvinfo)
+ 	.cmd		= do_drvinfo,
+ 	BAREBOX_CMD_DESC("list compiled-in device drivers")
++	BAREBOX_CMD_OPTS("[DRIVER]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
++	BAREBOX_CMD_COMPLETE(driver_complete)
+ BAREBOX_CMD_END
 diff --git a/common/complete.c b/common/complete.c
-index 4137bb3084fc..ef31a36faf5f 100644
+index ef31a36faf5f..3911535621b1 100644
 --- a/common/complete.c
 +++ b/common/complete.c
-@@ -14,6 +14,27 @@
- #include <command.h>
- #include <environment.h>
- 
-+static bool is_valid_escape(const char *str)
-+{
-+	return str[0] == '\\' && (str[1] == ' ' || str[1] == '\\');
-+}
-+
-+static bool strstarts_escaped(const char *whole, const char *prefix_escaped)
-+{
-+	if (!prefix_escaped)
-+		return true;
-+
-+	while (*prefix_escaped) {
-+		if (is_valid_escape(prefix_escaped))
-+			prefix_escaped++;
-+
-+		if (*whole++ != *prefix_escaped++)
-+			return false;
-+	}
-+
-+	return true;
-+}
-+
- static int file_complete(struct string_list *sl, char *instr,
- 			 const char *dirn, int exec)
- {
-@@ -35,7 +56,7 @@ static int file_complete(struct string_list *sl, char *instr,
- 		if (!strcmp(d->d_name, ".") || !strcmp(d->d_name, ".."))
- 			continue;
- 
--		if (strncmp(base, d->d_name, strlen(base)))
-+		if (!strstarts_escaped(d->d_name, base))
- 			continue;
- 
- 		strcpy(tmp, instr);
-@@ -94,7 +115,7 @@ static int path_command_complete(struct string_list *sl, char *instr)
- 					!strcmp(d->d_name, ".."))
- 				continue;
- 
--			if (!strncmp(instr, d->d_name, strlen(instr))) {
-+			if (strstarts_escaped(d->d_name, instr)) {
- 				strcpy(tmp, d->d_name);
- 				if (!stat(tmp, &s) &&
- 						S_ISDIR(s.st_mode))
-@@ -136,15 +157,9 @@ EXPORT_SYMBOL(command_complete);
- int device_complete(struct string_list *sl, char *instr)
- {
- 	struct device *dev;
--	int len;
--
--	if (!instr)
--		instr = "";
--
--	len = strlen(instr);
- 
- 	for_each_device(dev) {
--		if (strncmp(instr, dev_name(dev), len))
-+		if (!strstarts_escaped(dev_name(dev), instr))
- 			continue;
- 
- 		string_list_add_asprintf(sl, "%s ", dev_name(dev));
-@@ -158,12 +173,9 @@ static int device_param_complete(struct device *dev, const char *devname,
- 				 struct string_list *sl, char *instr, int eval)
- {
- 	struct param_d *param;
--	int len;
--
--	len = strlen(instr);
- 
- 	list_for_each_entry(param, &dev->parameters, list) {
--		if (strncmp(instr, param->name, len))
-+		if (!strstarts_escaped(param->name, instr))
- 			continue;
- 
- 		string_list_add_asprintf(sl, "%s%s.%s%c",
-@@ -340,21 +352,43 @@ void complete_reset(void)
- 	tab_pressed = 0;
+@@ -186,6 +186,21 @@ static int device_param_complete(struct device *dev, const char *devname,
+ 	return 0;
  }
  
-+static char *skip_to_last_unescaped_space(char *instr)
++int driver_complete(struct string_list *sl, char *instr)
 +{
-+	char *t;
++	struct driver_d *drv;
 +
-+	t = strrchr(instr, ' ');
-+	if (t && (instr == t || t[-1] != '\\'))
-+		return t + 1;
++	for_each_driver(drv) {
++		if (!strstarts_escaped(drv->name, instr))
++			continue;
 +
-+	return instr;
-+}
-+
-+static size_t strlen_escaped(char *instr)
-+{
-+	size_t count = 0;
-+
-+	for (; *instr; instr++) {
-+		if (is_valid_escape(instr))
-+			instr++;
-+
-+		count++;
++		string_list_add_asprintf(sl, "%s ", drv->name);
 +	}
 +
-+	return count;
++	return COMPLETE_CONTINUE;
 +}
++EXPORT_SYMBOL(driver_complete);
 +
- static char* cmd_complete_lookup(struct string_list *sl, char *instr)
+ int empty_complete(struct string_list *sl, char *instr)
  {
- 	struct command *cmdtp;
- 	int len;
- 	int ret = COMPLETE_END;
- 	char *res = NULL;
--	char *t;
+ 	return COMPLETE_END;
+diff --git a/include/complete.h b/include/complete.h
+index b0e675b5599f..2068760ac235 100644
+--- a/include/complete.h
++++ b/include/complete.h
+@@ -14,6 +14,7 @@ void complete_reset(void);
  
- 	for_each_command(cmdtp) {
- 		len = strlen(cmdtp->name);
- 		if (!strncmp(instr, cmdtp->name, len) && instr[len] == ' ') {
- 			instr += len + 1;
--			t = strrchr(instr, ' ');
--			if (t)
--				instr = t + 1;
-+			instr = skip_to_last_unescaped_space(instr);
- 
- 			if (cmdtp->complete) {
- 				ret = cmdtp->complete(sl, instr);
-@@ -414,7 +448,7 @@ int complete(char *instr, char **outstr)
- 			env_param_complete(&sl, instr + 1, 1);
- 	}
- 
--	pos = strlen(instr);
-+	pos = strlen_escaped(instr);
- 
- 	*outstr = "";
- 	if (list_empty(&sl.list))
+ int command_complete(struct string_list *sl, char *instr);
+ int device_complete(struct string_list *sl, char *instr);
++int driver_complete(struct string_list *sl, char *instr);
+ int empty_complete(struct string_list *sl, char *instr);
+ int eth_complete(struct string_list *sl, char *instr);
+ int command_var_complete(struct string_list *sl, char *instr);
 -- 
 2.39.2
 
