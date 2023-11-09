@@ -1,65 +1,66 @@
-Delivery-date: Thu, 09 Nov 2023 12:39:42 +0100
+Delivery-date: Thu, 09 Nov 2023 12:48:27 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r13Nu-0048El-0y
+	id 1r13WM-0048mH-2v
 	for lore@lore.pengutronix.de;
-	Thu, 09 Nov 2023 12:39:42 +0100
+	Thu, 09 Nov 2023 12:48:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r13Nu-0008S8-BY
-	for lore@pengutronix.de; Thu, 09 Nov 2023 12:39:42 +0100
+	id 1r13WM-000323-Qn
+	for lore@pengutronix.de; Thu, 09 Nov 2023 12:48:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=otuYvNtrIICsBaAudt9bhKCBhBBLlpncV24Kxiu+Wxg=; b=2u8t6HHwX300Eni1T11vawsHOQ
-	3us2EegqiPRO2yNaL0W2rM2as+er+te/KyEimlaEvEZY1HzRiXyrgvFBp1SKdJksKvtVq5ZcmagJA
-	mTqkteBknRx+ovCzEM0pVxnPefrKDH14SM7LTrh7dpRXNJNLvL9JMj6dFm46tyYUlRY5z8mY0Bxio
-	iXOB4L5VYZdg5puVpvC/UKyIQYxaW/6S/w+k2XOr1k1a8B5eFjSixDAfOtud4qMwl5RuwTdPrCQOr
-	gzKvtW1cRT5TBq0UM9kgEK7cTaNdKD6QmcF0rg2xc0giN5laHaOQ3y7uu/mNikbRc7QVpH/o8fMie
-	aa5MpOgA==;
+	bh=wliqfTAm6L2UgsvvFHczye2yosHvdD9mHe2tf8/uh50=; b=4FKLC9KZexOBIT+fsLfkkX96IG
+	muzACHZJWfiGUNX6314mRz2UApyubcqKHpY8pufq2foAG1TqCQjm8GL6ujSBUMgDiCof3B7a+y4rw
+	egRIm7xETVdlseco03cZZSJMvhXxxMhWWZ0MJB1m3uMzeI93fy5FAGCujY3Wbvm47WUCRQTxdt1GB
+	jiEisuSGtGL4T6trASjbDDTFdjB/+rukvzOVB/AMk/uKR8bozVRqNFfGA6ABPZ3SLu9EKdFTuT6RM
+	aIIuKm4rF4E3qrefvVkxVtOJ32Po7saeZ4aJz48K6uRExhmXQ3c3nJ6ngAkquYXNCbNRhCf48g3QZ
+	SQoDCYgA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r13Mv-0065qD-04;
-	Thu, 09 Nov 2023 11:38:41 +0000
+	id 1r13VD-006921-2M;
+	Thu, 09 Nov 2023 11:47:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r13Ms-0065pU-1I
+	id 1r13VA-0068zQ-1s
 	for barebox@lists.infradead.org;
-	Thu, 09 Nov 2023 11:38:39 +0000
+	Thu, 09 Nov 2023 11:47:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r13Mr-00085i-7b; Thu, 09 Nov 2023 12:38:37 +0100
+	id 1r13V9-0002k5-8p
+	for barebox@lists.infradead.org; Thu, 09 Nov 2023 12:47:11 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r13Mq-007lWL-RR; Thu, 09 Nov 2023 12:38:36 +0100
+	id 1r13V8-007lck-Se
+	for barebox@lists.infradead.org; Thu, 09 Nov 2023 12:47:10 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r13Mq-00529M-2S;
-	Thu, 09 Nov 2023 12:38:36 +0100
+	id 1r13V8-005gNP-2a
+	for barebox@lists.infradead.org;
+	Thu, 09 Nov 2023 12:47:10 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  9 Nov 2023 12:38:35 +0100
-Message-Id: <20231109113835.1199875-1-a.fatoum@pengutronix.de>
+Date: Thu,  9 Nov 2023 12:47:06 +0100
+Message-Id: <20231109114707.1354502-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231109_033838_444431_0D1576E3 
-X-CRM114-Status: UNSURE (   9.82  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20231109_034712_620869_DCA62A8B 
+X-CRM114-Status: GOOD (  16.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,62 +83,111 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH master] scripts: setlocalversion: sync with Linux
+Subject: [PATCH 1/2] console: provide best-effort clk_get_for_console helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We are using an older version of setlocalversion that sources the
-config. This is wrong as there's no guarantee that it's ok to source the
-config, e.g.:
+From: Ahmad Fatoum <ahmad@a3f.at>
 
-  CONFIG_DEFAULT_ENVIRONMENT_PATH="$(objtree)/.ptxdist-defaultenv"
+clk_get will return -EPROBE_DEFER if clock provider hasn't yet been
+probed. In a system with deep probe enabled, dependencies are probed
+on demand, so a -EPROBE_DEFER return is final and the console probe
+will never succeed.
 
-when sourced will lead to:
+CONFIG_DEBUG_LL is often used to debug this, but because the low-level
+console is not interactive, it's a bit cumbersome. Improve upon this a
+bit, by providing a clk_get_for_console helper that returns NULL if and
+only if we are sure that a clock provider will not be probed.
 
-  scripts/setlocalversion: 15: include/config/auto.conf: objtree: not found
+In that case, the driver can skip code paths initialization code and
+baud rate setting dependent on having access to the clock and still
+register a console that reuses what was set up by CONFIG_DEBUG_LL.
 
-Fix this by grepping the file instead.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- scripts/setlocalversion | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ include/console.h   | 26 ++++++++++++++++++++++++++
+ include/linux/clk.h | 21 +++++++++++++++++++++
+ 2 files changed, 47 insertions(+)
 
-diff --git a/scripts/setlocalversion b/scripts/setlocalversion
-index 6b54e46a0f12..cbd3883df9ae 100755
---- a/scripts/setlocalversion
-+++ b/scripts/setlocalversion
-@@ -111,13 +111,14 @@ if $scm_only; then
- 	exit
- fi
+diff --git a/include/console.h b/include/console.h
+index 586b68f73301..b8c901801e9f 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -8,6 +8,7 @@
+ #define _CONSOLE_H_
  
--if test -e include/config/auto.conf; then
--	. include/config/auto.conf
--else
-+if ! test -e include/config/auto.conf; then
- 	echo "Error: kernelrelease not valid - run 'make prepare' to update it" >&2
- 	exit 1
- fi
+ #include <param.h>
++#include <linux/clk.h>
+ #include <linux/list.h>
+ #include <driver.h>
+ #include <serdev.h>
+@@ -208,4 +209,29 @@ static inline void console_ctrlc_allow(void) { }
+ static inline void console_ctrlc_forbid(void) { }
+ #endif
  
-+# version string from CONFIG_LOCALVERSION
-+config_localversion=$(sed -n 's/^CONFIG_LOCALVERSION=\(.*\)$/\1/p' include/config/auto.conf)
++/**
++ * clk_get_for_console - get clock, ignoring known unavailable clock controller
++ * @dev: device for clock "consumer"
++ * @id: clock consumer ID
++ *
++ * Return: a struct clk corresponding to the clock producer, a
++ * valid IS_ERR() condition containing errno or NULL if it could
++ * be determined that the clock producer will never be probed in
++ * absence of modules. The NULL return allows serial drivers to
++ * skip clock handling and rely on CONFIG_DEBUG_LL.
++ */
++static inline struct clk *clk_get_for_console(struct device *dev, const char *id)
++{
++	struct clk *clk;
 +
- # localversion* files in the build and source directory
- res="$(collect_files localversion*)"
- if test ! "$srctree" -ef .; then
-@@ -125,10 +126,10 @@ if test ! "$srctree" -ef .; then
- fi
++	if (!IS_ENABLED(CONFIG_DEBUG_LL))
++		return clk_get(dev, id);
++
++	clk = clk_get_if_available(dev, id);
++	if (clk == NULL)
++		dev_warn(dev, "couldn't get clock (ignoring)\n");
++
++	return clk;
++}
++
+ #endif
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 61b4ff3127cf..f505f18a75c0 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -14,6 +14,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/stringify.h>
+ #include <linux/container_of.h>
++#include <deep-probe.h>
+ #include <xfuncs.h>
  
- # CONFIG_LOCALVERSION and LOCALVERSION (if set)
--res="${res}${CONFIG_LOCALVERSION}${LOCALVERSION}"
-+res="${res}${config_localversion}${LOCALVERSION}"
+ struct device;
+@@ -982,4 +983,24 @@ static inline struct clk *clk_get_enabled(struct device *dev, const char *id)
+ 	return clk;
+ }
  
- # scm version string if not at a tagged commit
--if test "$CONFIG_LOCALVERSION_AUTO" = "y"; then
-+if grep -q "^CONFIG_LOCALVERSION_AUTO=y$" include/config/auto.conf; then
- 	# full scm version string
- 	res="$res$(scm_version)"
- elif [ "${LOCALVERSION+set}" != "set" ]; then
++/**
++ * clk_get_if_available - get clock, ignoring known unavailable clock controller
++ * @dev: device for clock "consumer"
++ * @id: clock consumer ID
++ *
++ * Return: a struct clk corresponding to the clock producer, a
++ * valid IS_ERR() condition containing errno or NULL if it could
++ * be determined that the clock producer will never be probed in
++ * absence of modules.
++ */
++static inline struct clk *clk_get_if_available(struct device *dev, const char *id)
++{
++	struct clk *clk = clk_get(dev, id);
++
++	if (clk == ERR_PTR(-EPROBE_DEFER) && deep_probe_is_supported())
++		return NULL;
++
++	return clk;
++}
++
+ #endif
 -- 
 2.39.2
 
