@@ -1,65 +1,64 @@
-Delivery-date: Thu, 09 Nov 2023 12:49:50 +0100
+Delivery-date: Thu, 09 Nov 2023 12:56:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r13Xh-0048qZ-1t
+	id 1r13eA-00498o-0Z
 	for lore@lore.pengutronix.de;
-	Thu, 09 Nov 2023 12:49:50 +0100
+	Thu, 09 Nov 2023 12:56:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r13Xh-0003PJ-LV
-	for lore@pengutronix.de; Thu, 09 Nov 2023 12:49:50 +0100
+	id 1r13eA-0004wH-6m
+	for lore@pengutronix.de; Thu, 09 Nov 2023 12:56:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=UYg+6IDWRT3IGYe3TWy7/e0CDrIr7G3EPKswT2soj0g=; b=XosnZO32jJhu9fT7elqaZOfzf2
-	NDqRlUfpviFwiwAcW3ZEDildfc/IGVIjQG7xp3os+67vdMHhKDo/ZGirShMg2mVg357aRItw6ZzSs
-	bApjrRQxL6cAFU52t9Dxu0HjG/uBhJRnEakxensZ1NQiKy3OwCnTjBLHKZPxofYFsUqXkUFcbVSU+
-	jfRn9rTHJOildJmxnVoY17y56PeCJKYqcSOpUX1IXKmxBVWsGCb6GJQDb5FT57q9zzBM5qBI1/uKx
-	2rJGcZeWYRVHzyDzv2zEGZVoRiwgpVopXTmVVzx5qrBJduj88BhPUZ+GROfEtaG4OfVWAgMUz9wZf
-	pAt/IADQ==;
+	bh=uEohV1EyZ1K4tUxFfy9wQ4frw/M+JmDVoyCPiFqiJ+o=; b=L/ILw1GMQmqLm2M8RQiMogAjwr
+	2KnBppq04SVJ3ojFWk57mVNQknpXPKLuj/VnVloc7n7PPT9cOtB4Qb/mtqAunSRwRHom/SMm23XHv
+	PGpmX5mqHo31Szh4FZBr0/VPaBq9yEOvfbZllAlc/5IvLsQxGPpy1pwr7FZGAQ30bcQjxBrvy9JK7
+	ceNwsyy7caSMrD+mSOn4n7dXXrMboQrLSP5XjbTVP6WsqI4G25lBHL4mfzoz8rG1D5Qk1rA9y6Ub3
+	qjVYgBriiqzxw9RNWdIVsT++cF3QLIMjrWRyvk+dUxL+79CWRCPcD5VMQS2cLylD+wgiCfdsYdc86
+	frUTe6MQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r13Wf-0069y5-0h;
-	Thu, 09 Nov 2023 11:48:45 +0000
+	id 1r13dA-006E8U-1X;
+	Thu, 09 Nov 2023 11:55:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r13Wb-0069vI-1r
+	id 1r13d7-006E63-2R
 	for barebox@lists.infradead.org;
-	Thu, 09 Nov 2023 11:48:42 +0000
+	Thu, 09 Nov 2023 11:55:26 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r13Wa-00037S-Dx; Thu, 09 Nov 2023 12:48:40 +0100
+	id 1r13d6-0004dT-9Q; Thu, 09 Nov 2023 12:55:24 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r13Wa-007ld3-1G; Thu, 09 Nov 2023 12:48:40 +0100
+	id 1r13d5-007ldu-Ss; Thu, 09 Nov 2023 12:55:23 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r13WZ-005gsl-34;
-	Thu, 09 Nov 2023 12:48:39 +0100
+	id 1r13d5-005kdd-2b;
+	Thu, 09 Nov 2023 12:55:23 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  9 Nov 2023 12:48:38 +0100
-Message-Id: <20231109114838.1356467-1-a.fatoum@pengutronix.de>
+Date: Thu,  9 Nov 2023 12:55:22 +0100
+Message-Id: <20231109115522.1370884-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231109_034841_612838_CDA062EB 
-X-CRM114-Status: UNSURE (   9.07  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20231109_035525_793056_3D6C79C4 
+X-CRM114-Status: GOOD (  10.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,42 +81,44 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] usb: dwc2: use linux/spinlock.h for stubs
+Subject: [PATCH master] mfd: syscon: don't register clocked syscon if geting clock fails
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We already have dummy definitions for common spin lock operations,
-so reuse them instead of defining them in the driver.
+When of_syscon_register is called with check_clk=true, it will attempt
+to attach the clock. If that fails, the newly allocated syscon is freed,
+but a dangling pointer remained in the syscon_list.
 
+Fix this by only registering the syscon in the successful case.
+
+Fixes: b36b7b727192 ("mfd: syscon: clock peripheral if specified in device tree")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/usb/dwc2/gadget.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/mfd/syscon.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
-index 00323d2d9029..3c06c438b65d 100644
---- a/drivers/usb/dwc2/gadget.c
-+++ b/drivers/usb/dwc2/gadget.c
-@@ -1,18 +1,15 @@
- // SPDX-License-Identifier: GPL-2.0-or-later
- #include <dma.h>
- #include <linux/usb/gadget.h>
-+#include <linux/spinlock.h>
- #include "dwc2.h"
+diff --git a/drivers/mfd/syscon.c b/drivers/mfd/syscon.c
+index 3e12123b572e..3c2e1241fdff 100644
+--- a/drivers/mfd/syscon.c
++++ b/drivers/mfd/syscon.c
+@@ -74,8 +74,6 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
+ 	syscon_config.val_bits = reg_io_width * 8;
+ 	syscon_config.max_register = resource_size(&res) - reg_io_width;
  
- #define to_dwc2 gadget_to_dwc2
- #define dwc2_set_bit(d, r, b)	dwc2_writel(d, (b) | dwc2_readl(d, r), r)
- #define dwc2_clear_bit(d, r, b)	dwc2_writel(d, ~(b) & dwc2_readl(d, r), r)
+-	list_add_tail(&syscon->list, &syscon_list);
+-
+ 	syscon->regmap = regmap_init_mmio_clk(NULL, NULL, syscon->base,
+ 					      &syscon_config);
  
--#define spin_lock(lock)
--#define spin_unlock(lock)
- #define local_irq_save(flags)(void)(flags)
- #define local_irq_restore(flags) (void)(flags)
--#define spin_lock_irqsave(lock, flags) (void)(flags)
--#define spin_unlock_irqrestore(lock, flags) (void)(flags)
+@@ -93,6 +91,8 @@ static struct syscon *of_syscon_register(struct device_node *np, bool check_clk)
+ 		}
+ 	}
  
- static void kill_all_requests(struct dwc2 *, struct dwc2_ep *, int);
++	list_add_tail(&syscon->list, &syscon_list);
++
+ 	return syscon;
  
+ err_map:
 -- 
 2.39.2
 
