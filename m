@@ -1,66 +1,66 @@
-Delivery-date: Fri, 10 Nov 2023 22:45:58 +0100
+Delivery-date: Fri, 10 Nov 2023 22:46:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1ZKA-006U1n-13
+	id 1r1ZKE-006U2U-1I
 	for lore@lore.pengutronix.de;
-	Fri, 10 Nov 2023 22:45:58 +0100
+	Fri, 10 Nov 2023 22:46:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1ZK9-0004rw-Vm
-	for lore@pengutronix.de; Fri, 10 Nov 2023 22:45:58 +0100
+	id 1r1ZKD-0004tK-Mz
+	for lore@pengutronix.de; Fri, 10 Nov 2023 22:46:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=cvTGQlmpZ658vuwGUZGfF8j+eaZAf/29AInU/6mMyT4=; b=KQNUja05OaUdFsYDSV++6sDmlc
-	lpWTXiE/xoLcdxF9eHdMsu25itTwCch9BvDgIprIF45LnxJC+drtlQAfd53Tof65MkcWnN5s3VtSI
-	GRKGLzIu6aHcHd9h+S7df4hMa86aNBHX8xTtj5iR2lFSKyMo9TiBzR+3jv0xfFTjFI3v138Og8I1f
-	n/odsb93yBHZA8icdlkBmTLgXV2ulgxq1fduplv2bTaw0IH+OgXiHcbgk+/lGM4X5w32KsK1Wuhrd
-	hlhNiCNHKAqtbKiT7RYuGf76P1v5lJ222t8gpOD9U9/APWNoBxv0EAczS3jd529nUtTFDkMs1uRr3
-	xOKpNS/w==;
+	bh=Mdl0TxMBTsJCB/SHeFVIrs0BZFHQIeiYEKqdEk/jApM=; b=1xb7Brg3NLr765DnsAPj1kUFLA
+	zrJG5gkGvA0wdsLn3PN/1alOr1BeZawh6g7wd+x//b9lEaVInF5UsJ0Vu8uEz9QdcL3zSrPIl0tr8
+	6yNsCuVv6fqNu/Q5XCkfmdv5e9/FJJwyMXJ2H3ULjKr+/ZX5YOIyKXf1VLUVbb3JEfJo2oFE95p1w
+	tjlA9qGlQtnt18ECXeShN8lXv3jZeZvD2v3v9S3Nz8Pa8CNu57OtJyw/4TVt5fizdpvFF6I3VaW5/
+	WniWYV8WGSpnLN9QNyWflbjKF5orEIP0TW9wm6IUV6P5xnwoPjXSEyAlaPQd4ubSUZvuWhrNEvbFd
+	GUuQ5qbA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1ZIu-009UGf-11;
-	Fri, 10 Nov 2023 21:44:40 +0000
+	id 1r1ZIx-009UI9-2V;
+	Fri, 10 Nov 2023 21:44:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1ZIl-009UCC-0a
+	id 1r1ZIl-009UCD-0e
 	for barebox@lists.infradead.org;
-	Fri, 10 Nov 2023 21:44:35 +0000
+	Fri, 10 Nov 2023 21:44:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r1ZIe-0004Dk-Sj; Fri, 10 Nov 2023 22:44:24 +0100
+	id 1r1ZIe-0004Dt-TN; Fri, 10 Nov 2023 22:44:24 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r1ZIe-0086yS-FO; Fri, 10 Nov 2023 22:44:24 +0100
+	id 1r1ZIe-0086yV-Gd; Fri, 10 Nov 2023 22:44:24 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r1ZIe-00BRGz-1F;
+	id 1r1ZIe-00BRGz-1O;
 	Fri, 10 Nov 2023 22:44:24 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 10 Nov 2023 22:44:10 +0100
-Message-Id: <20231110214421.2726093-8-a.fatoum@pengutronix.de>
+Date: Fri, 10 Nov 2023 22:44:11 +0100
+Message-Id: <20231110214421.2726093-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231110214421.2726093-1-a.fatoum@pengutronix.de>
 References: <20231110214421.2726093-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231110_134432_067292_5BC850A3 
-X-CRM114-Status: GOOD (  15.61  )
+X-CRM114-CacheID: sfid-20231110_134432_098392_FB9B6AB1 
+X-CRM114-Status: GOOD (  24.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,277 +83,584 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 07/18] include: add linux/io.h with strict prototypes
+Subject: [PATCH 08/18] include: import Linux word-at-a-time.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Kernel code uses <linux/io.h> instead of <io.h>, which defines readl and
-friends as functions with type checks instead of macros that just cast
-everything to pointers. Let's provide <linux/io.h> to ease porting as
-well and have it have the same semantics.
+The Linux <linux/word-at-a-time.h> interface is used to optimize
+searching for bytes in strings by doing word-size comparisons. This will
+be used in the implementation of strscpy in a follow-up commit, so
+import the generic version here.
 
-Eventually, we should be able to get switch <io.h> to include
-<linux/io.h> once all in-tree users are migrated.
+A good overview on the interface is available at LWN[1]. Note that
+it discuss Linux v3.5. The asm-generic version imported here works
+also on little-endian and not only big-endian[2].
+
+[1]: https://lwn.net/Articles/501492/
+[2]: Linux kernel commit a6e2f029ae34 ("Make asm/word-at-a-time.h
+     available on all architectures").
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/asm-generic/io.h | 217 +++++++++++++++++++++++++++++++++++++--
- include/linux/io.h       |   9 ++
- 2 files changed, 218 insertions(+), 8 deletions(-)
- create mode 100644 include/linux/io.h
+ arch/arm/include/asm/word-at-a-time.h      |  59 ++++++++
+ arch/kvx/include/asm/word-at-a-time.h      |   2 +
+ arch/mips/include/asm/word-at-a-time.h     |   2 +
+ arch/openrisc/include/asm/word-at-a-time.h |   2 +
+ arch/powerpc/include/asm/word-at-a-time.h  | 156 +++++++++++++++++++++
+ arch/riscv/include/asm/word-at-a-time.h    |  48 +++++++
+ arch/sandbox/include/asm/word-at-a-time.h  |   2 +
+ arch/x86/include/asm/word-at-a-time.h      |  73 ++++++++++
+ include/asm-generic/word-at-a-time.h       | 121 ++++++++++++++++
+ include/linux/kernel.h                     |   8 ++
+ 10 files changed, 473 insertions(+)
+ create mode 100644 arch/arm/include/asm/word-at-a-time.h
+ create mode 100644 arch/kvx/include/asm/word-at-a-time.h
+ create mode 100644 arch/mips/include/asm/word-at-a-time.h
+ create mode 100644 arch/openrisc/include/asm/word-at-a-time.h
+ create mode 100644 arch/powerpc/include/asm/word-at-a-time.h
+ create mode 100644 arch/riscv/include/asm/word-at-a-time.h
+ create mode 100644 arch/sandbox/include/asm/word-at-a-time.h
+ create mode 100644 arch/x86/include/asm/word-at-a-time.h
+ create mode 100644 include/asm-generic/word-at-a-time.h
 
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index b118979ed1df..123ad5488ffc 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -13,23 +13,224 @@
- 
- #include <linux/string.h> /* for memset() and memcpy() */
- #include <linux/compiler.h>
-+#include <linux/instruction_pointer.h>
- #include <linux/types.h>
- #include <asm/byteorder.h>
-+
-+#ifndef __LINUX_IO_STRICT_PROTOTYPES__
- #include <asm-generic/io-typeconfused.h>
-+#endif
-+
-+#define __io_br()      barrier()
-+#define __io_ar(v)      barrier()
-+#define __io_bw()      barrier()
-+#define __io_pbw()     __io_bw()
-+#define __io_paw()     __io_aw()
-+#define __io_aw()      do { } while (0)
-+#define __io_pbr()     __io_br()
-+#define __io_par(v)     __io_ar(v)
-+
-+static inline void log_write_mmio(u64 val, u8 width, volatile void __iomem *addr,
-+				  unsigned long caller_addr, unsigned long caller_addr0) {}
-+static inline void log_post_write_mmio(u64 val, u8 width, volatile void __iomem *addr,
-+				       unsigned long caller_addr, unsigned long caller_addr0) {}
-+static inline void log_read_mmio(u8 width, const volatile void __iomem *addr,
-+				 unsigned long caller_addr, unsigned long caller_addr0) {}
-+static inline void log_post_read_mmio(u64 val, u8 width, const volatile void __iomem *addr,
-+				      unsigned long caller_addr, unsigned long caller_addr0) {}
-+
-+/*
-+ * __raw_{read,write}{b,w,l,q}() access memory in native endianness.
-+ *
-+ * On some architectures memory mapped IO needs to be accessed differently.
-+ * On the simple architectures, we just read/write the memory location
-+ * directly.
-+ */
-+
-+#ifndef __raw_readb
-+#define __raw_readb __raw_readb
-+static inline u8 __raw_readb(const volatile void __iomem *addr)
-+{
-+	return *(const volatile u8 __force *)addr;
-+}
-+#endif
-+
-+#ifndef __raw_readw
-+#define __raw_readw __raw_readw
-+static inline u16 __raw_readw(const volatile void __iomem *addr)
-+{
-+	return *(const volatile u16 __force *)addr;
-+}
-+#endif
-+
-+#ifndef __raw_readl
-+#define __raw_readl __raw_readl
-+static inline u32 __raw_readl(const volatile void __iomem *addr)
-+{
-+	return *(const volatile u32 __force *)addr;
-+}
-+#endif
- 
- #ifdef CONFIG_64BIT
-+#ifndef __raw_readq
-+#define __raw_readq __raw_readq
- static inline u64 __raw_readq(const volatile void __iomem *addr)
- {
--	return *(const volatile u64 __force *) addr;
-+	return *(const volatile u64 __force *)addr;
- }
--#define readq(addr) __le64_to_cpu(__raw_readq(addr))
--
--static inline void __raw_writeq(u64 b, volatile void __iomem *addr)
--{
--	*(volatile u64 __force *) addr = b;
--}
--#define writeq(b,addr) __raw_writeq(__cpu_to_le64(b),addr)
- #endif
-+#endif /* CONFIG_64BIT */
-+
-+#ifndef __raw_writeb
-+#define __raw_writeb __raw_writeb
-+static inline void __raw_writeb(u8 value, volatile void __iomem *addr)
-+{
-+	*(volatile u8 __force *)addr = value;
-+}
-+#endif
-+
-+#ifndef __raw_writew
-+#define __raw_writew __raw_writew
-+static inline void __raw_writew(u16 value, volatile void __iomem *addr)
-+{
-+	*(volatile u16 __force *)addr = value;
-+}
-+#endif
-+
-+#ifndef __raw_writel
-+#define __raw_writel __raw_writel
-+static inline void __raw_writel(u32 value, volatile void __iomem *addr)
-+{
-+	*(volatile u32 __force *)addr = value;
-+}
-+#endif
-+
-+#ifdef CONFIG_64BIT
-+#ifndef __raw_writeq
-+#define __raw_writeq __raw_writeq
-+static inline void __raw_writeq(u64 value, volatile void __iomem *addr)
-+{
-+	*(volatile u64 __force *)addr = value;
-+}
-+#endif
-+#endif /* CONFIG_64BIT */
-+
-+/*
-+ * {read,write}{b,w,l,q}() access little endian memory and return result in
-+ * native endianness.
-+ */
-+
-+#ifndef readb
-+#define readb readb
-+static inline u8 readb(const volatile void __iomem *addr)
-+{
-+	u8 val;
-+
-+	log_read_mmio(8, addr, _THIS_IP_, _RET_IP_);
-+	__io_br();
-+	val = __raw_readb(addr);
-+	__io_ar(val);
-+	log_post_read_mmio(val, 8, addr, _THIS_IP_, _RET_IP_);
-+	return val;
-+}
-+#endif
-+
-+#ifndef readw
-+#define readw readw
-+static inline u16 readw(const volatile void __iomem *addr)
-+{
-+	u16 val;
-+
-+	log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
-+	__io_br();
-+	val = __le16_to_cpu((__le16 __force)__raw_readw(addr));
-+	__io_ar(val);
-+	log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
-+	return val;
-+}
-+#endif
-+
-+#ifndef readl
-+#define readl readl
-+static inline u32 readl(const volatile void __iomem *addr)
-+{
-+	u32 val;
-+
-+	log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
-+	__io_br();
-+	val = __le32_to_cpu((__le32 __force)__raw_readl(addr));
-+	__io_ar(val);
-+	log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
-+	return val;
-+}
-+#endif
-+
-+#ifdef CONFIG_64BIT
-+#ifndef readq
-+#define readq readq
-+static inline u64 readq(const volatile void __iomem *addr)
-+{
-+	u64 val;
-+
-+	log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
-+	__io_br();
-+	val = __le64_to_cpu((__le64 __force)__raw_readq(addr));
-+	__io_ar(val);
-+	log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
-+	return val;
-+}
-+#endif
-+#endif /* CONFIG_64BIT */
-+
-+#ifndef writeb
-+#define writeb writeb
-+static inline void writeb(u8 value, volatile void __iomem *addr)
-+{
-+	log_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-+	__io_bw();
-+	__raw_writeb(value, addr);
-+	__io_aw();
-+	log_post_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-+}
-+#endif
-+
-+#ifndef writew
-+#define writew writew
-+static inline void writew(u16 value, volatile void __iomem *addr)
-+{
-+	log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-+	__io_bw();
-+	__raw_writew((u16 __force)cpu_to_le16(value), addr);
-+	__io_aw();
-+	log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-+}
-+#endif
-+
-+#ifndef writel
-+#define writel writel
-+static inline void writel(u32 value, volatile void __iomem *addr)
-+{
-+	log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-+	__io_bw();
-+	__raw_writel((u32 __force)__cpu_to_le32(value), addr);
-+	__io_aw();
-+	log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-+}
-+#endif
-+
-+#ifdef CONFIG_64BIT
-+#ifndef writeq
-+#define writeq writeq
-+static inline void writeq(u64 value, volatile void __iomem *addr)
-+{
-+	log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-+	__io_bw();
-+	__raw_writeq((u64 __force)__cpu_to_le64(value), addr);
-+	__io_aw();
-+	log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-+}
-+#endif
-+#endif /* CONFIG_64BIT */
- 
- #ifndef PCI_IOBASE
- #define PCI_IOBASE ((void __iomem *)RELOC_HIDE((void *)0, 0))
-diff --git a/include/linux/io.h b/include/linux/io.h
+diff --git a/arch/arm/include/asm/word-at-a-time.h b/arch/arm/include/asm/word-at-a-time.h
 new file mode 100644
-index 000000000000..9119e4e629d7
+index 000000000000..f22198a66be3
 --- /dev/null
-+++ b/include/linux/io.h
-@@ -0,0 +1,9 @@
++++ b/arch/arm/include/asm/word-at-a-time.h
+@@ -0,0 +1,59 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2013 ARM Ltd.
++ */
++#ifndef __ASM_WORD_AT_A_TIME_H
++#define __ASM_WORD_AT_A_TIME_H
 +
-+#ifndef _LINUX_IO_H
-+#define _LINUX_IO_H
++#if !defined(__AARCH64EB__) && !defined(__ARMEB__)
 +
-+#define __LINUX_IO_STRICT_PROTOTYPES__
-+#include <asm/io.h>
++#include <linux/kernel.h>
++
++struct word_at_a_time {
++	const unsigned long one_bits, high_bits;
++};
++
++#define WORD_AT_A_TIME_CONSTANTS { REPEAT_BYTE(0x01), REPEAT_BYTE(0x80) }
++
++static inline unsigned long has_zero(unsigned long a, unsigned long *bits,
++				     const struct word_at_a_time *c)
++{
++	unsigned long mask = ((a - c->one_bits) & ~a) & c->high_bits;
++	*bits = mask;
++	return mask;
++}
++
++#define prep_zero_mask(a, bits, c) (bits)
++
++static inline unsigned long create_zero_mask(unsigned long bits)
++{
++	bits = (bits - 1) & ~bits;
++	return bits >> 7;
++}
++
++static inline unsigned long find_zero(unsigned long mask)
++{
++	unsigned long ret;
++
++#if __LINUX_ARM_ARCH__ >= 8
++	ret = fls64(mask) >> 3;
++#elif __LINUX_ARM_ARCH__ >= 5
++	/* We have clz available. */
++	ret = fls(mask) >> 3;
++#else
++	/* (000000 0000ff 00ffff ffffff) -> ( 1 1 2 3 ) */
++	ret = (0x0ff0001 + mask) >> 23;
++	/* Fix the 1 for 00 case */
++	ret &= mask;
++#endif
++
++	return ret;
++}
++
++#define zero_bytemask(mask) (mask)
++
++#else	/* __AARCH64EB__ || __ARMEB__ */
++#include <asm-generic/word-at-a-time.h>
++#endif
++
++#endif /* __ASM_WORD_AT_A_TIME_H */
+diff --git a/arch/kvx/include/asm/word-at-a-time.h b/arch/kvx/include/asm/word-at-a-time.h
+new file mode 100644
+index 000000000000..f6306fb896a1
+--- /dev/null
++++ b/arch/kvx/include/asm/word-at-a-time.h
+@@ -0,0 +1,2 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#include <asm-generic/word-at-a-time.h>
+diff --git a/arch/mips/include/asm/word-at-a-time.h b/arch/mips/include/asm/word-at-a-time.h
+new file mode 100644
+index 000000000000..f6306fb896a1
+--- /dev/null
++++ b/arch/mips/include/asm/word-at-a-time.h
+@@ -0,0 +1,2 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#include <asm-generic/word-at-a-time.h>
+diff --git a/arch/openrisc/include/asm/word-at-a-time.h b/arch/openrisc/include/asm/word-at-a-time.h
+new file mode 100644
+index 000000000000..f6306fb896a1
+--- /dev/null
++++ b/arch/openrisc/include/asm/word-at-a-time.h
+@@ -0,0 +1,2 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#include <asm-generic/word-at-a-time.h>
+diff --git a/arch/powerpc/include/asm/word-at-a-time.h b/arch/powerpc/include/asm/word-at-a-time.h
+new file mode 100644
+index 000000000000..1de46fbd2e15
+--- /dev/null
++++ b/arch/powerpc/include/asm/word-at-a-time.h
+@@ -0,0 +1,156 @@
++#ifndef _ASM_WORD_AT_A_TIME_H
++#define _ASM_WORD_AT_A_TIME_H
++
++/*
++ * Word-at-a-time interfaces for PowerPC.
++ */
++
++#include <linux/kernel.h>
++
++#ifdef __BIG_ENDIAN__
++
++struct word_at_a_time {
++	const unsigned long high_bits, low_bits;
++};
++
++#define WORD_AT_A_TIME_CONSTANTS { REPEAT_BYTE(0xfe) + 1, REPEAT_BYTE(0x7f) }
++
++/* Bit set in the bytes that have a zero */
++static inline long prep_zero_mask(unsigned long val, unsigned long rhs, const struct word_at_a_time *c)
++{
++	unsigned long mask = (val & c->low_bits) + c->low_bits;
++	return ~(mask | rhs);
++}
++
++#define create_zero_mask(mask) (mask)
++
++static inline long find_zero(unsigned long mask)
++{
++	long leading_zero_bits;
++
++	asm (PPC_CNTLZL "%0,%1" : "=r" (leading_zero_bits) : "r" (mask));
++	return leading_zero_bits >> 3;
++}
++
++static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
++{
++	unsigned long rhs = val | c->low_bits;
++	*data = rhs;
++	return (val + c->high_bits) & ~rhs;
++}
++
++static inline unsigned long zero_bytemask(unsigned long mask)
++{
++	return ~1ul << __fls(mask);
++}
++
++#else
++
++#ifdef CONFIG_64BIT
++
++/* unused */
++struct word_at_a_time {
++};
++
++#define WORD_AT_A_TIME_CONSTANTS { }
++
++/* This will give us 0xff for a NULL char and 0x00 elsewhere */
++static inline unsigned long has_zero(unsigned long a, unsigned long *bits, const struct word_at_a_time *c)
++{
++	unsigned long ret;
++	unsigned long zero = 0;
++
++	asm("cmpb %0,%1,%2" : "=r" (ret) : "r" (a), "r" (zero));
++	*bits = ret;
++
++	return ret;
++}
++
++static inline unsigned long prep_zero_mask(unsigned long a, unsigned long bits, const struct word_at_a_time *c)
++{
++	return bits;
++}
++
++/* Alan Modra's little-endian strlen tail for 64-bit */
++static inline unsigned long create_zero_mask(unsigned long bits)
++{
++	unsigned long leading_zero_bits;
++	long trailing_zero_bit_mask;
++
++	asm("addi	%1,%2,-1\n\t"
++	    "andc	%1,%1,%2\n\t"
++	    "popcntd	%0,%1"
++		: "=r" (leading_zero_bits), "=&r" (trailing_zero_bit_mask)
++		: "b" (bits));
++
++	return leading_zero_bits;
++}
++
++static inline unsigned long find_zero(unsigned long mask)
++{
++	return mask >> 3;
++}
++
++/* This assumes that we never ask for an all 1s bitmask */
++static inline unsigned long zero_bytemask(unsigned long mask)
++{
++	return (1UL << mask) - 1;
++}
++
++#else	/* 32-bit case */
++
++struct word_at_a_time {
++	const unsigned long one_bits, high_bits;
++};
++
++#define WORD_AT_A_TIME_CONSTANTS { REPEAT_BYTE(0x01), REPEAT_BYTE(0x80) }
++
++/*
++ * This is largely generic for little-endian machines, but the
++ * optimal byte mask counting is probably going to be something
++ * that is architecture-specific. If you have a reliably fast
++ * bit count instruction, that might be better than the multiply
++ * and shift, for example.
++ */
++
++/* Carl Chatfield / Jan Achrenius G+ version for 32-bit */
++static inline long count_masked_bytes(long mask)
++{
++	/* (000000 0000ff 00ffff ffffff) -> ( 1 1 2 3 ) */
++	long a = (0x0ff0001+mask) >> 23;
++	/* Fix the 1 for 00 case */
++	return a & mask;
++}
++
++static inline unsigned long create_zero_mask(unsigned long bits)
++{
++	bits = (bits - 1) & ~bits;
++	return bits >> 7;
++}
++
++static inline unsigned long find_zero(unsigned long mask)
++{
++	return count_masked_bytes(mask);
++}
++
++/* Return nonzero if it has a zero */
++static inline unsigned long has_zero(unsigned long a, unsigned long *bits, const struct word_at_a_time *c)
++{
++	unsigned long mask = ((a - c->one_bits) & ~a) & c->high_bits;
++	*bits = mask;
++	return mask;
++}
++
++static inline unsigned long prep_zero_mask(unsigned long a, unsigned long bits, const struct word_at_a_time *c)
++{
++	return bits;
++}
++
++/* The mask we created is directly usable as a bytemask */
++#define zero_bytemask(mask) (mask)
++
++#endif /* CONFIG_64BIT */
++
++#endif /* __BIG_ENDIAN__ */
++
++#endif /* _ASM_WORD_AT_A_TIME_H */
+diff --git a/arch/riscv/include/asm/word-at-a-time.h b/arch/riscv/include/asm/word-at-a-time.h
+new file mode 100644
+index 000000000000..7c086ac6ecd4
+--- /dev/null
++++ b/arch/riscv/include/asm/word-at-a-time.h
+@@ -0,0 +1,48 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) 2012 Regents of the University of California
++ *
++ * Derived from arch/x86/include/asm/word-at-a-time.h
++ */
++
++#ifndef _ASM_RISCV_WORD_AT_A_TIME_H
++#define _ASM_RISCV_WORD_AT_A_TIME_H
++
++
++#include <linux/kernel.h>
++
++struct word_at_a_time {
++	const unsigned long one_bits, high_bits;
++};
++
++#define WORD_AT_A_TIME_CONSTANTS { REPEAT_BYTE(0x01), REPEAT_BYTE(0x80) }
++
++static inline unsigned long has_zero(unsigned long val,
++	unsigned long *bits, const struct word_at_a_time *c)
++{
++	unsigned long mask = ((val - c->one_bits) & ~val) & c->high_bits;
++	*bits = mask;
++	return mask;
++}
++
++static inline unsigned long prep_zero_mask(unsigned long val,
++	unsigned long bits, const struct word_at_a_time *c)
++{
++	return bits;
++}
++
++static inline unsigned long create_zero_mask(unsigned long bits)
++{
++	bits = (bits - 1) & ~bits;
++	return bits >> 7;
++}
++
++static inline unsigned long find_zero(unsigned long mask)
++{
++	return fls64(mask) >> 3;
++}
++
++/* The mask we created is directly usable as a bytemask */
++#define zero_bytemask(mask) (mask)
++
++#endif /* _ASM_RISCV_WORD_AT_A_TIME_H */
+diff --git a/arch/sandbox/include/asm/word-at-a-time.h b/arch/sandbox/include/asm/word-at-a-time.h
+new file mode 100644
+index 000000000000..f6306fb896a1
+--- /dev/null
++++ b/arch/sandbox/include/asm/word-at-a-time.h
+@@ -0,0 +1,2 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#include <asm-generic/word-at-a-time.h>
+diff --git a/arch/x86/include/asm/word-at-a-time.h b/arch/x86/include/asm/word-at-a-time.h
+new file mode 100644
+index 000000000000..a7e57b7fd617
+--- /dev/null
++++ b/arch/x86/include/asm/word-at-a-time.h
+@@ -0,0 +1,73 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_WORD_AT_A_TIME_H
++#define _ASM_WORD_AT_A_TIME_H
++
++#include <linux/kernel.h>
++
++/*
++ * This is largely generic for little-endian machines, but the
++ * optimal byte mask counting is probably going to be something
++ * that is architecture-specific. If you have a reliably fast
++ * bit count instruction, that might be better than the multiply
++ * and shift, for example.
++ */
++struct word_at_a_time {
++	const unsigned long one_bits, high_bits;
++};
++
++#define WORD_AT_A_TIME_CONSTANTS { REPEAT_BYTE(0x01), REPEAT_BYTE(0x80) }
++
++#ifdef CONFIG_64BIT
++
++/*
++ * Jan Achrenius on G+: microoptimized version of
++ * the simpler "(mask & ONEBYTES) * ONEBYTES >> 56"
++ * that works for the bytemasks without having to
++ * mask them first.
++ */
++static inline long count_masked_bytes(unsigned long mask)
++{
++	return mask*0x0001020304050608ul >> 56;
++}
++
++#else	/* 32-bit case */
++
++/* Carl Chatfield / Jan Achrenius G+ version for 32-bit */
++static inline long count_masked_bytes(long mask)
++{
++	/* (000000 0000ff 00ffff ffffff) -> ( 1 1 2 3 ) */
++	long a = (0x0ff0001+mask) >> 23;
++	/* Fix the 1 for 00 case */
++	return a & mask;
++}
 +
 +#endif
++
++/* Return nonzero if it has a zero */
++static inline unsigned long has_zero(unsigned long a, unsigned long *bits, const struct word_at_a_time *c)
++{
++	unsigned long mask = ((a - c->one_bits) & ~a) & c->high_bits;
++	*bits = mask;
++	return mask;
++}
++
++static inline unsigned long prep_zero_mask(unsigned long a, unsigned long bits, const struct word_at_a_time *c)
++{
++	return bits;
++}
++
++static inline unsigned long create_zero_mask(unsigned long bits)
++{
++	bits = (bits - 1) & ~bits;
++	return bits >> 7;
++}
++
++/* The mask we created is directly usable as a bytemask */
++#define zero_bytemask(mask) (mask)
++
++static inline unsigned long find_zero(unsigned long mask)
++{
++	return count_masked_bytes(mask);
++}
++
++#endif /* _ASM_WORD_AT_A_TIME_H */
+diff --git a/include/asm-generic/word-at-a-time.h b/include/asm-generic/word-at-a-time.h
+new file mode 100644
+index 000000000000..95a1d214108a
+--- /dev/null
++++ b/include/asm-generic/word-at-a-time.h
+@@ -0,0 +1,121 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _ASM_WORD_AT_A_TIME_H
++#define _ASM_WORD_AT_A_TIME_H
++
++#include <linux/kernel.h>
++#include <asm/byteorder.h>
++
++#ifdef __BIG_ENDIAN
++
++struct word_at_a_time {
++	const unsigned long high_bits, low_bits;
++};
++
++#define WORD_AT_A_TIME_CONSTANTS { REPEAT_BYTE(0xfe) + 1, REPEAT_BYTE(0x7f) }
++
++/* Bit set in the bytes that have a zero */
++static inline long prep_zero_mask(unsigned long val, unsigned long rhs, const struct word_at_a_time *c)
++{
++	unsigned long mask = (val & c->low_bits) + c->low_bits;
++	return ~(mask | rhs);
++}
++
++#define create_zero_mask(mask) (mask)
++
++static inline long find_zero(unsigned long mask)
++{
++	long byte = 0;
++#ifdef CONFIG_64BIT
++	if (mask >> 32)
++		mask >>= 32;
++	else
++		byte = 4;
++#endif
++	if (mask >> 16)
++		mask >>= 16;
++	else
++		byte += 2;
++	return (mask >> 8) ? byte : byte + 1;
++}
++
++static inline unsigned long has_zero(unsigned long val, unsigned long *data, const struct word_at_a_time *c)
++{
++	unsigned long rhs = val | c->low_bits;
++	*data = rhs;
++	return (val + c->high_bits) & ~rhs;
++}
++
++#ifndef zero_bytemask
++#define zero_bytemask(mask) (~1ul << __fls(mask))
++#endif
++
++#else
++
++/*
++ * The optimal byte mask counting is probably going to be something
++ * that is architecture-specific. If you have a reliably fast
++ * bit count instruction, that might be better than the multiply
++ * and shift, for example.
++ */
++struct word_at_a_time {
++	const unsigned long one_bits, high_bits;
++};
++
++#define WORD_AT_A_TIME_CONSTANTS { REPEAT_BYTE(0x01), REPEAT_BYTE(0x80) }
++
++#ifdef CONFIG_64BIT
++
++/*
++ * Jan Achrenius on G+: microoptimized version of
++ * the simpler "(mask & ONEBYTES) * ONEBYTES >> 56"
++ * that works for the bytemasks without having to
++ * mask them first.
++ */
++static inline long count_masked_bytes(unsigned long mask)
++{
++	return mask*0x0001020304050608ul >> 56;
++}
++
++#else	/* 32-bit case */
++
++/* Carl Chatfield / Jan Achrenius G+ version for 32-bit */
++static inline long count_masked_bytes(long mask)
++{
++	/* (000000 0000ff 00ffff ffffff) -> ( 1 1 2 3 ) */
++	long a = (0x0ff0001+mask) >> 23;
++	/* Fix the 1 for 00 case */
++	return a & mask;
++}
++
++#endif
++
++/* Return nonzero if it has a zero */
++static inline unsigned long has_zero(unsigned long a, unsigned long *bits, const struct word_at_a_time *c)
++{
++	unsigned long mask = ((a - c->one_bits) & ~a) & c->high_bits;
++	*bits = mask;
++	return mask;
++}
++
++static inline unsigned long prep_zero_mask(unsigned long a, unsigned long bits, const struct word_at_a_time *c)
++{
++	return bits;
++}
++
++static inline unsigned long create_zero_mask(unsigned long bits)
++{
++	bits = (bits - 1) & ~bits;
++	return bits >> 7;
++}
++
++/* The mask we created is directly usable as a bytemask */
++#define zero_bytemask(mask) (mask)
++
++static inline unsigned long find_zero(unsigned long mask)
++{
++	return count_masked_bytes(mask);
++}
++
++#endif /* __BIG_ENDIAN */
++
++#endif /* _ASM_WORD_AT_A_TIME_H */
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index da6121888ebd..4e50f6075189 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -11,6 +11,14 @@
+ #include <linux/instruction_pointer.h>
+ #include <linux/minmax.h>
+ 
++/**
++ * REPEAT_BYTE - repeat the value @x multiple times as an unsigned long value
++ * @x: value to repeat
++ *
++ * NOTE: @x is not checked for > 0xff; larger values produce odd results.
++ */
++#define REPEAT_BYTE(x)	((~0ul / 0xff) * (x))
++
+ #define ALIGN(x, a)		__ALIGN_MASK(x, (typeof(x))(a) - 1)
+ #define ALIGN_DOWN(x, a)	ALIGN((x) - ((a) - 1), (a))
+ #define __ALIGN_MASK(x, mask)	(((x) + (mask)) & ~(mask))
 -- 
 2.39.2
 
