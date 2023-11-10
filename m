@@ -1,64 +1,79 @@
-Delivery-date: Fri, 10 Nov 2023 14:00:22 +0100
+Delivery-date: Fri, 10 Nov 2023 14:00:40 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1R7V-005rZU-1v
+	id 1r1R7n-005raY-1E
 	for lore@lore.pengutronix.de;
-	Fri, 10 Nov 2023 14:00:22 +0100
+	Fri, 10 Nov 2023 14:00:39 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1R7J-0003mM-1T
-	for lore@pengutronix.de; Fri, 10 Nov 2023 14:00:22 +0100
+	id 1r1R7c-00041i-OU
+	for lore@pengutronix.de; Fri, 10 Nov 2023 14:00:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4TCwiHpU7D8nDK0YZlHWvO8x/nQPAIDCyUuKAz3BsN8=; b=OBxpzgBtDqMnc2raNSdtsyYaYY
-	hwe1WQBzbK9Ws2xhibdepvi7q+Z8tev4V6eBzgVRCXMFdIkhSMZLBM7mWwGYbWgikQbAn83VThWo7
-	0yHmCLbj3DMIO1CYm8ZW5O0txrjJwIKy7nm8ZkrioSQdvIzZ4aN967AXXRvYrRR12GLJf8D2gvWEG
-	zmnFLymchizZRy7lacgYGvRlVu5aBuwNlfUbUkrr2PGEMNOqbAOJUGdqH1DoWj7obJgOfwOwZ6wll
-	5jB+d3YrY+xuybMJiPEVs5re3MmkXHHbCGxShUzdy0f1SPo7YIZKfu22zZy0xBu1M+ksE30zzZJPo
-	gTcfHxmA==;
+	bh=2swGfjzPpkGGLjp3pGUANJfp9LlWS9vWARrDwc4ficA=; b=RZ2YU0Xs5nIoBvtRfuJvwcU9yK
+	fCsPq62ppzvJUH3BunqZzU8lAGsCtdPvTVPdvtTPXlxY1gAr+8m/RFPpMP/cf4s30GQo2BPwxGUUp
+	E2pHuNx0B5zcK2dZoznf6gP1HYYre3fuCjHP+4XvIhzl8sdw3l7Sdlt89cP6HV3j01vdNBz3L67xc
+	X4E4x7Ev8IT4vnyxzb3Yfq7TlKCB/4ZBWSMMhvBMHuNgbjFLn5sp88pl1X2DEcLufSuQ73tQptY/T
+	gzAqK4F4K1K24F0k9OYlOsRQ+J/rPj/Q6xbAc8Oje2rXkrCKXGDennvEODoz2LwER4UR+YuhmHlAV
+	IEuLG30Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R5f-008k66-0t;
-	Fri, 10 Nov 2023 12:58:27 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1r1R5u-008kSH-1j;
+	Fri, 10 Nov 2023 12:58:42 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R5J-008jo4-33
+	id 1r1R5e-008k5T-20
+	for barebox@bombadil.infradead.org;
+	Fri, 10 Nov 2023 12:58:27 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=2swGfjzPpkGGLjp3pGUANJfp9LlWS9vWARrDwc4ficA=; b=p1oCIA3T5Rn3PmI5aoCiRkxt0Z
+	Or1xyACs9XRZ4RjaGxGaszMPTi9R0LiiFn35+4I7Q+F016K24F5sl02kSZmdclfESQ3hzumXcnE4o
+	s4h5aljrvl3mEljsesICdUesblvqWRGxiACIrh6ZU5jgnmRsjYiJdhN7X8H4aWiwgWaxGhknRj5rp
+	GCrUbkKZQNwhkTPVSHDv3iG/ozavoge/coPPh6aTZkzDuBCFk+vgFK9/mVYbMD5MwIEETTqZfV6r0
+	qT5FcLAyT/F5NV9gX4Qmh3XcNaRS9gCHUkuStTixBUQUPR06d7QBIQPpgdUafMwh8jiK2D9OZuy4v
+	pGFwR6gw==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1r1R5R-00Fbuj-2m
 	for barebox@lists.infradead.org;
-	Fri, 10 Nov 2023 12:58:19 +0000
+	Fri, 10 Nov 2023 12:58:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5H-00026M-Ct; Fri, 10 Nov 2023 13:58:03 +0100
+	id 1r1R5I-00027E-07; Fri, 10 Nov 2023 13:58:04 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5G-0081X7-Oc; Fri, 10 Nov 2023 13:58:02 +0100
+	id 1r1R5H-0081XY-3F; Fri, 10 Nov 2023 13:58:03 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5G-008rz9-2G;
+	id 1r1R5G-008s1O-2x;
 	Fri, 10 Nov 2023 13:58:02 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 10 Nov 2023 13:57:39 +0100
-Message-Id: <20231110125800.1901232-5-s.hauer@pengutronix.de>
+Date: Fri, 10 Nov 2023 13:57:51 +0100
+Message-Id: <20231110125800.1901232-17-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231110125800.1901232-1-s.hauer@pengutronix.de>
 References: <20231110125800.1901232-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231110_045806_467001_72C43587 
-X-CRM114-Status: GOOD (  22.85  )
+X-CRM114-CacheID: sfid-20231110_125814_788540_77FB3512 
+X-CRM114-Status: GOOD (  18.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,2325 +96,2529 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 04/25] scripts: Add imx9image tool
+Subject: [PATCH 16/25] ARM: Add TQ MBA9XXXCA board support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds a tool for building images for the NXP i.MX9 SoC. The code
-is based on:
-https://github.com/nxp-imx/imx-mkimage/tree/5a0faefc223e51e088433663b6e7d6fbce89bf59
+The TQ MBA9XXXCA is a i.MX93 based board, see
+https://www.tq-group.com/de/produkte/tq-embedded/arm-architektur/stka93xx/
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/soc/imx9/flash_header.h |   88 ++
- scripts/Kconfig                 |    7 +
- scripts/Makefile                |    1 +
- scripts/imx9image.c             | 2171 +++++++++++++++++++++++++++++++
- 4 files changed, 2267 insertions(+)
- create mode 100644 include/soc/imx9/flash_header.h
- create mode 100644 scripts/imx9image.c
+ arch/arm/boards/Makefile                      |    1 +
+ arch/arm/boards/tqmba9xxxca/Makefile          |    2 +
+ arch/arm/boards/tqmba9xxxca/board.c           |   58 +
+ arch/arm/boards/tqmba9xxxca/lowlevel.c        |   43 +
+ .../tqmba9xxxca/lpddr4x_tqma93xxca_timing.c   | 1480 +++++++++++++++++
+ arch/arm/dts/Makefile                         |    1 +
+ arch/arm/dts/imx93-tqma9352-mba93xxca.dts     |  826 +++++++++
+ arch/arm/mach-imx/Kconfig                     |    9 +
+ images/Makefile.imx                           |   11 +
+ 9 files changed, 2431 insertions(+)
+ create mode 100644 arch/arm/boards/tqmba9xxxca/Makefile
+ create mode 100644 arch/arm/boards/tqmba9xxxca/board.c
+ create mode 100644 arch/arm/boards/tqmba9xxxca/lowlevel.c
+ create mode 100644 arch/arm/boards/tqmba9xxxca/lpddr4x_tqma93xxca_timing.c
+ create mode 100644 arch/arm/dts/imx93-tqma9352-mba93xxca.dts
 
-diff --git a/include/soc/imx9/flash_header.h b/include/soc/imx9/flash_header.h
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index bdac1e69ee..5b78c760b9 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -197,3 +197,4 @@ obj-$(CONFIG_MACH_RADXA_ROCK3)			+= radxa-rock3/
+ obj-$(CONFIG_MACH_RADXA_ROCK5)			+= radxa-rock5/
+ obj-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP)	+= variscite-dt8mcustomboard-imx8mp/
+ obj-$(CONFIG_MACH_RADXA_CM3)			+= radxa-cm3/
++obj-$(CONFIG_MACH_TQ_MBA9XXXCA)			+= tqmba9xxxca/
+diff --git a/arch/arm/boards/tqmba9xxxca/Makefile b/arch/arm/boards/tqmba9xxxca/Makefile
 new file mode 100644
-index 0000000000..51819929dd
+index 0000000000..2957523cdd
 --- /dev/null
-+++ b/include/soc/imx9/flash_header.h
-@@ -0,0 +1,88 @@
-+#ifndef SOC_IMX_FLASH_HEADER_H
-+#define SOC_IMX_FLASH_HEADER_H
-+
-+#define HASH_MAX_LEN			64
-+#define IV_MAX_LEN			32
-+#define MAX_NUM_IMGS			8
-+#define MAX_NUM_OF_CONTAINER		3
-+#define MAX_HW_CFG_SIZE_V2		359
-+
-+struct img_flags {
-+	char type;
-+	char core_id;
-+	char hash_type;
-+	bool encrypted;
-+	uint16_t boot_flags;
-+};
-+
-+struct sig_blk_hdr {
-+	uint8_t version;
-+	uint16_t length;
-+	uint8_t tag;
-+	uint16_t srk_table_offset;
-+	uint16_t cert_offset;
-+	uint16_t blob_offset;
-+	uint16_t signature_offset;
-+	uint32_t reserved;
-+} __attribute__((packed));
-+
-+struct boot_img {
-+	uint32_t offset;
-+	uint32_t size;
-+	uint64_t dst;
-+	uint64_t entry;
-+	uint32_t hab_flags;
-+	uint32_t meta;
-+	uint8_t hash[HASH_MAX_LEN];
-+	uint8_t iv[IV_MAX_LEN];
-+} __attribute__((packed));
-+
-+struct flash_header_v3 {
-+	uint8_t version;
-+	uint16_t length;
-+	uint8_t tag;
-+	uint32_t flags;
-+	uint16_t sw_version;
-+	uint8_t fuse_version;
-+	uint8_t num_images;
-+	uint16_t sig_blk_offset;
-+	uint16_t reserved;
-+	struct boot_img img[MAX_NUM_IMGS];
-+	struct sig_blk_hdr sig_blk_hdr;
-+	uint32_t sigblk_size;
-+	uint32_t padding;
-+} __attribute__((packed));
-+
-+struct ivt_header {
-+	uint8_t tag;
-+	uint16_t length;
-+	uint8_t version;
-+} __attribute__((packed));
-+
-+struct write_dcd_command {
-+	uint8_t tag;
-+	uint16_t length;
-+	uint8_t param;
-+} __attribute__((packed));
-+
-+struct dcd_addr_data {
-+	uint32_t addr;
-+	uint32_t value;
-+};
-+
-+struct dcd_v2_cmd {
-+	struct write_dcd_command write_dcd_command; /*4*/
-+	struct dcd_addr_data addr_data[MAX_HW_CFG_SIZE_V2]; /*2872*/
-+} __attribute__((packed));
-+
-+struct dcd_v2 {
-+	struct ivt_header header;   /*4*/
-+	struct dcd_v2_cmd dcd_cmd; /*2876*/
-+} __attribute__((packed)) ;                     /*2880*/
-+
-+struct imx_header_v3 {
-+	struct flash_header_v3 fhdr[MAX_NUM_OF_CONTAINER];
-+	struct dcd_v2 dcd_table;
-+}  __attribute__((packed));
-+
-+#endif /* SOC_IMX_FLASH_HEADER_H */
-diff --git a/scripts/Kconfig b/scripts/Kconfig
-index 9be04fa7c8..4b675671ee 100644
---- a/scripts/Kconfig
-+++ b/scripts/Kconfig
-@@ -28,6 +28,13 @@ config ZYNQ_MKIMAGE
- 	help
- 	  This enables building the image creation tool for Zynq
- 
-+config IMX9_IMAGE
-+	bool "imx9image"
-+	depends on ARCH_IMX93 || COMPILE_HOST_TOOLS
-+	default y if ARCH_IMX93
-+	help
-+	  This enables building the image tool for NXP i.MX9 SoCs
-+
- config MXS_HOSTTOOLS
- 	bool "MXS host tools" if COMPILE_HOST_TOOLS
- 	depends on ARCH_MXS || COMPILE_HOST_TOOLS
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 42ac4e548b..cb1d916439 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -25,6 +25,7 @@ hostprogs-always-$(CONFIG_SOCFPGA_MKIMAGE)		+= socfpga_mkimage
- hostprogs-always-$(CONFIG_MXS_HOSTTOOLS)		+= mxsimage mxsboot
- hostprogs-always-$(CONFIG_LAYERSCAPE_PBLIMAGE)		+= pblimage
- hostprogs-always-$(CONFIG_STM32_IMAGE)			+= stm32image
-+hostprogs-always-$(CONFIG_IMX9_IMAGE)			+= imx9image
- hostprogs-always-$(CONFIG_RISCV)			+= prelink-riscv
- hostprogs-always-$(CONFIG_RK_IMAGE)			+= rkimage
- HOSTCFLAGS_rkimage.o = `$(PKG_CONFIG) --cflags openssl`
-diff --git a/scripts/imx9image.c b/scripts/imx9image.c
++++ b/arch/arm/boards/tqmba9xxxca/Makefile
+@@ -0,0 +1,2 @@
++lwl-y += lowlevel.o lpddr4x_tqma93xxca_timing.o
++obj-y += board.o
+diff --git a/arch/arm/boards/tqmba9xxxca/board.c b/arch/arm/boards/tqmba9xxxca/board.c
 new file mode 100644
-index 0000000000..a991ba5f35
+index 0000000000..b181784079
 --- /dev/null
-+++ b/scripts/imx9image.c
-@@ -0,0 +1,2171 @@
-+/*
-+ * Copyright (C) 2016 Freescale Semiconductor, Inc.
-+ *
-+ * Copyright 2017 NXP
-+ *
-+ * SPDX-License-Identifier:	GPL-2.0+
-+ * derived from u-boot's mkimage utility
-+ *
-+ */
++++ b/arch/arm/boards/tqmba9xxxca/board.c
+@@ -0,0 +1,58 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+#define _GNU_SOURCE
-+#include <stdio.h>
-+#include <string.h>
-+#include <stdlib.h>
-+#include <stdint.h>
-+#include <stddef.h>
-+#include <stdarg.h>
-+#include <sys/stat.h>
-+#include <getopt.h>
-+#include <errno.h>
-+#include <fcntl.h>
-+#include <unistd.h>
-+#include <sys/mman.h>
-+#include <sys/types.h>
-+#include <stdbool.h>
-+#include <inttypes.h>
++#define pr_fmt(fmt) "TQMa93xx: " fmt
++
++#include <common.h>
++#include <gpio.h>
++#include <init.h>
++#include <i2c/i2c.h>
++#include <linux/clk.h>
 +#include <linux/kernel.h>
++#include <environment.h>
++#include <mfd/pca9450.h>
++#include <deep-probe.h>
++#include <mach/imx/bbu.h>
 +
-+#include "../include/soc/imx9/flash_header.h"
-+#include "compiler.h"
-+
-+typedef enum option_type {
-+	NO_IMG = 0,
-+	DCD,
-+	SCFW,
-+	SECO,
-+	M4,
-+	AP,
-+	OUTPUT,
-+	SCD,
-+	CSF,
-+	FLAG,
-+	DEVICE,
-+	NEW_CONTAINER,
-+	APPEND,
-+	DATA,
-+	PARTITION,
-+	FILEOFF,
-+	MSG_BLOCK,
-+	DUMMY_V2X,
-+	SENTINEL,
-+	UPOWER,
-+	FCB
-+} option_type_t;
-+
-+typedef struct {
-+	option_type_t option;
-+	char* filename;
-+	uint64_t src;
-+	uint64_t dst;
-+	uint64_t entry;/* image entry address or general purpose num */
-+	uint64_t ext;
-+	uint64_t mu;
-+	uint64_t part;
-+} image_t;
-+
-+typedef enum REVISION_TYPE {
-+	NO_REV = 0,
-+	A0,
-+	B0
-+} rev_type_t;
-+
-+typedef enum SOC_TYPE {
-+	NONE = 0,
-+	QX,
-+	QM,
-+	DXL,
-+	ULP,
-+	IMX9,
-+} soc_type_t;
-+
-+#define CORE_SC         0x1
-+#define CORE_CM4_0      0x2
-+#define CORE_CM4_1      0x3
-+#define CORE_CA53       0x4
-+#define CORE_CA35       0x4
-+#define CORE_CA72       0x5
-+#define CORE_SECO       0x6
-+#define CORE_V2X_P      0x9
-+#define CORE_V2X_S      0xA
-+
-+#define CORE_ULP_CM33		0x1
-+#define CORE_ULP_CA35		0x2
-+#define CORE_ULP_UPOWER 	0x4
-+#define CORE_ULP_SENTINEL 	0x6
-+
-+#define SC_R_OTP		357U
-+#define SC_R_DEBUG		354U
-+#define SC_R_ROM_0		236U
-+#define SC_R_PWM_0		191U
-+#define SC_R_SNVS		356U
-+#define SC_R_DC_0		32U
-+
-+#define IMG_TYPE_CSF		0x01   /* CSF image type */
-+#define IMG_TYPE_SCD		0x02   /* SCD image type */
-+#define IMG_TYPE_EXEC		0x03   /* Executable image type */
-+#define IMG_TYPE_DATA		0x04   /* Data image type */
-+#define IMG_TYPE_DCD_DDR	0x05   /* DCD/DDR image type */
-+#define IMG_TYPE_SECO		0x06   /* SECO image type */
-+#define IMG_TYPE_SENTINEL	0x06   /* SENTINEL image type */
-+#define IMG_TYPE_PROV		0x07   /* Provisioning image type */
-+#define IMG_TYPE_DEK		0x08   /* DEK validation type */
-+#define IMG_TYPE_FCB_CHK	0x08   /* The FCB copy image */
-+#define IMG_TYPE_PRIM_V2X	0x0B   /* Primary V2X FW image */
-+#define IMG_TYPE_SEC_V2X	0x0C   /* Secondary V2X FW image*/
-+#define IMG_TYPE_V2X_ROM	0x0D   /* V2X ROM Patch image */
-+#define IMG_TYPE_V2X_DUMMY	0x0E   /* V2X Dummy image */
-+
-+#define IMG_TYPE_SHIFT   0
-+#define IMG_TYPE_MASK    0x1f
-+#define IMG_TYPE(x)      (((x) & IMG_TYPE_MASK) >> IMG_TYPE_SHIFT)
-+
-+#define BOOT_IMG_FLAGS_CORE_MASK		0xF
-+#define BOOT_IMG_FLAGS_CORE_SHIFT		0x04
-+#define BOOT_IMG_FLAGS_CPU_RID_MASK		0x3FF0
-+#define BOOT_IMG_FLAGS_CPU_RID_SHIFT		4
-+#define BOOT_IMG_FLAGS_MU_RID_MASK		0xFFC000
-+#define BOOT_IMG_FLAGS_MU_RID_SHIFT		14
-+#define BOOT_IMG_FLAGS_PARTITION_ID_MASK	0x1F000000
-+#define BOOT_IMG_FLAGS_PARTITION_ID_SHIFT	24
-+
-+#define SC_R_A35_0      508
-+#define SC_R_A53_0      1
-+#define SC_R_A72_0      6
-+#define SC_R_MU_0A      213
-+#define SC_R_MU_3A      216
-+#define SC_R_M4_0_PID0  278
-+#define SC_R_M4_0_MU_1A 297
-+#define SC_R_M4_1_PID0  298
-+#define SC_R_M4_1_MU_1A 317
-+#define PARTITION_ID_M4 0
-+#define PARTITION_ID_AP 1
-+#define PARTITION_ID_AP2 3
-+
-+/* Command tags and parameters */
-+#define HAB_DATA_WIDTH_BYTE 1 /* 8-bit value */
-+#define HAB_DATA_WIDTH_HALF 2 /* 16-bit value */
-+#define HAB_DATA_WIDTH_WORD 4 /* 32-bit value */
-+#define HAB_CMD_WRT_DAT_MSK 1 /* mask/value flag */
-+#define HAB_CMD_WRT_DAT_SET 2 /* set/clear flag */
-+#define HAB_CMD_CHK_DAT_SET 2 /* set/clear flag */
-+#define HAB_CMD_CHK_DAT_ANY 4 /* any/all flag */
-+#define HAB_CMD_WRT_DAT_FLAGS_WIDTH   5 /* flags field width */
-+#define HAB_CMD_WRT_DAT_FLAGS_SHIFT   3 /* flags field offset */
-+#define HAB_CMD_WRT_DAT_BYTES_WIDTH   3 /* bytes field width */
-+#define HAB_CMD_WRT_DAT_BYTES_SHIFT   0 /* bytes field offset */
-+
-+#define IVT_VER                         0x01
-+#define IVT_VERSION                     0x43
-+#define DCD_HEADER_TAG                  0xD2
-+#define DCD_VERSION                     0x43
-+#define DCD_WRITE_DATA_COMMAND_TAG      0xCC
-+#define DCD_WRITE_DATA_PARAM            (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT) /* 0x4 */
-+#define DCD_WRITE_CLR_BIT_PARAM         ((HAB_CMD_WRT_DAT_MSK << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT)) /* 0xC */
-+#define DCD_WRITE_SET_BIT_PARAM         ((HAB_CMD_WRT_DAT_MSK << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_CMD_WRT_DAT_SET << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT)) /* 0x1C */
-+#define DCD_CHECK_DATA_COMMAND_TAG      0xCF
-+#define DCD_CHECK_BITS_CLR_PARAM        (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT) /* 0x04 */
-+#define DCD_CHECK_BITS_SET_PARAM        ((HAB_CMD_CHK_DAT_SET << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT)) /* 0x14 */
-+#define DCD_CHECK_ANY_BIT_CLR_PARAM     ((HAB_CMD_CHK_DAT_ANY << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT)) /* 0x24 */
-+#define DCD_CHECK_ANY_BIT_SET_PARAM     ((HAB_CMD_CHK_DAT_ANY << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_CMD_CHK_DAT_SET << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT)) /* 0x34 */
-+
-+#define IVT_OFFSET_NAND         (0x400)
-+#define IVT_OFFSET_I2C          (0x400)
-+#define IVT_OFFSET_FLEXSPI      (0x1000)
-+#define IVT_OFFSET_SD           (0x400)
-+#define IVT_OFFSET_SATA         (0x400)
-+#define IVT_OFFSET_EMMC         (0x400)
-+
-+#define CSF_DATA_SIZE       (0x4000)
-+#define INITIAL_LOAD_ADDR_SCU_ROM 0x2000e000
-+#define INITIAL_LOAD_ADDR_AP_ROM 0x00110000
-+#define INITIAL_LOAD_ADDR_FLEXSPI 0x08000000
-+#define IMG_AUTO_ALIGN 0x10
-+
-+#define UNDEFINED 0xFFFFFFFF
-+
-+#define OCRAM_START						0x00100000
-+#define OCRAM_END						0x00400000
-+
-+#define MAX_NUM_SRK_RECORDS		4
-+
-+#define IVT_HEADER_TAG_B0		0x87
-+#define IVT_VERSION_B0			0x00
-+
-+#define IMG_FLAG_HASH_SHA256		0x000
-+#define IMG_FLAG_HASH_SHA384		0x100
-+#define IMG_FLAG_HASH_SHA512		0x200
-+#define IMG_FLAG_HASH_SM3		0x300
-+
-+#define IMG_FLAG_ENCRYPTED_MASK		0x400
-+#define IMG_FLAG_ENCRYPTED_SHIFT	0x0A
-+
-+#define IMG_FLAG_BOOTFLAGS_MASK		0xFFFF0000
-+#define IMG_FLAG_BOOTFLAGS_SHIFT	0x10
-+
-+#define IMG_ARRAY_ENTRY_SIZE		128
-+#define HEADER_IMG_ARRAY_OFFSET		0x10
-+
-+#define HASH_STR_SHA_256		"sha256"
-+#define HASH_STR_SHA_384		"sha384"
-+#define HASH_STR_SHA_512		"sha512"
-+#define HASH_STR_SM3			"sm3"
-+
-+#define HASH_TYPE_SHA_256		256
-+#define HASH_TYPE_SHA_384		384
-+#define HASH_TYPE_SHA_512		512
-+#define HASH_TYPE_SM3			003
-+
-+#define IMAGE_HASH_ALGO_DEFAULT		HASH_TYPE_SHA_384
-+#define IMAGE_HASH_ALGO_DEFAULT_NAME	HASH_STR_SHA_384
-+#define IMAGE_PADDING_DEFAULT		0x1000
-+
-+#define DCD_ENTRY_ADDR_IN_SCFW		0x240
-+
-+#define CONTAINER_ALIGNMENT		0x400
-+#define CONTAINER_FLAGS_DEFAULT		0x10
-+#define CONTAINER_FUSE_DEFAULT		0x0
-+
-+#define SIGNATURE_BLOCK_HEADER_LENGTH	0x10
-+
-+#define BOOT_IMG_META_MU_RID_SHIFT	10
-+#define BOOT_IMG_META_PART_ID_SHIFT	20
-+
-+#define IMAGE_TYPE_MASK	0xF
-+
-+#define CORE_ID_SHIFT	0x4
-+#define CORE_ID_MASK	0xF
-+
-+#define HASH_TYPE_SHIFT	0x8
-+#define HASH_TYPE_MASK	0x7
-+
-+#define IMAGE_ENCRYPTED_SHIFT	0x11
-+#define IMAGE_ENCRYPTED_MASK	0x1
-+
-+#define IMAGE_A35_DEFAULT_META(PART, SC_R_MU)						\
-+	(((PART == 0 ) ? PARTITION_ID_AP : PART) << BOOT_IMG_META_PART_ID_SHIFT |	\
-+	SC_R_MU << BOOT_IMG_META_MU_RID_SHIFT | SC_R_A35_0)
-+
-+#define IMAGE_A53_DEFAULT_META(PART, SC_R_MU)						\
-+	(((PART == 0 ) ? PARTITION_ID_AP : PART) << BOOT_IMG_META_PART_ID_SHIFT |	\
-+	 SC_R_MU << BOOT_IMG_META_MU_RID_SHIFT |					\
-+	 SC_R_A53_0)
-+
-+#define IMAGE_A72_DEFAULT_META(PART, SC_R_MU)						\
-+	(((PART == 0 ) ? PARTITION_ID_AP2 : PART) << BOOT_IMG_META_PART_ID_SHIFT |	\
-+	 SC_R_MU << BOOT_IMG_META_MU_RID_SHIFT | SC_R_A72_0)
-+
-+#define IMAGE_M4_0_DEFAULT_META(PART)							\
-+	(((PART == 0) ? PARTITION_ID_M4 : PART) << BOOT_IMG_META_PART_ID_SHIFT |	\
-+	SC_R_M4_0_MU_1A << BOOT_IMG_META_MU_RID_SHIFT | SC_R_M4_0_PID0)
-+
-+#define IMAGE_M4_1_DEFAULT_META(PART)							\
-+	(((PART == 0) ? PARTITION_ID_M4 : PART) << BOOT_IMG_META_PART_ID_SHIFT |	\
-+	SC_R_M4_1_MU_1A << BOOT_IMG_META_MU_RID_SHIFT | SC_R_M4_1_PID0)
-+
-+#define CONTAINER_IMAGE_ARRAY_START_OFFSET	0x2000
-+
-+uint32_t scfw_flags = 0;
-+
-+static uint32_t custom_partition = 0;
-+
-+static void copy_file_aligned(int ifd, const char *datafile, int offset, int align)
++static void tqma93xx_init_pmic(struct regmap *map)
 +{
-+	int dfd;
-+	struct stat sbuf;
-+	unsigned char *ptr;
-+	uint8_t zeros[0x4000];
-+	int size;
-+	int ret;
++	/* BUCKxOUT_DVS0/1 control BUCK123 output */
++	regmap_write(map, PCA9450_BUCK123_DVS, 0x29);
++	/* enable DVS control through PMIC_STBY_REQ */
++	regmap_write(map, PCA9450_BUCK1CTRL, 0x59);
++	/* 0.9 V */
++	regmap_write(map, PCA9450_BUCK1OUT_DVS0, 0x18);
++	regmap_write(map, PCA9450_BUCK3OUT_DVS0, 0x18);
++	/* set standby voltage to 0.65v */
++	regmap_write(map, PCA9450_BUCK1OUT_DVS1, 0x4);
 +
-+	if (align > 0x4000) {
-+		fprintf (stderr, "Wrong alignment requested %d\n",
-+			align);
-+		exit (EXIT_FAILURE);
-+	}
++	/* I2C_LT_EN*/
++	regmap_write(map, 0xa, 0x3);
 +
-+	memset(zeros, 0, sizeof(zeros));
-+
-+	if ((dfd = open(datafile, O_RDONLY|O_BINARY)) < 0) {
-+		fprintf (stderr, "Can't open %s: %s\n",
-+			datafile, strerror(errno));
-+		exit (EXIT_FAILURE);
-+	}
-+
-+	if (fstat(dfd, &sbuf) < 0) {
-+		fprintf (stderr, "Can't stat %s: %s\n",
-+			datafile, strerror(errno));
-+		exit (EXIT_FAILURE);
-+	}
-+
-+	if (sbuf.st_size == 0)
-+		goto close;
-+
-+	ptr = mmap(0, sbuf.st_size, PROT_READ, MAP_SHARED, dfd, 0);
-+	if (ptr == MAP_FAILED) {
-+		fprintf (stderr, "Can't read %s: %s\n",
-+			datafile, strerror(errno));
-+		exit (EXIT_FAILURE);
-+	}
-+
-+	size = sbuf.st_size;
-+	ret = lseek(ifd, offset, SEEK_SET);
-+	if (ret < 0) {
-+		fprintf(stderr, "%s: lseek error %s\n",
-+			__func__, strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	if (write(ifd, ptr, size) != size) {
-+		fprintf (stderr, "Write error %s\n",
-+			strerror(errno));
-+		exit (EXIT_FAILURE);
-+	}
-+
-+	align = ALIGN(size, align) - size;
-+
-+	if (write(ifd, (char *)&zeros, align) != align) {
-+		fprintf(stderr, "Write error: %s\n",
-+			strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	(void) munmap((void *)ptr, sbuf.st_size);
-+close:
-+	(void) close (dfd);
-+
++	/* set WDOG_B_CFG to cold reset */
++	regmap_write(map, PCA9450_RESET_CTRL, 0xA1);
 +}
 +
-+static void set_imx_hdr_v3(struct imx_header_v3 *imxhdr, uint32_t dcd_len,
-+		uint32_t flash_offset, uint32_t hdr_base, uint32_t cont_id)
++static int tqma93xx_probe(struct device *dev)
 +{
-+	struct flash_header_v3 *fhdr_v3 = &imxhdr->fhdr[cont_id];
++	pca9450_register_init_callback(tqma93xx_init_pmic);
 +
-+	/* Set magic number */
-+	fhdr_v3->tag = IVT_HEADER_TAG_B0;
-+	fhdr_v3->version = IVT_VERSION_B0;
-+}
-+
-+static void set_image_hash(struct boot_img *img, char *filename, uint32_t hash_type)
-+{
-+	FILE *fp = NULL;
-+	char sha_command[512];
-+	char digest_type[10];
-+	char hash[2 * HASH_MAX_LEN + 1];
-+	int digest_length = 0;
-+	int i;
-+
-+	switch (hash_type) {
-+	case HASH_TYPE_SHA_256:
-+		img->hab_flags |= IMG_FLAG_HASH_SHA256;
-+		strcpy(digest_type, "sha256sum" );
-+		digest_length = 64;
-+		break;
-+	case HASH_TYPE_SHA_384:
-+		img->hab_flags |= IMG_FLAG_HASH_SHA384;
-+		strcpy(digest_type, "sha384sum" );
-+		digest_length = 96;
-+		break;
-+	case HASH_TYPE_SHA_512:
-+		img->hab_flags |= IMG_FLAG_HASH_SHA512;
-+		strcpy(digest_type, "sha512sum" );
-+		digest_length = 128;
-+		break;
-+	case HASH_TYPE_SM3:
-+		img->hab_flags |= IMG_FLAG_HASH_SM3;
-+		strcpy(digest_type, "sm3sum" );
-+		digest_length = 64;
-+		break;
-+	default:
-+		fprintf(stderr, "Wrong hash type selected (%d) !!!\n\n",
-+				hash_type);
-+		exit(EXIT_FAILURE);
-+		break;
-+	}
-+
-+	if (img->size == 0 || !filename)
-+		sprintf(sha_command, "%s /dev/null", digest_type);
-+	else
-+		sprintf(sha_command, "dd status=none if=/dev/zero of=tmp_pad bs=%d count=1;\
-+				dd status=none if=\'%s\' of=tmp_pad conv=notrunc;\
-+				%s tmp_pad; rm -f tmp_pad",
-+			img->size, filename, digest_type);
-+
-+	memset(img->hash, 0, HASH_MAX_LEN);
-+
-+	fp = popen(sha_command, "r");
-+	if (fp == NULL) {
-+		fprintf(stderr, "Failed to run command hash\n" );
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	if (fgets(hash, digest_length + 1, fp) == NULL) {
-+		fprintf(stderr, "Failed to hash file: %s\n", filename ? filename : "<none>");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	for (i = 0; i < strlen(hash)/2; i++)
-+		sscanf(hash + 2*i, "%02hhx", &img->hash[i]);
-+
-+	pclose(fp);
-+}
-+
-+#define append(p, s, l) do {memcpy(p, (uint8_t *)s, l); p += l; } while (0)
-+
-+static uint8_t *flatten_container_header(struct imx_header_v3 *imx_header,
-+					uint8_t containers_count,
-+					uint32_t *size_out, uint32_t file_offset)
-+{
-+	uint8_t *flat = NULL;
-+	uint8_t *ptr = NULL;
-+	uint16_t size = 0;
-+	int i;
-+
-+	/* Compute size of all container headers */
-+	for (i = 0; i < containers_count; i++) {
-+
-+		struct flash_header_v3 *container = &imx_header->fhdr[i];
-+
-+		container->sig_blk_offset = HEADER_IMG_ARRAY_OFFSET +
-+			container->num_images * IMG_ARRAY_ENTRY_SIZE;
-+
-+		container->length = HEADER_IMG_ARRAY_OFFSET +
-+			(IMG_ARRAY_ENTRY_SIZE * container->num_images) + sizeof(struct sig_blk_hdr);
-+
-+		/* Print info needed by CST to sign the container header */
-+		printf("CST: CONTAINER %d offset: 0x%x\n", i, file_offset + size);
-+		printf("CST: CONTAINER %d: Signature Block: offset is at 0x%x\n", i,
-+						file_offset + size + container->length - SIGNATURE_BLOCK_HEADER_LENGTH);
-+
-+		printf("\tOffsets = \t0x%x \t0x%x\n", file_offset + size,
-+						file_offset + size + container->length - SIGNATURE_BLOCK_HEADER_LENGTH);
-+
-+		size += ALIGN(container->length, container->padding);
-+	}
-+
-+	flat = calloc(size, sizeof(uint8_t));
-+	if (!flat) {
-+		fprintf(stderr, "Failed to allocate memory (%d)\n", size);
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	ptr = flat;
-+	*size_out = size;
-+
-+	for (i = 0; i < containers_count; i++) {
-+		struct flash_header_v3 *container = &imx_header->fhdr[i];
-+		uint32_t container_start_offset = ptr - flat;
-+		int j;
-+
-+		/* Append container header */
-+		append(ptr, container, HEADER_IMG_ARRAY_OFFSET);
-+
-+		/* Adjust images offset to start from container headers start */
-+		for (j = 0; j < container->num_images; j++)
-+			container->img[j].offset -= container_start_offset + file_offset;
-+
-+		/* Append each image array entry */
-+		for (j = 0; j < container->num_images; j++)
-+			append(ptr, &container->img[j], sizeof(struct boot_img));
-+
-+		append(ptr, &container->sig_blk_hdr, sizeof(struct sig_blk_hdr));
-+
-+		/* Padding for container (if necessary) */
-+		ptr += ALIGN(container->length, container->padding) - container->length;
-+	}
-+
-+	return flat;
-+}
-+
-+static uint64_t read_dcd_offset(char *filename)
-+{
-+	int dfd;
-+	struct stat sbuf;
-+	uint8_t *ptr;
-+	uint64_t offset = 0;
-+
-+	dfd = open(filename, O_RDONLY|O_BINARY);
-+	if (dfd < 0) {
-+		fprintf(stderr, "Can't open %s: %s\n", filename, strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	if (fstat(dfd, &sbuf) < 0) {
-+		fprintf(stderr, "Can't stat %s: %s\n", filename, strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	ptr = mmap(0, sbuf.st_size, PROT_READ, MAP_SHARED, dfd, 0);
-+	if (ptr == MAP_FAILED) {
-+		fprintf(stderr, "Can't read %s: %s\n", filename, strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	offset = *(uint32_t *)(ptr + DCD_ENTRY_ADDR_IN_SCFW);
-+
-+	(void) munmap((void *)ptr, sbuf.st_size);
-+	(void) close(dfd);
-+
-+	return offset;
-+}
-+
-+static uint32_t get_hash_algo(char *images_hash)
-+{
-+	uint32_t hash_algo;
-+	const char *hash_name;
-+
-+	if (!images_hash) {
-+		hash_algo = IMAGE_HASH_ALGO_DEFAULT;
-+		hash_name = IMAGE_HASH_ALGO_DEFAULT_NAME;
-+	} else if (!strcmp(images_hash, HASH_STR_SHA_256)) {
-+		hash_algo = HASH_TYPE_SHA_256;
-+		hash_name = HASH_STR_SHA_256;
-+	} else if (!strcmp(images_hash, HASH_STR_SHA_384)) {
-+		hash_algo = HASH_TYPE_SHA_384;
-+		hash_name = HASH_STR_SHA_384;
-+	} else if (!strcmp(images_hash, HASH_STR_SHA_512)) {
-+		hash_algo = HASH_TYPE_SHA_512;
-+		hash_name = HASH_STR_SHA_512;
-+	} else if (!strcmp(images_hash, HASH_STR_SM3)) {
-+		hash_algo = HASH_TYPE_SM3;
-+		hash_name = HASH_STR_SM3;
-+	} else {
-+		fprintf(stderr,
-+			"\nERROR: %s is an invalid hash argument\n"
-+			"    Expected values: %s, %s, %s, %s\n\n",
-+			images_hash, HASH_STR_SHA_256, HASH_STR_SHA_384,
-+			HASH_STR_SHA_512, HASH_STR_SM3);
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	printf("image hash type:\t%s\n", hash_name);
-+	return hash_algo;
-+}
-+
-+static void set_image_array_entry(struct flash_header_v3 *container, soc_type_t soc,
-+		const image_t *image_stack, uint32_t offset,
-+		uint32_t size, char *tmp_filename, bool dcd_skip, char *images_hash)
-+{
-+	uint64_t entry = image_stack->entry;
-+	uint64_t dst = image_stack->dst;
-+	uint64_t core = image_stack->ext;
-+	uint32_t meta;
-+	char *tmp_name = "";
-+	option_type_t type = image_stack->option;
-+	struct boot_img *img = &container->img[container->num_images];
-+
-+	if (container->num_images >= MAX_NUM_IMGS) {
-+		fprintf(stderr, "Error: Container allows 8 images at most\n");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	img->offset = offset;  /* Is re-adjusted later */
-+	img->size = size;
-+
-+	set_image_hash(img, tmp_filename, get_hash_algo(images_hash));
-+
-+	switch (type) {
-+	case SECO:
-+		if (container->num_images > 0) {
-+			fprintf(stderr, "Error: SECO container only allows 1 image\n");
-+			exit(EXIT_FAILURE);
-+		}
-+
-+		img->hab_flags |= IMG_TYPE_SECO;
-+		img->hab_flags |= CORE_SECO << BOOT_IMG_FLAGS_CORE_SHIFT;
-+		tmp_name = "SECO";
-+		img->dst = 0x20C00000;
-+		img->entry = 0x20000000;
-+
-+		break;
-+	case SENTINEL:
-+		if (container->num_images > 0) {
-+			fprintf(stderr, "Error: SENTINEL container only allows 1 image\n");
-+			exit(EXIT_FAILURE);
-+		}
-+
-+		img->hab_flags |= IMG_TYPE_SENTINEL;
-+		img->hab_flags |= CORE_ULP_SENTINEL << BOOT_IMG_FLAGS_CORE_SHIFT;
-+		tmp_name = "SENTINEL";
-+		img->dst = 0XE7FE8000; /* S400 IRAM base */
-+		img->entry = 0XE7FE8000;
-+
-+		break;
-+	case AP:
-+		if ((soc == QX || soc == DXL) && core == CORE_CA35)
-+			meta = IMAGE_A35_DEFAULT_META(image_stack->part, image_stack->mu);
-+		else if (soc == QM && core == CORE_CA53)
-+			meta = IMAGE_A53_DEFAULT_META(image_stack->part, image_stack->mu);
-+		else if (soc == QM && core == CORE_CA72)
-+			meta = IMAGE_A72_DEFAULT_META(image_stack->part, image_stack->mu);
-+		else if (((soc == ULP) || (soc == IMX9)) && core == CORE_CA35)
-+			meta = 0;
-+		else {
-+			fprintf(stderr, "Error: invalid AP core id: %" PRIi64 "\n", core);
-+			exit(EXIT_FAILURE);
-+		}
-+		img->hab_flags |= IMG_TYPE_EXEC;
-+		if ((soc == ULP) || (soc == IMX9))
-+			img->hab_flags |= CORE_ULP_CA35 << BOOT_IMG_FLAGS_CORE_SHIFT;
-+		else
-+			img->hab_flags |= CORE_CA53 << BOOT_IMG_FLAGS_CORE_SHIFT; /* On B0, only core id = 4 is valid */
-+		tmp_name = "AP";
-+		img->dst = entry;
-+		img->entry = entry;
-+		img->meta = meta;
-+		custom_partition = 0;
-+		break;
-+	case M4:
-+		if ((soc == ULP) || (soc == IMX9)) {
-+			core = CORE_ULP_CM33;
-+			meta = 0;
-+		} else if (core == 0) {
-+			core = CORE_CM4_0;
-+			meta = IMAGE_M4_0_DEFAULT_META(custom_partition);
-+		} else if (core == 1) {
-+			core = CORE_CM4_1;
-+			meta = IMAGE_M4_1_DEFAULT_META(custom_partition);
-+		} else {
-+			fprintf(stderr, "Error: invalid m4 core id: %" PRIi64 "\n", core);
-+			exit(EXIT_FAILURE);
-+		}
-+
-+		img->hab_flags |= IMG_TYPE_EXEC;
-+		img->hab_flags |= core << BOOT_IMG_FLAGS_CORE_SHIFT;
-+		tmp_name = "M4";
-+		if ((entry & 0x7) != 0)
-+			fprintf(stderr, "\n\nWarning: M4 Destination address is not 8 byte aligned\n\n");
-+
-+		if (dst)
-+			img->dst = dst;
-+		else
-+			img->dst = entry;
-+
-+		img->entry = entry;
-+		img->meta = meta;
-+		custom_partition = 0;
-+		break;
-+	case DATA:
-+		img->hab_flags |= IMG_TYPE_DATA;
-+		if ((soc == ULP) || (soc == IMX9))
-+			if (core == CORE_CM4_0)
-+				img->hab_flags |= CORE_ULP_CM33 << BOOT_IMG_FLAGS_CORE_SHIFT;
-+			else
-+				img->hab_flags |= CORE_ULP_CA35 << BOOT_IMG_FLAGS_CORE_SHIFT;
-+		else
-+			img->hab_flags |= core << BOOT_IMG_FLAGS_CORE_SHIFT;
-+		tmp_name = "DATA";
-+		img->dst = entry;
-+		break;
-+	case MSG_BLOCK:
-+		img->hab_flags |= IMG_TYPE_DATA;
-+		img->hab_flags |= CORE_CA35 << BOOT_IMG_FLAGS_CORE_SHIFT;
-+		img->meta = core << BOOT_IMG_META_MU_RID_SHIFT;
-+		tmp_name = "MSG_BLOCK";
-+		img->dst = entry;
-+		break;
-+	case SCFW:
-+		img->hab_flags |= scfw_flags & 0xFFFF0000;
-+		img->hab_flags |= IMG_TYPE_EXEC;
-+		img->hab_flags |= CORE_SC << BOOT_IMG_FLAGS_CORE_SHIFT;
-+		tmp_name = "SCFW";
-+		img->dst = 0x1FFE0000;
-+		img->entry = 0x1FFE0000;
-+
-+		/* Lets add the DCD now */
-+		if (!dcd_skip) {
-+			container->num_images++;
-+			img = &container->img[container->num_images];
-+			img->hab_flags |= IMG_TYPE_DCD_DDR;
-+			img->hab_flags |= CORE_SC << BOOT_IMG_FLAGS_CORE_SHIFT;
-+			set_image_hash(img, "/dev/null", IMAGE_HASH_ALGO_DEFAULT);
-+			img->offset = offset + img->size;
-+			img->entry = read_dcd_offset(tmp_filename);
-+			img->dst = img->entry - 1;
-+		}
-+		break;
-+	case UPOWER:
-+		if (soc == ULP) {
-+			img->hab_flags |= IMG_TYPE_EXEC;
-+			img->hab_flags |= CORE_ULP_UPOWER << BOOT_IMG_FLAGS_CORE_SHIFT;
-+			tmp_name = "UPOWER";
-+			img->dst = 0x28300200; /* UPOWER code RAM */
-+			img->entry = 0x28300200;
-+		}
-+		break;
-+	case DUMMY_V2X:
-+		img->hab_flags |= IMG_TYPE_V2X_DUMMY;
-+		img->hab_flags |= CORE_SC << BOOT_IMG_FLAGS_CORE_SHIFT;
-+		tmp_name = "V2X Dummy";
-+		img->dst = entry;
-+		img->entry = entry;
-+		img->size = 0; /* dummy image has no size */
-+		break;
-+	case FCB:
-+		img->hab_flags |= IMG_TYPE_FCB_CHK;
-+		img->dst = entry;
-+		tmp_name = "FCB";
-+		break;
-+	default:
-+		fprintf(stderr, "unrecognized image type (%d)\n", type);
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	printf("%s file_offset = 0x%x size = 0x%x\n", tmp_name, offset, size);
-+
-+	container->num_images++;
-+}
-+
-+static void set_container(struct flash_header_v3 *container,  uint16_t sw_version,
-+			uint32_t alignment, uint32_t flags, uint16_t fuse_version)
-+{
-+	container->sig_blk_hdr.tag = 0x90;
-+	container->sig_blk_hdr.length = sizeof(struct sig_blk_hdr);
-+	container->sw_version = sw_version;
-+	container->padding = alignment;
-+	container->fuse_version = fuse_version;
-+	container->flags = flags;
-+	printf("flags:\t\t\t0x%x\n", container->flags);
-+}
-+
-+static int get_container_image_start_pos(image_t *image_stack, uint32_t align, soc_type_t soc,
-+					 uint32_t *scu_cont_hdr_off)
-+{
-+	image_t *img_sp = image_stack;
-+	/* 8K total container header */
-+	int file_off = CONTAINER_IMAGE_ARRAY_START_OFFSET,  ofd = -1;
-+	struct flash_header_v3 header;
-+
-+	while (img_sp->option != NO_IMG) {
-+		if (img_sp->option != APPEND) {
-+			img_sp++;
-+			continue;
-+		}
-+
-+		ofd = open(img_sp->filename, O_RDONLY);
-+		if (ofd < 0) {
-+			printf("Failure open first container file %s\n", img_sp->filename);
-+			break;
-+		}
-+
-+		if (soc == DXL) {
-+			/* Skip SECO container, jump to V2X container */
-+			if (lseek(ofd, CONTAINER_ALIGNMENT, SEEK_SET) < 0) {
-+				printf("Failure Skip SECO header \n");
-+				exit(EXIT_FAILURE);
-+			}
-+		}
-+
-+		if (read(ofd, &header, sizeof(header)) != sizeof(header)) {
-+			printf("Failure Read header \n");
-+			exit(EXIT_FAILURE);
-+		}
-+
-+		close(ofd);
-+
-+		if (header.tag != IVT_HEADER_TAG_B0) {
-+			printf("header tag mismatch %x\n", header.tag);
-+		} else if (header.num_images == 0) {
-+			printf("image num is 0 \n");
-+		} else {
-+			file_off = header.img[header.num_images - 1].offset + header.img[header.num_images - 1].size;
-+			if (soc == DXL) {
-+				file_off += CONTAINER_ALIGNMENT;
-+				*scu_cont_hdr_off = CONTAINER_ALIGNMENT + ALIGN(header.length, CONTAINER_ALIGNMENT);
-+			} else {
-+				*scu_cont_hdr_off = ALIGN(header.length, CONTAINER_ALIGNMENT);
-+			}
-+			file_off = ALIGN(file_off, align);
-+		}
-+
-+		img_sp++;
-+	}
-+
-+	return file_off;
-+}
-+
-+static void check_file(struct stat *sbuf, char *filename)
-+{
-+	int tmp_fd  = open(filename, O_RDONLY | O_BINARY);
-+
-+	if (tmp_fd < 0) {
-+		fprintf(stderr, "%s: Can't open: %s\n", filename, strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	if (fstat(tmp_fd, sbuf) < 0) {
-+		fprintf(stderr, "%s: Can't stat: %s\n", filename, strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	close(tmp_fd);
-+}
-+
-+static void copy_file(int ifd, const char *datafile, int pad, int offset)
-+{
-+	int dfd;
-+	struct stat sbuf;
-+	unsigned char *ptr;
-+	int tail;
-+	uint8_t zeros[4096];
-+	int size, ret;
-+
-+	memset(zeros, 0, sizeof(zeros));
-+
-+	if ((dfd = open(datafile, O_RDONLY|O_BINARY)) < 0) {
-+		fprintf(stderr, "Can't open %s: %s\n", datafile, strerror(errno));
-+		exit (EXIT_FAILURE);
-+	}
-+
-+	if (fstat(dfd, &sbuf) < 0) {
-+		fprintf(stderr, "Can't stat %s: %s\n", datafile, strerror(errno));
-+		exit (EXIT_FAILURE);
-+	}
-+
-+	if (sbuf.st_size == 0)
-+		goto close;
-+
-+	ptr = mmap(0, sbuf.st_size, PROT_READ, MAP_SHARED, dfd, 0);
-+	if (ptr == MAP_FAILED) {
-+		fprintf(stderr, "Can't read %s: %s\n", datafile, strerror(errno));
-+		exit (EXIT_FAILURE);
-+	}
-+
-+	size = sbuf.st_size;
-+	ret = lseek(ifd, offset, SEEK_SET);
-+	if (ret < 0) {
-+		fprintf(stderr, "%s: lseek error %s\n", __func__, strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	if (write(ifd, ptr, size) != size) {
-+		fprintf(stderr, "Write error %s\n", strerror(errno));
-+		exit (EXIT_FAILURE);
-+	}
-+
-+	tail = size % 4;
-+	pad = pad - size;
-+	if ((pad == 1) && (tail != 0)) {
-+
-+		if (write(ifd, zeros, 4 - tail) != 4 - tail) {
-+			fprintf(stderr, "Write error on %s\n", strerror(errno));
-+			exit (EXIT_FAILURE);
-+		}
-+	} else if (pad > 1) {
-+		while (pad > 0) {
-+			int todo = sizeof(zeros);
-+
-+			if (todo > pad)
-+				todo = pad;
-+			if (write(ifd, (char *)&zeros, todo) != todo) {
-+				fprintf(stderr, "Write error: %s\n",
-+					strerror(errno));
-+				exit(EXIT_FAILURE);
-+			}
-+			pad -= todo;
-+		}
-+	}
-+
-+	(void) munmap((void *)ptr, sbuf.st_size);
-+close:
-+	(void) close (dfd);
-+}
-+
-+static int build_container_qx_qm_b0(soc_type_t soc, uint32_t sector_size, uint32_t ivt_offset,
-+				    char *out_file, bool emmc_fastboot, image_t *image_stack,
-+				    bool dcd_skip, uint8_t fuse_version, uint16_t sw_version,
-+				    char *images_hash)
-+{
-+	int file_off, ofd = -1;
-+	unsigned int dcd_len = 0;
-+	struct imx_header_v3 imx_header = {};
-+	image_t *img_sp = image_stack;
-+	struct stat sbuf;
-+	uint32_t size = 0;
-+	uint32_t file_padding = 0;
-+	int ret;
-+	const char *platform;
-+
-+	int container = -1;
-+	int cont_img_count = 0; /* indexes to arrange the container */
-+
-+	if (image_stack == NULL) {
-+		fprintf(stderr, "Empty image stack ");
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	switch (soc) {
-+	case QX: platform = "i.MX8QXP B0"; break;
-+	case QM: platform = "i.MX8QM B0"; break;
-+	case DXL: platform = "i.MX8DXL A0"; break;
-+	case ULP: platform = "i.MX8ULP A0"; break;
-+	case IMX9: platform = "i.MX9"; break;
-+	default:
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	printf("Platform:\t\t%s\n", platform);
-+
-+	set_imx_hdr_v3(&imx_header, dcd_len, ivt_offset, INITIAL_LOAD_ADDR_SCU_ROM, 0);
-+	set_imx_hdr_v3(&imx_header, 0, ivt_offset, INITIAL_LOAD_ADDR_AP_ROM, 1);
-+
-+	printf("ivt_offset:\t\t0x%x\n", ivt_offset);
-+
-+	file_off = get_container_image_start_pos(image_stack, sector_size, soc, &file_padding);
-+	printf("container image offset (aligned): 0x%x\n", file_off);
-+
-+	printf("csf_off:\t\t0x%x\n", ivt_offset + file_off);
-+
-+	/* step through image stack and generate the header */
-+	img_sp = image_stack;
-+
-+	while (img_sp->option != NO_IMG) { /* stop once we reach null terminator */
-+		switch (img_sp->option) {
-+		case FCB:
-+		case AP:
-+		case M4:
-+		case SCFW:
-+		case DATA:
-+		case UPOWER:
-+		case MSG_BLOCK:
-+		case SENTINEL:
-+			if (container < 0) {
-+				fprintf(stderr, "No container found\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			check_file(&sbuf, img_sp->filename);
-+			set_image_array_entry(&imx_header.fhdr[container],
-+						soc,
-+						img_sp,
-+						file_off,
-+						ALIGN(sbuf.st_size, sector_size),
-+						img_sp->filename,
-+						dcd_skip,
-+						images_hash);
-+			img_sp->src = file_off;
-+
-+			file_off += ALIGN(sbuf.st_size, sector_size);
-+			cont_img_count++;
-+			break;
-+
-+		case DUMMY_V2X:
-+			if (container < 0) {
-+				fprintf(stderr, "No container found\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			set_image_array_entry(&imx_header.fhdr[container],
-+						soc,
-+						img_sp,
-+						file_off,
-+						0,
-+						NULL,
-+						dcd_skip,
-+						images_hash);
-+			img_sp->src = file_off;
-+
-+			cont_img_count++;
-+			break;
-+
-+		case SECO:
-+			if (container < 0) {
-+				fprintf(stderr, "No container found\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			check_file(&sbuf, img_sp->filename);
-+			set_image_array_entry(&imx_header.fhdr[container],
-+						soc,
-+						img_sp,
-+						file_off,
-+						sbuf.st_size,
-+						img_sp->filename,
-+						dcd_skip,
-+						"sha384");
-+			img_sp->src = file_off;
-+
-+			file_off += sbuf.st_size;
-+			cont_img_count++;
-+			break;
-+
-+		case NEW_CONTAINER:
-+			container++;
-+			set_container(&imx_header.fhdr[container], sw_version,
-+					CONTAINER_ALIGNMENT,
-+					CONTAINER_FLAGS_DEFAULT,
-+					fuse_version);
-+			cont_img_count = 0; /* reset img count when moving to new container */
-+			scfw_flags = 0;
-+			break;
-+
-+		case APPEND:
-+			/* nothing to do here, the container is appended in the output */
-+			break;
-+		case FLAG:
-+			/* override the flags for scfw in current container */
-+			scfw_flags = img_sp->entry & 0xFFFF0000;/* mask off bottom 16 bits */
-+			break;
-+		case FILEOFF:
-+			if (file_off > img_sp->dst) {
-+				fprintf(stderr, "FILEOFF address less than current file offset!!!\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			if (img_sp->dst != ALIGN(img_sp->dst, sector_size)) {
-+				fprintf(stderr, "FILEOFF address is not aligned to sector size!!!\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			file_off = img_sp->dst;
-+			break;
-+		case PARTITION: /* keep custom partition until next executable image */
-+			custom_partition = img_sp->entry; /* use a global var for default behaviour */
-+			break;
-+		default:
-+			fprintf(stderr, "unrecognized option in input stack (%d)\n", img_sp->option);
-+			exit(EXIT_FAILURE);
-+		}
-+		img_sp++;/* advance index */
-+	}
-+
-+	/* Open output file */
-+	ofd = open(out_file, O_RDWR|O_CREAT|O_TRUNC|O_BINARY, 0666);
-+	if (ofd < 0) {
-+		fprintf(stderr, "%s: Can't open: %s\n",
-+				out_file, strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	/* Append container (if specified) */
-+	img_sp = image_stack;
-+	while (img_sp->option != NO_IMG) {
-+		if (img_sp->option == APPEND)
-+			copy_file(ofd, img_sp->filename, 0, 0);
-+
-+		img_sp++;
-+	}
-+
-+	/* Add padding or skip appended container */
-+	ret = lseek(ofd, file_padding, SEEK_SET);
-+	if (ret < 0) {
-+		fprintf(stderr, "%s: lseek error %s\n", __func__, strerror(errno));
-+		exit(EXIT_FAILURE);
-+	}
-+
-+	/* Note: Image offset are not contained in the image */
-+	uint8_t *tmp = flatten_container_header(&imx_header, container + 1, &size, file_padding);
-+	/* Write image header */
-+	if (write(ofd, tmp, size) != size) {
-+		fprintf(stderr, "error writing image hdr\n");
-+		exit(1);
-+	}
-+
-+	/* Clean-up memory used by the headers */
-+	free(tmp);
-+
-+	if (emmc_fastboot)
-+		ivt_offset = 0; /*set ivt offset to 0 if emmc */
-+
-+	/* step through the image stack again this time copying images to final bin */
-+	img_sp = image_stack;
-+	while (img_sp->option != NO_IMG) { /* stop once we reach null terminator */
-+		if (img_sp->option == M4 ||
-+		    img_sp->option == AP ||
-+		    img_sp->option == DATA ||
-+		    img_sp->option == SCD ||
-+		    img_sp->option == SCFW ||
-+		    img_sp->option == SECO ||
-+		    img_sp->option == MSG_BLOCK ||
-+		    img_sp->option == UPOWER ||
-+		    img_sp->option == SENTINEL ||
-+		    img_sp->option == FCB) {
-+			copy_file_aligned(ofd, img_sp->filename, img_sp->src, sector_size);
-+		}
-+		img_sp++;
-+	}
-+
-+	/* Close output file */
-+	close(ofd);
-+	return 0;
-+}
-+
-+static struct img_flags parse_image_flags(uint32_t flags, char *flag_list, soc_type_t soc)
-+{
-+	struct img_flags img_flags;
-+
-+	strcpy(flag_list, "(");
-+
-+	/* first extract the image type */
-+	strcat(flag_list, "IMG TYPE: ");
-+	img_flags.type = flags & IMAGE_TYPE_MASK;
-+
-+	switch (img_flags.type) {
-+
-+	case 0x3:
-+		strcat(flag_list, "Executable");
-+		break;
-+	case 0x4:
-+		strcat(flag_list, "Data");
-+		break;
-+	case 0x5:
-+		strcat(flag_list, "DDR Init");
-+		break;
-+	case 0x6:
-+		if ((soc == ULP) || (soc == IMX9))
-+			strcat(flag_list, "SENTINEL");
-+		else
-+			strcat(flag_list, "SECO");
-+		break;
-+	case 0x7:
-+		strcat(flag_list, "Provisioning");
-+		break;
-+	case 0x8:
-+		if (soc == IMX9)
-+		    strcat(flag_list, "FCB Check");
-+		else
-+		    strcat(flag_list, "DEK validation");
-+		break;
-+	case 0xB:
-+		strcat(flag_list, "Primary V2X FW image");
-+		break;
-+	case 0xC:
-+		strcat(flag_list, "Secondary V2X FW image");
-+		break;
-+	case 0xD:
-+		strcat(flag_list, "V2X ROM Patch image");
-+		break;
-+	case 0xE:
-+		strcat(flag_list, "V2X Dummy image");
-+		break;
-+	default:
-+		strcat(flag_list, "Invalid img type");
-+		break;
-+	}
-+	strcat(flag_list, " | ");
-+
-+	/* next get the core id */
-+	strcat(flag_list, "CORE ID: ");
-+	img_flags.core_id = (flags >> CORE_ID_SHIFT) & CORE_ID_MASK;
-+
-+	if ((soc == ULP) || (soc == IMX9)) {
-+		switch (img_flags.core_id) {
-+		case CORE_ULP_CM33:
-+			strcat(flag_list, "CORE_CM33");
-+			break;
-+		case CORE_ULP_SENTINEL:
-+			strcat(flag_list, "CORE_SENTINEL");
-+			break;
-+		case CORE_ULP_UPOWER:
-+			strcat(flag_list, "CORE_UPOWER");
-+			break;
-+		case CORE_ULP_CA35:
-+			if (soc == IMX9)
-+				strcat(flag_list, "CORE_CA55");
-+			else
-+				strcat(flag_list, "CORE_CA35");
-+			break;
-+		default:
-+			strcat(flag_list, "Invalid core id");
-+			break;
-+		}
-+	} else {
-+		switch (img_flags.core_id) {
-+		case CORE_SC:
-+			strcat(flag_list, "CORE_SC");
-+			break;
-+		case CORE_CM4_0:
-+			strcat(flag_list, "CORE_CM4_0");
-+			break;
-+		case CORE_CM4_1:
-+			strcat(flag_list, "CORE_CM4_1");
-+			break;
-+		case CORE_CA53:
-+			strcat(flag_list, "CORE_CA53");
-+			break;
-+		case CORE_CA72:
-+			strcat(flag_list, "CORE_CA72");
-+			break;
-+		case CORE_SECO:
-+			strcat(flag_list, "CORE_SECO");
-+			break;
-+		case CORE_V2X_P:
-+			strcat(flag_list, "CORE_V2X_P");
-+			break;
-+		case CORE_V2X_S:
-+			strcat(flag_list, "CORE_V2X_S");
-+			break;
-+		default:
-+			strcat(flag_list, "Invalid core id");
-+			break;
-+		}
-+	}
-+	strcat(flag_list, " | ");
-+
-+	/* next get the hash type */
-+	strcat(flag_list, "HASH TYPE: ");
-+	img_flags.hash_type = (flags >> HASH_TYPE_SHIFT) & HASH_TYPE_MASK;
-+
-+	switch (img_flags.hash_type) {
-+	case 0x0:
-+		strcat(flag_list, "SHA256");
-+		break;
-+	case 0x1:
-+		strcat(flag_list, "SHA384");
-+		break;
-+	case 0x2:
-+		strcat(flag_list, "SHA512");
-+		break;
-+	case 0x3:
-+		strcat(flag_list, "SM3");
-+		break;
-+	default:
-+		break;
-+	}
-+	strcat(flag_list, " | ");
-+
-+	/* lastly, read the encrypted bit */
-+	strcat(flag_list, "ENCRYPTED: ");
-+	img_flags.encrypted = (flags >> IMAGE_ENCRYPTED_SHIFT) & IMAGE_ENCRYPTED_MASK;
-+
-+	if (img_flags.encrypted)
-+		strcat(flag_list, "YES");
-+	else
-+		strcat(flag_list, "NO");
-+
-+	/* terminate flag string */
-+	strcat(flag_list, ")");
-+
-+	return img_flags;
-+}
-+
-+static void print_image_array_fields(struct flash_header_v3 *container_hdrs, soc_type_t soc, bool app_cntr)
-+{
-+	struct boot_img img; /* image array entry */
-+	struct img_flags img_flags; /* image hab flags */
-+	int hash_length = 0;
-+	char img_name[32]; /* scfw, bootloader, etc. */
-+	char hash_name[8]; /* sha256, sha384, or sha512 */
-+	char flag_string[128]; /* text representation of image hab flags */
-+	int i;
-+
-+	for (i = 0; i < container_hdrs->num_images; i++) {
-+		/* get the next image array entry */
-+		img = container_hdrs->img[i];
-+
-+		/* get the image flags */
-+		img_flags = parse_image_flags(img.hab_flags, flag_string, soc);
-+
-+		/* determine the type of image */
-+		switch (img_flags.type) {
-+		case 0x3:
-+			if ((soc == ULP) || (soc == IMX9)) {
-+				if (img_flags.core_id == CORE_ULP_UPOWER)
-+					strcpy(img_name, "uPower FW");
-+				else if ((img_flags.core_id == CORE_ULP_CA35))
-+					if (app_cntr)
-+						strcpy(img_name, "A core Image");
-+					else
-+						strcpy(img_name, "Bootloader");
-+				else if ((img_flags.core_id == CORE_ULP_CM33))
-+					strcpy(img_name, "M33");
-+
-+			} else {
-+				if (img_flags.core_id == CORE_SC)
-+					strcpy(img_name, "SCFW");
-+				else if ((img_flags.core_id == CORE_CA53) || (img_flags.core_id == CORE_CA72))
-+					if (app_cntr)
-+						strcpy(img_name, "A core Image");
-+					else
-+						strcpy(img_name, "Bootloader");
-+				else if (img_flags.core_id == CORE_CM4_0)
-+					strcpy(img_name, "M4_0");
-+				else if (img_flags.core_id == CORE_CM4_1)
-+					strcpy(img_name, "M4_1");
-+			}
-+			break;
-+		case 0x4:
-+			strcpy(img_name, "Data");
-+			break;
-+		case 0x5:
-+			strcpy(img_name, "DDR Init");
-+			break;
-+		case 0x6:
-+			if ((soc == ULP) || (soc == IMX9))
-+				strcpy(img_name, "SENTINEL FW");
-+			else
-+				strcpy(img_name, "SECO FW");
-+			break;
-+		case 0x7:
-+			strcpy(img_name, "Provisioning");
-+			break;
-+		case 0x8:
-+			if (soc == IMX9)
-+				strcpy(img_name, "FCB Check");
-+			else
-+				strcpy(img_name, "DEK Validation");
-+			break;
-+		case 0xB:
-+			strcpy(img_name, "Primary V2X FW image");
-+			break;
-+		case 0xC:
-+			strcpy(img_name, "Secondary V2X FW image");
-+			break;
-+		case 0xD:
-+			strcpy(img_name, "V2X ROM Patch image");
-+			break;
-+		case 0xE:
-+			strcpy(img_name, "V2X Dummy image");
-+			break;
-+		default:
-+			strcpy(img_name, "Unknown image");
-+			break;
-+		}
-+
-+		/* get the image hash type */
-+		switch (img_flags.hash_type) {
-+		case 0x0:
-+			hash_length = 256 / 8;
-+			strcpy(hash_name, "SHA256");
-+			break;
-+		case 0x1:
-+			hash_length = 384 / 8;
-+			strcpy(hash_name, "SHA384");
-+			break;
-+		case 0x2:
-+			hash_length = 512 / 8;
-+			strcpy(hash_name, "SHA512");
-+			break;
-+		case 0x3:
-+			hash_length = 256 / 8;
-+			strcpy(hash_name, "SM3");
-+			break;
-+		default:
-+			strcpy(hash_name, "Unknown");
-+			break;
-+		}
-+
-+		/* print the image array fields */
-+		printf("%sIMAGE %d (%s)%s\n", "\x1B[33m", i+1, img_name, "\x1B[37m");
-+		printf("Offset: %#X\n", img.offset);
-+		printf("Size: %#X (%d)\n", img.size, img.size);
-+		printf("Load Addr: %#lX\n", img.dst);
-+		printf("Entry Addr: %#lX\n", img.entry);
-+		printf("Flags: %#X %s\n", img.hab_flags, flag_string);
-+
-+		/* only print metadata and hash if the image isn't DDR init */
-+		if (img_flags.type != 0x5) {
-+			int j;
-+
-+			printf("Metadata: %#X\n", img.meta);
-+
-+			/* print the image hash */
-+			printf("Hash: ");
-+			for (j = 0; j < hash_length; j++)
-+				printf("%02x", img.hash[j]);
-+
-+			printf(" (%s)\n", hash_name);
-+
-+		}
-+		printf("\n");
-+	}
-+}
-+
-+static void print_container_hdr_fields(struct flash_header_v3 *container_hdrs, int num_cntrs,
-+				       soc_type_t soc, bool app_cntr)
-+{
-+	int i;
-+
-+	for (i = 0; i < num_cntrs; i++) {
-+		printf("\n");
-+		printf("*********************************\n");
-+		printf("*				*\n");
-+		if (app_cntr)
-+			printf("*          APP CONTAINER %-2d     *\n", i + 1);
-+		else
-+			printf("*          ROM CONTAINER %-2d     *\n", i + 1);
-+		printf("*				*\n");
-+		printf("*********************************\n\n");
-+		printf("%16s", "Length: ");
-+		printf("%#X (%d)\n", container_hdrs->length, container_hdrs->length);
-+		printf("%16s", "Tag: ");
-+		printf("%#X\n", container_hdrs->tag);
-+		printf("%16s", "Version: ");
-+		printf("%#X\n", container_hdrs->version);
-+		printf("%16s", "Flags: ");
-+		printf("%#X\n", container_hdrs->flags);
-+		printf("%16s", "Num images: ");
-+		printf("%d\n", container_hdrs->num_images);
-+		printf("%16s", "Fuse version: ");
-+		printf("%#X\n", container_hdrs->fuse_version);
-+		printf("%16s", "SW version: ");
-+		printf("%#X\n", container_hdrs->sw_version);
-+		printf("%16s", "Sig blk offset: ");
-+		printf("%#X\n\n", container_hdrs->sig_blk_offset);
-+
-+		print_image_array_fields(container_hdrs, soc, app_cntr);
-+
-+		container_hdrs++;
-+	}
-+}
-+
-+static int get_container_size(struct flash_header_v3 *phdr)
-+{
-+	uint8_t i = 0;
-+	uint32_t max_offset = 0, img_end;
-+
-+	max_offset = phdr->length;
-+
-+	for (i = 0; i < phdr->num_images; i++) {
-+		img_end = phdr->img[i].offset + phdr->img[i].size;
-+		if (img_end > max_offset)
-+			max_offset = img_end;
-+	}
-+
-+	if (phdr->sig_blk_offset != 0) {
-+		uint16_t len = phdr->sig_blk_hdr.length;
-+
-+		if (phdr->sig_blk_offset + len > max_offset)
-+			max_offset = phdr->sig_blk_offset + len;
-+	}
-+
-+	return max_offset;
-+}
-+
-+static int search_app_container(struct flash_header_v3 *container_hdrs, int num_cntrs, int ifd,
-+				struct flash_header_v3 *app_container_hdr)
-+{
-+	int off[MAX_NUM_OF_CONTAINER];
-+	int end = 0, last = 0;
-+	int img_array_entries = 0;
-+	ssize_t rd_err;
-+	off_t err;
-+	int i;
-+
-+	off[0] = 0;
-+
-+	for (i = 0; i < num_cntrs; i++) {
-+		end = get_container_size(&container_hdrs[i]);
-+		if (end + off[i] > last)
-+			last = end + off[i];
-+
-+		if ((i + 1) < num_cntrs)
-+			off[i + 1] = off[i] + ALIGN(container_hdrs[i].length, CONTAINER_ALIGNMENT);
-+	}
-+
-+	/* Check app container tag at each 1KB beginning until 16KB */
-+	last = ALIGN(last, 0x400);
-+	for (i = 0; i < 16; i++) {
-+		last = last + (i * 0x400);
-+		err = lseek(ifd, last, SEEK_SET);
-+		if (err < 0)
-+			break;
-+
-+		rd_err = read(ifd, (void *)app_container_hdr, 16);
-+		if (rd_err < 0) {
-+			fprintf(stderr, "Error reading from input binary\n");
-+			exit(EXIT_FAILURE);
-+		}
-+
-+		/* check that the current container has a valid tag */
-+		if (app_container_hdr->tag != IVT_HEADER_TAG_B0)
-+			continue;
-+
-+		if (app_container_hdr->num_images > MAX_NUM_IMGS) {
-+			fprintf(stderr, "This container includes %d images, beyond max 8 images\n",
-+				app_container_hdr->num_images);
-+			exit(EXIT_FAILURE);
-+		}
-+
-+		/* compute the size of the image array */
-+		img_array_entries = app_container_hdr->num_images * sizeof(struct boot_img);
-+
-+		/* read in the full image array */
-+		rd_err = read(ifd, (void *)&app_container_hdr->img, img_array_entries);
-+		if (rd_err < 0) {
-+			fprintf(stderr, "Error reading from input binary\n");
-+			exit(EXIT_FAILURE);
-+		}
-+
-+		/* read in signature block header */
-+		if (app_container_hdr->sig_blk_offset != 0) {
-+			lseek(ifd, last + app_container_hdr->sig_blk_offset, SEEK_SET);
-+			rd_err = read(ifd, (void *)&app_container_hdr->sig_blk_hdr, sizeof(struct sig_blk_hdr));
-+			if (rd_err == -1) {
-+				fprintf(stderr, "Error reading from input binary\n");
-+				exit(EXIT_FAILURE);
-+			}
-+		}
-+
-+		return last;
-+	}
++	imx9_bbu_internal_mmcboot_register_handler("eMMC", "/dev/mmc0", 0);
 +
 +	return 0;
 +}
 +
-+static int extract_container_images(struct flash_header_v3 *container_hdr, char *ifname, int num_cntrs,
-+				    int ifd, soc_type_t soc, int app_cntr_off)
++static const struct of_device_id tqma93xx_of_match[] = {
++        {
++                .compatible = "tq,imx93-tqma9352",
++        },
++        { /* sentinel */ },
++};
++
++static struct driver tqma93xx_board_driver = {
++        .name = "board-tqma93xx",
++        .probe = tqma93xx_probe,
++        .of_compatible = tqma93xx_of_match,
++};
++coredevice_platform_driver(tqma93xx_board_driver);
++
++BAREBOX_DEEP_PROBE_ENABLE(tqma93xx_of_match);
+diff --git a/arch/arm/boards/tqmba9xxxca/lowlevel.c b/arch/arm/boards/tqmba9xxxca/lowlevel.c
+new file mode 100644
+index 0000000000..8207cd9515
+--- /dev/null
++++ b/arch/arm/boards/tqmba9xxxca/lowlevel.c
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: GPL-2.0
++
++#include <common.h>
++#include <debug_ll.h>
++#include <mach/imx/debug_ll.h>
++#include <mach/imx/generic.h>
++#include <asm/barebox-arm.h>
++#include <soc/imx9/ddr.h>
++#include <mach/imx/atf.h>
++#include <mach/imx/romapi.h>
++
++extern char __dtb_z_imx93_tqma9352_mba93xxca_start[];
++extern struct dram_timing_info tqma93xxca_dram_timing;
++
++static noinline void tqma9352_mba93xxca_continue(void)
 +{
-+	uint32_t img_offset = 0; /* image offset from container header */
-+	uint32_t img_size = 0; /* image size */
-+	uint32_t file_off = 0; /* current offset within container binary */
-+	const uint32_t pad = 0;
-+	int ofd = 0;
-+	int ret = 0;
-+	uint32_t seco_off = 0;
-+	char dd_cmd[512]; /* dd cmd to extract each image from container binary */
-+	struct stat buf;
-+	FILE *f_ptr = NULL; /* file pointer to the dd process */
-+	char *mem_ptr; /* pointer to input container in memory */
-+	int i, j;
++	void *base = IOMEM(MX9_UART1_BASE_ADDR);
++	void *muxbase = IOMEM(MX9_IOMUXC_BASE_ADDR);
 +
-+	printf("Extracting container images...\n");
++	writel(0x0, muxbase + 0x184);
++	imx9_uart_setup(IOMEM(base));
++	pbl_set_putc(lpuart32_putc, base + 0x10);
 +
-+	/* create output directory if it does not exist */
-+	if (stat("extracted_imgs", &buf) == -1)
-+		mkdir("extracted_imgs", S_IRWXU|S_IRWXG|S_IRWXO);
++	if (current_el() == 3) {
++		imx93_ddr_init(&tqma93xxca_dram_timing, DRAM_TYPE_LPDDR4);
 +
-+	/* open container binary and map to memory */
-+	fstat(ifd, &buf);
-+	mem_ptr = mmap(NULL, buf.st_size, PROT_READ, MAP_SHARED, ifd, 0);
-+
-+	for (i = 0; i < num_cntrs; i++) {
-+		for (j = 0; j < container_hdr->num_images; j++) {
-+
-+			/* first get the image offset and size from the container header */
-+			img_offset = container_hdr->img[j].offset;
-+			img_size = container_hdr->img[j].size;
-+
-+			if (!img_size) {
-+				/* check for images with zero size (DDR Init) */
-+				continue;
-+			} else if (app_cntr_off > 0) {
-+				sprintf(dd_cmd, "dd status=none if=%s of=extracted_imgs/app_container%d_img%d.bin ibs=1 skip=%d count=%d conv=notrunc",
-+						ifname, i+1, j+1, app_cntr_off+img_offset, img_size);
-+				printf("APP Container %d Image %d -> extracted_imgs/app_container%d_img%d.bin\n", i+1, j+1, i+1, j+1);
-+
-+			} else if ((i == 0) && (soc != DXL)) { /* first container is always SECO FW */
-+				int k;
-+
-+				/* open output file */
-+				ofd = open("extracted_imgs/ahab-container.img", O_CREAT|O_WRONLY, S_IRWXU|S_IRWXG|S_IRWXO);
-+
-+				/* first copy container header to output image */
-+				ret = write(ofd, (void *)mem_ptr, 1024);
-+				if (ret < 0)
-+					fprintf(stderr, "Error writing to output file\n");
-+
-+
-+				/* next, pad the output with zeros until the start of the image */
-+				for (k = 0; k < (img_offset-CONTAINER_ALIGNMENT)/4; k++)
-+					ret = write(ofd, (void *)&pad, 4);
-+
-+				/* now write the fw image to the output file */
-+				ret = write(ofd, (void *)(mem_ptr+img_offset), img_size);
-+				if (ret < 0)
-+					fprintf(stderr, "Error writing to output file\n");
-+
-+				/* close output file and unmap input file */
-+				close(ofd);
-+
-+				printf("Container %d Image %d -> extracted_imgs/ahab-container.img\n", i+1, j+1);
-+
-+			} else if ((i < 2 ) && (soc == DXL)) { /* Second Container is Always V2X for DXL */
-+				if (i == 0) {
-+					/* open output file */
-+					ofd = open("extracted_imgs/ahab-container.img", O_CREAT|O_WRONLY, S_IRWXU|S_IRWXG|S_IRWXO);
-+
-+					/* first copy container header to output image */
-+					ret = write(ofd, (void *)mem_ptr, 0x400);
-+					if (ret < 0)
-+						fprintf(stderr, "Error writing to output file1\n");
-+
-+					/* For DXL go to next container to copy header */
-+					seco_off = img_offset;
-+					continue;
-+				} else if (i == 1 && j == 0) {
-+					int k;
-+
-+					/* copy v2x container header and seco fw */
-+					ret = write(ofd,(void *) mem_ptr + file_off, container_hdr->length);
-+					if (ret < 0)
-+						fprintf(stderr, "Error writing to output file2\n");
-+
-+
-+					/* next, pad the output with zeros until the start of SECO image */
-+					for (k = 0; k < (seco_off - (file_off + container_hdr->length)) / 4; k++)
-+						ret = write(ofd, (void *)&pad, 4);
-+
-+					/* now write the SECO fw image to the output file */
-+					ret = write(ofd, (void *)(mem_ptr+seco_off), file_off + img_offset - seco_off);
-+					if (ret < 0)
-+						fprintf(stderr, "Error writing to output file3: %x\n",ret);
-+				}
-+
-+				/* now write the next image to the output file */
-+				ret = write(ofd, (void *)(mem_ptr + file_off + img_offset), img_size);
-+				if (ret < 0)
-+					fprintf(stderr, "Error writing to output file4: %x\n",ret);
-+
-+				/* Iterate through V2X container for other images */
-+				if (j < (container_hdr->num_images - 1))
-+					continue;
-+
-+				/* close output file and unmap input file */
-+				close(ofd);
-+
-+
-+				printf("Container %d Image %d -> extracted_imgs/v2x-container.img\n", i+1, j+1);
-+
-+			} else {
-+				sprintf(dd_cmd, "dd status=none if=%s of=extracted_imgs/container%d_img%d.bin ibs=1 skip=%d count=%d conv=notrunc",
-+						ifname, i+1, j+1, file_off+img_offset, img_size);
-+				printf("Container %d Image %d -> extracted_imgs/container%d_img%d.bin\n", i+1, j+1, i+1, j+1);
-+			}
-+
-+			/* run dd command to extract current image from container */
-+			fprintf(stderr, "FOOO: %s\n", dd_cmd);
-+			f_ptr = popen(dd_cmd, "r");
-+			if (f_ptr == NULL) {
-+				fprintf(stderr, "Failed to extract image\n");
-+				exit(EXIT_FAILURE);
-+			}
-+
-+			/* close the pipe */
-+			pclose(f_ptr);
-+		}
-+
-+		file_off += ALIGN(container_hdr->length, CONTAINER_ALIGNMENT);
-+		container_hdr++;
++		imx93_romapi_load_image();
++		imx93_load_and_start_image_via_tfa();
 +	}
 +
-+	munmap((void *)mem_ptr, buf.st_size);
-+	printf("Done\n\n");
-+	return 0;
++	barebox_arm_entry(0x80000000, 0x40000000, __dtb_z_imx93_tqma9352_mba93xxca_start);
 +}
 +
-+static int parse_container_hdrs_qx_qm_b0(char *ifname, bool extract, soc_type_t soc, off_t file_off)
++ENTRY_FUNCTION(start_imx93_tqma9352_mba93xxca, r0, r1, r2)
 +{
-+	int ifd; /* container file descriptor */
-+	int max_containers = (soc == DXL) ? 3 : 2;
-+	int cntr_num = 0; /* number of containers in binary */
-+	int img_array_entries = 0; /* number of images in container */
-+	ssize_t rd_err;
-+	struct flash_header_v3 container_headers[MAX_NUM_OF_CONTAINER];
-+	struct flash_header_v3 app_container_header;
-+	int app_cntr_off;
++	if (current_el() == 3)
++		imx93_cpu_lowlevel_init();
 +
-+	/* initialize region of memory where flash header will be stored */
-+	memset((void *)container_headers, 0, sizeof(container_headers));
++	relocate_to_current_adr();
++	setup_c();
 +
-+	/* open container binary */
-+	ifd = open(ifname, O_RDONLY|O_BINARY);
-+
-+	if (file_off) /* inital offset within container binary */
-+		lseek(ifd, file_off, SEEK_SET);
-+
-+	while (cntr_num < max_containers) {
-+
-+		/* read in next container header up to the image array */
-+		rd_err = read(ifd, (void *)&container_headers[cntr_num], 16);
-+		if (rd_err == -1) {
-+			fprintf(stderr, "Error reading from input binary\n");
-+			exit(EXIT_FAILURE);
-+		}
-+
-+		/* check that the current container has a valid tag */
-+		if (container_headers[cntr_num].tag != IVT_HEADER_TAG_B0)
-+			break;
-+
-+		if (container_headers[cntr_num].num_images > MAX_NUM_IMGS) {
-+			fprintf(stderr, "This container includes %d images, beyond max 8 images\n",
-+				container_headers[cntr_num].num_images);
-+			exit(EXIT_FAILURE);
-+		}
-+
-+		/* compute the size of the image array */
-+		img_array_entries = container_headers[cntr_num].num_images * sizeof(struct boot_img);
-+
-+		/* read in the full image array */
-+		rd_err = read(ifd, (void *)&container_headers[cntr_num].img, img_array_entries);
-+		if (rd_err == -1) {
-+			fprintf(stderr, "Error reading from input binary\n");
-+			exit(EXIT_FAILURE);
-+		}
-+
-+		if (container_headers[cntr_num].sig_blk_offset != 0) {
-+			/* read in signature block header */
-+			lseek(ifd, file_off + container_headers[cntr_num].sig_blk_offset, SEEK_SET);
-+			rd_err = read(ifd, (void *)&container_headers[cntr_num].sig_blk_hdr, sizeof(struct sig_blk_hdr));
-+			if (rd_err == -1) {
-+				fprintf(stderr, "Error reading from input binary\n");
-+				exit(EXIT_FAILURE);
-+			}
-+		}
-+
-+		/* seek to next container in binary */
-+		file_off += ALIGN(container_headers[cntr_num].length, CONTAINER_ALIGNMENT);
-+		lseek(ifd, file_off, SEEK_SET);
-+
-+		/* increment current container count */
-+		cntr_num++;
-+	}
-+
-+
-+	print_container_hdr_fields(container_headers, cntr_num, soc, false);
-+
-+	if (extract)
-+		extract_container_images(container_headers, ifname, cntr_num, ifd, soc, 0);
-+
-+	app_cntr_off = search_app_container(container_headers, cntr_num, ifd, &app_container_header);
-+
-+	if (app_cntr_off > 0) {
-+		print_container_hdr_fields(&app_container_header, 1, soc, true);
-+		if (extract)
-+			extract_container_images(&app_container_header, ifname, 1, ifd, soc, app_cntr_off);
-+	}
-+
-+	close(ifd);
-+
-+	return 0;
-+
++	tqma9352_mba93xxca_continue();
 +}
-+
-+#define IMG_STACK_SIZE			32 /* max of 32 images for commandline images */
-+
+diff --git a/arch/arm/boards/tqmba9xxxca/lpddr4x_tqma93xxca_timing.c b/arch/arm/boards/tqmba9xxxca/lpddr4x_tqma93xxca_timing.c
+new file mode 100644
+index 0000000000..09e6744ddf
+--- /dev/null
++++ b/arch/arm/boards/tqmba9xxxca/lpddr4x_tqma93xxca_timing.c
+@@ -0,0 +1,1480 @@
++// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * Read commandline parameters and construct the header in order
-+ *
-+ * This will then construct the image according to the header and
-+ *
-+ * parameters passed in
-+ *
++ * Copyright 2023 NXP
 + */
-+int main(int argc, char **argv)
-+{
-+	int c;
-+	char *ofname = NULL;
-+	char *ifname = NULL;
-+	bool output = false;
-+	bool dcd_skip = false;
-+	bool emmc_fastboot = false;
-+	bool extract = false;
-+	bool parse = false;
 +
-+	int container = -1;
-+	image_t param_stack[IMG_STACK_SIZE];/* stack of input images */
-+	int p_idx = 0;/* param index counter */
-+	off_t file_off = 0;
++#include <common.h>
++#include <soc/imx9/ddr.h>
 +
-+	uint32_t ivt_offset = IVT_OFFSET_SD;
-+	uint32_t sector_size = 0x400; /* default sector size */
-+	soc_type_t soc = NONE; /* Initially No SOC defined */
++static struct dram_cfg_param ddr_ddrc_cfg[] = {
++	/** Initialize DDRC registers **/
++	{ 0x4e300110, 0x44100001 },
++	{ 0x4e300000, 0x8000bf },
++	{ 0x4e300008, 0x0 },
++	{ 0x4e300080, 0x80000412 },
++	{ 0x4e300084, 0x0 },
++	{ 0x4e300100, 0x24a0321b },
++	{ 0x4e300104, 0xa8ee001b },
++	{ 0x4e300108, 0x2f2e3233 },
++	{ 0x4e30010c, 0x85c18b },
++	{ 0x4e300114, 0x1002 },
++	{ 0x4e300124, 0x1c77071d },
++	{ 0x4e300160, 0x5402 },
++	{ 0x4e30016c, 0x35f00000 },
++	{ 0x4e300170, 0x8b0b0608 },
++	{ 0x4e300250, 0x28 },
++	{ 0x4e300254, 0x0 },
++	{ 0x4e30025c, 0x400 },
++	{ 0x4e300260, 0x0 },
++	{ 0x4e300300, 0x14281114 },
++	{ 0x4e300304, 0x106110a },
++	{ 0x4e300308, 0xa200e3c },
++	{ 0x4e300f04, 0x80 },
++	{ 0x4e300800, 0x39300002 },
++	{ 0x4e300804, 0x1f1f1f1f },
++};
 +
-+	uint8_t  fuse_version = 0;
-+	uint16_t sw_version   = 0;
-+	char     *images_hash = NULL;
++/* PHY Initialize Configuration */
++static struct dram_cfg_param ddr_ddrphy_cfg[] = {
++	{ 0x100a0, 0x4 },
++	{ 0x100a1, 0x5 },
++	{ 0x100a2, 0x6 },
++	{ 0x100a3, 0x7 },
++	{ 0x100a4, 0x0 },
++	{ 0x100a5, 0x1 },
++	{ 0x100a6, 0x2 },
++	{ 0x100a7, 0x3 },
++	{ 0x110a0, 0x3 },
++	{ 0x110a1, 0x2 },
++	{ 0x110a2, 0x0 },
++	{ 0x110a3, 0x1 },
++	{ 0x110a4, 0x7 },
++	{ 0x110a5, 0x6 },
++	{ 0x110a6, 0x4 },
++	{ 0x110a7, 0x5 },
++	{ 0x1005f, 0x5ff },
++	{ 0x1015f, 0x5ff },
++	{ 0x1105f, 0x5ff },
++	{ 0x1115f, 0x5ff },
++	{ 0x55, 0x1ff },
++	{ 0x1055, 0x1ff },
++	{ 0x2055, 0x1ff },
++	{ 0x200c5, 0x19 },
++	{ 0x2002e, 0x2 },
++	{ 0x90204, 0x0 },
++	{ 0x20024, 0x1e3 },
++	{ 0x2003a, 0x2 },
++	{ 0x2007d, 0x212 },
++	{ 0x2007c, 0x61 },
++	{ 0x20056, 0x3 },
++	{ 0x1004d, 0xe00 },
++	{ 0x1014d, 0xe00 },
++	{ 0x1104d, 0xe00 },
++	{ 0x1114d, 0xe00 },
++	{ 0x10049, 0xe00 },
++	{ 0x10149, 0xe00 },
++	{ 0x11049, 0xe00 },
++	{ 0x11149, 0xe00 },
++	{ 0x43, 0x60 },
++	{ 0x1043, 0x60 },
++	{ 0x2043, 0x60 },
++	{ 0x20018, 0x1 },
++	{ 0x20075, 0x4 },
++	{ 0x20050, 0x0 },
++	{ 0x2009b, 0x2 },
++	{ 0x20008, 0x3a5 },
++	{ 0x20088, 0x9 },
++	{ 0x200b2, 0x10c },
++	{ 0x10043, 0x5a1 },
++	{ 0x10143, 0x5a1 },
++	{ 0x11043, 0x5a1 },
++	{ 0x11143, 0x5a1 },
++	{ 0x200fa, 0x2 },
++	{ 0x20019, 0x1 },
++	{ 0x200f0, 0x0 },
++	{ 0x200f1, 0x0 },
++	{ 0x200f2, 0x4444 },
++	{ 0x200f3, 0x8888 },
++	{ 0x200f4, 0x5555 },
++	{ 0x200f5, 0x0 },
++	{ 0x200f6, 0x0 },
++	{ 0x200f7, 0xf000 },
++	{ 0x1004a, 0x500 },
++	{ 0x1104a, 0x500 },
++	{ 0x20025, 0x0 },
++	{ 0x2002d, 0x0 },
++	{ 0x2002c, 0x0 },
++};
 +
-+	static struct option long_options[] = {
-+		{"scfw", required_argument, NULL, 'f'},
-+		{"seco", required_argument, NULL, 'O'},
-+		{"m4", required_argument, NULL, 'm'},
-+		{"ap", required_argument, NULL, 'a'},
-+		{"dcd", required_argument, NULL, 'd'},
-+		{"out", required_argument, NULL, 'o'},
-+		{"flags", required_argument, NULL, 'l'},
-+		{"scd", required_argument, NULL, 'x'},
-+		{"csf", required_argument, NULL, 'z'},
-+		{"dev", required_argument, NULL, 'e'},
-+		{"soc", required_argument, NULL, 's'},
-+		{"dummy",required_argument, NULL, 'y'},
-+		{"container", no_argument, NULL, 'c'},
-+		{"partition", required_argument, NULL, 'p'},
-+		{"append", no_argument, NULL, 'A'},
-+		{"data", required_argument, NULL, 'D'},
-+		{"fileoff", required_argument, NULL, 'P'},
-+		{"msg_blk", required_argument, NULL, 'M'},
-+		{"fuse_version", required_argument, NULL, 'u'},
-+		{"sw_version", required_argument, NULL, 'v'},
-+		{"images_hash", required_argument, NULL, 'h'},
-+		{"extract", required_argument, NULL, 'X'},
-+		{"parse", required_argument, NULL, 'R'},
-+		{"sentinel", required_argument, NULL, 'i'},
-+		{"upower", required_argument, NULL, 'w'},
-+		{"fcb", required_argument, NULL, 'b'},
-+		{"padding", required_argument, NULL, 'G'},
-+		{NULL, 0, NULL, 0}
++/* ddr phy trained csr */
++static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
++	{ 0x200b2, 0x0 },
++	{ 0x1200b2, 0x0 },
++	{ 0x2200b2, 0x0 },
++	{ 0x200cb, 0x0 },
++	{ 0x10043, 0x0 },
++	{ 0x110043, 0x0 },
++	{ 0x210043, 0x0 },
++	{ 0x10143, 0x0 },
++	{ 0x110143, 0x0 },
++	{ 0x210143, 0x0 },
++	{ 0x11043, 0x0 },
++	{ 0x111043, 0x0 },
++	{ 0x211043, 0x0 },
++	{ 0x11143, 0x0 },
++	{ 0x111143, 0x0 },
++	{ 0x211143, 0x0 },
++	{ 0x12043, 0x0 },
++	{ 0x112043, 0x0 },
++	{ 0x212043, 0x0 },
++	{ 0x12143, 0x0 },
++	{ 0x112143, 0x0 },
++	{ 0x212143, 0x0 },
++	{ 0x13043, 0x0 },
++	{ 0x113043, 0x0 },
++	{ 0x213043, 0x0 },
++	{ 0x13143, 0x0 },
++	{ 0x113143, 0x0 },
++	{ 0x213143, 0x0 },
++	{ 0x80, 0x0 },
++	{ 0x100080, 0x0 },
++	{ 0x200080, 0x0 },
++	{ 0x1080, 0x0 },
++	{ 0x101080, 0x0 },
++	{ 0x201080, 0x0 },
++	{ 0x2080, 0x0 },
++	{ 0x102080, 0x0 },
++	{ 0x202080, 0x0 },
++	{ 0x3080, 0x0 },
++	{ 0x103080, 0x0 },
++	{ 0x203080, 0x0 },
++	{ 0x4080, 0x0 },
++	{ 0x104080, 0x0 },
++	{ 0x204080, 0x0 },
++	{ 0x5080, 0x0 },
++	{ 0x105080, 0x0 },
++	{ 0x205080, 0x0 },
++	{ 0x6080, 0x0 },
++	{ 0x106080, 0x0 },
++	{ 0x206080, 0x0 },
++	{ 0x7080, 0x0 },
++	{ 0x107080, 0x0 },
++	{ 0x207080, 0x0 },
++	{ 0x8080, 0x0 },
++	{ 0x108080, 0x0 },
++	{ 0x208080, 0x0 },
++	{ 0x9080, 0x0 },
++	{ 0x109080, 0x0 },
++	{ 0x209080, 0x0 },
++	{ 0x10080, 0x0 },
++	{ 0x110080, 0x0 },
++	{ 0x210080, 0x0 },
++	{ 0x10180, 0x0 },
++	{ 0x110180, 0x0 },
++	{ 0x210180, 0x0 },
++	{ 0x11080, 0x0 },
++	{ 0x111080, 0x0 },
++	{ 0x211080, 0x0 },
++	{ 0x11180, 0x0 },
++	{ 0x111180, 0x0 },
++	{ 0x211180, 0x0 },
++	{ 0x12080, 0x0 },
++	{ 0x112080, 0x0 },
++	{ 0x212080, 0x0 },
++	{ 0x12180, 0x0 },
++	{ 0x112180, 0x0 },
++	{ 0x212180, 0x0 },
++	{ 0x13080, 0x0 },
++	{ 0x113080, 0x0 },
++	{ 0x213080, 0x0 },
++	{ 0x13180, 0x0 },
++	{ 0x113180, 0x0 },
++	{ 0x213180, 0x0 },
++	{ 0x10081, 0x0 },
++	{ 0x110081, 0x0 },
++	{ 0x210081, 0x0 },
++	{ 0x10181, 0x0 },
++	{ 0x110181, 0x0 },
++	{ 0x210181, 0x0 },
++	{ 0x11081, 0x0 },
++	{ 0x111081, 0x0 },
++	{ 0x211081, 0x0 },
++	{ 0x11181, 0x0 },
++	{ 0x111181, 0x0 },
++	{ 0x211181, 0x0 },
++	{ 0x12081, 0x0 },
++	{ 0x112081, 0x0 },
++	{ 0x212081, 0x0 },
++	{ 0x12181, 0x0 },
++	{ 0x112181, 0x0 },
++	{ 0x212181, 0x0 },
++	{ 0x13081, 0x0 },
++	{ 0x113081, 0x0 },
++	{ 0x213081, 0x0 },
++	{ 0x13181, 0x0 },
++	{ 0x113181, 0x0 },
++	{ 0x213181, 0x0 },
++	{ 0x100d0, 0x0 },
++	{ 0x1100d0, 0x0 },
++	{ 0x2100d0, 0x0 },
++	{ 0x101d0, 0x0 },
++	{ 0x1101d0, 0x0 },
++	{ 0x2101d0, 0x0 },
++	{ 0x110d0, 0x0 },
++	{ 0x1110d0, 0x0 },
++	{ 0x2110d0, 0x0 },
++	{ 0x111d0, 0x0 },
++	{ 0x1111d0, 0x0 },
++	{ 0x2111d0, 0x0 },
++	{ 0x120d0, 0x0 },
++	{ 0x1120d0, 0x0 },
++	{ 0x2120d0, 0x0 },
++	{ 0x121d0, 0x0 },
++	{ 0x1121d0, 0x0 },
++	{ 0x2121d0, 0x0 },
++	{ 0x130d0, 0x0 },
++	{ 0x1130d0, 0x0 },
++	{ 0x2130d0, 0x0 },
++	{ 0x131d0, 0x0 },
++	{ 0x1131d0, 0x0 },
++	{ 0x2131d0, 0x0 },
++	{ 0x100d1, 0x0 },
++	{ 0x1100d1, 0x0 },
++	{ 0x2100d1, 0x0 },
++	{ 0x101d1, 0x0 },
++	{ 0x1101d1, 0x0 },
++	{ 0x2101d1, 0x0 },
++	{ 0x110d1, 0x0 },
++	{ 0x1110d1, 0x0 },
++	{ 0x2110d1, 0x0 },
++	{ 0x111d1, 0x0 },
++	{ 0x1111d1, 0x0 },
++	{ 0x2111d1, 0x0 },
++	{ 0x120d1, 0x0 },
++	{ 0x1120d1, 0x0 },
++	{ 0x2120d1, 0x0 },
++	{ 0x121d1, 0x0 },
++	{ 0x1121d1, 0x0 },
++	{ 0x2121d1, 0x0 },
++	{ 0x130d1, 0x0 },
++	{ 0x1130d1, 0x0 },
++	{ 0x2130d1, 0x0 },
++	{ 0x131d1, 0x0 },
++	{ 0x1131d1, 0x0 },
++	{ 0x2131d1, 0x0 },
++	{ 0x10068, 0x0 },
++	{ 0x10168, 0x0 },
++	{ 0x10268, 0x0 },
++	{ 0x10368, 0x0 },
++	{ 0x10468, 0x0 },
++	{ 0x10568, 0x0 },
++	{ 0x10668, 0x0 },
++	{ 0x10768, 0x0 },
++	{ 0x10868, 0x0 },
++	{ 0x11068, 0x0 },
++	{ 0x11168, 0x0 },
++	{ 0x11268, 0x0 },
++	{ 0x11368, 0x0 },
++	{ 0x11468, 0x0 },
++	{ 0x11568, 0x0 },
++	{ 0x11668, 0x0 },
++	{ 0x11768, 0x0 },
++	{ 0x11868, 0x0 },
++	{ 0x12068, 0x0 },
++	{ 0x12168, 0x0 },
++	{ 0x12268, 0x0 },
++	{ 0x12368, 0x0 },
++	{ 0x12468, 0x0 },
++	{ 0x12568, 0x0 },
++	{ 0x12668, 0x0 },
++	{ 0x12768, 0x0 },
++	{ 0x12868, 0x0 },
++	{ 0x13068, 0x0 },
++	{ 0x13168, 0x0 },
++	{ 0x13268, 0x0 },
++	{ 0x13368, 0x0 },
++	{ 0x13468, 0x0 },
++	{ 0x13568, 0x0 },
++	{ 0x13668, 0x0 },
++	{ 0x13768, 0x0 },
++	{ 0x13868, 0x0 },
++	{ 0x10069, 0x0 },
++	{ 0x10169, 0x0 },
++	{ 0x10269, 0x0 },
++	{ 0x10369, 0x0 },
++	{ 0x10469, 0x0 },
++	{ 0x10569, 0x0 },
++	{ 0x10669, 0x0 },
++	{ 0x10769, 0x0 },
++	{ 0x10869, 0x0 },
++	{ 0x11069, 0x0 },
++	{ 0x11169, 0x0 },
++	{ 0x11269, 0x0 },
++	{ 0x11369, 0x0 },
++	{ 0x11469, 0x0 },
++	{ 0x11569, 0x0 },
++	{ 0x11669, 0x0 },
++	{ 0x11769, 0x0 },
++	{ 0x11869, 0x0 },
++	{ 0x12069, 0x0 },
++	{ 0x12169, 0x0 },
++	{ 0x12269, 0x0 },
++	{ 0x12369, 0x0 },
++	{ 0x12469, 0x0 },
++	{ 0x12569, 0x0 },
++	{ 0x12669, 0x0 },
++	{ 0x12769, 0x0 },
++	{ 0x12869, 0x0 },
++	{ 0x13069, 0x0 },
++	{ 0x13169, 0x0 },
++	{ 0x13269, 0x0 },
++	{ 0x13369, 0x0 },
++	{ 0x13469, 0x0 },
++	{ 0x13569, 0x0 },
++	{ 0x13669, 0x0 },
++	{ 0x13769, 0x0 },
++	{ 0x13869, 0x0 },
++	{ 0x1008c, 0x0 },
++	{ 0x11008c, 0x0 },
++	{ 0x21008c, 0x0 },
++	{ 0x1018c, 0x0 },
++	{ 0x11018c, 0x0 },
++	{ 0x21018c, 0x0 },
++	{ 0x1108c, 0x0 },
++	{ 0x11108c, 0x0 },
++	{ 0x21108c, 0x0 },
++	{ 0x1118c, 0x0 },
++	{ 0x11118c, 0x0 },
++	{ 0x21118c, 0x0 },
++	{ 0x1208c, 0x0 },
++	{ 0x11208c, 0x0 },
++	{ 0x21208c, 0x0 },
++	{ 0x1218c, 0x0 },
++	{ 0x11218c, 0x0 },
++	{ 0x21218c, 0x0 },
++	{ 0x1308c, 0x0 },
++	{ 0x11308c, 0x0 },
++	{ 0x21308c, 0x0 },
++	{ 0x1318c, 0x0 },
++	{ 0x11318c, 0x0 },
++	{ 0x21318c, 0x0 },
++	{ 0x1008d, 0x0 },
++	{ 0x11008d, 0x0 },
++	{ 0x21008d, 0x0 },
++	{ 0x1018d, 0x0 },
++	{ 0x11018d, 0x0 },
++	{ 0x21018d, 0x0 },
++	{ 0x1108d, 0x0 },
++	{ 0x11108d, 0x0 },
++	{ 0x21108d, 0x0 },
++	{ 0x1118d, 0x0 },
++	{ 0x11118d, 0x0 },
++	{ 0x21118d, 0x0 },
++	{ 0x1208d, 0x0 },
++	{ 0x11208d, 0x0 },
++	{ 0x21208d, 0x0 },
++	{ 0x1218d, 0x0 },
++	{ 0x11218d, 0x0 },
++	{ 0x21218d, 0x0 },
++	{ 0x1308d, 0x0 },
++	{ 0x11308d, 0x0 },
++	{ 0x21308d, 0x0 },
++	{ 0x1318d, 0x0 },
++	{ 0x11318d, 0x0 },
++	{ 0x21318d, 0x0 },
++	{ 0x100c0, 0x0 },
++	{ 0x1100c0, 0x0 },
++	{ 0x2100c0, 0x0 },
++	{ 0x101c0, 0x0 },
++	{ 0x1101c0, 0x0 },
++	{ 0x2101c0, 0x0 },
++	{ 0x102c0, 0x0 },
++	{ 0x1102c0, 0x0 },
++	{ 0x2102c0, 0x0 },
++	{ 0x103c0, 0x0 },
++	{ 0x1103c0, 0x0 },
++	{ 0x2103c0, 0x0 },
++	{ 0x104c0, 0x0 },
++	{ 0x1104c0, 0x0 },
++	{ 0x2104c0, 0x0 },
++	{ 0x105c0, 0x0 },
++	{ 0x1105c0, 0x0 },
++	{ 0x2105c0, 0x0 },
++	{ 0x106c0, 0x0 },
++	{ 0x1106c0, 0x0 },
++	{ 0x2106c0, 0x0 },
++	{ 0x107c0, 0x0 },
++	{ 0x1107c0, 0x0 },
++	{ 0x2107c0, 0x0 },
++	{ 0x108c0, 0x0 },
++	{ 0x1108c0, 0x0 },
++	{ 0x2108c0, 0x0 },
++	{ 0x110c0, 0x0 },
++	{ 0x1110c0, 0x0 },
++	{ 0x2110c0, 0x0 },
++	{ 0x111c0, 0x0 },
++	{ 0x1111c0, 0x0 },
++	{ 0x2111c0, 0x0 },
++	{ 0x112c0, 0x0 },
++	{ 0x1112c0, 0x0 },
++	{ 0x2112c0, 0x0 },
++	{ 0x113c0, 0x0 },
++	{ 0x1113c0, 0x0 },
++	{ 0x2113c0, 0x0 },
++	{ 0x114c0, 0x0 },
++	{ 0x1114c0, 0x0 },
++	{ 0x2114c0, 0x0 },
++	{ 0x115c0, 0x0 },
++	{ 0x1115c0, 0x0 },
++	{ 0x2115c0, 0x0 },
++	{ 0x116c0, 0x0 },
++	{ 0x1116c0, 0x0 },
++	{ 0x2116c0, 0x0 },
++	{ 0x117c0, 0x0 },
++	{ 0x1117c0, 0x0 },
++	{ 0x2117c0, 0x0 },
++	{ 0x118c0, 0x0 },
++	{ 0x1118c0, 0x0 },
++	{ 0x2118c0, 0x0 },
++	{ 0x120c0, 0x0 },
++	{ 0x1120c0, 0x0 },
++	{ 0x2120c0, 0x0 },
++	{ 0x121c0, 0x0 },
++	{ 0x1121c0, 0x0 },
++	{ 0x2121c0, 0x0 },
++	{ 0x122c0, 0x0 },
++	{ 0x1122c0, 0x0 },
++	{ 0x2122c0, 0x0 },
++	{ 0x123c0, 0x0 },
++	{ 0x1123c0, 0x0 },
++	{ 0x2123c0, 0x0 },
++	{ 0x124c0, 0x0 },
++	{ 0x1124c0, 0x0 },
++	{ 0x2124c0, 0x0 },
++	{ 0x125c0, 0x0 },
++	{ 0x1125c0, 0x0 },
++	{ 0x2125c0, 0x0 },
++	{ 0x126c0, 0x0 },
++	{ 0x1126c0, 0x0 },
++	{ 0x2126c0, 0x0 },
++	{ 0x127c0, 0x0 },
++	{ 0x1127c0, 0x0 },
++	{ 0x2127c0, 0x0 },
++	{ 0x128c0, 0x0 },
++	{ 0x1128c0, 0x0 },
++	{ 0x2128c0, 0x0 },
++	{ 0x130c0, 0x0 },
++	{ 0x1130c0, 0x0 },
++	{ 0x2130c0, 0x0 },
++	{ 0x131c0, 0x0 },
++	{ 0x1131c0, 0x0 },
++	{ 0x2131c0, 0x0 },
++	{ 0x132c0, 0x0 },
++	{ 0x1132c0, 0x0 },
++	{ 0x2132c0, 0x0 },
++	{ 0x133c0, 0x0 },
++	{ 0x1133c0, 0x0 },
++	{ 0x2133c0, 0x0 },
++	{ 0x134c0, 0x0 },
++	{ 0x1134c0, 0x0 },
++	{ 0x2134c0, 0x0 },
++	{ 0x135c0, 0x0 },
++	{ 0x1135c0, 0x0 },
++	{ 0x2135c0, 0x0 },
++	{ 0x136c0, 0x0 },
++	{ 0x1136c0, 0x0 },
++	{ 0x2136c0, 0x0 },
++	{ 0x137c0, 0x0 },
++	{ 0x1137c0, 0x0 },
++	{ 0x2137c0, 0x0 },
++	{ 0x138c0, 0x0 },
++	{ 0x1138c0, 0x0 },
++	{ 0x2138c0, 0x0 },
++	{ 0x100c1, 0x0 },
++	{ 0x1100c1, 0x0 },
++	{ 0x2100c1, 0x0 },
++	{ 0x101c1, 0x0 },
++	{ 0x1101c1, 0x0 },
++	{ 0x2101c1, 0x0 },
++	{ 0x102c1, 0x0 },
++	{ 0x1102c1, 0x0 },
++	{ 0x2102c1, 0x0 },
++	{ 0x103c1, 0x0 },
++	{ 0x1103c1, 0x0 },
++	{ 0x2103c1, 0x0 },
++	{ 0x104c1, 0x0 },
++	{ 0x1104c1, 0x0 },
++	{ 0x2104c1, 0x0 },
++	{ 0x105c1, 0x0 },
++	{ 0x1105c1, 0x0 },
++	{ 0x2105c1, 0x0 },
++	{ 0x106c1, 0x0 },
++	{ 0x1106c1, 0x0 },
++	{ 0x2106c1, 0x0 },
++	{ 0x107c1, 0x0 },
++	{ 0x1107c1, 0x0 },
++	{ 0x2107c1, 0x0 },
++	{ 0x108c1, 0x0 },
++	{ 0x1108c1, 0x0 },
++	{ 0x2108c1, 0x0 },
++	{ 0x110c1, 0x0 },
++	{ 0x1110c1, 0x0 },
++	{ 0x2110c1, 0x0 },
++	{ 0x111c1, 0x0 },
++	{ 0x1111c1, 0x0 },
++	{ 0x2111c1, 0x0 },
++	{ 0x112c1, 0x0 },
++	{ 0x1112c1, 0x0 },
++	{ 0x2112c1, 0x0 },
++	{ 0x113c1, 0x0 },
++	{ 0x1113c1, 0x0 },
++	{ 0x2113c1, 0x0 },
++	{ 0x114c1, 0x0 },
++	{ 0x1114c1, 0x0 },
++	{ 0x2114c1, 0x0 },
++	{ 0x115c1, 0x0 },
++	{ 0x1115c1, 0x0 },
++	{ 0x2115c1, 0x0 },
++	{ 0x116c1, 0x0 },
++	{ 0x1116c1, 0x0 },
++	{ 0x2116c1, 0x0 },
++	{ 0x117c1, 0x0 },
++	{ 0x1117c1, 0x0 },
++	{ 0x2117c1, 0x0 },
++	{ 0x118c1, 0x0 },
++	{ 0x1118c1, 0x0 },
++	{ 0x2118c1, 0x0 },
++	{ 0x120c1, 0x0 },
++	{ 0x1120c1, 0x0 },
++	{ 0x2120c1, 0x0 },
++	{ 0x121c1, 0x0 },
++	{ 0x1121c1, 0x0 },
++	{ 0x2121c1, 0x0 },
++	{ 0x122c1, 0x0 },
++	{ 0x1122c1, 0x0 },
++	{ 0x2122c1, 0x0 },
++	{ 0x123c1, 0x0 },
++	{ 0x1123c1, 0x0 },
++	{ 0x2123c1, 0x0 },
++	{ 0x124c1, 0x0 },
++	{ 0x1124c1, 0x0 },
++	{ 0x2124c1, 0x0 },
++	{ 0x125c1, 0x0 },
++	{ 0x1125c1, 0x0 },
++	{ 0x2125c1, 0x0 },
++	{ 0x126c1, 0x0 },
++	{ 0x1126c1, 0x0 },
++	{ 0x2126c1, 0x0 },
++	{ 0x127c1, 0x0 },
++	{ 0x1127c1, 0x0 },
++	{ 0x2127c1, 0x0 },
++	{ 0x128c1, 0x0 },
++	{ 0x1128c1, 0x0 },
++	{ 0x2128c1, 0x0 },
++	{ 0x130c1, 0x0 },
++	{ 0x1130c1, 0x0 },
++	{ 0x2130c1, 0x0 },
++	{ 0x131c1, 0x0 },
++	{ 0x1131c1, 0x0 },
++	{ 0x2131c1, 0x0 },
++	{ 0x132c1, 0x0 },
++	{ 0x1132c1, 0x0 },
++	{ 0x2132c1, 0x0 },
++	{ 0x133c1, 0x0 },
++	{ 0x1133c1, 0x0 },
++	{ 0x2133c1, 0x0 },
++	{ 0x134c1, 0x0 },
++	{ 0x1134c1, 0x0 },
++	{ 0x2134c1, 0x0 },
++	{ 0x135c1, 0x0 },
++	{ 0x1135c1, 0x0 },
++	{ 0x2135c1, 0x0 },
++	{ 0x136c1, 0x0 },
++	{ 0x1136c1, 0x0 },
++	{ 0x2136c1, 0x0 },
++	{ 0x137c1, 0x0 },
++	{ 0x1137c1, 0x0 },
++	{ 0x2137c1, 0x0 },
++	{ 0x138c1, 0x0 },
++	{ 0x1138c1, 0x0 },
++	{ 0x2138c1, 0x0 },
++	{ 0x10020, 0x0 },
++	{ 0x110020, 0x0 },
++	{ 0x210020, 0x0 },
++	{ 0x11020, 0x0 },
++	{ 0x111020, 0x0 },
++	{ 0x211020, 0x0 },
++	{ 0x12020, 0x0 },
++	{ 0x112020, 0x0 },
++	{ 0x212020, 0x0 },
++	{ 0x13020, 0x0 },
++	{ 0x113020, 0x0 },
++	{ 0x213020, 0x0 },
++	{ 0x20072, 0x0 },
++	{ 0x20073, 0x0 },
++	{ 0x20074, 0x0 },
++	{ 0x100aa, 0x0 },
++	{ 0x110aa, 0x0 },
++	{ 0x120aa, 0x0 },
++	{ 0x130aa, 0x0 },
++	{ 0x20010, 0x0 },
++	{ 0x120010, 0x0 },
++	{ 0x220010, 0x0 },
++	{ 0x20011, 0x0 },
++	{ 0x120011, 0x0 },
++	{ 0x220011, 0x0 },
++	{ 0x100ae, 0x0 },
++	{ 0x1100ae, 0x0 },
++	{ 0x2100ae, 0x0 },
++	{ 0x100af, 0x0 },
++	{ 0x1100af, 0x0 },
++	{ 0x2100af, 0x0 },
++	{ 0x110ae, 0x0 },
++	{ 0x1110ae, 0x0 },
++	{ 0x2110ae, 0x0 },
++	{ 0x110af, 0x0 },
++	{ 0x1110af, 0x0 },
++	{ 0x2110af, 0x0 },
++	{ 0x120ae, 0x0 },
++	{ 0x1120ae, 0x0 },
++	{ 0x2120ae, 0x0 },
++	{ 0x120af, 0x0 },
++	{ 0x1120af, 0x0 },
++	{ 0x2120af, 0x0 },
++	{ 0x130ae, 0x0 },
++	{ 0x1130ae, 0x0 },
++	{ 0x2130ae, 0x0 },
++	{ 0x130af, 0x0 },
++	{ 0x1130af, 0x0 },
++	{ 0x2130af, 0x0 },
++	{ 0x20020, 0x0 },
++	{ 0x120020, 0x0 },
++	{ 0x220020, 0x0 },
++	{ 0x100a0, 0x0 },
++	{ 0x100a1, 0x0 },
++	{ 0x100a2, 0x0 },
++	{ 0x100a3, 0x0 },
++	{ 0x100a4, 0x0 },
++	{ 0x100a5, 0x0 },
++	{ 0x100a6, 0x0 },
++	{ 0x100a7, 0x0 },
++	{ 0x110a0, 0x0 },
++	{ 0x110a1, 0x0 },
++	{ 0x110a2, 0x0 },
++	{ 0x110a3, 0x0 },
++	{ 0x110a4, 0x0 },
++	{ 0x110a5, 0x0 },
++	{ 0x110a6, 0x0 },
++	{ 0x110a7, 0x0 },
++	{ 0x120a0, 0x0 },
++	{ 0x120a1, 0x0 },
++	{ 0x120a2, 0x0 },
++	{ 0x120a3, 0x0 },
++	{ 0x120a4, 0x0 },
++	{ 0x120a5, 0x0 },
++	{ 0x120a6, 0x0 },
++	{ 0x120a7, 0x0 },
++	{ 0x130a0, 0x0 },
++	{ 0x130a1, 0x0 },
++	{ 0x130a2, 0x0 },
++	{ 0x130a3, 0x0 },
++	{ 0x130a4, 0x0 },
++	{ 0x130a5, 0x0 },
++	{ 0x130a6, 0x0 },
++	{ 0x130a7, 0x0 },
++	{ 0x2007c, 0x0 },
++	{ 0x12007c, 0x0 },
++	{ 0x22007c, 0x0 },
++	{ 0x2007d, 0x0 },
++	{ 0x12007d, 0x0 },
++	{ 0x22007d, 0x0 },
++	{ 0x400fd, 0x0 },
++	{ 0x400c0, 0x0 },
++	{ 0x90201, 0x0 },
++	{ 0x190201, 0x0 },
++	{ 0x290201, 0x0 },
++	{ 0x90202, 0x0 },
++	{ 0x190202, 0x0 },
++	{ 0x290202, 0x0 },
++	{ 0x90203, 0x0 },
++	{ 0x190203, 0x0 },
++	{ 0x290203, 0x0 },
++	{ 0x90204, 0x0 },
++	{ 0x190204, 0x0 },
++	{ 0x290204, 0x0 },
++	{ 0x90205, 0x0 },
++	{ 0x190205, 0x0 },
++	{ 0x290205, 0x0 },
++	{ 0x90206, 0x0 },
++	{ 0x190206, 0x0 },
++	{ 0x290206, 0x0 },
++	{ 0x90207, 0x0 },
++	{ 0x190207, 0x0 },
++	{ 0x290207, 0x0 },
++	{ 0x90208, 0x0 },
++	{ 0x190208, 0x0 },
++	{ 0x290208, 0x0 },
++	{ 0x10062, 0x0 },
++	{ 0x10162, 0x0 },
++	{ 0x10262, 0x0 },
++	{ 0x10362, 0x0 },
++	{ 0x10462, 0x0 },
++	{ 0x10562, 0x0 },
++	{ 0x10662, 0x0 },
++	{ 0x10762, 0x0 },
++	{ 0x10862, 0x0 },
++	{ 0x11062, 0x0 },
++	{ 0x11162, 0x0 },
++	{ 0x11262, 0x0 },
++	{ 0x11362, 0x0 },
++	{ 0x11462, 0x0 },
++	{ 0x11562, 0x0 },
++	{ 0x11662, 0x0 },
++	{ 0x11762, 0x0 },
++	{ 0x11862, 0x0 },
++	{ 0x12062, 0x0 },
++	{ 0x12162, 0x0 },
++	{ 0x12262, 0x0 },
++	{ 0x12362, 0x0 },
++	{ 0x12462, 0x0 },
++	{ 0x12562, 0x0 },
++	{ 0x12662, 0x0 },
++	{ 0x12762, 0x0 },
++	{ 0x12862, 0x0 },
++	{ 0x13062, 0x0 },
++	{ 0x13162, 0x0 },
++	{ 0x13262, 0x0 },
++	{ 0x13362, 0x0 },
++	{ 0x13462, 0x0 },
++	{ 0x13562, 0x0 },
++	{ 0x13662, 0x0 },
++	{ 0x13762, 0x0 },
++	{ 0x13862, 0x0 },
++	{ 0x20077, 0x0 },
++	{ 0x10001, 0x0 },
++	{ 0x11001, 0x0 },
++	{ 0x12001, 0x0 },
++	{ 0x13001, 0x0 },
++	{ 0x10040, 0x0 },
++	{ 0x10140, 0x0 },
++	{ 0x10240, 0x0 },
++	{ 0x10340, 0x0 },
++	{ 0x10440, 0x0 },
++	{ 0x10540, 0x0 },
++	{ 0x10640, 0x0 },
++	{ 0x10740, 0x0 },
++	{ 0x10840, 0x0 },
++	{ 0x10030, 0x0 },
++	{ 0x10130, 0x0 },
++	{ 0x10230, 0x0 },
++	{ 0x10330, 0x0 },
++	{ 0x10430, 0x0 },
++	{ 0x10530, 0x0 },
++	{ 0x10630, 0x0 },
++	{ 0x10730, 0x0 },
++	{ 0x10830, 0x0 },
++	{ 0x11040, 0x0 },
++	{ 0x11140, 0x0 },
++	{ 0x11240, 0x0 },
++	{ 0x11340, 0x0 },
++	{ 0x11440, 0x0 },
++	{ 0x11540, 0x0 },
++	{ 0x11640, 0x0 },
++	{ 0x11740, 0x0 },
++	{ 0x11840, 0x0 },
++	{ 0x11030, 0x0 },
++	{ 0x11130, 0x0 },
++	{ 0x11230, 0x0 },
++	{ 0x11330, 0x0 },
++	{ 0x11430, 0x0 },
++	{ 0x11530, 0x0 },
++	{ 0x11630, 0x0 },
++	{ 0x11730, 0x0 },
++	{ 0x11830, 0x0 },
++	{ 0x12040, 0x0 },
++	{ 0x12140, 0x0 },
++	{ 0x12240, 0x0 },
++	{ 0x12340, 0x0 },
++	{ 0x12440, 0x0 },
++	{ 0x12540, 0x0 },
++	{ 0x12640, 0x0 },
++	{ 0x12740, 0x0 },
++	{ 0x12840, 0x0 },
++	{ 0x12030, 0x0 },
++	{ 0x12130, 0x0 },
++	{ 0x12230, 0x0 },
++	{ 0x12330, 0x0 },
++	{ 0x12430, 0x0 },
++	{ 0x12530, 0x0 },
++	{ 0x12630, 0x0 },
++	{ 0x12730, 0x0 },
++	{ 0x12830, 0x0 },
++	{ 0x13040, 0x0 },
++	{ 0x13140, 0x0 },
++	{ 0x13240, 0x0 },
++	{ 0x13340, 0x0 },
++	{ 0x13440, 0x0 },
++	{ 0x13540, 0x0 },
++	{ 0x13640, 0x0 },
++	{ 0x13740, 0x0 },
++	{ 0x13840, 0x0 },
++	{ 0x13030, 0x0 },
++	{ 0x13130, 0x0 },
++	{ 0x13230, 0x0 },
++	{ 0x13330, 0x0 },
++	{ 0x13430, 0x0 },
++	{ 0x13530, 0x0 },
++	{ 0x13630, 0x0 },
++	{ 0x13730, 0x0 },
++	{ 0x13830, 0x0 },
++};
++
++/* P0 message block parameter for training firmware */
++static struct dram_cfg_param ddr_fsp0_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54003, 0xe94 },
++	{ 0x54004, 0x4 },
++	{ 0x54006, 0x15 },
++	{ 0x54008, 0x131f },
++	{ 0x54009, 0xff },
++	{ 0x5400b, 0x4 },
++	{ 0x5400c, 0x1 },
++	{ 0x5400d, 0x100 },
++	{ 0x5400f, 0x100 },
++	{ 0x54012, 0x110 },
++	{ 0x54019, 0x36e4 },
++	{ 0x5401a, 0x32 },
++	{ 0x5401b, 0x1146 },
++	{ 0x5401c, 0x1108 },
++	{ 0x5401e, 0x6 },
++	{ 0x5401f, 0x36e4 },
++	{ 0x54020, 0x32 },
++	{ 0x54021, 0x1146 },
++	{ 0x54022, 0x1108 },
++	{ 0x54024, 0x6 },
++	{ 0x54032, 0xe400 },
++	{ 0x54033, 0x3236 },
++	{ 0x54034, 0x4600 },
++	{ 0x54035, 0x811 },
++	{ 0x54036, 0x11 },
++	{ 0x54037, 0x600 },
++	{ 0x54038, 0xe400 },
++	{ 0x54039, 0x3236 },
++	{ 0x5403a, 0x4600 },
++	{ 0x5403b, 0x811 },
++	{ 0x5403c, 0x11 },
++	{ 0x5403d, 0x600 },
++	{ 0xd0000, 0x1 }
++};
++
++/* P0 2D message block paremeter for training firmware */
++static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54003, 0xe94 },
++	{ 0x54004, 0x4 },
++	{ 0x54006, 0x15 },
++	{ 0x54008, 0x61 },
++	{ 0x54009, 0xff },
++	{ 0x5400b, 0x4 },
++	{ 0x5400c, 0x1 },
++	{ 0x5400d, 0x100 },
++	{ 0x5400f, 0x100 },
++	{ 0x54010, 0x2080 },
++	{ 0x54012, 0x110 },
++	{ 0x54019, 0x36e4 },
++	{ 0x5401a, 0x32 },
++	{ 0x5401b, 0x1146 },
++	{ 0x5401c, 0x1108 },
++	{ 0x5401e, 0x6 },
++	{ 0x5401f, 0x36e4 },
++	{ 0x54020, 0x32 },
++	{ 0x54021, 0x1146 },
++	{ 0x54022, 0x1108 },
++	{ 0x54024, 0x6 },
++	{ 0x54032, 0xe400 },
++	{ 0x54033, 0x3236 },
++	{ 0x54034, 0x4600 },
++	{ 0x54035, 0x811 },
++	{ 0x54036, 0x11 },
++	{ 0x54037, 0x600 },
++	{ 0x54038, 0xe400 },
++	{ 0x54039, 0x3236 },
++	{ 0x5403a, 0x4600 },
++	{ 0x5403b, 0x811 },
++	{ 0x5403c, 0x11 },
++	{ 0x5403d, 0x600 },
++	{ 0xd0000, 0x1 }
++};
++
++/* DRAM PHY init engine image */
++static struct dram_cfg_param ddr_phy_pie[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x90000, 0x10 },
++	{ 0x90001, 0x400 },
++	{ 0x90002, 0x10e },
++	{ 0x90003, 0x0 },
++	{ 0x90004, 0x0 },
++	{ 0x90005, 0x8 },
++	{ 0x90029, 0xb },
++	{ 0x9002a, 0x480 },
++	{ 0x9002b, 0x109 },
++	{ 0x9002c, 0x8 },
++	{ 0x9002d, 0x448 },
++	{ 0x9002e, 0x139 },
++	{ 0x9002f, 0x8 },
++	{ 0x90030, 0x478 },
++	{ 0x90031, 0x109 },
++	{ 0x90032, 0x0 },
++	{ 0x90033, 0xe8 },
++	{ 0x90034, 0x109 },
++	{ 0x90035, 0x2 },
++	{ 0x90036, 0x10 },
++	{ 0x90037, 0x139 },
++	{ 0x90038, 0xb },
++	{ 0x90039, 0x7c0 },
++	{ 0x9003a, 0x139 },
++	{ 0x9003b, 0x44 },
++	{ 0x9003c, 0x633 },
++	{ 0x9003d, 0x159 },
++	{ 0x9003e, 0x14f },
++	{ 0x9003f, 0x630 },
++	{ 0x90040, 0x159 },
++	{ 0x90041, 0x47 },
++	{ 0x90042, 0x633 },
++	{ 0x90043, 0x149 },
++	{ 0x90044, 0x4f },
++	{ 0x90045, 0x633 },
++	{ 0x90046, 0x179 },
++	{ 0x90047, 0x8 },
++	{ 0x90048, 0xe0 },
++	{ 0x90049, 0x109 },
++	{ 0x9004a, 0x0 },
++	{ 0x9004b, 0x7c8 },
++	{ 0x9004c, 0x109 },
++	{ 0x9004d, 0x0 },
++	{ 0x9004e, 0x1 },
++	{ 0x9004f, 0x8 },
++	{ 0x90050, 0x30 },
++	{ 0x90051, 0x65a },
++	{ 0x90052, 0x9 },
++	{ 0x90053, 0x0 },
++	{ 0x90054, 0x45a },
++	{ 0x90055, 0x9 },
++	{ 0x90056, 0x0 },
++	{ 0x90057, 0x448 },
++	{ 0x90058, 0x109 },
++	{ 0x90059, 0x40 },
++	{ 0x9005a, 0x633 },
++	{ 0x9005b, 0x179 },
++	{ 0x9005c, 0x1 },
++	{ 0x9005d, 0x618 },
++	{ 0x9005e, 0x109 },
++	{ 0x9005f, 0x40c0 },
++	{ 0x90060, 0x633 },
++	{ 0x90061, 0x149 },
++	{ 0x90062, 0x8 },
++	{ 0x90063, 0x4 },
++	{ 0x90064, 0x48 },
++	{ 0x90065, 0x4040 },
++	{ 0x90066, 0x633 },
++	{ 0x90067, 0x149 },
++	{ 0x90068, 0x0 },
++	{ 0x90069, 0x4 },
++	{ 0x9006a, 0x48 },
++	{ 0x9006b, 0x40 },
++	{ 0x9006c, 0x633 },
++	{ 0x9006d, 0x149 },
++	{ 0x9006e, 0x0 },
++	{ 0x9006f, 0x658 },
++	{ 0x90070, 0x109 },
++	{ 0x90071, 0x10 },
++	{ 0x90072, 0x4 },
++	{ 0x90073, 0x18 },
++	{ 0x90074, 0x0 },
++	{ 0x90075, 0x4 },
++	{ 0x90076, 0x78 },
++	{ 0x90077, 0x549 },
++	{ 0x90078, 0x633 },
++	{ 0x90079, 0x159 },
++	{ 0x9007a, 0xd49 },
++	{ 0x9007b, 0x633 },
++	{ 0x9007c, 0x159 },
++	{ 0x9007d, 0x94a },
++	{ 0x9007e, 0x633 },
++	{ 0x9007f, 0x159 },
++	{ 0x90080, 0x441 },
++	{ 0x90081, 0x633 },
++	{ 0x90082, 0x149 },
++	{ 0x90083, 0x42 },
++	{ 0x90084, 0x633 },
++	{ 0x90085, 0x149 },
++	{ 0x90086, 0x1 },
++	{ 0x90087, 0x633 },
++	{ 0x90088, 0x149 },
++	{ 0x90089, 0x0 },
++	{ 0x9008a, 0xe0 },
++	{ 0x9008b, 0x109 },
++	{ 0x9008c, 0xa },
++	{ 0x9008d, 0x10 },
++	{ 0x9008e, 0x109 },
++	{ 0x9008f, 0x9 },
++	{ 0x90090, 0x3c0 },
++	{ 0x90091, 0x149 },
++	{ 0x90092, 0x9 },
++	{ 0x90093, 0x3c0 },
++	{ 0x90094, 0x159 },
++	{ 0x90095, 0x18 },
++	{ 0x90096, 0x10 },
++	{ 0x90097, 0x109 },
++	{ 0x90098, 0x0 },
++	{ 0x90099, 0x3c0 },
++	{ 0x9009a, 0x109 },
++	{ 0x9009b, 0x18 },
++	{ 0x9009c, 0x4 },
++	{ 0x9009d, 0x48 },
++	{ 0x9009e, 0x18 },
++	{ 0x9009f, 0x4 },
++	{ 0x900a0, 0x58 },
++	{ 0x900a1, 0xb },
++	{ 0x900a2, 0x10 },
++	{ 0x900a3, 0x109 },
++	{ 0x900a4, 0x1 },
++	{ 0x900a5, 0x10 },
++	{ 0x900a6, 0x109 },
++	{ 0x900a7, 0x5 },
++	{ 0x900a8, 0x7c0 },
++	{ 0x900a9, 0x109 },
++	{ 0x40000, 0x811 },
++	{ 0x40020, 0x880 },
++	{ 0x40040, 0x0 },
++	{ 0x40060, 0x0 },
++	{ 0x40001, 0x4008 },
++	{ 0x40021, 0x83 },
++	{ 0x40041, 0x4f },
++	{ 0x40061, 0x0 },
++	{ 0x40002, 0x4040 },
++	{ 0x40022, 0x83 },
++	{ 0x40042, 0x51 },
++	{ 0x40062, 0x0 },
++	{ 0x40003, 0x811 },
++	{ 0x40023, 0x880 },
++	{ 0x40043, 0x0 },
++	{ 0x40063, 0x0 },
++	{ 0x40004, 0x720 },
++	{ 0x40024, 0xf },
++	{ 0x40044, 0x1740 },
++	{ 0x40064, 0x0 },
++	{ 0x40005, 0x16 },
++	{ 0x40025, 0x83 },
++	{ 0x40045, 0x4b },
++	{ 0x40065, 0x0 },
++	{ 0x40006, 0x716 },
++	{ 0x40026, 0xf },
++	{ 0x40046, 0x2001 },
++	{ 0x40066, 0x0 },
++	{ 0x40007, 0x716 },
++	{ 0x40027, 0xf },
++	{ 0x40047, 0x2800 },
++	{ 0x40067, 0x0 },
++	{ 0x40008, 0x716 },
++	{ 0x40028, 0xf },
++	{ 0x40048, 0xf00 },
++	{ 0x40068, 0x0 },
++	{ 0x40009, 0x720 },
++	{ 0x40029, 0xf },
++	{ 0x40049, 0x1400 },
++	{ 0x40069, 0x0 },
++	{ 0x4000a, 0xe08 },
++	{ 0x4002a, 0xc15 },
++	{ 0x4004a, 0x0 },
++	{ 0x4006a, 0x0 },
++	{ 0x4000b, 0x625 },
++	{ 0x4002b, 0x15 },
++	{ 0x4004b, 0x0 },
++	{ 0x4006b, 0x0 },
++	{ 0x4000c, 0x4028 },
++	{ 0x4002c, 0x80 },
++	{ 0x4004c, 0x0 },
++	{ 0x4006c, 0x0 },
++	{ 0x4000d, 0xe08 },
++	{ 0x4002d, 0xc1a },
++	{ 0x4004d, 0x0 },
++	{ 0x4006d, 0x0 },
++	{ 0x4000e, 0x625 },
++	{ 0x4002e, 0x1a },
++	{ 0x4004e, 0x0 },
++	{ 0x4006e, 0x0 },
++	{ 0x4000f, 0x4040 },
++	{ 0x4002f, 0x80 },
++	{ 0x4004f, 0x0 },
++	{ 0x4006f, 0x0 },
++	{ 0x40010, 0x2604 },
++	{ 0x40030, 0x15 },
++	{ 0x40050, 0x0 },
++	{ 0x40070, 0x0 },
++	{ 0x40011, 0x708 },
++	{ 0x40031, 0x5 },
++	{ 0x40051, 0x0 },
++	{ 0x40071, 0x2002 },
++	{ 0x40012, 0x8 },
++	{ 0x40032, 0x80 },
++	{ 0x40052, 0x0 },
++	{ 0x40072, 0x0 },
++	{ 0x40013, 0x2604 },
++	{ 0x40033, 0x1a },
++	{ 0x40053, 0x0 },
++	{ 0x40073, 0x0 },
++	{ 0x40014, 0x708 },
++	{ 0x40034, 0xa },
++	{ 0x40054, 0x0 },
++	{ 0x40074, 0x2002 },
++	{ 0x40015, 0x4040 },
++	{ 0x40035, 0x80 },
++	{ 0x40055, 0x0 },
++	{ 0x40075, 0x0 },
++	{ 0x40016, 0x60a },
++	{ 0x40036, 0x15 },
++	{ 0x40056, 0x1200 },
++	{ 0x40076, 0x0 },
++	{ 0x40017, 0x61a },
++	{ 0x40037, 0x15 },
++	{ 0x40057, 0x1300 },
++	{ 0x40077, 0x0 },
++	{ 0x40018, 0x60a },
++	{ 0x40038, 0x1a },
++	{ 0x40058, 0x1200 },
++	{ 0x40078, 0x0 },
++	{ 0x40019, 0x642 },
++	{ 0x40039, 0x1a },
++	{ 0x40059, 0x1300 },
++	{ 0x40079, 0x0 },
++	{ 0x4001a, 0x4808 },
++	{ 0x4003a, 0x880 },
++	{ 0x4005a, 0x0 },
++	{ 0x4007a, 0x0 },
++	{ 0x900aa, 0x0 },
++	{ 0x900ab, 0x790 },
++	{ 0x900ac, 0x11a },
++	{ 0x900ad, 0x8 },
++	{ 0x900ae, 0x7aa },
++	{ 0x900af, 0x2a },
++	{ 0x900b0, 0x10 },
++	{ 0x900b1, 0x7b2 },
++	{ 0x900b2, 0x2a },
++	{ 0x900b3, 0x0 },
++	{ 0x900b4, 0x7c8 },
++	{ 0x900b5, 0x109 },
++	{ 0x900b6, 0x10 },
++	{ 0x900b7, 0x10 },
++	{ 0x900b8, 0x109 },
++	{ 0x900b9, 0x10 },
++	{ 0x900ba, 0x2a8 },
++	{ 0x900bb, 0x129 },
++	{ 0x900bc, 0x8 },
++	{ 0x900bd, 0x370 },
++	{ 0x900be, 0x129 },
++	{ 0x900bf, 0xa },
++	{ 0x900c0, 0x3c8 },
++	{ 0x900c1, 0x1a9 },
++	{ 0x900c2, 0xc },
++	{ 0x900c3, 0x408 },
++	{ 0x900c4, 0x199 },
++	{ 0x900c5, 0x14 },
++	{ 0x900c6, 0x790 },
++	{ 0x900c7, 0x11a },
++	{ 0x900c8, 0x8 },
++	{ 0x900c9, 0x4 },
++	{ 0x900ca, 0x18 },
++	{ 0x900cb, 0xe },
++	{ 0x900cc, 0x408 },
++	{ 0x900cd, 0x199 },
++	{ 0x900ce, 0x8 },
++	{ 0x900cf, 0x8568 },
++	{ 0x900d0, 0x108 },
++	{ 0x900d1, 0x18 },
++	{ 0x900d2, 0x790 },
++	{ 0x900d3, 0x16a },
++	{ 0x900d4, 0x8 },
++	{ 0x900d5, 0x1d8 },
++	{ 0x900d6, 0x169 },
++	{ 0x900d7, 0x10 },
++	{ 0x900d8, 0x8558 },
++	{ 0x900d9, 0x168 },
++	{ 0x900da, 0x1ff8 },
++	{ 0x900db, 0x85a8 },
++	{ 0x900dc, 0x1e8 },
++	{ 0x900dd, 0x50 },
++	{ 0x900de, 0x798 },
++	{ 0x900df, 0x16a },
++	{ 0x900e0, 0x60 },
++	{ 0x900e1, 0x7a0 },
++	{ 0x900e2, 0x16a },
++	{ 0x900e3, 0x8 },
++	{ 0x900e4, 0x8310 },
++	{ 0x900e5, 0x168 },
++	{ 0x900e6, 0x8 },
++	{ 0x900e7, 0xa310 },
++	{ 0x900e8, 0x168 },
++	{ 0x900e9, 0xa },
++	{ 0x900ea, 0x408 },
++	{ 0x900eb, 0x169 },
++	{ 0x900ec, 0x6e },
++	{ 0x900ed, 0x0 },
++	{ 0x900ee, 0x68 },
++	{ 0x900ef, 0x0 },
++	{ 0x900f0, 0x408 },
++	{ 0x900f1, 0x169 },
++	{ 0x900f2, 0x0 },
++	{ 0x900f3, 0x8310 },
++	{ 0x900f4, 0x168 },
++	{ 0x900f5, 0x0 },
++	{ 0x900f6, 0xa310 },
++	{ 0x900f7, 0x168 },
++	{ 0x900f8, 0x1ff8 },
++	{ 0x900f9, 0x85a8 },
++	{ 0x900fa, 0x1e8 },
++	{ 0x900fb, 0x68 },
++	{ 0x900fc, 0x798 },
++	{ 0x900fd, 0x16a },
++	{ 0x900fe, 0x78 },
++	{ 0x900ff, 0x7a0 },
++	{ 0x90100, 0x16a },
++	{ 0x90101, 0x68 },
++	{ 0x90102, 0x790 },
++	{ 0x90103, 0x16a },
++	{ 0x90104, 0x8 },
++	{ 0x90105, 0x8b10 },
++	{ 0x90106, 0x168 },
++	{ 0x90107, 0x8 },
++	{ 0x90108, 0xab10 },
++	{ 0x90109, 0x168 },
++	{ 0x9010a, 0xa },
++	{ 0x9010b, 0x408 },
++	{ 0x9010c, 0x169 },
++	{ 0x9010d, 0x58 },
++	{ 0x9010e, 0x0 },
++	{ 0x9010f, 0x68 },
++	{ 0x90110, 0x0 },
++	{ 0x90111, 0x408 },
++	{ 0x90112, 0x169 },
++	{ 0x90113, 0x0 },
++	{ 0x90114, 0x8b10 },
++	{ 0x90115, 0x168 },
++	{ 0x90116, 0x1 },
++	{ 0x90117, 0xab10 },
++	{ 0x90118, 0x168 },
++	{ 0x90119, 0x0 },
++	{ 0x9011a, 0x1d8 },
++	{ 0x9011b, 0x169 },
++	{ 0x9011c, 0x80 },
++	{ 0x9011d, 0x790 },
++	{ 0x9011e, 0x16a },
++	{ 0x9011f, 0x18 },
++	{ 0x90120, 0x7aa },
++	{ 0x90121, 0x6a },
++	{ 0x90122, 0xa },
++	{ 0x90123, 0x0 },
++	{ 0x90124, 0x1e9 },
++	{ 0x90125, 0x8 },
++	{ 0x90126, 0x8080 },
++	{ 0x90127, 0x108 },
++	{ 0x90128, 0xf },
++	{ 0x90129, 0x408 },
++	{ 0x9012a, 0x169 },
++	{ 0x9012b, 0xc },
++	{ 0x9012c, 0x0 },
++	{ 0x9012d, 0x68 },
++	{ 0x9012e, 0x9 },
++	{ 0x9012f, 0x0 },
++	{ 0x90130, 0x1a9 },
++	{ 0x90131, 0x0 },
++	{ 0x90132, 0x408 },
++	{ 0x90133, 0x169 },
++	{ 0x90134, 0x0 },
++	{ 0x90135, 0x8080 },
++	{ 0x90136, 0x108 },
++	{ 0x90137, 0x8 },
++	{ 0x90138, 0x7aa },
++	{ 0x90139, 0x6a },
++	{ 0x9013a, 0x0 },
++	{ 0x9013b, 0x8568 },
++	{ 0x9013c, 0x108 },
++	{ 0x9013d, 0xb7 },
++	{ 0x9013e, 0x790 },
++	{ 0x9013f, 0x16a },
++	{ 0x90140, 0x1f },
++	{ 0x90141, 0x0 },
++	{ 0x90142, 0x68 },
++	{ 0x90143, 0x8 },
++	{ 0x90144, 0x8558 },
++	{ 0x90145, 0x168 },
++	{ 0x90146, 0xf },
++	{ 0x90147, 0x408 },
++	{ 0x90148, 0x169 },
++	{ 0x90149, 0xd },
++	{ 0x9014a, 0x0 },
++	{ 0x9014b, 0x68 },
++	{ 0x9014c, 0x0 },
++	{ 0x9014d, 0x408 },
++	{ 0x9014e, 0x169 },
++	{ 0x9014f, 0x0 },
++	{ 0x90150, 0x8558 },
++	{ 0x90151, 0x168 },
++	{ 0x90152, 0x8 },
++	{ 0x90153, 0x3c8 },
++	{ 0x90154, 0x1a9 },
++	{ 0x90155, 0x3 },
++	{ 0x90156, 0x370 },
++	{ 0x90157, 0x129 },
++	{ 0x90158, 0x20 },
++	{ 0x90159, 0x2aa },
++	{ 0x9015a, 0x9 },
++	{ 0x9015b, 0x8 },
++	{ 0x9015c, 0xe8 },
++	{ 0x9015d, 0x109 },
++	{ 0x9015e, 0x0 },
++	{ 0x9015f, 0x8140 },
++	{ 0x90160, 0x10c },
++	{ 0x90161, 0x10 },
++	{ 0x90162, 0x8138 },
++	{ 0x90163, 0x104 },
++	{ 0x90164, 0x8 },
++	{ 0x90165, 0x448 },
++	{ 0x90166, 0x109 },
++	{ 0x90167, 0xf },
++	{ 0x90168, 0x7c0 },
++	{ 0x90169, 0x109 },
++	{ 0x9016a, 0x0 },
++	{ 0x9016b, 0xe8 },
++	{ 0x9016c, 0x109 },
++	{ 0x9016d, 0x47 },
++	{ 0x9016e, 0x630 },
++	{ 0x9016f, 0x109 },
++	{ 0x90170, 0x8 },
++	{ 0x90171, 0x618 },
++	{ 0x90172, 0x109 },
++	{ 0x90173, 0x8 },
++	{ 0x90174, 0xe0 },
++	{ 0x90175, 0x109 },
++	{ 0x90176, 0x0 },
++	{ 0x90177, 0x7c8 },
++	{ 0x90178, 0x109 },
++	{ 0x90179, 0x8 },
++	{ 0x9017a, 0x8140 },
++	{ 0x9017b, 0x10c },
++	{ 0x9017c, 0x0 },
++	{ 0x9017d, 0x478 },
++	{ 0x9017e, 0x109 },
++	{ 0x9017f, 0x0 },
++	{ 0x90180, 0x1 },
++	{ 0x90181, 0x8 },
++	{ 0x90182, 0x8 },
++	{ 0x90183, 0x4 },
++	{ 0x90184, 0x0 },
++	{ 0x90006, 0x8 },
++	{ 0x90007, 0x7c8 },
++	{ 0x90008, 0x109 },
++	{ 0x90009, 0x0 },
++	{ 0x9000a, 0x400 },
++	{ 0x9000b, 0x106 },
++	{ 0xd00e7, 0x400 },
++	{ 0x90017, 0x0 },
++	{ 0x9001f, 0x2b },
++	{ 0x90026, 0x69 },
++	{ 0x400d0, 0x0 },
++	{ 0x400d1, 0x101 },
++	{ 0x400d2, 0x105 },
++	{ 0x400d3, 0x107 },
++	{ 0x400d4, 0x10f },
++	{ 0x400d5, 0x202 },
++	{ 0x400d6, 0x20a },
++	{ 0x400d7, 0x20b },
++	{ 0x2003a, 0x2 },
++	{ 0x200be, 0x3 },
++	{ 0x2000b, 0x75 },
++	{ 0x2000c, 0xe9 },
++	{ 0x2000d, 0x91c },
++	{ 0x2000e, 0x2c },
++	{ 0x9000c, 0x0 },
++	{ 0x9000d, 0x173 },
++	{ 0x9000e, 0x60 },
++	{ 0x9000f, 0x6110 },
++	{ 0x90010, 0x2152 },
++	{ 0x90011, 0xdfbd },
++	{ 0x90012, 0x2060 },
++	{ 0x90013, 0x6152 },
++	{ 0x20010, 0x5a },
++	{ 0x20011, 0x3 },
++	{ 0x40080, 0xe0 },
++	{ 0x40081, 0x12 },
++	{ 0x40082, 0xe0 },
++	{ 0x40083, 0x12 },
++	{ 0x40084, 0xe0 },
++	{ 0x40085, 0x12 },
++	{ 0x400fd, 0xf },
++	{ 0x400f1, 0xe },
++	{ 0x10011, 0x1 },
++	{ 0x10012, 0x1 },
++	{ 0x10013, 0x180 },
++	{ 0x10018, 0x1 },
++	{ 0x10002, 0x6209 },
++	{ 0x100b2, 0x1 },
++	{ 0x101b4, 0x1 },
++	{ 0x102b4, 0x1 },
++	{ 0x103b4, 0x1 },
++	{ 0x104b4, 0x1 },
++	{ 0x105b4, 0x1 },
++	{ 0x106b4, 0x1 },
++	{ 0x107b4, 0x1 },
++	{ 0x108b4, 0x1 },
++	{ 0x11011, 0x1 },
++	{ 0x11012, 0x1 },
++	{ 0x11013, 0x180 },
++	{ 0x11018, 0x1 },
++	{ 0x11002, 0x6209 },
++	{ 0x110b2, 0x1 },
++	{ 0x111b4, 0x1 },
++	{ 0x112b4, 0x1 },
++	{ 0x113b4, 0x1 },
++	{ 0x114b4, 0x1 },
++	{ 0x115b4, 0x1 },
++	{ 0x116b4, 0x1 },
++	{ 0x117b4, 0x1 },
++	{ 0x118b4, 0x1 },
++	{ 0x20089, 0x1 },
++	{ 0x20088, 0x19 },
++	{ 0xc0080, 0x0 },
++	{ 0xd0000, 0x1 },
++};
++
++static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
++	{
++		/* P0 3733mts 1D */
++		.drate = 3733,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp0_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_cfg),
++	},
++	{
++		/* P0 3733mts 2D */
++		.drate = 3733,
++		.fw_type = FW_2D_IMAGE,
++		.fsp_cfg = ddr_fsp0_2d_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_cfg),
++	},
++};
++
++/* ddr timing config params */
++struct dram_timing_info tqma93xxca_dram_timing = {
++	.ddrc_cfg = ddr_ddrc_cfg,
++	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
++	.ddrphy_cfg = ddr_ddrphy_cfg,
++	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
++	.fsp_msg = ddr_dram_fsp_msg,
++	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg),
++	.ddrphy_trained_csr = ddr_ddrphy_trained_csr,
++	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
++	.ddrphy_pie = ddr_phy_pie,
++	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
++	.fsp_table = { 3733, },
++};
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index e9512a30c8..2e02baf8dc 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -217,5 +217,6 @@ lwl-$(CONFIG_MACH_LS1021AIOT) += fsl-ls1021a-iot.dtb.o
+ lwl-$(CONFIG_MACH_ZEDBOARD) += zynq-zed.dtb.o
+ lwl-$(CONFIG_MACH_MNT_REFORM) += imx8mq-mnt-reform2.dtb.o
+ lwl-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP) += imx8mp-var-dart-dt8mcustomboard.dtb.o
++lwl-$(CONFIG_MACH_TQ_MBA9XXXCA) += imx93-tqma9352-mba93xxca.dtb.o
+ 
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+diff --git a/arch/arm/dts/imx93-tqma9352-mba93xxca.dts b/arch/arm/dts/imx93-tqma9352-mba93xxca.dts
+new file mode 100644
+index 0000000000..1de05d0573
+--- /dev/null
++++ b/arch/arm/dts/imx93-tqma9352-mba93xxca.dts
+@@ -0,0 +1,826 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++/*
++ * Copyright (c) 2022-2023 TQ-Systems GmbH <linux@ew.tq-group.com>,
++ * D-82229 Seefeld, Germany.
++ * Author: Markus Niebel
++ * Author: Alexander Stein
++ */
++/dts-v1/;
++
++#include <dt-bindings/input/input.h>
++#include <dt-bindings/leds/common.h>
++#include <dt-bindings/net/ti-dp83867.h>
++#include <dt-bindings/pwm/pwm.h>
++
++#include <arm64/freescale/imx93-tqma9352.dtsi>
++#include "imx93.dtsi"
++
++/{
++	model = "TQ-Systems i.MX93 TQMa93xxLA/TQMa93xxCA on MBa93xxCA starter kit";
++	compatible = "tq,imx93-tqma9352-mba93xxca",
++		     "tq,imx93-tqma9352", "fsl,imx93";
++	chassis-type = "embedded";
++
++	chosen {
++		stdout-path = &lpuart1;
++		environment-spi-nor {
++			compatible = "barebox,environment";
++			device-path = &environment_spi_nor;
++		};
 +	};
 +
-+	/* scan in parameters in order */
-+	while (1) {
-+		/* getopt_long stores the option index here. */
-+		int option_index = 0;
++	aliases {
++		eeprom0 = &eeprom0;
++		rtc0 = &pcf85063;
++		rtc1 = &bbnsm_rtc;
++	};
 +
-+		c = getopt_long_only (argc, argv, ":f:m:a:d:o:l:x:z:e:p:cu:v:h:i:w:",
-+			long_options, &option_index);
++	backlight_lvds: backlight {
++		compatible = "pwm-backlight";
++		pwms = <&tpm5 0 5000000 0>;
++		brightness-levels = <0 4 8 16 32 64 128 255>;
++		default-brightness-level = <7>;
++		power-supply = <&reg_12v0>;
++		enable-gpios = <&expander2 2 GPIO_ACTIVE_HIGH>;
++		status = "disabled";
++	};
 +
-+		/* Detect the end of the options. */
-+		if (c == -1)
-+			break;
++	fan0: pwm-fan {
++		compatible = "pwm-fan";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_pwmfan>;
++		fan-supply = <&reg_pwm_fan>;
++		#cooling-cells = <2>;
++		/* typical 25 kHz -> 40.000 nsec */
++		pwms = <&tpm6 0 40000 PWM_POLARITY_INVERTED>;
++		cooling-levels = <0 32 64 128 196 240>;
++		pulses-per-revolution = <2>;
++		interrupt-parent = <&gpio2>;
++		interrupts = <9 IRQ_TYPE_EDGE_FALLING>;
++		status = "disabled";
++	};
 +
-+		switch (c) {
-+		case 0:
-+			fprintf(stderr, "option %s", long_options[option_index].name);
-+			if (optarg)
-+				fprintf(stderr, " with arg %s", optarg);
-+			fprintf(stderr, "\n");
-+			break;
-+		case 'A':
-+			param_stack[p_idx].option = APPEND;
-+			param_stack[p_idx++].filename = argv[optind++];
-+			break;
-+		case 'p':
-+			printf("PARTITION:\t%s\n", optarg);
-+			param_stack[p_idx].option = PARTITION;
-+			param_stack[p_idx++].entry = (uint32_t) strtoll(optarg, NULL, 0);
-+			break;
-+		case 's':
-+			if (!strncmp(optarg, "QX", 2)) {
-+				soc = QX;
-+			} else if (!strncmp(optarg, "QM", 2)) {
-+				soc = QM;
-+			} else if (!strncmp(optarg, "DXL", 3)) {
-+				soc = DXL;
-+			} else if (!strncmp(optarg, "ULP", 3)) {
-+				soc = ULP;
-+			} else if (!strncmp(optarg, "IMX9", 4)) {
-+				soc = IMX9;
-+			} else {
-+				printf("unrecognized SOC: %s \n",optarg);
-+				exit(EXIT_FAILURE);
-+			}
-+			printf("SOC: %s \n",optarg);
-+			break;
-+		case 'b':
-+			printf("FCB:\t%s\n", optarg);
-+			param_stack[p_idx].option = FCB;
-+			param_stack[p_idx].filename = optarg;
-+			if (optind < argc && *argv[optind] != '-') {
-+				param_stack[p_idx].entry = (uint32_t) strtoll(argv[optind++], NULL, 0);
-+				p_idx++;
-+			} else {
-+				fprintf(stderr, "\n-fcb option require Two arguments: filename, load address in hex\n\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			break;
-+		case 'i':
-+			printf("SENTINEL:\t%s\n", optarg);
-+			param_stack[p_idx].option = SENTINEL;
-+			param_stack[p_idx++].filename = optarg;
-+			break;
-+		case 'w':
-+			printf("UPOWER:\t%s\n", optarg);
-+			param_stack[p_idx].option = UPOWER;
-+			param_stack[p_idx++].filename = optarg;
-+			break;
-+		case 'f':
-+			printf("SCFW:\t%s\n", optarg);
-+			param_stack[p_idx].option = SCFW;
-+			param_stack[p_idx++].filename = optarg;
-+			break;
-+		case 'O':
-+			printf("SECO:\t%s\n", optarg);
-+			param_stack[p_idx].option = SECO;
-+			param_stack[p_idx++].filename = optarg;
-+			break;
-+		case 'd':
-+			printf("DCD:\t%s\n", optarg);
-+			if (soc == DXL) {
-+				if (!strncmp(optarg, "skip", 4)) {
-+					dcd_skip = true;
-+				} else {
-+					fprintf(stderr, "\n-dcd option requires argument skip\n\n");
-+					exit(EXIT_FAILURE);
-+				}
-+			} else if ((soc == ULP) || (soc == IMX9)) {
-+				fprintf(stderr, "\n-dcd option is not used on ULP and IMX9\n\n");
-+				exit(EXIT_FAILURE);
-+			} else {
-+				param_stack[p_idx].option = DCD;
-+				param_stack[p_idx].filename = optarg;
-+				p_idx++;
-+			}
-+			break;
-+		case 'D':
-+			if ((soc == DXL) || (soc == ULP) || (soc == IMX9)) {
-+				printf("Data:\t%s", optarg);
-+				param_stack[p_idx].option = DATA;
-+				param_stack[p_idx].filename = optarg;
-+				if ((optind < argc && *argv[optind] != '-') &&
-+				    (optind+1 < argc && *argv[optind+1] != '-' )) {
-+					if (!strncmp(argv[optind], "a53", 3))
-+						param_stack[p_idx].ext = CORE_CA53;
-+					else if (!strncmp(argv[optind], "a55", 3))
-+						param_stack[p_idx].ext = CORE_CA35; /* fake id for a55 */
-+					else if (!strncmp(argv[optind], "a35", 3))
-+						param_stack[p_idx].ext = CORE_CA35;
-+					else if (!strncmp(argv[optind], "a72", 3))
-+						param_stack[p_idx].ext = CORE_CA72;
-+					else if (!strncmp(argv[optind], "m4_1", 4))
-+						param_stack[p_idx].ext = CORE_CM4_1;
-+					else if (!strncmp(argv[optind], "m4", 2))
-+						param_stack[p_idx].ext = CORE_CM4_0;
-+					else {
-+						fprintf(stderr, "ERROR: incorrect core ID for --data option: %s\n", argv[optind]);
-+						exit(EXIT_FAILURE);
-+					}
-+					printf("\tcore: %s\n", argv[optind++]);
-+					param_stack[p_idx].entry = (uint32_t) strtoll(argv[optind++], NULL, 0);
-+				} else {
-+					fprintf(stderr, "\n-data option require THREE arguments: filename, core: a55/a35/a53/a72/m4_0/m4_1, load address in hex\n\n");
-+					exit(EXIT_FAILURE);
-+				}
-+				p_idx++;
-+			} else {
-+				fprintf(stderr, "\n-data option is only used with -rev B0, or DXL or ULP or IMX9 soc.\n\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			break;
-+		case 'm':
-+			printf("CM4:\t%s", optarg);
-+			param_stack[p_idx].option = M4;
-+			param_stack[p_idx].filename = optarg;
-+			if ((optind < argc && *argv[optind] != '-') &&
-+			    (optind + 1 < argc &&*argv[optind+1] != '-' )) {
-+				param_stack[p_idx].ext = strtol(argv[optind++], NULL, 0);
-+				param_stack[p_idx].entry = (uint32_t) strtoll(argv[optind++], NULL, 0);
-+				param_stack[p_idx].dst = 0;
-+				printf("\tcore: %" PRIi64, param_stack[p_idx].ext);
-+				printf(" entry addr: 0x%08" PRIx64 , param_stack[p_idx].entry);
-+				if (optind < argc && *argv[optind] != '-') {
-+					param_stack[p_idx].dst = (uint32_t) strtoll(argv[optind++], NULL, 0);
-+					printf(" load addr: 0x%08" PRIx64 , param_stack[p_idx].dst);
-+				}
-+				printf("\n");
-+				p_idx++;
-+			} else {
-+				fprintf(stderr, "\n-m4 option require FOUR arguments: filename, core: 0/1, entry address in hex, load address in hex(optional)\n\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			break;
-+		case 'a':
-+			printf("AP:\t%s", optarg);
-+			param_stack[p_idx].option = AP;
-+			param_stack[p_idx].filename = optarg;
-+			if ((optind < argc && *argv[optind] != '-') &&
-+			    (optind + 1 < argc &&*argv[optind+1] != '-' )) {
-+				if (!strncmp(argv[optind], "a53", 3))
-+					param_stack[p_idx].ext = CORE_CA53;
-+				else if (!strncmp(argv[optind], "a55", 3))
-+					param_stack[p_idx].ext = CORE_CA35; /* fake id for a55 */
-+				else if (!strncmp(argv[optind], "a35", 3))
-+					param_stack[p_idx].ext = CORE_CA35;
-+				else if (!strncmp(argv[optind], "a72", 3))
-+					param_stack[p_idx].ext = CORE_CA72;
-+				else {
-+					fprintf(stderr, "ERROR: AP Core not found %s\n", argv[optind+2]);
-+					exit(EXIT_FAILURE);
-+				}
-+				printf("\tcore: %s", argv[optind++]);
++	gpio-keys {
++		compatible = "gpio-keys";
++		autorepeat;
 +
-+				param_stack[p_idx].entry = (uint32_t) strtoll(argv[optind++], NULL, 0);
-+				param_stack[p_idx].mu = SC_R_MU_0A;
-+				param_stack[p_idx].part = 1;
++		switch-a {
++			label = "switcha";
++			linux,code = <BTN_0>;
++			gpios = <&expander0 6 GPIO_ACTIVE_LOW>;
++			wakeup-source;
++		};
 +
-+				if (optind < argc && *argv[optind] != '-') {
-+					if (!strncmp(argv[optind], "mu0", 3))
-+						param_stack[p_idx].mu = SC_R_MU_0A;
-+					else if (!strncmp(argv[optind], "mu3", 3))
-+						param_stack[p_idx].mu = SC_R_MU_3A;
-+					else {
-+						fprintf(stderr, "ERROR: MU number %s not found\n", argv[optind]);
-+						exit(EXIT_FAILURE);
-+					}
-+					printf("\tMU: %s ", argv[optind++]);
-+				}
-+				if (optind < argc && *argv[optind] != '-') {
-+					if (!strncmp(argv[optind], "pt", 2) &&
-+					    (argv[optind][2] > '0') &&
-+					    (argv[optind][2] != '2') &&
-+					    (argv[optind][2] <= '9')) {
-+						char str[2];
-+						str[0] = argv[optind][2];
-+						str[1] = '\0';
-+						param_stack[p_idx].part = strtoll(str, NULL, 0);
-+					} else {
-+						fprintf(stderr, "ERROR: partition number %s not found\n", argv[optind]);
-+						exit(EXIT_FAILURE);
-+					}
-+					printf("\tPartition: %s ", argv[optind++]);
-+				}
-+				printf(" addr: 0x%08" PRIx64 "\n", param_stack[p_idx++].entry);
-+			} else {
-+				fprintf(stderr, "\n-ap option require THREE arguments: filename, a35/a53/a72, start address in hex\n\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			break;
-+		case 'l':
-+			printf("FLAG:\t%s\n", optarg);
-+			param_stack[p_idx].option = FLAG;
-+			param_stack[p_idx++].entry = (uint32_t) strtoll(optarg, NULL, 0);
-+			break;
-+		case 'o':
-+			printf("Output:\t%s\n", optarg);
-+			ofname = optarg;
-+			output = true;
-+			break;
-+		case 'x':
-+			printf("SCD:\t%s\n", optarg);
-+			param_stack[p_idx].option = SCD;
-+			param_stack[p_idx++].filename = optarg;
-+			break;
-+		case 'z':
-+			printf("CSF:\t%s\n", optarg);
-+			param_stack[p_idx].option = CSF;
-+			param_stack[p_idx++].filename = optarg;
-+			break;
-+		case 'e':
-+			printf("BOOT DEVICE:\t%s\n", optarg);
-+			if (!strcmp(optarg, "flexspi")) {
-+				ivt_offset = IVT_OFFSET_FLEXSPI;
-+			} else if (!strcmp(optarg, "sd")) {
-+				ivt_offset = IVT_OFFSET_SD;
-+			} else if (!strcmp(optarg, "nand")) {
-+				sector_size = 0x8000;/* sector size for NAND */
-+				if ((soc == DXL) || (soc == IMX9)) {
-+					if (optind < argc && *argv[optind] != '-') {
-+						if (!strcmp(argv[optind], "4K")) {
-+							sector_size = 0x1000;
-+						} else if (!strcmp(argv[optind], "8K")) {
-+							sector_size = 0x2000;
-+						} else if (!strcmp(argv[optind], "16K")) {
-+							sector_size = 0x4000;
-+						} else
-+							printf("\nwrong nand page size:\r\n 4K\r\n8K\r\n16K\n\n");
-+					} else {
-+						printf("\n-dev nand requires the page size:\r\n 4K\r\n8K\r\n16K\n\n");
-+					}
-+				}
-+			} else if (!strcmp(optarg, "emmc_fast")) {
-+					ivt_offset = IVT_OFFSET_EMMC;
-+					emmc_fastboot = true;/* emmc boot */
-+			} else {
-+				printf("\n-dev option, Valid boot devices are:\r\n sd\r\nflexspi\r\nnand\n\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			break;
-+		case 'c':
-+			printf("New Container: \t%d\n",++container);
-+			param_stack[p_idx++].option = NEW_CONTAINER;
-+			break;
-+		case ':':
-+			fprintf(stderr, "option %c missing arguments\n", optopt);
-+			exit(EXIT_FAILURE);
-+			break;
-+		case 'P':
-+			printf("FILEOFF:\t%s\n", optarg);
-+			param_stack[p_idx].option = FILEOFF;
-+			param_stack[p_idx++].dst = (uint64_t) strtoll(optarg, NULL, 0);
-+			break;
-+		case 'M':
-+			printf("MSG BLOCK:\t%s", optarg);
-+			param_stack[p_idx].option = MSG_BLOCK;
-+			param_stack[p_idx].filename = optarg;
-+			if ((optind < argc && *argv[optind] != '-') &&
-+			    (optind+1 < argc &&*argv[optind + 1] != '-' )) {
-+				if (!strncmp(argv[optind], "fuse", 4))
-+					param_stack[p_idx].ext = SC_R_OTP;
-+				else if (!strncmp(argv[optind], "debug", 5))
-+					param_stack[p_idx].ext = SC_R_DEBUG;
-+				else if (!strncmp(argv[optind], "field", 5))
-+					param_stack[p_idx].ext = SC_R_ROM_0;
-+				else if (!strncmp(argv[optind], "zero", 4))
-+					param_stack[p_idx].ext = SC_R_PWM_0;
-+				else if (!strncmp(argv[optind], "patch", 5))
-+					param_stack[p_idx].ext = SC_R_SNVS;
-+				else if (!strncmp(argv[optind], "degrade", 7))
-+					param_stack[p_idx].ext = SC_R_DC_0;
-+				else {
-+					fprintf(stderr, "ERROR: MSG type not found %s\n", argv[optind+2]);
-+					exit(EXIT_FAILURE);
-+				}
-+				printf("\ttype: %s", argv[optind++]);
++		switch-b {
++			label = "switchb";
++			linux,code = <BTN_1>;
++			gpios = <&expander0 7 GPIO_ACTIVE_LOW>;
++			wakeup-source;
++		};
++	};
 +
-+				param_stack[p_idx].entry = (uint32_t) strtoll(argv[optind++], NULL, 0);
++	gpio-leds {
++		compatible = "gpio-leds";
 +
-+				printf(" addr: 0x%08" PRIx64 "\n", param_stack[p_idx++].entry);
-+			} else {
-+				fprintf(stderr, "\nmsg block option require THREE arguments: filename, debug/fuse/field/patch, start address in hex\n\n");
-+				exit(EXIT_FAILURE);
-+			}
-+			break;
-+		case 'u':
-+			fuse_version = (uint8_t) (strtoll(optarg, NULL, 0) & 0xFF);
-+			break;
-+		case 'v':
-+			sw_version = (uint16_t) (strtoll(optarg, NULL, 0) & 0xFFFF);
-+			break;
-+		case 'h':
-+			images_hash = optarg;
-+			break;
-+		case 'X':
-+			printf("Input container binary to be deconstructed: %s\n", optarg);
-+			ifname = optarg;
-+			extract = true;
-+			break;
-+		case 'R':
-+			printf("Input container binary to be parsed: %s\n", optarg);
-+			ifname = optarg;
-+			parse = true;
-+			break;
-+		case 'y':
-+			printf("Dummy V2X image at:\t%s\n", optarg);
-+			param_stack[p_idx].option = DUMMY_V2X;
-+			param_stack[p_idx++].entry = (uint64_t) strtoll(optarg, NULL, 0);
-+			break;
-+		case 'G':
-+			printf("Padding length:\t%s bytes\n", optarg);
-+			file_off = atoi(optarg);
-+			break;
-+		case '?':
-+		default:
-+			/* invalid option */
-+			fprintf(stderr, "option '%c' is invalid: ignored\n",
-+				optopt);
-+			exit(EXIT_FAILURE);
-+		}
-+	}
++		led-1 {
++			color = <LED_COLOR_ID_GREEN>;
++			function = LED_FUNCTION_STATUS;
++			gpios = <&expander2 6 GPIO_ACTIVE_HIGH>;
++			linux,default-trigger = "default-on";
++		};
 +
-+	if (!parse) {
-+		printf("CONTAINER FUSE VERSION:\t0x%02x\n", fuse_version);
-+		printf("CONTAINER SW VERSION:\t0x%04x\n", sw_version);
-+	}
++		led-2 {
++			color = <LED_COLOR_ID_AMBER>;
++			gpios = <&expander2 7 GPIO_ACTIVE_HIGH>;
++		};
++	};
 +
-+	param_stack[p_idx].option = NO_IMG; /* null terminate the img stack */
++	iio-hwmon {
++		compatible = "iio-hwmon";
++		io-channels = <&adc1 0>, <&adc1 1>, <&adc1 2>, <&adc1 3>;
++	};
 +
-+	if (soc == NONE) {
-+		fprintf(stderr, " No SOC defined");
-+		exit(EXIT_FAILURE);
-+	}
++	reg_3v3: regulator-3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "V_3V3_MB";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++	};
 +
-+	if (parse || extract) {
-+		parse_container_hdrs_qx_qm_b0(ifname, extract, soc, file_off);
-+		return 0;
-+	}
++	reg_5v0: regulator-5v0 {
++		compatible = "regulator-fixed";
++		regulator-name = "V_5V0_MB";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++	};
 +
-+	if (container < 0) {
-+		/* check to make sure there is at least 1 container defined */
-+		fprintf(stderr, " No Container defined");
-+		exit(EXIT_FAILURE);
-+	}
++	reg_12v0: regulator-12v0 {
++		compatible = "regulator-fixed";
++		regulator-name = "V_12V";
++		regulator-min-microvolt = <12000000>;
++		regulator-max-microvolt = <12000000>;
++		gpio = <&expander1 7 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
 +
-+	if (!output) {
-+		fprintf(stderr, "mandatory args scfw and output file name missing! abort\n");
-+		exit(EXIT_FAILURE);
-+	}
++	reg_mpcie_1v5: regulator-mpcie-1v5 {
++		compatible = "regulator-fixed";
++		regulator-name = "V_1V5_MPCIE";
++		regulator-min-microvolt = <1500000>;
++		regulator-max-microvolt = <1500000>;
++		gpio = <&expander0 2 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
 +
-+	build_container_qx_qm_b0(soc, sector_size, ivt_offset, ofname, emmc_fastboot,
-+				 (image_t *) param_stack, dcd_skip, fuse_version,
-+				 sw_version, images_hash);
++	reg_mpcie_3v3: regulator-mpcie-3v3 {
++		compatible = "regulator-fixed";
++		regulator-name = "V_3V3_MPCIE";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		gpio = <&expander0 3 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++	};
 +
-+	printf("DONE.\n");
-+	printf("Note: Please copy image to offset: IVT_OFFSET + IMAGE_OFFSET\n");
++	reg_pwm_fan: regulator-pwm-fan {
++		compatible = "regulator-fixed";
++		regulator-name = "FAN_PWR";
++		regulator-min-microvolt = <12000000>;
++		regulator-max-microvolt = <12000000>;
++		gpio = <&expander0 0 GPIO_ACTIVE_HIGH>;
++		enable-active-high;
++		vin-supply = <&reg_12v0>;
++	};
 +
-+	return 0;
-+}
++	thermal-zones {
++		cpu-thermal {
++			trips {
++				cpu_active0: trip-active0 {
++					temperature = <40000>;
++					hysteresis = <5000>;
++					type = "active";
++				};
 +
++				cpu_active1: trip-active1 {
++					temperature = <48000>;
++					hysteresis = <3000>;
++					type = "active";
++				};
++
++				cpu_active2: trip-active2 {
++					temperature = <60000>;
++					hysteresis = <10000>;
++					type = "active";
++				};
++			};
++
++			cooling-maps {
++				map1 {
++					trip = <&cpu_active0>;
++					cooling-device = <&fan0 1 1>;
++				};
++
++				map2 {
++					trip = <&cpu_active1>;
++					cooling-device = <&fan0 2 2>;
++				};
++
++				map3 {
++					trip = <&cpu_active2>;
++					cooling-device = <&fan0 3 3>;
++				};
++			};
++		};
++	};
++};
++
++&adc1 {
++	status = "okay";
++};
++
++&eqos {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_eqos>;
++	phy-mode = "rgmii-id";
++	phy-handle = <&ethphy_eqos>;
++	status = "okay";
++
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy_eqos: ethernet-phy@0 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <0>;
++			pinctrl-names = "default";
++			pinctrl-0 = <&pinctrl_eqos_phy>;
++			reset-gpios = <&expander1 0 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <500000>;
++			reset-deassert-us = <50000>;
++			interrupt-parent = <&gpio3>;
++			interrupts = <26 IRQ_TYPE_EDGE_FALLING>;
++			enet-phy-lane-no-swap;
++			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
++			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
++			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
++			ti,dp83867-rxctrl-strap-quirk;
++			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
++		};
++	};
++};
++
++&fec {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_fec>;
++	phy-mode = "rgmii-id";
++	phy-handle = <&ethphy_fec>;
++	fsl,magic-packet;
++	status = "okay";
++
++	mdio {
++		#address-cells = <1>;
++		#size-cells = <0>;
++		clock-frequency = <5000000>;
++
++		ethphy_fec: ethernet-phy@0 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <0>;
++			pinctrl-names = "default";
++			pinctrl-0 = <&pinctrl_fec_phy>;
++			reset-gpios = <&expander1 1 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <500000>;
++			reset-deassert-us = <50000>;
++			interrupt-parent = <&gpio3>;
++			interrupts = <27 IRQ_TYPE_EDGE_FALLING>;
++			enet-phy-lane-no-swap;
++			ti,rx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
++			ti,tx-internal-delay = <DP83867_RGMIIDCTL_2_25_NS>;
++			ti,fifo-depth = <DP83867_PHYCR_FIFO_DEPTH_4_B_NIB>;
++			ti,dp83867-rxctrl-strap-quirk;
++			ti,clk-output-sel = <DP83867_CLK_O_SEL_OFF>;
++		};
++	};
++};
++
++&flexcan1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_flexcan1>;
++	xceiver-supply = <&reg_3v3>;
++	status = "okay";
++};
++
++&flexcan2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_flexcan2>;
++	xceiver-supply = <&reg_3v3>;
++	status = "okay";
++};
++
++&gpio1 {
++	expander-irq-hog {
++		gpio-hog;
++		gpios = <12 GPIO_ACTIVE_LOW>;
++		input;
++		line-name = "PEX_INT#";
++	};
++
++	tcpc-irq-hog {
++		gpio-hog;
++		gpios = <2 GPIO_ACTIVE_LOW>;
++		input;
++		line-name = "USB_C_ALERT#";
++	};
++};
++
++&lpi2c1 {
++	pca9451a: pmic@25 {
++		compatible = "nxp,pca9451a";
++		reg = <0x25>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_pca9451>;
++		interrupt-parent = <&gpio1>;
++		interrupts = <3 IRQ_TYPE_LEVEL_LOW>;
++
++		pca9451a_regulators: regulators {
++			/* V_0V8_SOC - hw developer guide: 0.75 .. 0.9 */
++			buck1: BUCK1 {
++				regulator-name = "BUCK1";
++				regulator-min-microvolt = <750000>;
++				regulator-max-microvolt = <900000>;
++				regulator-boot-on;
++				regulator-always-on;
++				regulator-ramp-delay = <3125>;
++			};
++
++			/* V_DDRQ - 1.1 LPDDR4 or 0.6 LPDDR4X */
++			buck2: BUCK2 {
++				regulator-name = "BUCK2";
++				regulator-min-microvolt = <600000>;
++				regulator-max-microvolt = <600000>;
++				regulator-boot-on;
++				regulator-always-on;
++				regulator-ramp-delay = <3125>;
++			};
++
++			/* V_3V3 - EEPROM, RTC, ... */
++			buck4: BUCK4{
++				regulator-name = "BUCK4";
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			/* V_1V8 - SPI NOR, eMMC, RAM VDD1... */
++			buck5: BUCK5{
++				regulator-name = "BUCK5";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			/* V_1V1 - RAM VDD2*/
++			buck6: BUCK6 {
++				regulator-name = "BUCK6";
++				regulator-min-microvolt = <1100000>;
++				regulator-max-microvolt = <1100000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			/* V_1V8_BBSM, fix 1.8 */
++			ldo1: LDO1 {
++				regulator-name = "LDO1";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			/* V_0V8_ANA */
++			ldo4: LDO4 {
++				regulator-name = "LDO4";
++				regulator-min-microvolt = <800000>;
++				regulator-max-microvolt = <800000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++
++			/* V_SD2 - 3.3/1.8V USDHC2 io Voltage */
++			ldo5: LDO5 {
++				regulator-name = "LDO5";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <3300000>;
++				regulator-boot-on;
++				regulator-always-on;
++			};
++		};
++	};
++};
++
++&lpi2c3 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	clock-frequency = <400000>;
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&pinctrl_lpi2c3>;
++	pinctrl-1 = <&pinctrl_lpi2c3>;
++	status = "okay";
++
++	temperature-sensor@1c {
++		compatible = "nxp,se97b", "jedec,jc-42.4-temp";
++		reg = <0x1c>;
++	};
++
++	eeprom2: eeprom@54 {
++		compatible = "nxp,se97b", "atmel,24c02";
++		reg = <0x54>;
++		pagesize = <16>;
++		vcc-supply = <&reg_3v3>;
++	};
++
++	expander0: gpio@70 {
++		compatible = "nxp,pca9538";
++		reg = <0x70>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_pexp_irq>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		interrupt-controller;
++		#interrupt-cells = <2>;
++		interrupt-parent = <&gpio1>;
++		interrupts = <12 IRQ_TYPE_LEVEL_LOW>;
++		vcc-supply = <&reg_3v3>;
++		gpio-line-names = "FAN_PWR_EN", "MPCIE_WAKE#",
++				  "MPCIE_1V5_EN", "MPCIE_3V3_EN",
++				  "MPCIE_PERST#", "MPCIE_WDISABLE#",
++				  "BUTTON_A#", "BUTTON_B#";
++
++		mpcie-wake-hog {
++			gpio-hog;
++			gpios = <1 GPIO_ACTIVE_LOW>;
++			input;
++			line-name = "MPCIE_WAKE#";
++		};
++
++		/*
++		 * Controls the mPCIE slot reset which is low active as
++		 * reset signal. The output-low states, the signal is
++		 * inactive, e.g. not in reset
++		 */
++		mpcie_rst_hog: mpcie-rst-hog {
++			gpio-hog;
++			gpios = <4 GPIO_ACTIVE_LOW>;
++			output-low;
++			line-name = "MPCIE_PERST#";
++		};
++
++		/*
++		 * Controls the mPCIE slot WDISABLE pin which is low active
++		 * as disable signal. The output-low states, the signal is
++		 * inactive, e.g. not disabled
++		 */
++		mpcie_wdisable_hog: mpcie-wdisable-hog {
++			gpio-hog;
++			gpios = <5 GPIO_ACTIVE_LOW>;
++			output-low;
++			line-name = "MPCIE_WDISABLE#";
++		};
++	};
++
++	expander1: gpio@71 {
++		compatible = "nxp,pca9538";
++		reg = <0x71>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		vcc-supply = <&reg_3v3>;
++		gpio-line-names = "ENET1_RESET#", "ENET2_RESET#",
++				  "USB_RESET#", "",
++				  "WLAN_PD#", "WLAN_W_DISABLE#",
++				  "WLAN_PERST#", "12V_EN";
++
++		/*
++		 * Controls the on board USB Hub reset which is low
++		 * active as reset signal. The output-low states, the
++		 * signal is inactive, e.g. no reset
++		 */
++		usb-reset-hog {
++			gpio-hog;
++			gpios = <2 GPIO_ACTIVE_LOW>;
++			output-low;
++			line-name = "USB_RESET#";
++		};
++
++		/*
++		 * Controls the WiFi card PD pin which is low active
++		 * as power down signal. The output-high states, the signal
++		 * is active, e.g. card is powered down
++		 */
++		wlan-pd-hog {
++			gpio-hog;
++			gpios = <4 GPIO_ACTIVE_LOW>;
++			output-high;
++			line-name = "WLAN_PD#";
++		};
++
++		/*
++		 * Controls the WiFi card disable pin which is low active
++		 * as disable signal. The output-high states, the signal
++		 * is active, e.g. card is disabled
++		 */
++		wlan-wdisable-hog {
++			gpio-hog;
++			gpios = <5 GPIO_ACTIVE_LOW>;
++			output-high;
++			line-name = "WLAN_W_DISABLE#";
++		};
++
++		/*
++		 * Controls the WiFi card reset pin which is low active
++		 * as reset signal. The output-high states, the signal
++		 * is active, e.g. card in reset
++		 */
++		wlan-perst-hog {
++			gpio-hog;
++			gpios = <6 GPIO_ACTIVE_LOW>;
++			output-high;
++			line-name = "WLAN_PERST#";
++		};
++	};
++
++	expander2: gpio@72 {
++		compatible = "nxp,pca9538";
++		reg = <0x72>;
++		gpio-controller;
++		#gpio-cells = <2>;
++		vcc-supply = <&reg_3v3>;
++		gpio-line-names = "LCD_RESET#", "LCD_PWR_EN",
++				  "LCD_BLT_EN", "DP_EN",
++				  "MIPI_CSI_EN", "MIPI_CSI_RST#",
++				  "USER_LED1", "USER_LED2";
++	};
++};
++
++&lpi2c5 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++	clock-frequency = <400000>;
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&pinctrl_lpi2c5>;
++	pinctrl-1 = <&pinctrl_lpi2c5>;
++	status = "okay";
++};
++
++&lpspi6 {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&pinctrl_lpspi6>;
++	pinctrl-1 = <&pinctrl_lpspi6>;
++	status = "okay";
++};
++
++&lpuart1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart1>;
++	status = "okay";
++};
++
++&lpuart2 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart2>;
++	linux,rs485-enabled-at-boot-time;
++	status = "okay";
++};
++
++/* disabled per default, console for M33 */
++&lpuart3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart3>;
++	status = "disabled";
++};
++
++&lpuart6 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart6>;
++	status = "okay";
++};
++
++&lpuart8 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_uart8>;
++	status = "okay";
++};
++
++&tpm5 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_tpm5>;
++};
++
++&tpm6 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_tpm6>;
++	status = "okay";
++};
++
++&usdhc2 {
++	pinctrl-names = "default", "state_100mhz", "state_200mhz";
++	pinctrl-0 = <&pinctrl_usdhc2_hs>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-1 = <&pinctrl_usdhc2_uhs>, <&pinctrl_usdhc2_gpio>;
++	pinctrl-2 = <&pinctrl_usdhc2_uhs>, <&pinctrl_usdhc2_gpio>;
++	cd-gpios = <&gpio3 0 GPIO_ACTIVE_LOW>;
++	vmmc-supply = <&reg_usdhc2_vmmc>;
++	bus-width = <4>;
++	no-sdio;
++	no-mmc;
++	disable-wp;
++	status = "okay";
++};
++
++&iomuxc {
++	pinctrl_eqos: eqosgrp {
++		fsl,pins = <
++			/* PD | FSEL_2 | DSE X4 */
++			MX93_PAD_ENET1_MDC__ENET_QOS_MDC		0x51e
++			MX93_PAD_ENET1_MDIO__ENET_QOS_MDIO		0x4000051e
++			/* PD | FSEL_2 | DSE X6 */
++			MX93_PAD_ENET1_RD0__ENET_QOS_RGMII_RD0		0x57e
++			MX93_PAD_ENET1_RD1__ENET_QOS_RGMII_RD1		0x57e
++			MX93_PAD_ENET1_RD2__ENET_QOS_RGMII_RD2		0x57e
++			MX93_PAD_ENET1_RD3__ENET_QOS_RGMII_RD3		0x57e
++			/* PD | FSEL_3 | DSE X6 */
++			MX93_PAD_ENET1_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK	0x5fe
++			MX93_PAD_ENET1_RX_CTL__ENET_QOS_RGMII_RX_CTL	0x57e
++			/* PD | FSEL_2 | DSE X4 */
++			MX93_PAD_ENET1_TD0__ENET_QOS_RGMII_TD0		0x51e
++			MX93_PAD_ENET1_TD1__ENET_QOS_RGMII_TD1		0x51e
++			MX93_PAD_ENET1_TD2__ENET_QOS_RGMII_TD2		0x51e
++			MX93_PAD_ENET1_TD3__ENET_QOS_RGMII_TD3		0x51e
++			MX93_PAD_ENET1_TX_CTL__ENET_QOS_RGMII_TX_CTL	0x51e
++			/* PD | FSEL_3 | DSE X3 */
++			MX93_PAD_ENET1_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK	0x58e
++		>;
++	};
++
++	pinctrl_eqos_phy: eqosphygrp {
++		fsl,pins = <
++			MX93_PAD_CCM_CLKO1__GPIO3_IO26		0x1306
++		>;
++	};
++
++	pinctrl_fec: fecgrp {
++		fsl,pins = <
++			/* PD | FSEL_2 | DSE X4 */
++			MX93_PAD_ENET2_MDC__ENET1_MDC			0x51e
++			MX93_PAD_ENET2_MDIO__ENET1_MDIO			0x4000051e
++			/* PD | FSEL_2 | DSE X6 */
++			MX93_PAD_ENET2_RD0__ENET1_RGMII_RD0		0x57e
++			MX93_PAD_ENET2_RD1__ENET1_RGMII_RD1		0x57e
++			MX93_PAD_ENET2_RD2__ENET1_RGMII_RD2		0x57e
++			MX93_PAD_ENET2_RD3__ENET1_RGMII_RD3		0x57e
++			/* PD | FSEL_3 | DSE X6 */
++			MX93_PAD_ENET2_RXC__ENET1_RGMII_RXC		0x5fe
++			MX93_PAD_ENET2_RX_CTL__ENET1_RGMII_RX_CTL	0x57e
++			/* PD | FSEL_2 | DSE X4 */
++			MX93_PAD_ENET2_TD0__ENET1_RGMII_TD0		0x51e
++			MX93_PAD_ENET2_TD1__ENET1_RGMII_TD1		0x51e
++			MX93_PAD_ENET2_TD2__ENET1_RGMII_TD2		0x51e
++			MX93_PAD_ENET2_TD3__ENET1_RGMII_TD3		0x51e
++			MX93_PAD_ENET2_TX_CTL__ENET1_RGMII_TX_CTL	0x51e
++			/* PD | FSEL_3 | DSE X3 */
++			MX93_PAD_ENET2_TXC__ENET1_RGMII_TXC		0x58e
++		>;
++	};
++
++	pinctrl_fec_phy: fecphygrp {
++		fsl,pins = <
++			MX93_PAD_CCM_CLKO2__GPIO3_IO27		0x1306
++		>;
++	};
++
++	pinctrl_flexcan1: flexcan1grp {
++		fsl,pins = <
++			MX93_PAD_PDM_BIT_STREAM0__CAN1_RX	0x139e
++			MX93_PAD_PDM_CLK__CAN1_TX		0x139e
++		>;
++	};
++
++	pinctrl_flexcan2: flexcan2grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO25__CAN2_TX		0x139e
++			MX93_PAD_GPIO_IO27__CAN2_RX		0x139e
++		>;
++	};
++
++	pinctrl_lpi2c3: lpi2c3grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO28__LPI2C3_SDA		0x40000b9e
++			MX93_PAD_GPIO_IO29__LPI2C3_SCL		0x40000b9e
++		>;
++	};
++
++	pinctrl_lpi2c5: lpi2c5grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO22__LPI2C5_SDA		0x40000b9e
++			MX93_PAD_GPIO_IO23__LPI2C5_SCL		0x40000b9e
++		>;
++	};
++
++	pinctrl_lpspi6: lpspi6grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO00__LPSPI6_PCS0		0x3fe
++			MX93_PAD_GPIO_IO01__LPSPI6_SIN		0x3fe
++			MX93_PAD_GPIO_IO02__LPSPI6_SOUT		0x3fe
++			MX93_PAD_GPIO_IO03__LPSPI6_SCK		0x3fe
++		>;
++	};
++
++	pinctrl_pexp_irq: pexpirqgrp {
++		fsl,pins = <
++			MX93_PAD_SAI1_TXC__GPIO1_IO12		0x1306
++		>;
++	};
++
++	pinctrl_pwmfan: pwmfangrp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO09__GPIO2_IO09		0x1306
++		>;
++	};
++
++	pinctrl_tpm5: tpm5grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO06__TPM5_CH0		0x57e
++		>;
++	};
++
++	pinctrl_tpm6: tpm6grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO08__TPM6_CH0		0x57e
++		>;
++	};
++
++	pinctrl_typec: typecgrp {
++		fsl,pins = <
++			MX93_PAD_I2C2_SCL__GPIO1_IO02		0x1306
++		>;
++	};
++
++	pinctrl_uart1: uart1grp {
++		fsl,pins = <
++			MX93_PAD_UART1_RXD__LPUART1_RX		0x31e
++			MX93_PAD_UART1_TXD__LPUART1_TX		0x31e
++		>;
++	};
++
++	pinctrl_uart2: uart2grp {
++		fsl,pins = <
++			MX93_PAD_UART2_TXD__LPUART2_TX		0x31e
++			MX93_PAD_UART2_RXD__LPUART2_RX		0x31e
++			MX93_PAD_SAI1_TXD0__LPUART2_RTS_B   0x51e
++		>;
++	};
++
++	pinctrl_uart3: uart3grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO14__LPUART3_TX		0x31e
++			MX93_PAD_GPIO_IO15__LPUART3_RX		0x31e
++		>;
++	};
++
++	pinctrl_uart6: uart6grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO04__LPUART6_TX		0x31e
++			MX93_PAD_GPIO_IO05__LPUART6_RX		0x31e
++		>;
++	};
++
++	pinctrl_uart8: uart8grp {
++		fsl,pins = <
++			MX93_PAD_GPIO_IO12__LPUART8_TX		0x31e
++			MX93_PAD_GPIO_IO13__LPUART8_RX		0x31e
++		>;
++	};
++
++	pinctrl_usdhc2_gpio: usdhc2gpiogrp {
++		fsl,pins = <
++			MX93_PAD_SD2_CD_B__GPIO3_IO00		0x31e
++		>;
++	};
++
++	pinctrl_usdhc2_hs: usdhc2hsgrp {
++		fsl,pins = <
++			/* HYS | PD | PU | FSEL_3 | DSE X5 */
++			MX93_PAD_SD2_CLK__USDHC2_CLK		0x17be
++			/* HYS | PD | PU | FSEL_3 | DSE X4 */
++			MX93_PAD_SD2_CMD__USDHC2_CMD		0x139e
++			/* HYS | PD | PU | FSEL_3 | DSE X3 */
++			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x138e
++			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x138e
++			MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x138e
++			MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x138e
++			/* PD | PU | FSEL_2 | DSE X3 */
++			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x50e
++		>;
++	};
++
++	pinctrl_usdhc2_uhs: usdhc2uhsgrp {
++		fsl,pins = <
++			/* HYS | PD | PU | FSEL_3 | DSE X6 */
++			MX93_PAD_SD2_CLK__USDHC2_CLK		0x17fe
++			/* HYS | PD | PU | FSEL_3 | DSE X4 */
++			MX93_PAD_SD2_CMD__USDHC2_CMD		0x139e
++			MX93_PAD_SD2_DATA0__USDHC2_DATA0	0x139e
++			MX93_PAD_SD2_DATA1__USDHC2_DATA1	0x139e
++			MX93_PAD_SD2_DATA2__USDHC2_DATA2	0x139e
++			MX93_PAD_SD2_DATA3__USDHC2_DATA3	0x139e
++			/* PD | PU | FSEL_2 | DSE X3 */
++			MX93_PAD_SD2_VSELECT__USDHC2_VSELECT	0x50e
++		>;
++	};
++};
++
++&usbotg1 {
++	status = "okay";
++};
++
++&usbotg2 {
++	status = "okay";
++	dr_mode = "host";
++};
++
++&{flexspi1/flash@0} {
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		partition@0 {
++			label = "barebox";
++			reg = <0x0 0x400000>;
++		};
++
++		environment_spi_nor: partition@400000 {
++			label = "barebox-environment";
++			reg = <0x400000 0x100000>;
++		};
++	};
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 358d1ef362..fc1021c0ec 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -715,6 +715,15 @@ config MACH_ZII_IMX8MQ_DEV
+ 	select MCI_IMX_ESDHC_PBL
+ 	select MACH_ZII_COMMON
+ 
++comment "i.MX93 boards"
++
++config MACH_TQ_MBA9XXXCA
++	bool "TQ i.MX93 on MBa9xxxCA Board"
++	select ARCH_IMX93
++	select IMX9_DRAM
++	select FIRMWARE_IMX93_ATF
++	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
++
+ endif
+ 
+ endmenu
+diff --git a/images/Makefile.imx b/images/Makefile.imx
+index 8b6958872a..693f7ca12a 100644
+--- a/images/Makefile.imx
++++ b/images/Makefile.imx
+@@ -495,3 +495,14 @@ CFG_start_mnt_reform.pblb.imximg = $(board)/mnt-reform/flash-header-mnt-reform.i
+ MAX_PBL_MEMORY_SIZE_start_mnt_reform = 0x3f000
+ FILE_barebox-mnt-reform.img = start_mnt_reform.pblb.imximg
+ image-$(CONFIG_MACH_MNT_REFORM) += barebox-mnt-reform.img
++
++quiet_cmd_imx9img = IMX9IMG  $@
++cmd_imx9img = $(objtree)/scripts/imx9image -soc IMX9 -c -ap $< a55 0x2049A000 -out $@ \
++		-pblsize $($(patsubst $(obj)/%.pblb,PBL_MEMORY_SIZE_%,$<)) > /dev/null
++
++$(obj)/%.imx9img: $(obj)/% FORCE
++	$(call if_changed,imx9img)
++
++pblb-$(CONFIG_MACH_TQ_MBA9XXXCA) += start_imx93_tqma9352_mba93xxca
++FILE_barebox-tqmba9xxxca.img = start_imx93_tqma9352_mba93xxca.pblb.imx9img
++image-$(CONFIG_MACH_TQ_MBA9XXXCA) += barebox-tqmba9xxxca.img
 -- 
 2.39.2
 
