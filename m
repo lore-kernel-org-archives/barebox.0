@@ -1,79 +1,79 @@
-Delivery-date: Fri, 10 Nov 2023 14:02:08 +0100
+Delivery-date: Fri, 10 Nov 2023 14:02:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1R9E-005rhz-04
+	id 1r1R9H-005riX-0g
 	for lore@lore.pengutronix.de;
-	Fri, 10 Nov 2023 14:02:08 +0100
+	Fri, 10 Nov 2023 14:02:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1R9C-0005F2-BY
-	for lore@pengutronix.de; Fri, 10 Nov 2023 14:02:08 +0100
+	id 1r1R9F-0005I6-UX
+	for lore@pengutronix.de; Fri, 10 Nov 2023 14:02:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gsw9BU6W/2EYbZsXfKrgweSPuICs+pCLeeFLuvelkaU=; b=hd5UVXMkHc4gaFU0d4WfMslKVc
-	6G83kMC5WUVxA6Durq2o1LVkayuc3vF8fB9bcncph73VWa7uJf9RwqlRfvh++yUBaZICCh/JlB3HP
-	9ZsMA6nKlME6ioBFz53LCbvFLD/1ql6TdQ/T9L1yLreAwfq+2kQe/wlkD8hzEHYlpsE+tZIC1HwPP
-	ZcclWT/LdTuTyRkgjv3ijySJseWbWHxgEsvVwmAVrHd3TG39h6HzI+soEwY84z/4G+K371r2owMCV
-	uXofIvfwiA5gNTXMnZ1ALNUFCKSJv0pIeuGhAK86GPJOkMtkhBj5IidIyvy6tJBNTXVOqcEJT+U9I
-	UPmtmvCQ==;
+	bh=0SxjeQoutY6rC98mT1SZgWqwgIU7rzJWbF62UT1IJrg=; b=eXPQOwbqsaktm3PmHOzggZ1HdV
+	hZhMPTwbf9AqAkWBCTu2BZHcrQPCqrfgCc0D96VhFJWka2uWV0xjTaKdaK4xNa+uohssSbhtmLn9K
+	5OnRwc/y5rXsXMDGWrIANCotYrCrL7FQlE9E+/6R2ht92R/GE5XtLz8mK1bl56utQjuyAaiZgrC59
+	tRfB4MfuUTb0WGmrnqAcO4hLQDzysVEOk2iPENo1kS37S+lWmc0qpro+2NCYadD5CBFkmEz3mznpL
+	Hdbo6aZLyo1Qlg468bvvb+OOv49K+saA99hnEJXiRNW7LAizkcv2XM1Lai64o/D1ey12Cr7Y6C9Oi
+	Bh9gDeXw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R81-008m30-2f;
-	Fri, 10 Nov 2023 13:00:53 +0000
+	id 1r1R88-008m9Y-0q;
+	Fri, 10 Nov 2023 13:01:00 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R7r-008lwI-1X
+	id 1r1R7v-008lyP-1I
 	for barebox@bombadil.infradead.org;
-	Fri, 10 Nov 2023 13:00:43 +0000
+	Fri, 10 Nov 2023 13:00:47 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=gsw9BU6W/2EYbZsXfKrgweSPuICs+pCLeeFLuvelkaU=; b=hM9NCT8YtLA7Kwp6rBqGykCPOR
-	McaodpwTt7EqbHOlMjdIGDd9zWSYCcqYBnPuLektuVTsNlUU8c56nOEMugs6CwWp3yE4gb4eeAj9V
-	XIY49IppxgcVZauiwPCTb278Fhys58fPIUOczxnPswkxXPVUrx84jrcGaV0zAehr45cKj9L3mSMLz
-	ZZS5602WVGUSoSKSH4sGJvYiuk4fjBJsq5i0OYq+SVMxU2yJnVMM3KxvWOqjhtvxPYNel69kiKpID
-	/0RmSLUwbc3StwCvXYMAbS1H2mIF9c7tP0v+ODy+BhIwdysW63VGaekGenUerDyUnVmLVHHPydSEJ
-	+5wx2xvg==;
+	bh=0SxjeQoutY6rC98mT1SZgWqwgIU7rzJWbF62UT1IJrg=; b=ZDFc6Z49W48S2FXYvbJGzNhtOj
+	kngbPNfhcsFL/XzyCi0IMcyT8QVUTdc7RLHlH6gsyFWq4UT0grhQuk92iDODL9yLW8e+PbrvdIYPU
+	tca6UrWUOSe9WChVzf54qFSVnM3hLIwKpgUaNsKrQOzUNuhcKJh0rtReV25PE8m3i3FBWCN4Bo2X/
+	9NMQo/u7jJ+bJU1YF3EdM91nSs+L/8uWGYI6twEdOVqO7/qvqAX05Rr01KWJuSHXus9jwXVocb2Od
+	fysJcIOzEwUlffuMcyRcnEbWsk1zXOtX3iOAHh/NFmxP1+OK+dFRaRmWKKlhE931IbxOhsbwdigWR
+	Ko9LTkFQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R7f-00Fc3s-0f
+	id 1r1R7f-00Fc3p-0W
 	for barebox@lists.infradead.org;
-	Fri, 10 Nov 2023 13:00:35 +0000
+	Fri, 10 Nov 2023 13:00:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R7e-00043I-HX; Fri, 10 Nov 2023 14:00:30 +0100
+	id 1r1R7e-00043F-Ft; Fri, 10 Nov 2023 14:00:30 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R7d-0081ZA-Be; Fri, 10 Nov 2023 14:00:29 +0100
+	id 1r1R7d-0081Z4-9T; Fri, 10 Nov 2023 14:00:29 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R7d-0096NL-0s;
+	id 1r1R7d-0096N3-0k;
 	Fri, 10 Nov 2023 14:00:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 10 Nov 2023 14:00:23 +0100
-Message-Id: <20231110130028.2123895-9-s.hauer@pengutronix.de>
+Date: Fri, 10 Nov 2023 14:00:21 +0100
+Message-Id: <20231110130028.2123895-7-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231110130028.2123895-1-s.hauer@pengutronix.de>
 References: <20231110130028.2123895-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231110_130032_608569_894745E1 
-X-CRM114-Status: GOOD (  20.57  )
+X-CRM114-CacheID: sfid-20231110_130044_313533_7C9CA506 
+X-CRM114-Status: GOOD (  19.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,377 +96,224 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 08/13] ddr: imx8m: get rid of hardcoded phy address
+Subject: [PATCH 06/13] ddr: imx8m: move phy_base to controller struct
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The phy address is hardcoded in several functions. Use the address
-provided in struct dram_controller instead. Some functions are used
-from legacy DDR setup in board code which only uses parts of the
-DDR initialization code. The board code doesn't have any struct
-dram_controller *, so provide some static inline wrappers for these
-functions.
+The phy_base will be different on i.MX9, so move the base address to
+struct dram_controller.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c | 10 ++---
- .../boards/phytec-som-imx8mq/ddrphy_train.c   | 12 +++---
- arch/arm/boards/zii-imx8mq-dev/ddrphy_train.c | 10 ++---
- drivers/ddr/imx/ddrphy_train.c                | 14 +++----
- drivers/ddr/imx/ddrphy_utils.c                | 40 ++++++++-----------
- include/soc/imx8m/ddr.h                       | 17 ++++++--
- 6 files changed, 53 insertions(+), 50 deletions(-)
+ drivers/ddr/imx/ddrphy_train.c   | 24 ++++++++++++------------
+ drivers/ddr/imx/helper.c         | 12 ++++++------
+ drivers/ddr/imx/imx8m_ddr_init.c | 13 ++++++-------
+ include/soc/imx8m/ddr.h          | 22 +++++++++++++++++-----
+ 4 files changed, 41 insertions(+), 30 deletions(-)
 
-diff --git a/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c b/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
-index e8577369dc..bac7d0a517 100644
---- a/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
-+++ b/arch/arm/boards/nxp-imx8mq-evk/ddrphy_train.c
-@@ -144,7 +144,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 1D training image
--	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
-+	imx8m_ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
- 
- 	//configure DDRPHY-FW DMEM structure @clock0...
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
-@@ -189,7 +189,7 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x9);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x0);
--	wait_ddrphy_training_complete();
-+	imx8m_wait_ddrphy_training_complete();
- 
- 	//configure DDRPHY-FW DMEM structure @clock1...
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
-@@ -258,7 +258,7 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x9);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x0);
--	wait_ddrphy_training_complete();
-+	imx8m_wait_ddrphy_training_complete();
- 
- 	//set the PHY input clock to the desired frequency for pstate 0
- 	reg32_write(0x3038a088,0x7070000);
-@@ -291,7 +291,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 2D training image
--	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_2D_IMAGE);
-+	imx8m_ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_2D_IMAGE);
- 
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54003,0xc80);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54006,0x11);
-@@ -332,7 +332,7 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x9);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x0);
--	wait_ddrphy_training_complete();
-+	imx8m_wait_ddrphy_training_complete();
- 
- 	//Halt MPU
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
-diff --git a/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c b/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c
-index 2ed6578093..fac9e184ae 100644
---- a/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c
-+++ b/arch/arm/boards/phytec-som-imx8mq/ddrphy_train.c
-@@ -148,7 +148,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 1D training image
--	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
-+	imx8m_ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
- 
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54003,0xc80);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54004,0x2);
-@@ -190,7 +190,7 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x9);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x0);
--	wait_ddrphy_training_complete();
-+	imx8m_wait_ddrphy_training_complete();
- 
- 	//configure DDRPHY-FW DMEM structure @clock1...
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
-@@ -224,7 +224,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 1D training image
--	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
-+	imx8m_ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
- 
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54002,0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54003,0x29c);
-@@ -267,7 +267,7 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x9);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x0);
--	wait_ddrphy_training_complete();
-+	imx8m_wait_ddrphy_training_complete();
- 
- 	//set the PHY input clock to the desired frequency for pstate 0
- 	reg32_write(0x3038a088,0x7070000);
-@@ -300,7 +300,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 2D training image
--	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_2D_IMAGE);
-+	imx8m_ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_2D_IMAGE);
- 
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54003,0xc80);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54004,0x2);
-@@ -343,7 +343,7 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x9);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x0);
--	wait_ddrphy_training_complete();
-+	imx8m_wait_ddrphy_training_complete();
- 
- 	//Halt MPU
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
-diff --git a/arch/arm/boards/zii-imx8mq-dev/ddrphy_train.c b/arch/arm/boards/zii-imx8mq-dev/ddrphy_train.c
-index e8577369dc..bac7d0a517 100644
---- a/arch/arm/boards/zii-imx8mq-dev/ddrphy_train.c
-+++ b/arch/arm/boards/zii-imx8mq-dev/ddrphy_train.c
-@@ -144,7 +144,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 1D training image
--	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
-+	imx8m_ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_1D_IMAGE);
- 
- 	//configure DDRPHY-FW DMEM structure @clock0...
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
-@@ -189,7 +189,7 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x9);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x0);
--	wait_ddrphy_training_complete();
-+	imx8m_wait_ddrphy_training_complete();
- 
- 	//configure DDRPHY-FW DMEM structure @clock1...
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
-@@ -258,7 +258,7 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x9);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x0);
--	wait_ddrphy_training_complete();
-+	imx8m_wait_ddrphy_training_complete();
- 
- 	//set the PHY input clock to the desired frequency for pstate 0
- 	reg32_write(0x3038a088,0x7070000);
-@@ -291,7 +291,7 @@ void ddr_cfg_phy(void) {
- 	//enable APB bus to access DDRPHY RAM
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0000, 0x0);
- 	//load the 2D training image
--	ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_2D_IMAGE);
-+	imx8m_ddr_load_train_code(DRAM_TYPE_LPDDR4, FW_2D_IMAGE);
- 
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54003,0xc80);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0x54006,0x11);
-@@ -332,7 +332,7 @@ void ddr_cfg_phy(void) {
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x9);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x0);
--	wait_ddrphy_training_complete();
-+	imx8m_wait_ddrphy_training_complete();
- 
- 	//Halt MPU
- 	reg32_write(IP2APB_DDRPHY_IPS_BASE_ADDR(0) + 4 * 0xd0099, 0x1);
 diff --git a/drivers/ddr/imx/ddrphy_train.c b/drivers/ddr/imx/ddrphy_train.c
-index 302acdfe62..c0555ffe01 100644
+index b44f5ef9b4..af4d710dc0 100644
 --- a/drivers/ddr/imx/ddrphy_train.c
 +++ b/drivers/ddr/imx/ddrphy_train.c
-@@ -9,7 +9,6 @@
- #include <linux/kernel.h>
- #include <soc/imx8m/ddr.h>
- #include <firmware.h>
--#include <mach/imx/imx8m-regs.h>
- 
- static const u16 *lpddr4_imem_1d;
- static size_t lpddr4_imem_1d_size;
-@@ -53,7 +52,8 @@ void ddr_get_firmware_ddr(void)
- 			     &ddr4_dmem_2d_size);
- }
- 
--void ddr_load_train_code(enum dram_type dram_type, enum fw_type fw_type)
-+void ddr_load_train_code(struct dram_controller *dram, enum dram_type dram_type,
-+			 enum fw_type fw_type)
- {
- 	const u16 *imem, *dmem;
- 	size_t isize, dsize;
-@@ -86,11 +86,9 @@ void ddr_load_train_code(enum dram_type dram_type, enum fw_type fw_type)
- 		panic("No matching DDR PHY firmware found");
+@@ -107,7 +107,7 @@ int ddr_cfg_phy(struct dram_controller *dram, struct dram_timing_info *dram_timi
+ 	num  = dram_timing->ddrphy_cfg_num;
+ 	for (i = 0; i < num; i++) {
+ 		/* config phy reg */
+-		dwc_ddrphy_apb_wr(dram_cfg->reg, dram_cfg->val);
++		dwc_ddrphy_apb_wr(dram, dram_cfg->reg, dram_cfg->val);
+ 		dram_cfg++;
  	}
  
--	ddrc_phy_load_firmware(IOMEM(MX8M_DDRC_PHY_BASE_ADDR),
--			       DDRC_PHY_IMEM, imem, isize);
-+	ddrc_phy_load_firmware(dram, DDRC_PHY_IMEM, imem, isize);
- 
--	ddrc_phy_load_firmware(IOMEM(MX8M_DDRC_PHY_BASE_ADDR),
--			       DDRC_PHY_DMEM, dmem, dsize);
-+	ddrc_phy_load_firmware(dram, DDRC_PHY_DMEM, dmem, dsize);
- }
- 
- int ddr_cfg_phy(struct dram_controller *dram, struct dram_timing_info *dram_timing)
-@@ -120,7 +118,7 @@ int ddr_cfg_phy(struct dram_controller *dram, struct dram_timing_info *dram_timi
+@@ -119,14 +119,14 @@ int ddr_cfg_phy(struct dram_controller *dram, struct dram_timing_info *dram_timi
+ 		dram->set_dfi_clk(dram, fsp_msg->drate);
  
  		/* load the dram training firmware image */
- 		dwc_ddrphy_apb_wr(dram, 0xd0000, 0x0);
--		ddr_load_train_code(dram->dram_type, fsp_msg->fw_type);
-+		ddr_load_train_code(dram, dram->dram_type, fsp_msg->fw_type);
+-		dwc_ddrphy_apb_wr(0xd0000, 0x0);
++		dwc_ddrphy_apb_wr(dram, 0xd0000, 0x0);
+ 		ddr_load_train_code(dram->dram_type, fsp_msg->fw_type);
  
  		/* load the frequency set point message block parameter */
  		dram_cfg = fsp_msg->fsp_cfg;
-@@ -146,7 +144,7 @@ int ddr_cfg_phy(struct dram_controller *dram, struct dram_timing_info *dram_timi
- 		dwc_ddrphy_apb_wr(dram, 0xd0099, 0x0);
+ 		num = fsp_msg->fsp_cfg_num;
+ 		for (j = 0; j < num; j++) {
+-			dwc_ddrphy_apb_wr(dram_cfg->reg, dram_cfg->val);
++			dwc_ddrphy_apb_wr(dram, dram_cfg->reg, dram_cfg->val);
+ 			dram_cfg++;
+ 		}
+ 
+@@ -140,10 +140,10 @@ int ddr_cfg_phy(struct dram_controller *dram, struct dram_timing_info *dram_timi
+ 		 * 4. read the message block result.
+ 		 * -------------------------------------------------------------
+ 		 */
+-		dwc_ddrphy_apb_wr(0xd0000, 0x1);
+-		dwc_ddrphy_apb_wr(0xd0099, 0x9);
+-		dwc_ddrphy_apb_wr(0xd0099, 0x1);
+-		dwc_ddrphy_apb_wr(0xd0099, 0x0);
++		dwc_ddrphy_apb_wr(dram, 0xd0000, 0x1);
++		dwc_ddrphy_apb_wr(dram, 0xd0099, 0x9);
++		dwc_ddrphy_apb_wr(dram, 0xd0099, 0x1);
++		dwc_ddrphy_apb_wr(dram, 0xd0099, 0x0);
  
  		/* Wait for the training firmware to complete */
--		ret = wait_ddrphy_training_complete();
-+		ret = wait_ddrphy_training_complete(dram);
- 		if (ret)
+ 		ret = wait_ddrphy_training_complete();
+@@ -151,17 +151,17 @@ int ddr_cfg_phy(struct dram_controller *dram, struct dram_timing_info *dram_timi
  			return ret;
  
-diff --git a/drivers/ddr/imx/ddrphy_utils.c b/drivers/ddr/imx/ddrphy_utils.c
-index 5f80b8fdc1..37274b0b5a 100644
---- a/drivers/ddr/imx/ddrphy_utils.c
-+++ b/drivers/ddr/imx/ddrphy_utils.c
-@@ -10,15 +10,13 @@
- #include <io.h>
- #include <linux/iopoll.h>
+ 		/* Halt the microcontroller. */
+-		dwc_ddrphy_apb_wr(0xd0099, 0x1);
++		dwc_ddrphy_apb_wr(dram, 0xd0099, 0x1);
+ 
+ 		/* Read the Message Block results */
+-		dwc_ddrphy_apb_wr(0xd0000, 0x0);
++		dwc_ddrphy_apb_wr(dram, 0xd0000, 0x0);
+ 
+ 		ddrphy_init_read_msg_block(fsp_msg->fw_type);
+ 
+ 		if (fsp_msg->fw_type != FW_2D_IMAGE)
+ 			dram->get_trained_CDD(dram, i);
+ 
+-		dwc_ddrphy_apb_wr(0xd0000, 0x1);
++		dwc_ddrphy_apb_wr(dram, 0xd0000, 0x1);
+ 
+ 		fsp_msg++;
+ 	}
+@@ -170,12 +170,12 @@ int ddr_cfg_phy(struct dram_controller *dram, struct dram_timing_info *dram_timi
+ 	dram_cfg = dram_timing->ddrphy_pie;
+ 	num = dram_timing->ddrphy_pie_num;
+ 	for (i = 0; i < num; i++) {
+-		dwc_ddrphy_apb_wr(dram_cfg->reg, dram_cfg->val);
++		dwc_ddrphy_apb_wr(dram, dram_cfg->reg, dram_cfg->val);
+ 		dram_cfg++;
+ 	}
+ 
+ 	/* save the ddr PHY trained CSR in memory for low power use */
+-	ddrphy_trained_csr_save(ddrphy_trained_csr, ddrphy_trained_csr_num);
++	ddrphy_trained_csr_save(dram, ddrphy_trained_csr, ddrphy_trained_csr_num);
+ 
+ 	return 0;
+ }
+diff --git a/drivers/ddr/imx/helper.c b/drivers/ddr/imx/helper.c
+index 81c3ed7f30..0bd8d2688a 100644
+--- a/drivers/ddr/imx/helper.c
++++ b/drivers/ddr/imx/helper.c
+@@ -10,21 +10,21 @@
+ #include <errno.h>
  #include <soc/imx8m/ddr.h>
--#include <mach/imx/imx8m-regs.h>
--#include <mach/imx/imx8m-ccm-regs.h>
  
--void ddrc_phy_load_firmware(void __iomem *phy,
-+void ddrc_phy_load_firmware(struct dram_controller *dram,
- 			    enum ddrc_phy_firmware_offset offset,
- 			    const u16 *blob, size_t size)
+-void ddrphy_trained_csr_save(struct dram_cfg_param *ddrphy_csr,
++void ddrphy_trained_csr_save(struct dram_controller *dram, struct dram_cfg_param *ddrphy_csr,
+ 			     unsigned int num)
  {
- 	while (size) {
--		writew(*blob++, phy + DDRC_PHY_REG(offset));
-+		writew(*blob++, dwc_ddrphy_apb_addr(dram, offset));
- 		offset++;
- 		size -= sizeof(*blob);
+ 	int i = 0;
+ 
+ 	/* enable the ddrphy apb */
+-	dwc_ddrphy_apb_wr(0xd0000, 0x0);
+-	dwc_ddrphy_apb_wr(0xc0080, 0x3);
++	dwc_ddrphy_apb_wr(dram, 0xd0000, 0x0);
++	dwc_ddrphy_apb_wr(dram, 0xc0080, 0x3);
+ 	for (i = 0; i < num; i++) {
+-		ddrphy_csr->val = dwc_ddrphy_apb_rd(ddrphy_csr->reg);
++		ddrphy_csr->val = dwc_ddrphy_apb_rd(dram, ddrphy_csr->reg);
+ 		ddrphy_csr++;
  	}
-@@ -33,28 +31,27 @@ enum pmc_constants {
- 	PMC_TRAIN_FAIL		= 0xff,
- };
- 
--static u32 ddrc_phy_get_message(void __iomem *phy, int type)
-+static u32 ddrc_phy_get_message(struct dram_controller *dram, int type)
- {
--	u32 r, message;
-+	u32 message;
- 
- 	/*
- 	 * When BIT0 set to 0, the PMU has a message for the user
- 	 * Wait for it indefinitely.
- 	 */
--	readl_poll_timeout(phy + DDRC_PHY_REG(0xd0004),
--			   r, !(r & BIT(0)), 0);
-+	while (dwc_ddrphy_apb_rd(dram, 0xd0004) & BIT(0));
- 
- 	switch (type) {
- 	case PMC_MESSAGE_ID:
- 		/*
- 		 * Get the major message ID
- 		 */
--		message = readl(phy + DDRC_PHY_REG(0xd0032));
-+		message = dwc_ddrphy_apb_rd(dram, 0xd0032);
- 		break;
- 	case PMC_MESSAGE_STREAM:
--		message = readl(phy + DDRC_PHY_REG(0xd0034));
-+		message = dwc_ddrphy_apb_rd(dram, 0xd0034);
- 		message <<= 16;
--		message |= readl(phy + DDRC_PHY_REG(0xd0032));
-+		message |= dwc_ddrphy_apb_rd(dram, 0xd0032);
- 		break;
- 	}
- 
-@@ -62,37 +59,34 @@ static u32 ddrc_phy_get_message(void __iomem *phy, int type)
- 	 * By setting this register to 0, the user acknowledges the
- 	 * receipt of the message.
- 	 */
--	writel(0x00000000, phy + DDRC_PHY_REG(0xd0031));
-+	dwc_ddrphy_apb_wr(dram, 0xd0031, 0x00000000);
- 	/*
- 	 * When BIT0 set to 0, the PMU has a message for the user
- 	 */
--	readl_poll_timeout(phy + DDRC_PHY_REG(0xd0004),
--			   r, r & BIT(0), 0);
-+	while (!(dwc_ddrphy_apb_rd(dram, 0xd0004) & BIT(0)));
- 
--	writel(0x00000001, phy + DDRC_PHY_REG(0xd0031));
-+	dwc_ddrphy_apb_wr(dram, 0xd0031, 0x00000001);
- 
- 	return message;
+ 	/* disable the ddrphy apb */
+-	dwc_ddrphy_apb_wr(0xc0080, 0x2);
+-	dwc_ddrphy_apb_wr(0xd0000, 0x1);
++	dwc_ddrphy_apb_wr(dram, 0xc0080, 0x2);
++	dwc_ddrphy_apb_wr(dram, 0xd0000, 0x1);
  }
  
--static void ddrc_phy_fetch_streaming_message(void __iomem *phy)
-+static void ddrc_phy_fetch_streaming_message(struct dram_controller *dram)
+ void dram_config_save(struct dram_timing_info *timing_info,
+diff --git a/drivers/ddr/imx/imx8m_ddr_init.c b/drivers/ddr/imx/imx8m_ddr_init.c
+index f76aafe769..8d473a3e63 100644
+--- a/drivers/ddr/imx/imx8m_ddr_init.c
++++ b/drivers/ddr/imx/imx8m_ddr_init.c
+@@ -15,7 +15,9 @@
+ 
+ bool imx8m_ddr_old_spreadsheet = true;
+ 
+-struct dram_controller imx8m_dram_controller;
++struct dram_controller imx8m_dram_controller = {
++	.phy_base = IOMEM(IP2APB_DDRPHY_IPS_BASE_ADDR(0)),
++};
+ 
+ static void ddr_cfg_umctl2(struct dram_cfg_param *ddrc_cfg, int num)
  {
--	const u16 index = ddrc_phy_get_message(phy, PMC_MESSAGE_STREAM);
-+	const u16 index = ddrc_phy_get_message(dram, PMC_MESSAGE_STREAM);
- 	u16 i;
+@@ -71,15 +73,13 @@ static void get_trained_CDD(struct dram_controller *dram, u32 fsp)
+ 	ddr_type = reg32_read(DDRC_MSTR(0)) & 0x3f;
+ 	if (ddr_type == 0x20) {
+ 		for (i = 0; i < 6; i++) {
+-			tmp = reg32_read(IP2APB_DDRPHY_IPS_BASE_ADDR(0) +
+-					 (0x54013UL + i) * 4);
++			tmp = dwc_ddrphy_apb_rd(dram, 0x54013UL + i);
+ 			cdd_cha[i * 2] = tmp & 0xff;
+ 			cdd_cha[i * 2 + 1] = (tmp >> 8) & 0xff;
+ 		}
  
- 	for (i = 0; i < index; i++)
--		ddrc_phy_get_message(phy, PMC_MESSAGE_STREAM);
-+		ddrc_phy_get_message(dram, PMC_MESSAGE_STREAM);
- }
+ 		for (i = 0; i < 7; i++) {
+-			tmp = reg32_read(IP2APB_DDRPHY_IPS_BASE_ADDR(0) +
+-					 (0x5402cUL + i) * 4);
++			tmp = dwc_ddrphy_apb_rd(dram, 0x5402cUL + i);
+ 			if (i == 0) {
+ 				cdd_cha[0] = (tmp >> 8) & 0xff;
+ 			} else if (i == 6) {
+@@ -106,8 +106,7 @@ static void get_trained_CDD(struct dram_controller *dram, u32 fsp)
+ 		unsigned int ddr4_cdd[64];
  
--int wait_ddrphy_training_complete(void)
-+int wait_ddrphy_training_complete(struct dram_controller *dram)
- {
--	void __iomem *phy = IOMEM(MX8M_DDRC_PHY_BASE_ADDR);
--
- 	for (;;) {
--		const u32 m = ddrc_phy_get_message(phy, PMC_MESSAGE_ID);
-+		const u32 m = ddrc_phy_get_message(dram, PMC_MESSAGE_ID);
- 
- 		switch (m) {
- 		case PMC_TRAIN_STREAM_START:
--			ddrc_phy_fetch_streaming_message(phy);
-+			ddrc_phy_fetch_streaming_message(dram);
- 			break;
- 		case PMC_TRAIN_SUCCESS:
- 			return 0;
+ 		for( i = 0; i < 29; i++) {
+-			tmp = reg32_read(IP2APB_DDRPHY_IPS_BASE_ADDR(0) +
+-					 (0x54012UL + i) * 4);
++			tmp = dwc_ddrphy_apb_rd(dram, 0x54012UL + i);
+ 			ddr4_cdd[i * 2] = tmp & 0xff;
+ 			ddr4_cdd[i * 2 + 1] = (tmp >> 8) & 0xff;
+ 		}
 diff --git a/include/soc/imx8m/ddr.h b/include/soc/imx8m/ddr.h
-index 0a2a7b0e2f..04addc1448 100644
+index 9ff9c0a2da..bdf0f25727 100644
 --- a/include/soc/imx8m/ddr.h
 +++ b/include/soc/imx8m/ddr.h
-@@ -455,7 +455,12 @@ void ddrphy_trained_csr_save(struct dram_controller *dram, struct dram_cfg_param
+@@ -385,6 +385,7 @@ struct dram_timing_info {
+ struct dram_controller {
+ 	enum ddrc_type ddrc_type;
+ 	enum dram_type dram_type;
++	void __iomem *phy_base;
+ 	void (*get_trained_CDD)(struct dram_controller *dram, u32 fsp);
+ 	void (*set_dfi_clk)(struct dram_controller *dram, unsigned int drate_mhz);
+ };
+@@ -449,7 +450,8 @@ static inline int imx8mp_ddr_init(struct dram_timing_info *dram_timing,
+ }
+ 
+ int ddr_cfg_phy(struct dram_controller *dram, struct dram_timing_info *timing_info);
+-void ddrphy_trained_csr_save(struct dram_cfg_param *param, unsigned int num);
++void ddrphy_trained_csr_save(struct dram_controller *dram, struct dram_cfg_param *param,
++			     unsigned int num);
  void dram_config_save(struct dram_timing_info *info, unsigned long base);
  
  /* utils function for ddr phy training */
--int wait_ddrphy_training_complete(void);
-+int wait_ddrphy_training_complete(struct dram_controller *dram);
+@@ -464,10 +466,20 @@ static inline void reg32setbit(unsigned long addr, u32 bit)
+ 	setbits_le32(addr, (1 << bit));
+ }
+ 
+-#define dwc_ddrphy_apb_wr(addr, data) \
+-	reg32_write(IOMEM(IP2APB_DDRPHY_IPS_BASE_ADDR(0)) + 4 * (addr), data)
+-#define dwc_ddrphy_apb_rd(addr) \
+-	reg32_read(IOMEM(IP2APB_DDRPHY_IPS_BASE_ADDR(0)) + 4 * (addr))
++static inline void *dwc_ddrphy_apb_addr(struct dram_controller *dram, unsigned int addr)
++{
++	return dram->phy_base + addr * 4;
++}
 +
-+static inline int imx8m_wait_ddrphy_training_complete(void)
++static inline void dwc_ddrphy_apb_wr(struct dram_controller *dram, unsigned int addr, u32 data)
 +{
-+	return wait_ddrphy_training_complete(&imx8m_dram_controller);
++	reg32_write(dwc_ddrphy_apb_addr(dram, addr), data);
++}
++
++static inline u32 dwc_ddrphy_apb_rd(struct dram_controller *dram, unsigned int addr)
++{
++	return reg32_read(dwc_ddrphy_apb_addr(dram, addr));
 +}
  
- #define reg32_write(a, v)	writel(v, a)
- #define reg32_read(a)		readl(a)
-@@ -489,9 +494,15 @@ enum ddrc_phy_firmware_offset {
- 	DDRC_PHY_DMEM = 0x00054000U,
- };
- 
--void ddr_load_train_code(enum dram_type dram_type, enum fw_type fw_type);
-+void ddr_load_train_code(struct dram_controller *dram, enum dram_type dram_type,
-+			 enum fw_type fw_type);
-+static inline void imx8m_ddr_load_train_code(enum dram_type dram_type,
-+					     enum fw_type fw_type)
-+{
-+	ddr_load_train_code(&imx8m_dram_controller, dram_type, fw_type);
-+}
- 
--void ddrc_phy_load_firmware(void __iomem *,
-+void ddrc_phy_load_firmware(struct dram_controller *dram,
- 			    enum ddrc_phy_firmware_offset,
- 			    const u16 *, size_t);
- 
+ extern bool imx8m_ddr_old_spreadsheet;
+ extern struct dram_cfg_param ddrphy_trained_csr[];
 -- 
 2.39.2
 
