@@ -1,60 +1,60 @@
-Delivery-date: Fri, 10 Nov 2023 14:25:16 +0100
+Delivery-date: Fri, 10 Nov 2023 14:26:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1RVb-005tT9-1g
+	id 1r1RWa-005tWq-35
 	for lore@lore.pengutronix.de;
-	Fri, 10 Nov 2023 14:25:16 +0100
+	Fri, 10 Nov 2023 14:26:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1RVb-0002h5-J9
-	for lore@pengutronix.de; Fri, 10 Nov 2023 14:25:16 +0100
+	id 1r1RWa-0002ys-WA
+	for lore@pengutronix.de; Fri, 10 Nov 2023 14:26:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ODrr+AKq0Ug8wwBSpd+cI2I6B7U4ekMnddKjdl+AGg8=; b=bLxKnXMrBTd2fA+K9qipZJpD/K
-	lKHAjTXHv9NbSE+g4WwL6YCbWnGGdC6xQQ+gGWYEDvt0E3INbiwV2H64O50p9S2uvlXbEPuRGJkPn
-	EXVBpSPN4btc/TsJ6U45+HTr/ANXv697A14o4ixwYZ6R9sm/CkJp53ZTgzyxbjg9/E9RfXt3dQ1Kr
-	zrE2bC/SbG6CAHigUlIOltGbCrdEw89bk20apVUF7d/aPAxB916EkPbrGSEiu6JzFveoxE3Sj13u2
-	pBKlV/LeXtDbw9ToCYdYMg01t/FJNdfM1LcIq7HDxgQH3Jr7eOl6gmo6RbLwFp8htuujQ61oF5jTT
-	Yyswl3aA==;
+	bh=OpgnHsVnoOl61j2/PoFm6LebhoIMnIHXb98qSPoVBw0=; b=CwrT1y2m3zGjDnXydzKT6onPh5
+	uuu4mD9DT9l02xzWMpIac26NWFVo3q7F5Z6dlmUflIp4nYwOkAQi64+QNqkU9f+O85/SL3juWdRc8
+	059/VP5I1tDAP2rUa4+hw/NzYX+F2aA8NHFd24L0zk3QEN0TLCxTQXfbli7o1aWjCElyGIYXeVIl3
+	kwsfOx/Xm62OYtmMNE1VwKzJDVkuUFonm280RPUh6btZmzop2q/dcXI0KJav/klfdTdf0uCsVWoEe
+	1hs8F/1k2C2Dv/6mePG19Rohu2ml9WVUXlGScgcyLdD0EcFs7JtRw3gyngvRpwcpD7RghchijamE1
+	J2libZ0g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1RUc-008q4K-00;
-	Fri, 10 Nov 2023 13:24:14 +0000
+	id 1r1RVa-008qFQ-2y;
+	Fri, 10 Nov 2023 13:25:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1RUY-008q3x-17
+	id 1r1RVX-008qEO-1c
 	for barebox@lists.infradead.org;
-	Fri, 10 Nov 2023 13:24:11 +0000
+	Fri, 10 Nov 2023 13:25:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1RUX-0002SU-3e; Fri, 10 Nov 2023 14:24:09 +0100
+	id 1r1RVW-0002fg-4v; Fri, 10 Nov 2023 14:25:10 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1RUW-00824Z-NV; Fri, 10 Nov 2023 14:24:08 +0100
+	id 1r1RVV-00824i-Ov; Fri, 10 Nov 2023 14:25:09 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1RUW-001LZj-L1; Fri, 10 Nov 2023 14:24:08 +0100
-Date: Fri, 10 Nov 2023 14:24:08 +0100
+	id 1r1RVV-001LaB-Mf; Fri, 10 Nov 2023 14:25:09 +0100
+Date: Fri, 10 Nov 2023 14:25:09 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20231110132408.GG3359458@pengutronix.de>
-References: <20231109130253.1506400-1-a.fatoum@pengutronix.de>
+Message-ID: <20231110132509.GH3359458@pengutronix.de>
+References: <20231109133812.1566381-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231109130253.1506400-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20231109133812.1566381-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -62,8 +62,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231110_052410_401422_0AA90183 
-X-CRM114-Status: GOOD (  19.33  )
+X-CRM114-CacheID: sfid-20231110_052511_535593_62AAE47F 
+X-CRM114-Status: GOOD (  21.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,38 +86,58 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] ARM: stm32mp: fix typo in STM32MP135-DK prompt
+Subject: Re: [PATCH] test: self: malloc: hide allocation size from compiler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Nov 09, 2023 at 02:02:53PM +0100, Ahmad Fatoum wrote:
-> The board is called STM32MP135 and there is currently no STM32MP137.
-> The typo was likely caused by copy-pasting from the STM32MP15x, which
-> has STM32MP157.
+On Thu, Nov 09, 2023 at 02:38:12PM +0100, Ahmad Fatoum wrote:
+> Once we start annotating malloc with __attribute((alloc_size)), GCC will
+> detect that we intentionally buffers that are too big.
+> 
+> Avoid the warning by hiding the size using the RELOC_HIDE macro.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  arch/arm/mach-stm32mp/Kconfig | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  test/self/malloc.c | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/mach-stm32mp/Kconfig b/arch/arm/mach-stm32mp/Kconfig
-> index bc0a48d64c82..524d282a1db8 100644
-> --- a/arch/arm/mach-stm32mp/Kconfig
-> +++ b/arch/arm/mach-stm32mp/Kconfig
-> @@ -16,7 +16,7 @@ config ARCH_STM32MP157
+> diff --git a/test/self/malloc.c b/test/self/malloc.c
+> index 47c225ac6a10..0feec810185f 100644
+> --- a/test/self/malloc.c
+> +++ b/test/self/malloc.c
+> @@ -85,11 +85,11 @@ static void test_malloc(void)
+>  	free(p);
 >  
->  config MACH_STM32MP13XX_DK
->  	select ARCH_STM32MP13
-> -	bool "STM32MP137F DK board"
-> +	bool "STM32MP135F DK board"
+>  	if (mem_malloc_size) {
+> -		tmp = expect_alloc_fail(malloc(SIZE_MAX));
+> +		tmp = expect_alloc_fail(malloc(RELOC_HIDE(SIZE_MAX, 0)));
+>  		free(tmp);
 >  
->  config MACH_STM32MP15XX_DKX
->  	select ARCH_STM32MP157
+>  		if (0xf0000000 > mem_malloc_size) {
+> -			tmp = expect_alloc_fail(malloc(0xf0000000));
+> +			tmp = expect_alloc_fail(malloc(RELOC_HIDE(0xf0000000, 0)));
+>  			free(tmp);
+>  		}
+>  	} else {
+> @@ -111,11 +111,11 @@ static void test_malloc(void)
+>  		free(tmp);
+>  
+>  		if (0xf0000000 > mem_malloc_size) {
+> -			tmp = expect_alloc_fail(realloc(p, 0xf0000000));
+> +			tmp = expect_alloc_fail(realloc(p, RELOC_HIDE(0xf0000000, 0)));
+>  			free(tmp);
+>  		}
+>  
+> -		tmp = expect_alloc_fail(realloc(p, SIZE_MAX));
+> +		tmp = expect_alloc_fail(realloc(p, RELOC_HIDE(SIZE_MAX, 0)));
+>  		free(tmp);
+>  
+>  	} else {
 > -- 
 > 2.39.2
 > 
