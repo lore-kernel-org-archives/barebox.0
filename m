@@ -1,75 +1,75 @@
-Delivery-date: Fri, 10 Nov 2023 14:09:30 +0100
+Delivery-date: Fri, 10 Nov 2023 14:13:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1RGL-005sTj-2x
+	id 1r1RJn-005slN-2v
 	for lore@lore.pengutronix.de;
-	Fri, 10 Nov 2023 14:09:30 +0100
+	Fri, 10 Nov 2023 14:13:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1RGL-0007qy-U8
-	for lore@pengutronix.de; Fri, 10 Nov 2023 14:09:30 +0100
+	id 1r1RJn-00006y-Tu
+	for lore@pengutronix.de; Fri, 10 Nov 2023 14:13:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ASwu94qeDB9lOdcu3oAq6UocZ51ZncSh10LP+BqQhVo=; b=jlf96MzvaSU1DN1aRSWjt1Y1Jo
-	rsxafnZRO9jw1elNmCG2z+LUkCUA9MDR1K222Pf0UfMbpT8/gPxlFe1Xl8+GNwL+CTEEkt5LZ8mO2
-	yeG8Gi/toYnNm5X4NWN9oEdp8nVjhbec3oOXDj5NHJBKnVyorMcAXqkRpkR1hjxQ3wxlKkp/Oxb7y
-	3BEZWeauyPlwVqry/VcYG8Deq9g+oUgGbA52yRO/MIts0pvK6K/MedGRn/kkUqR41EWzy8O0+FiVg
-	HPTK0TiKlkc4DN8feXaOt5hHtBI2DsLTdwPVSNAvbGRPz/n8Kk89S9WooKvmUMNia2j9IjfoFzSxT
-	UqfeSkAA==;
+	bh=VjRYxtx8eu88dyyUd+HuBtPbV94hwDjHHBNVElYQFrM=; b=aaJE64BoKGVXoejb3oBcisapX+
+	QldPhfYOeDbp1elqXQemDYDOsszoVdv3hjPYAHD31Itjf8+OxE1ikvBJkJpuhNOHX32iGQagSyOQA
+	c/RUVVE3fbJtJ7HFrtwLr4YNNDa2FfD9KKM5I9UCvc8wz0vQb9cZX763hyAyuIZ+ReVWlYiI/lwg8
+	Ge5tK5A++0mfz1u1Ye9eEGOsSqbSlLh8jksZzSu2uE2uJICflvCXxlq792gg97EamV0cQfI+YBEzG
+	QSJNtkl1Ul+vSiVhbv4ou5v/lQ7JnTOq/0thTzCZgLf6kw8Jq1XUMscU/pODyLG8yRGjLUYmttfCr
+	xNzcOwSQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1RFJ-008oJw-00;
-	Fri, 10 Nov 2023 13:08:25 +0000
+	id 1r1RIr-008oVh-0t;
+	Fri, 10 Nov 2023 13:12:05 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1RFH-008oJm-0F
+	id 1r1RIp-008oVZ-2G
 	for barebox@bombadil.infradead.org;
-	Fri, 10 Nov 2023 13:08:23 +0000
+	Fri, 10 Nov 2023 13:12:03 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=From:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:Date:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=ASwu94qeDB9lOdcu3oAq6UocZ51ZncSh10LP+BqQhVo=; b=qd3vYheXceYAx6jgzsihSuXFEg
-	8P6d+c18bW6vj6vlTNISxdQZHXf6XUDd1K2gefKoca9jcvJsUP5cowDMb0cS31w7clZ3yhwjjA6KK
-	BgoqbIlsTZM+mHiHNBAXw48+moEauje+rIq6CCm8I+UIompvN4GhpHOupHs22VvPEPPR4VymNJ82p
-	Dbs9TbYGUOCtgpftoaAHoVLS2RzTF1aldiZoPc2kVNfPjchS7leKtXgODmRUziR5Ar57PLdILvfe/
-	/tglq9r5/qt0AKxSTDoc6b7xovg3YlUcvK70i1c/F0kgSiOQmmpA3CpPi4qCknEXHSmWLkW4VCHzt
-	bxrVRzBg==;
+	bh=VjRYxtx8eu88dyyUd+HuBtPbV94hwDjHHBNVElYQFrM=; b=OghuD6OQ23HCstK8hzUCsW4QtK
+	Pji1peucHGotGnlpPYzii06E7ypXq4fDpXMhcWb/UMl3KUDF4p5CCd5D6xdmUob+qNyQkQDRoPdjP
+	gkiUOwDgJeN94mMWYoMUF8AoCt0/GNwDexQeKM8/iVwznCGFTTUfHPs17pCcH9DmyzER1ehgBObO4
+	H1JlcxjrYFsgMKLSahwn8143RndghADB0pW7x/yqAA23Ipb8SOU/grRbGNSSFvr+GG8f4Nhag8E40
+	Dz6aSqhAYFtkLYXmY+MNI4ObZUEpwfFf6FIDLGi9bYJ3LysAETqJYnoWvE+zaNvuo+OH6rByLH9AN
+	BUsSY2bw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1RF8-00FcGn-1i
+	id 1r1RIm-00FcKa-0F
 	for barebox@lists.infradead.org;
-	Fri, 10 Nov 2023 13:08:19 +0000
+	Fri, 10 Nov 2023 13:12:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1RF8-0007dc-3d; Fri, 10 Nov 2023 14:08:14 +0100
+	id 1r1RIl-0008I4-K6; Fri, 10 Nov 2023 14:11:59 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1RF7-00822C-NU; Fri, 10 Nov 2023 14:08:13 +0100
+	id 1r1RIl-00822d-7l; Fri, 10 Nov 2023 14:11:59 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1RF7-001LUX-LF; Fri, 10 Nov 2023 14:08:13 +0100
-Date: Fri, 10 Nov 2023 14:08:13 +0100
+	id 1r1RIl-001LVT-5Q; Fri, 10 Nov 2023 14:11:59 +0100
+Date: Fri, 10 Nov 2023 14:11:59 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20231110130813.GX3359458@pengutronix.de>
-References: <20231109113807.1193935-1-a.fatoum@pengutronix.de>
+Message-ID: <20231110131159.GY3359458@pengutronix.de>
+References: <20231109114838.1356467-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231109113807.1193935-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20231109114838.1356467-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -77,8 +77,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231110_130816_044763_1A0BEDC5 
-X-CRM114-Status: GOOD (  20.16  )
+X-CRM114-CacheID: sfid-20231110_131200_426144_DC27789C 
+X-CRM114-Status: GOOD (  18.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,80 +101,48 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/2] KASan: test_kasan: hide buggy accesses from compiler
+Subject: Re: [PATCH] usb: dwc2: use linux/spinlock.h for stubs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Nov 09, 2023 at 12:38:06PM +0100, Ahmad Fatoum wrote:
-> Once we add __alloc_size attributes to allocations, GCC will complain
-> about violation of memory safety in test_kasan.c.
-> 
-> That memory violation is intended though as test_kasan is meant to
-> trigger kasan at runtime to verify correct operation.
-> 
-> Silence the warnings by hiding the origin of ptr, so the compiler loses
-> context about the size of the allocation.
+On Thu, Nov 09, 2023 at 12:48:38PM +0100, Ahmad Fatoum wrote:
+> We already have dummy definitions for common spin lock operations,
+> so reuse them instead of defining them in the driver.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  lib/kasan/test_kasan.c | 11 +++++++++++
->  1 file changed, 11 insertions(+)
+>  drivers/usb/dwc2/gadget.c | 5 +----
+>  1 file changed, 1 insertion(+), 4 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/lib/kasan/test_kasan.c b/lib/kasan/test_kasan.c
-> index 14511cdb80bd..a74251a6d9ad 100644
-> --- a/lib/kasan/test_kasan.c
-> +++ b/lib/kasan/test_kasan.c
-> @@ -38,6 +38,8 @@ static noinline void malloc_oob_right(void)
->  		return;
->  	}
+> diff --git a/drivers/usb/dwc2/gadget.c b/drivers/usb/dwc2/gadget.c
+> index 00323d2d9029..3c06c438b65d 100644
+> --- a/drivers/usb/dwc2/gadget.c
+> +++ b/drivers/usb/dwc2/gadget.c
+> @@ -1,18 +1,15 @@
+>  // SPDX-License-Identifier: GPL-2.0-or-later
+>  #include <dma.h>
+>  #include <linux/usb/gadget.h>
+> +#include <linux/spinlock.h>
+>  #include "dwc2.h"
 >  
-> +	OPTIMIZER_HIDE_VAR(ptr);
-> +
->  	ptr[size] = 'x';
+>  #define to_dwc2 gadget_to_dwc2
+>  #define dwc2_set_bit(d, r, b)	dwc2_writel(d, (b) | dwc2_readl(d, r), r)
+>  #define dwc2_clear_bit(d, r, b)	dwc2_writel(d, ~(b) & dwc2_readl(d, r), r)
 >  
->  	free(ptr);
-> @@ -55,6 +57,8 @@ static noinline void malloc_oob_left(void)
->  		return;
->  	}
+> -#define spin_lock(lock)
+> -#define spin_unlock(lock)
+>  #define local_irq_save(flags)(void)(flags)
+>  #define local_irq_restore(flags) (void)(flags)
+> -#define spin_lock_irqsave(lock, flags) (void)(flags)
+> -#define spin_unlock_irqrestore(lock, flags) (void)(flags)
 >  
-> +	OPTIMIZER_HIDE_VAR(ptr);
-> +
->  	*ptr = *(ptr - 1);
->  	free(ptr);
->  }
-> @@ -75,6 +79,8 @@ static noinline void malloc_oob_realloc_more(void)
->  		return;
->  	}
+>  static void kill_all_requests(struct dwc2 *, struct dwc2_ep *, int);
 >  
-> +	OPTIMIZER_HIDE_VAR(ptr2);
-> +
->  	ptr2[size2] = 'x';
->  
->  	free(ptr2);
-> @@ -95,6 +101,8 @@ static noinline void malloc_oob_realloc_less(void)
->  		return;
->  	}
->  
-> +	OPTIMIZER_HIDE_VAR(ptr2);
-> +
->  	ptr2[size2] = 'x';
->  
->  	free(ptr2);
-> @@ -115,6 +123,9 @@ static noinline void malloc_oob_16(void)
->  		free(ptr2);
->  		return;
->  	}
-> +
-> +	OPTIMIZER_HIDE_VAR(ptr1);
-> +
->  	*ptr1 = *ptr2;
->  	free(ptr1);
->  	free(ptr2);
 > -- 
 > 2.39.2
 > 
