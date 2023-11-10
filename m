@@ -1,79 +1,79 @@
-Delivery-date: Fri, 10 Nov 2023 13:59:57 +0100
+Delivery-date: Fri, 10 Nov 2023 14:00:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1R76-005rY6-2o
+	id 1r1R7A-005rYS-0h
 	for lore@lore.pengutronix.de;
-	Fri, 10 Nov 2023 13:59:57 +0100
+	Fri, 10 Nov 2023 14:00:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1R72-0003V4-H9
-	for lore@pengutronix.de; Fri, 10 Nov 2023 13:59:57 +0100
+	id 1r1R76-0003ZH-6j
+	for lore@pengutronix.de; Fri, 10 Nov 2023 14:00:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MG9LxK2oQ9mbGBoDzU9DLKJ7R2NW5q+oQdzIgVE/xm8=; b=e1btspj9M8INrg6efK9zZzYVDB
-	ySIKkIopN3hUj6FJvocfr/08rKb4oLnzBustnh6oYDnrHhXR/V0pucOzdGcrTnxn56rvdwmQFXD8g
-	ZLHwsQP615d6bXLIGiCzPWxcSjnvvEYOBXFXKkGnS2AWT6d88r9g12BBREAYg/GzdEJutBt6b1+KY
-	EsNN/HcW+NBQ3s63KKozXtVcd/28q0XWD7negEnH9xMlWBe4EKxHH4MrwHkh1SyE5ikQnE/58AkCZ
-	z5rzKN6RsqSYgUtfP2F8/1v3vENYpkXCcvOWikThAKBW1NSPeEl8G+tP4cZTf5ZAPtPjJsV61+dqW
-	QO9hoiUw==;
+	bh=Qo3mdGr0TmPQlcQ91o4JWufxY4dPYGxJ3rzd/eYtWok=; b=i2I6uRwIJdChMFAqqIkfpA264K
+	FT67Vlj+pqTkScrpKVvsuUNXgo3QVQbsUl+Hh0zINxap55YVMsRmShTQmzYWBy5eBdWiLTnmEH0m7
+	2EMRfpnnDfA59HNlguWm7hHURRDYe+Es50tJsXjprPMvf/9cY4bV7U+8ipXFOXg6ynKxzcgRVbJMV
+	zz5rXkDa3oWg4nGRR9j+S6H9hPqa7VLhlnM8GC2veF0GMOsyZ7UvNrV/08gQuEYw3/gLDs5wTGLVU
+	3+v7BKO3+QsycLz7Ce9Jn3UMGSJcTxv+0SeVG86BOuEL9ynTNnEpHsXVWxL5o+oyaAgoXq5JEkiqc
+	00C0CMLA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R5m-008kFl-1U;
-	Fri, 10 Nov 2023 12:58:34 +0000
+	id 1r1R5p-008kKZ-1o;
+	Fri, 10 Nov 2023 12:58:37 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R5a-008k0V-1y
+	id 1r1R5b-008k1R-0z
 	for barebox@bombadil.infradead.org;
-	Fri, 10 Nov 2023 12:58:22 +0000
+	Fri, 10 Nov 2023 12:58:23 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=MG9LxK2oQ9mbGBoDzU9DLKJ7R2NW5q+oQdzIgVE/xm8=; b=iHNDMUC+99TSZYayhizKAft4ju
-	FV0m41kPWRzdYJ08lBMTJ0SAeJ9I7GzQX+6sqmubXPMW4xi1gPCCckuBQL98wank2dVn4rxBMsZiM
-	7DqWnAUs/j0gdh9V5cEdwtXnfOiLx0ZyqIujr/YzotA8trZ2u/+N9ZcEYQG/IGPmJQq9sNgnSbuDU
-	jB2J3YtwyKSxv8o/vKuSaa1c8sIA3ARwvXbxCpvoLyL993bkE2GhJq/B5ZVsIhTIn21wGdLsfSqr0
-	yCuT6GO169Mn8OboxQaoiPfKShGCSfsEUcSZYc6MPPlxfsNFVg/VA2ZwOm5DrR974vVUeK4Ht8eQS
-	4CuBIkeQ==;
+	bh=Qo3mdGr0TmPQlcQ91o4JWufxY4dPYGxJ3rzd/eYtWok=; b=WsYb9B9W6xfvQCmUEJcDkyO0d0
+	eQvcCJ20HpiiZnBXlssuDLiMEIBSfgGnEM5414CmhSTMOBjFJwhMXgSFL6ekNvSrdOpPK9Cxdlfsd
+	Roe772ier3wF5oyb6I6PtOL5KgG4ohx7Ri61wDcPRAWtuHveqVyC0vT/NHeOJcoYAB++6AMlNpsOB
+	UXGY8cRRVJaJpkQi2o+8vntwfyO/cS8U/CPFW/lich7277V4xcdjPxUcNIoYbPLJWlyWOFotL1jgk
+	vqKT/T3d5/QH1UsAv+f3rOszEpKnUIjkMaTDVufIenB7jp5fKpqWHv1TimfHUVIXmNNRfiPOKiwLT
+	lJghWpvA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R5R-00Fbum-2e
+	id 1r1R5R-00Fbui-2X
 	for barebox@lists.infradead.org;
-	Fri, 10 Nov 2023 12:58:21 +0000
+	Fri, 10 Nov 2023 12:58:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5H-00026t-RW; Fri, 10 Nov 2023 13:58:03 +0100
+	id 1r1R5H-00026o-Uh; Fri, 10 Nov 2023 13:58:03 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5G-0081XU-Vm; Fri, 10 Nov 2023 13:58:02 +0100
+	id 1r1R5G-0081XM-Vb; Fri, 10 Nov 2023 13:58:02 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5G-008s0r-2o;
+	id 1r1R5G-008s0Q-2h;
 	Fri, 10 Nov 2023 13:58:02 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 10 Nov 2023 13:57:49 +0100
-Message-Id: <20231110125800.1901232-15-s.hauer@pengutronix.de>
+Date: Fri, 10 Nov 2023 13:57:47 +0100
+Message-Id: <20231110125800.1901232-13-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231110125800.1901232-1-s.hauer@pengutronix.de>
 References: <20231110125800.1901232-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231110_125814_768822_7CBACD70 
-X-CRM114-Status: GOOD (  25.06  )
+X-CRM114-CacheID: sfid-20231110_125814_616713_4218B4CB 
+X-CRM114-Status: GOOD (  26.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,405 +96,572 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 14/25] serial: Add lpuart32 driver
+Subject: [PATCH 12/25] i2c: Add lpi2c support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds a lpuart32 driver. This is a variant of the lpuart driver
-that is found on i.MX9 and other SoCs.
-
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/serial/Kconfig           |   4 +
- drivers/serial/Makefile          |   1 +
- drivers/serial/serial_lpuart32.c | 185 +++++++++++++++++++++++++++++++
- include/serial/lpuart32.h        | 158 ++++++++++++++++++++++++++
- 4 files changed, 348 insertions(+)
- create mode 100644 drivers/serial/serial_lpuart32.c
- create mode 100644 include/serial/lpuart32.h
+ drivers/i2c/busses/Kconfig         |   7 +
+ drivers/i2c/busses/Makefile        |   1 +
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 518 +++++++++++++++++++++++++++++
+ 3 files changed, 526 insertions(+)
+ create mode 100644 drivers/i2c/busses/i2c-imx-lpi2c.c
 
-diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
-index 77c827e436..803f6b6aee 100644
---- a/drivers/serial/Kconfig
-+++ b/drivers/serial/Kconfig
-@@ -122,6 +122,10 @@ config DRIVER_SERIAL_LPUART
- 	default y
- 	bool "LPUART serial driver"
+diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
+index 766aa5edfa..a274baf4b6 100644
+--- a/drivers/i2c/busses/Kconfig
++++ b/drivers/i2c/busses/Kconfig
+@@ -30,6 +30,13 @@ config I2C_IMX
+ 	  for many i.MX ARM based SoCs, for MPC85xx and MPC5200 PowerPC based
+ 	  SoCs.
  
-+config DRIVER_SERIAL_LPUART32
-+	depends on ARCH_IMX
-+	bool "LPUART32 serial driver"
++config I2C_IMX_LPI2C
++	tristate "IMX Low Power I2C interface"
++	depends on ARCH_IMX || COMPILE_TEST
++	help
++	  Say Y here if you want to use the Low Power IIC bus controller
++	  on the Freescale i.MX processors.
 +
- config VIRTIO_CONSOLE
- 	tristate "Virtio console"
- 	depends on VIRTIO
-diff --git a/drivers/serial/Makefile b/drivers/serial/Makefile
-index bbc517f521..4887e24ee1 100644
---- a/drivers/serial/Makefile
-+++ b/drivers/serial/Makefile
-@@ -20,6 +20,7 @@ obj-$(CONFIG_DRIVER_SERIAL_CADENCE)		+= serial_cadence.o
- obj-$(CONFIG_DRIVER_SERIAL_EFI_STDIO)		+= efi-stdio.o
- obj-$(CONFIG_DRIVER_SERIAL_DIGIC)		+= serial_digic.o
- obj-$(CONFIG_DRIVER_SERIAL_LPUART)		+= serial_lpuart.o
-+obj-$(CONFIG_DRIVER_SERIAL_LPUART32)		+= serial_lpuart32.o
- obj-$(CONFIG_VIRTIO_CONSOLE)			+= virtio_console.o
- obj-$(CONFIG_SERIAL_SIFIVE)			+= serial_sifive.o
- obj-$(CONFIG_SERIAL_SBI)			+= serial_sbi.o
-diff --git a/drivers/serial/serial_lpuart32.c b/drivers/serial/serial_lpuart32.c
+ config I2C_DESIGNWARE
+ 	bool "Synopsys DesignWare I2C Master driver"
+ 	help
+diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
+index a1ab46fb28..48f9b5be04 100644
+--- a/drivers/i2c/busses/Makefile
++++ b/drivers/i2c/busses/Makefile
+@@ -4,6 +4,7 @@ obj-$(CONFIG_I2C_BCM283X)	+= i2c-bcm283x.o
+ obj-$(CONFIG_I2C_GPIO)		+= i2c-gpio.o
+ obj-$(CONFIG_I2C_IMX)		+= i2c-imx.o
+ lwl-$(CONFIG_I2C_IMX_EARLY)	+= i2c-imx-early.o
++obj-$(CONFIG_I2C_IMX_LPI2C)	+= i2c-imx-lpi2c.o
+ obj-$(CONFIG_I2C_MV64XXX)	+= i2c-mv64xxx.o
+ obj-$(CONFIG_I2C_OMAP)		+= i2c-omap.o
+ obj-$(CONFIG_I2C_TEGRA)		+= i2c-tegra.o
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
 new file mode 100644
-index 0000000000..0f3e7c7a04
+index 0000000000..f28a445601
 --- /dev/null
-+++ b/drivers/serial/serial_lpuart32.c
-@@ -0,0 +1,185 @@
-+// SPDX-License-Identifier: GPL-2.0-only
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -0,0 +1,518 @@
++// SPDX-License-Identifier: GPL-2.0+
 +/*
-+ * Copyright (c) 2023 Pengutronix
++ * This is i.MX low power i2c controller driver.
++ *
++ * Copyright 2016 Freescale Semiconductor, Inc.
 + */
 +
++#include <clock.h>
 +#include <common.h>
 +#include <driver.h>
 +#include <init.h>
-+#include <malloc.h>
-+#include <notifier.h>
-+#include <io.h>
 +#include <of.h>
-+#include <linux/err.h>
++#include <gpio.h>
++#include <malloc.h>
++#include <types.h>
++#include <xfuncs.h>
 +#include <linux/clk.h>
-+#include <serial/lpuart32.h>
++#include <linux/err.h>
++#include <pinctrl.h>
++#include <of_gpio.h>
++#include <of_device.h>
 +
-+struct lpuart32_devtype_data {
-+	unsigned int reg_offs;
++#include <io.h>
++#include <i2c/i2c.h>
++
++#define DRIVER_NAME "imx-lpi2c"
++
++#define LPI2C_PARAM	0x04	/* i2c RX/TX FIFO size */
++#define LPI2C_MCR	0x10	/* i2c contrl register */
++#define LPI2C_MSR	0x14	/* i2c status register */
++#define LPI2C_MIER	0x18	/* i2c interrupt enable */
++#define LPI2C_MCFGR0	0x20	/* i2c master configuration */
++#define LPI2C_MCFGR1	0x24	/* i2c master configuration */
++#define LPI2C_MCFGR2	0x28	/* i2c master configuration */
++#define LPI2C_MCFGR3	0x2C	/* i2c master configuration */
++#define LPI2C_MCCR0	0x48	/* i2c master clk configuration */
++#define LPI2C_MCCR1	0x50	/* i2c master clk configuration */
++#define LPI2C_MFCR	0x58	/* i2c master FIFO control */
++#define LPI2C_MFSR	0x5C	/* i2c master FIFO status */
++#define LPI2C_MTDR	0x60	/* i2c master TX data register */
++#define LPI2C_MRDR	0x70	/* i2c master RX data register */
++
++/* i2c command */
++#define TRAN_DATA	0X00
++#define RECV_DATA	0X01
++#define GEN_STOP	0X02
++#define RECV_DISCARD	0X03
++#define GEN_START	0X04
++#define START_NACK	0X05
++#define START_HIGH	0X06
++#define START_HIGH_NACK	0X07
++
++#define MCR_MEN		BIT(0)
++#define MCR_RST		BIT(1)
++#define MCR_DOZEN	BIT(2)
++#define MCR_DBGEN	BIT(3)
++#define MCR_RTF		BIT(8)
++#define MCR_RRF		BIT(9)
++#define MSR_TDF		BIT(0)
++#define MSR_RDF		BIT(1)
++#define MSR_SDF		BIT(9)
++#define MSR_NDF		BIT(10)
++#define MSR_ALF		BIT(11)
++#define MSR_MBF		BIT(24)
++#define MSR_BBF		BIT(25)
++#define MIER_TDIE	BIT(0)
++#define MIER_RDIE	BIT(1)
++#define MIER_SDIE	BIT(9)
++#define MIER_NDIE	BIT(10)
++#define MCFGR1_AUTOSTOP	BIT(8)
++#define MCFGR1_IGNACK	BIT(9)
++#define MRDR_RXEMPTY	BIT(14)
++
++#define I2C_CLK_RATIO	2
++#define CHUNK_DATA	256
++
++#define I2C_PM_TIMEOUT		10 /* ms */
++
++enum lpi2c_imx_mode {
++	STANDARD,	/* 100+Kbps */
++	FAST,		/* 400+Kbps */
++	FAST_PLUS,	/* 1.0+Mbps */
++	HS,		/* 3.4+Mbps */
++	ULTRA_FAST,	/* 5.0+Mbps */
 +};
 +
-+struct lpuart32 {
-+	struct console_device cdev;
-+	int baudrate;
-+	int dte_mode;
-+	struct notifier_block notify;
-+	struct resource *io;
-+	void __iomem *base;
-+	struct clk *clk;
++enum lpi2c_imx_pincfg {
++	TWO_PIN_OD,
++	TWO_PIN_OO,
++	TWO_PIN_PP,
++	FOUR_PIN_PP,
 +};
 +
-+static struct lpuart32 *cdev_to_lpuart32(struct console_device *cdev)
++struct lpi2c_imx_struct {
++	struct i2c_adapter	adapter;
++	int			num_clks;
++	struct clk_bulk_data	*clks;
++	void __iomem		*base;
++	__u8			*rx_buf;
++	__u8			*tx_buf;
++	unsigned int		msglen;
++	unsigned int		delivered;
++	unsigned int		bitrate;
++	unsigned int		txfifosize;
++	unsigned int		rxfifosize;
++	enum lpi2c_imx_mode	mode;
++};
++
++static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
++			      unsigned int enable)
 +{
-+	return container_of(cdev, struct lpuart32, cdev);
++	writel(enable, lpi2c_imx->base + LPI2C_MIER);
 +}
 +
-+static void lpuart32_enable(struct lpuart32 *lpuart32)
++static int lpi2c_imx_bus_busy(struct lpi2c_imx_struct *lpi2c_imx)
 +{
-+	writel(LPUART32_UARTCTRL_TE | LPUART32_UARTCTRL_RE,
-+	       lpuart32->base + LPUART32_UARTCTRL);
-+}
++	unsigned int temp;
++	u64 start = get_time_ns();
 +
-+static void lpuart32_disable(struct lpuart32 *lpuart32)
-+{
-+	writel(0, lpuart32->base + LPUART32_UARTCTRL);
-+}
++	while (1) {
++		temp = readl(lpi2c_imx->base + LPI2C_MSR);
 +
-+static int lpuart32_serial_setbaudrate(struct console_device *cdev,
-+				     int baudrate)
-+{
-+	struct lpuart32 *lpuart32 = cdev_to_lpuart32(cdev);
++		/* check for arbitration lost, clear if set */
++		if (temp & (MSR_ALF | MSR_NDF)) {
++			writel(temp, lpi2c_imx->base + LPI2C_MSR);
++			return -EAGAIN;
++		}
 +
-+	lpuart32_disable(lpuart32);
++		if (temp & (MSR_BBF | MSR_MBF))
++			break;
 +
-+	/*
-+	 * We treat baudrate of 0 as a request to disable UART
-+	 */
-+	if (baudrate) {
-+		lpuart32_setbrg(lpuart32->base, clk_get_rate(lpuart32->clk),
-+			      baudrate);
-+		lpuart32_enable(lpuart32);
++		if (is_timeout(start, 500 * MSECOND)) {
++			dev_dbg(&lpi2c_imx->adapter.dev, "bus not work\n");
++			return -ETIMEDOUT;
++		}
 +	}
-+
-+	lpuart32->baudrate = baudrate;
 +
 +	return 0;
 +}
 +
-+static int lpuart32_serial_getc(struct console_device *cdev)
++static void lpi2c_imx_set_mode(struct lpi2c_imx_struct *lpi2c_imx)
 +{
-+	struct lpuart32 *lpuart32 = cdev_to_lpuart32(cdev);
++	unsigned int bitrate = lpi2c_imx->bitrate;
++	enum lpi2c_imx_mode mode;
 +
-+	while (!(readl(lpuart32->base + LPUART32_UARTSTAT) & LPUART32_UARTSTAT_RDRF));
++	if (bitrate < I2C_MAX_FAST_MODE_FREQ)
++		mode = STANDARD;
++	else if (bitrate < I2C_MAX_FAST_MODE_PLUS_FREQ)
++		mode = FAST;
++	else if (bitrate < I2C_MAX_HIGH_SPEED_MODE_FREQ)
++		mode = FAST_PLUS;
++	else if (bitrate < I2C_MAX_ULTRA_FAST_MODE_FREQ)
++		mode = HS;
++	else
++		mode = ULTRA_FAST;
 +
-+	return readl(lpuart32->base + LPUART32_UARTDATA) & 0xff;
++	lpi2c_imx->mode = mode;
 +}
 +
-+static void lpuart32_serial_putc(struct console_device *cdev, char c)
++static int lpi2c_imx_start(struct lpi2c_imx_struct *lpi2c_imx,
++			   struct i2c_msg *msgs)
 +{
-+	struct lpuart32 *lpuart32 = cdev_to_lpuart32(cdev);
++	unsigned int temp;
 +
-+	lpuart32_putc(lpuart32->base, c);
++	temp = readl(lpi2c_imx->base + LPI2C_MCR);
++	temp |= MCR_RRF | MCR_RTF;
++	writel(temp, lpi2c_imx->base + LPI2C_MCR);
++	writel(0x7f00, lpi2c_imx->base + LPI2C_MSR);
++
++	temp = i2c_8bit_addr_from_msg(msgs) | (GEN_START << 8);
++	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
++
++	return lpi2c_imx_bus_busy(lpi2c_imx);
 +}
 +
-+/* Test whether a character is in the RX buffer */
-+static int lpuart32_serial_tstc(struct console_device *cdev)
++static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
 +{
-+	struct lpuart32 *lpuart32 = cdev_to_lpuart32(cdev);
++	unsigned int temp;
++	u64 start = get_time_ns();
 +
-+	return readl(lpuart32->base + LPUART32_UARTSTAT) & LPUART32_UARTSTAT_RDRF;
++	writel(GEN_STOP << 8, lpi2c_imx->base + LPI2C_MTDR);
++
++	do {
++		temp = readl(lpi2c_imx->base + LPI2C_MSR);
++		if (temp & MSR_SDF)
++			break;
++
++		if (is_timeout(start, 500 * MSECOND)) {
++			dev_dbg(&lpi2c_imx->adapter.dev, "stop timeout\n");
++			break;
++		}
++
++	} while (1);
 +}
 +
-+static void lpuart32_serial_flush(struct console_device *cdev)
++/* CLKLO = I2C_CLK_RATIO * CLKHI, SETHOLD = CLKHI, DATAVD = CLKHI/2 */
++static int lpi2c_imx_config(struct lpi2c_imx_struct *lpi2c_imx)
 +{
++	u8 prescale, filt, sethold, datavd;
++	unsigned int clk_rate, clk_cycle, clkhi, clklo;
++	enum lpi2c_imx_pincfg pincfg;
++	unsigned int temp;
++
++	lpi2c_imx_set_mode(lpi2c_imx);
++
++	clk_rate = clk_get_rate(lpi2c_imx->clks[0].clk);
++	if (!clk_rate)
++		return -EINVAL;
++
++	if (lpi2c_imx->mode == HS || lpi2c_imx->mode == ULTRA_FAST)
++		filt = 0;
++	else
++		filt = 2;
++
++	for (prescale = 0; prescale <= 7; prescale++) {
++		clk_cycle = clk_rate / ((1 << prescale) * lpi2c_imx->bitrate)
++			    - 3 - (filt >> 1);
++		clkhi = DIV_ROUND_UP(clk_cycle, I2C_CLK_RATIO + 1);
++		clklo = clk_cycle - clkhi;
++		if (clklo < 64)
++			break;
++	}
++
++	if (prescale > 7)
++		return -EINVAL;
++
++	/* set MCFGR1: PINCFG, PRESCALE, IGNACK */
++	if (lpi2c_imx->mode == ULTRA_FAST)
++		pincfg = TWO_PIN_OO;
++	else
++		pincfg = TWO_PIN_OD;
++	temp = prescale | pincfg << 24;
++
++	if (lpi2c_imx->mode == ULTRA_FAST)
++		temp |= MCFGR1_IGNACK;
++
++	writel(temp, lpi2c_imx->base + LPI2C_MCFGR1);
++
++	/* set MCFGR2: FILTSDA, FILTSCL */
++	temp = (filt << 16) | (filt << 24);
++	writel(temp, lpi2c_imx->base + LPI2C_MCFGR2);
++
++	/* set MCCR: DATAVD, SETHOLD, CLKHI, CLKLO */
++	sethold = clkhi;
++	datavd = clkhi >> 1;
++	temp = datavd << 24 | sethold << 16 | clkhi << 8 | clklo;
++
++	if (lpi2c_imx->mode == HS)
++		writel(temp, lpi2c_imx->base + LPI2C_MCCR1);
++	else
++		writel(temp, lpi2c_imx->base + LPI2C_MCCR0);
++
++	return 0;
 +}
 +
-+static int lpuart32_serial_probe(struct device *dev)
++static int lpi2c_imx_master_enable(struct lpi2c_imx_struct *lpi2c_imx)
 +{
++	unsigned int temp;
 +	int ret;
-+	struct console_device *cdev;
-+	struct lpuart32 *lpuart32;
-+	const char *devname;
-+	struct lpuart32_devtype_data *devtype;
 +
-+	ret = dev_get_drvdata(dev, (const void **)&devtype);
++	temp = MCR_RST;
++	writel(temp, lpi2c_imx->base + LPI2C_MCR);
++	writel(0, lpi2c_imx->base + LPI2C_MCR);
++
++	ret = lpi2c_imx_config(lpi2c_imx);
 +	if (ret)
 +		return ret;
 +
-+	lpuart32 = xzalloc(sizeof(*lpuart32));
-+	cdev = &lpuart32->cdev;
-+	dev->priv = lpuart32;
++	temp = readl(lpi2c_imx->base + LPI2C_MCR);
++	temp |= MCR_MEN;
++	writel(temp, lpi2c_imx->base + LPI2C_MCR);
 +
-+	lpuart32->io = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(lpuart32->io)) {
-+		ret = PTR_ERR(lpuart32->io);
-+		goto err_free;
-+	}
-+	lpuart32->base = IOMEM(lpuart32->io->start) + devtype->reg_offs;
++	return 0;
++}
 +
-+	lpuart32->clk = clk_get(dev, NULL);
-+	if (IS_ERR(lpuart32->clk)) {
-+		ret = PTR_ERR(lpuart32->clk);
-+		dev_err(dev, "Failed to get UART clock %d\n", ret);
-+		goto io_release;
-+	}
++static int lpi2c_imx_master_disable(struct lpi2c_imx_struct *lpi2c_imx)
++{
++	u32 temp;
 +
-+	ret = clk_enable(lpuart32->clk);
-+	if (ret) {
-+		dev_err(dev, "Failed to enable UART clock %d\n", ret);
-+		goto io_release;
-+	}
++	temp = readl(lpi2c_imx->base + LPI2C_MCR);
++	temp &= ~MCR_MEN;
++	writel(temp, lpi2c_imx->base + LPI2C_MCR);
 +
-+	cdev->dev    = dev;
-+	cdev->tstc   = lpuart32_serial_tstc;
-+	cdev->putc   = lpuart32_serial_putc;
-+	cdev->getc   = lpuart32_serial_getc;
-+	cdev->flush  = lpuart32_serial_flush;
-+	cdev->setbrg = lpuart32_serial_setbaudrate;
++	return 0;
++}
 +
-+	if (dev->of_node) {
-+		devname = of_alias_get(dev->of_node);
-+		if (devname) {
-+			cdev->devname = xstrdup(devname);
-+			cdev->devid   = DEVICE_ID_SINGLE;
++static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx)
++{
++	u32 txcnt;
++	u64 start = get_time_ns();
++
++	do {
++		txcnt = readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
++
++		if (readl(lpi2c_imx->base + LPI2C_MSR) & MSR_NDF) {
++			dev_dbg(&lpi2c_imx->adapter.dev, "NDF detected\n");
++			return -EIO;
++		}
++
++		if (is_timeout(start, 500 * MSECOND)) {
++			dev_dbg(&lpi2c_imx->adapter.dev, "txfifo empty timeout\n");
++			return -ETIMEDOUT;
++		}
++
++	} while (txcnt);
++
++	return 0;
++}
++
++static void lpi2c_imx_set_tx_watermark(struct lpi2c_imx_struct *lpi2c_imx)
++{
++	writel(lpi2c_imx->txfifosize >> 1, lpi2c_imx->base + LPI2C_MFCR);
++}
++
++static void lpi2c_imx_set_rx_watermark(struct lpi2c_imx_struct *lpi2c_imx)
++{
++	unsigned int temp, remaining;
++
++	remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
++
++	if (remaining > (lpi2c_imx->rxfifosize >> 1))
++		temp = lpi2c_imx->rxfifosize >> 1;
++	else
++		temp = 0;
++
++	writel(temp << 16, lpi2c_imx->base + LPI2C_MFCR);
++}
++
++static int lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx)
++{
++	unsigned int data, remaining;
++	uint64_t start = get_time_ns();
++
++	do {
++		u32 cnt = readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
++		if (cnt == lpi2c_imx->txfifosize) {
++			if (is_timeout(start, 100 * MSECOND))
++				return -EIO;
++			continue;
++		}
++
++		data = lpi2c_imx->tx_buf[lpi2c_imx->delivered++];
++
++		writel(data, lpi2c_imx->base + LPI2C_MTDR);
++		remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
++	} while (remaining);
++
++	return 0;
++}
++
++static int lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx)
++{
++	unsigned int remaining;
++	unsigned int data;
++	uint64_t start = get_time_ns();
++
++	do {
++		data = readl(lpi2c_imx->base + LPI2C_MRDR);
++		if (data & MRDR_RXEMPTY) {
++			if (is_timeout(start, 100 * MSECOND))
++				return -EIO;
++			continue;
++		}
++
++		lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
++
++		remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
++	} while (remaining);
++
++	return 0;
++}
++
++static int lpi2c_imx_write(struct lpi2c_imx_struct *lpi2c_imx,
++			    struct i2c_msg *msgs)
++{
++	lpi2c_imx->tx_buf = msgs->buf;
++	lpi2c_imx_set_tx_watermark(lpi2c_imx);
++
++	return lpi2c_imx_write_txfifo(lpi2c_imx);
++}
++
++static int lpi2c_imx_read(struct lpi2c_imx_struct *lpi2c_imx,
++			   struct i2c_msg *msgs)
++{
++	unsigned int temp;
++
++	lpi2c_imx->rx_buf = msgs->buf;
++
++	lpi2c_imx_set_rx_watermark(lpi2c_imx);
++	temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
++	temp |= (RECV_DATA << 8);
++	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
++
++	lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE | MIER_NDIE);
++
++	return lpi2c_imx_read_rxfifo(lpi2c_imx);
++}
++
++static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
++			  struct i2c_msg *msgs, int num)
++{
++	struct lpi2c_imx_struct *lpi2c_imx = container_of(adapter, struct lpi2c_imx_struct, adapter);
++	unsigned int temp;
++	int i, result;
++
++	result = lpi2c_imx_master_enable(lpi2c_imx);
++	if (result)
++		return result;
++
++	for (i = 0; i < num; i++) {
++		result = lpi2c_imx_start(lpi2c_imx, &msgs[i]);
++		if (result)
++			goto disable;
++
++		/* quick smbus */
++		if (num == 1 && msgs[0].len == 0)
++			goto stop;
++
++		lpi2c_imx->rx_buf = NULL;
++		lpi2c_imx->tx_buf = NULL;
++		lpi2c_imx->delivered = 0;
++		lpi2c_imx->msglen = msgs[i].len;
++
++		if (msgs[i].flags & I2C_M_RD)
++			result = lpi2c_imx_read(lpi2c_imx, &msgs[i]);
++		else
++			result = lpi2c_imx_write(lpi2c_imx, &msgs[i]);
++
++		if (result)
++			goto stop;
++
++		if (!(msgs[i].flags & I2C_M_RD)) {
++			result = lpi2c_imx_txfifo_empty(lpi2c_imx);
++			if (result)
++				goto stop;
 +		}
 +	}
 +
-+	cdev->linux_console_name = "ttyLP";
-+	cdev->linux_earlycon_name = "lpuart";
-+	cdev->phys_base = lpuart32->base;
++stop:
++	lpi2c_imx_stop(lpi2c_imx);
 +
-+	lpuart32_setup(lpuart32->base, clk_get_rate(lpuart32->clk));
++	temp = readl(lpi2c_imx->base + LPI2C_MSR);
++	if ((temp & MSR_NDF) && !result)
++		result = -EIO;
 +
-+	ret = console_register(cdev);
-+	if (!ret)
-+		return 0;
++disable:
++	lpi2c_imx_master_disable(lpi2c_imx);
 +
-+	clk_put(lpuart32->clk);
-+io_release:
-+	release_region(lpuart32->io);
-+err_free:
-+	free(lpuart32);
++	dev_dbg(&lpi2c_imx->adapter.dev, "<%s> exit with: %s: %d\n", __func__,
++		(result < 0) ? "error" : "success msg",
++		(result < 0) ? result : num);
 +
-+	return ret;
++	return (result < 0) ? result : num;
 +}
 +
-+static struct lpuart32_devtype_data imx7ulp_data = {
-+	.reg_offs = 0x10,
++static const struct of_device_id lpi2c_imx_of_match[] = {
++	{ .compatible = "fsl,imx7ulp-lpi2c" },
++	{ },
 +};
++MODULE_DEVICE_TABLE(of, lpi2c_imx_of_match);
 +
-+static struct of_device_id lpuart32_serial_dt_ids[] = {
-+	{
-+		.compatible = "fsl,imx7ulp-lpuart",
-+		.data = &imx7ulp_data,
-+	}, {
-+		/* sentinel */
-+	}
++static int lpi2c_imx_probe(struct device *dev)
++{
++	struct lpi2c_imx_struct *lpi2c_imx;
++	struct resource *iores;
++	unsigned int temp;
++	int ret;
++
++	lpi2c_imx = xzalloc(sizeof(*lpi2c_imx));
++
++	iores = dev_request_mem_resource(dev, 0);
++	if (IS_ERR(iores))
++		return PTR_ERR(iores);
++
++	lpi2c_imx->base = IOMEM(iores->start);
++
++	lpi2c_imx->adapter.nr = -1;
++	lpi2c_imx->adapter.master_xfer	= lpi2c_imx_xfer;
++	lpi2c_imx->adapter.dev.parent	= dev;
++	lpi2c_imx->adapter.dev.of_node	= dev->of_node;
++
++	ret = clk_bulk_get_all(dev, &lpi2c_imx->clks);
++	if (ret < 0)
++		return dev_err_probe(dev, ret, "can't get I2C peripheral clock\n");
++	lpi2c_imx->num_clks = ret;
++
++	ret = of_property_read_u32(dev->of_node,
++				   "clock-frequency", &lpi2c_imx->bitrate);
++	if (ret)
++		lpi2c_imx->bitrate = I2C_MAX_STANDARD_MODE_FREQ;
++
++	ret = clk_bulk_enable(lpi2c_imx->num_clks, lpi2c_imx->clks);
++	if (ret)
++		return ret;
++
++	temp = readl(lpi2c_imx->base + LPI2C_PARAM);
++	lpi2c_imx->txfifosize = 1 << (temp & 0x0f);
++	lpi2c_imx->rxfifosize = 1 << ((temp >> 8) & 0x0f);
++
++	ret = i2c_add_numbered_adapter(&lpi2c_imx->adapter);
++	if (ret)
++		return ret;
++
++	dev_dbg(&lpi2c_imx->adapter.dev, "LPI2C adapter registered\n");
++
++	return 0;
++}
++
++static struct driver lpi2c_imx_driver = {
++        .probe  = lpi2c_imx_probe,
++        .name   = "i2c-fsl",
++        .of_compatible = DRV_OF_COMPAT(lpi2c_imx_of_match),
 +};
-+MODULE_DEVICE_TABLE(of, lpuart32_serial_dt_ids);
++coredevice_platform_driver(lpi2c_imx_driver);
 +
-+static struct driver lpuart32_serial_driver = {
-+	.name   = "lpuart32-serial",
-+	.probe  = lpuart32_serial_probe,
-+	.of_compatible = DRV_OF_COMPAT(lpuart32_serial_dt_ids),
-+};
-+console_platform_driver(lpuart32_serial_driver);
-diff --git a/include/serial/lpuart32.h b/include/serial/lpuart32.h
-new file mode 100644
-index 0000000000..bcfd067113
---- /dev/null
-+++ b/include/serial/lpuart32.h
-@@ -0,0 +1,158 @@
-+/*
-+ * Copyright (c) 2016 Zodiac Inflight Innovation
-+ * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-+ *
-+ * Based on code found in Linux kernel and U-Boot.
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License version 2
-+ * as published by the Free Software Foundation.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ */
-+
-+#ifndef __lpuart32_H__
-+#define __lpuart32_H__
-+
-+
-+/* 32-bit register definition */
-+#define LPUART32_UARTBAUD		0x00
-+#define LPUART32_UARTSTAT		0x04
-+#define LPUART32_UARTCTRL		0x08
-+#define LPUART32_UARTDATA		0x0C
-+#define LPUART32_UARTMATCH		0x10
-+#define LPUART32_UARTMODIR		0x14
-+#define LPUART32_UARTFIFO		0x18
-+#define LPUART32_UARTWATER		0x1c
-+
-+#define LPUART32_UARTBAUD_MAEN1		0x80000000
-+#define LPUART32_UARTBAUD_MAEN2		0x40000000
-+#define LPUART32_UARTBAUD_M10		0x20000000
-+#define LPUART32_UARTBAUD_TDMAE		0x00800000
-+#define LPUART32_UARTBAUD_RDMAE		0x00200000
-+#define LPUART32_UARTBAUD_MATCFG	0x00400000
-+#define LPUART32_UARTBAUD_BOTHEDGE	0x00020000
-+#define LPUART32_UARTBAUD_RESYNCDIS	0x00010000
-+#define LPUART32_UARTBAUD_LBKDIE	0x00008000
-+#define LPUART32_UARTBAUD_RXEDGIE	0x00004000
-+#define LPUART32_UARTBAUD_SBNS		0x00002000
-+#define LPUART32_UARTBAUD_SBR		0x00000000
-+#define LPUART32_UARTBAUD_SBR_MASK	0x1fff
-+#define LPUART32_UARTBAUD_OSR_MASK	0x1f
-+#define LPUART32_UARTBAUD_OSR_SHIFT	24
-+
-+#define LPUART32_UARTSTAT_LBKDIF	0x80000000
-+#define LPUART32_UARTSTAT_RXEDGIF	0x40000000
-+#define LPUART32_UARTSTAT_MSBF		0x20000000
-+#define LPUART32_UARTSTAT_RXINV		0x10000000
-+#define LPUART32_UARTSTAT_RWUID		0x08000000
-+#define LPUART32_UARTSTAT_BRK13		0x04000000
-+#define LPUART32_UARTSTAT_LBKDE		0x02000000
-+#define LPUART32_UARTSTAT_RAF		0x01000000
-+#define LPUART32_UARTSTAT_TDRE		0x00800000
-+#define LPUART32_UARTSTAT_TC		0x00400000
-+#define LPUART32_UARTSTAT_RDRF		0x00200000
-+#define LPUART32_UARTSTAT_IDLE		0x00100000
-+#define LPUART32_UARTSTAT_OR		0x00080000
-+#define LPUART32_UARTSTAT_NF		0x00040000
-+#define LPUART32_UARTSTAT_FE		0x00020000
-+#define LPUART32_UARTSTAT_PE		0x00010000
-+#define LPUART32_UARTSTAT_MA1F		0x00008000
-+#define LPUART32_UARTSTAT_M21F		0x00004000
-+
-+#define LPUART32_UARTCTRL_R8T9		0x80000000
-+#define LPUART32_UARTCTRL_R9T8		0x40000000
-+#define LPUART32_UARTCTRL_TXDIR		0x20000000
-+#define LPUART32_UARTCTRL_TXINV		0x10000000
-+#define LPUART32_UARTCTRL_ORIE		0x08000000
-+#define LPUART32_UARTCTRL_NEIE		0x04000000
-+#define LPUART32_UARTCTRL_FEIE		0x02000000
-+#define LPUART32_UARTCTRL_PEIE		0x01000000
-+#define LPUART32_UARTCTRL_TIE		0x00800000
-+#define LPUART32_UARTCTRL_TCIE		0x00400000
-+#define LPUART32_UARTCTRL_RIE		0x00200000
-+#define LPUART32_UARTCTRL_ILIE		0x00100000
-+#define LPUART32_UARTCTRL_TE		0x00080000
-+#define LPUART32_UARTCTRL_RE		0x00040000
-+#define LPUART32_UARTCTRL_RWU		0x00020000
-+#define LPUART32_UARTCTRL_SBK		0x00010000
-+#define LPUART32_UARTCTRL_MA1IE		0x00008000
-+#define LPUART32_UARTCTRL_MA2IE		0x00004000
-+#define LPUART32_UARTCTRL_IDLECFG	GENMASK(10, 8)
-+#define LPUART32_UARTCTRL_LOOPS		0x00000080
-+#define LPUART32_UARTCTRL_DOZEEN	0x00000040
-+#define LPUART32_UARTCTRL_RSRC		0x00000020
-+#define LPUART32_UARTCTRL_M		0x00000010
-+#define LPUART32_UARTCTRL_WAKE		0x00000008
-+#define LPUART32_UARTCTRL_ILT		0x00000004
-+#define LPUART32_UARTCTRL_PE		0x00000002
-+#define LPUART32_UARTCTRL_PT		0x00000001
-+
-+#define LPUART32_UARTDATA_NOISY		0x00008000
-+#define LPUART32_UARTDATA_PARITYE	0x00004000
-+#define LPUART32_UARTDATA_FRETSC	0x00002000
-+#define LPUART32_UARTDATA_RXEMPT	0x00001000
-+#define LPUART32_UARTDATA_IDLINE	0x00000800
-+#define LPUART32_UARTDATA_MASK		0x3ff
-+
-+#define LPUART32_UARTMODIR_IREN		0x00020000
-+#define LPUART32_UARTMODIR_RTSWATER	GENMASK(10, 8)
-+#define LPUART32_UARTMODIR_TXCTSSRC	0x00000020
-+#define LPUART32_UARTMODIR_TXCTSC	0x00000010
-+#define LPUART32_UARTMODIR_RXRTSE	0x00000008
-+#define LPUART32_UARTMODIR_TXRTSPOL	0x00000004
-+#define LPUART32_UARTMODIR_TXRTSE	0x00000002
-+#define LPUART32_UARTMODIR_TXCTSE	0x00000001
-+
-+#define LPUART32_UARTFIFO_TXEMPT	0x00800000
-+#define LPUART32_UARTFIFO_RXEMPT	0x00400000
-+#define LPUART32_UARTFIFO_TXOF		0x00020000
-+#define LPUART32_UARTFIFO_RXUF		0x00010000
-+#define LPUART32_UARTFIFO_TXFLUSH	0x00008000
-+#define LPUART32_UARTFIFO_RXFLUSH	0x00004000
-+#define LPUART32_UARTFIFO_RXIDEN	GENMASK(12, 10)
-+#define LPUART32_UARTFIFO_TXOFE		0x00000200
-+#define LPUART32_UARTFIFO_RXUFE		0x00000100
-+#define LPUART32_UARTFIFO_TXFE		0x00000080
-+#define LPUART32_UARTFIFO_FIFOSIZE_MASK	0x7
-+#define LPUART32_UARTFIFO_TXSIZE_OFF	4
-+#define LPUART32_UARTFIFO_RXFE		0x00000008
-+#define LPUART32_UARTFIFO_RXSIZE_OFF	0
-+#define LPUART32_UARTFIFO_DEPTH(x)	(0x1 << ((x) ? ((x) + 1) : 0))
-+
-+#define LPUART32_UARTWATER_COUNT_MASK	0xff
-+#define LPUART32_UARTWATER_TXCNT_OFF	8
-+#define LPUART32_UARTWATER_RXCNT_OFF	24
-+#define LPUART32_UARTWATER_WATER_MASK	0xff
-+#define LPUART32_UARTWATER_TXWATER_OFF	0
-+#define LPUART32_UARTWATER_RXWATER_OFF	16
-+
-+static inline void lpuart32_setbrg(void __iomem *base,
-+				 unsigned int refclock,
-+				 unsigned int baudrate)
-+{
-+	u32 sbr;
-+
-+	sbr = (refclock / (16 * baudrate));
-+	writel(sbr, base + LPUART32_UARTBAUD);
-+}
-+
-+static inline void lpuart32_setup(void __iomem *base,
-+				unsigned int refclock)
-+{
-+	lpuart32_setbrg(base, refclock, CONFIG_BAUDRATE);
-+	writel(LPUART32_UARTCTRL_TE | LPUART32_UARTCTRL_RE, base + LPUART32_UARTCTRL);
-+}
-+
-+static inline void lpuart32_putc(void __iomem *base, int c)
-+{
-+	while (!(readl(base + LPUART32_UARTSTAT) & LPUART32_UARTSTAT_TDRE));
-+
-+	writel(c, base + LPUART32_UARTDATA);
-+}
-+
-+#endif
++MODULE_AUTHOR("Gao Pan <pandy.gao@nxp.com>");
++MODULE_DESCRIPTION("I2C adapter driver for LPI2C bus");
++MODULE_LICENSE("GPL");
 -- 
 2.39.2
 
