@@ -1,79 +1,64 @@
-Delivery-date: Fri, 10 Nov 2023 14:00:00 +0100
+Delivery-date: Fri, 10 Nov 2023 14:00:22 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1R7A-005rYS-0h
+	id 1r1R7V-005rZU-1v
 	for lore@lore.pengutronix.de;
-	Fri, 10 Nov 2023 14:00:00 +0100
+	Fri, 10 Nov 2023 14:00:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1R76-0003ZH-6j
-	for lore@pengutronix.de; Fri, 10 Nov 2023 14:00:00 +0100
+	id 1r1R7J-0003mM-1T
+	for lore@pengutronix.de; Fri, 10 Nov 2023 14:00:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Qo3mdGr0TmPQlcQ91o4JWufxY4dPYGxJ3rzd/eYtWok=; b=i2I6uRwIJdChMFAqqIkfpA264K
-	FT67Vlj+pqTkScrpKVvsuUNXgo3QVQbsUl+Hh0zINxap55YVMsRmShTQmzYWBy5eBdWiLTnmEH0m7
-	2EMRfpnnDfA59HNlguWm7hHURRDYe+Es50tJsXjprPMvf/9cY4bV7U+8ipXFOXg6ynKxzcgRVbJMV
-	zz5rXkDa3oWg4nGRR9j+S6H9hPqa7VLhlnM8GC2veF0GMOsyZ7UvNrV/08gQuEYw3/gLDs5wTGLVU
-	3+v7BKO3+QsycLz7Ce9Jn3UMGSJcTxv+0SeVG86BOuEL9ynTNnEpHsXVWxL5o+oyaAgoXq5JEkiqc
-	00C0CMLA==;
+	bh=4TCwiHpU7D8nDK0YZlHWvO8x/nQPAIDCyUuKAz3BsN8=; b=OBxpzgBtDqMnc2raNSdtsyYaYY
+	hwe1WQBzbK9Ws2xhibdepvi7q+Z8tev4V6eBzgVRCXMFdIkhSMZLBM7mWwGYbWgikQbAn83VThWo7
+	0yHmCLbj3DMIO1CYm8ZW5O0txrjJwIKy7nm8ZkrioSQdvIzZ4aN967AXXRvYrRR12GLJf8D2gvWEG
+	zmnFLymchizZRy7lacgYGvRlVu5aBuwNlfUbUkrr2PGEMNOqbAOJUGdqH1DoWj7obJgOfwOwZ6wll
+	5jB+d3YrY+xuybMJiPEVs5re3MmkXHHbCGxShUzdy0f1SPo7YIZKfu22zZy0xBu1M+ksE30zzZJPo
+	gTcfHxmA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R5p-008kKZ-1o;
-	Fri, 10 Nov 2023 12:58:37 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R5b-008k1R-0z
-	for barebox@bombadil.infradead.org;
-	Fri, 10 Nov 2023 12:58:23 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=Qo3mdGr0TmPQlcQ91o4JWufxY4dPYGxJ3rzd/eYtWok=; b=WsYb9B9W6xfvQCmUEJcDkyO0d0
-	eQvcCJ20HpiiZnBXlssuDLiMEIBSfgGnEM5414CmhSTMOBjFJwhMXgSFL6ekNvSrdOpPK9Cxdlfsd
-	Roe772ier3wF5oyb6I6PtOL5KgG4ohx7Ri61wDcPRAWtuHveqVyC0vT/NHeOJcoYAB++6AMlNpsOB
-	UXGY8cRRVJaJpkQi2o+8vntwfyO/cS8U/CPFW/lich7277V4xcdjPxUcNIoYbPLJWlyWOFotL1jgk
-	vqKT/T3d5/QH1UsAv+f3rOszEpKnUIjkMaTDVufIenB7jp5fKpqWHv1TimfHUVIXmNNRfiPOKiwLT
-	lJghWpvA==;
+	id 1r1R5f-008k66-0t;
+	Fri, 10 Nov 2023 12:58:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R5R-00Fbui-2X
+	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1r1R5J-008jo4-33
 	for barebox@lists.infradead.org;
-	Fri, 10 Nov 2023 12:58:22 +0000
+	Fri, 10 Nov 2023 12:58:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5H-00026o-Uh; Fri, 10 Nov 2023 13:58:03 +0100
+	id 1r1R5H-00026M-Ct; Fri, 10 Nov 2023 13:58:03 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5G-0081XM-Vb; Fri, 10 Nov 2023 13:58:02 +0100
+	id 1r1R5G-0081X7-Oc; Fri, 10 Nov 2023 13:58:02 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5G-008s0Q-2h;
+	id 1r1R5G-008rz9-2G;
 	Fri, 10 Nov 2023 13:58:02 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 10 Nov 2023 13:57:47 +0100
-Message-Id: <20231110125800.1901232-13-s.hauer@pengutronix.de>
+Date: Fri, 10 Nov 2023 13:57:39 +0100
+Message-Id: <20231110125800.1901232-5-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231110125800.1901232-1-s.hauer@pengutronix.de>
 References: <20231110125800.1901232-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231110_125814_616713_4218B4CB 
-X-CRM114-Status: GOOD (  26.60  )
+X-CRM114-CacheID: sfid-20231110_045806_467001_72C43587 
+X-CRM114-Status: GOOD (  22.85  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -96,572 +81,2325 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 12/25] i2c: Add lpi2c support
+Subject: [PATCH 04/25] scripts: Add imx9image tool
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+This adds a tool for building images for the NXP i.MX9 SoC. The code
+is based on:
+https://github.com/nxp-imx/imx-mkimage/tree/5a0faefc223e51e088433663b6e7d6fbce89bf59
+
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/busses/Kconfig         |   7 +
- drivers/i2c/busses/Makefile        |   1 +
- drivers/i2c/busses/i2c-imx-lpi2c.c | 518 +++++++++++++++++++++++++++++
- 3 files changed, 526 insertions(+)
- create mode 100644 drivers/i2c/busses/i2c-imx-lpi2c.c
+ include/soc/imx9/flash_header.h |   88 ++
+ scripts/Kconfig                 |    7 +
+ scripts/Makefile                |    1 +
+ scripts/imx9image.c             | 2171 +++++++++++++++++++++++++++++++
+ 4 files changed, 2267 insertions(+)
+ create mode 100644 include/soc/imx9/flash_header.h
+ create mode 100644 scripts/imx9image.c
 
-diff --git a/drivers/i2c/busses/Kconfig b/drivers/i2c/busses/Kconfig
-index 766aa5edfa..a274baf4b6 100644
---- a/drivers/i2c/busses/Kconfig
-+++ b/drivers/i2c/busses/Kconfig
-@@ -30,6 +30,13 @@ config I2C_IMX
- 	  for many i.MX ARM based SoCs, for MPC85xx and MPC5200 PowerPC based
- 	  SoCs.
- 
-+config I2C_IMX_LPI2C
-+	tristate "IMX Low Power I2C interface"
-+	depends on ARCH_IMX || COMPILE_TEST
-+	help
-+	  Say Y here if you want to use the Low Power IIC bus controller
-+	  on the Freescale i.MX processors.
-+
- config I2C_DESIGNWARE
- 	bool "Synopsys DesignWare I2C Master driver"
- 	help
-diff --git a/drivers/i2c/busses/Makefile b/drivers/i2c/busses/Makefile
-index a1ab46fb28..48f9b5be04 100644
---- a/drivers/i2c/busses/Makefile
-+++ b/drivers/i2c/busses/Makefile
-@@ -4,6 +4,7 @@ obj-$(CONFIG_I2C_BCM283X)	+= i2c-bcm283x.o
- obj-$(CONFIG_I2C_GPIO)		+= i2c-gpio.o
- obj-$(CONFIG_I2C_IMX)		+= i2c-imx.o
- lwl-$(CONFIG_I2C_IMX_EARLY)	+= i2c-imx-early.o
-+obj-$(CONFIG_I2C_IMX_LPI2C)	+= i2c-imx-lpi2c.o
- obj-$(CONFIG_I2C_MV64XXX)	+= i2c-mv64xxx.o
- obj-$(CONFIG_I2C_OMAP)		+= i2c-omap.o
- obj-$(CONFIG_I2C_TEGRA)		+= i2c-tegra.o
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+diff --git a/include/soc/imx9/flash_header.h b/include/soc/imx9/flash_header.h
 new file mode 100644
-index 0000000000..f28a445601
+index 0000000000..51819929dd
 --- /dev/null
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -0,0 +1,518 @@
-+// SPDX-License-Identifier: GPL-2.0+
++++ b/include/soc/imx9/flash_header.h
+@@ -0,0 +1,88 @@
++#ifndef SOC_IMX_FLASH_HEADER_H
++#define SOC_IMX_FLASH_HEADER_H
++
++#define HASH_MAX_LEN			64
++#define IV_MAX_LEN			32
++#define MAX_NUM_IMGS			8
++#define MAX_NUM_OF_CONTAINER		3
++#define MAX_HW_CFG_SIZE_V2		359
++
++struct img_flags {
++	char type;
++	char core_id;
++	char hash_type;
++	bool encrypted;
++	uint16_t boot_flags;
++};
++
++struct sig_blk_hdr {
++	uint8_t version;
++	uint16_t length;
++	uint8_t tag;
++	uint16_t srk_table_offset;
++	uint16_t cert_offset;
++	uint16_t blob_offset;
++	uint16_t signature_offset;
++	uint32_t reserved;
++} __attribute__((packed));
++
++struct boot_img {
++	uint32_t offset;
++	uint32_t size;
++	uint64_t dst;
++	uint64_t entry;
++	uint32_t hab_flags;
++	uint32_t meta;
++	uint8_t hash[HASH_MAX_LEN];
++	uint8_t iv[IV_MAX_LEN];
++} __attribute__((packed));
++
++struct flash_header_v3 {
++	uint8_t version;
++	uint16_t length;
++	uint8_t tag;
++	uint32_t flags;
++	uint16_t sw_version;
++	uint8_t fuse_version;
++	uint8_t num_images;
++	uint16_t sig_blk_offset;
++	uint16_t reserved;
++	struct boot_img img[MAX_NUM_IMGS];
++	struct sig_blk_hdr sig_blk_hdr;
++	uint32_t sigblk_size;
++	uint32_t padding;
++} __attribute__((packed));
++
++struct ivt_header {
++	uint8_t tag;
++	uint16_t length;
++	uint8_t version;
++} __attribute__((packed));
++
++struct write_dcd_command {
++	uint8_t tag;
++	uint16_t length;
++	uint8_t param;
++} __attribute__((packed));
++
++struct dcd_addr_data {
++	uint32_t addr;
++	uint32_t value;
++};
++
++struct dcd_v2_cmd {
++	struct write_dcd_command write_dcd_command; /*4*/
++	struct dcd_addr_data addr_data[MAX_HW_CFG_SIZE_V2]; /*2872*/
++} __attribute__((packed));
++
++struct dcd_v2 {
++	struct ivt_header header;   /*4*/
++	struct dcd_v2_cmd dcd_cmd; /*2876*/
++} __attribute__((packed)) ;                     /*2880*/
++
++struct imx_header_v3 {
++	struct flash_header_v3 fhdr[MAX_NUM_OF_CONTAINER];
++	struct dcd_v2 dcd_table;
++}  __attribute__((packed));
++
++#endif /* SOC_IMX_FLASH_HEADER_H */
+diff --git a/scripts/Kconfig b/scripts/Kconfig
+index 9be04fa7c8..4b675671ee 100644
+--- a/scripts/Kconfig
++++ b/scripts/Kconfig
+@@ -28,6 +28,13 @@ config ZYNQ_MKIMAGE
+ 	help
+ 	  This enables building the image creation tool for Zynq
+ 
++config IMX9_IMAGE
++	bool "imx9image"
++	depends on ARCH_IMX93 || COMPILE_HOST_TOOLS
++	default y if ARCH_IMX93
++	help
++	  This enables building the image tool for NXP i.MX9 SoCs
++
+ config MXS_HOSTTOOLS
+ 	bool "MXS host tools" if COMPILE_HOST_TOOLS
+ 	depends on ARCH_MXS || COMPILE_HOST_TOOLS
+diff --git a/scripts/Makefile b/scripts/Makefile
+index 42ac4e548b..cb1d916439 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -25,6 +25,7 @@ hostprogs-always-$(CONFIG_SOCFPGA_MKIMAGE)		+= socfpga_mkimage
+ hostprogs-always-$(CONFIG_MXS_HOSTTOOLS)		+= mxsimage mxsboot
+ hostprogs-always-$(CONFIG_LAYERSCAPE_PBLIMAGE)		+= pblimage
+ hostprogs-always-$(CONFIG_STM32_IMAGE)			+= stm32image
++hostprogs-always-$(CONFIG_IMX9_IMAGE)			+= imx9image
+ hostprogs-always-$(CONFIG_RISCV)			+= prelink-riscv
+ hostprogs-always-$(CONFIG_RK_IMAGE)			+= rkimage
+ HOSTCFLAGS_rkimage.o = `$(PKG_CONFIG) --cflags openssl`
+diff --git a/scripts/imx9image.c b/scripts/imx9image.c
+new file mode 100644
+index 0000000000..a991ba5f35
+--- /dev/null
++++ b/scripts/imx9image.c
+@@ -0,0 +1,2171 @@
 +/*
-+ * This is i.MX low power i2c controller driver.
++ * Copyright (C) 2016 Freescale Semiconductor, Inc.
 + *
-+ * Copyright 2016 Freescale Semiconductor, Inc.
++ * Copyright 2017 NXP
++ *
++ * SPDX-License-Identifier:	GPL-2.0+
++ * derived from u-boot's mkimage utility
++ *
 + */
 +
-+#include <clock.h>
-+#include <common.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <of.h>
-+#include <gpio.h>
-+#include <malloc.h>
-+#include <types.h>
-+#include <xfuncs.h>
-+#include <linux/clk.h>
-+#include <linux/err.h>
-+#include <pinctrl.h>
-+#include <of_gpio.h>
-+#include <of_device.h>
++#define _GNU_SOURCE
++#include <stdio.h>
++#include <string.h>
++#include <stdlib.h>
++#include <stdint.h>
++#include <stddef.h>
++#include <stdarg.h>
++#include <sys/stat.h>
++#include <getopt.h>
++#include <errno.h>
++#include <fcntl.h>
++#include <unistd.h>
++#include <sys/mman.h>
++#include <sys/types.h>
++#include <stdbool.h>
++#include <inttypes.h>
++#include <linux/kernel.h>
 +
-+#include <io.h>
-+#include <i2c/i2c.h>
++#include "../include/soc/imx9/flash_header.h"
++#include "compiler.h"
 +
-+#define DRIVER_NAME "imx-lpi2c"
++typedef enum option_type {
++	NO_IMG = 0,
++	DCD,
++	SCFW,
++	SECO,
++	M4,
++	AP,
++	OUTPUT,
++	SCD,
++	CSF,
++	FLAG,
++	DEVICE,
++	NEW_CONTAINER,
++	APPEND,
++	DATA,
++	PARTITION,
++	FILEOFF,
++	MSG_BLOCK,
++	DUMMY_V2X,
++	SENTINEL,
++	UPOWER,
++	FCB
++} option_type_t;
 +
-+#define LPI2C_PARAM	0x04	/* i2c RX/TX FIFO size */
-+#define LPI2C_MCR	0x10	/* i2c contrl register */
-+#define LPI2C_MSR	0x14	/* i2c status register */
-+#define LPI2C_MIER	0x18	/* i2c interrupt enable */
-+#define LPI2C_MCFGR0	0x20	/* i2c master configuration */
-+#define LPI2C_MCFGR1	0x24	/* i2c master configuration */
-+#define LPI2C_MCFGR2	0x28	/* i2c master configuration */
-+#define LPI2C_MCFGR3	0x2C	/* i2c master configuration */
-+#define LPI2C_MCCR0	0x48	/* i2c master clk configuration */
-+#define LPI2C_MCCR1	0x50	/* i2c master clk configuration */
-+#define LPI2C_MFCR	0x58	/* i2c master FIFO control */
-+#define LPI2C_MFSR	0x5C	/* i2c master FIFO status */
-+#define LPI2C_MTDR	0x60	/* i2c master TX data register */
-+#define LPI2C_MRDR	0x70	/* i2c master RX data register */
++typedef struct {
++	option_type_t option;
++	char* filename;
++	uint64_t src;
++	uint64_t dst;
++	uint64_t entry;/* image entry address or general purpose num */
++	uint64_t ext;
++	uint64_t mu;
++	uint64_t part;
++} image_t;
 +
-+/* i2c command */
-+#define TRAN_DATA	0X00
-+#define RECV_DATA	0X01
-+#define GEN_STOP	0X02
-+#define RECV_DISCARD	0X03
-+#define GEN_START	0X04
-+#define START_NACK	0X05
-+#define START_HIGH	0X06
-+#define START_HIGH_NACK	0X07
++typedef enum REVISION_TYPE {
++	NO_REV = 0,
++	A0,
++	B0
++} rev_type_t;
 +
-+#define MCR_MEN		BIT(0)
-+#define MCR_RST		BIT(1)
-+#define MCR_DOZEN	BIT(2)
-+#define MCR_DBGEN	BIT(3)
-+#define MCR_RTF		BIT(8)
-+#define MCR_RRF		BIT(9)
-+#define MSR_TDF		BIT(0)
-+#define MSR_RDF		BIT(1)
-+#define MSR_SDF		BIT(9)
-+#define MSR_NDF		BIT(10)
-+#define MSR_ALF		BIT(11)
-+#define MSR_MBF		BIT(24)
-+#define MSR_BBF		BIT(25)
-+#define MIER_TDIE	BIT(0)
-+#define MIER_RDIE	BIT(1)
-+#define MIER_SDIE	BIT(9)
-+#define MIER_NDIE	BIT(10)
-+#define MCFGR1_AUTOSTOP	BIT(8)
-+#define MCFGR1_IGNACK	BIT(9)
-+#define MRDR_RXEMPTY	BIT(14)
++typedef enum SOC_TYPE {
++	NONE = 0,
++	QX,
++	QM,
++	DXL,
++	ULP,
++	IMX9,
++} soc_type_t;
 +
-+#define I2C_CLK_RATIO	2
-+#define CHUNK_DATA	256
++#define CORE_SC         0x1
++#define CORE_CM4_0      0x2
++#define CORE_CM4_1      0x3
++#define CORE_CA53       0x4
++#define CORE_CA35       0x4
++#define CORE_CA72       0x5
++#define CORE_SECO       0x6
++#define CORE_V2X_P      0x9
++#define CORE_V2X_S      0xA
 +
-+#define I2C_PM_TIMEOUT		10 /* ms */
++#define CORE_ULP_CM33		0x1
++#define CORE_ULP_CA35		0x2
++#define CORE_ULP_UPOWER 	0x4
++#define CORE_ULP_SENTINEL 	0x6
 +
-+enum lpi2c_imx_mode {
-+	STANDARD,	/* 100+Kbps */
-+	FAST,		/* 400+Kbps */
-+	FAST_PLUS,	/* 1.0+Mbps */
-+	HS,		/* 3.4+Mbps */
-+	ULTRA_FAST,	/* 5.0+Mbps */
-+};
++#define SC_R_OTP		357U
++#define SC_R_DEBUG		354U
++#define SC_R_ROM_0		236U
++#define SC_R_PWM_0		191U
++#define SC_R_SNVS		356U
++#define SC_R_DC_0		32U
 +
-+enum lpi2c_imx_pincfg {
-+	TWO_PIN_OD,
-+	TWO_PIN_OO,
-+	TWO_PIN_PP,
-+	FOUR_PIN_PP,
-+};
++#define IMG_TYPE_CSF		0x01   /* CSF image type */
++#define IMG_TYPE_SCD		0x02   /* SCD image type */
++#define IMG_TYPE_EXEC		0x03   /* Executable image type */
++#define IMG_TYPE_DATA		0x04   /* Data image type */
++#define IMG_TYPE_DCD_DDR	0x05   /* DCD/DDR image type */
++#define IMG_TYPE_SECO		0x06   /* SECO image type */
++#define IMG_TYPE_SENTINEL	0x06   /* SENTINEL image type */
++#define IMG_TYPE_PROV		0x07   /* Provisioning image type */
++#define IMG_TYPE_DEK		0x08   /* DEK validation type */
++#define IMG_TYPE_FCB_CHK	0x08   /* The FCB copy image */
++#define IMG_TYPE_PRIM_V2X	0x0B   /* Primary V2X FW image */
++#define IMG_TYPE_SEC_V2X	0x0C   /* Secondary V2X FW image*/
++#define IMG_TYPE_V2X_ROM	0x0D   /* V2X ROM Patch image */
++#define IMG_TYPE_V2X_DUMMY	0x0E   /* V2X Dummy image */
 +
-+struct lpi2c_imx_struct {
-+	struct i2c_adapter	adapter;
-+	int			num_clks;
-+	struct clk_bulk_data	*clks;
-+	void __iomem		*base;
-+	__u8			*rx_buf;
-+	__u8			*tx_buf;
-+	unsigned int		msglen;
-+	unsigned int		delivered;
-+	unsigned int		bitrate;
-+	unsigned int		txfifosize;
-+	unsigned int		rxfifosize;
-+	enum lpi2c_imx_mode	mode;
-+};
++#define IMG_TYPE_SHIFT   0
++#define IMG_TYPE_MASK    0x1f
++#define IMG_TYPE(x)      (((x) & IMG_TYPE_MASK) >> IMG_TYPE_SHIFT)
 +
-+static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
-+			      unsigned int enable)
++#define BOOT_IMG_FLAGS_CORE_MASK		0xF
++#define BOOT_IMG_FLAGS_CORE_SHIFT		0x04
++#define BOOT_IMG_FLAGS_CPU_RID_MASK		0x3FF0
++#define BOOT_IMG_FLAGS_CPU_RID_SHIFT		4
++#define BOOT_IMG_FLAGS_MU_RID_MASK		0xFFC000
++#define BOOT_IMG_FLAGS_MU_RID_SHIFT		14
++#define BOOT_IMG_FLAGS_PARTITION_ID_MASK	0x1F000000
++#define BOOT_IMG_FLAGS_PARTITION_ID_SHIFT	24
++
++#define SC_R_A35_0      508
++#define SC_R_A53_0      1
++#define SC_R_A72_0      6
++#define SC_R_MU_0A      213
++#define SC_R_MU_3A      216
++#define SC_R_M4_0_PID0  278
++#define SC_R_M4_0_MU_1A 297
++#define SC_R_M4_1_PID0  298
++#define SC_R_M4_1_MU_1A 317
++#define PARTITION_ID_M4 0
++#define PARTITION_ID_AP 1
++#define PARTITION_ID_AP2 3
++
++/* Command tags and parameters */
++#define HAB_DATA_WIDTH_BYTE 1 /* 8-bit value */
++#define HAB_DATA_WIDTH_HALF 2 /* 16-bit value */
++#define HAB_DATA_WIDTH_WORD 4 /* 32-bit value */
++#define HAB_CMD_WRT_DAT_MSK 1 /* mask/value flag */
++#define HAB_CMD_WRT_DAT_SET 2 /* set/clear flag */
++#define HAB_CMD_CHK_DAT_SET 2 /* set/clear flag */
++#define HAB_CMD_CHK_DAT_ANY 4 /* any/all flag */
++#define HAB_CMD_WRT_DAT_FLAGS_WIDTH   5 /* flags field width */
++#define HAB_CMD_WRT_DAT_FLAGS_SHIFT   3 /* flags field offset */
++#define HAB_CMD_WRT_DAT_BYTES_WIDTH   3 /* bytes field width */
++#define HAB_CMD_WRT_DAT_BYTES_SHIFT   0 /* bytes field offset */
++
++#define IVT_VER                         0x01
++#define IVT_VERSION                     0x43
++#define DCD_HEADER_TAG                  0xD2
++#define DCD_VERSION                     0x43
++#define DCD_WRITE_DATA_COMMAND_TAG      0xCC
++#define DCD_WRITE_DATA_PARAM            (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT) /* 0x4 */
++#define DCD_WRITE_CLR_BIT_PARAM         ((HAB_CMD_WRT_DAT_MSK << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT)) /* 0xC */
++#define DCD_WRITE_SET_BIT_PARAM         ((HAB_CMD_WRT_DAT_MSK << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_CMD_WRT_DAT_SET << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT)) /* 0x1C */
++#define DCD_CHECK_DATA_COMMAND_TAG      0xCF
++#define DCD_CHECK_BITS_CLR_PARAM        (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT) /* 0x04 */
++#define DCD_CHECK_BITS_SET_PARAM        ((HAB_CMD_CHK_DAT_SET << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT)) /* 0x14 */
++#define DCD_CHECK_ANY_BIT_CLR_PARAM     ((HAB_CMD_CHK_DAT_ANY << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT)) /* 0x24 */
++#define DCD_CHECK_ANY_BIT_SET_PARAM     ((HAB_CMD_CHK_DAT_ANY << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_CMD_CHK_DAT_SET << HAB_CMD_WRT_DAT_FLAGS_SHIFT) | (HAB_DATA_WIDTH_WORD << HAB_CMD_WRT_DAT_BYTES_SHIFT)) /* 0x34 */
++
++#define IVT_OFFSET_NAND         (0x400)
++#define IVT_OFFSET_I2C          (0x400)
++#define IVT_OFFSET_FLEXSPI      (0x1000)
++#define IVT_OFFSET_SD           (0x400)
++#define IVT_OFFSET_SATA         (0x400)
++#define IVT_OFFSET_EMMC         (0x400)
++
++#define CSF_DATA_SIZE       (0x4000)
++#define INITIAL_LOAD_ADDR_SCU_ROM 0x2000e000
++#define INITIAL_LOAD_ADDR_AP_ROM 0x00110000
++#define INITIAL_LOAD_ADDR_FLEXSPI 0x08000000
++#define IMG_AUTO_ALIGN 0x10
++
++#define UNDEFINED 0xFFFFFFFF
++
++#define OCRAM_START						0x00100000
++#define OCRAM_END						0x00400000
++
++#define MAX_NUM_SRK_RECORDS		4
++
++#define IVT_HEADER_TAG_B0		0x87
++#define IVT_VERSION_B0			0x00
++
++#define IMG_FLAG_HASH_SHA256		0x000
++#define IMG_FLAG_HASH_SHA384		0x100
++#define IMG_FLAG_HASH_SHA512		0x200
++#define IMG_FLAG_HASH_SM3		0x300
++
++#define IMG_FLAG_ENCRYPTED_MASK		0x400
++#define IMG_FLAG_ENCRYPTED_SHIFT	0x0A
++
++#define IMG_FLAG_BOOTFLAGS_MASK		0xFFFF0000
++#define IMG_FLAG_BOOTFLAGS_SHIFT	0x10
++
++#define IMG_ARRAY_ENTRY_SIZE		128
++#define HEADER_IMG_ARRAY_OFFSET		0x10
++
++#define HASH_STR_SHA_256		"sha256"
++#define HASH_STR_SHA_384		"sha384"
++#define HASH_STR_SHA_512		"sha512"
++#define HASH_STR_SM3			"sm3"
++
++#define HASH_TYPE_SHA_256		256
++#define HASH_TYPE_SHA_384		384
++#define HASH_TYPE_SHA_512		512
++#define HASH_TYPE_SM3			003
++
++#define IMAGE_HASH_ALGO_DEFAULT		HASH_TYPE_SHA_384
++#define IMAGE_HASH_ALGO_DEFAULT_NAME	HASH_STR_SHA_384
++#define IMAGE_PADDING_DEFAULT		0x1000
++
++#define DCD_ENTRY_ADDR_IN_SCFW		0x240
++
++#define CONTAINER_ALIGNMENT		0x400
++#define CONTAINER_FLAGS_DEFAULT		0x10
++#define CONTAINER_FUSE_DEFAULT		0x0
++
++#define SIGNATURE_BLOCK_HEADER_LENGTH	0x10
++
++#define BOOT_IMG_META_MU_RID_SHIFT	10
++#define BOOT_IMG_META_PART_ID_SHIFT	20
++
++#define IMAGE_TYPE_MASK	0xF
++
++#define CORE_ID_SHIFT	0x4
++#define CORE_ID_MASK	0xF
++
++#define HASH_TYPE_SHIFT	0x8
++#define HASH_TYPE_MASK	0x7
++
++#define IMAGE_ENCRYPTED_SHIFT	0x11
++#define IMAGE_ENCRYPTED_MASK	0x1
++
++#define IMAGE_A35_DEFAULT_META(PART, SC_R_MU)						\
++	(((PART == 0 ) ? PARTITION_ID_AP : PART) << BOOT_IMG_META_PART_ID_SHIFT |	\
++	SC_R_MU << BOOT_IMG_META_MU_RID_SHIFT | SC_R_A35_0)
++
++#define IMAGE_A53_DEFAULT_META(PART, SC_R_MU)						\
++	(((PART == 0 ) ? PARTITION_ID_AP : PART) << BOOT_IMG_META_PART_ID_SHIFT |	\
++	 SC_R_MU << BOOT_IMG_META_MU_RID_SHIFT |					\
++	 SC_R_A53_0)
++
++#define IMAGE_A72_DEFAULT_META(PART, SC_R_MU)						\
++	(((PART == 0 ) ? PARTITION_ID_AP2 : PART) << BOOT_IMG_META_PART_ID_SHIFT |	\
++	 SC_R_MU << BOOT_IMG_META_MU_RID_SHIFT | SC_R_A72_0)
++
++#define IMAGE_M4_0_DEFAULT_META(PART)							\
++	(((PART == 0) ? PARTITION_ID_M4 : PART) << BOOT_IMG_META_PART_ID_SHIFT |	\
++	SC_R_M4_0_MU_1A << BOOT_IMG_META_MU_RID_SHIFT | SC_R_M4_0_PID0)
++
++#define IMAGE_M4_1_DEFAULT_META(PART)							\
++	(((PART == 0) ? PARTITION_ID_M4 : PART) << BOOT_IMG_META_PART_ID_SHIFT |	\
++	SC_R_M4_1_MU_1A << BOOT_IMG_META_MU_RID_SHIFT | SC_R_M4_1_PID0)
++
++#define CONTAINER_IMAGE_ARRAY_START_OFFSET	0x2000
++
++uint32_t scfw_flags = 0;
++
++static uint32_t custom_partition = 0;
++
++static void copy_file_aligned(int ifd, const char *datafile, int offset, int align)
 +{
-+	writel(enable, lpi2c_imx->base + LPI2C_MIER);
-+}
-+
-+static int lpi2c_imx_bus_busy(struct lpi2c_imx_struct *lpi2c_imx)
-+{
-+	unsigned int temp;
-+	u64 start = get_time_ns();
-+
-+	while (1) {
-+		temp = readl(lpi2c_imx->base + LPI2C_MSR);
-+
-+		/* check for arbitration lost, clear if set */
-+		if (temp & (MSR_ALF | MSR_NDF)) {
-+			writel(temp, lpi2c_imx->base + LPI2C_MSR);
-+			return -EAGAIN;
-+		}
-+
-+		if (temp & (MSR_BBF | MSR_MBF))
-+			break;
-+
-+		if (is_timeout(start, 500 * MSECOND)) {
-+			dev_dbg(&lpi2c_imx->adapter.dev, "bus not work\n");
-+			return -ETIMEDOUT;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static void lpi2c_imx_set_mode(struct lpi2c_imx_struct *lpi2c_imx)
-+{
-+	unsigned int bitrate = lpi2c_imx->bitrate;
-+	enum lpi2c_imx_mode mode;
-+
-+	if (bitrate < I2C_MAX_FAST_MODE_FREQ)
-+		mode = STANDARD;
-+	else if (bitrate < I2C_MAX_FAST_MODE_PLUS_FREQ)
-+		mode = FAST;
-+	else if (bitrate < I2C_MAX_HIGH_SPEED_MODE_FREQ)
-+		mode = FAST_PLUS;
-+	else if (bitrate < I2C_MAX_ULTRA_FAST_MODE_FREQ)
-+		mode = HS;
-+	else
-+		mode = ULTRA_FAST;
-+
-+	lpi2c_imx->mode = mode;
-+}
-+
-+static int lpi2c_imx_start(struct lpi2c_imx_struct *lpi2c_imx,
-+			   struct i2c_msg *msgs)
-+{
-+	unsigned int temp;
-+
-+	temp = readl(lpi2c_imx->base + LPI2C_MCR);
-+	temp |= MCR_RRF | MCR_RTF;
-+	writel(temp, lpi2c_imx->base + LPI2C_MCR);
-+	writel(0x7f00, lpi2c_imx->base + LPI2C_MSR);
-+
-+	temp = i2c_8bit_addr_from_msg(msgs) | (GEN_START << 8);
-+	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-+
-+	return lpi2c_imx_bus_busy(lpi2c_imx);
-+}
-+
-+static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
-+{
-+	unsigned int temp;
-+	u64 start = get_time_ns();
-+
-+	writel(GEN_STOP << 8, lpi2c_imx->base + LPI2C_MTDR);
-+
-+	do {
-+		temp = readl(lpi2c_imx->base + LPI2C_MSR);
-+		if (temp & MSR_SDF)
-+			break;
-+
-+		if (is_timeout(start, 500 * MSECOND)) {
-+			dev_dbg(&lpi2c_imx->adapter.dev, "stop timeout\n");
-+			break;
-+		}
-+
-+	} while (1);
-+}
-+
-+/* CLKLO = I2C_CLK_RATIO * CLKHI, SETHOLD = CLKHI, DATAVD = CLKHI/2 */
-+static int lpi2c_imx_config(struct lpi2c_imx_struct *lpi2c_imx)
-+{
-+	u8 prescale, filt, sethold, datavd;
-+	unsigned int clk_rate, clk_cycle, clkhi, clklo;
-+	enum lpi2c_imx_pincfg pincfg;
-+	unsigned int temp;
-+
-+	lpi2c_imx_set_mode(lpi2c_imx);
-+
-+	clk_rate = clk_get_rate(lpi2c_imx->clks[0].clk);
-+	if (!clk_rate)
-+		return -EINVAL;
-+
-+	if (lpi2c_imx->mode == HS || lpi2c_imx->mode == ULTRA_FAST)
-+		filt = 0;
-+	else
-+		filt = 2;
-+
-+	for (prescale = 0; prescale <= 7; prescale++) {
-+		clk_cycle = clk_rate / ((1 << prescale) * lpi2c_imx->bitrate)
-+			    - 3 - (filt >> 1);
-+		clkhi = DIV_ROUND_UP(clk_cycle, I2C_CLK_RATIO + 1);
-+		clklo = clk_cycle - clkhi;
-+		if (clklo < 64)
-+			break;
-+	}
-+
-+	if (prescale > 7)
-+		return -EINVAL;
-+
-+	/* set MCFGR1: PINCFG, PRESCALE, IGNACK */
-+	if (lpi2c_imx->mode == ULTRA_FAST)
-+		pincfg = TWO_PIN_OO;
-+	else
-+		pincfg = TWO_PIN_OD;
-+	temp = prescale | pincfg << 24;
-+
-+	if (lpi2c_imx->mode == ULTRA_FAST)
-+		temp |= MCFGR1_IGNACK;
-+
-+	writel(temp, lpi2c_imx->base + LPI2C_MCFGR1);
-+
-+	/* set MCFGR2: FILTSDA, FILTSCL */
-+	temp = (filt << 16) | (filt << 24);
-+	writel(temp, lpi2c_imx->base + LPI2C_MCFGR2);
-+
-+	/* set MCCR: DATAVD, SETHOLD, CLKHI, CLKLO */
-+	sethold = clkhi;
-+	datavd = clkhi >> 1;
-+	temp = datavd << 24 | sethold << 16 | clkhi << 8 | clklo;
-+
-+	if (lpi2c_imx->mode == HS)
-+		writel(temp, lpi2c_imx->base + LPI2C_MCCR1);
-+	else
-+		writel(temp, lpi2c_imx->base + LPI2C_MCCR0);
-+
-+	return 0;
-+}
-+
-+static int lpi2c_imx_master_enable(struct lpi2c_imx_struct *lpi2c_imx)
-+{
-+	unsigned int temp;
++	int dfd;
++	struct stat sbuf;
++	unsigned char *ptr;
++	uint8_t zeros[0x4000];
++	int size;
 +	int ret;
 +
-+	temp = MCR_RST;
-+	writel(temp, lpi2c_imx->base + LPI2C_MCR);
-+	writel(0, lpi2c_imx->base + LPI2C_MCR);
++	if (align > 0x4000) {
++		fprintf (stderr, "Wrong alignment requested %d\n",
++			align);
++		exit (EXIT_FAILURE);
++	}
 +
-+	ret = lpi2c_imx_config(lpi2c_imx);
-+	if (ret)
-+		return ret;
++	memset(zeros, 0, sizeof(zeros));
 +
-+	temp = readl(lpi2c_imx->base + LPI2C_MCR);
-+	temp |= MCR_MEN;
-+	writel(temp, lpi2c_imx->base + LPI2C_MCR);
++	if ((dfd = open(datafile, O_RDONLY|O_BINARY)) < 0) {
++		fprintf (stderr, "Can't open %s: %s\n",
++			datafile, strerror(errno));
++		exit (EXIT_FAILURE);
++	}
 +
-+	return 0;
++	if (fstat(dfd, &sbuf) < 0) {
++		fprintf (stderr, "Can't stat %s: %s\n",
++			datafile, strerror(errno));
++		exit (EXIT_FAILURE);
++	}
++
++	if (sbuf.st_size == 0)
++		goto close;
++
++	ptr = mmap(0, sbuf.st_size, PROT_READ, MAP_SHARED, dfd, 0);
++	if (ptr == MAP_FAILED) {
++		fprintf (stderr, "Can't read %s: %s\n",
++			datafile, strerror(errno));
++		exit (EXIT_FAILURE);
++	}
++
++	size = sbuf.st_size;
++	ret = lseek(ifd, offset, SEEK_SET);
++	if (ret < 0) {
++		fprintf(stderr, "%s: lseek error %s\n",
++			__func__, strerror(errno));
++		exit(EXIT_FAILURE);
++	}
++
++	if (write(ifd, ptr, size) != size) {
++		fprintf (stderr, "Write error %s\n",
++			strerror(errno));
++		exit (EXIT_FAILURE);
++	}
++
++	align = ALIGN(size, align) - size;
++
++	if (write(ifd, (char *)&zeros, align) != align) {
++		fprintf(stderr, "Write error: %s\n",
++			strerror(errno));
++		exit(EXIT_FAILURE);
++	}
++
++	(void) munmap((void *)ptr, sbuf.st_size);
++close:
++	(void) close (dfd);
++
 +}
 +
-+static int lpi2c_imx_master_disable(struct lpi2c_imx_struct *lpi2c_imx)
++static void set_imx_hdr_v3(struct imx_header_v3 *imxhdr, uint32_t dcd_len,
++		uint32_t flash_offset, uint32_t hdr_base, uint32_t cont_id)
 +{
-+	u32 temp;
++	struct flash_header_v3 *fhdr_v3 = &imxhdr->fhdr[cont_id];
 +
-+	temp = readl(lpi2c_imx->base + LPI2C_MCR);
-+	temp &= ~MCR_MEN;
-+	writel(temp, lpi2c_imx->base + LPI2C_MCR);
-+
-+	return 0;
++	/* Set magic number */
++	fhdr_v3->tag = IVT_HEADER_TAG_B0;
++	fhdr_v3->version = IVT_VERSION_B0;
 +}
 +
-+static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx)
++static void set_image_hash(struct boot_img *img, char *filename, uint32_t hash_type)
 +{
-+	u32 txcnt;
-+	u64 start = get_time_ns();
++	FILE *fp = NULL;
++	char sha_command[512];
++	char digest_type[10];
++	char hash[2 * HASH_MAX_LEN + 1];
++	int digest_length = 0;
++	int i;
 +
-+	do {
-+		txcnt = readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
++	switch (hash_type) {
++	case HASH_TYPE_SHA_256:
++		img->hab_flags |= IMG_FLAG_HASH_SHA256;
++		strcpy(digest_type, "sha256sum" );
++		digest_length = 64;
++		break;
++	case HASH_TYPE_SHA_384:
++		img->hab_flags |= IMG_FLAG_HASH_SHA384;
++		strcpy(digest_type, "sha384sum" );
++		digest_length = 96;
++		break;
++	case HASH_TYPE_SHA_512:
++		img->hab_flags |= IMG_FLAG_HASH_SHA512;
++		strcpy(digest_type, "sha512sum" );
++		digest_length = 128;
++		break;
++	case HASH_TYPE_SM3:
++		img->hab_flags |= IMG_FLAG_HASH_SM3;
++		strcpy(digest_type, "sm3sum" );
++		digest_length = 64;
++		break;
++	default:
++		fprintf(stderr, "Wrong hash type selected (%d) !!!\n\n",
++				hash_type);
++		exit(EXIT_FAILURE);
++		break;
++	}
 +
-+		if (readl(lpi2c_imx->base + LPI2C_MSR) & MSR_NDF) {
-+			dev_dbg(&lpi2c_imx->adapter.dev, "NDF detected\n");
-+			return -EIO;
-+		}
-+
-+		if (is_timeout(start, 500 * MSECOND)) {
-+			dev_dbg(&lpi2c_imx->adapter.dev, "txfifo empty timeout\n");
-+			return -ETIMEDOUT;
-+		}
-+
-+	} while (txcnt);
-+
-+	return 0;
-+}
-+
-+static void lpi2c_imx_set_tx_watermark(struct lpi2c_imx_struct *lpi2c_imx)
-+{
-+	writel(lpi2c_imx->txfifosize >> 1, lpi2c_imx->base + LPI2C_MFCR);
-+}
-+
-+static void lpi2c_imx_set_rx_watermark(struct lpi2c_imx_struct *lpi2c_imx)
-+{
-+	unsigned int temp, remaining;
-+
-+	remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
-+
-+	if (remaining > (lpi2c_imx->rxfifosize >> 1))
-+		temp = lpi2c_imx->rxfifosize >> 1;
++	if (img->size == 0 || !filename)
++		sprintf(sha_command, "%s /dev/null", digest_type);
 +	else
-+		temp = 0;
++		sprintf(sha_command, "dd status=none if=/dev/zero of=tmp_pad bs=%d count=1;\
++				dd status=none if=\'%s\' of=tmp_pad conv=notrunc;\
++				%s tmp_pad; rm -f tmp_pad",
++			img->size, filename, digest_type);
 +
-+	writel(temp << 16, lpi2c_imx->base + LPI2C_MFCR);
++	memset(img->hash, 0, HASH_MAX_LEN);
++
++	fp = popen(sha_command, "r");
++	if (fp == NULL) {
++		fprintf(stderr, "Failed to run command hash\n" );
++		exit(EXIT_FAILURE);
++	}
++
++	if (fgets(hash, digest_length + 1, fp) == NULL) {
++		fprintf(stderr, "Failed to hash file: %s\n", filename ? filename : "<none>");
++		exit(EXIT_FAILURE);
++	}
++
++	for (i = 0; i < strlen(hash)/2; i++)
++		sscanf(hash + 2*i, "%02hhx", &img->hash[i]);
++
++	pclose(fp);
 +}
 +
-+static int lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx)
-+{
-+	unsigned int data, remaining;
-+	uint64_t start = get_time_ns();
++#define append(p, s, l) do {memcpy(p, (uint8_t *)s, l); p += l; } while (0)
 +
-+	do {
-+		u32 cnt = readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
-+		if (cnt == lpi2c_imx->txfifosize) {
-+			if (is_timeout(start, 100 * MSECOND))
-+				return -EIO;
-+			continue;
++static uint8_t *flatten_container_header(struct imx_header_v3 *imx_header,
++					uint8_t containers_count,
++					uint32_t *size_out, uint32_t file_offset)
++{
++	uint8_t *flat = NULL;
++	uint8_t *ptr = NULL;
++	uint16_t size = 0;
++	int i;
++
++	/* Compute size of all container headers */
++	for (i = 0; i < containers_count; i++) {
++
++		struct flash_header_v3 *container = &imx_header->fhdr[i];
++
++		container->sig_blk_offset = HEADER_IMG_ARRAY_OFFSET +
++			container->num_images * IMG_ARRAY_ENTRY_SIZE;
++
++		container->length = HEADER_IMG_ARRAY_OFFSET +
++			(IMG_ARRAY_ENTRY_SIZE * container->num_images) + sizeof(struct sig_blk_hdr);
++
++		/* Print info needed by CST to sign the container header */
++		printf("CST: CONTAINER %d offset: 0x%x\n", i, file_offset + size);
++		printf("CST: CONTAINER %d: Signature Block: offset is at 0x%x\n", i,
++						file_offset + size + container->length - SIGNATURE_BLOCK_HEADER_LENGTH);
++
++		printf("\tOffsets = \t0x%x \t0x%x\n", file_offset + size,
++						file_offset + size + container->length - SIGNATURE_BLOCK_HEADER_LENGTH);
++
++		size += ALIGN(container->length, container->padding);
++	}
++
++	flat = calloc(size, sizeof(uint8_t));
++	if (!flat) {
++		fprintf(stderr, "Failed to allocate memory (%d)\n", size);
++		exit(EXIT_FAILURE);
++	}
++
++	ptr = flat;
++	*size_out = size;
++
++	for (i = 0; i < containers_count; i++) {
++		struct flash_header_v3 *container = &imx_header->fhdr[i];
++		uint32_t container_start_offset = ptr - flat;
++		int j;
++
++		/* Append container header */
++		append(ptr, container, HEADER_IMG_ARRAY_OFFSET);
++
++		/* Adjust images offset to start from container headers start */
++		for (j = 0; j < container->num_images; j++)
++			container->img[j].offset -= container_start_offset + file_offset;
++
++		/* Append each image array entry */
++		for (j = 0; j < container->num_images; j++)
++			append(ptr, &container->img[j], sizeof(struct boot_img));
++
++		append(ptr, &container->sig_blk_hdr, sizeof(struct sig_blk_hdr));
++
++		/* Padding for container (if necessary) */
++		ptr += ALIGN(container->length, container->padding) - container->length;
++	}
++
++	return flat;
++}
++
++static uint64_t read_dcd_offset(char *filename)
++{
++	int dfd;
++	struct stat sbuf;
++	uint8_t *ptr;
++	uint64_t offset = 0;
++
++	dfd = open(filename, O_RDONLY|O_BINARY);
++	if (dfd < 0) {
++		fprintf(stderr, "Can't open %s: %s\n", filename, strerror(errno));
++		exit(EXIT_FAILURE);
++	}
++
++	if (fstat(dfd, &sbuf) < 0) {
++		fprintf(stderr, "Can't stat %s: %s\n", filename, strerror(errno));
++		exit(EXIT_FAILURE);
++	}
++
++	ptr = mmap(0, sbuf.st_size, PROT_READ, MAP_SHARED, dfd, 0);
++	if (ptr == MAP_FAILED) {
++		fprintf(stderr, "Can't read %s: %s\n", filename, strerror(errno));
++		exit(EXIT_FAILURE);
++	}
++
++	offset = *(uint32_t *)(ptr + DCD_ENTRY_ADDR_IN_SCFW);
++
++	(void) munmap((void *)ptr, sbuf.st_size);
++	(void) close(dfd);
++
++	return offset;
++}
++
++static uint32_t get_hash_algo(char *images_hash)
++{
++	uint32_t hash_algo;
++	const char *hash_name;
++
++	if (!images_hash) {
++		hash_algo = IMAGE_HASH_ALGO_DEFAULT;
++		hash_name = IMAGE_HASH_ALGO_DEFAULT_NAME;
++	} else if (!strcmp(images_hash, HASH_STR_SHA_256)) {
++		hash_algo = HASH_TYPE_SHA_256;
++		hash_name = HASH_STR_SHA_256;
++	} else if (!strcmp(images_hash, HASH_STR_SHA_384)) {
++		hash_algo = HASH_TYPE_SHA_384;
++		hash_name = HASH_STR_SHA_384;
++	} else if (!strcmp(images_hash, HASH_STR_SHA_512)) {
++		hash_algo = HASH_TYPE_SHA_512;
++		hash_name = HASH_STR_SHA_512;
++	} else if (!strcmp(images_hash, HASH_STR_SM3)) {
++		hash_algo = HASH_TYPE_SM3;
++		hash_name = HASH_STR_SM3;
++	} else {
++		fprintf(stderr,
++			"\nERROR: %s is an invalid hash argument\n"
++			"    Expected values: %s, %s, %s, %s\n\n",
++			images_hash, HASH_STR_SHA_256, HASH_STR_SHA_384,
++			HASH_STR_SHA_512, HASH_STR_SM3);
++		exit(EXIT_FAILURE);
++	}
++
++	printf("image hash type:\t%s\n", hash_name);
++	return hash_algo;
++}
++
++static void set_image_array_entry(struct flash_header_v3 *container, soc_type_t soc,
++		const image_t *image_stack, uint32_t offset,
++		uint32_t size, char *tmp_filename, bool dcd_skip, char *images_hash)
++{
++	uint64_t entry = image_stack->entry;
++	uint64_t dst = image_stack->dst;
++	uint64_t core = image_stack->ext;
++	uint32_t meta;
++	char *tmp_name = "";
++	option_type_t type = image_stack->option;
++	struct boot_img *img = &container->img[container->num_images];
++
++	if (container->num_images >= MAX_NUM_IMGS) {
++		fprintf(stderr, "Error: Container allows 8 images at most\n");
++		exit(EXIT_FAILURE);
++	}
++
++	img->offset = offset;  /* Is re-adjusted later */
++	img->size = size;
++
++	set_image_hash(img, tmp_filename, get_hash_algo(images_hash));
++
++	switch (type) {
++	case SECO:
++		if (container->num_images > 0) {
++			fprintf(stderr, "Error: SECO container only allows 1 image\n");
++			exit(EXIT_FAILURE);
 +		}
 +
-+		data = lpi2c_imx->tx_buf[lpi2c_imx->delivered++];
++		img->hab_flags |= IMG_TYPE_SECO;
++		img->hab_flags |= CORE_SECO << BOOT_IMG_FLAGS_CORE_SHIFT;
++		tmp_name = "SECO";
++		img->dst = 0x20C00000;
++		img->entry = 0x20000000;
 +
-+		writel(data, lpi2c_imx->base + LPI2C_MTDR);
-+		remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
-+	} while (remaining);
-+
-+	return 0;
-+}
-+
-+static int lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx)
-+{
-+	unsigned int remaining;
-+	unsigned int data;
-+	uint64_t start = get_time_ns();
-+
-+	do {
-+		data = readl(lpi2c_imx->base + LPI2C_MRDR);
-+		if (data & MRDR_RXEMPTY) {
-+			if (is_timeout(start, 100 * MSECOND))
-+				return -EIO;
-+			continue;
++		break;
++	case SENTINEL:
++		if (container->num_images > 0) {
++			fprintf(stderr, "Error: SENTINEL container only allows 1 image\n");
++			exit(EXIT_FAILURE);
 +		}
 +
-+		lpi2c_imx->rx_buf[lpi2c_imx->delivered++] = data & 0xff;
++		img->hab_flags |= IMG_TYPE_SENTINEL;
++		img->hab_flags |= CORE_ULP_SENTINEL << BOOT_IMG_FLAGS_CORE_SHIFT;
++		tmp_name = "SENTINEL";
++		img->dst = 0XE7FE8000; /* S400 IRAM base */
++		img->entry = 0XE7FE8000;
 +
-+		remaining = lpi2c_imx->msglen - lpi2c_imx->delivered;
-+	} while (remaining);
-+
-+	return 0;
-+}
-+
-+static int lpi2c_imx_write(struct lpi2c_imx_struct *lpi2c_imx,
-+			    struct i2c_msg *msgs)
-+{
-+	lpi2c_imx->tx_buf = msgs->buf;
-+	lpi2c_imx_set_tx_watermark(lpi2c_imx);
-+
-+	return lpi2c_imx_write_txfifo(lpi2c_imx);
-+}
-+
-+static int lpi2c_imx_read(struct lpi2c_imx_struct *lpi2c_imx,
-+			   struct i2c_msg *msgs)
-+{
-+	unsigned int temp;
-+
-+	lpi2c_imx->rx_buf = msgs->buf;
-+
-+	lpi2c_imx_set_rx_watermark(lpi2c_imx);
-+	temp = msgs->len > CHUNK_DATA ? CHUNK_DATA - 1 : msgs->len - 1;
-+	temp |= (RECV_DATA << 8);
-+	writel(temp, lpi2c_imx->base + LPI2C_MTDR);
-+
-+	lpi2c_imx_intctrl(lpi2c_imx, MIER_RDIE | MIER_NDIE);
-+
-+	return lpi2c_imx_read_rxfifo(lpi2c_imx);
-+}
-+
-+static int lpi2c_imx_xfer(struct i2c_adapter *adapter,
-+			  struct i2c_msg *msgs, int num)
-+{
-+	struct lpi2c_imx_struct *lpi2c_imx = container_of(adapter, struct lpi2c_imx_struct, adapter);
-+	unsigned int temp;
-+	int i, result;
-+
-+	result = lpi2c_imx_master_enable(lpi2c_imx);
-+	if (result)
-+		return result;
-+
-+	for (i = 0; i < num; i++) {
-+		result = lpi2c_imx_start(lpi2c_imx, &msgs[i]);
-+		if (result)
-+			goto disable;
-+
-+		/* quick smbus */
-+		if (num == 1 && msgs[0].len == 0)
-+			goto stop;
-+
-+		lpi2c_imx->rx_buf = NULL;
-+		lpi2c_imx->tx_buf = NULL;
-+		lpi2c_imx->delivered = 0;
-+		lpi2c_imx->msglen = msgs[i].len;
-+
-+		if (msgs[i].flags & I2C_M_RD)
-+			result = lpi2c_imx_read(lpi2c_imx, &msgs[i]);
++		break;
++	case AP:
++		if ((soc == QX || soc == DXL) && core == CORE_CA35)
++			meta = IMAGE_A35_DEFAULT_META(image_stack->part, image_stack->mu);
++		else if (soc == QM && core == CORE_CA53)
++			meta = IMAGE_A53_DEFAULT_META(image_stack->part, image_stack->mu);
++		else if (soc == QM && core == CORE_CA72)
++			meta = IMAGE_A72_DEFAULT_META(image_stack->part, image_stack->mu);
++		else if (((soc == ULP) || (soc == IMX9)) && core == CORE_CA35)
++			meta = 0;
++		else {
++			fprintf(stderr, "Error: invalid AP core id: %" PRIi64 "\n", core);
++			exit(EXIT_FAILURE);
++		}
++		img->hab_flags |= IMG_TYPE_EXEC;
++		if ((soc == ULP) || (soc == IMX9))
++			img->hab_flags |= CORE_ULP_CA35 << BOOT_IMG_FLAGS_CORE_SHIFT;
 +		else
-+			result = lpi2c_imx_write(lpi2c_imx, &msgs[i]);
++			img->hab_flags |= CORE_CA53 << BOOT_IMG_FLAGS_CORE_SHIFT; /* On B0, only core id = 4 is valid */
++		tmp_name = "AP";
++		img->dst = entry;
++		img->entry = entry;
++		img->meta = meta;
++		custom_partition = 0;
++		break;
++	case M4:
++		if ((soc == ULP) || (soc == IMX9)) {
++			core = CORE_ULP_CM33;
++			meta = 0;
++		} else if (core == 0) {
++			core = CORE_CM4_0;
++			meta = IMAGE_M4_0_DEFAULT_META(custom_partition);
++		} else if (core == 1) {
++			core = CORE_CM4_1;
++			meta = IMAGE_M4_1_DEFAULT_META(custom_partition);
++		} else {
++			fprintf(stderr, "Error: invalid m4 core id: %" PRIi64 "\n", core);
++			exit(EXIT_FAILURE);
++		}
 +
-+		if (result)
-+			goto stop;
++		img->hab_flags |= IMG_TYPE_EXEC;
++		img->hab_flags |= core << BOOT_IMG_FLAGS_CORE_SHIFT;
++		tmp_name = "M4";
++		if ((entry & 0x7) != 0)
++			fprintf(stderr, "\n\nWarning: M4 Destination address is not 8 byte aligned\n\n");
 +
-+		if (!(msgs[i].flags & I2C_M_RD)) {
-+			result = lpi2c_imx_txfifo_empty(lpi2c_imx);
-+			if (result)
-+				goto stop;
++		if (dst)
++			img->dst = dst;
++		else
++			img->dst = entry;
++
++		img->entry = entry;
++		img->meta = meta;
++		custom_partition = 0;
++		break;
++	case DATA:
++		img->hab_flags |= IMG_TYPE_DATA;
++		if ((soc == ULP) || (soc == IMX9))
++			if (core == CORE_CM4_0)
++				img->hab_flags |= CORE_ULP_CM33 << BOOT_IMG_FLAGS_CORE_SHIFT;
++			else
++				img->hab_flags |= CORE_ULP_CA35 << BOOT_IMG_FLAGS_CORE_SHIFT;
++		else
++			img->hab_flags |= core << BOOT_IMG_FLAGS_CORE_SHIFT;
++		tmp_name = "DATA";
++		img->dst = entry;
++		break;
++	case MSG_BLOCK:
++		img->hab_flags |= IMG_TYPE_DATA;
++		img->hab_flags |= CORE_CA35 << BOOT_IMG_FLAGS_CORE_SHIFT;
++		img->meta = core << BOOT_IMG_META_MU_RID_SHIFT;
++		tmp_name = "MSG_BLOCK";
++		img->dst = entry;
++		break;
++	case SCFW:
++		img->hab_flags |= scfw_flags & 0xFFFF0000;
++		img->hab_flags |= IMG_TYPE_EXEC;
++		img->hab_flags |= CORE_SC << BOOT_IMG_FLAGS_CORE_SHIFT;
++		tmp_name = "SCFW";
++		img->dst = 0x1FFE0000;
++		img->entry = 0x1FFE0000;
++
++		/* Lets add the DCD now */
++		if (!dcd_skip) {
++			container->num_images++;
++			img = &container->img[container->num_images];
++			img->hab_flags |= IMG_TYPE_DCD_DDR;
++			img->hab_flags |= CORE_SC << BOOT_IMG_FLAGS_CORE_SHIFT;
++			set_image_hash(img, "/dev/null", IMAGE_HASH_ALGO_DEFAULT);
++			img->offset = offset + img->size;
++			img->entry = read_dcd_offset(tmp_filename);
++			img->dst = img->entry - 1;
++		}
++		break;
++	case UPOWER:
++		if (soc == ULP) {
++			img->hab_flags |= IMG_TYPE_EXEC;
++			img->hab_flags |= CORE_ULP_UPOWER << BOOT_IMG_FLAGS_CORE_SHIFT;
++			tmp_name = "UPOWER";
++			img->dst = 0x28300200; /* UPOWER code RAM */
++			img->entry = 0x28300200;
++		}
++		break;
++	case DUMMY_V2X:
++		img->hab_flags |= IMG_TYPE_V2X_DUMMY;
++		img->hab_flags |= CORE_SC << BOOT_IMG_FLAGS_CORE_SHIFT;
++		tmp_name = "V2X Dummy";
++		img->dst = entry;
++		img->entry = entry;
++		img->size = 0; /* dummy image has no size */
++		break;
++	case FCB:
++		img->hab_flags |= IMG_TYPE_FCB_CHK;
++		img->dst = entry;
++		tmp_name = "FCB";
++		break;
++	default:
++		fprintf(stderr, "unrecognized image type (%d)\n", type);
++		exit(EXIT_FAILURE);
++	}
++
++	printf("%s file_offset = 0x%x size = 0x%x\n", tmp_name, offset, size);
++
++	container->num_images++;
++}
++
++static void set_container(struct flash_header_v3 *container,  uint16_t sw_version,
++			uint32_t alignment, uint32_t flags, uint16_t fuse_version)
++{
++	container->sig_blk_hdr.tag = 0x90;
++	container->sig_blk_hdr.length = sizeof(struct sig_blk_hdr);
++	container->sw_version = sw_version;
++	container->padding = alignment;
++	container->fuse_version = fuse_version;
++	container->flags = flags;
++	printf("flags:\t\t\t0x%x\n", container->flags);
++}
++
++static int get_container_image_start_pos(image_t *image_stack, uint32_t align, soc_type_t soc,
++					 uint32_t *scu_cont_hdr_off)
++{
++	image_t *img_sp = image_stack;
++	/* 8K total container header */
++	int file_off = CONTAINER_IMAGE_ARRAY_START_OFFSET,  ofd = -1;
++	struct flash_header_v3 header;
++
++	while (img_sp->option != NO_IMG) {
++		if (img_sp->option != APPEND) {
++			img_sp++;
++			continue;
++		}
++
++		ofd = open(img_sp->filename, O_RDONLY);
++		if (ofd < 0) {
++			printf("Failure open first container file %s\n", img_sp->filename);
++			break;
++		}
++
++		if (soc == DXL) {
++			/* Skip SECO container, jump to V2X container */
++			if (lseek(ofd, CONTAINER_ALIGNMENT, SEEK_SET) < 0) {
++				printf("Failure Skip SECO header \n");
++				exit(EXIT_FAILURE);
++			}
++		}
++
++		if (read(ofd, &header, sizeof(header)) != sizeof(header)) {
++			printf("Failure Read header \n");
++			exit(EXIT_FAILURE);
++		}
++
++		close(ofd);
++
++		if (header.tag != IVT_HEADER_TAG_B0) {
++			printf("header tag mismatch %x\n", header.tag);
++		} else if (header.num_images == 0) {
++			printf("image num is 0 \n");
++		} else {
++			file_off = header.img[header.num_images - 1].offset + header.img[header.num_images - 1].size;
++			if (soc == DXL) {
++				file_off += CONTAINER_ALIGNMENT;
++				*scu_cont_hdr_off = CONTAINER_ALIGNMENT + ALIGN(header.length, CONTAINER_ALIGNMENT);
++			} else {
++				*scu_cont_hdr_off = ALIGN(header.length, CONTAINER_ALIGNMENT);
++			}
++			file_off = ALIGN(file_off, align);
++		}
++
++		img_sp++;
++	}
++
++	return file_off;
++}
++
++static void check_file(struct stat *sbuf, char *filename)
++{
++	int tmp_fd  = open(filename, O_RDONLY | O_BINARY);
++
++	if (tmp_fd < 0) {
++		fprintf(stderr, "%s: Can't open: %s\n", filename, strerror(errno));
++		exit(EXIT_FAILURE);
++	}
++
++	if (fstat(tmp_fd, sbuf) < 0) {
++		fprintf(stderr, "%s: Can't stat: %s\n", filename, strerror(errno));
++		exit(EXIT_FAILURE);
++	}
++
++	close(tmp_fd);
++}
++
++static void copy_file(int ifd, const char *datafile, int pad, int offset)
++{
++	int dfd;
++	struct stat sbuf;
++	unsigned char *ptr;
++	int tail;
++	uint8_t zeros[4096];
++	int size, ret;
++
++	memset(zeros, 0, sizeof(zeros));
++
++	if ((dfd = open(datafile, O_RDONLY|O_BINARY)) < 0) {
++		fprintf(stderr, "Can't open %s: %s\n", datafile, strerror(errno));
++		exit (EXIT_FAILURE);
++	}
++
++	if (fstat(dfd, &sbuf) < 0) {
++		fprintf(stderr, "Can't stat %s: %s\n", datafile, strerror(errno));
++		exit (EXIT_FAILURE);
++	}
++
++	if (sbuf.st_size == 0)
++		goto close;
++
++	ptr = mmap(0, sbuf.st_size, PROT_READ, MAP_SHARED, dfd, 0);
++	if (ptr == MAP_FAILED) {
++		fprintf(stderr, "Can't read %s: %s\n", datafile, strerror(errno));
++		exit (EXIT_FAILURE);
++	}
++
++	size = sbuf.st_size;
++	ret = lseek(ifd, offset, SEEK_SET);
++	if (ret < 0) {
++		fprintf(stderr, "%s: lseek error %s\n", __func__, strerror(errno));
++		exit(EXIT_FAILURE);
++	}
++
++	if (write(ifd, ptr, size) != size) {
++		fprintf(stderr, "Write error %s\n", strerror(errno));
++		exit (EXIT_FAILURE);
++	}
++
++	tail = size % 4;
++	pad = pad - size;
++	if ((pad == 1) && (tail != 0)) {
++
++		if (write(ifd, zeros, 4 - tail) != 4 - tail) {
++			fprintf(stderr, "Write error on %s\n", strerror(errno));
++			exit (EXIT_FAILURE);
++		}
++	} else if (pad > 1) {
++		while (pad > 0) {
++			int todo = sizeof(zeros);
++
++			if (todo > pad)
++				todo = pad;
++			if (write(ifd, (char *)&zeros, todo) != todo) {
++				fprintf(stderr, "Write error: %s\n",
++					strerror(errno));
++				exit(EXIT_FAILURE);
++			}
++			pad -= todo;
 +		}
 +	}
 +
-+stop:
-+	lpi2c_imx_stop(lpi2c_imx);
-+
-+	temp = readl(lpi2c_imx->base + LPI2C_MSR);
-+	if ((temp & MSR_NDF) && !result)
-+		result = -EIO;
-+
-+disable:
-+	lpi2c_imx_master_disable(lpi2c_imx);
-+
-+	dev_dbg(&lpi2c_imx->adapter.dev, "<%s> exit with: %s: %d\n", __func__,
-+		(result < 0) ? "error" : "success msg",
-+		(result < 0) ? result : num);
-+
-+	return (result < 0) ? result : num;
++	(void) munmap((void *)ptr, sbuf.st_size);
++close:
++	(void) close (dfd);
 +}
 +
-+static const struct of_device_id lpi2c_imx_of_match[] = {
-+	{ .compatible = "fsl,imx7ulp-lpi2c" },
-+	{ },
-+};
-+MODULE_DEVICE_TABLE(of, lpi2c_imx_of_match);
-+
-+static int lpi2c_imx_probe(struct device *dev)
++static int build_container_qx_qm_b0(soc_type_t soc, uint32_t sector_size, uint32_t ivt_offset,
++				    char *out_file, bool emmc_fastboot, image_t *image_stack,
++				    bool dcd_skip, uint8_t fuse_version, uint16_t sw_version,
++				    char *images_hash)
 +{
-+	struct lpi2c_imx_struct *lpi2c_imx;
-+	struct resource *iores;
-+	unsigned int temp;
++	int file_off, ofd = -1;
++	unsigned int dcd_len = 0;
++	struct imx_header_v3 imx_header = {};
++	image_t *img_sp = image_stack;
++	struct stat sbuf;
++	uint32_t size = 0;
++	uint32_t file_padding = 0;
 +	int ret;
++	const char *platform;
 +
-+	lpi2c_imx = xzalloc(sizeof(*lpi2c_imx));
++	int container = -1;
++	int cont_img_count = 0; /* indexes to arrange the container */
 +
-+	iores = dev_request_mem_resource(dev, 0);
-+	if (IS_ERR(iores))
-+		return PTR_ERR(iores);
++	if (image_stack == NULL) {
++		fprintf(stderr, "Empty image stack ");
++		exit(EXIT_FAILURE);
++	}
 +
-+	lpi2c_imx->base = IOMEM(iores->start);
++	switch (soc) {
++	case QX: platform = "i.MX8QXP B0"; break;
++	case QM: platform = "i.MX8QM B0"; break;
++	case DXL: platform = "i.MX8DXL A0"; break;
++	case ULP: platform = "i.MX8ULP A0"; break;
++	case IMX9: platform = "i.MX9"; break;
++	default:
++		exit(EXIT_FAILURE);
++	}
 +
-+	lpi2c_imx->adapter.nr = -1;
-+	lpi2c_imx->adapter.master_xfer	= lpi2c_imx_xfer;
-+	lpi2c_imx->adapter.dev.parent	= dev;
-+	lpi2c_imx->adapter.dev.of_node	= dev->of_node;
++	printf("Platform:\t\t%s\n", platform);
 +
-+	ret = clk_bulk_get_all(dev, &lpi2c_imx->clks);
-+	if (ret < 0)
-+		return dev_err_probe(dev, ret, "can't get I2C peripheral clock\n");
-+	lpi2c_imx->num_clks = ret;
++	set_imx_hdr_v3(&imx_header, dcd_len, ivt_offset, INITIAL_LOAD_ADDR_SCU_ROM, 0);
++	set_imx_hdr_v3(&imx_header, 0, ivt_offset, INITIAL_LOAD_ADDR_AP_ROM, 1);
 +
-+	ret = of_property_read_u32(dev->of_node,
-+				   "clock-frequency", &lpi2c_imx->bitrate);
-+	if (ret)
-+		lpi2c_imx->bitrate = I2C_MAX_STANDARD_MODE_FREQ;
++	printf("ivt_offset:\t\t0x%x\n", ivt_offset);
 +
-+	ret = clk_bulk_enable(lpi2c_imx->num_clks, lpi2c_imx->clks);
-+	if (ret)
-+		return ret;
++	file_off = get_container_image_start_pos(image_stack, sector_size, soc, &file_padding);
++	printf("container image offset (aligned): 0x%x\n", file_off);
 +
-+	temp = readl(lpi2c_imx->base + LPI2C_PARAM);
-+	lpi2c_imx->txfifosize = 1 << (temp & 0x0f);
-+	lpi2c_imx->rxfifosize = 1 << ((temp >> 8) & 0x0f);
++	printf("csf_off:\t\t0x%x\n", ivt_offset + file_off);
 +
-+	ret = i2c_add_numbered_adapter(&lpi2c_imx->adapter);
-+	if (ret)
-+		return ret;
++	/* step through image stack and generate the header */
++	img_sp = image_stack;
 +
-+	dev_dbg(&lpi2c_imx->adapter.dev, "LPI2C adapter registered\n");
++	while (img_sp->option != NO_IMG) { /* stop once we reach null terminator */
++		switch (img_sp->option) {
++		case FCB:
++		case AP:
++		case M4:
++		case SCFW:
++		case DATA:
++		case UPOWER:
++		case MSG_BLOCK:
++		case SENTINEL:
++			if (container < 0) {
++				fprintf(stderr, "No container found\n");
++				exit(EXIT_FAILURE);
++			}
++			check_file(&sbuf, img_sp->filename);
++			set_image_array_entry(&imx_header.fhdr[container],
++						soc,
++						img_sp,
++						file_off,
++						ALIGN(sbuf.st_size, sector_size),
++						img_sp->filename,
++						dcd_skip,
++						images_hash);
++			img_sp->src = file_off;
++
++			file_off += ALIGN(sbuf.st_size, sector_size);
++			cont_img_count++;
++			break;
++
++		case DUMMY_V2X:
++			if (container < 0) {
++				fprintf(stderr, "No container found\n");
++				exit(EXIT_FAILURE);
++			}
++			set_image_array_entry(&imx_header.fhdr[container],
++						soc,
++						img_sp,
++						file_off,
++						0,
++						NULL,
++						dcd_skip,
++						images_hash);
++			img_sp->src = file_off;
++
++			cont_img_count++;
++			break;
++
++		case SECO:
++			if (container < 0) {
++				fprintf(stderr, "No container found\n");
++				exit(EXIT_FAILURE);
++			}
++			check_file(&sbuf, img_sp->filename);
++			set_image_array_entry(&imx_header.fhdr[container],
++						soc,
++						img_sp,
++						file_off,
++						sbuf.st_size,
++						img_sp->filename,
++						dcd_skip,
++						"sha384");
++			img_sp->src = file_off;
++
++			file_off += sbuf.st_size;
++			cont_img_count++;
++			break;
++
++		case NEW_CONTAINER:
++			container++;
++			set_container(&imx_header.fhdr[container], sw_version,
++					CONTAINER_ALIGNMENT,
++					CONTAINER_FLAGS_DEFAULT,
++					fuse_version);
++			cont_img_count = 0; /* reset img count when moving to new container */
++			scfw_flags = 0;
++			break;
++
++		case APPEND:
++			/* nothing to do here, the container is appended in the output */
++			break;
++		case FLAG:
++			/* override the flags for scfw in current container */
++			scfw_flags = img_sp->entry & 0xFFFF0000;/* mask off bottom 16 bits */
++			break;
++		case FILEOFF:
++			if (file_off > img_sp->dst) {
++				fprintf(stderr, "FILEOFF address less than current file offset!!!\n");
++				exit(EXIT_FAILURE);
++			}
++			if (img_sp->dst != ALIGN(img_sp->dst, sector_size)) {
++				fprintf(stderr, "FILEOFF address is not aligned to sector size!!!\n");
++				exit(EXIT_FAILURE);
++			}
++			file_off = img_sp->dst;
++			break;
++		case PARTITION: /* keep custom partition until next executable image */
++			custom_partition = img_sp->entry; /* use a global var for default behaviour */
++			break;
++		default:
++			fprintf(stderr, "unrecognized option in input stack (%d)\n", img_sp->option);
++			exit(EXIT_FAILURE);
++		}
++		img_sp++;/* advance index */
++	}
++
++	/* Open output file */
++	ofd = open(out_file, O_RDWR|O_CREAT|O_TRUNC|O_BINARY, 0666);
++	if (ofd < 0) {
++		fprintf(stderr, "%s: Can't open: %s\n",
++				out_file, strerror(errno));
++		exit(EXIT_FAILURE);
++	}
++
++	/* Append container (if specified) */
++	img_sp = image_stack;
++	while (img_sp->option != NO_IMG) {
++		if (img_sp->option == APPEND)
++			copy_file(ofd, img_sp->filename, 0, 0);
++
++		img_sp++;
++	}
++
++	/* Add padding or skip appended container */
++	ret = lseek(ofd, file_padding, SEEK_SET);
++	if (ret < 0) {
++		fprintf(stderr, "%s: lseek error %s\n", __func__, strerror(errno));
++		exit(EXIT_FAILURE);
++	}
++
++	/* Note: Image offset are not contained in the image */
++	uint8_t *tmp = flatten_container_header(&imx_header, container + 1, &size, file_padding);
++	/* Write image header */
++	if (write(ofd, tmp, size) != size) {
++		fprintf(stderr, "error writing image hdr\n");
++		exit(1);
++	}
++
++	/* Clean-up memory used by the headers */
++	free(tmp);
++
++	if (emmc_fastboot)
++		ivt_offset = 0; /*set ivt offset to 0 if emmc */
++
++	/* step through the image stack again this time copying images to final bin */
++	img_sp = image_stack;
++	while (img_sp->option != NO_IMG) { /* stop once we reach null terminator */
++		if (img_sp->option == M4 ||
++		    img_sp->option == AP ||
++		    img_sp->option == DATA ||
++		    img_sp->option == SCD ||
++		    img_sp->option == SCFW ||
++		    img_sp->option == SECO ||
++		    img_sp->option == MSG_BLOCK ||
++		    img_sp->option == UPOWER ||
++		    img_sp->option == SENTINEL ||
++		    img_sp->option == FCB) {
++			copy_file_aligned(ofd, img_sp->filename, img_sp->src, sector_size);
++		}
++		img_sp++;
++	}
++
++	/* Close output file */
++	close(ofd);
++	return 0;
++}
++
++static struct img_flags parse_image_flags(uint32_t flags, char *flag_list, soc_type_t soc)
++{
++	struct img_flags img_flags;
++
++	strcpy(flag_list, "(");
++
++	/* first extract the image type */
++	strcat(flag_list, "IMG TYPE: ");
++	img_flags.type = flags & IMAGE_TYPE_MASK;
++
++	switch (img_flags.type) {
++
++	case 0x3:
++		strcat(flag_list, "Executable");
++		break;
++	case 0x4:
++		strcat(flag_list, "Data");
++		break;
++	case 0x5:
++		strcat(flag_list, "DDR Init");
++		break;
++	case 0x6:
++		if ((soc == ULP) || (soc == IMX9))
++			strcat(flag_list, "SENTINEL");
++		else
++			strcat(flag_list, "SECO");
++		break;
++	case 0x7:
++		strcat(flag_list, "Provisioning");
++		break;
++	case 0x8:
++		if (soc == IMX9)
++		    strcat(flag_list, "FCB Check");
++		else
++		    strcat(flag_list, "DEK validation");
++		break;
++	case 0xB:
++		strcat(flag_list, "Primary V2X FW image");
++		break;
++	case 0xC:
++		strcat(flag_list, "Secondary V2X FW image");
++		break;
++	case 0xD:
++		strcat(flag_list, "V2X ROM Patch image");
++		break;
++	case 0xE:
++		strcat(flag_list, "V2X Dummy image");
++		break;
++	default:
++		strcat(flag_list, "Invalid img type");
++		break;
++	}
++	strcat(flag_list, " | ");
++
++	/* next get the core id */
++	strcat(flag_list, "CORE ID: ");
++	img_flags.core_id = (flags >> CORE_ID_SHIFT) & CORE_ID_MASK;
++
++	if ((soc == ULP) || (soc == IMX9)) {
++		switch (img_flags.core_id) {
++		case CORE_ULP_CM33:
++			strcat(flag_list, "CORE_CM33");
++			break;
++		case CORE_ULP_SENTINEL:
++			strcat(flag_list, "CORE_SENTINEL");
++			break;
++		case CORE_ULP_UPOWER:
++			strcat(flag_list, "CORE_UPOWER");
++			break;
++		case CORE_ULP_CA35:
++			if (soc == IMX9)
++				strcat(flag_list, "CORE_CA55");
++			else
++				strcat(flag_list, "CORE_CA35");
++			break;
++		default:
++			strcat(flag_list, "Invalid core id");
++			break;
++		}
++	} else {
++		switch (img_flags.core_id) {
++		case CORE_SC:
++			strcat(flag_list, "CORE_SC");
++			break;
++		case CORE_CM4_0:
++			strcat(flag_list, "CORE_CM4_0");
++			break;
++		case CORE_CM4_1:
++			strcat(flag_list, "CORE_CM4_1");
++			break;
++		case CORE_CA53:
++			strcat(flag_list, "CORE_CA53");
++			break;
++		case CORE_CA72:
++			strcat(flag_list, "CORE_CA72");
++			break;
++		case CORE_SECO:
++			strcat(flag_list, "CORE_SECO");
++			break;
++		case CORE_V2X_P:
++			strcat(flag_list, "CORE_V2X_P");
++			break;
++		case CORE_V2X_S:
++			strcat(flag_list, "CORE_V2X_S");
++			break;
++		default:
++			strcat(flag_list, "Invalid core id");
++			break;
++		}
++	}
++	strcat(flag_list, " | ");
++
++	/* next get the hash type */
++	strcat(flag_list, "HASH TYPE: ");
++	img_flags.hash_type = (flags >> HASH_TYPE_SHIFT) & HASH_TYPE_MASK;
++
++	switch (img_flags.hash_type) {
++	case 0x0:
++		strcat(flag_list, "SHA256");
++		break;
++	case 0x1:
++		strcat(flag_list, "SHA384");
++		break;
++	case 0x2:
++		strcat(flag_list, "SHA512");
++		break;
++	case 0x3:
++		strcat(flag_list, "SM3");
++		break;
++	default:
++		break;
++	}
++	strcat(flag_list, " | ");
++
++	/* lastly, read the encrypted bit */
++	strcat(flag_list, "ENCRYPTED: ");
++	img_flags.encrypted = (flags >> IMAGE_ENCRYPTED_SHIFT) & IMAGE_ENCRYPTED_MASK;
++
++	if (img_flags.encrypted)
++		strcat(flag_list, "YES");
++	else
++		strcat(flag_list, "NO");
++
++	/* terminate flag string */
++	strcat(flag_list, ")");
++
++	return img_flags;
++}
++
++static void print_image_array_fields(struct flash_header_v3 *container_hdrs, soc_type_t soc, bool app_cntr)
++{
++	struct boot_img img; /* image array entry */
++	struct img_flags img_flags; /* image hab flags */
++	int hash_length = 0;
++	char img_name[32]; /* scfw, bootloader, etc. */
++	char hash_name[8]; /* sha256, sha384, or sha512 */
++	char flag_string[128]; /* text representation of image hab flags */
++	int i;
++
++	for (i = 0; i < container_hdrs->num_images; i++) {
++		/* get the next image array entry */
++		img = container_hdrs->img[i];
++
++		/* get the image flags */
++		img_flags = parse_image_flags(img.hab_flags, flag_string, soc);
++
++		/* determine the type of image */
++		switch (img_flags.type) {
++		case 0x3:
++			if ((soc == ULP) || (soc == IMX9)) {
++				if (img_flags.core_id == CORE_ULP_UPOWER)
++					strcpy(img_name, "uPower FW");
++				else if ((img_flags.core_id == CORE_ULP_CA35))
++					if (app_cntr)
++						strcpy(img_name, "A core Image");
++					else
++						strcpy(img_name, "Bootloader");
++				else if ((img_flags.core_id == CORE_ULP_CM33))
++					strcpy(img_name, "M33");
++
++			} else {
++				if (img_flags.core_id == CORE_SC)
++					strcpy(img_name, "SCFW");
++				else if ((img_flags.core_id == CORE_CA53) || (img_flags.core_id == CORE_CA72))
++					if (app_cntr)
++						strcpy(img_name, "A core Image");
++					else
++						strcpy(img_name, "Bootloader");
++				else if (img_flags.core_id == CORE_CM4_0)
++					strcpy(img_name, "M4_0");
++				else if (img_flags.core_id == CORE_CM4_1)
++					strcpy(img_name, "M4_1");
++			}
++			break;
++		case 0x4:
++			strcpy(img_name, "Data");
++			break;
++		case 0x5:
++			strcpy(img_name, "DDR Init");
++			break;
++		case 0x6:
++			if ((soc == ULP) || (soc == IMX9))
++				strcpy(img_name, "SENTINEL FW");
++			else
++				strcpy(img_name, "SECO FW");
++			break;
++		case 0x7:
++			strcpy(img_name, "Provisioning");
++			break;
++		case 0x8:
++			if (soc == IMX9)
++				strcpy(img_name, "FCB Check");
++			else
++				strcpy(img_name, "DEK Validation");
++			break;
++		case 0xB:
++			strcpy(img_name, "Primary V2X FW image");
++			break;
++		case 0xC:
++			strcpy(img_name, "Secondary V2X FW image");
++			break;
++		case 0xD:
++			strcpy(img_name, "V2X ROM Patch image");
++			break;
++		case 0xE:
++			strcpy(img_name, "V2X Dummy image");
++			break;
++		default:
++			strcpy(img_name, "Unknown image");
++			break;
++		}
++
++		/* get the image hash type */
++		switch (img_flags.hash_type) {
++		case 0x0:
++			hash_length = 256 / 8;
++			strcpy(hash_name, "SHA256");
++			break;
++		case 0x1:
++			hash_length = 384 / 8;
++			strcpy(hash_name, "SHA384");
++			break;
++		case 0x2:
++			hash_length = 512 / 8;
++			strcpy(hash_name, "SHA512");
++			break;
++		case 0x3:
++			hash_length = 256 / 8;
++			strcpy(hash_name, "SM3");
++			break;
++		default:
++			strcpy(hash_name, "Unknown");
++			break;
++		}
++
++		/* print the image array fields */
++		printf("%sIMAGE %d (%s)%s\n", "\x1B[33m", i+1, img_name, "\x1B[37m");
++		printf("Offset: %#X\n", img.offset);
++		printf("Size: %#X (%d)\n", img.size, img.size);
++		printf("Load Addr: %#lX\n", img.dst);
++		printf("Entry Addr: %#lX\n", img.entry);
++		printf("Flags: %#X %s\n", img.hab_flags, flag_string);
++
++		/* only print metadata and hash if the image isn't DDR init */
++		if (img_flags.type != 0x5) {
++			int j;
++
++			printf("Metadata: %#X\n", img.meta);
++
++			/* print the image hash */
++			printf("Hash: ");
++			for (j = 0; j < hash_length; j++)
++				printf("%02x", img.hash[j]);
++
++			printf(" (%s)\n", hash_name);
++
++		}
++		printf("\n");
++	}
++}
++
++static void print_container_hdr_fields(struct flash_header_v3 *container_hdrs, int num_cntrs,
++				       soc_type_t soc, bool app_cntr)
++{
++	int i;
++
++	for (i = 0; i < num_cntrs; i++) {
++		printf("\n");
++		printf("*********************************\n");
++		printf("*				*\n");
++		if (app_cntr)
++			printf("*          APP CONTAINER %-2d     *\n", i + 1);
++		else
++			printf("*          ROM CONTAINER %-2d     *\n", i + 1);
++		printf("*				*\n");
++		printf("*********************************\n\n");
++		printf("%16s", "Length: ");
++		printf("%#X (%d)\n", container_hdrs->length, container_hdrs->length);
++		printf("%16s", "Tag: ");
++		printf("%#X\n", container_hdrs->tag);
++		printf("%16s", "Version: ");
++		printf("%#X\n", container_hdrs->version);
++		printf("%16s", "Flags: ");
++		printf("%#X\n", container_hdrs->flags);
++		printf("%16s", "Num images: ");
++		printf("%d\n", container_hdrs->num_images);
++		printf("%16s", "Fuse version: ");
++		printf("%#X\n", container_hdrs->fuse_version);
++		printf("%16s", "SW version: ");
++		printf("%#X\n", container_hdrs->sw_version);
++		printf("%16s", "Sig blk offset: ");
++		printf("%#X\n\n", container_hdrs->sig_blk_offset);
++
++		print_image_array_fields(container_hdrs, soc, app_cntr);
++
++		container_hdrs++;
++	}
++}
++
++static int get_container_size(struct flash_header_v3 *phdr)
++{
++	uint8_t i = 0;
++	uint32_t max_offset = 0, img_end;
++
++	max_offset = phdr->length;
++
++	for (i = 0; i < phdr->num_images; i++) {
++		img_end = phdr->img[i].offset + phdr->img[i].size;
++		if (img_end > max_offset)
++			max_offset = img_end;
++	}
++
++	if (phdr->sig_blk_offset != 0) {
++		uint16_t len = phdr->sig_blk_hdr.length;
++
++		if (phdr->sig_blk_offset + len > max_offset)
++			max_offset = phdr->sig_blk_offset + len;
++	}
++
++	return max_offset;
++}
++
++static int search_app_container(struct flash_header_v3 *container_hdrs, int num_cntrs, int ifd,
++				struct flash_header_v3 *app_container_hdr)
++{
++	int off[MAX_NUM_OF_CONTAINER];
++	int end = 0, last = 0;
++	int img_array_entries = 0;
++	ssize_t rd_err;
++	off_t err;
++	int i;
++
++	off[0] = 0;
++
++	for (i = 0; i < num_cntrs; i++) {
++		end = get_container_size(&container_hdrs[i]);
++		if (end + off[i] > last)
++			last = end + off[i];
++
++		if ((i + 1) < num_cntrs)
++			off[i + 1] = off[i] + ALIGN(container_hdrs[i].length, CONTAINER_ALIGNMENT);
++	}
++
++	/* Check app container tag at each 1KB beginning until 16KB */
++	last = ALIGN(last, 0x400);
++	for (i = 0; i < 16; i++) {
++		last = last + (i * 0x400);
++		err = lseek(ifd, last, SEEK_SET);
++		if (err < 0)
++			break;
++
++		rd_err = read(ifd, (void *)app_container_hdr, 16);
++		if (rd_err < 0) {
++			fprintf(stderr, "Error reading from input binary\n");
++			exit(EXIT_FAILURE);
++		}
++
++		/* check that the current container has a valid tag */
++		if (app_container_hdr->tag != IVT_HEADER_TAG_B0)
++			continue;
++
++		if (app_container_hdr->num_images > MAX_NUM_IMGS) {
++			fprintf(stderr, "This container includes %d images, beyond max 8 images\n",
++				app_container_hdr->num_images);
++			exit(EXIT_FAILURE);
++		}
++
++		/* compute the size of the image array */
++		img_array_entries = app_container_hdr->num_images * sizeof(struct boot_img);
++
++		/* read in the full image array */
++		rd_err = read(ifd, (void *)&app_container_hdr->img, img_array_entries);
++		if (rd_err < 0) {
++			fprintf(stderr, "Error reading from input binary\n");
++			exit(EXIT_FAILURE);
++		}
++
++		/* read in signature block header */
++		if (app_container_hdr->sig_blk_offset != 0) {
++			lseek(ifd, last + app_container_hdr->sig_blk_offset, SEEK_SET);
++			rd_err = read(ifd, (void *)&app_container_hdr->sig_blk_hdr, sizeof(struct sig_blk_hdr));
++			if (rd_err == -1) {
++				fprintf(stderr, "Error reading from input binary\n");
++				exit(EXIT_FAILURE);
++			}
++		}
++
++		return last;
++	}
 +
 +	return 0;
 +}
 +
-+static struct driver lpi2c_imx_driver = {
-+        .probe  = lpi2c_imx_probe,
-+        .name   = "i2c-fsl",
-+        .of_compatible = DRV_OF_COMPAT(lpi2c_imx_of_match),
-+};
-+coredevice_platform_driver(lpi2c_imx_driver);
++static int extract_container_images(struct flash_header_v3 *container_hdr, char *ifname, int num_cntrs,
++				    int ifd, soc_type_t soc, int app_cntr_off)
++{
++	uint32_t img_offset = 0; /* image offset from container header */
++	uint32_t img_size = 0; /* image size */
++	uint32_t file_off = 0; /* current offset within container binary */
++	const uint32_t pad = 0;
++	int ofd = 0;
++	int ret = 0;
++	uint32_t seco_off = 0;
++	char dd_cmd[512]; /* dd cmd to extract each image from container binary */
++	struct stat buf;
++	FILE *f_ptr = NULL; /* file pointer to the dd process */
++	char *mem_ptr; /* pointer to input container in memory */
++	int i, j;
 +
-+MODULE_AUTHOR("Gao Pan <pandy.gao@nxp.com>");
-+MODULE_DESCRIPTION("I2C adapter driver for LPI2C bus");
-+MODULE_LICENSE("GPL");
++	printf("Extracting container images...\n");
++
++	/* create output directory if it does not exist */
++	if (stat("extracted_imgs", &buf) == -1)
++		mkdir("extracted_imgs", S_IRWXU|S_IRWXG|S_IRWXO);
++
++	/* open container binary and map to memory */
++	fstat(ifd, &buf);
++	mem_ptr = mmap(NULL, buf.st_size, PROT_READ, MAP_SHARED, ifd, 0);
++
++	for (i = 0; i < num_cntrs; i++) {
++		for (j = 0; j < container_hdr->num_images; j++) {
++
++			/* first get the image offset and size from the container header */
++			img_offset = container_hdr->img[j].offset;
++			img_size = container_hdr->img[j].size;
++
++			if (!img_size) {
++				/* check for images with zero size (DDR Init) */
++				continue;
++			} else if (app_cntr_off > 0) {
++				sprintf(dd_cmd, "dd status=none if=%s of=extracted_imgs/app_container%d_img%d.bin ibs=1 skip=%d count=%d conv=notrunc",
++						ifname, i+1, j+1, app_cntr_off+img_offset, img_size);
++				printf("APP Container %d Image %d -> extracted_imgs/app_container%d_img%d.bin\n", i+1, j+1, i+1, j+1);
++
++			} else if ((i == 0) && (soc != DXL)) { /* first container is always SECO FW */
++				int k;
++
++				/* open output file */
++				ofd = open("extracted_imgs/ahab-container.img", O_CREAT|O_WRONLY, S_IRWXU|S_IRWXG|S_IRWXO);
++
++				/* first copy container header to output image */
++				ret = write(ofd, (void *)mem_ptr, 1024);
++				if (ret < 0)
++					fprintf(stderr, "Error writing to output file\n");
++
++
++				/* next, pad the output with zeros until the start of the image */
++				for (k = 0; k < (img_offset-CONTAINER_ALIGNMENT)/4; k++)
++					ret = write(ofd, (void *)&pad, 4);
++
++				/* now write the fw image to the output file */
++				ret = write(ofd, (void *)(mem_ptr+img_offset), img_size);
++				if (ret < 0)
++					fprintf(stderr, "Error writing to output file\n");
++
++				/* close output file and unmap input file */
++				close(ofd);
++
++				printf("Container %d Image %d -> extracted_imgs/ahab-container.img\n", i+1, j+1);
++
++			} else if ((i < 2 ) && (soc == DXL)) { /* Second Container is Always V2X for DXL */
++				if (i == 0) {
++					/* open output file */
++					ofd = open("extracted_imgs/ahab-container.img", O_CREAT|O_WRONLY, S_IRWXU|S_IRWXG|S_IRWXO);
++
++					/* first copy container header to output image */
++					ret = write(ofd, (void *)mem_ptr, 0x400);
++					if (ret < 0)
++						fprintf(stderr, "Error writing to output file1\n");
++
++					/* For DXL go to next container to copy header */
++					seco_off = img_offset;
++					continue;
++				} else if (i == 1 && j == 0) {
++					int k;
++
++					/* copy v2x container header and seco fw */
++					ret = write(ofd,(void *) mem_ptr + file_off, container_hdr->length);
++					if (ret < 0)
++						fprintf(stderr, "Error writing to output file2\n");
++
++
++					/* next, pad the output with zeros until the start of SECO image */
++					for (k = 0; k < (seco_off - (file_off + container_hdr->length)) / 4; k++)
++						ret = write(ofd, (void *)&pad, 4);
++
++					/* now write the SECO fw image to the output file */
++					ret = write(ofd, (void *)(mem_ptr+seco_off), file_off + img_offset - seco_off);
++					if (ret < 0)
++						fprintf(stderr, "Error writing to output file3: %x\n",ret);
++				}
++
++				/* now write the next image to the output file */
++				ret = write(ofd, (void *)(mem_ptr + file_off + img_offset), img_size);
++				if (ret < 0)
++					fprintf(stderr, "Error writing to output file4: %x\n",ret);
++
++				/* Iterate through V2X container for other images */
++				if (j < (container_hdr->num_images - 1))
++					continue;
++
++				/* close output file and unmap input file */
++				close(ofd);
++
++
++				printf("Container %d Image %d -> extracted_imgs/v2x-container.img\n", i+1, j+1);
++
++			} else {
++				sprintf(dd_cmd, "dd status=none if=%s of=extracted_imgs/container%d_img%d.bin ibs=1 skip=%d count=%d conv=notrunc",
++						ifname, i+1, j+1, file_off+img_offset, img_size);
++				printf("Container %d Image %d -> extracted_imgs/container%d_img%d.bin\n", i+1, j+1, i+1, j+1);
++			}
++
++			/* run dd command to extract current image from container */
++			fprintf(stderr, "FOOO: %s\n", dd_cmd);
++			f_ptr = popen(dd_cmd, "r");
++			if (f_ptr == NULL) {
++				fprintf(stderr, "Failed to extract image\n");
++				exit(EXIT_FAILURE);
++			}
++
++			/* close the pipe */
++			pclose(f_ptr);
++		}
++
++		file_off += ALIGN(container_hdr->length, CONTAINER_ALIGNMENT);
++		container_hdr++;
++	}
++
++	munmap((void *)mem_ptr, buf.st_size);
++	printf("Done\n\n");
++	return 0;
++}
++
++static int parse_container_hdrs_qx_qm_b0(char *ifname, bool extract, soc_type_t soc, off_t file_off)
++{
++	int ifd; /* container file descriptor */
++	int max_containers = (soc == DXL) ? 3 : 2;
++	int cntr_num = 0; /* number of containers in binary */
++	int img_array_entries = 0; /* number of images in container */
++	ssize_t rd_err;
++	struct flash_header_v3 container_headers[MAX_NUM_OF_CONTAINER];
++	struct flash_header_v3 app_container_header;
++	int app_cntr_off;
++
++	/* initialize region of memory where flash header will be stored */
++	memset((void *)container_headers, 0, sizeof(container_headers));
++
++	/* open container binary */
++	ifd = open(ifname, O_RDONLY|O_BINARY);
++
++	if (file_off) /* inital offset within container binary */
++		lseek(ifd, file_off, SEEK_SET);
++
++	while (cntr_num < max_containers) {
++
++		/* read in next container header up to the image array */
++		rd_err = read(ifd, (void *)&container_headers[cntr_num], 16);
++		if (rd_err == -1) {
++			fprintf(stderr, "Error reading from input binary\n");
++			exit(EXIT_FAILURE);
++		}
++
++		/* check that the current container has a valid tag */
++		if (container_headers[cntr_num].tag != IVT_HEADER_TAG_B0)
++			break;
++
++		if (container_headers[cntr_num].num_images > MAX_NUM_IMGS) {
++			fprintf(stderr, "This container includes %d images, beyond max 8 images\n",
++				container_headers[cntr_num].num_images);
++			exit(EXIT_FAILURE);
++		}
++
++		/* compute the size of the image array */
++		img_array_entries = container_headers[cntr_num].num_images * sizeof(struct boot_img);
++
++		/* read in the full image array */
++		rd_err = read(ifd, (void *)&container_headers[cntr_num].img, img_array_entries);
++		if (rd_err == -1) {
++			fprintf(stderr, "Error reading from input binary\n");
++			exit(EXIT_FAILURE);
++		}
++
++		if (container_headers[cntr_num].sig_blk_offset != 0) {
++			/* read in signature block header */
++			lseek(ifd, file_off + container_headers[cntr_num].sig_blk_offset, SEEK_SET);
++			rd_err = read(ifd, (void *)&container_headers[cntr_num].sig_blk_hdr, sizeof(struct sig_blk_hdr));
++			if (rd_err == -1) {
++				fprintf(stderr, "Error reading from input binary\n");
++				exit(EXIT_FAILURE);
++			}
++		}
++
++		/* seek to next container in binary */
++		file_off += ALIGN(container_headers[cntr_num].length, CONTAINER_ALIGNMENT);
++		lseek(ifd, file_off, SEEK_SET);
++
++		/* increment current container count */
++		cntr_num++;
++	}
++
++
++	print_container_hdr_fields(container_headers, cntr_num, soc, false);
++
++	if (extract)
++		extract_container_images(container_headers, ifname, cntr_num, ifd, soc, 0);
++
++	app_cntr_off = search_app_container(container_headers, cntr_num, ifd, &app_container_header);
++
++	if (app_cntr_off > 0) {
++		print_container_hdr_fields(&app_container_header, 1, soc, true);
++		if (extract)
++			extract_container_images(&app_container_header, ifname, 1, ifd, soc, app_cntr_off);
++	}
++
++	close(ifd);
++
++	return 0;
++
++}
++
++#define IMG_STACK_SIZE			32 /* max of 32 images for commandline images */
++
++/*
++ * Read commandline parameters and construct the header in order
++ *
++ * This will then construct the image according to the header and
++ *
++ * parameters passed in
++ *
++ */
++int main(int argc, char **argv)
++{
++	int c;
++	char *ofname = NULL;
++	char *ifname = NULL;
++	bool output = false;
++	bool dcd_skip = false;
++	bool emmc_fastboot = false;
++	bool extract = false;
++	bool parse = false;
++
++	int container = -1;
++	image_t param_stack[IMG_STACK_SIZE];/* stack of input images */
++	int p_idx = 0;/* param index counter */
++	off_t file_off = 0;
++
++	uint32_t ivt_offset = IVT_OFFSET_SD;
++	uint32_t sector_size = 0x400; /* default sector size */
++	soc_type_t soc = NONE; /* Initially No SOC defined */
++
++	uint8_t  fuse_version = 0;
++	uint16_t sw_version   = 0;
++	char     *images_hash = NULL;
++
++	static struct option long_options[] = {
++		{"scfw", required_argument, NULL, 'f'},
++		{"seco", required_argument, NULL, 'O'},
++		{"m4", required_argument, NULL, 'm'},
++		{"ap", required_argument, NULL, 'a'},
++		{"dcd", required_argument, NULL, 'd'},
++		{"out", required_argument, NULL, 'o'},
++		{"flags", required_argument, NULL, 'l'},
++		{"scd", required_argument, NULL, 'x'},
++		{"csf", required_argument, NULL, 'z'},
++		{"dev", required_argument, NULL, 'e'},
++		{"soc", required_argument, NULL, 's'},
++		{"dummy",required_argument, NULL, 'y'},
++		{"container", no_argument, NULL, 'c'},
++		{"partition", required_argument, NULL, 'p'},
++		{"append", no_argument, NULL, 'A'},
++		{"data", required_argument, NULL, 'D'},
++		{"fileoff", required_argument, NULL, 'P'},
++		{"msg_blk", required_argument, NULL, 'M'},
++		{"fuse_version", required_argument, NULL, 'u'},
++		{"sw_version", required_argument, NULL, 'v'},
++		{"images_hash", required_argument, NULL, 'h'},
++		{"extract", required_argument, NULL, 'X'},
++		{"parse", required_argument, NULL, 'R'},
++		{"sentinel", required_argument, NULL, 'i'},
++		{"upower", required_argument, NULL, 'w'},
++		{"fcb", required_argument, NULL, 'b'},
++		{"padding", required_argument, NULL, 'G'},
++		{NULL, 0, NULL, 0}
++	};
++
++	/* scan in parameters in order */
++	while (1) {
++		/* getopt_long stores the option index here. */
++		int option_index = 0;
++
++		c = getopt_long_only (argc, argv, ":f:m:a:d:o:l:x:z:e:p:cu:v:h:i:w:",
++			long_options, &option_index);
++
++		/* Detect the end of the options. */
++		if (c == -1)
++			break;
++
++		switch (c) {
++		case 0:
++			fprintf(stderr, "option %s", long_options[option_index].name);
++			if (optarg)
++				fprintf(stderr, " with arg %s", optarg);
++			fprintf(stderr, "\n");
++			break;
++		case 'A':
++			param_stack[p_idx].option = APPEND;
++			param_stack[p_idx++].filename = argv[optind++];
++			break;
++		case 'p':
++			printf("PARTITION:\t%s\n", optarg);
++			param_stack[p_idx].option = PARTITION;
++			param_stack[p_idx++].entry = (uint32_t) strtoll(optarg, NULL, 0);
++			break;
++		case 's':
++			if (!strncmp(optarg, "QX", 2)) {
++				soc = QX;
++			} else if (!strncmp(optarg, "QM", 2)) {
++				soc = QM;
++			} else if (!strncmp(optarg, "DXL", 3)) {
++				soc = DXL;
++			} else if (!strncmp(optarg, "ULP", 3)) {
++				soc = ULP;
++			} else if (!strncmp(optarg, "IMX9", 4)) {
++				soc = IMX9;
++			} else {
++				printf("unrecognized SOC: %s \n",optarg);
++				exit(EXIT_FAILURE);
++			}
++			printf("SOC: %s \n",optarg);
++			break;
++		case 'b':
++			printf("FCB:\t%s\n", optarg);
++			param_stack[p_idx].option = FCB;
++			param_stack[p_idx].filename = optarg;
++			if (optind < argc && *argv[optind] != '-') {
++				param_stack[p_idx].entry = (uint32_t) strtoll(argv[optind++], NULL, 0);
++				p_idx++;
++			} else {
++				fprintf(stderr, "\n-fcb option require Two arguments: filename, load address in hex\n\n");
++				exit(EXIT_FAILURE);
++			}
++			break;
++		case 'i':
++			printf("SENTINEL:\t%s\n", optarg);
++			param_stack[p_idx].option = SENTINEL;
++			param_stack[p_idx++].filename = optarg;
++			break;
++		case 'w':
++			printf("UPOWER:\t%s\n", optarg);
++			param_stack[p_idx].option = UPOWER;
++			param_stack[p_idx++].filename = optarg;
++			break;
++		case 'f':
++			printf("SCFW:\t%s\n", optarg);
++			param_stack[p_idx].option = SCFW;
++			param_stack[p_idx++].filename = optarg;
++			break;
++		case 'O':
++			printf("SECO:\t%s\n", optarg);
++			param_stack[p_idx].option = SECO;
++			param_stack[p_idx++].filename = optarg;
++			break;
++		case 'd':
++			printf("DCD:\t%s\n", optarg);
++			if (soc == DXL) {
++				if (!strncmp(optarg, "skip", 4)) {
++					dcd_skip = true;
++				} else {
++					fprintf(stderr, "\n-dcd option requires argument skip\n\n");
++					exit(EXIT_FAILURE);
++				}
++			} else if ((soc == ULP) || (soc == IMX9)) {
++				fprintf(stderr, "\n-dcd option is not used on ULP and IMX9\n\n");
++				exit(EXIT_FAILURE);
++			} else {
++				param_stack[p_idx].option = DCD;
++				param_stack[p_idx].filename = optarg;
++				p_idx++;
++			}
++			break;
++		case 'D':
++			if ((soc == DXL) || (soc == ULP) || (soc == IMX9)) {
++				printf("Data:\t%s", optarg);
++				param_stack[p_idx].option = DATA;
++				param_stack[p_idx].filename = optarg;
++				if ((optind < argc && *argv[optind] != '-') &&
++				    (optind+1 < argc && *argv[optind+1] != '-' )) {
++					if (!strncmp(argv[optind], "a53", 3))
++						param_stack[p_idx].ext = CORE_CA53;
++					else if (!strncmp(argv[optind], "a55", 3))
++						param_stack[p_idx].ext = CORE_CA35; /* fake id for a55 */
++					else if (!strncmp(argv[optind], "a35", 3))
++						param_stack[p_idx].ext = CORE_CA35;
++					else if (!strncmp(argv[optind], "a72", 3))
++						param_stack[p_idx].ext = CORE_CA72;
++					else if (!strncmp(argv[optind], "m4_1", 4))
++						param_stack[p_idx].ext = CORE_CM4_1;
++					else if (!strncmp(argv[optind], "m4", 2))
++						param_stack[p_idx].ext = CORE_CM4_0;
++					else {
++						fprintf(stderr, "ERROR: incorrect core ID for --data option: %s\n", argv[optind]);
++						exit(EXIT_FAILURE);
++					}
++					printf("\tcore: %s\n", argv[optind++]);
++					param_stack[p_idx].entry = (uint32_t) strtoll(argv[optind++], NULL, 0);
++				} else {
++					fprintf(stderr, "\n-data option require THREE arguments: filename, core: a55/a35/a53/a72/m4_0/m4_1, load address in hex\n\n");
++					exit(EXIT_FAILURE);
++				}
++				p_idx++;
++			} else {
++				fprintf(stderr, "\n-data option is only used with -rev B0, or DXL or ULP or IMX9 soc.\n\n");
++				exit(EXIT_FAILURE);
++			}
++			break;
++		case 'm':
++			printf("CM4:\t%s", optarg);
++			param_stack[p_idx].option = M4;
++			param_stack[p_idx].filename = optarg;
++			if ((optind < argc && *argv[optind] != '-') &&
++			    (optind + 1 < argc &&*argv[optind+1] != '-' )) {
++				param_stack[p_idx].ext = strtol(argv[optind++], NULL, 0);
++				param_stack[p_idx].entry = (uint32_t) strtoll(argv[optind++], NULL, 0);
++				param_stack[p_idx].dst = 0;
++				printf("\tcore: %" PRIi64, param_stack[p_idx].ext);
++				printf(" entry addr: 0x%08" PRIx64 , param_stack[p_idx].entry);
++				if (optind < argc && *argv[optind] != '-') {
++					param_stack[p_idx].dst = (uint32_t) strtoll(argv[optind++], NULL, 0);
++					printf(" load addr: 0x%08" PRIx64 , param_stack[p_idx].dst);
++				}
++				printf("\n");
++				p_idx++;
++			} else {
++				fprintf(stderr, "\n-m4 option require FOUR arguments: filename, core: 0/1, entry address in hex, load address in hex(optional)\n\n");
++				exit(EXIT_FAILURE);
++			}
++			break;
++		case 'a':
++			printf("AP:\t%s", optarg);
++			param_stack[p_idx].option = AP;
++			param_stack[p_idx].filename = optarg;
++			if ((optind < argc && *argv[optind] != '-') &&
++			    (optind + 1 < argc &&*argv[optind+1] != '-' )) {
++				if (!strncmp(argv[optind], "a53", 3))
++					param_stack[p_idx].ext = CORE_CA53;
++				else if (!strncmp(argv[optind], "a55", 3))
++					param_stack[p_idx].ext = CORE_CA35; /* fake id for a55 */
++				else if (!strncmp(argv[optind], "a35", 3))
++					param_stack[p_idx].ext = CORE_CA35;
++				else if (!strncmp(argv[optind], "a72", 3))
++					param_stack[p_idx].ext = CORE_CA72;
++				else {
++					fprintf(stderr, "ERROR: AP Core not found %s\n", argv[optind+2]);
++					exit(EXIT_FAILURE);
++				}
++				printf("\tcore: %s", argv[optind++]);
++
++				param_stack[p_idx].entry = (uint32_t) strtoll(argv[optind++], NULL, 0);
++				param_stack[p_idx].mu = SC_R_MU_0A;
++				param_stack[p_idx].part = 1;
++
++				if (optind < argc && *argv[optind] != '-') {
++					if (!strncmp(argv[optind], "mu0", 3))
++						param_stack[p_idx].mu = SC_R_MU_0A;
++					else if (!strncmp(argv[optind], "mu3", 3))
++						param_stack[p_idx].mu = SC_R_MU_3A;
++					else {
++						fprintf(stderr, "ERROR: MU number %s not found\n", argv[optind]);
++						exit(EXIT_FAILURE);
++					}
++					printf("\tMU: %s ", argv[optind++]);
++				}
++				if (optind < argc && *argv[optind] != '-') {
++					if (!strncmp(argv[optind], "pt", 2) &&
++					    (argv[optind][2] > '0') &&
++					    (argv[optind][2] != '2') &&
++					    (argv[optind][2] <= '9')) {
++						char str[2];
++						str[0] = argv[optind][2];
++						str[1] = '\0';
++						param_stack[p_idx].part = strtoll(str, NULL, 0);
++					} else {
++						fprintf(stderr, "ERROR: partition number %s not found\n", argv[optind]);
++						exit(EXIT_FAILURE);
++					}
++					printf("\tPartition: %s ", argv[optind++]);
++				}
++				printf(" addr: 0x%08" PRIx64 "\n", param_stack[p_idx++].entry);
++			} else {
++				fprintf(stderr, "\n-ap option require THREE arguments: filename, a35/a53/a72, start address in hex\n\n");
++				exit(EXIT_FAILURE);
++			}
++			break;
++		case 'l':
++			printf("FLAG:\t%s\n", optarg);
++			param_stack[p_idx].option = FLAG;
++			param_stack[p_idx++].entry = (uint32_t) strtoll(optarg, NULL, 0);
++			break;
++		case 'o':
++			printf("Output:\t%s\n", optarg);
++			ofname = optarg;
++			output = true;
++			break;
++		case 'x':
++			printf("SCD:\t%s\n", optarg);
++			param_stack[p_idx].option = SCD;
++			param_stack[p_idx++].filename = optarg;
++			break;
++		case 'z':
++			printf("CSF:\t%s\n", optarg);
++			param_stack[p_idx].option = CSF;
++			param_stack[p_idx++].filename = optarg;
++			break;
++		case 'e':
++			printf("BOOT DEVICE:\t%s\n", optarg);
++			if (!strcmp(optarg, "flexspi")) {
++				ivt_offset = IVT_OFFSET_FLEXSPI;
++			} else if (!strcmp(optarg, "sd")) {
++				ivt_offset = IVT_OFFSET_SD;
++			} else if (!strcmp(optarg, "nand")) {
++				sector_size = 0x8000;/* sector size for NAND */
++				if ((soc == DXL) || (soc == IMX9)) {
++					if (optind < argc && *argv[optind] != '-') {
++						if (!strcmp(argv[optind], "4K")) {
++							sector_size = 0x1000;
++						} else if (!strcmp(argv[optind], "8K")) {
++							sector_size = 0x2000;
++						} else if (!strcmp(argv[optind], "16K")) {
++							sector_size = 0x4000;
++						} else
++							printf("\nwrong nand page size:\r\n 4K\r\n8K\r\n16K\n\n");
++					} else {
++						printf("\n-dev nand requires the page size:\r\n 4K\r\n8K\r\n16K\n\n");
++					}
++				}
++			} else if (!strcmp(optarg, "emmc_fast")) {
++					ivt_offset = IVT_OFFSET_EMMC;
++					emmc_fastboot = true;/* emmc boot */
++			} else {
++				printf("\n-dev option, Valid boot devices are:\r\n sd\r\nflexspi\r\nnand\n\n");
++				exit(EXIT_FAILURE);
++			}
++			break;
++		case 'c':
++			printf("New Container: \t%d\n",++container);
++			param_stack[p_idx++].option = NEW_CONTAINER;
++			break;
++		case ':':
++			fprintf(stderr, "option %c missing arguments\n", optopt);
++			exit(EXIT_FAILURE);
++			break;
++		case 'P':
++			printf("FILEOFF:\t%s\n", optarg);
++			param_stack[p_idx].option = FILEOFF;
++			param_stack[p_idx++].dst = (uint64_t) strtoll(optarg, NULL, 0);
++			break;
++		case 'M':
++			printf("MSG BLOCK:\t%s", optarg);
++			param_stack[p_idx].option = MSG_BLOCK;
++			param_stack[p_idx].filename = optarg;
++			if ((optind < argc && *argv[optind] != '-') &&
++			    (optind+1 < argc &&*argv[optind + 1] != '-' )) {
++				if (!strncmp(argv[optind], "fuse", 4))
++					param_stack[p_idx].ext = SC_R_OTP;
++				else if (!strncmp(argv[optind], "debug", 5))
++					param_stack[p_idx].ext = SC_R_DEBUG;
++				else if (!strncmp(argv[optind], "field", 5))
++					param_stack[p_idx].ext = SC_R_ROM_0;
++				else if (!strncmp(argv[optind], "zero", 4))
++					param_stack[p_idx].ext = SC_R_PWM_0;
++				else if (!strncmp(argv[optind], "patch", 5))
++					param_stack[p_idx].ext = SC_R_SNVS;
++				else if (!strncmp(argv[optind], "degrade", 7))
++					param_stack[p_idx].ext = SC_R_DC_0;
++				else {
++					fprintf(stderr, "ERROR: MSG type not found %s\n", argv[optind+2]);
++					exit(EXIT_FAILURE);
++				}
++				printf("\ttype: %s", argv[optind++]);
++
++				param_stack[p_idx].entry = (uint32_t) strtoll(argv[optind++], NULL, 0);
++
++				printf(" addr: 0x%08" PRIx64 "\n", param_stack[p_idx++].entry);
++			} else {
++				fprintf(stderr, "\nmsg block option require THREE arguments: filename, debug/fuse/field/patch, start address in hex\n\n");
++				exit(EXIT_FAILURE);
++			}
++			break;
++		case 'u':
++			fuse_version = (uint8_t) (strtoll(optarg, NULL, 0) & 0xFF);
++			break;
++		case 'v':
++			sw_version = (uint16_t) (strtoll(optarg, NULL, 0) & 0xFFFF);
++			break;
++		case 'h':
++			images_hash = optarg;
++			break;
++		case 'X':
++			printf("Input container binary to be deconstructed: %s\n", optarg);
++			ifname = optarg;
++			extract = true;
++			break;
++		case 'R':
++			printf("Input container binary to be parsed: %s\n", optarg);
++			ifname = optarg;
++			parse = true;
++			break;
++		case 'y':
++			printf("Dummy V2X image at:\t%s\n", optarg);
++			param_stack[p_idx].option = DUMMY_V2X;
++			param_stack[p_idx++].entry = (uint64_t) strtoll(optarg, NULL, 0);
++			break;
++		case 'G':
++			printf("Padding length:\t%s bytes\n", optarg);
++			file_off = atoi(optarg);
++			break;
++		case '?':
++		default:
++			/* invalid option */
++			fprintf(stderr, "option '%c' is invalid: ignored\n",
++				optopt);
++			exit(EXIT_FAILURE);
++		}
++	}
++
++	if (!parse) {
++		printf("CONTAINER FUSE VERSION:\t0x%02x\n", fuse_version);
++		printf("CONTAINER SW VERSION:\t0x%04x\n", sw_version);
++	}
++
++	param_stack[p_idx].option = NO_IMG; /* null terminate the img stack */
++
++	if (soc == NONE) {
++		fprintf(stderr, " No SOC defined");
++		exit(EXIT_FAILURE);
++	}
++
++	if (parse || extract) {
++		parse_container_hdrs_qx_qm_b0(ifname, extract, soc, file_off);
++		return 0;
++	}
++
++	if (container < 0) {
++		/* check to make sure there is at least 1 container defined */
++		fprintf(stderr, " No Container defined");
++		exit(EXIT_FAILURE);
++	}
++
++	if (!output) {
++		fprintf(stderr, "mandatory args scfw and output file name missing! abort\n");
++		exit(EXIT_FAILURE);
++	}
++
++	build_container_qx_qm_b0(soc, sector_size, ivt_offset, ofname, emmc_fastboot,
++				 (image_t *) param_stack, dcd_skip, fuse_version,
++				 sw_version, images_hash);
++
++	printf("DONE.\n");
++	printf("Note: Please copy image to offset: IVT_OFFSET + IMAGE_OFFSET\n");
++
++	return 0;
++}
++
 -- 
 2.39.2
 
