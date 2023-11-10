@@ -1,16 +1,16 @@
-Delivery-date: Fri, 10 Nov 2023 13:59:37 +0100
+Delivery-date: Fri, 10 Nov 2023 13:59:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1R6n-005rTI-0s
+	id 1r1R6n-005rTT-1d
 	for lore@lore.pengutronix.de;
-	Fri, 10 Nov 2023 13:59:37 +0100
+	Fri, 10 Nov 2023 13:59:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1R6l-0003Dl-RG
+	id 1r1R6l-0003Dx-T0
 	for lore@pengutronix.de; Fri, 10 Nov 2023 13:59:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,47 +18,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ntyPjHMGS35er6bEEei0RzQjSRHYQNtvWhVn7S52CtI=; b=dGG40K8dgXZkQO0/SyxAF5Lfx4
-	NHOBTmi2QyqO3okUs7/Um9uQLFkBI9tkm/RyEMdaLW9YZG92LbaMeX4dUd2aIkXA6ouD7mvzsaU/2
-	QV7vB7fEbHXC3jssusbWnqB1miFODnImkhm/eKvEANeYwRdJAPkLvIKbosd6TQKAO/N4YxZpBZP1Z
-	SflPayzLWRRLOtUMdzMUzTVHVpGG+Mw6Eh2qVF2NhSW+rTSflT64Hv4v1lCf7cC01jrH3JyeM6U7g
-	BUiYE4TWfBqIGv8BFiKXOPOWWjaxAeBvdzaufVfoKc9gvYKczn7XA4jmty40I8SY2EB/zQiARSj32
-	IF6ftPjQ==;
+	bh=zlgWXTOfZOnBsfFw6ZoGDGIODIGlXX+gCxV4mvoSJVQ=; b=cvUWLtTFf1yWk3Jg3BAdJ1YXpm
+	uvvseVVD5DX00YLw1qh5fYRMxCsB8SMXU73DvSYFNyvBTAu1EuS4KR5lgLIiCHO4Jr2RdKKU49/C+
+	j86FdxS3L/c+Z4+LvD8thJXaxRMSwQfgF80M8hd2BKgp1rkRhmjb0SfFo7rA/VxbkUGL30uGds5lD
+	Gq07j0grWyQb++vM2GouiCQIWe5vpqPiEW7xThjSPTOs9RO2ENvo/LovIpfKtToZn0a4/eEPebZ+U
+	m7YBvtCq/N8cc7lIc+pWvgs/mmZ3WvUeewbN8z9Vh2Deh4kVBIGpL81qXwY8W615AWi4EzIAobjaF
+	IZw5JDqg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R5V-008jvc-02;
-	Fri, 10 Nov 2023 12:58:17 +0000
+	id 1r1R5S-008juW-1b;
+	Fri, 10 Nov 2023 12:58:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1R5J-008jo8-33
+	id 1r1R5J-008jo1-34
 	for barebox@lists.infradead.org;
-	Fri, 10 Nov 2023 12:58:14 +0000
+	Fri, 10 Nov 2023 12:58:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5H-00026O-DV; Fri, 10 Nov 2023 13:58:03 +0100
+	id 1r1R5H-00026L-AS; Fri, 10 Nov 2023 13:58:03 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5G-0081X5-Nl; Fri, 10 Nov 2023 13:58:02 +0100
+	id 1r1R5G-0081X4-NN; Fri, 10 Nov 2023 13:58:02 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r1R5G-008ryv-2C;
+	id 1r1R5G-008ryl-29;
 	Fri, 10 Nov 2023 13:58:02 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri, 10 Nov 2023 13:57:38 +0100
-Message-Id: <20231110125800.1901232-4-s.hauer@pengutronix.de>
+Date: Fri, 10 Nov 2023 13:57:37 +0100
+Message-Id: <20231110125800.1901232-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231110125800.1901232-1-s.hauer@pengutronix.de>
 References: <20231110125800.1901232-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231110_045806_140832_C40A88F6 
-X-CRM114-Status: GOOD (  23.98  )
+X-CRM114-CacheID: sfid-20231110_045806_150995_6D08B10F 
+X-CRM114-Status: GOOD (  16.79  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,414 +81,279 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 03/25] ARM: i.MX: Add i.MX93 trdc support
+Subject: [PATCH 02/25] ARM: i.MX: Add i.MX93 s4mu support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Makefile     |   2 +-
- arch/arm/mach-imx/imx93-trdc.c | 364 +++++++++++++++++++++++++++++++++
- include/soc/imx9/trdc.h        |  11 +
- 3 files changed, 376 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-imx/imx93-trdc.c
- create mode 100644 include/soc/imx9/trdc.h
+ arch/arm/mach-imx/Makefile     |   1 +
+ arch/arm/mach-imx/imx93-s4mu.c |  97 ++++++++++++++++++++++++++
+ include/soc/imx9/mu_hal.h      |  12 ++++
+ include/soc/imx9/s400_api.h    | 124 +++++++++++++++++++++++++++++++++
+ 4 files changed, 234 insertions(+)
+ create mode 100644 arch/arm/mach-imx/imx93-s4mu.c
+ create mode 100644 include/soc/imx9/mu_hal.h
+ create mode 100644 include/soc/imx9/s400_api.h
 
 diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index 4efac08ee8..8a1ccabe15 100644
+index 7b093ba7fd..4efac08ee8 100644
 --- a/arch/arm/mach-imx/Makefile
 +++ b/arch/arm/mach-imx/Makefile
-@@ -33,4 +33,4 @@ obj-$(CONFIG_RESET_IMX_SRC) += src.o
+@@ -33,3 +33,4 @@ obj-$(CONFIG_RESET_IMX_SRC) += src.o
  lwl-y += cpu_init.o
  pbl-y += xload-spi.o xload-common.o xload-imx-nand.o xload-gpmi-nand.o
  pbl-y += xload-qspi.o
--pbl-$(CONFIG_ARCH_IMX93) += imx93-s4mu.o
-+pbl-$(CONFIG_ARCH_IMX93) += imx93-s4mu.o imx93-trdc.o
-diff --git a/arch/arm/mach-imx/imx93-trdc.c b/arch/arm/mach-imx/imx93-trdc.c
++pbl-$(CONFIG_ARCH_IMX93) += imx93-s4mu.o
+diff --git a/arch/arm/mach-imx/imx93-s4mu.c b/arch/arm/mach-imx/imx93-s4mu.c
 new file mode 100644
-index 0000000000..a1c7d49515
+index 0000000000..11a787d44d
 --- /dev/null
-+++ b/arch/arm/mach-imx/imx93-trdc.c
-@@ -0,0 +1,364 @@
-+// SPDX-License-Identifier: GPL-2.0+
++++ b/arch/arm/mach-imx/imx93-s4mu.c
+@@ -0,0 +1,97 @@
++// SPDX-License-Identifier: GPL-2.0
 +/*
-+ * Copyright 2022 NXP
++ * Copyright 2020-2022 NXP
 + */
-+#define pr_fmt(fmt) "trdc: " fmt
++#define pr_fmt(fmt) "s4mu: " fmt
 +
 +#include <common.h>
 +#include <io.h>
-+#include <soc/imx9/mu_hal.h>
 +#include <soc/imx9/s400_api.h>
-+#include <soc/imx9/trdc.h>
-+#include <mach/imx/imx9-regs.h>
++#include <soc/imx9/mu_hal.h>
++#include <linux/iopoll.h>
 +
-+#define DID_NUM 16
-+#define MBC_MAX_NUM 4
-+#define MRC_MAX_NUM 2
-+#define MBC_NUM(HWCFG) ((HWCFG >> 16) & 0xF)
-+#define MRC_NUM(HWCFG) ((HWCFG >> 24) & 0x1F)
++#define MU_SR_TE0_MASK		BIT(0)
++#define MU_SR_RF0_MASK		BIT(0)
++#define MU_TR_COUNT		8
++#define MU_RR_COUNT		4
 +
-+struct mbc_mem_dom {
-+	u32 mem_glbcfg[4];
-+	u32 nse_blk_index;
-+	u32 nse_blk_set;
-+	u32 nse_blk_clr;
-+	u32 nsr_blk_clr_all;
-+	u32 memn_glbac[8];
-+	/* The upper only existed in the beginning of each MBC */
-+	u32 mem0_blk_cfg_w[64];
-+	u32 mem0_blk_nse_w[16];
-+	u32 mem1_blk_cfg_w[8];
-+	u32 mem1_blk_nse_w[2];
-+	u32 mem2_blk_cfg_w[8];
-+	u32 mem2_blk_nse_w[2];
-+	u32 mem3_blk_cfg_w[8];
-+	u32 mem3_blk_nse_w[2];/*0x1F0, 0x1F4 */
-+	u32 reserved[2];
++struct mu_type {
++	u32 ver;
++	u32 par;
++	u32 cr;
++	u32 sr;
++	u32 reserved0[60];
++	u32 fcr;
++	u32 fsr;
++	u32 reserved1[2];
++	u32 gier;
++	u32 gcr;
++	u32 gsr;
++	u32 reserved2;
++	u32 tcr;
++	u32 tsr;
++	u32 rcr;
++	u32 rsr;
++	u32 reserved3[52];
++	u32 tr[16];
++	u32 reserved4[16];
++	u32 rr[16];
++	u32 reserved5[14];
++	u32 mu_attr;
 +};
 +
-+struct mrc_rgn_dom {
-+	u32 mrc_glbcfg[4];
-+	u32 nse_rgn_indirect;
-+	u32 nse_rgn_set;
-+	u32 nse_rgn_clr;
-+	u32 nse_rgn_clr_all;
-+	u32 memn_glbac[8];
-+	/* The upper only existed in the beginning of each MRC */
-+	u32 rgn_desc_words[16][2]; /* 16  regions at max, 2 words per region */
-+	u32 rgn_nse;
-+	u32 reserved2[15];
-+};
-+
-+struct mda_inst {
-+	u32 mda_w[8];
-+};
-+
-+struct trdc_mgr {
-+	u32 trdc_cr;
-+	u32 res0[59];
-+	u32 trdc_hwcfg0;
-+	u32 trdc_hwcfg1;
-+	u32 res1[450];
-+	struct mda_inst mda[8];
-+	u32 res2[15808];
-+};
-+
-+struct trdc_mbc {
-+	struct mbc_mem_dom mem_dom[DID_NUM];
-+};
-+
-+struct trdc_mrc {
-+	struct mrc_rgn_dom mrc_dom[DID_NUM];
-+};
-+
-+static void *trdc_get_mbc_base(ulong trdc_reg, u32 mbc_x)
++void mu_hal_init(ulong base)
 +{
-+	struct trdc_mgr *trdc_base = (struct trdc_mgr *)trdc_reg;
-+	u32 mbc_num = MBC_NUM(trdc_base->trdc_hwcfg0);
++	struct mu_type *mu_base = (struct mu_type *)base;
 +
-+	if (mbc_x >= mbc_num)
-+		return 0;
-+
-+	return (void *)trdc_reg + 0x10000 + 0x2000 * mbc_x;
++	writel(0, &mu_base->tcr);
++	writel(0, &mu_base->rcr);
 +}
 +
-+static void *trdc_get_mrc_base(ulong trdc_reg, u32 mrc_x)
++int mu_hal_sendmsg(ulong base, u32 reg_index, u32 msg)
 +{
-+	struct trdc_mgr *trdc_base = (struct trdc_mgr *)trdc_reg;
-+	u32 mbc_num = MBC_NUM(trdc_base->trdc_hwcfg0);
-+	u32 mrc_num = MRC_NUM(trdc_base->trdc_hwcfg0);
-+
-+	if (mrc_x >= mrc_num)
-+		return 0;
-+
-+	return (void *)trdc_reg + 0x10000 + 0x2000 * mbc_num + 0x1000 * mrc_x;
-+}
-+
-+static int trdc_mbc_set_control(ulong trdc_reg, u32 mbc_x, u32 glbac_id,
-+			 u32 glbac_val)
-+{
-+	struct trdc_mbc *mbc_base = trdc_get_mbc_base(trdc_reg, mbc_x);
-+	struct mbc_mem_dom *mbc_dom;
-+
-+	if (mbc_base == 0 || glbac_id >= 8)
-+		return -EINVAL;
-+
-+	/* only first dom has the glbac */
-+	mbc_dom = &mbc_base->mem_dom[0];
-+
-+	writel(glbac_val, &mbc_dom->memn_glbac[glbac_id]);
-+
-+	return 0;
-+}
-+
-+static int trdc_mbc_blk_config(ulong trdc_reg, u32 mbc_x, u32 dom_x, u32 mem_x,
-+			u32 blk_x, bool sec_access, u32 glbac_id)
-+{
-+	struct trdc_mbc *mbc_base = trdc_get_mbc_base(trdc_reg, mbc_x);
-+	struct mbc_mem_dom *mbc_dom;
-+	u32 *cfg_w, *nse_w;
-+	u32 index, offset, val;
-+
-+	if (mbc_base == 0 || glbac_id >= 8)
-+		return -EINVAL;
-+
-+	mbc_dom = &mbc_base->mem_dom[dom_x];
-+
-+	switch (mem_x) {
-+	case 0:
-+		cfg_w = &mbc_dom->mem0_blk_cfg_w[blk_x / 8];
-+		nse_w = &mbc_dom->mem0_blk_nse_w[blk_x / 32];
-+		break;
-+	case 1:
-+		cfg_w = &mbc_dom->mem1_blk_cfg_w[blk_x / 8];
-+		nse_w = &mbc_dom->mem1_blk_nse_w[blk_x / 32];
-+		break;
-+	case 2:
-+		cfg_w = &mbc_dom->mem2_blk_cfg_w[blk_x / 8];
-+		nse_w = &mbc_dom->mem2_blk_nse_w[blk_x / 32];
-+		break;
-+	case 3:
-+		cfg_w = &mbc_dom->mem3_blk_cfg_w[blk_x / 8];
-+		nse_w = &mbc_dom->mem3_blk_nse_w[blk_x / 32];
-+		break;
-+	default:
-+		return -EINVAL;
-+	};
-+
-+	index = blk_x % 8;
-+	offset = index * 4;
-+
-+	val = readl((void __iomem *)cfg_w);
-+
-+	val &= ~(0xFU << offset);
-+
-+	/* MBC0-3
-+	 *  Global 0, 0x7777 secure pri/user read/write/execute, S400 has already set it.
-+	 *  So select MBC0_MEMN_GLBAC0
-+	 */
-+	if (sec_access) {
-+		val |= ((0x0 | (glbac_id & 0x7)) << offset);
-+		writel(val, (void __iomem *)cfg_w);
-+	} else {
-+		val |= ((0x8 | (glbac_id & 0x7)) << offset); /* nse bit set */
-+		writel(val, (void __iomem *)cfg_w);
-+	}
-+
-+	return 0;
-+}
-+
-+static int trdc_mrc_set_control(ulong trdc_reg, u32 mrc_x, u32 glbac_id, u32 glbac_val)
-+{
-+	struct trdc_mrc *mrc_base = trdc_get_mrc_base(trdc_reg, mrc_x);
-+	struct mrc_rgn_dom *mrc_dom;
-+
-+	if (mrc_base == 0 || glbac_id >= 8)
-+		return -EINVAL;
-+
-+	/* only first dom has the glbac */
-+	mrc_dom = &mrc_base->mrc_dom[0];
-+
-+	pr_vdebug("mrc_dom 0x%lx\n", (ulong)mrc_dom);
-+
-+	writel(glbac_val, &mrc_dom->memn_glbac[glbac_id]);
-+
-+	return 0;
-+}
-+
-+static int trdc_mrc_region_config(ulong trdc_reg, u32 mrc_x, u32 dom_x, u32 addr_start,
-+			   u32 addr_end, bool sec_access, u32 glbac_id)
-+{
-+	struct trdc_mrc *mrc_base = trdc_get_mrc_base(trdc_reg, mrc_x);
-+	struct mrc_rgn_dom *mrc_dom;
-+	u32 *desc_w;
-+	u32 start, end;
-+	u32 i, free = 8;
-+	bool vld, hit = false;
-+
-+	if (mrc_base == 0 || glbac_id >= 8)
-+		return -EINVAL;
-+
-+	mrc_dom = &mrc_base->mrc_dom[dom_x];
-+
-+	addr_start &= ~0x3fff;
-+	addr_end &= ~0x3fff;
-+
-+	for (i = 0; i < 8; i++) {
-+		desc_w = &mrc_dom->rgn_desc_words[i][0];
-+
-+		start = readl((void __iomem *)desc_w) & (~0x3fff);
-+		end = readl((void __iomem *)(desc_w + 1));
-+		vld = end & 0x1;
-+		end = end & (~0x3fff);
-+
-+		if (start == 0 && end == 0 && !vld && free >= 8)
-+			free = i;
-+
-+		/* Check all the region descriptors, even overlap */
-+		if (addr_start >= end || addr_end <= start || !vld)
-+			continue;
-+
-+		/* MRC0,1
-+		 *  Global 0, 0x7777 secure pri/user read/write/execute, S400 has already set it.
-+		 *  So select MRCx_MEMN_GLBAC0
-+		 */
-+		if (sec_access) {
-+			writel(start | (glbac_id & 0x7), (void __iomem *)desc_w);
-+			writel(end | 0x1, (void __iomem *)(desc_w + 1));
-+		} else {
-+			writel(start | (glbac_id & 0x7), (void __iomem *)desc_w);
-+			writel(end | 0x1 | 0x10, (void __iomem *)(desc_w + 1));
-+		}
-+
-+		if (addr_start >= start && addr_end <= end)
-+			hit = true;
-+	}
-+
-+	if (!hit) {
-+		if (free >= 8)
-+			return -EFAULT;
-+
-+		desc_w = &mrc_dom->rgn_desc_words[free][0];
-+
-+		if (sec_access) {
-+			writel(addr_start | (glbac_id & 0x7), (void __iomem *)desc_w);
-+			writel(addr_end | 0x1, (void __iomem *)(desc_w + 1));
-+		} else {
-+			writel(addr_start | (glbac_id & 0x7), (void __iomem *)desc_w);
-+			writel((addr_end | 0x1 | 0x10), (void __iomem *)(desc_w + 1));
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static bool trdc_mrc_enabled(ulong trdc_base)
-+{
-+	return (!!(readl((void __iomem *)trdc_base) & 0x8000));
-+}
-+
-+static int release_rdc(u8 xrdc)
-+{
-+	ulong s_mu_base = 0x47520000UL;
-+	struct sentinel_msg msg;
++	struct mu_type *mu_base = (struct mu_type *)base;
++	u32 mask = MU_SR_TE0_MASK << reg_index;
++	u32 val;
 +	int ret;
-+	u32 rdc_id;
 +
-+	switch (xrdc) {
-+	case 0:
-+		rdc_id = 0x74;
-+		break;
-+	case 1:
-+		rdc_id = 0x78;
-+		break;
-+	case 2:
-+		rdc_id = 0x82;
-+		break;
-+	case 3:
-+		rdc_id = 0x86;
-+		break;
-+	default:
-+		return -EINVAL;
++	BUG_ON(reg_index >= MU_TR_COUNT);
++
++	pr_vdebug("sendmsg tsr 0x%x\n", readl(&mu_base->tsr));
++
++	/* Wait TX register to be empty. */
++	ret = readl_poll_timeout(&mu_base->tsr, val, val & mask, 10000);
++	if (ret < 0) {
++		pr_debug("%s timeout\n", __func__);
++		return -ETIMEDOUT;
 +	}
 +
-+	msg.version = AHAB_VERSION;
-+	msg.tag = AHAB_CMD_TAG;
-+	msg.size = 2;
-+	msg.command = ELE_RELEASE_RDC_REQ;
-+	msg.data[0] = (rdc_id << 8) | 0x2; /* A55 */
++	pr_vdebug("tr[%d] 0x%x\n", reg_index, msg);
 +
-+	mu_hal_init(s_mu_base);
-+	mu_hal_sendmsg(s_mu_base, 0, *((u32 *)&msg));
-+	mu_hal_sendmsg(s_mu_base, 1, msg.data[0]);
++	writel(msg, &mu_base->tr[reg_index]);
 +
-+	ret = mu_hal_receivemsg(s_mu_base, 0, (u32 *)&msg);
-+	if (ret)
-+		return ret;
-+
-+	ret = mu_hal_receivemsg(s_mu_base, 1, &msg.data[0]);
-+	if (ret)
-+		return -EIO;
-+
-+	if ((msg.data[0] & 0xff) == 0xd6)
-+		return 0;
-+
-+	return -EIO;
++	return 0;
 +}
 +
-+void imx9_trdc_init(void)
++int mu_hal_receivemsg(ulong base, u32 reg_index, u32 *msg)
 +{
-+	unsigned long base = MX9_TRDC_NICMIX_BASE_ADDR;
-+	int ret = 0, i;
++	struct mu_type *mu_base = (struct mu_type *)base;
++	u32 mask = MU_SR_RF0_MASK << reg_index;
++	u32 val;
++	int ret;
 +
-+	ret |= release_rdc(0);
-+	ret |= release_rdc(2);
-+	ret |= release_rdc(1);
-+	ret |= release_rdc(3);
++	BUG_ON(reg_index >= MU_RR_COUNT);
 +
-+	if (ret)
-+		return;
++	pr_vdebug("receivemsg rsr 0x%x\n", readl(&mu_base->rsr));
 +
-+	/* Set OCRAM to RWX for secure, when OEM_CLOSE, the image is RX only */
-+	trdc_mbc_set_control(base, 3, 0, 0x7700);
++	/* Wait RX register to be full. */
++	ret = readl_poll_timeout(&mu_base->rsr, val, val & mask, 10000000);
++	if (ret < 0)
++		return -ETIMEDOUT;
 +
-+	for (i = 0; i < 40; i++)
-+		trdc_mbc_blk_config(base, 3, 3, 0, i, true, 0);
++	*msg = readl(&mu_base->rr[reg_index]);
 +
-+	for (i = 0; i < 40; i++)
-+		trdc_mbc_blk_config(base, 3, 3, 1, i, true, 0);
++	pr_vdebug("rr[%d] 0x%x\n", reg_index, *msg);
 +
-+	for (i = 0; i < 40; i++)
-+		trdc_mbc_blk_config(base, 3, 0, 0, i, true, 0);
-+
-+	for (i = 0; i < 40; i++)
-+		trdc_mbc_blk_config(base, 3, 0, 1, i, true, 0);
-+
-+	/* TRDC mega */
-+	if (!trdc_mrc_enabled(base))
-+		return;
-+
-+	/* DDR */
-+	trdc_mrc_set_control(base, 0, 0, 0x7777);
-+	/* S400*/
-+	trdc_mrc_region_config(base, 0, 0, 0x80000000, 0xFFFFFFFF, false, 0);
-+	/* MTR */
-+	trdc_mrc_region_config(base, 0, 1, 0x80000000, 0xFFFFFFFF, false, 0);
-+	/* M33 */
-+	trdc_mrc_region_config(base, 0, 2, 0x80000000, 0xFFFFFFFF, false, 0);
-+	/* A55*/
-+	trdc_mrc_region_config(base, 0, 3, 0x80000000, 0xFFFFFFFF, false, 0);
-+	/* For USDHC1 to DDR, USDHC1 is default force to non-secure */
-+	trdc_mrc_region_config(base, 0, 5, 0x80000000, 0xFFFFFFFF, false, 0);
-+	/* For USDHC2 to DDR, USDHC2 is default force to non-secure */
-+	trdc_mrc_region_config(base, 0, 6, 0x80000000, 0xFFFFFFFF, false, 0);
-+	/* eDMA */
-+	trdc_mrc_region_config(base, 0, 7, 0x80000000, 0xFFFFFFFF, false, 0);
-+	/* CoreSight, TestPort */
-+	trdc_mrc_region_config(base, 0, 8, 0x80000000, 0xFFFFFFFF, false, 0);
-+	/* DAP */
-+	trdc_mrc_region_config(base, 0, 9, 0x80000000, 0xFFFFFFFF, false, 0);
-+	/* SoC masters */
-+	trdc_mrc_region_config(base, 0, 10, 0x80000000, 0xFFFFFFFF, false, 0);
-+	/* USB */
-+	trdc_mrc_region_config(base, 0, 11, 0x80000000, 0xFFFFFFFF, false, 0);
++	return 0;
 +}
-diff --git a/include/soc/imx9/trdc.h b/include/soc/imx9/trdc.h
+diff --git a/include/soc/imx9/mu_hal.h b/include/soc/imx9/mu_hal.h
 new file mode 100644
-index 0000000000..624e267ab6
+index 0000000000..5db559c1ac
 --- /dev/null
-+++ b/include/soc/imx9/trdc.h
-@@ -0,0 +1,11 @@
++++ b/include/soc/imx9/mu_hal.h
+@@ -0,0 +1,12 @@
 +/* SPDX-License-Identifier: GPL-2.0+ */
 +/*
-+ * Copyright 2022 NXP
++ * Copyright 2021 NXP
 + */
 +
-+#ifndef __ASM_ARCH_IMX9_TRDC_H
-+#define __ASM_ARCH_IMX9_TRDC_H
++#ifndef __SNT_MU_HAL_H__
++#define __SNT_MU_HAL_H__
 +
-+void imx9_trdc_init(void);
++void mu_hal_init(ulong base);
++int mu_hal_sendmsg(ulong base, u32 reg_index, u32 msg);
++int mu_hal_receivemsg(ulong base, u32 reg_index, u32 *msg);
++#endif
+diff --git a/include/soc/imx9/s400_api.h b/include/soc/imx9/s400_api.h
+new file mode 100644
+index 0000000000..6d2dd71d67
+--- /dev/null
++++ b/include/soc/imx9/s400_api.h
+@@ -0,0 +1,124 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++/*
++ * Copyright 2021 NXP
++ */
++
++#ifndef __S400_API_H__
++#define __S400_API_H__
++
++#define AHAB_VERSION    0x6
++#define AHAB_CMD_TAG    0x17
++#define AHAB_RESP_TAG   0xe1
++
++/* ELE commands */
++#define ELE_PING_REQ (0x01)
++#define ELE_FW_AUTH_REQ (0x02)
++#define ELE_RESTART_RST_TIMER_REQ (0x04)
++#define ELE_DUMP_DEBUG_BUFFER_REQ (0x21)
++#define ELE_OEM_CNTN_AUTH_REQ (0x87)
++#define ELE_VERIFY_IMAGE_REQ (0x88)
++#define ELE_RELEASE_CONTAINER_REQ (0x89)
++#define ELE_WRITE_SECURE_FUSE_REQ (0x91)
++#define ELE_FWD_LIFECYCLE_UP_REQ (0x95)
++#define ELE_READ_FUSE_REQ (0x97)
++#define ELE_GET_FW_VERSION_REQ (0x9D)
++#define ELE_RET_LIFECYCLE_UP_REQ (0xA0)
++#define ELE_GET_EVENTS_REQ (0xA2)
++#define ELE_START_RNG (0xA3)
++#define ELE_GENERATE_DEK_BLOB (0xAF)
++#define ELE_ENABLE_PATCH_REQ (0xC3)
++#define ELE_RELEASE_RDC_REQ (0xC4)
++#define ELE_GET_FW_STATUS_REQ (0xC5)
++#define ELE_ENABLE_OTFAD_REQ (0xC6)
++#define ELE_RESET_REQ (0xC7)
++#define ELE_UPDATE_OTP_CLKDIV_REQ (0xD0)
++#define ELE_POWER_DOWN_REQ (0xD1)
++#define ELE_ENABLE_APC_REQ (0xD2)
++#define ELE_ENABLE_RTC_REQ (0xD3)
++#define ELE_DEEP_POWER_DOWN_REQ (0xD4)
++#define ELE_STOP_RST_TIMER_REQ (0xD5)
++#define ELE_WRITE_FUSE_REQ (0xD6)
++#define ELE_RELEASE_CAAM_REQ (0xD7)
++#define ELE_RESET_A35_CTX_REQ (0xD8)
++#define ELE_MOVE_TO_UNSECURED_REQ (0xD9)
++#define ELE_GET_INFO_REQ (0xDA)
++#define ELE_ATTEST_REQ (0xDB)
++#define ELE_RELEASE_PATCH_REQ (0xDC)
++#define ELE_OTP_SEQ_SWITH_REQ (0xDD)
++
++/* ELE failure indications */
++#define ELE_ROM_PING_FAILURE_IND (0x0A)
++#define ELE_FW_PING_FAILURE_IND (0x1A)
++#define ELE_BAD_SIGNATURE_FAILURE_IND (0xF0)
++#define ELE_BAD_HASH_FAILURE_IND (0xF1)
++#define ELE_INVALID_LIFECYCLE_IND (0xF2)
++#define ELE_PERMISSION_DENIED_FAILURE_IND (0xF3)
++#define ELE_INVALID_MESSAGE_FAILURE_IND (0xF4)
++#define ELE_BAD_VALUE_FAILURE_IND (0xF5)
++#define ELE_BAD_FUSE_ID_FAILURE_IND (0xF6)
++#define ELE_BAD_CONTAINER_FAILURE_IND (0xF7)
++#define ELE_BAD_VERSION_FAILURE_IND (0xF8)
++#define ELE_INVALID_KEY_FAILURE_IND (0xF9)
++#define ELE_BAD_KEY_HASH_FAILURE_IND (0xFA)
++#define ELE_NO_VALID_CONTAINER_FAILURE_IND (0xFB)
++#define ELE_BAD_CERTIFICATE_FAILURE_IND (0xFC)
++#define ELE_BAD_UID_FAILURE_IND (0xFD)
++#define ELE_BAD_MONOTONIC_COUNTER_FAILURE_IND (0xFE)
++#define ELE_MUST_SIGNED_FAILURE_IND (0xE0)
++#define ELE_NO_AUTHENTICATION_FAILURE_IND (0xEE)
++#define ELE_BAD_SRK_SET_FAILURE_IND (0xEF)
++#define ELE_UNALIGNED_PAYLOAD_FAILURE_IND (0xA6)
++#define ELE_WRONG_SIZE_FAILURE_IND (0xA7)
++#define ELE_ENCRYPTION_FAILURE_IND (0xA8)
++#define ELE_DECRYPTION_FAILURE_IND (0xA9)
++#define ELE_OTP_PROGFAIL_FAILURE_IND (0xAA)
++#define ELE_OTP_LOCKED_FAILURE_IND (0xAB)
++#define ELE_OTP_INVALID_IDX_FAILURE_IND (0xAD)
++#define ELE_TIME_OUT_FAILURE_IND (0xB0)
++#define ELE_BAD_PAYLOAD_FAILURE_IND (0xB1)
++#define ELE_WRONG_ADDRESS_FAILURE_IND (0xB4)
++#define ELE_DMA_FAILURE_IND (0xB5)
++#define ELE_DISABLED_FEATURE_FAILURE_IND (0xB6)
++#define ELE_MUST_ATTEST_FAILURE_IND (0xB7)
++#define ELE_RNG_NOT_STARTED_FAILURE_IND (0xB8)
++#define ELE_CRC_ERROR_IND (0xB9)
++#define ELE_AUTH_SKIPPED_OR_FAILED_FAILURE_IND (0xBB)
++#define ELE_INCONSISTENT_PAR_FAILURE_IND (0xBC)
++#define ELE_RNG_INST_FAILURE_FAILURE_IND (0xBD)
++#define ELE_LOCKED_REG_FAILURE_IND (0xBE)
++#define ELE_BAD_ID_FAILURE_IND (0xBF)
++#define ELE_INVALID_OPERATION_FAILURE_IND (0xC0)
++#define ELE_NON_SECURE_STATE_FAILURE_IND (0xC1)
++#define ELE_MSG_TRUNCATED_IND (0xC2)
++#define ELE_BAD_IMAGE_NUM_FAILURE_IND (0xC3)
++#define ELE_BAD_IMAGE_ADDR_FAILURE_IND (0xC4)
++#define ELE_BAD_IMAGE_PARAM_FAILURE_IND (0xC5)
++#define ELE_BAD_IMAGE_TYPE_FAILURE_IND (0xC6)
++#define ELE_CORRUPTED_SRK_FAILURE_IND (0xD0)
++#define ELE_OUT_OF_MEMORY_IND (0xD1)
++#define ELE_CSTM_FAILURE_IND (0xCF)
++#define ELE_OLD_VERSION_FAILURE_IND (0xCE)
++#define ELE_WRONG_BOOT_MODE_FAILURE_IND (0xCD)
++#define ELE_APC_ALREADY_ENABLED_FAILURE_IND (0xCB)
++#define ELE_RTC_ALREADY_ENABLED_FAILURE_IND (0xCC)
++#define ELE_ABORT_IND (0xFF)
++
++/* ELE IPC identifier */
++#define ELE_IPC_MU_RTD (0x1)
++#define ELE_IPC_MU_APD (0x2)
++
++/* ELE Status*/
++#define ELE_SUCCESS_IND (0xD6)
++#define ELE_FAILURE_IND (0x29)
++
++#define S400_MAX_MSG          255U
++
++struct sentinel_msg {
++	u8 version;
++	u8 size;
++	u8 command;
++	u8 tag;
++	u32 data[(S400_MAX_MSG - 1U)];
++};
 +
 +#endif
 -- 
