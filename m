@@ -1,71 +1,67 @@
-Delivery-date: Fri, 10 Nov 2023 14:33:33 +0100
+Delivery-date: Fri, 10 Nov 2023 22:45:53 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1Rdd-005tyX-0I
+	id 1r1ZK5-006Tz9-0X
 	for lore@lore.pengutronix.de;
-	Fri, 10 Nov 2023 14:33:33 +0100
+	Fri, 10 Nov 2023 22:45:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r1Rdd-0004FR-2d
-	for lore@pengutronix.de; Fri, 10 Nov 2023 14:33:33 +0100
+	id 1r1ZK5-0004nz-4A
+	for lore@pengutronix.de; Fri, 10 Nov 2023 22:45:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=k6eFYCynIFv/yBXOtZQTih8eO4d45QGpU5hG2LrWhg0=; b=uiXrqXmHbLuPxUYhii0CQEvJyz
-	nfP06uQkuUvp+54GUgkfNoczb/UmVZwzdusx0DLJjz/Ik1zwnrZItUSGKZVKhCpr7J+eXAoDEGCFe
-	i/aM4IH8elsH/ybxmGxId+lIgKd6Yb87uAdKb3LrhyKY+WVZUKXW+/88CLTmio8xdUzvcig3ONbr8
-	Zv3+9mAIDkcXoD62zMbE15yBsUdBFilUL8ojRCmBWnuIOI9Mif2ADaX8XGd5ySGZ3v9yerwc0h10D
-	LUJHcG1ZetimpSVt8BqT4rufVMwEqKL+qKKVZtt0bEPuxcme+deZgu+IQ2OgrH2N/yxDtn2IE7PcN
-	Stsnihbw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=6LLTxe/QJwzejJcIH9hGGTVUMcJj2Nf4jQ4GMr4tKL8=; b=t60m90yRGygmhws4OTmK/DaGHO
+	lp7zF84igkB1ZBaXizhPc1fjewaPKjzOpioVVROBPyOa69FGX4ORUp44ALDuydHtYhDhi0lSGLVib
+	SYoHfEfBKklSKiE1eDpgBhBC0Yc39zK+ISHTU9bF21V3DWKLl3LK3nHGBg0VvBxNTruT81qX1DFOW
+	rUGduf8sI2j8APSi8dGjoQU9T91G5HA6GAefvVZl7zvxQBdRszGp7yfmqgg5tZtyMKLitXu1J/BH/
+	0c0bg6bz/uQ5HiAzPrAP5i23NZ/HUhjlAa7LZotHE848Piv37TkFZf7CmJsl1giaQo5mgmy2s+Uv3
+	FdDSV9gA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1Rcc-008rFY-2b;
-	Fri, 10 Nov 2023 13:32:30 +0000
+	id 1r1ZIs-009UGD-1l;
+	Fri, 10 Nov 2023 21:44:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r1Rca-008rF4-0j
+	id 1r1ZIl-009UCB-0d
 	for barebox@lists.infradead.org;
-	Fri, 10 Nov 2023 13:32:29 +0000
+	Fri, 10 Nov 2023 21:44:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r1RcY-00044K-NM; Fri, 10 Nov 2023 14:32:26 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r1ZIe-0004DY-RG; Fri, 10 Nov 2023 22:44:24 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r1RcY-008267-As; Fri, 10 Nov 2023 14:32:26 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r1RcY-001Lkg-8O; Fri, 10 Nov 2023 14:32:26 +0100
-Date: Fri, 10 Nov 2023 14:32:26 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org,
-	Uwe =?iso-8859-15?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>
-Message-ID: <20231110133226.GK3359458@pengutronix.de>
-References: <20231109113012.1063774-1-a.fatoum@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r1ZIe-0086yP-Dj; Fri, 10 Nov 2023 22:44:24 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r1ZIe-00BRGz-16;
+	Fri, 10 Nov 2023 22:44:24 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 10 Nov 2023 22:44:09 +0100
+Message-Id: <20231110214421.2726093-7-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231110214421.2726093-1-a.fatoum@pengutronix.de>
+References: <20231110214421.2726093-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231109113012.1063774-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231110_053228_263558_F308F7CF 
-X-CRM114-Status: GOOD (  24.55  )
+X-CRM114-CacheID: sfid-20231110_134431_256570_0B99A662 
+X-CRM114-Status: UNSURE (   8.87  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,85 +79,113 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master] resource: align memory reservation to page
- boundaries
+Subject: [PATCH 06/18] asm-generic: migrate relaxed helpers into asm-generic/io.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Nov 09, 2023 at 12:30:12PM +0100, Ahmad Fatoum wrote:
-> barebox remaps all reserved entries as uncached to avoid speculative
-> access into the described regions using remap_range.
-> 
-> The ARM implementation requires buffers to be page aligned, which we
-> can't assume unconditionally. For this reason, reserve_sdram_region
-> will align region start and size before mapping uncached.
-> 
-> __mmu_init called later on, will remap everything outside the reserved
-> entries cached, e.g. to cache additional DRAM not known at PBL time.
-> No realignment will happen then though triggering the BUG(!IS_ALIGNED)
-> in ARM's arch_remap_range.
-> 
-> By moving the realignment before __request_sdram_region(), we ensure
-> that no misaligned memory regions will be passed to arch_remap_range by
-> core code.
-> 
-> This fixes chainloading barebox from an older barebox[1] that reserves
-> the FDT prior to relocation.
-> 
-> [1]: anything prior to 0b6b146a5508 ("fdt: Do not reserve device tree blob")
-> 
-> Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  common/memory.c | 8 ++++----
->  1 file changed, 4 insertions(+), 4 deletions(-)
+In preparation for having <io.h> be the include file for type confused
+MMIO accessors and <linux/io.h> for typechecked accessors, let's move out
+of <io.h> everything that's not directly related to the type confusion.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/asm-generic/io.h | 34 ++++++++++++++++++++++++++++++++++
+ include/io.h             | 34 ----------------------------------
+ 2 files changed, 34 insertions(+), 34 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/common/memory.c b/common/memory.c
-> index d560d444b0a8..300320f85344 100644
-> --- a/common/memory.c
-> +++ b/common/memory.c
-> @@ -218,10 +218,6 @@ struct resource *reserve_sdram_region(const char *name, resource_size_t start,
->  {
->  	struct resource *res;
->  
-> -	res = __request_sdram_region(name, IORESOURCE_BUSY, start, size);
-> -	if (IS_ERR(res))
-> -		return ERR_CAST(res);
-> -
->  	if (!IS_ALIGNED(start, PAGE_SIZE)) {
->  		pr_err("%s: %s start is not page aligned\n", __func__, name);
->  		start = ALIGN_DOWN(start, PAGE_SIZE);
-> @@ -232,6 +228,10 @@ struct resource *reserve_sdram_region(const char *name, resource_size_t start,
->  		size = ALIGN(size, PAGE_SIZE);
->  	}
->  
-> +	res = __request_sdram_region(name, IORESOURCE_BUSY, start, size);
-> +	if (IS_ERR(res))
-> +		return ERR_CAST(res);
-> +
->  	remap_range((void *)start, size, MAP_UNCACHED);
->  
->  	return res;
-> -- 
-> 2.39.2
-> 
-> 
-> 
-
+diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+index 6383d71746f1..b118979ed1df 100644
+--- a/include/asm-generic/io.h
++++ b/include/asm-generic/io.h
+@@ -792,4 +792,38 @@ static inline void memcpy_toio(volatile void __iomem *addr, const void *buffer,
+ 
+ #include <asm-generic/bitio.h>
+ 
++#define IOMEM_ERR_PTR(err) (__force void __iomem *)ERR_PTR(err)
++
++#ifndef readq_relaxed
++#define readq_relaxed(addr) readq(addr)
++#endif
++
++#ifndef readl_relaxed
++#define readl_relaxed(addr) readl(addr)
++#endif
++
++#ifndef readw_relaxed
++#define readw_relaxed(addr) readw(addr)
++#endif
++
++#ifndef readb_relaxed
++#define readb_relaxed(addr) readb(addr)
++#endif
++
++#ifndef writeq_relaxed
++#define writeq_relaxed(val, addr) writeq((val), (addr))
++#endif
++
++#ifndef writel_relaxed
++#define writel_relaxed(val, addr) writel((val), (addr))
++#endif
++
++#ifndef writew_relaxed
++#define writew_relaxed(val, addr) writew((val), (addr))
++#endif
++
++#ifndef writeb_relaxed
++#define writeb_relaxed(val, addr) writeb((val), (addr))
++#endif
++
+ #endif /* __ASM_GENERIC_IO_H */
+diff --git a/include/io.h b/include/io.h
+index 6a74246ea777..913002072240 100644
+--- a/include/io.h
++++ b/include/io.h
+@@ -4,38 +4,4 @@
+ 
+ #include <asm/io.h>
+ 
+-#define IOMEM_ERR_PTR(err) (__force void __iomem *)ERR_PTR(err)
+-
+-#ifndef readq_relaxed
+-#define readq_relaxed(addr) readq(addr)
+-#endif
+-
+-#ifndef readl_relaxed
+-#define readl_relaxed(addr) readl(addr)
+-#endif
+-
+-#ifndef readw_relaxed
+-#define readw_relaxed(addr) readw(addr)
+-#endif
+-
+-#ifndef readb_relaxed
+-#define readb_relaxed(addr) readb(addr)
+-#endif
+-
+-#ifndef writeq_relaxed
+-#define writeq_relaxed(val, addr) writeq((val), (addr))
+-#endif
+-
+-#ifndef writel_relaxed
+-#define writel_relaxed(val, addr) writel((val), (addr))
+-#endif
+-
+-#ifndef writew_relaxed
+-#define writew_relaxed(val, addr) writew((val), (addr))
+-#endif
+-
+-#ifndef writeb_relaxed
+-#define writeb_relaxed(val, addr) writeb((val), (addr))
+-#endif
+-
+ #endif /* __IO_H */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
