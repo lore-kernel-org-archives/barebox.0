@@ -1,59 +1,59 @@
-Delivery-date: Mon, 13 Nov 2023 08:21:15 +0100
+Delivery-date: Mon, 13 Nov 2023 08:25:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r2RFy-009i0c-1S
+	id 1r2RKI-009iCV-2x
 	for lore@lore.pengutronix.de;
-	Mon, 13 Nov 2023 08:21:15 +0100
+	Mon, 13 Nov 2023 08:25:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r2RFy-0003d7-2s
-	for lore@pengutronix.de; Mon, 13 Nov 2023 08:21:14 +0100
+	id 1r2RKI-000427-D9
+	for lore@pengutronix.de; Mon, 13 Nov 2023 08:25:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9Plsy5jLggein2e9RKU/QmNpmVXBmkLNQopVtc/L35U=; b=jE8D3SkwOCJf/RjK60SCVyBw3D
-	z+3qur88BvVJGrgVp3stt1W37umBBdRei3gOp6sulpS+LSFUiO3G1u2phcrf6jxe99UcHU4Ah514V
-	eS3fCqNac+ysuGDMBvkkx22sjfb/O3+NmLuIxvRD33shCLYfNyLpgMd9fZdMCVmgyiLlpSkfSX3aR
-	CLQ7WwHIAa8AxX6Xj7oISsY4wA7MuDTzLPmSd+ZA+J0wHLtDdo9UP9DyFQfb84Iw8Obm02yUCHOUV
-	jp92Wo/aLgpQwpX/t/OuVBAykBg1C5LtqmVd6YO11gTzn9xM7haOZtYX9yIQmTG+zkxxvdV8lNyv2
-	/W6S72Fw==;
+	bh=8eS4wcqxOjBVI6lZE+tieDysbeSj8s/Dn0kiqlEi/h4=; b=QsQoQXvfn7zMowYJBOECslY7Uv
+	ZGKzOOUOWwfsNlHxray1X5G96Ts2GQQ3fLjdaCxAsDFQfohHQ6TVnrxCSlusJm8BZboG8AvRtwCee
+	DcA3ZgB2S52F8Ftt9b7SGc7KhAWQWlonlKM+4O7jLxNgTpUZgQMLX9NXTh1tshk0Oa41m0FdrdCDM
+	pBO3fk7CnHXkckIyBKmqp+yoJJV1Kx2AUqlSBZzyAaXZkcbbAoLmGo2qxwlDKthUi5/2wvWw9k/yj
+	Y94WyEomG+Pw7ZJaA30yIOJz6FPY3Y85g6N4caWmCuSTnTyxXyp6TpQqwv61M934Z1P4ulYVXXQOU
+	C9phM1Yw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r2REI-00DQZq-1q;
-	Mon, 13 Nov 2023 07:19:30 +0000
+	id 1r2RJ5-00DQzY-1u;
+	Mon, 13 Nov 2023 07:24:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r2REE-00DQZP-0f
+	id 1r2RJ1-00DQz8-12
 	for barebox@lists.infradead.org;
-	Mon, 13 Nov 2023 07:19:28 +0000
+	Mon, 13 Nov 2023 07:24:25 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r2REB-0003O4-Es; Mon, 13 Nov 2023 08:19:23 +0100
-Message-ID: <1e68befa-bae2-150e-6ac7-6bd450fb14f8@pengutronix.de>
-Date: Mon, 13 Nov 2023 08:19:23 +0100
+	id 1r2RJ0-0003tf-2v; Mon, 13 Nov 2023 08:24:22 +0100
+Message-ID: <e055b94e-3116-992f-de16-8e37ed1b634d@pengutronix.de>
+Date: Mon, 13 Nov 2023 08:24:21 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
  Thunderbird/102.13.0
 Content-Language: en-US
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  Barebox List <barebox@lists.infradead.org>
-References: <20231110130206.2172907-1-s.hauer@pengutronix.de>
- <20231110130206.2172907-2-s.hauer@pengutronix.de>
+References: <20231110125800.1901232-1-s.hauer@pengutronix.de>
+ <20231110125800.1901232-4-s.hauer@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20231110130206.2172907-2-s.hauer@pengutronix.de>
+In-Reply-To: <20231110125800.1901232-4-s.hauer@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231112_231926_422771_DC718186 
-X-CRM114-Status: GOOD (  28.34  )
+X-CRM114-CacheID: sfid-20231112_232423_676854_8AA5E093 
+X-CRM114-Status: GOOD (  32.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,239 +76,425 @@ X-Spam-Status: No, score=-6.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
 	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/3] net: eqos: rename i.MX8 driver glue code to i.MX
+Subject: Re: [PATCH 03/25] ARM: i.MX: Add i.MX93 trdc support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 10.11.23 14:02, Sascha Hauer wrote:
-> The i.MX8 glue code for the designware ethernet driver will be used by
-> i.MX9 as well. Rename the file accordingly.
-> 
+On 10.11.23 13:57, Sascha Hauer wrote:
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+
+TRDC is presumably Tsomething Resource Domain Controller?
+Would be nice to have a commit message spelling it out and describing
+why this needs to be done in PBL for future reference.
+
+Thanks,
+Ahmad
+
 > ---
->  arch/arm/configs/imx_v8_defconfig             |  2 +-
->  arch/arm/configs/multi_v8_defconfig           |  2 +-
->  drivers/net/Kconfig                           |  6 +-
->  drivers/net/Makefile                          |  2 +-
->  .../{designware_imx8.c => designware_imx.c}   | 58 +++++++++----------
->  5 files changed, 35 insertions(+), 35 deletions(-)
->  rename drivers/net/{designware_imx8.c => designware_imx.c} (73%)
+>  arch/arm/mach-imx/Makefile     |   2 +-
+>  arch/arm/mach-imx/imx93-trdc.c | 364 +++++++++++++++++++++++++++++++++
+>  include/soc/imx9/trdc.h        |  11 +
+>  3 files changed, 376 insertions(+), 1 deletion(-)
+>  create mode 100644 arch/arm/mach-imx/imx93-trdc.c
+>  create mode 100644 include/soc/imx9/trdc.h
 > 
-> diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_defconfig
-> index 8084e72ea0..66dab8c4a7 100644
-> --- a/arch/arm/configs/imx_v8_defconfig
-> +++ b/arch/arm/configs/imx_v8_defconfig
-> @@ -92,7 +92,7 @@ CONFIG_NET_NETCONSOLE=y
->  CONFIG_OFDEVICE=y
->  CONFIG_OF_BAREBOX_DRIVERS=y
->  CONFIG_SERIAL_DEV_BUS=y
-> -CONFIG_DRIVER_NET_DESIGNWARE_IMX8=y
-> +CONFIG_DRIVER_NET_DESIGNWARE_IMX=y
->  CONFIG_DRIVER_NET_FEC_IMX=y
->  CONFIG_DP83867_PHY=y
->  CONFIG_MICREL_PHY=y
-> diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
-> index 9c538e698d..2599519351 100644
-> --- a/arch/arm/configs/multi_v8_defconfig
-> +++ b/arch/arm/configs/multi_v8_defconfig
-> @@ -141,7 +141,7 @@ CONFIG_SERIAL_AMBA_PL011=y
->  CONFIG_DRIVER_SERIAL_NS16550=y
->  CONFIG_DRIVER_SERIAL_CADENCE=y
->  CONFIG_VIRTIO_CONSOLE=y
-> -CONFIG_DRIVER_NET_DESIGNWARE_IMX8=y
-> +CONFIG_DRIVER_NET_DESIGNWARE_IMX=y
->  CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP=y
->  CONFIG_DRIVER_NET_FEC_IMX=y
->  CONFIG_DRIVER_NET_MACB=y
-> diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
-> index 1c89cf9e41..9be03cf20c 100644
-> --- a/drivers/net/Kconfig
-> +++ b/drivers/net/Kconfig
-> @@ -107,14 +107,14 @@ config DRIVER_NET_DESIGNWARE_EQOS
->  	  This option enables support for the Synopsys
->  	  Designware Ethernet Quality-of-Service (GMAC4).
->  
-> -config DRIVER_NET_DESIGNWARE_IMX8
-> -	bool "Designware EQOS i.MX8 Ethernet driver"
-> +config DRIVER_NET_DESIGNWARE_IMX
-> +	bool "Designware EQOS i.MX Ethernet driver"
->  	depends on HAS_DMA && COMMON_CLK && OFTREE && (ARCH_IMX8M || COMPILE_TEST)
->  	select DRIVER_NET_DESIGNWARE_EQOS
->  	select MFD_SYSCON
-
-Please add an imply of a def_bool, so existing users with i.MX8MP defconfigs
-don't lose driver support on an olddefconfig.
-
->  	help
->  	  This option enables support for the Designware EQOS MAC implemented on
-> -	  the NXP i.MX8 SoCs.
-> +	  the NXP i.MX SoCs.
->  
->  config DRIVER_NET_DESIGNWARE_STM32
->  	bool "STM32 Designware Ethernet driver"
-> diff --git a/drivers/net/Makefile b/drivers/net/Makefile
-> index 1a272d9158..697b5bdfb7 100644
-> --- a/drivers/net/Makefile
-> +++ b/drivers/net/Makefile
-> @@ -15,7 +15,7 @@ obj-$(CONFIG_DRIVER_NET_DESIGNWARE_GENERIC) += designware_generic.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_SOCFPGA) += designware_socfpga.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_STARFIVE) += designware_starfive.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_EQOS) += designware_eqos.o
-> -obj-$(CONFIG_DRIVER_NET_DESIGNWARE_IMX8) += designware_imx8.o
-> +obj-$(CONFIG_DRIVER_NET_DESIGNWARE_IMX) += designware_imx.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_STM32) += designware_stm32.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_TEGRA186) += designware_tegra186.o
->  obj-$(CONFIG_DRIVER_NET_DESIGNWARE_ROCKCHIP) += designware_rockchip.o
-> diff --git a/drivers/net/designware_imx8.c b/drivers/net/designware_imx.c
-> similarity index 73%
-> rename from drivers/net/designware_imx8.c
-> rename to drivers/net/designware_imx.c
-> index 73a16d5e65..00164fa7c7 100644
-> --- a/drivers/net/designware_imx8.c
-> +++ b/drivers/net/designware_imx.c
-> @@ -18,7 +18,7 @@
->  #define GPR_ENET_QOS_RGMII_EN		BIT(21)
->  
->  
-> -struct eqos_imx8_priv {
-> +struct eqos_imx_priv {
->  	struct device *dev;
->  	struct clk_bulk_data *clks;
->  	int num_clks;
-> @@ -28,25 +28,25 @@ struct eqos_imx8_priv {
->  };
->  
->  enum { CLK_STMMACETH, CLK_PCLK, CLK_PTP_REF, CLK_TX};
-> -static const struct clk_bulk_data imx8_clks[] = {
-> +static const struct clk_bulk_data imx_clks[] = {
->  	[CLK_STMMACETH] = { .id = "stmmaceth" },
->  	[CLK_PCLK]      = { .id = "pclk" },
->  	[CLK_PTP_REF]   = { .id = "ptp_ref" },
->  	[CLK_TX]        = { .id = "tx" },
->  };
->  
-> -static unsigned long eqos_get_csr_clk_rate_imx8(struct eqos *eqos)
-> +static unsigned long eqos_get_csr_clk_rate_imx(struct eqos *eqos)
->  {
-> -	struct eqos_imx8_priv *priv = eqos->priv;
-> +	struct eqos_imx_priv *priv = eqos->priv;
->  
->  	return clk_get_rate(priv->clks[CLK_PCLK].clk);
->  }
->  
->  
-> -static void eqos_adjust_link_imx8(struct eth_device *edev)
-> +static void eqos_adjust_link_imx(struct eth_device *edev)
->  {
->  	struct eqos *eqos = edev->priv;
-> -	struct eqos_imx8_priv *priv = eqos->priv;
-> +	struct eqos_imx_priv *priv = eqos->priv;
->  	unsigned long rate;
->  	int ret;
->  
-> @@ -74,9 +74,9 @@ static void eqos_adjust_link_imx8(struct eth_device *edev)
->  	eqos_adjust_link(edev);
->  }
->  
-> -static void eqos_imx8_set_interface_mode(struct eqos *eqos)
-> +static void eqos_imx_set_interface_mode(struct eqos *eqos)
->  {
-> -	struct eqos_imx8_priv *priv = eqos->priv;
-> +	struct eqos_imx_priv *priv = eqos->priv;
->  	struct device_node *np = priv->dev->device_node;
->  	int val;
->  
-> @@ -109,10 +109,10 @@ static void eqos_imx8_set_interface_mode(struct eqos *eqos)
->  			   GPR_ENET_QOS_INTF_MODE_MASK, val);
->  }
->  
-> -static int eqos_init_imx8(struct device *dev, struct eqos *eqos)
-> +static int eqos_init_imx(struct device *dev, struct eqos *eqos)
->  {
->  	struct device_node *np = dev->device_node;
-> -	struct eqos_imx8_priv *priv = eqos->priv;
-> +	struct eqos_imx_priv *priv = eqos->priv;
->  	int ret;
->  
->  	priv->dev = dev;
-> @@ -132,9 +132,9 @@ static int eqos_init_imx8(struct device *dev, struct eqos *eqos)
->  		}
->  	}
->  
-> -	priv->num_clks = ARRAY_SIZE(imx8_clks);
-> +	priv->num_clks = ARRAY_SIZE(imx_clks);
->  	priv->clks = xmalloc(priv->num_clks * sizeof(*priv->clks));
-> -	memcpy(priv->clks, imx8_clks, sizeof imx8_clks);
-> +	memcpy(priv->clks, imx_clks, sizeof imx_clks);
->  
->  	ret = clk_bulk_get(dev, priv->num_clks, priv->clks);
->  	if (ret) {
-> @@ -148,31 +148,31 @@ static int eqos_init_imx8(struct device *dev, struct eqos *eqos)
->  		return ret;
->  	}
->  
-> -	eqos_imx8_set_interface_mode(eqos);
-> +	eqos_imx_set_interface_mode(eqos);
->  
->  	return 0;
->  }
->  
-> -static struct eqos_ops imx8_ops = {
-> -	.init = eqos_init_imx8,
-> +static struct eqos_ops imx_ops = {
-> +	.init = eqos_init_imx,
->  	.get_ethaddr = eqos_get_ethaddr,
->  	.set_ethaddr = eqos_set_ethaddr,
-> -	.adjust_link = eqos_adjust_link_imx8,
-> -	.get_csr_clk_rate = eqos_get_csr_clk_rate_imx8,
-> +	.adjust_link = eqos_adjust_link_imx,
-> +	.get_csr_clk_rate = eqos_get_csr_clk_rate_imx,
->  
->  	.clk_csr = EQOS_MDIO_ADDR_CR_250_300,
->  	.config_mac = EQOS_MAC_RXQ_CTRL0_RXQ0EN_ENABLED_DCB,
->  };
->  
-> -static int eqos_probe_imx8(struct device *dev)
-> +static int eqos_probe_imx(struct device *dev)
->  {
-> -	return eqos_probe(dev, &imx8_ops, xzalloc(sizeof(struct eqos_imx8_priv)));
-> +	return eqos_probe(dev, &imx_ops, xzalloc(sizeof(struct eqos_imx_priv)));
->  }
->  
-> -static void eqos_remove_imx8(struct device *dev)
-> +static void eqos_remove_imx(struct device *dev)
->  {
->  	struct eqos *eqos = dev->priv;
-> -	struct eqos_imx8_priv *priv = eqos->priv;
-> +	struct eqos_imx_priv *priv = eqos->priv;
->  
->  	eqos_remove(dev);
->  
-> @@ -180,16 +180,16 @@ static void eqos_remove_imx8(struct device *dev)
->  	clk_bulk_put(priv->num_clks, priv->clks);
->  }
->  
-> -static __maybe_unused struct of_device_id eqos_imx8_ids[] = {
-> +static __maybe_unused struct of_device_id eqos_imx_ids[] = {
->  	{ .compatible = "nxp,imx8mp-dwmac-eqos"},
->  	{ /* sentinel */ }
->  };
-> -MODULE_DEVICE_TABLE(of, eqos_imx8_ids);
-> +MODULE_DEVICE_TABLE(of, eqos_imx_ids);
->  
-> -static struct driver eqos_imx8_driver = {
-> -	.name = "eqos-imx8",
-> -	.probe = eqos_probe_imx8,
-> -	.remove = eqos_remove_imx8,
-> -	.of_compatible = DRV_OF_COMPAT(eqos_imx8_ids),
-> +static struct driver eqos_imx_driver = {
-> +	.name = "eqos-imx",
-> +	.probe = eqos_probe_imx,
-> +	.remove = eqos_remove_imx,
-> +	.of_compatible = DRV_OF_COMPAT(eqos_imx_ids),
->  };
-> -device_platform_driver(eqos_imx8_driver);
-> +device_platform_driver(eqos_imx_driver);
+> diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+> index 4efac08ee8..8a1ccabe15 100644
+> --- a/arch/arm/mach-imx/Makefile
+> +++ b/arch/arm/mach-imx/Makefile
+> @@ -33,4 +33,4 @@ obj-$(CONFIG_RESET_IMX_SRC) += src.o
+>  lwl-y += cpu_init.o
+>  pbl-y += xload-spi.o xload-common.o xload-imx-nand.o xload-gpmi-nand.o
+>  pbl-y += xload-qspi.o
+> -pbl-$(CONFIG_ARCH_IMX93) += imx93-s4mu.o
+> +pbl-$(CONFIG_ARCH_IMX93) += imx93-s4mu.o imx93-trdc.o
+> diff --git a/arch/arm/mach-imx/imx93-trdc.c b/arch/arm/mach-imx/imx93-trdc.c
+> new file mode 100644
+> index 0000000000..a1c7d49515
+> --- /dev/null
+> +++ b/arch/arm/mach-imx/imx93-trdc.c
+> @@ -0,0 +1,364 @@
+> +// SPDX-License-Identifier: GPL-2.0+
+> +/*
+> + * Copyright 2022 NXP
+> + */
+> +#define pr_fmt(fmt) "trdc: " fmt
+> +
+> +#include <common.h>
+> +#include <io.h>
+> +#include <soc/imx9/mu_hal.h>
+> +#include <soc/imx9/s400_api.h>
+> +#include <soc/imx9/trdc.h>
+> +#include <mach/imx/imx9-regs.h>
+> +
+> +#define DID_NUM 16
+> +#define MBC_MAX_NUM 4
+> +#define MRC_MAX_NUM 2
+> +#define MBC_NUM(HWCFG) ((HWCFG >> 16) & 0xF)
+> +#define MRC_NUM(HWCFG) ((HWCFG >> 24) & 0x1F)
+> +
+> +struct mbc_mem_dom {
+> +	u32 mem_glbcfg[4];
+> +	u32 nse_blk_index;
+> +	u32 nse_blk_set;
+> +	u32 nse_blk_clr;
+> +	u32 nsr_blk_clr_all;
+> +	u32 memn_glbac[8];
+> +	/* The upper only existed in the beginning of each MBC */
+> +	u32 mem0_blk_cfg_w[64];
+> +	u32 mem0_blk_nse_w[16];
+> +	u32 mem1_blk_cfg_w[8];
+> +	u32 mem1_blk_nse_w[2];
+> +	u32 mem2_blk_cfg_w[8];
+> +	u32 mem2_blk_nse_w[2];
+> +	u32 mem3_blk_cfg_w[8];
+> +	u32 mem3_blk_nse_w[2];/*0x1F0, 0x1F4 */
+> +	u32 reserved[2];
+> +};
+> +
+> +struct mrc_rgn_dom {
+> +	u32 mrc_glbcfg[4];
+> +	u32 nse_rgn_indirect;
+> +	u32 nse_rgn_set;
+> +	u32 nse_rgn_clr;
+> +	u32 nse_rgn_clr_all;
+> +	u32 memn_glbac[8];
+> +	/* The upper only existed in the beginning of each MRC */
+> +	u32 rgn_desc_words[16][2]; /* 16  regions at max, 2 words per region */
+> +	u32 rgn_nse;
+> +	u32 reserved2[15];
+> +};
+> +
+> +struct mda_inst {
+> +	u32 mda_w[8];
+> +};
+> +
+> +struct trdc_mgr {
+> +	u32 trdc_cr;
+> +	u32 res0[59];
+> +	u32 trdc_hwcfg0;
+> +	u32 trdc_hwcfg1;
+> +	u32 res1[450];
+> +	struct mda_inst mda[8];
+> +	u32 res2[15808];
+> +};
+> +
+> +struct trdc_mbc {
+> +	struct mbc_mem_dom mem_dom[DID_NUM];
+> +};
+> +
+> +struct trdc_mrc {
+> +	struct mrc_rgn_dom mrc_dom[DID_NUM];
+> +};
+> +
+> +static void *trdc_get_mbc_base(ulong trdc_reg, u32 mbc_x)
+> +{
+> +	struct trdc_mgr *trdc_base = (struct trdc_mgr *)trdc_reg;
+> +	u32 mbc_num = MBC_NUM(trdc_base->trdc_hwcfg0);
+> +
+> +	if (mbc_x >= mbc_num)
+> +		return 0;
+> +
+> +	return (void *)trdc_reg + 0x10000 + 0x2000 * mbc_x;
+> +}
+> +
+> +static void *trdc_get_mrc_base(ulong trdc_reg, u32 mrc_x)
+> +{
+> +	struct trdc_mgr *trdc_base = (struct trdc_mgr *)trdc_reg;
+> +	u32 mbc_num = MBC_NUM(trdc_base->trdc_hwcfg0);
+> +	u32 mrc_num = MRC_NUM(trdc_base->trdc_hwcfg0);
+> +
+> +	if (mrc_x >= mrc_num)
+> +		return 0;
+> +
+> +	return (void *)trdc_reg + 0x10000 + 0x2000 * mbc_num + 0x1000 * mrc_x;
+> +}
+> +
+> +static int trdc_mbc_set_control(ulong trdc_reg, u32 mbc_x, u32 glbac_id,
+> +			 u32 glbac_val)
+> +{
+> +	struct trdc_mbc *mbc_base = trdc_get_mbc_base(trdc_reg, mbc_x);
+> +	struct mbc_mem_dom *mbc_dom;
+> +
+> +	if (mbc_base == 0 || glbac_id >= 8)
+> +		return -EINVAL;
+> +
+> +	/* only first dom has the glbac */
+> +	mbc_dom = &mbc_base->mem_dom[0];
+> +
+> +	writel(glbac_val, &mbc_dom->memn_glbac[glbac_id]);
+> +
+> +	return 0;
+> +}
+> +
+> +static int trdc_mbc_blk_config(ulong trdc_reg, u32 mbc_x, u32 dom_x, u32 mem_x,
+> +			u32 blk_x, bool sec_access, u32 glbac_id)
+> +{
+> +	struct trdc_mbc *mbc_base = trdc_get_mbc_base(trdc_reg, mbc_x);
+> +	struct mbc_mem_dom *mbc_dom;
+> +	u32 *cfg_w, *nse_w;
+> +	u32 index, offset, val;
+> +
+> +	if (mbc_base == 0 || glbac_id >= 8)
+> +		return -EINVAL;
+> +
+> +	mbc_dom = &mbc_base->mem_dom[dom_x];
+> +
+> +	switch (mem_x) {
+> +	case 0:
+> +		cfg_w = &mbc_dom->mem0_blk_cfg_w[blk_x / 8];
+> +		nse_w = &mbc_dom->mem0_blk_nse_w[blk_x / 32];
+> +		break;
+> +	case 1:
+> +		cfg_w = &mbc_dom->mem1_blk_cfg_w[blk_x / 8];
+> +		nse_w = &mbc_dom->mem1_blk_nse_w[blk_x / 32];
+> +		break;
+> +	case 2:
+> +		cfg_w = &mbc_dom->mem2_blk_cfg_w[blk_x / 8];
+> +		nse_w = &mbc_dom->mem2_blk_nse_w[blk_x / 32];
+> +		break;
+> +	case 3:
+> +		cfg_w = &mbc_dom->mem3_blk_cfg_w[blk_x / 8];
+> +		nse_w = &mbc_dom->mem3_blk_nse_w[blk_x / 32];
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	};
+> +
+> +	index = blk_x % 8;
+> +	offset = index * 4;
+> +
+> +	val = readl((void __iomem *)cfg_w);
+> +
+> +	val &= ~(0xFU << offset);
+> +
+> +	/* MBC0-3
+> +	 *  Global 0, 0x7777 secure pri/user read/write/execute, S400 has already set it.
+> +	 *  So select MBC0_MEMN_GLBAC0
+> +	 */
+> +	if (sec_access) {
+> +		val |= ((0x0 | (glbac_id & 0x7)) << offset);
+> +		writel(val, (void __iomem *)cfg_w);
+> +	} else {
+> +		val |= ((0x8 | (glbac_id & 0x7)) << offset); /* nse bit set */
+> +		writel(val, (void __iomem *)cfg_w);
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static int trdc_mrc_set_control(ulong trdc_reg, u32 mrc_x, u32 glbac_id, u32 glbac_val)
+> +{
+> +	struct trdc_mrc *mrc_base = trdc_get_mrc_base(trdc_reg, mrc_x);
+> +	struct mrc_rgn_dom *mrc_dom;
+> +
+> +	if (mrc_base == 0 || glbac_id >= 8)
+> +		return -EINVAL;
+> +
+> +	/* only first dom has the glbac */
+> +	mrc_dom = &mrc_base->mrc_dom[0];
+> +
+> +	pr_vdebug("mrc_dom 0x%lx\n", (ulong)mrc_dom);
+> +
+> +	writel(glbac_val, &mrc_dom->memn_glbac[glbac_id]);
+> +
+> +	return 0;
+> +}
+> +
+> +static int trdc_mrc_region_config(ulong trdc_reg, u32 mrc_x, u32 dom_x, u32 addr_start,
+> +			   u32 addr_end, bool sec_access, u32 glbac_id)
+> +{
+> +	struct trdc_mrc *mrc_base = trdc_get_mrc_base(trdc_reg, mrc_x);
+> +	struct mrc_rgn_dom *mrc_dom;
+> +	u32 *desc_w;
+> +	u32 start, end;
+> +	u32 i, free = 8;
+> +	bool vld, hit = false;
+> +
+> +	if (mrc_base == 0 || glbac_id >= 8)
+> +		return -EINVAL;
+> +
+> +	mrc_dom = &mrc_base->mrc_dom[dom_x];
+> +
+> +	addr_start &= ~0x3fff;
+> +	addr_end &= ~0x3fff;
+> +
+> +	for (i = 0; i < 8; i++) {
+> +		desc_w = &mrc_dom->rgn_desc_words[i][0];
+> +
+> +		start = readl((void __iomem *)desc_w) & (~0x3fff);
+> +		end = readl((void __iomem *)(desc_w + 1));
+> +		vld = end & 0x1;
+> +		end = end & (~0x3fff);
+> +
+> +		if (start == 0 && end == 0 && !vld && free >= 8)
+> +			free = i;
+> +
+> +		/* Check all the region descriptors, even overlap */
+> +		if (addr_start >= end || addr_end <= start || !vld)
+> +			continue;
+> +
+> +		/* MRC0,1
+> +		 *  Global 0, 0x7777 secure pri/user read/write/execute, S400 has already set it.
+> +		 *  So select MRCx_MEMN_GLBAC0
+> +		 */
+> +		if (sec_access) {
+> +			writel(start | (glbac_id & 0x7), (void __iomem *)desc_w);
+> +			writel(end | 0x1, (void __iomem *)(desc_w + 1));
+> +		} else {
+> +			writel(start | (glbac_id & 0x7), (void __iomem *)desc_w);
+> +			writel(end | 0x1 | 0x10, (void __iomem *)(desc_w + 1));
+> +		}
+> +
+> +		if (addr_start >= start && addr_end <= end)
+> +			hit = true;
+> +	}
+> +
+> +	if (!hit) {
+> +		if (free >= 8)
+> +			return -EFAULT;
+> +
+> +		desc_w = &mrc_dom->rgn_desc_words[free][0];
+> +
+> +		if (sec_access) {
+> +			writel(addr_start | (glbac_id & 0x7), (void __iomem *)desc_w);
+> +			writel(addr_end | 0x1, (void __iomem *)(desc_w + 1));
+> +		} else {
+> +			writel(addr_start | (glbac_id & 0x7), (void __iomem *)desc_w);
+> +			writel((addr_end | 0x1 | 0x10), (void __iomem *)(desc_w + 1));
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static bool trdc_mrc_enabled(ulong trdc_base)
+> +{
+> +	return (!!(readl((void __iomem *)trdc_base) & 0x8000));
+> +}
+> +
+> +static int release_rdc(u8 xrdc)
+> +{
+> +	ulong s_mu_base = 0x47520000UL;
+> +	struct sentinel_msg msg;
+> +	int ret;
+> +	u32 rdc_id;
+> +
+> +	switch (xrdc) {
+> +	case 0:
+> +		rdc_id = 0x74;
+> +		break;
+> +	case 1:
+> +		rdc_id = 0x78;
+> +		break;
+> +	case 2:
+> +		rdc_id = 0x82;
+> +		break;
+> +	case 3:
+> +		rdc_id = 0x86;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	msg.version = AHAB_VERSION;
+> +	msg.tag = AHAB_CMD_TAG;
+> +	msg.size = 2;
+> +	msg.command = ELE_RELEASE_RDC_REQ;
+> +	msg.data[0] = (rdc_id << 8) | 0x2; /* A55 */
+> +
+> +	mu_hal_init(s_mu_base);
+> +	mu_hal_sendmsg(s_mu_base, 0, *((u32 *)&msg));
+> +	mu_hal_sendmsg(s_mu_base, 1, msg.data[0]);
+> +
+> +	ret = mu_hal_receivemsg(s_mu_base, 0, (u32 *)&msg);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = mu_hal_receivemsg(s_mu_base, 1, &msg.data[0]);
+> +	if (ret)
+> +		return -EIO;
+> +
+> +	if ((msg.data[0] & 0xff) == 0xd6)
+> +		return 0;
+> +
+> +	return -EIO;
+> +}
+> +
+> +void imx9_trdc_init(void)
+> +{
+> +	unsigned long base = MX9_TRDC_NICMIX_BASE_ADDR;
+> +	int ret = 0, i;
+> +
+> +	ret |= release_rdc(0);
+> +	ret |= release_rdc(2);
+> +	ret |= release_rdc(1);
+> +	ret |= release_rdc(3);
+> +
+> +	if (ret)
+> +		return;
+> +
+> +	/* Set OCRAM to RWX for secure, when OEM_CLOSE, the image is RX only */
+> +	trdc_mbc_set_control(base, 3, 0, 0x7700);
+> +
+> +	for (i = 0; i < 40; i++)
+> +		trdc_mbc_blk_config(base, 3, 3, 0, i, true, 0);
+> +
+> +	for (i = 0; i < 40; i++)
+> +		trdc_mbc_blk_config(base, 3, 3, 1, i, true, 0);
+> +
+> +	for (i = 0; i < 40; i++)
+> +		trdc_mbc_blk_config(base, 3, 0, 0, i, true, 0);
+> +
+> +	for (i = 0; i < 40; i++)
+> +		trdc_mbc_blk_config(base, 3, 0, 1, i, true, 0);
+> +
+> +	/* TRDC mega */
+> +	if (!trdc_mrc_enabled(base))
+> +		return;
+> +
+> +	/* DDR */
+> +	trdc_mrc_set_control(base, 0, 0, 0x7777);
+> +	/* S400*/
+> +	trdc_mrc_region_config(base, 0, 0, 0x80000000, 0xFFFFFFFF, false, 0);
+> +	/* MTR */
+> +	trdc_mrc_region_config(base, 0, 1, 0x80000000, 0xFFFFFFFF, false, 0);
+> +	/* M33 */
+> +	trdc_mrc_region_config(base, 0, 2, 0x80000000, 0xFFFFFFFF, false, 0);
+> +	/* A55*/
+> +	trdc_mrc_region_config(base, 0, 3, 0x80000000, 0xFFFFFFFF, false, 0);
+> +	/* For USDHC1 to DDR, USDHC1 is default force to non-secure */
+> +	trdc_mrc_region_config(base, 0, 5, 0x80000000, 0xFFFFFFFF, false, 0);
+> +	/* For USDHC2 to DDR, USDHC2 is default force to non-secure */
+> +	trdc_mrc_region_config(base, 0, 6, 0x80000000, 0xFFFFFFFF, false, 0);
+> +	/* eDMA */
+> +	trdc_mrc_region_config(base, 0, 7, 0x80000000, 0xFFFFFFFF, false, 0);
+> +	/* CoreSight, TestPort */
+> +	trdc_mrc_region_config(base, 0, 8, 0x80000000, 0xFFFFFFFF, false, 0);
+> +	/* DAP */
+> +	trdc_mrc_region_config(base, 0, 9, 0x80000000, 0xFFFFFFFF, false, 0);
+> +	/* SoC masters */
+> +	trdc_mrc_region_config(base, 0, 10, 0x80000000, 0xFFFFFFFF, false, 0);
+> +	/* USB */
+> +	trdc_mrc_region_config(base, 0, 11, 0x80000000, 0xFFFFFFFF, false, 0);
+> +}
+> diff --git a/include/soc/imx9/trdc.h b/include/soc/imx9/trdc.h
+> new file mode 100644
+> index 0000000000..624e267ab6
+> --- /dev/null
+> +++ b/include/soc/imx9/trdc.h
+> @@ -0,0 +1,11 @@
+> +/* SPDX-License-Identifier: GPL-2.0+ */
+> +/*
+> + * Copyright 2022 NXP
+> + */
+> +
+> +#ifndef __ASM_ARCH_IMX9_TRDC_H
+> +#define __ASM_ARCH_IMX9_TRDC_H
+> +
+> +void imx9_trdc_init(void);
+> +
+> +#endif
 
 -- 
 Pengutronix e.K.                           |                             |
