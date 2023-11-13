@@ -1,61 +1,61 @@
-Delivery-date: Mon, 13 Nov 2023 13:41:55 +0100
+Delivery-date: Mon, 13 Nov 2023 13:48:51 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r2WGJ-00A0xL-0T
+	id 1r2WN0-00A1W2-1Y
 	for lore@lore.pengutronix.de;
-	Mon, 13 Nov 2023 13:41:55 +0100
+	Mon, 13 Nov 2023 13:48:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r2WGJ-0005XW-0l
-	for lore@pengutronix.de; Mon, 13 Nov 2023 13:41:55 +0100
+	id 1r2WN0-0006Fc-H6
+	for lore@pengutronix.de; Mon, 13 Nov 2023 13:48:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PNhouN4vEsAj6ijq2QMakCKQ2VAJp1coj7knMtp2LTk=; b=oaRc/l5V4YVWRdCIEgF85fT0Rs
-	BMfZMuPqHDkXjeE07FEla0lS+9Gf+N6stC78xETyx+O7KNzG2HIYd8J2qPS5VxhKOF2WGhMRt64f8
-	rAIcwPZ/2VtS4a14IVsPRJ5aW87dEmnzuehmr+AKW5s+8Eca6d//Ih6vzyLK8azggP4jBoJt5uJKE
-	Bot6r+Oya1iy4TdipcL/hRVHjOt9j8jSWvErOHePw5Xjhx9+/4uelngJ6Sy0CWPIg2jediCqyrfV9
-	9pjUc/MQvr9bjiuqwblnNkzE1Y2TZl+6eu2ip6Lp5oIVLLlg2WarlPTLCfIfk7Kjm8fPljlu6A//1
-	p307YwmQ==;
+	bh=ejl7IuvDaVAoWoF97PCald2hAf0Rc4iuZLWzp6Xy+WE=; b=bDmE9CJYGbLQmgUNPdYHj86aNs
+	A7L1jqvHZuEZQ6b/HTbDdWPId9yF4/3v3FYWAbmLr2NtC73BEG5jddJ/sABs3VUBpXy9FgxqvfaHL
+	N8QCJx6ZcsDb+96RPv8zhbSXSGyAxQzp1ebTFxwvwKbqv2QtWsUsLho9kl1NZHEfZfxz7fJq5ljRI
+	q7ctQfquyLdmGjivS8RyZnrnawBlBaObYxXGYWnzpzwKQLZXX8T/wPlOLKoiOmtNnh0oghSFMBVJk
+	nQCt0Dtff6161Ms0pCoWfLtH8W6h/WMkVNgFgUzlj4eymINq7doD9ljjXhFL+K2EjR3Is0+LqbAJE
+	yCph5T3Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r2WFE-00Dyso-1n;
-	Mon, 13 Nov 2023 12:40:48 +0000
+	id 1r2WLy-00DzTz-0h;
+	Mon, 13 Nov 2023 12:47:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r2WFB-00DysK-0a
+	id 1r2WLu-00DzTK-20
 	for barebox@lists.infradead.org;
-	Mon, 13 Nov 2023 12:40:46 +0000
+	Mon, 13 Nov 2023 12:47:43 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r2WF9-0005Ml-Vx; Mon, 13 Nov 2023 13:40:44 +0100
+	id 1r2WLt-00067x-4z; Mon, 13 Nov 2023 13:47:41 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r2WF9-008jxF-Jb; Mon, 13 Nov 2023 13:40:43 +0100
+	id 1r2WLs-008jyP-Ok; Mon, 13 Nov 2023 13:47:40 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r2WF9-001opA-HN; Mon, 13 Nov 2023 13:40:43 +0100
-Date: Mon, 13 Nov 2023 13:40:43 +0100
+	id 1r2WLs-001orD-MW; Mon, 13 Nov 2023 13:47:40 +0100
+Date: Mon, 13 Nov 2023 13:47:40 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20231113124043.GP3359458@pengutronix.de>
+Message-ID: <20231113124740.GQ3359458@pengutronix.de>
 References: <20231110214421.2726093-1-a.fatoum@pengutronix.de>
- <20231110214421.2726093-6-a.fatoum@pengutronix.de>
+ <20231110214421.2726093-18-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231110214421.2726093-6-a.fatoum@pengutronix.de>
+In-Reply-To: <20231110214421.2726093-18-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -63,8 +63,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231113_044045_222885_8E1B6594 
-X-CRM114-Status: GOOD (  32.46  )
+X-CRM114-CacheID: sfid-20231113_044742_661524_9DEB392A 
+X-CRM114-Status: GOOD (  21.65  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,178 +87,49 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 05/18] asm-generic: split off typeconfused readl and
- friends
+Subject: Re: [PATCH 17/18] of: define of_devices_ensure_probed_by_compatible
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Nov 10, 2023 at 10:44:08PM +0100, Ahmad Fatoum wrote:
-> The MMIO accessors in barebox like readl have the error prone
-> peculiarity of accepting integer arguments to pointers automatically,
-> which makes it easy to confuse address and data.
-> 
-> We will add an alternative less error-probe way for new code, so first
-
-s/error-probe/error-prone/
-
-> split off the typeconfused code into a separate file.
+On Fri, Nov 10, 2023 at 10:44:20PM +0100, Ahmad Fatoum wrote:
+> We will need to ensure probe of OP-TEE from SCMI code in a follow-up
+> commit, so add a small helper to facilitate this.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  include/asm-generic/io-typeconfused.h | 75 +++++++++++++++++++++++++++
->  include/asm-generic/io.h              | 57 +-------------------
->  2 files changed, 76 insertions(+), 56 deletions(-)
->  create mode 100644 include/asm-generic/io-typeconfused.h
+>  include/of.h | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
 > 
-> diff --git a/include/asm-generic/io-typeconfused.h b/include/asm-generic/io-typeconfused.h
-> new file mode 100644
-> index 000000000000..d25ed7db2473
-> --- /dev/null
-> +++ b/include/asm-generic/io-typeconfused.h
-> @@ -0,0 +1,75 @@
-> +/* Generic I/O port emulation, based on MN10300 code
-> + *
-> + * Copyright (C) 2007 Red Hat, Inc. All Rights Reserved.
-> + * Written by David Howells (dhowells@redhat.com)
-> + *
-> + * This program is free software; you can redistribute it and/or
-> + * modify it under the terms of the GNU General Public Licence
-> + * as published by the Free Software Foundation; either version
-> + * 2 of the Licence, or (at your option) any later version.
-> + */
-> +#ifndef __ASM_GENERIC_IO_TYPECONFUSED_H
-> +#define __ASM_GENERIC_IO_TYPECONFUSED_H
-> +
-> +#include <linux/string.h> /* for memset() and memcpy() */
-> +#include <linux/compiler.h>
-> +#include <linux/types.h>
-> +#include <asm/byteorder.h>
-> +
-> +/*****************************************************************************/
-> +/*
-> + * Unlike the definitions in <asm-generic/io.h>, these macros don't complain
-> + * about integer arguments and just silently cast them to pointers. This is
-> + * a common cause of bugs, but lots of existing code depends on this, so
-> + * this header is provided as a transitory measure.
-> + */
-> +
-> +#ifndef __raw_readb
-> +#define __raw_readb(a)		(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a))
-> +#endif
-> +
-> +#ifndef __raw_readw
-> +#define __raw_readw(a)		(__chk_io_ptr(a), *(volatile unsigned short __force *)(a))
-> +#endif
-> +
-> +#ifndef __raw_readl
-> +#define __raw_readl(a)		(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a))
-> +#endif
-> +
-> +#ifndef readb
-> +#define readb __raw_readb
-> +#endif
-> +
-> +#ifndef readw
-> +#define readw(addr) __le16_to_cpu(__raw_readw(addr))
-> +#endif
-> +
-> +#ifndef readl
-> +#define readl(addr) __le32_to_cpu(__raw_readl(addr))
-> +#endif
-> +
-> +#ifndef __raw_writeb
-> +#define __raw_writeb(v,a)	(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a) = (v))
-> +#endif
-> +
-> +#ifndef __raw_writew
-> +#define __raw_writew(v,a)	(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v))
-> +#endif
-> +
-> +#ifndef __raw_writel
-> +#define __raw_writel(v,a)	(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a) = (v))
-> +#endif
-> +
-> +#ifndef writeb
-> +#define writeb __raw_writeb
-> +#endif
-> +
-> +#ifndef writew
-> +#define writew(b,addr) __raw_writew(__cpu_to_le16(b),addr)
-> +#endif
-> +
-> +#ifndef writel
-> +#define writel(b,addr) __raw_writel(__cpu_to_le32(b),addr)
-> +#endif
-> +
-> +#endif /* __ASM_GENERIC_IO_TYPECONFUSED_H */
-> diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-> index ab439026928a..6383d71746f1 100644
-> --- a/include/asm-generic/io.h
-> +++ b/include/asm-generic/io.h
-> @@ -15,62 +15,7 @@
->  #include <linux/compiler.h>
->  #include <linux/types.h>
->  #include <asm/byteorder.h>
-> -
-> -/*****************************************************************************/
-> -/*
-> - * readX/writeX() are used to access memory mapped devices. On some
-> - * architectures the memory mapped IO stuff needs to be accessed
-> - * differently. On the simple architectures, we just read/write the
-> - * memory location directly.
-> - */
-> -
-> -#ifndef __raw_readb
-> -#define __raw_readb(a)		(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a))
-> -#endif
-> -
-> -#ifndef __raw_readw
-> -#define __raw_readw(a)		(__chk_io_ptr(a), *(volatile unsigned short __force *)(a))
-> -#endif
-> -
-> -#ifndef __raw_readl
-> -#define __raw_readl(a)		(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a))
-> -#endif
-> -
-> -#ifndef readb
-> -#define readb __raw_readb
-> -#endif
-> -
-> -#ifndef readw
-> -#define readw(addr) __le16_to_cpu(__raw_readw(addr))
-> -#endif
-> -
-> -#ifndef readl
-> -#define readl(addr) __le32_to_cpu(__raw_readl(addr))
-> -#endif
-> -
-> -#ifndef __raw_writeb
-> -#define __raw_writeb(v,a)	(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a) = (v))
-> -#endif
-> -
-> -#ifndef __raw_writew
-> -#define __raw_writew(v,a)	(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v))
-> -#endif
-> -
-> -#ifndef __raw_writel
-> -#define __raw_writel(v,a)	(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a) = (v))
-> -#endif
-> -
-> -#ifndef writeb
-> -#define writeb __raw_writeb
-> -#endif
-> -
-> -#ifndef writew
-> -#define writew(b,addr) __raw_writew(__cpu_to_le16(b),addr)
-> -#endif
-> -
-> -#ifndef writel
-> -#define writel(b,addr) __raw_writel(__cpu_to_le32(b),addr)
-> -#endif
-> +#include <asm-generic/io-typeconfused.h>
+> diff --git a/include/of.h b/include/of.h
+> index a7a1ce125fc0..7ebf1f02cc68 100644
+> --- a/include/of.h
+> +++ b/include/of.h
+> @@ -1220,6 +1220,16 @@ int of_device_disable(struct device_node *node);
+>  int of_device_disable_path(const char *path);
+>  int of_device_disable_by_alias(const char *alias);
 >  
->  #ifdef CONFIG_64BIT
->  static inline u64 __raw_readq(const volatile void __iomem *addr)
+> +static inline int of_devices_ensure_probed_by_compatible(char *compatible)
+
+Should the argument be const char *?
+
+We would have to change struct of_device_id::compatible to const char *
+as well, but at least a test build of multi_v8_defconfig showed no
+problems with this change.
+
+Sascha
+
+> +{
+> +	struct of_device_id match_id[] = {
+> +		{ .compatible = compatible, },
+> +		{ /* sentinel */ },
+> +	};
+> +
+> +	return of_devices_ensure_probed_by_dev_id(match_id);
+> +}
+> +
+>  phandle of_get_tree_max_phandle(struct device_node *root);
+>  phandle of_node_create_phandle(struct device_node *node);
+>  int of_set_property_to_child_phandle(struct device_node *node, char *prop_name);
 > -- 
 > 2.39.2
 > 
