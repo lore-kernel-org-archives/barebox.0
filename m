@@ -1,59 +1,64 @@
-Delivery-date: Mon, 13 Nov 2023 16:04:38 +0100
+Delivery-date: Mon, 13 Nov 2023 20:02:31 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r2YUP-00A9KP-1C
+	id 1r2cCc-00ALsQ-2K
 	for lore@lore.pengutronix.de;
-	Mon, 13 Nov 2023 16:04:37 +0100
+	Mon, 13 Nov 2023 20:02:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r2YUP-00080k-8r
-	for lore@pengutronix.de; Mon, 13 Nov 2023 16:04:37 +0100
+	id 1r2cCc-0003o7-Kq
+	for lore@pengutronix.de; Mon, 13 Nov 2023 20:02:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HwAV6/zK5VdGtuQ0hk+370MfYRTKYbXDeITK9IilNHI=; b=WiE93KJNS+XZ28OT6tKvRPlvmF
-	MQZasseTxQEhyjCX6PxV6gWzgIdbzo2d675MHLlVpG8Hpu063g5zXfXdBGypTOf4oDEmXHQbD0EcJ
-	n939nNKWLymaNGcHw3JMSN+95vfDEmEV3MuZSAwhGWdH1LleJWySis2CmMwC0mATftux4R+n4xU+k
-	p7vPdECrVby2ZnhbW1lSbHtJnWy+jS8XU3pEekFJmT+tZcXRXiWbLYbfDcSiOi4fZKKVg2f3pkUtz
-	XcJyLh7eu4rTe6bCRePhLey/CHFmtRCIgT3hzFJZYLa6sGcRYh7AP63XV1BHFEH52HX7gSyaDRnI/
-	zRfwaYJg==;
+	Content-Type:MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Y63RVZlxhvowYmFuEck2V71n2bhXgXBT3X3vePgGT+4=; b=W4DHVk0emx2sDvTR9PAhcD61i5
+	g6GEMC1qkPItBPvQ/Axm4/Zqe34cxfrB9MNtVCit0/v+VmuU9jbFtVhFs6AKyb9IHhmQnZ0AN0sfz
+	w93sykkRDgHCiazj1H9PiZlwZyZLvXQOXVCSSKW/s6ZQmcJy3h/B4MjqXBilwqFMUSJn5/urIDp5S
+	kXgzYzTBK8szTxl7P2uTTLGQGAFlEff2/oEkCz7xOXTATS8RNBf6tatl/H1Y05Fa5cBoD3FsdkTsy
+	d2rVVTxrVykrftTsLKpLSJDABCiifjCLf/z5rgrH6EnxT4R6P9b1p3AfGIQ7ld5N21v36jCxhcdAN
+	H8NyHzEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r2YSw-00ECTB-1R;
-	Mon, 13 Nov 2023 15:03:06 +0000
+	id 1r2cB6-00EX98-1c;
+	Mon, 13 Nov 2023 19:00:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r2YSs-00ECSf-00
+	id 1r2cB0-00EX5p-1r
 	for barebox@lists.infradead.org;
-	Mon, 13 Nov 2023 15:03:04 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r2YSn-0007mP-NV; Mon, 13 Nov 2023 16:02:57 +0100
-Message-ID: <546aba5d-d506-52fd-de23-6bc12805ddd4@pengutronix.de>
-Date: Mon, 13 Nov 2023 16:02:56 +0100
+	Mon, 13 Nov 2023 19:00:55 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1r2cAw-00039T-Bj; Mon, 13 Nov 2023 20:00:46 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1r2cAv-008ovf-Sr; Mon, 13 Nov 2023 20:00:45 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1r2cAv-0010zO-Ja; Mon, 13 Nov 2023 20:00:45 +0100
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Mon, 13 Nov 2023 20:00:35 +0100
+Message-ID: <20231113190034.270327-2-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20231109114707.1354502-1-a.fatoum@pengutronix.de>
- <20231113130350.GS3359458@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20231113130350.GS3359458@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4714; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=vLmHr29fLbiHovwKmbPjff3ZDsbkCUf5+W8CyIh5EQU=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlUnJSP7kQSyFCa4njO06Gxas9vd3jYt8nuv43p EqJFZIwdF+JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZVJyUgAKCRCPgPtYfRL+ TmbjCACllORl5I6lfAJw5ZKme7naTmbjs0u9y71Kny5h2W2pfRmNdH28J7vlJOXOGQFwbyk0FGv LU8nzDoeFCaCOXKO+fG1B8Esvordbp5A+HqKcqC5k7jcM8PHQrtyCt8TVVOgUPdYOjP3aeu9veM /Ogr3S8HwWg1GEJp6qB6i/eho4PII+X0jLjTYIIUONGlPvkAYA1Py4sZbCnaVrpbb2ntwngJgvq UySbEaI2pGtESl+lsO7l71SvUFd9yyRkug07FNR7DZYD0c+FWJJQUuBtYlcvrvoYkrAtrVPNwSa 7d/rk+a6GpnwvB3q2MF4xgs1GeWZ0YTBR53bq/YIoIzuVXYg
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231113_070302_038520_ED25CCE6 
-X-CRM114-Status: GOOD (  29.79  )
+X-CRM114-CacheID: sfid-20231113_110050_627802_80FE235F 
+X-CRM114-Status: GOOD (  11.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,155 +76,158 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/2] console: provide best-effort clk_get_for_console
- helper
+Subject: [PATCH] uncompress: simplify prototype of uncompress()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 13.11.23 14:03, Sascha Hauer wrote:
-> On Thu, Nov 09, 2023 at 12:47:06PM +0100, Ahmad Fatoum wrote:
->> From: Ahmad Fatoum <ahmad@a3f.at>
->>
->> clk_get will return -EPROBE_DEFER if clock provider hasn't yet been
->> probed. In a system with deep probe enabled, dependencies are probed
->> on demand, so a -EPROBE_DEFER return is final and the console probe
->> will never succeed.
->>
->> CONFIG_DEBUG_LL is often used to debug this, but because the low-level
->> console is not interactive, it's a bit cumbersome. Improve upon this a
->> bit, by providing a clk_get_for_console helper that returns NULL if and
->> only if we are sure that a clock provider will not be probed.
->>
->> In that case, the driver can skip code paths initialization code and
->> baud rate setting dependent on having access to the clock and still
->> register a console that reuses what was set up by CONFIG_DEBUG_LL.
->>
->> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
->> ---
->>  include/console.h   | 26 ++++++++++++++++++++++++++
->>  include/linux/clk.h | 21 +++++++++++++++++++++
->>  2 files changed, 47 insertions(+)
->>
->> diff --git a/include/console.h b/include/console.h
->> index 586b68f73301..b8c901801e9f 100644
->> --- a/include/console.h
->> +++ b/include/console.h
->> @@ -8,6 +8,7 @@
->>  #define _CONSOLE_H_
->>  
->>  #include <param.h>
->> +#include <linux/clk.h>
->>  #include <linux/list.h>
->>  #include <driver.h>
->>  #include <serdev.h>
->> @@ -208,4 +209,29 @@ static inline void console_ctrlc_allow(void) { }
->>  static inline void console_ctrlc_forbid(void) { }
->>  #endif
->>  
->> +/**
->> + * clk_get_for_console - get clock, ignoring known unavailable clock controller
->> + * @dev: device for clock "consumer"
->> + * @id: clock consumer ID
->> + *
->> + * Return: a struct clk corresponding to the clock producer, a
->> + * valid IS_ERR() condition containing errno or NULL if it could
->> + * be determined that the clock producer will never be probed in
->> + * absence of modules. The NULL return allows serial drivers to
->> + * skip clock handling and rely on CONFIG_DEBUG_LL.
->> + */
->> +static inline struct clk *clk_get_for_console(struct device *dev, const char *id)
->> +{
->> +	struct clk *clk;
->> +
->> +	if (!IS_ENABLED(CONFIG_DEBUG_LL))
->> +		return clk_get(dev, id);
-> 
-> There are several SoCs out there where the UART is enabled by the ROM
-> already, on these we don't need to have CONFIG_DEBUG_LL enabled for a
-> working UART.
+All callers apart from lib/uncompress.c itself only use memory-to-memory
+decompression. Simplify the calls accordingly.
 
-Those SoCs can still implement CONFIG_DEBUG_LL and just skip the
-initialization step.
+Note that two of three callers passed error_fn=NULL. As the uncompress
+function calls error_fn() unconditionally on error, this might yield
+undefined behaviour and so the new uncompress function uses
+uncompress_err_stdout() as error function which isn't worse for sure.
 
-> Maybe testing for the UART enable bit in probe() would be a better
-> indication that the UART is already in a working state?
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ arch/arm/cpu/start.c    |  2 +-
+ arch/riscv/boot/start.c |  2 +-
+ defaultenv/defaultenv.c |  4 +---
+ include/uncompress.h    |  7 +------
+ lib/uncompress.c        | 24 +++++++++++++++---------
+ 5 files changed, 19 insertions(+), 20 deletions(-)
 
-If clk turns out to be not enabled, system would hang on e.g. i.MX.
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 15f5b2937227..65e1a0cce53b 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -84,7 +84,7 @@ void *barebox_arm_boot_dtb(void)
+ 		       compressed_dtb->datalen_uncompressed);
+ 	else
+ 		ret = uncompress(compressed_dtb->data, compressed_dtb->datalen,
+-				 NULL, NULL, dtb, NULL, NULL);
++				 dtb);
+ 
+ 	if (ret) {
+ 		pr_err("uncompressing dtb failed\n");
+diff --git a/arch/riscv/boot/start.c b/arch/riscv/boot/start.c
+index 92991d0f6a84..526012b9a43b 100644
+--- a/arch/riscv/boot/start.c
++++ b/arch/riscv/boot/start.c
+@@ -59,7 +59,7 @@ void *barebox_riscv_boot_dtb(void)
+ 		return NULL;
+ 
+ 	ret = uncompress(compressed_dtb->data, compressed_dtb->datalen,
+-			 NULL, NULL, dtb, NULL, NULL);
++			 dtb);
+ 	if (ret) {
+ 		pr_err("uncompressing dtb failed\n");
+ 		free(dtb);
+diff --git a/defaultenv/defaultenv.c b/defaultenv/defaultenv.c
+index 055475eb4756..b1b042d724d7 100644
+--- a/defaultenv/defaultenv.c
++++ b/defaultenv/defaultenv.c
+@@ -111,9 +111,7 @@ static int defaultenv_load_one(struct defaultenv *df, const char *dir,
+ 		if (!freep)
+ 			return -ENOMEM;
+ 
+-		ret = uncompress(df->buf, df->size,
+-				NULL, NULL,
+-				freep, NULL, uncompress_err_stdout);
++		ret = uncompress(df->buf, df->size, freep)
+ 		if (ret) {
+ 			free(freep);
+ 			pr_err("Failed to uncompress: %s\n", strerror(-ret));
+diff --git a/include/uncompress.h b/include/uncompress.h
+index 72ba1dfda607..c6ab2abde983 100644
+--- a/include/uncompress.h
++++ b/include/uncompress.h
+@@ -2,12 +2,7 @@
+ #ifndef __UNCOMPRESS_H
+ #define __UNCOMPRESS_H
+ 
+-int uncompress(unsigned char *inbuf, int len,
+-	   int(*fill)(void*, unsigned int),
+-	   int(*flush)(void*, unsigned int),
+-	   unsigned char *output,
+-	   int *pos,
+-	   void(*error_fn)(char *x));
++int uncompress(unsigned char *inbuf, int len, unsigned char *output);
+ 
+ int uncompress_fd_to_fd(int infd, int outfd,
+ 	   void(*error_fn)(char *x));
+diff --git a/lib/uncompress.c b/lib/uncompress.c
+index 71ac882b87fe..8f7284ba68c0 100644
+--- a/lib/uncompress.c
++++ b/lib/uncompress.c
+@@ -60,12 +60,12 @@ static int uncompress_fill(void *buf, unsigned int len)
+ 	return total;
+ }
+ 
+-int uncompress(unsigned char *inbuf, int len,
+-	   int(*fill)(void*, unsigned int),
+-	   int(*flush)(void*, unsigned int),
+-	   unsigned char *output,
+-	   int *pos,
+-	   void(*error_fn)(char *x))
++static int __uncompress(unsigned char *inbuf, int len,
++			int(*fill)(void*, unsigned int),
++			int(*flush)(void*, unsigned int),
++			unsigned char *output,
++			int *pos,
++			void(*error_fn)(char *x))
+ {
+ 	enum filetype ft;
+ 	int (*compfn)(unsigned char *inbuf, int len,
+@@ -139,6 +139,12 @@ int uncompress(unsigned char *inbuf, int len,
+ 	return ret;
+ }
+ 
++int uncompress(unsigned char *inbuf, int len,
++	       unsigned char *output)
++{
++	return __uncompress(inbuf, len, NULL, NULL, output, NULL, uncompress_err_stdout);
++}
++
+ static int uncompress_infd, uncompress_outfd;
+ 
+ static int fill_fd(void *buf, unsigned int len)
+@@ -157,7 +163,7 @@ int uncompress_fd_to_fd(int infd, int outfd,
+ 	uncompress_infd = infd;
+ 	uncompress_outfd = outfd;
+ 
+-	return uncompress(NULL, 0,
++	return __uncompress(NULL, 0,
+ 	   fill_fd,
+ 	   flush_fd,
+ 	   NULL,
+@@ -170,7 +176,7 @@ int uncompress_fd_to_buf(int infd, void *output,
+ {
+ 	uncompress_infd = infd;
+ 
+-	return uncompress(NULL, 0, fill_fd, NULL, output, NULL, error_fn);
++	return __uncompress(NULL, 0, fill_fd, NULL, output, NULL, error_fn);
+ }
+ 
+ int uncompress_buf_to_fd(const void *input, size_t input_len,
+@@ -178,7 +184,7 @@ int uncompress_buf_to_fd(const void *input, size_t input_len,
+ {
+ 	uncompress_outfd = outfd;
+ 
+-	return uncompress((void *)input, input_len, NULL, flush_fd,
++	return __uncompress((void *)input, input_len, NULL, flush_fd,
+ 			  NULL, NULL, error_fn);
+ }
+ 
 
-This is a mere debugging measure for SoCs with complex clock controllers
-backed by firmware, so I think having to enable CONFIG_DEBUG_LL to use
-is acceptable.
-
-Cheers,
-Ahmad
-
-
-> 
-> Sascha
-> 
->> +
->> +	clk = clk_get_if_available(dev, id);
->> +	if (clk == NULL)
->> +		dev_warn(dev, "couldn't get clock (ignoring)\n");
->> +
->> +	return clk;
->> +}
->> +
->>  #endif
->> diff --git a/include/linux/clk.h b/include/linux/clk.h
->> index 61b4ff3127cf..f505f18a75c0 100644
->> --- a/include/linux/clk.h
->> +++ b/include/linux/clk.h
->> @@ -14,6 +14,7 @@
->>  #include <linux/spinlock.h>
->>  #include <linux/stringify.h>
->>  #include <linux/container_of.h>
->> +#include <deep-probe.h>
->>  #include <xfuncs.h>
->>  
->>  struct device;
->> @@ -982,4 +983,24 @@ static inline struct clk *clk_get_enabled(struct device *dev, const char *id)
->>  	return clk;
->>  }
->>  
->> +/**
->> + * clk_get_if_available - get clock, ignoring known unavailable clock controller
->> + * @dev: device for clock "consumer"
->> + * @id: clock consumer ID
->> + *
->> + * Return: a struct clk corresponding to the clock producer, a
->> + * valid IS_ERR() condition containing errno or NULL if it could
->> + * be determined that the clock producer will never be probed in
->> + * absence of modules.
->> + */
->> +static inline struct clk *clk_get_if_available(struct device *dev, const char *id)
->> +{
->> +	struct clk *clk = clk_get(dev, id);
->> +
->> +	if (clk == ERR_PTR(-EPROBE_DEFER) && deep_probe_is_supported())
->> +		return NULL;
->> +
->> +	return clk;
->> +}
->> +
->>  #endif
->> -- 
->> 2.39.2
->>
->>
->>
-> 
-
+base-commit: a9120f147631785fec30eb1e18615d8eabd3d087
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.42.0
 
 
 
