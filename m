@@ -1,53 +1,53 @@
-Delivery-date: Mon, 13 Nov 2023 10:06:22 +0100
+Delivery-date: Mon, 13 Nov 2023 12:19:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r2Sth-009n8c-2V
+	id 1r2UyQ-009uOY-1m
 	for lore@lore.pengutronix.de;
-	Mon, 13 Nov 2023 10:06:22 +0100
+	Mon, 13 Nov 2023 12:19:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r2Sth-0005T4-R4
-	for lore@pengutronix.de; Mon, 13 Nov 2023 10:06:22 +0100
+	id 1r2UyQ-0003z1-K7
+	for lore@pengutronix.de; Mon, 13 Nov 2023 12:19:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=6PSWcWwevDufrPA1KlCCWh7iX42tDUduKWexYNTcdp8=; b=hYNwcFposYnijtT9N8v+2UPI3E
-	y+PYpzhUTqjBNp/vNRTXmzbTlPGhxaNXzmJArWFBLrOOzSpviZBZXcZNIYYnmz23EWJBmumuk7+Wg
-	rv8e1AOpXYBW4ALnypAyYDnWOyEfFBPo45HxVrVQ9Dv8AnPlBVQMWQzqJy1zjfGJbWyJ6ug1sZSLf
-	IjMYgYRDR4BdJ/cD56ABK6UKZnRy9WwYaw2roreFaE13fhi0TqP7vOv/GBpxaC4HNcc7UqfvAEtvI
-	fWOtQLtOiHTRhvuy+4W7ohquZDyV7tIGg9xOQlBC0IhIc78NqeWx+blGZN4G8dVoQ0O9j6hqmctbl
-	4FE+AOiA==;
+	bh=+fl/+U4pEdKZmaIFsGeMLETonkeYlWL69aQJS/uNSk4=; b=gIGfbr1t52NkIq6aP0o0Elo1yC
+	ODNQ5iGj5ZJDeT3dVxRnsCZ4QBrOjm3guecmo+ctIpNTqq4qcGYGMU3ZjXmAaejZ8BH60CUAoztBa
+	6JH437We8geQsakUufay5NpBvqME0HXpJ1qMUjoDADfuw/6qzT6LgpVa1ElGnh7lj6YpuNCyzuA32
+	B4S7H5rJBGT2pBArEG8rYR/nRMIWV0wFzbT3+SP9mB5kX/iDLOseaCz9BTXPxKLAmOhVX/Bb5ntVq
+	cubZ79UYSoUlwFeO4HWs2/h1ssnwcvndMSTeqbM+o0kbsmwcTEgEt/s1DkFShqsvdfLep2DC6ULx3
+	Z6LP1X8g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r2SsC-00DWwC-1m;
-	Mon, 13 Nov 2023 09:04:48 +0000
+	id 1r2Ux0-00DiOg-28;
+	Mon, 13 Nov 2023 11:17:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r2Ss9-00DWvb-0G
+	id 1r2Uwv-00DiNp-18
 	for barebox@lists.infradead.org;
-	Mon, 13 Nov 2023 09:04:47 +0000
+	Mon, 13 Nov 2023 11:17:52 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1r2Ss6-0005H7-Dq
-	for barebox@lists.infradead.org; Mon, 13 Nov 2023 10:04:42 +0100
+	id 1r2Uwp-0003n2-Bc
+	for barebox@lists.infradead.org; Mon, 13 Nov 2023 12:17:43 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Mon, 13 Nov 2023 10:04:38 +0100
-Message-Id: <20231113090438.1890680-1-m.felsch@pengutronix.de>
+Date: Mon, 13 Nov 2023 12:17:40 +0100
+Message-Id: <20231113111740.2119800-1-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231113_010445_116914_E2E23DCA 
-X-CRM114-Status: GOOD (  10.59  )
+X-CRM114-CacheID: sfid-20231113_031749_412217_C7867260 
+X-CRM114-Status: GOOD (  10.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,7 +70,7 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] ARM: i.MX8M: bootrom: fix load image size
+Subject: [PATCH master] ARM: i.MX8M: bootrom: fix load image size
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -94,20 +94,20 @@ Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
  1 file changed, 7 insertions(+)
 
 diff --git a/arch/arm/mach-imx/romapi.c b/arch/arm/mach-imx/romapi.c
-index 1b1800f1e000..b4c63e4d7274 100644
+index aef0ff0534c9..972a1bf427de 100644
 --- a/arch/arm/mach-imx/romapi.c
 +++ b/arch/arm/mach-imx/romapi.c
-@@ -6,6 +6,7 @@
- #include <linux/bitfield.h>
- #include <soc/imx9/flash_header.h>
+@@ -4,6 +4,7 @@
+ 
+ #include <common.h>
  #include <asm/sections.h>
 +#include <linux/sizes.h>
  #include <mach/imx/romapi.h>
  #include <mach/imx/atf.h>
  #include <mach/imx/imx8m-regs.h>
-@@ -50,6 +51,12 @@ static int imx_bootrom_query(struct rom_api *rom_api, uint32_t type, uint32_t *_
+@@ -16,6 +17,12 @@
  
- static int imx_romapi_load_stream(struct rom_api *rom_api, void *adr, size_t size)
+ static int imx8m_bootrom_load(struct rom_api *rom_api, void *adr, size_t size)
  {
 +	/*
 +	 * The imx-image tool align the final image size to 4K so we need to
