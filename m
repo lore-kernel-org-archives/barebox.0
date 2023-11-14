@@ -1,75 +1,54 @@
-Delivery-date: Tue, 14 Nov 2023 10:58:46 +0100
+Delivery-date: Tue, 14 Nov 2023 14:01:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r2qBy-00B9bP-0L
+	id 1r2t2g-00BI7s-2r
 	for lore@lore.pengutronix.de;
-	Tue, 14 Nov 2023 10:58:46 +0100
+	Tue, 14 Nov 2023 14:01:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r2qBx-0006GF-Lm
-	for lore@pengutronix.de; Tue, 14 Nov 2023 10:58:46 +0100
+	id 1r2t2g-0007oJ-V7
+	for lore@pengutronix.de; Tue, 14 Nov 2023 14:01:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WSykbREPOYe2WXDxVo/WUqcRrv5jBQywOgi3o/QHBkE=; b=Nt6KKnXfMdh7eFS3lJgaWjDSMK
-	/7PrUjD9128fzw38Uw5RYutPWiPOvG/cND76n4fd+E7tPPmUYUtiJMICDYPPp6ua/K+CBKN6+zhbs
-	vp2P0KHkohyLGf27LhHIpqGsT6tJHHhkwOj572xVowLLmr4V0XoXMuDee2wqDcAVgRACbeZk5lV/n
-	qsFMw3UsnBr+15xcHbdQ/4CHvDkoQEPoAResOPvGhknS2BzjXcYw72x7Hnl6i1rHww/yZRg86tc9D
-	2WWXl6BNA1XtnJQ+HljGirtgpkw8pjiEJnECce49cOebB271lMoSbUsv5SF9td7L88K/TS6VxfRgz
-	vF9HV0kA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=9gDLogFqhEu3QQIJUTWDt6y9JGJzq/6ax+eyjI45I0A=; b=ql836ga++MsEv8pcDSHIxRP05n
+	VRM2W0q/+Cnh9z/L6Cd696787meMUWwbEH/f1KycCw76OPj6BE+iNlLXD9rnOI32uwsD4gCAylYuT
+	kafGg2ENCrgB5RL42Ep1B+Of7za6ntZVQaO/J5lkQVqFQKkzrMIl1Vv+6orIbjFzxs36LkC6zo47s
+	RyGle3b9M+s7JCc172iQ5MQ95dObdBWipuAIiSPURhjXQcbkAC3dnI1iBq3y8OtizjeNo4Dz1VHGp
+	m+yTNwWDzECVvJgKPs8ePzTAeqoBHrhDwmH0N5wPPgQgJotxsQqj+3t2AQVq4gWXbqcz2FWpdJCr4
+	DFX5GqnA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r2qAI-00FXKx-1C;
-	Tue, 14 Nov 2023 09:57:02 +0000
+	id 1r2t1C-00Fz7l-1G;
+	Tue, 14 Nov 2023 12:59:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r2qAE-00FXKG-2s
+	id 1r2t18-00Fz7N-2K
 	for barebox@lists.infradead.org;
-	Tue, 14 Nov 2023 09:57:00 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r2qA9-00060O-Ph; Tue, 14 Nov 2023 10:56:53 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r2qA9-008xf0-DO; Tue, 14 Nov 2023 10:56:53 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r2qA9-001xyY-BH; Tue, 14 Nov 2023 10:56:53 +0100
-Date: Tue, 14 Nov 2023 10:56:53 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20231114095653.GW3359458@pengutronix.de>
-References: <20231109114707.1354502-1-a.fatoum@pengutronix.de>
- <20231113130350.GS3359458@pengutronix.de>
- <546aba5d-d506-52fd-de23-6bc12805ddd4@pengutronix.de>
- <20231114082341.GT3359458@pengutronix.de>
- <785ceb84-47cc-199e-e261-dec7d8a17cf1@pengutronix.de>
- <20231114084612.GU3359458@pengutronix.de>
- <e4a7052e-c54e-89d9-5838-fe40c6514367@pengutronix.de>
+	Tue, 14 Nov 2023 12:59:48 +0000
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1r2t0z-0006eb-RL
+	for barebox@lists.infradead.org; Tue, 14 Nov 2023 13:59:37 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Tue, 14 Nov 2023 13:59:31 +0100
+Message-Id: <20231114125931.2980297-1-m.felsch@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e4a7052e-c54e-89d9-5838-fe40c6514367@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231114_015659_084911_DB3D0385 
-X-CRM114-Status: GOOD (  57.13  )
+X-CRM114-CacheID: sfid-20231114_045946_776955_C6097A9B 
+X-CRM114-Status: UNSURE (   8.56  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,155 +66,66 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/2] console: provide best-effort clk_get_for_console
- helper
+Subject: [PATCH] mci: core: add partitioning_completed device parameter
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Nov 14, 2023 at 09:54:57AM +0100, Ahmad Fatoum wrote:
-> On 14.11.23 09:46, Sascha Hauer wrote:
-> > On Tue, Nov 14, 2023 at 09:33:47AM +0100, Ahmad Fatoum wrote:
-> >> On 14.11.23 09:23, Sascha Hauer wrote:
-> >>> On Mon, Nov 13, 2023 at 04:02:56PM +0100, Ahmad Fatoum wrote:
-> >>>> On 13.11.23 14:03, Sascha Hauer wrote:
-> >>>>> On Thu, Nov 09, 2023 at 12:47:06PM +0100, Ahmad Fatoum wrote:
-> >>>>>> From: Ahmad Fatoum <ahmad@a3f.at>
-> >>>>>>
-> >>>>>> clk_get will return -EPROBE_DEFER if clock provider hasn't yet been
-> >>>>>> probed. In a system with deep probe enabled, dependencies are probed
-> >>>>>> on demand, so a -EPROBE_DEFER return is final and the console probe
-> >>>>>> will never succeed.
-> >>>>>>
-> >>>>>> CONFIG_DEBUG_LL is often used to debug this, but because the low-level
-> >>>>>> console is not interactive, it's a bit cumbersome. Improve upon this a
-> >>>>>> bit, by providing a clk_get_for_console helper that returns NULL if and
-> >>>>>> only if we are sure that a clock provider will not be probed.
-> >>>>>>
-> >>>>>> In that case, the driver can skip code paths initialization code and
-> >>>>>> baud rate setting dependent on having access to the clock and still
-> >>>>>> register a console that reuses what was set up by CONFIG_DEBUG_LL.
-> >>>>>>
-> >>>>>> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
-> >>>>>> ---
-> >>>>>>  include/console.h   | 26 ++++++++++++++++++++++++++
-> >>>>>>  include/linux/clk.h | 21 +++++++++++++++++++++
-> >>>>>>  2 files changed, 47 insertions(+)
-> >>>>>>
-> >>>>>> diff --git a/include/console.h b/include/console.h
-> >>>>>> index 586b68f73301..b8c901801e9f 100644
-> >>>>>> --- a/include/console.h
-> >>>>>> +++ b/include/console.h
-> >>>>>> @@ -8,6 +8,7 @@
-> >>>>>>  #define _CONSOLE_H_
-> >>>>>>  
-> >>>>>>  #include <param.h>
-> >>>>>> +#include <linux/clk.h>
-> >>>>>>  #include <linux/list.h>
-> >>>>>>  #include <driver.h>
-> >>>>>>  #include <serdev.h>
-> >>>>>> @@ -208,4 +209,29 @@ static inline void console_ctrlc_allow(void) { }
-> >>>>>>  static inline void console_ctrlc_forbid(void) { }
-> >>>>>>  #endif
-> >>>>>>  
-> >>>>>> +/**
-> >>>>>> + * clk_get_for_console - get clock, ignoring known unavailable clock controller
-> >>>>>> + * @dev: device for clock "consumer"
-> >>>>>> + * @id: clock consumer ID
-> >>>>>> + *
-> >>>>>> + * Return: a struct clk corresponding to the clock producer, a
-> >>>>>> + * valid IS_ERR() condition containing errno or NULL if it could
-> >>>>>> + * be determined that the clock producer will never be probed in
-> >>>>>> + * absence of modules. The NULL return allows serial drivers to
-> >>>>>> + * skip clock handling and rely on CONFIG_DEBUG_LL.
-> >>>>>> + */
-> >>>>>> +static inline struct clk *clk_get_for_console(struct device *dev, const char *id)
-> >>>>>> +{
-> >>>>>> +	struct clk *clk;
-> >>>>>> +
-> >>>>>> +	if (!IS_ENABLED(CONFIG_DEBUG_LL))
-> >>>>>> +		return clk_get(dev, id);
-> >>>>>
-> >>>>> There are several SoCs out there where the UART is enabled by the ROM
-> >>>>> already, on these we don't need to have CONFIG_DEBUG_LL enabled for a
-> >>>>> working UART.
-> >>>>
-> >>>> Those SoCs can still implement CONFIG_DEBUG_LL and just skip the
-> >>>> initialization step.
-> >>>>
-> >>>>> Maybe testing for the UART enable bit in probe() would be a better
-> >>>>> indication that the UART is already in a working state?
-> >>>>
-> >>>> If clk turns out to be not enabled, system would hang on e.g. i.MX.
-> >>>
-> >>> That can happen with your patch as well as you don't limit the
-> >>> usage of clk_get_for_console() to the UART putc_ll is configured
-> >>> for. Initializing one of the other UARTs might hang your system
-> >>> once you access a register.
-> >>
-> >> That's why it's a debugging measure behind DEBUG_LL, so you need to
-> >> opt-in into this.
-> > 
-> > The opt-in in your case is that you decided that this quirk works with
-> > the stm32 UART driver, but really it might only work on the SoC you
-> > tested it with and maybe only with this specific firmware version which
-> > uses clocks provided via SCMI.
-> 
-> STM32MP13 is currently broken, because upstream changed clock controller
-> DT. This is an easy way to have users at least get to an interactive
-> shell to be able to do something about this instead of staying on DEBUG_LL
-> shell with no interaction. FWIW, I originally wrote this patch for ZynqMP,
-> which also has a firmware-managed clock controller and it worked equally
-> well there. For bring-up, it can also be useful.
-> 
-> 
-> > 
-> >>
-> >>>
-> >>>>
-> >>>> This is a mere debugging measure for SoCs with complex clock controllers
-> >>>> backed by firmware, so I think having to enable CONFIG_DEBUG_LL to use
-> >>>> is acceptable.
-> >>>
-> >>> Another option would be to implement and use a GETC_LL() macro. This
-> >>> requires some thinking how this can be integrated into the console
-> >>> code, but would in the end be more universally usable. With this we
-> >>> could make barebox interactive even when the real serial driver is
-> >>> not compiled in (or not even yet existing). See below for a prototype.
-> >>
-> >> I don't think the DEBUG_LL API should be extended. Rather we should
-> >> look into how to inherit PBL console in barebox proper. But that's a
-> >> bigger change, thus the middle ground in my patch.
-> > 
-> > Fine with me, but then please let's don't clutter the current code with
-> > wobbly special purpose solutions.
-> 
-> What's wobbly about it? I consider it rather elegant. If we have DEBUG_LL
-> and no clock driver -> Just assume DEBUG_LL will have enabled the necessary
-> clocks and have the user reach a shell.
+Add mmcX.partitioning_completed parameter so it can be queried by
+scripts and board code.
 
-DEBUG_LL will at maximum enable the clocks needed for the one UART used
-as debug UART, but not the clocks for the other UARTs. Maybe your
-firmware enables the clocks for all UARTs by default, but you can't tell this is
-the case for all firmware versions. Maybe accessing UART registers with
-dsabled clocks works on the one SoC you tested it, but you can't tell
-this works for other SoCs.
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ drivers/mci/mci-core.c | 23 +++++++++++++++++++++++
+ 1 file changed, 23 insertions(+)
 
-Maybe you carefully tested all possible SoC/firmware combinations this
-UART is used on, but what if somebody comes along and sends patches for
-using this pattern on other UARTs? In that case there's no way to find
-out if the patch is safe or not.
-
-Sascha
-
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 70e367997763..d20db925876e 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -1968,6 +1968,22 @@ static int of_broken_cd_fixup(struct device_node *root, void *ctx)
+ 	return 0;
+ }
+ 
++static int mci_get_partition_setting_completed(struct mci *mci)
++{
++	u8 *ext_csd;
++	int ret;
++
++	ext_csd = mci_get_ext_csd(mci);
++	if (IS_ERR(ext_csd))
++		return PTR_ERR(ext_csd);
++
++	ret = ext_csd[EXT_CSD_PARTITION_SETTING_COMPLETED];
++
++	free(ext_csd);
++
++	return ret;
++}
++
+ /**
+  * Probe an MCI card at the given host interface
+  * @param mci MCI device instance
+@@ -2079,6 +2095,13 @@ static int mci_card_probe(struct mci *mci)
+ 			dev_add_param_bool(&mci->dev, "boot_ack",
+ 					   mci_set_boot_ack, NULL,
+ 					   &mci->boot_ack_enable, mci);
++
++		ret = mci_get_partition_setting_completed(mci);
++		if (ret < 0)
++			dev_dbg(&mci->dev,
++				"Failed to determine EXT_CSD_PARTITION_SETTING_COMPLETED\n");
++		else
++			dev_add_param_bool_fixed(&mci->dev, "partitioning_completed", ret);
+ 	}
+ 
+ 	dev_dbg(&mci->dev, "SD Card successfully added\n");
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
