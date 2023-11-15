@@ -1,65 +1,67 @@
-Delivery-date: Wed, 15 Nov 2023 07:36:37 +0100
+Delivery-date: Wed, 15 Nov 2023 10:04:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r39Vq-00CAz7-1u
+	id 1r3Bot-00CJEo-2p
 	for lore@lore.pengutronix.de;
-	Wed, 15 Nov 2023 07:36:37 +0100
+	Wed, 15 Nov 2023 10:04:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r39Vq-0000Y0-45
-	for lore@pengutronix.de; Wed, 15 Nov 2023 07:36:35 +0100
+	id 1r3Bot-0002tc-T8
+	for lore@pengutronix.de; Wed, 15 Nov 2023 10:04:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TbImzWGhuzvFheSGXynN/7sHd3o6UzXRP48j/u3YSps=; b=vfLo9CIJ0w4X1le68EEcwDTh/r
-	sWWIe2yDv/beZTMBUonkbklpTG2jR2nLIh+XWpT38/ZHxuk/ozEHgcme/tVfS4FXSc7VGffkmh7Ty
-	z9yhE/WKrYUjkNuDNkPI6ENQkL1SWwkIWntcFYkgg5qSWFD222PDbKeyr2ttA2c1T/w7kUZVfyOA3
-	m3wfZ03PLbBC/+nWttL9gXb5H1KsmxuctW7/dz9xpZF/pja+LMf0ZMC0Hp8cU4Tdi3kn1C97yBTDi
-	h6G1gPpDpPWcs/qygh2ZidUGzMjD0tq4TMGQH2rKKS8rhpVy/BZYqcRpH0ypKsf+zL6WiRsNHCV+o
-	A/czTQdw==;
+	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=DmRKSq4n7R3jKaPl3Gg74VjSVOPmbTmuv7Y27lmu+9E=; b=svpu+igGc+pgB1CoB4R28a2hbE
+	qH4NOZti+CSFU1ibBKwDvkdUn0kjhmg5TKQ0yXbd14etduKbvchQzFRDMU7L6xj6CdYuQpM3yrkyf
+	tR48MmYnaYRh9O/U6/Ya5VZH+39f0Kyohr1LV+jn112pZvez7kuPWQ6yP/YncX78wqoVjlmVeyGLE
+	L2YgN/SxyxD/JJpsSOQH1OJC9+jryrjLpkDv7fggiaZ3jAcRAgJN3unfs4gzM3YaTxaj/FF9C/q6p
+	3tZEt802jfXcnENzRY9Ce+oL8K0u2iKe14XAKRDTiVszmEIdTqMdE5UFdKJBX5hI+jSGV2JU4vT1l
+	WeDPCFtg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r39UE-0003qD-2g;
-	Wed, 15 Nov 2023 06:34:54 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1r3BnU-000HrA-0K;
+	Wed, 15 Nov 2023 09:02:56 +0000
+Received: from algol.kleine-koenig.org ([2a01:4f8:c010:8611::2])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r39UA-0003pb-2R
+	id 1r3BnP-000Hp6-2l
 	for barebox@lists.infradead.org;
-	Wed, 15 Nov 2023 06:34:53 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r39U2-0000Ih-87; Wed, 15 Nov 2023 07:34:42 +0100
-Message-ID: <92a0ed3f-db10-5c2d-f92b-e401a0aa6173@pengutronix.de>
-Date: Wed, 15 Nov 2023 07:34:41 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
+	Wed, 15 Nov 2023 09:02:53 +0000
+Received: by algol.kleine-koenig.org (Postfix, from userid 1000)
+	id 7606EB80417; Wed, 15 Nov 2023 10:02:46 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kleine-koenig.org;
+	s=2022; t=1700038966;
+	bh=zeDBQ4DkjLdI2jtITXDJvrs1hiKm6C7nUdXwdsLnNAo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=WcBCHWyGzFRZ7YPN6buPYtwm/dXKkswFhgh5kjtUEKnP37MC+vrr73yUaUQarsnE+
+	 rkvDoASwypQq/xR7sgg2nqlnJaLl9IDzy0lIh4C/uiU6LZoS6POw0fLPUnh4mjK4lC
+	 oVhQBTsp6TxJgNeH1FRN3FuQTSYpFmqYKeGc128nuS1XWw/F3HnuJFwg+3S0F5q10I
+	 0Q2ySuutwdisPl2ccV9k5EhioK8u2C2Ws9d1B1Y/v7vGmW9NU4m0/OWCxRjGO6IeHq
+	 DPvlwAPYPv4IiaHK+W1mZI0zMNv28evb1cqLQBgzQNLeKF2q4rctLO2F3IWQvPlm5G
+	 3Wc8LLIx4B9cg==
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
 To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20231109114707.1354502-1-a.fatoum@pengutronix.de>
- <20231113130350.GS3359458@pengutronix.de>
- <546aba5d-d506-52fd-de23-6bc12805ddd4@pengutronix.de>
- <20231114082341.GT3359458@pengutronix.de>
- <785ceb84-47cc-199e-e261-dec7d8a17cf1@pengutronix.de>
- <20231114084612.GU3359458@pengutronix.de>
- <e4a7052e-c54e-89d9-5838-fe40c6514367@pengutronix.de>
- <20231114095653.GW3359458@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20231114095653.GW3359458@pengutronix.de>
+Cc: Alexander Shiyan <eagle.alexander923@gmail.com>,
+	Thorsten Scherer <T.Scherer@eckelmann.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	barebox@lists.infradead.org
+Date: Wed, 15 Nov 2023 10:02:39 +0100
+Message-ID: <20231115090238.399200-1-uwe@kleine-koenig.org>
+X-Mailer: git-send-email 2.42.0.586.gbc5204569f7d.dirty
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1806; i=uwe@kleine-koenig.org; h=from:subject; bh=zeDBQ4DkjLdI2jtITXDJvrs1hiKm6C7nUdXwdsLnNAo=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlVIkukDV9Hi7aTvD6A9bXf3H7mWiTeWdbbls56 YUOPBMdzY2JATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZVSJLgAKCRCPgPtYfRL+ Tq9EB/96CQ7TbaCr72tUTPAzh5VNG+G69FFUuZIoEWwEhZby4fg0QEhlvSU0XeSPPjFZCfZou49 o9Bw9z/I9w/2PKWLcz0a8lT6DaBvMJMjFlvblwyC5az2qU5JM8jfBxLdMixfSd2EEA24rCzM41p 1lCBB80lT9sj7WclDQk9vLdvMOixWSVLIolhFNzHNjEzlRy+segMOGZXlHVD8EOw88DO4TFTGlc 2rbOhGpZXLxStKPAaTE8GZok7L0BN8V7E4KvSlWABc9sa/uceZtSj7Je6zOqJImSfbkJnEvHaB9 7314sEbEB/jrjMonigRlyECi1FWkQWExZpcV+JPnGNgjqv61
+X-Developer-Key: i=uwe@kleine-koenig.org; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231114_223450_969217_6A5EA1C9 
-X-CRM114-Status: GOOD (  43.73  )
+X-CRM114-CacheID: sfid-20231115_010252_388217_41113C02 
+X-CRM114-Status: GOOD (  13.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,169 +79,63 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/2] console: provide best-effort clk_get_for_console
- helper
+Subject: [PATCH v2 0/2] Allow generating MAC addresses from machine ID
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 14.11.23 10:56, Sascha Hauer wrote:
-> On Tue, Nov 14, 2023 at 09:54:57AM +0100, Ahmad Fatoum wrote:
->> On 14.11.23 09:46, Sascha Hauer wrote:
->>> On Tue, Nov 14, 2023 at 09:33:47AM +0100, Ahmad Fatoum wrote:
->>>> On 14.11.23 09:23, Sascha Hauer wrote:
->>>>> On Mon, Nov 13, 2023 at 04:02:56PM +0100, Ahmad Fatoum wrote:
->>>>>> On 13.11.23 14:03, Sascha Hauer wrote:
->>>>>>> On Thu, Nov 09, 2023 at 12:47:06PM +0100, Ahmad Fatoum wrote:
->>>>>>>> From: Ahmad Fatoum <ahmad@a3f.at>
->>>>>>>>
->>>>>>>> clk_get will return -EPROBE_DEFER if clock provider hasn't yet been
->>>>>>>> probed. In a system with deep probe enabled, dependencies are probed
->>>>>>>> on demand, so a -EPROBE_DEFER return is final and the console probe
->>>>>>>> will never succeed.
->>>>>>>>
->>>>>>>> CONFIG_DEBUG_LL is often used to debug this, but because the low-level
->>>>>>>> console is not interactive, it's a bit cumbersome. Improve upon this a
->>>>>>>> bit, by providing a clk_get_for_console helper that returns NULL if and
->>>>>>>> only if we are sure that a clock provider will not be probed.
->>>>>>>>
->>>>>>>> In that case, the driver can skip code paths initialization code and
->>>>>>>> baud rate setting dependent on having access to the clock and still
->>>>>>>> register a console that reuses what was set up by CONFIG_DEBUG_LL.
->>>>>>>>
->>>>>>>> Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
->>>>>>>> ---
->>>>>>>>  include/console.h   | 26 ++++++++++++++++++++++++++
->>>>>>>>  include/linux/clk.h | 21 +++++++++++++++++++++
->>>>>>>>  2 files changed, 47 insertions(+)
->>>>>>>>
->>>>>>>> diff --git a/include/console.h b/include/console.h
->>>>>>>> index 586b68f73301..b8c901801e9f 100644
->>>>>>>> --- a/include/console.h
->>>>>>>> +++ b/include/console.h
->>>>>>>> @@ -8,6 +8,7 @@
->>>>>>>>  #define _CONSOLE_H_
->>>>>>>>  
->>>>>>>>  #include <param.h>
->>>>>>>> +#include <linux/clk.h>
->>>>>>>>  #include <linux/list.h>
->>>>>>>>  #include <driver.h>
->>>>>>>>  #include <serdev.h>
->>>>>>>> @@ -208,4 +209,29 @@ static inline void console_ctrlc_allow(void) { }
->>>>>>>>  static inline void console_ctrlc_forbid(void) { }
->>>>>>>>  #endif
->>>>>>>>  
->>>>>>>> +/**
->>>>>>>> + * clk_get_for_console - get clock, ignoring known unavailable clock controller
->>>>>>>> + * @dev: device for clock "consumer"
->>>>>>>> + * @id: clock consumer ID
->>>>>>>> + *
->>>>>>>> + * Return: a struct clk corresponding to the clock producer, a
->>>>>>>> + * valid IS_ERR() condition containing errno or NULL if it could
->>>>>>>> + * be determined that the clock producer will never be probed in
->>>>>>>> + * absence of modules. The NULL return allows serial drivers to
->>>>>>>> + * skip clock handling and rely on CONFIG_DEBUG_LL.
->>>>>>>> + */
->>>>>>>> +static inline struct clk *clk_get_for_console(struct device *dev, const char *id)
->>>>>>>> +{
->>>>>>>> +	struct clk *clk;
->>>>>>>> +
->>>>>>>> +	if (!IS_ENABLED(CONFIG_DEBUG_LL))
->>>>>>>> +		return clk_get(dev, id);
->>>>>>>
->>>>>>> There are several SoCs out there where the UART is enabled by the ROM
->>>>>>> already, on these we don't need to have CONFIG_DEBUG_LL enabled for a
->>>>>>> working UART.
->>>>>>
->>>>>> Those SoCs can still implement CONFIG_DEBUG_LL and just skip the
->>>>>> initialization step.
->>>>>>
->>>>>>> Maybe testing for the UART enable bit in probe() would be a better
->>>>>>> indication that the UART is already in a working state?
->>>>>>
->>>>>> If clk turns out to be not enabled, system would hang on e.g. i.MX.
->>>>>
->>>>> That can happen with your patch as well as you don't limit the
->>>>> usage of clk_get_for_console() to the UART putc_ll is configured
->>>>> for. Initializing one of the other UARTs might hang your system
->>>>> once you access a register.
->>>>
->>>> That's why it's a debugging measure behind DEBUG_LL, so you need to
->>>> opt-in into this.
->>>
->>> The opt-in in your case is that you decided that this quirk works with
->>> the stm32 UART driver, but really it might only work on the SoC you
->>> tested it with and maybe only with this specific firmware version which
->>> uses clocks provided via SCMI.
->>
->> STM32MP13 is currently broken, because upstream changed clock controller
->> DT. This is an easy way to have users at least get to an interactive
->> shell to be able to do something about this instead of staying on DEBUG_LL
->> shell with no interaction. FWIW, I originally wrote this patch for ZynqMP,
->> which also has a firmware-managed clock controller and it worked equally
->> well there. For bring-up, it can also be useful.
->>
->>
->>>
->>>>
->>>>>
->>>>>>
->>>>>> This is a mere debugging measure for SoCs with complex clock controllers
->>>>>> backed by firmware, so I think having to enable CONFIG_DEBUG_LL to use
->>>>>> is acceptable.
->>>>>
->>>>> Another option would be to implement and use a GETC_LL() macro. This
->>>>> requires some thinking how this can be integrated into the console
->>>>> code, but would in the end be more universally usable. With this we
->>>>> could make barebox interactive even when the real serial driver is
->>>>> not compiled in (or not even yet existing). See below for a prototype.
->>>>
->>>> I don't think the DEBUG_LL API should be extended. Rather we should
->>>> look into how to inherit PBL console in barebox proper. But that's a
->>>> bigger change, thus the middle ground in my patch.
->>>
->>> Fine with me, but then please let's don't clutter the current code with
->>> wobbly special purpose solutions.
->>
->> What's wobbly about it? I consider it rather elegant. If we have DEBUG_LL
->> and no clock driver -> Just assume DEBUG_LL will have enabled the necessary
->> clocks and have the user reach a shell.
-> 
-> DEBUG_LL will at maximum enable the clocks needed for the one UART used
-> as debug UART, but not the clocks for the other UARTs. Maybe your
-> firmware enables the clocks for all UARTs by default, but you can't tell this is
-> the case for all firmware versions. Maybe accessing UART registers with
-> dsabled clocks works on the one SoC you tested it, but you can't tell
-> this works for other SoCs.
+Hello,
 
-If I restrict clk_get_for_console() to return NULL only for the stdout
-console, would this alleviate your concerns?
+this series contains two patches by Ahmad that he send earlier starting
+with Message-Id: <20230911155927.3786335-1-a.fatoum@pengutronix.de>.
 
-> Maybe you carefully tested all possible SoC/firmware combinations this
-> UART is used on, but what if somebody comes along and sends patches for
-> using this pattern on other UARTs? In that case there's no way to find
-> out if the patch is safe or not.
+Patch #1 was already applied back then as 9831b2e5fed8 ("common:
+machine_id: support deriving app specific UUIDs").
 
-I can't follow your objection honestly. This is only relevant if clock
-controller support is unexpectedly missing. In that case, you don't have
-a booting system anyway, but let's at least have a shell.
+Changes since (implicit) v1:
 
-Cheers,
-Ahmad
+ - fix compilation with MACHINE_ID=n (Sascha)
+ - fix typo in NET_ETHADDR_FROM_MACHINE_ID helptext (Thorsten)
+ - rename of_populate_ethaddr -> populate_ethaddr as it's not about of any more (Sascha)
 
-> 
-> Sascha
-> 
+On Tue, Sep 12, 2023 at 12:49:03PM +0200, Sascha Hauer wrote:
+> On Mon, Sep 11, 2023 at 05:59:27PM +0200, Ahmad Fatoum wrote:
+> > @@ -566,11 +568,18 @@ static int of_populate_ethaddr(void)
+> >
+> >             ret = of_get_mac_addr_nvmem(edev->parent->of_node,
+> >                                         edev->ethaddr);
+> > +           if (ret && IS_ENABLED(CONFIG_NET_ETHADDR_FROM_MACHINE_ID)) {
+>
+> This check doesn't seem to be needed, generate_ether_addr() already
+> returns -ENOSYS when this option is not enabled.
 
+I kept this check, Ahmad already argued that is should be kept. (I only
+swapped the checks to have the static one first which is IMHO more
+natural.)
+
+Best regards
+Uwe
+
+Ahmad Fatoum (2):
+  common: machine_id: support deriving app specific UUIDs
+  net: add generic MAC address derivation from machine ID
+
+ common/machine_id.c  | 84 ++++++++++++++++++++++++++++++++++++++++++--
+ include/linux/uuid.h |  8 +++++
+ include/machine_id.h | 11 ++++++
+ include/net.h        |  2 ++
+ net/Kconfig          | 17 +++++++++
+ net/eth.c            | 15 ++++++--
+ net/net.c            | 49 ++++++++++++++++++++++++--
+ 7 files changed, 179 insertions(+), 7 deletions(-)
+
+base-commit: bc5e49335067d0c6c6e97c082a0368fe9d86b725
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.42.0.586.gbc5204569f7d.dirty
 
 
 
