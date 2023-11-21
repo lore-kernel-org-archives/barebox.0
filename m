@@ -1,61 +1,60 @@
-Delivery-date: Tue, 21 Nov 2023 08:38:01 +0100
+Delivery-date: Tue, 21 Nov 2023 09:30:53 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5LKa-002dLZ-1k
+	id 1r5M9l-002hBu-0f
 	for lore@lore.pengutronix.de;
-	Tue, 21 Nov 2023 08:38:01 +0100
+	Tue, 21 Nov 2023 09:30:53 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5LKa-0004ZM-Gv
-	for lore@pengutronix.de; Tue, 21 Nov 2023 08:38:01 +0100
+	id 1r5M9l-0006bA-5C
+	for lore@pengutronix.de; Tue, 21 Nov 2023 09:30:53 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kDQkgzZJUEBvrlJS7dqbpB4QmGzwtTnjeOs3Iu7FGbY=; b=WEOMV7NvgZXyTOFVBRVSJ8BspR
-	Ni/XbzaGOhArVa5pRfVslrOo3rYN0+vJYYaF2RZWWtN4rrOYyyoildP7ZhFbxKlNzF/c+97PKp3tK
-	JZ6DwSLzFfcwFbgM7FiFRIRGS3eba22eVYa1vwJYpl3TRSB/O+jTT0dvN2izhg7ycwc6ZgHXrnfWi
-	TPddPLwiAIimH4expv7HdJ3m5E0kBzeTE0wYWTbupkl2rJFDmQTO1j54bSYEm/blcTJqmKnqjDvcg
-	XSqUJ2mU0WawzrUtg1kvfDCBqk3+/IR0LCNLUX1AaiQHFXN4eQk6GIXYXRu511vua4paxjB4/UG/r
-	/3kV7qHw==;
+	bh=DxVkyo8dako7UYWxOTbd89LPBiu4X0spVAaFGSPXd8g=; b=lzyewvveHP29zCBlbaWPs7y9IL
+	hkVTLFBhnNvdmeaFgAfVOT3lkqn+jeA3Ry9JDsPq504V6RIQDQGCjqytmU5WNP5DRSdzf6lYjlITc
+	BHyEVCf3BLe/rukg256aK9yy0zK7J63GUhoh6cUpzdXVJchX1oT9NZoCFh/af+JffKxfySbZ5SfnU
+	CFLzjhPVzUdgk6Bl82FJr66jo6D3pdNRDs0uRkmY/qFt1evqLv2tv4sbQkYjAF4Fga64pQTzHdwbo
+	5cJsdyi3jBAeViVY37MOAFr7LuSq3ZhgwcHjiEedcImKmlbiKF2kdy1/gmGbJY4KRoPnYR9pFB+Rz
+	oVf9HuKg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5LJ5-00FuD8-2b;
-	Tue, 21 Nov 2023 07:36:27 +0000
+	id 1r5M8F-00G0P6-2B;
+	Tue, 21 Nov 2023 08:29:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5LJ2-00FuCf-0y
+	id 1r5M8C-00G0OR-1g
 	for barebox@lists.infradead.org;
-	Tue, 21 Nov 2023 07:36:26 +0000
+	Tue, 21 Nov 2023 08:29:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r5LJ0-0004FD-Ti; Tue, 21 Nov 2023 08:36:22 +0100
+	id 1r5M89-0006GV-HZ; Tue, 21 Nov 2023 09:29:13 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r5LJ0-00AWso-H5; Tue, 21 Nov 2023 08:36:22 +0100
+	id 1r5M89-00AXQE-55; Tue, 21 Nov 2023 09:29:13 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r5LJ0-0035uM-Ec; Tue, 21 Nov 2023 08:36:22 +0100
-Date: Tue, 21 Nov 2023 08:36:22 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20231121073622.GN3359458@pengutronix.de>
-References: <20231120083750.3967831-1-a.fatoum@pengutronix.de>
- <20231120083750.3967831-2-a.fatoum@pengutronix.de>
+	id 1r5M89-0036YQ-2a; Tue, 21 Nov 2023 09:29:13 +0100
+Date: Tue, 21 Nov 2023 09:29:13 +0100
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org, Bruno Knittel <bruno.knittel@bruker.com>
+Message-ID: <20231121082913.GO3359458@pengutronix.de>
+References: <20231115-arria10-fpga-reload-on-failure-v2-1-6a45f125c9c2@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231120083750.3967831-2-a.fatoum@pengutronix.de>
+In-Reply-To: <20231115-arria10-fpga-reload-on-failure-v2-1-6a45f125c9c2@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -63,8 +62,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231120_233625_138586_300B53CD 
-X-CRM114-Status: GOOD (  25.50  )
+X-CRM114-CacheID: sfid-20231121_002916_562196_55711526 
+X-CRM114-Status: GOOD (  33.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,99 +86,134 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH RFC 2/3] libfile: implement read_fd counterpart to
- read_file
+Subject: Re: [PATCH v2] ARM: arria10: xload: retry FPGA configuration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Nov 20, 2023 at 09:37:49AM +0100, Ahmad Fatoum wrote:
-> Files opened with O_TMPFILE have no name, so read_file can't be used
-> with them. Therefore add a read_fd function, which slurps all a file's
-> contents into a buffer.
+On Wed, Nov 15, 2023 at 02:11:22PM +0100, Steffen Trumtrar wrote:
+> From: Bruno Knittel <bruno.knittel@bruker.com>
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> The Intel documentation states that the FPGA configuration might fail.
+> This has been observed on the Enclustra AA1+ board where up to 4 retries
+> where required to configure the FPGA.
+> 
+> Debugging session showed that the data where correctly read from the
+> eMMC but yet the configuration failed.
+> 
+> This commit introduces a retry loop on the FPGA configuration.
+> Up to 10 retries (arbitrary) are attempted.
+> As the hardware can't be used anyway without the FPGA loaded, this
+> doesn't introduce any boot time problems. Taking longer is better than
+> just hang()ing.
+> 
+> Signed-off-by: Bruno Knittel <bruno.knittel@bruker.com>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  include/libfile.h |  2 ++
->  lib/libfile.c     | 44 ++++++++++++++++++++++++++++++++++++++++++++
->  2 files changed, 46 insertions(+)
-> 
-> diff --git a/include/libfile.h b/include/libfile.h
-> index a353ccfa9ea9..423e7ffec5b7 100644
-> --- a/include/libfile.h
-> +++ b/include/libfile.h
-> @@ -12,6 +12,8 @@ char *read_file_line(const char *fmt, ...);
->  
->  void *read_file(const char *filename, size_t *size);
->  
-> +void *read_fd(int fd, size_t *size);
-> +
->  int read_file_2(const char *filename, size_t *size, void **outbuf,
->  		loff_t max_size);
->  
-> diff --git a/lib/libfile.c b/lib/libfile.c
-> index e53ba08415a2..c257baaa2733 100644
-> --- a/lib/libfile.c
-> +++ b/lib/libfile.c
-> @@ -306,6 +306,50 @@ void *read_file(const char *filename, size_t *size)
->  }
->  EXPORT_SYMBOL(read_file);
->  
-> +/**
-> + * read_fd - read from a file descriptor to an allocated buffer
-> + * @filename:  The file descriptor to read
-> + * @size:      After successful return contains the size of the file
-> + *
-> + * This function reads a file descriptor from offset 0 until EOF to an
-> + * allocated buffer.
-> + *
-> + * Return: The buffer containing the file or NULL on failure
-> + */
-> +void *read_fd(int fd, size_t *out_size)
-> +{
-> +	off_t off;
-> +	ssize_t ret;
-> +	size_t size;
-> +	void *buf;
-> +
-> +	off = lseek(fd, SEEK_CUR, 0);
+> Changes since v1:
+>     - split loop into inline function
+> ---
+>  arch/arm/mach-socfpga/arria10-xload.c | 49 ++++++++++++++++++++++++++---------
+>  1 file changed, 37 insertions(+), 12 deletions(-)
 
-You lseek to the current position. It seems you are trying to determine
-the size of the file, so did you mean to use SEEK_END?
-
-You could use fstat() instead. With that you could also correctly handle
-FILE_SIZE_STREAM.
-
-> +	if (off >= 0) {
-> +		size = off;
-> +		off = lseek(fd, SEEK_SET, 0);
-> +	}
-> +	if (off < 0) {
-> +		ret = off;
-> +		goto close_fd;
-> +	}
-> +
-> +	buf = malloc(size + 3);
-> +	ret = read_full(fd, buf, size);
-
-You can use pread_full() here to avoid having to lseek to the beginning
-of the file.
-
-> +	if (ret < 0) {
-> +		free(buf);
-> +		goto close_fd;
-> +	}
-> +
-> +	memset(&buf[size], '\0', 3);
-> +	*out_size = size;
-> +
-> +close_fd:
-> +	close(fd);
-> +
-> +	return ret < 0 ? NULL : buf;
-
-Return an error pointer or an error integer and pass buf as argument?
+Applied, thanks
 
 Sascha
+
+> 
+> diff --git a/arch/arm/mach-socfpga/arria10-xload.c b/arch/arm/mach-socfpga/arria10-xload.c
+> index 9d54a1de58..db3cc209ee 100644
+> --- a/arch/arm/mach-socfpga/arria10-xload.c
+> +++ b/arch/arm/mach-socfpga/arria10-xload.c
+> @@ -353,17 +353,9 @@ int arria10_prepare_mmc(int barebox_part, int rbf_part)
+>  	return 0;
+>  }
+>  
+> -int arria10_load_fpga(int offset, int bitstream_size)
+> +static inline int __arria10_load_fpga(void *buf, uint32_t count, uint32_t size)
+>  {
+> -	void *buf = (void *)0xffe00000 + SZ_256K - 256 - SZ_16K;
+>  	int ret;
+> -	uint32_t count;
+> -	uint32_t size = bitstream_size / SECTOR_SIZE;
+> -
+> -	if (offset)
+> -		offset = offset / SECTOR_SIZE;
+> -
+> -	count = offset;
+>  
+>  	arria10_read_blocks(buf, count + bitstream.first_sec, SZ_16K);
+>  
+> @@ -371,23 +363,56 @@ int arria10_load_fpga(int offset, int bitstream_size)
+>  
+>  	ret = a10_fpga_init(buf);
+>  	if (ret)
+> -		hang();
+> +		return -EAGAIN;
+>  
+>  	while (count <= size) {
+>  		ret = a10_fpga_write(buf, SZ_16K);
+>  		if (ret == -ENOSPC)
+> -			break;
+> +			return -EAGAIN;
+> +
+>  		count += SZ_16K / SECTOR_SIZE;
+>  		ret = arria10_read_blocks(buf, count, SZ_16K);
+> +		// Reading failed, consider this a failed attempt to configure the FPGA and retry
+> +		if (ret)
+> +			return -EAGAIN;
+>  	}
+>  
+>  	ret = a10_fpga_write_complete();
+>  	if (ret)
+> -		hang();
+> +		return -EAGAIN;
+>  
+>  	return 0;
+>  }
+>  
+> +int arria10_load_fpga(int offset, int bitstream_size)
+> +{
+> +	int ret;
+> +	void *buf = (void *)0xffe00000 + SZ_256K - 256 - SZ_16K;
+> +	uint32_t count;
+> +	uint32_t size = bitstream_size / SECTOR_SIZE;
+> +	uint32_t retryCount;
+> +
+> +	if (offset)
+> +		offset = offset / SECTOR_SIZE;
+> +
+> +	/* Up to 4 retries have been seen on the Enclustra Mercury AA1+ board, as
+> +	 * FPGA configuration is mandatory to be able to continue the boot, take
+> +	 * some margin and try up to 10 times
+> +	 */
+> +	for (retryCount = 0; retryCount < 10; ++retryCount) {
+> +		count = offset;
+> +
+> +		ret = __arria10_load_fpga(buf, count, size);
+> +		if (!ret)
+> +			return 0;
+> +		else if (ret == -EAGAIN)
+> +			continue;
+> +	}
+> +
+> +	hang();
+> +	return -EIO;
+> +}
+> +
+>  void arria10_start_image(int offset)
+>  {
+>  	void *buf = (void *)0x0;
+> 
+> ---
+> base-commit: bc5e49335067d0c6c6e97c082a0368fe9d86b725
+> change-id: 20231115-arria10-fpga-reload-on-failure-ba64deafcc52
+> 
+> Best regards,
+> -- 
+> Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> 
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
