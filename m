@@ -3,64 +3,64 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5qoB-004cTk-1y
+	id 1r5qoB-004cTl-22
 	for lore@lore.pengutronix.de;
 	Wed, 22 Nov 2023 18:14:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5qoB-0004Ap-IW
+	id 1r5qoB-0004Aq-LM
 	for lore@pengutronix.de; Wed, 22 Nov 2023 18:14:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=aQbz12uyeuI41oxJeJKNRzY3Dvc0Sodn/N4I6iDch04=; b=MiibljJAlzL5PpI97wMlPFGqW+
-	WugW+5crLaLA4GAUGYJzHqoYnBUahQtiob1OS6953N3fi5aD97Zao7xC6D+HvJya4gyhAGLfaXwde
-	SNyNCqAvb2ktLzD2KZeGyyCimEnDPpJardqkEwgn7Z3h6RKvPFAFY+WHUl3qi1KgY13ybAedh96s6
-	xrJoVmy5y0eyQSOX2UFCqZUtP16a3bjgrSescPRMWRm7SxR5IyiQJTj3TxGrttiXiUiEKI1iI1RQ5
-	STq972wcbHdEuBYusTAtavjzTVqVhrI0+14VMbTEbdICeVFGiO9N5c0TfERPXp/wCKmmjZBC7+6Yt
-	Kb0tPEDg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ZQgVNMpHc74fDkQnQOqgJbN0wTuxVl8uHuV1zaRO4Fw=; b=EjbhdKrOKaLMhKsECugzajhAQL
+	rQBSnbLeQKXM9y2RmWlACFyjBbl+GUoKGFVu3zolLKho9yZlXg5HtLLm9pn5Y4Nf9o5WAIh3ek6XG
+	DUDL5LYhAKMCPK6IoHk2lliW6eN73nynjHI1s/v4KVNQHD6ZGCaoN2vJ8SGSWreFLnW+wJZQkQomJ
+	/ApKWyTbJjwaOEE159Aokb9n4IRd5gLxkD3jb4QpUXWhiLFy3w6TT5JKiisdyCwYX28LbqgqXlmgz
+	fxFwEj65+57cFRZvR21c/alIdzqvRIhrT2XPEbJo3ZuMVLjWmx0yIA1lkhdTTpJ++LFU0JMGqeUlq
+	9yU2qI1Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5qn1-002csy-1j;
-	Wed, 22 Nov 2023 17:13:27 +0000
+	id 1r5qn0-002csq-32;
+	Wed, 22 Nov 2023 17:13:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5qmx-002crg-2c
+	id 1r5qmx-002cri-2b
 	for barebox@lists.infradead.org;
 	Wed, 22 Nov 2023 17:13:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5qmw-0003rl-DU
-	for barebox@lists.infradead.org; Wed, 22 Nov 2023 18:13:22 +0100
+	id 1r5qmw-0003rm-Es; Wed, 22 Nov 2023 18:13:22 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5qmw-00ArRB-0u
-	for barebox@lists.infradead.org; Wed, 22 Nov 2023 18:13:22 +0100
+	id 1r5qmw-00ArRC-2Z; Wed, 22 Nov 2023 18:13:22 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5qmv-0083cJ-2y
-	for barebox@lists.infradead.org;
-	Wed, 22 Nov 2023 18:13:21 +0100
+	id 1r5qmv-0083cJ-38;
+	Wed, 22 Nov 2023 18:13:22 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 22 Nov 2023 18:13:19 +0100
-Message-Id: <20231122171320.1714868-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 22 Nov 2023 18:13:20 +0100
+Message-Id: <20231122171320.1714868-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231122171320.1714868-1-a.fatoum@pengutronix.de>
+References: <20231122171320.1714868-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_091323_854909_5E835B56 
-X-CRM114-Status: GOOD (  17.41  )
+X-CRM114-CacheID: sfid-20231122_091323_851448_7D0CDD3A 
+X-CRM114-Status: GOOD (  12.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,115 +83,48 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 1/2] console: provide best-effort clk_get_for_console helper
+Subject: [PATCH v2 2/2] serial: stm32: support probing with missing clock provider
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <ahmad@a3f.at>
+The STM32MP135F-DK support in barebox has bitrotted, because of changes
+to the upstream device tree: The root of the clock tree is now provided
+by OP-TEE over SCMI for which no support exists in barebox, so drivers
+requesting clocks will defer indefinitely, including the console device.
 
-clk_get will return -EPROBE_DEFER if clock provider hasn't yet been
-probed. In a system with deep probe enabled, dependencies are probed
-on demand, so a -EPROBE_DEFER return is final and the console probe
-will never succeed.
+A series adding OP-TEE SCMI support will follow, but for now, let's
+ensure that console registration isn't deferred in such a case.
 
-CONFIG_DEBUG_LL is often used to debug this, but because the low-level
-console is not interactive, it's a bit cumbersome. Improve upon this a
-bit, by providing a clk_get_for_console helper that returns NULL if and
-only if we are sure that a clock provider will not be probed.
-
-In that case, the driver can skip code paths initialization code and
-baud rate setting dependent on having access to the clock and still
-register a console that reuses what was set up by CONFIG_DEBUG_LL.
-
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - restrict new mechanism to stdout console (Sascha)
+  - no change
 ---
- include/console.h   | 27 +++++++++++++++++++++++++++
- include/linux/clk.h | 21 +++++++++++++++++++++
- 2 files changed, 48 insertions(+)
+ drivers/serial/serial_stm32.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/console.h b/include/console.h
-index d7cbdfa99207..69c0ec144b31 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -8,6 +8,7 @@
- #define _CONSOLE_H_
+diff --git a/drivers/serial/serial_stm32.c b/drivers/serial/serial_stm32.c
+index 4a67408f44f6..3e18a2c152af 100644
+--- a/drivers/serial/serial_stm32.c
++++ b/drivers/serial/serial_stm32.c
+@@ -165,7 +165,7 @@ static int stm32_serial_probe(struct device *dev)
+ 	stm32->stm32f4 = info->stm32f4;
+ 	stm32->uart_enable_bit = info->uart_enable_bit;
  
- #include <param.h>
-+#include <linux/clk.h>
- #include <linux/list.h>
- #include <driver.h>
- #include <serdev.h>
-@@ -228,4 +229,30 @@ static inline void console_ctrlc_allow(void) { }
- static inline void console_ctrlc_forbid(void) { }
- #endif
+-	stm32->clk = clk_get(dev, NULL);
++	stm32->clk = clk_get_for_console(dev, NULL);
+ 	if (IS_ERR(stm32->clk)) {
+ 		ret = PTR_ERR(stm32->clk);
+ 		dev_err(dev, "Failed to get UART clock %d\n", ret);
+@@ -183,7 +183,7 @@ static int stm32_serial_probe(struct device *dev)
+ 	cdev->putc   = stm32_serial_putc;
+ 	cdev->getc   = stm32_serial_getc;
+ 	cdev->flush  = stm32_serial_flush;
+-	cdev->setbrg = stm32_serial_setbaudrate;
++	cdev->setbrg = stm32->clk ? stm32_serial_setbaudrate : NULL;
+ 	cdev->linux_console_name = "ttySTM";
  
-+/**
-+ * clk_get_for_console - get clock, ignoring known unavailable clock controller
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Return: a struct clk corresponding to the clock producer, a
-+ * valid IS_ERR() condition containing errno or NULL if it could
-+ * be determined that the clock producer will never be probed in
-+ * absence of modules. The NULL return allows serial drivers to
-+ * skip clock handling for the stdout console and rely on CONFIG_DEBUG_LL.
-+ */
-+static inline struct clk *clk_get_for_console(struct device *dev, const char *id)
-+{
-+	__always_unused unsigned baudrate;
-+	struct clk *clk;
-+
-+	if (!IS_ENABLED(CONFIG_DEBUG_LL) || !of_device_is_stdout_path(dev, &baudrate))
-+		return clk_get(dev, id);
-+
-+	clk = clk_get_if_available(dev, id);
-+	if (clk == NULL)
-+		dev_warn(dev, "couldn't get clock (ignoring)\n");
-+
-+	return clk;
-+}
-+
- #endif
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 61b4ff3127cf..f505f18a75c0 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -14,6 +14,7 @@
- #include <linux/spinlock.h>
- #include <linux/stringify.h>
- #include <linux/container_of.h>
-+#include <deep-probe.h>
- #include <xfuncs.h>
- 
- struct device;
-@@ -982,4 +983,24 @@ static inline struct clk *clk_get_enabled(struct device *dev, const char *id)
- 	return clk;
- }
- 
-+/**
-+ * clk_get_if_available - get clock, ignoring known unavailable clock controller
-+ * @dev: device for clock "consumer"
-+ * @id: clock consumer ID
-+ *
-+ * Return: a struct clk corresponding to the clock producer, a
-+ * valid IS_ERR() condition containing errno or NULL if it could
-+ * be determined that the clock producer will never be probed in
-+ * absence of modules.
-+ */
-+static inline struct clk *clk_get_if_available(struct device *dev, const char *id)
-+{
-+	struct clk *clk = clk_get(dev, id);
-+
-+	if (clk == ERR_PTR(-EPROBE_DEFER) && deep_probe_is_supported())
-+		return NULL;
-+
-+	return clk;
-+}
-+
- #endif
+ 	if (dev->of_node) {
 -- 
 2.39.2
 
