@@ -1,66 +1,67 @@
-Delivery-date: Wed, 22 Nov 2023 18:31:27 +0100
+Delivery-date: Wed, 22 Nov 2023 18:31:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5r4R-004dfh-0z
+	id 1r5r4X-004dgm-2q
 	for lore@lore.pengutronix.de;
-	Wed, 22 Nov 2023 18:31:27 +0100
+	Wed, 22 Nov 2023 18:31:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5r4R-00089r-80
-	for lore@pengutronix.de; Wed, 22 Nov 2023 18:31:27 +0100
+	id 1r5r4X-0008DQ-QH
+	for lore@pengutronix.de; Wed, 22 Nov 2023 18:31:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=jn0sbDfKrNv4aa1jwGzYU2mB14k/wpqwa/nMYpAbcyg=; b=mPMfaP78OkumlT8t4CMBHwHOSp
-	sDye5B+LuTow+ft5ZI0OchhtCZNFgMbO7R1F2c3G4ECQb0ljvT6wIBX7Vsx6Iof3sE6Rb9hc/jcbm
-	WhLOtLyeP2Uu1rnF5seJj4bR2bm2EaYBs/nxGoGT0QtAngIXzFec/zIFcn7oa9ZG1SBoljaTdm81M
-	dQATkA6VPT/jxMCrrmrVl9ZcDxN7lgf9CgttM1ABYc47ArOyBE0SOMBen+5xHMU5IbxYWxFaZ2poE
-	t3xJ3tPuGYotFoPkBlJqw4EAYAMYiRSsAdfQJavdiwBm4TTxjtZmunEt/21pkw3TfyVbT9gcnpY+0
-	A45crCOw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=6Ix3F+b5WbhQ+3B6DdMbE8uNiQpNpESis79n+qFebjI=; b=NrdSIR4QWDGEaQjqb7NtcH8MdE
+	X9e7nIkjCHMIziItliyOhvdjyKv9CPLb6qXWcyOJozRUhukK78q5BJR7wjxH+QOCsGTmKxaeWWCNr
+	lZqQzCIjGcSfaDo94J+wU0cO6U7o++/S7CSkZlB5Jpv9RjVSjAMeWbLojX+WW3ShLhSWGkXl7x3dc
+	xa0BZepL6fWynKMh7ujT+k3bJ3fXsCJpD9NosuzuqGisQNYezIoRcvwai/Vg+fm6r97nVYoQRjZxU
+	IN6wzFepjt/9Wl3GhBH1vcg3UTev1xODnT0xtLIFV68dJFRhJWolA6nVcHfzIikQJMWDrZkKDrLwo
+	XXFK5vNA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5r39-002fAg-2s;
-	Wed, 22 Nov 2023 17:30:07 +0000
+	id 1r5r3B-002fBF-2g;
+	Wed, 22 Nov 2023 17:30:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5r35-002f7u-1V
+	id 1r5r35-002f80-1x
 	for barebox@lists.infradead.org;
-	Wed, 22 Nov 2023 17:30:05 +0000
+	Wed, 22 Nov 2023 17:30:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r34-0007Ss-35
-	for barebox@lists.infradead.org; Wed, 22 Nov 2023 18:30:02 +0100
+	id 1r5r34-0007TE-G3; Wed, 22 Nov 2023 18:30:02 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r33-00ArSi-Mf
-	for barebox@lists.infradead.org; Wed, 22 Nov 2023 18:30:01 +0100
+	id 1r5r34-00ArSy-06; Wed, 22 Nov 2023 18:30:02 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r33-001lAy-1u
-	for barebox@lists.infradead.org;
+	id 1r5r33-001lAy-2t;
 	Wed, 22 Nov 2023 18:30:01 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 22 Nov 2023 18:29:31 +0100
-Message-Id: <20231122172951.376531-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 22 Nov 2023 18:29:37 +0100
+Message-Id: <20231122172951.376531-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231122172951.376531-1-a.fatoum@pengutronix.de>
+References: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_093003_508151_476CDA0B 
-X-CRM114-Status: GOOD (  13.01  )
+X-CRM114-CacheID: sfid-20231122_093003_660559_6371CC2F 
+X-CRM114-Status: UNSURE (   9.00  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,125 +84,109 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 00/20] prepare for porting OP-TEE communication support
+Subject: [PATCH v2 06/20] asm-generic: migrate relaxed helpers into asm-generic/io.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-So far, barebox support for OP-TEE was restricted to loading it either
-early in PBL or via bootm and to not step over it when allocating
-memory. This was guarded behind CONFIG_HAVE_OPTEE.
+In preparation for having <io.h> be the include file for type confused
+MMIO accessors and <linux/io.h> for typechecked accessors, let's move out
+of <io.h> everything that's not directly related to the type confusion.
 
-To prepare porting the Linux driver behind CONFIG_OPTEE, which
-brings actual bidirectional communication with OP-TEE to barebox,
-let's import some of the headers and APIs used by the v6.6 Linux
-driver.
-
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
 v1 -> v2:
-  See individual change log in every patch.
+  - unchanged
+---
+ include/asm-generic/io.h | 34 ++++++++++++++++++++++++++++++++++
+ include/io.h             | 34 ----------------------------------
+ 2 files changed, 34 insertions(+), 34 deletions(-)
 
-Ahmad Fatoum (20):
-  include: provide linux/errno.h
-  include: add linux/refcount.h
-  bitops: split off linux/bits.h
-  include: import <linux/instruction_pointer.h>
-  asm-generic: split off typeconfused readl and friends
-  asm-generic: migrate relaxed helpers into asm-generic/io.h
-  include: add linux/io.h with strict prototypes
-  include: import Linux word-at-a-time.h
-  string: implement strscpy
-  of: add CONFIG_OF for Linux compatibility
-  include: asm-generic/atomic.h: define atomic_cmpxchg
-  kbuild: build barebox for -std=gnu11
-  include: linux/idr.h: implement more Linux API
-  test: self: add simple IDR test
-  include: implement dev_warn_once and friends
-  include: add blocking notifier aliases
-  include: add Linux ktime API
-  of: constify string pointed to by struct of_device_id::compatible
-  of: define of_devices_ensure_probed_by_compatible
-  include: add linux/device.h wrapper around driver.h
-
- Makefile                                   |   4 +-
- arch/arm/include/asm/word-at-a-time.h      |  59 +++++
- arch/kvx/include/asm/word-at-a-time.h      |   2 +
- arch/mips/include/asm/word-at-a-time.h     |   2 +
- arch/openrisc/include/asm/word-at-a-time.h |   2 +
- arch/powerpc/include/asm/word-at-a-time.h  | 156 +++++++++++
- arch/powerpc/lib/misc.S                    |   2 +-
- arch/powerpc/lib/ppcstring.S               |   2 +-
- arch/riscv/include/asm/word-at-a-time.h    |  48 ++++
- arch/sandbox/include/asm/word-at-a-time.h  |   2 +
- arch/x86/include/asm/word-at-a-time.h      |  73 ++++++
- common/optee.c                             |   2 +-
- drivers/firmware/Kconfig                   |   1 +
- drivers/firmware/arm_scmi/driver.c         |   4 +-
- drivers/of/Kconfig                         |   4 +
- include/asm-generic/atomic.h               |   2 +
- include/asm-generic/cmpxchg-local.h        |  64 +++++
- include/asm-generic/cmpxchg.h              |  26 ++
- include/asm-generic/errno.h                |  11 -
- include/asm-generic/io-typeconfused.h      |  75 ++++++
- include/asm-generic/io.h                   | 284 +++++++++++++++++----
- include/asm-generic/word-at-a-time.h       | 121 +++++++++
- include/bbu.h                              |   2 +-
- include/errno.h                            |   2 +-
- include/io.h                               |  34 ---
- include/linux/atomic.h                     |  63 +++++
- include/linux/bitops.h                     |  21 +-
- include/linux/bits.h                       |  30 +++
- include/linux/device.h                     |  66 +++++
- include/linux/err.h                        |   2 +-
- include/linux/errno.h                      |  36 +++
- include/linux/idr.h                        |  61 ++---
- include/linux/instruction_pointer.h        |  11 +
- include/linux/io.h                         |   9 +
- include/linux/kernel.h                     |  11 +-
- include/linux/kref.h                       |  90 +++++++
- include/linux/ktime.h                      | 212 +++++++++++++++
- include/linux/notifier.h                   |  16 ++
- include/linux/printk.h                     |  29 ++-
- include/linux/pstore.h                     |   2 +-
- include/linux/refcount.h                   | 271 ++++++++++++++++++++
- include/linux/string.h                     |   3 +
- include/mach/at91/iomux.h                  |   2 +-
- include/notifier.h                         |   3 +
- include/of.h                               |  12 +-
- include/tee/optee.h                        |   2 +-
- lib/Kconfig                                |   3 +
- lib/Makefile                               |   2 +
- lib/idr.c                                  | 100 ++++++++
- lib/reed_solomon/reed_solomon.c            |   2 +-
- lib/refcount.c                             |  34 +++
- lib/string.c                               |  71 ++++++
- test/self/Kconfig                          |   5 +
- test/self/Makefile                         |   1 +
- test/self/idr.c                            | 119 +++++++++
- 55 files changed, 2103 insertions(+), 170 deletions(-)
- create mode 100644 arch/arm/include/asm/word-at-a-time.h
- create mode 100644 arch/kvx/include/asm/word-at-a-time.h
- create mode 100644 arch/mips/include/asm/word-at-a-time.h
- create mode 100644 arch/openrisc/include/asm/word-at-a-time.h
- create mode 100644 arch/powerpc/include/asm/word-at-a-time.h
- create mode 100644 arch/riscv/include/asm/word-at-a-time.h
- create mode 100644 arch/sandbox/include/asm/word-at-a-time.h
- create mode 100644 arch/x86/include/asm/word-at-a-time.h
- create mode 100644 include/asm-generic/cmpxchg-local.h
- create mode 100644 include/asm-generic/cmpxchg.h
- create mode 100644 include/asm-generic/io-typeconfused.h
- create mode 100644 include/asm-generic/word-at-a-time.h
- create mode 100644 include/linux/bits.h
- create mode 100644 include/linux/device.h
- create mode 100644 include/linux/errno.h
- create mode 100644 include/linux/instruction_pointer.h
- create mode 100644 include/linux/io.h
- create mode 100644 include/linux/kref.h
- create mode 100644 include/linux/ktime.h
- create mode 100644 include/linux/notifier.h
- create mode 100644 include/linux/refcount.h
- create mode 100644 lib/idr.c
- create mode 100644 lib/refcount.c
- create mode 100644 test/self/idr.c
-
+diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+index 6383d71746f1..b118979ed1df 100644
+--- a/include/asm-generic/io.h
++++ b/include/asm-generic/io.h
+@@ -792,4 +792,38 @@ static inline void memcpy_toio(volatile void __iomem *addr, const void *buffer,
+ 
+ #include <asm-generic/bitio.h>
+ 
++#define IOMEM_ERR_PTR(err) (__force void __iomem *)ERR_PTR(err)
++
++#ifndef readq_relaxed
++#define readq_relaxed(addr) readq(addr)
++#endif
++
++#ifndef readl_relaxed
++#define readl_relaxed(addr) readl(addr)
++#endif
++
++#ifndef readw_relaxed
++#define readw_relaxed(addr) readw(addr)
++#endif
++
++#ifndef readb_relaxed
++#define readb_relaxed(addr) readb(addr)
++#endif
++
++#ifndef writeq_relaxed
++#define writeq_relaxed(val, addr) writeq((val), (addr))
++#endif
++
++#ifndef writel_relaxed
++#define writel_relaxed(val, addr) writel((val), (addr))
++#endif
++
++#ifndef writew_relaxed
++#define writew_relaxed(val, addr) writew((val), (addr))
++#endif
++
++#ifndef writeb_relaxed
++#define writeb_relaxed(val, addr) writeb((val), (addr))
++#endif
++
+ #endif /* __ASM_GENERIC_IO_H */
+diff --git a/include/io.h b/include/io.h
+index 6a74246ea777..913002072240 100644
+--- a/include/io.h
++++ b/include/io.h
+@@ -4,38 +4,4 @@
+ 
+ #include <asm/io.h>
+ 
+-#define IOMEM_ERR_PTR(err) (__force void __iomem *)ERR_PTR(err)
+-
+-#ifndef readq_relaxed
+-#define readq_relaxed(addr) readq(addr)
+-#endif
+-
+-#ifndef readl_relaxed
+-#define readl_relaxed(addr) readl(addr)
+-#endif
+-
+-#ifndef readw_relaxed
+-#define readw_relaxed(addr) readw(addr)
+-#endif
+-
+-#ifndef readb_relaxed
+-#define readb_relaxed(addr) readb(addr)
+-#endif
+-
+-#ifndef writeq_relaxed
+-#define writeq_relaxed(val, addr) writeq((val), (addr))
+-#endif
+-
+-#ifndef writel_relaxed
+-#define writel_relaxed(val, addr) writel((val), (addr))
+-#endif
+-
+-#ifndef writew_relaxed
+-#define writew_relaxed(val, addr) writew((val), (addr))
+-#endif
+-
+-#ifndef writeb_relaxed
+-#define writeb_relaxed(val, addr) writeb((val), (addr))
+-#endif
+-
+ #endif /* __IO_H */
 -- 
 2.39.2
 
