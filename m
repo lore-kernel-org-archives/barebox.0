@@ -1,66 +1,66 @@
-Delivery-date: Wed, 22 Nov 2023 18:31:35 +0100
+Delivery-date: Wed, 22 Nov 2023 18:31:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5r4Y-004dhp-2i
+	id 1r5r4b-004dim-1W
 	for lore@lore.pengutronix.de;
-	Wed, 22 Nov 2023 18:31:35 +0100
+	Wed, 22 Nov 2023 18:31:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5r4Y-0008EJ-Ly
-	for lore@pengutronix.de; Wed, 22 Nov 2023 18:31:35 +0100
+	id 1r5r4b-0008Gm-DB
+	for lore@pengutronix.de; Wed, 22 Nov 2023 18:31:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Pnu+T2OLSa1Si5FXVzh7rcBjtt4avUrRY9A3oULeaMM=; b=KMNFcvhhKOEMcdlxr3KoVrIwMw
-	O7jtR+IPOMhQdjGuaBx3eZ3/I9TSgp9DCgCS8BgwcFu7QcYgPT7gYxo5fsPmjGfKlG0NxOF4DNpGs
-	ohuihrDXJ20vXIp09hQ/pVgrf8UdUq6hghGiJobt/jHNx8eGfktxbunACctZGoRgVT13RarR09EQY
-	8s1hYRd1Pv1tHsooerX72c6IUhfv8nXtS4MpM/UMHsmDrMTqfS5/zn6C4EPrOBdlgIdE6G+GHtiXT
-	E5IWdXJ6OABBAIwCmNKEqER9pPQkuImbRfWhJwvx9xUYAeqhmZFG2b9Pp0JLk1/fqIts2dopAOOY/
-	IUoFcyaQ==;
+	bh=1UeHugvhYPwfp/SG03N5N9kovbtlDEjy84Xl1DU8+to=; b=plt48aWyPA3Tm8o9kaSAoKQW7J
+	4ZeOHYwIjMuAlZfjgTX64h8B16xBdgxx7s+vXAbo7QWmJ/vw3as+tseBwe0y3kZ8xzPMcVU+xdKmT
+	D1fwEdE0nU3hN95zmcKgpz3HjXhMzmmEnrxG69XwyP/G8mHfMC3NNYXfKi9XvVViTemL+aMWCG38g
+	7jFCe2UYzYJfsSrKFb65Sq/rhB4VjB2yO8gE5zCXnA1HwkDq3qyR0U9vgSxWhgA26AxeRZ5RqxHUa
+	ouccKQTU4CmUbghjAvs/jQ+PrvaR9Sze0yy5rlZlzAks3TvGyjXCh4mOvm6eaXrCEyMgmZtyG+/OI
+	zR2qt4Vw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5r39-002fAJ-0s;
-	Wed, 22 Nov 2023 17:30:07 +0000
+	id 1r5r3B-002fAv-0f;
+	Wed, 22 Nov 2023 17:30:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5r35-002f7x-1U
+	id 1r5r35-002f7y-1b
 	for barebox@lists.infradead.org;
-	Wed, 22 Nov 2023 17:30:04 +0000
+	Wed, 22 Nov 2023 17:30:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r34-0007Sx-9I; Wed, 22 Nov 2023 18:30:02 +0100
+	id 1r5r34-0007Sz-Aw; Wed, 22 Nov 2023 18:30:02 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r33-00ArSp-Rb; Wed, 22 Nov 2023 18:30:01 +0100
+	id 1r5r33-00ArSs-TG; Wed, 22 Nov 2023 18:30:01 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r33-001lAy-2P;
+	id 1r5r33-001lAy-2Z;
 	Wed, 22 Nov 2023 18:30:01 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 22 Nov 2023 18:29:34 +0100
-Message-Id: <20231122172951.376531-4-a.fatoum@pengutronix.de>
+Date: Wed, 22 Nov 2023 18:29:35 +0100
+Message-Id: <20231122172951.376531-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 References: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_093003_506981_11A5B34D 
-X-CRM114-Status: GOOD (  16.03  )
+X-CRM114-CacheID: sfid-20231122_093003_531187_957D259C 
+X-CRM114-Status: GOOD (  12.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,104 +83,62 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 03/20] bitops: split off linux/bits.h
+Subject: [PATCH v2 04/20] include: import <linux/instruction_pointer.h>
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The bit definitions are split off in Linux into <linux/bits.h>, which
-is included by <linux/bitops.h> and extended with bit operations.
-
-Follow through in barebox to simplify porting kernel code and in future
-to speed up the build a bit by avoiding pulling in the whole bitops.h,
-when only needing macros like BIT().
+This header provides definitions for getting the instruction pointer and
+the return address in a portable manner, which can be useful for
+trace outputs where dump_stack would be overkill.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
   - unchanged
 ---
- include/linux/bitops.h | 21 +--------------------
- include/linux/bits.h   | 30 ++++++++++++++++++++++++++++++
- 2 files changed, 31 insertions(+), 20 deletions(-)
- create mode 100644 include/linux/bits.h
+ include/linux/instruction_pointer.h | 11 +++++++++++
+ include/linux/kernel.h              |  3 +--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
+ create mode 100644 include/linux/instruction_pointer.h
 
-diff --git a/include/linux/bitops.h b/include/linux/bitops.h
-index b0d6ca6ac87f..7646e1563478 100644
---- a/include/linux/bitops.h
-+++ b/include/linux/bitops.h
-@@ -5,15 +5,9 @@
- 
- #include <linux/types.h>
- #include <linux/const.h>
-+#include <linux/bits.h>
- 
- #ifdef	__KERNEL__
--#define BIT(nr)			(UL(1) << (nr))
--#define BIT_ULL(nr)		(ULL(1) << (nr))
--#define BIT_MASK(nr)		(UL(1) << ((nr) % BITS_PER_LONG))
--#define BIT_WORD(nr)		((nr) / BITS_PER_LONG)
--#define BIT_ULL_MASK(nr)	(ULL(1) << ((nr) % BITS_PER_LONG_LONG))
--#define BIT_ULL_WORD(nr)	((nr) / BITS_PER_LONG_LONG)
--#define BITS_PER_BYTE		8
- #define BITS_PER_TYPE(type)	(sizeof(type) * BITS_PER_BYTE)
- #define BITS_TO_LONGS(nr)	DIV_ROUND_UP(nr, BITS_PER_TYPE(long))
- #define BITS_TO_U64(nr)		DIV_ROUND_UP(nr, BITS_PER_TYPE(u64))
-@@ -22,19 +16,6 @@
- #define BYTES_TO_BITS(nb)	(((BITS_PER_LONG * (nb)) / sizeof(long)))
- #endif
- 
--/*
-- * Create a contiguous bitmask starting at bit position @l and ending at
-- * position @h. For example
-- * GENMASK_ULL(39, 21) gives us the 64bit vector 0x000000ffffe00000.
-- */
--#define GENMASK(h, l) \
--	(((~UL(0)) - (UL(1) << (l)) + 1) & \
--	 (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
--
--#define GENMASK_ULL(h, l) \
--	(((~ULL(0)) - (ULL(1) << (l)) + 1) & \
--	 (~ULL(0) >> (BITS_PER_LONG_LONG - 1 - (h))))
--
- #ifndef __ASSEMBLY__
- /*
-  * Include this here because some architectures need generic_ffs/fls in
-diff --git a/include/linux/bits.h b/include/linux/bits.h
+diff --git a/include/linux/instruction_pointer.h b/include/linux/instruction_pointer.h
 new file mode 100644
-index 000000000000..ea5dfa120102
+index 000000000000..6564127a31ba
 --- /dev/null
-+++ b/include/linux/bits.h
-@@ -0,0 +1,30 @@
++++ b/include/linux/instruction_pointer.h
+@@ -0,0 +1,11 @@
 +/* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __LINUX_BITS_H
-+#define __LINUX_BITS_H
++#ifndef _LINUX_INSTRUCTION_POINTER_H
++#define _LINUX_INSTRUCTION_POINTER_H
 +
-+#include <linux/types.h>
-+#include <linux/const.h>
-+#include <asm/bitsperlong.h>
++#define _RET_IP_		(unsigned long)__builtin_return_address(0)
 +
-+#define BIT(nr)			(UL(1) << (nr))
-+#define BIT_ULL(nr)		(ULL(1) << (nr))
-+#define BIT_MASK(nr)		(UL(1) << ((nr) % BITS_PER_LONG))
-+#define BIT_WORD(nr)		((nr) / BITS_PER_LONG)
-+#define BIT_ULL_MASK(nr)	(ULL(1) << ((nr) % BITS_PER_LONG_LONG))
-+#define BIT_ULL_WORD(nr)	((nr) / BITS_PER_LONG_LONG)
-+#define BITS_PER_BYTE		8
++#ifndef _THIS_IP_
++#define _THIS_IP_  ({ __label__ __here; __here: (unsigned long)&&__here; })
++#endif
 +
-+/*
-+ * Create a contiguous bitmask starting at bit position @l and ending at
-+ * position @h. For example
-+ * GENMASK_ULL(39, 21) gives us the 64bit vector 0x000000ffffe00000.
-+ */
-+#define GENMASK(h, l) \
-+	(((~UL(0)) - (UL(1) << (l)) + 1) & \
-+	 (~UL(0) >> (BITS_PER_LONG - 1 - (h))))
-+
-+#define GENMASK_ULL(h, l) \
-+	(((~ULL(0)) - (ULL(1) << (l)) + 1) & \
-+	 (~ULL(0) >> (BITS_PER_LONG_LONG - 1 - (h))))
-+
-+#endif	/* __LINUX_BITS_H */
++#endif /* _LINUX_INSTRUCTION_POINTER_H */
+diff --git a/include/linux/kernel.h b/include/linux/kernel.h
+index 0e4ba243915b..da6121888ebd 100644
+--- a/include/linux/kernel.h
++++ b/include/linux/kernel.h
+@@ -8,6 +8,7 @@
+ #include <linux/limits.h>
+ #include <linux/math64.h>
+ #include <linux/container_of.h>
++#include <linux/instruction_pointer.h>
+ #include <linux/minmax.h>
+ 
+ #define ALIGN(x, a)		__ALIGN_MASK(x, (typeof(x))(a) - 1)
+@@ -117,8 +118,6 @@ extern long long simple_strtoll(const char *,char **,unsigned int);
+ }							\
+ )
+ 
+-#define _RET_IP_             (unsigned long)__builtin_return_address(0)
+-
+ extern const char hex_asc[];
+ #define hex_asc_lo(x)	hex_asc[((x) & 0x0f)]
+ #define hex_asc_hi(x)	hex_asc[((x) & 0xf0) >> 4]
 -- 
 2.39.2
 
