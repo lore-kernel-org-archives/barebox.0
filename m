@@ -1,70 +1,69 @@
-Delivery-date: Wed, 22 Nov 2023 10:50:33 +0100
+Delivery-date: Wed, 22 Nov 2023 10:51:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5jsO-004BDE-2R
+	id 1r5jtY-004BGV-39
 	for lore@lore.pengutronix.de;
-	Wed, 22 Nov 2023 10:50:33 +0100
+	Wed, 22 Nov 2023 10:51:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5jsO-00047V-LJ
-	for lore@pengutronix.de; Wed, 22 Nov 2023 10:50:33 +0100
+	id 1r5jtY-0004Ut-Qr
+	for lore@pengutronix.de; Wed, 22 Nov 2023 10:51:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MV/xe9eVI6Fi0lPmSlAO6vlP51b6Nqv3zVkcuI8kItw=; b=OBGXOuuTmHPc95NHHjg8JQYFsZ
-	T4+1xRPi0OVstlposB21BmDzIGmT/ePP2dJCjc0E0yWh5RdLaIq0aWgexYpgiH9J74cWjMOR8Mpsm
-	ZiKU1aaOfmvCO2HKVBCIh60/+jGHqVnv2HgJi1h+1Rf18eVlXYJ/27zK+rJOoOg4JhqvJ0n0FYvMe
-	QY7dBds4iDL7orNrZj9Lz2Eo/F441vlzDPCY2XpokSFO6AXEb0u4GJ44oRn/VThjtpavXzRKq9DvI
-	I8BBA0iyF6rdA469fSQy63H3+/feyX5B+rA0wCFIDXR1xocxJcPxfyUyw/Dme5H1e/4/zW3P1wFAA
-	BPAb7LdA==;
+	bh=EGnlugr1E1EQop/QyBiwXFyw1OmHGArB1a5Qie2Ih5I=; b=FYbTa7Nl6tti2XIjFaATeOdBqU
+	C/anVN8wuEUkJqyeGrzbatAWg4UF8w+BlbL/nTyn/vq49w2mHs0pa4xLfUCBp4GFKsallsjlVXQ00
+	a7d/NUhnboQsi7krrnvxlq4+mfEupNDXZxrvc2fGvFIjjdA/e/lOGRyx6SQSsq482t2QprYhsi/qh
+	tPtQhmOUG+MRYtZTqGETopb7nI8eYcW0TC02XvD7MomZMgzO+ac5lKL2MlOGhyz8qBG/4fYrHYhXz
+	lKm1ws9NZeFLL9+7jnkZBL4GzKxgbMSt9ZqnvdzJcogh8S8yMsLWcapigJFKOFeYxVAEaNNFVmLXp
+	veHSWw0A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5jqk-001L32-1a;
-	Wed, 22 Nov 2023 09:48:50 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
+	id 1r5jqx-001LBc-1Y;
+	Wed, 22 Nov 2023 09:49:03 +0000
+Received: from algol.kleine-koenig.org ([2a01:4f8:c010:8611::2])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5jq4-001KEx-0I
+	id 1r5jq4-001KBK-1N
 	for barebox@lists.infradead.org;
-	Wed, 22 Nov 2023 09:48:18 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1r5jpu-0003E5-Vp; Wed, 22 Nov 2023 10:47:58 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1r5jpu-00AmUT-Di; Wed, 22 Nov 2023 10:47:58 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1r5jpu-005ayX-4W; Wed, 22 Nov 2023 10:47:58 +0100
+	Wed, 22 Nov 2023 09:48:19 +0000
+Received: by algol.kleine-koenig.org (Postfix, from userid 1000)
+	id 4CF14B9CB6C; Wed, 22 Nov 2023 10:47:58 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kleine-koenig.org;
+	s=2022; t=1700646478;
+	bh=lYcySPZ9k6e6I8wmMYGEpdYnEVapoXG29Db86yGY1Ck=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=bhtp7Zr7h1ZgL0wINfk2nLsIdhRMR+ro2DN30DuUDbOmaVzLFtLM9b8G2nUbM2n3C
+	 Zu65bGFxj86jQbbc88b+2GGF/x+zr3TC+B4iigxNv4/2m4HoIRdQOg02Eh2SR7Fqz2
+	 sIKAtEh7jlmKtZiFpxe9uazfz1UjT1WSeRQ9EgK1wyBGHIItokeSjMmH5yHGOFJMFg
+	 aQMf3K7rS53RGp3pNhMCJN6QzwdOcCHSkmLGI+U4QvrzDLhZ6rzI+pLGU8hwpOyx37
+	 2mdHJq7LOfVPEChcK9kr/b3G7hr06o8isUTSQ+w3YNTO/7P3xwkcF5FYKTddiYtnf0
+	 PkKMSJhHfePrA==
 From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>
 To: Sascha Hauer <sha@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Ahmad Fatoum <ahmad@a3f.at>,
+Cc: Ahmad Fatoum <ahmad@a3f.at>,
 	Alexander Shiyan <eagle.alexander923@gmail.com>,
 	Thorsten Scherer <T.Scherer@eckelmann.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
 	barebox@lists.infradead.org
-Date: Wed, 22 Nov 2023 10:47:49 +0100
-Message-ID: <20231122094747.340825-2-uwe@kleine-koenig.org>
+Date: Wed, 22 Nov 2023 10:47:50 +0100
+Message-ID: <20231122094747.340825-3-uwe@kleine-koenig.org>
 X-Mailer: git-send-email 2.42.0.586.gbc5204569f7d.dirty
 In-Reply-To: <20231122094747.340825-1-uwe@kleine-koenig.org>
 References: <20231122094747.340825-1-uwe@kleine-koenig.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5043; i=uwe@kleine-koenig.org; h=from:subject; bh=ksi6mhqW5nDSdW1iA9VBw7O0qaM7Pzhm/iJitKG69jk=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlXc5E2iCzTAn93hUDBCHkvEZp2JlCXS6jWNqkP PvfShVBPAyJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZV3ORAAKCRCPgPtYfRL+ ToCTCACjLZU7XtLQHBI9//QQlJuOGfv4HQbB0V6QNEAISEFOlPfXRRV242AJSExt7AJb0pJbquT p3Qgwz/PsXc3LCT8o8uaaLBa1OoE8Bvb/bwbtYVb4a30MsGGNfj4RB3nky46Ni7KnT6NxCq+xWJ 97uwerLzjWgitVv1hdda0n/rZkckivgBVdsQTjK+1wyi47JHdQqlhniZ5vikBvyWEFOyA/CSlAS nux8KQo0juTfL6ZBzot1o0IKMty0dTsNr2rZlegQM76MPIGxs72tD2ITYHeibKAF0U64ER7zK2J 9QjZWjp/8pTKhgMyWqzupZf34o0d7n0+wVshTGicPe1dHNyk
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5728; i=uwe@kleine-koenig.org; h=from:subject; bh=VJzkxrvOJUS7NajrlowzlnbkM9h0KTrjKseA4DFdTLU=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBlXc5FWX7Whw5kzexjXseQ3Xbrmf+bGOIUYfYjF nfTQcSvMhSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZV3ORQAKCRCPgPtYfRL+ Ti84CAC4ATVJ6mE2KL8rTyex5vKj1ghiHXZ9hFa0psvrGE5lzLYSyKL9MRHPlnVNaPjs53ZuoaX ZngnHNHbevTnHBFUnI5YpYmeB4qMUuiFNRXruMlYbk82TQ6OWOG4qXzUViHzk5J5G5Qj1JwLpOc ye1TcVcVfpWc7HFFbnMm13x7rW1tpUMik61YY7+skfW+YUgdUV3bxH9Bv8dc3ORIY1h7aXfPsjq s/0pfZ1QwYTUwwodPRBFr6h5vi4zZ55a+fCKwpAi/ECZi4+Eat4xU7WM6AUps7pHzhxVgbQjdYt VynOyaDqhLH0lOx80m87JoS37oeUlcIpVOHJUkdpLHvxOc2i
 X-Developer-Key: i=uwe@kleine-koenig.org; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_014808_154247_D217F5DA 
-X-CRM114-Status: GOOD (  20.55  )
+X-CRM114-CacheID: sfid-20231122_014809_289749_E4FDC642 
+X-CRM114-Status: GOOD (  18.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,198 +81,199 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 1/2] common: machine_id: support deriving app specific UUIDs
+Subject: [PATCH v3 2/2] net: add generic MAC address derivation from machine ID
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+From: Ahmad Fatoum <ahmad@a3f.at>
 
-libsystemd provides a sd_id128_get_machine_app_specific() function that
-allows deriving an application specific UUID without directly leaking
-the machine ID.
+Especially during development, devices often lack a MAC address. While a
+MAC address can be easily added to the environment:
 
-Let's provide an equivalent for barebox that will be used in a following
-commit to generate a stable MAC instead of randomizing it.
+  nv dev.eth0.ethaddr="aa:bb:cc:dd:ee:ff"
+
+It's easily lost when flashing complete new images, e.g. from CI.
+Make the development experience neater by deriving a stable MAC address
+if possible.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- common/machine_id.c  | 83 +++++++++++++++++++++++++++++++++++++++++++-
- include/linux/uuid.h |  8 +++++
- include/machine_id.h | 11 ++++++
- 3 files changed, 101 insertions(+), 1 deletion(-)
+ include/net.h |  2 ++
+ net/Kconfig   | 17 +++++++++++++++++
+ net/eth.c     | 15 ++++++++++++---
+ net/net.c     | 49 +++++++++++++++++++++++++++++++++++++++++++++++--
+ 4 files changed, 78 insertions(+), 5 deletions(-)
 
-diff --git a/common/machine_id.c b/common/machine_id.c
-index f0b148fb9b99..e670886d8538 100644
---- a/common/machine_id.c
-+++ b/common/machine_id.c
-@@ -13,6 +13,7 @@
+diff --git a/include/net.h b/include/net.h
+index a0ef8bee0404..de43c29f74ac 100644
+--- a/include/net.h
++++ b/include/net.h
+@@ -418,6 +418,8 @@ static inline int is_broadcast_ether_addr(const u8 *addr)
+ #define ETH_ALEN	6	/* Octets in an Ethernet address */
+ #define ETH_HLEN	14	/* Total octets in header.*/
  
- #define MACHINE_ID_LENGTH 32
++int generate_ether_addr(u8 *addr, int ethid);
++
+ /**
+  * random_ether_addr - Generate software assigned random Ethernet address
+  * @addr: Pointer to a six-byte array containing the Ethernet address
+diff --git a/net/Kconfig b/net/Kconfig
+index 59f14c23cba2..07e623670e22 100644
+--- a/net/Kconfig
++++ b/net/Kconfig
+@@ -6,6 +6,23 @@ menuconfig NET
  
-+static bool __machine_id_initialized;
- static void *__machine_id_hashable;
- static size_t __machine_id_hashable_length;
+ if NET
  
-@@ -22,13 +23,92 @@ const void *machine_id_get_hashable(size_t *len)
- 	return __machine_id_hashable;
++config NET_ETHADDR_FROM_MACHINE_ID
++	bool
++	prompt "generate stable Ethernet address"
++	depends on MACHINE_ID && HAVE_DIGEST_SHA256 && HAVE_DIGEST_HMAC
++	help
++	  By default, barebox will generate random Ethernet addresses for
++	  interfaces that had no explicit Ethernet address set via
++	  either board code or NVMEM properties in device tree.
++
++	  Say y here, to randomize Ethernet addresses only if no machine ID
++	  is available. Should barebox have a machine ID, it will be used
++	  alongside the hostname to generate MAC addresses that are unlikely
++	  to change between subsequent runs of barebox.
++
++	  This is not recommended for use in production as it may leak
++	  information about the machine ID.
++
+ config NET_NFS
+ 	bool
+ 	prompt "nfs support"
+diff --git a/net/eth.c b/net/eth.c
+index ccac5e2a6488..d1474ec57df3 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -10,6 +10,7 @@
+ #include <dhcp.h>
+ #include <net.h>
+ #include <dma.h>
++#include <machine_id.h>
+ #include <of.h>
+ #include <of_net.h>
+ #include <linux/phy.h>
+@@ -554,10 +555,11 @@ void eth_open_all(void)
+ 	}
  }
  
-+/**
-+ * machine_id_set_hashable - Provide per-board unique data
-+ * @hashable: Buffer
-+ * @len: size of buffer
-+ *
-+ * The data supplied to the last call of this function prior to
-+ * late_initcall will be hashed and stored into global.machine_id,
-+ * which can be later used for fixup into the kernel command line
-+ * or for deriving application specific unique IDs via
-+ * machine_id_get_app_specific().
-+ */
- void machine_id_set_hashable(const void *hashable, size_t len)
+-static int of_populate_ethaddr(void)
++static int populate_ethaddr(void)
  {
--
- 	__machine_id_hashable = xmemdup(hashable, len);
- 	__machine_id_hashable_length = len;
+ 	char str[sizeof("xx:xx:xx:xx:xx:xx")];
+ 	struct eth_device *edev;
++	bool generated = false;
+ 	int ret;
+ 
+ 	list_for_each_entry(edev, &netdev_list, list) {
+@@ -566,14 +568,21 @@ static int of_populate_ethaddr(void)
+ 
+ 		ret = of_get_mac_addr_nvmem(edev->parent->of_node,
+ 					    edev->ethaddr);
++		if (IS_ENABLED(CONFIG_NET_ETHADDR_FROM_MACHINE_ID) && ret) {
++			ret = generate_ether_addr(edev->ethaddr, edev->dev.id);
++			generated = true;
++		}
+ 		if (ret)
+ 			continue;
+ 
+ 		ethaddr_to_string(edev->ethaddr, str);
+-		dev_info(&edev->dev, "Got preset MAC address from device tree: %s\n", str);
++		if (generated)
++			dev_notice(&edev->dev, "Generated MAC address from unique id: %s\n", str);
++		else
++			dev_info(&edev->dev, "Got preset MAC address from NVMEM: %s\n", str);
+ 		eth_set_ethaddr(edev, edev->ethaddr);
+ 	}
+ 
+ 	return 0;
  }
+-postenvironment_initcall(of_populate_ethaddr);
++postenvironment_initcall(populate_ethaddr);
+diff --git a/net/net.c b/net/net.c
+index bf2117ff7ec2..e38179491d7a 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -25,6 +25,7 @@
+ #include <init.h>
+ #include <globalvar.h>
+ #include <magicvar.h>
++#include <machine_id.h>
+ #include <linux/ctype.h>
+ #include <linux/err.h>
+ 
+@@ -365,6 +366,43 @@ IPaddr_t net_get_gateway(void)
+ 
+ static LIST_HEAD(connection_list);
  
 +/**
-+ * machine_id_get_app_specific - Generates an application-specific UUID
-+ * @result: UUID output of the function
-+ * @...: pairs of (const void *, size_t) arguments of data to factor
-+ * into the UUID followed by a NULL sentinel value.
++ * generate_ether_addr - Generates stable software assigned Ethernet address
++ * @addr: Pointer to a six-byte array to contain the Ethernet address
++ * @ethid: index of the Ethernet interface
 + *
-+ * Combines the machine ID with the application specific varargs data
-+ * to arrive at an application-specific and board-specific UUID that is
-+ * stable and unique.
++ * Derives an Ethernet address (MAC) from the machine ID, that's stable
++ * per board that is not multicast and has the local assigned bit set.
 + *
-+ * The function returns 0 if a UUID was successfully written into @result
-+ * and a negative error code otherwise.
++ * Return 0 if an address could be generated or a negative error code otherwise.
 + */
-+int machine_id_get_app_specific(uuid_t *result, ...)
++int generate_ether_addr(u8 *ethaddr, int ethid)
 +{
-+	static u8 hmac[SHA256_DIGEST_SIZE];
-+	const void *data;
-+	size_t size;
-+	va_list args;
-+	struct digest *d;
++	const char *hostname;
++	uuid_t id;
 +	int ret;
 +
-+	if (!__machine_id_initialized)
-+		return -ENODATA;
-+
-+	d = digest_alloc("hmac(sha256)");
-+	if (!d)
++	if (!IS_ENABLED(CONFIG_NET_ETHADDR_FROM_MACHINE_ID))
 +		return -ENOSYS;
 +
-+	ret = digest_set_key(d, __machine_id_hashable, __machine_id_hashable_length);
++	hostname = barebox_get_hostname();
++	if (!hostname)
++		return -EINVAL;
++
++	ret = machine_id_get_app_specific(&id, ARRAY_AND_SIZE("barebox-macaddr:"),
++					  hostname, strlen(hostname), NULL);
 +	if (ret)
-+		goto out;
++		return ret;
 +
-+	ret = digest_init(d);
-+	if (ret)
-+		goto out;
++	memcpy(ethaddr, &id.b, ETH_ALEN);
++	eth_addr_add(ethaddr, ethid);
 +
-+	ret = -ENODATA;
++	ethaddr[0] &= 0xfe;	/* clear multicast bit */
++	ethaddr[0] |= 0x02;	/* set local assignment bit (IEEE802) */
 +
-+	va_start(args, result);
++	return 0;
++}
 +
-+	while ((data = va_arg(args, const void *))) {
-+		size = va_arg(args, size_t);
+ static struct net_connection *net_new(struct eth_device *edev, IPaddr_t dest,
+ 				      rx_handler_f *handler, void *ctx)
+ {
+@@ -381,9 +419,16 @@ static struct net_connection *net_new(struct eth_device *edev, IPaddr_t dest,
+ 
+ 	if (!is_valid_ether_addr(edev->ethaddr)) {
+ 		char str[sizeof("xx:xx:xx:xx:xx:xx")];
+-		random_ether_addr(edev->ethaddr);
 +
-+		ret = digest_update(d, data, size);
++		ret = generate_ether_addr(edev->ethaddr, edev->dev.id);
 +		if (ret)
-+			break;
-+	}
++			random_ether_addr(edev->ethaddr);
 +
-+	va_end(args);
+ 		ethaddr_to_string(edev->ethaddr, str);
+-		dev_warn(&edev->dev, "No MAC address set. Using random address %s\n", str);
 +
-+	if (ret)
-+		goto out;
-+
-+	ret = digest_final(d, hmac);
-+	if (ret)
-+		goto out;
-+
-+	/* Take only the first half. */
-+	memcpy(result, hmac, min(sizeof(hmac), sizeof(*result)));
-+
-+	uuid_make_v4(result);
-+
-+out:
-+	digest_free(d);
-+
-+	return ret;
-+}
-+
- static int machine_id_set_globalvar(void)
- {
- 	struct digest *digest = NULL;
-@@ -66,6 +146,7 @@ static int machine_id_set_globalvar(void)
- 	env_machine_id = basprintf("%.*s", MACHINE_ID_LENGTH, hex_machine_id);
- 	globalvar_add_simple("machine_id", env_machine_id);
- 	free(env_machine_id);
-+	__machine_id_initialized = true;
++		dev_warn(&edev->dev, "No MAC address set. Using %s %s\n",
++			 ret == 1 ? "address computed from unique ID" : "random address",
++			 str);
+ 		eth_set_ethaddr(edev, edev->ethaddr);
+ 	}
  
- out:
- 	digest_free(digest);
-diff --git a/include/linux/uuid.h b/include/linux/uuid.h
-index 6b1a3efa1e0b..1e4ffb343452 100644
---- a/include/linux/uuid.h
-+++ b/include/linux/uuid.h
-@@ -107,6 +107,14 @@ extern const u8 uuid_index[16];
- int guid_parse(const char *uuid, guid_t *u);
- int uuid_parse(const char *uuid, uuid_t *u);
- 
-+static inline void uuid_make_v4(uuid_t *u) {
-+	/* Set UUID version to 4 --- truly random generation */
-+	u->b[6] = (u->b[6] & 0x0F) | 0x40;
-+
-+	/* Set the UUID variant to DCE */
-+	u->b[8] = (u->b[8] & 0x3F) | 0x80;
-+}
-+
- /* MEI UUID type, don't use anywhere else */
- #include <uapi/linux/uuid.h>
- 
-diff --git a/include/machine_id.h b/include/machine_id.h
-index 9699e7f2072b..29600483ddc5 100644
---- a/include/machine_id.h
-+++ b/include/machine_id.h
-@@ -3,11 +3,15 @@
- #ifndef __MACHINE_ID_H__
- #define __MACHINE_ID_H__
- 
-+#include <linux/types.h>
-+#include <linux/uuid.h>
-+
- #if IS_ENABLED(CONFIG_MACHINE_ID)
- 
- const void *machine_id_get_hashable(size_t *len);
- 
- void machine_id_set_hashable(const void *hashable, size_t len);
-+int machine_id_get_app_specific(uuid_t *result, ...) __attribute__((__sentinel__));
- 
- #else
- 
-@@ -20,6 +24,13 @@ static inline void machine_id_set_hashable(const void *hashable, size_t len)
- {
- }
- 
-+static inline int machine_id_get_app_specific(uuid_t *result, ...)
-+	__attribute__((__sentinel__));
-+static inline int machine_id_get_app_specific(uuid_t *result, ...)
-+{
-+	return -ENOSYS;
-+}
-+
- #endif /* CONFIG_MACHINE_ID */
- 
- #endif  /* __MACHINE_ID_H__ */
 -- 
 2.42.0
 
