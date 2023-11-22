@@ -1,71 +1,64 @@
-Delivery-date: Wed, 22 Nov 2023 16:27:03 +0100
+Delivery-date: Wed, 22 Nov 2023 16:56:22 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5p83-004ViR-18
+	id 1r5paQ-004XaH-0F
 	for lore@lore.pengutronix.de;
-	Wed, 22 Nov 2023 16:27:03 +0100
+	Wed, 22 Nov 2023 16:56:22 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5p83-0001y9-CN
-	for lore@pengutronix.de; Wed, 22 Nov 2023 16:27:03 +0100
+	id 1r5paQ-0001Xd-4u
+	for lore@pengutronix.de; Wed, 22 Nov 2023 16:56:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=02tqWPrz/Qkav/rqxHXeBU67a/yjbHhnVlm8AvgY2qs=; b=ibkU6YyQgrS99LsmiTqBxRIYvG
-	fGr4CL0a2kDt381oMpvR3PtYmOOV4DG5b9LTiPS1QKa3RFO9AX5ZtxoDtCl5+Ls6krG+aGAGLpRvX
-	Qe8sk6Wa7XgPtXt+0ZGZhm0lwwh5CndPfd+VU5N8T5uCtycCDsApX49T5iIWSLdTFiZAVa+7uiWOR
-	FnVIMviWk7/DppZfmONGQKuHPcUcubYn4TKh0pOyqPJCjeRAfANUbdvr2a/nWoMKHwXW4MlWPNp8D
-	3RreUiV5hOH8AfjD+FCGVEsrmYQetiHZ51gBlvPpfo5Pqt3pVzzpFG7Z1cdv1Mrc/r3Tz2jbkyEjg
-	dGC8HP7Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=hQVDrFJ2p53BOCHBrrN8aH4qPG2jAGZZVhrAfgbQhJE=; b=Bl6aMiAUUHuczjaloNP/RjBT2G
+	dST9CFQRxsQ5vBtTJZJEI9u6bxGe+GS2G3QkoQuimKGCrOKK+X+FPFG3Sg28qlh/Y/MLT8FNgHx8A
+	c1ENS0dV1k1o/8sWTClgMHVzRiRTvbG2mML5V/lUK85QQEV8cPtCY5QMTwJI87yYhT6EVwKN4cvQy
+	ICHs4SJTKI6jNPZDbHsvx2wO0l6hEGHgRXyA8woCU3G7dwq/0ZXcX0TDpMf4iMim6v//ynBuOVtKX
+	RGDz2kIr4dLh5posKN3tWad4SooTvbgolwH3l93l/9dyYjT0cCd3LcpS/r5ccAKzPORbn0FU1ad8X
+	Fk0M5BPA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5p6t-002FNt-0m;
-	Wed, 22 Nov 2023 15:25:51 +0000
+	id 1r5pZ0-002MCE-0X;
+	Wed, 22 Nov 2023 15:54:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5p6q-002FMr-18
+	id 1r5pYv-002MBB-33
 	for barebox@lists.infradead.org;
-	Wed, 22 Nov 2023 15:25:49 +0000
+	Wed, 22 Nov 2023 15:54:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r5p6p-0001ew-5l; Wed, 22 Nov 2023 16:25:47 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r5pYr-0001BR-IJ; Wed, 22 Nov 2023 16:54:45 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r5p6o-00AqJI-PO; Wed, 22 Nov 2023 16:25:46 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r5p6o-003JuS-N8; Wed, 22 Nov 2023 16:25:46 +0100
-Date: Wed, 22 Nov 2023 16:25:46 +0100
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20231122152546.GB3359458@pengutronix.de>
-References: <20231122094813.qlw2avhut44datru@pengutronix.de>
- <20231122095114.3051661-1-rhi@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r5pYr-00AqPq-64; Wed, 22 Nov 2023 16:54:45 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r5pYr-006Cmi-0G;
+	Wed, 22 Nov 2023 16:54:45 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 22 Nov 2023 16:54:43 +0100
+Message-Id: <20231122155443.1446732-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-15
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20231122095114.3051661-1-rhi@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_072548_387856_20EEDA24 
-X-CRM114-Status: GOOD (  19.56  )
+X-CRM114-CacheID: sfid-20231122_075449_981452_CFDF5862 
+X-CRM114-Status: GOOD (  10.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,54 +81,48 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2] Documentation: dt-bindings: leds: document
- 'default-on' trigger
+Subject: [PATCH] fixup! test: self: add JSON Web Token tests
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Nov 22, 2023 at 10:51:14AM +0100, Roland Hieber wrote:
-> The default-on trigger has been supported in barebox since commit
-> 767c6b4a814a2a000f3b (2014-02-28, Sascha Hauer: "led: Add default-on
-> trigger").
-> 
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-> ---
-> PATCH v2:
->  * change U+2013 EN DASH to U+002D HYPHEN-MINUS to be consistent
->    with the rest of the list (feedback from Ulrich Ölmann)
-> 
-> PATCH v1: https://lore.barebox.org/barebox/20231121162009.160644-1-rhi@pengutronix.de
-> ---
->  Documentation/devicetree/bindings/leds/common.rst | 1 +
->  1 file changed, 1 insertion(+)
+test: self: jwt: use barebox_set_loglevel
 
-Applied, thanks
+For CONFIG_CONSOLE_SIMPLE or CONFIG_CONSOLE_FULL, this is equivalent,
+but for CONFIG_CONSOLE_NONE, this fixes a linker error as
+barebox_loglevel isn't defined in that case.
 
-Sascha
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - send as fixup instead of a patch as fixed commit is still in next
+---
+ test/self/jwt.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-> 
-> diff --git a/Documentation/devicetree/bindings/leds/common.rst b/Documentation/devicetree/bindings/leds/common.rst
-> index 09b4e401bc2c..8bf41f0d649b 100644
-> --- a/Documentation/devicetree/bindings/leds/common.rst
-> +++ b/Documentation/devicetree/bindings/leds/common.rst
-> @@ -9,6 +9,7 @@ Common leds properties
->      * ``net`` - LED indicates network activity (tx and rx)
->      * ``net-rx`` - LED indicates network activity (rx only)
->      * ``net-tx`` - LED indicates network activity (tx only)
-> +    * ``default-on`` - LED is switched on by default
->  
->  * ``label``: The label for this LED. If omitted, the label is taken
->    from the node name (excluding the unit address).
-> -- 
-> 2.39.2
-> 
-> 
-> 
-
+diff --git a/test/self/jwt.c b/test/self/jwt.c
+index f37b44be22b8..015a0e436736 100644
+--- a/test/self/jwt.c
++++ b/test/self/jwt.c
+@@ -97,8 +97,7 @@ static void test_jwt(void)
+ 	 * noisy, so we decrease logging a bit during their run
+ 	 */
+ 
+-	old_loglevel = barebox_loglevel;
+-	barebox_loglevel = MSG_CRIT;
++	old_loglevel = barebox_set_loglevel(MSG_CRIT);
+ 
+ 	jwt_rs256_mangled = strdup(jwt_rs256);
+ 	ch = &jwt_rs256_mangled[strlen(jwt_rs256_mangled) - 1];
+@@ -152,6 +151,6 @@ static void test_jwt(void)
+ 		jwt_free(jwt);
+ 	}
+ 
+-	barebox_loglevel = old_loglevel;
++	barebox_set_loglevel(old_loglevel);
+ }
+ bselftest(parser, test_jwt);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
