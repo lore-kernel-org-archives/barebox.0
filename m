@@ -1,60 +1,66 @@
-Delivery-date: Wed, 22 Nov 2023 17:11:08 +0100
+Delivery-date: Wed, 22 Nov 2023 18:01:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5poi-004YcA-10
+	id 1r5qbg-004bKD-1d
 	for lore@lore.pengutronix.de;
-	Wed, 22 Nov 2023 17:11:08 +0100
+	Wed, 22 Nov 2023 18:01:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5poi-0004wj-9i
-	for lore@pengutronix.de; Wed, 22 Nov 2023 17:11:08 +0100
+	id 1r5qbg-0000zD-Ht
+	for lore@pengutronix.de; Wed, 22 Nov 2023 18:01:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=e2Y+9MKHFUxspImlfBjgTMIOo9ENvx3+LL6SsZXYlnk=; b=Sqg77yaNE/Fasnp+6UTqb9jFHc
-	gt/3pk0vWtHjBoWAUHzD2YOj7WxSHVmq8AJ9FrBaOwcSACcGa0k1gBpVWaBSln083jwNvZoMIUTxU
-	ZkgX1ItfB9vS9ZVZ5wSp6odHHmiIUI3kFI1DjtD4EW9ZEuuec/YGGFdEzxhMM7KCH5T0ZazY9JkLt
-	doznCxgIlvY18BuThLvBRUwjoTwkQ5m8HqzkiD/1YpaWaKVZOfmEzmIQqGqUZKFpR16UTTmXL14CC
-	I3grB4vYBw9DxUsQP9wp5smPOdDohviwD7dP2WtZsHyw71F7vbVaHx2+b20N8+JUODzy/OAMvi6yc
-	G5bSh6IQ==;
+	bh=OA2yE3OoOtbkkjvKPn/1mRe54e0XgvVdwKw0AcG86B0=; b=hhBCT+AQ1M8sPLm8oAYicudcn2
+	0M93fgh5PKXAYdddXL3KLn4lJwzFNL0VxrJ7oImjvn9aU0a2Uwn18VmDgMHbJj+vNuvMm4ng22zcC
+	fvD7UIXJ9exB5KNLp8qYxCux3MeaeoMjnsZX2yRbWEgTh9810lAW9kE4eStSfQGzbMwHA1koUY+2X
+	BxvfVXrrBGnrEbWvti/oiZxVvxNCBOLkULeAiz8GssAh1QjX0SpRz9FjIDoQi785nTGTsbeCSMC1/
+	7pCjsfboTzFVpeDi7EnhCmr9Ru353DkTpFpVH8Qf8KZB3STEaMWMziZojqAqohaAehRT2s1GlTtAH
+	NFiZHHcA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5pnN-002NzW-1l;
-	Wed, 22 Nov 2023 16:09:45 +0000
+	id 1r5qaK-002b6c-3D;
+	Wed, 22 Nov 2023 17:00:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5pnJ-002Nyi-1V
+	id 1r5qaH-002b4I-2D
 	for barebox@lists.infradead.org;
-	Wed, 22 Nov 2023 16:09:42 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Wed, 22 Nov 2023 17:00:19 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5pnH-0004cU-J6; Wed, 22 Nov 2023 17:09:39 +0100
-Message-ID: <905d5333-e2f4-0485-7483-f2f6d0ea110a@pengutronix.de>
-Date: Wed, 22 Nov 2023 17:09:39 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20231120083750.3967831-1-a.fatoum@pengutronix.de>
- <20231120083750.3967831-2-a.fatoum@pengutronix.de>
- <20231121073622.GN3359458@pengutronix.de>
+	id 1r5qaE-0000Gu-4R; Wed, 22 Nov 2023 18:00:14 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r5qaD-00Aqz3-O9; Wed, 22 Nov 2023 18:00:13 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r5qaD-00GFMW-26;
+	Wed, 22 Nov 2023 18:00:13 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20231121073622.GN3359458@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 22 Nov 2023 18:00:07 +0100
+Message-Id: <20231122170007.3849506-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231122170007.3849506-1-a.fatoum@pengutronix.de>
+References: <20231122170007.3849506-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_080941_500509_74B00058 
-X-CRM114-Status: GOOD (  24.69  )
+X-CRM114-CacheID: sfid-20231122_090017_723933_1560BBBB 
+X-CRM114-Status: GOOD (  13.86  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,125 +78,96 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH RFC 2/3] libfile: implement read_fd counterpart to
- read_file
+Subject: [PATCH 2/2] dlmalloc: populate errno on error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 21.11.23 08:36, Sascha Hauer wrote:
-> On Mon, Nov 20, 2023 at 09:37:49AM +0100, Ahmad Fatoum wrote:
->> Files opened with O_TMPFILE have no name, so read_file can't be used
->> with them. Therefore add a read_fd function, which slurps all a file's
->> contents into a buffer.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  include/libfile.h |  2 ++
->>  lib/libfile.c     | 44 ++++++++++++++++++++++++++++++++++++++++++++
->>  2 files changed, 46 insertions(+)
->>
->> diff --git a/include/libfile.h b/include/libfile.h
->> index a353ccfa9ea9..423e7ffec5b7 100644
->> --- a/include/libfile.h
->> +++ b/include/libfile.h
->> @@ -12,6 +12,8 @@ char *read_file_line(const char *fmt, ...);
->>  
->>  void *read_file(const char *filename, size_t *size);
->>  
->> +void *read_fd(int fd, size_t *size);
->> +
->>  int read_file_2(const char *filename, size_t *size, void **outbuf,
->>  		loff_t max_size);
->>  
->> diff --git a/lib/libfile.c b/lib/libfile.c
->> index e53ba08415a2..c257baaa2733 100644
->> --- a/lib/libfile.c
->> +++ b/lib/libfile.c
->> @@ -306,6 +306,50 @@ void *read_file(const char *filename, size_t *size)
->>  }
->>  EXPORT_SYMBOL(read_file);
->>  
->> +/**
->> + * read_fd - read from a file descriptor to an allocated buffer
->> + * @filename:  The file descriptor to read
->> + * @size:      After successful return contains the size of the file
->> + *
->> + * This function reads a file descriptor from offset 0 until EOF to an
->> + * allocated buffer.
->> + *
->> + * Return: The buffer containing the file or NULL on failure
->> + */
->> +void *read_fd(int fd, size_t *out_size)
->> +{
->> +	off_t off;
->> +	ssize_t ret;
->> +	size_t size;
->> +	void *buf;
->> +
->> +	off = lseek(fd, SEEK_CUR, 0);
-> 
-> You lseek to the current position. It seems you are trying to determine
-> the size of the file, so did you mean to use SEEK_END?
-> 
-> You could use fstat() instead. With that you could also correctly handle
-> FILE_SIZE_STREAM.
+TLSF already populates errno on errors, so do likewise for the
+allocators that don't.
 
-Will use fstat, thanks.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ common/dlmalloc.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-> 
->> +	if (off >= 0) {
->> +		size = off;
->> +		off = lseek(fd, SEEK_SET, 0);
->> +	}
->> +	if (off < 0) {
->> +		ret = off;
->> +		goto close_fd;
->> +	}
->> +
->> +	buf = malloc(size + 3);
->> +	ret = read_full(fd, buf, size);
-> 
-> You can use pread_full() here to avoid having to lseek to the beginning
-> of the file.
-
-Ok, will do.
-
-> 
->> +	if (ret < 0) {
->> +		free(buf);
->> +		goto close_fd;
->> +	}
->> +
->> +	memset(&buf[size], '\0', 3);
->> +	*out_size = size;
->> +
->> +close_fd:
->> +	close(fd);
->> +
->> +	return ret < 0 ? NULL : buf;
-> 
-> Return an error pointer or an error integer and pass buf as argument?
-
-I want it to return a buffer like read_file does. I think that would
-be the least surprising API.
-
-Cheers,
-Ahmad
-
-> 
-> Sascha
-> 
-
+diff --git a/common/dlmalloc.c b/common/dlmalloc.c
+index c634fb1997a5..c41487d54b4a 100644
+--- a/common/dlmalloc.c
++++ b/common/dlmalloc.c
+@@ -1,5 +1,6 @@
+ 
+ #include <config.h>
++#include <errno.h>
+ #include <malloc.h>
+ #include <string.h>
+ #include <memory.h>
+@@ -1167,8 +1168,10 @@ void *malloc(size_t bytes)
+ 
+ 	INTERNAL_SIZE_T nb;
+ 
+-	if ((long) bytes < 0)
++	if ((long) bytes < 0) {
++		errno = ENOMEM;
+ 		return NULL;
++	}
+ 
+ 	nb = request2size(bytes); /* padded request size; */
+ 
+@@ -1322,8 +1325,10 @@ void *malloc(size_t bytes)
+ 	if ((remainder_size = chunksize (top) - nb) < (long) MINSIZE) {
+ 		/* Try to extend */
+ 		malloc_extend_top(nb);
+-		if ((remainder_size = chunksize(top) - nb) < (long) MINSIZE)
++		if ((remainder_size = chunksize(top) - nb) < (long) MINSIZE) {
++			errno = ENOMEM;
+ 			return NULL;	/* propagate failure */
++		}
+ 	}
+ 
+ 	victim = top;
+@@ -1487,8 +1492,10 @@ void *realloc(void *oldmem, size_t bytes)
+ 	}
+ #endif
+ 
+-	if ((long)bytes < 0)
++	if ((long)bytes < 0) {
++		errno = ENOMEM;
+ 		return NULL;
++	}
+ 
+ 	/* realloc of null is supposed to be same as malloc */
+ 	if (!oldmem)
+@@ -1654,8 +1661,10 @@ void *memalign(size_t alignment, size_t bytes)
+ 	mchunkptr remainder;	/* spare room at end to split off */
+ 	long remainder_size;	/* its size */
+ 
+-	if ((long) bytes < 0)
++	if ((long) bytes < 0) {
++		errno = ENOMEM;
+ 		return NULL;
++	}
+ 
+ 	/* If need less alignment than we give anyway, just relay to malloc */
+ 
+@@ -1737,8 +1746,10 @@ void *calloc(size_t n, size_t elem_size)
+ 	mchunkptr oldtop = top;
+ 	INTERNAL_SIZE_T oldtopsize = chunksize(top);
+ 
+-	if ((long)n < 0)
++	if ((long)n < 0) {
++		errno = ENOMEM;
+ 		return NULL;
++	}
+ 
+ 	mem = malloc(sz);
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
