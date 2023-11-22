@@ -1,66 +1,66 @@
-Delivery-date: Wed, 22 Nov 2023 18:31:41 +0100
+Delivery-date: Wed, 22 Nov 2023 18:31:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5r4e-004dk8-3C
+	id 1r5r4j-004dl1-0b
 	for lore@lore.pengutronix.de;
-	Wed, 22 Nov 2023 18:31:41 +0100
+	Wed, 22 Nov 2023 18:31:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5r4e-0008KZ-J2
-	for lore@pengutronix.de; Wed, 22 Nov 2023 18:31:41 +0100
+	id 1r5r4i-0008Mq-8u
+	for lore@pengutronix.de; Wed, 22 Nov 2023 18:31:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9/YsH4YB0YdGS1bM0hkWVbNkjcHJFPMQBX109fIv0v8=; b=YFXuRlBiTJ77biC2q5+obrtOC1
-	qdgnwldI90XDWWqf+1umAH2R4PkA8Caa7bDjKgEBueh+d6joJyyj5m7vkj4JF9o0i2zwoSuBTGvlL
-	F1iZd5XW9XX9mWQKfz4owtQppdG/Of3RjOQP8DbAwb4tZAC9BbNAqi9E6k0g7C92l8B53iHsQVcuu
-	r/2wKJ6cq3iGC51j9/QlkyiPPyzuqiYJo/GFPUF8UJ0LrkcLo5bLx5aVRkAX9mQ3PDR+iT3qMSKEw
-	cHfgk4nLDl8Gago+2GpN0IW82YnxN1EB+GHlB3qzqLnW+W3q/GMpVblqvez+mdDkv0Yp+z53PhswT
-	/aibEVwg==;
+	bh=L4IwUePEiNgsvPynxAhgvN4Xl0h/majdIuC7MW+hBEk=; b=dCCi2Q+q4S3Puc9ZBFY6hAe8wj
+	9kIMDyfrYr6lY8XaZDuiNGe/btdFuGwhQt0OlQv5fH2rpS1SOQDspoDheDLKBOZQ/+MCbgSYBCuyb
+	ZqMf1mZRVQ6dmp1R1HN5kp8vGb1naUJyHNcTG8QkkiLee77hhQSkbBS08KZZnvB22NnvDe0BWKTlJ
+	HyQ4pu2CdDsJhqwO789bn6fLHBfL7yExmuY/OpLnEAqdUE2hpSx1EtJuAU5HR8g83l95p8T56Qrwa
+	3qixcVAh2nwyJgb6NM72a1cQxUwfYXM4gVeoGGFZ52jRZoER0+e3HB2nkoJlAcnbvcmV0SG00Xb+A
+	i35R2stg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5r3G-002fEK-2U;
-	Wed, 22 Nov 2023 17:30:14 +0000
+	id 1r5r3F-002fDN-0y;
+	Wed, 22 Nov 2023 17:30:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5r3D-002fBv-21
+	id 1r5r35-002f7w-1V
 	for barebox@lists.infradead.org;
-	Wed, 22 Nov 2023 17:30:13 +0000
+	Wed, 22 Nov 2023 17:30:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r34-0007TK-Fq; Wed, 22 Nov 2023 18:30:02 +0100
+	id 1r5r34-0007Sw-6a; Wed, 22 Nov 2023 18:30:02 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r34-00ArT1-1O; Wed, 22 Nov 2023 18:30:02 +0100
+	id 1r5r33-00ArSm-Pa; Wed, 22 Nov 2023 18:30:01 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r33-001lAy-33;
+	id 1r5r33-001lAy-2F;
 	Wed, 22 Nov 2023 18:30:01 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 22 Nov 2023 18:29:38 +0100
-Message-Id: <20231122172951.376531-8-a.fatoum@pengutronix.de>
+Date: Wed, 22 Nov 2023 18:29:33 +0100
+Message-Id: <20231122172951.376531-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 References: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_093011_816930_B7D351C2 
-X-CRM114-Status: GOOD (  15.56  )
+X-CRM114-CacheID: sfid-20231122_093003_806031_C2EA38E1 
+X-CRM114-Status: GOOD (  34.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,280 +83,635 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 07/20] include: add linux/io.h with strict prototypes
+Subject: [PATCH v2 02/20] include: add linux/refcount.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Kernel code uses <linux/io.h> instead of <io.h>, which defines readl and
-friends as functions with type checks instead of macros that just cast
-everything to pointers. Let's provide <linux/io.h> to ease porting as
-well and have it have the same semantics.
+For complex interactions, especially in communication protocols, it can
+be beneficial to keep the reference counts used in the Linux drivers as
+is to avoid resource leaks or use-after-frees.
 
-Eventually, we should be able to get switch <io.h> to include
-<linux/io.h> once all in-tree users are migrated.
+Provide a simplified kref and refcount API to facilitate this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
   - unchanged
 ---
- include/asm-generic/io.h | 217 +++++++++++++++++++++++++++++++++++++--
- include/linux/io.h       |   9 ++
- 2 files changed, 218 insertions(+), 8 deletions(-)
- create mode 100644 include/linux/io.h
+ include/asm-generic/cmpxchg-local.h |  64 +++++++
+ include/asm-generic/cmpxchg.h       |  26 +++
+ include/linux/atomic.h              |  63 +++++++
+ include/linux/kref.h                |  90 +++++++++
+ include/linux/refcount.h            | 271 ++++++++++++++++++++++++++++
+ lib/Makefile                        |   1 +
+ lib/refcount.c                      |  34 ++++
+ 7 files changed, 549 insertions(+)
+ create mode 100644 include/asm-generic/cmpxchg-local.h
+ create mode 100644 include/asm-generic/cmpxchg.h
+ create mode 100644 include/linux/kref.h
+ create mode 100644 include/linux/refcount.h
+ create mode 100644 lib/refcount.c
 
-diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
-index b118979ed1df..123ad5488ffc 100644
---- a/include/asm-generic/io.h
-+++ b/include/asm-generic/io.h
-@@ -13,23 +13,224 @@
- 
- #include <linux/string.h> /* for memset() and memcpy() */
- #include <linux/compiler.h>
-+#include <linux/instruction_pointer.h>
- #include <linux/types.h>
- #include <asm/byteorder.h>
-+
-+#ifndef __LINUX_IO_STRICT_PROTOTYPES__
- #include <asm-generic/io-typeconfused.h>
-+#endif
-+
-+#define __io_br()      barrier()
-+#define __io_ar(v)      barrier()
-+#define __io_bw()      barrier()
-+#define __io_pbw()     __io_bw()
-+#define __io_paw()     __io_aw()
-+#define __io_aw()      do { } while (0)
-+#define __io_pbr()     __io_br()
-+#define __io_par(v)     __io_ar(v)
-+
-+static inline void log_write_mmio(u64 val, u8 width, volatile void __iomem *addr,
-+				  unsigned long caller_addr, unsigned long caller_addr0) {}
-+static inline void log_post_write_mmio(u64 val, u8 width, volatile void __iomem *addr,
-+				       unsigned long caller_addr, unsigned long caller_addr0) {}
-+static inline void log_read_mmio(u8 width, const volatile void __iomem *addr,
-+				 unsigned long caller_addr, unsigned long caller_addr0) {}
-+static inline void log_post_read_mmio(u64 val, u8 width, const volatile void __iomem *addr,
-+				      unsigned long caller_addr, unsigned long caller_addr0) {}
-+
-+/*
-+ * __raw_{read,write}{b,w,l,q}() access memory in native endianness.
-+ *
-+ * On some architectures memory mapped IO needs to be accessed differently.
-+ * On the simple architectures, we just read/write the memory location
-+ * directly.
-+ */
-+
-+#ifndef __raw_readb
-+#define __raw_readb __raw_readb
-+static inline u8 __raw_readb(const volatile void __iomem *addr)
-+{
-+	return *(const volatile u8 __force *)addr;
-+}
-+#endif
-+
-+#ifndef __raw_readw
-+#define __raw_readw __raw_readw
-+static inline u16 __raw_readw(const volatile void __iomem *addr)
-+{
-+	return *(const volatile u16 __force *)addr;
-+}
-+#endif
-+
-+#ifndef __raw_readl
-+#define __raw_readl __raw_readl
-+static inline u32 __raw_readl(const volatile void __iomem *addr)
-+{
-+	return *(const volatile u32 __force *)addr;
-+}
-+#endif
- 
- #ifdef CONFIG_64BIT
-+#ifndef __raw_readq
-+#define __raw_readq __raw_readq
- static inline u64 __raw_readq(const volatile void __iomem *addr)
- {
--	return *(const volatile u64 __force *) addr;
-+	return *(const volatile u64 __force *)addr;
- }
--#define readq(addr) __le64_to_cpu(__raw_readq(addr))
--
--static inline void __raw_writeq(u64 b, volatile void __iomem *addr)
--{
--	*(volatile u64 __force *) addr = b;
--}
--#define writeq(b,addr) __raw_writeq(__cpu_to_le64(b),addr)
- #endif
-+#endif /* CONFIG_64BIT */
-+
-+#ifndef __raw_writeb
-+#define __raw_writeb __raw_writeb
-+static inline void __raw_writeb(u8 value, volatile void __iomem *addr)
-+{
-+	*(volatile u8 __force *)addr = value;
-+}
-+#endif
-+
-+#ifndef __raw_writew
-+#define __raw_writew __raw_writew
-+static inline void __raw_writew(u16 value, volatile void __iomem *addr)
-+{
-+	*(volatile u16 __force *)addr = value;
-+}
-+#endif
-+
-+#ifndef __raw_writel
-+#define __raw_writel __raw_writel
-+static inline void __raw_writel(u32 value, volatile void __iomem *addr)
-+{
-+	*(volatile u32 __force *)addr = value;
-+}
-+#endif
-+
-+#ifdef CONFIG_64BIT
-+#ifndef __raw_writeq
-+#define __raw_writeq __raw_writeq
-+static inline void __raw_writeq(u64 value, volatile void __iomem *addr)
-+{
-+	*(volatile u64 __force *)addr = value;
-+}
-+#endif
-+#endif /* CONFIG_64BIT */
-+
-+/*
-+ * {read,write}{b,w,l,q}() access little endian memory and return result in
-+ * native endianness.
-+ */
-+
-+#ifndef readb
-+#define readb readb
-+static inline u8 readb(const volatile void __iomem *addr)
-+{
-+	u8 val;
-+
-+	log_read_mmio(8, addr, _THIS_IP_, _RET_IP_);
-+	__io_br();
-+	val = __raw_readb(addr);
-+	__io_ar(val);
-+	log_post_read_mmio(val, 8, addr, _THIS_IP_, _RET_IP_);
-+	return val;
-+}
-+#endif
-+
-+#ifndef readw
-+#define readw readw
-+static inline u16 readw(const volatile void __iomem *addr)
-+{
-+	u16 val;
-+
-+	log_read_mmio(16, addr, _THIS_IP_, _RET_IP_);
-+	__io_br();
-+	val = __le16_to_cpu((__le16 __force)__raw_readw(addr));
-+	__io_ar(val);
-+	log_post_read_mmio(val, 16, addr, _THIS_IP_, _RET_IP_);
-+	return val;
-+}
-+#endif
-+
-+#ifndef readl
-+#define readl readl
-+static inline u32 readl(const volatile void __iomem *addr)
-+{
-+	u32 val;
-+
-+	log_read_mmio(32, addr, _THIS_IP_, _RET_IP_);
-+	__io_br();
-+	val = __le32_to_cpu((__le32 __force)__raw_readl(addr));
-+	__io_ar(val);
-+	log_post_read_mmio(val, 32, addr, _THIS_IP_, _RET_IP_);
-+	return val;
-+}
-+#endif
-+
-+#ifdef CONFIG_64BIT
-+#ifndef readq
-+#define readq readq
-+static inline u64 readq(const volatile void __iomem *addr)
-+{
-+	u64 val;
-+
-+	log_read_mmio(64, addr, _THIS_IP_, _RET_IP_);
-+	__io_br();
-+	val = __le64_to_cpu((__le64 __force)__raw_readq(addr));
-+	__io_ar(val);
-+	log_post_read_mmio(val, 64, addr, _THIS_IP_, _RET_IP_);
-+	return val;
-+}
-+#endif
-+#endif /* CONFIG_64BIT */
-+
-+#ifndef writeb
-+#define writeb writeb
-+static inline void writeb(u8 value, volatile void __iomem *addr)
-+{
-+	log_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-+	__io_bw();
-+	__raw_writeb(value, addr);
-+	__io_aw();
-+	log_post_write_mmio(value, 8, addr, _THIS_IP_, _RET_IP_);
-+}
-+#endif
-+
-+#ifndef writew
-+#define writew writew
-+static inline void writew(u16 value, volatile void __iomem *addr)
-+{
-+	log_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-+	__io_bw();
-+	__raw_writew((u16 __force)cpu_to_le16(value), addr);
-+	__io_aw();
-+	log_post_write_mmio(value, 16, addr, _THIS_IP_, _RET_IP_);
-+}
-+#endif
-+
-+#ifndef writel
-+#define writel writel
-+static inline void writel(u32 value, volatile void __iomem *addr)
-+{
-+	log_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-+	__io_bw();
-+	__raw_writel((u32 __force)__cpu_to_le32(value), addr);
-+	__io_aw();
-+	log_post_write_mmio(value, 32, addr, _THIS_IP_, _RET_IP_);
-+}
-+#endif
-+
-+#ifdef CONFIG_64BIT
-+#ifndef writeq
-+#define writeq writeq
-+static inline void writeq(u64 value, volatile void __iomem *addr)
-+{
-+	log_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-+	__io_bw();
-+	__raw_writeq((u64 __force)__cpu_to_le64(value), addr);
-+	__io_aw();
-+	log_post_write_mmio(value, 64, addr, _THIS_IP_, _RET_IP_);
-+}
-+#endif
-+#endif /* CONFIG_64BIT */
- 
- #ifndef PCI_IOBASE
- #define PCI_IOBASE ((void __iomem *)RELOC_HIDE((void *)0, 0))
-diff --git a/include/linux/io.h b/include/linux/io.h
+diff --git a/include/asm-generic/cmpxchg-local.h b/include/asm-generic/cmpxchg-local.h
 new file mode 100644
-index 000000000000..9119e4e629d7
+index 000000000000..d93b103d5ca2
 --- /dev/null
-+++ b/include/linux/io.h
-@@ -0,0 +1,9 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/include/asm-generic/cmpxchg-local.h
+@@ -0,0 +1,64 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __ASM_GENERIC_CMPXCHG_LOCAL_H
++#define __ASM_GENERIC_CMPXCHG_LOCAL_H
 +
-+#ifndef _LINUX_IO_H
-+#define _LINUX_IO_H
++#include <linux/types.h>
++#include <linux/compiler.h>
 +
-+#define __LINUX_IO_STRICT_PROTOTYPES__
-+#include <asm/io.h>
++extern unsigned long wrong_size_cmpxchg(volatile void *ptr)
++	__noreturn;
++
++/*
++ * Generic version of __cmpxchg_local (disables interrupts). Takes an unsigned
++ * long parameter, supporting various types of architectures.
++ */
++static inline unsigned long __generic_cmpxchg_local(volatile void *ptr,
++		unsigned long old, unsigned long new, int size)
++{
++	unsigned long prev;
++
++	/*
++	 * Sanity checking, compile-time.
++	 */
++	if (size == 8 && sizeof(unsigned long) != 8)
++		wrong_size_cmpxchg(ptr);
++
++	switch (size) {
++	case 1: prev = *(u8 *)ptr;
++		if (prev == old)
++			*(u8 *)ptr = (u8)new;
++		break;
++	case 2: prev = *(u16 *)ptr;
++		if (prev == old)
++			*(u16 *)ptr = (u16)new;
++		break;
++	case 4: prev = *(u32 *)ptr;
++		if (prev == old)
++			*(u32 *)ptr = (u32)new;
++		break;
++	case 8: prev = *(u64 *)ptr;
++		if (prev == old)
++			*(u64 *)ptr = (u64)new;
++		break;
++	default:
++		wrong_size_cmpxchg(ptr);
++	}
++	return prev;
++}
++
++/*
++ * Generic version of __cmpxchg64_local. Takes an u64 parameter.
++ */
++static inline u64 __generic_cmpxchg64_local(volatile void *ptr,
++		u64 old, u64 new)
++{
++	u64 prev;
++
++	prev = *(u64 *)ptr;
++	if (prev == old)
++		*(u64 *)ptr = new;
++
++	return prev;
++}
 +
 +#endif
+diff --git a/include/asm-generic/cmpxchg.h b/include/asm-generic/cmpxchg.h
+new file mode 100644
+index 000000000000..b90524135efe
+--- /dev/null
++++ b/include/asm-generic/cmpxchg.h
+@@ -0,0 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * Generic non-atomic cmpxchg for porting kernel code.
++ */
++
++#ifndef __ASM_GENERIC_CMPXCHG_H
++#define __ASM_GENERIC_CMPXCHG_H
++
++#ifdef CONFIG_SMP
++#error "Cannot use generic cmpxchg on SMP"
++#endif
++
++#include <asm-generic/cmpxchg-local.h>
++
++#define generic_cmpxchg_local(ptr, o, n) ({					\
++	((__typeof__(*(ptr)))__generic_cmpxchg_local((ptr), (unsigned long)(o),	\
++			(unsigned long)(n), sizeof(*(ptr))));			\
++})
++
++#define generic_cmpxchg64_local(ptr, o, n) \
++	__generic_cmpxchg64_local((ptr), (o), (n))
++
++#define cmpxchg		generic_cmpxchg_local
++#define cmpxchg64	generic_cmpxchg64_local
++
++#endif
+diff --git a/include/linux/atomic.h b/include/linux/atomic.h
+index 9304ab4a34ba..c7bdf5857ce8 100644
+--- a/include/linux/atomic.h
++++ b/include/linux/atomic.h
+@@ -3,5 +3,68 @@
+ #define LINUX_ATOMIC_H_
+ 
+ #include <asm-generic/atomic.h>
++#include <linux/compiler.h>
++#include <asm-generic/cmpxchg.h>
++
++#define raw_cmpxchg_relaxed cmpxchg
++
++/**
++ * raw_atomic_cmpxchg_relaxed() - atomic compare and exchange with relaxed ordering
++ * @v: pointer to atomic_t
++ * @old: int value to compare with
++ * @new: int value to assign
++ *
++ * If (@v == @old), atomically updates @v to @new with relaxed ordering.
++ *
++ * Safe to use in noinstr code; prefer atomic_cmpxchg_relaxed() elsewhere.
++ *
++ * Return: The original value of @v.
++ */
++static __always_inline int
++raw_atomic_cmpxchg_relaxed(atomic_t *v, int old, int new)
++{
++	return raw_cmpxchg_relaxed(&v->counter, old, new);
++}
++
++/**
++ * atomic_try_cmpxchg_relaxed() - atomic compare and exchange with relaxed ordering
++ * @v: pointer to atomic_t
++ * @old: pointer to int value to compare with
++ * @new: int value to assign
++ *
++ * If (@v == @old), atomically updates @v to @new with relaxed ordering.
++ * Otherwise, updates @old to the current value of @v.
++ *
++ * Return: @true if the exchange occured, @false otherwise.
++ */
++static __always_inline bool
++atomic_try_cmpxchg_relaxed(atomic_t *v, int *old, int new)
++{
++	int r, o = *old;
++	r = raw_atomic_cmpxchg_relaxed(v, o, new);
++	if (unlikely(r != o))
++		*old = r;
++	return likely(r == o);
++}
++
++/**
++ * atomic_fetch_add() - atomic add
++ * @i: int value to add
++ * @v: pointer to atomic_t
++ *
++ * Atomically updates @v to (@v + @i).
++ *
++ * Return: The original value of @v.
++ */
++static __always_inline int
++atomic_fetch_add(int i, atomic_t *v)
++{
++	int old = v->counter;
++	v->counter += i;
++	return old;
++}
++#define atomic_fetch_add_relaxed atomic_fetch_add
++#define atomic_fetch_sub(i, v) atomic_fetch_add(-i, v)
++#define atomic_fetch_sub_release atomic_fetch_sub
+ 
+ #endif
+diff --git a/include/linux/kref.h b/include/linux/kref.h
+new file mode 100644
+index 000000000000..6add3d91da95
+--- /dev/null
++++ b/include/linux/kref.h
+@@ -0,0 +1,90 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * kref.h - library routines for handling generic reference counted objects
++ *
++ * Copyright (C) 2004 Greg Kroah-Hartman <greg@kroah.com>
++ * Copyright (C) 2004 IBM Corp.
++ *
++ * based on kobject.h which was:
++ * Copyright (C) 2002-2003 Patrick Mochel <mochel@osdl.org>
++ * Copyright (C) 2002-2003 Open Source Development Labs
++ */
++
++#ifndef _KREF_H_
++#define _KREF_H_
++
++#include <linux/refcount.h>
++
++struct kref {
++	refcount_t refcount;
++};
++
++#define KREF_INIT(n)	{ .refcount = REFCOUNT_INIT(n), }
++
++/**
++ * kref_init - initialize object.
++ * @kref: object in question.
++ */
++static inline void kref_init(struct kref *kref)
++{
++	refcount_set(&kref->refcount, 1);
++}
++
++static inline unsigned int kref_read(const struct kref *kref)
++{
++	return refcount_read(&kref->refcount);
++}
++
++/**
++ * kref_get - increment refcount for object.
++ * @kref: object.
++ */
++static inline void kref_get(struct kref *kref)
++{
++	refcount_inc(&kref->refcount);
++}
++
++/**
++ * kref_put - decrement refcount for object.
++ * @kref: object.
++ * @release: pointer to the function that will clean up the object when the
++ *	     last reference to the object is released.
++ *	     This pointer is required, and it is not acceptable to pass kfree
++ *	     in as this function.
++ *
++ * Decrement the refcount, and if 0, call release().
++ * Return 1 if the object was removed, otherwise return 0.  Beware, if this
++ * function returns 0, you still can not count on the kref from remaining in
++ * memory.  Only use the return value if you want to see if the kref is now
++ * gone, not present.
++ */
++static inline int kref_put(struct kref *kref, void (*release)(struct kref *kref))
++{
++	if (refcount_dec_and_test(&kref->refcount)) {
++		release(kref);
++		return 1;
++	}
++	return 0;
++}
++
++/**
++ * kref_get_unless_zero - Increment refcount for object unless it is zero.
++ * @kref: object.
++ *
++ * Return non-zero if the increment succeeded. Otherwise return 0.
++ *
++ * This function is intended to simplify locking around refcounting for
++ * objects that can be looked up from a lookup structure, and which are
++ * removed from that lookup structure in the object destructor.
++ * Operations on such objects require at least a read lock around
++ * lookup + kref_get, and a write lock around kref_put + remove from lookup
++ * structure. Furthermore, RCU implementations become extremely tricky.
++ * With a lookup followed by a kref_get_unless_zero *with return value check*
++ * locking in the kref_put path can be deferred to the actual removal from
++ * the lookup structure and RCU lookups become trivial.
++ */
++static inline int __must_check kref_get_unless_zero(struct kref *kref)
++{
++	return refcount_inc_not_zero(&kref->refcount);
++}
++#endif /* _KREF_H_ */
+diff --git a/include/linux/refcount.h b/include/linux/refcount.h
+new file mode 100644
+index 000000000000..81eed1bbadb3
+--- /dev/null
++++ b/include/linux/refcount.h
+@@ -0,0 +1,271 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++
++#ifndef _LINUX_REFCOUNT_H
++#define _LINUX_REFCOUNT_H
++
++#include <linux/atomic.h>
++#include <linux/bug.h>
++#include <linux/compiler.h>
++#include <linux/limits.h>
++
++/**
++ * typedef refcount_t - variant of atomic_t specialized for reference counts
++ * @refs: atomic_t counter field
++ *
++ * The counter saturates at REFCOUNT_SATURATED and will not move once
++ * there. This avoids wrapping the counter and causing 'spurious'
++ * use-after-free bugs.
++ */
++typedef struct refcount_struct {
++	atomic_t refs;
++} refcount_t;
++
++#define REFCOUNT_INIT(n)	{ .refs = ATOMIC_INIT(n), }
++#define REFCOUNT_MAX		INT_MAX
++#define REFCOUNT_SATURATED	(INT_MIN / 2)
++
++enum refcount_saturation_type {
++	REFCOUNT_ADD_NOT_ZERO_OVF,
++	REFCOUNT_ADD_OVF,
++	REFCOUNT_ADD_UAF,
++	REFCOUNT_SUB_UAF,
++	REFCOUNT_DEC_LEAK,
++};
++
++void refcount_warn_saturate(refcount_t *r, enum refcount_saturation_type t);
++
++/**
++ * refcount_set - set a refcount's value
++ * @r: the refcount
++ * @n: value to which the refcount will be set
++ */
++static inline void refcount_set(refcount_t *r, int n)
++{
++	atomic_set(&r->refs, n);
++}
++
++/**
++ * refcount_read - get a refcount's value
++ * @r: the refcount
++ *
++ * Return: the refcount's value
++ */
++static inline unsigned int refcount_read(const refcount_t *r)
++{
++	return atomic_read(&r->refs);
++}
++
++static inline __must_check bool __refcount_add_not_zero(int i, refcount_t *r, int *oldp)
++{
++	int old = refcount_read(r);
++
++	do {
++		if (!old)
++			break;
++	} while (!atomic_try_cmpxchg_relaxed(&r->refs, &old, old + i));
++
++	if (oldp)
++		*oldp = old;
++
++	if (unlikely(old < 0 || old + i < 0))
++		refcount_warn_saturate(r, REFCOUNT_ADD_NOT_ZERO_OVF);
++
++	return old;
++}
++
++/**
++ * refcount_add_not_zero - add a value to a refcount unless it is 0
++ * @i: the value to add to the refcount
++ * @r: the refcount
++ *
++ * Will saturate at REFCOUNT_SATURATED and WARN.
++ *
++ * Provides no memory ordering, it is assumed the caller has guaranteed the
++ * object memory to be stable (RCU, etc.). It does provide a control dependency
++ * and thereby orders future stores. See the comment on top.
++ *
++ * Use of this function is not recommended for the normal reference counting
++ * use case in which references are taken and released one at a time.  In these
++ * cases, refcount_inc(), or one of its variants, should instead be used to
++ * increment a reference count.
++ *
++ * Return: false if the passed refcount is 0, true otherwise
++ */
++static inline __must_check bool refcount_add_not_zero(int i, refcount_t *r)
++{
++	return __refcount_add_not_zero(i, r, NULL);
++}
++
++static inline void __refcount_add(int i, refcount_t *r, int *oldp)
++{
++	int old = atomic_fetch_add_relaxed(i, &r->refs);
++
++	if (oldp)
++		*oldp = old;
++
++	if (unlikely(!old))
++		refcount_warn_saturate(r, REFCOUNT_ADD_UAF);
++	else if (unlikely(old < 0 || old + i < 0))
++		refcount_warn_saturate(r, REFCOUNT_ADD_OVF);
++}
++
++/**
++ * refcount_add - add a value to a refcount
++ * @i: the value to add to the refcount
++ * @r: the refcount
++ *
++ * Similar to atomic_add(), but will saturate at REFCOUNT_SATURATED and WARN.
++ *
++ * Provides no memory ordering, it is assumed the caller has guaranteed the
++ * object memory to be stable (RCU, etc.). It does provide a control dependency
++ * and thereby orders future stores. See the comment on top.
++ *
++ * Use of this function is not recommended for the normal reference counting
++ * use case in which references are taken and released one at a time.  In these
++ * cases, refcount_inc(), or one of its variants, should instead be used to
++ * increment a reference count.
++ */
++static inline void refcount_add(int i, refcount_t *r)
++{
++	__refcount_add(i, r, NULL);
++}
++
++static inline __must_check bool __refcount_inc_not_zero(refcount_t *r, int *oldp)
++{
++	return __refcount_add_not_zero(1, r, oldp);
++}
++
++/**
++ * refcount_inc_not_zero - increment a refcount unless it is 0
++ * @r: the refcount to increment
++ *
++ * Similar to atomic_inc_not_zero(), but will saturate at REFCOUNT_SATURATED
++ * and WARN.
++ *
++ * Provides no memory ordering, it is assumed the caller has guaranteed the
++ * object memory to be stable (RCU, etc.). It does provide a control dependency
++ * and thereby orders future stores. See the comment on top.
++ *
++ * Return: true if the increment was successful, false otherwise
++ */
++static inline __must_check bool refcount_inc_not_zero(refcount_t *r)
++{
++	return __refcount_inc_not_zero(r, NULL);
++}
++
++static inline void __refcount_inc(refcount_t *r, int *oldp)
++{
++	__refcount_add(1, r, oldp);
++}
++
++/**
++ * refcount_inc - increment a refcount
++ * @r: the refcount to increment
++ *
++ * Similar to atomic_inc(), but will saturate at REFCOUNT_SATURATED and WARN.
++ *
++ * Provides no memory ordering, it is assumed the caller already has a
++ * reference on the object.
++ *
++ * Will WARN if the refcount is 0, as this represents a possible use-after-free
++ * condition.
++ */
++static inline void refcount_inc(refcount_t *r)
++{
++	__refcount_inc(r, NULL);
++}
++
++static inline __must_check bool __refcount_sub_and_test(int i, refcount_t *r, int *oldp)
++{
++	int old = atomic_fetch_sub_release(i, &r->refs);
++
++	if (oldp)
++		*oldp = old;
++
++	if (old == i)
++		return true;
++
++	if (unlikely(old < 0 || old - i < 0))
++		refcount_warn_saturate(r, REFCOUNT_SUB_UAF);
++
++	return false;
++}
++
++/**
++ * refcount_sub_and_test - subtract from a refcount and test if it is 0
++ * @i: amount to subtract from the refcount
++ * @r: the refcount
++ *
++ * Similar to atomic_dec_and_test(), but it will WARN, return false and
++ * ultimately leak on underflow and will fail to decrement when saturated
++ * at REFCOUNT_SATURATED.
++ *
++ * Provides release memory ordering, such that prior loads and stores are done
++ * before, and provides an acquire ordering on success such that free()
++ * must come after.
++ *
++ * Use of this function is not recommended for the normal reference counting
++ * use case in which references are taken and released one at a time.  In these
++ * cases, refcount_dec(), or one of its variants, should instead be used to
++ * decrement a reference count.
++ *
++ * Return: true if the resulting refcount is 0, false otherwise
++ */
++static inline __must_check bool refcount_sub_and_test(int i, refcount_t *r)
++{
++	return __refcount_sub_and_test(i, r, NULL);
++}
++
++static inline __must_check bool __refcount_dec_and_test(refcount_t *r, int *oldp)
++{
++	return __refcount_sub_and_test(1, r, oldp);
++}
++
++/**
++ * refcount_dec_and_test - decrement a refcount and test if it is 0
++ * @r: the refcount
++ *
++ * Similar to atomic_dec_and_test(), it will WARN on underflow and fail to
++ * decrement when saturated at REFCOUNT_SATURATED.
++ *
++ * Provides release memory ordering, such that prior loads and stores are done
++ * before, and provides an acquire ordering on success such that free()
++ * must come after.
++ *
++ * Return: true if the resulting refcount is 0, false otherwise
++ */
++static inline __must_check bool refcount_dec_and_test(refcount_t *r)
++{
++	return __refcount_dec_and_test(r, NULL);
++}
++
++static inline void __refcount_dec(refcount_t *r, int *oldp)
++{
++	int old = atomic_fetch_sub_release(1, &r->refs);
++
++	if (oldp)
++		*oldp = old;
++
++	if (unlikely(old <= 1))
++		refcount_warn_saturate(r, REFCOUNT_DEC_LEAK);
++}
++
++/**
++ * refcount_dec - decrement a refcount
++ * @r: the refcount
++ *
++ * Similar to atomic_dec(), it will WARN on underflow and fail to decrement
++ * when saturated at REFCOUNT_SATURATED.
++ *
++ * Provides release memory ordering, such that prior loads and stores are done
++ * before.
++ */
++static inline void refcount_dec(refcount_t *r)
++{
++	__refcount_dec(r, NULL);
++}
++
++extern __must_check bool refcount_dec_if_one(refcount_t *r);
++extern __must_check bool refcount_dec_not_one(refcount_t *r);
++
++#endif /* _LINUX_REFCOUNT_H */
+diff --git a/lib/Makefile b/lib/Makefile
+index 9bb871f94f71..8fd950040381 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -71,6 +71,7 @@ obj-$(CONFIG_BAREBOX_LOGO)     += logo/
+ obj-y			+= reed_solomon/
+ obj-$(CONFIG_RATP)	+= ratp.o
+ obj-y			+= list_sort.o
++obj-y			+= refcount.o
+ obj-y			+= int_sqrt.o
+ obj-y			+= parseopt.o
+ obj-y			+= clz_ctz.o
+diff --git a/lib/refcount.c b/lib/refcount.c
+new file mode 100644
+index 000000000000..8c6f98b48032
+--- /dev/null
++++ b/lib/refcount.c
+@@ -0,0 +1,34 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Out-of-line refcount functions.
++ */
++
++#include <linux/refcount.h>
++#include <linux/printk.h>
++
++#define REFCOUNT_WARN(str)	WARN_ONCE(1, "refcount_t: " str ".\n")
++
++void refcount_warn_saturate(refcount_t *r, enum refcount_saturation_type t)
++{
++	refcount_set(r, REFCOUNT_SATURATED);
++
++	switch (t) {
++	case REFCOUNT_ADD_NOT_ZERO_OVF:
++		REFCOUNT_WARN("saturated; leaking memory");
++		break;
++	case REFCOUNT_ADD_OVF:
++		REFCOUNT_WARN("saturated; leaking memory");
++		break;
++	case REFCOUNT_ADD_UAF:
++		REFCOUNT_WARN("addition on 0; use-after-free");
++		break;
++	case REFCOUNT_SUB_UAF:
++		REFCOUNT_WARN("underflow; use-after-free");
++		break;
++	case REFCOUNT_DEC_LEAK:
++		REFCOUNT_WARN("decrement hit 0; leaking memory");
++		break;
++	default:
++		REFCOUNT_WARN("unknown saturation event!?");
++	}
++}
 -- 
 2.39.2
 
