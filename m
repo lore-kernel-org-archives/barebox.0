@@ -1,66 +1,66 @@
-Delivery-date: Wed, 22 Nov 2023 18:42:41 +0100
+Delivery-date: Wed, 22 Nov 2023 18:42:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5rFI-004epI-1t
+	id 1r5rFJ-004epi-1e
 	for lore@lore.pengutronix.de;
-	Wed, 22 Nov 2023 18:42:41 +0100
+	Wed, 22 Nov 2023 18:42:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5rFI-0002op-MA
-	for lore@pengutronix.de; Wed, 22 Nov 2023 18:42:41 +0100
+	id 1r5rFJ-0002pu-Fq
+	for lore@pengutronix.de; Wed, 22 Nov 2023 18:42:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GzsI90rPiJqlIhQQi/6d3gHFmRDrxF/IIEoX0ni7NLg=; b=dpHCIyGk3cBij+OhbuEtD3RUob
-	a+1Q8XHAfoyYzR+i1VRdnwCOu70JbMeKidUJYj3dwa+TuxGWHXi0r+0WnB09TcY7E1kZCbtvBgCKk
-	OKb5Z5HrO8YZy6vVpvf69tZShHLm0vR8wsakK81uVJSrZpNkXBdjaGqjcref5Qlnz4O/FByu1UG9x
-	9VH73ujTV1nvlsGywJRhBWcYiarJPI6Y2J1pYeWzuJHakzbNrBxFOqEBdEMygVgLfITlggpdz1ZZN
-	SMSDF3kgD7kv9IBEf0igi9cW85admf8OqLJQ8GGTbmMiVXYVU9NsO1Sb6NbwkPN71Ri7gqTsIJNd3
-	IiwePFsQ==;
+	bh=X38pfYynhXuFUFibxfC/lB9ptEstkj/yqfo9dIiYCHA=; b=M1x/7Rh8aZnzgYELr7Fn1ogpGE
+	nGOftZ0vFzZzSXMN5RxSXAPWsaNlhLTfuJt06k+kt/SyBhdkIx7KFNO6vSOD83QelEx3yZmEuyZLP
+	M8V4vJ5lQm8+jaDU0cMkrEwvL6uxwRQ4LXjSphREFXyfOjA2KT5V2B2JELY284ykt3IVK8Sl6B4KC
+	1EOR3s4YfPFga4IAQd+gYurx585SWAe2P02lgM9z+4PyB5EBNZBn7bI6K/UtqnaNVkQFqzwN+z94o
+	u1BRfBtbg9oYge+GEoBOLZGMRdg01nROX6cDLwJoia851xXIiJnsYm+nw4eJY3sZ11I6g5NhFWFuP
+	Rnh6PkeQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5rEB-002hmn-0O;
-	Wed, 22 Nov 2023 17:41:31 +0000
+	id 1r5rE7-002hl3-2w;
+	Wed, 22 Nov 2023 17:41:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5rE2-002hgs-2U
+	id 1r5rE2-002hgp-1t
 	for barebox@lists.infradead.org;
-	Wed, 22 Nov 2023 17:41:26 +0000
+	Wed, 22 Nov 2023 17:41:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5rE1-0002Bh-Kw; Wed, 22 Nov 2023 18:41:21 +0100
+	id 1r5rE1-0002BJ-FC; Wed, 22 Nov 2023 18:41:21 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5rE1-00ArX8-8K; Wed, 22 Nov 2023 18:41:21 +0100
+	id 1r5rE1-00ArWy-2O; Wed, 22 Nov 2023 18:41:21 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r34-001lAy-1X;
+	id 1r5r34-001lAy-1E;
 	Wed, 22 Nov 2023 18:30:02 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 22 Nov 2023 18:29:49 +0100
-Message-Id: <20231122172951.376531-19-a.fatoum@pengutronix.de>
+Date: Wed, 22 Nov 2023 18:29:47 +0100
+Message-Id: <20231122172951.376531-17-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 References: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_094122_811683_9AD90DC1 
-X-CRM114-Status: GOOD (  12.38  )
+X-CRM114-CacheID: sfid-20231122_094122_624145_4E69B2F7 
+X-CRM114-Status: GOOD (  12.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,38 +83,59 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 18/20] of: constify string pointed to by struct of_device_id::compatible
+Subject: [PATCH v2 16/20] include: add blocking notifier aliases
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In Linux struct of_device_id::compatible is a character array, but in
-barebox, so far it has been a pointer to char *. As most compatible
-strings are smaller than 24 bytes, we are likely saving some space by
-using a pointer, so we will keep that is, but let's make the member
-const to reflect the fact that it points at immutable strings and to
-allow easier use without casting.
+All notifiers are blocking in barebox, but to avoid needless mechanical
+fixups during porting, just provide the stubs in a new
+<linux/notifier.h> header. While at it, also provide NOTIFY_DONE and
+NOTIFY_OK for use in the notifier callbacks.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - new patch (Sascha)
+  - fix typo in commit message (Sascha)
 ---
- include/of.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/notifier.h | 16 ++++++++++++++++
+ include/notifier.h       |  3 +++
+ 2 files changed, 19 insertions(+)
+ create mode 100644 include/linux/notifier.h
 
-diff --git a/include/of.h b/include/of.h
-index 5686709fcf0a..e99b41ef6f14 100644
---- a/include/of.h
-+++ b/include/of.h
-@@ -40,7 +40,7 @@ struct device_node {
- };
+diff --git a/include/linux/notifier.h b/include/linux/notifier.h
+new file mode 100644
+index 000000000000..25f4921a3e80
+--- /dev/null
++++ b/include/linux/notifier.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __LINUX_NOTIFIER_H
++#define __LINUX_NOTIFIER_H
++
++#include <notifier.h>
++
++#define BLOCKING_NOTIFIER_HEAD			NOTIFIER_HEAD
++
++#define blocking_notifier_call_chain		notifier_call_chain
++
++#define blocking_notifier_head			notifier_head
++
++#define blocking_notifier_chain_register	notifier_chain_register
++#define blocking_notifier_chain_unregister	notifier_chain_unregister
++
++#endif
+diff --git a/include/notifier.h b/include/notifier.h
+index 432b66c4ca5a..093fedb0e8e4 100644
+--- a/include/notifier.h
++++ b/include/notifier.h
+@@ -35,4 +35,7 @@ int clock_notifier_call_chain(void);
+ 		.blocks = LIST_HEAD_INIT((name).blocks),	\
+ 	};
  
- struct of_device_id {
--	char *compatible;
-+	const char *compatible;
- 	const void *data;
- };
- 
++#define NOTIFY_DONE		0x0000		/* Don't care */
++#define NOTIFY_OK		0x0001		/* Suits me */
++
+ #endif /* __NOTIFIER_H */
 -- 
 2.39.2
 
