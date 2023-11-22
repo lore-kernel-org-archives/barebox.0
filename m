@@ -1,64 +1,60 @@
-Delivery-date: Wed, 22 Nov 2023 16:56:22 +0100
+Delivery-date: Wed, 22 Nov 2023 17:11:08 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5paQ-004XaH-0F
+	id 1r5poi-004YcA-10
 	for lore@lore.pengutronix.de;
-	Wed, 22 Nov 2023 16:56:22 +0100
+	Wed, 22 Nov 2023 17:11:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5paQ-0001Xd-4u
-	for lore@pengutronix.de; Wed, 22 Nov 2023 16:56:22 +0100
+	id 1r5poi-0004wj-9i
+	for lore@pengutronix.de; Wed, 22 Nov 2023 17:11:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=hQVDrFJ2p53BOCHBrrN8aH4qPG2jAGZZVhrAfgbQhJE=; b=Bl6aMiAUUHuczjaloNP/RjBT2G
-	dST9CFQRxsQ5vBtTJZJEI9u6bxGe+GS2G3QkoQuimKGCrOKK+X+FPFG3Sg28qlh/Y/MLT8FNgHx8A
-	c1ENS0dV1k1o/8sWTClgMHVzRiRTvbG2mML5V/lUK85QQEV8cPtCY5QMTwJI87yYhT6EVwKN4cvQy
-	ICHs4SJTKI6jNPZDbHsvx2wO0l6hEGHgRXyA8woCU3G7dwq/0ZXcX0TDpMf4iMim6v//ynBuOVtKX
-	RGDz2kIr4dLh5posKN3tWad4SooTvbgolwH3l93l/9dyYjT0cCd3LcpS/r5ccAKzPORbn0FU1ad8X
-	Fk0M5BPA==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=e2Y+9MKHFUxspImlfBjgTMIOo9ENvx3+LL6SsZXYlnk=; b=Sqg77yaNE/Fasnp+6UTqb9jFHc
+	gt/3pk0vWtHjBoWAUHzD2YOj7WxSHVmq8AJ9FrBaOwcSACcGa0k1gBpVWaBSln083jwNvZoMIUTxU
+	ZkgX1ItfB9vS9ZVZ5wSp6odHHmiIUI3kFI1DjtD4EW9ZEuuec/YGGFdEzxhMM7KCH5T0ZazY9JkLt
+	doznCxgIlvY18BuThLvBRUwjoTwkQ5m8HqzkiD/1YpaWaKVZOfmEzmIQqGqUZKFpR16UTTmXL14CC
+	I3grB4vYBw9DxUsQP9wp5smPOdDohviwD7dP2WtZsHyw71F7vbVaHx2+b20N8+JUODzy/OAMvi6yc
+	G5bSh6IQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5pZ0-002MCE-0X;
-	Wed, 22 Nov 2023 15:54:54 +0000
+	id 1r5pnN-002NzW-1l;
+	Wed, 22 Nov 2023 16:09:45 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5pYv-002MBB-33
+	id 1r5pnJ-002Nyi-1V
 	for barebox@lists.infradead.org;
-	Wed, 22 Nov 2023 15:54:51 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+	Wed, 22 Nov 2023 16:09:42 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5pYr-0001BR-IJ; Wed, 22 Nov 2023 16:54:45 +0100
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5pYr-00AqPq-64; Wed, 22 Nov 2023 16:54:45 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5pYr-006Cmi-0G;
-	Wed, 22 Nov 2023 16:54:45 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 22 Nov 2023 16:54:43 +0100
-Message-Id: <20231122155443.1446732-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	id 1r5pnH-0004cU-J6; Wed, 22 Nov 2023 17:09:39 +0100
+Message-ID: <905d5333-e2f4-0485-7483-f2f6d0ea110a@pengutronix.de>
+Date: Wed, 22 Nov 2023 17:09:39 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Content-Language: en-US
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20231120083750.3967831-1-a.fatoum@pengutronix.de>
+ <20231120083750.3967831-2-a.fatoum@pengutronix.de>
+ <20231121073622.GN3359458@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20231121073622.GN3359458@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_075449_981452_CFDF5862 
-X-CRM114-Status: GOOD (  10.41  )
+X-CRM114-CacheID: sfid-20231122_080941_500509_74B00058 
+X-CRM114-Status: GOOD (  24.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,53 +72,125 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	MAILING_LIST_MULTI,NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+	SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] fixup! test: self: add JSON Web Token tests
+Subject: Re: [PATCH RFC 2/3] libfile: implement read_fd counterpart to
+ read_file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-test: self: jwt: use barebox_set_loglevel
+On 21.11.23 08:36, Sascha Hauer wrote:
+> On Mon, Nov 20, 2023 at 09:37:49AM +0100, Ahmad Fatoum wrote:
+>> Files opened with O_TMPFILE have no name, so read_file can't be used
+>> with them. Therefore add a read_fd function, which slurps all a file's
+>> contents into a buffer.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  include/libfile.h |  2 ++
+>>  lib/libfile.c     | 44 ++++++++++++++++++++++++++++++++++++++++++++
+>>  2 files changed, 46 insertions(+)
+>>
+>> diff --git a/include/libfile.h b/include/libfile.h
+>> index a353ccfa9ea9..423e7ffec5b7 100644
+>> --- a/include/libfile.h
+>> +++ b/include/libfile.h
+>> @@ -12,6 +12,8 @@ char *read_file_line(const char *fmt, ...);
+>>  
+>>  void *read_file(const char *filename, size_t *size);
+>>  
+>> +void *read_fd(int fd, size_t *size);
+>> +
+>>  int read_file_2(const char *filename, size_t *size, void **outbuf,
+>>  		loff_t max_size);
+>>  
+>> diff --git a/lib/libfile.c b/lib/libfile.c
+>> index e53ba08415a2..c257baaa2733 100644
+>> --- a/lib/libfile.c
+>> +++ b/lib/libfile.c
+>> @@ -306,6 +306,50 @@ void *read_file(const char *filename, size_t *size)
+>>  }
+>>  EXPORT_SYMBOL(read_file);
+>>  
+>> +/**
+>> + * read_fd - read from a file descriptor to an allocated buffer
+>> + * @filename:  The file descriptor to read
+>> + * @size:      After successful return contains the size of the file
+>> + *
+>> + * This function reads a file descriptor from offset 0 until EOF to an
+>> + * allocated buffer.
+>> + *
+>> + * Return: The buffer containing the file or NULL on failure
+>> + */
+>> +void *read_fd(int fd, size_t *out_size)
+>> +{
+>> +	off_t off;
+>> +	ssize_t ret;
+>> +	size_t size;
+>> +	void *buf;
+>> +
+>> +	off = lseek(fd, SEEK_CUR, 0);
+> 
+> You lseek to the current position. It seems you are trying to determine
+> the size of the file, so did you mean to use SEEK_END?
+> 
+> You could use fstat() instead. With that you could also correctly handle
+> FILE_SIZE_STREAM.
 
-For CONFIG_CONSOLE_SIMPLE or CONFIG_CONSOLE_FULL, this is equivalent,
-but for CONFIG_CONSOLE_NONE, this fixes a linker error as
-barebox_loglevel isn't defined in that case.
+Will use fstat, thanks.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - send as fixup instead of a patch as fixed commit is still in next
----
- test/self/jwt.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+> 
+>> +	if (off >= 0) {
+>> +		size = off;
+>> +		off = lseek(fd, SEEK_SET, 0);
+>> +	}
+>> +	if (off < 0) {
+>> +		ret = off;
+>> +		goto close_fd;
+>> +	}
+>> +
+>> +	buf = malloc(size + 3);
+>> +	ret = read_full(fd, buf, size);
+> 
+> You can use pread_full() here to avoid having to lseek to the beginning
+> of the file.
 
-diff --git a/test/self/jwt.c b/test/self/jwt.c
-index f37b44be22b8..015a0e436736 100644
---- a/test/self/jwt.c
-+++ b/test/self/jwt.c
-@@ -97,8 +97,7 @@ static void test_jwt(void)
- 	 * noisy, so we decrease logging a bit during their run
- 	 */
- 
--	old_loglevel = barebox_loglevel;
--	barebox_loglevel = MSG_CRIT;
-+	old_loglevel = barebox_set_loglevel(MSG_CRIT);
- 
- 	jwt_rs256_mangled = strdup(jwt_rs256);
- 	ch = &jwt_rs256_mangled[strlen(jwt_rs256_mangled) - 1];
-@@ -152,6 +151,6 @@ static void test_jwt(void)
- 		jwt_free(jwt);
- 	}
- 
--	barebox_loglevel = old_loglevel;
-+	barebox_set_loglevel(old_loglevel);
- }
- bselftest(parser, test_jwt);
+Ok, will do.
+
+> 
+>> +	if (ret < 0) {
+>> +		free(buf);
+>> +		goto close_fd;
+>> +	}
+>> +
+>> +	memset(&buf[size], '\0', 3);
+>> +	*out_size = size;
+>> +
+>> +close_fd:
+>> +	close(fd);
+>> +
+>> +	return ret < 0 ? NULL : buf;
+> 
+> Return an error pointer or an error integer and pass buf as argument?
+
+I want it to return a buffer like read_file does. I think that would
+be the least surprising API.
+
+Cheers,
+Ahmad
+
+> 
+> Sascha
+> 
+
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
