@@ -1,66 +1,66 @@
-Delivery-date: Wed, 22 Nov 2023 18:42:49 +0100
+Delivery-date: Wed, 22 Nov 2023 18:42:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5rFQ-004erD-2S
+	id 1r5rFR-004ern-2u
 	for lore@lore.pengutronix.de;
-	Wed, 22 Nov 2023 18:42:49 +0100
+	Wed, 22 Nov 2023 18:42:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5rFQ-0002u8-K8
-	for lore@pengutronix.de; Wed, 22 Nov 2023 18:42:49 +0100
+	id 1r5rFR-0002um-Px
+	for lore@pengutronix.de; Wed, 22 Nov 2023 18:42:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=x3pPNwwTMgZssFA/9zkWKE2EzoAbFDU430+WIvepZtQ=; b=f5Ha1ZJ/IsuQCjwGaFhm1WcePB
-	Dhdi4e+SNK931zCPwx2ON+rzi9Jd0GeuibGfcMcjAQts7tIP/98fPih4BmOuMkPRbDBOrK6IM7hg+
-	jFe7c21/3FGtBIu7mc6CWwuLeWy+YORhg8ym/267R2eV57vXaB4KgI3rhS581sldm6r8v4Ih1Uvi4
-	h3ayBmderXY7Vqf9Atf81jfu3c7Wiyf9LVVJDMpKkoe9UZbc22InLr23BfCs6KjD1k1RIeJtkJWra
-	YOoH5pCrD2dRDnUrxhjsoOtxFEfXwXOoz93xqXOEOQWZtOz2ob3kOZQgUmG/tIVF+Jz1+lKbCna7O
-	yZEp/GaQ==;
+	bh=FLMpnTJmcrrMRsVvN/2WadCvC1oEosfbl3yYZQsx2VU=; b=NLSGCoQmIPMFYE/ahNQMteY+ZG
+	/aYNfj9Y5MPI0aEnqYFIYGsgrBbg3Vv3Stm+8p6iNFLmSLZP5hOKd3KNs0ghJUW3sRQLhfCH323++
+	ddm7uY3EDB7ev/kGf63jkamwKWFGY0Kxx93PyCRgJiup+GnIkxnGCFIrxZFgIfklMP2bvpV7byYAO
+	HJr9bWdTuTNixQ/InWA2oDwQ7QvqOvsBBf7HJI6XZ8hRjO7GpJNt+vt9cvNJziefLSoE5baVbr91B
+	bnnIL3UmqX4NrGLtkOGFfkvOEqvgjdO8a+Ih/T9iyB1A7Dj1CPj1rw33JGp6fn+/WNfX/HDH/qJkD
+	rX727HHw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5rEE-002hps-0K;
-	Wed, 22 Nov 2023 17:41:34 +0000
+	id 1r5rE8-002hlX-1i;
+	Wed, 22 Nov 2023 17:41:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5rE2-002hgt-2n
+	id 1r5rE2-002hgm-1e
 	for barebox@lists.infradead.org;
-	Wed, 22 Nov 2023 17:41:27 +0000
+	Wed, 22 Nov 2023 17:41:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5rE1-0002Br-Mg; Wed, 22 Nov 2023 18:41:21 +0100
+	id 1r5rE1-0002Au-9E; Wed, 22 Nov 2023 18:41:21 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5rE1-00ArXB-AH; Wed, 22 Nov 2023 18:41:21 +0100
+	id 1r5rE0-00ArWs-Sv; Wed, 22 Nov 2023 18:41:20 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r34-001lAy-1O;
+	id 1r5r34-001lAy-0x;
 	Wed, 22 Nov 2023 18:30:02 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 22 Nov 2023 18:29:48 +0100
-Message-Id: <20231122172951.376531-18-a.fatoum@pengutronix.de>
+Date: Wed, 22 Nov 2023 18:29:45 +0100
+Message-Id: <20231122172951.376531-15-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 References: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_094122_901622_4B98E986 
-X-CRM114-Status: GOOD (  19.97  )
+X-CRM114-CacheID: sfid-20231122_094122_547928_122316F1 
+X-CRM114-Status: GOOD (  15.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,246 +83,185 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 17/20] include: add Linux ktime API
+Subject: [PATCH v2 14/20] test: self: add simple IDR test
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With get_time_ns(), we already have a monotonically increasing nanosecond
-counter, so let's define ktime_get() as an alias for it and import the
-Linux helpers for doing arithmetic with this ktime_t type.
+The barebox implementation for IDR is very rudimentary compared to the
+kernel, consisting just of a linked list compared to Linux' radix tree.
 
-There is a slight mismatch here as get_time_ns() returns a u64, while
-ktime_t is signed, but U64_MAX is > 580 years and half of that is still
-a fair bit longer than the expected life time of a device idling with
-100% CPU in the barebox shell after an aborted boot.
+Nevertheless, there is potential for wrong implementation, so add a
+self test to verify its operation.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - unchanged
+  - new patch
 ---
- include/linux/ktime.h | 212 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 212 insertions(+)
- create mode 100644 include/linux/ktime.h
+ test/self/Kconfig  |   5 ++
+ test/self/Makefile |   1 +
+ test/self/idr.c    | 119 +++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 125 insertions(+)
+ create mode 100644 test/self/idr.c
 
-diff --git a/include/linux/ktime.h b/include/linux/ktime.h
+diff --git a/test/self/Kconfig b/test/self/Kconfig
+index 5850dc95973b..ace01accda7e 100644
+--- a/test/self/Kconfig
++++ b/test/self/Kconfig
+@@ -43,6 +43,7 @@ config SELFTEST_ENABLE_ALL
+ 	select SELFTEST_SETJMP if ARCH_HAS_SJLJ
+ 	select SELFTEST_REGULATOR if REGULATOR && OFDEVICE
+ 	select SELFTEST_TEST_COMMAND if CMD_TEST
++	select SELFTEST_IDR
+ 	help
+ 	  Selects all self-tests compatible with current configuration
+ 
+@@ -107,4 +108,8 @@ config SELFTEST_TEST_COMMAND
+ 	bool "test command selftest"
+ 	depends on CMD_TEST
+ 
++config SELFTEST_IDR
++	bool "idr selftest"
++	select IDR
++
+ endif
+diff --git a/test/self/Makefile b/test/self/Makefile
+index c9ecb459c2d3..51131474f333 100644
+--- a/test/self/Makefile
++++ b/test/self/Makefile
+@@ -16,6 +16,7 @@ obj-$(CONFIG_SELFTEST_STRING) += string.o
+ obj-$(CONFIG_SELFTEST_SETJMP) += setjmp.o
+ obj-$(CONFIG_SELFTEST_REGULATOR) += regulator.o test_regulator.dtbo.o
+ obj-$(CONFIG_SELFTEST_TEST_COMMAND) += test_command.o
++obj-$(CONFIG_SELFTEST_IDR) += idr.o
+ 
+ ifdef REGENERATE_RSATOC
+ 
+diff --git a/test/self/idr.c b/test/self/idr.c
 new file mode 100644
-index 000000000000..ea368b8802e7
+index 000000000000..3d23141e0f03
 --- /dev/null
-+++ b/include/linux/ktime.h
-@@ -0,0 +1,212 @@
-+/*
-+ *  include/linux/ktime.h
-+ *
-+ *  ktime_t - nanosecond-resolution time format.
-+ *
-+ *   Copyright(C) 2005, Thomas Gleixner <tglx@linutronix.de>
-+ *   Copyright(C) 2005, Red Hat, Inc., Ingo Molnar
-+ *
-+ *  data type definitions, declarations, prototypes and macros.
-+ *
-+ *  Started by: Thomas Gleixner and Ingo Molnar
-+ *
-+ *  Credits:
-+ *
-+ *  	Roman Zippel provided the ideas and primary code snippets of
-+ *  	the ktime_t union and further simplifications of the original
-+ *  	code.
-+ *
-+ *  For licencing details see kernel-base/COPYING
-+ */
-+#ifndef _LINUX_KTIME_H
-+#define _LINUX_KTIME_H
++++ b/test/self/idr.c
+@@ -0,0 +1,119 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
-+#include <linux/time.h>
-+#include <clock.h>
-+#include <linux/bug.h>
++#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
 +
-+#define KTIME_MAX			((s64)~((u64)1 << 63))
-+#define KTIME_MIN			(-KTIME_MAX - 1)
-+#define KTIME_SEC_MAX			(KTIME_MAX / NSEC_PER_SEC)
-+#define KTIME_SEC_MIN			(KTIME_MIN / NSEC_PER_SEC)
++#include <printk.h>
++#include <linux/idr.h>
++#include <bselftest.h>
 +
-+/* Nanosecond scalar representation for kernel time values */
-+typedef s64	ktime_t;
++BSELFTEST_GLOBALS();
 +
-+/**
-+ * ktime_set - Set a ktime_t variable from a seconds/nanoseconds value
-+ * @secs:	seconds to set
-+ * @nsecs:	nanoseconds to set
-+ *
-+ * Return: The ktime_t representation of the value.
-+ */
-+static inline ktime_t ktime_set(const s64 secs, const unsigned long nsecs)
++#define __expect(cond, fmt, ...) ({ \
++	bool __cond = (cond); \
++	total_tests++; \
++	\
++	if (!__cond) { \
++		failed_tests++; \
++		printf("%s failed at %s:%d " fmt "\n", \
++			#cond, __func__, __LINE__, ##__VA_ARGS__); \
++	} \
++	__cond; \
++})
++
++#define expect(ret, ...) __expect((ret), __VA_ARGS__)
++
++static int cmp[3] = { 7, 1, 2};
++static int sorted_cmp[3] = { 1, 2, 7};
++
++static int test_idr_for_each(int id, void *p, void *data)
 +{
-+	if (unlikely(secs >= KTIME_SEC_MAX))
-+		return KTIME_MAX;
++	expect(data == &cmp[2]);
++	expect(*(int *)p == id);
 +
-+	return secs * NSEC_PER_SEC + (s64)nsecs;
++	return id == 1 ? 0 : -1;
 +}
 +
-+/* Subtract two ktime_t variables. rem = lhs -rhs: */
-+#define ktime_sub(lhs, rhs)	((lhs) - (rhs))
-+
-+/* Add two ktime_t variables. res = lhs + rhs: */
-+#define ktime_add(lhs, rhs)	((lhs) + (rhs))
-+
-+/*
-+ * Same as ktime_add(), but avoids undefined behaviour on overflow; however,
-+ * this means that you must check the result for overflow yourself.
-+ */
-+#define ktime_add_unsafe(lhs, rhs)	((u64) (lhs) + (rhs))
-+
-+/*
-+ * Add a ktime_t variable and a scalar nanosecond value.
-+ * res = kt + nsval:
-+ */
-+#define ktime_add_ns(kt, nsval)		((kt) + (nsval))
-+
-+/*
-+ * Subtract a scalar nanosecod from a ktime_t variable
-+ * res = kt - nsval:
-+ */
-+#define ktime_sub_ns(kt, nsval)		((kt) - (nsval))
-+
-+/* Convert ktime_t to nanoseconds */
-+static inline s64 ktime_to_ns(const ktime_t kt)
++static int count_idr(int id, void *p, void *data)
 +{
-+	return kt;
-+}
++	int *count = data;
 +
-+/**
-+ * ktime_compare - Compares two ktime_t variables for less, greater or equal
-+ * @cmp1:	comparable1
-+ * @cmp2:	comparable2
-+ *
-+ * Return: ...
-+ *   cmp1  < cmp2: return <0
-+ *   cmp1 == cmp2: return 0
-+ *   cmp1  > cmp2: return >0
-+ */
-+static inline int ktime_compare(const ktime_t cmp1, const ktime_t cmp2)
-+{
-+	if (cmp1 < cmp2)
-+		return -1;
-+	if (cmp1 > cmp2)
-+		return 1;
++	++*count;
++
 +	return 0;
 +}
 +
-+/**
-+ * ktime_after - Compare if a ktime_t value is bigger than another one.
-+ * @cmp1:	comparable1
-+ * @cmp2:	comparable2
-+ *
-+ * Return: true if cmp1 happened after cmp2.
-+ */
-+static inline bool ktime_after(const ktime_t cmp1, const ktime_t cmp2)
++static void test_idr(void)
 +{
-+	return ktime_compare(cmp1, cmp2) > 0;
-+}
++	void *ptr;
++	int id, count;
 +
-+/**
-+ * ktime_before - Compare if a ktime_t value is smaller than another one.
-+ * @cmp1:	comparable1
-+ * @cmp2:	comparable2
-+ *
-+ * Return: true if cmp1 happened before cmp2.
-+ */
-+static inline bool ktime_before(const ktime_t cmp1, const ktime_t cmp2)
-+{
-+	return ktime_compare(cmp1, cmp2) < 0;
-+}
++	DEFINE_IDR(idr);
 +
-+#if BITS_PER_LONG < 64
-+extern s64 __ktime_divns(const ktime_t kt, s64 div);
-+static inline s64 ktime_divns(const ktime_t kt, s64 div)
-+{
-+	/*
-+	 * Negative divisors could cause an inf loop,
-+	 * so bug out here.
-+	 */
-+	BUG_ON(div < 0);
-+	if (__builtin_constant_p(div) && !(div >> 32)) {
-+		s64 ns = kt;
-+		u64 tmp = ns < 0 ? -ns : ns;
++	expect(idr_is_empty(&idr));
 +
-+		do_div(tmp, div);
-+		return ns < 0 ? -tmp : tmp;
-+	} else {
-+		return __ktime_divns(kt, div);
++	expect(!idr_find(&idr, cmp[0]));
++
++	id = idr_alloc_one(&idr, &cmp[0], cmp[0]);
++	expect(id == cmp[0]);
++
++	expect(!idr_is_empty(&idr));
++
++	ptr = idr_find(&idr, cmp[0]);
++	expect(ptr);
++	expect(ptr == &cmp[0]);
++
++	id = idr_alloc_one(&idr, &cmp[1], cmp[1]);
++	expect(id == cmp[1]);
++
++	id = idr_alloc_one(&idr, &cmp[2], cmp[2]);
++	expect(id == cmp[2]);
++
++	count = 0;
++
++	idr_for_each_entry(&idr, ptr, id) {
++		expect(id  ==  sorted_cmp[count]);
++		expect(*(int *)ptr == sorted_cmp[count]);
++
++		count++;
++
 +	}
-+}
-+#else /* BITS_PER_LONG < 64 */
-+static inline s64 ktime_divns(const ktime_t kt, s64 div)
-+{
-+	/*
-+	 * 32-bit implementation cannot handle negative divisors,
-+	 * so catch them on 64bit as well.
-+	 */
-+	WARN_ON(div < 0);
-+	return kt / div;
-+}
-+#endif
 +
-+static inline s64 ktime_to_us(const ktime_t kt)
-+{
-+	return ktime_divns(kt, NSEC_PER_USEC);
++	expect(count == 3);
++
++	expect(idr_for_each(&idr, test_idr_for_each, &cmp[2]) == -1);
++
++	count = 0;
++	expect(idr_for_each(&idr, count_idr, &count) == 0);
++	expect(count == 3);
++
++	idr_remove(&idr, 1);
++
++	count = 0;
++	expect(idr_for_each(&idr, count_idr, &count) == 0);
++	expect(count == 2);
++
++	idr_remove(&idr, 7);
++
++	count = 0;
++	expect(idr_for_each(&idr, count_idr, &count) == 0);
++	expect(count == 1);
++
++	idr_remove(&idr, 2);
++
++	count = 0;
++	expect(idr_for_each(&idr, count_idr, &count) == 0);
++	expect(count == 0);
++
++	expect(idr_is_empty(&idr));
++
++	idr_alloc_one(&idr, &cmp[0], cmp[0]);
++	idr_alloc_one(&idr, &cmp[1], cmp[1]);
++	idr_alloc_one(&idr, &cmp[2], cmp[2]);
++
++	expect(!idr_is_empty(&idr));
++
++	idr_destroy(&idr);
++
++	expect(idr_is_empty(&idr));
 +}
-+
-+static inline s64 ktime_to_ms(const ktime_t kt)
-+{
-+	return ktime_divns(kt, NSEC_PER_MSEC);
-+}
-+
-+static inline s64 ktime_us_delta(const ktime_t later, const ktime_t earlier)
-+{
-+       return ktime_to_us(ktime_sub(later, earlier));
-+}
-+
-+static inline s64 ktime_ms_delta(const ktime_t later, const ktime_t earlier)
-+{
-+	return ktime_to_ms(ktime_sub(later, earlier));
-+}
-+
-+static inline ktime_t ktime_add_us(const ktime_t kt, const u64 usec)
-+{
-+	return ktime_add_ns(kt, usec * NSEC_PER_USEC);
-+}
-+
-+static inline ktime_t ktime_add_ms(const ktime_t kt, const u64 msec)
-+{
-+	return ktime_add_ns(kt, msec * NSEC_PER_MSEC);
-+}
-+
-+static inline ktime_t ktime_sub_us(const ktime_t kt, const u64 usec)
-+{
-+	return ktime_sub_ns(kt, usec * NSEC_PER_USEC);
-+}
-+
-+static inline ktime_t ktime_sub_ms(const ktime_t kt, const u64 msec)
-+{
-+	return ktime_sub_ns(kt, msec * NSEC_PER_MSEC);
-+}
-+
-+extern ktime_t ktime_add_safe(const ktime_t lhs, const ktime_t rhs);
-+
-+static inline ktime_t ns_to_ktime(u64 ns)
-+{
-+	return ns;
-+}
-+
-+static inline ktime_t ms_to_ktime(u64 ms)
-+{
-+	return ms * NSEC_PER_MSEC;
-+}
-+
-+static inline ktime_t ktime_get(void)
-+{
-+	return get_time_ns();
-+}
-+
-+#endif
++bselftest(core, test_idr);
 -- 
 2.39.2
 
