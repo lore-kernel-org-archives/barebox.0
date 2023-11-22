@@ -1,66 +1,66 @@
-Delivery-date: Wed, 22 Nov 2023 18:31:34 +0100
+Delivery-date: Wed, 22 Nov 2023 18:31:35 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5r4Y-004dgy-0D
+	id 1r5r4Y-004dhP-1r
 	for lore@lore.pengutronix.de;
-	Wed, 22 Nov 2023 18:31:34 +0100
+	Wed, 22 Nov 2023 18:31:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r5r4X-0008DU-UK
-	for lore@pengutronix.de; Wed, 22 Nov 2023 18:31:34 +0100
+	id 1r5r4Y-0008Dz-Df
+	for lore@pengutronix.de; Wed, 22 Nov 2023 18:31:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=q0gzQSRsjaMq+dhyEjB+vvuymMiXfCyGaqnySlaMWP4=; b=AQ+rXPNhtIjBGCP6GePeO4cv/r
-	Z9BVfbG3++CxfBlyfPSuv7cULmdJLHu7D/cQlRol/el0hUsdzsdQ9u7yruad/xm8WRTJkE20GtYET
-	dQylGznGZBnd+3QDhh9MxPnzheOQ+7FT6S4zZ2azPifWf/XIVfJfH1s+KrFktaQ65tml5N2TiqcJK
-	uFjEsvFt7Gkv3+hom9g1uW+LcgJRpbBdPLzxId6CU5LyswZ6j9dSFFzQyugzRk9nWjJh2K7srP6Ls
-	q9uAg86TKKMQK3jYG910Rji1qccYvIb3ePP0sbxVHvadbJcQZ3hwbHIt8xIAsiHaoXs4vW/G8VGYP
-	VKkkOCtw==;
+	bh=pJH9pVvqhW9OfrSWdgQleRlxpwBP/u/ctBzlVe3G/D0=; b=h05VxrJnyCpT8eeNVKsGZVYcQG
+	s5PpkNQ2TXZsARMEl/hlct1FeCHuB3V9JkXW8Hqx2wPydrZ+ZpRzpNiSvj8Vfn8DMHugJ84urCxUn
+	uoKMtWCORqPyPlmgGDPrFeGIrpJth0+StWTcQyiYYIMRTkUjtqknaooHEffmsbD4qr7QVQHq3yMQx
+	GO4olNlAUimth4wTpGmPZ82F7OS7JvfoRuyVpH8rtdkwlCUwliZh363OpcxJyHwn7As9ylsX0XnUr
+	Ctd9R693PISnaPUt8HFA3xK2D8FUaR4itDwgh0no0GgHIvSefJFfxqsTHVgm2elYmYaCPf2nVhEGo
+	thA7BjWw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5r3C-002fBa-1f;
-	Wed, 22 Nov 2023 17:30:10 +0000
+	id 1r5r3D-002fBp-0R;
+	Wed, 22 Nov 2023 17:30:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r5r35-002f82-2C
+	id 1r5r35-002f7z-1j
 	for barebox@lists.infradead.org;
 	Wed, 22 Nov 2023 17:30:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r34-0007Tj-IZ; Wed, 22 Nov 2023 18:30:02 +0100
+	id 1r5r34-0007T6-Bf; Wed, 22 Nov 2023 18:30:02 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r34-00ArT7-5D; Wed, 22 Nov 2023 18:30:02 +0100
+	id 1r5r33-00ArSv-Uz; Wed, 22 Nov 2023 18:30:01 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r5r34-001lAy-0A;
-	Wed, 22 Nov 2023 18:30:02 +0100
+	id 1r5r33-001lAy-2j;
+	Wed, 22 Nov 2023 18:30:01 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 22 Nov 2023 18:29:40 +0100
-Message-Id: <20231122172951.376531-10-a.fatoum@pengutronix.de>
+Date: Wed, 22 Nov 2023 18:29:36 +0100
+Message-Id: <20231122172951.376531-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 References: <20231122172951.376531-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_093003_722714_0F6BC36A 
-X-CRM114-Status: GOOD (  16.88  )
+X-CRM114-CacheID: sfid-20231122_093003_577335_98DCA904 
+X-CRM114-Status: GOOD (  19.18  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,127 +83,176 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 09/20] string: implement strscpy
+Subject: [PATCH v2 05/20] asm-generic: split off typeconfused readl and friends
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-strscpy is meant to be a safer alternative to strscpy, which always
-terminates the destination string and returns an error code if
-truncation happens. To enable porting kernel code using it, import the
-definition.
+The MMIO accessors in barebox like readl have the error prone
+peculiarity of accepting integer arguments to pointers automatically,
+which makes it easy to confuse address and data.
+
+We will add an alternative less error-prone way for new code, so first
+split off the typeconfused code into a separate file.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - unchanged
+  - fix typo in commit message (Sascha)
 ---
- include/linux/string.h |  3 ++
- lib/string.c           | 71 ++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 74 insertions(+)
+ include/asm-generic/io-typeconfused.h | 75 +++++++++++++++++++++++++++
+ include/asm-generic/io.h              | 57 +-------------------
+ 2 files changed, 76 insertions(+), 56 deletions(-)
+ create mode 100644 include/asm-generic/io-typeconfused.h
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index 75c8cf818b39..32ce56939699 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -46,6 +46,9 @@ extern char * strncpy(char *,const char *, __kernel_size_t);
- #ifndef __HAVE_ARCH_STRLCPY
- size_t strlcpy(char *, const char *, size_t);
- #endif
-+#ifndef __HAVE_ARCH_STRSCPY
-+ssize_t strscpy(char *, const char *, size_t);
+diff --git a/include/asm-generic/io-typeconfused.h b/include/asm-generic/io-typeconfused.h
+new file mode 100644
+index 000000000000..d25ed7db2473
+--- /dev/null
++++ b/include/asm-generic/io-typeconfused.h
+@@ -0,0 +1,75 @@
++/* Generic I/O port emulation, based on MN10300 code
++ *
++ * Copyright (C) 2007 Red Hat, Inc. All Rights Reserved.
++ * Written by David Howells (dhowells@redhat.com)
++ *
++ * This program is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU General Public Licence
++ * as published by the Free Software Foundation; either version
++ * 2 of the Licence, or (at your option) any later version.
++ */
++#ifndef __ASM_GENERIC_IO_TYPECONFUSED_H
++#define __ASM_GENERIC_IO_TYPECONFUSED_H
++
++#include <linux/string.h> /* for memset() and memcpy() */
++#include <linux/compiler.h>
++#include <linux/types.h>
++#include <asm/byteorder.h>
++
++/*****************************************************************************/
++/*
++ * Unlike the definitions in <asm-generic/io.h>, these macros don't complain
++ * about integer arguments and just silently cast them to pointers. This is
++ * a common cause of bugs, but lots of existing code depends on this, so
++ * this header is provided as a transitory measure.
++ */
++
++#ifndef __raw_readb
++#define __raw_readb(a)		(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a))
 +#endif
- #ifndef __HAVE_ARCH_STRCAT
- extern char * strcat(char *, const char *);
- #endif
-diff --git a/lib/string.c b/lib/string.c
-index 166ef190d6aa..bf0f0455ab3f 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -22,6 +22,7 @@
++
++#ifndef __raw_readw
++#define __raw_readw(a)		(__chk_io_ptr(a), *(volatile unsigned short __force *)(a))
++#endif
++
++#ifndef __raw_readl
++#define __raw_readl(a)		(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a))
++#endif
++
++#ifndef readb
++#define readb __raw_readb
++#endif
++
++#ifndef readw
++#define readw(addr) __le16_to_cpu(__raw_readw(addr))
++#endif
++
++#ifndef readl
++#define readl(addr) __le32_to_cpu(__raw_readl(addr))
++#endif
++
++#ifndef __raw_writeb
++#define __raw_writeb(v,a)	(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a) = (v))
++#endif
++
++#ifndef __raw_writew
++#define __raw_writew(v,a)	(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v))
++#endif
++
++#ifndef __raw_writel
++#define __raw_writel(v,a)	(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a) = (v))
++#endif
++
++#ifndef writeb
++#define writeb __raw_writeb
++#endif
++
++#ifndef writew
++#define writew(b,addr) __raw_writew(__cpu_to_le16(b),addr)
++#endif
++
++#ifndef writel
++#define writel(b,addr) __raw_writel(__cpu_to_le32(b),addr)
++#endif
++
++#endif /* __ASM_GENERIC_IO_TYPECONFUSED_H */
+diff --git a/include/asm-generic/io.h b/include/asm-generic/io.h
+index ab439026928a..6383d71746f1 100644
+--- a/include/asm-generic/io.h
++++ b/include/asm-generic/io.h
+@@ -15,62 +15,7 @@
+ #include <linux/compiler.h>
  #include <linux/types.h>
- #include <string.h>
- #include <linux/ctype.h>
-+#include <asm/word-at-a-time.h>
- #include <malloc.h>
+ #include <asm/byteorder.h>
+-
+-/*****************************************************************************/
+-/*
+- * readX/writeX() are used to access memory mapped devices. On some
+- * architectures the memory mapped IO stuff needs to be accessed
+- * differently. On the simple architectures, we just read/write the
+- * memory location directly.
+- */
+-
+-#ifndef __raw_readb
+-#define __raw_readb(a)		(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a))
+-#endif
+-
+-#ifndef __raw_readw
+-#define __raw_readw(a)		(__chk_io_ptr(a), *(volatile unsigned short __force *)(a))
+-#endif
+-
+-#ifndef __raw_readl
+-#define __raw_readl(a)		(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a))
+-#endif
+-
+-#ifndef readb
+-#define readb __raw_readb
+-#endif
+-
+-#ifndef readw
+-#define readw(addr) __le16_to_cpu(__raw_readw(addr))
+-#endif
+-
+-#ifndef readl
+-#define readl(addr) __le32_to_cpu(__raw_readl(addr))
+-#endif
+-
+-#ifndef __raw_writeb
+-#define __raw_writeb(v,a)	(__chk_io_ptr(a), *(volatile unsigned char __force  *)(a) = (v))
+-#endif
+-
+-#ifndef __raw_writew
+-#define __raw_writew(v,a)	(__chk_io_ptr(a), *(volatile unsigned short __force *)(a) = (v))
+-#endif
+-
+-#ifndef __raw_writel
+-#define __raw_writel(v,a)	(__chk_io_ptr(a), *(volatile unsigned int __force   *)(a) = (v))
+-#endif
+-
+-#ifndef writeb
+-#define writeb __raw_writeb
+-#endif
+-
+-#ifndef writew
+-#define writew(b,addr) __raw_writew(__cpu_to_le16(b),addr)
+-#endif
+-
+-#ifndef writel
+-#define writel(b,addr) __raw_writel(__cpu_to_le32(b),addr)
+-#endif
++#include <asm-generic/io-typeconfused.h>
  
- #ifndef __HAVE_ARCH_STRCASECMP
-@@ -87,6 +88,76 @@ char * strcpy(char * dest,const char *src)
- #endif
- EXPORT_SYMBOL(strcpy);
- 
-+#ifndef __HAVE_ARCH_STRSCPY
-+ssize_t strscpy(char *dest, const char *src, size_t count)
-+{
-+	const struct word_at_a_time constants = WORD_AT_A_TIME_CONSTANTS;
-+	size_t max = count;
-+	long res = 0;
-+
-+	if (count == 0 || WARN_ON_ONCE(count > INT_MAX))
-+		return -E2BIG;
-+
-+#ifdef CONFIG_HAVE_EFFICIENT_UNALIGNED_ACCESS
-+	/*
-+	 * If src is unaligned, don't cross a page boundary,
-+	 * since we don't know if the next page is mapped.
-+	 */
-+	if ((long)src & (sizeof(long) - 1)) {
-+		size_t limit = PAGE_SIZE - ((long)src & (PAGE_SIZE - 1));
-+		if (limit < max)
-+			max = limit;
-+	}
-+#else
-+	/* If src or dest is unaligned, don't do word-at-a-time. */
-+	if (((long) dest | (long) src) & (sizeof(long) - 1))
-+		max = 0;
-+#endif
-+
-+	/*
-+	 * read_word_at_a_time() below may read uninitialized bytes after the
-+	 * trailing zero and use them in comparisons. Disable this optimization
-+	 * under KMSAN to prevent false positive reports.
-+	 */
-+	if (IS_ENABLED(CONFIG_KMSAN))
-+		max = 0;
-+
-+	while (max >= sizeof(unsigned long)) {
-+		unsigned long c, data;
-+
-+		c = read_word_at_a_time(src+res);
-+		if (has_zero(c, &data, &constants)) {
-+			data = prep_zero_mask(c, data, &constants);
-+			data = create_zero_mask(data);
-+			*(unsigned long *)(dest+res) = c & zero_bytemask(data);
-+			return res + find_zero(data);
-+		}
-+		*(unsigned long *)(dest+res) = c;
-+		res += sizeof(unsigned long);
-+		count -= sizeof(unsigned long);
-+		max -= sizeof(unsigned long);
-+	}
-+
-+	while (count) {
-+		char c;
-+
-+		c = src[res];
-+		dest[res] = c;
-+		if (!c)
-+			return res;
-+		res++;
-+		count--;
-+	}
-+
-+	/* Hit buffer length without finding a NUL; force NUL-termination. */
-+	if (res)
-+		dest[res-1] = '\0';
-+
-+	return -E2BIG;
-+}
-+EXPORT_SYMBOL(strscpy);
-+#endif
-+
- /**
-  * stpcpy - Copy a %NUL terminated string, but return pointer to %NUL
-  * @dest: Where to copy the string to
+ #ifdef CONFIG_64BIT
+ static inline u64 __raw_readq(const volatile void __iomem *addr)
 -- 
 2.39.2
 
