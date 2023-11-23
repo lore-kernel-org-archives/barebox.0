@@ -1,60 +1,60 @@
-Delivery-date: Thu, 23 Nov 2023 08:24:38 +0100
+Delivery-date: Thu, 23 Nov 2023 08:26:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r644j-005UBB-1k
+	id 1r646w-005UMf-2f
 	for lore@lore.pengutronix.de;
-	Thu, 23 Nov 2023 08:24:38 +0100
+	Thu, 23 Nov 2023 08:26:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r644j-0006f8-IS
-	for lore@pengutronix.de; Thu, 23 Nov 2023 08:24:38 +0100
+	id 1r646w-000752-Sl
+	for lore@pengutronix.de; Thu, 23 Nov 2023 08:26:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xO/ka3xNeS+hziAED9CA2fV+vffRG/HVOL2qIVAuSvA=; b=L50mOdjErL8G03rCbASCASEfSQ
-	15zFJTZgsFu4lRfu/HcFzULDJkiqbaBIbF423KLG45/99v01xCH5JTiTSypDDCqMnTW0CRuA8y60y
-	vCUurB5So/52O+ac9A0ygym4UssHVWjVHt9k7DDR4CvQBa/7kKpdzmHGe/0uQz1yr81gMSjsXYDpZ
-	yGmaNh5jCCbXiDOE965jaDItUTQ5F46KJmr0I9CVvhw19uquwanpMmKasE5RymDBIdiBYTU25kLMH
-	E65gxZ9Xy1ba/xVfduv+6wi1PQm6xaYuepZjIxc0dfyd5Jsy1/IebutAMysxpP/2smmksaK3+3sxo
-	XmaLkulA==;
+	bh=ZMGrYo+Tw+0OJmpfiu9y02Vg56EyHrQgDjIomNzLyhQ=; b=uMJKVXGByzx4eItlyDc8NZQZ8c
+	X19Q7RYRmISoTt4cF+s5IHWiAX4qH4UJKpGVVNzOlAXqVlOkdu9o+dPMGGU/+g3bfZB+MX1DVvEnw
+	iptMRg5+ugftG4lXnSyrW/XLCHFvEyMvGy/FmyMIFqfVNiKjl2TKKFccx4AZStcFXngTGT9uF/9RN
+	MpAF4pL0TuBljPep5emZYa5MYbvTnjDdeGYdZzdRUJ0DWxKEsBcj25apoRdySygj1pvF8yDlOztME
+	F4zfCc56roGT3j2ps6f1HMdOCJYVzDdJSMp6WYACNHvd8JQJhsxENaneBdmbWddMNFgoyk4IzvL4f
+	9AEKRRiA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r643Q-0041AV-0Y;
-	Thu, 23 Nov 2023 07:23:16 +0000
+	id 1r645f-0041vs-0K;
+	Thu, 23 Nov 2023 07:25:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r643M-00418d-2E
+	id 1r645b-0041us-25
 	for barebox@lists.infradead.org;
-	Thu, 23 Nov 2023 07:23:14 +0000
+	Thu, 23 Nov 2023 07:25:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r643L-0006Qm-Ad; Thu, 23 Nov 2023 08:23:11 +0100
+	id 1r645a-0006s0-98; Thu, 23 Nov 2023 08:25:30 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r643K-00AzPL-UQ; Thu, 23 Nov 2023 08:23:10 +0100
+	id 1r645Z-00AzPb-Sv; Thu, 23 Nov 2023 08:25:29 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1r643K-003QDG-SE; Thu, 23 Nov 2023 08:23:10 +0100
-Date: Thu, 23 Nov 2023 08:23:10 +0100
+	id 1r645Z-003QE8-Qf; Thu, 23 Nov 2023 08:25:29 +0100
+Date: Thu, 23 Nov 2023 08:25:29 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20231123072310.GF3359458@pengutronix.de>
-References: <20231122173118.569620-1-a.fatoum@pengutronix.de>
+Message-ID: <20231123072529.GG3359458@pengutronix.de>
+References: <20231122181116.591131-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231122173118.569620-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20231122181116.591131-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -62,8 +62,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231122_232312_728123_E6D5BCF0 
-X-CRM114-Status: GOOD (  18.19  )
+X-CRM114-CacheID: sfid-20231122_232531_685415_58C188C9 
+X-CRM114-Status: GOOD (  16.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,46 +86,38 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] of: reserved-mem: add debug print for reservations
+Subject: Re: [PATCH 0/7] ARM: stm32mp: random STM32MP13 fixes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Nov 22, 2023 at 06:31:18PM +0100, Ahmad Fatoum wrote:
-> reserve_sdram_region can now involve cache maintenance, so add a debug
-> print beforehand to aid debugging.
+On Wed, Nov 22, 2023 at 07:11:09PM +0100, Ahmad Fatoum wrote:
+> STM32MP135-DK board support has been broken by a device tree sync with
+> the kernel as the kernel now uses SCMI to communicate with OP-TEE for
+> controlling some clocks, resets, regulators and OTP.
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/of/reserved-mem.c | 4 ++++
->  1 file changed, 4 insertions(+)
+> A series for that is incoming once OP-TEE communication upstreaming
+> is complete, but for now, this series fixes random other stuff.
+> 
+> Ahmad Fatoum (7):
+>   ARM: dts: stm32mp: stm32mp135-dk: drop duplicate property
+>   ARM: dts: stm32mp: fix model string for stm32mp135f-dk
+>   ARM: stm32mp: init: drop unused macros
+>   ARM: stm32mp: don't re-enable DBGCFGR clock
+>   ARM: stm32mp: init: handle differences between STM32MP13 and STM32MP15
+>   ARM: stm32mp: init: don't print STM32MP15 CPU type
+>   ARM: stm32mp: init: ignore of_register_fixup return value
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/of/reserved-mem.c b/drivers/of/reserved-mem.c
-> index f50a0bd8374d..599a7c968afd 100644
-> --- a/drivers/of/reserved-mem.c
-> +++ b/drivers/of/reserved-mem.c
-> @@ -1,6 +1,8 @@
->  // SPDX-License-Identifier: GPL-2.0-only
->  // SPDX-FileCopyrightText: 2021 Rouven Czerwinski <r.czerwinski@pengutronix.de>, Pengutronix
->  
-> +#define pr_fmt(fmt) "of-reserved-mem: " fmt
-> +
->  #include <stdio.h>
->  #include <of.h>
->  #include <of_address.h>
-> @@ -17,6 +19,8 @@ static void request_region(struct resource *r)
->  		if (!resource_contains(bank->res, r))
->  			continue;
->  
-> +		pr_debug("reserving %s at %pad-%pad\n", r->name, &r->start, &r->end);
-> +
->  		if (!reserve_sdram_region(r->name, r->start, resource_size(r)))
->  			pr_warn("couldn't request reserved sdram region %pa-%pa\n",
->  				&r->start, &r->end);
+>  arch/arm/boards/stm32mp15xx-dkx/lowlevel.c |   2 +-
+>  arch/arm/dts/stm32mp135f-dk.dts            |   6 +-
+>  arch/arm/mach-stm32mp/init.c               | 106 +++++----------------
+>  include/mach/stm32mp/revision.h            |  41 +++-----
+>  4 files changed, 38 insertions(+), 117 deletions(-)
+> 
 > -- 
 > 2.39.2
 > 
