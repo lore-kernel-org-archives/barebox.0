@@ -1,66 +1,66 @@
-Delivery-date: Mon, 27 Nov 2023 07:38:11 +0100
+Delivery-date: Mon, 27 Nov 2023 07:38:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r7VFz-00Adxa-0D
+	id 1r7VG3-00AdyL-1u
 	for lore@lore.pengutronix.de;
-	Mon, 27 Nov 2023 07:38:11 +0100
+	Mon, 27 Nov 2023 07:38:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r7VFy-0007Te-6N
-	for lore@pengutronix.de; Mon, 27 Nov 2023 07:38:11 +0100
+	id 1r7VG3-0007Wf-5b
+	for lore@pengutronix.de; Mon, 27 Nov 2023 07:38:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YPkdcxLPNMinN2dU4s86I/v8xdmhCzcsrmtK2flypd4=; b=zYv4D028vV9zY/zapNLQtHAULM
-	J1Qg3d+EnTflZKY2I4+myc3FGj/38wy7vl2PlnnTtJS/GCoLycPpw9DxGpFQ+hT0M3NmBvjs2v+0C
-	LuDAYHtt5VIN9EvWgx8s0ZAk95+qv+nqAebuwOCufqEh3QCEcXk1p0yePS+iRJnH5Dwi5Y5darzbI
-	ME3RduQAXHz6tRZNICsRd0p+azcK38NReWUg5jE2/yyTTvng+GPaznnLxnug7nW3RN2udTwxEmNtx
-	8HoGlI21JSaKyR/yEt8PeNXHk3+6bM3iZDlgx0D6+MExD1EWBRrvj8+1qTVbUyVS3t/UuXGpuN7k7
-	yg/xFuDQ==;
+	bh=uzTYvdoFyZNJx0yjARPTeaCY/6L7HgKSx8V5/j/ZWAg=; b=kTqiemARccBnL9/V38kVsvT8eA
+	NNsXSqQXsTAHLDHwPDK/+utOcjDMAx6+dHGLLDJv7NnjQ11FSIgkUCbilGVZIJTXnAN1MlhdNSP69
+	PzJG5S3clxjvCSXsMcXUrZ+AfDvZYsKD7UOFPdlGtfduDlWbrynDbMmaVgQhdPSXxSdkEWYwyCoqp
+	KEbQyUUagxdPvX4aIVPEVM3v+lnMRWdP3FZoKjnVMES1QATbO0K19325gJH3eg4PWKOO0jfCnyFzI
+	kgIBNX0wCeyvQwosKiEdaqZLqVYHnSUW8S21x49a2AqhW92z7ZGHGd67nV7Zer1c2tVNPdV4kHe3W
+	wuHHzFvQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r7VEU-001Z48-1q;
-	Mon, 27 Nov 2023 06:36:38 +0000
+	id 1r7VET-001Z2t-28;
+	Mon, 27 Nov 2023 06:36:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r7VE8-001Ywv-31
+	id 1r7VE8-001Yww-31
 	for barebox@lists.infradead.org;
-	Mon, 27 Nov 2023 06:36:23 +0000
+	Mon, 27 Nov 2023 06:36:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VE4-00071M-QN; Mon, 27 Nov 2023 07:36:12 +0100
+	id 1r7VE4-00071P-R8; Mon, 27 Nov 2023 07:36:12 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VE4-00Bsgl-DT; Mon, 27 Nov 2023 07:36:12 +0100
+	id 1r7VE4-00Bsgo-Eb; Mon, 27 Nov 2023 07:36:12 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VE4-009Fpr-13;
+	id 1r7VE4-009Fpr-1C;
 	Mon, 27 Nov 2023 07:36:12 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 27 Nov 2023 07:35:58 +0100
-Message-Id: <20231127063559.2205776-8-a.fatoum@pengutronix.de>
+Date: Mon, 27 Nov 2023 07:35:59 +0100
+Message-Id: <20231127063559.2205776-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231127063559.2205776-1-a.fatoum@pengutronix.de>
 References: <20231127063559.2205776-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231126_223617_978478_8272EE05 
-X-CRM114-Status: GOOD (  25.31  )
+X-CRM114-CacheID: sfid-20231126_223617_140988_E3336D5A 
+X-CRM114-Status: GOOD (  24.80  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,798 +83,360 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 7/8] optee: add experimental support for /dev/tee0
+Subject: [PATCH 8/8] hw_random: add implementation for OP-TEE RNG pseudo TA
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+This driver provides support for OP-TEE based Random Number
+Generator on ARM SoCs where hardware entropy sources are not
+accessible to barebox running in the normal world.
 
-Userspace accesses OP-TEE via ioctls and mmaps of the /dev/tee0
-device. Replicating this in barebox is useful for verifying proper
-operation of CONFIG_OPTEE by hacking libteeclient + optee_tests to
-run under barebox.
+It also makes for an easy target to test matching drivers with
+devices via UUID and using the device enumeration pseudo TA.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/tee/optee/Kconfig |   9 +
- drivers/tee/tee_core.c    | 406 ++++++++++++++++++++++++++++++++++++++
- drivers/tee/tee_private.h |   4 +
- drivers/tee/tee_shm.c     | 142 ++++++++++++-
- include/linux/tee_drv.h   |  33 ++++
- 5 files changed, 589 insertions(+), 5 deletions(-)
+ drivers/hw_random/Kconfig     |   9 +
+ drivers/hw_random/Makefile    |   1 +
+ drivers/hw_random/optee-rng.c | 302 ++++++++++++++++++++++++++++++++++
+ 3 files changed, 312 insertions(+)
+ create mode 100644 drivers/hw_random/optee-rng.c
 
-diff --git a/drivers/tee/optee/Kconfig b/drivers/tee/optee/Kconfig
-index 4eb0dd6ac61c..3c791a10c4ac 100644
---- a/drivers/tee/optee/Kconfig
-+++ b/drivers/tee/optee/Kconfig
-@@ -18,3 +18,12 @@ config OPTEE
- 	  CONFIG_BOOTM_OPTEE and PBL_OPTEE.
+diff --git a/drivers/hw_random/Kconfig b/drivers/hw_random/Kconfig
+index bf86240623c4..6daff6490693 100644
+--- a/drivers/hw_random/Kconfig
++++ b/drivers/hw_random/Kconfig
+@@ -51,4 +51,13 @@ config HW_RANDOM_EFI
+ 	  This driver provides barebox support for the Random Number
+ 	  Generator Protocol offered by EFI firmware
  
- 	  If unsure, say n here.
-+
-+config OPTEE_DEVFS
-+	bool "Provide /dev/tee0 interface"
-+	depends on OPTEE && FS_DEVFS && EXPERIMENTAL
++config HW_RANDOM_OPTEE
++	tristate "OP-TEE based Random Number Generator support"
++	depends on OPTEE
++	default HW_RANDOM
 +	help
-+	  Userspace accesses OP-TEE via ioctls and mmaps of the /dev/tee0
-+	  device. This are no current in-tree users of this interface,
-+	  but it's useful for compiling libteeclient + optee_tests for
-+	  use inside barebox to verify proper operation of CONFIG_OPTEE.
-diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
-index be92e3dfc920..0bf645a310eb 100644
---- a/drivers/tee/tee_core.c
-+++ b/drivers/tee/tee_core.c
-@@ -82,6 +82,32 @@ void teedev_close_context(struct tee_context *ctx)
- }
- EXPORT_SYMBOL_GPL(teedev_close_context);
- 
-+static int tee_open(struct cdev *cdev, unsigned long flags)
-+{
++	  This  driver provides support for OP-TEE based Random Number
++	  Generator on ARM SoCs where hardware entropy sources are not
++	  accessible to normal world (Linux).
++
+ endif
+diff --git a/drivers/hw_random/Makefile b/drivers/hw_random/Makefile
+index 9ea064340916..2c7d196f2f72 100644
+--- a/drivers/hw_random/Makefile
++++ b/drivers/hw_random/Makefile
+@@ -6,3 +6,4 @@ obj-$(CONFIG_HWRNG_DEV_RANDOM) += dev-random.o
+ obj-$(CONFIG_HW_RANDOM_VIRTIO) += virtio-rng.o
+ obj-$(CONFIG_HW_RANDOM_STARFIVE) += starfive-vic-rng.o
+ obj-$(CONFIG_HW_RANDOM_EFI) += efi-rng.o
++obj-$(CONFIG_HW_RANDOM_OPTEE) += optee-rng.o
+diff --git a/drivers/hw_random/optee-rng.c b/drivers/hw_random/optee-rng.c
+new file mode 100644
+index 000000000000..d1d2904821cf
+--- /dev/null
++++ b/drivers/hw_random/optee-rng.c
+@@ -0,0 +1,302 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (C) 2018-2019 Linaro Ltd.
++ */
++
++#include <of.h>
++#include <linux/hw_random.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/tee_drv.h>
++#include <linux/uuid.h>
++
++#define DRIVER_NAME "optee-rng"
++
++#define TEE_ERROR_HEALTH_TEST_FAIL	0x00000001
++
++/*
++ * TA_CMD_GET_ENTROPY - Get Entropy from RNG
++ *
++ * param[0] (inout memref) - Entropy buffer memory reference
++ * param[1] unused
++ * param[2] unused
++ * param[3] unused
++ *
++ * Result:
++ * TEE_SUCCESS - Invoke command success
++ * TEE_ERROR_BAD_PARAMETERS - Incorrect input param
++ * TEE_ERROR_NOT_SUPPORTED - Requested entropy size greater than size of pool
++ * TEE_ERROR_HEALTH_TEST_FAIL - Continuous health testing failed
++ */
++#define TA_CMD_GET_ENTROPY		0x0
++
++/*
++ * TA_CMD_GET_RNG_INFO - Get RNG information
++ *
++ * param[0] (out value) - value.a: RNG data-rate in bytes per second
++ *                        value.b: Quality/Entropy per 1024 bit of data
++ * param[1] unused
++ * param[2] unused
++ * param[3] unused
++ *
++ * Result:
++ * TEE_SUCCESS - Invoke command success
++ * TEE_ERROR_BAD_PARAMETERS - Incorrect input param
++ */
++#define TA_CMD_GET_RNG_INFO		0x1
++
++#define MAX_ENTROPY_REQ_SZ		(4 * 1024)
++
++/**
++ * struct optee_rng_private - OP-TEE Random Number Generator private data
++ * @dev:		OP-TEE based RNG device.
++ * @ctx:		OP-TEE context handler.
++ * @session_id:		RNG TA session identifier.
++ * @data_rate:		RNG data rate.
++ * @entropy_shm_pool:	Memory pool shared with RNG device.
++ * @optee_rng:		OP-TEE RNG driver structure.
++ */
++struct optee_rng_private {
++	struct device *dev;
 +	struct tee_context *ctx;
-+
-+	if (cdev->priv)
-+		return -EBUSY;
-+
-+	ctx = teedev_open(container_of(cdev, struct tee_device, cdev));
-+	if (IS_ERR(ctx))
-+		return PTR_ERR(ctx);
-+
-+	cdev->priv = ctx;
-+
-+	return 0;
-+}
-+
-+static int tee_release(struct cdev *cdev)
-+{
-+	struct tee_context *ctx = cdev->priv;
-+
-+	teedev_close_context(ctx);
-+	cdev->priv = NULL;
-+
-+	return 0;
-+}
-+
- int tee_session_calc_client_uuid(uuid_t *uuid, u32 connection_method,
- 				 const u8 connection_data[TEE_IOCTL_UUID_LEN])
- {
-@@ -96,6 +122,367 @@ int tee_session_calc_client_uuid(uuid_t *uuid, u32 connection_method,
- }
- EXPORT_SYMBOL_GPL(tee_session_calc_client_uuid);
- 
-+static int tee_ioctl_version(struct tee_context *ctx,
-+			     struct tee_ioctl_version_data __user *uvers)
-+{
-+	struct tee_ioctl_version_data vers;
-+
-+	ctx->teedev->desc->ops->get_version(ctx->teedev, &vers);
-+
-+	if (ctx->teedev->desc->flags & TEE_DESC_PRIVILEGED)
-+		vers.gen_caps |= TEE_GEN_CAP_PRIVILEGED;
-+
-+	if (copy_to_user(uvers, &vers, sizeof(vers)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int tee_ioctl_shm_alloc(struct tee_context *ctx,
-+			       struct tee_ioctl_shm_alloc_data *data)
-+{
-+	struct tee_shm *shm;
-+
-+	/* Currently no input flags are supported */
-+	if (data->flags)
-+		return -EINVAL;
-+
-+	shm = tee_shm_alloc_user_buf(ctx, data->size);
-+	if (IS_ERR(shm))
-+		return PTR_ERR(shm);
-+
-+	data->id = shm->dev.id;
-+	data->flags = shm->flags;
-+	data->size = shm->size;
-+
-+	return tee_shm_get_fd(shm);
-+}
-+
-+static int
-+tee_ioctl_shm_register(struct tee_context *ctx,
-+		       struct tee_ioctl_shm_register_data *data)
-+{
-+	struct tee_shm *shm;
-+
-+	/* Currently no input flags are supported */
-+	if (data->flags)
-+		return -EINVAL;
-+
-+	shm = tee_shm_register_user_buf(ctx, data->addr, data->length);
-+	if (IS_ERR(shm))
-+		return PTR_ERR(shm);
-+
-+	data->id = shm->dev.id;
-+	data->flags = shm->flags;
-+	data->length = shm->size;
-+
-+	return tee_shm_get_fd(shm);
-+}
-+
-+static int params_from_user(struct tee_context *ctx, struct tee_param *params,
-+			    size_t num_params,
-+			    struct tee_ioctl_param __user *uparams)
-+{
-+	size_t n;
-+
-+	for (n = 0; n < num_params; n++) {
-+		struct tee_shm *shm;
-+		struct tee_ioctl_param ip;
-+
-+		if (copy_from_user(&ip, uparams + n, sizeof(ip)))
-+			return -EFAULT;
-+
-+		/* All unused attribute bits has to be zero */
-+		if (ip.attr & ~TEE_IOCTL_PARAM_ATTR_MASK)
-+			return -EINVAL;
-+
-+		params[n].attr = ip.attr;
-+		switch (ip.attr & TEE_IOCTL_PARAM_ATTR_TYPE_MASK) {
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_NONE:
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_OUTPUT:
-+			break;
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INPUT:
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INOUT:
-+			params[n].u.value.a = ip.a;
-+			params[n].u.value.b = ip.b;
-+			params[n].u.value.c = ip.c;
-+			break;
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INPUT:
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_OUTPUT:
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INOUT:
-+			/*
-+			 * If a NULL pointer is passed to a TA in the TEE,
-+			 * the ip.c IOCTL parameters is set to TEE_MEMREF_NULL
-+			 * indicating a NULL memory reference.
-+			 */
-+			if (ip.c != TEE_MEMREF_NULL) {
-+				/*
-+				 * If we fail to get a pointer to a shared
-+				 * memory object (and increase the ref count)
-+				 * from an identifier we return an error. All
-+				 * pointers that has been added in params have
-+				 * an increased ref count. It's the callers
-+				 * responibility to do tee_shm_put() on all
-+				 * resolved pointers.
-+				 */
-+				shm = tee_shm_get_from_id(ctx, ip.c);
-+				if (IS_ERR(shm))
-+					return PTR_ERR(shm);
-+
-+				/*
-+				 * Ensure offset + size does not overflow
-+				 * offset and does not overflow the size of
-+				 * the referred shared memory object.
-+				 */
-+				if ((ip.a + ip.b) < ip.a ||
-+				    (ip.a + ip.b) > shm->size) {
-+					tee_shm_put(shm);
-+					return -EINVAL;
-+				}
-+			} else if (ctx->cap_memref_null) {
-+				/* Pass NULL pointer to OP-TEE */
-+				shm = NULL;
-+			} else {
-+				return -EINVAL;
-+			}
-+
-+			params[n].u.memref.shm_offs = ip.a;
-+			params[n].u.memref.size = ip.b;
-+			params[n].u.memref.shm = shm;
-+			break;
-+		default:
-+			/* Unknown attribute */
-+			return -EINVAL;
-+		}
-+	}
-+	return 0;
-+}
-+
-+static int params_to_user(struct tee_ioctl_param __user *uparams,
-+			  size_t num_params, struct tee_param *params)
-+{
-+	size_t n;
-+
-+	for (n = 0; n < num_params; n++) {
-+		struct tee_ioctl_param __user *up = uparams + n;
-+		struct tee_param *p = params + n;
-+
-+		switch (p->attr) {
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_OUTPUT:
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_INOUT:
-+			if (put_user(p->u.value.a, &up->a) ||
-+			    put_user(p->u.value.b, &up->b) ||
-+			    put_user(p->u.value.c, &up->c))
-+				return -EFAULT;
-+			break;
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_OUTPUT:
-+		case TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INOUT:
-+			if (put_user((u64)p->u.memref.size, &up->b))
-+				return -EFAULT;
-+			break;
-+		default:
-+			break;
-+		}
-+	}
-+	return 0;
-+}
-+
-+static int tee_ioctl_open_session(struct tee_context *ctx,
-+				  struct tee_ioctl_buf_data __user *ubuf)
-+{
-+	int rc;
-+	size_t n;
-+	struct tee_ioctl_buf_data buf;
-+	struct tee_ioctl_open_session_arg __user *uarg;
-+	struct tee_ioctl_open_session_arg arg;
-+	struct tee_ioctl_param __user *uparams = NULL;
-+	struct tee_param *params = NULL;
-+	bool have_session = false;
-+
-+	if (!ctx->teedev->desc->ops->open_session)
-+		return -EINVAL;
-+
-+	if (copy_from_user(&buf, ubuf, sizeof(buf)))
-+		return -EFAULT;
-+
-+	if (buf.buf_len > TEE_MAX_ARG_SIZE ||
-+	    buf.buf_len < sizeof(struct tee_ioctl_open_session_arg))
-+		return -EINVAL;
-+
-+	uarg = u64_to_user_ptr(buf.buf_ptr);
-+	if (copy_from_user(&arg, uarg, sizeof(arg)))
-+		return -EFAULT;
-+
-+	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
-+		return -EINVAL;
-+
-+	if (arg.num_params) {
-+		params = kcalloc(arg.num_params, sizeof(struct tee_param),
-+				 GFP_KERNEL);
-+		if (!params)
-+			return -ENOMEM;
-+		uparams = uarg->params;
-+		rc = params_from_user(ctx, params, arg.num_params, uparams);
-+		if (rc)
-+			goto out;
-+	}
-+
-+	if (arg.clnt_login >= TEE_IOCTL_LOGIN_REE_KERNEL_MIN &&
-+	    arg.clnt_login <= TEE_IOCTL_LOGIN_REE_KERNEL_MAX) {
-+		pr_debug("login method not allowed for user-space client\n");
-+		rc = -EPERM;
-+		goto out;
-+	}
-+
-+	rc = ctx->teedev->desc->ops->open_session(ctx, &arg, params);
-+	if (rc)
-+		goto out;
-+	have_session = true;
-+
-+	if (put_user(arg.session, &uarg->session) ||
-+	    put_user(arg.ret, &uarg->ret) ||
-+	    put_user(arg.ret_origin, &uarg->ret_origin)) {
-+		rc = -EFAULT;
-+		goto out;
-+	}
-+	rc = params_to_user(uparams, arg.num_params, params);
-+out:
-+	/*
-+	 * If we've succeeded to open the session but failed to communicate
-+	 * it back to user space, close the session again to avoid leakage.
-+	 */
-+	if (rc && have_session && ctx->teedev->desc->ops->close_session)
-+		ctx->teedev->desc->ops->close_session(ctx, arg.session);
-+
-+	if (params) {
-+		/* Decrease ref count for all valid shared memory pointers */
-+		for (n = 0; n < arg.num_params; n++)
-+			if (tee_param_is_memref(params + n) &&
-+			    params[n].u.memref.shm)
-+				tee_shm_put(params[n].u.memref.shm);
-+		kfree(params);
-+	}
-+
-+	return rc;
-+}
-+
-+static int tee_ioctl_invoke(struct tee_context *ctx,
-+			    struct tee_ioctl_buf_data __user *ubuf)
-+{
-+	int rc;
-+	size_t n;
-+	struct tee_ioctl_buf_data buf;
-+	struct tee_ioctl_invoke_arg __user *uarg;
-+	struct tee_ioctl_invoke_arg arg;
-+	struct tee_ioctl_param __user *uparams = NULL;
-+	struct tee_param *params = NULL;
-+
-+	if (!ctx->teedev->desc->ops->invoke_func)
-+		return -EINVAL;
-+
-+	if (copy_from_user(&buf, ubuf, sizeof(buf)))
-+		return -EFAULT;
-+
-+	if (buf.buf_len > TEE_MAX_ARG_SIZE ||
-+	    buf.buf_len < sizeof(struct tee_ioctl_invoke_arg))
-+		return -EINVAL;
-+
-+	uarg = u64_to_user_ptr(buf.buf_ptr);
-+	if (copy_from_user(&arg, uarg, sizeof(arg)))
-+		return -EFAULT;
-+
-+	if (sizeof(arg) + TEE_IOCTL_PARAM_SIZE(arg.num_params) != buf.buf_len)
-+		return -EINVAL;
-+
-+	if (arg.num_params) {
-+		params = kcalloc(arg.num_params, sizeof(struct tee_param),
-+				 GFP_KERNEL);
-+		if (!params)
-+			return -ENOMEM;
-+		uparams = uarg->params;
-+		rc = params_from_user(ctx, params, arg.num_params, uparams);
-+		if (rc)
-+			goto out;
-+	}
-+
-+	rc = ctx->teedev->desc->ops->invoke_func(ctx, &arg, params);
-+	if (rc)
-+		goto out;
-+
-+	if (put_user(arg.ret, &uarg->ret) ||
-+	    put_user(arg.ret_origin, &uarg->ret_origin)) {
-+		rc = -EFAULT;
-+		goto out;
-+	}
-+	rc = params_to_user(uparams, arg.num_params, params);
-+out:
-+	if (params) {
-+		/* Decrease ref count for all valid shared memory pointers */
-+		for (n = 0; n < arg.num_params; n++)
-+			if (tee_param_is_memref(params + n) &&
-+			    params[n].u.memref.shm)
-+				tee_shm_put(params[n].u.memref.shm);
-+		kfree(params);
-+	}
-+	return rc;
-+}
-+
-+static int tee_ioctl_cancel(struct tee_context *ctx,
-+			    struct tee_ioctl_cancel_arg __user *uarg)
-+{
-+	return -EINVAL;
-+}
-+
-+static int
-+tee_ioctl_close_session(struct tee_context *ctx,
-+			struct tee_ioctl_close_session_arg __user *uarg)
-+{
-+	struct tee_ioctl_close_session_arg arg;
-+
-+	if (!ctx->teedev->desc->ops->close_session)
-+		return -EINVAL;
-+
-+	if (copy_from_user(&arg, uarg, sizeof(arg)))
-+		return -EFAULT;
-+
-+	return ctx->teedev->desc->ops->close_session(ctx, arg.session);
-+}
-+
-+static int tee_ioctl(struct cdev *cdev, int cmd, void *arg)
-+{
-+	struct tee_context *ctx = cdev->priv;
-+	void __user *uarg = (void __user *)arg;
-+
-+	switch (cmd) {
-+	case TEE_IOC_VERSION:
-+		return tee_ioctl_version(ctx, uarg);
-+	case TEE_IOC_SHM_ALLOC:
-+		return tee_ioctl_shm_alloc(ctx, uarg);
-+	case TEE_IOC_SHM_REGISTER:
-+		return tee_ioctl_shm_register(ctx, uarg);
-+	case TEE_IOC_OPEN_SESSION:
-+		return tee_ioctl_open_session(ctx, uarg);
-+	case TEE_IOC_INVOKE:
-+		return tee_ioctl_invoke(ctx, uarg);
-+	case TEE_IOC_CANCEL:
-+		return tee_ioctl_cancel(ctx, uarg);
-+	case TEE_IOC_CLOSE_SESSION:
-+		return tee_ioctl_close_session(ctx, uarg);
-+	case TEE_IOC_SUPPL_RECV:
-+		return -ENOSYS;
-+	case TEE_IOC_SUPPL_SEND:
-+		return -ENOSYS;
-+	default:
-+		return -EINVAL;
-+	}
-+}
-+
-+static const struct cdev_operations tee_cdev_ops = {
-+	.open = tee_open,
-+	.close = tee_release,
-+	.ioctl = tee_ioctl,
++	u32 session_id;
++	u32 data_rate;
++	struct tee_shm *entropy_shm_pool;
++	struct hwrng optee_rng;
++	u16 quality;
++	void (*bus_devinfo)(struct device *);
 +};
 +
- static void tee_devinfo(struct device *dev)
- {
- 	struct tee_device *teedev = dev->priv;
-@@ -148,6 +535,11 @@ struct tee_device *tee_device_alloc(const struct tee_desc *teedesc,
- 		goto err;
- 	}
- 
-+	if (IS_ENABLED(CONFIG_OPTEE_DEVFS)) {
-+		teedev->cdev.dev = &teedev->dev;
-+		teedev->cdev.ops = &tee_cdev_ops;
++#define to_optee_rng_private(r) \
++		container_of(r, struct optee_rng_private, optee_rng)
++
++static size_t get_optee_rng_data(struct optee_rng_private *pvt_data,
++				 void *buf, size_t req_size)
++{
++	int ret = 0;
++	u8 *rng_data = NULL;
++	size_t rng_size = 0;
++	struct tee_ioctl_invoke_arg inv_arg;
++	struct tee_param param[4];
++
++	memset(&inv_arg, 0, sizeof(inv_arg));
++	memset(&param, 0, sizeof(param));
++
++	/* Invoke TA_CMD_GET_ENTROPY function of Trusted App */
++	inv_arg.func = TA_CMD_GET_ENTROPY;
++	inv_arg.session = pvt_data->session_id;
++	inv_arg.num_params = 4;
++
++	/* Fill invoke cmd params */
++	param[0].attr = TEE_IOCTL_PARAM_ATTR_TYPE_MEMREF_INOUT;
++	param[0].u.memref.shm = pvt_data->entropy_shm_pool;
++	param[0].u.memref.size = req_size;
++	param[0].u.memref.shm_offs = 0;
++
++	ret = tee_client_invoke_func(pvt_data->ctx, &inv_arg, param);
++	if ((ret < 0) || (inv_arg.ret != 0)) {
++		dev_err(pvt_data->dev, "TA_CMD_GET_ENTROPY invoke err: %x\n",
++			inv_arg.ret);
++		return 0;
 +	}
 +
- 	/* 1 as tee_device_unregister() does one final tee_device_put() */
- 	teedev->num_users = 1;
- 	mutex_init(&teedev->mutex);
-@@ -190,10 +582,22 @@ int tee_device_register(struct tee_device *teedev)
- 	if (rc)
- 		return rc;
- 
-+	if (IS_ENABLED(CONFIG_OPTEE_DEVFS)) {
-+		teedev->cdev.name = teedev->dev.unique_name;
-+
-+		rc = devfs_create(&teedev->cdev);
-+		if (rc)
-+			goto out;
++	rng_data = tee_shm_get_va(pvt_data->entropy_shm_pool, 0);
++	if (IS_ERR(rng_data)) {
++		dev_err(pvt_data->dev, "tee_shm_get_va failed\n");
++		return 0;
 +	}
 +
- 	list_add_tail(&teedev->list, &tee_clients);
- 
- 	teedev->flags |= TEE_DEVICE_FLAG_REGISTERED;
- 	return 0;
++	rng_size = param[0].u.memref.size;
++	memcpy(buf, rng_data, rng_size);
 +
-+out:
-+	unregister_device(&teedev->dev);
-+	return rc;
- }
- EXPORT_SYMBOL_GPL(tee_device_register);
- 
-@@ -236,6 +640,8 @@ void tee_device_unregister(struct tee_device *teedev)
- 		return;
- 
- 	list_del(&teedev->list);
-+	if (IS_ENABLED(CONFIG_OPTEE_DEVFS))
-+		devfs_remove(&teedev->cdev);
- 	unregister_device(&teedev->dev);
- }
- EXPORT_SYMBOL_GPL(tee_device_unregister);
-diff --git a/drivers/tee/tee_private.h b/drivers/tee/tee_private.h
-index ccd082c2c6bb..045f2df9f3b4 100644
---- a/drivers/tee/tee_private.h
-+++ b/drivers/tee/tee_private.h
-@@ -22,6 +22,7 @@ struct tee_context;
-  * @id:		unique id of device
-  * @flags:	represented by TEE_DEVICE_FLAG_REGISTERED above
-  * @dev:	embedded basic device structure
-+ * @cdev:	embedded cdev
-  * @num_users:	number of active users of this device
-  * @mutex:	mutex protecting @num_users and @idr
-  */
-@@ -32,11 +33,14 @@ struct tee_device {
- 	unsigned int flags;
- 
- 	struct device dev;
-+	struct cdev cdev;
- 
- 	size_t num_users;
- 	struct mutex mutex;	/* protects num_users and idr */
- };
- 
-+int tee_shm_get_fd(struct tee_shm *shm);
++	return rng_size;
++}
 +
- bool tee_device_get(struct tee_device *teedev);
- void tee_device_put(struct tee_device *teedev);
- 
-diff --git a/drivers/tee/tee_shm.c b/drivers/tee/tee_shm.c
-index acb74002bace..ea16c9cdd2e5 100644
---- a/drivers/tee/tee_shm.c
-+++ b/drivers/tee/tee_shm.c
-@@ -18,8 +18,13 @@ static void tee_shm_release(struct tee_device *teedev, struct tee_shm *shm)
- 	if (shm->flags & TEE_SHM_DYNAMIC)
- 		teedev->desc->ops->shm_unregister(shm->ctx, shm);
- 
--	if (!(shm->flags & TEE_SHM_PRIV))
-+	if (!(shm->flags & TEE_SHM_PRIV)) {
- 		list_del(&shm->link);
-+		if (IS_ENABLED(CONFIG_OPTEE_DEVFS)) {
-+			devfs_remove(&shm->cdev);
-+			unregister_device(&shm->dev);
++static int optee_rng_read(struct hwrng *rng, void *buf, size_t max, bool wait)
++{
++	struct optee_rng_private *pvt_data = to_optee_rng_private(rng);
++	size_t read = 0, rng_size;
++	int timeout = 1;
++	u8 *data = buf;
++
++	if (max > MAX_ENTROPY_REQ_SZ)
++		max = MAX_ENTROPY_REQ_SZ;
++
++	while (read < max) {
++		rng_size = get_optee_rng_data(pvt_data, data, (max - read));
++
++		data += rng_size;
++		read += rng_size;
++
++		if (wait && pvt_data->data_rate) {
++			if ((timeout-- == 0) || (read == max))
++				return read;
++		} else {
++			return read;
 +		}
 +	}
- 
- 	if (shm->flags & TEE_SHM_POOL)
- 		free(shm->kaddr);
-@@ -31,6 +36,11 @@ static void tee_shm_release(struct tee_device *teedev, struct tee_shm *shm)
- 	tee_device_put(teedev);
- }
- 
-+static const struct cdev_operations tee_shm_ops = {
-+	.read = mem_read,
-+	.memmap = generic_memmap_ro,
++
++	return read;
++}
++
++static int optee_rng_init(struct hwrng *rng)
++{
++	struct optee_rng_private *pvt_data = to_optee_rng_private(rng);
++	struct tee_shm *entropy_shm_pool = NULL;
++
++	entropy_shm_pool = tee_shm_alloc_kernel_buf(pvt_data->ctx,
++						    MAX_ENTROPY_REQ_SZ);
++	if (IS_ERR(entropy_shm_pool)) {
++		dev_err(pvt_data->dev, "tee_shm_alloc_kernel_buf failed\n");
++		return PTR_ERR(entropy_shm_pool);
++	}
++
++	pvt_data->entropy_shm_pool = entropy_shm_pool;
++
++	return 0;
++}
++
++static struct optee_rng_private pvt_data = {
++	.optee_rng = {
++		.name		= DRIVER_NAME,
++		.init		= optee_rng_init,
++		.read		= optee_rng_read,
++	}
 +};
 +
- static struct tee_shm *
- register_shm_helper(struct tee_context *ctx, void *addr,
- 		    size_t size, u32 flags)
-@@ -53,14 +63,45 @@ register_shm_helper(struct tee_context *ctx, void *addr,
- 		goto err;
- 	}
- 
-+	shm->fd = -EBADF;
-+	shm->dev.id = -EACCES;
- 	shm->ctx = ctx;
- 	shm->kaddr = addr;
- 	shm->paddr = virt_to_phys(shm->kaddr);
- 	shm->size = size;
- 	shm->flags = flags;
- 
--	if (!(flags & TEE_SHM_PRIV))
-+	if (!(flags & TEE_SHM_PRIV)) {
-+		if (IS_ENABLED(CONFIG_OPTEE_DEVFS)) {
-+			shm->res.start = (resource_size_t)addr;
-+			shm->res.end = (resource_size_t)(addr + size - 1);
-+			shm->res.flags = IORESOURCE_MEM;
-+
-+			shm->dev.id = DEVICE_ID_DYNAMIC;
-+			shm->dev.parent = &ctx->teedev->dev;
-+			shm->dev.resource = &shm->res;
-+			shm->dev.num_resources = 1;
-+			rc = dev_set_name(&shm->dev, "%s-shm", ctx->teedev->dev.unique_name);
-+			if (rc)
-+				goto err;
-+
-+			rc = register_device(&shm->dev);
-+			if (rc)
-+				goto err;
-+
-+			shm->res.name = shm->dev.unique_name;
-+
-+			shm->cdev.dev = &shm->dev;
-+			shm->cdev.ops = &tee_shm_ops;
-+			shm->cdev.size = size;
-+			shm->cdev.name = shm->dev.unique_name;
-+			rc = devfs_create(&shm->cdev);
-+			if (rc)
-+				goto err;
-+		}
-+
- 		list_add(&shm->link, &ctx->list_shm);
-+	}
- 
- 	if (flags & TEE_SHM_DYNAMIC) {
- 		rc = ctx->teedev->desc->ops->shm_register(ctx, shm);
-@@ -70,13 +111,18 @@ register_shm_helper(struct tee_context *ctx, void *addr,
- 
- 	refcount_set(&shm->refcount, 1);
- 
--	pr_debug("%s: shm=%p addr=%p size=%zu\n", __func__, shm,
--		 addr, size);
-+	pr_debug("%s: shm=%p cdev=%s addr=%p size=%zu\n", __func__, shm,
-+		 shm->cdev.name ?: "(priv)", addr, size);
- 
- 	return shm;
- err:
--	if (!(flags & TEE_SHM_PRIV))
-+	if (!(flags & TEE_SHM_PRIV)) {
- 		list_del(&shm->link);
-+		if (IS_ENABLED(CONFIG_OPTEE_DEVFS)) {
-+			devfs_remove(&shm->cdev);
-+			unregister_device(&shm->dev);
-+		}
-+	}
- 
- 	free(shm);
- 	teedev_ctx_put(ctx);
-@@ -85,6 +131,22 @@ register_shm_helper(struct tee_context *ctx, void *addr,
- 	return ERR_PTR(rc);
- }
- 
-+/**
-+ * tee_shm_register_user_buf() - Register a userspace shared memory buffer
-+ * @ctx:	Context that registers the shared memory
-+ * @addr:	The userspace address of the shared buffer
-+ * @length:	Length of the shared buffer
-+ *
-+ * @returns a pointer to 'struct tee_shm'
-+ */
-+struct tee_shm *tee_shm_register_user_buf(struct tee_context *ctx,
-+					  unsigned long addr, size_t length)
++static int get_optee_rng_info(struct device *dev)
 +{
-+	u32 flags = TEE_SHM_USER_MAPPED | TEE_SHM_DYNAMIC;
++	int ret = 0;
++	struct tee_ioctl_invoke_arg inv_arg;
++	struct tee_param param[4];
 +
-+	return register_shm_helper(ctx, (void *)addr, length, flags);
-+}
++	memset(&inv_arg, 0, sizeof(inv_arg));
++	memset(&param, 0, sizeof(param));
 +
- static struct tee_shm *shm_alloc_helper(struct tee_context *ctx, size_t size,
- 					size_t align, u32 flags)
- {
-@@ -104,6 +166,21 @@ static struct tee_shm *shm_alloc_helper(struct tee_context *ctx, size_t size,
- 	return shm;
- }
- 
-+/**
-+ * tee_shm_alloc_user_buf() - Allocate shared memory for user space
-+ * @ctx:	Context that allocates the shared memory
-+ * @size:	Requested size of shared memory
-+ *
-+ * Memory allocated as user space shared memory is automatically freed when
-+ * the TEE file pointer is closed. The primary usage of this function is
-+ * when the TEE driver doesn't support registering ordinary user space
-+ * memory.
-+ *
-+ * @returns a pointer to 'struct tee_shm'
-+ */
-+struct tee_shm *tee_shm_alloc_user_buf(struct tee_context *ctx, size_t size)
-+	__alias(tee_shm_alloc_kernel_buf);
++	/* Invoke TA_CMD_GET_RNG_INFO function of Trusted App */
++	inv_arg.func = TA_CMD_GET_RNG_INFO;
++	inv_arg.session = pvt_data.session_id;
++	inv_arg.num_params = 4;
 +
- /**
-  * tee_shm_alloc_kernel_buf() - Allocate shared memory for kernel buffer
-  * @ctx:	Context that allocates the shared memory
-@@ -147,6 +224,39 @@ struct tee_shm *tee_shm_alloc_priv_buf(struct tee_context *ctx, size_t size)
- }
- EXPORT_SYMBOL_GPL(tee_shm_alloc_priv_buf);
- 
-+/**
-+ * tee_shm_get_fd() - Increase reference count and return file descriptor
-+ * @shm:	Shared memory handle
-+ * @returns user space file descriptor to shared memory
-+ */
-+int tee_shm_get_fd(struct tee_shm *shm)
-+{
-+	int fd;
++	/* Fill invoke cmd params */
++	param[0].attr = TEE_IOCTL_PARAM_ATTR_TYPE_VALUE_OUTPUT;
 +
-+	if (!IS_ENABLED(CONFIG_OPTEE_DEVFS))
-+		return -ENOSYS;
-+
-+	refcount_inc(&shm->refcount);
-+
-+	if (shm->fd < 0) {
-+		char *tmp;
-+
-+		tmp = basprintf("/dev/%s", shm->cdev.name);
-+		if (!tmp)
-+			return -ENOMEM;
-+
-+		shm->fd = open(tmp, O_RDONLY);
-+		free(tmp);
++	ret = tee_client_invoke_func(pvt_data.ctx, &inv_arg, param);
++	if ((ret < 0) || (inv_arg.ret != 0)) {
++		dev_err(dev, "TA_CMD_GET_RNG_INFO invoke err: %x\n",
++			inv_arg.ret);
++		return -EINVAL;
 +	}
 +
-+	fd = shm->fd;
++	pvt_data.data_rate = param[0].u.value.a;
++	pvt_data.quality = param[0].u.value.b;
 +
-+	if (shm->fd < 0)
-+		tee_shm_put(shm);
-+
-+	return fd;
++	return 0;
 +}
 +
- /**
-  * tee_shm_free() - Free shared memory
-  * @shm:	Handle to shared memory to free
-@@ -192,6 +302,28 @@ int tee_shm_get_pa(struct tee_shm *shm, size_t offs, phys_addr_t *pa)
- }
- EXPORT_SYMBOL_GPL(tee_shm_get_pa);
- 
-+/**
-+ * tee_shm_get_from_id() - Find shared memory object and increase reference
-+ * count
-+ * @ctx:	Context owning the shared memory
-+ * @id:		Id of shared memory object
-+ * @returns a pointer to 'struct tee_shm' on success or an ERR_PTR on failure
-+ */
-+struct tee_shm *tee_shm_get_from_id(struct tee_context *ctx, int id)
++static void optee_rng_devinfo(struct device *dev)
 +{
-+	struct tee_shm *shm;
++	printf("Data rate: %u\n", pvt_data.data_rate);
++	printf("Quality: %u\n", pvt_data.quality);
 +
-+	list_for_each_entry(shm, &ctx->list_shm, link) {
-+		if (shm->dev.id == id) {
-+			refcount_inc(&shm->refcount);
-+			return shm;
-+		}
++	if (pvt_data.bus_devinfo)
++		pvt_data.bus_devinfo(dev);
++}
++
++static int optee_ctx_match(struct tee_ioctl_version_data *ver, const void *data)
++{
++	if (ver->impl_id == TEE_IMPL_ID_OPTEE)
++		return 1;
++	else
++		return 0;
++}
++
++static int optee_rng_probe(struct device *dev)
++{
++	struct tee_client_device *rng_device = to_tee_client_device(dev);
++	int ret = 0, err = -ENODEV;
++	struct tee_ioctl_open_session_arg sess_arg;
++
++	memset(&sess_arg, 0, sizeof(sess_arg));
++
++	/* Open context with TEE driver */
++	pvt_data.ctx = tee_client_open_context(NULL, optee_ctx_match, NULL,
++					       NULL);
++	if (IS_ERR(pvt_data.ctx))
++		return -ENODEV;
++
++	/* Open session with hwrng Trusted App */
++	export_uuid(sess_arg.uuid, &rng_device->id.uuid);
++	sess_arg.clnt_login = TEE_IOCTL_LOGIN_PUBLIC;
++	sess_arg.num_params = 0;
++
++	ret = tee_client_open_session(pvt_data.ctx, &sess_arg, NULL);
++	if ((ret < 0) || (sess_arg.ret != 0)) {
++		dev_err(dev, "tee_client_open_session failed, err: %x\n",
++			sess_arg.ret);
++		err = -EINVAL;
++		goto out_ctx;
++	}
++	pvt_data.session_id = sess_arg.session;
++
++	err = get_optee_rng_info(dev);
++	if (err)
++		goto out_sess;
++
++	err = hwrng_register(dev, &pvt_data.optee_rng);
++	if (err) {
++		dev_err(dev, "hwrng registration failed (%d)\n", err);
++		goto out_sess;
 +	}
 +
-+	return NULL;
++	pvt_data.dev = dev;
++	pvt_data.bus_devinfo = dev->info;
++	dev->info = optee_rng_devinfo;
++
++	return 0;
++
++out_sess:
++	tee_client_close_session(pvt_data.ctx, pvt_data.session_id);
++out_ctx:
++	tee_client_close_context(pvt_data.ctx);
++
++	return err;
 +}
-+EXPORT_SYMBOL_GPL(tee_shm_get_from_id);
 +
- /**
-  * tee_shm_put() - Decrease reference count on a shared memory handle
-  * @shm:	Shared memory handle
-diff --git a/include/linux/tee_drv.h b/include/linux/tee_drv.h
-index e5f0344d4d06..4a5cb0f0a50f 100644
---- a/include/linux/tee_drv.h
-+++ b/include/linux/tee_drv.h
-@@ -182,6 +182,9 @@ int tee_session_calc_client_uuid(uuid_t *uuid, u32 connection_method,
-  * @refcount:	reference counter
-  * @flags:	defined by TEE_SHM_* in tee_drv.h
-  * @link:	list head for registering object globally
-+ * @fd:		file descriptor for use in userspace
-+ * @dev:	device for registering shared memory
-+ * @res:	resource to be associated with device
-  *
-  * This pool is only supposed to be accessed directly from the TEE
-  * subsystem and from drivers that implements their own shm pool manager.
-@@ -194,6 +197,11 @@ struct tee_shm {
- 	refcount_t refcount;
- 	u32 flags;
- 	struct list_head link;
-+
-+	int fd;
-+	struct device_d dev;
-+	struct cdev cdev;
-+	struct resource res;
- };
- 
- /**
-@@ -205,6 +213,10 @@ void *tee_get_drvdata(struct tee_device *teedev);
- struct tee_shm *tee_shm_alloc_priv_buf(struct tee_context *ctx, size_t size);
- struct tee_shm *tee_shm_alloc_kernel_buf(struct tee_context *ctx, size_t size);
- 
-+struct tee_shm *tee_shm_alloc_user_buf(struct tee_context *ctx, size_t size);
-+struct tee_shm *tee_shm_register_user_buf(struct tee_context *ctx,
-+					  unsigned long addr, size_t length);
-+
- /**
-  * tee_shm_is_dynamic() - Check if shared memory object is of the dynamic kind
-  * @shm:	Shared memory handle
-@@ -256,6 +268,27 @@ static inline size_t tee_shm_get_size(struct tee_shm *shm)
- 	return shm->size;
- }
- 
-+/**
-+ * tee_shm_get_id() - Get id of a shared memory object
-+ * @shm:	Shared memory handle
-+ * @returns id
-+ */
-+static inline int tee_shm_get_id(struct tee_shm *shm)
++static void optee_rng_remove(struct device *dev)
 +{
-+	/* Only call on non-private SHMs */
-+	BUG_ON(shm->dev.id < 0);
-+	return shm->dev.id;
++	hwrng_unregister(&pvt_data.optee_rng);
++
++	tee_shm_free(pvt_data.entropy_shm_pool);
++
++	tee_client_close_session(pvt_data.ctx, pvt_data.session_id);
++	tee_client_close_context(pvt_data.ctx);
 +}
 +
-+/**
-+ * tee_shm_get_from_id() - Find shared memory object and increase reference
-+ * count
-+ * @ctx:	Context owning the shared memory
-+ * @id:		Id of shared memory object
-+ * @returns a pointer to 'struct tee_shm' on success or an ERR_PTR on failure
-+ */
-+struct tee_shm *tee_shm_get_from_id(struct tee_context *ctx, int id);
++static const struct tee_client_device_id optee_rng_id_table[] = {
++	{UUID_INIT(0xab7a617c, 0xb8e7, 0x4d8f,
++		   0x83, 0x01, 0xd0, 0x9b, 0x61, 0x03, 0x6b, 0x64)},
++	{}
++};
 +
- /**
-  * tee_client_open_context() - Open a TEE context
-  * @start:	if not NULL, continue search after this context
++MODULE_DEVICE_TABLE(tee, optee_rng_id_table);
++
++static struct tee_client_driver optee_rng_driver = {
++	.id_table	= optee_rng_id_table,
++	.driver		= {
++		.name		= DRIVER_NAME,
++		.bus		= &tee_bus_type,
++		.probe		= optee_rng_probe,
++		.remove		= optee_rng_remove,
++	},
++};
++
++static int __init optee_rng_mod_init(void)
++{
++	return driver_register(&optee_rng_driver.driver);
++}
++device_initcall(optee_rng_mod_init);
++
++MODULE_LICENSE("GPL v2");
++MODULE_AUTHOR("Sumit Garg <sumit.garg@linaro.org>");
++MODULE_DESCRIPTION("OP-TEE based random number generator driver");
 -- 
 2.39.2
 
