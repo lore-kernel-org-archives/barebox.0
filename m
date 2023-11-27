@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r7VFw-00AdwK-2j
+	id 1r7VFw-00AdwL-2m
 	for lore@lore.pengutronix.de;
 	Mon, 27 Nov 2023 07:38:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r7VFw-0007TE-Q3
+	id 1r7VFw-0007TF-S8
 	for lore@pengutronix.de; Mon, 27 Nov 2023 07:38:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,49 +18,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3xtWwnygUHPRWgRs6pf/JxeWBPOdzSZ7uAyfabvhx1c=; b=pk3YUxj3DpHZdqaZSh1/SAri/g
-	ncPpWsOQg61Tz/L/9n/so4oaEhkcZEP/GzFURbqm64pnqPPvEoWwB8AlWi9FKXACMNeVK6BJt3BDt
-	qgMYlvrw0WOFqpO5aJ+mqM6aPLZJ9NOJKzYQZ4hck9FcMtKHJt58EJNLaKYs9i8WqUjyWpFCN9z2q
-	efNOuwhpdnjipi4pGvTPjxvL+MQVXSM5yYF+886MNR2GHuLI3Oi6ll4wDc0cty5OZjZ1n7YDjHZt9
-	TfqGBApbtazUn1mV/6z7fovSK01CZUaHZdWtHuB4nzSgMk0SA3O+TGwPz41nA+JBKE2ap7iMkhOiJ
-	72zu/qjw==;
+	bh=8blBEDRZjoOkaLjmqXcIUHJ0sCERD1C/rrHto191180=; b=Z/7oXTWk/jrRxP/t0M5EGI6idF
+	3d2duHY88uZM3Eu9kXeDzlpagmY/UOsZVSzPsilKnMesxdImORtXSF1IJBv5DE9Jo4Rngnti0cpUW
+	kNaAf2l1zbv6XtX4zJQDg4fvSWohGIGVM8FDhBz4Vd62GFnkcN2DBUgSLw9MKAlPTpAbaITcu74au
+	lzHZ8yIlwBPFGshV0z9TZuGafwCC3AH8io/E7ASetEjMcIxUfCI4+rr5XQuekWK7gQWYlrocXzDzZ
+	rBZGv6Z29k9yVqEWquOO0oQDGbBl/zQPNIQOvQ3PnyFZr6mds3mlJe64UTGJwnSBNyqzGzuSVIn6l
+	no+q1X/Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r7VEF-001YzR-0g;
-	Mon, 27 Nov 2023 06:36:23 +0000
+	id 1r7VEV-001Z4y-1e;
+	Mon, 27 Nov 2023 06:36:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r7VE8-001Ywr-31
+	id 1r7VED-001YzO-22
 	for barebox@lists.infradead.org;
-	Mon, 27 Nov 2023 06:36:18 +0000
+	Mon, 27 Nov 2023 06:36:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VE4-00070b-I9; Mon, 27 Nov 2023 07:36:12 +0100
+	id 1r7VE4-00070Z-Fy; Mon, 27 Nov 2023 07:36:12 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VE4-00BsgZ-5S; Mon, 27 Nov 2023 07:36:12 +0100
+	id 1r7VE4-00BsgT-2i; Mon, 27 Nov 2023 07:36:12 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VE4-009Fpr-0I;
+	id 1r7VE4-009Fpr-00;
 	Mon, 27 Nov 2023 07:36:12 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 27 Nov 2023 07:35:54 +0100
-Message-Id: <20231127063559.2205776-4-a.fatoum@pengutronix.de>
+Date: Mon, 27 Nov 2023 07:35:52 +0100
+Message-Id: <20231127063559.2205776-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231127063559.2205776-1-a.fatoum@pengutronix.de>
 References: <20231127063559.2205776-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231126_223617_113277_5D644D4F 
-X-CRM114-Status: GOOD (  14.04  )
+X-CRM114-CacheID: sfid-20231126_223622_066482_2EB5AA57 
+X-CRM114-Status: GOOD (  13.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,70 +83,49 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 3/8] deep-probe: skip on-demand platform dev creation for nodes without compatible
+Subject: [PATCH 1/8] driver: don't clear unrelated struct device_node::device on unregister
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-of_device_create_on_demand won't create a new device if the device tree
-node already has a device associated. What it will do however, is to
-create devices for all parent nodes in the device tree if they don't
-already exist. This is unnecessary and clutters the device list
-with nodes that won't ever be matched as they lack a compatible anyway.
-For example a reference to scmi_reg11 in below snippet:
+Device nodes have a pointer to the device that was instantiated for it.
+In some cases, we have both a platform device and a virtual device as
+child instantiated from it with both pointing at the same device node.
 
-  &{scmi/protocol@17} {
-      reg = <0x17>;
-      regulators {
-          #address-cells = <0x1>;
-          #size-cells = <0x0>;
-          scmi_reg11: regulator@0 {
-              reg = <0x0>;
-              regulator-name = "reg11";
-          };
-      };
-  };
-
-will result in creation of a device for the regulators node that serves
-no purpose whatsoever:
-
-  `-- firmware.of
-     `-- firmware:scmi.of
-        `-- scmi_dev0
-           `-- firmware:scmi:protocol@17:regulators.of
-
-Avoid this by creating devices on demand only if they have a compatible.
+So far, when unregistering the virtual device, we would clear the device
+member, even if it happens to point at another device. Fix this by only
+clearing it if the device it points at is the one that's actually is
+being removed.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/of/platform.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/base/driver.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/of/platform.c b/drivers/of/platform.c
-index 9e592d567cae..9ba4438812c1 100644
---- a/drivers/of/platform.c
-+++ b/drivers/of/platform.c
-@@ -442,9 +442,6 @@ static struct device *of_device_create_on_demand(struct device_node *np)
- 	if (!np->dev && parent->dev)
- 		device_rescan(parent->dev);
+diff --git a/drivers/base/driver.c b/drivers/base/driver.c
+index 02d8fb0b6f2a..93607fc3b09d 100644
+--- a/drivers/base/driver.c
++++ b/drivers/base/driver.c
+@@ -273,6 +273,7 @@ int unregister_device(struct device *old_dev)
+ 	struct device_alias *alias, *at;
+ 	struct cdev *cdev, *ct;
+ 	struct device *child, *dt;
++	struct device_node *np;
  
--	if (!np->dev)
--		pr_debug("Creating device for %pOF\n", np);
--
- 	/* Create all parent devices needed for the requested device */
- 	parent_dev = parent->dev ? : of_device_create_on_demand(parent);
- 	if (IS_ERR(parent_dev))
-@@ -458,6 +455,11 @@ static struct device *of_device_create_on_demand(struct device_node *np)
- 	if (np->dev)
- 		return np->dev;
+ 	dev_dbg(old_dev, "unregister\n");
  
-+	if (!of_property_present(np, "compatible"))
-+		return NULL;
+@@ -305,8 +306,10 @@ int unregister_device(struct device *old_dev)
+ 	/* remove device from parents child list */
+ 	if (old_dev->parent)
+ 		list_del(&old_dev->sibling);
+-	if (dev_of_node(old_dev))
+-		old_dev->of_node->dev = NULL;
 +
-+	pr_debug("Creating device for %pOF\n", np);
-+
- 	if (of_device_is_compatible(np, "arm,primecell"))
- 		dev = of_amba_device_create(np);
- 	else
++	np = dev_of_node(old_dev);
++	if (np && np->dev == old_dev)
++		np->dev = NULL;
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 
