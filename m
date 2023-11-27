@@ -1,66 +1,66 @@
-Delivery-date: Mon, 27 Nov 2023 07:51:18 +0100
+Delivery-date: Mon, 27 Nov 2023 07:51:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r7VSf-00Aeqj-1Q
+	id 1r7VSl-00Aerb-07
 	for lore@lore.pengutronix.de;
-	Mon, 27 Nov 2023 07:51:18 +0100
+	Mon, 27 Nov 2023 07:51:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r7VSf-00014n-AN
-	for lore@pengutronix.de; Mon, 27 Nov 2023 07:51:17 +0100
+	id 1r7VSl-00017F-0o
+	for lore@pengutronix.de; Mon, 27 Nov 2023 07:51:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ItlKLlVAAuR4sJYDi0om3pi6M2Jnisz3+lvevHMvkcI=; b=JP4ZvMnP+cFU9IzxyN7Oz8NKDH
-	kWlq5KMIcCz2DeF/jDOJJCuBz3WBKs7hJVXNPSuuR0hrQ9UIJNAyBCWikwNJDLjVV9fY1URWH9odF
-	KViN73LGPwjYuSmt0ESfApzixK00hBVpDOTO5Nr5+mtEqT3FQ1sPa5SH05W/OobrJRRCj//0WQ3ly
-	ukLFFAE6YBFKZmMWQbcFtlzNF2rVhOoLjOXRAohL5g0AMIEModkTL2U2+3NSVIuokd/4ICutSUGXw
-	Z9jo1LjLE/Vd46omXavG7d0qSQgRsQsjzT4zx9h16+G3ZoztA5MPbz5F7/x58cM/cwx/POLaLq9+J
-	ng2ZTcwA==;
+	bh=gMDi6qhDsAY3KsFtw/fQlDCdMGeCpeDui98voQXBscA=; b=HNHP02YhjWv+Z/UIMjZIZzOJH1
+	+ELWoNlZkbg77uFRz46fcSuZQGScUkEmrwOq91rJlyqwxb00oegwl9VX8lk5G3jxbE3FR6UyytPma
+	wpNzbJyUTJGVLaECnna4grFRaOASG2VjI2wWyDqVDDqQ7DenPujwv9BHKu4tcnhgrmVDsMCPOiqMN
+	qm9w3/lQgloXRhET0LbPDFHgt5WZIAJwm0o87oEFw7JEDUMH76uRiKSJPAb7EKh2+wCScDKsWYIf1
+	uOfjdBe9jcybcaer4gg86hWGdyyPrwoWaTxckYx5HZ2XAM4bA2OkDLuY3Byfxo+HLZ4GmVRtQWg/U
+	1mmgJMRA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r7VRR-001bZM-2U;
-	Mon, 27 Nov 2023 06:50:01 +0000
+	id 1r7VRZ-001bcA-0m;
+	Mon, 27 Nov 2023 06:50:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r7VRL-001bWH-1T
+	id 1r7VRL-001bWG-1T
 	for barebox@lists.infradead.org;
-	Mon, 27 Nov 2023 06:49:58 +0000
+	Mon, 27 Nov 2023 06:49:59 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VRK-0000dE-8g; Mon, 27 Nov 2023 07:49:54 +0100
+	id 1r7VRK-0000dD-73; Mon, 27 Nov 2023 07:49:54 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VRJ-00Bsiq-Sj; Mon, 27 Nov 2023 07:49:53 +0100
+	id 1r7VRJ-00Bsin-RB; Mon, 27 Nov 2023 07:49:53 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VRJ-009GPh-2b;
+	id 1r7VRJ-009GPh-2S;
 	Mon, 27 Nov 2023 07:49:53 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 27 Nov 2023 07:49:37 +0100
-Message-Id: <20231127064947.2207726-4-a.fatoum@pengutronix.de>
+Date: Mon, 27 Nov 2023 07:49:36 +0100
+Message-Id: <20231127064947.2207726-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231127064947.2207726-1-a.fatoum@pengutronix.de>
 References: <20231127064947.2207726-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231126_224955_664883_B265B4C1 
-X-CRM114-Status: GOOD (  15.91  )
+X-CRM114-CacheID: sfid-20231126_224955_681350_E2AC6201 
+X-CRM114-Status: GOOD (  16.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,166 +83,118 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 03/13] include: add initial <linux/clk-provider.h>
+Subject: [PATCH 02/13] clk: factor out clk_hw_get_parent_index
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Linux now differentiates bween <linux/clk.h> for consumers and
-<linux/clk-provider.h> for providers. We have been putting
-everything into <linux/clk.h>, but for new API imported from Linux
-that's only applicable to clock provider drivers, let's add a
-<linux/clk-provider.h> header and add them there.
+clk_ops::set_parent passes the parent as an index, so clk_set_parent
+needs to determine the index. Linux provides this information via
+clk_hw_get_parent_index and some drivers depend on this, so factor out
+the code in question in barebox as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/clk-provider.h | 138 +++++++++++++++++++++++++++++++++++
- 1 file changed, 138 insertions(+)
- create mode 100644 include/linux/clk-provider.h
+ drivers/clk/clk.c   | 55 ++++++++++++++++++++++++++++++++++++---------
+ include/linux/clk.h |  6 +++++
+ 2 files changed, 50 insertions(+), 11 deletions(-)
 
-diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
-new file mode 100644
-index 000000000000..207f3b205dab
---- /dev/null
-+++ b/include/linux/clk-provider.h
-@@ -0,0 +1,138 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ *  Copyright (c) 2010-2011 Jeremy Kerr <jeremy.kerr@canonical.com>
-+ *  Copyright (C) 2011-2012 Linaro Ltd <mturquette@linaro.org>
+diff --git a/drivers/clk/clk.c b/drivers/clk/clk.c
+index 5b85c375cfed..25d32e9e12f9 100644
+--- a/drivers/clk/clk.c
++++ b/drivers/clk/clk.c
+@@ -211,6 +211,47 @@ int clk_hw_set_rate(struct clk_hw *hw, unsigned long rate)
+ 	return clk_set_rate(&hw->clk, rate);
+ }
+ 
++static int clk_fetch_parent_index(struct clk *clk,
++				  struct clk *parent)
++{
++	int i;
++
++	if (!parent)
++		return -EINVAL;
++
++	for (i = 0; i < clk->num_parents; i++) {
++		if (IS_ERR_OR_NULL(clk->parents[i]))
++			clk->parents[i] = clk_lookup(clk->parent_names[i]);
++
++		if (!IS_ERR_OR_NULL(clk->parents[i]))
++			if (clk->parents[i] == parent)
++				break;
++	}
++
++	if (i == clk->num_parents)
++		return -EINVAL;
++
++	return i;
++}
++
++/**
++ * clk_hw_get_parent_index - return the index of the parent clock
++ * @hw: clk_hw associated with the clk being consumed
++ *
++ * Fetches and returns the index of parent clock. Returns -EINVAL if the given
++ * clock does not have a current parent.
 + */
-+#ifndef __LINUX_CLK_PROVIDER_H
-+#define __LINUX_CLK_PROVIDER_H
++int clk_hw_get_parent_index(struct clk_hw *hw)
++{
++	struct clk_hw *parent = clk_hw_get_parent(hw);
 +
-+#include <linux/clk.h>
++	if (WARN_ON(parent == NULL))
++		return -EINVAL;
 +
-+#define CLK_HW_INIT(_name, _parent, _ops, _flags)		\
-+	(&(struct clk_init_data) {				\
-+		.flags		= _flags,			\
-+		.name		= _name,			\
-+		.parent_names	= (const char *[]) { _parent },	\
-+		.num_parents	= 1,				\
-+		.ops		= _ops,				\
-+	})
++	return clk_fetch_parent_index(clk_hw_to_clk(hw), clk_hw_to_clk(parent));
++}
++EXPORT_SYMBOL_GPL(clk_hw_get_parent_index);
 +
-+#define CLK_HW_INIT_HW(_name, _parent, _ops, _flags)			\
-+	(&(struct clk_init_data) {					\
-+		.flags		= _flags,				\
-+		.name		= _name,				\
-+		.parent_hws	= (const struct clk_hw*[]) { _parent },	\
-+		.num_parents	= 1,					\
-+		.ops		= _ops,					\
-+	})
+ struct clk *clk_lookup(const char *name)
+ {
+ 	struct clk *c;
+@@ -245,17 +286,9 @@ int clk_set_parent(struct clk *clk, struct clk *newparent)
+ 	if (!clk->ops->set_parent)
+ 		return -EINVAL;
+ 
+-	for (i = 0; i < clk->num_parents; i++) {
+-		if (IS_ERR_OR_NULL(clk->parents[i]))
+-			clk->parents[i] = clk_lookup(clk->parent_names[i]);
+-
+-		if (!IS_ERR_OR_NULL(clk->parents[i]))
+-			if (clk->parents[i] == newparent)
+-				break;
+-	}
+-
+-	if (i == clk->num_parents)
+-		return -EINVAL;
++	i = clk_fetch_parent_index(clk, newparent);
++	if (i < 0)
++		return i;
+ 
+ 	if (clk->enable_count)
+ 		clk_enable(newparent);
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 80921136438d..9975c1a601c4 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -139,6 +139,7 @@ int clk_hw_set_parent(struct clk_hw *hw, struct clk_hw *hwp);
+  */
+ struct clk *clk_get_parent(struct clk *clk);
+ struct clk_hw *clk_hw_get_parent(struct clk_hw *hw);
++int clk_hw_get_parent_index(struct clk_hw *hw);
+ 
+ int clk_set_phase(struct clk *clk, int degrees);
+ int clk_get_phase(struct clk *clk);
+@@ -185,6 +186,11 @@ static inline struct clk *clk_get_parent(struct clk *clk)
+ 	return NULL;
+ }
+ 
++static inline int clk_hw_get_parent_index(struct clk_hw *hw)
++{
++	return -EINVAL;
++}
 +
-+/*
-+ * This macro is intended for drivers to be able to share the otherwise
-+ * individual struct clk_hw[] compound literals created by the compiler
-+ * when using CLK_HW_INIT_HW. It does NOT support multiple parents.
-+ */
-+#define CLK_HW_INIT_HWS(_name, _parent, _ops, _flags)			\
-+	(&(struct clk_init_data) {					\
-+		.flags		= _flags,				\
-+		.name		= _name,				\
-+		.parent_hws	= _parent,				\
-+		.num_parents	= 1,					\
-+		.ops		= _ops,					\
-+	})
-+
-+#define CLK_HW_INIT_FW_NAME(_name, _parent, _ops, _flags)		\
-+	(&(struct clk_init_data) {					\
-+		.flags		= _flags,				\
-+		.name		= _name,				\
-+		.parent_data	= (const struct clk_parent_data[]) {	\
-+					{ .fw_name = _parent },		\
-+				  },					\
-+		.num_parents	= 1,					\
-+		.ops		= _ops,					\
-+	})
-+
-+#define CLK_HW_INIT_PARENTS(_name, _parents, _ops, _flags)	\
-+	(&(struct clk_init_data) {				\
-+		.flags		= _flags,			\
-+		.name		= _name,			\
-+		.parent_names	= _parents,			\
-+		.num_parents	= ARRAY_SIZE(_parents),		\
-+		.ops		= _ops,				\
-+	})
-+
-+#define CLK_HW_INIT_PARENTS_HW(_name, _parents, _ops, _flags)	\
-+	(&(struct clk_init_data) {				\
-+		.flags		= _flags,			\
-+		.name		= _name,			\
-+		.parent_hws	= _parents,			\
-+		.num_parents	= ARRAY_SIZE(_parents),		\
-+		.ops		= _ops,				\
-+	})
-+
-+#define CLK_HW_INIT_PARENTS_DATA(_name, _parents, _ops, _flags)	\
-+	(&(struct clk_init_data) {				\
-+		.flags		= _flags,			\
-+		.name		= _name,			\
-+		.parent_data	= _parents,			\
-+		.num_parents	= ARRAY_SIZE(_parents),		\
-+		.ops		= _ops,				\
-+	})
-+
-+#define CLK_HW_INIT_NO_PARENT(_name, _ops, _flags)	\
-+	(&(struct clk_init_data) {			\
-+		.flags          = _flags,		\
-+		.name           = _name,		\
-+		.parent_names   = NULL,			\
-+		.num_parents    = 0,			\
-+		.ops            = _ops,			\
-+	})
-+
-+#define CLK_FIXED_FACTOR(_struct, _name, _parent,			\
-+			_div, _mult, _flags)				\
-+	struct clk_fixed_factor _struct = {				\
-+		.div		= _div,					\
-+		.mult		= _mult,				\
-+		.hw.init	= CLK_HW_INIT(_name,			\
-+					      _parent,			\
-+					      &clk_fixed_factor_ops,	\
-+					      _flags),			\
-+	}
-+
-+#define CLK_FIXED_FACTOR_HW(_struct, _name, _parent,			\
-+			    _div, _mult, _flags)			\
-+	struct clk_fixed_factor _struct = {				\
-+		.div		= _div,					\
-+		.mult		= _mult,				\
-+		.hw.init	= CLK_HW_INIT_HW(_name,			\
-+						 _parent,		\
-+						 &clk_fixed_factor_ops,	\
-+						 _flags),		\
-+	}
-+
-+/*
-+ * This macro allows the driver to reuse the _parent array for multiple
-+ * fixed factor clk declarations.
-+ */
-+#define CLK_FIXED_FACTOR_HWS(_struct, _name, _parent,			\
-+			     _div, _mult, _flags)			\
-+	struct clk_fixed_factor _struct = {				\
-+		.div		= _div,					\
-+		.mult		= _mult,				\
-+		.hw.init	= CLK_HW_INIT_HWS(_name,		\
-+						  _parent,		\
-+						  &clk_fixed_factor_ops, \
-+						  _flags),	\
-+	}
-+
-+#define CLK_FIXED_FACTOR_FW_NAME(_struct, _name, _parent,		\
-+				 _div, _mult, _flags)			\
-+	struct clk_fixed_factor _struct = {				\
-+		.div		= _div,					\
-+		.mult		= _mult,				\
-+		.hw.init	= CLK_HW_INIT_FW_NAME(_name,		\
-+						      _parent,		\
-+						      &clk_fixed_factor_ops, \
-+						      _flags),		\
-+	}
-+
-+#endif
+ static inline int clk_enable(struct clk *clk)
+ {
+ 	return 0;
 -- 
 2.39.2
 
