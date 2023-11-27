@@ -1,16 +1,16 @@
-Delivery-date: Mon, 27 Nov 2023 07:51:17 +0100
+Delivery-date: Mon, 27 Nov 2023 07:51:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r7VSf-00AeqK-07
+	id 1r7VSf-00Aeqj-1Q
 	for lore@lore.pengutronix.de;
-	Mon, 27 Nov 2023 07:51:17 +0100
+	Mon, 27 Nov 2023 07:51:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r7VSf-00014L-1Z
+	id 1r7VSf-00014n-AN
 	for lore@pengutronix.de; Mon, 27 Nov 2023 07:51:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,49 +18,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MLDEZBFY9AhaJWGeTKqwWLwUDR0aypHsoy1gCUs+F5A=; b=YzZlaTJ5PBfSbEa9myt0GhBTMg
-	uNmA9W8SJHGyHVL8jR0lBJrK3ooXSWj635bVHnFEpl1fdVvwkuBLnlHlXcQEkASbINS/XmS5eA7+6
-	EmqmRP+onPaijefHt77Z6GQx+zZvIWfzioujZNQNf/OzkuPpySKZASsmMkayHSeqmCl8KFxZuagjf
-	50pRwxPwu89RcGLyWyD9yrUDe3wen3Q/jETR/QDsm/O2EQwNHaBadssjWzjjKNG9LWVlvAeQuJhIo
-	p79V86R/Z1WfUJq5yPmo2TpGdXMBoYLiulrN8sEAAFOyDm3RvC8xSOiPLTMZ8wtfRnBDVSo8BFuWy
-	CJZ7ZatA==;
+	bh=ItlKLlVAAuR4sJYDi0om3pi6M2Jnisz3+lvevHMvkcI=; b=JP4ZvMnP+cFU9IzxyN7Oz8NKDH
+	kWlq5KMIcCz2DeF/jDOJJCuBz3WBKs7hJVXNPSuuR0hrQ9UIJNAyBCWikwNJDLjVV9fY1URWH9odF
+	KViN73LGPwjYuSmt0ESfApzixK00hBVpDOTO5Nr5+mtEqT3FQ1sPa5SH05W/OobrJRRCj//0WQ3ly
+	ukLFFAE6YBFKZmMWQbcFtlzNF2rVhOoLjOXRAohL5g0AMIEModkTL2U2+3NSVIuokd/4ICutSUGXw
+	Z9jo1LjLE/Vd46omXavG7d0qSQgRsQsjzT4zx9h16+G3ZoztA5MPbz5F7/x58cM/cwx/POLaLq9+J
+	ng2ZTcwA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r7VRQ-001bZA-2M;
-	Mon, 27 Nov 2023 06:50:00 +0000
+	id 1r7VRR-001bZM-2U;
+	Mon, 27 Nov 2023 06:50:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r7VRL-001bWF-1T
+	id 1r7VRL-001bWH-1T
 	for barebox@lists.infradead.org;
 	Mon, 27 Nov 2023 06:49:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VRK-0000dC-5p; Mon, 27 Nov 2023 07:49:54 +0100
+	id 1r7VRK-0000dE-8g; Mon, 27 Nov 2023 07:49:54 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VRJ-00Bsik-Pj; Mon, 27 Nov 2023 07:49:53 +0100
+	id 1r7VRJ-00Bsiq-Sj; Mon, 27 Nov 2023 07:49:53 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r7VRJ-009GPh-2J;
+	id 1r7VRJ-009GPh-2b;
 	Mon, 27 Nov 2023 07:49:53 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 27 Nov 2023 07:49:35 +0100
-Message-Id: <20231127064947.2207726-2-a.fatoum@pengutronix.de>
+Date: Mon, 27 Nov 2023 07:49:37 +0100
+Message-Id: <20231127064947.2207726-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231127064947.2207726-1-a.fatoum@pengutronix.de>
 References: <20231127064947.2207726-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231126_224955_664459_58FE126E 
-X-CRM114-Status: GOOD (  11.82  )
+X-CRM114-CacheID: sfid-20231126_224955_664883_B265B4C1 
+X-CRM114-Status: GOOD (  15.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,49 +83,166 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 01/13] clk: stm32mp1: build only when STM32MP15 support is enabled
+Subject: [PATCH 03/13] include: add initial <linux/clk-provider.h>
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The stm32mp1 clock driver is only used on the STM32MP15 and won't be
-reused for the STM32MP13, so let's make it dependent on ARCH_STM32MP157
-instead of CONFIG_ARCH_STM32MP.
+Linux now differentiates bween <linux/clk.h> for consumers and
+<linux/clk-provider.h> for providers. We have been putting
+everything into <linux/clk.h>, but for new API imported from Linux
+that's only applicable to clock provider drivers, let's add a
+<linux/clk-provider.h> header and add them there.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/clk/Kconfig  | 5 +++++
- drivers/clk/Makefile | 2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ include/linux/clk-provider.h | 138 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 138 insertions(+)
+ create mode 100644 include/linux/clk-provider.h
 
-diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index 076e77c8590f..a7b8709cd72c 100644
---- a/drivers/clk/Kconfig
-+++ b/drivers/clk/Kconfig
-@@ -28,6 +28,11 @@ config COMMON_CLK_STM32F
- 	help
- 	  Support for stm32f4 and stm32f7 SoC families clocks
- 
-+config COMMON_CLK_STM32MP157
-+	def_bool ARCH_STM32MP157
-+	help
-+	  Support for stm32mp157 SoC family clocks
+diff --git a/include/linux/clk-provider.h b/include/linux/clk-provider.h
+new file mode 100644
+index 000000000000..207f3b205dab
+--- /dev/null
++++ b/include/linux/clk-provider.h
+@@ -0,0 +1,138 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ *  Copyright (c) 2010-2011 Jeremy Kerr <jeremy.kerr@canonical.com>
++ *  Copyright (C) 2011-2012 Linaro Ltd <mturquette@linaro.org>
++ */
++#ifndef __LINUX_CLK_PROVIDER_H
++#define __LINUX_CLK_PROVIDER_H
 +
- config COMMON_CLK_SCMI
- 	tristate "Clock driver controlled via SCMI interface"
- 	depends on ARM_SCMI_PROTOCOL || COMPILE_TEST
-diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
-index 3ebafbf7fdad..6b08dc065444 100644
---- a/drivers/clk/Makefile
-+++ b/drivers/clk/Makefile
-@@ -17,7 +17,7 @@ obj-$(CONFIG_SOC_QCA_AR9331)	+= clk-ar933x.o
- obj-$(CONFIG_SOC_QCA_AR9344)	+= clk-ar9344.o
- obj-$(CONFIG_ARCH_IMX)		+= imx/
- obj-$(CONFIG_COMMON_CLK_AT91)	+= at91/
--obj-$(CONFIG_ARCH_STM32MP)	+= clk-stm32mp1.o
-+obj-$(CONFIG_COMMON_CLK_STM32MP157)	+= clk-stm32mp1.o
- obj-$(CONFIG_MACH_VEXPRESS)	+= vexpress/
- obj-$(CONFIG_MACH_MIPS_LOONGSON)+= loongson/
- obj-$(CONFIG_ARCH_LAYERSCAPE)	+= clk-qoric.o
++#include <linux/clk.h>
++
++#define CLK_HW_INIT(_name, _parent, _ops, _flags)		\
++	(&(struct clk_init_data) {				\
++		.flags		= _flags,			\
++		.name		= _name,			\
++		.parent_names	= (const char *[]) { _parent },	\
++		.num_parents	= 1,				\
++		.ops		= _ops,				\
++	})
++
++#define CLK_HW_INIT_HW(_name, _parent, _ops, _flags)			\
++	(&(struct clk_init_data) {					\
++		.flags		= _flags,				\
++		.name		= _name,				\
++		.parent_hws	= (const struct clk_hw*[]) { _parent },	\
++		.num_parents	= 1,					\
++		.ops		= _ops,					\
++	})
++
++/*
++ * This macro is intended for drivers to be able to share the otherwise
++ * individual struct clk_hw[] compound literals created by the compiler
++ * when using CLK_HW_INIT_HW. It does NOT support multiple parents.
++ */
++#define CLK_HW_INIT_HWS(_name, _parent, _ops, _flags)			\
++	(&(struct clk_init_data) {					\
++		.flags		= _flags,				\
++		.name		= _name,				\
++		.parent_hws	= _parent,				\
++		.num_parents	= 1,					\
++		.ops		= _ops,					\
++	})
++
++#define CLK_HW_INIT_FW_NAME(_name, _parent, _ops, _flags)		\
++	(&(struct clk_init_data) {					\
++		.flags		= _flags,				\
++		.name		= _name,				\
++		.parent_data	= (const struct clk_parent_data[]) {	\
++					{ .fw_name = _parent },		\
++				  },					\
++		.num_parents	= 1,					\
++		.ops		= _ops,					\
++	})
++
++#define CLK_HW_INIT_PARENTS(_name, _parents, _ops, _flags)	\
++	(&(struct clk_init_data) {				\
++		.flags		= _flags,			\
++		.name		= _name,			\
++		.parent_names	= _parents,			\
++		.num_parents	= ARRAY_SIZE(_parents),		\
++		.ops		= _ops,				\
++	})
++
++#define CLK_HW_INIT_PARENTS_HW(_name, _parents, _ops, _flags)	\
++	(&(struct clk_init_data) {				\
++		.flags		= _flags,			\
++		.name		= _name,			\
++		.parent_hws	= _parents,			\
++		.num_parents	= ARRAY_SIZE(_parents),		\
++		.ops		= _ops,				\
++	})
++
++#define CLK_HW_INIT_PARENTS_DATA(_name, _parents, _ops, _flags)	\
++	(&(struct clk_init_data) {				\
++		.flags		= _flags,			\
++		.name		= _name,			\
++		.parent_data	= _parents,			\
++		.num_parents	= ARRAY_SIZE(_parents),		\
++		.ops		= _ops,				\
++	})
++
++#define CLK_HW_INIT_NO_PARENT(_name, _ops, _flags)	\
++	(&(struct clk_init_data) {			\
++		.flags          = _flags,		\
++		.name           = _name,		\
++		.parent_names   = NULL,			\
++		.num_parents    = 0,			\
++		.ops            = _ops,			\
++	})
++
++#define CLK_FIXED_FACTOR(_struct, _name, _parent,			\
++			_div, _mult, _flags)				\
++	struct clk_fixed_factor _struct = {				\
++		.div		= _div,					\
++		.mult		= _mult,				\
++		.hw.init	= CLK_HW_INIT(_name,			\
++					      _parent,			\
++					      &clk_fixed_factor_ops,	\
++					      _flags),			\
++	}
++
++#define CLK_FIXED_FACTOR_HW(_struct, _name, _parent,			\
++			    _div, _mult, _flags)			\
++	struct clk_fixed_factor _struct = {				\
++		.div		= _div,					\
++		.mult		= _mult,				\
++		.hw.init	= CLK_HW_INIT_HW(_name,			\
++						 _parent,		\
++						 &clk_fixed_factor_ops,	\
++						 _flags),		\
++	}
++
++/*
++ * This macro allows the driver to reuse the _parent array for multiple
++ * fixed factor clk declarations.
++ */
++#define CLK_FIXED_FACTOR_HWS(_struct, _name, _parent,			\
++			     _div, _mult, _flags)			\
++	struct clk_fixed_factor _struct = {				\
++		.div		= _div,					\
++		.mult		= _mult,				\
++		.hw.init	= CLK_HW_INIT_HWS(_name,		\
++						  _parent,		\
++						  &clk_fixed_factor_ops, \
++						  _flags),	\
++	}
++
++#define CLK_FIXED_FACTOR_FW_NAME(_struct, _name, _parent,		\
++				 _div, _mult, _flags)			\
++	struct clk_fixed_factor _struct = {				\
++		.div		= _div,					\
++		.mult		= _mult,				\
++		.hw.init	= CLK_HW_INIT_FW_NAME(_name,		\
++						      _parent,		\
++						      &clk_fixed_factor_ops, \
++						      _flags),		\
++	}
++
++#endif
 -- 
 2.39.2
 
