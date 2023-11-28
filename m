@@ -1,64 +1,64 @@
-Delivery-date: Tue, 28 Nov 2023 16:32:13 +0100
+Delivery-date: Tue, 28 Nov 2023 17:31:08 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r804L-00CCGc-0i
+	id 1r80zM-00CFmo-0A
 	for lore@lore.pengutronix.de;
-	Tue, 28 Nov 2023 16:32:13 +0100
+	Tue, 28 Nov 2023 17:31:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r804L-0005tQ-4K
-	for lore@pengutronix.de; Tue, 28 Nov 2023 16:32:13 +0100
+	id 1r80zL-0000ui-V5
+	for lore@pengutronix.de; Tue, 28 Nov 2023 17:31:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Tk+6EfFD4LqaO8br54Bp99jNSfWzHsWF2VXcZ9mHPAU=; b=e+X0G3OWc8vMyr9cJ60r46s0HT
-	SD8ueerkydR4TXLEA3e4tEeZp51bNsSE1/6uHaPx2JeOUIYF7zx2ep7+nU9c505eBDEjyCorMhCdK
-	AZtMSuIFQ9zBUs4lFSjZ9x2UiYyALlSolydZ1LxDk9OxswV3B2YcLtLSxYlOHlZKHCmFv6POnlfI5
-	xe2O+oClw9pV8Yy/alkuqRlqDd9+ptZzRFvoERJzvXcJMJTxxBotxILabAXh5omwjbpQpclHn8N3c
-	IDWvZ+RA8rrXD460tMOISD7JBB7CPN6XE5p+cbaoKinLqfFDnl9QH73+SNbyHzm50hl6ua8WqI+38
-	DIskWx+g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=UuaeSLUrVcHgOkhAI57WzlT4TyROGoBwjk2/lQvof3U=; b=cPBvb7VBGxZ/du0ZCGOeDhaRUa
+	nzK9y52p1iejG46l0F/QmHHFOyxj88EDwg5knlzh6CbFeOQd3DBkO+R19V44ff5wD5cfi+78F3sMQ
+	DRwMiy32gVfqURwWSAjArUzO65Hsd2yO4VCECGt51l+bYvJPEA+cWeW/7bYSMsMl/YjgBbQgq64S0
+	ipYxG8kroNJMFck/TQ1QP6ljD6xws9kM2vK6FDaVPtGjK5nKRH+qvv5zp/ZD1f/tsq43vLvoYziGF
+	sVRmXtq6fCtCN8m3tpoGOfMrrW8jgtK9S2LTp2jFW/KbhtbN7PnB4C+h5GE+mFxVEC80SKZLDZ2BT
+	nFKoN5/A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r802l-005gmP-23;
-	Tue, 28 Nov 2023 15:30:35 +0000
+	id 1r80y2-005ocs-1N;
+	Tue, 28 Nov 2023 16:29:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r802h-005gkA-1Y
+	id 1r80xy-005oaz-1D
 	for barebox@lists.infradead.org;
-	Tue, 28 Nov 2023 15:30:34 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r802a-0005YG-6g; Tue, 28 Nov 2023 16:30:24 +0100
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r802Z-00CD1K-QV; Tue, 28 Nov 2023 16:30:23 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r802Z-002oF9-2H;
-	Tue, 28 Nov 2023 16:30:23 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 28 Nov 2023 16:30:20 +0100
-Message-Id: <20231128153020.669750-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	Tue, 28 Nov 2023 16:29:45 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1r80xv-0000W2-RC
+	for barebox@lists.infradead.org; Tue, 28 Nov 2023 17:29:39 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Tue, 28 Nov 2023 17:29:22 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231128-v2023-08-0-topic-macb-v1-1-9faff73bc990@pengutronix.de>
+References: <20231128-v2023-08-0-topic-macb-v1-0-9faff73bc990@pengutronix.de>
+In-Reply-To: <20231128-v2023-08-0-topic-macb-v1-0-9faff73bc990@pengutronix.de>
+To: barebox@lists.infradead.org
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5453;
+ i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
+ bh=x4XiDXWGZZffgBxxopbASr/xYp5DYE3qU1f5C5IF5XI=;
+ b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFLTRLOP3ru1a9LzovI/OxqFzZjtN851dittyTBiCL1htm+3
+ /DytjlIWBjEuBlkxRZbItYc0Ngt/1vly/DwDzBxWJpAhDFycAjARFndGhmtN4lHGJjf88tffa/2dLG
+ lptohBu0LTe/usAJdLGX5b5jIy3Kpq1+pcMfPISrGlW73c7hyY/WnSs+2zriew/zq9ZdlOTXYA
+X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
+ fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231128_073031_517934_4F3E5A5C 
-X-CRM114-Status: GOOD (  12.96  )
+X-CRM114-CacheID: sfid-20231128_082942_413703_0CAED6AA 
+X-CRM114-Status: GOOD (  14.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,160 +76,163 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] commands: regulator: add option to list provider devices
+Subject: [PATCH 1/2] net: macb: fix dma_alloc for rx_buffer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Especially on SCMI boards, it isn't immediately clear if e.g. reg11 is
-supplied by a directly accessed regulator or by the secure world.
+rx_buffer gets dma_alloc'ed but is never dma_map'ed and therefor not
+flushed before it is initially used.
 
-Give the regulator command a -D option to list devices that the
-regulator is associated with as well.
+Map the rx_buffer when the macb is initialized and unmap it on ether_halt.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+While at it, cleanup the dma_alloc_coherent rx_ring/tx_ring, too.
+
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- commands/regulator.c     | 11 ++++++++---
- drivers/regulator/core.c | 27 ++++++++++++++++++++-------
- include/regulator.h      |  5 ++++-
- 3 files changed, 32 insertions(+), 11 deletions(-)
+ drivers/net/macb.c | 37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
-diff --git a/commands/regulator.c b/commands/regulator.c
-index e6b2f4852db4..3e38b616469f 100644
---- a/commands/regulator.c
-+++ b/commands/regulator.c
-@@ -11,9 +11,10 @@
- static int do_regulator(int argc, char *argv[])
- {
- 	struct regulator *chosen;
-+	unsigned flags = 0;
- 	int opt, ret;
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 260c1e806a..92f78f7253 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -63,10 +63,13 @@ struct macb_device {
+ 	unsigned int		tx_head;
  
--	while ((opt = getopt(argc, argv, "e:d:")) > 0) {
-+	while ((opt = getopt(argc, argv, "e:d:D")) > 0) {
- 		switch (opt) {
- 		case 'e':
- 		case 'd':
-@@ -27,12 +28,15 @@ static int do_regulator(int argc, char *argv[])
- 				         : regulator_disable(chosen);
- 			regulator_put(chosen);
- 			return ret;
-+		case 'D':
-+			flags |= REGULATOR_PRINT_DEVS;
-+			break;
- 		default:
- 			return COMMAND_ERROR_USAGE;
+ 	void			*rx_buffer;
++	dma_addr_t		rx_buffer_phys;
+ 	void			*tx_buffer;
+ 	void			*rx_packet_buf;
+ 	struct macb_dma_desc	*rx_ring;
++	dma_addr_t		rx_ring_phys;
+ 	struct macb_dma_desc	*tx_ring;
++	dma_addr_t		tx_ring_phys;
+ 	struct macb_dma_desc	*gem_q1_descs;
+ 
+ 	int			rx_buffer_size;
+@@ -181,7 +184,7 @@ static int gem_recv(struct eth_device *edev)
+ 		barrier();
+ 		status = macb->rx_ring[macb->rx_tail].ctrl;
+ 		length = MACB_BFEXT(RX_FRMLEN, status);
+-		buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
++		buffer = (void *)macb->rx_buffer_phys + macb->rx_buffer_size * macb->rx_tail;
+ 		dma_sync_single_for_cpu(macb->dev, (unsigned long)buffer, length,
+ 					DMA_FROM_DEVICE);
+ 		net_receive(edev, buffer, length);
+@@ -221,7 +224,7 @@ static int macb_recv(struct eth_device *edev)
  		}
- 	}
  
--	regulators_print();
-+	regulators_print(flags);
+ 		if (status & MACB_BIT(RX_EOF)) {
+-			buffer = macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
++			buffer = (void *)macb->rx_buffer_phys + macb->rx_buffer_size * macb->rx_tail;
+ 			length = MACB_BFEXT(RX_FRMLEN, status);
+ 			if (wrapped) {
+ 				unsigned int headlen, taillen;
+@@ -232,12 +235,12 @@ static int macb_recv(struct eth_device *edev)
+ 				dma_sync_single_for_cpu(macb->dev, (unsigned long)buffer,
+ 							headlen, DMA_FROM_DEVICE);
+ 				memcpy(macb->rx_packet_buf, buffer, headlen);
+-				dma_sync_single_for_cpu(macb->dev, (unsigned long)macb->rx_buffer,
++				dma_sync_single_for_cpu(macb->dev, (unsigned long)macb->rx_buffer_phys,
+ 							taillen, DMA_FROM_DEVICE);
+ 				memcpy(macb->rx_packet_buf + headlen, macb->rx_buffer, taillen);
+ 				dma_sync_single_for_device(macb->dev, (unsigned long)buffer,
+ 							headlen, DMA_FROM_DEVICE);
+-				dma_sync_single_for_device(macb->dev, (unsigned long)macb->rx_buffer,
++				dma_sync_single_for_device(macb->dev, (unsigned long)macb->rx_buffer_phys,
+ 							taillen, DMA_FROM_DEVICE);
+ 				net_receive(edev, macb->rx_packet_buf, length);
+ 			} else {
+@@ -377,7 +380,7 @@ static int gmac_init_dummy_tx_queues(struct macb_device *macb)
  	return 0;
  }
  
-@@ -42,12 +46,13 @@ BAREBOX_CMD_HELP_START(regulator)
- 	BAREBOX_CMD_HELP_TEXT("Options:")
- 	BAREBOX_CMD_HELP_OPT("-e REGULATOR\t", "enable REGULATOR")
- 	BAREBOX_CMD_HELP_OPT("-d REGULATOR\t", "disable REGULATOR")
-+	BAREBOX_CMD_HELP_OPT("-D\t", "list provider devices of regulators")
- BAREBOX_CMD_HELP_END
- 
- BAREBOX_CMD_START(regulator)
- 	.cmd		= do_regulator,
- 	BAREBOX_CMD_DESC("list and control regulators")
--	BAREBOX_CMD_OPTS("[-ed] [REGULATOR]")
-+	BAREBOX_CMD_OPTS("[-edD] [REGULATOR]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
- 	BAREBOX_CMD_HELP(cmd_regulator_help)
- BAREBOX_CMD_END
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index b20a48e0f63c..bbba3b0b5712 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -729,20 +729,32 @@ int regulator_get_voltage(struct regulator *regulator)
- }
- EXPORT_SYMBOL_GPL(regulator_get_voltage);
- 
--static void regulator_print_one(struct regulator_dev *rdev, int level)
-+static int regulator_name_indent(unsigned flags)
+-static void macb_init(struct macb_device *macb)
++static int macb_init(struct macb_device *macb)
  {
-+	return 30 + (flags & REGULATOR_PRINT_DEVS ? 50 : 0);
-+}
-+
-+static void regulator_print_one(struct regulator_dev *rdev, int level, unsigned flags)
-+{
-+	const char *name = rdev->name;
- 	struct regulator *r;
-+	char buf[256];
+ 	unsigned long paddr, val = 0;
+ 	int i;
+@@ -386,6 +389,11 @@ static void macb_init(struct macb_device *macb)
+ 	 * macb_halt should have been called at some point before now,
+ 	 * so we'll assume the controller is idle.
+ 	 */
++	macb->rx_buffer_phys = dma_map_single(macb->dev, macb->rx_buffer,
++					      macb->rx_buffer_size * macb->rx_ring_size,
++					      DMA_TO_DEVICE);
++	if (dma_mapping_error(macb->dev, macb->rx_buffer_phys))
++		return -EFAULT;
  
- 	if (!rdev)
- 		return;
+ 	/* initialize DMA descriptors */
+ 	paddr = (ulong)macb->rx_buffer;
+@@ -442,6 +450,7 @@ static void macb_init(struct macb_device *macb)
  
-+	if (flags & REGULATOR_PRINT_DEVS) {
-+		snprintf(buf, sizeof(buf), "%s  %s", dev_name(rdev->dev), rdev->name);
-+		name = buf;
-+	}
-+
- 	printf("%*s%-*s %6d %10d %10d\n", level * 3, "",
--	       30 - level * 3,
--	       rdev->name, rdev->enable_count, rdev->min_uv, rdev->max_uv);
-+	       regulator_name_indent(flags) - level * 3,
-+	       name, rdev->enable_count, rdev->min_uv, rdev->max_uv);
+ 	macb_or_gem_writel(macb, USRIO, val);
  
- 	list_for_each_entry(r, &rdev->consumer_list, list) {
- 		if (r->rdev_consumer)
--			regulator_print_one(r->rdev_consumer, level + 1);
-+			regulator_print_one(r->rdev_consumer, level + 1, flags);
- 		else
- 			printf("%*s%s\n", (level + 1) * 3, "", r->dev ? dev_name(r->dev) : "none");
- 	}
-@@ -751,13 +763,14 @@ static void regulator_print_one(struct regulator_dev *rdev, int level)
- /*
-  * regulators_print - print informations about all regulators
-  */
--void regulators_print(void)
-+void regulators_print(unsigned flags)
- {
- 	struct regulator_dev *rdev;
- 
--	printf("%-30s %6s %10s %10s\n", "name", "enable", "min_uv", "max_uv");
-+	printf("%-*s %6s %10s %10s\n", regulator_name_indent(flags),
-+	       "name", "enable", "min_uv", "max_uv");
- 	list_for_each_entry(rdev, &regulator_list, list) {
- 		if (!rdev->supply)
--			regulator_print_one(rdev, 0);
-+			regulator_print_one(rdev, 0, flags);
- 	}
++	return 0;
  }
-diff --git a/include/regulator.h b/include/regulator.h
-index 240dbce5e7da..135fe6d91fd3 100644
---- a/include/regulator.h
-+++ b/include/regulator.h
-@@ -2,6 +2,8 @@
- #ifndef __REGULATOR_H
- #define __REGULATOR_H
  
-+#include <linux/bitops.h>
+ static void macb_halt(struct eth_device *edev)
+@@ -460,6 +469,13 @@ static void macb_halt(struct eth_device *edev)
+ 
+ 	/* Disable TX and RX, and clear statistics */
+ 	macb_writel(macb, NCR, MACB_BIT(CLRSTAT));
 +
- struct device;
++	dma_unmap_single(macb->dev, macb->rx_buffer_phys,
++			 macb->rx_buffer_size * macb->rx_ring_size,
++			 DMA_TO_DEVICE);
++	free(macb->rx_buffer);
++	dma_free_coherent((void *)macb->rx_ring, macb->rx_ring_phys, RX_RING_BYTES(macb));
++	dma_free_coherent((void *)macb->tx_ring, macb->tx_ring_phys, TX_RING_BYTES);
+ }
  
- /* struct regulator is an opaque object for consumers */
-@@ -155,7 +157,8 @@ static inline int of_regulator_register(struct regulator_dev *rd,
- #endif
- int dev_regulator_register(struct regulator_dev *rd, const char *name);
+ static int macb_phy_read(struct mii_bus *bus, int addr, int reg)
+@@ -780,6 +796,7 @@ static int macb_probe(struct device *dev)
+ 	const char *pclk_name, *hclk_name;
+ 	const struct macb_config *config = NULL;
+ 	u32 ncfgr;
++	int ret;
  
--void regulators_print(void);
-+#define REGULATOR_PRINT_DEVS	BIT(0)
-+void regulators_print(unsigned flags);
+ 	macb = xzalloc(sizeof(*macb));
+ 	edev = &macb->netdev;
+@@ -877,7 +894,7 @@ static int macb_probe(struct device *dev)
+ 		clk_enable(macb->rxclk);
  
- const char *rdev_get_name(struct regulator_dev *rdev);
+ 	if (config) {
+-		int ret = config->txclk_init(dev, &macb->txclk);
++		ret = config->txclk_init(dev, &macb->txclk);
+ 		if (ret)
+ 			return ret;
+ 	}
+@@ -891,8 +908,8 @@ static int macb_probe(struct device *dev)
  
+ 	macb_init_rx_buffer_size(macb, PKTSIZE);
+ 	macb->rx_buffer = dma_alloc(macb->rx_buffer_size * macb->rx_ring_size);
+-	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb), DMA_ADDRESS_BROKEN);
+-	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES, DMA_ADDRESS_BROKEN);
++	macb->rx_ring = dma_alloc_coherent(RX_RING_BYTES(macb), &macb->rx_ring_phys);
++	macb->tx_ring = dma_alloc_coherent(TX_RING_BYTES, &macb->tx_ring_phys);
+ 
+ 	if (macb->is_gem)
+ 		macb->gem_q1_descs = dma_alloc_coherent(GEM_Q1_DESC_BYTES,
+@@ -907,7 +924,9 @@ static int macb_probe(struct device *dev)
+ 	ncfgr |= macb_dbw(macb);
+ 	macb_writel(macb, NCFGR, ncfgr);
+ 
+-	macb_init(macb);
++	ret = macb_init(macb);
++	if (ret)
++		return ret;
+ 
+ 	mdiobus_register(&macb->miibus);
+ 	eth_register(edev);
+
 -- 
-2.39.2
+2.40.1
 
 
 
