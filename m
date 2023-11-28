@@ -1,64 +1,57 @@
-Delivery-date: Tue, 28 Nov 2023 17:31:24 +0100
+Delivery-date: Tue, 28 Nov 2023 17:58:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r80zb-00CFob-2M
+	id 1r81PU-00CH5H-1I
 	for lore@lore.pengutronix.de;
-	Tue, 28 Nov 2023 17:31:24 +0100
+	Tue, 28 Nov 2023 17:58:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r80zb-00011W-KO
-	for lore@pengutronix.de; Tue, 28 Nov 2023 17:31:24 +0100
+	id 1r81PU-0006Ht-8v
+	for lore@pengutronix.de; Tue, 28 Nov 2023 17:58:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0os5KhnfABa15n/YonQusnrq2meAlLRPGlTrxTkGiW8=; b=LjWbgQYPtxowupNh51wCBjTD2I
-	AO3fLXJlQOfcXqC7TehBndo65vPzZ2mgY90qd7wSBv76fCx7q4KvD8Mqq9ACfrDD4W+BNga9rK7U2
-	VjWxWz+XjOc5vd9UvhKpTtNqiIbdf+Hb74edxfAWq1gu+r/bAy0yPAaHK6vh8iu+x13a+sYHcnDo2
-	1TY4SPGip7QRwPu+IppYZKtQUkIfE6t/TR8oWv9CMT1RCsTTwiEhpg81zOzSrtf5gITFf8FZubcPM
-	jCrw34pVCcbkMb4Vyp8aJx1WKOCxh5D3RDHW9Uf7UOqPR05Wg700aKjkxe7P0opvzkrzBUTHw9SHs
-	BFR9og8g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
+	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
+	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4k7mG6i7P9SpIw5HdE47bHtqy5xXPXKYVPmulmt5zNo=; b=kr7RZw+nYmUfP7BlTX7+gydK5w
+	ohIXR56ttgmO4p19TJNU5I6E0YN60MViHsfeA1SylYimQDlkxxjV0x6HR72cVnAw7MapRmZDA4W9A
+	2/qCXyNt/o4VQySdOWu7+vpBlBqRIfLyG6YHNfzJfysZ0e/UTyfgIYYPrfPyPglI2IbI3Jc72ADAw
+	HvlCJ2z8+vV/qArUsswRfU7H2hueeTd9AzUOe1YmAM90BDVmqrVTVHc6y5pCpksHGH5Zbcfc42J4F
+	dmMSzaLh3y+VMa7wKpT33Q3HrWINJMr8VKPWHGJEAgiMXe3N/YhcTaB1kBwAA1r6gEurPPl4FIRTy
+	45yZaBlg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r80y3-005od2-0E;
-	Tue, 28 Nov 2023 16:29:47 +0000
+	id 1r81Nw-005ru3-2i;
+	Tue, 28 Nov 2023 16:56:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r80xy-005ob2-1a
+	id 1r81Nt-005rtI-1W
 	for barebox@lists.infradead.org;
-	Tue, 28 Nov 2023 16:29:45 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1r80xw-0000W2-0d
-	for barebox@lists.infradead.org; Tue, 28 Nov 2023 17:29:40 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 28 Nov 2023 17:29:23 +0100
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231128-v2023-08-0-topic-macb-v1-2-9faff73bc990@pengutronix.de>
+	Tue, 28 Nov 2023 16:56:31 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <l.stach@pengutronix.de>)
+	id 1r81Nq-0005wU-SU; Tue, 28 Nov 2023 17:56:26 +0100
+Message-ID: <3e38519f5f47bfeeed8416748b5493dd1d99a408.camel@pengutronix.de>
+From: Lucas Stach <l.stach@pengutronix.de>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, barebox@lists.infradead.org
+Date: Tue, 28 Nov 2023 17:56:26 +0100
+In-Reply-To: <20231128-v2023-08-0-topic-macb-v1-1-9faff73bc990@pengutronix.de>
 References: <20231128-v2023-08-0-topic-macb-v1-0-9faff73bc990@pengutronix.de>
-In-Reply-To: <20231128-v2023-08-0-topic-macb-v1-0-9faff73bc990@pengutronix.de>
-To: barebox@lists.infradead.org
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5470;
- i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=qNQ7X1RHtCO/ayoF0in1A3KHry5fmseD9ibbhEcqB4w=;
- b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFLTRPMPWLlOZt5VOLFVP94hMcU/4kj/6Yt/f8dm8rw+Mcf2
- sml6RykLgxgXg6yYIkvk2kMam4U/63w5fp4BZg4rE8gQBi5OAZhIoBvDP92XD9c27I+6OEXxR+AH43
- 9V1Re/uL//ynrJUf7SO8Nn29wZ/rtXbH5wortb7GOHte6+vFPZBw95xQtN4LukLPZ6pZZyHQMA
-X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
- fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
+	 <20231128-v2023-08-0-topic-macb-v1-1-9faff73bc990@pengutronix.de>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231128_082942_529737_2E55CEEA 
-X-CRM114-Status: GOOD (  12.61  )
+X-CRM114-CacheID: sfid-20231128_085629_517193_2C964E62 
+X-CRM114-Status: GOOD (  21.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,171 +69,188 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/2] net: macb: convert to volatile accesses
+Subject: Re: [PATCH 1/2] net: macb: fix dma_alloc for rx_buffer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Instead of directly reading from memory addresses and inserting
-sw barriers to be sure that the compiler will not move loads/stores
-behind this point, just use proper volatile writel/readl accesses.
+Am Dienstag, dem 28.11.2023 um 17:29 +0100 schrieb Steffen Trumtrar:
+> rx_buffer gets dma_alloc'ed but is never dma_map'ed and therefor not
+> flushed before it is initially used.
+>=20
+> Map the rx_buffer when the macb is initialized and unmap it on ether_halt=
+.
+>=20
+> While at it, cleanup the dma_alloc_coherent rx_ring/tx_ring, too.
+>=20
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  drivers/net/macb.c | 37 ++++++++++++++++++++++++++++---------
+>  1 file changed, 28 insertions(+), 9 deletions(-)
+>=20
+> diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+> index 260c1e806a..92f78f7253 100644
+> --- a/drivers/net/macb.c
+> +++ b/drivers/net/macb.c
+> @@ -63,10 +63,13 @@ struct macb_device {
+>  	unsigned int		tx_head;
+> =20
+>  	void			*rx_buffer;
+> +	dma_addr_t		rx_buffer_phys;
+>  	void			*tx_buffer;
+>  	void			*rx_packet_buf;
+>  	struct macb_dma_desc	*rx_ring;
+> +	dma_addr_t		rx_ring_phys;
+>  	struct macb_dma_desc	*tx_ring;
+> +	dma_addr_t		tx_ring_phys;
+>  	struct macb_dma_desc	*gem_q1_descs;
+> =20
+>  	int			rx_buffer_size;
+> @@ -181,7 +184,7 @@ static int gem_recv(struct eth_device *edev)
+>  		barrier();
+>  		status =3D macb->rx_ring[macb->rx_tail].ctrl;
+>  		length =3D MACB_BFEXT(RX_FRMLEN, status);
+> -		buffer =3D macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
+> +		buffer =3D (void *)macb->rx_buffer_phys + macb->rx_buffer_size * macb-=
+>rx_tail;
+>  		dma_sync_single_for_cpu(macb->dev, (unsigned long)buffer, length,
+>  					DMA_FROM_DEVICE);
+>  		net_receive(edev, buffer, length);
+> @@ -221,7 +224,7 @@ static int macb_recv(struct eth_device *edev)
+>  		}
+> =20
+>  		if (status & MACB_BIT(RX_EOF)) {
+> -			buffer =3D macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail;
+> +			buffer =3D (void *)macb->rx_buffer_phys + macb->rx_buffer_size * macb=
+->rx_tail;
+>  			length =3D MACB_BFEXT(RX_FRMLEN, status);
+>  			if (wrapped) {
+>  				unsigned int headlen, taillen;
+> @@ -232,12 +235,12 @@ static int macb_recv(struct eth_device *edev)
+>  				dma_sync_single_for_cpu(macb->dev, (unsigned long)buffer,
+>  							headlen, DMA_FROM_DEVICE);
+>  				memcpy(macb->rx_packet_buf, buffer, headlen);
+> -				dma_sync_single_for_cpu(macb->dev, (unsigned long)macb->rx_buffer,
+> +				dma_sync_single_for_cpu(macb->dev, (unsigned long)macb->rx_buffer_ph=
+ys,
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- drivers/net/macb.c | 53 ++++++++++++++++++++++-------------------------------
- 1 file changed, 22 insertions(+), 31 deletions(-)
+You can drop all those (unsigned long) casts in calls to
+dma_sync_single, now that you are passing a argument of the proper
+dma_addr_t type.
 
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index 92f78f7253..c9a7e395d6 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -119,17 +119,15 @@ static int macb_send(struct eth_device *edev, void *packet,
- 		macb->tx_head++;
- 	}
- 
--	macb->tx_ring[tx_head].ctrl = ctrl;
--	macb->tx_ring[tx_head].addr = (ulong)packet;
--	barrier();
-+	writel(ctrl, &macb->tx_ring[tx_head].ctrl);
-+	writel((ulong)packet, &macb->tx_ring[tx_head].addr);
- 	dma_sync_single_for_device(macb->dev, (unsigned long)packet, length, DMA_TO_DEVICE);
- 	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
- 
- 	start = get_time_ns();
- 	ret = -ETIMEDOUT;
- 	do {
--		barrier();
--		ctrl = macb->tx_ring[0].ctrl;
-+		ctrl = readl(&macb->tx_ring[0].ctrl);
- 		if (ctrl & MACB_BIT(TX_USED)) {
- 			ret = 0;
- 			break;
-@@ -154,18 +152,17 @@ static void reclaim_rx_buffers(struct macb_device *macb,
- 
- 	i = macb->rx_tail;
- 	while (i > new_tail) {
--		macb->rx_ring[i].addr &= ~MACB_BIT(RX_USED);
-+		clrbits_le32(&macb->rx_ring[i].addr, MACB_BIT(RX_USED));
- 		i++;
- 		if (i > macb->rx_ring_size)
- 			i = 0;
- 	}
- 
- 	while (i < new_tail) {
--		macb->rx_ring[i].addr &= ~MACB_BIT(RX_USED);
-+		clrbits_le32(&macb->rx_ring[i].addr, MACB_BIT(RX_USED));
- 		i++;
- 	}
- 
--	barrier();
- 	macb->rx_tail = new_tail;
- }
- 
-@@ -177,12 +174,10 @@ static int gem_recv(struct eth_device *edev)
- 	u32 status;
- 
- 	for (;;) {
--		barrier();
--		if (!(macb->rx_ring[macb->rx_tail].addr & MACB_BIT(RX_USED)))
-+		if (!(readl(&macb->rx_ring[macb->rx_tail].addr) & MACB_BIT(RX_USED)))
- 			return -1;
- 
--		barrier();
--		status = macb->rx_ring[macb->rx_tail].ctrl;
-+		status = readl(&macb->rx_ring[macb->rx_tail].ctrl);
- 		length = MACB_BFEXT(RX_FRMLEN, status);
- 		buffer = (void *)macb->rx_buffer_phys + macb->rx_buffer_size * macb->rx_tail;
- 		dma_sync_single_for_cpu(macb->dev, (unsigned long)buffer, length,
-@@ -190,8 +185,7 @@ static int gem_recv(struct eth_device *edev)
- 		net_receive(edev, buffer, length);
- 		dma_sync_single_for_device(macb->dev, (unsigned long)buffer, length,
- 					   DMA_FROM_DEVICE);
--		macb->rx_ring[macb->rx_tail].addr &= ~MACB_BIT(RX_USED);
--		barrier();
-+		clrbits_le32(&macb->rx_ring[macb->rx_tail].addr, MACB_BIT(RX_USED));
- 
- 		macb->rx_tail++;
- 		if (macb->rx_tail >= macb->rx_ring_size)
-@@ -211,12 +205,10 @@ static int macb_recv(struct eth_device *edev)
- 	u32 status;
- 
- 	for (;;) {
--		barrier();
--		if (!(macb->rx_ring[rx_tail].addr & MACB_BIT(RX_USED)))
-+		if (!(readl(&macb->rx_ring[rx_tail].addr) & MACB_BIT(RX_USED)))
- 			return -1;
- 
--		barrier();
--		status = macb->rx_ring[rx_tail].ctrl;
-+		status = readl(&macb->rx_ring[rx_tail].ctrl);
- 		if (status & MACB_BIT(RX_SOF)) {
- 			if (rx_tail != macb->rx_tail)
- 				reclaim_rx_buffers(macb, rx_tail);
-@@ -250,7 +242,6 @@ static int macb_recv(struct eth_device *edev)
- 				dma_sync_single_for_device(macb->dev, (unsigned long)buffer, length,
- 							DMA_FROM_DEVICE);
- 			}
--			barrier();
- 			if (++rx_tail >= macb->rx_ring_size)
- 				rx_tail = 0;
- 			reclaim_rx_buffers(macb, rx_tail);
-@@ -370,9 +361,9 @@ static int gmac_init_dummy_tx_queues(struct macb_device *macb)
- 		if (queue_mask & (1 << i))
- 			num_queues++;
- 
--	macb->gem_q1_descs[0].addr = 0;
--	macb->gem_q1_descs[0].ctrl = MACB_BIT(TX_WRAP) |
--		MACB_BIT(TX_LAST) | MACB_BIT(TX_USED);
-+	writel(0, &macb->gem_q1_descs[0].addr);
-+	setbits_le32(&macb->gem_q1_descs[0].ctrl,
-+		     MACB_BIT(TX_WRAP) | MACB_BIT(TX_LAST) | MACB_BIT(TX_USED));
- 
- 	for (i = 1; i < num_queues; i++)
- 		gem_writel_queue_TBQP(macb, (ulong)macb->gem_q1_descs, i - 1);
-@@ -398,17 +389,17 @@ static int macb_init(struct macb_device *macb)
- 	/* initialize DMA descriptors */
- 	paddr = (ulong)macb->rx_buffer;
- 	for (i = 0; i < macb->rx_ring_size; i++) {
--		macb->rx_ring[i].addr = paddr;
--		macb->rx_ring[i].ctrl = 0;
-+		writel(paddr, &macb->rx_ring[i].addr);
-+		writel(0, &macb->rx_ring[i].ctrl);
- 		paddr += macb->rx_buffer_size;
- 	}
--	macb->rx_ring[macb->rx_ring_size - 1].addr |= MACB_BIT(RX_WRAP);
-+	setbits_le32(&macb->rx_ring[macb->rx_ring_size - 1].addr, MACB_BIT(RX_WRAP));
- 
- 	for (i = 0; i < TX_RING_SIZE; i++) {
--		macb->tx_ring[i].addr = 0;
--		macb->tx_ring[i].ctrl = MACB_BIT(TX_USED);
-+		writel(0, &macb->tx_ring[i].addr);
-+		writel(MACB_BIT(TX_USED), &macb->tx_ring[i].ctrl);
- 	}
--	macb->tx_ring[TX_RING_SIZE - 1].addr |= MACB_BIT(TX_WRAP);
-+	writel(MACB_BIT(TX_WRAP), &macb->tx_ring[TX_RING_SIZE - 1].addr);
- 
- 	macb->rx_tail = macb->tx_head = 0;
- 
-@@ -421,9 +412,9 @@ static int macb_init(struct macb_device *macb)
- 		gmac_init_dummy_tx_queues(macb);
- 
- 		/* Disable the second priority rx queue */
--		macb->gem_q1_descs[1].addr = MACB_BIT(RX_USED) |
--				MACB_BIT(RX_WRAP);
--		macb->gem_q1_descs[1].ctrl = 0;
-+		setbits_le32(&macb->gem_q1_descs[1].addr,
-+			     MACB_BIT(RX_USED) | MACB_BIT(RX_WRAP));
-+		writel(0, &macb->gem_q1_descs[1].ctrl);
- 
- 		gem_writel(macb, RQ1, (ulong)&macb->gem_q1_descs[1]);
- 	}
+>  							taillen, DMA_FROM_DEVICE);
+>  				memcpy(macb->rx_packet_buf + headlen, macb->rx_buffer, taillen);
+>  				dma_sync_single_for_device(macb->dev, (unsigned long)buffer,
+>  							headlen, DMA_FROM_DEVICE);
+> -				dma_sync_single_for_device(macb->dev, (unsigned long)macb->rx_buffer=
+,
+> +				dma_sync_single_for_device(macb->dev, (unsigned long)macb->rx_buffer=
+_phys,
+>  							taillen, DMA_FROM_DEVICE);
+>  				net_receive(edev, macb->rx_packet_buf, length);
+>  			} else {
+> @@ -377,7 +380,7 @@ static int gmac_init_dummy_tx_queues(struct macb_devi=
+ce *macb)
+>  	return 0;
+>  }
+> =20
+> -static void macb_init(struct macb_device *macb)
+> +static int macb_init(struct macb_device *macb)
+>  {
+>  	unsigned long paddr, val =3D 0;
+>  	int i;
+> @@ -386,6 +389,11 @@ static void macb_init(struct macb_device *macb)
+>  	 * macb_halt should have been called at some point before now,
+>  	 * so we'll assume the controller is idle.
+>  	 */
+> +	macb->rx_buffer_phys =3D dma_map_single(macb->dev, macb->rx_buffer,
+> +					      macb->rx_buffer_size * macb->rx_ring_size,
+> +					      DMA_TO_DEVICE);
 
--- 
-2.40.1
+The RX buffer is used to hold data written by the device, so it must be
+mapped with DMA_FROM_DEVICE.
+
+Regards,
+Lucas
+
+> +	if (dma_mapping_error(macb->dev, macb->rx_buffer_phys))
+> +		return -EFAULT;
+> =20
+>  	/* initialize DMA descriptors */
+>  	paddr =3D (ulong)macb->rx_buffer;
+> @@ -442,6 +450,7 @@ static void macb_init(struct macb_device *macb)
+> =20
+>  	macb_or_gem_writel(macb, USRIO, val);
+> =20
+> +	return 0;
+>  }
+> =20
+>  static void macb_halt(struct eth_device *edev)
+> @@ -460,6 +469,13 @@ static void macb_halt(struct eth_device *edev)
+> =20
+>  	/* Disable TX and RX, and clear statistics */
+>  	macb_writel(macb, NCR, MACB_BIT(CLRSTAT));
+> +
+> +	dma_unmap_single(macb->dev, macb->rx_buffer_phys,
+> +			 macb->rx_buffer_size * macb->rx_ring_size,
+> +			 DMA_TO_DEVICE);
+> +	free(macb->rx_buffer);
+> +	dma_free_coherent((void *)macb->rx_ring, macb->rx_ring_phys, RX_RING_BY=
+TES(macb));
+> +	dma_free_coherent((void *)macb->tx_ring, macb->tx_ring_phys, TX_RING_BY=
+TES);
+>  }
+> =20
+>  static int macb_phy_read(struct mii_bus *bus, int addr, int reg)
+> @@ -780,6 +796,7 @@ static int macb_probe(struct device *dev)
+>  	const char *pclk_name, *hclk_name;
+>  	const struct macb_config *config =3D NULL;
+>  	u32 ncfgr;
+> +	int ret;
+> =20
+>  	macb =3D xzalloc(sizeof(*macb));
+>  	edev =3D &macb->netdev;
+> @@ -877,7 +894,7 @@ static int macb_probe(struct device *dev)
+>  		clk_enable(macb->rxclk);
+> =20
+>  	if (config) {
+> -		int ret =3D config->txclk_init(dev, &macb->txclk);
+> +		ret =3D config->txclk_init(dev, &macb->txclk);
+>  		if (ret)
+>  			return ret;
+>  	}
+> @@ -891,8 +908,8 @@ static int macb_probe(struct device *dev)
+> =20
+>  	macb_init_rx_buffer_size(macb, PKTSIZE);
+>  	macb->rx_buffer =3D dma_alloc(macb->rx_buffer_size * macb->rx_ring_size=
+);
+> -	macb->rx_ring =3D dma_alloc_coherent(RX_RING_BYTES(macb), DMA_ADDRESS_B=
+ROKEN);
+> -	macb->tx_ring =3D dma_alloc_coherent(TX_RING_BYTES, DMA_ADDRESS_BROKEN)=
+;
+> +	macb->rx_ring =3D dma_alloc_coherent(RX_RING_BYTES(macb), &macb->rx_rin=
+g_phys);
+> +	macb->tx_ring =3D dma_alloc_coherent(TX_RING_BYTES, &macb->tx_ring_phys=
+);
+> =20
+>  	if (macb->is_gem)
+>  		macb->gem_q1_descs =3D dma_alloc_coherent(GEM_Q1_DESC_BYTES,
+> @@ -907,7 +924,9 @@ static int macb_probe(struct device *dev)
+>  	ncfgr |=3D macb_dbw(macb);
+>  	macb_writel(macb, NCFGR, ncfgr);
+> =20
+> -	macb_init(macb);
+> +	ret =3D macb_init(macb);
+> +	if (ret)
+> +		return ret;
+> =20
+>  	mdiobus_register(&macb->miibus);
+>  	eth_register(edev);
+>=20
 
 
 
