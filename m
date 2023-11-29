@@ -1,57 +1,73 @@
-Delivery-date: Wed, 29 Nov 2023 08:21:38 +0100
+Delivery-date: Wed, 29 Nov 2023 09:31:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r8Et7-00CyZD-1s
+	id 1r8FzA-00D2C7-0t
 	for lore@lore.pengutronix.de;
-	Wed, 29 Nov 2023 08:21:38 +0100
+	Wed, 29 Nov 2023 09:31:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r8Et7-0001xx-KX
-	for lore@pengutronix.de; Wed, 29 Nov 2023 08:21:38 +0100
+	id 1r8FzA-0001Mr-5B
+	for lore@pengutronix.de; Wed, 29 Nov 2023 09:31:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=S1fGTfGAJ7oRlv+Fzw3eog8wLz7Yefqq7R3biscmCWM=; b=JMM4p5KG19YbbHfqB8msUw3e6Z
-	3RHfGhTNybOBP3SqVEQrbXadVHkSD9t9uKMvbkyRhldXzWqy92ieNCHVU18N7cjyXlZhpUchmEwbl
-	fc5z3KS5kIH/o5Dy6HfEVhW37uaWDVSp36VAJ9EHcDY/pzlQ4iF9fRTETgcbhwMg87xACssco4+YY
-	KO063EH1ap0LJRy2jL9vZ3yyAj8rToWhViKKulj4MhaMI71tHUXZ97Xy9JJSDHklOQ7IgSY7hpn2J
-	yIv8FYYgq8ckN2lTyvqu1C73hAbMqMfulJL+orcU4iIOh2Kg7VhRQGmg/rU/KK/4MF9Qt1WASfGyC
-	GP9e9SQw==;
+	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ZpXJ0c59VlOn8n87613SSXosJEBt0fr4SPKAZ/EF3eA=; b=gvNT4xp2auOLdm3rFoLnJAdf9N
+	pqjMUzUvVZSbSE6QkgQpmKLAsG8/3ZPNRjmCmHaZCmhJW26ax/M0o01mbXOicM7AhHFIzZlwsGhN/
+	KYjp1zn0fbjX7iw+ggAP17RoMltLETyl5LNsCOsccA3SVXGrc59s/zoi7kBnzzv8ZgqSC9LHRhf+s
+	ZPBcjnv+77NLqyFAkf/KxOLd3bboST0jHE2weSH6CLw2lqCUYHexaWarQtf79FgXargswTfpHGRC3
+	PLzkzI7w57p1meokkPQrhs2NkYMcMfUVm0Ct7kMqRRWYJU0BDoHCLFh/t6lQNWlX+V2FgoEGSlQd3
+	919pRqNQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r8Ere-007KBN-1v;
-	Wed, 29 Nov 2023 07:20:06 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1r8Fxi-007Tk2-0I;
+	Wed, 29 Nov 2023 08:30:26 +0000
+Received: from smtpout43.security-mail.net ([85.31.212.43] helo=fx303.security-mail.net)
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r8Erb-007KAi-00
+	id 1r8Fxd-007Tgg-1l
 	for barebox@lists.infradead.org;
-	Wed, 29 Nov 2023 07:20:04 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r8ErW-0001m0-Uw; Wed, 29 Nov 2023 08:19:59 +0100
-Message-ID: <c769d8bc-57af-4607-b04f-72e8b5153e2e@pengutronix.de>
-Date: Wed, 29 Nov 2023 08:19:57 +0100
+	Wed, 29 Nov 2023 08:30:24 +0000
+Received: from localhost (fx303.security-mail.net [127.0.0.1])
+	by fx303.security-mail.net (Postfix) with ESMTP id 0F5C330F805
+	for <barebox@lists.infradead.org>; Wed, 29 Nov 2023 09:30:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
+	s=sec-sig-email; t=1701246612;
+	bh=pm2ayy01TKNN417gyAd50u0dTMIwsLcty0pENQK2xNo=;
+	h=From:To:Cc:Subject:Date;
+	b=QON3sJLSJibP0hwo/d8hCy6wcK71ErFtyzBYVREmrn5ciNQvDrUeVfojaULAMIEuj
+	 7zO9EV/HSelVYClPtbPfOlRVSG4BTnRM18QjNmKxb0M3Aa94t8WHfMqFfHAkOlABOx
+	 55UY79IyZpm3i66kKtC/Z0wHP/XtCw2FKYs9LJgI=
+Received: from fx303 (fx303.security-mail.net [127.0.0.1]) by
+ fx303.security-mail.net (Postfix) with ESMTP id AA37430F760; Wed, 29 Nov
+ 2023 09:30:07 +0100 (CET)
+Received: from srvsmtp.lin.mbt.kalray.eu (unknown [217.181.231.53]) by
+ fx303.security-mail.net (Postfix) with ESMTPS id E7C5130EC60; Wed, 29 Nov
+ 2023 09:30:05 +0100 (CET)
+Received: from junon.lin.mbt.kalray.eu (unknown [192.168.37.161]) by
+ srvsmtp.lin.mbt.kalray.eu (Postfix) with ESMTPSA id B7A344035F; Wed, 29 Nov
+ 2023 09:30:02 +0100 (CET)
+X-Quarantine-ID: <SUAz2HZhcGMn>
+X-Virus-Scanned: E-securemail
+Secumail-id: <148f5.6566f68d.b30e5.0>
+From: Yann Sionneau <ysionneau@kalrayinc.com>
+To: barebox@lists.infradead.org
+Cc: Yann Sionneau <ysionneau@kalrayinc.com>
+Date: Wed, 29 Nov 2023 09:29:56 +0100
+Message-ID: <20231129082956.30622-1-ysionneau@kalrayinc.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Lior Weintraub <liorw@pliops.com>,
- "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <PR3P195MB0555B60C3789D5DE6FCF1D4BC3BDA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <PR3P195MB0555B60C3789D5DE6FCF1D4BC3BDA@PR3P195MB0555.EURP195.PROD.OUTLOOK.COM>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: 8bit
+X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231128_232003_039196_03567993 
-X-CRM114-Status: GOOD (  17.26  )
+X-CRM114-CacheID: sfid-20231129_003021_883661_6037D900 
+X-CRM114-Status: GOOD (  14.50  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,66 +85,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: Pass user defines for Barebox build
+Subject: [PATCH] mci: set RCA to 2 according to eMMC specification
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Lior,
+According to eMMC Protocol Specification JESD84-B51 Section 7.5
 
-On 27.11.23 08:02, Lior Weintraub wrote:
-> Hi guys,
-> 
-> Is there a formal way to pass user compilation flags into Barebox build?
+```
+The writable 16-bit relative Device address (RCA) register carries the Device
+address assigned by the host during the Device identification. This address is
+used for the addressed host-Device communication after the Device identification
+procedure. The default value of the RCA register is 0x0001. The value 0x0000 is
+reserved to set all Devices into the Stand-by State with CMD7.
+```
 
-There isn't. Both barebox and Linux have been broken in the past by distros
-setting CFLAGS that force hardening options that require kernel/libc cooperation,
-which didn't apply to barebox. For that reason, the variables were prefixed
-with KBUILD_ and a way to inject variables into the build of barebox itself
-(i.e. not host tools) is intentionally not provided.
+So definetely 0 does not seem to be a good value.
+Second, the specification says in
+A.6 High-speed e•MMC bus functions / A.6.1 Bus initialization:
 
-What options do you want to inject?
+```
+17. Send CMD3 with a chosen RCA, with value greater than 1
+```
 
-> I couldn't find one so I just patched the main Makefile 
-> diff --git a/Makefile b/Makefile
-> index 471bbc2679..febc94b7f3 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -443,7 +443,7 @@ KBUILD_CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builti
->  KBUILD_CFLAGS   := -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs \
->                    -fno-strict-aliasing -fno-common -fshort-wchar \
->                     -Werror=implicit-function-declaration -Werror=implicit-int \
-> -                   -Os -pipe -Wmissing-prototypes -std=gnu89
-> +                   -Os -pipe -Wmissing-prototypes -std=gnu89 $(BAREBOX_USER_CFLAGS)
+And third, I used a VIP (Verification IP) and plugged it to a simulated host
+controller chip running Barebox and it said:
 
-USER is an unfortunate name, because there's already KBUILD_USERCFLAGS
-and that user is short for userspace and not the user, who is building
-barebox.
+```
+MGC_EMMC: EMMC_SET_RELATIVE_ADDR_INCORR:152 - Set relative addr should be
+greater than 1. address given is = 16'h0001
+Refer to the eMMC Protocol Specification JESD84-B51 Section 7.5
+```
 
-Cheers,
-Ahmad
+Note that with an RCA value of 0 or 1, the VIP would print the same error message.
 
->  KBUILD_AFLAGS          := -D__ASSEMBLY__
->  KBUILD_AFLAGS_KERNEL :=
->  KBUILD_CFLAGS_KERNEL :=
-> 
-> This patch allowed me to set BAREBOX_CFLAGS environment when calling make.
-> 
-> Thanks,                         
-> Lior.
-> 
-> 
-> 
+Set RCA to 2 instead of 0 for eMMC/MMC case.
 
+Signed-off-by: Yann Sionneau <ysionneau@kalrayinc.com>
+---
+ drivers/mci/mci-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 6d0d647377..b9a8580927 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -450,7 +450,7 @@ static int mmc_send_op_cond(struct mci *mci)
+ 	mci->ocr = cmd.response[0];
+ 
+ 	mci->high_capacity = ((mci->ocr & OCR_HCS) == OCR_HCS);
+-	mci->rca = 0;
++	mci->rca = 2;
+ 
+ 	return 0;
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.42.0
+
+
+
+
 
 
 
