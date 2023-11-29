@@ -1,64 +1,64 @@
-Delivery-date: Wed, 29 Nov 2023 12:35:40 +0100
+Delivery-date: Wed, 29 Nov 2023 12:48:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r8Iqy-00DCP5-0Q
+	id 1r8J3R-00DCqk-1d
 	for lore@lore.pengutronix.de;
-	Wed, 29 Nov 2023 12:35:40 +0100
+	Wed, 29 Nov 2023 12:48:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r8Iqx-0004VV-Vf
-	for lore@pengutronix.de; Wed, 29 Nov 2023 12:35:40 +0100
+	id 1r8J3R-0006Wj-Is
+	for lore@pengutronix.de; Wed, 29 Nov 2023 12:48:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4jxiH5I8iwPAup8xAWa9FdrgzC5IMoyck2aqavJEIsg=; b=1/wd+h9cbRK7wyScB8KHB/f+Cd
-	mXu9esL3ihB3P1iuJP45wR84ALgEgdeSvIWMnjGm3ryeCfSeZgIHln0rhJi/oeFjvQ1MZ5P9WfSHT
-	ugjPbDCRLkCVQoBlrHbnzromtQEw/+fLz8V9xkC/JCmSwyuYpxRnoHNnjB7nuK+GfRebPlx80oMkP
-	7NA7iU8xoXSzHxXevVECi9uT27s6089XKuf0u/tOng/Ht766DKO2QNr+F7kZpVKBr2UPH/tHcJjbM
-	GX1rh0ywKzxa972K9CepZ5qc/Z7MGgCXfplS6VI9TmnwFWJe5wokjlUTkLBQOU+5IIlBBSAOy151d
-	CY6qyqnA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=BL3khHc+6Iy5hrMXHpEP3lTw4a+sz+bs0UfMQuBl1DA=; b=xxTUdavF4t5gmllS2yEkq1Eem7
+	zGQk22NuS3aI79jCc5JoWqdyR0dg8r66a3mJ2lDH/Vrd1Vje8sIEYaF7mTNNRUZKCj1l7kGjq/uPR
+	SYPp+KjM9McBacBDotXKlOx0KTxF4bAiTbcrytnC7TpEk7CQtKeWbitDdpRu+YkjSnGqdMCZY2oVd
+	fu1SlXFKngHCwitOnHqH+CR50VE9E7VTtbF45TjCQSKULibFxEeM8lwxwWOF+5TZj9DxAlWF6dZcL
+	JszWuF2IHuc8dPvz+x0M8onluUZw58Xbdtz7rMHyChK3Z8Cjr19Qx9cYSd8p4FhaiopsBJReriMnw
+	3YOZWjpg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r8IpZ-0088Uo-0m;
-	Wed, 29 Nov 2023 11:34:13 +0000
+	id 1r8J28-008Aeo-1U;
+	Wed, 29 Nov 2023 11:47:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r8IpV-0088TV-1V
+	id 1r8J25-008AeI-1k
 	for barebox@lists.infradead.org;
-	Wed, 29 Nov 2023 11:34:11 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1r8IpQ-00049f-Ln
-	for barebox@lists.infradead.org; Wed, 29 Nov 2023 12:34:04 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Wed, 29 Nov 2023 12:33:48 +0100
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231129-v2023-08-0-topic-macb-v3-2-65ad6db834dc@pengutronix.de>
-References: <20231129-v2023-08-0-topic-macb-v3-0-65ad6db834dc@pengutronix.de>
-In-Reply-To: <20231129-v2023-08-0-topic-macb-v3-0-65ad6db834dc@pengutronix.de>
+	Wed, 29 Nov 2023 11:47:10 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r8J23-0005qt-Mk; Wed, 29 Nov 2023 12:47:07 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r8J22-00COPg-Dj; Wed, 29 Nov 2023 12:47:06 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1r8J22-006QhS-16;
+	Wed, 29 Nov 2023 12:47:06 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5352;
- i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=eBP7Vu2tKpdWzOffaIX0reE8crzB70JYG3T7sK9E3k8=;
- b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFLTFVfM3fe3eB7PWfViX2U+PtMzC+2XfpsdsrpPmOMY/7ey
- E3H+HaUsDGJcDLJiiiyRaw9pbBb+rPPl+HkGmDmsTCBDGLg4BWAim8IYGT48dHBPDz3Gc6E0aOOq1M
- 8yd5m6lF7MmL3q9bP5Rx9fW32a4Z+qqcnE4/lyPZ6LvvQJLVq883NJV7S+RFeVQrSfnfneb5wA
-X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
- fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 29 Nov 2023 12:47:05 +0100
+Message-Id: <20231129114705.1532572-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231129_033409_501404_8E980C3C 
-X-CRM114-Status: GOOD (  12.80  )
+X-CRM114-CacheID: sfid-20231129_034709_583531_CEC9BDA4 
+X-CRM114-Status: GOOD (  11.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,171 +76,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 2/2] net: macb: convert to volatile accesses
+Subject: [PATCH] Documentation: i.MX: point out that barebox-*-u.img is i.MX6-specific
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Instead of directly reading from memory addresses and inserting
-sw barriers to be sure that the compiler will not move loads/stores
-behind this point, just use proper volatile writel/readl accesses.
+We don't use the DCD table for RAM setup on i.MX8M, so no special
+barebox binary is needed for USB upload.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+CONFIG_HABV4_IMAGE_SIGNED_USB is already i.MX6-specific, but point this
+out in the documentation explicitly as well.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/net/macb.c | 53 +++++++++++++++++++++--------------------------------
- 1 file changed, 21 insertions(+), 32 deletions(-)
+ Documentation/boards/imx.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/macb.c b/drivers/net/macb.c
-index d6708b190c..06ca0e9e33 100644
---- a/drivers/net/macb.c
-+++ b/drivers/net/macb.c
-@@ -124,17 +124,14 @@ static int macb_send(struct eth_device *edev, void *packet,
- 	if (dma_mapping_error(macb->dev, packet_dma))
- 		return -EFAULT;
+diff --git a/Documentation/boards/imx.rst b/Documentation/boards/imx.rst
+index 2a5168190620..13246599838b 100644
+--- a/Documentation/boards/imx.rst
++++ b/Documentation/boards/imx.rst
+@@ -131,7 +131,7 @@ barebox supports generating signed images, signed USB images suitable for
+ *imx-usb-loader* and encrypted images.
  
--	macb->tx_ring[tx_head].ctrl = ctrl;
--	macb->tx_ring[tx_head].addr = packet_dma;
--	barrier();
--
-+	writel(ctrl, &macb->tx_ring[tx_head].ctrl);
-+	writel(packet_dma, &macb->tx_ring[tx_head].addr);
- 	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
- 
- 	start = get_time_ns();
- 	ret = -ETIMEDOUT;
- 	do {
--		barrier();
--		ctrl = macb->tx_ring[0].ctrl;
-+		ctrl = readl(&macb->tx_ring[0].ctrl);
- 		if (ctrl & MACB_BIT(TX_USED)) {
- 			ret = 0;
- 			break;
-@@ -160,18 +157,17 @@ static void reclaim_rx_buffers(struct macb_device *macb,
- 
- 	i = macb->rx_tail;
- 	while (i > new_tail) {
--		macb->rx_ring[i].addr &= ~MACB_BIT(RX_USED);
-+		clrbits_le32(&macb->rx_ring[i].addr, MACB_BIT(RX_USED));
- 		i++;
- 		if (i > macb->rx_ring_size)
- 			i = 0;
- 	}
- 
- 	while (i < new_tail) {
--		macb->rx_ring[i].addr &= ~MACB_BIT(RX_USED);
-+		clrbits_le32(&macb->rx_ring[i].addr, MACB_BIT(RX_USED));
- 		i++;
- 	}
- 
--	barrier();
- 	macb->rx_tail = new_tail;
- }
- 
-@@ -182,15 +178,11 @@ static int gem_recv(struct eth_device *edev)
- 	u32 status;
- 
- 	for (;;) {
--		barrier();
--		if (!(macb->rx_ring[macb->rx_tail].addr & MACB_BIT(RX_USED)))
-+		if (!(readl(&macb->rx_ring[macb->rx_tail].addr) & MACB_BIT(RX_USED)))
- 			return -1;
- 
--		barrier();
--		status = macb->rx_ring[macb->rx_tail].ctrl;
-+		status = readl(&macb->rx_ring[macb->rx_tail].ctrl);
- 		length = MACB_BFEXT(RX_FRMLEN, status);
--		macb->rx_ring[macb->rx_tail].addr &= ~MACB_BIT(RX_USED);
--		barrier();
- 		dma_sync_single_for_cpu(macb->dev,
- 					macb->rx_buffer_phys + macb->rx_buffer_size * macb->rx_tail,
- 					length,	DMA_FROM_DEVICE);
-@@ -198,6 +190,7 @@ static int gem_recv(struct eth_device *edev)
- 		dma_sync_single_for_device(macb->dev,
- 					   macb->rx_buffer_phys + macb->rx_buffer_size * macb->rx_tail,
- 					   length, DMA_FROM_DEVICE);
-+		clrbits_le32(&macb->rx_ring[macb->rx_tail].addr, MACB_BIT(RX_USED));
- 
- 		macb->rx_tail++;
- 		if (macb->rx_tail >= macb->rx_ring_size)
-@@ -216,12 +209,10 @@ static int macb_recv(struct eth_device *edev)
- 	u32 status;
- 
- 	for (;;) {
--		barrier();
--		if (!(macb->rx_ring[rx_tail].addr & MACB_BIT(RX_USED)))
-+		if (!(readl(&macb->rx_ring[rx_tail].addr) & MACB_BIT(RX_USED)))
- 			return -1;
- 
--		barrier();
--		status = macb->rx_ring[rx_tail].ctrl;
-+		status = readl(&macb->rx_ring[rx_tail].ctrl);
- 		if (status & MACB_BIT(RX_SOF)) {
- 			if (rx_tail != macb->rx_tail)
- 				reclaim_rx_buffers(macb, rx_tail);
-@@ -262,7 +253,6 @@ static int macb_recv(struct eth_device *edev)
- 							   length,
- 							   DMA_FROM_DEVICE);
- 			}
--			barrier();
- 			if (++rx_tail >= macb->rx_ring_size)
- 				rx_tail = 0;
- 			reclaim_rx_buffers(macb, rx_tail);
-@@ -382,9 +372,9 @@ static int gmac_init_dummy_tx_queues(struct macb_device *macb)
- 		if (queue_mask & (1 << i))
- 			num_queues++;
- 
--	macb->gem_q1_descs[0].addr = 0;
--	macb->gem_q1_descs[0].ctrl = MACB_BIT(TX_WRAP) |
--		MACB_BIT(TX_LAST) | MACB_BIT(TX_USED);
-+	writel(0, &macb->gem_q1_descs[0].addr);
-+	writel(MACB_BIT(TX_WRAP) | MACB_BIT(TX_LAST) | MACB_BIT(TX_USED),
-+	       &macb->gem_q1_descs[0].ctrl);
- 
- 	for (i = 1; i < num_queues; i++)
- 		gem_writel_queue_TBQP(macb, (ulong)macb->gem_q1_descs, i - 1);
-@@ -410,17 +400,17 @@ static int macb_init(struct macb_device *macb)
- 	/* initialize DMA descriptors */
- 	paddr = (ulong)macb->rx_buffer;
- 	for (i = 0; i < macb->rx_ring_size; i++) {
--		macb->rx_ring[i].addr = paddr;
--		macb->rx_ring[i].ctrl = 0;
-+		writel(paddr, &macb->rx_ring[i].addr);
-+		writel(0, &macb->rx_ring[i].ctrl);
- 		paddr += macb->rx_buffer_size;
- 	}
--	macb->rx_ring[macb->rx_ring_size - 1].addr |= MACB_BIT(RX_WRAP);
-+	setbits_le32(&macb->rx_ring[macb->rx_ring_size - 1].addr, MACB_BIT(RX_WRAP));
- 
- 	for (i = 0; i < TX_RING_SIZE; i++) {
--		macb->tx_ring[i].addr = 0;
--		macb->tx_ring[i].ctrl = MACB_BIT(TX_USED);
-+		writel(0, &macb->tx_ring[i].addr);
-+		writel(MACB_BIT(TX_USED), &macb->tx_ring[i].ctrl);
- 	}
--	macb->tx_ring[TX_RING_SIZE - 1].addr |= MACB_BIT(TX_WRAP);
-+	setbits_le32(&macb->tx_ring[TX_RING_SIZE - 1].addr, MACB_BIT(TX_WRAP));
- 
- 	macb->rx_tail = macb->tx_head = 0;
- 
-@@ -433,9 +423,8 @@ static int macb_init(struct macb_device *macb)
- 		gmac_init_dummy_tx_queues(macb);
- 
- 		/* Disable the second priority rx queue */
--		macb->gem_q1_descs[1].addr = MACB_BIT(RX_USED) |
--				MACB_BIT(RX_WRAP);
--		macb->gem_q1_descs[1].ctrl = 0;
-+		writel(MACB_BIT(RX_USED) | MACB_BIT(RX_WRAP), &macb->gem_q1_descs[1].addr);
-+		writel(0, &macb->gem_q1_descs[1].ctrl);
- 
- 		gem_writel(macb, RQ1, (ulong)&macb->gem_q1_descs[1]);
- 	}
-
+ In contrast to normal (unsigned) images booting signed images via
+-imx-usb-loader requires special images:
++imx-usb-loader on i.MX6 (but not in i.MX8M) requires special images:
+ DCD data is invalidated (DCD pointer set to zero), the image is then signed and
+ afterwards the DCD pointer is set to the DCD data again (practically making
+ the signature invalid).
 -- 
-2.40.1
+2.39.2
 
 
 
