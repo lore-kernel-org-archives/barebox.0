@@ -1,59 +1,78 @@
-Delivery-date: Thu, 30 Nov 2023 09:03:39 +0100
+Delivery-date: Thu, 30 Nov 2023 15:30:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r8c1L-00E9Pi-0j
+	id 1r8i43-00ETqA-2D
 	for lore@lore.pengutronix.de;
-	Thu, 30 Nov 2023 09:03:39 +0100
+	Thu, 30 Nov 2023 15:30:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r8c1L-0007oY-6S
-	for lore@pengutronix.de; Thu, 30 Nov 2023 09:03:39 +0100
+	id 1r8i43-0005ke-Oh
+	for lore@pengutronix.de; Thu, 30 Nov 2023 15:30:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZbMzg+9wdJm0tw4JCWys3C8IO73QJ9hB/smNyYON/6w=; b=DlgYTF1+y4Hb2RmKF13+sNmByL
-	0q5fyiTowi1+SrEF5yDhhRoxWTYiQopcCWwMDyCwD2O95VGpuIjSe8w8xZ1hVYZHjZkyrQacuDrE6
-	fkKNrSi84CaGjNkt7QygQlwde37t5GpM2VBUH635PGXXynW9zH8S6hbQqycYB127kZ4piqHrsaNS6
-	pTszsltsEhKft/vidr74ySPVZUgCQGIZpkeXNXMyaFaXTklBsRhiP4sLWRMdN1CBi1rrc39zx7ylE
-	7y8vi5F0gVYG6FK4SDPnkLyDT3YZHb9PQKGv2VgwMpnrKHnE8e17fA6nIS32h9ryI3NWlgqmtanYp
-	BwzfnsBg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:To:Subject:
+	Message-ID:Date:From:MIME-Version:Reply-To:Cc:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=fwoREsDJA8PxsN5aKvukhY/OO9CPyT9RGXbe/vDiFwM=; b=Tm1UYX5Za7SyK7lixEN5Cl3yEF
+	c7e+/S2+SADQJ6eVYUmkIoq5thdzneYfHgai1ElvyRNBsVG3KojbgjW8jpzn0dctYNxeXpPxqRan/
+	cPtqc1gbZZmZXx9oWrKbsLpL0zlpHVpy+OeT/PAdZ3Zx0DGH96A4OIslTx7X6qb3TR6CXcGGpmnoR
+	KjAQMbK0K+Tr5pk0EbXwOBI1InLBH9jfuRF2eGAWJA20z7oQS3x8u3E5BVKDY01rjXGfO2osBWIE/
+	J6hlwc1x6z4uK3uHFhVP+YGCidsbgU04njPFbem/3O0T/f2QNoFWflWhXr6bjjumgEVV3J4DUhUhu
+	foFJyDSg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r8bzt-00A9ba-3B;
-	Thu, 30 Nov 2023 08:02:10 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1r8i2L-00B62N-0y;
+	Thu, 30 Nov 2023 14:29:05 +0000
+Received: from mail-pj1-x1031.google.com ([2607:f8b0:4864:20::1031])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r8bzq-00A9aj-3A
+	id 1r8i2I-00B61y-0L
 	for barebox@lists.infradead.org;
-	Thu, 30 Nov 2023 08:02:08 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1r8bzp-0007VX-IE; Thu, 30 Nov 2023 09:02:05 +0100
-Message-ID: <f58ea40c-6457-4469-8604-e0de8ea37d3a@pengutronix.de>
-Date: Thu, 30 Nov 2023 09:02:05 +0100
+	Thu, 30 Nov 2023 14:29:03 +0000
+Received: by mail-pj1-x1031.google.com with SMTP id 98e67ed59e1d1-28555b0c7afso1002933a91.1
+        for <barebox@lists.infradead.org>; Thu, 30 Nov 2023 06:28:56 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1701354535; x=1701959335; darn=lists.infradead.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fwoREsDJA8PxsN5aKvukhY/OO9CPyT9RGXbe/vDiFwM=;
+        b=Rs3QgdYnUorUzOmnxM+4qhkSLnsaHvTLqoc2kCOagtqBTft7ChslDWGhhpmBni+Ekk
+         DbnrUJGqP07Hq1XqSAS80gKlcDOnyFbDTtrfSY/ERWKK3mRzhVKTTW6zva3Fh766cbhA
+         3bfkgCeJm8qyGNU0JsUxmk5gL6icrIbV+EX20NMZ/QEHzIdrz+rMrB9/1YY5p2yDCDLt
+         pZN7eMLlAxUC+88673B4k3EVk+G6N2UOImvYldtaTahKgqRPcGwUsf890K3MI3Cm6DmJ
+         tmi8LNo9Ob4g2fTlif7MRgYtkQsEsuBBQXxZc8E4R9MnGoJAWy9Ns2CinaioTOjbZysJ
+         dWnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1701354535; x=1701959335;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fwoREsDJA8PxsN5aKvukhY/OO9CPyT9RGXbe/vDiFwM=;
+        b=lyNgKZxraOGj8I8O2oz/4X84Ix8kZfObyoZMPo8T2pVPV97qleHdS4dEzRNKihXAv5
+         T0+dwq93uS65h56CmcfBt8DBwwvXoAfFDtxZS4w5jtsWNYTrPZjYGoNDT/RL7Et5lPUW
+         PBGYpJaTvBYfKcc5LVkSupGVqISMEWddaP50b0BlcnSWuXxFwHeM4zEdTHDpjMpqAYE2
+         uKabEL6a11sRJNUDyJPZqyhQb14lBkGF2MWibnySYhW1dfGQ2SBjHg1a6IrPJTlZ+/ZT
+         RVPIJkoAHLsxGtscQulfxmpiiFs6WUyMO5cPehbbJBKkCu+a44G6UStd04OWdKeFCE6u
+         3I9Q==
+X-Gm-Message-State: AOJu0YwymnZfI4TFD6FMXpIiIa757LiUsbzWWtLTIkqLWn/nObnss7NO
+	vL1ELXu/81IRyeQJ/fspB34dFEcErwd5fE6zSPhmCBwjkxY=
+X-Google-Smtp-Source: AGHT+IEUl4l4E1Z3yKGHrgMggzCrudvZxR3W+uPx7l0EkNZq33RVoRCiHPkevR8aJmnf+0rOn+KL+hRdeU1jgHVgMJA=
+X-Received: by 2002:a17:90b:1d90:b0:285:b6be:d89c with SMTP id
+ pf16-20020a17090b1d9000b00285b6bed89cmr18043960pjb.7.1701354535415; Thu, 30
+ Nov 2023 06:28:55 -0800 (PST)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Sascha Hauer <sha@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20231127063559.2205776-1-a.fatoum@pengutronix.de>
- <20231127063559.2205776-4-a.fatoum@pengutronix.de>
- <20231129091219.GK977968@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20231129091219.GK977968@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Thu, 30 Nov 2023 17:28:44 +0300
+Message-ID: <CAP1tNvSUuHY0RGQ0hSOOKPPHHzaRJfnHR4c2hJ2JznqA2t-H9A@mail.gmail.com>
+To: Barebox List <barebox@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231130_000207_020317_6372BCEE 
-X-CRM114-Status: GOOD (  26.28  )
+X-CRM114-CacheID: sfid-20231130_062902_146597_E6EE34B0 
+X-CRM114-Status: UNSURE (   3.63  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,106 +90,44 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 3/8] deep-probe: skip on-demand platform dev creation for
- nodes without compatible
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: RK3568 fail with 2023.11.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 29.11.23 10:12, Sascha Hauer wrote:
-> On Mon, Nov 27, 2023 at 07:35:54AM +0100, Ahmad Fatoum wrote:
->> of_device_create_on_demand won't create a new device if the device tree
->> node already has a device associated. What it will do however, is to
->> create devices for all parent nodes in the device tree if they don't
->> already exist. This is unnecessary and clutters the device list
->> with nodes that won't ever be matched as they lack a compatible anyway.
->> For example a reference to scmi_reg11 in below snippet:
->>
->>   &{scmi/protocol@17} {
->>       reg = <0x17>;
->>       regulators {
->>           #address-cells = <0x1>;
->>           #size-cells = <0x0>;
->>           scmi_reg11: regulator@0 {
->>               reg = <0x0>;
->>               regulator-name = "reg11";
->>           };
->>       };
->>   };
->>
->> will result in creation of a device for the regulators node that serves
->> no purpose whatsoever:
->>
->>   `-- firmware.of
->>      `-- firmware:scmi.of
->>         `-- scmi_dev0
->>            `-- firmware:scmi:protocol@17:regulators.of
->>
->> Avoid this by creating devices on demand only if they have a compatible.
-> 
-> How will this change affect the device hierarchy? When a parent device
-> node doesn't have a compatible, will the child device then be a child
-> of its grandparent, or will it just have no parent at all?
+Hello All.
 
-It will have the platform bus as parent. I am not sure how this can happen in
-a working setup. If the parent has no compatible, that means that the grandparent
-needs to populate it by driver. Grandparent device is created first, so only
-case it wouldn't match is if driver is missing in which case, it's game over anyway.
+The latest version of the barebox does not work on a RK3568 with 4G memory.
+With a similar board with 2G memory, everything works fine.
+...
+NOTICE:  BL31: v2.3():v2.3-607-gbf602aff1:cl
+NOTICE:  BL31: Built : 10:16:03, Jun  5 2023
+INFO:    GICv3 without legacy support detected.
+INFO:    ARM GICv3 driver initialized in EL3
+INFO:    pmu v1 is valid 220114
+INFO:    Using opteed sec cpu_context!
+INFO:    boot cpu mask: 0
+INFO:    BL31: Initializing runtime services
+WARNING: No OPTEE provided by BL2 boot loader, Booting device without
+OPTEE initialization. SMC`s destined for OPTEE will return SMC_UNK
+ERROR:   Error initializing runtime service opteed_fast
+INFO:    BL31: Preparing for EL3 exit to normal world
+INFO:    Entry point address = 0xb00000
+INFO:    SPSR = 0x3c9
+>rockchip-dmc: rockchip_sdram_size(reg2=1000eaf1, reg3=30000001)
+rockchip-dmc: rank 2 cs0_col 10 cs1_col 10 bk 3 cs0_row 16 cs1_row 16
+bw 2 row_3_4 0
+rockchip-dmc: rk3568_ram0_size() = 4026531840
+uncompress.c: memory at 0x00a00000, size 0xef600000
+mmu: enabling MMU, ttb @ 0xeffe0000
+===STALL HERE===
 
-Cheers,
-Ahmad
-
-> 
-> Sascha
-> 
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  drivers/of/platform.c | 8 +++++---
->>  1 file changed, 5 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
->> index 9e592d567cae..9ba4438812c1 100644
->> --- a/drivers/of/platform.c
->> +++ b/drivers/of/platform.c
->> @@ -442,9 +442,6 @@ static struct device *of_device_create_on_demand(struct device_node *np)
->>  	if (!np->dev && parent->dev)
->>  		device_rescan(parent->dev);
->>  
->> -	if (!np->dev)
->> -		pr_debug("Creating device for %pOF\n", np);
->> -
->>  	/* Create all parent devices needed for the requested device */
->>  	parent_dev = parent->dev ? : of_device_create_on_demand(parent);
->>  	if (IS_ERR(parent_dev))
->> @@ -458,6 +455,11 @@ static struct device *of_device_create_on_demand(struct device_node *np)
->>  	if (np->dev)
->>  		return np->dev;
->>  
->> +	if (!of_property_present(np, "compatible"))
->> +		return NULL;
->> +
->> +	pr_debug("Creating device for %pOF\n", np);
->> +
->>  	if (of_device_is_compatible(np, "arm,primecell"))
->>  		dev = of_amba_device_create(np);
->>  	else
->> -- 
->> 2.39.2
->>
->>
->>
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+Through various manipulations, I identified the faulty patch: "ARM:
+mmu64: mark barebox text section executable during early init".
+After its rollback everything works as it should.
 
 
