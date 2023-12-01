@@ -1,69 +1,64 @@
-Delivery-date: Fri, 01 Dec 2023 11:41:44 +0100
+Delivery-date: Fri, 01 Dec 2023 14:53:32 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r90xr-00Fjln-2E
+	id 1r93xU-00G2DW-0g
 	for lore@lore.pengutronix.de;
-	Fri, 01 Dec 2023 11:41:44 +0100
+	Fri, 01 Dec 2023 14:53:32 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1r90xr-0001ty-KC
-	for lore@pengutronix.de; Fri, 01 Dec 2023 11:41:44 +0100
+	id 1r93xU-0005t0-4A
+	for lore@pengutronix.de; Fri, 01 Dec 2023 14:53:32 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dW2si1dUIo8LPt5RRvZmHAvHkwRnxMbwj204aVQUyVA=; b=bsIIPCKPpaYcngzkCeXNRRGP5O
-	O14OO3PIcbnUZz84G+sTPYkjDg1Ng1f1Rre4r7+0YotF7/X7P+MI43p6cZ37bq9vpImu3xvHSldfM
-	LZzror7FAiWkVf+Pdl4KOyl+V7NtcG30XIPbdKOcFipln90MQnpinuyLoru9IQVRxrFzNtomhlolQ
-	RidYw5y2REkSXFHefcECHV68DCOQFtcSRSNAS/mTELzGO0i39RhYAGSdynhlEHHjHyUziHMWt3MYN
-	w2t1wVuOUbmMT0Rg9VwIILeo/ihzwAqf+tQWKvH2YL5uXiUmxt7IPY3Sy+YIP224qrTi0y4pji0wp
-	E/ZXWujA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Sd2uVEAmy6KZGVUIyaNtNTbUCLbvJR11O36awpY6OiI=; b=GVo+HRkXosciu6EqVL5HBUmvgE
+	/dLmmQqBnzrU627sjk4tmkfVO/2L7cbSXLw2MYlkmWCLcBW+1yEPUrdzCSXSuwrxW55NfcnT1ExOo
+	I/5wO3es9Lrpja1GZPqXMs2WAvZhBmwlY1CiKkz3fNFYsDNn64EIR4RIck/eomh6uUWdYx7QEdvAe
+	sikT0pxjrT0n4GDcipE/CXUasYitKtMLuIM7ZkAx8oNl7Y761inQrlP3Sa+UUEBct7HXWgrc6zoDa
+	NcroSOIafvOIyrm84IYGctZyEbnOesfgP6it4+cvj/A9p8zfK1raFJgHWL9qs/qUg2uTmPqlR5zhg
+	qZqUV5Dg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1r90w9-00DEcE-1c;
-	Fri, 01 Dec 2023 10:39:57 +0000
+	id 1r93w6-00Drct-0a;
+	Fri, 01 Dec 2023 13:52:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1r90w5-00DEah-2f
+	id 1r93w0-00Drah-2Y
 	for barebox@lists.infradead.org;
-	Fri, 01 Dec 2023 10:39:56 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r90w3-0001Yo-0D; Fri, 01 Dec 2023 11:39:51 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r90w2-00Cpd5-K4; Fri, 01 Dec 2023 11:39:50 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1r90w2-004jnz-Hy; Fri, 01 Dec 2023 11:39:50 +0100
-Date: Fri, 1 Dec 2023 11:39:50 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20231201103950.GB1057032@pengutronix.de>
-References: <20231127063559.2205776-1-a.fatoum@pengutronix.de>
+	Fri, 01 Dec 2023 13:52:04 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1r93vv-0005Sc-TP
+	for barebox@lists.infradead.org; Fri, 01 Dec 2023 14:51:55 +0100
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Fri, 01 Dec 2023 14:51:28 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231127063559.2205776-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20231201-v2023-08-0-topic-macb-v4-2-b4f5d64de1ad@pengutronix.de>
+References: <20231201-v2023-08-0-topic-macb-v4-0-b4f5d64de1ad@pengutronix.de>
+In-Reply-To: <20231201-v2023-08-0-topic-macb-v4-0-b4f5d64de1ad@pengutronix.de>
+To: barebox@lists.infradead.org
+X-Mailer: b4 0.12.3
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5417;
+ i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
+ bh=0mWmJuGKA10Kk7fyS24AHZffy+oeO3iWak3hDm5+LBM=;
+ b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFIzn3z5p5RUbOWTHjf3xbee1oQg5gM9f2Zv01xi4Zlz4sA1
+ /+P3OkpZGMS4GGTFFFki1x7S2Cz8WefL8fMMMHNYmUCGMHBxCsBE2LsZ/kfbf64IkAydzxNz0DFzpz
+ rnpOzS4LNLOs93r5vzetFzVjuGvzJnN0y+yzqxmbXUJ3LJ6/NlC1lmMr549/qe8hHmMuMJjmwA
+X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
+ fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231201_023953_861990_51628005 
-X-CRM114-Status: GOOD (  21.88  )
+X-CRM114-CacheID: sfid-20231201_055200_832698_74CC8567 
+X-CRM114-Status: GOOD (  12.02  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,112 +76,170 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 0/8] optee: add bidirectional communication support
+Subject: [PATCH v4 2/3] net: macb: convert to volatile accesses
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Nov 27, 2023 at 07:35:51AM +0100, Ahmad Fatoum wrote:
-> So far, barebox interaction by OP-TEE was limited to loading it and
-> maybe passing along its device tree fixup. In some scenarios, there
-> is a lot more that could need to be done however:
-> 
->   - Access to eMMC RPMB memory
->   - Access to keys stored in OP-TEE, e.g. in Trusted Keys TA or
->     in fTPM
->   - Access to hardware managed by OP-TEE via e.g. PRNG TA
-> 
-> Let's prepare for all that by importing the Linux v6.6 OP-TEE support
-> into barebox. This series has been tested on STM3MP15 and STM32MP13
-> 32-bit ARM SoCs, where OP-TEE functioned as SCMI provider, restricting
-> access to some clocks, resets and regulators deemed too important to
-> let pesky normal world have direct access to them.
-> 
-> Ahmad Fatoum (5):
->   driver: don't clear unrelated struct device_node::device on unregister
->   deep-probe: don't panic when device can't be created
->   deep-probe: skip on-demand platform dev creation for nodes without
->     compatible
->   devinfo: indicate if device tree nodes are differently populated
->   hw_random: add implementation for OP-TEE RNG pseudo TA
-> 
-> Marc Kleine-Budde (3):
->   include: uaccess.h: import from linux
->   optee: add bidirectional communication support
->   optee: add experimental support for /dev/tee0
+Instead of directly reading from memory addresses and inserting
+sw barriers to be sure that the compiler will not move loads/stores
+behind this point, just use proper volatile writel/readl accesses.
 
-Applied, thanks
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+---
+ drivers/net/macb.c | 53 +++++++++++++++++++++--------------------------------
+ 1 file changed, 21 insertions(+), 32 deletions(-)
 
-Sascha
-
-> 
->  commands/devinfo.c                     |  13 +-
->  common/Kconfig                         |   5 +
->  drivers/Kconfig                        |   1 +
->  drivers/Makefile                       |   2 +-
->  drivers/base/driver.c                  |   7 +-
->  drivers/hw_random/Kconfig              |   9 +
->  drivers/hw_random/Makefile             |   1 +
->  drivers/hw_random/optee-rng.c          | 302 ++++++++++
->  drivers/of/platform.c                  |  13 +-
->  drivers/tee/Kconfig                    |  17 +
->  drivers/tee/Makefile                   |   5 +
->  drivers/tee/optee/Kconfig              |  29 +
->  drivers/tee/optee/Makefile             |   8 +
->  drivers/tee/optee/call.c               | 239 ++++++++
->  drivers/tee/optee/core.c               |  68 +++
->  drivers/tee/optee/device.c             | 174 ++++++
->  drivers/tee/optee/{of.c => of_fixup.c} |   0
->  drivers/tee/optee/optee_msg.h          | 295 +++++++++
->  drivers/tee/optee/optee_private.h      | 179 ++++++
->  drivers/tee/optee/optee_smc.h          | 473 +++++++++++++++
->  drivers/tee/optee/rpc.c                |  16 +
->  drivers/tee/optee/smc_abi.c            | 748 +++++++++++++++++++++++
->  drivers/tee/tee_core.c                 | 801 +++++++++++++++++++++++++
->  drivers/tee/tee_private.h              |  50 ++
->  drivers/tee/tee_shm.c                  | 338 +++++++++++
->  include/asm-generic/uaccess.h          | 205 +++++++
->  include/linux/mod_devicetable.h        |  10 +
->  include/linux/tee_drv.h                | 418 +++++++++++++
->  include/linux/uaccess.h                |  38 ++
->  include/uapi/linux/tee.h               | 407 +++++++++++++
->  30 files changed, 4860 insertions(+), 11 deletions(-)
->  create mode 100644 drivers/hw_random/optee-rng.c
->  create mode 100644 drivers/tee/Kconfig
->  create mode 100644 drivers/tee/Makefile
->  create mode 100644 drivers/tee/optee/Kconfig
->  create mode 100644 drivers/tee/optee/Makefile
->  create mode 100644 drivers/tee/optee/call.c
->  create mode 100644 drivers/tee/optee/core.c
->  create mode 100644 drivers/tee/optee/device.c
->  rename drivers/tee/optee/{of.c => of_fixup.c} (100%)
->  create mode 100644 drivers/tee/optee/optee_msg.h
->  create mode 100644 drivers/tee/optee/optee_private.h
->  create mode 100644 drivers/tee/optee/optee_smc.h
->  create mode 100644 drivers/tee/optee/rpc.c
->  create mode 100644 drivers/tee/optee/smc_abi.c
->  create mode 100644 drivers/tee/tee_core.c
->  create mode 100644 drivers/tee/tee_private.h
->  create mode 100644 drivers/tee/tee_shm.c
->  create mode 100644 include/asm-generic/uaccess.h
->  create mode 100644 include/linux/tee_drv.h
->  create mode 100644 include/linux/uaccess.h
->  create mode 100644 include/uapi/linux/tee.h
-> 
-> -- 
-> 2.39.2
-> 
-> 
-> 
+diff --git a/drivers/net/macb.c b/drivers/net/macb.c
+index 6aae8e340d..f5b2fa74dc 100644
+--- a/drivers/net/macb.c
++++ b/drivers/net/macb.c
+@@ -124,17 +124,14 @@ static int macb_send(struct eth_device *edev, void *packet,
+ 	if (dma_mapping_error(macb->dev, packet_dma))
+ 		return -EFAULT;
+ 
+-	macb->tx_ring[tx_head].ctrl = ctrl;
+-	macb->tx_ring[tx_head].addr = packet_dma;
+-	barrier();
+-
++	writel(ctrl, &macb->tx_ring[tx_head].ctrl);
++	writel(packet_dma, &macb->tx_ring[tx_head].addr);
+ 	macb_writel(macb, NCR, MACB_BIT(TE) | MACB_BIT(RE) | MACB_BIT(TSTART));
+ 
+ 	start = get_time_ns();
+ 	ret = -ETIMEDOUT;
+ 	do {
+-		barrier();
+-		ctrl = macb->tx_ring[0].ctrl;
++		ctrl = readl(&macb->tx_ring[0].ctrl);
+ 		if (ctrl & MACB_BIT(TX_USED)) {
+ 			ret = 0;
+ 			break;
+@@ -160,18 +157,17 @@ static void reclaim_rx_buffers(struct macb_device *macb,
+ 
+ 	i = macb->rx_tail;
+ 	while (i > new_tail) {
+-		macb->rx_ring[i].addr &= ~MACB_BIT(RX_USED);
++		clrbits_le32(&macb->rx_ring[i].addr, MACB_BIT(RX_USED));
+ 		i++;
+ 		if (i > macb->rx_ring_size)
+ 			i = 0;
+ 	}
+ 
+ 	while (i < new_tail) {
+-		macb->rx_ring[i].addr &= ~MACB_BIT(RX_USED);
++		clrbits_le32(&macb->rx_ring[i].addr, MACB_BIT(RX_USED));
+ 		i++;
+ 	}
+ 
+-	barrier();
+ 	macb->rx_tail = new_tail;
+ }
+ 
+@@ -183,12 +179,10 @@ static int gem_recv(struct eth_device *edev)
+ 	u32 status;
+ 
+ 	for (;;) {
+-		barrier();
+-		if (!(macb->rx_ring[macb->rx_tail].addr & MACB_BIT(RX_USED)))
++		if (!(readl(&macb->rx_ring[macb->rx_tail].addr) & MACB_BIT(RX_USED)))
+ 			return -1;
+ 
+-		barrier();
+-		status = macb->rx_ring[macb->rx_tail].ctrl;
++		status = readl(&macb->rx_ring[macb->rx_tail].ctrl);
+ 		length = MACB_BFEXT(RX_FRMLEN, status);
+ 		buffer = macb->rx_buffer_phys + macb->rx_buffer_size * macb->rx_tail;
+ 		dma_sync_single_for_cpu(macb->dev, buffer, length, DMA_FROM_DEVICE);
+@@ -196,8 +190,7 @@ static int gem_recv(struct eth_device *edev)
+ 			    macb->rx_buffer + macb->rx_buffer_size * macb->rx_tail,
+ 			    length);
+ 		dma_sync_single_for_device(macb->dev, buffer, length, DMA_FROM_DEVICE);
+-		macb->rx_ring[macb->rx_tail].addr &= ~MACB_BIT(RX_USED);
+-		barrier();
++		clrbits_le32(&macb->rx_ring[macb->rx_tail].addr, MACB_BIT(RX_USED));
+ 
+ 		macb->rx_tail++;
+ 		if (macb->rx_tail >= macb->rx_ring_size)
+@@ -217,12 +210,10 @@ static int macb_recv(struct eth_device *edev)
+ 	u32 status;
+ 
+ 	for (;;) {
+-		barrier();
+-		if (!(macb->rx_ring[rx_tail].addr & MACB_BIT(RX_USED)))
++		if (!(readl(&macb->rx_ring[rx_tail].addr) & MACB_BIT(RX_USED)))
+ 			return -1;
+ 
+-		barrier();
+-		status = macb->rx_ring[rx_tail].ctrl;
++		status = readl(&macb->rx_ring[rx_tail].ctrl);
+ 		if (status & MACB_BIT(RX_SOF)) {
+ 			if (rx_tail != macb->rx_tail)
+ 				reclaim_rx_buffers(macb, rx_tail);
+@@ -256,7 +247,6 @@ static int macb_recv(struct eth_device *edev)
+ 					    length);
+ 				dma_sync_single_for_device(macb->dev, buffer, length, DMA_FROM_DEVICE);
+ 			}
+-			barrier();
+ 			if (++rx_tail >= macb->rx_ring_size)
+ 				rx_tail = 0;
+ 			reclaim_rx_buffers(macb, rx_tail);
+@@ -376,9 +366,9 @@ static int gmac_init_dummy_tx_queues(struct macb_device *macb)
+ 		if (queue_mask & (1 << i))
+ 			num_queues++;
+ 
+-	macb->gem_q1_descs[0].addr = 0;
+-	macb->gem_q1_descs[0].ctrl = MACB_BIT(TX_WRAP) |
+-		MACB_BIT(TX_LAST) | MACB_BIT(TX_USED);
++	writel(0, &macb->gem_q1_descs[0].addr);
++	writel(MACB_BIT(TX_WRAP) | MACB_BIT(TX_LAST) | MACB_BIT(TX_USED),
++	       &macb->gem_q1_descs[0].ctrl);
+ 
+ 	for (i = 1; i < num_queues; i++)
+ 		gem_writel_queue_TBQP(macb, (ulong)macb->gem_q1_descs, i - 1);
+@@ -404,17 +394,17 @@ static int macb_init(struct macb_device *macb)
+ 	/* initialize DMA descriptors */
+ 	paddr = (ulong)macb->rx_buffer;
+ 	for (i = 0; i < macb->rx_ring_size; i++) {
+-		macb->rx_ring[i].addr = paddr;
+-		macb->rx_ring[i].ctrl = 0;
++		writel(paddr, &macb->rx_ring[i].addr);
++		writel(0, &macb->rx_ring[i].ctrl);
+ 		paddr += macb->rx_buffer_size;
+ 	}
+-	macb->rx_ring[macb->rx_ring_size - 1].addr |= MACB_BIT(RX_WRAP);
++	setbits_le32(&macb->rx_ring[macb->rx_ring_size - 1].addr, MACB_BIT(RX_WRAP));
+ 
+ 	for (i = 0; i < TX_RING_SIZE; i++) {
+-		macb->tx_ring[i].addr = 0;
+-		macb->tx_ring[i].ctrl = MACB_BIT(TX_USED);
++		writel(0, &macb->tx_ring[i].addr);
++		writel(MACB_BIT(TX_USED), &macb->tx_ring[i].ctrl);
+ 	}
+-	macb->tx_ring[TX_RING_SIZE - 1].addr |= MACB_BIT(TX_WRAP);
++	setbits_le32(&macb->tx_ring[TX_RING_SIZE - 1].addr, MACB_BIT(TX_WRAP));
+ 
+ 	macb->rx_tail = macb->tx_head = 0;
+ 
+@@ -427,9 +417,8 @@ static int macb_init(struct macb_device *macb)
+ 		gmac_init_dummy_tx_queues(macb);
+ 
+ 		/* Disable the second priority rx queue */
+-		macb->gem_q1_descs[1].addr = MACB_BIT(RX_USED) |
+-				MACB_BIT(RX_WRAP);
+-		macb->gem_q1_descs[1].ctrl = 0;
++		writel(MACB_BIT(RX_USED) | MACB_BIT(RX_WRAP), &macb->gem_q1_descs[1].addr);
++		writel(0, &macb->gem_q1_descs[1].ctrl);
+ 
+ 		gem_writel(macb, RQ1, (ulong)&macb->gem_q1_descs[1]);
+ 	}
 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.40.1
+
 
 
