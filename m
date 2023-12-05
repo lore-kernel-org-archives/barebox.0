@@ -1,60 +1,60 @@
-Delivery-date: Tue, 05 Dec 2023 08:58:11 +0100
+Delivery-date: Tue, 05 Dec 2023 09:03:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rAQJn-003vIb-0H
+	id 1rAQOl-003vVA-2N
 	for lore@lore.pengutronix.de;
-	Tue, 05 Dec 2023 08:58:11 +0100
+	Tue, 05 Dec 2023 09:03:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rAQJn-0002FN-2V
-	for lore@pengutronix.de; Tue, 05 Dec 2023 08:58:11 +0100
+	id 1rAQOl-00034Z-NH
+	for lore@pengutronix.de; Tue, 05 Dec 2023 09:03:20 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rL2CgnTsZiInQ0YsSlJqcYTmbrYLrpDgqvsjpQH3STc=; b=DYbT2EzBhhtXiIROynqKcUUvcv
-	DBVGDRFVo6XEyyJZs+h/cP6u/8AlM8/RbKi3nH3jaUluKdhM+pcSoHjN6hZa5HLS9jKQQbwzEAimk
-	oo5ts9EVB4oVqOf2me/ozepQ/q5YsF4CapETqQG9ueE0ZRQcknqpaJltd9kJQvxfvuGjsGQA8tucC
-	h6rtyu7kDLCWk3aK64XGpzx1oLsvJaA7/dex3K3AlNS51+EWS30haGea77T1JbZ2W2dalRQzJtZfC
-	eltq1+l83Td6jJVH4Vfst0uUtJW6v5Yv4TyhMKeXAJSPzVXfhs0JFKMGG0GeIDrjF0bcs7Biz4S3r
-	h38FsRzQ==;
+	bh=X9xOtlDQwnlSOO6HNVuncuI8eGWaVZUH59o/qSB0VG0=; b=I8OLd8iW4nfbBgIKmRiPXStzwj
+	ip0R7zlQ+zdiLD2zWfbxsdf+E8jFp/LDK+bL2LPg/62oJefgkmlq3ka66OZLsJu5oJZo0mrBD7dF8
+	W8X8t7XIt+J5LGY7Y7SW+c6LOhXtu7Oc7oQqaNZNPeUs1Xl3P5qrSJfkfMJpR6dJNY802xe5decbh
+	arMzaOqx6i4tnITRwV/DxoxhuyBDwyV8FOJckiEHvm2xn4KESbUXlq2pCoYDrHV25cZ8Pc4WCxLfV
+	wV+FEVoVAehvdkDD/UHt7xNKm3apOB8rHR1Ukw74//vE47KXPZnHLifFUmas+8rg5vgCwo6Dv756t
+	gcPEeFdg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rAQId-006Ywk-2b;
-	Tue, 05 Dec 2023 07:56:59 +0000
+	id 1rAQNa-006Zlq-1x;
+	Tue, 05 Dec 2023 08:02:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rAQIW-006Yvd-1U
+	id 1rAQNU-006ZlS-1I
 	for barebox@lists.infradead.org;
-	Tue, 05 Dec 2023 07:56:54 +0000
+	Tue, 05 Dec 2023 08:02:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rAQIU-00020l-QQ; Tue, 05 Dec 2023 08:56:50 +0100
+	id 1rAQNT-0002m7-0X; Tue, 05 Dec 2023 09:01:59 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rAQIU-00Dh46-Dy; Tue, 05 Dec 2023 08:56:50 +0100
+	id 1rAQNS-00Dh4j-Ka; Tue, 05 Dec 2023 09:01:58 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rAQIU-005LoV-BY; Tue, 05 Dec 2023 08:56:50 +0100
-Date: Tue, 5 Dec 2023 08:56:50 +0100
+	id 1rAQNS-005Lsl-HM; Tue, 05 Dec 2023 09:01:58 +0100
+Date: Tue, 5 Dec 2023 09:01:58 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, Simon Glass <sjg@chromium.org>
-Message-ID: <20231205075650.GN1057032@pengutronix.de>
-References: <20231129203106.2417486-1-a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20231205080158.GO1057032@pengutronix.de>
+References: <20231130070320.3295372-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231129203106.2417486-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20231130070320.3295372-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -62,8 +62,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231204_235652_498471_9B589A74 
-X-CRM114-Status: GOOD (  26.86  )
+X-CRM114-CacheID: sfid-20231205_000200_440481_7A67875B 
+X-CRM114-Status: GOOD (  20.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,67 +86,67 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] FIT: support kernel images with type = "kernel_noload"
+Subject: Re: [PATCH 1/2] kbuild: don't mix overlay and normal DTC and CPP
+ flags
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Nov 29, 2023 at 09:31:06PM +0100, Ahmad Fatoum wrote:
-> U-Boot interprets "kernel_noload" to mean that the load and entry
-> addresses shall be ignored[1] and that the kernel image should be executed
-> in-place, unless compressed[2]. The entry and load addresses are still
-> mandatory and need to be initialized to some dummy value according to
-> spec[3].
+On Thu, Nov 30, 2023 at 08:03:19AM +0100, Ahmad Fatoum wrote:
+> We currently conflate flags for *.dtb and *.dtbo targets:
 > 
-> barebox, which is unaware of any special semantics for the kernel_noload
-> type, would thus try to place a kernel_noload image at the dummy load
-> address specified and fail if that's not possible. Fix this by treating
-> type = "kernel_noload" as if load and entry properties were omitted,
-> in which case barebox falls back to find a suitable memory region at
-> runtime.
+>   - -@ doesn't make sense for overlays, but is used there anyway when
+>     CONFIG_OF_OVERLAY_LIVE
 > 
-> This change is motivated by the Linux kernel series adding FIT as
-> additional Kbuild target for ARM64[4]. With the change here, it's possible
-> to consume these FIT images in barebox as well.
+>   - DTC_CPP_FLAGS_basetarget.dtbo and DTC_CPP_FLAGS_basetarget.dtb are
+>     interchangeable
 > 
-> [1]: U-Boot commit b9b50e89d317 ("image: Implement IH_TYPE_KERNEL_NOLOAD")
-> [2]: https://patchwork.ozlabs.org/project/uboot/list/?series=382849&state=*
-> [3]: https://github.com/open-source-firmware/flat-image-tree/releases/download/v0.8/fit-specification-v0.8.pdf
-> [4]: https://lore.kernel.org/linux-arm-kernel/20231129172200.430674-1-sjg@chromium.org/T/#meb5bda548de8d8d403c67ee90f639923c8a182fa
+> Fix this by allowing flags to be specific to either *.dtb or *.dtbo
+> generation.
 > 
+> Fixes: 3610ec11f72b ("kbuild: Add target to build dtb overlay files")
+> Fixes: 5b3d7e66aac0 ("kbuild: support DTC_CPP_FLAGS_file.dtbo")
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  common/image-fit.c | 6 ++++++
->  1 file changed, 6 insertions(+)
+>  scripts/Makefile.lib | 7 +++----
+>  1 file changed, 3 insertions(+), 4 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/image-fit.c b/common/image-fit.c
-> index 0352dc5cbd0c..5ef5013bd41d 100644
-> --- a/common/image-fit.c
-> +++ b/common/image-fit.c
-> @@ -545,6 +545,7 @@ int fit_get_image_address(struct fit_handle *handle, void *configuration,
->  {
->  	struct device_node *image;
->  	const char *unit = name;
-> +	const char *type;
->  	int ret;
+> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+> index 18b4fc1b9dd2..8aa49b1ee1b0 100644
+> --- a/scripts/Makefile.lib
+> +++ b/scripts/Makefile.lib
+> @@ -220,8 +220,7 @@ dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
+>  		 -I$(srctree)/include                                    \
+>  		 -I$(srctree)/dts/include                                \
+>  		 -I$(srctree)/dts/src/                                   \
+> -		 $(DTC_CPP_FLAGS_$(basetarget).dtb)                      \
+> -		 $(DTC_CPP_FLAGS_$(basetarget).dtbo)                     \
+> +		 $(DTC_CPP_FLAGS_$(basetarget)$(suffix $@))              \
+>  		 -undef -D__DTS__
 >  
->  	if (!address || !property || !name)
-> @@ -554,6 +555,11 @@ int fit_get_image_address(struct fit_handle *handle, void *configuration,
->  	if (ret)
->  		return ret;
+>  ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
+> @@ -369,7 +368,7 @@ DTC_FLAGS += -Wno-unit_address_vs_reg \
+>  	 -Wno-interrupt_provider
 >  
-> +	/* Treat type = "kernel_noload" as if entry/load address is missing */
-> +	ret = of_property_read_string(image, "type", &type);
-> +	if (!ret && !strcmp(type, "kernel_noload"))
-> +	    return -ENOENT;
-> +
->  	ret = fit_get_address(image, property, address);
+>  ifeq ($(CONFIG_OF_OVERLAY_LIVE), y)
+> -DTC_FLAGS += -@
+> +DTC_FLAGS.dtb += -@
+>  endif
 >  
->  	return ret;
+>  # Generate an assembly file to wrap the output of the device tree compiler
+> @@ -391,7 +390,7 @@ quiet_cmd_dtc = DTC     $@
+>  cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) \
+>  	-D'$(subst -,_,$(*F))_dts=1' $(foreach f,$< $(2),-include '$(f)') /dev/null ; \
+>  	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
+> -		-i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
+> +		-i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) $(DTC_FLAGS$(suffix $@)) \
+>  		-i $(srctree)/dts/src/$(SRCARCH) \
+>  		-i $(srctree)/dts/src/arm/ti/omap \
+>  		-d $(depfile).dtc $(dtc-tmp) ; \
 > -- 
 > 2.39.2
 > 
