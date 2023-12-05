@@ -1,60 +1,60 @@
-Delivery-date: Tue, 05 Dec 2023 09:03:20 +0100
+Delivery-date: Tue, 05 Dec 2023 09:05:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rAQOl-003vVA-2N
+	id 1rAQRG-003vbV-24
 	for lore@lore.pengutronix.de;
-	Tue, 05 Dec 2023 09:03:20 +0100
+	Tue, 05 Dec 2023 09:05:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rAQOl-00034Z-NH
-	for lore@pengutronix.de; Tue, 05 Dec 2023 09:03:20 +0100
+	id 1rAQRG-0003ei-Lz
+	for lore@pengutronix.de; Tue, 05 Dec 2023 09:05:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=X9xOtlDQwnlSOO6HNVuncuI8eGWaVZUH59o/qSB0VG0=; b=I8OLd8iW4nfbBgIKmRiPXStzwj
-	ip0R7zlQ+zdiLD2zWfbxsdf+E8jFp/LDK+bL2LPg/62oJefgkmlq3ka66OZLsJu5oJZo0mrBD7dF8
-	W8X8t7XIt+J5LGY7Y7SW+c6LOhXtu7Oc7oQqaNZNPeUs1Xl3P5qrSJfkfMJpR6dJNY802xe5decbh
-	arMzaOqx6i4tnITRwV/DxoxhuyBDwyV8FOJckiEHvm2xn4KESbUXlq2pCoYDrHV25cZ8Pc4WCxLfV
-	wV+FEVoVAehvdkDD/UHt7xNKm3apOB8rHR1Ukw74//vE47KXPZnHLifFUmas+8rg5vgCwo6Dv756t
-	gcPEeFdg==;
+	bh=igH3lEIGFN1iJTooPPFmIBsKEq0uv0jiIdAXCbChMkQ=; b=xCH9y+e91GWXXK9dvW2rcQQkFo
+	VgycdNF3F+8lkh41X/wUrngey+SV1Q/GYYQK5eEHRVlIU7eyGxQkPiErSpQSr3sMqME1iOjduDAZu
+	9upS82XP7a6FTgFRfo+97zgY4jGw1CfcpVe9xvJSiJ6KnwjZBkOuvZLz2/OwBpjSguX23x0sZ7M3U
+	poxVZJhPoPe1KaMAtTyn51rCS0I4BH0DpFWhKVLZSDVqqmqGnerQCQ1BaAxM5ojvrIeFP5dUjD+dA
+	lWTslAeCN8nm+IbBnxU5D6yMaRpbtYrY4Vbp+Vj2y1cSj2meAH5s+YijT0mlTSvh7Sg7NlVTHxda1
+	CUqpWvwQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rAQNa-006Zlq-1x;
-	Tue, 05 Dec 2023 08:02:06 +0000
+	id 1rAQQ3-006aEW-34;
+	Tue, 05 Dec 2023 08:04:39 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rAQNU-006ZlS-1I
+	id 1rAQPp-006aAm-1X
 	for barebox@lists.infradead.org;
-	Tue, 05 Dec 2023 08:02:02 +0000
+	Tue, 05 Dec 2023 08:04:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rAQNT-0002m7-0X; Tue, 05 Dec 2023 09:01:59 +0100
+	id 1rAQPo-0003F1-9G; Tue, 05 Dec 2023 09:04:24 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rAQNS-00Dh4j-Ka; Tue, 05 Dec 2023 09:01:58 +0100
+	id 1rAQPn-00DhTp-TG; Tue, 05 Dec 2023 09:04:23 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rAQNS-005Lsl-HM; Tue, 05 Dec 2023 09:01:58 +0100
-Date: Tue, 5 Dec 2023 09:01:58 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20231205080158.GO1057032@pengutronix.de>
-References: <20231130070320.3295372-1-a.fatoum@pengutronix.de>
+	id 1rAQPn-005LtX-Qo; Tue, 05 Dec 2023 09:04:23 +0100
+Date: Tue, 5 Dec 2023 09:04:23 +0100
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <20231205080423.GP1057032@pengutronix.de>
+References: <20231201-v2023-08-0-topic-macb-v4-0-b4f5d64de1ad@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231130070320.3295372-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20231201-v2023-08-0-topic-macb-v4-0-b4f5d64de1ad@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -62,8 +62,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231205_000200_440481_7A67875B 
-X-CRM114-Status: GOOD (  20.47  )
+X-CRM114-CacheID: sfid-20231205_000425_602057_E049D737 
+X-CRM114-Status: GOOD (  17.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,69 +86,57 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/2] kbuild: don't mix overlay and normal DTC and CPP
- flags
+Subject: Re: [PATCH v4 0/3] net: macb: fix dma usage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Nov 30, 2023 at 08:03:19AM +0100, Ahmad Fatoum wrote:
-> We currently conflate flags for *.dtb and *.dtbo targets:
+On Fri, Dec 01, 2023 at 02:51:26PM +0100, Steffen Trumtrar wrote:
+> The rx_buffer is only dma_alloc'ed but never properly flushed.
+> Fix that.
 > 
->   - -@ doesn't make sense for overlays, but is used there anyway when
->     CONFIG_OF_OVERLAY_LIVE
+> While at it, also use proper volatile access instead of sw barriers.
 > 
->   - DTC_CPP_FLAGS_basetarget.dtbo and DTC_CPP_FLAGS_basetarget.dtb are
->     interchangeable
+> Also, redefine PKTSIZE to a sensible multiple of 64 bytes.
 > 
-> Fix this by allowing flags to be specific to either *.dtb or *.dtbo
-> generation.
-> 
-> Fixes: 3610ec11f72b ("kbuild: Add target to build dtb overlay files")
-> Fixes: 5b3d7e66aac0 ("kbuild: support DTC_CPP_FLAGS_file.dtbo")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > ---
->  scripts/Makefile.lib | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
+> Changes in v4:
+> - align PKTSIZE with cacheline size
+> - minor style changes
+> - Link to v3: https://lore.barebox.org/20231129-v2023-08-0-topic-macb-v3-0-65ad6db834dc@pengutronix.de
+> 
+> Changes in v3:
+> - fix dma_unmap_single direction
+> - dma_map_single packet in macb_send()
+> - Link to v2: https://lore.barebox.org/20231129-v2023-08-0-topic-macb-v2-0-4dc2cb4d5d25@pengutronix.de
+> 
+> Changes in v2:
+> - change dma_map_single to DMA_FROM_DEVICE
+> - drop (unsigned long) casts in dma_sync_*
+> - rework writel/setbits/clearbits to keep semantics
+> - Link to v1: https://lore.barebox.org/20231128-v2023-08-0-topic-macb-v1-0-9faff73bc990@pengutronix.de
+> 
+> ---
+> Steffen Trumtrar (3):
+>       net: macb: fix dma_alloc for rx_buffer
+>       net: macb: convert to volatile accesses
+>       include: net: align PKTSIZE to 64 bytes
+> 
+>  drivers/net/macb.c | 132 +++++++++++++++++++++++++++++------------------------
+>  include/net.h      |   4 +-
+>  2 files changed, 75 insertions(+), 61 deletions(-)
 
 Applied, thanks
 
 Sascha
 
+> ---
+> base-commit: 5f200dd534c848dfa5d948334b6373f0310b8f73
+> change-id: 20231128-v2023-08-0-topic-macb-0c13ed91179d
 > 
-> diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-> index 18b4fc1b9dd2..8aa49b1ee1b0 100644
-> --- a/scripts/Makefile.lib
-> +++ b/scripts/Makefile.lib
-> @@ -220,8 +220,7 @@ dtc_cpp_flags  = -Wp,-MD,$(depfile).pre -nostdinc                        \
->  		 -I$(srctree)/include                                    \
->  		 -I$(srctree)/dts/include                                \
->  		 -I$(srctree)/dts/src/                                   \
-> -		 $(DTC_CPP_FLAGS_$(basetarget).dtb)                      \
-> -		 $(DTC_CPP_FLAGS_$(basetarget).dtbo)                     \
-> +		 $(DTC_CPP_FLAGS_$(basetarget)$(suffix $@))              \
->  		 -undef -D__DTS__
->  
->  ifdef CONFIG_BOOTM_FITIMAGE_PUBKEY
-> @@ -369,7 +368,7 @@ DTC_FLAGS += -Wno-unit_address_vs_reg \
->  	 -Wno-interrupt_provider
->  
->  ifeq ($(CONFIG_OF_OVERLAY_LIVE), y)
-> -DTC_FLAGS += -@
-> +DTC_FLAGS.dtb += -@
->  endif
->  
->  # Generate an assembly file to wrap the output of the device tree compiler
-> @@ -391,7 +390,7 @@ quiet_cmd_dtc = DTC     $@
->  cmd_dtc = $(CPP) $(dtc_cpp_flags) -x assembler-with-cpp -o $(dtc-tmp) \
->  	-D'$(subst -,_,$(*F))_dts=1' $(foreach f,$< $(2),-include '$(f)') /dev/null ; \
->  	$(objtree)/scripts/dtc/dtc -O dtb -o $@ -b 0 \
-> -		-i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) \
-> +		-i $(srctree)/arch/$(SRCARCH)/dts $(DTC_FLAGS) $(DTC_FLAGS$(suffix $@)) \
->  		-i $(srctree)/dts/src/$(SRCARCH) \
->  		-i $(srctree)/dts/src/arm/ti/omap \
->  		-d $(depfile).dtc $(dtc-tmp) ; \
+> Best regards,
 > -- 
-> 2.39.2
+> Steffen Trumtrar <s.trumtrar@pengutronix.de>
 > 
 > 
 > 
