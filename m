@@ -1,60 +1,60 @@
-Delivery-date: Wed, 13 Dec 2023 07:50:20 +0100
+Delivery-date: Wed, 13 Dec 2023 07:53:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rDJ4V-001yaU-0Y
+	id 1rDJ7z-001yie-1H
 	for lore@lore.pengutronix.de;
-	Wed, 13 Dec 2023 07:50:20 +0100
+	Wed, 13 Dec 2023 07:53:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rDJ4V-0005Zx-Dv
-	for lore@pengutronix.de; Wed, 13 Dec 2023 07:50:19 +0100
+	id 1rDJ7z-0000PS-GV
+	for lore@pengutronix.de; Wed, 13 Dec 2023 07:53:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vwnPv+GnQIuMPtiMITzCNjN2RXvhWRzR2okgN//W8BI=; b=0bntgTCpM0ml/IfhrODrvVnEte
-	ileGWS1CL1nCdibqyu5/+CdM8100UL91F0209LdThG6nB0o2Y2wMGMhQhErpyH0hxSaxMU4Hq5tss
-	BMPOCbs8SO/z95k7zRsYuNrSyh9j1vUdthfTTo5LPWZhQz0rPY3oSPP+YfmB5LyrKLCRlGKxQz6Uq
-	32/vt7lRawglJoGa/rqLpOGnaYE0dpTqzpdKmnCBjCvl0mySa20fqRVhaRGSUz67RRHxxFCp10WIJ
-	047hhMd+5Paa6vei3drhtbs3GMsZsir0sF3riZnlH5bztdo8D0rz3Yn7Hs1+iGoEkNwfoYLXe1e8g
-	5fa46B4w==;
+	bh=mz8MXWMlhtnflTGFn0buhcd4jwLYVOOYZsRde+BIPas=; b=Sa+/BpCPigU1ycy07dwBWN3Vw8
+	wjTptB5Uf2NeVrjGJXkCcR2ustdr6PhowbdL2YGZL3ys5NxCFWYlizlFekbBcOEXHAkIs0ib3Th02
+	e78nQRGULbnALQe4/xFzztRG+4/+Sgm2mFLPzbHYhjFo3y/SmwtQCXYZssjWHIQO0FgrSdCpVMRv5
+	mXaiz/Wp82TeCe0RoHI1watsNeNIG1SyWyKhFOT7EYSlWaCFcouuumywDZoVR72coG9aKLoqf8bQe
+	Zp3x39bV2njs3b7vn+4kGeYkolxaoMA4Q8Q252GhOnOPOEDTfYDy9wtU61KCfa4LR0EtUtqlr4ORy
+	1JGuHHHQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rDJ3Z-00DpYx-2Q;
-	Wed, 13 Dec 2023 06:49:21 +0000
+	id 1rDJ6u-00Dpmd-2j;
+	Wed, 13 Dec 2023 06:52:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rDJ3W-00DpYT-1a
+	id 1rDJ6r-00DpmE-0j
 	for barebox@lists.infradead.org;
-	Wed, 13 Dec 2023 06:49:19 +0000
+	Wed, 13 Dec 2023 06:52:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rDJ3V-0004ej-9R; Wed, 13 Dec 2023 07:49:17 +0100
+	id 1rDJ6p-0007lu-RS; Wed, 13 Dec 2023 07:52:43 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rDJ3U-00FVie-TC; Wed, 13 Dec 2023 07:49:16 +0100
+	id 1rDJ6p-00FViz-75; Wed, 13 Dec 2023 07:52:43 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rDJ3U-006kZH-Qy; Wed, 13 Dec 2023 07:49:16 +0100
-Date: Wed, 13 Dec 2023 07:49:16 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, bst@pengutronix.de
-Message-ID: <20231213064916.GH1318922@pengutronix.de>
-References: <20231208140630.1986278-1-a.fatoum@pengutronix.de>
+	id 1rDJ6p-006kaB-4r; Wed, 13 Dec 2023 07:52:43 +0100
+Date: Wed, 13 Dec 2023 07:52:43 +0100
+To: Oleksij Rempel <o.rempel@pengutronix.de>
+Cc: barebox@lists.infradead.org, Oleksij Rempel <linux@rempel-privat.de>
+Message-ID: <20231213065243.GI1318922@pengutronix.de>
+References: <20231206111118.1338567-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20231208140630.1986278-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20231206111118.1338567-1-o.rempel@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -62,8 +62,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231212_224918_524946_B1F6A1EB 
-X-CRM114-Status: GOOD (  22.03  )
+X-CRM114-CacheID: sfid-20231212_225245_288925_E64CD35C 
+X-CRM114-Status: GOOD (  30.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,51 +86,166 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] fastboot: sparse: print descriptive error on overflowing
- destination
+Subject: Re: [PATCH v1] net: phy: add TI DP83TG720 1000BaseT1 PHY support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Dec 08, 2023 at 03:06:30PM +0100, Ahmad Fatoum wrote:
-> Fastboot flash of both regular files and barebox update handlers will
-> print a message if the file being written doesn't fit the destination:
+On Wed, Dec 06, 2023 at 12:11:18PM +0100, Oleksij Rempel wrote:
+> From: Oleksij Rempel <linux@rempel-privat.de>
 > 
->   barebox update:  "Image (%zd) is too big for device (%lld)\n"
->   fastboot:        "write: No space left on device\n"
+> Add driver for TI DP83TG720 driver support.
 > 
-> With sparse images however, not the write will fail, but the lseek to
-> the new offset, triggering a cryptic:
+> Even if the PHY is capable of creating a link on it's own. It needs
+> proper RGMII configuration and HW reset on link loss.
 > 
->   "writing sparse image: Invalid argument"
-> 
-> Let's improve upon this a bit by translating lseek -EINVAL to -ENOSPC,
-> so we get:
-> 
->   "writing sparse image: No space left on device"
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 > ---
->  common/fastboot.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  drivers/net/phy/Kconfig     |   6 +++
+>  drivers/net/phy/Makefile    |   1 +
+>  drivers/net/phy/dp83tg720.c | 102 ++++++++++++++++++++++++++++++++++++
+>  3 files changed, 109 insertions(+)
+>  create mode 100644 drivers/net/phy/dp83tg720.c
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/common/fastboot.c b/common/fastboot.c
-> index 65d1d30f9092..261283d50a3a 100644
-> --- a/common/fastboot.c
-> +++ b/common/fastboot.c
-> @@ -598,7 +598,7 @@ static int fastboot_handle_sparse(struct fastboot *fb,
+> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
+> index e95e2a3228..8e12671801 100644
+> --- a/drivers/net/phy/Kconfig
+> +++ b/drivers/net/phy/Kconfig
+> @@ -35,6 +35,12 @@ config DP83TD510_PHY
+>  	  Support for the DP83TD510 Ethernet 10Base-T1L PHY. This PHY supports
+>  	  a 10M single pair Ethernet connection for up to 1000 meter cable.
 >  
->  			pos = lseek(fd, pos, SEEK_SET);
->  			if (pos == -1) {
-> -				ret = -errno;
-> +				ret = errno == EINVAL ? -ENOSPC : -errno;
->  				goto out;
->  			}
+> +config DP83TG720_PHY
+> +	tristate "Texas Instruments DP83TG720 Ethernet 1000Base-T1 PHY"
+> +	help
+> +	  Support for the DP83TG720 Ethernet 10000Base-T1 PHY. This PHY supports
+> +	  a 1000M single pair Ethernet.
+> +
+>  config LXT_PHY
+>  	bool "Driver for the Intel LXT PHYs"
+>  	help
+> diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
+> index 26e4ad884d..ce15e1bab7 100644
+> --- a/drivers/net/phy/Makefile
+> +++ b/drivers/net/phy/Makefile
+> @@ -19,4 +19,5 @@ obj-$(CONFIG_MDIO_BUS_MUX)	+= mdio-mux.o
+>  obj-$(CONFIG_MDIO_BUS_MUX_GPIO)	+= mdio-mux-gpio.o
+>  obj-$(CONFIG_DP83867_PHY)	+= dp83867.o
+>  obj-$(CONFIG_DP83TD510_PHY)	+= dp83td510.o
+> +obj-$(CONFIG_DP83TG720_PHY)	+= dp83tg720.o
 >  
+> diff --git a/drivers/net/phy/dp83tg720.c b/drivers/net/phy/dp83tg720.c
+> new file mode 100644
+> index 0000000000..f0c6e29489
+> --- /dev/null
+> +++ b/drivers/net/phy/dp83tg720.c
+> @@ -0,0 +1,102 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +/* Driver for the Texas Instruments DP83TG720 PHY
+> + * Copyright (c) 2023 Pengutronix, Oleksij Rempel <kernel@pengutronix.de>
+> + */
+> +#include <common.h>
+> +#include <linux/mdio.h>
+> +#include <linux/phy.h>
+> +
+> +#define DP83TG720S_PHY_ID			0x2000a284
+> +
+> +/* MDIO_MMD_VEND2 registers */
+> +#define DP83TG720S_MII_REG_10			0x10
+> +#define DP83TG720S_LINK_STATUS			BIT(0)
+> +
+> +#define DP83TG720S_RGMII_DELAY_CTRL		0x602
+> +/* In RGMII mode, Enable or disable the internal delay for RXD */
+> +#define DP83TG720S_RGMII_RX_CLK_SEL		BIT(1)
+> +/* In RGMII mode, Enable or disable the internal delay for TXD */
+> +#define DP83TG720S_RGMII_TX_CLK_SEL		BIT(0)
+> +
+> +#define DP83TG720S_PHY_RESET			0x1f
+> +#define DP83TG720S_HW_RESET			BIT(15)
+> +
+> +static int dp83tg720_config_rgmii_delay(struct phy_device *phydev)
+> +{
+> +	u16 rgmii_delay_mask;
+> +	u16 rgmii_delay = 0;
+> +
+> +	switch (phydev->interface) {
+> +	case PHY_INTERFACE_MODE_RGMII:
+> +		rgmii_delay = 0;
+> +		break;
+> +	case PHY_INTERFACE_MODE_RGMII_ID:
+> +		rgmii_delay = DP83TG720S_RGMII_RX_CLK_SEL |
+> +				DP83TG720S_RGMII_TX_CLK_SEL;
+> +		break;
+> +	case PHY_INTERFACE_MODE_RGMII_RXID:
+> +		rgmii_delay = DP83TG720S_RGMII_RX_CLK_SEL;
+> +		break;
+> +	case PHY_INTERFACE_MODE_RGMII_TXID:
+> +		rgmii_delay = DP83TG720S_RGMII_TX_CLK_SEL;
+> +		break;
+> +	default:
+> +		return 0;
+> +	}
+> +
+> +	rgmii_delay_mask = DP83TG720S_RGMII_RX_CLK_SEL |
+> +			   DP83TG720S_RGMII_TX_CLK_SEL;
+> +
+> +	return phy_modify_mmd(phydev, MDIO_MMD_VEND2,
+> +			      DP83TG720S_RGMII_DELAY_CTRL, rgmii_delay_mask,
+> +			      rgmii_delay);
+> +}
+> +
+> +static int dp83tg720_phy_init(struct phy_device *phydev)
+> +{
+> +	/* HW reset is needed to recover link if previous link was lost. SW
+> +	 * reset is not enough.
+> +	 */
+> +	phy_write(phydev, DP83TG720S_PHY_RESET, DP83TG720S_HW_RESET);
+> +
+> +	phydev->supported = SUPPORTED_1000baseT_Full;
+> +	phydev->advertising = SUPPORTED_1000baseT_Full;
+> +
+> +	if (phy_interface_is_rgmii(phydev))
+> +		return dp83tg720_config_rgmii_delay(phydev);
+> +
+> +	return 0;
+> +}
+> +
+> +static int dp83tg720_read_status(struct phy_device *phydev)
+> +{
+> +	u16 phy_sts;
+> +
+> +	phy_sts = phy_read(phydev, DP83TG720S_MII_REG_10);
+> +	phydev->link = !!(phy_sts & DP83TG720S_LINK_STATUS);
+> +	if (!phydev->link) {
+> +		phydev->speed = SPEED_UNKNOWN;
+> +		phydev->duplex = DUPLEX_UNKNOWN;
+> +
+> +		/* According to the "DP83TC81x, DP83TG72x Software
+> +		 * Implementation Guide", the PHY needs to be reset after a
+> +		 * link loss or if no link is created after at least 100ms.
+> +		 */
+> +		dp83tg720_phy_init(phydev);
+> +		return 0;
+> +	}
+> +
+> +	phydev->duplex = DUPLEX_FULL;
+> +	phydev->speed = SPEED_1000;
+> +
+> +	return 0;
+> +}
+> +
+> +static struct phy_driver dp83tg720_driver[] = {
+> +{
+> +	PHY_ID_MATCH_MODEL(DP83TG720S_PHY_ID),
+> +	.drv.name	= "TI DP83TG720S",
+> +	.read_status	= dp83tg720_read_status,
+> +	.config_init	= dp83tg720_phy_init,
+> +} };
+> +device_phy_drivers(dp83tg720_driver);
 > -- 
 > 2.39.2
 > 
