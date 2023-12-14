@@ -1,65 +1,66 @@
-Delivery-date: Thu, 14 Dec 2023 16:17:10 +0100
+Delivery-date: Thu, 14 Dec 2023 16:19:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rDnSX-0030dB-2i
+	id 1rDnUS-0030ih-37
 	for lore@lore.pengutronix.de;
-	Thu, 14 Dec 2023 16:17:10 +0100
+	Thu, 14 Dec 2023 16:19:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rDnSY-0002BI-4s
-	for lore@pengutronix.de; Thu, 14 Dec 2023 16:17:10 +0100
+	id 1rDnUT-00047N-6x
+	for lore@pengutronix.de; Thu, 14 Dec 2023 16:19:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=9mlM0L3/Y1Sj1L4+eG/1IYA1BC3r5jGeOLanjCIGZyo=; b=y2hv3VA9mvfEcKojHgOwuUaOYP
-	2k2czDz+fm+QFeSdZv1b9CVQIPGPUeXiocR59D40DAeazsNxYFJuhlq8O/5NuVSv0Mc9ipQ8tSk4w
-	l5ZFJZjJxQzingG710mSvNh6xHJfh6j3/m7+rcXAPRTDFjrzUhMk8vIWXqUnx0+9MPB5B6nahUgwJ
-	OCn5DUyTVfJBABbulOueP1yoRdYKfwnfsuheRIumZhASBUYK3MUcGa46h5NzWf2sZfG9S123LaXnG
-	jwiclLliymudmdIA7QoxKMbLpW4Dkz0Ec1LRzINXUIhEWyNs3wBhiym0f+0iHF/DG8L3dnHBtmFED
-	+bzWx3Xg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=fZmTB5pwmMLc34DlwwmuUz/I4JcNs1G6i9zIQHQXXow=; b=oM/UxrclIyKwSMG9U3Zia4hBKg
+	6pQT+GcVhRYnTYRMFmjpn9zw4OMLo4ZjX3VUi8FZ5mBwdWROmly5Ohj6ZG8rMPSuKtoTwlWlBaKHp
+	9IZYnXBt682uDn0hiNJShg353YlHxZKwxAxT4uLQzDcG9cICFAPNGZqXnCXUfMcypAY6dthW1XfnT
+	YfJHGCPCx8ccPSh0hzVYs4hTAlrBwR+uMF7mkYT9hPPpphMAAU02iZb/e6oQ390AO2ZTG1VMpH6vl
+	pVINbdpeYouhYKIoI9umR9aqFyXuuOcxnR33OhiYgUNK67uTFYgliUtl8glb1hApOQPZ60Zyavi9g
+	lQhRH83Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rDnR6-000eRY-01;
-	Thu, 14 Dec 2023 15:15:40 +0000
+	id 1rDnTX-000ehi-1l;
+	Thu, 14 Dec 2023 15:18:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rDnR2-000eQy-0p
+	id 1rDnTU-000egY-0V
 	for barebox@lists.infradead.org;
-	Thu, 14 Dec 2023 15:15:38 +0000
+	Thu, 14 Dec 2023 15:18:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rDnQw-0000XR-Lf; Thu, 14 Dec 2023 16:15:30 +0100
+	id 1rDnTS-00033N-S0; Thu, 14 Dec 2023 16:18:06 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rDnQw-00FphO-9T; Thu, 14 Dec 2023 16:15:30 +0100
+	id 1rDnTS-00Fphf-FU; Thu, 14 Dec 2023 16:18:06 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rDnQw-006vIB-0g;
-	Thu, 14 Dec 2023 16:15:30 +0100
+	id 1rDnTS-006x67-1I;
+	Thu, 14 Dec 2023 16:18:06 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 14 Dec 2023 16:15:29 +0100
-Message-Id: <20231214151529.1650181-1-a.fatoum@pengutronix.de>
+Date: Thu, 14 Dec 2023 16:18:05 +0100
+Message-Id: <20231214151805.1657124-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20231214151805.1657124-1-a.fatoum@pengutronix.de>
+References: <20231214151805.1657124-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231214_071536_291890_D8AB94AB 
-X-CRM114-Status: UNSURE (   8.56  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20231214_071808_215995_5650DEDD 
+X-CRM114-Status: GOOD (  12.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,43 +83,48 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH master] mci: stm32_sdmmc2: fix warnings when building for 64-bit
+Subject: [PATCH 3/3] ARM: rpi: look for env in mmc0 as well
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Building the driver via CONFIG_COMPILE_TEST for 64-bit shows two
-instances of type confusion, fix them.
+Raspberry Pi Compute Module 4S device tree has a DT alias for the eMMC,
+which makes it mmc0. Use that as a fallback, so environment and /boot
+mount is correct there as well.
+
+There is no upstream device tree for this S-variant yet, but it's already
+bootable when barebox is passed the device tree by the VideoCore.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/stm32_sdmmc2.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mci/stm32_sdmmc2.c b/drivers/mci/stm32_sdmmc2.c
-index 84969a29d0f4..418213a1b334 100644
---- a/drivers/mci/stm32_sdmmc2.c
-+++ b/drivers/mci/stm32_sdmmc2.c
-@@ -257,8 +257,8 @@ static void stm32_sdmmc2_pwron(struct stm32_sdmmc2_priv *priv)
- 	udelay(DIV_ROUND_UP(74 * USEC_PER_SEC, priv->mci.clock));
- }
- 
--static int stm32_sdmmc2_start_data(struct stm32_sdmmc2_priv *priv,
--				    struct mci_data *data, u32 data_length)
-+static dma_addr_t stm32_sdmmc2_start_data(struct stm32_sdmmc2_priv *priv,
-+					  struct mci_data *data, u32 data_length)
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index f3a28e87c6f0..abee5ffcdbee 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -188,14 +188,20 @@ mem_initcall(rpi_mem_init);
+ static int rpi_env_init(void)
  {
- 	unsigned int num_bytes = data->blocks * data->blocksize;
- 	dma_addr_t idmabase0;
-@@ -494,8 +494,8 @@ static int stm32_sdmmc2_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	struct stat s;
+-	const char *diskdev = "/dev/disk0.0";
++	const char *diskdev;
+ 	int ret;
  
- 	stm32_sdmmc2_start_cmd(priv, cmd, cmdat, data_length);
+ 	device_detect_by_name("mci0");
  
--	dev_dbg(priv->dev, "%s: send cmd %d data: 0x%x @ 0x%x\n", __func__,
--		cmd->cmdidx, data ? data_length : 0, (unsigned int)data);
-+	dev_dbg(priv->dev, "%s: send cmd %d data: 0x%x @ %p\n", __func__,
-+		cmd->cmdidx, data ? data_length : 0, data);
- 
- 	ret = stm32_sdmmc2_end_cmd(priv, cmd);
++	diskdev = "/dev/disk0.0";
+ 	ret = stat(diskdev, &s);
+ 	if (ret) {
+-		printf("no %s. using default env\n", diskdev);
++		device_detect_by_name("mmc0");
++		diskdev = "/dev/mmc0.0";
++		ret = stat(diskdev, &s);
++	}
++	if (ret) {
++		printf("no /dev/disk0.0 or /dev/mmc0.0. using default env\n");
+ 		return 0;
+ 	}
  
 -- 
 2.39.2
