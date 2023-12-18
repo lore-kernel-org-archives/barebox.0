@@ -1,68 +1,70 @@
-Delivery-date: Fri, 15 Dec 2023 14:45:16 +0100
+Delivery-date: Mon, 18 Dec 2023 07:51:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rE8V9-003e2U-2M
+	id 1rF7TS-002TVV-2Q
 	for lore@lore.pengutronix.de;
-	Fri, 15 Dec 2023 14:45:16 +0100
+	Mon, 18 Dec 2023 07:51:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rE8VA-0000TI-0x
-	for lore@pengutronix.de; Fri, 15 Dec 2023 14:45:16 +0100
+	id 1rF7TS-0001je-6l
+	for lore@pengutronix.de; Mon, 18 Dec 2023 07:51:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xaAJ9Kvp0zTdiEce4cgrDYZXFQiTXIKvNyP4cI8eNgU=; b=xWcSA3jkJ+iRg1hVGzp5gybfgr
-	Vx6NUdc2mRHC/eccvzh0aAu7C3aNMDKtmsI1qrZlS8zei2GJojWkYsGPzJo/aKI7Wl27gO/J9aHkB
-	Dbq8VV60Ee89Bo85TfyNxDFXXmKa8XlI2ZkembmhtguJiPd6QslJFOJoSBFs/NO1xBPYGUcN40wPh
-	osnnCLTNAS229g69SS+ZnbPw/+6yKPfT7k6wpE30LdaO7HweOC9bQ16dsBHxkBPhFALRkxwJX2NPn
-	QDazBUGeyMxQGGWitl3xlaLh/AnWY43szRenP9E7uJP7rbwRfPaxJV+o0nz6DeoftGOT3a6z3y6dH
-	0nZZjAjQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Up4E0CIhZ2k76zGMX2752wBQqKRBGCZODJ0wo86XTpk=; b=ner0P7+rHxE27BugE/v9SGwC2q
+	NxhJyOe4/bzczNI1bxIT4E+kk8NHjvWdHmxIoltmlU+NfkjvESjB2yGHef6rqB18kHuJVpx6e/BWS
+	re+HYZRsGZfHkyvk9jxj95gDsUR4YpIhvxqJ+bHdswSV7HQzqLt/RwZzdIOZLwSPCSfjQSDvPiF0g
+	5IH9ULcylZMrm34sGqMWV6/YjsimvvLcOrUcOb5fF9Kw1yWR61tRLVvrOeeY+ojaXpX070++wQGwF
+	ysj5RAyVpQUzBdzI7Pt+bFCDEsDe+6sNbH2nNH+Qv0haKrFeQPiXu3EUexVMGWtiCGV2qXhxhW2MR
+	WddQEnPA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rE8Tv-003PUI-2k;
-	Fri, 15 Dec 2023 13:43:59 +0000
+	id 1rF7S1-009Gd9-01;
+	Mon, 18 Dec 2023 06:50:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rE8Ts-003PT7-2C
+	id 1rF7Rw-009Gb1-1v
 	for barebox@lists.infradead.org;
-	Fri, 15 Dec 2023 13:43:57 +0000
+	Mon, 18 Dec 2023 06:50:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rE8Tq-00009k-IN; Fri, 15 Dec 2023 14:43:54 +0100
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rF7Rq-0001Nk-27; Mon, 18 Dec 2023 07:49:54 +0100
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rE8Tq-00G2Xt-5b; Fri, 15 Dec 2023 14:43:54 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rE8Tq-000Uur-0R;
-	Fri, 15 Dec 2023 14:43:54 +0100
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Fri, 15 Dec 2023 14:43:53 +0100
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20231215-doc-fit-images-for-chainloading-v2-1-2fa359eee535@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1rF7Rp-00Gdie-MB; Mon, 18 Dec 2023 07:49:53 +0100
+Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rF7Rp-007XES-Jk; Mon, 18 Dec 2023 07:49:53 +0100
+Date: Mon, 18 Dec 2023 07:49:53 +0100
+To: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Message-ID: <20231218064953.GP1318922@pengutronix.de>
 References: <20231215-doc-fit-images-for-chainloading-v2-0-2fa359eee535@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20231215-doc-fit-images-for-chainloading-v2-0-2fa359eee535@pengutronix.de>
-To: BAREBOX <barebox@lists.infradead.org>
-Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>
-X-Mailer: b4 0.12.4
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231215_054356_719014_E645554A 
-X-CRM114-Status: GOOD (  10.96  )
+X-CRM114-CacheID: sfid-20231217_225000_656809_0634F41E 
+X-CRM114-Status: GOOD (  17.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,35 +87,51 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 1/2] doc: user: barebox: bootz instead of bootm
+Subject: Re: [PATCH v2 0/2] doc: user: barebox: add method for fit image
+ chainloading
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-barebox-dt-2nd.img is in the `zImage` format, therefore use the proper
-command for booting on 32-bit platforms.
+On Fri, Dec 15, 2023 at 02:43:52PM +0100, Stefan Kerkmann wrote:
+> This small series fixes one small usage of `bootm` and adds a section
+> for chainloading a Barebox FIT image from U-Boot.
+> 
+> To: open list:BAREBOX <barebox@lists.infradead.org>
+> 
+> Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+> ---
+> Changes in v2:
+> - Added missing SOB
+> - Added Acked-by from Ahmad Fatoum 
+> - Link to v1: https://lore.kernel.org/r/20231215-doc-fit-images-for-chainloading-v1-0-9b704facdc3b@pengutronix.de
 
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- Documentation/user/barebox.rst | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Applied, thanks
 
-diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
-index 80f0f96a98..f4e600bde0 100644
---- a/Documentation/user/barebox.rst
-+++ b/Documentation/user/barebox.rst
-@@ -212,7 +212,7 @@ like a Linux kernel that is passed an external device tree. For example:
- 
-   U-Boot: tftp $kernel_addr barebox-dt-2nd.img
-   U-Boot: tftp $fdt_addr my-board.dtb
--  U-Boot: bootm $kernel_addr - $fdt_addr # On 32-bit ARM
-+  U-Boot: bootz $kernel_addr - $fdt_addr # On 32-bit ARM
-   U-Boot: booti $kernel_addr - $fdt_addr # for other platforms
- 
- For non-DT enabled-bootloaders or other architectures, often the normal barebox
+Sascha
+
+> 
+> ---
+> Stefan Kerkmann (2):
+>       doc: user: barebox: bootz instead of bootm
+>       doc: user: barebox: add chainloading of fit images
+> 
+>  Documentation/user/barebox.rst | 28 +++++++++++++++++++++++++++-
+>  1 file changed, 27 insertions(+), 1 deletion(-)
+> ---
+> base-commit: 154884d7c0c9dac4578848849c8dac3afc5da3fc
+> change-id: 20231215-doc-fit-images-for-chainloading-aea9783921d2
+> 
+> Best regards,
+> -- 
+> Stefan Kerkmann <s.kerkmann@pengutronix.de>
+> 
+> 
+> 
 
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
