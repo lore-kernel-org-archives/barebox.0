@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rFZfb-004YGp-0z
+	id 1rFZfb-004YH9-25
 	for lore@lore.pengutronix.de;
 	Tue, 19 Dec 2023 13:57:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rFZfa-0007tz-No
+	id 1rFZfb-0007uK-3y
 	for lore@pengutronix.de; Tue, 19 Dec 2023 13:57:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,47 +18,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nzp3MSYtVDc+3gGTGhnQurS6fXJiVRf0u62X2YTK/z4=; b=d9AqIr9JEy2d1dWajwwzdyYCDU
-	KC/psOEg86ESOLif0KIjs+TREc8xxItheTohsMtJzA5E+1tDboCL+fL9CpB6LtkjcTRtCYk6VDsDK
-	oYLSmvMJcRtYoO12m42cvM1Dcm2NsWJ5md8pXYpiBLeU5m6N/J04ZHlrgoLcVcPa131w2olYZHXbK
-	wzy/3ekFyaT1fnOD5KG1RRSnuWAZ3XaBxTP6cuFfjXhzy0RlpFuvoku++gLR0yJcQjuLKusuYZycW
-	QbhjKXo7cGMlcprK+qXCqUg7HLIlpwWZKn9osB6o+SzVXvi4IlSYF/yTOCYWIGLK5WgEbZJFNn/UL
-	tZdp/6UQ==;
+	bh=jt3YSXJhuu/leQ9eLQMzwKlMd40N15lTSR8ZVVm8R3M=; b=d5uzBt0IsOPKvlydjVkLH5gWI1
+	XIyfwaCZQT+5p6aCzX6eY03I9svDOPh3aG1Bh1P20b7i0GYq/+xzRmcnEYuz2Au0XQeOUgz4xhDKm
+	O5xmiIsD66q+EibFMYCLFKhfPuFZDBlBAiuPt1onmzG3W4u/tsclTDWdCRMU+UvbSI/dgZvUoAsG7
+	wbhMWkykEIu9xf5+wBXTuxy9CetuGN3fTpJShnvp/iQ3a4dYo8oWRrQPk5UxiOVtfWZnaXVfJrt7E
+	31TnnOMjy24YeIkUHUBgmvVa6lUOoUl9BX6Q8Rn1bvf9ke/7s4VFyOvsu9uUaFn78KEYdbQz4qnyW
+	lO1wQp7A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFZeX-00E6f7-2w;
-	Tue, 19 Dec 2023 12:56:53 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
+	id 1rFZeL-00E6Wq-0R;
+	Tue, 19 Dec 2023 12:56:41 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFZeM-00E6XK-2v
+	id 1rFZeG-00E6P6-1A
 	for barebox@lists.infradead.org;
-	Tue, 19 Dec 2023 12:56:49 +0000
+	Tue, 19 Dec 2023 12:56:38 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rFZeC-00077G-0C; Tue, 19 Dec 2023 13:56:32 +0100
+	id 1rFZeB-00077D-Ve; Tue, 19 Dec 2023 13:56:31 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rFZeA-0001KE-Ey; Tue, 19 Dec 2023 13:56:31 +0100
+	id 1rFZeA-0001KB-CS; Tue, 19 Dec 2023 13:56:31 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rFZeB-0000yK-1Y;
+	id 1rFZeB-0000y8-1L;
 	Tue, 19 Dec 2023 13:56:31 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 19 Dec 2023 13:56:28 +0100
-Message-Id: <20231219125630.3684-5-s.hauer@pengutronix.de>
+Date: Tue, 19 Dec 2023 13:56:25 +0100
+Message-Id: <20231219125630.3684-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20231219125630.3684-1-s.hauer@pengutronix.de>
 References: <20231219125630.3684-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231219_045642_989148_D8418CBE 
-X-CRM114-Status: GOOD (  12.12  )
+X-CRM114-CacheID: sfid-20231219_045636_425671_EBF3AC9C 
+X-CRM114-Status: GOOD (  10.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,53 +81,32 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 4/6] pci: fix __pci_bus_find_cap_start
+Subject: [PATCH 1/6] pci: remove duplicate definition of pci_resource_start
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-BIT(7) of dev->hdr_type has unrelated information. Mask out the upper
-bit so that the capabilities can properly be found.
+pci_resource_start is defined twice. Remove the duplicate.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/pci/pci.c        | 4 ++--
- include/linux/pci_regs.h | 1 +
- 2 files changed, 3 insertions(+), 2 deletions(-)
+ include/linux/pci.h | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 638af9722e..0211fc0081 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -428,7 +428,7 @@ static unsigned int pci_scan_bus(struct pci_bus *bus)
- 		pr_debug("%02x:%02x [%04x:%04x]\n", bus->number, dev->devfn,
- 		    dev->vendor, dev->device);
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 98d056624f..0e907209a7 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -201,10 +201,6 @@ struct pci_driver {
  
--		switch (hdr_type & 0x7f) {
-+		switch (hdr_type & PCI_HEADER_TYPE_MASK) {
- 		case PCI_HEADER_TYPE_NORMAL:
- 			if (class == PCI_CLASS_BRIDGE_PCI)
- 				goto bad;
-@@ -642,7 +642,7 @@ u8 pci_find_capability(struct pci_dev *dev, int cap)
- {
- 	u8 pos;
+ #define	to_pci_driver(drv) container_of(drv, struct pci_driver, driver)
  
--	pos = __pci_bus_find_cap_start(dev->bus, dev->devfn, dev->hdr_type);
-+	pos = __pci_bus_find_cap_start(dev->bus, dev->devfn, dev->hdr_type & PCI_HEADER_TYPE_MASK);
- 	if (pos)
- 		pos = __pci_find_next_cap(dev->bus, dev->devfn, pos, cap);
- 
-diff --git a/include/linux/pci_regs.h b/include/linux/pci_regs.h
-index 2c335f5835..631f218229 100644
---- a/include/linux/pci_regs.h
-+++ b/include/linux/pci_regs.h
-@@ -69,6 +69,7 @@
- #define PCI_CACHE_LINE_SIZE	0x0c	/* 8 bits */
- #define PCI_LATENCY_TIMER	0x0d	/* 8 bits */
- #define PCI_HEADER_TYPE		0x0e	/* 8 bits */
-+#define  PCI_HEADER_TYPE_MASK		0x7f
- #define  PCI_HEADER_TYPE_NORMAL		0
- #define  PCI_HEADER_TYPE_BRIDGE		1
- #define  PCI_HEADER_TYPE_CARDBUS	2
+-/* these helpers provide future and backwards compatibility
+- * for accessing popular PCI BAR info */
+-#define pci_resource_start(dev, bar)    ((dev)->resource[(bar)].start)
+-
+ /**
+  * DEFINE_PCI_DEVICE_TABLE - macro used to describe a pci device table
+  * @_table: device table name
 -- 
 2.39.2
 
