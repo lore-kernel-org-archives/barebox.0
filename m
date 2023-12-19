@@ -1,62 +1,63 @@
-Delivery-date: Tue, 19 Dec 2023 14:16:18 +0100
+Delivery-date: Tue, 19 Dec 2023 14:19:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rFZxK-004Zij-2P
+	id 1rFa0B-004ZtP-36
 	for lore@lore.pengutronix.de;
-	Tue, 19 Dec 2023 14:16:18 +0100
+	Tue, 19 Dec 2023 14:19:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rFZxK-00070v-7N
-	for lore@pengutronix.de; Tue, 19 Dec 2023 14:16:18 +0100
+	id 1rFa0B-000875-Em
+	for lore@pengutronix.de; Tue, 19 Dec 2023 14:19:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=XbPGn0ThrTwtXOZuUSOT0qazVZq8JNg7B/XISaS7440=; b=Hd/aQ4FQ/Hmd1le0+A32W5KRFj
-	FQ3ojToBQb0Jegk+QQNCuAirzbDEFdr4GMog8j7v8JWgOL9jLU9eJAaQzczoB+cpeCh6rMxHmFO/i
-	94NdOuK9zaWSBWj0FTTtKda5wRStlqmdtQbci9LY6QM+WYwAadItZX7dwLQJBYmLXW/0ajR9vdh+5
-	bGGcoIqaJ5U07bhLS0onr+yVZt7FDAwz7Q0xKZq/iQHHhYxsySKlh2uSrMKcLzNKcc6ONleHP6c8o
-	AK9eJWd+M+ykPjx0ncazzu4DOK5m3aSpjCeln6lmf3uCWLmLsUk2KHTv2TckYj+zWV6dVBBra8CMp
-	d6Cx9ykg==;
+	bh=XEr7SG+CIdfZufdZGY4rWnKWMMoj6SJPqD/T4WaQ2TA=; b=lJVpwxQkvcIA7emsDqDaI0paAl
+	kEedDFh/WWzs410zYAb5g71gYfahDSWwCWNZLSTdx0r7z37gHqjvWHsBU54rOTHQQRHbRZqtmFSid
+	WNA/hm0pn3bQoTgL21/t6G0sB5NhkyfU9FUZjkxHodaKT6nIwxU/SLiO28WaKacIMEU1wI92qwVnR
+	+lYdbj/wRmWZvckSUpsyNNibinlelfait5orDxmHVD2tN8snpmI0PQVc+ONNetvek0yXd4ekfWLXk
+	hUGcQEElUQ880Rlngh7Iv2Bi1xRUX51k3eAwkhF60ulR8hQYE8HKDFje8/S/xb02WhWx05KAAfAsv
+	fB7TCAPw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFZwJ-00EAEb-2x;
-	Tue, 19 Dec 2023 13:15:15 +0000
+	id 1rFZzE-00EAVz-2E;
+	Tue, 19 Dec 2023 13:18:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFZwH-00EAEB-0Q
+	id 1rFZzA-00EAUw-2S
 	for barebox@lists.infradead.org;
-	Tue, 19 Dec 2023 13:15:14 +0000
+	Tue, 19 Dec 2023 13:18:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rFZwF-0006b7-Jl; Tue, 19 Dec 2023 14:15:11 +0100
+	id 1rFZz1-0007bh-Kz; Tue, 19 Dec 2023 14:18:03 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rFZwE-0001nE-4f; Tue, 19 Dec 2023 14:15:11 +0100
+	id 1rFZz0-0001ne-4f; Tue, 19 Dec 2023 14:18:03 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rFZwF-0001qo-0a;
-	Tue, 19 Dec 2023 14:15:11 +0100
+	id 1rFZz1-0001xC-0Z;
+	Tue, 19 Dec 2023 14:18:03 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 19 Dec 2023 14:15:10 +0100
-Message-Id: <20231219131510.7106-1-s.hauer@pengutronix.de>
+Date: Tue, 19 Dec 2023 14:18:00 +0100
+Message-Id: <20231219131802.7475-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231219_051513_169416_7D354429 
-X-CRM114-Status: GOOD (  10.05  )
+X-CRM114-CacheID: sfid-20231219_051812_799297_1502CE1C 
+X-CRM114-Status: UNSURE (   7.68  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,36 +80,27 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] net: fsl_fman: gracefully exit of_fixup()
+Subject: [PATCH 0/2] Layerscape LS1028a: add DDR support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The fman OF fixup is registered independent of the actual devices, so
-do not assume there are any "fsl,fman" compatible nodes in the current
-device tree.
+The existing DDR driver can be re-used for LS1028a. We just have to swap
+the endianess of the register accesses.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/net/fsl-fman.c | 5 +++++
- 1 file changed, 5 insertions(+)
+Sascha Hauer (2):
+  fsl-ddr: remove duplicate prototype
+  fsl-ddr: make endianess runtime decision
 
-diff --git a/drivers/net/fsl-fman.c b/drivers/net/fsl-fman.c
-index ff32fa8fc7..c5fbeeda37 100644
---- a/drivers/net/fsl-fman.c
-+++ b/drivers/net/fsl-fman.c
-@@ -1348,7 +1348,12 @@ static int fman_of_fixup(struct device_node *root, void *context)
- 	struct device_node *child, *child_bb;
- 
- 	fman_bb = of_find_compatible_node(NULL, NULL, "fsl,fman");
-+	if (!fman_bb)
-+		return 0;
-+
- 	fman = of_find_compatible_node(root, NULL, "fsl,fman");
-+	if (!fman)
-+		return 0;
- 
- 	/*
- 	 * The dts files in the Linux tree have all network interfaces
+ arch/arm/boards/ls1021aiot/lowlevel.c |  2 +-
+ arch/arm/boards/ls1046ardb/lowlevel.c |  2 +-
+ arch/arm/boards/tqmls1046a/lowlevel.c |  2 +-
+ drivers/ddr/fsl/arm_ddr_gen3.c        |  7 ++-
+ drivers/ddr/fsl/fsl_ddr.h             |  1 -
+ drivers/ddr/fsl/fsl_ddr_gen4.c        |  7 ++-
+ drivers/ddr/fsl/main.c                | 13 ++++--
+ include/soc/fsl/fsl_ddr_sdram.h       | 65 ++++++++++++++++++++-------
+ 8 files changed, 74 insertions(+), 25 deletions(-)
+
 -- 
 2.39.2
 
