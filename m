@@ -1,63 +1,62 @@
-Delivery-date: Tue, 19 Dec 2023 14:08:10 +0100
+Delivery-date: Tue, 19 Dec 2023 14:16:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rFZpS-004ZFY-1d
+	id 1rFZxK-004Zij-2P
 	for lore@lore.pengutronix.de;
-	Tue, 19 Dec 2023 14:08:10 +0100
+	Tue, 19 Dec 2023 14:16:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rFZpR-00044A-Vt
-	for lore@pengutronix.de; Tue, 19 Dec 2023 14:08:10 +0100
+	id 1rFZxK-00070v-7N
+	for lore@pengutronix.de; Tue, 19 Dec 2023 14:16:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=KHa0arj3YLMFueqMBcwxSFBYa2Wm2P7bBeKXku7yIz0=; b=pP7obA1sAm62viWIjg+KwZzCru
-	CA60+KEAhm7RbRWNcH9eetaDj5Az2LwuyQ1tVRRpglq1BxGR3MeXjOooHE/D3yEnPMXANkAPTgWcY
-	0o2du2yIoPyQ2LWpXCQBkilbauDCZvkF6LZjqtGmSP2K6VJtsQqQsk1K3u6kkwnt7uWf9r6XWiCK4
-	j8MQwVoBeUIibUsRq4UTIJCtGMnBwUuoOuxsDgEN8/UeSXLf62QQGm4tPSq0YuIZpMSQJLjMnzodr
-	l+Bsr/pkToCvSKp57T2NVGMZtSAjAhg+PPIEcFJ9D5R5iVLgXXGeFhlTKzj6ycc+VM25q1S7xm0rY
-	5EL4JKHQ==;
+	bh=XbPGn0ThrTwtXOZuUSOT0qazVZq8JNg7B/XISaS7440=; b=Hd/aQ4FQ/Hmd1le0+A32W5KRFj
+	FQ3ojToBQb0Jegk+QQNCuAirzbDEFdr4GMog8j7v8JWgOL9jLU9eJAaQzczoB+cpeCh6rMxHmFO/i
+	94NdOuK9zaWSBWj0FTTtKda5wRStlqmdtQbci9LY6QM+WYwAadItZX7dwLQJBYmLXW/0ajR9vdh+5
+	bGGcoIqaJ5U07bhLS0onr+yVZt7FDAwz7Q0xKZq/iQHHhYxsySKlh2uSrMKcLzNKcc6ONleHP6c8o
+	AK9eJWd+M+ykPjx0ncazzu4DOK5m3aSpjCeln6lmf3uCWLmLsUk2KHTv2TckYj+zWV6dVBBra8CMp
+	d6Cx9ykg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFZoS-00E8hc-22;
-	Tue, 19 Dec 2023 13:07:08 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
+	id 1rFZwJ-00EAEb-2x;
+	Tue, 19 Dec 2023 13:15:15 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFZoP-00E8h8-2J
+	id 1rFZwH-00EAEB-0Q
 	for barebox@lists.infradead.org;
-	Tue, 19 Dec 2023 13:07:06 +0000
+	Tue, 19 Dec 2023 13:15:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rFZoO-0003bU-DV; Tue, 19 Dec 2023 14:07:04 +0100
+	id 1rFZwF-0006b7-Jl; Tue, 19 Dec 2023 14:15:11 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rFZoM-0001Nr-UB; Tue, 19 Dec 2023 14:07:04 +0100
+	id 1rFZwE-0001nE-4f; Tue, 19 Dec 2023 14:15:11 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rFZoN-0001hO-37;
-	Tue, 19 Dec 2023 14:07:03 +0100
+	id 1rFZwF-0001qo-0a;
+	Tue, 19 Dec 2023 14:15:11 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 19 Dec 2023 14:07:03 +0100
-Message-Id: <20231219130703.6522-1-s.hauer@pengutronix.de>
+Date: Tue, 19 Dec 2023 14:15:10 +0100
+Message-Id: <20231219131510.7106-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231219_050705_751911_ECC04CE0 
-X-CRM114-Status: UNSURE (   9.02  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20231219_051513_169416_7D354429 
+X-CRM114-Status: GOOD (  10.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,37 +79,36 @@ X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] ARM: fix dmb on ARMv8
+Subject: [PATCH] net: fsl_fman: gracefully exit of_fixup()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add "sy" argument to the dmb instruction. This is optional for ARMv7,
-but mandatory for ARMv8. On ARMv7 "dsb" and "dsb sy" are equivalent,
-so use "dsb sy" on both ARMv7 and ARMv8 and drop the unnecessary #ifdef
+The fman OF fixup is registered independent of the actual devices, so
+do not assume there are any "fsl,fman" compatible nodes in the current
+device tree.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/system.h | 6 +-----
- 1 file changed, 1 insertion(+), 5 deletions(-)
+ drivers/net/fsl-fman.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm/include/asm/system.h b/arch/arm/include/asm/system.h
-index 9e88001533..bf3b7b02e2 100644
---- a/arch/arm/include/asm/system.h
-+++ b/arch/arm/include/asm/system.h
-@@ -25,12 +25,8 @@
+diff --git a/drivers/net/fsl-fman.c b/drivers/net/fsl-fman.c
+index ff32fa8fc7..c5fbeeda37 100644
+--- a/drivers/net/fsl-fman.c
++++ b/drivers/net/fsl-fman.c
+@@ -1348,7 +1348,12 @@ static int fman_of_fixup(struct device_node *root, void *context)
+ 	struct device_node *child, *child_bb;
  
- #if __LINUX_ARM_ARCH__ >= 7
- #define isb() __asm__ __volatile__ ("isb" : : : "memory")
--#ifdef CONFIG_CPU_64v8
- #define dsb() __asm__ __volatile__ ("dsb sy" : : : "memory")
--#else
--#define dsb() __asm__ __volatile__ ("dsb" : : : "memory")
--#endif
--#define dmb() __asm__ __volatile__ ("dmb" : : : "memory")
-+#define dmb() __asm__ __volatile__ ("dmb sy" : : : "memory")
- #elif defined(CONFIG_CPU_XSC3) || __LINUX_ARM_ARCH__ == 6
- #define isb() __asm__ __volatile__ ("mcr p15, 0, %0, c7, c5, 4" \
-                                     : : "r" (0) : "memory")
+ 	fman_bb = of_find_compatible_node(NULL, NULL, "fsl,fman");
++	if (!fman_bb)
++		return 0;
++
+ 	fman = of_find_compatible_node(root, NULL, "fsl,fman");
++	if (!fman)
++		return 0;
+ 
+ 	/*
+ 	 * The dts files in the Linux tree have all network interfaces
 -- 
 2.39.2
 
