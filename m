@@ -1,57 +1,54 @@
-Delivery-date: Wed, 20 Dec 2023 10:01:51 +0100
+Delivery-date: Wed, 20 Dec 2023 11:45:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rFsSd-005tFJ-1R
+	id 1rFu4j-0060aS-0C
 	for lore@lore.pengutronix.de;
-	Wed, 20 Dec 2023 10:01:51 +0100
+	Wed, 20 Dec 2023 11:45:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rFsSc-0005hg-Rw
-	for lore@pengutronix.de; Wed, 20 Dec 2023 10:01:51 +0100
+	id 1rFu4i-0005S7-Bs
+	for lore@pengutronix.de; Wed, 20 Dec 2023 11:45:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kblzI6GWyZr1akh79Ee2mAXIh78lcvCLgKmHX/zdcvo=; b=fdFMIDN8U987uxrSw2XmAbOifh
-	Fa/ELPdQidxywZ4CJkJfrvBtYMYh4BAz6S+Hs5P0FF+IqY4xfyJfLAqN9V0FEzKoTqWdn2VyKBhEC
-	get/RPWA3poDaBCVHpKBvz4sgCE3YwaTJaBnjX1YbHoc4B1WDl9OsM+AP99/O64TqLweWvQwAbKfq
-	pPL3RxVG5BVfUHzfQnom7ESWeNA+l52MufPzgiykwnr9NR4oqFWiZVaU/yEvJK5gl2TNYjeLpsaFz
-	ltWVgtKd7MqG3F+b5Bg2WPii8p79ZUsaah5C7AFSTdgdgbttaIE1+Fa0Nbv+OZaTmkZS9vh8BWhwz
-	a9WlafDg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=86BQjlWWA/bsqEftIHNTiRin76f5EglPOAUamj5Epak=; b=b+i8Lkbjc1esrXuHILe8FqMJLA
+	OYB3ZWRBrHlv+5W79BgooN4F+FZQGYu/JLtIxVJmM+w3atF4QPXmJr4NgwudirjFH6kCYsjoZY+W0
+	UTZ1Dv8mLhV2A88Enf87Kxf80QGvsSJPRFEz7Pv6UTNpggtkZrNEfi++tLJAjbdJfdP75cL2lB966
+	fOswy/OGVYogVh9Y01aaMDZLF5jSnkNcQHjLPTnqCEbYqAiVVwgqwFZ8BiF8/xnWWeXpefvFujmFz
+	C6bN+s4MOnLoogSsUMpDRFgtNnmDgkInlNvbOaGWHk4rkADwCB39WAGVd+5nz2kfYlwlQojAlO7cI
+	4qKaZ8aA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFsRI-00GfNx-2J;
-	Wed, 20 Dec 2023 09:00:28 +0000
+	id 1rFu3Q-00GyaH-2C;
+	Wed, 20 Dec 2023 10:43:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFsRF-00GfNS-1j
+	id 1rFu3N-00GyZQ-20
 	for barebox@lists.infradead.org;
-	Wed, 20 Dec 2023 09:00:27 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	Wed, 20 Dec 2023 10:43:55 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rFsRA-000583-Fe; Wed, 20 Dec 2023 10:00:20 +0100
-Message-ID: <27a9d947-2358-4e05-ba77-32b26b3b3125@pengutronix.de>
-Date: Wed, 20 Dec 2023 10:00:20 +0100
+	(envelope-from <bst@pengutronix.de>)
+	id 1rFu3L-00059I-Gs; Wed, 20 Dec 2023 11:43:51 +0100
+From: Bastian Krause <bst@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Bastian Krause <bst@pengutronix.de>
+Date: Wed, 20 Dec 2023 11:43:41 +0100
+Message-Id: <20231220104341.4184187-1-bst@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Robin van der Gracht <robin@protonic.nl>, barebox@lists.infradead.org
-Cc: michiel.schelfhout@protonic.nl
-References: <20231220082908.360302-1-robin@protonic.nl>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20231220082908.360302-1-robin@protonic.nl>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231220_010025_574729_16E72838 
-X-CRM114-Status: GOOD (  10.52  )
+X-CRM114-CacheID: sfid-20231220_024353_659645_BEB50584 
+X-CRM114-Status: GOOD (  10.91  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,46 +66,205 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2] nvmem: regmap: Fix nvmem size
+Subject: [PATCH v2] mfd: rn5t568: add complete register map to header and use it
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Robin,
+This allows lowlevel board code to use these symbols to perform power
+sequencing with the PBL PMIC helper functions.
 
-Thanks for the fix.
+Signed-off-by: Bastian Krause <bst@pengutronix.de>
+---
+Changes since (implicit) v1:
+- add missing include of linux/bits.h as suggested by Ahmad
+---
+ drivers/mfd/rn5t568.c |  24 +-------
+ include/mfd/rn5t568.h | 134 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 135 insertions(+), 23 deletions(-)
+ create mode 100644 include/mfd/rn5t568.h
 
-On 20.12.23 09:29, Robin van der Gracht wrote:
-> -	if (roffset + rbytes > stride * regmap_get_max_register(map))
-> +	if (roffset + rbytes > regmap_size_bytes(map) * stride)
-
-Shouldn't stride on the right hand side be dropped?
-
-Cheers,
-Ahmad
-
->  		return -EINVAL;
->  
->  	for (i = roffset; i < roffset + rbytes; i += stride) {
-> @@ -78,7 +78,7 @@ nvmem_regmap_register_with_pp(struct regmap *map, const char *name,
->  	config.priv = map;
->  	config.stride = 1;
->  	config.word_size = 1;
-> -	config.size = regmap_get_max_register(map) * regmap_get_reg_stride(map);
-> +	config.size = regmap_size_bytes(map) * regmap_get_reg_stride(map);
->  	config.cell_post_process = cell_post_process;
->  	config.reg_write = nvmem_regmap_write;
->  	config.reg_read = nvmem_regmap_read;
-
+diff --git a/drivers/mfd/rn5t568.c b/drivers/mfd/rn5t568.c
+index 12de689734d..f1e2eeb0c88 100644
+--- a/drivers/mfd/rn5t568.c
++++ b/drivers/mfd/rn5t568.c
+@@ -16,29 +16,7 @@
+ #include <linux/regmap.h>
+ #include <reset_source.h>
+ #include <restart.h>
+-
+-#define RN5T568_LSIVER 0x00
+-#define RN5T568_OTPVER 0x01
+-#define RN5T568_PONHIS 0x09
+-# define RN5T568_PONHIS_ON_EXTINPON BIT(3)
+-# define RN5T568_PONHIS_ON_REPWRPON BIT(1)
+-# define RN5T568_PONHIS_ON_PWRONPON BIT(0)
+-#define RN5T568_POFFHIS 0x0a
+-# define RN5T568_POFFHIS_N_OEPOFF BIT(7)
+-# define RN5T568_POFFHIS_DCLIMPOFF BIT(6)
+-# define RN5T568_POFFHIS_WDGPOFF BIT(5)
+-# define RN5T568_POFFHIS_CPUPOFF BIT(4)
+-# define RN5T568_POFFHIS_IODETPOFF BIT(3)
+-# define RN5T568_POFFHIS_VINDETPOFF BIT(2)
+-# define RN5T568_POFFHIS_TSHUTPOFF BIT(1)
+-# define RN5T568_POFFHIS_PWRONPOFF BIT(0)
+-#define RN5T568_SLPCNT 0x0e
+-# define RN5T568_SLPCNT_SWPPWROFF BIT(0)
+-#define RN5T568_REPCNT 0x0f
+-# define RN5T568_REPCNT_OFF_RESETO_16MS 0x30
+-# define RN5T568_REPCNT_OFF_REPWRTIM_1000MS 0x06
+-# define RN5T568_REPCNT_OFF_REPWRON BIT(0)
+-#define RN5T568_MAX_REG 0xbc
++#include <mfd/rn5t568.h>
+ 
+ struct rn5t568 {
+ 	struct restart_handler restart;
+diff --git a/include/mfd/rn5t568.h b/include/mfd/rn5t568.h
+new file mode 100644
+index 00000000000..04b6c832a5d
+--- /dev/null
++++ b/include/mfd/rn5t568.h
+@@ -0,0 +1,134 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * Copyright (C) 2014 Beniamino Galvani <b.galvani@gmail.com>
++ * Copyright (C) 2016 Toradex AG
++ */
++
++#ifndef __MFD_RN5T568_H
++#define __MFD_RN5T568_H
++
++#include <linux/bits.h>
++
++/* RN5T568 registers */
++enum {
++	RN5T568_LSIVER		= 0x00,
++	RN5T568_OTPVER		= 0x01,
++	RN5T568_IODAC		= 0x02,
++	RN5T568_VINDAC		= 0x03,
++	RN5T568_OUT32KEN	= 0x05,
++
++	RN5T568_CPUCNT		= 0x06,
++
++	RN5T568_PSWR		= 0x07,
++	RN5T568_PONHIS		= 0x09,
++	RN5T568_POFFHIS		= 0x0A,
++	RN5T568_WATCHDOG	= 0x0B,
++	RN5T568_WATCHDOGCNT	= 0x0C,
++	RN5T568_PWRFUNC		= 0x0D,
++	RN5T568_SLPCNT		= 0x0E,
++	RN5T568_REPCNT		= 0x0F,
++	RN5T568_PWRONTIMSET	= 0x10,
++	RN5T568_NOETIMSETCNT	= 0x11,
++	RN5T568_PWRIREN		= 0x12,
++	RN5T568_PWRIRQ		= 0x13,
++	RN5T568_PWRMON		= 0x14,
++	RN5T568_PWRIRSEL	= 0x15,
++
++	RN5T568_DC1_SLOT	= 0x16,
++	RN5T568_DC2_SLOT	= 0x17,
++	RN5T568_DC3_SLOT	= 0x18,
++	RN5T568_DC4_SLOT	= 0x19,
++
++	RN5T568_LDO1_SLOT	= 0x1B,
++	RN5T568_LDO2_SLOT	= 0x1C,
++	RN5T568_LDO3_SLOT	= 0x1D,
++	RN5T568_LDO4_SLOT	= 0x1E,
++	RN5T568_LDO5_SLOT	= 0x1F,
++
++	RN5T568_PSO0_SLOT	= 0x25,
++	RN5T568_PSO1_SLOT	= 0x26,
++	RN5T568_PSO2_SLOT	= 0x27,
++	RN5T568_PSO3_SLOT	= 0x28,
++
++	RN5T568_LDORTC1_SLOT	= 0x2A,
++
++	RN5T568_DC1CTL		= 0x2C,
++	RN5T568_DC1CTL2		= 0x2D,
++	RN5T568_DC2CTL		= 0x2E,
++	RN5T568_DC2CTL2		= 0x2F,
++	RN5T568_DC3CTL		= 0x30,
++	RN5T568_DC3CTL2		= 0x31,
++	RN5T568_DC4CTL		= 0x32,
++	RN5T568_DC4CTL2		= 0x33,
++
++	RN5T568_DC1DAC		= 0x36,
++	RN5T568_DC2DAC		= 0x37,
++	RN5T568_DC3DAC		= 0x38,
++	RN5T568_DC4DAC		= 0x39,
++
++	RN5T568_DC1DAC_SLP	= 0x3B,
++	RN5T568_DC2DAC_SLP	= 0x3C,
++	RN5T568_DC3DAC_SLP	= 0x3D,
++	RN5T568_DC4DAC_SLP	= 0x3E,
++
++	RN5T568_DCIREN		= 0x40,
++	RN5T568_DCIRQ		= 0x41,
++	RN5T568_DCIRMON		= 0x42,
++
++	RN5T568_LDOEN1		= 0x44,
++	RN5T568_LDOEN2		= 0x45,
++	RN5T568_LDODIS1		= 0x46,
++
++	RN5T568_LDO1DAC		= 0x4C,
++	RN5T568_LDO2DAC		= 0x4D,
++	RN5T568_LDO3DAC		= 0x4E,
++	RN5T568_LDO4DAC		= 0x4F,
++	RN5T568_LDO5DAC		= 0x50,
++
++	RN5T568_LDORTC1DAC	= 0x56,
++	RN5T568_LDORTC2DAC	= 0x57,
++
++	RN5T568_LDO1DAC_SLP	= 0x58,
++	RN5T568_LDO2DAC_SLP	= 0x59,
++	RN5T568_LDO3DAC_SLP	= 0x5A,
++	RN5T568_LDO4DAC_SLP	= 0x5B,
++	RN5T568_LDO5DAC_SLP	= 0x5C,
++
++	RN5T568_IOSEL		= 0x90,
++	RN5T568_IOOUT		= 0x91,
++	RN5T568_GPEDGE1		= 0x92,
++	RN5T568_EN_GPIR		= 0x94,
++	RN5T568_IR_GPR		= 0x95,
++	RN5T568_IR_GPF		= 0x96,
++	RN5T568_MON_IOIN	= 0x97,
++	RN5T568_GPLED_FUNC	= 0x98,
++	RN5T568_INTPOL		= 0x9C,
++	RN5T568_INTEN		= 0x9D,
++	RN5T568_INTMON		= 0x9E,
++
++	RN5T568_PREVINDAC	= 0xB0,
++	RN5T568_OVTEMP		= 0xBC,
++
++	RN5T568_MAX_REG		= 0xBC,
++};
++
++#define RN5T568_PONHIS_ON_EXTINPON		BIT(3)
++#define RN5T568_PONHIS_ON_REPWRPON		BIT(1)
++#define RN5T568_PONHIS_ON_PWRONPON		BIT(0)
++
++#define RN5T568_POFFHIS_N_OEPOFF		BIT(7)
++#define RN5T568_POFFHIS_DCLIMPOFF		BIT(6)
++#define RN5T568_POFFHIS_WDGPOFF			BIT(5)
++#define RN5T568_POFFHIS_CPUPOFF			BIT(4)
++#define RN5T568_POFFHIS_IODETPOFF		BIT(3)
++#define RN5T568_POFFHIS_VINDETPOFF		BIT(2)
++#define RN5T568_POFFHIS_TSHUTPOFF		BIT(1)
++#define RN5T568_POFFHIS_PWRONPOFF		BIT(0)
++
++#define RN5T568_SLPCNT_SWPPWROFF		BIT(0)
++
++#define RN5T568_REPCNT_OFF_RESETO_16MS		0x30
++#define RN5T568_REPCNT_OFF_REPWRTIM_1000MS	0x06
++#define RN5T568_REPCNT_OFF_REPWRON		BIT(0)
++
++#endif
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
