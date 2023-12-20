@@ -1,56 +1,66 @@
-Delivery-date: Wed, 20 Dec 2023 16:45:31 +0100
+Delivery-date: Wed, 20 Dec 2023 16:49:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rFylH-006Ssq-04
+	id 1rFypC-006TIF-19
 	for lore@lore.pengutronix.de;
-	Wed, 20 Dec 2023 16:45:31 +0100
+	Wed, 20 Dec 2023 16:49:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rFylG-0002Mc-Bl
-	for lore@pengutronix.de; Wed, 20 Dec 2023 16:45:30 +0100
+	id 1rFypB-00036V-Mo
+	for lore@pengutronix.de; Wed, 20 Dec 2023 16:49:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=R434EINJy1vea56oXOAntLlcUj/0pBWp6pp8YwfoxYs=; b=qsOGjvp9ujyKXdHq77cO4W4UE+
-	igdOHptb/8lPGew+d/1HVS7bMg/HhY+cFwZZmp5i/Fvy5cRPTOA+Lv8SblW+JQu2izga4TQDUF9QI
-	D77ApClGOtH5vHdgyFR/x19WCMv7d6Q2/gTftRyL6G56McuXRJT1GczT9T9KMG7QIyIX6U5ez6pHy
-	0BTiP825SyDJhP8i7p09o3FJx2+rveCsE4X9pXWHcR7G8VghYoqjxUqQmkOOipFjHCdiH8FPRz6UD
-	yJb5mt1n/blpfvoVxv1fYiZfuV8Gi3jCvbPD5LUqCZTtwD1LAFwD5AYEhm7ryeVQyTuOBC1G7TuSV
-	vUYPXY0g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=mwrg3/bR7oD8RtflyAhLLqAQx8eH53LEfkmNsOF5wcg=; b=y4Y7lWfjgMl1kwWaKaAA6HZ30+
+	nsf4sFuqMjs9AzLqsF5FodNy7DNy6BOzR14SpYXOLNrVrUXgjBU9aCk0MAcVAk6L4/+pDKsVkrc85
+	q8E9CKiXyLEpUIHwxLQjvQzlYJFbGxHyxJrZgtToAhPDGGv6PJtlJIvA/ZffcZTxISOYYKitnJaTc
+	SQU5gTB+MDpmvCnnCoMYFrBNEacS2CgEz6p7wv3M0IfwAe6wpCQ33psU34k+NY+4nffXNhmFeWcW3
+	P/u48x9DFIypRJePZDCFs+Ugr5ioa5G+nOgyBrn0nX6KTl204JMq6Oa3lvoGHAYhO9X+Aqj1I1NF3
+	pDUO6yyQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFykC-000HuS-33;
-	Wed, 20 Dec 2023 15:44:24 +0000
+	id 1rFyo8-000IZ3-1s;
+	Wed, 20 Dec 2023 15:48:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rFyk8-000Htb-0Q
+	id 1rFyo5-000IXH-17
 	for barebox@lists.infradead.org;
-	Wed, 20 Dec 2023 15:44:23 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rFyk6-00029a-3K; Wed, 20 Dec 2023 16:44:18 +0100
-Message-ID: <c75d78e0-4033-4c18-b9dc-72ebf5e98c1a@pengutronix.de>
-Date: Wed, 20 Dec 2023 16:44:17 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
+	Wed, 20 Dec 2023 15:48:26 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rFyo4-0002sg-52; Wed, 20 Dec 2023 16:48:24 +0100
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rFyo2-000HuP-LY; Wed, 20 Dec 2023 16:48:23 +0100
+Received: from mfe by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rFyo3-007xma-M8; Wed, 20 Dec 2023 16:48:23 +0100
+Date: Wed, 20 Dec 2023 16:48:23 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20231220154823.pj5jsruygu552qis@pengutronix.de>
 References: <20231220145418.88750-1-m.felsch@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20231220145418.88750-1-m.felsch@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <c75d78e0-4033-4c18-b9dc-72ebf5e98c1a@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <c75d78e0-4033-4c18-b9dc-72ebf5e98c1a@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231220_074420_173476_F99E7CFA 
-X-CRM114-Status: GOOD (  12.75  )
+X-CRM114-CacheID: sfid-20231220_074825_395163_41C1D7C0 
+X-CRM114-Status: GOOD (  16.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,7 +78,7 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
@@ -77,39 +87,48 @@ Subject: Re: [PATCH 1/2] ARM: boards: polyhex-debix: enable HAB support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Marco,
-
-On 20.12.23 15:54, Marco Felsch wrote:
-> From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+On 23-12-20, Ahmad Fatoum wrote:
+> Hello Marco,
 > 
-> Include the gencsf header to enable the secure-boot images.
+> On 20.12.23 15:54, Marco Felsch wrote:
+> > From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> > 
+> > Include the gencsf header to enable the secure-boot images.
+> > 
+> > Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 > 
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+> Any downside in just doing this for all i.MX8M boards?
 
-Any downside in just doing this for all i.MX8M boards?
+Thought about this too. If HABV4 is not enabled this will have no
+impact. I didn't added the support for all boards since some custom
+boards may don't want this. What about adding it to all EVK boards?
 
-Thanks,
-Ahmad
+Regards,
+  Marco
 
-> ---
->  arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg | 1 +
->  1 file changed, 1 insertion(+)
+> Thanks,
+> Ahmad
 > 
-> diff --git a/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg b/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg
-> index 663bd102e9a2..d619995496ac 100644
-> --- a/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg
-> +++ b/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg
-> @@ -5,3 +5,4 @@ soc imx8mp
->  loadaddr 0x920000
->  max_load_size 0x3f000
->  ivtofs 0x0
-> +#include <mach/imx/habv4-imx8-gencsf.h>
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+> > ---
+> >  arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg | 1 +
+> >  1 file changed, 1 insertion(+)
+> > 
+> > diff --git a/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg b/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg
+> > index 663bd102e9a2..d619995496ac 100644
+> > --- a/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg
+> > +++ b/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg
+> > @@ -5,3 +5,4 @@ soc imx8mp
+> >  loadaddr 0x920000
+> >  max_load_size 0x3f000
+> >  ivtofs 0x0
+> > +#include <mach/imx/habv4-imx8-gencsf.h>
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> 
 
 
