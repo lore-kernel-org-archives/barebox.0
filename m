@@ -1,61 +1,83 @@
-Delivery-date: Sun, 24 Dec 2023 10:28:42 +0100
+Delivery-date: Mon, 01 Jan 2024 12:25:48 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rHKmo-00Bzyb-0f
+	id 1rKGQU-00Bzu0-1Y
 	for lore@lore.pengutronix.de;
-	Sun, 24 Dec 2023 10:28:42 +0100
+	Mon, 01 Jan 2024 12:25:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rHKmn-0004uT-JW
-	for lore@pengutronix.de; Sun, 24 Dec 2023 10:28:42 +0100
+	id 1rKGQT-0001js-QQ
+	for lore@pengutronix.de; Mon, 01 Jan 2024 12:25:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=z7rFm22vNTDPmSYEn+Qhbhb/h5dRX1pkV62wbyp3grY=; b=rmaPaQ1lrKqhABwISZZxz1T2QP
-	aUJIqPrfh4+E72717KXmyRlTqFJ6+Ewu3GZKZepg5DfT80SEyWF1rjkNi7nc+SPSKQzaSADVETumV
-	o0DU9Zl/kBGnHOlT9eKpXqJzhR5rG5kGnBmS+RgPnJEkjj4Cf9MXRjeIO2JF1ArgMwat+6f4+t1PF
-	1gO3Ng5kH5HmfCoBEhQ3slsIvzXdQu3DJQx93tjpGZoXT9TQlIjocqWeJdVQMhUpPSfhBKXCCvrj6
-	TRhn08vGMLTF8DvarfUvwxDGpdnfOTk4pYAXQFFhE02j1i1tIRFe+uOSXBrJswYh/7HNnYGgA8xd/
-	DkM6YRPw==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=WojpPxzksM7e1m3zh8h88bLbliDFu1i00n4G7PasoWA=; b=4lJEbU1VfNLHCbtZqvwk27COLg
+	uIWx2cKKNPnJ6kwXo/0gXdW4jMRUo0CtzBoeQVoWPyZWY9Ktt2lvVmoPmlv8kzs90gjayAh8filBT
+	8Uo7y5NJZTbsRWIDkGUO0ubSTY+qZ/qy53T15Ewyhc4LFw5T2vUQr3EY+zroKvSQaothLLbVYUl6G
+	c58bWvrGbT783T1JdU5UvUb6bYx62l4yWYCgGg8Q0XubW1Vio/so9ds6kWF2vPom3dbtCuDH9j3/i
+	336BcODb4Isu/854dqQ3PR+GdhfU3UsbJJhC4p2bMyn+TtxtB6ce5q0GLkwAFiu3tcoTgUYrAayVm
+	m+zY57ow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rHKlO-0096pj-06;
-	Sun, 24 Dec 2023 09:27:14 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1rKGOk-005x5r-0h;
+	Mon, 01 Jan 2024 11:23:58 +0000
+Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rHKlK-0096pN-1x
+	id 1rKGOg-005x3r-28
 	for barebox@lists.infradead.org;
-	Sun, 24 Dec 2023 09:27:12 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rHKlG-0004os-Av; Sun, 24 Dec 2023 10:27:06 +0100
-Message-ID: <65e626eb-dc07-41fb-8f51-a7f307e5e360@pengutronix.de>
-Date: Sun, 24 Dec 2023 10:27:04 +0100
+	Mon, 01 Jan 2024 11:23:56 +0000
+Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-50e7be1c65dso5264393e87.3
+        for <barebox@lists.infradead.org>; Mon, 01 Jan 2024 03:23:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704108231; x=1704713031; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WojpPxzksM7e1m3zh8h88bLbliDFu1i00n4G7PasoWA=;
+        b=kWy7hHdSg/dPveQP1VR7TPk+tBALJGfjpmAbcyil5DTcDQJ9TYYswcjMe/hUYxVEIW
+         yEupLo5F+RzLDrj0ndHY3MPBi21i3vFNB0nPjjad0EiwnQ+cIL9SZhlB7lJKLDkriv0m
+         jPxWSkI0JDNkKWoLhN8oA1jL60Gcj3DEvCXHR26KvJ7yYVZi1Gs1clVa537hvUvlo2Kw
+         mLNyBw4YW5gdH32Kg61l+dxpmqCWFULl7TdhQ4sI5I3EW9UjpmxXXQTUPf8tP6c8VSm7
+         FjXGJDnhrx5Ylcch3OIsoLc0xfAdDD3Md3uSnGSlu9a4aVp86pC5KWKyPsxI4Ku1jyMU
+         gHsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704108231; x=1704713031;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WojpPxzksM7e1m3zh8h88bLbliDFu1i00n4G7PasoWA=;
+        b=qCAfjYuqnTLaf5tdSWIETzUsOu+zhX4TEEP2kb7Ud1PR/Hz6PP204dssPlpVJ0KE7o
+         0mAUloaP6Fn8eY+bIT/l7H/tszbbYlrwVqcxhm0o2teF5WYiVW3H2XiwyUzr/QbujlNC
+         ZMO7hRmCelkdiCtZDMQZCrazlW+OFMw6AnuCwLesRYVIboaMQy2y9LzZ5q/IjMRwKdOd
+         5cr2hhvNGl+qPva7NWao71nITV4yUsKFLANINyr7B6m7hKhUSpZ56fV4GHS4SZlQySSl
+         QWGDMibRL+xO8sLV2erASfGTEY2HSHdD4TsAmd64lsVVTAd034OqwGutNVwxJNW5NC4E
+         Dqew==
+X-Gm-Message-State: AOJu0YxxDykNNibT1Qd4cZbz9DwaV0T+EWoVcy3ozjllt+h0IGPE3QPT
+	1omAJoMDEg8BexkBHK4QTqMQVMxgwAs=
+X-Google-Smtp-Source: AGHT+IHFPFExR7ZPS6vBy8f4QRA+U/dN8qBDJieOjpVo9SSmX2q+dXslKyu8UDe2DrjvqEy519Z4hg==
+X-Received: by 2002:ac2:4890:0:b0:50e:5ac7:2f83 with SMTP id x16-20020ac24890000000b0050e5ac72f83mr5567074lfc.55.1704108230678;
+        Mon, 01 Jan 2024 03:23:50 -0800 (PST)
+Received: from cinco.. (109-252-3-142.nat.spd-mgts.ru. [109.252.3.142])
+        by smtp.gmail.com with ESMTPSA id p25-20020ac246d9000000b0050e7bb371b1sm2283492lfo.46.2024.01.01.03.23.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jan 2024 03:23:50 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: barebox@lists.infradead.org
+Date: Mon,  1 Jan 2024 14:23:59 +0300
+Message-Id: <20240101112359.721688-1-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alvin@pqrs.dk>,
- Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
- Luiz Angelo Daros de Luca <luizluca@gmail.com>,
- =?UTF-8?Q?Alvin_=C5=A0ipraga?= <alsi@bang-olufsen.dk>
-References: <20231222-realtek-mdio-fix-v1-0-6bbf80d6a756@bang-olufsen.dk>
- <20231222-realtek-mdio-fix-v1-1-6bbf80d6a756@bang-olufsen.dk>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20231222-realtek-mdio-fix-v1-1-6bbf80d6a756@bang-olufsen.dk>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20231224_012710_670321_F2008D74 
-X-CRM114-Status: GOOD (  19.29  )
+X-CRM114-CacheID: sfid-20240101_032354_705588_8DA75EA4 
+X-CRM114-Status: UNSURE (   7.99  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,85 +95,42 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 1/4] net: fec_imx: reverse registration order of mdiobus
- and edev
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] MIPS: asm/pbl_nmon.h: add guard macro
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Alvin,
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/include/asm/pbl_nmon.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-On 22.12.23 03:07, Alvin Šipraga wrote:
-> From: Alvin Šipraga <alsi@bang-olufsen.dk>
-> 
-> This is necessary so that on systems with MDIO-connected Etheret
-> switches, DSA can find the master edev during switch registration.
-> Otherwise the switch setup will fail.
-
-On the other hand, systems, where the PHY supplies a clock to the MAC
-need the MDIO bus controller to be registered first, so the PHYs can
-probe. In the special case of the FEC driver:
-
-  - there's no struct eth_device::init function 
-  - struct eth_device::get_ethaddr doesn't do hardware access
-
-
-and operations in struct eth_device are only invoked when ->open is initially
-called, which won't happen at driver probe time.
-
-I thus think the change is ok, even if not generally applicable to all drivers.
-
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-
-Thanks,
-Ahmad
-
-> 
-> Signed-off-by: Alvin Šipraga <alsi@bang-olufsen.dk>
-> ---
->  drivers/net/fec_imx.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
-> 
-> diff --git a/drivers/net/fec_imx.c b/drivers/net/fec_imx.c
-> index 203a2a8aa191..75a65962820b 100644
-> --- a/drivers/net/fec_imx.c
-> +++ b/drivers/net/fec_imx.c
-> @@ -895,18 +895,18 @@ static int fec_probe(struct device *dev)
->  	fec->miibus.priv = fec;
->  	fec->miibus.parent = dev;
->  
-> -	ret = mdiobus_register(&fec->miibus);
-> +	ret = eth_register(edev);
->  	if (ret)
->  		goto free_receive_packets;
->  
-> -	ret = eth_register(edev);
-> +	ret = mdiobus_register(&fec->miibus);
->  	if (ret)
-> -		goto unregister_mdio;
-> +		goto unregister_eth;
->  
->  	return 0;
->  
-> -unregister_mdio:
-> -	mdiobus_unregister(&fec->miibus);
-> +unregister_eth:
-> +	eth_unregister(edev);
->  free_receive_packets:
->  	fec_free_receive_packets(fec, FEC_RBD_NUM, FEC_MAX_PKT_SIZE);
->  free_xbd:
-> 
-
+diff --git a/arch/mips/include/asm/pbl_nmon.h b/arch/mips/include/asm/pbl_nmon.h
+index 7c8ec9d204f..73e4a9d2e9c 100644
+--- a/arch/mips/include/asm/pbl_nmon.h
++++ b/arch/mips/include/asm/pbl_nmon.h
+@@ -5,6 +5,9 @@
+  * Copyright (C) 2013 Antony Pavlov <antonynpavlov@gmail.com>
+  */
+ 
++#ifndef __ASM_PBL_NMON_H
++#define __ASM_PBL_NMON_H
++
+ #include <mach/debug_ll.h>
+ 
+ #define CODE_ESC	0x1b
+@@ -286,3 +289,5 @@
+ #endif /* CONFIG_NMON */
+ 	.set	pop
+ 	.endm
++
++#endif /* __ASM_PBL_NMON_H */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.0
 
 
 
