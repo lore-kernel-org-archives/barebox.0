@@ -1,69 +1,65 @@
-Delivery-date: Tue, 02 Jan 2024 12:52:29 +0100
+Delivery-date: Tue, 02 Jan 2024 17:57:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKdJt-000Y1K-1v
+	id 1rKi4k-000q43-12
 	for lore@lore.pengutronix.de;
-	Tue, 02 Jan 2024 12:52:29 +0100
+	Tue, 02 Jan 2024 17:57:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKdJs-0000BH-J2
-	for lore@pengutronix.de; Tue, 02 Jan 2024 12:52:29 +0100
+	id 1rKi4j-0005HM-AV
+	for lore@pengutronix.de; Tue, 02 Jan 2024 17:57:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=h+Izql1gtSMZ3B/XNPZZoC56b9UZ1VM3vZeoNy51TbM=; b=vCVKljre4+i1qCmQfLo2y0K77d
-	vlaLSm7NXk+Wx73+bz1/GRFAQPekkjWgSGV+BV12DXu+uTie6nJQ7oXyuXojSqqKHro3cQd8RmJxB
-	X6LpeY9+O03loR5U4yFigg3FPG3c9+HOnW/vUTQh9Or3+/3Ki5+79gtzwnGAd3JzrLoDtbGHCFtrm
-	TyKqlK6HfxKBy2Hg4SHiQqT7zZdyPwGqVDOPqy65LlWVmxeVQy/eDQZL1mSeVTsWDjD/RpxE4N662
-	lofCSjnSveUWzjAPuPv5fr5mfbgp1mI1KEFJfKv2F9RyNFPX/U+9azxa/TdTP9wwUIABsqZFBTRbC
-	i/GTqx9g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=d11JFNdSfu1sB05ZNceTdSHvImP4zghJi5zyiBchMKY=; b=f5/fmCOV8zEmDSxhBKgAJ318xr
+	6hUqWxTsaydgIuVlff7GORZLkio1z1gnIlMGVb9ibSovvr1HHBJX+bPmZwG2qOporVoxUauXoPI/9
+	MVOmmlEbqwD2QROWKMeIMU+WuOb4Td+J3u16OXJTBRXolmy38txQEshufCA4W0EHzXEgEk6sDwOh5
+	9mjvx8mgoNxrIoLrbN36h3W5aoN6unBxT797wcMturOU9PAtLCjcl0fLf8MMwApTGFjoEjGPJXFpW
+	ivUfYXv+8SxFOS5YN7rHpkPmxrkjbFAQaWe2+0ogtjSVU0smO+S1pZq0kVLaOp19XZap640ccimlW
+	nWzIRKrA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKdIr-007tCt-0i;
-	Tue, 02 Jan 2024 11:51:25 +0000
+	id 1rKi3P-008Wwe-0G;
+	Tue, 02 Jan 2024 16:55:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKdIn-007t9V-0x
+	id 1rKi3K-008WwB-3C
 	for barebox@lists.infradead.org;
-	Tue, 02 Jan 2024 11:51:23 +0000
+	Tue, 02 Jan 2024 16:55:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rKdIl-0008PQ-8D; Tue, 02 Jan 2024 12:51:19 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rKi3H-0004xg-AR; Tue, 02 Jan 2024 17:55:39 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rKdIj-003Ag5-Ow; Tue, 02 Jan 2024 12:51:18 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rKdIk-009uIR-Pf; Tue, 02 Jan 2024 12:51:18 +0100
-Date: Tue, 2 Jan 2024 12:51:18 +0100
-To: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
-Message-ID: <20240102115118.GE1318922@pengutronix.de>
-References: <20231218-doc-missing-empty-lines-v1-1-d18280ebafba@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rKi3F-003Dqx-RV; Tue, 02 Jan 2024 17:55:38 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rKi3G-005nF4-2d;
+	Tue, 02 Jan 2024 17:55:38 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  2 Jan 2024 17:55:37 +0100
+Message-Id: <20240102165537.1378708-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20231218-doc-missing-empty-lines-v1-1-d18280ebafba@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240102_035121_331620_512A45DE 
-X-CRM114-Status: GOOD (  20.60  )
+X-CRM114-CacheID: sfid-20240102_085543_057106_98853A4F 
+X-CRM114-Status: UNSURE (   9.33  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,61 +82,38 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] doc: user: barebox: add missing empty lines
+Subject: [PATCH master] crypto: caam - remove overly verbose debug print
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Dec 18, 2023 at 10:58:07AM +0100, Stefan Kerkmann wrote:
-> These where missed in b90e9ad8f7922b6a694c119017168bea1b6e16a1 and thus
-> didn't render the code blocks.
-> 
-> Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-> ---
->  Documentation/user/barebox.rst | 2 ++
->  1 file changed, 2 insertions(+)
-> 
+We can already read /dev/hwrng to get the randomness as generated by the
+device. Printing 32K bytes of randomness to the log (or even worse to
+console) is just not useful for debugging. There are debug prints for
+the job descriptors and Linux doesn't have this print too since commit
+2c5e88dc90f5 ("crypto: caam - simplify RNG implementation"), so let's
+drop it in barebox too.
 
-Applied, thanks
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/crypto/caam/caamrng.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
-Sascha
-
-
-> diff --git a/Documentation/user/barebox.rst b/Documentation/user/barebox.rst
-> index ea4db28d08..43e5a631ba 100644
-> --- a/Documentation/user/barebox.rst
-> +++ b/Documentation/user/barebox.rst
-> @@ -219,6 +219,7 @@ Another option is to generate a FIT image containing the generic DT image and a
->  matching device tree with ``mkimage``:
->  
->  .. code-block:: console
-> +
->    sh: mkimage --architecture arm \
->        --os linux \
->        --type kernel \
-> @@ -233,6 +234,7 @@ This FIT image can then be loaded by U-Boot and executed just like a regular
->  Linux kernel:
->  
->  .. code-block:: console
-> +
->    U-Boot: tftp $fit_addr barebox-dt-2nd.fit
->    U-Boot: bootm $fit_addr
->  
-> 
-> ---
-> base-commit: ed433cbef99860b39dfbc2d36983026cced54583
-> change-id: 20231218-doc-missing-empty-lines-12a48d7dba82
-> 
-> Best regards,
-> -- 
-> Stefan Kerkmann <s.kerkmann@pengutronix.de>
-> 
-> 
-> 
-
+diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
+index ede35cea7f80..ea154913cab6 100644
+--- a/drivers/crypto/caam/caamrng.c
++++ b/drivers/crypto/caam/caamrng.c
+@@ -91,9 +91,6 @@ static void rng_done(struct device *jrdev, u32 *desc, u32 err, void *context)
+ 
+ 	/* Buffer refilled, invalidate cache */
+ 	dma_sync_single_for_cpu(jrdev, bd->addr, RN_BUF_SIZE, DMA_FROM_DEVICE);
+-
+-	print_hex_dump_debug("rng refreshed buf@: ", DUMP_PREFIX_OFFSET,
+-			     16, 4, bd->buf, RN_BUF_SIZE, 1);
+ }
+ 
+ static inline int submit_job(struct caam_rng_ctx *ctx, int to_current)
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
