@@ -1,70 +1,69 @@
-Delivery-date: Tue, 02 Jan 2024 12:34:05 +0100
+Delivery-date: Tue, 02 Jan 2024 12:35:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKd26-000Wr8-15
+	id 1rKd2z-000Wtc-0E
 	for lore@lore.pengutronix.de;
-	Tue, 02 Jan 2024 12:34:05 +0100
+	Tue, 02 Jan 2024 12:35:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKd25-0006fk-82
-	for lore@pengutronix.de; Tue, 02 Jan 2024 12:34:05 +0100
+	id 1rKd2y-0006oj-25
+	for lore@pengutronix.de; Tue, 02 Jan 2024 12:35:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
+	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AEfwRnkTSCvr+pfLZTbbsTMbqMAPAgVTwRtdlhefv+w=; b=PFCNOVGEJWy7EdS6mdMkc2G/+2
-	dEsIPpey/5Wk43AzGGKFHH7SSNe3R1FgqW1OcDJk0vTm14Kvtixg5YPhUub52umvW4cHKrwqx3SAR
-	3tnNeCWDW8SX/Fjq+iByeyl5Ihhf98CA7uDzH6tSMKrrFIwq/6yUwmHsXY7x36WOsgWtXY/j7Cwun
-	xdXnNozyDeQ4q/a9saSUfn3r7cdJss8GrI93PsBLwNE/XDNYOrh6n+NPdeUVqcsky7ALknQYu8G0E
-	xQgreQIB/mzd9Y0tAbxRnI7RQ/k/w31xu40BpR4TrcwEgAl0zDJUUfAvKC3nJCPplYdYZJMJA1YvA
-	f13SuCnw==;
+	bh=+GKbHry23byGgSAMPLkMD8WyE+omtq1yN0IKxP4gPf4=; b=gJSP6EwbL22KCOpaI2tou0cRx5
+	ggJHKphClPUUx9eO9rzJ7pXkypSFmn8n2928a2HGDIdSXKM59JqxzCC24G+DKxa0EydwmY+WGDjKx
+	3o9BXNi7DvELrCZQbv7qZtSKFIIunU0ZZL1DnomvpLcY4UMCLpQHFP+hPlTe7ADv+DKfXz60XUl5o
+	IVJGVw+8I7ZlV9e2wnsa4N9sfbPTPn4hQtbhv41LNLqGVyjPv0FSWOKqIkDoXGvaYfUJhkszmvscs
+	MOSWCHF82ivJgaRWm2YCEmQHrkR444AMPYMQnBXsg/E9F+b/q2H9P4XMAZcgD+Hqj3WN72m7HIsiK
+	O53MuNdw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKd0s-007j97-2h;
-	Tue, 02 Jan 2024 11:32:50 +0000
+	id 1rKd1y-007jPq-2F;
+	Tue, 02 Jan 2024 11:33:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKd0p-007j8S-0s
+	id 1rKd1v-007jOd-1m
 	for barebox@lists.infradead.org;
-	Tue, 02 Jan 2024 11:32:48 +0000
+	Tue, 02 Jan 2024 11:33:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rKd0k-0006Sd-Ee; Tue, 02 Jan 2024 12:32:42 +0100
+	id 1rKd1u-0006da-BY; Tue, 02 Jan 2024 12:33:54 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rKd0i-003AbP-VS; Tue, 02 Jan 2024 12:32:42 +0100
+	id 1rKd1s-003AbW-SM; Tue, 02 Jan 2024 12:33:53 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rKd0j-009uD9-Vn; Tue, 02 Jan 2024 12:32:41 +0100
-Date: Tue, 2 Jan 2024 12:32:41 +0100
-From: Sascha Hauer <sha@pengutronix.de>
-To: Bastian Krause <bst@pengutronix.de>
-Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Message-ID: <20240102113241.GB1318922@pengutronix.de>
-References: <20231220104739.10700-1-bst@pengutronix.de>
- <20240102091538.GW1318922@pengutronix.de>
+	id 1rKd1t-009uDW-T1; Tue, 02 Jan 2024 12:33:53 +0100
+Date: Tue, 2 Jan 2024 12:33:53 +0100
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20240102113353.GC1318922@pengutronix.de>
+References: <20240102091837.250238-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240102091538.GW1318922@pengutronix.de>
+In-Reply-To: <20240102091837.250238-1-m.felsch@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
+From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240102_033247_328393_61027C6F 
-X-CRM114-Status: GOOD (  27.07  )
+X-CRM114-CacheID: sfid-20240102_033355_665908_5CC3215F 
+X-CRM114-Status: GOOD (  20.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,84 +86,41 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2] i2c: add pmic_reg_read() for PBL use
+Subject: Re: [PATCH] mtd: spi-nor: add support for Winbond w25q256jwm
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Jan 02, 2024 at 10:15:38AM +0100, Sascha Hauer wrote:
-> On Wed, Dec 20, 2023 at 11:47:39AM +0100, Bastian Krause wrote:
-> > Add a common PMIC read function to PBL which allows easy porting of
-> > U-Boot's pmic_reg_read() in lowlevel board code.
-> > 
-> > Signed-off-by: Bastian Krause <bst@pengutronix.de>
-> > ---
-> > Changes since (implicit) v1:
-> > - make function static inline as suggested by Ahmad
-> > - change void *buf to u32 *val to resemble's U-Boot's pmic_reg_read() as
-> >   suggested by Ahmad
-> > ---
-> >  include/pbl/pmic.h | 24 ++++++++++++++++++++++++
-> >  1 file changed, 24 insertions(+)
-> > 
-> > diff --git a/include/pbl/pmic.h b/include/pbl/pmic.h
-> > index 0f882c5649d..4eeee31d46c 100644
-> > --- a/include/pbl/pmic.h
-> > +++ b/include/pbl/pmic.h
-> > @@ -9,6 +9,30 @@ struct pmic_config {
-> >  	u8 val;
-> >  };
-> >  
-> > +static inline void pmic_reg_read(struct pbl_i2c *i2c, int addr, u8 reg, u32 *val)
+On Tue, Jan 02, 2024 at 10:18:37AM +0100, Marco Felsch wrote:
+> Add entry for Winbond w25q256jwm. Flags are aligned with the Linux
+> spi-nor/winbond driver.
 > 
-> I didn't notice there is a v2 when replying to v1, so here again:
-> 
-> Why not make *val a u8 *?
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  drivers/mtd/spi-nor/spi-nor.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
-I renamed this to pmic_reg_read8() and changed the data type to u8 *,
-see the patch I just sent.
+Applied, thanks
 
 Sascha
 
 > 
-> Sascha
-> 
-> > +{
-> > +	int ret;
-> > +	u8 buf[1];
-> > +	struct i2c_msg msg[] = {
-> > +		{
-> > +			.addr = addr,
-> > +			.buf = &reg,
-> > +			.len = 1,
-> > +		}, {
-> > +			.addr = addr,
-> > +			.flags = I2C_M_RD,
-> > +			.buf = buf,
-> > +			.len = 1,
-> > +		},
-> > +	};
-> > +
-> > +	ret = pbl_i2c_xfer(i2c, msg, ARRAY_SIZE(msg));
-> > +	if (ret != ARRAY_SIZE(msg))
-> > +		pr_err("Failed to read from pmic@%x: %d\n", addr, ret);
-> > +
-> > +	*val = buf[0];
-> > +}
-> > +
-> >  static void pmic_reg_write(struct pbl_i2c *i2c, int addr, u8 reg, u8 val)
-> >  {
-> >  	int ret;
-> > -- 
-> > 2.39.2
-> > 
-> > 
-> > 
-> 
+> diff --git a/drivers/mtd/spi-nor/spi-nor.c b/drivers/mtd/spi-nor/spi-nor.c
+> index 5ad95ff50d1b..1773db09a1ab 100644
+> --- a/drivers/mtd/spi-nor/spi-nor.c
+> +++ b/drivers/mtd/spi-nor/spi-nor.c
+> @@ -874,6 +874,8 @@ static const struct spi_device_id spi_nor_ids[] = {
+>  	{ "w25q128", INFO(0xef7018, 0, 64 * 1024, 256, SECT_4K) },
+>  	{ "w25q256", INFO(0xef4019, 0, 64 * 1024, 512, SECT_4K |
+>  		SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ | SPI_NOR_QUAD_WRITE | SPI_NOR_4B_OPCODES) },
+> +	{ "w25q256jwm", INFO(0xef8019, 0, 64 * 1024, 512, SECT_4K |
+> +		SPI_NOR_HAS_LOCK | SPI_NOR_HAS_TB | SPI_NOR_DUAL_READ | SPI_NOR_QUAD_READ) },
+>  
+>  	/* Catalyst / On Semiconductor -- non-JEDEC */
+>  	{ "cat25c11", CAT25_INFO(  16, 8, 16, 1, SPI_NOR_NO_ERASE | SPI_NOR_NO_FR) },
 > -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 2.39.2
+> 
+> 
 > 
 
 -- 
