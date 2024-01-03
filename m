@@ -1,82 +1,66 @@
-Delivery-date: Wed, 03 Jan 2024 19:33:13 +0100
+Delivery-date: Wed, 03 Jan 2024 19:33:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL63G-002Nel-0e
+	id 1rL63H-002NfL-2B
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 19:33:13 +0100
+	Wed, 03 Jan 2024 19:33:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL638-0003zl-FF
-	for lore@pengutronix.de; Wed, 03 Jan 2024 19:33:13 +0100
+	id 1rL639-00040u-9T
+	for lore@pengutronix.de; Wed, 03 Jan 2024 19:33:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jjfZCzF780qFoENpVXBX7nl58Rr0cdf0Tve/ZtM5vr8=; b=C97yqR7yp3n+2B5t/iHM20uhdD
-	Y9wYN3AEfZpsNfVC80sEPwjlOmdh8krB6tJ9qyH/4nhhRj+MFg/1Dy55RnL2+Hg1fJCG4MAyY/5ZZ
-	yt0PhvuMy+t4JvND6mv8bLUZQibulOKzZPkMD2jqRpDibTZRHB1/LZLtSjAdFX3qq0Ajo0AlNIhHF
-	HPCGR8JV9G8Ojb1/wkl8LQIoS937gmF4vL82rH6THz6zNjWzAIWsihlX4dRDfx4/sLgF2AFVPhCGc
-	jhjNLrTGrGM2tj3vEPa1t5eEWOYLU2fFipX6noFTCmVnnysyfHT8R9Yugkj5GtYimTKETn4IS8H58
-	UiJWgfpQ==;
+	bh=cIYvhfeLu4bEKJxsw2DmK9OXDcqGAhl6CkcVh3+TDiw=; b=hhWg8LDlq+u/G18MVJZvtnz7af
+	6N43YB7PGOWe1luI42jm2Jx+4UMNroC0V5riAz4rkSZUSG0AcATO/VOBdc2m4OWZ3eMWBgkW0EyDr
+	o1xLp6TxH7ezhxNTOYEtEaDFowBqwTpc3PQ+fdzQFa4J4870+15mmlGSGDiqo9ZU8TSVELi7/Ptkj
+	qsVrvgcsk25bivlC+KnPPprwtlJTNMPrVXrlQ6asC739o26fAf6AB2MrJOCCY5Gd4OFnPAPhqTlw7
+	b2a3pfBbYoFzObnvHwcfYmzVdOImiyFzYl8+Ke9rJB8zgnO1mJGWylcnPvc/EBIgBwvatTf8hNQiv
+	edAtyx5Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL61n-00BhvJ-1s;
-	Wed, 03 Jan 2024 18:31:43 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL61B-00BhEa-0m
-	for barebox@bombadil.infradead.org;
-	Wed, 03 Jan 2024 18:31:05 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=jjfZCzF780qFoENpVXBX7nl58Rr0cdf0Tve/ZtM5vr8=; b=oXNHmmV3YrGBdzoMzmU6k0xgvW
-	sMLWEWGLGszNnRpcQW7Sjt1n+n76OT9c4F2zUvUhadIllI1bg3W/a4NCFENI4LaMKCQo8EKZM9JqX
-	rNApzYmvuLXi4MTYe9iVEVRGDBkQSf/3jPfh28BKeag/QQL1NIrdJxYaza4xoG9XhEo4+AaXayyQy
-	rcA79Mny9BfTOqOyzQfbEZ3DscP3MIG2XviTIBl2QRQd0t/8peyzMp1mrbao95aFDFUIaV8SxclP9
-	Wa3J5XkC8yysIXNhINwL5wnZqd0Uh5wah1GTZHILBeEdEU7mTgSmjVtrO3o1FCcvJnxsCZipkyZuj
-	P46C/4ow==;
+	id 1rL61o-00Bhy5-2b;
+	Wed, 03 Jan 2024 18:31:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL611-005eC7-0Z
+	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1rL615-00Bh1H-29
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 18:31:04 +0000
+	Wed, 03 Jan 2024 18:31:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL610-0001T4-4n; Wed, 03 Jan 2024 19:30:54 +0100
+	id 1rL614-0001ha-1d; Wed, 03 Jan 2024 19:30:58 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL60z-000Atu-ON; Wed, 03 Jan 2024 19:30:53 +0100
+	id 1rL613-000Axy-LG; Wed, 03 Jan 2024 19:30:57 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k5-001j4X-24;
-	Wed, 03 Jan 2024 19:13:25 +0100
+	id 1rL5k2-001j4X-1I;
+	Wed, 03 Jan 2024 19:13:22 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:13:04 +0100
-Message-Id: <20240103181312.409668-105-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:11:52 +0100
+Message-Id: <20240103181312.409668-33-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_183055_488399_0C8D59CF 
-X-CRM114-Status: UNSURE (   8.09  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240103_103059_705501_5D657DF0 
+X-CRM114-Status: GOOD (  11.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,30 +83,69 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 104/112] efi: devicepath: drop unused macro
+Subject: [PATCH 032/112] fs: remove unused member from struct nameidata
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is used no where, so it can just be dropped.
+A number of members in the struct are either unused or only ever written
+and never read. Drop them to tidy up the code.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/efi/device-path.h | 2 --
- 1 file changed, 2 deletions(-)
+ fs/fs.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/include/efi/device-path.h b/include/efi/device-path.h
-index 433233f38c0d..39221ca369de 100644
---- a/include/efi/device-path.h
-+++ b/include/efi/device-path.h
-@@ -324,8 +324,6 @@ struct efi_device_path_file_path {
- 	s16 path_name[];
+diff --git a/fs/fs.c b/fs/fs.c
+index ca1bcef1adf0..be0b38d8bc30 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1605,21 +1605,16 @@ enum {WALK_FOLLOW = 1, WALK_MORE = 2};
+ struct nameidata {
+ 	struct path	path;
+ 	struct qstr	last;
+-	struct inode	*inode; /* path.dentry.d_inode */
+ 	unsigned int	flags;
+-	unsigned	seq, m_seq;
+ 	int		last_type;
+ 	unsigned	depth;
+ 	int		total_link_count;
+ 	struct saved {
+ 		struct path link;
+ 		const char *name;
+-		unsigned seq;
+ 	} *stack, internal[EMBEDDED_LEVELS];
+ 	struct filename	*name;
+-	struct nameidata *saved;
+ 	struct inode	*link_inode;
+-	unsigned	root_seq;
  };
  
--#define SIZE_OF_FILEPATH_DEVICE_PATH offsetof(FILEPATH_DEVICE_PATH,path_name)
+ struct filename {
+@@ -1879,8 +1874,6 @@ static int follow_dotdot(struct nameidata *nd)
+ 
+ 	follow_mount(&nd->path);
+ 
+-	nd->inode = nd->path.dentry->d_inode;
 -
- #define DEVICE_PATH_SUB_TYPE_MEDIA_PROTOCOL               0x05
- struct efi_device_path_media_protocol {
- 	struct efi_device_path header;
+ 	return 0;
+ }
+ 
+@@ -1961,7 +1954,6 @@ static inline int step_into(struct nameidata *nd, struct path *path,
+ 	   !(flags & WALK_FOLLOW || nd->flags & LOOKUP_FOLLOW)) {
+ 		/* not a symlink or should not follow */
+ 		path_to_nameidata(path, nd);
+-		nd->inode = inode;
+ 		return 0;
+ 	}
+ 
+@@ -2185,7 +2177,6 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
+ 		return s;
+ 	} else {
+ 		get_pwd(&nd->path);
+-		nd->inode = nd->path.dentry->d_inode;
+ 		return s;
+ 	}
+ 
 -- 
 2.39.2
 
