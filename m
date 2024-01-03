@@ -1,60 +1,60 @@
-Delivery-date: Wed, 03 Jan 2024 15:11:05 +0100
+Delivery-date: Wed, 03 Jan 2024 15:13:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL1xZ-0023vQ-2j
+	id 1rL1zh-0024Kn-25
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 15:11:05 +0100
+	Wed, 03 Jan 2024 15:13:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL1xY-00033q-OG
-	for lore@pengutronix.de; Wed, 03 Jan 2024 15:11:05 +0100
+	id 1rL1zg-0003bg-Hl
+	for lore@pengutronix.de; Wed, 03 Jan 2024 15:13:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Mdqf+H6XAyapMc9sYDxQZyN82HklmzUQ0WcPFsITzNw=; b=rnEHzpwdiI4j4hbaQinoJL6yl0
-	FtI09RD8f4CIrShs8qfBgSHRuZj0LjkFYp+j6gyIoEcMcE+MfkZkFVVb4G8wGBBS1SHE8aTvtnTKR
-	I2d2GAk8c3EM8J78uF7+V0sFdn9mf++lheEmFIJ/Wn1H+S8YeN5JRRYmEEc8XMgaULyxp33b7Ek9u
-	OBlHe7psNm6F7lecqytICmF5Gs7rTuWADhPsswsgW/pqf2gLBdtuqTttyrDEILHNTkn3pxJ8OWIk6
-	iIz5vkMyuNxdJ1dos0robwIgTbi3e1xlWpcCTjTf6M9RdKOnPwTA0HHhRqvdpf7byHxkQ18P7VbkD
-	EP160zwA==;
+	bh=LOpb8QQQmcO7FrzVHEzh6EqYU2dl3FSEJC25GbYxr/Q=; b=pY4BXTMdNwfpA96RmgfM/+tqa6
+	CY48WvRi1oFjEMzu049UIPQI3aufuCNsqN3iVOB+ACsc0KlG4b1/U6macfk5hIYjjV7FhO5HZ2l6i
+	SPlftbTQ84WB4dztp2jCaV0tRpgXuLrhBAll1B//iIW11+cNwzTx2WqZ5hdYko5D1wIxFs0Ikc+p7
+	QuE2ngs2UhJiSDYYhZuN3sIBfCtYUZr8XoQ6xKCq991ppUzeibfcoyYAxr3kO0XgZFLjpRt+SHZXA
+	VfSbwhUJ3lPolSC4wbCDjSRQIcUUSwWYYEsogxakm+7GvMMdAKcaipLTrjwCr6Q/nIJ15NFH0qMG+
+	Tx8TXHdg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL1wb-00B49t-0f;
-	Wed, 03 Jan 2024 14:10:05 +0000
+	id 1rL1yj-00B4Oy-11;
+	Wed, 03 Jan 2024 14:12:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL1wY-00B495-2M
+	id 1rL1yg-00B4Of-2Q
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 14:10:04 +0000
+	Wed, 03 Jan 2024 14:12:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rL1wX-0002lp-HZ; Wed, 03 Jan 2024 15:10:01 +0100
+	id 1rL1yf-0003Ku-GQ; Wed, 03 Jan 2024 15:12:13 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rL1wX-0008ZJ-4x; Wed, 03 Jan 2024 15:10:01 +0100
+	id 1rL1yf-0008ZW-44; Wed, 03 Jan 2024 15:12:13 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rL1wX-00A4g4-2h; Wed, 03 Jan 2024 15:10:01 +0100
-Date: Wed, 3 Jan 2024 15:10:01 +0100
+	id 1rL1yf-00A4go-1o; Wed, 03 Jan 2024 15:12:13 +0100
+Date: Wed, 3 Jan 2024 15:12:13 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20240103141001.GJ1318922@pengutronix.de>
-References: <20240103101344.2628970-1-a.fatoum@pengutronix.de>
+Message-ID: <20240103141213.GK1318922@pengutronix.de>
+References: <20240103101354.2629106-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240103101344.2628970-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20240103101354.2629106-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -62,8 +62,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_061002_795668_69B63D5B 
-X-CRM114-Status: GOOD (  23.51  )
+X-CRM114-CacheID: sfid-20240103_061214_811605_0E771F18 
+X-CRM114-Status: GOOD (  28.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,82 +86,74 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master 1/3] test: self: ramfs: fix null pointer
- dereference on error
+Subject: Re: [PATCH master] virtio: pci: don't re-enable with 0 as argument
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Jan 03, 2024 at 11:13:42AM +0100, Ahmad Fatoum wrote:
-> expect_success is meant for return values of functions that return
-> negative error codes and as such compares the first argument to be
-> zero or greater, which means PTR_ERR_OR_ZERO will treat NULL pointers as
-> valid all the same leading to NULL pointer dereferences should the test
-> fail instead of a descriptive error message. Fix this by translating
-> NULL pointer to -errno or -EFAULT if errno is unset.
+On Wed, Jan 03, 2024 at 11:13:54AM +0100, Ahmad Fatoum wrote:
+> Qemu prints an error during barebox shutdown when virtio-net was used:
+> 
+>   qemu-system-aarch64: wrong value for queue_enable 0
+> 
+> This warning was added a few years back in Qemu commit 10d35e5819:
+> 
+>  | virtio-pci: fix queue_enable write
+>  |
+>  | Spec said: The driver uses this to selectively prevent the device from
+>  | executing requests from this virtqueue. 1 - enabled; 0 - disabled.
+>  |
+>  | Though write 0 to queue_enable is forbidden by the spec, we should not
+>  | assume that the value is 1.
+>  |
+>  | Fix this by ignore the write value other than 1.
+>  |
+>  | Signed-off-by: Jason Wang <jasowang@redhat.com>
+>  | Message-Id: <20200610054351.15811-1-jasowang@redhat.com>
+>  | Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+>  | Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+>  | Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+>  | Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+>  | Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
+>  | Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> 
+> Even older Qemu versions actually marked the virtqueue enabled when
+> queue_enable was written with any value, we should really stop writing
+> anything, but 1 into queue_enable in the removal path.
+> 
+> We already reset before deleting the virtqueues, which disables them.
+> This aligns us with what Linux is doing, except that Linux has some
+> MSIX cleanup logic in virtio_pci_del_vq. We don't have that, but we
+> will keep the function anyway to simplify future synchronization.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  test/self/ramfs.c | 17 +++++++++++++----
->  1 file changed, 13 insertions(+), 4 deletions(-)
+>  drivers/virtio/virtio_pci_modern.c | 8 --------
+>  1 file changed, 8 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/test/self/ramfs.c b/test/self/ramfs.c
-> index bce396dc171e..1bc2b3b068f0 100644
-> --- a/test/self/ramfs.c
-> +++ b/test/self/ramfs.c
-> @@ -27,7 +27,16 @@ BSELFTEST_GLOBALS();
->  	__cond; \
->  })
+> diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
+> index 26eefba85bea..2dd369b02e9a 100644
+> --- a/drivers/virtio/virtio_pci_modern.c
+> +++ b/drivers/virtio/virtio_pci_modern.c
+> @@ -223,14 +223,6 @@ static struct virtqueue *virtio_pci_setup_vq(struct virtio_device *vdev,
 >  
-> +static inline int ptr_to_err(const void *ptr)
-> +{
-> +	if (ptr)
-> +		return PTR_ERR_OR_ZERO(ptr);
-> +
-> +	return -errno ?: -EFAULT;
-> +}
-> +
->  #define expect_success(ret, ...) __expect((ret), (ret) >= 0, __VA_ARGS__)
-> +#define expect_ptrok(ptr, ...) expect_success(ptr_to_err(ptr), __VA_ARGS__)
->  #define expect_fail(ret, ...) __expect((ret), (ret) < 0, __VA_ARGS__)
+>  static void virtio_pci_del_vq(struct virtqueue *vq)
+>  {
+> -	struct virtio_pci_device *vp_dev = to_vp_device(vq->vdev);
+> -	unsigned int index = vq->index;
+> -
+> -	iowrite16(index, &vp_dev->common->queue_select);
+> -
+> -	/* Select and deactivate the queue */
+> -	iowrite16(0, &vp_dev->common->queue_enable);
+> -
+>  	vring_del_virtqueue(vq);
+>  }
 >  
->  static inline int get_file_count(int i)
-> @@ -101,7 +110,7 @@ static void test_ramfs(void)
->  		}
->  
->  		dir = opendir(dname);
-> -		if (!expect_success(PTR_ERR_OR_ZERO(dir), "opening parent directory"))
-> +		if (!expect_ptrok(dir, "opening parent directory"))
->  			continue;
->  
->  		j = 0;
-> @@ -120,11 +129,11 @@ static void test_ramfs(void)
->  	}
->  
->  	oldpwd = pushd(dname);
-> -	if (!expect_success(oldpwd != NULL ? 0 : -EINVAL, "pushd()"))
-> +	if (!expect_ptrok(oldpwd, "pushd()"))
->  		goto out;;
->  
->  	dir = opendir(".");
-> -	if (!expect_success(PTR_ERR_OR_ZERO(dir), "opening parent directory"))
-> +	if (!expect_ptrok(dir, "opening parent directory"))
->  		goto out;
->  
->  	i = 1;
-> @@ -183,7 +192,7 @@ static void test_ramfs(void)
->  		expect_success(ret, "write_file()");
->  
->  		buf = read_file("test/a/b/c/d/e/f/g/h/i/j/k/l/FILE", NULL);
-> -		if (expect_success(PTR_ERR_OR_ZERO(buf), "read_file()")) {
-> +		if (expect_ptrok(buf, "read_file()")) {
->  			expect_success(memcmp(buf, ARRAY_AND_SIZE(hello)),
->  				       "read_file() content");
->  		}
 > -- 
 > 2.39.2
 > 
