@@ -1,16 +1,16 @@
-Delivery-date: Wed, 03 Jan 2024 19:36:56 +0100
+Delivery-date: Wed, 03 Jan 2024 19:36:57 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL66q-002OHN-2n
+	id 1rL66r-002OHr-1l
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 19:36:56 +0100
+	Wed, 03 Jan 2024 19:36:57 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL66k-0008HZ-Qa
+	id 1rL66m-0008J4-3H
 	for lore@pengutronix.de; Wed, 03 Jan 2024 19:36:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,63 +18,63 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dvit1+M/JGv/htFqc0f3SrKRmV5c6nV8dRfkYxUSxvU=; b=CplI9Ds5BMyjd8OI2bA4EQ6Y1U
-	Y90c6eeUKxvR/e90LVs9a3eNWly5sNo9+5n8uRuJ5DY1ECW0vegwmw34+9QQiVH8uuC0U+MpXuPfR
-	cA7yZvSMTWdGQ8KHaemhg90L6HoXf19cvMhpWLp+2+0nLUObwFwIinXZNr9OfA6wtj2tECNCkrmMa
-	tqV8NzJhNdNHP4Nl+AeXl10kjq4k/jegHCXwAqzo/sR7uReTh3+eh6DdnLuAMaqMDjCto+L36QcdM
-	6tuSJa69OJun0gMM2d5sBBJBFlbammMIyFOUd8brjTK74VtvfpPqln5p2hsZblUpxXat4CEGWFkbr
-	9FKqZZ3A==;
+	bh=xQAvuCyUQxpP1JTCy/hL6zCa2iGTvTA3CQJFH/+VqOw=; b=yostHSVZ2AGLQuXTrdqQRsQtYx
+	Fne+tznQmmPe7uS0vrCx/WrO4gwkgYn/XEI0eDq/zBvbHov9NfHyU7HVUWXV/YzCEO9d9Arf4VSQ1
+	dktIBhZcyST37kYXcI1MUX/wQucZuJeZqg5Zo1DR0Ei7v44VbCucLOVCW1Dhs8f6Aq5Z6XKuOXR+R
+	86jWClGjhv/1PmYapIU6ZduuG7WVovEbaYK33bPdm+ZoNpX6NT5BfeEJcgBqZF4IYHnoRQ+dgXWui
+	pnjvIdu+QWRCicXkVsXxFKUULNCR39Pp/71NiomUwsQzZOHEelW36IK4/WScgxwNK3EqkWdw9Ocum
+	7vupTQ+A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL656-00BlsT-19;
-	Wed, 03 Jan 2024 18:35:08 +0000
+	id 1rL654-00Blob-1P;
+	Wed, 03 Jan 2024 18:35:06 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL61P-00BhTx-1I
+	id 1rL61O-00BhT9-2c
 	for barebox@bombadil.infradead.org;
-	Wed, 03 Jan 2024 18:31:19 +0000
+	Wed, 03 Jan 2024 18:31:18 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=dvit1+M/JGv/htFqc0f3SrKRmV5c6nV8dRfkYxUSxvU=; b=K7tUp4/uA3zcsivWBJaXsV5IsA
-	IfIb+xh2YmYy5aj4zDYQ9SyYH6CZbqf4gxtoBCWG/+cJMA66MOQTL6Xpkh3ZU9F9dQHcdJ6q5wHhE
-	cdHn6KrYQewqUyI4VskNkek1vJvBB6wFQSgozRz3lKx1JYFGmNqRbaJZrwRH3kJpGfaD2dCWulMtq
-	epM0Q50sjpAPDTv5ThjeYoduxkKxA+l7XxSpbaNQBfZ/W439pd0BLq/uhUmVQc0wiF/Wjj02Goq2k
-	JzDRSzgaReOKHOiP4ZZV6Uo4prbRKRvEnNRQRniMCbuTIVsB1zDTXFjrRK2GgeKQchWgA0Dw5lZXN
-	srvVArhA==;
+	bh=xQAvuCyUQxpP1JTCy/hL6zCa2iGTvTA3CQJFH/+VqOw=; b=k8EI/RhdHA5BSn5Z8DeOkmbef+
+	PUdfD7o8Byb85/GmanPBX9fqZLDssu1Q6ZdnHbnorIPINOWnyLCP1fKNAcNf7egQs8h5nY+igFsLQ
+	dip0QzFUkRJEVHNEHmUZSx6sKoeFZquQiu9lVL3cnafXaXI/SfRmBvnepJmrv346EEuatSrWflRq4
+	/1YYtUF8QAeu11kCH8KuvXAwuWMraTuUevu7g5qCH/F825jrqn6ig08/fp6SzVlAaTNwrEmK0UU+A
+	qbnZ1OPDoI4dBPoEuW+ODBb0y/Wu3N9kHx1AThviRLxwfU9lxktK6NvSrFg85cQdGF3GdUEYjsKV3
+	msHJZ6PQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1rL61H-00DImB-E7
-	for barebox@lists.infradead.org; Wed, 03 Jan 2024 18:31:18 +0000
+	id 1rL61H-00DImA-CZ
+	for barebox@lists.infradead.org; Wed, 03 Jan 2024 18:31:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL611-0001Xz-Ml; Wed, 03 Jan 2024 19:30:55 +0100
+	id 1rL611-0001Xp-L5; Wed, 03 Jan 2024 19:30:55 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL611-000AvW-A5; Wed, 03 Jan 2024 19:30:55 +0100
+	id 1rL611-000AvS-8B; Wed, 03 Jan 2024 19:30:55 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k5-001j4X-2e;
-	Wed, 03 Jan 2024 19:13:25 +0100
+	id 1rL5k2-001j4X-19;
+	Wed, 03 Jan 2024 19:13:22 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:13:08 +0100
-Message-Id: <20240103181312.409668-109-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:11:51 +0100
+Message-Id: <20240103181312.409668-32-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_183112_776674_393D3E8B 
-X-CRM114-Status: GOOD (  14.08  )
+X-CRM114-CacheID: sfid-20240103_183112_700713_0CA3F723 
+X-CRM114-Status: GOOD (  15.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,95 +97,144 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 108/112] lib: uuid: implement uuid/guid_parse
+Subject: [PATCH 031/112] fs: implement fdopendir and rewinddir
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We opencode this at least once in EFI code, so import the Linux
-definition and start using that instead.
+We will be using the incoming O_PATH support to implement the EFI file
+system protocol for when barebox acts as EFI loader.
+
+The protocol also requires being able to rewind iteration, so add
+support for that too.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- lib/uuid.c | 63 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 63 insertions(+)
+ fs/fs.c          | 55 ++++++++++++++++++++++++++++++++++++++++++++++--
+ include/dirent.h |  3 +++
+ 2 files changed, 56 insertions(+), 2 deletions(-)
 
-diff --git a/lib/uuid.c b/lib/uuid.c
-index db75be1725bf..c83227c0d1e7 100644
---- a/lib/uuid.c
-+++ b/lib/uuid.c
-@@ -8,9 +8,72 @@
+diff --git a/fs/fs.c b/fs/fs.c
+index 96ca0f110393..ca1bcef1adf0 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -2643,6 +2643,20 @@ int open(const char *pathname, int flags, ...)
+ }
+ EXPORT_SYMBOL(open);
  
- #include <linux/uuid.h>
- #include <module.h>
-+#include <linux/ctype.h>
- #include <linux/export.h>
++static const char *fd_getpath(int fd)
++{
++	FILE *f;
++
++	if (fd < 0)
++		return ERR_PTR(errno_set(fd));
++
++	f = fd_to_file(fd);
++	if (IS_ERR(f))
++		return ERR_CAST(f);
++
++	return f->path;
++}
++
+ int unlink(const char *pathname)
+ {
+ 	int ret;
+@@ -2710,9 +2724,11 @@ EXPORT_SYMBOL(symlink);
  
- const guid_t guid_null;
- EXPORT_SYMBOL(guid_null);
- const uuid_t uuid_null;
- EXPORT_SYMBOL(uuid_null);
-+
-+const u8 guid_index[16] = {3,2,1,0,5,4,7,6,8,9,10,11,12,13,14,15};
-+const u8 uuid_index[16] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
-+
-+/**
-+ * uuid_is_valid - checks if a UUID string is valid
-+ * @uuid:	UUID string to check
-+ *
-+ * Description:
-+ * It checks if the UUID string is following the format:
-+ *	xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-+ *
-+ * where x is a hex digit.
-+ *
-+ * Return: true if input is valid UUID string.
-+ */
-+bool uuid_is_valid(const char *uuid)
+ static void __release_dir(DIR *d)
+ {
+-	struct readdir_entry *entry, *tmp;
++	while (!list_empty(&d->entries)) {
++		struct readdir_entry *entry =
++			list_first_entry(&d->entries, struct readdir_entry, list);
+ 
+-	list_for_each_entry_safe(entry, tmp, &d->entries, list) {
++		list_del(&entry->list);
+ 		free(entry);
+ 	}
+ }
+@@ -2772,6 +2788,7 @@ DIR *opendir(const char *pathname)
+ 
+ 	d = xzalloc(sizeof(*d));
+ 	d->path = path;
++	d->fd = -ENOENT;
+ 
+ 	ret = __opendir(d);
+ 	if (ret)
+@@ -2790,6 +2807,27 @@ DIR *opendir(const char *pathname)
+ }
+ EXPORT_SYMBOL(opendir);
+ 
++DIR *fdopendir(int fd)
 +{
-+	unsigned int i;
++	const char *path;
++	DIR *dir;
 +
-+	for (i = 0; i < UUID_STRING_LEN; i++) {
-+		if (i == 8 || i == 13 || i == 18 || i == 23) {
-+			if (uuid[i] != '-')
-+				return false;
-+		} else if (!isxdigit(uuid[i])) {
-+			return false;
-+		}
-+	}
++	path = fd_getpath(fd);
++	if (IS_ERR(path))
++		return NULL;
 +
-+	return true;
++	dir = opendir(path);
++	if (!dir)
++		return NULL;
++
++	/* we intentionally don't increment the reference count,
++	 * as POSIX specifies that fd ownership is transferred
++	 */
++	dir->fd = fd;
++	return dir;
 +}
-+EXPORT_SYMBOL(uuid_is_valid);
++EXPORT_SYMBOL(fdopendir);
 +
-+static int __uuid_parse(const char *uuid, __u8 b[16], const u8 ei[16])
+ int closedir(DIR *dir)
+ {
+ 	if (!dir)
+@@ -2797,12 +2835,25 @@ int closedir(DIR *dir)
+ 
+ 	path_put(&dir->path);
+ 	__release_dir(dir);
++	if (dir->fd >= 0)
++		close(dir->fd);
+ 	free(dir);
+ 
+ 	return 0;
+ }
+ EXPORT_SYMBOL(closedir);
+ 
++int rewinddir(DIR *dir)
 +{
-+	static const u8 si[16] = {0,2,4,6,9,11,14,16,19,21,24,26,28,30,32,34};
-+	unsigned int i;
++	if (!dir)
++		return errno_set(-EBADF);
 +
-+	if (!uuid_is_valid(uuid))
-+		return -EINVAL;
++	__release_dir(dir);
 +
-+	for (i = 0; i < 16; i++) {
-+		int hi = hex_to_bin(uuid[si[i] + 0]);
-+		int lo = hex_to_bin(uuid[si[i] + 1]);
-+
-+		b[ei[i]] = (hi << 4) | lo;
-+	}
-+
-+	return 0;
++	return __opendir(dir);
 +}
++EXPORT_SYMBOL(rewinddir);
 +
-+int guid_parse(const char *uuid, guid_t *u)
-+{
-+	return __uuid_parse(uuid, u->b, guid_index);
-+}
-+EXPORT_SYMBOL(guid_parse);
-+
-+int uuid_parse(const char *uuid, uuid_t *u)
-+{
-+	return __uuid_parse(uuid, u->b, uuid_index);
-+}
-+EXPORT_SYMBOL(uuid_parse);
+ int readlink(const char *pathname, char *buf, size_t bufsiz)
+ {
+ 	int ret;
+diff --git a/include/dirent.h b/include/dirent.h
+index 6e77058d2903..4f7ff2a5f91f 100644
+--- a/include/dirent.h
++++ b/include/dirent.h
+@@ -14,13 +14,16 @@ typedef struct dir {
+ 	struct fs_driver *fsdrv;
+ 	struct dirent d;
+ 	void *priv; /* private data for the fs driver */
++	int fd;
+ 	struct path path;
+ 	struct list_head entries;
+ } DIR;
+ 
+ DIR *opendir(const char *pathname);
++DIR *fdopendir(int fd);
+ struct dirent *readdir(DIR *dir);
+ int unreaddir(DIR *dir, const struct dirent *d);
++int rewinddir(DIR *dir);
+ int closedir(DIR *dir);
+ 
+ #endif /* __DIRENT_H */
 -- 
 2.39.2
 
