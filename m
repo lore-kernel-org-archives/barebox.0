@@ -1,82 +1,85 @@
-Delivery-date: Wed, 03 Jan 2024 18:09:23 +0100
+Delivery-date: Wed, 03 Jan 2024 18:09:29 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL4k8-002GU7-0V
+	id 1rL4kD-002GUm-2M
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 18:09:23 +0100
+	Wed, 03 Jan 2024 18:09:29 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL4k7-0004zz-5b
-	for lore@pengutronix.de; Wed, 03 Jan 2024 18:09:23 +0100
+	id 1rL4kC-00052B-Oh
+	for lore@pengutronix.de; Wed, 03 Jan 2024 18:09:29 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=Q0fQzphAvTPVd8opOVIO4szl+xQJK+aOknVtajsLkns=; b=lOEyIiE3gTx40f
-	K7RTallpkNak5NZJ0jHqmv42SR0ZSTHgf6oDda+LxDN++5Jt0jANERjAGbg8TNq5xXsANTYg6SlpA
-	a+FRaj1rVKs7rRFabu0M6nz+K7GlCtLOqzlvNjHQzMsbWbKOoDlMTo5Hmql15X02avwm2L1jJonoh
-	FiNseganFdkV7vO9CeLQGPqQpVV8Kmz3imXirWr74swOpOQdXG4FZKsPwC/DGXaVD4jjRq7/rizoF
-	5JFLnWm2IX9oQcPYJtndIFQm2rS2LGNe4L+jDv1VKQT6ScTUcGA2otFLhTCrLQkpaPoaSAOWAl9uS
-	Z0YYe1cv7tGnNHeleykg==;
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=F3MMw8QpAl/PgzAlT7s9PGr7TUtibic0xV0t2w6J8zg=; b=bUN6P84TO9s1Fp
+	9eb5BbtZ7FpSIxPXz55pa5lYWSK2WTVmtjzDh9rVlIc4Pp/KnNs+OUStlCIu+19Z0LWhRW3z9SbyZ
+	7eGEHAM6UIay8CLaXN6iFHVJ8FPJwuVM4Lh7ahQAFPi95GMLQZbEgia76pv+0m1Nt7Rn1xSSQdPbS
+	dhUJedqC9b0oVYI1um1rCOMtt2Aj3ZpTdjF4ClIw3yRP7RSjpjLI1vWMdMF/5XIQM4kb1Rs8zduBF
+	zBU3gHtGrZ8NtyGC822UPFpcYATo1EHLqRdnyEV9vZ1c1wYXSue/WXQPYTH+wRKcRekmRJUUiIMZX
+	X5kP8Yxun5KXWeZodQ1A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL4i1-00BUUY-0I;
-	Wed, 03 Jan 2024 17:07:13 +0000
-Received: from mail-lf1-x12f.google.com ([2a00:1450:4864:20::12f])
+	id 1rL4i2-00BUVF-2t;
+	Wed, 03 Jan 2024 17:07:14 +0000
+Received: from mail-lj1-x235.google.com ([2a00:1450:4864:20::235])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL4hy-00BUSd-1c
+	id 1rL4hz-00BUTE-2e
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 17:07:11 +0000
-Received: by mail-lf1-x12f.google.com with SMTP id 2adb3069b0e04-50e741123acso8696577e87.0
-        for <barebox@lists.infradead.org>; Wed, 03 Jan 2024 09:07:08 -0800 (PST)
+	Wed, 03 Jan 2024 17:07:13 +0000
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2cd0c151cdcso22696831fa.2
+        for <barebox@lists.infradead.org>; Wed, 03 Jan 2024 09:07:11 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1704301627; x=1704906427; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q0fQzphAvTPVd8opOVIO4szl+xQJK+aOknVtajsLkns=;
-        b=OuMdRIoJX4+ukxDYes/0VEiJ+cToI/uP1b5NC1OS+uFJLve/lRAsYGY93bO+cxD05f
-         fhEYlmy8MTilTBkhtouzuNCq1nmZlY0tKmtPRQkOvmbjc9DuOkJo3QdN7onZeJ/sqBOP
-         W042/pU2ZJ+PXiiFMBBmiqe8ABWjFOOeNXkp91cgj96loFyG9mO7/BdJ6IL5Tl2ztBux
-         qumTyT4752nQeVDhjh3xajK9EwruCNCyWXJX9VRczZFyl/kfcgS+0MGPj1VMK6P7TOmL
-         f+pZXrkvpP3kCWVoz3FkPgQEyvp/CRjl4QD9Es76KXH8Jh9tfgy/xHwvHKK4rQS7p9AP
-         cYvA==
+        d=gmail.com; s=20230601; t=1704301629; x=1704906429; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=F3MMw8QpAl/PgzAlT7s9PGr7TUtibic0xV0t2w6J8zg=;
+        b=QP7vz+hQiBjg0/YTkULfJ9rPHHP18UE6b82d0+Yf4CmTAwEQt0F76zggu+Nhvnx4Lx
+         rKW5i+Ug4eTnxsGXIuqkaGlC898hz4IuL0rT1wGpvCFPSsSxKP0NBsJWr4dcdR6UDgF8
+         /4HeS4s9OZVaO/R1rAKSiRoKxtNWOb0pMdORls8wAGBOzWvxMpYtrmV5YNAH0C8cpzAG
+         jqRm2eIy+MVG1H7vsdrr5l8GBXGpSEJO7BI+9VWdvjZ1D0HfRU8ko/iCmtJSNXCtT5sI
+         tQSXpdX8VOSnWJxiBHY5MV/PAdh6ttJTRppQh/wxYPN0hV0u2ohsJYkS2uMLPkSi/aPj
+         zL2w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1704301627; x=1704906427;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Q0fQzphAvTPVd8opOVIO4szl+xQJK+aOknVtajsLkns=;
-        b=ikgdKZ9UCQxiWk+1lSsvRjF+Cmu5swBX9MMYsw6FgWg430RVc7B+DOw9/wv9xgeXm0
-         S7yJSIONc82eAEHEJNoPaldbLGqe8QUmEBS2ElGy8OfHyInjz6i3Jj2V7eVZ5eLJuq/5
-         zDOS6FfiTUvSL9m+xO7Xwo5Ktbnz4Bc37B7ntgpsQbljyioXMwdNr2vz8OIgdDrIHpNd
-         UyymjOkpNSoVI0dnSQM/LaeGSkiyJVXXEFks/HMabT7g1a5jTBnBnXiFOfACwGnVr/17
-         ymnkh3gSQNb87t5AdognfjIwM/yA7j/7TwBzd0fQKZG5w55aeQHopeRrPGjgLZFv8IWf
-         L0qA==
-X-Gm-Message-State: AOJu0YyMGZrhrgnoV2lJyGqm6mVUGtcvctv3OlgaE+YAZNG9YvoWR1Rd
-	KPxpaf64S5oryBlNLhgk/dDBOe3Krow=
-X-Google-Smtp-Source: AGHT+IH1yHgnm5Q5INtKRxm1CWSH8jJ+X3PM0vPUTkBW6L1kmxeDCbRUjsPzhyBJ+v9wX0QlqCPPBg==
-X-Received: by 2002:a05:6512:3183:b0:50e:9da7:3136 with SMTP id i3-20020a056512318300b0050e9da73136mr2262046lfe.75.1704301626925;
-        Wed, 03 Jan 2024 09:07:06 -0800 (PST)
+        d=1e100.net; s=20230601; t=1704301629; x=1704906429;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=F3MMw8QpAl/PgzAlT7s9PGr7TUtibic0xV0t2w6J8zg=;
+        b=ZCGbE+AOyIh0KLaGJx02wZu3LZQekDqaB+5So3ktsav64powz3G8LUlG3Lqs6JXiTB
+         3rKPAK9Gkg82x83iGNLF4xhVWVTFUH8PBMkH9s6owreVPk8l8xsp5BQB1t3g1n3F5cHJ
+         2x844Qm1WhTRr2GAGtTaDso6O7zONoneF9ti4hZ+uTOYMYmmq+AaEOJEU+Wh76DeGxg5
+         K2O7QQzckPy9+XHWiI5WYJJJVM7LMR9LjxcEHbH4Djef6bFZLkFB95EOUPfmLAuNVbXG
+         DcvtsyKh9R39PYtAgt4ydK1TlSJwqEIjPOxfsmOSsXe/6qt39Bpc5+Mlh3BbPpDlsOzL
+         KVYw==
+X-Gm-Message-State: AOJu0Yxq5USk9RqEUJrUe2TXRY2dYZxWvRq2UnEJGO00kCjim1CzKScs
+	oq7MZewoaPfRO526kaZB9F/QJ0F/bM0=
+X-Google-Smtp-Source: AGHT+IGgZm/AWyjLVBf/s55TDjYmPgVVa4m9S0pARm03DXMNet6v++xinvnBk0yNPuq0/kq5qAsq/A==
+X-Received: by 2002:a05:6512:b25:b0:50e:81e0:a8b8 with SMTP id w37-20020a0565120b2500b0050e81e0a8b8mr7006738lfu.2.1704301629125;
+        Wed, 03 Jan 2024 09:07:09 -0800 (PST)
 Received: from cinco.. (109-252-3-142.nat.spd-mgts.ru. [109.252.3.142])
-        by smtp.gmail.com with ESMTPSA id d25-20020a0565123d1900b0050e743b0b2csm3313364lfv.34.2024.01.03.09.07.06
+        by smtp.gmail.com with ESMTPSA id d25-20020a0565123d1900b0050e743b0b2csm3313364lfv.34.2024.01.03.09.07.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jan 2024 09:07:06 -0800 (PST)
+        Wed, 03 Jan 2024 09:07:08 -0800 (PST)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed,  3 Jan 2024 20:07:23 +0300
-Message-Id: <20240103170725.846378-1-antonynpavlov@gmail.com>
+Date: Wed,  3 Jan 2024 20:07:25 +0300
+Message-Id: <20240103170725.846378-3-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20240103170725.846378-1-antonynpavlov@gmail.com>
+References: <20240103170725.846378-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_090710_540603_681C6411 
-X-CRM114-Status: UNSURE (   4.82  )
+X-CRM114-CacheID: sfid-20240103_090711_869697_0240B7A9 
+X-CRM114-Status: UNSURE (   9.24  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -101,19 +104,38 @@ X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/2] uImage fixes
+Subject: [PATCH 2/2] common: Kconfig: TIMESTAMP: fix help
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Antony Pavlov (2):
-  uImage: use IS_ENABLED(CONFIG_TIMESTAMP)
-  common: Kconfig: TIMESTAMP: fix help
+At the moment CONFIG_TIMESTAMP help text is inherited from U-Boot.
+Fix it in accordance with barebox realities.
 
- common/Kconfig  |  7 +++----
- common/uimage.c | 22 ++++++++++++----------
- fs/uimagefs.c   | 24 ++++++++++--------------
- 3 files changed, 25 insertions(+), 28 deletions(-)
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ common/Kconfig | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
+diff --git a/common/Kconfig b/common/Kconfig
+index c8c23a8e03a..3efa8402b9b 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -533,12 +533,11 @@ config TIMESTAMP
+ 	bool
+ 	default y
+ 	select GREGORIAN_CALENDER
+-	prompt "print timestamp information from images"
++	prompt "print timestamp information from uImages"
+ 	help
+ 	  When CONFIG_TIMESTAMP is selected, the timestamp
+-	  (date and time) of an image is printed by image
+-	  commands like bootm or iminfo. This option is
+-	  automatically enabled when you select CFG_CMD_DATE .
++	  (date and time) of an uImage is printed by image
++	  commands like bootm or uimage.
+ 
+ menuconfig BOOTM
+ 	select UIMAGE
 -- 
 2.39.0
 
