@@ -1,66 +1,66 @@
-Delivery-date: Wed, 03 Jan 2024 19:34:30 +0100
+Delivery-date: Wed, 03 Jan 2024 19:34:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL64V-002Nsx-1B
+	id 1rL64j-002NuV-2H
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 19:34:30 +0100
+	Wed, 03 Jan 2024 19:34:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL64P-0005Uo-IO
-	for lore@pengutronix.de; Wed, 03 Jan 2024 19:34:30 +0100
+	id 1rL64c-0005lF-KY
+	for lore@pengutronix.de; Wed, 03 Jan 2024 19:34:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KzWjLS0uHmy2kcdcqpHc42Jf/iukZeW+ZdbtZlVZGgM=; b=SqjN61uVvb/LvRNyN1pW2MLLF6
-	o7FnnhXioXZE420KBq+XNIs1HDkWrbMzgCpqIJr/HTG7l5WIgTfs/vewardrIw9TqQ+/iy9ZZehKm
-	0hfEI2/nQK9lpSHU/zcT8BjES2LiFgiRTaw3DQgHegPXhCTWvw+X/0OSQOm8LXI5eCAxM22XAN/L2
-	9ABAoxS6KJ+4rd7+t/Ev8cCyWMBHcjw0ifaziaJJ6dw8CVjd0WxFGzrdqNS10qL3trmeEBPKEgWm0
-	eVYI/gTNajMeRWV87ebOETBtTTLEqfSWO641kzJFXW6MrFctlBNyo3zKp7raaGPrd9e23NRM29NTe
-	XZR3aptg==;
+	bh=/DOhdjgRrKUSJ5UfPbn81T99QK+lAhjkMzfWraDaNP4=; b=iM88M9f4nXuHDbTRE6U9ZZhzsT
+	NFrAIWpWOo2yEgn33HlY8qNNvjLBNOU4aa+8UJabiVT04lfLO588YhXL8gSwKCMCLcO7oN3Azb4Ds
+	1KJnABUKzz2TAI24V8+4eg6y4fhtJ24dOSLOhfKtdwqacilzrg/85PpuZnxfmmaRXLoLt3OpzcbPx
+	gaDHMzmHPgllAv3sX2WlXoGlT/CILGsmQcmYf+p8REuOwS3uiKjne0vCzNp3vqqnfTN67Uc841Q6e
+	0WgBTh2Wqq12wu4BSi8EmBl5jGNI0S0pAOWYvD1D4tVzfstbNtOhOCvFtUXNJin9Vg4BP741zE1yi
+	KsLLAg8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL62e-00BiuL-0P;
-	Wed, 03 Jan 2024 18:32:36 +0000
+	id 1rL62r-00Bj6p-1V;
+	Wed, 03 Jan 2024 18:32:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL61B-00Bh1I-2w
+	id 1rL61B-00Bh1F-1W
 	for barebox@lists.infradead.org;
 	Wed, 03 Jan 2024 18:31:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL612-0001bK-OM; Wed, 03 Jan 2024 19:30:56 +0100
+	id 1rL613-0001cF-2j; Wed, 03 Jan 2024 19:30:57 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL612-000Awb-BE; Wed, 03 Jan 2024 19:30:56 +0100
+	id 1rL612-000Aws-J8; Wed, 03 Jan 2024 19:30:56 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k3-001j4X-1N;
-	Wed, 03 Jan 2024 19:13:23 +0100
+	id 1rL5k4-001j4X-26;
+	Wed, 03 Jan 2024 19:13:24 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:12:15 +0100
-Message-Id: <20240103181312.409668-56-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:12:42 +0100
+Message-Id: <20240103181312.409668-83-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_103105_962091_C2F923DC 
-X-CRM114-Status: GOOD (  11.96  )
+X-CRM114-CacheID: sfid-20240103_103105_530016_5067FD46 
+X-CRM114-Status: GOOD (  14.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,110 +83,95 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 055/112] ARM64: cpu: setupc: rewrite to be fully PIC
+Subject: [PATCH 082/112] efi: payload: register handler for EFI-stubbed ARM64 kernel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The code resulting from building the barebox ARM64 assembly contains
-relocations, which could've been position-independent just as well.
+The normal DT-only ARM64 boot handlers are not registered when barebox
+is running as EFI payload. Instead, barebox started via EFI should start
+images via EFI as well. Add a suitable binfmt handlers that does just that.
 
-Let's make them truly position independent by turning:
-
-	ldr   x0, =label
-
-into
-	adr_l x0,  label
-
-adr_l is position independent by virtue of being implemented using adrp,
-so it's usuable as-is before relocation and requires no manual addition
-of get_runtime_offset().
-
-With these changes, only relocation necessary for the ARM64 generic DT
-2nd stage is the one needed for get_runtime_offset() to find out
-whether barebox has been relocated.
-
-This is one step towards supporting mapping barebox PBL text section
-W^X, which precludes relocation entries emitted for code.
-
-With this change applied, there is still a data relocation entry
-in assembly code for get_runtime_offset(), but that doesn't bother us
-because it's in the data section.
+We intentionally don't register a bootm handler just yet, because we
+need to take care of initrd and boot arguments still.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/cpu/setupc_64.S | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ efi/payload/image.c | 32 ++++++++++++++++++++++++++------
+ 1 file changed, 26 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/cpu/setupc_64.S b/arch/arm/cpu/setupc_64.S
-index f38f893be90b..2138c2a600fa 100644
---- a/arch/arm/cpu/setupc_64.S
-+++ b/arch/arm/cpu/setupc_64.S
-@@ -1,6 +1,7 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
+diff --git a/efi/payload/image.c b/efi/payload/image.c
+index b9cdb0e0562a..0795010cd9d2 100644
+--- a/efi/payload/image.c
++++ b/efi/payload/image.c
+@@ -155,12 +155,26 @@ static int efi_load_image(const char *file, struct efi_loaded_image **loaded_ima
+ 	return -efi_errno(efiret);
+ }
  
- #include <linux/linkage.h>
-+#include <asm/assembler.h>
- #include <asm/sections.h>
+-static int efi_execute_image(const char *file)
++static bool is_linux_image(enum filetype filetype, const void *base)
++{
++	const struct linux_kernel_header *hdr = base;
++
++	if (IS_ENABLED(CONFIG_X86) &&
++	    hdr->boot_flag == 0xAA55 && hdr->header == 0x53726448)
++		return true;
++
++	if (IS_ENABLED(CONFIG_CPU_V8) &&
++	    filetype == filetype_arm64_efi_linux_image)
++		return true;
++
++	return false;
++}
++
++static int efi_execute_image(enum filetype filetype, const char *file)
+ {
+ 	efi_handle_t handle;
+ 	struct efi_loaded_image *loaded_image;
+ 	efi_status_t efiret;
+-	struct linux_kernel_header *image_header;
+ 	const char *options;
+ 	bool is_driver;
+ 	int ret;
+@@ -172,9 +186,7 @@ static int efi_execute_image(const char *file)
+ 	is_driver = (loaded_image->image_code_type == EFI_BOOT_SERVICES_CODE) ||
+ 		(loaded_image->image_code_type == EFI_RUNTIME_SERVICES_CODE);
  
- .section .text.setupc
-@@ -10,9 +11,9 @@
-  */
- ENTRY(setup_c)
- 	mov	x15, x30
--	ldr	x0, =__bss_start
-+	adr_l	x0, __bss_start
- 	mov	x1, #0
--	ldr	x2, =__bss_stop
-+	adr_l	x2, __bss_stop
- 	sub	x2, x2, x0
- 	bl	__memset		/* clear bss */
- 	mov	x30, x15
-@@ -29,12 +30,12 @@ ENDPROC(setup_c)
- 					/* x0: target address */
- #ifdef __PBL__
- ENTRY(relocate_to_adr_full)
--	ldr	x2, =__image_end
-+	adr_l	x2, __image_end
- 	b	1f
- #endif
+-	image_header = (struct linux_kernel_header *)loaded_image->image_base;
+-	if (image_header->boot_flag == 0xAA55 &&
+-	    image_header->header == 0x53726448) {
++	if (is_linux_image(filetype, loaded_image->image_base)) {
+ 		pr_debug("Linux kernel detected. Adding bootargs.");
+ 		options = linux_bootargs_get();
+ 		pr_info("add linux options '%s'\n", options);
+@@ -317,7 +329,7 @@ static struct image_handler efi_handle_tr = {
  
- ENTRY(relocate_to_adr)
--	ldr	x2, =__bss_start
-+	adr_l	x2, __bss_start
- 	b	1f
+ static int efi_execute(struct binfmt_hook *b, char *file, int argc, char **argv)
+ {
+-	return efi_execute_image(file);
++	return efi_execute_image(b->type, file);
+ }
  
- 1:
-@@ -45,18 +46,13 @@ ENTRY(relocate_to_adr)
+ static struct binfmt_hook binfmt_efi_hook = {
+@@ -325,11 +337,19 @@ static struct binfmt_hook binfmt_efi_hook = {
+ 	.hook = efi_execute,
+ };
  
- 	mov	x21, x0
++static struct binfmt_hook binfmt_arm64_efi_hook = {
++	.type = filetype_arm64_efi_linux_image,
++	.hook = efi_execute,
++};
++
+ static int efi_register_image_handler(void)
+ {
+ 	register_image_handler(&efi_handle_tr);
+ 	binfmt_register(&binfmt_efi_hook);
  
--	bl	get_runtime_offset
--	mov	x5, x0
--
--	ldr	x0, =_text
--	mov	x20, x0
--
--	add	x1, x0, x5		/* x1: from address */
-+	adr_l	x1, _text
-+	mov	x20, x1
- 
- 	cmp	x1, x21			/* already at correct address? */
- 	beq	1f			/* yes, skip copy to new address */
- 
--	sub	x2, x2, x0		/* x2: size */
-+	sub	x2, x2, x1		/* x2: size */
- 	mov	x0, x21			/* x0: target */
- 
- 	/* adjust return address */
-@@ -70,7 +66,7 @@ ENTRY(relocate_to_adr)
- 	mov	x0,#0
- 	ic	ivau, x0	/* flush icache */
- 
--	ldr	x0,=1f
-+	adr_l	x0, 1f
- 	sub	x0, x0, x20
- 	add	x0, x0, x21
- 	br	x0			/* jump to relocated address */
++	if (IS_ENABLED(CONFIG_CPU_V8))
++		binfmt_register(&binfmt_arm64_efi_hook);
++
+ 	return 0;
+ }
+ late_efi_initcall(efi_register_image_handler);
 -- 
 2.39.2
 
