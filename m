@@ -1,60 +1,60 @@
-Delivery-date: Wed, 03 Jan 2024 12:21:59 +0100
+Delivery-date: Wed, 03 Jan 2024 15:00:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKzJw-001qtJ-0c
+	id 1rL1n8-0023CF-1x
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 12:21:59 +0100
+	Wed, 03 Jan 2024 15:00:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKzJv-0000NT-5R
-	for lore@pengutronix.de; Wed, 03 Jan 2024 12:21:59 +0100
+	id 1rL1n6-0000Ym-WA
+	for lore@pengutronix.de; Wed, 03 Jan 2024 15:00:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SItbqet9DMbZU1RPzbQD1/tjhF3deFQdjFEZA8Kh1cI=; b=M3qK6KkVa3r/NmlUjTHbrrF9U3
-	BP/fumKgOPUBT4rQNgTbbH+NS60G3KF8MI1/80Q1dSQmo2Sf2reyb9Aarr2R8ME8KKE7Wci6eGpG3
-	acR/S01rRLrSpL/iXDOv1YF/VPl0Lec3OgcwU+YDG37FM4E39kZQp07D2k5Luuw4tsy/1Bt6smREQ
-	eYyfnbFBrsLW+E8/gYp1WFkeCjzXyCcilamFZlsCcBAQp+nf8B0krnndrZiRde5Eo9yE7bFuWS20i
-	sFJMaRXBaUOksMnQgoCQAvBtgIn3V7RZjaS1yXXTbSP3A9mwrmE8rKDLd9ZFQWxQH5b03oohJ4wgG
-	1Sjq5mnQ==;
+	bh=M272fv/4WjE2gc2TkLHyxx5v4fwlBTftGdVe/xGuXiw=; b=1jaesw1RUZ3ZCHoYDs2PxnP41C
+	Ds0GfftOeityAbWW42QrojOdfxbaZLdFMsmWyOJdzdT/lzOKH5I9rGsUJQkL9x1GzyMp6RP6XroWP
+	LcoqSuChjOGrxgrPlIXORBPa0r4U73gu0buJISeb7gmefjBVLmzNkVmzifDCAWu8Dhl9CHQAy+KyE
+	JPig0MHif906Y8D53qh/Nf1K7vQy60N8mMccgUs3cSnDBwwRz/QJUWkAfiUUpkRKW0gxnI5L+17gg
+	60QlzsL2NMO4QJa8JOhfkaUqNMAevTo3msYVCUuYLXyI8F9NCo2wV8bCP7FQMIQIWD0M5WfSWtyWQ
+	7JK6Dt0g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKzIu-00AVEw-28;
-	Wed, 03 Jan 2024 11:20:56 +0000
+	id 1rL1lr-00B2ao-2d;
+	Wed, 03 Jan 2024 13:58:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKzIr-00AVD1-08
+	id 1rL1ln-00B2Zh-3B
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 11:20:54 +0000
+	Wed, 03 Jan 2024 13:58:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rKzIp-00005F-SI; Wed, 03 Jan 2024 12:20:51 +0100
+	id 1rL1li-0000CS-V1; Wed, 03 Jan 2024 14:58:50 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rKzIp-0006Vx-Fl; Wed, 03 Jan 2024 12:20:51 +0100
+	id 1rL1li-00087D-Ih; Wed, 03 Jan 2024 14:58:50 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rKzIp-00A3IX-C0; Wed, 03 Jan 2024 12:20:51 +0100
-Date: Wed, 3 Jan 2024 12:20:51 +0100
+	id 1rL1li-00A4cf-GN; Wed, 03 Jan 2024 14:58:50 +0100
+Date: Wed, 3 Jan 2024 14:58:50 +0100
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20240103112051.GG1318922@pengutronix.de>
-References: <20240102165537.1378708-1-a.fatoum@pengutronix.de>
+Message-ID: <20240103135850.GH1318922@pengutronix.de>
+References: <20240103101308.2628659-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240102165537.1378708-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20240103101308.2628659-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -62,8 +62,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_032053_117364_8F3E9F81 
-X-CRM114-Status: GOOD (  21.09  )
+X-CRM114-CacheID: sfid-20240103_055856_028674_8D5FEFF5 
+X-CRM114-Status: GOOD (  18.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,42 +86,40 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master] crypto: caam - remove overly verbose debug print
+Subject: Re: [PATCH master] ARM: kasan: reserve shadow memory region
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Jan 02, 2024 at 05:55:37PM +0100, Ahmad Fatoum wrote:
-> We can already read /dev/hwrng to get the randomness as generated by the
-> device. Printing 32K bytes of randomness to the log (or even worse to
-> console) is just not useful for debugging. There are debug prints for
-> the job descriptors and Linux doesn't have this print too since commit
-> 2c5e88dc90f5 ("crypto: caam - simplify RNG implementation"), so let's
-> drop it in barebox too.
+On Wed, Jan 03, 2024 at 11:13:08AM +0100, Ahmad Fatoum wrote:
+> We did not have any protection in place to ensure that KASAN shadow memory
+> isn't overwritten during boot. Add that now to avoid strange effects
+> during debugging.
 > 
 > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  drivers/crypto/caam/caamrng.c | 3 ---
->  1 file changed, 3 deletions(-)
+>  arch/arm/cpu/start.c | 4 ++++
+>  1 file changed, 4 insertions(+)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
-> index ede35cea7f80..ea154913cab6 100644
-> --- a/drivers/crypto/caam/caamrng.c
-> +++ b/drivers/crypto/caam/caamrng.c
-> @@ -91,9 +91,6 @@ static void rng_done(struct device *jrdev, u32 *desc, u32 err, void *context)
+> diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+> index 15f5b2937227..9f4cdfe67fbf 100644
+> --- a/arch/arm/cpu/start.c
+> +++ b/arch/arm/cpu/start.c
+> @@ -133,6 +133,10 @@ static int barebox_memory_areas_init(void)
+>  		request_sdram_region("board data", (unsigned long)barebox_boarddata,
+>  				     barebox_boarddata_size);
 >  
->  	/* Buffer refilled, invalidate cache */
->  	dma_sync_single_for_cpu(jrdev, bd->addr, RN_BUF_SIZE, DMA_FROM_DEVICE);
-> -
-> -	print_hex_dump_debug("rng refreshed buf@: ", DUMP_PREFIX_OFFSET,
-> -			     16, 4, bd->buf, RN_BUF_SIZE, 1);
+> +	if (IS_ENABLED(CONFIG_KASAN))
+> +		request_sdram_region("kasan shadow", kasan_shadow_base,
+> +				     mem_malloc_start() - kasan_shadow_base);
+> +
+>  	return 0;
 >  }
->  
->  static inline int submit_job(struct caam_rng_ctx *ctx, int to_current)
+>  device_initcall(barebox_memory_areas_init);
 > -- 
 > 2.39.2
 > 
