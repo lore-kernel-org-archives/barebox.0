@@ -3,65 +3,64 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL7Cc-002V19-1a
+	id 1rL7Cc-002V1g-2g
 	for lore@lore.pengutronix.de;
 	Wed, 03 Jan 2024 20:46:58 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL7Cb-00045h-2p
-	for lore@pengutronix.de; Wed, 03 Jan 2024 20:46:57 +0100
+	id 1rL7Cb-00045z-Je
+	for lore@pengutronix.de; Wed, 03 Jan 2024 20:46:58 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7t/1a0QCjyNnw2oQ6j3rJrs6Ij5GzAZ1TyftHGheeWg=; b=pDX+z4jXlNCnj7wnNye5gL77rQ
-	L3R6TlTgK9kYu7g44O+EKy9KHGHVE0L9dnLV1f619bsx+mbbm36vtw61hEhBJTx0vDXqFSbtqSjXp
-	88KWaFbjTvJwT58vf/wXPakymnp9DG4VVUEo+IwjW7AGHFxQEX5qQBRcMH9B2qaYYM0JKlx4nLlJk
-	3OyUpNrhhwcOCbdU7tjPqirldw2qXpK19b591/RODmy02PaMK/ORhl+4oXSVfIDdrM/vC0z+lI8nG
-	/9rZ5sSZiHxNAY4FL3N6ZV8/1dhVsuc1cFIJK4Qj1h5DmTVKAoSaPTzWiwnMzEZjg5OAxL4B0zYjI
-	SqVUAm0g==;
+	bh=OKjJ8bVLSMGyPjuCbfYWDFMCIACQtIaiF8GdrV+ybks=; b=Je108ZgK9jW6cJ38rzRwS2Hs2W
+	MZH1QTfs6tCJ5bLiv4AB+XR9sTSuY9WZenheY1FgcjXQxZ0IA+VggvTE5sHGJbVXgnHRIrUa7IwNm
+	qt4tQWaXO/oguAVHKe+TXSZw13XjgYMhmlYXm9XMjEJ36S5HTHVtZ3NEEJZaCvAfFf2pivkYflSFy
+	vfXsoeur3+6j52Pav9l10xBDopTriaJkYAhzp5Julh6/jyymozoX9kALci+iPruc0OjbRTnZ4R4rf
+	LGV7TFeTSAOgXzfLXw9kW0c/l2RJmLXME70IgoTBqxVTL87TYmsf/JWahsUOdQZeWxHYAEW9Bf3A3
+	xNWXOVkQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL7BY-00Bw8a-2b;
-	Wed, 03 Jan 2024 19:45:52 +0000
+	id 1rL7BS-00Bw5J-1j;
+	Wed, 03 Jan 2024 19:45:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL610-00Bh1L-0a
+	id 1rL60z-00Bh1C-1e
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 18:31:00 +0000
+	Wed, 03 Jan 2024 18:30:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL60y-0001Pf-Vo; Wed, 03 Jan 2024 19:30:53 +0100
+	id 1rL60y-0001Ni-C7; Wed, 03 Jan 2024 19:30:52 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL60y-000Ask-JQ; Wed, 03 Jan 2024 19:30:52 +0100
+	id 1rL60x-000As9-Vv; Wed, 03 Jan 2024 19:30:51 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k4-001j4X-0D;
+	id 1rL5k4-001j4X-2y;
 	Wed, 03 Jan 2024 19:13:24 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:12:29 +0100
-Message-Id: <20240103181312.409668-70-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:12:48 +0100
+Message-Id: <20240103181312.409668-89-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_103054_216632_23152DB0 
-X-CRM114-Status: UNSURE (   9.02  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240103_103053_555667_762013A8 
+X-CRM114-Status: GOOD (  11.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,47 +83,83 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 069/112] efi: constify guid_t in API
+Subject: [PATCH 088/112] efi: refactor device_path_to_partuuid for code reuse
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Improve const safety by marking parameters that are pointers to const as
-such.
+Continuing walk of a device path until the next compatible node will
+come in handy later as well, so factor that out into a new
+device_path_next_compatible_node().
+
+No functional change intended.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/efi.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ efi/devicepath.c | 41 ++++++++++++++++++++++++-----------------
+ 1 file changed, 24 insertions(+), 17 deletions(-)
 
-diff --git a/include/efi.h b/include/efi.h
-index 2e34c6be068a..f0c968ec5e8a 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -241,12 +241,12 @@ struct efi_boot_services {
- #define EFI_OPEN_PROTOCOL_BY_CHILD_CONTROLLER 0x00000008
- #define EFI_OPEN_PROTOCOL_BY_DRIVER           0x00000010
- #define EFI_OPEN_PROTOCOL_EXCLUSIVE           0x00000020
--	efi_status_t (EFIAPI *open_protocol)(efi_handle_t handle, efi_guid_t *protocol,
-+	efi_status_t (EFIAPI *open_protocol)(efi_handle_t handle, const efi_guid_t *protocol,
- 			void ** interface, efi_handle_t agent_handle,
- 			efi_handle_t controller_handle, u32 attributes);
--	efi_status_t (EFIAPI *close_protocol)(efi_handle_t handle, efi_guid_t *protocol,
-+	efi_status_t (EFIAPI *close_protocol)(efi_handle_t handle, const efi_guid_t *protocol,
- 					      efi_handle_t agent, efi_handle_t controller);
--	efi_status_t(EFIAPI *open_protocol_information)(efi_handle_t handle, efi_guid_t *Protocol,
-+	efi_status_t(EFIAPI *open_protocol_information)(efi_handle_t handle, const efi_guid_t *Protocol,
- 			struct efi_open_protocol_information_entry **entry_buffer,
- 			unsigned long *entry_count);
- 	efi_status_t (EFIAPI *protocols_per_handle)(efi_handle_t handle,
-@@ -254,7 +254,7 @@ struct efi_boot_services {
- 			unsigned long *protocols_buffer_count);
- 	efi_status_t (EFIAPI *locate_handle_buffer) (
- 			enum efi_locate_search_type search_type,
--			efi_guid_t *protocol, void *search_key,
-+			const efi_guid_t *protocol, void *search_key,
- 			unsigned long *no_handles, efi_handle_t **buffer);
- 	void *locate_protocol;
- 	void *install_multiple_protocol_interfaces;
+diff --git a/efi/devicepath.c b/efi/devicepath.c
+index 6ec0c3780f37..d562bf482955 100644
+--- a/efi/devicepath.c
++++ b/efi/devicepath.c
+@@ -801,33 +801,40 @@ u8 device_path_to_subtype(const struct efi_device_path *dev_path)
+ 	return dev_path->sub_type;
+ }
+ 
++static const struct efi_device_path *
++device_path_next_compatible_node(const struct efi_device_path *dev_path,
++				 u8 type, u8 subtype)
++{
++	for (; !is_device_path_end(dev_path);
++	     dev_path = next_device_path_node(dev_path)) {
++
++		if (device_path_type(dev_path) != type)
++			continue;
++
++		if (dev_path->sub_type != subtype)
++			continue;
++
++		return dev_path;
++	}
++
++	return NULL;
++}
+ 
+ char *device_path_to_partuuid(const struct efi_device_path *dev_path)
+ {
+-	const struct efi_device_path *dev_path_node;
+-	struct harddrive_device_path *hd;
+-	char *str = NULL;;
+-
+ 	dev_path = unpack_device_path(dev_path);
+ 
+-	for (dev_path_node = dev_path; !is_device_path_end(dev_path_node);
+-	     dev_path_node = next_device_path_node(dev_path_node)) {
+-
+-		if (device_path_type(dev_path_node) != MEDIA_DEVICE_PATH)
+-			continue;
+-
+-		if (dev_path_node->sub_type != MEDIA_HARDDRIVE_DP)
+-			continue;
+-
+-		hd = (struct harddrive_device_path *)dev_path_node;
++	while ((dev_path = device_path_next_compatible_node(dev_path,
++				 MEDIA_DEVICE_PATH, MEDIA_HARDDRIVE_DP))) {
++		struct harddrive_device_path *hd =
++			(struct harddrive_device_path *)dev_path;
+ 
+ 		if (hd->signature_type != SIGNATURE_TYPE_GUID)
+ 			continue;
+ 
+-		str = xasprintf("%pUl", (efi_guid_t *)&(hd->signature[0]));
+-		break;
++		return xasprintf("%pUl", (efi_guid_t *)&(hd->signature[0]));
+ 	}
+ 
+-	return str;
++	return NULL;
+ }
+ 
 -- 
 2.39.2
 
