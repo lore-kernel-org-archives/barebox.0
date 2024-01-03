@@ -1,66 +1,81 @@
-Delivery-date: Wed, 03 Jan 2024 19:14:49 +0100
+Delivery-date: Wed, 03 Jan 2024 19:14:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL5lR-002LwZ-2G
+	id 1rL5lS-002LxO-35
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 19:14:49 +0100
+	Wed, 03 Jan 2024 19:14:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL5lQ-0005LL-9B
-	for lore@pengutronix.de; Wed, 03 Jan 2024 19:14:49 +0100
+	id 1rL5lR-0005M1-Pu
+	for lore@pengutronix.de; Wed, 03 Jan 2024 19:14:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CNP8ZvijocFSTxvubjPDPyGVknYsmq2+hkvOixtsarw=; b=2aC5B71c+gQ2ljeylnqwjJw2VJ
-	GQ250GbtYccJOTCd6IFR97Ha6T98WSxBW+//45+kQ3us9Oo8nmxCN82FCTvS9lGWYpNG1NSpOgYog
-	O6ceTW0Ee4XfjBG1sSe3UMrvEI1gBtF1ssNEyU8Ndzmv2C7W3WoiX+ooso4P6zne8xtV4+BoJtKfI
-	SC2U/nyp3GsuybaWTvc4YnFoVGEWGD1kaVVw7uiHBK5FZL1rGaqZAxSoB0RpXcyHntw4lXL2g92Xp
-	044xwcF9r4eL70ZR6WSvcouwX3Gwn7QfdCY0JeeNsi09iyq/B5GAAJ6mHgRmmzaZ7O/TsKHsRKjkL
-	YdgfzKAw==;
+	bh=2hQZXNS3YXObg0ENJQOPmXNjcE9HgxUBM8ZgPD85Hes=; b=fi+u1IExA6xXGxvc01ndDlWmSV
+	jn7Dx9+OEZT+/VmrxAe0f4ezsi+O2EqG85GT99kcwDM7vtsNJDYfUWHR2FY2PZ/7vszeXZxt/A/OJ
+	k6l7pPac0eFwxw8I/kCQdFz+X8IUzPD1rH6FWMNPNjc6UCbdIfkXOjfV+vT+zjuPXhFF1lqWcWkXX
+	Mi/9tVgR+PVJGos3dd/8+4yVN08wrDRLMivhYfccQKzgfAicUIfrVCeWCDSarjIvHKFMrA5aq8YL1
+	qIOgT7/yCB0VlBUrhb4Ysz05NO0jNPl2IuE9HKOKlXcf8trEJXD7z61l3bJeWSmlNIZbTDtrzmb50
+	hw71iMhg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL5kK-00Be1V-0T;
-	Wed, 03 Jan 2024 18:13:40 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
+	id 1rL5kI-00Bdzx-0s;
+	Wed, 03 Jan 2024 18:13:38 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL5k3-00BdsE-2n
+	id 1rL5kE-00Bdxa-1F
+	for barebox@bombadil.infradead.org;
+	Wed, 03 Jan 2024 18:13:34 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=2hQZXNS3YXObg0ENJQOPmXNjcE9HgxUBM8ZgPD85Hes=; b=B8QCAOmSruWlviVKeC6D1yxhMZ
+	b2TW0s2Lb/xyaCSB9JJypa2liE8vHU4+bS0Bt3MXx5m3MubZfUQkGKmgmVm9d4QFfJB9NLXa12ydR
+	3xoDARk2WM4xCMlfYkiIMHqGLZelj3zr6TRiAjgfzzyfhVwaV9hIEsXk15+sDIp2AB/0WIP81kMDC
+	KirpZqywaN6lINPKmmkfq7/6CTxePo6GkOZNKgMNd6J2n/J3X9j9SxdwjkodqRMz9zzsrNGC5Artp
+	wlrGyl9czUWXZ8dEogTJzfrXoh+QzC+XuzlNde5f80SnhAjwp2ZHnHq2QYmexk8dS1dd9BMbm0I8/
+	4uvWqobQ==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
+	id 1rL5k3-005dTI-1K
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 18:13:35 +0000
+	Wed, 03 Jan 2024 18:13:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k1-0004f4-Iv; Wed, 03 Jan 2024 19:13:21 +0100
+	id 1rL5k1-0004fe-Oq; Wed, 03 Jan 2024 19:13:21 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k1-000Apm-5y; Wed, 03 Jan 2024 19:13:21 +0100
+	id 1rL5k1-000Apy-Bj; Wed, 03 Jan 2024 19:13:21 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k1-001j4X-0K;
+	id 1rL5k1-001j4X-0t;
 	Wed, 03 Jan 2024 19:13:21 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:11:23 +0100
-Message-Id: <20240103181312.409668-4-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:11:27 +0100
+Message-Id: <20240103181312.409668-8-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_101324_074158_8A536D47 
-X-CRM114-Status: GOOD (  16.93  )
+X-CRM114-CacheID: sfid-20240103_181329_461294_37108492 
+X-CRM114-Status: GOOD (  10.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,404 +98,143 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 003/112] treewide: add errno_set helper for returning positive error code in errno
+Subject: [PATCH 007/112] common: efi: move directory to top-level
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We have this sequence at multiple places: Check a return value for being
-below zero and if so, turn it positive and store into errno.
-
-Instead of opencoding it everywhere, add a helper to encapsulate this.
+The EFI code will grow considerably with the addition of loader support,
+so it makes sense to move it to top-level to shorten the path and to
+improve visibility.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c         | 112 ++++++++++++------------------------------------
- include/errno.h |   7 +++
- lib/libfile.c   |  15 +++----
- lib/parameter.c |  22 ++++------
- 4 files changed, 48 insertions(+), 108 deletions(-)
+ Kconfig                                                   | 1 +
+ Makefile                                                  | 1 +
+ common/Kconfig                                            | 2 --
+ common/Makefile                                           | 1 -
+ {common/efi => efi}/Kconfig                               | 0
+ {common/efi => efi}/Makefile                              | 0
+ {common/efi => efi}/devicepath.c                          | 0
+ {common/efi => efi}/efivar-filename.c                     | 0
+ {common/efi => efi}/errno.c                               | 0
+ {common/efi => efi}/guid.c                                | 0
+ {common/efi => efi}/payload/Makefile                      | 0
+ {common/efi => efi}/payload/env-efi/network/eth0-discover | 0
+ {common/efi => efi}/payload/fdt.c                         | 0
+ {common/efi => efi}/payload/image.c                       | 0
+ {common/efi => efi}/payload/init.c                        | 0
+ {common/efi => efi}/payload/iomem.c                       | 0
+ 16 files changed, 2 insertions(+), 3 deletions(-)
+ rename {common/efi => efi}/Kconfig (100%)
+ rename {common/efi => efi}/Makefile (100%)
+ rename {common/efi => efi}/devicepath.c (100%)
+ rename {common/efi => efi}/efivar-filename.c (100%)
+ rename {common/efi => efi}/errno.c (100%)
+ rename {common/efi => efi}/guid.c (100%)
+ rename {common/efi => efi}/payload/Makefile (100%)
+ rename {common/efi => efi}/payload/env-efi/network/eth0-discover (100%)
+ rename {common/efi => efi}/payload/fdt.c (100%)
+ rename {common/efi => efi}/payload/image.c (100%)
+ rename {common/efi => efi}/payload/init.c (100%)
+ rename {common/efi => efi}/payload/iomem.c (100%)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 68e7873e9c54..4b64f6fcf1df 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -365,10 +365,8 @@ int ftruncate(int fd, loff_t length)
- 		return 0;
+diff --git a/Kconfig b/Kconfig
+index 4c076026b0c9..9c3a20a9a9a3 100644
+--- a/Kconfig
++++ b/Kconfig
+@@ -11,6 +11,7 @@ source "scripts/Kconfig.include"
+ source "arch/Kconfig"
  
- 	ret = fsdev_truncate(&f->fsdev->dev, f, length);
--	if (ret) {
--		errno = -ret;
--		return ret;
--	}
-+	if (ret)
-+		return errno_set(ret);
+ source "common/Kconfig"
++source "efi/Kconfig"
+ source "commands/Kconfig"
+ source "net/Kconfig"
+ source "drivers/Kconfig"
+diff --git a/Makefile b/Makefile
+index 9a982e943cd4..c5c627bb6a8c 100644
+--- a/Makefile
++++ b/Makefile
+@@ -601,6 +601,7 @@ common-y		:= common/ drivers/ commands/ lib/ crypto/ net/ fs/ firmware/
  
- 	f->size = length;
- 	f->f_inode->i_size = f->size;
-@@ -391,9 +389,8 @@ int ioctl(int fd, int request, void *buf)
- 		ret = fsdrv->ioctl(&f->fsdev->dev, f, request, buf);
- 	else
- 		ret = -ENOSYS;
--	if (ret)
--		errno = -ret;
--	return ret;
-+
-+	return errno_set(ret);
- }
+ include $(srctree)/arch/$(SRCARCH)/Makefile
  
- static ssize_t __read(FILE *f, void *buf, size_t count)
-@@ -419,9 +416,7 @@ static ssize_t __read(FILE *f, void *buf, size_t count)
++common-$(CONFIG_EFI)	+= efi/
+ common-y		+= test/
  
- 	ret = fsdrv->read(&f->fsdev->dev, f, buf, count);
- out:
--	if (ret < 0)
--		errno = -ret;
--	return ret;
-+	return errno_set(ret);
- }
+ ifdef need-config
+diff --git a/common/Kconfig b/common/Kconfig
+index 6377a587f00b..0e8188d2b2fb 100644
+--- a/common/Kconfig
++++ b/common/Kconfig
+@@ -1789,8 +1789,6 @@ config WERROR
  
- ssize_t pread(int fd, void *buf, size_t count, loff_t offset)
-@@ -490,9 +485,7 @@ static ssize_t __write(FILE *f, const void *buf, size_t count)
- 	}
- 	ret = fsdrv->write(&f->fsdev->dev, f, buf, count);
- out:
--	if (ret < 0)
--		errno = -ret;
--	return ret;
-+	return errno_set(ret);
- }
+ endmenu
  
- ssize_t pwrite(int fd, const void *buf, size_t count, loff_t offset)
-@@ -544,10 +537,7 @@ int flush(int fd)
- 	else
- 		ret = 0;
- 
--	if (ret)
--		errno = -ret;
+-source "common/efi/Kconfig"
 -
--	return ret;
-+	return errno_set(ret);
- }
+ config HAS_DEBUG_LL
+ 	bool
  
- loff_t lseek(int fd, loff_t offset, int whence)
-@@ -597,8 +587,7 @@ loff_t lseek(int fd, loff_t offset, int whence)
- 	return pos;
- 
- out:
--	if (ret)
--		errno = -ret;
-+	errno_set(ret);
- 
- 	return -1;
- }
-@@ -629,10 +618,7 @@ int erase(int fd, loff_t count, loff_t offset)
- 	else
- 		ret = -ENOSYS;
- 
--	if (ret)
--		errno = -ret;
--
--	return ret;
-+	return errno_set(ret);
- }
- EXPORT_SYMBOL(erase);
- 
-@@ -659,10 +645,7 @@ int protect(int fd, size_t count, loff_t offset, int prot)
- 	else
- 		ret = -ENOSYS;
- 
--	if (ret)
--		errno = -ret;
--
--	return ret;
-+	return errno_set(ret);
- }
- EXPORT_SYMBOL(protect);
- 
-@@ -689,10 +672,7 @@ int discard_range(int fd, loff_t count, loff_t offset)
- 	else
- 		ret = -ENOSYS;
- 
--	if (ret)
--		errno = -ret;
--
--	return ret;
-+	return errno_set(ret);
- }
- 
- int protect_file(const char *file, int prot)
-@@ -730,9 +710,7 @@ void *memmap(int fd, int flags)
- 	else
- 		ret = -EINVAL;
- 
--	if (ret)
--		errno = -ret;
--
-+	errno_set(ret);
- 	return retp;
- }
- EXPORT_SYMBOL(memmap);
-@@ -756,10 +734,7 @@ int close(int fd)
- 
- 	put_file(f);
- 
--	if (ret)
--		errno = -ret;
--
--	return ret;
-+	return errno_set(ret);
- }
- EXPORT_SYMBOL(close);
- 
-@@ -2464,10 +2439,7 @@ int mkdir (const char *pathname, mode_t mode)
- 	dput(dentry);
- 	path_put(&path);
- out:
--	if (error)
--		errno = -error;
--
--	return error;
-+	return errno_set(error);
- }
- EXPORT_SYMBOL(mkdir);
- 
-@@ -2519,10 +2491,7 @@ int rmdir (const char *pathname)
- 	path_put(&path);
- 	putname(name);
- 
--	if (error)
--		errno = -error;
--
--	return error;
-+	return errno_set(error);
- }
- EXPORT_SYMBOL(rmdir);
- 
-@@ -2676,10 +2645,7 @@ int open(const char *pathname, int flags, ...)
- out:
- 	put_file(f);
- out1:
--
--	if (error)
--		errno = -error;
--	return error;
-+	return errno_set(error);
- }
- EXPORT_SYMBOL(open);
- 
-@@ -2717,9 +2683,7 @@ int unlink(const char *pathname)
- out_put:
- 	path_put(&path);
- out:
--	if (ret)
--		errno = -ret;
--	return ret;
-+	return errno_set(ret);
- }
- EXPORT_SYMBOL(unlink);
- 
-@@ -2746,10 +2710,7 @@ int symlink(const char *pathname, const char *newpath)
- 
- 	error = vfs_symlink(path.dentry->d_inode, dentry, pathname);
- out:
--	if (error)
--		errno = -error;
--
--	return error;
-+	return errno_set(error);
- }
- EXPORT_SYMBOL(symlink);
- 
-@@ -2819,7 +2780,7 @@ DIR *opendir(const char *pathname)
- out_put:
- 	path_put(&path);
- out:
--	errno = -ret;
-+	errno_set(ret);
- 
- 	return NULL;
- }
-@@ -2827,10 +2788,8 @@ EXPORT_SYMBOL(opendir);
- 
- int closedir(DIR *dir)
- {
--	if (!dir) {
--		errno = EBADF;
--		return -EBADF;
--	}
-+	if (!dir)
-+		return errno_set(-EBADF);
- 
- 	release_dir(dir);
- 
-@@ -2876,10 +2835,7 @@ int readlink(const char *pathname, char *buf, size_t bufsiz)
- out_put:
- 	path_put(&path);
- out:
--	if (ret)
--		errno = -ret;
--
--	return ret;
-+	return errno_set(ret);
- }
- EXPORT_SYMBOL(readlink);
- 
-@@ -2909,10 +2865,7 @@ static int stat_filename(const char *filename, struct stat *s, unsigned int flag
- out_put:
- 	path_put(&path);
- out:
--	if (ret)
--		errno = -ret;
--
--	return ret;
-+	return errno_set(ret);
- }
- 
- int stat(const char *filename, struct stat *s)
-@@ -3000,9 +2953,7 @@ char *canonicalize_path(const char *pathname)
- 
- 	res = dpath(path.dentry, d_root);
- out:
--	if (ret)
--		errno = -ret;
--
-+	errno_set(ret);
- 	return res;
- }
- 
-@@ -3036,10 +2987,7 @@ int chdir(const char *pathname)
- 	ret = 0;
- 
- out:
--	if (ret)
--		errno = -ret;
--
--	return ret;
-+	return errno_set(ret);
- }
- EXPORT_SYMBOL(chdir);
- 
-@@ -3234,9 +3182,7 @@ int mount(const char *device, const char *fsname, const char *pathname,
- out:
- 	path_put(&path);
- 
--	errno = -ret;
--
--	return ret;
-+	return errno_set(ret);
- }
- EXPORT_SYMBOL(mount);
- 
-@@ -3273,10 +3219,8 @@ int umount(const char *pathname)
- 		}
- 	}
- 
--	if (!fsdev) {
--		errno = EFAULT;
--		return -EFAULT;
--	}
-+	if (!fsdev)
-+		return errno_set(-EFAULT);
- 
- 	return fsdev_umount(fsdev);
- }
-diff --git a/include/errno.h b/include/errno.h
-index 6ec7af4d7e9f..12e526a0d7ed 100644
---- a/include/errno.h
-+++ b/include/errno.h
-@@ -10,4 +10,11 @@ extern int errno;
- void perror(const char *s);
- const char *strerror(int errnum);
- 
-+static inline int errno_set(int err)
-+{
-+	if (err < 0)
-+		errno = -err;
-+	return err;
-+}
-+
- #endif /* __ERRNO_H */
-diff --git a/lib/libfile.c b/lib/libfile.c
-index 72a2fc79c721..185c7af721b5 100644
---- a/lib/libfile.c
-+++ b/lib/libfile.c
-@@ -33,10 +33,8 @@ int pwrite_full(int fd, const void *buf, size_t size, loff_t offset)
- 
- 	while (size) {
- 		now = pwrite(fd, buf, size, offset);
--		if (now == 0) {
--			errno = ENOSPC;
--			return -errno;
--		}
-+		if (now == 0)
-+			return errno_set(-ENOSPC);
- 		if (now < 0)
- 			return now;
- 		size -= now;
-@@ -61,10 +59,8 @@ int write_full(int fd, const void *buf, size_t size)
- 
- 	while (size) {
- 		now = write(fd, buf, size);
--		if (now == 0) {
--			errno = ENOSPC;
--			return -errno;
--		}
-+		if (now == 0)
-+			return errno_set(-ENOSPC);
- 		if (now < 0)
- 			return now;
- 		size -= now;
-@@ -240,8 +236,7 @@ int read_file_2(const char *filename, size_t *size, void **outbuf,
- 	/* ensure wchar_t nul termination */
- 	buf = calloc(ALIGN(read_size, 2) + 2, 1);
- 	if (!buf) {
--		ret = -ENOMEM;
--		errno = ENOMEM;
-+		ret = errno_set(-ENOMEM);
- 		goto err_out;
- 	}
- 
-diff --git a/lib/parameter.c b/lib/parameter.c
-index aac33e3a1940..c2b8536ee93f 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -90,28 +90,22 @@ int dev_set_param(struct device *dev, const char *name, const char *val)
- 	struct param_d *param;
- 	int ret;
- 
--	if (!dev) {
--		errno = ENODEV;
--		return -ENODEV;
--	}
-+	if (!dev)
-+		return errno_set(-ENODEV);
- 
- 	param = get_param_by_name(dev, name);
- 
--	if (!param) {
--		errno = EINVAL;
--		return -EINVAL;
--	}
-+	if (!param)
-+		return errno_set(-EINVAL);
- 
--	if (param->flags & PARAM_FLAG_RO) {
--		errno = EACCES;
--		return -EACCES;
--	}
-+	if (param->flags & PARAM_FLAG_RO)
-+		return errno_set(-EACCES);
- 
- 	ret = param->set(dev, param, val);
- 	if (ret)
--		errno = -ret;
-+		return errno_set(ret);
- 
--	return ret;
-+	return 0;
- }
- 
- /**
+diff --git a/common/Makefile b/common/Makefile
+index 7fb864f61480..936997d9bcdd 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -70,7 +70,6 @@ obj-$(CONFIG_BOOTCHOOSER)	+= bootchooser.o
+ obj-$(CONFIG_UIMAGE)		+= image.o uimage.o
+ obj-$(CONFIG_FITIMAGE)		+= image-fit.o
+ obj-$(CONFIG_MENUTREE)		+= menutree.o
+-obj-$(CONFIG_EFI)		+= efi/
+ lwl-$(CONFIG_IMD)		+= imd-barebox.o
+ obj-$(CONFIG_IMD)		+= imd.o
+ obj-y				+= file-list.o
+diff --git a/common/efi/Kconfig b/efi/Kconfig
+similarity index 100%
+rename from common/efi/Kconfig
+rename to efi/Kconfig
+diff --git a/common/efi/Makefile b/efi/Makefile
+similarity index 100%
+rename from common/efi/Makefile
+rename to efi/Makefile
+diff --git a/common/efi/devicepath.c b/efi/devicepath.c
+similarity index 100%
+rename from common/efi/devicepath.c
+rename to efi/devicepath.c
+diff --git a/common/efi/efivar-filename.c b/efi/efivar-filename.c
+similarity index 100%
+rename from common/efi/efivar-filename.c
+rename to efi/efivar-filename.c
+diff --git a/common/efi/errno.c b/efi/errno.c
+similarity index 100%
+rename from common/efi/errno.c
+rename to efi/errno.c
+diff --git a/common/efi/guid.c b/efi/guid.c
+similarity index 100%
+rename from common/efi/guid.c
+rename to efi/guid.c
+diff --git a/common/efi/payload/Makefile b/efi/payload/Makefile
+similarity index 100%
+rename from common/efi/payload/Makefile
+rename to efi/payload/Makefile
+diff --git a/common/efi/payload/env-efi/network/eth0-discover b/efi/payload/env-efi/network/eth0-discover
+similarity index 100%
+rename from common/efi/payload/env-efi/network/eth0-discover
+rename to efi/payload/env-efi/network/eth0-discover
+diff --git a/common/efi/payload/fdt.c b/efi/payload/fdt.c
+similarity index 100%
+rename from common/efi/payload/fdt.c
+rename to efi/payload/fdt.c
+diff --git a/common/efi/payload/image.c b/efi/payload/image.c
+similarity index 100%
+rename from common/efi/payload/image.c
+rename to efi/payload/image.c
+diff --git a/common/efi/payload/init.c b/efi/payload/init.c
+similarity index 100%
+rename from common/efi/payload/init.c
+rename to efi/payload/init.c
+diff --git a/common/efi/payload/iomem.c b/efi/payload/iomem.c
+similarity index 100%
+rename from common/efi/payload/iomem.c
+rename to efi/payload/iomem.c
 -- 
 2.39.2
 
