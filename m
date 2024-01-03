@@ -1,60 +1,60 @@
-Delivery-date: Wed, 03 Jan 2024 12:21:07 +0100
+Delivery-date: Wed, 03 Jan 2024 12:21:59 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKzJ5-001qq9-2w
+	id 1rKzJw-001qtJ-0c
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 12:21:07 +0100
+	Wed, 03 Jan 2024 12:21:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKzJ4-0000Ah-M6
-	for lore@pengutronix.de; Wed, 03 Jan 2024 12:21:07 +0100
+	id 1rKzJv-0000NT-5R
+	for lore@pengutronix.de; Wed, 03 Jan 2024 12:21:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
 	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vq0NZgg4HMZrGDWOLrQmkAafBquOrpgJkrGMoyttOOg=; b=L366VCTBnOqcbauuutw1iHFcSY
-	uCmn3zx8LogMdhl9I3v7B/UWozusix+B53PGSOl+jjFV7GTLir39S2iG/ws7QKkb+97Vm2pBt0a2P
-	w7CgLoOSzUQy3vzaKxRagzpi1Qls0bp69og5qfCLEEgc4nf4DAWWaOXYRzu5LxSupzB0jx1RriCaz
-	bAHd/3k014WcMA0lFKAD/UutcpME7qtB3aeXRgqny0RkzcBkAEBeckB1Bgtko4A3Gu3XL6fVHjEe0
-	AyB+BvGBV6dJe1NVwjZyECLpAdNaA2W/XP8vcxKz3mr+PY6h0lTem/3CwMH0WkxWNx+BUand5YUsy
-	L4pwWcrg==;
+	bh=SItbqet9DMbZU1RPzbQD1/tjhF3deFQdjFEZA8Kh1cI=; b=M3qK6KkVa3r/NmlUjTHbrrF9U3
+	BP/fumKgOPUBT4rQNgTbbH+NS60G3KF8MI1/80Q1dSQmo2Sf2reyb9Aarr2R8ME8KKE7Wci6eGpG3
+	acR/S01rRLrSpL/iXDOv1YF/VPl0Lec3OgcwU+YDG37FM4E39kZQp07D2k5Luuw4tsy/1Bt6smREQ
+	eYyfnbFBrsLW+E8/gYp1WFkeCjzXyCcilamFZlsCcBAQp+nf8B0krnndrZiRde5Eo9yE7bFuWS20i
+	sFJMaRXBaUOksMnQgoCQAvBtgIn3V7RZjaS1yXXTbSP3A9mwrmE8rKDLd9ZFQWxQH5b03oohJ4wgG
+	1Sjq5mnQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKzHq-00AUwl-0A;
-	Wed, 03 Jan 2024 11:19:50 +0000
+	id 1rKzIu-00AVEw-28;
+	Wed, 03 Jan 2024 11:20:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKzHm-00AUvr-1w
+	id 1rKzIr-00AVD1-08
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 11:19:48 +0000
+	Wed, 03 Jan 2024 11:20:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rKzHi-0008Az-OK; Wed, 03 Jan 2024 12:19:42 +0100
+	id 1rKzIp-00005F-SI; Wed, 03 Jan 2024 12:20:51 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rKzHi-0006Vm-Bp; Wed, 03 Jan 2024 12:19:42 +0100
+	id 1rKzIp-0006Vx-Fl; Wed, 03 Jan 2024 12:20:51 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rKzHi-00A3I3-9T; Wed, 03 Jan 2024 12:19:42 +0100
-Date: Wed, 3 Jan 2024 12:19:42 +0100
-To: Marco Felsch <m.felsch@pengutronix.de>
+	id 1rKzIp-00A3IX-C0; Wed, 03 Jan 2024 12:20:51 +0100
+Date: Wed, 3 Jan 2024 12:20:51 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20240103111942.GF1318922@pengutronix.de>
-References: <20240102110118.280032-1-m.felsch@pengutronix.de>
+Message-ID: <20240103112051.GG1318922@pengutronix.de>
+References: <20240102165537.1378708-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240102110118.280032-1-m.felsch@pengutronix.de>
+In-Reply-To: <20240102165537.1378708-1-a.fatoum@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
@@ -62,8 +62,8 @@ X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 From: Sascha Hauer <sha@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_031946_660610_57EB9A0A 
-X-CRM114-Status: GOOD (  18.61  )
+X-CRM114-CacheID: sfid-20240103_032053_117364_8F3E9F81 
+X-CRM114-Status: GOOD (  21.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,125 +86,42 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/4] ARM: boards: i.MX8M: add HAB support
+Subject: Re: [PATCH master] crypto: caam - remove overly verbose debug print
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Jan 02, 2024 at 12:01:15PM +0100, Marco Felsch wrote:
-> The gencsf header is required to build HAB (secure-boot) compatible
-> images. This commit add the support for this for all i.MX8M boards.
+On Tue, Jan 02, 2024 at 05:55:37PM +0100, Ahmad Fatoum wrote:
+> We can already read /dev/hwrng to get the randomness as generated by the
+> device. Printing 32K bytes of randomness to the log (or even worse to
+> console) is just not useful for debugging. There are debug prints for
+> the job descriptors and Linux doesn't have this print too since commit
+> 2c5e88dc90f5 ("crypto: caam - simplify RNG implementation"), so let's
+> drop it in barebox too.
 > 
-> To finally build HAB compatible images the CONFIG_HABV4 and
-> CONFIG_HABV4_IMAGE_SIGNED must be enabled.
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 > ---
->  .../boards/innocomm-imx8mm-wb15/flash-header-imx8mm-wb15.imxcfg | 2 ++
->  .../flash-header-imx8mm-phyboard-polis-rdk.imxcfg               | 2 ++
->  .../boards/phytec-som-imx8mq/flash-header-phycore-imx8mq.imxcfg | 2 ++
->  arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg | 2 ++
->  arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg       | 2 ++
->  arch/arm/boards/skov-imx8mp/flash-header-skov-imx8mp.imxcfg     | 2 ++
->  arch/arm/boards/tqma8mpxl/flash-header-tqma8mpxl.imxcfg         | 2 ++
->  .../flash-header-imx8mp-dart.imxcfg                             | 2 ++
->  .../boards/zii-imx8mq-dev/flash-header-zii-imx8mq-dev.imxcfg    | 2 ++
->  9 files changed, 18 insertions(+)
+>  drivers/crypto/caam/caamrng.c | 3 ---
+>  1 file changed, 3 deletions(-)
 
 Applied, thanks
 
 Sascha
 
 > 
-> diff --git a/arch/arm/boards/innocomm-imx8mm-wb15/flash-header-imx8mm-wb15.imxcfg b/arch/arm/boards/innocomm-imx8mm-wb15/flash-header-imx8mm-wb15.imxcfg
-> index 10606ce29c96..8aff991618ec 100644
-> --- a/arch/arm/boards/innocomm-imx8mm-wb15/flash-header-imx8mm-wb15.imxcfg
-> +++ b/arch/arm/boards/innocomm-imx8mm-wb15/flash-header-imx8mm-wb15.imxcfg
-> @@ -5,3 +5,5 @@ soc imx8mm
->  loadaddr 0x007e1000
->  max_load_size 0x3f000
->  ivtofs 0x400
-> +
-> +#include <mach/imx/habv4-imx8-gencsf.h>
-> diff --git a/arch/arm/boards/phytec-som-imx8mm/flash-header-imx8mm-phyboard-polis-rdk.imxcfg b/arch/arm/boards/phytec-som-imx8mm/flash-header-imx8mm-phyboard-polis-rdk.imxcfg
-> index 10606ce29c96..8aff991618ec 100644
-> --- a/arch/arm/boards/phytec-som-imx8mm/flash-header-imx8mm-phyboard-polis-rdk.imxcfg
-> +++ b/arch/arm/boards/phytec-som-imx8mm/flash-header-imx8mm-phyboard-polis-rdk.imxcfg
-> @@ -5,3 +5,5 @@ soc imx8mm
->  loadaddr 0x007e1000
->  max_load_size 0x3f000
->  ivtofs 0x400
-> +
-> +#include <mach/imx/habv4-imx8-gencsf.h>
-> diff --git a/arch/arm/boards/phytec-som-imx8mq/flash-header-phycore-imx8mq.imxcfg b/arch/arm/boards/phytec-som-imx8mq/flash-header-phycore-imx8mq.imxcfg
-> index 93cf14f26ba5..f82759f8499a 100644
-> --- a/arch/arm/boards/phytec-som-imx8mq/flash-header-phycore-imx8mq.imxcfg
-> +++ b/arch/arm/boards/phytec-som-imx8mq/flash-header-phycore-imx8mq.imxcfg
-> @@ -5,3 +5,5 @@ soc imx8mq
->  loadaddr 0x007E1000
->  max_load_size 0x3F000
->  ivtofs 0x400
-> +
-> +#include <mach/imx/habv4-imx8-gencsf.h>
-> diff --git a/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg b/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg
-> index 663bd102e9a2..6ea2e6c68ed7 100644
-> --- a/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg
-> +++ b/arch/arm/boards/polyhex-debix/flash-header-polyhex-debix.imxcfg
-> @@ -5,3 +5,5 @@ soc imx8mp
->  loadaddr 0x920000
->  max_load_size 0x3f000
->  ivtofs 0x0
-> +
-> +#include <mach/imx/habv4-imx8-gencsf.h>
-> diff --git a/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg b/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg
-> index 10606ce29c96..8aff991618ec 100644
-> --- a/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg
-> +++ b/arch/arm/boards/protonic-imx8m/flash-header-prt8mm.imxcfg
-> @@ -5,3 +5,5 @@ soc imx8mm
->  loadaddr 0x007e1000
->  max_load_size 0x3f000
->  ivtofs 0x400
-> +
-> +#include <mach/imx/habv4-imx8-gencsf.h>
-> diff --git a/arch/arm/boards/skov-imx8mp/flash-header-skov-imx8mp.imxcfg b/arch/arm/boards/skov-imx8mp/flash-header-skov-imx8mp.imxcfg
-> index 663bd102e9a2..6ea2e6c68ed7 100644
-> --- a/arch/arm/boards/skov-imx8mp/flash-header-skov-imx8mp.imxcfg
-> +++ b/arch/arm/boards/skov-imx8mp/flash-header-skov-imx8mp.imxcfg
-> @@ -5,3 +5,5 @@ soc imx8mp
->  loadaddr 0x920000
->  max_load_size 0x3f000
->  ivtofs 0x0
-> +
-> +#include <mach/imx/habv4-imx8-gencsf.h>
-> diff --git a/arch/arm/boards/tqma8mpxl/flash-header-tqma8mpxl.imxcfg b/arch/arm/boards/tqma8mpxl/flash-header-tqma8mpxl.imxcfg
-> index 663bd102e9a2..6ea2e6c68ed7 100644
-> --- a/arch/arm/boards/tqma8mpxl/flash-header-tqma8mpxl.imxcfg
-> +++ b/arch/arm/boards/tqma8mpxl/flash-header-tqma8mpxl.imxcfg
-> @@ -5,3 +5,5 @@ soc imx8mp
->  loadaddr 0x920000
->  max_load_size 0x3f000
->  ivtofs 0x0
-> +
-> +#include <mach/imx/habv4-imx8-gencsf.h>
-> diff --git a/arch/arm/boards/variscite-dt8mcustomboard-imx8mp/flash-header-imx8mp-dart.imxcfg b/arch/arm/boards/variscite-dt8mcustomboard-imx8mp/flash-header-imx8mp-dart.imxcfg
-> index 2b104edfb741..c3149a197f7d 100644
-> --- a/arch/arm/boards/variscite-dt8mcustomboard-imx8mp/flash-header-imx8mp-dart.imxcfg
-> +++ b/arch/arm/boards/variscite-dt8mcustomboard-imx8mp/flash-header-imx8mp-dart.imxcfg
-> @@ -5,3 +5,5 @@ soc imx8mp
->  loadaddr 0x918000
->  max_load_size 0x3f000
->  ivtofs 0x0
-> +
-> +#include <mach/imx/habv4-imx8-gencsf.h>
-> diff --git a/arch/arm/boards/zii-imx8mq-dev/flash-header-zii-imx8mq-dev.imxcfg b/arch/arm/boards/zii-imx8mq-dev/flash-header-zii-imx8mq-dev.imxcfg
-> index 93cf14f26ba5..f82759f8499a 100644
-> --- a/arch/arm/boards/zii-imx8mq-dev/flash-header-zii-imx8mq-dev.imxcfg
-> +++ b/arch/arm/boards/zii-imx8mq-dev/flash-header-zii-imx8mq-dev.imxcfg
-> @@ -5,3 +5,5 @@ soc imx8mq
->  loadaddr 0x007E1000
->  max_load_size 0x3F000
->  ivtofs 0x400
-> +
-> +#include <mach/imx/habv4-imx8-gencsf.h>
+> diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
+> index ede35cea7f80..ea154913cab6 100644
+> --- a/drivers/crypto/caam/caamrng.c
+> +++ b/drivers/crypto/caam/caamrng.c
+> @@ -91,9 +91,6 @@ static void rng_done(struct device *jrdev, u32 *desc, u32 err, void *context)
+>  
+>  	/* Buffer refilled, invalidate cache */
+>  	dma_sync_single_for_cpu(jrdev, bd->addr, RN_BUF_SIZE, DMA_FROM_DEVICE);
+> -
+> -	print_hex_dump_debug("rng refreshed buf@: ", DUMP_PREFIX_OFFSET,
+> -			     16, 4, bd->buf, RN_BUF_SIZE, 1);
+>  }
+>  
+>  static inline int submit_job(struct caam_rng_ctx *ctx, int to_current)
 > -- 
 > 2.39.2
 > 
