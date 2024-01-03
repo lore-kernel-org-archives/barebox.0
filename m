@@ -1,64 +1,66 @@
-Delivery-date: Wed, 03 Jan 2024 11:21:39 +0100
+Delivery-date: Wed, 03 Jan 2024 11:21:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKyNX-001mol-1h
+	id 1rKyNZ-001mpF-1g
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 11:21:39 +0100
+	Wed, 03 Jan 2024 11:21:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKyNW-0004Xs-H6
-	for lore@pengutronix.de; Wed, 03 Jan 2024 11:21:39 +0100
+	id 1rKyNY-0004Z9-Eu
+	for lore@pengutronix.de; Wed, 03 Jan 2024 11:21:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=KyFwJM/dfjn7wtzyuvOWkg+JF+h5r3FXKoO/g2Yls8s=; b=nyXdGKW4PBSua03/0H4mH3wLPx
-	a6Z5XVfT1qU9VkXsIcScih+484dPWgibGUXc+zyvYD42pPzPMq1y8sFjzSAGYvmQAf2BrZCgVhZy1
-	i+rYY6WZ1krLGcaqeW/S5v3OjBuw3obk5OGeN3+8zM1JSu56MVxeu2IVM9JkJeFV5nekleCu/c+Iv
-	oCqWCmSUmgjX6UGymYqqzzoVCWrXo/jI/IxN3R85Q5SD9GMaWpUSSn+QcOaS84qgR2PkynJ0hNCO4
-	9iejHHA+W32ldQY6NJ7Ygucqw8EaugB5GyMv8KJrOqkw+0SRE+rF/dq9gzNe1aqCBtnHBo4RJ5xym
-	8aw67vQA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=AiPKql7UJL6G+d3UKGuH/vFUw2SON6XZzCnfLm69r5c=; b=x/T1sXWHhdNoAivymYdv7+7VZY
+	rxEnOmya0yAZGL668hH1vyyvu0B3nMJeUgt0oXqbyLLVA+pgbsfvLwGvDeuJNXTc+sxr7QXotu71o
+	TKhdsqX0u7ZPny/vaFxeVpa3bnRBzw8NWGsVkKhstimUvHcw9xLuCq7lVl9tJ4yjk/3xaOpttEYF1
+	tqW/hl7f9uEssjw0xGU0dOuETXdl3Zji/mJ2D2jzeiwwIzX6+GGeDpvP1oHmXDtiuZWmacW9NWUnJ
+	7LtWKdxKlbeuoHMnJ/1iX272b1hnlbuVdfgo4L0sZG565qmrThZAugfJdQwCgixb6k4Pe2d9rMuBa
+	dY87GARw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKyMb-00ANUR-1b;
-	Wed, 03 Jan 2024 10:20:41 +0000
+	id 1rKyMc-00ANUg-0i;
+	Wed, 03 Jan 2024 10:20:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKyMY-00ANTV-1R
+	id 1rKyMY-00ANTW-1R
 	for barebox@lists.infradead.org;
 	Wed, 03 Jan 2024 10:20:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rKyMX-0004De-9G; Wed, 03 Jan 2024 11:20:37 +0100
+	id 1rKyMX-0004Df-Am; Wed, 03 Jan 2024 11:20:37 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rKyMW-0005x8-T7; Wed, 03 Jan 2024 11:20:36 +0100
+	id 1rKyMW-0005x9-Un; Wed, 03 Jan 2024 11:20:36 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rKyMW-00B2Ne-2d;
+	id 1rKyMW-00B2Ne-2m;
 	Wed, 03 Jan 2024 11:20:36 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 11:20:34 +0100
-Message-Id: <20240103102035.2630735-1-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 11:20:35 +0100
+Message-Id: <20240103102035.2630735-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240103102035.2630735-1-a.fatoum@pengutronix.de>
+References: <20240103102035.2630735-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_022038_517094_78402606 
-X-CRM114-Status: GOOD (  11.60  )
+X-CRM114-CacheID: sfid-20240103_022038_516858_869B1CE7 
+X-CRM114-Status: GOOD (  12.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,42 +83,83 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/2] cdev: simplify loop in cdev_by_device_node
+Subject: [PATCH 2/2] cdev: add cdev_alloc helper for creating cdevs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We don't need to compare the cdev's device node pointer both against NULL
-and against the searched for device node on each iteration.
+We have different helpers for creating cdevs, depending on whether they
+are loop devices, partitions or links.
 
-Instead, it's sufficient to just compare the device nodes directly.
-To maintain previous behavior, when searching for a NULL device node, we
-shouldn't return the first cdev, but return NULL. Do that via an early
-exit instead of doing it after iterating over all cdevs.
-
-No functional change.
+Create a common cdev_alloc function, so it's easier to instrument cdev
+creation during debugging.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/devfs-core.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ fs/devfs-core.c | 21 +++++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
 
 diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 244f76f62c52..c79b092a112e 100644
+index c79b092a112e..9f5b41761f52 100644
 --- a/fs/devfs-core.c
 +++ b/fs/devfs-core.c
-@@ -87,9 +87,10 @@ struct cdev *cdev_by_device_node(struct device_node *node)
+@@ -324,6 +324,16 @@ int cdev_truncate(struct cdev *cdev, size_t size)
+ 	return -EPERM;
+ }
+ 
++static struct cdev *cdev_alloc(const char *name)
++{
++	struct cdev *new;
++
++	new = xzalloc(sizeof(*new));
++	new->name = xstrdup(name);
++
++	return new;
++}
++
+ int devfs_create(struct cdev *new)
  {
  	struct cdev *cdev;
+@@ -358,8 +368,7 @@ int devfs_create_link(struct cdev *cdev, const char *name)
+ 	 */
+ 	cdev = cdev_readlink(cdev);
  
-+	if (!node)
-+		return NULL;
-+
- 	for_each_cdev(cdev) {
--		if (!cdev->device_node)
--			continue;
- 		if (cdev->device_node == node)
- 			return cdev_readlink(cdev);
+-	new = xzalloc(sizeof(*new));
+-	new->name = xstrdup(name);
++	new = cdev_alloc(name);
+ 	new->link = cdev;
+ 
+ 	if (cdev->partname) {
+@@ -540,8 +549,7 @@ struct cdev *cdevfs_add_partition(struct cdev *cdev,
+ 		return &mtd->cdev;
  	}
+ 
+-	new = xzalloc(sizeof(*new));
+-	new->name = strdup(partinfo->name);
++	new = cdev_alloc(partinfo->name);
+ 	if (!strncmp(cdev->name, partinfo->name, strlen(cdev->name)))
+ 		new->partname = xstrdup(partinfo->name + strlen(cdev->name) + 1);
+ 
+@@ -679,6 +687,7 @@ static const struct cdev_operations loop_ops = {
+ 
+ struct cdev *cdev_create_loop(const char *path, ulong flags, loff_t offset)
+ {
++	char str[16];
+ 	struct cdev *new;
+ 	struct loop_priv *priv;
+ 	static int loopno;
+@@ -692,10 +701,10 @@ struct cdev *cdev_create_loop(const char *path, ulong flags, loff_t offset)
+ 		return NULL;
+ 	}
+ 
+-	new = xzalloc(sizeof(*new));
++	snprintf(str, sizeof(str), "loop%u", loopno++);
+ 
++	new = cdev_alloc(str);
+ 	new->ops = &loop_ops;
+-	new->name = basprintf("loop%u", loopno++);
+ 	new->priv = priv;
+ 
+ 	ofs = lseek(priv->fd, 0, SEEK_END);
 -- 
 2.39.2
 
