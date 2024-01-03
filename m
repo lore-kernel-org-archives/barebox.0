@@ -1,81 +1,80 @@
-Delivery-date: Wed, 03 Jan 2024 19:36:53 +0100
+Delivery-date: Wed, 03 Jan 2024 19:36:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL66o-002OGj-0v
+	id 1rL66q-002OHN-2n
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 19:36:53 +0100
+	Wed, 03 Jan 2024 19:36:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL66h-0008CR-Ft
-	for lore@pengutronix.de; Wed, 03 Jan 2024 19:36:53 +0100
+	id 1rL66k-0008HZ-Qa
+	for lore@pengutronix.de; Wed, 03 Jan 2024 19:36:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3y03nQDD1KrXFVafwK6ehEZVaoqAXh78xHBKFEpMbAQ=; b=ChKFLmQb4vps+2bNzX4klpcVrI
-	gPg3yQyWDA3yv69jnr0bejnW9bE6PdElf803Q09Wbw4fZfva5Wup6IYKF5UVZpEXk2ZaPpinLzah9
-	NCBjApNBItSbmdu5jkXMouAn4bd6vEPQK9j/y4HMdj+5nvwqVeuPIRnVP56IuhUPoSfIF8oJtPNnC
-	HM4SXT6ZDpz+pW2tRnnwtRzQz8LItQUAjXxl7e/AXDjYNwX4pVPhF9gWLMurYAixf6srvsQaPSkX+
-	2bZsQbmWCvR2dK2yu2Aw8bqNU3t0T0hBVTCOOT3MRP3ykOv6Xod49fby3+X1D848rKUkaQujbOo8W
-	YzDlYrQw==;
+	bh=dvit1+M/JGv/htFqc0f3SrKRmV5c6nV8dRfkYxUSxvU=; b=CplI9Ds5BMyjd8OI2bA4EQ6Y1U
+	Y90c6eeUKxvR/e90LVs9a3eNWly5sNo9+5n8uRuJ5DY1ECW0vegwmw34+9QQiVH8uuC0U+MpXuPfR
+	cA7yZvSMTWdGQ8KHaemhg90L6HoXf19cvMhpWLp+2+0nLUObwFwIinXZNr9OfA6wtj2tECNCkrmMa
+	tqV8NzJhNdNHP4Nl+AeXl10kjq4k/jegHCXwAqzo/sR7uReTh3+eh6DdnLuAMaqMDjCto+L36QcdM
+	6tuSJa69OJun0gMM2d5sBBJBFlbammMIyFOUd8brjTK74VtvfpPqln5p2hsZblUpxXat4CEGWFkbr
+	9FKqZZ3A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL651-00Blmg-2F;
-	Wed, 03 Jan 2024 18:35:03 +0000
+	id 1rL656-00BlsT-19;
+	Wed, 03 Jan 2024 18:35:08 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL61O-00BhSn-1K
+	id 1rL61P-00BhTx-1I
 	for barebox@bombadil.infradead.org;
-	Wed, 03 Jan 2024 18:31:18 +0000
+	Wed, 03 Jan 2024 18:31:19 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=3y03nQDD1KrXFVafwK6ehEZVaoqAXh78xHBKFEpMbAQ=; b=G0i6zJ+4D7s5nAfYhY3Ffejexv
-	GJgGkMi0sEvxMIbRezUmX4S04BmQBwl1CxOI0sNwG7XInPesgLU4koFWgASwHRtZlNrQGzbS4nsZY
-	VIsDFNjwDbrCVm474DxASnu4PJcW1ljgp3uzWPuU2QcrWfCutg2rYJLTZ+YbS/9dA9En1vKz0idtk
-	/cmWD9wuv+AXRwjALAbtO+hm2ewplGj5M0IY6aOXSadLlPuEC28eWiDjzcYgb+42i/uDslrVNhVnl
-	i++LbL8HIaa1U6WqH7xeHrzhS/LBijeGXgcyMIUQ1ufrNOtou6qQ8RwVwYqku37StmLvSeURLBCHA
-	1SnFDigg==;
+	bh=dvit1+M/JGv/htFqc0f3SrKRmV5c6nV8dRfkYxUSxvU=; b=K7tUp4/uA3zcsivWBJaXsV5IsA
+	IfIb+xh2YmYy5aj4zDYQ9SyYH6CZbqf4gxtoBCWG/+cJMA66MOQTL6Xpkh3ZU9F9dQHcdJ6q5wHhE
+	cdHn6KrYQewqUyI4VskNkek1vJvBB6wFQSgozRz3lKx1JYFGmNqRbaJZrwRH3kJpGfaD2dCWulMtq
+	epM0Q50sjpAPDTv5ThjeYoduxkKxA+l7XxSpbaNQBfZ/W439pd0BLq/uhUmVQc0wiF/Wjj02Goq2k
+	JzDRSzgaReOKHOiP4ZZV6Uo4prbRKRvEnNRQRniMCbuTIVsB1zDTXFjrRK2GgeKQchWgA0Dw5lZXN
+	srvVArhA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1rL61H-00DIm4-1H
-	for barebox@lists.infradead.org; Wed, 03 Jan 2024 18:31:17 +0000
+	id 1rL61H-00DImB-E7
+	for barebox@lists.infradead.org; Wed, 03 Jan 2024 18:31:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL611-0001Wd-98; Wed, 03 Jan 2024 19:30:55 +0100
+	id 1rL611-0001Xz-Ml; Wed, 03 Jan 2024 19:30:55 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL610-000Av4-Ro; Wed, 03 Jan 2024 19:30:54 +0100
+	id 1rL611-000AvW-A5; Wed, 03 Jan 2024 19:30:55 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k4-001j4X-1X;
-	Wed, 03 Jan 2024 19:13:24 +0100
+	id 1rL5k5-001j4X-2e;
+	Wed, 03 Jan 2024 19:13:25 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:12:38 +0100
-Message-Id: <20240103181312.409668-79-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:13:08 +0100
+Message-Id: <20240103181312.409668-109-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_183112_267667_31C9C9DD 
-X-CRM114-Status: UNSURE (   8.78  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240103_183112_776674_393D3E8B 
+X-CRM114-Status: GOOD (  14.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,157 +97,95 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 078/112] efi: fs: flesh out file system definitions
+Subject: [PATCH 108/112] lib: uuid: implement uuid/guid_parse
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-A number of members aren't prototyped or are using compatible, but less
-descriptive. In preparation for adding EFI loader as another user of
-these definitions, flesh them out.
+We opencode this at least once in EFI code, so import the Linux
+definition and start using that instead.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/efi.h | 79 ++++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 65 insertions(+), 14 deletions(-)
+ lib/uuid.c | 63 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 63 insertions(+)
 
-diff --git a/include/efi.h b/include/efi.h
-index e0080552cf53..80d2f784847b 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -303,6 +303,8 @@ enum efi_reset_type {
- #define EFI_RUNTIME_SERVICES_SIGNATURE ((u64)0x5652453544e5552ULL)
- #define EFI_RUNTIME_SERVICES_REVISION  0x00010000
+diff --git a/lib/uuid.c b/lib/uuid.c
+index db75be1725bf..c83227c0d1e7 100644
+--- a/lib/uuid.c
++++ b/lib/uuid.c
+@@ -8,9 +8,72 @@
  
-+struct efi_capsule_header;
-+
- struct efi_runtime_services {
- 	struct efi_table_hdr hdr;
- 	efi_status_t (EFIAPI *get_time)(struct efi_time *time,
-@@ -317,16 +319,21 @@ struct efi_runtime_services {
- 				       struct efi_memory_desc *virtmap);
- 	efi_status_t (*convert_pointer)(unsigned long dbg, void **address);
- 	efi_status_t (EFIAPI *get_variable)(efi_char16_t *variable_name, const efi_guid_t *vendor,
--			u32 *Attributes, unsigned long *data_size, void *data);
--	efi_status_t (EFIAPI *get_next_variable)(unsigned long *variable_name_size,
--			s16 *variable_name, efi_guid_t *vendor);
--	efi_status_t (EFIAPI *set_variable)(s16 *variable_name, efi_guid_t *vendor,
--			u32 Attributes, unsigned long data_size, void *data);
-+			u32 *Attributes, size_t *data_size, void *data);
-+	efi_status_t (EFIAPI *get_next_variable)(size_t *variable_name_size,
-+			efi_char16_t *variable_name, efi_guid_t *vendor);
-+	efi_status_t (EFIAPI *set_variable)(efi_char16_t *variable_name, const efi_guid_t *vendor,
-+			u32 Attributes, size_t data_size, const void *data);
- 	efi_status_t (EFIAPI *get_next_high_mono_count)(uint32_t *high_count);
- 	void (EFIAPI *reset_system)(enum efi_reset_type reset_type, efi_status_t reset_status,
--			unsigned long data_size, void *reset_data);
--	void *update_capsule;
--	void *query_capsule_caps;
-+			size_t data_size, void *reset_data);
-+	efi_status_t (EFIAPI *update_capsule)(struct efi_capsule_header **capsule_header_array,
-+					      size_t capsule_count,
-+					      u64 scatter_gather_list);
-+	efi_status_t (EFIAPI *query_capsule_caps)(struct efi_capsule_header **capsule_header_array,
-+						  size_t capsule_count,
-+						  u64 *maximum_capsule_size,
-+						  u32 *reset_type);
- 	void *query_variable_info;
- };
+ #include <linux/uuid.h>
+ #include <module.h>
++#include <linux/ctype.h>
+ #include <linux/export.h>
  
-@@ -688,29 +695,58 @@ struct efi_loaded_image {
- #define EFI_FILE_ARCHIVE        0x0000000000000020
- #define EFI_FILE_VALID_ATTR     0x0000000000000037
- 
-+struct efi_file_io_token {
-+	struct efi_event *event;
-+	efi_status_t status;
-+	size_t buffer_size;
-+	void *buffer;
-+};
+ const guid_t guid_null;
+ EXPORT_SYMBOL(guid_null);
+ const uuid_t uuid_null;
+ EXPORT_SYMBOL(uuid_null);
 +
- #define EFI_FILE_HANDLE_REVISION         0x00010000
-+#define EFI_FILE_HANDLE_REVISION2        0x00020000
-+#define EFI_FILE_HANDLE_LATEST_REVISION  EFI_FILE_PROTOCOL_REVISION2
- struct efi_file_handle {
- 	uint64_t Revision;
- 	efi_status_t(EFIAPI *open)(struct efi_file_handle *File,
--			struct efi_file_handle **NewHandle, s16 *FileName,
-+			struct efi_file_handle **NewHandle, efi_char16_t *FileName,
- 			uint64_t OpenMode, uint64_t Attributes);
- 	efi_status_t(EFIAPI *close)(struct efi_file_handle *File);
- 	efi_status_t(EFIAPI *delete)(struct efi_file_handle *File);
--	efi_status_t(EFIAPI *read)(struct efi_file_handle *File, unsigned long *BufferSize,
-+	efi_status_t(EFIAPI *read)(struct efi_file_handle *File, size_t *BufferSize,
- 			void *Buffer);
- 	efi_status_t(EFIAPI *write)(struct efi_file_handle *File,
--			unsigned long *BufferSize, void *Buffer);
-+			size_t *BufferSize, void *Buffer);
- 	efi_status_t(EFIAPI *get_position)(struct efi_file_handle *File,
- 			uint64_t *Position);
- 	efi_status_t(EFIAPI *set_position)(struct efi_file_handle *File,
- 			uint64_t Position);
- 	efi_status_t(EFIAPI *get_info)(struct efi_file_handle *File,
--			efi_guid_t *InformationType, unsigned long *BufferSize,
-+			const efi_guid_t *InformationType, size_t *BufferSize,
- 			void *Buffer);
- 	efi_status_t(EFIAPI *set_info)(struct efi_file_handle *File,
--			efi_guid_t *InformationType, unsigned long BufferSize,
-+			const efi_guid_t *InformationType, size_t BufferSize,
- 			void *Buffer);
- 	efi_status_t(EFIAPI *flush)(struct efi_file_handle *File);
-+	efi_status_t (EFIAPI *open_ex)(struct efi_file_handle *this,
-+			struct efi_file_handle **new_handle,
-+			u16 *file_name, u64 open_mode, u64 attributes,
-+			struct efi_file_io_token *token);
-+	efi_status_t (EFIAPI *read_ex)(struct efi_file_handle *this,
-+			struct efi_file_io_token *token);
-+	efi_status_t (EFIAPI *write_ex)(struct efi_file_handle *this,
-+			struct efi_file_io_token *token);
-+	efi_status_t (EFIAPI *flush_ex)(struct efi_file_handle *this,
-+			struct efi_file_io_token *token);
-+};
++const u8 guid_index[16] = {3,2,1,0,5,4,7,6,8,9,10,11,12,13,14,15};
++const u8 uuid_index[16] = {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 +
-+#define EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_REVISION 0x00010000
++/**
++ * uuid_is_valid - checks if a UUID string is valid
++ * @uuid:	UUID string to check
++ *
++ * Description:
++ * It checks if the UUID string is following the format:
++ *	xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
++ *
++ * where x is a hex digit.
++ *
++ * Return: true if input is valid UUID string.
++ */
++bool uuid_is_valid(const char *uuid)
++{
++	unsigned int i;
 +
-+struct efi_load_file_protocol {
-+	efi_status_t (EFIAPI *load_file)(struct efi_load_file_protocol *this,
-+					 struct efi_device_path *file_path,
-+					 bool boot_policy,
-+					 size_t *buffer_size,
-+					 void *buffer);
- };
- 
- #define EFI_FILE_IO_INTERFACE_REVISION   0x00010000
-@@ -722,6 +758,12 @@ struct efi_file_io_interface {
- 			struct efi_file_handle **Root);
- };
- 
-+struct efi_simple_file_system_protocol {
-+	u64 Revision;
-+	efi_status_t (EFIAPI *open_volume)(struct efi_simple_file_system_protocol *this,
-+			struct efi_file_handle **root);
-+};
++	for (i = 0; i < UUID_STRING_LEN; i++) {
++		if (i == 8 || i == 13 || i == 18 || i == 23) {
++			if (uuid[i] != '-')
++				return false;
++		} else if (!isxdigit(uuid[i])) {
++			return false;
++		}
++	}
 +
- struct efi_file_info {
- 	uint64_t Size;
- 	uint64_t FileSize;
-@@ -730,7 +772,16 @@ struct efi_file_info {
- 	struct efi_time LastAccessTime;
- 	struct efi_time ModificationTime;
- 	uint64_t Attribute;
--	s16 FileName[1];
-+	efi_char16_t FileName[];
-+};
++	return true;
++}
++EXPORT_SYMBOL(uuid_is_valid);
 +
-+struct efi_file_system_info {
-+	u64 size;
-+	u8 read_only;
-+	u64 volume_size;
-+	u64 free_space;
-+	u32 block_size;
-+	efi_char16_t volume_label[];
- };
- 
- __attribute__((noreturn)) void efi_main(efi_handle_t, struct efi_system_table *);
++static int __uuid_parse(const char *uuid, __u8 b[16], const u8 ei[16])
++{
++	static const u8 si[16] = {0,2,4,6,9,11,14,16,19,21,24,26,28,30,32,34};
++	unsigned int i;
++
++	if (!uuid_is_valid(uuid))
++		return -EINVAL;
++
++	for (i = 0; i < 16; i++) {
++		int hi = hex_to_bin(uuid[si[i] + 0]);
++		int lo = hex_to_bin(uuid[si[i] + 1]);
++
++		b[ei[i]] = (hi << 4) | lo;
++	}
++
++	return 0;
++}
++
++int guid_parse(const char *uuid, guid_t *u)
++{
++	return __uuid_parse(uuid, u->b, guid_index);
++}
++EXPORT_SYMBOL(guid_parse);
++
++int uuid_parse(const char *uuid, uuid_t *u)
++{
++	return __uuid_parse(uuid, u->b, uuid_index);
++}
++EXPORT_SYMBOL(uuid_parse);
 -- 
 2.39.2
 
