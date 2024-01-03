@@ -1,66 +1,83 @@
-Delivery-date: Wed, 03 Jan 2024 11:21:41 +0100
+Delivery-date: Wed, 03 Jan 2024 11:53:39 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKyNZ-001mpF-1g
+	id 1rKysV-001p7T-0u
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 11:21:41 +0100
+	Wed, 03 Jan 2024 11:53:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rKyNY-0004Z9-Eu
-	for lore@pengutronix.de; Wed, 03 Jan 2024 11:21:41 +0100
+	id 1rKysU-0002W5-7j
+	for lore@pengutronix.de; Wed, 03 Jan 2024 11:53:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AiPKql7UJL6G+d3UKGuH/vFUw2SON6XZzCnfLm69r5c=; b=x/T1sXWHhdNoAivymYdv7+7VZY
-	rxEnOmya0yAZGL668hH1vyyvu0B3nMJeUgt0oXqbyLLVA+pgbsfvLwGvDeuJNXTc+sxr7QXotu71o
-	TKhdsqX0u7ZPny/vaFxeVpa3bnRBzw8NWGsVkKhstimUvHcw9xLuCq7lVl9tJ4yjk/3xaOpttEYF1
-	tqW/hl7f9uEssjw0xGU0dOuETXdl3Zji/mJ2D2jzeiwwIzX6+GGeDpvP1oHmXDtiuZWmacW9NWUnJ
-	7LtWKdxKlbeuoHMnJ/1iX272b1hnlbuVdfgo4L0sZG565qmrThZAugfJdQwCgixb6k4Pe2d9rMuBa
-	dY87GARw==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=C/TRkTPOE+VuK/CWhtkvSWuCZsC6oA82hjPVi64sxck=; b=X0l99noyyt0T2WBbgpU8h2lB2d
+	5qXL2XWqxWe7Ls9cxUpls7oMey2WhpXT0pizMvPDfIpzZsC28V6Z1Zr7OuwxJcpVk2QpJj0naZR/S
+	Nr8ukRSVS53q0QwGXQ+iIBUBS63PHvCFwDAn8Y2Lv1hr0IGNjn+fKQ6cEtrz+gQ66aarw/FKi6PqY
+	aMqSVP+wQsKAnz81ZDCdVG9fFSKIyAvmaAdiYE6vLP7+PZGQ1yBkaWs2+13xOTct9ve83IuIPkH8a
+	yyd7UPNmO3X3ZFUx2g4+zGJ7NZyxlmMAIfpWASeVIZTP8otyv+F7M6pDNkojGE6OMCZHXCwuNbsEA
+	4hlDqzjQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKyMc-00ANUg-0i;
-	Wed, 03 Jan 2024 10:20:42 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1rKyrO-00ARYo-2V;
+	Wed, 03 Jan 2024 10:52:30 +0000
+Received: from mail-lf1-x12e.google.com ([2a00:1450:4864:20::12e])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rKyMY-00ANTW-1R
+	id 1rKyrL-00ARWw-1B
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 10:20:39 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rKyMX-0004Df-Am; Wed, 03 Jan 2024 11:20:37 +0100
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rKyMW-0005x9-Un; Wed, 03 Jan 2024 11:20:36 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rKyMW-00B2Ne-2m;
-	Wed, 03 Jan 2024 11:20:36 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Wed, 03 Jan 2024 10:52:28 +0000
+Received: by mail-lf1-x12e.google.com with SMTP id 2adb3069b0e04-50e67e37661so11106523e87.0
+        for <barebox@lists.infradead.org>; Wed, 03 Jan 2024 02:52:26 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1704279145; x=1704883945; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=C/TRkTPOE+VuK/CWhtkvSWuCZsC6oA82hjPVi64sxck=;
+        b=LGAcNQZiJB1IPXUX9z1sO8cnPGz/t4VAnlFArYgPiXEaPUdOD53Reqv5VVQt386iH3
+         H2tK4fIo632MoM7QXObYnCkV0CqPa5y/ghqtHqzoi21RjRxvDyzmLhqPD1KBcsjRKlJ6
+         Tz8qR377FO7SsiV7COPRdD+87dg+JukLvUN4m4XTyggKMsH9z/0zmpVh34CXvg8zhngv
+         RPinA1dqNlVlouFkQvLelCQCr0xsMa2htbGUKoId3Gb8t+1WeZN2SRaB4dun7BIYfEmq
+         iBWqxqBzlDCJeuX02dxVPjBrSj/maQJzRBz7LjMoCr3Y25iIAVTD3pdEIIxS5C9oC918
+         7N/Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1704279145; x=1704883945;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C/TRkTPOE+VuK/CWhtkvSWuCZsC6oA82hjPVi64sxck=;
+        b=HMfg45MB3Ig9rR3CgciKXwTAjKUMfmxukUZZG2sP9c/izMrYFNUk0IMs54lPvTfel9
+         ZHfBJY2lRKaCNoqLA1zKUC8Uw9GoFNuFXk+Ge2XDt3GYJKvMUya6/Eg7y5rp0B1dByxW
+         MszZ1WPQdE0mHKPeFNAi+lOJ47krXJju6Lvw0hQJ6a8iva2ylSlowmqvht1her8n2b2M
+         4UsoJEwIGQIE93B1Iu3ZPaRb8Zvi68BNmo4Nfm9uBH6PXLn76mGwBmzbzoFU5h8FiIHg
+         JM+RaJTe1ObCWqanrYYceFaVNv+WV6PKD1NF5mMHFTJcwb7FhuGjI0YgUeUuWKlvFh29
+         WgCQ==
+X-Gm-Message-State: AOJu0Yyb9whj4Tu9sgllRc7npSHVFxvVZpZTovRGVt28mQnuwXEyZJhX
+	4JBv08DoItMFY3KjhGBDCuLSUT9TjqI=
+X-Google-Smtp-Source: AGHT+IFkNv7D7C1B91rrmJTcQYVJpnUTW5UaRDJQOGl4PYZYXsFzp92Ir4uJu8/yDcs3R49d7k2mxA==
+X-Received: by 2002:ac2:5504:0:b0:50e:6a21:f9b2 with SMTP id j4-20020ac25504000000b0050e6a21f9b2mr7359378lfk.55.1704279144485;
+        Wed, 03 Jan 2024 02:52:24 -0800 (PST)
+Received: from cinco.. (109-252-3-142.nat.spd-mgts.ru. [109.252.3.142])
+        by smtp.gmail.com with ESMTPSA id f20-20020ac251b4000000b0050e798ab1b9sm2963671lfk.139.2024.01.03.02.52.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jan 2024 02:52:24 -0800 (PST)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 11:20:35 +0100
-Message-Id: <20240103102035.2630735-2-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240103102035.2630735-1-a.fatoum@pengutronix.de>
-References: <20240103102035.2630735-1-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 13:52:46 +0300
+Message-Id: <20240103105246.800751-1-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_022038_516858_869B1CE7 
-X-CRM114-Status: GOOD (  12.68  )
+X-CRM114-CacheID: sfid-20240103_025227_401632_01727356 
+X-CRM114-Status: UNSURE (   9.78  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,90 +95,92 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH 2/2] cdev: add cdev_alloc helper for creating cdevs
+X-Spam-Status: No, score=-4.3 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] MIPS: qemu-malta*_defconfig: enable e1000 network driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We have different helpers for creating cdevs, depending on whether they
-are loop devices, partitions or links.
+Thanks to Denis Orlov's work on dma_sync_single_for_*()
+interface and e1000 patches we can enable e1000 support
+on both 32-bit and 64-bit qemu malta boards.
 
-Create a common cdev_alloc function, so it's easier to instrument cdev
-creation during debugging.
+32-bit malta qemu command line:
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+    qemu-system-mips -M malta -cpu 24Kf -m 256M \
+        -nographic -serial mon:stdio \
+        -bios images/barebox-qemu-malta.img \
+        -net user,tftp=$(pwd) -net nic,model=e1000
+
+64-bit malta qemu command line:
+
+    qemu-system-mips64el -M malta -cpu MIPS64R2-generic -m 256M \
+        -nographic -serial mon:stdio \
+        -bios images/barebox-qemu-malta.img.swapped \
+        -net user,tftp=$(pwd) -net nic,model=e1000
+
+Barebox commands to check e1000 network interface:
+
+    barebox@qemu malta:/ devinfo eth0
+    Parent: pci-8086:100e.0
+    Parameters:
+      ethaddr: 52:54:00:12:34:56 (type: MAC)
+      gateway: 0.0.0.0 (type: ipv4)
+      ipaddr: 0.0.0.0 (type: ipv4)
+      linux.bootargs:  (type: string)
+      linux.devname:  (type: string)
+      mode: dhcp (type: enum) (values: "dhcp", "static", "disabled")
+      netmask: 0.0.0.0 (type: ipv4)
+      serverip:  (type: string)
+    barebox@qemu malta:/ devinfo pci-8086:100e.0
+    Driver: e1000
+    Bus: pci
+    Parameters:
+      class: 0200 (type: string)
+      devfn: 90 (type: string)
+      device: 100e (type: string)
+      revision: 0003 (type: string)
+      vendor: 8086 (type: string)
+    barebox@qemu malta:/ dhcp eth0
+    eth0: DHCP client bound to address 10.0.2.15
+    barebox@qemu malta:/ tftp images/barebox-qemu-malta.img
+            [################################################################]
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- fs/devfs-core.c | 21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ arch/mips/configs/qemu-malta64el_defconfig | 1 +
+ arch/mips/configs/qemu-malta_defconfig     | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index c79b092a112e..9f5b41761f52 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -324,6 +324,16 @@ int cdev_truncate(struct cdev *cdev, size_t size)
- 	return -EPERM;
- }
- 
-+static struct cdev *cdev_alloc(const char *name)
-+{
-+	struct cdev *new;
-+
-+	new = xzalloc(sizeof(*new));
-+	new->name = xstrdup(name);
-+
-+	return new;
-+}
-+
- int devfs_create(struct cdev *new)
- {
- 	struct cdev *cdev;
-@@ -358,8 +368,7 @@ int devfs_create_link(struct cdev *cdev, const char *name)
- 	 */
- 	cdev = cdev_readlink(cdev);
- 
--	new = xzalloc(sizeof(*new));
--	new->name = xstrdup(name);
-+	new = cdev_alloc(name);
- 	new->link = cdev;
- 
- 	if (cdev->partname) {
-@@ -540,8 +549,7 @@ struct cdev *cdevfs_add_partition(struct cdev *cdev,
- 		return &mtd->cdev;
- 	}
- 
--	new = xzalloc(sizeof(*new));
--	new->name = strdup(partinfo->name);
-+	new = cdev_alloc(partinfo->name);
- 	if (!strncmp(cdev->name, partinfo->name, strlen(cdev->name)))
- 		new->partname = xstrdup(partinfo->name + strlen(cdev->name) + 1);
- 
-@@ -679,6 +687,7 @@ static const struct cdev_operations loop_ops = {
- 
- struct cdev *cdev_create_loop(const char *path, ulong flags, loff_t offset)
- {
-+	char str[16];
- 	struct cdev *new;
- 	struct loop_priv *priv;
- 	static int loopno;
-@@ -692,10 +701,10 @@ struct cdev *cdev_create_loop(const char *path, ulong flags, loff_t offset)
- 		return NULL;
- 	}
- 
--	new = xzalloc(sizeof(*new));
-+	snprintf(str, sizeof(str), "loop%u", loopno++);
- 
-+	new = cdev_alloc(str);
- 	new->ops = &loop_ops;
--	new->name = basprintf("loop%u", loopno++);
- 	new->priv = priv;
- 
- 	ofs = lseek(priv->fd, 0, SEEK_END);
+diff --git a/arch/mips/configs/qemu-malta64el_defconfig b/arch/mips/configs/qemu-malta64el_defconfig
+index da3396246d5..c1f7366d76d 100644
+--- a/arch/mips/configs/qemu-malta64el_defconfig
++++ b/arch/mips/configs/qemu-malta64el_defconfig
+@@ -63,6 +63,7 @@ CONFIG_NET_NETCONSOLE=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_VIRTIO_CONSOLE=y
++CONFIG_DRIVER_NET_E1000=y
+ CONFIG_DRIVER_NET_RTL8139=y
+ CONFIG_DRIVER_NET_VIRTIO=y
+ # CONFIG_SPI is not set
+diff --git a/arch/mips/configs/qemu-malta_defconfig b/arch/mips/configs/qemu-malta_defconfig
+index 4be05b7e5a3..99714aa3068 100644
+--- a/arch/mips/configs/qemu-malta_defconfig
++++ b/arch/mips/configs/qemu-malta_defconfig
+@@ -60,6 +60,7 @@ CONFIG_NET_NETCONSOLE=y
+ CONFIG_OFDEVICE=y
+ CONFIG_OF_BAREBOX_DRIVERS=y
+ CONFIG_VIRTIO_CONSOLE=y
++CONFIG_DRIVER_NET_E1000=y
+ CONFIG_DRIVER_NET_RTL8139=y
+ CONFIG_DRIVER_NET_VIRTIO=y
+ # CONFIG_SPI is not set
 -- 
-2.39.2
+2.39.0
 
 
 
