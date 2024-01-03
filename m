@@ -1,69 +1,62 @@
-Delivery-date: Wed, 03 Jan 2024 15:13:17 +0100
+Delivery-date: Wed, 03 Jan 2024 15:52:19 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL1zh-0024Kn-25
+	id 1rL2bU-0026fL-0I
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 15:13:17 +0100
+	Wed, 03 Jan 2024 15:52:19 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL1zg-0003bg-Hl
-	for lore@pengutronix.de; Wed, 03 Jan 2024 15:13:17 +0100
+	id 1rL2bS-0004c1-WF
+	for lore@pengutronix.de; Wed, 03 Jan 2024 15:52:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LOpb8QQQmcO7FrzVHEzh6EqYU2dl3FSEJC25GbYxr/Q=; b=pY4BXTMdNwfpA96RmgfM/+tqa6
-	CY48WvRi1oFjEMzu049UIPQI3aufuCNsqN3iVOB+ACsc0KlG4b1/U6macfk5hIYjjV7FhO5HZ2l6i
-	SPlftbTQ84WB4dztp2jCaV0tRpgXuLrhBAll1B//iIW11+cNwzTx2WqZ5hdYko5D1wIxFs0Ikc+p7
-	QuE2ngs2UhJiSDYYhZuN3sIBfCtYUZr8XoQ6xKCq991ppUzeibfcoyYAxr3kO0XgZFLjpRt+SHZXA
-	VfSbwhUJ3lPolSC4wbCDjSRQIcUUSwWYYEsogxakm+7GvMMdAKcaipLTrjwCr6Q/nIJ15NFH0qMG+
-	Tx8TXHdg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=rbGczkcGyEHE2iX0UXVdyjxud3KynqWOX2uPiiHcZ/U=; b=pW8r965R+J4kbiRNyPta7mclQG
+	aNI1Kw5n69Azg/T7eavP+on8WXq4xVlsn2xMhnqgwAvtbB1Rqq6Ivn4HnMMVRWk4tb4lgPEjZCoXp
+	cxlbd8A9fPEfvRxoqfgZM7+12mcLmMc4EqaIEdILfhtSCTz+tOHshPuQPg/3suC4l1q0hHKt8JOrb
+	p0nFNUG4TZyaG0YBqD6nDWqZWlOqQoBtG/HxYveESrviISnK1W4QGfLA7rmHO8Sit7U+EDfPnep2n
+	GNPbcIaOM8xInDwGrNhb2kR0Ttr9U2iy9zs+R57BKsWlmn0deGDBu/30xoIiB7X8/8h4B5j9gUMRn
+	6GaBtGwA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL1yj-00B4Oy-11;
-	Wed, 03 Jan 2024 14:12:17 +0000
+	id 1rL2aM-00BAwr-0C;
+	Wed, 03 Jan 2024 14:51:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL1yg-00B4Of-2Q
+	id 1rL2aI-00BAvW-2R
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 14:12:16 +0000
+	Wed, 03 Jan 2024 14:51:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rL1yf-0003Ku-GQ; Wed, 03 Jan 2024 15:12:13 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	id 1rL2aH-0004Hv-A1; Wed, 03 Jan 2024 15:51:05 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rL1yf-0008ZW-44; Wed, 03 Jan 2024 15:12:13 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	id 1rL2aG-0008fd-Ti; Wed, 03 Jan 2024 15:51:04 +0100
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rL1yf-00A4go-1o; Wed, 03 Jan 2024 15:12:13 +0100
-Date: Wed, 3 Jan 2024 15:12:13 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20240103141213.GK1318922@pengutronix.de>
-References: <20240103101354.2629106-1-a.fatoum@pengutronix.de>
+	id 1rL2aG-00F3zZ-2g;
+	Wed, 03 Jan 2024 15:51:04 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Wed,  3 Jan 2024 15:51:02 +0100
+Message-Id: <20240103145103.3589208-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240103101354.2629106-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_061214_811605_0E771F18 
-X-CRM114-Status: GOOD (  28.23  )
+X-CRM114-CacheID: sfid-20240103_065106_791020_44FFB23C 
+X-CRM114-Status: GOOD (  10.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,89 +74,105 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH master] virtio: pci: don't re-enable with 0 as argument
+	T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75 autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH 1/2] net/phy: sync phy_interface_t types with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Jan 03, 2024 at 11:13:54AM +0100, Ahmad Fatoum wrote:
-> Qemu prints an error during barebox shutdown when virtio-net was used:
-> 
->   qemu-system-aarch64: wrong value for queue_enable 0
-> 
-> This warning was added a few years back in Qemu commit 10d35e5819:
-> 
->  | virtio-pci: fix queue_enable write
->  |
->  | Spec said: The driver uses this to selectively prevent the device from
->  | executing requests from this virtqueue. 1 - enabled; 0 - disabled.
->  |
->  | Though write 0 to queue_enable is forbidden by the spec, we should not
->  | assume that the value is 1.
->  |
->  | Fix this by ignore the write value other than 1.
->  |
->  | Signed-off-by: Jason Wang <jasowang@redhat.com>
->  | Message-Id: <20200610054351.15811-1-jasowang@redhat.com>
->  | Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->  | Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
->  | Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
->  | Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
->  | Reviewed-by: Michael S. Tsirkin <mst@redhat.com>
->  | Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
-> 
-> Even older Qemu versions actually marked the virtqueue enabled when
-> queue_enable was written with any value, we should really stop writing
-> anything, but 1 into queue_enable in the removal path.
-> 
-> We already reset before deleting the virtqueues, which disables them.
-> This aligns us with what Linux is doing, except that Linux has some
-> MSIX cleanup logic in virtio_pci_del_vq. We don't have that, but we
-> will keep the function anyway to simplify future synchronization.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/virtio/virtio_pci_modern.c | 8 --------
->  1 file changed, 8 deletions(-)
+This syncs the phy interface modes with Linux as of linux-6.7-rc7.
 
-Applied, thanks
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ include/linux/phy.h | 55 +++++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 51 insertions(+), 4 deletions(-)
 
-Sascha
-
-> 
-> diff --git a/drivers/virtio/virtio_pci_modern.c b/drivers/virtio/virtio_pci_modern.c
-> index 26eefba85bea..2dd369b02e9a 100644
-> --- a/drivers/virtio/virtio_pci_modern.c
-> +++ b/drivers/virtio/virtio_pci_modern.c
-> @@ -223,14 +223,6 @@ static struct virtqueue *virtio_pci_setup_vq(struct virtio_device *vdev,
->  
->  static void virtio_pci_del_vq(struct virtqueue *vq)
->  {
-> -	struct virtio_pci_device *vp_dev = to_vp_device(vq->vdev);
-> -	unsigned int index = vq->index;
-> -
-> -	iowrite16(index, &vp_dev->common->queue_select);
-> -
-> -	/* Select and deactivate the queue */
-> -	iowrite16(0, &vp_dev->common->queue_enable);
-> -
->  	vring_del_virtqueue(vq);
->  }
->  
-> -- 
-> 2.39.2
-> 
-> 
-> 
-
+diff --git a/include/linux/phy.h b/include/linux/phy.h
+index d68ee5665a..7da4f94e0e 100644
+--- a/include/linux/phy.h
++++ b/include/linux/phy.h
+@@ -36,7 +36,46 @@
+ #define PHY_GBIT_FEATURES       (PHY_BASIC_FEATURES | \
+ 				 PHY_1000BT_FEATURES)
+ 
+-/* Interface Mode definitions */
++/**
++ * enum phy_interface_t - Interface Mode definitions
++ *
++ * @PHY_INTERFACE_MODE_NA: Not Applicable - don't touch
++ * @PHY_INTERFACE_MODE_INTERNAL: No interface, MAC and PHY combined
++ * @PHY_INTERFACE_MODE_MII: Media-independent interface
++ * @PHY_INTERFACE_MODE_GMII: Gigabit media-independent interface
++ * @PHY_INTERFACE_MODE_SGMII: Serial gigabit media-independent interface
++ * @PHY_INTERFACE_MODE_TBI: Ten Bit Interface
++ * @PHY_INTERFACE_MODE_REVMII: Reverse Media Independent Interface
++ * @PHY_INTERFACE_MODE_RMII: Reduced Media Independent Interface
++ * @PHY_INTERFACE_MODE_REVRMII: Reduced Media Independent Interface in PHY role
++ * @PHY_INTERFACE_MODE_RGMII: Reduced gigabit media-independent interface
++ * @PHY_INTERFACE_MODE_RGMII_ID: RGMII with Internal RX+TX delay
++ * @PHY_INTERFACE_MODE_RGMII_RXID: RGMII with Internal RX delay
++ * @PHY_INTERFACE_MODE_RGMII_TXID: RGMII with Internal RX delay
++ * @PHY_INTERFACE_MODE_RTBI: Reduced TBI
++ * @PHY_INTERFACE_MODE_SMII: Serial MII
++ * @PHY_INTERFACE_MODE_XGMII: 10 gigabit media-independent interface
++ * @PHY_INTERFACE_MODE_XLGMII:40 gigabit media-independent interface
++ * @PHY_INTERFACE_MODE_MOCA: Multimedia over Coax
++ * @PHY_INTERFACE_MODE_PSGMII: Penta SGMII
++ * @PHY_INTERFACE_MODE_QSGMII: Quad SGMII
++ * @PHY_INTERFACE_MODE_TRGMII: Turbo RGMII
++ * @PHY_INTERFACE_MODE_100BASEX: 100 BaseX
++ * @PHY_INTERFACE_MODE_1000BASEX: 1000 BaseX
++ * @PHY_INTERFACE_MODE_2500BASEX: 2500 BaseX
++ * @PHY_INTERFACE_MODE_5GBASER: 5G BaseR
++ * @PHY_INTERFACE_MODE_RXAUI: Reduced XAUI
++ * @PHY_INTERFACE_MODE_XAUI: 10 Gigabit Attachment Unit Interface
++ * @PHY_INTERFACE_MODE_10GBASER: 10G BaseR
++ * @PHY_INTERFACE_MODE_25GBASER: 25G BaseR
++ * @PHY_INTERFACE_MODE_USXGMII:  Universal Serial 10GE MII
++ * @PHY_INTERFACE_MODE_10GKR: 10GBASE-KR - with Clause 73 AN
++ * @PHY_INTERFACE_MODE_QUSGMII: Quad Universal SGMII
++ * @PHY_INTERFACE_MODE_1000BASEKX: 1000Base-KX - with Clause 73 AN
++ * @PHY_INTERFACE_MODE_MAX: Book keeping
++ *
++ * Describes the interface between the MAC and PHY.
++ */
+ typedef enum {
+ 	PHY_INTERFACE_MODE_NA,
+ 	PHY_INTERFACE_MODE_INTERNAL,
+@@ -54,17 +93,25 @@ typedef enum {
+ 	PHY_INTERFACE_MODE_RTBI,
+ 	PHY_INTERFACE_MODE_SMII,
+ 	PHY_INTERFACE_MODE_XGMII,
++	PHY_INTERFACE_MODE_XLGMII,
+ 	PHY_INTERFACE_MODE_MOCA,
++	PHY_INTERFACE_MODE_PSGMII,
+ 	PHY_INTERFACE_MODE_QSGMII,
+ 	PHY_INTERFACE_MODE_TRGMII,
++	PHY_INTERFACE_MODE_100BASEX,
+ 	PHY_INTERFACE_MODE_1000BASEX,
+ 	PHY_INTERFACE_MODE_2500BASEX,
++	PHY_INTERFACE_MODE_5GBASER,
+ 	PHY_INTERFACE_MODE_RXAUI,
+ 	PHY_INTERFACE_MODE_XAUI,
+-	/* 10GBASE-KR, XFI, SFI - single lane 10G Serdes */
++	/* 10GBASE-R, XFI, SFI - single lane 10G Serdes */
++	PHY_INTERFACE_MODE_10GBASER,
++	PHY_INTERFACE_MODE_25GBASER,
++	PHY_INTERFACE_MODE_USXGMII,
++	/* 10GBASE-KR - with Clause 73 AN */
+ 	PHY_INTERFACE_MODE_10GKR,
+-	PHY_INTERFACE_MODE_SGMII_2500,
+-	PHY_INTERFACE_MODE_NONE,
++	PHY_INTERFACE_MODE_QUSGMII,
++	PHY_INTERFACE_MODE_1000BASEKX,
+ 	PHY_INTERFACE_MODE_MAX,
+ } phy_interface_t;
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
