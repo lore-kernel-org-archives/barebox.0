@@ -1,81 +1,80 @@
-Delivery-date: Wed, 03 Jan 2024 19:36:47 +0100
+Delivery-date: Wed, 03 Jan 2024 19:36:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL66h-002OEp-2b
+	id 1rL66k-002OFJ-0U
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 19:36:47 +0100
+	Wed, 03 Jan 2024 19:36:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL66c-00085T-0p
-	for lore@pengutronix.de; Wed, 03 Jan 2024 19:36:47 +0100
+	id 1rL66d-00087d-R0
+	for lore@pengutronix.de; Wed, 03 Jan 2024 19:36:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7pszoGdH1mNQxhHIdyQEB/h9WXHKL9kVN6yEYd2GXqQ=; b=gJUmv1i13CDWJUmtPMWo30cDev
-	MIIh1JzIdLVsmZWAb96s1A6IHZm0VuvjqE8qOBH66pO4cbmCaMMC4fikyc1Zk7BvPbU4ju7fd5Ya6
-	g5pIpwzWuD/1FqiHPCOQR1SW93z7PFb+MIDdV6k7KqTVJuxM/Wq3IT9csXhipzQahiRg5rvsvN18Y
-	rcivAvBIaBb88l68FN7BsgLVwKpX9kNdrUDFH/WMsZu5R0Ny9L4XdrmXvgkdaNrRgTcP/tRcycy0O
-	OB5Se5dkTy4V4zV8fagK056keGfyRYuTAA1yTuyhrxptsMUIRs6or0CHx2z9VBRCwPyI59gIyAnv6
-	Yw/AM98g==;
+	bh=kVKJN3ZpSQOn0QhEOVuwccH/VX03t/+YJhfMIeOGMKY=; b=DEpPqRk8hU5zLvN84jz1vSC72e
+	HeT4QJ7LBezp4r1MxCzKUQJMekUKqW+tRL63hpo9fzU+5oji25ADg3TDuQNYYIXhoxniMFLjsiYnV
+	ABNqnxZ0FeTHB2ESGfZUjqEEasrZCHQbinK4cwJe2o/MT62BJkgrPrAfcnrNcQ2n+ijE5JoXr/U2x
+	rZ6e+yva8wPr/clru/xo1j6YcjYDMWzaV7uf5jE/m2QSP/w4boAbHvTmLkCferf/4rENFu4a5q8p5
+	OQm741sTlBJ0EgjmZgqGl1hqHtCURZV0wte12OZ7y6k1db8z5S2Ee6JrSG5Eu5vGuy+lKcjTdlskW
+	qhlVWIgg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL64w-00Blez-0O;
-	Wed, 03 Jan 2024 18:34:58 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1rL64x-00BlhH-1J;
+	Wed, 03 Jan 2024 18:34:59 +0000
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL61M-00BhQl-2s
+	id 1rL61N-00BhRV-1a
 	for barebox@bombadil.infradead.org;
-	Wed, 03 Jan 2024 18:31:16 +0000
+	Wed, 03 Jan 2024 18:31:17 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=7pszoGdH1mNQxhHIdyQEB/h9WXHKL9kVN6yEYd2GXqQ=; b=cV8XpS1X1W6tkRf91kRyenUUF5
-	QokUlzH6cUS3z8s/8ToSBiBeoxzqBpQpvU7c3O48ACe9n6emLhr8R4sD2Z+4qgW6k+TYJwMaM+Kf+
-	SXoIMxqeTzxSA82e9W2A93V8ufqnm+yCxa8fWzN9xP8Ixj/loIa2nv0BaVb/C+x/19VZcsW0lNs/6
-	CEluSdm7y5uCrrAUFib1TklUqKiHSh5F/KEQZsYtaU2fFCHBpHcZkJImmPBEalnKE4NA+wtMB6BkB
-	POuqDwLIEPzsBrw6C1HMWVZLgTiBo64CitSDADP/pr/g6Zur//hF+CR5ZSnnCYQqsytdXAxWVS0a6
-	HmplQdXQ==;
+	bh=kVKJN3ZpSQOn0QhEOVuwccH/VX03t/+YJhfMIeOGMKY=; b=Kh0RCUHVecwCFm+2MhW/uk2ily
+	9TZLn2POY4N/GO8+DmARVn6w4qtWFhFgwF2FZDH4orD6NEdW52n+5D/7WAPR3tp228I90CIkcDcfI
+	Hq9Weei0avT6HH3ZQoaSAofuNxgWqH9m0AI1qqxO4TQuIybpepJOVgA7iKIqPCsgRkwiJsyiI/Q1f
+	Zgn+7Knou+PU8IRCEd4F0Ayzrmhn77/fcEdnHjQTgFhQZqEv90No7BvsdJEqPoBUFyfUqzSuY3vfO
+	lOVEkteygEa5s7lu2riB9zftcFdYyH+jiIPF+Vnvm2ROQDWdjb5WPZlBCDABdlZd61PxHlNn/rI+C
+	6PKRw3wQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL61E-005eCO-1H
-	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 18:31:15 +0000
+	by casper.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
+	id 1rL61D-00DIm9-Jz
+	for barebox@lists.infradead.org; Wed, 03 Jan 2024 18:31:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL612-0001ah-Iz; Wed, 03 Jan 2024 19:30:56 +0100
+	id 1rL611-0001Xe-J2; Wed, 03 Jan 2024 19:30:55 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL612-000AwQ-5b; Wed, 03 Jan 2024 19:30:56 +0100
+	id 1rL611-000AvO-6K; Wed, 03 Jan 2024 19:30:55 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k1-001j4X-1K;
-	Wed, 03 Jan 2024 19:13:21 +0100
+	id 1rL5k5-001j4X-35;
+	Wed, 03 Jan 2024 19:13:25 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:11:30 +0100
-Message-Id: <20240103181312.409668-11-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:13:11 +0100
+Message-Id: <20240103181312.409668-112-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_183108_598916_858041ED 
-X-CRM114-Status: GOOD (  11.42  )
+X-CRM114-CacheID: sfid-20240103_183110_022757_BA8F3356 
+X-CRM114-Status: GOOD (  12.64  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,125 +97,125 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 010/112] of: don't report failure to of_read_file twice
+Subject: [PATCH 111/112] commands: efi_handle_dump: use guid_parse instead of open-coding
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-of_read_file already prints to log messages when it fails, so
-duplicating the error message in the caller is needlessly verbose.
+Now that we have GUID parsing functions, let's start using them.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/of_diff.c            | 5 ++---
- commands/of_display_timings.c | 4 +---
- commands/of_overlay.c         | 4 +---
- commands/oftree.c             | 4 +---
- drivers/of/overlay.c          | 4 +---
- efi/payload/init.c            | 4 +---
- 6 files changed, 7 insertions(+), 18 deletions(-)
+ commands/efi_handle_dump.c | 69 +++++---------------------------------
+ 1 file changed, 8 insertions(+), 61 deletions(-)
 
-diff --git a/commands/of_diff.c b/commands/of_diff.c
-index 8b19c093ddab..623b033c7323 100644
---- a/commands/of_diff.c
-+++ b/commands/of_diff.c
-@@ -19,15 +19,14 @@ static struct device_node *get_tree(const char *filename, struct device_node *ro
+diff --git a/commands/efi_handle_dump.c b/commands/efi_handle_dump.c
+index 74d53c9a17c5..461d330c2fa4 100644
+--- a/commands/efi_handle_dump.c
++++ b/commands/efi_handle_dump.c
+@@ -8,6 +8,7 @@
+ #include <common.h>
+ #include <command.h>
+ #include <efi.h>
++#include <linux/uuid.h>
+ #include <efi/efi-mode.h>
+ #include <efi/efi-device.h>
  
- 	if (!strcmp(filename, "-")) {
- 		node = of_dup(root) ?: ERR_PTR(-ENOENT);
-+		if (IS_ERR(node))
-+			printf("Cannot duplicate live tree: %pe\n", node);
- 	} else if (!strcmp(filename, "+")) {
- 		return NULL;
- 	} else {
- 		node = of_read_file(filename);
- 	}
- 
--	if (IS_ERR(node))
--		printf("Cannot read %s: %pe\n", filename, node);
--
- 	return node;
+@@ -58,75 +59,22 @@ static void efi_dump(struct efi_boot_services *bs, efi_handle_t *handles, unsign
+ 	printf("\n");
  }
  
-diff --git a/commands/of_display_timings.c b/commands/of_display_timings.c
-index 4cc79ec88d7e..232074fce786 100644
---- a/commands/of_display_timings.c
-+++ b/commands/of_display_timings.c
-@@ -68,10 +68,8 @@ static int do_of_display_timings(int argc, char *argv[])
- 	/* Check if external dtb given */
- 	if (dtbfile) {
- 		root = of_read_file(dtbfile);
--		if (IS_ERR(root)) {
--			printf("Cannot open %s: %pe\n", dtbfile, root);
-+		if (IS_ERR(root))
- 			return PTR_ERR(root);
--		}
+-static unsigned char to_digit(unsigned char c)
+-{
+-	if (c >= '0' && c <= '9')
+-		c -= '0';
+-	else if (c >= 'A' && c <= 'F')
+-		c -= 'A' - 10;
+-	else
+-		c -= 'a' - 10;
+-
+-	return c;
+-}
+-
+-#define read_xbit(src, dest, bit) 					\
+-	do {								\
+-		int __i;						\
+-		for (__i = (bit - 4); __i >= 0; __i -= 4, src++)	\
+-			dest |= to_digit(*src) << __i;			\
+-	} while (0)
+-
+ static int do_efi_protocol_dump(struct efi_boot_services *bs, int argc, char **argv)
+ {
+ 	unsigned long handle_count = 0;
+ 	efi_handle_t *handles = NULL;
+ 	int ret;
+ 	efi_guid_t guid;
+-	u32 a = 0;
+-	u16 b = 0;
+-	u16 c = 0;
+-	u8 d0 = 0;
+-	u8 d1 = 0;
+-	u8 d2 = 0;
+-	u8 d3 = 0;
+-	u8 d4 = 0;
+-	u8 d5 = 0;
+-	u8 d6 = 0;
+-	u8 d7 = 0;
+ 
+ 	/* Format 220e73b6-6bdb-4413-8405-b974b108619a */
+ 	if (argc == 1) {
+-		char *s = argv[0];
+-		int len = strlen(s);
+-
+-		if (len != 36)
+-			return -EINVAL;
+-
+-		read_xbit(s, a, 32);
+-		if (*s != '-')
+-			return -EINVAL;
+-		s++;
+-		read_xbit(s, b, 16);
+-		if (*s != '-')
+-			return -EINVAL;
+-		s++;
+-		read_xbit(s, c, 16);
+-		if (*s != '-')
+-			return -EINVAL;
+-		s++;
+-		read_xbit(s, d0, 8);
+-		read_xbit(s, d1, 8);
+-		if (*s != '-')
+-			return -EINVAL;
+-		s++;
+-		read_xbit(s, d2, 8);
+-		read_xbit(s, d3, 8);
+-		read_xbit(s, d4, 8);
+-		read_xbit(s, d5, 8);
+-		read_xbit(s, d6, 8);
+-		read_xbit(s, d7, 8);
++		ret = guid_parse(argv[0], &guid);
++		if (ret)
++			return ret;
+ 	} else if (argc == 11) {
++		u32 a;
++		u16 b, c;
++		u8 d0, d1, d2, d3, d4, d5, d6, d7;
+ 		/* Format :
+ 		 *	220e73b6 6bdb 4413 84 05 b9 74 b1 08 61 9a
+ 		 *   or
+@@ -143,12 +91,11 @@ static int do_efi_protocol_dump(struct efi_boot_services *bs, int argc, char **a
+ 		d5 = simple_strtoul(argv[8], NULL, 16);
+ 		d6 = simple_strtoul(argv[9], NULL, 16);
+ 		d7 = simple_strtoul(argv[10], NULL, 16);
++		guid = EFI_GUID(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7);
  	} else {
- 		root = of_get_root_node();
- 	}
-diff --git a/commands/of_overlay.c b/commands/of_overlay.c
-index fda9115a8201..2013c4b27867 100644
---- a/commands/of_overlay.c
-+++ b/commands/of_overlay.c
-@@ -36,10 +36,8 @@ static int do_of_overlay(int argc, char *argv[])
+ 		return -EINVAL;
  	}
  
- 	overlay = of_read_file(argv[optind]);
--	if (IS_ERR(overlay)) {
--		printf("Cannot open %s: %pe\n", argv[optind], overlay);
-+	if (IS_ERR(overlay))
- 		return PTR_ERR(overlay);
--	}
+-	guid = EFI_GUID(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7);
+-
+ 	printf("Searching for:\n");
+ 	printf("  %pUl: %s\n", &guid, efi_guid_string(&guid));
  
- 	if (live_tree) {
- 		ret = of_overlay_apply_tree(of_get_root_node(), overlay);
-diff --git a/commands/oftree.c b/commands/oftree.c
-index 7b12c86e1dc3..76227a10b033 100644
---- a/commands/oftree.c
-+++ b/commands/oftree.c
-@@ -76,10 +76,8 @@ static int do_oftree(int argc, char *argv[])
- 
- 	if (load) {
- 		root = of_read_file(load);
--		if (IS_ERR(root)) {
--			printf("Cannot open %s: %pe\n", load, root);
-+		if (IS_ERR(root))
- 			return PTR_ERR(root);
--		}
- 
- 		ret = of_set_root_node(root);
- 		if (ret) {
-diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index 2d2367fc101b..73c7a91db9b5 100644
---- a/drivers/of/overlay.c
-+++ b/drivers/of/overlay.c
-@@ -315,10 +315,8 @@ int of_overlay_apply_file(struct device_node *root, const char *filename,
- 		return 0;
- 
- 	ovl = of_read_file(filename);
--	if (IS_ERR(ovl)) {
--		pr_err("Failed to unflatten %s: %pe\n", filename, ovl);
-+	if (IS_ERR(ovl))
- 		return PTR_ERR(ovl);
--	}
- 
- 	if (filter && !of_overlay_matches_filter(NULL, ovl))
- 		return 0;
-diff --git a/efi/payload/init.c b/efi/payload/init.c
-index ffa466e3ad44..caab28741cc5 100644
---- a/efi/payload/init.c
-+++ b/efi/payload/init.c
-@@ -399,10 +399,8 @@ static int efi_late_init(void)
- 		struct state *state;
- 
- 		root = of_read_file(state_desc);
--		if (IS_ERR(root)) {
--			printf("Cannot open %s: %pe\n", state_desc, root);
-+		if (IS_ERR(root))
- 			return PTR_ERR(root);
--		}
- 
- 		ret = barebox_register_of(root);
- 		if (ret)
 -- 
 2.39.2
 
