@@ -1,66 +1,66 @@
-Delivery-date: Wed, 03 Jan 2024 20:46:59 +0100
+Delivery-date: Wed, 03 Jan 2024 20:47:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL7Ce-002V33-0v
+	id 1rL7Cf-002V3k-1E
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 20:46:59 +0100
+	Wed, 03 Jan 2024 20:47:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL7Cd-00047b-86
-	for lore@pengutronix.de; Wed, 03 Jan 2024 20:46:59 +0100
+	id 1rL7Ce-00048M-9B
+	for lore@pengutronix.de; Wed, 03 Jan 2024 20:47:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kml82ynhCSSGQAmEczHuL1mNBuuzt9XEI+Pj0uDLs68=; b=Pw4/UDq9uovROFu3lTPO2h6u7A
-	lvL34XOONjeiC2T2JfdmCtTGmG3vhNrn4zT27TUNDni/a+bTPCXjyPgCAB6I57eO6SGUzGG4LuVlr
-	3S53dpQdTCKwL8sjn9N8BpU8uhKp3Hlk4J18wt3QqrSWp6j3vV/GT3+cpqAOTdKHNBxxe4E9BRXD9
-	w48fW483sH9RE2//CpgyWMWX+UWT3wxwRK4XA+iDigN1y8IqfO2swLtyxy2b6bKs+XR4v1ubG2tA8
-	Oj5EiV53FtwuWVhffjM1ZJ2MCYiqWiVRkdsRFYZbo4pd5KmOuk6X+NjX3YaOJis8Wpz+VGsBXhs2n
-	VPhzDiJQ==;
+	bh=slWJBZDAC4MHB8HArioho+izp9zVch1SQTv2yHQWwsk=; b=R0h2E4o1lcQg2QHyrl+fTY/5wI
+	n/ux4EIS5jrkPtBEwKypj/VI8CdAwLTtI6evBt0jh2hJmiGkCMwUWA54dVPE+/1JoGDovwr+kU1S4
+	OOX8XrH3MVw+t0x/52rk4sE6rikdoZrRL1YEybUylqG1Y+ZsGGD+ehAqlSi8AM1OqpI4p7lfJKUCo
+	YS3/HL/Msi/0xIJJPWHgBmLI+CK47AQbJhVemc79lRXTGjtoMlSDw2d/y/1+4JXWDhSi+vfwKAz11
+	X+fiU1AUsij4METnvEbLuWfJ3NocIcE5dk4yQvP9RMvJsISPXyVp0Au9Y8HhokSFzBW+y0nayVj8K
+	7Mbnm78A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL7BU-00Bw6S-2k;
-	Wed, 03 Jan 2024 19:45:48 +0000
+	id 1rL7BZ-00Bw9C-1w;
+	Wed, 03 Jan 2024 19:45:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL60z-00Bh1F-2G
+	id 1rL610-00Bh1N-0i
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 18:30:57 +0000
+	Wed, 03 Jan 2024 18:31:00 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL60y-0001OG-IN; Wed, 03 Jan 2024 19:30:52 +0100
+	id 1rL60z-0001Pr-1T; Wed, 03 Jan 2024 19:30:53 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL60y-000AsI-5f; Wed, 03 Jan 2024 19:30:52 +0100
+	id 1rL60y-000Aso-L8; Wed, 03 Jan 2024 19:30:52 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k3-001j4X-2g;
-	Wed, 03 Jan 2024 19:13:23 +0100
+	id 1rL5k1-001j4X-1b;
+	Wed, 03 Jan 2024 19:13:21 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:12:24 +0100
-Message-Id: <20240103181312.409668-65-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:11:32 +0100
+Message-Id: <20240103181312.409668-13-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_103053_745539_D4822192 
-X-CRM114-Status: GOOD (  10.81  )
+X-CRM114-CacheID: sfid-20240103_103054_263231_53B92641 
+X-CRM114-Status: GOOD (  13.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,37 +83,122 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 064/112] boarddata: add barebox_boarddata_is_machine helper
+Subject: [PATCH 012/112] libfile: factor out read_file_into_buf helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In a later commit, the same barebox binary may be used either as EFI payload
-or as EFI loader being initialized from the device tree. The
-difference will be the barebox_boarddata, so add a helper for checking
-it.
+We do open -> read_full -> close at a number of places. Add a function
+that does this all at once and start using it to implement read_file.
+
+More users can follow later.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/boarddata.h | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ include/libfile.h |  4 ++++
+ lib/libfile.c     | 44 ++++++++++++++++++++++++++++++--------------
+ 2 files changed, 34 insertions(+), 14 deletions(-)
 
-diff --git a/include/boarddata.h b/include/boarddata.h
-index 68ad0d146495..8c048fd957b4 100644
---- a/include/boarddata.h
-+++ b/include/boarddata.h
-@@ -38,4 +38,12 @@ static inline struct barebox_boarddata *boarddata_create(void *adr, u32 machine)
+diff --git a/include/libfile.h b/include/libfile.h
+index 423e7ffec5b7..1240276e1d74 100644
+--- a/include/libfile.h
++++ b/include/libfile.h
+@@ -2,12 +2,16 @@
+ #ifndef __LIBFILE_H
+ #define __LIBFILE_H
  
- const struct barebox_boarddata *barebox_get_boarddata(void);
++#include <linux/types.h>
++
+ int pread_full(int fd, void *buf, size_t size, loff_t offset);
+ int pwrite_full(int fd, const void *buf, size_t size, loff_t offset);
+ int write_full(int fd, const void *buf, size_t size);
+ int read_full(int fd, void *buf, size_t size);
+ int copy_fd(int in, int out);
  
-+static inline bool barebox_boarddata_is_machine(const struct barebox_boarddata *bd,
-+						u32 machine)
++ssize_t read_file_into_buf(const char *filename, void *buf, size_t size);
++
+ char *read_file_line(const char *fmt, ...);
+ 
+ void *read_file(const char *filename, size_t *size);
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 185c7af721b5..67fc9cc7f3a2 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -186,6 +186,33 @@ char *read_file_line(const char *fmt, ...)
+ }
+ EXPORT_SYMBOL_GPL(read_file_line);
+ 
++/**
++ * read_file_into_buf - read a file to an external buffer
++ * @filename:  The filename to read
++ * @buf:       The buffer to read into
++ * @size:      The buffer size
++ *
++ * This function reads a file to an external buffer. At maximum @size
++ * bytes are read.
++ *
++ * Return: number of bytes read, or negative error code.
++ */
++ssize_t read_file_into_buf(const char *filename, void *buf, size_t size)
 +{
-+	if (!bd || bd->magic != BAREBOX_BOARDDATA_MAGIC)
-+		return false;
-+	return bd->machine == machine;
++	int fd;
++	ssize_t ret;
++
++	fd = open(filename, O_RDONLY);
++	if (fd < 0)
++		return fd;
++
++	ret = read_full(fd, buf, size);
++
++	close(fd);
++
++	return ret;
 +}
 +
- #endif	/* _BAREBOX_BOARDDATA_H_ */
+ /**
+  * read_file_2 - read a file to an allocated buffer
+  * @filename:  The filename to read
+@@ -208,11 +235,10 @@ EXPORT_SYMBOL_GPL(read_file_line);
+ int read_file_2(const char *filename, size_t *size, void **outbuf,
+ 		loff_t max_size)
+ {
+-	int fd;
+ 	struct stat s;
+ 	void *buf = NULL;
+ 	const char *tmpfile = "/.read_file_tmp";
+-	int ret;
++	ssize_t ret;
+ 	loff_t read_size;
+ 
+ again:
+@@ -240,17 +266,9 @@ int read_file_2(const char *filename, size_t *size, void **outbuf,
+ 		goto err_out;
+ 	}
+ 
+-	fd = open(filename, O_RDONLY);
+-	if (fd < 0) {
+-		ret = fd;
+-		goto err_out;
+-	}
+-
+-	ret = read_full(fd, buf, read_size);
++	ret = read_file_into_buf(filename, buf, read_size);
+ 	if (ret < 0)
+-		goto err_out1;
+-
+-	close(fd);
++		goto err_out;
+ 
+ 	if (size)
+ 		*size = ret;
+@@ -265,8 +283,6 @@ int read_file_2(const char *filename, size_t *size, void **outbuf,
+ 
+ 	return 0;
+ 
+-err_out1:
+-	close(fd);
+ err_out:
+ 	free(buf);
+ 
 -- 
 2.39.2
 
