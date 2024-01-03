@@ -1,82 +1,81 @@
-Delivery-date: Wed, 03 Jan 2024 20:17:08 +0100
+Delivery-date: Wed, 03 Jan 2024 20:17:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL6jk-002SiF-2a
+	id 1rL6jl-002Sif-2k
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 20:17:08 +0100
+	Wed, 03 Jan 2024 20:17:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL6jj-0003el-MV
-	for lore@pengutronix.de; Wed, 03 Jan 2024 20:17:08 +0100
+	id 1rL6ji-0003eB-Rs
+	for lore@pengutronix.de; Wed, 03 Jan 2024 20:17:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YscId6TVIV2hKwjM+QdP/4DPQKIr6CIKJicRA3u0SUs=; b=hJEe2PgXvynJmk57AZ9H4dgGEd
-	HUaLl+RGrAfjlkJ9yv5pP8Lg8vTJwhYXDzY5CE1d0lcJPZTeGYv5i7tModEMrKk32fRT4Lf0IaeLq
-	bMjqL94qElImlwZz09aph9os3AloLxzJ7QXlK7VpdU68AeBaILZnmvNxRh+V9AtlLjLr0hHVn04V2
-	HQUjbakX0SAUUULUsDMJTEnKP9yUvyMJBI78heAPH/tSsHxjIXX3c5NOtg3/FqZ6MNe0d8kQHfq9e
-	GjuxA1T4azDH5zSdzDGH0oVm7590o1dPsWmzybbfp2sN6/boilJ8Wbidw1fmwJb90k+qdgxnwzHQj
-	8Oxtd+IQ==;
+	bh=sYE2a7gxSVocGVOiiYmZcYJTzos1dveFX62DHwUdq9c=; b=iy9QbUaVA+JZdcq/8XCD0iXN02
+	gI/8xWZC9XxCmT7Z9Lo9Rvk0T6XgCRBrwDeeIINtN8eJU0tnY6ZNnnsRlfSiEQvzSNHA5+jlvnAFC
+	we1VNyZDiQG5hwMq+Mfv7yA2XadmjnZevsGXLrPdnJAEs8vG/vRSVyudISfGFj70PhooJY4DVlW+1
+	NgVCGFWLoZMSYo9bf9UU1fkWkjqIv/h3JCTJmyny2CndduRWlywD5BEp0M1dD8hituL80VMcDb+fM
+	jQHn4B7JT6M5GNsyBJaQrz3mXFIBtmQXCQZ+aWOWs3qtRMIGCmq565kLpR8j6e/pGy4QhVhV1V8+I
+	jqG1yPfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL6iR-00BsfR-0K;
-	Wed, 03 Jan 2024 19:15:47 +0000
+	id 1rL6iQ-00Bsf9-12;
+	Wed, 03 Jan 2024 19:15:46 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL5kU-00Be9v-0S
+	id 1rL5kN-00Be48-0I
 	for barebox@bombadil.infradead.org;
-	Wed, 03 Jan 2024 18:13:50 +0000
+	Wed, 03 Jan 2024 18:13:43 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=YscId6TVIV2hKwjM+QdP/4DPQKIr6CIKJicRA3u0SUs=; b=Tw/jyw+2xoBRVxgd4FG9UgfyNc
-	btpXneV7lb/R88BneLUtFKtoLpbmloHw4FJR/yGQB2DbJjjiU5wXnNcy9JiNx3lluv5wtbG1ilkgb
-	ldj3Ag1mSrckpmO2a5hDp0TdolRhc2R+wqwgCxzh1eLRPR8aS8WfIyaRFezwNoMtp1f/eGr8lxtpe
-	xyNPvjlHnvGog2RkOvNJkChxTFjUDMLpYP7EiKJr9+SoHE3IRoox/QsmRr1jWyr5MIbS9lekwIx4J
-	XSHCVjNyBMaoWs9zd854erWjUAl+cX1RugUcK1UPIWcFYx4s3kxpdYbqKS5aRvj1JJBSjtS3Mads0
-	GTClNywg==;
+	bh=sYE2a7gxSVocGVOiiYmZcYJTzos1dveFX62DHwUdq9c=; b=BzVUQhYObsq8FgpPho6PTKj7FL
+	3z1wCvB+XjYjctueWseotzcoQ3oyyV5WukioEC5qnwFK2yQO99HxMfSVtN+3UB684eaZGYmtse/+B
+	XsMbXMMeqHOJyxMtsd8z8Gxo2YTkBJZ2WG/n2OqR9Olu055ujFC6s/e0mS7mP4NljDZx6f5zVckTA
+	L5+S0LlWi4EgNDdjErkaxC8M/2uZ8DsuO/JxY7UnEgmHkUwkKAXO/kQy2YJdhSfif0vaSl3fbQfcB
+	m9xySL+lLWLfNpeTVUf8C9B6Y7+mCBa+MJypIA6fArn/KL29aVyBK7ktTstILjC4HGjaLrKwUf1hX
+	iPUAiHPQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL5k3-005dTB-1q
+	id 1rL5k3-005dTH-1d
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 18:13:48 +0000
+	Wed, 03 Jan 2024 18:13:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k1-0004fI-L8; Wed, 03 Jan 2024 19:13:21 +0100
+	id 1rL5k1-0004fk-QF; Wed, 03 Jan 2024 19:13:21 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k1-000App-7O; Wed, 03 Jan 2024 19:13:21 +0100
+	id 1rL5k1-000Aq1-D6; Wed, 03 Jan 2024 19:13:21 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k1-001j4X-0T;
+	id 1rL5k1-001j4X-12;
 	Wed, 03 Jan 2024 19:13:21 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:11:24 +0100
-Message-Id: <20240103181312.409668-5-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:11:28 +0100
+Message-Id: <20240103181312.409668-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_181343_814815_011B2D3E 
-X-CRM114-Status: UNSURE (   9.12  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240103_181334_858802_B67A08E5 
+X-CRM114-Status: GOOD (  12.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,32 +98,248 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 004/112] vsprintf: guard against NULL in UUID %pU
+Subject: [PATCH 008/112] efi: payload: rename CONFIG_EFI_BOOTUP to CONFIG_EFI_PAYLOAD
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To make %pU more useful for debugging, have it handle NULL gracefully.
+The symbol is internal, so we don't break anything by renaming it.
+CONFIG_EFI_PAYLOAD is clearer in intent, as BOOTUP doesn't clearly
+indificate whether barebox would act as EFI payload or as EFI loader.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- lib/vsprintf.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/Kconfig            | 2 +-
+ drivers/Makefile            | 2 +-
+ drivers/block/Kconfig       | 2 +-
+ drivers/bus/Kconfig         | 2 +-
+ drivers/clocksource/Kconfig | 4 ++--
+ drivers/net/Kconfig         | 2 +-
+ drivers/of/Kconfig          | 2 +-
+ drivers/pci/Kconfig         | 2 +-
+ drivers/serial/Kconfig      | 4 ++--
+ drivers/video/Kconfig       | 2 +-
+ drivers/watchdog/Kconfig    | 2 +-
+ efi/Kconfig                 | 2 +-
+ efi/Makefile                | 2 +-
+ fs/Kconfig                  | 4 ++--
+ include/efi.h               | 2 +-
+ 15 files changed, 18 insertions(+), 18 deletions(-)
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index 7d943706ddea..ea092c06d3d6 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -309,6 +309,10 @@ char *uuid_string(char *buf, const char *end, const u8 *addr, int field_width,
- 	const u8 *index = be;
- 	bool uc = false;
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index bd6a94bd0b0e..8b00a674a688 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -45,5 +45,5 @@ config MACH_EFI_GENERIC
  
-+	/* If addr == NULL output the string '<NULL>' */
-+	if (!addr)
-+		return string(buf, end, NULL, field_width, precision, flags);
-+
- 	switch (*(++fmt)) {
- 	case 'L':
- 		uc = true;		/* fall-through */
+ config X86_EFI
+ 	def_bool y
+-	select EFI_BOOTUP
++	select EFI_PAYLOAD
+ 	select CLOCKSOURCE_EFI_X86
+diff --git a/drivers/Makefile b/drivers/Makefile
+index 42a71f73c259..4be519d1fe4a 100644
+--- a/drivers/Makefile
++++ b/drivers/Makefile
+@@ -2,7 +2,7 @@
+ obj-y	+= base/
+ obj-y	+= block/
+ obj-$(CONFIG_ARM_AMBA) += amba/
+-obj-$(CONFIG_EFI_BOOTUP) += efi/
++obj-$(CONFIG_EFI_PAYLOAD) += efi/
+ obj-y	+= net/
+ obj-y	+= serial/
+ obj-y	+= mtd/
+diff --git a/drivers/block/Kconfig b/drivers/block/Kconfig
+index 625e81a4ec97..bf8dfdbd5c12 100644
+--- a/drivers/block/Kconfig
++++ b/drivers/block/Kconfig
+@@ -9,7 +9,7 @@ config VIRTIO_BLK
+ config EFI_BLK
+ 	bool "EFI block I/O driver"
+ 	default y
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 
+ config EFI_BLK_SEPARATE_USBDISK
+ 	bool "rename USB devices to /dev/usbdiskX"
+diff --git a/drivers/bus/Kconfig b/drivers/bus/Kconfig
+index e622ed239c7c..b480cf8bff0f 100644
+--- a/drivers/bus/Kconfig
++++ b/drivers/bus/Kconfig
+@@ -29,7 +29,7 @@ config MVEBU_MBUS
+ config ACPI
+ 	bool "Advanced Configuration and Power Interface (ACPI)"
+ 	default y
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 	help
+ 	  Driver needed for supporting drivers probed from ACPI tables.
+ 	  The root SDT is found via UEFI.
+diff --git a/drivers/clocksource/Kconfig b/drivers/clocksource/Kconfig
+index e1bff23320de..5ee83d2b383c 100644
+--- a/drivers/clocksource/Kconfig
++++ b/drivers/clocksource/Kconfig
+@@ -42,11 +42,11 @@ config CLOCKSOURCE_DUMMY_RATE
+ 
+ config CLOCKSOURCE_EFI
+ 	bool "Generic EFI Driver"
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 
+ config CLOCKSOURCE_EFI_X86
+ 	bool "EFI X86 HW driver"
+-	depends on EFI_BOOTUP && X86
++	depends on EFI_PAYLOAD && X86
+ 
+ config CLOCKSOURCE_KVX
+ 	bool "KVX core timer clocksource"
+diff --git a/drivers/net/Kconfig b/drivers/net/Kconfig
+index e3571cbb20a4..a02d00f672bd 100644
+--- a/drivers/net/Kconfig
++++ b/drivers/net/Kconfig
+@@ -276,7 +276,7 @@ config DRIVER_NET_TAP
+ 
+ config DRIVER_NET_EFI_SNP
+ 	bool "EFI SNP ethernet driver"
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 
+ config DRIVER_NET_VIRTIO
+ 	bool "virtio net driver"
+diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
+index 816aff0063b0..8dd796572062 100644
+--- a/drivers/of/Kconfig
++++ b/drivers/of/Kconfig
+@@ -5,7 +5,7 @@ config OFTREE
+ 
+ config OFTREE_MEM_GENERIC
+ 	depends on OFTREE
+-	depends on PPC || ARM || EFI_BOOTUP || OPENRISC || SANDBOX || RISCV || KVX
++	depends on PPC || ARM || EFI_PAYLOAD || OPENRISC || SANDBOX || RISCV || KVX
+ 	def_bool y
+ 
+ config DTC
+diff --git a/drivers/pci/Kconfig b/drivers/pci/Kconfig
+index 39df54f215cf..8f37805d71ca 100644
+--- a/drivers/pci/Kconfig
++++ b/drivers/pci/Kconfig
+@@ -64,7 +64,7 @@ config PCI_ROCKCHIP
+ 
+ config PCI_EFI
+ 	bool "EFI PCI protocol"
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 	select PCI
+ 
+ config PCI_ECAM_GENERIC
+diff --git a/drivers/serial/Kconfig b/drivers/serial/Kconfig
+index 803f6b6aee9e..60b0e5f1dc1f 100644
+--- a/drivers/serial/Kconfig
++++ b/drivers/serial/Kconfig
+@@ -31,7 +31,7 @@ config DRIVER_SERIAL_AR933X
+ 
+ config DRIVER_SERIAL_EFI
+ 	bool "EFI serial"
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 
+ config DRIVER_SERIAL_IMX
+ 	depends on ARCH_IMX
+@@ -58,7 +58,7 @@ config DRIVER_SERIAL_LINUX_CONSOLE
+ 	bool "linux console driver"
+ 
+ config DRIVER_SERIAL_EFI_STDIO
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 	bool "EFI stdio driver"
+ 
+ config DRIVER_SERIAL_MPC5XXX
+diff --git a/drivers/video/Kconfig b/drivers/video/Kconfig
+index b4e37a92586e..571ce49ef616 100644
+--- a/drivers/video/Kconfig
++++ b/drivers/video/Kconfig
+@@ -31,7 +31,7 @@ config DRIVER_VIDEO_ATMEL_HLCD
+ 
+ config DRIVER_VIDEO_EFI_GOP
+ 	bool "EFI Graphics Output Protocol (GOP)"
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 
+ config DRIVER_VIDEO_IMX
+ 	bool "i.MX framebuffer driver"
+diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
+index 159b495acbd9..762e37c9c2dd 100644
+--- a/drivers/watchdog/Kconfig
++++ b/drivers/watchdog/Kconfig
+@@ -31,7 +31,7 @@ config WATCHDOG_AT91SAM9
+ 
+ config WATCHDOG_EFI
+ 	bool "Generic EFI Watchdog Driver"
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 	help
+ 	  Add support for the EFI watchdog.
+ 
+diff --git a/efi/Kconfig b/efi/Kconfig
+index 15246ccbf0e0..971d58a7a9c0 100644
+--- a/efi/Kconfig
++++ b/efi/Kconfig
+@@ -2,7 +2,7 @@
+ 
+ menu "EFI (Extensible Firmware Interface) Support"
+ 
+-config EFI_BOOTUP
++config EFI_PAYLOAD
+ 	bool
+ 	select EFI
+ 	select EFI_GUID
+diff --git a/efi/Makefile b/efi/Makefile
+index a7cebde4f1b3..2b188bafa0a4 100644
+--- a/efi/Makefile
++++ b/efi/Makefile
+@@ -1,6 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+ 
+-obj-$(CONFIG_EFI_BOOTUP)	+= payload/
++obj-$(CONFIG_EFI_PAYLOAD)	+= payload/
+ obj-$(CONFIG_EFI_GUID)		+= guid.o
+ obj-$(CONFIG_EFI_DEVICEPATH)	+= devicepath.o
+ obj-y				+= errno.o efivar-filename.o
+diff --git a/fs/Kconfig b/fs/Kconfig
+index 0c4934285942..a3ba84b6aefd 100644
+--- a/fs/Kconfig
++++ b/fs/Kconfig
+@@ -69,7 +69,7 @@ config FS_NFS
+ 	prompt "nfs support"
+ 
+ config FS_EFI
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 	select FS_LEGACY
+ 	bool
+ 	prompt "EFI filesystem support"
+@@ -78,7 +78,7 @@ config FS_EFI
+ 	  by the EFI Firmware via the EFI Simple File System Protocol.
+ 
+ config FS_EFIVARFS
+-	depends on EFI_BOOTUP
++	depends on EFI_PAYLOAD
+ 	select FS_LEGACY
+ 	bool
+ 	prompt "EFI variable filesystem support (efivarfs)"
+diff --git a/include/efi.h b/include/efi.h
+index 1904caf3a4b6..f1567f7791b8 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -16,7 +16,7 @@
+ #include <linux/types.h>
+ #include <linux/uuid.h>
+ 
+-#ifdef CONFIG_EFI_BOOTUP
++#ifdef CONFIG_EFI_PAYLOAD
+ #define EFIAPI __attribute__((ms_abi))
+ #else
+ #define EFIAPI
 -- 
 2.39.2
 
