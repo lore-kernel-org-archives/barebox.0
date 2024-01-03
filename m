@@ -1,82 +1,82 @@
-Delivery-date: Wed, 03 Jan 2024 19:35:03 +0100
+Delivery-date: Wed, 03 Jan 2024 19:35:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL652-002Nx4-08
+	id 1rL659-002NyD-28
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 19:35:03 +0100
+	Wed, 03 Jan 2024 19:35:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL64v-00067R-TD
-	for lore@pengutronix.de; Wed, 03 Jan 2024 19:35:03 +0100
+	id 1rL653-0006F4-BC
+	for lore@pengutronix.de; Wed, 03 Jan 2024 19:35:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=v1QhL9G/ZJSH+atmmrU9zylqWeqK6aQUH8t6PhUtiFE=; b=s5SsJj9TMxux9oEjq9IIRSPq5M
-	bL/8jq6ZlyxEcZEN4GR5UNmkHmS+e4v/hLbG0m+1xaoM/tdRbLBXmTl22WDjohFGP9uyO1aGcOp+a
-	FriFmItQYdeweIv802trhsJV2l4BZQ9qtpC/0CcArcQ3Goqc0aoQySXuJWxTAY6s2hrIWd/rCG7wa
-	I3pfMx3c+W7hbcM/LYYPYfBlzFfr5BizLeZs3+/NkAQkH13/KtQQg8Io6RV116ER3MFUZtAIDKdr9
-	F14y+qk/9xdQ+UglSOvFUpftaWmIwh9dek/DL2QEKjgRU4efVuvMrdPgvMN7EckJIhEatjVUsNiS5
-	JAYIvLXQ==;
+	bh=dpE1lQJXFAZKjzxi89cZ7SR+bs4/ucrqIsmZU7xVaiY=; b=UmcSbWZVZK6UIjMgB9PW4S0sbk
+	QIbVUAtkB3VB0h3pJ6VfzYdOOOhSXtnuBW59Ep9L+ouYjeoTGE6OkfCE59/NtVSME+jYp/LaTlGtR
+	oHcEjGke75wPHR4TRP1FOIw+hdceSXHAJgM5h6LjtjPAEnw+dfl4Y5A4bZwXauc3YNbC6Y8f0i26b
+	xnEGwKFI+ZjzxCjQ4RKLQL6PpqrClbkT2quZxwA33kLYsEHRCqz5bHEwYIdnb2RL++hn1Ptb9OYwz
+	RrRiq5tOhakqJ2nEFRMtJ95Pdgi1Deyc2OEiFe70R3lts2eUXmJSzI52WildgePzQBjBmZpm69CF4
+	/A6FcMjA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL631-00BjMC-1i;
-	Wed, 03 Jan 2024 18:32:59 +0000
+	id 1rL63C-00BjiX-33;
+	Wed, 03 Jan 2024 18:33:10 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL61G-00BhKs-2S
+	id 1rL61G-00BhKt-2U
 	for barebox@bombadil.infradead.org;
 	Wed, 03 Jan 2024 18:31:10 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=v1QhL9G/ZJSH+atmmrU9zylqWeqK6aQUH8t6PhUtiFE=; b=fap896GaZoMpF9ISzSgHgSs0PK
-	jw+rPaadXb8Hn0TuMI/nrwoClnbbHpQnBsZm2JgABvuKNgkV0+rsszO2vqh3xv5Z9LtPPIn9W2U6O
-	4Y6j0ny4ls7KOhe3Vy+ZVelI95gPCDQQnKibD1mCRXDtWrewDOst2IYIGAW/3V7cC9dWSHGfQ0P2Y
-	nLPl5QavCoPA1mMfemn5gVTzXK8Q2euyL2sblumDJRUsEq4hQnGgyxjUGVIZNJX6WohWkl80CuPj8
-	k4WZJdvvxfVmkKWbOPkHqrtFW9InOQhQ4p+3x+brKyxCKIG8nQ870YGDew3srngW+rdMhYeHeXIWa
-	JZZ2dHQQ==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=dpE1lQJXFAZKjzxi89cZ7SR+bs4/ucrqIsmZU7xVaiY=; b=ZouDA7sZPg81FJSEco47cLjxEz
+	/GjkTXfD+8fdqoxQ0BJ1jrF1rir3LyS36h1qcuWSc2WEw/VuEaUwZzpuXxwoDBD8xh4zklKqM+VU2
+	Zuwofl7hq0eIgjrcbG9OLSiAvQABJgXtZxrvGj7gUz3LyMa5yoEcCnWb5he53poj5yd6faXl5M3st
+	27cL9JFO48Qr4344u+JfKyNuUoxWaHiVgsTsrgQcLHpqRq+UhpRNkkUk5hXhEOKqKyxay0UREMEj6
+	zwvPLUGWV4UH9FZRBKZI0sUXeFrE1skeVegCrFxAyYieDatw1yd4NGEJPCRBGxlMQj7P/Z4K8E9ix
+	oRi+97ng==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL616-005eBy-1G
+	id 1rL617-005eBu-1s
 	for barebox@lists.infradead.org;
 	Wed, 03 Jan 2024 18:31:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL614-0001iq-DD; Wed, 03 Jan 2024 19:30:58 +0100
+	id 1rL613-0001gT-Q6; Wed, 03 Jan 2024 19:30:57 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL614-000AyM-0h; Wed, 03 Jan 2024 19:30:58 +0100
+	id 1rL613-000Axg-Dd; Wed, 03 Jan 2024 19:30:57 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k3-001j4X-15;
+	id 1rL5k3-001j4X-0w;
 	Wed, 03 Jan 2024 19:13:23 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:12:13 +0100
-Message-Id: <20240103181312.409668-54-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:12:12 +0100
+Message-Id: <20240103181312.409668-53-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_183100_748910_3FEFA534 
-X-CRM114-Status: UNSURE (   8.71  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240103_183102_355823_94C22E45 
+X-CRM114-Status: GOOD (  23.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,204 +99,385 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 053/112] efi: unify whitespace for GUIDs
+Subject: [PATCH 052/112] efi: make headers self-contained
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Half the GUID definitions indent with a tab and the other with 4 spaces.
-Stick to 4 spaces throughout and remove the discrepancy.
+With the loader support, efi.h will grow quite a bit. To avoid having to
+include it always, lets move the base definitions into a new
+<efi/types.h> and make the different <efi/*.h> headers self contained.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/efi.h | 86 +++++++++++++++++++++++++--------------------------
- 1 file changed, 43 insertions(+), 43 deletions(-)
+ drivers/hw_random/efi-rng.c |  2 +-
+ efi/devicepath.c            |  1 +
+ efi/errno.c                 |  1 +
+ efi/guid.c                  |  1 +
+ efi/payload/fdt.c           |  1 +
+ include/efi.h               | 72 ++-----------------------------------
+ include/efi/device-path.h   |  2 ++
+ include/efi/efi-device.h    |  4 +++
+ include/efi/efi-payload.h   |  6 +++-
+ include/efi/efi-stdio.h     |  7 +++-
+ include/efi/efi-util.h      |  8 ++++-
+ include/efi/types.h         | 66 ++++++++++++++++++++++++++++++++++
+ 12 files changed, 97 insertions(+), 74 deletions(-)
+ create mode 100644 include/efi/types.h
 
+diff --git a/drivers/hw_random/efi-rng.c b/drivers/hw_random/efi-rng.c
+index b74075e3a4ac..61cb01caf647 100644
+--- a/drivers/hw_random/efi-rng.c
++++ b/drivers/hw_random/efi-rng.c
+@@ -3,7 +3,7 @@
+ #include <driver.h>
+ #include <init.h>
+ #include <linux/hw_random.h>
+-#include <efi/efi-util.h>
++#include <efi.h>
+ #include <efi/efi-device.h>
+ 
+ struct efi_rng_priv {
+diff --git a/efi/devicepath.c b/efi/devicepath.c
+index fad36c78a260..63b0ea61f0f9 100644
+--- a/efi/devicepath.c
++++ b/efi/devicepath.c
+@@ -2,6 +2,7 @@
+ 
+ #include <common.h>
+ #include <efi.h>
++#include <efi/efi-util.h>
+ #include <malloc.h>
+ #include <string.h>
+ #include <wchar.h>
+diff --git a/efi/errno.c b/efi/errno.c
+index 3bb68e7781e6..ed14b1a8a6b0 100644
+--- a/efi/errno.c
++++ b/efi/errno.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0-only
+ 
+ #include <efi/efi-util.h>
++#include <efi.h>
+ #include <errno.h>
+ 
+ const char *efi_strerror(efi_status_t err)
+diff --git a/efi/guid.c b/efi/guid.c
+index ca16f4520ff2..8103b3d63114 100644
+--- a/efi/guid.c
++++ b/efi/guid.c
+@@ -2,6 +2,7 @@
+ 
+ #include <common.h>
+ #include <efi.h>
++#include <efi/efi-util.h>
+ 
+ efi_guid_t efi_file_info_id = EFI_FILE_INFO_GUID;
+ efi_guid_t efi_simple_file_system_protocol_guid = EFI_SIMPLE_FILE_SYSTEM_GUID;
+diff --git a/efi/payload/fdt.c b/efi/payload/fdt.c
+index faa7a5ad8d41..8dacaa8b524a 100644
+--- a/efi/payload/fdt.c
++++ b/efi/payload/fdt.c
+@@ -5,6 +5,7 @@
+ #include <common.h>
+ #include <init.h>
+ #include <libfile.h>
++#include <efi.h>
+ #include <efi/efi-payload.h>
+ #include <efi/efi-device.h>
+ 
 diff --git a/include/efi.h b/include/efi.h
-index 2b248a17013d..8635ab58f981 100644
+index 10e22f1e9f99..2b248a17013d 100644
 --- a/include/efi.h
 +++ b/include/efi.h
-@@ -373,138 +373,138 @@ extern struct efi_runtime_services *RT;
-     EFI_GUID( 0xA19832B9, 0xAC25, 0x11D3, 0x9A, 0x2D, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D )
+@@ -14,15 +14,7 @@
+  */
+ #include <linux/string.h>
+ #include <linux/types.h>
+-#include <linux/uuid.h>
+-
+-#ifdef CONFIG_EFI_PAYLOAD
+-#define EFIAPI __attribute__((ms_abi))
+-#else
+-#define EFIAPI
+-#endif
+-
+-struct efi_device_path;
++#include <efi/types.h>
  
- #define EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID \
--	EFI_GUID(0x0964e5b22, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
-+    EFI_GUID(0x0964e5b22, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ /* Bit mask for EFI status code with error */
+ #define EFI_ERROR_MASK (1UL << (BITS_PER_LONG-1))
+@@ -62,33 +54,6 @@ struct efi_device_path;
  
- #define EFI_UNKNOWN_DEVICE_GUID \
--	EFI_GUID(0xcf31fac5, 0xc24e, 0x11d2, 0x85, 0xf3, 0x0, 0xa0, 0xc9, 0x3e, 0xc9, 0x3b)
-+    EFI_GUID(0xcf31fac5, 0xc24e, 0x11d2, 0x85, 0xf3, 0x0, 0xa0, 0xc9, 0x3e, 0xc9, 0x3b)
+ #define EFI_ERROR(a)	(((signed long) a) < 0)
  
- #define EFI_BLOCK_IO_PROTOCOL_GUID \
--	EFI_GUID(0x964e5b21, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
-+    EFI_GUID(0x964e5b21, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+-typedef unsigned long efi_status_t;
+-typedef u16 efi_char16_t;		/* UNICODE character */
+-typedef u64 efi_physical_addr_t;
+-typedef void *efi_handle_t;
+-
+-/*
+- * The UEFI spec and EDK2 reference implementation both define EFI_GUID as
+- * struct { u32 a; u16; b; u16 c; u8 d[8]; }; and so the implied alignment
+- * is 32 bits not 8 bits like our guid_t. In some cases (i.e., on 32-bit ARM),
+- * this means that firmware services invoked by the kernel may assume that
+- * efi_guid_t* arguments are 32-bit aligned, and use memory accessors that
+- * do not tolerate misalignment. So let's set the minimum alignment to 32 bits.
+- *
+- * Note that the UEFI spec as well as some comments in the EDK2 code base
+- * suggest that EFI_GUID should be 64-bit aligned, but this appears to be
+- * a mistake, given that no code seems to exist that actually enforces that
+- * or relies on it.
+- */
+-typedef guid_t efi_guid_t __aligned(__alignof__(u32));
+-
+-#define EFI_GUID(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7) \
+-((efi_guid_t) \
+-{{ (a) & 0xff, ((a) >> 8) & 0xff, ((a) >> 16) & 0xff, ((a) >> 24) & 0xff, \
+-  (b) & 0xff, ((b) >> 8) & 0xff, \
+-  (c) & 0xff, ((c) >> 8) & 0xff, \
+-  (d0), (d1), (d2), (d3), (d4), (d5), (d6), (d7) }})
+-
+ /*
+  * Generic EFI table header
+  */
+@@ -605,12 +570,6 @@ struct efi_loaded_image {
+ 	unsigned long unload;
+ };
  
- /* additional GUID from EDK2 */
- #define EFI_FIRMWARE_VOLUME2_PROTOCOL_GUID \
--	EFI_GUID(0x220e73b6, 0x6bdb, 0x4413, 0x84, 0x5, 0xb9, 0x74, 0xb1, 0x8, 0x61, 0x9a)
-+    EFI_GUID(0x220e73b6, 0x6bdb, 0x4413, 0x84, 0x5, 0xb9, 0x74, 0xb1, 0x8, 0x61, 0x9a)
+-static inline int
+-efi_guidcmp (efi_guid_t left, efi_guid_t right)
+-{
+-	return memcmp(&left, &right, sizeof (efi_guid_t));
+-}
+-
+ __attribute__((noreturn)) void efi_main(efi_handle_t, struct efi_system_table *);
  
- #define EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL_GUID \
--	EFI_GUID(0x8f644fa9, 0xe850, 0x4db1, 0x9c, 0xe2, 0xb, 0x44, 0x69, 0x8e, 0x8d, 0xa4)
-+    EFI_GUID(0x8f644fa9, 0xe850, 0x4db1, 0x9c, 0xe2, 0xb, 0x44, 0x69, 0x8e, 0x8d, 0xa4)
+ /*
+@@ -637,12 +596,6 @@ __attribute__((noreturn)) void efi_main(efi_handle_t, struct efi_system_table *)
+  */
+ #define EFI_VARIABLE_GUID_LEN 36
  
- #define EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID \
--	EFI_GUID(0x2f707ebb, 0x4a1a, 0x11d4, 0x9a, 0x38, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
-+    EFI_GUID(0x2f707ebb, 0x4a1a, 0x11d4, 0x9a, 0x38, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+-struct efi_device_path {
+-	u8 type;
+-	u8 sub_type;
+-	u16 length;
+-} __attribute ((packed));
+-
+ struct simple_text_output_mode {
+ 	s32 max_mode;
+ 	s32 mode;
+@@ -670,10 +623,7 @@ struct efi_simple_text_output_protocol {
+ 	struct simple_text_output_mode *mode;
+ };
  
- #define EFI_ISA_ACPI_PROTOCOL_GUID \
--	EFI_GUID(0x64a892dc, 0x5561, 0x4536, 0x92, 0xc7, 0x79, 0x9b, 0xfc, 0x18, 0x33, 0x55)
-+    EFI_GUID(0x64a892dc, 0x5561, 0x4536, 0x92, 0xc7, 0x79, 0x9b, 0xfc, 0x18, 0x33, 0x55)
+-struct efi_input_key {
+-	u16 scan_code;
+-	s16 unicode_char;
+-};
++struct efi_input_key;
  
- #define EFI_ISA_IO_PROTOCOL_GUID \
--	EFI_GUID(0x7ee2bd44, 0x3da0, 0x11d4, 0x9a, 0x38, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
-+    EFI_GUID(0x7ee2bd44, 0x3da0, 0x11d4, 0x9a, 0x38, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+ struct efi_simple_input_interface {
+ 	efi_status_t(EFIAPI *reset)(struct efi_simple_input_interface *this,
+@@ -683,24 +633,6 @@ struct efi_simple_input_interface {
+ 	void *wait_for_key;
+ };
  
- #define EFI_STANDARD_ERROR_DEVICE_GUID \
--	EFI_GUID(0xd3b36f2d, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
-+    EFI_GUID(0xd3b36f2d, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+-struct efi_mac_address {
+-	uint8_t Addr[32];
+-};
+-
+-struct efi_ipv4_address {
+-	uint8_t Addr[4];
+-};
+-
+-struct efi_ipv6_address {
+-	uint8_t Addr[16];
+-};
+-
+-union efi_ip_address {
+-	uint32_t Addr[4];
+-	struct efi_ipv4_address v4;
+-	struct efi_ipv6_address v6;
+-};
+-
+ struct efi_device_path *device_path_from_handle(efi_handle_t Handle);
+ char *device_path_to_str(struct efi_device_path *dev_path);
+ u8 device_path_to_type(struct efi_device_path *dev_path);
+diff --git a/include/efi/device-path.h b/include/efi/device-path.h
+index 2882b87d6831..4b97cadde4f1 100644
+--- a/include/efi/device-path.h
++++ b/include/efi/device-path.h
+@@ -1,6 +1,8 @@
+ #ifndef __EFI_DEVICE_PATH_H
+ #define __EFI_DEVICE_PATH_H
  
- #define EFI_CONSOLE_OUT_DEVICE_GUID \
--	EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
-+    EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++#include <efi/types.h>
++
+ /*
+  * Hardware Device Path (UEFI 2.4 specification, version 2.4 § 9.3.2.)
+  */
+diff --git a/include/efi/efi-device.h b/include/efi/efi-device.h
+index cb665edf657e..eaf89beb8ed1 100644
+--- a/include/efi/efi-device.h
++++ b/include/efi/efi-device.h
+@@ -2,6 +2,10 @@
+ #ifndef __EFI_EFI_DEVICE_H
+ #define __EFI_EFI_DEVICE_H
  
- #define EFI_CONSOLE_IN_DEVICE_GUID \
--	EFI_GUID(0xd3b36f2b, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
-+    EFI_GUID(0xd3b36f2b, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++#include <efi/types.h>
++#include <efi/efi-util.h>
++#include <driver.h>
++
+ struct efi_device {
+ 	struct device dev;
+ 	efi_guid_t *guids;
+diff --git a/include/efi/efi-payload.h b/include/efi/efi-payload.h
+index cddd8c8ddd47..3713ef359228 100644
+--- a/include/efi/efi-payload.h
++++ b/include/efi/efi-payload.h
+@@ -2,9 +2,12 @@
+ #ifndef __EFI_PAYLOAD_H
+ #define __EFI_PAYLOAD_H
  
- #define EFI_SIMPLE_TEXT_OUT_PROTOCOL_GUID \
--	EFI_GUID(0x387477c2, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
-+    EFI_GUID(0x387477c2, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+-#include <efi.h>
++#include <efi/types.h>
+ #include <efi/efi-util.h>
  
- #define EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL_GUID \
--	EFI_GUID(0xdd9e7534, 0x7762, 0x4698, 0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa)
-+    EFI_GUID(0xdd9e7534, 0x7762, 0x4698, 0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa)
++struct efi_system_table;
++struct efi_loaded_image;
++
+ extern struct efi_system_table *efi_sys_table;
+ extern efi_handle_t efi_parent_image;
+ extern struct efi_device_path *efi_device_path;
+@@ -14,6 +17,7 @@ void *efi_get_variable(char *name, efi_guid_t *vendor, int *var_size);
  
- #define EFI_SIMPLE_TEXT_IN_PROTOCOL_GUID \
--	EFI_GUID(0x387477c1, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
-+    EFI_GUID(0x387477c1, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ static inline void *efi_get_global_var(char *name, int *var_size)
+ {
++	extern efi_guid_t efi_global_variable_guid;
+ 	return efi_get_variable(name, &efi_global_variable_guid, var_size);
+ }
  
- #define EFI_DISK_IO_PROTOCOL_GUID \
--	EFI_GUID(0xce345171, 0xba0b, 0x11d2, 0x8e, 0x4f, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
-+    EFI_GUID(0xce345171, 0xba0b, 0x11d2, 0x8e, 0x4f, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+diff --git a/include/efi/efi-stdio.h b/include/efi/efi-stdio.h
+index e8af244bfcf6..623b42c10f19 100644
+--- a/include/efi/efi-stdio.h
++++ b/include/efi/efi-stdio.h
+@@ -2,7 +2,7 @@
+ #ifndef EFI_STDIO_H_
+ #define EFI_STDIO_H_
  
- #define EFI_IDE_CONTROLLER_INIT_PROTOCOL_GUID \
--	EFI_GUID(0xa1e37052, 0x80d9, 0x4e65, 0xa3, 0x17, 0x3e, 0x9a, 0x55, 0xc4, 0x3e, 0xc9)
-+    EFI_GUID(0xa1e37052, 0x80d9, 0x4e65, 0xa3, 0x17, 0x3e, 0x9a, 0x55, 0xc4, 0x3e, 0xc9)
+-#include <efi.h>
++#include <efi/types.h>
  
- #define EFI_DISK_INFO_PROTOCOL_GUID \
--	EFI_GUID(0xd432a67f, 0x14dc, 0x484b, 0xb3, 0xbb, 0x3f, 0x2, 0x91, 0x84, 0x93, 0x27)
-+    EFI_GUID(0xd432a67f, 0x14dc, 0x484b, 0xb3, 0xbb, 0x3f, 0x2, 0x91, 0x84, 0x93, 0x27)
+ struct efi_simple_text_input_ex_protocol;
  
- #define EFI_SERIAL_IO_PROTOCOL_GUID \
--	EFI_GUID(0xbb25cf6f, 0xf1d4, 0x11d2, 0x9a, 0x0c, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0xfd)
-+    EFI_GUID(0xbb25cf6f, 0xf1d4, 0x11d2, 0x9a, 0x0c, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0xfd)
+@@ -16,6 +16,11 @@ struct efi_key_state {
+ 	u8 toggle_state;
+ };
  
- #define EFI_BUS_SPECIFIC_DRIVER_OVERRIDE_PROTOCOL_GUID \
--	EFI_GUID(0x3bc1b285, 0x8a15, 0x4a82, 0xaa, 0xbf, 0x4d, 0x7d, 0x13, 0xfb, 0x32, 0x65)
-+    EFI_GUID(0x3bc1b285, 0x8a15, 0x4a82, 0xaa, 0xbf, 0x4d, 0x7d, 0x13, 0xfb, 0x32, 0x65)
++struct efi_input_key {
++	u16 scan_code;
++	s16 unicode_char;
++};
++
+ struct efi_key_data {
+ 	struct efi_input_key key;
+ 	struct efi_key_state state;
+diff --git a/include/efi/efi-util.h b/include/efi/efi-util.h
+index 78e352456ad1..c61f3a5b05d2 100644
+--- a/include/efi/efi-util.h
++++ b/include/efi/efi-util.h
+@@ -2,7 +2,7 @@
+ #ifndef __EFI_UTIL_H
+ #define __EFI_UTIL_H
  
- #define EFI_LOAD_FILE2_PROTOCOL_GUID \
--	EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e, 0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
-+    EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e, 0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
+-#include <efi.h>
++#include <efi/types.h>
  
- #define EFI_MTFTP4_SERVICE_BINDING_PROTOCOL_GUID \
--	EFI_GUID(0x2fe800be, 0x8f01, 0x4aa6, 0x94, 0x6b, 0xd7, 0x13, 0x88, 0xe1, 0x83, 0x3f)
-+    EFI_GUID(0x2fe800be, 0x8f01, 0x4aa6, 0x94, 0x6b, 0xd7, 0x13, 0x88, 0xe1, 0x83, 0x3f)
+ const char *efi_strerror(efi_status_t err);
+ int efi_errno(efi_status_t err);
+@@ -11,4 +11,10 @@ int __efivarfs_parse_filename(const char *filename, efi_guid_t *vendor,
+ 			      s16 *name, size_t *namelen);
+ int efivarfs_parse_filename(const char *filename, efi_guid_t *vendor, s16 **name);
  
- #define EFI_DHCP4_PROTOCOL_GUID \
--	EFI_GUID(0x9d9a39d8, 0xbd42, 0x4a73, 0xa4, 0xd5, 0x8e, 0xe9, 0x4b, 0xe1, 0x13, 0x80)
-+    EFI_GUID(0x9d9a39d8, 0xbd42, 0x4a73, 0xa4, 0xd5, 0x8e, 0xe9, 0x4b, 0xe1, 0x13, 0x80)
- 
- #define EFI_UDP4_SERVICE_BINDING_PROTOCOL_GUID \
--	EFI_GUID(0x83f01464, 0x99bd, 0x45e5, 0xb3, 0x83, 0xaf, 0x63, 0x05, 0xd8, 0xe9, 0xe6)
-+    EFI_GUID(0x83f01464, 0x99bd, 0x45e5, 0xb3, 0x83, 0xaf, 0x63, 0x05, 0xd8, 0xe9, 0xe6)
- 
- #define EFI_TCP4_SERVICE_BINDING_PROTOCOL_GUID \
--	EFI_GUID(0x00720665, 0x67EB, 0x4a99, 0xBA, 0xF7, 0xD3, 0xC3, 0x3A, 0x1C, 0x7C, 0xC9)
-+    EFI_GUID(0x00720665, 0x67EB, 0x4a99, 0xBA, 0xF7, 0xD3, 0xC3, 0x3A, 0x1C, 0x7C, 0xC9)
- 
- #define EFI_IP4_SERVICE_BINDING_PROTOCOL_GUID \
--	EFI_GUID(0xc51711e7, 0xb4bf, 0x404a, 0xbf, 0xb8, 0x0a, 0x04, 0x8e, 0xf1, 0xff, 0xe4)
-+    EFI_GUID(0xc51711e7, 0xb4bf, 0x404a, 0xbf, 0xb8, 0x0a, 0x04, 0x8e, 0xf1, 0xff, 0xe4)
- 
- #define EFI_IP4_CONFIG_PROTOCOL_GUID \
--	EFI_GUID(0x3b95aa31, 0x3793, 0x434b, 0x86, 0x67, 0xc8, 0x07, 0x08, 0x92, 0xe0, 0x5e)
-+    EFI_GUID(0x3b95aa31, 0x3793, 0x434b, 0x86, 0x67, 0xc8, 0x07, 0x08, 0x92, 0xe0, 0x5e)
- 
- #define EFI_ARP_SERVICE_BINDING_PROTOCOL_GUID\
--	EFI_GUID(0xf44c00ee, 0x1f2c, 0x4a00, 0xaa, 0x9, 0x1c, 0x9f, 0x3e, 0x8, 0x0, 0xa3)
-+    EFI_GUID(0xf44c00ee, 0x1f2c, 0x4a00, 0xaa, 0x9, 0x1c, 0x9f, 0x3e, 0x8, 0x0, 0xa3)
- 
- #define EFI_MANAGED_NETWORK_SERVICE_BINDING_PROTOCOL_GUID \
--	EFI_GUID(0xf36ff770, 0xa7e1, 0x42cf, 0x9e, 0xd2, 0x56, 0xf0, 0xf2, 0x71, 0xf4, 0x4c)
-+    EFI_GUID(0xf36ff770, 0xa7e1, 0x42cf, 0x9e, 0xd2, 0x56, 0xf0, 0xf2, 0x71, 0xf4, 0x4c)
- 
- #define EFI_VLAN_CONFIG_PROTOCOL_GUID \
--	EFI_GUID(0x9e23d768, 0xd2f3, 0x4366, 0x9f, 0xc3, 0x3a, 0x7a, 0xba, 0x86, 0x43, 0x74)
-+    EFI_GUID(0x9e23d768, 0xd2f3, 0x4366, 0x9f, 0xc3, 0x3a, 0x7a, 0xba, 0x86, 0x43, 0x74)
- 
- #define EFI_HII_CONFIG_ACCESS_PROTOCOL_GUID \
--	EFI_GUID(0x330d4706, 0xf2a0, 0x4e4f, 0xa3, 0x69, 0xb6, 0x6f, 0xa8, 0xd5, 0x43, 0x85)
-+    EFI_GUID(0x330d4706, 0xf2a0, 0x4e4f, 0xa3, 0x69, 0xb6, 0x6f, 0xa8, 0xd5, 0x43, 0x85)
- 
- #define EFI_LOAD_FILE_PROTOCOL_GUID \
--	EFI_GUID(0x56ec3091, 0x954c, 0x11d2, 0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
-+    EFI_GUID(0x56ec3091, 0x954c, 0x11d2, 0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
- 
- #define EFI_COMPONENT_NAME2_PROTOCOL_GUID \
--	EFI_GUID(0x6a7a5cff, 0xe8d9, 0x4f70, 0xba, 0xda, 0x75, 0xab, 0x30, 0x25, 0xce, 0x14)
-+    EFI_GUID(0x6a7a5cff, 0xe8d9, 0x4f70, 0xba, 0xda, 0x75, 0xab, 0x30, 0x25, 0xce, 0x14)
- 
- #define EFI_IDEBUSDXE_INF_GUID \
--	EFI_GUID(0x69fd8e47, 0xa161, 0x4550, 0xb0, 0x1a, 0x55, 0x94, 0xce, 0xb2, 0xb2, 0xb2)
-+    EFI_GUID(0x69fd8e47, 0xa161, 0x4550, 0xb0, 0x1a, 0x55, 0x94, 0xce, 0xb2, 0xb2, 0xb2)
- 
- #define EFI_TERMINALDXE_INF_GUID \
--	EFI_GUID(0x9e863906, 0xa40f, 0x4875, 0x97, 0x7f, 0x5b, 0x93, 0xff, 0x23, 0x7f, 0xc6)
-+    EFI_GUID(0x9e863906, 0xa40f, 0x4875, 0x97, 0x7f, 0x5b, 0x93, 0xff, 0x23, 0x7f, 0xc6)
- 
- #define EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID_31 \
--	EFI_GUID(0x1aced566, 0x76ed, 0x4218, 0xbc, 0x81, 0x76, 0x7f, 0x1f, 0x97, 0x7a, 0x89)
-+    EFI_GUID(0x1aced566, 0x76ed, 0x4218, 0xbc, 0x81, 0x76, 0x7f, 0x1f, 0x97, 0x7a, 0x89)
- 
- #define EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID \
--	EFI_GUID(0xe18541cd, 0xf755, 0x4f73, 0x92, 0x8d, 0x64, 0x3c, 0x8a, 0x79, 0xb2, 0x29)
-+    EFI_GUID(0xe18541cd, 0xf755, 0x4f73, 0x92, 0x8d, 0x64, 0x3c, 0x8a, 0x79, 0xb2, 0x29)
- 
- #define EFI_ISCSIDXE_INF_GUID \
--	EFI_GUID(0x4579b72d, 0x7ec4, 0x4dd4, 0x84, 0x86, 0x08, 0x3c, 0x86, 0xb1, 0x82, 0xa7)
-+    EFI_GUID(0x4579b72d, 0x7ec4, 0x4dd4, 0x84, 0x86, 0x08, 0x3c, 0x86, 0xb1, 0x82, 0xa7)
- 
- #define EFI_VLANCONFIGDXE_INF_GUID \
--	EFI_GUID(0xe4f61863, 0xfe2c, 0x4b56, 0xa8, 0xf4, 0x08, 0x51, 0x9b, 0xc4, 0x39, 0xdf)
-+    EFI_GUID(0xe4f61863, 0xfe2c, 0x4b56, 0xa8, 0xf4, 0x08, 0x51, 0x9b, 0xc4, 0x39, 0xdf)
- 
- #define EFI_TIMESTAMP_PROTOCOL_GUID \
--	EFI_GUID(0xafbfde41, 0x2e6e, 0x4262, 0xba, 0x65, 0x62, 0xb9, 0x23, 0x6e, 0x54, 0x95)
-+    EFI_GUID(0xafbfde41, 0x2e6e, 0x4262, 0xba, 0x65, 0x62, 0xb9, 0x23, 0x6e, 0x54, 0x95)
- 
- /* barebox specific GUIDs */
- #define EFI_BAREBOX_VENDOR_GUID \
--	EFI_GUID(0x5b91f69c, 0x8b88, 0x4a2b, 0x92, 0x69, 0x5f, 0x1d, 0x80, 0x2b, 0x51, 0x75)
-+    EFI_GUID(0x5b91f69c, 0x8b88, 0x4a2b, 0x92, 0x69, 0x5f, 0x1d, 0x80, 0x2b, 0x51, 0x75)
- 
- /* for systemd */
- #define EFI_SYSTEMD_VENDOR_GUID \
--	EFI_GUID(0x4a67b082, 0x0a4c, 0x41cf, 0xb6, 0xc7, 0x44, 0x0b, 0x29, 0xbb, 0x8c, 0x4f)
-+    EFI_GUID(0x4a67b082, 0x0a4c, 0x41cf, 0xb6, 0xc7, 0x44, 0x0b, 0x29, 0xbb, 0x8c, 0x4f)
- 
- /* for TPM 1.2 */
- #define EFI_TCG_PROTOCOL_GUID \
--	EFI_GUID(0xf541796d, 0xa62e, 0x4954, 0xa7, 0x75, 0x95, 0x84, 0xf6, 0x1b, 0x9c, 0xdd)
-+    EFI_GUID(0xf541796d, 0xa62e, 0x4954, 0xa7, 0x75, 0x95, 0x84, 0xf6, 0x1b, 0x9c, 0xdd)
- 
- /* for TPM 2.0 */
- #define EFI_TCG2_PROTOCOL_GUID \
--	EFI_GUID(0x607f766c, 0x7455, 0x42be, 0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
-+    EFI_GUID(0x607f766c, 0x7455, 0x42be, 0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
- 
- extern efi_guid_t efi_file_info_id;
- extern efi_guid_t efi_simple_file_system_protocol_guid;
++static inline int
++efi_guidcmp (efi_guid_t left, efi_guid_t right)
++{
++	return memcmp(&left, &right, sizeof (efi_guid_t));
++}
++
+ #endif
+diff --git a/include/efi/types.h b/include/efi/types.h
+new file mode 100644
+index 000000000000..3d42948d2b62
+--- /dev/null
++++ b/include/efi/types.h
+@@ -0,0 +1,66 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef _EFI_TYPES_H_
++#define _EFI_TYPES_H_
++
++#include <linux/types.h>
++#include <linux/compiler.h>
++#include <linux/uuid.h>
++
++typedef unsigned long efi_status_t;
++typedef u16 efi_char16_t;		/* UNICODE character */
++typedef u64 efi_physical_addr_t;
++typedef void *efi_handle_t;
++
++/*
++ * The UEFI spec and EDK2 reference implementation both define EFI_GUID as
++ * struct { u32 a; u16; b; u16 c; u8 d[8]; }; and so the implied alignment
++ * is 32 bits not 8 bits like our guid_t. In some cases (i.e., on 32-bit ARM),
++ * this means that firmware services invoked by the kernel may assume that
++ * efi_guid_t* arguments are 32-bit aligned, and use memory accessors that
++ * do not tolerate misalignment. So let's set the minimum alignment to 32 bits.
++ *
++ * Note that the UEFI spec as well as some comments in the EDK2 code base
++ * suggest that EFI_GUID should be 64-bit aligned, but this appears to be
++ * a mistake, given that no code seems to exist that actually enforces that
++ * or relies on it.
++ */
++typedef guid_t efi_guid_t __aligned(__alignof__(u32));
++
++#define EFI_GUID(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7) \
++((efi_guid_t) \
++{{ (a) & 0xff, ((a) >> 8) & 0xff, ((a) >> 16) & 0xff, ((a) >> 24) & 0xff, \
++  (b) & 0xff, ((b) >> 8) & 0xff, \
++  (c) & 0xff, ((c) >> 8) & 0xff, \
++  (d0), (d1), (d2), (d3), (d4), (d5), (d6), (d7) }})
++
++#ifdef CONFIG_EFI_PAYLOAD
++#define EFIAPI __attribute__((ms_abi))
++#else
++#define EFIAPI
++#endif
++
++struct efi_device_path {
++	u8 type;
++	u8 sub_type;
++	u16 length;
++} __packed;
++
++struct efi_mac_address {
++	uint8_t Addr[32];
++};
++
++struct efi_ipv4_address {
++	uint8_t Addr[4];
++};
++
++struct efi_ipv6_address {
++	uint8_t Addr[16];
++};
++
++union efi_ip_address {
++	uint32_t Addr[4];
++	struct efi_ipv4_address v4;
++	struct efi_ipv6_address v6;
++};
++
++#endif
 -- 
 2.39.2
 
