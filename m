@@ -1,81 +1,82 @@
-Delivery-date: Wed, 03 Jan 2024 19:34:08 +0100
+Delivery-date: Wed, 03 Jan 2024 19:34:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL648-002Nq3-2L
+	id 1rL64N-002Nrh-1t
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jan 2024 19:34:08 +0100
+	Wed, 03 Jan 2024 19:34:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rL640-000525-Q3
-	for lore@pengutronix.de; Wed, 03 Jan 2024 19:34:08 +0100
+	id 1rL64F-0005JJ-HV
+	for lore@pengutronix.de; Wed, 03 Jan 2024 19:34:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=2oIRtjtTLFQqaDgHNC8S2MXwwg37J0hlak11MEhDfWw=; b=gisBuuIp3RllBlhyCcBG7t13m+
-	p/y8d62ImfZIr7tAJK8Kj/PAiGBEe45ZyVRFGG+lsAOjYSWanaYl7CV/IQPG5gUVvYB5TpLMFPB+7
-	5qBZy23Wt9KSOKhUeLgJZd4JN1N4soGCfkvxdq6K/dfHNVV1y1kGufRFubbqF58Al/BDmlKr1jwSx
-	O1lAqOP2PfoJ7dfs1Tow/U8+++qEW2v6RezJ+Aqnk0AChg5hJX0ycKu72InbOLM1mDKpQIeMmG+M5
-	6UW3d++Jxet/eqecz2Hgtlva1QUdguhgRQ1Bgk/pffsO7/MIhXHLUp8pDA0lkSfjXI4EnD9NS2U3l
-	87ho9VtA==;
+	bh=dXSGegNd+ptGfxZ2VlD6Z+da+N+ElOEHyFfsolvSNjQ=; b=N7/Ag3hMq9reQx4ifXi73YnaxJ
+	VuuQ+IYu4kg9hGET9YHXG93mSpfFCxyzsNPmqEuspps54/HqI0qadcju/agGszR3OJ1XqmZ47/wiq
+	YueToM39MJScHdzrBwn7o2tS3K5SNt7Nlb//nBw0iwO2aS2teN1PXYHLW/H1rgOZT1epGnqNkhiA6
+	enIlgtMZiLb3D6PccrRtCTnnBt570MpVkQfgNL0abaHpzGTgKAr7Ja6x1yHalAks9HMiUVwhp2dfY
+	YJTHVdkI8XW0xu9KZKjlujgGaAmXejELShJOUyqq+KuOfk/42UcycP1vC7BEHqjfaxRTac7eiaULL
+	/ZHTtfSA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL62M-00BibZ-0A;
-	Wed, 03 Jan 2024 18:32:18 +0000
+	id 1rL62U-00BinO-0G;
+	Wed, 03 Jan 2024 18:32:26 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL61F-00BhJX-1w
+	id 1rL61G-00BhK3-1P
 	for barebox@bombadil.infradead.org;
-	Wed, 03 Jan 2024 18:31:09 +0000
+	Wed, 03 Jan 2024 18:31:10 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=2oIRtjtTLFQqaDgHNC8S2MXwwg37J0hlak11MEhDfWw=; b=UY8Joe0rfzOljS3+CG80UgS74A
-	JkUkgM2mf+ZgE7TdvSUUKeVnfyF4aiwUbDIQ8CMqdLCpWLZyhr4aA9Gd4bJ+kbSam70XykY5YYDni
-	+rxHnRfDj7o65sYOE5DCjbRifahWP62lp7XA9w941NWjT3PIlYj4RvvChaps1g6kqOU+1ZGkcOvZL
-	49igLR2z5iX/pB8XFi/v8woXRqFXnpEnhKIHl5IMjAfv4CByxaTzOcCdjyvyYfBjH3zPZyst1GkHA
-	w8k+HOmwlgiNIngjYs7GOV8H+AoGdggHfnY8IKbKmRERJSI8INVFigxKKM81y4NQdFE07N+kf1KPr
-	KzSW1WAA==;
+	bh=dXSGegNd+ptGfxZ2VlD6Z+da+N+ElOEHyFfsolvSNjQ=; b=LXepcKAeMWvhf/FL1K5hrhvGgR
+	b7BBUKg3bgJ60DLM1OS3mbMLF/aDDa9V9hEO3hfnIPRNBrjh+z8HyGgAVWNRBQLLe4NwPz3aU08o1
+	1U7EtGzczrr2CmfKkg9jKvWKAFEadDmc5Dh0zS2MCNwlOtdUTcsw2D+y0EWl3udnFhs29kHrlYfOB
+	Yq0OEkvIfyOgGTRLN5D/H62Uv5a7gkDiVmSOp3Ej35uOJErEoAB5Oehlz7QG+rIt+kjd3xlHmSi4p
+	mLO4WUbg6fY9qAjUgTZJN39OQUdGNZhG21Okp+ZH4L7KrtMDbUCeAF2PLgRboN0KPxPEsBlJPyWQG
+	4IG5OFeg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rL616-005eC0-1V
+	id 1rL617-005eBv-0v
 	for barebox@lists.infradead.org;
-	Wed, 03 Jan 2024 18:31:08 +0000
+	Wed, 03 Jan 2024 18:31:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL614-0001ic-Bi; Wed, 03 Jan 2024 19:30:58 +0100
+	id 1rL613-0001hL-U3; Wed, 03 Jan 2024 19:30:57 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL613-000AyI-V2; Wed, 03 Jan 2024 19:30:57 +0100
+	id 1rL613-000Axp-HF; Wed, 03 Jan 2024 19:30:57 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rL5k2-001j4X-0h;
-	Wed, 03 Jan 2024 19:13:22 +0100
+	id 1rL5k4-001j4X-1N;
+	Wed, 03 Jan 2024 19:13:24 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Jan 2024 19:11:48 +0100
-Message-Id: <20240103181312.409668-29-a.fatoum@pengutronix.de>
+Date: Wed,  3 Jan 2024 19:12:37 +0100
+Message-Id: <20240103181312.409668-78-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240103_183100_751368_EACBEF7E 
-X-CRM114-Status: GOOD (  13.21  )
+X-CRM114-CacheID: sfid-20240103_183101_452269_250A819F 
+X-CRM114-Status: UNSURE (   9.94  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,90 +99,159 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 028/112] fs: drop unused LOOKUP_ flags
+Subject: [PATCH 077/112] fs: efi: move definitions into header
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Most flags used during VFS lookup are apparently unused, so let's delete
-them to make the code easier to reason about.
+EFI loader support will require access to these same definitions, so
+move them into a header.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c               | 11 +----------
- include/linux/namei.h | 13 -------------
- 2 files changed, 1 insertion(+), 23 deletions(-)
+ fs/efi.c      | 59 ---------------------------------------------------
+ include/efi.h | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 59 insertions(+), 59 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 7c4e2f250ea8..7d9bee539db5 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1696,9 +1696,7 @@ static int follow_automount(struct path *path, struct nameidata *nd,
- 	 * as being automount points.  These will need the attentions
- 	 * of the daemon to instantiate them before they can be used.
- 	 */
--	if (!(nd->flags & (LOOKUP_PARENT | LOOKUP_DIRECTORY |
--			LOOKUP_OPEN | LOOKUP_CREATE | LOOKUP_AUTOMOUNT)) &&
--			path->dentry->d_inode)
-+	if (!(nd->flags & (LOOKUP_PARENT | LOOKUP_DIRECTORY)) && path->dentry->d_inode)
- 		return -EISDIR;
+diff --git a/fs/efi.c b/fs/efi.c
+index 0cfd5a3aebf6..11073e9961c4 100644
+--- a/fs/efi.c
++++ b/fs/efi.c
+@@ -32,65 +32,6 @@
+ #include <efi/efi-device.h>
+ #include <linux/stddef.h>
  
- 	return automount_mount(path->dentry);
-@@ -2278,12 +2276,6 @@ static struct dentry *filename_create(struct filename *name,
- 	int error;
- 	bool is_dir = (lookup_flags & LOOKUP_DIRECTORY);
- 
--	/*
--	 * Note that only LOOKUP_REVAL and LOOKUP_DIRECTORY matter here. Any
--	 * other flags passed in are ignored!
--	 */
--	lookup_flags &= LOOKUP_REVAL;
+-/* Open modes */
+-#define EFI_FILE_MODE_READ      0x0000000000000001
+-#define EFI_FILE_MODE_WRITE     0x0000000000000002
+-#define EFI_FILE_MODE_CREATE    0x8000000000000000
 -
- 	name = filename_parentat(name, 0, path, &last, &type);
- 	if (IS_ERR(name))
- 		return ERR_CAST(name);
-@@ -2298,7 +2290,6 @@ static struct dentry *filename_create(struct filename *name,
- 	/*
- 	 * Do the final lookup.
- 	 */
--	lookup_flags |= LOOKUP_CREATE | LOOKUP_EXCL;
- 	dentry = __lookup_hash(&last, path->dentry, lookup_flags);
- 	if (IS_ERR(dentry))
- 		goto unlock;
-diff --git a/include/linux/namei.h b/include/linux/namei.h
-index 9f6e568591af..29c3460ace2a 100644
---- a/include/linux/namei.h
-+++ b/include/linux/namei.h
-@@ -19,30 +19,17 @@ enum {LAST_NORM, LAST_ROOT, LAST_DOT, LAST_DOTDOT, LAST_BIND};
-  *  - follow links at the end
-  *  - require a directory
-  *  - ending slashes ok even for nonexistent files
-- *  - internal "there are more path components" flag
-- *  - dentry cache is untrusted; force a real lookup
-- *  - suppress terminal automount
-  */
- #define LOOKUP_FOLLOW		0x0001
- #define LOOKUP_DIRECTORY	0x0002
- #define LOOKUP_AUTOMOUNT	0x0004
+-/* File attributes */
+-#define EFI_FILE_READ_ONLY      0x0000000000000001
+-#define EFI_FILE_HIDDEN         0x0000000000000002
+-#define EFI_FILE_SYSTEM         0x0000000000000004
+-#define EFI_FILE_RESERVIED      0x0000000000000008
+-#define EFI_FILE_DIRECTORY      0x0000000000000010
+-#define EFI_FILE_ARCHIVE        0x0000000000000020
+-#define EFI_FILE_VALID_ATTR     0x0000000000000037
+-
+-#define EFI_FILE_HANDLE_REVISION         0x00010000
+-struct efi_file_handle {
+-	uint64_t Revision;
+-	efi_status_t(EFIAPI *open)(struct efi_file_handle *File,
+-			struct efi_file_handle **NewHandle, s16 *FileName,
+-			uint64_t OpenMode, uint64_t Attributes);
+-	efi_status_t(EFIAPI *close)(struct efi_file_handle *File);
+-	efi_status_t(EFIAPI *delete)(struct efi_file_handle *File);
+-	efi_status_t(EFIAPI *read)(struct efi_file_handle *File, unsigned long *BufferSize,
+-			void *Buffer);
+-	efi_status_t(EFIAPI *write)(struct efi_file_handle *File,
+-			unsigned long *BufferSize, void *Buffer);
+-	efi_status_t(EFIAPI *get_position)(struct efi_file_handle *File,
+-			uint64_t *Position);
+-	efi_status_t(EFIAPI *set_position)(struct efi_file_handle *File,
+-			uint64_t Position);
+-	efi_status_t(EFIAPI *get_info)(struct efi_file_handle *File,
+-			efi_guid_t *InformationType, unsigned long *BufferSize,
+-			void *Buffer);
+-	efi_status_t(EFIAPI *set_info)(struct efi_file_handle *File,
+-			efi_guid_t *InformationType, unsigned long BufferSize,
+-			void *Buffer);
+-	efi_status_t(EFIAPI *flush)(struct efi_file_handle *File);
+-};
+-
+-#define EFI_FILE_IO_INTERFACE_REVISION   0x00010000
+-
+-struct efi_file_io_interface {
+-	uint64_t Revision;
+-	efi_status_t(EFIAPI *open_volume)(
+-			struct efi_file_io_interface *This,
+-			struct efi_file_handle **Root);
+-};
+-
+-struct efi_file_info {
+-	uint64_t Size;
+-	uint64_t FileSize;
+-	uint64_t PhysicalSize;
+-	struct efi_time CreateTime;
+-	struct efi_time LastAccessTime;
+-	struct efi_time ModificationTime;
+-	uint64_t Attribute;
+-	s16 FileName[1];
+-};
+-
+ struct efifs_priv {
+ 	struct efi_file_handle *root_dir;
+ 	struct efi_file_io_interface *protocol;
+diff --git a/include/efi.h b/include/efi.h
+index a73c96ef3a82..e0080552cf53 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -674,6 +674,65 @@ struct efi_loaded_image {
+ 	efi_status_t (EFIAPI *unload)(efi_handle_t image_handle);
+ };
  
- #define LOOKUP_PARENT		0x0010
--#define LOOKUP_REVAL		0x0020
--#define LOOKUP_RCU		0x0040
--#define LOOKUP_NO_REVAL		0x0080
++/* Open modes */
++#define EFI_FILE_MODE_READ      0x0000000000000001
++#define EFI_FILE_MODE_WRITE     0x0000000000000002
++#define EFI_FILE_MODE_CREATE    0x8000000000000000
++
++/* File attributes */
++#define EFI_FILE_READ_ONLY      0x0000000000000001
++#define EFI_FILE_HIDDEN         0x0000000000000002
++#define EFI_FILE_SYSTEM         0x0000000000000004
++#define EFI_FILE_RESERVIED      0x0000000000000008
++#define EFI_FILE_DIRECTORY      0x0000000000000010
++#define EFI_FILE_ARCHIVE        0x0000000000000020
++#define EFI_FILE_VALID_ATTR     0x0000000000000037
++
++#define EFI_FILE_HANDLE_REVISION         0x00010000
++struct efi_file_handle {
++	uint64_t Revision;
++	efi_status_t(EFIAPI *open)(struct efi_file_handle *File,
++			struct efi_file_handle **NewHandle, s16 *FileName,
++			uint64_t OpenMode, uint64_t Attributes);
++	efi_status_t(EFIAPI *close)(struct efi_file_handle *File);
++	efi_status_t(EFIAPI *delete)(struct efi_file_handle *File);
++	efi_status_t(EFIAPI *read)(struct efi_file_handle *File, unsigned long *BufferSize,
++			void *Buffer);
++	efi_status_t(EFIAPI *write)(struct efi_file_handle *File,
++			unsigned long *BufferSize, void *Buffer);
++	efi_status_t(EFIAPI *get_position)(struct efi_file_handle *File,
++			uint64_t *Position);
++	efi_status_t(EFIAPI *set_position)(struct efi_file_handle *File,
++			uint64_t Position);
++	efi_status_t(EFIAPI *get_info)(struct efi_file_handle *File,
++			efi_guid_t *InformationType, unsigned long *BufferSize,
++			void *Buffer);
++	efi_status_t(EFIAPI *set_info)(struct efi_file_handle *File,
++			efi_guid_t *InformationType, unsigned long BufferSize,
++			void *Buffer);
++	efi_status_t(EFIAPI *flush)(struct efi_file_handle *File);
++};
++
++#define EFI_FILE_IO_INTERFACE_REVISION   0x00010000
++
++struct efi_file_io_interface {
++	uint64_t Revision;
++	efi_status_t(EFIAPI *open_volume)(
++			struct efi_file_io_interface *This,
++			struct efi_file_handle **Root);
++};
++
++struct efi_file_info {
++	uint64_t Size;
++	uint64_t FileSize;
++	uint64_t PhysicalSize;
++	struct efi_time CreateTime;
++	struct efi_time LastAccessTime;
++	struct efi_time ModificationTime;
++	uint64_t Attribute;
++	s16 FileName[1];
++};
++
+ __attribute__((noreturn)) void efi_main(efi_handle_t, struct efi_system_table *);
  
  /*
-  * Intent data
-  */
--#define LOOKUP_OPEN		0x0100
--#define LOOKUP_CREATE		0x0200
--#define LOOKUP_EXCL		0x0400
--#define LOOKUP_RENAME_TARGET	0x0800
- 
- #define LOOKUP_JUMPED		0x1000
--#define LOOKUP_ROOT		0x2000
--#define LOOKUP_EMPTY		0x4000
--#define LOOKUP_DOWN		0x8000
- 
- #endif /* _LINUX_NAMEI_H */
 -- 
 2.39.2
 
