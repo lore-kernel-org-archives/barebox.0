@@ -1,67 +1,74 @@
-Delivery-date: Thu, 04 Jan 2024 17:34:15 +0100
+Delivery-date: Thu, 04 Jan 2024 19:11:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLQff-003iCG-2Q
+	id 1rLSBm-003mQQ-34
 	for lore@lore.pengutronix.de;
-	Thu, 04 Jan 2024 17:34:15 +0100
+	Thu, 04 Jan 2024 19:11:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLQfe-0008R1-Oz
-	for lore@pengutronix.de; Thu, 04 Jan 2024 17:34:15 +0100
+	id 1rLSBl-0005ay-Rh
+	for lore@pengutronix.de; Thu, 04 Jan 2024 19:11:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/QFwc/9uJ+gBDxCHsslLChEBkBwp0F9l3OZ7jn3wPns=; b=qBg6qliD6+4j0LldQe95QV08QP
-	SG9gNXVFsOz6ib0xCe0Dg+63gswFkwqnlfE2HeVVdx5nlJwdfejHn2TEe79L3qqIUonSrBL3SubxQ
-	NbD8uwOmaH852A8lg6Cm/l7HR384CSlaEnqTEk6c8gkW1eSVmE/VpVyvzOzUiVxUp46Sa5FT+0k/h
-	+Ttv7XlpzURSntCwC70EbBNgy4tiqPA2sjIj4+BBFVtnTKH4dx1M5Q74evYQ+zqfsfmPYNgVnbdhE
-	jv2qf5l2mnPYgL7NPOyl4Yto381zZjgB6L3izv5XtasDLZXgZykSsvVYDJpUVFEHXTaAuCIB44jZk
-	yebVy2+g==;
+	bh=7KW8aS3Ine17waO/vOgs3scu7YAx1+WEqHcl5G6SAxE=; b=G4J78JkxFKXBHNc34dbk7dfDnD
+	wxI6TRYyMP0WmF8bwuu9znMAeaA6AnupADeesLZmntEjrJ4khO6F1oliIaUFEI9UvP1i5bERMjBTJ
+	EvgxdthauxAFDoV+Inf2Mf/jl3t989VSXY3pcFJPkhxl+nihLUOU7L9AIKLAYbwVWDwDqaVLfI9SN
+	XuQGV4RKTp0xvYU/CORbqsEk65GpJE9U2prmiuGolKS55wtr3ujOfq9OWi2e34ANV5WBg59H/AN5g
+	IQe3LtCVpGe1cWDZwjup5p6mrnKzH68KGogbuq8wuO3+ACjKb1zlniA+3WvbrTnAGLvUsLBdnlH5l
+	tI7ypEPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLQeI-00Egyp-0R;
-	Thu, 04 Jan 2024 16:32:50 +0000
+	id 1rLSAQ-00Evhu-2q;
+	Thu, 04 Jan 2024 18:10:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLQeD-00Egw8-39
+	id 1rLSAN-00EvhC-1x
 	for barebox@lists.infradead.org;
-	Thu, 04 Jan 2024 16:32:48 +0000
+	Thu, 04 Jan 2024 18:10:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rLQe8-00087B-Dt; Thu, 04 Jan 2024 17:32:40 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	(envelope-from <mol@pengutronix.de>)
+	id 1rLSAM-0005FA-Cm; Thu, 04 Jan 2024 19:10:02 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rLQe8-000O5O-1P; Thu, 04 Jan 2024 17:32:40 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rLQe7-003aXF-36;
-	Thu, 04 Jan 2024 17:32:39 +0100
-Date: Thu, 4 Jan 2024 17:32:39 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <krc42r42rtkgkrnxgnk2unn2x5lfnzfwruht2ftv7upxfl2sjq@zcvlmoibeoej>
-References: <20240104141746.165014-1-s.hauer@pengutronix.de>
- <20240104141746.165014-20-s.hauer@pengutronix.de>
+	(envelope-from <mol@pengutronix.de>)
+	id 1rLSAL-000Pot-W1; Thu, 04 Jan 2024 19:10:02 +0100
+Received: from mol by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mol@pengutronix.de>)
+	id 1rLSAL-0016gg-2v;
+	Thu, 04 Jan 2024 19:10:01 +0100
+Date: Thu, 4 Jan 2024 19:10:01 +0100
+From: Michael Olbrich <mol@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <ZZb0eXfQvD8sjN5-@pengutronix.de>
+Mail-Followup-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	barebox@lists.infradead.org
+References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
+ <20240103181312.409668-60-a.fatoum@pengutronix.de>
+ <ZZWuTmS6DichQw5g@pengutronix.de>
+ <af116cd9-ce59-4152-b19f-d654897df04c@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="2ojetrj3tlpkz5fp"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240104141746.165014-20-s.hauer@pengutronix.de>
+In-Reply-To: <af116cd9-ce59-4152-b19f-d654897df04c@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240104_083246_014004_FBD7B692 
-X-CRM114-Status: GOOD (  11.74  )
+X-CRM114-CacheID: sfid-20240104_101003_638991_0CC7057F 
+X-CRM114-Status: GOOD (  36.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,51 +86,90 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 19/19] ARM: Layerscape: add basic support for NXP LS1028a
- RDB
+Subject: Re: [PATCH 059/112] efi: payload: init: restrict barebox mem to
+ first 1G only on x86
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+On Thu, Jan 04, 2024 at 12:17:12PM +0100, Ahmad Fatoum wrote:
+> On 03.01.24 19:58, Michael Olbrich wrote:
+> > On Wed, Jan 03, 2024 at 07:12:19PM +0100, Ahmad Fatoum wrote:
+> >> When run as EFI payload, barebox will not have full access to DRAM and will
+> >> have to ask the EFI firmware for memory. It does so once at the beginning
+> >> and since commit 356aaef5a37d ("efi: improve malloc pool allocation"),
+> >> the buffer was always placed beneath the 1G boundary.
+> >>
+> >> Aforementioned commit didn't elaborate why a maximum of 1G in particular
+> >> was chosen. Anyways, non-PC architectures have different memory maps, so
+> >> a 1G limit doesn't make sense there. Therefore restrict the limit to
+> >> ARCH_X86. On non-x86, we allow the memory pages to be located anywhere.
+> > 
+> > The 1G is somewhat arbitrary but if you don't restrict the memory to 32bit,
+> > then loading the kernel may fail: The addresses in "struct
+> > linux_kernel_header" are only 32bit. So if you impose no restrictions at
+> > all, then this memory cannot be used for the kernel and initrd.
+> 
+> The limit for x86 remains at 1G. It's only for other architectures, that we
+> remove the limit. I suspect that other architectures won't have this kind
+> of problems though , because they would boot the kernel image via EFI load
+> and start image boot services, where the EFI firmware takes care to layout
+> the boot artifacts.
+> 
+> Once we have that in place, we could even use it on x86 instead of
+> using struct linux_kernel_header, but I haven't investigated this yet.
 
---2ojetrj3tlpkz5fp
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+How do you load the initrd via EFI? As far as I know, that only works as a
+filename in the EFI boot partition. That was the reason for implementing
+the "legacy" boot mode. And what about the device-tree?
 
-On Thu, Jan 04, 2024 at 03:17:46PM +0100, Sascha Hauer wrote:
-> From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+Michael
 
-even though you picked up some wip code to build up this commit, feel
-free to grap authorship. I don't think I added anything that justifies
-to claim authorship for myself.
+> >> This can break PCI drivers on systems that so far assumed barebox memory
+> >> is located in the first 4G, but that's ok. That code will need to be
+> >> fixed eventually anyway.
+> >>
+> >> Cc: Michael Olbrich <m.olbrich@pengutronix.de>
+> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >> ---
+> >>  efi/payload/init.c | 2 +-
+> >>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>
+> >> diff --git a/efi/payload/init.c b/efi/payload/init.c
+> >> index 4b612e61afb3..0c2f38e9c86a 100644
+> >> --- a/efi/payload/init.c
+> >> +++ b/efi/payload/init.c
+> >> @@ -292,7 +292,7 @@ void efi_main(efi_handle_t image, struct efi_system_table *sys_table)
+> >>  		BS->handle_protocol(efi_loaded_image->device_handle,
+> >>  				&efi_device_path_protocol_guid, (void **)&efi_device_path);
+> >>  
+> >> -	mem = 0x3fffffff;
+> >> +	mem = IS_ENABLED(CONFIG_X86) ? 0x3fffffff : ~0ULL;
+> >>  	for (memsize = SZ_256M; memsize >= SZ_8M; memsize /= 2) {
+> >>  		efiret  = BS->allocate_pages(EFI_ALLOCATE_MAX_ADDRESS,
+> >>  					     EFI_LOADER_DATA,
+> >> -- 
+> >> 2.39.2
+> >>
+> >>
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> 
 
-Best regards and thanks to bring this forward,
-Uwe
-
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---2ojetrj3tlpkz5fp
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmWW3aYACgkQj4D7WH0S
-/k5OiAf+Oa03OybnLvlRSMISeWmcHIXMadqAPIj2Awk4TFEnHOwLM+Vh0Sk+Bn4s
-SKEY0lyLI9h3zuxU/f9vHs7GT6jE8H+rA8ODEvhZfuATxqkxWssqiWCjSg5L03O9
-oD3WnOZYQBpxKrsFS5IZu28q0L3F9rByT0wiv+H3LRX86JehaksJ5ZzJVi2fXvVU
-VawcsMVLn61xFXvujT1qAuczjeNczO2XbtPUUmoACqP+SZDjiOzQ2nVhMpz2uRx8
-psfYwLpKIyU5qXJZl1JyYrm/MCZcY3Wq/NTAibnKtfcxjs2UNd8uGQjfPBA+qiTC
-uKlDLkdMUuK10aFTYuyNKq0Uut1C0w==
-=eZOZ
------END PGP SIGNATURE-----
-
---2ojetrj3tlpkz5fp--
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
