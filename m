@@ -1,70 +1,65 @@
-Delivery-date: Thu, 04 Jan 2024 09:24:15 +0100
+Delivery-date: Thu, 04 Jan 2024 09:52:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLJ1T-003INE-1n
+	id 1rLJT8-003JUR-26
 	for lore@lore.pengutronix.de;
-	Thu, 04 Jan 2024 09:24:15 +0100
+	Thu, 04 Jan 2024 09:52:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLJ1S-0000nk-GA
-	for lore@pengutronix.de; Thu, 04 Jan 2024 09:24:15 +0100
+	id 1rLJT7-0005J0-Kj
+	for lore@pengutronix.de; Thu, 04 Jan 2024 09:52:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UDFkwxevMGTSLE1IzhoL51r7HmMhk67T8Ga2ZwFz/a0=; b=iOxpRcRhEq8YMkockEgbRlXvFt
-	hiPArfL96XQV0nVMcAMEBXYktizeNdYYN/pEAlFoMmHWst7+Ew0ko4AejRnVugGsSrJpMatafiURc
-	NqP0tfAMUYzfoAFmEHoXonBXU1lOfirbgALtJYM3A20LFg8MkEXlMnztITYrmnjG8cqvjDrSNYM8u
-	5dUEifg77f+GCJ/KF4WgYBNwZcKIY1yA8CcJKJrICP6A43xg3frK+QSe5DewC1KNj0C87uy+D2TY4
-	r648bQAME+u+sabftKPvPUxP86UGrCN67lgizpnpb8/MS9hfBR3aLXrv7V3YlZqn+xo1odb2QwGN4
-	8fLC8Mow==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=wT1VRNQIC7WG3UuBM6dB7rzvc/f17yXGAlkD6DHY8h8=; b=1eeCrUVQ4eNwqm
+	M+9oUp4dr8AC9ui1hr5Hzvt2DVfFeKKiF+dXRNQlRlXVxjAHT39UCqE+dvZE5fcZE0nrTQlPqDiPy
+	LIBBIc0IEIcmSc6FOsxwSs1ympTodoERyOk4i5izM4wNdIw1KQn132WG62SOwPDXHPVbQGVwU28ju
+	yfa1dzuS1KMON5iuGqWxKO9Qby1Km1gXl+Pyzs5XcKkZ3HZb0Ts2u/sk4XXfZVKokMC37AtbgkxOZ
+	C1Ao61ZhNezlYc09tf8Q7sEHt0grOYGpIFcE6xvs34V9H3Kv4+CWlkje3B2wp/l881lFKIOgE6K4v
+	VZQAyTVkXgWGd79KPcrw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLJ06-00DBzY-0N;
-	Thu, 04 Jan 2024 08:22:50 +0000
+	id 1rLJS1-00DGtT-1v;
+	Thu, 04 Jan 2024 08:51:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLJ02-00DByc-0Y
+	id 1rLJRy-00DGs7-37
 	for barebox@lists.infradead.org;
-	Thu, 04 Jan 2024 08:22:48 +0000
+	Thu, 04 Jan 2024 08:51:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rLIzx-0000Y1-5s; Thu, 04 Jan 2024 09:22:41 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rLJRx-00053l-J4; Thu, 04 Jan 2024 09:51:37 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rLIzw-000Irv-Ph; Thu, 04 Jan 2024 09:22:40 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rLIzw-00ABSr-NG; Thu, 04 Jan 2024 09:22:40 +0100
-Date: Thu, 4 Jan 2024 09:22:40 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20240104082240.GL1318922@pengutronix.de>
-References: <20240103101629.2629497-1-a.fatoum@pengutronix.de>
- <20240103101629.2629497-4-a.fatoum@pengutronix.de>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rLJRx-000IwS-6R; Thu, 04 Jan 2024 09:51:37 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rLJRx-002BDw-0J;
+	Thu, 04 Jan 2024 09:51:37 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Thu,  4 Jan 2024 09:51:35 +0100
+Message-Id: <20240104085135.519786-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240103101629.2629497-4-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+References: <20240103101629.2629497-4-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240104_002246_227538_8DF36AC9 
-X-CRM114-Status: GOOD (  24.08  )
+X-CRM114-CacheID: sfid-20240104_005139_002144_C7B38549 
+X-CRM114-Status: GOOD (  10.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,6 +71,7 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -87,86 +83,42 @@ X-Spam-Status: No, score=-6.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 3/6] cdev: export cdevfs_add_partition for general use
+Subject: [PATCH] fixup! cdev: export cdevfs_add_partition for general use
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Jan 03, 2024 at 11:16:26AM +0100, Ahmad Fatoum wrote:
-> __devfs_add_partition was added, so it can internally be used by
-> functions that already have a cdev and don't require looking it up first
-> by file path. This is useful elsewhere as well, so give it a less
-> internal-sounding name and start exporting it.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  fs/devfs-core.c  | 6 +++---
->  include/driver.h | 3 +++
->  2 files changed, 6 insertions(+), 3 deletions(-)
-> 
-> diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-> index 6abf5eacc8dd..912bfeede8dc 100644
-> --- a/fs/devfs-core.c
-> +++ b/fs/devfs-core.c
-> @@ -474,7 +474,7 @@ static struct cdev *check_overlap(struct cdev *cdev, const char *name, loff_t of
->  	return ret ? ERR_PTR(ret) : cpart;
->  }
->  
-> -static struct cdev *__devfs_add_partition(struct cdev *cdev,
-> +struct cdev *cdevfs_add_partition(struct cdev *cdev,
->  		const struct devfs_partition *partinfo, loff_t *end)
+Now that we export the function, some documentation can be useful.
 
-Now that this function is exported the @end deserves a comment that
-tells what it's good for. Alternatively, as the new users doesn't seem
-to make use of this parameter, you could keep __devfs_add_partition
-static call it from an exported wrapper function that passes NULL as
-@end.
+Suggested-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ fs/devfs-core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-Sascha
-
->  {
->  	loff_t offset, size;
-> @@ -572,7 +572,7 @@ struct cdev *devfs_add_partition(const char *devname, loff_t offset,
->  	if (!cdev)
->  		return ERR_PTR(-ENOENT);
->  
-> -	return __devfs_add_partition(cdev, &partinfo, NULL);
-> +	return cdevfs_add_partition(cdev, &partinfo, NULL);
->  }
->  
->  int devfs_del_partition(const char *name)
-> @@ -618,7 +618,7 @@ int devfs_create_partitions(const char *devname,
->  	for (; partinfo->name; ++partinfo) {
->  		struct cdev *new;
->  
-> -		new = __devfs_add_partition(cdev, partinfo, &offset);
-> +		new = cdevfs_add_partition(cdev, partinfo, &offset);
->  		if (IS_ERR(new))
->  			return PTR_ERR(new);
->  
-> diff --git a/include/driver.h b/include/driver.h
-> index 0e3d5635e4c1..373c4f1d0bca 100644
-> --- a/include/driver.h
-> +++ b/include/driver.h
-> @@ -681,6 +681,9 @@ struct cdev *devfs_add_partition(const char *devname, loff_t offset,
->  		loff_t size, unsigned int flags, const char *name);
->  int devfs_del_partition(const char *name);
->  
-> +struct cdev *cdevfs_add_partition(struct cdev *cdev,
-> +		const struct devfs_partition *partinfo, loff_t *end);
-> +
->  #define of_match_ptr(compat) \
->  	IS_ENABLED(CONFIG_OFDEVICE) ? (compat) : NULL
->  
-> -- 
-> 2.39.2
-> 
-> 
-> 
-
+diff --git a/fs/devfs-core.c b/fs/devfs-core.c
+index 912bfeede8dc..060a24795c47 100644
+--- a/fs/devfs-core.c
++++ b/fs/devfs-core.c
+@@ -474,6 +474,17 @@ static struct cdev *check_overlap(struct cdev *cdev, const char *name, loff_t of
+ 	return ret ? ERR_PTR(ret) : cpart;
+ }
+ 
++/**
++ * cdevfs_add_partition() - add partition to already registered cdev
++ * @cdev: parent cdev
++ * @partinfo: new partition information
++ * @end: If not NULL, will hold the the (non-inclusive) end offset of the newly
++ *       created partition.
++ *
++ * Return: the newly registered cdev or an error pointer if the new partition
++ *         would clash with exisiting partitions or overflow the cdev.
++ *         A valid cdev can be freed with cdevfs_del_partition()
++ */
+ struct cdev *cdevfs_add_partition(struct cdev *cdev,
+ 		const struct devfs_partition *partinfo, loff_t *end)
+ {
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
