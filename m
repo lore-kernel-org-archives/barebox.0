@@ -1,65 +1,64 @@
-Delivery-date: Thu, 04 Jan 2024 15:19:24 +0100
+Delivery-date: Thu, 04 Jan 2024 15:19:28 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLOZA-003cY4-1M
+	id 1rLOZF-003cYm-0G
 	for lore@lore.pengutronix.de;
-	Thu, 04 Jan 2024 15:19:23 +0100
+	Thu, 04 Jan 2024 15:19:28 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLOZ7-0005QZ-Rx
-	for lore@pengutronix.de; Thu, 04 Jan 2024 15:19:23 +0100
+	id 1rLOZD-0005Xy-2F
+	for lore@pengutronix.de; Thu, 04 Jan 2024 15:19:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=j19aaki3ekbOQuRk2tsvcEu7vkApI3VDB5zHVr1/c8c=; b=XdxbMya9po27ps
-	Quey6jNmxBfSRuTq6cYdoqu/5Bmx2U5Z2d2BDO5D6rChIruVn09BAzZsQmgxbfZ5xeqXCAFT2POJ3
-	N746r+7eoInGzYERXd2s3vm2CcNLqoEYp3spMCq/cGgBTOWX9iPaBfYpUr3O12LRQVnsvcfPKwi/e
-	Cv+0/rjmC8suYADb+VZzAR3ShO4U57RdfAXfLZrGl+DLI99H6tSEqCws3HJaTR3BqpkBwOtXI113D
-	oXxMcRhuUb3dMft2lL5l0e/QzXBKkE+3onyzrQ0nKtCYevA17v+jh6GgpljzHP7uJpDgr4aFCUtm7
-	afx+MnmmJtPJiAdmfrnw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=zf5sTT0hSuqaK0esUZMQRh/qbwS6ebKcLsslyc0ziz4=; b=JhfJrmt/eLz5CumydBzlGuYWNC
+	UL2ovEoaPGxgLihPnoHhqpyroyWZI0OwnueW64Wfj0VLEREhY7bzuK38h0xhfG0Z1wysflfljgBha
+	yiDOiyKBpgA+wtJcgXTSaEv207zBFo4rwaRrKBZ8wAK1s+UxjPebOi6WWwxipKa/diWbNMo6AxVX4
+	DA2qOipzgewLEa+5yGJ4fVno0XUUSzoK7QmUHGQJKBFHEqHngEK877IrbB3fKIsLI2+DtfFw3MGW+
+	hfmlxl9mUukU2TAyLbGJuP59KoNMkchZHjYX3ALmVGaY9LDV4f76fVI7PRjNIR6TWlf74Cfrbva+l
+	YBxodjjA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLOXw-00EJD3-0y;
-	Thu, 04 Jan 2024 14:18:08 +0000
+	id 1rLOXx-00EJDu-0z;
+	Thu, 04 Jan 2024 14:18:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLOXf-00EIzI-2O
+	id 1rLOXi-00EIzD-2r
 	for barebox@lists.infradead.org;
-	Thu, 04 Jan 2024 14:17:59 +0000
+	Thu, 04 Jan 2024 14:18:00 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rLOXc-0004Ht-Ne; Thu, 04 Jan 2024 15:17:48 +0100
+	id 1rLOXc-0004Hf-Jm; Thu, 04 Jan 2024 15:17:48 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rLOXb-000Myk-Ul; Thu, 04 Jan 2024 15:17:47 +0100
+	id 1rLOXb-000MyY-RI; Thu, 04 Jan 2024 15:17:47 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rLOXb-001806-2i;
+	id 1rLOXb-0017zJ-2S;
 	Thu, 04 Jan 2024 15:17:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  4 Jan 2024 15:17:46 +0100
-Message-Id: <20240104141746.165014-20-s.hauer@pengutronix.de>
+Date: Thu,  4 Jan 2024 15:17:41 +0100
+Message-Id: <20240104141746.165014-15-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240104141746.165014-1-s.hauer@pengutronix.de>
 References: <20240104141746.165014-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240104_061752_090641_721C0381 
-X-CRM114-Status: GOOD (  21.89  )
+X-CRM114-CacheID: sfid-20240104_061755_279998_6A3C9E71 
+X-CRM114-Status: GOOD (  33.09  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,7 +70,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -83,432 +81,531 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 19/19] ARM: Layerscape: add basic support for NXP LS1028a RDB
+Subject: [PATCH 14/19] ARM: Layerscape: add tzc400 support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-
-The NXP LS1028a RDB is a LS1028a Eval board. Currently supported are
-SD/MMC, ethernet and SD image generation.
+This adds the code necessary to initialize the TZC400 unit found on the
+LS1028a. The code is taken from TF-A. It's mostly SoC independent, but
+keep it in arch-layerscape for now until we get a second user and it's
+clear which parts can be re-used.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/Makefile                      |   1 +
- arch/arm/boards/ls1028ardb/Makefile           |   5 +
- arch/arm/boards/ls1028ardb/board.c            |  30 ++++
- arch/arm/boards/ls1028ardb/lowlevel.c         | 142 ++++++++++++++++++
- arch/arm/boards/ls1028ardb/ls1028ardb_pbi.cfg |  14 ++
- .../boards/ls1028ardb/ls1028ardb_rcw_sd.cfg   |  14 ++
- arch/arm/boards/ls1028ardb/start.S            |  19 +++
- arch/arm/configs/layerscape_defconfig         |   5 +-
- arch/arm/dts/Makefile                         |   1 +
- arch/arm/dts/fsl-ls1028a-rdb.dts              |  12 ++
- arch/arm/mach-layerscape/Kconfig              |  15 +-
- images/Makefile.layerscape                    |   9 ++
- 12 files changed, 264 insertions(+), 3 deletions(-)
- create mode 100644 arch/arm/boards/ls1028ardb/Makefile
- create mode 100644 arch/arm/boards/ls1028ardb/board.c
- create mode 100644 arch/arm/boards/ls1028ardb/lowlevel.c
- create mode 100644 arch/arm/boards/ls1028ardb/ls1028ardb_pbi.cfg
- create mode 100644 arch/arm/boards/ls1028ardb/ls1028ardb_rcw_sd.cfg
- create mode 100644 arch/arm/boards/ls1028ardb/start.S
- create mode 100644 arch/arm/dts/fsl-ls1028a-rdb.dts
+ arch/arm/mach-layerscape/Makefile  |   1 +
+ arch/arm/mach-layerscape/tzc400.c  | 303 +++++++++++++++++++++++++++++
+ arch/arm/mach-layerscape/tzc400.h  | 164 ++++++++++++++++
+ include/mach/layerscape/lowlevel.h |   3 +
+ 4 files changed, 471 insertions(+)
+ create mode 100644 arch/arm/mach-layerscape/tzc400.c
+ create mode 100644 arch/arm/mach-layerscape/tzc400.h
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index d27252c4a7..875d011573 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -187,6 +187,7 @@ obj-$(CONFIG_MACH_ZII_IMX8MQ_DEV)		+= zii-imx8mq-dev/
- obj-$(CONFIG_MACH_ZII_VF610_DEV)		+= zii-vf610-dev/
- obj-$(CONFIG_MACH_ZII_IMX7D_DEV)		+= zii-imx7d-dev/
- obj-$(CONFIG_MACH_WAGO_PFC_AM35XX)		+= wago-pfc-am35xx/
-+obj-$(CONFIG_MACH_LS1028ARDB)			+= ls1028ardb/
- obj-$(CONFIG_MACH_LS1046ARDB)			+= ls1046ardb/
- obj-$(CONFIG_MACH_TQMLS1046A)			+= tqmls1046a/
- obj-$(CONFIG_MACH_LS1021AIOT)			+= ls1021aiot/
-diff --git a/arch/arm/boards/ls1028ardb/Makefile b/arch/arm/boards/ls1028ardb/Makefile
+diff --git a/arch/arm/mach-layerscape/Makefile b/arch/arm/mach-layerscape/Makefile
+index ebb030a1cb..8f288851ff 100644
+--- a/arch/arm/mach-layerscape/Makefile
++++ b/arch/arm/mach-layerscape/Makefile
+@@ -6,6 +6,7 @@ lwl-$(CONFIG_ARCH_LS1046) += lowlevel.o lowlevel-ls1046a.o
+ obj-$(CONFIG_ARCH_LS1046) += icid.o
+ obj-pbl-y += boot.o soc.o
+ pbl-y += xload-qspi.o xload.o
++pbl-$(CONFIG_ARCH_LS1028) += tzc400.o
+ obj-$(CONFIG_ARCH_LAYERSCAPE_PPA) += ppa.o ppa-entry.o
+ obj-$(CONFIG_BOOTM) += pblimage.o
+ 
+diff --git a/arch/arm/mach-layerscape/tzc400.c b/arch/arm/mach-layerscape/tzc400.c
 new file mode 100644
-index 0000000000..df60a21844
+index 0000000000..04a97809f5
 --- /dev/null
-+++ b/arch/arm/boards/ls1028ardb/Makefile
-@@ -0,0 +1,5 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+
-+lwl-y += lowlevel.o
-+lwl-y += start.o
-+obj-y += board.o
-diff --git a/arch/arm/boards/ls1028ardb/board.c b/arch/arm/boards/ls1028ardb/board.c
-new file mode 100644
-index 0000000000..137f5753ca
---- /dev/null
-+++ b/arch/arm/boards/ls1028ardb/board.c
-@@ -0,0 +1,30 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <deep-probe.h>
-+#include <bootsource.h>
-+#include <driver.h>
-+#include <init.h>
-+#include <of.h>
-+#include <asm/memory.h>
-+#include <mach/layerscape/layerscape.h>
-+#include <linux/sizes.h>
-+
-+static int ls1028ardb_probe(struct device *dev)
-+{
-+	arm_add_mem_device("ram1", LS1028A_DDR_SDRAM_HIGHMEM_BASE, SZ_2G);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id ls1028a_of_match[] = {
-+	{ .compatible = "fsl,ls1028a-rdb" },
-+	{ /* sentinel */ },
-+};
-+BAREBOX_DEEP_PROBE_ENABLE(ls1028a_of_match);
-+
-+static struct driver ls1028ardb_board_driver = {
-+	.name = "ls1028a-rdb",
-+	.probe = ls1028ardb_probe,
-+	.of_compatible = ls1028a_of_match,
-+};
-+device_platform_driver(ls1028ardb_board_driver);
-diff --git a/arch/arm/boards/ls1028ardb/lowlevel.c b/arch/arm/boards/ls1028ardb/lowlevel.c
-new file mode 100644
-index 0000000000..77b5a78852
---- /dev/null
-+++ b/arch/arm/boards/ls1028ardb/lowlevel.c
-@@ -0,0 +1,142 @@
-+// SPDX-License-Identifier: GPL-2.0+
++++ b/arch/arm/mach-layerscape/tzc400.c
+@@ -0,0 +1,303 @@
++// SPDX-License-Identifier: BSD-3-Clause
++/*
++ * Copyright (c) 2016-2022, ARM Limited and Contributors. All rights reserved.
++ *
++ */
++#define pr_fmt(fmt) "tzc400: " fmt
 +
 +#include <common.h>
-+#include <debug_ll.h>
-+#include <ddr_spd.h>
-+#include <image-metadata.h>
-+#include <platform_data/mmc-esdhc-imx.h>
-+#include <soc/fsl/fsl_ddr_sdram.h>
-+#include <soc/fsl/immap_lsch2.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <asm/syscounter.h>
-+#include <asm/cache.h>
-+#include <mach/layerscape/lowlevel.h>
-+#include <mach/layerscape/xload.h>
-+#include <mach/layerscape/errata.h>
-+#include <mach/layerscape/layerscape.h>
 +#include <linux/bitfield.h>
++#include <linux/sizes.h>
++#include <mach/layerscape/lowlevel.h>
++#include <mach/layerscape/layerscape.h>
 +
-+static struct fsl_ddr_controller ddrc = {
-+	.memctl_opts.ddrtype = SDRAM_TYPE_DDR4,
-+	.base = IOMEM(LSCH2_DDR_ADDR),
-+	.ddr_freq = 1600000000,
-+	.erratum_A009942 = 1,
-+	.erratum_A009663 = 1,
-+	.chip_selects_per_ctrl = 4,
-+	.fsl_ddr_config_reg = {
-+		.cs[0].bnds		= 0x000000ff,
-+		.cs[0].config		= 0x80040422,
-+		.cs[0].config_2		= 0,
-+		.cs[1].bnds		= 0,
-+		.cs[1].config		= 0,
-+		.cs[1].config_2		= 0,
++#include "tzc400.h"
 +
-+		.timing_cfg_3		= 0x01111000,
-+		.timing_cfg_0		= 0xd0550018,
-+		.timing_cfg_1		= 0xFAFC0C42,
-+		.timing_cfg_2		= 0x0048c114,
-+		.ddr_sdram_cfg		= 0xe50c000c,
-+		.ddr_sdram_cfg_2	= 0x00401110,
-+		.ddr_sdram_mode		= 0x01010230,
-+		.ddr_sdram_mode_2	= 0x0,
-+
-+		.ddr_sdram_md_cntl	= 0x0600001f,
-+		.ddr_sdram_interval	= 0x18600618,
-+		.ddr_data_init		= 0xdeadbeef,
-+
-+		.ddr_sdram_clk_cntl	= 0x02000000,
-+		.ddr_init_addr		= 0,
-+		.ddr_init_ext_addr	= 0,
-+
-+		.timing_cfg_4		= 0x00000002,
-+		.timing_cfg_5		= 0x07401400,
-+		.timing_cfg_6		= 0x0,
-+		.timing_cfg_7		= 0x23300000,
-+
-+		.ddr_zq_cntl		= 0x8A090705,
-+		.ddr_wrlvl_cntl		= 0x86550607,
-+		.ddr_sr_cntr		= 0,
-+		.ddr_sdram_rcw_1	= 0,
-+		.ddr_sdram_rcw_2	= 0,
-+		.ddr_wrlvl_cntl_2	= 0x0708080A,
-+		.ddr_wrlvl_cntl_3	= 0x0A0B0C09,
-+
-+		.ddr_sdram_mode_9	= 0x00000400,
-+		.ddr_sdram_mode_10	= 0x04000000,
-+
-+		.timing_cfg_8		= 0x06115600,
-+
-+		.dq_map_0		= 0x5b65b658,
-+		.dq_map_1		= 0xd96d8000,
-+		.dq_map_2		= 0,
-+		.dq_map_3		= 0x01600000,
-+
-+		.ddr_cdr1		= 0x80040000,
-+		.ddr_cdr2		= 0x000000C1
-+	},
-+};
-+
-+extern char __dtb_z_fsl_ls1028a_rdb_start[];
-+
-+#define MEM_PLL_RAT	GENMASK(15, 10)
-+
-+static unsigned long get_ddr_freq(void)
++static inline void mmio_write_32(uintptr_t addr, uint32_t value)
 +{
-+	unsigned long freq = 100000000;
-+	u32 rcwsr1 = readl(0x1e00100);
-+	u32 mult;
-+
-+	mult = FIELD_GET(MEM_PLL_RAT, rcwsr1);
-+
-+	return freq * mult;
++	out_le32(addr, value);
 +}
 +
-+struct dram_regions_info dram_info = {
-+	.num_dram_regions = 2,
-+	.total_dram_size = SZ_4G,
-+	.region = {
-+		{
-+			.addr = LS1028A_DDR_SDRAM_BASE,
-+			.size = SZ_2G,
-+		}, {
-+			.addr = LS1028A_DDR_SDRAM_HIGHMEM_BASE,
-+			.size = SZ_2G,
-+		},
-+	},
-+};
-+
-+static noinline __noreturn void ls1028ardb_r_entry(unsigned long memsize)
++static inline uint32_t mmio_read_32(uintptr_t addr)
 +{
-+	unsigned long membase = LS1028A_DDR_SDRAM_BASE;
-+
-+	if (get_pc() >= membase)
-+		barebox_arm_entry(membase, SZ_2G - SZ_64M - SZ_2M,
-+				  __dtb_z_fsl_ls1028a_rdb_start);
-+
-+	arm_cpu_lowlevel_init();
-+	ls1028a_init_lowlevel();
-+	ddrc.ddr_freq = get_ddr_freq();
-+
-+	fsl_ddr_set_memctl_regs(&ddrc, 0, true);
-+
-+	ls1028a_tzc400_init(SZ_4G);
-+
-+	ls1028a_errata_post_ddr();
-+
-+	ls1028a_esdhc1_start_image(&dram_info);
-+
-+	hang();
++	return in_le32(addr);
 +}
 +
-+void ls1028ardb_entry(unsigned long r0, unsigned long r1, unsigned long r2);
-+
-+__noreturn void ls1028ardb_entry(unsigned long r0, unsigned long r1, unsigned long r2)
++static inline void mmio_clrsetbits_32(uintptr_t addr,
++                                uint32_t clear,
++                                uint32_t set)
 +{
-+	ls1028a_uart_setup(IOMEM(LSCH2_NS16550_COM1));
-+
-+	relocate_to_current_adr();
-+	setup_c();
-+
-+	ls1028ardb_r_entry(r0);
++	clrsetbits_le32(addr, clear, set);
 +}
-diff --git a/arch/arm/boards/ls1028ardb/ls1028ardb_pbi.cfg b/arch/arm/boards/ls1028ardb/ls1028ardb_pbi.cfg
-new file mode 100644
-index 0000000000..53cfb20327
---- /dev/null
-+++ b/arch/arm/boards/ls1028ardb/ls1028ardb_pbi.cfg
-@@ -0,0 +1,14 @@
-+# SPDX-License-Identifier: GPL-2.0-only
 +
-+31e00400 18010000
-+31e00404 00000000
-+33400890 00800401
-+33500890 00800401
-+334008bc 00000001
-+33400154 47474747
-+33400158 47474747
-+335008bc 00000001
-+33500154 47474747
-+33500158 47474747
-+334008bc 00000000
-+335008bc 00000000
-diff --git a/arch/arm/boards/ls1028ardb/ls1028ardb_rcw_sd.cfg b/arch/arm/boards/ls1028ardb/ls1028ardb_rcw_sd.cfg
-new file mode 100644
-index 0000000000..2183991112
---- /dev/null
-+++ b/arch/arm/boards/ls1028ardb/ls1028ardb_rcw_sd.cfg
-@@ -0,0 +1,14 @@
-+# SPDX-License-Identifier: GPL-2.0-only
++static inline unsigned int tzc_read_peripheral_id(uintptr_t base)
++{
++	unsigned int id;
 +
-+#PBL preamble and RCW header
-+aa55aa55 80100000
-+# RCW
-+34004010 00000030 00000000 00000000
-+00000000 00bf0000 0030c000 00000000
-+01e03150 00002580 00000000 00003496
-+00000000 00000010 00000000 00000000
-+00000000 00000000 00000000 00000000
-+00000000 00000000 00000000 00000000
-+00000000 00000000 200e705a 00000000
-+bb580000 00000000 00000000 00000000
++	id = mmio_read_32(base + PID0_OFF);
++	/* Masks DESC part in PID1 */
++	id |= ((mmio_read_32(base + PID1_OFF) & 0xFU) << 8U);
 +
-diff --git a/arch/arm/boards/ls1028ardb/start.S b/arch/arm/boards/ls1028ardb/start.S
-new file mode 100644
-index 0000000000..fd410b744a
---- /dev/null
-+++ b/arch/arm/boards/ls1028ardb/start.S
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+#include <linux/linkage.h>
-+#include <asm/barebox-arm64.h>
-+#include <asm/assembler64.h>
++	return id;
++}
 +
-+#define STACK_TOP 0x18040000
-+
-+ENTRY_PROC(start_ls1028ardb)
-+	switch_el x3, 3f, 2f, 1f
-+3:
-+	mov x3, #STACK_TOP
-+	mov sp, x3
-+	b ls1028ardb_entry
-+2:
-+1:
-+	mov x3, 0x90000000
-+	mov sp, x3
-+	b ls1028ardb_entry
-+ENTRY_PROC_END(start_ls1028ardb)
-diff --git a/arch/arm/configs/layerscape_defconfig b/arch/arm/configs/layerscape_defconfig
-index 35b254f139..b26eca66c3 100644
---- a/arch/arm/configs/layerscape_defconfig
-+++ b/arch/arm/configs/layerscape_defconfig
-@@ -1,5 +1,6 @@
- CONFIG_ARCH_LAYERSCAPE=y
- CONFIG_ARCH_LAYERSCAPE_PPA=y
-+CONFIG_MACH_LS1028ARDB=y
- CONFIG_MACH_LS1046ARDB=y
- CONFIG_MACH_TQMLS1046A=y
- CONFIG_64BIT=y
-@@ -82,6 +83,7 @@ CONFIG_NET=y
- CONFIG_NET_NETCONSOLE=y
- CONFIG_OF_BAREBOX_DRIVERS=y
- CONFIG_DRIVER_SERIAL_NS16550=y
-+CONFIG_DRIVER_NET_FSL_ENETC=y
- CONFIG_DRIVER_NET_FSL_FMAN=y
- CONFIG_DP83867_PHY=y
- CONFIG_REALTEK_PHY=y
-@@ -111,12 +113,13 @@ CONFIG_WATCHDOG_IMX=y
- CONFIG_GPIO_PCA953X=y
- CONFIG_REGULATOR=y
- CONFIG_REGULATOR_FIXED=y
-+CONFIG_PCI_LAYERSCAPE=y
-+CONFIG_PCI_ECAM_GENERIC=y
- CONFIG_FS_EXT4=y
- CONFIG_FS_TFTP=y
- CONFIG_FS_NFS=y
- CONFIG_FS_FAT=y
- CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
- CONFIG_FS_UBIFS=y
- CONFIG_FS_UBIFS_COMPRESSION_LZO=y
- CONFIG_ZLIB=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 04af3bd646..301014eaff 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -214,6 +214,7 @@ lwl-$(CONFIG_MACH_XILINX_ZCU106) += zynqmp-zcu106-revA.dtb.o
- 
- lwl-$(CONFIG_MACH_ZII_IMX7D_DEV) += imx7d-zii-rpu2.dtb.o imx7d-zii-rmu2.dtb.o
- lwl-$(CONFIG_MACH_WAGO_PFC_AM35XX) += am35xx-pfc-750_820x.dtb.o
-+lwl-$(CONFIG_MACH_LS1028ARDB) += fsl-ls1028a-rdb.dtb.o
- lwl-$(CONFIG_MACH_LS1046ARDB) += fsl-ls1046a-rdb.dtb.o
- lwl-$(CONFIG_MACH_TQMLS1046A) += fsl-tqmls1046a-mbls10xxa.dtb.o
- lwl-$(CONFIG_MACH_LS1021AIOT) += fsl-ls1021a-iot.dtb.o
-diff --git a/arch/arm/dts/fsl-ls1028a-rdb.dts b/arch/arm/dts/fsl-ls1028a-rdb.dts
-new file mode 100644
-index 0000000000..1667a42e45
---- /dev/null
-+++ b/arch/arm/dts/fsl-ls1028a-rdb.dts
-@@ -0,0 +1,12 @@
-+// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
-+
-+/dts-v1/;
-+
-+#include <arm64/freescale/fsl-ls1028a-rdb.dts>
-+
-+/ {
-+	memory@80000000 {
-+		/* Upstream dts has size 4GiB here which is wrong */
-+		reg = <0x0 0x80000000 0x0 0x80000000>;
-+	};
++/*
++ * Implementation defined values used to validate inputs later.
++ * Filters : max of 4 ; 0 to 3
++ * Regions : max of 9 ; 0 to 8
++ * Address width : Values between 32 to 64
++ */
++struct tzc400_instance {
++	uintptr_t base;
++	uint8_t addr_width;
++	uint8_t num_filters;
++	uint8_t num_regions;
 +};
-diff --git a/arch/arm/mach-layerscape/Kconfig b/arch/arm/mach-layerscape/Kconfig
-index 52527f0c15..5658a63b33 100644
---- a/arch/arm/mach-layerscape/Kconfig
-+++ b/arch/arm/mach-layerscape/Kconfig
-@@ -7,7 +7,6 @@ config ARCH_LAYERSCAPE_PPA
- 	select ARM_PSCI_OF
- 	select ARM_SMCCC
- 	select FITIMAGE
--	bool
- 	help
- 	  The "Primary Protected Application" (PPA) is a PSCI compliant firmware
- 	  distributed by NXP. It is needed to start the secondary cores on
-@@ -15,12 +14,24 @@ config ARCH_LAYERSCAPE_PPA
- 	  work properly. The precompiled firmware images can be found here:
- 	  https://github.com/NXP/qoriq-ppa-binary
- 
--config ARCH_LS1046
-+config ARCH_LS1028
-+	bool
- 	select CPU_V8
-+	select SYS_SUPPORTS_64BIT_KERNEL
-+	select ARM_ATF
-+	select FIRMWARE_LS1028A_ATF
 +
-+config ARCH_LS1046
- 	bool
-+	select CPU_V8
-+	select SYS_SUPPORTS_64BIT_KERNEL
- 
- if 64BIT
- 
-+config MACH_LS1028ARDB
-+	bool "QorIQ LS1028A Reference Design Board"
-+	select ARCH_LS1028
++static struct tzc400_instance tzc400;
 +
- config MACH_LS1046ARDB
- 	bool "QorIQ LS1046A Reference Design Board"
- 	select ARCH_LS1046
-diff --git a/images/Makefile.layerscape b/images/Makefile.layerscape
-index e36dc5000a..9cb88270d7 100644
---- a/images/Makefile.layerscape
-+++ b/images/Makefile.layerscape
-@@ -21,6 +21,15 @@ quiet_cmd_lspbl_spi_image = LSPBL-SPI-IMG $@
- 			    $(objtree)/scripts/pblimage -o $@ -r $(lspbl-rcw-tmp) -s \
- 			    -c $(2) -m $($(patsubst $(obj)/%.pblb,PBL_CODE_SIZE_%,$<)) -p $(lspbl-pbi-tmp) -i $<
++static inline unsigned int tzc400_read_gate_keeper(void)
++{
++	uintptr_t base = tzc400.base;
++
++	return mmio_read_32(base + TZC400_GATE_KEEPER);
++}
++
++static inline void tzc400_write_gate_keeper(unsigned int val)
++{
++	uintptr_t base = tzc400.base;
++
++	mmio_write_32(base + TZC400_GATE_KEEPER, val);
++}
++
++static unsigned int tzc400_open_status(void)
++{
++	return FIELD_GET(TZC400_GATE_KEEPER_OS, tzc400_read_gate_keeper());
++}
++
++static unsigned int tzc400_get_gate_keeper(unsigned int filter)
++{
++	return (tzc400_open_status() >> filter) & GATE_KEEPER_FILTER_MASK;
++}
++
++/* This function is not MP safe. */
++static void tzc400_set_gate_keeper(unsigned int filter, int val)
++{
++	unsigned int os;
++
++	/* Upper half is current state. Lower half is requested state. */
++	os = tzc400_open_status();
++
++	if (val != 0)
++		os |=  (1UL << filter);
++	else
++		os &= ~(1UL << filter);
++
++	tzc400_write_gate_keeper(FIELD_PREP(TZC400_GATE_KEEPER_OR, os));
++
++	/* Wait here until we see the change reflected in the TZC status. */
++	while ((tzc400_open_status()) != os)
++		;
++}
++
++void tzc400_set_action(unsigned int action)
++{
++	uintptr_t base = tzc400.base;
++
++	ASSERT(base != 0U);
++	ASSERT(action <= TZC_ACTION_ERR_INT);
++
++	mmio_write_32(base + TZC400_ACTION, action);
++}
++
++void tzc400_init(uintptr_t base)
++{
++	unsigned int tzc400_id;
++	unsigned int tzc400_build;
++
++	tzc400.base = base;
++
++	tzc400_id = tzc_read_peripheral_id(base);
++	if (tzc400_id != TZC400_PERIPHERAL_ID)
++		panic("TZC-400 : Wrong device ID (0x%x).\n", tzc400_id);
++
++	/* Save values we will use later. */
++	tzc400_build = mmio_read_32(base + TZC400_BUILD_CONFIG);
++	tzc400.num_filters = FIELD_GET(TZC400_BUILD_CONFIG_NF, tzc400_build) + 1;
++	tzc400.addr_width  = FIELD_GET(TZC400_BUILD_CONFIG_AW, tzc400_build) + 1;
++	tzc400.num_regions = FIELD_GET(TZC400_BUILD_CONFIG_NR, tzc400_build) + 1;
++}
++
++/*
++ * `tzc400_configure_region` is used to program regions into the TrustZone
++ * controller. A region can be associated with more than one filter. The
++ * associated filters are passed in as a bitmap (bit0 = filter0), except that
++ * the value TZC400_REGION_ATTR_FILTER_BIT_ALL selects all filters, based on
++ * the value of tzc400.num_filters.
++ * NOTE:
++ * Region 0 is special; it is preferable to use tzc400_configure_region0
++ * for this region (see comment for that function).
++ */
++void tzc400_configure_region(unsigned int filters, unsigned int region, uint64_t region_base,
++			     uint64_t region_top, unsigned int sec_attr,
++			     unsigned int nsaid_permissions)
++{
++	uintptr_t rbase = tzc400.base + TZC_REGION_OFFSET(TZC400_REGION_SIZE, region);
++
++	/* Adjust filter mask by real filter number */
++	if (filters == TZC400_REGION_ATTR_FILTER_BIT_ALL)
++		filters = (1U << tzc400.num_filters) - 1U;
++
++	/* Do range checks on filters and regions. */
++	ASSERT(((filters >> tzc400.num_filters) == 0U) &&
++	       (region < tzc400.num_regions));
++
++	/*
++	 * Do address range check based on TZC configuration. A 64bit address is
++	 * the max and expected case.
++	 */
++	ASSERT((region_top <= (U64_MAX >> (64U - tzc400.addr_width))) &&
++		(region_base < region_top));
++
++	/* region_base and (region_top + 1) must be 4KB aligned */
++	ASSERT(((region_base | (region_top + 1U)) & (4096U - 1U)) == 0U);
++
++	ASSERT(sec_attr <= TZC_REGION_S_RDWR);
++
++	pr_debug("TrustZone : Configuring region %u\n", region);
++	pr_debug("TrustZone : ... base = %llx, top = %llx,\n", region_base, region_top);
++	pr_debug("TrustZone : ... sec_attr = 0x%x, ns_devs = 0x%x)\n",
++		sec_attr, nsaid_permissions);
++
++	/***************************************************/
++	/* Inputs look ok, start programming registers.    */
++	/* All the address registers are 32 bits wide and  */
++	/* have a LOW and HIGH				   */
++	/* component used to construct an address up to a  */
++	/* 64bit.					   */
++	/***************************************************/
++	mmio_write_32(rbase + TZC400_REGION_BASE_LOW_0, (uint32_t)region_base);
++	mmio_write_32(rbase + TZC400_REGION_BASE_HIGH_0, (uint32_t)(region_base >> 32));
++	mmio_write_32(rbase + TZC400_REGION_TOP_LOW_0, (uint32_t)region_top);
++	mmio_write_32(rbase + TZC400_REGION_TOP_HIGH_0, (uint32_t)(region_top >> 32));
++
++	/* Enable filter to the region and set secure attributes */
++	mmio_write_32(rbase + TZC400_REGION_ATTR_0,
++		      (sec_attr << TZC_REGION_ATTR_SEC_SHIFT) | (filters << TZC_REGION_ATTR_F_EN_SHIFT));
++
++	/***************************************************/
++	/* Specify which non-secure devices have permission*/
++	/* to access this region.			   */
++	/***************************************************/
++	mmio_write_32(rbase + TZC400_REGION_ID_ACCESS_0, nsaid_permissions);
++}
++
++void tzc400_update_filters(unsigned int region, unsigned int filters)
++{
++	uintptr_t rbase = tzc400.base + TZC_REGION_OFFSET(TZC400_REGION_SIZE, region);
++	uint32_t filters_mask = GENMASK(tzc400.num_filters - 1U, 0);
++
++	/* Do range checks on filters and regions. */
++	ASSERT(((filters >> tzc400.num_filters) == 0U) &&
++	       (region < tzc400.num_regions));
++
++	mmio_clrsetbits_32(rbase + TZC400_REGION_ATTR_0,
++			   filters_mask << TZC_REGION_ATTR_F_EN_SHIFT,
++			   filters << TZC_REGION_ATTR_F_EN_SHIFT);
++}
++
++void tzc400_enable_filters(void)
++{
++	unsigned int state;
++	unsigned int filter;
++
++	ASSERT(tzc400.base != 0U);
++
++	for (filter = 0U; filter < tzc400.num_filters; filter++) {
++		state = tzc400_get_gate_keeper(filter);
++		if (state != 0U) {
++			/* Filter 0 is special and cannot be disabled.
++			 * So here we allow it being already enabled. */
++			if (filter == 0U)
++				continue;
++
++			/*
++			 * The TZC filter is already configured. Changing the
++			 * programmer's view in an active system can cause
++			 * unpredictable behavior therefore panic for now rather
++			 * than try to determine whether this is safe in this
++			 * instance.
++			 *
++			 * See the 'ARM (R) CoreLink TM TZC-400 TrustZone (R)
++			 * Address Space Controller' Technical Reference Manual.
++			 */
++			panic("TZC-400 : Filter %u Gatekeeper already enabled.\n",
++			      filter);
++		}
++		tzc400_set_gate_keeper(filter, 1);
++	}
++}
++
++void tzc400_disable_filters(void)
++{
++	unsigned int filter;
++	unsigned int state;
++	unsigned int start = 0U;
++
++	ASSERT(tzc400.base != 0U);
++
++	/* Filter 0 is special and cannot be disabled. */
++	state = tzc400_get_gate_keeper(0);
++	if (state != 0U)
++		start++;
++
++	for (filter = start; filter < tzc400.num_filters; filter++)
++		tzc400_set_gate_keeper(filter, 0);
++}
++
++unsigned long ls1028a_tzc400_init(unsigned long memsize)
++{
++	unsigned long lowmem, highmem, lowmem_end;
++
++	tzc400_init(LS1028A_TZC400_BASE);
++	tzc400_disable_filters();
++
++	/* Region 0 set to no access by default */
++	mmio_write_32(tzc400.base + TZC400_REGION_ATTR_0, TZC_REGION_S_NONE << TZC_REGION_ATTR_SEC_SHIFT);
++	mmio_write_32(tzc400.base + TZC400_REGION_ID_ACCESS_0, 0);
++
++	lowmem = min_t(unsigned long, LS1028A_DDR_SDRAM_LOWMEM_SIZE, memsize);
++	lowmem_end = LS1028A_DDR_SDRAM_BASE + lowmem;
++	highmem = memsize - lowmem;
++
++	/* region 1: secure memory */
++	tzc400_configure_region(1, 1,
++		lowmem_end - LS1028A_SECURE_DRAM_SIZE,
++		lowmem_end - 1,
++		TZC_REGION_S_RDWR, TZC_REGION_NS_NONE);
++
++	/* region 2: shared memory */
++	tzc400_configure_region(1, 2,
++		lowmem_end - LS1028A_SECURE_DRAM_SIZE - LS1028A_SP_SHARED_DRAM_SIZE,
++		lowmem_end - LS1028A_SECURE_DRAM_SIZE - 1,
++		TZC_REGION_S_RDWR, TZC_NS_ACCESS_ID);
++
++	/* region 3: nonsecure low memory */
++	tzc400_configure_region(1, 3,
++		LS1028A_DDR_SDRAM_BASE,
++		lowmem_end - LS1028A_SECURE_DRAM_SIZE - LS1028A_SP_SHARED_DRAM_SIZE - 1,
++		TZC_REGION_S_RDWR, TZC_NS_ACCESS_ID);
++
++	if (highmem)
++		/* nonsecure high memory */
++		tzc400_configure_region(1, 4,
++			LS1028A_DDR_SDRAM_HIGHMEM_BASE,
++			LS1028A_DDR_SDRAM_HIGHMEM_BASE + highmem - 1,
++			TZC_REGION_S_RDWR, TZC_NS_ACCESS_ID);
++
++	tzc400_set_action(TZC_ACTION_ERR);
++
++	tzc400_enable_filters();
++
++	return lowmem - LS1028A_SECURE_DRAM_SIZE - LS1028A_SP_SHARED_DRAM_SIZE;
++}
+diff --git a/arch/arm/mach-layerscape/tzc400.h b/arch/arm/mach-layerscape/tzc400.h
+new file mode 100644
+index 0000000000..c8d4583622
+--- /dev/null
++++ b/arch/arm/mach-layerscape/tzc400.h
+@@ -0,0 +1,164 @@
++/*
++ * Copyright (c) 2014-2021, ARM Limited and Contributors. All rights reserved.
++ *
++ * SPDX-License-Identifier: BSD-3-Clause
++ */
++
++#ifndef TZC400_H
++#define TZC400_H
++
++#include <linux/bits.h>
++
++/*
++ * Offset of core registers from the start of the base of configuration
++ * registers for each region.
++ */
++
++/* ID Registers */
++#define PID0_OFF					0xfe0
++#define PID1_OFF					0xfe4
++#define PID2_OFF					0xfe8
++#define PID3_OFF					0xfec
++#define PID4_OFF					0xfd0
++#define CID0_OFF					0xff0
++#define CID1_OFF					0xff4
++#define CID2_OFF					0xff8
++#define CID3_OFF					0xffc
++
++/*
++ * What type of action is expected when an access violation occurs.
++ * The memory requested is returned as zero. But we can also raise an event to
++ * let the system know it happened.
++ * We can raise an interrupt(INT) and/or cause an exception(ERR).
++ *  TZC_ACTION_NONE    - No interrupt, no Exception
++ *  TZC_ACTION_ERR     - No interrupt, raise exception -> sync external
++ *                       data abort
++ *  TZC_ACTION_INT     - Raise interrupt, no exception
++ *  TZC_ACTION_ERR_INT - Raise interrupt, raise exception -> sync
++ *                       external data abort
++ */
++#define TZC_ACTION_NONE			0
++#define TZC_ACTION_ERR			1
++#define TZC_ACTION_INT			2
++#define TZC_ACTION_ERR_INT		(TZC_ACTION_ERR | TZC_ACTION_INT)
++
++/* Bit positions of TZC_ACTION registers */
++#define TZC_ACTION_RV_SHIFT				0
++#define TZC_ACTION_RV_MASK				0x3
++#define TZC_ACTION_RV_LOWOK				0x0
++#define TZC_ACTION_RV_LOWERR				0x1
++#define TZC_ACTION_RV_HIGHOK				0x2
++#define TZC_ACTION_RV_HIGHERR				0x3
++
++/*
++ * Controls secure access to a region. If not enabled secure access is not
++ * allowed to region.
++ */
++#define TZC_REGION_S_NONE		0
++#define TZC_REGION_S_RD			1
++#define TZC_REGION_S_WR			2
++#define TZC_REGION_S_RDWR		(TZC_REGION_S_RD | TZC_REGION_S_WR)
++
++#define TZC_REGION_ATTR_S_RD_SHIFT			30
++#define TZC_REGION_ATTR_S_WR_SHIFT			31
++#define TZC_REGION_ATTR_F_EN_SHIFT			0
++#define TZC_REGION_ATTR_SEC_SHIFT			30
++#define TZC_REGION_ATTR_S_RD_MASK			0x1
++#define TZC_REGION_ATTR_S_WR_MASK			0x1
++#define TZC_REGION_ATTR_SEC_MASK			0x3
++
++#define TZC_REGION_ACCESS_WR_EN_SHIFT			16
++#define TZC_REGION_ACCESS_RD_EN_SHIFT			0
++#define TZC_REGION_ACCESS_ID_MASK			0xf
++
++/* Macros for allowing Non-Secure access to a region based on NSAID */
++#define TZC_REGION_ACCESS_RD(nsaid)				\
++	((U(1) << ((nsaid) & TZC_REGION_ACCESS_ID_MASK)) <<	\
++	 TZC_REGION_ACCESS_RD_EN_SHIFT)
++#define TZC_REGION_ACCESS_WR(nsaid)				\
++	((U(1) << ((nsaid) & TZC_REGION_ACCESS_ID_MASK)) <<	\
++	 TZC_REGION_ACCESS_WR_EN_SHIFT)
++#define TZC_REGION_ACCESS_RDWR(nsaid)				\
++	(TZC_REGION_ACCESS_RD(nsaid) |				\
++	TZC_REGION_ACCESS_WR(nsaid))
++
++/* Returns offset of registers to program for a given region no */
++#define TZC_REGION_OFFSET(region_size, region_no)	\
++				((region_size) * (region_no))
++
++#define TZC400_BUILD_CONFIG			0x000
++#define TZC400_GATE_KEEPER			0x008
++#define TZC400_SPECULATION_CTRL			0x00c
++#define TZC400_INT_STATUS			0x010
++#define TZC400_INT_CLEAR			0x014
++
++#define TZC400_FAIL_ADDRESS_LOW			0x020
++#define TZC400_FAIL_ADDRESS_HIGH		0x024
++#define TZC400_FAIL_CONTROL			0x028
++#define TZC400_FAIL_ID				0x02c
++
++#define TZC400_BUILD_CONFIG_NF			GENMASK(25, 24)
++#define TZC400_BUILD_CONFIG_AW			GENMASK(13, 8)
++#define TZC400_BUILD_CONFIG_NR			GENMASK(4, 0)
++
++/*
++ * Number of gate keepers is implementation defined. But we know the max for
++ * this device is 4. Get implementation details from BUILD_CONFIG.
++ */
++#define TZC400_GATE_KEEPER_OS			GENMASK(19, 16)
++#define TZC400_GATE_KEEPER_OR			GENMASK(3, 0)
++#define GATE_KEEPER_FILTER_MASK			0x1
++
++#define TZC400_FAIL_CONTROL_DIR_WRITE		BIT(24)
++#define TZC400_FAIL_CONTROL_NS_NONSECURE	BIT(21)
++#define TZC400_FAIL_CONTROL_PRIV		BIT(20)
++
++#define TZC400_PERIPHERAL_ID			0x460
++
++/* Filter enable bits in a TZC */
++#define TZC400_REGION_ATTR_F_EN_MASK		0xf
++#define TZC400_REGION_ATTR_FILTER_BIT(x)	(1) << (x))
++#define TZC400_REGION_ATTR_FILTER_BIT_ALL	TZC400_REGION_ATTR_F_EN_MASK
++
++/*
++ * All TZC region configuration registers are placed one after another. It
++ * depicts size of block of registers for programming each region.
++ */
++#define TZC400_REGION_SIZE			0x20
++#define TZC400_ACTION				0x4
++
++#define FILTER_OFFSET				0x10
++
++#define TZC400_REGION_BASE_LOW_0	0x100
++#define TZC400_REGION_BASE_HIGH_0	0x104
++#define TZC400_REGION_TOP_LOW_0	0x108
++#define TZC400_REGION_TOP_HIGH_0	0x10c
++#define TZC400_REGION_ATTR_0		0x110
++#define TZC400_REGION_ID_ACCESS_0	0x114
++
++#define TZC_REGION_NS_NONE			0x00000000U
++
++/*
++ * NXP Platforms do not support NS Access ID (NSAID) based non-secure access.
++ * Supports only non secure through generic NS ACCESS ID
++ */
++#define TZC_NS_ACCESS_ID			0xFFFFFFFFU
++
++/*******************************************************************************
++ * Function & variable prototypes
++ ******************************************************************************/
++void tzc400_init(uintptr_t base);
++void tzc400_configure_region0(unsigned int sec_attr,
++			   unsigned int ns_device_access);
++void tzc400_configure_region(unsigned int filters,
++			  unsigned int region,
++			  unsigned long long region_base,
++			  unsigned long long region_top,
++			  unsigned int sec_attr,
++			  unsigned int nsaid_permissions);
++void tzc400_update_filters(unsigned int region, unsigned int filters);
++void tzc400_set_action(unsigned int action);
++void tzc400_enable_filters(void);
++void tzc400_disable_filters(void);
++
++#endif /* TZC400_H */
+diff --git a/include/mach/layerscape/lowlevel.h b/include/mach/layerscape/lowlevel.h
+index d013c5e610..e59fb67740 100644
+--- a/include/mach/layerscape/lowlevel.h
++++ b/include/mach/layerscape/lowlevel.h
+@@ -4,7 +4,10 @@
+ #define __MACH_LOWLEVEL_H
  
-+pbl-$(CONFIG_MACH_LS1028ARDB) += start_ls1028ardb.pbl
-+
-+$(obj)/barebox-ls1028ardb-sd.image: $(obj)/start_ls1028ardb.pblb \
-+		$(board)/ls1028ardb/ls1028ardb_rcw_sd.cfg \
-+		$(board)/ls1028ardb/ls1028ardb_pbi.cfg
-+	$(call if_changed,lspbl_image,ls1028a)
-+
-+image-$(CONFIG_MACH_LS1028ARDB) += barebox-ls1028ardb-sd.image
-+
- pbl-$(CONFIG_MACH_LS1046ARDB) += start_ls1046ardb.pbl
+ void ls1046a_init_lowlevel(void);
++void ls1028a_init_lowlevel(void);
+ void ls1046a_init_l2_latency(void);
+ void ls102xa_init_lowlevel(void);
  
- $(obj)/barebox-ls1046ardb-sd.image: $(obj)/start_ls1046ardb.pblb \
++unsigned long ls1028a_tzc400_init(unsigned long memsize);
++
+ #endif /* __MACH_LOWLEVEL_H */
 -- 
 2.39.2
 
