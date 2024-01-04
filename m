@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLOZ1-003cUQ-0M
+	id 1rLOZ1-003cUP-0C
 	for lore@lore.pengutronix.de;
 	Thu, 04 Jan 2024 15:19:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLOYz-0005JO-LO
+	id 1rLOYz-0005IJ-8F
 	for lore@pengutronix.de; Thu, 04 Jan 2024 15:19:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,47 +18,47 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=QwRlCM4hqTOcJE9/wuKlAMB4snKkKITMYu4zfqaXvYI=; b=yb0PFoyZ0asL4pRtjdAeRKSGkt
-	ydm6M+QFKCva2Tr/lsZp4eF66qwIK6WsyCtQs7104J/PNn9yaJKOvqSBoZYaMkT0onr/ic0f6vVws
-	00yNJLH4IvKuUsDCqN95XhTiw7aKdlUJxraT2SxncXBXeCb2MdvNRNfklH2VGcYv28ll3xp/gpc2w
-	/3Fpg8ANBKJT8VuDFt/CTa3TIahJnNsJKMQw2Mrloq0tvJufZjgqOJnvHTfaA2iGUo211tfbgFJp8
-	IFvG+lVGxiFi816IbORkqEzr2bTxWZvvKrfo+e9e9Ei9rnQLa0++692MN8d/Z9+D0Ekp+VegyaS5X
-	f38L0bxQ==;
+	bh=IVP7wuTn/zdGpDqlhyN44UlhB0GDI+QBkZdmIKP8uoM=; b=BnZyLuQDmSSG5mddb2yshNLP9+
+	I6xfOdfML8P8eVO5Qj31uQiIakh/b/QgjH2dS+Kx/CmIYC7MX72bVu9euA5S8sp9b0qr/Q3i2xzve
+	JTVsgHrEU8np/ZYpH2Tioi1XXueQxpCiPyEofWTn/aeQhWa1UA7L1uS9a/GJWNlGz52d0IM5oJBuh
+	sAIrJzGGZoL1WXH8I1b+zEGZWAm893z/pTXJ4uYonXse+4KdVZ8JHHwtC2LCByEdwAj/AeZyS6hrE
+	7NGOzIbKdEWHwTyFwRyUqvtfttCqPj58kdIi260v/Y7Go1t8IVVOJbgQLBP4Ik57QsOKl6kA47TiC
+	hqILVAKA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLOXs-00EJ8P-0h;
-	Thu, 04 Jan 2024 14:18:04 +0000
+	id 1rLOXt-00EJ90-0V;
+	Thu, 04 Jan 2024 14:18:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLOXf-00EIzH-2N
+	id 1rLOXf-00EIzG-2M
 	for barebox@lists.infradead.org;
 	Thu, 04 Jan 2024 14:17:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rLOXc-0004Hr-Oo; Thu, 04 Jan 2024 15:17:48 +0100
+	id 1rLOXc-0004Hu-O1; Thu, 04 Jan 2024 15:17:48 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rLOXb-000Myh-Tb; Thu, 04 Jan 2024 15:17:47 +0100
+	id 1rLOXb-000Myc-Sl; Thu, 04 Jan 2024 15:17:47 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rLOXb-0017zv-2f;
+	id 1rLOXb-0017ze-2Y;
 	Thu, 04 Jan 2024 15:17:47 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu,  4 Jan 2024 15:17:45 +0100
-Message-Id: <20240104141746.165014-19-s.hauer@pengutronix.de>
+Date: Thu,  4 Jan 2024 15:17:43 +0100
+Message-Id: <20240104141746.165014-17-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240104141746.165014-1-s.hauer@pengutronix.de>
 References: <20240104141746.165014-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240104_061751_880323_2FA6C223 
-X-CRM114-Status: GOOD (  15.42  )
+X-CRM114-CacheID: sfid-20240104_061751_840127_3AEA667A 
+X-CRM114-Status: GOOD (  15.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,162 +81,182 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 18/19] mci: imx-esdhc-pbl: implement esdhc xload for ls1028a
+Subject: [PATCH 16/19] ARM: atf: add bl31 v2 calling method
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This implements esdhc xload support for LS1028a. Unlike LS1046a we use
-TF-A rather than obsoleted PPA for EL3, so this code also starts the
-TF-A.
+Newer bl31 binaries require a slightly different parameter structure.
+This patch adds support for it. The code is taken from U-Boot and
+changed to static initializers for improved readability.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mci/imx-esdhc-pbl.c          | 55 +++++++++++++++++++++++++++-
- firmware/Kconfig                     |  3 ++
- firmware/Makefile                    |  1 +
- include/mach/layerscape/layerscape.h | 12 ++++++
- include/mach/layerscape/xload.h      |  4 ++
- 5 files changed, 74 insertions(+), 1 deletion(-)
+ arch/arm/cpu/atf.c                | 94 +++++++++++++++++++++++++++++++
+ arch/arm/include/asm/atf_common.h | 40 +++++++++++++
+ 2 files changed, 134 insertions(+)
 
-diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
-index c13830d726..2c74d101e4 100644
---- a/drivers/mci/imx-esdhc-pbl.c
-+++ b/drivers/mci/imx-esdhc-pbl.c
-@@ -9,6 +9,8 @@
- #include <asm/sections.h>
- #include <asm/cache.h>
- #include <mach/imx/xload.h>
-+#include <firmware.h>
-+#include <asm/atf_common.h>
- #ifdef CONFIG_ARCH_IMX
- #include <mach/imx/atf.h>
- #include <mach/imx/imx6-regs.h>
-@@ -319,7 +321,8 @@ static int layerscape_esdhc_load_image(struct fsl_esdhc_host *host, void *adr, u
- 	val |= div_val;
- 	sdhci_write32(&host->sdhci, SDHCI_CLOCK_CONTROL__TIMEOUT_CONTROL__SOFTWARE_RESET, val);
+diff --git a/arch/arm/cpu/atf.c b/arch/arm/cpu/atf.c
+index ccd540d32a..d01e20508c 100644
+--- a/arch/arm/cpu/atf.c
++++ b/arch/arm/cpu/atf.c
+@@ -80,3 +80,97 @@ void bl31_entry(uintptr_t bl31_entry, uintptr_t bl32_entry,
  
--	sdhci_write32(&host->sdhci, ESDHC_DMA_SYSCTL, ESDHC_SYSCTL_DMA_SNOOP);
-+	sdhci_write32(&host->sdhci, ESDHC_DMA_SYSCTL,
-+		      ESDHC_SYSCTL_DMA_SNOOP | ESDHC_SYSCTL_PERIPHERAL_CLK_SEL);
- 
- 	ret = esdhc_read_blocks(host, adr, size);
- 	if (ret) {
-@@ -373,4 +376,54 @@ int ls1046a_esdhc_start_image(unsigned long r0, unsigned long r1, unsigned long
- 
- 	return -EINVAL;
+ 	atf_entry(&bl31_params, fdt_addr);
  }
 +
-+static int ls1028a_esdhc_start_image(void __iomem *base, struct dram_regions_info *dram_info)
++struct bl2_to_bl31_params_mem_v2 *bl2_plat_get_bl31_params_v2(uintptr_t bl32_entry,
++					uintptr_t bl33_entry, uintptr_t fdt_addr)
 +{
-+	struct esdhc_soc_data data = {
-+		.flags = ESDHC_FLAG_MULTIBLK_NO_INT,
++	static struct bl2_to_bl31_params_mem_v2 p = {
++		.bl_params = {
++			.h = {
++				.type = ATF_PARAM_BL_PARAMS,
++				.version = ATF_VERSION_2,
++				.size = sizeof(struct bl_params),
++				.attr = 0,
++			},
++			.head = &p.bl31_params_node,
++		},
++		.bl31_params_node = {
++			.image_id = ATF_BL31_IMAGE_ID,
++			.image_info = &p.bl31_image_info,
++			.ep_info = &p.bl31_ep_info,
++			.next_params_info = &p.bl32_params_node,
++		},
++		.bl32_params_node = {
++			.image_id = ATF_BL32_IMAGE_ID,
++			.image_info = &p.bl32_image_info,
++			.ep_info = &p.bl32_ep_info,
++			.next_params_info = &p.bl33_params_node,
++		},
++		.bl33_params_node = {
++			.image_id = ATF_BL33_IMAGE_ID,
++			.image_info = &p.bl33_image_info,
++			.ep_info = &p.bl33_ep_info,
++			.next_params_info = NULL,
++		},
++		.bl32_ep_info = {
++			.h = {
++				.type = ATF_PARAM_EP,
++				.version = ATF_VERSION_2,
++				.size = sizeof(struct entry_point_info),
++				.attr = ATF_EP_SECURE,
++			},
++			.spsr = SPSR_64(MODE_EL1, MODE_SP_ELX, DISABLE_ALL_EXECPTIONS),
++		},
++		.bl33_ep_info = {
++			.h = {
++				.type = ATF_PARAM_EP,
++				.version = ATF_VERSION_2,
++				.size = sizeof(struct entry_point_info),
++				.attr = ATF_EP_NON_SECURE,
++			},
++			.spsr = SPSR_64(MODE_EL2, MODE_SP_ELX, DISABLE_ALL_EXECPTIONS),
++		},
++		.bl33_image_info = {
++			.h = {
++				.type = ATF_PARAM_IMAGE_BINARY,
++				.version = ATF_VERSION_2,
++				.size = sizeof(struct atf_image_info),
++				.attr = 0,
++			},
++		},
++		.bl32_image_info = {
++			.h = {
++				.type = ATF_PARAM_IMAGE_BINARY,
++				.version = ATF_VERSION_2,
++				.size = sizeof(struct atf_image_info),
++				.attr = ATF_EP_SECURE,
++			},
++		},
++		.bl31_image_info = {
++			.h = {
++				.type = ATF_PARAM_IMAGE_BINARY,
++				.version = ATF_VERSION_2,
++				.size = sizeof(struct atf_image_info),
++				.attr = 0,
++			},
++		},
 +	};
-+	struct fsl_esdhc_host host = {
-+		.sdhci.base = base,
-+		.socdata = &data,
-+	};
-+	void *sdram = (void *)0x80000000;
-+	void (*bl31)(void) = (void *)0xfbe00000;
-+	size_t bl31_size;
-+	void *bl31_image;
-+	struct bl2_to_bl31_params_mem_v2 *params;
-+	unsigned long size = ALIGN(barebox_image_size + LS1046A_SD_IMAGE_OFFSET, 512);
-+	void (*barebox)(unsigned long, unsigned long, unsigned long) =
-+		(sdram + LS1046A_SD_IMAGE_OFFSET);
-+	int ret;
 +
-+	ret = layerscape_esdhc_load_image(&host, sdram, size, 8 << 4);
-+	if (ret)
-+		return ret;
++	p.bl33_ep_info.args.arg0 = 0xffff & read_mpidr();
++	p.bl33_ep_info.pc = bl33_entry;
++	p.bl32_ep_info.args.arg3 = fdt_addr;
++	p.bl32_ep_info.pc = bl32_entry;
 +
-+	get_builtin_firmware_ext(ls1028a_bl31_bin, barebox, &bl31_image, &bl31_size);
-+	memcpy(bl31, bl31_image, bl31_size);
-+
-+	/* Setup an initial stack for EL2 */
-+	asm volatile("msr sp_el2, %0" : : "r" ((unsigned long)barebox - 16) : "cc");
-+
-+	params = bl2_plat_get_bl31_params_v2(0, (uintptr_t)barebox, 0);
-+	params->bl31_ep_info.args.arg3 = (unsigned long)dram_info;
-+
-+	printf("Starting bl31\n");
-+
-+	bl31_entry_v2((uintptr_t)bl31, &params->bl_params, NULL);
-+
-+	return -EINVAL;
++	return &p;
 +}
 +
-+int ls1028a_esdhc1_start_image(struct dram_regions_info *dram_info)
++void bl31_entry_v2(uintptr_t bl31_entry, struct bl_params *params, void *fdt_addr)
 +{
-+	return ls1028a_esdhc_start_image(IOMEM(0x2140000), dram_info);
++	void (*atf_entry)(struct bl_params *params, uintptr_t plat_params);
++
++	raw_write_daif(SPSR_EXCEPTION_MASK);
++
++	atf_entry = (void *)bl31_entry;
++
++	atf_entry(params, (uintptr_t)fdt_addr);
 +}
+diff --git a/arch/arm/include/asm/atf_common.h b/arch/arm/include/asm/atf_common.h
+index 56e2d3ffaa..ab99cd3ac1 100644
+--- a/arch/arm/include/asm/atf_common.h
++++ b/arch/arm/include/asm/atf_common.h
+@@ -14,8 +14,14 @@
+ #define ATF_PARAM_EP		0x01
+ #define ATF_PARAM_IMAGE_BINARY	0x02
+ #define ATF_PARAM_BL31		0x03
++#define ATF_PARAM_BL_PARAMS	0x05
+ 
+ #define ATF_VERSION_1	0x01
++#define ATF_VERSION_2	0x02
 +
-+int ls1028a_esdhc2_start_image(struct dram_regions_info *dram_info)
-+{
-+	return ls1028a_esdhc_start_image(IOMEM(0x2150000), dram_info);
-+}
-+
- #endif
-diff --git a/firmware/Kconfig b/firmware/Kconfig
-index 38fbf85555..2785c4aabe 100644
---- a/firmware/Kconfig
-+++ b/firmware/Kconfig
-@@ -58,4 +58,7 @@ config FIRMWARE_CCBV2_OPTEE
- 	depends on MACH_WEBASTO_CCBV2 && PBL_OPTEE
- 	default y
++#define ATF_BL31_IMAGE_ID	0x03
++#define ATF_BL32_IMAGE_ID	0x04
++#define ATF_BL33_IMAGE_ID	0x05
  
-+config FIRMWARE_LS1028A_ATF
-+	bool
-+
- endmenu
-diff --git a/firmware/Makefile b/firmware/Makefile
-index 51d98d54bf..9c3ffa4289 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -29,6 +29,7 @@ pbl-firmware-$(CONFIG_ARCH_RK3399_OPTEE) += rk3399-op-tee.bin
- firmware-$(CONFIG_DRIVER_NET_FSL_FMAN) += fsl_fman_ucode_ls1046_r1.0_106_4_18.bin
+ #define ATF_EP_SECURE	0x0
+ #define ATF_EP_NON_SECURE	0x1
+@@ -158,6 +164,40 @@ struct bl31_params {
+ void bl31_entry(uintptr_t bl31_entry, uintptr_t bl32_entry,
+ 		uintptr_t bl33_entry, uintptr_t fdt_addr);
  
- firmware-$(CONFIG_ARCH_LAYERSCAPE_PPA) += ppa-ls1046a.bin
-+fw-external-$(CONFIG_FIRMWARE_LS1028A_ATF) += ls1028a-bl31.bin
- 
- pbl-firmware-$(CONFIG_FIRMWARE_CCBV2_OPTEE) += ccbv2_optee.bin
- 
-diff --git a/include/mach/layerscape/layerscape.h b/include/mach/layerscape/layerscape.h
-index 95c230b8f3..ceb7b983f6 100644
---- a/include/mach/layerscape/layerscape.h
-+++ b/include/mach/layerscape/layerscape.h
-@@ -29,4 +29,16 @@ static inline int ls1046a_ppa_init(resource_size_t ppa_start,
- }
- #endif
- 
-+struct dram_region_info {
-+        uint64_t addr;
-+        uint64_t size;
-+};
-+#define NUM_DRAM_REGIONS  3
-+
-+struct dram_regions_info {
-+        uint64_t num_dram_regions;
-+        int64_t total_dram_size;
-+        struct dram_region_info region[NUM_DRAM_REGIONS];
++/* BL image node in the BL image execution sequence */
++struct bl_params_node {
++	unsigned int image_id;
++	struct atf_image_info *image_info;
++	struct entry_point_info *ep_info;
++	struct bl_params_node *next_params_info;
 +};
 +
- #endif /* __MACH_LAYERSCAPE_H */
-diff --git a/include/mach/layerscape/xload.h b/include/mach/layerscape/xload.h
-index 0aeedc2834..86327c63e6 100644
---- a/include/mach/layerscape/xload.h
-+++ b/include/mach/layerscape/xload.h
-@@ -3,7 +3,11 @@
- #ifndef __MACH_LAYERSCAPE_XLOAD_H
- #define __MACH_LAYERSCAPE_XLOAD_H
- 
-+struct dram_regions_info;
++/*
++ * BL image head node in the BL image execution sequence
++ * It is also used to pass information to next BL image.
++ */
++struct bl_params {
++	struct param_header h;
++	struct bl_params_node *head;
++};
 +
- int ls1046a_esdhc_start_image(unsigned long r0, unsigned long r1, unsigned long r2);
-+int ls1028a_esdhc1_start_image(struct dram_regions_info *dram_info);
-+int ls1028a_esdhc2_start_image(struct dram_regions_info *dram_info);
- int ls1046a_qspi_start_image(unsigned long r0, unsigned long r1,
- 					     unsigned long r2);
- int ls1021a_qspi_start_image(unsigned long r0, unsigned long r1,
++struct bl2_to_bl31_params_mem_v2 {
++	struct bl_params bl_params;
++	struct bl_params_node bl31_params_node;
++	struct bl_params_node bl32_params_node;
++	struct bl_params_node bl33_params_node;
++	struct atf_image_info bl31_image_info;
++	struct atf_image_info bl32_image_info;
++	struct atf_image_info bl33_image_info;
++	struct entry_point_info bl31_ep_info;
++	struct entry_point_info bl32_ep_info;
++	struct entry_point_info bl33_ep_info;
++};
++
++struct bl2_to_bl31_params_mem_v2 *bl2_plat_get_bl31_params_v2(uintptr_t bl32_entry,
++					uintptr_t bl33_entry, uintptr_t fdt_addr);
++void bl31_entry_v2(uintptr_t bl31_entry, struct bl_params *params, void *fdt_addr);
++
+ #endif /*__ASSEMBLY__ */
+ 
+ #endif /* __BL_COMMON_H__ */
 -- 
 2.39.2
 
