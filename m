@@ -1,57 +1,76 @@
-Delivery-date: Fri, 05 Jan 2024 10:22:44 +0100
+Delivery-date: Fri, 05 Jan 2024 10:33:13 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLgPc-004ZtV-1t
+	id 1rLgZl-004a87-0C
 	for lore@lore.pengutronix.de;
-	Fri, 05 Jan 2024 10:22:44 +0100
+	Fri, 05 Jan 2024 10:33:13 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLgPb-0000Kz-T6
-	for lore@pengutronix.de; Fri, 05 Jan 2024 10:22:44 +0100
+	id 1rLgZk-0001kA-9l
+	for lore@pengutronix.de; Fri, 05 Jan 2024 10:33:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=95uqV83ZSpHv4BOmu+sTERs2cByNX67F4X8wYgfaEQ4=; b=iv3Fom84wsGKKP5vm9QrAUz4nZ
-	8PsrWwuJAWlpsdgT/2LRqHwZDZBvYuxXA5YIULa9qEE4ZIkjZohslA0PciJ4z1bbv67iOWS1KJKGP
-	U/XRYh7KOoAzCwTQ1ZsJOGy3BxbsfbvNRhLDxotx01h6CovUllQutbWAd693eHOVeNP7P7XGKSIHo
-	xDuIBPbs+ZEjZ1m7pui4SK6Oo122h765zujZwf6gvll8SiZS2M1b2ndtSLBf7hJAw6Mf8McKqIWjI
-	O7JNGQT2+eEmDS2Wo83dDPFOqbFCfn1AtNf1Wg+VlTfaGgN0+FsYCMNzSkdaU/Bzlcs9p1pdmy83g
-	WCxydFxg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=e0dVOXuRULjdM+h7qixH5Ot6Ax/2QKxrKuI8ePm0Opk=; b=RA60MzC+2ia/PmaTWD33I+k6mq
+	Dc/hVIMcD7DZUyEh39EU+ZAS7AW7r4PRvvPHwIVEN2u753Tx2X9yW+6T7dAXLlaZY7XQ8vIKq+STV
+	y+Sz8hWs6+jra3J8NLIieLM1rpKDzOttv7X/vCh+wCVCwqdxoCqRLsAit4ADeXEVSdHlv5zxtNkpk
+	AoByR2lZvMbgruHuiIs6imI8JGOBlnEsVdPh2hVHsL8G7/EvSWNms8EbnAg4pwgI0MQQPJ3oZuJaO
+	uQJq4TIDFQKwG8681eIeKFo4SzxCzC/f1dSvXxWx80kkxlhWbHYtmKsFI83MhkZGiEnksrngKYOcP
+	9mD/uNwA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLgOV-00GN77-08;
-	Fri, 05 Jan 2024 09:21:35 +0000
+	id 1rLgYe-00GOYP-1t;
+	Fri, 05 Jan 2024 09:32:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLgOR-00GN5s-1e
+	id 1rLgYb-00GOXS-2m
 	for barebox@lists.infradead.org;
-	Fri, 05 Jan 2024 09:21:33 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rLgOQ-0008S9-Ay; Fri, 05 Jan 2024 10:21:30 +0100
-Message-ID: <4fe5efdc-07b5-4450-bc23-5f541ae8998e@pengutronix.de>
-Date: Fri, 5 Jan 2024 10:21:29 +0100
+	Fri, 05 Jan 2024 09:32:03 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mol@pengutronix.de>)
+	id 1rLgYZ-0001Xr-4f; Fri, 05 Jan 2024 10:31:59 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mol@pengutronix.de>)
+	id 1rLgYY-000YTc-OT; Fri, 05 Jan 2024 10:31:58 +0100
+Received: from mol by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mol@pengutronix.de>)
+	id 1rLgYY-002SCW-2B;
+	Fri, 05 Jan 2024 10:31:58 +0100
+Date: Fri, 5 Jan 2024 10:31:58 +0100
+From: Michael Olbrich <mol@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <ZZfMjhCHW7mzXCDL@pengutronix.de>
+Mail-Followup-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	barebox@lists.infradead.org
+References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
+ <20240103181312.409668-60-a.fatoum@pengutronix.de>
+ <ZZWuTmS6DichQw5g@pengutronix.de>
+ <af116cd9-ce59-4152-b19f-d654897df04c@pengutronix.de>
+ <ZZb0eXfQvD8sjN5-@pengutronix.de>
+ <3c4fc4ee-a4fe-44e5-a4c5-7a8f086a1124@pengutronix.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20240104112241.989839-1-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240104112241.989839-1-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <3c4fc4ee-a4fe-44e5-a4c5-7a8f086a1124@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240105_012131_553016_B3E6D825 
-X-CRM114-Status: GOOD (  17.59  )
+X-CRM114-CacheID: sfid-20240105_013201_919329_1ECDA910 
+X-CRM114-Status: GOOD (  44.41  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,113 +88,126 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75 autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/2] net/phy: sync phy_interface_t types with Linux
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 059/112] efi: payload: init: restrict barebox mem to
+ first 1G only on x86
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 04.01.24 12:22, Sascha Hauer wrote:
-> This syncs the phy interface modes with Linux as of linux-6.7-rc7.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Hi,
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-> ---
->  include/linux/phy.h | 55 +++++++++++++++++++++++++++++++++++++++++----
->  1 file changed, 51 insertions(+), 4 deletions(-)
+On Fri, Jan 05, 2024 at 10:14:33AM +0100, Ahmad Fatoum wrote:
+> On 04.01.24 19:10, Michael Olbrich wrote:
+> > On Thu, Jan 04, 2024 at 12:17:12PM +0100, Ahmad Fatoum wrote:
+> >> On 03.01.24 19:58, Michael Olbrich wrote:
+> >>> On Wed, Jan 03, 2024 at 07:12:19PM +0100, Ahmad Fatoum wrote:
+> >>>> When run as EFI payload, barebox will not have full access to DRAM and will
+> >>>> have to ask the EFI firmware for memory. It does so once at the beginning
+> >>>> and since commit 356aaef5a37d ("efi: improve malloc pool allocation"),
+> >>>> the buffer was always placed beneath the 1G boundary.
+> >>>>
+> >>>> Aforementioned commit didn't elaborate why a maximum of 1G in particular
+> >>>> was chosen. Anyways, non-PC architectures have different memory maps, so
+> >>>> a 1G limit doesn't make sense there. Therefore restrict the limit to
+> >>>> ARCH_X86. On non-x86, we allow the memory pages to be located anywhere.
+> >>>
+> >>> The 1G is somewhat arbitrary but if you don't restrict the memory to 32bit,
+> >>> then loading the kernel may fail: The addresses in "struct
+> >>> linux_kernel_header" are only 32bit. So if you impose no restrictions at
+> >>> all, then this memory cannot be used for the kernel and initrd.
+> >>
+> >> The limit for x86 remains at 1G. It's only for other architectures, that we
+> >> remove the limit. I suspect that other architectures won't have this kind
+> >> of problems though , because they would boot the kernel image via EFI load
+> >> and start image boot services, where the EFI firmware takes care to layout
+> >> the boot artifacts.
+> >>
+> >> Once we have that in place, we could even use it on x86 instead of
+> >> using struct linux_kernel_header, but I haven't investigated this yet.
+> > 
+> > How do you load the initrd via EFI? As far as I know, that only works as a
+> > filename in the EFI boot partition.
 > 
-> diff --git a/include/linux/phy.h b/include/linux/phy.h
-> index d68ee5665a..7da4f94e0e 100644
-> --- a/include/linux/phy.h
-> +++ b/include/linux/phy.h
-> @@ -36,7 +36,46 @@
->  #define PHY_GBIT_FEATURES       (PHY_BASIC_FEATURES | \
->  				 PHY_1000BT_FEATURES)
->  
-> -/* Interface Mode definitions */
-> +/**
-> + * enum phy_interface_t - Interface Mode definitions
-> + *
-> + * @PHY_INTERFACE_MODE_NA: Not Applicable - don't touch
-> + * @PHY_INTERFACE_MODE_INTERNAL: No interface, MAC and PHY combined
-> + * @PHY_INTERFACE_MODE_MII: Media-independent interface
-> + * @PHY_INTERFACE_MODE_GMII: Gigabit media-independent interface
-> + * @PHY_INTERFACE_MODE_SGMII: Serial gigabit media-independent interface
-> + * @PHY_INTERFACE_MODE_TBI: Ten Bit Interface
-> + * @PHY_INTERFACE_MODE_REVMII: Reverse Media Independent Interface
-> + * @PHY_INTERFACE_MODE_RMII: Reduced Media Independent Interface
-> + * @PHY_INTERFACE_MODE_REVRMII: Reduced Media Independent Interface in PHY role
-> + * @PHY_INTERFACE_MODE_RGMII: Reduced gigabit media-independent interface
-> + * @PHY_INTERFACE_MODE_RGMII_ID: RGMII with Internal RX+TX delay
-> + * @PHY_INTERFACE_MODE_RGMII_RXID: RGMII with Internal RX delay
-> + * @PHY_INTERFACE_MODE_RGMII_TXID: RGMII with Internal RX delay
-> + * @PHY_INTERFACE_MODE_RTBI: Reduced TBI
-> + * @PHY_INTERFACE_MODE_SMII: Serial MII
-> + * @PHY_INTERFACE_MODE_XGMII: 10 gigabit media-independent interface
-> + * @PHY_INTERFACE_MODE_XLGMII:40 gigabit media-independent interface
-> + * @PHY_INTERFACE_MODE_MOCA: Multimedia over Coax
-> + * @PHY_INTERFACE_MODE_PSGMII: Penta SGMII
-> + * @PHY_INTERFACE_MODE_QSGMII: Quad SGMII
-> + * @PHY_INTERFACE_MODE_TRGMII: Turbo RGMII
-> + * @PHY_INTERFACE_MODE_100BASEX: 100 BaseX
-> + * @PHY_INTERFACE_MODE_1000BASEX: 1000 BaseX
-> + * @PHY_INTERFACE_MODE_2500BASEX: 2500 BaseX
-> + * @PHY_INTERFACE_MODE_5GBASER: 5G BaseR
-> + * @PHY_INTERFACE_MODE_RXAUI: Reduced XAUI
-> + * @PHY_INTERFACE_MODE_XAUI: 10 Gigabit Attachment Unit Interface
-> + * @PHY_INTERFACE_MODE_10GBASER: 10G BaseR
-> + * @PHY_INTERFACE_MODE_25GBASER: 25G BaseR
-> + * @PHY_INTERFACE_MODE_USXGMII:  Universal Serial 10GE MII
-> + * @PHY_INTERFACE_MODE_10GKR: 10GBASE-KR - with Clause 73 AN
-> + * @PHY_INTERFACE_MODE_QUSGMII: Quad Universal SGMII
-> + * @PHY_INTERFACE_MODE_1000BASEKX: 1000Base-KX - with Clause 73 AN
-> + * @PHY_INTERFACE_MODE_MAX: Book keeping
-> + *
-> + * Describes the interface between the MAC and PHY.
-> + */
->  typedef enum {
->  	PHY_INTERFACE_MODE_NA,
->  	PHY_INTERFACE_MODE_INTERNAL,
-> @@ -54,17 +93,25 @@ typedef enum {
->  	PHY_INTERFACE_MODE_RTBI,
->  	PHY_INTERFACE_MODE_SMII,
->  	PHY_INTERFACE_MODE_XGMII,
-> +	PHY_INTERFACE_MODE_XLGMII,
->  	PHY_INTERFACE_MODE_MOCA,
-> +	PHY_INTERFACE_MODE_PSGMII,
->  	PHY_INTERFACE_MODE_QSGMII,
->  	PHY_INTERFACE_MODE_TRGMII,
-> +	PHY_INTERFACE_MODE_100BASEX,
->  	PHY_INTERFACE_MODE_1000BASEX,
->  	PHY_INTERFACE_MODE_2500BASEX,
-> +	PHY_INTERFACE_MODE_5GBASER,
->  	PHY_INTERFACE_MODE_RXAUI,
->  	PHY_INTERFACE_MODE_XAUI,
-> -	/* 10GBASE-KR, XFI, SFI - single lane 10G Serdes */
-> +	/* 10GBASE-R, XFI, SFI - single lane 10G Serdes */
-> +	PHY_INTERFACE_MODE_10GBASER,
-> +	PHY_INTERFACE_MODE_25GBASER,
-> +	PHY_INTERFACE_MODE_USXGMII,
-> +	/* 10GBASE-KR - with Clause 73 AN */
->  	PHY_INTERFACE_MODE_10GKR,
-> -	PHY_INTERFACE_MODE_SGMII_2500,
-> -	PHY_INTERFACE_MODE_NONE,
-> +	PHY_INTERFACE_MODE_QUSGMII,
-> +	PHY_INTERFACE_MODE_1000BASEKX,
->  	PHY_INTERFACE_MODE_MAX,
->  } phy_interface_t;
->  
+> This seems to be relaxed in newer kernels, see
+> https://lore.kernel.org/linux-efi/20200207202637.GA3464906@rani.riverdale.lan/T/
+
+It's not quite clear to me how that works, but from what I can tell,
+requires support from the firmware and barebox needs to use it. So that
+does not help here.
+You need to either disable the legacy handler to avoid arbitrary failures
+or explicitly allocate the initrd memory from efi with the restriction to
+<4G.
+
+Michael
+
+> > That was the reason for implementing
+> > the "legacy" boot mode. And what about the device-tree?
+> 
+> There is an EFI config table for FDT (DEVICE_TREE_GUID in Linux code). barebox
+> as EFI loader can use it to provide its own DT. I have to check what's the cleanest
+> way for barebox as EFI payload to provide a different DT, but I hope there is a way
+> without barebox as EFI payload having to manipulate the device tree itself.
+> 
+> Cheers,
+> Ahmad
+> 
+> > 
+> > Michael
+> > 
+> >>>> This can break PCI drivers on systems that so far assumed barebox memory
+> >>>> is located in the first 4G, but that's ok. That code will need to be
+> >>>> fixed eventually anyway.
+> >>>>
+> >>>> Cc: Michael Olbrich <m.olbrich@pengutronix.de>
+> >>>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >>>> ---
+> >>>>  efi/payload/init.c | 2 +-
+> >>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+> >>>>
+> >>>> diff --git a/efi/payload/init.c b/efi/payload/init.c
+> >>>> index 4b612e61afb3..0c2f38e9c86a 100644
+> >>>> --- a/efi/payload/init.c
+> >>>> +++ b/efi/payload/init.c
+> >>>> @@ -292,7 +292,7 @@ void efi_main(efi_handle_t image, struct efi_system_table *sys_table)
+> >>>>  		BS->handle_protocol(efi_loaded_image->device_handle,
+> >>>>  				&efi_device_path_protocol_guid, (void **)&efi_device_path);
+> >>>>  
+> >>>> -	mem = 0x3fffffff;
+> >>>> +	mem = IS_ENABLED(CONFIG_X86) ? 0x3fffffff : ~0ULL;
+> >>>>  	for (memsize = SZ_256M; memsize >= SZ_8M; memsize /= 2) {
+> >>>>  		efiret  = BS->allocate_pages(EFI_ALLOCATE_MAX_ADDRESS,
+> >>>>  					     EFI_LOADER_DATA,
+> >>>> -- 
+> >>>> 2.39.2
+> >>>>
+> >>>>
+> >>>
+> >>
+> >> -- 
+> >> Pengutronix e.K.                           |                             |
+> >> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> >> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> >> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> >>
+> >>
+> > 
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
+> 
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
