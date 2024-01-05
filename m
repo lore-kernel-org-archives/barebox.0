@@ -1,59 +1,57 @@
-Delivery-date: Fri, 05 Jan 2024 10:22:17 +0100
+Delivery-date: Fri, 05 Jan 2024 10:22:44 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLgPB-004ZsR-22
+	id 1rLgPc-004ZtV-1t
 	for lore@lore.pengutronix.de;
-	Fri, 05 Jan 2024 10:22:17 +0100
+	Fri, 05 Jan 2024 10:22:44 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rLgPA-0000FK-Vf
-	for lore@pengutronix.de; Fri, 05 Jan 2024 10:22:17 +0100
+	id 1rLgPb-0000Kz-T6
+	for lore@pengutronix.de; Fri, 05 Jan 2024 10:22:44 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HwHPh1QiN1kfQHRGpEheJIQM2y7upqsgBgOWuvlynAE=; b=kPWjxTyiIK2zf5lil12x6eRfKa
-	H6L+Hva9MHWaEmhBOfmUJG4VKhX6P8ZWlxTm4VKpGsPMiY8WFhvhhAjU/Dogu3YKhMnZTfdi/W5h2
-	7S3/147G3oywRpHBT+sg4E2N3NemlNUQH1ZHswfdvGDvXQIpyono8xkz4svF5NJLVZb1D6vN2Sxq3
-	uGp07y4wt1trvdu5Spe/g0ADaPL0bX2pZzJvqEf7hcOJqBd6XXwcWOjEokI2HVAtEZwOChMHFTJ97
-	ZpP3Pj5JP6OPauaW6ja0r2Hlk5Qa42Lvir/lyu+4ZrR8QADRB6TUH0VDk9EBO8hXNPAzGSpbnZuko
-	3hA8HKyQ==;
+	bh=95uqV83ZSpHv4BOmu+sTERs2cByNX67F4X8wYgfaEQ4=; b=iv3Fom84wsGKKP5vm9QrAUz4nZ
+	8PsrWwuJAWlpsdgT/2LRqHwZDZBvYuxXA5YIULa9qEE4ZIkjZohslA0PciJ4z1bbv67iOWS1KJKGP
+	U/XRYh7KOoAzCwTQ1ZsJOGy3BxbsfbvNRhLDxotx01h6CovUllQutbWAd693eHOVeNP7P7XGKSIHo
+	xDuIBPbs+ZEjZ1m7pui4SK6Oo122h765zujZwf6gvll8SiZS2M1b2ndtSLBf7hJAw6Mf8McKqIWjI
+	O7JNGQT2+eEmDS2Wo83dDPFOqbFCfn1AtNf1Wg+VlTfaGgN0+FsYCMNzSkdaU/Bzlcs9p1pdmy83g
+	WCxydFxg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLgO6-00GN1p-2e;
-	Fri, 05 Jan 2024 09:21:10 +0000
+	id 1rLgOV-00GN77-08;
+	Fri, 05 Jan 2024 09:21:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rLgO3-00GN0a-1U
+	id 1rLgOR-00GN5s-1e
 	for barebox@lists.infradead.org;
-	Fri, 05 Jan 2024 09:21:09 +0000
+	Fri, 05 Jan 2024 09:21:33 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rLgO2-0008S9-2e; Fri, 05 Jan 2024 10:21:06 +0100
-Message-ID: <0dc646f4-5023-4ec2-b091-c123137c7824@pengutronix.de>
-Date: Fri, 5 Jan 2024 10:21:05 +0100
+	id 1rLgOQ-0008S9-Ay; Fri, 05 Jan 2024 10:21:30 +0100
+Message-ID: <4fe5efdc-07b5-4450-bc23-5f541ae8998e@pengutronix.de>
+Date: Fri, 5 Jan 2024 10:21:29 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
 To: Sascha Hauer <s.hauer@pengutronix.de>,
  Barebox List <barebox@lists.infradead.org>
 References: <20240104112241.989839-1-s.hauer@pengutronix.de>
- <20240104112241.989839-2-s.hauer@pengutronix.de>
- <20240104121856.GT1318922@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240104121856.GT1318922@pengutronix.de>
+In-Reply-To: <20240104112241.989839-1-s.hauer@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240105_012107_496129_27053F35 
-X-CRM114-Status: GOOD (  24.59  )
+X-CRM114-CacheID: sfid-20240105_012131_553016_B3E6D825 
+X-CRM114-Status: GOOD (  17.59  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,98 +72,104 @@ X-Spam-Level:
 X-Spam-Status: No, score=-6.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH v2 2/2] net: Add fsl_enetc network driver support
+	T_SCC_BODY_TEXT_LINE,UPPERCASE_50_75 autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v2 1/2] net/phy: sync phy_interface_t types with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
-
-On 04.01.24 13:18, Sascha Hauer wrote:
-> On Thu, Jan 04, 2024 at 12:22:41PM +0100, Sascha Hauer wrote:
->> This adds support for the fsl_enetc network controller found on several
->> Layerscape SoCs. The code is originally from U-Boot-2023.10-rc1.
->>
->> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
->> ---
->>
->> Notes:
->>     Changes since v1:
->>     
->>     - Use get_unaligned to access unaligned pointers
->>     - use physical address returned by dma_alloc_coherent()
->>     - implement struct pci_driver::remove hook
->>     - do not printf in poller function
->>     - use write[lwq] to access rx/tx rings to avoid dmb()
+On 04.01.24 12:22, Sascha Hauer wrote:
+> This syncs the phy interface modes with Linux as of linux-6.7-rc7.
 > 
-> Actually this last part is missing, here it is:
-> 
-> ---------------------------------8<---------------------------
-> 
-> From 3b312b7d501be3b0049de27582a26b19fdaf84e1 Mon Sep 17 00:00:00 2001
-> From: Sascha Hauer <s.hauer@pengutronix.de>
-> Date: Wed, 3 Jan 2024 20:55:39 +0100
-> Subject: [PATCH] fixup! net: Add fsl_enetc network driver support
-> 
-> ---
->  drivers/net/fsl_enetc.c | 19 +++++++------------
->  1 file changed, 7 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/net/fsl_enetc.c b/drivers/net/fsl_enetc.c
-> index eb90c526bb..07e9a6b7c8 100644
-> --- a/drivers/net/fsl_enetc.c
-> +++ b/drivers/net/fsl_enetc.c
-> @@ -454,13 +454,10 @@ static int enetc_send(struct eth_device *edev, void *packet, int length)
->  	dma = dma_map_single(priv->dev, packet, length, DMA_TO_DEVICE);
->  
->  	/* prepare Tx BD */
-> -	memset(&priv->enetc_txbd[pi], 0x0, sizeof(struct enetc_tx_bd));
-> -	priv->enetc_txbd[pi].addr = cpu_to_le64(dma);
-> -	priv->enetc_txbd[pi].buf_len = cpu_to_le16(length);
-> -	priv->enetc_txbd[pi].frm_len = cpu_to_le16(length);
-> -	priv->enetc_txbd[pi].flags = cpu_to_le16(ENETC_TXBD_FLAGS_F);
-> -
-> -	dmb();
-> +	writeq(cpu_to_le64(dma), &priv->enetc_txbd[pi].addr);
-> +	writew(cpu_to_le16(length), &priv->enetc_txbd[pi].buf_len);
-> +	writew(cpu_to_le16(length), &priv->enetc_txbd[pi].frm_len);
-> +	writew(cpu_to_le16(ENETC_TXBD_FLAGS_F), &priv->enetc_txbd[pi].flags);
-
-The cpu_to_le* can be dropped because writew/writeq always do conversion
-to little endian.
-
->  
->  	/* send frame: increment producer index */
->  	pi = (pi + 1) % txr->bd_count;
-> @@ -508,9 +505,7 @@ static int enetc_recv(struct eth_device *edev)
->  	if (!ENETC_RXBD_STATUS_R(status))
->  		return 0;
->  
-> -	dmb();
-> -
-> -	len = le16_to_cpu(priv->enetc_rxbd[pi].r.buf_len);
-> +	len = le16_to_cpu(readw(&priv->enetc_rxbd[pi].r.buf_len));
-
-Same.
-
->  
->  	dev_dbg(&edev->dev, "RxBD[%d]: len=%d err=%d pkt=0x%p\n", pi, len,
->  		  ENETC_RXBD_STATUS_ERRORS(status), pkg);
-> @@ -520,8 +515,8 @@ static int enetc_recv(struct eth_device *edev)
->  	dma_sync_single_for_device(priv->dev, priv->rx_pkg_phys[pi], PKTSIZE, DMA_FROM_DEVICE);
->  
->  	/* BD clean up and advance to next in ring */
-> -	memset(&priv->enetc_rxbd[pi], 0, sizeof(union enetc_rx_bd));
-> -	priv->enetc_rxbd[pi].w.addr = priv->rx_pkg_phys[pi];
-> +	memset_io(&priv->enetc_rxbd[pi], 0, sizeof(union enetc_rx_bd));
-> +	writeq(priv->rx_pkg_phys[pi], &priv->enetc_rxbd[pi].w.addr);
->  	rxr->next_prod_idx = (pi + 1) % rxr->bd_count;
->  	ci = (ci + 1) % rxr->bd_count;
->  	rxr->next_cons_idx = ci;
-LGTM with changes applied:
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
 Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+
+> ---
+>  include/linux/phy.h | 55 +++++++++++++++++++++++++++++++++++++++++----
+>  1 file changed, 51 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/phy.h b/include/linux/phy.h
+> index d68ee5665a..7da4f94e0e 100644
+> --- a/include/linux/phy.h
+> +++ b/include/linux/phy.h
+> @@ -36,7 +36,46 @@
+>  #define PHY_GBIT_FEATURES       (PHY_BASIC_FEATURES | \
+>  				 PHY_1000BT_FEATURES)
+>  
+> -/* Interface Mode definitions */
+> +/**
+> + * enum phy_interface_t - Interface Mode definitions
+> + *
+> + * @PHY_INTERFACE_MODE_NA: Not Applicable - don't touch
+> + * @PHY_INTERFACE_MODE_INTERNAL: No interface, MAC and PHY combined
+> + * @PHY_INTERFACE_MODE_MII: Media-independent interface
+> + * @PHY_INTERFACE_MODE_GMII: Gigabit media-independent interface
+> + * @PHY_INTERFACE_MODE_SGMII: Serial gigabit media-independent interface
+> + * @PHY_INTERFACE_MODE_TBI: Ten Bit Interface
+> + * @PHY_INTERFACE_MODE_REVMII: Reverse Media Independent Interface
+> + * @PHY_INTERFACE_MODE_RMII: Reduced Media Independent Interface
+> + * @PHY_INTERFACE_MODE_REVRMII: Reduced Media Independent Interface in PHY role
+> + * @PHY_INTERFACE_MODE_RGMII: Reduced gigabit media-independent interface
+> + * @PHY_INTERFACE_MODE_RGMII_ID: RGMII with Internal RX+TX delay
+> + * @PHY_INTERFACE_MODE_RGMII_RXID: RGMII with Internal RX delay
+> + * @PHY_INTERFACE_MODE_RGMII_TXID: RGMII with Internal RX delay
+> + * @PHY_INTERFACE_MODE_RTBI: Reduced TBI
+> + * @PHY_INTERFACE_MODE_SMII: Serial MII
+> + * @PHY_INTERFACE_MODE_XGMII: 10 gigabit media-independent interface
+> + * @PHY_INTERFACE_MODE_XLGMII:40 gigabit media-independent interface
+> + * @PHY_INTERFACE_MODE_MOCA: Multimedia over Coax
+> + * @PHY_INTERFACE_MODE_PSGMII: Penta SGMII
+> + * @PHY_INTERFACE_MODE_QSGMII: Quad SGMII
+> + * @PHY_INTERFACE_MODE_TRGMII: Turbo RGMII
+> + * @PHY_INTERFACE_MODE_100BASEX: 100 BaseX
+> + * @PHY_INTERFACE_MODE_1000BASEX: 1000 BaseX
+> + * @PHY_INTERFACE_MODE_2500BASEX: 2500 BaseX
+> + * @PHY_INTERFACE_MODE_5GBASER: 5G BaseR
+> + * @PHY_INTERFACE_MODE_RXAUI: Reduced XAUI
+> + * @PHY_INTERFACE_MODE_XAUI: 10 Gigabit Attachment Unit Interface
+> + * @PHY_INTERFACE_MODE_10GBASER: 10G BaseR
+> + * @PHY_INTERFACE_MODE_25GBASER: 25G BaseR
+> + * @PHY_INTERFACE_MODE_USXGMII:  Universal Serial 10GE MII
+> + * @PHY_INTERFACE_MODE_10GKR: 10GBASE-KR - with Clause 73 AN
+> + * @PHY_INTERFACE_MODE_QUSGMII: Quad Universal SGMII
+> + * @PHY_INTERFACE_MODE_1000BASEKX: 1000Base-KX - with Clause 73 AN
+> + * @PHY_INTERFACE_MODE_MAX: Book keeping
+> + *
+> + * Describes the interface between the MAC and PHY.
+> + */
+>  typedef enum {
+>  	PHY_INTERFACE_MODE_NA,
+>  	PHY_INTERFACE_MODE_INTERNAL,
+> @@ -54,17 +93,25 @@ typedef enum {
+>  	PHY_INTERFACE_MODE_RTBI,
+>  	PHY_INTERFACE_MODE_SMII,
+>  	PHY_INTERFACE_MODE_XGMII,
+> +	PHY_INTERFACE_MODE_XLGMII,
+>  	PHY_INTERFACE_MODE_MOCA,
+> +	PHY_INTERFACE_MODE_PSGMII,
+>  	PHY_INTERFACE_MODE_QSGMII,
+>  	PHY_INTERFACE_MODE_TRGMII,
+> +	PHY_INTERFACE_MODE_100BASEX,
+>  	PHY_INTERFACE_MODE_1000BASEX,
+>  	PHY_INTERFACE_MODE_2500BASEX,
+> +	PHY_INTERFACE_MODE_5GBASER,
+>  	PHY_INTERFACE_MODE_RXAUI,
+>  	PHY_INTERFACE_MODE_XAUI,
+> -	/* 10GBASE-KR, XFI, SFI - single lane 10G Serdes */
+> +	/* 10GBASE-R, XFI, SFI - single lane 10G Serdes */
+> +	PHY_INTERFACE_MODE_10GBASER,
+> +	PHY_INTERFACE_MODE_25GBASER,
+> +	PHY_INTERFACE_MODE_USXGMII,
+> +	/* 10GBASE-KR - with Clause 73 AN */
+>  	PHY_INTERFACE_MODE_10GKR,
+> -	PHY_INTERFACE_MODE_SGMII_2500,
+> -	PHY_INTERFACE_MODE_NONE,
+> +	PHY_INTERFACE_MODE_QUSGMII,
+> +	PHY_INTERFACE_MODE_1000BASEKX,
+>  	PHY_INTERFACE_MODE_MAX,
+>  } phy_interface_t;
+>  
 
 -- 
 Pengutronix e.K.                           |                             |
