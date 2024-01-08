@@ -1,69 +1,64 @@
-Delivery-date: Mon, 08 Jan 2024 11:00:18 +0100
+Delivery-date: Mon, 08 Jan 2024 11:01:35 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rMmQc-008fwr-12
+	id 1rMmRr-008g03-2C
 	for lore@lore.pengutronix.de;
-	Mon, 08 Jan 2024 11:00:18 +0100
+	Mon, 08 Jan 2024 11:01:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rMmQb-0000ll-NX
-	for lore@pengutronix.de; Mon, 08 Jan 2024 11:00:18 +0100
+	id 1rMmRr-00014I-4t
+	for lore@pengutronix.de; Mon, 08 Jan 2024 11:01:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LSOeKSyqL0GBrBEDlaahRKivmj97UWlq+NqlQ7D6OVw=; b=BoA/5f3bGktLXtm/HVLfUBimQQ
-	WzYUiJxW32Df13jgFLbkJn/kB8Z+iwpZwEGGLirmdRoHQeiaB/T/qNjRtRgoeP/NTzkR7YrMSkaWU
-	zn+8/9hTna/FgTTMKFZoVbRgPxC8ZZVzmqj0ycGTQyKXoV2eG1Iq1WZekp5zuHGdLPgez3a1I+lmo
-	TtFV8Hkowc/TraTiYxHsG7tF3QkWnHdllERt9rigBW/doEHWTCJd4OPMIgt2Jmw6REv3vZumlSDSl
-	kupLWp69kyo9AZaIBpWre648E4LVO6bhM+QSZF0PR+KxA9FBnafcqOz1hCNzSc+2VgxIzTytYjYVS
-	H33hDI9Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=8R7k6wq1hc4HitmrEQ1HlqOEik0vdXNdXD49ZA+QmaE=; b=V/UqFd8kNOwo1mm7fumM/mxtwt
+	dHgBUoLeHcQ/sj2UBVP9Uw4Y8CQp5HrBwDUmdoRvgA7PMe92J05Stps0MmEadMXpYeT60hm9pEdCO
+	D39gwWXkHImximhygBt5/oshsELaorraYuBhk57VJQBzeDFFJOPbrE5mHUKbHgWlNLyQh8we6PRjF
+	oDxbHAcFNrHkKXBpyIG/Jy/6jeHXeSOZoGu2K8YE0dtmXgLjMHhxGOsD/IwpVmkW2idsAgGaBqJzw
+	qa7NE8uJhjWgnOnfW1rWPhpA/YILqU26ECtKdWZMCA+B1EqtWhrKtIuEBfrFDeQf5KwkjGrZcVOz+
+	bOCbQttA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rMmPU-004Xpy-0f;
-	Mon, 08 Jan 2024 09:59:08 +0000
+	id 1rMmQP-004Y9g-16;
+	Mon, 08 Jan 2024 10:00:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rMmPQ-004Xpc-2d
+	id 1rMmQN-004Y8j-09
 	for barebox@lists.infradead.org;
-	Mon, 08 Jan 2024 09:59:06 +0000
+	Mon, 08 Jan 2024 10:00:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rMmPP-0000Oj-DT; Mon, 08 Jan 2024 10:59:03 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rMmQL-0000hk-Sm; Mon, 08 Jan 2024 11:00:01 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rMmPP-001DQr-0d; Mon, 08 Jan 2024 10:59:03 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rMmPO-00Aq15-UX; Mon, 08 Jan 2024 10:59:02 +0100
-Date: Mon, 8 Jan 2024 10:59:02 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20240108095902.GE1318922@pengutronix.de>
-References: <20240103101629.2629497-1-a.fatoum@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rMmQL-001DRA-FY; Mon, 08 Jan 2024 11:00:01 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rMmQL-005EwX-1G;
+	Mon, 08 Jan 2024 11:00:01 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  8 Jan 2024 10:59:59 +0100
+Message-Id: <20240108095959.1249068-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240103101629.2629497-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240108_015904_877003_93BF7558 
-X-CRM114-Status: GOOD (  20.03  )
+X-CRM114-CacheID: sfid-20240108_020003_086339_E8FD94B0 
+X-CRM114-Status: GOOD (  11.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,47 +81,35 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 0/6] cdev: delete partitions when deleting master cdev
+Subject: [PATCH] ARM: layerscape: ppa: fix type of C variable used in inline assembly
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Jan 03, 2024 at 11:16:23AM +0100, Ahmad Fatoum wrote:
-> blockdevice_unregister only calls devfs_remove on the root cdev and
-> leaves the partition cdevs dangling. This doesn't break until the
-> block device parent struct device is freed at which time, it will
-> iterate over its cdevs to free them. If there's partitions there,
-> list_del on the partitions triggers a use after free.
-> 
-> This series fixes this by removing partitions whenever the master cdev
-> is deleted.
-> 
-> Code has been this way since for ever, but virtio deletes its devices on
-> shutdown triggering this issue. As virtio isn't that critical, I think
-> it's ok to not go into master right away and sit in next first.
+clang warns that cr should be an unsigned long as it's used to
+initialize a register argument for the mrs instruction.
 
-Applied, thanks
+Change the type from unsigned int to unsigned long to fix this.
 
-Sascha
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/mach-layerscape/ppa.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
->  common/partitions.c    | 12 +++++++----
->  drivers/base/driver.c  |  2 +-
->  drivers/of/partition.c | 16 +++++++--------
->  fs/devfs-core.c        | 45 +++++++++++++++++++++++++++---------------
->  include/driver.h       | 12 +++++++----
->  lib/bootstrap/devfs.c  |  2 +-
->  6 files changed, 55 insertions(+), 34 deletions(-)
-> 
-> -- 
-> 2.39.2
-> 
-> 
-> 
-
+diff --git a/arch/arm/mach-layerscape/ppa.c b/arch/arm/mach-layerscape/ppa.c
+index 37d467386f6f..1f69aacf083a 100644
+--- a/arch/arm/mach-layerscape/ppa.c
++++ b/arch/arm/mach-layerscape/ppa.c
+@@ -124,7 +124,7 @@ int ls1046a_ppa_init(resource_size_t ppa_start, resource_size_t ppa_size)
+ 	get_builtin_firmware(ppa_ls1046a_bin, &ppa_fw, &ppa_fw_size);
+ 
+ 	if (el == 3) {
+-		unsigned int cr;
++		unsigned long cr;
+ 
+ 		asm volatile("mrs %0, sctlr_el3" : "=r" (cr) : : "cc");
+ 		remap_range((void *)ppa_start, ppa_size, MAP_CACHED);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
