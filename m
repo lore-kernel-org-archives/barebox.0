@@ -1,69 +1,66 @@
-Delivery-date: Mon, 08 Jan 2024 11:03:14 +0100
+Delivery-date: Mon, 08 Jan 2024 11:15:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rMmTS-008g48-2Y
+	id 1rMmfV-008gsD-0E
 	for lore@lore.pengutronix.de;
-	Mon, 08 Jan 2024 11:03:14 +0100
+	Mon, 08 Jan 2024 11:15:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rMmTS-0001Lc-7P
-	for lore@pengutronix.de; Mon, 08 Jan 2024 11:03:14 +0100
+	id 1rMmfU-0003Nf-Dp
+	for lore@pengutronix.de; Mon, 08 Jan 2024 11:15:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=e23ZI5NUNVyFu+ibsgkHonr89YkPa7Y7gUVstVetoZ0=; b=yr9v8xF7NOJwJxlXbu7VAYTj/5
-	kHdx3d+hJkDpd1zm03suqy2FQH+nwz71ruUfrWO9BmXmLcSamdksN3XWKnEbnxhd0QSeYQUX/s5dt
-	9lxuBmL0GyV3SJnxZb4TGYKcj5KEBcRKZKbZRM7t1fQmFHodQHbMADi3RSTc7nkdVTcr+VPLZuTDG
-	7ZwCgIEjVSqtx1n0Cff4JHz78X6Wr9HA5f3TrvTvlzYnFEBm8JO4CMzh5oPwjFvIAjsVKn1lrqAdF
-	EBX4xDXSWU5VB1uF8OpumfOVkXmUYKOWOpAp0JbcfihQCsAugrD2XzPPSkoaXvCAG4jK9hRklEWnv
-	qui/cFqA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=a3IidmiMg9WxaVeVbGTbxRp0XpjWes+7g+Wkm0YFPVI=; b=c84xqLHFe4IJrrKEyG67LJWm5q
+	KUHQ3egGZGO4UtwEqcCL00Rsc44c0x+YESBMgJaAMFDnqwcmSZfZiHDj45a3kw7jJWqH8jkurAnRn
+	qeEIcEv+5nSPtQA1NZ9OBlYUMEaq8nP1DCoCVCCl+vnUTJujMGzmCbzD0Num91qeBe9PGVlt1IZbO
+	06HjYqH4yeza9CG3fbCMtAxjOjYByezlpXDVKtohTDKQJpSLR9yhCA3eRdoc9FX6TNAc7AChpQmKB
+	LRshAzgZEeB5dTuQU7yO7sHO1vnNcNOiW+1lQSZ5AD8YXxZB9K9nrm4D+a/Ab7fPo0BX5Q3meFLvV
+	fwLJmCZQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rMmSQ-004YfA-2k;
-	Mon, 08 Jan 2024 10:02:10 +0000
+	id 1rMmeI-004Znw-2x;
+	Mon, 08 Jan 2024 10:14:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rMmSN-004Yen-2t
+	id 1rMmeF-004ZnB-0m
 	for barebox@lists.infradead.org;
-	Mon, 08 Jan 2024 10:02:09 +0000
+	Mon, 08 Jan 2024 10:14:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rMmSM-00018v-J4; Mon, 08 Jan 2024 11:02:06 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rMmeD-00033x-97; Mon, 08 Jan 2024 11:14:21 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rMmSM-001DRt-6V; Mon, 08 Jan 2024 11:02:06 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rMmSM-00Aq2A-3y; Mon, 08 Jan 2024 11:02:06 +0100
-Date: Mon, 8 Jan 2024 11:02:06 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20240108100206.GF1318922@pengutronix.de>
-References: <20240105131000.1328500-1-a.fatoum@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rMmeC-001Dvi-S3; Mon, 08 Jan 2024 11:14:20 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rMmeC-005Pp1-2X;
+	Mon, 08 Jan 2024 11:14:20 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  8 Jan 2024 11:14:19 +0100
+Message-Id: <20240108101419.1290778-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240108101419.1290778-1-a.fatoum@pengutronix.de>
+References: <20240108101419.1290778-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240105131000.1328500-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240108_020207_931463_720050DB 
-X-CRM114-Status: GOOD (  20.01  )
+X-CRM114-CacheID: sfid-20240108_021423_313723_7843C290 
+X-CRM114-Status: GOOD (  12.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,48 +83,67 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] rsatoc: fix typo in usage string
+Subject: [PATCH master 2/2] net: fsl-fman: fix CONFIG_DMA_API_DEBUG warnings
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Jan 05, 2024 at 02:10:00PM +0100, Ahmad Fatoum wrote:
-> The commit introducing help text for the individual options,
-> inadvertently modified the usage string. Revert that single line.
-> 
-> Fixes: 94a2b2b28738 ("rsatoc: support generating standalone keys unreferenced by FIT keyring")
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  scripts/rsatoc.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+The first time a buffer is provided to a device, it needs to be mapped
+with dma_map_single, before dma_sync_single_for_* may be called.
 
-Applied, thanks
+>From a cache coherence point of view, dma_map_single and
+dma_sync_single_for_device have the same effect, but the former
+is necessary, so DMA API debugging can catch issues.
 
-Sascha
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/net/fsl-fman.c | 21 +++++++++++----------
+ 1 file changed, 11 insertions(+), 10 deletions(-)
 
-> 
-> diff --git a/scripts/rsatoc.c b/scripts/rsatoc.c
-> index 6d10dca4169c..d5943d4a1154 100644
-> --- a/scripts/rsatoc.c
-> +++ b/scripts/rsatoc.c
-> @@ -509,7 +509,7 @@ int main(int argc, char *argv[])
->  	}
->  
->  	if (optind == argc) {
-> -		fprintf(stderr, "Usage: %s [-ods]  OUTFIE<key_name_hint>:<crt> ...\n", argv[0]);
-> +		fprintf(stderr, "Usage: %s [-ods] <key_name_hint>:<crt> ...\n", argv[0]);
->  		fprintf(stderr, "\t-o FILE\twrite output into FILE instead of stdout\n");
->  		fprintf(stderr, "\t-d\tgenerate device tree snippet instead of C code\n");
->  		fprintf(stderr, "\t-s\tgenerate standalone key outside FIT image keyring\n");
-> -- 
-> 2.39.2
-> 
-> 
-> 
-
+diff --git a/drivers/net/fsl-fman.c b/drivers/net/fsl-fman.c
+index baafe027c079..12cb240a37c0 100644
+--- a/drivers/net/fsl-fman.c
++++ b/drivers/net/fsl-fman.c
+@@ -583,7 +583,6 @@ static int fm_eth_rx_port_parameter_init(struct fm_eth *fm_eth)
+ 	void *rx_bd_ring_base;
+ 	void *rx_buf_pool;
+ 	u32 bd_ring_base_lo, bd_ring_base_hi;
+-	u32 buf_lo, buf_hi;
+ 	struct fm_port_bd *rxbd;
+ 	struct fm_port_qd *rxqd;
+ 	struct fm_bmi_rx_port *bmi_rx_port = fm_eth->rx_port;
+@@ -631,19 +630,21 @@ static int fm_eth_rx_port_parameter_init(struct fm_eth *fm_eth)
+ 
+ 	/* init Rx BDs ring */
+ 	for (i = 0; i < RX_BD_RING_SIZE; i++) {
++		dma_addr_t dma;
++
+ 		rxbd = &fm_eth->rx_bd_ring[i];
+ 
+ 		muram_writew(&rxbd->status, RxBD_EMPTY);
+ 		muram_writew(&rxbd->len, 0);
+-		buf_hi = upper_32_bits(virt_to_phys(rx_buf_pool +
+-					i * MAX_RXBUF_LEN));
+-		buf_lo = lower_32_bits(virt_to_phys(rx_buf_pool +
+-					i * MAX_RXBUF_LEN));
+-		dma_sync_single_for_device(fm_eth->dev,
+-					   (unsigned long)rx_buf_pool + i * MAX_RXBUF_LEN,
+-					   MAX_RXBUF_LEN, DMA_FROM_DEVICE);
+-		muram_writew(&rxbd->buf_ptr_hi, (u16)buf_hi);
+-		out_be32(&rxbd->buf_ptr_lo, buf_lo);
++
++		dma = dma_map_single(fm_eth->dev,
++				     rx_buf_pool + i * MAX_RXBUF_LEN,
++				     MAX_RXBUF_LEN, DMA_FROM_DEVICE);
++		if (dma_mapping_error(fm_eth->dev, dma))
++			return -EFAULT;
++
++		muram_writew(&rxbd->buf_ptr_hi, (u16)upper_32_bits(dma));
++		out_be32(&rxbd->buf_ptr_lo, lower_32_bits(dma));
+ 	}
+ 
+ 	/* set the Rx queue descriptor */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
