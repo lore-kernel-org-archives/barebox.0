@@ -1,16 +1,16 @@
-Delivery-date: Tue, 09 Jan 2024 17:17:02 +0100
+Delivery-date: Tue, 09 Jan 2024 17:17:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNEmk-00AUIT-2f
+	id 1rNEml-00AUIm-0G
 	for lore@lore.pengutronix.de;
-	Tue, 09 Jan 2024 17:17:02 +0100
+	Tue, 09 Jan 2024 17:17:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNEmi-0000Ob-VI
+	id 1rNEmi-0000OC-2m
 	for lore@pengutronix.de; Tue, 09 Jan 2024 17:17:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,47 +18,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rytCPEzdw9hhZGXiIaML4V3NoHG7ifj2Qujm3Vp2vJg=; b=tHNWVngeAWEsSmjQu34fG+lzBl
-	FwwhHnDMRv0FhYn/6XNvgxNDED75UQ51BcWdBOezG9dRxb+2WTjyCTw84PP461TuE97JGJaJW6o8D
-	nnWfFTxzatWPieGakKRF64LADHTyGqQcC+coK07ImP+78upoL6fll23PFf/9UE8ZGsF4+JMVS7CcA
-	P8VaIABYt5iCiEB10HxiVzcE3KB8Seuo7gzhuZRfyxERAymF7/AP8sqbp/zKDdRs/aaaRuJxsV8dA
-	IoM5b+wb9/CH7QFWNRVCaQxD4FaMT3hOG3qwAmTJhJGajdAbHWxX19Lspzjd1v2/nsL6EIIK3NJm5
-	UoznKT8Q==;
+	bh=eTivodZKqsc5od0hfA7QMkrc4MiqC7/7PXLZm36eiwA=; b=0oRGxjUZY7IKa0Jjb61JBMUrvn
+	Q+chA4Y+DkkFULFdlnUqmPYDUh3YEjhRynu+DPYBiVSpJijBGwAKBViy4vR71MIxzlXuBIUO9EaLK
+	e37dODYCA8zAR/ULGLKh8t3EoP5oQquqMBVMmY9u518W3nU/0sfhRyoTXVKUpXczgqBqnqM6hviX8
+	5xhUXvH4hK8qG4BZE5s1XjzMejVXYgW3fvPQ05hAc3PEdsM/p6q0CzXDNSDT6Jh74BVQcukl9gNOd
+	abZj4KBHvWSX4fRFQk3kXa4TOlqtTyPPut9/x233iDrCHCYhd1vCmd6jJlI9IDo8xbYed3XKGBpIT
+	3fgC+SeA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNElf-008nzJ-0x;
-	Tue, 09 Jan 2024 16:15:55 +0000
+	id 1rNEla-008ntl-05;
+	Tue, 09 Jan 2024 16:15:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNElL-008nix-2h
+	id 1rNElL-008niu-2F
 	for barebox@lists.infradead.org;
 	Tue, 09 Jan 2024 16:15:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rNElF-0007lV-Ju; Tue, 09 Jan 2024 17:15:29 +0100
+	id 1rNElF-0007lo-HA; Tue, 09 Jan 2024 17:15:29 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rNElE-001WCv-Oz; Tue, 09 Jan 2024 17:15:28 +0100
+	id 1rNElE-001WD4-Sh; Tue, 09 Jan 2024 17:15:28 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rNElE-00E7RV-2H;
+	id 1rNElE-00E7S4-2T;
 	Tue, 09 Jan 2024 17:15:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  9 Jan 2024 17:15:23 +0100
-Message-Id: <20240109161527.3237581-18-s.hauer@pengutronix.de>
+Date: Tue,  9 Jan 2024 17:15:26 +0100
+Message-Id: <20240109161527.3237581-21-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240109161527.3237581-1-s.hauer@pengutronix.de>
 References: <20240109161527.3237581-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240109_081535_901698_DD588862 
-X-CRM114-Status: GOOD (  11.87  )
+X-CRM114-CacheID: sfid-20240109_081535_780868_283BF4B8 
+X-CRM114-Status: UNSURE (   9.99  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,39 +82,37 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 17/21] clk: layerscape: increase PLL divider array
+Subject: [PATCH v2 20/21] ARM: Layerscape: LS1028a: Add barebox update handler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Newer Layerscape SoCs like the LS1028a have more PLL dividers,
-increase the divider array to accomodate this.
+The LS1028a image can be written straight to SD/eMMC at offset 0x100.
+Add a barebox update handler for it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/clk/clk-qoric.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/mach/layerscape/bbu.h | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/clk/clk-qoric.c b/drivers/clk/clk-qoric.c
-index 6c69b5b3f3..44155692a8 100644
---- a/drivers/clk/clk-qoric.c
-+++ b/drivers/clk/clk-qoric.c
-@@ -27,6 +27,7 @@
- #define CGA_PLL4	4	/* only on clockgen-1.0, which lacks CGB */
- #define CGB_PLL1	4
- #define CGB_PLL2	5
-+#define MAX_PLL_DIV	32
+diff --git a/include/mach/layerscape/bbu.h b/include/mach/layerscape/bbu.h
+index d018ec9a9d..186185699b 100644
+--- a/include/mach/layerscape/bbu.h
++++ b/include/mach/layerscape/bbu.h
+@@ -5,6 +5,14 @@
  
- struct clockgen_pll_div {
- 	struct clk_hw *hw;
-@@ -34,7 +35,7 @@ struct clockgen_pll_div {
- };
+ #include <bbu.h>
  
- struct clockgen_pll {
--	struct clockgen_pll_div div[8];
-+	struct clockgen_pll_div div[MAX_PLL_DIV];
- };
- 
- #define CLKSEL_VALID	1
++static inline int ls1028a_bbu_mmc_register_handler(const char *name,
++						   const char *devicefile,
++						   unsigned long flags)
++{
++	return bbu_register_std_file_update(name, flags, devicefile,
++					    filetype_layerscape_image);
++}
++
+ static inline int ls1046a_bbu_mmc_register_handler(const char *name,
+ 						   const char *devicefile,
+ 						   unsigned long flags)
 -- 
 2.39.2
 
