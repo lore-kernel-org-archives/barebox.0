@@ -1,64 +1,64 @@
-Delivery-date: Tue, 09 Jan 2024 10:18:03 +0100
+Delivery-date: Tue, 09 Jan 2024 10:18:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rN8FH-00A69i-1L
+	id 1rN8FI-00A6A4-18
 	for lore@lore.pengutronix.de;
-	Tue, 09 Jan 2024 10:18:03 +0100
+	Tue, 09 Jan 2024 10:18:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rN8FG-0001Bv-MV
-	for lore@pengutronix.de; Tue, 09 Jan 2024 10:18:03 +0100
+	id 1rN8FH-0001Cf-Jt
+	for lore@pengutronix.de; Tue, 09 Jan 2024 10:18:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1ETTxvRkvQ9y3tYSDTo/Rn3E6LdI40M8MeHugmajHGk=; b=hnY90/1fbvMUdsaIz/HWe/J6Yj
-	qJXrKxJyqlRHkyuQoTUdzJiXPjJuaHvwInIfYMklYZUl6IbBeycqVKukdPBq7UFtg6wZjCqPxD63g
-	Q9Bt+kRvS09xIhOo9y+6IMOCs9mNASeEEaQ2IM+ssBdSWQGOReiUwM6jBitSJXGW1IMt31WOgS1qU
-	CFGrvSEUD+bLkpF1l9VHbiywpdYqaTk4qbSGJ2FCKT6lwCCp9jEwduKfgkfAOYb8Jij59i6rIU4/S
-	WLZ9lBofNCjqD8TolTtxc8qbffg7tu7iuLbqK9Z66e7ruosbVgiUlVoCVhoQJ3+ab8tkJIo6rQG9v
-	aOVau5Vg==;
+	bh=hfcP8s0GLXzJbQpLtIqC71a30GXz8JnIV6aByGXfnow=; b=Co6Wj93lReVKKpVrz+MOwkrosa
+	CIVnnBzStSAKAWBj2xyc5AhvnhQbhFWcjNzHOT5cYIIHH9msCbyEmvbdQcZ+DUcdCnIcc/KUCjDzP
+	QoDhzqrFQ63xtasS6niwfGpQasvioOBDZ5GCGLCaYpZeAbSMQNJtebzWdEVHguD9qQfNm8s+Nr1VR
+	99luOQjZdlUt0rnUe8sYm+a3ex6lh3gaBr6LujE9o/GqOYDiMALSBmyj44BbB/rn9MBZDHjvzCAF9
+	pBLAWRHwSowP/MwMODl7mbInoEP4SgBz+0wXGfzmyT4OoBV8qUGdosRhjsqCDUgIa3ykuO25XAv1i
+	5CqMOjow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rN8Db-007SNs-39;
-	Tue, 09 Jan 2024 09:16:19 +0000
+	id 1rN8DX-007SML-1y;
+	Tue, 09 Jan 2024 09:16:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rN8DY-007SMP-0p
+	id 1rN8DR-007SIi-2j
 	for barebox@lists.infradead.org;
-	Tue, 09 Jan 2024 09:16:17 +0000
+	Tue, 09 Jan 2024 09:16:12 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rN8DP-0000Om-1E; Tue, 09 Jan 2024 10:16:07 +0100
+	id 1rN8DO-0000Oj-Ty; Tue, 09 Jan 2024 10:16:06 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rN8DO-001RWa-Hy; Tue, 09 Jan 2024 10:16:06 +0100
+	id 1rN8DO-001RWW-G9; Tue, 09 Jan 2024 10:16:06 +0100
 Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rN8DO-001A9F-1b;
+	id 1rN8DO-001A8q-1Q;
 	Tue, 09 Jan 2024 10:16:06 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  9 Jan 2024 10:15:57 +0100
-Message-Id: <20240109091603.235589-5-s.hauer@pengutronix.de>
+Date: Tue,  9 Jan 2024 10:15:55 +0100
+Message-Id: <20240109091603.235589-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240109091603.235589-1-s.hauer@pengutronix.de>
 References: <20240109091603.235589-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240109_011616_293543_11580E1C 
-X-CRM114-Status: GOOD (  13.92  )
+X-CRM114-CacheID: sfid-20240109_011609_904675_A3EB57E4 
+X-CRM114-Status: GOOD (  12.18  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,108 +81,80 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 04/10] ARM: Layerscape: icid: rename functions
+Subject: [PATCH 02/10] ARM: Layerscape: LS1028a: reserve DDR region for TF-A
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We are working on unflattened trees, so use the more appropriate
-function prefix "of_" rather than "fdt_"
+On LS1028a the TF-A is placed in DDR, so we have to reserve the region
+in order to keep Linux away from it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-layerscape/icid.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ arch/arm/mach-layerscape/soc.c       | 2 ++
+ drivers/mci/imx-esdhc-pbl.c          | 3 ++-
+ include/mach/layerscape/layerscape.h | 8 ++++++++
+ 3 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-layerscape/icid.c b/arch/arm/mach-layerscape/icid.c
-index 11fab9c3b9..f0a9dc8063 100644
---- a/arch/arm/mach-layerscape/icid.c
-+++ b/arch/arm/mach-layerscape/icid.c
-@@ -292,7 +292,7 @@ static int get_fman_port_icid(int port_id, const struct fman_icid_id_table *tbl,
- 	return -ENODEV;
- }
+diff --git a/arch/arm/mach-layerscape/soc.c b/arch/arm/mach-layerscape/soc.c
+index 4d4ef05d4b..5f9d0d5171 100644
+--- a/arch/arm/mach-layerscape/soc.c
++++ b/arch/arm/mach-layerscape/soc.c
+@@ -91,6 +91,8 @@ static int ls1028a_init(void)
  
--static void fdt_set_iommu_prop(struct device_node *np, phandle iommu_handle,
-+static void of_set_iommu_prop(struct device_node *np, phandle iommu_handle,
- 			       int stream_id)
- {
- 	u32 prop[2];
-@@ -303,7 +303,7 @@ static void fdt_set_iommu_prop(struct device_node *np, phandle iommu_handle,
- 	of_set_property(np, "iommus", prop, sizeof(prop), 1);
- }
+ 	layerscape_register_pbl_image_handler();
  
--static void fdt_fixup_fman_port_icid_by_compat(struct device_node *root,
-+static void of_fixup_fman_port_icid_by_compat(struct device_node *root,
- 					       phandle iommu_handle,
- 					       const char *compat)
- {
-@@ -324,11 +324,11 @@ static void fdt_fixup_fman_port_icid_by_compat(struct device_node *root,
- 			continue;
- 		}
- 
--		fdt_set_iommu_prop(np, iommu_handle, icid);
-+		of_set_iommu_prop(np, iommu_handle, icid);
- 	}
- }
- 
--static void fdt_fixup_fman_icids(struct device_node *root, phandle iommu_handle)
-+static void of_fixup_fman_icids(struct device_node *root, phandle iommu_handle)
- {
- 	static const char * const compats[] = {
- 		"fsl,fman-v3-port-oh",
-@@ -338,7 +338,7 @@ static void fdt_fixup_fman_icids(struct device_node *root, phandle iommu_handle)
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(compats); i++)
--		fdt_fixup_fman_port_icid_by_compat(root, iommu_handle, compats[i]);
-+		of_fixup_fman_port_icid_by_compat(root, iommu_handle, compats[i]);
- }
- 
- struct qportal_info {
-@@ -452,7 +452,7 @@ static void setup_qbman_portals(void)
- 	inhibit_portals(qpaddr, ARRAY_SIZE(qp_info), QMAN_SP_CINH_SIZE);
- }
- 
--static void fdt_set_qportal_iommu_prop(struct device_node *np, phandle iommu_handle,
-+static void of_set_qportal_iommu_prop(struct device_node *np, phandle iommu_handle,
- 			       const struct qportal_info *qp_info)
- {
- 	u32 prop[6];
-@@ -467,7 +467,7 @@ static void fdt_set_qportal_iommu_prop(struct device_node *np, phandle iommu_han
- 	of_set_property(np, "iommus", prop, sizeof(prop), 1);
- }
- 
--static void fdt_fixup_qportals(struct device_node *root, phandle iommu_handle)
-+static void of_fixup_qportals(struct device_node *root, phandle iommu_handle)
- {
- 	struct device_node *np;
- 	unsigned int maj, min;
-@@ -487,7 +487,7 @@ static void fdt_fixup_qportals(struct device_node *root, phandle iommu_handle)
- 		if (ret)
- 			continue;
- 
--		fdt_set_qportal_iommu_prop(np, iommu_handle, &qp_info[cell_index]);
-+		of_set_qportal_iommu_prop(np, iommu_handle, &qp_info[cell_index]);
- 	}
- }
- 
-@@ -519,14 +519,14 @@ static int icid_of_fixup(struct device_node *root, void *context)
- 				continue;
- 
- 			if (res.start == icid->compat_addr) {
--				fdt_set_iommu_prop(np, iommu_handle, icid->id);
-+				of_set_iommu_prop(np, iommu_handle, icid->id);
- 				break;
- 			}
- 		}
- 	}
- 
--	fdt_fixup_fman_icids(root, iommu_handle);
--	fdt_fixup_qportals(root, iommu_handle);
-+	of_fixup_fman_icids(root, iommu_handle);
-+	of_fixup_qportals(root, iommu_handle);
- 
++	reserve_sdram_region("tfa", LS1028A_TFA_RESERVED_START, LS1028A_TFA_RESERVED_SIZE);
++
  	return 0;
  }
+ 
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 2c74d101e4..2d071eaca8 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -21,6 +21,7 @@
+ #endif
+ #ifdef CONFIG_ARCH_LAYERSCAPE
+ #include <mach/layerscape/xload.h>
++#include <mach/layerscape/layerscape.h>
+ #endif
+ #include "sdhci.h"
+ #include "imx-esdhc.h"
+@@ -387,7 +388,7 @@ static int ls1028a_esdhc_start_image(void __iomem *base, struct dram_regions_inf
+ 		.socdata = &data,
+ 	};
+ 	void *sdram = (void *)0x80000000;
+-	void (*bl31)(void) = (void *)0xfbe00000;
++	void (*bl31)(void) = (void *)LS1028A_TFA_RESERVED_START;
+ 	size_t bl31_size;
+ 	void *bl31_image;
+ 	struct bl2_to_bl31_params_mem_v2 *params;
+diff --git a/include/mach/layerscape/layerscape.h b/include/mach/layerscape/layerscape.h
+index a048b7ef9e..6f420dd4f4 100644
+--- a/include/mach/layerscape/layerscape.h
++++ b/include/mach/layerscape/layerscape.h
+@@ -3,6 +3,8 @@
+ #ifndef __MACH_LAYERSCAPE_H
+ #define __MACH_LAYERSCAPE_H
+ 
++#include <linux/sizes.h>
++
+ #define LS1046A_DDR_SDRAM_BASE		0x80000000
+ #define LS1046A_DDR_FREQ		2100000000
+ 
+@@ -16,6 +18,12 @@
+ #define LS1028A_SP_SHARED_DRAM_SIZE	SZ_2M
+ #define LS1028A_TZC400_BASE		0x01100000
+ 
++#define LS1028A_TFA_SIZE		SZ_64M
++#define LS1028A_TFA_SHRD		SZ_2M
++#define LS1028A_TFA_RESERVED_SIZE	(LS1028A_TFA_SIZE + LS1028A_TFA_SHRD)
++#define LS1028A_TFA_RESERVED_START	(0x100000000 - LS1028A_TFA_RESERVED_SIZE)
++#define LS1028A_TFA_START		(0x100000000 - LS1028A_TFA_SIZE)
++
+ enum bootsource ls1046a_bootsource_get(void);
+ enum bootsource ls1021a_bootsource_get(void);
+ 
 -- 
 2.39.2
 
