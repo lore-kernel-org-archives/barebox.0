@@ -1,75 +1,73 @@
-Delivery-date: Wed, 10 Jan 2024 15:18:35 +0100
+Delivery-date: Wed, 10 Jan 2024 15:18:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNZPf-00BiBm-0z
+	id 1rNZPg-00BiCG-2s
 	for lore@lore.pengutronix.de;
-	Wed, 10 Jan 2024 15:18:35 +0100
+	Wed, 10 Jan 2024 15:18:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNZPe-0007tr-P5
-	for lore@pengutronix.de; Wed, 10 Jan 2024 15:18:35 +0100
+	id 1rNZPg-0007uE-AO
+	for lore@pengutronix.de; Wed, 10 Jan 2024 15:18:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:Content-Transfer-Encoding
-	:Content-Type:MIME-Version:Message-Id:Date:Subject:From:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=3K4hvRfG0gMB1RZLLw41eKC3AFFQDLewom1VM7coy9Q=; b=xLK7CgIKmaS6yiqNH+xrLRwxCv
-	8ck1gjZXtcfek9Xco9zvi4heHPydL9+5Vhf8dq/dj/NbOZ+TTM3qZPtd22T7fjSBULHoT4M1icACn
-	KEYF02o9qF/TkkKb8XNfVrimbz0oga/v88/XCD9aqdgzdmmNaiwFY+fUaiL52FG4S8YVtpiKrYBlh
-	03+lAzj00FBfQW++UjhyyOeMH7VqLu86+AY4x/Ym4epp28s5c41EWmXyLpzY8F4sWSwT9oCbl+6GF
-	uw+zmVUirE8asPTZBAD0eeuRBMmkMfAzgmCqhNOdZGrUTzFkS0sZJ0ctDPkZZgzGt/rfWcv90xAIQ
-	nB1Kriag==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=CCMwZaLtnj8Fjuc/9B8jJM104gPDhLEYBPVr/2Rj210=; b=lMH79cQzgh4Td7piMmkjfabBKg
+	pplXxf+OV0orsAgJSAdBl1O1HJShcnXbcvXT5i6QO5zvoCVY7kCHnycF0i4n1bn7ZQWOGLCq6wC/T
+	/loy3IKa+E9+R/mZX2BCElRJS2a6LV6ie+cLLQ/zfW5tsZ/DNsvLcFFC+4+cdanOaXhP/avJ1uDNy
+	95bv9pPa3Qh8t8oj0+2TUw1UEWewYQTxp2WQOZOOL8r8ljKtIhMSZqkGhgrke3k2DYT2gp6GZFhaw
+	HoWqHDFACJJHfHmc6d/2H2CpFv2RnsFLwKgHkZ86XyoiTCjr0KAhMRPxMtrvshJyBlhC/0KcaIzwb
+	0r8R+CLg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNZOT-00CGGI-0k;
+	id 1rNZOT-00CGGY-33;
 	Wed, 10 Jan 2024 14:17:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNZOQ-00CGDZ-0q
+	id 1rNZOQ-00CGDc-0m
 	for barebox@lists.infradead.org;
 	Wed, 10 Jan 2024 14:17:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rNZOM-0007SX-SV; Wed, 10 Jan 2024 15:17:14 +0100
+	id 1rNZOM-0007SY-T0; Wed, 10 Jan 2024 15:17:14 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rNZOM-001ipT-G4; Wed, 10 Jan 2024 15:17:14 +0100
+	id 1rNZOM-001ipU-GR; Wed, 10 Jan 2024 15:17:14 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rNZOM-00DAdA-1Q;
+	id 1rNZOM-00DAdA-1R;
 	Wed, 10 Jan 2024 15:17:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 10 Jan 2024 15:17:10 +0100
-Message-Id: <20240110-scripts-omap3-usb-loader-fix-compilation-v1-0-0503f170fa59@pengutronix.de>
+Date: Wed, 10 Jan 2024 15:17:11 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOemnmUC/x2NQQqDQAwAvyI5G9hdKy39SvGQrrENqLskthTEv
- xt6HBhmdjBWYYN7s4PyV0zK6hDbBvKb1hejjM6QQrqEGANaVqmbYVmodvixJ86FRlac5Ie5LFV
- m2jyC157oFqlPUyDwXFV25b96DMdxAouwh1R6AAAA
+Message-Id: <20240110-scripts-omap3-usb-loader-fix-compilation-v1-1-0503f170fa59@pengutronix.de>
+References: <20240110-scripts-omap3-usb-loader-fix-compilation-v1-0-0503f170fa59@pengutronix.de>
+In-Reply-To: <20240110-scripts-omap3-usb-loader-fix-compilation-v1-0-0503f170fa59@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1704896234; l=533;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1704896234; l=1335;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=0sMFCGTPE8o0lNRFr0X4UEysR7B6PPXYmxNgeqXuKd8=;
- b=XjJv9XCU3S2vlqfKp7Pkvd6rB7Lc07S4w1TPrWHgNFPVuwkSngoV4DaDwXKQXc9vln+kFR4JG
- 7ZhUVf6aDqzDAvar7zXVKavEQ7cekdSG4yb6hbsWP5z1ImJmLREP49H
+ bh=FDbn2JSGDgOCzaAgjXZfBgDJUh4QtHxqLX0uz16BcAw=;
+ b=4x0X0/Xre6Kel6P0+pfws4DltdAWE3Gfnkt5DjpKNRU+9F0j3Gk0e+fATvM8XtyleElqKahAk
+ UQPLfeXWRAZB0ZldflDqp8aRD+f7ar6Fqqv6jFU+HA05IgQRE854PA+
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240110_061718_304730_2A721F62 
-X-CRM114-Status: UNSURE (   7.52  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240110_061718_284025_A8415235 
+X-CRM114-Status: GOOD (  10.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,27 +90,54 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 0/2] omap3-usb-loader fixes
+Subject: [PATCH 1/2] omap3-usb-loader: Fix compilation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This contains a few fixes for the omap3-usb-loader tool
+Since a4a04ec768e ("scripts: common: fix read_file_2 for windows")
+common.c includes compiler.h which defines cpu_to_le32 and friends
+which are also defined in omap3-usb-loader.c. Drop the duplicated
+definitions from omap3-usb-loader.c to make it compile again.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
-Sascha Hauer (2):
-      omap3-usb-loader: Fix compilation
-      omap3-usb-loader: Fix for big endian hosts
+ scripts/omap3-usb-loader.c | 13 -------------
+ 1 file changed, 13 deletions(-)
 
- scripts/omap3-usb-loader.c | 21 +++++----------------
- 1 file changed, 5 insertions(+), 16 deletions(-)
----
-base-commit: d1f8df4a012ec52f1b4bca785cfd2a67d690c09e
-change-id: 20240110-scripts-omap3-usb-loader-fix-compilation-75aa81a52f0a
+diff --git a/scripts/omap3-usb-loader.c b/scripts/omap3-usb-loader.c
+index 31a03be8e7..d9422a0916 100644
+--- a/scripts/omap3-usb-loader.c
++++ b/scripts/omap3-usb-loader.c
+@@ -19,10 +19,6 @@
+ #define PROG_NAME "OMAP Loader"
+ #define VERSION "1.0.0"
+ 
+-#if defined(__BYTE_ORDER__) && (__BYTE_ORDER__ == __ORDER_BIG_ENDIAN__)
+-#define OMAP_IS_BIG_ENDIAN
+-#endif
+-
+ #include <unistd.h>		/* for usleep and friends */
+ #include <getopt.h>
+ #include <errno.h>
+@@ -46,15 +42,6 @@
+ #define OMAP_USB_BULK_OUT 0x01
+ #define OMAP_ASIC_ID_LEN 69
+ 
+-#ifdef OMAP_IS_BIG_ENDIAN
+-#define cpu_to_le32(v) (((v & 0xff) << 24) | ((v & 0xff00) << 8) | \
+-    ((v & 0xff0000) >> 8) | ((v & 0xff000000) >> 24))
+-#define le32_to_cpu(v) cpu_to_le32(v)
+-#else
+-#define cpu_to_le32(v) (v)
+-#define le32_to_cpu(v) (v)
+-#endif
+-
+ /*
+  * taken from x-loader/drivers/usb/usb.c
+  * All credit to Martin Mueller
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.2
 
 
 
