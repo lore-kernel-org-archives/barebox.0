@@ -1,69 +1,64 @@
-Delivery-date: Wed, 10 Jan 2024 15:35:16 +0100
+Delivery-date: Wed, 10 Jan 2024 15:41:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNZfo-00Bj5x-0L
+	id 1rNZlb-00BjSV-1b
 	for lore@lore.pengutronix.de;
-	Wed, 10 Jan 2024 15:35:16 +0100
+	Wed, 10 Jan 2024 15:41:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNZfn-0002od-Fk
-	for lore@pengutronix.de; Wed, 10 Jan 2024 15:35:16 +0100
+	id 1rNZla-0003ow-Oo
+	for lore@pengutronix.de; Wed, 10 Jan 2024 15:41:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qpIS4YuHUfDaKIJSdPs/ZqNKEcP7vvi8e6dMVapa0y8=; b=ZUX8LPHVJauiSzXL5gfC5hhGIe
-	KBeD7vepFSFegQ/jn2wQ8iW4VkyH8KeD3PS+sawus/sNRrXaU7uE6q2yzyd8unt4fMeOgGBft1Lre
-	4nX9fmVN5LwP7u53/mnmRNS36avg6IGaoJmiFe5Iw2qMET8Dm8yiQ0cZHifzCDkt9iJ8M0Lz/xOKQ
-	RYd0KoRc4HjDSc2b48zb1GogrCVL5wD/mq+Kad02j64URyIaPVF6MjHNWPWZrQRU4fSMTadZ79017
-	bT0RacbU7gjRm+O6GSHZlam/83jPdO4R3fAOmy/2s+EHTzUrXBnUwhM97wuzBzzJCfOBfFRpZjbsB
-	K1NOeFiw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=YIsf4LSX8pLjMXohq2+YDKCQhv38xT2CR3H/CQm6fPE=; b=qUWmPjKRoX2cxXH1fLYV0gKEaI
+	sjKFn7by4wkNn6ws0xwEAWi+GtURA6fAj0ZLnhC0VkhkMI6bU4OXBtMBbG+X1O2lisIYD42K0FyfQ
+	Zh8Yw3LGv9dcpslYle58tjkZQHjXn+uW2kS19EsPWByCD0HenN1/gkj1iyDPiQS+tSLWC8D/vr5sK
+	rnZwk8x2nzG+5H7s7Thu9Wv/Ve0maXVrZlMIkLBrgmvVYDxkbQFfH5lSxji+4x4c2EPWlyR8fXZzT
+	YIBnqASq2/6G6bbXvDPMT9L/vJfVpGw6prarz4vwiLW1Eu52E2O38/ud0Iyvz4kBnwjWk1ChU6HPx
+	Y4rF+aNQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNZeg-00CLqE-0G;
-	Wed, 10 Jan 2024 14:34:06 +0000
+	id 1rNZkZ-00CN69-0c;
+	Wed, 10 Jan 2024 14:40:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNZec-00CLp0-35
+	id 1rNZkW-00CN5F-1j
 	for barebox@lists.infradead.org;
-	Wed, 10 Jan 2024 14:34:04 +0000
+	Wed, 10 Jan 2024 14:40:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rNZeb-0002ao-2g; Wed, 10 Jan 2024 15:34:01 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rNZkT-0003Yz-NP; Wed, 10 Jan 2024 15:40:05 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rNZea-001iry-MJ; Wed, 10 Jan 2024 15:34:00 +0100
-Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rNZea-00BDua-JX; Wed, 10 Jan 2024 15:34:00 +0100
-Date: Wed, 10 Jan 2024 15:34:00 +0100
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20240110143400.GR1318922@pengutronix.de>
-References: <20240110091538.3130283-1-a.fatoum@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rNZkT-001iur-Ag; Wed, 10 Jan 2024 15:40:05 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rNZkT-00FpdD-0m;
+	Wed, 10 Jan 2024 15:40:05 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 10 Jan 2024 15:39:58 +0100
+Message-Id: <20240110143958.3773360-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240110091538.3130283-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-User-Agent: Mutt/1.10.1 (2018-07-13)
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240110_063403_001512_1D564D97 
-X-CRM114-Status: GOOD (  28.02  )
+X-CRM114-CacheID: sfid-20240110_064008_598802_A1B650AE 
+X-CRM114-Status: GOOD (  18.23  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,96 +76,180 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] fixup! pblimage: pblimage: Add LS1028a support
+Subject: [PATCH RFC] bootm: support printing bootm parameters determined at runtime to file
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Jan 10, 2024 at 10:15:38AM +0100, Ahmad Fatoum wrote:
-> soc_index is not only used for comparisons, but also as index into the
-> socs[] array. However, the array starts with SOC_TYPE_LS1046A and the
-> enum with SOC_TYPE_INVALID leading to socs[SOC_TYPE_LS1046A].soc
-> == SOC_TYPE_LS1028A and socs[SOC_TYPE_LS1028A] to overflow the array.
-> 
-> This broke LS1046A boot and LS1028A seems to have only worked by chance,
-> because the memory after socs[] happened to be zeroed.
-> 
-> Fix this by reordering the enum and while at it remove the redundancy in
-> having both the index and the soc member be the same value.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  scripts/pblimage.c | 14 ++++++--------
->  1 file changed, 6 insertions(+), 8 deletions(-)
+The barebox bootm command is often not called directly, but via
+bootloader spec or FIT image boot handlers. For debugging, it can be
+useful to reuse those boot handlers, but replace single artifacts, e.g.
+using the barebox device tree instead of the bootloader-spec provided
+device tree.
 
-Applied, thanks
+To make this easier, have boot -v -d (verbose + dry run) write a boot
+script that reproduces the cancelled boot to /env/boot/cancelled.
 
-Sascha
+The user can then edit the file and boot it manually.
 
-> 
-> diff --git a/scripts/pblimage.c b/scripts/pblimage.c
-> index 8cb473d5bcf2..ef09b0f96084 100644
-> --- a/scripts/pblimage.c
-> +++ b/scripts/pblimage.c
-> @@ -57,30 +57,28 @@ static uint32_t pbi_crc_cmd1;
->  static uint32_t pbi_crc_cmd2;
->  
->  enum soc_type {
-> -	SOC_TYPE_INVALID,
-> +	SOC_TYPE_INVALID = -1,
->  	SOC_TYPE_LS1046A,
->  	SOC_TYPE_LS1028A,
->  };
->  
->  struct soc_type_entry {
->  	const char *name;
-> -	enum soc_type soc;
->  	bool big_endian;
->  };
->  
->  static struct soc_type_entry socs[] = {
-> -	{
-> +	[SOC_TYPE_LS1046A] = {
->  		.name = "ls1046a",
-> -		.soc = SOC_TYPE_LS1046A,
->  		.big_endian = true,
-> -	}, {
-> +	},
-> +	[SOC_TYPE_LS1028A] = {
->  		.name = "ls1028a",
-> -		.soc = SOC_TYPE_LS1028A,
->  		.big_endian = false,
->  	},
->  };
->  
-> -static enum soc_type soc_type;
-> +static enum soc_type soc_type = SOC_TYPE_INVALID;
->  
->  static char *rcwfile;
->  static char *pbifile;
-> @@ -413,7 +411,7 @@ int main(int argc, char *argv[])
->  
->  	for (i = 0; i < ARRAY_SIZE(socs); i++) {
->  		if (!strcmp(socs[i].name, cputypestr)) {
-> -			soc_type = socs[i].soc;
-> +			soc_type = i;
->  			break;
->  		}
->  	}
-> -- 
-> 2.39.2
-> 
-> 
-> 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ commands/bootm.c | 85 ++++++++++++++++++++++++++++++++++++++++++++++++
+ common/bootm.c   | 10 +++++-
+ include/bootm.h  |  9 +++++
+ 3 files changed, 103 insertions(+), 1 deletion(-)
 
+diff --git a/commands/bootm.c b/commands/bootm.c
+index 95d267135cdb..520f041b6bac 100644
+--- a/commands/bootm.c
++++ b/commands/bootm.c
+@@ -8,6 +8,7 @@
+ #include <driver.h>
+ #include <command.h>
+ #include <image.h>
++#include <boot.h>
+ #include <malloc.h>
+ #include <environment.h>
+ #include <asm/byteorder.h>
+@@ -36,6 +37,90 @@
+ #define BOOTM_OPTS BOOTM_OPTS_COMMON
+ #endif
+ 
++int bootm_print_cmd(const char *file, const struct bootm_data *data)
++{
++	int fd = CONSOLE_STDOUT;
++	const char *bootargs;
++	const char *verify = "";
++
++	if (!IS_ENABLED(CONFIG_GLOBALVAR))
++		return -ENOSYS;
++
++	if (file) {
++		fd = creat(file, 0755);
++		if (fd < 0)
++			return fd;
++	}
++
++	dprintf(fd, "#!/bin/sh\n\n");
++
++	if (data->appendroot)
++		dprintf(fd, "global.bootm.appendroot=%u\n", data->appendroot);
++	if (data->root_dev)
++		dprintf(fd, "global.bootm.root_dev='%s'\n", data->root_dev);
++	if (data->provide_machine_id)
++		dprintf(fd, "global.bootm.machine_id=%u\n", data->provide_machine_id);
++
++	switch (data->verify) {
++	case BOOTM_VERIFY_NONE:
++		verify = "none";
++		break;
++	case BOOTM_VERIFY_HASH:
++		verify = "hash";
++		break;
++	case BOOTM_VERIFY_AVAILABLE:
++		verify = "available";
++		break;
++	case BOOTM_VERIFY_SIGNATURE:
++		verify = "signature";
++		break;
++	}
++
++	dprintf(fd, "global.bootm.verify=%s\n", verify);
++
++	dprintf(fd, "\n");
++
++	if (data->os_address != UIMAGE_SOME_ADDRESS)
++		dprintf(fd, "global.bootm.image.loadaddr=0x%08lx\n", data->os_address);
++	if (data->os_file)
++		dprintf(fd, "global.bootm.image='%s'\n", data->os_file);
++	if (data->oftree_file)
++		dprintf(fd, "global.bootm.oftree='%s'\n", data->oftree_file);
++#ifdef CONFIG_BOOTM_INITRD
++	if (data->initrd_file)
++		dprintf(fd, "global.bootm.initrd='%s'\n", data->initrd_file);
++
++	if (data->initrd_address != UIMAGE_INVALID_ADDRESS)
++		dprintf(fd, "global.bootm.initrd.loadaddr=0x%08lx\n", data->initrd_address);
++#endif
++	if (data->tee_file)
++		dprintf(fd, "global.bootm.tee_file='%s'\n", data->tee_file);
++
++	dprintf(fd, "\n");
++
++	bootargs = linux_bootargs_get();
++	if (bootargs)
++		dprintf(fd, "global linux.bootargs.dyn.concatenated='%s'\n", bootargs);
++
++	if (data->force || data->os_entry != UIMAGE_SOME_ADDRESS) {
++		/* We have no global variables for these two parameters yet, so
++		 * we just print a comment to alert the user to this fact
++		 */
++
++		dprintf(fd, "\n# bootm ");
++		if (data->force)
++				dprintf(fd, "-f ");
++		if (data->os_entry != UIMAGE_SOME_ADDRESS)
++				dprintf(fd, "-e %08lx ", data->os_entry);
++		dputc(fd, '\n');
++	}
++
++	if (file)
++		close(fd);
++
++	return 0;
++}
++
+ static int do_bootm(int argc, char *argv[])
+ {
+ 	int opt;
+diff --git a/common/bootm.c b/common/bootm.c
+index 29ea13e28cb8..3ecd788e7b16 100644
+--- a/common/bootm.c
++++ b/common/bootm.c
+@@ -825,8 +825,16 @@ int bootm_boot(struct bootm_data *bootm_data)
+ 	}
+ 
+ 	ret = handler->bootm(data);
+-	if (data->dryrun)
++	if (data->dryrun) {
+ 		pr_info("Dryrun. Aborted\n");
++		if (bootm_verbose(data)) {
++			const char *file = "/env/boot/cancelled";
++			if (!bootm_print_cmd(file, bootm_data))
++				pr_info("Boot script written to %s\n", file);
++			else
++				pr_warn("Boot script write to %s failed: %m\n", file);
++		}
++	}
+ 
+ err_out:
+ 	if (data->os_res)
+diff --git a/include/bootm.h b/include/bootm.h
+index ee2b574521db..53d2905ca992 100644
+--- a/include/bootm.h
++++ b/include/bootm.h
+@@ -41,6 +41,15 @@ struct bootm_data {
+ 
+ int bootm_boot(struct bootm_data *data);
+ 
++#ifdef CONFIG_CMD_BOOTM
++int bootm_print_cmd(const char *file, const struct bootm_data *data);
++#else
++static inline int bootm_print_cmd(const char *file, const struct bootm_data *data)
++{
++	return -ENOSYS;
++}
++#endif
++
+ struct image_data {
+ 	/* simplest case. barebox has already loaded the os here */
+ 	struct resource *os_res;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
