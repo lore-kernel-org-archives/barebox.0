@@ -1,55 +1,55 @@
-Delivery-date: Thu, 11 Jan 2024 12:50:35 +0100
+Delivery-date: Thu, 11 Jan 2024 12:50:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNtZz-00Cw2Z-2v
+	id 1rNta0-00Cw2u-1g
 	for lore@lore.pengutronix.de;
-	Thu, 11 Jan 2024 12:50:35 +0100
+	Thu, 11 Jan 2024 12:50:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNtZy-0002N1-GO
-	for lore@pengutronix.de; Thu, 11 Jan 2024 12:50:35 +0100
+	id 1rNtZz-0002Nl-4j
+	for lore@pengutronix.de; Thu, 11 Jan 2024 12:50:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jnUq0qoON8QjAdH+wu/OSyAZfKduxyvFH1uiLDXYEC8=; b=kyf/KtR+U3flLYlsFhVCNGn+Dc
-	VAfzNPp+rQobAMFSGNl6y8tzwTm3YdkGipRcPuebehBCS3CuF25M4IaEaQrJBCkBYHSun5Y4yvbKg
-	19kCunBtX4zUDaK4Hlfp5nMxENzNEup/ebv7lhUFbVhYz766oABPJU8fkfXJuAFMXpNJjZu1tV7Ot
-	aNRn8NqV2iHNiFcWGBc/mtP6Qmz6KKdgqmJNHggRpmVT6hahmJ9VKhZnDzkg5qvvnreUY0AnOGo7U
-	ASca+eC/zV7MjXQXuHgE0d/7ElLhDs1OjKpm18W5cFcm9yifKTonTgD0EIDbQgYx9njW6gRH9B534
-	BcqjD6rg==;
+	bh=7M/e3GRKiuZ9D+3qK826+4i+YdxkQmSB6G36tIE19Xc=; b=SIRcOEHOMktfEpIHcMX8zqCGCi
+	cnB79RBjqE1XHL6Wa+1UQZuIedrvoO71dkl4lkAFzb3TOxQ4SuG/Jhhmy86D7xvDwgh57rHkHYbNQ
+	KAARRycgDaVEoxLkcOT3CHQWehoQBLTRW5sVl1rrGpc1hvdyN0eZNNQhThTPKoZWMb1GhD+kUOoDT
+	ossSrl1baMzWgHxhCkryVjDSGBF4fRzXltgW14ro3rev7HKGCZ/IQFfKwpHdForjDIvN/H+qc2+h3
+	N8d1MCXoymyKdW2sL/DpSgx7G8mjvXeZRTR7GjuVxKFTp6g7Ow+kS0yXuhjmbbUjJ4at9IuUy+EZR
+	CTqdZe1Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtYZ-00HSkK-03;
-	Thu, 11 Jan 2024 11:49:07 +0000
+	id 1rNtYV-00HShq-1J;
+	Thu, 11 Jan 2024 11:49:03 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtYP-00HSah-15
+	id 1rNtYP-00HSan-15
 	for barebox@lists.infradead.org;
-	Thu, 11 Jan 2024 11:49:01 +0000
+	Thu, 11 Jan 2024 11:49:00 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1rNtYK-000137-IW
+	id 1rNtYK-000137-Nv
 	for barebox@lists.infradead.org; Thu, 11 Jan 2024 12:48:52 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 11 Jan 2024 12:48:26 +0100
-Message-Id: <20240111114841.2676939-4-m.felsch@pengutronix.de>
+Date: Thu, 11 Jan 2024 12:48:31 +0100
+Message-Id: <20240111114841.2676939-9-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240111114841.2676939-1-m.felsch@pengutronix.de>
 References: <20240111114841.2676939-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240111_034857_596906_B9AA1A82 
-X-CRM114-Status: UNSURE (   9.61  )
+X-CRM114-CacheID: sfid-20240111_034857_579317_E63D6A81 
+X-CRM114-Status: UNSURE (   9.83  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -73,85 +73,42 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 03/18] ARM: i.MX8M: scratch: make imx_scratch_space private
+Subject: [PATCH 08/18] optee: add support to verify 64-bit headers as well
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Make the scratch layout opaque and provide required accessor functions
-to make it easier to extent it later on.
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 
+Guard the check by IS_ENABLED() to make it possible to verify 32-bit and
+64-bit optee headers.
+
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-imx/romapi.c  |  6 ++----
- arch/arm/mach-imx/scratch.c | 12 +++++++++++-
- include/mach/imx/scratch.h  |  6 ++----
- 3 files changed, 15 insertions(+), 9 deletions(-)
+ common/optee.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/romapi.c b/arch/arm/mach-imx/romapi.c
-index e11f38202461..51e35c9d2aa2 100644
---- a/arch/arm/mach-imx/romapi.c
-+++ b/arch/arm/mach-imx/romapi.c
-@@ -220,10 +220,8 @@ const u32 *imx8m_get_bootrom_log(void)
- 		return (u32 *)rom_log_addr;
+diff --git a/common/optee.c b/common/optee.c
+index 32a6c0a15b94..fd2b03d06d2d 100644
+--- a/common/optee.c
++++ b/common/optee.c
+@@ -14,8 +14,14 @@ int optee_verify_header(struct optee_header *hdr)
+ 		return -EINVAL;
  	}
  
--	if (!IN_PBL) {
--		const struct imx_scratch_space *scratch = arm_mem_scratch_get();
--		return scratch->bootrom_log;
--	}
-+	if (!IN_PBL)
-+		return imx8m_scratch_get_bootrom_log();
- 
- 	return NULL;
- }
-diff --git a/arch/arm/mach-imx/scratch.c b/arch/arm/mach-imx/scratch.c
-index 0828b55ff8e5..fba00955c095 100644
---- a/arch/arm/mach-imx/scratch.c
-+++ b/arch/arm/mach-imx/scratch.c
-@@ -8,7 +8,11 @@
- #include <mach/imx/scratch.h>
- #include <memory.h>
- 
--struct imx_scratch_space *__imx8m_scratch_space(int ddr_buswidth)
-+struct imx_scratch_space {
-+	u32 bootrom_log[128];
-+};
+-	if (hdr->arch != OPTEE_ARCH_ARM32 || hdr->init_load_addr_hi) {
+-		pr_err("Only 32bit supported\n");
++	if (IS_ENABLED(CPU_V7) &&
++	    (hdr->arch != OPTEE_ARCH_ARM32 || hdr->init_load_addr_hi)) {
++		pr_err("Wrong OP-TEE Arch for ARM v7 CPU\n");
++		return -EINVAL;
++	}
 +
-+void *__imx8m_scratch_space(int ddr_buswidth)
- {
- 	ulong endmem = MX8M_DDR_CSD1_BASE_ADDR +
- 		imx8m_barebox_earlymem_size(ddr_buswidth);
-@@ -16,6 +20,12 @@ struct imx_scratch_space *__imx8m_scratch_space(int ddr_buswidth)
- 	return (void *)arm_mem_scratch(endmem);
- }
++	if (IS_ENABLED(CPU_V8) && hdr->arch != OPTEE_ARCH_ARM64) {
++		pr_err("Wrong OP-TEE Arch for ARM v8 CPU\n");
+ 		return -EINVAL;
+ 	}
  
-+const u32 *imx8m_scratch_get_bootrom_log(void)
-+{
-+	const struct imx_scratch_space *scratch = arm_mem_scratch_get();
-+	return scratch->bootrom_log;
-+}
-+
- static int imx8m_reserve_scratch_area(void)
- {
- 	return PTR_ERR_OR_ZERO(request_sdram_region("scratch area",
-diff --git a/include/mach/imx/scratch.h b/include/mach/imx/scratch.h
-index 6dcf35750caf..9b01cf315622 100644
---- a/include/mach/imx/scratch.h
-+++ b/include/mach/imx/scratch.h
-@@ -3,11 +3,9 @@
- #ifndef __MACH_IMX_SCRATCH_H
- #define __MACH_IMX_SCRATCH_H
- 
--struct imx_scratch_space {
--	u32 bootrom_log[128];
--};
-+void *__imx8m_scratch_space(int ddr_buswidth);
- 
--struct imx_scratch_space *__imx8m_scratch_space(int ddr_buswidth);
-+const u32 *imx8m_scratch_get_bootrom_log(void);
- 
- #define imx8mq_scratch_space() __imx8m_scratch_space(32)
- #define imx8mm_scratch_space() __imx8m_scratch_space(32)
 -- 
 2.39.2
 
