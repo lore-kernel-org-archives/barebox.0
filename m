@@ -1,55 +1,55 @@
-Delivery-date: Thu, 11 Jan 2024 12:50:31 +0100
+Delivery-date: Thu, 11 Jan 2024 12:50:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNtZv-00Cw1f-2M
+	id 1rNtZy-00Cw2A-24
 	for lore@lore.pengutronix.de;
-	Thu, 11 Jan 2024 12:50:31 +0100
+	Thu, 11 Jan 2024 12:50:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNtZu-0002Ic-9o
-	for lore@pengutronix.de; Thu, 11 Jan 2024 12:50:31 +0100
+	id 1rNtZx-0002MA-R1
+	for lore@pengutronix.de; Thu, 11 Jan 2024 12:50:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LVTUMrFAJGvrqRAQp24BJEOI7XCL8I6TbAaZgMpZg9A=; b=Q8BWnas3SWvZvmO1GeEi6YA1hO
-	meLs7dZboK2HMFMKfO75qVmmWOVQmhyy4ny51NIhEIbcKih5QZOaTEAaz+D8jugbwnJL62tW3P9ZR
-	Au2H4JHjBHFD/MXygT2m3iLPdzEcB7MoIXOXWjqIVlnyNVg5/RwvcZqf8LNxpn7ay6MeJdcbKSeE1
-	OBRiuIJC1tUdaYYG2qXWp1Aan9lea1dUS0sYGpjSBPW1PotKEX8owSyiQrnWgN/WU7vm3ax2/wqTe
-	WsTkr26YifORwGrWdFeusWHAlpmDq8HhujXRmTdHtVceOflCo/h/vc7g1643Zu6f7bxGxjn8t3Qny
-	mO3yQktw==;
+	bh=uLzMSl1gV/ev9IuLUgkXz1HyE+py8FHniRdMQvrmbhg=; b=BlXGfLgPl9hv5sC9qOp62rYkIf
+	grFHtUuYl0AWpWm5RAMzVVX71EDbMbC7Z/b/urpBhi96qCY2DjrdRdy1eaA51n5Dd3OP0L2SVzEPG
+	MN3EzfhxQsgSNiGQ2yLGbmfRLSKAUvdhKF8qNXqXfSrelA1fSzax2bV5pKMef7Hjyc6Tsb7hZ+H/M
+	JIT8SIZjI+LYcOC8hTx0dWy7IH7ifm8GB9ZMRJ4Y7PJ4jbpS5MKuxDOCN6Aztlu74oe0fU/zXJiM9
+	SltgopAWfJQMFgaJ3JRBz++rGcbIIDw7mlIb3scsvasRC7P4+eo9feR5QlvrvWmknxnDPyUqA+EZD
+	pchCia+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtYY-00HSjQ-0Q;
-	Thu, 11 Jan 2024 11:49:06 +0000
+	id 1rNtYc-00HSnE-2l;
+	Thu, 11 Jan 2024 11:49:10 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtYP-00HSam-15
+	id 1rNtYP-00HSag-15
 	for barebox@lists.infradead.org;
-	Thu, 11 Jan 2024 11:49:01 +0000
+	Thu, 11 Jan 2024 11:49:03 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1rNtYK-000137-Mu
+	id 1rNtYK-000137-HT
 	for barebox@lists.infradead.org; Thu, 11 Jan 2024 12:48:52 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 11 Jan 2024 12:48:30 +0100
-Message-Id: <20240111114841.2676939-8-m.felsch@pengutronix.de>
+Date: Thu, 11 Jan 2024 12:48:25 +0100
+Message-Id: <20240111114841.2676939-3-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240111114841.2676939-1-m.felsch@pengutronix.de>
 References: <20240111114841.2676939-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240111_034857_603966_F638800D 
-X-CRM114-Status: GOOD (  13.00  )
+X-CRM114-CacheID: sfid-20240111_034857_575685_9F2D9E93 
+X-CRM114-Status: GOOD (  16.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,54 +72,168 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 07/18] common: add OPTEE_SHM_SIZE to configure optee shared memory
+Subject: [PATCH 02/18] ARM: i.MX8M: bundle imx-scratch code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-An size of 4M seems quite large and upstream OP-TEE code mostly uses 2M
-for all i.MX platforms. However keep the 4M as default but make it
-configurable for integrators which want to use the autom. OF fixup
-logic.
+The scatch code spread over the code base which is ok as long as we use
+it for the bootrom-log only.
+
+This commit bundles the scratch code into a own module to make it easier
+to adapt later on and to make the scratch space independent of
+CONFIG_ARCH_IMX_ROMAPI.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-imx/imx8m.c | 2 +-
- common/Kconfig            | 9 +++++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/Makefile       |  2 +-
+ arch/arm/mach-imx/romapi.c       |  8 --------
+ arch/arm/mach-imx/scratch.c      | 25 +++++++++++++++++++++++++
+ arch/arm/mach-imx/xload-common.c |  8 --------
+ include/mach/imx/romapi.h        |  2 +-
+ include/mach/imx/scratch.h       | 17 +++++++++++++++++
+ include/mach/imx/xload.h         | 11 -----------
+ 7 files changed, 44 insertions(+), 29 deletions(-)
+ create mode 100644 arch/arm/mach-imx/scratch.c
+ create mode 100644 include/mach/imx/scratch.h
 
-diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
-index c7c799c64bc4..90dc12ca18cc 100644
---- a/arch/arm/mach-imx/imx8m.c
-+++ b/arch/arm/mach-imx/imx8m.c
-@@ -68,7 +68,7 @@ static int imx8m_init(const char *cputypestr)
- 	if (IS_ENABLED(CONFIG_PBL_OPTEE) && tzc380_is_enabled() &&
- 	    !of_find_node_by_path_from(NULL, "/firmware/optee")) {
- 		static struct of_optee_fixup_data optee_fixup_data = {
--			.shm_size = SZ_4M,
-+			.shm_size = CONFIG_OPTEE_SHM_SIZE,
- 			.method = "smc",
- 		};
+diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+index 3a51ae87813a..9505cffa8111 100644
+--- a/arch/arm/mach-imx/Makefile
++++ b/arch/arm/mach-imx/Makefile
+@@ -17,7 +17,7 @@ CFLAGS_imx6.o := -march=armv7-a
+ lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
+ obj-$(CONFIG_ARCH_IMX7) += imx7.o
+ obj-$(CONFIG_ARCH_VF610) += vf610.o
+-obj-pbl-$(CONFIG_ARCH_IMX8M) += imx8m.o
++obj-pbl-$(CONFIG_ARCH_IMX8M) += imx8m.o scratch.o
+ obj-$(CONFIG_ARCH_IMX9) += imx9.o
+ lwl-$(CONFIG_ARCH_IMX_ATF) += atf.o
+ obj-pbl-$(CONFIG_ARCH_IMX8M) += tzasc.o
+diff --git a/arch/arm/mach-imx/romapi.c b/arch/arm/mach-imx/romapi.c
+index 6d47f3c6d4af..e11f38202461 100644
+--- a/arch/arm/mach-imx/romapi.c
++++ b/arch/arm/mach-imx/romapi.c
+@@ -228,14 +228,6 @@ const u32 *imx8m_get_bootrom_log(void)
+ 	return NULL;
+ }
  
-diff --git a/common/Kconfig b/common/Kconfig
-index 1de76651fddf..5b5da6224752 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -1136,6 +1136,15 @@ config OPTEE_SIZE
- 	  Can be smaller than the actual size used by OP-TEE, this is used to prevent
- 	  barebox from allocating memory in this area.
- 
-+config OPTEE_SHM_SIZE
-+	hex
-+	default 0x400000
-+	prompt "OP-TEE Shared Memory Size"
-+	depends on HAVE_OPTEE
-+	help
-+	  Size to reserve in main memory for OP-TEE shared memory communication.
-+	  Can be used for fixing up the OP-TEE OF node.
+-static int imx8m_reserve_scratch_area(void)
+-{
+-	return PTR_ERR_OR_ZERO(request_sdram_region("scratch area",
+-				    (ulong)arm_mem_scratch_get(),
+-				    sizeof(struct imx_scratch_space)));
+-}
+-device_initcall(imx8m_reserve_scratch_area);
+-
+ void imx8m_save_bootrom_log(void *dest)
+ {
+ 	const u32 *rom_log;
+diff --git a/arch/arm/mach-imx/scratch.c b/arch/arm/mach-imx/scratch.c
+new file mode 100644
+index 000000000000..0828b55ff8e5
+--- /dev/null
++++ b/arch/arm/mach-imx/scratch.c
+@@ -0,0 +1,25 @@
++// SPDX-License-Identifier: GPL-2.0-only
 +
- config BOOTM_OPTEE
- 	bool
- 	prompt "support booting OP-TEE"
++#include <asm/barebox-arm.h>
++#include <init.h>
++#include <linux/err.h>
++#include <mach/imx/imx8m-regs.h>
++#include <mach/imx/esdctl.h>
++#include <mach/imx/scratch.h>
++#include <memory.h>
++
++struct imx_scratch_space *__imx8m_scratch_space(int ddr_buswidth)
++{
++	ulong endmem = MX8M_DDR_CSD1_BASE_ADDR +
++		imx8m_barebox_earlymem_size(ddr_buswidth);
++
++	return (void *)arm_mem_scratch(endmem);
++}
++
++static int imx8m_reserve_scratch_area(void)
++{
++	return PTR_ERR_OR_ZERO(request_sdram_region("scratch area",
++				    (ulong)arm_mem_scratch_get(),
++				    sizeof(struct imx_scratch_space)));
++}
++device_initcall(imx8m_reserve_scratch_area);
+diff --git a/arch/arm/mach-imx/xload-common.c b/arch/arm/mach-imx/xload-common.c
+index 03eb2ef109e3..0c02e664a84b 100644
+--- a/arch/arm/mach-imx/xload-common.c
++++ b/arch/arm/mach-imx/xload-common.c
+@@ -21,14 +21,6 @@ int piggydata_size(void)
+ 	return input_data_end - input_data;
+ }
+ 
+-struct imx_scratch_space *__imx8m_scratch_space(int ddr_buswidth)
+-{
+-	ulong endmem = MX8M_DDR_CSD1_BASE_ADDR +
+-		imx8m_barebox_earlymem_size(ddr_buswidth);
+-
+-	return (void *)arm_mem_scratch(endmem);
+-}
+-
+ #define HDR_SIZE	512
+ 
+ static int
+diff --git a/include/mach/imx/romapi.h b/include/mach/imx/romapi.h
+index 959d165a3323..977095a5a2f5 100644
+--- a/include/mach/imx/romapi.h
++++ b/include/mach/imx/romapi.h
+@@ -2,7 +2,7 @@
+ #ifndef __MACH_IMX_ROMAPI_H
+ #define __MACH_IMX_ROMAPI_H
+ 
+-#include <mach/imx/xload.h>
++#include <mach/imx/scratch.h>
+ #include <linux/types.h>
+ 
+ struct rom_api {
+diff --git a/include/mach/imx/scratch.h b/include/mach/imx/scratch.h
+new file mode 100644
+index 000000000000..6dcf35750caf
+--- /dev/null
++++ b/include/mach/imx/scratch.h
+@@ -0,0 +1,17 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef __MACH_IMX_SCRATCH_H
++#define __MACH_IMX_SCRATCH_H
++
++struct imx_scratch_space {
++	u32 bootrom_log[128];
++};
++
++struct imx_scratch_space *__imx8m_scratch_space(int ddr_buswidth);
++
++#define imx8mq_scratch_space() __imx8m_scratch_space(32)
++#define imx8mm_scratch_space() __imx8m_scratch_space(32)
++#define imx8mn_scratch_space() __imx8m_scratch_space(16)
++#define imx8mp_scratch_space() __imx8m_scratch_space(32)
++
++#endif /* __MACH_IMX_SCRATCH_H */
+diff --git a/include/mach/imx/xload.h b/include/mach/imx/xload.h
+index 2c2d2fa3c52d..965e73772ceb 100644
+--- a/include/mach/imx/xload.h
++++ b/include/mach/imx/xload.h
+@@ -43,15 +43,4 @@ int piggydata_size(void);
+ extern unsigned char input_data[];
+ extern unsigned char input_data_end[];
+ 
+-struct imx_scratch_space {
+-	u32 bootrom_log[128];
+-};
+-
+-struct imx_scratch_space *__imx8m_scratch_space(int ddr_buswidth);
+-
+-#define imx8mq_scratch_space() __imx8m_scratch_space(32)
+-#define imx8mm_scratch_space() __imx8m_scratch_space(32)
+-#define imx8mn_scratch_space() __imx8m_scratch_space(16)
+-#define imx8mp_scratch_space() __imx8m_scratch_space(32)
+-
+ #endif /* __MACH_IMX_XLOAD_H */
 -- 
 2.39.2
 
