@@ -1,70 +1,68 @@
-Delivery-date: Thu, 11 Jan 2024 12:51:02 +0100
+Delivery-date: Thu, 11 Jan 2024 12:52:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNtaQ-00Cw8v-18
+	id 1rNtbq-00CwCv-17
 	for lore@lore.pengutronix.de;
-	Thu, 11 Jan 2024 12:51:02 +0100
+	Thu, 11 Jan 2024 12:52:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNtaP-0002pi-3U
-	for lore@pengutronix.de; Thu, 11 Jan 2024 12:51:02 +0100
+	id 1rNtbp-0003Zw-Hq
+	for lore@pengutronix.de; Thu, 11 Jan 2024 12:52:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hNWmOw0eEYJ5xxSs+Tg7ckhmyO4zVdSryKhX8RIhqRA=; b=nfnd2Yg6azyv8o10jUL0LzSmhs
-	ZsffJlEqOSLW3E08f4+eU8kasKA2PoGWTEBdYC4SZDQpGHlHogM/1MVQtC/gpPv/rTdj7nzcOkX/Y
-	NoqpFqCI7mOduq0lEK+5wBrC8kNmA7es0JqShUzDoQ2aoKWp3Z+VKR1Pc4E5wkibaaGogYquXEqYs
-	n+HQ+IYurrn1DF15inOcIlqHbBc1UNhnAmcnQXk1CbgsW5jmaUsZQ2Lh+54cBC4aCOSU9UqdX0nuM
-	iyo/F6uszcT1gZ3ZwRgV4Wiyg1zA1Rxtv/AJPXR9S3YrCJEdG2CnrlLBaUwwESI3I/LlSd7DOE3qK
-	g8Kt5wIg==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=IgwP2RuCFaKJmKVsNgulgF3vkbzYMc2/vPE8DwVLIRI=; b=E/k2JgNT+ePh4SM9TMGAKYWt9d
+	fWOoi+zFD8WQHsnNwxEu28PZ+3NuMGikgRyvS6Mt/f1vej+ta7l18wIwH9weucBZOaYgvxvQELuXG
+	JuVynUklcJtwQURfgHpl7QsPTrEZ5YxM/rKVa2VaTNNbxPtmjFEUdjyxhxwfUK+g15n9CQbmXz+Ea
+	Ck+4ZwoQZiAaMgToKgpmWn43S8GpVjXX77vij3VuwfDcmAyE2vaV219AkVa34Isbh1SRLAXYDWh6D
+	E02xPW57EzFJwkW50Jn5Wq/VpXNrbXMj5WVRBy0LI2bptYoXYEE8Z7/x8QbEz87K2tDa41fEzAFBY
+	/3EToNEw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtZ2-00HTHG-10;
-	Thu, 11 Jan 2024 11:49:36 +0000
+	id 1rNtas-00HVO5-0a;
+	Thu, 11 Jan 2024 11:51:30 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtYd-00HSoV-1x
+	id 1rNtap-00HVMW-2F
 	for barebox@bombadil.infradead.org;
-	Thu, 11 Jan 2024 11:49:11 +0000
+	Thu, 11 Jan 2024 11:51:27 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
-	Content-Type:Content-ID:Content-Description;
-	bh=hNWmOw0eEYJ5xxSs+Tg7ckhmyO4zVdSryKhX8RIhqRA=; b=JnV0WxBAd40vOKOJQJ5ugURk3N
-	J7btR25MHOP+jHPxAR0LDuCS3/PfvDf7W9XDPLT+yQOrRQQenuh0nn/jtmCDLdBok8lIXnUTxnI3h
-	tRtPzE90OC1kjX8tb2kMAtwu9eO9MBoEnQpekdTPf8ngJb3qlPin8z68n2pAyByDDUffqDadPLiky
-	SkePwFZQ6gHj6mvNqVLIsJezSk5r9xlIne/n/rQ1HzMFhdcKsXcSxNH6vgaKF6s1DXKa23NHN7Bz5
-	N1CsfixFnlFS05f3SsbJmmMpX1L4J+ktgMFfys1sljApwH86DaOP6HF9XPmqGeRAtbV1O0bzLPsrE
-	Noe60rZw==;
+	:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=IgwP2RuCFaKJmKVsNgulgF3vkbzYMc2/vPE8DwVLIRI=; b=E/rUnCYBJiAzJmuyKjnvAUL3Cw
+	ZKiO0a/0jPP0sOVa6qzBzTh5QGcPOIy8n+kAVqCUj1a6x2Hp7zHtJ3vql4yc3X/G3EFNx8dxl6oQR
+	MCzOXK71BJS8PUpqsQCWlF89nbjSMUbqi4WRYP4vV2oyT2dY4Q+n/0PAqCK6/mdOvgHq/eCCilLzd
+	/vRI3i3dz9BQ/VeWz5Nllgt6VRUhH3IxgONTZA8pA2FzFhyWGgcn1yFYXDI6Clw3AHe6rov9TzeVM
+	EDfsLelzHaYFnV3Y1Z718WnAXoWG7w6pa4zZwmK/NZsNPTPxRR70dazMrv+HO39qI23nCEmGM93zQ
+	ayHTEhsw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtYY-00AIUo-37
+	id 1rNtak-00AIeu-19
 	for barebox@lists.infradead.org;
-	Thu, 11 Jan 2024 11:49:10 +0000
+	Thu, 11 Jan 2024 11:51:26 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1rNtYK-000137-Vk
-	for barebox@lists.infradead.org; Thu, 11 Jan 2024 12:48:52 +0100
+	id 1rNtaj-0003C1-RH
+	for barebox@lists.infradead.org; Thu, 11 Jan 2024 12:51:21 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 11 Jan 2024 12:48:39 +0100
-Message-Id: <20240111114841.2676939-17-m.felsch@pengutronix.de>
+Date: Thu, 11 Jan 2024 12:51:19 +0100
+Message-Id: <20240111115120.2678876-1-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240111114841.2676939-1-m.felsch@pengutronix.de>
-References: <20240111114841.2676939-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240111_114907_237345_B117C5FC 
-X-CRM114-Status: GOOD (  16.23  )
+X-CRM114-CacheID: sfid-20240111_115124_088564_EBB3EB14 
+X-CRM114-Status: GOOD (  21.20  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,345 +85,223 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 16/18] ARM: i.MX8M: allow board code to configure the bl33 loadaddr
+Subject: [PATCH 1/2] Port SoC framework from Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-At an helper to load_and_start the image on arbitrary load addresses.
-This should be taken with caution since it requires to configure the
-TF-A correctly as well, therefore the functions are prefixt with '__'.
+This adds the initial support for the Linux soc framework which can be
+used to register all SoC relevant informations. The framework can be
+used by driver to check for errata for an specific soc(-revision) in the
+future since this require porting the matching function.
 
-One use case of the new helper is to place OP-TEE at the very beginning
-of the DRAM and barebox afterwards e.g. if multiple DRAM setups are
-required for the platform/som-family.
-
-A nice side effect of this change is to bundle the usage of
-MX8M*_ATF_BL33_BASE_ADDR at a single place.
+For now it gathers all required SoC information and provide a standard
+interface to query the data via device params.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-imx/atf.c        | 42 +++++++++++++++++++++++-----------
- arch/arm/mach-imx/romapi.c     | 15 ++++++------
- arch/arm/mach-imx/xload-qspi.c | 18 +++++++--------
- drivers/mci/imx-esdhc-pbl.c    | 13 ++++++-----
- include/mach/imx/romapi.h      |  4 ++--
- include/mach/imx/xload.h       | 17 +++++++++-----
- 6 files changed, 65 insertions(+), 44 deletions(-)
+ drivers/base/Kconfig    |   3 +
+ drivers/base/Makefile   |   1 +
+ drivers/base/soc.c      | 123 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/sys_soc.h |  39 +++++++++++++
+ 4 files changed, 166 insertions(+)
+ create mode 100644 drivers/base/soc.c
+ create mode 100644 include/linux/sys_soc.h
 
-diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
-index eef3235b84f9..a976459aee56 100644
---- a/arch/arm/mach-imx/atf.c
-+++ b/arch/arm/mach-imx/atf.c
-@@ -66,7 +66,7 @@ void imx8mm_load_bl33(void *bl33)
- 	imx8mm_get_boot_source(&src, &instance);
- 	switch (src) {
- 	case BOOTSOURCE_MMC:
--		imx8m_esdhc_load_image(instance, false);
-+		imx8m_esdhc_load_image(instance, false, bl33);
- 		break;
- 	case BOOTSOURCE_SERIAL:
- 		if (!IS_ENABLED(CONFIG_USB_GADGET_DRIVER_ARC_PBL)) {
-@@ -99,7 +99,7 @@ void imx8mm_load_bl33(void *bl33)
+diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+index 612a84be33e7..21a4793cfa47 100644
+--- a/drivers/base/Kconfig
++++ b/drivers/base/Kconfig
+@@ -6,4 +6,7 @@ config PM_GENERIC_DOMAINS
+ config FEATURE_CONTROLLER
+ 	bool "Feature controller support" if COMPILE_TEST || SANDBOX
  
- 		break;
- 	case BOOTSOURCE_SPI:
--		imx8mm_qspi_load_image(instance, false);
-+		imx8mm_qspi_load_image(instance, false, bl33);
- 		break;
- 	default:
- 		printf("Unsupported bootsource BOOTSOURCE_%d\n", src);
-@@ -136,10 +136,14 @@ static void imx_adjust_optee_memory(void **bl32, void **bl32_image, size_t *bl32
- }
++config SOC_BUS
++	bool
++
+ source "drivers/base/regmap/Kconfig"
+diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+index e8e354cdaabc..acc53763da35 100644
+--- a/drivers/base/Makefile
++++ b/drivers/base/Makefile
+@@ -7,3 +7,4 @@ obj-y	+= regmap/
  
- __noreturn void imx8mm_load_and_start_image_via_tfa(void)
+ obj-$(CONFIG_PM_GENERIC_DOMAINS) += power.o
+ obj-$(CONFIG_FEATURE_CONTROLLER) += featctrl.o
++obj-$(CONFIG_SOC_BUS) += soc.o
+diff --git a/drivers/base/soc.c b/drivers/base/soc.c
+new file mode 100644
+index 000000000000..a481f8987b56
+--- /dev/null
++++ b/drivers/base/soc.c
+@@ -0,0 +1,123 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: 2024 Marco Felsch, Pengutronix
++/*
++ * Based on Linux drivers/base/soc.c:
++ * Copyright (C) ST-Ericsson SA 2011
++ */
++
++#include <common.h>
++#include <init.h>
++#include <of.h>
++
++#include <linux/slab.h>
++#include <linux/sys_soc.h>
++#include <linux/err.h>
++
++struct soc_device {
++	struct device dev;
++	struct soc_device_attribute *attr;
++};
++
++static struct bus_type soc_bus_type = {
++	.name  = "soc",
++};
++static bool soc_bus_registered;
++
++static void soc_device_add_params(struct soc_device *soc_dev)
 +{
-+	__imx8mm_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
++	struct soc_device_attribute *attr = soc_dev->attr;
++	struct device *dev = &soc_dev->dev;
++
++	if (attr->machine)
++		dev_add_param_string_fixed(dev, "machine", attr->machine);
++	if (attr->family)
++		dev_add_param_string_fixed(dev, "family", attr->family);
++	if (attr->revision)
++		dev_add_param_string_fixed(dev, "revision", attr->revision);
++	if (attr->serial_number)
++		dev_add_param_string_fixed(dev, "serial_number", attr->serial_number);
++	if (attr->soc_id)
++		dev_add_param_string_fixed(dev, "soc_id", attr->soc_id);
 +}
 +
-+__noreturn void __imx8mm_load_and_start_image_via_tfa(void *bl33)
- {
- 	const void *bl31;
- 	size_t bl31_size;
--	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
- 
- 	imx8mm_init_scratch_space();
-@@ -176,13 +180,13 @@ void imx8mp_load_bl33(void *bl33)
- 	imx8mp_get_boot_source(&src, &instance);
- 	switch (src) {
- 	case BOOTSOURCE_MMC:
--		imx8mp_esdhc_load_image(instance, false);
-+		imx8mp_esdhc_load_image(instance, false, bl33);
- 		break;
- 	case BOOTSOURCE_SERIAL:
--		imx8mp_romapi_load_image();
-+		imx8mp_romapi_load_image(bl33);
- 		break;
- 	case BOOTSOURCE_SPI:
--		imx8mp_qspi_load_image(instance, false);
-+		imx8mp_qspi_load_image(instance, false, bl33);
- 		break;
- 	default:
- 		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
-@@ -202,10 +206,14 @@ void imx8mp_load_bl33(void *bl33)
- }
- 
- __noreturn void imx8mp_load_and_start_image_via_tfa(void)
++static void soc_device_get_machine(struct soc_device_attribute *soc_dev_attr)
 +{
-+	__imx8mp_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
++	struct device_node *np;
++
++	if (soc_dev_attr->machine)
++		return;
++
++	np = of_find_node_by_path("/");
++	of_property_read_string(np, "model", &soc_dev_attr->machine);
++	of_node_put(np);
 +}
 +
-+__noreturn void __imx8mp_load_and_start_image_via_tfa(void *bl33)
- {
- 	const void *bl31;
- 	size_t bl31_size;
--	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
- 
- 	imx8mp_init_scratch_space();
-@@ -243,13 +251,13 @@ void imx8mn_load_bl33(void *bl33)
- 	imx8mn_get_boot_source(&src, &instance);
- 	switch (src) {
- 	case BOOTSOURCE_MMC:
--		imx8mn_esdhc_load_image(instance, false);
-+		imx8mn_esdhc_load_image(instance, false, bl33);
- 		break;
- 	case BOOTSOURCE_SERIAL:
--		imx8mn_romapi_load_image();
-+		imx8mn_romapi_load_image(bl33);
- 		break;
- 	case BOOTSOURCE_SPI:
--		imx8mn_qspi_load_image(instance, false);
-+		imx8mn_qspi_load_image(instance, false, bl33);
- 		break;
- 	default:
- 		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
-@@ -269,10 +277,14 @@ void imx8mn_load_bl33(void *bl33)
- }
- 
- __noreturn void imx8mn_load_and_start_image_via_tfa(void)
++static struct soc_device_attribute *early_soc_dev_attr;
++
++struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr)
 +{
-+	__imx8mn_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
-+}
++	struct soc_device *soc_dev;
++	int ret;
 +
-+__noreturn void __imx8mn_load_and_start_image_via_tfa(void *bl33)
- {
- 	const void *bl31;
- 	size_t bl31_size;
--	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(16);
- 
- 	imx8mn_init_scratch_space();
-@@ -309,7 +321,7 @@ void imx8mq_load_bl33(void *bl33)
- 	imx8mn_get_boot_source(&src, &instance);
- 	switch (src) {
- 	case BOOTSOURCE_MMC:
--		imx8m_esdhc_load_image(instance, false);
-+		imx8m_esdhc_load_image(instance, false, bl33);
- 		break;
- 	default:
- 		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
-@@ -329,10 +341,14 @@ void imx8mq_load_bl33(void *bl33)
- }
- 
- __noreturn void imx8mq_load_and_start_image_via_tfa(void)
++	soc_device_get_machine(soc_dev_attr);
++
++	if (!soc_bus_registered) {
++		if (early_soc_dev_attr)
++			return ERR_PTR(-EBUSY);
++		early_soc_dev_attr = soc_dev_attr;
++		return NULL;
++	}
++
++	soc_dev = kzalloc(sizeof(*soc_dev), GFP_KERNEL);
++	if (!soc_dev) {
++		ret = -ENOMEM;
++		goto out1;
++	}
++
++	soc_dev->attr = soc_dev_attr;
++	soc_dev->dev.bus = &soc_bus_type;
++	soc_dev->dev.id = DEVICE_ID_DYNAMIC;
++
++	dev_set_name(&soc_dev->dev, "soc");
++
++	ret = device_register(&soc_dev->dev);
++	if (ret) {
++		put_device(&soc_dev->dev);
++		goto out2;
++	}
++
++	soc_device_add_params(soc_dev);
++
++	return soc_dev;
++
++out2:
++	kfree(soc_dev);
++out1:
++	return ERR_PTR(ret);
++}
++EXPORT_SYMBOL_GPL(soc_device_register);
++
++/* Ensure soc_dev->attr is freed after calling soc_device_unregister. */
++void soc_device_unregister(struct soc_device *soc_dev)
 +{
-+	__imx8mq_load_and_start_image_via_tfa((void *)MX8M_ATF_BL33_BASE_ADDR);
++	device_unregister(&soc_dev->dev);
++	kfree(soc_dev);
++	early_soc_dev_attr = NULL;
 +}
++EXPORT_SYMBOL_GPL(soc_device_unregister);
 +
-+__noreturn void __imx8mq_load_and_start_image_via_tfa(void *bl33)
- {
- 	const void *bl31;
- 	size_t bl31_size;
--	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
- 
- 	imx8mq_init_scratch_space();
-diff --git a/arch/arm/mach-imx/romapi.c b/arch/arm/mach-imx/romapi.c
-index a245357fdf5d..797b479c3e91 100644
---- a/arch/arm/mach-imx/romapi.c
-+++ b/arch/arm/mach-imx/romapi.c
-@@ -79,25 +79,24 @@ static int imx_romapi_load_seekable(struct rom_api *rom_api, void *adr, uint32_t
- }
- 
- /* read piggydata via a bootrom callback and place it behind our copy in SDRAM */
--static int imx_romapi_load_image(struct rom_api *rom_api)
-+static int imx_romapi_load_image(struct rom_api *rom_api, void *bl33)
- {
--	return imx_romapi_load_stream(rom_api,
--			(void *)MX8M_ATF_BL33_BASE_ADDR + barebox_pbl_size,
--			__image_end - __piggydata_start);
-+	return imx_romapi_load_stream(rom_api, bl33 + barebox_pbl_size,
-+				      __image_end - __piggydata_start);
- }
- 
--int imx8mp_romapi_load_image(void)
-+int imx8mp_romapi_load_image(void *bl33)
- {
- 	struct rom_api *rom_api = (void *)0x980;
- 
- 	OPTIMIZER_HIDE_VAR(rom_api);
- 
--	return imx_romapi_load_image(rom_api);
-+	return imx_romapi_load_image(rom_api, bl33);
- }
- 
--int imx8mn_romapi_load_image(void)
-+int imx8mn_romapi_load_image(void *bl33)
- {
--	return imx8mp_romapi_load_image();
-+	return imx8mp_romapi_load_image(bl33);
- }
- 
- static int imx_romapi_boot_device_seekable(struct rom_api *rom_api)
-diff --git a/arch/arm/mach-imx/xload-qspi.c b/arch/arm/mach-imx/xload-qspi.c
-index 6bf5bba5e69d..fe7aa9c7bb46 100644
---- a/arch/arm/mach-imx/xload-qspi.c
-+++ b/arch/arm/mach-imx/xload-qspi.c
-@@ -34,24 +34,24 @@ int imx8m_qspi_read(void *dest, size_t len, void *priv)
-  * or 0. A negative error code is returned when this function fails.
-  */
- static
--int imx8m_qspi_load_image(int instance, bool start, off_t offset, off_t ivt_offset)
-+int imx8m_qspi_load_image(int instance, bool start, off_t offset, off_t ivt_offset,
-+			  void *bl33)
- {
- 	void __iomem *qspi_ahb = IOMEM(IMX8M_QSPI_MMAP);
- 
--	return imx_load_image(MX8M_DDR_CSD1_BASE_ADDR, MX8M_ATF_BL33_BASE_ADDR,
--			      offset, ivt_offset, start, 0,
--			      imx8m_qspi_read, qspi_ahb);
-+	return imx_load_image(MX8M_DDR_CSD1_BASE_ADDR, (ptrdiff_t)bl33, offset,
-+			      ivt_offset, start, 0, imx8m_qspi_read, qspi_ahb);
- }
- 
--int imx8mm_qspi_load_image(int instance, bool start)
-+int imx8mm_qspi_load_image(int instance, bool start, void *bl33)
- {
--	return imx8m_qspi_load_image(instance, start, 0, SZ_4K);
-+	return imx8m_qspi_load_image(instance, start, 0, SZ_4K, bl33);
- }
- 
--int imx8mn_qspi_load_image(int instance, bool start)
-+int imx8mn_qspi_load_image(int instance, bool start, void *bl33)
- {
--	return imx8m_qspi_load_image(instance, start, SZ_4K, 0);
-+	return imx8m_qspi_load_image(instance, start, SZ_4K, 0, bl33);
- }
- 
--int imx8mp_qspi_load_image(int instance, bool start)
-+int imx8mp_qspi_load_image(int instance, bool start, void *bl33)
- 	__alias(imx8mn_qspi_load_image);
-diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
-index 892329de512a..5cf81eeffb1a 100644
---- a/drivers/mci/imx-esdhc-pbl.c
-+++ b/drivers/mci/imx-esdhc-pbl.c
-@@ -240,6 +240,7 @@ int imx7_esdhc_start_image(int instance)
-  * imx8m_esdhc_load_image - Load and optionally start an image from USDHC controller
-  * @instance: The USDHC controller instance (0..2)
-  * @start: Whether to directly start the loaded image
-+ * @bl33: Where to load the bl33 barebox image
-  *
-  * This uses esdhc_start_image() to load an image from SD/MMC.  It is
-  * assumed that the image is the currently running barebox image (This
-@@ -249,7 +250,7 @@ int imx7_esdhc_start_image(int instance)
-  * Return: If successful, this function does not return (if directly started)
-  * or 0. A negative error code is returned when this function fails.
-  */
--int imx8m_esdhc_load_image(int instance, bool start)
-+int imx8m_esdhc_load_image(int instance, bool start, void *bl33)
- {
- 	struct esdhc_soc_data data;
- 	struct fsl_esdhc_host host = { 0 };
-@@ -260,14 +261,14 @@ int imx8m_esdhc_load_image(int instance, bool start)
- 		return ret;
- 
- 	return esdhc_load_image(&host, MX8M_DDR_CSD1_BASE_ADDR,
--				MX8MQ_ATF_BL33_BASE_ADDR, SZ_32K, SZ_1K,
--				start);
-+				(ptrdiff_t)bl33, SZ_32K, SZ_1K, start);
- }
- 
- /**
-  * imx8mp_esdhc_load_image - Load and optionally start an image from USDHC controller
-  * @instance: The USDHC controller instance (0..2)
-  * @start: Whether to directly start the loaded image
-+ * @bl33: Where to load the bl33 barebox image
-  *
-  * This uses esdhc_start_image() to load an image from SD/MMC.  It is
-  * assumed that the image is the currently running barebox image (This
-@@ -277,7 +278,7 @@ int imx8m_esdhc_load_image(int instance, bool start)
-  * Return: If successful, this function does not return (if directly started)
-  * or 0. A negative error code is returned when this function fails.
-  */
--int imx8mp_esdhc_load_image(int instance, bool start)
-+int imx8mp_esdhc_load_image(int instance, bool start, void *bl33)
- {
- 	struct esdhc_soc_data data;
- 	struct fsl_esdhc_host host = { 0 };
-@@ -291,10 +292,10 @@ int imx8mp_esdhc_load_image(int instance, bool start)
- 	offset = esdhc_bootpart_active(&host)? 0 : SZ_32K;
- 
- 	return esdhc_load_image(&host, MX8M_DDR_CSD1_BASE_ADDR,
--				MX8MQ_ATF_BL33_BASE_ADDR, offset, 0, start);
-+				(ptrdiff_t)bl33, offset, 0, start);
- }
- 
--int imx8mn_esdhc_load_image(int instance, bool start)
-+int imx8mn_esdhc_load_image(int instance, bool start, void *bl33)
- 	__alias(imx8mp_esdhc_load_image);
- #endif
- 
-diff --git a/include/mach/imx/romapi.h b/include/mach/imx/romapi.h
-index b1a990085088..de5881001c02 100644
---- a/include/mach/imx/romapi.h
-+++ b/include/mach/imx/romapi.h
-@@ -35,8 +35,8 @@ enum boot_dev_type_e {
- 
- #define ROM_API_OKAY		0xF0
- 
--int imx8mp_romapi_load_image(void);
--int imx8mn_romapi_load_image(void);
-+int imx8mp_romapi_load_image(void *bl33);
-+int imx8mn_romapi_load_image(void *bl33);
- int imx93_romapi_load_image(void);
- 
- /* only call after DRAM has been configured */
-diff --git a/include/mach/imx/xload.h b/include/mach/imx/xload.h
-index 965e73772ceb..49e38f8c1dd3 100644
---- a/include/mach/imx/xload.h
-+++ b/include/mach/imx/xload.h
-@@ -14,12 +14,12 @@ int imx6_esdhc_start_image(int instance);
- int imx6_nand_start_image(void);
- int imx7_esdhc_start_image(int instance);
- int imx7_nand_start_image(void);
--int imx8m_esdhc_load_image(int instance, bool start);
--int imx8mn_esdhc_load_image(int instance, bool start);
--int imx8mp_esdhc_load_image(int instance, bool start);
--int imx8mm_qspi_load_image(int instance, bool start);
--int imx8mn_qspi_load_image(int instance, bool start);
--int imx8mp_qspi_load_image(int instance, bool start);
-+int imx8m_esdhc_load_image(int instance, bool start, void *bl33);
-+int imx8mn_esdhc_load_image(int instance, bool start, void *bl33);
-+int imx8mp_esdhc_load_image(int instance, bool start, void *bl33);
-+int imx8mm_qspi_load_image(int instance, bool start, void *bl33);
-+int imx8mn_qspi_load_image(int instance, bool start, void *bl33);
-+int imx8mp_qspi_load_image(int instance, bool start, void *bl33);
- 
- void imx8mm_load_bl33(void *bl33);
- void imx8mn_load_bl33(void *bl33);
-@@ -30,6 +30,11 @@ void __noreturn imx8mm_load_and_start_image_via_tfa(void);
- void __noreturn imx8mn_load_and_start_image_via_tfa(void);
- void __noreturn imx8mp_load_and_start_image_via_tfa(void);
- void __noreturn imx8mq_load_and_start_image_via_tfa(void);
-+void __noreturn __imx8mm_load_and_start_image_via_tfa(void *bl33);
-+void __noreturn __imx8mn_load_and_start_image_via_tfa(void *bl33);
-+void __noreturn __imx8mp_load_and_start_image_via_tfa(void *bl33);
-+void __noreturn __imx8mq_load_and_start_image_via_tfa(void *bl33);
++static int __init soc_bus_register(void)
++{
++	int ret;
 +
- void __noreturn imx93_load_and_start_image_via_tfa(void);
- 
- int imx_load_image(ptrdiff_t address, ptrdiff_t entry, u32 offset,
++	ret = bus_register(&soc_bus_type);
++	if (ret)
++		return ret;
++	soc_bus_registered = true;
++
++	if (early_soc_dev_attr)
++		return PTR_ERR(soc_device_register(early_soc_dev_attr));
++
++	return 0;
++}
++core_initcall(soc_bus_register);
+diff --git a/include/linux/sys_soc.h b/include/linux/sys_soc.h
+new file mode 100644
+index 000000000000..fd597ae54096
+--- /dev/null
++++ b/include/linux/sys_soc.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) ST-Ericsson SA 2011
++ * Author: Lee Jones <lee.jones@linaro.org> for ST-Ericsson.
++ */
++#ifndef __SOC_BUS_H
++#define __SOC_BUS_H
++
++#include <linux/device.h>
++
++struct soc_device_attribute {
++	const char *machine;
++	const char *family;
++	const char *revision;
++	const char *serial_number;
++	const char *soc_id;
++	const void *data;
++};
++
++/**
++ * soc_device_register - register SoC as a device
++ * @soc_plat_dev_attr: Attributes passed from platform to be attributed to a SoC
++ */
++struct soc_device *soc_device_register(
++	struct soc_device_attribute *soc_plat_dev_attr);
++
++/**
++ * soc_device_unregister - unregister SoC device
++ * @dev: SoC device to be unregistered
++ */
++void soc_device_unregister(struct soc_device *soc_dev);
++
++/**
++ * soc_device_to_device - helper function to fetch struct device
++ * @soc: Previously registered SoC device container
++ */
++struct device *soc_device_to_device(struct soc_device *soc);
++
++#endif /* __SOC_BUS_H */
 -- 
 2.39.2
 
