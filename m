@@ -1,64 +1,67 @@
-Delivery-date: Thu, 11 Jan 2024 13:13:25 +0100
+Delivery-date: Thu, 11 Jan 2024 13:13:28 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNtw5-00CxFZ-1P
+	id 1rNtw8-00CxFv-0G
 	for lore@lore.pengutronix.de;
-	Thu, 11 Jan 2024 13:13:25 +0100
+	Thu, 11 Jan 2024 13:13:28 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNtw4-00083N-Tq
-	for lore@pengutronix.de; Thu, 11 Jan 2024 13:13:25 +0100
+	id 1rNtw7-00084f-GO
+	for lore@pengutronix.de; Thu, 11 Jan 2024 13:13:28 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=gX7SG8cJARHgXifiUFoYOZdhqxfL8EDbzij0rL3k/rM=; b=rdAlKNXg6BK6XqX2CzTQ5qf93d
-	/hfLGoLyVlzaot92BFMtRnGlwJ2lxjEIFVkz40oIg4uj7ECTIcPuwT8VVVopUdRtYZqQjAAezcil0
-	B2kR0mJjjcvFSZFjj/FxiRRWZ4QfxHtIdk8MJiApb4hKZghgnHSJDsRr2pwsHCZvoreo78mCtA8wg
-	ywdZTsLjQ8svGY+ojYN/SDpxeSEU6QIy9u3xBVM40FcSWcYl6jpKi6Z4ZD5mQme10IUTexBiFmJM/
-	dFAYWj+aBmdmIsvIYDBNRfjVDWxTxwZei06ht9asUqxdRyFMadCQw6ZHCd3MScnKcQBC4TvehkjOt
-	uWNxf4eg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=JpXMW3laYUObwds9t+Aq+ljcKffEaJDTk7kMbe5oN3E=; b=WOxWiPzSBdO6a2Hr51s8s1Q7Jh
+	XIJXiPWejAb0nm0+LHVQjDGWNPwZvMp+VYusiQrLZ7gb9oetngySgEZQcTtCYH9nLCfElvy59apUy
+	ZufWz7yubR75O67dT+BKGqWLgLy3GaBN0goUcwEvxt118pFgamqU40Dq0eKz91gNXwDcDUd7Aaxu4
+	uy1XISGSZb3aR/lF2b/Bs3OQtQ1F1efHteg1Zx1jcfRFAywICzxCY05z8CiIEC6zdz0/qhxcTO9Sl
+	CmiMzzC4L/2nTvABMb6iD4y4KItIRGT089wAKnpQdSmXJIq1GMUMOZK0VV3zHjIxEevimqMTIOjNz
+	LXaPkLYw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtv6-00HaTz-35;
-	Thu, 11 Jan 2024 12:12:24 +0000
+	id 1rNtv7-00HaU7-1i;
+	Thu, 11 Jan 2024 12:12:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtv4-00HaT1-1P
+	id 1rNtv4-00HaTF-1P
 	for barebox@lists.infradead.org;
-	Thu, 11 Jan 2024 12:12:23 +0000
+	Thu, 11 Jan 2024 12:12:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rNtv3-0007nq-2y; Thu, 11 Jan 2024 13:12:21 +0100
+	id 1rNtv3-0007nr-7r; Thu, 11 Jan 2024 13:12:21 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rNtv2-001vIR-Mk; Thu, 11 Jan 2024 13:12:20 +0100
+	id 1rNtv2-001vIS-OO; Thu, 11 Jan 2024 13:12:20 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rNtv2-006JoO-1l;
+	id 1rNtv2-006JoO-1x;
 	Thu, 11 Jan 2024 13:12:20 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 11 Jan 2024 13:12:18 +0100
-Message-Id: <20240111121219.1505025-1-a.fatoum@pengutronix.de>
+Cc: Christian Melki <christian.melki@t2data.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 11 Jan 2024 13:12:19 +0100
+Message-Id: <20240111121219.1505025-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240111121219.1505025-1-a.fatoum@pengutronix.de>
+References: <20240111121219.1505025-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240111_041222_488506_748AE129 
-X-CRM114-Status: GOOD (  10.97  )
+X-CRM114-CacheID: sfid-20240111_041222_491027_9B13E827 
+X-CRM114-Status: GOOD (  11.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,38 +84,39 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH master 1/2] hab: habv4: use explicitly unsigned types for pointers into SRAM
+Subject: [PATCH master 2/2] hab: habv4: warn if more than 10 HAB events are found
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-char is generally unsigned on ARM, but we shouldn't rely on that. HAB
-code does though and compare a char against 0xdb, which would never
-succeed if chars were signed. Switch to an explicitly unsigned type to
-fix this.
+The function has space for up to 10 HAB events. On the off-chance that
+there are more found, it will scribble them over stack memory.
 
+Fix this by only collecting up to 10 events and printing a warning if
+that's exceeded. Once we have reports that this issue manifests, we can
+consider extending the array or dynamically allocating it.
+
+Reported-by: Christian Melki <christian.melki@t2data.com>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/hab/habv4.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hab/habv4.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
-index 974158fd0c01..4db1e7cc0f3a 100644
+index 4db1e7cc0f3a..66caa875835d 100644
 --- a/drivers/hab/habv4.c
 +++ b/drivers/hab/habv4.c
-@@ -216,11 +216,11 @@ static enum hab_status imx8m_read_sram_events(enum hab_status status,
- {
- 	struct hab_event_record *events[10];
- 	int num_events = 0;
--	char *sram;
-+	u8 *sram;
- 	int i = 0;
- 	int internal_index = 0;
- 	uint16_t ev_len;
--	char *end = 0;
-+	u8 *end = 0;
- 	struct hab_event_record *search;
+@@ -255,7 +255,10 @@ static enum hab_status imx8m_read_sram_events(enum hab_status status,
+ 				break;
  
- 	if (cpu_is_mx8mq())
+ 			events[num_events] = search;
+-			num_events++;
++			if (num_events < ARRAY_SIZE(events))
++				num_events++;
++			else
++				pr_warn("Discarding excess event\n");
+ 		} else {
+ 			sram++;
+ 		}
 -- 
 2.39.2
 
