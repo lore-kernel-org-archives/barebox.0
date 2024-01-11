@@ -1,56 +1,55 @@
-Delivery-date: Thu, 11 Jan 2024 12:50:37 +0100
+Delivery-date: Thu, 11 Jan 2024 12:50:38 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNta1-00Cw4A-1o
+	id 1rNta2-00Cw4m-0c
 	for lore@lore.pengutronix.de;
-	Thu, 11 Jan 2024 12:50:37 +0100
+	Thu, 11 Jan 2024 12:50:38 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rNtZz-0002O4-Ae
-	for lore@pengutronix.de; Thu, 11 Jan 2024 12:50:37 +0100
+	id 1rNtZz-0002OA-En
+	for lore@pengutronix.de; Thu, 11 Jan 2024 12:50:38 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tyTV2AxeZn0RVs13bj6ChGjURllij93rf2aCY20NyJo=; b=oVolzMTdWf9n4o2lmOaYroHyJH
-	g0znLfPHLLawQYfaEEK4Ofi2kLTNXuArm5LARbKMoT/ST/CmKOy2sTJE1ptLMBYHOaaP7vOW917s4
-	b44Qa8XGG92eOMdK9eX2QSaOwZObXbF+HL99mZEx887c+SHS9fRkJSwCqMk5WrmmNd4z4HbxYM+LZ
-	TJSGAbC8aFMSvpL0nPNiS3QAwdUTzii7LyHR+xZJyfIaehaYWN6967a+bhLI8CIMNDh2UIEZ6+p+M
-	KWuOcXfrEoUpx846b3QqBr5VxKDE98UTp1vOqgO53sNw6qKSkav3JkIDKhrkfZFxk1q3pSKNKj9iD
-	aofKiAkA==;
+	bh=GuHur3cUKQKFcK/4u+RVjL1J/C+o//PLw+90354ds8Q=; b=dvTVV3Q9S9/ahNHcKPDDbDONW0
+	hcJnUTSLSTvutYWQEgQov/xcA93pZ8YT3ZSeqNsj29shOMLAh7Fm9LROt5oCk99kDIufuaElx6G0b
+	OwRcPBoBZ5zyZEPfR+k4dLKNzR/slpgdkDhDGiTEKMgmP2cHbuU9CwNbia7i4skgIjeJzYwH6djOK
+	YembEUnh4a2bX3x6TH+8QnX5S2KG7PIBqgURvLhrcPMPcZtrEJC+KDHGgcU+jO9sOxOjCXB/ExXEY
+	EHDDohQ1a+Mbsu2xr+Zs5O1SuZ7n4Z+kGd5xbiByClK51zC01sqyZdwAWtHZZAkAXkekZfjfcWnyS
+	MPDNnHUA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtYZ-00HSkt-2k;
-	Thu, 11 Jan 2024 11:49:07 +0000
+	id 1rNtYn-00HSwS-0c;
+	Thu, 11 Jan 2024 11:49:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rNtYP-00HSad-16
+	id 1rNtYQ-00HSar-38
 	for barebox@lists.infradead.org;
-	Thu, 11 Jan 2024 11:49:01 +0000
+	Thu, 11 Jan 2024 11:49:04 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1rNtYK-000137-GQ
+	id 1rNtYK-000137-Rt
 	for barebox@lists.infradead.org; Thu, 11 Jan 2024 12:48:52 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 11 Jan 2024 12:48:24 +0100
-Message-Id: <20240111114841.2676939-2-m.felsch@pengutronix.de>
+Date: Thu, 11 Jan 2024 12:48:35 +0100
+Message-Id: <20240111114841.2676939-13-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240111114841.2676939-1-m.felsch@pengutronix.de>
 References: <20240111114841.2676939-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240111_034857_619418_870EAE72 
-X-CRM114-Status: UNSURE (   9.45  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240111_034859_007273_6565179D 
+X-CRM114-Status: GOOD (  11.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,61 +72,94 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 01/18] ARM: i.MX8M: atf: make use of imx8m*_save_bootrom_log macros
+Subject: [PATCH 12/18] ARM64: mmu: add dynamic optee memory mapping support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Make use of the already existing macros and fix the memory bus width for
-the i.MX8MQ.
+Use the dynamic optee memory base address for the early mapping if
+possible and fallback to the static mapping if the query failed.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- arch/arm/mach-imx/atf.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/arm/cpu/mmu_64.c      | 14 ++++++++++++--
+ arch/arm/mach-imx/esdctl.c |  4 ++++
+ common/Makefile            |  2 +-
+ 3 files changed, 17 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
-index e1a89ef543cd..c6da5de13a1a 100644
---- a/arch/arm/mach-imx/atf.c
-+++ b/arch/arm/mach-imx/atf.c
-@@ -123,7 +123,7 @@ __noreturn void imx8mm_load_and_start_image_via_tfa(void)
- 	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index c6ea63e655ad..69fd2218c1fc 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -20,6 +20,7 @@
+ #include <memory.h>
+ #include <asm/system_info.h>
+ #include <linux/pagemap.h>
++#include <tee/optee.h>
  
--	imx8m_save_bootrom_log((void *)arm_mem_scratch(endmem));
-+	imx8mm_save_bootrom_log();
- 	imx8mm_load_bl33(bl33);
+ #include "mmu_64.h"
  
- 	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MM_OPTEE)) {
-@@ -186,7 +186,7 @@ __noreturn void imx8mp_load_and_start_image_via_tfa(void)
- 	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
+@@ -297,6 +298,7 @@ void dma_flush_range(void *ptr, size_t size)
+ void mmu_early_enable(unsigned long membase, unsigned long memsize)
+ {
+ 	int el;
++	u64 optee_membase;
+ 	unsigned long ttb = arm_mem_ttb(membase + memsize);
  
--	imx8m_save_bootrom_log((void *)arm_mem_scratch(endmem));
-+	imx8mp_save_bootrom_log();
- 	imx8mp_load_bl33(bl33);
+ 	pr_debug("enabling MMU, ttb @ 0x%08lx\n", ttb);
+@@ -309,8 +311,16 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize)
+ 	memset((void *)ttb, 0, GRANULE_SIZE);
  
- 	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MP_OPTEE)) {
-@@ -250,7 +250,7 @@ __noreturn void imx8mn_load_and_start_image_via_tfa(void)
- 	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(16);
+ 	early_remap_range(0, 1UL << (BITS_PER_VA - 1), MAP_UNCACHED);
+-	early_remap_range(membase, memsize - OPTEE_SIZE, MAP_CACHED);
+-	early_remap_range(membase + memsize - OPTEE_SIZE, OPTEE_SIZE, MAP_FAULT);
++
++	if (optee_get_membase(&optee_membase)) {
++		/* Fallback and place OP-TEE at the memory end region */
++		early_remap_range(membase, memsize - OPTEE_SIZE, MAP_CACHED);
++		early_remap_range(membase + memsize - OPTEE_SIZE, OPTEE_SIZE, MAP_FAULT);
++	} else {
++		early_remap_range(membase, memsize, MAP_CACHED);
++		early_remap_range(optee_membase, OPTEE_SIZE, MAP_FAULT);
++	}
++
+ 	early_remap_range(PAGE_ALIGN_DOWN((uintptr_t)_stext), PAGE_ALIGN(_etext - _stext), MAP_CACHED);
  
--	imx8m_save_bootrom_log((void *)arm_mem_scratch(endmem));
-+	imx8mn_save_bootrom_log();
- 	imx8mn_load_bl33(bl33);
+ 	mmu_enable();
+diff --git a/arch/arm/mach-imx/esdctl.c b/arch/arm/mach-imx/esdctl.c
+index ac35a2de66f1..47c43d75ec75 100644
+--- a/arch/arm/mach-imx/esdctl.c
++++ b/arch/arm/mach-imx/esdctl.c
+@@ -29,6 +29,8 @@
+ #include <mach/imx/imx8m-regs.h>
+ #include <mach/imx/imx7-regs.h>
+ #include <mach/imx/imx9-regs.h>
++#include <mach/imx/scratch.h>
++#include <tee/optee.h>
  
- 	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MN_OPTEE)) {
-@@ -305,9 +305,9 @@ __noreturn void imx8mq_load_and_start_image_via_tfa(void)
- 	const void *bl31;
- 	size_t bl31_size;
- 	void *bl33 = (void *)MX8M_ATF_BL33_BASE_ADDR;
--	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(16);
-+	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
+ struct imx_esdctl_data {
+ 	unsigned long base0;
+@@ -1004,6 +1006,8 @@ resource_size_t imx8m_barebox_earlymem_size(unsigned buswidth)
  
--	imx8m_save_bootrom_log((void *)arm_mem_scratch(endmem));
-+	imx8mq_save_bootrom_log();
- 	imx8mq_load_bl33(bl33);
+ static void __noreturn imx8m_barebox_entry(void *boarddata, unsigned buswidth)
+ {
++	imx8m_init_scratch_space(buswidth, false);
++	optee_set_membase(imx8m_scratch_get_optee_hdr());
+ 	barebox_arm_entry(MX8M_DDR_CSD1_BASE_ADDR,
+ 			  imx8m_barebox_earlymem_size(buswidth), boarddata);
+ }
+diff --git a/common/Makefile b/common/Makefile
+index 7fb864f61480..c31cbab9e48f 100644
+--- a/common/Makefile
++++ b/common/Makefile
+@@ -80,7 +80,7 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
+ obj-$(CONFIG_BOOT)		+= boot.o
+ obj-$(CONFIG_SERIAL_DEV_BUS)	+= serdev.o
+ obj-$(CONFIG_USBGADGET_START)	+= usbgadget.o
+-pbl-$(CONFIG_PBL_OPTEE)		+= optee.o
++obj-pbl-$(CONFIG_PBL_OPTEE)	+= optee.o
+ obj-$(CONFIG_BOOTM_OPTEE)	+= optee.o
+ obj-$(CONFIG_FASTBOOT_BASE)	+= fastboot.o
  
- 	if (IS_ENABLED(CONFIG_FIRMWARE_IMX8MQ_OPTEE)) {
 -- 
 2.39.2
 
