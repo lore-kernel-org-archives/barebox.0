@@ -1,67 +1,65 @@
-Delivery-date: Mon, 15 Jan 2024 18:02:39 +0100
+Delivery-date: Mon, 15 Jan 2024 18:02:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rPQM9-000QPk-3C
+	id 1rPQME-000QQK-09
 	for lore@lore.pengutronix.de;
-	Mon, 15 Jan 2024 18:02:39 +0100
+	Mon, 15 Jan 2024 18:02:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rPQMA-000360-Hz
-	for lore@pengutronix.de; Mon, 15 Jan 2024 18:02:39 +0100
+	id 1rPQME-00037Z-86
+	for lore@pengutronix.de; Mon, 15 Jan 2024 18:02:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=87VVdiG3blYtTkva186EK4jfam2j5Qch+JL10Tb1u9A=; b=dII0uRFHvKT2JtzajpUwSnzmas
-	Tq127HEzfJ+JYFUFYE4kYdjz3R3ql6DOfn5jHnv7BKpUVqvpL3fq45oHIdFquLQqXWGoywZ1CvOeE
-	DQhzB6dSKSbLcQ+JH658PV4SxiMK3Vq5zmBbunTIrJXtrPXuEwRS1mG5uDNJK2fjs4bEZT/5CLUDI
-	rA1dMR8/xEpWbsyFm3//mwzXHqbwJjrBEo8AgMgshvlgMFfjWG+wgNwJ4yzNQ4VpyzgMIIj1r0c7g
-	RFByOuqPr1UnP0chH+VJLRDEk/j4DRzFhs8/TfyRAhKO64yZgC6xyLCVwqAl6U0bi6tYJrEHXppel
-	teIMUjaQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=nHEV5YuI2mS7iJZfpnX1wqflfpiWrtJ5KB0VsxRBPhI=; b=DXJwtFR7mOjGhARJrndB1gY2EE
+	9Ysp5trTj1Ev/A7ll0Lw6yIefYhbZCyG+OrQ6OQFxyS4LyJsAK7p452F4D3gXyIp99AKIDAvKiKXX
+	Zij/EQDk5C+fzRqA4EYX7kgRe6an04voetqIrHmdOUTpyi+UZQzurZ3ZIdA1T/R5vK2ALAViPWTyQ
+	99W3G6zClLPD4KVuTquIfjdSoHX7M0P/dUU5lQQAATMDzxPTr7cXMrZmKoYr1tBujke2MztDToPzq
+	tJSwBad3zTYW+xTyXgJCi0UED845/OwyhvwL+1S0w/NHP7nw5XaJ1eYrXEVJYsqkoLrZdKxdkg9GN
+	cLlEyVrw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rPQKt-009klv-2w;
-	Mon, 15 Jan 2024 17:01:19 +0000
+	id 1rPQKv-009kmf-1g;
+	Mon, 15 Jan 2024 17:01:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rPQKq-009kja-2R
+	id 1rPQKq-009kjZ-2S
 	for barebox@lists.infradead.org;
-	Mon, 15 Jan 2024 17:01:18 +0000
+	Mon, 15 Jan 2024 17:01:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rPQKl-0002aA-T7; Mon, 15 Jan 2024 18:01:11 +0100
+	id 1rPQKl-0002a8-Rh; Mon, 15 Jan 2024 18:01:11 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rPQKl-0003bS-GX; Mon, 15 Jan 2024 18:01:11 +0100
+	id 1rPQKl-0003bR-F7; Mon, 15 Jan 2024 18:01:11 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rPQKl-001Lgg-1N;
+	id 1rPQKl-001Lgg-1E;
 	Mon, 15 Jan 2024 18:01:11 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: m.felsch@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 15 Jan 2024 18:01:09 +0100
-Message-Id: <20240115170110.321676-2-a.fatoum@pengutronix.de>
+Date: Mon, 15 Jan 2024 18:01:08 +0100
+Message-Id: <20240115170110.321676-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240115170110.321676-1-a.fatoum@pengutronix.de>
-References: <20240115170110.321676-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240115_090116_799318_63246751 
-X-CRM114-Status: GOOD (  21.66  )
+X-CRM114-CacheID: sfid-20240115_090116_974329_7D2B193F 
+X-CRM114-Status: GOOD (  18.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,99 +82,260 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/3] ARM: i.MX8M: return error if imx_load_image can't honour entry address
+Subject: [PATCH 1/3] ARM: i.MX8M: remove unutilized start parameter to i.MX8M load functions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On i.MX6 and 7, we call imx_load_image with start == true and address
-equal to entry.
+We have two kinds of xload functions for i.MX: _start_image loads and
+starts the image and _load_image takes a parameter on whether to start
+the image after loading. All users of _load_image pass false as argument
+for the start parameter and this is unlikely to change, because we need
+to do other things before starting the image:
 
-On i.MX8M, we call imx_load_image with start == false and address
-unequal to entry.
+  - BL31: Install ARM Trusted Firmware
+  - BL32: Optionally, extract OP-TEE from external firmware
+  - BL33: Optionally, verify barebox proper when secure booting
 
-imx_load_image interprets the address being unequal to entry as a
-directive to move the image, so that the barebox entry point without
-the i.MX header starts at exactly the entry address.
+_start_image doesn't concern itself with this:
 
-If we were to change this, say on an i.MX8MN, so address is equal
-to entry, the system will no longer boot:
+  - BL31: We don't use TF-A on 32-bit i.MX systems and if barebox is secure
+    monitor, it's installed in barebox proper
+  - BL32: OP-TEE is shipped inside PBL or loaded by bootm on 32-bit i.MX
+  - BL33: barebox is loaded directly to SDRAM after it was setup by DCD
+          and is thus verified by bootrom as a whole. Chainloading
+	  manually is not mixed with secure boot
 
-  - i.MX header is loaded to offset 0 from start of SDRAM (like on i.MX6/7)
-  - barebox PBL entry point is loaded to offset 32K
-  - imx8mX_load_bl33 will copy the running barebox PBL to offset 0
+For that reason, let's drop the start parameter to try to reduce
+the complexity of the chainloading code a bit.
 
-The result of this is that the TF-A will be able to return to barebox
-(non-executable i.MX header overwritten with executable PBL), but
-uncompressing barebox will fail (remainder of partially overwritten
-PBL is interpreted as start of piggydata).
-
-Add some documentation explaining this complexity, a hint on how we
-could improve it and change the condition, so entry == address results
-in an explicit warning message immediately.
-
-Reported-by: Marco Felsch <m.felsch@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-imx/xload-common.c | 32 +++++++++++++++++++++++++++++++-
- 1 file changed, 31 insertions(+), 1 deletion(-)
+ arch/arm/mach-imx/atf.c        | 14 +++++++-------
+ arch/arm/mach-imx/xload-qspi.c | 24 +++++++++++-------------
+ drivers/mci/imx-esdhc-pbl.c    | 24 +++++++++++-------------
+ include/mach/imx/romapi.h      |  1 +
+ include/mach/imx/xload.h       | 14 ++++++++------
+ 5 files changed, 38 insertions(+), 39 deletions(-)
 
-diff --git a/arch/arm/mach-imx/xload-common.c b/arch/arm/mach-imx/xload-common.c
-index 03eb2ef109e3..32f12cd7f574 100644
---- a/arch/arm/mach-imx/xload-common.c
-+++ b/arch/arm/mach-imx/xload-common.c
-@@ -78,6 +78,25 @@ imx_search_header(struct imx_flash_header_v2 **header_pointer,
- 	return 0;
+diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
+index e1a89ef543cd..f9baad862dc7 100644
+--- a/arch/arm/mach-imx/atf.c
++++ b/arch/arm/mach-imx/atf.c
+@@ -65,7 +65,7 @@ void imx8mm_load_bl33(void *bl33)
+ 	imx8mm_get_boot_source(&src, &instance);
+ 	switch (src) {
+ 	case BOOTSOURCE_MMC:
+-		imx8m_esdhc_load_image(instance, false);
++		imx8m_esdhc_load_image(instance);
+ 		break;
+ 	case BOOTSOURCE_SERIAL:
+ 		if (!IS_ENABLED(CONFIG_USB_GADGET_DRIVER_ARC_PBL)) {
+@@ -98,7 +98,7 @@ void imx8mm_load_bl33(void *bl33)
+ 
+ 		break;
+ 	case BOOTSOURCE_SPI:
+-		imx8mm_qspi_load_image(instance, false);
++		imx8mm_qspi_load_image(instance);
+ 		break;
+ 	default:
+ 		printf("Unsupported bootsource BOOTSOURCE_%d\n", src);
+@@ -154,13 +154,13 @@ void imx8mp_load_bl33(void *bl33)
+ 	imx8mp_get_boot_source(&src, &instance);
+ 	switch (src) {
+ 	case BOOTSOURCE_MMC:
+-		imx8mp_esdhc_load_image(instance, false);
++		imx8mp_esdhc_load_image(instance);
+ 		break;
+ 	case BOOTSOURCE_SERIAL:
+ 		imx8mp_romapi_load_image();
+ 		break;
+ 	case BOOTSOURCE_SPI:
+-		imx8mp_qspi_load_image(instance, false);
++		imx8mp_qspi_load_image(instance);
+ 		break;
+ 	default:
+ 		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
+@@ -218,13 +218,13 @@ void imx8mn_load_bl33(void *bl33)
+ 	imx8mn_get_boot_source(&src, &instance);
+ 	switch (src) {
+ 	case BOOTSOURCE_MMC:
+-		imx8mn_esdhc_load_image(instance, false);
++		imx8mn_esdhc_load_image(instance);
+ 		break;
+ 	case BOOTSOURCE_SERIAL:
+ 		imx8mn_romapi_load_image();
+ 		break;
+ 	case BOOTSOURCE_SPI:
+-		imx8mn_qspi_load_image(instance, false);
++		imx8mn_qspi_load_image(instance);
+ 		break;
+ 	default:
+ 		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
+@@ -281,7 +281,7 @@ void imx8mq_load_bl33(void *bl33)
+ 	imx8mn_get_boot_source(&src, &instance);
+ 	switch (src) {
+ 	case BOOTSOURCE_MMC:
+-		imx8m_esdhc_load_image(instance, false);
++		imx8m_esdhc_load_image(instance);
+ 		break;
+ 	default:
+ 		printf("Unhandled bootsource BOOTSOURCE_%d\n", src);
+diff --git a/arch/arm/mach-imx/xload-qspi.c b/arch/arm/mach-imx/xload-qspi.c
+index 6bf5bba5e69d..5089f20d627c 100644
+--- a/arch/arm/mach-imx/xload-qspi.c
++++ b/arch/arm/mach-imx/xload-qspi.c
+@@ -23,35 +23,33 @@ int imx8m_qspi_read(void *dest, size_t len, void *priv)
+  * imx8mm_qspi_start_image - Load and optionally start an image from the
+  *                           FlexSPI controller.
+  * @instance: The FlexSPI controller instance
+- * @start: Whether to directly start the loaded image
+  *
+  * This uses imx8m_qspi_load_image() to load an image from QSPI. It is assumed
+- * that the image is the currently running barebox image (This information
+- * is used to calculate the length of the image).
+- * The image is started afterwards.
++ * that the image is the currently running barebox image.
++ * The image is not started afterwards.
+  *
+- * Return: If successful, this function does not return (if directly started)
+- * or 0. A negative error code is returned when this function fails.
++ * Return: If image successfully loaded, returns 0.
++ * A negative error code is returned when this function fails.
+  */
+ static
+-int imx8m_qspi_load_image(int instance, bool start, off_t offset, off_t ivt_offset)
++int imx8m_qspi_load_image(int instance, off_t offset, off_t ivt_offset)
+ {
+ 	void __iomem *qspi_ahb = IOMEM(IMX8M_QSPI_MMAP);
+ 
+ 	return imx_load_image(MX8M_DDR_CSD1_BASE_ADDR, MX8M_ATF_BL33_BASE_ADDR,
+-			      offset, ivt_offset, start, 0,
++			      offset, ivt_offset, false, 0,
+ 			      imx8m_qspi_read, qspi_ahb);
  }
  
-+/**
-+ * imx_load_image - Load i.MX barebox image from boot medium
-+ * @address: Start address of SDRAM where barebox can be loaded into
-+ * @entry: Address where barebox entry point should be placed.
-+ *         This is ignored unless @start == false
-+ * @offset: Start offset for i.MX header search
-+ * @ivt_offset: offset between i.MX header and IVT
-+ * @start: whether image should be started after loading
-+ * @alignment: If nonzero, image size hardcoded in PBL will be aligned up
-+ *             to this value
-+ * @read: function pointer for reading from the beginning of the boot
-+ *        medium onwards
-+ * @priv: private data pointer passed to read function
-+ *
-+ * Return: A negative error code on failure.
-+ * On success, if @start == true, the function will not return.
-+ * If @start == false, the function will return 0 after placing the
-+ * barebox entry point (without header) at @entry.
-+ */
- int imx_load_image(ptrdiff_t address, ptrdiff_t entry, u32 offset,
- 		   u32 ivt_offset, bool start, unsigned int alignment,
- 		   int (*read)(void *dest, size_t len, void *priv),
-@@ -102,7 +121,7 @@ int imx_load_image(ptrdiff_t address, ptrdiff_t entry, u32 offset,
+-int imx8mm_qspi_load_image(int instance, bool start)
++int imx8mm_qspi_load_image(int instance)
+ {
+-	return imx8m_qspi_load_image(instance, start, 0, SZ_4K);
++	return imx8m_qspi_load_image(instance, 0, SZ_4K);
+ }
  
- 	ofs = offset + hdr->entry - hdr->boot_data.start;
+-int imx8mn_qspi_load_image(int instance, bool start)
++int imx8mn_qspi_load_image(int instance)
+ {
+-	return imx8m_qspi_load_image(instance, start, SZ_4K, 0);
++	return imx8m_qspi_load_image(instance, SZ_4K, 0);
+ }
  
--	if (entry != address) {
-+	if (!start) {
- 		/*
- 		 * Passing entry different from address is interpreted
- 		 * as a request to place the image such that its entry
-@@ -129,6 +148,17 @@ int imx_load_image(ptrdiff_t address, ptrdiff_t entry, u32 offset,
- 		buf = (void *)(entry - ofs);
- 	}
+-int imx8mp_qspi_load_image(int instance, bool start)
++int imx8mp_qspi_load_image(int instance)
+ 	__alias(imx8mn_qspi_load_image);
+diff --git a/drivers/mci/imx-esdhc-pbl.c b/drivers/mci/imx-esdhc-pbl.c
+index 2d071eaca88a..2cb703a0c552 100644
+--- a/drivers/mci/imx-esdhc-pbl.c
++++ b/drivers/mci/imx-esdhc-pbl.c
+@@ -242,17 +242,16 @@ int imx7_esdhc_start_image(int instance)
+ /**
+  * imx8m_esdhc_load_image - Load and optionally start an image from USDHC controller
+  * @instance: The USDHC controller instance (0..2)
+- * @start: Whether to directly start the loaded image
+  *
+  * This uses esdhc_start_image() to load an image from SD/MMC.  It is
+  * assumed that the image is the currently running barebox image (This
+  * information is used to calculate the length of the image). The
+- * image is started afterwards.
++ * image is not started afterwards.
+  *
+- * Return: If successful, this function does not return (if directly started)
+- * or 0. A negative error code is returned when this function fails.
++ * Return: If image successfully loaded, returns 0.
++ * A negative error code is returned when this function fails.
+  */
+-int imx8m_esdhc_load_image(int instance, bool start)
++int imx8m_esdhc_load_image(int instance)
+ {
+ 	struct esdhc_soc_data data;
+ 	struct fsl_esdhc_host host = { 0 };
+@@ -264,23 +263,22 @@ int imx8m_esdhc_load_image(int instance, bool start)
  
-+	/*
-+	 * For SD/MMC High-Capacity support (> 2G), the offset for the block
-+	 * read command is in blocks, not bytes. We don't have the information
-+	 * whether we have a SDHC card or not, when we run here though, because
-+	 * card setup was done by BootROM. To workaround this, we just read
-+	 * from offset 0 as 0 blocks == 0 bytes.
-+	 *
-+	 * A result of this is that we will have to read the i.MX header and
-+	 * padding in front of the binary first to arrive at the barebox entry
-+	 * point.
-+	 */
- 	ret = read(buf, ofs + len, priv);
- 	if (ret) {
- 		pr_err("Loading image failed with %d\n", ret);
+ 	return esdhc_load_image(&host, MX8M_DDR_CSD1_BASE_ADDR,
+ 				MX8MQ_ATF_BL33_BASE_ADDR, SZ_32K, SZ_1K,
+-				start);
++				false);
+ }
+ 
+ /**
+  * imx8mp_esdhc_load_image - Load and optionally start an image from USDHC controller
+  * @instance: The USDHC controller instance (0..2)
+- * @start: Whether to directly start the loaded image
+  *
+  * This uses esdhc_start_image() to load an image from SD/MMC.  It is
+  * assumed that the image is the currently running barebox image (This
+  * information is used to calculate the length of the image). The
+- * image is started afterwards.
++ * image is not started afterwards.
+  *
+- * Return: If successful, this function does not return (if directly started)
+- * or 0. A negative error code is returned when this function fails.
++ * Return: If image successfully loaded, returns 0.
++ * A negative error code is returned when this function fails.
+  */
+-int imx8mp_esdhc_load_image(int instance, bool start)
++int imx8mp_esdhc_load_image(int instance)
+ {
+ 	struct esdhc_soc_data data;
+ 	struct fsl_esdhc_host host = { 0 };
+@@ -294,10 +292,10 @@ int imx8mp_esdhc_load_image(int instance, bool start)
+ 	offset = esdhc_bootpart_active(&host)? 0 : SZ_32K;
+ 
+ 	return esdhc_load_image(&host, MX8M_DDR_CSD1_BASE_ADDR,
+-				MX8MQ_ATF_BL33_BASE_ADDR, offset, 0, start);
++				MX8MQ_ATF_BL33_BASE_ADDR, offset, 0, false);
+ }
+ 
+-int imx8mn_esdhc_load_image(int instance, bool start)
++int imx8mn_esdhc_load_image(int instance)
+ 	__alias(imx8mp_esdhc_load_image);
+ #endif
+ 
+diff --git a/include/mach/imx/romapi.h b/include/mach/imx/romapi.h
+index 959d165a3323..05932fac88ce 100644
+--- a/include/mach/imx/romapi.h
++++ b/include/mach/imx/romapi.h
+@@ -35,6 +35,7 @@ enum boot_dev_type_e {
+ 
+ #define ROM_API_OKAY		0xF0
+ 
++/* Below functions only load and don't start the image */
+ int imx8mp_romapi_load_image(void);
+ int imx8mn_romapi_load_image(void);
+ int imx93_romapi_load_image(void);
+diff --git a/include/mach/imx/xload.h b/include/mach/imx/xload.h
+index 2c2d2fa3c52d..66219f9fef30 100644
+--- a/include/mach/imx/xload.h
++++ b/include/mach/imx/xload.h
+@@ -14,12 +14,14 @@ int imx6_esdhc_start_image(int instance);
+ int imx6_nand_start_image(void);
+ int imx7_esdhc_start_image(int instance);
+ int imx7_nand_start_image(void);
+-int imx8m_esdhc_load_image(int instance, bool start);
+-int imx8mn_esdhc_load_image(int instance, bool start);
+-int imx8mp_esdhc_load_image(int instance, bool start);
+-int imx8mm_qspi_load_image(int instance, bool start);
+-int imx8mn_qspi_load_image(int instance, bool start);
+-int imx8mp_qspi_load_image(int instance, bool start);
++
++/* Below functions only load and don't start the image */
++int imx8m_esdhc_load_image(int instance);
++int imx8mn_esdhc_load_image(int instance);
++int imx8mp_esdhc_load_image(int instance);
++int imx8mm_qspi_load_image(int instance);
++int imx8mn_qspi_load_image(int instance);
++int imx8mp_qspi_load_image(int instance);
+ 
+ void imx8mm_load_bl33(void *bl33);
+ void imx8mn_load_bl33(void *bl33);
 -- 
 2.39.2
 
