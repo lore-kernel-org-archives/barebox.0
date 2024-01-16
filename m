@@ -1,67 +1,68 @@
-Delivery-date: Tue, 16 Jan 2024 07:54:59 +0100
+Delivery-date: Tue, 16 Jan 2024 08:10:30 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rPdLe-001TlX-1X
+	id 1rPdae-001VM2-2w
 	for lore@lore.pengutronix.de;
-	Tue, 16 Jan 2024 07:54:59 +0100
+	Tue, 16 Jan 2024 08:10:30 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rPdLf-00049v-73
-	for lore@pengutronix.de; Tue, 16 Jan 2024 07:54:59 +0100
+	id 1rPdaf-0005Dy-Kx
+	for lore@pengutronix.de; Tue, 16 Jan 2024 08:10:30 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=O2L3REyzdcrT1DHUpqhz19bQ4cBveQsxoi+EiD0SyT4=; b=Q0Qjhg4zdGX4TSEoGpTJPjIGqX
-	mU4tbaYSSDBee1q5gCdraLPMsQFOB4ZUvZXUqQwXAr5Mkpdx3nXYSU8G5Zw/3v5+LDvh27oMC08f6
-	cBNOQSEkQ9AqBr4rq52zq7/LEm7FrRPzcqrqBbM+TDnmr+Sz40nMWFozl0ZX2QzRdUIgayWZYV4z8
-	J9dTM4MMf92ePpwUrW7GMhDP9aj2R8dRgaS5PbhD1hVgMO15sCXT1534j4A2YFZUDDa4JIyleCb6G
-	lNWLRCLmNrXzm091wNljATnqB0tKH0xtWK9c/Aes9vkBZUaNpKqGF5BCVoCe4YD0ATi6SjsmUwGAQ
-	ze6NRB4w==;
+	bh=/jDvdh2AVFPW3g7OUFQ0Rj5qkZZ53Vd4C7bgi0R+fX4=; b=XkE7/nJTOzrVBbBBrwf6LRzf6z
+	KlsAkuf6+BYLtvMOR+Cco5O0m2qI7ZPimPdiaZJmdzOXeL/gT5HTfU0WW4RCKWmWSfpERTCISZlGq
+	Dhb6hgAq1t/bKm2YgL/HcRv/BZ3bkApb4KdTFwgbn0oanlj2wEy28OvV4EwYU0CMcySZQyy+idqqZ
+	xFCDJ3qJsGHXPr2R6WYEXLyC+HcLJdNOoQms2wZS6yT16jDAEljsA7/mqFpzh8T7sam6eLF4uh+mv
+	afwv3RVARhHuHv9Px024qEF7B9Dtb25JbYlUJ3jTUMLkktYRmBOLB01sZwyU359IDrQglU68BwQdW
+	Hvfn/A7A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rPdKi-00B9dl-0o;
-	Tue, 16 Jan 2024 06:54:00 +0000
+	id 1rPdZc-00BAbR-22;
+	Tue, 16 Jan 2024 07:09:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rPdKf-00B9dC-1e
+	id 1rPdZZ-00BAac-0P
 	for barebox@lists.infradead.org;
-	Tue, 16 Jan 2024 06:53:58 +0000
+	Tue, 16 Jan 2024 07:09:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rPdKe-00043T-8P; Tue, 16 Jan 2024 07:53:56 +0100
+	id 1rPdZX-0005A5-A5; Tue, 16 Jan 2024 08:09:19 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rPdKd-000BIq-SP; Tue, 16 Jan 2024 07:53:55 +0100
+	id 1rPdZW-000BkA-U4; Tue, 16 Jan 2024 08:09:18 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rPdKd-005O5F-2e;
-	Tue, 16 Jan 2024 07:53:55 +0100
+	id 1rPdZW-006inc-2e;
+	Tue, 16 Jan 2024 08:09:18 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20240115155615.953954-1-s.hauer@pengutronix.de>
-References: <20240115155615.953954-1-s.hauer@pengutronix.de>
-Message-Id: <170538803581.1284156.1102491452028367403.b4-ty@pengutronix.de>
-Date: Tue, 16 Jan 2024 07:53:55 +0100
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>, 
+ Stefan Kerkmann <s.kerkmann@pengutronix.de>
+In-Reply-To: <20240112-fix-habv4-event-report-v2-0-1c91bc857935@pengutronix.de>
+References: <20240112-fix-habv4-event-report-v2-0-1c91bc857935@pengutronix.de>
+Message-Id: <170538895881.1601925.7129290826072063785.b4-ty@pengutronix.de>
+Date: Tue, 16 Jan 2024 08:09:18 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240115_225357_546971_A526C708 
-X-CRM114-Status: UNSURE (   6.35  )
+X-CRM114-CacheID: sfid-20240115_230921_167910_23AE0367 
+X-CRM114-Status: UNSURE (   8.80  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,24 +86,28 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/2] watchdog: imxulp: Fix timeout calculation
+Subject: Re: [PATCH v2 0/2] Use HABv4 report_event implementation for
+ imx8mm and imx8mn
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 15 Jan 2024 16:56:14 +0100, Sascha Hauer wrote:
-> On i.MX93 the 32k clock runs at 32768Hz. Together with the /256
-> prescaler the watchdog timer advances 32768/256 = 128 ticks per
-> second, not 125.
+On Fri, 12 Jan 2024 16:21:06 +0100, Stefan Kerkmann wrote:
+> This series corrects the HABv4 rom vector table and syncs it with the
+> offical NXP documentation and switches the imx8mm and imx8mn socs from
+> the `imx8m_read_sram_events` ram parsing implementation to the one found
+> in the HABv4 rom. Calling the boot rom previously caused hangs which was
+> the root cause for the ram parsing workaround, with the corrections to
+> the API these hangs were no longer observed.
 > 
-> 
+> [...]
 
 Applied, thanks!
 
-[1/2] watchdog: imxulp: Fix timeout calculation
-      https://git.pengutronix.de/cgit/barebox/commit/?id=96b145148467 (link may not be stable)
-[2/2] watchdog: imxulp: Fix prescaler setting on i.MX7ulp
-      https://git.pengutronix.de/cgit/barebox/commit/?id=519d1c00f3e5 (link may not be stable)
+[1/2] habv4: correct habv4 rom vector table
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b2a4fe2c3494 (link may not be stable)
+[2/2] habv4: use hab rom implementation of report_event
+      https://git.pengutronix.de/cgit/barebox/commit/?id=02a795cc0866 (link may not be stable)
 
 Best regards,
 -- 
