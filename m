@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rPmw5-002FSr-0J
+	id 1rPmw5-002FT2-16
 	for lore@lore.pengutronix.de;
 	Tue, 16 Jan 2024 18:09:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rPmw5-0007dy-Mr
+	id 1rPmw5-0007eD-Vy
 	for lore@pengutronix.de; Tue, 16 Jan 2024 18:09:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,52 +18,52 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZL3s0TUlt/U6haECvmVeG0jeCByax3KpUCEMgb7GQV4=; b=yIYe8VtXnlzBdpm1jLst7LcwGK
-	l/aMsVT7Zy5YeeJU6rzAExmNEe0paF/em4fkQtbftTgM5BiQ/bnKqUj1vrl+1nr7srR4Fbjn9M5zJ
-	eAo3tcOzEjy6wWdKCJFJ4CP+Le4DdDGvkH/E03vYiQsWinkYnhHNlMWOuFrJI83sDJia7gh15VLen
-	aP8Zf3MhkX3xsoedtN6qfkJITOpytiFA1YmnRXxW7WQVQeQaNWBls4Bx7YFjg6V9G0AOqUilWvuGR
-	rFJXOr80wrc2lJ3xaMisv+V8VPNwO5Yf05mJnDHe5gjatMOuhatYL4toRPKsmbP4wRZF1G3x4Xd95
-	I1aHtjJA==;
+	bh=zXGKLKYCNDxjPGAHUWrOTCBRokajRU+q8Ktp0Af2iTo=; b=0cfSr6LUrbwy+Sps5yx1IOlEIC
+	ZJz5zWY4wjrwo6l4wCLeNKURYbHID1Ljovr6Lc+AfL4WN9lw/qEhsQcfjttgxqqUwEXxlbEm6OZiY
+	q34zcdhIjwVPDTYO1x4L+mPjjafHCdXvYjQ95B29lPxnU39BUBIF1tOK6eeqfPToEcpFE1ucxMHkG
+	H9IKLCZk23oY+B14DLx0F/oI/Y71PPb9dPAUs0m/b7pBrumn//vQlkqGDrz0+9wA2kbnaqt2wfdZu
+	HTHrXBh8UBZ3hp54INOm2e1T9CQ0mr8Z9E2mUwlFupL50arXcNJyKRfjm51FsajEs28IOT0zfBK3p
+	4R3N3kIQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rPmv6-00CiDY-2o;
-	Tue, 16 Jan 2024 17:08:12 +0000
+	id 1rPmv7-00CiEx-2N;
+	Tue, 16 Jan 2024 17:08:13 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rPmuv-00Ci2x-0q
+	id 1rPmuw-00Ci3M-03
 	for barebox@bombadil.infradead.org;
-	Tue, 16 Jan 2024 17:08:01 +0000
+	Tue, 16 Jan 2024 17:08:02 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:
 	Content-Type:Content-ID:Content-Description;
-	bh=ZL3s0TUlt/U6haECvmVeG0jeCByax3KpUCEMgb7GQV4=; b=JrPyZw2C34Ryoo8yskof0DIT2u
-	XebKCEIGKNxSBua/UrUKO0CZY9NBAjyj3BSLk63qfXG45qAZLzQ5f1nQaVTWHrUanN1GW9+Vtrq4g
-	q0e4YTA06/+RpBffzE4bGCdy40h4q6s3kSnjGATs5pKn1INKAwpDHrfrAqlJMCuIlOMwdlvZ+cr3/
-	nZ0hjsXOyoaxklLjNvli1zsSpRtOhyf6a5q2rpFreE4c4km2oPNesGBxHrqF6OklcZeiJ/n67BWoG
-	r/j316F8q2YjHDKvgXQ8nzmrkODmnvFqBE2vUs4fBl1PwGTMVEXeRx1TK4jmbkYTbOWWOy13dfqfa
-	69lbeTHw==;
+	bh=zXGKLKYCNDxjPGAHUWrOTCBRokajRU+q8Ktp0Af2iTo=; b=jAEayq5587UPPdgTVujS5I3cO2
+	d+jBlQ6lNjiTPvtlNzcpuZmpTme8xDxKXLeAKO6Glr0RJxFlPNWiSwIANe4CAJl5DPbqmub0He3R8
+	Kp0Ig1jlGC7fZOejpe3nLENQhVmUHdBfRF8gGzQKqU8vvoWaaeHkwyQe9RR59r2NpZdybgZBLmBfe
+	a7b8U1EjDNcaaVXr8F4QROVcHdeSRGCfV1wSL4D/V7Y6JZZcUr1l2ZUkMF4IVjRX9rxYQhHSfMrKw
+	OtoMgBeFXU+MJnK0ldoYSR1yDd+MIL9AC1y/9bQfJzku3WgtLzqK5GGBIaR+NmiW48WPkuhFp+gFa
+	KuKSEPlw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.94.2 #2 (Red Hat Linux))
-	id 1rPmup-00DdxB-7P
+	id 1rPmup-00DdxA-8g
 	for barebox@lists.infradead.org; Tue, 16 Jan 2024 17:08:00 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1rPmuf-0006lg-Fj
+	id 1rPmuf-0006lg-Gk
 	for barebox@lists.infradead.org; Tue, 16 Jan 2024 18:07:45 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 16 Jan 2024 18:07:37 +0100
-Message-Id: <20240116170738.209954-18-m.felsch@pengutronix.de>
+Date: Tue, 16 Jan 2024 18:07:38 +0100
+Message-Id: <20240116170738.209954-19-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240116170738.209954-1-m.felsch@pengutronix.de>
 References: <20240116170738.209954-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240116_170755_332536_CAEBB2A0 
-X-CRM114-Status: GOOD (  10.18  )
+X-CRM114-CacheID: sfid-20240116_170755_341036_5150AC06 
+X-CRM114-Status: GOOD (  12.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,84 +86,62 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 17/18] ARM: i.MX8M: cleanup MX8M*_ATF_BL33_BASE_ADDR defines
+Subject: [PATCH v2 18/18] ARM: i.MX8M: fix optee of-fixup logic
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Instead of having three defines for the same just use the base
-definition which is MX8M_ATF_BL33_BASE_ADDR and drop the others.
+The current code checks only if "/firmware/optee" exist on the builtin
+dtb and applys the fixup if not found and if found nothing is done. If a
+builtin dts contains the node but an external don't the fixup won't be
+applied. Also if the external dts does have a node + the reserved memory
+region nodes but the barebox builtin dts don't we do add additional
+reserved memory nodes which may conflict due to different name scheme:
+<name> vs. <name>@<addr>.
+
+Move the "/firmware/optee" check into the of_optee_fixup() so the check
+is done on the correct dtb root nodes.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- Documentation/boards/imx/zii-imx8mq-dev/openocd.cfg | 10 +++++-----
- arch/arm/boards/phytec-som-imx8mq/lowlevel.c        |  2 +-
- arch/arm/boards/zii-imx8mq-dev/lowlevel.c           |  2 +-
- include/mach/imx/atf.h                              |  2 --
- 4 files changed, 7 insertions(+), 9 deletions(-)
+ arch/arm/mach-imx/imx8m.c    | 3 +--
+ drivers/tee/optee/of_fixup.c | 6 +++++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/Documentation/boards/imx/zii-imx8mq-dev/openocd.cfg b/Documentation/boards/imx/zii-imx8mq-dev/openocd.cfg
-index cc0bec6b74b9..fa25348757af 100644
---- a/Documentation/boards/imx/zii-imx8mq-dev/openocd.cfg
-+++ b/Documentation/boards/imx/zii-imx8mq-dev/openocd.cfg
-@@ -71,15 +71,15 @@ proc ddr_init { } {
+diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
+index 6db16f024148..73b420b38697 100644
+--- a/arch/arm/mach-imx/imx8m.c
++++ b/arch/arm/mach-imx/imx8m.c
+@@ -68,8 +68,7 @@ static int imx8m_init(const char *cputypestr)
+ 	imx_set_reset_reason(src + IMX7_SRC_SRSR, imx7_reset_reasons);
+ 	pr_info("%s unique ID: %llx\n", cputypestr, imx8m_uid());
  
- proc start_barebox {} {
- 	#
--	# We have to place our image at MX8MQ_ATF_BL33_BASE_ADDR in order
-+	# We have to place our image at MX8M_ATF_BL33_BASE_ADDR in order
- 	# to be able to initialize ATF firmware since that's where it
- 	# expects entry point to BL33 would be
- 	#
--	set MX8MQ_ATF_BL33_BASE_ADDR	0x40200000
-+	set MX8M_ATF_BL33_BASE_ADDR	0x40200000
- 	echo "Bootstrap: Loading Barebox"
--	load_image images/start_zii_imx8mq_dev.pblb $MX8MQ_ATF_BL33_BASE_ADDR bin
--	echo [format "Bootstrap: Jumping to 0x%08x" $MX8MQ_ATF_BL33_BASE_ADDR]
--	resume $MX8MQ_ATF_BL33_BASE_ADDR
-+	load_image images/start_zii_imx8mq_dev.pblb $MX8M_ATF_BL33_BASE_ADDR bin
-+	echo [format "Bootstrap: Jumping to 0x%08x" $MX8M_ATF_BL33_BASE_ADDR]
-+	resume $MX8M_ATF_BL33_BASE_ADDR
- }
+-	if (IS_ENABLED(CONFIG_PBL_OPTEE) && tzc380_is_enabled() &&
+-	    !of_find_node_by_path_from(NULL, "/firmware/optee")) {
++	if (IS_ENABLED(CONFIG_PBL_OPTEE) && tzc380_is_enabled()) {
+ 		static struct of_optee_fixup_data optee_fixup_data = {
+ 			.shm_size = OPTEE_SHM_SIZE,
+ 			.method = "smc",
+diff --git a/drivers/tee/optee/of_fixup.c b/drivers/tee/optee/of_fixup.c
+index cdf650592e90..2ff1f01964c8 100644
+--- a/drivers/tee/optee/of_fixup.c
++++ b/drivers/tee/optee/of_fixup.c
+@@ -9,12 +9,16 @@
+ int of_optee_fixup(struct device_node *root, void *_data)
+ {
+ 	struct of_optee_fixup_data *fixup_data = _data;
++	const char *optee_of_path = "/firmware/optee";
+ 	struct resource res = {};
+ 	struct device_node *node;
+ 	u64 optee_membase;
+ 	int ret;
  
- proc board_init { } {
-diff --git a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-index 5708c8d75484..362b3ed823c1 100644
---- a/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-+++ b/arch/arm/boards/phytec-som-imx8mq/lowlevel.c
-@@ -88,7 +88,7 @@ static __noreturn noinline void phytec_phycore_imx8mq_start(void)
-  *
-  * 4. BL31 blob is uploaded to OCRAM and the control is transfer to it
-  *
-- * 5. BL31 exits EL3 into EL2 at address MX8MQ_ATF_BL33_BASE_ADDR,
-+ * 5. BL31 exits EL3 into EL2 at address MX8M_ATF_BL33_BASE_ADDR,
-  *    executing start_phytec_phycore_imx8mq() the third time
-  *
-  * 6. Standard barebox boot flow continues
-diff --git a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-index 42cd05d3f17c..4184748cd858 100644
---- a/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-+++ b/arch/arm/boards/zii-imx8mq-dev/lowlevel.c
-@@ -174,7 +174,7 @@ static __noreturn noinline void zii_imx8mq_dev_start(void)
-  *
-  * 4. BL31 blob is uploaded to OCRAM and the control is transfer to it
-  *
-- * 5. BL31 exits EL3 into EL2 at address MX8MQ_ATF_BL33_BASE_ADDR,
-+ * 5. BL31 exits EL3 into EL2 at address MX8M_ATF_BL33_BASE_ADDR,
-  *    executing start_nxp_imx8mq_evk() the third time
-  *
-  * 6. Standard barebox boot flow continues
-diff --git a/include/mach/imx/atf.h b/include/mach/imx/atf.h
-index fb367d6a7052..15bd13eb27cc 100644
---- a/include/mach/imx/atf.h
-+++ b/include/mach/imx/atf.h
-@@ -15,8 +15,6 @@
- #define MX8MP_ATF_BL31_BASE_ADDR	0x00970000
- #define MX8MQ_ATF_BL31_BASE_ADDR	0x00910000
- #define MX8M_ATF_BL33_BASE_ADDR		0x40200000
--#define MX8MM_ATF_BL33_BASE_ADDR	MX8M_ATF_BL33_BASE_ADDR
--#define MX8MQ_ATF_BL33_BASE_ADDR	MX8M_ATF_BL33_BASE_ADDR
- #define MX93_ATF_BL31_BASE_ADDR		0x204e0000
- #define MX93_ATF_BL33_BASE_ADDR		0x80200000
+-	node = of_create_node(root, "/firmware/optee");
++	if (of_find_node_by_path_from(NULL, optee_of_path))
++		return 0;
++
++	node = of_create_node(root, optee_of_path);
+ 	if (!node)
+ 		return -ENOMEM;
  
 -- 
 2.39.2
