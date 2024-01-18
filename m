@@ -1,72 +1,72 @@
-Delivery-date: Thu, 18 Jan 2024 11:17:38 +0100
+Delivery-date: Thu, 18 Jan 2024 11:18:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rQPSr-005AVT-1C
+	id 1rQPTT-005AXz-10
 	for lore@lore.pengutronix.de;
-	Thu, 18 Jan 2024 11:17:38 +0100
+	Thu, 18 Jan 2024 11:18:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rQPSr-0006Ky-Rk
-	for lore@pengutronix.de; Thu, 18 Jan 2024 11:17:38 +0100
+	id 1rQPTT-0006SU-U8
+	for lore@pengutronix.de; Thu, 18 Jan 2024 11:18:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FCSQEbdZVRplwwaeaO7qmkn5u50GMEZL762DYrF4CGo=; b=d2epoGA1aINf8SMbfAaqdq+LpX
-	IwUHvjBBFAP+wWEuCkeoYlkMlJHPz8rN3HG7H1bbRA1TJTKU3UzpWjCbK2lO0eUWx+Hgg4QS6d0N9
-	/5U+vg9kRAI7OxDH7+0P0HxmM8ZRSFQ7b2P6AVsChGePnZ6+7IvFVRM3zLTobFR2xr0srfxFDrRR0
-	/R3O8c1tBbZuamHT6ltoy/F5nnxD7BfvsxfKXNRQVqd0zx58hbVPYUf3kU/WRM1wjKRVIVfi5hYox
-	6oyv63jUaD2/UDpQOyMg1RstO5o+Oh2QOUfl97RSZRge3ty/3d9BfgtAcDjQCo28ifbhEI00LPnNg
-	vWpb/XmA==;
+	bh=ifWW90q32qiTt/ZJUSMHPDWm/hodgOnvdPraK1p7z4k=; b=J2Q0hwoIUhAu7Ea9Uvt9f/6D05
+	4bAFH1defJK1EvRKObPzVelLFwCRJVSSv4P6lHD27XsJ1LgPyhybiFptpn18mYJklHmStDxaKGymt
+	fCebvyPZ2fXAfgP8dU0HZ5VDwxJaWhu5utEL4D71BN69D6o/Bm0RDXdWxsKcsn2w3KNa9ida0OBFN
+	5huatWktPnHxBs+BnFYcB8gDZ7ricYQRYpGn++9oOCcsxejss8ZlBXu/tzT1u04bZtJ4Nz+qgHrPT
+	d/t+Zcc4KCkXJ4ScaZoyjpdvNkIvfzeN1xaZek+30GlFQ00EEfElON6YXitB70JBMR4bjbR/7WE/F
+	W7Pimbsg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rQPRW-002NoW-0O;
-	Thu, 18 Jan 2024 10:16:14 +0000
+	id 1rQPSP-002O1r-0w;
+	Thu, 18 Jan 2024 10:17:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rQPRS-002Nnt-1g
+	id 1rQPSM-002O0D-31
 	for barebox@lists.infradead.org;
-	Thu, 18 Jan 2024 10:16:12 +0000
+	Thu, 18 Jan 2024 10:17:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rQPRL-0006BY-Uu; Thu, 18 Jan 2024 11:16:03 +0100
+	id 1rQPSL-0006Fv-Pe; Thu, 18 Jan 2024 11:17:05 +0100
 Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rQPRL-000fSo-IM; Thu, 18 Jan 2024 11:16:03 +0100
+	id 1rQPSL-000fT1-DG; Thu, 18 Jan 2024 11:17:05 +0100
 Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rQPRL-000XvN-Fp; Thu, 18 Jan 2024 11:16:03 +0100
-Date: Thu, 18 Jan 2024 11:16:03 +0100
+	id 1rQPSL-000Xvy-B2; Thu, 18 Jan 2024 11:17:05 +0100
+Date: Thu, 18 Jan 2024 11:17:05 +0100
 From: Sascha Hauer <sha@pengutronix.de>
 To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20240118101603.GL4700@pengutronix.de>
+Message-ID: <20240118101705.GM4700@pengutronix.de>
 References: <20240116170738.209954-1-m.felsch@pengutronix.de>
- <20240116170738.209954-3-m.felsch@pengutronix.de>
- <20240117143651.GJ4700@pengutronix.de>
- <20240118091118.q2gibngag2vqhspc@pengutronix.de>
+ <20240116170738.209954-13-m.felsch@pengutronix.de>
+ <20240117143341.GI4700@pengutronix.de>
+ <20240118091343.r25gx5nrids2mgpd@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240118091118.q2gibngag2vqhspc@pengutronix.de>
+In-Reply-To: <20240118091343.r25gx5nrids2mgpd@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240118_021610_583228_BD35D271 
-X-CRM114-Status: GOOD (  35.32  )
+X-CRM114-CacheID: sfid-20240118_021706_981456_E0823461 
+X-CRM114-Status: GOOD (  26.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,116 +89,80 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 02/18] ARM: i.MX8M: bundle imx-scratch code
+Subject: Re: [PATCH v2 12/18] ARM64: mmu: add dynamic optee memory mapping
+ support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Jan 18, 2024 at 10:11:18AM +0100, Marco Felsch wrote:
+On Thu, Jan 18, 2024 at 10:13:43AM +0100, Marco Felsch wrote:
 > On 24-01-17, Sascha Hauer wrote:
-> > On Tue, Jan 16, 2024 at 06:07:22PM +0100, Marco Felsch wrote:
-> > > The scatch code spread over the code base which is ok as long as we use
-> > > it for the bootrom-log only.
-> > > 
-> > > This commit bundles the scratch code into a own module to make it easier
-> > > to adapt later on and to make the scratch space independent of
-> > > CONFIG_ARCH_IMX_ROMAPI.
+> > On Tue, Jan 16, 2024 at 06:07:32PM +0100, Marco Felsch wrote:
+> > > Use the dynamic optee memory base address for the early mapping if
+> > > possible and fallback to the static mapping if the query failed.
 > > > 
 > > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > > > ---
-> > >  arch/arm/mach-imx/Makefile       |  2 +-
-> > >  arch/arm/mach-imx/romapi.c       |  8 --------
-> > >  arch/arm/mach-imx/scratch.c      | 25 +++++++++++++++++++++++++
-> > >  arch/arm/mach-imx/xload-common.c |  8 --------
-> > >  include/mach/imx/romapi.h        |  2 +-
-> > >  include/mach/imx/scratch.h       | 17 +++++++++++++++++
-> > >  include/mach/imx/xload.h         | 11 -----------
-> > >  7 files changed, 44 insertions(+), 29 deletions(-)
-> > >  create mode 100644 arch/arm/mach-imx/scratch.c
-> > >  create mode 100644 include/mach/imx/scratch.h
+> > >  arch/arm/cpu/mmu_64.c      | 14 ++++++++++++--
+> > >  arch/arm/mach-imx/esdctl.c |  4 ++++
+> > >  common/Makefile            |  2 +-
+> > >  3 files changed, 17 insertions(+), 3 deletions(-)
 > > > 
-> > > diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-> > > index 3a51ae87813a..9505cffa8111 100644
-> > > --- a/arch/arm/mach-imx/Makefile
-> > > +++ b/arch/arm/mach-imx/Makefile
-> > > @@ -17,7 +17,7 @@ CFLAGS_imx6.o := -march=armv7-a
-> > >  lwl-$(CONFIG_ARCH_IMX6) += imx6-mmdc.o
-> > >  obj-$(CONFIG_ARCH_IMX7) += imx7.o
-> > >  obj-$(CONFIG_ARCH_VF610) += vf610.o
-> > > -obj-pbl-$(CONFIG_ARCH_IMX8M) += imx8m.o
-> > > +obj-pbl-$(CONFIG_ARCH_IMX8M) += imx8m.o scratch.o
-> > >  obj-$(CONFIG_ARCH_IMX9) += imx9.o
-> > >  lwl-$(CONFIG_ARCH_IMX_ATF) += atf.o
-> > >  obj-pbl-$(CONFIG_ARCH_IMX8M) += tzasc.o
-> > > diff --git a/arch/arm/mach-imx/romapi.c b/arch/arm/mach-imx/romapi.c
-> > > index 6d47f3c6d4af..e11f38202461 100644
-> > > --- a/arch/arm/mach-imx/romapi.c
-> > > +++ b/arch/arm/mach-imx/romapi.c
-> > > @@ -228,14 +228,6 @@ const u32 *imx8m_get_bootrom_log(void)
-> > >  	return NULL;
-> > >  }
+> > > diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+> > > index 84f45bc2c3c1..27fd15ea1233 100644
+> > > --- a/arch/arm/cpu/mmu_64.c
+> > > +++ b/arch/arm/cpu/mmu_64.c
+> > > @@ -20,6 +20,7 @@
+> > >  #include <memory.h>
+> > >  #include <asm/system_info.h>
+> > >  #include <linux/pagemap.h>
+> > > +#include <tee/optee.h>
 > > >  
-> > > -static int imx8m_reserve_scratch_area(void)
-> > > -{
-> > > -	return PTR_ERR_OR_ZERO(request_sdram_region("scratch area",
-> > > -				    (ulong)arm_mem_scratch_get(),
-> > > -				    sizeof(struct imx_scratch_space)));
-> > > -}
-> > > -device_initcall(imx8m_reserve_scratch_area);
-> > > -
-> > >  void imx8m_save_bootrom_log(void *dest)
+> > >  #include "mmu_64.h"
+> > >  
+> > > @@ -310,6 +311,7 @@ static void init_range(size_t total_level0_tables)
+> > >  void mmu_early_enable(unsigned long membase, unsigned long memsize)
 > > >  {
-> > >  	const u32 *rom_log;
-> > > diff --git a/arch/arm/mach-imx/scratch.c b/arch/arm/mach-imx/scratch.c
-> > > new file mode 100644
-> > > index 000000000000..0828b55ff8e5
-> > > --- /dev/null
-> > > +++ b/arch/arm/mach-imx/scratch.c
-> > > @@ -0,0 +1,25 @@
-> > > +// SPDX-License-Identifier: GPL-2.0-only
+> > >  	int el;
+> > > +	u64 optee_membase;
+> > >  	unsigned long ttb = arm_mem_ttb(membase + memsize);
+> > >  
+> > >  	pr_debug("enabling MMU, ttb @ 0x%08lx\n", ttb);
+> > > @@ -326,8 +328,16 @@ void mmu_early_enable(unsigned long membase, unsigned long memsize)
+> > >  	 * Set 1:1 mapping of VA->PA. So to cover the full 1TB range we need 2 tables.
+> > >  	 */
+> > >  	init_range(2);
+> > > -	early_remap_range(membase, memsize - OPTEE_SIZE, MAP_CACHED);
+> > > -	early_remap_range(membase + memsize - OPTEE_SIZE, OPTEE_SIZE, MAP_FAULT);
 > > > +
-> > > +#include <asm/barebox-arm.h>
-> > > +#include <init.h>
-> > > +#include <linux/err.h>
-> > > +#include <mach/imx/imx8m-regs.h>
-> > > +#include <mach/imx/esdctl.h>
-> > > +#include <mach/imx/scratch.h>
-> > > +#include <memory.h>
-> > > +
-> > > +struct imx_scratch_space *__imx8m_scratch_space(int ddr_buswidth)
-> > > +{
-> > > +	ulong endmem = MX8M_DDR_CSD1_BASE_ADDR +
-> > > +		imx8m_barebox_earlymem_size(ddr_buswidth);
-> > > +
-> > > +	return (void *)arm_mem_scratch(endmem);
-> > > +}
-> > > +
-> > > +static int imx8m_reserve_scratch_area(void)
-> > > +{
-> > > +	return PTR_ERR_OR_ZERO(request_sdram_region("scratch area",
-> > > +				    (ulong)arm_mem_scratch_get(),
-> > > +				    sizeof(struct imx_scratch_space)));
-> > > +}
-> > > +device_initcall(imx8m_reserve_scratch_area);
+> > > +	if (optee_get_membase(&optee_membase)) {
+> > > +		/* Fallback and place OP-TEE at the memory end region */
+> > > +		early_remap_range(membase, memsize - OPTEE_SIZE, MAP_CACHED);
+> > > +		early_remap_range(membase + memsize - OPTEE_SIZE, OPTEE_SIZE, MAP_FAULT);
+> > > +	} else {
+> > > +		early_remap_range(membase, memsize, MAP_CACHED);
+> > > +		early_remap_range(optee_membase, OPTEE_SIZE, MAP_FAULT);
+> > > +	}
 > > 
-> > This reservation doesn't seem to be i.MX specific. You could move this
-> > to a more generic place.
+> > You could replace the above with:
+> > 
+> > 	early_remap_range(membase, memsize, MAP_CACHED);
+> > 
+> > 	optee_membase = membase + memsize - OPTEE_SIZE;
+> > 	optee_get_membase(&optee_membase);
+> > 	early_remap_range(optee_membase, OPTEE_SIZE, MAP_FAULT);
 > 
-> You mean to use it for Rockchip,... as well or just for all i.MX SoCs? I
-> wanted to keep this commit as simple as possible by just shifting the
-> code from placeA to placeB without changing the logic nor the naming.
+> Nice catch, thanks a lot. How about:
+> 
+>   	early_remap_range(membase, memsize, MAP_CACHED);
+>   
+>   	if (optee_get_membase(&optee_membase))
+> 		optee_membase = membase + memsize - OPTEE_SIZE;
+>   	early_remap_range(optee_membase, OPTEE_SIZE, MAP_FAULT);
 
-I didn't notice that this code was just moved, so it's ok for this
-commit.
-
-What I really meant is that this could be ARM generic as the scratch
-area exists on all ARM machines. It's size is 32KiB, I am not sure why
-sizeof(struct imx_scratch_space) is used here. It could be used to
-request some other offset in the scratch area for somehing else, but do
-we really want to go that path?
-If this reservation is only meant to see something in the iomem output,
-then we could make this reservation ARM generic.
+Also fine.
 
 Sascha
+
 
 -- 
 Pengutronix e.K.                           |                             |
