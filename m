@@ -1,64 +1,67 @@
-Delivery-date: Thu, 18 Jan 2024 10:08:39 +0100
+Delivery-date: Thu, 18 Jan 2024 10:09:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rQOO6-0056GE-0V
+	id 1rQOOQ-0056IK-2c
 	for lore@lore.pengutronix.de;
-	Thu, 18 Jan 2024 10:08:39 +0100
+	Thu, 18 Jan 2024 10:09:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rQOO6-00019U-Ie
-	for lore@pengutronix.de; Thu, 18 Jan 2024 10:08:39 +0100
+	id 1rQOOR-0001Dr-E8
+	for lore@pengutronix.de; Thu, 18 Jan 2024 10:09:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=5L8bOKywdE+TYQimbRaYXwMeDoiOxwdpeTvcFFO8YHE=; b=aU61khI8HcTH+oXj5rYfCmQ3fu
-	N9cRok4tgOgMI28a9JxZOXc1Lo0WskxkqG8uTPSiqqDksQf5t6V/IEr9App7rafmVhu6X5nl1W/oU
-	ioC2bhjdwakSI7yGRpYQ3tK3jgRS6PTYWjrbGNj1wSsr+/D79rKlY+k+5vUBoLZyCUwIqTjp8h6Gc
-	JpByC9TJ56CrFwjHOLAjVRaX+Qs40rm1QV+A/Zstn3S4PzfohRkgu3nr4D5Eg9U3c3JBK9q2TyJ0n
-	c42x0/h7DJ/8pimTQH4ltMTMflo8XkmYNDiFqfj+Gg0VPcOGp1OFPfx6tX/F0x7PPGff9oSk+Yv9j
-	Ss+lmrjg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=QcZ+0BTNwOzx4YlXL2JfBcaaTEmRO2f7YRwpJlGCc4w=; b=1z6yxgQKtsfarhLrHr5ioZEsC0
+	01jo4+8gJm/92b+YZTjfqdVViLJRPmq0+V72kpuV4uZg1TF7xz8VYMWPkQ6bnh2ACkUA4b9BoKNj/
+	kziWS0BGkD6vr/hOCHZVtUP4AAT7gSuSq8WoOCI/QY6u3sbkGw+to68utpbuiWvhRSTK0GvH/HBeR
+	nJ2Sqq9mCM9sEiDaStVjPQ0LmNB+YR9Wvo6AgUDZ1FjshDXebyrXNdW2UvnvjfSp1/anzMkw3uNFV
+	nVZt96tMSmy8LR4B5KyRQ1Q26U8y5b14gFlEmmzTFTbmBTwf6YZLS6n+qtm2thBK3AlH0NX2Rr7Ka
+	ndC+zIlg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rQOMu-002E2L-2d;
-	Thu, 18 Jan 2024 09:07:24 +0000
+	id 1rQONS-002E88-0d;
+	Thu, 18 Jan 2024 09:07:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rQOMr-002E1c-37
+	id 1rQONP-002E7Y-1N
 	for barebox@lists.infradead.org;
-	Thu, 18 Jan 2024 09:07:23 +0000
+	Thu, 18 Jan 2024 09:07:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rQOMq-0000wg-K7; Thu, 18 Jan 2024 10:07:20 +0100
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rQONN-00010a-67; Thu, 18 Jan 2024 10:07:53 +0100
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rQOMq-000eOy-7T; Thu, 18 Jan 2024 10:07:20 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rQOMq-005Vsf-0S;
-	Thu, 18 Jan 2024 10:07:20 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 18 Jan 2024 10:07:17 +0100
-Message-Id: <20240118090718.1314156-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rQONM-000eP6-Ph; Thu, 18 Jan 2024 10:07:52 +0100
+Received: from mfe by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1rQONM-000XEm-NR; Thu, 18 Jan 2024 10:07:52 +0100
+Date: Thu, 18 Jan 2024 10:07:52 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <20240118090752.aj6caiscofe7ocgu@pengutronix.de>
+References: <20240116170738.209954-1-m.felsch@pengutronix.de>
+ <20240116170738.209954-6-m.felsch@pengutronix.de>
+ <20240117150014.GK4700@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240117150014.GK4700@pengutronix.de>
+User-Agent: NeoMutt/20180716
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240118_010722_011074_34CD0CA8 
-X-CRM114-Status: GOOD (  15.03  )
+X-CRM114-CacheID: sfid-20240118_010755_463166_6018C17F 
+X-CRM114-Status: GOOD (  25.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,138 +84,87 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/2] clk: make COMMON_CLK a visible symbol
+Subject: Re: [PATCH v2 05/18] ARM: i.MX8M: scratch: add optee_hdr area
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-So far, we expected platforms to select COMMON_CLK if they have a clock
-controller that's covered by the common clk framework and HAVE_CLK if
-they have a legacy clock driver.
+On 24-01-17, Sascha Hauer wrote:
+> On Tue, Jan 16, 2024 at 06:07:25PM +0100, Marco Felsch wrote:
+> > Add a new scratch storage slot for possible optee-hdr information which
+> > have to passed between barebox-pbl and barebox-proper. Reserve 512 bytes
+> > between the bootrom-log and the optee-hdr in case the bootrom-log need
+> > more space in the future.
+> > 
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> > ---
+> >  arch/arm/mach-imx/scratch.c | 29 +++++++++++++++++++++++++++++
+> >  include/mach/imx/scratch.h  |  5 +++++
+> >  2 files changed, 34 insertions(+)
+> > 
+> > diff --git a/arch/arm/mach-imx/scratch.c b/arch/arm/mach-imx/scratch.c
+> > index f4faff835c8c..6ba9b9d55b7d 100644
+> > --- a/arch/arm/mach-imx/scratch.c
+> > +++ b/arch/arm/mach-imx/scratch.c
+> > @@ -8,10 +8,13 @@
+> >  #include <mach/imx/esdctl.h>
+> >  #include <mach/imx/scratch.h>
+> >  #include <memory.h>
+> > +#include <tee/optee.h>
+> >  #include <pbl.h>
+> >  
+> >  struct imx_scratch_space {
+> >  	u32 bootrom_log[128];
+> > +	u32 reserved[128];		/* reserve for bootrom log */
+> > +	struct optee_header optee_hdr;
+> >  };
+> >  
+> >  static struct imx_scratch_space *scratch;
+> > @@ -53,6 +56,32 @@ const u32 *imx8m_scratch_get_bootrom_log(void)
+> >  	return scratch->bootrom_log;
+> >  }
+> >  
+> > +void imx8m_scratch_save_optee_hdr(const struct optee_header *hdr)
+> > +{
+> > +	size_t sz = sizeof(*hdr);
+> > +
+> > +	if (!scratch) {
+> > +		pr_err("No scratch area initialized, skip saving optee-hdr");
+> > +		return;
+> > +	}
+> > +
+> > +	pr_debug("Saving optee-hdr to scratch area 0x%p\n", &scratch->optee_hdr);
+> > +
+> > +	memcpy(&scratch->optee_hdr, hdr, sz);
+> > +}
+> > +
+> > +const struct optee_header *imx8m_scratch_get_optee_hdr(void)
+> > +{
+> > +	if (!scratch) {
+> > +		if (IN_PBL)
+> > +			return ERR_PTR(-EINVAL);
+> > +		else
+> > +			scratch = (void *)arm_mem_scratch_get();
+> > +	}
+> > +
+> > +	return &scratch->optee_hdr;
+> > +}
+> 
+> These two function do not seem to be i.MX8 specific, I could reuse them
+> on i.MX9, so better with imx_ prefix?
 
-With the addition of SCMI clocks, platforms, especially virtualized ones,
-that previously didn't need clock support may now want access to them.
+Yes, I can do that.
 
-Instead of having to select COMMON_CLK from such platforms on the
-off-chance that SCMI clocks may need to be used, just make COMMON_CLK
-user visible, so it can be selected as needed. As COMMON_CLK needs to
-conflict with legacy clock support, we also add a symbol for that and
-start selecting it where appropriate,
+Regards,
+  Marco
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/Kconfig            |  5 +----
- arch/arm/mach-at91/Kconfig  |  4 ++++
- arch/arm/mach-at91/Makefile |  4 +---
- drivers/clk/Kconfig         | 21 ++++++++++++++++++++-
- 4 files changed, 26 insertions(+), 8 deletions(-)
-
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 089ce43c88bd..34415cd2cea0 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -120,7 +120,7 @@ config ARCH_NOMADIK
- 	depends on 32BIT
- 	select CPU_ARM926T
- 	select CLOCKSOURCE_NOMADIK
--	select HAVE_CLK
-+	select HAVE_LEGACY_CLK
- 	help
- 	  Support for the Nomadik platform by ST-Ericsson
- 
-@@ -229,7 +229,6 @@ config ARCH_K3
- 	select CLKDEV_LOOKUP
- 	select HAVE_PBL_MULTI_IMAGES
- 	select HAS_DEBUG_LL
--	select HAVE_CLK
- 	select COMMON_CLK_OF_PROVIDER
- 	select PM_GENERIC_DOMAINS
- 
-@@ -281,7 +280,6 @@ config ARCH_STM32MP
- 	select COMMON_CLK
- 	select COMMON_CLK_OF_PROVIDER
- 	select HAS_DEBUG_LL
--	select HAVE_CLK
- 	select GPIOLIB
- 	select ARCH_HAS_RESET_CONTROLLER
- 	select ARM_AMBA
-@@ -294,7 +292,6 @@ config ARCH_VERSATILE
- 	select GPIOLIB
- 	select ARM_AMBA
- 	select AMBA_SP804
--	select HAVE_CLK
- 	select HAS_DEBUG_LL
- 	select COMMON_CLK
- 	select COMMON_CLK_OF_PROVIDER
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index 94e8e525a2f0..1049eb69570d 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -20,6 +20,10 @@ config MACH_AT91SAM9263EK_DT
- 	  Enabled for at91sam9263ek - evaluation kit.
- 	  But only if we need the device tree (bootstrap do not use DT)
- 
-+config HAVE_AT91_LEGACY_CLK
-+	def_bool !COMMON_CLK_OF_PROVIDER
-+	select HAVE_LEGACY_CLK
-+
- config HAVE_AT91_SMD
- 	bool
- 
-diff --git a/arch/arm/mach-at91/Makefile b/arch/arm/mach-at91/Makefile
-index c4532959556e..7d7f27749f65 100644
---- a/arch/arm/mach-at91/Makefile
-+++ b/arch/arm/mach-at91/Makefile
-@@ -4,9 +4,7 @@ obj-y += setup.o aic.o
- lwl-y += at91_pmc_ll.o ddramc_ll.o at91sam9_sdramc_ll.o matrix.o
- lwl-$(CONFIG_CLOCKSOURCE_ATMEL_PIT) += early_udelay.o
- 
--ifeq ($(CONFIG_COMMON_CLK_OF_PROVIDER),)
--obj-y += clock.o
--endif
-+obj-$(CONFIG_HAVE_AT91_LEGACY_CLK) += clock.o
- 
- obj-$(CONFIG_CMD_AT91_BOOT_TEST) += boot_test_cmd.o
- 
-diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
-index 3e032469d09b..685b34565d53 100644
---- a/drivers/clk/Kconfig
-+++ b/drivers/clk/Kconfig
-@@ -1,13 +1,32 @@
- # SPDX-License-Identifier: GPL-2.0-only
- config HAVE_CLK
- 	bool
-+	help
-+	  The <linux/clk.h> calls support software clock gating and
-+	  thus are a key power management tool on many systems.
-+
-+config HAVE_LEGACY_CLK
-+	select HAVE_CLK
-+	bool
-+	help
-+	  Select this option when the clock API in <linux/clk.h> is implemented
-+	  by platform/architecture code. This method is deprecated. Modern
-+	  code should select COMMON_CLK instead and not define a custom
-+	  'struct clk'.
- 
- config CLKDEV_LOOKUP
- 	bool
- 
- config COMMON_CLK
-+	bool "Common Clock Framework"
-+	depends on !HAVE_LEGACY_CLK
- 	select HAVE_CLK
--	bool
-+	help
-+	  The common clock framework is a single definition of struct
-+	  clk, useful across many platforms, as well as an
-+	  implementation of the clock API in include/linux/clk.h.
-+	  Architectures utilizing the common struct clk should select
-+	  this option.
- 
- config COMMON_CLK_OF_PROVIDER
- 	bool
--- 
-2.39.2
-
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
 
 
