@@ -1,53 +1,65 @@
-Delivery-date: Fri, 19 Jan 2024 11:35:52 +0100
+Delivery-date: Fri, 19 Jan 2024 15:25:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rQmE2-006t4d-2Z
+	id 1rQpoT-0079Ws-0I
 	for lore@lore.pengutronix.de;
-	Fri, 19 Jan 2024 11:35:52 +0100
+	Fri, 19 Jan 2024 15:25:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rQmE3-0002bK-EB
-	for lore@pengutronix.de; Fri, 19 Jan 2024 11:35:51 +0100
+	id 1rQpoT-0003iD-Ne
+	for lore@pengutronix.de; Fri, 19 Jan 2024 15:25:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Qdg8iaBgwtj6uhoZENb5RFbxsuxoZo2E47e2tR2m8vA=; b=t3Ejv6oePeFt/DFx0e9YUL3REH
-	Fzl4Ld41M5dlU9tEZW2qlejR0tJitXTgDWk7838b9Nk0KRpma720QWn8f3ObOqbi+DQtCs+m+3FNU
-	uczb/gTAMThU+QYDB5Gky9QDrT8E9jTVPYEGH1T6IlxDTDo5Hh/2XKhqNR1PjQ0emgBSdj3mP6Fco
-	cQZJpu7qFFUZ37Td+/e/qtOuxOcdE+6eOT51BA0VHVxDNfvY0gzgJuJUSXPlxrTfS9CJSFU9G7NCm
-	eqf2zuBC1KtgDWONzjvIWSGB7xn9YVKKqkF0SF7FJml51OAQJueJGHGeRRObZRUetYj62IvAFHoIM
-	/1l1worw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=j0MUWjok4PmLgUwQ4Iw0gmWde6POIZPUL5v/qyELDVA=; b=GjcT3EQQtWA8KVr8CcvqiadFGa
+	4CiL83KyI4OUWdOt6Bg3lkalqe0+Z6GYuOLnURhjv8/g5/Un+xIZjtIKU83m+6TXdQi/ssELR9JAk
+	I8FJ/nfkLcjoYHYD1PsUrqcg6Oce5E2don99tA0nQKLh105Ot3b8UxIfNbNULApLkpdw2PPPNmoI2
+	B8Pk7k3PoFpwK0BxRvt8u9hgN9Zml9S0K/Lv++UWYMO1GKmdmUUpSs6mKws+kmFa2O2unV7rSFtR5
+	ylnJG84OsWoREXyfNS26W5FLjPPqFrxgAmCZUC9a9lVv8isAhsUoQUnaG8XHnMvCwgGSMPYEnObi2
+	luv9e2jA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rQmCi-0056Re-1P;
-	Fri, 19 Jan 2024 10:34:28 +0000
+	id 1rQpnI-005pqU-05;
+	Fri, 19 Jan 2024 14:24:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rQmCe-0056PY-0x
+	id 1rQpnE-005pnR-2W
 	for barebox@lists.infradead.org;
-	Fri, 19 Jan 2024 10:34:26 +0000
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1rQmCY-0002V1-Og
-	for barebox@lists.infradead.org; Fri, 19 Jan 2024 11:34:18 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Fri, 19 Jan 2024 11:34:15 +0100
-Message-Id: <20240119103415.1101057-1-m.felsch@pengutronix.de>
+	Fri, 19 Jan 2024 14:24:26 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rQpn5-0003OT-DV; Fri, 19 Jan 2024 15:24:15 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rQpn5-000wI3-0w; Fri, 19 Jan 2024 15:24:15 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rQpn4-00DczL-2z;
+	Fri, 19 Jan 2024 15:24:14 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Fri, 19 Jan 2024 15:24:07 +0100
+Message-Id: <20240119142413.3206832-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240119142413.3206832-1-s.hauer@pengutronix.de>
+References: <20240119142413.3206832-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240119_023424_332037_5B450727 
-X-CRM114-Status: GOOD (  12.03  )
+X-CRM114-CacheID: sfid-20240119_062424_860043_D0A5191D 
+X-CRM114-Status: GOOD (  10.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,55 +82,33 @@ X-Spam-Status: No, score=-6.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH master] ARM: i.MX8MM bootsource: fix serial detection for QSPI boot source
+Subject: [PATCH 1/7] firmware: add missing FIRMWARE_IMX8MQ_OPTEE symbol
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
+CONFIG_FIRMWARE_IMX8MQ_OPTEE is used but not defined in Kconfig. Add the
+missing symbol like existing for the other i.MX8M variants.
 
-The current code override the serial download boot mode which is set in
-case the BootROM decide to fallback due to an empty QSPI. This lead into
-the wrong boot source detection and barebox will try to download the
-rest of the image via QSPI instead of using the serial download mode.
-
-Fix this by reorder the detection, first try the generic bootsource and
-if this fails try to detect the QSPI boot mode. This is also how u-boot
-does it in the first place.
-
-Fixes: 7b55ababb40f ("ARM: i.MX8MM bootsource: fix QSPI boot source detection")
-Signed-off-by: LI Qingwu <Qing-wu.Li@leica-geosystems.com.cn>
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/boot.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ firmware/Kconfig | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/arm/mach-imx/boot.c b/arch/arm/mach-imx/boot.c
-index c6134f35b659..153da835606c 100644
---- a/arch/arm/mach-imx/boot.c
-+++ b/arch/arm/mach-imx/boot.c
-@@ -711,15 +711,18 @@ void imx8mm_get_boot_source(enum bootsource *src, int *instance)
- 		return;
- 	}
+diff --git a/firmware/Kconfig b/firmware/Kconfig
+index 38fbf85555..8babdb85a8 100644
+--- a/firmware/Kconfig
++++ b/firmware/Kconfig
+@@ -53,6 +53,10 @@ config FIRMWARE_IMX8MP_OPTEE
+ 	bool "install OP-TEE on i.MX8MP boards"
+ 	depends on FIRMWARE_IMX8MP_ATF && PBL_OPTEE
  
-+	addr = IMX8M_BOOT_SW_INFO_POINTER_ADDR_A0;
++config FIRMWARE_IMX8MQ_OPTEE
++	bool "install OP-TEE on i.MX8MQ boards"
++	depends on FIRMWARE_IMX8MQ_ATF && PBL_OPTEE
 +
-+	__imx7_get_boot_source(src, instance, addr, sbmr2);
-+
-+	if (*src != BOOTSOURCE_UNKNOWN)
-+		return;
-+
- 	if (imx8mm_bootsource_qspi(sbmr1)) {
- 		*src = BOOTSOURCE_SPI; /* Really: qspi */
- 		*instance = 0;
- 		return;
- 	}
--
--	addr = IMX8M_BOOT_SW_INFO_POINTER_ADDR_A0;
--
--	__imx7_get_boot_source(src, instance, addr, sbmr2);
- }
- 
- void imx8mm_boot_save_loc(void)
+ config FIRMWARE_CCBV2_OPTEE
+ 	bool
+ 	depends on MACH_WEBASTO_CCBV2 && PBL_OPTEE
 -- 
 2.39.2
 
