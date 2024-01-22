@@ -1,64 +1,59 @@
-Delivery-date: Mon, 22 Jan 2024 16:49:31 +0100
+Delivery-date: Mon, 22 Jan 2024 20:16:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rRwYE-00BfdP-1g
+	id 1rRzmq-00BsuJ-2p
 	for lore@lore.pengutronix.de;
-	Mon, 22 Jan 2024 16:49:31 +0100
+	Mon, 22 Jan 2024 20:16:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rRwYE-0003p4-PF
-	for lore@pengutronix.de; Mon, 22 Jan 2024 16:49:31 +0100
+	id 1rRzmr-0001lQ-FZ
+	for lore@pengutronix.de; Mon, 22 Jan 2024 20:16:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iYOaMv7VoqDxPWnJoWcunEvH2WkZ77HaIrwuK17ZRcs=; b=kmJMsq2fZKAwb23UrwGXUlK7Gx
-	9Ug85k2VC7vr6BW/88RTeabOsn7XSvvhXrpK9QWm9qJ0YmiEyhdZK+Bcw4nUDtI/mjFg6w7pKXra5
-	NFK4+dZrbEyvU3xy827u0jVg0KjQrEEqE1CDJ1gFkBvvqqRqFIN4ZKenr7tjSnFAMxmsRYk1OdbOI
-	YgALOs1jJOvW6fkESqJPOcKkX7lkO4qpHdYsmzH9GallH/lXFnFV8X+qxvGid8KHVkdJc6VVwB+pd
-	gYThvxhxKDMnfqRGb183eVq3aO0v3vihHoHOYfO1VbpzoU5XvxiUmrABgPZbsVUH56X2pKdIifQTL
-	H2G5T8xg==;
+	bh=pjk5kAvY3euesXqowl5GKquSnb91BQ9GFBA2/cOc+GM=; b=v4Nl6AFVXWS4G/duD42FkDLG//
+	EpoPyHvaZgKNOWT0+ohsMjVLNYvEfSVW3AdeAgA46Pqg8eeBGGmBQgErbTvHqXJ+W9dUfi4dlGHW2
+	S9aNd3dpKBWl1uKr25NBJU1Ls0kC0B9RKp1hCJrmOY9aZ7mCtSn9Mvm0kfGfj5SjokD8p1EnafhCY
+	yAW7yRr1XgOSMudbm+dsUhib6aF6HQPaRoIPXVABAMUhMcjWdSo8sMaw/SJYUncApfZkK8xJLXKd8
+	xbFT/yM4R6mWQYr8XvfVRPj5gz0dUraCiLxTXUsItjaEF5ghtv5PKaFR8UqoETm52wcL4AHgc6auc
+	NB4/Te/w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rRwWt-00Cn9O-0p;
-	Mon, 22 Jan 2024 15:48:07 +0000
+	id 1rRzlP-00Dgt6-1w;
+	Mon, 22 Jan 2024 19:15:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rRwWq-00Cn8f-0A
+	id 1rRzlL-00DgrT-2Y
 	for barebox@lists.infradead.org;
-	Mon, 22 Jan 2024 15:48:06 +0000
+	Mon, 22 Jan 2024 19:15:17 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rRwWo-0003gn-N7; Mon, 22 Jan 2024 16:48:02 +0100
-Message-ID: <dca11fc5-e002-4c65-927f-7cb97b2478cf@pengutronix.de>
-Date: Mon, 22 Jan 2024 16:48:01 +0100
+	id 1rRzlI-0001a5-7a; Mon, 22 Jan 2024 20:15:12 +0100
+Message-ID: <ca44fd16-5009-4afd-b1ba-7da9460085df@pengutronix.de>
+Date: Mon, 22 Jan 2024 20:15:11 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: =?UTF-8?Q?Hans_Christian_L=C3=B8nstad?= <hcl@datarespons.no>
-Cc: Barebox List <barebox@lists.infradead.org>
-References: <EE0A8E0F-465F-46D1-A366-676E9047EA0C@datarespons.no>
- <52fa194d-441c-8827-00ac-49db2cd72661@pengutronix.de>
- <99FA6255-7807-4790-BA19-5BE02346DBF7@datarespons.no>
- <56A3F2CD-4EE3-4157-B821-2BD8917155AC@datarespons.no>
- <2df69458-e538-1505-13dd-3ba87e697f3c@pengutronix.de>
- <2FCD3543-D1C9-4A48-B325-19F51C84FFC8@datarespons.no>
- <70fa4042-3978-18c3-e5fe-23ec14122c4b@pengutronix.de>
- <CF417E7D-014C-4AAE-B042-6E22069546D5@datarespons.no>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20240103181312.409668-1-a.fatoum@pengutronix.de>
+ <20240103181312.409668-58-a.fatoum@pengutronix.de>
+ <20240108074704.GZ1318922@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <CF417E7D-014C-4AAE-B042-6E22069546D5@datarespons.no>
+In-Reply-To: <20240108074704.GZ1318922@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240122_074804_241985_C3DFB1E1 
-X-CRM114-Status: GOOD (  23.42  )
+X-CRM114-CacheID: sfid-20240122_111515_827179_74EE224C 
+X-CRM114-Status: GOOD (  25.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,159 +76,92 @@ X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: IMX8M and Optee support
+Subject: Re: [PATCH 057/112] pbl: introduce CONFIG_PBL_FULLY_PIC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 19.10.23 08:25, Hans Christian Lønstad wrote:
-> Optee using ATF 2.8 works when a header is stripped of the tee.bin file (use tee-raw.bin)
+On 08.01.24 08:47, Sascha Hauer wrote:
+> On Wed, Jan 03, 2024 at 07:12:17PM +0100, Ahmad Fatoum wrote:
+>> In the quest for making barebox PBL code W^X mappable, we have now taken
+>> care to make the ARM64 assembly routines not emit code relocations,
+>> so let's do the same for the C code as well.
+>>
+>> We do this by setting pragma GCC visibility push(hidden) globally. This
+>> option is stronger than -fvisibility=hidden and ensures we are
+>> completely position-independent. See kernel commit e544ea57ac07
+>> ("x86/boot/compressed: Force hidden visibility for all symbol references")
+>> for more information.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  include/linux/export.h |  2 +-
+>>  include/linux/hidden.h | 19 +++++++++++++++++++
+>>  pbl/Kconfig            |  7 +++++++
+>>  scripts/Makefile.lib   |  5 +++++
+>>  scripts/Makefile.pic   | 22 ++++++++++++++++++++++
+>>  5 files changed, 54 insertions(+), 1 deletion(-)
+>>  create mode 100644 include/linux/hidden.h
+>>  create mode 100644 scripts/Makefile.pic
+>>
+>> diff --git a/include/linux/export.h b/include/linux/export.h
+>> index 8f47742bea99..a136d727d128 100644
+>> --- a/include/linux/export.h
+>> +++ b/include/linux/export.h
+>> @@ -6,7 +6,7 @@
+>>  
+>>  #define THIS_MODULE	0
+>>  
+>> -#ifdef CONFIG_MODULES
+>> +#if defined(CONFIG_MODULES) && !defined(__DISABLE_EXPORTS)
+>>  
+>>  struct kernel_symbol
+>>  {
+>> diff --git a/include/linux/hidden.h b/include/linux/hidden.h
+>> new file mode 100644
+>> index 000000000000..49a17b6b5962
+>> --- /dev/null
+>> +++ b/include/linux/hidden.h
+>> @@ -0,0 +1,19 @@
+>> +/* SPDX-License-Identifier: GPL-2.0 */
+>> +/*
+>> + * When building position independent code with GCC using the -fPIC option,
+>> + * (or even the -fPIE one on older versions), it will assume that we are
+>> + * building a dynamic object (either a shared library or an executable) that
+>> + * may have symbol references that can only be resolved at load time. For a
+>> + * variety of reasons (ELF symbol preemption, the CoW footprint of the section
+>> + * that is modified by the loader), this results in all references to symbols
+>> + * with external linkage to go via entries in the Global Offset Table (GOT),
+>> + * which carries absolute addresses which need to be fixed up when the
+>> + * executable image is loaded at an offset which is different from its link
+>> + * time offset.
+>> + *
+>> + * Fortunately, there is a way to inform the compiler that such symbol
+>> + * references will be satisfied at link time rather than at load time, by
+>> + * giving them 'hidden' visibility.
+>> + */
+>> +
+>> +#pragma GCC visibility push(hidden)
+>> diff --git a/pbl/Kconfig b/pbl/Kconfig
+>> index 91970c19bc1e..23fcbd20dacd 100644
+>> --- a/pbl/Kconfig
+>> +++ b/pbl/Kconfig
+>> @@ -46,6 +46,13 @@ config PBL_RELOCATABLE
+>>  	  This option only influences the PBL image. See RELOCATABLE to also make
+>>  	  the real image relocatable.
+>>  
+>> +config PBL_FULLY_PIC
+>> +	bool "fully position-independent pbl image"
+>> +	depends on PBL_RELOCATABLE && ARM
+>> +	help
+>> +	  Compared to CONFIG_PBL_RELOCATABLE, this image has no relocations in
+>> +	  the code sections.
+> 
+> Shouldn't we make PBL_FULLY_PIC the default when available?
 
-FTR: With Marco's recent OP-TEE changes that are sitting in next, barebox accepts
-OP-TEE with a header too and will use it to dynamically determine the OP-TEE base
-instead of hardcoding it to be at the end of RAM.
+Eventually, yes. But I want this to get some more testing before making it so.
 
 > 
-> Hans
-> 
->> 18. okt. 2023 kl. 16:36 skrev Ahmad Fatoum <a.fatoum@pengutronix.de>:
->>
->> Hello Hans,
->>
->> On 18.10.23 16:06, Hans Christian Lønstad wrote:
->>> The ATF for imx8 is quite convoluted requiring fixed memory locations for images and device trees. The ATF itself supports transferring parameters
->>> Using 4 unsigned long arguments. These are unfortunately zeroed out by a misconfiguration for IMX8:
->>>
->>> RESET_TO_BL31 := 1
->>> and not at the same time setting
->>> RESET_TO_BL31_WITH_PARAMS := 1
->>>
->>> As demoed below this can be made to work.
->>> ———><——
->>>
->>> Uart initialized
->>> Run level 3
->>> Init power
->>> Init DDR
->>> Handover to ATF
->>> imx8mp_load_and_start_image_via_tfa: Expect OPTEE at 0xbe000000
->>> CH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
->>> IH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
->>>                                                                   CAAM early init successful
->>> imx8m_atf_start_bl31: Callout BL31 with 1, 2, 3, 4
->>> NOTICE:  Do not release JR0 to NS as it can be used by HAB
->>> INFO:    bl31_early_platform_setup2: args are 0x00000001, 0x00000002, 0x00000003, 0x00000004
->>> NOTICE:  BL31: v2.8(debug):lf-6.1.36-2.1.0-0-g1a3beeab6-dirty
->>> NOTICE:  BL31: Built : 15:49:38, Oct 18 2023
->>>
->>> ——><——
->>>
->>> The "best" approach is likely to patch ATFs imx8mX_bl31_setup.c replacing preprocessor values with values
->>> handed over from Barebox. Adding these parameters will be compatible with unpatched ATFs anyway.
->>
->> There's void bl31_entry(uintptr_t bl31_entry, uintptr_t bl32_entry,
->>         uintptr_t bl33_entry, uintptr_t fdt_addr)
->>
->> which is used for RK3568/RK3588 platforms. AFAIU, future SoCs will likely
->> use a linked list of hand over blocks to transfer this same information.
->>
->> Any of these two approaches would be better than what we have now on i.MX.
->>
->> I am still not sure how this relates to OP-TEE hanging. Can you configure
->> your OP-TEE to not expect a FDT?
->>
->> Cheers,
->> Ahmad
->>
->>>
->>> Hans
->>>
->>>
->>>> 18. okt. 2023 kl. 15:04 skrev Ahmad Fatoum <a.fatoum@pengutronix.de>:
->>>>
->>>> Hello,
->>>>
->>>> On 18.10.23 14:31, Hans Christian Lønstad wrote:
->>>>> I may have gotten this wrong, but should not the device tree be passed over to ATF which again pass it over to Optee?
->>>>>
->>>>> The bl31() wrapper in imx8m_atf_start_bl31 should do this using register call parameters?
->>>>
->>>> I am using a quite antiquated imx-atf v2.4 and optee-os-3.2.0.imx in my setup and
->>>> haven't come around to update them. I know that barebox works fine with newer TF-A
->>>> versions (especially after https://review.trustedfirmware.org/c/TF-A/trusted-firmware-a/+/16370),
->>>> but I haven't tested a newer OP-TEE, so if your OP-TEE configuration/version expects
->>>> a device tree, this may indeed be the culprit.
->>>>
->>>>>> 18. okt. 2023 kl. 13:29 skrev Hans Christian Lønstad <hcl@datarespons.no>:
->>>>>>
->>>>>> We have a 2GB IMX8MP system using 32MB OPTEEE_SIZE, so expect to find Optee blob at 0xBE000000.
->>>>>>
->>>>>> ATF compiled with:
->>>>>> make PLAT=imx8mp BL32_BASE=0xBE000000 IMX_BOOT_UART_BASE=0x30890000 SPD=opteed DEBUG=1 -j
->>>>>>
->>>>>> Optee compiled with:
->>>>>>
->>>>>> CFG_DDR_SIZE ?= UL(0x80000000)
->>>>>> CFG_UART_BASE ?= UART2_BASE
->>>>>> CFG_TZDRAM_START ?= 0xBE000000
->>>>>> undefine CFG_NS_ENTRY_ADDR
->>>>>>
->>>>>> Barebox compiled with:
->>>>>> CONFIG_HAVE_OPTEE=y CONFIG_OPTEE_SIZE=0x02000000 # CONFIG_BOOTM_OPTEE is not set CONFIG_PBL_OPTEE=y CONFIG_FIRMWARE_IMX8MP_OPTEE=y
->>>>
->>>> barebox configuration looks ok assuming board code calls imx8mp_load_and_start_image_via_tfa().
->>>>
->>>>>>
->>>>>> This produces the following on boot:
->>>>>> —————————————————><--------------
->>>>>>
->>>>>> Uart initialized
->>>>>> Run level 3
->>>>>> Init power
->>>>>> Init DDR
->>>>>> Handover to ATF
->>>>>> imx8mp_load_and_start_image_via_tfa: Expect OPTEE at 0xbe000000
->>>>>> CH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
->>>>>> IH e2a7175151fe3e842116990e62c864334e1bb030ca146b749d8e6b0c02481357
->>>>>>                                                                 NOTICE:  Do not release JR0 to NS as it can be used by HAB
->>>>>> NOTICE:  BL31: v2.8(debug):lf-6.1.36-2.1.0-0-g1a3beeab6-dirty
->>>>>> NOTICE:  BL31: Built : 13:14:09, Oct 18 2023
->>>>>> INFO:    GICv3 with legacy support detected.
->>>>>> INFO:    ARM GICv3 driver initialized in EL3
->>>>>> INFO:    Maximum SPI INTID supported: 191
->>>>>> INFO:    BL31: Initializing runtime services
->>>>>> INFO:    bl31_plat_get_next_image_ep_info: want image 0
->>>>>> INFO:    bl31_plat_get_next_image_ep_info: bl32 PC is 0xbe000000
->>>>>> INFO:    BL31: cortex_a53: CPU workaround for 855873 was applied
->>>>>> WARNING: BL31: cortex_a53: CPU workaround for 1530924 was missing!
->>>>>> INFO:    BL31: Initializing BL32
->>>>>> INFO:    bl31_plat_get_next_image_ep_info: want image 0
->>>>>> INFO:    bl31_plat_get_next_image_ep_info: bl32 PC is 0xbe000000
->>>>>> INFO:    opteed_init: 176 - calling <opteed_synchronous_sp_entry>
->>>>>> INFO:    opteed_synchronous_sp_entry: 79 - calling <opteed_enter_sp>
->>>>
->>>> Try compiling op-tee with CFG_TEE_CORE_LOG_LEVEL=4 and see how far it gets.
->>>>
->>>>>> I´m not sure why it asks for the same image twice and if this implies anything …
->>>>
->>>> No idea..
->>>>
->>>> Cheers,
->>>> Ahmad
->>>>
->>>> -- 
->>>> Pengutronix e.K.                           |                             |
->>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>>>
->>>
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+> Sascha
 > 
 
 -- 
