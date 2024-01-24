@@ -1,68 +1,58 @@
-Delivery-date: Wed, 24 Jan 2024 15:23:54 +0100
+Delivery-date: Wed, 24 Jan 2024 16:49:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rSeAT-00GKOT-0R
+	id 1rSfUp-00GVGX-0t
 	for lore@lore.pengutronix.de;
-	Wed, 24 Jan 2024 15:23:54 +0100
+	Wed, 24 Jan 2024 16:49:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rSeAT-0000ci-Qd
-	for lore@pengutronix.de; Wed, 24 Jan 2024 15:23:54 +0100
+	id 1rSfUp-0006t4-Ut
+	for lore@pengutronix.de; Wed, 24 Jan 2024 16:49:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VpR1nUiVikt/JKzUDu2/x7Jn71jA6YU9b5qb1aUlUYk=; b=J4IenI/GBXQaLFJKxMDJE8tPF/
-	pSCAiGq9iBlRPrN3ZDiTxyMQw1WPMNVAl2xNOsNJfoyzuATL7Ek+ZpYyhzFr/Kvwq+Wh4HySaYj4g
-	hr/bFTyq4NAlsnA3a2MWjr6E8Tdcja587tohjpq177yBuMSccZJqtlsWMEtAf9QXNWj3umzcNFCb2
-	HfxA4DqV9CXUqZ8CdpIPb7/W+z/2sa85Q8RlcEavxW8hyMT5yUlyXSRDIUo7F5jssAbaLlFOWKvBH
-	7zglP6XFApUTHr/3V/4c810xgJRJ38n9ck7kCDWONu8tMu500UIQUvdgR5F/YR8xl/yipUYeXhIn1
-	i+97zSRw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=cqvzvXA1VJTYt56qZX0g1TPbGYAYZ7wRlBW3BCsS8V4=; b=3PjQIpV9HzkjMCWR+Yr3ms5yap
+	eb782hB4YbZZA3CKhg316Nql2Wu8bvVJJpbsM4nlYIKpAHS1XKh2FOWLBlfRkJTggC37cX9QUKISN
+	LjdekS9V7T6L4Aa/VL2M6+R35cu89FQ1Nba4ccT5wMXXCfL2KtB4f/5MTs+YNK1pOJAK5pUi8SRXI
+	LRJ53FhkLfdDkPUplXcqfeUa+QBjYE4zlOKmr8Ca92E0DJwgvDoEER3in4xJCbHaUYdR/bKo4J28P
+	N/2uPI5alZy9kcOgAaXYKmGs9Bf3faD1Jg68FU5S1DodRMWUrN/fhb7JquktQ8KGJ1zjDNvYxvXUS
+	ivRjTTnw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rSe9Q-003dfu-0I;
-	Wed, 24 Jan 2024 14:22:48 +0000
+	id 1rSfTh-0042DL-30;
+	Wed, 24 Jan 2024 15:47:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rSe9M-003deZ-2f
+	id 1rSfTc-00428o-12
 	for barebox@lists.infradead.org;
-	Wed, 24 Jan 2024 14:22:46 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rSe9L-0000Ya-FF; Wed, 24 Jan 2024 15:22:43 +0100
-Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rSe9L-00259s-2t; Wed, 24 Jan 2024 15:22:43 +0100
-Received: from mfe by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1rSe9L-001ZOk-0i; Wed, 24 Jan 2024 15:22:43 +0100
-Date: Wed, 24 Jan 2024 15:22:43 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20240124142243.cjds2eb2l3l2v5mm@pengutronix.de>
-References: <20240124134738.133782-1-m.felsch@pengutronix.de>
- <20240124134738.133782-4-m.felsch@pengutronix.de>
- <12b6b0e6-25c6-4a63-ab0d-2cf1f8de23bd@pengutronix.de>
- <20240124135842.pbpselwwytxri22q@pengutronix.de>
+	Wed, 24 Jan 2024 15:47:47 +0000
+Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <bst@pengutronix.de>)
+	id 1rSfTV-0006lz-QQ; Wed, 24 Jan 2024 16:47:37 +0100
+From: Bastian Krause <bst@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Marco Felsch <m.felsch@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>,
+	Bastian Krause <bst@pengutronix.de>
+Date: Wed, 24 Jan 2024 16:47:28 +0100
+Message-Id: <20240124154728.901305-2-bst@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240124154728.901305-1-bst@pengutronix.de>
+References: <20240124154728.901305-1-bst@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240124135842.pbpselwwytxri22q@pengutronix.de>
-User-Agent: NeoMutt/20180716
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240124_062244_879490_C0B0CBC5 
-X-CRM114-Status: GOOD (  21.32  )
+X-CRM114-CacheID: sfid-20240124_074744_354705_0A9D70A7 
+X-CRM114-Status: UNSURE (   7.48  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,61 +75,33 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 3/3] uncompress: add detected file type debug print
+Subject: [PATCH v2 2/2] usbgadget: add bbu fastboot partition naming scheme
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 24-01-24, Marco Felsch wrote:
-> On 24-01-24, Ahmad Fatoum wrote:
-> > On 24.01.24 14:47, Marco Felsch wrote:
-> > > This can be useful for developers.
-> > > 
-> > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > > ---
-> > >  lib/uncompress.c | 2 ++
-> > >  1 file changed, 2 insertions(+)
-> > > 
-> > > diff --git a/lib/uncompress.c b/lib/uncompress.c
-> > > index e7a3ffde823e..48e8173501c6 100644
-> > > --- a/lib/uncompress.c
-> > > +++ b/lib/uncompress.c
-> > > @@ -97,6 +97,8 @@ int uncompress(unsigned char *inbuf, int len,
-> > >  		ft = file_detect_type(uncompress_buf, 32);
-> > >  	}
-> > >  
-> > > +	pr_debug("Filetype detected: %s\n", file_type_to_string(ft));
-> > 
-> > Not that I mind, but do you know about the filetype command?
-> 
-> I used it to check the kernel image within a fit container.
+Signed-off-by: Bastian Krause <bst@pengutronix.de>
+---
+New patch, no v1 available.
+---
+ commands/usbgadget.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-After checking the code path which is a bit confusing, I see that I
-didn't triggered the bootm path the image-fit path which uses the same
-uncompression algorithm. So the cover-letter title is incorrect.
+diff --git a/commands/usbgadget.c b/commands/usbgadget.c
+index d0dcde69cec..e69660fde54 100644
+--- a/commands/usbgadget.c
++++ b/commands/usbgadget.c
+@@ -61,7 +61,8 @@ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT ("-a\t", "Create CDC ACM function")
+ BAREBOX_CMD_HELP_OPT ("-A <desc>", "Create Android Fastboot function. If 'desc' is not provided, "
+ 				   "try to use 'global.fastboot.partitions' variable.")
+-BAREBOX_CMD_HELP_OPT ("-b\t", "include registered barebox update handlers (fastboot specific)")
++BAREBOX_CMD_HELP_OPT ("-b\t", "include registered barebox update handlers (fastboot specific,"
++			      "exported as 'bbu-<update_handler_name>' partitions)")
+ BAREBOX_CMD_HELP_OPT ("-D <desc>", "Create DFU function. If 'desc' is not provided, "
+ 				   "try to use 'global.usbgadget.dfu_function' variable.")
+ BAREBOX_CMD_HELP_OPT ("-S <desc>", "Create USB Mass Storage function. If 'desc' is not provided,"
+-- 
+2.39.2
 
-Regards,
-  Marco
-
-> 
-> Regards,
->   Marco
-> 
-> 
-> 
-> > 
-> > > +
-> > >  	switch (ft) {
-> > >  #ifdef CONFIG_BZLIB
-> > >  	case filetype_bzip2:
-> > 
-> > -- 
-> > Pengutronix e.K.                           |                             |
-> > Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> > 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> > Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> > 
-> > 
-> 
-> 
 
 
