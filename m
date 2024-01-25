@@ -1,84 +1,68 @@
-Delivery-date: Thu, 25 Jan 2024 08:40:25 +0100
+Delivery-date: Thu, 25 Jan 2024 15:11:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rSuLW-0013xw-1u
+	id 1rT0SH-001nY8-2C
 	for lore@lore.pengutronix.de;
-	Thu, 25 Jan 2024 08:40:25 +0100
+	Thu, 25 Jan 2024 15:11:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rSuLX-0003CY-AM
-	for lore@pengutronix.de; Thu, 25 Jan 2024 08:40:23 +0100
+	id 1rT0SI-0007gV-3M
+	for lore@pengutronix.de; Thu, 25 Jan 2024 15:11:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=s4iEvwD/eMPGylHtOeTRWVo8bHqbtukP0YGPj1K85gw=; b=GFcd1Dhr+udMYp6RlCV84ZsKUL
-	BOHN9LgH7VrMVN+LLrC3JtkOp8x3u7JjECZTHgwWpRcqCo06Y8oeYO2nITeNktYQfBianEyf3jtBS
-	TgDn4QC8cUMBE4vnv0JRRjFchBO0DnHOiYPXGNV0Uo6aZeZp6V5CA/T/cTY+kaMyn8NUXK8d9t1BS
-	3u5/cF6WGOmUaApcGkbT1lZy1p1THVK55DS6ROpUsumFivDtKUxarmH/a+oYy7VuL8he/omJho4ve
-	nnMaVVBKzRPmb+7ZlnDWvDKWC3cb/Ioe0H2Pypyh9dpOHvaadqGJs2MCcrSsWq5GSqDYQs3w+R+8R
-	AtY4DOvA==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=NaXZoOHizlynsfYMkhyJY4mCYAAcmRcHKbxVNQkRQm0=; b=CTzlOguAkKiHtq46tNl7ojlxbQ
+	M+lGnCufwd/WpXOBjo7CUHJ3cGQ+UlWrF/9pXheTuQufVBB5gsQ/oRtY/aB8h4YqomcSYNi/LMFKj
+	Y6a2Vn4PeQaH9TZMVSrTa+q3mB2aKTYkNHscqz2lBdMUkYdQF9BS4cEFTByUrbQsdKvJGH/4WfBCo
+	3hBv2Mcts4CIgYhJn5jKRoQLRWQlHv7fX+jSsHtVlB9LdMRQVCDmkCfs8owJXTrEeud7ny2iSWA+i
+	TSQ0Z+IgWnuKVMyCS0vAIrMIQKJsH2Fpq/kqTHYrbt+2/BDZZnURzk8D5IOTTYKT5ugGHsu/omMu7
+	6cMO/x8Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
-	by bombadil.infradead.org with esmtp (Exim 4.96 #2 (Red Hat Linux))
-	id 1rSuKV-00765R-1B;
-	Thu, 25 Jan 2024 07:39:19 +0000
+	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rT0Rb-00000000GxE-4BvU;
+	Thu, 25 Jan 2024 14:11:04 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.96 #2 (Red Hat Linux))
-	id 1rSuKP-00761o-1D
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rT0Py-00000000Fqh-0A94
 	for barebox@bombadil.infradead.org;
-	Thu, 25 Jan 2024 07:39:16 +0000
+	Thu, 25 Jan 2024 14:09:22 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
-	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:To:From:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=s4iEvwD/eMPGylHtOeTRWVo8bHqbtukP0YGPj1K85gw=; b=OhLYZjF/k5isqHxQl7buy97r7/
-	BwQugthn3G2xV/hj3y3kkH8Cpmn4bCPl8mNp6NW7mLVbWnihCUx4GjqrsXiTMPRDpu0MS0lo4U/XW
-	9wHkhvT+wObE1MgqFkOaK6jlKKsMZ+5LiqbO39QssyJW1ZbhNS7tQX/LbOEH56fYFK8fNx3K6gjDF
-	xdpIRlyAaoEJTwcuyLV94nqYaKoZDyYzJMKUKp72ANbroX365/ogje5tFRk2bIlRP6yFs08bbayab
-	My6fozJiEjk1XcfnMMnp+OjD84ffUHpVN3qsS87hqNULqJEFnlJLsSvcBLNL/qk9s5E9qyP2RJ437
-	8oVN/Kfg==;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:Message-Id:Date:Subject:To:From:Sender:Reply-To:Cc:Content-Type:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=NaXZoOHizlynsfYMkhyJY4mCYAAcmRcHKbxVNQkRQm0=; b=nKEoFPBX8uovkvgz9ITBzIy+VS
+	sjnbaQ+g5aUIIeFSt+zqPk4dmuaR+4f112/6R6+Zrb+sHYb2Pr0hk72FxBgXRgRcUk+5UX9wJOm+f
+	9qa3Z3HqWB9JyixO9wUdwFxsjlWYHgHFqhR1iCIb1KbwjgP5Gh4h12VfCb7Foowxzlaa93TNAcz5O
+	pjtoE5Ff+VIxApnPuiNSJ4Qef8spwOnW551CeLgDdxBEeXnAsRv//01IqJBYm0qctjzfzltmWEul8
+	TdKJ7Mc2F+9D1tAjw39CigsOoRiUOiwEojEEh968gELQC9P46uZ4uplSf1+E8ASVvuYbp8k5vo+Vx
+	BE66bRSA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rSuKL-00000004yb9-378T
+	id 1rSzwZ-00000005PEJ-0sBU
 	for barebox@lists.infradead.org;
-	Thu, 25 Jan 2024 07:39:12 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rSuKJ-00033A-AO; Thu, 25 Jan 2024 08:39:07 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rSuKI-002EaG-Tr; Thu, 25 Jan 2024 08:39:06 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rSuKI-002OD4-2l;
-	Thu, 25 Jan 2024 08:39:06 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
-Cc: Marco Felsch <m.felsch@pengutronix.de>, 
- Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240124154728.901305-1-bst@pengutronix.de>
-References: <20240124154728.901305-1-bst@pengutronix.de>
-Message-Id: <170616834685.569564.7623937483587115564.b4-ty@pengutronix.de>
-Date: Thu, 25 Jan 2024 08:39:06 +0100
+	Thu, 25 Jan 2024 13:39:01 +0000
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1rSzwX-00053U-RO
+	for barebox@lists.infradead.org; Thu, 25 Jan 2024 14:38:57 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Thu, 25 Jan 2024 14:38:55 +0100
+Message-Id: <20240125133856.3792552-1-m.felsch@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240125_073910_158154_32C0DAAB 
-X-CRM114-Status: UNSURE (   7.55  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240125_133859_361604_5AA34601 
+X-CRM114-Status: GOOD (  21.76  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -101,30 +85,231 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 1/2] Documentation: usb: document bbu fastboot
- partition name
+Subject: [PATCH v3 1/2] Port SoC framework from Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+This adds the initial support for the Linux soc framework which can be
+used to register all SoC relevant informations. The framework can be
+used by driver to check for errata for an specific soc(-revision) in the
+future since this require porting the matching function.
 
-On Wed, 24 Jan 2024 16:47:27 +0100, Bastian Krause wrote:
-> After looking this up the nth time in the code base, it's really time to
-> document this.
-> 
-> Also mention that ``fastboot getvar all`` lists the partitions.
-> 
-> 
+For now it gathers all required SoC information and provide a standard
+interface to query the data via device params.
 
-Applied, thanks!
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+Changelog:
+v3:
+ - rebased on current master
+v2:
+ - nothing
 
-[1/2] Documentation: usb: document bbu fastboot partition name
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3021e16f1a4a (link may not be stable)
-[2/2] usbgadget: add bbu fastboot partition naming scheme
-      https://git.pengutronix.de/cgit/barebox/commit/?id=305b65c2f950 (link may not be stable)
+ drivers/base/Kconfig    |   3 +
+ drivers/base/Makefile   |   1 +
+ drivers/base/soc.c      | 123 ++++++++++++++++++++++++++++++++++++++++
+ include/linux/sys_soc.h |  39 +++++++++++++
+ 4 files changed, 166 insertions(+)
+ create mode 100644 drivers/base/soc.c
+ create mode 100644 include/linux/sys_soc.h
 
-Best regards,
+diff --git a/drivers/base/Kconfig b/drivers/base/Kconfig
+index 612a84be33e7..21a4793cfa47 100644
+--- a/drivers/base/Kconfig
++++ b/drivers/base/Kconfig
+@@ -6,4 +6,7 @@ config PM_GENERIC_DOMAINS
+ config FEATURE_CONTROLLER
+ 	bool "Feature controller support" if COMPILE_TEST || SANDBOX
+ 
++config SOC_BUS
++	bool
++
+ source "drivers/base/regmap/Kconfig"
+diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+index e8e354cdaabc..acc53763da35 100644
+--- a/drivers/base/Makefile
++++ b/drivers/base/Makefile
+@@ -7,3 +7,4 @@ obj-y	+= regmap/
+ 
+ obj-$(CONFIG_PM_GENERIC_DOMAINS) += power.o
+ obj-$(CONFIG_FEATURE_CONTROLLER) += featctrl.o
++obj-$(CONFIG_SOC_BUS) += soc.o
+diff --git a/drivers/base/soc.c b/drivers/base/soc.c
+new file mode 100644
+index 000000000000..a481f8987b56
+--- /dev/null
++++ b/drivers/base/soc.c
+@@ -0,0 +1,123 @@
++// SPDX-License-Identifier: GPL-2.0-only
++// SPDX-FileCopyrightText: 2024 Marco Felsch, Pengutronix
++/*
++ * Based on Linux drivers/base/soc.c:
++ * Copyright (C) ST-Ericsson SA 2011
++ */
++
++#include <common.h>
++#include <init.h>
++#include <of.h>
++
++#include <linux/slab.h>
++#include <linux/sys_soc.h>
++#include <linux/err.h>
++
++struct soc_device {
++	struct device dev;
++	struct soc_device_attribute *attr;
++};
++
++static struct bus_type soc_bus_type = {
++	.name  = "soc",
++};
++static bool soc_bus_registered;
++
++static void soc_device_add_params(struct soc_device *soc_dev)
++{
++	struct soc_device_attribute *attr = soc_dev->attr;
++	struct device *dev = &soc_dev->dev;
++
++	if (attr->machine)
++		dev_add_param_string_fixed(dev, "machine", attr->machine);
++	if (attr->family)
++		dev_add_param_string_fixed(dev, "family", attr->family);
++	if (attr->revision)
++		dev_add_param_string_fixed(dev, "revision", attr->revision);
++	if (attr->serial_number)
++		dev_add_param_string_fixed(dev, "serial_number", attr->serial_number);
++	if (attr->soc_id)
++		dev_add_param_string_fixed(dev, "soc_id", attr->soc_id);
++}
++
++static void soc_device_get_machine(struct soc_device_attribute *soc_dev_attr)
++{
++	struct device_node *np;
++
++	if (soc_dev_attr->machine)
++		return;
++
++	np = of_find_node_by_path("/");
++	of_property_read_string(np, "model", &soc_dev_attr->machine);
++	of_node_put(np);
++}
++
++static struct soc_device_attribute *early_soc_dev_attr;
++
++struct soc_device *soc_device_register(struct soc_device_attribute *soc_dev_attr)
++{
++	struct soc_device *soc_dev;
++	int ret;
++
++	soc_device_get_machine(soc_dev_attr);
++
++	if (!soc_bus_registered) {
++		if (early_soc_dev_attr)
++			return ERR_PTR(-EBUSY);
++		early_soc_dev_attr = soc_dev_attr;
++		return NULL;
++	}
++
++	soc_dev = kzalloc(sizeof(*soc_dev), GFP_KERNEL);
++	if (!soc_dev) {
++		ret = -ENOMEM;
++		goto out1;
++	}
++
++	soc_dev->attr = soc_dev_attr;
++	soc_dev->dev.bus = &soc_bus_type;
++	soc_dev->dev.id = DEVICE_ID_DYNAMIC;
++
++	dev_set_name(&soc_dev->dev, "soc");
++
++	ret = device_register(&soc_dev->dev);
++	if (ret) {
++		put_device(&soc_dev->dev);
++		goto out2;
++	}
++
++	soc_device_add_params(soc_dev);
++
++	return soc_dev;
++
++out2:
++	kfree(soc_dev);
++out1:
++	return ERR_PTR(ret);
++}
++EXPORT_SYMBOL_GPL(soc_device_register);
++
++/* Ensure soc_dev->attr is freed after calling soc_device_unregister. */
++void soc_device_unregister(struct soc_device *soc_dev)
++{
++	device_unregister(&soc_dev->dev);
++	kfree(soc_dev);
++	early_soc_dev_attr = NULL;
++}
++EXPORT_SYMBOL_GPL(soc_device_unregister);
++
++static int __init soc_bus_register(void)
++{
++	int ret;
++
++	ret = bus_register(&soc_bus_type);
++	if (ret)
++		return ret;
++	soc_bus_registered = true;
++
++	if (early_soc_dev_attr)
++		return PTR_ERR(soc_device_register(early_soc_dev_attr));
++
++	return 0;
++}
++core_initcall(soc_bus_register);
+diff --git a/include/linux/sys_soc.h b/include/linux/sys_soc.h
+new file mode 100644
+index 000000000000..fd597ae54096
+--- /dev/null
++++ b/include/linux/sys_soc.h
+@@ -0,0 +1,39 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/*
++ * Copyright (C) ST-Ericsson SA 2011
++ * Author: Lee Jones <lee.jones@linaro.org> for ST-Ericsson.
++ */
++#ifndef __SOC_BUS_H
++#define __SOC_BUS_H
++
++#include <linux/device.h>
++
++struct soc_device_attribute {
++	const char *machine;
++	const char *family;
++	const char *revision;
++	const char *serial_number;
++	const char *soc_id;
++	const void *data;
++};
++
++/**
++ * soc_device_register - register SoC as a device
++ * @soc_plat_dev_attr: Attributes passed from platform to be attributed to a SoC
++ */
++struct soc_device *soc_device_register(
++	struct soc_device_attribute *soc_plat_dev_attr);
++
++/**
++ * soc_device_unregister - unregister SoC device
++ * @dev: SoC device to be unregistered
++ */
++void soc_device_unregister(struct soc_device *soc_dev);
++
++/**
++ * soc_device_to_device - helper function to fetch struct device
++ * @soc: Previously registered SoC device container
++ */
++struct device *soc_device_to_device(struct soc_device *soc);
++
++#endif /* __SOC_BUS_H */
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.2
 
 
 
