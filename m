@@ -1,78 +1,78 @@
-Delivery-date: Wed, 31 Jan 2024 11:47:19 +0100
+Delivery-date: Wed, 31 Jan 2024 12:04:27 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rV87i-00Daun-1o
+	id 1rV8OI-00Dbmo-02
 	for lore@lore.pengutronix.de;
-	Wed, 31 Jan 2024 11:47:19 +0100
+	Wed, 31 Jan 2024 12:04:27 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rV87j-000850-7J
-	for lore@pengutronix.de; Wed, 31 Jan 2024 11:47:19 +0100
+	id 1rV8OG-0001a7-Lk
+	for lore@pengutronix.de; Wed, 31 Jan 2024 12:04:27 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:To:Subject:
+	Message-ID:Date:From:MIME-Version:Reply-To:Cc:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=JDfG85bdeO6WNyaxXQDZwRIMLmVPev1Kedvqwe6NEQg=; b=qV5uzo8ID2Up89C6ZXT64FrS40
-	6kd0ry6Kg0OBs1um16iGF5dqOVRCoTqtD955tmJ94uzDO9p1PidCKz4nGYRmyqYOe/PzSdD2oM8+Z
-	i4saqF2DWW9OSiEC/VW/6CguHJCI0n4wUlhfGi3mjuzwQdsCU8Q6VeY/bDe5xLMNry/vWhsZY+oIF
-	0JUSbDxgJ0P+3rGb/PCScUKuVLm8IDg4q+RL5Bs8jWSiqdcU8Bi3Er0bbCZZpUQJVDOPxCb/VJPkg
-	g77kQXAb4LaR6UsdAuccI0F75oDzdrZtyxXb2BCpARR3mqa3yhzb1wdtYTKNqLptBDAMBTIAzDfeV
-	LMNqnkYQ==;
+	bh=MwyJTJkjgF5F4YGA/0bBynSAwFfeNaLTcwPplFJFCUg=; b=1HYOkSfu9EIvn3HzFdW8P7JSk5
+	Ftm9rC8cvLAEY09vZgk0v3DBEiGsqT75YP9rifCBgYM2wS5Wpdb6Tv7wGeSkw5reAl6PVvJ3zMBhx
+	V1Q2l5JxAcPoZlYjysbQ2KIleY8jFjSDRPfdG6lfa5ebt0gWWGCRfuPBQvOLf8XqCCPYcSRhINYKx
+	qinSgwF90dWKk30hZWHAR6qkFHjKbgS1DOU9+JwgMd7eGKu44V2I/4/lsvb072fzQqGUHBjO4Sz2O
+	0YdteAbl5xRxZWJefM50kYbUDW5QwA8e8mkaEZ62xgyw9IYrQGsw+y8WZJxNVQBWsO53J7B0KDAUi
+	TBVk/1cg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rV874-00000002rkE-3KcP;
-	Wed, 31 Jan 2024 10:46:38 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1rV8Nc-00000002y06-07kJ;
+	Wed, 31 Jan 2024 11:03:44 +0000
+Received: from mail-pg1-x52c.google.com ([2607:f8b0:4864:20::52c])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rV63a-0000000292c-25Eo
-	for barebox@bombadil.infradead.org;
-	Wed, 31 Jan 2024 08:34:54 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=JDfG85bdeO6WNyaxXQDZwRIMLmVPev1Kedvqwe6NEQg=; b=pKsniAGjEvUBSB/j3EG2M6+KuY
-	r0/+tDaoz3Y4ZXWZGKrrjvvtvyMJPCprN4hIYIGAfBwygz9IdWe9sO0+1VT3CrLcylRoc6oklalbe
-	KfMXe/0zB80AFlAGs3RpdylGmz9WFUAr94AB9v4F59TdDCZjkz7q8Krlio8gOh416F5AY8M2Zl2O7
-	1dEm6DYQKtFmWTx6DfdtfO/DiBhGIVwFQk1R3ey5OnZVO1rl/4M/5V34hmeXnWqNyxZ3fxoFt7K5t
-	GpEk8T4sSCCQqrSPgspx8EwwAF85+clWmxC/N4VjYFZIz2ftX+9YgmR08rHMz9/P93TMXchRCJv5p
-	yYRFIn1A==;
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rV63X-00000008pRq-1Qsi
+	id 1rV8NZ-00000002xyf-2V68
 	for barebox@lists.infradead.org;
-	Wed, 31 Jan 2024 08:34:53 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rV63U-0006w4-Kf; Wed, 31 Jan 2024 09:34:48 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rV63U-003ar1-80; Wed, 31 Jan 2024 09:34:48 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rV63U-002pEA-0S;
-	Wed, 31 Jan 2024 09:34:48 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 31 Jan 2024 09:34:46 +0100
-Message-Id: <20240131083446.673104-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	Wed, 31 Jan 2024 11:03:42 +0000
+Received: by mail-pg1-x52c.google.com with SMTP id 41be03b00d2f7-5cdf76cde78so3106655a12.1
+        for <barebox@lists.infradead.org>; Wed, 31 Jan 2024 03:03:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1706699019; x=1707303819; darn=lists.infradead.org;
+        h=to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=MwyJTJkjgF5F4YGA/0bBynSAwFfeNaLTcwPplFJFCUg=;
+        b=E6mfaVd6sUIcRNIKWwMgD62muVrZAPWZ/QAQavKBc+pbVTamXy0xL9Q/ScKK97JyUV
+         fM2cElzBrgoGPYMqRamjSq/VbHR1h5VXINrDWxlPuQWFQwLD91xXiNiHF5s6EpygIEgy
+         wOsCLrnnDruAEuSZZLeqKZSntcQQrHW69xFvwhygs8JZl53nxFsT6smG6+4Rx3e5AFeV
+         VtNZ8Y7w81NDiD34gokeSsR8dHC84f2jdRb90SAKmVnk4Bya0KztHJmmekTPmBvUCrVZ
+         JVXCKbli384CHHAjXGpmqtzjWYeWPvYsi/aor23yEcVYHodeIokw1O4ad5F13nzajoT5
+         QOKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1706699019; x=1707303819;
+        h=to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MwyJTJkjgF5F4YGA/0bBynSAwFfeNaLTcwPplFJFCUg=;
+        b=fXHGJ97XpcmUNV062vNkx2GPCUaswzVyzHsPzucHhbLFTl/XGDKE+Bze48W781Ywba
+         uk18dfS7r306IFgWtNxP2loe2nUdUWjEXbULZEgfuGOlEfN8BMewlLB4lKFtKkFpk/iC
+         UV5bdVPcEwu1jtf54Rv5iAxM5hTjLLp8vIw6NJWa/CvV3jzGXcIneoFntudV8knFMIrR
+         jSUPoP7PVzBdNzMvkuQsTBW6Stc17q7OACe6SixcyNaFgxnGn0j+PLa5SN7Gblpnb1OI
+         rGx+LV/W+FxW2oKFzsZMfAiwJ0MCdGLFvOHisYLUDLpW5gv3ziZSWrkplhwH312nqK0N
+         R6lQ==
+X-Gm-Message-State: AOJu0YwKdircdQQloztYSdC1JwlFpg1tkhkt76lMxnm1AuC4HhkCW/Jl
+	4QID2OXT121cMn9PY557lugAN2qRIiRI+I7PUdsKkNHiiL8Af1ZbvT+9o1X003+0WmERzU0f0QE
+	lSmOOMviz6P1+rVLZI+ZFubgWSYDTXoLMDI9KQg==
+X-Google-Smtp-Source: AGHT+IFMpGeyeqI9T6b/RYdclH517lM8dO8/WJvua6tj2lA4x+BatObtbxw34mhy2g+x0a4CTZWvGUwA42L3NEkvmrE=
+X-Received: by 2002:a05:6a20:1787:b0:19c:841a:99e4 with SMTP id
+ bl7-20020a056a20178700b0019c841a99e4mr934959pzb.6.1706699019169; Wed, 31 Jan
+ 2024 03:03:39 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Wed, 31 Jan 2024 14:03:27 +0300
+Message-ID: <CAP1tNvS5XfXJXv0Fkg9Q=X-QL6jAn7-R7CdGhyoOzo3mbVuh3Q@mail.gmail.com>
+To: Barebox List <barebox@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240131_083451_514937_95198861 
-X-CRM114-Status: UNSURE (   9.43  )
+X-CRM114-CacheID: sfid-20240131_030341_664789_CE5C5C02 
+X-CRM114-Status: UNSURE (   5.29  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -91,51 +91,127 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH] ARM: i.MX defconfigs: Enable ELE nvmem support
+X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Possible regression 2023.12 -> 2024.01
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The ELE nvmem support is needed on i.MX9 for reading fuses, especially
-for reading MAC addresses from the fuses. Enable it in the relevant
-defconfigs.
+Hello.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/configs/imx_v8_defconfig   | 1 +
- arch/arm/configs/multi_v8_defconfig | 1 +
- 2 files changed, 2 insertions(+)
+Here is an output with bb 2023.12.0:
 
-diff --git a/arch/arm/configs/imx_v8_defconfig b/arch/arm/configs/imx_v8_defconfig
-index 731156e4fe..486ef30671 100644
---- a/arch/arm/configs/imx_v8_defconfig
-+++ b/arch/arm/configs/imx_v8_defconfig
-@@ -139,6 +139,7 @@ CONFIG_WATCHDOG_IMX=y
- CONFIG_WATCHDOG_IMXULP=y
- CONFIG_RAVE_SP_WATCHDOG=y
- CONFIG_GPIO_PCA953X=y
-+CONFIG_IMX_OCOTP_ELE=y
- CONFIG_RAVE_SP_EEPROM=y
- CONFIG_REGULATOR=y
- CONFIG_REGULATOR_FIXED=y
-diff --git a/arch/arm/configs/multi_v8_defconfig b/arch/arm/configs/multi_v8_defconfig
-index 677395b1f9..bc3b6e25cb 100644
---- a/arch/arm/configs/multi_v8_defconfig
-+++ b/arch/arm/configs/multi_v8_defconfig
-@@ -233,6 +233,7 @@ CONFIG_GPIO_PCA953X=y
- CONFIG_GPIO_ZYNQ=y
- CONFIG_PINCTRL_SINGLE=y
- CONFIG_NVMEM_RMEM=y
-+CONFIG_IMX_OCOTP_ELE=y
- CONFIG_RAVE_SP_EEPROM=y
- CONFIG_REGULATOR=y
- CONFIG_REGULATOR_FIXED=y
--- 
-2.39.2
+barebox 2023.12.0-00134-gad7f545cf97d #6 Wed Jan 31 13:37:45 MSK 2024
+Board: Diasom DS-IMX8M-EVB
+deep-probe: supported due to diasom,ds-imx8m-evb
+detected i.MX8MM revision 1.0
+i.MX8MM unique ID: 1e0769aac2a3784a
+netconsole: registered as netconsole-1
+WARNING: imx-esdhc 30b40000.mmc@30b40000.of: Failed to get 'vmmc'
+regulator (ignored).
+imx-esdhc 30b40000.mmc@30b40000.of: registered as mmc0
+mmc0: detected MMC card version 5.1
+mmc0: registered mmc0.boot0
+mmc0: registered mmc0.boot1
+WARNING: mmc0: GPT:Primary header thinks Alt. header is not at the end
+of the disk.
+WARNING: mmc0: GPT:1040487 != 7634943
+WARNING: mmc0: GPT:Alternate GPT header not at the end of the disk.
+WARNING: mmc0: GPT:1040487 != 7634943
+WARNING: mmc0: GPT: Use GNU Parted to correct GPT errors.
+mmc0: registered mmc0
+imx-esdhc 30b50000.mmc@30b50000.of: registered as mmc1
+mmc1: detected SD card version 2.0
+WARNING: mmc1: GPT:Primary header thinks Alt. header is not at the end
+of the disk.
+WARNING: mmc1: GPT:1757287 != 60579839
+WARNING: mmc1: GPT:Alternate GPT header not at the end of the disk.
+WARNING: mmc1: GPT:1757287 != 60579839
+WARNING: mmc1: GPT: Use GNU Parted to correct GPT errors.
+mmc1: registered mmc1
+imx-usb 32e50000.usb@32e50000.of: USB EHCI 1.00
+malloc space: 0x7fefe200 -> 0xbfdfc3ff (size 1023 MiB)
+envfs: no envfs (magic mismatch) - envfs never written?
+multi_bind: creating Fastboot function
+multi_bind: creating USB Mass Storage function
+multi_bind: creating ACM function
+g_multi gadget0: Multifunction Composite Gadget
+g_multi gadget0: g_multi ready
+Hit m for menu or any to stop autoboot:    9
 
+Here is an output with bb 2024.01.0:
+
+barebox 2024.01.0-00135-g2449d030bcf1 #5 Wed Jan 31 12:43:50 MSK 2024
+Board: Diasom DS-IMX8M-EVB
+deep-probe: supported due to diasom,ds-imx8m-evb
+detected i.MX8MM revision 1.0
+i.MX8MM unique ID: 1e0769aac2a3784a
+netconsole: registered as netconsole-1
+WARNING: imx-esdhc 30b40000.mmc@30b40000.of: Failed to get 'vmmc'
+regulator (ignored).
+imx-esdhc 30b40000.mmc@30b40000.of: registered as mmc0
+mmc0: detected MMC card version 5.1
+mmc0: registered mmc0.boot0
+mmc0: registered mmc0.boot1
+WARNING: mmc0: GPT:Primary header thinks Alt. header is not at the end
+of the disk.
+WARNING: mmc0: GPT:1040487 != 7634943
+WARNING: mmc0: GPT:Alternate GPT header not at the end of the disk.
+WARNING: mmc0: GPT:1040487 != 7634943
+WARNING: mmc0: GPT: Use GNU Parted to correct GPT errors.
+mmc0: registered mmc0
+imx-esdhc 30b50000.mmc@30b50000.of: registered as mmc1
+mmc1: detected SD card version 2.0
+ERROR: mmc1: Cannot read MBR/partition table: I/O error
+mmc1: registered mmc1
+imx-usb 32e50000.usb@32e50000.of: USB EHCI 1.00
+malloc space: 0x7fefe200 -> 0xbfdfc3ff (size 1023 MiB)
+ERROR: barebox-environment chosen:environment-sd.of: probe failed: No
+such file or directory
+environment load /dev/env0: No such file or directory
+Maybe you have to create the partition.
+multi_bind: creating Fastboot function
+multi_bind: creating USB Mass Storage function
+multi_bind: creating ACM function
+g_multi gadget0: Multifunction Composite Gadget
+g_multi gadget0: g_multi ready
+Hit m for menu or any to stop autoboot:
+
+The booting freezes (~5 s or so) during the mmc1 detection process.
+Also, for reasons unknown to me, the kernel now throws an error when loading:
+
+mmc1: Timeout waiting for hardware interrupt.
+mmc1: sdhci: ============ SDHCI REGISTER DUMP ===========
+mmc1: sdhci: Sys addr:  0x00000008 | Version:  0x00000002
+mmc1: sdhci: Blk size:  0x00000200 | Blk cnt:  0x00000008
+mmc1: sdhci: Argument:  0x00000000 | Trn mode: 0x0000003b
+mmc1: sdhci: Present:   0x01f8820e | Host ctl: 0x00000013
+mmc1: sdhci: Power:     0x00000002 | Blk gap:  0x00000080
+mmc1: sdhci: Wake-up:   0x00000008 | Clock:    0x00000077
+mmc1: sdhci: Timeout:   0x0000000f | Int stat: 0x00000000
+mmc1: sdhci: Int enab:  0x117f100b | Sig enab: 0x117f100b
+mmc1: sdhci: ACmd stat: 0x00000000 | Slot int: 0x00000502
+mmc1: sdhci: Caps:      0x07eb0000 | Caps_1:   0x0000b407
+mmc1: sdhci: Cmd:       0x0000123a | Max curr: 0x00ffffff
+mmc1: sdhci: Resp[0]:   0x00000900 | Resp[1]:  0x00e7177f
+mmc1: sdhci: Resp[2]:   0x325b5900 | Resp[3]:  0x00000900
+mmc1: sdhci: Host ctl2: 0x00000000
+mmc1: sdhci: ADMA Err:  0x00000003 | ADMA Ptr: 0x42133204
+mmc1: sdhci-esdhc-imx: ========= ESDHC IMX DEBUG STATUS DUMP =========
+mmc1: sdhci-esdhc-imx: cmd debug status:  0x3100
+mmc1: sdhci-esdhc-imx: data debug status:  0x32a0
+mmc1: sdhci-esdhc-imx: trans debug status:  0x33a0
+mmc1: sdhci-esdhc-imx: dma debug status:  0x3400
+mmc1: sdhci-esdhc-imx: adma debug status:  0x35b4
+mmc1: sdhci-esdhc-imx: fifo debug status:  0x3680
+mmc1: sdhci-esdhc-imx: async fifo debug status:  0x3750
+mmc1: sdhci: ============================================
+
+Any ideas?
+
+Thanks!
 
 
