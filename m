@@ -1,56 +1,69 @@
-Delivery-date: Wed, 31 Jan 2024 22:38:29 +0100
+Delivery-date: Thu, 01 Feb 2024 00:00:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rVIHr-00ESfC-2Q
+	id 1rVJZ2-00EZhK-2D
 	for lore@lore.pengutronix.de;
-	Wed, 31 Jan 2024 22:38:29 +0100
+	Thu, 01 Feb 2024 00:00:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rVIHs-0004Cf-Bb
-	for lore@pengutronix.de; Wed, 31 Jan 2024 22:38:28 +0100
+	id 1rVJZ3-0007cN-7f
+	for lore@pengutronix.de; Thu, 01 Feb 2024 00:00:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:To:Subject:From:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=S4OE1g8wzpWvOxoRNpt586+M/SUVa/iiEbsJBQvCCEU=; b=n3gyLyhqLKRh6BoMRsVgJnaaZC
-	Pp2KIYpj/E2S6GhrOFLKijaD0uI/TcXD5fVAYIDZSzF7pMT8SYIkND9ebpQbTI+gpnHfj2LogesFl
-	veOEgBb8NxedBg/WbsRxvdNusUChok6QVL16YgA3hLCTs+osk9ZxZNplDnZSyzrnj0bKQJFC1VrE3
-	BCUJxTKGjTFAxk1t6sdhPNYmh5L/4dWpoQY933lxpXufqpncks7kvnVmIT8Tl5zGpSzY5JoGvgFQk
-	537hxhVOlP2tX0GEfsuhmKh3u/tyimgLVo7zKL01YSFEI511jwu3cPSoB5YzVtASy35fNM02akRks
-	Z+QUJEjw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=jgbayl7DW7QHVdMCpIC7HnmNJh+a6zfUcBCH96vDvCM=; b=RjWK0d6o4qLEzmXQko6yswh4Yq
+	G3HDI8UFbhJLQ1vYei2XGUEQaemQKiBb/z8zl42ch/HUOvAKQEDGzk6wAetn/nz8rLXK84dZwS4Vo
+	yVFHW3YbeI6E6gQDP4OJE/7CT233reZ2kiwoi2t8IthlBId5arNDA/OM5U4riQmHttytWo9OPmHSQ
+	SsZeL/xy9eBRbK7tBlxZf/huxdyBdaSV8UVbN49HeUjEtq8QJLLuWh6I2/QjTc9lvKb8hYYuHCYxt
+	GTN5895zHIfwIB5uMitNF//qd5Jf+Y/nqIGfppZSHA+/HUkkOZ96ERNJBIwt1ZPB1Hdzr295mH6QX
+	EXsxUgzw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVIHN-00000005ZrH-3uz6;
-	Wed, 31 Jan 2024 21:37:57 +0000
+	id 1rVJYb-00000005lRg-1AY1;
+	Wed, 31 Jan 2024 22:59:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVIHK-00000005ZqE-2lOC
+	id 1rVJYU-00000005lOu-049S
 	for barebox@lists.infradead.org;
-	Wed, 31 Jan 2024 21:37:56 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Wed, 31 Jan 2024 22:59:44 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rVIHH-00048Y-FT; Wed, 31 Jan 2024 22:37:51 +0100
-Message-ID: <a154ae13-86e1-4c2b-9c38-3774fde6a6c8@pengutronix.de>
-Date: Wed, 31 Jan 2024 22:37:50 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	id 1rVJYR-0007LA-VP; Wed, 31 Jan 2024 23:59:39 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rVJYR-003j6k-C0; Wed, 31 Jan 2024 23:59:39 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rVJYR-007KFg-0u;
+	Wed, 31 Jan 2024 23:59:39 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Dan Shelton <dan.f.shelton@gmail.com>, barebox@lists.infradead.org
-References: <CAAvCNcCZhS8mkvdgcJ2L-eiur+OxgWEXRLnadO_HFyHfSi7WFA@mail.gmail.com>
-Content-Language: en-US
-In-Reply-To: <CAAvCNcCZhS8mkvdgcJ2L-eiur+OxgWEXRLnadO_HFyHfSi7WFA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: str@pengutronix.de,
+	ske@pengutronix.de,
+	Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 31 Jan 2024 23:59:36 +0100
+Message-Id: <20240131225938.1746123-3-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240131225938.1746123-1-a.fatoum@pengutronix.de>
+References: <20240131225938.1746123-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240131_133754_733683_B996FDB0 
-X-CRM114-Status: GOOD (  16.84  )
+X-CRM114-CacheID: sfid-20240131_145942_137832_ABE0A62B 
+X-CRM114-Status: GOOD (  10.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,59 +86,47 @@ X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: NFSv4 boot support?
+Subject: [PATCH master 2/4] ARM: socfpga: populate HANDOFF_FPGA2SDR with Quartus value
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Dan,
+The Terasic DE10-Nano is the only upstream board that has a non-zero
+value for CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST in the headers generated by
+Quartus. Yet, barebox ignored this value, with the effect that either:
 
-On 31.01.24 22:03, Dan Shelton wrote:
-> Hello!
-> 
-> Does barebox support booting from a NFSv4 filesystem, e.g. boot from
-> NFSv4 filesystem into a Linux NFSv4 netroot (diskless machine)?
+  - The Linux bridge driver reads a zero value from the handoff3 register
+    and keeps all fpga2sdram ports in reset
 
-The barebox network stack only does UDP/IP. There have been attempts to
-bring a TCP stack into barebox, but none have so far succeeded to
-make it mainline. This is a hard requirement before we can consider
-supporting NFSv4. I hope that lwIP could fill this gap in the future,
-but no one is actively continuing this work as far as I am aware[1].
+  - The barebox bridge driver uses its hardcoded mask of 0x3fff, when
+    the bridge is enabled, which is different than the Quartus value
+    of 0x1FF.
 
-> We need NFSv4, because it does not need rpcbind, and combines
-> filesystem, lockd and other stuff all in one TCP port (2049). Site
-> policy also does not allow NFSv2/NFSv3, but allows NFSv4.
+Fix the first point by populating the handoff3 register, so an enabled
+Linux driver can enable the correct ports. A fix for barebox configurations
+with CONFIG_SOCFPGA_FPGA_BRIDGE=y follows in the follow-up commit.
 
-Please note that this only concerns barebox and that kernel nfsroot is
-unaffected. You can load kernel and device tree over TFTP and supply a
-suitable command line argument to the kernel to use a NFS root.
+Cc: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/mach/socfpga/cyclone5-sdram-config.h | 3 +++
+ 1 file changed, 3 insertions(+)
 
-The standard net boot target does just that:
-https://elixir.bootlin.com/barebox/v2024.01.0/source/defaultenv/defaultenv-2-base/boot/net
-
-It specifies TCP, but hardcodes v3 currently. I guess we could drop the v3 and let
-the kernel decide on its own what version it will use? If that doesn't work, you can
-override the file locally in your environment, e.g. via CONFIG_DEFAULT_ENVIRONMENT
-pointing at a directory that contains a boot/net file with the appropriate
-changes (or just call your boot target something else like boot/nfsv4).
-
-Hope this helps.
-
-[1]: Some attempts I am aware of:
-     https://github.com/a3f/barebox/tree/lwip
-     https://github.com/olerem/barebox/tree/picotcp-2019.06.29
-     https://github.com/jmaselbas/barebox/commit/4a987bfdc2ad50c13126dd6290d2477c3fc0c87d
-
-Cheers,
-Ahmad
-
-> 
-> Dan
-
+diff --git a/include/mach/socfpga/cyclone5-sdram-config.h b/include/mach/socfpga/cyclone5-sdram-config.h
+index 06f06ef5d78f..2abef7f31121 100644
+--- a/include/mach/socfpga/cyclone5-sdram-config.h
++++ b/include/mach/socfpga/cyclone5-sdram-config.h
+@@ -155,6 +155,9 @@ static inline void socfpga_sdram_mmr_init(void)
+ 		CONFIG_HPS_SDR_CTRLCFG_DRAMODT_WRITE << SDR_CTRLGRP_DRAMODT_WRITE_LSB;
+ 	sdram_write(SDR_CTRLGRP_DRAMODT_ADDRESS, val);
+ 
++	val = CONFIG_HPS_SDR_CTRLCFG_FPGAPORTRST;
++	writel(val, ISWGRP_HANDOFF_FPGA2SDR);
++
+ 	val = readl(CYCLONE5_SDR_ADDRESS + SDR_CTRLGRP_STATICCFG_ADDRESS);
+ 	val &= ~(SDR_CTRLGRP_STATICCFG_APPLYCFG_MASK);
+ 	val |= 1 << SDR_CTRLGRP_STATICCFG_APPLYCFG_LSB;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
