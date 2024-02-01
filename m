@@ -1,60 +1,60 @@
-Delivery-date: Thu, 01 Feb 2024 09:49:39 +0100
+Delivery-date: Thu, 01 Feb 2024 11:25:20 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rVSlO-00FMzC-0w
+	id 1rVUFy-00FTNQ-2X
 	for lore@lore.pengutronix.de;
-	Thu, 01 Feb 2024 09:49:39 +0100
+	Thu, 01 Feb 2024 11:25:20 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rVSlO-0001tG-UM
-	for lore@pengutronix.de; Thu, 01 Feb 2024 09:49:39 +0100
+	id 1rVUFz-0000wl-DN
+	for lore@pengutronix.de; Thu, 01 Feb 2024 11:25:19 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fI2+SmCt/9R1JiNNCIE9/wnzQtOwaenojPUbIPYvyak=; b=LUJkStB6RILSdK1qVQmvgt0l2z
-	m4UXirUF6z+I6g4etSUatHXcDMdtxrAb/BDUIwsOaQKJstK2PAcIT0KGYE2rvtancTZBUx+FYrCLY
-	a8mQvgS0xeW71lLrX1zclqHVeFamZBDB0yVVajA+sVAtGvIFkmA1gMaxFOy3aD55Ab62WFit0F4t5
-	nZpt3mURHW6rC0AeJ5ZdCqoiQV7ei9yYNCbV/LXDFwead0liBl/f+HSaSmHTSd8uDjfw+c0u76Em4
-	PTOH5nUPIo5L91DC0FZHJUfBSggVYr3ObZWBkpmeycKax3Y2pAUZ5aUMZyIzI6+OaW2jDCoz8L68q
-	5xoGgqHQ==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ulR2auaTyj1/cfUVrBusG7Og77jeoodVmQ6YlV18uMc=; b=kVhJysWratNKw2a8viQ6zHTFUj
+	OSjvig+odRrLFii7zfWVooObmIUH+XbO1Wdk2EcAEc6jAsuIRQUbBFUj9BdZml0Vk5V9ktk4RTusq
+	XS7AJ+CJMx1oMOwTfOFZnCO46kVq6xAYf4XiX1rF0QBnrLNIFf+U8p7Tf+46aO5YLexD1xzn5ZQGO
+	JU0vPc3MZiafMV0ZlLMtOUhttSHTg4m27tOMH8Fb7oFzq5p/LWgMvFcsNT93xSDBxs+XECM4ieqhL
+	DghVWWz4FwVpEhMz6Xy+8VTrP91WTzwCt+OWYIq46iUi6QIw3BWNMCQ1LKY21bD3TvTuxb7+Z7nrb
+	LD5REMqg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVSkt-000000079K2-3019;
-	Thu, 01 Feb 2024 08:49:07 +0000
+	id 1rVUFO-00000007RfI-245N;
+	Thu, 01 Feb 2024 10:24:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVSkq-000000079JN-0nGf
+	id 1rVUFL-00000007Rdo-25XQ
 	for barebox@lists.infradead.org;
-	Thu, 01 Feb 2024 08:49:05 +0000
+	Thu, 01 Feb 2024 10:24:40 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rVSko-0001pa-Ap; Thu, 01 Feb 2024 09:49:02 +0100
-Message-ID: <64705b99-a903-4ca7-820b-6695336946eb@pengutronix.de>
-Date: Thu, 1 Feb 2024 09:49:01 +0100
+	id 1rVUFK-0000sk-4n; Thu, 01 Feb 2024 11:24:38 +0100
+Message-ID: <53ab0b01-2de6-4255-913e-963d921737b5@pengutronix.de>
+Date: Thu, 1 Feb 2024 11:24:37 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: BAREBOX <barebox@lists.infradead.org>
+Content-Language: en-US, de-DE
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
 References: <20240131-fix-fdt-memory-safety-v1-0-3d3a2c797eec@pengutronix.de>
  <20240131-fix-fdt-memory-safety-v1-2-3d3a2c797eec@pengutronix.de>
- <20240201074746.GH406126@pengutronix.de>
-Content-Language: en-US, de-DE
+ <ec788b5c-dab3-4018-ad94-26bd0a71b108@pengutronix.de>
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-In-Reply-To: <20240201074746.GH406126@pengutronix.de>
+In-Reply-To: <ec788b5c-dab3-4018-ad94-26bd0a71b108@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240201_004904_262768_A677B51A 
-X-CRM114-Status: GOOD (  19.99  )
+X-CRM114-CacheID: sfid-20240201_022439_559642_60F9FAF0 
+X-CRM114-Status: GOOD (  23.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,18 +81,10 @@ Subject: Re: [PATCH 2/2] of: fdt: fix oob writes with large ftd properties
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Sascha,
+Hello Ahmad,
 
-On 01.02.24 08:47, Sascha Hauer wrote:
-> 
-> In the subject: s/ftd/fdt/
-> 
-
-Applied.
-
-> Sascha
-> 
-> On Wed, Jan 31, 2024 at 05:57:00PM +0100, Stefan Kerkmann wrote:
+On 31.01.24 18:21, Ahmad Fatoum wrote:
+> On 31.01.24 17:57, Stefan Kerkmann wrote:
 >> OOB writes can be triggered when fdt->dt_size * 2 is still smaller than
 >> the property for which memory should be allocated. This can happen under
 >> rare circumstances when editing a fdt with the of_property command and a
@@ -127,14 +119,35 @@ Applied.
 >> +		while (new_size <= dtsize) {
 >> +			new_size *= 2;
 >> +		}
+> 
+> A nitpick that I solely note because I already had feedback on the first patch:
+> Kernel coding style is to omit { braces } for single statement blocks.
+> 
+> In your case you could just do:
+> 
+>   if (new_size <= dtsize)
+>   	new_size = roundup_pow_of_two(new_size + dtsize);
+> 
+> I think to skip the loop.
+> 
+
+Thanks! That is the better solution.
+
+To not over provision memory I changed the new size to be 
+`roundup_pow_of_two(fdt->dt_size + dtsize)` as we know for sure that 
+`dtsize` is already larger than `fdt->dt_size * 2`.
+
+In (made up) case that we already have 8k space for the fdt and got a 
+17k property we would allocate 65k (8k + 8k + 17k = 33k ⇾ rounded ⇾ 65k) 
+and only 32k (8k + 17k = 25k → rounded → 32k) with `fdt->dt_size + dtsize`.
+
+> Cheers,
+> Ahmad
+> 
 >> +
 >>   		if ((fdt->dt = memalign_realloc(previous, fdt->dt_size,
 >>   						new_size)) == NULL) {
 >>   			free(previous);
->>
->> -- 
->> 2.39.2
->>
 >>
 > 
 
