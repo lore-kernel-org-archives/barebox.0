@@ -1,64 +1,70 @@
-Delivery-date: Thu, 01 Feb 2024 00:04:15 +0100
+Delivery-date: Thu, 01 Feb 2024 08:48:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rVJcs-00Ea7C-0N
+	id 1rVRoH-00FHl0-1N
 	for lore@lore.pengutronix.de;
-	Thu, 01 Feb 2024 00:04:15 +0100
+	Thu, 01 Feb 2024 08:48:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rVJcs-0000Lc-Pi
-	for lore@pengutronix.de; Thu, 01 Feb 2024 00:04:15 +0100
+	id 1rVRoI-0007Iy-2Z
+	for lore@pengutronix.de; Thu, 01 Feb 2024 08:48:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Bwhj9FFLvniUPVLechHuFmM5SgjGo6TjazCarFrsE0Y=; b=cdIZ3aUAvpcw3i6h5bJYjfEP+l
-	HnXv1qlJnA988Wuhkf9ej1RR87NxEgVEcFM0H77BfPO0Aekr/ahkOwWq/WczgyIyEVHgqkr3cK42u
-	GAuwNKLiSAHNjhyKvi3M+8QSK5NDW+t+6SFVxpqSgF5gEzYieWwb4CocceRvz8ODTC1EiSUxcAYQx
-	sYIp/mt9Ihk9mx8htORQO7J89YJx2C1cpX4K8YpIOtWfS0AEcCgGF5R4xIthKILNf2tCdytNBoqf6
-	Q4m4C/vSWf7SB5e2uB8PJfBv5kxMV+CkiK6gjeuduaUTUUOjHJhSsLp/mWXo/NegrkSsAPhZjVMlf
-	62N1KxyQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ki7zy2T62yjaVrEo3isrxk2xKSHXID7kAmPMEr/OC/w=; b=q1bGJ2JEjqdnFTxN26ZdLWtUDx
+	5vR2bGh4J9q1Tb3a0BndbOiTK5faD0HU/c1roTqv+eBOwh4qeePV2UYRJxT1De5L0fUZfQkzNcHCC
+	vI6f9mo9w5qwjFY9S4babxxNZQJmZNGJwua3544ZgYs93QX59PGjC1ARhF0gm4SDuhJO+ckTfQvuw
+	v0F69soSxLiMh7wKXN9Jynf2vyZM9r2wlAyVLk7YbIje+wFgIP1qbOuk1Cu+yet4ZOjkO4CtsCBZT
+	+DAkwL7g4Nq9TOoQ9eRNPShT+Rx9LYiDa614afDICVZCqs61ChiIW85guWKGh0gUXEO+50/6TI7G5
+	UmYVfavQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVJcW-00000005mhx-2Pv6;
-	Wed, 31 Jan 2024 23:03:52 +0000
+	id 1rVRnf-00000006xBL-2Itl;
+	Thu, 01 Feb 2024 07:47:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVJcT-00000005mgL-1m63
+	id 1rVRnb-00000006xAd-17U6
 	for barebox@lists.infradead.org;
-	Wed, 31 Jan 2024 23:03:50 +0000
+	Thu, 01 Feb 2024 07:47:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rVJcS-0000IG-8R; Thu, 01 Feb 2024 00:03:48 +0100
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rVRnW-0007Es-Kd; Thu, 01 Feb 2024 08:47:46 +0100
+Received: from [2a0a:edc0:2:b01:1d::c0] (helo=ptx.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rVJcR-003j7c-S8; Thu, 01 Feb 2024 00:03:47 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rVJcR-007KXA-2X;
-	Thu, 01 Feb 2024 00:03:47 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  1 Feb 2024 00:03:47 +0100
-Message-Id: <20240131230347.1747216-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1rVRnW-003o54-81; Thu, 01 Feb 2024 08:47:46 +0100
+Received: from sha by ptx.whiteo.stw.pengutronix.de with local (Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rVRnW-002twk-5h; Thu, 01 Feb 2024 08:47:46 +0100
+Date: Thu, 1 Feb 2024 08:47:46 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Cc: BAREBOX <barebox@lists.infradead.org>
+Message-ID: <20240201074746.GH406126@pengutronix.de>
+References: <20240131-fix-fdt-memory-safety-v1-0-3d3a2c797eec@pengutronix.de>
+ <20240131-fix-fdt-memory-safety-v1-2-3d3a2c797eec@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240131-fix-fdt-memory-safety-v1-2-3d3a2c797eec@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
+User-Agent: Mutt/1.10.1 (2018-07-13)
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240131_150349_495244_6A137BA7 
-X-CRM114-Status: GOOD (  11.90  )
+X-CRM114-CacheID: sfid-20240131_234751_324771_A1E25E8D 
+X-CRM114-Status: GOOD (  26.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,51 +82,69 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] mtd: spi-nor: fix format specifier in debug message
+Subject: Re: [PATCH 2/2] of: fdt: fix oob writes with large ftd properties
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The type size_t is to be printed with the %zu modifier as it's not
-necessarily typedef'ed as unsigned long, even if for barebox purposes,
-the sizeof(size_t) is always equal to sizeof(ulong).
 
-Building the dw-ospi-nor driver for 32-bit warns about this, so fix
-that.
+In the subject: s/ftd/fdt/
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/mtd/spi-nor/dw-ospi-nor.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Sascha
 
-diff --git a/drivers/mtd/spi-nor/dw-ospi-nor.c b/drivers/mtd/spi-nor/dw-ospi-nor.c
-index 692c6f9b9dae..897f4f49a9f9 100644
---- a/drivers/mtd/spi-nor/dw-ospi-nor.c
-+++ b/drivers/mtd/spi-nor/dw-ospi-nor.c
-@@ -637,7 +637,7 @@ static void dw_spi_write(struct spi_nor *nor, loff_t to,
- 	struct dw_spi_nor *dw_spi = nor->priv;
- 
- 	*retlen = 0;
--	dev_dbg(dw_spi->dev, "write %ld bytes at @0x%llx\n", len, to);
-+	dev_dbg(dw_spi->dev, "write %zu bytes at @0x%llx\n", len, to);
- 
- 	if (dw_spi_is_enhanced(nor->write_proto)) {
- 		if (dw_spi_prep_enhanced(nor, nor->write_proto, SPI_TMOD_TO))
-@@ -673,7 +673,7 @@ static int dw_spi_read(struct spi_nor *nor, loff_t from,
- 	size_t chunk;
- 
- 	*retlen = 0;
--	dev_dbg(nor->dev, "read %ld bytes from @0x%llx\n", len, from);
-+	dev_dbg(nor->dev, "read %zu bytes from @0x%llx\n", len, from);
- 
- 	if (enhanced)
- 		ret = dw_spi_prep_enhanced(nor, nor->read_proto, SPI_TMOD_RO);
+On Wed, Jan 31, 2024 at 05:57:00PM +0100, Stefan Kerkmann wrote:
+> OOB writes can be triggered when fdt->dt_size * 2 is still smaller than
+> the property for which memory should be allocated. This can happen under
+> rare circumstances when editing a fdt with the of_property command and a
+> property is larger than 128k in size.
+> 
+> This happend when editing a FIT image (which is a ftd) with the
+> of_property command and the Kernel image was around 8M in size.
+> 
+> The simplified call chain is the following:
+> 
+> of_property -> of_flatten_dtb -> create new fdt with 64k in size (this is
+> fixed) -> __of_flatten_dtb -> attempt to copy kernel image (8M) ->
+> fdt_ensure_space -> allocate only 128k for fdt->dt -> memcopy 8M into fdt->dt
+> buffer -> crash
+> 
+> The fix is to grow fdt->dt to hold at least the new property. The power
+> of 2 increment is untouched to keep the same behaviour otherwise.
+> 
+> Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+> ---
+>  drivers/of/fdt.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+> index 4f79a6120f..1f24ed0bbc 100644
+> --- a/drivers/of/fdt.c
+> +++ b/drivers/of/fdt.c
+> @@ -399,6 +399,10 @@ static int fdt_ensure_space(struct fdt *fdt, int dtsize)
+>  		previous = fdt->dt;
+>  		new_size = fdt->dt_size * 2;
+>  
+> +		while (new_size <= dtsize) {
+> +			new_size *= 2;
+> +		}
+> +
+>  		if ((fdt->dt = memalign_realloc(previous, fdt->dt_size,
+>  						new_size)) == NULL) {
+>  			free(previous);
+> 
+> -- 
+> 2.39.2
+> 
+> 
+
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
