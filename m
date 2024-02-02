@@ -1,80 +1,65 @@
-Delivery-date: Fri, 02 Feb 2024 16:32:05 +0100
+Delivery-date: Fri, 02 Feb 2024 16:32:06 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rVvWN-0002U8-1U
+	id 1rVvWP-0002Uw-02
 	for lore@lore.pengutronix.de;
-	Fri, 02 Feb 2024 16:32:05 +0100
+	Fri, 02 Feb 2024 16:32:06 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rVvWM-0005uR-QS
-	for lore@pengutronix.de; Fri, 02 Feb 2024 16:32:04 +0100
+	id 1rVvWN-0005un-Eb
+	for lore@pengutronix.de; Fri, 02 Feb 2024 16:32:06 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=54c9OxiF57ofVXK+EiOKnrQ3IBXilejsOjqOO84vxm4=; b=B33+Q4Ts7/pWjJwwe/xD3dgPXC
-	RHX0wpm12Ncw7Lzw7miJrx2kSWGGhfyypsMtZ/JZDcQ8k4QHBbAYjsYAz7AhnKylf0z5Sbp59fX4u
-	hTBenKKoA/rbwz6AiUYHEde6pHK+r/XtL/xzXB+uj3eVH0E6DFNN/oqr+Uv2XCrdPZtZWu8VzlbtI
-	VcxjL1NtS+Pv4LsJk7l59WUA3CNUqk3kwJZtO2GNT83cl6eEWQrG20XYihCFE62axrYGkNQjKVeW+
-	l+dQLBpsHnU5nXF5XQV1jCHufkFql01yi6gIirr6zuUPXGxXdpK/kRhYxyV0TgG8IpuUwfaHOF40v
-	/YEbapvg==;
+	bh=+dsvcynCpquU5xePRST8ecq4HH6Gu3vGRX35zrks2I0=; b=SbLp6k7JN/eZS0PinxeiSW5G3d
+	/jRh3O/iF4K4hOzzf2dtB/EVjTWQL7xgPYyIWK4EzCznsL/RPZ7L0thjY7zy9sbOogPzOvJtDk+zn
+	0E388uyEO90vGnCZtzYHGzfC6w0aedllIOXxXEM8NZeWWxc5wy3aNwxnEr2TyIEwq+xp0NbdyGaFJ
+	fanOXNiahp/494t+06gQcVVm0MMqDs7kI3XjgfrvDyT/5LG4FjWWs0DTzLSh3r/NZq3d/8szY/p41
+	Ur94C5yRLSFGQybfPt0pk+43MihUi0UM3QleUNZk+SO9acBWWCZUljjoO3dOVvaW0tMr9T3/S/5Sg
+	vXRRdY7Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVvVs-0000000C1AE-38MC;
-	Fri, 02 Feb 2024 15:31:32 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVvVl-0000000C14I-3IMW
-	for barebox@bombadil.infradead.org;
-	Fri, 02 Feb 2024 15:31:27 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=54c9OxiF57ofVXK+EiOKnrQ3IBXilejsOjqOO84vxm4=; b=fkhc/37kMQ5Ykb8SQm+QVmb4YJ
-	2FI8juoOkVZnLEyqp+op24lhLZR059ForYkNHN12yCj20WVrkDKlbvBJYuq7N6pX/OQ13nYekYXqC
-	1Xzx4XPE+IFFl3A3lzN8pyEXdtiVpH4e97B7qv9PX1yddOk/u4f79lAiHcjiBLirI2M7uZy3UA8By
-	wsnqYKmk1SIjnirb8JeXAe2RXNzzyEKh/cxNxld7yDnCYgs020VWIHBzXDPFcQGt4eY8Mqf2SFTeC
-	ElWBk31t718hG5qbaevO1sJs7MGzMtsB0otPC3P90ayuzqMULGNYcOHZ6X9B9+PHmYtShAF6OYAOD
-	jPTRXz4A==;
+	id 1rVvVp-0000000C16p-31ql;
+	Fri, 02 Feb 2024 15:31:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVvVh-0000000A3u7-1Ct8
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rVvVc-0000000C0yo-1KOh
 	for barebox@lists.infradead.org;
-	Fri, 02 Feb 2024 15:31:24 +0000
+	Fri, 02 Feb 2024 15:31:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rVvVb-0005UT-0y; Fri, 02 Feb 2024 16:31:15 +0100
+	id 1rVvVb-0005VF-5x; Fri, 02 Feb 2024 16:31:15 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rVvVa-0045XR-Jv; Fri, 02 Feb 2024 16:31:14 +0100
+	id 1rVvVa-0045Xb-PT; Fri, 02 Feb 2024 16:31:14 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rVvVa-0015Pr-1g;
+	id 1rVvVa-0015Pr-29;
 	Fri, 02 Feb 2024 16:31:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri,  2 Feb 2024 16:31:10 +0100
-Message-Id: <20240202153113.245488-6-s.hauer@pengutronix.de>
+Date: Fri,  2 Feb 2024 16:31:13 +0100
+Message-Id: <20240202153113.245488-9-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240202153113.245488-1-s.hauer@pengutronix.de>
 References: <20240202153113.245488-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240202_153122_054772_26C0B874 
-X-CRM114-Status: GOOD (  29.96  )
+X-CRM114-CacheID: sfid-20240202_073116_895593_556B4A61 
+X-CRM114-Status: GOOD (  19.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,403 +82,1748 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 5/8] common: add TQ EEPROM support
+Subject: [PATCH 8/8] ARM: i.MX: tqma93xx: Add LGA board variant
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Many TQ boards have an EEPROM with useful board information equipped.
-Add support for reading this EEPROM. The code is based on the
-corresponding U-Boot code from the TQ downstream U-Boot.
-
-Right now not much of this information is actually used, the main
-motivation for porting this code was to detect the DDR type on the
-TQ i.MX93 boards. Distributing and printing the information is left
-for a future excercise.
+The LGA variant needs different DDR setup and another device tree. The
+board type can be read from EEPROM, so we don't need another image for
+it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Kconfig      |   3 +
- common/Makefile     |   1 +
- common/tq_eeprom.c  | 140 +++++++++++++++++++++++++++++++
- include/tq_eeprom.h | 196 ++++++++++++++++++++++++++++++++++++++++++++
- 4 files changed, 340 insertions(+)
- create mode 100644 common/tq_eeprom.c
- create mode 100644 include/tq_eeprom.h
+ arch/arm/boards/tqma93xx/Makefile             |    2 +-
+ arch/arm/boards/tqma93xx/lowlevel.c           |   65 +-
+ .../tqma93xx/lpddr4x_tqma93xxla_timing.c      | 1482 +++++++++++++++++
+ arch/arm/dts/Makefile                         |    3 +-
+ arch/arm/dts/imx93-tqma9352-mba93xxca.dts     |   38 +-
+ arch/arm/dts/imx93-tqma9352-mba93xxla.dts     |    5 +
+ arch/arm/dts/imx93-tqma93xx.dtsi              |   37 +
+ arch/arm/mach-imx/Kconfig                     |    3 +
+ 8 files changed, 1594 insertions(+), 41 deletions(-)
+ create mode 100644 arch/arm/boards/tqma93xx/lpddr4x_tqma93xxla_timing.c
+ create mode 100644 arch/arm/dts/imx93-tqma9352-mba93xxla.dts
+ create mode 100644 arch/arm/dts/imx93-tqma93xx.dtsi
 
-diff --git a/common/Kconfig b/common/Kconfig
-index ddca1e913b..69a53f5e07 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -105,6 +105,9 @@ config BOOT
- config FASTBOOT_BASE
- 	bool
- 
-+config TQ_EEPROM
-+	bool
-+
- menu "General Settings"
- 
- config LOCALVERSION
-diff --git a/common/Makefile b/common/Makefile
-index c31cbab9e4..4ca1478425 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -74,6 +74,7 @@ obj-$(CONFIG_EFI)		+= efi/
- lwl-$(CONFIG_IMD)		+= imd-barebox.o
- obj-$(CONFIG_IMD)		+= imd.o
- obj-y				+= file-list.o
-+obj-pbl-$(CONFIG_TQ_EEPROM)	+= tq_eeprom.o
- obj-$(CONFIG_FIRMWARE)		+= firmware.o
- obj-$(CONFIG_UBIFORMAT)		+= ubiformat.o
- obj-$(CONFIG_BAREBOX_UPDATE_IMX_NAND_FCB) += imx-bbu-nand-fcb.o
-diff --git a/common/tq_eeprom.c b/common/tq_eeprom.c
-new file mode 100644
-index 0000000000..83a24bbb04
---- /dev/null
-+++ b/common/tq_eeprom.c
-@@ -0,0 +1,140 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (c) 2014-2023 TQ-Systems GmbH <u-boot@ew.tq-group.com>,
-+ * D-82229 Seefeld, Germany.
-+ * Author: Markus Niebel
-+ */
-+
-+#include <common.h>
-+#include <net.h>
-+#include <linux/ctype.h>
-+#include <crc.h>
+diff --git a/arch/arm/boards/tqma93xx/Makefile b/arch/arm/boards/tqma93xx/Makefile
+index 2957523cdd..1bef9e284d 100644
+--- a/arch/arm/boards/tqma93xx/Makefile
++++ b/arch/arm/boards/tqma93xx/Makefile
+@@ -1,2 +1,2 @@
+-lwl-y += lowlevel.o lpddr4x_tqma93xxca_timing.o
++lwl-y += lowlevel.o lpddr4x_tqma93xxca_timing.o lpddr4x_tqma93xxla_timing.o
+ obj-y += board.o
+diff --git a/arch/arm/boards/tqma93xx/lowlevel.c b/arch/arm/boards/tqma93xx/lowlevel.c
+index 9e2e0828ca..2870317314 100644
+--- a/arch/arm/boards/tqma93xx/lowlevel.c
++++ b/arch/arm/boards/tqma93xx/lowlevel.c
+@@ -11,27 +11,88 @@
+ #include <mach/imx/xload.h>
+ #include <mach/imx/romapi.h>
+ #include <mach/imx/esdctl.h>
 +#include <pbl/i2c.h>
-+#include <pbl/eeprom.h>
++#include <tq_eeprom.h>
+ 
+ extern char __dtb_z_imx93_tqma9352_mba93xxca_start[];
++extern char __dtb_z_imx93_tqma9352_mba93xxla_start[];
+ extern struct dram_timing_info tqma93xxca_dram_timing;
++extern struct dram_timing_info tqma93xxla_dram_timing;
 +
-+#include "tq_eeprom.h"
-+
-+/*
-+ * static EEPROM layout
-+ */
-+#define TQ_EE_HRCW_BYTES		0x20
-+#define TQ_EE_RSV1_BYTES		10
-+#define TQ_EE_RSV2_BYTES		8
-+
-+struct __packed tq_eeprom_data {
-+	union {
-+		struct tq_vard vard;
-+		_Static_assert(sizeof(struct tq_vard) == TQ_EE_HRCW_BYTES, \
-+			"struct tq_vard has incorrect size");
-+		u8 hrcw_primary[TQ_EE_HRCW_BYTES];
-+	} tq_hw_data;
-+	u8 mac[TQ_EE_MAC_BYTES];		/* 0x20 ... 0x25 */
-+	u8 rsv1[TQ_EE_RSV1_BYTES];
-+	u8 serial[TQ_EE_SERIAL_BYTES];		/* 0x30 ... 0x37 */
-+	u8 rsv2[TQ_EE_RSV2_BYTES];
-+	u8 id[TQ_EE_BDID_BYTES];		/* 0x40 ... 0x7f */
-+};
-+
-+static bool tq_vard_valid(const struct tq_vard *vard)
++static int tqma93xx_get_formfactor(void)
 +{
-+	const unsigned char *start = (const unsigned char *)(vard) +
-+		sizeof(vard->crc);
-+	u16 crc;
++	struct pbl_i2c *i2c;
++	struct tq_eeprom *eeprom;
++	phys_size_t ramsize;
++	int formfactor;
 +
-+	crc = crc_itu_t(0, start, sizeof(*vard) - sizeof(vard->crc));
++	i2c = imx93_i2c_early_init(IOMEM(MX9_I2C1_BASE_ADDR));
 +
-+	return vard->crc == crc;
-+}
++	eeprom = pbl_tq_read_eeprom(i2c, 0x53);
 +
-+phys_size_t tq_vard_memsize(u8 val, unsigned int multiply, unsigned int tmask)
-+{
-+	phys_size_t result = 0;
++	ramsize = tq_vard_ramsize(&eeprom->vard);
++	if (ramsize != SZ_1G)
++		pr_err("unsupported ram size 0x%08llx\n", ramsize);
 +
-+	if (val != VARD_MEMSIZE_DEFAULT) {
-+		result = 1 << (size_t)(val & VARD_MEMSIZE_MASK_EXP);
-+		if (val & tmask)
-+			result *= 3;
-+		result *= multiply;
-+	}
++	formfactor = tq_vard_get_formfactor(&eeprom->vard);
 +
-+	return result;
-+}
-+
-+void tq_vard_show(const struct tq_vard *vard)
-+{
-+	/* display data anyway to support developer */
-+	printf("HW\tREV.%02uxx\n", (unsigned int)vard->hwrev);
-+	printf("RAM\ttype %u, %lu MiB, %s\n",
-+	       (unsigned int)(vard->memtype & VARD_MEMTYPE_MASK_TYPE),
-+	       (unsigned long)(tq_vard_ramsize(vard) / (SZ_1M)),
-+	       (tq_vard_has_ramecc(vard) ? "ECC" : "no ECC"));
-+	printf("RTC\t%c\nSPINOR\t%c\ne-MMC\t%c\nSE\t%c\nEEPROM\t%c\n",
-+	       (tq_vard_has_rtc(vard) ? 'y' : 'n'),
-+	       (tq_vard_has_spinor(vard) ? 'y' : 'n'),
-+	       (tq_vard_has_emmc(vard) ? 'y' : 'n'),
-+	       (tq_vard_has_secelem(vard) ? 'y' : 'n'),
-+	       (tq_vard_has_eeprom(vard) ? 'y' : 'n'));
-+
-+	if (tq_vard_has_eeprom(vard))
-+		printf("EEPROM\ttype %u, %lu KiB, page %lu\n",
-+		       (unsigned int)(vard->eepromtype & VARD_EETYPE_MASK_MFR) >> 4,
-+		       (unsigned long)(tq_vard_eepromsize(vard) / (SZ_1K)),
-+		       tq_vard_eeprom_pgsize(vard));
-+
-+	printf("FORMFACTOR: ");
-+
-+	switch (tq_vard_get_formfactor(vard)) {
++	switch (formfactor) {
 +	case VARD_FORMFACTOR_TYPE_LGA:
-+		printf("LGA\n");
++		pr_debug("LGA board type\n");
 +		break;
 +	case VARD_FORMFACTOR_TYPE_CONNECTOR:
-+		printf("CONNECTOR\n");
-+		break;
-+	case VARD_FORMFACTOR_TYPE_SMARC2:
-+		printf("SMARC-2\n");
-+		break;
-+	case VARD_FORMFACTOR_TYPE_NONE:
-+		/*
-+		 * applies to boards with no variants or older boards
-+		 * where this field is not written
-+		 */
-+		printf("UNSPECIFIED\n");
++		pr_debug("CONNECTOR board type\n");
 +		break;
 +	default:
-+		/*
-+		 * generic fall trough
-+		 * unhandled form factor or invalid data
-+		 */
-+		printf("UNKNOWN\n");
++		pr_err("Unknown formfactor\n");
++		formfactor = VARD_FORMFACTOR_TYPE_CONNECTOR;
++	}
++
++	return formfactor;
++}
+ 
+ static noinline void tqma93xx_continue(void)
+ {
+ 	void *base = IOMEM(MX9_UART1_BASE_ADDR);
+ 	void *muxbase = IOMEM(MX9_IOMUXC_BASE_ADDR);
++	int formfactor;
++	void *fdt;
+ 
++	writel(0x10, muxbase + 0x170);
++	writel(0x10, muxbase + 0x174);
+ 	writel(0x0, muxbase + 0x184);
++	writel(0xb9e, muxbase + 0x320);
++	writel(0xb9e, muxbase + 0x324);
++
+ 	imx9_uart_setup(IOMEM(base));
+ 	pbl_set_putc(lpuart32_putc, base + 0x10);
+ 
++	formfactor = tqma93xx_get_formfactor();
++
+ 	if (current_el() == 3) {
+-		imx93_ddr_init(&tqma93xxca_dram_timing, DRAM_TYPE_LPDDR4);
++		switch (formfactor) {
++		case VARD_FORMFACTOR_TYPE_LGA:
++			imx93_ddr_init(&tqma93xxla_dram_timing, DRAM_TYPE_LPDDR4);
++			break;
++		case VARD_FORMFACTOR_TYPE_CONNECTOR:
++			imx93_ddr_init(&tqma93xxca_dram_timing, DRAM_TYPE_LPDDR4);
++			break;
++		}
+ 
+ 		imx93_romapi_load_image();
+ 		imx93_load_and_start_image_via_tfa();
+ 	}
+ 
+-	imx93_barebox_entry(__dtb_z_imx93_tqma9352_mba93xxca_start);
++	switch (formfactor) {
++	case VARD_FORMFACTOR_TYPE_LGA:
++		fdt = __dtb_z_imx93_tqma9352_mba93xxla_start;
++		break;
++	case VARD_FORMFACTOR_TYPE_CONNECTOR:
++		fdt = __dtb_z_imx93_tqma9352_mba93xxca_start;
 +		break;
 +	}
-+}
 +
-+static void tq_read_string(const char *src, char *dst, int len)
-+{
-+	int i;
-+
-+	for (i = 0; i < len && isprint(src[i]) && isascii(src[i]); ++i)
-+		dst[i] = src[i];
-+	dst[i] = '\0';
-+}
-+
-+struct tq_eeprom *pbl_tq_read_eeprom(struct pbl_i2c *i2c, u8 addr)
-+{
-+	struct tq_eeprom_data raw;
-+	static struct tq_eeprom eeprom;
-+	int ret;
-+
-+	ret = eeprom_read(i2c, addr, 0, &raw, sizeof(raw));
-+	if (ret)
-+		return NULL;
-+
-+	if (tq_vard_valid(&eeprom.vard))
-+		eeprom.vard = raw.tq_hw_data.vard;
-+
-+	memcpy(eeprom.mac, raw.mac, TQ_EE_MAC_BYTES);
-+	tq_read_string(raw.serial, eeprom.serial, TQ_EE_SERIAL_BYTES);
-+	tq_read_string(raw.id, eeprom.id, TQ_EE_BDID_BYTES);
-+
-+	return &eeprom;
-+}
-diff --git a/include/tq_eeprom.h b/include/tq_eeprom.h
++	imx93_barebox_entry(fdt);
+ }
+ 
+ ENTRY_FUNCTION(start_imx93_tqma93xx, r0, r1, r2)
+diff --git a/arch/arm/boards/tqma93xx/lpddr4x_tqma93xxla_timing.c b/arch/arm/boards/tqma93xx/lpddr4x_tqma93xxla_timing.c
 new file mode 100644
-index 0000000000..9a81e6e61d
+index 0000000000..7ca8c3aedc
 --- /dev/null
-+++ b/include/tq_eeprom.h
-@@ -0,0 +1,196 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
++++ b/arch/arm/boards/tqma93xx/lpddr4x_tqma93xxla_timing.c
+@@ -0,0 +1,1482 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
 +/*
-+ * Copyright (c) 2014-2023 TQ-Systems GmbH <u-boot@ew.tq-group.com>,
-+ * D-82229 Seefeld, Germany.
-+ * Author: Markus Niebel
++ * Copyright 2022 NXP
 + */
 +
-+#ifndef __TQ_EEPROM_H__
-+#define __TQ_EEPROM_H__
++/* generated from TQMa9xxxLA.DDR-Timing.Beta.0001.mex  */
 +
-+#include <linux/sizes.h>
++#include <common.h>
++#include <soc/imx9/ddr.h>
 +
-+#define VARD_FEATURE_BYTES	8
-+
-+/*
-+ * VARD - variant and revision detection
-+ * must have an exact size of 32 bytes to fit in EEPROM just before
-+ * the module data
-+ */
-+struct __packed tq_vard {
-+	u16 crc;		/* checksum of vard data - CRC16 XMODEM */
-+	u8 hwrev;		/* hardware major revision */
-+	u8 memsize;		/* RAM size */
-+	u8 memtype;		/* RAM Type + ECC */
-+	u8 features[VARD_FEATURE_BYTES];	/* feature bitmask */
-+	u8 eepromsize;		/* user eeprom size (feature EEPROM) */
-+	u8 eepromtype;		/* user eeprom type (feature EEPROM) */
-+	u8 formfactor;		/* SOM Form factor. mask 0xf0 */
-+	u8 rsv[0x10];		/* for future use */
++static struct dram_cfg_param ddr_ddrc_cfg[] = {
++	/** Initialize DDRC registers **/
++	{ 0x4e300110, 0x44100001 },
++	{ 0x4e300000, 0x8000bf },
++	{ 0x4e300008, 0x0 },
++	{ 0x4e300080, 0x80000412 },
++	{ 0x4e300084, 0x0 },
++	{ 0x4e300100, 0x24a0321b },
++	{ 0x4e300104, 0xa8ee001b },
++	{ 0x4e300108, 0x2f2e3233 },
++	{ 0x4e30010c, 0x85c18b },
++	{ 0x4e300114, 0x1002 },
++	{ 0x4e300124, 0x1c77071d },
++	{ 0x4e300160, 0x5402 },
++	{ 0x4e30016c, 0x35f00000 },
++	{ 0x4e300170, 0x8b0b0608 },
++	{ 0x4e300250, 0x28 },
++	{ 0x4e300254, 0x0 },
++	{ 0x4e30025c, 0x400 },
++	{ 0x4e300260, 0x0 },
++	{ 0x4e300300, 0x14281114 },
++	{ 0x4e300304, 0x106110a },
++	{ 0x4e300308, 0xa200e3c },
++	{ 0x4e300f04, 0x80 },
++	{ 0x4e300800, 0x39300002 },
++	{ 0x4e300804, 0x1f1f1f1f },
 +};
 +
-+#define VARD_MEMTYPE_MASK_TYPE		0x7f /* board specific RAM Type */
-+#define VARD_MEMTYPE_MASK_ECC		0x80 /* extra ECC RAM assembled */
-+#define VARD_MEMTYPE_DEFAULT		0xff /* use board specific default */
-+
-+#define VARD_MEMSIZE_MASK_EXP		0x1f /* 2^n MBytes */
-+#define VARD_MEMSIZE_MASK_FACTOR	0x20 /* x3 */
-+#define VARD_MEMSIZE_DEFAULT		0xff /* use board specific default */
-+
-+/* feature is present if bit is zero */
-+#define VARD_FEATURE_0_RESERVED		0xf0 /* Do not use */
-+#define VARD_FEATURE_0_EMMC		0x08 /* e-MMC assembled */
-+#define VARD_FEATURE_0_EEPROM		0x04 /* user EEPROM assembled */
-+#define VARD_FEATURE_0_SPINOR		0x02 /* [Q,O]SPI-NOR assembled */
-+#define VARD_FEATURE_0_SECELEM		0x01 /* secure element assembled */
-+
-+#define VARD_FEATURE_4_RESERVED		0xf0 /* Do not use */
-+#define VARD_FEATURE_4_RTC		0x08 /* RTC assembled */
-+
-+#define VARD_EESIZE_MASK_EXP		0x1f /* 2^n Bytes */
-+#define VARD_EETYPE_DEFAULT		0xff /* use board specific default */
-+#define VARD_EETYPE_MASK_MFR		0xf0 /* manufacturer / type mask */
-+#define VARD_EETYPE_MASK_PGSIZE		0x0f /* page size */
-+
-+#define VARD_FORMFACTOR_MASK_TYPE	0xf0 /* SOM type mask */
-+#define VARD_FORMFACTOR_TYPE_CONNECTOR	0x00 /* SOM with connector, no board standard */
-+#define VARD_FORMFACTOR_TYPE_LGA	0x10 /* LGA SOM, no board standard */
-+#define VARD_FORMFACTOR_TYPE_SMARC2	0x20 /* SOM conforms to SMARC-2 standard */
-+#define VARD_FORMFACTOR_TYPE_NONE	0xf0 /* unspecified SOM type */
-+
-+/*
-+ * all data should only be handled as valid, if CRC is OKAY
-+ */
-+static inline
-+bool tq_vard_has_ramecc(const struct tq_vard *vard)
-+{
-+	return (vard->memtype & VARD_MEMTYPE_MASK_ECC);
-+}
-+
-+/*
-+ * Calculate size in byte using byte from vard
-+ * This works as long as coding for EEPROM / RAM size is the same
-+ * val - memsize byte from tq_vard structure
-+ * multiply - multiplier, aka 1 / SZ_1K / SZ_1M
-+ * tmask - mask for triple factor (use only for RAM sizes)
-+ *
-+ * return size in bytes or zero in case the val is equal to VARD_MEMSIZE_DEFAULT
-+ */
-+phys_size_t tq_vard_memsize(u8 val, unsigned int multiply, unsigned int tmask);
-+
-+static inline
-+phys_size_t tq_vard_ramsize(const struct tq_vard *vard)
-+{
-+	return tq_vard_memsize(vard->memsize, SZ_1M, VARD_MEMSIZE_MASK_FACTOR);
-+}
-+
-+static inline
-+size_t tq_vard_eepromsize(const struct tq_vard *vard)
-+{
-+	return tq_vard_memsize(vard->eepromsize, 1, 0x0);
-+}
-+
-+static inline
-+size_t tq_vard_eeprom_pgsize(const struct tq_vard *vard)
-+{
-+	return 1 << (size_t)(vard->eepromtype & VARD_EETYPE_MASK_PGSIZE);
-+}
-+
-+static inline
-+int tq_vard_has_feature(const struct tq_vard *vard, unsigned int fbyte,
-+			unsigned int fbit)
-+{
-+	if (fbyte < VARD_FEATURE_BYTES && fbit < 8)
-+		return !(vard->features[fbyte] & BIT(fbit));
-+	else
-+		return -ERANGE;
-+}
-+
-+static inline
-+bool tq_vard_has_emmc(const struct tq_vard *vard)
-+{
-+	return (tq_vard_has_feature(vard, 0, 3) > 0);
-+}
-+
-+static inline
-+bool tq_vard_has_eeprom(const struct tq_vard *vard)
-+{
-+	return (tq_vard_has_feature(vard, 0, 2) > 0);
-+}
-+
-+static inline
-+bool tq_vard_has_spinor(const struct tq_vard *vard)
-+{
-+	return (tq_vard_has_feature(vard, 0, 1) > 0);
-+}
-+
-+static inline
-+bool tq_vard_has_secelem(const struct tq_vard *vard)
-+{
-+	return (tq_vard_has_feature(vard, 0, 0) > 0);
-+}
-+
-+static inline
-+bool tq_vard_has_rtc(const struct tq_vard *vard)
-+{
-+	return (tq_vard_has_feature(vard, 4, 3) > 0);
-+}
-+
-+static inline u32 tq_vard_get_formfactor(const struct tq_vard *vard)
-+{
-+	return (u32)(vard->formfactor & VARD_FORMFACTOR_MASK_TYPE);
++/* PHY Initialize Configuration */
++static struct dram_cfg_param ddr_ddrphy_cfg[] = {
++	{ 0x100a0, 0x2 },
++	{ 0x100a1, 0x1 },
++	{ 0x100a2, 0x0 },
++	{ 0x100a3, 0x4 },
++	{ 0x100a4, 0x3 },
++	{ 0x100a5, 0x5 },
++	{ 0x100a6, 0x6 },
++	{ 0x100a7, 0x7 },
++	{ 0x110a0, 0x4 },
++	{ 0x110a1, 0x0 },
++	{ 0x110a2, 0x2 },
++	{ 0x110a3, 0x3 },
++	{ 0x110a4, 0x1 },
++	{ 0x110a5, 0x5 },
++	{ 0x110a6, 0x7 },
++	{ 0x110a7, 0x6 },
++	{ 0x1005f, 0x5ff },
++	{ 0x1015f, 0x5ff },
++	{ 0x1105f, 0x5ff },
++	{ 0x1115f, 0x5ff },
++	{ 0x55, 0x1ff },
++	{ 0x1055, 0x1ff },
++	{ 0x2055, 0x1ff },
++	{ 0x200c5, 0x19 },
++	{ 0x2002e, 0x2 },
++	{ 0x90204, 0x0 },
++	{ 0x20024, 0x1e3 },
++	{ 0x2003a, 0x2 },
++	{ 0x2007d, 0x212 },
++	{ 0x2007c, 0x61 },
++	{ 0x20056, 0x3 },
++	{ 0x1004d, 0xe00 },
++	{ 0x1014d, 0xe00 },
++	{ 0x1104d, 0xe00 },
++	{ 0x1114d, 0xe00 },
++	{ 0x10049, 0xe00 },
++	{ 0x10149, 0xe00 },
++	{ 0x11049, 0xe00 },
++	{ 0x11149, 0xe00 },
++	{ 0x43, 0x60 },
++	{ 0x1043, 0x60 },
++	{ 0x2043, 0x60 },
++	{ 0x20018, 0x1 },
++	{ 0x20075, 0x4 },
++	{ 0x20050, 0x0 },
++	{ 0x2009b, 0x2 },
++	{ 0x20008, 0x3a5 },
++	{ 0x20088, 0x9 },
++	{ 0x200b2, 0x10c },
++	{ 0x10043, 0x5a1 },
++	{ 0x10143, 0x5a1 },
++	{ 0x11043, 0x5a1 },
++	{ 0x11143, 0x5a1 },
++	{ 0x200fa, 0x2 },
++	{ 0x20019, 0x1 },
++	{ 0x200f0, 0x0 },
++	{ 0x200f1, 0x0 },
++	{ 0x200f2, 0x4444 },
++	{ 0x200f3, 0x8888 },
++	{ 0x200f4, 0x5555 },
++	{ 0x200f5, 0x0 },
++	{ 0x200f6, 0x0 },
++	{ 0x200f7, 0xf000 },
++	{ 0x1004a, 0x500 },
++	{ 0x1104a, 0x500 },
++	{ 0x20025, 0x0 },
++	{ 0x2002d, 0x0 },
++	{ 0x2002c, 0x0 },
 +};
 +
-+static inline
-+bool tq_vard_is_lga(const struct tq_vard *vard)
-+{
-+	return (tq_vard_get_formfactor(vard) == VARD_FORMFACTOR_TYPE_LGA);
-+}
-+
-+static inline
-+bool tq_vard_is_connector(const struct tq_vard *vard)
-+{
-+	return (tq_vard_get_formfactor(vard) == VARD_FORMFACTOR_TYPE_CONNECTOR);
-+}
-+
-+static inline
-+bool tq_vard_is_smarc2(const struct tq_vard *vard)
-+{
-+	return (tq_vard_get_formfactor(vard) == VARD_FORMFACTOR_TYPE_SMARC2);
-+}
-+
-+void tq_vard_show(const struct tq_vard *vard);
-+
-+struct tq_som_feature_list;
-+
-+/**
-+ * fill in presence information from VARD.
-+ *
-+ * @param[in] vard pointer to VARD structure from SOM EEPROM
-+ * @param[in] features SOM specific feature list
-+ *
-+ * @return 0 on success
-+ *
-+ * Must be called after data was read to vard. The function checks
-+ * if vard is valid, goes through the list and sets the present flag
-+ * for each entry depending on the flags in vard.
-+ */
-+int tq_vard_detect_features(const struct tq_vard *vard,
-+			     struct tq_som_feature_list *features);
-+
-+#define TQ_EE_MAC_BYTES		6
-+#define TQ_EE_SERIAL_BYTES	8
-+#define TQ_EE_BDID_BYTES	0x40
-+
-+struct tq_eeprom {
-+	struct tq_vard vard;
-+	u8 mac[TQ_EE_MAC_BYTES];
-+	u8 serial[TQ_EE_SERIAL_BYTES + 1];
-+	u8 id[TQ_EE_BDID_BYTES + 1];
++/* ddr phy trained csr */
++static struct dram_cfg_param ddr_ddrphy_trained_csr[] = {
++	{ 0x200b2, 0x0 },
++	{ 0x1200b2, 0x0 },
++	{ 0x2200b2, 0x0 },
++	{ 0x200cb, 0x0 },
++	{ 0x10043, 0x0 },
++	{ 0x110043, 0x0 },
++	{ 0x210043, 0x0 },
++	{ 0x10143, 0x0 },
++	{ 0x110143, 0x0 },
++	{ 0x210143, 0x0 },
++	{ 0x11043, 0x0 },
++	{ 0x111043, 0x0 },
++	{ 0x211043, 0x0 },
++	{ 0x11143, 0x0 },
++	{ 0x111143, 0x0 },
++	{ 0x211143, 0x0 },
++	{ 0x12043, 0x0 },
++	{ 0x112043, 0x0 },
++	{ 0x212043, 0x0 },
++	{ 0x12143, 0x0 },
++	{ 0x112143, 0x0 },
++	{ 0x212143, 0x0 },
++	{ 0x13043, 0x0 },
++	{ 0x113043, 0x0 },
++	{ 0x213043, 0x0 },
++	{ 0x13143, 0x0 },
++	{ 0x113143, 0x0 },
++	{ 0x213143, 0x0 },
++	{ 0x80, 0x0 },
++	{ 0x100080, 0x0 },
++	{ 0x200080, 0x0 },
++	{ 0x1080, 0x0 },
++	{ 0x101080, 0x0 },
++	{ 0x201080, 0x0 },
++	{ 0x2080, 0x0 },
++	{ 0x102080, 0x0 },
++	{ 0x202080, 0x0 },
++	{ 0x3080, 0x0 },
++	{ 0x103080, 0x0 },
++	{ 0x203080, 0x0 },
++	{ 0x4080, 0x0 },
++	{ 0x104080, 0x0 },
++	{ 0x204080, 0x0 },
++	{ 0x5080, 0x0 },
++	{ 0x105080, 0x0 },
++	{ 0x205080, 0x0 },
++	{ 0x6080, 0x0 },
++	{ 0x106080, 0x0 },
++	{ 0x206080, 0x0 },
++	{ 0x7080, 0x0 },
++	{ 0x107080, 0x0 },
++	{ 0x207080, 0x0 },
++	{ 0x8080, 0x0 },
++	{ 0x108080, 0x0 },
++	{ 0x208080, 0x0 },
++	{ 0x9080, 0x0 },
++	{ 0x109080, 0x0 },
++	{ 0x209080, 0x0 },
++	{ 0x10080, 0x0 },
++	{ 0x110080, 0x0 },
++	{ 0x210080, 0x0 },
++	{ 0x10180, 0x0 },
++	{ 0x110180, 0x0 },
++	{ 0x210180, 0x0 },
++	{ 0x11080, 0x0 },
++	{ 0x111080, 0x0 },
++	{ 0x211080, 0x0 },
++	{ 0x11180, 0x0 },
++	{ 0x111180, 0x0 },
++	{ 0x211180, 0x0 },
++	{ 0x12080, 0x0 },
++	{ 0x112080, 0x0 },
++	{ 0x212080, 0x0 },
++	{ 0x12180, 0x0 },
++	{ 0x112180, 0x0 },
++	{ 0x212180, 0x0 },
++	{ 0x13080, 0x0 },
++	{ 0x113080, 0x0 },
++	{ 0x213080, 0x0 },
++	{ 0x13180, 0x0 },
++	{ 0x113180, 0x0 },
++	{ 0x213180, 0x0 },
++	{ 0x10081, 0x0 },
++	{ 0x110081, 0x0 },
++	{ 0x210081, 0x0 },
++	{ 0x10181, 0x0 },
++	{ 0x110181, 0x0 },
++	{ 0x210181, 0x0 },
++	{ 0x11081, 0x0 },
++	{ 0x111081, 0x0 },
++	{ 0x211081, 0x0 },
++	{ 0x11181, 0x0 },
++	{ 0x111181, 0x0 },
++	{ 0x211181, 0x0 },
++	{ 0x12081, 0x0 },
++	{ 0x112081, 0x0 },
++	{ 0x212081, 0x0 },
++	{ 0x12181, 0x0 },
++	{ 0x112181, 0x0 },
++	{ 0x212181, 0x0 },
++	{ 0x13081, 0x0 },
++	{ 0x113081, 0x0 },
++	{ 0x213081, 0x0 },
++	{ 0x13181, 0x0 },
++	{ 0x113181, 0x0 },
++	{ 0x213181, 0x0 },
++	{ 0x100d0, 0x0 },
++	{ 0x1100d0, 0x0 },
++	{ 0x2100d0, 0x0 },
++	{ 0x101d0, 0x0 },
++	{ 0x1101d0, 0x0 },
++	{ 0x2101d0, 0x0 },
++	{ 0x110d0, 0x0 },
++	{ 0x1110d0, 0x0 },
++	{ 0x2110d0, 0x0 },
++	{ 0x111d0, 0x0 },
++	{ 0x1111d0, 0x0 },
++	{ 0x2111d0, 0x0 },
++	{ 0x120d0, 0x0 },
++	{ 0x1120d0, 0x0 },
++	{ 0x2120d0, 0x0 },
++	{ 0x121d0, 0x0 },
++	{ 0x1121d0, 0x0 },
++	{ 0x2121d0, 0x0 },
++	{ 0x130d0, 0x0 },
++	{ 0x1130d0, 0x0 },
++	{ 0x2130d0, 0x0 },
++	{ 0x131d0, 0x0 },
++	{ 0x1131d0, 0x0 },
++	{ 0x2131d0, 0x0 },
++	{ 0x100d1, 0x0 },
++	{ 0x1100d1, 0x0 },
++	{ 0x2100d1, 0x0 },
++	{ 0x101d1, 0x0 },
++	{ 0x1101d1, 0x0 },
++	{ 0x2101d1, 0x0 },
++	{ 0x110d1, 0x0 },
++	{ 0x1110d1, 0x0 },
++	{ 0x2110d1, 0x0 },
++	{ 0x111d1, 0x0 },
++	{ 0x1111d1, 0x0 },
++	{ 0x2111d1, 0x0 },
++	{ 0x120d1, 0x0 },
++	{ 0x1120d1, 0x0 },
++	{ 0x2120d1, 0x0 },
++	{ 0x121d1, 0x0 },
++	{ 0x1121d1, 0x0 },
++	{ 0x2121d1, 0x0 },
++	{ 0x130d1, 0x0 },
++	{ 0x1130d1, 0x0 },
++	{ 0x2130d1, 0x0 },
++	{ 0x131d1, 0x0 },
++	{ 0x1131d1, 0x0 },
++	{ 0x2131d1, 0x0 },
++	{ 0x10068, 0x0 },
++	{ 0x10168, 0x0 },
++	{ 0x10268, 0x0 },
++	{ 0x10368, 0x0 },
++	{ 0x10468, 0x0 },
++	{ 0x10568, 0x0 },
++	{ 0x10668, 0x0 },
++	{ 0x10768, 0x0 },
++	{ 0x10868, 0x0 },
++	{ 0x11068, 0x0 },
++	{ 0x11168, 0x0 },
++	{ 0x11268, 0x0 },
++	{ 0x11368, 0x0 },
++	{ 0x11468, 0x0 },
++	{ 0x11568, 0x0 },
++	{ 0x11668, 0x0 },
++	{ 0x11768, 0x0 },
++	{ 0x11868, 0x0 },
++	{ 0x12068, 0x0 },
++	{ 0x12168, 0x0 },
++	{ 0x12268, 0x0 },
++	{ 0x12368, 0x0 },
++	{ 0x12468, 0x0 },
++	{ 0x12568, 0x0 },
++	{ 0x12668, 0x0 },
++	{ 0x12768, 0x0 },
++	{ 0x12868, 0x0 },
++	{ 0x13068, 0x0 },
++	{ 0x13168, 0x0 },
++	{ 0x13268, 0x0 },
++	{ 0x13368, 0x0 },
++	{ 0x13468, 0x0 },
++	{ 0x13568, 0x0 },
++	{ 0x13668, 0x0 },
++	{ 0x13768, 0x0 },
++	{ 0x13868, 0x0 },
++	{ 0x10069, 0x0 },
++	{ 0x10169, 0x0 },
++	{ 0x10269, 0x0 },
++	{ 0x10369, 0x0 },
++	{ 0x10469, 0x0 },
++	{ 0x10569, 0x0 },
++	{ 0x10669, 0x0 },
++	{ 0x10769, 0x0 },
++	{ 0x10869, 0x0 },
++	{ 0x11069, 0x0 },
++	{ 0x11169, 0x0 },
++	{ 0x11269, 0x0 },
++	{ 0x11369, 0x0 },
++	{ 0x11469, 0x0 },
++	{ 0x11569, 0x0 },
++	{ 0x11669, 0x0 },
++	{ 0x11769, 0x0 },
++	{ 0x11869, 0x0 },
++	{ 0x12069, 0x0 },
++	{ 0x12169, 0x0 },
++	{ 0x12269, 0x0 },
++	{ 0x12369, 0x0 },
++	{ 0x12469, 0x0 },
++	{ 0x12569, 0x0 },
++	{ 0x12669, 0x0 },
++	{ 0x12769, 0x0 },
++	{ 0x12869, 0x0 },
++	{ 0x13069, 0x0 },
++	{ 0x13169, 0x0 },
++	{ 0x13269, 0x0 },
++	{ 0x13369, 0x0 },
++	{ 0x13469, 0x0 },
++	{ 0x13569, 0x0 },
++	{ 0x13669, 0x0 },
++	{ 0x13769, 0x0 },
++	{ 0x13869, 0x0 },
++	{ 0x1008c, 0x0 },
++	{ 0x11008c, 0x0 },
++	{ 0x21008c, 0x0 },
++	{ 0x1018c, 0x0 },
++	{ 0x11018c, 0x0 },
++	{ 0x21018c, 0x0 },
++	{ 0x1108c, 0x0 },
++	{ 0x11108c, 0x0 },
++	{ 0x21108c, 0x0 },
++	{ 0x1118c, 0x0 },
++	{ 0x11118c, 0x0 },
++	{ 0x21118c, 0x0 },
++	{ 0x1208c, 0x0 },
++	{ 0x11208c, 0x0 },
++	{ 0x21208c, 0x0 },
++	{ 0x1218c, 0x0 },
++	{ 0x11218c, 0x0 },
++	{ 0x21218c, 0x0 },
++	{ 0x1308c, 0x0 },
++	{ 0x11308c, 0x0 },
++	{ 0x21308c, 0x0 },
++	{ 0x1318c, 0x0 },
++	{ 0x11318c, 0x0 },
++	{ 0x21318c, 0x0 },
++	{ 0x1008d, 0x0 },
++	{ 0x11008d, 0x0 },
++	{ 0x21008d, 0x0 },
++	{ 0x1018d, 0x0 },
++	{ 0x11018d, 0x0 },
++	{ 0x21018d, 0x0 },
++	{ 0x1108d, 0x0 },
++	{ 0x11108d, 0x0 },
++	{ 0x21108d, 0x0 },
++	{ 0x1118d, 0x0 },
++	{ 0x11118d, 0x0 },
++	{ 0x21118d, 0x0 },
++	{ 0x1208d, 0x0 },
++	{ 0x11208d, 0x0 },
++	{ 0x21208d, 0x0 },
++	{ 0x1218d, 0x0 },
++	{ 0x11218d, 0x0 },
++	{ 0x21218d, 0x0 },
++	{ 0x1308d, 0x0 },
++	{ 0x11308d, 0x0 },
++	{ 0x21308d, 0x0 },
++	{ 0x1318d, 0x0 },
++	{ 0x11318d, 0x0 },
++	{ 0x21318d, 0x0 },
++	{ 0x100c0, 0x0 },
++	{ 0x1100c0, 0x0 },
++	{ 0x2100c0, 0x0 },
++	{ 0x101c0, 0x0 },
++	{ 0x1101c0, 0x0 },
++	{ 0x2101c0, 0x0 },
++	{ 0x102c0, 0x0 },
++	{ 0x1102c0, 0x0 },
++	{ 0x2102c0, 0x0 },
++	{ 0x103c0, 0x0 },
++	{ 0x1103c0, 0x0 },
++	{ 0x2103c0, 0x0 },
++	{ 0x104c0, 0x0 },
++	{ 0x1104c0, 0x0 },
++	{ 0x2104c0, 0x0 },
++	{ 0x105c0, 0x0 },
++	{ 0x1105c0, 0x0 },
++	{ 0x2105c0, 0x0 },
++	{ 0x106c0, 0x0 },
++	{ 0x1106c0, 0x0 },
++	{ 0x2106c0, 0x0 },
++	{ 0x107c0, 0x0 },
++	{ 0x1107c0, 0x0 },
++	{ 0x2107c0, 0x0 },
++	{ 0x108c0, 0x0 },
++	{ 0x1108c0, 0x0 },
++	{ 0x2108c0, 0x0 },
++	{ 0x110c0, 0x0 },
++	{ 0x1110c0, 0x0 },
++	{ 0x2110c0, 0x0 },
++	{ 0x111c0, 0x0 },
++	{ 0x1111c0, 0x0 },
++	{ 0x2111c0, 0x0 },
++	{ 0x112c0, 0x0 },
++	{ 0x1112c0, 0x0 },
++	{ 0x2112c0, 0x0 },
++	{ 0x113c0, 0x0 },
++	{ 0x1113c0, 0x0 },
++	{ 0x2113c0, 0x0 },
++	{ 0x114c0, 0x0 },
++	{ 0x1114c0, 0x0 },
++	{ 0x2114c0, 0x0 },
++	{ 0x115c0, 0x0 },
++	{ 0x1115c0, 0x0 },
++	{ 0x2115c0, 0x0 },
++	{ 0x116c0, 0x0 },
++	{ 0x1116c0, 0x0 },
++	{ 0x2116c0, 0x0 },
++	{ 0x117c0, 0x0 },
++	{ 0x1117c0, 0x0 },
++	{ 0x2117c0, 0x0 },
++	{ 0x118c0, 0x0 },
++	{ 0x1118c0, 0x0 },
++	{ 0x2118c0, 0x0 },
++	{ 0x120c0, 0x0 },
++	{ 0x1120c0, 0x0 },
++	{ 0x2120c0, 0x0 },
++	{ 0x121c0, 0x0 },
++	{ 0x1121c0, 0x0 },
++	{ 0x2121c0, 0x0 },
++	{ 0x122c0, 0x0 },
++	{ 0x1122c0, 0x0 },
++	{ 0x2122c0, 0x0 },
++	{ 0x123c0, 0x0 },
++	{ 0x1123c0, 0x0 },
++	{ 0x2123c0, 0x0 },
++	{ 0x124c0, 0x0 },
++	{ 0x1124c0, 0x0 },
++	{ 0x2124c0, 0x0 },
++	{ 0x125c0, 0x0 },
++	{ 0x1125c0, 0x0 },
++	{ 0x2125c0, 0x0 },
++	{ 0x126c0, 0x0 },
++	{ 0x1126c0, 0x0 },
++	{ 0x2126c0, 0x0 },
++	{ 0x127c0, 0x0 },
++	{ 0x1127c0, 0x0 },
++	{ 0x2127c0, 0x0 },
++	{ 0x128c0, 0x0 },
++	{ 0x1128c0, 0x0 },
++	{ 0x2128c0, 0x0 },
++	{ 0x130c0, 0x0 },
++	{ 0x1130c0, 0x0 },
++	{ 0x2130c0, 0x0 },
++	{ 0x131c0, 0x0 },
++	{ 0x1131c0, 0x0 },
++	{ 0x2131c0, 0x0 },
++	{ 0x132c0, 0x0 },
++	{ 0x1132c0, 0x0 },
++	{ 0x2132c0, 0x0 },
++	{ 0x133c0, 0x0 },
++	{ 0x1133c0, 0x0 },
++	{ 0x2133c0, 0x0 },
++	{ 0x134c0, 0x0 },
++	{ 0x1134c0, 0x0 },
++	{ 0x2134c0, 0x0 },
++	{ 0x135c0, 0x0 },
++	{ 0x1135c0, 0x0 },
++	{ 0x2135c0, 0x0 },
++	{ 0x136c0, 0x0 },
++	{ 0x1136c0, 0x0 },
++	{ 0x2136c0, 0x0 },
++	{ 0x137c0, 0x0 },
++	{ 0x1137c0, 0x0 },
++	{ 0x2137c0, 0x0 },
++	{ 0x138c0, 0x0 },
++	{ 0x1138c0, 0x0 },
++	{ 0x2138c0, 0x0 },
++	{ 0x100c1, 0x0 },
++	{ 0x1100c1, 0x0 },
++	{ 0x2100c1, 0x0 },
++	{ 0x101c1, 0x0 },
++	{ 0x1101c1, 0x0 },
++	{ 0x2101c1, 0x0 },
++	{ 0x102c1, 0x0 },
++	{ 0x1102c1, 0x0 },
++	{ 0x2102c1, 0x0 },
++	{ 0x103c1, 0x0 },
++	{ 0x1103c1, 0x0 },
++	{ 0x2103c1, 0x0 },
++	{ 0x104c1, 0x0 },
++	{ 0x1104c1, 0x0 },
++	{ 0x2104c1, 0x0 },
++	{ 0x105c1, 0x0 },
++	{ 0x1105c1, 0x0 },
++	{ 0x2105c1, 0x0 },
++	{ 0x106c1, 0x0 },
++	{ 0x1106c1, 0x0 },
++	{ 0x2106c1, 0x0 },
++	{ 0x107c1, 0x0 },
++	{ 0x1107c1, 0x0 },
++	{ 0x2107c1, 0x0 },
++	{ 0x108c1, 0x0 },
++	{ 0x1108c1, 0x0 },
++	{ 0x2108c1, 0x0 },
++	{ 0x110c1, 0x0 },
++	{ 0x1110c1, 0x0 },
++	{ 0x2110c1, 0x0 },
++	{ 0x111c1, 0x0 },
++	{ 0x1111c1, 0x0 },
++	{ 0x2111c1, 0x0 },
++	{ 0x112c1, 0x0 },
++	{ 0x1112c1, 0x0 },
++	{ 0x2112c1, 0x0 },
++	{ 0x113c1, 0x0 },
++	{ 0x1113c1, 0x0 },
++	{ 0x2113c1, 0x0 },
++	{ 0x114c1, 0x0 },
++	{ 0x1114c1, 0x0 },
++	{ 0x2114c1, 0x0 },
++	{ 0x115c1, 0x0 },
++	{ 0x1115c1, 0x0 },
++	{ 0x2115c1, 0x0 },
++	{ 0x116c1, 0x0 },
++	{ 0x1116c1, 0x0 },
++	{ 0x2116c1, 0x0 },
++	{ 0x117c1, 0x0 },
++	{ 0x1117c1, 0x0 },
++	{ 0x2117c1, 0x0 },
++	{ 0x118c1, 0x0 },
++	{ 0x1118c1, 0x0 },
++	{ 0x2118c1, 0x0 },
++	{ 0x120c1, 0x0 },
++	{ 0x1120c1, 0x0 },
++	{ 0x2120c1, 0x0 },
++	{ 0x121c1, 0x0 },
++	{ 0x1121c1, 0x0 },
++	{ 0x2121c1, 0x0 },
++	{ 0x122c1, 0x0 },
++	{ 0x1122c1, 0x0 },
++	{ 0x2122c1, 0x0 },
++	{ 0x123c1, 0x0 },
++	{ 0x1123c1, 0x0 },
++	{ 0x2123c1, 0x0 },
++	{ 0x124c1, 0x0 },
++	{ 0x1124c1, 0x0 },
++	{ 0x2124c1, 0x0 },
++	{ 0x125c1, 0x0 },
++	{ 0x1125c1, 0x0 },
++	{ 0x2125c1, 0x0 },
++	{ 0x126c1, 0x0 },
++	{ 0x1126c1, 0x0 },
++	{ 0x2126c1, 0x0 },
++	{ 0x127c1, 0x0 },
++	{ 0x1127c1, 0x0 },
++	{ 0x2127c1, 0x0 },
++	{ 0x128c1, 0x0 },
++	{ 0x1128c1, 0x0 },
++	{ 0x2128c1, 0x0 },
++	{ 0x130c1, 0x0 },
++	{ 0x1130c1, 0x0 },
++	{ 0x2130c1, 0x0 },
++	{ 0x131c1, 0x0 },
++	{ 0x1131c1, 0x0 },
++	{ 0x2131c1, 0x0 },
++	{ 0x132c1, 0x0 },
++	{ 0x1132c1, 0x0 },
++	{ 0x2132c1, 0x0 },
++	{ 0x133c1, 0x0 },
++	{ 0x1133c1, 0x0 },
++	{ 0x2133c1, 0x0 },
++	{ 0x134c1, 0x0 },
++	{ 0x1134c1, 0x0 },
++	{ 0x2134c1, 0x0 },
++	{ 0x135c1, 0x0 },
++	{ 0x1135c1, 0x0 },
++	{ 0x2135c1, 0x0 },
++	{ 0x136c1, 0x0 },
++	{ 0x1136c1, 0x0 },
++	{ 0x2136c1, 0x0 },
++	{ 0x137c1, 0x0 },
++	{ 0x1137c1, 0x0 },
++	{ 0x2137c1, 0x0 },
++	{ 0x138c1, 0x0 },
++	{ 0x1138c1, 0x0 },
++	{ 0x2138c1, 0x0 },
++	{ 0x10020, 0x0 },
++	{ 0x110020, 0x0 },
++	{ 0x210020, 0x0 },
++	{ 0x11020, 0x0 },
++	{ 0x111020, 0x0 },
++	{ 0x211020, 0x0 },
++	{ 0x12020, 0x0 },
++	{ 0x112020, 0x0 },
++	{ 0x212020, 0x0 },
++	{ 0x13020, 0x0 },
++	{ 0x113020, 0x0 },
++	{ 0x213020, 0x0 },
++	{ 0x20072, 0x0 },
++	{ 0x20073, 0x0 },
++	{ 0x20074, 0x0 },
++	{ 0x100aa, 0x0 },
++	{ 0x110aa, 0x0 },
++	{ 0x120aa, 0x0 },
++	{ 0x130aa, 0x0 },
++	{ 0x20010, 0x0 },
++	{ 0x120010, 0x0 },
++	{ 0x220010, 0x0 },
++	{ 0x20011, 0x0 },
++	{ 0x120011, 0x0 },
++	{ 0x220011, 0x0 },
++	{ 0x100ae, 0x0 },
++	{ 0x1100ae, 0x0 },
++	{ 0x2100ae, 0x0 },
++	{ 0x100af, 0x0 },
++	{ 0x1100af, 0x0 },
++	{ 0x2100af, 0x0 },
++	{ 0x110ae, 0x0 },
++	{ 0x1110ae, 0x0 },
++	{ 0x2110ae, 0x0 },
++	{ 0x110af, 0x0 },
++	{ 0x1110af, 0x0 },
++	{ 0x2110af, 0x0 },
++	{ 0x120ae, 0x0 },
++	{ 0x1120ae, 0x0 },
++	{ 0x2120ae, 0x0 },
++	{ 0x120af, 0x0 },
++	{ 0x1120af, 0x0 },
++	{ 0x2120af, 0x0 },
++	{ 0x130ae, 0x0 },
++	{ 0x1130ae, 0x0 },
++	{ 0x2130ae, 0x0 },
++	{ 0x130af, 0x0 },
++	{ 0x1130af, 0x0 },
++	{ 0x2130af, 0x0 },
++	{ 0x20020, 0x0 },
++	{ 0x120020, 0x0 },
++	{ 0x220020, 0x0 },
++	{ 0x100a0, 0x0 },
++	{ 0x100a1, 0x0 },
++	{ 0x100a2, 0x0 },
++	{ 0x100a3, 0x0 },
++	{ 0x100a4, 0x0 },
++	{ 0x100a5, 0x0 },
++	{ 0x100a6, 0x0 },
++	{ 0x100a7, 0x0 },
++	{ 0x110a0, 0x0 },
++	{ 0x110a1, 0x0 },
++	{ 0x110a2, 0x0 },
++	{ 0x110a3, 0x0 },
++	{ 0x110a4, 0x0 },
++	{ 0x110a5, 0x0 },
++	{ 0x110a6, 0x0 },
++	{ 0x110a7, 0x0 },
++	{ 0x120a0, 0x0 },
++	{ 0x120a1, 0x0 },
++	{ 0x120a2, 0x0 },
++	{ 0x120a3, 0x0 },
++	{ 0x120a4, 0x0 },
++	{ 0x120a5, 0x0 },
++	{ 0x120a6, 0x0 },
++	{ 0x120a7, 0x0 },
++	{ 0x130a0, 0x0 },
++	{ 0x130a1, 0x0 },
++	{ 0x130a2, 0x0 },
++	{ 0x130a3, 0x0 },
++	{ 0x130a4, 0x0 },
++	{ 0x130a5, 0x0 },
++	{ 0x130a6, 0x0 },
++	{ 0x130a7, 0x0 },
++	{ 0x2007c, 0x0 },
++	{ 0x12007c, 0x0 },
++	{ 0x22007c, 0x0 },
++	{ 0x2007d, 0x0 },
++	{ 0x12007d, 0x0 },
++	{ 0x22007d, 0x0 },
++	{ 0x400fd, 0x0 },
++	{ 0x400c0, 0x0 },
++	{ 0x90201, 0x0 },
++	{ 0x190201, 0x0 },
++	{ 0x290201, 0x0 },
++	{ 0x90202, 0x0 },
++	{ 0x190202, 0x0 },
++	{ 0x290202, 0x0 },
++	{ 0x90203, 0x0 },
++	{ 0x190203, 0x0 },
++	{ 0x290203, 0x0 },
++	{ 0x90204, 0x0 },
++	{ 0x190204, 0x0 },
++	{ 0x290204, 0x0 },
++	{ 0x90205, 0x0 },
++	{ 0x190205, 0x0 },
++	{ 0x290205, 0x0 },
++	{ 0x90206, 0x0 },
++	{ 0x190206, 0x0 },
++	{ 0x290206, 0x0 },
++	{ 0x90207, 0x0 },
++	{ 0x190207, 0x0 },
++	{ 0x290207, 0x0 },
++	{ 0x90208, 0x0 },
++	{ 0x190208, 0x0 },
++	{ 0x290208, 0x0 },
++	{ 0x10062, 0x0 },
++	{ 0x10162, 0x0 },
++	{ 0x10262, 0x0 },
++	{ 0x10362, 0x0 },
++	{ 0x10462, 0x0 },
++	{ 0x10562, 0x0 },
++	{ 0x10662, 0x0 },
++	{ 0x10762, 0x0 },
++	{ 0x10862, 0x0 },
++	{ 0x11062, 0x0 },
++	{ 0x11162, 0x0 },
++	{ 0x11262, 0x0 },
++	{ 0x11362, 0x0 },
++	{ 0x11462, 0x0 },
++	{ 0x11562, 0x0 },
++	{ 0x11662, 0x0 },
++	{ 0x11762, 0x0 },
++	{ 0x11862, 0x0 },
++	{ 0x12062, 0x0 },
++	{ 0x12162, 0x0 },
++	{ 0x12262, 0x0 },
++	{ 0x12362, 0x0 },
++	{ 0x12462, 0x0 },
++	{ 0x12562, 0x0 },
++	{ 0x12662, 0x0 },
++	{ 0x12762, 0x0 },
++	{ 0x12862, 0x0 },
++	{ 0x13062, 0x0 },
++	{ 0x13162, 0x0 },
++	{ 0x13262, 0x0 },
++	{ 0x13362, 0x0 },
++	{ 0x13462, 0x0 },
++	{ 0x13562, 0x0 },
++	{ 0x13662, 0x0 },
++	{ 0x13762, 0x0 },
++	{ 0x13862, 0x0 },
++	{ 0x20077, 0x0 },
++	{ 0x10001, 0x0 },
++	{ 0x11001, 0x0 },
++	{ 0x12001, 0x0 },
++	{ 0x13001, 0x0 },
++	{ 0x10040, 0x0 },
++	{ 0x10140, 0x0 },
++	{ 0x10240, 0x0 },
++	{ 0x10340, 0x0 },
++	{ 0x10440, 0x0 },
++	{ 0x10540, 0x0 },
++	{ 0x10640, 0x0 },
++	{ 0x10740, 0x0 },
++	{ 0x10840, 0x0 },
++	{ 0x10030, 0x0 },
++	{ 0x10130, 0x0 },
++	{ 0x10230, 0x0 },
++	{ 0x10330, 0x0 },
++	{ 0x10430, 0x0 },
++	{ 0x10530, 0x0 },
++	{ 0x10630, 0x0 },
++	{ 0x10730, 0x0 },
++	{ 0x10830, 0x0 },
++	{ 0x11040, 0x0 },
++	{ 0x11140, 0x0 },
++	{ 0x11240, 0x0 },
++	{ 0x11340, 0x0 },
++	{ 0x11440, 0x0 },
++	{ 0x11540, 0x0 },
++	{ 0x11640, 0x0 },
++	{ 0x11740, 0x0 },
++	{ 0x11840, 0x0 },
++	{ 0x11030, 0x0 },
++	{ 0x11130, 0x0 },
++	{ 0x11230, 0x0 },
++	{ 0x11330, 0x0 },
++	{ 0x11430, 0x0 },
++	{ 0x11530, 0x0 },
++	{ 0x11630, 0x0 },
++	{ 0x11730, 0x0 },
++	{ 0x11830, 0x0 },
++	{ 0x12040, 0x0 },
++	{ 0x12140, 0x0 },
++	{ 0x12240, 0x0 },
++	{ 0x12340, 0x0 },
++	{ 0x12440, 0x0 },
++	{ 0x12540, 0x0 },
++	{ 0x12640, 0x0 },
++	{ 0x12740, 0x0 },
++	{ 0x12840, 0x0 },
++	{ 0x12030, 0x0 },
++	{ 0x12130, 0x0 },
++	{ 0x12230, 0x0 },
++	{ 0x12330, 0x0 },
++	{ 0x12430, 0x0 },
++	{ 0x12530, 0x0 },
++	{ 0x12630, 0x0 },
++	{ 0x12730, 0x0 },
++	{ 0x12830, 0x0 },
++	{ 0x13040, 0x0 },
++	{ 0x13140, 0x0 },
++	{ 0x13240, 0x0 },
++	{ 0x13340, 0x0 },
++	{ 0x13440, 0x0 },
++	{ 0x13540, 0x0 },
++	{ 0x13640, 0x0 },
++	{ 0x13740, 0x0 },
++	{ 0x13840, 0x0 },
++	{ 0x13030, 0x0 },
++	{ 0x13130, 0x0 },
++	{ 0x13230, 0x0 },
++	{ 0x13330, 0x0 },
++	{ 0x13430, 0x0 },
++	{ 0x13530, 0x0 },
++	{ 0x13630, 0x0 },
++	{ 0x13730, 0x0 },
++	{ 0x13830, 0x0 },
 +};
 +
-+struct pbl_i2c;
++/* P0 message block parameter for training firmware */
++static struct dram_cfg_param ddr_fsp0_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54003, 0xe94 },
++	{ 0x54004, 0x4 },
++	{ 0x54006, 0x15 },
++	{ 0x54008, 0x131f },
++	{ 0x54009, 0xff },
++	{ 0x5400b, 0x4 },
++	{ 0x5400c, 0x1 },
++	{ 0x5400d, 0x100 },
++	{ 0x5400f, 0x100 },
++	{ 0x54012, 0x110 },
++	{ 0x54019, 0x36e4 },
++	{ 0x5401a, 0x32 },
++	{ 0x5401b, 0x1146 },
++	{ 0x5401c, 0x1108 },
++	{ 0x5401e, 0x6 },
++	{ 0x5401f, 0x36e4 },
++	{ 0x54020, 0x32 },
++	{ 0x54021, 0x1146 },
++	{ 0x54022, 0x1108 },
++	{ 0x54024, 0x6 },
++	{ 0x54032, 0xe400 },
++	{ 0x54033, 0x3236 },
++	{ 0x54034, 0x4600 },
++	{ 0x54035, 0x811 },
++	{ 0x54036, 0x11 },
++	{ 0x54037, 0x600 },
++	{ 0x54038, 0xe400 },
++	{ 0x54039, 0x3236 },
++	{ 0x5403a, 0x4600 },
++	{ 0x5403b, 0x811 },
++	{ 0x5403c, 0x11 },
++	{ 0x5403d, 0x600 },
++	{ 0xd0000, 0x1 },
++};
 +
-+struct tq_eeprom *pbl_tq_read_eeprom(struct pbl_i2c *i2c, u8 addr);
++/* P0 2D message block paremeter for training firmware */
++static struct dram_cfg_param ddr_fsp0_2d_cfg[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x54003, 0xe94 },
++	{ 0x54004, 0x4 },
++	{ 0x54006, 0x15 },
++	{ 0x54008, 0x61 },
++	{ 0x54009, 0xff },
++	{ 0x5400b, 0x4 },
++	{ 0x5400c, 0x1 },
++	{ 0x5400d, 0x100 },
++	{ 0x5400f, 0x100 },
++	{ 0x54010, 0x2080 },
++	{ 0x54012, 0x110 },
++	{ 0x54019, 0x36e4 },
++	{ 0x5401a, 0x32 },
++	{ 0x5401b, 0x1146 },
++	{ 0x5401c, 0x1108 },
++	{ 0x5401e, 0x6 },
++	{ 0x5401f, 0x36e4 },
++	{ 0x54020, 0x32 },
++	{ 0x54021, 0x1146 },
++	{ 0x54022, 0x1108 },
++	{ 0x54024, 0x6 },
++	{ 0x54032, 0xe400 },
++	{ 0x54033, 0x3236 },
++	{ 0x54034, 0x4600 },
++	{ 0x54035, 0x811 },
++	{ 0x54036, 0x11 },
++	{ 0x54037, 0x600 },
++	{ 0x54038, 0xe400 },
++	{ 0x54039, 0x3236 },
++	{ 0x5403a, 0x4600 },
++	{ 0x5403b, 0x811 },
++	{ 0x5403c, 0x11 },
++	{ 0x5403d, 0x600 },
++	{ 0xd0000, 0x1 },
++};
 +
-+#endif
++/* DRAM PHY init engine image */
++static struct dram_cfg_param ddr_phy_pie[] = {
++	{ 0xd0000, 0x0 },
++	{ 0x90000, 0x10 },
++	{ 0x90001, 0x400 },
++	{ 0x90002, 0x10e },
++	{ 0x90003, 0x0 },
++	{ 0x90004, 0x0 },
++	{ 0x90005, 0x8 },
++	{ 0x90029, 0xb },
++	{ 0x9002a, 0x480 },
++	{ 0x9002b, 0x109 },
++	{ 0x9002c, 0x8 },
++	{ 0x9002d, 0x448 },
++	{ 0x9002e, 0x139 },
++	{ 0x9002f, 0x8 },
++	{ 0x90030, 0x478 },
++	{ 0x90031, 0x109 },
++	{ 0x90032, 0x0 },
++	{ 0x90033, 0xe8 },
++	{ 0x90034, 0x109 },
++	{ 0x90035, 0x2 },
++	{ 0x90036, 0x10 },
++	{ 0x90037, 0x139 },
++	{ 0x90038, 0xb },
++	{ 0x90039, 0x7c0 },
++	{ 0x9003a, 0x139 },
++	{ 0x9003b, 0x44 },
++	{ 0x9003c, 0x633 },
++	{ 0x9003d, 0x159 },
++	{ 0x9003e, 0x14f },
++	{ 0x9003f, 0x630 },
++	{ 0x90040, 0x159 },
++	{ 0x90041, 0x47 },
++	{ 0x90042, 0x633 },
++	{ 0x90043, 0x149 },
++	{ 0x90044, 0x4f },
++	{ 0x90045, 0x633 },
++	{ 0x90046, 0x179 },
++	{ 0x90047, 0x8 },
++	{ 0x90048, 0xe0 },
++	{ 0x90049, 0x109 },
++	{ 0x9004a, 0x0 },
++	{ 0x9004b, 0x7c8 },
++	{ 0x9004c, 0x109 },
++	{ 0x9004d, 0x0 },
++	{ 0x9004e, 0x1 },
++	{ 0x9004f, 0x8 },
++	{ 0x90050, 0x30 },
++	{ 0x90051, 0x65a },
++	{ 0x90052, 0x9 },
++	{ 0x90053, 0x0 },
++	{ 0x90054, 0x45a },
++	{ 0x90055, 0x9 },
++	{ 0x90056, 0x0 },
++	{ 0x90057, 0x448 },
++	{ 0x90058, 0x109 },
++	{ 0x90059, 0x40 },
++	{ 0x9005a, 0x633 },
++	{ 0x9005b, 0x179 },
++	{ 0x9005c, 0x1 },
++	{ 0x9005d, 0x618 },
++	{ 0x9005e, 0x109 },
++	{ 0x9005f, 0x40c0 },
++	{ 0x90060, 0x633 },
++	{ 0x90061, 0x149 },
++	{ 0x90062, 0x8 },
++	{ 0x90063, 0x4 },
++	{ 0x90064, 0x48 },
++	{ 0x90065, 0x4040 },
++	{ 0x90066, 0x633 },
++	{ 0x90067, 0x149 },
++	{ 0x90068, 0x0 },
++	{ 0x90069, 0x4 },
++	{ 0x9006a, 0x48 },
++	{ 0x9006b, 0x40 },
++	{ 0x9006c, 0x633 },
++	{ 0x9006d, 0x149 },
++	{ 0x9006e, 0x0 },
++	{ 0x9006f, 0x658 },
++	{ 0x90070, 0x109 },
++	{ 0x90071, 0x10 },
++	{ 0x90072, 0x4 },
++	{ 0x90073, 0x18 },
++	{ 0x90074, 0x0 },
++	{ 0x90075, 0x4 },
++	{ 0x90076, 0x78 },
++	{ 0x90077, 0x549 },
++	{ 0x90078, 0x633 },
++	{ 0x90079, 0x159 },
++	{ 0x9007a, 0xd49 },
++	{ 0x9007b, 0x633 },
++	{ 0x9007c, 0x159 },
++	{ 0x9007d, 0x94a },
++	{ 0x9007e, 0x633 },
++	{ 0x9007f, 0x159 },
++	{ 0x90080, 0x441 },
++	{ 0x90081, 0x633 },
++	{ 0x90082, 0x149 },
++	{ 0x90083, 0x42 },
++	{ 0x90084, 0x633 },
++	{ 0x90085, 0x149 },
++	{ 0x90086, 0x1 },
++	{ 0x90087, 0x633 },
++	{ 0x90088, 0x149 },
++	{ 0x90089, 0x0 },
++	{ 0x9008a, 0xe0 },
++	{ 0x9008b, 0x109 },
++	{ 0x9008c, 0xa },
++	{ 0x9008d, 0x10 },
++	{ 0x9008e, 0x109 },
++	{ 0x9008f, 0x9 },
++	{ 0x90090, 0x3c0 },
++	{ 0x90091, 0x149 },
++	{ 0x90092, 0x9 },
++	{ 0x90093, 0x3c0 },
++	{ 0x90094, 0x159 },
++	{ 0x90095, 0x18 },
++	{ 0x90096, 0x10 },
++	{ 0x90097, 0x109 },
++	{ 0x90098, 0x0 },
++	{ 0x90099, 0x3c0 },
++	{ 0x9009a, 0x109 },
++	{ 0x9009b, 0x18 },
++	{ 0x9009c, 0x4 },
++	{ 0x9009d, 0x48 },
++	{ 0x9009e, 0x18 },
++	{ 0x9009f, 0x4 },
++	{ 0x900a0, 0x58 },
++	{ 0x900a1, 0xb },
++	{ 0x900a2, 0x10 },
++	{ 0x900a3, 0x109 },
++	{ 0x900a4, 0x1 },
++	{ 0x900a5, 0x10 },
++	{ 0x900a6, 0x109 },
++	{ 0x900a7, 0x5 },
++	{ 0x900a8, 0x7c0 },
++	{ 0x900a9, 0x109 },
++	{ 0x40000, 0x811 },
++	{ 0x40020, 0x880 },
++	{ 0x40040, 0x0 },
++	{ 0x40060, 0x0 },
++	{ 0x40001, 0x4008 },
++	{ 0x40021, 0x83 },
++	{ 0x40041, 0x4f },
++	{ 0x40061, 0x0 },
++	{ 0x40002, 0x4040 },
++	{ 0x40022, 0x83 },
++	{ 0x40042, 0x51 },
++	{ 0x40062, 0x0 },
++	{ 0x40003, 0x811 },
++	{ 0x40023, 0x880 },
++	{ 0x40043, 0x0 },
++	{ 0x40063, 0x0 },
++	{ 0x40004, 0x720 },
++	{ 0x40024, 0xf },
++	{ 0x40044, 0x1740 },
++	{ 0x40064, 0x0 },
++	{ 0x40005, 0x16 },
++	{ 0x40025, 0x83 },
++	{ 0x40045, 0x4b },
++	{ 0x40065, 0x0 },
++	{ 0x40006, 0x716 },
++	{ 0x40026, 0xf },
++	{ 0x40046, 0x2001 },
++	{ 0x40066, 0x0 },
++	{ 0x40007, 0x716 },
++	{ 0x40027, 0xf },
++	{ 0x40047, 0x2800 },
++	{ 0x40067, 0x0 },
++	{ 0x40008, 0x716 },
++	{ 0x40028, 0xf },
++	{ 0x40048, 0xf00 },
++	{ 0x40068, 0x0 },
++	{ 0x40009, 0x720 },
++	{ 0x40029, 0xf },
++	{ 0x40049, 0x1400 },
++	{ 0x40069, 0x0 },
++	{ 0x4000a, 0xe08 },
++	{ 0x4002a, 0xc15 },
++	{ 0x4004a, 0x0 },
++	{ 0x4006a, 0x0 },
++	{ 0x4000b, 0x625 },
++	{ 0x4002b, 0x15 },
++	{ 0x4004b, 0x0 },
++	{ 0x4006b, 0x0 },
++	{ 0x4000c, 0x4028 },
++	{ 0x4002c, 0x80 },
++	{ 0x4004c, 0x0 },
++	{ 0x4006c, 0x0 },
++	{ 0x4000d, 0xe08 },
++	{ 0x4002d, 0xc1a },
++	{ 0x4004d, 0x0 },
++	{ 0x4006d, 0x0 },
++	{ 0x4000e, 0x625 },
++	{ 0x4002e, 0x1a },
++	{ 0x4004e, 0x0 },
++	{ 0x4006e, 0x0 },
++	{ 0x4000f, 0x4040 },
++	{ 0x4002f, 0x80 },
++	{ 0x4004f, 0x0 },
++	{ 0x4006f, 0x0 },
++	{ 0x40010, 0x2604 },
++	{ 0x40030, 0x15 },
++	{ 0x40050, 0x0 },
++	{ 0x40070, 0x0 },
++	{ 0x40011, 0x708 },
++	{ 0x40031, 0x5 },
++	{ 0x40051, 0x0 },
++	{ 0x40071, 0x2002 },
++	{ 0x40012, 0x8 },
++	{ 0x40032, 0x80 },
++	{ 0x40052, 0x0 },
++	{ 0x40072, 0x0 },
++	{ 0x40013, 0x2604 },
++	{ 0x40033, 0x1a },
++	{ 0x40053, 0x0 },
++	{ 0x40073, 0x0 },
++	{ 0x40014, 0x708 },
++	{ 0x40034, 0xa },
++	{ 0x40054, 0x0 },
++	{ 0x40074, 0x2002 },
++	{ 0x40015, 0x4040 },
++	{ 0x40035, 0x80 },
++	{ 0x40055, 0x0 },
++	{ 0x40075, 0x0 },
++	{ 0x40016, 0x60a },
++	{ 0x40036, 0x15 },
++	{ 0x40056, 0x1200 },
++	{ 0x40076, 0x0 },
++	{ 0x40017, 0x61a },
++	{ 0x40037, 0x15 },
++	{ 0x40057, 0x1300 },
++	{ 0x40077, 0x0 },
++	{ 0x40018, 0x60a },
++	{ 0x40038, 0x1a },
++	{ 0x40058, 0x1200 },
++	{ 0x40078, 0x0 },
++	{ 0x40019, 0x642 },
++	{ 0x40039, 0x1a },
++	{ 0x40059, 0x1300 },
++	{ 0x40079, 0x0 },
++	{ 0x4001a, 0x4808 },
++	{ 0x4003a, 0x880 },
++	{ 0x4005a, 0x0 },
++	{ 0x4007a, 0x0 },
++	{ 0x900aa, 0x0 },
++	{ 0x900ab, 0x790 },
++	{ 0x900ac, 0x11a },
++	{ 0x900ad, 0x8 },
++	{ 0x900ae, 0x7aa },
++	{ 0x900af, 0x2a },
++	{ 0x900b0, 0x10 },
++	{ 0x900b1, 0x7b2 },
++	{ 0x900b2, 0x2a },
++	{ 0x900b3, 0x0 },
++	{ 0x900b4, 0x7c8 },
++	{ 0x900b5, 0x109 },
++	{ 0x900b6, 0x10 },
++	{ 0x900b7, 0x10 },
++	{ 0x900b8, 0x109 },
++	{ 0x900b9, 0x10 },
++	{ 0x900ba, 0x2a8 },
++	{ 0x900bb, 0x129 },
++	{ 0x900bc, 0x8 },
++	{ 0x900bd, 0x370 },
++	{ 0x900be, 0x129 },
++	{ 0x900bf, 0xa },
++	{ 0x900c0, 0x3c8 },
++	{ 0x900c1, 0x1a9 },
++	{ 0x900c2, 0xc },
++	{ 0x900c3, 0x408 },
++	{ 0x900c4, 0x199 },
++	{ 0x900c5, 0x14 },
++	{ 0x900c6, 0x790 },
++	{ 0x900c7, 0x11a },
++	{ 0x900c8, 0x8 },
++	{ 0x900c9, 0x4 },
++	{ 0x900ca, 0x18 },
++	{ 0x900cb, 0xe },
++	{ 0x900cc, 0x408 },
++	{ 0x900cd, 0x199 },
++	{ 0x900ce, 0x8 },
++	{ 0x900cf, 0x8568 },
++	{ 0x900d0, 0x108 },
++	{ 0x900d1, 0x18 },
++	{ 0x900d2, 0x790 },
++	{ 0x900d3, 0x16a },
++	{ 0x900d4, 0x8 },
++	{ 0x900d5, 0x1d8 },
++	{ 0x900d6, 0x169 },
++	{ 0x900d7, 0x10 },
++	{ 0x900d8, 0x8558 },
++	{ 0x900d9, 0x168 },
++	{ 0x900da, 0x1ff8 },
++	{ 0x900db, 0x85a8 },
++	{ 0x900dc, 0x1e8 },
++	{ 0x900dd, 0x50 },
++	{ 0x900de, 0x798 },
++	{ 0x900df, 0x16a },
++	{ 0x900e0, 0x60 },
++	{ 0x900e1, 0x7a0 },
++	{ 0x900e2, 0x16a },
++	{ 0x900e3, 0x8 },
++	{ 0x900e4, 0x8310 },
++	{ 0x900e5, 0x168 },
++	{ 0x900e6, 0x8 },
++	{ 0x900e7, 0xa310 },
++	{ 0x900e8, 0x168 },
++	{ 0x900e9, 0xa },
++	{ 0x900ea, 0x408 },
++	{ 0x900eb, 0x169 },
++	{ 0x900ec, 0x6e },
++	{ 0x900ed, 0x0 },
++	{ 0x900ee, 0x68 },
++	{ 0x900ef, 0x0 },
++	{ 0x900f0, 0x408 },
++	{ 0x900f1, 0x169 },
++	{ 0x900f2, 0x0 },
++	{ 0x900f3, 0x8310 },
++	{ 0x900f4, 0x168 },
++	{ 0x900f5, 0x0 },
++	{ 0x900f6, 0xa310 },
++	{ 0x900f7, 0x168 },
++	{ 0x900f8, 0x1ff8 },
++	{ 0x900f9, 0x85a8 },
++	{ 0x900fa, 0x1e8 },
++	{ 0x900fb, 0x68 },
++	{ 0x900fc, 0x798 },
++	{ 0x900fd, 0x16a },
++	{ 0x900fe, 0x78 },
++	{ 0x900ff, 0x7a0 },
++	{ 0x90100, 0x16a },
++	{ 0x90101, 0x68 },
++	{ 0x90102, 0x790 },
++	{ 0x90103, 0x16a },
++	{ 0x90104, 0x8 },
++	{ 0x90105, 0x8b10 },
++	{ 0x90106, 0x168 },
++	{ 0x90107, 0x8 },
++	{ 0x90108, 0xab10 },
++	{ 0x90109, 0x168 },
++	{ 0x9010a, 0xa },
++	{ 0x9010b, 0x408 },
++	{ 0x9010c, 0x169 },
++	{ 0x9010d, 0x58 },
++	{ 0x9010e, 0x0 },
++	{ 0x9010f, 0x68 },
++	{ 0x90110, 0x0 },
++	{ 0x90111, 0x408 },
++	{ 0x90112, 0x169 },
++	{ 0x90113, 0x0 },
++	{ 0x90114, 0x8b10 },
++	{ 0x90115, 0x168 },
++	{ 0x90116, 0x1 },
++	{ 0x90117, 0xab10 },
++	{ 0x90118, 0x168 },
++	{ 0x90119, 0x0 },
++	{ 0x9011a, 0x1d8 },
++	{ 0x9011b, 0x169 },
++	{ 0x9011c, 0x80 },
++	{ 0x9011d, 0x790 },
++	{ 0x9011e, 0x16a },
++	{ 0x9011f, 0x18 },
++	{ 0x90120, 0x7aa },
++	{ 0x90121, 0x6a },
++	{ 0x90122, 0xa },
++	{ 0x90123, 0x0 },
++	{ 0x90124, 0x1e9 },
++	{ 0x90125, 0x8 },
++	{ 0x90126, 0x8080 },
++	{ 0x90127, 0x108 },
++	{ 0x90128, 0xf },
++	{ 0x90129, 0x408 },
++	{ 0x9012a, 0x169 },
++	{ 0x9012b, 0xc },
++	{ 0x9012c, 0x0 },
++	{ 0x9012d, 0x68 },
++	{ 0x9012e, 0x9 },
++	{ 0x9012f, 0x0 },
++	{ 0x90130, 0x1a9 },
++	{ 0x90131, 0x0 },
++	{ 0x90132, 0x408 },
++	{ 0x90133, 0x169 },
++	{ 0x90134, 0x0 },
++	{ 0x90135, 0x8080 },
++	{ 0x90136, 0x108 },
++	{ 0x90137, 0x8 },
++	{ 0x90138, 0x7aa },
++	{ 0x90139, 0x6a },
++	{ 0x9013a, 0x0 },
++	{ 0x9013b, 0x8568 },
++	{ 0x9013c, 0x108 },
++	{ 0x9013d, 0xb7 },
++	{ 0x9013e, 0x790 },
++	{ 0x9013f, 0x16a },
++	{ 0x90140, 0x1f },
++	{ 0x90141, 0x0 },
++	{ 0x90142, 0x68 },
++	{ 0x90143, 0x8 },
++	{ 0x90144, 0x8558 },
++	{ 0x90145, 0x168 },
++	{ 0x90146, 0xf },
++	{ 0x90147, 0x408 },
++	{ 0x90148, 0x169 },
++	{ 0x90149, 0xd },
++	{ 0x9014a, 0x0 },
++	{ 0x9014b, 0x68 },
++	{ 0x9014c, 0x0 },
++	{ 0x9014d, 0x408 },
++	{ 0x9014e, 0x169 },
++	{ 0x9014f, 0x0 },
++	{ 0x90150, 0x8558 },
++	{ 0x90151, 0x168 },
++	{ 0x90152, 0x8 },
++	{ 0x90153, 0x3c8 },
++	{ 0x90154, 0x1a9 },
++	{ 0x90155, 0x3 },
++	{ 0x90156, 0x370 },
++	{ 0x90157, 0x129 },
++	{ 0x90158, 0x20 },
++	{ 0x90159, 0x2aa },
++	{ 0x9015a, 0x9 },
++	{ 0x9015b, 0x8 },
++	{ 0x9015c, 0xe8 },
++	{ 0x9015d, 0x109 },
++	{ 0x9015e, 0x0 },
++	{ 0x9015f, 0x8140 },
++	{ 0x90160, 0x10c },
++	{ 0x90161, 0x10 },
++	{ 0x90162, 0x8138 },
++	{ 0x90163, 0x104 },
++	{ 0x90164, 0x8 },
++	{ 0x90165, 0x448 },
++	{ 0x90166, 0x109 },
++	{ 0x90167, 0xf },
++	{ 0x90168, 0x7c0 },
++	{ 0x90169, 0x109 },
++	{ 0x9016a, 0x0 },
++	{ 0x9016b, 0xe8 },
++	{ 0x9016c, 0x109 },
++	{ 0x9016d, 0x47 },
++	{ 0x9016e, 0x630 },
++	{ 0x9016f, 0x109 },
++	{ 0x90170, 0x8 },
++	{ 0x90171, 0x618 },
++	{ 0x90172, 0x109 },
++	{ 0x90173, 0x8 },
++	{ 0x90174, 0xe0 },
++	{ 0x90175, 0x109 },
++	{ 0x90176, 0x0 },
++	{ 0x90177, 0x7c8 },
++	{ 0x90178, 0x109 },
++	{ 0x90179, 0x8 },
++	{ 0x9017a, 0x8140 },
++	{ 0x9017b, 0x10c },
++	{ 0x9017c, 0x0 },
++	{ 0x9017d, 0x478 },
++	{ 0x9017e, 0x109 },
++	{ 0x9017f, 0x0 },
++	{ 0x90180, 0x1 },
++	{ 0x90181, 0x8 },
++	{ 0x90182, 0x8 },
++	{ 0x90183, 0x4 },
++	{ 0x90184, 0x0 },
++	{ 0x90006, 0x8 },
++	{ 0x90007, 0x7c8 },
++	{ 0x90008, 0x109 },
++	{ 0x90009, 0x0 },
++	{ 0x9000a, 0x400 },
++	{ 0x9000b, 0x106 },
++	{ 0xd00e7, 0x400 },
++	{ 0x90017, 0x0 },
++	{ 0x9001f, 0x2b },
++	{ 0x90026, 0x69 },
++	{ 0x400d0, 0x0 },
++	{ 0x400d1, 0x101 },
++	{ 0x400d2, 0x105 },
++	{ 0x400d3, 0x107 },
++	{ 0x400d4, 0x10f },
++	{ 0x400d5, 0x202 },
++	{ 0x400d6, 0x20a },
++	{ 0x400d7, 0x20b },
++	{ 0x2003a, 0x2 },
++	{ 0x200be, 0x3 },
++	{ 0x2000b, 0x75 },
++	{ 0x2000c, 0xe9 },
++	{ 0x2000d, 0x91c },
++	{ 0x2000e, 0x2c },
++	{ 0x9000c, 0x0 },
++	{ 0x9000d, 0x173 },
++	{ 0x9000e, 0x60 },
++	{ 0x9000f, 0x6110 },
++	{ 0x90010, 0x2152 },
++	{ 0x90011, 0xdfbd },
++	{ 0x90012, 0x2060 },
++	{ 0x90013, 0x6152 },
++	{ 0x20010, 0x5a },
++	{ 0x20011, 0x3 },
++	{ 0x40080, 0xe0 },
++	{ 0x40081, 0x12 },
++	{ 0x40082, 0xe0 },
++	{ 0x40083, 0x12 },
++	{ 0x40084, 0xe0 },
++	{ 0x40085, 0x12 },
++	{ 0x400fd, 0xf },
++	{ 0x400f1, 0xe },
++	{ 0x10011, 0x1 },
++	{ 0x10012, 0x1 },
++	{ 0x10013, 0x180 },
++	{ 0x10018, 0x1 },
++	{ 0x10002, 0x6209 },
++	{ 0x100b2, 0x1 },
++	{ 0x101b4, 0x1 },
++	{ 0x102b4, 0x1 },
++	{ 0x103b4, 0x1 },
++	{ 0x104b4, 0x1 },
++	{ 0x105b4, 0x1 },
++	{ 0x106b4, 0x1 },
++	{ 0x107b4, 0x1 },
++	{ 0x108b4, 0x1 },
++	{ 0x11011, 0x1 },
++	{ 0x11012, 0x1 },
++	{ 0x11013, 0x180 },
++	{ 0x11018, 0x1 },
++	{ 0x11002, 0x6209 },
++	{ 0x110b2, 0x1 },
++	{ 0x111b4, 0x1 },
++	{ 0x112b4, 0x1 },
++	{ 0x113b4, 0x1 },
++	{ 0x114b4, 0x1 },
++	{ 0x115b4, 0x1 },
++	{ 0x116b4, 0x1 },
++	{ 0x117b4, 0x1 },
++	{ 0x118b4, 0x1 },
++	{ 0x20089, 0x1 },
++	{ 0x20088, 0x19 },
++	{ 0xc0080, 0x0 },
++	{ 0xd0000, 0x1 },
++};
++
++static struct dram_fsp_msg ddr_dram_fsp_msg[] = {
++	{
++		/* P0 3732mts 1D */
++		.drate = 3732,
++		.fw_type = FW_1D_IMAGE,
++		.fsp_cfg = ddr_fsp0_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_cfg),
++	},
++	{
++		/* P0 3732mts 2D */
++		.drate = 3732,
++		.fw_type = FW_2D_IMAGE,
++		.fsp_cfg = ddr_fsp0_2d_cfg,
++		.fsp_cfg_num = ARRAY_SIZE(ddr_fsp0_2d_cfg),
++	},
++};
++
++/* ddr timing config params */
++struct dram_timing_info tqma93xxla_dram_timing = {
++	.ddrc_cfg = ddr_ddrc_cfg,
++	.ddrc_cfg_num = ARRAY_SIZE(ddr_ddrc_cfg),
++	.ddrphy_cfg = ddr_ddrphy_cfg,
++	.ddrphy_cfg_num = ARRAY_SIZE(ddr_ddrphy_cfg),
++	.fsp_msg = ddr_dram_fsp_msg,
++	.fsp_msg_num = ARRAY_SIZE(ddr_dram_fsp_msg),
++	.ddrphy_trained_csr = ddr_ddrphy_trained_csr,
++	.ddrphy_trained_csr_num = ARRAY_SIZE(ddr_ddrphy_trained_csr),
++	.ddrphy_pie = ddr_phy_pie,
++	.ddrphy_pie_num = ARRAY_SIZE(ddr_phy_pie),
++	.fsp_table = { 3732, },
++};
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 9b08fe5643..79f096d850 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -221,6 +221,7 @@ lwl-$(CONFIG_MACH_LS1021AIOT) += fsl-ls1021a-iot.dtb.o
+ lwl-$(CONFIG_MACH_ZEDBOARD) += zynq-zed.dtb.o
+ lwl-$(CONFIG_MACH_MNT_REFORM) += imx8mq-mnt-reform2.dtb.o
+ lwl-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP) += imx8mp-var-dart-dt8mcustomboard.dtb.o
+-lwl-$(CONFIG_MACH_TQMA93XX) += imx93-tqma9352-mba93xxca.dtb.o
++lwl-$(CONFIG_MACH_TQMA93XX) += imx93-tqma9352-mba93xxca.dtb.o \
++			       imx93-tqma9352-mba93xxla.dtb.o
+ 
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+diff --git a/arch/arm/dts/imx93-tqma9352-mba93xxca.dts b/arch/arm/dts/imx93-tqma9352-mba93xxca.dts
+index ef56b15c75..b77f8b9f9a 100644
+--- a/arch/arm/dts/imx93-tqma9352-mba93xxca.dts
++++ b/arch/arm/dts/imx93-tqma9352-mba93xxca.dts
+@@ -1,41 +1,5 @@
+ // SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+-// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
+ 
+ #include <arm64/freescale/imx93-tqma9352-mba93xxca.dts>
+ #include "imx93.dtsi"
+-
+-/{
+-	chosen {
+-		environment-spi-nor {
+-			compatible = "barebox,environment";
+-			device-path = &environment_spi_nor;
+-		};
+-	};
+-};
+-
+-&usbotg1 {
+-	status = "okay";
+-};
+-
+-&usbotg2 {
+-	status = "okay";
+-	dr_mode = "host";
+-};
+-
+-&{flexspi1/flash@0} {
+-	partitions {
+-		compatible = "fixed-partitions";
+-		#address-cells = <1>;
+-		#size-cells = <1>;
+-
+-		partition@0 {
+-			label = "barebox";
+-			reg = <0x0 0x400000>;
+-		};
+-
+-		environment_spi_nor: partition@400000 {
+-			label = "barebox-environment";
+-			reg = <0x400000 0x100000>;
+-		};
+-	};
+-};
++#include "imx93-tqma93xx.dtsi"
+diff --git a/arch/arm/dts/imx93-tqma9352-mba93xxla.dts b/arch/arm/dts/imx93-tqma9352-mba93xxla.dts
+new file mode 100644
+index 0000000000..d1d68a55e1
+--- /dev/null
++++ b/arch/arm/dts/imx93-tqma9352-mba93xxla.dts
+@@ -0,0 +1,5 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++
++#include <arm64/freescale/imx93-tqma9352-mba93xxla.dts>
++#include "imx93.dtsi"
++#include "imx93-tqma93xx.dtsi"
+diff --git a/arch/arm/dts/imx93-tqma93xx.dtsi b/arch/arm/dts/imx93-tqma93xx.dtsi
+new file mode 100644
+index 0000000000..5877290640
+--- /dev/null
++++ b/arch/arm/dts/imx93-tqma93xx.dtsi
+@@ -0,0 +1,37 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++
++/{
++	chosen {
++		environment-spi-nor {
++			compatible = "barebox,environment";
++			device-path = &environment_spi_nor;
++		};
++	};
++};
++
++&usbotg1 {
++	status = "okay";
++};
++
++&usbotg2 {
++	status = "okay";
++	dr_mode = "host";
++};
++
++&{flexspi1/flash@0} {
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <1>;
++		#size-cells = <1>;
++
++		partition@0 {
++			label = "barebox";
++			reg = <0x0 0x400000>;
++		};
++
++		environment_spi_nor: partition@400000 {
++			label = "barebox-environment";
++			reg = <0x400000 0x100000>;
++		};
++	};
++};
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index f52b7a4dd8..7a7f0b4d84 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -736,6 +736,9 @@ config MACH_TQMA93XX
+ 	bool "TQ i.MX93 on TQMA93XX Board"
+ 	select ARCH_IMX93
+ 	select IMX9_DRAM
++	select TQ_EEPROM
++	select I2C
++	select I2C_IMX_LPI2C
+ 	select FIRMWARE_IMX93_ATF
+ 	select FIRMWARE_IMX_LPDDR4_PMU_TRAIN
+ 
 -- 
 2.39.2
 
