@@ -1,65 +1,65 @@
-Delivery-date: Fri, 02 Feb 2024 16:12:39 +0100
+Delivery-date: Fri, 02 Feb 2024 16:31:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rVvDZ-0001VE-2u
+	id 1rVvWB-0002RC-1F
 	for lore@lore.pengutronix.de;
-	Fri, 02 Feb 2024 16:12:39 +0100
+	Fri, 02 Feb 2024 16:31:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rVvDZ-0002ur-06
-	for lore@pengutronix.de; Fri, 02 Feb 2024 16:12:39 +0100
+	id 1rVvWA-0005l0-Us
+	for lore@pengutronix.de; Fri, 02 Feb 2024 16:31:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JAgjG74tlEmD7RK6LjbQRFCED061j3Ieu4vJSszDX4w=; b=z+ysC5okRTYH8FDHPYccHSCMel
-	ql9LZseGkZr7suu1FEpJQu4fTe6+TpdjBf3pwnRfGVL7fPQ4QwIsCQKI1UhbQ12nRVXvchdmRPoJX
-	hw91wUgMY4CCLWK5wwy/QSOXQXsywgKdzbRq2OKSKEa2nEhsWqMYxkdReMexiAEJNpFGPhg8IKRmo
-	Gi9cwj4687qXq+yHBXvxNwy98oMvLomjpJO+K5GA8kwDvDXFWPdUJTEwCobFSBAmGi7Bx2O3FmrKL
-	Ot0Se0Lz+1EFxA1npDZ9TcPLhFucU7XHT3aGaRspO4axmunDJkF1fP4I0ZcZnIgLlGMSgw9kfSBXr
-	By5xwntQ==;
+	bh=UPJVtpSAP2C+ARk0i3IykuUGmXxrcvsezLT6CJQM2kw=; b=U9yN6Xi4SlKKekTgBvDkS1VFu0
+	NEKkXKFva85NJ4tLhyJHpd8NjzTuVP7xzfhloJxLQEgfrKnFqqNaKvoLz0GmHC5vAEZq02fm+g0dS
+	ObpnZfEVC7YQh9BydYOFBINyxbnEwFCtqE120fkUu2DzAonK+Im3sknRBgH18NZ+R6fNQi/biojQ0
+	StQO5ifwAwzOeYypKsCu1UeO1r/KF2qJ67cbVyRDcrcz1qZotxEsXEizLv5mXUnxxzqX+TrVqzDhe
+	UscrXiDWxznQwXhjkZmVXj+ZTOla8iLed0ht85d4vwjwBw7jL8Fu43f+zNd9APd636iZKwd6jm1pw
+	2gfSuMNA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVvCw-0000000BvwP-3Sid;
-	Fri, 02 Feb 2024 15:11:58 +0000
+	id 1rVvVf-0000000C11f-3dgV;
+	Fri, 02 Feb 2024 15:31:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rVvCs-0000000Bvty-0i79
+	id 1rVvVc-0000000C0yf-02cn
 	for barebox@lists.infradead.org;
-	Fri, 02 Feb 2024 15:11:56 +0000
+	Fri, 02 Feb 2024 15:31:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rVvCn-0002Yt-PG; Fri, 02 Feb 2024 16:11:49 +0100
+	id 1rVvVa-0005UC-QJ; Fri, 02 Feb 2024 16:31:14 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rVvCn-0045UK-Cj; Fri, 02 Feb 2024 16:11:49 +0100
+	id 1rVvVa-0045XF-Dk; Fri, 02 Feb 2024 16:31:14 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rVvCn-000x2z-0v;
-	Fri, 02 Feb 2024 16:11:49 +0100
+	id 1rVvVa-0015Pr-13;
+	Fri, 02 Feb 2024 16:31:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri,  2 Feb 2024 16:11:47 +0100
-Message-Id: <20240202151147.226876-2-s.hauer@pengutronix.de>
+Date: Fri,  2 Feb 2024 16:31:06 +0100
+Message-Id: <20240202153113.245488-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240202151147.226876-1-s.hauer@pengutronix.de>
-References: <20240202151147.226876-1-s.hauer@pengutronix.de>
+In-Reply-To: <20240202153113.245488-1-s.hauer@pengutronix.de>
+References: <20240202153113.245488-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240202_071154_244463_FE632C69 
-X-CRM114-Status: GOOD (  13.52  )
+X-CRM114-CacheID: sfid-20240202_073116_174448_8A28A0E3 
+X-CRM114-Status: GOOD (  13.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,172 +82,67 @@ X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/2] eth: replace ethaddr_to_string() with %pM
+Subject: [PATCH 1/8] i2c: lpi2c: determine clk rate during probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that we can print MAC addresses using the %pM format specifier we
-can get rid of ethaddr_to_string(). Do this treewide.
+The clock rate is not expected to change during runtime, so we can
+determine it during probe instead of later when actually transferring
+messages. This helps us to integrate PBL support into the driver where
+we don't have clk_get_rate() available.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/protonic-imx6/board.c |  5 +----
- arch/arm/boards/skov-imx6/board.c     |  5 +----
- include/net.h                         |  1 -
- lib/parameter.c                       |  3 +--
- net/eth.c                             | 13 +++++--------
- net/lib.c                             |  7 -------
- net/net.c                             |  8 ++------
- 7 files changed, 10 insertions(+), 32 deletions(-)
+ drivers/i2c/busses/i2c-imx-lpi2c.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boards/protonic-imx6/board.c b/arch/arm/boards/protonic-imx6/board.c
-index 5c5e7d6155..9e62dc1544 100644
---- a/arch/arm/boards/protonic-imx6/board.c
-+++ b/arch/arm/boards/protonic-imx6/board.c
-@@ -200,10 +200,7 @@ static int prt_imx6_set_mac(struct prt_imx6_priv *priv,
- 		return 0;
- 
- 	if (!is_valid_ether_addr(&rfid->mac[0])) {
--		unsigned char ethaddr_str[sizeof("xx:xx:xx:xx:xx:xx")];
--
--		ethaddr_to_string(&rfid->mac[0], ethaddr_str);
--		dev_err(dev, "bad MAC addr: %s\n", ethaddr_str);
-+		dev_err(dev, "bad MAC addr: %pM\n", &rfid->mac[0]);
- 
- 		return -EILSEQ;
- 	}
-diff --git a/arch/arm/boards/skov-imx6/board.c b/arch/arm/boards/skov-imx6/board.c
-index b3f170cfdf..8ebb4a6e58 100644
---- a/arch/arm/boards/skov-imx6/board.c
-+++ b/arch/arm/boards/skov-imx6/board.c
-@@ -30,10 +30,7 @@ static int eth_of_fixup_node(struct device_node *root, const char *node_path,
- 	int ret;
- 
- 	if (!is_valid_ether_addr(ethaddr)) {
--		unsigned char ethaddr_str[sizeof("xx:xx:xx:xx:xx:xx")];
--
--		ethaddr_to_string(ethaddr, ethaddr_str);
--		dev_err(skov_priv->dev, "The mac-address %s is invalid.\n", ethaddr_str);
-+		dev_err(skov_priv->dev, "The mac-address %pM is invalid.\n", ethaddr);
- 		return -EINVAL;
- 	}
- 
-diff --git a/include/net.h b/include/net.h
-index 40287a3503..ffc1093ae6 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -358,7 +358,6 @@ IPaddr_t getenv_ip(const char *name);
- int setenv_ip(const char *name, IPaddr_t ip);
- 
- int string_to_ethaddr(const char *str, u8 enetaddr[6]);
--void ethaddr_to_string(const u8 enetaddr[6], char *str);
- 
- #ifdef CONFIG_NET_RESOLV
- int resolv(const char *host, IPaddr_t *ip);
-diff --git a/lib/parameter.c b/lib/parameter.c
-index aac33e3a19..dc80f3f858 100644
---- a/lib/parameter.c
-+++ b/lib/parameter.c
-@@ -846,7 +846,6 @@ struct param_mac {
+diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
+index f28a445601..91203d90be 100644
+--- a/drivers/i2c/busses/i2c-imx-lpi2c.c
++++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
+@@ -104,6 +104,7 @@ struct lpi2c_imx_struct {
+ 	unsigned int		txfifosize;
+ 	unsigned int		rxfifosize;
+ 	enum lpi2c_imx_mode	mode;
++	unsigned long		clk_rate;
  };
  
- int string_to_ethaddr(const char *str, u8 enetaddr[6]);
--void ethaddr_to_string(const u8 enetaddr[6], char *str);
- 
- static inline struct param_mac *to_param_mac(struct param_d *p)
+ static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
+@@ -197,23 +198,19 @@ static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
+ static int lpi2c_imx_config(struct lpi2c_imx_struct *lpi2c_imx)
  {
-@@ -894,7 +893,7 @@ static const char *param_mac_get(struct device *dev, struct param_d *p)
- 			return NULL;
- 	}
+ 	u8 prescale, filt, sethold, datavd;
+-	unsigned int clk_rate, clk_cycle, clkhi, clklo;
++	unsigned int clk_cycle, clkhi, clklo;
+ 	enum lpi2c_imx_pincfg pincfg;
+ 	unsigned int temp;
  
--	ethaddr_to_string(pm->mac, p->value);
-+	sprintf(p->value, "%pM", pm->mac);
+ 	lpi2c_imx_set_mode(lpi2c_imx);
  
- 	return p->value;
- }
-diff --git a/net/eth.c b/net/eth.c
-index d1474ec57d..28961e868b 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -55,11 +55,8 @@ int eth_set_ethaddr(struct eth_device *edev, const char *ethaddr)
- 
- static void register_preset_mac_address(struct eth_device *edev, const char *ethaddr)
- {
--	unsigned char ethaddr_str[sizeof("xx:xx:xx:xx:xx:xx")];
+-	clk_rate = clk_get_rate(lpi2c_imx->clks[0].clk);
+-	if (!clk_rate)
+-		return -EINVAL;
 -
- 	if (is_valid_ether_addr(ethaddr)) {
--		ethaddr_to_string(ethaddr, ethaddr_str);
--		dev_info(&edev->dev, "got preset MAC address: %s\n", ethaddr_str);
-+		dev_info(&edev->dev, "got preset MAC address: %pM\n", ethaddr);
- 		eth_set_ethaddr(edev, ethaddr);
- 	}
- }
-@@ -557,7 +554,6 @@ void eth_open_all(void)
+ 	if (lpi2c_imx->mode == HS || lpi2c_imx->mode == ULTRA_FAST)
+ 		filt = 0;
+ 	else
+ 		filt = 2;
  
- static int populate_ethaddr(void)
- {
--	char str[sizeof("xx:xx:xx:xx:xx:xx")];
- 	struct eth_device *edev;
- 	bool generated = false;
- 	int ret;
-@@ -575,11 +571,12 @@ static int populate_ethaddr(void)
- 		if (ret)
- 			continue;
+ 	for (prescale = 0; prescale <= 7; prescale++) {
+-		clk_cycle = clk_rate / ((1 << prescale) * lpi2c_imx->bitrate)
++		clk_cycle = lpi2c_imx->clk_rate / ((1 << prescale) * lpi2c_imx->bitrate)
+ 			    - 3 - (filt >> 1);
+ 		clkhi = DIV_ROUND_UP(clk_cycle, I2C_CLK_RATIO + 1);
+ 		clklo = clk_cycle - clkhi;
+@@ -493,6 +490,8 @@ static int lpi2c_imx_probe(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
--		ethaddr_to_string(edev->ethaddr, str);
- 		if (generated)
--			dev_notice(&edev->dev, "Generated MAC address from unique id: %s\n", str);
-+			dev_notice(&edev->dev, "Generated MAC address from unique id: %pM\n",
-+				   edev->ethaddr);
- 		else
--			dev_info(&edev->dev, "Got preset MAC address from NVMEM: %s\n", str);
-+			dev_info(&edev->dev, "Got preset MAC address from NVMEM: %pM\n",
-+				 edev->ethaddr);
- 		eth_set_ethaddr(edev, edev->ethaddr);
- 	}
- 
-diff --git a/net/lib.c b/net/lib.c
-index d4536441bd..dc6e138f39 100644
---- a/net/lib.c
-+++ b/net/lib.c
-@@ -37,13 +37,6 @@ int string_to_ethaddr(const char *str, u8 enetaddr[ETH_ALEN])
- 	return 0;
- }
- 
--void ethaddr_to_string(const u8 enetaddr[ETH_ALEN], char *str)
--{
--	sprintf(str, "%02x:%02x:%02x:%02x:%02x:%02x",
--		 enetaddr[0], enetaddr[1], enetaddr[2], enetaddr[3],
--		 enetaddr[4], enetaddr[5]);
--}
--
- int string_to_ip(const char *s, IPaddr_t *ip)
- {
- 	IPaddr_t addr = 0;
-diff --git a/net/net.c b/net/net.c
-index e38179491d..d72ed81e10 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -418,17 +418,13 @@ static struct net_connection *net_new(struct eth_device *edev, IPaddr_t dest,
- 	}
- 
- 	if (!is_valid_ether_addr(edev->ethaddr)) {
--		char str[sizeof("xx:xx:xx:xx:xx:xx")];
--
- 		ret = generate_ether_addr(edev->ethaddr, edev->dev.id);
- 		if (ret)
- 			random_ether_addr(edev->ethaddr);
- 
--		ethaddr_to_string(edev->ethaddr, str);
--
--		dev_warn(&edev->dev, "No MAC address set. Using %s %s\n",
-+		dev_warn(&edev->dev, "No MAC address set. Using %s %pM\n",
- 			 ret == 1 ? "address computed from unique ID" : "random address",
--			 str);
-+			 edev->ethaddr);
- 		eth_set_ethaddr(edev, edev->ethaddr);
- 	}
- 
++	lpi2c_imx->clk_rate = clk_get_rate(lpi2c_imx->clks[0].clk);
++
+ 	temp = readl(lpi2c_imx->base + LPI2C_PARAM);
+ 	lpi2c_imx->txfifosize = 1 << (temp & 0x0f);
+ 	lpi2c_imx->rxfifosize = 1 << ((temp >> 8) & 0x0f);
 -- 
 2.39.2
 
