@@ -1,16 +1,16 @@
-Delivery-date: Mon, 05 Feb 2024 08:46:45 +0100
+Delivery-date: Mon, 05 Feb 2024 08:46:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rWtgi-003xMj-0v
+	id 1rWtgi-003xNC-2S
 	for lore@lore.pengutronix.de;
-	Mon, 05 Feb 2024 08:46:45 +0100
+	Mon, 05 Feb 2024 08:46:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rWtgh-0003ML-RC
+	id 1rWtgi-0003MO-5D
 	for lore@pengutronix.de; Mon, 05 Feb 2024 08:46:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,48 +18,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=16NbRZzxc3/VVeHxLgSXy32Lju3eXBzou0bLtuLKKAQ=; b=Ms8wedc6y//10IhXQZ0R0MAvSV
-	WAsPA6LS9+yCZh31pWWMQnT+HYVFA2SwQ8jvW/tizCajmivW4jZAzDi8AWvUXWcl3z8KiB6/Ra+ef
-	h4nvExwIfPQKMSw8QF43TEoNOkNy2Hr5hAHLy/hklaf5+NK+nHkIpdAWEEwSkRRjVFw1flsRGb7FW
-	W1Z49dpIUGcU32g5PgtPp0UDlxd1mM9nzgMtUThHPyLY4oHFlHDyHUlySNR5V+m46ta7EspmLWRro
-	OcZnMkrfk0vtiZYjOR9bNzpsPpEvfecGKVB2qjv/xJlBqExynI/jjtIX4/S9elEFurZBsBUEpQ/cD
-	WQOQ951Q==;
+	bh=BduZ3kLjgF5VZ6hQQO0Ru04X3mKaqlQxAlUeLo19iyU=; b=G02QkACeDBBH77frl37x8l5XoS
+	A7AAsfvqy9+NlBMFEgOUkOi3rW+CcJC0PURmx0FVqgmCE7oi1uh9lSWchPqV0uIcO7c7H8XkOURn5
+	cTQTdv5CP2EntBPdojhromeWJP0oYT5c6SIKYsZVmtag8rKXr1nok6JfqSWE1dWE9RbybhZ7HsgoL
+	dGBZ+bz6nc0O9Gqpvr1TeVZpS+fHvqerJbMYlKfCgYJabV5hIwJi47ZFXiZcXpyQy70Gb1KlJOIbW
+	AbgrExw/gOJdnUOrF4gjxyivAOwLR+oDIWGQIsHnRCr32VP6Zh/8o1dfzsR8KnlqnfWqmP4z5uZgy
+	Minyek8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rWtg5-00000002Kl3-00Rt;
-	Mon, 05 Feb 2024 07:46:05 +0000
+	id 1rWtg4-00000002Kkt-18Ct;
+	Mon, 05 Feb 2024 07:46:04 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rWtfz-00000002KhN-0wVX
+	id 1rWtfz-00000002KhP-11AG
 	for barebox@lists.infradead.org;
 	Mon, 05 Feb 2024 07:46:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rWtfu-00031N-HP; Mon, 05 Feb 2024 08:45:54 +0100
+	id 1rWtfu-00031V-LE; Mon, 05 Feb 2024 08:45:54 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rWtfu-004aUM-4u; Mon, 05 Feb 2024 08:45:54 +0100
+	id 1rWtfu-004aUS-8C; Mon, 05 Feb 2024 08:45:54 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rWtfu-008PtL-0B;
+	id 1rWtfu-008PtL-0U;
 	Mon, 05 Feb 2024 08:45:54 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon,  5 Feb 2024 08:45:47 +0100
-Message-Id: <20240205074553.2005284-3-s.hauer@pengutronix.de>
+Date: Mon,  5 Feb 2024 08:45:49 +0100
+Message-Id: <20240205074553.2005284-5-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240205074553.2005284-1-s.hauer@pengutronix.de>
 References: <20240205074553.2005284-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240204_234559_273166_79F722B0 
-X-CRM114-Status: GOOD (  13.71  )
+X-CRM114-CacheID: sfid-20240204_234559_312710_C9719E07 
+X-CRM114-Status: GOOD (  12.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,112 +82,48 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 2/8] i2c: lpi2c: use udelay for timeout loops
+Subject: [PATCH v2 4/8] pbl: eeprom: return error from eeprom_read()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In PBL we don't have get_time_ns() and is_timeout() available. In
-preparation for adding PBL support to the driver replace the timeout
-loops with udelay() which we have available in PBL.
+Reading from an I2C EEPROM can clearly produce errors, so return
+an error code instead of void.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/i2c/busses/i2c-imx-lpi2c.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ include/pbl/eeprom.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-imx-lpi2c.c b/drivers/i2c/busses/i2c-imx-lpi2c.c
-index 91203d90be..42f7b37143 100644
---- a/drivers/i2c/busses/i2c-imx-lpi2c.c
-+++ b/drivers/i2c/busses/i2c-imx-lpi2c.c
-@@ -116,7 +116,7 @@ static void lpi2c_imx_intctrl(struct lpi2c_imx_struct *lpi2c_imx,
- static int lpi2c_imx_bus_busy(struct lpi2c_imx_struct *lpi2c_imx)
+diff --git a/include/pbl/eeprom.h b/include/pbl/eeprom.h
+index df868b1a37..4d9ef22fc8 100644
+--- a/include/pbl/eeprom.h
++++ b/include/pbl/eeprom.h
+@@ -5,7 +5,7 @@
+ #include <common.h>
+ #include <pbl/i2c.h>
+ 
+-static inline void eeprom_read(struct pbl_i2c *i2c, u16 client_addr, u32 addr, void *buf, u16 count)
++static inline int eeprom_read(struct pbl_i2c *i2c, u16 client_addr, u32 addr, void *buf, u16 count)
  {
- 	unsigned int temp;
--	u64 start = get_time_ns();
-+	unsigned int timeout = 500000;
+ 	u8 msgbuf[2];
+ 	struct i2c_msg msg[] = {
+@@ -27,8 +27,15 @@ static inline void eeprom_read(struct pbl_i2c *i2c, u16 client_addr, u32 addr, v
+ 	msg[0].len = i;
  
- 	while (1) {
- 		temp = readl(lpi2c_imx->base + LPI2C_MSR);
-@@ -130,7 +130,8 @@ static int lpi2c_imx_bus_busy(struct lpi2c_imx_struct *lpi2c_imx)
- 		if (temp & (MSR_BBF | MSR_MBF))
- 			break;
+ 	ret = pbl_i2c_xfer(i2c, msg, ARRAY_SIZE(msg));
+-	if (ret != ARRAY_SIZE(msg))
++	if (ret < 0)
++		return ret;
++
++	if (ret != ARRAY_SIZE(msg)) {
+ 		pr_err("Failed to read from eeprom@%x: %d\n", client_addr, ret);
++		return -EIO;
++	}
++
++	return 0;
+ }
  
--		if (is_timeout(start, 500 * MSECOND)) {
-+		udelay(1);
-+		if (!timeout--) {
- 			dev_dbg(&lpi2c_imx->adapter.dev, "bus not work\n");
- 			return -ETIMEDOUT;
- 		}
-@@ -177,7 +178,7 @@ static int lpi2c_imx_start(struct lpi2c_imx_struct *lpi2c_imx,
- static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
- {
- 	unsigned int temp;
--	u64 start = get_time_ns();
-+	unsigned int timeout = 500000;
- 
- 	writel(GEN_STOP << 8, lpi2c_imx->base + LPI2C_MTDR);
- 
-@@ -186,7 +187,8 @@ static void lpi2c_imx_stop(struct lpi2c_imx_struct *lpi2c_imx)
- 		if (temp & MSR_SDF)
- 			break;
- 
--		if (is_timeout(start, 500 * MSECOND)) {
-+		udelay(1);
-+		if (!timeout--) {
- 			dev_dbg(&lpi2c_imx->adapter.dev, "stop timeout\n");
- 			break;
- 		}
-@@ -284,7 +286,7 @@ static int lpi2c_imx_master_disable(struct lpi2c_imx_struct *lpi2c_imx)
- static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx)
- {
- 	u32 txcnt;
--	u64 start = get_time_ns();
-+	unsigned int timeout = 500000;
- 
- 	do {
- 		txcnt = readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
-@@ -294,7 +296,8 @@ static int lpi2c_imx_txfifo_empty(struct lpi2c_imx_struct *lpi2c_imx)
- 			return -EIO;
- 		}
- 
--		if (is_timeout(start, 500 * MSECOND)) {
-+		udelay(1);
-+		if (!timeout--) {
- 			dev_dbg(&lpi2c_imx->adapter.dev, "txfifo empty timeout\n");
- 			return -ETIMEDOUT;
- 		}
-@@ -326,12 +329,13 @@ static void lpi2c_imx_set_rx_watermark(struct lpi2c_imx_struct *lpi2c_imx)
- static int lpi2c_imx_write_txfifo(struct lpi2c_imx_struct *lpi2c_imx)
- {
- 	unsigned int data, remaining;
--	uint64_t start = get_time_ns();
-+	unsigned int timeout = 100000;;
- 
- 	do {
- 		u32 cnt = readl(lpi2c_imx->base + LPI2C_MFSR) & 0xff;
- 		if (cnt == lpi2c_imx->txfifosize) {
--			if (is_timeout(start, 100 * MSECOND))
-+			udelay(1);
-+			if (!timeout--)
- 				return -EIO;
- 			continue;
- 		}
-@@ -349,12 +353,13 @@ static int lpi2c_imx_read_rxfifo(struct lpi2c_imx_struct *lpi2c_imx)
- {
- 	unsigned int remaining;
- 	unsigned int data;
--	uint64_t start = get_time_ns();
-+	unsigned int timeout = 100000;;
- 
- 	do {
- 		data = readl(lpi2c_imx->base + LPI2C_MRDR);
- 		if (data & MRDR_RXEMPTY) {
--			if (is_timeout(start, 100 * MSECOND))
-+			udelay(1);
-+			if (!timeout--)
- 				return -EIO;
- 			continue;
- 		}
+ #endif
 -- 
 2.39.2
 
