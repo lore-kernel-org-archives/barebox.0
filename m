@@ -1,63 +1,63 @@
-Delivery-date: Mon, 05 Feb 2024 12:17:13 +0100
+Delivery-date: Mon, 05 Feb 2024 12:53:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rWwyO-004C12-1F
+	id 1rWxX9-004E9i-2O
 	for lore@lore.pengutronix.de;
-	Mon, 05 Feb 2024 12:17:13 +0100
+	Mon, 05 Feb 2024 12:53:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rWwyP-0000Gc-3B
-	for lore@pengutronix.de; Mon, 05 Feb 2024 12:17:13 +0100
+	id 1rWxXA-0002jx-EG
+	for lore@pengutronix.de; Mon, 05 Feb 2024 12:53:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=mahp5LDll08/pzNRXe114cSV6cKJc1Q7KIXiJAJlEvU=; b=p64JX2XRPcJctN4BRZtUL5ihVm
-	5f3ddJSVh4F/NM//ey1QO1uhWpx3sxKu929J+dcTPUkqCDgu/WuonliQMmASdPkPkj4h71AXBFRLP
-	3hyHrLTdHyxURcX7g3z0/ig+VSbiY/2vi+mRsB0beOFYmpV25Oo4zJZ8xfCFaCKi6vJNqpromh63E
-	yDQ9WDF2rgaWtFqVrsGT8PNFfxHgSkIOL7yRvW2mYRDdX25yYuEiLUmI8undHz3mif0SdzB40orsK
-	aJzkGSDGu2Lkd/T7CViCLdveJp5A2TRdc/FxleE8nYio/ehz7ivYz2kk7XRBVM8khP+F0nSQtH+F/
-	+er/YWuQ==;
+	bh=oS1ppOaj6dlT3Q6pzn9JNs6ls9YHftELPy0Xwr+upbg=; b=LLbiYnCxyYB33W9Epe9hoQZzh3
+	I0z+m7nJlnYvP5Yie3pde2+Jk85AKFSG2Pu3v0t7OLc2+wMSU9AqAY4RVw+q7DCUI0iH3EBpy1x6s
+	H3YITOmakIfyRJR7Z79dSfskepgLtyNQm/yb9NOjT6jxe2m3BKFL9mk868M5yvyzIZeUE6VOrRuK9
+	dXm+K5jlanRvyG7P4B98jMmfkLChFbfHHMQlinjJskDpxmEay6BIHNd+A/Xib/GAaK5q62MulecL7
+	9BjrH+x1JmQZxwcmto8Mtl+7BPs9WtSqOodCTYQHw2IRYn40bNfw1RzEZcCfKpE5bGxu+IlGRXh1l
+	X2thv4cw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rWwxm-00000002xLd-0FKY;
-	Mon, 05 Feb 2024 11:16:34 +0000
+	id 1rWxWb-000000033jd-42yq;
+	Mon, 05 Feb 2024 11:52:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rWwxi-00000002xKE-3h5N
+	id 1rWxWZ-000000033j9-1RgY
 	for barebox@lists.infradead.org;
-	Mon, 05 Feb 2024 11:16:32 +0000
+	Mon, 05 Feb 2024 11:52:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rWwxg-0000Ds-R3; Mon, 05 Feb 2024 12:16:28 +0100
+	id 1rWxWX-0002gM-Kw; Mon, 05 Feb 2024 12:52:29 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rWwxg-004cTS-EL; Mon, 05 Feb 2024 12:16:28 +0100
+	id 1rWxWV-004cb0-H9; Mon, 05 Feb 2024 12:52:27 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rWwxg-00A3jg-15;
-	Mon, 05 Feb 2024 12:16:28 +0100
+	id 1rWxWV-00ACgR-1N;
+	Mon, 05 Feb 2024 12:52:27 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon,  5 Feb 2024 12:16:27 +0100
-Message-Id: <20240205111627.2397633-1-s.hauer@pengutronix.de>
+Date: Mon,  5 Feb 2024 12:52:26 +0100
+Message-Id: <20240205115226.2432028-1-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240205_031630_937507_53149034 
-X-CRM114-Status: GOOD (  13.90  )
+X-CRM114-CacheID: sfid-20240205_035231_398331_9D712A18 
+X-CRM114-Status: GOOD (  11.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,37 +80,36 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] gpio-vf610: always register 32 GPIOs
+Subject: [PATCH] watchdog: restart handler: hang when watchdog cannot restart the machine
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The gpio-vf610 driver used to parse the number of GPIOs to register from
-the gpio-ranges property. This was ok to do when the gpio-ranges
-property only contained a single entry like on the vf610. On i.MX93 we
-have multiple entries though, so the first entry doesn't contain the
-full number of GPIOs the device supports. We would have to parse all
-entries instead. That doesn't give us any gain though, we can equally
-well just register the maximum of 32 GPIOs and just have a few GPIOs
-registered that are not pinmuxed to the outside.
+The __builtin_unreachable() in watchdog_restart_handle() is bogus,
+because when the watchdog doesn't work we will run into
+__builtin_unreachable() and behaviour is undefined. Drop the call
+to __builtin_unreachable(), print a big fat warning and hang() the
+machine which makes sure we don't return from watchdog_restart_handle().
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/gpio/gpio-vf610.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/watchdog/wd_core.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-vf610.c b/drivers/gpio/gpio-vf610.c
-index 510ee74333..7c535c2e5e 100644
---- a/drivers/gpio/gpio-vf610.c
-+++ b/drivers/gpio/gpio-vf610.c
-@@ -177,7 +177,7 @@ static int vf610_gpio_probe(struct device *dev)
- 	port->need_pinctrl = devtype->need_pinctrl;
+diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+index 89e4f1d1ea..f39a8f4522 100644
+--- a/drivers/watchdog/wd_core.c
++++ b/drivers/watchdog/wd_core.c
+@@ -179,7 +179,9 @@ static void __noreturn watchdog_restart_handle(struct restart_handler *this)
  
- 	port->pinctrl_base = be32_to_cpu(gpio_ranges[PINCTRL_BASE]);
--	port->chip.ngpio   = be32_to_cpu(gpio_ranges[COUNT]);
-+	port->chip.ngpio   = 32;
+ 	BUG_ON(ret);
+ 	mdelay(2000);
+-	__builtin_unreachable();
++
++	pr_emerg("Watchdog failed to reset the machine\n");
++	hang();
+ }
  
- 	/*
- 	 * Some old bindings have two register ranges. When we have two ranges
+ static struct restart_handler restart_handler = {
 -- 
 2.39.2
 
