@@ -1,67 +1,67 @@
-Delivery-date: Thu, 08 Feb 2024 08:13:19 +0100
+Delivery-date: Thu, 08 Feb 2024 08:13:40 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rXyb0-008GDy-1B
+	id 1rXybL-008GFX-1z
 	for lore@lore.pengutronix.de;
-	Thu, 08 Feb 2024 08:13:19 +0100
+	Thu, 08 Feb 2024 08:13:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rXyb0-0006Mi-Nr
-	for lore@pengutronix.de; Thu, 08 Feb 2024 08:13:19 +0100
+	id 1rXybM-0006R8-BC
+	for lore@pengutronix.de; Thu, 08 Feb 2024 08:13:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PMe+ym3vQ9WW0lU0K9HHTY/826HY1CxrFDm6spgRXCo=; b=Hggpk40Qm7fJ0LqwtUK0StVzja
-	jQQRgExsX1tP+Aqo2fI524IJO/Z4mh4Szhq1VJNW8zCn/+Am7ZBYtN1EtU3SfH62Nh0kwfc+Yuu5B
-	zBY23IgBO55okYKV5WWHby+Xw0nUNKIY1JV7zBRSCtwcXNWxNXgqtJmFDDLkBJsjzP4dJRXsspkj7
-	b8173aHN9aDm4hANSYkZDzxyd353LUAl3ZvH7D7w6sO5ESX4GHCcTpm6wZ73AOrTk2em2+gyYWjwi
-	5mjqsUt7xMwn09JRelrEneAB2qa65MHPmNpigXbtZsXk0u4Gc5cvA45+st4TOjJwlocT9W1ZR4Ovs
-	Ve2Oy/sg==;
+	bh=dWG+9B7WIVGDPIthjZwlboaC47AAs1oyqNgjpMu5DlI=; b=pHwCVlGIW+V8kFk7cgaNEEhNOF
+	YuptTY1Z/I94AvIqkM+hldPzYxyxOLHVithh93X/PQDSKMfFTqU5mbltjwOPykgiJeKq8/10nKmMR
+	5gUqMjIulmbYjFKYKFIyFsUgQdmvwUNVv3os8uhTeRs2FVUDsnxjbBz8XA91kMEZqHcYgFBBSV5GW
+	WhDWTiiwHPEZiwSAVhIbecFjxJRRdEpXqaPwaOBcl/iNhhMY9Objo18sK5Bp+5fCz+UkTb6EyO03E
+	45RBIjSTm5hmdnKTl+sQA9PDmVG3e4PZcBo5PCLkGYIFbETFQW6+3QkxsTUUSKpSCT8yTaLoRl3Yg
+	IyhM6kqA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rXyad-0000000CsgG-43uV;
-	Thu, 08 Feb 2024 07:12:55 +0000
+	id 1rXyay-0000000Cskw-48A1;
+	Thu, 08 Feb 2024 07:13:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rXyab-0000000Csfo-3NEv
+	id 1rXyaw-0000000Csk1-3GrP
 	for barebox@lists.infradead.org;
-	Thu, 08 Feb 2024 07:12:55 +0000
+	Thu, 08 Feb 2024 07:13:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rXyaa-0006JW-LO; Thu, 08 Feb 2024 08:12:52 +0100
+	id 1rXyav-0006MC-Ki; Thu, 08 Feb 2024 08:13:13 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rXyaa-005Acn-8r; Thu, 08 Feb 2024 08:12:52 +0100
+	id 1rXyav-005Acs-7u; Thu, 08 Feb 2024 08:13:13 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rXyaa-001TKH-0g;
-	Thu, 08 Feb 2024 08:12:52 +0100
+	id 1rXyav-001TN3-0a;
+	Thu, 08 Feb 2024 08:13:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>, 
  Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20240205125728.2470228-1-s.hauer@pengutronix.de>
-References: <20240205125728.2470228-1-s.hauer@pengutronix.de>
-Message-Id: <170737637220.351032.5762787241688562097.b4-ty@pengutronix.de>
-Date: Thu, 08 Feb 2024 08:12:52 +0100
+In-Reply-To: <20240205135642.2906131-1-s.hauer@pengutronix.de>
+References: <20240205135642.2906131-1-s.hauer@pengutronix.de>
+Message-Id: <170737639318.351222.10805873962683656776.b4-ty@pengutronix.de>
+Date: Thu, 08 Feb 2024 08:13:13 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240207_231253_874205_D3764BCD 
-X-CRM114-Status: UNSURE (   8.98  )
+X-CRM114-CacheID: sfid-20240207_231314_851747_F787B6CD 
+X-CRM114-Status: UNSURE (   6.39  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,22 +85,21 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX: add Kconfig option for scratchmem
+Subject: Re: [PATCH] nvmem: imx-ocotp-ele: provide machine_id
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 05 Feb 2024 13:57:28 +0100, Sascha Hauer wrote:
-> scratch.c is needed for both i.MX8 and i.MX9, but is compiled only for
-> i.MX8, so linking will failed if only i.MX9 is enabled.
-> Add a Kconfig option for it and select it from both i.MX8 and i.MX9.
+On Mon, 05 Feb 2024 14:56:42 +0100, Sascha Hauer wrote:
+> The i.MX93 fusemap has a unique machine id. Use that for providing a
+> machine_id.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] ARM: i.MX: add Kconfig option for scratchmem
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c8bf88f4f96a (link may not be stable)
+[1/1] nvmem: imx-ocotp-ele: provide machine_id
+      https://git.pengutronix.de/cgit/barebox/commit/?id=31a6cc5f0936 (link may not be stable)
 
 Best regards,
 -- 
