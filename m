@@ -1,69 +1,67 @@
-Delivery-date: Thu, 08 Feb 2024 08:31:27 +0100
+Delivery-date: Thu, 08 Feb 2024 08:36:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rXysX-008HnF-39
+	id 1rXyxJ-008ILM-33
 	for lore@lore.pengutronix.de;
-	Thu, 08 Feb 2024 08:31:27 +0100
+	Thu, 08 Feb 2024 08:36:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rXysX-0007Ba-Ui
-	for lore@pengutronix.de; Thu, 08 Feb 2024 08:31:27 +0100
+	id 1rXyxJ-0007PH-Uw
+	for lore@pengutronix.de; Thu, 08 Feb 2024 08:36:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:From:In-Reply-To:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lDtFpLBGR0npjF/hsPDqXvYe7/VBOPoakQOXlNXAOu8=; b=VrlpoVZ72hF3gwoKNZeF/Pt2JP
-	t/zUn3irupz4ZCOlkMIp5J8usaw1wKVVDCq+GbODASqeDyfVfQQq8yabFg4hofuPTKGr6KqmJbuyy
-	gsSeC5gwhdYQMejBr6eAfLYr5lnoiGcRySBZ2orzKoOLgA9ieZYbezbp6qDfsOKQQ6ZC/U0VchW9P
-	TzvCkXL+u7y0cVxRhdhkatR+Gth/CLHAn1ipHksyYkVySZdWZH8ZTCpQMemRFv+EfjVOjPQUZhA7Y
-	y87iIEpaHdVE44r7IHHXHvkqBm50nSPsALn4vHpKpDFbELxW4rF7/IfYr7DA3iFnsS3AIJFhqLYLs
-	XAlFYhWQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=F5Aj0IH8Y0bzO82q4TpyRpTVSZKRzD96W2ier3mdIYQ=; b=MxBErIeit5nrehbPCywzk2GdOD
+	hzBmHlpr8jBGyOjwGltGvBwfYrd+2NM584dAfzrlAPD1vf2b9jlWqRBRTPHJ/28lusxexfqLfeiCv
+	+2YFPmRjkbdgVkSNdpa6zDq47n+gUkwbyYdPxA0i5FnorBafI1DgGpGKy8VDMRlwzumd4V9Fm/jwC
+	41k60hL+umg+SFN8XMi63LDRcBRRD/sbUMCqq/Mvz4P06blKIuEEdxNWr2P8d8R8G+WYmZHT/WXQs
+	EsVKGH0Km6qr9zUxj6nXmkjMMJodK2rJVkgq53ZbUxSgur79Kc1GfTNzkWF0scbrhc4SoYenr460M
+	0QtgKuHg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rXyrm-0000000CuED-3GtA;
-	Thu, 08 Feb 2024 07:30:38 +0000
+	id 1rXywo-0000000Cuef-1bfT;
+	Thu, 08 Feb 2024 07:35:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rXyrj-0000000CuDd-1Ikj
+	id 1rXywl-0000000CueB-03hh
 	for barebox@lists.infradead.org;
-	Thu, 08 Feb 2024 07:30:36 +0000
+	Thu, 08 Feb 2024 07:35:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rXyrg-00078c-Ns; Thu, 08 Feb 2024 08:30:32 +0100
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rXywj-0007KM-Pc; Thu, 08 Feb 2024 08:35:45 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rXyrg-005Aeh-B1; Thu, 08 Feb 2024 08:30:32 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rXyrg-00H5La-0n;
-	Thu, 08 Feb 2024 08:30:32 +0100
-Date: Thu, 8 Feb 2024 08:30:32 +0100
-To: Thaison Phan <tsphan42@gmail.com>
-Cc: barebox@lists.infradead.org
-Message-ID: <ZcSDGHbcInKvmR-x@pengutronix.de>
-References: <CAFPn3sTc_3q04koG_oPnqTmhGnejxtiva+B5KwYsCdC3czCmKw@mail.gmail.com>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rXywj-005AhQ-Ct; Thu, 08 Feb 2024 08:35:45 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rXywj-001WjR-15;
+	Thu, 08 Feb 2024 08:35:45 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240122141331.3438235-1-a.fatoum@pengutronix.de>
+References: <20240122141331.3438235-1-a.fatoum@pengutronix.de>
+Message-Id: <170737774533.364124.14674276794371121105.b4-ty@pengutronix.de>
+Date: Thu, 08 Feb 2024 08:35:45 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAFPn3sTc_3q04koG_oPnqTmhGnejxtiva+B5KwYsCdC3czCmKw@mail.gmail.com>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
-From: Sascha Hauer <sha@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240207_233035_369758_DB75F19B 
-X-CRM114-Status: GOOD (  30.07  )
+X-CRM114-CacheID: sfid-20240207_233547_088768_5B3234F4 
+X-CRM114-Status: UNSURE (   7.84  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,73 +79,34 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] Patch to fix bootm barebox load address alignment to
- acomodate ADRP instruction
+Subject: Re: [PATCH] ddr: imx8m: add missing DDR clock rates
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Thaison,
 
-On Tue, Feb 06, 2024 at 09:37:47PM -0500, Thaison Phan wrote:
-> Hi,
+On Mon, 22 Jan 2024 15:13:31 +0100, Ahmad Fatoum wrote:
+> ddrphy_init_set_dfi_clk() is called to translate a scalar clock rate
+> as specified by board code into PLL parameters, which are configured.
 > 
-> The aarch64 bootm image handler for barebox can choose a load address
-> that is not 4KB aligned. This can result in unexpected behavior with
-> the ADRP instruction that is available in 64 bit ARM architectures.
-> ADRP forms a PC-relative address to a 4KB page where the bottom 12
-> bits of the current PC will be masked out. When the load address of
-> the barebox image is not 4KB aligned ADRP can end up forming an
-> address that starts from an invalid page of memory or the wrong page
-> of memory that was expected to be formed. The following patch aligns
-> the load address for the next barebox image to be 4KB aligned to
-> accommodate the ADRP instruction.
+> enum ddr_rate describes the possible DDR rates and so far
+> ddrphy_init_set_dfi_clk() supported all of them, except for 2600 and
+> 2376 MHz, rendering these two rates unusable.
 > 
-> Thanks,
-> Thaison
-> 
-> ---
->  arch/arm/lib64/armlinux.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
-> index 8382ffdf1b..d66963dae5 100644
-> --- a/arch/arm/lib64/armlinux.c
-> +++ b/arch/arm/lib64/armlinux.c
-> @@ -43,6 +43,8 @@ static struct image_handler aarch64_fit_handler = {
->         .filetype = filetype_oftree,
->  };
-> 
-> +#define ADRP_PAGE_MASK 0x1000
-> +
->  static int do_bootm_barebox(struct image_data *data)
->  {
->         void (*fn)(unsigned long x0, unsigned long x1, unsigned long x2,
-> @@ -55,7 +57,7 @@ static int do_bootm_barebox(struct image_data *data)
->         if (ret)
->                 goto out;
-> 
-> -       barebox = start;
-> +       barebox = ALIGN(start, ADRP_PAGE_MASK);
+> [...]
 
-I'd suggest using PAGE_ALIGN here.
+Applied, thanks!
 
-While I agree that the barebox image must be page aligned to be
-correctly started, I wonder how it can happen that the address returned
-from memory_bank_first_find_space() is not page aligned. Normally this
-should be the start address of your DRAM. How comes this address is not
-aligned in your case?
+[1/1] ddr: imx8m: add missing DDR clock rates
+      https://git.pengutronix.de/cgit/barebox/commit/?id=205a77e12cd1 (link may not be stable)
 
-Sascha
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
