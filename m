@@ -1,64 +1,85 @@
-Delivery-date: Thu, 08 Feb 2024 20:17:55 +0100
+Delivery-date: Fri, 09 Feb 2024 02:45:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rY9uE-00947U-0a
+	id 1rYFx4-009VKE-24
 	for lore@lore.pengutronix.de;
-	Thu, 08 Feb 2024 20:17:55 +0100
+	Fri, 09 Feb 2024 02:45:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rY9uE-0007kg-Sn
-	for lore@pengutronix.de; Thu, 08 Feb 2024 20:17:55 +0100
+	id 1rYFx5-0001CR-7P
+	for lore@pengutronix.de; Fri, 09 Feb 2024 02:45:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=LiWpr0Q3lHkKy3UaX0uR80CJQayzOHHD8gjrJDW8Zh4=; b=hp5cEIRyMlsPsZ6dUSXqisEiAq
-	BE4Rsv9jz7W0JU0+IMeAl1L2gdO+Y3vKYA/qk4VkMiicSofZySH638oVV5HpdvLBW09b21Ovg0w6a
-	Cb7dLULgBDD+jPncPoqBE3EaGMqgn9502wJdj3mzirrw4L1TSHctLFGWVUll1ueAqH4oTUJQss2bQ
-	WChH/SBH2XQGAJIAKPN10DnW49kglCE6Aa5fDV5VpPrNmJDsO0IhwVLdWLA06CBMkqegadUYs8Zup
-	js2gVNgFMTn2UJEw8jwvoCHGuRd8luO+DTSSOz7B5Y9yY8sxI3Wq/bmf70ObO0SSPXtTxjBk7pa4T
-	81GMvcJQ==;
+	Content-Type:Cc:To:Subject:Message-ID:Date:From:In-Reply-To:References:
+	MIME-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=NVtq9+azNkdktWXrMVoVOkfe47KwUuM5z0BMf9sUYW8=; b=J7gBWLRR45AedtobFDrHhPB7Uo
+	vJZtdUY5iCMZ4C3t4yGIldwEEDrw5ooVmse8QEpusRRt93FoT8cl36zZ/Lz4BV6G+Rmouu72o/Gn0
+	3kF1VtGbzfoKCNvxCWNdz26t4+jrpcRfYX6yzZkfFTo7gKeIq2b9X6IDG8FUL9plKJXgqYpGXX9TF
+	AKtLXJ9JLtdJk0M5ihq2osY9txSftk3nFhYNLSFR7Gld/smYMBrlyRW7lTTJbMNCXnNWn+2W9BDof
+	ZWDVmr3J5CNhMFn9MuaCq4z+R7xNExrSdXNwuigk2A3CxZ+phjVY8/CyHKVjZCYtA4SN0HOE+E2cT
+	ZOtkZChg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rY9tW-0000000Ejtq-3E6x;
-	Thu, 08 Feb 2024 19:17:10 +0000
-Received: from xvm-107-148.dc0.ghst.net ([46.226.107.148] helo=zdiv.net)
+	id 1rYFwM-0000000Frtb-0edl;
+	Fri, 09 Feb 2024 01:44:30 +0000
+Received: from mail-lj1-x234.google.com ([2a00:1450:4864:20::234])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rY9tT-0000000Ejs6-1Adf
+	id 1rYFwI-0000000FrsH-1ubz
 	for barebox@lists.infradead.org;
-	Thu, 08 Feb 2024 19:17:08 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=23;
-	t=1707419819;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=LiWpr0Q3lHkKy3UaX0uR80CJQayzOHHD8gjrJDW8Zh4=;
-	b=Q/zOxV8SS/SQw9RBA4I6YEEfuNUtqs5g7Wpdl8pFUilfFCI22v3yf2qiKKxnLkEc3rdPVk
-	hB6nv1DlwHfhssXQ9T3Nmv6PWC0DdnOfEirxewofe/svgBFKr2KV/G9igI1yj9lehZd66Z
-	/S1KmQ4sUEuv7izUMaSB+2OPS9/66MtGLBPG83foeLyK0bJ4T9WKM9CMRf6PqjT3GCwPoz
-	6VotxwfA+b70i97t/dOwjDuqHZen1R6TJV1AJsSCA9EyIaOcv0j1cAz1Iut5VIYD6Ha3t+
-	dsCAnv3dzTewk3ZX8D8tcnS/cYNco/QfjJVSsynBxLX/yF53SC+y6KSyqRhrhA==
-Received: from mini.my.domain (91-160-75-97.subs.proxad.net [91.160.75.97])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id cee4708a (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Thu, 8 Feb 2024 19:16:59 +0000 (UTC)
-From: Jules Maselbas <jmaselbas@zdiv.net>
-To: barebox@lists.infradead.org
-Cc: Jules Maselbas <jmaselbas@zdiv.net>
-Date: Thu,  8 Feb 2024 20:16:25 +0100
-Message-ID: <20240208191625.2455-1-jmaselbas@zdiv.net>
-X-Mailer: git-send-email 2.43.0
+	Fri, 09 Feb 2024 01:44:28 +0000
+Received: by mail-lj1-x234.google.com with SMTP id 38308e7fff4ca-2d09b21a8bbso5986931fa.3
+        for <barebox@lists.infradead.org>; Thu, 08 Feb 2024 17:44:22 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1707443061; x=1708047861; darn=lists.infradead.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NVtq9+azNkdktWXrMVoVOkfe47KwUuM5z0BMf9sUYW8=;
+        b=hc38+n4OIr4P6XKTRX2XNS9CT7ycXUfhVe3y4DtLeB0qjYK9SoaRHa35qgMWhfmvqZ
+         2HB7zWpgOAOLaxczLRasEsxFR1wJu/BwRF555ICnGhksHvMydm0Kl/PuklyCZJbiG+p2
+         AqeiCN9PRytVGGhZNtVhQ+aO4UqRqdM/wtVp3RuYy+eIOAkgt5JtRyL/5AH/0YM3QH+l
+         e4MmXM2SL3B/rc7iBAS+YqDjd2NhVcaNeqQLuH8c7tzDPMNshgOrvoaKFyjKISufnKcp
+         YidQoKaz6cRliZiaUMTINGI3UuXZ4xtO6pezHx3Yg+d1aTqYrjCl15CllM6EIOXOI8GV
+         13sA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1707443061; x=1708047861;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NVtq9+azNkdktWXrMVoVOkfe47KwUuM5z0BMf9sUYW8=;
+        b=d0em1AncYZQbIwpIkJuniX0WgEfJU28UvVmYlyAXbAMT/el2B3EU67PYEKD4xwVFV5
+         k9i23q5TJLkXi+L0YAHZoo3syA4OFMhtzDkW6qDwiDzUsItzf9T1RauLewLQiWovwt6W
+         QQlcsTM2UQsGITll7nBBTGKoCWiJ3sXDc1OI2VBdl3qRqwXoL44LFXq6jk9ihlemvFIf
+         P0FlHd71RRZ18J+XXg8FAgN3P/f+jRkQLGqdiO8zvARd0guQEXkhXhRRtf9AFAmog6d1
+         zYkk/VRXduWWGSadpInmo7kDDOFvthsl32m8GMIN+irfY1KGzPm5ZSevx9VNLlRYH3dl
+         /3kw==
+X-Gm-Message-State: AOJu0YzHgEJvJJuRyzM0FnnvaU5EnFmuaL1p7f2+sfkl41mTZaeLkeh0
+	NcrYu2J9L3l0/w7/TP+IQMDJcB1Ay/5DnOC0Gw7rouSDtrX09hsSjLjG0nBp54AgUL//8b5f0RB
+	qawsBruL9vaqnrEpouv7CwfZj4q73uRSlxQ==
+X-Google-Smtp-Source: AGHT+IG1yjZ5AYFdOKg281iINAbUhnHQdU2GFX64Yp93jLyuI42yXFRzuxgs1fDDgT+/gFYbvEmDiwmDTU5AG6nbU40=
+X-Received: by 2002:a2e:9081:0:b0:2d0:cd0d:42d with SMTP id
+ l1-20020a2e9081000000b002d0cd0d042dmr198676ljg.7.1707443061042; Thu, 08 Feb
+ 2024 17:44:21 -0800 (PST)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <CAFPn3sTc_3q04koG_oPnqTmhGnejxtiva+B5KwYsCdC3czCmKw@mail.gmail.com>
+ <ZcSDGHbcInKvmR-x@pengutronix.de>
+In-Reply-To: <ZcSDGHbcInKvmR-x@pengutronix.de>
+From: Thaison Phan <tsphan42@gmail.com>
+Date: Thu, 8 Feb 2024 20:44:10 -0500
+Message-ID: <CAFPn3sRU=hHsAQRuLaW9sz80SM4ugbWMTxgxbd7cjS0sEk9PJw@mail.gmail.com>
+To: Sascha Hauer <sha@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240208_111707_600689_5F3EEBDC 
-X-CRM114-Status: UNSURE (   8.22  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240208_174426_524037_F936E184 
+X-CRM114-Status: GOOD (  39.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,38 +97,119 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH] Documentation: Fix heading level of TFTP windowsize section
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] Patch to fix bootm barebox load address alignment to
+ acomodate ADRP instruction
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The section title about TFTP windowsize support was at the same
-heading level as the page main title.
+Hi Sascha,
 
-Signed-off-by: Jules Maselbas <jmaselbas@zdiv.net>
+For the system I am running in, barebox is constrained to run within 4MB
+of memory. Because of this, when arm_mem_barebox_image() calculates
+the address to uncompress barebox to, it selects an address that ends up
+being within ~2MB from the start of memory that was designated for barebox
+to use. The malloc space ends at the start of the barebox image, and ends
+up taking up to the start of memory. memory_bank_first_find_space ends
+up finding the first available location to be after the .bss section which =
+is
+not aligned to 4KB. It seems like my case is a very unlikely corner case,
+but I create a patch using PAGE_ALIGN as you suggested just in case it
+may be useful.
+
+Signed-off-by: Thaison Phan <tsphan42 at gmail.com>
 ---
- Documentation/filesystems/tftp.rst | 2 +-
+ arch/arm/lib64/armlinux.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/filesystems/tftp.rst b/Documentation/filesystems/tftp.rst
-index e88ad3dd4c..5a2910adbf 100644
---- a/Documentation/filesystems/tftp.rst
-+++ b/Documentation/filesystems/tftp.rst
-@@ -22,7 +22,7 @@ In addition to the TFTP filesystem implementation, barebox does also have a
- :ref:`tftp command <command_tftp>`.
- 
- RFC 7440 "windowsize" support
--=============================
-+-----------------------------
- 
- barebox supports the tftp windowsize option for downloading files.  It
- is not implemented for uploads.
--- 
-2.43.0
+diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
+index 8382ffdf1b..8b62131347 100644
+--- a/arch/arm/lib64/armlinux.c
++++ b/arch/arm/lib64/armlinux.c
+@@ -55,7 +55,7 @@ static int do_bootm_barebox(struct image_data *data)
+  if (ret)
+  goto out;
 
+- barebox =3D start;
++ barebox =3D PAGE_ALIGN(start);
+
+  ret =3D bootm_load_os(data, barebox);
+  if (ret)
+--=20
+2.25.1
+
+Thanks,
+Thaison
+
+On Thu, Feb 8, 2024 at 2:30=E2=80=AFAM Sascha Hauer <sha@pengutronix.de> wr=
+ote:
+>
+> Hi Thaison,
+>
+> On Tue, Feb 06, 2024 at 09:37:47PM -0500, Thaison Phan wrote:
+> > Hi,
+> >
+> > The aarch64 bootm image handler for barebox can choose a load address
+> > that is not 4KB aligned. This can result in unexpected behavior with
+> > the ADRP instruction that is available in 64 bit ARM architectures.
+> > ADRP forms a PC-relative address to a 4KB page where the bottom 12
+> > bits of the current PC will be masked out. When the load address of
+> > the barebox image is not 4KB aligned ADRP can end up forming an
+> > address that starts from an invalid page of memory or the wrong page
+> > of memory that was expected to be formed. The following patch aligns
+> > the load address for the next barebox image to be 4KB aligned to
+> > accommodate the ADRP instruction.
+> >
+> > Thanks,
+> > Thaison
+> >
+> > ---
+> >  arch/arm/lib64/armlinux.c | 4 +++-
+> >  1 file changed, 3 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
+> > index 8382ffdf1b..d66963dae5 100644
+> > --- a/arch/arm/lib64/armlinux.c
+> > +++ b/arch/arm/lib64/armlinux.c
+> > @@ -43,6 +43,8 @@ static struct image_handler aarch64_fit_handler =3D {
+> >         .filetype =3D filetype_oftree,
+> >  };
+> >
+> > +#define ADRP_PAGE_MASK 0x1000
+> > +
+> >  static int do_bootm_barebox(struct image_data *data)
+> >  {
+> >         void (*fn)(unsigned long x0, unsigned long x1, unsigned long x2=
+,
+> > @@ -55,7 +57,7 @@ static int do_bootm_barebox(struct image_data *data)
+> >         if (ret)
+> >                 goto out;
+> >
+> > -       barebox =3D start;
+> > +       barebox =3D ALIGN(start, ADRP_PAGE_MASK);
+>
+> I'd suggest using PAGE_ALIGN here.
+>
+> While I agree that the barebox image must be page aligned to be
+> correctly started, I wonder how it can happen that the address returned
+> from memory_bank_first_find_space() is not page aligned. Normally this
+> should be the start address of your DRAM. How comes this address is not
+> aligned in your case?
+>
+> Sascha
+>
+> --
+> Pengutronix e.K.                           |                             =
+|
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
+|
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
+|
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
+|
 
 
