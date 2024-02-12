@@ -1,74 +1,65 @@
-Delivery-date: Mon, 12 Feb 2024 14:29:55 +0100
+Delivery-date: Mon, 12 Feb 2024 16:46:39 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rZWNf-003PkN-1O
+	id 1rZYVz-003YVN-2E
 	for lore@lore.pengutronix.de;
-	Mon, 12 Feb 2024 14:29:55 +0100
+	Mon, 12 Feb 2024 16:46:39 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rZWNe-0004Sa-Oy
-	for lore@pengutronix.de; Mon, 12 Feb 2024 14:29:55 +0100
+	id 1rZYVz-0006kd-3r
+	for lore@pengutronix.de; Mon, 12 Feb 2024 16:46:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=Fk0uyybwRWcqNk7l9kvQdBJYJtA2ebYSXim+eqUPgZY=; b=anGOAq+fdQ8Ud2
-	C/J43xOpxk6UhF0DBwkBTGlYX2xSTwhMeuy2BWnshJwtA8zu6T37OYAzAHFKITqhSzfgTpThQltvM
-	2ZM+/6Vl0LsXuNG1DovcDlVH9vrte1PVhtGXkx4rRItLzDMCMjooKxe7RDJQhlTaCG5idDvipp2o+
-	yTdmA71/ISvnKs1I5MhDoLHG8WeIc28YhkP5QxTEEIa2PnYfm8ECQ4uK5U33aqiufFEJ4zOLBaBJ2
-	zj/EWz8Q44rZCRHowjV6mBwRdMm4NnzVSH/yRAX46QPSFf07FPfBHKzwxBVZNYyxsMEXxzN16KWlR
-	iilMLwc8fkG/syqKR9bw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Yv0xhArA+t2OysUz6mUqVzgNn6ROJv5P2ViLdfuHDVo=; b=AdoNvCakTtRWMO0GVqeuwJsQXD
+	j/c7biBCctrFlEMv+444XGS0cna9vjBvaj5AaYnvQrciC/rzRSk/brdX7Q1E0B7K/TQ2N9qwkXbOl
+	7tgm2o224am0Zcx/YAa6OisqZF15evpzUmhJre8k1G+xNF1BrhfFrHFx1Nmz3aDUBdZDOgKLBin9U
+	/FPGou4xA2s4sh0VUBSWnidwrLS2wPiYeLQjTDKPPnytVHfTWPgt9B15KLj6KGDwYanhOHzaALZcm
+	arrUpeagcfryBzKGBjtNfKmPezxTYd5uK2WsDT29hTgX0vpGyJ0W5Z+vhkJXTiyXzphWJs6ea1/KV
+	KACcv2hg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rZWMz-00000005VrK-3WKN;
-	Mon, 12 Feb 2024 13:29:13 +0000
+	id 1rZYVM-0000000612N-2OKk;
+	Mon, 12 Feb 2024 15:46:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rZWMv-00000005Vnj-1OLO
+	id 1rZYVI-0000000611R-3uRu
 	for barebox@lists.infradead.org;
-	Mon, 12 Feb 2024 13:29:11 +0000
+	Mon, 12 Feb 2024 15:45:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1rZWMs-0004BJ-NW
-	for barebox@lists.infradead.org; Mon, 12 Feb 2024 14:29:06 +0100
-Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rZYVF-0006eh-FE; Mon, 12 Feb 2024 16:45:53 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1rZWMs-000ISS-9w
-	for barebox@lists.infradead.org; Mon, 12 Feb 2024 14:29:06 +0100
-Received: from dspam.blackshift.org (localhost [127.0.0.1])
-	by bjornoya.blackshift.org (Postfix) with SMTP id EB05E28C4C4
-	for <barebox@lists.infradead.org>; Mon, 12 Feb 2024 13:29:05 +0000 (UTC)
-Received: from hardanger.blackshift.org (unknown [172.20.34.65])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bjornoya.blackshift.org (Postfix) with ESMTPS id B637B28C4C1;
-	Mon, 12 Feb 2024 13:29:05 +0000 (UTC)
-Received: from blackshift.org (localhost [::1])
-	by hardanger.blackshift.org (OpenSMTPD) with ESMTP id 03367983;
-	Mon, 12 Feb 2024 13:29:04 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: sha@pengutronix.de
-Date: Mon, 12 Feb 2024 14:27:53 +0100
-Message-ID: <20240212132901.1641599-4-mkl@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240212132901.1641599-1-mkl@pengutronix.de>
-References: <20240212132901.1641599-1-mkl@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rZYVE-000Jbv-8r; Mon, 12 Feb 2024 16:45:52 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rZYVE-009TvS-0b;
+	Mon, 12 Feb 2024 16:45:52 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Joacim Zetterling <joacim.zetterling@westermo.com>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 12 Feb 2024 16:45:51 +0100
+Message-Id: <20240212154551.2259925-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240212_052909_449832_DB590BD0 
-X-CRM114-Status: GOOD (  10.21  )
+X-CRM114-CacheID: sfid-20240212_074556_993003_606DFAB6 
+X-CRM114-Status: GOOD (  12.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,111 +71,53 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 3/3] nvmem: ocotp: mark data as const
+Subject: [PATCH master] mci: sdhci: atmel: fix truncation when reading out caps
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Mark values obtained from "priv->data->ctrl" as const.
+The capability read out was changed a few years ago to use 32-bit
+accessors, but the variable that it was stored in remained at 16-bit
+leading to truncation of the upper bits and breaking detection of the
+SD-Card on my SAMA5D27-SOM1-EK:
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+  ERROR: barebox-environment chosen:environment-sd.of: probe failed: No such file or directory
+
+Fix this by using the appropriate type. The commit introducing the
+regression touched multiple drivers, but the Atmel SDHCI one is the only
+one which still used a 16-bit type.
+
+Fixes: 1570f8d8d87e ("mci: sdhci: straighten capabilities register")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/nvmem/ocotp.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/mci/atmel-sdhci-common.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index 16d2a6be9fce..c282efefa824 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -275,11 +275,11 @@ static int imx6_ocotp_prepare(struct ocotp_priv *priv)
- 
- static int imx6_fuse_read_addr(struct ocotp_priv *priv, u32 addr, u32 *pdata)
+diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
+index 171737ab01d4..a69d6b67b551 100644
+--- a/drivers/mci/atmel-sdhci-common.c
++++ b/drivers/mci/atmel-sdhci-common.c
+@@ -39,7 +39,7 @@ static inline struct at91_sdhci *to_priv(struct sdhci *sdhci)
+ void at91_sdhci_host_capability(struct at91_sdhci *host,
+ 				unsigned *voltages)
  {
-+	const u32 bm_ctrl_error = priv->data->ctrl->bm_error;
-+	const u32 bm_ctrl_addr = priv->data->ctrl->bm_addr;
-+	const u32 bm_ctrl_wr_unlock = priv->data->ctrl->bm_wr_unlock;
- 	u32 ctrl_reg;
- 	int ret;
--	u32 bm_ctrl_error = priv->data->ctrl->bm_error;
--	u32 bm_ctrl_addr = priv->data->ctrl->bm_addr;
--	u32 bm_ctrl_wr_unlock = priv->data->ctrl->bm_wr_unlock;
+-	u16 caps;
++	u32 caps;
  
- 	writel(bm_ctrl_error, priv->base + OCOTP_CTRL_CLR);
+ 	caps = sdhci_read32(&host->sdhci, SDHCI_CAPABILITIES);
  
-@@ -304,13 +304,13 @@ static int imx6_fuse_read_addr(struct ocotp_priv *priv, u32 addr, u32 *pdata)
- 
- static int imx7_fuse_read_addr(struct ocotp_priv *priv, u32 index, u32 *pdata)
- {
-+	const u32 bm_ctrl_error = priv->data->ctrl->bm_error;
-+	const u32 bm_ctrl_addr = priv->data->ctrl->bm_addr;
-+	const u32 bm_ctrl_wr_unlock = priv->data->ctrl->bm_wr_unlock;
- 	u32 ctrl_reg;
- 	u32 bank_addr;
- 	u16 word;
- 	int ret;
--	u32 bm_ctrl_error = priv->data->ctrl->bm_error;
--	u32 bm_ctrl_addr = priv->data->ctrl->bm_addr;
--	u32 bm_ctrl_wr_unlock = priv->data->ctrl->bm_wr_unlock;
- 
- 	word = index & 0x3;
- 	bank_addr = index >> 2;
-@@ -391,10 +391,10 @@ static int imx_ocotp_reg_read(void *ctx, unsigned int reg, unsigned int *val)
- 
- static void imx_ocotp_clear_unlock(struct ocotp_priv *priv, u32 index)
- {
-+	const u32 bm_ctrl_error = priv->data->ctrl->bm_error;
-+	const u32 bm_ctrl_addr = priv->data->ctrl->bm_addr;
-+	const u32 bm_ctrl_wr_unlock = priv->data->ctrl->bm_wr_unlock;
- 	u32 ctrl_reg;
--	u32 bm_ctrl_error = priv->data->ctrl->bm_error;
--	u32 bm_ctrl_addr = priv->data->ctrl->bm_addr;
--	u32 bm_ctrl_wr_unlock = priv->data->ctrl->bm_wr_unlock;
- 
- 	writel(bm_ctrl_error, priv->base + OCOTP_CTRL_CLR);
- 
-@@ -408,8 +408,8 @@ static void imx_ocotp_clear_unlock(struct ocotp_priv *priv, u32 index)
- 
- static int imx6_fuse_blow_addr(struct ocotp_priv *priv, u32 index, u32 value)
- {
-+	const u32 bm_ctrl_error = priv->data->ctrl->bm_error;
- 	int ret;
--	u32 bm_ctrl_error = priv->data->ctrl->bm_error;
- 
- 	imx_ocotp_clear_unlock(priv, index);
- 
-@@ -474,7 +474,7 @@ static int imx7_fuse_blow_addr(struct ocotp_priv *priv, u32 index, u32 value)
- 
- static int imx6_ocotp_reload_shadow(struct ocotp_priv *priv)
- {
--	u32 bm_ctrl_reload_shadows = priv->data->ctrl->bm_reload_shadows;
-+	const u32 bm_ctrl_reload_shadows = priv->data->ctrl->bm_reload_shadows;
- 
- 	dev_info(&priv->dev, "reloading shadow registers...\n");
- 	writel(bm_ctrl_reload_shadows, priv->base + OCOTP_CTRL_SET);
-@@ -486,8 +486,8 @@ static int imx6_ocotp_reload_shadow(struct ocotp_priv *priv)
- static int imx6_ocotp_blow_one_u32(struct ocotp_priv *priv, u32 index, u32 data,
- 			    u32 *pfused_value)
- {
-+	const u32 bm_ctrl_error = priv->data->ctrl->bm_error;
- 	int ret;
--	u32 bm_ctrl_error = priv->data->ctrl->bm_error;
- 
- 	ret = imx6_ocotp_prepare(priv);
- 	if (ret) {
 -- 
-2.43.0
-
+2.39.2
 
 
 
