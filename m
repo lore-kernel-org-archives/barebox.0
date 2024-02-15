@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raedc-007d8l-0C
+	id 1raedc-007d8m-0E
 	for lore@lore.pengutronix.de;
 	Thu, 15 Feb 2024 17:31:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raedZ-0005gp-P3
+	id 1raedZ-0005gT-Ov
 	for lore@pengutronix.de; Thu, 15 Feb 2024 17:31:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KWCcqUidASuW9DZ+/UpyOqpJCDKhH6w32uiv7t6RKIc=; b=T/uCtqo9TqxSZAwEnyT/RqNy1n
-	51DdqQrnlsjSwzkK7Yk/7QS5PE00/l2FAHYX1wMP/b4Sw9uMYbigeiAFAznUkdmiWsJfpZwYImyeM
-	xZpUoI59SlwFHu3yMM8s+4ow2oFrDx8YNv6gcVWsUo8eOL7RBpAE1WQDIY0igz5d7/AT4cfhoOBc9
-	dFYjWkcZ58Dus05dkWTXuSpDzfxM2jU6tmVDCxWUXaYIa8K2G/Bu97PEG4scfq4srf5h6vk3ioXFE
-	i2R3C5qiEhym8ASI8rddhHcKetQ3EVKMel+f/YyOiMEzoiI9buIrjaSA0d3FkVO+exo4RFjrQ0zUu
-	jVbUUzPg==;
+	bh=j+/gW+rtdrJLLKPh1czrxa/879mFUi1F5KMAgeBeoaA=; b=AjD+aR/xwMwPLMni9A+on+2nus
+	saYfYK81aQdDJx/QtuSN/HJ7XrIwmoLMjxLBq2VgJdcWRPCK0HUFjLxYxfKnenvX57s2nmU5yki3C
+	l+xgVYOworoWakja4dXFHhpmMjdh352mZYvQaAVgvTl71lpS4xyEV8Uv8+2+/49lf1m3+GZq5gBo3
+	1M3HDFgj2zwNYdFCwl0AaLKT/jQQkZqZbfX4H4X0KjkAC5XAbBfvnlVM5kIOxwBARhQdLGdhKx4Wt
+	Ql0+I99f/2m5TJTtJ+80WzPU7EjbhcngiyOi7R06rUYoqcAu0cRxKnIh27FgMrX9UGtD53z0b1+cb
+	JI3l0GsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raed1-0000000GyRv-3lz7;
-	Thu, 15 Feb 2024 16:30:27 +0000
+	id 1raecz-0000000GyQq-1ny8;
+	Thu, 15 Feb 2024 16:30:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raecr-0000000GyLl-2SJw
+	id 1raecr-0000000GyLj-2OZG
 	for barebox@lists.infradead.org;
-	Thu, 15 Feb 2024 16:30:21 +0000
+	Thu, 15 Feb 2024 16:30:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raecn-0005H8-Q9; Thu, 15 Feb 2024 17:30:13 +0100
+	id 1raecn-0005H7-Nb; Thu, 15 Feb 2024 17:30:13 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raecn-000uza-Au; Thu, 15 Feb 2024 17:30:13 +0100
+	id 1raecn-000uzX-8w; Thu, 15 Feb 2024 17:30:13 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raecn-009YG0-0l;
+	id 1raecn-009YG0-0c;
 	Thu, 15 Feb 2024 17:30:13 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Sam Ravnborg <sam@ravnborg.org>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 15 Feb 2024 17:30:01 +0100
-Message-Id: <20240215163009.2172795-8-a.fatoum@pengutronix.de>
+Date: Thu, 15 Feb 2024 17:30:00 +0100
+Message-Id: <20240215163009.2172795-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240215163009.2172795-1-a.fatoum@pengutronix.de>
 References: <20240215163009.2172795-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240215_083017_749720_A0C94994 
-X-CRM114-Status: GOOD (  12.23  )
+X-CRM114-CacheID: sfid-20240215_083017_726198_85139CE2 
+X-CRM114-Status: GOOD (  12.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,67 +84,52 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 07/15] ARM: at91: sam9263_ll: pass AT91_PMC_LL_AT91SAM9263 to PMC functions
+Subject: [PATCH v3 06/15] ARM: at91: sam9263_ll: drop PLL charge pump initialization
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The low level PMC driver does things differently according to its flags
-parameter that encodes what SoC is being used. The default case of flags
-== 0 is appropriate for the AT91SAM9263, but we have a AT91_PMC_LL_AT91SAM9263
-macro that expands to 0, which makes apparent that we take the necessary
-precautions, so use that instead for documentation purposes.
+The datasheet[1] described the PLL Charge Pump Current Register in 27.9.17
+very sparingly by mandating that 0x10001 is to be written into it.
 
-No functional change.
+In the 28-Jan-16 revision of the datasheet the access mode for the
+register was changed from Write-only to Read/Write. Indeed reading the
+register is possible, but it seems to always return 0, even directly
+after write.
+
+Given that code for initializing the PLL charge pumps was added to
+AT91Bootsrap only for SAMA5 support and that apparently no adverse effect
+was observed on SAM9263 for not doing this for all these years, it follows
+that the PLL charge pump has to be already initialized on POR or by BootROM
+and we are better off playing it safe and not introducing code in the PMC
+setup that didn't exist in Atmel's own AT91Bootstrap.
+
+Therefore drop that line again. There are no upstream boards calling
+this function yet anyway, so this should have very limited effect.
+
+[1]: Atmel-6249N-ATARM-SAM9263-Datasheet_14-Mar-16
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v3:
   - new patch
 ---
- arch/arm/mach-at91/sam9263_ll.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/arm/mach-at91/sam9263_ll.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/arch/arm/mach-at91/sam9263_ll.c b/arch/arm/mach-at91/sam9263_ll.c
-index 7600391629af..ed56ad21cd89 100644
+index 8855a679fdf2..7600391629af 100644
 --- a/arch/arm/mach-at91/sam9263_ll.c
 +++ b/arch/arm/mach-at91/sam9263_ll.c
-@@ -9,14 +9,16 @@
- 
- static void sam9263_pmc_init(const struct sam92_pmc_config *config)
+@@ -11,9 +11,6 @@ static void sam9263_pmc_init(const struct sam92_pmc_config *config)
  {
--	at91_pmc_init(IOMEM(AT91SAM926X_BASE_PMC), 0);
-+	unsigned flags = AT91_PMC_LL_AT91SAM9263;
-+
-+	at91_pmc_init(IOMEM(AT91SAM926X_BASE_PMC), flags);
+ 	at91_pmc_init(IOMEM(AT91SAM926X_BASE_PMC), 0);
  
+-	/* Initialize PLL charge pump, must be done before PLLAR/PLLBR */
+-	at91_pmc_init_pll(IOMEM(AT91SAM926X_BASE_PMC), AT91SAM9_PMC_ICPPLLA | AT91SAM9_PMC_ICPPLLB);
+-
  	/* Setting PLL A and divider A */
  	at91_pmc_cfg_plla(IOMEM(AT91SAM926X_BASE_PMC),
  			  AT91_PMC_MUL_(config->mula) |
- 			  AT91_PMC_OUT_2 |		// 190 to 240 MHz
- 			  config->diva,			// Divider
--			  0);
-+			  flags);
- 
- 	/* Selection of Master Clock and Processor Clock */
- 
-@@ -26,7 +28,7 @@ static void sam9263_pmc_init(const struct sam92_pmc_config *config)
- 			 | AT91_PMC_PRES_1
- 			 | AT91SAM9_PMC_MDIV_2
- 			 | AT91_PMC_PDIV_1,
--			 0);
-+			 flags);
- 
- 	/* Switch MCK on PLLA output */
- 	at91_pmc_cfg_mck(IOMEM(AT91SAM926X_BASE_PMC),
-@@ -34,7 +36,7 @@ static void sam9263_pmc_init(const struct sam92_pmc_config *config)
- 			 | AT91_PMC_PRES_1
- 			 | AT91SAM9_PMC_MDIV_2
- 			 | AT91_PMC_PDIV_1,
--			 0);
-+			 flags);
- }
- 
- static inline void matrix_wr(unsigned int offset, const unsigned int value)
 -- 
 2.39.2
 
