@@ -1,67 +1,66 @@
-Delivery-date: Thu, 15 Feb 2024 11:36:49 +0100
+Delivery-date: Thu, 15 Feb 2024 12:08:31 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raZ6n-007JWJ-2U
+	id 1raZbT-007KfS-22
 	for lore@lore.pengutronix.de;
-	Thu, 15 Feb 2024 11:36:49 +0100
+	Thu, 15 Feb 2024 12:08:31 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raZ6n-0008Gb-4a
-	for lore@pengutronix.de; Thu, 15 Feb 2024 11:36:49 +0100
+	id 1raZbT-0004HU-0J
+	for lore@pengutronix.de; Thu, 15 Feb 2024 12:08:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0VrRXNsuijAunntXIJZbN1eIXxfx/1TUPuHd5CCOViA=; b=FRLaaAlDuP03UhsR/g+aCJbS/h
-	hNU9EHTp8HdLoSEe9aFX3MkoP2UEc6v7JQ6za8cXnzk+/ZmDTJB9V9dhtTV9Kqd0aR48OQbeeEkUt
-	n1SkZJ0chL+ob2YbMnefEbOREi0f9Hzv/sYQmzZG6cZdSxyARSIGuX3yVtuIuLzy8IYKxJuJMnXrK
-	g4+k7GNNfOQYHJUN5zHAKfqxs1ZucJuz5mAknILLlYonhu21R8MtJ1xkcj2WylsWZn34YyvEESB/l
-	wivODmkdJtzG1l9S90BdOReMjwS2woZ8pi3F9LqckXixwuZ1/fMjCYszgVJzpTKYHe04zAR54B7i6
-	CvcofFjQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=62NskPsal2/BAfDJhgL7M96TDJ1Jp6gKyXzZ9gR1cWk=; b=GzAQx/spi0jTcoBtnBaEXX8GJe
+	UgkguIIje8FZ7iciO0ax+RZfqbr2d5LPolNAZWyb+Gmw1wtEWyYCAihNrWtyYFNl0+RRh9g0EbZ0v
+	g0lU/iRktuRDExZzv35xD/sQyA1XVz4akm+qU8UuQNIj/BtUEf7iljNUOeX6gKijn5R/SQ32hxamB
+	W7UPPTak4EL/RGBRKCtXdJShCK1eo6ANPNu8i1pTSo8KRCkFAkxgByR/hX3Z8XWx+cza+IQ+HR/xt
+	YcGtWkb+he7CX/9c+/5uZ0Cr3W3+UHKdXm5u+KxoL9VF5x33hJqR5hS6yXEoXUYQH6OBKHJw/6nAU
+	TR7rXEcg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raZ6K-0000000FnzW-3rO4;
-	Thu, 15 Feb 2024 10:36:20 +0000
+	id 1raZaw-0000000FxL8-1riF;
+	Thu, 15 Feb 2024 11:07:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raZ6H-0000000FnxU-2KI2
+	id 1raZat-0000000FxKK-2etj
 	for barebox@lists.infradead.org;
-	Thu, 15 Feb 2024 10:36:18 +0000
+	Thu, 15 Feb 2024 11:07:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raZ60-00084y-Bz; Thu, 15 Feb 2024 11:36:00 +0100
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1raZaq-0004Be-P9; Thu, 15 Feb 2024 12:07:52 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raZ5y-000rjf-9G; Thu, 15 Feb 2024 11:35:58 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raZ5y-00BmHC-0b;
-	Thu, 15 Feb 2024 11:35:58 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: ske@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 15 Feb 2024 11:33:52 +0100
-Message-Id: <20240215103353.2799723-2-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240215103353.2799723-1-a.fatoum@pengutronix.de>
-References: <20240215103353.2799723-1-a.fatoum@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1raZaq-000sBA-Cc; Thu, 15 Feb 2024 12:07:52 +0100
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1raZaq-00A0xj-0z;
+	Thu, 15 Feb 2024 12:07:52 +0100
+Date: Thu, 15 Feb 2024 12:07:52 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <20240215110752.qjhfdytbb3hap5qk@pengutronix.de>
+References: <20240215074757.960200-1-s.hauer@pengutronix.de>
+ <20240215074757.960200-4-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240215074757.960200-4-s.hauer@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240215_023617_613330_478A283E 
-X-CRM114-Status: GOOD (  10.69  )
+X-CRM114-CacheID: sfid-20240215_030755_691867_8ACB75F9 
+X-CRM114-Status: GOOD (  20.73  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,147 +78,84 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/3] drivers: drop simple bus remove in favor of common implementation
+Subject: Re: [PATCH 3/7] partition: allow to reparse a partition table
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that driver core will call dev->driver->remove if dev->bus->remove
-is NULL, we cann remove all bus_type::remove functions that do the same.
+On 24-02-15, Sascha Hauer wrote:
+> The partition table of a block device may change when it is written to.
+> Allow to reparse the partition table when this happens.
+> This is easy when none of the partitions is opened, in that case just
+> remove the old partitions and call parse_partition_table() again.
+> When a partition is opened (including mounted) we can't remove it. In
+> that case continue with the old partition table and print a warning.
+> 
+> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 
-This has the welcome side effect that devices that device_remove will
-return false when called on a device the neither has a bus remove or
-driver remove function and thus we can skip tracing these calls when
-CONFIG_DEBUG_PROBES is enabled.
+Just two nits, to make cdev access more opaque.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/base/platform.c | 7 -------
- drivers/bus/acpi.c      | 7 -------
- drivers/i2c/i2c.c       | 7 -------
- drivers/spi/spi.c       | 7 -------
- drivers/tee/tee_core.c  | 7 -------
- 5 files changed, 35 deletions(-)
+> ---
+>  common/partitions.c | 20 ++++++++++++++++++++
+>  include/disks.h     |  1 +
+>  2 files changed, 21 insertions(+)
+> 
+> diff --git a/common/partitions.c b/common/partitions.c
+> index 78b68276c3..cfcd0e080b 100644
+> --- a/common/partitions.c
+> +++ b/common/partitions.c
+> @@ -154,6 +154,26 @@ int parse_partition_table(struct block_device *blk)
+>  	return rc;
+>  }
+>  
+> +int reparse_partition_table(struct block_device *blk)
+> +{
+> +	struct cdev *cdev = &blk->cdev;
+> +	struct cdev *c, *tmp;
+> +
+> +	list_for_each_entry(c, &cdev->partitions, partition_entry) {
+> +		if (c->open) {
 
-diff --git a/drivers/base/platform.c b/drivers/base/platform.c
-index f9954785608b..ac7c473c8c7b 100644
---- a/drivers/base/platform.c
-+++ b/drivers/base/platform.c
-@@ -22,12 +22,6 @@ static int platform_probe(struct device *dev)
- 	return dev->driver->probe(dev);
- }
- 
--static void platform_remove(struct device *dev)
--{
--	if (dev->driver->remove)
--		dev->driver->remove(dev);
--}
--
- int platform_driver_register(struct driver *drv)
- {
- 	drv->bus = &platform_bus;
-@@ -46,7 +40,6 @@ struct bus_type platform_bus = {
- 	.name = "platform",
- 	.match = device_match,
- 	.probe = platform_probe,
--	.remove = platform_remove,
- };
- 
- static int platform_init(void)
-diff --git a/drivers/bus/acpi.c b/drivers/bus/acpi.c
-index ac034cce4569..cf85e886d0a2 100644
---- a/drivers/bus/acpi.c
-+++ b/drivers/bus/acpi.c
-@@ -210,17 +210,10 @@ static int acpi_bus_probe(struct device *dev)
- 	return dev->driver->probe(dev);
- }
- 
--static void acpi_bus_remove(struct device *dev)
--{
--	if (dev->driver->remove)
--		dev->driver->remove(dev);
--}
--
- struct bus_type acpi_bus = {
- 	.name = "acpi",
- 	.match = acpi_bus_match,
- 	.probe = acpi_bus_probe,
--	.remove = acpi_bus_remove,
- };
- 
- static int efi_acpi_probe(void)
-diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
-index 70d1b810c1c3..d518bf2c9dcf 100644
---- a/drivers/i2c/i2c.c
-+++ b/drivers/i2c/i2c.c
-@@ -748,17 +748,10 @@ static int i2c_probe(struct device *dev)
- 	return dev->driver->probe(dev);
- }
- 
--static void i2c_remove(struct device *dev)
--{
--	if (dev->driver->remove)
--		dev->driver->remove(dev);
--}
--
- struct bus_type i2c_bus = {
- 	.name = "i2c",
- 	.match = device_match_of_modalias,
- 	.probe = i2c_probe,
--	.remove = i2c_remove,
- };
- 
- static int i2c_bus_init(void)
-diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
-index 83f2b0ee1b2e..fd9c8da17100 100644
---- a/drivers/spi/spi.c
-+++ b/drivers/spi/spi.c
-@@ -417,17 +417,10 @@ static int spi_probe(struct device *dev)
- 	return dev->driver->probe(dev);
- }
- 
--static void spi_remove(struct device *dev)
--{
--	if (dev->driver->remove)
--		dev->driver->remove(dev);
--}
--
- struct bus_type spi_bus = {
- 	.name = "spi",
- 	.match = device_match_of_modalias,
- 	.probe = spi_probe,
--	.remove = spi_remove,
- };
- 
- static int spi_bus_init(void)
-diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
-index 0bf645a310eb..36c6210b8b1d 100644
---- a/drivers/tee/tee_core.c
-+++ b/drivers/tee/tee_core.c
-@@ -775,17 +775,10 @@ static int tee_bus_probe(struct device *dev)
- 	return dev->driver->probe(dev);
- }
- 
--static void tee_bus_remove(struct device *dev)
--{
--	if (dev->driver->remove)
--		dev->driver->remove(dev);
--}
--
- struct bus_type tee_bus_type = {
- 	.name		= "tee",
- 	.match		= tee_client_device_match,
- 	.probe		= tee_bus_probe,
--	.remove		= tee_bus_remove,
- };
- EXPORT_SYMBOL_GPL(tee_bus_type);
- 
--- 
-2.39.2
+		if (cdev_is_open(c))
 
+> +			pr_warn("%s is busy, will continue to use old partition table\n", c->name);
+> +			return -EBUSY;
+> +		}
+> +	}
+> +
+> +	list_for_each_entry_safe(c, tmp, &cdev->partitions, partition_entry) {
+> +		if (c->flags & DEVFS_PARTITION_FROM_TABLE)
+
+		if (cdev_flag_set(c, DEVFS_PARTITION_FROM_TABLE))
+
+> +			cdevfs_del_partition(c);
+> +	}
+> +
+> +	return parse_partition_table(blk);
+> +}
+> +
+>  int partition_parser_register(struct partition_parser *p)
+>  {
+>  	list_add_tail(&p->list, &partition_parser_list);
+> diff --git a/include/disks.h b/include/disks.h
+> index 1ca7063c54..ccb50d3ce9 100644
+> --- a/include/disks.h
+> +++ b/include/disks.h
+> @@ -24,5 +24,6 @@ struct partition_entry {
+>  } __attribute__ ((packed));
+>  
+>  extern int parse_partition_table(struct block_device*);
+> +int reparse_partition_table(struct block_device *blk);
+>  
+>  #endif /* DISKS_H */
+> -- 
+> 2.39.2
+> 
+> 
+> 
 
 
