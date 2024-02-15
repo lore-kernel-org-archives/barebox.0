@@ -3,66 +3,65 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raerO-007dm1-0A
+	id 1raerO-007dmQ-0u
 	for lore@lore.pengutronix.de;
 	Thu, 15 Feb 2024 17:45:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raerN-0006tT-Cg
-	for lore@pengutronix.de; Thu, 15 Feb 2024 17:45:17 +0100
+	id 1raerN-0006sl-35
+	for lore@pengutronix.de; Thu, 15 Feb 2024 17:45:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Mx0DRu38oSN0mNuosGtLVhWmNc9ZkJRFVJOy2BCMnJ8=; b=yoNXm9GcPW0weFd1i/1/g631a+
-	oJNaGdTvVD9yRjlrt9YKf0bDlIXypRqxNhpOzqPtbHVjmY+dLNSbFk5A6ew6rbyA06lklIWxTYNdz
-	67Im246yhuYG8FrEZ+DVUaDpU9dphCPCHdjyt2VHXeq+TeRaKkID9eZs2KCH7FDid4y9DqTCPqtXW
-	rIrRsZFFLLcOYxckJDrDkrL6mU8MnIiHa6L1MHpQLxiq+u8jfSfYsox3wOv5sY1wmfrW4Lz1GCioz
-	dkNsVKQg1RdkHq/OchQXnfU75Jb0q5vQmzZS0hh4OOG8u3xDFopDIqRlGyd9iXxFPWzNXjrx7srSE
-	CVxTiwaQ==;
+	bh=fgNJ8NxQCsJN6jXIZ/Gfw38xrVX6nTelZ1Qb/QY+cM0=; b=NjoUg03uwB6gl1bEQyelABUMs8
+	x0otXhKZ1Mw/rOFHB5VGCflOms0LjYyPZuJt0Nwg5jVpZJWON4vH169XZ808uJG/sl+fSD7p92OQb
+	+ku4tWyHTG6oJlAsXUnnX6xhqmGHJYlg1VZRoDEqeurPnVBv4EVJ1KFv5XNl5F4zxOqzN1ZH16KVV
+	AtSXV+up1iZ+zlSkxJTNtQGy7/T812bsn/tnXxGrOdEd1Xp7V/CFVrLG3WtPZiMwB1kPCxboUUbPh
+	/fiA1ShxwZYAiw7skjBxiXSOs6GCrFUfdvsRaIKB+rmzP+8EEkdJnnUGAVLzsFRCyMlNRPH5QvzHz
+	gn0JTf0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raequ-0000000H1gZ-36cH;
-	Thu, 15 Feb 2024 16:44:48 +0000
+	id 1raeqt-0000000H1gE-3wUG;
+	Thu, 15 Feb 2024 16:44:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raeqp-0000000H1cV-30SQ
+	id 1raeqp-0000000H1cP-2gxr
 	for barebox@lists.infradead.org;
 	Thu, 15 Feb 2024 16:44:45 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raeqo-0006dG-JI; Thu, 15 Feb 2024 17:44:42 +0100
+	id 1raeqo-0006dE-FB; Thu, 15 Feb 2024 17:44:42 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raeqo-000v4B-5Z; Thu, 15 Feb 2024 17:44:42 +0100
+	id 1raeqo-000v45-1r; Thu, 15 Feb 2024 17:44:42 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raecn-009YG0-1d;
+	id 1raecn-009YG0-1L;
 	Thu, 15 Feb 2024 17:30:13 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Sam Ravnborg <sam@ravnborg.org>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 15 Feb 2024 17:30:07 +0100
-Message-Id: <20240215163009.2172795-14-a.fatoum@pengutronix.de>
+Date: Thu, 15 Feb 2024 17:30:05 +0100
+Message-Id: <20240215163009.2172795-12-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240215163009.2172795-1-a.fatoum@pengutronix.de>
 References: <20240215163009.2172795-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240215_084443_791746_0E4637D1 
-X-CRM114-Status: UNSURE (   9.60  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240215_084443_879073_442CF8A6 
+X-CRM114-Status: GOOD (  24.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,34 +84,301 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 13/15] ARM: at91: skov-arm9cpu: configure more appropriate hostname
+Subject: [PATCH v3 11/15] ARM: at91: skov-arm9cpu: Add SD-Card xload support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The default logic would set the hostname to arm9-cpu, which isn't very
-descriptive. Set our own hostname that contains the vendor name.
+From: Sam Ravnborg <sam@ravnborg.org>
+
+This updates skov-arm9cpu with xload support, and we can now
+use barebox as a replacement for at91bootstrap
+
+Only boot via SD card is supported.
+
+Signed-off-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v2 -> v3:
+  - rename skov-arm9cpu-xload.img to skov-arm9cpu-xload-mmc.img
+  - move code after relocation into separate noinline function
+  - fix PLLA configuration and add PLLB configuration
+  - add support for 64M SDRAM variant
+  - remove erroneous pull-up setting from DRAM lines
+  - read AT91SAM9263_MATRIX_EBI0CSA, so we only set the relevant bits
+
+v1 -> v2:
+  - Use ENTRY_FUNCTION_WITHSTACK
+  - Reshuffeled order in early init
+  - SD card in not highcapacity
+  - Drop irrelevant max image size in images/Makefile.at91
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v3:
-  - new patch
----
- arch/arm/boards/skov-arm9cpu/board.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boards/skov-arm9cpu/lowlevel.c | 193 ++++++++++++------------
+ arch/arm/mach-at91/Kconfig              |   4 +-
+ images/Makefile.at91                    |   6 +-
+ 3 files changed, 101 insertions(+), 102 deletions(-)
 
-diff --git a/arch/arm/boards/skov-arm9cpu/board.c b/arch/arm/boards/skov-arm9cpu/board.c
-index 1d0ecb247d8e..db6813c0e726 100644
---- a/arch/arm/boards/skov-arm9cpu/board.c
-+++ b/arch/arm/boards/skov-arm9cpu/board.c
-@@ -56,6 +56,8 @@ static int mem;
-  */
- static int skov_arm9_probe(struct device *dev)
+diff --git a/arch/arm/boards/skov-arm9cpu/lowlevel.c b/arch/arm/boards/skov-arm9cpu/lowlevel.c
+index 82abfb4021a9..d83215bf9336 100644
+--- a/arch/arm/boards/skov-arm9cpu/lowlevel.c
++++ b/arch/arm/boards/skov-arm9cpu/lowlevel.c
+@@ -1,115 +1,110 @@
+ // SPDX-License-Identifier: GPL-2.0
+-// PDX-FileCopyrightText: 2018 Sam Ravnborg <sam@ravnborg.org>
+-
+-#include <linux/sizes.h>
+-
++// SPDX-FileCopyrightText: 2022 Sam Ravnborg <sam@ravnborg.org>
+ 
+ #include <mach/at91/at91sam926x_board_init.h>
+ #include <mach/at91/at91sam9263_matrix.h>
++#include <mach/at91/sam92_ll.h>
++#include <mach/at91/xload.h>
+ #include <mach/at91/barebox-arm.h>
+ 
+-#define MASTER_PLL_MUL		171
+-#define MASTER_PLL_DIV		14
++/* MCK = 20 MHz */
++#define MAIN_CLOCK	200000000
++#define MASTER_CLOCK	(MAIN_CLOCK / 2)	/* PMC_MCKR divides by 2 */
+ 
+-static void __bare_init skovarm9cpu_board_config(struct at91sam926x_board_cfg *cfg)
++/*
++ * Check if target is 64 or 128 MB and adjust AT91_SDRAMC_CR
++ * accordingly.
++ * Size      Start      Size(hex)
++ * 64 MB  => 0x20000000 0x4000000
++ * 128 MB => 0x20000000 0x8000000
++ *
++ * If 64 MiB RAM with NC_10 set, then we see holes in the memory, which
++ * is how we detect if memory is 64 or 128 MiB
++ */
++static int check_if_128mb(void)
  {
-+	barebox_set_hostname("skov-arm9cpu");
+-	/* Disable Watchdog */
+-	cfg->wdt_mr =
+-		AT91_WDT_WDIDLEHLT | AT91_WDT_WDDBGHLT |
+-		AT91_WDT_WDV |
+-		AT91_WDT_WDDIS |
+-		AT91_WDT_WDD;
++	unsigned int *test_adr = (unsigned int *)AT91_CHIPSELECT_1;
++	unsigned int test_val = 0xdeadbee0;
++	unsigned int *p;
++	int i;
+ 
+-	/* define PDC[31:16] as DATA[31:16] */
+-	cfg->ebi_pio_pdr = 0xFFFF0000;
+-	/* no pull-up for D[31:16] */
+-	cfg->ebi_pio_ppudr = 0xFFFF0000;
+-	/* EBI0_CSA, CS1 SDRAM, CS3 NAND Flash, 3.3V memories */
+-	cfg->ebi_csa =
+-		AT91SAM9263_MATRIX_EBI0_DBPUC | AT91SAM9263_MATRIX_EBI0_VDDIOMSEL_3_3V |
+-		AT91SAM9263_MATRIX_EBI0_CS1A_SDRAMC;
++	/* Fill up memory with a known pattern */
++	p = test_adr;
++	for (i = 0; i < 0xb00; i++)
++		*p++ = test_val + i;
+ 
+-	cfg->smc_cs = 0;
+-	cfg->smc_mode =
+-		AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
+-		AT91_SMC_DBW_16 |
+-		AT91_SMC_TDFMODE |
+-		AT91_SMC_TDF_(6);
+-	cfg->smc_cycle =
+-		AT91_SMC_NWECYCLE_(22) | AT91_SMC_NRDCYCLE_(22);
+-	cfg->smc_pulse =
+-		AT91_SMC_NWEPULSE_(11) | AT91_SMC_NCS_WRPULSE_(11) |
+-		AT91_SMC_NRDPULSE_(11) | AT91_SMC_NCS_RDPULSE_(11);
+-	cfg->smc_setup =
+-		AT91_SMC_NWESETUP_(10) | AT91_SMC_NCS_WRSETUP_(10) |
+-		AT91_SMC_NRDSETUP_(10) | AT91_SMC_NCS_RDSETUP_(10);
++	/*
++	 * Check that we can read back the values just written
++	 * If one or more fails, we have only 64 MB
++	 */
++	p = test_adr;
++	for (i = 0; i < 0xb00; i++)
++		if (*p++ != (test_val + i))
++			return false;
+ 
+-	cfg->pmc_mor =
+-		AT91_PMC_MOSCEN |
+-		(255 << 8);		/* Main Oscillator Start-up Time */
+-	cfg->pmc_pllar =
+-		AT91_PMC_PLLA_WR_ERRATA | /* Bit 29 must be 1 when prog */
+-		AT91_PMC_OUT |
+-		AT91_PMC_PLLCOUNT |	/* PLL Counter */
+-		(2 << 28) |		/* PLL Clock Frequency Range */
+-		((MASTER_PLL_MUL - 1) << 16) | (MASTER_PLL_DIV);
+-	/* PCK/2 = MCK Master Clock from PLLA */
+-	cfg->pmc_mckr1 =
+-		AT91_PMC_CSS_SLOW |
+-		AT91_PMC_PRES_1 |
+-		AT91SAM9_PMC_MDIV_2 |
+-		AT91_PMC_PDIV_1;
+-	/* PCK/2 = MCK Master Clock from PLLA */
+-	cfg->pmc_mckr2 =
+-		AT91_PMC_CSS_PLLA |
+-		AT91_PMC_PRES_1 |
+-		AT91SAM9_PMC_MDIV_2 |
+-		AT91_PMC_PDIV_1;
+-
+-	/* SDRAM */
+-	/* SDRAMC_TR - Refresh Timer register */
+-	cfg->sdrc_tr1 = 0x13C;
+-	/* SDRAMC_CR - Configuration register*/
+-	cfg->sdrc_cr =
+-		AT91_SDRAMC_NC_10 |	/* Assume 128MiB */
+-		AT91_SDRAMC_NR_13 |
+-		AT91_SDRAMC_NB_4 |
+-		AT91_SDRAMC_CAS_3 |
+-		AT91_SDRAMC_DBW_32 |
+-		(1 <<  8) |		/* Write Recovery Delay */
+-		(7 << 12) |		/* Row Cycle Delay */
+-		(2 << 16) |		/* Row Precharge Delay */
+-		(2 << 20) |		/* Row to Column Delay */
+-		(5 << 24) |		/* Active to Precharge Delay */
+-		(1 << 28);		/* Exit Self Refresh to Active Delay */
+-
+-	/* Memory Device Register -> SDRAM */
+-	cfg->sdrc_mdr = AT91_SDRAMC_MD_SDRAM;
+-	/* SDRAM_TR */
+-	cfg->sdrc_tr2 = 1200;
+-
+-	/* user reset enable */
+-	cfg->rstc_rmr =
+-		AT91_RSTC_KEY |
+-		AT91_RSTC_PROCRST |
+-		AT91_RSTC_RSTTYP_WAKEUP |
+-		AT91_RSTC_RSTTYP_WATCHDOG;
++	return true;
+ }
+ 
+-static void __bare_init skov_arm9cpu_init(void *fdt)
++static void sam9263_sdramc_init(void)
+ {
+-	struct at91sam926x_board_cfg cfg;
++	void __iomem *piod = IOMEM(AT91SAM9263_BASE_PIOD);
++	static struct at91sam9_sdramc_config config = {
++		.sdramc = IOMEM(AT91SAM9263_BASE_SDRAMC0),
++		.mr = 0,
++		.tr = (MASTER_CLOCK * 7) / 1000000, // TODO 140 versus 0x13c (316)?
++		.cr = AT91_SDRAMC_NC_10 | AT91_SDRAMC_NR_13 | AT91_SDRAMC_CAS_2
++		      | AT91_SDRAMC_NB_4 | AT91_SDRAMC_DBW_32
++		      | AT91_SDRAMC_TWR_2 | AT91_SDRAMC_TRC_7
++		      | AT91_SDRAMC_TRP_2 | AT91_SDRAMC_TRCD_2
++		      | AT91_SDRAMC_TRAS_5 | AT91_SDRAMC_TXSR_8,
++		.lpr = 0,
++		.mdr = AT91_SDRAMC_MD_SDRAM,
++	};
+ 
+-	cfg.pio = IOMEM(AT91SAM9263_BASE_PIOD);
+-	cfg.sdramc = IOMEM(AT91SAM9263_BASE_SDRAMC0);
+-	cfg.ebi_pio_is_peripha = true;
+-	cfg.matrix_csa = IOMEM(AT91SAM9263_BASE_MATRIX + AT91SAM9263_MATRIX_EBI0CSA);
++	/* Define PD[31:16] as DATA[31:16] */
++	at91_mux_gpio_disable(piod, GENMASK(31, 16));
++	/* No pull-up for D[31:16] */
++	at91_mux_set_pullup(piod, GENMASK(31, 16), false);
++	/* PD16 to PD31 are pheripheral A */
++	at91_mux_set_A_periph(piod, GENMASK(31, 16));
+ 
+-	skovarm9cpu_board_config(&cfg);
+-	at91sam9263_board_init(&cfg);
++	/* EBI0_CSA, CS1 SDRAM, 3.3V memories */
++	setbits_le32(IOMEM(AT91SAM9263_BASE_MATRIX + AT91SAM9263_MATRIX_EBI0CSA),
++	       AT91SAM9263_MATRIX_EBI0_VDDIOMSEL_3_3V | AT91SAM9263_MATRIX_EBI0_CS1A_SDRAMC);
+ 
+-	barebox_arm_entry(AT91_CHIPSELECT_1, at91_get_sdram_size(cfg.sdramc),
+-			  fdt);
++	at91sam9_sdramc_initialize(&config, AT91SAM9263_BASE_EBI0_CS1);
 +
- 	add_generic_device("at91sam9-smc", 0, NULL, AT91SAM9263_BASE_SMC0, 0x200,
- 			   IORESOURCE_MEM, NULL);
- 	add_generic_device("at91sam9-smc", 1, NULL, AT91SAM9263_BASE_SMC1, 0x200,
++	if (!check_if_128mb()) {
++		/* Change number of columns to 9 for 64MB ram. */
++		/* Other parameters does not need to be changed due to chip size. */
++
++		pr_debug("64M variant detected\n");
++
++		/* Clear NC bits */
++		config.cr &= ~AT91_SDRAMC_NC;
++		config.cr |= AT91_SDRAMC_NC_9;
++		at91sam9_sdramc_initialize(&config, AT91SAM9263_BASE_EBI0_CS1);
++	}
++}
++
++static noinline void continue_skov_arm9cpu_xload_mmc(void)
++{
++	sam9263_lowlevel_init(0x2031B004, 0x10053001);
++	sam92_dbgu_setup_ll(MASTER_CLOCK);
++
++	sam92_udelay_init(MASTER_CLOCK);
++	sam9263_sdramc_init();
++	sam9263_atmci_start_image(1, MASTER_CLOCK, 0);
++}
++
++SAM9_ENTRY_FUNCTION(start_skov_arm9cpu_xload_mmc)
++{
++	/* Configure system so we are less constrained */
++	arm_cpu_lowlevel_init();
++	relocate_to_current_adr();
++	setup_c();
++
++	continue_skov_arm9cpu_xload_mmc();
+ }
+ 
+ extern char __dtb_at91_skov_arm9cpu_start[];
+@@ -118,10 +113,12 @@ AT91_ENTRY_FUNCTION(start_skov_arm9cpu, r0, r1, r2)
+ {
+ 	void *fdt;
+ 
++	/*
++	 * We may be running after at91bootstrap, so redo the initialization to
++	 * be sure, everything is as we expect it.
++	 */
+ 	arm_cpu_lowlevel_init();
+ 
+-	arm_setup_stack(AT91SAM9263_SRAM0_BASE + AT91SAM9263_SRAM0_SIZE);
+ 	fdt = __dtb_at91_skov_arm9cpu_start + get_runtime_offset();
+-
+-	skov_arm9cpu_init(fdt);
++	barebox_arm_entry(AT91_CHIPSELECT_1, at91sam9263_get_sdram_size(0), fdt);
+ }
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index 69edf3dbdc4e..0e89916c9c32 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -603,9 +603,7 @@ config MACH_SKOV_ARM9CPU
+ 	select SOC_AT91SAM9263
+ 	select OFDEVICE
+ 	select COMMON_CLK_OF_PROVIDER
+-	select HAVE_AT91_USB_CLK
+-	select HAVE_AT91_BOOTSTRAP
+-	select AT91SAM926X_BOARD_INIT
++	select MCI_ATMEL_PBL
+ 	help
+ 	  Say y here if you are using SKOV's ARM9 CPU board
+ 
+diff --git a/images/Makefile.at91 b/images/Makefile.at91
+index 523dc5f499f0..06f8936893ae 100644
+--- a/images/Makefile.at91
++++ b/images/Makefile.at91
+@@ -56,9 +56,13 @@ FILE_barebox-groboards-sama5d27-giantboard-xload-mmc.img = start_sama5d27_giantb
+ MAX_PBL_IMAGE_SIZE_start_sama5d27_giantboard_xload_mmc = 0xffff
+ image-$(CONFIG_MACH_SAMA5D27_GIANTBOARD) += barebox-groboards-sama5d27-giantboard-xload-mmc.img
+ 
++pblb-$(CONFIG_MACH_SKOV_ARM9CPU) += start_skov_arm9cpu_xload_mmc
++FILE_barebox-skov-arm9cpu-xload-mmc.img = start_skov_arm9cpu_xload_mmc.pblb
++MAX_PBL_MEMORY_SIZE_start_skov_arm9cpu = 0x12000
++image-$(CONFIG_MACH_SKOV_ARM9CPU) += barebox-skov-arm9cpu-xload-mmc.img
++
+ pblb-$(CONFIG_MACH_SKOV_ARM9CPU) += start_skov_arm9cpu
+ FILE_barebox-skov-arm9cpu.img = start_skov_arm9cpu.pblb
+-MAX_PBL_MEMORY_SIZE_start_skov_arm9cpu = 0x12000
+ image-$(CONFIG_MACH_SKOV_ARM9CPU) += barebox-skov-arm9cpu.img
+ 
+ pblb-$(CONFIG_MACH_SAMA5D4_WIFX) += start_sama5d4_wifx_l1
 -- 
 2.39.2
 
