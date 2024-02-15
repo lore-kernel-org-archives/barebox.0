@@ -1,67 +1,66 @@
-Delivery-date: Thu, 15 Feb 2024 13:19:20 +0100
+Delivery-date: Thu, 15 Feb 2024 13:19:21 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raai0-007Ord-2M
+	id 1raai1-007Orz-1y
 	for lore@lore.pengutronix.de;
-	Thu, 15 Feb 2024 13:19:20 +0100
+	Thu, 15 Feb 2024 13:19:21 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raai0-0001w3-3s
-	for lore@pengutronix.de; Thu, 15 Feb 2024 13:19:20 +0100
+	id 1raai1-0001wS-0i
+	for lore@pengutronix.de; Thu, 15 Feb 2024 13:19:21 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Sl/icvw1N3XA+kBSfr1YIw2o7plLxj+rjjDtpBfXEGg=; b=Koxml0kHoX53FVcPCKaUyB479e
-	f0C1rigRhTkdmedrJiKopX9F/sz8cgkN8HFfh/fd/eF+ehVNrAxGHb3cAj4mshK/zMZpxDhguJ0di
-	GoKI5L4tO1iJIZUCtXegjQvmdnRq9RUX+044S102UsYY3UvdBvWzDkdzf0fc+tfRjHuA1RF6fxqA/
-	ZpICfz510EJKv8GTQGQEaQoLL8bo+3jwZkbXlipDUN36spsdqtdoPfUqalbQoi2sB6Ou6CfX8hBft
-	5yD4CdgfcSpsONMOXOoAh+H7/WcyhsfOlPnBmiP3Ot6BPivXVJKKwLO0TfMdPYt+FUivk93b0Rw8n
-	urtA4+AA==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=eJq/7lamrl/5LFbfdh2zxGv911or5pkITSDrCmg7dOY=; b=IqI0WSpwkKqKb3ikyXrodnMoeF
+	tpSYSDSk5oO+Wg8pA3z3DuT4JmIbYC5zi6duEnSB0rq+37mXq6/mg32F04FylvmcQYqDKILX8UQEs
+	VAWLr6Bs+FUElRFirAhNLVG89Va/7AjfYztUFjHXTRMYRS3Iu7Wmjy2Uk1PEsBki8O92CbD2ZiuFX
+	ieg+3oSB6yZscmSmpGENXYAW8uFIrW9mof0iNArXYsdXT9aNSepljfjU3KrdElbhwlbByfeBY4oGG
+	2RR8RyYih4wpX4jH4jK23CZDR2u6NzYdblWeLj3i47++BjpnkTNcWq25DvTd1RNyRxC0LvsuqWwNz
+	w7L0EK+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raahR-0000000GCUp-36ZK;
-	Thu, 15 Feb 2024 12:18:45 +0000
+	id 1raahU-0000000GCWf-2uUL;
+	Thu, 15 Feb 2024 12:18:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raahN-0000000GCSE-3ifH
+	id 1raahN-0000000GCSA-3iRb
 	for barebox@lists.infradead.org;
-	Thu, 15 Feb 2024 12:18:43 +0000
+	Thu, 15 Feb 2024 12:18:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raahM-0001jt-CX; Thu, 15 Feb 2024 13:18:40 +0100
+	id 1raahM-0001jr-9i
+	for barebox@lists.infradead.org; Thu, 15 Feb 2024 13:18:40 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raahL-000shg-W8; Thu, 15 Feb 2024 13:18:40 +0100
+	id 1raahL-000shc-TF
+	for barebox@lists.infradead.org; Thu, 15 Feb 2024 13:18:39 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raahL-001YuQ-2w;
+	id 1raahL-001YuQ-2c
+	for barebox@lists.infradead.org;
 	Thu, 15 Feb 2024 13:18:39 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 15 Feb 2024 13:18:36 +0100
-Message-Id: <20240215121837.251013-3-a.fatoum@pengutronix.de>
+Date: Thu, 15 Feb 2024 13:18:34 +0100
+Message-Id: <20240215121837.251013-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240215121837.251013-1-a.fatoum@pengutronix.de>
-References: <20240215121837.251013-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240215_041841_974167_A7A056B3 
-X-CRM114-Status: UNSURE (   7.98  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240215_041841_994617_643AB8A3 
+X-CRM114-Status: GOOD (  11.24  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,33 +83,65 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/3] clk: define empty stub for clk_hw_unregister
+Subject: [PATCH 0/3] clk: at91: sync drivers with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We don't do clk unregistration and thus define clk_unregister as empty
-stub. Let's do likewise for clk_hw_unregister.
+During bug hunt of a clocking issue that ultimately turned out to be
+unrelated, I resynced AT91 clk support with Linux.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- include/linux/clk.h | 4 ++++
- 1 file changed, 4 insertions(+)
+The changes look more extensive than they really are, because I first
+imported the clock drivers before a major overhaul of the barebox clock
+framework to be more compatible with the more recent kernel API changes.
 
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index d76f175bbd49..25bba3e99971 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -875,6 +875,10 @@ static inline void clk_unregister(struct clk *clk)
- {
- }
- 
-+static inline void clk_hw_unregister(struct clk_hw *hw)
-+{
-+}
-+
- #ifdef CONFIG_COMMON_CLK
- 
- /**
+Most of the diff is due to that, but this resync also fixes
+at least a USB issue for the at91rm9200 and adds support for
+the new SAMA7 SoC as well as more clocks for the SAM9x60. Both these
+SoCs aren't supported by barebox yet, but this at least adds clock
+driver support.
+
+Ahmad Fatoum (3):
+  clk: add dummy definitions for CLK_SET_RATE_GATE, CLK_SET_PARENT_GATE
+  clk: define empty stub for clk_hw_unregister
+  clk: at91: sync drivers with Linux
+
+ Documentation/devel/porting.rst     |    2 -
+ arch/arm/mach-at91/Kconfig          |   15 +-
+ drivers/clk/at91/at91rm9200.c       |   47 +-
+ drivers/clk/at91/at91sam9260.c      |   68 +-
+ drivers/clk/at91/at91sam9g45.c      |   62 +-
+ drivers/clk/at91/at91sam9n12.c      |   71 +-
+ drivers/clk/at91/at91sam9rl.c       |   47 +-
+ drivers/clk/at91/at91sam9x5.c       |   84 +-
+ drivers/clk/at91/clk-audio-pll.c    |   89 ++-
+ drivers/clk/at91/clk-generated.c    |  114 ++-
+ drivers/clk/at91/clk-h32mx.c        |   32 +-
+ drivers/clk/at91/clk-i2s-mux.c      |   33 +-
+ drivers/clk/at91/clk-main.c         |  235 +++---
+ drivers/clk/at91/clk-master.c       |  424 ++++++++--
+ drivers/clk/at91/clk-peripheral.c   |  159 ++--
+ drivers/clk/at91/clk-pll.c          |   68 +-
+ drivers/clk/at91/clk-plldiv.c       |   50 +-
+ drivers/clk/at91/clk-programmable.c |   60 +-
+ drivers/clk/at91/clk-sam9x60-pll.c  |  741 +++++++++++++-----
+ drivers/clk/at91/clk-slow.c         |   41 +-
+ drivers/clk/at91/clk-smd.c          |   54 +-
+ drivers/clk/at91/clk-system.c       |   62 +-
+ drivers/clk/at91/clk-usb.c          |  141 ++--
+ drivers/clk/at91/clk-utmi.c         |  178 ++++-
+ drivers/clk/at91/pmc.c              |  181 +----
+ drivers/clk/at91/pmc.h              |  164 ++--
+ drivers/clk/at91/sam9x60.c          |  147 +++-
+ drivers/clk/at91/sama5d2.c          |  138 ++--
+ drivers/clk/at91/sama5d3.c          |   80 +-
+ drivers/clk/at91/sama5d4.c          |   86 +-
+ drivers/clk/at91/sama7g5.c          | 1133 +++++++++++++++++++++++++++
+ drivers/clk/at91/sckc.c             |  245 +++---
+ include/linux/clk.h                 |   25 +
+ include/linux/clk/at91_pmc.h        |   59 ++
+ 34 files changed, 3663 insertions(+), 1472 deletions(-)
+ create mode 100644 drivers/clk/at91/sama7g5.c
+
 -- 
 2.39.2
 
