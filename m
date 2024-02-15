@@ -3,62 +3,65 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raedc-007d9f-3C
+	id 1raedd-007dA3-0j
 	for lore@lore.pengutronix.de;
 	Thu, 15 Feb 2024 17:31:05 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raeda-0005h4-Ji
-	for lore@pengutronix.de; Thu, 15 Feb 2024 17:31:04 +0100
+	id 1raedb-0005h9-1U
+	for lore@pengutronix.de; Thu, 15 Feb 2024 17:31:05 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=xgo5b3Pem13F5CZaRh1wEbY9JYnWFq7hbg30p9P0vA0=; b=FGf1X4wMwICLmJO7kFtaRGWjqt
-	zSYmHF+GvqHlTbfnkgnxJnOifyTfwoM4WmvFAO8sY+Nz+ftMCr867bOtQAeYox/P7YoUXe0WCvh9Y
-	Q2A6UlMC1yFP7oh3LKbzHwbiZBYJr3E4jhJZSMfHJtkpxBfDzLW7mEL/9I6NEkofs873+hKNziH5q
-	unmvt7utiXoz7yu94EXwFj134/4YWZAxk9a6DYJkKxC9Iy/XdCn1d+uLwiwBvWUSaFvSUP5auzbtj
-	T48u2CWP6pnKxJBpyT8CNbC0xTCAUC5SIHdPHf+2P4DjS57I+Ng0B8ONCX6ci+unVkewjP8DSzQ+j
-	j8v0VwxA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ZIPNPx6CDlJagDuhiXyBhGWU1/da7wKBB9a1Vlie0Sg=; b=h8UyTcsX3GPxx0gOeKuuSLBCaf
+	xY1wP71GspGQGxZ5QOyCOsL4FH3jFvGkyYAZ4wd5iA1KO4g5wbjwLBoIAzktBzGa5LFHAUcxss1Vk
+	FmucKYF4gLE9InPQKUTxV4qy01FS1VJWXhNT10PmB0v6X/BHPv0rofMYYMePLD5ea5DGuQLLp7+eK
+	3x90KcIqMu1UDDAy2jJAsC9aalxfx/jez8SYgGSH8JJBemnOae6ezalMnZAeflbqKcON2d6HYOmJr
+	CK75DL+3SdaxP9TLlPfGNPXdTAw3Dz/jS16jRVTL9UrNzfA1bksiGwS8kxT7DPVXmAAjjXNjjwhGJ
+	gIA9pd7A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raed0-0000000GyRa-413p;
-	Thu, 15 Feb 2024 16:30:26 +0000
+	id 1raecv-0000000GyOg-2JIn;
+	Thu, 15 Feb 2024 16:30:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raecr-0000000GyLe-2MbC
+	id 1raecr-0000000GyLf-24B6
 	for barebox@lists.infradead.org;
-	Thu, 15 Feb 2024 16:30:21 +0000
+	Thu, 15 Feb 2024 16:30:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raecn-0005H1-Hs; Thu, 15 Feb 2024 17:30:13 +0100
+	id 1raecn-0005H3-Ht; Thu, 15 Feb 2024 17:30:13 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raecn-000uzH-04; Thu, 15 Feb 2024 17:30:13 +0100
+	id 1raecn-000uzL-38; Thu, 15 Feb 2024 17:30:13 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raecm-009YG0-2w;
-	Thu, 15 Feb 2024 17:30:12 +0100
+	id 1raecn-009YG0-01;
+	Thu, 15 Feb 2024 17:30:13 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Date: Thu, 15 Feb 2024 17:29:54 +0100
-Message-Id: <20240215163009.2172795-1-a.fatoum@pengutronix.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu, 15 Feb 2024 17:29:56 +0100
+Message-Id: <20240215163009.2172795-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240215163009.2172795-1-a.fatoum@pengutronix.de>
+References: <20240215163009.2172795-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240215_083017_690619_0BCCDFE0 
-X-CRM114-Status: GOOD (  13.56  )
+X-CRM114-CacheID: sfid-20240215_083017_554640_93B2B902 
+X-CRM114-Status: GOOD (  13.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,67 +84,52 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 00/15] ARM: at91: skov-arm9cpu (SAM9263) first stage support
+Subject: [PATCH v3 02/15] mci: atmel_mci: fix zeroing of block length on AT91SAM9263
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-SDRAM setup and SD-Card chainloading support were previously added[1]
-by Sam as well as a WIP patch to enable them for Skov ARM9CPU.
+We don't read back ATMCI_MR, but instead set up the value once and keep
+writing it on every reset. On the SAM9263, but not on the later SAM9x5,
+the ATMCI_MR register also includes a field for the block length. Not
+taking that into account means that we zero the block length on every
+reset.
 
-I reworked his final WIP patch and fixed some smaller and bigger issues
-that I ran into. Now barebox can replace at91bootstrap on this platform
-when booted from SD.
+While the effect of this zeroing is likely limited, because we set the
+block length on every transfer via ATMCI_BLKR, it would be less surprising
+and more robust against future change to not intermittently zero the block
+length via the MR register.
 
-What didn't work for me were USB and Ethernet, but these didn't work in
-Linux either when booted with the same device tree. I suspect this to be
-related, but I don't have use for either USB or Ethernet in barebox at
-this time, so I am happy with functional SD and nor flash.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v3:
+  - new patch
+---
+ drivers/mci/atmel_mci_common.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-All patches are new ones, except for 11/15, which contains a changelog.
-
-[1]: https://lore.barebox.org/barebox/20220628203849.2785611-12-sam@ravnborg.org/
-
-Ahmad Fatoum (14):
-  mci: atmel_mci: disable power save mode
-  mci: atmel_mci: fix zeroing of block length on AT91SAM9263
-  ARM: replace ENTRY_FUNCTION_HEAD with ENTRY_FUNCTION_WITHSTACK_HEAD
-  ARM: at91: use AT91 header instead of generic barebox ARM's
-  ARM: at91: implement SAM9_ENTRY_FUNCTION
-  ARM: at91: sam9263_ll: drop PLL charge pump initialization
-  ARM: at91: sam9263_ll: pass AT91_PMC_LL_AT91SAM9263 to PMC functions
-  ARM: at91: sam9263_ll: refactor MCK switch to PLLA for clarity
-  ARM: at91: sam9263_ll: support configuration of PLLB
-  ARM: dts: AT91: skov-arm9cpu: remove barebox environment on NOR
-  ARM: at91: skov-arm9cpu: configure SMC for NOR flash use
-  ARM: at91: skov-arm9cpu: configure more appropriate hostname
-  ARM: AT91: skov-arm9cpu: support environment on SD-Card
-  usb: ohci-at91: fix possible hang chainloading barebox
-
-Sam Ravnborg (1):
-  ARM: at91: skov-arm9cpu: Add SD-Card xload support
-
- arch/arm/boards/at91sam9263ek/lowlevel_init.c |   5 +-
- arch/arm/boards/at91sam9x5ek/lowlevel.c       |   5 +-
- arch/arm/boards/skov-arm9cpu/board.c          |  53 +++--
- arch/arm/boards/skov-arm9cpu/lowlevel.c       | 197 +++++++++---------
- arch/arm/dts/at91-skov-arm9cpu.dts            |   9 +-
- arch/arm/include/asm/barebox-arm.h            |  20 +-
- arch/arm/mach-at91/Kconfig                    |   4 +-
- arch/arm/mach-at91/at91_pmc_ll.c              |  11 +
- arch/arm/mach-at91/sam9263_ll.c               |  34 ++-
- drivers/clk/clk.c                             |  12 +-
- drivers/mci/atmel_mci.c                       |   1 +
- drivers/mci/atmel_mci_common.c                |  12 +-
- drivers/mci/atmel_mci_pbl.c                   |   1 +
- drivers/usb/host/ohci-at91.c                  |  13 +-
- images/Makefile.at91                          |   6 +-
- include/linux/clk.h                           |  20 +-
- include/mach/at91/at91_pmc_ll.h               |   1 +
- include/mach/at91/barebox-arm.h               |   7 +-
- include/mach/at91/sam92_ll.h                  |   7 +-
- include/mach/mvebu/barebox-arm-head.h         |   2 +-
- 20 files changed, 243 insertions(+), 177 deletions(-)
-
+diff --git a/drivers/mci/atmel_mci_common.c b/drivers/mci/atmel_mci_common.c
+index 098e90503a3a..7b11e9134e65 100644
+--- a/drivers/mci/atmel_mci_common.c
++++ b/drivers/mci/atmel_mci_common.c
+@@ -68,7 +68,17 @@ static void atmci_set_clk_rate(struct atmel_mci *host,
+ 				 clock_min, host->bus_hz / (2 * 256));
+ 			clkdiv = 255;
+ 		}
+-		host->mode_reg = ATMCI_MR_CLKDIV(clkdiv);
++
++		/*
++		 * Older Atmels without CLKODD have the block length
++		 * in the upper 16 bits of both MCI_MR and MCI_BLKR
++		 *
++		 * To avoid intermittent zeroing of the block length,
++		 * just hardcode 512 here and have atmci_setup_data()
++		 * change it as necessary.
++		 */
++
++		host->mode_reg = ATMCI_MR_CLKDIV(clkdiv) | ATMCI_BLKLEN(512);
+ 	}
+ 
+ 	dev_dbg(host->hw_dev, "atmel_set_clk_rate: clkIn=%ld clkIos=%d divider=%d\n",
 -- 
 2.39.2
 
