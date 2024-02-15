@@ -1,66 +1,65 @@
-Delivery-date: Thu, 15 Feb 2024 13:52:58 +0100
+Delivery-date: Thu, 15 Feb 2024 13:55:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rabEX-007QvD-3B
+	id 1rabGh-007R3o-2I
 	for lore@lore.pengutronix.de;
-	Thu, 15 Feb 2024 13:52:57 +0100
+	Thu, 15 Feb 2024 13:55:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rabEX-0004Ma-BQ
-	for lore@pengutronix.de; Thu, 15 Feb 2024 13:52:57 +0100
+	id 1rabGh-0004Xp-4i
+	for lore@pengutronix.de; Thu, 15 Feb 2024 13:55:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qhVx559sWx8nhUc2nR/IZLoqT8XkJF+GpZdAAR7Aoe0=; b=ID9hHIkaU7HpTyGlU7FskRPZee
-	2R+bGX07xr/ZMXmDKbFbUA5amKM7iBsMkcbKvt8j3k5okCI3quujlkty/HdM+JjSxVzW2aZjlvhLk
-	XpVFnbixpZE33//74D6UW02J123DIe6jZe3rohBLNhCfYyHiZXNrx8nZzfLmeAUJZkbmjYqkndp9f
-	khDcyoGR2AJYJzLUqI/KBi18LfpKfdU0uErmnPvuRnVULIUpXoxLI8H4XyzPIlvZ9imwrYQ8mQRhS
-	pHeEGChSwjIN5KAZEsrzAu2iwNZwUFGhtfsmjBwB9AoU+KWKGxYPmPjPxMhpTp9PUskfEgEV40Qfj
-	K+2FW12Q==;
+	bh=sBLTNe0dPV2948Ph8cctjOdKUh4uqICkKtZ2Foc9dZw=; b=Qgs07iYsOUSqKgwDB7tTHf/EO1
+	h53U3mYAoFgwV5pceS+AN7KwuCWyFltHikh9QN+WGeATYZJlIYuHPYX+1Nr6DEOpNaHQrNBjerEHX
+	CWX0h3LIF0fVaFWnkKBhna56Vx4JmM/9f0VpWqspAAePALfyg51eWELCHjfq+cPFsZxalqdNNeecy
+	48QdfLvr9LuSmNR4JV+Qku6LGVaYP/vB69thZVT1z8c0XOeZ6cCopTp8MnPWpwR/Nv+Ajz32187Ay
+	ToIhMRwi6UJb9U5Oa2p6y/bFbbrhR4Tn/jIXJ5yOxhtSKS9YzNVhSQVHC7Kw4tD87z0DI8eGGhSH/
+	J+XEerig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rabE9-0000000GIYf-0Uis;
-	Thu, 15 Feb 2024 12:52:33 +0000
+	id 1rabGJ-0000000GJ0P-3PXY;
+	Thu, 15 Feb 2024 12:54:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rabE5-0000000GIY4-3tl4
+	id 1rabGH-0000000GJ01-0nmo
 	for barebox@lists.infradead.org;
-	Thu, 15 Feb 2024 12:52:31 +0000
+	Thu, 15 Feb 2024 12:54:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1rabE4-0004Hs-QA; Thu, 15 Feb 2024 13:52:28 +0100
+	id 1rabGG-0004UX-1p; Thu, 15 Feb 2024 13:54:44 +0100
 Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1rabE4-000t6w-Dq; Thu, 15 Feb 2024 13:52:28 +0100
+	id 1rabGF-000t78-Lp; Thu, 15 Feb 2024 13:54:43 +0100
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1rabE4-00A22V-17;
-	Thu, 15 Feb 2024 13:52:28 +0100
-Date: Thu, 15 Feb 2024 13:52:28 +0100
+	id 1rabGF-00A255-1v;
+	Thu, 15 Feb 2024 13:54:43 +0100
+Date: Thu, 15 Feb 2024 13:54:43 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <20240215125228.qwikd4yn4q256thw@pengutronix.de>
+Message-ID: <20240215125443.k5abaq425fbndvg2@pengutronix.de>
 References: <20240215074757.960200-1-s.hauer@pengutronix.de>
- <20240215074757.960200-5-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240215074757.960200-5-s.hauer@pengutronix.de>
+In-Reply-To: <20240215074757.960200-1-s.hauer@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240215_045229_988866_43898A77 
-X-CRM114-Status: GOOD (  24.50  )
+X-CRM114-CacheID: sfid-20240215_045445_246500_66070960 
+X-CRM114-Status: GOOD (  13.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,97 +82,32 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 4/7] block: reparse partition table when necessary
+Subject: Re: [PATCH 0/7] Detect partition changes at runtime
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hi Sascha,
+
 On 24-02-15, Sascha Hauer wrote:
-> Call reparse_partition_table() when the partition table may have
-> changed. We detect this by recording if the block device has been
-> written to in the area where the partition table is.
+> With this series barebox can detect partition table changes at runtime
+> and reparse the partition table in that case. With this it's possible
+> for example to write an image to a SD card and mount partitions directly
+> afterwards without restarting barebox.
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  common/block.c  | 30 ++++++++++++++++++++++++++++--
->  include/block.h |  2 ++
->  2 files changed, 30 insertions(+), 2 deletions(-)
+> The fastboot code is also changed to check for existing partitions when
+> they are actually used and no longer during initialization time of the
+> gadget. With this it becomes possible to expose a full device via
+> fastboot and also some not yet existing partitions. When the full device
+> is written to one can then write to a (newly created) partition directly
+> afterwards.
 > 
-> diff --git a/common/block.c b/common/block.c
-> index 3a4a9fb731..007c8bed12 100644
-> --- a/common/block.c
-> +++ b/common/block.c
-> @@ -284,6 +284,17 @@ static ssize_t block_op_write(struct cdev *cdev, const void *buf, size_t count,
->  	blkcnt_t blocks;
->  	int ret;
->  
-> +	/*
-> +	 * When the offset that is written to is within the first two
-> +	 * LBAs then the partition table has changed, reparse the partition
-> +	 * table at close time in this case. A GPT covers more space than
-> +	 * only the first two LBAs, but a CRC of the remaining pieces is
-> +	 * written to LBA1, so LBA1 must change as well when the partioning
-> +	 * is changed.
-> +	 */
-> +	if (offset < 2 * SECTOR_SIZE)
-> +		blk->need_reparse = true;
-> +
->  	if (offset & mask) {
->  		size_t now = BLOCKSIZE(blk) - (offset & mask);
->  		void *iobuf = block_get(blk, block);
-> @@ -335,13 +346,28 @@ static ssize_t block_op_write(struct cdev *cdev, const void *buf, size_t count,
->  static int block_op_flush(struct cdev *cdev)
->  {
->  	struct block_device *blk = cdev->priv;
-> +	int ret;
->  
->  	blk->discard_start = blk->discard_size = 0;
->  
-> -	return writebuffer_flush(blk);
-> +	ret = writebuffer_flush(blk);
-> +
-> +	return ret;
+> The reparsing of the partition table only works when none of the
+> partitions are mounted or otherwise opened. When a partition is open
+> when the partition table changes, then barebox will continue with
+> the old partition table just like Linux does.
 
-This change is not required or do I miss something?
+Finally :) except my three comments fell free to add my:
 
-Regards,
-  Marco
-
->  }
->  
-> -static int block_op_close(struct cdev *cdev) __alias(block_op_flush);
-> +static int block_op_close(struct cdev *cdev)
-> +{
-> +	struct block_device *blk = cdev->priv;
-> +
-> +	block_op_flush(cdev);
-> +
-> +	if (blk->need_reparse) {
-> +		reparse_partition_table(blk);
-> +		blk->need_reparse = false;
-> +	}
-> +
-> +	return 0;
-> +}
->  
->  static int block_op_discard_range(struct cdev *cdev, loff_t count, loff_t offset)
->  {
-> diff --git a/include/block.h b/include/block.h
-> index 44037bd74c..aaaa97400f 100644
-> --- a/include/block.h
-> +++ b/include/block.h
-> @@ -33,6 +33,8 @@ struct block_device {
->  	struct list_head idle_blocks;
->  
->  	struct cdev cdev;
-> +
-> +	bool need_reparse;
->  };
->  
->  extern struct list_head block_device_list;
-> -- 
-> 2.39.2
-> 
-> 
-> 
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
 
 
