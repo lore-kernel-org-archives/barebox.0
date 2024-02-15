@@ -1,67 +1,67 @@
-Delivery-date: Thu, 15 Feb 2024 17:45:14 +0100
+Delivery-date: Thu, 15 Feb 2024 17:45:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raerK-007dlI-1Q
+	id 1raerN-007dlp-2r
 	for lore@lore.pengutronix.de;
-	Thu, 15 Feb 2024 17:45:14 +0100
+	Thu, 15 Feb 2024 17:45:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raerJ-0006rb-So
-	for lore@pengutronix.de; Thu, 15 Feb 2024 17:45:14 +0100
+	id 1raerN-0006sm-2v
+	for lore@pengutronix.de; Thu, 15 Feb 2024 17:45:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ne5oEYOMgZ7Rvb4sIhJwb40x868zLMNmOI6s/UEsKQQ=; b=T/YeED63smMDHTLlGWdYS7XFxg
-	kjvRE1NlmwZ+RLpkDtVqqsgGaEtOivrnWuWeo2tM2a1h3Cuw9SY1zS1KP9+T98/8053IC/9otY1Mn
-	6mYu2eFeszWfX7Lw3R4PtNBtbzuunT1qRrkGbq8I8JX6GGuMbMt8cTtCxfr1nxwWS7k4nAbH7hQci
-	srohnFH8/l1gnBi0Mg1Amc0VtFGr2Wj4wxbbX+3OufL0b1Qq0b/wvAm9rUVR2Wqkc6D6G4UUqWbFk
-	097yP2nrICMcxi7l8vFDWhVZz9hPKa57nDmYVpqodrxFcA7Qen//omsNag9m/emrdFZISf8DlPlw0
-	furuZEUQ==;
+	bh=dXyN6AybgB8C20u6fgES/g1mPnTqx0UFO+lMhUrMShc=; b=r4XRiaC/GFDB7P5M98tzVCB9mP
+	DuHiHuuHj4wxsaQfvvmVpe4BaHIzKo2gs0ApSv1LLc3gcfL7oZ9ew1u3v25Ia92XYUGL7fHYGNcbU
+	T4sN+KJ2DHJaeztUKDh5GlQuTKYFgSeY+MZ/HBwCtzzTt7qPOfSXXJZHa9UHKPDHcjtNqgTDGhvKY
+	dXFyije/b7ar2mqKR0VIdsYrKBkFASgzOVdTry1HWQPE/WbmLWCEJMS80OUxvLArryCvUzRSAl/Yv
+	wEAhPeSWFOmJi/G1GU7ufRMTRhSMj7udX8RsMGQoh64JRbI+m8SKYbQfL4pwBqbQu0kcXTbjY1uy1
+	sRNSUq9w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raeqv-0000000H1gr-1t6l;
-	Thu, 15 Feb 2024 16:44:49 +0000
+	id 1raeqs-0000000H1f0-2E7P;
+	Thu, 15 Feb 2024 16:44:46 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raeqp-0000000H1cO-2hCF
+	id 1raeqp-0000000H1cT-2gti
 	for barebox@lists.infradead.org;
-	Thu, 15 Feb 2024 16:44:45 +0000
+	Thu, 15 Feb 2024 16:44:44 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raeqo-0006dD-Ca; Thu, 15 Feb 2024 17:44:42 +0100
+	id 1raeqo-0006dF-Gw; Thu, 15 Feb 2024 17:44:42 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raeqn-000v41-WC; Thu, 15 Feb 2024 17:44:42 +0100
+	id 1raeqo-000v48-3j; Thu, 15 Feb 2024 17:44:42 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raecn-009YG0-1C;
+	id 1raecn-009YG0-1U;
 	Thu, 15 Feb 2024 17:30:13 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Sam Ravnborg <sam@ravnborg.org>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 15 Feb 2024 17:30:04 +0100
-Message-Id: <20240215163009.2172795-11-a.fatoum@pengutronix.de>
+Date: Thu, 15 Feb 2024 17:30:06 +0100
+Message-Id: <20240215163009.2172795-13-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240215163009.2172795-1-a.fatoum@pengutronix.de>
 References: <20240215163009.2172795-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240215_084443_734631_D7B8C76A 
-X-CRM114-Status: GOOD (  10.99  )
+X-CRM114-CacheID: sfid-20240215_084443_724214_33F315CE 
+X-CRM114-Status: GOOD (  15.63  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,54 +84,101 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 10/15] ARM: dts: AT91: skov-arm9cpu: remove barebox environment on NOR
+Subject: [PATCH v3 12/15] ARM: at91: skov-arm9cpu: configure SMC for NOR flash use
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The NOR-Flash for ARM9CPUs in the field has U-Boot, so it's not a good
-idea to overwrite its environment with barebox'. We'll add a SD-Card
-environment for barebox in recovery case in a later commit, but for now
-remove the NOR flash environment footgun.
+Deployed ARM9CPU's boots from NOR, not NAND. Replace the EBI NAND configuration
+taken from the EK with one appropriate for the NOR chip we have.
+
+As this needs to happen earlier than the cfi-flash driver probe, we also
+move the board code to coredevice initlevel.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v3:
   - new patch
 ---
- arch/arm/dts/at91-skov-arm9cpu.dts | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ arch/arm/boards/skov-arm9cpu/board.c | 45 +++++++++++++++-------------
+ 1 file changed, 24 insertions(+), 21 deletions(-)
 
-diff --git a/arch/arm/dts/at91-skov-arm9cpu.dts b/arch/arm/dts/at91-skov-arm9cpu.dts
-index 5e2541f2fa76..ac1d5c0c2e6e 100644
---- a/arch/arm/dts/at91-skov-arm9cpu.dts
-+++ b/arch/arm/dts/at91-skov-arm9cpu.dts
-@@ -16,11 +16,6 @@ / {
+diff --git a/arch/arm/boards/skov-arm9cpu/board.c b/arch/arm/boards/skov-arm9cpu/board.c
+index ddf6b68bcc6f..1d0ecb247d8e 100644
+--- a/arch/arm/boards/skov-arm9cpu/board.c
++++ b/arch/arm/boards/skov-arm9cpu/board.c
+@@ -16,23 +16,32 @@
+ #include <mach/at91/hardware.h>
+ #include <mach/at91/iomux.h>
  
- 	chosen {
- 		stdout-path = "serial0:115200n8";
+-static struct sam9_smc_config ek_nand_smc_config = {
+-	.ncs_read_setup		= 0,
+-	.nrd_setup		= 1,
++static struct sam9_smc_config skov_nor_smc_config = {
++	/* Setup time is 2 cycles after the CS signal */
++	.nwe_setup		= 2,
+ 	.ncs_write_setup	= 0,
+-	.nwe_setup		= 1,
++	.nrd_setup		= 2,
++	.ncs_read_setup		= 0,
+ 
+-	.ncs_read_pulse		= 3,
+-	.nrd_pulse		= 3,
+-	.ncs_write_pulse	= 3,
+-	.nwe_pulse		= 3,
++	/* Set pulse long enough - pulse should be a bit shorter than the cycle */
++	.nwe_pulse		= 10,
++	.ncs_write_pulse	= 12,
++	.nrd_pulse		= 10,
++	.ncs_read_pulse		= 12,
+ 
+-	.read_cycle		= 5,
+-	.write_cycle		= 5,
++	/* Set cycle long enougth at least 12 Cycles->120ns plus a little extra */
++	.write_cycle		= 0x13,
++	.read_cycle		= 0x13,
+ 
++	/* Set mode: 16Bit bus width, enable read and write
++	 *   Note: pagemode + 32 byte pages do not work with the 29GL512P flash
++	 */
+ 	.mode			= AT91_SMC_READMODE | AT91_SMC_WRITEMODE |
+-				  AT91_SMC_EXNWMODE_DISABLE,
+-	.tdf_cycles		= 2,
++				  AT91_SMC_EXNWMODE_DISABLE |
++				  AT91_SMC_BAT_WRITE |
++				  AT91_SMC_DBW_16 |
++				  AT91_SMC_TDFMODE,
++	.tdf_cycles		= 1,
+ };
+ 
+ BAREBOX_MAGICVAR(board.mem, "The detected memory size in MiB");
+@@ -47,19 +56,13 @@ static int mem;
+  */
+ static int skov_arm9_probe(struct device *dev)
+ {
+-	unsigned long csa;
 -
--		environment {
--			compatible = "barebox,environment";
--			device-path = &environment_nor;
--		};
- 	};
+ 	add_generic_device("at91sam9-smc", 0, NULL, AT91SAM9263_BASE_SMC0, 0x200,
+ 			   IORESOURCE_MEM, NULL);
+ 	add_generic_device("at91sam9-smc", 1, NULL, AT91SAM9263_BASE_SMC1, 0x200,
+ 			   IORESOURCE_MEM, NULL);
  
- 	flash: nor_flash@10000000 {
-@@ -36,12 +31,12 @@ partitions {
- 			#address-cells = <1>;
- 			#size-cells = <1>;
+-	csa = readl(AT91SAM9263_BASE_MATRIX + AT91SAM9263_MATRIX_EBI0CSA);
+-	csa |= AT91SAM9263_MATRIX_EBI0_CS3A_SMC_SMARTMEDIA;
+-	writel(csa, AT91SAM9263_BASE_MATRIX + AT91SAM9263_MATRIX_EBI0CSA);
+-
+-	/* configure chip-select 3 (NAND) */
+-	sam9_smc_configure(0, 3, &ek_nand_smc_config);
++	/* configure chip-select 0 (NOR) */
++	sam9_smc_configure(0, 0, &skov_nor_smc_config);
  
--			barebox@0 {
-+			u-boot@0 {
- 				label = "bootloader";
- 				reg = <0x00000 0x80000>;
- 			};
- 
--			environment_nor: env@80000 {
-+			env@80000 {
- 				label = "environment";
- 				reg = <0x80000 0x20000>;
- 			};
+ 	mem = at91_get_sdram_size(IOMEM(AT91SAM9263_BASE_SDRAMC0));
+ 	mem = mem / SZ_1M;
+@@ -82,4 +85,4 @@ static struct driver skov_arm9_driver = {
+ 	.probe = skov_arm9_probe,
+ 	.of_compatible = DRV_OF_COMPAT(skov_arm9_ids),
+ };
+-device_platform_driver(skov_arm9_driver);
++coredevice_platform_driver(skov_arm9_driver);
 -- 
 2.39.2
 
