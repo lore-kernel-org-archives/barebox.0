@@ -1,65 +1,67 @@
-Delivery-date: Thu, 15 Feb 2024 11:36:40 +0100
+Delivery-date: Thu, 15 Feb 2024 11:36:49 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raZ6e-007JVV-0R
+	id 1raZ6n-007JWJ-2U
 	for lore@lore.pengutronix.de;
-	Thu, 15 Feb 2024 11:36:40 +0100
+	Thu, 15 Feb 2024 11:36:49 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1raZ6d-0008Dm-FB
-	for lore@pengutronix.de; Thu, 15 Feb 2024 11:36:40 +0100
+	id 1raZ6n-0008Gb-4a
+	for lore@pengutronix.de; Thu, 15 Feb 2024 11:36:49 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Yqdnwy5n96rb/sHGIzRvUliwFrZt2r45uM8hkqy2XyE=; b=wzgSa2QFfHL1OVP/kTmltznHmN
-	Kd16EUBItmXOwkU9+XVr+MIKbrLui2hRkqK5APKEcc0mMkzISLhlod5bqDFfscpKij1GH3XCf8gkC
-	Pb+mkPx4ie24Dh5vkIejWlQItoQLCIThK4qENsnzCTkWKtu+eAphlzKzYU21HedSdtkKxtv1rfwQM
-	Z0+u/VhXWYFK8QaqFU6KMOe4uKs/qrJ1XpPtd3Hl5AM9jzD6pP46DSeWTugFD5ubCt0haafS+Q393
-	i5sSPKOQcwhx+34Q8wsomsUCuS6HtYQALWBbmtxgT517DafQsBgFZFkHs9aIGQXoOEVqTf+sXItHS
-	y076NaEQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=0VrRXNsuijAunntXIJZbN1eIXxfx/1TUPuHd5CCOViA=; b=FRLaaAlDuP03UhsR/g+aCJbS/h
+	hNU9EHTp8HdLoSEe9aFX3MkoP2UEc6v7JQ6za8cXnzk+/ZmDTJB9V9dhtTV9Kqd0aR48OQbeeEkUt
+	n1SkZJ0chL+ob2YbMnefEbOREi0f9Hzv/sYQmzZG6cZdSxyARSIGuX3yVtuIuLzy8IYKxJuJMnXrK
+	g4+k7GNNfOQYHJUN5zHAKfqxs1ZucJuz5mAknILLlYonhu21R8MtJ1xkcj2WylsWZn34YyvEESB/l
+	wivODmkdJtzG1l9S90BdOReMjwS2woZ8pi3F9LqckXixwuZ1/fMjCYszgVJzpTKYHe04zAR54B7i6
+	CvcofFjQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raZ6C-0000000Fnvo-2LMN;
-	Thu, 15 Feb 2024 10:36:12 +0000
+	id 1raZ6K-0000000FnzW-3rO4;
+	Thu, 15 Feb 2024 10:36:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1raZ69-0000000Fnto-2DdV
+	id 1raZ6H-0000000FnxU-2KI2
 	for barebox@lists.infradead.org;
-	Thu, 15 Feb 2024 10:36:10 +0000
+	Thu, 15 Feb 2024 10:36:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raZ60-00084x-Bz; Thu, 15 Feb 2024 11:36:00 +0100
+	id 1raZ60-00084y-Bz; Thu, 15 Feb 2024 11:36:00 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raZ5y-000rje-7m; Thu, 15 Feb 2024 11:35:58 +0100
+	id 1raZ5y-000rjf-9G; Thu, 15 Feb 2024 11:35:58 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1raZ5y-00BmHC-0R;
+	id 1raZ5y-00BmHC-0b;
 	Thu, 15 Feb 2024 11:35:58 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: ske@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 15 Feb 2024 11:33:51 +0100
-Message-Id: <20240215103353.2799723-1-a.fatoum@pengutronix.de>
+Date: Thu, 15 Feb 2024 11:33:52 +0100
+Message-Id: <20240215103353.2799723-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240215103353.2799723-1-a.fatoum@pengutronix.de>
+References: <20240215103353.2799723-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240215_023609_590615_1CE5B6FB 
-X-CRM114-Status: GOOD (  17.96  )
+X-CRM114-CacheID: sfid-20240215_023617_613330_478A283E 
+X-CRM114-Status: GOOD (  10.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,146 +84,140 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/3] driver: make CONFIG_DEBUG_PROBES more useful for removal
+Subject: [PATCH 2/3] drivers: drop simple bus remove in favor of common implementation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When CONFIG_DEBUG_PROBES is enabled, barebox will print a message on
-every device probe and removal. Unfortunately, the removal prints are not
-very useful, because the removal happens in the bus remove function,
-which is often a no-op, but that's not known to driver core.
+Now that driver core will call dev->driver->remove if dev->bus->remove
+is NULL, we cann remove all bus_type::remove functions that do the same.
 
-To make this a bit more useful, let's allow skipping bus remove
-functions like Linux does and only print that a remove is happening if
-either a bus or driver remove function is available.
-
-At present, this doesn't change much, but the follow-up commit will drop
-bus remove functions that only call the driver remove function, which
-will shorten the CONFIG_DEBUG_PROBES output on shutdown a fair bit.
+This has the welcome side effect that devices that device_remove will
+return false when called on a device the neither has a bus remove or
+driver remove function and thus we can skip tracing these calls when
+CONFIG_DEBUG_PROBES is enabled.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/devunbind.c  | 14 +++++++++-----
- drivers/base/driver.c | 28 ++++++++++++++++++----------
- include/driver.h      | 10 ++++++++++
- 3 files changed, 37 insertions(+), 15 deletions(-)
+ drivers/base/platform.c | 7 -------
+ drivers/bus/acpi.c      | 7 -------
+ drivers/i2c/i2c.c       | 7 -------
+ drivers/spi/spi.c       | 7 -------
+ drivers/tee/tee_core.c  | 7 -------
+ 5 files changed, 35 deletions(-)
 
-diff --git a/commands/devunbind.c b/commands/devunbind.c
-index dab7f834db9f..d30193b28527 100644
---- a/commands/devunbind.c
-+++ b/commands/devunbind.c
-@@ -20,9 +20,14 @@ static int do_devunbind(int argc, char *argv[])
- 			break;
- 		case 'l':
- 			list_for_each_entry(dev, &active_device_list, active) {
-+				void *rm_dev;
-+
- 				BUG_ON(!dev->driver);
--				if (dev->bus->remove)
--					printf("%pS(%s, %s)\n", dev->bus->remove,
-+
-+				rm_dev = dev->bus->remove ?: dev->driver->remove;
-+
-+				if (rm_dev)
-+					printf("%pS(%s, %s)\n", rm_dev,
- 					       dev->driver->name, dev_name(dev));
- 			}
- 			return 0;
-@@ -47,13 +52,12 @@ static int do_devunbind(int argc, char *argv[])
- 			continue;
- 		}
- 
--		if (!dev->driver || !dev->bus->remove) {
--			printf("skipping unbound %s\n", argv[i]);
-+		if (!device_remove(dev)) {
-+			printf("no remove callback registered for %s\n", argv[i]);
- 			ret = COMMAND_ERROR;
- 			continue;
- 		}
- 
--		dev->bus->remove(dev);
- 		dev->driver = NULL;
- 		list_del(&dev->active);
- 	}
-diff --git a/drivers/base/driver.c b/drivers/base/driver.c
-index 6548aec9b27b..8bd187eef57f 100644
---- a/drivers/base/driver.c
-+++ b/drivers/base/driver.c
-@@ -280,7 +280,7 @@ int unregister_device(struct device *old_dev)
- 	dev_remove_parameters(old_dev);
- 
- 	if (old_dev->driver)
--		old_dev->bus->remove(old_dev);
-+		device_remove(old_dev);
- 
- 	list_for_each_entry_safe(alias, at, &device_alias_list, list) {
- 		if(alias->dev == old_dev)
-@@ -432,7 +432,7 @@ void unregister_driver(struct driver *drv)
- 
- 	bus_for_each_device(drv->bus, dev) {
- 		if (dev->driver == drv) {
--			drv->bus->remove(dev);
-+			device_remove(dev);
- 			dev->driver = NULL;
- 			list_del(&dev->active);
- 			INIT_LIST_HEAD(&dev->active);
-@@ -641,19 +641,27 @@ int dev_add_alias(struct device *dev, const char *fmt, ...)
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index f9954785608b..ac7c473c8c7b 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -22,12 +22,6 @@ static int platform_probe(struct device *dev)
+ 	return dev->driver->probe(dev);
  }
- EXPORT_SYMBOL_GPL(dev_add_alias);
  
-+bool device_remove(struct device *dev)
-+{
-+	if (dev->bus && dev->bus->remove)
-+		dev->bus->remove(dev);
-+	else if (dev->driver->remove)
-+		dev->driver->remove(dev);
-+	else
-+		return false; /* nothing to do */
-+
-+	return true;
-+}
-+EXPORT_SYMBOL_GPL(device_remove);
-+
- static void devices_shutdown(void)
+-static void platform_remove(struct device *dev)
+-{
+-	if (dev->driver->remove)
+-		dev->driver->remove(dev);
+-}
+-
+ int platform_driver_register(struct driver *drv)
  {
- 	struct device *dev;
--	int depth = 0;
+ 	drv->bus = &platform_bus;
+@@ -46,7 +40,6 @@ struct bus_type platform_bus = {
+ 	.name = "platform",
+ 	.match = device_match,
+ 	.probe = platform_probe,
+-	.remove = platform_remove,
+ };
  
- 	list_for_each_entry(dev, &active_device_list, active) {
--		if (dev->bus->remove) {
--			depth++;
--			pr_report_probe("%*sremove-> %s\n", depth * 4, "", dev_name(dev));
--			dev->bus->remove(dev);
--			dev->driver = NULL;
--			depth--;
--		}
-+		if (device_remove(dev))
-+			pr_report_probe("%*sremove-> %s\n", 1 * 4, "", dev_name(dev));
-+		dev->driver = NULL;
- 	}
+ static int platform_init(void)
+diff --git a/drivers/bus/acpi.c b/drivers/bus/acpi.c
+index ac034cce4569..cf85e886d0a2 100644
+--- a/drivers/bus/acpi.c
++++ b/drivers/bus/acpi.c
+@@ -210,17 +210,10 @@ static int acpi_bus_probe(struct device *dev)
+ 	return dev->driver->probe(dev);
  }
- devshutdown_exitcall(devices_shutdown);
-diff --git a/include/driver.h b/include/driver.h
-index 638426b9606a..b7c950620bca 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -166,6 +166,16 @@ int register_device(struct device *);
-  */
- int device_probe(struct device *dev);
  
-+/**
-+ * device_remove - Remove a device from its bus and driver
-+ *
-+ * @dev: Device
-+ *
-+ * Returns true if there was any bus or driver specific removal
-+ * code that was executed and false if the function was a no-op.
-+ */
-+bool device_remove(struct device *dev);
-+
- /* detect devices attached to this device (cards, disks,...) */
- int device_detect(struct device *dev);
- int device_detect_by_name(const char *devname);
+-static void acpi_bus_remove(struct device *dev)
+-{
+-	if (dev->driver->remove)
+-		dev->driver->remove(dev);
+-}
+-
+ struct bus_type acpi_bus = {
+ 	.name = "acpi",
+ 	.match = acpi_bus_match,
+ 	.probe = acpi_bus_probe,
+-	.remove = acpi_bus_remove,
+ };
+ 
+ static int efi_acpi_probe(void)
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index 70d1b810c1c3..d518bf2c9dcf 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -748,17 +748,10 @@ static int i2c_probe(struct device *dev)
+ 	return dev->driver->probe(dev);
+ }
+ 
+-static void i2c_remove(struct device *dev)
+-{
+-	if (dev->driver->remove)
+-		dev->driver->remove(dev);
+-}
+-
+ struct bus_type i2c_bus = {
+ 	.name = "i2c",
+ 	.match = device_match_of_modalias,
+ 	.probe = i2c_probe,
+-	.remove = i2c_remove,
+ };
+ 
+ static int i2c_bus_init(void)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index 83f2b0ee1b2e..fd9c8da17100 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -417,17 +417,10 @@ static int spi_probe(struct device *dev)
+ 	return dev->driver->probe(dev);
+ }
+ 
+-static void spi_remove(struct device *dev)
+-{
+-	if (dev->driver->remove)
+-		dev->driver->remove(dev);
+-}
+-
+ struct bus_type spi_bus = {
+ 	.name = "spi",
+ 	.match = device_match_of_modalias,
+ 	.probe = spi_probe,
+-	.remove = spi_remove,
+ };
+ 
+ static int spi_bus_init(void)
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index 0bf645a310eb..36c6210b8b1d 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -775,17 +775,10 @@ static int tee_bus_probe(struct device *dev)
+ 	return dev->driver->probe(dev);
+ }
+ 
+-static void tee_bus_remove(struct device *dev)
+-{
+-	if (dev->driver->remove)
+-		dev->driver->remove(dev);
+-}
+-
+ struct bus_type tee_bus_type = {
+ 	.name		= "tee",
+ 	.match		= tee_client_device_match,
+ 	.probe		= tee_bus_probe,
+-	.remove		= tee_bus_remove,
+ };
+ EXPORT_SYMBOL_GPL(tee_bus_type);
+ 
 -- 
 2.39.2
 
