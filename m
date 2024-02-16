@@ -1,67 +1,70 @@
-Delivery-date: Fri, 16 Feb 2024 13:00:30 +0100
+Delivery-date: Fri, 16 Feb 2024 13:02:07 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rawtJ-008WsU-39
+	id 1rawut-008Wwy-0s
 	for lore@lore.pengutronix.de;
-	Fri, 16 Feb 2024 13:00:29 +0100
+	Fri, 16 Feb 2024 13:02:07 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rawtJ-0005m2-Dj
-	for lore@pengutronix.de; Fri, 16 Feb 2024 13:00:29 +0100
+	id 1rawus-0005wX-Nd
+	for lore@pengutronix.de; Fri, 16 Feb 2024 13:02:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MyCUHxqxJZxKfT+tz3S2mmsePoPBUtFe+44HefVrPpE=; b=fh+vDkTGRUKPqxkbqfpSN831oH
-	6+COlyjkjpdhKdJVQwzD/sbLwC/JlwNqGvG12dDwxad7xYJb4vzOSE20W/4147gi6/OavyoRtssH9
-	2d0F93pMnOHp7rhxVpku0DhaHFvwHdJNDPvMc5wKXd1c/QreLszn4mV9LYh3wbPK7Wa6SsmMsKPGu
-	jUnmhYTmJWyK9/drMsqYZbwbkJ2GBLEr8zfghoSVKS4x+elIw1r/MxE3sY1t1tt9wjzhp8g4YYQQH
-	cIvnxTMI85qRXZ2du+M8gLDFCQh3ygrnX4ENbgQAbXGLvho4BPaNmcEfIK7gOj5GyfSI+xMERAAzz
-	EN9nR2gw==;
+	bh=21qH2SfFn+k0wbVnBTzzSGjwMst6IuVE0t/xvIB5rkg=; b=MIUMZ6+c7HkojkvSJ0FQGSjQwT
+	FSloHK/kEa9nKTdNg8CuSXpRovfF1MfZK2XIk/KVxgDAcubMGCMlGQiM7ne8987hnoN5kfvC3exeZ
+	EO6XqJObhg42ilTpkUCdT3wfiGHhu7t7cag5qmV3Y6Ya7kJys1OCoLGkkg8cguwtwMg46QvvTeuJY
+	sGN8Rkddyv/Kez3CJ6pkpyexdynmOaMTpQ5622IBD1yV0m+B7XDPs0ZD2tcR6DwzNpkRYAl2Z2xtF
+	mjKibgaD0m+i5QiKx9bq1Jtg4WlB7rCEojdwu/S2fXE/ei1lhDUEuGCeMdKZ7+1lkuKttzeOD948S
+	EdkwTxAQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rawsl-00000002EL5-1Yuo;
-	Fri, 16 Feb 2024 11:59:55 +0000
+	id 1rawuL-00000002Ecu-0s9B;
+	Fri, 16 Feb 2024 12:01:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rawsi-00000002EKA-15Ny
+	id 1rawuI-00000002EcQ-1sNn
 	for barebox@lists.infradead.org;
-	Fri, 16 Feb 2024 11:59:53 +0000
+	Fri, 16 Feb 2024 12:01:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rawsh-0005i4-2S; Fri, 16 Feb 2024 12:59:51 +0100
+	id 1rawuH-0005t4-9w; Fri, 16 Feb 2024 13:01:29 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rawsg-00149w-ML; Fri, 16 Feb 2024 12:59:50 +0100
+	id 1rawuG-0014AA-Gk; Fri, 16 Feb 2024 13:01:28 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rawsg-005uXr-21;
-	Fri, 16 Feb 2024 12:59:50 +0100
+	id 1rawuG-005ub4-1P;
+	Fri, 16 Feb 2024 13:01:28 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: ske@pengutronix.de
-In-Reply-To: <20240215103353.2799723-1-a.fatoum@pengutronix.de>
-References: <20240215103353.2799723-1-a.fatoum@pengutronix.de>
-Message-Id: <170808479062.1408984.10210208315888412124.b4-ty@pengutronix.de>
-Date: Fri, 16 Feb 2024 12:59:50 +0100
+To: barebox@lists.infradead.org, 
+ Pierre-Olivier Huard <pierre-olivier.huard@rtone.fr>
+Cc: sebastien.bourdelin@rtone.fr, a.fatoum@pengutronix.de, 
+ oss-contrib@rtone.fr
+In-Reply-To: <20240215120109.23242-1-pierre-olivier.huard@rtone.fr>
+References: <20240215120109.23242-1-pierre-olivier.huard@rtone.fr>
+Message-Id: <170808488842.1409181.11265524906828009460.b4-ty@pengutronix.de>
+Date: Fri, 16 Feb 2024 13:01:28 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_035952_329309_1FF7E142 
-X-CRM114-Status: GOOD (  11.28  )
+X-CRM114-CacheID: sfid-20240216_040130_517554_91F34272 
+X-CRM114-Status: UNSURE (   8.94  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,32 +87,25 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/3] driver: make CONFIG_DEBUG_PROBES more useful for
- removal
+Subject: Re: [PATCH 1/1] ARM: dts: rpi4: add DT for CM4S
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 15 Feb 2024 11:33:51 +0100, Ahmad Fatoum wrote:
-> When CONFIG_DEBUG_PROBES is enabled, barebox will print a message on
-> every device probe and removal. Unfortunately, the removal prints are not
-> very useful, because the removal happens in the bus remove function,
-> which is often a no-op, but that's not known to driver core.
+On Thu, 15 Feb 2024 13:01:09 +0100, Pierre-Olivier Huard wrote:
+> CM4S is close to the CM4, and thus is herited from it, with some
+> minor changes:
 > 
-> To make this a bit more useful, let's allow skipping bus remove
-> functions like Linux does and only print that a remove is happening if
-> either a bus or driver remove function is available.
+> * The uart1 node (mini UART) does not need the clock to be forced to
+>   500MHz.
+> * The compatible field needs to be updated to match the CM4S
 > 
 > [...]
 
 Applied, thanks!
 
-[1/3] driver: make CONFIG_DEBUG_PROBES more useful for removal
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4d515afe56eb (link may not be stable)
-[2/3] drivers: drop simple bus remove in favor of common implementation
-      https://git.pengutronix.de/cgit/barebox/commit/?id=e8ec515026fd (link may not be stable)
-[3/3] firmware: arm_scmi: call device driver remove if defined
-      https://git.pengutronix.de/cgit/barebox/commit/?id=59aab0bebb1b (link may not be stable)
+[1/1] ARM: dts: rpi4: add DT for CM4S
+      https://git.pengutronix.de/cgit/barebox/commit/?id=749e11023eb8 (link may not be stable)
 
 Best regards,
 -- 
