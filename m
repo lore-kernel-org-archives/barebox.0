@@ -1,71 +1,71 @@
-Delivery-date: Fri, 16 Feb 2024 12:16:06 +0100
+Delivery-date: Fri, 16 Feb 2024 12:16:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rawCM-008Ujx-01
+	id 1rawD4-008Um2-2a
 	for lore@lore.pengutronix.de;
-	Fri, 16 Feb 2024 12:16:06 +0100
+	Fri, 16 Feb 2024 12:16:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rawCL-0002I6-As
-	for lore@pengutronix.de; Fri, 16 Feb 2024 12:16:05 +0100
+	id 1rawD4-0002O3-6D
+	for lore@pengutronix.de; Fri, 16 Feb 2024 12:16:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fAwtxy8PDqpF4LTDkut8UmMtrYVhuu4LmfJH1cXh03E=; b=DoLy0x/Lax9g+BKmQKTisdHSuq
-	SeX3sDcc5a+M0QN7W3Blebw8vYcdEP38/+7QH7poDodPeFSRmnN9oj1ZNRp8dgakZwrsiFYfSGB/0
-	O6V8y5XI00+QIVawjrKOigST1ZNuMS/vEG27zDWFg2pR9Gkg7P3sPok9uU0Mo4z7Cp3NPOxiG59cW
-	mOIUFUf+ponfmSkeMLQhgZoG6reKmP0NReN4yix3+hJAPT87BXRLZev2qi9KW/nnMAkywyX5VPUBV
-	eO0hPGy4E70K/KHF2i6FOJ0XwxPG3tenMsqnszg89aSN5erOTXG8CGjrnsSE7vA8qnOT3YjhZqlxE
-	Y1bi4RNA==;
+	bh=2BGp5JATvHanHjSvM9v6wXPJZZjyuW8xF6tw3nNGRWM=; b=2P/ro/OIjsTWZSS4gOWc6uhEMp
+	H4YODGLk/TLoBVqu41m2iVKiJkJulRBR9L4wl7grm3QtK4M4HMiaQh9WFcfJRjfzv7lyKAZaxeYgr
+	moi051Ft/TQ+loAnAXTHhSmQIJJmeeKL+zCs/EVmG9qt0aeQb+NQ8dDt9nc1VG3gNUc3w+umNtOj5
+	sHlj8Q21aTOBP6BBYnMb6OaIGvFF4mwkradfAsHbnm0otTJKmcBFfDpdNQI7GFGi8J5q06dVv/bAG
+	+adIc5ND/F1XHiRvkhix9BjaUNdVoTswmw4v852dtd1HaxUYGGp3Xi428RgeOP7JsU/4zj3FT61Yz
+	jyYmkY1w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rawBw-000000026xq-0l5R;
-	Fri, 16 Feb 2024 11:15:40 +0000
+	id 1rawCZ-000000027A9-2pd4;
+	Fri, 16 Feb 2024 11:16:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rawBt-000000026xC-0hZl
+	id 1rawCX-0000000279F-1TuW
 	for barebox@lists.infradead.org;
-	Fri, 16 Feb 2024 11:15:38 +0000
+	Fri, 16 Feb 2024 11:16:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rawBr-0002CZ-VN; Fri, 16 Feb 2024 12:15:35 +0100
+	id 1rawCW-0002JA-5F; Fri, 16 Feb 2024 12:16:16 +0100
 Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rawBr-0013zT-Id; Fri, 16 Feb 2024 12:15:35 +0100
+	id 1rawCV-0013zX-Ou; Fri, 16 Feb 2024 12:16:15 +0100
 Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <sha@pengutronix.de>)
-	id 1rawBr-00BU5Q-1b;
-	Fri, 16 Feb 2024 12:15:35 +0100
-Date: Fri, 16 Feb 2024 12:15:35 +0100
+	id 1rawCV-00BU65-2E;
+	Fri, 16 Feb 2024 12:16:15 +0100
+Date: Fri, 16 Feb 2024 12:16:15 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Marco Felsch <m.felsch@pengutronix.de>
 Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <Zc9D1yeoSWF0qp5z@pengutronix.de>
+Message-ID: <Zc9D_9XNHXqYkBqP@pengutronix.de>
 References: <20240215074757.960200-1-s.hauer@pengutronix.de>
- <20240215074757.960200-8-s.hauer@pengutronix.de>
- <20240215125118.55hi2ftx3k34rufa@pengutronix.de>
+ <20240215074757.960200-5-s.hauer@pengutronix.de>
+ <20240215125228.qwikd4yn4q256thw@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240215125118.55hi2ftx3k34rufa@pengutronix.de>
+In-Reply-To: <20240215125228.qwikd4yn4q256thw@pengutronix.de>
 X-Sent-From: Pengutronix Hildesheim
 X-URL: http://www.pengutronix.de/
 X-Accept-Language: de,en
 X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240216_031537_233789_78917F05 
-X-CRM114-Status: GOOD (  26.61  )
+X-CRM114-CacheID: sfid-20240216_031617_411326_B45DC3A3 
+X-CRM114-Status: GOOD (  27.75  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,95 +88,60 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 7/7] fastboot: evaluate fastboot partitions when used
+Subject: Re: [PATCH 4/7] block: reparse partition table when necessary
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Feb 15, 2024 at 01:51:18PM +0100, Marco Felsch wrote:
+On Thu, Feb 15, 2024 at 01:52:28PM +0100, Marco Felsch wrote:
 > On 24-02-15, Sascha Hauer wrote:
-> > So far we have evaluated the fastboot partition description during
-> > initialization of the fastboot gadget. Let's make this more flexible
-> > and parse it when actually needed.
-> > This gives us the possibility to first write an image including a
-> > partition table to a disk and afterwards write an image to a single
-> > partition created by the first whole disk write.
+> > Call reparse_partition_table() when the partition table may have
+> > changed. We detect this by recording if the block device has been
+> > written to in the area where the partition table is.
 > > 
 > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > > ---
-> >  common/fastboot.c | 40 +++++++++++++++++++++++++---------------
-> >  1 file changed, 25 insertions(+), 15 deletions(-)
+> >  common/block.c  | 30 ++++++++++++++++++++++++++++--
+> >  include/block.h |  2 ++
+> >  2 files changed, 30 insertions(+), 2 deletions(-)
 > > 
-> > diff --git a/common/fastboot.c b/common/fastboot.c
-> > index f41c02a576..acf138af8a 100644
-> > --- a/common/fastboot.c
-> > +++ b/common/fastboot.c
-> > @@ -80,7 +80,7 @@ static struct fb_variable *fb_addvar(struct fastboot *fb, struct list_head *list
-> >  	return var;
-> >  }
+> > diff --git a/common/block.c b/common/block.c
+> > index 3a4a9fb731..007c8bed12 100644
+> > --- a/common/block.c
+> > +++ b/common/block.c
+> > @@ -284,6 +284,17 @@ static ssize_t block_op_write(struct cdev *cdev, const void *buf, size_t count,
+> >  	blkcnt_t blocks;
+> >  	int ret;
 > >  
-> > -static int fastboot_add_partition_variables(struct fastboot *fb,
-> > +static int fastboot_add_partition_variables(struct fastboot *fb, struct list_head *list,
-> >  		struct file_list_entry *fentry)
-> >  {
-> >  	struct stat s;
-> > @@ -152,9 +152,9 @@ static int fastboot_add_partition_variables(struct fastboot *fb,
-> >  	if (ret)
-> >  		return ret;
-> >  
-> > -	var = fb_addvar(fb, &fb->variables, "partition-size:%s", fentry->name);
-> > +	var = fb_addvar(fb, list, "partition-size:%s", fentry->name);
-> >  	fb_setvar(var, "%08zx", size);
-> > -	var = fb_addvar(fb, &fb->variables, "partition-type:%s", fentry->name);
-> > +	var = fb_addvar(fb, list, "partition-type:%s", fentry->name);
-> >  	fb_setvar(var, "%s", type);
-> >  
-> >  	return ret;
-> > @@ -162,8 +162,6 @@ static int fastboot_add_partition_variables(struct fastboot *fb,
-> >  
-> >  int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
-> >  {
-> > -	int ret;
-> > -	struct file_list_entry *fentry;
-> >  	struct fb_variable *var;
-> >  
-> >  	INIT_LIST_HEAD(&fb->variables);
-> > @@ -186,12 +184,6 @@ int fastboot_generic_init(struct fastboot *fb, bool export_bbu)
-> >  	if (export_bbu)
-> >  		bbu_append_handlers_to_file_list(fb->files);
-> >  
-> > -	file_list_for_each_entry(fb->files, fentry) {
-> > -		ret = fastboot_add_partition_variables(fb, fentry);
-> > -		if (ret)
-> > -			return ret;
-> > -	}
-> > -
-> >  	return 0;
-> >  }
-> >  
-> > @@ -305,26 +297,44 @@ static int strcmp_l1(const char *s1, const char *s2)
-> >  static void cb_getvar(struct fastboot *fb, const char *cmd)
-> >  {
-> >  	struct fb_variable *var;
-> > +	LIST_HEAD(partition_list);
-> > +	struct file_list_entry *fentry;
+> > +	/*
+> > +	 * When the offset that is written to is within the first two
+> > +	 * LBAs then the partition table has changed, reparse the partition
+> > +	 * table at close time in this case. A GPT covers more space than
+> > +	 * only the first two LBAs, but a CRC of the remaining pieces is
+> > +	 * written to LBA1, so LBA1 must change as well when the partioning
+> > +	 * is changed.
+> > +	 */
+> > +	if (offset < 2 * SECTOR_SIZE)
+> > +		blk->need_reparse = true;
 > > +
-> > +	file_list_for_each_entry(fb->files, fentry)
-> > +		fastboot_add_partition_variables(fb, &partition_list, fentry);
+> >  	if (offset & mask) {
+> >  		size_t now = BLOCKSIZE(blk) - (offset & mask);
+> >  		void *iobuf = block_get(blk, block);
+> > @@ -335,13 +346,28 @@ static ssize_t block_op_write(struct cdev *cdev, const void *buf, size_t count,
+> >  static int block_op_flush(struct cdev *cdev)
+> >  {
+> >  	struct block_device *blk = cdev->priv;
+> > +	int ret;
+> >  
+> >  	blk->discard_start = blk->discard_size = 0;
+> >  
+> > -	return writebuffer_flush(blk);
+> > +	ret = writebuffer_flush(blk);
+> > +
+> > +	return ret;
 > 
-> Albeit we can ignore it, I would check the return code and print a
-> warning like:
-> 
-> 	file_list_for_each_entry(fb->files, fentry) {
-> 		int ret;
-> 
-> 		ret = fastboot_add_partition_variables(fb, &partition_list, fentry);
-> 		if (ret) {
-> 			pr_warn("Failed to add partition variables");
-> 			return;
-> 		}
-> 	}
+> This change is not required or do I miss something?
 
-Yes, did it like this.
+Fixed, thanks
 
 Sascha
 
