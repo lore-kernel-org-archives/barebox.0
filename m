@@ -1,59 +1,73 @@
-Delivery-date: Sat, 17 Feb 2024 11:04:17 +0100
+Delivery-date: Sat, 17 Feb 2024 11:19:33 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rbHYP-009gK1-0T
+	id 1rbHnA-009h3J-00
 	for lore@lore.pengutronix.de;
-	Sat, 17 Feb 2024 11:04:17 +0100
+	Sat, 17 Feb 2024 11:19:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rbHYO-0005NB-EP
-	for lore@pengutronix.de; Sat, 17 Feb 2024 11:04:17 +0100
+	id 1rbHn9-0005nI-7w
+	for lore@pengutronix.de; Sat, 17 Feb 2024 11:19:31 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ojquq6lernQpxAPbdWNHaNGkrMAq7kWnCqVIOjEeT5M=; b=VJq2fiK351zTP8mS2kBIN0+AMI
-	tL4dGocLa+tevjg4t36Um72GTjhLfySr//K/7PxgyoXghvpM8X/XzBycLbi51sU3q75zArYVhKcD6
-	63hCVor2esRltB+KAm1PXCmUQ4HYNtk07oL0NbBgAH877lMBQJQlzsdMLdeqsq262gQJt06EITnj2
-	gpqXgNdZgITp+2VuS/smPx/NlymqpUCOdBNYmlRbjJUiO64S4+MLrb9s+4LIqdM0T6eaSZZY0nGP0
-	SAg+e7xIn3KXgcwaP1kRNq7CeCcrdBMTL7ouGJo89ixr7drYrfGJ+n782W/HNOYuaTG/e+8gISVKr
-	DEjUsQZw==;
+	bh=dLCKq95/GKoOCoC9gmbGgX+xc/EOB2gUzIxSVavK56w=; b=Vz21xdINrHB1YH7TX+JiJco7dg
+	J7Va3knBJ5vxyFpxvI1h8UJNXmVqOMCrYQiTt02reKYWUUQCKmMgQcI3SMeoluM2wgmlT+oQqTILF
+	sUdWYX78PsGBHc/HUPki9BBDCnx0/X5pZvhMNyfbxDxn8kbBhnEuO+GjbnNfLa3HKcQLytG4alqjm
+	5z5HRDRRKMctfgYXrLTVyj6RUfseQvQrAIaJ7c8/YWCZr3SIrbMeM9Cxh7gLYBhEjRfCPEDhYehqJ
+	tQA2OOW4hfguflv7rQJvkkryAdwyGkNcrHgZg5+8P9Mr/a/GKhN9t69iA+R2ip2Q+y0YCL7owTVDY
+	YtaswCKw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rbHY4-00000005HgM-385Q;
-	Sat, 17 Feb 2024 10:03:56 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
+	id 1rbHmd-00000005LOL-3RBX;
+	Sat, 17 Feb 2024 10:18:59 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rbGPa-00000004zgi-2R7s
+	id 1rbGoO-000000056Bg-1loV
+	for barebox@bombadil.infradead.org;
+	Sat, 17 Feb 2024 09:16:45 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:
+	Sender:Reply-To:Content-ID:Content-Description;
+	bh=dLCKq95/GKoOCoC9gmbGgX+xc/EOB2gUzIxSVavK56w=; b=hGW1VQubfbsgIKf+bG/AUfuijt
+	JrCGYDxNAn8IuKhO8vKZBa3xQBcchLC6urCrbUfoil4yBql40bFURY5g7v0PKYG00o8hY+oazLlIt
+	GJkbWKstPqQ/X1RHEhkLkfnbY0/ng6Emis9y7peWbW9kPleREVmGf7T4peCa0Q6thVh8fWbzGP5c+
+	LYbXegfsY3DHOVhXkUVIM6mAFwRpjG1yOUIaU0yAp1IOcGuhSTglmtD2AKsPlKHBVnfA75Xb0UnTy
+	h7uc29WvkwjEIuma1el/MpaU5UJ6VfcXGoWN5nx6QVu579JzHVNMTbPZpaOUsydvq0+9o13SodJGx
+	pTrck94w==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rbGoE-00000000HgI-0P3b
 	for barebox@lists.infradead.org;
-	Sat, 17 Feb 2024 08:51:08 +0000
+	Sat, 17 Feb 2024 09:16:40 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rbGPX-0003W0-92; Sat, 17 Feb 2024 09:51:03 +0100
-Message-ID: <90de314f-b7a7-4b49-8c72-ec45aa3d38e2@pengutronix.de>
-Date: Sat, 17 Feb 2024 09:51:02 +0100
+	id 1rbGoD-0004dm-Ik; Sat, 17 Feb 2024 10:16:33 +0100
+Message-ID: <b67edc68-b41b-4220-bdd0-2e30f09ce56f@pengutronix.de>
+Date: Sat, 17 Feb 2024 10:16:33 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
-To: Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Dan Shelton <dan.f.shelton@gmail.com>, barebox@lists.infradead.org
-References: <CAAvCNcCZhS8mkvdgcJ2L-eiur+OxgWEXRLnadO_HFyHfSi7WFA@mail.gmail.com>
- <a154ae13-86e1-4c2b-9c38-3774fde6a6c8@pengutronix.de>
- <20240205125900.c4b182f57b6efe0152beee24@gmail.com>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20240216220649.2328345-1-a.fatoum@pengutronix.de>
+ <20240216230237.7fk6luetjyu7nwbo@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240205125900.c4b182f57b6efe0152beee24@gmail.com>
+In-Reply-To: <20240216230237.7fk6luetjyu7nwbo@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240217_005106_664920_B5B57189 
-X-CRM114-Status: GOOD (  24.64  )
+X-CRM114-CacheID: sfid-20240217_091638_490141_9ACCF1DC 
+X-CRM114-Status: GOOD (  33.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,95 +88,106 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: NFSv4 boot support?
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 1/2] of: platform: return -EPROBE_DEFER when ensuring
+ probe with driver missing
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Antony,
+Hello Marco,
 
-On 05.02.24 10:59, Antony Pavlov wrote:
-> On Wed, 31 Jan 2024 22:37:50 +0100
-> Ahmad Fatoum <a.fatoum@pengutronix.de> wrote:
+On 17.02.24 00:02, Marco Felsch wrote:
+> Hi Ahmad,
 > 
-> Hi All!
-> 
->> Hello Dan,
+> On 24-02-16, Ahmad Fatoum wrote:
+>> -ENODEV is a bad choice for an error code for of_device_ensure_probed.
 >>
->> On 31.01.24 22:03, Dan Shelton wrote:
->>> Hello!
->>>
->>> Does barebox support booting from a NFSv4 filesystem, e.g. boot from
->>> NFSv4 filesystem into a Linux NFSv4 netroot (diskless machine)?
+>> The function is either called from board code or from driver frameworks,
+>> which usually just propagate the error code with unintended
+>> consequences:
 >>
->> The barebox network stack only does UDP/IP. There have been attempts to
->> bring a TCP stack into barebox, but none have so far succeeded to
->> make it mainline. This is a hard requirement before we can consider
->> supporting NFSv4. I hope that lwIP could fill this gap in the future,
->> but no one is actively continuing this work as far as I am aware[1].
+>>   - A board driver probe function returning -ENODEV is silently skipped
+>>
+>>   - A driver framework function returning -ENODEV is often interpreted
+>>     to mean that an optional resource is not specified (e.g. in DT).
+>>
+>> In both cases, the user isn't provided an error message and wrong
+>> behavior can crop up later. In my case, the XHCI driver would time out,
+>> because phy_get propagated of_device_ensure_probed's -ENODEV, which was
+>> understood to mean that no PHY is needed and not that the PHY is
+>> specified in the DT, but no driver was bound to it.
+>>
+>> Instead of -ENODEV, let's thus return -EPROBE_DEFER. This can be
+>> propagated up to the driver core, which on a deep probe system (the only
+>> ones where of_device_ensure_probed is not a no-op) will print a fat red
+>> error message. We could achieve the same with some other error code, but
 > 
-> I have started integration on picotcp into barebox in 2015, see
->   https://lore.barebox.org/barebox/1436991230-14251-10-git-send-email-antonynpavlov@gmail.com/T/
+> This big fat error should indicate that something went really wrong.
+
+Having a dependency on a device without a driver is something that shouldn't
+happen, so a big fat error is appropriate.
+
 > 
-> At the moment I have WIP barebox-v2023.11 with integrated picotcp 2.1:
+>> -EPROBE_DEFER is what a non-deep-probe system would return when probes
+>> are deferred indefinitely, so symmetry in the deep probe case fits well.
 > 
->   https://github.com/frantony/barebox/tree/20231127.picotcp
+> Albeit I get your point, I'm not very happy to return this error code
+> here since the whole idea of deep-probe was to get rid of EPROBE_DEFER.
 
-Cool. Looking at Oleksij's repo, it was based on your work. How well does
-picotcp work for you? What open issues remain with the patch stack? Is the
-barebox integration actively used in projects?
+I thought that deep probe disables the probe deferral mechanism, but apparently
+returning EPROBE_DEFER still ends up with the device making it into the deferral
+list. Shouldn't we disable the deferral list when deep probe is enabled for a board?
 
-Is https://github.com/tass-belgium/picotcp the official repository? This hasn't
-seen development activity in 5 years. lwIP on the other hand still sees active
-development.
 
-Regarding the license, inclusion of BSD-licensed code is ok. You can check out
-the LICENSES/ subdirectory for the licenses covering barebox.
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>>  drivers/of/platform.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+>> index 060fa3458bd2..664af49d268f 100644
+>> --- a/drivers/of/platform.c
+>> +++ b/drivers/of/platform.c
+>> @@ -504,7 +504,7 @@ int of_device_ensure_probed(struct device_node *np)
+>>  	 * requirements are fulfilled if 'dev->driver' is not NULL.
+>>  	 */
+>>  	if (!dev->driver)
+>> -		return -ENODEV;
+>> +		return -EPROBE_DEFER;
+> 
+> What about a new error code, e.g. ENODRV which is only used once in this
+> function? Additional we can add an error message like:
+> pr_err("No driver found for %pO\n, np); since we know that the driver is
+> missing.
+
+I think EPROBE_DEFER is an appropriate error code. Yes, deep probe is meant
+to replace probe deferral, but if there's no driver, we can't do anything,
+except for indefinite deferral of the probe, so the error code sounds
+appropriate to me. An extra benefit is that kernel drivers being ported
+will often just forward EPROBE_DEFER, while an unknown error code may
+trigger an extra warning or different unwanted behavior.
+
+> If you want to stick with -EPROBE_DEFER you need at least adapt the
+> above comment and the function doc.
+
+Sure, I can do that for v2.
 
 Cheers,
 Ahmad
 
-
-
-
->>> We need NFSv4, because it does not need rpcbind, and combines
->>> filesystem, lockd and other stuff all in one TCP port (2049). Site
->>> policy also does not allow NFSv2/NFSv3, but allows NFSv4.
->>
->> Please note that this only concerns barebox and that kernel nfsroot is
->> unaffected. You can load kernel and device tree over TFTP and supply a
->> suitable command line argument to the kernel to use a NFS root.
->>
->> The standard net boot target does just that:
->> https://elixir.bootlin.com/barebox/v2024.01.0/source/defaultenv/defaultenv-2-base/boot/net
->>
->> It specifies TCP, but hardcodes v3 currently. I guess we could drop the v3 and let
->> the kernel decide on its own what version it will use? If that doesn't work, you can
->> override the file locally in your environment, e.g. via CONFIG_DEFAULT_ENVIRONMENT
->> pointing at a directory that contains a boot/net file with the appropriate
->> changes (or just call your boot target something else like boot/nfsv4).
->>
->> Hope this helps.
->>
->> [1]: Some attempts I am aware of:
->>      https://github.com/a3f/barebox/tree/lwip
->>      https://github.com/olerem/barebox/tree/picotcp-2019.06.29
->>      https://github.com/jmaselbas/barebox/commit/4a987bfdc2ad50c13126dd6290d2477c3fc0c87d
->>
->> Cheers,
->> Ahmad
->>
->>>
->>> Dan
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
->>
 > 
+> Regards,
+>   Marco
+> 
+>>  
+>>  	return 0;
+>>  }
+>> -- 
+>> 2.39.2
+>>
+>>
+>>
 > 
 
 -- 
