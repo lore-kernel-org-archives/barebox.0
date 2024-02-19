@@ -1,81 +1,65 @@
-Delivery-date: Mon, 19 Feb 2024 14:46:15 +0100
+Delivery-date: Mon, 19 Feb 2024 15:52:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rc3yJ-00Eb3W-1F
+	id 1rc50b-00EkUx-1c
 	for lore@lore.pengutronix.de;
-	Mon, 19 Feb 2024 14:46:15 +0100
+	Mon, 19 Feb 2024 15:52:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rc3yI-0002Rd-MW
-	for lore@pengutronix.de; Mon, 19 Feb 2024 14:46:15 +0100
+	id 1rc50a-0007Hn-RZ
+	for lore@pengutronix.de; Mon, 19 Feb 2024 15:52:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xi5Pb2Mp93MlDFY3ldFOAe0KDvl5/E6N0bJWdhf3I9o=; b=BthYBVExb9eWcjURDJA0E6P2ee
-	ajT/csY28vGdC98rBTawws1v08GgIG7w+f3efnLrSmwOQkxMY4at2q9X6KUMAnndIrjZGSxZbxfye
-	n9dWkSE8ksGETdqVC320LTpYVboeQrjAtZbbwTCevayTCsksWWVGeT/16b77XOdItlPs+OZhP6TZI
-	3FP5od2dZ2JFzYHI7rVUXrJnw7wAKNxXhD28XbTLkHiqjozUzNZSgYDG1fpZ6nBDdBkh6x72qOjf+
-	SnbpxBdNw4TaQkFdsZ5qO1VEOe/OtE0tV7dfFIeOpEDt3X3qbRrCCJKcZAz3FESVcyeDjln4BoI23
-	BeA4Lr9Q==;
+	bh=2FsGlizwP9PMnLnDN1dGhcvPw1+LIl4Bb2PNgbrojHQ=; b=iPqne8mmSN7dpN0RSdOnQYE5oS
+	/kbdrKhH645Skp2Xkxepam8xd2zyIexhtnsrb51ybdnKs6VuJZuQEMz0xCOV8tF4Ra14GPoX0X+hb
+	+5l/WPnc+bJMg/OrCgXLHy5d2QTbGdTfV9no+QbB3qOOChccrlXpki/YNr2DmcxnxiFChmnKpA7At
+	14tt9vhQeBJ1pl5YlfjL0LaKXAhDSgEUFJxAi6g+whGsuBPRuDZn1FOfa8CJjm8dLUPI0ilsJbkXI
+	9XVbotNGY+coCaYK7lv3X5f2nFJ184mHSL6U0Xt/M8iMtQuYrrs+7Ur2MP5boJ/HyRfnze4/EjBis
+	9KfGMy0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rc3xr-0000000AiOs-1n2k;
-	Mon, 19 Feb 2024 13:45:47 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rc3xo-0000000AiMq-0ElH
-	for barebox@bombadil.infradead.org;
-	Mon, 19 Feb 2024 13:45:44 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=xi5Pb2Mp93MlDFY3ldFOAe0KDvl5/E6N0bJWdhf3I9o=; b=Dzn7I7mdlfkjyXCP8YlfPgiz3g
-	7cQ28Db8D2aIZAriTfFHhb2+WerMumby8rWeYbIWf9lkMnD77Bh7kQI1N9hM47M7kuyGoEbyyxVJD
-	udF6S6rRN4kK9aNoOELXt1ELWPkVc20zEB3LWBEn5Peryh8OLUBRHKpIalGbfiCFR5JcCr79dev10
-	clu8o+DNPpKGwdrjtNqa09lIXIitUQYWPFaQJ9p8R9VoKGlFwX7gZWJ/Maz/7+20sueDkuBordoN1
-	dYW7YmulXxoTxmOkcsrX9VBD1ZmuL4Bey4jDhsYxKOrzaeJOaifxmRH2eTpw490DkNfhycGyRqyaB
-	csjWUfTA==;
+	id 1rc502-0000000AveM-3Wfe;
+	Mon, 19 Feb 2024 14:52:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rc3xH-00000001GoC-1xR9
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rc4zy-0000000AvcN-3bwa
 	for barebox@lists.infradead.org;
-	Mon, 19 Feb 2024 13:45:39 +0000
+	Mon, 19 Feb 2024 14:52:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rc3xB-0001LA-9E; Mon, 19 Feb 2024 14:45:05 +0100
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rc4zx-0006ld-A4; Mon, 19 Feb 2024 15:52:01 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rc3xA-001f5F-Ss; Mon, 19 Feb 2024 14:45:04 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rc3r1-00GySQ-1L;
-	Mon, 19 Feb 2024 14:38:43 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 19 Feb 2024 14:38:32 +0100
-Message-Id: <20240219133835.3886399-13-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rc4zw-001fcM-Tq; Mon, 19 Feb 2024 15:52:00 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rc4zw-008lEV-2f;
+	Mon, 19 Feb 2024 15:52:00 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 19 Feb 2024 15:51:57 +0100
+Message-Id: <20240219145159.1962618-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240219133835.3886399-1-a.fatoum@pengutronix.de>
-References: <20240219133835.3886399-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20240219145159.1962618-1-s.hauer@pengutronix.de>
+References: <20240219145159.1962618-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240219_134515_722920_E5920080 
-X-CRM114-Status: GOOD (  14.13  )
+X-CRM114-CacheID: sfid-20240219_065202_936932_8C69114E 
+X-CRM114-Status: GOOD (  13.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,110 +82,68 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 12/15] usb: xhci: Better error handling in abort_td()
+Subject: [PATCH 1/3] partitions: efi: Allow to create barebox environment partition
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This ports U-Boot commit 2526cd993272966606cb64b1898343e6963fb1d9:
+We have a GUID for partitions to use for barebox environment. Add an
+option for parted to create these.
 
-| Author:     Hector Martin <marcan@marcan.st>
-| AuthorDate: Sun Oct 29 15:37:39 2023 +0900
-|
-| usb: xhci: Better error handling in abort_td()
-|
-| If the xHC has a problem with our STOP ENDPOINT command, it is likely to
-| return a completion directly instead of first a transfer event for the
-| in-progress transfer. Handle that more gracefully.
-|
-| We still BUG() on the error code, but at least we don't end up timing
-| out on the event and ending up with unexpected event errors.
-|
-| Signed-off-by: Hector Martin <marcan@marcan.st>
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/usb/host/xhci-ring.c | 36 +++++++++++++++++++++++-------------
- drivers/usb/host/xhci.h      |  2 ++
- 2 files changed, 25 insertions(+), 13 deletions(-)
+ commands/parted.c       | 2 +-
+ common/partitions/efi.c | 3 +++
+ include/efi/partition.h | 3 +++
+ 3 files changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index d3f2018422cc..23357a882538 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -470,7 +470,8 @@ union xhci_trb *xhci_wait_for_event(struct xhci_ctrl *ctrl, trb_type expected,
- 			continue;
+diff --git a/commands/parted.c b/commands/parted.c
+index 02bb1cff0c..6af18cdc57 100644
+--- a/commands/parted.c
++++ b/commands/parted.c
+@@ -360,7 +360,7 @@ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("<unit> can be one of \"s\" (sectors), \"B\" (bytes), \"kB\", \"MB\", \"GB\", \"TB\",")
+ BAREBOX_CMD_HELP_TEXT("\"KiB\", \"MiB\", \"GiB\" or \"TiB\"")
+ BAREBOX_CMD_HELP_TEXT("<type> must be \"gpt\"")
+-BAREBOX_CMD_HELP_TEXT("<fstype> can be one of  \"ext2\", \"ext3\", \"ext4\", \"fat16\" or \"fat32\"")
++BAREBOX_CMD_HELP_TEXT("<fstype> can be one of  \"ext2\", \"ext3\", \"ext4\", \"fat16\", \"fat32\" or \"bbenv\"")
+ BAREBOX_CMD_HELP_TEXT("<name> for MBR partition tables can be one of \"primary\", \"extended\" or")
+ BAREBOX_CMD_HELP_TEXT("\"logical\". For GPT this is a name string.")
+ BAREBOX_CMD_HELP_END
+diff --git a/common/partitions/efi.c b/common/partitions/efi.c
+index 67d4978244..d102370b24 100644
+--- a/common/partitions/efi.c
++++ b/common/partitions/efi.c
+@@ -559,6 +559,7 @@ static __maybe_unused struct partition_desc *efi_partition_create_table(struct b
  
- 		type = TRB_FIELD_TO_TYPE(le32_to_cpu(event->event_cmd.flags));
--		if (type == expected)
-+		if (type == expected ||
-+		    (expected == TRB_NONE && type != TRB_PORT_STATUS))
- 			return event;
+ static guid_t partition_linux_data_guid = PARTITION_LINUX_DATA_GUID;
+ static guid_t partition_basic_data_guid = PARTITION_BASIC_DATA_GUID;
++static guid_t partition_barebox_env_gui = PARTITION_BAREBOX_ENVIRONMENT_GUID;
  
- 		if (type == TRB_PORT_STATUS)
-@@ -549,29 +550,38 @@ static void abort_td(struct usb_device *udev, int ep_index)
- 	struct xhci_ctrl *ctrl = xhci_get_ctrl(udev);
- 	struct xhci_ring *ring =  ctrl->devs[udev->slot_id]->eps[ep_index].ring;
- 	union xhci_trb *event;
-+	trb_type type;
- 	dma_addr_t addr;
- 	u32 field;
+ static const guid_t *fs_type_to_guid(const char *fstype)
+ {
+@@ -572,6 +573,8 @@ static const guid_t *fs_type_to_guid(const char *fstype)
+ 		return &partition_basic_data_guid;
+ 	if (!strcmp(fstype, "fat32"))
+ 		return &partition_basic_data_guid;
++	if (!strcmp(fstype, "bbenv"))
++		return &partition_barebox_env_gui;
  
- 	xhci_queue_command(ctrl, 0, udev->slot_id, ep_index, TRB_STOP_RING);
+ 	return NULL;
+ }
+diff --git a/include/efi/partition.h b/include/efi/partition.h
+index 40ff4c557f..184b4fd961 100644
+--- a/include/efi/partition.h
++++ b/include/efi/partition.h
+@@ -57,6 +57,9 @@
+ #define PARTITION_LINUX_LVM_GUID \
+ 	GUID_INIT( 0xe6d6d379, 0xf507, 0x44c2, \
+ 		0xa2, 0x3c, 0x23, 0x8f, 0x2a, 0x3d, 0xf9, 0x28)
++#define PARTITION_BAREBOX_ENVIRONMENT_GUID \
++	GUID_INIT( 0x6c3737f2, 0x07f8, 0x45d1, \
++		0xad, 0x45, 0x15, 0xd2, 0x60, 0xaa, 0xb2, 0x4d)
  
--	event = xhci_wait_for_event(ctrl, TRB_TRANSFER, XHCI_TIMEOUT_DEFAULT);
-+	event = xhci_wait_for_event(ctrl, TRB_NONE, XHCI_TIMEOUT_DEFAULT);
- 	if (!event)
- 		return;
- 
--	field = le32_to_cpu(event->trans_event.flags);
--	BUG_ON(TRB_TO_SLOT_ID(field) != udev->slot_id);
--	BUG_ON(TRB_TO_EP_INDEX(field) != ep_index);
--	BUG_ON(GET_COMP_CODE(le32_to_cpu(event->trans_event.transfer_len
--		!= COMP_STOP)));
--	xhci_acknowledge_event(ctrl);
-+	type = TRB_FIELD_TO_TYPE(le32_to_cpu(event->event_cmd.flags));
-+	if (type == TRB_TRANSFER) {
-+		field = le32_to_cpu(event->trans_event.flags);
-+		BUG_ON(TRB_TO_SLOT_ID(field) != udev->slot_id);
-+		BUG_ON(TRB_TO_EP_INDEX(field) != ep_index);
-+		BUG_ON(GET_COMP_CODE(le32_to_cpu(event->trans_event.transfer_len
-+			!= COMP_STOP)));
-+		xhci_acknowledge_event(ctrl);
- 
--	event = xhci_wait_for_event(ctrl, TRB_COMPLETION, XHCI_TIMEOUT_DEFAULT);
--	if (!event)
--		return;
-+		event = xhci_wait_for_event(ctrl, TRB_COMPLETION, XHCI_TIMEOUT_DEFAULT);
-+		if (!event)
-+			return;
-+		type = TRB_FIELD_TO_TYPE(le32_to_cpu(event->event_cmd.flags));
- 
--	BUG_ON(TRB_TO_SLOT_ID(le32_to_cpu(event->event_cmd.flags))
-+	} else {
-+		dev_warn(ctrl->dev, "abort_td: Expected a TRB_TRANSFER TRB first\n");
-+	}
-+
-+	BUG_ON(type != TRB_COMPLETION ||
-+		TRB_TO_SLOT_ID(le32_to_cpu(event->event_cmd.flags))
- 		!= udev->slot_id || GET_COMP_CODE(le32_to_cpu(
--		event->event_cmd.status)) != COMP_SUCCESS);
-+	        event->event_cmd.status)) != COMP_SUCCESS);
- 	xhci_acknowledge_event(ctrl);
- 
- 	addr = xhci_trb_virt_to_dma(ring->enq_seg, ring->enqueue);
-diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
-index 4a08f3f9e0d2..37e8cee843cf 100644
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -906,6 +906,8 @@ union xhci_trb {
- 
- /* TRB type IDs */
- typedef enum {
-+	/* reserved, used as a software sentinel */
-+	TRB_NONE = 0,
- 	/* bulk, interrupt, isoc scatter/gather, and control data stage */
- 	TRB_NORMAL = 1,
- 	/* setup stage for control transfers */
+ /* based on linux/include/genhd.h */
+ struct legacy_partition {
 -- 
 2.39.2
 
