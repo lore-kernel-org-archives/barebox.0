@@ -1,58 +1,71 @@
-Delivery-date: Mon, 19 Feb 2024 16:21:31 +0100
+Delivery-date: Mon, 19 Feb 2024 16:21:40 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rc5SV-00EnXa-0X
+	id 1rc5Se-00EnYs-2n
 	for lore@lore.pengutronix.de;
-	Mon, 19 Feb 2024 16:21:31 +0100
+	Mon, 19 Feb 2024 16:21:40 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rc5SU-0000OM-Hc
-	for lore@pengutronix.de; Mon, 19 Feb 2024 16:21:31 +0100
+	id 1rc5Se-0000Vi-5Z
+	for lore@pengutronix.de; Mon, 19 Feb 2024 16:21:40 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YHYrzKdaqPvNTUm+OS1GwYuwNiOWIrxcrMM//WZS6V4=; b=H/vjlWyFoz3NT4UFu20lCJWi1r
-	GhnTpwH1tUAU5FhTnCCB8xcr1cYfvjDRfRsWZfmt6X8TX90a19NiwyXhrlIasidjKNf6vwE5fzTyU
-	S2GxgkfVKnKClXsQnoc0aR80E6d9JUJtLG0kypjWqXji6v4Mw7DsIGE0XQYW6ZGRsqXrw0H6GXqZF
-	JnBhtg9GNWHOLr5rJsH+50GhrcVOSoKlcXc/WpvBctdI6017uiqVPxl2eZhepYWcIfSQqnVYmu99B
-	ouYyEGcUlwaaPX58oLp/L+lAFJjmC3unbeickautXv7qAI+WMWziZFsgwm/PynelnCdQSaWFgpldF
-	Tp2p2n3Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=9LJsSP7druxj+0yWk36Be9rQzjS5u7JPUkREr5HMFs4=; b=4JT5ZS8/C74Eo7AGwyA8b/3t54
+	seG96Q+SHMoAgmt0N7Y8a053aBq8R5EhrDtNpDR+vee1C2G2Ubw5pag3/zRIayon9oGLxkcJHSbhw
+	Qn5P0LKkJ2t393rr4M58JvF+WBuK90mdaAWZKhGAzCciNz2DnpBU3qCfOIWq65JQ9JBGgdMMFeoPo
+	xIDAm7gg9HrPUpf6mdfMmJEyHkmOUKdcmfCRVFcTFs9fb+A8nbLPRJXa2TvH7QQvPkWOhtZxQHSf4
+	tZP0NdN9nOIdC8/bALHGiJsIA9+eawBpJVdq+xtqZ1z9cp1dRVQgFRpiPv4GNBiPnX7syPNp0B3mQ
+	rK1lEl0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rc5Rz-0000000B4aG-1xdW;
-	Mon, 19 Feb 2024 15:20:59 +0000
+	id 1rc5SD-0000000B4da-1aEm;
+	Mon, 19 Feb 2024 15:21:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rc5Rw-0000000B4Zc-3bjc
+	id 1rc5SA-0000000B4cA-0OdM
 	for barebox@lists.infradead.org;
-	Mon, 19 Feb 2024 15:20:58 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rc5Rv-0008QP-J3; Mon, 19 Feb 2024 16:20:55 +0100
-Message-ID: <2c5de6e3-aba4-46ad-aae3-04a134b07cc2@pengutronix.de>
-Date: Mon, 19 Feb 2024 16:20:55 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
+	Mon, 19 Feb 2024 15:21:11 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rc5S7-00008Y-GF; Mon, 19 Feb 2024 16:21:07 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rc5S7-001g1e-3Z; Mon, 19 Feb 2024 16:21:07 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rc5S7-00FusY-06;
+	Mon, 19 Feb 2024 16:21:07 +0100
+Date: Mon, 19 Feb 2024 16:21:07 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Marco Felsch <m.felsch@pengutronix.de>
+Cc: Barebox List <barebox@lists.infradead.org>
+Message-ID: <ZdNx4yaum8DXpMAZ@pengutronix.de>
 References: <20240219145159.1962618-1-s.hauer@pengutronix.de>
- <20240219145159.1962618-2-s.hauer@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240219145159.1962618-2-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20240219145159.1962618-3-s.hauer@pengutronix.de>
+ <20240219145936.uiwy7frsbk4grtcy@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240219145936.uiwy7frsbk4grtcy@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240219_072056_937261_079E7E71 
-X-CRM114-Status: GOOD (  20.83  )
+X-CRM114-CacheID: sfid-20240219_072110_170699_2DAA1CE8 
+X-CRM114-Status: GOOD (  26.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,84 +83,62 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/3] partitions: efi: Allow to create barebox environment
- partition
+Subject: Re: [PATCH 2/3] bootsource: add function to get device_node we
+ booted from
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 19.02.24 15:51, Sascha Hauer wrote:
-> We have a GUID for partitions to use for barebox environment. Add an
-> option for parted to create these.
+On Mon, Feb 19, 2024 at 03:59:36PM +0100, Marco Felsch wrote:
+> On 24-02-19, Sascha Hauer wrote:
+> > We have a relation between the bootsource and the corresponding
+> > device_node. Add a function to get the device_node we booted from.
+> > This is already open coded in of_fixup_bootargs_bootsource(),
+> > use the newly created function for it.
+> > 
+> > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+> > ---
+> >  common/bootsource.c  | 14 ++++++++++++++
+> >  common/oftree.c      |  7 +------
+> >  include/bootsource.h |  1 +
+> >  3 files changed, 16 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/common/bootsource.c b/common/bootsource.c
+> > index da528a5b9b..5666d8d30d 100644
+> > --- a/common/bootsource.c
+> > +++ b/common/bootsource.c
+> > @@ -108,6 +108,20 @@ char *bootsource_get_alias_name(void)
+> >  	return basprintf("%s%d", stem, bootsource_instance);
+> >  }
+> >  
+> > +struct device_node *bootsource_of_node_get(struct device_node *root)
+> > +{
+> > +	struct device_node *np;
+> > +	char *alias_name;
+> > +
+> > +	alias_name = bootsource_get_alias_name();
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  commands/parted.c       | 2 +-
->  common/partitions/efi.c | 3 +++
->  include/efi/partition.h | 3 +++
->  3 files changed, 7 insertions(+), 1 deletion(-)
-> 
-> diff --git a/commands/parted.c b/commands/parted.c
-> index 02bb1cff0c..6af18cdc57 100644
-> --- a/commands/parted.c
-> +++ b/commands/parted.c
-> @@ -360,7 +360,7 @@ BAREBOX_CMD_HELP_TEXT("")
->  BAREBOX_CMD_HELP_TEXT("<unit> can be one of \"s\" (sectors), \"B\" (bytes), \"kB\", \"MB\", \"GB\", \"TB\",")
->  BAREBOX_CMD_HELP_TEXT("\"KiB\", \"MiB\", \"GiB\" or \"TiB\"")
->  BAREBOX_CMD_HELP_TEXT("<type> must be \"gpt\"")
-> -BAREBOX_CMD_HELP_TEXT("<fstype> can be one of  \"ext2\", \"ext3\", \"ext4\", \"fat16\" or \"fat32\"")
-> +BAREBOX_CMD_HELP_TEXT("<fstype> can be one of  \"ext2\", \"ext3\", \"ext4\", \"fat16\", \"fat32\" or \"bbenv\"")
->  BAREBOX_CMD_HELP_TEXT("<name> for MBR partition tables can be one of \"primary\", \"extended\" or")
->  BAREBOX_CMD_HELP_TEXT("\"logical\". For GPT this is a name string.")
->  BAREBOX_CMD_HELP_END
-> diff --git a/common/partitions/efi.c b/common/partitions/efi.c
-> index 67d4978244..d102370b24 100644
-> --- a/common/partitions/efi.c
-> +++ b/common/partitions/efi.c
-> @@ -559,6 +559,7 @@ static __maybe_unused struct partition_desc *efi_partition_create_table(struct b
->  
->  static guid_t partition_linux_data_guid = PARTITION_LINUX_DATA_GUID;
->  static guid_t partition_basic_data_guid = PARTITION_BASIC_DATA_GUID;
-> +static guid_t partition_barebox_env_gui = PARTITION_BAREBOX_ENVIRONMENT_GUID;
->  
->  static const guid_t *fs_type_to_guid(const char *fstype)
->  {
-> @@ -572,6 +573,8 @@ static const guid_t *fs_type_to_guid(const char *fstype)
->  		return &partition_basic_data_guid;
->  	if (!strcmp(fstype, "fat32"))
->  		return &partition_basic_data_guid;
-> +	if (!strcmp(fstype, "bbenv"))
-> +		return &partition_barebox_env_gui;
+> 	if (!alias_name) {
+> 		pr_warn("No alias found for bootsource\n");
+> 		return 0;
+> 	}
 
-guid*
+I'll have to look over this. With this we assume that for example the
+mmcx alias really matches bootsource instance x. This is not the case,
+instead we have to look for an alias named "barebox,bootsource-%s%u".
+This alias doesn't exist for the majority of platforms, so when we
+issue a warning here it would be seen on most boards.
 
->  
->  	return NULL;
->  }
-> diff --git a/include/efi/partition.h b/include/efi/partition.h
-> index 40ff4c557f..184b4fd961 100644
-> --- a/include/efi/partition.h
-> +++ b/include/efi/partition.h
-> @@ -57,6 +57,9 @@
->  #define PARTITION_LINUX_LVM_GUID \
->  	GUID_INIT( 0xe6d6d379, 0xf507, 0x44c2, \
->  		0xa2, 0x3c, 0x23, 0x8f, 0x2a, 0x3d, 0xf9, 0x28)
-> +#define PARTITION_BAREBOX_ENVIRONMENT_GUID \
-> +	GUID_INIT( 0x6c3737f2, 0x07f8, 0x45d1, \
-> +		0xad, 0x45, 0x15, 0xd2, 0x60, 0xaa, 0xb2, 0x4d)
->  
->  /* based on linux/include/genhd.h */
->  struct legacy_partition {
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
