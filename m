@@ -1,70 +1,65 @@
-Delivery-date: Mon, 19 Feb 2024 20:14:48 +0100
+Delivery-date: Mon, 19 Feb 2024 22:07:35 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rc96G-00F3f4-00
+	id 1rcArP-00FAtR-2Z
 	for lore@lore.pengutronix.de;
-	Mon, 19 Feb 2024 20:14:48 +0100
+	Mon, 19 Feb 2024 22:07:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rc96F-00045u-7e
-	for lore@pengutronix.de; Mon, 19 Feb 2024 20:14:47 +0100
+	id 1rcArP-0005Ck-3s
+	for lore@pengutronix.de; Mon, 19 Feb 2024 22:07:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MQLr3OpsKuJmIIHkBLMXmAmutNRru9alqZYxwl1BdP4=; b=kiwKvkcFQgW7QCBZO1pfq0yuKN
-	KyH0m8Y4Kf4AbV6hKEmO56F8G+QuFTAf6jI2uLzJRqKMEmLbJqiG01fRGnICEfUi6MqmF3eAyF1kF
-	GNzflcl4QcM1eIeH6wPxP6Ns2rvWJsFTOSVzUDspsQJHdEhqPjsm3OfF1oCY6OjolXvYxlH2MhPE2
-	9tKoAnKkQsJDK1Bs6UczgSwffSariF1Y/qqgaBl+F8Jer8oc3nauaa+mF6hv2Q/cPvrPO1z9ALdwh
-	ymdtgCfp/35T8rq9bexGQU5mfFfTkpmAgsL7VUwKnNN2tatqpBqIsl8OTFMm05fMLumYAbSChOHec
-	dj+EvT/A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=MknyMefQKygKK1EEIFyfouF5cvTVCTvudRhB5yV/Amk=; b=043j/619sCm8GSe3Z7WVlmvgD/
+	I2pv9p28WyvvcFL9AmrAMJCTHHG0F2ngMWOayca8CWps3XOB2jMPQ9/4obNK7xoTFvCTc6FgE43k5
+	77Ba4miLFw3NbiihWABdpt9iWiAa3/k4WtwBaaC+IXpMacWkwFuG9TrLf0u4Z+Nk2SzJY3keSUYLY
+	YLHZDjLhNlBQawneAq6tLiXaECUHbltZZdK0g+G9iRzIMG02kGTS2t/CoWE9wUOZs15RqNale9g1p
+	SaBne1NjLYjjHIreFNsBQmKHPDpLBsT3LJQgM2JhGcMYLjo/urqcsZfCxtSdAvazbZUq/4JA4q2OT
+	4b2BJKpg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rc95b-0000000Bqq1-3EgW;
-	Mon, 19 Feb 2024 19:14:07 +0000
+	id 1rcAqi-0000000CB50-16Yw;
+	Mon, 19 Feb 2024 21:06:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rc95Y-0000000Bqnn-2OTx
+	id 1rcAqe-0000000CB4I-2Gxv
 	for barebox@lists.infradead.org;
-	Mon, 19 Feb 2024 19:14:06 +0000
+	Mon, 19 Feb 2024 21:06:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1rc95V-0003d5-J1; Mon, 19 Feb 2024 20:14:01 +0100
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rcAqc-0004hS-EX; Mon, 19 Feb 2024 22:06:46 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1rc95U-001hwB-Ty; Mon, 19 Feb 2024 20:14:00 +0100
-Received: from rhi by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1rc95U-00Fxms-2h;
-	Mon, 19 Feb 2024 20:14:00 +0100
-Date: Mon, 19 Feb 2024 20:14:00 +0100
-From: Roland Hieber <rhi@pengutronix.de>
-To: Denis Osterland-Heim <denis.osterland@gmail.com>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rcAqc-001irI-2E; Mon, 19 Feb 2024 22:06:46 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rcAqb-001hzf-39;
+	Mon, 19 Feb 2024 22:06:46 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: buildroot@buildroot.org
 Cc: barebox@lists.infradead.org,
-	Denis OSTERLAND-HEIM <denis.osterland@diehl.com>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>,
-	Alexander Dahl <ada@thorsis.com>
-Message-ID: <20240219191400.do7ib5rxy7tupv4i@pengutronix.de>
-References: <20230925110716.5370-1-denis.osterland@gmail.com>
- <6496b2cabc1ec6cec520ea27145d3cecdc19927c.camel@gmail.com>
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 19 Feb 2024 22:06:28 +0100
+Message-Id: <20240219210628.407423-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <6496b2cabc1ec6cec520ea27145d3cecdc19927c.camel@gmail.com>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240219_111404_632416_B51BF4E8 
-X-CRM114-Status: GOOD (  27.79  )
+X-CRM114-CacheID: sfid-20240219_130648_602322_B044B534 
+X-CRM114-Status: GOOD (  13.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,148 +77,101 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 2/2] raspi: fixup additional vc created nodes
+Subject: [PATCH] boot/barebox: install all barebox images if none were specified
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+When selecting barebox in menuconfig, BR2_TARGET_BAREBOX_IMAGE_FILE will
+be empty by default, which causes Buildroot to install whatever the
+barebox-flash-image symlink points at for barebox versions >= v2012.10.0.
 
-On Mon, Sep 25, 2023 at 01:10:05PM +0200, Denis Osterland-Heim wrote:
-> From: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
-> 
-> The video core creates some additional nodes.
-> This code takes over this values.
-> The /hat node is only there if an raspi hat with EEPROM is detected.
-> 
-> Signed-off-by: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
-> Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/boards/raspberry-pi/rpi-common.c | 39 +++++++++++++++++------
->  1 file changed, 30 insertions(+), 9 deletions(-)
-> 
-> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c
-> b/arch/arm/boards/raspberry-pi/rpi-common.c
-> index ceafd55a56..713fad78c9 100644
-> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
-> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-> @@ -264,19 +264,37 @@ static enum reset_src_type
-> rpi_decode_pm_rsts(struct device_node *chosen,
->  
->  static int rpi_vc_fdt_fixup(struct device_node *root, void *data)
->  {
-> -       const struct device_node *vc_chosen = data;
-> -       struct device_node *chosen;
-> +       const struct device_node *vc_node = data;
-> +       struct device_node *node;
-> +       struct property *pp;
->  
-> -       chosen = of_create_node(root, "/chosen");
-> -       if (!chosen)
-> +       node = of_create_node(root, vc_node->full_name);
-> +       if (!node)
->                 return -ENOMEM;
->  
-> -       of_copy_property(vc_chosen, "overlay_prefix", chosen);
-> -       of_copy_property(vc_chosen, "os_prefix", chosen);
-> +       for_each_property_of_node(vc_node, pp)
-> +               of_copy_property(vc_node, pp->name, node);
->  
->         return 0;
->  }
->  
-> +static struct device_node *register_vc_fixup(struct device_node *root,
-> +                                            const char *path)
-> +{
-> +       struct device_node *ret, *tmp;
-> +
-> +       ret = of_find_node_by_path_from(root, path);
-> +       if (ret) {
-> +               tmp = of_dup(ret);
-> +               tmp->full_name = xstrdup(ret->full_name);
-> +               of_register_fixup(rpi_vc_fdt_fixup, tmp);
-> +       } else {
-> +               pr_info("no '%s' node found in vc fdtn", path);
-> +       }
-> +
-> +       return ret;
-> +}
-> +
->  static u32 rpi_boot_mode, rpi_boot_part;
->  /* Extract useful information from the VideoCore FDT we got.
->   * Some parameters are defined here:
-> @@ -300,14 +318,17 @@ static void rpi_vc_fdt_parse(struct device_node
-> *root)
->                 free(str);
->         }
->  
-> -       chosen = of_find_node_by_path_from(root, "/chosen");
-> +       register_vc_fixup(root, "/system");
-> +       register_vc_fixup(root, "/axi");
-> +       register_vc_fixup(root, "/reserved-memory");
-> +       register_vc_fixup(root, "/hat");
-> +       register_vc_fixup(root, "/chosen/bootloader");
-> +       chosen = register_vc_fixup(root, "/chosen");
+This is an outdated fallback, because barebox-flash-image is only valid
+when the barebox build produces a single binary. Virtually all new
+defconfigs added in the last couple of years are multiconfig
+(CONFIG_PBL_IMAGE=y) however, meaning that a single imx_v7_defconfig
+or multi_v8_defconfig will produce many images that support different
+boards or even platforms.
 
-This throws a lot of new warnings and errors on our RPi 3B:
+As there is no single valid target for barebox-flash-image to point at
+in this case, this symlink will point at a non-existing
+'multi-image-build' to alert the user to this fact.
 
-    barebox 2024.01.0 #1 2024-02-01T00:00:00+00:00
-    Buildsystem version: DistroKit-2019.12.0-552-g775624b9f5d6
+As replacement for barebox-flash-image, barebox commit 550cf79c216a
+("Make list of flash images and fix link all single image cases") first
+released with v2015.12.0 creates a barebox-flash-images file with a list
+of all images built by barebox.
 
-    Board: Raspberry Pi 3 Model B
-    deep-probe: supported due to raspberrypi,3-model-b
-    netconsole: registered as netconsole-1
-    bcm2835-sdhost 3f202000.mmc@7e202000.of: registered as mci0
-    bcm2835_mci 3f300000.mmc@7e300000.of: registered as mci1
-    mci0: detected SD card version 2.0
-    mci0: registered disk0
-    state: New state registered 'state'
-    state: Using bucket 0@0x00000000
-    malloc space: 0x1d87f620 -> 0x3b0fec3f (size 472.5 MiB)
-    WARNING: no property 'serial-number' found in vc fdt's '' node
-    no '/system' node found in vc fdt
-    no '/axi' node found in vc fdt
-    no '/hat' node found in vc fdt
-    no '/chosen/bootloader' node found in vc fdt
-    WARNING: no property 'bootargs' found in vc fdt's '/chosen' node
-    WARNING: no property 'overlay_prefix' found in vc fdt's '/chosen' node
-    WARNING: no property 'os_prefix' found in vc fdt's '/chosen' node
-    WARNING: 'pm_rsts' value not found in vc fdt
-    ERROR: Won't delete root device node
-    environment load /boot/barebox.env: No such file or directory
-    Maybe you have to create the partition.
+Have buildroot use that file as a fallback before trying
+barebox-flash-image to have a fallback that works for any recent barebox
+defconfig as well.
 
-Do you have any idea what is going on here? 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ boot/barebox/barebox-aux/Config.in | 9 +++++++--
+ boot/barebox/barebox.mk            | 2 ++
+ boot/barebox/barebox/Config.in     | 9 +++++++--
+ 3 files changed, 16 insertions(+), 4 deletions(-)
 
-I also don't see /vc.dtb, which should have been created. I have
-'vc.kernel: kernel7.img' in the 'global' output, but nothing else
-starting with vc.*.
-
- - Roland
-
->         if (!chosen) {
->                 pr_err("no '/chosen' node found in vc fdtn");
->                 goto out;
->         }
->  
-> -       of_register_fixup(rpi_vc_fdt_fixup, of_dup(chosen));
-> -
->         bootloader = of_find_node_by_name(chosen, "bootloader");
->  
->         str = of_read_vc_string(chosen, "bootargs");
-> -- 
-> 2.39.2
-> 
-> 
-
+diff --git a/boot/barebox/barebox-aux/Config.in b/boot/barebox/barebox-aux/Config.in
+index d39d24f763e0..4b0201ea6758 100644
+--- a/boot/barebox/barebox-aux/Config.in
++++ b/boot/barebox/barebox-aux/Config.in
+@@ -36,8 +36,13 @@ config BR2_TARGET_BAREBOX_AUX_IMAGE_FILE
+ 	  the images directory.
+ 
+ 	  If left empty, defaults to:
+-	  - barebox.bin for barebox versions older than 2012.10.
+-	  - barebox-flash-image for later versions.
++	  - all images as listed in barebox-flash-images (>= v2015.12.0)
++	  - the image pointed at by barebox-flash-image (>= v2012.10.0)
++	  - barebox.bin for even older barebox versions
++
++	  In any case, this only influences the artifacts collected by
++	  Buildroot. They will still need to be referenced from image
++	  packages or flashed separately onto the hardware.
+ 
+ config BR2_TARGET_BAREBOX_AUX_CUSTOM_ENV
+ 	bool "Generate an environment image"
+diff --git a/boot/barebox/barebox.mk b/boot/barebox/barebox.mk
+index 4c9df8d6180b..fe366989b9d8 100644
+--- a/boot/barebox/barebox.mk
++++ b/boot/barebox/barebox.mk
+@@ -151,6 +151,8 @@ $(1)_IMAGE_FILES = $$(call qstrip,$$(BR2_TARGET_$(1)_IMAGE_FILE))
+ define $(1)_INSTALL_IMAGES_CMDS
+ 	if test -n "$$($(1)_IMAGE_FILES)"; then \
+ 		cp -L $$(foreach image,$$($(1)_IMAGE_FILES),$$(@D)/$$(image)) $$(BINARIES_DIR) ; \
++	elif test -e $$(@D)/barebox-flash-images ; then \
++		cp -L $$(foreach image,$$(shell cat $$(@D)/barebox-flash-images),$$(@D)/$$(image)) $$(BINARIES_DIR) ; \
+ 	elif test -h $$(@D)/barebox-flash-image ; then \
+ 		cp -L $$(@D)/barebox-flash-image $$(BINARIES_DIR)/barebox.bin ; \
+ 	else \
+diff --git a/boot/barebox/barebox/Config.in b/boot/barebox/barebox/Config.in
+index 958e294e40b6..2fd70a84aec3 100644
+--- a/boot/barebox/barebox/Config.in
++++ b/boot/barebox/barebox/Config.in
+@@ -36,8 +36,13 @@ config BR2_TARGET_BAREBOX_IMAGE_FILE
+ 	  the images directory.
+ 
+ 	  If left empty, defaults to:
+-	  - barebox.bin for barebox versions older than 2012.10.
+-	  - barebox-flash-image for later versions.
++	  - all images as listed in barebox-flash-images (>= v2015.12.0)
++	  - the image pointed at by barebox-flash-image (>= v2012.10.0)
++	  - barebox.bin for even older barebox versions
++
++	  In any case, this only influences the artifacts collected by
++	  Buildroot. They will still need to be referenced from image
++	  packages or flashed separately onto the hardware.
+ 
+ config BR2_TARGET_BAREBOX_BAREBOXENV
+ 	bool "bareboxenv tool in target"
 -- 
-Roland Hieber, Pengutronix e.K.          | r.hieber@pengutronix.de     |
-Steuerwalder Str. 21                     | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany                | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686         | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
