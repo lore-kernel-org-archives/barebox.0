@@ -1,65 +1,65 @@
-Delivery-date: Mon, 19 Feb 2024 09:36:05 +0100
+Delivery-date: Mon, 19 Feb 2024 09:36:07 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rbz89-00E4T6-0x
+	id 1rbz8B-00E4Ta-1l
 	for lore@lore.pengutronix.de;
-	Mon, 19 Feb 2024 09:36:05 +0100
+	Mon, 19 Feb 2024 09:36:07 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rbz88-00045I-0J
-	for lore@pengutronix.de; Mon, 19 Feb 2024 09:36:05 +0100
+	id 1rbz8A-00046T-9t
+	for lore@pengutronix.de; Mon, 19 Feb 2024 09:36:07 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LZy2yLau54vY5IaSwvo/HLwaQMS6WmJH97DL5bjTp1E=; b=HhXs2fSMPfN3RaqS26ac4OaStv
-	PTPc5zyqPqTwcx+ys1esvQvcvjx0IdcrtA4NgBWrd8w+7/yl7V5YT1tExYnPbaxVu35o8sTGqXWDT
-	8CWcKFL/WtAr8WjajeXKb677t/W2bgLp9H8gLMb+RnGw2IzLZWdZb8iU+l40khfti01blPdNx3Crz
-	Di9KkVZmmCJRpm+NXHE6Bs65vr96vBVTgfG7nonAI1IXOougVzeKF94hDg9lYRlmPgiP2UPqUCbXY
-	AVpaDBrLnyh4hVUn/SrjqwhcLSxipzHc5K7oc93pCjGf3zKHwBbRzjbuB1U4R2Lp4SBKobxz9N6Ox
-	m+ZCY8og==;
+	bh=BnRCwPA36kuYWaP/BzVgvN96YSs6M5g9dmxTiAIDnaM=; b=oDqLRX5QlHyzaxLUjHqUt3HHXm
+	W8FHbBuAwDRxOGBGjT1J14w4P0BJmAnLLnn4c0+HED+kqVvrSsHxch9lw6DG/EXMknmK94aMPZ7Ru
+	mldcv1QE6bWyXrdX845bgbNou6BWBgSikyes3XkXouwt4flCZ5HOjUArxFzBiRtrSpOF84CbqpUaG
+	1fJR2NJup2t6c1Y9FT1sUZCtm7T43sB4MNUo0GW/DJguXrMi2HHOmhgokcCOfJycygLccSM8X3TAw
+	Gqiyku/tqPp2f1ZOAByqEN8kwX7IBbciux/ZAZyRslxWuaPyYclGuoaG1YAafabp6ATVA+jj0jPZO
+	7XHik/PQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rbz7n-00000009bfn-0gKI;
-	Mon, 19 Feb 2024 08:35:43 +0000
+	id 1rbz7o-00000009bgM-2OeJ;
+	Mon, 19 Feb 2024 08:35:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rbz7i-00000009bd8-1R8S
+	id 1rbz7i-00000009bdB-1UL9
 	for barebox@lists.infradead.org;
 	Mon, 19 Feb 2024 08:35:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rbz7h-0003vL-50; Mon, 19 Feb 2024 09:35:37 +0100
+	id 1rbz7h-0003vM-7S; Mon, 19 Feb 2024 09:35:37 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rbz7g-001boZ-OZ; Mon, 19 Feb 2024 09:35:36 +0100
+	id 1rbz7g-001boc-Qu; Mon, 19 Feb 2024 09:35:36 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rbz3u-00CNCk-0o;
+	id 1rbz3u-00CNCk-19;
 	Mon, 19 Feb 2024 09:31:42 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 19 Feb 2024 09:31:38 +0100
-Message-Id: <20240219083140.2713047-11-s.hauer@pengutronix.de>
+Date: Mon, 19 Feb 2024 09:31:40 +0100
+Message-Id: <20240219083140.2713047-13-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240219083140.2713047-1-s.hauer@pengutronix.de>
 References: <20240219083140.2713047-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240219_003538_580101_DE279960 
-X-CRM114-Status: GOOD (  22.82  )
+X-CRM114-CacheID: sfid-20240219_003538_772526_B4BEB683 
+X-CRM114-Status: GOOD (  28.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,382 +82,477 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 10/12] partitions: dos: implement partition manipulation support
+Subject: [PATCH 12/12] commands: add parted
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This fills in the msdos specific function hooks to add/remove
-partitions.
+This adds a parted command which behaves pretty much like the GNU parted
+program. Unlike other partition manipulation programs parted has a quite
+convenient command line API suitable for scripting. The tool supports
+these commands:
+
+print    - print a partition table
+mklabel  - create a new partition table
+rm       - remove a partition
+mkpart   - create a partition
+unit     - change input/display units
+refresh  - refresh a partition table (barebox specific)
+
+Multiple commands can be given on a single call so that a full partition
+table including partitions can be created with a single command.
+Examples include:
+
+Print a partition table:
+
+$ parted mmc0 print
+
+create a new partition table:
+
+$ parted mmc0 mklabel gpt
+
+create a new partition table and add a partition beginning at offset
+1MiB ending at offset 128MiB:
+
+$ parted mmc0 mklabel gpt mkpart rootfs ext4 1MiB 128MiB
+
+The same, using KiB as unit and printing the result at the end:
+
+$ parted mmc0 unit KiB mklabel gpt mkpart rootfs ext4 1024 131072 print
+
+The "refresh" command is barebox specific and is useful when for example
+the alternate GPT is missing. This happens when an image is written.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/partitions/dos.c | 256 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 243 insertions(+), 13 deletions(-)
+ commands/Kconfig  |  21 +++
+ commands/Makefile |   2 +-
+ commands/parted.c | 374 ++++++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 396 insertions(+), 1 deletion(-)
+ create mode 100644 commands/parted.c
 
-diff --git a/common/partitions/dos.c b/common/partitions/dos.c
-index e5ff59f71a..9bb51bce85 100644
---- a/common/partitions/dos.c
-+++ b/common/partitions/dos.c
-@@ -15,10 +15,26 @@
- #include <common.h>
- #include <disks.h>
- #include <init.h>
-+#include <stdlib.h>
- #include <asm/unaligned.h>
- #include <linux/err.h>
- #include <partitions.h>
+diff --git a/commands/Kconfig b/commands/Kconfig
+index a6806f198e..819fb80411 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -655,6 +655,27 @@ config CMD_MOUNT
+ 		  -o OPTIONS	set file system OPTIONS
+ 		  -v		verbose
  
-+struct dos_partition_desc {
-+	struct partition_desc pd;
-+	uint32_t signature;
++config CMD_PARTED
++	tristate
++	depends on PARTITION
++	select PARTITION_MANIPULATION
++	prompt "parted"
++	help
++	  parted - edit partition tables
++
++	  Usage: parted <device> [command [options...]...]
++
++	  parted is a partition manipulation program with a behaviour similar to
++	  GNU Parted
++
++	  commands:
++	         print   print partitions
++	         mklabel <type>  create a new partition table
++	         rm <num>        remove a partition
++	         mkpart <name> <fstype> <start> <end>    create a new partition
++	         unit <unit>     change display/input units
++	         refresh refresh a partition table
++
+ config CMD_UBI
+ 	tristate
+ 	default y if MTD_UBI
+diff --git a/commands/Makefile b/commands/Makefile
+index 4924755500..b311410276 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -146,5 +146,5 @@ obj-$(CONFIG_CMD_UBSAN)		+= ubsan.o
+ obj-$(CONFIG_CMD_SELFTEST)	+= selftest.o
+ obj-$(CONFIG_CMD_TUTORIAL)	+= tutorial.o
+ obj-$(CONFIG_CMD_STACKSMASH)	+= stacksmash.o
+-
++obj-$(CONFIG_CMD_PARTED)	+= parted.o
+ UBSAN_SANITIZE_ubsan.o := y
+diff --git a/commands/parted.c b/commands/parted.c
+new file mode 100644
+index 0000000000..02bb1cff0c
+--- /dev/null
++++ b/commands/parted.c
+@@ -0,0 +1,374 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <common.h>
++#include <command.h>
++#include <block.h>
++#include <getopt.h>
++#include <fcntl.h>
++#include <disks.h>
++#include <linux/sizes.h>
++#include <partitions.h>
++#include <linux/math64.h>
++
++static struct partition_desc *gpdesc;
++static bool table_needs_write;
++static const char *gunit_str = "KiB";
++static uint64_t gunit = 1024;
++
++struct unit {
++	const char *str;
++	uint64_t size;
 +};
 +
-+struct dos_partition {
-+	struct partition part;
-+	bool extended;
-+	bool logical;
-+
-+	uint8_t boot_indicator;
-+	uint8_t chs_begin[3];
-+	uint8_t type;
-+	uint8_t chs_end[3];
++static struct unit units[] = {
++	{ .str = "B", .size = 1 },
++	{ .str = "s", .size = 512 },
++	{ .str = "KiB", .size = SZ_1K },
++	{ .str = "MiB", .size = SZ_1M },
++	{ .str = "GiB", .size = SZ_1G },
++	{ .str = "TiB", .size = SZ_1T },
++	{ .str = "KB", .size = 1000ULL },
++	{ .str = "MB", .size = 1000ULL * 1000 },
++	{ .str = "GB", .size = 1000ULL * 1000 * 1000 },
++	{ .str = "TB", .size = 1000ULL * 1000 * 1000 * 1000 },
++	{ .str = "k", .size = SZ_1K },
++	{ .str = "K", .size = SZ_1K },
++	{ .str = "M", .size = SZ_1M },
++	{ .str = "G", .size = SZ_1G },
 +};
- 
- enum {
- /* These three have identical behaviour; use the second one if DOS FDISK gets
-@@ -105,13 +121,14 @@ static int dos_get_disk_signature(struct param_d *p, void *_priv)
- 	return 0;
- }
- 
--static void dos_extended_partition(struct block_device *blk, struct partition_desc *pd,
-+static void dos_extended_partition(struct block_device *blk, struct dos_partition_desc *dpd,
- 		struct partition *partition, uint32_t signature)
- {
- 	uint8_t *buf = malloc(SECTOR_SIZE);
- 	uint32_t ebr_sector = partition->first_sec;
- 	struct partition_entry *table = (struct partition_entry *)&buf[0x1be];
- 	unsigned partno = 5;
-+	struct dos_partition *dpart;
- 	struct partition *pentry;
- 
- 	while (1) {
-@@ -138,7 +155,14 @@ static void dos_extended_partition(struct block_device *blk, struct partition_de
- 			}
- 		/* /sanity checks */
- 
--		pentry = xzalloc(sizeof(*pentry));
-+		dpart = xzalloc(sizeof(*dpart));
-+		dpart->logical = true;
-+		dpart->boot_indicator = table[0].boot_indicator;
-+		memcpy(dpart->chs_begin, table[0].chs_begin, sizeof(table[0].chs_begin));
-+		dpart->type = table[0].type;
-+		memcpy(dpart->chs_end, table[0].chs_end, sizeof(table[0].chs_end));
 +
-+		pentry = &dpart->part;
- 
- 		/* the first entry defines the extended partition */
- 		pentry->first_sec = ebr_sector +
-@@ -150,7 +174,7 @@ static void dos_extended_partition(struct block_device *blk, struct partition_de
- 			sprintf(pentry->partuuid, "%08x-%02u",
- 				signature, partno);
- 
--		list_add_tail(&pentry->list, &pd->partitions);
-+		list_add_tail(&pentry->list, &dpd->pd.partitions);
- 		partno++;
- 
- 		/* the second entry defines the start of the next ebr if != 0 */
-@@ -177,13 +201,14 @@ static void dos_extended_partition(struct block_device *blk, struct partition_de
- static struct partition_desc *dos_partition(void *buf, struct block_device *blk)
- {
- 	struct partition_entry *table;
-+	struct dos_partition *dpart;
- 	struct partition *pentry;
- 	struct partition *extended_partition = NULL;
- 	uint8_t *buffer = buf;
- 	int i;
- 	struct disk_signature_priv *dsp;
- 	uint32_t signature = get_unaligned_le32(buf + 0x1b8);
--	struct partition_desc *pd;
-+	struct dos_partition_desc *dpd;
- 
- 	if (signature)
- 		sprintf(blk->cdev.diskuuid, "%08x", signature);
-@@ -192,8 +217,8 @@ static struct partition_desc *dos_partition(void *buf, struct block_device *blk)
- 
- 	table = (struct partition_entry *)&buffer[446];
- 
--	pd = xzalloc(sizeof(*pd));
--	INIT_LIST_HEAD(&pd->partitions);
-+	dpd = xzalloc(sizeof(*dpd));
-+	partition_desc_init(&dpd->pd, blk);
- 
- 	for (i = 0; i < 4; i++) {
- 		uint64_t first_sec = get_unaligned_le32(&table[i].partition_start);
-@@ -203,16 +228,26 @@ static struct partition_desc *dos_partition(void *buf, struct block_device *blk)
- 			continue;
- 		}
- 
--		pentry = xzalloc(sizeof(*pentry));
-+		dpart = xzalloc(sizeof(*dpart));
-+		dpart->boot_indicator = table[i].boot_indicator;
-+		memcpy(dpart->chs_begin, table[i].chs_begin, sizeof(table[i].chs_begin));
-+		dpart->type = table[i].type;
-+		memcpy(dpart->chs_end, table[i].chs_end, sizeof(table[i].chs_end));
-+
-+		pentry = &dpart->part;
- 
- 		pentry->first_sec = first_sec;
- 		pentry->size = get_unaligned_le32(&table[i].partition_size);
- 		pentry->dos_partition_type = table[i].type;
-+		pentry->num = i + 1;
- 
--		if (signature)
-+		if (signature) {
- 			sprintf(pentry->partuuid, "%08x-%02d", signature, i + 1);
-+			dpd->signature = signature;
-+		}
- 
- 		if (is_extended_partition(pentry)) {
-+			dpart->extended = true;
- 			pentry->size = 2;
- 
- 			if (!extended_partition)
-@@ -226,11 +261,11 @@ static struct partition_desc *dos_partition(void *buf, struct block_device *blk)
- 				dev_warn(blk->dev, "Skipping additional extended partition\n");
- 		}
- 
--		list_add_tail(&pentry->list, &pd->partitions);
-+		list_add_tail(&pentry->list, &dpd->pd.partitions);
- 	}
- 
- 	if (extended_partition)
--		dos_extended_partition(blk, pd, extended_partition, signature);
-+		dos_extended_partition(blk, dpd, extended_partition, signature);
- 
- 	dsp = xzalloc(sizeof(*dsp));
- 	dsp->blk = blk;
-@@ -249,23 +284,218 @@ static struct partition_desc *dos_partition(void *buf, struct block_device *blk)
- 			dos_set_disk_signature, dos_get_disk_signature,
- 			&dsp->signature, "%08x", dsp);
- 
--	return pd;
-+	return &dpd->pd;
- }
- 
- static void dos_partition_free(struct partition_desc *pd)
- {
- 	struct partition *part, *tmp;
- 
--	list_for_each_entry_safe(part, tmp, &pd->partitions, list)
--		free(part);
-+	list_for_each_entry_safe(part, tmp, &pd->partitions, list) {
-+		struct dos_partition *dpart = container_of(part, struct dos_partition, part);
-+
-+		free(dpart);
-+	}
- 
- 	free(pd);
- }
- 
-+static __maybe_unused struct partition_desc *dos_partition_create_table(struct block_device *blk)
++static int parted_strtoull(const char *str, uint64_t *val, uint64_t *mult)
 +{
-+	struct dos_partition_desc *dpd = xzalloc(512);
++	char *end;
++	int i;
 +
-+	partition_desc_init(&dpd->pd, blk);
++	*val = simple_strtoull(str, &end, 0);
 +
-+	dpd->signature = random32();
++	if (!*end) {
++		*mult = 0;
++		return 0;
++	}
 +
-+	return &dpd->pd;
++	for (i = 0; i < ARRAY_SIZE(units); i++) {
++		if (!strcmp(end, units[i].str)) {
++			*mult = units[i].size;
++			return 0;
++		}
++	}
++
++	printf("Error: Cannot read \"%s\" as number\n", str);
++
++	return -EINVAL;
 +}
 +
-+static int fs_type_to_type(const char *fstype)
++static struct partition_desc *pdesc_get(struct block_device *blk)
 +{
-+	unsigned long type;
++	if (gpdesc)
++		return gpdesc;
++
++	gpdesc = partition_table_read(blk);
++	if (!gpdesc) {
++		printf("Cannot read partition table\n");
++		return NULL;
++	}
++
++	return gpdesc;
++}
++
++static int do_unit(struct block_device *blk, int argc, char *argv[])
++{
++	int i;
++
++	if (argc < 2) {
++		printf("Error: missing unit\n");
++		return -EINVAL;
++	}
++
++	for (i = 0; i < ARRAY_SIZE(units); i++) {
++		if (!strcmp(units[i].str, argv[1])) {
++			gunit_str = units[i].str;
++			gunit = units[i].size;
++			return 2;
++		}
++	}
++
++	printf("invalid unit: %s\n", argv[1]);
++
++	return -EINVAL;
++}
++
++static int do_print(struct block_device *blk, int argc, char *argv[])
++{
++	struct partition_desc *pdesc;
++	struct partition *part;
++
++	pdesc = pdesc_get(blk);
++	if (!pdesc) {
++		printf("Error: Cannot get partition table from %s\n", blk->cdev.name);
++		return -EINVAL;
++	}
++
++	printf("Disk /dev/%s: %s\n", blk->cdev.name,
++	       size_human_readable(blk->num_blocks << SECTOR_SHIFT));
++	printf("Partition Table: %s\n", pdesc->parser->name);
++
++	printf("Number      Start           End          Size     Name\n");
++
++	list_for_each_entry(part, &pdesc->partitions, list) {
++		uint64_t start = part->first_sec << SECTOR_SHIFT;
++		uint64_t size = part->size << SECTOR_SHIFT;
++		uint64_t end = start + size - SECTOR_SIZE;
++
++		printf(" %3d   %10llu%-3s %10llu%-3s %10llu%-3s  %-36s\n",
++			part->num,
++			div64_u64(start, gunit), gunit_str,
++			div64_u64(end, gunit), gunit_str,
++			div64_u64(size, gunit), gunit_str,
++			part->name);
++	}
++
++	return 1;
++}
++
++static int do_mkpart(struct block_device *blk, int argc, char *argv[])
++{
++	struct partition_desc *pdesc;
++	uint64_t start, end;
++	const char *name, *fs_type;
 +	int ret;
++	uint64_t mult;
 +
-+	if (!strcmp(fstype, "ext2"))
-+		return 0x83;
-+	if (!strcmp(fstype, "ext3"))
-+		return 0x83;
-+	if (!strcmp(fstype, "ext4"))
-+		return 0x83;
-+	if (!strcmp(fstype, "fat16"))
-+		return 0xe;
-+	if (!strcmp(fstype, "fat32"))
-+		return 0xc;
++	if (argc < 5) {
++		printf("Error: Missing required arguments\n");
++		return -EINVAL;
++	}
 +
-+	ret = kstrtoul(fstype, 16, &type);
++	name = argv[1];
++	fs_type = argv[2];
++
++	ret = parted_strtoull(argv[3], &start, &mult);
 +	if (ret)
 +		return ret;
 +
-+	if (type > 0xff)
++	ret = parted_strtoull(argv[4], &end, &mult);
++	if (ret)
++		return ret;
++
++	if (!mult)
++		mult = gunit;
++
++	start *= mult;
++	end *= mult;
++
++	/* If not on sector boundaries move start up and end down */
++	start = ALIGN(start, SECTOR_SIZE);
++	end = ALIGN_DOWN(end, SECTOR_SIZE);
++
++	/* convert to LBA */
++	start >>= SECTOR_SHIFT;
++	end >>= SECTOR_SHIFT;
++
++	/*
++	 * When unit is >= KB then substract one sector for user convenience.
++	 * It allows to start the next partition where the previous ends
++	 */
++	if (mult >= 1000)
++		end -= 1;
++
++	pdesc = pdesc_get(blk);
++	if (!pdesc)
 +		return -EINVAL;
 +
-+	return type;
++	ret = partition_create(pdesc, name, fs_type, start, end);
++
++	if (!ret)
++		table_needs_write = true;
++
++	return ret < 0 ? ret : 5;
 +}
 +
-+static __maybe_unused int dos_partition_mkpart(struct partition_desc *pd,
-+					       const char *name, const char *fs_type,
-+					       uint64_t start_lba, uint64_t end_lba)
++static int do_rmpart(struct block_device *blk, int argc, char *argv[])
 +{
-+	struct dos_partition *dpart;
-+	struct partition *part, *part_extended = NULL;
-+	int npart = 0, npart_logical = 0;
-+	uint64_t size;
-+	int mask_free = 0xf;
-+	int type = fs_type_to_type(fs_type);
-+
-+	if (type < 0) {
-+		pr_err("invalid fs_type \"%s\"\n", fs_type);
-+		return -EINVAL;
-+	}
-+
-+	if (start_lba < 1) {
-+		pr_err("invalid start LBA, minimum is 1\n");
-+		return -EINVAL;
-+	}
-+
-+	list_for_each_entry(part, &pd->partitions, list) {
-+		dpart = container_of(part, struct dos_partition, part);
-+
-+		mask_free &= ~(1 << npart);
-+
-+		if (dpart->extended)
-+			part_extended = part;
-+		if (dpart->logical)
-+			npart_logical++;
-+		else
-+			npart++;
-+	}
-+
-+	if (!strcmp(name, "extended")) {
-+		if (part_extended) {
-+			pr_err("extended partition already exists\n");
-+			return -ENOSPC;
-+		}
-+		goto create;
-+	} else if (!strcmp(name, "primary")) {
-+		if (npart == 4) {
-+			pr_err("Can't create any more partitions\n");
-+			return -ENOSPC;
-+		}
-+
-+		goto create;
-+	} else if (!strcmp(name, "logical")) {
-+		if (!part_extended) {
-+			pr_err("No extended partition\n");
-+			return -EINVAL;
-+		}
-+
-+		if (npart_logical >= 4) {
-+			pr_err("Can't create any more partitions\n");
-+			return -ENOSPC;
-+		}
-+
-+		pr_err("Can't create logical partitions yet\n");
-+		return -EINVAL;
-+	} else {
-+		pr_err("Invalid name \"%s\"\n", name);
-+		return -EINVAL;
-+	}
-+
-+	return 0;
-+
-+create:
-+	dpart = xzalloc(sizeof(*dpart));
-+	part = &dpart->part;
-+
-+	if (start_lba > UINT_MAX)
-+		return -ENOSPC;
-+	size = end_lba - start_lba + 1;
-+
-+	if (size > UINT_MAX)
-+		return -ENOSPC;
-+
-+	dpart->type = fs_type_to_type(fs_type);
-+
-+	part->first_sec = start_lba;
-+	part->size = size;
-+	part->num = ffs(mask_free);
-+
-+	list_add_tail(&part->list, &pd->partitions);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused int dos_partition_rmpart(struct partition_desc *pd, struct partition *part)
-+{
-+	struct dos_partition *dpart = container_of(part, struct dos_partition, part);
-+
-+	list_del(&part->list);
-+	free(dpart);
-+
-+	return 0;
-+}
-+
-+static __maybe_unused int dos_partition_write(struct partition_desc *pd)
-+{
-+	struct dos_partition_desc *dpd = container_of(pd, struct dos_partition_desc, pd);
-+	struct dos_partition *dpart;
-+	struct partition *part;
-+	void *buf;
-+	struct partition_entry *table, *entry;
++	struct partition_desc *pdesc;
++	unsigned long num;
 +	int ret;
 +
-+	list_for_each_entry(part, &pd->partitions, list) {
-+		dpart = container_of(part, struct dos_partition, part);
-+		if (dpart->logical) {
-+			pr_err("Cannot write tables with logical partitions yet\n");
-+			return -EINVAL;
-+		}
++	if (argc < 2) {
++		printf("Error: Expecting a partition number.\n");
++		return -EINVAL;
 +	}
 +
-+	buf = read_mbr(pd->blk);
-+	if (!buf)
-+		return -EIO;
++	ret = kstrtoul(argv[1], 0, &num);
++	if (ret)
++		return ret;
 +
-+	put_unaligned_le32(dpd->signature, buf + 0x1b8);
++	pdesc = pdesc_get(blk);
++	if (!pdesc)
++		return -EINVAL;
 +
-+	table = buf + 0x1be;
-+	memset(table, 0x0, sizeof(*table) * 4);
++	ret = partition_remove(pdesc, num);
++	if (ret)
++		return ret;
 +
-+	*(u8 *)(buf + 0x1fe) = 0x55;
-+	*(u8 *)(buf + 0x1ff) = 0xaa;
++	table_needs_write = true;
 +
-+	list_for_each_entry(part, &pd->partitions, list) {
-+		dpart = container_of(part, struct dos_partition, part);
++	return 2;
++}
 +
-+		entry = &table[part->num - 1];
++static int do_mklabel(struct block_device *blk, int argc, char *argv[])
++{
++	struct partition_desc *pdesc;
 +
-+		entry->boot_indicator = dpart->boot_indicator;
-+		memcpy(entry->chs_begin, dpart->chs_begin, sizeof(entry->chs_begin));
-+		entry->type = dpart->type;
-+		memcpy(entry->chs_end, dpart->chs_end, sizeof(entry->chs_end));
-+		put_unaligned_le32(part->first_sec, &entry->partition_start);
-+		put_unaligned_le32(part->size, &entry->partition_size);
++	if (argc < 2) {
++		printf("Error: Expecting a disk label type.\n");
++		return -EINVAL;
 +	}
 +
-+	ret = block_write(pd->blk, buf, 0, 1);
++	pdesc = partition_table_new(blk, argv[1]);
++	if (IS_ERR(pdesc)) {
++		printf("Error: Cannot create partition table: %pe\n", pdesc);
++		return PTR_ERR(pdesc);
++	}
 +
-+	free(buf);
++	table_needs_write = true;
++
++	if (gpdesc)
++		partition_table_free(gpdesc);
++	gpdesc = pdesc;
++
++	return 2;
++}
++
++static int do_refresh(struct block_device *blk, int argc, char *argv[])
++{
++	struct partition_desc *pdesc;
++
++	pdesc = pdesc_get(blk);
++	if (!pdesc)
++		return -EINVAL;
++
++	table_needs_write = true;
++
++	return 1;
++}
++
++struct parted_command {
++	const char *name;
++	int (*command)(struct block_device *blk, int argc, char *argv[]);
++};
++
++struct parted_command parted_commands[] = {
++	{
++		.name = "mkpart",
++		.command = do_mkpart,
++	}, {
++		.name = "print",
++		.command = do_print,
++	}, {
++		.name = "rm",
++		.command = do_rmpart,
++	}, {
++		.name = "mklabel",
++		.command = do_mklabel,
++	}, {
++		.name = "unit",
++		.command = do_unit,
++	}, {
++		.name = "refresh",
++		.command = do_refresh,
++	},
++};
++
++static int parted_run_command(struct block_device *blk, int argc, char *argv[])
++{
++	int i;
++
++	for (i = 0; i < ARRAY_SIZE(parted_commands); i++) {
++		struct parted_command *cmd = &parted_commands[i];
++
++		if (!strcmp(argv[0], cmd->name))
++			return cmd->command(blk, argc, argv);
++	}
++
++	printf("No such command: %s\n", argv[0]);
++
++	return COMMAND_ERROR;
++}
++
++static int do_parted(int argc, char *argv[])
++{
++	struct cdev *cdev;
++	struct block_device *blk;
++	int ret = 0;
++
++	table_needs_write = false;
++	gpdesc = NULL;
++
++	if (argc < 3)
++		return COMMAND_ERROR_USAGE;
++
++	cdev = cdev_open_by_name(argv[1], O_RDWR);
++	if (!cdev) {
++		printf("Cannot open %s\n", argv[1]);
++		return COMMAND_ERROR;
++	}
++
++	blk = cdev_get_block_device(cdev);
++	if (!blk) {
++		ret = -EINVAL;
++		goto err;
++	}
++
++	argc -= 2;
++	argv += 2;
++
++	while (argc) {
++		debug("---> run command %s\n", argv[0]);
++		ret = parted_run_command(blk, argc, argv);
++		if (ret < 0)
++			break;
++
++		argc -= ret;
++		argv += ret;
++
++		ret = 0;
++	}
++
++	if (!ret && gpdesc && table_needs_write)
++		ret = partition_table_write(gpdesc);
++
++err:
++	if (gpdesc)
++		partition_table_free(gpdesc);
++
++	cdev_close(cdev);
 +
 +	return ret;
 +}
 +
- static struct partition_parser dos = {
- 	.parse = dos_partition,
- 	.partition_free = dos_partition_free,
-+#ifdef CONFIG_PARTITION_MANIPULATION
-+	.create = dos_partition_create_table,
-+	.mkpart = dos_partition_mkpart,
-+	.rmpart = dos_partition_rmpart,
-+	.write = dos_partition_write,
-+#endif
- 	.type = filetype_mbr,
-+	.name = "msdos",
- };
- 
- static int dos_partition_init(void)
++BAREBOX_CMD_HELP_START(parted)
++BAREBOX_CMD_HELP_TEXT("parted is a partition manipulation program with a behaviour similar to")
++BAREBOX_CMD_HELP_TEXT("GNU Parted")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("commands:")
++BAREBOX_CMD_HELP_OPT ("print", "print partitions")
++BAREBOX_CMD_HELP_OPT ("mklabel <type>", "create a new partition table")
++BAREBOX_CMD_HELP_OPT ("rm <num>", "remove a partition")
++BAREBOX_CMD_HELP_OPT ("mkpart <name> <fstype> <start> <end>", "create a new partition")
++BAREBOX_CMD_HELP_OPT ("unit <unit>", "change display/input units")
++BAREBOX_CMD_HELP_OPT ("refresh", "refresh a partition table")
++BAREBOX_CMD_HELP_TEXT("")
++BAREBOX_CMD_HELP_TEXT("<unit> can be one of \"s\" (sectors), \"B\" (bytes), \"kB\", \"MB\", \"GB\", \"TB\",")
++BAREBOX_CMD_HELP_TEXT("\"KiB\", \"MiB\", \"GiB\" or \"TiB\"")
++BAREBOX_CMD_HELP_TEXT("<type> must be \"gpt\"")
++BAREBOX_CMD_HELP_TEXT("<fstype> can be one of  \"ext2\", \"ext3\", \"ext4\", \"fat16\" or \"fat32\"")
++BAREBOX_CMD_HELP_TEXT("<name> for MBR partition tables can be one of \"primary\", \"extended\" or")
++BAREBOX_CMD_HELP_TEXT("\"logical\". For GPT this is a name string.")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(parted)
++	.cmd            = do_parted,
++	BAREBOX_CMD_DESC("edit partition tables")
++	BAREBOX_CMD_OPTS("<device> [command [options...]...]")
++	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
++	BAREBOX_CMD_HELP(cmd_parted_help)
++BAREBOX_CMD_END
 -- 
 2.39.2
 
