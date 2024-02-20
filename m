@@ -1,66 +1,67 @@
-Delivery-date: Tue, 20 Feb 2024 12:07:49 +0100
+Delivery-date: Tue, 20 Feb 2024 12:09:01 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rcNyX-00Fwke-0h
+	id 1rcNzh-00FwnP-2X
 	for lore@lore.pengutronix.de;
-	Tue, 20 Feb 2024 12:07:49 +0100
+	Tue, 20 Feb 2024 12:09:01 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rcNyW-0004ji-Jl
-	for lore@pengutronix.de; Tue, 20 Feb 2024 12:07:49 +0100
+	id 1rcNzh-0004yk-6w
+	for lore@pengutronix.de; Tue, 20 Feb 2024 12:09:01 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=SxNzDZR60uK2XhA78Jun3F/onCEMSK1ih6jg9PVhO1Q=; b=lpE6D+TAuici4zujUX3SR+KX2t
-	mBxqzmGjM4euYPWAMpqdYjpsVoFO/3BMD+zZDC9DPKp/wrC7jSFsXJzKf/kShTL0Yja83SwnDw9kt
-	JwT58qph0JIrmxOxhmWHJRE4xzC5DViULQhA/+qof0AiymqKVOvQQ5Af4CudXML03NuSvGmYW4mlO
-	fx921lFTD1kQtgQbO0sDzvqjC0x0um2gMVc55VVRXxdzmtp50byO6Ways7q9HhpPf9jI9V61l+XVX
-	kg2PVoJ36pEZU47nn2jB1XAevKGBlxehrAGqchKrsauyn+aGPMfDlMPypCYLiZy9TsbO5xB7xIhrP
-	uloU9dqw==;
+	bh=APxsKVFsUr7tiA/M9NW1Z5U8loMH/UgiJxLKD0uacl0=; b=MGmDgWljdvy3RqC+PXPTPUbMrU
+	fRP2pdHAa3EkXzsewf3Ti4oR6o1sKmpGq/QanrGgrVo1OyW4dq/XHLwS2clH7LtlaU7mm27J5Ewb1
+	2dzjXnYDLklZCw92ZAoSQCBd7RN9OIPHOs4HFilQ0fZx+KnTnL5fn99xLuHo4TUv+hzzDJKygX4LT
+	tOgWcYxRkpzs6kKeb45SG87KMWx1Y6JKfTrvZr5mCmOEmtJsx1FYqyqLYNRFza+WaD+yYVkbofpWe
+	kxN7Rkpu0rGeg0KOkKr6gZdspX72/ig7+rxNeKwt83JSDdPEt2F+r56zsWctEG8vnlecWb8Co5NLJ
+	94FQ8ajQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rcNxz-0000000ENhr-0aPe;
-	Tue, 20 Feb 2024 11:07:15 +0000
+	id 1rcNzJ-0000000ENwk-0UTT;
+	Tue, 20 Feb 2024 11:08:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rcNxv-0000000ENgH-3zkC
+	id 1rcNzG-0000000ENw1-2XYX
 	for barebox@lists.infradead.org;
-	Tue, 20 Feb 2024 11:07:13 +0000
+	Tue, 20 Feb 2024 11:08:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rcNxu-0004Wi-KJ; Tue, 20 Feb 2024 12:07:10 +0100
+	id 1rcNzF-0004si-Dn; Tue, 20 Feb 2024 12:08:33 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rcNxu-001pO2-7f; Tue, 20 Feb 2024 12:07:10 +0100
+	id 1rcNzF-001pOF-1B; Tue, 20 Feb 2024 12:08:33 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rcNxu-00CBnV-0Y;
-	Tue, 20 Feb 2024 12:07:10 +0100
+	id 1rcNzE-00CM1O-39;
+	Tue, 20 Feb 2024 12:08:32 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240219133835.3886399-1-a.fatoum@pengutronix.de>
-References: <20240219133835.3886399-1-a.fatoum@pengutronix.de>
-Message-Id: <170842723016.2905158.9549269258145733653.b4-ty@pengutronix.de>
-Date: Tue, 20 Feb 2024 12:07:10 +0100
+Cc: mfe@pengutronix.de
+In-Reply-To: <20240219172925.3798024-1-a.fatoum@pengutronix.de>
+References: <20240219172925.3798024-1-a.fatoum@pengutronix.de>
+Message-Id: <170842731297.2943921.7634914007838859374.b4-ty@pengutronix.de>
+Date: Tue, 20 Feb 2024 12:08:32 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240220_030712_031658_F10DDA07 
-X-CRM114-Status: UNSURE (   9.28  )
+X-CRM114-CacheID: sfid-20240220_030834_682151_BF32C46F 
+X-CRM114-Status: UNSURE (   8.99  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,53 +85,35 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 00/15] usb: xhci: pull in fixes from U-Boot v2024.01
+Subject: Re: [PATCH v2 1/5] driver: refactor probe return value handling
+ into switch statement
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 19 Feb 2024 14:38:20 +0100, Ahmad Fatoum wrote:
-> The latest U-Boot release saw some fixes to the xHCI driver contributed
-> by the Asahi Linux project to improve robustness in case of errors.
+On Mon, 19 Feb 2024 18:29:21 +0100, Ahmad Fatoum wrote:
+> The return values of the bus probe function called inside device_probe()
+> are classified into 4 categories and they are checked by if statement
+> distributed across device_probe().
 > 
-> Port these to barebox as well as a couple of cleanup commits that make
-> the code in barebox look more similar to changes that happened to U-Boot
-> in the meantime.
+> For clarity and easier changes, collect all of them into a switch
+> statement and while at it, use helpers to make use of %pe, list_move and
+> list_del_init instead of opencoding them.
 > 
 > [...]
 
 Applied, thanks!
 
-[01/15] usb: xhci: usb: xhci: avoid type conversion of void *
-        https://git.pengutronix.de/cgit/barebox/commit/?id=13509f24774c (link may not be stable)
-[02/15] usb: xhci: add various debugging prints
-        https://git.pengutronix.de/cgit/barebox/commit/?id=86da740d096c (link may not be stable)
-[03/15] usb: xhci: call xhci_flush_cache where appropriate
-        https://git.pengutronix.de/cgit/barebox/commit/?id=c4a99e4bfb48 (link may not be stable)
-[04/15] usb: xhci: use macros for formatting values
-        https://git.pengutronix.de/cgit/barebox/commit/?id=ad69d4395d97 (link may not be stable)
-[05/15] usb: xhci: Add missing endian conversions (cpu_to_leXX / leXX_to_cpu)
-        https://git.pengutronix.de/cgit/barebox/commit/?id=668cefb5fa19 (link may not be stable)
-[06/15] usb: xhci: Add missing xhci_readl()
-        https://git.pengutronix.de/cgit/barebox/commit/?id=97d839040fcc (link may not be stable)
-[07/15] usb: xhci: don't use xhci_writeq for normal SDRAM
-        https://git.pengutronix.de/cgit/barebox/commit/?id=fb4e864c0726 (link may not be stable)
-[08/15] usb: xhci: support non-1:1 mapped xHCI
-        https://git.pengutronix.de/cgit/barebox/commit/?id=6fba5a3b0bd7 (link may not be stable)
-[09/15] usb: xhci: reset endpoint on USB stall
-        https://git.pengutronix.de/cgit/barebox/commit/?id=be01454be27a (link may not be stable)
-[10/15] usb: xhci: Fix root hub descriptor
-        https://git.pengutronix.de/cgit/barebox/commit/?id=cb1ead123c45 (link may not be stable)
-[11/15] usb: xhci: Guard all calls to xhci_wait_for_event
-        https://git.pengutronix.de/cgit/barebox/commit/?id=2708f615e75b (link may not be stable)
-[12/15] usb: xhci: Better error handling in abort_td()
-        https://git.pengutronix.de/cgit/barebox/commit/?id=0a2bf109353e (link may not be stable)
-[13/15] usb: xhci: Allow context state errors when halting an endpoint
-        https://git.pengutronix.de/cgit/barebox/commit/?id=3b3af837338f (link may not be stable)
-[14/15] usb: xhci: Recover from halted bulk endpoints
-        https://git.pengutronix.de/cgit/barebox/commit/?id=42db38526b2c (link may not be stable)
-[15/15] usb: xhci: Do not panic on event timeouts
-        https://git.pengutronix.de/cgit/barebox/commit/?id=43a3850ed840 (link may not be stable)
+[1/5] driver: refactor probe return value handling into switch statement
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6e08b4ab5bec (link may not be stable)
+[2/5] deep-probe: treat any probe deferral as permanent
+      https://git.pengutronix.de/cgit/barebox/commit/?id=8a42a6bf42b0 (link may not be stable)
+[3/5] deep-probe: use IS_ERR_OR_NULL() instead of opencoding
+      https://git.pengutronix.de/cgit/barebox/commit/?id=05785e25af00 (link may not be stable)
+[4/5] deep-probe: return -EPROBE_DEFER when ensuring probe fails
+      https://git.pengutronix.de/cgit/barebox/commit/?id=1905fa7cb425 (link may not be stable)
+[5/5] phy: freescale: imx8mq-usb: make i.MX8MP support more explicit
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e87ca6e235e4 (link may not be stable)
 
 Best regards,
 -- 
