@@ -1,71 +1,68 @@
-Delivery-date: Fri, 23 Feb 2024 08:38:54 +0100
+Delivery-date: Fri, 23 Feb 2024 09:51:14 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rdQ90-002dst-2y
+	id 1rdRH0-002kBD-2H
 	for lore@lore.pengutronix.de;
-	Fri, 23 Feb 2024 08:38:54 +0100
+	Fri, 23 Feb 2024 09:51:14 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rdQ90-0001hB-AQ
-	for lore@pengutronix.de; Fri, 23 Feb 2024 08:38:54 +0100
+	id 1rdRGz-0000tb-UQ
+	for lore@pengutronix.de; Fri, 23 Feb 2024 09:51:14 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=EJA98kP6Q3O1aThAEraV3+xURBxzQ8oLiewp+2RdVrw=; b=HmDcqlJfWNcyOl8GKeVqaUxuCF
-	qeGWusOJfyNaTv/FSzb3mgGSHZ2Zz8U8duSEAIgyFtgt4ECvJ5iFqVcIyDAkQhHMOIA28aw8JxJl9
-	u2WolKL0cwwnI6ZgvRL69GL6LbEjRU3ydUnrRAkBQayzlXEU6vxHN7/Uj9ncNYu0RE/ZgPgWv7xZh
-	qdtqTmgVNArQhq8OebZ/QkNjCpWKczOHFdIBYYxetV4E1AQVVzDPwXS8P6hSQelWrU6v4LBx7laiH
-	cag2aPgTxTb9OgQR7aC/3c4G2dfpImXQIpm4W7h/S3ZYos6omAVsruJ+5nMRkg32ZQqs/i/S4+lZ+
-	XWPkAoaQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=dPjOVuETdWAw83ZxF6qeLBUjxTN3Z453CRpuDOpDvDY=; b=pIdbiT8SQuDFt7e+ulroMK3mkc
+	IGipajfdscMq/A1vQAvI1KK01Y1wf5d1uDnkt8S5BH1CgkGYzSPiE1kf8rpKVLZGFlBv07pY/onzo
+	i5L5rwaa868XcBxchxRZf7hacxapbAdFxzChvmxDw2ZfHFnueIHUXJkIure3+bR/1gMquNvE3Wf0F
+	C7ExR5XbMAIzyYIVZP9zrIPWSGN7LUK3uEQHiUAf2xaPt+2cU37q0b/GuAp9A0s5QS9tlvLNMEvdk
+	rI1fbHHCDOz7ETamRNEoNYp2lAg55cPd6WgKzMLkT+eilJxpUvCDH4xgyLqCvbSqH18GuFUqIqMqw
+	05zpHAjQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rdQ8A-00000008KQY-04ww;
-	Fri, 23 Feb 2024 07:38:02 +0000
+	id 1rdRFo-00000008Z9Y-2fEP;
+	Fri, 23 Feb 2024 08:50:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rdQ7p-00000008KMc-3WbP
+	id 1rdQ3G-00000008J97-1okE
 	for barebox@lists.infradead.org;
-	Fri, 23 Feb 2024 07:37:43 +0000
+	Fri, 23 Feb 2024 07:35:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rdQ7n-0001b9-62; Fri, 23 Feb 2024 08:37:39 +0100
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rdQ3E-0000um-1x; Fri, 23 Feb 2024 08:32:56 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rdQ7m-002NiR-Pe; Fri, 23 Feb 2024 08:37:38 +0100
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rdQ7m-004Byy-2F;
-	Fri, 23 Feb 2024 08:37:38 +0100
-Date: Fri, 23 Feb 2024 08:37:38 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rdQ3D-002Nfe-Ec; Fri, 23 Feb 2024 08:32:55 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rdQ3D-001FPv-1F;
+	Fri, 23 Feb 2024 08:32:55 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>
-Message-ID: <ZdhLQqJZRvy4K3QA@pengutronix.de>
-References: <20240221150323.2715164-1-s.hauer@pengutronix.de>
- <20240221150323.2715164-9-s.hauer@pengutronix.de>
- <a27b45a4-2e4c-4ad0-8f81-85ed7638d79b@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Sam Ravnborg <sam@ravnborg.org>
+In-Reply-To: <20240220093100.1539120-1-a.fatoum@pengutronix.de>
+References: <20240220093100.1539120-1-a.fatoum@pengutronix.de>
+Message-Id: <170867357538.297406.10053197424359743990.b4-ty@pengutronix.de>
+Date: Fri, 23 Feb 2024 08:32:55 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a27b45a4-2e4c-4ad0-8f81-85ed7638d79b@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240222_233741_923250_FE343C09 
-X-CRM114-Status: GOOD (  24.11  )
+X-CRM114-CacheID: sfid-20240222_233258_526668_CD021BAA 
+X-CRM114-Status: UNSURE (   8.62  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,59 +80,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH 8/8] ARM: tqma6ul: use upstream device trees
+	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH v4 00/14] ARM: at91: skov-arm9cpu (SAM9263) first stage
+ support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Wed, Feb 21, 2024 at 05:42:49PM +0100, Ahmad Fatoum wrote:
-> Hello Sascha,
+
+On Tue, 20 Feb 2024 10:30:46 +0100, Ahmad Fatoum wrote:
+> SDRAM setup and SD-Card chainloading support were previously added[1]
+> by Sam as well as a WIP patch to enable them for Skov ARM9CPU.
 > 
-> On 21.02.24 16:03, Sascha Hauer wrote:
-> > The tqma6ul has several upstream device trees depending on the exact
-> > board type. This removes the downstream device tree in favour for the
-> > upstream device trees. The board type can be determined from an EEPROM
-> > on the board. This patch also adds support for reading the EEPROM and
-> > picking the right device tree for the board found.
+> I reworked his final WIP patch and fixed some smaller and bigger issues
+> that I ran into. Now barebox can replace at91bootstrap on this platform
+> when booted from SD.
 > 
-> Is the existing "mba6ulx" device tree not a subset of all boards?
-> Would it make sense to fall back to that instead of using a specific
-> DT that may fail on other variants?
+> [...]
 
-I don't know if it's a subset of all boards. There are enough TQMa6ul
-device trees already, I don't think we should keep even more of them
-around.
+Applied, thanks!
 
-> > +	writel(0x12, iomux + 0x0094);
-> > +	writel(0x0, iomux + 0x05bc);
-> > +	writel(0x1b8b0, iomux + 0x0320);
-> > +	writel(0x12, iomux + 0x0098);
-> > +	writel(0x0, iomux + 0x05c0);
-> > +	writel(0x1b8b0, iomux + 0x0324);
-> 
-> Could iomux_v3_setup_pad and pinctrl macros be used here instead?
+[01/14] mci: atmel_mci: disable power save mode
+        https://git.pengutronix.de/cgit/barebox/commit/?id=b9c420653af2 (link may not be stable)
+[02/14] mci: atmel_mci: fix zeroing of block length on AT91SAM9263
+        https://git.pengutronix.de/cgit/barebox/commit/?id=f6c56c2011c3 (link may not be stable)
+[03/14] ARM: replace ENTRY_FUNCTION_HEAD with ENTRY_FUNCTION_WITHSTACK_HEAD
+        https://git.pengutronix.de/cgit/barebox/commit/?id=8b95ed2a0f6b (link may not be stable)
+[04/14] ARM: at91: use AT91 header instead of generic barebox ARM's
+        https://git.pengutronix.de/cgit/barebox/commit/?id=7800d1136236 (link may not be stable)
+[05/14] ARM: at91: implement SAM9_ENTRY_FUNCTION
+        https://git.pengutronix.de/cgit/barebox/commit/?id=2807d3f3e341 (link may not be stable)
+[06/14] ARM: at91: sam9263_ll: drop PLL charge pump initialization
+        https://git.pengutronix.de/cgit/barebox/commit/?id=d0e17e91e6a5 (link may not be stable)
+[07/14] ARM: at91: sam9263_ll: pass AT91_PMC_LL_AT91SAM9263 to PMC functions
+        https://git.pengutronix.de/cgit/barebox/commit/?id=ead3bd2c6db6 (link may not be stable)
+[08/14] ARM: at91: sam9263_ll: refactor MCK switch to PLLA for clarity
+        https://git.pengutronix.de/cgit/barebox/commit/?id=824801f1309e (link may not be stable)
+[09/14] ARM: at91: sam9263_ll: support configuration of PLLB
+        https://git.pengutronix.de/cgit/barebox/commit/?id=8761a451da82 (link may not be stable)
+[10/14] ARM: dts: AT91: skov-arm9cpu: remove barebox environment on NOR
+        https://git.pengutronix.de/cgit/barebox/commit/?id=6ef2a22a0b26 (link may not be stable)
+[11/14] ARM: at91: skov-arm9cpu: Add SD-Card xload support
+        https://git.pengutronix.de/cgit/barebox/commit/?id=e369be6b3276 (link may not be stable)
+[12/14] ARM: at91: skov-arm9cpu: configure SMC for NOR flash use
+        https://git.pengutronix.de/cgit/barebox/commit/?id=433b8dce29c7 (link may not be stable)
+[13/14] ARM: at91: skov-arm9cpu: configure more appropriate hostname
+        https://git.pengutronix.de/cgit/barebox/commit/?id=66e62c636f37 (link may not be stable)
+[14/14] ARM: AT91: skov-arm9cpu: support environment on SD-Card
+        https://git.pengutronix.de/cgit/barebox/commit/?id=7645601a1fb6 (link may not be stable)
 
-Yes, fixed.
-
-> >  	select ARM_USE_COMPRESSED_DTB
-> > +	select BOARD_TQ
-> > +	select I2C
-> 
-> Is I2C absolutely needed in barebox proper?
-
-No, it's not. I though we have to select I2C to get I2C_IMX_EARLY, but
-apparently that's not necessary.
-
-Sascha
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
