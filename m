@@ -1,67 +1,67 @@
-Delivery-date: Fri, 23 Feb 2024 08:36:56 +0100
+Delivery-date: Fri, 23 Feb 2024 08:37:10 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rdQ76-002dji-2H
+	id 1rdQ7K-002dkz-1i
 	for lore@lore.pengutronix.de;
-	Fri, 23 Feb 2024 08:36:56 +0100
+	Fri, 23 Feb 2024 08:37:10 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rdQ6z-0001P9-0N
-	for lore@pengutronix.de; Fri, 23 Feb 2024 08:36:56 +0100
+	id 1rdQ7J-0001Um-Ck
+	for lore@pengutronix.de; Fri, 23 Feb 2024 08:37:10 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Zb6Eolr3CLIa0SUuBxLGYGTIPdfJO6d2rn02EQh4+yg=; b=JKMp4cJRpcG/Z3Dvl8wp8BHQAR
-	GvBl9na1Mx1X1VEQEFmd4SpERdta5SW5GoBDoFAAWqnlFFuyeIfhbZnY4Sgh4D7+XovHMjUuXxNqi
-	s0jXmwtflP6PHK9KlA04+Uq6xAxWrHJW3hJQN59q1BHDWK68IpbO/LsM3pE6NEZHbmYHdOn5Z4Ezd
-	mD9k4abbLWOTqpywXStzjaTpgQu3inHR/HxnZcYmh3IpTJFGzCQib2FALTtgKDkq6Mb7VD4Hn+z/Z
-	K6EExiIS0awpgI6vZL9EO5tb9lZ53Er8IqCs3Xd8jSmnCUVq6IyNThu/6OWk1OrikF3u9OoquDe4y
-	34hU1u1A==;
+	bh=PXF2nITTIKAJlKISH0ma6TiRBGRPcaIzOUErbcqtnNo=; b=IZuGuAkEavsuMENdxBy78NTRms
+	jIu3wGtXnCFSDAp5NZFM7k+2W9mH+mWJGO4EdfBCyCcW1OVEa4Jv7TbTKLU7iZuO9FJLjvRpIjzz/
+	bL43LLHeQEWsPr1h136yOeoj2cH+bTLhZ8Kji2oNy9j7sSpyYzagzVUe7lcWoz9Byibb5JHbMC5v5
+	VGrb/exFC+Ndp5J4/4zVX59VVB/8MCZiczRTSbRDOWeMEKTy9oTXpRZftkMdZD0tJbswsmqfqvjZg
+	UkdaMu0UMKj9E3nO3INS8F0zth7ivi1JoDY6CTvsmWPHrRbGmSQB1vM3T/OtWfyVxbMTFB+DT5odA
+	JC1NW9LA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rdQ5o-00000008Jfv-1uX4;
-	Fri, 23 Feb 2024 07:35:38 +0000
+	id 1rdQ6C-00000008JnT-15AP;
+	Fri, 23 Feb 2024 07:36:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rdQ2u-00000008J75-1SLS
+	id 1rdQ35-00000008J8J-2j9S
 	for barebox@lists.infradead.org;
-	Fri, 23 Feb 2024 07:34:48 +0000
+	Fri, 23 Feb 2024 07:35:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rdQ2s-0000q6-Bl; Fri, 23 Feb 2024 08:32:34 +0100
+	id 1rdQ34-0000qx-8a; Fri, 23 Feb 2024 08:32:46 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rdQ2r-002NfT-VW; Fri, 23 Feb 2024 08:32:33 +0100
+	id 1rdQ33-002Nfa-S4; Fri, 23 Feb 2024 08:32:45 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rdQ2r-001FH7-2x;
-	Fri, 23 Feb 2024 08:32:33 +0100
+	id 1rdQ33-001FL4-2b;
+	Fri, 23 Feb 2024 08:32:45 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20240221103334.1925850-2-u.kleine-koenig@pengutronix.de>
-References: <20240221103334.1925850-2-u.kleine-koenig@pengutronix.de>
-Message-Id: <170867355391.296878.12981312080940486571.b4-ty@pengutronix.de>
-Date: Fri, 23 Feb 2024 08:32:33 +0100
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: ukl@pengutronix.de
+In-Reply-To: <20240220172527.599962-1-a.fatoum@pengutronix.de>
+References: <20240220172527.599962-1-a.fatoum@pengutronix.de>
+Message-Id: <170867356580.297131.14232217175830869747.b4-ty@pengutronix.de>
+Date: Fri, 23 Feb 2024 08:32:45 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240222_233245_590647_535A8114 
-X-CRM114-Status: UNSURE (   7.65  )
+X-CRM114-CacheID: sfid-20240222_233254_067061_1B706743 
+X-CRM114-Status: UNSURE (   8.59  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,31 +80,33 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH] bbu: Emit a message about what happens also when -y is
- given
+	TVD_SUBJ_WIPE_DEBT,T_SCC_BODY_TEXT_LINE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: Re: [PATCH master] ARM: i.MX8MP: dts: remove power domains
+ referenced by media_blk_ctrl
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 21 Feb 2024 11:33:35 +0100, Uwe Kleine-König wrote:
-> To inform the user which device is updated using which handler, also
-> emit a message with -y.
+On Tue, 20 Feb 2024 18:25:27 +0100, Ahmad Fatoum wrote:
+> The media_blk_ctrl is hardcoded in the DT to reference a number of power
+> domains that we delete. The media_blk_ctrl itself is still usable
+> without them (e.g. LVDS doesn't require ISP), but the probe in Linux
+> would fail, because the power domain can't be attached.
 > 
-> Also update the wording to make the output more similar between the
-> different cases.
-> 
+> This has already been fixed once in commit 5600290f4bf1
+> ("/arch/arm/dts: imx8mp: Do not mask out mediamix power domain"), but
+> got reintroduced recently.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] bbu: Emit a message about what happens also when -y is given
-      https://git.pengutronix.de/cgit/barebox/commit/?id=73ac8b16486f (link may not be stable)
+[1/1] ARM: i.MX8MP: dts: remove power domains referenced by media_blk_ctrl
+      https://git.pengutronix.de/cgit/barebox/commit/?id=02f8945abcb0 (link may not be stable)
 
 Best regards,
 -- 
