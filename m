@@ -1,68 +1,63 @@
-Delivery-date: Mon, 26 Feb 2024 15:41:39 +0100
+Delivery-date: Mon, 26 Feb 2024 16:32:08 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1recAl-0088ky-1w
+	id 1recxc-008E1j-0O
 	for lore@lore.pengutronix.de;
-	Mon, 26 Feb 2024 15:41:39 +0100
+	Mon, 26 Feb 2024 16:32:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1recAg-0004kh-7y
-	for lore@pengutronix.de; Mon, 26 Feb 2024 15:41:39 +0100
+	id 1recxb-0006AF-Fb
+	for lore@pengutronix.de; Mon, 26 Feb 2024 16:32:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lft9t0cCD3piwWeuKgxvfQk4jJcAza0RHNtjTqZ53S0=; b=2tGsAhjqgJoiQdIaQaKCWWEqJB
-	PODjZwlnc1YLWTdgVpAYvUdsaj7801y9O/NRIviM1xALWyp1GLgIPFgLwRkX7DB5e5008yLBu76OW
-	qtk6+vDDD1Y3Q7iJERTgZNVTfrPjN9eGddOf4UGjJNje+B6HyiRhqsDlaaU8mOYnKWASYu2+ZHN0E
-	4xObzAivbaZYNqFOUtaOlxoURZXNlxYbksVMzJMi0cy2h4iEDV69qtp24JYZprDPda6mUezDQ3X/8
-	qTbSGiy9d0iPyX+29Lvy1CW/64B8IsAowPjS1co5x4GgC0OddVKQtf6CYpx8yHfcovA/bsFgiBZd+
-	lCj0sieg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=jNZ3UHYJfJ2XGtH9nZQbnbr/+0ztIqgAAkVQVw9ZA6k=; b=EEFOK8FBRM3y7grDasYnvYiT5z
+	Z5rhF3NV1qY/ecPY77Ge808R7mV2vsLx/cWFENhRMD4v4v0iZ9hIEAZiFsLoCGGVJg93f2NILnHoD
+	d6i01eMF7P1h6crARcThcJ93mnhwGDXcq7mBdgbQ0I78zSfPdSOcFvhsLv1ezF+aVpLHnCa9MgKtP
+	Ic7Wj5AELnQWsXdwNL+amfqWYmnlgee7W6mXhOwfkupK872JGOKpZcrrHb4QS481Guj+C4nwOIqZv
+	ifLakdIwGJatiOA8xd+1b2I6ZOice4hJodKqwRHISaHv3sjKXZ25WAXPYBudQq0xKiFao5zVNbKNa
+	P7KrUIdA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rec9r-00000001Cfm-2v2o;
-	Mon, 26 Feb 2024 14:40:43 +0000
+	id 1recwv-00000001RgU-2JBA;
+	Mon, 26 Feb 2024 15:31:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rec9m-00000001Ccx-2U15
+	id 1recws-00000001Rfo-2VaD
 	for barebox@lists.infradead.org;
-	Mon, 26 Feb 2024 14:40:40 +0000
+	Mon, 26 Feb 2024 15:31:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rec9j-0004OY-US; Mon, 26 Feb 2024 15:40:35 +0100
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1recwo-0005yx-Tv; Mon, 26 Feb 2024 16:31:18 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rec9j-0030wZ-Gy; Mon, 26 Feb 2024 15:40:35 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rec9i-002vPy-33;
-	Mon, 26 Feb 2024 15:40:35 +0100
-From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Mon, 26 Feb 2024 15:40:22 +0100
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1recwo-0031TF-HL; Mon, 26 Feb 2024 16:31:18 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1recwo-0037K9-1O;
+	Mon, 26 Feb 2024 16:31:18 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Mon, 26 Feb 2024 16:31:17 +0100
+Message-Id: <20240226153117.743128-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240226-v2024-02-0-topic-imx8m-n-p-tzac-v1-2-2df2430da984@pengutronix.de>
-References: <20240226-v2024-02-0-topic-imx8m-n-p-tzac-v1-0-2df2430da984@pengutronix.de>
-In-Reply-To: <20240226-v2024-02-0-topic-imx8m-n-p-tzac-v1-0-2df2430da984@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-X-Mailer: b4 0.12.4
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240226_064038_691837_BC65326E 
-X-CRM114-Status: GOOD (  12.44  )
+X-CRM114-CacheID: sfid-20240226_073122_655839_83DA7B6F 
+X-CRM114-Status: GOOD (  12.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,104 +75,139 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/3] arm: mach-imx: set cpu type in pbl
+Subject: [PATCH] ARM: i.MX: move barebox,bootsource-mmc aliases to chosen node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In order to use the `cpu_is_imxxyz` macro family in the pbl,
-`__imx_cpu_type` has to be defined and initialized. As we don't have
-access to the devicetree at this point, we resort to manual assignment.
+The barebox,bootsource-* properties are looked for in /chosen, not in
+/aliases. Move the properties to the correct node.
 
-Note: It is safe to build the same imx.o object file for both barebox
-pbl and proper as the `imx_init` function is discarded during linking as
-the whole `init_call` section is not linked into the final binary.
-
-Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+Fixes: 7eedf79ba9 ("ARM: i.MX: add barebox,bootsource-mmc aliases")
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/mach-imx/Makefile | 2 +-
- arch/arm/mach-imx/atf.c    | 5 +++++
- include/mach/imx/generic.h | 5 +++++
- 3 files changed, 11 insertions(+), 1 deletion(-)
+ arch/arm/dts/imx51.dtsi   | 3 +++
+ arch/arm/dts/imx53.dtsi   | 3 +++
+ arch/arm/dts/imx6qdl.dtsi | 3 +++
+ arch/arm/dts/imx8mm.dtsi  | 3 +++
+ arch/arm/dts/imx8mn.dtsi  | 3 +++
+ arch/arm/dts/imx8mp.dtsi  | 3 +++
+ arch/arm/dts/imx8mq.dtsi  | 2 +-
+ arch/arm/dts/imx93.dtsi   | 2 +-
+ 8 files changed, 20 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index ce8af486ae..a2d9702bf4 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -28,7 +28,7 @@ obj-$(CONFIG_NAND_IMX) += nand.o
- lwl-$(CONFIG_ARCH_IMX_EXTERNAL_BOOT_NAND) += external-nand-boot.o
- obj-y += devices.o imx.o
- obj-$(CONFIG_CMD_BOOTROM) += bootrom-cmd.o
--obj-pbl-y += esdctl.o boot.o
-+obj-pbl-y += esdctl.o boot.o imx.o
- obj-$(CONFIG_BAREBOX_UPDATE) += imx-bbu-internal.o
- obj-$(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND) += imx-bbu-external-nand.o
- pbl-$(CONFIG_USB_GADGET_DRIVER_ARC_PBL) += imx-udc.o
-diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
-index 2d8388e8e9..e8060ebd95 100644
---- a/arch/arm/mach-imx/atf.c
-+++ b/arch/arm/mach-imx/atf.c
-@@ -148,6 +148,7 @@ __noreturn void __imx8mm_load_and_start_image_via_tfa(void *bl33)
- 	size_t bl31_size;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
- 
-+	imx_set_cpu_type(IMX_CPU_IMX8MM);
- 	imx8mm_init_scratch_space();
- 	imx8m_save_bootrom_log();
- 	imx8mm_load_bl33(bl33);
-@@ -218,6 +219,7 @@ __noreturn void __imx8mp_load_and_start_image_via_tfa(void *bl33)
- 	size_t bl31_size;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
- 
-+	imx_set_cpu_type(IMX_CPU_IMX8MP);
- 	imx8mp_init_scratch_space();
- 	imx8m_save_bootrom_log();
- 	imx8mp_load_bl33(bl33);
-@@ -289,6 +291,7 @@ __noreturn void __imx8mn_load_and_start_image_via_tfa(void *bl33)
- 	size_t bl31_size;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(16);
- 
-+	imx_set_cpu_type(IMX_CPU_IMX8MN);
- 	imx8mn_init_scratch_space();
- 	imx8m_save_bootrom_log();
- 	imx8mn_load_bl33(bl33);
-@@ -353,6 +356,7 @@ __noreturn void __imx8mq_load_and_start_image_via_tfa(void *bl33)
- 	size_t bl31_size;
- 	unsigned long endmem = MX8M_DDR_CSD1_BASE_ADDR + imx8m_barebox_earlymem_size(32);
- 
-+	imx_set_cpu_type(IMX_CPU_IMX8MQ);
- 	imx8mq_init_scratch_space();
- 	imx8m_save_bootrom_log();
- 	imx8mq_load_bl33(bl33);
-@@ -388,6 +392,7 @@ void __noreturn imx93_load_and_start_image_via_tfa(void)
- 	void *bl33 = (void *)MX93_ATF_BL33_BASE_ADDR;
- 	unsigned long endmem = MX9_DDR_CSD1_BASE_ADDR + imx9_ddrc_sdram_size();
- 
-+	imx_set_cpu_type(IMX_CPU_IMX93);
- 	imx93_init_scratch_space(true);
- 
- 	/*
-diff --git a/include/mach/imx/generic.h b/include/mach/imx/generic.h
-index 1dca335fdd..2b26a1d45a 100644
---- a/include/mach/imx/generic.h
-+++ b/include/mach/imx/generic.h
-@@ -82,6 +82,11 @@ void imx93_cpu_lowlevel_init(void);
- 
- extern unsigned int __imx_cpu_type;
- 
-+static __always_inline void imx_set_cpu_type(unsigned int cpu_type)
-+{
-+	__imx_cpu_type = cpu_type;
-+}
+diff --git a/arch/arm/dts/imx51.dtsi b/arch/arm/dts/imx51.dtsi
+index 2be6b955e2..521f182d20 100644
+--- a/arch/arm/dts/imx51.dtsi
++++ b/arch/arm/dts/imx51.dtsi
+@@ -2,6 +2,9 @@ /{
+ 	aliases {
+ 		pwm0 = &pwm1;
+ 		pwm1 = &pwm2;
++	};
 +
- #ifdef CONFIG_ARCH_IMX1
- # ifdef imx_cpu_type
- #  undef imx_cpu_type
-
++	chosen {
+ 		barebox,bootsource-mmc0 = &esdhc1;
+ 		barebox,bootsource-mmc1 = &esdhc2;
+ 		barebox,bootsource-mmc2 = &esdhc3;
+diff --git a/arch/arm/dts/imx53.dtsi b/arch/arm/dts/imx53.dtsi
+index 5be1d7a53f..0fd05f9b51 100644
+--- a/arch/arm/dts/imx53.dtsi
++++ b/arch/arm/dts/imx53.dtsi
+@@ -3,6 +3,9 @@ aliases {
+ 		pwm0 = &pwm1;
+ 		pwm1 = &pwm2;
+ 		ipu0 = &ipu;
++	};
++
++	chosen {
+ 		barebox,bootsource-mmc0 = &esdhc1;
+ 		barebox,bootsource-mmc1 = &esdhc2;
+ 		barebox,bootsource-mmc2 = &esdhc3;
+diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
+index 5afb772a84..6f58804ed3 100644
+--- a/arch/arm/dts/imx6qdl.dtsi
++++ b/arch/arm/dts/imx6qdl.dtsi
+@@ -7,6 +7,9 @@ aliases {
+ 		pwm3 = &pwm4;
+ 		ipu0 = &ipu1;
+ 		gpr.reboot_mode = &reboot_mode_gpr;
++	};
++
++	chosen {
+ 		barebox,bootsource-mmc0 = &usdhc1;
+ 		barebox,bootsource-mmc1 = &usdhc2;
+ 		barebox,bootsource-mmc2 = &usdhc3;
+diff --git a/arch/arm/dts/imx8mm.dtsi b/arch/arm/dts/imx8mm.dtsi
+index d3d0129421..01f74c1074 100644
+--- a/arch/arm/dts/imx8mm.dtsi
++++ b/arch/arm/dts/imx8mm.dtsi
+@@ -9,6 +9,9 @@ aliases {
+ 		pwm1 = &pwm2;
+ 		pwm2 = &pwm3;
+ 		pwm3 = &pwm4;
++	};
++
++	chosen {
+ 		barebox,bootsource-mmc0 = &usdhc1;
+ 		barebox,bootsource-mmc1 = &usdhc2;
+ 		barebox,bootsource-mmc2 = &usdhc3;
+diff --git a/arch/arm/dts/imx8mn.dtsi b/arch/arm/dts/imx8mn.dtsi
+index 6f3f943548..9aa787ea25 100644
+--- a/arch/arm/dts/imx8mn.dtsi
++++ b/arch/arm/dts/imx8mn.dtsi
+@@ -8,6 +8,9 @@ aliases {
+ 		pwm1 = &pwm2;
+ 		pwm2 = &pwm3;
+ 		pwm3 = &pwm4;
++	};
++
++	chosen {
+ 		barebox,bootsource-mmc0 = &usdhc1;
+ 		barebox,bootsource-mmc1 = &usdhc2;
+ 		barebox,bootsource-mmc2 = &usdhc3;
+diff --git a/arch/arm/dts/imx8mp.dtsi b/arch/arm/dts/imx8mp.dtsi
+index 6c84cfb211..4d1f1bf588 100644
+--- a/arch/arm/dts/imx8mp.dtsi
++++ b/arch/arm/dts/imx8mp.dtsi
+@@ -14,6 +14,9 @@ aliases {
+ 		pwm1 = &pwm2;
+ 		pwm2 = &pwm3;
+ 		pwm3 = &pwm4;
++	};
++
++	chosen {
+ 		barebox,bootsource-mmc0 = &usdhc1;
+ 		barebox,bootsource-mmc1 = &usdhc2;
+ 		barebox,bootsource-mmc2 = &usdhc3;
+diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
+index d90afbe628..7cdbafcffe 100644
+--- a/arch/arm/dts/imx8mq.dtsi
++++ b/arch/arm/dts/imx8mq.dtsi
+@@ -5,7 +5,7 @@
+  */
+ 
+ / {
+-	aliases {
++	chosen {
+ 		barebox,bootsource-mmc0 = &usdhc1;
+ 		barebox,bootsource-mmc1 = &usdhc2;
+ 	};
+diff --git a/arch/arm/dts/imx93.dtsi b/arch/arm/dts/imx93.dtsi
+index dd24c732d3..b931586d74 100644
+--- a/arch/arm/dts/imx93.dtsi
++++ b/arch/arm/dts/imx93.dtsi
+@@ -1,5 +1,5 @@
+ /{
+-	aliases {
++	chosen {
+ 		barebox,bootsource-mmc0 = &usdhc1;
+ 		barebox,bootsource-mmc1 = &usdhc2;
+ 		barebox,bootsource-mmc2 = &usdhc3;
 -- 
 2.39.2
 
