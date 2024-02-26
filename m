@@ -1,63 +1,59 @@
-Delivery-date: Mon, 26 Feb 2024 16:32:08 +0100
+Delivery-date: Mon, 26 Feb 2024 17:03:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1recxc-008E1j-0O
+	id 1redRY-008Hmt-0h
 	for lore@lore.pengutronix.de;
-	Mon, 26 Feb 2024 16:32:08 +0100
+	Mon, 26 Feb 2024 17:03:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1recxb-0006AF-Fb
-	for lore@pengutronix.de; Mon, 26 Feb 2024 16:32:08 +0100
+	id 1redRW-0003A8-LZ
+	for lore@pengutronix.de; Mon, 26 Feb 2024 17:03:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=jNZ3UHYJfJ2XGtH9nZQbnbr/+0ztIqgAAkVQVw9ZA6k=; b=EEFOK8FBRM3y7grDasYnvYiT5z
-	Z5rhF3NV1qY/ecPY77Ge808R7mV2vsLx/cWFENhRMD4v4v0iZ9hIEAZiFsLoCGGVJg93f2NILnHoD
-	d6i01eMF7P1h6crARcThcJ93mnhwGDXcq7mBdgbQ0I78zSfPdSOcFvhsLv1ezF+aVpLHnCa9MgKtP
-	Ic7Wj5AELnQWsXdwNL+amfqWYmnlgee7W6mXhOwfkupK872JGOKpZcrrHb4QS481Guj+C4nwOIqZv
-	ifLakdIwGJatiOA8xd+1b2I6ZOice4hJodKqwRHISaHv3sjKXZ25WAXPYBudQq0xKiFao5zVNbKNa
-	P7KrUIdA==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=BPkS1kcintE322gczbmRTRPXQtZnY+X9aEA5aPN35cY=; b=BudiTpAgf5DM5sgTJMPSCnUn4c
+	arBOUEewmgMOCFihg1t6R0A5xOtwOm82s4hoV1XyUQXr2UpBzfrH3c73hmscmXuwDfcVnjMziznHq
+	c/wakh/phpjI08fhP/XLZQQAb4Xgr6eEMB7Rd8UaLuOAtb9GVBye7eEPvnDMUnnVlLPB5JLP5e+nv
+	k2098300mat0DwULXpOV6j08kLlIf4eaCQ1ZdRgEC7XDnldtTZl20F+NED7PA7BDsRcaM4hWUyLlR
+	LU84FW4PKhmwcsfIp9dLdm3DthMMpDHutiUue4lHfeUY73OsJ7cinmEHngTRPvdtkvUjCirAHeqVg
+	S/Ybh5Jg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1recwv-00000001RgU-2JBA;
-	Mon, 26 Feb 2024 15:31:25 +0000
+	id 1redQw-00000001YZo-1Iz5;
+	Mon, 26 Feb 2024 16:02:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1recws-00000001Rfo-2VaD
+	id 1redQt-00000001YYl-2b6R
 	for barebox@lists.infradead.org;
-	Mon, 26 Feb 2024 15:31:23 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1recwo-0005yx-Tv; Mon, 26 Feb 2024 16:31:18 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1recwo-0031TF-HL; Mon, 26 Feb 2024 16:31:18 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1recwo-0037K9-1O;
-	Mon, 26 Feb 2024 16:31:18 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 26 Feb 2024 16:31:17 +0100
-Message-Id: <20240226153117.743128-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	Mon, 26 Feb 2024 16:02:24 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1redQs-00032D-AH; Mon, 26 Feb 2024 17:02:22 +0100
+Message-ID: <5890b1c3-dc7c-47c4-affa-d518c324ae3e@pengutronix.de>
+Date: Mon, 26 Feb 2024 17:02:21 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Stefan Kerkmann <s.kerkmann@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
+Cc: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
+References: <20240226-v2024-02-0-topic-imx8m-n-p-tzac-v1-0-2df2430da984@pengutronix.de>
+ <20240226-v2024-02-0-topic-imx8m-n-p-tzac-v1-1-2df2430da984@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240226-v2024-02-0-topic-imx8m-n-p-tzac-v1-1-2df2430da984@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240226_073122_655839_83DA7B6F 
-X-CRM114-Status: GOOD (  12.56  )
+X-CRM114-CacheID: sfid-20240226_080223_694433_34C7531F 
+X-CRM114-Status: GOOD (  26.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,136 +76,117 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] ARM: i.MX: move barebox,bootsource-mmc aliases to chosen node
+Subject: Re: [PATCH 1/3] arm: mach-imx: tzasc: lock id_swap_bypass bit
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The barebox,bootsource-* properties are looked for in /chosen, not in
-/aliases. Move the properties to the correct node.
+On 26.02.24 15:40, Stefan Kerkmann wrote:
+> This commit ports U-Boot commit 1289ff7bd7e4 ("imx8m: lock
+> id_swap_bypass bit in tzc380 enable") to barebox. This is the original
+> commit message:
+> 
+>> According to TRM for i.MX8M Nano and Plus, GPR10 register contains lock
+>> bit for TZASC_ID_SWAP_BYPASS bit. This bit is required to be set in
+>> order to avoid AXI bus errors when GPU is enabled on the platform.
+>> TZASC_ID_SWAP_BYPASS bit is alread set for all imx8m applicable
+>> derivatives, but is missing a lock settings to be applied.
+>>
+>> Set the TZASC_ID_SWAP_BYPASS_LOCK bit for those derivatives which have
+>> it implemented.
+>>
+>> Since we're here, provide also names to bits from TRM instead of using
+>> BIT() macro in the code.
+> 
+> Signed-off-by: Andrey Zhizhikin <andrey.zhizhikin@leica-geosystems.com>
+> Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 
-Fixes: 7eedf79ba9 ("ARM: i.MX: add barebox,bootsource-mmc aliases")
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/dts/imx51.dtsi   | 3 +++
- arch/arm/dts/imx53.dtsi   | 3 +++
- arch/arm/dts/imx6qdl.dtsi | 3 +++
- arch/arm/dts/imx8mm.dtsi  | 3 +++
- arch/arm/dts/imx8mn.dtsi  | 3 +++
- arch/arm/dts/imx8mp.dtsi  | 3 +++
- arch/arm/dts/imx8mq.dtsi  | 2 +-
- arch/arm/dts/imx93.dtsi   | 2 +-
- 8 files changed, 20 insertions(+), 2 deletions(-)
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-diff --git a/arch/arm/dts/imx51.dtsi b/arch/arm/dts/imx51.dtsi
-index 2be6b955e2..521f182d20 100644
---- a/arch/arm/dts/imx51.dtsi
-+++ b/arch/arm/dts/imx51.dtsi
-@@ -2,6 +2,9 @@ /{
- 	aliases {
- 		pwm0 = &pwm1;
- 		pwm1 = &pwm2;
-+	};
-+
-+	chosen {
- 		barebox,bootsource-mmc0 = &esdhc1;
- 		barebox,bootsource-mmc1 = &esdhc2;
- 		barebox,bootsource-mmc2 = &esdhc3;
-diff --git a/arch/arm/dts/imx53.dtsi b/arch/arm/dts/imx53.dtsi
-index 5be1d7a53f..0fd05f9b51 100644
---- a/arch/arm/dts/imx53.dtsi
-+++ b/arch/arm/dts/imx53.dtsi
-@@ -3,6 +3,9 @@ aliases {
- 		pwm0 = &pwm1;
- 		pwm1 = &pwm2;
- 		ipu0 = &ipu;
-+	};
-+
-+	chosen {
- 		barebox,bootsource-mmc0 = &esdhc1;
- 		barebox,bootsource-mmc1 = &esdhc2;
- 		barebox,bootsource-mmc2 = &esdhc3;
-diff --git a/arch/arm/dts/imx6qdl.dtsi b/arch/arm/dts/imx6qdl.dtsi
-index 5afb772a84..6f58804ed3 100644
---- a/arch/arm/dts/imx6qdl.dtsi
-+++ b/arch/arm/dts/imx6qdl.dtsi
-@@ -7,6 +7,9 @@ aliases {
- 		pwm3 = &pwm4;
- 		ipu0 = &ipu1;
- 		gpr.reboot_mode = &reboot_mode_gpr;
-+	};
-+
-+	chosen {
- 		barebox,bootsource-mmc0 = &usdhc1;
- 		barebox,bootsource-mmc1 = &usdhc2;
- 		barebox,bootsource-mmc2 = &usdhc3;
-diff --git a/arch/arm/dts/imx8mm.dtsi b/arch/arm/dts/imx8mm.dtsi
-index d3d0129421..01f74c1074 100644
---- a/arch/arm/dts/imx8mm.dtsi
-+++ b/arch/arm/dts/imx8mm.dtsi
-@@ -9,6 +9,9 @@ aliases {
- 		pwm1 = &pwm2;
- 		pwm2 = &pwm3;
- 		pwm3 = &pwm4;
-+	};
-+
-+	chosen {
- 		barebox,bootsource-mmc0 = &usdhc1;
- 		barebox,bootsource-mmc1 = &usdhc2;
- 		barebox,bootsource-mmc2 = &usdhc3;
-diff --git a/arch/arm/dts/imx8mn.dtsi b/arch/arm/dts/imx8mn.dtsi
-index 6f3f943548..9aa787ea25 100644
---- a/arch/arm/dts/imx8mn.dtsi
-+++ b/arch/arm/dts/imx8mn.dtsi
-@@ -8,6 +8,9 @@ aliases {
- 		pwm1 = &pwm2;
- 		pwm2 = &pwm3;
- 		pwm3 = &pwm4;
-+	};
-+
-+	chosen {
- 		barebox,bootsource-mmc0 = &usdhc1;
- 		barebox,bootsource-mmc1 = &usdhc2;
- 		barebox,bootsource-mmc2 = &usdhc3;
-diff --git a/arch/arm/dts/imx8mp.dtsi b/arch/arm/dts/imx8mp.dtsi
-index 6c84cfb211..4d1f1bf588 100644
---- a/arch/arm/dts/imx8mp.dtsi
-+++ b/arch/arm/dts/imx8mp.dtsi
-@@ -14,6 +14,9 @@ aliases {
- 		pwm1 = &pwm2;
- 		pwm2 = &pwm3;
- 		pwm3 = &pwm4;
-+	};
-+
-+	chosen {
- 		barebox,bootsource-mmc0 = &usdhc1;
- 		barebox,bootsource-mmc1 = &usdhc2;
- 		barebox,bootsource-mmc2 = &usdhc3;
-diff --git a/arch/arm/dts/imx8mq.dtsi b/arch/arm/dts/imx8mq.dtsi
-index d90afbe628..7cdbafcffe 100644
---- a/arch/arm/dts/imx8mq.dtsi
-+++ b/arch/arm/dts/imx8mq.dtsi
-@@ -5,7 +5,7 @@
-  */
- 
- / {
--	aliases {
-+	chosen {
- 		barebox,bootsource-mmc0 = &usdhc1;
- 		barebox,bootsource-mmc1 = &usdhc2;
- 	};
-diff --git a/arch/arm/dts/imx93.dtsi b/arch/arm/dts/imx93.dtsi
-index dd24c732d3..b931586d74 100644
---- a/arch/arm/dts/imx93.dtsi
-+++ b/arch/arm/dts/imx93.dtsi
-@@ -1,5 +1,5 @@
- /{
--	aliases {
-+	chosen {
- 		barebox,bootsource-mmc0 = &usdhc1;
- 		barebox,bootsource-mmc1 = &usdhc2;
- 		barebox,bootsource-mmc2 = &usdhc3;
+> ---
+>  arch/arm/mach-imx/tzasc.c | 42 ++++++++++++++++++++++++++++++++----------
+>  1 file changed, 32 insertions(+), 10 deletions(-)
+> 
+> diff --git a/arch/arm/mach-imx/tzasc.c b/arch/arm/mach-imx/tzasc.c
+> index 9c71108c99..1f8d7426c1 100644
+> --- a/arch/arm/mach-imx/tzasc.c
+> +++ b/arch/arm/mach-imx/tzasc.c
+> @@ -5,37 +5,59 @@
+>  #include <mach/imx/imx8m-regs.h>
+>  #include <io.h>
+>  
+> -#define GPR_TZASC_EN		BIT(0)
+> -#define GPR_TZASC_SWAP_ID	BIT(1)
+> -#define GPR_TZASC_EN_LOCK	BIT(16)
+> +#define GPR_TZASC_EN					BIT(0)
+> +#define GPR_TZASC_ID_SWAP_BYPASS		BIT(1)
+> +#define GPR_TZASC_EN_LOCK				BIT(16)
+> +#define GPR_TZASC_ID_SWAP_BYPASS_LOCK	BIT(17)
+>  
+> -static void enable_tzc380(bool bypass_id_swap)
+> +#define MX8M_TZASC_REGION_ATTRIBUTES_0		(MX8M_TZASC_BASE_ADDR + 0x108)
+> +#define MX8M_TZASC_REGION_ATTRIBUTES_0_SP	GENMASK(31, 28)
+> +
+> +static void enable_tzc380(bool bypass_id_swap, bool bypass_id_swap_lock)
+>  {
+>  	u32 __iomem *gpr = IOMEM(MX8M_IOMUXC_GPR_BASE_ADDR);
+>  
+>  	/* Enable TZASC and lock setting */
+>  	setbits_le32(&gpr[10], GPR_TZASC_EN);
+>  	setbits_le32(&gpr[10], GPR_TZASC_EN_LOCK);
+> +
+> +	/*
+> +	 * According to TRM, TZASC_ID_SWAP_BYPASS should be set in
+> +	 * order to avoid AXI Bus errors when GPU is in use
+> +	 */
+>  	if (bypass_id_swap)
+> -		setbits_le32(&gpr[10], BIT(1));
+> +		setbits_le32(&gpr[10], GPR_TZASC_ID_SWAP_BYPASS);
+> +
+> +	/*
+> +	 * imx8mn and imx8mp implements the lock bit for
+> +	 * TZASC_ID_SWAP_BYPASS, enable it to lock settings
+> +	 */
+> +	if (bypass_id_swap_lock)
+> +		setbits_le32(&gpr[10], GPR_TZASC_ID_SWAP_BYPASS_LOCK);
+> +
+>  	/*
+>  	 * set Region 0 attribute to allow secure and non-secure
+>  	 * read/write permission. Found some masters like usb dwc3
+>  	 * controllers can't work with secure memory.
+>  	 */
+> -	writel(0xf0000000, MX8M_TZASC_BASE_ADDR + 0x108);
+> +	writel(MX8M_TZASC_REGION_ATTRIBUTES_0_SP,
+> +		   MX8M_TZASC_REGION_ATTRIBUTES_0);
+>  }
+>  
+>  void imx8mq_tzc380_init(void)
+>  {
+> -	enable_tzc380(false);
+> +	enable_tzc380(false, false);
+>  }
+>  
+> -void imx8mn_tzc380_init(void) __alias(imx8mm_tzc380_init);
+> -void imx8mp_tzc380_init(void) __alias(imx8mm_tzc380_init);
+>  void imx8mm_tzc380_init(void)
+>  {
+> -	enable_tzc380(true);
+> +	enable_tzc380(true, false);
+> +}
+> +
+> +void imx8mn_tzc380_init(void) __alias(imx8mp_tzc380_init);
+> +void imx8mp_tzc380_init(void)
+> +{
+> +	enable_tzc380(true, true);
+>  }
+>  
+>  bool tzc380_is_enabled(void)
+> 
+
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
