@@ -1,64 +1,68 @@
-Delivery-date: Wed, 28 Feb 2024 17:03:56 +0100
+Delivery-date: Wed, 28 Feb 2024 17:06:00 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfMPS-00DfIq-22
+	id 1rfMRU-00DfPb-2R
 	for lore@lore.pengutronix.de;
-	Wed, 28 Feb 2024 17:03:56 +0100
+	Wed, 28 Feb 2024 17:06:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfMPS-0007fi-2L
-	for lore@pengutronix.de; Wed, 28 Feb 2024 17:03:54 +0100
+	id 1rfMRU-0008Qe-4A
+	for lore@pengutronix.de; Wed, 28 Feb 2024 17:06:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=rOqF8zOdqOvfirnL2X2DmF2NWcqc1mKQVrXF0/eo6NU=; b=fo+VLpFXGHPyVh8b5dIDZNXPjD
-	EAYuy+f88+H/zznUq6I8wfHMjSACkBOtMStgx55WyaenTzQxFUFjVvSxBaAASLci05iO1KCY/z0RM
-	4qhP7Bg6cAN14dHTaxc9pOZ69zDCsdzBIQx6CcxVur0eP1KuilgjtWu/1VEGyOoX4vxX5Q3C+j1TC
-	tTRvVPL8UrO2NJNs6cJWGqz8CpYEPV1mz3XfJyFGlJHaLB5u2CjLxkonVmQFiU741W20etRCFtEGw
-	+SEuUn+kQHL616CjeuTfrJwn3T+3QDVQpkBfJmU8YUpAtEU28ge9T0CC4lHYzct37eLy7IIkR+vyv
-	oiGAripQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=TH8pjJjxcv5sZpGKiIF8COPH01dOZz/EaQ3DO+eOzv4=; b=SHweE87Xj7CSNbouDKSypfQB57
+	V0SXniXE6Gy80FD32f4v7px5zG9yRBLZ8UvhhaXADPakZ59YsCZu0JUG91j5n9bPK8DVOhqhXtezj
+	upkUSYNqoFldtZuqofLY/mRiVw71xrpvwOJGHUYb7Y03xUqZb50ucN9i5WaYjlG8fLFpZf0+xHtqx
+	bkoaz1s8R9iS1ZHTaliDpKg82IQsoszDy3uIoL2mVDeqiWEn+yKUgLDOnayYlfN2sIqp7Nhuj1DDY
+	jiFNTM0ScxL4XtIhRmROHim8QdX83XJyPMt+KEYxi9yFndFsE7DoQWiKNlqHMVs+ZWR+B/YDM03G3
+	rjcEmWBA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfMOl-0000000A1LK-1Tzs;
-	Wed, 28 Feb 2024 16:03:11 +0000
+	id 1rfMQz-0000000A26c-11O9;
+	Wed, 28 Feb 2024 16:05:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfMOi-0000000A1KE-2DNX
+	id 1rfMQu-0000000A248-0oqh
 	for barebox@lists.infradead.org;
-	Wed, 28 Feb 2024 16:03:10 +0000
+	Wed, 28 Feb 2024 16:05:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rfMOg-0007V3-C8; Wed, 28 Feb 2024 17:03:06 +0100
+	id 1rfMQt-000834-0t; Wed, 28 Feb 2024 17:05:23 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rfMOf-003QJl-Va; Wed, 28 Feb 2024 17:03:05 +0100
+	id 1rfMQs-003QfV-KR; Wed, 28 Feb 2024 17:05:22 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rfMOf-006fJR-1E;
-	Wed, 28 Feb 2024 17:03:05 +0100
+	id 1rfMQs-006fql-06;
+	Wed, 28 Feb 2024 17:05:22 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 28 Feb 2024 17:03:04 +0100
-Message-Id: <20240228160304.1588645-1-a.fatoum@pengutronix.de>
+Cc: mfe@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 28 Feb 2024 17:05:15 +0100
+Message-Id: <20240228160518.1589193-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240228160518.1589193-1-a.fatoum@pengutronix.de>
+References: <20240228160518.1589193-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240228_080308_590721_B826768F 
-X-CRM114-Status: GOOD (  11.39  )
+X-CRM114-CacheID: sfid-20240228_080524_311623_4F9B0DE7 
+X-CRM114-Status: UNSURE (   9.53  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,36 +85,102 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] mtd: don't try to detect UBI in too small flash partitions
+Subject: [PATCH 3/6] treewide: remove bus probe functions that just call driver probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The detect callback will try to detect an UBI volume inside a partition.
-If that partition happens to be smaller than 512 bytes, detect will fail
-with -EINVAL.
-
-Avoid this confusing error by early exiting in this case.
+Now that the driver core will call the driver probe function if there is
+no bus probe function, remove all bus probe functions that do what the
+core can do instead.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mtd/core.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/bus/acpi.c     | 6 ------
+ drivers/i2c/i2c.c      | 6 ------
+ drivers/spi/spi.c      | 6 ------
+ drivers/tee/tee_core.c | 6 ------
+ 4 files changed, 24 deletions(-)
 
-diff --git a/drivers/mtd/core.c b/drivers/mtd/core.c
-index 97a7996cf68e..34f919b96ea4 100644
---- a/drivers/mtd/core.c
-+++ b/drivers/mtd/core.c
-@@ -599,6 +599,10 @@ static int mtd_detect(struct device *dev)
- 	enum filetype filetype;
- 	int npebs = mtd_div_by_eb(mtd->size, mtd);
+diff --git a/drivers/bus/acpi.c b/drivers/bus/acpi.c
+index cf85e886d0a2..0d11b604ae5d 100644
+--- a/drivers/bus/acpi.c
++++ b/drivers/bus/acpi.c
+@@ -205,15 +205,9 @@ static int acpi_bus_match(struct device *dev, struct driver *drv)
+ 	return acpi_sigcmp(acpidrv->signature, sdt->signature);
+ }
  
-+	/* No point in looking for UBI on a partition that's smaller than an erase block */
-+	if (!npebs)
-+		return 0;
-+
- 	npebs = max(npebs, 64);
+-static int acpi_bus_probe(struct device *dev)
+-{
+-	return dev->driver->probe(dev);
+-}
+-
+ struct bus_type acpi_bus = {
+ 	.name = "acpi",
+ 	.match = acpi_bus_match,
+-	.probe = acpi_bus_probe,
+ };
  
- 	/*
+ static int efi_acpi_probe(void)
+diff --git a/drivers/i2c/i2c.c b/drivers/i2c/i2c.c
+index 997fc8d81725..547151904517 100644
+--- a/drivers/i2c/i2c.c
++++ b/drivers/i2c/i2c.c
+@@ -743,15 +743,9 @@ int i2c_add_numbered_adapter(struct i2c_adapter *adapter)
+ }
+ EXPORT_SYMBOL(i2c_add_numbered_adapter);
+ 
+-static int i2c_probe(struct device *dev)
+-{
+-	return dev->driver->probe(dev);
+-}
+-
+ struct bus_type i2c_bus = {
+ 	.name = "i2c",
+ 	.match = device_match_of_modalias,
+-	.probe = i2c_probe,
+ };
+ 
+ static int i2c_bus_init(void)
+diff --git a/drivers/spi/spi.c b/drivers/spi/spi.c
+index fd9c8da17100..c627d88954a7 100644
+--- a/drivers/spi/spi.c
++++ b/drivers/spi/spi.c
+@@ -412,15 +412,9 @@ int spi_write_then_read(struct spi_device *spi,
+ }
+ EXPORT_SYMBOL(spi_write_then_read);
+ 
+-static int spi_probe(struct device *dev)
+-{
+-	return dev->driver->probe(dev);
+-}
+-
+ struct bus_type spi_bus = {
+ 	.name = "spi",
+ 	.match = device_match_of_modalias,
+-	.probe = spi_probe,
+ };
+ 
+ static int spi_bus_init(void)
+diff --git a/drivers/tee/tee_core.c b/drivers/tee/tee_core.c
+index 36c6210b8b1d..45fa9b567072 100644
+--- a/drivers/tee/tee_core.c
++++ b/drivers/tee/tee_core.c
+@@ -770,15 +770,9 @@ static int tee_client_device_match(struct device *dev,
+ 	return -1;
+ }
+ 
+-static int tee_bus_probe(struct device *dev)
+-{
+-	return dev->driver->probe(dev);
+-}
+-
+ struct bus_type tee_bus_type = {
+ 	.name		= "tee",
+ 	.match		= tee_client_device_match,
+-	.probe		= tee_bus_probe,
+ };
+ EXPORT_SYMBOL_GPL(tee_bus_type);
+ 
 -- 
 2.39.2
 
