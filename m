@@ -1,62 +1,77 @@
-Delivery-date: Thu, 29 Feb 2024 12:46:59 +0100
+Delivery-date: Thu, 29 Feb 2024 16:58:12 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfesN-00FZp8-1w
+	id 1rfinT-00GBAo-3B
 	for lore@lore.pengutronix.de;
-	Thu, 29 Feb 2024 12:46:59 +0100
+	Thu, 29 Feb 2024 16:58:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfesM-0006Nv-W7
-	for lore@pengutronix.de; Thu, 29 Feb 2024 12:46:59 +0100
+	id 1rfinT-0003Vv-Ah
+	for lore@pengutronix.de; Thu, 29 Feb 2024 16:58:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=gh7eQnnMdwZUJCTK2x1FyQxNJTxNgLqgez+JcPHqIJc=; b=J7l8JqTOUg0asoBs9q6OhQMNIQ
-	a6m5Hd6DmkhdULpg327A6K5L1lWIR9YnTYcqLEJzYf8jtHuxVs8w0gOUwbuoLq16SOJrV6+DXxw3m
-	b948+6vUObYfipUn9p1f/wNZzuYKow/L5xBajOFmYoVYtwMlqfjrKLu65+U/TDNJxpuOM/lOTvQE4
-	1KhJAuVzwz+NarK4138x4Da+aLPOTRWgp7X93cEdD28uFjSuwXAtWnd6oXMJVQGSwg09d7zfT5Rkg
-	L6uBBWPnW1lr++sPIwXkVhUC9/T9YnpybiG3dZz80+VyagcIr7/aqZB/jQ8D1seSFjWBjaNWJA77I
-	yHJZurOQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
+	:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=agauh48jlAyTvOPwi5Kid/et6D9u3Xejrvng2OkYl4Q=; b=O+bhczA4vANFwKgaBKBb2KHg1g
+	jlhnVMh+m5832cItYRbOyeIAc0KKiqgocuoqH912eI0Vla8/7R5f+PgMuKXxSG8BlDT2qCMu0y4PV
+	AclN95sMOd6Oxlc2g8WKcFLerLeeh/iDzW/HwaGTEEN8rh7AccmPCsGBjjr0+eqrbZpYCInlPli4T
+	xLyv6ydRi2N8kNU1g8gyZntBbOCwtyUB47sJMrcJQ9LLOc0X+B8I8Ve4ipQNtwWj2BJtArGmVFbmw
+	9e6YzwWP5Fc8hx02JUn53yydNOBRuQGwUDkwkfCtaHWKwD5lPtW62Hj1n2zEerWtJcMRe8rR7jnwh
+	fb8r/TOw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rferp-0000000DOcp-3zyX;
-	Thu, 29 Feb 2024 11:46:25 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1rfimp-0000000EAGh-06pU;
+	Thu, 29 Feb 2024 15:57:31 +0000
+Received: from smtpout143.security-mail.net ([85.31.212.143])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rferm-0000000DOZP-0S2O
+	id 1rfimk-0000000EADB-30zi
 	for barebox@lists.infradead.org;
-	Thu, 29 Feb 2024 11:46:23 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rferk-0006Gi-QU; Thu, 29 Feb 2024 12:46:20 +0100
-Message-ID: <e73418af-07e8-4c5f-9d81-3821a2825e70@pengutronix.de>
-Date: Thu, 29 Feb 2024 12:46:20 +0100
+	Thu, 29 Feb 2024 15:57:28 +0000
+Received: from localhost (localhost [127.0.0.1])
+	by fx403.security-mail.net (Postfix) with ESMTP id 97C59596EF2
+	for <barebox@lists.infradead.org>; Thu, 29 Feb 2024 16:57:22 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
+	s=sec-sig-email; t=1709222242;
+	bh=UsNiormco5EoSQEQAo3RIrkvAlJX+kgIscQcf/08zhQ=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=b/zZ2hO81xw+03jxol2glJWlkKVGBThec+RH/h4aerXL+x8ykPOG5MAmUZjsBfDOk
+	 8BC5K9jM3OGWbjaQJY5xDGqf21a0h2pIRcG5Vmo385BUsPisdwP9MXdxSupWhUHJbd
+	 t5oO2NT8trybmyyEwCiD6TS4iuMpBWsCZh4GSuYU=
+Received: from fx403 (localhost [127.0.0.1]) by fx403.security-mail.net
+ (Postfix) with ESMTP id 525845970D4; Thu, 29 Feb 2024 16:57:22 +0100 (CET)
+Received: from srvsmtp.lin.mbt.kalray.eu (unknown [217.181.231.53]) by
+ fx403.security-mail.net (Postfix) with ESMTPS id A7EA1596B5F; Thu, 29 Feb
+ 2024 16:57:21 +0100 (CET)
+Received: from junon.lan.kalrayinc.com (unknown [192.168.37.161]) by
+ srvsmtp.lin.mbt.kalray.eu (Postfix) with ESMTPSA id 78F1D40363; Thu, 29 Feb
+ 2024 16:57:21 +0100 (CET)
+X-Quarantine-ID: <itdPkDqct3P0>
+X-Virus-Scanned: E-securemail
+Secumail-id: <6141.65e0a961.a50a6.0>
+From: Yann Sionneau <ysionneau@kalrayinc.com>
+To: barebox@lists.infradead.org
+Cc: Jonathan Borne <jborne@kalrayinc.com>, Julian Vetter
+ <jvetter@kalrayinc.com>, Jules Maselbas <jmaselbas@zdiv.net>, Yann Sionneau
+ <ysionneau@kalrayinc.com>
+Date: Thu, 29 Feb 2024 16:56:58 +0100
+Message-ID: <20240229155700.17443-2-ysionneau@kalrayinc.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240229155700.17443-1-ysionneau@kalrayinc.com>
+References: <20240229155700.17443-1-ysionneau@kalrayinc.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Marco Felsch <m.felsch@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20240228180319.2739412-1-a.fatoum@pengutronix.de>
- <20240229091020.6fdnglwbla75hpn3@pengutronix.de>
- <cd591f96-026f-4fc8-8f26-f572143b32e7@pengutronix.de>
- <20240229093324.by6gutzs6g3bgknz@pengutronix.de>
- <e930242d-0fa6-4387-82a2-112b519b619d@pengutronix.de>
- <20240229111354.y6hgi2ml5jwgotvz@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240229111354.y6hgi2ml5jwgotvz@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240229_034622_225332_103C7129 
-X-CRM114-Status: GOOD (  17.96  )
+X-CRM114-CacheID: sfid-20240229_075726_935190_9D05868A 
+X-CRM114-Status: UNSURE (   9.93  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,105 +90,58 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master] optee: don't warn about missing OP-TEE header
+Subject: [PATCH 2/4] mci: dwcmshc-sdhci: Fix f_max computation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 29.02.24 12:13, Marco Felsch wrote:
-> On 24-02-29, Ahmad Fatoum wrote:
->> On 29.02.24 10:33, Marco Felsch wrote:
->>> On 24-02-29, Ahmad Fatoum wrote:
->>>> hdr is a valid pointer for me, but it doesn't point at a header, which causes
->>>> me to get an error message.
->>>
->>> Yes, I have noticed the code path for non-pbl part as well now :/
->>>
->>> I was thinking about:
->>>
->>> 	if (hdr->magic == 0)
->>> 		return -EINVAL;
->>>
->>> but this is not far awways from you change. Therefore:
->>
->> This would assume that DRAM is zero-initialized after POR, which isn't given.
-> 
-> For i.MX8M and i.MX9 it should be the case since we call
-> imx8m*_init_scratch_space which in turn does set the scratch space to
-> zero. Anyway as said, I'm fine with lowering it to pr_debug() :)
+f_max was possibly set from max-frequency DT property
+by mci_of_parse() and then overwritten few lines later
+with the clock frequency, making it impossible to
+reduce the clock frequency from DT.
 
-Ah, I see. First time I ran into this, I was chainloading a new barebox from
-an old barebox, so it read gibberish.
+Move the call to mci_of_parse() after the first assignment
+to f_max.
 
-Cheers,
-Ahmad
+Signed-off-by: Yann Sionneau <ysionneau@kalrayinc.com>
 
-> 
-> Regards,
->   Marco
-> 
->>> Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
->>>
->>> PS: Could you please fix the silent check as well by using IS_ERR_OR_NULL()?
->>
->> I will send a separate patch for that, so this can be picked up as-is.
->>
->> Cheers,
->> Ahmad
->>
->>>
->>> Regards,
->>>   Marco
->>>
->>>>
->>>> Thanks,
->>>> Ahmad
->>>>
->>>>>
->>>>> Regards,
->>>>>   Marco
->>>>>
->>>>>>  
->>>>>>  	if (hdr->magic != OPTEE_MAGIC) {
->>>>>> -		pr_err("Invalid header magic 0x%08x, expected 0x%08x\n",
->>>>>> -			   hdr->magic, OPTEE_MAGIC);
->>>>>> +		pr_debug("Invalid header magic 0x%08x, expected 0x%08x\n",
->>>>>> +			 hdr->magic, OPTEE_MAGIC);
->>>>>>  		return -EINVAL;
->>>>>>  	}
->>>>>>  
->>>>>> -- 
->>>>>> 2.39.2
->>>>>>
->>>>>>
->>>>>
->>>>
->>>> -- 
->>>> Pengutronix e.K.                           |                             |
->>>> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->>>> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->>>> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>>>
->>>>
->>>
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
->>
-> 
+---
+ drivers/mci/dwcmshc-sdhci.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/mci/dwcmshc-sdhci.c b/drivers/mci/dwcmshc-sdhci.c
+index 7cc6fe3f18..d9c51752db 100644
+--- a/drivers/mci/dwcmshc-sdhci.c
++++ b/drivers/mci/dwcmshc-sdhci.c
+@@ -316,12 +316,17 @@ static int dwcmshc_probe(struct device *dev)
+ 	mci->send_cmd = dwcmshc_mci_send_cmd;
+ 	mci->card_present = dwcmshc_mci_card_present;
+ 
+-	mci_of_parse(&host->mci);
+-
+ 	sdhci_setup_host(&host->sdhci);
+ 
+ 	mci->max_req_size = 0x8000;
++	/*
++	 * Let's first initialize f_max to the DT clock freq
++	 * Then mci_of_parse can override if with the content
++	 * of the 'max-frequency' DT property if it is present.
++	 * Then we can finish by computing the f_min.
++	 */
+ 	mci->f_max = clk_get_rate(clk);
++	mci_of_parse(&host->mci);
+ 	mci->f_min = mci->f_max / SDHCI_MAX_DIV_SPEC_300;
+ 
+ 	dev->priv = host;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.43.0
+
+
+
+
 
 
 
