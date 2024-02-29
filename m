@@ -3,72 +3,75 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfinT-00GBAn-35
+	id 1rfinU-00GBBj-2z
 	for lore@lore.pengutronix.de;
 	Thu, 29 Feb 2024 16:58:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfinT-0003Va-8C
-	for lore@pengutronix.de; Thu, 29 Feb 2024 16:58:11 +0100
+	id 1rfinU-0003We-Ao
+	for lore@pengutronix.de; Thu, 29 Feb 2024 16:58:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GFyBanayqNF6Co14gi/ja3h0C3CN4VhYyphOcJU81no=; b=nhs7yjSwtx/An2+DSQ9L/LrL99
-	YtuD8IoyeK5dDxzxAGE0ky0iCso4rcDJtWtFELZPZSpEci6VHLeJoXHifJrbBC23ZeFQ/Fr0JzI0x
-	LKq16ebR8yXsnWnX89y92ghFLoJhyK70A1tmv3X6ReHg6g4fBgSFQtOkK9wIoiwfTiqwcPIcmTCCP
-	8s+HSI9vUOpXWjhTrUUEVLKZnMNZ7/orBiZXcNOErU16rbEZiPdJMKy5KR8xGaUKtwu0sn1K1nmJl
-	iiVWXRB9rNraOraS8/vZEKNPEkQWh8wnEzmkw4vNZFAANuTksce9mpOu4nQkj0koSCrxY26Pq1qbJ
-	QN8mJISQ==;
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
+	:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=2DMh49OzrjcB/HnOEpIkIAK57GxvF9Vm7VgYIigYhJo=; b=BXucAXep/FRYrPe/YgdFRfyT9A
+	1ThZ4d77DWu8la9p/uahPzaExKVJhLYUHcHNYPUVkFCkqGDVP1X3Ty8c+vx94Ar2Ha2rvDXAc63tU
+	LcL0KVKfUKj4oZ2rd3yMo9HpQIpXgNDmh5KLYRJ5F/BmSdEw472p/pPF186tsojLIuX/kbVcnmTia
+	nRZeVL5algPykcWMZxBPENAY0kAcmveoW9/tHrlcx9Y+zOd0GLWkGRubAHQR90DAMYyjm5YtESHr8
+	9hoK1/zqHzpEiV4P93iKvWNhYgg1TYZgorq31ssZMDjbQGBIgy1XYibFrYO+DZoGeyUF5oJsVkxHP
+	P1LL+mXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfimt-0000000EAJC-3x2l;
-	Thu, 29 Feb 2024 15:57:35 +0000
-Received: from smtpout143.security-mail.net ([85.31.212.143])
+	id 1rfimv-0000000EAK0-10fz;
+	Thu, 29 Feb 2024 15:57:37 +0000
+Received: from smtpout35.security-mail.net ([85.31.212.35])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfimk-0000000EADC-343z
+	id 1rfimk-0000000EAD7-31N5
 	for barebox@lists.infradead.org;
 	Thu, 29 Feb 2024 15:57:29 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by fx403.security-mail.net (Postfix) with ESMTP id BBC2F5972B7
+Received: from localhost (fx305.security-mail.net [127.0.0.1])
+	by fx305.security-mail.net (Postfix) with ESMTP id 8B2C930EB31
 	for <barebox@lists.infradead.org>; Thu, 29 Feb 2024 16:57:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
 	s=sec-sig-email; t=1709222242;
-	bh=j09feZcylw1+PQR+N3kuI1KXVIfc6p8xQ20lfPD9Jc8=;
-	h=From:To:Cc:Subject:Date;
-	b=Qsu9BTuGyWmjbon420AUZwDGNB8eBiV4ufdM7ls7bZp5LoKRDlN3lss1FzVsquclx
-	 gEP7KormlmbvBO4BkOITerVMKv84klfflKij6E492HW5gD4rbAUzsRLdnjAiFNY9fw
-	 n3bg+OwoX/amffPUwBqBJzCr1XzKn/3mVXEOTpkE=
-Received: from fx403 (localhost [127.0.0.1]) by fx403.security-mail.net
- (Postfix) with ESMTP id 75B90596F2F; Thu, 29 Feb 2024 16:57:22 +0100 (CET)
+	bh=AxwiYBt5B5p8sHwFrCz/X/qsxMX0dY1JiFxPwt5D2cs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=RsHD/vceqDdTaZbNpM+vlIl8Qs6PuMLqJIaYTZEake5qICTI0h7aMtyFCLEwUtdFl
+	 JP/y5xII2/U08+9quty1MtjkUGcIJJrkkIgEEgeEKO429Dsf3i4vw7C04JZTfZV53m
+	 XKzNGIJm94UpIePnH/0pUtZvwH3MxViJUKcyA5vI=
+Received: from fx305 (fx305.security-mail.net [127.0.0.1]) by
+ fx305.security-mail.net (Postfix) with ESMTP id 6683230EAD3; Thu, 29 Feb
+ 2024 16:57:22 +0100 (CET)
 Received: from srvsmtp.lin.mbt.kalray.eu (unknown [217.181.231.53]) by
- fx403.security-mail.net (Postfix) with ESMTPS id AC2B259750F; Thu, 29 Feb
+ fx305.security-mail.net (Postfix) with ESMTPS id E7F5F30EA5B; Thu, 29 Feb
  2024 16:57:21 +0100 (CET)
 Received: from junon.lan.kalrayinc.com (unknown [192.168.37.161]) by
- srvsmtp.lin.mbt.kalray.eu (Postfix) with ESMTPSA id 6BD3740354; Thu, 29 Feb
+ srvsmtp.lin.mbt.kalray.eu (Postfix) with ESMTPSA id 7B31940364; Thu, 29 Feb
  2024 16:57:21 +0100 (CET)
-X-Quarantine-ID: <UHYFxXrBk9s9>
+X-Quarantine-ID: <LakwlkgcKcOl>
 X-Virus-Scanned: E-securemail
-Secumail-id: <6283.65e0a961.aa7f2.0>
+Secumail-id: <b6a.65e0a961.a47d8.0>
 From: Yann Sionneau <ysionneau@kalrayinc.com>
 To: barebox@lists.infradead.org
 Cc: Jonathan Borne <jborne@kalrayinc.com>, Julian Vetter
  <jvetter@kalrayinc.com>, Jules Maselbas <jmaselbas@zdiv.net>, Yann Sionneau
  <ysionneau@kalrayinc.com>
-Date: Thu, 29 Feb 2024 16:56:57 +0100
-Message-ID: <20240229155700.17443-1-ysionneau@kalrayinc.com>
+Date: Thu, 29 Feb 2024 16:56:59 +0100
+Message-ID: <20240229155700.17443-3-ysionneau@kalrayinc.com>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240229155700.17443-1-ysionneau@kalrayinc.com>
+References: <20240229155700.17443-1-ysionneau@kalrayinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=utf-8
 X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240229_075726_964856_7935D9AB 
-X-CRM114-Status: UNSURE (   8.06  )
+X-CRM114-CacheID: sfid-20240229_075726_961180_C7962529 
+X-CRM114-Status: UNSURE (   7.60  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -92,33 +95,36 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/4] mci: dwcmshc-sdhci: Remove superfluous call to
- sdhci_enable_v4_mode
+Subject: [PATCH 3/4] mci: sdhci: add register define for
+ P_VENDOR_SPECIFIC_AREA
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-sdhci_enable_v4_mode is already called from dwcmshc_mci_init which is
-always called before using the controller from mci-core.c
+This register is standardized by SDHCI (See SD Host Controller
+Simplified Specification v4.20 "1.2 Register Map" and
+"2.3.14 Pointer Registers to mFFh-100h Area").
+ 
+It is necessary to access some vendor specific registers for
+some controllers.
 
 Signed-off-by: Yann Sionneau <ysionneau@kalrayinc.com>
-
 ---
- drivers/mci/dwcmshc-sdhci.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/mci/sdhci.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/mci/dwcmshc-sdhci.c b/drivers/mci/dwcmshc-sdhci.c
-index 6ccf195eac..7cc6fe3f18 100644
---- a/drivers/mci/dwcmshc-sdhci.c
-+++ b/drivers/mci/dwcmshc-sdhci.c
-@@ -318,8 +318,6 @@ static int dwcmshc_probe(struct device *dev)
+diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
+index 4291d8d04a..d0ef54bb45 100644
+--- a/drivers/mci/sdhci.h
++++ b/drivers/mci/sdhci.h
+@@ -168,6 +168,8 @@
+ #define SDHCI_PRESET_CLKGEN_SEL		BIT(10)
+ #define SDHCI_PRESET_SDCLK_FREQ_MASK	GENMASK(9, 0)
  
- 	mci_of_parse(&host->mci);
- 
--	/* Enable host_version4 */
--	sdhci_enable_v4_mode(&host->sdhci);
- 	sdhci_setup_host(&host->sdhci);
- 
- 	mci->max_req_size = 0x8000;
++#define SDHCI_P_VENDOR_SPEC_AREA	0xE8
++#define SDHCI_P_VENDOR_SPEC_AREA_MASK	GENMASK(11, 0)
+ #define SDHCI_HOST_VERSION	0xFE
+ #define  SDHCI_VENDOR_VER_MASK	0xFF00
+ #define  SDHCI_VENDOR_VER_SHIFT	8
 -- 
 2.43.0
 
