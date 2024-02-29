@@ -3,74 +3,72 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfinT-00GBAo-3B
+	id 1rfinT-00GBAn-35
 	for lore@lore.pengutronix.de;
 	Thu, 29 Feb 2024 16:58:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfinT-0003Vv-Ah
+	id 1rfinT-0003Va-8C
 	for lore@pengutronix.de; Thu, 29 Feb 2024 16:58:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
-	:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=agauh48jlAyTvOPwi5Kid/et6D9u3Xejrvng2OkYl4Q=; b=O+bhczA4vANFwKgaBKBb2KHg1g
-	jlhnVMh+m5832cItYRbOyeIAc0KKiqgocuoqH912eI0Vla8/7R5f+PgMuKXxSG8BlDT2qCMu0y4PV
-	AclN95sMOd6Oxlc2g8WKcFLerLeeh/iDzW/HwaGTEEN8rh7AccmPCsGBjjr0+eqrbZpYCInlPli4T
-	xLyv6ydRi2N8kNU1g8gyZntBbOCwtyUB47sJMrcJQ9LLOc0X+B8I8Ve4ipQNtwWj2BJtArGmVFbmw
-	9e6YzwWP5Fc8hx02JUn53yydNOBRuQGwUDkwkfCtaHWKwD5lPtW62Hj1n2zEerWtJcMRe8rR7jnwh
-	fb8r/TOw==;
+	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=GFyBanayqNF6Co14gi/ja3h0C3CN4VhYyphOcJU81no=; b=nhs7yjSwtx/An2+DSQ9L/LrL99
+	YtuD8IoyeK5dDxzxAGE0ky0iCso4rcDJtWtFELZPZSpEci6VHLeJoXHifJrbBC23ZeFQ/Fr0JzI0x
+	LKq16ebR8yXsnWnX89y92ghFLoJhyK70A1tmv3X6ReHg6g4fBgSFQtOkK9wIoiwfTiqwcPIcmTCCP
+	8s+HSI9vUOpXWjhTrUUEVLKZnMNZ7/orBiZXcNOErU16rbEZiPdJMKy5KR8xGaUKtwu0sn1K1nmJl
+	iiVWXRB9rNraOraS8/vZEKNPEkQWh8wnEzmkw4vNZFAANuTksce9mpOu4nQkj0koSCrxY26Pq1qbJ
+	QN8mJISQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfimp-0000000EAGh-06pU;
-	Thu, 29 Feb 2024 15:57:31 +0000
+	id 1rfimt-0000000EAJC-3x2l;
+	Thu, 29 Feb 2024 15:57:35 +0000
 Received: from smtpout143.security-mail.net ([85.31.212.143])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfimk-0000000EADB-30zi
+	id 1rfimk-0000000EADC-343z
 	for barebox@lists.infradead.org;
-	Thu, 29 Feb 2024 15:57:28 +0000
+	Thu, 29 Feb 2024 15:57:29 +0000
 Received: from localhost (localhost [127.0.0.1])
-	by fx403.security-mail.net (Postfix) with ESMTP id 97C59596EF2
+	by fx403.security-mail.net (Postfix) with ESMTP id BBC2F5972B7
 	for <barebox@lists.infradead.org>; Thu, 29 Feb 2024 16:57:22 +0100 (CET)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
 	s=sec-sig-email; t=1709222242;
-	bh=UsNiormco5EoSQEQAo3RIrkvAlJX+kgIscQcf/08zhQ=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=b/zZ2hO81xw+03jxol2glJWlkKVGBThec+RH/h4aerXL+x8ykPOG5MAmUZjsBfDOk
-	 8BC5K9jM3OGWbjaQJY5xDGqf21a0h2pIRcG5Vmo385BUsPisdwP9MXdxSupWhUHJbd
-	 t5oO2NT8trybmyyEwCiD6TS4iuMpBWsCZh4GSuYU=
+	bh=j09feZcylw1+PQR+N3kuI1KXVIfc6p8xQ20lfPD9Jc8=;
+	h=From:To:Cc:Subject:Date;
+	b=Qsu9BTuGyWmjbon420AUZwDGNB8eBiV4ufdM7ls7bZp5LoKRDlN3lss1FzVsquclx
+	 gEP7KormlmbvBO4BkOITerVMKv84klfflKij6E492HW5gD4rbAUzsRLdnjAiFNY9fw
+	 n3bg+OwoX/amffPUwBqBJzCr1XzKn/3mVXEOTpkE=
 Received: from fx403 (localhost [127.0.0.1]) by fx403.security-mail.net
- (Postfix) with ESMTP id 525845970D4; Thu, 29 Feb 2024 16:57:22 +0100 (CET)
+ (Postfix) with ESMTP id 75B90596F2F; Thu, 29 Feb 2024 16:57:22 +0100 (CET)
 Received: from srvsmtp.lin.mbt.kalray.eu (unknown [217.181.231.53]) by
- fx403.security-mail.net (Postfix) with ESMTPS id A7EA1596B5F; Thu, 29 Feb
+ fx403.security-mail.net (Postfix) with ESMTPS id AC2B259750F; Thu, 29 Feb
  2024 16:57:21 +0100 (CET)
 Received: from junon.lan.kalrayinc.com (unknown [192.168.37.161]) by
- srvsmtp.lin.mbt.kalray.eu (Postfix) with ESMTPSA id 78F1D40363; Thu, 29 Feb
+ srvsmtp.lin.mbt.kalray.eu (Postfix) with ESMTPSA id 6BD3740354; Thu, 29 Feb
  2024 16:57:21 +0100 (CET)
-X-Quarantine-ID: <itdPkDqct3P0>
+X-Quarantine-ID: <UHYFxXrBk9s9>
 X-Virus-Scanned: E-securemail
-Secumail-id: <6141.65e0a961.a50a6.0>
+Secumail-id: <6283.65e0a961.aa7f2.0>
 From: Yann Sionneau <ysionneau@kalrayinc.com>
 To: barebox@lists.infradead.org
 Cc: Jonathan Borne <jborne@kalrayinc.com>, Julian Vetter
  <jvetter@kalrayinc.com>, Jules Maselbas <jmaselbas@zdiv.net>, Yann Sionneau
  <ysionneau@kalrayinc.com>
-Date: Thu, 29 Feb 2024 16:56:58 +0100
-Message-ID: <20240229155700.17443-2-ysionneau@kalrayinc.com>
+Date: Thu, 29 Feb 2024 16:56:57 +0100
+Message-ID: <20240229155700.17443-1-ysionneau@kalrayinc.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240229155700.17443-1-ysionneau@kalrayinc.com>
-References: <20240229155700.17443-1-ysionneau@kalrayinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset=utf-8
 X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240229_075726_935190_9D05868A 
-X-CRM114-Status: UNSURE (   9.93  )
+X-CRM114-CacheID: sfid-20240229_075726_964856_7935D9AB 
+X-CRM114-Status: UNSURE (   8.06  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -94,48 +92,33 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/4] mci: dwcmshc-sdhci: Fix f_max computation
+Subject: [PATCH 1/4] mci: dwcmshc-sdhci: Remove superfluous call to
+ sdhci_enable_v4_mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-f_max was possibly set from max-frequency DT property
-by mci_of_parse() and then overwritten few lines later
-with the clock frequency, making it impossible to
-reduce the clock frequency from DT.
-
-Move the call to mci_of_parse() after the first assignment
-to f_max.
+sdhci_enable_v4_mode is already called from dwcmshc_mci_init which is
+always called before using the controller from mci-core.c
 
 Signed-off-by: Yann Sionneau <ysionneau@kalrayinc.com>
 
 ---
- drivers/mci/dwcmshc-sdhci.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/mci/dwcmshc-sdhci.c | 2 --
+ 1 file changed, 2 deletions(-)
 
 diff --git a/drivers/mci/dwcmshc-sdhci.c b/drivers/mci/dwcmshc-sdhci.c
-index 7cc6fe3f18..d9c51752db 100644
+index 6ccf195eac..7cc6fe3f18 100644
 --- a/drivers/mci/dwcmshc-sdhci.c
 +++ b/drivers/mci/dwcmshc-sdhci.c
-@@ -316,12 +316,17 @@ static int dwcmshc_probe(struct device *dev)
- 	mci->send_cmd = dwcmshc_mci_send_cmd;
- 	mci->card_present = dwcmshc_mci_card_present;
+@@ -318,8 +318,6 @@ static int dwcmshc_probe(struct device *dev)
  
--	mci_of_parse(&host->mci);
--
+ 	mci_of_parse(&host->mci);
+ 
+-	/* Enable host_version4 */
+-	sdhci_enable_v4_mode(&host->sdhci);
  	sdhci_setup_host(&host->sdhci);
  
  	mci->max_req_size = 0x8000;
-+	/*
-+	 * Let's first initialize f_max to the DT clock freq
-+	 * Then mci_of_parse can override if with the content
-+	 * of the 'max-frequency' DT property if it is present.
-+	 * Then we can finish by computing the f_min.
-+	 */
- 	mci->f_max = clk_get_rate(clk);
-+	mci_of_parse(&host->mci);
- 	mci->f_min = mci->f_max / SDHCI_MAX_DIV_SPEC_300;
- 
- 	dev->priv = host;
 -- 
 2.43.0
 
