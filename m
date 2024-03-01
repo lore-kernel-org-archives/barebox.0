@@ -1,75 +1,63 @@
-Delivery-date: Fri, 01 Mar 2024 11:22:17 +0100
+Delivery-date: Fri, 01 Mar 2024 12:19:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rg01w-001WxN-38
+	id 1rg0vj-001frk-1y
 	for lore@lore.pengutronix.de;
-	Fri, 01 Mar 2024 11:22:17 +0100
+	Fri, 01 Mar 2024 12:19:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rg01w-0006L8-AA
-	for lore@pengutronix.de; Fri, 01 Mar 2024 11:22:16 +0100
+	id 1rg0vi-0005Ei-T1
+	for lore@pengutronix.de; Fri, 01 Mar 2024 12:19:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ek38nPskmVjcKsiuclo0FynEh+51/BlhgrSLh/YsANw=; b=QAgFq5o7yisbBmnU62kcHXnWMJ
-	HNGsASHnfv21xTx5po1QKPSkdTD26sC5v3PF24eFdlHJBbpuQjc7kBt6q+ad874wGkk2PCwnaJmg8
-	YKAxtBjU59v4r0g+Uqetnb65KgzoukMZd5FE/vPx0nQGLPeYRtzWdPih06xI3UcovR0jvynKTf/XF
-	jlNJOMueO+agHnIgYzFsp80FIJlvMCjCwwTx5ROhExUqBHX3anwuUbAJOB124vHcrOiohNjQaIP1H
-	zqCpV2RpUDpgjhNHW3fELXcGmzlX+qU6mVEEn2wauI294WTnrjuhY1+EaJloZfvOU3UcKpUawUelK
-	bbgFaT8A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ZI4P4CFXL3oHVRQGKlVLqdgIfzgjvg3U+ILGTSDBoLI=; b=SzvhZsGP8AVtaxPizsCTRVWfg9
+	DRUAKEtxLRYOKVHzwfWj9Gyvf41KxVvrJijFTXq1NPIJIKRvMqIFSfxaA1AGusvnuOy1gDRxvs1Xe
+	NO3j3yb8p1xMUOaZ1jdwHJCw+ZG4JVUU4TSGBr1MjPST9OK3xdi9uPBlLSpCBns4VXzg7N8UWyliF
+	hCwX5YUMOmwf3mn4P7UK4WfSd9YouaHPOTA1u9ybOvyP7a8kj4kCThuofYq5e2APUr14JvpULkCBZ
+	IaxGEqpYTM10PcSlUajyS+cBdsXb6+gWZ4cfppt2bSF8FmyrZWRL2d+rgMikslIaEi0qKX8DqRsYd
+	NkAjVeMg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rg01K-0000000HL5L-09ev;
-	Fri, 01 Mar 2024 10:21:38 +0000
-Received: from smtpout35.security-mail.net ([85.31.212.35])
+	id 1rg0vB-0000000HX7G-3uN0;
+	Fri, 01 Mar 2024 11:19:21 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rg01G-0000000HL4N-3TBT
+	id 1rg0v8-0000000HX6f-0RKI
 	for barebox@lists.infradead.org;
-	Fri, 01 Mar 2024 10:21:36 +0000
-Received: from localhost (fx305.security-mail.net [127.0.0.1])
-	by fx305.security-mail.net (Postfix) with ESMTP id 0B2CB30E971
-	for <barebox@lists.infradead.org>; Fri,  1 Mar 2024 11:21:31 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
-	s=sec-sig-email; t=1709288491;
-	bh=MU8O8Za3lj/x11Zuorv/u0FTn5M4fPhnsWjHF/seA5I=;
-	h=From:To:Cc:Subject:Date;
-	b=O3bAOsbbZvBHHDuKJhMnt7dmIY8dI0ZZOK6IYNKIf/NFJSB6eNemMQbFRi07BMhoj
-	 bOWCla8gb0JxXqnUgSECWiX72xX8dMXhCm3nm2TtGlb+koIHtIm263Vv7vGhS5ecjU
-	 Hnv2GEQr4VeOia16CjDxzrLrdpd56rDjQHX8VBzE=
-Received: from fx305 (fx305.security-mail.net [127.0.0.1]) by
- fx305.security-mail.net (Postfix) with ESMTP id CB85530E936; Fri,  1 Mar
- 2024 11:21:30 +0100 (CET)
-Received: from srvsmtp.lin.mbt.kalray.eu (unknown [217.181.231.53]) by
- fx305.security-mail.net (Postfix) with ESMTPS id 44D2630E95A; Fri,  1 Mar
- 2024 11:21:30 +0100 (CET)
-Received: from junon.lan.kalrayinc.com (unknown [192.168.37.161]) by
- srvsmtp.lin.mbt.kalray.eu (Postfix) with ESMTPSA id 160AC4035C; Fri,  1 Mar
- 2024 11:21:30 +0100 (CET)
-X-Quarantine-ID: <qQB2oUgqgaW5>
-X-Virus-Scanned: E-securemail
-Secumail-id: <2ee3.65e1ac2a.42898.0>
-From: Yann Sionneau <ysionneau@kalrayinc.com>
-To: barebox@lists.infradead.org
-Cc: Jonathan Borne <jborne@kalrayinc.com>, Julian Vetter
- <jvetter@kalrayinc.com>, Jules Maselbas <jmaselbas@zdiv.net>, Yann Sionneau
- <ysionneau@kalrayinc.com>
-Date: Fri,  1 Mar 2024 11:21:19 +0100
-Message-ID: <20240301102119.17914-1-ysionneau@kalrayinc.com>
-X-Mailer: git-send-email 2.43.0
+	Fri, 01 Mar 2024 11:19:19 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rg0v6-000565-SK; Fri, 01 Mar 2024 12:19:16 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rg0v6-003lj1-Fn; Fri, 01 Mar 2024 12:19:16 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rg0v6-00AEfJ-1F;
+	Fri, 01 Mar 2024 12:19:16 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Fri,  1 Mar 2024 12:19:15 +0100
+Message-Id: <20240301111915.2439646-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8
-X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240301_022135_037881_13A94207 
-X-CRM114-Status: GOOD (  14.14  )
+X-CRM114-CacheID: sfid-20240301_031918_171841_0662EBA9 
+X-CRM114-Status: GOOD (  14.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,136 +76,169 @@ X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2] mci: dwcmshc-sdhci: add support for Kalray Coolidge v2
- SoC eMMC controller
+Subject: [PATCH] ARM: i.MX: ele: remove unnecessary argument
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Kalray Coolidge v2 SoC eMMC controller needs static tx delay tuning even
-for basic standard or high speed modes.
+The get_response argument to imx9_s3mua_call() is always set to true by
+the callers. It must be like that because in the ELE API Reference Guide
+every call into the ELE has a response. Drop the unnecessary argument.
 
-Add vendor specific callback mechanism for init and implement it for
-Coolidge v2 SoC.
-
-Signed-off-by: Yann Sionneau <ysionneau@kalrayinc.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
+ arch/arm/mach-imx/ele.c | 34 ++++++++++++++++------------------
+ include/mach/imx/ele.h  |  2 +-
+ 2 files changed, 17 insertions(+), 19 deletions(-)
 
-Notes:
-
-V1 -> V2:
- - Fixed comment style
- - Removed unused set_ios callback
- - rephrased commit message
-
- drivers/mci/dwcmshc-sdhci.c | 36 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
-
-diff --git a/drivers/mci/dwcmshc-sdhci.c b/drivers/mci/dwcmshc-sdhci.c
-index d9c51752db..b3432d500b 100644
---- a/drivers/mci/dwcmshc-sdhci.c
-+++ b/drivers/mci/dwcmshc-sdhci.c
-@@ -9,11 +9,16 @@
- #include <dma.h>
- #include <malloc.h>
- #include <mci.h>
-+#include <of_device.h>
- #include <linux/err.h>
- #include <linux/clk.h>
- 
- #include "sdhci.h"
- 
-+#define tx_delay_static_cfg(delay)      (delay << 5)
-+#define tx_tuning_clk_sel(delay)        (delay)
-+
-+#define DWCMSHC_GPIO_OUT  0x34 /* offset from vendor specific area */
- #define CARD_STATUS_MASK (0x1e00)
- #define CARD_STATUS_TRAN (4 << 9)
- 
-@@ -22,6 +27,12 @@ static int do_send_cmd(struct mci_host *mci, struct mci_cmd *cmd, struct mci_dat
- struct dwcmshc_host {
- 	struct mci_host mci;
- 	struct sdhci sdhci;
-+	int vendor_specific_area;
-+	const struct dwcmshc_callbacks *cb;
-+};
-+
-+struct dwcmshc_callbacks {
-+	void (*init)(struct mci_host *mci, struct device *dev);
- };
- 
- static inline struct dwcmshc_host *priv_from_mci_host(struct mci_host *h)
-@@ -253,6 +264,9 @@ static int dwcmshc_mci_init(struct mci_host *mci, struct device *dev)
- 	dev_dbg(host->mci.hw_dev, "host version4: %s\n",
- 		ctrl2 & SDHCI_CTRL_V4_MODE ? "enabled" : "disabled");
- 
-+	if (host->cb && host->cb->init)
-+		host->cb->init(mci, dev);
-+
+diff --git a/arch/arm/mach-imx/ele.c b/arch/arm/mach-imx/ele.c
+index 18161428c6..ab3958cbd3 100644
+--- a/arch/arm/mach-imx/ele.c
++++ b/arch/arm/mach-imx/ele.c
+@@ -116,7 +116,7 @@ static int mu_write(void __iomem *base, struct ele_msg *msg)
  	return 0;
  }
  
-@@ -284,6 +298,8 @@ static void dwcmshc_set_dma_mask(struct device *dev)
- 
- static int dwcmshc_probe(struct device *dev)
+-static int imx9_s3mua_call(struct ele_msg *msg, bool get_response)
++static int imx9_s3mua_call(struct ele_msg *msg)
  {
-+	const struct dwcmshc_callbacks *dwcmshc_cb =
-+			of_device_get_match_data(dev);
- 	struct dwcmshc_host *host;
- 	struct resource *iores;
- 	struct mci_host *mci;
-@@ -309,6 +325,7 @@ static int dwcmshc_probe(struct device *dev)
- 	host->sdhci.base = IOMEM(iores->start);
- 	host->sdhci.mci = mci;
- 	host->sdhci.max_clk = clk_get_rate(clk);
-+	host->cb = dwcmshc_cb;
- 
- 	mci->hw_dev = dev;
- 	mci->init = dwcmshc_mci_init;
-@@ -337,6 +354,10 @@ static int dwcmshc_probe(struct device *dev)
- 	dev_dbg(host->mci.hw_dev, "host controller version: %u\n",
- 		host->sdhci.version);
- 
-+	host->vendor_specific_area = sdhci_read32(&host->sdhci,
-+						   SDHCI_P_VENDOR_SPEC_AREA);
-+	host->vendor_specific_area &= SDHCI_P_VENDOR_SPEC_AREA_MASK;
-+
- 	ret = mci_register(&host->mci);
+ 	void __iomem *s3mua = IOMEM(MX9_S3MUA_BASE_ADDR);
+ 	u32 result;
+@@ -126,11 +126,9 @@ static int imx9_s3mua_call(struct ele_msg *msg, bool get_response)
  	if (ret)
- 		goto err_register;
-@@ -354,8 +375,23 @@ static int dwcmshc_probe(struct device *dev)
- 	return ret;
+ 		return ret;
+ 
+-	if (get_response) {
+-		ret = mu_read(s3mua, msg);
+-		if (ret)
+-			return ret;
+-	}
++	ret = mu_read(s3mua, msg);
++	if (ret)
++		return ret;
+ 
+ 	result = msg->data[0];
+ 	if ((result & 0xff) == 0xd6)
+@@ -139,9 +137,9 @@ static int imx9_s3mua_call(struct ele_msg *msg, bool get_response)
+ 	return -EIO;
  }
  
-+static void dwcmshc_coolidgev2_init(struct mci_host *mci, struct device *dev)
-+{
-+	struct dwcmshc_host *host = priv_from_mci_host(mci);
-+
-+	/* configure TX delay to set correct setup/hold for Coolidge V2 */
-+	sdhci_write32(&host->sdhci,
-+		      host->vendor_specific_area + DWCMSHC_GPIO_OUT,
-+		      tx_delay_static_cfg(0xf) | tx_tuning_clk_sel(4));
-+}
-+
-+struct dwcmshc_callbacks kalray_coolidgev2_callbacks = {
-+	.init = dwcmshc_coolidgev2_init,
-+};
-+
- static struct of_device_id dwcmshc_dt_ids[] = {
- 	{ .compatible = "snps,dwcmshc-sdhci", },
-+	{ .compatible = "kalray,coolidge-v2-dwcmshc-sdhci", .data = &kalray_coolidgev2_callbacks },
- 	{ }
- };
+-int ele_call(struct ele_msg *msg, bool get_response)
++int ele_call(struct ele_msg *msg)
+ {
+-	return imx9_s3mua_call(msg, get_response);
++	return imx9_s3mua_call(msg);
+ }
  
+ int ele_get_info(struct ele_get_info_data *info)
+@@ -159,7 +157,7 @@ int ele_get_info(struct ele_get_info_data *info)
+ 	};
+ 	int ret;
+ 
+-	ret = ele_call(&msg, true);
++	ret = ele_call(&msg);
+ 	if (ret)
+ 		pr_err("Could not get ELE info: ret %d, response 0x%x\n",
+ 			ret, msg.data[0]);
+@@ -201,7 +199,7 @@ int imx93_ele_load_fw(void *bl33)
+ 	/* Actual address of the container header */
+ 	msg.data[2] = lower_32_bits((unsigned long)firmware);
+ 
+-	ret = ele_call(&msg, true);
++	ret = ele_call(&msg);
+ 	if (ret)
+ 		pr_err("Could not start ELE firmware: ret %d, response 0x%x\n",
+ 			ret, msg.data[0]);
+@@ -220,7 +218,7 @@ int ele_read_common_fuse(u16 fuse_id, u32 *fuse_word, u32 *response)
+ 	msg.command = ELE_READ_FUSE_REQ;
+ 	msg.data[0] = fuse_id;
+ 
+-	ret = imx9_s3mua_call(&msg, true);
++	ret = imx9_s3mua_call(&msg);
+ 
+ 	if (response)
+ 		*response = msg.data[0];
+@@ -243,7 +241,7 @@ int ele_read_shadow_fuse(u16 fuse_id, u32 *fuse_word, u32 *response)
+ 	msg.command = ELE_READ_SHADOW_REQ;
+ 	msg.data[0] = fuse_id;
+ 
+-	ret = imx9_s3mua_call(&msg, true);
++	ret = imx9_s3mua_call(&msg);
+ 
+ 	if (response)
+ 		*response = msg.data[0];
+@@ -281,7 +279,7 @@ int ele_write_fuse(u16 fuse_id, u32 fuse_val, bool lock, u32 *response)
+ 
+ 	msg.data[1] = fuse_val;
+ 
+-	ret = imx9_s3mua_call(&msg, true);
++	ret = imx9_s3mua_call(&msg);
+ 
+ 	if (response)
+ 		*response = msg.data[0];
+@@ -312,7 +310,7 @@ int ele_forward_lifecycle(enum ele_lifecycle lc, u32 *response)
+ 	msg.command = ELE_FWD_LIFECYCLE_UP_REQ;
+ 	msg.data[0] = lc;
+ 
+-	ret = imx9_s3mua_call(&msg, true);
++	ret = imx9_s3mua_call(&msg);
+ 
+ 	if (response)
+ 		*response = msg.data[0];
+@@ -342,7 +340,7 @@ int ele_authenticate_container(unsigned long addr, u32 *response)
+ 	msg.data[0] = upper_32_bits(addr);
+ 	msg.data[1] = lower_32_bits(addr);
+ 
+-	ret = imx9_s3mua_call(&msg, true);
++	ret = imx9_s3mua_call(&msg);
+ 
+ 	if (response)
+ 		*response = msg.data[0];
+@@ -369,7 +367,7 @@ int ele_release_container(u32 *response)
+ 	msg.size = 1;
+ 	msg.command = ELE_RELEASE_CONTAINER_REQ;
+ 
+-	ret = imx9_s3mua_call(&msg, true);
++	ret = imx9_s3mua_call(&msg);
+ 
+ 	if (response)
+ 		*response = msg.data[0];
+@@ -404,7 +402,7 @@ int ele_release_rdc(u8 core_id, u8 xrdc, u32 *response)
+ 		return -EINVAL;
+ 	}
+ 
+-	ret = ele_call(&msg, true);
++	ret = ele_call(&msg);
+ 	if (ret)
+ 		pr_err("%s: ret %d, core id %u, response 0x%x\n",
+ 			__func__, ret, core_id, msg.data[0]);
+@@ -571,7 +569,7 @@ static int ahab_get_events(u32 *events)
+ 	msg.size = 1;
+ 	msg.command = ELE_GET_EVENTS_REQ;
+ 
+-	ret = imx9_s3mua_call(&msg, true);
++	ret = imx9_s3mua_call(&msg);
+ 	if (ret) {
+ 		pr_err("%s: ret %d, response 0x%x\n", __func__, ret, msg.data[0]);
+ 
+diff --git a/include/mach/imx/ele.h b/include/mach/imx/ele.h
+index 018e8345aa..0c863f6cb3 100644
+--- a/include/mach/imx/ele.h
++++ b/include/mach/imx/ele.h
+@@ -146,7 +146,7 @@ enum ele_lifecycle {
+ 
+ #define ELE_INFO_SOC_REV	GENMASK(31, 24)
+ 
+-int ele_call(struct ele_msg *msg, bool get_response);
++int ele_call(struct ele_msg *msg);
+ 
+ int ele_read_common_fuse(u16 fuse_id, u32 *fuse_word, u32 *response);
+ int ele_release_rdc(u8 core_id, u8 xrdc, u32 *response);
 -- 
-2.43.0
-
-
-
-
+2.39.2
 
 
 
