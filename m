@@ -1,66 +1,66 @@
-Delivery-date: Fri, 01 Mar 2024 10:20:20 +0100
+Delivery-date: Fri, 01 Mar 2024 10:20:34 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfz40-001QOw-25
+	id 1rfz4E-001QQY-2G
 	for lore@lore.pengutronix.de;
-	Fri, 01 Mar 2024 10:20:20 +0100
+	Fri, 01 Mar 2024 10:20:34 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfz40-0007Sx-2G
-	for lore@pengutronix.de; Fri, 01 Mar 2024 10:20:20 +0100
+	id 1rfz4E-0007We-5W
+	for lore@pengutronix.de; Fri, 01 Mar 2024 10:20:34 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VV3vGWA5SRPkQJDzKYMQZ4aZ02v3LpicsIFPTdyKhqk=; b=ozTRYPj0DdG7s0bBi42au9wFhd
-	GslUx9R0sNgJd0e77Ve2hEcCV6KdvHlpbwI6i4wKPBhXqXhlOIFlpb2s0UhIvicf0kgTlPx613shs
-	Y5JoG87F5eKnw37/WDeZa3Dymj41a8qEUAo7WgyT1x3pRnD6gNPBCquFUGxQXzrx2TkgX/gjZW45I
-	atGcWr3XVDZLtlOSkkwxJxjVVMN5ZR/AiAbm7s11i5BiVKL6SZN6necnqnBQRDqysUCyuFOFSphkN
-	gYVevdiHK7fTzYZsKo2ANJie8DmUFwLsTeqfCIZbXvnbMUnvN+KHnTbXKMp/kgEjVRk1rXhzL6vUu
-	w2mlK7Pw==;
+	bh=IcaUowlB08Ut4FmQH2VQ0OEbLisrAvHNS3sj9q62UBE=; b=aKYbi4/6wwkYwLG5lgwjABxpTu
+	y1xWUJgX4F3c8whUuOxhjah5hsZrw9aODpClLgZZs5flwzQgGTwxnWakB33aaapLYC4r3RYVU4FeF
+	6Um2ibqvV6jUEFlLrdn3EJaeOQish3uQ+hFMvOWNmqMKrYxdNtpFrOQwrKTuEkUNlOebQcXH2NwR5
+	TP3Zr9LNFbv4mO1ItKplC5kj/P4kjiTzhpels3xqS3Z9BeyKRQ8o+3SPzfMdD/1rjjpxFixv0ngtd
+	X7/yBpuDCQKDhQOm8bu+2souonux3yQses17uymytj0R3DaKn0t/G3xXo7Hd/DpjN5rjn+DRaCcmu
+	gMsB3ELg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfz3N-0000000H6eV-29IQ;
-	Fri, 01 Mar 2024 09:19:41 +0000
+	id 1rfz3c-0000000H6nX-2Ao4;
+	Fri, 01 Mar 2024 09:19:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfz3E-0000000H6Xw-3GJe
+	id 1rfz3L-0000000H6e4-1MbK
 	for barebox@lists.infradead.org;
-	Fri, 01 Mar 2024 09:19:36 +0000
+	Fri, 01 Mar 2024 09:19:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rfz3C-0007DK-4n; Fri, 01 Mar 2024 10:19:30 +0100
+	id 1rfz3C-0007DL-53; Fri, 01 Mar 2024 10:19:30 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rfz3B-003kiN-OK; Fri, 01 Mar 2024 10:19:29 +0100
+	id 1rfz3B-003kiO-Oe; Fri, 01 Mar 2024 10:19:29 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rfz3B-00A6Ou-2E;
+	id 1rfz3B-00A6Ou-2G;
 	Fri, 01 Mar 2024 10:19:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240301074400.1616644-1-a.fatoum@pengutronix.de>
-References: <20240301074400.1616644-1-a.fatoum@pengutronix.de>
-Message-Id: <170928476968.2407867.16563936439483064113.b4-ty@pengutronix.de>
+In-Reply-To: <20240301074752.1618164-1-a.fatoum@pengutronix.de>
+References: <20240301074752.1618164-1-a.fatoum@pengutronix.de>
+Message-Id: <170928476970.2407867.10145268582323648009.b4-ty@pengutronix.de>
 Date: Fri, 01 Mar 2024 10:19:29 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240301_011933_514732_CBC30D50 
-X-CRM114-Status: UNSURE (   8.29  )
+X-CRM114-CacheID: sfid-20240301_011939_626539_A07471F9 
+X-CRM114-Status: UNSURE (   9.41  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,26 +84,27 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH next] fixup! usb: xhci: reset endpoint on USB stall
+Subject: Re: [PATCH master] firmware: arm_scmi: pmdomain: restrict default
+ y for driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 01 Mar 2024 08:44:00 +0100, Ahmad Fatoum wrote:
-> usb: xhci: call dma_unmap_single in all error paths
+On Fri, 01 Mar 2024 08:47:52 +0100, Ahmad Fatoum wrote:
+> default y is inappropriate for drivers that depend on CONFIG_COMPILE_TEST,
+> because it enables the driver as soon as CONFIG_COMPILE_TEST is enabled.
 > 
-> A new early exit for stalled USB was added that resets the endpoint
-> before returning an error code to the caller.
+> While the driver can be built in that case, without
+> CONFIG_ARM_SCMI_PROTOCOL, it just prints a red error message on init:
 > 
-> This unintentionally happened before unmapping the buffer, which is
-> detected by CONFIG_DMA_API_DEBUG:
+>   ERROR: initcall scmi_power_domain_driver_register+0x0/0x10 failed: Invalid argument
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] fixup! usb: xhci: reset endpoint on USB stall
-      https://git.pengutronix.de/cgit/barebox/commit/?id=aed18e44bbd9 (link may not be stable)
+[1/1] firmware: arm_scmi: pmdomain: restrict default y for driver
+      https://git.pengutronix.de/cgit/barebox/commit/?id=a6e780cbe3a5 (link may not be stable)
 
 Best regards,
 -- 
