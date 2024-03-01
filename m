@@ -1,65 +1,64 @@
-Delivery-date: Fri, 01 Mar 2024 08:45:02 +0100
+Delivery-date: Fri, 01 Mar 2024 08:48:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfxZm-001F8B-1U
+	id 1rfxd1-001FnT-0T
 	for lore@lore.pengutronix.de;
-	Fri, 01 Mar 2024 08:45:02 +0100
+	Fri, 01 Mar 2024 08:48:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfxZl-0003L9-6Y
-	for lore@pengutronix.de; Fri, 01 Mar 2024 08:45:02 +0100
+	id 1rfxd0-0003ln-Id
+	for lore@pengutronix.de; Fri, 01 Mar 2024 08:48:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=JsnkUG+FsCsMP7p5ftrsU4VfDdwVppp4Ayf2M/e7eEU=; b=mjk2Q11m5k9BEXW3S9QZ+emOqx
-	uw0TgHST87ihzYlR9XdHE+NOfryuNO1tXjqKhfszJCrMTzCxDrI0WHe+b00khPXQjUqkR5v3RamMR
-	GSDG158FzZSqSsA238PbNxWUJtLSGD5Lm0ECybIkjH1MKVWZWZFbX+ZhzbniElTLR2CdsGbKDBQwD
-	swGJ2Aj6WrbwYJNOb7d56WVtehqJ0i7BP36Eq+C3XkRrGxgJ7D01BcexcvgLZZPtipb5kBQ6cia94
-	BRoETZi70viq83o/45013VOPIBdDlSpobyBM8tlkOV9ZyDTFq2DEvmNQmo6uOKBjhD44K86ev5yLm
-	aiziupKw==;
+	bh=/ds9l/SRA2pInXO5vou2fwuOGwtnpxuZc3tDhTvRK9s=; b=a5LOHd4KS1dVaf4JFTZzsgxCx3
+	1W/Hq5aoZ6hOwctEw0Ni0AbmQB2gtP4ceDi2s6gOgYoTzkQhEPJ+EVnBDaNmblTZflyUGCta2ItXQ
+	RJE1V3H4QQeMr8dhk11PXLHv+n9axps4ZYmeVbpF1hNt5JTdGTPzLibomxwhIat4ptJf2SJa4R+e/
+	wJvHSX4ftA1G1EQlKa8vRrSVDoN7cdfC1eQP0wHM9uIQa4nZDGPt8MgCi6p88fwNe81GEIT7WsnlG
+	CvA4voGbBxuGwV/Zmv/WIspu0UX0sBRckRVUk2RIBskzbn4d+ogsLCYidI78NP5Mc5YUIgis1t+JV
+	CMdZlSPg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfxYv-0000000GlMo-1YLj;
-	Fri, 01 Mar 2024 07:44:09 +0000
+	id 1rfxcb-0000000GmBJ-0YWF;
+	Fri, 01 Mar 2024 07:47:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfxYq-0000000GlM2-3qx3
+	id 1rfxcY-0000000GmAl-1Axh
 	for barebox@lists.infradead.org;
-	Fri, 01 Mar 2024 07:44:07 +0000
+	Fri, 01 Mar 2024 07:47:55 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rfxYn-0003Es-W8; Fri, 01 Mar 2024 08:44:02 +0100
+	id 1rfxcX-0003fx-4W; Fri, 01 Mar 2024 08:47:53 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rfxYn-003jlV-Je; Fri, 01 Mar 2024 08:44:01 +0100
+	id 1rfxcW-003jlt-OG; Fri, 01 Mar 2024 08:47:52 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rfxYn-006mZB-01;
-	Fri, 01 Mar 2024 08:44:01 +0100
+	id 1rfxcW-006mxg-0U;
+	Fri, 01 Mar 2024 08:47:52 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  1 Mar 2024 08:44:00 +0100
-Message-Id: <20240301074400.1616644-1-a.fatoum@pengutronix.de>
+Date: Fri,  1 Mar 2024 08:47:52 +0100
+Message-Id: <20240301074752.1618164-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240229_234404_980345_D506DFEF 
-X-CRM114-Status: UNSURE (   9.95  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240229_234754_336068_B03A268C 
+X-CRM114-Status: GOOD (  12.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,51 +81,39 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH next] fixup! usb: xhci: reset endpoint on USB stall
+Subject: [PATCH master] firmware: arm_scmi: pmdomain: restrict default y for driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-usb: xhci: call dma_unmap_single in all error paths
+default y is inappropriate for drivers that depend on CONFIG_COMPILE_TEST,
+because it enables the driver as soon as CONFIG_COMPILE_TEST is enabled.
 
-A new early exit for stalled USB was added that resets the endpoint
-before returning an error code to the caller.
+While the driver can be built in that case, without
+CONFIG_ARM_SCMI_PROTOCOL, it just prints a red error message on init:
 
-This unintentionally happened before unmapping the buffer, which is
-detected by CONFIG_DMA_API_DEBUG:
+  ERROR: initcall scmi_power_domain_driver_register+0x0/0x10 failed: Invalid argument
 
-  usb2-0: Resetting EP 0...
-  WARNING: dwc3 2f00000.usb@2f00000.of: from-device mapping 0xbdf96680+0xff: duplicate mapping
+Therefore, allow building, but don't enable it by default unless
+CONFIG_ARM_SCMI_PROTOCOL=y.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/usb/host/xhci-ring.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/firmware/arm_scmi/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
-index 5f68bc7c2f35..691d9c7463ad 100644
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -1045,15 +1045,16 @@ int xhci_ctrl_tx(struct usb_device *udev, unsigned long pipe,
- 
- 	record_transfer_result(udev, event, length);
- 	xhci_acknowledge_event(ctrl);
--	if (udev->status == USB_ST_STALLED) {
--		reset_ep(udev, ep_index, timeout_ms);
--		return -EPIPE;
--	}
- 
- 	/* Invalidate buffer to make it available to usb-core */
- 	if (length > 0)
- 		dma_unmap_single(ctrl->host.hw_dev, map, length, direction);
- 
-+	if (udev->status == USB_ST_STALLED) {
-+		reset_ep(udev, ep_index, timeout_ms);
-+		return -EPIPE;
-+	}
-+
- 	if (GET_COMP_CODE(le32_to_cpu(event->trans_event.transfer_len))
- 			== COMP_SHORT_TX) {
- 		/* Short data stage, clear up additional status stage event */
+diff --git a/drivers/firmware/arm_scmi/Kconfig b/drivers/firmware/arm_scmi/Kconfig
+index e14c1ede3619..29b0152901ad 100644
+--- a/drivers/firmware/arm_scmi/Kconfig
++++ b/drivers/firmware/arm_scmi/Kconfig
+@@ -73,7 +73,7 @@ endif #ARM_SCMI_PROTOCOL
+ config ARM_SCMI_POWER_DOMAIN
+ 	tristate "SCMI power domain driver"
+ 	depends on ARM_SCMI_PROTOCOL || (COMPILE_TEST && OF)
+-	default y
++	default ARM_SCMI_PROTOCOL
+ 	select PM_GENERIC_DOMAINS
+ 	help
+ 	  This enables support for the SCMI power domains which can be
 -- 
 2.39.2
 
