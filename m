@@ -1,66 +1,67 @@
-Delivery-date: Fri, 01 Mar 2024 10:20:34 +0100
+Delivery-date: Fri, 01 Mar 2024 10:21:03 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfz4E-001QQY-2G
+	id 1rfz4h-001QSZ-2p
 	for lore@lore.pengutronix.de;
-	Fri, 01 Mar 2024 10:20:34 +0100
+	Fri, 01 Mar 2024 10:21:03 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rfz4E-0007We-5W
-	for lore@pengutronix.de; Fri, 01 Mar 2024 10:20:34 +0100
+	id 1rfz4h-0007f3-BN
+	for lore@pengutronix.de; Fri, 01 Mar 2024 10:21:03 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IcaUowlB08Ut4FmQH2VQ0OEbLisrAvHNS3sj9q62UBE=; b=aKYbi4/6wwkYwLG5lgwjABxpTu
-	y1xWUJgX4F3c8whUuOxhjah5hsZrw9aODpClLgZZs5flwzQgGTwxnWakB33aaapLYC4r3RYVU4FeF
-	6Um2ibqvV6jUEFlLrdn3EJaeOQish3uQ+hFMvOWNmqMKrYxdNtpFrOQwrKTuEkUNlOebQcXH2NwR5
-	TP3Zr9LNFbv4mO1ItKplC5kj/P4kjiTzhpels3xqS3Z9BeyKRQ8o+3SPzfMdD/1rjjpxFixv0ngtd
-	X7/yBpuDCQKDhQOm8bu+2souonux3yQses17uymytj0R3DaKn0t/G3xXo7Hd/DpjN5rjn+DRaCcmu
-	gMsB3ELg==;
+	bh=rMhFwcbia2zPnl0S200zPcFrdj5snKBn9JUWPztncGs=; b=pvcjLEgrrUDizhJgGFobjQQma9
+	c9beWplL/7xOPzznN7l2uo8hu9UhsfLnZGEs4kaG3NRbIgurqg4+vYkR2Tw2scyP3GSEJBD55/bmF
+	8IyYX90VUpuOYYSiyZhp/CSa7OguMttd3SgFX1bEDlsO0LggkSTrcvGYAKo5Er1tilJfZpM3wITHs
+	kmUgrgPzjkaBhg1fOJbFbDLeLbuSLCiA0S4PSR2QeehaQj8eTjSYArObVapRhj0vABKMPPSLCSQyN
+	2bEMO/Yg3URwf+sADGXhZwX2g+GWo+z5zywd654UnY4Wxr5oVMyPmV2UqsGJmFuBxNR0bsp/s06zb
+	YSnJN1nQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfz3c-0000000H6nX-2Ao4;
-	Fri, 01 Mar 2024 09:19:56 +0000
+	id 1rfz4E-0000000H7AJ-0uRN;
+	Fri, 01 Mar 2024 09:20:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rfz3L-0000000H6e4-1MbK
+	id 1rfz4B-0000000H77q-1qSK
 	for barebox@lists.infradead.org;
-	Fri, 01 Mar 2024 09:19:51 +0000
+	Fri, 01 Mar 2024 09:20:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rfz3C-0007DL-53; Fri, 01 Mar 2024 10:19:30 +0100
+	id 1rfz4A-0007Vw-76; Fri, 01 Mar 2024 10:20:30 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rfz3B-003kiO-Oe; Fri, 01 Mar 2024 10:19:29 +0100
+	id 1rfz49-003kiY-Qn; Fri, 01 Mar 2024 10:20:29 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rfz3B-00A6Ou-2G;
-	Fri, 01 Mar 2024 10:19:29 +0100
+	id 1rfz49-00A6Qj-2T;
+	Fri, 01 Mar 2024 10:20:29 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240301074752.1618164-1-a.fatoum@pengutronix.de>
-References: <20240301074752.1618164-1-a.fatoum@pengutronix.de>
-Message-Id: <170928476970.2407867.10145268582323648009.b4-ty@pengutronix.de>
-Date: Fri, 01 Mar 2024 10:19:29 +0100
+Cc: Marco Felsch <m.felsch@pengutronix.de>
+In-Reply-To: <20240229094655.2897860-1-a.fatoum@pengutronix.de>
+References: <20240229094655.2897860-1-a.fatoum@pengutronix.de>
+Message-Id: <170928482976.2407978.4026980698507647631.b4-ty@pengutronix.de>
+Date: Fri, 01 Mar 2024 10:20:29 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240301_011939_626539_A07471F9 
-X-CRM114-Status: UNSURE (   9.41  )
+X-CRM114-CacheID: sfid-20240301_012031_661678_F4AC9893 
+X-CRM114-Status: UNSURE (   6.79  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,27 +85,24 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master] firmware: arm_scmi: pmdomain: restrict default
- y for driver
+Subject: Re: [PATCH master] optee: check optee_verify_header argument for
+ error pointers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 01 Mar 2024 08:47:52 +0100, Ahmad Fatoum wrote:
-> default y is inappropriate for drivers that depend on CONFIG_COMPILE_TEST,
-> because it enables the driver as soon as CONFIG_COMPILE_TEST is enabled.
+On Thu, 29 Feb 2024 10:46:56 +0100, Ahmad Fatoum wrote:
+> optee_verify_header is called at two places with
+> imx_scratch_get_optee_hdr() as argument, which returns an error pointer.
 > 
-> While the driver can be built in that case, without
-> CONFIG_ARM_SCMI_PROTOCOL, it just prints a red error message on init:
+> Check against that to avoid crashing in error cases.
 > 
->   ERROR: initcall scmi_power_domain_driver_register+0x0/0x10 failed: Invalid argument
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] firmware: arm_scmi: pmdomain: restrict default y for driver
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a6e780cbe3a5 (link may not be stable)
+[1/1] optee: check optee_verify_header argument for error pointers
+      https://git.pengutronix.de/cgit/barebox/commit/?id=231e81f8645c (link may not be stable)
 
 Best regards,
 -- 
