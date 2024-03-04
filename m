@@ -1,82 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:11:14 +0100
+Delivery-date: Mon, 04 Mar 2024 20:11:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDiU-008dpl-0u
+	id 1rhDiY-008dqN-0n
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:11:14 +0100
+	Mon, 04 Mar 2024 20:11:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDiR-00063g-TS
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:11:14 +0100
+	id 1rhDiX-00067C-53
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:11:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UE2bH76TYaibn0qmYkuvMilkFce5E035FKfVAIhkeLs=; b=3+FXk8VMG1td8yaB8NKuDcZFs+
-	VwAwflONXptHwuEJaTnLWfAzIc+Dy+K1BhP80atmryafJ/Uv3tffnxTgPIupLnL5eAY6omeNhIB/2
-	YNuqd1QsN+rm6SnftsnOZ+Ow+l+zAKEElew1a0Gs3X3++ma0uf93q2l4Eh8/sE0JrVE+7aocnmWhV
-	QYtcw48SlQ1orHSV+S7ZvoQ5Gpmpgx/GOoRhLRtwOuEIi7pQ1jiRx1a2ee2vb5Rgl4meVfLJhHOcU
-	JF+NlI4Yh3TY3+seEhqBZ3CEoqRWcvDk5YamqFs09UQQwQrs0qC6Pu6ChInLWwqntdBOKc/F8OS8z
-	cbAjdatw==;
+	bh=3n8hUDERJ4/FW1/YQ1HmlvzVodYoOZuLYf7wWN7I/ro=; b=uOXaz2wxjRMWK/HiE/y55hJsy0
+	bU5/xzWtp2O/T/RsIJtNMJOiuDwa9xx0JkmVJg7VLXKlhGIPHedvYMhsls4I7ZCNRrWvwqN4qCEiT
+	AzeVoeSt0CuAtItylvB9PNv++ROUWyWchtyXEVbuGRZJJmQaA+FXUIyHi3pHN+/ebFzZLCgyiGlKv
+	byR/qfXKpWDfFvzKvqQCGhfX2VkSWNw7/JmnaO6BKdLhMbZFnp1bPaTZTftrUXgjffvvfutiB8x1a
+	aQ77+5TI0qEGmCjE/+gUXyNODbfPCzr35rv+N1jP3Dsg28XegYiuE8aTNNLglwdFzq5t/ZH9C07rH
+	GjymFF+Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDhp-0000000ANdg-38Or;
-	Mon, 04 Mar 2024 19:10:37 +0000
+	id 1rhDi0-0000000ANk9-34f4;
+	Mon, 04 Mar 2024 19:10:44 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaf-0000000AIew-05DF
+	id 1rhDaf-0000000AIfH-1QBf
 	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:03:09 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=UE2bH76TYaibn0qmYkuvMilkFce5E035FKfVAIhkeLs=; b=GvDzIkUaiEY1XpLA7KDCF9DXKJ
-	mFGqoJGxIuuGzxbBgm3M5ivMhcNVecuIzYYOkO8umISxcr8vS6FxYsTBv8T0i6HlAWCszSrDsVykN
-	W/9AWNU7ybOJGE4GVLg/zxZ/5bhH6+wR84Y7lniD+1sDx5lPMVUkjmhj0aNG+v0SnZAqlTPPmmJmt
-	xcVXXELz7UH8JbJgz9YbsrdwHbInayTlShPC6K38g11keN8ohZaYKrycMbTZ0eKmu7ErhshNLmGAl
-	ElN3teYv5qNa3jeMWBJL66EIspbAFiXU3yhhrg8CRPOnUy5zIeQhaRVl/Yc34/M57pkeQPG5Lvpvx
-	/H0d2QPQ==;
+	bh=3n8hUDERJ4/FW1/YQ1HmlvzVodYoOZuLYf7wWN7I/ro=; b=W1Wvt7kEJzmK+ORNNTdKZnt+D3
+	8m096oxzJYFPP/79R8sx8PCScPaZJ8lqSULn08m4VqinwFCE1OBXtrX3Q1Ba5NDgccQzOd8jDEt1F
+	aCVz/VeBxEe3znZ4lwbcjt7jvfvpozENRRBGUEicyYf85aLavmdqZX/wNu3gqQjAUs6XoKCTOu85y
+	IXqaSAMFepdxEQKWINuTPuSzn9aZxgNgelqMQI1WguSJMZiIjbH8JQkNNgAe1TTQKOSZqHXG1zdYB
+	H9fMh2T4WfyGrDCMh1tEkmgtztq1M/YVKCt6u7jCdA/0sjnCT6vDjEmfgtIdoKwimD5bpSoASn6Ba
+	VkwExHQQ==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaZ-00000002BSj-0kme
+	id 1rhDaZ-00000002BSf-0VLH
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:03:07 +0000
+	Mon, 04 Mar 2024 19:03:08 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaF-00065A-Ey; Mon, 04 Mar 2024 20:02:43 +0100
+	id 1rhDaF-000648-22; Mon, 04 Mar 2024 20:02:43 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaE-004PIb-VJ; Mon, 04 Mar 2024 20:02:42 +0100
+	id 1rhDaE-004PII-KX; Mon, 04 Mar 2024 20:02:42 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYL-00Ed9V-2I;
-	Mon, 04 Mar 2024 20:00:46 +0100
+	id 1rhDYN-00Ed9V-2L;
+	Mon, 04 Mar 2024 20:00:48 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:44 +0100
-Message-Id: <20240304190038.3486881-60-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:29 +0100
+Message-Id: <20240304190038.3486881-105-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190303_423906_81BF5B17 
-X-CRM114-Status: UNSURE (   9.20  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240304_190303_423177_3BFA5BCC 
+X-CRM114-Status: GOOD (  10.06  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -99,47 +98,60 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 059/113] efi: payload: fix ARM build
+Subject: [PATCH v2 104/113] efi: devicepath: use flexible array members for trailing strings
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-So far we only ever built EFI for x86. Prepare building it for ARM by
-removing the x86-specific attributes.
+When we start using fortified string operations in the future, we will
+need to replace zero and one sized trailing arrays with flexible arrays
+where required everywhere, but for now let's just avoid having any in
+the EFI code.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/payload/image.c | 4 ++--
- include/efi/types.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ include/efi/device-path.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/efi/payload/image.c b/efi/payload/image.c
-index f9706c028ed9..8e5ad87de22f 100644
---- a/efi/payload/image.c
-+++ b/efi/payload/image.c
-@@ -217,8 +217,8 @@ static inline void linux_efi_handover(efi_handle_t handle,
- 	handover(handle, efi_sys_table, header);
- }
- #else
--typedef void(*handover_fn)(VOID *image, EFI_SYSTEM_TABLE *table,
--		struct SetupHeader *setup) __attribute__((regparm(0)));
-+typedef void(*handover_fn)(void *image, struct efi_system_table *table,
-+		struct linux_kernel_header *setup);
+diff --git a/include/efi/device-path.h b/include/efi/device-path.h
+index 8d64ac4900ac..433233f38c0d 100644
+--- a/include/efi/device-path.h
++++ b/include/efi/device-path.h
+@@ -65,7 +65,7 @@ struct efi_device_path_expanded_acpi {
+ 	u32 HID;
+ 	u32 UID;
+ 	u32 CID;
+-	u8 hid_str[1];
++	u8 hid_str[];
+ };
  
- static inline void linux_efi_handover(efi_handle_t handle,
- 		struct linux_kernel_header *header)
-diff --git a/include/efi/types.h b/include/efi/types.h
-index 3d42948d2b62..6e134387692f 100644
---- a/include/efi/types.h
-+++ b/include/efi/types.h
-@@ -33,7 +33,7 @@ typedef guid_t efi_guid_t __aligned(__alignof__(u32));
-   (c) & 0xff, ((c) >> 8) & 0xff, \
-   (d0), (d1), (d2), (d3), (d4), (d5), (d6), (d7) }})
+ #define DEVICE_PATH_SUB_TYPE_ACPI_ADR_DEVICE 3
+@@ -164,7 +164,7 @@ struct efi_device_path_usb_wwid {
+ 	u16 interface_number;
+ 	u16 vendor_id;
+ 	u16 product_id;
+-	s16 serial_number[1];	/* UTF-16 characters of the USB serial number */
++	s16 serial_number[];	/* UTF-16 characters of the USB serial number */
+ };
  
--#ifdef CONFIG_EFI_PAYLOAD
-+#ifdef __x86_64__
- #define EFIAPI __attribute__((ms_abi))
- #else
- #define EFIAPI
+ /**
+@@ -321,7 +321,7 @@ struct efi_device_path_cdrom_path {
+ #define DEVICE_PATH_SUB_TYPE_FILE_PATH               0x04
+ struct efi_device_path_file_path {
+ 	struct efi_device_path header;
+-	s16 path_name[1];
++	s16 path_name[];
+ };
+ 
+ #define SIZE_OF_FILEPATH_DEVICE_PATH offsetof(FILEPATH_DEVICE_PATH,path_name)
+@@ -374,7 +374,7 @@ struct efi_device_path_bbs_bbs {
+ 	struct efi_device_path header;
+ 	u16 device_type;
+ 	u16 status_flag;
+-	s8 String[1];
++	s8 String[];
+ };
+ 
+ /* device_type definitions - from BBS specification */
 -- 
 2.39.2
 
