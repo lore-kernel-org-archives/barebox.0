@@ -1,81 +1,66 @@
-Delivery-date: Mon, 04 Mar 2024 20:03:55 +0100
+Delivery-date: Mon, 04 Mar 2024 20:03:59 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDbP-008d2c-19
+	id 1rhDbT-008d3A-1r
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:03:55 +0100
+	Mon, 04 Mar 2024 20:03:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDbN-0007RL-3K
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:03:55 +0100
+	id 1rhDbR-0007WU-Tz
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:03:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PgqphMD7sHovJFMrOoqHojQc/tG7TPw/QiFhVSAyCWU=; b=Ce/+v2fipbHFZV0i7HhkKog7Go
-	aNUXT9J0GphPmGRazN/PMgblHfX6aZDTx4ewQw4HQk03i03Ip+xD4PrpbYfOoS9NWRFITn9nETqGD
-	KxBaTK0XAeI0v7Kxc+cOm867SN9njoqWcDnsLHSMTUHb6wZqe+TZ3PA30PZc39nJ/e/MZWT0FXGtu
-	zzkwf2pqVingbNOJnoPws74rGXF2fxym5xEsa2fHhFhJ44eGoXmUfCAQqe1o8r/Rf/fzBhQVVu9gX
-	o8SXx2FObytMKaSadxICVZOmmOT8BgIiCzNmNIAEFdSCFywMOaX6T5zEybO0q/WYP2QPEmD3P+wfA
-	6lMRvgfw==;
+	bh=ejFfDRyaMvje3Snwz+7KY7aEyaDln3oy1VljOsdMNVo=; b=VIoPRDuSN8JcTrTpOaktyiks9T
+	/Ci8hhuSQXjBFoPG28nZBU9WRrXwIFIAQTyNVDlluKaSq3ZsgfW/7Njs4mu3y9e6l8zGT69UCdGoL
+	8yO+jSEmWcSJTZqoCHUX2o8V97qCamNWkn6JafAxN0C1KD/zwM6qvwoxl+pMQYjddlzBiD5EOiGeZ
+	Q06sDQi4gwTWFEzayquUfwPUeXObYUQJS6bs/YqRjV3Rx5D/C83naskgbXdaO0KdGGW/vZ35cXToG
+	28egoMOVD56n1Fft/PRhzc5EyiRh0SojI5HWSNhg4H8zvaD6VwYlO45VKFgFOya4+jrn4FT0lHFY9
+	lCZ5GQKQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDan-0000000AIlW-14Fh;
-	Mon, 04 Mar 2024 19:03:17 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaK-0000000AINf-45bJ
-	for barebox@bombadil.infradead.org;
-	Mon, 04 Mar 2024 19:02:49 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=PgqphMD7sHovJFMrOoqHojQc/tG7TPw/QiFhVSAyCWU=; b=clEn1QMyvExRDuxGrNb2CDHpUI
-	FxYnWTnlo/7iQWOthDmk/kX5Hsdw5Kkm+GUOn2+JaY9iLLUGsKVsYLjb4szWG25hN5pe2gFtt8KMb
-	1VT3E31viYcrhXf3EfQ0yCuqOgYpApntUXjOUSR06MDUbQL+bPsR6twcNeeXNASOYwqbFGH7Mpvs/
-	Lsi06MH/JExAPMNm5NdzDMhlgVil3TZRYda9B2Jtubnup6BOl0XDoLdVHdaILER7G0b8QVh9nwt9b
-	UlbXCwFJtIoxs5yNo7OlCpkYARaO80IkMyBDZTr7pjhwK6pf6RcmjK0bMwYpwWflNQEAViAXZXJ2A
-	gGXJAbQA==;
+	id 1rhDap-0000000AImz-3yaR;
+	Mon, 04 Mar 2024 19:03:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaF-000000051vZ-2PBG
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaE-0000000AIHS-2lNC
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:02:47 +0000
+	Mon, 04 Mar 2024 19:02:49 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaD-0005zx-PP; Mon, 04 Mar 2024 20:02:41 +0100
+	id 1rhDaD-0005yR-BM; Mon, 04 Mar 2024 20:02:41 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaD-004PGs-BF; Mon, 04 Mar 2024 20:02:41 +0100
+	id 1rhDaC-004PGS-Tb; Mon, 04 Mar 2024 20:02:40 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYN-00Ed9V-0C;
-	Mon, 04 Mar 2024 20:00:47 +0100
+	id 1rhDYK-00Ed9V-1L;
+	Mon, 04 Mar 2024 20:00:44 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 20:00:14 +0100
-Message-Id: <20240304190038.3486881-90-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 19:59:15 +0100
+Message-Id: <20240304190038.3486881-31-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190243_939072_71DE4ECA 
-X-CRM114-Status: GOOD (  19.39  )
+X-CRM114-CacheID: sfid-20240304_110243_010490_C4312F5D 
+X-CRM114-Status: GOOD (  12.32  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,165 +83,118 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 089/113] efi: devicepath: implement device_path_to_str_buf variant
+Subject: [PATCH v2 030/113] fs: factor out opendir iteration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Existing device_path_to_str() formats a buffer once to determines the amount
-of space necessary and then allocates it and formats it again.
-
-To make this functionality available as printf format specifier, we need
-a variant that doesn't allocate memory and that's preferably single
-pass, which we add here.
-
-No functional change for users of device_path_to_str().
+In preparation for supporting fdopendir and rewinddir, add an __opendir
+helper that is reused in a follow-up commit.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/devicepath.c | 71 +++++++++++++++++++++++++++++++++++-------------
- include/efi.h    |  1 +
- 2 files changed, 53 insertions(+), 19 deletions(-)
+ fs/fs.c | 52 ++++++++++++++++++++++++++++++++--------------------
+ 1 file changed, 32 insertions(+), 20 deletions(-)
 
-diff --git a/efi/devicepath.c b/efi/devicepath.c
-index d562bf482955..0c2fc4d86927 100644
---- a/efi/devicepath.c
-+++ b/efi/devicepath.c
-@@ -6,11 +6,13 @@
- #include <malloc.h>
- #include <string.h>
- #include <wchar.h>
-+#include <linux/overflow.h>
- #include <efi/device-path.h>
- 
- struct string {
- 	char *str;
--	int len;
-+	unsigned allocated;
-+	unsigned used;
- };
- 
- char *cprintf(struct string *str, const char *fmt, ...)
-@@ -18,17 +20,22 @@ char *cprintf(struct string *str, const char *fmt, ...)
- 
- char *cprintf(struct string *str, const char *fmt, ...)
- {
-+	void *buf = str->str;
-+	unsigned bufsize = 0;
- 	va_list args;
- 	int len;
- 
-+	if (str->str) {
-+		buf += str->used;
-+		if (check_sub_overflow(str->allocated, str->used, &bufsize))
-+			bufsize = 0;
-+	}
-+
- 	va_start(args, fmt);
--	if (str->str)
--		len = vsprintf(str->str + str->len, fmt, args);
--	else
--		len = vsnprintf(NULL, 0, fmt, args);
-+	len = vsnprintf(buf, bufsize, fmt, args);
- 	va_end(args);
- 
--	str->len += len;
-+	str->used += len;
- 
- 	return NULL;
+diff --git a/fs/fs.c b/fs/fs.c
+index a31343e2e272..96ca0f110393 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -2708,15 +2708,39 @@ int symlink(const char *pathname, const char *newpath)
  }
-@@ -717,8 +724,8 @@ struct {
- 	0, 0, NULL}
- };
+ EXPORT_SYMBOL(symlink);
  
--static int __device_path_to_str(struct string *str,
--				const struct efi_device_path *dev_path)
-+static void __device_path_to_str(struct string *str,
-+				 const struct efi_device_path *dev_path)
+-static void release_dir(DIR *d)
++static void __release_dir(DIR *d)
  {
- 	const struct efi_device_path *dev_path_node;
- 	void (*dump_node) (struct string *, const void *);
-@@ -743,32 +750,58 @@ static int __device_path_to_str(struct string *str,
- 		if (!dump_node)
- 			dump_node = dev_path_node_unknown;
+ 	struct readdir_entry *entry, *tmp;
  
--		if (str->len && dump_node != dev_path_end_instance)
-+		if (str->used && dump_node != dev_path_end_instance)
- 			cprintf(str, "/");
- 
- 		dump_node(str, dev_path_node);
- 
- 		dev_path_node = next_device_path_node(dev_path_node);
+ 	list_for_each_entry_safe(entry, tmp, &d->entries, list) {
+ 		free(entry);
  	}
--
--	return 0;
- }
++}
  
-+/**
-+ * device_path_to_str_buf() - formats a device path into a preallocated buffer
-+ *
-+ * @dev_path:	The EFI device path to format
-+ * @buf:	The buffer to format into or optionally NULL if @len is zero
-+ * @len:	The number of bytes that may be written into @buf
-+ * Return:	total number of bytes that are required to store the formatted
-+ *		result, excluding the terminating NUL byte, which is always
-+ *		written.
-+ */
-+size_t device_path_to_str_buf(const struct efi_device_path *dev_path,
-+			      char *buf, size_t len)
+-	free(d);
++static int __opendir(DIR *d)
 +{
-+	struct string str = {
-+		.str = buf,
-+		.allocated = len,
++	int ret;
++	struct file file = {};
++	struct path *path = &d->path;
++	struct dentry *dir = path->dentry;
++	struct readdir_callback rd = {
++		.ctx = {
++			.actor = fillonedir,
++		},
 +	};
 +
-+	__device_path_to_str(&str, dev_path);
++	file.f_path.dentry = dir;
++	file.f_inode = d_inode(dir);
++	file.f_op = dir->d_inode->i_fop;
 +
-+	return str.used;
-+}
++	INIT_LIST_HEAD(&d->entries);
++	rd.dir = d;
 +
-+/**
-+ * device_path_to_str() - formats a device path into a newly allocated buffer
-+ *
-+ * @dev_path:	The EFI device path to format
-+ * Return:	A pointer to the nul-terminated formatted device path.
-+ */
- char *device_path_to_str(const struct efi_device_path *dev_path)
- {
--	struct string str = {};
-+	void *buf;
-+	size_t size;
- 
--	__device_path_to_str(&str, dev_path);
-+	size = device_path_to_str_buf(dev_path, NULL, 0);
- 
--	str.str = malloc(str.len + 1);
--	if (!str.str)
-+	buf = malloc(size + 1);
-+	if (!buf)
- 		return NULL;
- 
--	str.len = 0;
-+	device_path_to_str_buf(dev_path, buf, size + 1);
- 
--	__device_path_to_str(&str, dev_path);
--
--	return str.str;
-+	return buf;
++	ret = file.f_op->iterate(&file, &rd.ctx);
++	if (ret)
++		__release_dir(d);
++
++	return ret;
  }
  
- u8 device_path_to_type(const struct efi_device_path *dev_path)
-diff --git a/include/efi.h b/include/efi.h
-index 6795dc414c3c..45e4080fac08 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -880,6 +880,7 @@ struct efi_simple_text_input_protocol {
+ DIR *opendir(const char *pathname)
+@@ -2724,14 +2748,8 @@ DIR *opendir(const char *pathname)
+ 	int ret;
+ 	struct dentry *dir;
+ 	struct inode *inode;
+-	struct file file = {};
+ 	DIR *d;
+ 	struct path path = {};
+-	struct readdir_callback rd = {
+-		.ctx = {
+-			.actor = fillonedir,
+-		},
+-	};
  
- const struct efi_device_path *device_path_from_handle(efi_handle_t handle);
- char *device_path_to_str(const struct efi_device_path *dev_path);
-+size_t device_path_to_str_buf(const struct efi_device_path *dev_path, char buf[], size_t size);
- u8 device_path_to_type(const struct efi_device_path *dev_path);
- u8 device_path_to_subtype(const struct efi_device_path *dev_path);
- char *device_path_to_partuuid(const struct efi_device_path *dev_path);
+ 	ret = filename_lookup(getname(pathname),
+ 			      LOOKUP_FOLLOW | LOOKUP_DIRECTORY, &path);
+@@ -2752,24 +2770,17 @@ DIR *opendir(const char *pathname)
+ 		goto out_put;
+ 	}
+ 
+-	file.f_path.dentry = dir;
+-	file.f_inode = d_inode(dir);
+-	file.f_op = dir->d_inode->i_fop;
+-
+ 	d = xzalloc(sizeof(*d));
+ 	d->path = path;
+ 
+-	INIT_LIST_HEAD(&d->entries);
+-	rd.dir = d;
+-
+-	ret = file.f_op->iterate(&file, &rd.ctx);
++	ret = __opendir(d);
+ 	if (ret)
+-		goto out_release;
++		goto out_free;
+ 
+ 	return d;
+ 
+-out_release:
+-	release_dir(d);
++out_free:
++	free(d);
+ out_put:
+ 	path_put(&path);
+ out:
+@@ -2785,7 +2796,8 @@ int closedir(DIR *dir)
+ 		return errno_set(-EBADF);
+ 
+ 	path_put(&dir->path);
+-	release_dir(dir);
++	__release_dir(dir);
++	free(dir);
+ 
+ 	return 0;
+ }
 -- 
 2.39.2
 
