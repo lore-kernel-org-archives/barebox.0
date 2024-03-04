@@ -1,81 +1,66 @@
-Delivery-date: Mon, 04 Mar 2024 20:04:34 +0100
+Delivery-date: Mon, 04 Mar 2024 20:04:37 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDc2-008d6m-11
+	id 1rhDc5-008d78-0i
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:04:34 +0100
+	Mon, 04 Mar 2024 20:04:37 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDc0-00089f-Eo
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:04:34 +0100
+	id 1rhDc4-0008ET-Cq
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:04:37 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=G5l8Kp2wXchI1+ec/AS6380p1DQ2vrhAztV33OdWrN4=; b=XIc3kZK81fC/GHlzHO5MtIESbe
-	R3UJ1XST5PekvP5eHjPFZAwbRUV2Y5OJLuh/82abnvn8nsQvSq+2QAAQtPDW1fxcpb/jgpbkoQhQD
-	Pm/UOew+XCmnnwYWlCqaPV28ug+dzrAuT2quCKO2D7sNnfoy+Zz2A1ZNWhF/EyLWxqobUKN9SqhAv
-	qVzpxc72Vavq63Om/bGx8JmZdJ5wjtMkIWhp23G5HNaVVoYcYA4gnTwHA0J8nY6a4aa1NJx16fDUI
-	N/HSNGraySgcvD7fgPWJf5m3nO0DexvCWs+CrxbjmFwGWZAAnRy5Sy7UWV+1GsrChkaE2ooCErmN5
-	SAzdSvTA==;
+	bh=NLuMeNlscje/MZOftnd8NkgjKKd+hlSz/7ZJm8NxKLA=; b=0UIkH1SJoJ1g39sGhomgD57uIf
+	V3PqvSJG3JOf4QFenhPNNJ/+5fL5jmsb4Ad5V10cOASXaAkirE1IgKfN5LJd6OTymkYQLsTXNSuej
+	vXDIbQ3/wH7UEYsPAxKp3kA90DpEnCIj98jQx9E7TRedRnvjkaG05dSJSPdkAZIQuUZg0f4WHh8Ho
+	egUi32HQ8+YWmF/A2inOuLjXdQtMi1CpV/LxCSRvF5ca8z8NArwlCOJMEsdGYbDAsZaHNi/FLITq3
+	2rPDTDgK4T9U0qq/3IYPn863Fu2p1wTMhWMGrfwEBAARBrIJ+oQzEgmT8ukCAQhBaYWLoh5DbV6IN
+	qz22Zzeg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDbH-0000000AJ6k-2ssl;
-	Mon, 04 Mar 2024 19:03:47 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaM-0000000AIOk-26O7
-	for barebox@bombadil.infradead.org;
-	Mon, 04 Mar 2024 19:02:50 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=G5l8Kp2wXchI1+ec/AS6380p1DQ2vrhAztV33OdWrN4=; b=GCxrG0ReBYw8q/go6b5rPT5gOI
-	P5qjY/BVv1e73+uzHk2bqdt2KNq5s8iwsVvmLb28FxIygi1KM/2ii2AnnXjytQkLFfQXtoBzLklE0
-	75eNWwsFGrk9+oIyCyh11EhLA/ywkNQ38GvqnNUGK6xNC9LnDMM6U5SrxE4xrimbgj9vDDGxRIwqv
-	rgdcg6LymBMgjvB+fQJs10LLsyz9BRGLLrTkVqy93EThEKr5us6YX+BpEit4Re4GdCSXSwVXA/GKF
-	51UgLrAcSErlFg7IGKNkvT3KpSHBzp5Ir0Pc9kGup3uxGW0ht6qlV5wfiwUZPJQq5dr4hbjFkFpi2
-	VOaPfPjw==;
+	id 1rhDbR-0000000AJDZ-2971;
+	Mon, 04 Mar 2024 19:03:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaF-000000051ve-2P5x
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaE-0000000AIHR-2LBB
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:02:49 +0000
+	Mon, 04 Mar 2024 19:02:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaE-00060s-3C; Mon, 04 Mar 2024 20:02:42 +0100
+	id 1rhDaD-0005yE-9H; Mon, 04 Mar 2024 20:02:41 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaD-004PHC-KQ; Mon, 04 Mar 2024 20:02:41 +0100
+	id 1rhDaC-004PGP-Rl; Mon, 04 Mar 2024 20:02:40 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYL-00Ed9V-1i;
-	Mon, 04 Mar 2024 20:00:46 +0100
+	id 1rhDYK-00Ed9V-3D;
+	Mon, 04 Mar 2024 20:00:45 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:40 +0100
-Message-Id: <20240304190038.3486881-56-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 19:59:28 +0100
+Message-Id: <20240304190038.3486881-44-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190243_954662_0EFAE28C 
-X-CRM114-Status: GOOD (  11.24  )
+X-CRM114-CacheID: sfid-20240304_110242_995887_B9B4168B 
+X-CRM114-Status: GOOD (  15.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,199 +83,149 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 055/113] efi: efi-guid: add more GUIDs
+Subject: [PATCH v2 043/113] commands: stat: add option for statat
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-These GUIDs will be useful for the incoming EFI loader support, so add
-them all at once.
+The stat command is a debugging aid for developing the VFS, so it makes
+sense to add support for dirfd, so they can be tested interactively.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/guid.c    | 35 +++++++++++++++++++++++++++++-
- include/efi.h | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 93 insertions(+), 1 deletion(-)
+ commands/Kconfig |  6 ++++--
+ commands/stat.c  | 26 +++++++++++++++++++-------
+ fs/fs.c          |  5 ++---
+ include/fs.h     |  2 +-
+ 4 files changed, 26 insertions(+), 13 deletions(-)
 
-diff --git a/efi/guid.c b/efi/guid.c
-index 8103b3d63114..f6bd4a24e2bf 100644
---- a/efi/guid.c
-+++ b/efi/guid.c
-@@ -6,6 +6,8 @@
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 9df3c67d930d..269d2432b45e 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1011,12 +1011,14 @@ config CMD_STAT
+ 	help
+ 	  Display file status
  
- efi_guid_t efi_file_info_id = EFI_FILE_INFO_GUID;
- efi_guid_t efi_simple_file_system_protocol_guid = EFI_SIMPLE_FILE_SYSTEM_GUID;
-+efi_guid_t efi_file_system_info_guid = EFI_FILE_SYSTEM_INFO_GUID;
-+efi_guid_t efi_system_volume_label_id = EFI_FILE_SYSTEM_VOLUME_LABEL_ID;
- efi_guid_t efi_device_path_protocol_guid = EFI_DEVICE_PATH_PROTOCOL_GUID;
- efi_guid_t efi_loaded_image_protocol_guid = EFI_LOADED_IMAGE_PROTOCOL_GUID;
- efi_guid_t efi_unknown_device_guid = EFI_UNKNOWN_DEVICE_GUID;
-@@ -16,6 +18,32 @@ efi_guid_t efi_rng_protocol_guid = EFI_RNG_PROTOCOL_GUID;
- efi_guid_t efi_barebox_vendor_guid = EFI_BAREBOX_VENDOR_GUID;
- efi_guid_t efi_systemd_vendor_guid = EFI_SYSTEMD_VENDOR_GUID;
- efi_guid_t efi_fdt_guid = EFI_DEVICE_TREE_GUID;
-+efi_guid_t efi_loaded_image_device_path_guid =
-+		EFI_LOADED_IMAGE_DEVICE_PATH_PROTOCOL_GUID;
-+const efi_guid_t efi_device_path_to_text_protocol_guid =
-+		EFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID;
-+const efi_guid_t efi_dt_fixup_protocol_guid = EFI_DT_FIXUP_PROTOCOL_GUID;
-+/* GUID of the EFI_DRIVER_BINDING_PROTOCOL */
-+const efi_guid_t efi_driver_binding_protocol_guid = EFI_DRIVER_BINDING_PROTOCOL_GUID;
-+
-+/* event group ExitBootServices() invoked */
-+const efi_guid_t efi_guid_event_group_exit_boot_services =
-+			EFI_EVENT_GROUP_EXIT_BOOT_SERVICES;
-+/* event group SetVirtualAddressMap() invoked */
-+const efi_guid_t efi_guid_event_group_virtual_address_change =
-+			EFI_EVENT_GROUP_VIRTUAL_ADDRESS_CHANGE;
-+/* event group memory map changed */
-+const efi_guid_t efi_guid_event_group_memory_map_change =
-+			EFI_EVENT_GROUP_MEMORY_MAP_CHANGE;
-+/* event group boot manager about to boot */
-+const efi_guid_t efi_guid_event_group_ready_to_boot = EFI_EVENT_GROUP_READY_TO_BOOT;
-+/* event group ResetSystem() invoked (before ExitBootServices) */
-+const efi_guid_t efi_guid_event_group_reset_system = EFI_EVENT_GROUP_RESET_SYSTEM;
-+/* GUIDs of the Load File and Load File2 protocols */
-+const efi_guid_t efi_load_file_protocol_guid = EFI_LOAD_FILE_PROTOCOL_GUID;
-+const efi_guid_t efi_load_file2_protocol_guid = EFI_LOAD_FILE2_PROTOCOL_GUID;
-+const efi_guid_t efi_device_path_utilities_protocol_guid =
-+	EFI_DEVICE_PATH_UTILITIES_PROTOCOL_GUID;
+-	  Usage: stat [-L] [FILEDIR...]
++	  Usage: stat [-LcC] [FILEDIR...]
  
- #define EFI_GUID_STRING(guid, short, long) do {	\
- 	if (!efi_guidcmp(guid, *g))		\
-@@ -42,14 +70,19 @@ const char *efi_guid_string(efi_guid_t *g)
- 	EFI_GUID_STRING(EFI_PCI_IO_PROTOCOL_GUID, "PCI IO Protocol", "EFI 1.1 PCI IO Protocol");
- 	EFI_GUID_STRING(EFI_USB_IO_PROTOCOL_GUID, "USB IO Protocol", "EFI 1.0 USB IO Protocol");
- 	EFI_GUID_STRING(EFI_FILE_INFO_GUID, "File Info", "EFI File Info");
-+	EFI_GUID_STRING(EFI_FILE_SYSTEM_INFO_GUID, "Filesystem Info", "EFI FileSystem Info");
-+	EFI_GUID_STRING(EFI_FILE_SYSTEM_VOLUME_LABEL_ID, "Filesystem Volume Label ID", "EFI FileSystem Volume Label ID");
- 	EFI_GUID_STRING(EFI_SIMPLE_FILE_SYSTEM_GUID, "Filesystem", "EFI 1.0 Simple FileSystem");
- 	EFI_GUID_STRING(EFI_DEVICE_TREE_GUID, "Device Tree", "EFI Device Tree GUID");
- 	EFI_GUID_STRING(EFI_DEVICE_PATH_PROTOCOL_GUID, "Device Path Protocol", "EFI 1.0 Device Path protocol");
-+	EFI_GUID_STRING(EFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID, "Device Path To Text Protocol", "EFI Device Path To Text Protocol");
-+	EFI_GUID_STRING(EFI_DEVICE_PATH_UTILITIES_PROTOCOL_GUID, "Device Path Utilities Protocol", "EFI Device Path Utilities Protocol");
- 	EFI_GUID_STRING(EFI_SIMPLE_NETWORK_PROTOCOL_GUID, "Simple Network Protocol", "EFI 1.0 Simple Network Protocol");
- 	EFI_GUID_STRING(EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID, "Filesystem Protocol", "EFI 1.0 Simple FileSystem Protocol");
- 	EFI_GUID_STRING(EFI_UNKNOWN_DEVICE_GUID, "Efi Unknown Device", "Efi Unknown Device GUID");
- 	EFI_GUID_STRING(EFI_BLOCK_IO_PROTOCOL_GUID, "BlockIo Protocol", "EFI 1.0 Block IO protocol");
--
-+	EFI_GUID_STRING(EFI_RNG_PROTOCOL_GUID, "RNG Protocol", "EFI RNG protocol");
-+	EFI_GUID_STRING(EFI_LOADED_IMAGE_DEVICE_PATH_PROTOCOL_GUID, "Loaded Image Device Path Protocol", "EFI LoadedImageDevicePath Protocol");
- 	EFI_GUID_STRING(EFI_FIRMWARE_VOLUME2_PROTOCOL_GUID, "FirmwareVolume2Protocol", "Efi FirmwareVolume2Protocol");
- 	EFI_GUID_STRING(EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL_GUID, "FirmwareVolumeBlock Protocol", "Firmware Volume Block protocol");
- 	EFI_GUID_STRING(EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID, "PciRootBridgeIo Protocol", "EFI 1.1 Pci Root Bridge IO Protocol");
-diff --git a/include/efi.h b/include/efi.h
-index 8635ab58f981..ec4c2a522df4 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -306,6 +306,27 @@ struct efi_runtime_services {
+ 	  Display status information about the specified files or directories.
  
- extern struct efi_runtime_services *RT;
+ 	  Options:
+-		  -L	follow symlinks
++		  -L		follow symlinks
++		  -c DIR	lookup file relative to directory DIR
++		  -C DIR	change root to DIR before file lookup
  
-+/* EFI event group GUID definitions */
-+#define EFI_EVENT_GROUP_EXIT_BOOT_SERVICES \
-+	EFI_GUID(0x27abf055, 0xb1b8, 0x4c26, 0x80, 0x48, \
-+		 0x74, 0x8f, 0x37, 0xba, 0xa2, 0xdf)
-+
-+#define EFI_EVENT_GROUP_VIRTUAL_ADDRESS_CHANGE \
-+	EFI_GUID(0x13fa7698, 0xc831, 0x49c7, 0x87, 0xea, \
-+		 0x8f, 0x43, 0xfc, 0xc2, 0x51, 0x96)
-+
-+#define EFI_EVENT_GROUP_MEMORY_MAP_CHANGE \
-+	EFI_GUID(0x78bee926, 0x692f, 0x48fd, 0x9e, 0xdb, \
-+		 0x01, 0x42, 0x2e, 0xf0, 0xd7, 0xab)
-+
-+#define EFI_EVENT_GROUP_READY_TO_BOOT \
-+	EFI_GUID(0x7ce88fb3, 0x4bd7, 0x4679, 0x87, 0xa8, \
-+		 0xa8, 0xd8, 0xde, 0xe5, 0x0d, 0x2b)
-+
-+#define EFI_EVENT_GROUP_RESET_SYSTEM \
-+	EFI_GUID(0x62da6a56, 0x13fb, 0x485a, 0xa8, 0xda, \
-+		 0xa3, 0xdd, 0x79, 0x12, 0xcb, 0x6b)
-+
- /*
-  *  EFI Configuration Table and GUID definitions
-  */
-@@ -345,6 +366,9 @@ extern struct efi_runtime_services *RT;
- #define EFI_LOADED_IMAGE_PROTOCOL_GUID \
-     EFI_GUID(  0x5b1b31a1, 0x9562, 0x11d2, 0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b )
+ config CMD_MD5SUM
+ 	tristate
+diff --git a/commands/stat.c b/commands/stat.c
+index 153eac50f1fa..10662005cdda 100644
+--- a/commands/stat.c
++++ b/commands/stat.c
+@@ -12,15 +12,23 @@
  
-+#define EFI_LOADED_IMAGE_DEVICE_PATH_PROTOCOL_GUID \
-+    EFI_GUID(0xbc62157e, 0x3e33, 0x4fec, 0x99, 0x20, 0x2d, 0x3b, 0x36, 0xd7, 0x50, 0xdf)
+ static int do_stat(int argc, char *argv[])
+ {
+-	int (*statfn)(const char *, struct stat *) = lstat;
+-	int ret, opt, exitcode = 0;
++	int (*statfn)(int dirfd, const char *, struct stat *) = lstatat;
++	int ret, opt, dirfd = AT_FDCWD, extra_flags = 0, exitcode = 0;
+ 	char **filename;
+ 	struct stat st;
+ 
+-	while((opt = getopt(argc, argv, "L")) > 0) {
++	while((opt = getopt(argc, argv, "Lc:C:")) > 0) {
+ 		switch(opt) {
+ 		case 'L':
+-			statfn = stat;
++			statfn = statat;
++			break;
++		case 'C':
++			extra_flags |= O_CHROOT;
++			fallthrough;
++		case 'c':
++			dirfd = open(optarg, O_PATH | extra_flags);
++			if (dirfd < 0)
++				return dirfd;
+ 			break;
+ 		default:
+ 			return COMMAND_ERROR_USAGE;
+@@ -31,7 +39,7 @@ static int do_stat(int argc, char *argv[])
+ 		return COMMAND_ERROR_USAGE;
+ 
+ 	for (filename = &argv[optind]; *filename; filename++) {
+-		ret = statfn(*filename, &st);
++		ret = statfn(dirfd, *filename, &st);
+ 
+ 		if (ret) {
+ 			printf("%s: %s: %m\n", argv[0], *filename);
+@@ -39,9 +47,11 @@ static int do_stat(int argc, char *argv[])
+ 			continue;
+ 		}
+ 
+-		stat_print(*filename, &st);
++		stat_print(dirfd, *filename, &st);
+ 	}
+ 
++	close(dirfd);
 +
- #define EFI_GRAPHICS_OUTPUT_PROTOCOL_GUID \
-     EFI_GUID(  0x9042a9de, 0x23dc, 0x4a38, 0x96, 0xfb, 0x7a, 0xde, 0xd0, 0x80, 0x51, 0x6a )
+ 	return exitcode;
+ }
  
-@@ -363,12 +387,24 @@ extern struct efi_runtime_services *RT;
- #define EFI_SIMPLE_FILE_SYSTEM_GUID \
-     EFI_GUID(  0x964e5b22, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b )
+@@ -51,12 +61,14 @@ BAREBOX_CMD_HELP_TEXT("or directories.")
+ BAREBOX_CMD_HELP_TEXT("")
+ BAREBOX_CMD_HELP_TEXT("Options:")
+ BAREBOX_CMD_HELP_OPT ("-L",  "follow links")
++BAREBOX_CMD_HELP_OPT ("-c DIR",  "lookup file relative to directory DIR")
++BAREBOX_CMD_HELP_OPT ("-C DIR",  "change root to DIR before file lookup")
+ BAREBOX_CMD_HELP_END
  
-+#define EFI_FILE_SYSTEM_INFO_GUID \
-+    EFI_GUID(0x09576e93, 0x6d3f, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
-+
-+#define EFI_FILE_SYSTEM_VOLUME_LABEL_ID \
-+    EFI_GUID(0xdb47d7d3, 0xfe81, 0x11d3, 0x9a, 0x35, 0x00, 0x90, 0x27, 0x3f, 0xC1, 0x4d)
-+
- #define EFI_DEVICE_TREE_GUID \
-     EFI_GUID(  0xb1b621d5, 0xf19c, 0x41a5, 0x83, 0x0b, 0xd9, 0x15, 0x2c, 0x69, 0xaa, 0xe0 )
+ BAREBOX_CMD_START(stat)
+ 	.cmd		= do_stat,
+ 	BAREBOX_CMD_DESC("display file status")
+-	BAREBOX_CMD_OPTS("[-L] [FILEDIR...]")
++	BAREBOX_CMD_OPTS("[-LcC] [FILEDIR...]")
+ 	BAREBOX_CMD_GROUP(CMD_GRP_FILE)
+ 	BAREBOX_CMD_HELP(cmd_stat_help)
+ BAREBOX_CMD_END
+diff --git a/fs/fs.c b/fs/fs.c
+index fa1d01d892dc..3bd476713595 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -130,9 +130,8 @@ void cdev_print(const struct cdev *cdev)
+ }
+ EXPORT_SYMBOL(cdev_print);
  
- #define EFI_DEVICE_PATH_PROTOCOL_GUID \
-     EFI_GUID(  0x9576e91, 0x6d3f, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b )
+-void stat_print(const char *filename, const struct stat *st)
++void stat_print(int dirfd, const char *filename, const struct stat *st)
+ {
+-	int dirfd = AT_FDCWD;
+ 	struct block_device *bdev = NULL;
+ 	struct fs_device *fdev;
+ 	struct cdev *cdev = NULL;
+@@ -177,7 +176,7 @@ void stat_print(const char *filename, const struct stat *st)
+ 		char realname[PATH_MAX] = {};
+ 		int ret;
  
-+#define EFI_DEVICE_PATH_TO_TEXT_PROTOCOL_GUID \
-+    EFI_GUID( 0x8b843e20, 0x8132, 0x4852, 0x90, 0xcc, 0x55, 0x1a, 0x4e, 0x4a, 0x7f, 0x1c)
-+
-+#define EFI_DEVICE_PATH_UTILITIES_PROTOCOL_GUID \
-+    EFI_GUID(0x0379be4e, 0xd706, 0x437d, 0xb0, 0x37, 0xed, 0xb8, 0x2f, 0xb7, 0x72, 0xa4)
-+
- #define EFI_SIMPLE_NETWORK_PROTOCOL_GUID \
-     EFI_GUID( 0xA19832B9, 0xAC25, 0x11D3, 0x9A, 0x2D, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D )
+-		ret = readlink(filename, realname, PATH_MAX - 1);
++		ret = readlinkat(dirfd, filename, realname, PATH_MAX - 1);
+ 		if (ret)
+ 			printf(" -> <readlink error %pe>", ERR_PTR(ret));
+ 		else
+diff --git a/include/fs.h b/include/fs.h
+index 020761692cad..70903142e89b 100644
+--- a/include/fs.h
++++ b/include/fs.h
+@@ -147,7 +147,7 @@ int ls(const char *path, ulong flags);
  
-@@ -415,6 +451,9 @@ extern struct efi_runtime_services *RT;
- #define EFI_SIMPLE_TEXT_IN_PROTOCOL_GUID \
-     EFI_GUID(0x387477c1, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ char *mkmodestr(unsigned long mode, char *str);
  
-+#define EFI_CONSOLE_CONTROL_GUID \
-+    EFI_GUID(0xf42f7782, 0x12e, 0x4c12, 0x99, 0x56, 0x49, 0xf9, 0x43, 0x4, 0xf7, 0x21)
-+
- #define EFI_DISK_IO_PROTOCOL_GUID \
-     EFI_GUID(0xce345171, 0xba0b, 0x11d2, 0x8e, 0x4f, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+-void stat_print(const char *filename, const struct stat *st);
++void stat_print(int dirfd, const char *filename, const struct stat *st);
+ void cdev_print(const struct cdev *cdev);
  
-@@ -506,8 +545,16 @@ extern struct efi_runtime_services *RT;
- #define EFI_TCG2_PROTOCOL_GUID \
-     EFI_GUID(0x607f766c, 0x7455, 0x42be, 0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
- 
-+#define EFI_DT_FIXUP_PROTOCOL_GUID \
-+    EFI_GUID(0xe617d64c, 0xfe08, 0x46da, 0xf4, 0xdc, 0xbb, 0xd5, 0x87, 0x0c, 0x73, 0x00)
-+
-+#define EFI_DRIVER_BINDING_PROTOCOL_GUID \
-+    EFI_GUID(0x18a031ab, 0xb443, 0x4d1a, 0xa5, 0xc0, 0x0c, 0x09, 0x26, 0x1e, 0x9f, 0x71)
-+
- extern efi_guid_t efi_file_info_id;
- extern efi_guid_t efi_simple_file_system_protocol_guid;
-+extern efi_guid_t efi_file_system_info_guid;
-+extern efi_guid_t efi_system_volume_label_id;
- extern efi_guid_t efi_device_path_protocol_guid;
- extern efi_guid_t efi_loaded_image_protocol_guid;
- extern efi_guid_t efi_unknown_device_guid;
-@@ -518,6 +565,18 @@ extern efi_guid_t efi_rng_protocol_guid;
- extern efi_guid_t efi_barebox_vendor_guid;
- extern efi_guid_t efi_systemd_vendor_guid;
- extern efi_guid_t efi_fdt_guid;
-+extern efi_guid_t efi_loaded_image_device_path_guid;
-+extern const efi_guid_t efi_device_path_to_text_protocol_guid;
-+extern const efi_guid_t efi_dt_fixup_protocol_guid;
-+extern const efi_guid_t efi_driver_binding_protocol_guid;
-+extern const efi_guid_t efi_guid_event_group_exit_boot_services;
-+extern const efi_guid_t efi_guid_event_group_virtual_address_change;
-+extern const efi_guid_t efi_guid_event_group_memory_map_change;
-+extern const efi_guid_t efi_guid_event_group_ready_to_boot;
-+extern const efi_guid_t efi_guid_event_group_reset_system;
-+extern const efi_guid_t efi_load_file_protocol_guid;
-+extern const efi_guid_t efi_load_file2_protocol_guid;
-+extern const efi_guid_t efi_device_path_utilities_protocol_guid;
- 
- struct efi_config_table {
- 	efi_guid_t guid;
+ char *canonicalize_path(int dirfd, const char *pathname);
 -- 
 2.39.2
 
