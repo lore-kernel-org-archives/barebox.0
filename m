@@ -1,81 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:09:15 +0100
+Delivery-date: Mon, 04 Mar 2024 20:09:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDgX-008dbK-2s
+	id 1rhDgc-008dc6-2X
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:09:15 +0100
+	Mon, 04 Mar 2024 20:09:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDgW-00047Y-Bm
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:09:13 +0100
+	id 1rhDgb-0004DQ-BK
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:09:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Lkn971gCSV5eLbC2UIw8LQqPpsRRS5D/AFNLMMLwdCM=; b=cubuM4OPqv7EKyMBbEobdx54RL
-	IOfk2vBKWX81PNzKWEcuiEVl7y2+j4ZrnPbyjG+dRPu33z+YlcifSSvQ2He4LGDlsAtq+D3+2k1i0
-	fotQx7R6egkDsajY+oPTGt6YIEfOoKAmncZIdFlK/U/qlPeExpALMhJv8GfMbVa9KC3LGwArCw+u9
-	kYF8+/ERUIsbax5OD0tdUbDzeox/6xGFY+M5Z7VCxAv/8qo6QqhFxvGfodHd2hVn2ciXNQ5x1T2gX
-	djS5KRiDLt7WrZoObuDrl+w42zvab0HlBnVFEOV/aaKlVBlq14YSpX9l/y8qWaWe/imUUFSRjbFSc
-	ps+TU1rw==;
+	bh=3y03nQDD1KrXFVafwK6ehEZVaoqAXh78xHBKFEpMbAQ=; b=Gw3c4VdZfUtxz8Ei6g18XxTYWx
+	Buq3vpK82VVJs/dQ6OHUAQaD8/KJ4JMugETECxsIDXEJywTS6KVnslEZffy/om7vYwAKINlXwNZ75
+	ixO5nq93is5Vf4gm7UvSrafBuK0mMT2DBDU8og+Bkk95Oa2m03lAgKljgN3jD4NG6LN8p3iomltd+
+	HcCEtgXnJ+Z7rbOu/pBO09d2o9y9fRUeSTZGc8JFYs6z0LqUV4RilFDAFnd2YX3+GVFmi9+XQPwkd
+	MEAnTpDqOIxaWhk3+PahEwyX4TsSTgjm4RNGQstTdnyI1uEcKGX6jBOjvrFmlwnE9i4BCW+xYhXPg
+	U35cRwtw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDfw-0000000AM9V-1crh;
-	Mon, 04 Mar 2024 19:08:36 +0000
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+	id 1rhDg0-0000000AMEe-3ffa;
+	Mon, 04 Mar 2024 19:08:40 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaY-0000000AIYU-22qn
+	id 1rhDaY-0000000AIYT-1ubh
 	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:03:02 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=Lkn971gCSV5eLbC2UIw8LQqPpsRRS5D/AFNLMMLwdCM=; b=FeIWbpXp6DWhHwXS/tw4Vfk8qL
-	Jv0PvnHpOc9Y9BQTIWnw2/ayzgvCD2Eo5ddlpI60Ek4F5fAKPCKV3iPkYg+2wDwcrAt61u0EP9STV
-	SZqYp2fIRYgy8TJehziCSrQK2RkgyIImLhymwlq6VmE8SiiBLqOzQfUviTHE44b39IKpYF5GRdO7v
-	Ir9snJyTK/K7bhb/Kva/7t1bT81yHBg2h4wqP39gev6O+nSuShe8ApA/+VoUQrdUXhTRBOUZXr799
-	OgC/OVg3TzizMpfZ6OITZj2Pa8xh6vkgd+OQeNGOem0fX50WdQutaPfnkqnQwV7wh6WZno0mwDItW
-	Osu1cCNg==;
+	bh=3y03nQDD1KrXFVafwK6ehEZVaoqAXh78xHBKFEpMbAQ=; b=MwWZk50bITKRVegPs7sR0N9F3U
+	G/P2DGb1zcgyncvEla/k61Yg3u7yqhnbl8EWtKJHQdIvj7MqpuXdrUQ9LoRBhq6MaYlIt1wFrAYoP
+	UUT8uE3kPLDxmM19gmtfJOap9eHrf+j6TG1s+g1/+7gjxfhqUCnKXwO2gdFCK6FV+rchi1R33IVUh
+	SV6AQeuhscrZYcv0Kr4d4xX+/6jtGe0FBUXeegQuQGE5LYru2KefcpwHfMmLj06KZFGdadTiA9McE
+	4i2LAIYk9iXCnXRxCGIFvC9gqs+JXGZ5cHjm844z92Osr9SKj+mLWw6ix8CNZ+1CbHlHlDkP2bTKn
+	xnHsaM/w==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by casper.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaU-00000002BSn-3jfB
+	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaR-000000051vb-3YXA
 	for barebox@lists.infradead.org;
 	Mon, 04 Mar 2024 19:03:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaF-00065t-NL; Mon, 04 Mar 2024 20:02:43 +0100
+	id 1rhDaJ-0006IL-5v; Mon, 04 Mar 2024 20:02:47 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaF-004PIv-8H; Mon, 04 Mar 2024 20:02:43 +0100
+	id 1rhDaI-004PMT-LD; Mon, 04 Mar 2024 20:02:46 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYJ-00Ed9V-2q;
-	Mon, 04 Mar 2024 20:00:44 +0100
+	id 1rhDYM-00Ed9V-1p;
+	Mon, 04 Mar 2024 20:00:47 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:03 +0100
-Message-Id: <20240304190038.3486881-19-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:03 +0100
+Message-Id: <20240304190038.3486881-79-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190259_079599_F89D2B07 
-X-CRM114-Status: GOOD (  15.06  )
+X-CRM114-CacheID: sfid-20240304_190256_035163_8F676462 
+X-CRM114-Status: GOOD (  10.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,172 +98,157 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 018/113] cdev: implement setter/getter for cdev device node
+Subject: [PATCH v2 078/113] efi: fs: flesh out file system definitions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-A cdev has two device tree node pointers, one directly at struct
-cdev.device_node and another indirectly via cdev.dev->device_node.
-
-We may want to remove cdev::device_node in future, but till then to
-avoid users having to guess, which device_node is the correct one, add a
-helper to set and get the device tree node.
+A number of members aren't prototyped or are using compatible, but less
+descriptive. In preparation for adding EFI loader as another user of
+these definitions, flesh them out.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/sandbox/board/hostfile.c |  2 +-
- drivers/mci/mci-core.c        |  2 +-
- drivers/nvmem/core.c          |  2 +-
- drivers/of/of_path.c          |  4 ++--
- drivers/of/partition.c        | 12 ++++++------
- fs/devfs-core.c               |  2 +-
- fs/fs.c                       |  2 +-
- include/driver.h              | 11 +++++++++++
- 8 files changed, 24 insertions(+), 13 deletions(-)
+ include/efi.h | 79 ++++++++++++++++++++++++++++++++++++++++++---------
+ 1 file changed, 65 insertions(+), 14 deletions(-)
 
-diff --git a/arch/sandbox/board/hostfile.c b/arch/sandbox/board/hostfile.c
-index 225617fe910f..88d4d6605fd1 100644
---- a/arch/sandbox/board/hostfile.c
-+++ b/arch/sandbox/board/hostfile.c
-@@ -153,7 +153,7 @@ static int hf_probe(struct device *dev)
+diff --git a/include/efi.h b/include/efi.h
+index e0080552cf53..80d2f784847b 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -303,6 +303,8 @@ enum efi_reset_type {
+ #define EFI_RUNTIME_SERVICES_SIGNATURE ((u64)0x5652453544e5552ULL)
+ #define EFI_RUNTIME_SERVICES_REVISION  0x00010000
  
- 	cdev = is_blockdev ? &priv->blk.cdev : &priv->cdev;
- 
--	cdev->device_node = np;
-+	cdev_set_of_node(cdev, np);
- 
- 	if (is_blockdev) {
- 		cdev->name = np->name;
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 2b39985d5e72..663d366666b0 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -557,7 +557,7 @@ static void mci_part_add(struct mci *mci, uint64_t size,
- 	part->idx = idx;
- 
- 	if (area_type == MMC_BLK_DATA_AREA_MAIN) {
--		part->blk.cdev.device_node = mci->host->hw_dev->of_node;
-+		cdev_set_of_node(&part->blk.cdev, mci->host->hw_dev->of_node);
- 		part->blk.cdev.flags |= DEVFS_IS_MCI_MAIN_PART_DEV;
- 	}
- 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index 67bb1d799376..e7341b62f6e6 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -213,7 +213,7 @@ struct nvmem_device *nvmem_register(const struct nvmem_config *config)
- 	nvmem->dev.parent = config->dev;
- 	nvmem->reg_read = config->reg_read;
- 	nvmem->reg_write = config->reg_write;
--	np = config->cdev ? config->cdev->device_node : config->dev->of_node;
-+	np = config->cdev ? cdev_of_node(config->cdev) : config->dev->of_node;
- 	nvmem->dev.of_node = np;
- 	nvmem->priv = config->priv;
- 	nvmem->cell_post_process = config->cell_post_process;
-diff --git a/drivers/of/of_path.c b/drivers/of/of_path.c
-index 12a2dfce553e..42efb1ad1dbf 100644
---- a/drivers/of/of_path.c
-+++ b/drivers/of/of_path.c
-@@ -181,9 +181,9 @@ struct device_node *of_find_node_by_devpath(struct device_node *root, const char
- 		part_size = cdev->size;
- 		pr_debug("%s path %s: is a partition with offset 0x%08llx, size 0x%08llx\n",
- 			 __func__, path, part_offset, part_size);
--		np = cdev->master->device_node;
-+		np = cdev_of_node(cdev->master);
- 	} else {
--		np = cdev->device_node;
-+		np = cdev_of_node(cdev);
- 	}
- 
- 	/*
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index 7c9f443ee7bd..729ea238b97d 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -95,7 +95,7 @@ int of_parse_partitions(struct cdev *cdev, struct device_node *node)
- 	if (!node)
- 		return -EINVAL;
- 
--	cdev->device_node = node;
-+	cdev_set_of_node(cdev, node);
- 
- 	subnode = of_get_child_by_name(node, "partitions");
- 	if (subnode) {
-@@ -276,21 +276,21 @@ int of_fixup_partitions(struct device_node *np, struct cdev *cdev)
- static int of_partition_fixup(struct device_node *root, void *ctx)
- {
- 	struct cdev *cdev = ctx;
--	struct device_node *np;
-+	struct device_node *cdev_np, *np;
- 	char *name;
- 
--	if (!cdev->device_node)
-+	cdev_np = cdev_of_node(cdev);
-+	if (!cdev_np)
- 		return -EINVAL;
- 
- 	if (list_empty(&cdev->partitions))
- 		return 0;
- 
--	name = of_get_reproducible_name(cdev->device_node);
-+	name = of_get_reproducible_name(cdev_np);
- 	np = of_find_node_by_reproducible_name(root, name);
- 	free(name);
- 	if (!np) {
--		dev_err(cdev->dev, "Cannot find nodepath %pOF, cannot fixup\n",
--				cdev->device_node);
-+		dev_err(cdev->dev, "Cannot find nodepath %pOF, cannot fixup\n", cdev_np);
- 		return -EINVAL;
- 	}
- 
-diff --git a/fs/devfs-core.c b/fs/devfs-core.c
-index 87d4591d99c5..376c62be9eab 100644
---- a/fs/devfs-core.c
-+++ b/fs/devfs-core.c
-@@ -91,7 +91,7 @@ struct cdev *cdev_by_device_node(struct device_node *node)
- 		return NULL;
- 
- 	for_each_cdev(cdev) {
--		if (cdev->device_node == node)
-+		if (cdev_of_node(cdev) == node)
- 			return cdev_readlink(cdev);
- 	}
- 	return NULL;
-diff --git a/fs/fs.c b/fs/fs.c
-index 4b64f6fcf1df..1e357872f6ae 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -3038,7 +3038,7 @@ static char *get_linux_mmcblkdev(const struct cdev *root_cdev)
- 	if (!cdevm || !cdev_is_mci_main_part_dev(cdevm))
- 		return NULL;
- 
--	id = of_alias_get_id(cdevm->device_node, "mmc");
-+	id = of_alias_get_id(cdev_of_node(cdevm), "mmc");
- 	if (id < 0)
- 		return NULL;
- 
-diff --git a/include/driver.h b/include/driver.h
-index b7c950620bca..cda1dfac9dac 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -578,6 +578,17 @@ struct cdev {
- 	};
++struct efi_capsule_header;
++
+ struct efi_runtime_services {
+ 	struct efi_table_hdr hdr;
+ 	efi_status_t (EFIAPI *get_time)(struct efi_time *time,
+@@ -317,16 +319,21 @@ struct efi_runtime_services {
+ 				       struct efi_memory_desc *virtmap);
+ 	efi_status_t (*convert_pointer)(unsigned long dbg, void **address);
+ 	efi_status_t (EFIAPI *get_variable)(efi_char16_t *variable_name, const efi_guid_t *vendor,
+-			u32 *Attributes, unsigned long *data_size, void *data);
+-	efi_status_t (EFIAPI *get_next_variable)(unsigned long *variable_name_size,
+-			s16 *variable_name, efi_guid_t *vendor);
+-	efi_status_t (EFIAPI *set_variable)(s16 *variable_name, efi_guid_t *vendor,
+-			u32 Attributes, unsigned long data_size, void *data);
++			u32 *Attributes, size_t *data_size, void *data);
++	efi_status_t (EFIAPI *get_next_variable)(size_t *variable_name_size,
++			efi_char16_t *variable_name, efi_guid_t *vendor);
++	efi_status_t (EFIAPI *set_variable)(efi_char16_t *variable_name, const efi_guid_t *vendor,
++			u32 Attributes, size_t data_size, const void *data);
+ 	efi_status_t (EFIAPI *get_next_high_mono_count)(uint32_t *high_count);
+ 	void (EFIAPI *reset_system)(enum efi_reset_type reset_type, efi_status_t reset_status,
+-			unsigned long data_size, void *reset_data);
+-	void *update_capsule;
+-	void *query_capsule_caps;
++			size_t data_size, void *reset_data);
++	efi_status_t (EFIAPI *update_capsule)(struct efi_capsule_header **capsule_header_array,
++					      size_t capsule_count,
++					      u64 scatter_gather_list);
++	efi_status_t (EFIAPI *query_capsule_caps)(struct efi_capsule_header **capsule_header_array,
++						  size_t capsule_count,
++						  u64 *maximum_capsule_size,
++						  u32 *reset_type);
+ 	void *query_variable_info;
  };
  
-+static inline struct device_node *cdev_of_node(const struct cdev *cdev)
-+{
-+	return IS_ENABLED(CONFIG_OFDEVICE) ? cdev->device_node : NULL;
-+}
+@@ -688,29 +695,58 @@ struct efi_loaded_image {
+ #define EFI_FILE_ARCHIVE        0x0000000000000020
+ #define EFI_FILE_VALID_ATTR     0x0000000000000037
+ 
++struct efi_file_io_token {
++	struct efi_event *event;
++	efi_status_t status;
++	size_t buffer_size;
++	void *buffer;
++};
 +
-+static inline void cdev_set_of_node(struct cdev *cdev, struct device_node *np)
-+{
-+	if (IS_ENABLED(CONFIG_OFDEVICE))
-+		cdev->device_node = np;
-+}
+ #define EFI_FILE_HANDLE_REVISION         0x00010000
++#define EFI_FILE_HANDLE_REVISION2        0x00020000
++#define EFI_FILE_HANDLE_LATEST_REVISION  EFI_FILE_PROTOCOL_REVISION2
+ struct efi_file_handle {
+ 	uint64_t Revision;
+ 	efi_status_t(EFIAPI *open)(struct efi_file_handle *File,
+-			struct efi_file_handle **NewHandle, s16 *FileName,
++			struct efi_file_handle **NewHandle, efi_char16_t *FileName,
+ 			uint64_t OpenMode, uint64_t Attributes);
+ 	efi_status_t(EFIAPI *close)(struct efi_file_handle *File);
+ 	efi_status_t(EFIAPI *delete)(struct efi_file_handle *File);
+-	efi_status_t(EFIAPI *read)(struct efi_file_handle *File, unsigned long *BufferSize,
++	efi_status_t(EFIAPI *read)(struct efi_file_handle *File, size_t *BufferSize,
+ 			void *Buffer);
+ 	efi_status_t(EFIAPI *write)(struct efi_file_handle *File,
+-			unsigned long *BufferSize, void *Buffer);
++			size_t *BufferSize, void *Buffer);
+ 	efi_status_t(EFIAPI *get_position)(struct efi_file_handle *File,
+ 			uint64_t *Position);
+ 	efi_status_t(EFIAPI *set_position)(struct efi_file_handle *File,
+ 			uint64_t Position);
+ 	efi_status_t(EFIAPI *get_info)(struct efi_file_handle *File,
+-			efi_guid_t *InformationType, unsigned long *BufferSize,
++			const efi_guid_t *InformationType, size_t *BufferSize,
+ 			void *Buffer);
+ 	efi_status_t(EFIAPI *set_info)(struct efi_file_handle *File,
+-			efi_guid_t *InformationType, unsigned long BufferSize,
++			const efi_guid_t *InformationType, size_t BufferSize,
+ 			void *Buffer);
+ 	efi_status_t(EFIAPI *flush)(struct efi_file_handle *File);
++	efi_status_t (EFIAPI *open_ex)(struct efi_file_handle *this,
++			struct efi_file_handle **new_handle,
++			u16 *file_name, u64 open_mode, u64 attributes,
++			struct efi_file_io_token *token);
++	efi_status_t (EFIAPI *read_ex)(struct efi_file_handle *this,
++			struct efi_file_io_token *token);
++	efi_status_t (EFIAPI *write_ex)(struct efi_file_handle *this,
++			struct efi_file_io_token *token);
++	efi_status_t (EFIAPI *flush_ex)(struct efi_file_handle *this,
++			struct efi_file_io_token *token);
++};
 +
- int devfs_create(struct cdev *);
- int devfs_create_link(struct cdev *, const char *name);
- int devfs_remove(struct cdev *);
++#define EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_REVISION 0x00010000
++
++struct efi_load_file_protocol {
++	efi_status_t (EFIAPI *load_file)(struct efi_load_file_protocol *this,
++					 struct efi_device_path *file_path,
++					 bool boot_policy,
++					 size_t *buffer_size,
++					 void *buffer);
+ };
+ 
+ #define EFI_FILE_IO_INTERFACE_REVISION   0x00010000
+@@ -722,6 +758,12 @@ struct efi_file_io_interface {
+ 			struct efi_file_handle **Root);
+ };
+ 
++struct efi_simple_file_system_protocol {
++	u64 Revision;
++	efi_status_t (EFIAPI *open_volume)(struct efi_simple_file_system_protocol *this,
++			struct efi_file_handle **root);
++};
++
+ struct efi_file_info {
+ 	uint64_t Size;
+ 	uint64_t FileSize;
+@@ -730,7 +772,16 @@ struct efi_file_info {
+ 	struct efi_time LastAccessTime;
+ 	struct efi_time ModificationTime;
+ 	uint64_t Attribute;
+-	s16 FileName[1];
++	efi_char16_t FileName[];
++};
++
++struct efi_file_system_info {
++	u64 size;
++	u8 read_only;
++	u64 volume_size;
++	u64 free_space;
++	u32 block_size;
++	efi_char16_t volume_label[];
+ };
+ 
+ __attribute__((noreturn)) void efi_main(efi_handle_t, struct efi_system_table *);
 -- 
 2.39.2
 
