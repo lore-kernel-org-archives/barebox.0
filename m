@@ -1,81 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:04:46 +0100
+Delivery-date: Mon, 04 Mar 2024 20:04:48 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDcE-008d86-0j
+	id 1rhDcG-008d8X-2m
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:04:46 +0100
+	Mon, 04 Mar 2024 20:04:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDcC-0008Mp-R8
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:04:46 +0100
+	id 1rhDcG-0008Qi-0k
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:04:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dXSGegNd+ptGfxZ2VlD6Z+da+N+ElOEHyFfsolvSNjQ=; b=XI5PF2Dy0N28ITabpi29PjOPZS
-	joE4k5r1uiB7LZ5rDcntRaeP5udfca2IehBC2IdPPe/wUYDDuMtzIrnHbIPy1B2U0iMviUZB1ZVIq
-	x+bR4o+cj5RD6EzHkWoQWShUfsTZRlGhYPRE+/r1Vd+syfxa/15yaqO+8wWQbMDg94fvDkUxm32+o
-	xOPGYom3FeNZK8GYUtxe605fYzXT6PNg7IbwbBRYG8A7w80RaVH4ReHvBI8eI4y2OIjahnuiWve78
-	QU9hLHu8Xdnqx6RZ3BoBbask2NG2tRwqAqAbReehyIDpIQvYrY/hBoaJsoIYARyb6ipPFtpAksvBU
-	RZbqkj7w==;
+	bh=slWJBZDAC4MHB8HArioho+izp9zVch1SQTv2yHQWwsk=; b=BjQtF6K8IvKCLDt4hmIsenONam
+	FO57uscCSztTJ6iaGFeYeFxUe0+vQuZhMpLXOfZ7DZlAOBux6MOXRVce0qG9vBFB8aqH9dBUYskLD
+	8XcLnj91tNX66D6wOX+RYmNt6ma7T23xihtrIbHnBY/M9h07cnYzkRrOu+EgX0Z2J+7CUARaiOXLM
+	bLBRm6oRekqqMmZNEh/tM8leGNj2Li/GwQi4wI+qMXCLQmIrD/qMJNGppPOaiKhZpxVTdqOJWIjGR
+	JwLFZChQqi+j0k1a8it/waEb+tU86t7U1I1chk0yhZvxTzbZYAL6eXOEAyMyiKDkjHzk3APi7YoPp
+	FNDSBzUw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDbd-0000000AJOM-4AB8;
-	Mon, 04 Mar 2024 19:04:09 +0000
+	id 1rhDbj-0000000AJRS-30rB;
+	Mon, 04 Mar 2024 19:04:16 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaN-0000000AIQ2-3SJk
+	id 1rhDaN-0000000AIQ5-4BRG
 	for barebox@bombadil.infradead.org;
-	Mon, 04 Mar 2024 19:02:51 +0000
+	Mon, 04 Mar 2024 19:02:52 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=dXSGegNd+ptGfxZ2VlD6Z+da+N+ElOEHyFfsolvSNjQ=; b=jxPRcCPB0lQdJK05eQv3xk7quG
-	J6vIsUNYYN9+y0USTEwWwHjdjp9xRa4xbgiNY/lzs5CADWIu1voFmNzxGq6figIvHiTuHjNy/ycsV
-	fAw5u9gY7FlyNbb7m6jjBGJsgxwrqL4566JCX4kpeIKdvpJ2DnuS6PVIc3edxAfyHcIYin9f2KV7R
-	HsNX4p2nA+BG9b2noOwePy1dD0G3MjncvGzB5Ub/DoUBNUs7trPZ9tX08OS8RnDi6oPRUjV42tyf1
-	wlUOSG0Sl7Ae9PhDGxTAJ7afDNYH4NhRa+xyb4Ac8/UhAfk8v3I9sz7ZyHj7NO+qV08XXtggxyFxs
-	IDzSLgwA==;
+	bh=slWJBZDAC4MHB8HArioho+izp9zVch1SQTv2yHQWwsk=; b=CLlYNecSQJgubY5FBdWEnRAMit
+	v5ib6mz3zPiG5X5tnoSkH6sjDBD1VL1+S2n0zC4rWItWW6k/PDdpzOGuoEfqvJW8HUfM7c9yTd8qx
+	DI6xW/GxXNvxN5WWZMkMjs+2ncU1gMgfmATSaF4x1W/t4gaT7trlhl01dZKVnbdhXHgIfJGQcXuPe
+	HjqJS+3VP1JMKHVlh8nHcdakTCCcjFu+2ucaRNP/phPzxV/BvmNlDuULogAkJnnV9M922Wpfy4EAA
+	fB0sORuuGtcwDM7tvbxY3bDttRv3ANLLWdnUhI3LOXKTX5x/ReRo4rSchetDFnkus9MgpsUzPJfXF
+	OF/+YODw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaF-000000051vl-37i3
+	id 1rhDaF-000000051vn-3pCS
 	for barebox@lists.infradead.org;
 	Mon, 04 Mar 2024 19:02:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaE-00062f-Kn; Mon, 04 Mar 2024 20:02:42 +0100
+	id 1rhDaE-000636-O9; Mon, 04 Mar 2024 20:02:42 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaE-004PHl-5O; Mon, 04 Mar 2024 20:02:42 +0100
+	id 1rhDaE-004PHt-96; Mon, 04 Mar 2024 20:02:42 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYM-00Ed9V-1g;
-	Mon, 04 Mar 2024 20:00:47 +0100
+	id 1rhDYJ-00Ed9V-1z;
+	Mon, 04 Mar 2024 20:00:44 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 20:00:02 +0100
-Message-Id: <20240304190038.3486881-78-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 19:58:57 +0100
+Message-Id: <20240304190038.3486881-13-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190244_027975_A0337E57 
-X-CRM114-Status: GOOD (  10.62  )
+X-CRM114-CacheID: sfid-20240304_190244_060238_CD7292EB 
+X-CRM114-Status: GOOD (  13.54  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,159 +98,122 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 077/113] fs: efi: move definitions into header
+Subject: [PATCH v2 012/113] libfile: factor out read_file_into_buf helper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-EFI loader support will require access to these same definitions, so
-move them into a header.
+We do open -> read_full -> close at a number of places. Add a function
+that does this all at once and start using it to implement read_file.
+
+More users can follow later.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/efi.c      | 59 ---------------------------------------------------
- include/efi.h | 59 +++++++++++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 59 insertions(+), 59 deletions(-)
+ include/libfile.h |  4 ++++
+ lib/libfile.c     | 44 ++++++++++++++++++++++++++++++--------------
+ 2 files changed, 34 insertions(+), 14 deletions(-)
 
-diff --git a/fs/efi.c b/fs/efi.c
-index 0cfd5a3aebf6..11073e9961c4 100644
---- a/fs/efi.c
-+++ b/fs/efi.c
-@@ -32,65 +32,6 @@
- #include <efi/efi-device.h>
- #include <linux/stddef.h>
+diff --git a/include/libfile.h b/include/libfile.h
+index 423e7ffec5b7..1240276e1d74 100644
+--- a/include/libfile.h
++++ b/include/libfile.h
+@@ -2,12 +2,16 @@
+ #ifndef __LIBFILE_H
+ #define __LIBFILE_H
  
--/* Open modes */
--#define EFI_FILE_MODE_READ      0x0000000000000001
--#define EFI_FILE_MODE_WRITE     0x0000000000000002
--#define EFI_FILE_MODE_CREATE    0x8000000000000000
--
--/* File attributes */
--#define EFI_FILE_READ_ONLY      0x0000000000000001
--#define EFI_FILE_HIDDEN         0x0000000000000002
--#define EFI_FILE_SYSTEM         0x0000000000000004
--#define EFI_FILE_RESERVIED      0x0000000000000008
--#define EFI_FILE_DIRECTORY      0x0000000000000010
--#define EFI_FILE_ARCHIVE        0x0000000000000020
--#define EFI_FILE_VALID_ATTR     0x0000000000000037
--
--#define EFI_FILE_HANDLE_REVISION         0x00010000
--struct efi_file_handle {
--	uint64_t Revision;
--	efi_status_t(EFIAPI *open)(struct efi_file_handle *File,
--			struct efi_file_handle **NewHandle, s16 *FileName,
--			uint64_t OpenMode, uint64_t Attributes);
--	efi_status_t(EFIAPI *close)(struct efi_file_handle *File);
--	efi_status_t(EFIAPI *delete)(struct efi_file_handle *File);
--	efi_status_t(EFIAPI *read)(struct efi_file_handle *File, unsigned long *BufferSize,
--			void *Buffer);
--	efi_status_t(EFIAPI *write)(struct efi_file_handle *File,
--			unsigned long *BufferSize, void *Buffer);
--	efi_status_t(EFIAPI *get_position)(struct efi_file_handle *File,
--			uint64_t *Position);
--	efi_status_t(EFIAPI *set_position)(struct efi_file_handle *File,
--			uint64_t Position);
--	efi_status_t(EFIAPI *get_info)(struct efi_file_handle *File,
--			efi_guid_t *InformationType, unsigned long *BufferSize,
--			void *Buffer);
--	efi_status_t(EFIAPI *set_info)(struct efi_file_handle *File,
--			efi_guid_t *InformationType, unsigned long BufferSize,
--			void *Buffer);
--	efi_status_t(EFIAPI *flush)(struct efi_file_handle *File);
--};
--
--#define EFI_FILE_IO_INTERFACE_REVISION   0x00010000
--
--struct efi_file_io_interface {
--	uint64_t Revision;
--	efi_status_t(EFIAPI *open_volume)(
--			struct efi_file_io_interface *This,
--			struct efi_file_handle **Root);
--};
--
--struct efi_file_info {
--	uint64_t Size;
--	uint64_t FileSize;
--	uint64_t PhysicalSize;
--	struct efi_time CreateTime;
--	struct efi_time LastAccessTime;
--	struct efi_time ModificationTime;
--	uint64_t Attribute;
--	s16 FileName[1];
--};
--
- struct efifs_priv {
- 	struct efi_file_handle *root_dir;
- 	struct efi_file_io_interface *protocol;
-diff --git a/include/efi.h b/include/efi.h
-index a73c96ef3a82..e0080552cf53 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -674,6 +674,65 @@ struct efi_loaded_image {
- 	efi_status_t (EFIAPI *unload)(efi_handle_t image_handle);
- };
++#include <linux/types.h>
++
+ int pread_full(int fd, void *buf, size_t size, loff_t offset);
+ int pwrite_full(int fd, const void *buf, size_t size, loff_t offset);
+ int write_full(int fd, const void *buf, size_t size);
+ int read_full(int fd, void *buf, size_t size);
+ int copy_fd(int in, int out);
  
-+/* Open modes */
-+#define EFI_FILE_MODE_READ      0x0000000000000001
-+#define EFI_FILE_MODE_WRITE     0x0000000000000002
-+#define EFI_FILE_MODE_CREATE    0x8000000000000000
++ssize_t read_file_into_buf(const char *filename, void *buf, size_t size);
 +
-+/* File attributes */
-+#define EFI_FILE_READ_ONLY      0x0000000000000001
-+#define EFI_FILE_HIDDEN         0x0000000000000002
-+#define EFI_FILE_SYSTEM         0x0000000000000004
-+#define EFI_FILE_RESERVIED      0x0000000000000008
-+#define EFI_FILE_DIRECTORY      0x0000000000000010
-+#define EFI_FILE_ARCHIVE        0x0000000000000020
-+#define EFI_FILE_VALID_ATTR     0x0000000000000037
-+
-+#define EFI_FILE_HANDLE_REVISION         0x00010000
-+struct efi_file_handle {
-+	uint64_t Revision;
-+	efi_status_t(EFIAPI *open)(struct efi_file_handle *File,
-+			struct efi_file_handle **NewHandle, s16 *FileName,
-+			uint64_t OpenMode, uint64_t Attributes);
-+	efi_status_t(EFIAPI *close)(struct efi_file_handle *File);
-+	efi_status_t(EFIAPI *delete)(struct efi_file_handle *File);
-+	efi_status_t(EFIAPI *read)(struct efi_file_handle *File, unsigned long *BufferSize,
-+			void *Buffer);
-+	efi_status_t(EFIAPI *write)(struct efi_file_handle *File,
-+			unsigned long *BufferSize, void *Buffer);
-+	efi_status_t(EFIAPI *get_position)(struct efi_file_handle *File,
-+			uint64_t *Position);
-+	efi_status_t(EFIAPI *set_position)(struct efi_file_handle *File,
-+			uint64_t Position);
-+	efi_status_t(EFIAPI *get_info)(struct efi_file_handle *File,
-+			efi_guid_t *InformationType, unsigned long *BufferSize,
-+			void *Buffer);
-+	efi_status_t(EFIAPI *set_info)(struct efi_file_handle *File,
-+			efi_guid_t *InformationType, unsigned long BufferSize,
-+			void *Buffer);
-+	efi_status_t(EFIAPI *flush)(struct efi_file_handle *File);
-+};
-+
-+#define EFI_FILE_IO_INTERFACE_REVISION   0x00010000
-+
-+struct efi_file_io_interface {
-+	uint64_t Revision;
-+	efi_status_t(EFIAPI *open_volume)(
-+			struct efi_file_io_interface *This,
-+			struct efi_file_handle **Root);
-+};
-+
-+struct efi_file_info {
-+	uint64_t Size;
-+	uint64_t FileSize;
-+	uint64_t PhysicalSize;
-+	struct efi_time CreateTime;
-+	struct efi_time LastAccessTime;
-+	struct efi_time ModificationTime;
-+	uint64_t Attribute;
-+	s16 FileName[1];
-+};
-+
- __attribute__((noreturn)) void efi_main(efi_handle_t, struct efi_system_table *);
+ char *read_file_line(const char *fmt, ...);
  
- /*
+ void *read_file(const char *filename, size_t *size);
+diff --git a/lib/libfile.c b/lib/libfile.c
+index 185c7af721b5..67fc9cc7f3a2 100644
+--- a/lib/libfile.c
++++ b/lib/libfile.c
+@@ -186,6 +186,33 @@ char *read_file_line(const char *fmt, ...)
+ }
+ EXPORT_SYMBOL_GPL(read_file_line);
+ 
++/**
++ * read_file_into_buf - read a file to an external buffer
++ * @filename:  The filename to read
++ * @buf:       The buffer to read into
++ * @size:      The buffer size
++ *
++ * This function reads a file to an external buffer. At maximum @size
++ * bytes are read.
++ *
++ * Return: number of bytes read, or negative error code.
++ */
++ssize_t read_file_into_buf(const char *filename, void *buf, size_t size)
++{
++	int fd;
++	ssize_t ret;
++
++	fd = open(filename, O_RDONLY);
++	if (fd < 0)
++		return fd;
++
++	ret = read_full(fd, buf, size);
++
++	close(fd);
++
++	return ret;
++}
++
+ /**
+  * read_file_2 - read a file to an allocated buffer
+  * @filename:  The filename to read
+@@ -208,11 +235,10 @@ EXPORT_SYMBOL_GPL(read_file_line);
+ int read_file_2(const char *filename, size_t *size, void **outbuf,
+ 		loff_t max_size)
+ {
+-	int fd;
+ 	struct stat s;
+ 	void *buf = NULL;
+ 	const char *tmpfile = "/.read_file_tmp";
+-	int ret;
++	ssize_t ret;
+ 	loff_t read_size;
+ 
+ again:
+@@ -240,17 +266,9 @@ int read_file_2(const char *filename, size_t *size, void **outbuf,
+ 		goto err_out;
+ 	}
+ 
+-	fd = open(filename, O_RDONLY);
+-	if (fd < 0) {
+-		ret = fd;
+-		goto err_out;
+-	}
+-
+-	ret = read_full(fd, buf, read_size);
++	ret = read_file_into_buf(filename, buf, read_size);
+ 	if (ret < 0)
+-		goto err_out1;
+-
+-	close(fd);
++		goto err_out;
+ 
+ 	if (size)
+ 		*size = ret;
+@@ -265,8 +283,6 @@ int read_file_2(const char *filename, size_t *size, void **outbuf,
+ 
+ 	return 0;
+ 
+-err_out1:
+-	close(fd);
+ err_out:
+ 	free(buf);
+ 
 -- 
 2.39.2
 
