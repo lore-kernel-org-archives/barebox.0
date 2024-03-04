@@ -1,81 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:09:36 +0100
+Delivery-date: Mon, 04 Mar 2024 20:09:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDgu-008deR-1N
+	id 1rhDh1-008dfA-16
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:09:36 +0100
+	Mon, 04 Mar 2024 20:09:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDgt-0004YZ-Nd
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:09:36 +0100
+	id 1rhDh0-0004gE-0m
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:09:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=eMFLyuOnmd1BkOi5s+z6O4Fofdk/zaiQvmk/LErrQOc=; b=1TozKby0TBoFcv203s6y66DMdA
-	hjMIyDqyUBDGpEfG0YxVvOJJl0pNQ+QUvDiMSgcjHd63IIEGHTmd99ZiZPWyk4Sw1KN9C/eHsp0GN
-	N9v5O+VcJD0CAGq4Xrio8su6SlV0BYTOg70c91qTNbJtJRGcILo27G/YOkD4FaqbRVlvdE94qIH41
-	JlLkNn11I6C4jYtuJJ8Yw6ePDRp3EeO5KVZ0qWpHyb/5V3yVvX5Nbe2DmI1QddsDCvyi+o5Cp/8Uw
-	CmUSBJ9IBPgEu+PsHh7rxh8c2J008cpeQ3T9NtV98eQrHfs8ZJ7QpTC/l5wuEGRxdiNvF5uSjcWdC
-	kqjknmHw==;
+	bh=4FpmU0wcs1sOKkYSXd0t794QMnFOc+iRDny+/eNmgoo=; b=A9uzhvFyzi6ItDpIrrn/V39KYx
+	R4jck5dPBLcuye98rTXN060FHBDEeH62f7mBOPOcEN5HBrwyPTKiR7OGlq7pSKw3d1hndAKuFsoav
+	K5BP6BigX2vpzs9SxPnx3zC+xnmQDEA+n65Ey8L639yKbAVr1Xq9zPa71w3cCh8iacUQgzrDl5MRR
+	jFz9S8YMwQpqFu+t/u1jEJzRewq9Yz5fVOuk3d1waWyjYaGTDNuii2xSFLO+slaVH/1b2a5ScLWHD
+	VY07nIiGOFYQAB7JErxcccESraAkVJxlgpKJY3t1YCoSquQ4PzC3FtXN0xeNFXltl/t20m9PSUXGm
+	aC777y0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDgP-0000000AMXm-0L6k;
-	Mon, 04 Mar 2024 19:09:05 +0000
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+	id 1rhDgT-0000000AMaA-2TAb;
+	Mon, 04 Mar 2024 19:09:09 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaa-0000000AIaW-2rzO
+	id 1rhDaa-0000000AIab-2yPK
 	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:03:04 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=eMFLyuOnmd1BkOi5s+z6O4Fofdk/zaiQvmk/LErrQOc=; b=qfihe8THAMHwRcAAetzT+0/4qK
-	wAJ+a+8G5ex6l+svu5RBobOVnicJqfnOqY0PJKc/M69tnQy07H9nqKo+xkQyJsla1BHqbekj/zoG/
-	4zmqgOZpF6xNE9pQUZk1nNoBzFhBcICPUa329XpuO28zPnphiLqWnvE2Y0hIk3TSJV7tNKt74vrgA
-	Qelf8Xl+yXQ2RmQHjOSvOj4QWjnAxgDSOnfwKin//o3xb78RB1WmWFP3lvRR3T+3V312zee+G1Q8N
-	UVNe1FX/BVmdKs1Kn0g4qbF2VyXucgqS5wf9w8L2/tU3UV0KfMKBuVdkM7Qh8DrSh/2eMU2HyHEL+
-	aztVmEvQ==;
+	bh=4FpmU0wcs1sOKkYSXd0t794QMnFOc+iRDny+/eNmgoo=; b=QlZjwA1Jn94ULrE9c6VjpfdC3C
+	p2/3ujKLOnhLAQ6/C+U+nubKAsoVlwa5KXPg6/CYza3LYH5sC2woNeoG55d+M6NVjO8F2KLGeGyyg
+	Q/8mOQoB/9mpJcMlqNKSrbzE4vDFDWTr541ewAHfIEvxxNnp5XeWiaTJMHKPasfqBuXcF6yIKyKGy
+	3ZoFuHLnMHI2CAiVyCqTUccYoK0OCHyHyxWEHxBgDk7jWHUyW1Dswd5fH0fuzlT7rR2BoF2felsKS
+	db+oupCXjrd6He0l6gPA3/YuGuRmWso0kYpQq2DYfelC/4KJBBOmHNi3cd7mvS15lsER444za322j
+	HT1sKtnA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by casper.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaV-00000002BSw-0xtg
+	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaS-000000051vl-3LRI
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:03:03 +0000
+	Mon, 04 Mar 2024 19:03:02 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaG-00067k-75; Mon, 04 Mar 2024 20:02:44 +0100
+	id 1rhDaH-0006CK-N4; Mon, 04 Mar 2024 20:02:45 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaF-004PJV-PP; Mon, 04 Mar 2024 20:02:43 +0100
+	id 1rhDaH-004PKt-4j; Mon, 04 Mar 2024 20:02:45 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYK-00Ed9V-2L;
-	Mon, 04 Mar 2024 20:00:45 +0100
+	id 1rhDYN-00Ed9V-1T;
+	Mon, 04 Mar 2024 20:00:48 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:22 +0100
-Message-Id: <20240304190038.3486881-38-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:23 +0100
+Message-Id: <20240304190038.3486881-99-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190259_339875_9775F047 
-X-CRM114-Status: GOOD (  13.49  )
+X-CRM114-CacheID: sfid-20240304_190256_931847_4D317EDD 
+X-CRM114-Status: GOOD (  10.87  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,74 +98,32 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 037/113] fs: support different root directories
+Subject: [PATCH v2 098/113] efi: devicepath: align MemoryMapped name with spec
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-A root directory is a directory that has itself as the parent.
-There is only one such directory, but for chroot support we will want to
-stop path resolution at a non-root directory as well.
-
-We do this by giving struct nameidata a d_root field, which serves as a
-root directory for the lookup. As we initialize it to the global root
-directory, this introduces no functional change.
+The strings are currently only for barebox-internal consumption, but we
+may in future expose them over the EFI_DEVICE_PATH_TO_TEXT_PROTOCOL, so
+we should start using the naming that's in the specification.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ efi/devicepath.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index cda1f39519fe..7aa8a5d69b25 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1623,6 +1623,7 @@ struct nameidata {
- 	} *stack, internal[EMBEDDED_LEVELS];
- 	struct filename	*name;
- 	struct inode	*link_inode;
-+	struct dentry   *d_root;
- };
+diff --git a/efi/devicepath.c b/efi/devicepath.c
+index 98aba6289e18..dfedeb6239ac 100644
+--- a/efi/devicepath.c
++++ b/efi/devicepath.c
+@@ -170,7 +170,7 @@ dev_path_mem_map(struct string *str, const void *dev_path)
+ 	const struct memmap_device_path *mem_map;
  
- struct filename {
-@@ -1635,6 +1636,7 @@ static void set_nameidata(struct nameidata *p, struct filename *name)
- 	p->stack = p->internal;
- 	p->name = name;
- 	p->total_link_count = 0;
-+	p->d_root = d_root;
+ 	mem_map = dev_path;
+-	cprintf(str, "mem_map(%d,0x%llx,0x%llx)",
++	cprintf(str, "MemoryMapped(0x%x,0x%llx,0x%llx)",
+ 		mem_map->memory_type,
+ 		mem_map->starting_address, mem_map->ending_address);
  }
- 
- static void path_get(const struct path *path)
-@@ -1820,16 +1822,16 @@ static int lookup_fast(struct nameidata *nd, struct path *path)
-  * Return 1 if we went up a level and 0 if we were already at the
-  * root.
-  */
--static int follow_up(struct path *path)
-+static int follow_up(struct nameidata *nd)
- {
--	struct vfsmount *parent, *mnt = path->mnt;
-+	struct path *path = &nd->path;
-+	struct vfsmount *mnt = path->mnt;
- 	struct dentry *mountpoint;
- 
--	parent = mnt->parent;
--	if (parent == mnt)
-+	if (nd->d_root == path->dentry)
- 		return 0;
- 
--	mntget(parent);
-+	mntget(mnt->parent);
- 	mountpoint = dget(mnt->mountpoint);
- 	dput(path->dentry);
- 	path->dentry = mountpoint;
-@@ -1871,7 +1873,7 @@ static int follow_dotdot(struct nameidata *nd)
- 			break;
- 		}
- 
--		if (!follow_up(&nd->path))
-+		if (!follow_up(nd))
- 			break;
- 	}
- 
 -- 
 2.39.2
 
