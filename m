@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDbT-008d3A-1r
+	id 1rhDbT-008d3H-2C
 	for lore@lore.pengutronix.de;
 	Mon, 04 Mar 2024 20:03:59 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDbR-0007WU-Tz
+	id 1rhDbS-0007XJ-4m
 	for lore@pengutronix.de; Mon, 04 Mar 2024 20:03:59 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,49 +18,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ejFfDRyaMvje3Snwz+7KY7aEyaDln3oy1VljOsdMNVo=; b=VIoPRDuSN8JcTrTpOaktyiks9T
-	/Ci8hhuSQXjBFoPG28nZBU9WRrXwIFIAQTyNVDlluKaSq3ZsgfW/7Njs4mu3y9e6l8zGT69UCdGoL
-	8yO+jSEmWcSJTZqoCHUX2o8V97qCamNWkn6JafAxN0C1KD/zwM6qvwoxl+pMQYjddlzBiD5EOiGeZ
-	Q06sDQi4gwTWFEzayquUfwPUeXObYUQJS6bs/YqRjV3Rx5D/C83naskgbXdaO0KdGGW/vZ35cXToG
-	28egoMOVD56n1Fft/PRhzc5EyiRh0SojI5HWSNhg4H8zvaD6VwYlO45VKFgFOya4+jrn4FT0lHFY9
-	lCZ5GQKQ==;
+	bh=nfyEVm6pCMrQtPqsWY5kvin5LhSfY67WRL8cifPRmu8=; b=LUamC/kYjIJt+FAnktX1Vy+skq
+	+dzLDVutLNi8GVRpkVcFewFUpyLV5BHsSk/MVtvdTzZ79znFd7TEYXb6hiGIL/lz0Rk+5TpbhQZwa
+	JL0KilMLcslm2mi2xrZeOE1ipWcf6OtCkBrHRDXjJ5YvjZ0Wllq4f+FIRGVa6YH0wS2jrgy1YmPeQ
+	v4sLw3tUVQwR26nwH0BvG5cAsWQGwNyQgPpe1+SX8tHZZ+z7tpbjlPp9q7rVBoZxJ/tr4Tfhdpwju
+	QWNLWWAaJ6vLg80MxJiLgYQet83MaaAMWSW+DixjY9u5F8xlWxNgV1gVduCUZEQ+dLB3cVwV2YnLL
+	/7KyPEjw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDap-0000000AImz-3yaR;
-	Mon, 04 Mar 2024 19:03:19 +0000
+	id 1rhDar-0000000AIow-3dmS;
+	Mon, 04 Mar 2024 19:03:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaE-0000000AIHS-2lNC
+	id 1rhDaE-0000000AIHY-3oqD
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:02:49 +0000
+	Mon, 04 Mar 2024 19:02:50 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaD-0005yR-BM; Mon, 04 Mar 2024 20:02:41 +0100
+	id 1rhDaD-0005zQ-Ij; Mon, 04 Mar 2024 20:02:41 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaC-004PGS-Tb; Mon, 04 Mar 2024 20:02:40 +0100
+	id 1rhDaD-004PGg-5J; Mon, 04 Mar 2024 20:02:41 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYK-00Ed9V-1L;
-	Mon, 04 Mar 2024 20:00:44 +0100
+	id 1rhDYN-00Ed9V-0u;
+	Mon, 04 Mar 2024 20:00:47 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:15 +0100
-Message-Id: <20240304190038.3486881-31-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:19 +0100
+Message-Id: <20240304190038.3486881-95-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_110243_010490_C4312F5D 
-X-CRM114-Status: GOOD (  12.32  )
+X-CRM114-CacheID: sfid-20240304_110243_087378_61A35303 
+X-CRM114-Status: GOOD (  10.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,118 +83,30 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 030/113] fs: factor out opendir iteration
+Subject: [PATCH v2 094/113] efi: payload: iomem: register later
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In preparation for supporting fdopendir and rewinddir, add an __opendir
-helper that is reused in a follow-up commit.
+efi_barebox_populate_mmap() will silently skip reserving areas that are
+already reserved. Yet, because it's called so early, it will prevent
+finer grained reservation for barebox internal areas. Move the initcall
+later to fix this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c | 52 ++++++++++++++++++++++++++++++++--------------------
- 1 file changed, 32 insertions(+), 20 deletions(-)
+ efi/payload/iomem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index a31343e2e272..96ca0f110393 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -2708,15 +2708,39 @@ int symlink(const char *pathname, const char *newpath)
+diff --git a/efi/payload/iomem.c b/efi/payload/iomem.c
+index d4390c856769..832f6db72b76 100644
+--- a/efi/payload/iomem.c
++++ b/efi/payload/iomem.c
+@@ -176,4 +176,4 @@ static int efi_barebox_populate_mmap(void)
+ 	free(mmap_buf);
+ 	return ret;
  }
- EXPORT_SYMBOL(symlink);
- 
--static void release_dir(DIR *d)
-+static void __release_dir(DIR *d)
- {
- 	struct readdir_entry *entry, *tmp;
- 
- 	list_for_each_entry_safe(entry, tmp, &d->entries, list) {
- 		free(entry);
- 	}
-+}
- 
--	free(d);
-+static int __opendir(DIR *d)
-+{
-+	int ret;
-+	struct file file = {};
-+	struct path *path = &d->path;
-+	struct dentry *dir = path->dentry;
-+	struct readdir_callback rd = {
-+		.ctx = {
-+			.actor = fillonedir,
-+		},
-+	};
-+
-+	file.f_path.dentry = dir;
-+	file.f_inode = d_inode(dir);
-+	file.f_op = dir->d_inode->i_fop;
-+
-+	INIT_LIST_HEAD(&d->entries);
-+	rd.dir = d;
-+
-+	ret = file.f_op->iterate(&file, &rd.ctx);
-+	if (ret)
-+		__release_dir(d);
-+
-+	return ret;
- }
- 
- DIR *opendir(const char *pathname)
-@@ -2724,14 +2748,8 @@ DIR *opendir(const char *pathname)
- 	int ret;
- 	struct dentry *dir;
- 	struct inode *inode;
--	struct file file = {};
- 	DIR *d;
- 	struct path path = {};
--	struct readdir_callback rd = {
--		.ctx = {
--			.actor = fillonedir,
--		},
--	};
- 
- 	ret = filename_lookup(getname(pathname),
- 			      LOOKUP_FOLLOW | LOOKUP_DIRECTORY, &path);
-@@ -2752,24 +2770,17 @@ DIR *opendir(const char *pathname)
- 		goto out_put;
- 	}
- 
--	file.f_path.dentry = dir;
--	file.f_inode = d_inode(dir);
--	file.f_op = dir->d_inode->i_fop;
--
- 	d = xzalloc(sizeof(*d));
- 	d->path = path;
- 
--	INIT_LIST_HEAD(&d->entries);
--	rd.dir = d;
--
--	ret = file.f_op->iterate(&file, &rd.ctx);
-+	ret = __opendir(d);
- 	if (ret)
--		goto out_release;
-+		goto out_free;
- 
- 	return d;
- 
--out_release:
--	release_dir(d);
-+out_free:
-+	free(d);
- out_put:
- 	path_put(&path);
- out:
-@@ -2785,7 +2796,8 @@ int closedir(DIR *dir)
- 		return errno_set(-EBADF);
- 
- 	path_put(&dir->path);
--	release_dir(dir);
-+	__release_dir(dir);
-+	free(dir);
- 
- 	return 0;
- }
+-mem_efi_initcall(efi_barebox_populate_mmap);
++device_efi_initcall(efi_barebox_populate_mmap);
 -- 
 2.39.2
 
