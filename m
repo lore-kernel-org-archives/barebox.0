@@ -1,81 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:08:49 +0100
+Delivery-date: Mon, 04 Mar 2024 20:08:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDg9-008dYv-1X
+	id 1rhDgG-008dZe-0k
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:08:49 +0100
+	Mon, 04 Mar 2024 20:08:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDg8-0003fh-Lk
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:08:49 +0100
+	id 1rhDgE-0003mg-OV
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:08:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tzRIRUOwiSfFYDNtdbNh6/udDtB12+aIxg0G7NqS7Q8=; b=Ei4prTGVV8g5atHAL5RYVHMMMn
-	DF+xXu5LAKjt4Bx6a1hsGKZPwkmuuqu9Yt4HDFOdAQU1SL5ZC42YyxEA9aHrKvXejYPOBVbmXaH7f
-	oRI32vgBjtkYx0zLQJRy+hywwY5wZiaIScxk4SWbJDS/5WHrSvD44FPYmR/gqSxibIl95jGZgO7dO
-	xG1ba0nNW3CP7alAe3/bE4R0xZO8QeGIgxa7E2pEnqh/Tq1Z+RXBae/mBlyu2gwgd5HMs0wNZIs3H
-	AZLvu7VMKqIP+O+shwQ7e+CHTG24eRd2TilIT4UTPAFCIClvFH6Xv8dVWQmoJV1QRCv0RMxnh2pWS
-	mdsmHfmQ==;
+	bh=WOmUPy4DRyaH/1WyoInVr1tp/sZEBE+cpvJQ0NY4tBw=; b=Cb+ofRG3uSsAcVVgbooZZJ2ia5
+	7yI3zVKDAgrTpJxLAtABX0bZ3r9LYM0C/d8gTvNo/TtbfHmTQq+knFhFtgqj0/BfssXtIsM+gPGOZ
+	N1XN+TeqfCfrvX6+UKAwLk+Pv4YcndN19g3J1qxpJ+dVgMBG1Na5O8KfAsqjogjH23PLtfgL59WNS
+	nxPdj/9Bpd0nE4jrr+jXfJrEFEEZxCjB5DHR/D+5PJHbj3JoBMkqGruzK8pHPJ/cNySXohOMFXgH5
+	t7bmy7++dJDsyko/j3QUi1o3b5PNoZMTTd9xqOVHWKV1MXt+ltr9ONnj/vDPw7+SjaDVFG7vCk1+I
+	Vp/tdZIg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDfW-0000000ALwQ-0Sjp;
-	Mon, 04 Mar 2024 19:08:10 +0000
+	id 1rhDfa-0000000ALz9-3Df8;
+	Mon, 04 Mar 2024 19:08:14 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaX-0000000AIXW-3p0T
+	id 1rhDaX-0000000AIXU-2xxE
 	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:03:01 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=tzRIRUOwiSfFYDNtdbNh6/udDtB12+aIxg0G7NqS7Q8=; b=TcouRKItXmYnVTlY1OsAQNhnqr
-	CiduY4ZIxqAYwUCIT4fg5+T+WUZrwy17fI8ZCV1Cg3PbxHId5Gb7PmHPfBVLtX449MTyjQfDdBanR
-	be+r9eBhBsgVGK/OUShysHUY6pSPk50LBpsBLT92w1so1AlV3OIkk3hxSGvTLPmT2IXuQfcEw8yTf
-	TLmenz4dyqiyKbH6K5BTbGg+jkxHyzz6xmyiVwVK9SdTPcWeI11zuPwnLW82o/ZIPAw7VMD9UZfwH
-	Mf0fYKSr4nA3hApsIE1rFJgn0PmMP3j5s5hq/Djkoresu5gfkb7yFG9owbEvwGIVzzk84EEXzpD4v
-	cNc3h09g==;
+	bh=WOmUPy4DRyaH/1WyoInVr1tp/sZEBE+cpvJQ0NY4tBw=; b=A5KLJISNcK7KaTXwaFc0sjsJ+R
+	7fRqyUDn/9F3TzDfYPukEO13/VdMXbQx/e9Ylp7M/TI+1S/1QYwYZApGb+wstjQs/D+XKoFVoxMU5
+	omRFXuKqf3+Msvw6iWkI1l/16OBlB+pnjVq8iZvo8hnLwsCQpwjOVhiRIYnpk5QNbGprBf9X27Kx5
+	YF2Biiv2WSGhKMTNApRi2Y+TDhPXpnjFre5r5xNqDkKokaprZc3jJQBkHmW1NuFku96nsroin+DCR
+	LFCMjYPDj3GK/3i5dG14TnRl9wr4STYoxTdDeJNmlRl032ruXcIKwskCNL4DKNiyH73twqAgurgib
+	jeCNGtYw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaQ-000000051vi-3Icw
+	id 1rhDaQ-000000051vh-38FX
 	for barebox@lists.infradead.org;
 	Mon, 04 Mar 2024 19:03:00 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaH-0006Ae-8d; Mon, 04 Mar 2024 20:02:45 +0100
+	id 1rhDaI-0006E3-50; Mon, 04 Mar 2024 20:02:46 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaG-004PKQ-Li; Mon, 04 Mar 2024 20:02:44 +0100
+	id 1rhDaH-004PLI-Hn; Mon, 04 Mar 2024 20:02:45 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYK-00Ed9V-0c;
+	id 1rhDYJ-00Ed9V-2P;
 	Mon, 04 Mar 2024 20:00:44 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:10 +0100
-Message-Id: <20240304190038.3486881-26-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 19:59:00 +0100
+Message-Id: <20240304190038.3486881-16-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190254_859785_D54A93C4 
-X-CRM114-Status: GOOD (  11.21  )
+X-CRM114-CacheID: sfid-20240304_190254_849184_A335CDE3 
+X-CRM114-Status: GOOD (  10.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,38 +98,43 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 025/113] efi: payload: restrict 8250 UART at I/O port 0x3f8 registration to x86
+Subject: [PATCH v2 015/113] efi: payload: iomem: adjust types to avoid casting
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The 8250 is available on other platforms, but being located at I/O port
-0x3f8 is mostly a x86 PC thing, so restrict registering that console to
-x86.
+We make ample use of GNU C's support for void pointer arithmetic, so use
+it here as well to get rid of the helper variable.
 
-This will become required when we start building EFI payload binaries
-for architectures besides x86.
+No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/payload/init.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ efi/payload/iomem.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/efi/payload/init.c b/efi/payload/init.c
-index 9afb11fd94a5..5f2cb085da90 100644
---- a/efi/payload/init.c
-+++ b/efi/payload/init.c
-@@ -215,8 +215,9 @@ static int efi_console_init(void)
+diff --git a/efi/payload/iomem.c b/efi/payload/iomem.c
+index 6b92ca993aa7..316dacd6b3c2 100644
+--- a/efi/payload/iomem.c
++++ b/efi/payload/iomem.c
+@@ -142,8 +142,7 @@ static int efi_parse_mmap(struct efi_memory_desc *desc, bool verbose)
  
- 	add_generic_device("efi-stdio", DEVICE_ID_SINGLE, NULL, 0 , 0, 0, NULL);
+ static int efi_barebox_populate_mmap(void)
+ {
+-	void *desc;
+-	u8 *mmap_buf = NULL;
++	void *mmap_buf = NULL, *desc;
+ 	efi_status_t efiret;
+ 	size_t mmap_size;
+ 	size_t mapkey;
+@@ -169,7 +168,7 @@ static int efi_barebox_populate_mmap(void)
+ 		goto out;
+ 	}
  
--	add_ns16550_device(0, 0x3f8, 0x10, IORESOURCE_IO | IORESOURCE_MEM_8BIT,
--				&ns16550_plat);
-+	if (IS_ENABLED(CONFIG_X86))
-+		add_ns16550_device(0, 0x3f8, 0x10, IORESOURCE_IO | IORESOURCE_MEM_8BIT,
-+					&ns16550_plat);
+-	for (desc = mmap_buf; (u8 *)desc < mmap_buf + mmap_size; desc += descsz)
++	for (desc = mmap_buf; desc < mmap_buf + mmap_size; desc += descsz)
+ 		efi_parse_mmap(desc, __is_defined(DEBUG));
  
- 	return 0;
- }
+ out:
 -- 
 2.39.2
 
