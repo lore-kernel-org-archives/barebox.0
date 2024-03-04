@@ -1,81 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:08:22 +0100
+Delivery-date: Mon, 04 Mar 2024 20:08:25 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDfi-008dVb-1N
+	id 1rhDfl-008dWN-30
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:08:22 +0100
+	Mon, 04 Mar 2024 20:08:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDfh-0003HA-A3
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:08:22 +0100
+	id 1rhDfl-0003LH-75
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:08:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=inNGBPOFgvwb2GY2xERBkNaKB07rIy083d9OgeTw+AI=; b=4ga48UbybQWO6zvNcEovk4I1Oh
-	YhZmp9LGbq+Ncir5WQJaUNuqjA8l07TmxO2yHC+CJraQsgxx4DGiUuE4i+E1IFfntyxMM7ZJArbXR
-	yI9qIzz0EDEcoxooTLEJOu86PiEqz5gLueMZ5sE0qi9w2wh6BWJGbGNA/hIY2o/J+dV6EUWFS8TdC
-	xumXA8VWry9SpsYmO9ujANkntug/ShnfMPKd0jHEmPodgViVyOaOkfLs2eJWYaKfJNAJqZXxpIv65
-	zBHVu2aXHhvflKNJOz40FFklrL7AftPSHof1urROhOTbgv4kdA9wMwjY17wt/BUNJ40hJWG6kbhpI
-	D+C7w1mQ==;
+	bh=AM9nibBz+3c7BNJw6mL7ENHUMZaym7O8vD51IJ+49rU=; b=GgT1lSt0vuaqN6P1JcI4YW2J/q
+	tEgWoywV1PaB8daGldiF14u2BpMa3unfbDRq4jBZoGIlSdJX0QyxS2wE4pQppncdbOWeBJQwGJhei
+	1yR612+YkLQc6t1SwAmjX//hKyk+jsyHl7MBGWdvU67Rs89k1ACgFDYYVj+L/kwPyOUxBiazS5meE
+	IQ/IRK/UG0Kxr2C4ZaumqZACb1Aj+Xv4RbJ8UjiHBIb+Iwwjg3BgVaPcwIm2NXPt2Lu5NA4eK5f8L
+	TTNhowOlt/y4Mi2J0YtDtHtOwMdek9RwgAilsDK19FhNpqEEoJXSFbBaHiFk7LidEntrW+hwWKzWv
+	fKxe1GHw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDfC-0000000ALhy-2ZbS;
-	Mon, 04 Mar 2024 19:07:50 +0000
+	id 1rhDfF-0000000ALkV-1AkE;
+	Mon, 04 Mar 2024 19:07:53 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaW-0000000AIX5-077t
+	id 1rhDaW-0000000AIX8-0qzw
 	for barebox@bombadil.infradead.org;
-	Mon, 04 Mar 2024 19:03:00 +0000
+	Mon, 04 Mar 2024 19:03:01 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=inNGBPOFgvwb2GY2xERBkNaKB07rIy083d9OgeTw+AI=; b=g0dOwOk9F9EUYe+S8CUIdNGh+Q
-	9/R1G9BSBe5evg/MTMti9wloS2BV2SmFY1rAktludjabGlIlqjDtr9RT5MVNb3e3ASZhhIYj5k5E5
-	OOVvBa7dYd71U/Q3UJXSGnADEHP2TNpFfCwLATkswDU8FhTYZqj3NAGjyiCkbST90bya/bVO1txnq
-	5LVcXrR3obwaNh0vW9zKzPyWGOZKDZV2KRzXjFeFxSa3Bx27zCLnPHkH4htZhRy9iFzGFQVTaCcqQ
-	U/2CjztXC7HhVn4w2ugVYyUaADAG/z9wm42KzOV4TftiLLi5foLM7jLozLhQWxkri3VIo9XnxNLKb
-	UVGf7fow==;
+	bh=AM9nibBz+3c7BNJw6mL7ENHUMZaym7O8vD51IJ+49rU=; b=BTPzCoG42zlevO6pSuKDG36xee
+	6CjRnS4VKnRdyMhG5UB4oy55WUg8kmbSl3LCTw0u1J8z8n+qGTQMFe41hYpxFfvDk4GDI34gMa5ks
+	wO2mQTWAiFDwBooRZtgPraECMXpf1az+33sLSFvXAka6QZj/zKARWbTqN8BHdhtnvHC+s8hEuL2r8
+	/LzgVKPGQPEkwhhaSObML4kypT2SvrVqeH+3d6x/JRKK+9R4YwZM4BlTiCUCqcDQ6uAnnXRAU/L5F
+	P3dudfYxzNtp2wcPL48OCH5XsbCl8KWSlznO6pyvvfoUkBeNeAafSN88S++895aF4RAWhINtSNjKn
+	NWX+ZkVg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaP-000000051vc-0LfV
+	id 1rhDaP-000000051vg-0Xoh
 	for barebox@lists.infradead.org;
 	Mon, 04 Mar 2024 19:02:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaI-0006EG-51; Mon, 04 Mar 2024 20:02:46 +0100
+	id 1rhDaI-0006EQ-5i; Mon, 04 Mar 2024 20:02:46 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaH-004PLO-Js; Mon, 04 Mar 2024 20:02:45 +0100
+	id 1rhDaH-004PLR-Lj; Mon, 04 Mar 2024 20:02:45 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYL-00Ed9V-29;
+	id 1rhDYM-00Ed9V-0h;
 	Mon, 04 Mar 2024 20:00:46 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:43 +0100
-Message-Id: <20240304190038.3486881-59-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 19:59:55 +0100
+Message-Id: <20240304190038.3486881-71-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190253_293703_66AA7C97 
-X-CRM114-Status: GOOD (  23.37  )
+X-CRM114-CacheID: sfid-20240304_190253_366185_084E6EBD 
+X-CRM114-Status: GOOD (  11.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,131 +98,61 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 058/113] pbl: introduce CONFIG_PBL_FULLY_PIC
+Subject: [PATCH v2 070/113] efi: rename efi_simple_input_interface to efi_simple_text_input_protocol
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In the quest for making barebox PBL code W^X mappable, we have now taken
-care to make the ARM64 assembly routines not emit code relocations,
-so let's do the same for the C code as well.
-
-We do this by setting pragma GCC visibility push(hidden) globally. This
-option is stronger than -fvisibility=hidden and ensures we are
-completely position-independent. See kernel commit e544ea57ac07
-("x86/boot/compressed: Force hidden visibility for all symbol references")
-for more information.
+This aligns the name with what's in the specification.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/export.h |  2 +-
- include/linux/hidden.h | 19 +++++++++++++++++++
- pbl/Kconfig            |  7 +++++++
- scripts/Makefile.lib   |  5 +++++
- scripts/Makefile.pic   | 22 ++++++++++++++++++++++
- 5 files changed, 54 insertions(+), 1 deletion(-)
- create mode 100644 include/linux/hidden.h
- create mode 100644 scripts/Makefile.pic
+ drivers/serial/efi-stdio.c |  2 +-
+ include/efi.h              | 10 +++++-----
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/linux/export.h b/include/linux/export.h
-index 8f47742bea99..a136d727d128 100644
---- a/include/linux/export.h
-+++ b/include/linux/export.h
-@@ -6,7 +6,7 @@
+diff --git a/drivers/serial/efi-stdio.c b/drivers/serial/efi-stdio.c
+index a0994168f0db..c8c84270093e 100644
+--- a/drivers/serial/efi-stdio.c
++++ b/drivers/serial/efi-stdio.c
+@@ -20,7 +20,7 @@
  
- #define THIS_MODULE	0
+ struct efi_console_priv {
+ 	struct efi_simple_text_output_protocol *out;
+-	struct efi_simple_input_interface *in;
++	struct efi_simple_text_input_protocol *in;
+ 	struct efi_simple_text_input_ex_protocol *inex;
+ 	struct console_device cdev;
+ 	u16 efi_console_buffer[CONFIG_CBSIZE + 1];
+diff --git a/include/efi.h b/include/efi.h
+index f0c968ec5e8a..1749001adb48 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -602,7 +602,7 @@ struct efi_system_table {
+ 	unsigned long fw_vendor;	/* physical addr of CHAR16 vendor string */
+ 	u32 fw_revision;
+ 	efi_handle_t con_in_handle;
+-	struct efi_simple_input_interface *con_in;
++	struct efi_simple_text_input_protocol *con_in;
+ 	efi_handle_t con_out_handle;
+ 	struct efi_simple_text_output_protocol *con_out;
+ 	efi_handle_t stderr_handle;
+@@ -711,12 +711,12 @@ struct efi_simple_text_output_protocol {
  
--#ifdef CONFIG_MODULES
-+#if defined(CONFIG_MODULES) && !defined(__DISABLE_EXPORTS)
+ struct efi_input_key;
  
- struct kernel_symbol
- {
-diff --git a/include/linux/hidden.h b/include/linux/hidden.h
-new file mode 100644
-index 000000000000..49a17b6b5962
---- /dev/null
-+++ b/include/linux/hidden.h
-@@ -0,0 +1,19 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * When building position independent code with GCC using the -fPIC option,
-+ * (or even the -fPIE one on older versions), it will assume that we are
-+ * building a dynamic object (either a shared library or an executable) that
-+ * may have symbol references that can only be resolved at load time. For a
-+ * variety of reasons (ELF symbol preemption, the CoW footprint of the section
-+ * that is modified by the loader), this results in all references to symbols
-+ * with external linkage to go via entries in the Global Offset Table (GOT),
-+ * which carries absolute addresses which need to be fixed up when the
-+ * executable image is loaded at an offset which is different from its link
-+ * time offset.
-+ *
-+ * Fortunately, there is a way to inform the compiler that such symbol
-+ * references will be satisfied at link time rather than at load time, by
-+ * giving them 'hidden' visibility.
-+ */
-+
-+#pragma GCC visibility push(hidden)
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index 223bf0640e1b..669a49a530a2 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -46,6 +46,13 @@ config PBL_RELOCATABLE
- 	  This option only influences the PBL image. See RELOCATABLE to also make
- 	  the real image relocatable.
+-struct efi_simple_input_interface {
+-	efi_status_t(EFIAPI *reset)(struct efi_simple_input_interface *this,
++struct efi_simple_text_input_protocol {
++	efi_status_t(EFIAPI *reset)(struct efi_simple_text_input_protocol *this,
+ 			bool ExtendedVerification);
+-	efi_status_t(EFIAPI *read_key_stroke)(struct efi_simple_input_interface *this,
++	efi_status_t(EFIAPI *read_key_stroke)(struct efi_simple_text_input_protocol *this,
+ 			struct efi_input_key *key);
+-	void *wait_for_key;
++	struct efi_event *wait_for_key;
+ };
  
-+config PBL_FULLY_PIC
-+	bool "fully position-independent pbl image"
-+	depends on PBL_RELOCATABLE && ARM
-+	help
-+	  Compared to CONFIG_PBL_RELOCATABLE, this image has no relocations in
-+	  the code sections.
-+
- config PBL_VERIFY_PIGGY
- 	depends on ARM
- 	bool "Verify barebox proper hash before decompression" if COMPILE_TEST
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index f205e08afc13..6b1f0ccbc003 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -170,6 +170,11 @@ _stackp_flags_pbl-$(CONFIG_PBL_STACKPROTECTOR_ALL)     := -fstack-protector-all
- 
- _c_flags += $(if $(part-of-pbl),$(_stackp_flags_pbl-y),$(_stackp_flags-y))
- 
-+ifeq ($(CONFIG_PBL_FULLY_PIC),y)
-+include scripts/Makefile.pic
-+PBL_CPPFLAGS	+= $(picflags-y)
-+endif
-+
- # If building barebox in a separate objtree expand all occurrences
- # of -Idir to -I$(srctree)/dir except for absolute paths (starting with '/').
- 
-diff --git a/scripts/Makefile.pic b/scripts/Makefile.pic
-new file mode 100644
-index 000000000000..c30894ba98d9
---- /dev/null
-+++ b/scripts/Makefile.pic
-@@ -0,0 +1,22 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# The stub may be linked into the kernel proper or into a separate boot binary,
-+# but in either case, it executes before the kernel does (with MMU disabled) so
-+# things like ftrace and stack-protector are likely to cause trouble if left
-+# enabled, even if doing so doesn't break the build.
-+#
-+picflags-$(CONFIG_X86_64)	:= -mcmodel=small
-+picflags-$(CONFIG_X86)		+= -fPIC -fno-asynchronous-unwind-tables
-+
-+ifeq ($(CONFIG_ARM),y)
-+picflags-$(CONFIG_CPU_32)	:= -fpic -mno-single-pic-base
-+picflags-$(CONFIG_CPU_64)	:= -fpie
-+endif
-+
-+picflags-y			+= -include $(srctree)/include/linux/hidden.h \
-+				   -D__fully_pic__ \
-+				   -D__NO_FORTIFY \
-+				   -ffreestanding \
-+				   -fno-stack-protector \
-+				   $(call cc-option,-fno-addrsig) \
-+				   -D__DISABLE_EXPORTS
+ struct efi_device_path *device_path_from_handle(efi_handle_t Handle);
 -- 
 2.39.2
 
