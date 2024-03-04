@@ -1,81 +1,66 @@
-Delivery-date: Mon, 04 Mar 2024 20:08:03 +0100
+Delivery-date: Mon, 04 Mar 2024 20:08:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDfP-008dTr-2Q
+	id 1rhDfe-008dUr-1F
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:08:03 +0100
+	Mon, 04 Mar 2024 20:08:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDfP-0002yV-0T
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:08:03 +0100
+	id 1rhDfd-0003D7-Lf
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:08:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WhFi9COniumgvXstauZYK4C82M9XlmNDyNF3X7YR0yA=; b=ldh51JJfUwjBdji7VpZlfzWsC7
-	OaFGzEQkSu3HnXH5Umxz1N60bb3180ndfYp7gR5byD2Dl1w3u0OyVdTfU9xblQSjolwBJjDCdaKUw
-	dMTwoyFOFbgAUhEbSXvUEKomx0wAJVp/TLGKXIhqIcM9e8bd4NRDKu4scFzdTexRBRlB1jjdFqptc
-	Mgw12gA7ZgRteIRB8RqTWAnKcgboPZ+RhDtWsDxH3CdEHgtt8jE0FOcUxJaxl5x1kNSnH6yCunLMM
-	B8M4Q02HkmBMgkChOKhZzYo+8Wu7kIAWysVHIQJ8e1zPK8UOU4f81QRDQZidJ9dEcvzf7I246Gq+1
-	o/2fWYVw==;
+	bh=d52pek+LWtWH3J5Cb+FdcWHAbaKOuMy1V2fcYwZTZmc=; b=YRcgbS0HWObi/XPpHKVTl6vZeC
+	yd1C5omGtlI0Z7DeMWxY92MHthH5VwTT0ZvchGtfO2Qbl/u5BwrorTfBHPWeqCUVHQlMKTfCixWo1
+	BHHD+8a+P/h9lw/Vlup9jiCskLyCKAUHZhC2WuxCn4k4qg9k8SfWd6HUiUaevFQ3jl9YQTsvuPoS7
+	GaIVd8i6N3BCSivNYVR3VexlvYW4Qxd9OJLOvgE4d1e19xV15HyxVmxqVY4RcVktJHRwF83sdpgW0
+	X7js5CMd/viO7FIYxGU/JverprITZW4sis2/yDjnk+T1Y16mOS80+RF1rXrE7ImlE2CO1dSSckj/v
+	sjrA5VWw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDed-0000000ALQL-3gXv;
-	Mon, 04 Mar 2024 19:07:15 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaW-0000000AIXM-42Rt
-	for barebox@bombadil.infradead.org;
-	Mon, 04 Mar 2024 19:03:01 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=WhFi9COniumgvXstauZYK4C82M9XlmNDyNF3X7YR0yA=; b=q5KbIv+THXH5JSIaZDYuI3WoYU
-	mcn2GNYG5Q9mC2nPXJud5Z/f/CYvKvz9NQQzn5WIw28GGved524vBDQPCqW4djKry5mvodnEPDo75
-	2VvazEYkrHtyKSR/bpzc70hWSFCGs9+aVPpNJKzMO1cxZBs1iE8wXyWww6wZ/GZGHqDYA6J6Jjwk8
-	i4gG5AnUZMrISJ6q1jEpvjz3QicCleU/00jM5GcIEwOJkp46y5AeHJ6CkgcIGJiY4HvJTdh91rkLa
-	Ok3qyyjNtuBNJxU0zt2L2rB38/bqkJDwkg0ZCAawM5vZq+HDfwHuxjT2Jg3J9TlvY1kdxkQBS94AB
-	S5Th2HkQ==;
+	id 1rhDf9-0000000ALeC-2aFT;
+	Mon, 04 Mar 2024 19:07:47 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaP-000000051vd-1GYq
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaT-0000000AIHP-3YBj
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:02:59 +0000
+	Mon, 04 Mar 2024 19:03:01 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaH-0006Dr-WB; Mon, 04 Mar 2024 20:02:46 +0100
+	id 1rhDaH-0006B8-Eu; Mon, 04 Mar 2024 20:02:45 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaH-004PLF-Fb; Mon, 04 Mar 2024 20:02:45 +0100
+	id 1rhDaG-004PKf-T5; Mon, 04 Mar 2024 20:02:44 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYK-00Ed9V-2v;
-	Mon, 04 Mar 2024 20:00:45 +0100
+	id 1rhDYN-00Ed9V-1k;
+	Mon, 04 Mar 2024 20:00:48 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:26 +0100
-Message-Id: <20240304190038.3486881-42-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:25 +0100
+Message-Id: <20240304190038.3486881-101-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190253_496486_EAB93718 
-X-CRM114-Status: GOOD (  12.37  )
+X-CRM114-CacheID: sfid-20240304_110258_327968_99B85087 
+X-CRM114-Status: GOOD (  11.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,58 +83,72 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 041/113] fs: support opening /
+Subject: [PATCH v2 100/113] efi: devicepath: format GUIDs as little endian
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With open() on / no longer accessing uninitialized memory, it now always
-fails with errno == ENOENT. This is because d_lookup only compares
-children of /, but never / itself.
+The default for %pU is to format as big endian, which isn't the correct
+representation for EFI GUIDs, which are little endian.
 
-Fix this by comparing the parent and while at it, rework the existing
-code to be more concise.
+Fix the format specifier to avoid the confusion.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ efi/devicepath.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index acd89dd1c9a4..fa1d01d892dc 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1502,7 +1502,6 @@ void d_add(struct dentry *dentry, struct inode *inode)
- }
- 
- static bool d_same_name(const struct dentry *dentry,
--			const struct dentry *parent,
- 			const struct qstr *name)
- {
- 	if (dentry->d_name.len != name->len)
-@@ -1511,17 +1510,16 @@ static bool d_same_name(const struct dentry *dentry,
- 	return strncmp(dentry->d_name.name, name->name, name->len) == 0;
- }
- 
--static struct dentry *d_lookup(const struct dentry *parent, const struct qstr *name)
-+static struct dentry *d_lookup(struct dentry *parent, const struct qstr *name)
- {
- 	struct dentry *dentry;
- 
-+	if (d_same_name(parent, name))
-+		return dget(parent);
-+
- 	list_for_each_entry(dentry, &parent->d_subdirs, d_child) {
--		if (!d_same_name(dentry, parent, name))
--			continue;
--
--		dget(dentry);
--
--		return dentry;
-+		if (d_same_name(dentry, name))
-+			return dget(dentry);
+diff --git a/efi/devicepath.c b/efi/devicepath.c
+index 53387d8bd127..d3a0204bd380 100644
+--- a/efi/devicepath.c
++++ b/efi/devicepath.c
+@@ -207,7 +207,7 @@ dev_path_vendor(struct string *str, const void *dev_path)
+ 		break;
  	}
  
- 	return NULL;
+-	cprintf(str, "Ven%s(%pU", type, &Vendor->Guid);
++	cprintf(str, "Ven%s(%pUl", type, &Vendor->Guid);
+ 	if (efi_guidcmp(Vendor->Guid, efi_unknown_device_guid) == 0) {
+ 		/* GUID used by EFI to enumerate an EDD 1.1 device */
+ 		unknown_dev_path =
+@@ -301,7 +301,7 @@ dev_path1394(struct string *str, const void *dev_path)
+ 	const struct f1394_device_path *F1394;
+ 
+ 	F1394 = dev_path;
+-	cprintf(str, "1394(%pU)", &F1394->Guid);
++	cprintf(str, "1394(%pUl)", &F1394->Guid);
+ }
+ 
+ static void
+@@ -464,7 +464,7 @@ dev_path_infini_band(struct string *str, const void *dev_path)
+ 	const struct infiniband_device_path *infini_band;
+ 
+ 	infini_band = dev_path;
+-	cprintf(str, "Infiniband(0x%x,%pU,0x%llx,0x%llx,0x%llx)",
++	cprintf(str, "Infiniband(0x%x,%pUl,0x%llx,0x%llx,0x%llx)",
+ 		infini_band->resource_flags, &infini_band->port_gid,
+ 		infini_band->service_id, infini_band->target_port_id,
+ 		infini_band->device_id);
+@@ -553,10 +553,7 @@ dev_path_hard_drive(struct string *str, const void *dev_path)
+ 		    );
+ 		break;
+ 	case SIGNATURE_TYPE_GUID:
+-		cprintf(str, "HD(Part%d,Sig%pU)",
+-			hd->partition_number,
+-			(efi_guid_t *) & (hd->signature[0])
+-		    );
++		cprintf(str, "HD(Part%d,Sig%pUl)", hd->partition_number, (guid_t *)hd->signature);
+ 		break;
+ 	default:
+ 		cprintf(str, "HD(Part%d,mbr_type=%02x,sig_type=%02x)",
+@@ -595,7 +592,7 @@ dev_path_media_protocol(struct string *str, const void *dev_path)
+ 	const struct media_protocol_device_path *media_prot;
+ 
+ 	media_prot = dev_path;
+-	cprintf(str, "%pU", &media_prot->Protocol);
++	cprintf(str, "%pUl", &media_prot->Protocol);
+ }
+ 
+ static void
 -- 
 2.39.2
 
