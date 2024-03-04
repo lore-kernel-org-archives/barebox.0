@@ -1,67 +1,66 @@
-Delivery-date: Mon, 04 Mar 2024 20:06:11 +0100
+Delivery-date: Mon, 04 Mar 2024 20:06:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDdb-008dHP-07
+	id 1rhDdg-008dI4-2t
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:06:11 +0100
+	Mon, 04 Mar 2024 20:06:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDdZ-0001IS-EB
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:06:10 +0100
+	id 1rhDdf-0001PF-Ds
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:06:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=l431OebrNzvp4gWPdu04qFr173FI/fm1b5lVU1kT1BI=; b=r2LTq98aS4qSBnjsfW7qX8qwsh
-	nsMl5GMmPkfnlS/sVCwYrQU6km+EEJpakSRboPxXMPvzWz5yi4fWChVFk5qeWvKZixdblfCTCTgJl
-	QH7crxz6hadBkhye90HrGq04alMN+Up67ZWUZZD+vp1058SpfD+TonpDX2/Z5S6T+y6DsIGm1I7ac
-	yg2HLHk4BSqA6EGaIyxLszlKvZo2xPEh895FuLS5OvYRrtsznbgXtbb+wMCxYdSFKqAQ9V9Iw+77i
-	6zJM+gRogfoeuY6PGWb2sBjWxm9DlIFMRyDZKHTYBNOGMHC3tqSosFs+ZrzbtXPOsDKErIN1DoeYc
-	r7xeb0RA==;
+	bh=hDqLCV20+qOA9+5nEkHiN6vVcC/roKPNgxFuBOWdVE8=; b=fWSigjasAApAivrS7dMTQVlVxS
+	ZzlBKiiqDk5XQkWJ8WF5i8J9um8ya5k8gryss9BKEoWvQgXnTXX597dv7OTqjEJH0l/HACse/kPiC
+	gmq+nXx1Ubl3keWti02LA8SR7Th05o3soK/QZqfT6Lm06qOJqSQM8LYrBgGSIwIvzvjYTONw0gdVe
+	g/ziN1azfdydS+5ufAxqoDK2gywcTc1rBsASYABGzr6P8vDAone3GECP1Eox7m6GzSJ1tYTkiGh+V
+	8cgtIno/pl8U7fkioeSRZYpOamiQG1+lBUZFRjiakjVVUbzFpM2G3hLJ71yKKcw9BQ5VZ9MxJYyDC
+	rbOuh6Bw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDd2-0000000AKIn-2ROP;
-	Mon, 04 Mar 2024 19:05:36 +0000
+	id 1rhDdA-0000000AKMl-0ILL;
+	Mon, 04 Mar 2024 19:05:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaL-0000000AIHJ-3Mlq
+	id 1rhDaH-0000000AILO-0zkP
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:02:57 +0000
+	Mon, 04 Mar 2024 19:02:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaI-0006HE-SX; Mon, 04 Mar 2024 20:02:46 +0100
+	id 1rhDaF-00066T-TV; Mon, 04 Mar 2024 20:02:43 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaI-004PM9-B5; Mon, 04 Mar 2024 20:02:46 +0100
+	id 1rhDaF-004PJ8-E1; Mon, 04 Mar 2024 20:02:43 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYN-00Ed9V-1t;
-	Mon, 04 Mar 2024 20:00:48 +0100
+	id 1rhDYJ-00Ed9V-2y;
+	Mon, 04 Mar 2024 20:00:44 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 20:00:26 +0100
-Message-Id: <20240304190038.3486881-102-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 19:59:04 +0100
+Message-Id: <20240304190038.3486881-20-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_110250_154060_9EB92E57 
-X-CRM114-Status: UNSURE (   9.73  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240304_110245_518584_31A9F8D0 
+X-CRM114-Status: GOOD (  11.01  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,61 +83,43 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 101/113] efi: devicepath: move END device node definitions into header
+Subject: [PATCH v2 019/113] block: virtio: assign virtio-mmio device tree node to cdevs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-While at it, drop DP_IS_END_TYPE and DP_IS_END_SUBTYPE, which are
-unused.
+All block devices except for virtio-mmio have a pointer to the hardware
+device tree node if available, so add it to virtio-mmio as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- efi/devicepath.c          | 12 ------------
- include/efi/device-path.h | 10 ++++++++++
- 2 files changed, 10 insertions(+), 12 deletions(-)
+ drivers/block/virtio_blk.c | 1 +
+ drivers/virtio/virtio.c    | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/efi/devicepath.c b/efi/devicepath.c
-index d3a0204bd380..12a94fdb6ef8 100644
---- a/efi/devicepath.c
-+++ b/efi/devicepath.c
-@@ -43,18 +43,6 @@ char *cprintf(struct string *str, const char *fmt, ...)
- #define MIN_ALIGNMENT_SIZE  8	/* FIXME: X86_64 specific */
- #define ALIGN_SIZE(a)   ((a % MIN_ALIGNMENT_SIZE) ? MIN_ALIGNMENT_SIZE - (a % MIN_ALIGNMENT_SIZE) : 0)
+diff --git a/drivers/block/virtio_blk.c b/drivers/block/virtio_blk.c
+index 11e52d9e6457..625daf6879c0 100644
+--- a/drivers/block/virtio_blk.c
++++ b/drivers/block/virtio_blk.c
+@@ -99,6 +99,7 @@ static int virtio_blk_probe(struct virtio_device *vdev)
  
--#define EFI_DP_TYPE_MASK			0x7f
--#define EFI_DP_TYPE_UNPACKED			0x80
--
--#define END_DEVICE_PATH_TYPE			0x7f
--
--#define END_ENTIRE_DEVICE_PATH_SUBTYPE		0xff
--#define END_INSTANCE_DEVICE_PATH_SUBTYPE	0x01
--#define END_DEVICE_PATH_LENGTH			(sizeof(struct efi_device_path))
--
--#define DP_IS_END_TYPE(a)
--#define DP_IS_END_SUBTYPE(a)        ( ((a)->sub_type == END_ENTIRE_DEVICE_PATH_SUBTYPE )
--
- #define device_path_type(a)           ( ((a)->type) & EFI_DP_TYPE_MASK )
- #define next_device_path_node(a)       ( (const struct efi_device_path *) ( ((u8 *) (a)) + (a)->length))
- #define is_device_path_end_type(a)      ( device_path_type(a) == END_DEVICE_PATH_TYPE )
-diff --git a/include/efi/device-path.h b/include/efi/device-path.h
-index 4b97cadde4f1..b7dc518859ac 100644
---- a/include/efi/device-path.h
-+++ b/include/efi/device-path.h
-@@ -387,4 +387,14 @@ struct bbs_bbs_device_path {
- #define BBS_TYPE_DEV                    0x80
- #define BBS_TYPE_UNKNOWN                0x_fF
+ 	devnum = cdev_find_free_index("virtioblk");
+ 	priv->blk.cdev.name = xasprintf("virtioblk%d", devnum);
++	cdev_set_of_node(&priv->blk.cdev, vdev->dev.device_node);
+ 	priv->blk.dev = &vdev->dev;
+ 	priv->blk.blockbits = SECTOR_SHIFT;
+ 	virtio_cread(vdev, struct virtio_blk_config, capacity, &cap);
+diff --git a/drivers/virtio/virtio.c b/drivers/virtio/virtio.c
+index aeca04aa9237..c4854e7d11aa 100644
+--- a/drivers/virtio/virtio.c
++++ b/drivers/virtio/virtio.c
+@@ -289,6 +289,7 @@ int register_virtio_device(struct virtio_device *dev)
+ 	dev->dev.bus = &virtio_bus;
+ 	dev->dev.id = DEVICE_ID_DYNAMIC;
+ 	dev->dev.name = "virtio";
++	dev->dev.device_node = dev_of_node(dev->dev.parent);
  
-+
-+#define EFI_DP_TYPE_MASK			0x7f
-+#define EFI_DP_TYPE_UNPACKED			0x80
-+
-+#define END_DEVICE_PATH_TYPE			0x7f
-+
-+#define END_ENTIRE_DEVICE_PATH_SUBTYPE		0xff
-+#define END_INSTANCE_DEVICE_PATH_SUBTYPE	0x01
-+#define END_DEVICE_PATH_LENGTH			(sizeof(struct efi_device_path))
-+
- #endif /* __EFI_DEVICE_PATH_H */
+ 	spin_lock_init(&dev->config_lock);
+ 	dev->config_enabled = false;
 -- 
 2.39.2
 
