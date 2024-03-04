@@ -1,81 +1,82 @@
-Delivery-date: Mon, 04 Mar 2024 20:10:20 +0100
+Delivery-date: Mon, 04 Mar 2024 20:10:25 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDhc-008dk9-2n
+	id 1rhDhh-008dkh-1Z
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:10:20 +0100
+	Mon, 04 Mar 2024 20:10:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDhb-0005JF-3L
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:10:20 +0100
+	id 1rhDhg-0005Np-DN
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:10:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=t5nroGyTkDH5/ISPGVOEG7DUTgA/6Ur7fTCAa1LzSPI=; b=ditHx1pWS8EOjOU/vM81ygL3Gs
-	9Z8AzLkhZ3CRuJHMBbqB5usfK2buwIVYLitJr6zuSQTaaiLlkgIrEwXjNPHDqFNPlZJw0gVc9FNtV
-	/6xJn3kSgKRSlPXWRTltnS2h2jXzHmocUs9VzUeDVWUp9xyk5j8u21/icUSam/AEv657t/FibJxVo
-	v+QLNsgSqnF2q7m6gTCWdaB8nI87HvxXNdmPaOx8aw2a1jWCqfML25cyQ+rH3W/eOIcNrJwbl+l/6
-	hBddgc+glThtczHcaEdx9ugoIB/yyJmbd+AHRBkzhHQdy/kjhHVNWuNBRJyPVafOicEJhbsOL/+BG
-	o+4+oTow==;
+	bh=yj7IU5p9N2pqb/+owsdkyh9zZK3+ogYAMo+sj1jk0qo=; b=1LWj8dRd46sL5v5HlL/Bl8W320
+	zhy6uGGXqw6iNBA7gJgqi7msDXdPolqwBjN4KV61z7C6SHIfLbZ1WTO7xgyuzXcG+DLdJk83ZqlCs
+	PR0SnjCAv37tW6J1xBB5Hhnu5KUAV1eYJcqYDRW+SBKecMKMe5tXN1zs7XEvjgWLMkVWYkq69R/eb
+	+FDpQ89bpDoMc81F858QWjdQwj9jyqyLW27EL3g0PtW0uTEFCYZonVGSBFAKX4jS/TO9B+0HdiVOT
+	iNpbTKmVhZWdDjG8bZIxsh//R6f4NjQgPINCDV8UcmiPGUNs44ZnAB9ajbnmfca3kMLd+W736QhwQ
+	hQKozUjQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDh2-0000000AN4s-3vml;
-	Mon, 04 Mar 2024 19:09:44 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1rhDh8-0000000AN7S-0MEf;
+	Mon, 04 Mar 2024 19:09:50 +0000
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDad-0000000AId2-0WQi
+	id 1rhDad-0000000AId0-0h96
 	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:03:07 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=t5nroGyTkDH5/ISPGVOEG7DUTgA/6Ur7fTCAa1LzSPI=; b=SnXe2EVl1L4FxX6guLSVfWuEc5
-	SA0UBfKyyHtefrOxLUO0SyOa53jtUIhZDdfUztChaKe5VbB3tBUPdTwnkTMYNhptffwxWjxETvcJp
-	ILJr8qqBbZasFYfFmDbZK3QQdbj9cRPXY9sCOUDmCu5GE6iKD1BcwEMB0sOY7wV0pSfeK4egB4y2+
-	jCoBN8NxwqYkIkbGJzNeJeX9fjD+q5gkri7Z9SQiIiomNJ//TE72St/0QnHJpQNmV3UMQTHvL58F5
-	5nfEzRxCPjM3lxS+YLJ1QJL3ai5q6y6xbslu0tAs8sAStwps03CYlK3THrvX1osTbizkf/lBJ8ocm
-	vzhFB18w==;
+	bh=yj7IU5p9N2pqb/+owsdkyh9zZK3+ogYAMo+sj1jk0qo=; b=N95iL78sRj5WOsSSL5SMAcgpbq
+	8WZVe1pDv5593yR/yRXZjm/4F3vv3H21auUdDovxCxwhF2EDBfk8udhlRQ5GOuplKcfdiKwvsn+xR
+	TRuCU9eeLNQzJ2WVaC9ir3982tYIcBVelhtlQge6Z8GjDmIabNnQhOh6ypgYWGPsqFQxKZapF7+ZG
+	Pqu2fnyHcnuOOhS2lZhP2CBoVjLq8DCY0NnEW7mdMyN2tuYfm5ViCLsOpV3Li9ZA8PBoKnLHVMx9H
+	rpBg7Kvpfx6td0fp2a5z67dgNOtgumeQLfLO4a+cf9/PBEKBj2X9v+bxXFKnEcDqBq0fGNK2hnxCY
+	l7NKwvOg==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaW-000000051va-0mE5
+	by casper.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaW-00000002BSp-2lBZ
 	for barebox@lists.infradead.org;
 	Mon, 04 Mar 2024 19:03:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaG-00068W-Ga; Mon, 04 Mar 2024 20:02:44 +0100
+	id 1rhDaF-00066J-SV; Mon, 04 Mar 2024 20:02:43 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaG-004PJm-1H; Mon, 04 Mar 2024 20:02:44 +0100
+	id 1rhDaF-004PJ3-Bw; Mon, 04 Mar 2024 20:02:43 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYM-00Ed9V-08;
-	Mon, 04 Mar 2024 20:00:46 +0100
+	id 1rhDYN-00Ed9V-1c;
+	Mon, 04 Mar 2024 20:00:48 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:51 +0100
-Message-Id: <20240304190038.3486881-67-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:24 +0100
+Message-Id: <20240304190038.3486881-100-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190300_280945_58C0BFA7 
-X-CRM114-Status: GOOD (  12.19  )
+X-CRM114-CacheID: sfid-20240304_190300_743696_AE10DCBE 
+X-CRM114-Status: UNSURE (   9.07  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,64 +99,33 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 066/113] efi: use efi_handle_t where appropriate
+Subject: [PATCH v2 099/113] efi: devicepath: pretty print BBS BEV DeviceType
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-efi_handle_t is a typedef for a void pointer. We use either void *
-directly or unsigned long at places, where a handle would be the more
-descriptive type. Fix this.
+BBS paths can have multiple types, one of them is the device type, which
+we will start abusing in a later commit, so make sure it's
+translated to a readable string.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/serial/efi-stdio.c |  2 +-
- include/efi.h              | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ efi/devicepath.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/serial/efi-stdio.c b/drivers/serial/efi-stdio.c
-index b3b696d8fb3c..a0994168f0db 100644
---- a/drivers/serial/efi-stdio.c
-+++ b/drivers/serial/efi-stdio.c
-@@ -430,7 +430,7 @@ static int efi_console_probe(struct device *dev)
- 	if (!priv->inputbuffer)
- 		return -ENOMEM;
- 
--	efiret = BS->open_protocol((void *)efi_sys_table->con_in_handle,
-+	efiret = BS->open_protocol(efi_sys_table->con_in_handle,
- 			     &inex_guid,
- 			     (void **)&inex,
- 			     efi_parent_image,
-diff --git a/include/efi.h b/include/efi.h
-index ec4c2a522df4..18583bf62594 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -601,11 +601,11 @@ struct efi_system_table {
- 	struct efi_table_hdr hdr;
- 	unsigned long fw_vendor;	/* physical addr of CHAR16 vendor string */
- 	u32 fw_revision;
--	unsigned long con_in_handle;
-+	efi_handle_t con_in_handle;
- 	struct efi_simple_input_interface *con_in;
--	unsigned long con_out_handle;
-+	efi_handle_t con_out_handle;
- 	struct efi_simple_text_output_protocol *con_out;
--	unsigned long stderr_handle;
-+	efi_handle_t stderr_handle;
- 	unsigned long std_err;
- 	struct efi_runtime_services *runtime;
- 	struct efi_boot_services *boottime;
-@@ -615,9 +615,9 @@ struct efi_system_table {
- 
- struct efi_loaded_image {
- 	u32 revision;
--	void *parent_handle;
-+	efi_handle_t parent_handle;
- 	struct efi_system_table *system_table;
--	void *device_handle;
-+	efi_handle_t device_handle;
- 	void *file_path;
- 	void *reserved;
- 	u32 load_options_size;
+diff --git a/efi/devicepath.c b/efi/devicepath.c
+index dfedeb6239ac..53387d8bd127 100644
+--- a/efi/devicepath.c
++++ b/efi/devicepath.c
+@@ -624,6 +624,9 @@ dev_path_bss_bss(struct string *str, const void *dev_path)
+ 	case BBS_TYPE_EMBEDDED_NETWORK:
+ 		type = "Net";
+ 		break;
++	case BBS_TYPE_DEV:
++		type = "Dev";
++		break;
+ 	default:
+ 		type = "?";
+ 		break;
 -- 
 2.39.2
 
