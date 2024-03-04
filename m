@@ -1,66 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:03:48 +0100
+Delivery-date: Mon, 04 Mar 2024 20:03:52 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDbI-008d1a-2y
+	id 1rhDbM-008d28-1U
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:03:48 +0100
+	Mon, 04 Mar 2024 20:03:52 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDbG-0007KF-83
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:03:48 +0100
+	id 1rhDbK-0007O7-U9
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:03:52 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tGWP20InLKFqOCIVNcJZ2zom5kwjV9z5S4ryPavFeMo=; b=RLgPlMGlEsf2WJF20Ieito+mJi
-	w/kqcsPPV3OHbwc0CWOHq32w4buAbMUY73o1Y0pImq+dPPqYiav/AwRrxJMXzmvt4XJydYyvLKJY7
-	2Tn/NRoclMUhIdpVlQe8yGXoLDuGyCMkHoJCYW+a2Zgixz06JbZfNkiUDEjhbOLP19F2TMAVIWiqJ
-	qZEUNdEfDOn4ccztlJr61N63alYT6Uey+p4TOd77dUggMAar3KORfhCBwf+C+uWk6Q80KRcN4qDrb
-	VXoXCECH/NoSoBWD4JM6vqZFBHIThRYlR7ORC3Et5e5vIsNnmzLeWotFKDQYe+YQQoHWcz9rHkhNL
-	upf12haw==;
+	bh=AoVUmHmLbzzbdQ/IbUYjHeGH7Z67c3K3JvsqYcS5hyA=; b=RwE90a/rBROkzWBzcfn4bcwtgG
+	uPdHr1GKnCXxjwh++q+p6MeEQvr4JvyCMFezFx/rJ3Um/07ZB1DwFcmgXGPgy/do5fN+uz4sxL0kA
+	VGRyqFmLBaFWRpagDYOBoi3gRDtIXeYeTSR8qSZvJUCL4ixcVrnl0DJFaTgCU0pPfDWqC2ZwLm40s
+	ab2ruagSMCHR7LpHQ2WOAqAGgLmoxo/l7dbs6Yr4U7bEUqYd6ZlEgv8dxU7myrTnhGxdCOQcOvr7C
+	X+aB3pQ4iDTcsmPO2snFdPS5MAmEbe7bymv8sFN5gRQGBI3nOwDFn9hKwkqk6lu1TAhGwJ2svszID
+	qZSSNDAA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDai-0000000AIgh-0UJb;
-	Mon, 04 Mar 2024 19:03:12 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1rhDak-0000000AIib-0m61;
+	Mon, 04 Mar 2024 19:03:14 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaE-0000000AIHL-1pVV
-	for barebox@lists.infradead.org;
+	id 1rhDaL-0000000AINe-0B76
+	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:02:49 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=AoVUmHmLbzzbdQ/IbUYjHeGH7Z67c3K3JvsqYcS5hyA=; b=JlLac4MlUD30PZMZoT1sq9MQu3
+	A2t8hf6HhMiHSo4OhwBvcbvJkGzrjmjc4AOcoHR1o3hMOOfAV0rw9myi6d+VXKEnq4RrZRwizMEZk
+	jybrDejXHjR6Cx0Me2FR+8iwKOWHiavQRS5rbGsDHndnfOGbc3tjswuYSD783pO3UZl5unnJKHqIN
+	3s7czWll8J7JKK5o5NvujjkJ6siYjHiTBLeujftv2pm9gDS9ybwE+QnvqkWvTeNJoAFeu+ZSNa/sz
+	8M29nRNBKVxwBKhfaoKzHqkY5/eX+DlEnckZjRRBd4+SE+kKCm4Rli3s+JC8qL8RoeR19vIQ4noy5
+	BKyRB7Pg==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaF-000000051vg-2Ovs
+	for barebox@lists.infradead.org;
+	Mon, 04 Mar 2024 19:02:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaD-0005xz-4U; Mon, 04 Mar 2024 20:02:41 +0100
+	id 1rhDaE-00061M-7j; Mon, 04 Mar 2024 20:02:42 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaC-004PGG-MQ; Mon, 04 Mar 2024 20:02:40 +0100
+	id 1rhDaD-004PHO-Pt; Mon, 04 Mar 2024 20:02:41 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYK-00Ed9V-34;
-	Mon, 04 Mar 2024 20:00:45 +0100
+	id 1rhDYN-00Ed9V-0K;
+	Mon, 04 Mar 2024 20:00:47 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:27 +0100
-Message-Id: <20240304190038.3486881-43-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:15 +0100
+Message-Id: <20240304190038.3486881-91-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_110242_842656_703ABE03 
-X-CRM114-Status: GOOD (  19.99  )
+X-CRM114-CacheID: sfid-20240304_190243_937433_7EED0781 
+X-CRM114-Status: GOOD (  17.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,195 +98,75 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 042/113] test: self: add dirfd tests
+Subject: [PATCH v2 090/113] lib: vsprintf: align documentation with current feature set
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Adding directory fds involved a bit of rework to the VFS layer.
-We have ramfs tests that check the previous behavior, so add now tests
-to check that path resolution in openat and statat work as one would expect.
-
-As we need a separate file system to test O_CHROOT, the test has a
-dependency on the devfs.
+The documentation lists modifiers unsupported by barebox and lacks
+modifiers that are actually supported. Align the documentation with the
+currently supported feature set and reorder it to the same order used
+inside the pointer() main switch statement.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- test/self/Kconfig  |   5 ++
- test/self/Makefile |   1 +
- test/self/dirfd.c  | 129 +++++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 135 insertions(+)
- create mode 100644 test/self/dirfd.c
+v1 -> v2:
+  - new patch
+---
+ lib/vsprintf.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/test/self/Kconfig b/test/self/Kconfig
-index 6b9a4bf4a6e4..33e478aee882 100644
---- a/test/self/Kconfig
-+++ b/test/self/Kconfig
-@@ -34,6 +34,7 @@ config SELFTEST_ENABLE_ALL
- 	select SELFTEST_OF_MANIPULATION
- 	select SELFTEST_ENVIRONMENT_VARIABLES if ENVIRONMENT_VARIABLES
- 	select SELFTEST_FS_RAMFS if FS_RAMFS
-+	select SELFTEST_DIRFD if FS_RAMFS && FS_DEVFS
- 	select SELFTEST_TFTP if FS_TFTP
- 	select SELFTEST_JSON if JSMN
- 	select SELFTEST_JWT if JWT
-@@ -73,6 +74,10 @@ config SELFTEST_FS_RAMFS
- 	bool "ramfs selftest"
- 	depends on FS_RAMFS
- 
-+config SELFTEST_DIRFD
-+	bool "dirfd selftest"
-+	depends on FS_RAMFS && FS_DEVFS
-+
- config SELFTEST_JSON
- 	bool "JSON selftest"
- 	depends on JSMN
-diff --git a/test/self/Makefile b/test/self/Makefile
-index 51131474f333..fbc186725487 100644
---- a/test/self/Makefile
-+++ b/test/self/Makefile
-@@ -8,6 +8,7 @@ obj-$(CONFIG_SELFTEST_PROGRESS_NOTIFIER) += progress-notifier.o
- obj-$(CONFIG_SELFTEST_OF_MANIPULATION) += of_manipulation.o of_manipulation.dtb.o
- obj-$(CONFIG_SELFTEST_ENVIRONMENT_VARIABLES) += envvar.o
- obj-$(CONFIG_SELFTEST_FS_RAMFS) += ramfs.o
-+obj-$(CONFIG_SELFTEST_DIRFD) += dirfd.o
- obj-$(CONFIG_SELFTEST_JSON) += json.o
- obj-$(CONFIG_SELFTEST_JWT) += jwt.o jwt_test.pem.o
- obj-$(CONFIG_SELFTEST_DIGEST) += digest.o
-diff --git a/test/self/dirfd.c b/test/self/dirfd.c
-new file mode 100644
-index 000000000000..20b54258715a
---- /dev/null
-+++ b/test/self/dirfd.c
-@@ -0,0 +1,129 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <common.h>
-+#include <fcntl.h>
-+#include <fs.h>
-+#include <string.h>
-+#include <linux/bitfield.h>
-+#include <unistd.h>
-+#include <bselftest.h>
-+
-+BSELFTEST_GLOBALS();
-+
-+#define expect(cond, res, fmt, ...) ({ \
-+	int __cond = (cond); \
-+	int __res = (res); \
-+	total_tests++; \
-+	if (__cond != __res) { \
-+		failed_tests++; \
-+		printf("%s:%d failed: %s == %d: " fmt "\n", \
-+		       __func__, __LINE__, #cond, __cond, ##__VA_ARGS__); \
-+	} \
-+	__cond == __res; \
-+})
-+
-+static void check_statat(const char *at, int dirfd, const char *prefix, unsigned expected)
-+{
-+	static const char *paths[] = { ".", "..", "zero", "dev" };
-+	struct stat s;
-+
-+	for (int i = 0; i < ARRAY_SIZE(paths); i++) {
-+		const char *path = paths[i];
-+		char *fullpath = NULL, *testpath = basprintf("%s%s", prefix, path);
-+		struct fs_device *fsdev1, *fsdev2;
-+		int ret;
-+
-+		ret = statat(dirfd, testpath, &s);
-+		if (!expect(ret == 0, FIELD_GET(BIT(2), expected),
-+			    "statat(%s, %s): %m", at, testpath))
-+			goto next;
-+
-+		fullpath = canonicalize_path(dirfd, testpath);
-+		if (!expect(fullpath != NULL, FIELD_GET(BIT(1), expected),
-+			    "canonicalize_path(%s, %s): %m", at, testpath))
-+			goto next;
-+
-+		if (!fullpath)
-+			goto next;
-+
-+		fsdev1 = get_fsdevice_by_path(AT_FDCWD, fullpath);
-+		if (!expect(IS_ERR_OR_NULL(fsdev1), false, "get_fsdevice_by_path(AT_FDCWD, %s)",
-+			    fullpath))
-+			goto next;
-+
-+		fsdev2 = get_fsdevice_by_path(dirfd, testpath);
-+		if (!expect(IS_ERR_OR_NULL(fsdev1), false, "get_fsdevice_by_path(%s, %s)",
-+			    at, testpath))
-+			goto next;
-+
-+		if (!expect(fsdev1 == fsdev2, true,
-+			    "get_fsdevice_by_path(%s, %s) != get_fsdevice_by_path(AT_FDCWD, %s)",
-+			    fullpath, at, testpath))
-+			goto next;
-+
-+		ret = strcmp_ptr(fsdev1->path, "/dev");
-+		if (!expect(ret == 0, FIELD_GET(BIT(0), expected),
-+			    "fsdev_of(%s)->path = %s != /dev", fullpath, fsdev1->path))
-+			goto next;
-+
-+next:
-+		expected >>= 3;
-+		free(testpath);
-+		free(fullpath);
-+	}
-+}
-+
-+static void do_test_dirfd(const char *at, int dirfd,
-+			  unsigned expected1, unsigned expected2,
-+			  unsigned expected3, unsigned expected4)
-+{
-+	if (dirfd < 0 && dirfd != AT_FDCWD)
-+		return;
-+
-+	check_statat(at, dirfd, "",             expected1);
-+	check_statat(at, dirfd, "./",           expected1);
-+	check_statat(at, dirfd, "/dev/",        expected2);
-+	check_statat(at, dirfd, "/dev/./",      expected2);
-+	check_statat(at, dirfd, "/dev/../dev/", expected2);
-+	check_statat(at, dirfd, "/",            expected3);
-+	check_statat(at, dirfd, "../",          expected4);
-+
-+	if (dirfd >= 0)
-+		close(dirfd);
-+}
-+
-+
-+static void test_dirfd(void)
-+{
-+	int fd;
-+
-+	fd = open("/", O_PATH);
-+	if (expect(fd < 0, false, "open(/, O_PATH) = %d", fd))
-+		close(fd);
-+
-+#define B(dot, dotdot, zero, dev) 0b##dev##zero##dotdot##dot
-+	/* We do fiften tests for every configuration
-+	 * for dir in ./ /dev / ../ ; do
-+	 *	for file in . .. zero dev ; do
-+	 *		test if file exists
-+	 *		test if file can be canonicalized
-+	 *		test if parent FS is mounted at /dev
-+	 *	done
-+	 * done
-+	 *
-+	 * The bits belows correspond to whether a test fails in the above loop
-+	 */
-+
-+	do_test_dirfd("AT_FDCWD", AT_FDCWD,
-+		      B(110,110,000,111), B(111,110,111,000),
-+		      B(110,110,000,111), B(110,110,000,111));
-+	do_test_dirfd("/dev", open("/dev", O_PATH),
-+		      B(111,110,111,000), B(111,110,111,000),
-+		      B(110,110,000,111), B(110,110,000,111));
-+	do_test_dirfd("/dev O_CHROOT", open("/dev", O_PATH | O_CHROOT),
-+		      B(111,111,111,000), B(000,000,000,000),
-+		      B(111,111,111,000), B(111,111,111,000));
-+}
-+bselftest(core, test_dirfd);
+diff --git a/lib/vsprintf.c b/lib/vsprintf.c
+index b12d04e37885..4458616e442b 100644
+--- a/lib/vsprintf.c
++++ b/lib/vsprintf.c
+@@ -472,8 +472,6 @@ char *device_node_string(char *buf, const char *end, const struct device_node *n
+  *
+  * Right now we handle:
+  *
+- * - 'I' [4] for IPv4 addresses printed in the usual way
+- *       IPv4 uses dot-separated decimal without leading 0's (1.2.3.4)
+  * - 'S' For symbolic direct pointers
+  * - 'U' For a 16 byte UUID/GUID, it prints the UUID/GUID in the form
+  *       "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+@@ -493,12 +491,18 @@ char *device_node_string(char *buf, const char *end, const struct device_node *n
+  *       correctness of the format string and va_list arguments.
+  * - 'a[pd]' For address types [p] phys_addr_t, [d] dma_addr_t and derivatives
+  *           (default assumed to be phys_addr_t, passed by reference)
++ * - 'I' [4] for IPv4 addresses printed in the usual way
++ *       IPv4 uses dot-separated decimal without leading 0's (1.2.3.4)
++ * - 'e' For formatting error pointers as string descriptions
++ * - 'OF' For a device tree node
++ * - 'h[CDN]' For a variable-length buffer, it prints it as a hex string with
++ *            a certain separator (' ' by default):
++ *              C colon
++ *              D dash
++ *              N no separator
++ * - 'JP' For a JSON path
+  * - 'M' For a 6-byte MAC address, it prints the address in the
+  *       usual colon-separated hex notation
+- *
+- * Note: The difference between 'S' and 'F' is that on ia64 and ppc64
+- * function pointers are really function descriptors, which contain a
+- * pointer to the real address.
+  */
+ static char *pointer(const char *fmt, char *buf, const char *end, const void *ptr,
+ 		     int field_width, int precision, int flags)
+@@ -573,10 +577,11 @@ static char *errno_string(char *buf, const char *end, int field_width, int preci
+  * @fmt: The format string to use
+  * @args: Arguments for the format string
+  *
+- * This function follows C99 vsnprintf, but has some extensions:
+- * %pS output the name of a text symbol
+- * %pF output the name of a function pointer
+- * %pR output the address range in a struct resource
++ * This function generally follows C99 vsnprintf, but has some
++ * extensions and a few limitations:
++ *
++ *  - ``%n`` is unsupported
++ *  - ``%p*`` is handled by pointer()
+  *
+  * The return value is the number of characters which would
+  * be generated for the given input, excluding the trailing
 -- 
 2.39.2
 
