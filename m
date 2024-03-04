@@ -1,81 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 21:20:55 +0100
+Delivery-date: Mon, 04 Mar 2024 21:20:56 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhEnu-008imh-39
+	id 1rhEnw-008inD-0I
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 21:20:54 +0100
+	Mon, 04 Mar 2024 21:20:56 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhEnu-0003pE-Cl
-	for lore@pengutronix.de; Mon, 04 Mar 2024 21:20:54 +0100
+	id 1rhEnv-0003pW-EU
+	for lore@pengutronix.de; Mon, 04 Mar 2024 21:20:56 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OJdoGDG9kcSeCLJB5TUEtw5S2mpKNfkJQKJi2ob3PAI=; b=r59KCfQ7UAiWPsFAzSSDFi1p7Q
-	fjXYTICMuZjsk7j11mPEgXmFZ0IOKvL7tbFlwiI4BlkJFt2wIdqz6gYnkQQ4/+RV5DOl5y6Mj6MXd
-	YCIpH7gLyit59mwuCCbkOaUKfxE/s3eSUQ7ImKDVKTf7+Xu3MY3G2L04ViNWcvNMPi2en4UFaa0VE
-	kXNTnwpwLEkvgMhhUI/fBn+vTNG4/zCIcbLhRo4ZBVsWE7XvTB7Qw1YqpryE2rcOvywZnsvjhZyBs
-	+dAOYv3MFUJJPS8f/jHh0MADSV9G9gy3DP8bjFjYnKMVYPUxvRkE8o7sQZXEuiUPtCk4nF0GtAkEF
-	g7k7CaeA==;
+	bh=cjqzUS1xROooqIcctG75eJr0/M16ABc1kuIsBCxWPJw=; b=jPs7DwinQXgRdBYfkvJJgF6jBZ
+	PVEPop2VHZrljRe05TWuuHLOH58JTMr7hLeno+oqGWNOjDEM1DMCY4lPUf5Q/cHFdtFWhtFG2UzEx
+	AV2oHBeV8MFqqyIsonjOQ3s2Tc+mJ0so9rrz2ghDxfqn8yG7YHmeOJqicqphlnCu4NgrvbbcvNlWY
+	r8whsDkpJ4BHObAEyP5P6mxs79UEU2ecNRlHTy0v0MMey7nF1Sctww+wIPOIA9DErtTkw+exo41UU
+	3U4xWbaaEAA/D90NRKW6FM3Z5bQ3KJX0OSnmJZeMFslHrDzLHoJA2T4JRGfGp6n3fde9rFFkc+pMx
+	4liO8dyA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhEnV-0000000AZUf-45c4;
-	Mon, 04 Mar 2024 20:20:29 +0000
-Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
+	id 1rhEnS-0000000AZRz-12O9;
+	Mon, 04 Mar 2024 20:20:26 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDab-0000000AIbA-2d30
+	id 1rhDaU-0000000AIVY-3hKQ
 	for barebox@bombadil.infradead.org;
-	Mon, 04 Mar 2024 19:03:05 +0000
+	Mon, 04 Mar 2024 19:02:58 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=OJdoGDG9kcSeCLJB5TUEtw5S2mpKNfkJQKJi2ob3PAI=; b=BxG2f2k51sACdpuro89qBooW+Q
-	hs2LnCwZRj7UvaE0ygF6XzVk+e3lqWwIhYGUzWeMYyATK2vzcYzhtpoJoqm6HbiALxbwF4ynqr5VT
-	mgArwvGHj4eeor3ZdU+EubnVQ5Ta6Ocqys2YP33172Bl2oNga/xTukxXa1TeVx11d0GehWYhKgsk+
-	W48bOv7oer5iTrC7qdf8VZWu747WMspHPdgj/mCGX8kD+Fn/H/NK79OZS3AgW2SMLgxhpGxC7y/a2
-	DlYM6VFM+xzhTm0QH8+cdxdwMxvWTWj0uGdZliusjHYavf7fZo7RZdLILY5D4f29gyrdtfGkjIFl9
-	aCnmQNLQ==;
+	bh=cjqzUS1xROooqIcctG75eJr0/M16ABc1kuIsBCxWPJw=; b=mJ9WivRRB8jQHE/0b9UarEisAh
+	jMrBoun/dhW9mL/Czwh5+1sq/ee1U/AmHdhVz8TJlg6xpoR9Cpq5cRp02d/oroxJ478xg+FdU9Rpy
+	8VZMSK4c59HHVG/UUJaYmqLp6DkIqAItuViZv7K9ye4yMHNcSnj7lqn34RoASda15l46A/oKNiMFc
+	36uumEnSWqvX2QP9pAIu7gp8fLlN3PM7PoaKaDcoZJCXIZlvogXK8QHLEaUuKmERh5GYKtMgDHxaN
+	605I85/Eo0dVcTYvUqsgEcHohmOisTg2FnTbpDgNmZYcftLZp+IwiH89vF422bE/jtkjPg0uf87E6
+	w8e7+d1w==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by casper.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaV-00000002BSt-1ITw
+	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaN-000000051w3-1sWI
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:03:04 +0000
+	Mon, 04 Mar 2024 19:02:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaG-00067A-32; Mon, 04 Mar 2024 20:02:44 +0100
+	id 1rhDaE-00062p-Lv; Mon, 04 Mar 2024 20:02:42 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaF-004PJJ-Je; Mon, 04 Mar 2024 20:02:43 +0100
+	id 1rhDaE-004PHq-7I; Mon, 04 Mar 2024 20:02:42 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYN-00Ed9V-0c;
-	Mon, 04 Mar 2024 20:00:47 +0100
+	id 1rhDYN-00Ed9V-22;
+	Mon, 04 Mar 2024 20:00:48 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 20:00:17 +0100
-Message-Id: <20240304190038.3486881-93-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:27 +0100
+Message-Id: <20240304190038.3486881-103-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190259_465338_A3397DC8 
-X-CRM114-Status: GOOD (  10.67  )
+X-CRM114-CacheID: sfid-20240304_190251_569040_8E232EAB 
+X-CRM114-Status: GOOD (  11.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,59 +98,40 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 092/113] lib: string: import Linux strreplace helper
+Subject: [PATCH v2 102/113] efi: devicepath: drop underscores in hex constants
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This helper replaces all occurrences of a given character in a string.
+The macros couldn't be used before as they would fail to parse, but we
+will start using BBS_TYPE_UNKNOWN.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/linux/string.h |  1 +
- lib/string.c           | 21 +++++++++++++++++++++
- 2 files changed, 22 insertions(+)
+ include/efi/device-path.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/string.h b/include/linux/string.h
-index 32ce56939699..0d046f783280 100644
---- a/include/linux/string.h
-+++ b/include/linux/string.h
-@@ -115,6 +115,7 @@ extern char * skip_spaces(const char *);
- extern char *strim(char *);
+diff --git a/include/efi/device-path.h b/include/efi/device-path.h
+index b7dc518859ac..91c8ce57c69c 100644
+--- a/include/efi/device-path.h
++++ b/include/efi/device-path.h
+@@ -177,7 +177,7 @@ struct device_logical_unit_device_path {
+ 	u8 Lun;			/* Logical Unit Number */
+ };
  
- void *memchr_inv(const void *start, int c, size_t bytes);
-+char *strreplace(char *str, char old, char new);
+-#define MSG_USB_CLASS_DP                0x0_f
++#define MSG_USB_CLASS_DP                0x0f
+ struct usb_class_device_path {
+ 	struct efi_device_path header;
+ 	u16 vendor_id;
+@@ -385,7 +385,7 @@ struct bbs_bbs_device_path {
+ #define BBS_TYPE_USB                    0x05
+ #define BBS_TYPE_EMBEDDED_NETWORK       0x06
+ #define BBS_TYPE_DEV                    0x80
+-#define BBS_TYPE_UNKNOWN                0x_fF
++#define BBS_TYPE_UNKNOWN                0xff
  
- /**
-  * memzero_explicit - Fill a region of memory (e.g. sensitive
-diff --git a/lib/string.c b/lib/string.c
-index 695e50bc8fc1..374f326143a7 100644
---- a/lib/string.c
-+++ b/lib/string.c
-@@ -1028,3 +1028,24 @@ char *strjoin(const char *separator, char **arr, size_t arrlen)
- 	return buf;
- }
- EXPORT_SYMBOL(strjoin);
-+
-+/**
-+ * strreplace - Replace all occurrences of character in string.
-+ * @str: The string to operate on.
-+ * @old: The character being replaced.
-+ * @new: The character @old is replaced with.
-+ *
-+ * Replaces the each @old character with a @new one in the given string @str.
-+ *
-+ * Return: pointer to the string @str itself.
-+ */
-+char *strreplace(char *str, char old, char new)
-+{
-+	char *s = str;
-+
-+	for (; *s; ++s)
-+		if (*s == old)
-+			*s = new;
-+	return str;
-+}
-+EXPORT_SYMBOL(strreplace);
+ 
+ #define EFI_DP_TYPE_MASK			0x7f
 -- 
 2.39.2
 
