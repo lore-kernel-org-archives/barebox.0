@@ -1,81 +1,66 @@
-Delivery-date: Mon, 04 Mar 2024 20:08:37 +0100
+Delivery-date: Mon, 04 Mar 2024 20:08:39 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDfx-008dXB-0Y
+	id 1rhDfz-008dXb-1u
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:08:37 +0100
+	Mon, 04 Mar 2024 20:08:39 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDfv-0003T0-Vg
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:08:37 +0100
+	id 1rhDfy-0003UT-EZ
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:08:39 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=whCCPk5eMtB2ZPa9nv8ENpgUZGk8AyvwbzqjOZFaJbo=; b=auYx9jciV5Rb+Pz3CzlXH0Sopw
-	z5Bm83AbKjSMoMBS33BJbec9QkArbGyncyYguN3OM28IyxlUb28FHq7ZSUoDceZSUxo1gIf3XPzfK
-	nn3A2rhrYmbFp7romvjaJ1Sqt4FHPeo59qSvq5/tXVGjgjfIdCN/7ZKNmbfZmpdRZsTy6PSPfaaR1
-	UlJy6gSzMfzKmtlMlUG/z5ajC+tbIaL8cf6FGGejHjq35gnm1pt488raYjklbUAdOZRAB5zdeypnl
-	urG/1Z3qIjqBZtMD8UZjiA9KAz05RhXL5M2MGlzcVVv5+/28kgsIiE78ppKFcWkJQjTElhhQ1lLdY
-	loiclU9Q==;
+	bh=cIYvhfeLu4bEKJxsw2DmK9OXDcqGAhl6CkcVh3+TDiw=; b=WCPlOpNwOctmoW7BlWe5ZS1VSB
+	si/Tplk2k3CVYLkkMDwWZU2muqg0ztTwFYIADwsX4xIZ320cJxA84xjMUpo7oCkmsVoz0wK4Tlcnt
+	HCNi3JpKk6c7nCskHOh+5IHfC5dA+jE54BT2w+tgvDJAHSNggSVF6M7nB0/RIMUu6LAhdYAoLh8nH
+	wKFHJiIGVQT6IBaNQyzeKLbU644mUwD7U+j+HIU9Hw7QrVukAd+e0KfA8npe0y5Utg2PyUmQEgCkq
+	44E1NNbV9AdSUiLz3zkQdrY63b++fvJEGmI9pgqKM4oaSlKa9jHPL9EjOoaDesgEdfViMq+bhKPrG
+	Su9SFSsg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDfJ-0000000ALmD-4Bfl;
-	Mon, 04 Mar 2024 19:07:58 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
-	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaX-0000000AIXO-01cx
-	for barebox@bombadil.infradead.org;
-	Mon, 04 Mar 2024 19:03:01 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-Type:Content-ID:Content-Description;
-	bh=whCCPk5eMtB2ZPa9nv8ENpgUZGk8AyvwbzqjOZFaJbo=; b=HI6xOkQhwldrmNchrRWWaC5g05
-	3CMA+/2BAmQA9GaFURJZumfAH9xvnJKZ5OC9i0OPQLJcmkrA9KKL+SSmEGycHI3+443OdQd54f2Z0
-	SBSbTKbGWfAyWWg/xXLX9fstQCbAwoKgvQy4LZuocI4bl4uxsb3/0jLg01zyULn2jlLb51ezc7XAP
-	qRyNWfkOiJoXrygZvbS4dUsd562kBbgKPZ7bdIJzgB+8GuMN4xmbE7FEvpKekL7ISkZWgaQyyAktT
-	72fEATdOp9lllALUjmWA3npboLOnV3mEW1SX+oc8rLf7K0vTSQLD3VgJlmdVjxBwtKTGPIdc5ZG2q
-	dDSmWLLA==;
+	id 1rhDfN-0000000ALpz-1Zz5;
+	Mon, 04 Mar 2024 19:08:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaQ-000000051vk-1b5f
+	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaQ-0000000AIKk-3gZJ
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:02:59 +0000
+	Mon, 04 Mar 2024 19:03:00 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaH-0006Bw-M4; Mon, 04 Mar 2024 20:02:45 +0100
+	id 1rhDaH-0006BL-F2; Mon, 04 Mar 2024 20:02:45 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaH-004PKq-2S; Mon, 04 Mar 2024 20:02:45 +0100
+	id 1rhDaG-004PKk-Us; Mon, 04 Mar 2024 20:02:44 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYN-00Ed9V-1K;
-	Mon, 04 Mar 2024 20:00:47 +0100
+	id 1rhDYK-00Ed9V-1c;
+	Mon, 04 Mar 2024 20:00:45 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 20:00:22 +0100
-Message-Id: <20240304190038.3486881-98-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 19:59:17 +0100
+Message-Id: <20240304190038.3486881-33-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190254_551332_E653AD4F 
-X-CRM114-Status: GOOD (  13.74  )
+X-CRM114-CacheID: sfid-20240304_110255_275976_516B383C 
+X-CRM114-Status: GOOD (  11.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,76 +83,69 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 097/113] commands: add cpuinfo -s option for stacktrace
+Subject: [PATCH v2 032/113] fs: remove unused member from struct nameidata
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-While a call to dump_stack() is easily hacked into the code, it can be
-useful during development to just print the stacktrace from the shell,
-e.g. to verify that kallsyms sharing for EFI works as intended.
-
-Add an option to cpuinfo to provide this functionality.
+A number of members in the struct are either unused or only ever written
+and never read. Drop them to tidy up the code.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/cpu/cpuinfo.c | 25 +++++++++++++++++++++++--
- 1 file changed, 23 insertions(+), 2 deletions(-)
+ fs/fs.c | 9 ---------
+ 1 file changed, 9 deletions(-)
 
-diff --git a/arch/arm/cpu/cpuinfo.c b/arch/arm/cpu/cpuinfo.c
-index aea50e80d194..2d3fe2ac8d0c 100644
---- a/arch/arm/cpu/cpuinfo.c
-+++ b/arch/arm/cpu/cpuinfo.c
-@@ -4,6 +4,7 @@
- /* cpuinfo.c - Show information about cp15 registers */
+diff --git a/fs/fs.c b/fs/fs.c
+index ca1bcef1adf0..be0b38d8bc30 100644
+--- a/fs/fs.c
++++ b/fs/fs.c
+@@ -1605,21 +1605,16 @@ enum {WALK_FOLLOW = 1, WALK_MORE = 2};
+ struct nameidata {
+ 	struct path	path;
+ 	struct qstr	last;
+-	struct inode	*inode; /* path.dentry.d_inode */
+ 	unsigned int	flags;
+-	unsigned	seq, m_seq;
+ 	int		last_type;
+ 	unsigned	depth;
+ 	int		total_link_count;
+ 	struct saved {
+ 		struct path link;
+ 		const char *name;
+-		unsigned seq;
+ 	} *stack, internal[EMBEDDED_LEVELS];
+ 	struct filename	*name;
+-	struct nameidata *saved;
+ 	struct inode	*link_inode;
+-	unsigned	root_seq;
+ };
  
- #include <common.h>
-+#include <getopt.h>
- #include <command.h>
- #include <complete.h>
- #include <asm/system.h>
-@@ -49,9 +50,23 @@ static int do_cpuinfo(int argc, char *argv[])
- {
- 	unsigned long mainid, cache, cr;
- 	char *architecture, *implementer;
--	int i;
-+	int opt, i;
- 	int cpu_arch;
+ struct filename {
+@@ -1879,8 +1874,6 @@ static int follow_dotdot(struct nameidata *nd)
  
-+	while ((opt = getopt(argc, argv, "s")) > 0) {
-+		switch (opt) {
-+		case 's':
-+			if (!IS_ENABLED(CONFIG_ARCH_HAS_STACK_DUMP))
-+				return -ENOSYS;
-+
-+			printf("SP: 0x%08lx\n", get_sp());
-+			dump_stack();
-+			return 0;
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
- #ifdef CONFIG_CPU_64v8
- 	__asm__ __volatile__(
- 		"mrs	%0, midr_el1\n"
-@@ -255,10 +270,16 @@ static int do_cpuinfo(int argc, char *argv[])
+ 	follow_mount(&nd->path);
+ 
+-	nd->inode = nd->path.dentry->d_inode;
+-
  	return 0;
  }
  
-+BAREBOX_CMD_HELP_START(cpuinfo)
-+BAREBOX_CMD_HELP_TEXT("Shows misc info about CPU")
-+BAREBOX_CMD_HELP_OPT ("-s", "print call stack info (if supported)")
-+BAREBOX_CMD_HELP_END
-+
- BAREBOX_CMD_START(cpuinfo)
- 	.cmd            = do_cpuinfo,
- 	BAREBOX_CMD_DESC("show info about CPU")
-+	BAREBOX_CMD_OPTS("[-s]")
- 	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
- 	BAREBOX_CMD_COMPLETE(empty_complete)
-+	BAREBOX_CMD_HELP(cmd_cpuinfo_help)
- BAREBOX_CMD_END
--
+@@ -1961,7 +1954,6 @@ static inline int step_into(struct nameidata *nd, struct path *path,
+ 	   !(flags & WALK_FOLLOW || nd->flags & LOOKUP_FOLLOW)) {
+ 		/* not a symlink or should not follow */
+ 		path_to_nameidata(path, nd);
+-		nd->inode = inode;
+ 		return 0;
+ 	}
+ 
+@@ -2185,7 +2177,6 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
+ 		return s;
+ 	} else {
+ 		get_pwd(&nd->path);
+-		nd->inode = nd->path.dentry->d_inode;
+ 		return s;
+ 	}
+ 
 -- 
 2.39.2
 
