@@ -1,66 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:07:12 +0100
+Delivery-date: Mon, 04 Mar 2024 20:07:16 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDea-008dOm-2o
+	id 1rhDee-008dPb-0t
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:07:12 +0100
+	Mon, 04 Mar 2024 20:07:16 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDea-0002Ne-7h
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:07:12 +0100
+	id 1rhDed-0002QA-67
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:07:16 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vwSEaZfeWK2yjavStTZ5NcU45c+O7j+2yg6sdDLZbB8=; b=4vWoCphuPL7Ei3u2l02oW27rio
-	OjklHfrBsnXleofXlFPE0adf/stI6osGIbgA83uOPY/hs8nXUegBYN/HhCkYrTRcqe7LvTG7UG2m1
-	/CrX4T0UncnT6ld+LFxWDC4wCnfwdXEDQiVXoztxGwO0BEYSwiEOcBlwxy785tT/+zB3BD7NR6W7Z
-	Jm4d61mwlV7hnMjeXWjUAdgh9E3hw50DO7Dh980sr7IxAWiSsJp2mQDmC2H7kZ52TF+ADYJC+0bwA
-	FgSG8jtZ/gMVkOrF6bHk5QeFLpJlZMXsse8ZCnZilldh398N85TxN437e4de/YBCAoOJAqD2TwO8A
-	Ni6zPriw==;
+	bh=JoVfk6QoQXZqinFoR0FuejC/HKzmVqYaiG3YeJrr4X0=; b=4yxbp4y3a27G032/vNpQXm9eQx
+	MBVDj9nrhmeKrPdnYO15q4Dhc2ELw/9Amgkxtmvx+nuJlup4evtGcwEkgUqYzszrdUFbTjuzc4rLU
+	DbIrggmxnkaRZqW/h29ruBHGZhvqGYKdI5CbhvObztUmqPK9RzxH8ouMAAgncjrqjJBm6/3FJGn6w
+	2s50W5+Wa/4QNrx4BVRWad21W0BMgs6qg7d9Sc3bLoSEkXPjZxYzplrruYeIc+sLhxaGA+Kz+uY9p
+	viAomH2lX1m2X+vtrzHtB+o5t/856qqjEuxXbBVV4Eazq8aP+pCAKaslkK7xGaQvXsV8MebCDuJUH
+	87BK52OQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDe0-0000000AKzx-3X7u;
-	Mon, 04 Mar 2024 19:06:36 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1rhDe3-0000000AL3f-13Sv;
+	Mon, 04 Mar 2024 19:06:40 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaM-0000000AIHL-0PHz
-	for barebox@lists.infradead.org;
+	id 1rhDaU-0000000AIV4-1ggl
+	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:02:58 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
+	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-Type:Content-ID:Content-Description;
+	bh=JoVfk6QoQXZqinFoR0FuejC/HKzmVqYaiG3YeJrr4X0=; b=En+EDuT4xVwDo2QyU9ggzGy5I6
+	PdOMlzKgEql1GbRk2IDXkQyINAN2gRZ6EguluqATcUDSCczPoFD42XJdbAdipHBfhGEaYM7iilGUf
+	+FBCCGF5iK/rFG+FiLF552rmK3g7iIwqucziXqW39wUpyo5W2NSzygnoc5aPVSYVp0+45NPRpM5UO
+	mA6Pw7csDrisnMyXUf1lE08sxRQBj0AgLqSUUgS42JjmK0Mp6ln9QzF81tw9Onc2hNET4Cq+ETJ1y
+	tnDTYyJwmwjldJMsYZZR3giVJfIevKTRxvsMG6EfEJI8h04upnnCqWt1OAAnw7diCYa1uNPM74onZ
+	btSNJV1g==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaN-000000051vn-0lno
+	for barebox@lists.infradead.org;
+	Mon, 04 Mar 2024 19:02:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaI-0006H2-Q5; Mon, 04 Mar 2024 20:02:46 +0100
+	id 1rhDaE-00063G-OG; Mon, 04 Mar 2024 20:02:42 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaI-004PM5-9B; Mon, 04 Mar 2024 20:02:46 +0100
+	id 1rhDaE-004PHy-B1; Mon, 04 Mar 2024 20:02:42 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYK-00Ed9V-1u;
-	Mon, 04 Mar 2024 20:00:45 +0100
+	id 1rhDYN-00Ed9V-12;
+	Mon, 04 Mar 2024 20:00:47 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:19 +0100
-Message-Id: <20240304190038.3486881-35-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:20 +0100
+Message-Id: <20240304190038.3486881-96-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_110250_280413_86E62D8B 
-X-CRM114-Status: GOOD (  12.70  )
+X-CRM114-CacheID: sfid-20240304_190251_379831_E5A4306F 
+X-CRM114-Status: GOOD (  10.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,49 +98,33 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 034/113] fs: set current working dir directly when mounting root
+Subject: [PATCH v2 095/113] efi: payload: protect against buggy EFI implementations
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The default current working directory is the root directory, but this
-can't be initialized statically, because the root directory is only
-mounted at runtime. Therefore, the get_pwd accessor initializes the
-current working directory on first access.
-
-Instead we could just initialize them when we mount the root directory
-and simplify the code a tiny bit.
+barebox' EFI loaded image handle should have a device path, but on the
+off-case that it doesn't, we should just return an error code instead of
+dereferencing a null pointer.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ efi/payload/init.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index c034f2cb9a0d..bf527f1b2d9b 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -1651,11 +1651,6 @@ static inline void get_root(struct path *root)
+diff --git a/efi/payload/init.c b/efi/payload/init.c
+index 0f518d4954cb..5701d7ad6dcf 100644
+--- a/efi/payload/init.c
++++ b/efi/payload/init.c
+@@ -328,6 +328,9 @@ static int efi_postcore_init(void)
+ 	loaded_image_dp = device_path_from_handle(efi_loaded_image->device_handle);
+ 	pr_debug("loaded-image: %pD\n", loaded_image_dp);
  
- static inline void get_pwd(struct path *pwd)
- {
--	if (!cwd_dentry) {
--		cwd_dentry = d_root;
--		cwd_mnt = mnt_root;
--	}
--
- 	pwd->dentry = cwd_dentry;
- 	pwd->mnt = cwd_mnt;
- 
-@@ -3211,6 +3206,9 @@ int mount(const char *device, const char *fsname, const char *pathname,
- 		fsdev->vfsmount.mountpoint = d_root;
- 		fsdev->vfsmount.parent = &fsdev->vfsmount;
- 		fsdev->path = xstrdup("/");
++	if (!loaded_image_dp)
++		return -EINVAL;
 +
-+		cwd_dentry = d_root;
-+		cwd_mnt = mnt_root;
- 	}
- 
- 	fsdev->vfsmount.mnt_root = fsdev->sb.s_root;
+ 	uuid = device_path_to_partuuid(loaded_image_dp);
+ 	if (uuid) {
+ 		wchar_t *uuid16 = xstrdup_char_to_wchar(uuid);
 -- 
 2.39.2
 
