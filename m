@@ -1,81 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:03:52 +0100
+Delivery-date: Mon, 04 Mar 2024 20:03:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDbM-008d28-1U
+	id 1rhDbP-008d2c-19
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:03:52 +0100
+	Mon, 04 Mar 2024 20:03:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDbK-0007O7-U9
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:03:52 +0100
+	id 1rhDbN-0007RL-3K
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:03:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AoVUmHmLbzzbdQ/IbUYjHeGH7Z67c3K3JvsqYcS5hyA=; b=RwE90a/rBROkzWBzcfn4bcwtgG
-	uPdHr1GKnCXxjwh++q+p6MeEQvr4JvyCMFezFx/rJ3Um/07ZB1DwFcmgXGPgy/do5fN+uz4sxL0kA
-	VGRyqFmLBaFWRpagDYOBoi3gRDtIXeYeTSR8qSZvJUCL4ixcVrnl0DJFaTgCU0pPfDWqC2ZwLm40s
-	ab2ruagSMCHR7LpHQ2WOAqAGgLmoxo/l7dbs6Yr4U7bEUqYd6ZlEgv8dxU7myrTnhGxdCOQcOvr7C
-	X+aB3pQ4iDTcsmPO2snFdPS5MAmEbe7bymv8sFN5gRQGBI3nOwDFn9hKwkqk6lu1TAhGwJ2svszID
-	qZSSNDAA==;
+	bh=PgqphMD7sHovJFMrOoqHojQc/tG7TPw/QiFhVSAyCWU=; b=Ce/+v2fipbHFZV0i7HhkKog7Go
+	aNUXT9J0GphPmGRazN/PMgblHfX6aZDTx4ewQw4HQk03i03Ip+xD4PrpbYfOoS9NWRFITn9nETqGD
+	KxBaTK0XAeI0v7Kxc+cOm867SN9njoqWcDnsLHSMTUHb6wZqe+TZ3PA30PZc39nJ/e/MZWT0FXGtu
+	zzkwf2pqVingbNOJnoPws74rGXF2fxym5xEsa2fHhFhJ44eGoXmUfCAQqe1o8r/Rf/fzBhQVVu9gX
+	o8SXx2FObytMKaSadxICVZOmmOT8BgIiCzNmNIAEFdSCFywMOaX6T5zEybO0q/WYP2QPEmD3P+wfA
+	6lMRvgfw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDak-0000000AIib-0m61;
-	Mon, 04 Mar 2024 19:03:14 +0000
+	id 1rhDan-0000000AIlW-14Fh;
+	Mon, 04 Mar 2024 19:03:17 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaL-0000000AINe-0B76
+	id 1rhDaK-0000000AINf-45bJ
 	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:02:49 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
 	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=AoVUmHmLbzzbdQ/IbUYjHeGH7Z67c3K3JvsqYcS5hyA=; b=JlLac4MlUD30PZMZoT1sq9MQu3
-	A2t8hf6HhMiHSo4OhwBvcbvJkGzrjmjc4AOcoHR1o3hMOOfAV0rw9myi6d+VXKEnq4RrZRwizMEZk
-	jybrDejXHjR6Cx0Me2FR+8iwKOWHiavQRS5rbGsDHndnfOGbc3tjswuYSD783pO3UZl5unnJKHqIN
-	3s7czWll8J7JKK5o5NvujjkJ6siYjHiTBLeujftv2pm9gDS9ybwE+QnvqkWvTeNJoAFeu+ZSNa/sz
-	8M29nRNBKVxwBKhfaoKzHqkY5/eX+DlEnckZjRRBd4+SE+kKCm4Rli3s+JC8qL8RoeR19vIQ4noy5
-	BKyRB7Pg==;
+	bh=PgqphMD7sHovJFMrOoqHojQc/tG7TPw/QiFhVSAyCWU=; b=clEn1QMyvExRDuxGrNb2CDHpUI
+	FxYnWTnlo/7iQWOthDmk/kX5Hsdw5Kkm+GUOn2+JaY9iLLUGsKVsYLjb4szWG25hN5pe2gFtt8KMb
+	1VT3E31viYcrhXf3EfQ0yCuqOgYpApntUXjOUSR06MDUbQL+bPsR6twcNeeXNASOYwqbFGH7Mpvs/
+	Lsi06MH/JExAPMNm5NdzDMhlgVil3TZRYda9B2Jtubnup6BOl0XDoLdVHdaILER7G0b8QVh9nwt9b
+	UlbXCwFJtIoxs5yNo7OlCpkYARaO80IkMyBDZTr7pjhwK6pf6RcmjK0bMwYpwWflNQEAViAXZXJ2A
+	gGXJAbQA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaF-000000051vg-2Ovs
+	id 1rhDaF-000000051vZ-2PBG
 	for barebox@lists.infradead.org;
 	Mon, 04 Mar 2024 19:02:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaE-00061M-7j; Mon, 04 Mar 2024 20:02:42 +0100
+	id 1rhDaD-0005zx-PP; Mon, 04 Mar 2024 20:02:41 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaD-004PHO-Pt; Mon, 04 Mar 2024 20:02:41 +0100
+	id 1rhDaD-004PGs-BF; Mon, 04 Mar 2024 20:02:41 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYN-00Ed9V-0K;
+	id 1rhDYN-00Ed9V-0C;
 	Mon, 04 Mar 2024 20:00:47 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 20:00:15 +0100
-Message-Id: <20240304190038.3486881-91-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:14 +0100
+Message-Id: <20240304190038.3486881-90-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190243_937433_7EED0781 
-X-CRM114-Status: GOOD (  17.11  )
+X-CRM114-CacheID: sfid-20240304_190243_939072_71DE4ECA 
+X-CRM114-Status: GOOD (  19.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,75 +98,165 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 090/113] lib: vsprintf: align documentation with current feature set
+Subject: [PATCH v2 089/113] efi: devicepath: implement device_path_to_str_buf variant
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The documentation lists modifiers unsupported by barebox and lacks
-modifiers that are actually supported. Align the documentation with the
-currently supported feature set and reorder it to the same order used
-inside the pointer() main switch statement.
+Existing device_path_to_str() formats a buffer once to determines the amount
+of space necessary and then allocates it and formats it again.
+
+To make this functionality available as printf format specifier, we need
+a variant that doesn't allocate memory and that's preferably single
+pass, which we add here.
+
+No functional change for users of device_path_to_str().
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v1 -> v2:
-  - new patch
----
- lib/vsprintf.c | 25 +++++++++++++++----------
- 1 file changed, 15 insertions(+), 10 deletions(-)
+ efi/devicepath.c | 71 +++++++++++++++++++++++++++++++++++-------------
+ include/efi.h    |  1 +
+ 2 files changed, 53 insertions(+), 19 deletions(-)
 
-diff --git a/lib/vsprintf.c b/lib/vsprintf.c
-index b12d04e37885..4458616e442b 100644
---- a/lib/vsprintf.c
-+++ b/lib/vsprintf.c
-@@ -472,8 +472,6 @@ char *device_node_string(char *buf, const char *end, const struct device_node *n
-  *
-  * Right now we handle:
-  *
-- * - 'I' [4] for IPv4 addresses printed in the usual way
-- *       IPv4 uses dot-separated decimal without leading 0's (1.2.3.4)
-  * - 'S' For symbolic direct pointers
-  * - 'U' For a 16 byte UUID/GUID, it prints the UUID/GUID in the form
-  *       "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-@@ -493,12 +491,18 @@ char *device_node_string(char *buf, const char *end, const struct device_node *n
-  *       correctness of the format string and va_list arguments.
-  * - 'a[pd]' For address types [p] phys_addr_t, [d] dma_addr_t and derivatives
-  *           (default assumed to be phys_addr_t, passed by reference)
-+ * - 'I' [4] for IPv4 addresses printed in the usual way
-+ *       IPv4 uses dot-separated decimal without leading 0's (1.2.3.4)
-+ * - 'e' For formatting error pointers as string descriptions
-+ * - 'OF' For a device tree node
-+ * - 'h[CDN]' For a variable-length buffer, it prints it as a hex string with
-+ *            a certain separator (' ' by default):
-+ *              C colon
-+ *              D dash
-+ *              N no separator
-+ * - 'JP' For a JSON path
-  * - 'M' For a 6-byte MAC address, it prints the address in the
-  *       usual colon-separated hex notation
-- *
-- * Note: The difference between 'S' and 'F' is that on ia64 and ppc64
-- * function pointers are really function descriptors, which contain a
-- * pointer to the real address.
-  */
- static char *pointer(const char *fmt, char *buf, const char *end, const void *ptr,
- 		     int field_width, int precision, int flags)
-@@ -573,10 +577,11 @@ static char *errno_string(char *buf, const char *end, int field_width, int preci
-  * @fmt: The format string to use
-  * @args: Arguments for the format string
-  *
-- * This function follows C99 vsnprintf, but has some extensions:
-- * %pS output the name of a text symbol
-- * %pF output the name of a function pointer
-- * %pR output the address range in a struct resource
-+ * This function generally follows C99 vsnprintf, but has some
-+ * extensions and a few limitations:
+diff --git a/efi/devicepath.c b/efi/devicepath.c
+index d562bf482955..0c2fc4d86927 100644
+--- a/efi/devicepath.c
++++ b/efi/devicepath.c
+@@ -6,11 +6,13 @@
+ #include <malloc.h>
+ #include <string.h>
+ #include <wchar.h>
++#include <linux/overflow.h>
+ #include <efi/device-path.h>
+ 
+ struct string {
+ 	char *str;
+-	int len;
++	unsigned allocated;
++	unsigned used;
+ };
+ 
+ char *cprintf(struct string *str, const char *fmt, ...)
+@@ -18,17 +20,22 @@ char *cprintf(struct string *str, const char *fmt, ...)
+ 
+ char *cprintf(struct string *str, const char *fmt, ...)
+ {
++	void *buf = str->str;
++	unsigned bufsize = 0;
+ 	va_list args;
+ 	int len;
+ 
++	if (str->str) {
++		buf += str->used;
++		if (check_sub_overflow(str->allocated, str->used, &bufsize))
++			bufsize = 0;
++	}
++
+ 	va_start(args, fmt);
+-	if (str->str)
+-		len = vsprintf(str->str + str->len, fmt, args);
+-	else
+-		len = vsnprintf(NULL, 0, fmt, args);
++	len = vsnprintf(buf, bufsize, fmt, args);
+ 	va_end(args);
+ 
+-	str->len += len;
++	str->used += len;
+ 
+ 	return NULL;
+ }
+@@ -717,8 +724,8 @@ struct {
+ 	0, 0, NULL}
+ };
+ 
+-static int __device_path_to_str(struct string *str,
+-				const struct efi_device_path *dev_path)
++static void __device_path_to_str(struct string *str,
++				 const struct efi_device_path *dev_path)
+ {
+ 	const struct efi_device_path *dev_path_node;
+ 	void (*dump_node) (struct string *, const void *);
+@@ -743,32 +750,58 @@ static int __device_path_to_str(struct string *str,
+ 		if (!dump_node)
+ 			dump_node = dev_path_node_unknown;
+ 
+-		if (str->len && dump_node != dev_path_end_instance)
++		if (str->used && dump_node != dev_path_end_instance)
+ 			cprintf(str, "/");
+ 
+ 		dump_node(str, dev_path_node);
+ 
+ 		dev_path_node = next_device_path_node(dev_path_node);
+ 	}
+-
+-	return 0;
+ }
+ 
++/**
++ * device_path_to_str_buf() - formats a device path into a preallocated buffer
 + *
-+ *  - ``%n`` is unsupported
-+ *  - ``%p*`` is handled by pointer()
-  *
-  * The return value is the number of characters which would
-  * be generated for the given input, excluding the trailing
++ * @dev_path:	The EFI device path to format
++ * @buf:	The buffer to format into or optionally NULL if @len is zero
++ * @len:	The number of bytes that may be written into @buf
++ * Return:	total number of bytes that are required to store the formatted
++ *		result, excluding the terminating NUL byte, which is always
++ *		written.
++ */
++size_t device_path_to_str_buf(const struct efi_device_path *dev_path,
++			      char *buf, size_t len)
++{
++	struct string str = {
++		.str = buf,
++		.allocated = len,
++	};
++
++	__device_path_to_str(&str, dev_path);
++
++	return str.used;
++}
++
++/**
++ * device_path_to_str() - formats a device path into a newly allocated buffer
++ *
++ * @dev_path:	The EFI device path to format
++ * Return:	A pointer to the nul-terminated formatted device path.
++ */
+ char *device_path_to_str(const struct efi_device_path *dev_path)
+ {
+-	struct string str = {};
++	void *buf;
++	size_t size;
+ 
+-	__device_path_to_str(&str, dev_path);
++	size = device_path_to_str_buf(dev_path, NULL, 0);
+ 
+-	str.str = malloc(str.len + 1);
+-	if (!str.str)
++	buf = malloc(size + 1);
++	if (!buf)
+ 		return NULL;
+ 
+-	str.len = 0;
++	device_path_to_str_buf(dev_path, buf, size + 1);
+ 
+-	__device_path_to_str(&str, dev_path);
+-
+-	return str.str;
++	return buf;
+ }
+ 
+ u8 device_path_to_type(const struct efi_device_path *dev_path)
+diff --git a/include/efi.h b/include/efi.h
+index 6795dc414c3c..45e4080fac08 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -880,6 +880,7 @@ struct efi_simple_text_input_protocol {
+ 
+ const struct efi_device_path *device_path_from_handle(efi_handle_t handle);
+ char *device_path_to_str(const struct efi_device_path *dev_path);
++size_t device_path_to_str_buf(const struct efi_device_path *dev_path, char buf[], size_t size);
+ u8 device_path_to_type(const struct efi_device_path *dev_path);
+ u8 device_path_to_subtype(const struct efi_device_path *dev_path);
+ char *device_path_to_partuuid(const struct efi_device_path *dev_path);
 -- 
 2.39.2
 
