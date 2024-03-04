@@ -1,66 +1,66 @@
-Delivery-date: Mon, 04 Mar 2024 20:05:51 +0100
+Delivery-date: Mon, 04 Mar 2024 20:05:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDdH-008dF1-1f
+	id 1rhDdL-008dFi-1X
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:05:51 +0100
+	Mon, 04 Mar 2024 20:05:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDdF-0000x0-Dq
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:05:51 +0100
+	id 1rhDdJ-00011P-Ku
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:05:55 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NRNN8xXirWR2tyYc8C5pD+KLSwNV0GLRcF4oy3clrvI=; b=4OEgEZen6FLjPzvyRL2UlaO7dE
-	QBlD81FNlzSvDmRuhOv5mDoJQLb+iFtEe8LN8OAM7/EQJYrG+3gJeK0UzMo+wVP17FhGfTQrQRTWP
-	EZ9GBH+a3KjRE54wSpTex+JS0NUH6t8xsvXCrk08nnO82tU2Zs4Hl1MI6dmAN+FYZOoyIUN3RwDbH
-	pk1KYcRxD+595I2HOrg3Hjv9gWOVOrXifjH3ru3NB8KRYzKLM1C+Uz0JWWgpecg+h7fKIO14nXF5o
-	VLX4LqdVhWQLYpJB+y+N9HNwikAnKEK15eICZaxmzh6kXdZiAO/WkHPQ6Ya9t4v13EaYdSuggXr7f
-	whmNNcxg==;
+	bh=Dqyze8ZnrVt/kbwk8l0WPCvcftBBPKU5mITNnFNVHZU=; b=rWaNMY/oqhNJZyfVoMd5uu6a0A
+	NXQeeJbqswFI4eICgbyjO1vE5iLJ3sxxiroJEZquECf90flw82SxDwfV4xs/3yD32dFJmcf9Ko/qA
+	t59twraviTr0vtfxhtt0EDT7jWeM5kniUTN7Qa1D5nAAQcz3ltPC20LneHu3dRB6pI3RWCyf6Ii7y
+	CI+f5558trgayq1Uv18Q8x+iO2lQz6acudSunJApGQHoAZh8spWWJU1c5M1aGAJl0sYiSCliLh0zP
+	XXVXOo81bZxbFbXlLxMVgp1zyNyHcEDJ5DBV+xBZO9n1T8RHHaxtbjd4aDAG31STCuQBQd4t6plT4
+	iY8y7yPA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDcb-0000000AK0j-1Lnd;
-	Mon, 04 Mar 2024 19:05:09 +0000
+	id 1rhDcl-0000000AK7c-2KxB;
+	Mon, 04 Mar 2024 19:05:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaE-0000000AIHW-3Jck
+	id 1rhDaK-0000000AIHN-2MVm
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:02:54 +0000
+	Mon, 04 Mar 2024 19:02:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaD-0005yx-Ef; Mon, 04 Mar 2024 20:02:41 +0100
+	id 1rhDaJ-0006J9-A6; Mon, 04 Mar 2024 20:02:47 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaD-004PGY-1Q; Mon, 04 Mar 2024 20:02:41 +0100
+	id 1rhDaI-004PMf-Ra; Mon, 04 Mar 2024 20:02:46 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYM-00Ed9V-1G;
+	id 1rhDYM-00Ed9V-17;
 	Mon, 04 Mar 2024 20:00:46 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:59 +0100
-Message-Id: <20240304190038.3486881-75-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 19:59:58 +0100
+Message-Id: <20240304190038.3486881-74-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_110243_364146_EF545667 
-X-CRM114-Status: GOOD (  17.21  )
+X-CRM114-CacheID: sfid-20240304_110248_725954_2EA15E8A 
+X-CRM114-Status: GOOD (  13.37  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,306 +83,68 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 074/113] efi: flesh out EFI definitions in header
+Subject: [PATCH v2 073/113] efi-stdio: wait for extended input key event when using extended input
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We have a lot of function pointer members in the protocols, that were
-defined as void pointers instead of properly prototyped function pointers.
+Extended input protocol support was added to deal with EFI firmwares that
+don't report control characters rendering utilities like barebox edit
+unusable.
 
-Similarly, a lot of data types are defined to equivalent types that
-aren't as descriptive, e.g. size_t vs ulong and s16 vs efi_char16_t.
+The extended input support comes with its own event for use with the
+wait_for_event boot service, which we should use instead of the
+non-extended variant in case we are going to read the key with the
+extended protocol.
 
-Let's switch them over all at once. No functional change as the types
-are either equivalent or were unused in the case of function pointers.
-
+Fixes: 438f80e98658 ("serial: efi-stdio: Add simple_text_input_ex_protocol backend")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/clocksource/efi.c  |   4 +-
- drivers/serial/efi-stdio.c |   4 +-
- include/efi.h              | 115 ++++++++++++++++++++++---------------
- include/efi/efi-stdio.h    |   4 +-
- 4 files changed, 74 insertions(+), 53 deletions(-)
+ drivers/serial/efi-stdio.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/clocksource/efi.c b/drivers/clocksource/efi.c
-index 11dbb6189786..1ac587a715f2 100644
---- a/drivers/clocksource/efi.c
-+++ b/drivers/clocksource/efi.c
-@@ -12,14 +12,14 @@
- #include <linux/err.h>
- 
- static uint64_t ticks = 1;
--static void *efi_cs_evt;
-+static struct efi_event *efi_cs_evt;
- 
- static uint64_t efi_cs_read(void)
- {
- 	return ticks;
- }
- 
--static void efi_cs_inc(void *event, void *ctx)
-+static void efi_cs_inc(struct efi_event *event, void *ctx)
- {
- 	ticks++;
- }
 diff --git a/drivers/serial/efi-stdio.c b/drivers/serial/efi-stdio.c
-index 235d67a303ed..92133f837838 100644
+index d31de5f53796..235d67a303ed 100644
 --- a/drivers/serial/efi-stdio.c
 +++ b/drivers/serial/efi-stdio.c
-@@ -79,9 +79,9 @@ static int xlate_keypress(struct efi_input_key *k)
+@@ -79,17 +79,23 @@ static int xlate_keypress(struct efi_input_key *k)
  	return k->unicode_char & 0xff;
  }
  
--static void efi_wait_single_event(void *event)
-+static void efi_wait_single_event(struct efi_event *event)
+-static int efi_read_key(struct efi_console_priv *priv, bool wait)
++static void efi_wait_single_event(void *event)
  {
--	unsigned long index;
-+	size_t index;
- 
- 	/* wait until key is pressed */
- 	BS->wait_for_event(1, &event, &index);
-diff --git a/include/efi.h b/include/efi.h
-index 7e8b7f0a49b8..08cb07c8b946 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -177,18 +177,20 @@ enum efi_timer_delay {
- 	EFI_TIMER_RELATIVE = 2
- };
- 
-+struct efi_event;
+ 	unsigned long index;
 +
- /*
-  * EFI Boot Services table
-  */
- struct efi_boot_services {
- 	struct efi_table_hdr hdr;
--	void *raise_tpl;
--	void *restore_tpl;
-+	efi_status_t (EFIAPI *raise_tpl)(unsigned long new_tpl);
-+	void (EFIAPI *restore_tpl)(unsigned long old_tpl);
- 	efi_status_t (EFIAPI *allocate_pages)(int, int, unsigned long,
- 				       efi_physical_addr_t *);
- 	efi_status_t (EFIAPI *free_pages)(efi_physical_addr_t, unsigned long);
--	efi_status_t (EFIAPI *get_memory_map)(unsigned long *, void *, unsigned long *,
--				       unsigned long *, u32 *);
-+	efi_status_t (EFIAPI *get_memory_map)(size_t *, struct efi_memory_desc *,
-+					      size_t *, size_t *, u32 *);
- 	efi_status_t (EFIAPI *allocate_pool)(int, unsigned long, void **);
- 	efi_status_t (EFIAPI *free_pool)(void *);
- #define EFI_EVT_TIMER				0x80000000
-@@ -203,33 +205,39 @@ struct efi_boot_services {
- #define EFI_TPL_NOTIFY		16
- #define EFI_TPL_HIGH_LEVEL	31
- 	efi_status_t(EFIAPI *create_event)(u32 type , unsigned long tpl,
--			void (*fn) (void *event, void *ctx),
--			void *ctx, void **event);
--	efi_status_t(EFIAPI *set_timer)(void *event, enum efi_timer_delay type, uint64_t time);
--	efi_status_t(EFIAPI *wait_for_event)(unsigned long number_of_events, void *event,
--			unsigned long *index);
--	void *signal_event;
--	efi_status_t(EFIAPI *close_event)(void *event);
--	void *check_event;
--	void *install_protocol_interface;
--	void *reinstall_protocol_interface;
--	void *uninstall_protocol_interface;
--	efi_status_t (EFIAPI *handle_protocol)(efi_handle_t, efi_guid_t *, void **);
-+			void (*fn) (struct efi_event *event, void *ctx),
-+			void *ctx, struct efi_event **event);
-+	efi_status_t(EFIAPI *set_timer)(struct efi_event *event, enum efi_timer_delay type, uint64_t time);
-+	efi_status_t(EFIAPI *wait_for_event)(size_t number_of_events, struct efi_event **event,
-+			size_t *index);
-+	efi_status_t (EFIAPI *signal_event)(struct efi_event *event);
-+	efi_status_t(EFIAPI *close_event)(struct efi_event *event);
-+#define EFI_NATIVE_INTERFACE	0x00000000
-+	efi_status_t (EFIAPI *check_event)(struct efi_event *event);
-+	efi_status_t (EFIAPI *install_protocol_interface)(efi_handle_t *handle, const efi_guid_t *protocol,
-+			int protocol_interface_type, void *protocol_interface);
-+	efi_status_t (EFIAPI *reinstall_protocol_interface)(efi_handle_t handle, const efi_guid_t *protocol,
-+			void *old_interface, void *new_interface);
-+	efi_status_t (EFIAPI *uninstall_protocol_interface)(efi_handle_t handle,
-+			const efi_guid_t *protocol, void *protocol_interface);
++	/* wait until key is pressed */
++	BS->wait_for_event(1, &event, &index);
++}
 +
-+	efi_status_t (EFIAPI *handle_protocol)(efi_handle_t, const efi_guid_t *, void **);
- 	void *__reserved;
--	void *register_protocol_notify;
-+	efi_status_t (EFIAPI *register_protocol_notify)(const efi_guid_t *protocol, struct efi_event *event,
-+			void **registration);
- 	efi_status_t (EFIAPI *locate_handle) (enum efi_locate_search_type search_type,
--			efi_guid_t *protocol, void *search_key,
--			unsigned long *buffer_size, efi_handle_t *buffer);
--	efi_status_t (EFIAPI *locate_device_path)(efi_guid_t *protocol,
-+			const efi_guid_t *protocol, void *search_key,
-+			size_t *buffer_size, efi_handle_t *buffer);
-+	efi_status_t (EFIAPI *locate_device_path)(const efi_guid_t *protocol,
- 			struct efi_device_path **device_path, efi_handle_t *device);
--	void *install_configuration_table;
-+	efi_status_t (EFIAPI *install_configuration_table)(const efi_guid_t *guid, void *table);
- 	efi_status_t (EFIAPI *load_image)(bool boot_policiy, efi_handle_t parent_image,
- 			struct efi_device_path *file_path, void *source_buffer,
- 			unsigned long source_size, efi_handle_t *image);
- 	efi_status_t (EFIAPI *start_image)(efi_handle_t handle,
--			unsigned long *exitdata_size, s16 **exitdata);
-+			size_t *exitdata_size, u16 **exitdata);
- 	efi_status_t(EFIAPI *exit)(efi_handle_t handle,  efi_status_t exit_status,
--			unsigned long exitdata_size, s16 *exitdata);
-+			unsigned long exitdata_size, u16 *exitdata);
- 	efi_status_t (EFIAPI *unload_image)(efi_handle_t handle);
- 	efi_status_t (EFIAPI *exit_boot_services)(efi_handle_t, unsigned long);
- 	void *get_next_monotonic_count;
-@@ -237,12 +245,13 @@ struct efi_boot_services {
- 	efi_status_t (EFIAPI *set_watchdog_timer)(unsigned long timeout,
- 						  uint64_t watchdog_code,
- 						  unsigned long data_size,
--						  s16 *watchdog_data);
-+						  u16 *watchdog_data);
- 	efi_status_t(EFIAPI *connect_controller)(efi_handle_t controller_handle,
- 			efi_handle_t *driver_image_handle,
- 			struct efi_device_path *remaining_device_path,
- 			bool Recursive);
--	void *disconnect_controller;
-+	efi_status_t (EFIAPI *disconnect_controller)(efi_handle_t controller_handle,
-+			efi_handle_t driver_image_handle, efi_handle_t child_handle);
- #define EFI_OPEN_PROTOCOL_BY_HANDLE_PROTOCOL  0x00000001
- #define EFI_OPEN_PROTOCOL_GET_PROTOCOL        0x00000002
- #define EFI_OPEN_PROTOCOL_TEST_PROTOCOL       0x00000004
-@@ -264,12 +273,14 @@ struct efi_boot_services {
- 			enum efi_locate_search_type search_type,
- 			const efi_guid_t *protocol, void *search_key,
- 			unsigned long *no_handles, efi_handle_t **buffer);
--	void *locate_protocol;
--	void *install_multiple_protocol_interfaces;
--	void *uninstall_multiple_protocol_interfaces;
--	void *calculate_crc32;
--	void *copy_mem;
--	void *set_mem;
-+	efi_status_t (EFIAPI *locate_protocol)(const efi_guid_t *protocol,
-+			void *registration, void **protocol_interface);
-+	efi_status_t (EFIAPI *install_multiple_protocol_interfaces)(efi_handle_t *handle, ...);
-+	efi_status_t (EFIAPI *uninstall_multiple_protocol_interfaces)(efi_handle_t handle, ...);
-+	efi_status_t (EFIAPI *calculate_crc32)(const void *data,
-+			unsigned long data_size, uint32_t *crc32);
-+	void (EFIAPI *copy_mem)(void *destination, const void *source, unsigned long length);
-+	void (EFIAPI *set_mem)(void *buffer, unsigned long size, uint8_t value);
- 	void *create_event_ex;
- };
++static int efi_read_key(struct efi_console_priv *priv, bool wait)
++{
+ 	efi_status_t efiret;
+ 	struct efi_key_data kd;
  
-@@ -281,7 +292,8 @@ extern struct efi_boot_services *BS;
- enum efi_reset_type {
- 	EFI_RESET_COLD = 0,
- 	EFI_RESET_WARM = 1,
--	EFI_RESET_SHUTDOWN = 2
-+	EFI_RESET_SHUTDOWN = 2,
-+	EFI_RESET_PLATFORM_SPECIFIC = 3,
- };
+-	/* wait until key is pressed */
+-	if (wait)
+-		BS->wait_for_event(1, &priv->in->wait_for_key, &index);
+-
+ 	if (priv->inex) {
++		if (wait)
++			efi_wait_single_event(priv->inex->wait_for_key_ex);
++
+ 		efiret = priv->inex->read_key_stroke_ex(priv->inex, &kd);
  
- /*
-@@ -292,19 +304,24 @@ enum efi_reset_type {
+ 		if (efiret == EFI_NOT_READY)
+@@ -118,6 +124,9 @@ static int efi_read_key(struct efi_console_priv *priv, bool wait)
+ 		}
+ 	}
  
- struct efi_runtime_services {
- 	struct efi_table_hdr hdr;
--	void *get_time;
--	void *set_time;
--	void *get_wakeup_time;
--	void *set_wakeup_time;
--	void *set_virtual_address_map;
--	void *convert_pointer;
--	efi_status_t (EFIAPI *get_variable)(s16 *variable_name, efi_guid_t *vendor,
-+	efi_status_t (EFIAPI *get_time)(struct efi_time *time,
-+					struct efi_time_cap *capabilities);
-+	efi_status_t (EFIAPI *set_time)(struct efi_time *time);
-+	efi_status_t (EFIAPI *get_wakeup_time)(char *enabled, char *pending,
-+				       struct efi_time *time);
-+	efi_status_t (EFIAPI *set_wakeup_time)(char enabled, struct efi_time *time);
-+	efi_status_t (EFIAPI *set_virtual_address_map)(size_t memory_map_size,
-+				       size_t descriptor_size,
-+				       uint32_t descriptor_version,
-+				       struct efi_memory_desc *virtmap);
-+	efi_status_t (*convert_pointer)(unsigned long dbg, void **address);
-+	efi_status_t (EFIAPI *get_variable)(efi_char16_t *variable_name, const efi_guid_t *vendor,
- 			u32 *Attributes, unsigned long *data_size, void *data);
- 	efi_status_t (EFIAPI *get_next_variable)(unsigned long *variable_name_size,
- 			s16 *variable_name, efi_guid_t *vendor);
- 	efi_status_t (EFIAPI *set_variable)(s16 *variable_name, efi_guid_t *vendor,
- 			u32 Attributes, unsigned long data_size, void *data);
--	void *get_next_high_mono_count;
-+	efi_status_t (EFIAPI *get_next_high_mono_count)(uint32_t *high_count);
- 	void (EFIAPI *reset_system)(enum efi_reset_type reset_type, efi_status_t reset_status,
- 			unsigned long data_size, void *reset_data);
- 	void *update_capsule;
-@@ -607,14 +624,14 @@ struct efi_config_table {
++	if (wait)
++		efi_wait_single_event(priv->in->wait_for_key);
++
+ 	efiret = priv->in->read_key_stroke(priv->in, &kd.key);
  
- struct efi_system_table {
- 	struct efi_table_hdr hdr;
--	unsigned long fw_vendor;	/* physical addr of CHAR16 vendor string */
-+	efi_char16_t *fw_vendor;	/* physical addr of CHAR16 vendor string */
- 	u32 fw_revision;
- 	efi_handle_t con_in_handle;
- 	struct efi_simple_text_input_protocol *con_in;
- 	efi_handle_t con_out_handle;
- 	struct efi_simple_text_output_protocol *con_out;
- 	efi_handle_t stderr_handle;
--	unsigned long std_err;
-+	struct efi_simple_text_output_protocol *std_err;
- 	struct efi_runtime_services *runtime;
- 	struct efi_boot_services *boottime;
- 	unsigned long nr_tables;
-@@ -634,7 +651,7 @@ struct efi_loaded_image {
- 	__aligned_u64 image_size;
- 	unsigned int image_code_type;
- 	unsigned int image_data_type;
--	unsigned long unload;
-+	efi_status_t (EFIAPI *unload)(efi_handle_t image_handle);
- };
- 
- __attribute__((noreturn)) void efi_main(efi_handle_t, struct efi_system_table *);
-@@ -700,9 +717,12 @@ struct simple_text_output_mode {
- };
- 
- struct efi_simple_text_output_protocol {
--	void *reset;
--	efi_status_t (EFIAPI *output_string)(void *, void *);
--	void *test_string;
-+	efi_status_t (EFIAPI *reset)(
-+			struct efi_simple_text_output_protocol *this,
-+			char extended_verification);
-+	efi_status_t (EFIAPI *output_string)(struct efi_simple_text_output_protocol *this, const efi_char16_t *str);
-+	efi_status_t (EFIAPI *test_string)(struct efi_simple_text_output_protocol *this,
-+			const efi_char16_t *str);
- 
- 	efi_status_t(EFIAPI *query_mode)(struct efi_simple_text_output_protocol *this,
- 			unsigned long mode_number, unsigned long *columns, unsigned long *rows);
-@@ -713,7 +733,8 @@ struct efi_simple_text_output_protocol {
- 	efi_status_t(EFIAPI *clear_screen) (struct efi_simple_text_output_protocol *this);
- 	efi_status_t(EFIAPI *set_cursor_position) (struct efi_simple_text_output_protocol *this,
- 			unsigned long column, unsigned long row);
--	efi_status_t(EFIAPI *enable_cursor)(void *, bool enable);
-+	efi_status_t(EFIAPI *enable_cursor)(struct efi_simple_text_output_protocol *this,
-+			bool enable);
- 	struct simple_text_output_mode *mode;
- };
- 
-diff --git a/include/efi/efi-stdio.h b/include/efi/efi-stdio.h
-index 623b42c10f19..0b3a184a78a8 100644
---- a/include/efi/efi-stdio.h
-+++ b/include/efi/efi-stdio.h
-@@ -18,7 +18,7 @@ struct efi_key_state {
- 
- struct efi_input_key {
- 	u16 scan_code;
--	s16 unicode_char;
-+	efi_char16_t unicode_char;
- };
- 
- struct efi_key_data {
-@@ -55,7 +55,7 @@ typedef efi_status_t (EFIAPI *efi_unregister_keystroke_notify)(
- struct efi_simple_text_input_ex_protocol {
- 	efi_input_reset_ex reset;
- 	efi_input_read_key_ex read_key_stroke_ex;
--	void *wait_for_key_ex;
-+	struct efi_event *wait_for_key_ex;
- 	efi_set_state set_state;
- 	efi_register_keystroke_notify register_key_notify;
- 	efi_unregister_keystroke_notify unregister_key_notify;
+ 	if (EFI_ERROR(efiret))
 -- 
 2.39.2
 
