@@ -1,81 +1,82 @@
-Delivery-date: Mon, 04 Mar 2024 20:11:36 +0100
+Delivery-date: Mon, 04 Mar 2024 20:11:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDiq-008e3q-2k
+	id 1rhDiw-008e4G-09
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:11:36 +0100
+	Mon, 04 Mar 2024 20:11:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDip-0006L5-BV
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:11:36 +0100
+	id 1rhDiu-0006O5-VJ
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:11:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HdcFRUNOccQ3Yj1OUpMF7ecnjiUXMtUjI686ZrbxSLc=; b=03n9zf1DJvbn/DzT5K2/lTrz/5
-	W3rvxVtq3qk8KqvuVWQrbxW3Ms1uyl+pBx+Cy+nI/Qv+hx7ScXadBy3lBZiXRrWO+ivupvlbggoO7
-	yg0tlGy6APJrxa4JB9HvD+Kj5BozVsqNldAuQCZcWRSI7razFxl2a1SK/dfGabgKXw7uFc22/dw08
-	aQ0W8kpFsJ+M/mNMCzmZLg84o64yDdCe0+DhtWxpvrB0vXeyC+CbdQEO4/8dUFI7WAn8UvIL1WR3o
-	YduhTEOSgYhJbLx6FWT4XLNX6DmZ058MnRDicRvX5Bw9Q2upV1AkfDZM0jeuOU3Sa3mofcdX9izF9
-	YnODtqiQ==;
+	bh=v1QhL9G/ZJSH+atmmrU9zylqWeqK6aQUH8t6PhUtiFE=; b=X9mULYkShvGa99dISRM8V1rVvw
+	aP40UfPJO2oQxf9kkd9AsiCz9GSs0AuUiXi1gJE52elYd98KKaagWFpSZL0WglGseGmKf6Y3eqCZV
+	Y0SB6DUuRtTfUuhQ+vgumNV9Y9TAVzoCVtjr0o9pEIdXZdLx6VgzrHw4TQx7uu+RAs0dx4ggMjrM/
+	ehNXVFnRs1o2yGm8fe7Yd82eQEgtypLX8er6d8f8gr7wTu7xvhRB6fi72ORNlKzva3A8MJK7L+pua
+	v4H8EJaNGYoyMs1eCAHVQYfq0PXaIltCRe+EsNXpKG3E8jvTJ9KD9zDOph20TRoanPSt9mvm419EE
+	wuGewcOg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDiC-0000000ANsR-2dlH;
-	Mon, 04 Mar 2024 19:10:56 +0000
+	id 1rhDiM-0000000AO10-29el;
+	Mon, 04 Mar 2024 19:11:07 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDag-0000000AIg5-0jfi
+	id 1rhDag-0000000AIgJ-1kgk
 	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:03:10 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=HdcFRUNOccQ3Yj1OUpMF7ecnjiUXMtUjI686ZrbxSLc=; b=RWSxMhkvYdsY3HQL9SbjkaNXow
-	U1sg6gVMQOyJUmhTzpkMCJJT9FZP5z6tcAB7+wdoJwwKKouW/skBzcDH2wS7C5lB+x3FrdSSiprJK
-	aheTrce0/rqFqSF68lcQ8VfK5MPgVZEKVIKfwMCKeDvd8pYovYRqU55r0LqPVEsGb41wWL50IiiPp
-	jMqvjXkmba7wT0QgNiO6DkyukSBsFBbtlI/d6+W+BJg1X01Mf5G1+wH4QjGxXTjis57JHAyEkzIVh
-	uEpCOoHsKC/xiluisSzGzr6DOOnA1DUdMvzFLz7n+qBhHm2uSHUkRT5nC5DhpOFsrPWMw3jmHAezi
-	iUkorlOw==;
+	bh=v1QhL9G/ZJSH+atmmrU9zylqWeqK6aQUH8t6PhUtiFE=; b=NYAp+BvUlekUiKieOj7GQWk5+2
+	vIZx35F+dzQPQ/PZNqO0AwPHY1Ww4+1b6gqLDIgiDjDQumc99Yo2et6bJqUsvULDeUbpIjW3iruPH
+	aiPs/xeFZhZWBMj5Rw7a1T12cVXY3+2hP2Lurdn/ECtEUn9eJXnLJcjxe5cNNIgEs0bSpyc4WzBdn
+	USX1UAtjtaC3OOPx6FmLLTKJE6L1oWG1eVxTrmJRuMXTbEFxfW693CwhK6VI5LDjdvCENeBBAJnWz
+	lPUiofvLujqUygxhTKEyJpXNMHBjt8jnSs53jv/YNJyaENCaA8Btb0V6jA3SHG+usfXDd9+JkkVkD
+	zvS1+p6A==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaZ-00000002BSv-1Y71
+	id 1rhDaZ-00000002BSr-1nLO
 	for barebox@lists.infradead.org;
 	Mon, 04 Mar 2024 19:03:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaG-00067L-5N; Mon, 04 Mar 2024 20:02:44 +0100
+	id 1rhDaG-00066y-0H; Mon, 04 Mar 2024 20:02:44 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaF-004PJN-LT; Mon, 04 Mar 2024 20:02:43 +0100
+	id 1rhDaF-004PJF-Hk; Mon, 04 Mar 2024 20:02:43 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYK-00Ed9V-23;
-	Mon, 04 Mar 2024 20:00:45 +0100
+	id 1rhDYL-00Ed9V-1a;
+	Mon, 04 Mar 2024 20:00:46 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:20 +0100
-Message-Id: <20240304190038.3486881-36-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 19:59:39 +0100
+Message-Id: <20240304190038.3486881-55-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190303_524571_F144E2AB 
-X-CRM114-Status: GOOD (  18.18  )
+X-CRM114-CacheID: sfid-20240304_190303_719808_6D80D2C4 
+X-CRM114-Status: UNSURE (   8.03  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,668 +99,204 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 035/113] fs: implement openat and friends
+Subject: [PATCH v2 054/113] efi: unify whitespace for GUIDs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The EFI file system API takes as handle an arbitrary file within the
-volume. Directory iteration should happen relative to that file, which
-lends itself well to mapping this to openat and friends.
-
-Add support for these to barebox in preparation.
+Half the GUID definitions indent with a tab and the other with 4 spaces.
+Stick to 4 spaces throughout and remove the discrepancy.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- commands/readlink.c |   2 +-
- fs/fs.c             | 140 +++++++++++++++++++++++++-------------------
- include/fcntl.h     |  14 ++++-
- include/fs.h        |   2 +-
- include/sys/stat.h  |   8 ++-
- include/unistd.h    |  35 +++++++++--
- 6 files changed, 132 insertions(+), 69 deletions(-)
+ include/efi.h | 86 +++++++++++++++++++++++++--------------------------
+ 1 file changed, 43 insertions(+), 43 deletions(-)
 
-diff --git a/commands/readlink.c b/commands/readlink.c
-index 81ad25c733ab..55f8249028e1 100644
---- a/commands/readlink.c
-+++ b/commands/readlink.c
-@@ -31,7 +31,7 @@ static int do_readlink(int argc, char *argv[])
- 		return COMMAND_ERROR_USAGE;
- 
- 	if (canonicalize) {
--		char *buf = canonicalize_path(argv[optind]);
-+		char *buf = canonicalize_path(AT_FDCWD, argv[optind]);
- 		struct stat s;
- 
- 		if (!buf)
-diff --git a/fs/fs.c b/fs/fs.c
-index bf527f1b2d9b..6b71440318af 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -130,10 +130,11 @@ void cdev_print(const struct cdev *cdev)
- }
- EXPORT_SYMBOL(cdev_print);
- 
--static struct fs_device *get_fsdevice_by_path(const char *path);
-+static struct fs_device *get_fsdevice_by_path(int dirfd, const char *path);
- 
- void stat_print(const char *filename, const struct stat *st)
- {
-+	int dirfd = AT_FDCWD;
- 	struct block_device *bdev = NULL;
- 	struct fs_device *fdev;
- 	struct cdev *cdev = NULL;
-@@ -156,7 +157,7 @@ void stat_print(const char *filename, const struct stat *st)
- 	if (st->st_mode & S_IFCHR) {
- 		char *path;
- 
--		path = canonicalize_path(filename);
-+		path = canonicalize_path(dirfd, filename);
- 		if (path) {
- 			const char *devicefile = devpath_to_name(path);
- 			struct cdev *lcdev;
-@@ -198,7 +199,7 @@ void stat_print(const char *filename, const struct stat *st)
- 	if (type)
- 		printf("  %s%s", typeprefix, type);
- 
--	fdev = get_fsdevice_by_path(filename);
-+	fdev = get_fsdevice_by_path(dirfd, filename);
- 
- 	printf("\nDevice: %s\tInode: %lu\n",
- 	       fdev ? dev_name(&fdev->dev) : "<unknown>",
-@@ -235,7 +236,7 @@ postcore_initcall(init_fs);
- 
- struct filename;
- 
--static int filename_lookup(struct filename *name, unsigned flags,
-+static int filename_lookup(int dirfd, struct filename *name, unsigned flags,
- 			   struct path *path);;
- static struct filename *getname(const char *filename);
- static void path_put(const struct path *path);
-@@ -282,7 +283,7 @@ struct cdev *get_cdev_by_mountpath(const char *path)
- {
- 	struct fs_device *fsdev;
- 
--	fsdev = get_fsdevice_by_path(path);
-+	fsdev = get_fsdevice_by_path(AT_FDCWD, path);
- 	if (!fsdev)
- 		return NULL;
- 
-@@ -293,7 +294,7 @@ char *get_mounted_path(const char *path)
- {
- 	struct fs_device *fdev;
- 
--	fdev = get_fsdevice_by_path(path);
-+	fdev = get_fsdevice_by_path(AT_FDCWD, path);
- 	if (!fdev)
- 		return NULL;
- 
-@@ -828,7 +829,7 @@ static void fs_remove(struct device *dev)
- 	if (fsdev->loop && fsdev->cdev) {
- 		cdev_remove_loop(fsdev->cdev);
- 
--		ret = filename_lookup(getname(fsdev->backingstore),
-+		ret = filename_lookup(AT_FDCWD, getname(fsdev->backingstore),
- 				      LOOKUP_FOLLOW, &path);
- 		if (!ret) {
- 			mntput(path.mnt);
-@@ -912,7 +913,7 @@ int fsdev_open_cdev(struct fs_device *fsdev)
- 	parseopt_b(fsdev->options, "loop", &fsdev->loop);
- 	parseopt_llu_suffix(fsdev->options, "offset", &offset);
- 	if (fsdev->loop) {
--		ret = filename_lookup(getname(fsdev->backingstore),
-+		ret = filename_lookup(AT_FDCWD, getname(fsdev->backingstore),
- 				      LOOKUP_FOLLOW, &path);
- 		if (ret)
- 			return ret;
-@@ -1194,7 +1195,7 @@ char *path_get_linux_rootarg(const char *path)
- 	struct fs_device *fsdev;
- 	const char *str;
- 
--	fsdev = get_fsdevice_by_path(path);
-+	fsdev = get_fsdevice_by_path(AT_FDCWD, path);
- 	if (!fsdev)
- 		return ERR_PTR(-EINVAL);
- 
-@@ -1217,7 +1218,7 @@ bool __is_tftp_fs(const char *path)
- {
- 	struct fs_device *fsdev;
- 
--	fsdev = get_fsdevice_by_path(path);
-+	fsdev = get_fsdevice_by_path(AT_FDCWD, path);
- 	if (!fsdev)
- 		return false;
- 
-@@ -2156,9 +2157,10 @@ static int link_path_walk(const char *name, struct nameidata *nd)
- 	}
- }
- 
--static const char *path_init(struct nameidata *nd, unsigned flags)
-+static const char *path_init(int dirfd, struct nameidata *nd, unsigned flags)
- {
- 	const char *s = nd->name->name;
-+	FILE *f = NULL;
- 
- 	nd->last_type = LAST_ROOT; /* if there are only slashes... */
- 	nd->flags = flags | LOOKUP_JUMPED | LOOKUP_PARENT;
-@@ -2167,12 +2169,23 @@ static const char *path_init(struct nameidata *nd, unsigned flags)
- 	nd->path.mnt = NULL;
- 	nd->path.dentry = NULL;
- 
-+	/* We don't check for error here yet, as POSIX allows checking
-+	 * whether paths are absolute with openat(-1, path, O_PATH)
-+	 */
-+	if (dirfd != AT_FDCWD)
-+		f = fd_to_file(dirfd);
-+
- 	if (*s == '/') {
- 		get_root(&nd->path);
--		return s;
--	} else {
-+	} else if (dirfd == AT_FDCWD) {
- 		get_pwd(&nd->path);
--		return s;
-+	} else {
-+		if (IS_ERR(f))
-+			return ERR_CAST(f);
-+
-+		nd->path.mnt = &f->fsdev->vfsmount;
-+		nd->path.dentry = f->dentry;
-+		follow_mount(&nd->path);
- 	}
- 
- 	return s;
-@@ -2210,10 +2223,10 @@ static void terminate_walk(struct nameidata *nd)
- }
- 
- /* Returns 0 and nd will be valid on success; Retuns error, otherwise. */
--static int path_parentat(struct nameidata *nd, unsigned flags,
-+static int path_parentat(int dirfd, struct nameidata *nd, unsigned flags,
- 				struct path *parent)
- {
--	const char *s = path_init(nd, flags);
-+	const char *s = path_init(dirfd, nd, flags);
- 	int err;
- 
- 	if (IS_ERR(s))
-@@ -2229,7 +2242,8 @@ static int path_parentat(struct nameidata *nd, unsigned flags,
- 	return err;
- }
- 
--static struct filename *filename_parentat(struct filename *name,
-+static struct filename *filename_parentat(int dirfd,
-+				struct filename *name,
- 				unsigned int flags, struct path *parent,
- 				struct qstr *last, int *type)
- {
-@@ -2241,7 +2255,7 @@ static struct filename *filename_parentat(struct filename *name,
- 
- 	set_nameidata(&nd, name);
- 
--	retval = path_parentat(&nd, flags, parent);
-+	retval = path_parentat(dirfd, &nd, flags, parent);
- 	if (likely(!retval)) {
- 		*last = nd.last;
- 		*type = nd.last_type;
-@@ -2253,7 +2267,7 @@ static struct filename *filename_parentat(struct filename *name,
- 	return name;
- }
- 
--static struct dentry *filename_create(struct filename *name,
-+static struct dentry *filename_create(int dirfd, struct filename *name,
- 				struct path *path, unsigned int lookup_flags)
- {
- 	struct dentry *dentry = ERR_PTR(-EEXIST);
-@@ -2262,7 +2276,7 @@ static struct dentry *filename_create(struct filename *name,
- 	int error;
- 	bool is_dir = (lookup_flags & LOOKUP_DIRECTORY);
- 
--	name = filename_parentat(name, 0, path, &last, &type);
-+	name = filename_parentat(dirfd, name, 0, path, &last, &type);
- 	if (IS_ERR(name))
- 		return ERR_CAST(name);
- 
-@@ -2306,7 +2320,7 @@ static struct dentry *filename_create(struct filename *name,
- 	return dentry;
- }
- 
--static int filename_lookup(struct filename *name, unsigned flags,
-+static int filename_lookup(int dirfd, struct filename *name, unsigned flags,
- 			   struct path *path)
- {
- 	int err;
-@@ -2318,7 +2332,7 @@ static int filename_lookup(struct filename *name, unsigned flags,
- 
- 	set_nameidata(&nd, name);
- 
--	s = path_init(&nd, flags);
-+	s = path_init(dirfd, &nd, flags);
- 	if (IS_ERR(s))
- 		return PTR_ERR(s);
- 
-@@ -2345,13 +2359,13 @@ static int filename_lookup(struct filename *name, unsigned flags,
- 	return err;
- }
- 
--static struct fs_device *get_fsdevice_by_path(const char *pathname)
-+static struct fs_device *get_fsdevice_by_path(int dirfd, const char *pathname)
- {
- 	struct fs_device *fsdev;
- 	struct path path;
- 	int ret;
- 
--	ret = filename_lookup(getname(pathname), 0, &path);
-+	ret = filename_lookup(dirfd, getname(pathname), 0, &path);
- 	if (ret)
- 		return NULL;
- 
-@@ -2403,14 +2417,14 @@ static int vfs_mkdir(struct inode *dir, struct dentry *dentry, umode_t mode)
- /* libfs.c */
- 
- /* ---------------------------------------------------------------- */
--int mkdir (const char *pathname, mode_t mode)
-+int mkdirat(int dirfd, const char *pathname, mode_t mode)
- {
- 	struct dentry *dentry;
- 	struct path path;
- 	int error;
- 	unsigned int lookup_flags = LOOKUP_DIRECTORY;
- 
--	dentry = filename_create(getname(pathname), &path, lookup_flags);
-+	dentry = filename_create(dirfd, getname(pathname), &path, lookup_flags);
- 	if (IS_ERR(dentry)) {
- 		error = PTR_ERR(dentry);
- 		goto out;
-@@ -2423,9 +2437,9 @@ int mkdir (const char *pathname, mode_t mode)
- out:
- 	return errno_set(error);
- }
--EXPORT_SYMBOL(mkdir);
-+EXPORT_SYMBOL(mkdirat);
- 
--int rmdir (const char *pathname)
-+static int rmdirat(int dirfd, const char *pathname)
- {
- 	int error = 0;
- 	struct filename *name;
-@@ -2434,7 +2448,7 @@ int rmdir (const char *pathname)
- 	struct qstr last;
- 	int type;
- 
--	name = filename_parentat(getname(pathname), 0,
-+	name = filename_parentat(dirfd, getname(pathname), 0,
- 				&path, &last, &type);
- 	if (IS_ERR(name))
- 		return PTR_ERR(name);
-@@ -2475,9 +2489,8 @@ int rmdir (const char *pathname)
- 
- 	return errno_set(error);
- }
--EXPORT_SYMBOL(rmdir);
- 
--int open(const char *pathname, int flags, ...)
-+int openat(int dirfd, const char *pathname, int flags)
- {
- 	struct fs_device *fsdev;
- 	struct fs_driver *fsdrv;
-@@ -2491,7 +2504,7 @@ int open(const char *pathname, int flags, ...)
- 	struct filename *filename;
- 
- 	if (flags & O_TMPFILE) {
--		fsdev = get_fsdevice_by_path(pathname);
-+		fsdev = get_fsdevice_by_path(dirfd, pathname);
- 		if (!fsdev) {
- 			errno = ENOENT;
- 			return -errno;
-@@ -2525,7 +2538,7 @@ int open(const char *pathname, int flags, ...)
- 
- 	set_nameidata(&nd, filename);
- 
--	s = path_init(&nd, LOOKUP_FOLLOW);
-+	s = path_init(dirfd, &nd, LOOKUP_FOLLOW);
- 	if (IS_ERR(s))
- 		return PTR_ERR(s);
- 
-@@ -2592,7 +2605,7 @@ int open(const char *pathname, int flags, ...)
- 		goto out1;
- 	}
- 
--	f->path = xstrdup(pathname);
-+	f->path = dpath(dentry, d_root);
- 	f->dentry = dentry;
- 	f->f_inode = iget(inode);
- 	f->flags = flags;
-@@ -2631,7 +2644,7 @@ int open(const char *pathname, int flags, ...)
- out1:
- 	return errno_set(error);
- }
--EXPORT_SYMBOL(open);
-+EXPORT_SYMBOL(openat);
- 
- static const char *fd_getpath(int fd)
- {
-@@ -2647,14 +2660,19 @@ static const char *fd_getpath(int fd)
- 	return f->path;
- }
- 
--int unlink(const char *pathname)
-+int unlinkat(int dirfd, const char *pathname, int flags)
- {
- 	int ret;
- 	struct dentry *dentry;
- 	struct inode *inode;
- 	struct path path;
- 
--	ret = filename_lookup(getname(pathname), 0, &path);
-+	if (flags == AT_REMOVEDIR)
-+		return rmdirat(dirfd, pathname);
-+	if (flags)
-+		return -EINVAL;
-+
-+	ret = filename_lookup(dirfd, getname(pathname), 0, &path);
- 	if (ret)
- 		goto out;
- 
-@@ -2683,7 +2701,7 @@ int unlink(const char *pathname)
- out:
- 	return errno_set(ret);
- }
--EXPORT_SYMBOL(unlink);
-+EXPORT_SYMBOL(unlinkat);
- 
- static int vfs_symlink(struct inode *dir, struct dentry *dentry, const char *oldname)
- {
-@@ -2700,7 +2718,7 @@ int symlink(const char *pathname, const char *newpath)
- 	int error;
- 	unsigned int lookup_flags = LOOKUP_DIRECTORY;
- 
--	dentry = filename_create(getname(newpath), &path, lookup_flags);
-+	dentry = filename_create(AT_FDCWD, getname(newpath), &path, lookup_flags);
- 	if (IS_ERR(dentry)) {
- 		error = PTR_ERR(dentry);
- 		goto out;
-@@ -2757,7 +2775,7 @@ DIR *opendir(const char *pathname)
- 	DIR *d;
- 	struct path path = {};
- 
--	ret = filename_lookup(getname(pathname),
-+	ret = filename_lookup(AT_FDCWD, getname(pathname),
- 			      LOOKUP_FOLLOW | LOOKUP_DIRECTORY, &path);
- 	if (ret)
- 		goto out;
-@@ -2844,7 +2862,7 @@ int rewinddir(DIR *dir)
- }
- EXPORT_SYMBOL(rewinddir);
- 
--int readlink(const char *pathname, char *buf, size_t bufsiz)
-+int readlinkat(int dirfd, const char *pathname, char *buf, size_t bufsiz)
- {
- 	int ret;
- 	struct dentry *dentry;
-@@ -2852,7 +2870,7 @@ int readlink(const char *pathname, char *buf, size_t bufsiz)
- 	const char *link;
- 	struct path path = {};
- 
--	ret = filename_lookup(getname(pathname), 0, &path);
-+	ret = filename_lookup(dirfd, getname(pathname), 0, &path);
- 	if (ret)
- 		goto out;
- 
-@@ -2884,16 +2902,16 @@ int readlink(const char *pathname, char *buf, size_t bufsiz)
- out:
- 	return errno_set(ret);
- }
--EXPORT_SYMBOL(readlink);
-+EXPORT_SYMBOL(readlinkat);
- 
--static int stat_filename(const char *filename, struct stat *s, unsigned int flags)
-+static int stat_filename(int dirfd, const char *filename, struct stat *s, unsigned int flags)
- {
- 	int ret;
- 	struct dentry *dentry;
- 	struct inode *inode;
- 	struct path path = {};
- 
--	ret = filename_lookup(getname(filename), flags, &path);
-+	ret = filename_lookup(dirfd, getname(filename), flags, &path);
- 	if (ret)
- 		goto out;
- 
-@@ -2915,17 +2933,17 @@ static int stat_filename(const char *filename, struct stat *s, unsigned int flag
- 	return errno_set(ret);
- }
- 
--int stat(const char *filename, struct stat *s)
-+int statat(int dirfd, const char *filename, struct stat *s)
- {
--	return stat_filename(filename, s, LOOKUP_FOLLOW);
-+	return stat_filename(dirfd, filename, s, LOOKUP_FOLLOW);
- }
--EXPORT_SYMBOL(stat);
-+EXPORT_SYMBOL(statat);
- 
--int lstat(const char *filename, struct stat *s)
-+int lstatat(int dirfd, const char *filename, struct stat *s)
- {
--	return stat_filename(filename, s, 0);
-+	return stat_filename(dirfd, filename, s, 0);
- }
--EXPORT_SYMBOL(lstat);
-+EXPORT_SYMBOL(lstatat);
- 
- static char *__dpath(struct dentry *dentry, struct dentry *root)
- {
-@@ -2981,6 +2999,8 @@ char *dpath(struct dentry *dentry, struct dentry *root)
- 
- /**
-  * canonicalize_path - resolve links in path
-+ *
-+ * @dirfd: directory file descriptor to look up relative to
-  * @pathname: The input path
-  *
-  * This function resolves all links in @pathname and returns
-@@ -2988,13 +3008,13 @@ char *dpath(struct dentry *dentry, struct dentry *root)
-  *
-  * Return: Path with links resolved. Allocated, must be freed after use.
-  */
--char *canonicalize_path(const char *pathname)
-+char *canonicalize_path(int dirfd, const char *pathname)
- {
- 	char *res = NULL;
- 	struct path path;
- 	int ret;
- 
--	ret = filename_lookup(getname(pathname), LOOKUP_FOLLOW, &path);
-+	ret = filename_lookup(dirfd, getname(pathname), LOOKUP_FOLLOW, &path);
- 	if (ret)
- 		goto out;
- 
-@@ -3016,7 +3036,7 @@ int chdir(const char *pathname)
- 	struct path path;
- 	int ret;
- 
--	ret = filename_lookup(getname(pathname), LOOKUP_FOLLOW | LOOKUP_DIRECTORY, &path);
-+	ret = filename_lookup(AT_FDCWD, getname(pathname), LOOKUP_FOLLOW | LOOKUP_DIRECTORY, &path);
- 	if (ret)
- 		goto out;
- 
-@@ -3135,7 +3155,7 @@ int mount(const char *device, const char *fsname, const char *pathname,
- 	struct path path = {};
- 
- 	if (d_root) {
--		ret = filename_lookup(getname(pathname), LOOKUP_FOLLOW, &path);
-+		ret = filename_lookup(AT_FDCWD, getname(pathname), LOOKUP_FOLLOW, &path);
- 		if (ret)
- 			goto out;
- 
-@@ -3242,7 +3262,7 @@ int umount(const char *pathname)
- 	struct path path = {};
- 	int ret;
- 
--	ret = filename_lookup(getname(pathname), LOOKUP_FOLLOW, &path);
-+	ret = filename_lookup(AT_FDCWD, getname(pathname), LOOKUP_FOLLOW, &path);
- 	if (ret)
- 		return ret;
- 
-@@ -3313,7 +3333,7 @@ void automount_remove(const char *pathname)
- 	struct path path;
- 	int ret;
- 
--	ret = filename_lookup(getname(pathname), LOOKUP_FOLLOW, &path);
-+	ret = filename_lookup(AT_FDCWD, getname(pathname), LOOKUP_FOLLOW, &path);
- 	if (ret)
- 		return;
- 
-@@ -3329,7 +3349,7 @@ int automount_add(const char *pathname, const char *cmd)
- 	struct path path;
- 	int ret;
- 
--	ret = filename_lookup(getname(pathname), LOOKUP_FOLLOW, &path);
-+	ret = filename_lookup(AT_FDCWD, getname(pathname), LOOKUP_FOLLOW, &path);
- 	if (ret)
- 		return ret;
- 
-@@ -3441,14 +3461,14 @@ static int do_lookup_dentry(int argc, char *argv[])
- 	if (argc < 2)
- 		return COMMAND_ERROR_USAGE;
- 
--	ret = filename_lookup(getname(argv[1]), 0, &path);
-+	ret = filename_lookup(AT_FDCWD, getname(argv[1]), 0, &path);
- 	if (ret) {
- 		printf("Cannot lookup path \"%s\": %s\n",
- 		       argv[1], strerror(-ret));
- 		return 1;
- 	}
- 
--	canon = canonicalize_path(argv[1]);
-+	canon = canonicalize_path(AT_FDCWD, argv[1]);
- 
- 	printf("path \"%s\":\n", argv[1]);
- 	printf("dentry: 0x%p\n", path.dentry);
-diff --git a/include/fcntl.h b/include/fcntl.h
-index 06289abc4376..a6ed50b92eaf 100644
---- a/include/fcntl.h
-+++ b/include/fcntl.h
-@@ -4,6 +4,13 @@
- 
- #include <linux/types.h>
- 
-+#define AT_FDCWD		-100    /* Special value used to indicate
-+                                           openat should use the current
-+                                           working directory. */
-+
-+#define AT_REMOVEDIR		0x200   /* Remove directory instead of
-+                                           unlinking file.  */
-+
- /* open/fcntl - O_SYNC is only implemented on blocks devices and on files
-    located on an ext2 file system */
- #define O_ACCMODE	00000003
-@@ -28,7 +35,12 @@
- #define O_RWSIZE_4	004000000
- #define O_RWSIZE_8	010000000
- 
--int open(const char *pathname, int flags, ...);
-+int openat(int dirfd, const char *pathname, int flags);
-+
-+static inline int open(const char *pathname, int flags, ...)
-+{
-+	return openat(AT_FDCWD, pathname, flags);
-+}
- 
- static inline int creat(const char *pathname, mode_t mode)
- {
-diff --git a/include/fs.h b/include/fs.h
-index a61982e59ade..c4af8659b0d3 100644
---- a/include/fs.h
-+++ b/include/fs.h
-@@ -150,7 +150,7 @@ char *mkmodestr(unsigned long mode, char *str);
- void stat_print(const char *filename, const struct stat *st);
- void cdev_print(const struct cdev *cdev);
- 
--char *canonicalize_path(const char *pathname);
-+char *canonicalize_path(int dirfd, const char *pathname);
- 
- char *get_mounted_path(const char *path);
- 
-diff --git a/include/sys/stat.h b/include/sys/stat.h
-index 0dd43d1f02c8..7af49a1d3ccc 100644
---- a/include/sys/stat.h
-+++ b/include/sys/stat.h
-@@ -5,7 +5,13 @@
- 
- #include <linux/types.h>
- #include <linux/stat.h>
-+#include <fcntl.h>
- 
--int mkdir (const char *pathname, mode_t mode);
-+int mkdirat(int dirfd, const char *pathname, mode_t mode);
-+
-+static inline int mkdir(const char *pathname, mode_t mode)
-+{
-+	return mkdirat(AT_FDCWD, pathname, mode);
-+}
- 
- #endif /* __STAT_H */
-diff --git a/include/unistd.h b/include/unistd.h
-index f7fe737d002b..b78acbfd737a 100644
---- a/include/unistd.h
-+++ b/include/unistd.h
-@@ -3,26 +3,51 @@
- #define __UNISTD_H
- 
- #include <linux/types.h>
-+#include <fcntl.h>
- 
- struct stat;
- 
--int unlink(const char *pathname);
-+int unlinkat(int dirfd, const char *pathname, int flags);
- int close(int fd);
--int lstat(const char *filename, struct stat *s);
--int stat(const char *filename, struct stat *s);
-+int lstatat(int dirfd, const char *filename, struct stat *s);
-+int statat(int dirfd, const char *filename, struct stat *s);
- int fstat(int fd, struct stat *s);
- ssize_t read(int fd, void *buf, size_t count);
- ssize_t pread(int fd, void *buf, size_t count, loff_t offset);
- ssize_t write(int fd, const void *buf, size_t count);
- ssize_t pwrite(int fd, const void *buf, size_t count, loff_t offset);
- loff_t lseek(int fildes, loff_t offset, int whence);
--int rmdir (const char *pathname);
- int symlink(const char *pathname, const char *newpath);
--int readlink(const char *path, char *buf, size_t bufsiz);
-+int readlinkat(int dirfd, const char *path, char *buf, size_t bufsiz);
- int chdir(const char *pathname);
- char *pushd(const char *dir);
- int popd(char *dir);
- const char *getcwd(void);
- int ftruncate(int fd, loff_t length);
- 
-+static inline int unlink(const char *pathname)
-+{
-+	return unlinkat(AT_FDCWD, pathname, 0);
-+}
-+
-+static inline int lstat(const char *filename, struct stat *s)
-+{
-+	return lstatat(AT_FDCWD, filename, s);
-+}
-+
-+static inline int stat(const char *filename, struct stat *s)
-+{
-+	return statat(AT_FDCWD, filename, s);
-+}
-+
-+static inline int rmdir(const char *pathname)
-+{
-+	return unlinkat(AT_FDCWD, pathname, AT_REMOVEDIR);
-+}
-+
-+static inline int readlink(const char *path, char *buf, size_t bufsiz)
-+{
-+	return readlinkat(AT_FDCWD, path, buf, bufsiz);
-+}
-+
- #endif /* __UNISTD_H */
+diff --git a/include/efi.h b/include/efi.h
+index 2b248a17013d..8635ab58f981 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -373,138 +373,138 @@ extern struct efi_runtime_services *RT;
+     EFI_GUID( 0xA19832B9, 0xAC25, 0x11D3, 0x9A, 0x2D, 0x00, 0x90, 0x27, 0x3F, 0xC1, 0x4D )
+ 
+ #define EFI_SIMPLE_FILE_SYSTEM_PROTOCOL_GUID \
+-	EFI_GUID(0x0964e5b22, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++    EFI_GUID(0x0964e5b22, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ 
+ #define EFI_UNKNOWN_DEVICE_GUID \
+-	EFI_GUID(0xcf31fac5, 0xc24e, 0x11d2, 0x85, 0xf3, 0x0, 0xa0, 0xc9, 0x3e, 0xc9, 0x3b)
++    EFI_GUID(0xcf31fac5, 0xc24e, 0x11d2, 0x85, 0xf3, 0x0, 0xa0, 0xc9, 0x3e, 0xc9, 0x3b)
+ 
+ #define EFI_BLOCK_IO_PROTOCOL_GUID \
+-	EFI_GUID(0x964e5b21, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++    EFI_GUID(0x964e5b21, 0x6459, 0x11d2, 0x8e, 0x39, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ 
+ /* additional GUID from EDK2 */
+ #define EFI_FIRMWARE_VOLUME2_PROTOCOL_GUID \
+-	EFI_GUID(0x220e73b6, 0x6bdb, 0x4413, 0x84, 0x5, 0xb9, 0x74, 0xb1, 0x8, 0x61, 0x9a)
++    EFI_GUID(0x220e73b6, 0x6bdb, 0x4413, 0x84, 0x5, 0xb9, 0x74, 0xb1, 0x8, 0x61, 0x9a)
+ 
+ #define EFI_FIRMWARE_VOLUME_BLOCK_PROTOCOL_GUID \
+-	EFI_GUID(0x8f644fa9, 0xe850, 0x4db1, 0x9c, 0xe2, 0xb, 0x44, 0x69, 0x8e, 0x8d, 0xa4)
++    EFI_GUID(0x8f644fa9, 0xe850, 0x4db1, 0x9c, 0xe2, 0xb, 0x44, 0x69, 0x8e, 0x8d, 0xa4)
+ 
+ #define EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL_GUID \
+-	EFI_GUID(0x2f707ebb, 0x4a1a, 0x11d4, 0x9a, 0x38, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++    EFI_GUID(0x2f707ebb, 0x4a1a, 0x11d4, 0x9a, 0x38, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+ 
+ #define EFI_ISA_ACPI_PROTOCOL_GUID \
+-	EFI_GUID(0x64a892dc, 0x5561, 0x4536, 0x92, 0xc7, 0x79, 0x9b, 0xfc, 0x18, 0x33, 0x55)
++    EFI_GUID(0x64a892dc, 0x5561, 0x4536, 0x92, 0xc7, 0x79, 0x9b, 0xfc, 0x18, 0x33, 0x55)
+ 
+ #define EFI_ISA_IO_PROTOCOL_GUID \
+-	EFI_GUID(0x7ee2bd44, 0x3da0, 0x11d4, 0x9a, 0x38, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++    EFI_GUID(0x7ee2bd44, 0x3da0, 0x11d4, 0x9a, 0x38, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+ 
+ #define EFI_STANDARD_ERROR_DEVICE_GUID \
+-	EFI_GUID(0xd3b36f2d, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++    EFI_GUID(0xd3b36f2d, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+ 
+ #define EFI_CONSOLE_OUT_DEVICE_GUID \
+-	EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++    EFI_GUID(0xd3b36f2c, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+ 
+ #define EFI_CONSOLE_IN_DEVICE_GUID \
+-	EFI_GUID(0xd3b36f2b, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
++    EFI_GUID(0xd3b36f2b, 0xd551, 0x11d4, 0x9a, 0x46, 0x0, 0x90, 0x27, 0x3f, 0xc1, 0x4d)
+ 
+ #define EFI_SIMPLE_TEXT_OUT_PROTOCOL_GUID \
+-	EFI_GUID(0x387477c2, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++    EFI_GUID(0x387477c2, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ 
+ #define EFI_SIMPLE_TEXT_INPUT_EX_PROTOCOL_GUID \
+-	EFI_GUID(0xdd9e7534, 0x7762, 0x4698, 0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa)
++    EFI_GUID(0xdd9e7534, 0x7762, 0x4698, 0x8c, 0x14, 0xf5, 0x85, 0x17, 0xa6, 0x25, 0xaa)
+ 
+ #define EFI_SIMPLE_TEXT_IN_PROTOCOL_GUID \
+-	EFI_GUID(0x387477c1, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++    EFI_GUID(0x387477c1, 0x69c7, 0x11d2, 0x8e, 0x39, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ 
+ #define EFI_DISK_IO_PROTOCOL_GUID \
+-	EFI_GUID(0xce345171, 0xba0b, 0x11d2, 0x8e, 0x4f, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++    EFI_GUID(0xce345171, 0xba0b, 0x11d2, 0x8e, 0x4f, 0x0, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ 
+ #define EFI_IDE_CONTROLLER_INIT_PROTOCOL_GUID \
+-	EFI_GUID(0xa1e37052, 0x80d9, 0x4e65, 0xa3, 0x17, 0x3e, 0x9a, 0x55, 0xc4, 0x3e, 0xc9)
++    EFI_GUID(0xa1e37052, 0x80d9, 0x4e65, 0xa3, 0x17, 0x3e, 0x9a, 0x55, 0xc4, 0x3e, 0xc9)
+ 
+ #define EFI_DISK_INFO_PROTOCOL_GUID \
+-	EFI_GUID(0xd432a67f, 0x14dc, 0x484b, 0xb3, 0xbb, 0x3f, 0x2, 0x91, 0x84, 0x93, 0x27)
++    EFI_GUID(0xd432a67f, 0x14dc, 0x484b, 0xb3, 0xbb, 0x3f, 0x2, 0x91, 0x84, 0x93, 0x27)
+ 
+ #define EFI_SERIAL_IO_PROTOCOL_GUID \
+-	EFI_GUID(0xbb25cf6f, 0xf1d4, 0x11d2, 0x9a, 0x0c, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0xfd)
++    EFI_GUID(0xbb25cf6f, 0xf1d4, 0x11d2, 0x9a, 0x0c, 0x00, 0x90, 0x27, 0x3f, 0xc1, 0xfd)
+ 
+ #define EFI_BUS_SPECIFIC_DRIVER_OVERRIDE_PROTOCOL_GUID \
+-	EFI_GUID(0x3bc1b285, 0x8a15, 0x4a82, 0xaa, 0xbf, 0x4d, 0x7d, 0x13, 0xfb, 0x32, 0x65)
++    EFI_GUID(0x3bc1b285, 0x8a15, 0x4a82, 0xaa, 0xbf, 0x4d, 0x7d, 0x13, 0xfb, 0x32, 0x65)
+ 
+ #define EFI_LOAD_FILE2_PROTOCOL_GUID \
+-	EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e, 0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
++    EFI_GUID(0x4006c0c1, 0xfcb3, 0x403e, 0x99, 0x6d, 0x4a, 0x6c, 0x87, 0x24, 0xe0, 0x6d)
+ 
+ #define EFI_MTFTP4_SERVICE_BINDING_PROTOCOL_GUID \
+-	EFI_GUID(0x2fe800be, 0x8f01, 0x4aa6, 0x94, 0x6b, 0xd7, 0x13, 0x88, 0xe1, 0x83, 0x3f)
++    EFI_GUID(0x2fe800be, 0x8f01, 0x4aa6, 0x94, 0x6b, 0xd7, 0x13, 0x88, 0xe1, 0x83, 0x3f)
+ 
+ #define EFI_DHCP4_PROTOCOL_GUID \
+-	EFI_GUID(0x9d9a39d8, 0xbd42, 0x4a73, 0xa4, 0xd5, 0x8e, 0xe9, 0x4b, 0xe1, 0x13, 0x80)
++    EFI_GUID(0x9d9a39d8, 0xbd42, 0x4a73, 0xa4, 0xd5, 0x8e, 0xe9, 0x4b, 0xe1, 0x13, 0x80)
+ 
+ #define EFI_UDP4_SERVICE_BINDING_PROTOCOL_GUID \
+-	EFI_GUID(0x83f01464, 0x99bd, 0x45e5, 0xb3, 0x83, 0xaf, 0x63, 0x05, 0xd8, 0xe9, 0xe6)
++    EFI_GUID(0x83f01464, 0x99bd, 0x45e5, 0xb3, 0x83, 0xaf, 0x63, 0x05, 0xd8, 0xe9, 0xe6)
+ 
+ #define EFI_TCP4_SERVICE_BINDING_PROTOCOL_GUID \
+-	EFI_GUID(0x00720665, 0x67EB, 0x4a99, 0xBA, 0xF7, 0xD3, 0xC3, 0x3A, 0x1C, 0x7C, 0xC9)
++    EFI_GUID(0x00720665, 0x67EB, 0x4a99, 0xBA, 0xF7, 0xD3, 0xC3, 0x3A, 0x1C, 0x7C, 0xC9)
+ 
+ #define EFI_IP4_SERVICE_BINDING_PROTOCOL_GUID \
+-	EFI_GUID(0xc51711e7, 0xb4bf, 0x404a, 0xbf, 0xb8, 0x0a, 0x04, 0x8e, 0xf1, 0xff, 0xe4)
++    EFI_GUID(0xc51711e7, 0xb4bf, 0x404a, 0xbf, 0xb8, 0x0a, 0x04, 0x8e, 0xf1, 0xff, 0xe4)
+ 
+ #define EFI_IP4_CONFIG_PROTOCOL_GUID \
+-	EFI_GUID(0x3b95aa31, 0x3793, 0x434b, 0x86, 0x67, 0xc8, 0x07, 0x08, 0x92, 0xe0, 0x5e)
++    EFI_GUID(0x3b95aa31, 0x3793, 0x434b, 0x86, 0x67, 0xc8, 0x07, 0x08, 0x92, 0xe0, 0x5e)
+ 
+ #define EFI_ARP_SERVICE_BINDING_PROTOCOL_GUID\
+-	EFI_GUID(0xf44c00ee, 0x1f2c, 0x4a00, 0xaa, 0x9, 0x1c, 0x9f, 0x3e, 0x8, 0x0, 0xa3)
++    EFI_GUID(0xf44c00ee, 0x1f2c, 0x4a00, 0xaa, 0x9, 0x1c, 0x9f, 0x3e, 0x8, 0x0, 0xa3)
+ 
+ #define EFI_MANAGED_NETWORK_SERVICE_BINDING_PROTOCOL_GUID \
+-	EFI_GUID(0xf36ff770, 0xa7e1, 0x42cf, 0x9e, 0xd2, 0x56, 0xf0, 0xf2, 0x71, 0xf4, 0x4c)
++    EFI_GUID(0xf36ff770, 0xa7e1, 0x42cf, 0x9e, 0xd2, 0x56, 0xf0, 0xf2, 0x71, 0xf4, 0x4c)
+ 
+ #define EFI_VLAN_CONFIG_PROTOCOL_GUID \
+-	EFI_GUID(0x9e23d768, 0xd2f3, 0x4366, 0x9f, 0xc3, 0x3a, 0x7a, 0xba, 0x86, 0x43, 0x74)
++    EFI_GUID(0x9e23d768, 0xd2f3, 0x4366, 0x9f, 0xc3, 0x3a, 0x7a, 0xba, 0x86, 0x43, 0x74)
+ 
+ #define EFI_HII_CONFIG_ACCESS_PROTOCOL_GUID \
+-	EFI_GUID(0x330d4706, 0xf2a0, 0x4e4f, 0xa3, 0x69, 0xb6, 0x6f, 0xa8, 0xd5, 0x43, 0x85)
++    EFI_GUID(0x330d4706, 0xf2a0, 0x4e4f, 0xa3, 0x69, 0xb6, 0x6f, 0xa8, 0xd5, 0x43, 0x85)
+ 
+ #define EFI_LOAD_FILE_PROTOCOL_GUID \
+-	EFI_GUID(0x56ec3091, 0x954c, 0x11d2, 0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
++    EFI_GUID(0x56ec3091, 0x954c, 0x11d2, 0x8e, 0x3f, 0x00, 0xa0, 0xc9, 0x69, 0x72, 0x3b)
+ 
+ #define EFI_COMPONENT_NAME2_PROTOCOL_GUID \
+-	EFI_GUID(0x6a7a5cff, 0xe8d9, 0x4f70, 0xba, 0xda, 0x75, 0xab, 0x30, 0x25, 0xce, 0x14)
++    EFI_GUID(0x6a7a5cff, 0xe8d9, 0x4f70, 0xba, 0xda, 0x75, 0xab, 0x30, 0x25, 0xce, 0x14)
+ 
+ #define EFI_IDEBUSDXE_INF_GUID \
+-	EFI_GUID(0x69fd8e47, 0xa161, 0x4550, 0xb0, 0x1a, 0x55, 0x94, 0xce, 0xb2, 0xb2, 0xb2)
++    EFI_GUID(0x69fd8e47, 0xa161, 0x4550, 0xb0, 0x1a, 0x55, 0x94, 0xce, 0xb2, 0xb2, 0xb2)
+ 
+ #define EFI_TERMINALDXE_INF_GUID \
+-	EFI_GUID(0x9e863906, 0xa40f, 0x4875, 0x97, 0x7f, 0x5b, 0x93, 0xff, 0x23, 0x7f, 0xc6)
++    EFI_GUID(0x9e863906, 0xa40f, 0x4875, 0x97, 0x7f, 0x5b, 0x93, 0xff, 0x23, 0x7f, 0xc6)
+ 
+ #define EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID_31 \
+-	EFI_GUID(0x1aced566, 0x76ed, 0x4218, 0xbc, 0x81, 0x76, 0x7f, 0x1f, 0x97, 0x7a, 0x89)
++    EFI_GUID(0x1aced566, 0x76ed, 0x4218, 0xbc, 0x81, 0x76, 0x7f, 0x1f, 0x97, 0x7a, 0x89)
+ 
+ #define EFI_NETWORK_INTERFACE_IDENTIFIER_PROTOCOL_GUID \
+-	EFI_GUID(0xe18541cd, 0xf755, 0x4f73, 0x92, 0x8d, 0x64, 0x3c, 0x8a, 0x79, 0xb2, 0x29)
++    EFI_GUID(0xe18541cd, 0xf755, 0x4f73, 0x92, 0x8d, 0x64, 0x3c, 0x8a, 0x79, 0xb2, 0x29)
+ 
+ #define EFI_ISCSIDXE_INF_GUID \
+-	EFI_GUID(0x4579b72d, 0x7ec4, 0x4dd4, 0x84, 0x86, 0x08, 0x3c, 0x86, 0xb1, 0x82, 0xa7)
++    EFI_GUID(0x4579b72d, 0x7ec4, 0x4dd4, 0x84, 0x86, 0x08, 0x3c, 0x86, 0xb1, 0x82, 0xa7)
+ 
+ #define EFI_VLANCONFIGDXE_INF_GUID \
+-	EFI_GUID(0xe4f61863, 0xfe2c, 0x4b56, 0xa8, 0xf4, 0x08, 0x51, 0x9b, 0xc4, 0x39, 0xdf)
++    EFI_GUID(0xe4f61863, 0xfe2c, 0x4b56, 0xa8, 0xf4, 0x08, 0x51, 0x9b, 0xc4, 0x39, 0xdf)
+ 
+ #define EFI_TIMESTAMP_PROTOCOL_GUID \
+-	EFI_GUID(0xafbfde41, 0x2e6e, 0x4262, 0xba, 0x65, 0x62, 0xb9, 0x23, 0x6e, 0x54, 0x95)
++    EFI_GUID(0xafbfde41, 0x2e6e, 0x4262, 0xba, 0x65, 0x62, 0xb9, 0x23, 0x6e, 0x54, 0x95)
+ 
+ /* barebox specific GUIDs */
+ #define EFI_BAREBOX_VENDOR_GUID \
+-	EFI_GUID(0x5b91f69c, 0x8b88, 0x4a2b, 0x92, 0x69, 0x5f, 0x1d, 0x80, 0x2b, 0x51, 0x75)
++    EFI_GUID(0x5b91f69c, 0x8b88, 0x4a2b, 0x92, 0x69, 0x5f, 0x1d, 0x80, 0x2b, 0x51, 0x75)
+ 
+ /* for systemd */
+ #define EFI_SYSTEMD_VENDOR_GUID \
+-	EFI_GUID(0x4a67b082, 0x0a4c, 0x41cf, 0xb6, 0xc7, 0x44, 0x0b, 0x29, 0xbb, 0x8c, 0x4f)
++    EFI_GUID(0x4a67b082, 0x0a4c, 0x41cf, 0xb6, 0xc7, 0x44, 0x0b, 0x29, 0xbb, 0x8c, 0x4f)
+ 
+ /* for TPM 1.2 */
+ #define EFI_TCG_PROTOCOL_GUID \
+-	EFI_GUID(0xf541796d, 0xa62e, 0x4954, 0xa7, 0x75, 0x95, 0x84, 0xf6, 0x1b, 0x9c, 0xdd)
++    EFI_GUID(0xf541796d, 0xa62e, 0x4954, 0xa7, 0x75, 0x95, 0x84, 0xf6, 0x1b, 0x9c, 0xdd)
+ 
+ /* for TPM 2.0 */
+ #define EFI_TCG2_PROTOCOL_GUID \
+-	EFI_GUID(0x607f766c, 0x7455, 0x42be, 0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
++    EFI_GUID(0x607f766c, 0x7455, 0x42be, 0x93, 0x0b, 0xe4, 0xd7, 0x6d, 0xb2, 0x72, 0x0f)
+ 
+ extern efi_guid_t efi_file_info_id;
+ extern efi_guid_t efi_simple_file_system_protocol_guid;
 -- 
 2.39.2
 
