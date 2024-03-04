@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDiG-008dnn-17
+	id 1rhDiG-008do8-2k
 	for lore@lore.pengutronix.de;
 	Mon, 04 Mar 2024 20:11:00 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDiC-0005pN-4H
+	id 1rhDiE-0005rt-Pe
 	for lore@pengutronix.de; Mon, 04 Mar 2024 20:11:00 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,64 +18,64 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=M6ZHl6fcgmoT4aYJBIMs2sN6UiDJhSC9jFXbVEECelE=; b=XA03gx+rJSousZKVKXE6pT79K4
-	T6OGSOFkd/Wk32gK5gVQ2LImAUtIyiBchZnOrOeKhbWWkyUP8MfINx/Kb01bXuJ3dejAs2uxh3ES5
-	TwnJjvIqcVE4R5YMTLRRuJfW40p+Sx7iZnZHUS00fd6rvYHqfvde9ZBZNTEZSSh5/a1hlJI+8mZZL
-	6gs1mXuT2TyhOgK+HWJIbFrNxZ6ox87kZiNgjap+TGOrDEJMivn/jHIwbIi6fa0kFC7oOT4Y2Ox3q
-	gNUVclsBSOcpLabAQAix7VULCGezn09tv87NYjnM0W3HbVEd0J6pNTmCPfEhWL6eL5En3fF7BzzkX
-	Daidv/2w==;
+	bh=OYiNeMK4OtHEXQDvxzoxH2qoWduhudaEJtm14MB6bF4=; b=cVKoizfWAHxcuJ73aC8oQDln9d
+	1Av/3nHAOjPPpqbFIjWlCz7Ez1jPHbNq9ed/r0/EZnZLzzuKs+j9XCPCNevQpSxUSWDq3ofoHy/lo
+	nzcdoZtpkCCDZ7QvPnJ+ma7pNkvYbh3yM82XBQO601DP4Nt/m8aIRmbxeZTj+F3TagSEMs+enKRRR
+	7i1e+Cqik4ht8PS/0gPa/MU8IEwnRJt7M5rmHuStqt9Zsf9BXZ0U3CUhrStiaI9lujTuREx8Hl1RM
+	nGm5OGI8l8gYu5mqaARf1m/or2SpDd3mvzx0AS6OtW+MUNstzIAWUTZ8i9/+FlcxO5Tm9A6+ra1Yw
+	UGuN7+LA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDhR-0000000ANMf-3OlF;
-	Mon, 04 Mar 2024 19:10:09 +0000
+	id 1rhDhW-0000000ANPr-01rk;
+	Mon, 04 Mar 2024 19:10:14 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDad-0000000AIda-33Am
+	id 1rhDae-0000000AIeJ-1ICP
 	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:03:08 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=M6ZHl6fcgmoT4aYJBIMs2sN6UiDJhSC9jFXbVEECelE=; b=QH+3LZa4r57/VOLatzhn5pYoVy
-	P7zuaiY7XvARupkICNY4XVkLBE8u3oviukIIo80Sfrh3GE+hbu5N+YRBwS8g/8V51ERiH/R7eXQwy
-	uqowXgUSOwX4GTguiNrQgu7QWqhb37342dVEgP7A8mpIxzAeDO+BA3WCJr+SEYY9O4B/o1zHN1avl
-	BJHOjN86KTlWTa8bnUZSfgzanbvwO8uyzayhct3QD0DUSmVAB+DkqH4UkiEaOXBaZr9HDZQdKyRTw
-	Ez9mZGRF2gSXP9oZs4INMzoHWC+FO7QrOrD840MbtEbhNbLb8A3cL37NzN/QbRyp0X/GdbjAsHAoP
-	NL/wnOQA==;
+	bh=OYiNeMK4OtHEXQDvxzoxH2qoWduhudaEJtm14MB6bF4=; b=XBLlxI5ytpYQcEIxBs6q1tXRU6
+	vULsySDKMTkZFZLkryqPzIEOdhDMwd8nfDm/G1ERWVw8kdwB/itHQXXsDOBTBifSLH6RTV5w2uX1x
+	bv1B/UYH0w3F+2wDEAjPopfut2kasj2APCnxlNobe4WT8A7vvn+4bc/ubB0BTk4+1EJLXOmHnDrdr
+	7g2591z0yxxl2XuLWrIX8ep53u39K7SUvpUfV5RBrQyVynwE0W35TUBEKH/WODR/J7+oP9Y6y21qL
+	tu4/sYt5shXjDPtkt3Ng4vaMhNvNrzoeVRxhBk4z1TS0V46LXzKNoa8dmRd6BPeBGnk4OI2BTS3Ly
+	sfOoqKSw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaV-00000002BSh-1Bxa
+	id 1rhDaX-00000002BSy-1GX4
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:03:06 +0000
+	Mon, 04 Mar 2024 19:03:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaF-00064u-9i; Mon, 04 Mar 2024 20:02:43 +0100
+	id 1rhDaG-00068M-Dy; Mon, 04 Mar 2024 20:02:44 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaE-004PIT-RU; Mon, 04 Mar 2024 20:02:42 +0100
+	id 1rhDaF-004PJh-VM; Mon, 04 Mar 2024 20:02:43 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYL-00Ed9V-3A;
-	Mon, 04 Mar 2024 20:00:46 +0100
+	id 1rhDYM-00Ed9V-2y;
+	Mon, 04 Mar 2024 20:00:47 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:50 +0100
-Message-Id: <20240304190038.3486881-66-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:11 +0100
+Message-Id: <20240304190038.3486881-87-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190259_534090_1E054188 
-X-CRM114-Status: GOOD (  32.23  )
+X-CRM114-CacheID: sfid-20240304_190301_435113_C31BB4B3 
+X-CRM114-Status: GOOD (  30.95  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,1070 +98,706 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 065/113] common: add PE/COFF loader
+Subject: [PATCH v2 086/113] ARM64: add optional EFI stub
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-EFI loader will need to parse and load PE executables. Add functions to
-facilitate that. The API is inspired by the already existing ELF API.
+While very recent binutils releases have dedicated efi-*-aarch targets,
+we may want to support older toolchains. For this reason, we import
+the kernel's EFI stub PE fakery, so the same barebox-dt-2nd.img may be
+loaded as if it were a "normal" or an EFI-stubbed kernel.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - replace use of pe.h header originating from Wine with <linux/pe.h>
+  - squash with commit introducing PECOFF_EDATA_PADDING
 ---
- common/Kconfig          |   3 +
- common/Makefile         |   1 +
- common/pe.c             | 379 +++++++++++++++++++++++++++++++
- include/linux/pagemap.h |   1 +
- include/linux/pe.h      | 482 ++++++++++++++++++++++++++++++++++++++++
- include/pe.h            | 124 +++++++++++
- 6 files changed, 990 insertions(+)
- create mode 100644 common/pe.c
- create mode 100644 include/linux/pe.h
- create mode 100644 include/pe.h
+ Makefile                            |   6 +-
+ arch/arm/Kconfig                    |   1 +
+ arch/arm/cpu/Kconfig                |   1 +
+ arch/arm/cpu/board-dt-2nd-aarch64.S |   8 +-
+ arch/arm/cpu/cpu.c                  |   6 ++
+ arch/arm/cpu/efi-header-aarch64.S   | 122 ++++++++++++++++++++++++++++
+ arch/arm/cpu/entry.c                |   3 +
+ arch/arm/cpu/interrupts_64.c        |   6 +-
+ arch/arm/cpu/mmu-common.c           |   4 +
+ arch/arm/cpu/start.c                |  16 ++--
+ arch/arm/include/asm/memory.h       |  20 +++++
+ arch/arm/include/asm/pci.h          |   4 +-
+ arch/arm/lib/pbl.lds.S              |  31 +++++++
+ arch/arm/lib64/armlinux.c           |   4 +
+ arch/x86/Kconfig                    |   1 +
+ efi/Kconfig                         |  13 ++-
+ efi/payload/Makefile                |   2 +
+ efi/payload/boarddata.c             |  45 ++++++++++
+ efi/payload/entry-multi.c           |  45 ++++++++++
+ include/pbl.h                       |   4 +
+ test/self/mmu.c                     |   7 ++
+ 21 files changed, 337 insertions(+), 12 deletions(-)
+ create mode 100644 arch/arm/cpu/efi-header-aarch64.S
+ create mode 100644 efi/payload/boarddata.c
+ create mode 100644 efi/payload/entry-multi.c
 
-diff --git a/common/Kconfig b/common/Kconfig
-index a7034a166189..33903aa249b7 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -623,6 +623,9 @@ config BOOTM_AIMAGE
- 	help
- 	  Support using Android Images.
+diff --git a/Makefile b/Makefile
+index 358cd4140ce8..5a4300deadb2 100644
+--- a/Makefile
++++ b/Makefile
+@@ -734,7 +734,11 @@ images: barebox.bin FORCE
+ images/%.s: barebox.bin FORCE
+ 	$(Q)$(MAKE) $(build)=images $@
  
-+config PE
-+	bool "PE/COFF Support" if COMPILE_TEST
-+
- config ELF
- 	bool "ELF Support" if COMPILE_TEST
+-ifdef CONFIG_PBL_IMAGE
++ifdef CONFIG_EFI_STUB
++all: barebox.bin images barebox.efi
++barebox.efi: FORCE
++	$(Q)ln -fsn images/barebox-dt-2nd.img $@
++else ifdef CONFIG_PBL_IMAGE
+ all: barebox.bin images
+ else
+ all: barebox-flash-image barebox-flash-images
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 86fc912ac49f..1377679ac90c 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -9,6 +9,7 @@ config ARM
+ 	select HAVE_ARCH_KASAN
+ 	select ARCH_HAS_SJLJ
+ 	select ARM_OPTIMZED_STRING_FUNCTIONS if KASAN
++	select HAVE_EFI_STUB
+ 	default y
  
-diff --git a/common/Makefile b/common/Makefile
-index 42edb40999b1..2fc4a703c8c4 100644
---- a/common/Makefile
-+++ b/common/Makefile
-@@ -13,6 +13,7 @@ obj-pbl-y			+= memsize.o
- obj-y				+= resource.o
- obj-pbl-y			+= bootsource.o
- obj-$(CONFIG_ELF)		+= elf.o
-+obj-$(CONFIG_PE)		+= pe.o
- obj-y				+= restart.o
- obj-y				+= poweroff.o
- obj-y				+= slice.o
-diff --git a/common/pe.c b/common/pe.c
-new file mode 100644
-index 000000000000..5c33665dfa74
---- /dev/null
-+++ b/common/pe.c
-@@ -0,0 +1,379 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ *  PE image loader
-+ *
-+ *  based partly on wine code
-+ *
-+ *  Copyright (c) 2016 Alexander Graf
-+ */
+ config ARM_LINUX
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index 40dd35833a63..e69acaacdf2f 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -21,6 +21,7 @@ config CPU_64
+ 	select HAS_DMA
+ 	select ARCH_WANT_FRAME_POINTERS
+ 	select ARCH_HAS_ZERO_PAGE
++	select HAVE_EFI_PAYLOAD
+ 
+ # Select CPU types depending on the architecture selected. This selects
+ # which CPUs we support in the kernel image, and the compiler instruction
+diff --git a/arch/arm/cpu/board-dt-2nd-aarch64.S b/arch/arm/cpu/board-dt-2nd-aarch64.S
+index d2c9f132cef6..030366c1cbf5 100644
+--- a/arch/arm/cpu/board-dt-2nd-aarch64.S
++++ b/arch/arm/cpu/board-dt-2nd-aarch64.S
+@@ -2,6 +2,7 @@
+ #include <linux/linkage.h>
+ #include <asm/barebox-arm64.h>
+ #include <asm/image.h>
++#include "efi-header-aarch64.S"
+ 
+ #define IMAGE_FLAGS \
+ 	(ARM64_IMAGE_FLAG_PAGE_SIZE_4K << ARM64_IMAGE_FLAG_PAGE_SIZE_SHIFT) | \
+@@ -9,7 +10,7 @@
+ 
+ .section .text_head_entry_start_dt_2nd
+ ENTRY("start_dt_2nd")
+-	adr x1, 0	   	   /* code0 */
++	efi_signature_nop          /* code0 */
+ 	b 2f                       /* code1 */
+ 	.xword 0x80000             /* Image load offset */
+ 	.xword _barebox_image_size /* Effective Image size */
+@@ -18,12 +19,15 @@ ENTRY("start_dt_2nd")
+ 	.xword 0                   /* reserved */
+ 	.xword 0                   /* reserved */
+ 	.ascii ARM64_IMAGE_MAGIC   /* magic number */
+-	.int   0                   /* reserved (PE-COFF offset) */
++	.int   .Lpe_header_offset  /* reserved (PE-COFF offset) */
+ 	.asciz "barebox"	   /* unused for now */
+ 2:
++	adr x1, 0
+ 	mov sp, x1
+ 	/* Stack now grows into the 0x80000 image load offset specified
+ 	 * above. This is more than enough until FDT /memory is decoded.
+ 	 */
+ 	b dt_2nd_aarch64
 +
-+#define pr_fmt(fmt) "pe: " fmt
-+
-+#include <common.h>
-+#include <pe.h>
-+#include <linux/sizes.h>
-+#include <libfile.h>
-+#include <memory.h>
-+#include <linux/err.h>
-+
-+static int machines[] = {
-+#if defined(__aarch64__)
-+	IMAGE_FILE_MACHINE_ARM64,
-+#elif defined(__arm__)
-+	IMAGE_FILE_MACHINE_ARM,
-+	IMAGE_FILE_MACHINE_THUMB,
-+	IMAGE_FILE_MACHINE_ARMNT,
-+#endif
-+
-+#if defined(__x86_64__)
-+	IMAGE_FILE_MACHINE_AMD64,
-+#elif defined(__i386__)
-+	IMAGE_FILE_MACHINE_I386,
-+#endif
-+
-+#if defined(__riscv) && (__riscv_xlen == 32)
-+	IMAGE_FILE_MACHINE_RISCV32,
-+#endif
-+
-+#if defined(__riscv) && (__riscv_xlen == 64)
-+	IMAGE_FILE_MACHINE_RISCV64,
-+#endif
-+	0 };
-+
-+/**
-+ * pe_loader_relocate() - relocate PE binary
-+ *
-+ * @rel:		pointer to the relocation table
-+ * @rel_size:		size of the relocation table in bytes
-+ * @pe_reloc:		actual load address of the image
-+ * @pref_address:	preferred load address of the image
-+ * Return:		status code
-+ */
-+static int pe_loader_relocate(const IMAGE_BASE_RELOCATION *rel,
-+			unsigned long rel_size, void *pe_reloc,
-+			unsigned long pref_address)
-+{
-+	unsigned long delta = (unsigned long)pe_reloc - pref_address;
-+	const IMAGE_BASE_RELOCATION *end;
-+	int i;
-+
-+	if (delta == 0)
++	__EFI_PE_HEADER
+ ENTRY_PROC_END(start_dt_2nd)
+diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+index cacd442b28da..5f1ffe9a3c76 100644
+--- a/arch/arm/cpu/cpu.c
++++ b/arch/arm/cpu/cpu.c
+@@ -17,6 +17,7 @@
+ #include <asm/cputype.h>
+ #include <asm/cache.h>
+ #include <asm/ptrace.h>
++#include <efi/efi-mode.h>
+ 
+ /**
+  * Enable processor's instruction cache
+@@ -82,6 +83,8 @@ static void disable_interrupts(void)
+  */
+ static void arch_shutdown(void)
+ {
++	if (efi_is_payload())
++		return;
+ 
+ #ifdef CONFIG_MMU
+ 	mmu_disable();
+@@ -96,6 +99,9 @@ extern unsigned long arm_stack_top;
+ 
+ static int arm_request_stack(void)
+ {
++	if (efi_is_payload())
 +		return 0;
 +
-+	end = (const IMAGE_BASE_RELOCATION *)((const char *)rel + rel_size);
-+	while (rel < end && rel->SizeOfBlock) {
-+		const uint16_t *relocs = (const uint16_t *)(rel + 1);
-+		i = (rel->SizeOfBlock - sizeof(*rel)) / sizeof(uint16_t);
-+		while (i--) {
-+			uint32_t offset = (uint32_t)(*relocs & 0xfff) +
-+					  rel->VirtualAddress;
-+			int type = *relocs >> PAGE_SHIFT;
-+			uint64_t *x64 = pe_reloc + offset;
-+			uint32_t *x32 = pe_reloc + offset;
-+			uint16_t *x16 = pe_reloc + offset;
-+
-+			switch (type) {
-+			case IMAGE_REL_BASED_ABSOLUTE:
-+				break;
-+			case IMAGE_REL_BASED_HIGH:
-+				*x16 += ((uint32_t)delta) >> 16;
-+				break;
-+			case IMAGE_REL_BASED_LOW:
-+				*x16 += (uint16_t)delta;
-+				break;
-+			case IMAGE_REL_BASED_HIGHLOW:
-+				*x32 += (uint32_t)delta;
-+				break;
-+			case IMAGE_REL_BASED_DIR64:
-+				*x64 += (uint64_t)delta;
-+				break;
-+#ifdef __riscv
-+			case IMAGE_REL_BASED_RISCV_HI20:
-+				*x32 = ((*x32 & 0xfffff000) + (uint32_t)delta) |
-+					(*x32 & 0x00000fff);
-+				break;
-+			case IMAGE_REL_BASED_RISCV_LOW12I:
-+			case IMAGE_REL_BASED_RISCV_LOW12S:
-+				/* We know that we're 4k aligned */
-+				if (delta & 0xfff) {
-+					pr_err("Unsupported reloc offset\n");
-+					return -ENOEXEC;
-+				}
-+				break;
-+#endif
-+			default:
-+				pr_err("Unknown Relocation off %x type %x\n",
-+					offset, type);
-+				return -ENOEXEC;
-+			}
-+			relocs++;
-+		}
-+		rel = (const IMAGE_BASE_RELOCATION *)relocs;
-+	}
-+	return 0;
-+}
-+
-+/**
-+ * pe_check_header() - check if a memory buffer contains a PE-COFF image
-+ *
-+ * @buffer:	buffer to check
-+ * @size:	size of buffer
-+ * @nt_header:	on return pointer to NT header of PE-COFF image
-+ * Return:	0 if the buffer contains a PE-COFF image
-+ */
-+static int pe_check_header(void *buffer, size_t size, void **nt_header)
-+{
-+	struct mz_hdr *dos = buffer;
-+	IMAGE_NT_HEADERS32 *nt;
-+
-+	if (size < sizeof(*dos))
-+		return -EINVAL;
-+
-+	/* Check for DOS magix */
-+	if (dos->magic != MZ_MAGIC)
-+		return -EINVAL;
-+
-+	/*
-+	 * Check if the image section header fits into the file. Knowing that at
-+	 * least one section header follows we only need to check for the length
-+	 * of the 64bit header which is longer than the 32bit header.
-+	 */
-+	if (size < dos->peaddr + sizeof(IMAGE_NT_HEADERS32))
-+		return -EINVAL;
-+	nt = (IMAGE_NT_HEADERS32 *)((u8 *)buffer + dos->peaddr);
-+
-+	/* Check for PE-COFF magic */
-+	if (nt->FileHeader.magic != PE_MAGIC)
-+		return -EINVAL;
-+
-+	if (nt_header)
-+		*nt_header = nt;
-+
-+	return 0;
-+}
-+
-+/**
-+ * section_size() - determine size of section
-+ *
-+ * The size of a section in memory if normally given by VirtualSize.
-+ * If VirtualSize is not provided, use SizeOfRawData.
-+ *
-+ * @sec:	section header
-+ * Return:	size of section in memory
-+ */
-+static u32 section_size(IMAGE_SECTION_HEADER *sec)
-+{
-+	if (sec->Misc.VirtualSize)
-+		return sec->Misc.VirtualSize;
-+	else
-+		return sec->SizeOfRawData;
-+}
-+
-+struct pe_image *pe_open_buf(void *bin, size_t pe_size)
-+{
-+	struct pe_image *pe;
-+	int i;
-+	int supported = 0;
-+	int ret;
-+
-+	pe = calloc(1, sizeof(*pe));
-+	if (!pe)
-+		return ERR_PTR(-ENOMEM);
-+
-+	ret = pe_check_header(bin, pe_size, (void **)&pe->nt);
-+	if (ret) {
-+		pr_err("Not a PE-COFF file\n");
-+		ret = -ENOEXEC;
-+		goto err;
-+	}
-+
-+	for (i = 0; machines[i]; i++)
-+		if (machines[i] == pe->nt->FileHeader.machine) {
-+			supported = 1;
-+			break;
-+		}
-+
-+	if (!supported) {
-+		pr_err("Machine type 0x%04x is not supported\n",
-+			pe->nt->FileHeader.machine);
-+		ret = -ENOEXEC;
-+		goto err;
-+	}
-+
-+	pe->num_sections = pe->nt->FileHeader.sections;
-+	pe->sections = (void *)&pe->nt->OptionalHeader +
-+			    pe->nt->FileHeader.opt_hdr_size;
-+
-+	if (pe_size < ((void *)pe->sections + sizeof(pe->sections[0]) * pe->num_sections - bin)) {
-+		pr_err("Invalid number of sections: %d\n", pe->num_sections);
-+		ret = -ENOEXEC;
-+		goto err;
-+	}
-+
-+	pe->bin = bin;
-+
-+	return pe;
-+err:
-+	return ERR_PTR(ret);
-+}
-+
-+struct pe_image *pe_open(const char *filename)
-+{
-+	struct pe_image *pe;
-+	size_t size;
-+	void *bin;
-+
-+	bin = read_file(filename, &size);
-+	if (!bin)
-+		return ERR_PTR(-errno);
-+
-+	pe = pe_open_buf(bin, size);
-+	if (IS_ERR(pe))
-+		free(bin);
-+
-+	return pe;
-+}
-+
-+static struct resource *pe_alloc(size_t virt_size)
-+{
-+	resource_size_t start, end;
-+	int ret;
-+
-+	ret = memory_bank_first_find_space(&start, &end);
-+	if (ret)
-+		return NULL;
-+
-+	start = ALIGN(start, SZ_64K);
-+
-+	if (start + virt_size > end)
-+		return NULL;
-+
-+	return request_sdram_region("pe-code", start, virt_size);
-+}
-+
-+unsigned long pe_get_mem_size(struct pe_image *pe)
-+{
-+	unsigned long virt_size = 0;
-+	int i;
-+
-+	/* Calculate upper virtual address boundary */
-+	for (i = pe->num_sections - 1; i >= 0; i--) {
-+		IMAGE_SECTION_HEADER *sec = &pe->sections[i];
-+
-+		virt_size = max_t(unsigned long, virt_size,
-+				  sec->VirtualAddress + section_size(sec));
-+	}
-+
-+	/* Read 32/64bit specific header bits */
-+	if (pe->nt->OptionalHeader.magic == PE_OPT_MAGIC_PE32PLUS) {
-+		IMAGE_NT_HEADERS64 *nt64 = (void *)pe->nt;
-+		struct pe32plus_opt_hdr  *opt = &nt64->OptionalHeader;
-+
-+		virt_size = ALIGN(virt_size, opt->section_align);
-+	} else if (pe->nt->OptionalHeader.magic == PE_OPT_MAGIC_PE32) {
-+		struct pe32_opt_hdr *opt = &pe->nt->OptionalHeader;
-+
-+		virt_size = ALIGN(virt_size, opt->section_align);
-+	} else {
-+		pr_err("Invalid optional header magic %x\n",
-+		       pe->nt->OptionalHeader.magic);
-+		return 0;
-+	}
-+
-+	return virt_size;
-+}
-+
-+int pe_load(struct pe_image *pe)
-+{
-+	int rel_idx = IMAGE_DIRECTORY_ENTRY_BASERELOC;
-+	uint64_t image_base;
-+	unsigned long virt_size;
-+	unsigned long rel_size;
-+	const IMAGE_BASE_RELOCATION *rel;
-+	struct mz_hdr *dos;
-+	struct resource *code;
-+	void *pe_reloc;
-+	int i;
-+
-+	virt_size = pe_get_mem_size(pe);
-+	if (!virt_size)
-+		return -ENOEXEC;
-+
-+	/* Read 32/64bit specific header bits */
-+	if (pe->nt->OptionalHeader.magic == PE_OPT_MAGIC_PE32PLUS) {
-+		IMAGE_NT_HEADERS64 *nt64 = (void *)pe->nt;
-+		struct pe32plus_opt_hdr *opt = &nt64->OptionalHeader;
-+		image_base = opt->image_base;
-+		pe->image_type = opt->subsys;
-+
-+		code = pe_alloc(virt_size);
-+		if (!code)
-+			return -ENOMEM;
-+
-+		pe_reloc = (void *)code->start;
-+
-+		pe->entry = code->start + opt->entry_point;
-+		rel_size = nt64->DataDirectory[rel_idx].size;
-+		rel = pe_reloc + nt64->DataDirectory[rel_idx].virtual_address;
-+	} else if (pe->nt->OptionalHeader.magic == PE_OPT_MAGIC_PE32) {
-+		struct pe32_opt_hdr *opt = &pe->nt->OptionalHeader;
-+		image_base = opt->image_base;
-+		pe->image_type = opt->subsys;
-+		virt_size = ALIGN(virt_size, opt->section_align);
-+
-+		code = pe_alloc(virt_size);
-+		if (!code)
-+			return -ENOMEM;
-+
-+		pe_reloc = (void *)code->start;
-+
-+		pe->entry = code->start + opt->entry_point;
-+		rel_size = pe->nt->DataDirectory[rel_idx].size;
-+		rel = pe_reloc + pe->nt->DataDirectory[rel_idx].virtual_address;
-+	} else {
-+		pr_err("Invalid optional header magic %x\n",
-+		       pe->nt->OptionalHeader.magic);
-+		return -ENOEXEC;
-+	}
-+
-+	/* Copy PE headers */
-+	memcpy(pe_reloc, pe->bin,
-+	       sizeof(*dos)
-+		 + sizeof(*pe->nt)
-+		 + pe->nt->FileHeader.opt_hdr_size
-+		 + pe->num_sections * sizeof(IMAGE_SECTION_HEADER));
-+
-+	/* Load sections into RAM */
-+	for (i = pe->num_sections - 1; i >= 0; i--) {
-+		IMAGE_SECTION_HEADER *sec = &pe->sections[i];
-+		u32 copy_size = section_size(sec);
-+
-+		if (copy_size > sec->SizeOfRawData) {
-+			copy_size = sec->SizeOfRawData;
-+			memset(pe_reloc + sec->VirtualAddress, 0,
-+			       sec->Misc.VirtualSize);
-+		}
-+
-+		memcpy(pe_reloc + sec->VirtualAddress,
-+		       pe->bin + sec->PointerToRawData,
-+		       copy_size);
-+	}
-+
-+	/* Run through relocations */
-+	if (pe_loader_relocate(rel, rel_size, pe_reloc,
-+				(unsigned long)image_base) != 0) {
-+		release_sdram_region(code);
-+		return -EINVAL;
-+	}
-+
-+	pe->code = code;
-+
-+	return 0;
-+}
-+
-+void pe_close(struct pe_image *pe)
-+{
-+	release_sdram_region(pe->code);
-+	free(pe->bin);
-+	free(pe);
-+}
-diff --git a/include/linux/pagemap.h b/include/linux/pagemap.h
-index 01cbfc17c57b..0db192e4d3ab 100644
---- a/include/linux/pagemap.h
-+++ b/include/linux/pagemap.h
-@@ -12,6 +12,7 @@
+ 	if (!request_sdram_region("stack", arm_stack_top - STACK_SIZE, STACK_SIZE))
+ 		pr_err("Error: Cannot request SDRAM region for stack\n");
  
- #define PAGE_SIZE	4096
- #define PAGE_SHIFT	12
-+#define PAGE_MASK	(PAGE_SIZE - 1)
- #define PAGE_ALIGN(s)	ALIGN(s, PAGE_SIZE)
- #define PAGE_ALIGN_DOWN(x) ALIGN_DOWN(x, PAGE_SIZE)
- 
-diff --git a/include/linux/pe.h b/include/linux/pe.h
+diff --git a/arch/arm/cpu/efi-header-aarch64.S b/arch/arm/cpu/efi-header-aarch64.S
 new file mode 100644
-index 000000000000..fdf9c95709ba
+index 000000000000..941d0d8fdcaa
 --- /dev/null
-+++ b/include/linux/pe.h
-@@ -0,0 +1,482 @@
++++ b/arch/arm/cpu/efi-header-aarch64.S
+@@ -0,0 +1,122 @@
 +/* SPDX-License-Identifier: GPL-2.0-only */
 +/*
-+ * Copyright 2011 Red Hat, Inc.
-+ * All rights reserved.
-+ *
-+ * Author(s): Peter Jones <pjones@redhat.com>
++ * Copyright (C) 2013 - 2017 Linaro, Ltd.
++ * Copyright (C) 2013, 2014 Red Hat, Inc.
 + */
-+#ifndef __LINUX_PE_H
-+#define __LINUX_PE_H
-+
-+#include <linux/types.h>
-+
-+/*
-+ * Starting from version v3.0, the major version field should be interpreted as
-+ * a bit mask of features supported by the kernel's EFI stub:
-+ * - 0x1: initrd loading from the LINUX_EFI_INITRD_MEDIA_GUID device path,
-+ * - 0x2: initrd loading using the initrd= command line option, where the file
-+ *        may be specified using device path notation, and is not required to
-+ *        reside on the same volume as the loaded kernel image.
-+ *
-+ * The recommended way of loading and starting v1.0 or later kernels is to use
-+ * the LoadImage() and StartImage() EFI boot services, and expose the initrd
-+ * via the LINUX_EFI_INITRD_MEDIA_GUID device path.
-+ *
-+ * Versions older than v1.0 may support initrd loading via the image load
-+ * options (using initrd=, limited to the volume from which the kernel itself
-+ * was loaded), or only via arch specific means (bootparams, DT, etc).
-+ *
-+ * The minor version field must remain 0x0.
-+ * (https://lore.kernel.org/all/efd6f2d4-547c-1378-1faa-53c044dbd297@gmail.com/)
-+ */
-+#define LINUX_EFISTUB_MAJOR_VERSION		0x3
-+#define LINUX_EFISTUB_MINOR_VERSION		0x0
-+
-+/*
-+ * LINUX_PE_MAGIC appears at offset 0x38 into the MS-DOS header of EFI bootable
-+ * Linux kernel images that target the architecture as specified by the PE/COFF
-+ * header machine type field.
-+ */
-+#define LINUX_PE_MAGIC	0x818223cd
-+
-+#define MZ_MAGIC	0x5a4d	/* "MZ" */
-+
-+#define PE_MAGIC		0x00004550	/* "PE\0\0" */
-+#define PE_OPT_MAGIC_PE32	0x010b
-+#define PE_OPT_MAGIC_PE32_ROM	0x0107
-+#define PE_OPT_MAGIC_PE32PLUS	0x020b
-+
-+/* machine type */
-+#define	IMAGE_FILE_MACHINE_UNKNOWN	0x0000
-+#define	IMAGE_FILE_MACHINE_AM33		0x01d3
-+#define	IMAGE_FILE_MACHINE_AMD64	0x8664
-+#define	IMAGE_FILE_MACHINE_ARM		0x01c0
-+#define	IMAGE_FILE_MACHINE_ARMV7	0x01c4
-+#define	IMAGE_FILE_MACHINE_ARM64	0xaa64
-+#define	IMAGE_FILE_MACHINE_EBC		0x0ebc
-+#define	IMAGE_FILE_MACHINE_I386		0x014c
-+#define	IMAGE_FILE_MACHINE_IA64		0x0200
-+#define	IMAGE_FILE_MACHINE_M32R		0x9041
-+#define	IMAGE_FILE_MACHINE_MIPS16	0x0266
-+#define	IMAGE_FILE_MACHINE_MIPSFPU	0x0366
-+#define	IMAGE_FILE_MACHINE_MIPSFPU16	0x0466
-+#define	IMAGE_FILE_MACHINE_POWERPC	0x01f0
-+#define	IMAGE_FILE_MACHINE_POWERPCFP	0x01f1
-+#define	IMAGE_FILE_MACHINE_R4000	0x0166
-+#define	IMAGE_FILE_MACHINE_RISCV32	0x5032
-+#define	IMAGE_FILE_MACHINE_RISCV64	0x5064
-+#define	IMAGE_FILE_MACHINE_RISCV128	0x5128
-+#define	IMAGE_FILE_MACHINE_SH3		0x01a2
-+#define	IMAGE_FILE_MACHINE_SH3DSP	0x01a3
-+#define	IMAGE_FILE_MACHINE_SH3E		0x01a4
-+#define	IMAGE_FILE_MACHINE_SH4		0x01a6
-+#define	IMAGE_FILE_MACHINE_SH5		0x01a8
-+#define	IMAGE_FILE_MACHINE_THUMB	0x01c2
-+#define	IMAGE_FILE_MACHINE_WCEMIPSV2	0x0169
-+#define	IMAGE_FILE_MACHINE_LOONGARCH32	0x6232
-+#define	IMAGE_FILE_MACHINE_LOONGARCH64	0x6264
-+
-+/* flags */
-+#define IMAGE_FILE_RELOCS_STRIPPED           0x0001
-+#define IMAGE_FILE_EXECUTABLE_IMAGE          0x0002
-+#define IMAGE_FILE_LINE_NUMS_STRIPPED        0x0004
-+#define IMAGE_FILE_LOCAL_SYMS_STRIPPED       0x0008
-+#define IMAGE_FILE_AGGRESSIVE_WS_TRIM        0x0010
-+#define IMAGE_FILE_LARGE_ADDRESS_AWARE       0x0020
-+#define IMAGE_FILE_16BIT_MACHINE             0x0040
-+#define IMAGE_FILE_BYTES_REVERSED_LO         0x0080
-+#define IMAGE_FILE_32BIT_MACHINE             0x0100
-+#define IMAGE_FILE_DEBUG_STRIPPED            0x0200
-+#define IMAGE_FILE_REMOVABLE_RUN_FROM_SWAP   0x0400
-+#define IMAGE_FILE_NET_RUN_FROM_SWAP         0x0800
-+#define IMAGE_FILE_SYSTEM                    0x1000
-+#define IMAGE_FILE_DLL                       0x2000
-+#define IMAGE_FILE_UP_SYSTEM_ONLY            0x4000
-+#define IMAGE_FILE_BYTES_REVERSED_HI         0x8000
-+
-+#define IMAGE_FILE_OPT_ROM_MAGIC	0x107
-+#define IMAGE_FILE_OPT_PE32_MAGIC	0x10b
-+#define IMAGE_FILE_OPT_PE32_PLUS_MAGIC	0x20b
-+
-+#define IMAGE_SUBSYSTEM_UNKNOWN			 0
-+#define IMAGE_SUBSYSTEM_NATIVE			 1
-+#define IMAGE_SUBSYSTEM_WINDOWS_GUI		 2
-+#define IMAGE_SUBSYSTEM_WINDOWS_CUI		 3
-+#define IMAGE_SUBSYSTEM_POSIX_CUI		 7
-+#define IMAGE_SUBSYSTEM_WINDOWS_CE_GUI		 9
-+#define IMAGE_SUBSYSTEM_EFI_APPLICATION		10
-+#define IMAGE_SUBSYSTEM_EFI_BOOT_SERVICE_DRIVER	11
-+#define IMAGE_SUBSYSTEM_EFI_RUNTIME_DRIVER	12
-+#define IMAGE_SUBSYSTEM_EFI_ROM_IMAGE		13
-+#define IMAGE_SUBSYSTEM_XBOX			14
-+
-+#define IMAGE_DLL_CHARACTERISTICS_DYNAMIC_BASE          0x0040
-+#define IMAGE_DLL_CHARACTERISTICS_FORCE_INTEGRITY       0x0080
-+#define IMAGE_DLL_CHARACTERISTICS_NX_COMPAT             0x0100
-+#define IMAGE_DLLCHARACTERISTICS_NO_ISOLATION           0x0200
-+#define IMAGE_DLLCHARACTERISTICS_NO_SEH                 0x0400
-+#define IMAGE_DLLCHARACTERISTICS_NO_BIND                0x0800
-+#define IMAGE_DLLCHARACTERISTICS_WDM_DRIVER             0x2000
-+#define IMAGE_DLLCHARACTERISTICS_TERMINAL_SERVER_AWARE  0x8000
-+
-+#define IMAGE_DLLCHARACTERISTICS_EX_CET_COMPAT		0x0001
-+#define IMAGE_DLLCHARACTERISTICS_EX_FORWARD_CFI_COMPAT	0x0040
-+
-+/* they actually defined 0x00000000 as well, but I think we'll skip that one. */
-+#define IMAGE_SCN_RESERVED_0	0x00000001
-+#define IMAGE_SCN_RESERVED_1	0x00000002
-+#define IMAGE_SCN_RESERVED_2	0x00000004
-+#define IMAGE_SCN_TYPE_NO_PAD	0x00000008 /* don't pad - obsolete */
-+#define IMAGE_SCN_RESERVED_3	0x00000010
-+#define IMAGE_SCN_CNT_CODE	0x00000020 /* .text */
-+#define IMAGE_SCN_CNT_INITIALIZED_DATA 0x00000040 /* .data */
-+#define IMAGE_SCN_CNT_UNINITIALIZED_DATA 0x00000080 /* .bss */
-+#define IMAGE_SCN_LNK_OTHER	0x00000100 /* reserved */
-+#define IMAGE_SCN_LNK_INFO	0x00000200 /* .drectve comments */
-+#define IMAGE_SCN_RESERVED_4	0x00000400
-+#define IMAGE_SCN_LNK_REMOVE	0x00000800 /* .o only - scn to be rm'd*/
-+#define IMAGE_SCN_LNK_COMDAT	0x00001000 /* .o only - COMDAT data */
-+#define IMAGE_SCN_RESERVED_5	0x00002000 /* spec omits this */
-+#define IMAGE_SCN_RESERVED_6	0x00004000 /* spec omits this */
-+#define IMAGE_SCN_GPREL		0x00008000 /* global pointer referenced data */
-+/* spec lists 0x20000 twice, I suspect they meant 0x10000 for one of them */
-+#define IMAGE_SCN_MEM_PURGEABLE	0x00010000 /* reserved for "future" use */
-+#define IMAGE_SCN_16BIT		0x00020000 /* reserved for "future" use */
-+#define IMAGE_SCN_LOCKED	0x00040000 /* reserved for "future" use */
-+#define IMAGE_SCN_PRELOAD	0x00080000 /* reserved for "future" use */
-+/* and here they just stuck a 1-byte integer in the middle of a bitfield */
-+#define IMAGE_SCN_ALIGN_1BYTES	0x00100000 /* it does what it says on the box */
-+#define IMAGE_SCN_ALIGN_2BYTES	0x00200000
-+#define IMAGE_SCN_ALIGN_4BYTES	0x00300000
-+#define IMAGE_SCN_ALIGN_8BYTES	0x00400000
-+#define IMAGE_SCN_ALIGN_16BYTES	0x00500000
-+#define IMAGE_SCN_ALIGN_32BYTES	0x00600000
-+#define IMAGE_SCN_ALIGN_64BYTES	0x00700000
-+#define IMAGE_SCN_ALIGN_128BYTES 0x00800000
-+#define IMAGE_SCN_ALIGN_256BYTES 0x00900000
-+#define IMAGE_SCN_ALIGN_512BYTES 0x00a00000
-+#define IMAGE_SCN_ALIGN_1024BYTES 0x00b00000
-+#define IMAGE_SCN_ALIGN_2048BYTES 0x00c00000
-+#define IMAGE_SCN_ALIGN_4096BYTES 0x00d00000
-+#define IMAGE_SCN_ALIGN_8192BYTES 0x00e00000
-+#define IMAGE_SCN_LNK_NRELOC_OVFL 0x01000000 /* extended relocations */
-+#define IMAGE_SCN_MEM_DISCARDABLE 0x02000000 /* scn can be discarded */
-+#define IMAGE_SCN_MEM_NOT_CACHED 0x04000000 /* cannot be cached */
-+#define IMAGE_SCN_MEM_NOT_PAGED	0x08000000 /* not pageable */
-+#define IMAGE_SCN_MEM_SHARED	0x10000000 /* can be shared */
-+#define IMAGE_SCN_MEM_EXECUTE	0x20000000 /* can be executed as code */
-+#define IMAGE_SCN_MEM_READ	0x40000000 /* readable */
-+#define IMAGE_SCN_MEM_WRITE	0x80000000 /* writeable */
-+
-+#define IMAGE_DEBUG_TYPE_CODEVIEW	2
-+#define IMAGE_DEBUG_TYPE_EX_DLLCHARACTERISTICS	20
-+
-+#ifndef __ASSEMBLY__
-+
-+struct mz_hdr {
-+	uint16_t magic;		/* MZ_MAGIC */
-+	uint16_t lbsize;	/* size of last used block */
-+	uint16_t blocks;	/* pages in file, 0x3 */
-+	uint16_t relocs;	/* relocations */
-+	uint16_t hdrsize;	/* header size in "paragraphs" */
-+	uint16_t min_extra_pps;	/* .bss */
-+	uint16_t max_extra_pps;	/* runtime limit for the arena size */
-+	uint16_t ss;		/* relative stack segment */
-+	uint16_t sp;		/* initial %sp register */
-+	uint16_t checksum;	/* word checksum */
-+	uint16_t ip;		/* initial %ip register */
-+	uint16_t cs;		/* initial %cs relative to load segment */
-+	uint16_t reloc_table_offset;	/* offset of the first relocation */
-+	uint16_t overlay_num;	/* overlay number.  set to 0. */
-+	uint16_t reserved0[4];	/* reserved */
-+	uint16_t oem_id;	/* oem identifier */
-+	uint16_t oem_info;	/* oem specific */
-+	uint16_t reserved1[10];	/* reserved */
-+	uint32_t peaddr;	/* address of pe header */
-+	char     message[];	/* message to print */
-+};
-+
-+struct mz_reloc {
-+	uint16_t offset;
-+	uint16_t segment;
-+};
-+
-+struct pe_hdr {
-+	uint32_t magic;		/* PE magic */
-+	uint16_t machine;	/* machine type */
-+	uint16_t sections;	/* number of sections */
-+	uint32_t timestamp;	/* time_t */
-+	uint32_t symbol_table;	/* symbol table offset */
-+	uint32_t symbols;	/* number of symbols */
-+	uint16_t opt_hdr_size;	/* size of optional header */
-+	uint16_t flags;		/* flags */
-+};
-+
-+/* the fact that pe32 isn't padded where pe32+ is 64-bit means union won't
-+ * work right.  vomit. */
-+struct pe32_opt_hdr {
-+	/* "standard" header */
-+	uint16_t magic;		/* file type */
-+	uint8_t  ld_major;	/* linker major version */
-+	uint8_t  ld_minor;	/* linker minor version */
-+	uint32_t text_size;	/* size of text section(s) */
-+	uint32_t data_size;	/* size of data section(s) */
-+	uint32_t bss_size;	/* size of bss section(s) */
-+	uint32_t entry_point;	/* file offset of entry point */
-+	uint32_t code_base;	/* relative code addr in ram */
-+	uint32_t data_base;	/* relative data addr in ram */
-+	/* "windows" header */
-+	uint32_t image_base;	/* preferred load address */
-+	uint32_t section_align;	/* alignment in bytes */
-+	uint32_t file_align;	/* file alignment in bytes */
-+	uint16_t os_major;	/* major OS version */
-+	uint16_t os_minor;	/* minor OS version */
-+	uint16_t image_major;	/* major image version */
-+	uint16_t image_minor;	/* minor image version */
-+	uint16_t subsys_major;	/* major subsystem version */
-+	uint16_t subsys_minor;	/* minor subsystem version */
-+	uint32_t win32_version;	/* reserved, must be 0 */
-+	uint32_t image_size;	/* image size */
-+	uint32_t header_size;	/* header size rounded up to
-+				   file_align */
-+	uint32_t csum;		/* checksum */
-+	uint16_t subsys;	/* subsystem */
-+	uint16_t dll_flags;	/* more flags! */
-+	uint32_t stack_size_req;/* amt of stack requested */
-+	uint32_t stack_size;	/* amt of stack required */
-+	uint32_t heap_size_req;	/* amt of heap requested */
-+	uint32_t heap_size;	/* amt of heap required */
-+	uint32_t loader_flags;	/* reserved, must be 0 */
-+	uint32_t data_dirs;	/* number of data dir entries */
-+};
-+
-+struct pe32plus_opt_hdr {
-+	uint16_t magic;		/* file type */
-+	uint8_t  ld_major;	/* linker major version */
-+	uint8_t  ld_minor;	/* linker minor version */
-+	uint32_t text_size;	/* size of text section(s) */
-+	uint32_t data_size;	/* size of data section(s) */
-+	uint32_t bss_size;	/* size of bss section(s) */
-+	uint32_t entry_point;	/* file offset of entry point */
-+	uint32_t code_base;	/* relative code addr in ram */
-+	/* "windows" header */
-+	uint64_t image_base;	/* preferred load address */
-+	uint32_t section_align;	/* alignment in bytes */
-+	uint32_t file_align;	/* file alignment in bytes */
-+	uint16_t os_major;	/* major OS version */
-+	uint16_t os_minor;	/* minor OS version */
-+	uint16_t image_major;	/* major image version */
-+	uint16_t image_minor;	/* minor image version */
-+	uint16_t subsys_major;	/* major subsystem version */
-+	uint16_t subsys_minor;	/* minor subsystem version */
-+	uint32_t win32_version;	/* reserved, must be 0 */
-+	uint32_t image_size;	/* image size */
-+	uint32_t header_size;	/* header size rounded up to
-+				   file_align */
-+	uint32_t csum;		/* checksum */
-+	uint16_t subsys;	/* subsystem */
-+	uint16_t dll_flags;	/* more flags! */
-+	uint64_t stack_size_req;/* amt of stack requested */
-+	uint64_t stack_size;	/* amt of stack required */
-+	uint64_t heap_size_req;	/* amt of heap requested */
-+	uint64_t heap_size;	/* amt of heap required */
-+	uint32_t loader_flags;	/* reserved, must be 0 */
-+	uint32_t data_dirs;	/* number of data dir entries */
-+};
-+
-+struct data_dirent {
-+	uint32_t virtual_address;	/* relative to load address */
-+	uint32_t size;
-+};
-+
-+struct data_directory {
-+	struct data_dirent exports;		/* .edata */
-+	struct data_dirent imports;		/* .idata */
-+	struct data_dirent resources;		/* .rsrc */
-+	struct data_dirent exceptions;		/* .pdata */
-+	struct data_dirent certs;		/* certs */
-+	struct data_dirent base_relocations;	/* .reloc */
-+	struct data_dirent debug;		/* .debug */
-+	struct data_dirent arch;		/* reservered */
-+	struct data_dirent global_ptr;		/* global pointer reg. Size=0 */
-+	struct data_dirent tls;			/* .tls */
-+	struct data_dirent load_config;		/* load configuration structure */
-+	struct data_dirent bound_imports;	/* no idea */
-+	struct data_dirent import_addrs;	/* import address table */
-+	struct data_dirent delay_imports;	/* delay-load import table */
-+	struct data_dirent clr_runtime_hdr;	/* .cor (object only) */
-+	struct data_dirent reserved;
-+};
-+
-+struct section_header {
-+	char name[8];			/* name or "/12\0" string tbl offset */
-+	uint32_t virtual_size;		/* size of loaded section in ram */
-+	uint32_t virtual_address;	/* relative virtual address */
-+	uint32_t raw_data_size;		/* size of the section */
-+	uint32_t data_addr;		/* file pointer to first page of sec */
-+	uint32_t relocs;		/* file pointer to relocation entries */
-+	uint32_t line_numbers;		/* line numbers! */
-+	uint16_t num_relocs;		/* number of relocations */
-+	uint16_t num_lin_numbers;	/* srsly. */
-+	uint32_t flags;
-+};
-+
-+enum x64_coff_reloc_type {
-+	IMAGE_REL_AMD64_ABSOLUTE = 0,
-+	IMAGE_REL_AMD64_ADDR64,
-+	IMAGE_REL_AMD64_ADDR32,
-+	IMAGE_REL_AMD64_ADDR32N,
-+	IMAGE_REL_AMD64_REL32,
-+	IMAGE_REL_AMD64_REL32_1,
-+	IMAGE_REL_AMD64_REL32_2,
-+	IMAGE_REL_AMD64_REL32_3,
-+	IMAGE_REL_AMD64_REL32_4,
-+	IMAGE_REL_AMD64_REL32_5,
-+	IMAGE_REL_AMD64_SECTION,
-+	IMAGE_REL_AMD64_SECREL,
-+	IMAGE_REL_AMD64_SECREL7,
-+	IMAGE_REL_AMD64_TOKEN,
-+	IMAGE_REL_AMD64_SREL32,
-+	IMAGE_REL_AMD64_PAIR,
-+	IMAGE_REL_AMD64_SSPAN32,
-+};
-+
-+enum arm_coff_reloc_type {
-+	IMAGE_REL_ARM_ABSOLUTE,
-+	IMAGE_REL_ARM_ADDR32,
-+	IMAGE_REL_ARM_ADDR32N,
-+	IMAGE_REL_ARM_BRANCH2,
-+	IMAGE_REL_ARM_BRANCH1,
-+	IMAGE_REL_ARM_SECTION,
-+	IMAGE_REL_ARM_SECREL,
-+};
-+
-+enum sh_coff_reloc_type {
-+	IMAGE_REL_SH3_ABSOLUTE,
-+	IMAGE_REL_SH3_DIRECT16,
-+	IMAGE_REL_SH3_DIRECT32,
-+	IMAGE_REL_SH3_DIRECT8,
-+	IMAGE_REL_SH3_DIRECT8_WORD,
-+	IMAGE_REL_SH3_DIRECT8_LONG,
-+	IMAGE_REL_SH3_DIRECT4,
-+	IMAGE_REL_SH3_DIRECT4_WORD,
-+	IMAGE_REL_SH3_DIRECT4_LONG,
-+	IMAGE_REL_SH3_PCREL8_WORD,
-+	IMAGE_REL_SH3_PCREL8_LONG,
-+	IMAGE_REL_SH3_PCREL12_WORD,
-+	IMAGE_REL_SH3_STARTOF_SECTION,
-+	IMAGE_REL_SH3_SIZEOF_SECTION,
-+	IMAGE_REL_SH3_SECTION,
-+	IMAGE_REL_SH3_SECREL,
-+	IMAGE_REL_SH3_DIRECT32_NB,
-+	IMAGE_REL_SH3_GPREL4_LONG,
-+	IMAGE_REL_SH3_TOKEN,
-+	IMAGE_REL_SHM_PCRELPT,
-+	IMAGE_REL_SHM_REFLO,
-+	IMAGE_REL_SHM_REFHALF,
-+	IMAGE_REL_SHM_RELLO,
-+	IMAGE_REL_SHM_RELHALF,
-+	IMAGE_REL_SHM_PAIR,
-+	IMAGE_REL_SHM_NOMODE,
-+};
-+
-+enum ppc_coff_reloc_type {
-+	IMAGE_REL_PPC_ABSOLUTE,
-+	IMAGE_REL_PPC_ADDR64,
-+	IMAGE_REL_PPC_ADDR32,
-+	IMAGE_REL_PPC_ADDR24,
-+	IMAGE_REL_PPC_ADDR16,
-+	IMAGE_REL_PPC_ADDR14,
-+	IMAGE_REL_PPC_REL24,
-+	IMAGE_REL_PPC_REL14,
-+	IMAGE_REL_PPC_ADDR32N,
-+	IMAGE_REL_PPC_SECREL,
-+	IMAGE_REL_PPC_SECTION,
-+	IMAGE_REL_PPC_SECREL16,
-+	IMAGE_REL_PPC_REFHI,
-+	IMAGE_REL_PPC_REFLO,
-+	IMAGE_REL_PPC_PAIR,
-+	IMAGE_REL_PPC_SECRELLO,
-+	IMAGE_REL_PPC_GPREL,
-+	IMAGE_REL_PPC_TOKEN,
-+};
-+
-+enum x86_coff_reloc_type {
-+	IMAGE_REL_I386_ABSOLUTE,
-+	IMAGE_REL_I386_DIR16,
-+	IMAGE_REL_I386_REL16,
-+	IMAGE_REL_I386_DIR32,
-+	IMAGE_REL_I386_DIR32NB,
-+	IMAGE_REL_I386_SEG12,
-+	IMAGE_REL_I386_SECTION,
-+	IMAGE_REL_I386_SECREL,
-+	IMAGE_REL_I386_TOKEN,
-+	IMAGE_REL_I386_SECREL7,
-+	IMAGE_REL_I386_REL32,
-+};
-+
-+enum ia64_coff_reloc_type {
-+	IMAGE_REL_IA64_ABSOLUTE,
-+	IMAGE_REL_IA64_IMM14,
-+	IMAGE_REL_IA64_IMM22,
-+	IMAGE_REL_IA64_IMM64,
-+	IMAGE_REL_IA64_DIR32,
-+	IMAGE_REL_IA64_DIR64,
-+	IMAGE_REL_IA64_PCREL21B,
-+	IMAGE_REL_IA64_PCREL21M,
-+	IMAGE_REL_IA64_PCREL21F,
-+	IMAGE_REL_IA64_GPREL22,
-+	IMAGE_REL_IA64_LTOFF22,
-+	IMAGE_REL_IA64_SECTION,
-+	IMAGE_REL_IA64_SECREL22,
-+	IMAGE_REL_IA64_SECREL64I,
-+	IMAGE_REL_IA64_SECREL32,
-+	IMAGE_REL_IA64_DIR32NB,
-+	IMAGE_REL_IA64_SREL14,
-+	IMAGE_REL_IA64_SREL22,
-+	IMAGE_REL_IA64_SREL32,
-+	IMAGE_REL_IA64_UREL32,
-+	IMAGE_REL_IA64_PCREL60X,
-+	IMAGE_REL_IA64_PCREL60B,
-+	IMAGE_REL_IA64_PCREL60F,
-+	IMAGE_REL_IA64_PCREL60I,
-+	IMAGE_REL_IA64_PCREL60M,
-+	IMAGE_REL_IA64_IMMGPREL6,
-+	IMAGE_REL_IA64_TOKEN,
-+	IMAGE_REL_IA64_GPREL32,
-+	IMAGE_REL_IA64_ADDEND,
-+};
-+
-+struct coff_reloc {
-+	uint32_t virtual_address;
-+	uint32_t symbol_table_index;
-+	union {
-+		enum x64_coff_reloc_type  x64_type;
-+		enum arm_coff_reloc_type  arm_type;
-+		enum sh_coff_reloc_type   sh_type;
-+		enum ppc_coff_reloc_type  ppc_type;
-+		enum x86_coff_reloc_type  x86_type;
-+		enum ia64_coff_reloc_type ia64_type;
-+		uint16_t data;
-+	};
-+};
-+
-+/*
-+ * Definitions for the contents of the certs data block
-+ */
-+#define WIN_CERT_TYPE_PKCS_SIGNED_DATA	0x0002
-+#define WIN_CERT_TYPE_EFI_OKCS115	0x0EF0
-+#define WIN_CERT_TYPE_EFI_GUID		0x0EF1
-+
-+#define WIN_CERT_REVISION_1_0	0x0100
-+#define WIN_CERT_REVISION_2_0	0x0200
-+
-+struct win_certificate {
-+	uint32_t length;
-+	uint16_t revision;
-+	uint16_t cert_type;
-+};
-+
-+#endif /* !__ASSEMBLY__ */
-+
-+#endif /* __LINUX_PE_H */
-diff --git a/include/pe.h b/include/pe.h
-new file mode 100644
-index 000000000000..742dd8235a24
---- /dev/null
-+++ b/include/pe.h
-@@ -0,0 +1,124 @@
-+/* SPDX-License-Identifier: GPL-2.0+ */
-+/*
-+ *  Portable Executable binary format structures
-+ *
-+ *  Copyright (c) 2016 Alexander Graf
-+ *
-+ *  Based on wine code, adjusted to use <linux/pe.h> defines
-+ */
-+
-+#ifndef _PE_H
-+#define _PE_H
 +
 +#include <linux/pe.h>
++#include <linux/sizes.h>
++#include <asm/memory.h>
 +
-+#define IMAGE_NUMBEROF_DIRECTORY_ENTRIES 16
-+
-+typedef struct _IMAGE_NT_HEADERS64 {
-+	struct pe_hdr FileHeader;
-+	struct pe32plus_opt_hdr OptionalHeader;
-+	struct data_dirent DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];
-+} IMAGE_NT_HEADERS64;
-+
-+typedef struct _IMAGE_NT_HEADERS {
-+	struct pe_hdr FileHeader;
-+	struct pe32_opt_hdr OptionalHeader;
-+	struct data_dirent DataDirectory[IMAGE_NUMBEROF_DIRECTORY_ENTRIES];
-+} IMAGE_NT_HEADERS32;
-+
-+#define IMAGE_SIZEOF_SHORT_NAME 8
-+
-+typedef struct _IMAGE_SECTION_HEADER {
-+	uint8_t	Name[IMAGE_SIZEOF_SHORT_NAME];
-+	union {
-+		uint32_t PhysicalAddress;
-+		uint32_t VirtualSize;
-+	} Misc;
-+	uint32_t VirtualAddress;
-+	uint32_t SizeOfRawData;
-+	uint32_t PointerToRawData;
-+	uint32_t PointerToRelocations;
-+	uint32_t PointerToLinenumbers;
-+	uint16_t NumberOfRelocations;
-+	uint16_t NumberOfLinenumbers;
-+	uint32_t Characteristics;
-+} IMAGE_SECTION_HEADER;
-+
-+/* Indices for Optional Header Data Directories */
-+#define IMAGE_DIRECTORY_ENTRY_SECURITY		4
-+#define IMAGE_DIRECTORY_ENTRY_BASERELOC         5
-+
-+typedef struct _IMAGE_BASE_RELOCATION
-+{
-+        uint32_t VirtualAddress;
-+        uint32_t SizeOfBlock;
-+        /* WORD TypeOffset[1]; */
-+} IMAGE_BASE_RELOCATION;
-+
-+#define IMAGE_SIZEOF_RELOCATION 10
-+
-+/* generic relocation types */
-+#define IMAGE_REL_BASED_ABSOLUTE                0
-+#define IMAGE_REL_BASED_HIGH                    1
-+#define IMAGE_REL_BASED_LOW                     2
-+#define IMAGE_REL_BASED_HIGHLOW                 3
-+#define IMAGE_REL_BASED_HIGHADJ                 4
-+#define IMAGE_REL_BASED_MIPS_JMPADDR            5
-+#define IMAGE_REL_BASED_ARM_MOV32A              5 /* yes, 5 too */
-+#define IMAGE_REL_BASED_ARM_MOV32               5 /* yes, 5 too */
-+#define IMAGE_REL_BASED_RISCV_HI20		5 /* yes, 5 too */
-+#define IMAGE_REL_BASED_SECTION                 6
-+#define IMAGE_REL_BASED_REL                     7
-+#define IMAGE_REL_BASED_ARM_MOV32T              7 /* yes, 7 too */
-+#define IMAGE_REL_BASED_THUMB_MOV32             7 /* yes, 7 too */
-+#define IMAGE_REL_BASED_RISCV_LOW12I		7 /* yes, 7 too */
-+#define IMAGE_REL_BASED_RISCV_LOW12S		8
-+#define IMAGE_REL_BASED_MIPS_JMPADDR16          9
-+#define IMAGE_REL_BASED_IA64_IMM64              9 /* yes, 9 too */
-+#define IMAGE_REL_BASED_DIR64                   10
-+#define IMAGE_REL_BASED_HIGH3ADJ                11
-+
-+struct pe_image {
-+	u64 entry;
-+	struct resource *code;
-+	void *bin;
-+
-+	u16 image_type;
-+	IMAGE_SECTION_HEADER *sections;
-+	IMAGE_NT_HEADERS32 *nt;
-+	int num_sections;
-+};
-+
-+#ifdef CONFIG_PE
-+struct pe_image *pe_open(const char *filename);
-+unsigned long pe_get_mem_size(struct pe_image *pe);
-+struct pe_image *pe_open_buf(void *bin, size_t pe_size);
-+int pe_load(struct pe_image *pe);
-+void pe_close(struct pe_image *pe);
++	.macro	efi_signature_nop
++#ifdef CONFIG_EFI_STUB
++.L_head:
++	/*
++	 * This ccmp instruction has no meaningful effect except that
++	 * its opcode forms the magic "MZ" signature required by UEFI.
++	 */
++	ccmp	x18, #0, #0xd, pl
 +#else
-+static inline struct pe_image *pe_open(const char *filename)
++	/*
++	 * Bootloaders may inspect the opcode at the start of the kernel
++	 * image to decide if the kernel is capable of booting via UEFI.
++	 * So put an ordinary NOP here, not the "MZ.." pseudo-nop above.
++	 */
++	nop
++#endif
++	.endm
++
++	.macro	__EFI_PE_HEADER
++#ifdef CONFIG_EFI_STUB
++	.set	.Lpe_header_offset, . - .L_head
++	.long	PE_MAGIC
++	.short	IMAGE_FILE_MACHINE_ARM64		// Machine
++	.short	.Lsection_count				// NumberOfSections
++	.long	0 					// TimeDateStamp
++	.long	0					// PointerToSymbolTable
++	.long	0					// NumberOfSymbols
++	.short	.Lsection_table - .Loptional_header	// SizeOfOptionalHeader
++	.short	IMAGE_FILE_DEBUG_STRIPPED | \
++		IMAGE_FILE_EXECUTABLE_IMAGE | \
++		IMAGE_FILE_LINE_NUMS_STRIPPED		// Characteristics
++
++.Loptional_header:
++	.short	PE_OPT_MAGIC_PE32PLUS			// PE32+ format
++	.byte	0x02					// MajorLinkerVersion
++	.byte	0x14					// MinorLinkerVersion
++	.long	_sdata - .Lefi_header_end		// SizeOfCode
++	.long	__pecoff_data_size			// SizeOfInitializedData
++	.long	0					// SizeOfUninitializedData
++	.long	__efistub_efi_pe_entry - .L_head	// AddressOfEntryPoint
++	.long	.Lefi_header_end - .L_head		// BaseOfCode
++
++	.quad	0					// ImageBase
++	.long	PBL_SEGMENT_ALIGN			// SectionAlignment
++	.long	PECOFF_FILE_ALIGNMENT			// FileAlignment
++	.short	0					// MajorOperatingSystemVersion
++	.short	0					// MinorOperatingSystemVersion
++	.short	LINUX_EFISTUB_MAJOR_VERSION		// MajorImageVersion
++	.short	LINUX_EFISTUB_MINOR_VERSION		// MinorImageVersion
++	.short	0					// MajorSubsystemVersion
++	.short	0					// MinorSubsystemVersion
++	.long	0					// Win32VersionValue
++
++	.long	__image_end - .L_head			// SizeOfImage
++
++	// Everything before the kernel image is considered part of the header
++	.long	.Lefi_header_end - .L_head		// SizeOfHeaders
++	.long	0					// CheckSum
++	.short	IMAGE_SUBSYSTEM_EFI_APPLICATION		// Subsystem
++	.short	0					// DllCharacteristics
++	.quad	0					// SizeOfStackReserve
++	.quad	0					// SizeOfStackCommit
++	.quad	0					// SizeOfHeapReserve
++	.quad	0					// SizeOfHeapCommit
++	.long	0					// LoaderFlags
++	.long	(.Lsection_table - .) / 8		// NumberOfRvaAndSizes
++
++	.quad	0					// ExportTable
++	.quad	0					// ImportTable
++	.quad	0					// ResourceTable
++	.quad	0					// ExceptionTable
++	.quad	0					// CertificationTable
++	.quad	0					// BaseRelocationTable
++
++	// Section table
++.Lsection_table:
++	.ascii	".text\0\0\0"
++	.long	_sdata - .Lefi_header_end		// VirtualSize
++	.long	.Lefi_header_end - .L_head		// VirtualAddress
++	.long	_sdata - .Lefi_header_end		// SizeOfRawData
++	.long	.Lefi_header_end - .L_head		// PointerToRawData
++
++	.long	0					// PointerToRelocations
++	.long	0					// PointerToLineNumbers
++	.short	0					// NumberOfRelocations
++	.short	0					// NumberOfLineNumbers
++	.long	IMAGE_SCN_CNT_CODE | \
++		IMAGE_SCN_MEM_READ | \
++		IMAGE_SCN_MEM_EXECUTE			// Characteristics
++
++	.ascii	".data\0\0\0"
++	.long	__pecoff_data_size			// VirtualSize
++	.long	_sdata - .L_head			// VirtualAddress
++	.long	__pecoff_data_rawsize			// SizeOfRawData
++	.long	_sdata - .L_head			// PointerToRawData
++
++	.long	0					// PointerToRelocations
++	.long	0					// PointerToLineNumbers
++	.short	0					// NumberOfRelocations
++	.short	0					// NumberOfLineNumbers
++	.long	IMAGE_SCN_CNT_INITIALIZED_DATA | \
++		IMAGE_SCN_MEM_READ | \
++		IMAGE_SCN_MEM_WRITE			// Characteristics
++
++	.set	.Lsection_count, (. - .Lsection_table) / 40
++
++	.balign	PBL_SEGMENT_ALIGN
++.Lefi_header_end:
++#else
++	.set	.Lpe_header_offset, 0x0
++#endif
++	.endm
+diff --git a/arch/arm/cpu/entry.c b/arch/arm/cpu/entry.c
+index dc264c877117..cc08d0ff7e42 100644
+--- a/arch/arm/cpu/entry.c
++++ b/arch/arm/cpu/entry.c
+@@ -42,3 +42,6 @@ void NAKED __noreturn barebox_arm_entry(unsigned long membase,
+ 	__barebox_arm_entry(membase, memsize, boarddata,
+ 			    arm_mem_stack_top(membase + memsize));
+ }
++
++void __noreturn barebox_pbl_entry(ulong, ulong, void *)
++	__alias(barebox_arm_entry);
+diff --git a/arch/arm/cpu/interrupts_64.c b/arch/arm/cpu/interrupts_64.c
+index b3e7da179756..6262ba8872db 100644
+--- a/arch/arm/cpu/interrupts_64.c
++++ b/arch/arm/cpu/interrupts_64.c
+@@ -11,6 +11,7 @@
+ #include <init.h>
+ #include <asm/system.h>
+ #include <asm/esr.h>
++#include <efi/efi-mode.h>
+ 
+ /* Avoid missing prototype warning, called from assembly */
+ void do_bad_sync (struct pt_regs *pt_regs);
+@@ -204,6 +205,9 @@ static int aarch64_init_vectors(void)
+ {
+ 	unsigned int el;
+ 
++	if (efi_is_payload())
++		return 0;
++
+ 	el = current_el();
+ 	switch (el) {
+ 	case 3:
+@@ -221,4 +225,4 @@ static int aarch64_init_vectors(void)
+ 
+ 	return 0;
+ }
+-pure_initcall(aarch64_init_vectors);
++core_initcall(aarch64_init_vectors);
+diff --git a/arch/arm/cpu/mmu-common.c b/arch/arm/cpu/mmu-common.c
+index acd4a9d35413..aeaf6c269df6 100644
+--- a/arch/arm/cpu/mmu-common.c
++++ b/arch/arm/cpu/mmu-common.c
+@@ -13,6 +13,7 @@
+ #include <memory.h>
+ #include <zero_page.h>
+ #include "mmu-common.h"
++#include <efi/efi-mode.h>
+ 
+ void arch_sync_dma_for_cpu(void *vaddr, size_t size,
+ 			   enum dma_data_direction dir)
+@@ -67,6 +68,9 @@ void zero_page_faulting(void)
+ 
+ static int mmu_init(void)
+ {
++	if (efi_is_payload())
++		return 0;
++
+ 	if (list_empty(&memory_banks)) {
+ 		resource_size_t start;
+ 		int ret;
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 9f4cdfe67fbf..0351dcb9278d 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -43,14 +43,18 @@ static bool blob_is_arm_boarddata(const void *blob)
+ 	return bd->magic == BAREBOX_ARM_BOARDDATA_MAGIC;
+ }
+ 
++const struct barebox_boarddata *barebox_get_boarddata(void)
 +{
-+	return ERR_PTR(-ENOSYS);
++	if (!barebox_boarddata || !blob_is_arm_boarddata(barebox_boarddata))
++		return NULL;
++
++	return barebox_boarddata;
 +}
 +
-+static inline unsigned long pe_get_mem_size(struct pe_image *pe)
-+{
-+	return 0;
-+}
+ u32 barebox_arm_machine(void)
+ {
+-	if (barebox_boarddata && blob_is_arm_boarddata(barebox_boarddata)) {
+-		const struct barebox_arm_boarddata *bd = barebox_boarddata;
+-		return bd->machine;
+-	} else {
+-		return 0;
+-	}
++	const struct barebox_boarddata *bd = barebox_get_boarddata();
++	return bd ? bd->machine : 0;
+ }
+ 
+ void *barebox_arm_boot_dtb(void)
+diff --git a/arch/arm/include/asm/memory.h b/arch/arm/include/asm/memory.h
+index 23fbbd8438a1..765b089beb59 100644
+--- a/arch/arm/include/asm/memory.h
++++ b/arch/arm/include/asm/memory.h
+@@ -3,6 +3,9 @@
+ #ifndef __ASM_ARM_MEMORY_H
+ #define __ASM_ARM_MEMORY_H
+ 
++#include <linux/sizes.h>
 +
-+static inline struct pe_image *pe_open_buf(void *bin, size_t pe_size)
-+{
-+	return ERR_PTR(-ENOSYS);
-+}
-+
-+static inline int pe_load(struct pe_image *pe)
-+{
-+	return -ENOSYS;
-+}
-+
-+static inline void pe_close(struct pe_image *pe)
-+{
-+}
++#ifndef __ASSEMBLY__
+ #include <memory.h>
+ 
+ #include <linux/const.h>
+@@ -13,4 +16,21 @@ static inline int arm_add_mem_device(const char* name, resource_size_t start,
+ 	return barebox_add_memory_bank(name, start, size);
+ }
+ 
 +#endif
 +
-+#endif /* _PE_H */
++
++/*
++ * Alignment of barebox PBL segments (e.g. .text, .data).
++ *
++ *  4  B granule:  Same flat rwx mapping for everything
++ *  4 KB granule:  16 level 3 entries, with contiguous bit
++ * 16 KB granule:   4 level 3 entries, without contiguous bit
++ * 64 KB granule:   1 level 3 entry
++ */
++#ifdef CONFIG_EFI_PAYLOAD
++#define PBL_SEGMENT_ALIGN		SZ_64K
++#else
++#define PBL_SEGMENT_ALIGN		4
++#endif
++
+ #endif	/* __ASM_ARM_MEMORY_H */
+diff --git a/arch/arm/include/asm/pci.h b/arch/arm/include/asm/pci.h
+index d7419cabe7ef..7c834f110111 100644
+--- a/arch/arm/include/asm/pci.h
++++ b/arch/arm/include/asm/pci.h
+@@ -2,6 +2,8 @@
+ #ifndef __ASM_PCI_H
+ #define __ASM_PCI_H
+ 
+-#define pcibios_assign_all_busses()	1
++#include <efi/efi-mode.h>
++
++#define pcibios_assign_all_busses()	(!efi_is_payload())
+ 
+ #endif
+diff --git a/arch/arm/lib/pbl.lds.S b/arch/arm/lib/pbl.lds.S
+index cafb27b2d55e..ec7296f0fb34 100644
+--- a/arch/arm/lib/pbl.lds.S
++++ b/arch/arm/lib/pbl.lds.S
+@@ -3,8 +3,27 @@
+ 
+ #include <linux/sizes.h>
+ #include <asm/barebox.lds.h>
++#include <asm/memory.h>
+ #include <asm-generic/memory_layout.h>
+ #include <asm-generic/pointer.h>
++#include <asm/memory.h>
++
++/*
++ * The size of the PE/COFF section that covers the barebox image, which
++ * runs from _stext to _edata, must be a round multiple of the PE/COFF
++ * FileAlignment, which we set to its minimum value of 0x200. '_stext'
++ * itself must be 4 KB aligned, because that's what the adrp instructions
++ * expects, so padding out _edata to a 0x200 aligned boundary should be
++ * sufficient.
++ */
++PECOFF_FILE_ALIGNMENT = 0x200;
++
++#ifdef CONFIG_EFI_STUB
++#define PECOFF_EDATA_PADDING   \
++       .pecoff_edata_padding : { BYTE(0); . = ALIGN(PECOFF_FILE_ALIGNMENT); }
++#else
++#define PECOFF_EDATA_PADDING
++#endif
+ 
+ #ifdef CONFIG_PBL_RELOCATABLE
+ #define BASE	0x0
+@@ -62,7 +81,9 @@ SECTIONS
+ 
+ 	.barebox_imd : { BAREBOX_IMD }
+ 
++	. = ALIGN(PBL_SEGMENT_ALIGN);
+ 	_etext = .;			/* End of text and rodata section */
++	_sdata = .;
+ 
+ 	. = ALIGN(4);
+ 	.data : { *(.data*) }
+@@ -109,6 +130,16 @@ SECTIONS
+ 	}
+ 	__pblext_end = .;
+ 
++	PECOFF_EDATA_PADDING
++
++	__pecoff_data_rawsize = ABSOLUTE(. - _etext);
++
++	/* .bss is dwarfed by piggydata size, so we just handle .bss
++	 * as normal PE data
++	 */
++
++	__pecoff_data_size = ABSOLUTE(. - _etext);
++
+ 	.image_end : { KEEP(*(.__image_end)) }
+ 
+ 	pbl_image_size =  . - BASE;
+diff --git a/arch/arm/lib64/armlinux.c b/arch/arm/lib64/armlinux.c
+index 40fea37f53a7..4628c8ab5693 100644
+--- a/arch/arm/lib64/armlinux.c
++++ b/arch/arm/lib64/armlinux.c
+@@ -5,6 +5,7 @@
+ #include <memory.h>
+ #include <init.h>
+ #include <bootm.h>
++#include <efi/efi-mode.h>
+ 
+ static int do_bootm_linux(struct image_data *data)
+ {
+@@ -89,6 +90,9 @@ static struct image_handler aarch64_barebox_handler = {
+ 
+ static int aarch64_register_image_handler(void)
+ {
++	if (efi_is_payload())
++		return 0;
++
+ 	register_image_handler(&aarch64_linux_efi_handler);
+ 	register_image_handler(&aarch64_linux_handler);
+ 	register_image_handler(&aarch64_barebox_handler);
+diff --git a/arch/x86/Kconfig b/arch/x86/Kconfig
+index 85f7e067d09a..aab0c3c63261 100644
+--- a/arch/x86/Kconfig
++++ b/arch/x86/Kconfig
+@@ -6,6 +6,7 @@ config X86
+ 	select HAS_DMA
+ 	select GENERIC_FIND_NEXT_BIT
+ 	select ARCH_DMA_DEFAULT_COHERENT
++	select HAVE_EFI_PAYLOAD
+ 	default y
+ 
+ config ARCH_TEXT_BASE
+diff --git a/efi/Kconfig b/efi/Kconfig
+index 971d58a7a9c0..35a57a3a42de 100644
+--- a/efi/Kconfig
++++ b/efi/Kconfig
+@@ -2,8 +2,12 @@
+ 
+ menu "EFI (Extensible Firmware Interface) Support"
+ 
+-config EFI_PAYLOAD
++config HAVE_EFI_PAYLOAD
+ 	bool
++
++config EFI_PAYLOAD
++	bool "Build as EFI payload" if COMPILE_TEST
++	depends on HAVE_EFI_PAYLOAD
+ 	select EFI
+ 	select EFI_GUID
+ 	select EFI_DEVICEPATH
+@@ -16,6 +20,13 @@ config EFI_PAYLOAD
+ config EFI
+ 	bool
+ 
++config HAVE_EFI_STUB
++	bool
++
++config EFI_STUB
++	def_bool EFI_PAYLOAD
++	depends on HAVE_EFI_STUB
++
+ config EFI_GUID
+ 	bool
+ 	help
+diff --git a/efi/payload/Makefile b/efi/payload/Makefile
+index 71305bee7006..a4a0332a8288 100644
+--- a/efi/payload/Makefile
++++ b/efi/payload/Makefile
+@@ -7,3 +7,5 @@ bbenv-y += env-efi
+ obj-$(CONFIG_CMD_IOMEM) += iomem.o
+ obj-pbl-$(CONFIG_EFI_PAYLOAD) += early-mem.o
+ obj-$(CONFIG_EFI_PAYLOAD) += entry-single.o
++pbl-$(CONFIG_EFI_STUB) += entry-multi.o
++obj-$(CONFIG_EFI_STUB) += boarddata.o
+diff --git a/efi/payload/boarddata.c b/efi/payload/boarddata.c
+new file mode 100644
+index 000000000000..3260e31c7bf7
+--- /dev/null
++++ b/efi/payload/boarddata.c
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#define pr_fmt(fmt) "efi-boarddata: " fmt
++
++#ifdef CONFIG_DEBUG_INITCALLS
++#define DEBUG
++#endif
++
++#include <efi/efi-payload.h>
++#include <efi.h>
++#include <boarddata.h>
++#include <memory.h>
++#include <linux/kernel.h>
++#include <linux/printk.h>
++#include <debug_ll.h>
++#include <init.h>
++
++static int handle_efi_boarddata(void)
++{
++	const struct barebox_boarddata *bd = barebox_get_boarddata();
++	efi_status_t efiret;
++
++	if (!barebox_boarddata_is_machine(bd, BAREBOX_MACH_TYPE_EFI))
++		return 0;
++
++	barebox_add_memory_bank("ram0", mem_malloc_start(), mem_malloc_size());
++
++	efi_parent_image = bd->image;
++	efi_sys_table = bd->sys_table;
++	BS = efi_sys_table->boottime;
++	RT = efi_sys_table->runtime;
++
++	pr_debug("parent_image = %p, sys_table = %p\n",
++		 efi_parent_image, efi_sys_table);
++
++	efiret = BS->open_protocol(efi_parent_image, &efi_loaded_image_protocol_guid,
++			(void **)&efi_loaded_image,
++			efi_parent_image, NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
++	if (!EFI_ERROR(efiret))
++		BS->handle_protocol(efi_loaded_image->device_handle,
++				&efi_device_path_protocol_guid, (void **)&efi_device_path);
++
++	return 0;
++}
++pure_initcall(handle_efi_boarddata);
+diff --git a/efi/payload/entry-multi.c b/efi/payload/entry-multi.c
+new file mode 100644
+index 000000000000..f929ab01ec7b
+--- /dev/null
++++ b/efi/payload/entry-multi.c
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <linux/kernel.h>
++#include <linux/linkage.h>
++#include <linux/sizes.h>
++#include <boarddata.h>
++#include <stdio.h>
++#include <efi.h>
++#include <asm/common.h>
++#include <efi/efi-util.h>
++#include <efi/efi-payload.h>
++#include <pbl.h>
++
++static struct barebox_boarddata boarddata = {
++	.magic = BAREBOX_BOARDDATA_MAGIC,
++	.machine = BAREBOX_MACH_TYPE_EFI,
++};
++
++asmlinkage void __efistub_efi_pe_entry(void *image, struct efi_system_table *sys_table);
++
++static void efi_putc(void *ctx, int ch)
++{
++	struct efi_system_table *sys_table = ctx;
++	wchar_t ws[2] = { ch, L'\0' };
++
++	sys_table->con_out->output_string(sys_table->con_out, ws);
++}
++
++void __efistub_efi_pe_entry(void *image, struct efi_system_table *sys_table)
++{
++	size_t memsize;
++	efi_physical_addr_t mem;
++
++#ifdef DEBUG
++	sys_table->con_out->output_string(sys_table->con_out, L"\nbarebox\n");
++#endif
++	pbl_set_putc(efi_putc, sys_table);
++
++	boarddata.image = image;
++	boarddata.sys_table = sys_table;
++
++	mem = efi_earlymem_alloc(sys_table, &memsize);
++
++	barebox_pbl_entry(mem, memsize, &boarddata);
++}
+diff --git a/include/pbl.h b/include/pbl.h
+index 44957f59784e..0633e340bef3 100644
+--- a/include/pbl.h
++++ b/include/pbl.h
+@@ -15,6 +15,7 @@
+ #ifndef __ASSEMBLY__
+ 
+ #include <linux/types.h>
++#include <linux/compiler.h>
+ 
+ extern unsigned long free_mem_ptr;
+ extern unsigned long free_mem_end_ptr;
+@@ -36,4 +37,7 @@ int pbl_barebox_verify(const void *compressed_start, unsigned int len,
+ 		       const void *hash, unsigned int hash_len);
+ #endif
+ 
++void __noreturn barebox_pbl_entry(ulong, ulong, void *);
++
++
+ #endif /* __PBL_H__ */
+diff --git a/test/self/mmu.c b/test/self/mmu.c
+index dbe5004550a8..60bc9b38e84a 100644
+--- a/test/self/mmu.c
++++ b/test/self/mmu.c
+@@ -9,6 +9,7 @@
+ #include <abort.h>
+ #include <zero_page.h>
+ #include <linux/sizes.h>
++#include <efi/efi-mode.h>
+ #include <memory.h>
+ 
+ #define TEST_BUFFER_SIZE		SZ_1M
+@@ -258,6 +259,12 @@ static void test_zero_page(void)
+ 
+ static void test_mmu(void)
+ {
++	if (efi_is_payload()) {
++		pr_info("MMU was not initialized by us\n");
++		skipped_tests += 23;
++		return;
++	}
++
+ 	test_zero_page();
+ 	test_remap();
+ }
 -- 
 2.39.2
 
