@@ -1,81 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:09:29 +0100
+Delivery-date: Mon, 04 Mar 2024 20:09:35 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDgn-008ddU-2e
+	id 1rhDgt-008de4-2Y
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:09:29 +0100
+	Mon, 04 Mar 2024 20:09:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDgn-0004QZ-55
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:09:29 +0100
+	id 1rhDgs-0004WG-M5
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:09:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9DkVt6H1dq5MWcxFU8GJAsSWrUh2XLt7TmAoPUc/JXU=; b=E8slVSwdv90zI+x9XOUUcUElCZ
-	WOGJliy7DsS9ubi96LLZyA8GgX5jJlLRYKwZ8/tOpdH6Aqy46yxDLNO1NDHm+ES4B1XCxzFdMemWT
-	TgV1BcF59mkLuqAF/d40f3S1Svq5qU6oxegtyHNawEOm3kJAI0ict1s5aOeFiVrq+UkXgnjiOA4v9
-	wYZOLUygNVsIORbOD0U5Pi6wIfryaJ45UVZzF5JdJAnbvfvwdLP1AeGULYf/aQUytQ+ZzERa0dvQk
-	mGdEOwVgmXg2x4BGFGvrxrPjgBcBx6dQlqR2Gk+nngASuBFPztQUsgSTpiGUuSJSnYshJ3KhU00g7
-	tgBMxRBw==;
+	bh=KzWjLS0uHmy2kcdcqpHc42Jf/iukZeW+ZdbtZlVZGgM=; b=s2WzGalkHGfG7WlgmJJsJEZKCi
+	RfdoUUK9XX0t6xKPcw4aK7hTFd9aHZU1FihOwpEAWObBBoWkGnXMG7gJh5SH7ZPe2ZQBD2Zv2Wkkx
+	CtCa59DA1ZxZv3A9dn2sotx7RsKSW4q5OC845X6J9TayynC1CqpFMGij1ja/HOwrawHzrUJJV2FDG
+	tgEJ4/U2QuBiAt+QJo+rpydSTQv2749gODxdOCJ72QH3by1jxqhpxo0mPjgaL1ne3kMPmLqKYiyIy
+	Qqp9rqdY09JbbsSxt6+PrcV2AHyT9OWisWc9g1Zdq8Q6XYVlWKnwr2cEOIIvAEn8sfgkcl/jknF43
+	MynJyR/g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDgE-0000000AMP5-1wcz;
-	Mon, 04 Mar 2024 19:08:54 +0000
+	id 1rhDgL-0000000AMSG-1jZe;
+	Mon, 04 Mar 2024 19:09:01 +0000
 Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaZ-0000000AIZk-2YKZ
+	id 1rhDaa-0000000AIaG-1ZfP
 	for barebox@bombadil.infradead.org;
-	Mon, 04 Mar 2024 19:03:03 +0000
+	Mon, 04 Mar 2024 19:03:04 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
 	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=9DkVt6H1dq5MWcxFU8GJAsSWrUh2XLt7TmAoPUc/JXU=; b=YgoreYM21gt6/axYnPNOcaWeRr
-	CEqNM6+MyLfx0bA8DqYfa+pHE8LutyH+a9zj9w8mNDf0ktHRQRzEZIByW6QbC82nTMpT+uiQPsUnQ
-	MFn2hISybsdA7gcOmDQaHbIOr9tSbhmkjVbICR+AAv8u3dlF5XQ3Jxzqa7wr3eO/pauuj9PMLxtXo
-	F1uX/vyVpcd47L452Qxx1pmkt2YrhovBIO8JQH9gg+c1j6BiTxg1W/DM/rIETK2wcxb/rk0wenlP2
-	LShb1CvP9fXQVW/2U0/q3j68BNlu996lM6/ay4nSuqND5wi0azYD+0PVkTB+9LlxZgxEemh4GCysj
-	hsC3iv9g==;
+	bh=KzWjLS0uHmy2kcdcqpHc42Jf/iukZeW+ZdbtZlVZGgM=; b=oDnTuHBSt2KI8xl84MREgXlKBV
+	0u0Xzl83dMhJg6PgL7uwt1D3s7U4sA2JpEsVoprvtzaUCUtjRP+zUaXdvPxqdroJvL0+r59J6xGXK
+	1r2CqpsY7uEwxEtNWwQkvmqkgjArSJznzdYMgEITBx/m4rsW06w8JNMz5UISdSa7fAIeDcKJ2E6OA
+	ME/Dorn9tevtA55++WJkOONYs9V6h4y3zDq0kVIeIsmxl31glM7OSzwtoo2xKbsRRJRS26HArkKdX
+	KLeYTfdsm+wQeBmZ6Rfbtah54xJhA+q+H1j2aUQbSOiO8TK45XwdW3p03gLRtcPwt6CsWXTx+viCO
+	3evyVilA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by casper.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaU-00000002BSq-3yvZ
+	id 1rhDaV-00000002BSl-0Lgq
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:03:02 +0000
+	Mon, 04 Mar 2024 19:03:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaF-00066i-Vz; Mon, 04 Mar 2024 20:02:44 +0100
+	id 1rhDaF-00065m-Kw; Mon, 04 Mar 2024 20:02:43 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaF-004PJA-Ft; Mon, 04 Mar 2024 20:02:43 +0100
+	id 1rhDaF-004PIs-6S; Mon, 04 Mar 2024 20:02:43 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYK-00Ed9V-2U;
-	Mon, 04 Mar 2024 20:00:45 +0100
+	id 1rhDYL-00Ed9V-1s;
+	Mon, 04 Mar 2024 20:00:46 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:23 +0100
-Message-Id: <20240304190038.3486881-39-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 19:59:41 +0100
+Message-Id: <20240304190038.3486881-57-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190259_133510_28E5B02A 
-X-CRM114-Status: GOOD (  14.95  )
+X-CRM114-CacheID: sfid-20240304_190259_236567_C75CBA6B 
+X-CRM114-Status: GOOD (  11.79  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,86 +98,110 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 038/113] fs: implement O_CHROOT
+Subject: [PATCH v2 056/113] ARM64: cpu: setupc: rewrite to be fully PIC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For use by EFI file system path resolution, implement an O_CHROOT
-flag that will map / to the root of the file system the dirfd points
-to instead of the VFS root. If the dirfd points to a mountpoint, it will
-be followed to the file system inside. This is similar to Linux openat2
-with RESOLVE_IN_ROOT.
+The code resulting from building the barebox ARM64 assembly contains
+relocations, which could've been position-independent just as well.
 
-Without this, the EFI protocol would have to do path sanitization itself
-before passing paths to the barebox VFS implementation.
+Let's make them truly position independent by turning:
+
+	ldr   x0, =label
+
+into
+	adr_l x0,  label
+
+adr_l is position independent by virtue of being implemented using adrp,
+so it's usuable as-is before relocation and requires no manual addition
+of get_runtime_offset().
+
+With these changes, only relocation necessary for the ARM64 generic DT
+2nd stage is the one needed for get_runtime_offset() to find out
+whether barebox has been relocated.
+
+This is one step towards supporting mapping barebox PBL text section
+W^X, which precludes relocation entries emitted for code.
+
+With this change applied, there is still a data relocation entry
+in assembly code for get_runtime_offset(), but that doesn't bother us
+because it's in the data section.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- fs/fs.c         | 19 +++++++++++++++++--
- include/fcntl.h |  1 +
- 2 files changed, 18 insertions(+), 2 deletions(-)
+ arch/arm/cpu/setupc_64.S | 22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/fs/fs.c b/fs/fs.c
-index 7aa8a5d69b25..9b876fe1f9be 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -2166,9 +2166,17 @@ static int link_path_walk(const char *name, struct nameidata *nd)
- 	}
- }
+diff --git a/arch/arm/cpu/setupc_64.S b/arch/arm/cpu/setupc_64.S
+index f38f893be90b..2138c2a600fa 100644
+--- a/arch/arm/cpu/setupc_64.S
++++ b/arch/arm/cpu/setupc_64.S
+@@ -1,6 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
  
-+static bool file_has_flag(FILE *f, unsigned flag)
-+{
-+	if (IS_ERR_OR_NULL(f))
-+		return false;
-+	return (f->flags & flag) == flag;
-+}
-+
- static const char *path_init(int dirfd, struct nameidata *nd, unsigned flags)
- {
- 	const char *s = nd->name->name;
-+	bool chroot = false;
- 	FILE *f = NULL;
+ #include <linux/linkage.h>
++#include <asm/assembler.h>
+ #include <asm/sections.h>
  
- 	nd->last_type = LAST_ROOT; /* if there are only slashes... */
-@@ -2181,10 +2189,12 @@ static const char *path_init(int dirfd, struct nameidata *nd, unsigned flags)
- 	/* We don't check for error here yet, as POSIX allows checking
- 	 * whether paths are absolute with openat(-1, path, O_PATH)
- 	 */
--	if (dirfd != AT_FDCWD)
-+	if (dirfd != AT_FDCWD) {
- 		f = fd_to_file(dirfd, true);
-+		chroot = file_has_flag(f, O_CHROOT);
-+	}
+ .section .text.setupc
+@@ -10,9 +11,9 @@
+  */
+ ENTRY(setup_c)
+ 	mov	x15, x30
+-	ldr	x0, =__bss_start
++	adr_l	x0, __bss_start
+ 	mov	x1, #0
+-	ldr	x2, =__bss_stop
++	adr_l	x2, __bss_stop
+ 	sub	x2, x2, x0
+ 	bl	__memset		/* clear bss */
+ 	mov	x30, x15
+@@ -29,12 +30,12 @@ ENDPROC(setup_c)
+ 					/* x0: target address */
+ #ifdef __PBL__
+ ENTRY(relocate_to_adr_full)
+-	ldr	x2, =__image_end
++	adr_l	x2, __image_end
+ 	b	1f
+ #endif
  
--	if (*s == '/') {
-+	if (*s == '/' && !chroot) {
- 		get_root(&nd->path);
- 	} else if (dirfd == AT_FDCWD) {
- 		get_pwd(&nd->path);
-@@ -2195,6 +2205,11 @@ static const char *path_init(int dirfd, struct nameidata *nd, unsigned flags)
- 		nd->path.mnt = &f->fsdev->vfsmount;
- 		nd->path.dentry = f->dentry;
- 		follow_mount(&nd->path);
-+
-+		if (*s == '/')
-+			nd->path.dentry = nd->path.mnt->mnt_root;
-+		if (chroot)
-+			nd->d_root = nd->path.mnt->mnt_root;
- 	}
+ ENTRY(relocate_to_adr)
+-	ldr	x2, =__bss_start
++	adr_l	x2, __bss_start
+ 	b	1f
  
- 	return s;
-diff --git a/include/fcntl.h b/include/fcntl.h
-index a3f5d96cd0ac..532a3a0f6b1e 100644
---- a/include/fcntl.h
-+++ b/include/fcntl.h
-@@ -24,6 +24,7 @@
- #define O_DIRECTORY	00200000	/* must be a directory */
- #define O_NOFOLLOW	00400000	/* don't follow links */
- #define O_PATH		02000000	/* open as path */
-+#define O_CHROOT	04000000	/* dirfd: stay within filesystem root */
- #define __O_TMPFILE	020000000
+ 1:
+@@ -45,18 +46,13 @@ ENTRY(relocate_to_adr)
  
- #define O_TMPFILE       (__O_TMPFILE | O_DIRECTORY)
+ 	mov	x21, x0
+ 
+-	bl	get_runtime_offset
+-	mov	x5, x0
+-
+-	ldr	x0, =_text
+-	mov	x20, x0
+-
+-	add	x1, x0, x5		/* x1: from address */
++	adr_l	x1, _text
++	mov	x20, x1
+ 
+ 	cmp	x1, x21			/* already at correct address? */
+ 	beq	1f			/* yes, skip copy to new address */
+ 
+-	sub	x2, x2, x0		/* x2: size */
++	sub	x2, x2, x1		/* x2: size */
+ 	mov	x0, x21			/* x0: target */
+ 
+ 	/* adjust return address */
+@@ -70,7 +66,7 @@ ENTRY(relocate_to_adr)
+ 	mov	x0,#0
+ 	ic	ivau, x0	/* flush icache */
+ 
+-	ldr	x0,=1f
++	adr_l	x0, 1f
+ 	sub	x0, x0, x20
+ 	add	x0, x0, x21
+ 	br	x0			/* jump to relocated address */
 -- 
 2.39.2
 
