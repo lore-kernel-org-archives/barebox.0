@@ -1,81 +1,81 @@
-Delivery-date: Mon, 04 Mar 2024 20:10:41 +0100
+Delivery-date: Mon, 04 Mar 2024 20:10:50 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDhx-008dm8-02
+	id 1rhDi6-008dmu-30
 	for lore@lore.pengutronix.de;
-	Mon, 04 Mar 2024 20:10:41 +0100
+	Mon, 04 Mar 2024 20:10:50 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhDhv-0005bK-CO
-	for lore@pengutronix.de; Mon, 04 Mar 2024 20:10:40 +0100
+	id 1rhDi3-0005i0-Tg
+	for lore@pengutronix.de; Mon, 04 Mar 2024 20:10:50 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fnmpzxNDB//bUsYRNd3hZKgKq0eJdmhpGs7wc3ofGdg=; b=IJ22qqR0Zab6a5WoLZqS0y8+0x
-	nRmLSIbuptVxOQBWy1Q+cyEl7SB4orEYlg/yNq1gI1ewOyqaiX+bXZXSU3wDi+v+iDvDnV7CyWtKN
-	e0mzb5970LvLmcPtNTvVPWKx8963rCB4yQ8zBfOnWwZy9vy4wHfKMkEjyLvSCJTn1PZM8e4J4E1EK
-	Et/CYx5gMBvvP9+7f1TCyYvtNUf4eX5vCET/5gwU+rAMy3d8FlfoSkpc5NVVfoo8MWQxVLuZwpnOB
-	TmOyPdENOotdiFIHI0RfkSkssa6i+IK43pecr8CaedFvyUdQEDrnocK1Wboa/Bx2+kDPRBZa2yeon
-	mI2NX/cA==;
+	bh=1HbbjGdNYtuNxwnhA8eID1h6WVSvKbeEdEs9qtZk95o=; b=bTfpKTGZ3cr6Af9xlIwc817GA2
+	iah/JVJxF/BbaKRadOaOP93ObPbHAEeV7fcdJj9agybnL0Kjy2HoopO/WarrdAti71zA0/7aHZrj/
+	VKHepFGZL1aXVONIfduTQiMRXBwnC5vxHHnrKIolXPlht+U6rHaiQpoEbLqM/kPxvc8CMVEnZC8R+
+	2r1y71MfemK5hYTH/tKVuby3ma7tFSzL1k6Y6X8SFT1S+np5wdBFGIglah3c1M+ZZ5Ru6okb1Pokb
+	d5yJAArX/JRoFVRB48pHdtjKqxL+9OpowuHkcQlBtulEAy1JXgWftcIR/c0mPTiDo+PoJNczN/jh/
+	qyZ9ESIA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDhD-0000000ANBI-2WKH;
-	Mon, 04 Mar 2024 19:09:55 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1rhDhN-0000000ANIZ-1fJL;
+	Mon, 04 Mar 2024 19:10:05 +0000
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDac-0000000AIcj-408i
+	id 1rhDad-0000000AIdR-1h5T
 	for barebox@bombadil.infradead.org;
 	Mon, 04 Mar 2024 19:03:07 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:MIME-Version
-	:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:Sender:Reply-To:
 	Content-Type:Content-ID:Content-Description;
-	bh=fnmpzxNDB//bUsYRNd3hZKgKq0eJdmhpGs7wc3ofGdg=; b=aBQW23O+OPJEgKhML3bfv1Xkwh
-	csm+dhbvGgTjCLuCUTF4hakOqfbKR7sR9Uu20s0aBBYcZqx5WLJILxt5m3XCiNiWMoOFJeTsZhpk1
-	52XY6rmWGWDm7elqTjB+5yTmw5MWOyb+86YWukCTRJWcU5y5PQKoXtDDBcvy61JbQA8qmMFsWXtZx
-	hHIiBRrYR28vmrGEdlq1MaMo1kJVNhAE4aVt9HwMNp/vU1R3i8YlMwBUdxaw+UuNg+/4jEhZS3OCo
-	x6g5+P/CVmiM1orQ/3KjiWiTJsbz7HyDhC58WMjvE1wgUNxwjVNus28ZU8JauSTWl1+bSs/eXvfTy
-	YEn2S6Gg==;
+	bh=1HbbjGdNYtuNxwnhA8eID1h6WVSvKbeEdEs9qtZk95o=; b=mofVHXBIKFrrHBpMfn6TSU1b+n
+	Fp25rGS0RE6IoUwbakVoBIIzSybEkzapfgT3E+vZpqhT+/slrdoWDZAtd0Q9arfAM7dl5ueIYKvwm
+	HAQQ7jCc6M5W4MU14VQbKNiSCMxRRoadXH6DTKfNkU8f7hD7UXqq3vljDVS4WRVMoP7N4tz8i6hOt
+	6WwAP2kLoJTSxocRovZvejXeFSKiN+XtMJ8HGA05qLfegq6pKSKQG7ogOYtwr7QrbLmmqMXFljr1o
+	FqStQtoaWzgkk8N79Idlcs1v6HDNiybpdpavUx1/GJg7PQ4aaALXOhVSCpQMKil5yx7hEycYeMGyn
+	GWgpttZw==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhDaV-000000051vc-13KL
+	by casper.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1rhDaX-00000002BSu-0TLE
 	for barebox@lists.infradead.org;
-	Mon, 04 Mar 2024 19:03:05 +0000
+	Mon, 04 Mar 2024 19:03:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaG-00069L-Lh; Mon, 04 Mar 2024 20:02:44 +0100
+	id 1rhDaG-00068A-Am; Mon, 04 Mar 2024 20:02:44 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDaG-004PJx-7M; Mon, 04 Mar 2024 20:02:44 +0100
+	id 1rhDaF-004PJd-TT; Mon, 04 Mar 2024 20:02:43 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rhDYL-00Ed9V-2j;
-	Mon, 04 Mar 2024 20:00:46 +0100
+	id 1rhDYN-00Ed9V-2u;
+	Mon, 04 Mar 2024 20:00:48 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  4 Mar 2024 19:59:47 +0100
-Message-Id: <20240304190038.3486881-63-a.fatoum@pengutronix.de>
+Date: Mon,  4 Mar 2024 20:00:33 +0100
+Message-Id: <20240304190038.3486881-109-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240304_190259_963702_460C5FE6 
-X-CRM114-Status: GOOD (  20.37  )
+X-CRM114-CacheID: sfid-20240304_190301_372058_8D60CB8D 
+X-CRM114-Status: GOOD (  25.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -98,319 +98,539 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 062/113] efi: payload: suppress EFI payload initcalls when not EFI-loaded
+Subject: [PATCH v2 108/113] commands: provide efi_handle_dump in both payload and loader
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For development, it has proven very useful to be able to load the same
-barebox binary both as EFI loader and EFI payload and debug the
-interaction. For this to work, we need to mark all current EFI payload
-initcalls as such to avoid running them when barebox is not running
-as EFI payload.
+The efi_handle_dump command is currently used when barebox is built as
+payload, but it's also useful when running as a loader to list handles
+and their protocols. Move the code into a common area to make it
+accessible in both configurations.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/x86/mach-efi/clocksource.c |  4 +--
- common/startup.c                |  3 +-
- drivers/bus/acpi.c              |  2 +-
- drivers/efi/efi-device.c        |  2 +-
- efi/payload/fdt.c               |  2 +-
- efi/payload/image.c             |  2 +-
- efi/payload/init.c              | 17 ++++++-----
- efi/payload/iomem.c             |  3 +-
- fs/efivarfs.c                   |  2 +-
- include/acpi.h                  |  3 +-
- include/efi/efi-device.h        |  6 +---
- include/efi/efi-init.h          | 51 +++++++++++++++++++++++++++++++++
- 12 files changed, 75 insertions(+), 22 deletions(-)
- create mode 100644 include/efi/efi-init.h
+ commands/Kconfig           |   8 ++
+ commands/Makefile          |   2 +
+ commands/efi_handle_dump.c | 181 ++++++++++++++++++++++++++++++++++
+ drivers/efi/Makefile       |   3 +-
+ drivers/efi/efi-device.c   | 196 +------------------------------------
+ drivers/efi/efi-handle.c   |  43 ++++++++
+ include/efi/efi-device.h   |   9 ++
+ 7 files changed, 247 insertions(+), 195 deletions(-)
+ create mode 100644 commands/efi_handle_dump.c
+ create mode 100644 drivers/efi/efi-handle.c
 
-diff --git a/arch/x86/mach-efi/clocksource.c b/arch/x86/mach-efi/clocksource.c
-index c7e557d7a228..daf3b3965851 100644
---- a/arch/x86/mach-efi/clocksource.c
-+++ b/arch/x86/mach-efi/clocksource.c
-@@ -1,7 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 269d2432b45e..8d0816c4d0f0 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -123,6 +123,14 @@ config CMD_DRVINFO
+ 	help
+ 	  List compiled-in device drivers and the devices they support.
  
- #include <common.h>
--#include <init.h>
-+#include <efi/efi-init.h>
- #include <driver.h>
- 
- static int efi_x86_pure_init(void)
-@@ -10,4 +10,4 @@ static int efi_x86_pure_init(void)
- 
- 	return platform_device_register(dev);
- }
--core_initcall(efi_x86_pure_init);
-+core_efi_initcall(efi_x86_pure_init);
-diff --git a/common/startup.c b/common/startup.c
-index bbba72f89255..522e2de75527 100644
---- a/common/startup.c
-+++ b/common/startup.c
-@@ -38,6 +38,7 @@
- #include <watchdog.h>
- #include <glob.h>
- #include <net.h>
++config CMD_EFI_HANDLE_DUMP
++	tristate
++	default y
++	depends on EFI
++	prompt "efi_handle_dump"
++	help
++	  Dump information on EFI handles
++
+ config CMD_HELP
+ 	tristate
+ 	default y
+diff --git a/commands/Makefile b/commands/Makefile
+index 19c006101dc6..30e1f8403eef 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -149,4 +149,6 @@ obj-$(CONFIG_CMD_SELFTEST)	+= selftest.o
+ obj-$(CONFIG_CMD_TUTORIAL)	+= tutorial.o
+ obj-$(CONFIG_CMD_STACKSMASH)	+= stacksmash.o
+ obj-$(CONFIG_CMD_PARTED)	+= parted.o
++obj-$(CONFIG_CMD_EFI_HANDLE_DUMP)	+= efi_handle_dump.o
++
+ UBSAN_SANITIZE_ubsan.o := y
+diff --git a/commands/efi_handle_dump.c b/commands/efi_handle_dump.c
+new file mode 100644
+index 000000000000..43cdb8ac503e
+--- /dev/null
++++ b/commands/efi_handle_dump.c
+@@ -0,0 +1,181 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * efi-device.c - barebox EFI payload support
++ *
++ * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ */
++
++#include <common.h>
++#include <command.h>
++#include <efi.h>
++#include <efi/efi-device.h>
 +#include <efi/efi-mode.h>
- #include <bselftest.h>
- 
- extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
-@@ -54,7 +55,7 @@ static int mount_root(void)
- 	mkdir("/tmp", 0);
- 	mount("none", "devfs", "/dev", NULL);
- 
--	if (IS_ENABLED(CONFIG_FS_EFIVARFS)) {
-+	if (IS_ENABLED(CONFIG_FS_EFIVARFS) && efi_is_payload()) {
- 		mkdir("/efivars", 0);
- 		mount("none", "efivarfs", "/efivars", NULL);
- 	}
-diff --git a/drivers/bus/acpi.c b/drivers/bus/acpi.c
-index b6d618815810..593617073345 100644
---- a/drivers/bus/acpi.c
-+++ b/drivers/bus/acpi.c
-@@ -233,4 +233,4 @@ static int efi_acpi_probe(void)
- 	acpi_bus.dev->priv = table;
- 	return acpi_register_devices(&acpi_bus);
- }
--postcore_initcall(efi_acpi_probe);
-+postcore_efi_initcall(efi_acpi_probe);
++
++static void efi_devpath(efi_handle_t handle)
++{
++	efi_status_t efiret;
++	void *devpath;
++	char *dev_path_str;
++
++	efiret = BS->open_protocol(handle, &efi_device_path_protocol_guid,
++				   &devpath, NULL, NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
++	if (EFI_ERROR(efiret))
++		return;
++
++	dev_path_str = device_path_to_str(devpath);
++	if (dev_path_str) {
++		printf("  Devpath: \n  %s\n", dev_path_str);
++		free(dev_path_str);
++	}
++}
++
++static void efi_dump(efi_handle_t *handles, unsigned long handle_count)
++{
++	int i, j;
++	unsigned long num_guids;
++	efi_guid_t **guids;
++
++	if (!handles || !handle_count)
++		return;
++
++	for (i = 0; i < handle_count; i++) {
++		printf("handle-%p\n", handles[i]);
++
++		BS->protocols_per_handle(handles[i], &guids, &num_guids);
++		printf("  Protocols:\n");
++		for (j = 0; j < num_guids; j++)
++			printf("  %d: %pUl: %s\n", j, guids[j],
++					efi_guid_string(guids[j]));
++		efi_devpath(handles[i]);
++	}
++	printf("\n");
++}
++
++static unsigned char to_digit(unsigned char c)
++{
++	if (c >= '0' && c <= '9')
++		c -= '0';
++	else if (c >= 'A' && c <= 'F')
++		c -= 'A' - 10;
++	else
++		c -= 'a' - 10;
++
++	return c;
++}
++
++#define read_xbit(src, dest, bit) 					\
++	do {								\
++		int __i;						\
++		for (__i = (bit - 4); __i >= 0; __i -= 4, src++)	\
++			dest |= to_digit(*src) << __i;			\
++	} while (0)
++
++static int do_efi_protocol_dump(int argc, char **argv)
++{
++	unsigned long handle_count = 0;
++	efi_handle_t *handles = NULL;
++	int ret;
++	efi_guid_t guid;
++	u32 a = 0;
++	u16 b = 0;
++	u16 c = 0;
++	u8 d0 = 0;
++	u8 d1 = 0;
++	u8 d2 = 0;
++	u8 d3 = 0;
++	u8 d4 = 0;
++	u8 d5 = 0;
++	u8 d6 = 0;
++	u8 d7 = 0;
++
++	/* Format 220e73b6-6bdb-4413-8405-b974b108619a */
++	if (argc == 1) {
++		char *s = argv[0];
++		int len = strlen(s);
++
++		if (len != 36)
++			return -EINVAL;
++
++		read_xbit(s, a, 32);
++		if (*s != '-')
++			return -EINVAL;
++		s++;
++		read_xbit(s, b, 16);
++		if (*s != '-')
++			return -EINVAL;
++		s++;
++		read_xbit(s, c, 16);
++		if (*s != '-')
++			return -EINVAL;
++		s++;
++		read_xbit(s, d0, 8);
++		read_xbit(s, d1, 8);
++		if (*s != '-')
++			return -EINVAL;
++		s++;
++		read_xbit(s, d2, 8);
++		read_xbit(s, d3, 8);
++		read_xbit(s, d4, 8);
++		read_xbit(s, d5, 8);
++		read_xbit(s, d6, 8);
++		read_xbit(s, d7, 8);
++	} else if (argc == 11) {
++		/* Format :
++		 *	220e73b6 6bdb 4413 84 05 b9 74 b1 08 61 9a
++		 *   or
++		 *	0x220e73b6 0x6bdb 0x14413 0x84 0x05 0xb9 0x74 0xb1 0x08 0x61 0x9a
++		 */
++		a = simple_strtoul(argv[0], NULL, 16);
++		b = simple_strtoul(argv[1], NULL, 16);
++		c = simple_strtoul(argv[2], NULL, 16);
++		d0 = simple_strtoul(argv[3], NULL, 16);
++		d1 = simple_strtoul(argv[4], NULL, 16);
++		d2 = simple_strtoul(argv[5], NULL, 16);
++		d3 = simple_strtoul(argv[6], NULL, 16);
++		d4 = simple_strtoul(argv[7], NULL, 16);
++		d5 = simple_strtoul(argv[8], NULL, 16);
++		d6 = simple_strtoul(argv[9], NULL, 16);
++		d7 = simple_strtoul(argv[10], NULL, 16);
++	} else {
++		return -EINVAL;
++	}
++
++	guid = EFI_GUID(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7);
++
++	printf("Searching for:\n");
++	printf("  %pUl: %s\n", &guid, efi_guid_string(&guid));
++
++	ret = __efi_locate_handle(BS, BY_PROTOCOL, &guid, NULL, &handle_count, &handles);
++	if (!ret)
++		efi_dump(handles, handle_count);
++
++	return 0;
++}
++
++static int do_efi_handle_dump(int argc, char *argv[])
++{
++	unsigned long handle_count = 0;
++	efi_handle_t *handles = NULL;
++	int ret;
++
++	if (argc > 1)
++		return do_efi_protocol_dump(--argc, ++argv);
++
++	ret = __efi_locate_handle(BS, ALL_HANDLES, NULL, NULL, &handle_count, &handles);
++	if (!ret)
++		efi_dump(handles, handle_count);
++
++	return 0;
++}
++
++BAREBOX_CMD_HELP_START(efi_handle_dump)
++BAREBOX_CMD_HELP_TEXT("Dump all the efi handle with protocol and devpath\n")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(efi_handle_dump)
++	.cmd = do_efi_handle_dump,
++	BAREBOX_CMD_DESC("Usage: efi_handle_dump")
++	BAREBOX_CMD_OPTS("[a-b-c-d0d1-d3d4d5d6d7] or [a b c d0 d1 d2 d3 d4 d5 d6 d7]")
++	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
++	BAREBOX_CMD_HELP(cmd_efi_handle_dump_help)
++BAREBOX_CMD_END
+diff --git a/drivers/efi/Makefile b/drivers/efi/Makefile
+index bd8fadac4222..4e3c39e14486 100644
+--- a/drivers/efi/Makefile
++++ b/drivers/efi/Makefile
+@@ -1,2 +1,3 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-y += efi-device.o
++obj-y += efi-handle.o
++obj-$(CONFIG_EFI_PAYLOAD) += efi-device.o
 diff --git a/drivers/efi/efi-device.c b/drivers/efi/efi-device.c
-index f93bbc6a4e50..a533bc43eb37 100644
+index bbc76e9ef769..33c82c81dd1d 100644
 --- a/drivers/efi/efi-device.c
 +++ b/drivers/efi/efi-device.c
-@@ -462,7 +462,7 @@ static int efi_init_devices(void)
+@@ -6,7 +6,6 @@
+  */
  
- 	return 0;
- }
--core_initcall(efi_init_devices);
-+core_efi_initcall(efi_init_devices);
- 
- void efi_pause_devices(void)
- {
-diff --git a/efi/payload/fdt.c b/efi/payload/fdt.c
-index 8dacaa8b524a..b50c09691976 100644
---- a/efi/payload/fdt.c
-+++ b/efi/payload/fdt.c
-@@ -41,4 +41,4 @@ static int efi_fdt_probe(void)
- 
- 	return 0;
- }
--late_initcall(efi_fdt_probe);
-+late_efi_initcall(efi_fdt_probe);
-diff --git a/efi/payload/image.c b/efi/payload/image.c
-index 8e5ad87de22f..b9cdb0e0562a 100644
---- a/efi/payload/image.c
-+++ b/efi/payload/image.c
-@@ -332,4 +332,4 @@ static int efi_register_image_handler(void)
- 
- 	return 0;
- }
--late_initcall(efi_register_image_handler);
-+late_efi_initcall(efi_register_image_handler);
-diff --git a/efi/payload/init.c b/efi/payload/init.c
-index dedecbf92cec..9bc0741e044b 100644
---- a/efi/payload/init.c
-+++ b/efi/payload/init.c
-@@ -205,7 +205,7 @@ static int misc_init(void)
- 
- 	return 0;
- }
--late_initcall(misc_init);
-+late_efi_initcall(misc_init);
- 
- static struct NS16550_plat ns16550_plat = {
- 	.clock = 115200 * 16,
-@@ -223,7 +223,7 @@ static int efi_console_init(void)
- 
- 	return 0;
- }
--console_initcall(efi_console_init);
-+console_efi_initcall(efi_console_init);
- 
- static void __noreturn efi_restart_system(struct restart_handler *rst)
- {
-@@ -247,7 +247,7 @@ static int restart_register_feature(void)
- 
- 	return 0;
- }
--coredevice_initcall(restart_register_feature);
-+coredevice_efi_initcall(restart_register_feature);
- 
- extern char image_base[];
- extern initcall_t __barebox_initcalls_start[], __barebox_early_initcalls_end[],
-@@ -265,7 +265,7 @@ static int efi_init(void)
- 
- 	return 0;
- }
--device_initcall(efi_init);
-+device_efi_initcall(efi_init);
- 
- /**
-  * efi-main - Entry point for EFI images
-@@ -325,7 +325,7 @@ static int efi_core_init(void)
- 	dev = device_alloc("efi-wdt", DEVICE_ID_SINGLE);
- 	return platform_device_register(dev);
- }
--core_initcall(efi_core_init);
-+core_efi_initcall(efi_core_init);
- 
- /* Features of the loader, i.e. systemd-boot, barebox (imported from systemd) */
- #define EFI_LOADER_FEATURE_CONFIG_TIMEOUT          (1LL << 0)
-@@ -385,7 +385,7 @@ static int efi_postcore_init(void)
- 
- 	return 0;
- }
--postcore_initcall(efi_postcore_init);
-+postcore_efi_initcall(efi_postcore_init);
- 
- static int efi_late_init(void)
- {
-@@ -434,10 +434,13 @@ static int efi_late_init(void)
- 
- 	return 0;
- }
--late_initcall(efi_late_init);
-+late_efi_initcall(efi_late_init);
- 
- static int do_efiexit(int argc, char *argv[])
- {
-+	if (!BS)
-+		return -ENOSYS;
-+
- 	console_flush();
- 
- 	if (!streq_ptr(argv[1], "-f"))
-diff --git a/efi/payload/iomem.c b/efi/payload/iomem.c
-index 316dacd6b3c2..d4390c856769 100644
---- a/efi/payload/iomem.c
-+++ b/efi/payload/iomem.c
-@@ -7,6 +7,7 @@
- #include <init.h>
- #include <efi.h>
- #include <efi/efi-payload.h>
-+#include <efi/efi-init.h>
- #include <memory.h>
- #include <linux/sizes.h>
- 
-@@ -175,4 +176,4 @@ static int efi_barebox_populate_mmap(void)
- 	free(mmap_buf);
- 	return ret;
- }
--mem_initcall(efi_barebox_populate_mmap);
-+mem_efi_initcall(efi_barebox_populate_mmap);
-diff --git a/fs/efivarfs.c b/fs/efivarfs.c
-index 5d805aefbf10..b19931806140 100644
---- a/fs/efivarfs.c
-+++ b/fs/efivarfs.c
-@@ -371,4 +371,4 @@ static int efivarfs_init(void)
- 	return register_fs_driver(&efivarfs_driver);
- }
- 
--coredevice_initcall(efivarfs_init);
-+coredevice_efi_initcall(efivarfs_init);
-diff --git a/include/acpi.h b/include/acpi.h
-index 2761fe60502c..0756f94501cc 100644
---- a/include/acpi.h
-+++ b/include/acpi.h
-@@ -9,6 +9,7 @@
- #include <linux/string.h>
- #include <linux/types.h>
+ #include <bootsource.h>
+-#include <command.h>
+ #include <common.h>
  #include <driver.h>
-+#include <efi/efi-init.h>
- 
- /* Names within the namespace are 4 bytes long */
- 
-@@ -130,7 +131,7 @@ static inline struct acpi_driver *to_acpi_driver(struct driver *drv)
+ #include <malloc.h>
+@@ -27,30 +26,8 @@ static int efi_locate_handle(enum efi_locate_search_type search_type,
+ 		unsigned long *no_handles,
+ 		efi_handle_t **buffer)
+ {
+-	efi_status_t efiret;
+-	unsigned long buffer_size = 0;
+-	efi_handle_t *buf;
+-
+-	efiret = BS->locate_handle(search_type, protocol, search_key, &buffer_size,
+-			NULL);
+-	if (EFI_ERROR(efiret) && efiret != EFI_BUFFER_TOO_SMALL)
+-		return -efi_errno(efiret);
+-
+-	buf = malloc(buffer_size);
+-	if (!buf)
+-		return -ENOMEM;
+-
+-	efiret = BS->locate_handle(search_type, protocol, search_key, &buffer_size,
+-			buf);
+-	if (EFI_ERROR(efiret)) {
+-		free(buf);
+-		return -efi_errno(efiret);
+-	}
+-
+-	*no_handles = buffer_size / sizeof(efi_handle_t);
+-	*buffer = buf;
+-
+-	return 0;
++	return __efi_locate_handle(BS, search_type, protocol, search_key, no_handles,
++				   buffer);
  }
  
- #define device_acpi_driver(drv)	\
--	register_driver_macro(device, acpi, drv)
-+	register_efi_driver_macro(device, acpi, drv)
- 
- static inline int acpi_driver_register(struct acpi_driver *acpidrv)
- {
+ static struct efi_device *efi_find_device(efi_handle_t handle)
+@@ -499,172 +476,3 @@ void efi_continue_devices(void)
+ 			efidrv->dev_continue(efidev);
+ 	}
+ }
+-
+-static void efi_devpath(efi_handle_t handle)
+-{
+-	efi_status_t efiret;
+-	void *devpath;
+-	char *dev_path_str;
+-
+-	efiret = BS->open_protocol(handle, &efi_device_path_protocol_guid,
+-				   &devpath, NULL, NULL, EFI_OPEN_PROTOCOL_GET_PROTOCOL);
+-	if (EFI_ERROR(efiret))
+-		return;
+-
+-	dev_path_str = device_path_to_str(devpath);
+-	if (dev_path_str) {
+-		printf("  Devpath: \n  %s\n", dev_path_str);
+-		free(dev_path_str);
+-	}
+-}
+-
+-static void efi_dump(efi_handle_t *handles, unsigned long handle_count)
+-{
+-	int i, j;
+-	unsigned long num_guids;
+-	efi_guid_t **guids;
+-
+-	if (!handles || !handle_count)
+-		return;
+-
+-	for (i = 0; i < handle_count; i++) {
+-		printf("handle-%p\n", handles[i]);
+-
+-		BS->protocols_per_handle(handles[i], &guids, &num_guids);
+-		printf("  Protocols:\n");
+-		for (j = 0; j < num_guids; j++)
+-			printf("  %d: %pUl: %s\n", j, guids[j],
+-					efi_guid_string(guids[j]));
+-		efi_devpath(handles[i]);
+-	}
+-	printf("\n");
+-}
+-
+-static unsigned char to_digit(unsigned char c)
+-{
+-	if (c >= '0' && c <= '9')
+-		c -= '0';
+-	else if (c >= 'A' && c <= 'F')
+-		c -= 'A' - 10;
+-	else
+-		c -= 'a' - 10;
+-
+-	return c;
+-}
+-
+-#define read_xbit(src, dest, bit) 					\
+-	do {								\
+-		int __i;						\
+-		for (__i = (bit - 4); __i >= 0; __i -= 4, src++)	\
+-			dest |= to_digit(*src) << __i;			\
+-	} while (0)
+-
+-static int do_efi_protocol_dump(int argc, char **argv)
+-{
+-	unsigned long handle_count = 0;
+-	efi_handle_t *handles = NULL;
+-	int ret;
+-	efi_guid_t guid;
+-	u32 a = 0;
+-	u16 b = 0;
+-	u16 c = 0;
+-	u8 d0 = 0;
+-	u8 d1 = 0;
+-	u8 d2 = 0;
+-	u8 d3 = 0;
+-	u8 d4 = 0;
+-	u8 d5 = 0;
+-	u8 d6 = 0;
+-	u8 d7 = 0;
+-
+-	/* Format 220e73b6-6bdb-4413-8405-b974b108619a */
+-	if (argc == 1) {
+-		char *s = argv[0];
+-		int len = strlen(s);
+-
+-		if (len != 36)
+-			return -EINVAL;
+-
+-		read_xbit(s, a, 32);
+-		if (*s != '-')
+-			return -EINVAL;
+-		s++;
+-		read_xbit(s, b, 16);
+-		if (*s != '-')
+-			return -EINVAL;
+-		s++;
+-		read_xbit(s, c, 16);
+-		if (*s != '-')
+-			return -EINVAL;
+-		s++;
+-		read_xbit(s, d0, 8);
+-		read_xbit(s, d1, 8);
+-		if (*s != '-')
+-			return -EINVAL;
+-		s++;
+-		read_xbit(s, d2, 8);
+-		read_xbit(s, d3, 8);
+-		read_xbit(s, d4, 8);
+-		read_xbit(s, d5, 8);
+-		read_xbit(s, d6, 8);
+-		read_xbit(s, d7, 8);
+-	} else if (argc == 11) {
+-		/* Format :
+-		 *	220e73b6 6bdb 4413 84 05 b9 74 b1 08 61 9a
+-		 *   or
+-		 *	0x220e73b6 0x6bdb 0x14413 0x84 0x05 0xb9 0x74 0xb1 0x08 0x61 0x9a
+-		 */
+-		a = simple_strtoul(argv[0], NULL, 16);
+-		b = simple_strtoul(argv[1], NULL, 16);
+-		c = simple_strtoul(argv[2], NULL, 16);
+-		d0 = simple_strtoul(argv[3], NULL, 16);
+-		d1 = simple_strtoul(argv[4], NULL, 16);
+-		d2 = simple_strtoul(argv[5], NULL, 16);
+-		d3 = simple_strtoul(argv[6], NULL, 16);
+-		d4 = simple_strtoul(argv[7], NULL, 16);
+-		d5 = simple_strtoul(argv[8], NULL, 16);
+-		d6 = simple_strtoul(argv[9], NULL, 16);
+-		d7 = simple_strtoul(argv[10], NULL, 16);
+-	} else {
+-		return -EINVAL;
+-	}
+-
+-	guid = EFI_GUID(a, b, c, d0, d1, d2, d3, d4, d5, d6, d7);
+-
+-	printf("Searching for:\n");
+-	printf("  %pUl: %s\n", &guid, efi_guid_string(&guid));
+-
+-	ret = efi_locate_handle(BY_PROTOCOL, &guid, NULL, &handle_count, &handles);
+-	if (!ret)
+-		efi_dump(handles, handle_count);
+-
+-	return 0;
+-}
+-
+-static int do_efi_handle_dump(int argc, char *argv[])
+-{
+-	unsigned long handle_count = 0;
+-	efi_handle_t *handles = NULL;
+-	int ret;
+-
+-	if (argc > 1)
+-		return do_efi_protocol_dump(--argc, ++argv);
+-
+-	ret = efi_locate_handle(ALL_HANDLES, NULL, NULL, &handle_count, &handles);
+-	if (!ret)
+-		efi_dump(handles, handle_count);
+-
+-	return 0;
+-}
+-
+-BAREBOX_CMD_HELP_START(efi_handle_dump)
+-BAREBOX_CMD_HELP_TEXT("Dump all the efi handle with protocol and devpath\n")
+-BAREBOX_CMD_HELP_END
+-
+-BAREBOX_CMD_START(efi_handle_dump)
+-	.cmd = do_efi_handle_dump,
+-	BAREBOX_CMD_DESC("Usage: efi_handle_dump")
+-	BAREBOX_CMD_OPTS("[a-b-c-d0d1-d3d4d5d6d7] or [a b c d0 d1 d2 d3 d4 d5 d6 d7]")
+-	BAREBOX_CMD_GROUP(CMD_GRP_MISC)
+-	BAREBOX_CMD_HELP(cmd_efi_handle_dump_help)
+-BAREBOX_CMD_END
+diff --git a/drivers/efi/efi-handle.c b/drivers/efi/efi-handle.c
+new file mode 100644
+index 000000000000..be9013cb648f
+--- /dev/null
++++ b/drivers/efi/efi-handle.c
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * Copyright (c) 2014 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
++ */
++
++#include <common.h>
++#include <efi.h>
++#include <efi/efi-util.h>
++#include <efi/efi-device.h>
++#include <efi/efi-mode.h>
++
++int __efi_locate_handle(struct efi_boot_services *bs,
++			enum efi_locate_search_type search_type,
++			efi_guid_t *protocol,
++			void *search_key,
++			unsigned long *no_handles,
++			efi_handle_t **buffer)
++{
++	efi_status_t efiret;
++	unsigned long buffer_size = 0;
++	efi_handle_t *buf;
++
++	efiret = bs->locate_handle(search_type, protocol, search_key, &buffer_size,
++			NULL);
++	if (EFI_ERROR(efiret) && efiret != EFI_BUFFER_TOO_SMALL)
++		return -efi_errno(efiret);
++
++	buf = malloc(buffer_size);
++	if (!buf)
++		return -ENOMEM;
++
++	efiret = bs->locate_handle(search_type, protocol, search_key, &buffer_size,
++			buf);
++	if (EFI_ERROR(efiret)) {
++		free(buf);
++		return -efi_errno(efiret);
++	}
++
++	*no_handles = buffer_size / sizeof(efi_handle_t);
++	*buffer = buf;
++
++	return 0;
++}
 diff --git a/include/efi/efi-device.h b/include/efi/efi-device.h
-index eaf89beb8ed1..5f7490028b9e 100644
+index 5f7490028b9e..5d2110356fd4 100644
 --- a/include/efi/efi-device.h
 +++ b/include/efi/efi-device.h
-@@ -5,6 +5,7 @@
- #include <efi/types.h>
- #include <efi/efi-util.h>
- #include <driver.h>
-+#include <efi/efi-init.h>
- 
- struct efi_device {
- 	struct device dev;
-@@ -37,11 +38,6 @@ static inline struct efi_driver *to_efi_driver(struct driver *drv)
- 	return container_of(drv, struct efi_driver, driver);
+@@ -63,4 +63,13 @@ static inline bool efi_device_has_guid(struct efi_device *efidev, efi_guid_t gui
+ 	return false;
  }
  
--#define device_efi_driver(drv)	\
--	register_driver_macro(device, efi, drv)
--
--#define fs_efi_driver(drv)	\
--	register_driver_macro(fs, efi, drv)
- static inline int efi_driver_register(struct efi_driver *efidrv)
- {
- 	efidrv->driver.bus = &efi_bus;
-diff --git a/include/efi/efi-init.h b/include/efi/efi-init.h
-new file mode 100644
-index 000000000000..f524f3973e0e
---- /dev/null
-+++ b/include/efi/efi-init.h
-@@ -0,0 +1,51 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
++enum efi_locate_search_type;
 +
-+#ifndef EFI_INIT_H_
-+#define EFI_INIT_H_
++int __efi_locate_handle(struct efi_boot_services *bs,
++		enum efi_locate_search_type search_type,
++		efi_guid_t *protocol,
++		void *search_key,
++		unsigned long *no_handles,
++		efi_handle_t **buffer);
 +
-+#include <init.h>
-+#include <linux/compiler.h>
-+
-+struct efi_boot_services;
-+extern struct efi_boot_services *BS;
-+
-+#ifdef CONFIG_EFI_PAYLOAD
-+#define efi_payload_initcall(level, fn) level##_initcall(fn)
-+#else
-+#define efi_payload_initcall(level, fn)
-+#endif
-+
-+/* For use by EFI payload */
-+#define __define_efi_initcall(level, fn) \
-+	static int __maybe_unused __efi_initcall_##fn(void) \
-+	{ \
-+		return BS ? fn() : 0; \
-+	} \
-+	efi_payload_initcall(level, __efi_initcall_##fn);
-+
-+#define core_efi_initcall(fn)		__define_efi_initcall(core, fn)
-+#define postcore_efi_initcall(fn)	__define_efi_initcall(postcore, fn)
-+#define console_efi_initcall(fn)	__define_efi_initcall(console, fn)
-+#define coredevice_efi_initcall(fn)	__define_efi_initcall(coredevice, fn)
-+#define mem_efi_initcall(fn)		__define_efi_initcall(mem, fn)
-+#define device_efi_initcall(fn)		__define_efi_initcall(device, fn)
-+#define fs_efi_initcall(fn)		__define_efi_initcall(fs, fn)
-+#define late_efi_initcall(fn)		__define_efi_initcall(late, fn)
-+
-+#define register_efi_driver_macro(level,bus,drv)	\
-+	static int __init drv##_register(void)		\
-+	{						\
-+		return bus##_driver_register(&drv);	\
-+	}						\
-+	level##_efi_initcall(drv##_register)
-+
-+#define core_efi_driver(drv)	\
-+	register_efi_driver_macro(core, efi, drv)
-+
-+#define device_efi_driver(drv)	\
-+	register_efi_driver_macro(device, efi, drv)
-+
-+#define fs_efi_driver(drv)	\
-+	register_efi_driver_macro(fs, efi, drv)
-+
-+#endif
+ #endif /* __EFI_EFI_DEVICE_H */
 -- 
 2.39.2
 
