@@ -1,92 +1,66 @@
-Delivery-date: Tue, 05 Mar 2024 15:19:39 +0100
+Delivery-date: Tue, 05 Mar 2024 16:29:25 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhVdr-009mnh-0J
+	id 1rhWjN-009pK2-2u
 	for lore@lore.pengutronix.de;
-	Tue, 05 Mar 2024 15:19:39 +0100
+	Tue, 05 Mar 2024 16:29:25 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rhVdp-0004Vm-Of
-	for lore@pengutronix.de; Tue, 05 Mar 2024 15:19:39 +0100
+	id 1rhWjL-0001RV-Vl
+	for lore@pengutronix.de; Tue, 05 Mar 2024 16:29:25 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Date:Content-Type:
-	MIME-Version:Message-ID:Subject:Cc:To:From:Reply-To:Content-Transfer-Encoding
-	:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=HMjXeIChnA6/pWuh/rnauCdPzyjxdAD5XhuDDeTg6lQ=; b=t4gs6bClJ+MN76MNGf778mnKXw
-	w58AXifXMylFstTPn9OnMT6QzrfJpop6rZ7RVy6LKfr6Ak7Aov7U1JoHaDB+xWYFHARb9fF/39Jd7
-	9avRxzhpRKBoArCAE4PmbwvF2F1jvMHw+u2VXegU39sTG7pCgxmmrgFaNCh/tHzTarMhxjbnQV9HH
-	3J0D0uUCwXw62FIMPRwUDJr0Mwk2wx5X4cJYxqUVt/Q7eUJCFHxmBZe4WORWsAC42CmQgDwdCq7o5
-	qZktD0opu/fnjGULJkwEAciHbD+qfpKP9KApz7Vvl9QEBzkPZPVf3Cn6vm8Nwd63lDreqQoXjELL8
-	wmePGnlw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=hWa0b3+4/KuIYAernlm/f0fxiVmQfWsO7qkzFqoE5Go=; b=CufOmLlwqqUv7eXI2engptUU6G
+	QCzt/GnjLGN0+vq0w6oY77+kOTZS1duSU4kqULtadrdieBZUjmlFln/Z0FvQ9KwPSvA4SYjSDbny4
+	2Yoo5da6FoJtqPK212xyO1GuhcbbiBZ8hg89DfCN3LPsm0vuIfA+xnZvE8/zr384cAX8LMZqChZbC
+	y3NltbhcCioOxPVTv+76zhDs6UR/53QYE958b8jR0gWi9hMaZykyI6TN07xcv7v85ucGvKgZzh9c7
+	kMnlTZg0NY24xfbX1ktbUsApluVTOzZgAkYXg1PCVmcSQiXw61UXDv+jZH/faA8nYLRlhXKtdnAgG
+	GXtM9hMQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhUZs-0000000Dghv-3X4g;
-	Tue, 05 Mar 2024 13:11:28 +0000
-Received: from enterprise01.smtp.diehl.com ([193.201.238.219])
+	id 1rhWie-0000000EGiD-0S2E;
+	Tue, 05 Mar 2024 15:28:40 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rhUZn-0000000Dgfk-3nzB
+	id 1rhWiY-0000000EGeZ-2nvG
 	for barebox@lists.infradead.org;
-	Tue, 05 Mar 2024 13:11:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=diehl.com; i=@diehl.com; q=dns/txt; s=default;
-  t=1709644283; x=1741180283;
-  h=from:to:cc:subject:message-id:mime-version:date;
-  bh=HMjXeIChnA6/pWuh/rnauCdPzyjxdAD5XhuDDeTg6lQ=;
-  b=GVttoenByMGb5vA+yYdNhEfX7b8czouBKd1XSuZecdSabe3Ef7sEVnD4
-   IHBdTtlzLaUhZprvTkjteezyWM8RI9dj2lKuwgYEOaqMBwNRdsjt/vZ7R
-   ZmnUEuVlqcHrRomrktNZRRnYp/OwU3XPd30lmowQPHS15v+0TeotHW+Tb
-   OLpOyxovSJ1C8R/hlpQx7W9c1IcmJ4sEBfClJ7bflbjB6zaKlAe6ljvM2
-   TgEXLjcoShqyu+N3EcmfkMGjeCr+T5y+z8z7j1OchMVTe6SVL+VWrOYNr
-   wE0xa7qIpMKo2xXaWSeBYeS7sFlLc4uS2jwAHID1UWQ+NFqimf5pAQ7Nu
-   Q==;
-X-CSE-ConnectionGUID: /2S/DzKQQjqfBTihaWNtsg==
-X-CSE-MsgGUID: afQscGADSKy9UlttoTUR3Q==
-X-ThreatScanner-Verdict: Negative
-IronPort-Data: A9a23:M23OZKl9iWj658dgwJCMBAfo5gxHJkRdPkR7XQ2eYbSJt16W5kVWj
- iJDADrXfqbVPH29ZpktO86x6Alf7siEipMhHTLYn1l2SnNPpIzdWs/xwizYZHzMd8SZExNss
- s9ONdSaIsxqQ3KF+kvya+Pr83dyi//ZFrahA+OdZix7GVRvGXl71Rg7keA03tRiiIS0Xg7U5
- rsezyGx1HqNglaYZUpPuvrTwP8WgNzypC8A7Bt5Zv1apxnSlnQVCNQUIqT2JGH8BZVXW+6NQ
- aDI1rXhll81hCzBee5J6J6gNBVif5bSIRSW2D0RWKWzmV5OpyEy1uAwM/9bYl1TzCmK2tBGz
- pNGr5joFERoZsXwdJ8mv2pl/1tWZusekILvIWSjqZ7UiFLZbD3gwvhuCAc9Oohf4uV2Rjkmy
- RBjE9x+U/z5r7nwmNqGd9RRauQfwOjDMN9P5Xs/lT/VA6d9SM+ZG/SUtIVS1Wdq3JEWRfzXO
- 5ZFMGo+Zxn+OBAeYV1/5LDSPguLriSlL2cI+Ar9SY4fuTW7INlZieC1WDbtUoXXA50TxgDB/
- j6uE13RWnkyLMaYxSeO7kWij+rOmTKTcI8JHdVUzNYz6LGo7jJVUEN+uWeT+6Hj1hblA48Hc
- iT4xwJ1xUQM3B3yJjXCd03gyJK0lkZ0c8ZdFeQ89DaMxsL8i+pOLjFZJtLpQIVOWP4eHVTG5
- HfQ9z/aLWUHXImudJ6o3uz8QQVem8QiBTRqiScsFWPp6jR4yW05pkqnot1LSMZZgjBpcN1ZL
- v/jQCUW3t0uYcA3O6qTugr8xB6+haHwTBc7zDnWXmuayB9ia9vwD2CowQCzAfdoIIOLRVae5
- CJCkM+E9KYCDJyNkGqGR+Bl8LOBvq7DYGea2A4pRsJ7n9iu0yfLkYR47Dx4JVwvNd0YdCXta
- UnfkQ9Q6Z9XenCtaMebZqrhUp51kvO8SrwJUNjdYONVabdYWDSk7XBTYVKM2FzQqhMVxPRX1
- ZCzNJzE4WwhIahqyjutAeAGzbIxwik4yUvcQJn6y1Ks1r/2THScU7oPN0umauEi8LjCoQPb6
- d9TOsKGjRJFX4XWa2/Z+JIUMFUiNXU9Co3qsctRd/7FLgcOMHshCtfJzLUuZpB/mKJUhqHE8
- xmVU0NR4Eb/gmfcKB7MYXdmAI4DRr5zqGAwMjN0ZxCk2nUjZcCk670HH3cqQYQaGCVY5aYcZ
- 5E4lw+oW5yjlhyvF+whUKTA
-IronPort-HdrOrdr: A9a23:LJqQr6hemgCDRUv7smbld3P0kXBQXtIji2hC6mlwRA09TyX+rb
- HNoB17726WtN9/YhAdcLy7VJVoIkmwyXcW2/h1AV7KZmCP01dASrsN0WKL+Vfd8kbFltK1u5
- 0OT0A0YOeAaWRHsQ==
-X-Talos-CUID: =?us-ascii?q?9a23=3AZ2giYWv5wuCiW2suX+7f0pwp6ItiKEaa4GXzGna?=
- =?us-ascii?q?6EGhDdLyVQGC25Lhrxp8=3D?=
-X-Talos-MUID: 9a23:yD3cygQ9zsb8tR9LRXTligh5P+hBz5+NGREwlYkavPW5D3dJbmI=
-X-IronPort-AV: E=Sophos;i="6.06,205,1705359600"; 
-   d="p7s'?scan'208";a="81277347"
-From: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Roland Hieber <rhi@pengutronix.de>, 
-	Denis Osterland-Heim <denis.osterland@gmail.com>
-Cc: "barebox@lists.infradead.org" <barebox@lists.infradead.org>, Alexander
- Dahl <ada@thorsis.com>
-Message-ID: <31cfa4b499ca4b6595df0ac15c146c2d@diehl.com>
+	Tue, 05 Mar 2024 15:28:37 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rhWiU-00017z-1M; Tue, 05 Mar 2024 16:28:30 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rhWiT-004Zvt-Hs; Tue, 05 Mar 2024 16:28:29 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rhWiT-00AaLT-1a;
+	Tue, 05 Mar 2024 16:28:29 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
+References: <20240304190038.3486881-1-a.fatoum@pengutronix.de>
+Message-Id: <170965250948.2522737.9720317597333640552.b4-ty@pengutronix.de>
+Date: Tue, 05 Mar 2024 16:28:29 +0100
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/x-pkcs7-signature"; micalg="sha-256"; boundary="----DD443D2E8FF77FCCECB1735AE1257902"
-Date: Tue,  5 Mar 2024 14:11:15 +0100 (CET)
-X-Bad-Reply: 'Re:' in Subject but no References or In-Reply-To headers
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240305_051124_543711_9CD1B0DD 
-X-CRM114-Status: GOOD (  40.38  )
+X-CRM114-CacheID: sfid-20240305_072835_234208_5E27B618 
+X-CRM114-Status: GOOD (  13.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -104,513 +78,260 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-105.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,USER_IN_WELCOMELIST,USER_IN_WHITELIST
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: RE: [EXT] Re: [EXT] Re: [EXT] Re: [EXT] Re: [PATCH v2 2/2] raspi:
- fixup additional vc created nodes
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH v2 000/113] efi: prepare for ARM64 EFI loader support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is an S/MIME signed message
 
-------DD443D2E8FF77FCCECB1735AE1257902
-Content-Type: text/plain;
-	charset="iso-8859-1"
-Content-Transfer-Encoding: quoted-printable
+On Mon, 04 Mar 2024 19:58:45 +0100, Ahmad Fatoum wrote:
+> I've been working on enabling use of barebox as EFI loader for a while.
+> It's already functional enough to boot efi-stubbed Linux directly or via
+> Grub, but some key parts like proper runtime services and the EFI boot
+> manager are still missing.
+> 
+> Nevertheless, A lot of commits are already in a good enough shape to be
+> upstreamed, which I collected in this series. A second WIP series with
+> the EFI loader support will follow afterwards.
+> 
+> [...]
 
-Hi,
+Applied, thanks!
 
-Cool. Thanks for the trigger.
-Works fine on my side.
-You can add my
+[001/113] string: implement strcmp_ptr and streq_ptr helpers
+          https://git.pengutronix.de/cgit/barebox/commit/?id=ab6b3b6b43a7 (link may not be stable)
+[002/113] commands: efiexit: flush console and shutdown barebox
+          https://git.pengutronix.de/cgit/barebox/commit/?id=d4a47c5f1477 (link may not be stable)
+[003/113] treewide: add errno_set helper for returning positive error code in errno
+          https://git.pengutronix.de/cgit/barebox/commit/?id=b0b6b9bd2634 (link may not be stable)
+[004/113] vsprintf: guard against NULL in UUID %pU
+          https://git.pengutronix.de/cgit/barebox/commit/?id=85ffcfca19ba (link may not be stable)
+[005/113] common: add option to poweroff system on failure
+          https://git.pengutronix.de/cgit/barebox/commit/?id=225004aad397 (link may not be stable)
+[006/113] boot: print error code when booting fails
+          https://git.pengutronix.de/cgit/barebox/commit/?id=1d06756875f0 (link may not be stable)
+[007/113] common: efi: move directory to top-level
+          https://git.pengutronix.de/cgit/barebox/commit/?id=c30fcd81f548 (link may not be stable)
+[008/113] efi: payload: rename CONFIG_EFI_BOOTUP to CONFIG_EFI_PAYLOAD
+          https://git.pengutronix.de/cgit/barebox/commit/?id=196140266808 (link may not be stable)
+[009/113] efi: payload: image: return actual read_file() error
+          https://git.pengutronix.de/cgit/barebox/commit/?id=b917445432d5 (link may not be stable)
+[010/113] of: don't report failure to of_read_file twice
+          https://git.pengutronix.de/cgit/barebox/commit/?id=fdd7da1169dc (link may not be stable)
+[011/113] efi: payload: make missing state reporting less verbose
+          https://git.pengutronix.de/cgit/barebox/commit/?id=c7fbc51c572e (link may not be stable)
+[012/113] libfile: factor out read_file_into_buf helper
+          https://git.pengutronix.de/cgit/barebox/commit/?id=761f51b69966 (link may not be stable)
+[013/113] efi: payload: image: allocate image via loader if it exceeds malloc area
+          https://git.pengutronix.de/cgit/barebox/commit/?id=63c4468ff1b1 (link may not be stable)
+[014/113] efi: payload: image: use assigned barebox loader type on x86
+          https://git.pengutronix.de/cgit/barebox/commit/?id=45883d351bde (link may not be stable)
+[015/113] efi: payload: iomem: adjust types to avoid casting
+          https://git.pengutronix.de/cgit/barebox/commit/?id=33860c392de7 (link may not be stable)
+[016/113] commands: kallsyms: add command-line interface
+          https://git.pengutronix.de/cgit/barebox/commit/?id=396fe8fb8b71 (link may not be stable)
+[017/113] block: define BLOCKSIZE globally in block.h
+          https://git.pengutronix.de/cgit/barebox/commit/?id=2285dd1e4f19 (link may not be stable)
+[018/113] cdev: implement setter/getter for cdev device node
+          https://git.pengutronix.de/cgit/barebox/commit/?id=29d0e0522828 (link may not be stable)
+[019/113] block: virtio: assign virtio-mmio device tree node to cdevs
+          https://git.pengutronix.de/cgit/barebox/commit/?id=2481ff8ac2df (link may not be stable)
+[020/113] commands: stat: print DT node for cdevs if available
+          https://git.pengutronix.de/cgit/barebox/commit/?id=3401bb216585 (link may not be stable)
+[021/113] partitions: have parsers record bootable bits
+          https://git.pengutronix.de/cgit/barebox/commit/?id=35c1e544eb11 (link may not be stable)
+[022/113] commands: stat: display bootable partition table bit info
+          https://git.pengutronix.de/cgit/barebox/commit/?id=aca95e86e163 (link may not be stable)
+[023/113] block: record block device type
+          https://git.pengutronix.de/cgit/barebox/commit/?id=46ba653ef10e (link may not be stable)
+[024/113] include: add definitions for UAPI discoverable partitions spec
+          https://git.pengutronix.de/cgit/barebox/commit/?id=cba5b8e2c184 (link may not be stable)
+[025/113] efi: payload: restrict 8250 UART at I/O port 0x3f8 registration to x86
+          https://git.pengutronix.de/cgit/barebox/commit/?id=4a3f29461bab (link may not be stable)
+[026/113] fs: fix unreaddir, so readdir returns unread dirent first
+          https://git.pengutronix.de/cgit/barebox/commit/?id=32ee1f61b692 (link may not be stable)
+[027/113] fs: turn creat into static inline helper
+          https://git.pengutronix.de/cgit/barebox/commit/?id=2ac0fe5c32ff (link may not be stable)
+[028/113] fs: drop unused LOOKUP_ flags
+          https://git.pengutronix.de/cgit/barebox/commit/?id=582d3b8bd764 (link may not be stable)
+[029/113] fs: opendir: reference mount point until closedir is called
+          https://git.pengutronix.de/cgit/barebox/commit/?id=4378835b3730 (link may not be stable)
+[030/113] fs: factor out opendir iteration
+          https://git.pengutronix.de/cgit/barebox/commit/?id=8208b020c4d2 (link may not be stable)
+[031/113] fs: implement fdopendir and rewinddir
+          https://git.pengutronix.de/cgit/barebox/commit/?id=8c5a89504ae5 (link may not be stable)
+[032/113] fs: remove unused member from struct nameidata
+          https://git.pengutronix.de/cgit/barebox/commit/?id=8de734a1f939 (link may not be stable)
+[033/113] fs: always check path_init for errors
+          https://git.pengutronix.de/cgit/barebox/commit/?id=a9020bdff31a (link may not be stable)
+[034/113] fs: set current working dir directly when mounting root
+          https://git.pengutronix.de/cgit/barebox/commit/?id=abb3a37a5031 (link may not be stable)
+[035/113] fs: implement openat and friends
+          https://git.pengutronix.de/cgit/barebox/commit/?id=c47228735021 (link may not be stable)
+[036/113] fs: implement O_PATH
+          https://git.pengutronix.de/cgit/barebox/commit/?id=049b0e98ded7 (link may not be stable)
+[037/113] fs: support different root directories
+          https://git.pengutronix.de/cgit/barebox/commit/?id=127f7b809e0c (link may not be stable)
+[038/113] fs: implement O_CHROOT
+          https://git.pengutronix.de/cgit/barebox/commit/?id=b89cf57d484e (link may not be stable)
+[039/113] commands: introduce new findmnt command
+          https://git.pengutronix.de/cgit/barebox/commit/?id=992f8aeec132 (link may not be stable)
+[040/113] fs: initialize struct nameidata::last
+          https://git.pengutronix.de/cgit/barebox/commit/?id=6548e5b9ca68 (link may not be stable)
+[041/113] fs: support opening /
+          https://git.pengutronix.de/cgit/barebox/commit/?id=3a478ff3e1e6 (link may not be stable)
+[042/113] test: self: add dirfd tests
+          https://git.pengutronix.de/cgit/barebox/commit/?id=fe477b0a74de (link may not be stable)
+[043/113] commands: stat: add option for statat
+          https://git.pengutronix.de/cgit/barebox/commit/?id=5b175c52b53b (link may not be stable)
+[044/113] efi: payload: lower command line options print from error to info
+          https://git.pengutronix.de/cgit/barebox/commit/?id=73d824f77554 (link may not be stable)
+[045/113] efi: payload: init: warn if /boot FS is unknown
+          https://git.pengutronix.de/cgit/barebox/commit/?id=3893b00bda38 (link may not be stable)
+[046/113] commands: time: switch to using getopt for -n
+          https://git.pengutronix.de/cgit/barebox/commit/?id=a238ac807882 (link may not be stable)
+[047/113] commands: time: reduce strjoin runtime, drop trailing space
+          https://git.pengutronix.de/cgit/barebox/commit/?id=35a903414ddc (link may not be stable)
+[048/113] commands: time: refactor into new strjoin
+          https://git.pengutronix.de/cgit/barebox/commit/?id=788f616946df (link may not be stable)
+[049/113] test: self: add strjoin tests
+          https://git.pengutronix.de/cgit/barebox/commit/?id=f0102c263aeb (link may not be stable)
+[050/113] filetype: have cdev_detect_type take a cdev
+          https://git.pengutronix.de/cgit/barebox/commit/?id=9294edaa4382 (link may not be stable)
+[051/113] ARM: mmu-early: gracefully handle already enabled MMU
+          https://git.pengutronix.de/cgit/barebox/commit/?id=f53fc0b3212e (link may not be stable)
+[052/113] efi: don't hide structs, enums or unions behind _t
+          https://git.pengutronix.de/cgit/barebox/commit/?id=05d94839c918 (link may not be stable)
+[053/113] efi: make headers self-contained
+          https://git.pengutronix.de/cgit/barebox/commit/?id=a1c7c158eedf (link may not be stable)
+[054/113] efi: unify whitespace for GUIDs
+          https://git.pengutronix.de/cgit/barebox/commit/?id=0e9c0a9cbd0a (link may not be stable)
+[055/113] efi: efi-guid: add more GUIDs
+          https://git.pengutronix.de/cgit/barebox/commit/?id=62a782bb02f5 (link may not be stable)
+[056/113] ARM64: cpu: setupc: rewrite to be fully PIC
+          https://git.pengutronix.de/cgit/barebox/commit/?id=0bfc6ab8bc65 (link may not be stable)
+[057/113] ARM64: runtime-offset: make get_runtime_offset fully PIC
+          https://git.pengutronix.de/cgit/barebox/commit/?id=22ae71e69d20 (link may not be stable)
+[058/113] pbl: introduce CONFIG_PBL_FULLY_PIC
+          https://git.pengutronix.de/cgit/barebox/commit/?id=a7e6cd8e3efa (link may not be stable)
+[059/113] efi: payload: fix ARM build
+          https://git.pengutronix.de/cgit/barebox/commit/?id=f6559edc80d3 (link may not be stable)
+[060/113] efi: payload: init: restrict barebox mem to first 1G only on x86
+          https://git.pengutronix.de/cgit/barebox/commit/?id=b488d9ada034 (link may not be stable)
+[061/113] efi: add efi_is_loader/efi_is_payload helpers
+          https://git.pengutronix.de/cgit/barebox/commit/?id=626d4126b0e9 (link may not be stable)
+[062/113] efi: payload: suppress EFI payload initcalls when not EFI-loaded
+          https://git.pengutronix.de/cgit/barebox/commit/?id=b2059a82e395 (link may not be stable)
+[063/113] ARM: make board data definitions accessible to other architectures
+          https://git.pengutronix.de/cgit/barebox/commit/?id=6debda9a2625 (link may not be stable)
+[064/113] boarddata: add barebox_boarddata_is_machine helper
+          https://git.pengutronix.de/cgit/barebox/commit/?id=3361b466b5a7 (link may not be stable)
+[065/113] common: add PE/COFF loader
+          https://git.pengutronix.de/cgit/barebox/commit/?id=5e418b7cf555 (link may not be stable)
+[066/113] efi: use efi_handle_t where appropriate
+          https://git.pengutronix.de/cgit/barebox/commit/?id=069bf5f7dd0f (link may not be stable)
+[067/113] efi: block: move definitions into header file
+          https://git.pengutronix.de/cgit/barebox/commit/?id=b10356152382 (link may not be stable)
+[068/113] efi: define efi_handle_t as opaque pointer
+          https://git.pengutronix.de/cgit/barebox/commit/?id=36f28caa8701 (link may not be stable)
+[069/113] efi: constify guid_t in API
+          https://git.pengutronix.de/cgit/barebox/commit/?id=5da3afed6bff (link may not be stable)
+[070/113] efi: rename efi_simple_input_interface to efi_simple_text_input_protocol
+          https://git.pengutronix.de/cgit/barebox/commit/?id=4420b7d6bccc (link may not be stable)
+[071/113] efi: add EFI_WARN constants
+          https://git.pengutronix.de/cgit/barebox/commit/?id=d030653880e5 (link may not be stable)
+[072/113] efi-stdio: fix wait_for_event argument
+          https://git.pengutronix.de/cgit/barebox/commit/?id=4c402a058e38 (link may not be stable)
+[073/113] efi-stdio: wait for extended input key event when using extended input
+          https://git.pengutronix.de/cgit/barebox/commit/?id=f1f47dbf94a8 (link may not be stable)
+[074/113] efi: flesh out EFI definitions in header
+          https://git.pengutronix.de/cgit/barebox/commit/?id=51b155eb9e02 (link may not be stable)
+[075/113] efi: add efi_driver_binding_protocol
+          https://git.pengutronix.de/cgit/barebox/commit/?id=b2af074756a0 (link may not be stable)
+[076/113] efi: improve usability of EFI_PAGE_* macros
+          https://git.pengutronix.de/cgit/barebox/commit/?id=9135eff90223 (link may not be stable)
+[077/113] fs: efi: move definitions into header
+          https://git.pengutronix.de/cgit/barebox/commit/?id=bcfdca61e191 (link may not be stable)
+[078/113] efi: fs: flesh out file system definitions
+          https://git.pengutronix.de/cgit/barebox/commit/?id=9ba434fc6e95 (link may not be stable)
+[079/113] efi: stdio: fix efi_register_keystroke_notify prototype
+          https://git.pengutronix.de/cgit/barebox/commit/?id=0fe55b4c7fd4 (link may not be stable)
+[080/113] video: mark EFI_GOP driver x86-only for now
+          https://git.pengutronix.de/cgit/barebox/commit/?id=de32a6e176a7 (link may not be stable)
+[081/113] filetype: add new file types for EFI-enabled Linux images
+          https://git.pengutronix.de/cgit/barebox/commit/?id=1c8a0198f2dd (link may not be stable)
+[082/113] efi: payload: register handler for EFI-stubbed ARM64 kernel
+          https://git.pengutronix.de/cgit/barebox/commit/?id=158ca31e5619 (link may not be stable)
+[083/113] efi: payload: factor C efi_main into dedicated file
+          https://git.pengutronix.de/cgit/barebox/commit/?id=c6d2ed6850ee (link may not be stable)
+[084/113] efi: payload: early-mem: simplify error message reporting
+          https://git.pengutronix.de/cgit/barebox/commit/?id=cc43c6e4c6cd (link may not be stable)
+[085/113] efi: payload: early-mem: use EFI_PAGE_SIZE instead of PAGE_SIZE
+          https://git.pengutronix.de/cgit/barebox/commit/?id=3919cc4b2996 (link may not be stable)
+[086/113] ARM64: add optional EFI stub
+          https://git.pengutronix.de/cgit/barebox/commit/?id=742e78976dd4 (link may not be stable)
+[087/113] efi: devicepath: improve const safety
+          https://git.pengutronix.de/cgit/barebox/commit/?id=b9dea1fef6b1 (link may not be stable)
+[088/113] efi: refactor device_path_to_partuuid for code reuse
+          https://git.pengutronix.de/cgit/barebox/commit/?id=e5bf6b3e56b5 (link may not be stable)
+[089/113] efi: devicepath: implement device_path_to_str_buf variant
+          https://git.pengutronix.de/cgit/barebox/commit/?id=8d242311041c (link may not be stable)
+[090/113] lib: vsprintf: align documentation with current feature set
+          https://git.pengutronix.de/cgit/barebox/commit/?id=26224692c14d (link may not be stable)
+[091/113] vsprintf: add %pD for printing EFI device path
+          https://git.pengutronix.de/cgit/barebox/commit/?id=402dae62ce82 (link may not be stable)
+[092/113] lib: string: import Linux strreplace helper
+          https://git.pengutronix.de/cgit/barebox/commit/?id=b823168b76ff (link may not be stable)
+[093/113] efi: payload: dynamically determine bootloader file name
+          https://git.pengutronix.de/cgit/barebox/commit/?id=f1230c7f92cd (link may not be stable)
+[094/113] efi: payload: iomem: register later
+          https://git.pengutronix.de/cgit/barebox/commit/?id=7584e768f48a (link may not be stable)
+[095/113] efi: payload: protect against buggy EFI implementations
+          https://git.pengutronix.de/cgit/barebox/commit/?id=e0e30f636242 (link may not be stable)
+[096/113] efi: payload: don't require efi_loaded_image->parent_handle for bootsource detection
+          https://git.pengutronix.de/cgit/barebox/commit/?id=1c18863354dc (link may not be stable)
+[097/113] commands: add cpuinfo -s option for stacktrace
+          https://git.pengutronix.de/cgit/barebox/commit/?id=ffa2c5d47d18 (link may not be stable)
+[098/113] efi: devicepath: align MemoryMapped name with spec
+          https://git.pengutronix.de/cgit/barebox/commit/?id=41781cbb27ae (link may not be stable)
+[099/113] efi: devicepath: pretty print BBS BEV DeviceType
+          https://git.pengutronix.de/cgit/barebox/commit/?id=fcbbd5db1c51 (link may not be stable)
+[100/113] efi: devicepath: format GUIDs as little endian
+          https://git.pengutronix.de/cgit/barebox/commit/?id=0a4d84b435c6 (link may not be stable)
+[101/113] efi: devicepath: move END device node definitions into header
+          https://git.pengutronix.de/cgit/barebox/commit/?id=066114dcd743 (link may not be stable)
+[102/113] efi: devicepath: drop underscores in hex constants
+          https://git.pengutronix.de/cgit/barebox/commit/?id=80f5353a74cf (link may not be stable)
+[103/113] efi: devicepath: namespace definitions
+          https://git.pengutronix.de/cgit/barebox/commit/?id=58f24203d77d (link may not be stable)
+[104/113] efi: devicepath: use flexible array members for trailing strings
+          https://git.pengutronix.de/cgit/barebox/commit/?id=b2e6b2ebb0a0 (link may not be stable)
+[105/113] efi: devicepath: drop unused macro
+          https://git.pengutronix.de/cgit/barebox/commit/?id=257b49108c97 (link may not be stable)
+[106/113] efi: devicepath: let compiler worry about unaligned unpacking
+          https://git.pengutronix.de/cgit/barebox/commit/?id=93ab2357f7fd (link may not be stable)
+[107/113] efi: devicepath: correct formatting of BBS
+          https://git.pengutronix.de/cgit/barebox/commit/?id=009208f801ca (link may not be stable)
+[108/113] commands: provide efi_handle_dump in both payload and loader
+          https://git.pengutronix.de/cgit/barebox/commit/?id=387d6f9ed9a1 (link may not be stable)
+[109/113] lib: uuid: implement uuid/guid_parse
+          https://git.pengutronix.de/cgit/barebox/commit/?id=193958495437 (link may not be stable)
+[110/113] commands: efi_handle_dump: prepare for supporting EFI loader
+          https://git.pengutronix.de/cgit/barebox/commit/?id=910bca1d6bc7 (link may not be stable)
+[111/113] commands: efi_handle_dump: print loaded image devpath
+          https://git.pengutronix.de/cgit/barebox/commit/?id=473e9898a13b (link may not be stable)
+[112/113] commands: efi_handle_dump: use guid_parse instead of open-coding
+          https://git.pengutronix.de/cgit/barebox/commit/?id=1151c4325bc7 (link may not be stable)
+[113/113] commands: efi_handle_dump: don't ignore failure to parse GUID
+          https://git.pengutronix.de/cgit/barebox/commit/?id=281c2b56b928 (link may not be stable)
 
-Tested-by: Denis Osterland-Heim <denis.osterland@diehl.com>
-
-Regards, Denis
-
------Original Message-----
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>=20
-Sent: Tuesday, March 5, 2024 11:34 AM
-To: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>; Roland Hieber
-<rhi@pengutronix.de>; Denis Osterland-Heim <denis.osterland@gmail.com>
-Cc: barebox@lists.infradead.org; Alexander Dahl <ada@thorsis.com>
-Subject: [EXT] Re: [EXT] Re: [EXT] Re: [EXT] Re: [PATCH v2 2/2] raspi: =
-fixup
-additional vc created nodes
-
-[EXTERNAL EMAIL]
-=20
-
-On 29.02.24 07:03, Denis OSTERLAND-HEIM wrote:
-> Hi,
->=20
-> Well, the kernel in root A may have a different device tree, than the=20
-> one in root B.
-> This is the kernel version update case.
-> What would break, depends on the changes to the dt.
-
-Hmm, ok. I just sent a patch that should support both my and your use =
-case.
-
-Cheers,
-Ahmad
-
->=20
-> Regards, Denis
->=20
-> -----Original Message-----
-> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Sent: Monday, February 26, 2024 1:39 PM
-> To: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>; Roland Hieber=20
-> <rhi@pengutronix.de>; Denis Osterland-Heim <denis.osterland@gmail.com>
-> Cc: barebox@lists.infradead.org; Alexander Dahl <ada@thorsis.com>
-> Subject: [EXT] Re: [EXT] Re: [EXT] Re: [PATCH v2 2/2] raspi: fixup=20
-> additional vc created nodes
->=20
-> [EXTERNAL EMAIL]
-> =20
->=20
-> Hello Denis,
->=20
-> On 21.02.24 08:46, Denis OSTERLAND-HEIM wrote:
->> Hi,
->>
->> It took me a while to think about it.
->> First I would like to explain my current boot process and then how I=20
->> think it would like with your suggestion.
->>
->>
->> Now:
->>
->> Disk layout:
->> - rpi boot fat: dt-2nd.img, barebox-dts, rpi-elf, config.txt
->> - root A
->> - root B
->>
->> Boot process:
->> - rpi boot loader
->> 	* load dt-2nd.img and dt
->> 	* read Hat Eeprom
->> 	* apply fixups to dt
->> - barebox with dt from r2
->> 	* bootchooser select A or B
->> 	* load kernel and dt from A or B
->> 	* copy stuff to kernel dt from barebox internal dt as fixups
->> - linux boot
->>
->>
->> Your approach:
->>
->> Disk layout:
->> - rpi boot fat: bb-rpi.img, some-dts, rpi-elf, config.txt
->> - root A
->> - root B
->>
->> Boot process:
->> - rpi boot loader
->> 	* load bb-rpi.img and dt
->> 	* read Hat Eeprom
->> 	* apply fixups to dt
->> - barebox with built-in dt
->> 	* bootchooser select A or B
->> 	* load kernel and dt from A or B
->> 	* copy stuff to kernel dt from /vc.dtb as fixups
->=20
-> This I don't understand. Why not use vc.dtb as kernel DT? You can=20
-> still have barebox apply boot arg fixups and so on, but use /vc.dtb as
-base?
->=20
->> - linux boot
->>
->> I can remember that I tried to implement the fixups as script in the=20
->> environment first, but switched to C somewhen.
->> I can not recall the reason, sorry.
->> I guess it was related to recursive copy.
->> The C code uses of_merge_node or something like that, which is not=20
->> available as command, I think.
->=20
-> This can be made available to shell too if there's use for it, but I=20
-> think this is tangential.
->=20
->> If we can keep the patches an just do something like if /vc.dtb then=20
->> apply fixups, I would be fine with your approach.
->> But I guess this almost exactly matches the `if(!IS_ERR(root))=20
->> rpi_vc_fdt_parse(root);` approach.
->> If you just revert the patches, I guess I would have to find a way to =
-
->> do it in script.
->=20
-> What would break if you used vc.dtb as kernel DT?
->=20
-> Thanks,
-> Ahmad
->=20
->>
->> Regards, Denis
->>
->> -----Original Message-----
->> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> Sent: Tuesday, February 20, 2024 4:33 PM
->> To: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>; Roland Hieber=20
->> <rhi@pengutronix.de>; Denis Osterland-Heim=20
->> <denis.osterland@gmail.com>
->> Cc: barebox@lists.infradead.org; Alexander Dahl <ada@thorsis.com>
->> Subject: [EXT] Re: [EXT] Re: [PATCH v2 2/2] raspi: fixup additional=20
->> vc created nodes
->>
->> [EXTERNAL EMAIL]
->> =20
->>
->> Hello Denis,
->>
->> On 20.02.24 09:16, Denis OSTERLAND-HEIM wrote:
->>> Hi,
->>>
->>> I think so, too.
->>> I think that my mistake was in =
-5ea6e19737e10973ce2cf785970e32562d9ee8f1.
->>
->> Yes.
->>
->>>> @@ -379,17 +381,17 @@ static void rpi_vc_fdt(void)
->>>> 		if (oftree->totalsize)
->>>> 			pr_err("there was an error copying fdt in pbl:
->>> %d\n",
->>>> 					be32_to_cpu(oftree->totalsize));
->>>> -		return;
->>> This return previously avoided a call of rpi_vc_fdt_parse().
->>>
->>
->> [snip]
->>
->>>> 	rpi_env_init();
->>>> -	rpi_vc_fdt();
->>>> +	root =3D rpi_vc_fdt();
->>>> +	rpi_vc_fdt_parse(IS_ERR(root) ? priv->dev->device_node : root);
->>> Now rpi_vc_fdt_parse() is called in both cases.
->>> So, it should be:
->>> 	if (!IS_ERR(root))
->>> 		rpi_vc_fdt_parse(root);
->>>> 	rpi_set_kernel_name();
->>>>
->>> ...
->>>
->>> Or do I miss something?
->>
->> Now that I think of it, I think the commit should just be reverted.
->> I don't see the utility of using barebox-dt-2nd.img on the Raspberry =
-Pi:
->>
->>   - If the board is already supported, use barebox-raspberry-pi.img,
-which
->>     has the DT built-in.
->>
->>   - If the board is not supported , use barebox-raspberry-pi.img, =
-which
->>     will take the outside DT and save it where the board code expects =
-it.
->>
->> What do you think?
->>
->> Thanks,
->> Ahmad
->>
->>>
->>> Regards, Denis
->>>
->>> -----Original Message-----
->>> From: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>> Sent: Monday, February 19, 2024 10:43 PM
->>> To: Roland Hieber <rhi@pengutronix.de>; Denis Osterland-Heim=20
->>> <denis.osterland@gmail.com>
->>> Cc: barebox@lists.infradead.org; Denis OSTERLAND-HEIM=20
->>> <denis.osterland@diehl.com>; Alexander Dahl <ada@thorsis.com>
->>> Subject: [EXT] Re: [PATCH v2 2/2] raspi: fixup additional vc created =
-
->>> nodes
->>>
->>> [EXTERNAL EMAIL]
->>> =20
->>>
->>> Hello Roland,
->>>
->>> On 19.02.24 20:14, Roland Hieber wrote:
->>>> Hi,
->>>>
->>>> On Mon, Sep 25, 2023 at 01:10:05PM +0200, Denis Osterland-Heim =
-wrote:
->>>>> From: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
->>>>>
->>>>> The video core creates some additional nodes.
->>>>> This code takes over this values.
->>>>> The /hat node is only there if an raspi hat with EEPROM is =
-detected.
->>>>>
->>>>> Signed-off-by: Denis OSTERLAND-HEIM <denis.osterland@diehl.com>
->>>>> Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>>>> ---
->>>>> =A0arch/arm/boards/raspberry-pi/rpi-common.c | 39
->>>>> +++++++++++++++++------
->>>>> =A01 file changed, 30 insertions(+), 9 deletions(-)
->>>>>
->>>>> diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c
->>>>> b/arch/arm/boards/raspberry-pi/rpi-common.c
->>>>> index ceafd55a56..713fad78c9 100644
->>>>> --- a/arch/arm/boards/raspberry-pi/rpi-common.c
->>>>> +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
->>>>> @@ -264,19 +264,37 @@ static enum reset_src_type=20
->>>>> rpi_decode_pm_rsts(struct device_node *chosen,
->>>>> =A0
->>>>> =A0static int rpi_vc_fdt_fixup(struct device_node *root, void =
-*data)
->>>>> =A0{
->>>>> -=A0=A0=A0=A0=A0=A0=A0const struct device_node *vc_chosen =3D =
-data;
->>>>> -=A0=A0=A0=A0=A0=A0=A0struct device_node *chosen;
->>>>> +=A0=A0=A0=A0=A0=A0=A0const struct device_node *vc_node =3D data;
->>>>> +=A0=A0=A0=A0=A0=A0=A0struct device_node *node;
->>>>> +=A0=A0=A0=A0=A0=A0=A0struct property *pp;
->>>>> =A0
->>>>> -=A0=A0=A0=A0=A0=A0=A0chosen =3D of_create_node(root, "/chosen");
->>>>> -=A0=A0=A0=A0=A0=A0=A0if (!chosen)
->>>>> +=A0=A0=A0=A0=A0=A0=A0node =3D of_create_node(root, =
-vc_node->full_name);
->>>>> +=A0=A0=A0=A0=A0=A0=A0if (!node)
->>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0return -ENOMEM;
->>>>> =A0
->>>>> -=A0=A0=A0=A0=A0=A0=A0of_copy_property(vc_chosen, =
-"overlay_prefix", chosen);
->>>>> -=A0=A0=A0=A0=A0=A0=A0of_copy_property(vc_chosen, "os_prefix", =
-chosen);
->>>>> +=A0=A0=A0=A0=A0=A0=A0for_each_property_of_node(vc_node, pp)
->>>>> =
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0of_copy_property(vc_node, =
-pp->name, node);
->>>>> =A0
->>>>> =A0=A0=A0=A0=A0=A0=A0=A0return 0;
->>>>> =A0}
->>>>> =A0
->>>>> +static struct device_node *register_vc_fixup(struct device_node=20
->>>>> +*root,
->>>>> =
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=
-=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0 const char =
-*path) {
->>>>> +=A0=A0=A0=A0=A0=A0=A0struct device_node *ret, *tmp;
->>>>> +
->>>>> +=A0=A0=A0=A0=A0=A0=A0ret =3D of_find_node_by_path_from(root, =
-path);
->>>>> +=A0=A0=A0=A0=A0=A0=A0if (ret) {
->>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0tmp =3D of_dup(ret);
->>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0tmp->full_name =3D =
-xstrdup(ret->full_name);
->>>>> =
-+=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0of_register_fixup(rpi_vc_fd=
-t_fixup, tmp);
->>>>> +=A0=A0=A0=A0=A0=A0=A0} else {
->>>>> +=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0pr_info("no '%s' =
-node found in vc fdtn", path);
->>>>> +=A0=A0=A0=A0=A0=A0=A0}
->>>>> +
->>>>> +=A0=A0=A0=A0=A0=A0=A0return ret;
->>>>> +}
->>>>> +
->>>>> =A0static u32 rpi_boot_mode, rpi_boot_part;
->>>>> =A0/* Extract useful information from the VideoCore FDT we got.
->>>>> =A0 * Some parameters are defined here:
->>>>> @@ -300,14 +318,17 @@ static void rpi_vc_fdt_parse(struct=20
->>>>> device_node
->>>>> *root)
->>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0free(str);
->>>>> =A0=A0=A0=A0=A0=A0=A0=A0}
->>>>> =A0
->>>>> -=A0=A0=A0=A0=A0=A0=A0chosen =3D of_find_node_by_path_from(root, =
-"/chosen");
->>>>> +=A0=A0=A0=A0=A0=A0=A0register_vc_fixup(root, "/system");
->>>>> +=A0=A0=A0=A0=A0=A0=A0register_vc_fixup(root, "/axi");
->>>>> +=A0=A0=A0=A0=A0=A0=A0register_vc_fixup(root, "/reserved-memory");
->>>>> +=A0=A0=A0=A0=A0=A0=A0register_vc_fixup(root, "/hat");
->>>>> +=A0=A0=A0=A0=A0=A0=A0register_vc_fixup(root, =
-"/chosen/bootloader");
->>>>> +=A0=A0=A0=A0=A0=A0=A0chosen =3D register_vc_fixup(root, =
-"/chosen");
->>>>
->>>> This throws a lot of new warnings and errors on our RPi 3B:
->>>>
->>>>     barebox 2024.01.0 #1 2024-02-01T00:00:00+00:00
->>>>     Buildsystem version: DistroKit-2019.12.0-552-g775624b9f5d6
->>>>
->>>>     Board: Raspberry Pi 3 Model B
->>>>     deep-probe: supported due to raspberrypi,3-model-b
->>>>     netconsole: registered as netconsole-1
->>>>     bcm2835-sdhost 3f202000.mmc@7e202000.of: registered as mci0
->>>>     bcm2835_mci 3f300000.mmc@7e300000.of: registered as mci1
->>>>     mci0: detected SD card version 2.0
->>>>     mci0: registered disk0
->>>>     state: New state registered 'state'
->>>>     state: Using bucket 0@0x00000000
->>>>     malloc space: 0x1d87f620 -> 0x3b0fec3f (size 472.5 MiB)
->>>>     WARNING: no property 'serial-number' found in vc fdt's '' node
->>>>     no '/system' node found in vc fdt
->>>>     no '/axi' node found in vc fdt
->>>>     no '/hat' node found in vc fdt
->>>>     no '/chosen/bootloader' node found in vc fdt
->>>>     WARNING: no property 'bootargs' found in vc fdt's '/chosen' =
-node
->>>>     WARNING: no property 'overlay_prefix' found in vc fdt's =
-'/chosen'
->> node
->>>>     WARNING: no property 'os_prefix' found in vc fdt's '/chosen' =
-node
->>>>     WARNING: 'pm_rsts' value not found in vc fdt
->>>>     ERROR: Won't delete root device node
->>>>     environment load /boot/barebox.env: No such file or directory
->>>>     Maybe you have to create the partition.
->>>>
->>>> Do you have any idea what is going on here?=20
->>>>
->>>> I also don't see /vc.dtb, which should have been created. I have
->>>> 'vc.kernel: kernel7.img' in the 'global' output, but nothing else=20
->>>> starting with vc.*.
->>>
->>> I think that a non-existent /vc.dtb is expected if there's no DTs in =
-
->>> the boot partition as is the case with DistroKit (except for rpi4)=20
->>> or if using barebox-dt-2nd.img.
->>>
->>> I think the info/warning messages should just be dropped.
->>>
->>> Cheers,
->>> Ahmad
->>>
->>>>
->>>>  - Roland
->>>>
->>>>> =A0=A0=A0=A0=A0=A0=A0=A0if (!chosen) {
->>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0pr_err("no =
-'/chosen' node found in vc fdtn");
->>>>> =A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0=A0goto out;
->>>>> =A0=A0=A0=A0=A0=A0=A0=A0}
->>>>> =A0
->>>>> -=A0=A0=A0=A0=A0=A0=A0of_register_fixup(rpi_vc_fdt_fixup, =
-of_dup(chosen));
->>>>> -
->>>>> =A0=A0=A0=A0=A0=A0=A0=A0bootloader =3D =
-of_find_node_by_name(chosen, "bootloader");
->>>>> =A0
->>>>> =A0=A0=A0=A0=A0=A0=A0=A0str =3D of_read_vc_string(chosen, =
-"bootargs");
->>>>> --
->>>>> 2.39.2
->>>>>
->>>>>
->>>>
->>>
->>
->=20
-
---=20
-Pengutronix e.K.                           |                             =
-|
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  =
-|
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    =
-|
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 =
-|
-
-------DD443D2E8FF77FCCECB1735AE1257902
-Content-Type: application/x-pkcs7-signature; name="smime.p7s"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="smime.p7s"
-
-MIIPQAYJKoZIhvcNAQcCoIIPMTCCDy0CAQExDzANBglghkgBZQMEAgEFADALBgkq
-hkiG9w0BBwGgggxWMIIGUTCCBDmgAwIBAgICMAAwDQYJKoZIhvcNAQELBQAwgaMx
-ITAfBgNVBAMMGERpZWhsIEdyb3VwIE1haWwgUm9vdCBDQTELMAkGA1UEBhMCREUx
-EjAQBgNVBAcMCU51ZXJuYmVyZzEUMBIGA1UECgwLRGllaGwgR3JvdXAxFDASBgNV
-BAsMC0RpZWhsIEdyb3VwMQ8wDQYDVQQIDAZCYXllcm4xIDAeBgkqhkiG9w0BCQEW
-EXg1MDktY2FAZGllaGwuY29tMB4XDTE4MDUyOTEyMzIzNVoXDTI4MDUyNjEyMzIz
-NVowgZQxCzAJBgNVBAYTAkRFMQ8wDQYDVQQIDAZCYXllcm4xFDASBgNVBAoMC0Rp
-ZWhsIEdyb3VwMRswGQYDVQQLDBJEaWVobCBNZXRlcmluZyBUS0gxHzAdBgNVBAMM
-FkRpZWhsIE1ldGVyaW5nIE1haWwgQ0ExIDAeBgkqhkiG9w0BCQEWEXg1MDktY2FA
-ZGllaGwuY29tMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAtISPrKPL
-Zjjh//2n9b+GXgrhijJV2knQVC0+/FS3zGl4p2fboB+Vr4YHz1uilEvhsS1oG4FV
-f1u0dqdmLVxDHBPMO2K1NKKOJN/6LDDfyiZGNqDOJke6FzrmDyPXXTDtgzWZfdnD
-esx63XSxprre30oJ3BxDFS+/8UpuI628SPc1N4125rHeUXG4scKFSjqRPcIOAQ2X
-veGXU2dYHzq7B02NA8tssmtJNwXjyvMjOw6HGZ8SB87TrFQm6drEtM7QhI/mfpGe
-nTZ4nc84n0yKuMveav8IOspYbkOXzi4JapiOUpmccNLZdIiMg5WJQ0Xt9NSp5yD5
-CYKideGrWgX2wNEBpalgjZoPPQDImcWEJx88/yYZ4FwtRD3VueFqpBr4z/bxwVDr
-N2a/sEqnocY9Tm2EQyHFHDCJ9JyYEXB8W0LTFcUAx+uHijwPk/oIB5EeH8UygXlX
-qUqII+BUZ+q5m5sIc4eXQ10UpUEjG/ptIyO1Ee/E0kPOWzHp07pPgXCZohZb3y41
-Ha2pO6rXOsOmPBK2r2++fLWz3NFyfEJCmn6FcBNi003HUEVCup1D9/9yaPHPSieN
-27sjQcQ96GbOitC99p3xMnSlg4N11lGeuTXCZjIGXdZL5/dThQaxneVA+hr2X+i1
-KmqnesMaSBEuBEBDmbDbakEgJFVWtVeXuk8CAwEAAaOBmzCBmDASBgNVHRMBAf8E
-CDAGAQH/AgEAMAsGA1UdDwQEAwIBBjAdBgNVHQ4EFgQUn8t6NGPzWsF+oZYXxmfn
-p4Ok7rIwHwYDVR0jBBgwFoAUZrrYQMMD50v/OCDMgDN7y/GT2P8wNQYDVR0fBC4w
-LDAqoCigJoYkaHR0cDovL2tleXMuZGllaGwuY29tL2NybC90ay1oX24uY3JsMA0G
-CSqGSIb3DQEBCwUAA4ICAQAl6hO6b6+GseZi3EAU+zPVhxNZP5Y+YsBnjf13jCGw
-nUVvPz6giwXiCd9KIC4eCqqrJLTHwZe8c/9hSk5CCd6A5XAd3YudrPDvmIwms5Ex
-OREMQkygZO6/qxfXO6IhfUO4HvYQtQexzHOLuxG/KdycVwWapA4acFzBurxFQ3aG
-jvPRgvWxe2Mt3K9wLrEhvGrDmS8yg4bYNyBZGgax6LRhfW4/ShInVUa0koG2Sj+H
-hKpppvqDK4FNgR2dKeCPoo28P9a+K9N3wkLKx4zxaxHegij0DsJOBAVbhk+vDWDO
-gedjtT09c9bsykaXFzykyQeQz7cwrTQ1gDacdcDgywMDQzZKim9O3JpyzvXnD7mb
-CvclM3xp9w6jIJbeaQE7HDlA9YIL/bSRIQq8mJcXArUevLK2MX/Mb+5m3UMU+zXc
-ZqmaneeZeR4bOWrmmhK6bMuce6H+i2YB1vG3BAcSfKQUzZ1m6aKSW1FvjI3SZXQD
-FzRzBwC5ql7i2ugtfOLNYjOO/fvAxNppIZb3IyWN1KBAI7YgS4nx0us/NIlWpTMW
-91WeUtNBCp2sgi3VTi/TUel3RZ9x3tggMUhrksGkFXz2NUL85AdPV6BqJXXXHggd
-121rnduE9ocMt0MFLuDPkMaHqKNzBAcKTcmFM8KYMJ5Z7NBqGtTAgHNVmEnU8gu3
-czCCBf0wggPloAMCAQICAgtcMA0GCSqGSIb3DQEBCwUAMIGUMQswCQYDVQQGEwJE
-RTEPMA0GA1UECAwGQmF5ZXJuMRQwEgYDVQQKDAtEaWVobCBHcm91cDEbMBkGA1UE
-CwwSRGllaGwgTWV0ZXJpbmcgVEtIMR8wHQYDVQQDDBZEaWVobCBNZXRlcmluZyBN
-YWlsIENBMSAwHgYJKoZIhvcNAQkBFhF4NTA5LWNhQGRpZWhsLmNvbTAeFw0yNDAx
-MDIwOTE5MzlaFw0yNjAxMDIwOTE5MzlaMIG8MSIwIAYDVQQDDBlkZW5pcy5vc3Rl
-cmxhbmRAZGllaGwuY29tMSgwJgYJKoZIhvcNAQkBFhlkZW5pcy5vc3RlcmxhbmRA
-ZGllaGwuY29tMQswCQYDVQQGEwJERTEPMA0GA1UECAwGQmF5ZXJuMRwwGgYDVQQK
-DBNEaWVobCBNZXRlcmluZyBUSy1IMRwwGgYDVQQLDBNEaWVobCBNZXRlcmluZyBU
-Sy1IMRIwEAYDVQQHDAlOdWVybmJlcmcwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw
-ggEKAoIBAQDC4CfZJns8lrNXSkis30SmXgEPwIED4unjF8EoHzBRk5cQphMwuxVY
-uFrZmkB8+FJ7kNnazQ5ddAH+7uh/w7vxEbch92iEpJxYRT6z9U7Mgw0sqGjzWQjd
-sVzCSrWJrOdrHXc65BnAPOpjNDNe1dR8J9Z4a7OZU5NnQqJMT314j2gfGawGDakJ
-Vph7S6v4AVmty1Fi4iRbaIamu8KJFrHQb5E1UVD5drrxW6TS0z/3YkrMQ6qA1fBB
-Y271mRVq/1ByvJMgPJu7LtIyuGwGJw44RxF0JPLlqRWpsIa+z2cI48dkvwb8k0T1
-rNSIj9urOmUEJGF5O8LioUy0vwmxeWF7AgMBAAGjggEtMIIBKTAfBgNVHSMEGDAW
-gBSfy3o0Y/NawX6hlhfGZ+eng6TusjAJBgNVHRIEAjAAMCQGA1UdEQQdMBuBGWRl
-bmlzLm9zdGVybGFuZEBkaWVobC5jb20wNQYDVR0fBC4wLDAqoCigJoYkaHR0cDov
-L2tleXMuZGllaGwuY29tL2NybC90ay1oX24uY3JsMDUGCCsGAQUFBwEBBCkwJzAl
-BggrBgEFBQcwAoYZaHR0cDovL3d3dy5kaWVobC5jb20vcGtpLzAJBgNVHRMEAjAA
-MB0GA1UdDgQWBBQK9y4jVYoCDsL7lhhJKjEP5wv1nTALBgNVHQ8EBAMCBaAwHQYD
-VR0lBBYwFAYIKwYBBQUHAwIGCCsGAQUFBwMEMBEGCWCGSAGG+EIBAQQEAwIFoDAN
-BgkqhkiG9w0BAQsFAAOCAgEAB27J8TZvm6g0rtQpv4kqYwzkXOkCt27WHHWzl/JZ
-knFwWH4mvlRSrQtKkx8cPb5xqqx7k4qXC7TAef4W5YmnpWDtw7YHQAygAsCV1+i8
-uBhdnBVRYkLi0Brsqb/KaDVCFDAYn82kr8OlDaVl5GazIF5rTTUFVT7QEUewf5e7
-Ej4tkepIMP8DW0mM9VRdiSd+DFQQQsQR91nJZS+Gd0jT2tW6SVtZEGnsdgKi9VOw
-+/u7TPynQA3m70zel9t0RySfc5bfZGqEBK/nqU2g5n/qaHKT9cMM8vTAJOmzMv4W
-p7j6RF851h+6c4kH0UsUR9LdbXsKS0KsKTmjPbmbuMAWSEafskq5lJdhIybBnGcp
-FwOkXw6yLHhvmBQ27hVolbrAgLprlLBm8qLq0G3dPHlLwgnNlD6RAcjaVLOcqH3Q
-HWHbKlVg310S75cll1rM+GAudWdsHWxOUbK7R0lwJf/E+FAXciAsExWzCQarpSFI
-AYJjvnsYTiSWas6b5L/rKtyeWIz5wJ3ovxFaMglCtGNGh3sqKwVgb0PeGJ/hfXkV
-Z3i06A/GFOMDvvZ4kI2OL2wwUftkvi8ID5g2nbX/WQh9y6zhlXtiOlA1IplU+PU3
-OHrFL4SBW0X7j1l+9Jl9kGy/ukAr+9nWZ55nUoV/L9C1GLrAO5KF/fDpO2b7lidQ
-mWUxggKuMIICqgIBATCBmzCBlDELMAkGA1UEBhMCREUxDzANBgNVBAgMBkJheWVy
-bjEUMBIGA1UECgwLRGllaGwgR3JvdXAxGzAZBgNVBAsMEkRpZWhsIE1ldGVyaW5n
-IFRLSDEfMB0GA1UEAwwWRGllaGwgTWV0ZXJpbmcgTWFpbCBDQTEgMB4GCSqGSIb3
-DQEJARYReDUwOS1jYUBkaWVobC5jb20CAgtcMA0GCWCGSAFlAwQCAQUAoIHkMBgG
-CSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI0MDMwNTEz
-MTExNVowLwYJKoZIhvcNAQkEMSIEIBNegcYI0eNvvLw+dxZ1kSdMPkktplAzyzcS
-/syjMWfdMHkGCSqGSIb3DQEJDzFsMGowCwYJYIZIAWUDBAEqMAsGCWCGSAFlAwQB
-FjALBglghkgBZQMEAQIwCgYIKoZIhvcNAwcwDgYIKoZIhvcNAwICAgCAMA0GCCqG
-SIb3DQMCAgFAMAcGBSsOAwIHMA0GCCqGSIb3DQMCAgEoMA0GCSqGSIb3DQEBAQUA
-BIIBAMHK9PcXVbZDt1v/nwUvjqlqzBcg7BONbKr6j1zhkLjseNUxkRFQGUtCn3nv
-QnXEYSYafbuNNcquMBZZrpDf5+nEmGX6iilU0a50hTadNMn2CtXPpilp/hEFNTPc
-pp3uZszCcxY4m/FAYv4vpKE2KEHlmgIiAqoUicuvD/hYIyDHW3d14BF3C1b3/yMI
-a33OXXKe8oOQ0ZzHr9OLk/wQ39Y11f6PwqAkRKCiRiCVywTfijqzwgDCYwZ9ebZS
-RcdF7GSURtvscDUNUJs6n0POhCqw2FqxmGynGoNTQbZ1+8t5owhlX9yQ4EJ/1BnH
-O+PliAVwoGZw0PpIKqoSqIL49ts=
-
-------DD443D2E8FF77FCCECB1735AE1257902--
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
