@@ -1,59 +1,66 @@
-Delivery-date: Thu, 07 Mar 2024 16:55:12 +0100
+Delivery-date: Thu, 07 Mar 2024 18:01:36 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riG5Q-00CR6C-1H
+	id 1riH7g-00CUzs-2r
 	for lore@lore.pengutronix.de;
-	Thu, 07 Mar 2024 16:55:12 +0100
+	Thu, 07 Mar 2024 18:01:36 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riG5P-0001ij-L6
-	for lore@pengutronix.de; Thu, 07 Mar 2024 16:55:12 +0100
+	id 1riH7f-0004rQ-Hd
+	for lore@pengutronix.de; Thu, 07 Mar 2024 18:01:36 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
-	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tgyi1XPueBSpRx/7a5YgpRbEeDGftkIfZhk19LnuKpE=; b=261i/uhTXZhH8vX4rBd6wuQuqd
-	Oou6ItjNxfQ+IpCqX/ZKeglHVHP11OoZ6goQjFK15rZvtqxgdXsRpbwEi+m/BpB2AYhF3kgwNa0wr
-	/2DOYgL9SBSiDkWMeFEJHcTtY7fC+YAhVnj0ntk5mUMSFm/c6R/4Pgg6R7GGPDR7HUS2ZfHsn61D0
-	MsRxfL5SZaQmjAVzR9xgXxyUeEVWaPrmwWsxZvv8BitN267G7XDijjTlphZEo9YBgrvXx6jeUctzn
-	TPUAFz7m7aDsKnaBrZfvBu6b/nLtBH4qx+EdFFLTTyq/QkYBcWB7o8AMX4tPATTpWL+MH4yOUmkoW
-	sBMrfFgg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=hUjBS4UQyiPe8CxOA06M3gwCA1YmCgLsTT4iMba8MfA=; b=mJuW1yqCbYYBh1ump1Ml8M6XoK
+	oTAp85Pse1YsdtLTsVUZtKTMxP1E1LC8OJXmokGMAOV1t13YfCkwcu9IQfP2UvQNCji4ck7a899CU
+	FgbN3vls5DfGA322UXMKkZX3YXk3Ga+B6M7i9Jbgu+iJTX6XUsRZskAX7n2DSr3LZZivJ5URDQ7/l
+	9ac2CLqgN/4dMBQQWeiT+k4w438Q/HT1kaVzhVJcbQBBN7IEWebu2Xb8lshisqI/ZjrFm4MX5yRoK
+	3bYHw/Q18Ry3A3WWkSTBwGA3vKTEYb2Xu5a9hOmpVOKK1Cx2l+ztMMMYetvZ7upb1a/gUfjIaxIhZ
+	WgT6StMg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riG4b-00000005NLR-3sIi;
-	Thu, 07 Mar 2024 15:54:21 +0000
+	id 1riH73-00000005bGj-20pt;
+	Thu, 07 Mar 2024 17:00:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riG4Y-00000005NKV-2VIQ
+	id 1riH6z-00000005bEs-1Q7u
 	for barebox@lists.infradead.org;
-	Thu, 07 Mar 2024 15:54:20 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	Thu, 07 Mar 2024 17:00:54 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1riG4S-0000cf-SG; Thu, 07 Mar 2024 16:54:12 +0100
-Message-ID: <5f6fe01bd40ac4e1a9078bde26b397c92346b037.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, Rouven Czerwinski
-	 <r.czerwinski@pengutronix.de>, barebox@lists.infradead.org
-Date: Thu, 07 Mar 2024 16:54:12 +0100
-In-Reply-To: <152b0d55-9a77-4aa2-9dab-192eb4f78a19@pengutronix.de>
-References: <20240307111409.3733947-1-a.fatoum@pengutronix.de>
-	 <8ce80053a8fc3767cc4a7c96189c35b2eac49b60.camel@pengutronix.de>
-	 <152b0d55-9a77-4aa2-9dab-192eb4f78a19@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1riH6x-0003lA-A8; Thu, 07 Mar 2024 18:00:51 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1riH6w-004yj5-Ts; Thu, 07 Mar 2024 18:00:50 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1riH6w-00DqQF-12;
+	Thu, 07 Mar 2024 18:00:50 +0100
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: lst@pengutronix.de,
+	rcz@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu,  7 Mar 2024 18:00:50 +0100
+Message-Id: <20240307170050.3299747-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240307_075418_732286_DBA09CAB 
-X-CRM114-Status: GOOD (  28.24  )
+X-CRM114-CacheID: sfid-20240307_090053_405485_882D6451 
+X-CRM114-Status: GOOD (  11.55  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,144 +78,85 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] dma: debug: detect repeated DMA sync
+Subject: [PATCH v2] dma: debug: detect repeated DMA sync
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Am Donnerstag, dem 07.03.2024 um 13:27 +0100 schrieb Ahmad Fatoum:
-> Hi,
->=20
-> On 07.03.24 12:20, Rouven Czerwinski wrote:
-> > Hi Ahmad,
-> >=20
-> > On Thu, 2024-03-07 at 12:14 +0100, Ahmad Fatoum wrote:
-> > > dma_map_single will do any necessary cache maintenance to make a buff=
-er
-> > > available to a device. Calling debug_dma_sync_single_for_device on su=
-ch
-> > > a buffer is unnecessary, so flag when this happens.
-> >=20
-> >=20
-> > AFAIUI It is only incorrect if the buffer is handed of to the device
-> > and never touched by the CPU again. If you want to modify a buffer
-> > after the device has modified it to let the device work on it again,
-> > dma_sync_single_for_device is the correct function.
-> >=20
-> > In Essence:
-> >=20
-> > Device Access -> dma_sync_single_for_cpu -> CPU modification ->
-> > dma_sync_single_for_device -> Device Access
-> >=20
-> > The buffer stays mapped to the deivce the whole time. Please correct me
-> > if my understanding is wrong.
->=20
-> Your understanding is correct and my patch shouldn't preclude using
-> the DMA API that way. What it flags is doing a sync for CPU or a sync
-> for device twice in a row without an intervening sync into the
-> inverse direction.
->=20
-Yep, the name of the property is a bit confusing, as it's not really
-telling if an entry is dma mapped, but rather in which domain CPU/DEV
-the entry currently resides. All memory regions start out in the CPU
-domain and dma_map/dma_sync_for_device push them into the device
-domain, while dma_unmap/dma_sync_for_cpu pull them back into the CPU
-domain.
+dma_map_single will do any necessary cache maintenance to make a buffer
+available to a device. Calling debug_dma_sync_single_for_device on such
+a buffer is unnecessary, so flag when this happens.
 
-So maybe make this a enum of domains or at least rename to dev_owned or
-something along those lines.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - rename dev_mapped to dev_owned to reduce confusion (Lucas)
+---
+ drivers/dma/debug.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
 
-Regards,
-Lucas
-
-> Cheers,
-> Ahmad
->=20
-> >=20
-> > > Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> > > ---
-> > > =C2=A0drivers/dma/debug.c | 22 ++++++++++++++++++++--
-> > > =C2=A01 file changed, 20 insertions(+), 2 deletions(-)
-> > >=20
-> > > diff --git a/drivers/dma/debug.c b/drivers/dma/debug.c
-> > > index b3bfbff9b2f5..b80e35ff5092 100644
-> > > --- a/drivers/dma/debug.c
-> > > +++ b/drivers/dma/debug.c
-> > > @@ -12,6 +12,7 @@ struct dma_debug_entry {
-> > > =C2=A0	dma_addr_t=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 dev_addr;
-> > > =C2=A0	size_t=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0 size;
-> > > =C2=A0	int=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0 direction;
-> > > +	bool=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0 dev_mapped;
-> > > =C2=A0};
-> > > =C2=A0
-> > > =C2=A0static const char *dir2name[] =3D {
-> > > @@ -121,6 +122,7 @@ void debug_dma_map(struct device *dev, void
-> > > *addr,
-> > > =C2=A0	entry->dev_addr =3D dev_addr;
-> > > =C2=A0	entry->size =3D size;
-> > > =C2=A0	entry->direction =3D direction;
-> > > +	entry->dev_mapped =3D true;
-> > > =C2=A0
-> > > =C2=A0	list_add(&entry->list, &dma_mappings);
-> > > =C2=A0
-> > > @@ -159,9 +161,17 @@ void debug_dma_sync_single_for_cpu(struct device
-> > > *dev,
-> > > =C2=A0	struct dma_debug_entry *entry;
-> > > =C2=A0
-> > > =C2=A0	entry =3D dma_debug_entry_find(dev, dma_handle, size);
-> > > -	if (!entry)
-> > > +	if (!entry) {
-> > > =C2=A0		dma_dev_warn(dev, "sync for CPU of never-mapped %s
-> > > buffer 0x%llx+0x%zx!\n",
-> > > =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0 dir2name[direction], (u64)dma_handl=
-e,
-> > > size);
-> > > +		return;
-> > > +	}
-> > > +
-> > > +	if (!entry->dev_mapped)
-> > > +		dma_dev_warn(dev, "unexpected sync for CPU of
-> > > already CPU-mapped %s buffer 0x%llx+0x%zx!\n",
-> > > +			=C2=A0=C2=A0=C2=A0=C2=A0 dir2name[direction], (u64)dma_handle,
-> > > size);
-> > > +
-> > > +	entry->dev_mapped =3D false;
-> > > =C2=A0}
-> > > =C2=A0
-> > > =C2=A0void debug_dma_sync_single_for_device(struct device *dev,
-> > > @@ -177,7 +187,15 @@ void debug_dma_sync_single_for_device(struct
-> > > device *dev,
-> > > =C2=A0	 * corruption
-> > > =C2=A0	 */
-> > > =C2=A0	entry =3D dma_debug_entry_find(dev, dma_handle, size);
-> > > -	if (!entry)
-> > > +	if (!entry) {
-> > > =C2=A0		dma_dev_warn(dev, "Syncing for device of never-
-> > > mapped %s buffer 0x%llx+0x%zx!\n",
-> > > =C2=A0			=C2=A0=C2=A0=C2=A0=C2=A0 dir2name[direction], (u64)dma_handl=
-e,
-> > > size);
-> > > +		return;
-> > > +	}
-> > > +
-> > > +	if (entry->dev_mapped)
-> > > +		dma_dev_warn(dev, "unexpected sync for device of
-> > > already device-mapped %s buffer 0x%llx+0x%zx!\n",
-> > > +			=C2=A0=C2=A0=C2=A0=C2=A0 dir2name[direction], (u64)dma_handle,
-> > > size);
-> > > +
-> > > +	entry->dev_mapped =3D true;
-> > > =C2=A0}
-> >=20
-> >=20
->=20
+diff --git a/drivers/dma/debug.c b/drivers/dma/debug.c
+index b3bfbff9b2f5..e524dc4127ce 100644
+--- a/drivers/dma/debug.c
++++ b/drivers/dma/debug.c
+@@ -12,6 +12,7 @@ struct dma_debug_entry {
+ 	dma_addr_t       dev_addr;
+ 	size_t           size;
+ 	int              direction;
++	bool             dev_owned;
+ };
+ 
+ static const char *dir2name[] = {
+@@ -121,6 +122,7 @@ void debug_dma_map(struct device *dev, void *addr,
+ 	entry->dev_addr = dev_addr;
+ 	entry->size = size;
+ 	entry->direction = direction;
++	entry->dev_owned = true;
+ 
+ 	list_add(&entry->list, &dma_mappings);
+ 
+@@ -159,9 +161,17 @@ void debug_dma_sync_single_for_cpu(struct device *dev,
+ 	struct dma_debug_entry *entry;
+ 
+ 	entry = dma_debug_entry_find(dev, dma_handle, size);
+-	if (!entry)
++	if (!entry) {
+ 		dma_dev_warn(dev, "sync for CPU of never-mapped %s buffer 0x%llx+0x%zx!\n",
+ 			     dir2name[direction], (u64)dma_handle, size);
++		return;
++	}
++
++	if (!entry->dev_owned)
++		dma_dev_warn(dev, "unexpected sync for CPU of already CPU-mapped %s buffer 0x%llx+0x%zx!\n",
++			     dir2name[direction], (u64)dma_handle, size);
++
++	entry->dev_owned = false;
+ }
+ 
+ void debug_dma_sync_single_for_device(struct device *dev,
+@@ -177,7 +187,15 @@ void debug_dma_sync_single_for_device(struct device *dev,
+ 	 * corruption
+ 	 */
+ 	entry = dma_debug_entry_find(dev, dma_handle, size);
+-	if (!entry)
++	if (!entry) {
+ 		dma_dev_warn(dev, "Syncing for device of never-mapped %s buffer 0x%llx+0x%zx!\n",
+ 			     dir2name[direction], (u64)dma_handle, size);
++		return;
++	}
++
++	if (entry->dev_owned)
++		dma_dev_warn(dev, "unexpected sync for device of already device-mapped %s buffer 0x%llx+0x%zx!\n",
++			     dir2name[direction], (u64)dma_handle, size);
++
++	entry->dev_owned = true;
+ }
+-- 
+2.39.2
 
 
 
