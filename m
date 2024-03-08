@@ -1,67 +1,66 @@
-Delivery-date: Fri, 08 Mar 2024 08:07:12 +0100
+Delivery-date: Fri, 08 Mar 2024 08:09:23 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riUK0-00DNd8-33
+	id 1riUM7-00DNkE-1O
 	for lore@lore.pengutronix.de;
-	Fri, 08 Mar 2024 08:07:12 +0100
+	Fri, 08 Mar 2024 08:09:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riUK0-0000OA-De
-	for lore@pengutronix.de; Fri, 08 Mar 2024 08:07:12 +0100
+	id 1riUM6-0001bB-Sr
+	for lore@pengutronix.de; Fri, 08 Mar 2024 08:09:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9HuNQxwoXafh+yDR9cz0CgEZ4Gs1jer/NKf+mTpk9T8=; b=zUNZi637iHxbCFwRiJxLOnZSe3
-	/3HnD/s3j7PuMLEUBvCbtwQkbPNfbbavMuJKlTY28ocD3QRGVcYSun9D+eW9rK24l+BUZxlCdjGXa
-	9KM9YACAKGg+dqHFvsnGM+wr3YvoBsVYefTBpWS2QiM+EOGu0kFrHI1N/D2Wud59o/ZHtwS79L+oU
-	Imdlu2LzrevIKHLbgjPv0jBiBdnV6YcmYo0onEuSM7eXW0RscgCsZDJujqhKMRWPp/2t2AoDJ2xr4
-	QK9ETv0E8s51Ziz7udLK6/GXvNQxbrZIsmNYd8cEF6V+KtUy9qN1goNy3IscdnXg9RcP5lph5QuYc
-	R78YTMKw==;
+	bh=q6+DapjgDY8pqqV9LYBijhnMgWylzPRrj7/XXYlyrd4=; b=1drPB2QBBxC+QEGCc1Nt9+4NAh
+	O2t8kUp/EXFfVfeqGizaaf4qPxmh8gmjD7piDF7r4jmmFAkwjB9xqYXgHAs6UHG1MS4Xsg/1cFz62
+	IrelZi8NBXmkj1J5OnucEdT13faCzWgnejW2NlvGpveI0O9ZeXBK/56lJ9lJ1WJ6fYLbuTPdc6y6n
+	RA1CeHqDZ7VlPpqW7izbKdsIQ7xhxkegLtSiHG1RBavePyPSciAEOXH9MIalrJ3rDvsFdmlaVRkkd
+	cf3Ln5PbjKVvSOaqRR8M5J71fmCM3YshwUjyAbG2flNwwRRzlrNt2PHbZDQb4pCAnZ7M9hM4nwhKV
+	LjMOcXQw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riUJX-0000000853c-0c8R;
-	Fri, 08 Mar 2024 07:06:43 +0000
+	id 1riULf-000000085IT-0wGh;
+	Fri, 08 Mar 2024 07:08:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riUJT-00000008529-3CX0
+	id 1riULc-000000085Ht-0MSd
 	for barebox@lists.infradead.org;
-	Fri, 08 Mar 2024 07:06:41 +0000
+	Fri, 08 Mar 2024 07:08:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1riUJS-0008Ux-Fl; Fri, 08 Mar 2024 08:06:38 +0100
+	id 1riULa-0001I0-KU; Fri, 08 Mar 2024 08:08:50 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1riUJS-0055iw-36; Fri, 08 Mar 2024 08:06:38 +0100
+	id 1riULa-0055jI-8A; Fri, 08 Mar 2024 08:08:50 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1riUJS-006vXH-06;
-	Fri, 08 Mar 2024 08:06:38 +0100
+	id 1riULa-0075oa-0c;
+	Fri, 08 Mar 2024 08:08:50 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: lst@pengutronix.de, rcz@pengutronix.de
-In-Reply-To: <20240307170050.3299747-1-a.fatoum@pengutronix.de>
-References: <20240307170050.3299747-1-a.fatoum@pengutronix.de>
-Message-Id: <170988159802.1651027.10045033633163373729.b4-ty@pengutronix.de>
-Date: Fri, 08 Mar 2024 08:06:38 +0100
+In-Reply-To: <20240306193924.712323-1-a.fatoum@pengutronix.de>
+References: <20240306193924.712323-1-a.fatoum@pengutronix.de>
+Message-Id: <170988173018.1689909.13574244903657082060.b4-ty@pengutronix.de>
+Date: Fri, 08 Mar 2024 08:08:50 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240307_230639_872023_80B24E06 
-X-CRM114-Status: UNSURE (   7.04  )
+X-CRM114-CacheID: sfid-20240307_230852_163774_C777358B 
+X-CRM114-Status: UNSURE (   8.01  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,22 +84,25 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2] dma: debug: detect repeated DMA sync
+Subject: Re: [PATCH] pbl: make PBL_FULLY_PIC specific to ARM64
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 07 Mar 2024 18:00:50 +0100, Ahmad Fatoum wrote:
-> dma_map_single will do any necessary cache maintenance to make a buffer
-> available to a device. Calling debug_dma_sync_single_for_device on such
-> a buffer is unnecessary, so flag when this happens.
+On Wed, 06 Mar 2024 20:39:24 +0100, Ahmad Fatoum wrote:
+> This has only been tested on ARM64 so far and quick test on a
+> Raspberry Pi 3 Model B in 32-bit mode hangs, so mark this
+> ARM64-specific for now.
 > 
+> CPU_64 implies ARM already, but we list both anyway for documentation
+> purposes.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] dma: debug: detect repeated DMA sync
-      https://git.pengutronix.de/cgit/barebox/commit/?id=1ad4b32702dd (link may not be stable)
+[1/1] pbl: make PBL_FULLY_PIC specific to ARM64
+      https://git.pengutronix.de/cgit/barebox/commit/?id=32da0a9de977 (link may not be stable)
 
 Best regards,
 -- 
