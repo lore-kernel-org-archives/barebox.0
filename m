@@ -1,65 +1,66 @@
-Delivery-date: Fri, 08 Mar 2024 12:18:41 +0100
+Delivery-date: Fri, 08 Mar 2024 12:18:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riYFN-00Dd8T-2G
+	id 1riYFO-00Dd8l-00
 	for lore@lore.pengutronix.de;
-	Fri, 08 Mar 2024 12:18:41 +0100
+	Fri, 08 Mar 2024 12:18:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riYFL-0000TB-7l
+	id 1riYFM-0000UB-C3
 	for lore@pengutronix.de; Fri, 08 Mar 2024 12:18:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=o3vu1zyhjiyVzhaxtZLLjfmdU1OxbCog5fU/aVWSuxY=; b=1UcGzetsFAM3kXXzz9sWa76Rjk
-	OWfHaTSEzSdMfjFEYk7GdXqdWK4miYyQOphfkxXjmNTpydb3QRXnicVsvc0dpk8GVKIMmflXQ7DXF
-	i1VljTCSuCciJ1SlNjEzb/2ciJ00TfNHJdqUhIb2xsuaSjvlS0wRFFlKBPwuJFOGd1oss7L/uIr6x
-	KI9+/RKmWV7sunX8N+O44ybjdbHSdC1mn5a6Uw6lWoRl4hacIl8RdjmlPcNMtsOIkZikB8ctjJwb8
-	Ou8l6D9cnXIumajQHAFj9YMYdR9o/3UOp18kIGla1xABlPXVuVplpYveQabvPXwppbgCC0yZV7yjb
-	5cDJElfQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=QuP+7d8GHWEnXyaZ/NFO7l6566FRuH7aDgV2MbSq9UI=; b=0833YubSD+Bm3h
+	sY0CJ5riEnMOTxsFdYuiG4c6oGM73XEPY9aoELl6wBOcxUlIV1ZD+SF2rZQF1bpNpLz3jSO/kZXlN
+	b1kJBCXtS6igWIm5HX3mSy8Jecw5IkZTdVvyPSUACg5jO8jvp83DS5FiUjzzxFPj8/zkrkIa+PLQZ
+	zVyTeKQMO+bQg7ZoU8CTY5BNaFxSspeeQMn/eihkIBkFCnl/7ulmJwjzPGcvpaC8PhtxSs9M7ydOj
+	vlODAgM9NqJYfp5u2pp1oEZfjcX+YnuAAEp/IvByJ006I3nXg+2IqLDLOgiDP93Wv+wFceXJ6rhaY
+	y+xAYnx5xbcA0d7XLD9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riYEo-00000008vXz-0FKd;
-	Fri, 08 Mar 2024 11:18:06 +0000
+	id 1riYEj-00000008vVw-1tms;
+	Fri, 08 Mar 2024 11:18:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riYEd-00000008vQN-3Ozd
+	id 1riYEd-00000008vPu-3PR9
 	for barebox@lists.infradead.org;
-	Fri, 08 Mar 2024 11:17:59 +0000
+	Fri, 08 Mar 2024 11:17:57 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1riYEZ-0007Id-AE
-	for barebox@lists.infradead.org; Fri, 08 Mar 2024 12:17:51 +0100
+	id 1riYEY-0007Id-64; Fri, 08 Mar 2024 12:17:50 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 08 Mar 2024 12:17:05 +0100
+Date: Fri, 08 Mar 2024 12:16:58 +0100
+Message-Id: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-0-6d50c90485f3@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-7-6d50c90485f3@pengutronix.de>
-References: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-0-6d50c90485f3@pengutronix.de>
-In-Reply-To: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-0-6d50c90485f3@pengutronix.de>
+X-B4-Tracking: v=1; b=H4sIAKrz6mUC/x2NMQ6DMAwAv4I815IJqGr7laqDk5riJYlsiioh/
+ t7AdrfcbeBiKg6PbgOTVV1LbtJfOkgz54+gvptDoDDSQDdcD0IKSLiUqgnZ2Dnj7IEI/VtrsQX
+ 7mIYpXuN4Z4bWqiaT/s7P87Xvf2/GPOV3AAAA
 To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1935;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1636;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=I5AVM8W1cN+RNF9G34GUFRyUbi3A8BkGbAKhh+++RZs=;
- b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFJffT4tHci98tL/zyfiNi4LfbnD/cW3Bte4/fZKUkaeG
- y2zJqp7dZSyMIhxMciKKbJErj2ksVn4s86X4+cZYOawMoEMYeDiFICbfI2R4cBD177X4jwfU+Ma
- s59WCSfzrN0iO9VNLfjw3vP7f6hYH2VkaBf58OHCQqur5xoePPP5uZtPrvXixtTWO8Zu8Ra6PoF
- rmQA=
+ bh=c8B//CDkR4V1icaUgiYTDJnYfFELRhvWLPcNs8mQgiI=;
+ b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFJffd68duO3Gc8sBN/1rjsXy+nP4dhisT7cTVThC0vhK
+ /bGdfEfO0pZGMS4GGTFFFki1x7S2Cz8WefL8fMMMHNYmUCGMHBxCsBEhB8w/C+U8pipPPd7ebYN
+ a3stw4q100p+HreZMJ1Z44YKc/GieaaMDBf+ufyz0rv8/YRG0/JVIldEThn4vW/9/jL443L5hw0
+ XmNgB
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240308_031756_027414_6E080562 
-X-CRM114-Status: UNSURE (   7.43  )
+X-CRM114-CacheID: sfid-20240308_031756_027484_A0DDC546 
+X-CRM114-Status: UNSURE (   6.44  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,54 +84,49 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 07/12] include: mci: add more EXT_CSD_CARD_TYPE_*
+Subject: [PATCH 00/12] mci: add HS200 support for eMMCs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Import missing EXT_CSD_CARD_TYPE_ defines from linux v6.7.
+This series adds support for HS200 mode to mci-core and sdhci.
+As the host driver also needs to handle clock setup, pin control and
+host specific tuning, this series only adds HS200 support to the Arasan
+SDHCI driver.
 
-EXT_CSD_CARD_TYPE_SDR_1_8V/1_2V is unused in barebox. Replace with the
-defines from linux.
+Tested on: ZynqMP.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- include/mci.h | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+Steffen Trumtrar (12):
+      ARM: zynqmp: add sd_dll_reset call
+      zynqmp: firmware: add functions to set tap delay
+      mci: arasan: implement 25MHz quirk for zynqmp
+      mci: arasan: read clk phases from DT
+      mci: arasan: register sdcard/sampleclk
+      include: mci: sync mci_timing with linux
+      include: mci: add more EXT_CSD_CARD_TYPE_*
+      mci: core: parse more host capabilities from DT
+      mci: mci-core: add HS200 support
+      mci: sdhci: add tuning support
+      mci: arasan-sdhci: add HS200 tuning support on ZynqMP
+      mci: arasan: use sdhci_wait_idle2
 
-diff --git a/include/mci.h b/include/mci.h
-index 91460b7ef6..9a52e3f360 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -293,13 +293,24 @@
- #define EXT_CSD_CARD_TYPE_MASK		0x3f
- #define EXT_CSD_CARD_TYPE_26		(1<<0)	/* Card can run at 26MHz */
- #define EXT_CSD_CARD_TYPE_52		(1<<1)	/* Card can run at 52MHz */
-+#define EXT_CSD_CARD_TYPE_HS		(EXT_CSD_CARD_TYPE_HS_26 |	\
-+					 EXT_CSD_CARD_TYPE_HS_52)
- #define EXT_CSD_CARD_TYPE_DDR_1_8V	(1<<2)	/* Card can run at 52MHz */
- 						/* DDR mode @1.8V or 3V I/O */
- #define EXT_CSD_CARD_TYPE_DDR_1_2V	(1<<3)	/* Card can run at 52MHz */
- 						/* DDR mode @1.2V I/O */
--#define EXT_CSD_CARD_TYPE_SDR_1_8V	(1<<4)	/* Card can run at 200MHz */
--#define EXT_CSD_CARD_TYPE_SDR_1_2V	(1<<5)	/* Card can run at 200MHz */
-+#define EXT_CSD_CARD_TYPE_DDR_52	(EXT_CSD_CARD_TYPE_DDR_1_8V  \
-+					 | EXT_CSD_CARD_TYPE_DDR_1_2V)
-+#define EXT_CSD_CARD_TYPE_HS200_1_8V	(1<<4)	/* Card can run at 200MHz */
-+#define EXT_CSD_CARD_TYPE_HS200_1_2V	(1<<5)	/* Card can run at 200MHz */
- 						/* SDR mode @1.2V I/O */
-+#define EXT_CSD_CARD_TYPE_HS200		(EXT_CSD_CARD_TYPE_HS200_1_8V | \
-+					 EXT_CSD_CARD_TYPE_HS200_1_2V)
-+#define EXT_CSD_CARD_TYPE_HS400_1_8V	(1<<6)	/* Card can run at 200MHz DDR, 1.8V */
-+#define EXT_CSD_CARD_TYPE_HS400_1_2V	(1<<7)	/* Card can run at 200MHz DDR, 1.2V */
-+#define EXT_CSD_CARD_TYPE_HS400		(EXT_CSD_CARD_TYPE_HS400_1_8V | \
-+					 EXT_CSD_CARD_TYPE_HS400_1_2V)
-+#define EXT_CSD_CARD_TYPE_HS400ES	(1<<8)	/* Card can run at HS400ES */
- 
- /* register PARTITIONS_ATTRIBUTE [156] */
- #define EXT_CSD_ENH_USR_MASK		(1 << 0)
+ arch/arm/mach-zynqmp/firmware-zynqmp.c |  59 ++++
+ drivers/mci/Kconfig                    |   7 +
+ drivers/mci/arasan-sdhci.c             | 516 ++++++++++++++++++++++++++++++++-
+ drivers/mci/mci-core.c                 | 290 +++++++++++++++++-
+ drivers/mci/sdhci.c                    | 269 ++++++++++++++++-
+ drivers/mci/sdhci.h                    |  25 ++
+ include/mach/zynqmp/firmware-zynqmp.h  |  23 ++
+ include/mci.h                          | 114 +++++++-
+ 8 files changed, 1270 insertions(+), 33 deletions(-)
+---
+base-commit: ed7c14536d521793199abf0597164a46ba68e8e5
+change-id: 20240308-v2024-02-0-topic-arasan-hs200-support-1bc3fb6b49aa
 
+Best regards,
 -- 
-2.40.1
+Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
 
 
