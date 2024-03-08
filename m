@@ -1,66 +1,67 @@
-Delivery-date: Fri, 08 Mar 2024 08:04:12 +0100
+Delivery-date: Fri, 08 Mar 2024 08:07:12 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riUH6-00DNUi-1A
+	id 1riUK0-00DNd8-33
 	for lore@lore.pengutronix.de;
-	Fri, 08 Mar 2024 08:04:12 +0100
+	Fri, 08 Mar 2024 08:07:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riUH5-00079a-Qy
-	for lore@pengutronix.de; Fri, 08 Mar 2024 08:04:12 +0100
+	id 1riUK0-0000OA-De
+	for lore@pengutronix.de; Fri, 08 Mar 2024 08:07:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mSERd1tOvUjKXuBKOaTg5UEsVOHsjMLXyfU7kxdK5jM=; b=y6ls6uRNNuj3yT5BrLXfx8SdL9
-	lj8WEBCnmdvet9il8YzIFLw70JHygS1aiDMlXYNCIgBbRckdsP+9UH2UTARoAs8+wfheB+OrI0Avr
-	dyctnO/6jlWeZjiH+VIRVkWuaMqZ/nNWd0MzHLEctZHUNZI0SjSn6TeDABu9zDlsrKR0f7SiBpFlu
-	RU7avLj574Bi0U+GebSJKOH/RT3NAxfWHUUH/2sWwtVmQg/X++kIeTCb+0NkTlL8HvjQ5xrxUPU0n
-	Xklo/ULpl0nXpeYXsu+m3sMpecDdHwpZd3bqi6ye+S6TIjcTnOoLdJtC7xo3BihiDafMLx+KR0904
-	iVvEU1QQ==;
+	bh=9HuNQxwoXafh+yDR9cz0CgEZ4Gs1jer/NKf+mTpk9T8=; b=zUNZi637iHxbCFwRiJxLOnZSe3
+	/3HnD/s3j7PuMLEUBvCbtwQkbPNfbbavMuJKlTY28ocD3QRGVcYSun9D+eW9rK24l+BUZxlCdjGXa
+	9KM9YACAKGg+dqHFvsnGM+wr3YvoBsVYefTBpWS2QiM+EOGu0kFrHI1N/D2Wud59o/ZHtwS79L+oU
+	Imdlu2LzrevIKHLbgjPv0jBiBdnV6YcmYo0onEuSM7eXW0RscgCsZDJujqhKMRWPp/2t2AoDJ2xr4
+	QK9ETv0E8s51Ziz7udLK6/GXvNQxbrZIsmNYd8cEF6V+KtUy9qN1goNy3IscdnXg9RcP5lph5QuYc
+	R78YTMKw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riUGi-000000084TI-2NKX;
-	Fri, 08 Mar 2024 07:03:48 +0000
+	id 1riUJX-0000000853c-0c8R;
+	Fri, 08 Mar 2024 07:06:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riUGU-000000084Jx-0iOX
+	id 1riUJT-00000008529-3CX0
 	for barebox@lists.infradead.org;
-	Fri, 08 Mar 2024 07:03:38 +0000
+	Fri, 08 Mar 2024 07:06:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1riUGS-0006ja-If; Fri, 08 Mar 2024 08:03:32 +0100
+	id 1riUJS-0008Ux-Fl; Fri, 08 Mar 2024 08:06:38 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1riUGS-0055NC-6K; Fri, 08 Mar 2024 08:03:32 +0100
+	id 1riUJS-0055iw-36; Fri, 08 Mar 2024 08:06:38 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1riUGS-006gYz-0R;
-	Fri, 08 Mar 2024 08:03:32 +0100
+	id 1riUJS-006vXH-06;
+	Fri, 08 Mar 2024 08:06:38 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240306193936.712501-1-a.fatoum@pengutronix.de>
-References: <20240306193936.712501-1-a.fatoum@pengutronix.de>
-Message-Id: <170988141213.1593374.17562795969137122118.b4-ty@pengutronix.de>
-Date: Fri, 08 Mar 2024 08:03:32 +0100
+Cc: lst@pengutronix.de, rcz@pengutronix.de
+In-Reply-To: <20240307170050.3299747-1-a.fatoum@pengutronix.de>
+References: <20240307170050.3299747-1-a.fatoum@pengutronix.de>
+Message-Id: <170988159802.1651027.10045033633163373729.b4-ty@pengutronix.de>
+Date: Fri, 08 Mar 2024 08:06:38 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240307_230335_229674_660ACC51 
-X-CRM114-Status: UNSURE (   9.80  )
+X-CRM114-CacheID: sfid-20240307_230639_872023_80B24E06 
+X-CRM114-Status: UNSURE (   7.04  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,29 +85,22 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master] optee: build common code depending on
- CONFIG_HAVE_OPTEE
+Subject: Re: [PATCH v2] dma: debug: detect repeated DMA sync
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 06 Mar 2024 20:39:36 +0100, Ahmad Fatoum wrote:
-> There's a stub for optee_set_membase(), but it's only defined when
-> CONFIG_HAVE_OPTEE is disabled. The out-of-line version is only linked
-> when there's either PBL_OPTEE or BOOTM_OPTEE, both of which select
-> HAVE_OPTEE.
+On Thu, 07 Mar 2024 18:00:50 +0100, Ahmad Fatoum wrote:
+> dma_map_single will do any necessary cache maintenance to make a buffer
+> available to a device. Calling debug_dma_sync_single_for_device on such
+> a buffer is unnecessary, so flag when this happens.
 > 
-> HAVE_OPTEE can also be selected by OPTEE, which is the option for
-> the driver communicating with OP-TEE. This leads to a linker error
-> with the combination of CONFIG_OPTEE=y, CONFIG_PBL_OPTEE=n and
-> CONFIG_BOOTM_OPTEE=n.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] optee: build common code depending on CONFIG_HAVE_OPTEE
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3f575583d798 (link may not be stable)
+[1/1] dma: debug: detect repeated DMA sync
+      https://git.pengutronix.de/cgit/barebox/commit/?id=1ad4b32702dd (link may not be stable)
 
 Best regards,
 -- 
