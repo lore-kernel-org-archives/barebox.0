@@ -1,58 +1,69 @@
-Delivery-date: Fri, 08 Mar 2024 10:56:22 +0100
+Delivery-date: Fri, 08 Mar 2024 11:15:09 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riWxi-00DYAG-35
+	id 1riXFt-00DZTs-0M
 	for lore@lore.pengutronix.de;
-	Fri, 08 Mar 2024 10:56:22 +0100
+	Fri, 08 Mar 2024 11:15:09 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riWxi-0003R4-By
-	for lore@pengutronix.de; Fri, 08 Mar 2024 10:56:22 +0100
+	id 1riXFr-0000Zj-Uc
+	for lore@pengutronix.de; Fri, 08 Mar 2024 11:15:09 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
-	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VTf1qEplablU2EwNfC0P0jvQk+1yrSyAIYPILZhFVLs=; b=U1LtAyRQvOcV8EbAJ8yHi7GpFn
-	NEUrhJOVS4TJYjJxXr1iQKwNELj07bYQ3leUu93NFKAbQqWDQZ5s3G/0iYHfGEV7TJ6l28blCHOi+
-	SlUitL92w6cc7HpYcIceNZ5WWg1PxkEnKDwSTWf1MUXiDSngMCSfzqDVU6tMOLFEEc7No1iQJF069
-	LHGdemfxeVAOQ1HkEw2+0tWrD1tmSH3GfcV9C3NeHbFQdiv/ry9eJ5/FFu+F+wIt+BnyMqdYdF5KA
-	YYAhlz5DmRzjByjTBKHjzgL6kBWwemTxFS0U+c7O2lizQAudGLAhLxjMpge44AM5dczPJyS/4Rgve
-	uR37eyRA==;
+	bh=RePNeGsHX6qa89izpuoUXk/CThb9Vpxq/P7znQjapHY=; b=ZOyLnTuqCIILC7c7jyheNFPDPJ
+	CyZJWvcInr+fn9jaj4hsRd9rcjY/2CgHt/hxtebo386gNFpcI359TIbITqgwRLMhnL1AYpOdPraT7
+	4zUyQC9pi4eTYeHbhTg44eyeVniO70AT8gpzGY6IxlIxIb64pG4kJxshZDMDkef1vqu449ENyodHO
+	dD+tBkSmTqAXLEUZzqj2yz9+bpAL4t+lOuGcNwcM6q4AsaOfEDOGrsYr4syxsrftnCEVy9N24p8gS
+	sqkzHL1njilZDofg8yIjrb0nNyKIxc/O9cJHm3AAaX2+ppNetgs9eP8d94higYzC4iqf4FqAUBRoa
+	x/RBDmQw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riWx9-00000008eX9-2CRB;
-	Fri, 08 Mar 2024 09:55:47 +0000
+	id 1riXFJ-00000008iHj-3gnB;
+	Fri, 08 Mar 2024 10:14:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riWx6-00000008eWL-0hJm
+	id 1riXFG-00000008iFs-36ut
 	for barebox@lists.infradead.org;
-	Fri, 08 Mar 2024 09:55:45 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
+	Fri, 08 Mar 2024 10:14:32 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1riWx1-0002tK-CT; Fri, 08 Mar 2024 10:55:39 +0100
-Message-ID: <8d96a1c3a89986b2997db41863af4afcbff49d91.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, 
+	(envelope-from <ukl@pengutronix.de>)
+	id 1riXFE-00005D-PF; Fri, 08 Mar 2024 11:14:28 +0100
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1riXFE-0057Iv-Cj; Fri, 08 Mar 2024 11:14:28 +0100
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1riXFE-00288i-0y;
+	Fri, 08 Mar 2024 11:14:28 +0100
+Date: Fri, 8 Mar 2024 11:14:28 +0100
+From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>, 
 	barebox@lists.infradead.org
-Date: Fri, 08 Mar 2024 10:55:39 +0100
-In-Reply-To: <20240308073518.3922205-2-r.czerwinski@pengutronix.de>
-References: <20240308073518.3922205-1-r.czerwinski@pengutronix.de>
-	 <20240308073518.3922205-2-r.czerwinski@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+Message-ID: <brq6pmetsgbghlfxfqcyxe3dslsjntd22wfme2mg7fjrr7satz@2we7kevot4fc>
+References: <20240308091507.249009-3-uwe@kleine-koenig.org>
+ <20240308091507.249009-4-uwe@kleine-koenig.org>
+ <ace334e4-d2ce-4e22-b6ce-e03550b1ad21@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ffhhcbst7mjrae5i"
+Content-Disposition: inline
+In-Reply-To: <ace334e4-d2ce-4e22-b6ce-e03550b1ad21@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240308_015544_229576_A883D872 
-X-CRM114-Status: GOOD (  13.18  )
+X-CRM114-CacheID: sfid-20240308_021430_812666_027D279E 
+X-CRM114-Status: GOOD (  18.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,81 +81,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 2/2] crypto: caam: caamrng: dma map descriptors
+Subject: Re: [PATCH 2/2] of: partition: Use mtd partitioning for of_fixup
+ instead of the cdev variant
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Am Freitag, dem 08.03.2024 um 08:35 +0100 schrieb Rouven Czerwinski:
-> With DMA API debugging Barebox complains that the descriptors are never
-> mapped before a sync. Add the map and unmap function calls.
+
+--ffhhcbst7mjrae5i
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hello,
+
+On Fri, Mar 08, 2024 at 10:27:21AM +0100, Ahmad Fatoum wrote:
+> On 08.03.24 10:15, Uwe Kleine-K=F6nig wrote:
+> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+> >=20
+> > It was already noticed in commit 9d42c77f126e ("devfs: take into account
+> > for the partitions check that mtd is different") that the partitioning
+> > info is stored differently for mtd devices. Instead of only getting the
+> > partion size from the right spot, use the right data completely.
 >=20
-> Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
-> ---
-> v2:
-> - remove dma_map_sync_single_for_device() calls
-> - remove dma_map_single for dma coherent memory
->=20
->  drivers/crypto/caam/caamrng.c | 7 +++----
->  1 file changed, 3 insertions(+), 4 deletions(-)
->=20
-> diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.=
-c
-> index ea154913ca..03e75d0b7b 100644
-> --- a/drivers/crypto/caam/caamrng.c
-> +++ b/drivers/crypto/caam/caamrng.c
-> @@ -91,6 +91,7 @@ static void rng_done(struct device *jrdev, u32 *desc, u=
-32 err, void *context)
-> =20
->  	/* Buffer refilled, invalidate cache */
->  	dma_sync_single_for_cpu(jrdev, bd->addr, RN_BUF_SIZE, DMA_FROM_DEVICE);
-> +	dma_unmap_single(jrdev, (unsigned long)desc, desc_bytes(desc), DMA_TO_D=
-EVICE);
->  }
-> =20
->  static inline int submit_job(struct caam_rng_ctx *ctx, int to_current)
-> @@ -102,8 +103,7 @@ static inline int submit_job(struct caam_rng_ctx *ctx=
-, int to_current)
-> =20
->  	dev_dbg(jrdev, "submitting job %d\n", !(to_current ^ ctx->current_buf))=
-;
-> =20
-> -	dma_sync_single_for_device(jrdev, (unsigned long)desc, desc_bytes(desc)=
-,
-> -				   DMA_TO_DEVICE);
-> +	dma_map_single(jrdev, (void *)desc, desc_bytes(desc), DMA_TO_DEVICE);
-> =20
->  	err =3D caam_jr_enqueue(jrdev, desc, rng_done, ctx);
->  	if (!err)
-> @@ -180,8 +180,7 @@ static inline int rng_create_sh_desc(struct caam_rng_=
-ctx *ctx)
-> =20
->  	ctx->sh_desc_dma =3D (dma_addr_t)desc;
-> =20
-> -	dma_sync_single_for_device(ctx->jrdev, (unsigned long)desc, desc_bytes(=
-desc),
-> -				   DMA_TO_DEVICE);
-> +	dma_map_single(ctx->jrdev, desc, desc_bytes(desc), DMA_TO_DEVICE);
+> I read both this commit message and that of the referenced commit and I
+> don't quite understand what the issue is. Could you add a short sentence
+> about what particular issue this fix addresses?
 
-dma_map_single returns the DMA address that should be stored in
-ctx->sh_desc_dma instead of the simple cast from virtual to DMA address
-in the line above.
+The situation fixed here is:
 
-The other two dma_map/unmap calls in this patch look like a layering
-violation. I would argue that those should move down into
-caam_jr_enqueue and caam_jr_dequeue, to avoid the equally silly cast
-from virt to DMA in those functions.
+After bootup the partitioning information for mtd devices exists in both
+locations (cdev->partitions and cdev->mtd->partitions). An interactive
+addpart only adds the the latter. This patch fixes the of fixup to also
+use the latter.
 
-Regards,
-Lucas
+In the described error case the partition added to the bootup layout
+(defined in the dtb) doesn't make it into the device tree provided to
+Linux.
 
-> =20
->  	print_hex_dump_debug("rng shdesc@: ", DUMP_PREFIX_OFFSET, 16, 4,
->  		       desc, desc_bytes(desc), 1);
+Best regards
+Uwe
 
+--=20
+Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
+Industrial Linux Solutions                 | https://www.pengutronix.de/ |
+
+--ffhhcbst7mjrae5i
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmXq5QMACgkQj4D7WH0S
+/k5SmAgAuHsOLBkz0B1zkqfc3Hcz89OzyDUhMXOujDWVEHJBST4Rgb7mpCj05lQH
+50Whp1IgmvfHwETQW+pQEJofOt8s6W0LMJzfAOu80Ln0sHLk3axhgt8HZTb2huE2
+GxZTrYmOwCs+oieuiDpNY+FfHf1hLyPLaWETp89j0uCqgegH949a5I2mjhnr8S6m
+0oNCc5krS05xPTk14VG/8ATxxN53KXnsf6K3TZ626CDliluayamme+04pfMugArA
+sY/48qBKGHhXApkASLoE6S2h9VRSqTF3CWSEsj2L2Ys5t3ey7HLU3J/5J3rsXZ/+
+X9/I19S3T1CB+WYUv9XjZAvsCXO1Vw==
+=MUoC
+-----END PGP SIGNATURE-----
+
+--ffhhcbst7mjrae5i--
 
 
