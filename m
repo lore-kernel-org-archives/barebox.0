@@ -1,69 +1,74 @@
-Delivery-date: Fri, 08 Mar 2024 11:15:09 +0100
+Delivery-date: Fri, 08 Mar 2024 11:24:26 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riXFt-00DZTs-0M
+	id 1riXOs-00Da1h-2H
 	for lore@lore.pengutronix.de;
-	Fri, 08 Mar 2024 11:15:09 +0100
+	Fri, 08 Mar 2024 11:24:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riXFr-0000Zj-Uc
-	for lore@pengutronix.de; Fri, 08 Mar 2024 11:15:09 +0100
+	id 1riXOr-0007iO-VO
+	for lore@pengutronix.de; Fri, 08 Mar 2024 11:24:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=RePNeGsHX6qa89izpuoUXk/CThb9Vpxq/P7znQjapHY=; b=ZOyLnTuqCIILC7c7jyheNFPDPJ
-	CyZJWvcInr+fn9jaj4hsRd9rcjY/2CgHt/hxtebo386gNFpcI359TIbITqgwRLMhnL1AYpOdPraT7
-	4zUyQC9pi4eTYeHbhTg44eyeVniO70AT8gpzGY6IxlIxIb64pG4kJxshZDMDkef1vqu449ENyodHO
-	dD+tBkSmTqAXLEUZzqj2yz9+bpAL4t+lOuGcNwcM6q4AsaOfEDOGrsYr4syxsrftnCEVy9N24p8gS
-	sqkzHL1njilZDofg8yIjrb0nNyKIxc/O9cJHm3AAaX2+ppNetgs9eP8d94higYzC4iqf4FqAUBRoa
-	x/RBDmQw==;
+	bh=dBJsRPERXNkdLQmxDLl03DUvCFq86Rez/ZEiuWxKL3E=; b=x9Z6V3/USbTUCBzW8z5dO11A7R
+	MHgyboV2uRFoAUQ1ooctr9eVwuiU4/MX0H8SWy+Ad2dGh6l97H4CErNSgE2B3LkeOnMizgovFJEnB
+	vWSQ63KisYgCUoenF2yya4S0Tf0OxdKuVQ/+giuZvw7mjTJZ4QtW17XXS1/nJnEOgYgHmEhh0sH+z
+	QEBnnQOycoI3zUzJZNfcH5Knr5B6OmVnAT52ifhbhkI3l3FQGemVXqXkFdN9HPiAyf9YQ8ndRetz1
+	pMHlDyOxFfpGymaCCUAHMquPlZzqgjZN7aiJ7btNpiVBtvXAzr9FuzlqILpGq8K/JvqOcxiMmKf4K
+	5TNsZm6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riXFJ-00000008iHj-3gnB;
-	Fri, 08 Mar 2024 10:14:33 +0000
+	id 1riXOB-00000008kjk-3tl9;
+	Fri, 08 Mar 2024 10:23:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riXFG-00000008iFs-36ut
+	id 1riXO6-00000008khp-1TAn
 	for barebox@lists.infradead.org;
-	Fri, 08 Mar 2024 10:14:32 +0000
+	Fri, 08 Mar 2024 10:23:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1riXFE-00005D-PF; Fri, 08 Mar 2024 11:14:28 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1riXO3-00075f-C9; Fri, 08 Mar 2024 11:23:35 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1riXFE-0057Iv-Cj; Fri, 08 Mar 2024 11:14:28 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1riXFE-00288i-0y;
-	Fri, 08 Mar 2024 11:14:28 +0100
-Date: Fri, 8 Mar 2024 11:14:28 +0100
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <uwe@kleine-koenig.org>, 
-	barebox@lists.infradead.org
-Message-ID: <brq6pmetsgbghlfxfqcyxe3dslsjntd22wfme2mg7fjrr7satz@2we7kevot4fc>
-References: <20240308091507.249009-3-uwe@kleine-koenig.org>
- <20240308091507.249009-4-uwe@kleine-koenig.org>
- <ace334e4-d2ce-4e22-b6ce-e03550b1ad21@pengutronix.de>
+	(envelope-from <sha@pengutronix.de>)
+	id 1riXO2-0057K1-QI; Fri, 08 Mar 2024 11:23:34 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1riXO2-007u5R-2L;
+	Fri, 08 Mar 2024 11:23:34 +0100
+Date: Fri, 8 Mar 2024 11:23:34 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Alessandro Rubini <rubini-list@gnudd.com>
+Cc: barebox@lists.infradead.org
+Message-ID: <ZernJsdi43QXwuVr@pengutronix.de>
+References: <20240220004316.fdc79907089c7358a1e67f62@gmail.com>
+ <CAAvCNcCZhS8mkvdgcJ2L-eiur+OxgWEXRLnadO_HFyHfSi7WFA@mail.gmail.com>
+ <a154ae13-86e1-4c2b-9c38-3774fde6a6c8@pengutronix.de>
+ <20240205125900.c4b182f57b6efe0152beee24@gmail.com>
+ <90de314f-b7a7-4b49-8c72-ec45aa3d38e2@pengutronix.de>
+ <ZdSu671i2n4RQPoz@arcana.i.gnudd.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="ffhhcbst7mjrae5i"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ace334e4-d2ce-4e22-b6ce-e03550b1ad21@pengutronix.de>
+In-Reply-To: <ZdSu671i2n4RQPoz@arcana.i.gnudd.com>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240308_021430_812666_027D279E 
-X-CRM114-Status: GOOD (  18.39  )
+X-CRM114-CacheID: sfid-20240308_022338_554600_E95DCCB8 
+X-CRM114-Status: GOOD (  26.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,70 +86,66 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 2/2] of: partition: Use mtd partitioning for of_fixup
- instead of the cdev variant
+Subject: Re: NFSv4 boot support?
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+On Tue, Feb 20, 2024 at 02:53:47PM +0100, Alessandro Rubini wrote:
+> >> This hasn't
+> >> seen development activity in 5 years.
+> > 
+> > Please see https://github.com/virtualsquare/picotcp
+> 
+> But the TCP/IPV4 standard didn't change, either.
+> 
+> >> lwIP on the other hand still sees active development.
+> > 
+> > I agree with you. It looks like lwIP is more popular than picotcp.
+> 
+> Sure. It's older and it has a loyal (or addicted) user base and
+> commercial support. Or it just needs more commits because it'w worse and
+> full of bugs.
+> 
+> As far as I know, lwIP is horrible code, difficult to integrate and
+> maintain, while picotcp is designed in the right way (although I admit
+> I only looked at the former, about picotcp I only talked with the main
+> author without looking at the code).
 
---ffhhcbst7mjrae5i
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+I have played around with lwIP and tried to integrate it into barebox.
+Now that there are patches integrating lwIP into U-Boot that was quite
+easy to do as the patches show the places we have to touch.
 
-Hello,
+It was easy to get ping and dns working, at least when the host to be
+pinged is in the local network. I wasn't able though to figure out how I
+can get lwIP to route packets through a gateway other than setting my
+(currently only) network interface as the default fallback interface
+which is used whenever no route is found.
 
-On Fri, Mar 08, 2024 at 10:27:21AM +0100, Ahmad Fatoum wrote:
-> On 08.03.24 10:15, Uwe Kleine-K=F6nig wrote:
-> > From: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
-> >=20
-> > It was already noticed in commit 9d42c77f126e ("devfs: take into account
-> > for the partitions check that mtd is different") that the partitioning
-> > info is stored differently for mtd devices. Instead of only getting the
-> > partion size from the right spot, use the right data completely.
->=20
-> I read both this commit message and that of the referenced commit and I
-> don't quite understand what the issue is. Could you add a short sentence
-> about what particular issue this fix addresses?
+It turns out that in lwIP the ip, netmask and gateway are members of
+struct netif. It has no idea of separating a link from a network
+interface. Yes, we do the same in barebox as well, but I don't need
+a dedicated network stack to have the same limitations we have in our
+adhoc network stack.
 
-The situation fixed here is:
+In order to get an idea of how routing is supposed to work I had to look
+around in the code. It's really a pain to see and I really don't want to
+have to debug it. The combination of two spaces indentation and a huge
+#ifdef density makes it really hard to read.
 
-After bootup the partitioning information for mtd devices exists in both
-locations (cdev->partitions and cdev->mtd->partitions). An interactive
-addpart only adds the the latter. This patch fixes the of fixup to also
-use the latter.
+>From that experience I can understand your concerns about lwIP.
 
-In the described error case the partition added to the bootup layout
-(defined in the dtb) doesn't make it into the device tree provided to
-Linux.
+Sascha
 
-Best regards
-Uwe
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---ffhhcbst7mjrae5i
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmXq5QMACgkQj4D7WH0S
-/k5SmAgAuHsOLBkz0B1zkqfc3Hcz89OzyDUhMXOujDWVEHJBST4Rgb7mpCj05lQH
-50Whp1IgmvfHwETQW+pQEJofOt8s6W0LMJzfAOu80Ln0sHLk3axhgt8HZTb2huE2
-GxZTrYmOwCs+oieuiDpNY+FfHf1hLyPLaWETp89j0uCqgegH949a5I2mjhnr8S6m
-0oNCc5krS05xPTk14VG/8ATxxN53KXnsf6K3TZ626CDliluayamme+04pfMugArA
-sY/48qBKGHhXApkASLoE6S2h9VRSqTF3CWSEsj2L2Ys5t3ey7HLU3J/5J3rsXZ/+
-X9/I19S3T1CB+WYUv9XjZAvsCXO1Vw==
-=MUoC
------END PGP SIGNATURE-----
-
---ffhhcbst7mjrae5i--
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
