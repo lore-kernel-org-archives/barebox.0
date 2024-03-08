@@ -1,66 +1,65 @@
-Delivery-date: Fri, 08 Mar 2024 12:18:43 +0100
+Delivery-date: Fri, 08 Mar 2024 12:18:54 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riYFP-00DdA0-0z
+	id 1riYFa-00DdAk-2a
 	for lore@lore.pengutronix.de;
-	Fri, 08 Mar 2024 12:18:43 +0100
+	Fri, 08 Mar 2024 12:18:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1riYFO-0000Wc-92
-	for lore@pengutronix.de; Fri, 08 Mar 2024 12:18:43 +0100
+	id 1riYFZ-0000pU-75
+	for lore@pengutronix.de; Fri, 08 Mar 2024 12:18:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=MsKRaqi/4JVE4mReUnbxb01dIALVOAd5oMLcGSBsf60=; b=c8AvKYapeu0P/y3qdS7nknJQ6I
-	3Ik7fTwafmISuhzOn1E7Ay/er4RA34usCQMi088HF0OgPEyIbK8GAjW23EHBDu2qfBmqh00pQHAl1
-	lcK1iA6BxvohI28EpS1yZq/Gnbfk8D9bRSEb4QVWFw8UbtW/yNIp+DZKVUzNdrsjoS7zagfuJb3D/
-	GDtgRZYlUQQ8KROe/CzAjbiFVuv1XyX4KwqrgxD18y9P6Ui1qluUQk54PvgJ2JRZuhh8t1RtpUPFr
-	/WNtWT1rbJkzWr0sMEw/zYe+IMDeiihDpPaVxmZ4MUt5FomLPte39K71A1eV8tDH0eKZk49I/lCe/
-	iH0o8Vbw==;
+	bh=N7ijse30MtJUWbJPas0sq20b8oXV3snBaOH1AfzdGVY=; b=GSpXkoIpt2hvQ2yhdg1UxIlsZf
+	UqHwlgTR+o6e3PAHPyvPlWERv2rcLbnRSJr48DB/87r2i7T2Evg0wp2gd8ucgb1eYG4oFBMtsfwTE
+	LndNU1rhsr2u73zUaacijhXCzU2JgAU3apAiwKeqdhAfIZ0C0WZu/bNJjvopSwLmArT5+dW/G2bQY
+	suEbSavkWtCqjloQmicdAidnXit+WKtp0cWvLpcKFnmQkrCvCl6HMe1T2iInO4+UTzZEbrQjVgLob
+	laIJGXviGb78XHU0FIrMdyZ6UpI+uqudv4CjoF9T8SYwa2sk8ZJsllj4jxHv+uh966DU4ovgOupOm
+	Z94ShRrg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riYEt-00000008vai-0IgW;
-	Fri, 08 Mar 2024 11:18:11 +0000
+	id 1riYEv-00000008vc3-1CUN;
+	Fri, 08 Mar 2024 11:18:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1riYEd-00000008vQA-3PYD
+	id 1riYEd-00000008vQP-3PsG
 	for barebox@lists.infradead.org;
 	Fri, 08 Mar 2024 11:18:01 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1riYEY-0007Id-BV
-	for barebox@lists.infradead.org; Fri, 08 Mar 2024 12:17:50 +0100
+	id 1riYEZ-0007Id-FS
+	for barebox@lists.infradead.org; Fri, 08 Mar 2024 12:17:51 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 08 Mar 2024 12:16:59 +0100
+Date: Fri, 08 Mar 2024 12:17:06 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-1-6d50c90485f3@pengutronix.de>
+Message-Id: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-8-6d50c90485f3@pengutronix.de>
 References: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-0-6d50c90485f3@pengutronix.de>
 In-Reply-To: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-0-6d50c90485f3@pengutronix.de>
 To: barebox@lists.infradead.org
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1154;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6326;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=DgKQk6dndJgNYweiZMRacMqGAlLrGltxEJihdx8Pj8g=;
- b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFJffd5WGTLV+c5DwR3vQ4yW8YX4lqQH6p7If2vH8lr2q
- VeZaWNwRykLgxgXg6yYIkvk2kMam4U/63w5fp4BZg4rE8gQBi5OAZhI+xSG/06W+atKN1z+8fLt
- evnmk47bvdI+XS6+9fJXQ34nc97qlc8Z/udXHq9+oSwZcXYd269NeXfuzt2Y/9v0lEKWn2Dp9gu
- vs9gB
+ bh=7JEvnfRIiHDp/LT1o1/xYiMgXOGSWuBditdt6xyUyaw=;
+ b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFJffT53dbmvL/PlG1xXZoX/22927rm4LOOSn1NS1yefu
+ ltR8/5Cd0cpC4MYF4OsmCJL5NpDGpuFP+t8OX6eAWYOKxPIEAYuTgGYyMIyRobeQ3tefZDhsa97
+ kVxbaLVswoVl/IetzcJ+m81Q1lco9GRg+B9y+00n45SErntVd25kVcfkGPPMa1gn77qpKzeP4eY
+ LU14A
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240308_031756_037857_B94D09C6 
-X-CRM114-Status: UNSURE (   8.27  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240308_031756_026739_4022B190 
+X-CRM114-Status: GOOD (  15.13  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,45 +82,140 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 01/12] ARM: zynqmp: add sd_dll_reset call
+Subject: [PATCH 08/12] mci: core: parse more host capabilities from DT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add a function to reset DLL logic for SD devices.
+Port the linux v6.7 mmc host caps2 parsing.
+While at it, remove the ->no_sd and ->no_sdio. These are bits in the
+caps2 field.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/mach-zynqmp/firmware-zynqmp.c | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
+ drivers/mci/mci-core.c | 34 ++++++++++++++++++++++++++++------
+ include/mci.h          | 32 ++++++++++++++++++++++++++++++--
+ 2 files changed, 58 insertions(+), 8 deletions(-)
 
-diff --git a/arch/arm/mach-zynqmp/firmware-zynqmp.c b/arch/arm/mach-zynqmp/firmware-zynqmp.c
-index a2b61efff4..b383ed6f00 100644
---- a/arch/arm/mach-zynqmp/firmware-zynqmp.c
-+++ b/arch/arm/mach-zynqmp/firmware-zynqmp.c
-@@ -511,6 +511,23 @@ static int zynqmp_pm_ioctl(u32 node_id, u32 ioctl_id, u32 arg1, u32 arg2,
- 				   arg1, arg2, out);
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 2b39985d5e..cd046149b4 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -2029,7 +2029,7 @@ static int mci_card_probe(struct mci *mci)
+ 		goto on_error;
+ 	}
+ 
+-	if (!host->no_sdio) {
++	if (!(host->caps2 & MMC_CAP2_NO_SDIO)) {
+ 		rc = sdio_send_op_cond(mci);
+ 		if (!rc) {
+ 			mci->ready_for_use = true;
+@@ -2040,11 +2040,11 @@ static int mci_card_probe(struct mci *mci)
+ 	}
+ 
+ 	/* Check if this card can handle the "SD Card Physical Layer Specification 2.0" */
+-	if (!host->no_sd) {
++	if (!(host->caps2 & MMC_CAP2_NO_SD)) {
+ 		rc = sd_send_if_cond(mci);
+ 		rc = sd_send_op_cond(mci);
+ 	}
+-	if (host->no_sd || rc == -ETIMEDOUT) {
++	if ((host->caps2 & MMC_CAP2_NO_SD) || rc == -ETIMEDOUT) {
+ 		/* If SD card initialization was skipped or if it timed out,
+ 		 * we check for an MMC card */
+ 		dev_dbg(&mci->dev, "Card seems to be a MultiMediaCard\n");
+@@ -2251,7 +2251,7 @@ int mci_register(struct mci_host *host)
+ 	if (IS_ENABLED(CONFIG_MCI_STARTUP))
+ 		mci_card_probe(mci);
+ 
+-	if (!host->no_sd && dev_of_node(host->hw_dev))
++	if (!(host->caps2 & MMC_CAP2_NO_SD) && dev_of_node(host->hw_dev))
+ 		of_register_fixup(of_broken_cd_fixup, host);
+ 
+ 	list_add_tail(&mci->list, &mci_list);
+@@ -2322,9 +2322,31 @@ void mci_of_parse_node(struct mci_host *host,
+ 
+ 	host->broken_cd = of_property_read_bool(np, "broken-cd");
+ 	host->non_removable = of_property_read_bool(np, "non-removable");
+-	host->no_sd = of_property_read_bool(np, "no-sd");
+-	host->no_sdio = of_property_read_bool(np, "no-sdio");
+ 	host->disable_wp = of_property_read_bool(np, "disable-wp");
++
++	if (of_property_read_bool(np, "full-pwr-cycle"))
++		host->caps2 |= MMC_CAP2_FULL_PWR_CYCLE;
++	if (of_property_read_bool(np, "full-pwr-cycle-in-suspend"))
++		host->caps2 |= MMC_CAP2_FULL_PWR_CYCLE_IN_SUSPEND;
++	if (of_property_read_bool(np, "mmc-hs200-1_8v"))
++		host->caps2 |= MMC_CAP2_HS200_1_8V_SDR;
++	if (of_property_read_bool(np, "mmc-hs200-1_2v"))
++		host->caps2 |= MMC_CAP2_HS200_1_2V_SDR;
++	if (of_property_read_bool(np, "mmc-hs400-1_8v"))
++		host->caps2 |= MMC_CAP2_HS400_1_8V | MMC_CAP2_HS200_1_8V_SDR;
++	if (of_property_read_bool(np, "mmc-hs400-1_2v"))
++		host->caps2 |= MMC_CAP2_HS400_1_2V | MMC_CAP2_HS200_1_2V_SDR;
++	if (of_property_read_bool(np, "mmc-hs400-enhanced-strobe"))
++		host->caps2 |= MMC_CAP2_HS400_ES;
++	if (of_property_read_bool(np, "no-sdio"))
++		host->caps2 |= MMC_CAP2_NO_SDIO;
++	if (of_property_read_bool(np, "no-sd"))
++		host->caps2 |= MMC_CAP2_NO_SD;
++	if (of_property_read_bool(np, "no-mmc"))
++		host->caps2 |= MMC_CAP2_NO_MMC;
++	if (of_property_read_bool(np, "no-mmc-hs400"))
++		host->caps2 &= ~(MMC_CAP2_HS400_1_8V | MMC_CAP2_HS400_1_2V |
++				 MMC_CAP2_HS400_ES);
  }
  
-+/**
-+ * zynqmp_pm_sd_dll_reset() - Reset DLL logic
-+ *
-+ * @node_id:	Node ID of the device
-+ * @type:	Reset type
-+ *
-+ * This function resets DLL logic for the SD device.
-+ *
-+ * Return:	Returns status, either success or error+reason
-+ */
-+int zynqmp_pm_sd_dll_reset(u32 node_id, u32 type)
-+{
-+	return zynqmp_pm_invoke_fn(PM_IOCTL, node_id, IOCTL_SD_DLL_RESET,
-+				   type, 0, NULL);
-+}
-+EXPORT_SYMBOL_GPL(zynqmp_pm_sd_dll_reset);
-+
- /*
-  * zynqmp_pm_write_ggs() - PM API for writing global general storage (ggs)
-  * @index:	GGS register index
+ void mci_of_parse(struct mci_host *host)
+diff --git a/include/mci.h b/include/mci.h
+index 9a52e3f360..ed2967c889 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -468,6 +468,36 @@ struct mci_host {
+ 	const char *devname;		/**< the devicename for the card, defaults to disk%d */
+ 	unsigned voltages;
+ 	unsigned host_caps;	/**< Host's interface capabilities, refer MMC_VDD_* */
++	unsigned caps2;		/* More host capabilities */
++#define MMC_CAP2_BOOTPART_NOACC	(1 << 0)	/* Boot partition no access */
++#define MMC_CAP2_FULL_PWR_CYCLE	(1 << 2)	/* Can do full power cycle */
++#define MMC_CAP2_FULL_PWR_CYCLE_IN_SUSPEND (1 << 3) /* Can do full power cycle in suspend */
++#define MMC_CAP2_HS200_1_8V_SDR	(1 << 5)        /* can support */
++#define MMC_CAP2_HS200_1_2V_SDR	(1 << 6)        /* can support */
++#define MMC_CAP2_HS200		(MMC_CAP2_HS200_1_8V_SDR | \
++				 MMC_CAP2_HS200_1_2V_SDR)
++#define MMC_CAP2_SD_EXP		(1 << 7)	/* SD express via PCIe */
++#define MMC_CAP2_SD_EXP_1_2V	(1 << 8)	/* SD express 1.2V */
++#define MMC_CAP2_CD_ACTIVE_HIGH	(1 << 10)	/* Card-detect signal active high */
++#define MMC_CAP2_RO_ACTIVE_HIGH	(1 << 11)	/* Write-protect signal active high */
++#define MMC_CAP2_NO_PRESCAN_POWERUP (1 << 14)	/* Don't power up before scan */
++#define MMC_CAP2_HS400_1_8V	(1 << 15)	/* Can support HS400 1.8V */
++#define MMC_CAP2_HS400_1_2V	(1 << 16)	/* Can support HS400 1.2V */
++#define MMC_CAP2_HS400		(MMC_CAP2_HS400_1_8V | \
++				 MMC_CAP2_HS400_1_2V)
++#define MMC_CAP2_HSX00_1_8V	(MMC_CAP2_HS200_1_8V_SDR | MMC_CAP2_HS400_1_8V)
++#define MMC_CAP2_HSX00_1_2V	(MMC_CAP2_HS200_1_2V_SDR | MMC_CAP2_HS400_1_2V)
++#define MMC_CAP2_SDIO_IRQ_NOTHREAD (1 << 17)
++#define MMC_CAP2_NO_WRITE_PROTECT (1 << 18)	/* No physical write protect pin, assume that card is always read-write */
++#define MMC_CAP2_NO_SDIO	(1 << 19)	/* Do not send SDIO commands during initialization */
++#define MMC_CAP2_HS400_ES	(1 << 20)	/* Host supports enhanced strobe */
++#define MMC_CAP2_NO_SD		(1 << 21)	/* Do not send SD commands during initialization */
++#define MMC_CAP2_NO_MMC		(1 << 22)	/* Do not send (e)MMC commands during initialization */
++#define MMC_CAP2_CQE		(1 << 23)	/* Has eMMC command queue engine */
++#define MMC_CAP2_CQE_DCMD	(1 << 24)	/* CQE can issue a direct command */
++#define MMC_CAP2_AVOID_3_3V	(1 << 25)	/* Host must negotiate down from 3.3V */
++#define MMC_CAP2_MERGE_CAPABLE	(1 << 26)	/* Host can merge a segment over the segment size */
++#define MMC_CAP2_CRYPTO		0
+ 	unsigned f_min;		/**< host interface lower limit */
+ 	unsigned f_max;		/**< host interface upper limit */
+ 	unsigned clock;		/**< Current clock used to talk to the card */
+@@ -478,8 +508,6 @@ struct mci_host {
+ 	int use_dsr;		/**< optional dsr usage flag */
+ 	int broken_cd;		/**< card detect is broken */
+ 	bool non_removable;	/**< device is non removable */
+-	bool no_sd;		/**< do not send SD commands during initialization */
+-	bool no_sdio;		/**< do not send SDIO commands during initialization */
+ 	bool disable_wp;	/**< ignore write-protect detection logic */
+ 	struct regulator *supply;
+ 
 
 -- 
 2.40.1
