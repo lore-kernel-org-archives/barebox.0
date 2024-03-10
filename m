@@ -1,61 +1,87 @@
-Delivery-date: Sat, 09 Mar 2024 11:02:49 +0100
+Delivery-date: Sun, 10 Mar 2024 21:10:41 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ritXV-00F7mv-20
+	id 1rjPVJ-00HSnx-1j
 	for lore@lore.pengutronix.de;
-	Sat, 09 Mar 2024 11:02:49 +0100
+	Sun, 10 Mar 2024 21:10:41 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ritXU-0007cH-Vr
-	for lore@pengutronix.de; Sat, 09 Mar 2024 11:02:49 +0100
+	id 1rjPVI-0003yu-Py
+	for lore@pengutronix.de; Sun, 10 Mar 2024 21:10:41 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:References:In-Reply-To:
-	Content-Type:MIME-Version:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UavSDbrMaR8jDq9FiKWTF5aGEf8eMeHz5k8g5s6jubk=; b=Tjg1OpeD+hAe3kMiK0Fa9BLrdr
-	ysht6KXIB7Epri3gRy97Yj0EITNnoxwpyQrrxQDIWDP7GQD3Vv6GK+arRTDCYuMmYY4vT5tr/tw6+
-	D/yWjiOsaVrLsA97eyrVrrgWzz5iuSWoD/yFCKIEz8fQVZnGVLgWuxt+tqe7RauYAiRBk4jr7V9Gg
-	vz74X61v75hDrhXLq+eeMhzySH4eMkXzs8roUAici+3KmhZzJ/RsuaPNsbjBabf4O/GwTI9iDJr82
-	Nw6IwWsHBMi1Hir+mBBmd3g2ICS7m4wfGKyiylLxYPQ2tz9oxwZTe+VJNEbmDl+CT68h5znDMvVPR
-	D1MHNCVw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:Content-Type:Mime-Version:References:In-Reply-To:
+	Message-Id:Subject:To:From:Date:Reply-To:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=mPJQzbFOlAY87+DDcW+b4JgesQBhOH65h22DCJDJt9M=; b=3Yqa+w7iz/891d
+	dNQVhHMOmKyFUf48QXpryd6u/SBp6ohJfECqSYcPJ5JpZjqHYHO/iXOW2uV8VB7T+ZHbyiNVhNoOB
+	a2E4OA/splWsf8GIkg8ctQU5mVS1WumvGTUjGBuo6UUxh393CFnF5UTYFFee7v/LPMtZplR5k3YT3
+	Hm0edWjQy+girifNwhv36CdlP/9ZogKg1OVxp1jLLYHhp6P0fmnhXQ2Nh3TzEuOr2YMCP4ZHsoy6y
+	WhZo0qpSJ7CRZq7KAVQ4LRscrcU/0f/VhZNdnhg1htKEAbGz8x6v27t6ReTJYR5sWBIhfq8tzcR0z
+	gaBi8wGeoKflbF1/cWaA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1ritWp-0000000D39O-0pjC;
-	Sat, 09 Mar 2024 10:02:07 +0000
-Received: from mail.gnudd.com ([93.91.132.248])
+	id 1rjPUR-0000000GVhk-1Lij;
+	Sun, 10 Mar 2024 20:09:47 +0000
+Received: from mail-lf1-x136.google.com ([2a00:1450:4864:20::136])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1ritWl-0000000D37c-2guf
+	id 1rjPUN-0000000GVgb-2lG8
 	for barebox@lists.infradead.org;
-	Sat, 09 Mar 2024 10:02:05 +0000
-Received: from rubini by mail.gnudd.com with local (Exim 4.94.2)
-	(envelope-from <rubini@arcana.gnudd.com>)
-	id 1ritWe-0005zi-AV; Sat, 09 Mar 2024 11:01:56 +0100
-Date: Sat, 9 Mar 2024 11:01:56 +0100
-From: Alessandro Rubini <rubini-list@gnudd.com>
-To: s.hauer@pengutronix.de
-Cc: barebox@lists.infradead.org
-Message-ID: <ZewzlAE4rg3ZNZks@arcana.i.gnudd.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Organization: GnuDD, Device Drivers, Embedded Systems, Courses
-In-Reply-To: <ZernJsdi43QXwuVr@pengutronix.de>
-References: <ZernJsdi43QXwuVr@pengutronix.de>
-  <20240220004316.fdc79907089c7358a1e67f62@gmail.com>
-  <CAAvCNcCZhS8mkvdgcJ2L-eiur+OxgWEXRLnadO_HFyHfSi7WFA@mail.gmail.com>
-  <a154ae13-86e1-4c2b-9c38-3774fde6a6c8@pengutronix.de>
-  <20240205125900.c4b182f57b6efe0152beee24@gmail.com>
-  <90de314f-b7a7-4b49-8c72-ec45aa3d38e2@pengutronix.de>
-  <ZdSu671i2n4RQPoz@arcana.i.gnudd.com>
+	Sun, 10 Mar 2024 20:09:45 +0000
+Received: by mail-lf1-x136.google.com with SMTP id 2adb3069b0e04-51336ab1fb7so2992102e87.1
+        for <barebox@lists.infradead.org>; Sun, 10 Mar 2024 13:09:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710101379; x=1710706179; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mPJQzbFOlAY87+DDcW+b4JgesQBhOH65h22DCJDJt9M=;
+        b=UshbWuAE7H+lEfv2hBb8fS1r9seujgoKtpXl5qYzkPT3r00WI6+QKApqdRRZ78PYac
+         rmU1qwq0fV/qrGtqVVae5fz7CsjDbr57hDI1Idg4Ck9mcWjPiLvYGtB1T6pDukKj4jVX
+         /ZSJgzS2LWWn4HPwx68p85hIT7hE5es7KrjZos4YvoyqKMCurpf6YykkNwo83PudeLZS
+         9/M2eXml0NdsOxU91+7MfNt1V5KYScmkKO3G8foSkYuWRLzgxvtLJBtfgK3ounjI5VGZ
+         M4voObGXLrEL84bNuXaqlz3FenVvvo6qk9pm+t3AA/HCbBDYfFKIQmTMtDiswq709CnJ
+         DKFw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710101379; x=1710706179;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mPJQzbFOlAY87+DDcW+b4JgesQBhOH65h22DCJDJt9M=;
+        b=vOWR3zMWYHM+w3uoUZ+OyHnjFv2pE+AOlPUZPbBiOZasHmUHiB9bVj8TpqM/mvByS0
+         oXGlC+ZsKrVWJivfsRT4dJzjBkCWzo3lRHN5dCHqgsDuX4nSzUg8H1ztvnlUoc53RhLe
+         XZUN2t4bum2ffqAwRHQHAnYkAqDlkq9dxe2dWAqw9u5d3DFpuV4P+pLp5CjHlYF5sn2M
+         3WGHLi1JHFib14FAsk9HCuLBAjJf57woDUtJ4NhBT/S4ErLc4jboX9tEuVeDarswEG4w
+         ZgXC+uFErv4nnswuZGzvZXMNpIfYgWzRuM8CZwfHelJBeKZ7qmoV514jNQmz8tK7x4b6
+         XY3g==
+X-Gm-Message-State: AOJu0Yy/i8KM7lJQkDqSqR8EzqOZwoWdKzHecNdaaUmYGF2nlHDei3k+
+	AkzPeA0FlUGUgFcyUij4mYHtJ6pvq9CCZvVj4BzQKtzsopThyjdk
+X-Google-Smtp-Source: AGHT+IGG1RHcXObO/f03C5Qw3psRjyJBs7xzpktwWrRBOXqS0lkQa7cPsxbzgErGL2hueRaSJET6yQ==
+X-Received: by 2002:a19:e013:0:b0:513:1cfe:7cf7 with SMTP id x19-20020a19e013000000b005131cfe7cf7mr2728836lfg.22.1710101378932;
+        Sun, 10 Mar 2024 13:09:38 -0700 (PDT)
+Received: from flare ([146.185.218.236])
+        by smtp.gmail.com with ESMTPSA id v3-20020ac25b03000000b00513a11014adsm543906lfn.189.2024.03.10.13.09.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Mar 2024 13:09:38 -0700 (PDT)
+Date: Sun, 10 Mar 2024 23:19:59 +0300
+From: Antony Pavlov <antonynpavlov@gmail.com>
+To: Sascha Hauer <sha@pengutronix.de>
+Message-Id: <20240310231959.cec6824859917350b25f0a83@gmail.com>
+In-Reply-To: <ZeXfC5XjqFz-oaL2@pengutronix.de>
+References: <20240303215803.f8693ec93f03fd048acd3a30@gmail.com>
+	<ZeXfC5XjqFz-oaL2@pengutronix.de>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240309_020203_700235_FD6B159F 
-X-CRM114-Status: GOOD (  11.47  )
+X-CRM114-CacheID: sfid-20240310_130943_728683_8BBA4857 
+X-CRM114-Status: GOOD (  25.66  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,50 +93,109 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>, Dan Shelton <dan.f.shelton@gmail.com>, Daniele Lacamera <dan@danielinux.net>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+X-Spam-Status: No, score=-6.8 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	NICE_REPLY_A,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: NFSv4 boot support?
+Subject: Re: barebox + picotcp-1.7.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Sascha:
-> In order to get an idea of how routing is supposed to work I had to look
-> around in the code. It's really a pain to see and I really don't want to
-> have to debug it. The combination of two spaces indentation and a huge
-> #ifdef density makes it really hard to read.
+On Mon, 4 Mar 2024 15:47:39 +0100
+Sascha Hauer <sha@pengutronix.de> wrote:
 
-Indentation is affordable. We understand different people make different
-choices (but I always suggest to read Linus' coding style guide, where every
-choice is explained).
+Hi Sascha!
 
-ifdef is a plague. There's almost no reason to use it nowadays, but I
-see it had it's role when memory and processing power was so limited.
+> On Sun, Mar 03, 2024 at 09:58:03PM +0300, Antony Pavlov wrote:
+> > Hi all!
+> >=20
+> > In the message [1] Sascha proposed to have the barebox network stack
+> > and picotcp in parallel.
+> >=20
+> > This approach is used in the branch 20240303.picotcp-1.7.0 from
+> > https://github.com/frantony/barebox/ repo [2]:
+> >=20
+> > * all incoming packets go through the barebox network stack and only if
+> >   they are not processed by it, they are forwarded to the picotcp netwo=
+rk
+> >   stack (all incoming ARP packets always go to the picotcp network stac=
+k).
+> >=20
+> > * risc-v virtual qemu machine with user networking (slirp network stack)
+> >   is used for demonstration; one needs only qemu risc-v emulator
+> >   for demonstration;
+> >=20
+> > * these barebox commands are introduced for picotcp stack capabilities
+> >   demonstration:
+> >=20
+> >   * dhclient --- setup picotcp network interface using the DHCP protoco=
+l;
+> >   * ifconfig --- print/setup picotcp network interface information;
+> >   * route --- print picotcp routing table;
+> >   * picoping --- send ICMP ECHO_REQUEST to network hosts, receive repli=
+es;
+> >   * picohost --- perform DNS lookup (google DNS server is used);
+> >   * app_wget --- download file using the HTTP protocol.
+> >=20
+> > * tcpdump code is incorporated into barebox for network stack debugging.
+> >   tcpdump supports parsing most of the protocols supported by barebox
+> >   (DHCP, ARP, ICMP, DNS, TFTP and TCP).
+>=20
+> I gave this a test on real hardware. I think the result is similar to
+> yours, dhclient, ifconfig, route, picoping, picohost work as expected.
+> app_wget does not work, it bails out with a NULL pointer exception.
 
-> From that experience I can understand your concerns about lwIP.
+I have updated my picotcp branches (see [1], [2]). I have tested
+picotcp-1.7.0 on my Raspberry Pi 2. app_wget works on Raspberry Pi 2
+without any exceptions.
 
-:)
+I have found that using picotcp on real hardware has negative effect
+on UART console (at least on Praspberry Pi 2 with USB-connected ethernet
+adapter): console drops characters from time to time.
 
-Thanks a lot for taking a serious look. I never used it myself, I only
-looked at the code and heard from mates who had to make their hands
-dirty.
+> I don't seem to have access to the Google DNS server, I switched this to
+> our local nameserver. Here global.net.nameserver should be used finally.
+>
+> It's a bit odd that barebox and picotcp both use different configs, so
+> that we have to call barebox dhcp and also dhclient to make a network
+> interface usable in both barebox and picotcp. That should be a solvable
+> issue though.
 
-I love what Antony did, but I admit I didn't test it. My own plague is
-being late with deliverables and with life in general -- but I'm sure
-I'm not alone.
+I have fixed this problem. Now dhclient updates ethX.* and global.net.*
+variables. Please note that picotcp dhcp client does not handle
+rootpath, device tree and tftp server parameters. I think
+that we can ignore current disadvantages of dhclient, picoping and picohost.
+These commands are used just for demonstration. They are just
+slightly reworked demo programs. We have to rework them more
+carefully to replace our traditional network commands.
 
-thanks
-/alessandro
--- 
-  +39-0382-529554 sempre, solo se ci sono
-  +39-349-2689041 sempre, solo se c'e` campo
+The TCP support is much more attractive feature. app_wget is adapted
+example from picotcp-modules repo [3] (not the main picotcp repo!).
+app_wget relies on incomplete libhttp library. You can see that app_wget
+dumps html-page with wrong offset. I used app_wget just for demonstration
+because it was most simple TCP-enabled application.
+Now I think that telnet-client/server would be more useful demo program.
+Also please note that there is "the old" picotcp-1.7.0 and "the modern"
+picotcp-2.1. I have the branch with picotcp-2.1 but it lacks
+libhttp support.
+
+My next step is to add tcp-enabled application to picotcp-2.1.
+
+[1] https://github.com/frantony/barebox/tree/20240310.picotcp-1.7.0
+[2] https://github.com/frantony/barebox/tree/20240310.picotcp-2.1
+[3] https://github.com/tass-belgium/picotcp-modules
+
+--=20
+Best regards,
+=A0 Antony Pavlov
 
 
