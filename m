@@ -3,65 +3,65 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjiG4-001FQe-08
+	id 1rjiG4-001FQz-1b
 	for lore@lore.pengutronix.de;
 	Mon, 11 Mar 2024 17:12:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjiG2-0003KQ-VY
-	for lore@pengutronix.de; Mon, 11 Mar 2024 17:12:11 +0100
+	id 1rjiG2-0003KO-WF
+	for lore@pengutronix.de; Mon, 11 Mar 2024 17:12:12 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=kkaY10rif+9M6uAN9uKw3CbEPVmjiTaU4izNnkjCqvg=; b=wdf3tmAV/7/nBx8RW4Qt+p/3MY
-	0Q1cv8mx7FzpRpyd2nA0KkpaQb5abmVumzqZtVjr4DQncAgy2HPilP6TNtKhrUkYgSKnSto3RXgoc
-	pOVUp5v17RWCeRXsopycsd1024gko9XUiARe/eU4Qq4fRy7IQ1O2r90JV6Eh/XJ1vwB0KihDDgZj1
-	NXAEfMx91jbh3J+MHKMcMItTXIjWA8MmNweO/kOWiPhGph+rfP6RylClApcfZYNTutGqN+NqvPEA/
-	1OWBvTJ19TKrIbEakT4qlh6j8Ks3qT9UFoN7pF6EcPTKE822WuAjY6BmhpTzo5Q3mbVZJ5Pc2BLJD
-	q0troi+w==;
+	bh=zU0m2+pHZVEU78O6oO/Y2M04fsbgo8xXCXGeTe2tvZ8=; b=u1jp4kPTovt2bybkOgCLvivxKh
+	I9+ZL2+BkkDUdKlPILxxXv2xeYoMmEtomBrBAub/J76my8k8NScgqbQDxqQiZvH2MoZWKhjmBwzJs
+	myuTSDRRKf7RKVrg2eT7OympqAnDYrXz933tOYbyhQYaHRobzfSs3SuHJTdRRP/VWw7bLPsnJL8HM
+	CHtCaTKwoOvM/rQUz5AbWtswqcjFDgqLG1nyFWMbWMlHmqKM9d+NsJVNLvmQjVatP+A5/4jexFz9E
+	2DtRznf4FXgl8IjRjOPs4IlgwVwHSYROLkhqG3u4VoHecoBTx8os1zZ3GP5+VXxwx4mcvYE881Axp
+	1XGZrk0g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjiFQ-00000002Eai-3zrc;
-	Mon, 11 Mar 2024 16:11:32 +0000
+	id 1rjiFS-00000002EbC-231u;
+	Mon, 11 Mar 2024 16:11:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjiFK-00000002EWN-46YB
+	id 1rjiFK-00000002EWL-48FS
 	for barebox@lists.infradead.org;
 	Mon, 11 Mar 2024 16:11:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rjiFI-0002QX-QV; Mon, 11 Mar 2024 17:11:24 +0100
+	id 1rjiFI-0002QU-NY; Mon, 11 Mar 2024 17:11:24 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rjiFI-005kb5-At; Mon, 11 Mar 2024 17:11:24 +0100
+	id 1rjiFI-005kb2-9e; Mon, 11 Mar 2024 17:11:24 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rjiFH-00EPUY-2J;
+	id 1rjiFH-00EPUY-2H;
 	Mon, 11 Mar 2024 17:11:24 +0100
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Mon, 11 Mar 2024 17:11:22 +0100
+Date: Mon, 11 Mar 2024 17:11:20 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240311-karo-imx8mp-som-board-upstreaming-v2-5-6ecda693adb2@pengutronix.de>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240311-karo-imx8mp-som-board-upstreaming-v2-3-6ecda693adb2@pengutronix.de>
 References: <20240311-karo-imx8mp-som-board-upstreaming-v2-0-6ecda693adb2@pengutronix.de>
 In-Reply-To: <20240311-karo-imx8mp-som-board-upstreaming-v2-0-6ecda693adb2@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.4
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240311_091127_238362_0F583021 
-X-CRM114-Status: GOOD (  10.48  )
+X-CRM114-CacheID: sfid-20240311_091127_245645_C823F820 
+X-CRM114-Status: GOOD (  18.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,112 +84,227 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 5/6] arm: dts: karo: add karo
- imx8mp-karo-qsxp-ml81-qsbase4
+Subject: [PATCH v2 3/6] net: phy: micrel: add support for ksz9131 phy
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The Ka-Ro QSXP-QSBASE4[1] is the offical DK from Ka-Ro for their QSXP
-i.MX8M Plus solder down system on module. It comes with an additional
-Micrel KSZ9131 gigabit ethernet phy. The devicetree was adapted from the
-offical Ka-Ro github[2], commit a49b38ec97854c0cd9cd83a9f4ae3b56e99a58b6.
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[1]: https://karo-electronics.github.io/docs/getting-started/qsbase4/quickstart-qsbase4.html
-[2]: https://github.com/karo-electronics/meta-karo-nxp.git
+This imports the micrel KSZ9131 gigabit phy driver from Linux, commit
+0316c7e66bbd16cf2d01a4e2f5afa6afb01278f2.
 
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- arch/arm/dts/imx8mp-karo-qsxp-ml81-qsbase4.dts | 82 ++++++++++++++++++++++++++
- 1 file changed, 82 insertions(+)
+ drivers/net/phy/micrel.c | 188 +++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 188 insertions(+)
 
-diff --git a/arch/arm/dts/imx8mp-karo-qsxp-ml81-qsbase4.dts b/arch/arm/dts/imx8mp-karo-qsxp-ml81-qsbase4.dts
-new file mode 100644
-index 0000000000..eec42954dc
---- /dev/null
-+++ b/arch/arm/dts/imx8mp-karo-qsxp-ml81-qsbase4.dts
-@@ -0,0 +1,82 @@
-+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
-+/*
-+ * Copyright (C) 2020 Lothar Waßmann <LW@KARO-electronics.de>
+diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
+index 36cc857a2c..a203669353 100644
+--- a/drivers/net/phy/micrel.c
++++ b/drivers/net/phy/micrel.c
+@@ -546,6 +546,186 @@ static int ksz9031_config_init(struct phy_device *phydev)
+ 	return ret;
+ }
+ 
++#define KSZ9131_SKEW_5BIT_MAX	2400
++#define KSZ9131_SKEW_4BIT_MAX	800
++#define KSZ9131_OFFSET		700
++#define KSZ9131_STEP		100
++
++static int ksz9131_of_load_skew_values(struct phy_device *phydev,
++				       const struct device_node *of_node,
++				       u16 reg, size_t field_sz,
++				       const char *field[], u8 numfields)
++{
++	int val[4] = {-(1 + KSZ9131_OFFSET), -(2 + KSZ9131_OFFSET),
++		      -(3 + KSZ9131_OFFSET), -(4 + KSZ9131_OFFSET)};
++	int skewval, skewmax = 0;
++	int matches = 0;
++	u16 maxval;
++	u16 newval;
++	u16 mask;
++	int i;
++
++	/* psec properties in dts should mean x pico seconds */
++	if (field_sz == 5)
++		skewmax = KSZ9131_SKEW_5BIT_MAX;
++	else
++		skewmax = KSZ9131_SKEW_4BIT_MAX;
++
++	for (i = 0; i < numfields; i++)
++		if (!of_property_read_s32(of_node, field[i], &skewval)) {
++			if (skewval < -KSZ9131_OFFSET)
++				skewval = -KSZ9131_OFFSET;
++			else if (skewval > skewmax)
++				skewval = skewmax;
++
++			val[i] = skewval + KSZ9131_OFFSET;
++			matches++;
++		}
++
++	if (!matches)
++		return 0;
++
++	if (matches < numfields)
++		newval = phy_read_mmd(phydev, 2, reg);
++	else
++		newval = 0;
++
++	maxval = (field_sz == 4) ? 0xf : 0x1f;
++	for (i = 0; i < numfields; i++)
++		if (val[i] != -(i + 1 + KSZ9131_OFFSET)) {
++			mask = 0xffff;
++			mask ^= maxval << (field_sz * i);
++			newval = (newval & mask) |
++				(((val[i] / KSZ9131_STEP) & maxval)
++					<< (field_sz * i));
++		}
++
++	return phy_write_mmd(phydev, 2, reg, newval);
++}
++
++#define KSZ9131RN_MMD_COMMON_CTRL_REG	2
++#define KSZ9131RN_RXC_DLL_CTRL		76
++#define KSZ9131RN_TXC_DLL_CTRL		77
++#define KSZ9131RN_DLL_CTRL_BYPASS	BIT_MASK(12)
++#define KSZ9131RN_DLL_ENABLE_DELAY	0
++#define KSZ9131RN_DLL_DISABLE_DELAY	BIT(12)
++
++static int ksz9131_config_rgmii_delay(struct phy_device *phydev)
++{
++	u16 rxcdll_val, txcdll_val;
++	int ret;
++
++	switch (phydev->interface) {
++	case PHY_INTERFACE_MODE_RGMII:
++		rxcdll_val = KSZ9131RN_DLL_DISABLE_DELAY;
++		txcdll_val = KSZ9131RN_DLL_DISABLE_DELAY;
++		break;
++	case PHY_INTERFACE_MODE_RGMII_ID:
++		rxcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
++		txcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
++		break;
++	case PHY_INTERFACE_MODE_RGMII_RXID:
++		rxcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
++		txcdll_val = KSZ9131RN_DLL_DISABLE_DELAY;
++		break;
++	case PHY_INTERFACE_MODE_RGMII_TXID:
++		rxcdll_val = KSZ9131RN_DLL_DISABLE_DELAY;
++		txcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
++		break;
++	default:
++		return 0;
++	}
++
++	ret = phy_modify_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
++			     KSZ9131RN_RXC_DLL_CTRL, KSZ9131RN_DLL_CTRL_BYPASS,
++			     rxcdll_val);
++	if (ret < 0)
++		return ret;
++
++	return phy_modify_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
++			      KSZ9131RN_TXC_DLL_CTRL, KSZ9131RN_DLL_CTRL_BYPASS,
++			      txcdll_val);
++}
++
++/* Silicon Errata DS80000693B
 + *
++ * When LEDs are configured in Individual Mode, LED1 is ON in a no-link
++ * condition. Workaround is to set register 0x1e, bit 9, this way LED1 behaves
++ * according to the datasheet (off if there is no link).
 + */
++static int ksz9131_led_errata(struct phy_device *phydev)
++{
++	int reg;
 +
-+/dts-v1/;
++	reg = phy_read_mmd(phydev, 2, 0);
++	if (reg < 0)
++		return reg;
 +
-+#include "imx8mp-karo-qsxp-ml81.dtsi"
++	if (!(reg & BIT(4)))
++		return 0;
 +
-+/ {
-+	model = "Ka-Ro electronics QSXP-ML81-QSBASE4 (NXP i.MX8MP) Board";
-+	compatible = "karo,imx8mp-qsxp-ml81-qsbase4", "karo,imx8mp-qsxp-ml81", "fsl,imx8mp";
-+};
++	return phy_set_bits(phydev, 0x1e, BIT(9));
++}
 +
-+&eqos {
-+	pinctrl-names = "default", "sleep";
-+	pinctrl-0 = <&pinctrl_eqos>;
-+	pinctrl-1 = <&pinctrl_eqos_sleep>;
-+	phy-connection-type = "rgmii-id";
-+	phy-handle = <&ethphy1>;
-+	phy-supply = <&ldo5_reg>;
-+	status = "okay";
-+
-+	mdio {
-+		compatible = "snps,dwmac-mdio";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		ethphy1: ethernet-phy@7 {
-+			compatible = "ethernet-phy-ieee802.3-c22";
-+			reg = <7>;
-+			reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <100>;
-+			reset-deassert-us = <250000>;
-+		};
++static int ksz9131_config_init(struct phy_device *phydev)
++{
++	const struct device *dev = &phydev->dev;
++	const struct device_node *of_node = dev->of_node;
++	static const char *clk_skews[2] = {"rxc-skew-psec", "txc-skew-psec"};
++	static const char *rx_data_skews[4] = {
++		"rxd0-skew-psec", "rxd1-skew-psec",
++		"rxd2-skew-psec", "rxd3-skew-psec"
 +	};
-+};
-+
-+&iomuxc {
-+	pinctrl_eqos: eqosgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22 0x140					/* PHY reset */
-+			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC 0x142
-+			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO 0x142
-+			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK 0x40000016
-+			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0 0x016
-+			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1 0x016
-+			MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2 0x016
-+			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3 0x016
-+			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL 0x016
-+			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0 0x110				/* MODE0 */
-+			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1 0x150				/* MODE1 */
-+			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2 0x150				/* MODE2 */
-+			MX8MP_IOMUXC_ENET_RD3__ENET_QOS_RGMII_RD3 0x150				/* MODE3 */
-+			MX8MP_IOMUXC_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK 0x156		/* PHYAD2 */
-+			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL 0x000			/* CLK125_EN */
-+			MX8MP_IOMUXC_GPIO1_IO00__CCM_ENET_PHY_REF_CLK_ROOT 0x110		/* LED_MODE */
-+		>;
++	static const char *tx_data_skews[4] = {
++		"txd0-skew-psec", "txd1-skew-psec",
++		"txd2-skew-psec", "txd3-skew-psec"
 +	};
++	static const char *control_skews[2] = {"txen-skew-psec", "rxdv-skew-psec"};
++	int ret;
 +
-+	pinctrl_eqos_sleep: eqos-sleep-grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22 0x120
-+			MX8MP_IOMUXC_ENET_MDC__GPIO1_IO16 0x120
-+			MX8MP_IOMUXC_ENET_MDIO__GPIO1_IO17 0x120
-+			MX8MP_IOMUXC_ENET_TXC__GPIO1_IO23 0x120
-+			MX8MP_IOMUXC_ENET_TD0__GPIO1_IO21 0x120
-+			MX8MP_IOMUXC_ENET_TD1__GPIO1_IO20 0x120
-+			MX8MP_IOMUXC_ENET_TD2__GPIO1_IO19 0x120
-+			MX8MP_IOMUXC_ENET_TD3__GPIO1_IO18 0x120
-+			MX8MP_IOMUXC_ENET_TX_CTL__GPIO1_IO22 0x120
-+			MX8MP_IOMUXC_ENET_RD0__GPIO1_IO26 0x120
-+			MX8MP_IOMUXC_ENET_RD1__GPIO1_IO27 0x120
-+			MX8MP_IOMUXC_ENET_RD2__GPIO1_IO28 0x120
-+			MX8MP_IOMUXC_ENET_RD3__GPIO1_IO29 0x120
-+			MX8MP_IOMUXC_ENET_RXC__GPIO1_IO25 0x120
-+			MX8MP_IOMUXC_ENET_RX_CTL__GPIO1_IO24 0x120
-+			MX8MP_IOMUXC_GPIO1_IO00__GPIO1_IO00 0x120
-+		>;
-+	};
-+};
++	if (!of_node && dev->parent->of_node)
++		of_node = dev->parent->of_node;
++
++	if (!of_node)
++		return 0;
++
++	if (phy_interface_is_rgmii(phydev)) {
++		ret = ksz9131_config_rgmii_delay(phydev);
++		if (ret < 0)
++			return ret;
++	}
++
++	ret = ksz9131_of_load_skew_values(phydev, of_node,
++					  MII_KSZ9031RN_CLK_PAD_SKEW, 5,
++					  clk_skews, 2);
++	if (ret < 0)
++		return ret;
++
++	ret = ksz9131_of_load_skew_values(phydev, of_node,
++					  MII_KSZ9031RN_CONTROL_PAD_SKEW, 4,
++					  control_skews, 2);
++	if (ret < 0)
++		return ret;
++
++	ret = ksz9131_of_load_skew_values(phydev, of_node,
++					  MII_KSZ9031RN_RX_DATA_PAD_SKEW, 4,
++					  rx_data_skews, 4);
++	if (ret < 0)
++		return ret;
++
++	ret = ksz9131_of_load_skew_values(phydev, of_node,
++					  MII_KSZ9031RN_TX_DATA_PAD_SKEW, 4,
++					  tx_data_skews, 4);
++	if (ret < 0)
++		return ret;
++
++	ret = ksz9131_led_errata(phydev);
++	if (ret < 0)
++		return ret;
++
++	return 0;
++}
++
+ #define KSZ8873MLL_GLOBAL_CONTROL_4	0x06
+ #define KSZ8873MLL_GLOBAL_CONTROL_4_DUPLEX	BIT(6)
+ #define KSZ8873MLL_GLOBAL_CONTROL_4_SPEED	BIT(4)
+@@ -757,6 +937,14 @@ static struct phy_driver ksphy_driver[] = {
+ 	.config_init	= ksz9031_config_init,
+ 	.config_aneg	= genphy_config_aneg,
+ 	.read_status	= ksz9031_read_status,
++}, {
++	.phy_id		= PHY_ID_KSZ9131,
++	.phy_id_mask	= 0x00fffff0,
++	.drv.name	= "Microchip KSZ9131 Gigabit PHY",
++	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause),
++	.config_init	= ksz9131_config_init,
++	.config_aneg	= genphy_config_aneg,
++	.read_status	= genphy_read_status,
+ }, {
+ 	.phy_id		= PHY_ID_KSZ8873MLL,
+ 	.phy_id_mask	= 0x00fffff0,
 
 -- 
 2.39.2
