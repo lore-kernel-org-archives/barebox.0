@@ -1,57 +1,57 @@
-Delivery-date: Mon, 11 Mar 2024 09:44:03 +0100
+Delivery-date: Mon, 11 Mar 2024 09:45:26 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjbGN-000ny3-2I
+	id 1rjbHi-000o4d-20
 	for lore@lore.pengutronix.de;
-	Mon, 11 Mar 2024 09:44:03 +0100
+	Mon, 11 Mar 2024 09:45:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjbGN-0000HB-4o
-	for lore@pengutronix.de; Mon, 11 Mar 2024 09:44:03 +0100
+	id 1rjbHh-0001Br-1B
+	for lore@pengutronix.de; Mon, 11 Mar 2024 09:45:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
 	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
 	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VOE96BxAD5ngTUNkurB/2TPTv31DDz2Z7OFHDzwAflM=; b=YvNdMVMqZDD/EaB+a71hM3DVKU
-	4URNYwSXPOgDO+erB0mwnq5b28y4+8JRqY4aiSHhloAkEkY1e2wTeJpxMIstfKJxzXC8YH6P74N5C
-	Ru5jYkI4fDqOTPjULbH6/Wkts0ndqZopb1JE4w+Xb5T0SDhxmYNA55Sq3fx2kTMSbPcPcSiUlSRdH
-	P8fI3bgXicxYz0vOanlHFbomS41jJUqEf1ukiFzSadZF+VhUACjIOIXSKuLD9KbA6J7gfNsdTMIR6
-	rV+BdZ0oFYN6Wc6auS/ZRMcW9lFPkggGZNq02AvS07MnVMBN0rBisZ7gMUviDgvWga4qQkKeUkQp7
-	JM090/wg==;
+	bh=wB58+ePP0beRvxG6BV7vzRHJdf0UaNgg2+nhF7JTqEM=; b=Lv0gB0oPopvXGnegnmh6+oezyh
+	whUyhvzryVsSzeAzW4ydAR3Yx9El2lq/DCn+ykmbLMgNSMd4pKuBkEGcxxzcGNggMET5Cwe3WMRuS
+	kZl5h0MsBS+19U7xupbwl3qulpsr2ZEcr5XKcZVgUrngNQ3CIiFm5iG/fPCxHOs597BqzZRl2c4C9
+	AAESDOQLSNuupC0k/Ub5eU7Wiq3wyu0ZpZR3L3Cm/bJkPfX2j8HyPzevEoDZ1+4ZpR/KT4g5vhDDD
+	hw5kdvyzSsmdzfeOi+VcFETxSGWLnUNn5P1uBBPuMmANnsHkoZX3/Mk4WzDfi1QPrMWL8d/QtieJb
+	bwxvvtFQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjbFv-00000000fJG-1LpH;
-	Mon, 11 Mar 2024 08:43:35 +0000
+	id 1rjbHD-00000000fdE-1mkb;
+	Mon, 11 Mar 2024 08:44:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjbFr-00000000fIL-3R74
+	id 1rjbHA-00000000fcl-2AMe
 	for barebox@lists.infradead.org;
-	Mon, 11 Mar 2024 08:43:33 +0000
+	Mon, 11 Mar 2024 08:44:54 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rjbFq-0007YF-E9; Mon, 11 Mar 2024 09:43:30 +0100
-Message-ID: <427e9abd-ccc2-44b0-a9db-421269e67e74@pengutronix.de>
-Date: Mon, 11 Mar 2024 09:43:30 +0100
+	id 1rjbH9-0007YF-6o; Mon, 11 Mar 2024 09:44:51 +0100
+Message-ID: <0014f54a-7359-44a1-85ea-be451ef7a733@pengutronix.de>
+Date: Mon, 11 Mar 2024 09:44:51 +0100
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Content-Language: en-US
 To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, barebox@lists.infradead.org
 References: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-0-6d50c90485f3@pengutronix.de>
- <20240308-v2024-02-0-topic-arasan-hs200-support-v1-1-6d50c90485f3@pengutronix.de>
+ <20240308-v2024-02-0-topic-arasan-hs200-support-v1-4-6d50c90485f3@pengutronix.de>
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-1-6d50c90485f3@pengutronix.de>
+In-Reply-To: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-4-6d50c90485f3@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240311_014331_957276_6978CEE1 
-X-CRM114-Status: GOOD (  17.14  )
+X-CRM114-CacheID: sfid-20240311_014452_694333_6E13B40F 
+X-CRM114-Status: GOOD (  30.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,49 +74,180 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 01/12] ARM: zynqmp: add sd_dll_reset call
+Subject: Re: [PATCH 04/12] mci: arasan: read clk phases from DT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 08.03.24 12:16, Steffen Trumtrar wrote:
-> Add a function to reset DLL logic for SD devices.
+On 08.03.24 12:17, Steffen Trumtrar wrote:
+> Depending on the used SDHCI mode the clock phases are different.
+> Import the helper function to get these values from the DT from linux v6.7.
 > 
 > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
 > ---
->  arch/arm/mach-zynqmp/firmware-zynqmp.c | 17 +++++++++++++++++
->  1 file changed, 17 insertions(+)
+>  drivers/mci/arasan-sdhci.c | 121 +++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 121 insertions(+)
 > 
-> diff --git a/arch/arm/mach-zynqmp/firmware-zynqmp.c b/arch/arm/mach-zynqmp/firmware-zynqmp.c
-> index a2b61efff4..b383ed6f00 100644
-> --- a/arch/arm/mach-zynqmp/firmware-zynqmp.c
-> +++ b/arch/arm/mach-zynqmp/firmware-zynqmp.c
-> @@ -511,6 +511,23 @@ static int zynqmp_pm_ioctl(u32 node_id, u32 ioctl_id, u32 arg1, u32 arg2,
->  				   arg1, arg2, out);
+> diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
+> index cc1bad8b62..76022708cd 100644
+> --- a/drivers/mci/arasan-sdhci.c
+> +++ b/drivers/mci/arasan-sdhci.c
+> @@ -30,10 +30,33 @@
+>  #define SDHCI_ARASAN_BUS_WIDTH			4
+>  #define TIMEOUT_VAL				0xE
+>  
+> +#define ZYNQMP_CLK_PHASES			10
+> +#define ZYNQMP_CLK_PHASE_UHS_SDR104		6
+> +#define ZYNQMP_CLK_PHASE_HS200			9
+> +/* Default settings for ZynqMP Clock Phases */
+> +#define ZYNQMP_ICLK_PHASE {0, 63, 63, 0, 63,  0,   0, 183, 54,  0, 0}
+> +#define ZYNQMP_OCLK_PHASE {0, 72, 60, 0, 60, 72, 135, 48, 72, 135, 0}
+
+"include: mci: sync mci_timing with linux" should be ordered before this
+patch, because the above two lines depend on it for correctness.
+
+> +
+> +/**
+> + * struct sdhci_arasan_clk_data - Arasan Controller Clock Data.
+> + *
+> + * @clk_phase_in:	Array of Input Clock Phase Delays for all speed modes
+> + * @clk_phase_out:	Array of Output Clock Phase Delays for all speed modes
+> + * @set_clk_delays:	Function pointer for setting Clock Delays
+> + * @clk_of_data:	Platform specific runtime clock data storage pointer
+> + */
+> +struct sdhci_arasan_clk_data {
+> +	int		clk_phase_in[ZYNQMP_CLK_PHASES + 1];
+> +	int		clk_phase_out[ZYNQMP_CLK_PHASES + 1];
+> +	void		(*set_clk_delays)(struct sdhci *host);
+> +	void		*clk_of_data;
+> +};
+> +
+>  struct arasan_sdhci_host {
+>  	struct mci_host		mci;
+>  	struct sdhci		sdhci;
+>  	unsigned int		quirks; /* Arasan deviations from spec */
+> +	struct sdhci_arasan_clk_data clk_data;
+>  /* Controller does not have CD wired and will not function normally without */
+>  #define SDHCI_ARASAN_QUIRK_FORCE_CDTEST		BIT(0)
+>  #define SDHCI_ARASAN_QUIRK_NO_1_8_V		BIT(1)
+> @@ -119,6 +142,7 @@ static int arasan_sdhci_init(struct mci_host *mci, struct device *dev)
+>  static void arasan_sdhci_set_clock(struct mci_host *mci, unsigned int clock)
+>  {
+>  	struct arasan_sdhci_host *host = to_arasan_sdhci_host(mci);
+> +	struct sdhci_arasan_clk_data *clk_data = &host->clk_data;
+>  
+>  	if (host->quirks & SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN) {
+>  		/*
+> @@ -219,6 +243,101 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+>  	return ret;
 >  }
 >  
-> +/**
-> + * zynqmp_pm_sd_dll_reset() - Reset DLL logic
-> + *
-> + * @node_id:	Node ID of the device
-> + * @type:	Reset type
-> + *
-> + * This function resets DLL logic for the SD device.
-> + *
-> + * Return:	Returns status, either success or error+reason
-> + */
-> +int zynqmp_pm_sd_dll_reset(u32 node_id, u32 type)
+> +static void sdhci_arasan_set_clk_delays(struct sdhci *host)
 > +{
-> +	return zynqmp_pm_invoke_fn(PM_IOCTL, node_id, IOCTL_SD_DLL_RESET,
-> +				   type, 0, NULL);
-> +}
-> +EXPORT_SYMBOL_GPL(zynqmp_pm_sd_dll_reset);
+> +	struct arasan_sdhci_host *arasan_sdhci = sdhci_to_arasan(host);
+> +	struct mci_host *mci = &arasan_sdhci->mci;
+> +	struct sdhci_arasan_clk_data *clk_data = &arasan_sdhci->clk_data;
 > +
->  /*
->   * zynqmp_pm_write_ggs() - PM API for writing global general storage (ggs)
->   * @index:	GGS register index
+> +}
+> +
+> +static void arasan_dt_read_clk_phase(struct device *dev,
+> +				     struct sdhci_arasan_clk_data *clk_data,
+> +				     unsigned int timing, const char *prop)
+> +{
+> +	struct device_node *np = dev->of_node;
+> +
+> +	u32 clk_phase[2] = {0};
+> +	int ret;
+> +
+> +	/*
+> +	 * Read Tap Delay values from DT, if the DT does not contain the
+> +	 * Tap Values then use the pre-defined values.
+> +	 */
+> +	ret = of_property_read_u32_array(np, prop, &clk_phase[0], 2);
+> +	if (ret < 0) {
+> +		dev_dbg(dev, "Using predefined clock phase for %s = %d %d\n",
+> +			prop, clk_data->clk_phase_in[timing],
+> +			clk_data->clk_phase_out[timing]);
+> +		return;
+> +	}
+> +
+> +	/* The values read are Input and Output Clock Delays in order */
+> +	clk_data->clk_phase_in[timing] = clk_phase[0];
+> +	clk_data->clk_phase_out[timing] = clk_phase[1];
+> +}
+> +
+> +/**
+> + * arasan_dt_parse_clk_phases - Read Clock Delay values from DT
+> + *
+> + * @dev:		Pointer to our struct device.
+> + * @clk_data:		Pointer to the Clock Data structure
+> + *
+> + * Called at initialization to parse the values of Clock Delays.
+> + */
+> +static void arasan_dt_parse_clk_phases(struct device *dev,
+> +				       struct sdhci_arasan_clk_data *clk_data)
+> +{
+> +	u32 mio_bank = 0;
+> +	int i;
+> +
+> +	/*
+> +	 * This has been kept as a pointer and is assigned a function here.
+> +	 * So that different controller variants can assign their own handling
+> +	 * function.
+> +	 */
+> +	clk_data->set_clk_delays = sdhci_arasan_set_clk_delays;
+> +
+> +	if (of_device_is_compatible(dev->of_node, "xlnx,zynqmp-8.9a")) {
+> +		u32 zynqmp_iclk_phase[ZYNQMP_CLK_PHASES + 1] = ZYNQMP_ICLK_PHASE;
+> +		u32 zynqmp_oclk_phase[ZYNQMP_CLK_PHASES + 1] = ZYNQMP_OCLK_PHASE;
+> +
+> +		of_property_read_u32(dev->of_node, "xlnx,mio-bank", &mio_bank);
+> +		if (mio_bank == 2) {
+> +			zynqmp_oclk_phase[ZYNQMP_CLK_PHASE_UHS_SDR104] = 90;
+> +			zynqmp_oclk_phase[ZYNQMP_CLK_PHASE_HS200] = 90;
+> +		}
+> +
+> +		for (i = 0; i <= ZYNQMP_CLK_PHASES; i++) {
+> +			clk_data->clk_phase_in[i] = zynqmp_iclk_phase[i];
+> +			clk_data->clk_phase_out[i] = zynqmp_oclk_phase[i];
+> +		}
+> +	}
+> +
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_LEGACY,
+> +				 "clk-phase-legacy");
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS,
+> +				 "clk-phase-mmc-hs");
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_SD_HS,
+> +				 "clk-phase-sd-hs");
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR12,
+> +				 "clk-phase-uhs-sdr12");
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR25,
+> +				 "clk-phase-uhs-sdr25");
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR50,
+> +				 "clk-phase-uhs-sdr50");
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR104,
+> +				 "clk-phase-uhs-sdr104");
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_DDR50,
+> +				 "clk-phase-uhs-ddr50");
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_DDR52,
+> +				 "clk-phase-mmc-ddr52");
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS200,
+> +				 "clk-phase-mmc-hs200");
+> +	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS400,
+> +				 "clk-phase-mmc-hs400");
+> +}
+> +
+>  static int arasan_sdhci_probe(struct device *dev)
+>  {
+>  	struct device_node *np = dev->of_node;
+> @@ -281,6 +400,8 @@ static int arasan_sdhci_probe(struct device *dev)
+>  	mci->f_max = clk_get_rate(clk_xin);
+>  	mci->f_min = 50000000 / 256;
+>  
+> +	arasan_dt_parse_clk_phases(dev, &arasan_sdhci->clk_data);
+> +
+>  	/* parse board supported bus width capabilities */
+>  	mci_of_parse(&arasan_sdhci->mci);
+>  
 > 
 
 -- 
