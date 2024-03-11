@@ -1,68 +1,57 @@
-Delivery-date: Mon, 11 Mar 2024 11:58:06 +0100
+Delivery-date: Mon, 11 Mar 2024 12:51:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjdM6-000vPF-23
+	id 1rjeBM-0010jY-0o
 	for lore@lore.pengutronix.de;
-	Mon, 11 Mar 2024 11:58:06 +0100
+	Mon, 11 Mar 2024 12:51:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjdM6-00075n-3X
-	for lore@pengutronix.de; Mon, 11 Mar 2024 11:58:06 +0100
+	id 1rjeBL-0005OQ-Mt
+	for lore@pengutronix.de; Mon, 11 Mar 2024 12:51:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:References:Cc:To:Subject:From:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=lAnOxdZq3TyB4LpRwRT4G156qS9vGVOrYkJWY5ze3P0=; b=DSVjOCVZhb5mvfVhowwtRwYh4x
-	gVfj/tvumlXlu3LE1AdXitgAFqEus1cc4XIwd4eC/bEPNDhrQLhETxCftpQJo3Z2kv++DP21yMsZ0
-	cwoF6vFnFR/setZdiwLnzDb8r4eIMK/Yh68gKlbD5KsrxYNCRFg238xlRa9V781O1FTg8wDCmvUXe
-	1AQj9jjlHBxMcuOUpg+1co/NStCwZSntcLnVzzHrrDknXtzKYoV6VajfIBrCoU0s4w0GKdIdWJ3Ny
-	Dnn7WKznCxLWPO7PsjOkuctRAwepbhek9gzxqMX+yyVWuJ3RFSiuENrjP3v30gzpHbZu+xp5eMUBq
-	87BZtLag==;
+	bh=u2vsM3vTuatNCGoYBY2TbZyYfMd9n0BwkmmRpWL7iQ0=; b=1L1OYUQwNCuCwRhpD4QCxtD7d0
+	dTXyPKw9oBGgT/6Apgr961b2lmd4bVaW4KwsYY01hu10VZ7VCG7SsHkxFolRu7JNwpr+Qy4XRh6qA
+	axwBi4gZeGRctwDudJyWpwzGlyeVXmtGqbgQEaCuYNXgTq+N2mxN9PJfOo8CF4TEGhDyznVDgdA7d
+	TiNbxB10fjRY3pkoYvLAAKqwRit2neDARQMnmFdCwrAopyh8Pwqg2G4wKeqXQv2nrk+aahmVQJhoE
+	i9oDOeTDSkisZK/ZfPkYaFEwoN7VxJCySQj9QqNXL/Sw21+P4375wyf2b81+KHivUSGN8qgPr6NV2
+	QjP6mBDQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjdLa-00000001AoM-2jwy;
-	Mon, 11 Mar 2024 10:57:34 +0000
+	id 1rjeAf-00000001MIZ-45ni;
+	Mon, 11 Mar 2024 11:50:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjdLW-00000001An0-1HJd
+	id 1rjeAa-00000001MGL-1CKl
 	for barebox@lists.infradead.org;
-	Mon, 11 Mar 2024 10:57:32 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rjdLU-0006ZK-IX; Mon, 11 Mar 2024 11:57:28 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rjdLU-005h8l-5r; Mon, 11 Mar 2024 11:57:28 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rjdLU-004RYN-0O;
-	Mon, 11 Mar 2024 11:57:28 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240308142052.2683407-1-bst@pengutronix.de>
-References: <20240308142052.2683407-1-bst@pengutronix.de>
-Message-Id: <171015464812.1059204.11754957283038963749.b4-ty@pengutronix.de>
-Date: Mon, 11 Mar 2024 11:57:28 +0100
+	Mon, 11 Mar 2024 11:50:19 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rjeAX-0004iv-Hc; Mon, 11 Mar 2024 12:50:13 +0100
+Message-ID: <41f4bc52-f619-4a91-a114-5eb2498cc3fc@pengutronix.de>
+Date: Mon, 11 Mar 2024 12:50:13 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Antony Pavlov <antonynpavlov@gmail.com>
+Cc: barebox@lists.infradead.org
+References: <20240310233355.015a6192a3d7cd668dd6f820@gmail.com>
+Content-Language: en-US
+In-Reply-To: <20240310233355.015a6192a3d7cd668dd6f820@gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240311_035730_403712_68E4DB34 
-X-CRM114-Status: UNSURE (   6.72  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240311_045016_382131_13A6FF57 
+X-CRM114-Status: GOOD (  13.82  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,29 +74,46 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/2] ARM: i.MX8MM: set SION bits for i2c2, i2c3, i2c4
- mux options
+Subject: Re: Documentation/boards/riscv.rst: can't rebuild image for BeagleV
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hello Antony,
 
-On Fri, 08 Mar 2024 15:20:51 +0100, Bastian Krause wrote:
-> i2c data lines are bidirectional, so the SION bit should be set. For
-> i2c1, this is already the case. Apply the same to the remaining i2c mux
-> options.
+On 10.03.24 21:33, Antony Pavlov wrote:
+> Hi Ahmad!
 > 
+> I have tried to rebuild barebox for BeagleV.
+> Alas I was unable to reproduce the steps from Documentation/boards/riscv.rst
+> because of changes in opensbi repo.
+> 
+> I have successfully rebuild U-Boot from the https://github.com/andreiw/uboot_jh7100 repo
+> and used it for running sbi-less BeagleV barebox image.
+> 
+> I planned to use BeagleV for picotcp demonstration but BeagleV ethernet adapter
+> does not works neither under U-Boot nor under barebox. My dhcp server can't even
+> receive any request from BeagleV.
+> 
+> Have we any chance to make BeagleV ethernet adapter works under barebox?
+
+I've been meaning to sync barebox with the kernel, now that there's upstream
+support for the JH7100. Ethernet on this SoC was a bit peculiar, because
+previous RISC-V SoCs were fully cache-coherent, but the MAC on this SoC wasn't.
+
+I got Ethernet to work though, so if it's broken now, it is a regression.
+
+I will try building an image when I have time.
+
+Cheers,
+Ahmad
+
 > 
 
-Applied, thanks!
-
-[1/2] ARM: i.MX8MM: set SION bits for i2c2, i2c3, i2c4 mux options
-      https://git.pengutronix.de/cgit/barebox/commit/?id=20b7ed6f3333 (link may not be stable)
-[2/2] ARM: i.MX8MN: set SION bits for i2c mux options
-      https://git.pengutronix.de/cgit/barebox/commit/?id=29b1a36f7cda (link may not be stable)
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
