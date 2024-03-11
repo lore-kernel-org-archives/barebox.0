@@ -1,16 +1,16 @@
-Delivery-date: Mon, 11 Mar 2024 10:11:26 +0100
+Delivery-date: Mon, 11 Mar 2024 10:11:27 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjbgs-000pu0-0r
+	id 1rjbgs-000puM-39
 	for lore@lore.pengutronix.de;
 	Mon, 11 Mar 2024 10:11:26 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjbgq-0001ei-PM
+	id 1rjbgn-0001aZ-7i
 	for lore@pengutronix.de; Mon, 11 Mar 2024 10:11:26 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zU0m2+pHZVEU78O6oO/Y2M04fsbgo8xXCXGeTe2tvZ8=; b=lELt2le/4OtJShvA3WY7W+P8Ea
-	I44jbv2g2SXmsZYrjHm+OHjtY0brdq7oVM3LKvQtDel3sNOF6A5pfsLGQc86hr54FXv6s8w6P8Lqq
-	tK0e/t0234H8Fgdlxnox2J7pTJ3T3umkwiZ+cq7Hwymq7kiqDJYEEEPitJog9Tmd6l7v6LPZg6VVz
-	VuVwYdR8/4HZgb2uXda6P+hKLEjzKGypuFuSBzQIT5H/Jd9v2Ih4/huBnBsFCYay2/L3E8FoOESJi
-	fYuyq5Rp3s2kVSESdONg+bXIoxptVKZLB5RQntuTQxayWOHnIIIrBRdrCF/SDKIbxMsLy3QtdhOeR
-	bWH7c4bw==;
+	bh=59QfnkIXAwg7pw7sLlLLe5q+jnRjCNyWOQudCH1+LoE=; b=YxnYS4OkUYLqgyscSYhpAchBJv
+	iDREPKKLHZxTaa+c6snlmsaBG6byr2tjb9Y48g9nXLmP2IRD19u7KC8A/snI++EPMgBl5wz7YDJDf
+	Z6h7ZoDh3AspSQp3klOygEkFCZax7qYF4FzVHFYtAvE7QBZ8WuZHp2SNDTZFe4SpMq4bB8y0VKoIB
+	Ro1mMjRBREI2akYZUyYAQgkfT2f2DiIZ28srkH1cOIKd4OylFlxMi/S+Nzk0LoT7h6MmUWfqOeDf4
+	S9FnS7/LfWWSlhI7r6fahtjZUlU+Q0plrLWbn1cmvl4E+GO5Tr0fed0SfVywzc1WLX6rp242ZTQSq
+	CfOiacTw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjbfz-00000000kLm-1Ey3;
-	Mon, 11 Mar 2024 09:10:31 +0000
+	id 1rjbft-00000000kKT-1dUH;
+	Mon, 11 Mar 2024 09:10:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjbfp-00000000kHy-3Piy
+	id 1rjbfp-00000000kHx-3Nzl
 	for barebox@lists.infradead.org;
-	Mon, 11 Mar 2024 09:10:24 +0000
+	Mon, 11 Mar 2024 09:10:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rjbfi-0000gS-K9; Mon, 11 Mar 2024 10:10:14 +0100
+	id 1rjbfi-0000gR-IQ; Mon, 11 Mar 2024 10:10:14 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rjbfi-005g4A-46; Mon, 11 Mar 2024 10:10:14 +0100
+	id 1rjbfi-005g49-40; Mon, 11 Mar 2024 10:10:14 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rjbfh-00ANLu-1i;
+	id 1rjbfh-00ANLu-1h;
 	Mon, 11 Mar 2024 10:10:14 +0100
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Mon, 11 Mar 2024 10:10:10 +0100
+Date: Mon, 11 Mar 2024 10:10:09 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240311-karo-imx8mp-som-board-upstreaming-v1-3-7c77f9ba02e5@pengutronix.de>
+Message-Id: <20240311-karo-imx8mp-som-board-upstreaming-v1-2-7c77f9ba02e5@pengutronix.de>
 References: <20240311-karo-imx8mp-som-board-upstreaming-v1-0-7c77f9ba02e5@pengutronix.de>
 In-Reply-To: <20240311-karo-imx8mp-som-board-upstreaming-v1-0-7c77f9ba02e5@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.4
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240311_021021_973675_AB9A55F0 
-X-CRM114-Status: GOOD (  18.67  )
+X-CRM114-CacheID: sfid-20240311_021021_975795_B01EC4FA 
+X-CRM114-Status: GOOD (  11.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,227 +84,106 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 3/6] net: phy: micrel: add support for ksz9131 phy
+Subject: [PATCH 2/6] net: phy: micrel: update id table from Linux kernel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-This imports the micrel KSZ9131 gigabit phy driver from Linux, commit
-0316c7e66bbd16cf2d01a4e2f5afa6afb01278f2.
+This syncs the known Micrel PHY IDs and register definitions with the
+Linux kernel, commit f600bb612b06adf70ccdefbd3294c71275b650c2.
 
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- drivers/net/phy/micrel.c | 188 +++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 188 insertions(+)
+ include/linux/micrel_phy.h | 49 +++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 42 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/phy/micrel.c b/drivers/net/phy/micrel.c
-index 36cc857a2c..a203669353 100644
---- a/drivers/net/phy/micrel.c
-+++ b/drivers/net/phy/micrel.c
-@@ -546,6 +546,186 @@ static int ksz9031_config_init(struct phy_device *phydev)
- 	return ret;
- }
+diff --git a/include/linux/micrel_phy.h b/include/linux/micrel_phy.h
+index 8752dbbc61..591bf5b5e8 100644
+--- a/include/linux/micrel_phy.h
++++ b/include/linux/micrel_phy.h
+@@ -1,26 +1,26 @@
++/* SPDX-License-Identifier: GPL-2.0-or-later */
+ /*
+  * include/linux/micrel_phy.h
+  *
+  * Micrel PHY IDs
+- *
+- * This program is free software; you can redistribute  it and/or modify it
+- * under  the terms of  the GNU General  Public License as published by the
+- * Free Software Foundation;  either version 2 of the  License, or (at your
+- * option) any later version.
+- *
+  */
  
-+#define KSZ9131_SKEW_5BIT_MAX	2400
-+#define KSZ9131_SKEW_4BIT_MAX	800
-+#define KSZ9131_OFFSET		700
-+#define KSZ9131_STEP		100
+ #ifndef _MICREL_PHY_H
+ #define _MICREL_PHY_H
+ 
++#define MICREL_OUI		0x0885
 +
-+static int ksz9131_of_load_skew_values(struct phy_device *phydev,
-+				       const struct device_node *of_node,
-+				       u16 reg, size_t field_sz,
-+				       const char *field[], u8 numfields)
-+{
-+	int val[4] = {-(1 + KSZ9131_OFFSET), -(2 + KSZ9131_OFFSET),
-+		      -(3 + KSZ9131_OFFSET), -(4 + KSZ9131_OFFSET)};
-+	int skewval, skewmax = 0;
-+	int matches = 0;
-+	u16 maxval;
-+	u16 newval;
-+	u16 mask;
-+	int i;
+ #define MICREL_PHY_ID_MASK	0x00fffff0
+ 
+ #define PHY_ID_KSZ8873MLL	0x000e7237
+ #define PHY_ID_KSZ9021		0x00221610
++#define PHY_ID_KSZ9021RLRN	0x00221611
+ #define PHY_ID_KS8737		0x00221720
+ #define PHY_ID_KSZ8021		0x00221555
+ #define PHY_ID_KSZ8031		0x00221556
+ #define PHY_ID_KSZ8041		0x00221510
++/* undocumented */
++#define PHY_ID_KSZ8041RNLI	0x00221537
+ #define PHY_ID_KSZ8051		0x00221550
+ /* same id: ks8001 Rev. A/B, and ks8721 Rev 3. */
+ #define PHY_ID_KSZ8001		0x0022161A
+@@ -28,11 +28,46 @@
+ #define PHY_ID_KSZ8081		0x00221560
+ #define PHY_ID_KSZ8061		0x00221570
+ #define PHY_ID_KSZ9031		0x00221620
++#define PHY_ID_KSZ9131		0x00221640
++#define PHY_ID_LAN8814		0x00221660
++#define PHY_ID_LAN8804		0x00221670
++#define PHY_ID_LAN8841		0x00221650
+ 
+ #define PHY_ID_KSZ886X		0x00221430
+ #define PHY_ID_KSZ8863		0x00221435
+ 
++#define PHY_ID_KSZ87XX		0x00221550
 +
-+	/* psec properties in dts should mean x pico seconds */
-+	if (field_sz == 5)
-+		skewmax = KSZ9131_SKEW_5BIT_MAX;
-+	else
-+		skewmax = KSZ9131_SKEW_4BIT_MAX;
++#define	PHY_ID_KSZ9477		0x00221631
 +
-+	for (i = 0; i < numfields; i++)
-+		if (!of_property_read_s32(of_node, field[i], &skewval)) {
-+			if (skewval < -KSZ9131_OFFSET)
-+				skewval = -KSZ9131_OFFSET;
-+			else if (skewval > skewmax)
-+				skewval = skewmax;
+ /* struct phy_device dev_flags definitions */
+-#define MICREL_PHY_50MHZ_CLK	0x00000001
++#define MICREL_PHY_50MHZ_CLK	BIT(0)
++#define MICREL_PHY_FXEN		BIT(1)
++#define MICREL_KSZ8_P1_ERRATA	BIT(2)
++#define MICREL_NO_EEE		BIT(3)
 +
-+			val[i] = skewval + KSZ9131_OFFSET;
-+			matches++;
-+		}
++#define MICREL_KSZ9021_EXTREG_CTRL	0xB
++#define MICREL_KSZ9021_EXTREG_DATA_WRITE	0xC
++#define MICREL_KSZ9021_RGMII_CLK_CTRL_PAD_SCEW	0x104
++#define MICREL_KSZ9021_RGMII_RX_DATA_PAD_SCEW	0x105
 +
-+	if (!matches)
-+		return 0;
-+
-+	if (matches < numfields)
-+		newval = phy_read_mmd(phydev, 2, reg);
-+	else
-+		newval = 0;
-+
-+	maxval = (field_sz == 4) ? 0xf : 0x1f;
-+	for (i = 0; i < numfields; i++)
-+		if (val[i] != -(i + 1 + KSZ9131_OFFSET)) {
-+			mask = 0xffff;
-+			mask ^= maxval << (field_sz * i);
-+			newval = (newval & mask) |
-+				(((val[i] / KSZ9131_STEP) & maxval)
-+					<< (field_sz * i));
-+		}
-+
-+	return phy_write_mmd(phydev, 2, reg, newval);
-+}
-+
-+#define KSZ9131RN_MMD_COMMON_CTRL_REG	2
-+#define KSZ9131RN_RXC_DLL_CTRL		76
-+#define KSZ9131RN_TXC_DLL_CTRL		77
-+#define KSZ9131RN_DLL_CTRL_BYPASS	BIT_MASK(12)
-+#define KSZ9131RN_DLL_ENABLE_DELAY	0
-+#define KSZ9131RN_DLL_DISABLE_DELAY	BIT(12)
-+
-+static int ksz9131_config_rgmii_delay(struct phy_device *phydev)
-+{
-+	u16 rxcdll_val, txcdll_val;
-+	int ret;
-+
-+	switch (phydev->interface) {
-+	case PHY_INTERFACE_MODE_RGMII:
-+		rxcdll_val = KSZ9131RN_DLL_DISABLE_DELAY;
-+		txcdll_val = KSZ9131RN_DLL_DISABLE_DELAY;
-+		break;
-+	case PHY_INTERFACE_MODE_RGMII_ID:
-+		rxcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
-+		txcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
-+		break;
-+	case PHY_INTERFACE_MODE_RGMII_RXID:
-+		rxcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
-+		txcdll_val = KSZ9131RN_DLL_DISABLE_DELAY;
-+		break;
-+	case PHY_INTERFACE_MODE_RGMII_TXID:
-+		rxcdll_val = KSZ9131RN_DLL_DISABLE_DELAY;
-+		txcdll_val = KSZ9131RN_DLL_ENABLE_DELAY;
-+		break;
-+	default:
-+		return 0;
-+	}
-+
-+	ret = phy_modify_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
-+			     KSZ9131RN_RXC_DLL_CTRL, KSZ9131RN_DLL_CTRL_BYPASS,
-+			     rxcdll_val);
-+	if (ret < 0)
-+		return ret;
-+
-+	return phy_modify_mmd(phydev, KSZ9131RN_MMD_COMMON_CTRL_REG,
-+			      KSZ9131RN_TXC_DLL_CTRL, KSZ9131RN_DLL_CTRL_BYPASS,
-+			      txcdll_val);
-+}
-+
-+/* Silicon Errata DS80000693B
-+ *
-+ * When LEDs are configured in Individual Mode, LED1 is ON in a no-link
-+ * condition. Workaround is to set register 0x1e, bit 9, this way LED1 behaves
-+ * according to the datasheet (off if there is no link).
++/* Device specific MII_BMCR (Reg 0) bits */
++/* 1 = HP Auto MDI/MDI-X mode, 0 = Microchip Auto MDI/MDI-X mode */
++#define KSZ886X_BMCR_HP_MDIX			BIT(5)
++/* 1 = Force MDI (transmit on RXP/RXM pins), 0 = Normal operation
++ * (transmit on TXP/TXM pins)
 + */
-+static int ksz9131_led_errata(struct phy_device *phydev)
-+{
-+	int reg;
++#define KSZ886X_BMCR_FORCE_MDI			BIT(4)
++/* 1 = Disable auto MDI-X */
++#define KSZ886X_BMCR_DISABLE_AUTO_MDIX		BIT(3)
++#define KSZ886X_BMCR_DISABLE_FAR_END_FAULT	BIT(2)
++#define KSZ886X_BMCR_DISABLE_TRANSMIT		BIT(1)
++#define KSZ886X_BMCR_DISABLE_LED		BIT(0)
 +
-+	reg = phy_read_mmd(phydev, 2, 0);
-+	if (reg < 0)
-+		return reg;
-+
-+	if (!(reg & BIT(4)))
-+		return 0;
-+
-+	return phy_set_bits(phydev, 0x1e, BIT(9));
-+}
-+
-+static int ksz9131_config_init(struct phy_device *phydev)
-+{
-+	const struct device *dev = &phydev->dev;
-+	const struct device_node *of_node = dev->of_node;
-+	static const char *clk_skews[2] = {"rxc-skew-psec", "txc-skew-psec"};
-+	static const char *rx_data_skews[4] = {
-+		"rxd0-skew-psec", "rxd1-skew-psec",
-+		"rxd2-skew-psec", "rxd3-skew-psec"
-+	};
-+	static const char *tx_data_skews[4] = {
-+		"txd0-skew-psec", "txd1-skew-psec",
-+		"txd2-skew-psec", "txd3-skew-psec"
-+	};
-+	static const char *control_skews[2] = {"txen-skew-psec", "rxdv-skew-psec"};
-+	int ret;
-+
-+	if (!of_node && dev->parent->of_node)
-+		of_node = dev->parent->of_node;
-+
-+	if (!of_node)
-+		return 0;
-+
-+	if (phy_interface_is_rgmii(phydev)) {
-+		ret = ksz9131_config_rgmii_delay(phydev);
-+		if (ret < 0)
-+			return ret;
-+	}
-+
-+	ret = ksz9131_of_load_skew_values(phydev, of_node,
-+					  MII_KSZ9031RN_CLK_PAD_SKEW, 5,
-+					  clk_skews, 2);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ksz9131_of_load_skew_values(phydev, of_node,
-+					  MII_KSZ9031RN_CONTROL_PAD_SKEW, 4,
-+					  control_skews, 2);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ksz9131_of_load_skew_values(phydev, of_node,
-+					  MII_KSZ9031RN_RX_DATA_PAD_SKEW, 4,
-+					  rx_data_skews, 4);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ksz9131_of_load_skew_values(phydev, of_node,
-+					  MII_KSZ9031RN_TX_DATA_PAD_SKEW, 4,
-+					  tx_data_skews, 4);
-+	if (ret < 0)
-+		return ret;
-+
-+	ret = ksz9131_led_errata(phydev);
-+	if (ret < 0)
-+		return ret;
-+
-+	return 0;
-+}
-+
- #define KSZ8873MLL_GLOBAL_CONTROL_4	0x06
- #define KSZ8873MLL_GLOBAL_CONTROL_4_DUPLEX	BIT(6)
- #define KSZ8873MLL_GLOBAL_CONTROL_4_SPEED	BIT(4)
-@@ -757,6 +937,14 @@ static struct phy_driver ksphy_driver[] = {
- 	.config_init	= ksz9031_config_init,
- 	.config_aneg	= genphy_config_aneg,
- 	.read_status	= ksz9031_read_status,
-+}, {
-+	.phy_id		= PHY_ID_KSZ9131,
-+	.phy_id_mask	= 0x00fffff0,
-+	.drv.name	= "Microchip KSZ9131 Gigabit PHY",
-+	.features	= (PHY_GBIT_FEATURES | SUPPORTED_Pause),
-+	.config_init	= ksz9131_config_init,
-+	.config_aneg	= genphy_config_aneg,
-+	.read_status	= genphy_read_status,
- }, {
- 	.phy_id		= PHY_ID_KSZ8873MLL,
- 	.phy_id_mask	= 0x00fffff0,
++/* PHY Special Control/Status Register (Reg 31) */
++#define KSZ886X_CTRL_MDIX_STAT			BIT(4)
++#define KSZ886X_CTRL_FORCE_LINK			BIT(3)
++#define KSZ886X_CTRL_PWRSAVE			BIT(2)
++#define KSZ886X_CTRL_REMOTE_LOOPBACK		BIT(1)
+ 
+ #endif /* _MICREL_PHY_H */
 
 -- 
 2.39.2
