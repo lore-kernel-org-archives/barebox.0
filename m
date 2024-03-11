@@ -1,63 +1,57 @@
-Delivery-date: Mon, 11 Mar 2024 09:07:19 +0100
+Delivery-date: Mon, 11 Mar 2024 09:12:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjago-000lMx-3C
+	id 1rjalk-000ldA-1A
 	for lore@lore.pengutronix.de;
-	Mon, 11 Mar 2024 09:07:19 +0100
+	Mon, 11 Mar 2024 09:12:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjago-0003iE-EM
-	for lore@pengutronix.de; Mon, 11 Mar 2024 09:07:18 +0100
+	id 1rjalj-0006XD-QK
+	for lore@pengutronix.de; Mon, 11 Mar 2024 09:12:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=P7MUbzp7kkLFZrF3dR6sGwvZoUfWF/rGsnteYUfx2B0=; b=R5Te5y+9RfkuWof3SSzQ13o1q0
-	qlj/ysfXKc0BGgown9AWAOLafgyCdWaslufeQfTXhK1EHK4EUXvx1t3+l6KhQbyRcjkhn9T2EyIPq
-	K0TvqGXqEugshtTpAVt3jkd/c2us7R/ORYLZ5K/dtO+l3Cq/IL6or+HujxRaVuvlTNMdQ8zJUBXAG
-	59OBGHB3Ic4iXmWtoaWfJQXo0bXr2LhrL0EP9EVVVcM4WWouWUHdjJ46f77AkEbdmWmIgrgM3BVdO
-	KDFEkb9zkqOwMc/VJyjJ3Yas1yUUJ73xAmTV/iWDyhsNptgyNOBelNdSn5F8uACcUowbBv4vvIbjO
-	vvEdOxMQ==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=bFODvHp7Cxn4vAOY7+3sizlSVG+7KScEb0v0t40feiU=; b=gXe1l1Z+9OwhPxtlOi9IfbxmC/
+	mFz6YznvOpjx216iJpnnqmUHAvqVUfJMszSaj88nHKNJscdvhLn2FH2wn09wJ3KaDAh19a34FMXqq
+	yBtXYa7e+uczXtJL56V28G5+S4KMuFLauzoKUePEqwamxScZo2ndcqJXaZ4s0N1IUqLUb08MprJwS
+	t83rg0CTsyK8Ddkf9R57uIGvShkrA8FTS5XxZPq9/MpO76/+bqjXYgxUNLCe2Vb/JzPZhTnXC6KZa
+	mC0OBjGugLazky4kgDjY3IKvPn+ro/C+LZ3wp6L3sJAEuE18axFKB3X4CyuOAZnS9n9G+AEnemBzO
+	vY3zwL2A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjag5-00000000Z9t-1wBd;
-	Mon, 11 Mar 2024 08:06:33 +0000
+	id 1rjalE-00000000Zrj-0Obe;
+	Mon, 11 Mar 2024 08:11:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjag1-00000000Z8l-2xFu
+	id 1rjalA-00000000Zq8-1Czk
 	for barebox@lists.infradead.org;
-	Mon, 11 Mar 2024 08:06:31 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rjafx-0003CS-Lm; Mon, 11 Mar 2024 09:06:25 +0100
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rjafx-005fU1-9L; Mon, 11 Mar 2024 09:06:25 +0100
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rjafx-007hvI-0Y;
-	Mon, 11 Mar 2024 09:06:25 +0100
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 11 Mar 2024 09:06:24 +0100
-Message-Id: <20240311080624.1836184-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	Mon, 11 Mar 2024 08:11:50 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rjal7-00069q-Iy; Mon, 11 Mar 2024 09:11:45 +0100
+Message-ID: <b937fe23-deff-4dee-ad41-877a1f0c7658@pengutronix.de>
+Date: Mon, 11 Mar 2024 09:11:43 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, barebox@lists.infradead.org
+References: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-0-6d50c90485f3@pengutronix.de>
+ <20240308-v2024-02-0-topic-arasan-hs200-support-v1-6-6d50c90485f3@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-6-6d50c90485f3@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240311_010629_764766_CB92A614 
-X-CRM114-Status: GOOD (  10.97  )
+X-CRM114-CacheID: sfid-20240311_011148_369847_A3104629 
+X-CRM114-Status: GOOD (  15.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,59 +74,58 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] ARM: i.MX93: ele: start TRNG on i.MX93 rev a1
+Subject: Re: [PATCH 06/12] include: mci: sync mci_timing with linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On i.MX93 a0 the TRNG seems to be started automatically. On rev a1 it's
-not and OP-TEE panics with "Cannot retrieve random data from ELE". Start
-the TRNG to let OP-TEE startup successfully.
+On 08.03.24 12:17, Steffen Trumtrar wrote:
+> The timings are used to check if mci_host->timing is equal to one of
+> this values. Linux uses a different numbering. Adapt that for compatability.
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/mach-imx/ele.c | 20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-diff --git a/arch/arm/mach-imx/ele.c b/arch/arm/mach-imx/ele.c
-index ab3958cbd3..f8093fc694 100644
---- a/arch/arm/mach-imx/ele.c
-+++ b/arch/arm/mach-imx/ele.c
-@@ -165,6 +165,23 @@ int ele_get_info(struct ele_get_info_data *info)
- 	return ret;
- }
- 
-+static int ele_get_start_trng(void)
-+{
-+        struct ele_msg msg = {
-+		.version = ELE_VERSION,
-+		.tag = ELE_CMD_TAG,
-+		.size = 1,
-+		.command = ELE_START_RNG,
-+	};
-+	int ret;
-+
-+	ret = ele_call(&msg);
-+	if (ret)
-+		pr_err("Could not start TRNG, response 0x%x\n", msg.data[0]);
-+
-+	return ret;
-+}
-+
- int imx93_ele_load_fw(void *bl33)
- {
- 	struct ele_get_info_data info = {};
-@@ -204,6 +221,9 @@ int imx93_ele_load_fw(void *bl33)
- 		pr_err("Could not start ELE firmware: ret %d, response 0x%x\n",
- 			ret, msg.data[0]);
- 
-+	if (rev == 0xa1)
-+		ele_get_start_trng();
-+
- 	return 0;
- }
- 
+> ---
+>  include/mci.h | 18 ++++++++++--------
+>  1 file changed, 10 insertions(+), 8 deletions(-)
+> 
+> diff --git a/include/mci.h b/include/mci.h
+> index 9c9d44881d..91460b7ef6 100644
+> --- a/include/mci.h
+> +++ b/include/mci.h
+> @@ -411,14 +411,16 @@ enum mci_timing {
+>  	MMC_TIMING_LEGACY	= 0,
+>  	MMC_TIMING_MMC_HS	= 1,
+>  	MMC_TIMING_SD_HS	= 2,
+> -	MMC_TIMING_UHS_SDR12	= MMC_TIMING_LEGACY,
+> -	MMC_TIMING_UHS_SDR25	= MMC_TIMING_SD_HS,
+> -	MMC_TIMING_UHS_SDR50	= 3,
+> -	MMC_TIMING_UHS_SDR104	= 4,
+> -	MMC_TIMING_UHS_DDR50	= 5,
+> -	MMC_TIMING_MMC_HS200	= 6,
+> -	MMC_TIMING_MMC_DDR52	= 7,
+> -	MMC_TIMING_MMC_HS400	= 8,
+> +	MMC_TIMING_UHS_SDR12	= 3,
+> +	MMC_TIMING_UHS_SDR25	= 4,
+> +	MMC_TIMING_UHS_SDR50	= 5,
+> +	MMC_TIMING_UHS_SDR104	= 6,
+> +	MMC_TIMING_UHS_DDR50	= 7,
+> +	MMC_TIMING_MMC_DDR52	= 8,
+> +	MMC_TIMING_MMC_HS200	= 9,
+> +	MMC_TIMING_MMC_HS400	= 10,
+> +	MMC_TIMING_SD_EXP	= 11,
+> +	MMC_TIMING_SD_EXP_1_2V	= 12,
+>  };
+>  
+>  static inline bool mci_timing_is_ddr(enum mci_timing timing)
+> 
+
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
