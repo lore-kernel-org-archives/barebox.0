@@ -1,62 +1,67 @@
-Delivery-date: Mon, 11 Mar 2024 15:48:57 +0100
+Delivery-date: Mon, 11 Mar 2024 17:12:12 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjgxV-001Bj0-2Z
+	id 1rjiG4-001FQe-08
 	for lore@lore.pengutronix.de;
-	Mon, 11 Mar 2024 15:48:57 +0100
+	Mon, 11 Mar 2024 17:12:12 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjgxV-0003us-2t
-	for lore@pengutronix.de; Mon, 11 Mar 2024 15:48:57 +0100
+	id 1rjiG2-0003KQ-VY
+	for lore@pengutronix.de; Mon, 11 Mar 2024 17:12:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=xHjJQOKw8v2ZPUlUJLcX4BX/LLq40z4fnUoEoNuL+6A=; b=SOlnmjlQFlS2u+q7REdlqbFjv8
-	hHONL3vFuVlFgKkTei8cGjnRbaHJi3Nx+vZrdDKewIl5PnGtYOh1HIw5kSy6FVyZVmHH/1YjgcNB+
-	RS8mbj6l2D9xIh+ZjOfKyeaJrTEY5xVxGDcdrW/PPECC0XoGf68Os5Abg6mPEXCUBlaJWzlfKZHrj
-	ZDdh8ljtz2UmeI0ImMovMfZTJTwZwvNJn1Wd30FEUEDgUix6cRb4HrP4lcjh9Cy2mZrC3yqyC68un
-	eczOMrpENXazAKSjgdw5U0wljcjoT1br2X9iInjZtHsZqjk9d+Hnc5D/wkoSbOowMQ8XFYyCqIE6E
-	WR9ZFdTw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=kkaY10rif+9M6uAN9uKw3CbEPVmjiTaU4izNnkjCqvg=; b=wdf3tmAV/7/nBx8RW4Qt+p/3MY
+	0Q1cv8mx7FzpRpyd2nA0KkpaQb5abmVumzqZtVjr4DQncAgy2HPilP6TNtKhrUkYgSKnSto3RXgoc
+	pOVUp5v17RWCeRXsopycsd1024gko9XUiARe/eU4Qq4fRy7IQ1O2r90JV6Eh/XJ1vwB0KihDDgZj1
+	NXAEfMx91jbh3J+MHKMcMItTXIjWA8MmNweO/kOWiPhGph+rfP6RylClApcfZYNTutGqN+NqvPEA/
+	1OWBvTJ19TKrIbEakT4qlh6j8Ks3qT9UFoN7pF6EcPTKE822WuAjY6BmhpTzo5Q3mbVZJ5Pc2BLJD
+	q0troi+w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjgwy-00000001rjU-0wtZ;
-	Mon, 11 Mar 2024 14:48:24 +0000
+	id 1rjiFQ-00000002Eai-3zrc;
+	Mon, 11 Mar 2024 16:11:32 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjgwu-00000001riu-2sO4
+	id 1rjiFK-00000002EWN-46YB
 	for barebox@lists.infradead.org;
-	Mon, 11 Mar 2024 14:48:22 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPV6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+	Mon, 11 Mar 2024 16:11:29 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1rjgws-0003Ko-Vn; Mon, 11 Mar 2024 15:48:19 +0100
-Message-ID: <e8909e72-1aef-47c8-bc69-942664f6c340@pengutronix.de>
-Date: Mon, 11 Mar 2024 15:48:18 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US, de-DE
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>,
- Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
-References: <20240311-karo-imx8mp-som-board-upstreaming-v1-0-7c77f9ba02e5@pengutronix.de>
- <20240311-karo-imx8mp-som-board-upstreaming-v1-4-7c77f9ba02e5@pengutronix.de>
- <c77f0333-386e-4201-b7d1-4cf186b15666@pengutronix.de>
- <2fc64924-48e5-4265-950e-0527c034628b@pengutronix.de>
- <591d7ddb-2b92-4241-9a74-41af3566241a@pengutronix.de>
+	id 1rjiFI-0002QX-QV; Mon, 11 Mar 2024 17:11:24 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.kerkmann@pengutronix.de>)
+	id 1rjiFI-005kb5-At; Mon, 11 Mar 2024 17:11:24 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.kerkmann@pengutronix.de>)
+	id 1rjiFH-00EPUY-2J;
+	Mon, 11 Mar 2024 17:11:24 +0100
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-In-Reply-To: <591d7ddb-2b92-4241-9a74-41af3566241a@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Date: Mon, 11 Mar 2024 17:11:22 +0100
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240311-karo-imx8mp-som-board-upstreaming-v2-5-6ecda693adb2@pengutronix.de>
+References: <20240311-karo-imx8mp-som-board-upstreaming-v2-0-6ecda693adb2@pengutronix.de>
+In-Reply-To: <20240311-karo-imx8mp-som-board-upstreaming-v2-0-6ecda693adb2@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+X-Mailer: b4 0.12.4
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240311_074820_888316_3016313B 
-X-CRM114-Status: GOOD (  19.11  )
+X-CRM114-CacheID: sfid-20240311_091127_238362_0F583021 
+X-CRM114-Status: GOOD (  10.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,104 +84,115 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 4/6] arm: dts: karo: import dts for karo-qsxp-ml81
+Subject: [PATCH v2 5/6] arm: dts: karo: add karo
+ imx8mp-karo-qsxp-ml81-qsbase4
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Ahmad,
+The Ka-Ro QSXP-QSBASE4[1] is the offical DK from Ka-Ro for their QSXP
+i.MX8M Plus solder down system on module. It comes with an additional
+Micrel KSZ9131 gigabit ethernet phy. The devicetree was adapted from the
+offical Ka-Ro github[2], commit a49b38ec97854c0cd9cd83a9f4ae3b56e99a58b6.
 
-On 11.03.24 15:33, Ahmad Fatoum wrote:
-> Hello Stefan,
-> 
-> On 11.03.24 15:23, Stefan Kerkmann wrote:
->> Hello Ahmad,
->>
->> On 11.03.24 11:02, Ahmad Fatoum wrote:
->>> Hello Stefan,
->>>
->>> On 11.03.24 10:10, Stefan Kerkmann wrote:
->>>> From: Marc Kleine-Budde <mkl@pengutronix.de>
->>>>
->>>> This imports the device tree for the Ka-Ro QSXP, which is a i.MX8M Plus
->>>> solder down system on module. The sources have been adapted from the
->>>> offical Ka-Ro github[1], commit a49b38ec97854c0cd9cd83a9f4ae3b56e99a58b6.
->>>>
->>>> [1]: https://github.com/karo-electronics/meta-karo-nxp.git
->>>
->>> To make it easier to sync with Linux, once the device tree goes upstream,
->>> could you separate the barebox-specific changes into a separate file?
->>>
->>
->> Ack.
->>
->>>> +	model = "Ka-Ro electronics QSXP-ML81 (NXP i.MX8MP) module";
->>>> +	compatible = "karo,imx8mp-qsxp-ml81", "fsl,imx8mp";
->>>
->>> Add a compatible for the SoM here: "karo,imx8mp-qsxp".
-> 
-> Then, why is it a DTS and not a DTSI?
-> 
+[1]: https://karo-electronics.github.io/docs/getting-started/qsbase4/quickstart-qsbase4.html
+[2]: https://github.com/karo-electronics/meta-karo-nxp.git
 
-AFAIK, this was a request from Marc to keep it as a DTS. I have no
-strong opinion here.
+Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
+---
+ arch/arm/dts/imx8mp-karo-qsxp-ml81-qsbase4.dts | 82 ++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
 
-> 
->> You're right, AFAIK the eMMC JEDEC standard mandates 1.8V IOs for HS200
->> mode. For DDR mode the IO voltage can be 3.3V or 1.8V, according to the
->> datasheet of the used THGBMNG5D1LBAIL eMMC (if the product pictures are
->> anything to go by). So the correct voltage ranges property would be
->> `voltage-ranges = <1800 1800 3300 3300>`?
-> 
-> Your I/O Voltage (vccq) is fixed at 1.8V, so 3300 sounds wrong.
-> 
-
-Alright, but what if it wasn't and was adjustable? Just asking out of
-curiosity.
-
->> The line itself was copied verbatim from
->> https://github.com/karo-electronics/meta-karo-nxp/blob/mickledore/recipes-kernel/linux/linux-karo-6.1/mx8-nxp-bsp/dts/freescale/imx8mp-karo.dtsi#L263
->>
->>
->>> Either way, it doesn't matter to barebox.
->> So in the end we just delete it?
-> 
-> Just delete it.
-> 
-
-Ack.
-
-> Cheers,
-> Ahmad
-> 
->>
->>>> +	non-removable;
->>>> +	status = "okay";
->>>> +};
->>>> +
->>>> +&wdog1 {
->>>> +	pinctrl-names = "default";
->>>> +	pinctrl-0 = <&pinctrl_wdog>;
->>>> +	fsl,ext-reset-output;
->>>> +	status = "okay";
->>>> +};
->>>> +
->>>> +&iomuxc {
->>>> +	pinctrl_i2c1: i2c1grp {
->>>> +		fsl,pins = <
->>>> +			MX8MP_IOMUXC_I2C1_SCL__I2C1_SCL			0x400001c2
->>>> +			MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA			0x400001c2
->>>> +		>;
->>>> +	};
-> 
-> 
-
-Cheers,
-Stefan
+diff --git a/arch/arm/dts/imx8mp-karo-qsxp-ml81-qsbase4.dts b/arch/arm/dts/imx8mp-karo-qsxp-ml81-qsbase4.dts
+new file mode 100644
+index 0000000000..eec42954dc
+--- /dev/null
++++ b/arch/arm/dts/imx8mp-karo-qsxp-ml81-qsbase4.dts
+@@ -0,0 +1,82 @@
++// SPDX-License-Identifier: (GPL-2.0 OR MIT)
++/*
++ * Copyright (C) 2020 Lothar Waßmann <LW@KARO-electronics.de>
++ *
++ */
++
++/dts-v1/;
++
++#include "imx8mp-karo-qsxp-ml81.dtsi"
++
++/ {
++	model = "Ka-Ro electronics QSXP-ML81-QSBASE4 (NXP i.MX8MP) Board";
++	compatible = "karo,imx8mp-qsxp-ml81-qsbase4", "karo,imx8mp-qsxp-ml81", "fsl,imx8mp";
++};
++
++&eqos {
++	pinctrl-names = "default", "sleep";
++	pinctrl-0 = <&pinctrl_eqos>;
++	pinctrl-1 = <&pinctrl_eqos_sleep>;
++	phy-connection-type = "rgmii-id";
++	phy-handle = <&ethphy1>;
++	phy-supply = <&ldo5_reg>;
++	status = "okay";
++
++	mdio {
++		compatible = "snps,dwmac-mdio";
++		#address-cells = <1>;
++		#size-cells = <0>;
++
++		ethphy1: ethernet-phy@7 {
++			compatible = "ethernet-phy-ieee802.3-c22";
++			reg = <7>;
++			reset-gpios = <&gpio4 22 GPIO_ACTIVE_LOW>;
++			reset-assert-us = <100>;
++			reset-deassert-us = <250000>;
++		};
++	};
++};
++
++&iomuxc {
++	pinctrl_eqos: eqosgrp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22 0x140					/* PHY reset */
++			MX8MP_IOMUXC_ENET_MDC__ENET_QOS_MDC 0x142
++			MX8MP_IOMUXC_ENET_MDIO__ENET_QOS_MDIO 0x142
++			MX8MP_IOMUXC_ENET_TXC__CCM_ENET_QOS_CLOCK_GENERATE_TX_CLK 0x40000016
++			MX8MP_IOMUXC_ENET_TD0__ENET_QOS_RGMII_TD0 0x016
++			MX8MP_IOMUXC_ENET_TD1__ENET_QOS_RGMII_TD1 0x016
++			MX8MP_IOMUXC_ENET_TD2__ENET_QOS_RGMII_TD2 0x016
++			MX8MP_IOMUXC_ENET_TD3__ENET_QOS_RGMII_TD3 0x016
++			MX8MP_IOMUXC_ENET_TX_CTL__ENET_QOS_RGMII_TX_CTL 0x016
++			MX8MP_IOMUXC_ENET_RD0__ENET_QOS_RGMII_RD0 0x110				/* MODE0 */
++			MX8MP_IOMUXC_ENET_RD1__ENET_QOS_RGMII_RD1 0x150				/* MODE1 */
++			MX8MP_IOMUXC_ENET_RD2__ENET_QOS_RGMII_RD2 0x150				/* MODE2 */
++			MX8MP_IOMUXC_ENET_RD3__ENET_QOS_RGMII_RD3 0x150				/* MODE3 */
++			MX8MP_IOMUXC_ENET_RXC__CCM_ENET_QOS_CLOCK_GENERATE_RX_CLK 0x156		/* PHYAD2 */
++			MX8MP_IOMUXC_ENET_RX_CTL__ENET_QOS_RGMII_RX_CTL 0x000			/* CLK125_EN */
++			MX8MP_IOMUXC_GPIO1_IO00__CCM_ENET_PHY_REF_CLK_ROOT 0x110		/* LED_MODE */
++		>;
++	};
++
++	pinctrl_eqos_sleep: eqos-sleep-grp {
++		fsl,pins = <
++			MX8MP_IOMUXC_SAI2_RXC__GPIO4_IO22 0x120
++			MX8MP_IOMUXC_ENET_MDC__GPIO1_IO16 0x120
++			MX8MP_IOMUXC_ENET_MDIO__GPIO1_IO17 0x120
++			MX8MP_IOMUXC_ENET_TXC__GPIO1_IO23 0x120
++			MX8MP_IOMUXC_ENET_TD0__GPIO1_IO21 0x120
++			MX8MP_IOMUXC_ENET_TD1__GPIO1_IO20 0x120
++			MX8MP_IOMUXC_ENET_TD2__GPIO1_IO19 0x120
++			MX8MP_IOMUXC_ENET_TD3__GPIO1_IO18 0x120
++			MX8MP_IOMUXC_ENET_TX_CTL__GPIO1_IO22 0x120
++			MX8MP_IOMUXC_ENET_RD0__GPIO1_IO26 0x120
++			MX8MP_IOMUXC_ENET_RD1__GPIO1_IO27 0x120
++			MX8MP_IOMUXC_ENET_RD2__GPIO1_IO28 0x120
++			MX8MP_IOMUXC_ENET_RD3__GPIO1_IO29 0x120
++			MX8MP_IOMUXC_ENET_RXC__GPIO1_IO25 0x120
++			MX8MP_IOMUXC_ENET_RX_CTL__GPIO1_IO24 0x120
++			MX8MP_IOMUXC_GPIO1_IO00__GPIO1_IO00 0x120
++		>;
++	};
++};
 
 -- 
-Pengutronix e.K.                       | Stefan Kerkmann             |
-Steuerwalder Str. 21                   | https://www.pengutronix.de/ |
-31137 Hildesheim, Germany              | Phone: +49-5121-206917-128  |
-Amtsgericht Hildesheim, HRA 2686       | Fax:   +49-5121-206917-9    |
+2.39.2
+
 
 
