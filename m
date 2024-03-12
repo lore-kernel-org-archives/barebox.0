@@ -1,63 +1,83 @@
-Delivery-date: Tue, 12 Mar 2024 11:10:06 +0100
+Delivery-date: Tue, 12 Mar 2024 14:52:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjz5C-002U7u-0p
+	id 1rk2Y7-002jYE-22
 	for lore@lore.pengutronix.de;
-	Tue, 12 Mar 2024 11:10:06 +0100
+	Tue, 12 Mar 2024 14:52:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjz5B-0006Gq-JV
-	for lore@pengutronix.de; Tue, 12 Mar 2024 11:10:06 +0100
+	id 1rk2Y6-0000sA-MT
+	for lore@pengutronix.de; Tue, 12 Mar 2024 14:52:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=NxX3fpiTPXa8l8KCoQAD88js1SDw47mFFmKvigGqt2I=; b=3yKolSRsq6TF2BP0ebtBcnU0Sy
-	FLSTcYb/9HFlXmoM55X+kjUOLE6cvhJKpOTz+X0z2HqH2n4FZNVK2TOjIT5sim4RuKKbam0j+EB+w
-	fWBMGyQS4k9kjocn3F808WNPBOy7gLUzY/tohPKqwQXFndAFS8ln8lfneJiqDaLNPP+9euIZek8VN
-	CZll9cliRERpeHCTAOReS9OUagY6aaQCceA0q/mTXPQEFCvJ+o2k30aJy8hSi0LYpGqHkl5JR0oP1
-	BPCuQbAJrOzaVFdXP7MMh2y/vnte1kppsdyXqaw5e72bvf50/Iuva0kyVVXNh03Se9hYy51UopQST
-	hsk3VL2A==;
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=c9XbbkSWVzd4IPJTtG03sAox8q/bFFY6fhvwQGUwTsw=; b=egymnKyLjCZDY14oOeFnp0fTu7
+	tjpkodOCRkP8dnI/sABPIzt/i36xUnQVXph6+djgHGxvMTphgvZobCmAFGyY9/mbP+jNeBkgcY1li
+	3CBwottwb27ODP68o4rzg89+ec+msU7xf45mzvjCPNPjqE1G+hlepi0AGOAka035oSsKe6fWZ7LeZ
+	6dPvogUNKAVx3znbgAW9nNBggMpAr0hkuj/D7IkOdrBV1CtelyEBu0+yN94AeEaQjoUriIBpgniU5
+	iTYM+SLP4JuieJ8/JthZWNUhWGgIBe8IHlh8B47cQzh4It+7sfcCM0YSuxJiVHk5mDCVu3lfqZ+dz
+	a8hA/sQw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjz4a-00000005HKz-2UEn;
-	Tue, 12 Mar 2024 10:09:28 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1rk2XQ-00000005yuF-1Ocl;
+	Tue, 12 Mar 2024 13:51:28 +0000
+Received: from mout.gmx.net ([212.227.17.22])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjz4X-00000005HKA-3nEv
+	id 1rk2XL-00000005ytD-48UL
 	for barebox@lists.infradead.org;
-	Tue, 12 Mar 2024 10:09:27 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rjz4U-0005kk-MQ; Tue, 12 Mar 2024 11:09:22 +0100
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rjz4U-005tYs-9z; Tue, 12 Mar 2024 11:09:22 +0100
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1rjz4U-004ga0-0k;
-	Tue, 12 Mar 2024 11:09:22 +0100
-From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Tue, 12 Mar 2024 11:09:08 +0100
-Message-ID: <20240312100918.604105-1-u.kleine-koenig@pengutronix.de>
-X-Mailer: git-send-email 2.43.0
+	Tue, 12 Mar 2024 13:51:26 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=rempel-privat.de;
+	s=s31663417; t=1710251479; x=1710856279; i=linux@rempel-privat.de;
+	bh=LCdH39wt6FEcy1TTPvESZ0gluRFqqoROs3OKkxrBfS4=;
+	h=X-UI-Sender-Class:Date:Subject:To:References:From:In-Reply-To;
+	b=nCpvfS+gQkjmDlsDnwM1jj5evQrjO0SCY8aD/QzXBomFR8U33mfQkdZ5UQ42PUe6
+	 9uKMi86SrlxeO9rENIYPac3c2BNQVOG4jy+sNH2x2sMSjfXJ39LOI/qVP0L9HDlGe
+	 m1NuJ1FsZIvPTSfimbsFEkp6zNI+Ewpzxq6kwWSY1/XFp+23LbGB8VFOurnSvTPVi
+	 2rRuW6UhaFool2nLb8hotyqctIOaTUIET1n3dj/LYcZjQU72XnYuYZbgLP69JwLhW
+	 QqgDeritcY9LXVw20gAVfbfVhh3B12/ISA86guP4LveE1E6/2glwvQpts8gYOXaO1
+	 UdoLeHtcwX5H3NCs4Q==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.86.182] ([95.91.192.148]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N95eJ-1qi3Dk1Vtn-016A20 for
+ <barebox@lists.infradead.org>; Tue, 12 Mar 2024 14:51:19 +0100
+Message-ID: <454d1374-3cda-42bf-97d5-56bbd84eea66@rempel-privat.de>
+Date: Tue, 12 Mar 2024 14:51:18 +0100
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: barebox@lists.infradead.org
+References: <20240312100057.3572762-1-o.rempel@pengutronix.de>
+From: Oleksij Rempel <linux@rempel-privat.de>
+In-Reply-To: <20240312100057.3572762-1-o.rempel@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:DWv9frEuJEzoT2rfEhwh3xbv2Co85Pa+0ZPOJFMALxH2465ZZYO
+ TaEOqFte/t9b1nlGvr8jluCKsa8qfkHJAkK0fDMkqvFL53A6GhBqgkvpnm4++Zzne9j9ve7
+ Fcc89VgZ0Gp1H16XKKGlfVmoe4ZNYv7bzP8ZW61HavUoK6SYKbTakZum5aSpaZJr8eRIEaP
+ xqXO2PTWroXF83jQQS66g==
+UI-OutboundReport: notjunk:1;M01:P0:2JSkn7gyFAQ=;xezThKvSARCDufRanXitVFWMNfh
+ fG/nTmtVwo9Ci/ES6FBRpqXwAj0YLe/LRJG8ZPqalu7hBlmm2gragR7EsnSzllAQ9AkJn4sg8
+ 3L8MKk99pebDDg2eLgsW2Fj1tqEj7XG5NSPbPDuHebvVP768w1Fw7iYgRZKWmraSsNrKg4ja+
+ RULh+d1Uok2gECFE+AtciVsKIiM9hXRpMrgp3aJBFXpXRE/QY3HKKd019f6QQBz6rI0U4XiuP
+ CZ5iHicZN+zM3PhW/mqX86bEnQD0ykLBJzjNXhBsJDSkAlL9+wEAfZDNNq4VDA00lDcmDwLM/
+ uHGGtjjC+uG5s541kE05kBO32tZmX8BGB/2eu77Z1GX3E+Yh5qfnFBwKOtMau8E7b9GEr4yty
+ Ll3FpH02XJ8YCpHxrHC7F8+AYt1Y2veTw3JFg7tuWdQw3oktthyZMJ1tq0F9ZZkx2e0NJHyVb
+ VCjQT7kXZwh3XyhDYLea+VKTo/hMV/iGaohLZOVpaxyTpMRD+dojrYQhnoQV7VortdVA2wTTd
+ H20x51pShc4pG8zoFF36yYvG7RJhk+TLHHbui6va0myaCi04Fk5hbHs8DhlL6uEMMx9pIxLjX
+ 3snrx9rb5/dcw9SU0YLbUkohCobcooby6Vz2StC9GeXKxO6wuASFXhJRqUHieihjZq7YzR0Qf
+ P5Tk+q1QzUnA5ghtwgKXfMIubRW7C7QuWiVdDLotvLdwo138KHA8IjcXdqpsOp9Q8UHpIseAy
+ E6I6wfgM6+hjsiLUDw47Fhjnb/O5Nu4KcQ+qWjEdZq4zdYutXSIoTNr+MGawwVRJozoieGsRC
+ HOHV8vnB/qgoo1+40TW67Yt5gSa4v37BMPrgm8X/+9tUE=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240312_030925_967163_79B51F46 
-X-CRM114-Status: GOOD (  14.59  )
+X-CRM114-CacheID: sfid-20240312_065124_652666_53270DD6 
+X-CRM114-Status: GOOD (  30.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,107 +95,206 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] of: partition: Also add partitions created by addpart to the boot dtb
+Subject: Re: [PATCH v1] ARM: i.MX8MP: skov: add MAC address assignment support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-A partition added interactively using addpart was added in
-of_partition_fixup() before commit aec676b568 ("cdev: record whether
-partition is parsed from OF").
+Please ignore this patch. Ahmad gave me a better idea.
 
-Restore that behaviour. To do that a new flag DEVFS_PARTITION_FOR_FIXUP
-is created that behaves very similar what DEVFS_PARTITION_FROM_OF did
-before. The only difference is that addpart makes use of it (and that
-stat uses a different string to describe it).
+Am 12.03.24 um 11:00 schrieb Oleksij Rempel:
+> Assign MAC address to main CPU interface and switch ports.
+>
+> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> ---
+>   arch/arm/boards/skov-imx8mp/board.c | 131 ++++++++++++++++++++++++++++
+>   arch/arm/dts/imx8mp-skov.dts        |   1 +
+>   2 files changed, 132 insertions(+)
+>
+> diff --git a/arch/arm/boards/skov-imx8mp/board.c b/arch/arm/boards/skov-=
+imx8mp/board.c
+> index 3b6eb7b080..94d0bc75f9 100644
+> --- a/arch/arm/boards/skov-imx8mp/board.c
+> +++ b/arch/arm/boards/skov-imx8mp/board.c
+> @@ -10,9 +10,12 @@
+>   #include <gpio.h>
+>   #include <init.h>
+>   #include <io.h>
+> +#include <linux/nvmem-consumer.h>
+>   #include <mach/imx/bbu.h>
+>   #include <mach/imx/generic.h>
+>   #include <mach/imx/iomux-mx8mp.h>
+> +#include <net.h>
+> +#include <of_net.h>
+>
+>   struct skov_imx8mp_priv {
+>   	struct device *dev;
+> @@ -85,6 +88,134 @@ static const struct board_description imx8mp_variant=
+s[] =3D {
+>   	},
+>   };
+>
+> +static void skov_imx8mp_get_src_mac(struct skov_imx8mp_priv *priv,
+> +				   struct device_node *s_np, u8 *mac,
+> +				   int dst_id)
+> +{
+> +	char str[sizeof("xx:xx:xx:xx:xx:xx")];
+> +	struct eth_device *s_edev;
+> +	int ret;
+> +
+> +	s_edev =3D of_find_eth_device_by_node(s_np);
+> +	if (s_edev && is_valid_ether_addr(s_edev->ethaddr)) {
+> +		/* If the source device has a valid MAC address, use it in
+> +		 * case address is overwritten by user.
+> +		 */
+> +		memcpy(mac, s_edev->ethaddr, ETH_ALEN);
+> +		return;
+> +	}
+> +
+> +	/* if the source device has no valid MAC address, try to get it from
+> +	 * nvmem if it configured in the devicetree.
+> +	 */
+> +	ret =3D of_get_mac_addr_nvmem(s_np, mac);
+> +	if (!ret)
+> +		return;
+> +
+> +	/* if the source device has no valid MAC address, generate one with
+> +	 * vendor OUI.
+> +	 */
+> +	ret =3D generate_ether_addr(mac, dst_id);
+> +	if (ret)
+> +		random_ether_addr(mac);
+> +
+> +	/* set SKOV OUI */
+> +	mac[0] =3D 0x00;
+> +	mac[1] =3D 0x0e;
+> +	mac[2] =3D 0xcd;
+> +	ethaddr_to_string(mac, str);
+> +	dev_warn(priv->dev, "Failed to get eth addr for idx=3D%d. Generating o=
+ne: %s\n",
+> +		 dst_id, str);
+> +}
+> +
+> +static int skov_imx8mp_eth_register_ethaddr(struct skov_imx8mp_priv *pr=
+iv,
+> +					    struct device_node *d_np,
+> +					    struct device_node *s_np,
+> +					    int dst_id)
+> +{
+> +	struct eth_device *d_edev;
+> +	u8 mac[ETH_ALEN] =3D { 0 };
+> +
+> +	d_edev =3D of_find_eth_device_by_node(d_np);
+> +	if (d_edev) {
+> +		/* If the destination device already has a valid MAC address, do
+> +		 * nothing, it was probably set to nv by user.
+> +		 */
+> +		if (is_valid_ether_addr(d_edev->ethaddr))
+> +			return 0;
+> +	}
+> +
+> +	skov_imx8mp_get_src_mac(priv, s_np, mac, dst_id);
+> +
+> +	of_eth_register_ethaddr(d_np, mac);
+> +
+> +	return 0;
+> +}
+> +
+> +/* We have following requirements for the ethernet MAC addresses:
+> + * - LAN1 MAC address should be the same as the MAC address stored in t=
+he FEC
+> + *   slot (FEC is not used on this board).
+> + * - LAN2 MAC address should be the same as the EQOS MAC address. (EQOS=
+ is
+> + *   the master interface for the switch on this board, LAN2 and LAN1 a=
+re
+> + *   external ports of this switch).
+> + * - LAN2 MAC address is usually higher than LAN1 MAC address. But prod=
+uction
+> + *   process do not guarantee this. So, we can't calculate LAN2 MAC add=
+ress
+> + *   from LAN1 MAC address.
+> + */
+> +static void skov_imx8mp_ethernet_init(struct skov_imx8mp_priv *priv)
+> +{
+> +	struct device_node *root;
+> +	unsigned int i;
+> +	struct eth_node_info {
+> +		const char *s_alias;
+> +		const char *d_alias;
+> +	} eth_node_info[] =3D {
+> +		{ "ethernet0", "ethernet0" }, /* EQOS -> EQOS */
+> +		{ "ethernet0", "ethernet2" }, /* EQOS -> LAN2 */
+> +		{ "ethernet3", "ethernet1" }, /* FEC -> LAN1 */
+> +	};
+> +
+> +	root =3D of_get_root_node();
+> +
+> +	for (i =3D 0; i < ARRAY_SIZE(eth_node_info); i++) {
+> +		const char *s_alias =3D eth_node_info[i].s_alias;
+> +		const char *d_alias =3D eth_node_info[i].d_alias;
+> +		struct device_node *s_np, *d_np;
+> +		int ret;
+> +
+> +		s_np =3D of_find_node_by_alias(root, s_alias);
+> +		if (!s_np) {
+> +			dev_warn(priv->dev, "Failed to find src ethernet node by alias: %s\n=
+",
+> +				 s_alias);
+> +			continue;
+> +		}
+> +
+> +		d_np =3D of_find_node_by_alias(root, d_alias);
+> +		if (!d_np) {
+> +			dev_warn(priv->dev, "Failed to find dst ethernet node by alias: %s\n=
+",
+> +				 d_alias);
+> +			continue;
+> +		}
+> +
+> +		ret =3D skov_imx8mp_eth_register_ethaddr(priv, d_np, s_np, i);
+> +		if (ret) {
+> +			dev_warn(priv->dev, "Failed to transfer MAC address from alias %s to=
+ %s\n",
+> +				 s_alias, d_alias);
+> +			continue;
+> +		}
+> +	}
+> +}
+> +
+> +static int skov_imx8mp_populate_ethaddr(void)
+> +{
+> +	struct skov_imx8mp_priv *priv =3D skov_imx8mp_priv;
+> +
+> +	skov_imx8mp_ethernet_init(priv);
+> +
+> +	return 0;
+> +}
+> +postenvironment_initcall(skov_imx8mp_populate_ethaddr);
+> +
+>   static int skov_imx8mp_fixup(struct device_node *root, void *data)
+>   {
+>   	struct device_node *chosen =3D of_create_node(root, "/chosen");
+> diff --git a/arch/arm/dts/imx8mp-skov.dts b/arch/arm/dts/imx8mp-skov.dts
+> index 3243a41697..063861427c 100644
+> --- a/arch/arm/dts/imx8mp-skov.dts
+> +++ b/arch/arm/dts/imx8mp-skov.dts
+> @@ -31,6 +31,7 @@ aliases {
+>   		ethernet0 =3D &eqos;
+>   		ethernet1 =3D &lan1;
+>   		ethernet2 =3D &lan2;
+> +		ethernet3 =3D &fec;
+>   		state =3D &state;
+>   	};
+>
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
----
- drivers/of/partition.c | 6 +++---
- fs/fs.c                | 2 ++
- include/driver.h       | 5 +++--
- lib/cmdlinepart.c      | 2 +-
- 4 files changed, 9 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/of/partition.c b/drivers/of/partition.c
-index 7c9f443ee7..abfa99820d 100644
---- a/drivers/of/partition.c
-+++ b/drivers/of/partition.c
-@@ -74,7 +74,7 @@ struct cdev *of_parse_partition(struct cdev *cdev, struct device_node *node)
- 	}
- 
- 	new->device_node = node;
--	new->flags |= DEVFS_PARTITION_FROM_OF;
-+	new->flags |= DEVFS_PARTITION_FROM_OF | DEVFS_PARTITION_FOR_FIXUP;
- 
- 	if (IS_ENABLED(CONFIG_NVMEM) && of_device_is_compatible(node, "nvmem-cells")) {
- 		struct nvmem_device *nvmem = nvmem_partition_register(new);
-@@ -178,7 +178,7 @@ int of_fixup_partitions(struct device_node *np, struct cdev *cdev)
- 		return 0;
- 
- 	list_for_each_entry(partcdev, &cdev->partitions, partition_entry) {
--		if (!(partcdev->flags & DEVFS_PARTITION_FROM_OF))
-+		if (!(partcdev->flags & DEVFS_PARTITION_FOR_FIXUP))
- 			continue;
- 		n_parts++;
- 	}
-@@ -229,7 +229,7 @@ int of_fixup_partitions(struct device_node *np, struct cdev *cdev)
- 		u8 tmp[16 * 16]; /* Up to 64-bit address + 64-bit size */
- 		loff_t partoffset;
- 
--		if (!(partcdev->flags & DEVFS_PARTITION_FROM_OF))
-+		if (!(partcdev->flags & DEVFS_PARTITION_FOR_FIXUP))
- 			continue;
- 
- 		if (partcdev->mtd)
-diff --git a/fs/fs.c b/fs/fs.c
-index 68e7873e9c..9812549b9b 100644
---- a/fs/fs.c
-+++ b/fs/fs.c
-@@ -92,6 +92,8 @@ void cdev_print(const struct cdev *cdev)
- 			printf(" of-partition");
- 		if (cdev->flags & DEVFS_PARTITION_FROM_TABLE)
- 			printf(" table-partition");
-+		if (cdev->flags & DEVFS_PARTITION_FOR_FIXUP)
-+			printf(" fixup");
- 		if (cdev->flags & DEVFS_IS_MCI_MAIN_PART_DEV)
- 			printf(" mci-main-partition");
- 		if (cdev->flags & DEVFS_IS_MBR_PARTITIONED)
-diff --git a/include/driver.h b/include/driver.h
-index b7c950620b..48b18a0ae6 100644
---- a/include/driver.h
-+++ b/include/driver.h
-@@ -624,8 +624,9 @@ extern struct list_head cdev_list;
- #define DEVFS_IS_MCI_MAIN_PART_DEV	(1U << 4)
- #define DEVFS_PARTITION_FROM_OF		(1U << 5)
- #define DEVFS_PARTITION_FROM_TABLE	(1U << 6)
--#define DEVFS_IS_MBR_PARTITIONED	(1U << 7)
--#define DEVFS_IS_GPT_PARTITIONED	(1U << 8)
-+#define DEVFS_PARTITION_FOR_FIXUP	(1U << 7)
-+#define DEVFS_IS_MBR_PARTITIONED	(1U << 8)
-+#define DEVFS_IS_GPT_PARTITIONED	(1U << 9)
- 
- static inline bool cdev_is_mbr_partitioned(const struct cdev *master)
- {
-diff --git a/lib/cmdlinepart.c b/lib/cmdlinepart.c
-index 5e95760bae..f1bfda641c 100644
---- a/lib/cmdlinepart.c
-+++ b/lib/cmdlinepart.c
-@@ -29,7 +29,7 @@ int cmdlinepart_do_parse_one(const char *devname, const char *partstr,
- 	loff_t size;
- 	char *end;
- 	char buf[PATH_MAX] = {};
--	unsigned long flags = 0;
-+	unsigned long flags = DEVFS_PARTITION_FOR_FIXUP;
- 	struct cdev *cdev;
- 
- 	memset(buf, 0, PATH_MAX);
--- 
-2.39.2
+=2D-
+Regards,
+Oleksij
 
 
 
