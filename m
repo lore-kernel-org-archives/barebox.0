@@ -1,57 +1,63 @@
-Delivery-date: Tue, 12 Mar 2024 09:35:26 +0100
+Delivery-date: Tue, 12 Mar 2024 11:02:08 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjxba-002LoF-0P
+	id 1rjyxU-002Tad-2F
 	for lore@lore.pengutronix.de;
-	Tue, 12 Mar 2024 09:35:26 +0100
+	Tue, 12 Mar 2024 11:02:08 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rjxbW-0002SU-BY
-	for lore@pengutronix.de; Tue, 12 Mar 2024 09:35:26 +0100
+	id 1rjyxQ-0000bx-4V
+	for lore@pengutronix.de; Tue, 12 Mar 2024 11:02:08 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6dmIJBOFiS8MUGj8lb2pWxn67sAJ4GA9bzUxKnuobmc=; b=N/mWvIkNlxM+U50va/P4vZjGUO
-	W1wtYG0t4qz+52/x4q8R4SgAPVtMMWgbKbdWDkG6J1zYd4BFWYLuIT51nohk1RwmGtPG+cnegBWsP
-	nbxpidC9lPLpnvVgN5zVDH3dUZSUAE6CBeRoo1qoh9iHVR/cg8QCREEsw4AxKC5oTfYVtK99h5cfU
-	7DcaoBDbVi4vfMS0U8x8PSXgh6osA0fNWYLdY38Rl4DybzZKmQX/h9JigE19TzcMxJwBkfzQ51yEJ
-	8p9W+m3wkDCPPHHv8WI8mxJcKsgtiVTdp+0Jy7lv2mv6S9KGq/WgHwWHqdLoIfvv7lxH8u9YSltYL
-	SmSzMxuQ==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=LeatFeSMenoP2shinq+Ihhk2oDHnicTlD2W4J7vKXOA=; b=e7dta34+9E+OxHOwhlwKqPs6ST
+	QC/xn8zoCFt3nlna1/MB6iwwz4zwJ6NcUYbKZnNAPokG/1485yt75wmr02wNThDZgJof4v1NmQrsT
+	V5rOQMLzJd2YdR4pRjhajvS4MT3JNnVG/EbUDHJ6KKmKxmdhRdJv5WDxsSpJBt6iH+RXhnvy6+ZnU
+	w2rxXWbV1XdqdvxQiCTy2rjLQefGQVN6RTYBuciktCsCXpG9d18OX6+SoNEUZvvZT6KC0NPrTrE7j
+	FycsFJN/fJHBZUFZd37lRRHtzxKMLsEapDpz15+qWWnNWPJAUmipddr5OGxDLKL1+yikQGAYwMpIS
+	vncF8JKA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjxaw-00000004tzt-0FI3;
-	Tue, 12 Mar 2024 08:34:46 +0000
+	id 1rjywZ-00000005FJZ-2H63;
+	Tue, 12 Mar 2024 10:01:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rjxat-00000004tzE-0REs
+	id 1rjywU-00000005FIH-3HUQ
 	for barebox@lists.infradead.org;
-	Tue, 12 Mar 2024 08:34:44 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rjxar-0000Ou-Nn; Tue, 12 Mar 2024 09:34:41 +0100
-Message-ID: <7dc0dd9e-c1f1-49a7-a719-e56313da8ae4@pengutronix.de>
-Date: Tue, 12 Mar 2024 09:34:41 +0100
+	Tue, 12 Mar 2024 10:01:10 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1rjywO-0008Gg-KG; Tue, 12 Mar 2024 11:01:00 +0100
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1rjywO-005tVM-7J; Tue, 12 Mar 2024 11:01:00 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1rjywO-00EzRP-0Y;
+	Tue, 12 Mar 2024 11:01:00 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue, 12 Mar 2024 11:00:57 +0100
+Message-Id: <20240312100057.3572762-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>, barebox@lists.infradead.org
-References: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-0-6d50c90485f3@pengutronix.de>
- <20240308-v2024-02-0-topic-arasan-hs200-support-v1-3-6d50c90485f3@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240308-v2024-02-0-topic-arasan-hs200-support-v1-3-6d50c90485f3@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240312_013443_219756_2FC28013 
-X-CRM114-Status: GOOD (  24.70  )
+X-CRM114-CacheID: sfid-20240312_030106_846895_EA9DCB8B 
+X-CRM114-Status: GOOD (  22.00  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,95 +75,189 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 03/12] mci: arasan: implement 25MHz quirk for zynqmp
+Subject: [PATCH v1] ARM: i.MX8MP: skov: add MAC address assignment support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 08.03.24 12:17, Steffen Trumtrar wrote:
-> The Arasan on the zynqmp in version 8.9a doesn't meet the timing
-> requirements at 25MHz. It works at 19MHz instead.
-> 
-> Add the quirk from linux kernel v6.8-rc4.
-> 
-> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Assign MAC address to main CPU interface and switch ports.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ arch/arm/boards/skov-imx8mp/board.c | 131 ++++++++++++++++++++++++++++
+ arch/arm/dts/imx8mp-skov.dts        |   1 +
+ 2 files changed, 132 insertions(+)
 
-> ---
->  drivers/mci/arasan-sdhci.c | 28 +++++++++++++++++++++++++++-
->  1 file changed, 27 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-> index 59afac7372..cc1bad8b62 100644
-> --- a/drivers/mci/arasan-sdhci.c
-> +++ b/drivers/mci/arasan-sdhci.c
-> @@ -37,6 +37,12 @@ struct arasan_sdhci_host {
->  /* Controller does not have CD wired and will not function normally without */
->  #define SDHCI_ARASAN_QUIRK_FORCE_CDTEST		BIT(0)
->  #define SDHCI_ARASAN_QUIRK_NO_1_8_V		BIT(1)
-> +/*
-> + * Some of the Arasan variations might not have timing requirements
-> + * met at 25MHz for Default Speed mode, those controllers work at
-> + * 19MHz instead
-> + */
-> +#define SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN	BIT(2)
->  };
->  
->  static inline
-> @@ -110,13 +116,30 @@ static int arasan_sdhci_init(struct mci_host *mci, struct device *dev)
->  	return 0;
->  }
->  
-> +static void arasan_sdhci_set_clock(struct mci_host *mci, unsigned int clock)
-> +{
-> +	struct arasan_sdhci_host *host = to_arasan_sdhci_host(mci);
-> +
-> +	if (host->quirks & SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN) {
-> +		/*
-> +		 * Some of the Arasan variations might not have timing
-> +		 * requirements met at 25MHz for Default Speed mode,
-> +		 * those controllers work at 19MHz instead.
-> +		 */
-> +		if (clock == 25000000)
-> +			clock = (25000000 * 19) / 25;
-> +	}
-> +
-> +	sdhci_set_clock(&host->sdhci, clock, host->sdhci.max_clk);
-> +}
-> +
->  static void arasan_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
->  {
->  	struct arasan_sdhci_host *host = to_arasan_sdhci_host(mci);
->  	u16 val;
->  
->  	if (ios->clock)
-> -		sdhci_set_clock(&host->sdhci, ios->clock, host->sdhci.max_clk);
-> +		arasan_sdhci_set_clock(mci, ios->clock);
->  
->  	sdhci_set_bus_width(&host->sdhci, ios->bus_width);
->  
-> @@ -243,6 +266,9 @@ static int arasan_sdhci_probe(struct device *dev)
->  	if (of_property_read_bool(np, "no-1-8-v"))
->  		arasan_sdhci->quirks |= SDHCI_ARASAN_QUIRK_NO_1_8_V;
->  
-> +	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a"))
-> +		arasan_sdhci->quirks |= SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN;
-> +
->  	arasan_sdhci->sdhci.base = IOMEM(iores->start);
->  	arasan_sdhci->sdhci.mci = mci;
->  	mci->send_cmd = arasan_sdhci_send_cmd;
-> 
-
+diff --git a/arch/arm/boards/skov-imx8mp/board.c b/arch/arm/boards/skov-imx8mp/board.c
+index 3b6eb7b080..94d0bc75f9 100644
+--- a/arch/arm/boards/skov-imx8mp/board.c
++++ b/arch/arm/boards/skov-imx8mp/board.c
+@@ -10,9 +10,12 @@
+ #include <gpio.h>
+ #include <init.h>
+ #include <io.h>
++#include <linux/nvmem-consumer.h>
+ #include <mach/imx/bbu.h>
+ #include <mach/imx/generic.h>
+ #include <mach/imx/iomux-mx8mp.h>
++#include <net.h>
++#include <of_net.h>
+ 
+ struct skov_imx8mp_priv {
+ 	struct device *dev;
+@@ -85,6 +88,134 @@ static const struct board_description imx8mp_variants[] = {
+ 	},
+ };
+ 
++static void skov_imx8mp_get_src_mac(struct skov_imx8mp_priv *priv,
++				   struct device_node *s_np, u8 *mac,
++				   int dst_id)
++{
++	char str[sizeof("xx:xx:xx:xx:xx:xx")];
++	struct eth_device *s_edev;
++	int ret;
++
++	s_edev = of_find_eth_device_by_node(s_np);
++	if (s_edev && is_valid_ether_addr(s_edev->ethaddr)) {
++		/* If the source device has a valid MAC address, use it in
++		 * case address is overwritten by user.
++		 */
++		memcpy(mac, s_edev->ethaddr, ETH_ALEN);
++		return;
++	}
++
++	/* if the source device has no valid MAC address, try to get it from
++	 * nvmem if it configured in the devicetree.
++	 */
++	ret = of_get_mac_addr_nvmem(s_np, mac);
++	if (!ret)
++		return;
++
++	/* if the source device has no valid MAC address, generate one with
++	 * vendor OUI.
++	 */
++	ret = generate_ether_addr(mac, dst_id);
++	if (ret)
++		random_ether_addr(mac);
++
++	/* set SKOV OUI */
++	mac[0] = 0x00;
++	mac[1] = 0x0e;
++	mac[2] = 0xcd;
++	ethaddr_to_string(mac, str);
++	dev_warn(priv->dev, "Failed to get eth addr for idx=%d. Generating one: %s\n",
++		 dst_id, str);
++}
++
++static int skov_imx8mp_eth_register_ethaddr(struct skov_imx8mp_priv *priv,
++					    struct device_node *d_np,
++					    struct device_node *s_np,
++					    int dst_id)
++{
++	struct eth_device *d_edev;
++	u8 mac[ETH_ALEN] = { 0 };
++
++	d_edev = of_find_eth_device_by_node(d_np);
++	if (d_edev) {
++		/* If the destination device already has a valid MAC address, do
++		 * nothing, it was probably set to nv by user.
++		 */
++		if (is_valid_ether_addr(d_edev->ethaddr))
++			return 0;
++	}
++
++	skov_imx8mp_get_src_mac(priv, s_np, mac, dst_id);
++
++	of_eth_register_ethaddr(d_np, mac);
++
++	return 0;
++}
++
++/* We have following requirements for the ethernet MAC addresses:
++ * - LAN1 MAC address should be the same as the MAC address stored in the FEC
++ *   slot (FEC is not used on this board).
++ * - LAN2 MAC address should be the same as the EQOS MAC address. (EQOS is
++ *   the master interface for the switch on this board, LAN2 and LAN1 are
++ *   external ports of this switch).
++ * - LAN2 MAC address is usually higher than LAN1 MAC address. But production
++ *   process do not guarantee this. So, we can't calculate LAN2 MAC address
++ *   from LAN1 MAC address.
++ */
++static void skov_imx8mp_ethernet_init(struct skov_imx8mp_priv *priv)
++{
++	struct device_node *root;
++	unsigned int i;
++	struct eth_node_info {
++		const char *s_alias;
++		const char *d_alias;
++	} eth_node_info[] = {
++		{ "ethernet0", "ethernet0" }, /* EQOS -> EQOS */
++		{ "ethernet0", "ethernet2" }, /* EQOS -> LAN2 */
++		{ "ethernet3", "ethernet1" }, /* FEC -> LAN1 */
++	};
++
++	root = of_get_root_node();
++
++	for (i = 0; i < ARRAY_SIZE(eth_node_info); i++) {
++		const char *s_alias = eth_node_info[i].s_alias;
++		const char *d_alias = eth_node_info[i].d_alias;
++		struct device_node *s_np, *d_np;
++		int ret;
++
++		s_np = of_find_node_by_alias(root, s_alias);
++		if (!s_np) {
++			dev_warn(priv->dev, "Failed to find src ethernet node by alias: %s\n",
++				 s_alias);
++			continue;
++		}
++
++		d_np = of_find_node_by_alias(root, d_alias);
++		if (!d_np) {
++			dev_warn(priv->dev, "Failed to find dst ethernet node by alias: %s\n",
++				 d_alias);
++			continue;
++		}
++
++		ret = skov_imx8mp_eth_register_ethaddr(priv, d_np, s_np, i);
++		if (ret) {
++			dev_warn(priv->dev, "Failed to transfer MAC address from alias %s to %s\n",
++				 s_alias, d_alias);
++			continue;
++		}
++	}
++}
++
++static int skov_imx8mp_populate_ethaddr(void)
++{
++	struct skov_imx8mp_priv *priv = skov_imx8mp_priv;
++
++	skov_imx8mp_ethernet_init(priv);
++
++	return 0;
++}
++postenvironment_initcall(skov_imx8mp_populate_ethaddr);
++
+ static int skov_imx8mp_fixup(struct device_node *root, void *data)
+ {
+ 	struct device_node *chosen = of_create_node(root, "/chosen");
+diff --git a/arch/arm/dts/imx8mp-skov.dts b/arch/arm/dts/imx8mp-skov.dts
+index 3243a41697..063861427c 100644
+--- a/arch/arm/dts/imx8mp-skov.dts
++++ b/arch/arm/dts/imx8mp-skov.dts
+@@ -31,6 +31,7 @@ aliases {
+ 		ethernet0 = &eqos;
+ 		ethernet1 = &lan1;
+ 		ethernet2 = &lan2;
++		ethernet3 = &fec;
+ 		state = &state;
+ 	};
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
