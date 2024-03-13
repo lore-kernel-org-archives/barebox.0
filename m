@@ -3,65 +3,64 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkMSg-004IR7-02
+	id 1rkMSg-004IRP-14
 	for lore@lore.pengutronix.de;
 	Wed, 13 Mar 2024 12:07:54 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkMSe-0002uf-0I
-	for lore@pengutronix.de; Wed, 13 Mar 2024 12:07:53 +0100
+	id 1rkMSf-0002xz-OA
+	for lore@pengutronix.de; Wed, 13 Mar 2024 12:07:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=o0p4Ceqd/kC4eiUdPzmYJh9tkZnsw5Mp0co1Ck3F4Qg=; b=WbiaTNFHgvinyWTN4hW78IwYKc
-	yHFuZh7rvQO4Whfgmi4f46tr/L1phKZZ6pFw0Rwux1JVibQ6NyjhP6oQz4YdfPdSUF0KRZgFWUOB8
-	MeWGa3SE7c85bi6/wqXh9A1Bo2mH3VXOXGGT39eIC1AXFiGqL+AGL6/b77vGKTa2gAFp9BOuN23kL
-	vUBUTqkLjeOUEJOIYYVPwmY83yuJ7tHxi76K7jE1Gbn1AIYGBqkm8Ws0/g4Gn/hqDCai3Yw8k1OEV
-	OhNi/2ra8vERuhmAtw0oM3lDTXqm9DRI5pUqCiLX/8wkY77QaKRzbloe89iReUrvWiJy3ItBNUpOo
-	7jEvpPUA==;
+	bh=3c4XC4itnb0cuy/5S8Hyw+E1m0LlAx/eOmDFKANyI2Q=; b=qRXuqlAYNyZy3nXJRsQsKUEt0G
+	LVsJ5sfpwv1RNFrEelItFF2sHuZEsmJwVUVsIgd49c3HZWISnp+5TlmaFaaJu3NmYlrHhzACwTEMn
+	ikrS+Lj/hH27bODpDh/iZmlDtezQxVioFgcZb1nMHullmCOSkFmEPoDoHzdelh4qfz6NGMnW2kfSQ
+	QPrj+e9UOs/GarCox38BvSxJ+dwBhsroHUZ70XdMLRaxvARHvfifMb0jDtHVGDNLzJzdjj/svjbeN
+	7euvnVich6DXWk9i7wD/tAykaJJNMKBguIvkCgNaxi+ad8TSoa6a0RcaKdLlFCzZUU2iwNqdV5fl9
+	4qiffxiA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkMS8-00000009pPQ-21c2;
-	Wed, 13 Mar 2024 11:07:20 +0000
+	id 1rkMSA-00000009pQt-36vp;
+	Wed, 13 Mar 2024 11:07:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkMRv-00000009pFj-10g8
+	id 1rkMRv-00000009pFi-0s2g
 	for barebox@lists.infradead.org;
-	Wed, 13 Mar 2024 11:07:10 +0000
+	Wed, 13 Mar 2024 11:07:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkMRu-0001tD-3Y; Wed, 13 Mar 2024 12:07:06 +0100
+	id 1rkMRu-0001t1-1s; Wed, 13 Mar 2024 12:07:06 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkMRt-006663-M4; Wed, 13 Mar 2024 12:07:05 +0100
+	id 1rkMRt-006660-KU; Wed, 13 Mar 2024 12:07:05 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkMRt-004dIp-0G;
+	id 1rkMRt-004dIp-07;
 	Wed, 13 Mar 2024 12:07:05 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 13 Mar 2024 12:07:04 +0100
-Message-Id: <20240313110704.1095554-8-a.fatoum@pengutronix.de>
+Date: Wed, 13 Mar 2024 12:07:03 +0100
+Message-Id: <20240313110704.1095554-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240313110704.1095554-1-a.fatoum@pengutronix.de>
 References: <20240313110704.1095554-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240313_040707_488200_9AD00BDE 
-X-CRM114-Status: UNSURE (   8.58  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240313_040707_491162_488858A8 
+X-CRM114-Status: GOOD (  13.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,53 +83,53 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 7/7] net: retire global NetRxPackets arrays
+Subject: [PATCH 6/7] net: cpsw: replace global NetRxPackets with per-interface allocation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Now that no in-tree user of NetRxPackets remain, no one will miss this
-remnant of simpler times.
+NetRxPackets is a remnant of times, where a board had at most one
+Ethernet controller. This is outdated and we should drop NetRxPackets.
+
+Switch over the driver to allocate the receive buffers needed.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/net.h | 2 --
- net/net.c     | 3 ---
- 2 files changed, 5 deletions(-)
+ drivers/net/cpsw.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/include/net.h b/include/net.h
-index 38fd6f8d3c41..5a6dd9ca7b82 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -249,8 +249,6 @@ struct icmphdr {
-  * (big endian).
-  */
+diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
+index 42fb32bde2f5..3f24c21594c1 100644
+--- a/drivers/net/cpsw.c
++++ b/drivers/net/cpsw.c
+@@ -215,6 +215,8 @@ struct cpsw_priv {
+ 	unsigned int			slave_size;
+ 	unsigned int			sliver_ofs;
  
--extern unsigned char *NetRxPackets[PKTBUFSRX];/* Receive packets		*/
--
- void net_set_ip(struct eth_device *edev, IPaddr_t ip);
- void net_set_serverip(IPaddr_t ip);
- const char *net_get_server(void);
-diff --git a/net/net.c b/net/net.c
-index 6f418df0538b..c06e88fe532d 100644
---- a/net/net.c
-+++ b/net/net.c
-@@ -29,7 +29,6 @@
- #include <linux/ctype.h>
- #include <linux/err.h>
++	void				*rx_buffer[PKTBUFSRX - 2];
++
+ 	struct cpdma_desc		*descs;
+ 	struct cpdma_desc		*desc_free;
+ 	struct cpdma_chan		rx_chan, tx_chan;
+@@ -980,7 +982,7 @@ static int cpsw_setup(struct device *dev)
  
--unsigned char *NetRxPackets[PKTBUFSRX]; /* Receive packets		*/
- static unsigned int net_ip_id;
+ 	/* submit rx descs */
+ 	for (i = 0; i < PKTBUFSRX - 2; i++) {
+-		ret = cpdma_submit(priv, &priv->rx_chan, NetRxPackets[i],
++		ret = cpdma_submit(priv, &priv->rx_chan, priv->rx_buffer[i],
+ 				   PKTSIZE, 0);
+ 		if (ret < 0) {
+ 			dev_err(dev, "error %d submitting rx desc\n", ret);
+@@ -1350,6 +1352,10 @@ static int cpsw_probe(struct device *dev)
+ 	priv = xzalloc(sizeof(*priv));
+ 	priv->dev = dev;
  
- char *net_server;
-@@ -815,8 +814,6 @@ int net_alloc_packets(void **packets, int count)
- 
- static int net_init(void)
- {
--	net_alloc_packets((void **)NetRxPackets, PKTBUFSRX);
--
- 	globalvar_add_simple_ip("net.nameserver", &net_nameserver);
- 	globalvar_add_simple_string("net.domainname", &net_domainname);
- 	globalvar_add_simple_string("net.server", &net_server);
++	ret = net_alloc_packets(priv->rx_buffer, ARRAY_SIZE(priv->rx_buffer));
++	if (ret)
++		goto out;
++
+ 	if (dev->of_node) {
+ 		ret = cpsw_probe_dt(priv);
+ 		if (ret)
 -- 
 2.39.2
 
