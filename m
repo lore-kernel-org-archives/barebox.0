@@ -1,66 +1,68 @@
-Delivery-date: Wed, 13 Mar 2024 12:07:54 +0100
+Delivery-date: Wed, 13 Mar 2024 12:12:04 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkMSg-004IRP-14
+	id 1rkMWi-004IkY-2I
 	for lore@lore.pengutronix.de;
-	Wed, 13 Mar 2024 12:07:54 +0100
+	Wed, 13 Mar 2024 12:12:04 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkMSf-0002xz-OA
-	for lore@pengutronix.de; Wed, 13 Mar 2024 12:07:54 +0100
+	id 1rkMWh-0006Rw-Ti
+	for lore@pengutronix.de; Wed, 13 Mar 2024 12:12:04 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3c4XC4itnb0cuy/5S8Hyw+E1m0LlAx/eOmDFKANyI2Q=; b=qRXuqlAYNyZy3nXJRsQsKUEt0G
-	LVsJ5sfpwv1RNFrEelItFF2sHuZEsmJwVUVsIgd49c3HZWISnp+5TlmaFaaJu3NmYlrHhzACwTEMn
-	ikrS+Lj/hH27bODpDh/iZmlDtezQxVioFgcZb1nMHullmCOSkFmEPoDoHzdelh4qfz6NGMnW2kfSQ
-	QPrj+e9UOs/GarCox38BvSxJ+dwBhsroHUZ70XdMLRaxvARHvfifMb0jDtHVGDNLzJzdjj/svjbeN
-	7euvnVich6DXWk9i7wD/tAykaJJNMKBguIvkCgNaxi+ad8TSoa6a0RcaKdLlFCzZUU2iwNqdV5fl9
-	4qiffxiA==;
+	bh=TFEeiEadBQcWJFZLSZnbnW+5iL7iffkMjeJdygCXi1o=; b=rgz7yMy+kMGpUc+Mhmgb6OdS7e
+	TjWjMdjCSmnspPLzcstymw5eFaw2k3jvsFpFlndWJZ2khc+8rD4nTJeJ9e8Pt1CRASKqNuHvx7jJO
+	unnIEawAOnDJSlAbJvrwKCpT9HEEVMO78j52e4SV0+DDPJpZaB85xrRhf1mk7UoNvFT5k01XVbU8r
+	GS39W7O1yGqGFNhDeZssBaQrQ8k2LzMYXK9h761x7JW2nQQ2dBbfgmm6fZgiwhz+xCjV6VIGfsEfh
+	vyxYroo2Z60OPjJEZJ0S9WGUIymnpH+sYUhAts4NBdTknY4PbpfocUZax+4s8IGMOT9cwEiTiMVq4
+	L/ClPACQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkMSA-00000009pQt-36vp;
-	Wed, 13 Mar 2024 11:07:22 +0000
+	id 1rkMW4-00000009rkY-1PRH;
+	Wed, 13 Mar 2024 11:11:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkMRv-00000009pFi-0s2g
+	id 1rkMVx-00000009rfV-2qHU
 	for barebox@lists.infradead.org;
-	Wed, 13 Mar 2024 11:07:11 +0000
+	Wed, 13 Mar 2024 11:11:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkMRu-0001t1-1s; Wed, 13 Mar 2024 12:07:06 +0100
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rkMVr-0005jh-8Q; Wed, 13 Mar 2024 12:11:11 +0100
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkMRt-006660-KU; Wed, 13 Mar 2024 12:07:05 +0100
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkMRt-004dIp-07;
-	Wed, 13 Mar 2024 12:07:05 +0100
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 13 Mar 2024 12:07:03 +0100
-Message-Id: <20240313110704.1095554-7-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240313110704.1095554-1-a.fatoum@pengutronix.de>
-References: <20240313110704.1095554-1-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rkMVq-0066Pz-RA; Wed, 13 Mar 2024 12:11:10 +0100
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rkMVq-007SHZ-2W;
+	Wed, 13 Mar 2024 12:11:10 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: BAREBOX <barebox@lists.infradead.org>, 
+ Stefan Kerkmann <s.kerkmann@pengutronix.de>
+In-Reply-To: <20240311-karo-imx8mp-som-board-upstreaming-v2-0-6ecda693adb2@pengutronix.de>
+References: <20240311-karo-imx8mp-som-board-upstreaming-v2-0-6ecda693adb2@pengutronix.de>
+Message-Id: <171032827077.1776412.9584792911192399502.b4-ty@pengutronix.de>
+Date: Wed, 13 Mar 2024 12:11:10 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240313_040707_491162_488858A8 
-X-CRM114-Status: GOOD (  13.12  )
+X-CRM114-CacheID: sfid-20240313_041118_089106_0F3E416B 
+X-CRM114-Status: UNSURE (   8.74  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,60 +80,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 6/7] net: cpsw: replace global NetRxPackets with per-interface allocation
+Subject: Re: [PATCH v2 0/6] arm: imx8mp: add karo electronics qsxp imx8mp
+ som support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-NetRxPackets is a remnant of times, where a board had at most one
-Ethernet controller. This is outdated and we should drop NetRxPackets.
 
-Switch over the driver to allocate the receive buffers needed.
+On Mon, 11 Mar 2024 17:11:17 +0100, Stefan Kerkmann wrote:
+> The Ka-Ro QSXP[1] is a i.MX8M Plus solder down system on module. This
+> series adds support for the SOM itself on the QSBASE4 RDK. For ethernet
+> support on the QSBASE4 RDK, the Micrel phy driver gains support for the
+> KSZ9131 gigabit ethernet phy.
+> 
+> [1]: https://www.karo-electronics.de/qsxp
+> 
+> [...]
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/net/cpsw.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+Applied, thanks!
 
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index 42fb32bde2f5..3f24c21594c1 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -215,6 +215,8 @@ struct cpsw_priv {
- 	unsigned int			slave_size;
- 	unsigned int			sliver_ofs;
- 
-+	void				*rx_buffer[PKTBUFSRX - 2];
-+
- 	struct cpdma_desc		*descs;
- 	struct cpdma_desc		*desc_free;
- 	struct cpdma_chan		rx_chan, tx_chan;
-@@ -980,7 +982,7 @@ static int cpsw_setup(struct device *dev)
- 
- 	/* submit rx descs */
- 	for (i = 0; i < PKTBUFSRX - 2; i++) {
--		ret = cpdma_submit(priv, &priv->rx_chan, NetRxPackets[i],
-+		ret = cpdma_submit(priv, &priv->rx_chan, priv->rx_buffer[i],
- 				   PKTSIZE, 0);
- 		if (ret < 0) {
- 			dev_err(dev, "error %d submitting rx desc\n", ret);
-@@ -1350,6 +1352,10 @@ static int cpsw_probe(struct device *dev)
- 	priv = xzalloc(sizeof(*priv));
- 	priv->dev = dev;
- 
-+	ret = net_alloc_packets(priv->rx_buffer, ARRAY_SIZE(priv->rx_buffer));
-+	if (ret)
-+		goto out;
-+
- 	if (dev->of_node) {
- 		ret = cpsw_probe_dt(priv);
- 		if (ret)
+[1/6] of: introduce of_property_read_s32
+      https://git.pengutronix.de/cgit/barebox/commit/?id=465961255898 (link may not be stable)
+[2/6] net: phy: micrel: update id table from Linux kernel
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2c63ec82210e (link may not be stable)
+[3/6] net: phy: micrel: add support for ksz9131 phy
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d6c94455f849 (link may not be stable)
+[4/6] arm: dts: karo: import dts for karo-qsxp-ml81
+      https://git.pengutronix.de/cgit/barebox/commit/?id=25b665092122 (link may not be stable)
+[5/6] arm: dts: karo: add karo imx8mp-karo-qsxp-ml81-qsbase4
+      https://git.pengutronix.de/cgit/barebox/commit/?id=a2a79372059d (link may not be stable)
+[6/6] arm: imx8mp: add karo electronics qsxp-ml81 som support
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e706d9f8de65 (link may not be stable)
+
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
