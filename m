@@ -1,67 +1,68 @@
-Delivery-date: Wed, 13 Mar 2024 08:41:57 +0100
+Delivery-date: Wed, 13 Mar 2024 08:42:18 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkJFN-0044fP-06
+	id 1rkJFi-0044h8-1O
 	for lore@lore.pengutronix.de;
-	Wed, 13 Mar 2024 08:41:57 +0100
+	Wed, 13 Mar 2024 08:42:18 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkJFM-0006PQ-GS
-	for lore@pengutronix.de; Wed, 13 Mar 2024 08:41:56 +0100
+	id 1rkJFh-0006fL-TM
+	for lore@pengutronix.de; Wed, 13 Mar 2024 08:42:18 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KOGWIq8HHxpkkDiWgA2ewlCAoJkKMPuSR7amdUH+Oy0=; b=r9OR8vqboZh+AuYuRNqsVrG51o
-	X6hFz5Mfqo5PsQnVFh5W9r+U6tW5nIPAry+vkzF0OIg7/jR3ZUUO2Syysbcv5+Lsay+chvZ1S85lg
-	vLWl0k03ONfufn1OVKLSoKviT15/G9bziyN9H++9N33lHI1LQG8RYIQX5TEerHVszGAfi/V8Gm3ip
-	Gi6/ME9YSgggNTSaTwNiK6cSDGZ9foIzZXczcrBiZi6aaRRLi3e6jyv1nhYXsd4ne8x6PhAA98gao
-	LzqzSJRnB8RujjYyXFSC5bXElkyi4LNb84TR649nImphLDoh7kG9zh1VbDjQE+NcbJmPywtbqlgAB
-	mJcccd1g==;
+	bh=XcUtDqkYxtoyhAaHt3jVxZjIrCFASLtvI/Rfza0aXLI=; b=eozo1nVENisOSBsfMe08Cj+b1A
+	BcusHiiV6axNV3nH8rMZD0SbPo+OuuCGbgNwB4wBL2DG0nzgR+rp19/PcdkY2/h+BBoYYRQu9TF51
+	QADpsasPRZl4JB+sEeQWRHq12B8VZfc36KsBHxICXebgoj7SKjLcV9O3cIapNgmb1jRJZvgdkekoP
+	pcqjelnSTjLvWaaBWyD0KcoD92yn4Z8jzZKD+JA40iEdHv6hlJ4caNQbdhFxrJzXgbamvB0sWGm9u
+	4lLie7SwZwLgF0NKqSm6uPoRJA6RzzQsQfAYjRIZJ14u6aBab6WgJDPpBvGuCzUzQqjw4CPLGqSxZ
+	bT91oHBA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkJEt-00000009Dz5-3LHP;
-	Wed, 13 Mar 2024 07:41:27 +0000
+	id 1rkJFN-00000009E2e-00HV;
+	Wed, 13 Mar 2024 07:41:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkJEr-00000009DyB-15De
+	id 1rkJFK-00000009E2G-19S6
 	for barebox@lists.infradead.org;
-	Wed, 13 Mar 2024 07:41:26 +0000
+	Wed, 13 Mar 2024 07:41:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rkJEn-000613-VO; Wed, 13 Mar 2024 08:41:21 +0100
+	id 1rkJFJ-0006Ls-39; Wed, 13 Mar 2024 08:41:53 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rkJEn-0064T9-J1; Wed, 13 Mar 2024 08:41:21 +0100
+	id 1rkJFI-0064TF-My; Wed, 13 Mar 2024 08:41:52 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rkJEn-0043I3-1h;
-	Wed, 13 Mar 2024 08:41:21 +0100
+	id 1rkJFI-0043KN-25;
+	Wed, 13 Mar 2024 08:41:52 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, 
- =?utf-8?q?Uwe_Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
-In-Reply-To: <20240312154827.638763-2-u.kleine-koenig@pengutronix.de>
-References: <20240312154827.638763-2-u.kleine-koenig@pengutronix.de>
-Message-Id: <171031568152.965946.1024358805222463010.b4-ty@pengutronix.de>
-Date: Wed, 13 Mar 2024 08:41:21 +0100
+To: barebox@lists.infradead.org, Roland Hieber <rhi@pengutronix.de>
+Cc: Johannes Zink <j.zink@pengutronix.de>, 
+ Juergen Borleis <j.borleis@pengutronix.de>
+In-Reply-To: <20240311140455.3094462-1-rhi@pengutronix.de>
+References: <20240311140455.3094462-1-rhi@pengutronix.de>
+Message-Id: <171031571264.966086.18332453568327175359.b4-ty@pengutronix.de>
+Date: Wed, 13 Mar 2024 08:41:52 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240313_004125_350705_44A08FC7 
-X-CRM114-Status: UNSURE (   5.13  )
+X-CRM114-CacheID: sfid-20240313_004154_337211_DB9A490D 
+X-CRM114-Status: UNSURE (   6.07  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,20 +86,23 @@ X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] imx25: Feed the unique id to machine_id_set_hashable()
+Subject: =?utf-8?q?Re=3A_=5BPATCH_v2=5D_ARM=3A_i=2EMX8MP=3A_add_K=C3=B6ni?=
+ =?utf-8?q?g+Bauer_AlphaJet_board?=
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 12 Mar 2024 16:48:27 +0100, Uwe Kleine-König wrote:
-> This enables barebox on i.MX25 to generate a per-machine eth address.
+On Mon, 11 Mar 2024 15:04:56 +0100, Roland Hieber wrote:
+> Add basic support for König+Bauer AlphaJet, based on a Congatec QMX8MP
+> SoM with an i.MX8MP SoC in the Industrial Temperature Grade 4GB Variant,
+> no inline ECC used.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] imx25: Feed the unique id to machine_id_set_hashable()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=fccedb1a18e7 (link may not be stable)
+[1/1] ARM: i.MX8MP: add König+Bauer AlphaJet board
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f5d3f7e6e731 (link may not be stable)
 
 Best regards,
 -- 
