@@ -1,57 +1,66 @@
-Delivery-date: Wed, 13 Mar 2024 12:46:55 +0100
+Delivery-date: Wed, 13 Mar 2024 13:17:11 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkN4R-004LDO-30
+	id 1rkNXj-004NKl-1R
 	for lore@lore.pengutronix.de;
-	Wed, 13 Mar 2024 12:46:55 +0100
+	Wed, 13 Mar 2024 13:17:11 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkN4R-0008UY-CG
-	for lore@pengutronix.de; Wed, 13 Mar 2024 12:46:55 +0100
+	id 1rkNXi-0006vX-BF
+	for lore@pengutronix.de; Wed, 13 Mar 2024 13:17:11 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=aQoG6AiO32wFglgqZT4SL5FUX0g2sXiAmFJiF2fSkPI=; b=1+0UT2iAXSzSQUsS+wBfQ0PbnB
-	vCeRefe1w8pt8kgDwFo005Pnm/bRHY93ogYi/gBJPIvol+R/g8Ym6lI/VyitPGEGu49rmBwdRumMk
-	LRSqyMcN8+0jJ73JFr/W/IqBYoaZ4gXCh1UL0pjER3teOWfcmoADtaflVAKzmul/eNTAtQFJjft/n
-	lBPPYdm3nIVPHQdFdMRSGoQOjYyKQ4gqvn2/DiqXJ26BzAB8PGenbWZ3bfsGLxLV3EKF/8AL8rUAJ
-	9v/B+SmbkzdCElSvAnziJ3y9AqpsUXFdWbaLl4YOPzFHBaIC3Ipa7qzHw4yttuRSoKMCafCJeI7/W
-	gQM/jQvg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=/cu7SqtlmZ/5LQH+BU5C8NB+ZCKzowwEDQemQSCRrX8=; b=ESV4BxvBwaqxQPH+0r7L0Wteq6
+	lY31J2AwejFqhLRCDgwNhwjWXd5V/T6IGh11lPMXfmnd9ujkQrU1Gg7TSCA5IDDy8QqZs83Ep+c/E
+	almXSXeuzSQPnXCPm0ZvdAMZqrdyEPN0NsiUdJXyPhAN0Oej55VEOUx7sJrZg64j2Ari/x8EKQHEF
+	kE9X7H+Jr8N9PivhqwUL6RaNO7iJs7tFcgmuFf+nwJpCGlPZgqcGaRBgzrnPehQfqgupAkgjFKY3O
+	dP7pK51mqWBpQjvWjqFuZ3qC1Cz1+zeCZgtGeMgFJik3G0+ruq8qJml9an39B+A7gg8TKXo5FrKz8
+	a7Z7yGmw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkN40-00000009xSM-0mds;
-	Wed, 13 Mar 2024 11:46:28 +0000
+	id 1rkNXN-0000000A2Kg-0gj6;
+	Wed, 13 Mar 2024 12:16:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkN3w-00000009xRq-1alM
+	id 1rkMOX-00000009nD5-2Uaq
 	for barebox@lists.infradead.org;
-	Wed, 13 Mar 2024 11:46:25 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Wed, 13 Mar 2024 11:03:43 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkN3u-00082O-Tv; Wed, 13 Mar 2024 12:46:22 +0100
-Message-ID: <3a09a33d-4907-42f6-acc5-f87281213eae@pengutronix.de>
-Date: Wed, 13 Mar 2024 12:46:22 +0100
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>, barebox@lists.infradead.org
-References: <20240313100048.386604-1-a.fatoum@pengutronix.de>
- <171032992292.2298318.3624692935716774908.b4-ty@pengutronix.de>
+	id 1rkMOW-0007At-1E; Wed, 13 Mar 2024 12:03:36 +0100
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rkMOV-00662K-Ki; Wed, 13 Mar 2024 12:03:35 +0100
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rkMHg-004FrF-0p;
+	Wed, 13 Mar 2024 11:56:32 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <171032992292.2298318.3624692935716774908.b4-ty@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 13 Mar 2024 11:56:29 +0100
+Message-Id: <20240313105631.686778-11-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240313105631.686778-1-a.fatoum@pengutronix.de>
+References: <20240313105631.686778-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240313_044624_464129_9D90B512 
-X-CRM114-Status: GOOD (  14.22  )
+X-CRM114-CacheID: sfid-20240313_040337_902765_F627772C 
+X-CRM114-Status: GOOD (  22.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,46 +83,331 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2] console: flush consoles on newline when debugging
+Subject: [PATCH 10/12] hw_random: add Rockchip RNG support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
+To enable proper hardening with stack protector, add support for the
+Rockchip RNG. This has been tested on the RK3568.
 
-On 13.03.24 12:38, Sascha Hauer wrote:
-> 
-> On Wed, 13 Mar 2024 11:00:48 +0100, Ahmad Fatoum wrote:
->> For debugging hangs, CONFIG_DEBUG_PROBES and CONFIG_DEBUG_INITCALLS are
->> useful tools to pinpoint where the issue is. FOr issues that lock up the
->> SoC, their output can be misleading if we have bigger UART FIFO and not
->> all output has managed to make it out.
->>
->> Add a new DEBUG_FLUSH_LINE_BREAK to make debugging this easier.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/dts/rk356x.dtsi         |   8 +
+ drivers/hw_random/Kconfig        |   7 +
+ drivers/hw_random/Makefile       |   1 +
+ drivers/hw_random/rockchip-rng.c | 259 +++++++++++++++++++++++++++++++
+ 4 files changed, 275 insertions(+)
+ create mode 100644 drivers/hw_random/rockchip-rng.c
 
-Thanks. I just noticed, I missed updating the message here
-(CONSOLE_FLUSH_LINE_BREAK). Could you fix it?
-
-Cheers,
-Ahmad
-
-
->> The option is unnecessary outside of debugging, so for now we don't add
->> a prompt by default and select it as needed.
->>
->> [...]
-> 
-> Applied, thanks!
-> 
-> [1/1] console: flush consoles on newline when debugging
->       https://git.pengutronix.de/cgit/barebox/commit/?id=50cbfd91b573 (link may not be stable)
-> 
-> Best regards,
-
+diff --git a/arch/arm/dts/rk356x.dtsi b/arch/arm/dts/rk356x.dtsi
+index 195b42a8b0fb..923e18e7ccda 100644
+--- a/arch/arm/dts/rk356x.dtsi
++++ b/arch/arm/dts/rk356x.dtsi
+@@ -22,4 +22,12 @@ cpu_id: id@a {
+ 			reg = <0x0a 0x10>;
+ 		};
+ 	};
++
++	rng: rng@fe388000 {
++		compatible = "rockchip,rk3568-rng", "rockchip,cryptov2-rng";
++		reg = <0x0 0xfe388000 0x0 0x2000>;
++		clocks = <&cru CLK_TRNG_NS>, <&cru HCLK_TRNG_NS>;
++		clock-names = "trng_clk", "trng_hclk";
++		resets = <&cru SRST_TRNG_NS>;
++	};
+ };
+diff --git a/drivers/hw_random/Kconfig b/drivers/hw_random/Kconfig
+index 8aef00d61d81..58df6a75443c 100644
+--- a/drivers/hw_random/Kconfig
++++ b/drivers/hw_random/Kconfig
+@@ -80,4 +80,11 @@ config HW_RANDOM_IPROC_RNG200
+ 	  This driver provides barebox support for the RNG200
+ 	  hardware found on the BCM2711.
+ 
++config HW_RANDOM_ROCKCHIP
++	tristate "Rockchip Random Number Generator support"
++	depends on ARCH_ROCKCHIP || COMPILE_TEST
++	help
++	  This driver provides barebox support for the Random Number
++	  Generator hardware found on Rockchip cpus.
++
+ endif
+diff --git a/drivers/hw_random/Makefile b/drivers/hw_random/Makefile
+index 120f4c465635..8658d4e52521 100644
+--- a/drivers/hw_random/Makefile
++++ b/drivers/hw_random/Makefile
+@@ -10,3 +10,4 @@ obj-$(CONFIG_HW_RANDOM_OPTEE) += optee-rng.o
+ obj-$(CONFIG_HW_RANDOM_ATMEL) += atmel-rng.o
+ obj-$(CONFIG_HW_RANDOM_BCM2835) += bcm2835-rng.o
+ obj-$(CONFIG_HW_RANDOM_IPROC_RNG200) += iproc-rng200.o
++obj-$(CONFIG_HW_RANDOM_ROCKCHIP) += rockchip-rng.o
+diff --git a/drivers/hw_random/rockchip-rng.c b/drivers/hw_random/rockchip-rng.c
+new file mode 100644
+index 000000000000..990e5fc111fd
+--- /dev/null
++++ b/drivers/hw_random/rockchip-rng.c
+@@ -0,0 +1,259 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * rockchip-rng.c Random Number Generator driver for the Rockchip
++ *
++ * Copyright (c) 2018, Fuzhou Rockchip Electronics Co., Ltd.
++ * Author: Lin Jinhan <troy.lin@rock-chips.com>
++ *
++ */
++#include <linux/clk.h>
++#include <linux/hw_random.h>
++#include <linux/iopoll.h>
++#include <linux/reset.h>
++#include <linux/bitfield.h>
++#include <linux/mod_devicetable.h>
++#include <of.h>
++#include <of_address.h>
++#include <linux/device.h>
++
++#define HIWORD_UPDATE(val, mask, shift) \
++			((val) << (shift) | (mask) << ((shift) + 16))
++
++#define ROCKCHIP_AUTOSUSPEND_DELAY		100
++#define ROCKCHIP_POLL_PERIOD_US			100
++#define ROCKCHIP_POLL_TIMEOUT_US		10000
++#define RK_MAX_RNG_BYTE				(32)
++
++#define CRYPTO_V1_CTRL				0x0008
++#define CRYPTO_V1_RNG_START			BIT(8)
++#define CRYPTO_V1_RNG_FLUSH			BIT(9)
++#define CRYPTO_V1_TRNG_CTRL			0x0200
++#define CRYPTO_V1_OSC_ENABLE			BIT(16)
++#define CRYPTO_V1_TRNG_SAMPLE_PERIOD(x)		(x)
++#define CRYPTO_V1_TRNG_DOUT_0			0x0204
++
++#define CRYPTO_V2_RNG_CTL			0x0400
++#define CRYPTO_V2_RNG_BIT_LEN			GENMASK(5, 4)
++#define CRYPTO_V2_RNG_64_BIT_LEN		FIELD_PREP(CRYPTO_V2_RNG_BIT_LEN, 0)
++#define CRYPTO_V2_RNG_128_BIT_LEN		FIELD_PREP(CRYPTO_V2_RNG_BIT_LEN, 1)
++#define CRYPTO_V2_RNG_192_BIT_LEN		FIELD_PREP(CRYPTO_V2_RNG_BIT_LEN, 2)
++#define CRYPTO_V2_RNG_256_BIT_LEN		FIELD_PREP(CRYPTO_V2_RNG_BIT_LEN, 3)
++#define CRYPTO_V2_RNG_SOC_RING			GENMASK(3, 2)
++#define CRYPTO_V2_RNG_FASTEST_SOC_RING		FIELD_PREP(CRYPTO_V2_RNG_SOC_RING, 0)
++#define CRYPTO_V2_RNG_SLOWER_SOC_RING_0		FIELD_PREP(CRYPTO_V2_RNG_SOC_RING, 1)
++#define CRYPTO_V2_RNG_SLOWER_SOC_RING_1		FIELD_PREP(CRYPTO_V2_RNG_SOC_RING, 2)
++#define CRYPTO_V2_RNG_SLOWEST_SOC_RING		FIELD_PREP(CRYPTO_V2_RNG_SOC_RING, 3)
++#define CRYPTO_V2_RNG_ENABLE			BIT(1)
++#define CRYPTO_V2_RNG_START			BIT(0)
++#define CRYPTO_V2_RNG_SAMPLE_CNT		0x0404
++#define CRYPTO_V2_RNG_DOUT_0			0x0410
++
++struct rk_rng_soc_data {
++	const char * const *clks;
++	int clks_num;
++	int (*rk_rng_read)(struct hwrng *rng, void *buf, size_t max, bool wait);
++};
++
++struct rk_rng {
++	struct device		*dev;
++	struct hwrng		rng;
++	void __iomem		*mem;
++	struct rk_rng_soc_data	*soc_data;
++	u32			clk_num;
++	struct clk_bulk_data	*clk_bulks;
++};
++
++static void rk_rng_writel(struct rk_rng *rng, u32 val, u32 offset)
++{
++	__raw_writel(val, rng->mem + offset);
++}
++
++static u32 rk_rng_readl(struct rk_rng *rng, u32 offset)
++{
++	return __raw_readl(rng->mem + offset);
++}
++
++static int rk_rng_init(struct hwrng *rng)
++{
++	int ret;
++	struct rk_rng *rk_rng = container_of(rng, struct rk_rng, rng);
++
++	ret = clk_bulk_prepare_enable(rk_rng->clk_num, rk_rng->clk_bulks);
++	if (ret < 0) {
++		dev_err(rk_rng->dev, "failed to enable clks %d\n", ret);
++		return ret;
++	}
++
++	return 0;
++}
++
++static void rk_rng_cleanup(struct rk_rng *rk_rng)
++{
++	clk_bulk_disable_unprepare(rk_rng->clk_num, rk_rng->clk_bulks);
++}
++
++static void rk_rng_read_regs(struct rk_rng *rng, u32 offset, void *buf,
++			     size_t size)
++{
++	u32 i, sample;
++
++	for (i = 0; i < size; i += 4) {
++		sample = rk_rng_readl(rng, offset + i);
++		memcpy(buf + i, &sample, sizeof(sample));
++	}
++}
++
++static int rk_rng_v1_read(struct hwrng *rng, void *buf, size_t max, bool wait)
++{
++	int ret = 0;
++	u32 reg_ctrl = 0;
++	struct rk_rng *rk_rng = container_of(rng, struct rk_rng, rng);
++
++	/* enable osc_ring to get entropy, sample period is set as 100 */
++	reg_ctrl = CRYPTO_V1_OSC_ENABLE | CRYPTO_V1_TRNG_SAMPLE_PERIOD(100);
++	rk_rng_writel(rk_rng, reg_ctrl, CRYPTO_V1_TRNG_CTRL);
++
++	reg_ctrl = HIWORD_UPDATE(CRYPTO_V1_RNG_START, CRYPTO_V1_RNG_START, 0);
++
++	rk_rng_writel(rk_rng, reg_ctrl, CRYPTO_V1_CTRL);
++
++	ret = readl_poll_timeout(rk_rng->mem + CRYPTO_V1_CTRL, reg_ctrl,
++				 !(reg_ctrl & CRYPTO_V1_RNG_START),
++				 ROCKCHIP_POLL_TIMEOUT_US);
++	if (ret < 0)
++		goto out;
++
++	ret = min_t(size_t, max, RK_MAX_RNG_BYTE);
++
++	rk_rng_read_regs(rk_rng, CRYPTO_V1_TRNG_DOUT_0, buf, ret);
++
++out:
++	/* close TRNG */
++	rk_rng_writel(rk_rng, HIWORD_UPDATE(0, CRYPTO_V1_RNG_START, 0),
++		      CRYPTO_V1_CTRL);
++
++	return ret;
++}
++
++static int rk_rng_v2_read(struct hwrng *rng, void *buf, size_t max, bool wait)
++{
++	int ret = 0;
++	u32 reg_ctrl = 0;
++	struct rk_rng *rk_rng = container_of(rng, struct rk_rng, rng);
++
++	/* enable osc_ring to get entropy, sample period is set as 100 */
++	rk_rng_writel(rk_rng, 100, CRYPTO_V2_RNG_SAMPLE_CNT);
++
++	reg_ctrl |= CRYPTO_V2_RNG_256_BIT_LEN;
++	reg_ctrl |= CRYPTO_V2_RNG_SLOWER_SOC_RING_0;
++	reg_ctrl |= CRYPTO_V2_RNG_ENABLE;
++	reg_ctrl |= CRYPTO_V2_RNG_START;
++
++	rk_rng_writel(rk_rng, HIWORD_UPDATE(reg_ctrl, 0xffff, 0),
++			CRYPTO_V2_RNG_CTL);
++
++	ret = readl_poll_timeout(rk_rng->mem + CRYPTO_V2_RNG_CTL, reg_ctrl,
++				 !(reg_ctrl & CRYPTO_V2_RNG_START),
++				 ROCKCHIP_POLL_TIMEOUT_US);
++	if (ret < 0)
++		goto out;
++
++	ret = min_t(size_t, max, RK_MAX_RNG_BYTE);
++
++	rk_rng_read_regs(rk_rng, CRYPTO_V2_RNG_DOUT_0, buf, ret);
++
++out:
++	/* close TRNG */
++	rk_rng_writel(rk_rng, HIWORD_UPDATE(0, 0xffff, 0), CRYPTO_V2_RNG_CTL);
++
++	return ret;
++}
++
++static const struct rk_rng_soc_data rk_rng_rk3399_soc_data = {
++	.clks_num = 3,
++	.rk_rng_read = rk_rng_v1_read,
++};
++
++static const struct rk_rng_soc_data rk_rng_v1_soc_data = {
++	.clks_num = 2,
++	.rk_rng_read = rk_rng_v1_read,
++};
++
++static const struct rk_rng_soc_data rk_rng_v2_soc_data = {
++	.clks_num = 2,
++	.rk_rng_read = rk_rng_v2_read,
++};
++
++static const struct of_device_id rk_rng_dt_match[] = {
++	{
++		.compatible = "rockchip,rk3399-crypto",
++		.data = (void *)&rk_rng_rk3399_soc_data,
++	},
++	{
++		.compatible = "rockchip,cryptov1-rng",
++		.data = (void *)&rk_rng_v1_soc_data,
++	},
++	{
++		.compatible = "rockchip,cryptov2-rng",
++		.data = (void *)&rk_rng_v2_soc_data,
++	},
++	{ },
++};
++
++MODULE_DEVICE_TABLE(of, rk_rng_dt_match);
++
++static int rk_rng_probe(struct device *dev)
++{
++	int ret;
++	struct rk_rng *rk_rng;
++	struct device_node *np = dev->of_node;
++	const struct of_device_id *match;
++
++	rk_rng = devm_kzalloc(dev, sizeof(struct rk_rng), GFP_KERNEL);
++	if (!rk_rng)
++		return -ENOMEM;
++
++	match = of_match_node(rk_rng_dt_match, np);
++	rk_rng->soc_data = (struct rk_rng_soc_data *)match->data;
++
++	rk_rng->dev = dev;
++	rk_rng->rng.name    = "rockchip";
++	rk_rng->rng.init    = rk_rng_init;
++	rk_rng->rng.read    = rk_rng->soc_data->rk_rng_read;
++
++	rk_rng->clk_num = clk_bulk_get_all(dev, &rk_rng->clk_bulks);
++	if (rk_rng->clk_num < rk_rng->soc_data->clks_num)
++		return dev_err_probe(dev, -EINVAL,
++				     "Missing clocks, got %d instead of %d\n",
++				     rk_rng->clk_num, rk_rng->soc_data->clks_num);
++
++	ret = device_reset_us(dev, 2);
++	if (ret)
++		return ret;
++
++	rk_rng->mem = of_iomap(dev->device_node, 0);
++	if (IS_ERR(rk_rng->mem))
++		return PTR_ERR(rk_rng->mem);
++
++	dev->priv = rk_rng;
++
++	return hwrng_register(dev, &rk_rng->rng);
++}
++
++static void rk_rng_remove(struct device *dev)
++{
++	rk_rng_cleanup(dev->priv);
++}
++
++static struct driver rk_rng_driver = {
++	.name	= "rockchip-rng",
++	.of_match_table = rk_rng_dt_match,
++	.probe	= rk_rng_probe,
++	.remove	= rk_rng_remove,
++};
++
++device_platform_driver(rk_rng_driver);
++
++MODULE_DESCRIPTION("ROCKCHIP H/W Random Number Generator driver");
++MODULE_AUTHOR("Lin Jinhan <troy.lin@rock-chips.com>");
++MODULE_LICENSE("GPL v2");
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
