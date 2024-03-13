@@ -1,66 +1,66 @@
-Delivery-date: Wed, 13 Mar 2024 11:57:45 +0100
+Delivery-date: Wed, 13 Mar 2024 12:05:51 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkMIr-004HVv-0g
+	id 1rkMQh-004I1z-1L
 	for lore@lore.pengutronix.de;
-	Wed, 13 Mar 2024 11:57:45 +0100
+	Wed, 13 Mar 2024 12:05:51 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkMIp-0001Wf-Qw
-	for lore@pengutronix.de; Wed, 13 Mar 2024 11:57:45 +0100
+	id 1rkMQg-0000pe-Hn
+	for lore@pengutronix.de; Wed, 13 Mar 2024 12:05:51 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5IlTe3zPesicJnnCOPIcyGgW2JoRaB8D6gf5MbzRWFc=; b=iovyUCpTAYwUyPEc+P8blFbkFu
-	f6XvjCXwThBfnZMmGSy+FL0+OtMREa4W/m1b4Xa37UV+eylWFQGqEfjJZ9SwUy/dar9bWzN8YRMlm
-	2EQg40gieIRoRIWdmw7B/zr+alWesVpEmoS+D4Ka+pC6XnOYQK4ORZzve3kbqx79fu1VcNTgO4nnk
-	EWFe2dE4bgUsf8YT2rh3E+mh7Y2QhDE6r/nS5P/l7h5JDA7WvyjdBN//TScUBiLoo04wA+bqesGmu
-	pN+Lnm1NsNj/R53JCZAaR/MGF0c1zUuwhB7c3cvyKXZuOOt+zFBWlNcj73+JrymWzZnpg3U0bxpu+
-	da32uHUA==;
+	bh=VZQQCn8lvK3i7hCEbIgqLh8LzTVMTnt1SkOG6dxQMss=; b=FTAACU/Pyhxcg5e/Kt1H6MhpY4
+	Bhy+tS9MWcrNC7LDExyvcvUwZpBDCDGpF8443uMNIpf/s0iEYHi8+l029e9szxZjAqiuRxuxFfjda
+	N3xV7/9crvHBd9Nng/lpLOYypukouLG9jQNJJ1yHZ5Dpq9c/oVinAn3GzRHzkM3WpuAkZ+XB+Zrdx
+	3PMcammDLVBIcawUPs5dnprWsyHh1fEhI2Hn1xGO8YEpzkBcrjurG62DhAZB2qJ//5LmVc89bTP2q
+	N6hNoSOQAsL/JADMdOkNM1fwnKxkcgKJI/YYmHM5oX/Hab+G1BBsB1XU1KOiqHbJgQLY456SQNzlE
+	CRRmLcZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkMII-00000009kdD-1hpN;
-	Wed, 13 Mar 2024 10:57:10 +0000
+	id 1rkMPy-00000009oJN-0qJk;
+	Wed, 13 Mar 2024 11:05:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkMHi-00000009kKr-2Dgt
+	id 1rkMOX-00000009nDA-2U3Z
 	for barebox@lists.infradead.org;
-	Wed, 13 Mar 2024 10:56:40 +0000
+	Wed, 13 Mar 2024 11:03:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkMHh-0008Px-7g; Wed, 13 Mar 2024 11:56:33 +0100
+	id 1rkMOW-0007Av-5b; Wed, 13 Mar 2024 12:03:36 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkMHg-00661R-Q9; Wed, 13 Mar 2024 11:56:32 +0100
+	id 1rkMOV-00662P-PC; Wed, 13 Mar 2024 12:03:35 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkMHg-004FrF-0f;
+	id 1rkMHg-004FrF-0y;
 	Wed, 13 Mar 2024 11:56:32 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 13 Mar 2024 11:56:28 +0100
-Message-Id: <20240313105631.686778-10-a.fatoum@pengutronix.de>
+Date: Wed, 13 Mar 2024 11:56:30 +0100
+Message-Id: <20240313105631.686778-12-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240313105631.686778-1-a.fatoum@pengutronix.de>
 References: <20240313105631.686778-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240313_035634_921732_45C8C308 
-X-CRM114-Status: GOOD (  23.40  )
+X-CRM114-CacheID: sfid-20240313_040337_751349_4CAC45CB 
+X-CRM114-Status: GOOD (  27.25  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,277 +78,206 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 09/12] hw_random: add IPROC RNG200 driver for BCM2711
+Subject: [PATCH 11/12] hw_random: add timeriomem_rng driver
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 To enable proper hardening with stack protector, add support for the
-IPROC RNG200. This has been tested on a Raspberry Pi 4.
+RNGs with the interface of a single memory mapped 32-bit register.
+
+This can possibly come in handy for the web demo.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/hw_random/Kconfig        |   7 +
- drivers/hw_random/Makefile       |   1 +
- drivers/hw_random/iproc-rng200.c | 220 +++++++++++++++++++++++++++++++
- 3 files changed, 228 insertions(+)
- create mode 100644 drivers/hw_random/iproc-rng200.c
+ drivers/hw_random/Kconfig          |   7 ++
+ drivers/hw_random/Makefile         |   1 +
+ drivers/hw_random/timeriomem-rng.c | 145 +++++++++++++++++++++++++++++
+ 3 files changed, 153 insertions(+)
+ create mode 100644 drivers/hw_random/timeriomem-rng.c
 
 diff --git a/drivers/hw_random/Kconfig b/drivers/hw_random/Kconfig
-index e38bf42a67cd..8aef00d61d81 100644
+index 58df6a75443c..bd1ac89ad37d 100644
 --- a/drivers/hw_random/Kconfig
 +++ b/drivers/hw_random/Kconfig
-@@ -73,4 +73,11 @@ config HW_RANDOM_BCM2835
- 	  This driver provides barebox support for the Random Number
- 	  Generator hardware found on the Broadcom BCM2835 SoCs.
+@@ -8,6 +8,13 @@ menuconfig HWRNG
  
-+config HW_RANDOM_IPROC_RNG200
-+	tristate "Broadcom iProc/STB RNG200 support"
-+	depends on ARCH_BCM283X || COMPILE_TEST
+ if HWRNG
+ 
++config HW_RANDOM_TIMERIOMEM
++	tristate "Timer IOMEM HW Random Number Generator support"
 +	help
-+	  This driver provides barebox support for the RNG200
-+	  hardware found on the BCM2711.
++	  This driver provides barebox support for a generic Random
++	  Number Generator used by reading a 'dumb' iomem address that
++	  is to be read no faster than, for example, once a second.
 +
- endif
+ config HWRNG_MXC_RNGC
+ 	tristate "Freescale i.MX RNGC Random Number Generator"
+ 	depends on ARCH_IMX25 || ARCH_IMX35 || ARCH_IMX53 || COMPILE_TEST
 diff --git a/drivers/hw_random/Makefile b/drivers/hw_random/Makefile
-index ed0a4efeedf4..120f4c465635 100644
+index 8658d4e52521..32b02fa211ac 100644
 --- a/drivers/hw_random/Makefile
 +++ b/drivers/hw_random/Makefile
-@@ -9,3 +9,4 @@ obj-$(CONFIG_HW_RANDOM_EFI) += efi-rng.o
- obj-$(CONFIG_HW_RANDOM_OPTEE) += optee-rng.o
- obj-$(CONFIG_HW_RANDOM_ATMEL) += atmel-rng.o
+@@ -11,3 +11,4 @@ obj-$(CONFIG_HW_RANDOM_ATMEL) += atmel-rng.o
  obj-$(CONFIG_HW_RANDOM_BCM2835) += bcm2835-rng.o
-+obj-$(CONFIG_HW_RANDOM_IPROC_RNG200) += iproc-rng200.o
-diff --git a/drivers/hw_random/iproc-rng200.c b/drivers/hw_random/iproc-rng200.c
+ obj-$(CONFIG_HW_RANDOM_IPROC_RNG200) += iproc-rng200.o
+ obj-$(CONFIG_HW_RANDOM_ROCKCHIP) += rockchip-rng.o
++obj-$(CONFIG_HW_RANDOM_TIMERIOMEM) += timeriomem-rng.o
+diff --git a/drivers/hw_random/timeriomem-rng.c b/drivers/hw_random/timeriomem-rng.c
 new file mode 100644
-index 000000000000..4cb3573a7d20
+index 000000000000..8d4705830653
 --- /dev/null
-+++ b/drivers/hw_random/iproc-rng200.c
-@@ -0,0 +1,220 @@
++++ b/drivers/hw_random/timeriomem-rng.c
+@@ -0,0 +1,145 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+* Copyright (C) 2015 Broadcom Corporation
-+*
-+*/
-+/*
-+ * DESCRIPTION: The Broadcom iProc RNG200 Driver
++ * drivers/char/hw_random/timeriomem-rng.c
++ *
++ * Copyright (C) 2009 Alexander Clouter <alex@digriz.org.uk>
++ *
++ * Derived from drivers/char/hw_random/omap-rng.c
++ *   Copyright 2005 (c) MontaVista Software, Inc.
++ *   Author: Deepak Saxena <dsaxena@plexity.net>
++ *
++ * Overview:
++ *   This driver is useful for platforms that have an IO range that provides
++ *   periodic random data from a single IO memory address.  All the platform
++ *   has to do is provide the address and 'wait time' that new data becomes
++ *   available.
++ *
++ * TODO: add support for reading sizes other than 32bits and masking
 + */
 +
 +#include <linux/hw_random.h>
 +#include <linux/io.h>
-+#include <linux/kernel.h>
-+#include <linux/mod_devicetable.h>
++#include <linux/ktime.h>
++#include <of.h>
 +#include <linux/device.h>
-+#include <clock.h>
++#include <linux/time.h>
 +
-+/* Registers */
-+#define RNG_CTRL_OFFSET					0x00
-+#define RNG_CTRL_RNG_RBGEN_MASK				0x00001FFF
-+#define RNG_CTRL_RNG_RBGEN_ENABLE			0x00000001
++struct timeriomem_rng_private {
++	void __iomem		*io_base;
 +
-+#define RNG_SOFT_RESET_OFFSET				0x04
-+#define RNG_SOFT_RESET					0x00000001
++	ktime_t			period;
++	ktime_t			next_read;
 +
-+#define RBG_SOFT_RESET_OFFSET				0x08
-+#define RBG_SOFT_RESET					0x00000001
-+
-+#define RNG_INT_STATUS_OFFSET				0x18
-+#define RNG_INT_STATUS_MASTER_FAIL_LOCKOUT_IRQ_MASK	0x80000000
-+#define RNG_INT_STATUS_STARTUP_TRANSITIONS_MET_IRQ_MASK	0x00020000
-+#define RNG_INT_STATUS_NIST_FAIL_IRQ_MASK		0x00000020
-+#define RNG_INT_STATUS_TOTAL_BITS_COUNT_IRQ_MASK	0x00000001
-+
-+#define RNG_FIFO_DATA_OFFSET				0x20
-+
-+#define RNG_FIFO_COUNT_OFFSET				0x24
-+#define RNG_FIFO_COUNT_RNG_FIFO_COUNT_MASK		0x000000FF
-+
-+struct iproc_rng200_dev {
-+	struct hwrng rng;
-+	void __iomem *base;
++	struct hwrng		rng_ops;
 +};
 +
-+#define to_rng_priv(rng)	container_of(rng, struct iproc_rng200_dev, rng)
-+
-+static void iproc_rng200_enable_set(void __iomem *rng_base, bool enable)
++static int timeriomem_rng_read(struct hwrng *hwrng, void *data,
++				size_t max, bool wait)
 +{
-+	u32 val;
++	struct timeriomem_rng_private *priv =
++		container_of(hwrng, struct timeriomem_rng_private, rng_ops);
++	int retval = 0;
++	int period_us = ktime_to_us(priv->period);
++	ktime_t now = ktime_get();
 +
-+	val = ioread32(rng_base + RNG_CTRL_OFFSET);
-+	val &= ~RNG_CTRL_RNG_RBGEN_MASK;
++	/*
++	 * There may not have been enough time for new data to be generated
++	 * since the last request.  If the caller doesn't want to wait, let them
++	 * bail out.  Otherwise, wait for the completion.  If the new data has
++	 * already been generated, the completion should already be available.
++	 */
++	if (ktime_before(now, priv->next_read)) {
++		if (!wait)
++			return 0;
 +
-+	if (enable)
-+		val |= RNG_CTRL_RNG_RBGEN_ENABLE;
-+
-+	iowrite32(val, rng_base + RNG_CTRL_OFFSET);
-+}
-+
-+static void iproc_rng200_restart(void __iomem *rng_base)
-+{
-+	uint32_t val;
-+
-+	iproc_rng200_enable_set(rng_base, false);
-+
-+	/* Clear all interrupt status */
-+	iowrite32(0xFFFFFFFFUL, rng_base + RNG_INT_STATUS_OFFSET);
-+
-+	/* Reset RNG and RBG */
-+	val = ioread32(rng_base + RBG_SOFT_RESET_OFFSET);
-+	val |= RBG_SOFT_RESET;
-+	iowrite32(val, rng_base + RBG_SOFT_RESET_OFFSET);
-+
-+	val = ioread32(rng_base + RNG_SOFT_RESET_OFFSET);
-+	val |= RNG_SOFT_RESET;
-+	iowrite32(val, rng_base + RNG_SOFT_RESET_OFFSET);
-+
-+	val = ioread32(rng_base + RNG_SOFT_RESET_OFFSET);
-+	val &= ~RNG_SOFT_RESET;
-+	iowrite32(val, rng_base + RNG_SOFT_RESET_OFFSET);
-+
-+	val = ioread32(rng_base + RBG_SOFT_RESET_OFFSET);
-+	val &= ~RBG_SOFT_RESET;
-+	iowrite32(val, rng_base + RBG_SOFT_RESET_OFFSET);
-+
-+	iproc_rng200_enable_set(rng_base, true);
-+}
-+
-+static int iproc_rng200_read(struct hwrng *rng, void *buf, size_t max,
-+			     bool wait)
-+{
-+	struct iproc_rng200_dev *priv = to_rng_priv(rng);
-+	uint32_t num_remaining = max;
-+	uint32_t status;
-+	u64 start;
-+
-+	#define MAX_RESETS_PER_READ	1
-+	uint32_t num_resets = 0;
-+
-+	#define MAX_IDLE_TIME_NS	(NSEC_PER_SEC)
-+
-+	start = get_time_ns();
-+
-+	while ((num_remaining > 0) && !is_timeout(start, MAX_IDLE_TIME_NS)) {
-+
-+		/* Is RNG sane? If not, reset it. */
-+		status = ioread32(priv->base + RNG_INT_STATUS_OFFSET);
-+		if ((status & (RNG_INT_STATUS_MASTER_FAIL_LOCKOUT_IRQ_MASK |
-+			RNG_INT_STATUS_NIST_FAIL_IRQ_MASK)) != 0) {
-+
-+			if (num_resets >= MAX_RESETS_PER_READ)
-+				return max - num_remaining;
-+
-+			iproc_rng200_restart(priv->base);
-+			num_resets++;
-+		}
-+
-+		/* Are there any random numbers available? */
-+		if ((ioread32(priv->base + RNG_FIFO_COUNT_OFFSET) &
-+				RNG_FIFO_COUNT_RNG_FIFO_COUNT_MASK) > 0) {
-+
-+			if (num_remaining >= sizeof(uint32_t)) {
-+				/* Buffer has room to store entire word */
-+				*(uint32_t *)buf = ioread32(priv->base +
-+							RNG_FIFO_DATA_OFFSET);
-+				buf += sizeof(uint32_t);
-+				num_remaining -= sizeof(uint32_t);
-+			} else {
-+				/* Buffer can only store partial word */
-+				uint32_t rnd_number = ioread32(priv->base +
-+							RNG_FIFO_DATA_OFFSET);
-+				memcpy(buf, &rnd_number, num_remaining);
-+				buf += num_remaining;
-+				num_remaining = 0;
-+			}
-+
-+			/* Reset the IDLE timeout */
-+			start = get_time_ns();
-+		} else {
-+			if (!wait)
-+				/* Cannot wait, return immediately */
-+				return max - num_remaining;
-+		}
++		udelay(ktime_to_us(ktime_sub(priv->next_read, now)));
 +	}
 +
-+	return max - num_remaining;
++	do {
++		/*
++		 * After the first read, all additional reads will need to wait
++		 * for the RNG to generate new data.  Since the period can have
++		 * a wide range of values (1us to 1s have been observed), allow
++		 * for 1% tolerance in the sleep time rather than a fixed value.
++		 */
++		if (retval > 0)
++			udelay(period_us);
++
++		*(u32 *)data = readl(priv->io_base);
++		retval += sizeof(u32);
++		data += sizeof(u32);
++		max -= sizeof(u32);
++	} while (wait && max > sizeof(u32));
++
++	/*
++	 * Block any new callers until the RNG has had time to generate new
++	 * data.
++	 */
++	priv->next_read = ktime_add(ktime_get(), priv->period);
++
++	return retval;
 +}
 +
-+static int iproc_rng200_init(struct hwrng *rng)
++static int timeriomem_rng_probe(struct device *dev)
 +{
-+	struct iproc_rng200_dev *priv = to_rng_priv(rng);
++	struct timeriomem_rng_private *priv;
++	struct resource *res;
++	int err = 0;
++	int period;
 +
-+	iproc_rng200_enable_set(priv->base, true);
-+
-+	return 0;
-+}
-+
-+static void iproc_rng200_cleanup(struct iproc_rng200_dev *priv)
-+{
-+	iproc_rng200_enable_set(priv->base, false);
-+}
-+
-+static int iproc_rng200_probe(struct device *dev)
-+{
-+	struct iproc_rng200_dev *priv;
-+	int ret;
-+
-+	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
++	/* Allocate memory for the device structure (and zero it) */
++	priv = devm_kzalloc(dev,
++			sizeof(struct timeriomem_rng_private), GFP_KERNEL);
 +	if (!priv)
 +		return -ENOMEM;
 +
-+	/* Map peripheral */
-+	priv->base = dev_platform_ioremap_resource(dev, 0);
-+	if (IS_ERR(priv->base)) {
-+		dev_err(dev, "failed to remap rng regs\n");
-+		return PTR_ERR(priv->base);
++	priv->io_base = dev_platform_get_and_ioremap_resource(dev, 0, &res);
++	if (IS_ERR(priv->io_base))
++		return PTR_ERR(priv->io_base);
++
++	if (res->start % 4 != 0 || resource_size(res) < 4) {
++		dev_err(dev,
++			"address must be at least four bytes wide and 32-bit aligned\n");
++		return -EINVAL;
 +	}
 +
-+	dev->priv = priv;
++	if (of_property_read_u32(dev->of_node, "period", &period))
++		return dev_err_probe(dev, -EINVAL, "missing period\n");
 +
-+	priv->rng.name = "iproc-rng200";
-+	priv->rng.read = iproc_rng200_read;
-+	priv->rng.init = iproc_rng200_init;
++	priv->period = ns_to_ktime(period * NSEC_PER_USEC);
 +
-+	/* Register driver */
-+	ret = hwrng_register(dev, &priv->rng);
-+	if (ret) {
-+		dev_err(dev, "hwrng registration failed\n");
-+		return ret;
++	priv->rng_ops.name = dev_name(dev);
++	priv->rng_ops.read = timeriomem_rng_read;
++
++	/* Assume random data is already available. */
++	priv->next_read = ktime_get();
++
++	err = hwrng_register(dev, &priv->rng_ops);
++	if (err) {
++		dev_err(dev, "problem registering\n");
++		return err;
 +	}
 +
-+	dev_info(dev, "hwrng registered\n");
++	dev_info(dev, "32bits from 0x%p @ %dus\n",
++			priv->io_base, period);
 +
 +	return 0;
 +}
 +
-+static void iproc_rng200_remove(struct device *dev)
-+{
-+	iproc_rng200_cleanup(dev->priv);
-+}
-+
-+static const struct of_device_id iproc_rng200_of_match[] = {
-+	{ .compatible = "brcm,bcm2711-rng200", },
-+	{ .compatible = "brcm,bcm7211-rng200", },
-+	{ .compatible = "brcm,bcm7278-rng200", },
-+	{ .compatible = "brcm,iproc-rng200", },
++static const struct of_device_id timeriomem_rng_match[] = {
++	{ .compatible = "timeriomem_rng" },
 +	{},
 +};
-+MODULE_DEVICE_TABLE(of, iproc_rng200_of_match);
++MODULE_DEVICE_TABLE(of, timeriomem_rng_match);
 +
-+static struct driver iproc_rng200_driver = {
-+	.name		= "iproc-rng200",
-+	.of_match_table = iproc_rng200_of_match,
-+	.probe		= iproc_rng200_probe,
-+	.remove		= iproc_rng200_remove,
++static struct driver timeriomem_rng_driver = {
++	.name		= "timeriomem_rng",
++	.of_match_table	= timeriomem_rng_match,
++	.probe		= timeriomem_rng_probe,
 +};
-+device_platform_driver(iproc_rng200_driver);
 +
-+MODULE_AUTHOR("Broadcom");
-+MODULE_DESCRIPTION("iProc RNG200 Random Number Generator driver");
-+MODULE_LICENSE("GPL v2");
++device_platform_driver(timeriomem_rng_driver);
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Alexander Clouter <alex@digriz.org.uk>");
++MODULE_DESCRIPTION("Timer IOMEM H/W RNG driver");
 -- 
 2.39.2
 
