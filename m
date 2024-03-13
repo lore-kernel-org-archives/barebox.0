@@ -1,64 +1,64 @@
-Delivery-date: Wed, 13 Mar 2024 15:42:27 +0100
+Delivery-date: Wed, 13 Mar 2024 16:43:02 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkPoJ-004WK2-1J
+	id 1rkQkw-004ZuN-2E
 	for lore@lore.pengutronix.de;
-	Wed, 13 Mar 2024 15:42:27 +0100
+	Wed, 13 Mar 2024 16:43:02 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkPoI-0005pv-RF
-	for lore@pengutronix.de; Wed, 13 Mar 2024 15:42:27 +0100
+	id 1rkQkw-0002j8-1D
+	for lore@pengutronix.de; Wed, 13 Mar 2024 16:43:02 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=5CBURemMi+QKw56sFEixboZf17Fwu7bO5vmY69N/4LI=; b=akD6h98ny5cIJmfSgYTlaKyM8s
-	syDOz59Hx4wvKHt//Hb2wCRiXNJ1wpYpK3Es5bqFvvH4S/JXD/JVYcONQGz3lRszZalX44kKTzN9j
-	zv/YqyIe7vaYSVnptE8xAcmSbHBzjfR3X2+ua3+a032hQ1D7wgfJnAkd2U5EK7SXjs+LdWfFxCA4E
-	YRLt0yp/RjKLIzqwnlZRZY0q4yWIW56OQXcoytymWwRn7pyrYm55kMa228Sf2AmBVQJyu8OUW0kAG
-	wpnaM35+2Xz4NIejuNxojHSqgVhCyMKDX8zTCiew6/NzftDZVxP7C44fbx/Kmc5BDZ6y6FfBuwixC
-	ZXpRQJhQ==;
+	bh=QB5Xmg3KluEF5tL+INRehSzH5+8sFcrJ2AdGAPvBJr0=; b=PVAHtI8TydG84/RqfHC8kVhSAR
+	+MHcXiivDNZ1Rj4LvwwCw7uNWXcKgMf2VMQutqRQdtS9TsBKgjAppiZurEoGNFD29xvx9Uy6Vxg47
+	2zM+YLqPuVxHK/Cu4dNQjGcVrClp7YqaltA9pMO/CyhzQk7ux8kMiEhYmclCsAqnGWimj1V54Q245
+	+0MdxAa/Y3P1UW5mnm4YuTIm3A56j0xSTdI+UQVBKtGVBtS/Y2eMH+Ce9YKNMJVI6dJI20K08rGMy
+	qk2aXxh9k5mJEZ5R9Tw5S5H+JAfO3S8ehqCfRCjw8t4QOKekjQwbYirzyAaa8f1UfxrshFGAqL0NI
+	ajGHTQfw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkPnc-0000000ASVN-1c4m;
-	Wed, 13 Mar 2024 14:41:44 +0000
+	id 1rkQkL-0000000AeKF-3PUr;
+	Wed, 13 Mar 2024 15:42:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkPnY-0000000ASTf-2LRR
+	id 1rkQkG-0000000AeJV-0Q5c
 	for barebox@lists.infradead.org;
-	Wed, 13 Mar 2024 14:41:42 +0000
+	Wed, 13 Mar 2024 15:42:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkPnW-00051z-Jk; Wed, 13 Mar 2024 15:41:38 +0100
+	id 1rkQkE-00022G-B9; Wed, 13 Mar 2024 16:42:18 +0100
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkPnW-0068Nf-6y; Wed, 13 Mar 2024 15:41:38 +0100
+	id 1rkQkD-0068rQ-Uz; Wed, 13 Mar 2024 16:42:17 +0100
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rkPnV-0093HA-1z;
-	Wed, 13 Mar 2024 15:41:38 +0100
+	id 1rkQkD-00BWvH-14;
+	Wed, 13 Mar 2024 16:42:17 +0100
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 13 Mar 2024 15:41:35 +0100
-Message-Id: <20240313144136.2157496-1-a.fatoum@pengutronix.de>
+Date: Wed, 13 Mar 2024 16:42:17 +0100
+Message-Id: <20240313154217.2747582-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240313_074140_624561_EC63C047 
-X-CRM114-Status: GOOD (  10.58  )
+X-CRM114-CacheID: sfid-20240313_084220_505712_9144D602 
+X-CRM114-Status: GOOD (  13.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,37 +81,69 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH master 1/2] ARM: i.MX8MQ: fix early boot hang
+Subject: [PATCH] ddr: imx8m: add deprecation warnings for ddrphy_trained_csr
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Commit 6ea731079140 ("ARM: i.MX8MQ: Streamline lowlevel startup code")
-changed i.MX8MQ PBL code to mimic the code introduced for later i.MX8M
-variants. The mimicry went a bit too far though and it exchanged i.MX8MQ
-boot source lookup with that of the i.MX8MN. Fix this to avoid the boot
-hanging with:
+ddrphy_trained_csr and ddrphy_trained_csr_num are generated by the
+spreadsheet, but are unused. Instead a default array with fixed values
+is unconditionally used. Add a deprecation warning to alert to this
+fact.
 
-  Unhandled bootsource BOOTSOURCE_0
+It seems GCC doesn't print this deprecation when using C99
+designated initializers, but clang(d) does, so it's useful to have for
+those using clangd in their editors.
 
-Fixes: 6ea731079140 ("ARM: i.MX8MQ: Streamline lowlevel startup code")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/mach-imx/atf.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/ddr/imx/helper.c | 7 +++++++
+ include/soc/imx/ddr.h    | 8 ++++++--
+ 2 files changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/atf.c b/arch/arm/mach-imx/atf.c
-index 9cbc38ef11e8..8b804602681b 100644
---- a/arch/arm/mach-imx/atf.c
-+++ b/arch/arm/mach-imx/atf.c
-@@ -323,7 +323,7 @@ void imx8mq_load_bl33(void *bl33)
- 	enum bootsource src;
- 	int instance;
+diff --git a/drivers/ddr/imx/helper.c b/drivers/ddr/imx/helper.c
+index 674ca7e4ac38..f9c25f7180b8 100644
+--- a/drivers/ddr/imx/helper.c
++++ b/drivers/ddr/imx/helper.c
+@@ -10,6 +10,13 @@
+ #include <errno.h>
+ #include <soc/imx8m/ddr.h>
  
--	imx8mn_get_boot_source(&src, &instance);
-+	imx8mq_get_boot_source(&src, &instance);
- 	switch (src) {
- 	case BOOTSOURCE_MMC:
- 		imx8m_esdhc_load_image(instance, bl33);
++/*
++ * We deprecate ddrphy_trained_csr(_num) for board code, so we can set it
++ * ourselves here
++ */
++#pragma GCC diagnostic push
++#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
++
+ void ddrphy_trained_csr_save(struct dram_controller *dram, struct dram_cfg_param *ddrphy_csr,
+ 			     unsigned int num)
+ {
+diff --git a/include/soc/imx/ddr.h b/include/soc/imx/ddr.h
+index 8553452ad8a9..0225ac0e033c 100644
+--- a/include/soc/imx/ddr.h
++++ b/include/soc/imx/ddr.h
+@@ -54,6 +54,10 @@ struct dram_fsp_msg {
+ 	unsigned int fsp_cfg_num;
+ };
+ 
++#define __deprecated_dram_timing_info \
++	__attribute__((deprecated("board-specific data here is ignored in favor of the defaults." \
++				  " You can probably remove the array")))
++
+ struct dram_timing_info {
+ 	/* umctl2 config */
+ 	struct dram_cfg_param *ddrc_cfg;
+@@ -68,8 +72,8 @@ struct dram_timing_info {
+ 	struct dram_fsp_msg *fsp_msg;
+ 	unsigned int fsp_msg_num;
+ 	/* ddr phy trained CSR */
+-	struct dram_cfg_param *ddrphy_trained_csr;
+-	unsigned int ddrphy_trained_csr_num;
++	struct dram_cfg_param *ddrphy_trained_csr __deprecated_dram_timing_info;
++	unsigned int ddrphy_trained_csr_num __deprecated_dram_timing_info;
+ 	/* ddr phy PIE */
+ 	struct dram_cfg_param *ddrphy_pie;
+ 	unsigned int ddrphy_pie_num;
 -- 
 2.39.2
 
