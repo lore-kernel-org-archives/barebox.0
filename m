@@ -1,56 +1,58 @@
-Delivery-date: Wed, 13 Mar 2024 20:56:46 +0100
+Delivery-date: Thu, 14 Mar 2024 07:16:55 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkUiU-004oVD-2a
+	id 1rkeOd-005gKn-00
 	for lore@lore.pengutronix.de;
-	Wed, 13 Mar 2024 20:56:46 +0100
+	Thu, 14 Mar 2024 07:16:55 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkUiU-00041G-8A
-	for lore@pengutronix.de; Wed, 13 Mar 2024 20:56:46 +0100
+	id 1rkeOc-000404-De
+	for lore@pengutronix.de; Thu, 14 Mar 2024 07:16:54 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:In-Reply-To:Cc:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vCguM6hQHWhVddZYpoW3kErXIfhWGuoMkKPzVfJ6YwE=; b=BXDAv0LCrUL5cWwsZZiu4BtMBo
-	YjHdkMivJf4jm8MvXX6YNVapznqi92yGnQt2UakoILxYTEEdg+czIbOX/Nb0OgK5m1zPOlwmU7cA5
-	JuPZdjnYehh7OKODWESsZA/CTSQSrryyCpCNm6EjYVm5b4fQkiw+MDdYEpk7mvhB7/qhNgDk6JTdR
-	YlKig2DWUH7dQh+wzj+Z4LrEcj/shqUMO4a/IYIBHQVx4qnY35t6zGy5aiekTHuAn9DSO6lCUBqoA
-	tJb+m5NQqV1tXtNXNP0pWgK9Uo2u0aZylKvkNHlAt//RuQGJQq56E93Y9OGQw8uJvWykdKwlUbsp4
-	7Toh3/OA==;
+	bh=cDkvB9P65wzm8y6vW9/5uJc2N5Ibhsk6TE3aL8VGnKc=; b=DE9lbaOQEYCq6+NDB81KwQkK5p
+	ayKpfyzPhKYMhcXbj7xIiz+OSVst5L6smZwQI0PAYD0TxZ/GgADxAGRF3496lIne5ovMjODN3/meX
+	AbbptpKRJzWCrR0Km5sn3CrWRQ5E26Nrb+PrhK7yufsbGLkJqAQTSPCI/1itYDsWQsA+Zlxd1csf7
+	oh1Ri/gEwVVzQIBUO/PxvgL/omM/3C9Dgw1SqR7GbiWF3wQHoI9L28HyWOKJuGYr1pS2pZUTVVlUw
+	skfxCSo6L/CPWgF7yCho001NQ1BdJFadsIDdLmiE/fWOVh4V7Kqd9ixVef/Vg2Wo1fnswReVGroj8
+	aNh59w7w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkUhw-0000000BieN-3qZT;
-	Wed, 13 Mar 2024 19:56:12 +0000
+	id 1rkeN7-0000000DCJb-1Zgm;
+	Thu, 14 Mar 2024 06:15:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkUht-0000000BicQ-01Tw
+	id 1rkeN3-0000000DCIj-0H0i
 	for barebox@lists.infradead.org;
-	Wed, 13 Mar 2024 19:56:10 +0000
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	Thu, 14 Mar 2024 06:15:19 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1rkUhr-00037i-Sz
-	for barebox@lists.infradead.org; Wed, 13 Mar 2024 20:56:07 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: barebox@lists.infradead.org
-Date: Wed, 13 Mar 2024 20:56:06 +0100
-Message-Id: <20240313195606.3911219-4-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240313195606.3911219-1-m.felsch@pengutronix.de>
-References: <20240313195606.3911219-1-m.felsch@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rkeMz-0003KL-5g; Thu, 14 Mar 2024 07:15:13 +0100
+Message-ID: <d899c758-8527-4c3b-854c-4014e8fdbc2f@pengutronix.de>
+Date: Thu, 14 Mar 2024 07:15:12 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: Marco Felsch <m.felsch@pengutronix.de>, barebox@lists.infradead.org
+References: <20240313194547.3725723-1-m.felsch@pengutronix.de>
+ <20240313194547.3725723-4-m.felsch@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: =?UTF-8?Q?Leonard_G=C3=B6hrs?= <lgo@pengutronix.de>
+In-Reply-To: <20240313194547.3725723-4-m.felsch@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240313_125609_251954_6418D156 
-X-CRM114-Status: UNSURE (   9.80  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240313_231517_244178_E27698AF 
+X-CRM114-Status: GOOD (  17.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,40 +70,78 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 4/4] common: barebox_banner: fix missing newline
+Subject: Re: [PATCH 4/4] bootm: add global.bootm.provide_hostname option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Albeit the banner is shown correctly due to following printf(), the
-dmesg() output isn't. This cause the next log buffer print printed on
-the same line as the "Buildsystem version:" print. Fix this by adding a
-newline afterwards.
+Hello Marco,
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- common/version.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Cc += Leonard
 
-diff --git a/common/version.c b/common/version.c
-index 465e22c7f52e..0cac5ee609e6 100644
---- a/common/version.c
-+++ b/common/version.c
-@@ -22,7 +22,7 @@ void barebox_banner (void)
- 	printf("\n\n");
- 	pr_info("%s\n", version_string);
- 	if (strlen(buildsystem_version_string) > 0)
--		pr_info("Buildsystem version: %s", buildsystem_version_string);
-+		pr_info("Buildsystem version: %s\n", buildsystem_version_string);
- 	printf("\n\n");
- 	pr_info("Board: %s\n", barebox_get_model());
- }
+On 13.03.24 20:45, Marco Felsch wrote:
+> +		if (!barebox_hostname_is_valid(hostname)) {
+> +			pr_err("Provided hostname is not compatible to systemd hostname requirements\n");
+> +			ret = -EINVAL;
+> +			goto err_out;
+> +		}
+> +
+> +		hostname_bootarg = basprintf("systemd.hostname=%s", hostname);
+
+Linux >= v6.0 supports a hostname= parameter and there's a discussion to decide what
+the semantics should be and if it should differ to systemd.hostname=:
+https://github.com/systemd/systemd/pull/25158
+
+I am not fully sure, whether we should go with hostname or systemd.hostname= here.
+@Leonard, what do you think?
+
+Cheers,
+Ahmad
+
+
+> -static bool barebox_hostname_is_valid(const char *s)
+> +bool barebox_hostname_is_valid(const char *s)
+>  {
+>  	unsigned int n_dots = 0;
+>  	const char *p;
+> diff --git a/include/bootm.h b/include/bootm.h
+> index ee2b574521db..c69da85cdda1 100644
+> --- a/include/bootm.h
+> +++ b/include/bootm.h
+> @@ -34,6 +34,11 @@ struct bootm_data {
+>  	 * value of global.machine_id to Kernel.
+>  	 */
+>  	bool provide_machine_id;
+> +	/*
+> +	 * provide_hostname - if true, try to add systemd.hostname= with value
+> +	 * of global.hostname to Kernel.
+> +	 */
+> +	bool provide_hostname;
+>  	unsigned long initrd_address;
+>  	unsigned long os_address;
+>  	unsigned long os_entry;
+> diff --git a/include/common.h b/include/common.h
+> index b7b4d9e35094..d7b5261bc921 100644
+> --- a/include/common.h
+> +++ b/include/common.h
+> @@ -127,6 +127,7 @@ void barebox_set_model(const char *);
+>  const char *barebox_get_hostname(void);
+>  void barebox_set_hostname(const char *);
+>  void barebox_set_hostname_no_overwrite(const char *);
+> +bool barebox_hostname_is_valid(const char *s);
+>  
+>  const char *barebox_get_serial_number(void);
+>  void barebox_set_serial_number(const char *);
+
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
