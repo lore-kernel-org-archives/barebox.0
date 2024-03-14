@@ -3,66 +3,63 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkq8p-006QkY-0F
+	id 1rkq8p-006Qkt-29
 	for lore@lore.pengutronix.de;
 	Thu, 14 Mar 2024 19:49:23 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rkq8m-0004Ha-Tp
-	for lore@pengutronix.de; Thu, 14 Mar 2024 19:49:22 +0100
+	id 1rkq8n-0004Hj-57
+	for lore@pengutronix.de; Thu, 14 Mar 2024 19:49:23 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=/0TQb4ZjYRyGNQo8YPpVoN93FRrLOuOtyI7kKZjuYSw=; b=VRtbfFmT2g4Szm
-	HTNyqkc6xzHcGcYRO4zqjpZgDuwtGwNDjUMrdBiCYXrpTrMK952ppHbWO6dm6HPEObnZEvdRMjxU/
-	qHI2hZ+kTMr1qfIdS3tSLh2bOAc5uMgLN1MVdoZlHNe02SpEC+1OBBY0gVkHkFZ/Eg2BU5Mn3kZbV
-	SdxpIdb44XjsSYTa1V40jXzcSdFpMfQl9eMEQrFwGJP0j9whGRghre190EHmCmnZsY1HPo+pb1tFq
-	iZcOmbsOUCiG6aceSqLOa3E3+NCplniUQG0I79YOXbhZ0D9Rbq5mbhPj2XK1zy1KUVAhJuqknaOX6
-	OFmhz8wsNJmHbUhDzpMA==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=AEpXjA1OB1WmPKO6K4Sh0lFZ57R9pJZWjOA0DM1sVZU=; b=upaMJcxrMIBPrUu2WHlDzitjh7
+	twPxmU9SkyQZ6yNikCapBMM0/UfzrdjHxMml6oKLydBpajfojmU+2f3qxLJT06POTnB5hEZmXneoy
+	TAcyne4Hetn17mHhfZ2vZpFPM2vg/LG114XGX8MZxIoQZbFmCXowE4jgXerUn+gVxsGLfgAdDECvD
+	68I04aOBEVe94drFNpttGYHawDdrNh5Z3xIGZLjpXkt3pRM0mFphMGlHCQQ9Iyew1HUgMN1P6oVzE
+	G3t41SR89mw1FQQytFd0JHvx7lPXg/SvaPoeXZ75VeM6eMC7LgsIlZMSaeQL4LqiWbEf0560FkeI/
+	fvfxxVfA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkq84-0000000FMuU-1fAQ;
-	Thu, 14 Mar 2024 18:48:36 +0000
+	id 1rkq7z-0000000FMrf-19EF;
+	Thu, 14 Mar 2024 18:48:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rkq7t-0000000FMmL-1fWo
+	id 1rkq7t-0000000FMmd-1W9a
 	for barebox@lists.infradead.org;
-	Thu, 14 Mar 2024 18:48:29 +0000
+	Thu, 14 Mar 2024 18:48:27 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1rkq7p-0001yt-9S; Thu, 14 Mar 2024 19:48:21 +0100
+	id 1rkq7q-0001yt-CQ; Thu, 14 Mar 2024 19:48:22 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Thu, 14 Mar 2024 19:47:23 +0100
-Message-Id: <20240314-v2024-02-0-topic-arasan-hs200-support-v2-0-0386c27fe653@pengutronix.de>
+Date: Thu, 14 Mar 2024 19:47:28 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADxG82UC/5WNOw6DMBBEr4K2zkaL+QhS5R4RhTEGtrEt21hEi
- LvHcIN082akeQcE7VkHeBUHeJ04sDUZxKMAtUqzaOQpMwgSNVXUYboSkkDCaB0rlF4GaXANggj
- D5pz1EctRVfPYjnUvJeQv5/XM++35DJlXDtH6761N5dX+a0hl3tupIdVT3TVz9XbaLFv01vD+n
- DQM53n+AB7yut3fAAAA
+Message-Id: <20240314-v2024-02-0-topic-arasan-hs200-support-v2-5-0386c27fe653@pengutronix.de>
+References: <20240314-v2024-02-0-topic-arasan-hs200-support-v2-0-0386c27fe653@pengutronix.de>
+In-Reply-To: <20240314-v2024-02-0-topic-arasan-hs200-support-v2-0-0386c27fe653@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2738;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6135;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=JUTKmUNQDzyKRF3y5fJndlr7GcAUMNP61RlJPtRMuAU=;
- b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFI/u9k6vv675VtK9vv661uFPZNnz5++23D12ftFXdOzd
- FzmFJ0+3lHKwiDGxSArpsgSufaQxmbhzzpfjp9ngJnDygQyhIGLUwAmYuHH8D/7ff7e1vAQ+38S
- Ru28/2vcL3PPXGznpyr382bldWm9ogJGhpYbG7O15hpskq7kWPeqWORXnN6XS1KrvmTGBXyKSvm
- VxAAA
+ bh=89RdmuRH+Y+u3ibVKuMcbjqv8ncbO1tqOYHhv0/f6NQ=;
+ b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFI/uwU4X9q5us5L4vt8ne7dJ78wd1you9ZSZbGl9m1yp
+ oLiPhOhjlIWBjEuBlkxRZbItYc0Ngt/1vly/DwDzBxWJpAhDFycAjARtsmMDHfa2C/uZmaIWWd2
+ cJfUlelN+mfPG4bE/dSUYOzkzeFeVszI8HL2XP4lx6Lr/3R+c3+4WeDYuZRZp+fobjNcuc7uwpP
+ fl5gB
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240314_114825_592885_0A75000C 
-X-CRM114-Status: UNSURE (   8.55  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240314_114825_508893_8E840DE0 
+X-CRM114-Status: GOOD (  17.63  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,73 +82,179 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 00/14] mci: add HS200 support for eMMCs
+Subject: [PATCH v2 05/14] mci: arasan: read clk phases from DT
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This series adds support for HS200 mode to mci-core and sdhci.
-As the host driver also needs to handle clock setup, pin control and
-host specific tuning, this series only adds HS200 support to the Arasan
-SDHCI driver.
-
-Tested on: ZynqMP
-Compile tested: for ZynqMP with/without CONFIG_MCI_TUNING
+Depending on the used SDHCI mode the clock phases are different.
+Import the helper function to get these values from the DT from linux v6.7.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Changes in v2:
-- added Reviewed-bys
-- small style fixes
-- return host->actual_clock in arasan_zynqmp_sampleclk_recalc_rate
-- return host->actual_clock in arasan_zynqmp_sdcardeclk_recalc_rate
-- move DT property parsing into IS_ENABLED
-- port mci_switch_status from linux
-- remove the #ifdef CONFIG_MCI_TUNING; functions get called in
-  IS_ENABLED context
-- mci_mmc_select_hs_ddr: set max_dtr to mci->tran_speed; matches
-  the calculation linux does here
-- move platform_execute_tuning from mci_host -> sdhci
-- port sdhci_reset_for_reason from linux
-- Link to v1: https://lore.barebox.org/20240308-v2024-02-0-topic-arasan-hs200-support-v1-0-6d50c90485f3@pengutronix.de
+ drivers/mci/arasan-sdhci.c | 121 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 121 insertions(+)
 
----
-Steffen Trumtrar (14):
-      ARM: zynqmp: add sd_dll_reset call
-      zynqmp: firmware: add functions to set tap delay
-      mci: arasan: implement 25MHz quirk for zynqmp
-      include: mci: sync mci_timing with linux
-      mci: arasan: read clk phases from DT
-      mci: core: save the set clock as actual_clock
-      mci: arasan: register sdcard/sampleclk
-      include: mci: add more EXT_CSD_CARD_TYPE_*
-      mci: core: parse more host capabilities from DT
-      mci: mci-core: add HS200 support
-      mci: mci-core: replace value with define
-      mci: sdhci: add tuning support
-      mci: arasan-sdhci: add HS200 tuning support on ZynqMP
-      mci: sdhci: replace sdhci_wait_idle
+diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
+index cc1bad8b62..76022708cd 100644
+--- a/drivers/mci/arasan-sdhci.c
++++ b/drivers/mci/arasan-sdhci.c
+@@ -30,10 +30,33 @@
+ #define SDHCI_ARASAN_BUS_WIDTH			4
+ #define TIMEOUT_VAL				0xE
+ 
++#define ZYNQMP_CLK_PHASES			10
++#define ZYNQMP_CLK_PHASE_UHS_SDR104		6
++#define ZYNQMP_CLK_PHASE_HS200			9
++/* Default settings for ZynqMP Clock Phases */
++#define ZYNQMP_ICLK_PHASE {0, 63, 63, 0, 63,  0,   0, 183, 54,  0, 0}
++#define ZYNQMP_OCLK_PHASE {0, 72, 60, 0, 60, 72, 135, 48, 72, 135, 0}
++
++/**
++ * struct sdhci_arasan_clk_data - Arasan Controller Clock Data.
++ *
++ * @clk_phase_in:	Array of Input Clock Phase Delays for all speed modes
++ * @clk_phase_out:	Array of Output Clock Phase Delays for all speed modes
++ * @set_clk_delays:	Function pointer for setting Clock Delays
++ * @clk_of_data:	Platform specific runtime clock data storage pointer
++ */
++struct sdhci_arasan_clk_data {
++	int		clk_phase_in[ZYNQMP_CLK_PHASES + 1];
++	int		clk_phase_out[ZYNQMP_CLK_PHASES + 1];
++	void		(*set_clk_delays)(struct sdhci *host);
++	void		*clk_of_data;
++};
++
+ struct arasan_sdhci_host {
+ 	struct mci_host		mci;
+ 	struct sdhci		sdhci;
+ 	unsigned int		quirks; /* Arasan deviations from spec */
++	struct sdhci_arasan_clk_data clk_data;
+ /* Controller does not have CD wired and will not function normally without */
+ #define SDHCI_ARASAN_QUIRK_FORCE_CDTEST		BIT(0)
+ #define SDHCI_ARASAN_QUIRK_NO_1_8_V		BIT(1)
+@@ -119,6 +142,7 @@ static int arasan_sdhci_init(struct mci_host *mci, struct device *dev)
+ static void arasan_sdhci_set_clock(struct mci_host *mci, unsigned int clock)
+ {
+ 	struct arasan_sdhci_host *host = to_arasan_sdhci_host(mci);
++	struct sdhci_arasan_clk_data *clk_data = &host->clk_data;
+ 
+ 	if (host->quirks & SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN) {
+ 		/*
+@@ -219,6 +243,101 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	return ret;
+ }
+ 
++static void sdhci_arasan_set_clk_delays(struct sdhci *host)
++{
++	struct arasan_sdhci_host *arasan_sdhci = sdhci_to_arasan(host);
++	struct mci_host *mci = &arasan_sdhci->mci;
++	struct sdhci_arasan_clk_data *clk_data = &arasan_sdhci->clk_data;
++
++}
++
++static void arasan_dt_read_clk_phase(struct device *dev,
++				     struct sdhci_arasan_clk_data *clk_data,
++				     unsigned int timing, const char *prop)
++{
++	struct device_node *np = dev->of_node;
++
++	u32 clk_phase[2] = {0};
++	int ret;
++
++	/*
++	 * Read Tap Delay values from DT, if the DT does not contain the
++	 * Tap Values then use the pre-defined values.
++	 */
++	ret = of_property_read_u32_array(np, prop, &clk_phase[0], 2);
++	if (ret < 0) {
++		dev_dbg(dev, "Using predefined clock phase for %s = %d %d\n",
++			prop, clk_data->clk_phase_in[timing],
++			clk_data->clk_phase_out[timing]);
++		return;
++	}
++
++	/* The values read are Input and Output Clock Delays in order */
++	clk_data->clk_phase_in[timing] = clk_phase[0];
++	clk_data->clk_phase_out[timing] = clk_phase[1];
++}
++
++/**
++ * arasan_dt_parse_clk_phases - Read Clock Delay values from DT
++ *
++ * @dev:		Pointer to our struct device.
++ * @clk_data:		Pointer to the Clock Data structure
++ *
++ * Called at initialization to parse the values of Clock Delays.
++ */
++static void arasan_dt_parse_clk_phases(struct device *dev,
++				       struct sdhci_arasan_clk_data *clk_data)
++{
++	u32 mio_bank = 0;
++	int i;
++
++	/*
++	 * This has been kept as a pointer and is assigned a function here.
++	 * So that different controller variants can assign their own handling
++	 * function.
++	 */
++	clk_data->set_clk_delays = sdhci_arasan_set_clk_delays;
++
++	if (of_device_is_compatible(dev->of_node, "xlnx,zynqmp-8.9a")) {
++		u32 zynqmp_iclk_phase[ZYNQMP_CLK_PHASES + 1] = ZYNQMP_ICLK_PHASE;
++		u32 zynqmp_oclk_phase[ZYNQMP_CLK_PHASES + 1] = ZYNQMP_OCLK_PHASE;
++
++		of_property_read_u32(dev->of_node, "xlnx,mio-bank", &mio_bank);
++		if (mio_bank == 2) {
++			zynqmp_oclk_phase[ZYNQMP_CLK_PHASE_UHS_SDR104] = 90;
++			zynqmp_oclk_phase[ZYNQMP_CLK_PHASE_HS200] = 90;
++		}
++
++		for (i = 0; i <= ZYNQMP_CLK_PHASES; i++) {
++			clk_data->clk_phase_in[i] = zynqmp_iclk_phase[i];
++			clk_data->clk_phase_out[i] = zynqmp_oclk_phase[i];
++		}
++	}
++
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_LEGACY,
++				 "clk-phase-legacy");
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS,
++				 "clk-phase-mmc-hs");
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_SD_HS,
++				 "clk-phase-sd-hs");
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR12,
++				 "clk-phase-uhs-sdr12");
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR25,
++				 "clk-phase-uhs-sdr25");
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR50,
++				 "clk-phase-uhs-sdr50");
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR104,
++				 "clk-phase-uhs-sdr104");
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_DDR50,
++				 "clk-phase-uhs-ddr50");
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_DDR52,
++				 "clk-phase-mmc-ddr52");
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS200,
++				 "clk-phase-mmc-hs200");
++	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS400,
++				 "clk-phase-mmc-hs400");
++}
++
+ static int arasan_sdhci_probe(struct device *dev)
+ {
+ 	struct device_node *np = dev->of_node;
+@@ -281,6 +400,8 @@ static int arasan_sdhci_probe(struct device *dev)
+ 	mci->f_max = clk_get_rate(clk_xin);
+ 	mci->f_min = 50000000 / 256;
+ 
++	arasan_dt_parse_clk_phases(dev, &arasan_sdhci->clk_data);
++
+ 	/* parse board supported bus width capabilities */
+ 	mci_of_parse(&arasan_sdhci->mci);
+ 
 
- arch/arm/mach-zynqmp/firmware-zynqmp.c |  59 ++++
- drivers/mci/Kconfig                    |   7 +
- drivers/mci/am654-sdhci.c              |   2 +-
- drivers/mci/arasan-sdhci.c             | 527 ++++++++++++++++++++++++++++++++-
- drivers/mci/atmel-sdhci-common.c       |   4 +-
- drivers/mci/dove-sdhci.c               |   2 +-
- drivers/mci/mci-bcm2835.c              |   2 +-
- drivers/mci/mci-core.c                 | 297 +++++++++++++++++--
- drivers/mci/rockchip-dwcmshc-sdhci.c   |   2 +-
- drivers/mci/sdhci.c                    | 304 ++++++++++++++++++-
- drivers/mci/sdhci.h                    |  30 +-
- include/mach/zynqmp/firmware-zynqmp.h  |  23 ++
- include/mci.h                          | 104 ++++++-
- 13 files changed, 1320 insertions(+), 43 deletions(-)
----
-base-commit: ed7c14536d521793199abf0597164a46ba68e8e5
-change-id: 20240308-v2024-02-0-topic-arasan-hs200-support-1bc3fb6b49aa
-
-Best regards,
 -- 
-Steffen Trumtrar <s.trumtrar@pengutronix.de>
+2.40.1
 
 
 
