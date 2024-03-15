@@ -1,66 +1,66 @@
-Delivery-date: Fri, 15 Mar 2024 08:11:46 +0100
+Delivery-date: Fri, 15 Mar 2024 08:12:45 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rl1jG-007PD1-1X
+	id 1rl1kD-007PKw-2b
 	for lore@lore.pengutronix.de;
-	Fri, 15 Mar 2024 08:11:46 +0100
+	Fri, 15 Mar 2024 08:12:45 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rl1jF-00007X-Sk
-	for lore@pengutronix.de; Fri, 15 Mar 2024 08:11:46 +0100
+	id 1rl1kD-0000do-9l
+	for lore@pengutronix.de; Fri, 15 Mar 2024 08:12:45 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rdOqBgf7Xe2ZbMQ9Ei6341TiBTdLRvb7RtQlQ0XRqoM=; b=TVW0VPltmkqWju6IHpofdPf9JI
-	pDbKAdbDN+0JtIu/Efqh8yLQOkJ/0ZamzVSg0panX7+8OZiA29uVItJUNZ06sVPSqje6j8jYIKQAd
-	KW39MqL0yBRbd+w2FmXXiu8pm3tkQc+v9CAQLL3qt5T16E74l8G5yGWpNcxH/3DS5gM4A7eTiIzPi
-	RNPmoMarypq9fyrQshLuM7aE9ZZuQQmSak5IGbKnvJmN948pYkhDEpH8gofCek8ASt3DxfcWgG6CN
-	/aTM9E0pDAMXIjF/UYpTNBkT+Nu15qsDTVD3dP9HgWpMQA9oKnULJvySRubvue8JWYGTDj7ALlUmi
-	JSs+0qag==;
+	bh=/E4MnoDJGXBjjzmaeq6qI3hcrpeIx/GovsS/WxCzG98=; b=4FZ6Z3IEdyNX+KRUyD53jTgP/9
+	WYDcIo5+MEBC+ojY7ho+8oi+BffL8ujbmPQCspt4khMdrVA24v1jZa/xPnjieuhDbgVp0b/17ea18
+	u6NFNhxAXLmBXKhMZ5vzV8PARvv3jKkTG/HMPM/YDIoJfvs5NiVU+YHx7uk4EDdqBg5rDt9PpnSmh
+	G7sAdWwSfnAPpxYOLh+xqZEFOFrG5TiWIFQS3WDOHqnYWlY7Xy6J2KXBF8XZi9EVB8b6nFNNiSMas
+	nrJiiEf9i3g4MlbJHpwVVy8j+BrD0LkX2lidhcEMZ4zcWmMXOTDNntIB/9bTechgfoqpjeiJiXP4p
+	EnKylGWg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rl1ip-0000000Gv5D-2dae;
-	Fri, 15 Mar 2024 07:11:19 +0000
+	id 1rl1jm-0000000GvKe-3KBm;
+	Fri, 15 Mar 2024 07:12:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rl1il-0000000Gv3r-3A4J
+	id 1rl1jj-0000000GvJG-2E2n
 	for barebox@lists.infradead.org;
-	Fri, 15 Mar 2024 07:11:17 +0000
+	Fri, 15 Mar 2024 07:12:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rl1ik-0008IG-JP; Fri, 15 Mar 2024 08:11:14 +0100
+	id 1rl1ji-0000M7-AG; Fri, 15 Mar 2024 08:12:14 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rl1ik-006Sdb-6q; Fri, 15 Mar 2024 08:11:14 +0100
+	id 1rl1jh-006Sdn-Tq; Fri, 15 Mar 2024 08:12:13 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rl1ik-0088DN-0V;
-	Fri, 15 Mar 2024 08:11:14 +0100
+	id 1rl1jh-0088GB-2m;
+	Fri, 15 Mar 2024 08:12:13 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240313154217.2747582-1-a.fatoum@pengutronix.de>
-References: <20240313154217.2747582-1-a.fatoum@pengutronix.de>
-Message-Id: <171048667414.1938112.8933288945513112389.b4-ty@pengutronix.de>
-Date: Fri, 15 Mar 2024 08:11:14 +0100
+In-Reply-To: <20240313175002.3200363-1-a.fatoum@pengutronix.de>
+References: <20240313175002.3200363-1-a.fatoum@pengutronix.de>
+Message-Id: <171048673385.1938340.6377595858921529301.b4-ty@pengutronix.de>
+Date: Fri, 15 Mar 2024 08:12:13 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240315_001115_824834_AA773899 
-X-CRM114-Status: UNSURE (   9.69  )
+X-CRM114-CacheID: sfid-20240315_001215_600878_6B875138 
+X-CRM114-Status: UNSURE (   6.11  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,28 +84,21 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] ddr: imx8m: add deprecation warnings for
- ddrphy_trained_csr
+Subject: Re: [PATCH] net: cpsw: map/unmap buffers used for DMA
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 13 Mar 2024 16:42:17 +0100, Ahmad Fatoum wrote:
-> ddrphy_trained_csr and ddrphy_trained_csr_num are generated by the
-> spreadsheet, but are unused. Instead a default array with fixed values
-> is unconditionally used. Add a deprecation warning to alert to this
-> fact.
+On Wed, 13 Mar 2024 18:50:02 +0100, Ahmad Fatoum wrote:
+> This doesn't fix any bugs, but it allows CONFIG_DMA_API_DEBUG to check
+> for any future issues that may be introduced.
 > 
-> It seems GCC doesn't print this deprecation when using C99
-> designated initializers, but clang(d) does, so it's useful to have for
-> those using clangd in their editors.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] ddr: imx8m: add deprecation warnings for ddrphy_trained_csr
-      https://git.pengutronix.de/cgit/barebox/commit/?id=183058a549fa (link may not be stable)
+[1/1] net: cpsw: map/unmap buffers used for DMA
+      https://git.pengutronix.de/cgit/barebox/commit/?id=aa700158e349 (link may not be stable)
 
 Best regards,
 -- 
