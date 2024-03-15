@@ -1,66 +1,66 @@
-Delivery-date: Fri, 15 Mar 2024 08:09:39 +0100
+Delivery-date: Fri, 15 Mar 2024 08:11:46 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rl1hD-007Oz6-2m
+	id 1rl1jG-007PD1-1X
 	for lore@lore.pengutronix.de;
-	Fri, 15 Mar 2024 08:09:39 +0100
+	Fri, 15 Mar 2024 08:11:46 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rl1hD-0007TP-BV
-	for lore@pengutronix.de; Fri, 15 Mar 2024 08:09:39 +0100
+	id 1rl1jF-00007X-Sk
+	for lore@pengutronix.de; Fri, 15 Mar 2024 08:11:46 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9b/WSD0J0BzR1/br7wZZ0YE9DIgUNnqA/gtfj0MuB7Y=; b=CkyuF1p/0gZsZKa0SADFOvWyD5
-	qc39rQ3BR3L3d2lcszGfxzGOcihL4bocv8T/J3QDI6J9kzPqDMbE5p2i+lOopxX7CB+V76tY+cJJx
-	60S7GZP22mZK39NZL2qOP07zPmzj5qQk6J3pPR4VbXs4r9E88cla28tZgFuIXat6eRdUsWSsS8Fi5
-	tto9qSAEEUQUGTCZd/kS1SnAb13rtJtDqOa/AuzB6R4dPWJIJ4pipwjGtDZ1J2WTFqR0DeUpBo3TX
-	ccH3erB2/EMhTW70jaix/04tvTGmRRH198cWvPXdVaUhT9m2VWf4nPUdq90F0cXUh4e3s+BfYASnz
-	yC8dhipA==;
+	bh=rdOqBgf7Xe2ZbMQ9Ei6341TiBTdLRvb7RtQlQ0XRqoM=; b=TVW0VPltmkqWju6IHpofdPf9JI
+	pDbKAdbDN+0JtIu/Efqh8yLQOkJ/0ZamzVSg0panX7+8OZiA29uVItJUNZ06sVPSqje6j8jYIKQAd
+	KW39MqL0yBRbd+w2FmXXiu8pm3tkQc+v9CAQLL3qt5T16E74l8G5yGWpNcxH/3DS5gM4A7eTiIzPi
+	RNPmoMarypq9fyrQshLuM7aE9ZZuQQmSak5IGbKnvJmN948pYkhDEpH8gofCek8ASt3DxfcWgG6CN
+	/aTM9E0pDAMXIjF/UYpTNBkT+Nu15qsDTVD3dP9HgWpMQA9oKnULJvySRubvue8JWYGTDj7ALlUmi
+	JSs+0qag==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rl1gn-0000000GuQi-36eF;
-	Fri, 15 Mar 2024 07:09:13 +0000
+	id 1rl1ip-0000000Gv5D-2dae;
+	Fri, 15 Mar 2024 07:11:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rl1gk-0000000GuOz-17Bz
+	id 1rl1il-0000000Gv3r-3A4J
 	for barebox@lists.infradead.org;
-	Fri, 15 Mar 2024 07:09:11 +0000
+	Fri, 15 Mar 2024 07:11:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rl1gi-0007Cc-US; Fri, 15 Mar 2024 08:09:08 +0100
+	id 1rl1ik-0008IG-JP; Fri, 15 Mar 2024 08:11:14 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rl1gi-006SdA-Hx; Fri, 15 Mar 2024 08:09:08 +0100
+	id 1rl1ik-006Sdb-6q; Fri, 15 Mar 2024 08:11:14 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rl1gi-00888s-1b;
-	Fri, 15 Mar 2024 08:09:08 +0100
+	id 1rl1ik-0088DN-0V;
+	Fri, 15 Mar 2024 08:11:14 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240313144136.2157496-1-a.fatoum@pengutronix.de>
-References: <20240313144136.2157496-1-a.fatoum@pengutronix.de>
-Message-Id: <171048654849.1937905.5848935190853036288.b4-ty@pengutronix.de>
-Date: Fri, 15 Mar 2024 08:09:08 +0100
+In-Reply-To: <20240313154217.2747582-1-a.fatoum@pengutronix.de>
+References: <20240313154217.2747582-1-a.fatoum@pengutronix.de>
+Message-Id: <171048667414.1938112.8933288945513112389.b4-ty@pengutronix.de>
+Date: Fri, 15 Mar 2024 08:11:14 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240315_000910_388944_CED39761 
-X-CRM114-Status: UNSURE (   7.56  )
+X-CRM114-CacheID: sfid-20240315_001115_824834_AA773899 
+X-CRM114-Status: UNSURE (   9.69  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,28 +84,28 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master 1/2] ARM: i.MX8MQ: fix early boot hang
+Subject: Re: [PATCH] ddr: imx8m: add deprecation warnings for
+ ddrphy_trained_csr
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 13 Mar 2024 15:41:35 +0100, Ahmad Fatoum wrote:
-> Commit 6ea731079140 ("ARM: i.MX8MQ: Streamline lowlevel startup code")
-> changed i.MX8MQ PBL code to mimic the code introduced for later i.MX8M
-> variants. The mimicry went a bit too far though and it exchanged i.MX8MQ
-> boot source lookup with that of the i.MX8MN. Fix this to avoid the boot
-> hanging with:
+On Wed, 13 Mar 2024 16:42:17 +0100, Ahmad Fatoum wrote:
+> ddrphy_trained_csr and ddrphy_trained_csr_num are generated by the
+> spreadsheet, but are unused. Instead a default array with fixed values
+> is unconditionally used. Add a deprecation warning to alert to this
+> fact.
 > 
->   Unhandled bootsource BOOTSOURCE_0
+> It seems GCC doesn't print this deprecation when using C99
+> designated initializers, but clang(d) does, so it's useful to have for
+> those using clangd in their editors.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/2] ARM: i.MX8MQ: fix early boot hang
-      https://git.pengutronix.de/cgit/barebox/commit/?id=a4d3c0b78250 (link may not be stable)
-[2/2] pmdomain: imx: gpc2: ignore missing regulators
-      https://git.pengutronix.de/cgit/barebox/commit/?id=7ef7a95ac49e (link may not be stable)
+[1/1] ddr: imx8m: add deprecation warnings for ddrphy_trained_csr
+      https://git.pengutronix.de/cgit/barebox/commit/?id=183058a549fa (link may not be stable)
 
 Best regards,
 -- 
