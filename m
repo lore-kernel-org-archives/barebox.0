@@ -1,65 +1,65 @@
-Delivery-date: Mon, 18 Mar 2024 12:33:33 +0100
+Delivery-date: Mon, 18 Mar 2024 12:33:35 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmBFF-00CHKd-22
+	id 1rmBFH-00CHL7-16
 	for lore@lore.pengutronix.de;
-	Mon, 18 Mar 2024 12:33:33 +0100
+	Mon, 18 Mar 2024 12:33:35 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmBFA-00054U-RH
-	for lore@pengutronix.de; Mon, 18 Mar 2024 12:33:33 +0100
+	id 1rmBFD-00058c-HJ
+	for lore@pengutronix.de; Mon, 18 Mar 2024 12:33:35 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fzZMhE7K5vyyW4IR62gpSOR6N2kwbXBOfk+kxrnLMxQ=; b=Smz2NkKT5dHaUPTXwFpwYbqUfJ
-	6otSX0EROcWjL8cKzFqoVPb99JXntQr1OHmeGa++HRei27luYIesuu2DEw1gxbi0YNbmZMepT8Q1x
-	x3zYbt3+XKR96M+PrRGF5d3gglemtRXXZDcjGr5OAhzHCpiOU5gGF+hbsPRJZJwv+I6qzwx9zTKBz
-	WJye5PF71kec9YZyWsUXDYdKop3Cd8eQpeZPdidPYnoKfMEzy6Lk/07xyhDKhdGID3QoUEvZvK+Kx
-	j7Anr9fi+9M9wWi20fUOBvf/XeqwOjsdZcw/o5TqFZzwZPIw1LOau/2N7UrQNCwg3U/OR+Qm8OfsZ
-	Qw0aTbYw==;
+	bh=d/MZM+e+ypGM5hD8UWm0EsVSYXGhP03c4s0UQHwjomI=; b=MvpI5o5NvrncFMSdZMk/FjuFwI
+	7i/kO3+gnsnefDmZaccCS3MAvHLfimKMBI3pVTGp4/3iPDbNFmG//1X9ek+PGNe6U6qx30kODm4BF
+	SyaAn6rIF+trlApWlXZN/RIiTq3sBD9zyf+kfd4+XgRzdYbZ6nxr560DRplGOH/9BMqccO69CZOXq
+	Ls2nbxbd4SqmHZOEHDWiMnrqdJLFX6k7fFwN0wH5GdZiKcBPUW6xXjF++cCdttgGgD6ghzxyHWj4C
+	u6JZmFpOrwLnxwlfOu4IcpyejjYNNExsOVqPVhTpLQPMV5LqRefDm+qCEw8kKUV1e55HQuzEJbeqx
+	ASlpOnHg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmBEw-00000008OYn-0cc1;
-	Mon, 18 Mar 2024 11:33:14 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1rmBEz-00000008Ob9-4B9h;
+	Mon, 18 Mar 2024 11:33:18 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmA8L-000000087Jh-1kmI
+	id 1rmA8O-000000087K6-1bCs
 	for barebox@lists.infradead.org;
-	Mon, 18 Mar 2024 10:22:25 +0000
+	Mon, 18 Mar 2024 10:22:27 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1rmA5O-0006MJ-P1; Mon, 18 Mar 2024 11:19:18 +0100
+	id 1rmA5Q-0006MJ-Uy; Mon, 18 Mar 2024 11:19:21 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 18 Mar 2024 11:18:20 +0100
+Date: Mon, 18 Mar 2024 11:18:29 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-6-48756863add6@pengutronix.de>
+Message-Id: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-15-48756863add6@pengutronix.de>
 References: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-0-48756863add6@pengutronix.de>
 In-Reply-To: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-0-48756863add6@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6135;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5894;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=luEzUngGk1NR0uP/6gT4QZiFxGGLcR6au9y3xASZ83s=;
- b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFJ/iDLFLzsT6PHgcMe6C8/txbqO1bFbFm5Pnmd08KzZz
- C21VmLLO0pZGMS4GGTFFFki1x7S2Cz8WefL8fMMMHNYmUCGMHBxCsBEBDkY/vu+uGpZ8ipNfOoF
- hqVf9u5l+c/e1Xe2uXnzvhtB1+tqQxUY/ooeZMmwn9/38XjJpymvtD9ck+RIfXrY6+U8v/ROufA
- afS4A
+ bh=w7rQo8Fv/orb5OSBUyRdC7sk6ccZ0Hq2y1RfhMUkYPY=;
+ b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFJ/iCr+fe5WZv5hg8/a8Lm2G2VPNPlYexxa/eCt7oLXL
+ +pe7tgT3FHKwiDGxSArpsgSufaQxmbhzzpfjp9ngJnDygQyhIGLUwAmsukbw19px3WypfdPi9Vo
+ HvywuXjP77rJ/a7VGyIvvl59aYJ3rfwbhr+isz7dKGqfxFd4Pf6+iuS0XY/Pbj6gGpi08oP7wYk
+ sTHXMAA==
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240318_032221_630256_D444FFDB 
-X-CRM114-Status: GOOD (  17.97  )
+X-CRM114-CacheID: sfid-20240318_032225_032980_28801D07 
+X-CRM114-Status: GOOD (  13.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,176 +82,176 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v4 06/15] mci: arasan: read clk phases from DT
+Subject: [PATCH v4 15/15] mci: sdhci: replace sdhci_wait_idle
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Depending on the used SDHCI mode the clock phases are different.
-Import the helper function to get these values from the DT from linux v6.7.
+Linux uses a different sdhci_wait_idle function than what barebox
+currently does. For HS200 support, the linux version needs to be used.
+As currently only arasan-sdhci is tested with HS200, keep the old
+sdhci_wait_idle as sdhci_wait_idle_data and convert all users of it.
 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/arasan-sdhci.c | 121 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 121 insertions(+)
+ drivers/mci/am654-sdhci.c            |  2 +-
+ drivers/mci/arasan-sdhci.c           |  2 +-
+ drivers/mci/atmel-sdhci-common.c     |  4 ++--
+ drivers/mci/dove-sdhci.c             |  2 +-
+ drivers/mci/mci-bcm2835.c            |  2 +-
+ drivers/mci/rockchip-dwcmshc-sdhci.c |  2 +-
+ drivers/mci/sdhci.c                  | 29 +++++++++++++++++++++++++++--
+ drivers/mci/sdhci.h                  |  3 ++-
+ 8 files changed, 36 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/mci/am654-sdhci.c b/drivers/mci/am654-sdhci.c
+index 1d94834c1a..391b65591c 100644
+--- a/drivers/mci/am654-sdhci.c
++++ b/drivers/mci/am654-sdhci.c
+@@ -471,7 +471,7 @@ static int am654_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	int ret;
+ 	dma_addr_t dma;
+ 
+-	ret = sdhci_wait_idle(&host->sdhci, cmd);
++	ret = sdhci_wait_idle_data(&host->sdhci, cmd);
+ 	if (ret)
+ 		return ret;
+ 
 diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-index 77e6086165..0e4c1287ae 100644
+index c8b5a84060..f01396d7ee 100644
 --- a/drivers/mci/arasan-sdhci.c
 +++ b/drivers/mci/arasan-sdhci.c
-@@ -30,10 +30,33 @@
- #define SDHCI_ARASAN_BUS_WIDTH			4
- #define TIMEOUT_VAL				0xE
+@@ -251,7 +251,7 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	dma_addr_t dma;
+ 	int ret;
  
-+#define ZYNQMP_CLK_PHASES			10
-+#define ZYNQMP_CLK_PHASE_UHS_SDR104		6
-+#define ZYNQMP_CLK_PHASE_HS200			9
-+/* Default settings for ZynqMP Clock Phases */
-+#define ZYNQMP_ICLK_PHASE {0, 63, 63, 0, 63,  0,   0, 183, 54,  0, 0}
-+#define ZYNQMP_OCLK_PHASE {0, 72, 60, 0, 60, 72, 135, 48, 72, 135, 0}
-+
-+/**
-+ * struct sdhci_arasan_clk_data - Arasan Controller Clock Data.
-+ *
-+ * @clk_phase_in:	Array of Input Clock Phase Delays for all speed modes
-+ * @clk_phase_out:	Array of Output Clock Phase Delays for all speed modes
-+ * @set_clk_delays:	Function pointer for setting Clock Delays
-+ * @clk_of_data:	Platform specific runtime clock data storage pointer
-+ */
-+struct sdhci_arasan_clk_data {
-+	int		clk_phase_in[ZYNQMP_CLK_PHASES + 1];
-+	int		clk_phase_out[ZYNQMP_CLK_PHASES + 1];
-+	void		(*set_clk_delays)(struct sdhci *host);
-+	void		*clk_of_data;
-+};
-+
- struct arasan_sdhci_host {
- 	struct mci_host		mci;
- 	struct sdhci		sdhci;
- 	unsigned int		quirks; /* Arasan deviations from spec */
-+	struct sdhci_arasan_clk_data clk_data;
- /* Controller does not have CD wired and will not function normally without */
- #define SDHCI_ARASAN_QUIRK_FORCE_CDTEST		BIT(0)
- #define SDHCI_ARASAN_QUIRK_NO_1_8_V		BIT(1)
-@@ -119,6 +142,7 @@ static int arasan_sdhci_init(struct mci_host *mci, struct device *dev)
- static void arasan_sdhci_set_clock(struct mci_host *mci, unsigned int clock)
- {
- 	struct arasan_sdhci_host *host = to_arasan_sdhci_host(mci);
-+	struct sdhci_arasan_clk_data *clk_data = &host->clk_data;
+-	ret = sdhci_wait_idle(&host->sdhci, cmd);
++	ret = sdhci_wait_idle(&host->sdhci, cmd, data);
+ 	if (ret)
+ 		return ret;
  
- 	if (host->quirks & SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN) {
- 		/*
-@@ -221,6 +245,101 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
- 	return ret;
+diff --git a/drivers/mci/atmel-sdhci-common.c b/drivers/mci/atmel-sdhci-common.c
+index a69d6b67b5..082ce842f7 100644
+--- a/drivers/mci/atmel-sdhci-common.c
++++ b/drivers/mci/atmel-sdhci-common.c
+@@ -98,7 +98,7 @@ int at91_sdhci_send_command(struct at91_sdhci *host, struct mci_cmd *cmd,
+ 	int status;
+ 	int ret;
+ 
+-	ret = sdhci_wait_idle(&host->sdhci, cmd);
++	ret = sdhci_wait_idle_data(&host->sdhci, cmd);
+ 	if (ret)
+ 		return ret;
+ 
+@@ -188,7 +188,7 @@ static int at91_sdhci_set_clock(struct at91_sdhci *host, unsigned clock)
+ 	u32 caps, caps_clk_mult;
+ 	int ret;
+ 
+-	ret = sdhci_wait_idle(&host->sdhci, NULL);
++	ret = sdhci_wait_idle_data(&host->sdhci, NULL);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/mci/dove-sdhci.c b/drivers/mci/dove-sdhci.c
+index 8a4c4a11b4..d37046ad31 100644
+--- a/drivers/mci/dove-sdhci.c
++++ b/drivers/mci/dove-sdhci.c
+@@ -62,7 +62,7 @@ static int dove_sdhci_mci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	unsigned int num_bytes = 0;
+ 	struct dove_sdhci *host = priv_from_mci_host(mci);
+ 
+-	ret = sdhci_wait_idle(&host->sdhci, cmd);
++	ret = sdhci_wait_idle_data(&host->sdhci, cmd);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/mci/mci-bcm2835.c b/drivers/mci/mci-bcm2835.c
+index 35cf0c4241..3546cc3a32 100644
+--- a/drivers/mci/mci-bcm2835.c
++++ b/drivers/mci/mci-bcm2835.c
+@@ -128,7 +128,7 @@ static int bcm2835_mci_request(struct mci_host *mci, struct mci_cmd *cmd,
+ 		block_data |= data->blocksize;
+ 	}
+ 
+-	ret = sdhci_wait_idle(&host->sdhci, cmd);
++	ret = sdhci_wait_idle_data(&host->sdhci, cmd);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/mci/rockchip-dwcmshc-sdhci.c b/drivers/mci/rockchip-dwcmshc-sdhci.c
+index 03f463a3f6..f503dbae65 100644
+--- a/drivers/mci/rockchip-dwcmshc-sdhci.c
++++ b/drivers/mci/rockchip-dwcmshc-sdhci.c
+@@ -249,7 +249,7 @@ static int rk_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	int ret;
+ 	dma_addr_t dma;
+ 
+-	ret = sdhci_wait_idle(&host->sdhci, cmd);
++	ret = sdhci_wait_idle_data(&host->sdhci, cmd);
+ 	if (ret)
+ 		return ret;
+ 
+diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
+index 7dedd5a7b2..8bba1e3bf9 100644
+--- a/drivers/mci/sdhci.c
++++ b/drivers/mci/sdhci.c
+@@ -788,7 +788,32 @@ void sdhci_enable_clk(struct sdhci *host, u16 clk)
+ 	sdhci_write16(host, SDHCI_CLOCK_CONTROL, clk);
  }
  
-+static void sdhci_arasan_set_clk_delays(struct sdhci *host)
+-int sdhci_wait_idle(struct sdhci *host, struct mci_cmd *cmd)
++int sdhci_wait_idle(struct sdhci *host, struct mci_cmd *cmd, struct mci_data *data)
 +{
-+	struct arasan_sdhci_host *arasan_sdhci = sdhci_to_arasan(host);
-+	struct mci_host *mci = &arasan_sdhci->mci;
-+	struct sdhci_arasan_clk_data *clk_data = &arasan_sdhci->clk_data;
-+
-+}
-+
-+static void arasan_dt_read_clk_phase(struct device *dev,
-+				     struct sdhci_arasan_clk_data *clk_data,
-+				     unsigned int timing, const char *prop)
-+{
-+	struct device_node *np = dev->of_node;
-+
-+	u32 clk_phase[2] = {0};
++	u32 mask;
 +	int ret;
 +
-+	/*
-+	 * Read Tap Delay values from DT, if the DT does not contain the
-+	 * Tap Values then use the pre-defined values.
-+	 */
-+	ret = of_property_read_u32_array(np, prop, &clk_phase[0], 2);
-+	if (ret < 0) {
-+		dev_dbg(dev, "Using predefined clock phase for %s = %d %d\n",
-+			prop, clk_data->clk_phase_in[timing],
-+			clk_data->clk_phase_out[timing]);
-+		return;
++	mask = SDHCI_CMD_INHIBIT_CMD;
++
++	if (data || (cmd && (cmd->resp_type & MMC_RSP_BUSY)))
++		mask |= SDHCI_CMD_INHIBIT_DATA;
++
++	if (cmd && cmd->cmdidx == MMC_CMD_STOP_TRANSMISSION)
++		mask &= ~SDHCI_CMD_INHIBIT_DATA;
++
++	ret = wait_on_timeout(10 * MSECOND,
++			!(sdhci_read32(host, SDHCI_PRESENT_STATE) & mask));
++
++	if (ret) {
++		dev_err(host->mci->hw_dev,
++				"SDHCI timeout while waiting for idle\n");
++		return -EBUSY;
 +	}
 +
-+	/* The values read are Input and Output Clock Delays in order */
-+	clk_data->clk_phase_in[timing] = clk_phase[0];
-+	clk_data->clk_phase_out[timing] = clk_phase[1];
++	return 0;
 +}
 +
-+/**
-+ * arasan_dt_parse_clk_phases - Read Clock Delay values from DT
-+ *
-+ * @dev:		Pointer to our struct device.
-+ * @clk_data:		Pointer to the Clock Data structure
-+ *
-+ * Called at initialization to parse the values of Clock Delays.
-+ */
-+static void arasan_dt_parse_clk_phases(struct device *dev,
-+				       struct sdhci_arasan_clk_data *clk_data)
-+{
-+	u32 mio_bank = 0;
-+	int i;
-+
-+	/*
-+	 * This has been kept as a pointer and is assigned a function here.
-+	 * So that different controller variants can assign their own handling
-+	 * function.
-+	 */
-+	clk_data->set_clk_delays = sdhci_arasan_set_clk_delays;
-+
-+	if (of_device_is_compatible(dev->of_node, "xlnx,zynqmp-8.9a")) {
-+		u32 zynqmp_iclk_phase[ZYNQMP_CLK_PHASES + 1] = ZYNQMP_ICLK_PHASE;
-+		u32 zynqmp_oclk_phase[ZYNQMP_CLK_PHASES + 1] = ZYNQMP_OCLK_PHASE;
-+
-+		of_property_read_u32(dev->of_node, "xlnx,mio-bank", &mio_bank);
-+		if (mio_bank == 2) {
-+			zynqmp_oclk_phase[ZYNQMP_CLK_PHASE_UHS_SDR104] = 90;
-+			zynqmp_oclk_phase[ZYNQMP_CLK_PHASE_HS200] = 90;
-+		}
-+
-+		for (i = 0; i <= ZYNQMP_CLK_PHASES; i++) {
-+			clk_data->clk_phase_in[i] = zynqmp_iclk_phase[i];
-+			clk_data->clk_phase_out[i] = zynqmp_oclk_phase[i];
-+		}
-+	}
-+
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_LEGACY,
-+				 "clk-phase-legacy");
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS,
-+				 "clk-phase-mmc-hs");
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_SD_HS,
-+				 "clk-phase-sd-hs");
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR12,
-+				 "clk-phase-uhs-sdr12");
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR25,
-+				 "clk-phase-uhs-sdr25");
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR50,
-+				 "clk-phase-uhs-sdr50");
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_SDR104,
-+				 "clk-phase-uhs-sdr104");
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_UHS_DDR50,
-+				 "clk-phase-uhs-ddr50");
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_DDR52,
-+				 "clk-phase-mmc-ddr52");
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS200,
-+				 "clk-phase-mmc-hs200");
-+	arasan_dt_read_clk_phase(dev, clk_data, MMC_TIMING_MMC_HS400,
-+				 "clk-phase-mmc-hs400");
-+}
-+
- static int arasan_sdhci_probe(struct device *dev)
++int sdhci_wait_idle_data(struct sdhci *host, struct mci_cmd *cmd)
  {
- 	struct device_node *np = dev->of_node;
-@@ -283,6 +402,8 @@ static int arasan_sdhci_probe(struct device *dev)
- 	mci->f_max = clk_get_rate(clk_xin);
- 	mci->f_min = 50000000 / 256;
+ 	u32 mask;
+ 	int ret;
+@@ -820,7 +845,7 @@ void sdhci_set_clock(struct sdhci *host, unsigned int clock, unsigned int input_
  
-+	arasan_dt_parse_clk_phases(dev, &arasan_sdhci->clk_data);
-+
- 	/* parse board supported bus width capabilities */
- 	mci_of_parse(&arasan_sdhci->mci);
+ 	sdhci_set_uhs_signaling(host, host->mci->timing);
  
+-	sdhci_wait_idle(host, NULL);
++	sdhci_wait_idle_data(host, NULL);
+ 
+ 	sdhci_write16(host, SDHCI_CLOCK_CONTROL, 0);
+ 
+diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
+index f10a801c88..15ce2b92b6 100644
+--- a/drivers/mci/sdhci.h
++++ b/drivers/mci/sdhci.h
+@@ -309,7 +309,8 @@ static inline void sdhci_write8(struct sdhci *host, int reg, u32 val)
+ 
+ #define SDHCI_NO_DMA DMA_ERROR_CODE
+ int sdhci_execute_tuning(struct sdhci *sdhci, u32 opcode);
+-int sdhci_wait_idle(struct sdhci *host, struct mci_cmd *cmd);
++int sdhci_wait_idle_data(struct sdhci *host, struct mci_cmd *cmd);
++int sdhci_wait_idle(struct sdhci *host, struct mci_cmd *cmd, struct mci_data *data);
+ int sdhci_wait_for_done(struct sdhci *host, u32 mask);
+ void sdhci_read_response(struct sdhci *host, struct mci_cmd *cmd);
+ void sdhci_set_cmd_xfer_mode(struct sdhci *host, struct mci_cmd *cmd,
 
 -- 
 2.43.2
