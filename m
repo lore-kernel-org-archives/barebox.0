@@ -1,68 +1,65 @@
-Delivery-date: Mon, 18 Mar 2024 11:23:29 +0100
+Delivery-date: Mon, 18 Mar 2024 11:23:33 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmA9R-00CDJS-08
+	id 1rmA9V-00CDKN-1l
 	for lore@lore.pengutronix.de;
-	Mon, 18 Mar 2024 11:23:29 +0100
+	Mon, 18 Mar 2024 11:23:33 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmA9P-0001MT-3R
-	for lore@pengutronix.de; Mon, 18 Mar 2024 11:23:28 +0100
+	id 1rmA9U-0001Rz-Lz
+	for lore@pengutronix.de; Mon, 18 Mar 2024 11:23:33 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=ZaKHiqRNGTT7YXb6zR4Xo7E7uMgq7wPyCf1xQoJYaQY=; b=k8Ay13iHgZrOEt
-	146ESIdXx+o4i3J8FgzwfOaR8Txutd1iHgDg0kecEpncV6+ap9z4OSssJt3TijJgmkWGPMhTLfifQ
-	lNhWG1RSUpXMTeJHsNRFxa9Ra24uPZaMiMf+3TtW5HVQChSdfB5ox3ePgI4Jc10zBl8E2gq9oF/VI
-	2CjCGkConDtcCtXB0qKPuSCQQT1lkWKuviLVhT4M01HCFLEcxOi7saAhEunXhJFNbBzg0HZfpeoy5
-	UjCP6AZ6PoNHH4HCXfmhYWkcAaUNZTMDZCcMLYIsFcvSt3m2ZbeZew+HJ26bdA6bVVp0R9goUcM/1
-	fSd4qlfTjr1NXjqTCFsA==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Dm/kEtpRfyFEs40Bsn8q2ggMqVYEwskNftCIvCxFcK4=; b=lU23+ngSep5EJRD+d8y0eQjPRR
+	foK5QuwE2WVANpU4sn/kuoZfD/DmobE1nj009YQXlACZSdiSLZIJ7oWx2NOoEgl5nyUcAeTKLB7LG
+	O/KI6UEymO59kTPvbbcOxGb+WrqULYNP+GVruUy/OWazXrL/7FYc3n7z16hU9IzVk/GI7MgSD6hs9
+	ZurVU4Pa0twwDWB5qRh0yz5lgzPSuoWDFVBsIEhyQ6V5K114Em7aDk6hOpsKX6v1mcNb3MNrG3OLF
+	tfGOaXkAvJjbdXd5NukYVeLm8ZztxuME8ZaQaBDkf497wK+/YOLqAkpII0HZ3xWZoxr5xk6NpOFnV
+	ruT8GZow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmA8W-000000087n3-1k3U;
-	Mon, 18 Mar 2024 10:22:32 +0000
+	id 1rmA8X-000000087nz-17Ka;
+	Mon, 18 Mar 2024 10:22:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmA8K-000000087Jb-2s3c
+	id 1rmA8K-000000087Jf-3uPY
 	for barebox@lists.infradead.org;
-	Mon, 18 Mar 2024 10:22:22 +0000
+	Mon, 18 Mar 2024 10:22:24 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1rmA5N-0006MJ-IM; Mon, 18 Mar 2024 11:19:17 +0100
+	id 1rmA5O-0006MJ-Al; Mon, 18 Mar 2024 11:19:18 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 18 Mar 2024 11:18:14 +0100
-Message-Id: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-0-48756863add6@pengutronix.de>
+Date: Mon, 18 Mar 2024 11:18:18 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAOYU+GUC/5WNQQ7CIBBFr2JYO2YKlLauvIdxQSm0bIBAS2pM7
- y51ZaIL3c2fl7z3IElHqxM5Hx4k6myT9a4MfjwQNUk3arBD2YQi5ciwhbxfgBQQZh+sAhllkg6
- mRBEhLSH4OEPVK2Z60fNOSlJcIWpj11fneit7smn28f7K5mr//lvIVeFiqFF1yNvasEvQblzm6
- J1dT4MmeybTN3XFf1XvHFkrFG2MFvV3NXtX17+qWeGDoaJV1PAOmw/1tm1Pnw6LtpUBAAA=
+Message-Id: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-4-48756863add6@pengutronix.de>
+References: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-0-48756863add6@pengutronix.de>
+In-Reply-To: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-0-48756863add6@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3196;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2476;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=nuiDWH40imzehjgQeiWxe295SeeSSLf1NY5LZwH1A00=;
- b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFJ/iLzZcTBxC+d6v5K9E+zEi3+G6IocLd/bnbJRJXTZm
- tLtc/OWd5SyMIhxMciKKbJErj2ksVn4s86X4+cZYOawMoEMYeDiFICJzORhZLh3v2eW4ZnzVVEZ
- u1Si0vXeZSzbcurtje88DirmCqaPQs8wMnzZxpR6q/a71MQITUnPq7wPhS7odWdn9D2btNT6mfG
- SWkYA
+ bh=1Pr5x2R/90JtF4TEn4NJApGjyYFlDBoBfkWFymCOkik=;
+ b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFJ/iPw+Jt7387R73KYzTyqXF7wSlP6oO9HUYsLKRQ3rZ
+ BiczvxR6ChlYRDjYpAVU2SJXHtIY7PwZ50vx88zwMxhZQIZwsDFKQATWa/LyHDa/r/G1DUqF/Yt
+ WXQ7c+7BzkUSMsEiP+4v75pldsBHRrGW4Z+aVwdLWWvezKevL5/8X110yOvaM703h69rbt5cNaf
+ EdAEXAA==
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240318_032220_887090_B19B4F4D 
-X-CRM114-Status: UNSURE (   9.75  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240318_032221_466822_802370BC 
+X-CRM114-Status: GOOD (  12.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -85,83 +82,83 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v4 00/15] mci: add HS200 support for eMMCs
+Subject: [PATCH v4 04/15] mci: arasan: implement 25MHz quirk for zynqmp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This series adds support for HS200 mode to mci-core and sdhci.
-As the host driver also needs to handle clock setup, pin control and
-host specific tuning, this series only adds HS200 support to the Arasan
-SDHCI driver.
+The Arasan on the zynqmp in version 8.9a doesn't meet the timing
+requirements at 25MHz. It works at 19MHz instead.
 
-Tested on: ZynqMP
-Compile tested: for ZynqMP with/without CONFIG_MCI_TUNING
+Add the quirk from linux kernel v6.8-rc4.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Changes in v4:
-- add a fix for arasan dma support patch
-- Link to v3: https://lore.barebox.org/20240315-v2024-02-0-topic-arasan-hs200-support-v3-0-df268c2f4907@pengutronix.de
+ drivers/mci/arasan-sdhci.c | 28 +++++++++++++++++++++++++++-
+ 1 file changed, 27 insertions(+), 1 deletion(-)
 
-Changes in v3:
-- rebased onto v2024.03.0
-- cherry-picked and rebased onto b80c0e1ec64c "mci: arasan: add dma support"
-- Link to v2: https://lore.barebox.org/20240314-v2024-02-0-topic-arasan-hs200-support-v2-0-0386c27fe653@pengutronix.de
+diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
+index 98f990b5c1..77e6086165 100644
+--- a/drivers/mci/arasan-sdhci.c
++++ b/drivers/mci/arasan-sdhci.c
+@@ -37,6 +37,12 @@ struct arasan_sdhci_host {
+ /* Controller does not have CD wired and will not function normally without */
+ #define SDHCI_ARASAN_QUIRK_FORCE_CDTEST		BIT(0)
+ #define SDHCI_ARASAN_QUIRK_NO_1_8_V		BIT(1)
++/*
++ * Some of the Arasan variations might not have timing requirements
++ * met at 25MHz for Default Speed mode, those controllers work at
++ * 19MHz instead
++ */
++#define SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN	BIT(2)
+ };
+ 
+ static inline
+@@ -110,13 +116,30 @@ static int arasan_sdhci_init(struct mci_host *mci, struct device *dev)
+ 	return 0;
+ }
+ 
++static void arasan_sdhci_set_clock(struct mci_host *mci, unsigned int clock)
++{
++	struct arasan_sdhci_host *host = to_arasan_sdhci_host(mci);
++
++	if (host->quirks & SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN) {
++		/*
++		 * Some of the Arasan variations might not have timing
++		 * requirements met at 25MHz for Default Speed mode,
++		 * those controllers work at 19MHz instead.
++		 */
++		if (clock == 25000000)
++			clock = (25000000 * 19) / 25;
++	}
++
++	sdhci_set_clock(&host->sdhci, clock, host->sdhci.max_clk);
++}
++
+ static void arasan_sdhci_set_ios(struct mci_host *mci, struct mci_ios *ios)
+ {
+ 	struct arasan_sdhci_host *host = to_arasan_sdhci_host(mci);
+ 	u16 val;
+ 
+ 	if (ios->clock)
+-		sdhci_set_clock(&host->sdhci, ios->clock, host->sdhci.max_clk);
++		arasan_sdhci_set_clock(mci, ios->clock);
+ 
+ 	sdhci_set_bus_width(&host->sdhci, ios->bus_width);
+ 
+@@ -245,6 +268,9 @@ static int arasan_sdhci_probe(struct device *dev)
+ 	if (of_property_read_bool(np, "no-1-8-v"))
+ 		arasan_sdhci->quirks |= SDHCI_ARASAN_QUIRK_NO_1_8_V;
+ 
++	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a"))
++		arasan_sdhci->quirks |= SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN;
++
+ 	arasan_sdhci->sdhci.base = IOMEM(iores->start);
+ 	arasan_sdhci->sdhci.mci = mci;
+ 	mci->send_cmd = arasan_sdhci_send_cmd;
 
-Changes in v2:
-- added Reviewed-bys
-- small style fixes
-- return host->actual_clock in arasan_zynqmp_sampleclk_recalc_rate
-- return host->actual_clock in arasan_zynqmp_sdcardeclk_recalc_rate
-- move DT property parsing into IS_ENABLED
-- port mci_switch_status from linux
-- remove the #ifdef CONFIG_MCI_TUNING; functions get called in
-  IS_ENABLED context
-- mci_mmc_select_hs_ddr: set max_dtr to mci->tran_speed; matches
-  the calculation linux does here
-- move platform_execute_tuning from mci_host -> sdhci
-- port sdhci_reset_for_reason from linux
-- Link to v1: https://lore.barebox.org/20240308-v2024-02-0-topic-arasan-hs200-support-v1-0-6d50c90485f3@pengutronix.de
-
----
-Steffen Trumtrar (15):
-      mci: arasan: fix dma support
-      ARM: zynqmp: add sd_dll_reset call
-      zynqmp: firmware: add functions to set tap delay
-      mci: arasan: implement 25MHz quirk for zynqmp
-      include: mci: sync mci_timing with linux
-      mci: arasan: read clk phases from DT
-      mci: core: save the set clock as actual_clock
-      mci: arasan: register sdcard/sampleclk
-      include: mci: add more EXT_CSD_CARD_TYPE_*
-      mci: core: parse more host capabilities from DT
-      mci: mci-core: add HS200 support
-      mci: mci-core: replace value with define
-      mci: sdhci: add tuning support
-      mci: arasan-sdhci: add HS200 tuning support on ZynqMP
-      mci: sdhci: replace sdhci_wait_idle
-
- arch/arm/mach-zynqmp/firmware-zynqmp.c |  59 ++++
- drivers/mci/Kconfig                    |   7 +
- drivers/mci/am654-sdhci.c              |   2 +-
- drivers/mci/arasan-sdhci.c             | 529 ++++++++++++++++++++++++++++++++-
- drivers/mci/atmel-sdhci-common.c       |   4 +-
- drivers/mci/dove-sdhci.c               |   2 +-
- drivers/mci/mci-bcm2835.c              |   2 +-
- drivers/mci/mci-core.c                 | 297 ++++++++++++++++--
- drivers/mci/rockchip-dwcmshc-sdhci.c   |   2 +-
- drivers/mci/sdhci.c                    | 304 ++++++++++++++++++-
- drivers/mci/sdhci.h                    |  30 +-
- include/mach/zynqmp/firmware-zynqmp.h  |  23 ++
- include/mci.h                          | 104 ++++++-
- 13 files changed, 1321 insertions(+), 44 deletions(-)
----
-base-commit: ec014c92f8ec31da8a062f6083a0d10dbcfe97ce
-change-id: 20240308-v2024-02-0-topic-arasan-hs200-support-1bc3fb6b49aa
-
-Best regards,
 -- 
-Steffen Trumtrar <s.trumtrar@pengutronix.de>
+2.43.2
 
 
 
