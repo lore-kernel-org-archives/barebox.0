@@ -1,65 +1,63 @@
-Delivery-date: Fri, 15 Mar 2024 15:02:53 +0100
+Delivery-date: Mon, 18 Mar 2024 10:46:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rl897-007x9b-1C
+	id 1rm9ZY-00CAe8-2T
 	for lore@lore.pengutronix.de;
-	Fri, 15 Mar 2024 15:02:53 +0100
+	Mon, 18 Mar 2024 10:46:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rl894-0001kN-Fy
-	for lore@pengutronix.de; Fri, 15 Mar 2024 15:02:53 +0100
+	id 1rm9ZY-00046s-6T
+	for lore@pengutronix.de; Mon, 18 Mar 2024 10:46:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pAV0P3tvidh57gSxOyEsdFbjNEFd33xibzEFGvSbGCQ=; b=hz/G91cpmIsj5rNrp0DJNwjTVN
-	mCxsWyuTkQhb6gL+XWzDA1tfae6qTQx1p1cd1PrU1fb1NMxH2Kx/TCUmh8o9ZpzwzfJkcuwUJwS/m
-	DeKa0GVmrud2IQ3Y1s1RJOtTQwdw/QO2zp9kbUrkRPUuZ16DsAf8hqr78sZOgEeCqPnX3eYo63iAJ
-	u1xDln9GucMwHM8Z7n5yOtxw/ZCf7NNJbqkHZarM03W4mKvVSd2+zl3vXTFD7uGUMEfmVNEC03pF4
-	P8HrhvVCNjVZTO1Jx12MoYtOBriAwJd488k061DUjDkJm/vz794XFq9cv64Ui2aw7UvLR1rmILlxe
-	Qf5ompBg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=lcZI5vbveo4BzenrDXQbZ+eVHK2eOzCECkPdv3Me7eo=; b=W3XeXl7AEAucuPy0MCZElr2oad
+	2uIPklfEVg9n7KLW4fs9ysYq9AJzqly6vQb/Ex8WRFNWnB8Vi/Bt5JCshUHGBBPBtCVAg3xdK4MVP
+	0TKCKvdbOZYvUbdrkV8EjY4g+m7DqqCVpR91IfIwBk1TWV03fK00e2lv2pusHi08XTAs7ZFFNzxL0
+	1u9qWs0OnU/55SCRRB1u1/Yv7plMHy8jsmNYaFQ8wmd/3IQ3vEB/VxYI+mSKdNzIt4GIa1hy+ZVry
+	wq84aObvLObt5m98dbqoPbuY5jrU3uus14h2eHUJDMUueMo7XTsyeku2la7R0Xg7ujmPYqJbrV9xp
+	ycmkoZig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rl88M-00000000OyF-22FG;
-	Fri, 15 Mar 2024 14:02:06 +0000
+	id 1rm9Yt-00000007zTP-36nr;
+	Mon, 18 Mar 2024 09:45:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rl881-00000000OlH-0P2u
+	id 1rm9Yo-00000007zSS-28kF
 	for barebox@lists.infradead.org;
-	Fri, 15 Mar 2024 14:01:51 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1rl87z-000817-Ty; Fri, 15 Mar 2024 15:01:43 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Fri, 15 Mar 2024 15:00:53 +0100
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240315-v2024-02-0-topic-arasan-hs200-support-v3-12-df268c2f4907@pengutronix.de>
-References: <20240315-v2024-02-0-topic-arasan-hs200-support-v3-0-df268c2f4907@pengutronix.de>
-In-Reply-To: <20240315-v2024-02-0-topic-arasan-hs200-support-v3-0-df268c2f4907@pengutronix.de>
+	Mon, 18 Mar 2024 09:45:39 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <ore@pengutronix.de>)
+	id 1rm9Yl-0003Zh-Rn; Mon, 18 Mar 2024 10:45:35 +0100
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <ore@pengutronix.de>)
+	id 1rm9Yl-00739x-FX; Mon, 18 Mar 2024 10:45:35 +0100
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1rm9Yl-006WCH-1P;
+	Mon, 18 Mar 2024 10:45:35 +0100
+From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12032;
- i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=vwZBDLj9vSnW25DRhb50E/OVvSLmxSn3o1vFMGz7rVM=;
- b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFK/hOy2a7N7tolNve6SWk6+oUnIN5EClo36kXsClygLn
- 9PKn7uko5SFQYyLQVZMkSVy7SGNzcKfdb4cP88AM4eVCWQIAxenAEzEaDvDb7asjflSnvPDgp9e
- PBOtteHHYe4dp04pXJy4ctLk0nlhc6IY/hk6Pkw0cP/+N2vFN+P80JVLOp7fUDjwqerw67Paod4
- vpzEAAA==
-X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
- fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Mon, 18 Mar 2024 10:45:32 +0100
+Message-Id: <20240318094533.1553713-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240315_070145_530882_C301C892 
-X-CRM114-Status: GOOD (  27.89  )
+X-CRM114-CacheID: sfid-20240318_024538_572255_33AE1B50 
+X-CRM114-Status: GOOD (  13.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,410 +75,61 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v3 12/14] mci: sdhci: add tuning support
+Subject: [PATCH v1 1/2] ARM: i.MX8MP: skov: add fallback for unsupported HW
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The arasan SDHCI driver doesn't use MMC tuning but SDHCI tuning. Both
-are not supported yet in barebox.
-Add SDHCI tuning support from linux v6.7.
+Add fallback support for currently not supported HW. Instead of
+completely fail, it is better to use some kind of basic devicetree with
+reduced functionality.
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
 ---
- drivers/mci/sdhci.c | 275 +++++++++++++++++++++++++++++++++++++++++++++++++++-
- drivers/mci/sdhci.h |  27 ++++++
- 2 files changed, 301 insertions(+), 1 deletion(-)
+ arch/arm/boards/skov-imx8mp/board.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mci/sdhci.c b/drivers/mci/sdhci.c
-index edb819d66d..7dedd5a7b2 100644
---- a/drivers/mci/sdhci.c
-+++ b/drivers/mci/sdhci.c
-@@ -9,6 +9,227 @@
- 
- #include "sdhci.h"
- 
-+#define MAX_TUNING_LOOP 40
-+#define  SDHCI_MAKE_BLKSZ(dma, blksz) (((dma & 0x7) << 12) | (blksz & 0xFFF))
-+
-+enum sdhci_reset_reason {
-+	SDHCI_RESET_FOR_INIT,
-+	SDHCI_RESET_FOR_REQUEST_ERROR,
-+	SDHCI_RESET_FOR_REQUEST_ERROR_DATA_ONLY,
-+	SDHCI_RESET_FOR_TUNING_ABORT,
-+	SDHCI_RESET_FOR_CARD_REMOVED,
-+	SDHCI_RESET_FOR_CQE_RECOVERY,
-+};
-+
-+static void sdhci_reset_for_reason(struct sdhci *host, enum sdhci_reset_reason reason)
-+{
-+	if (host->quirks2 & SDHCI_QUIRK2_ISSUE_CMD_DAT_RESET_TOGETHER) {
-+		sdhci_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
-+		return;
-+	}
-+
-+	switch (reason) {
-+	case SDHCI_RESET_FOR_INIT:
-+		sdhci_reset(host, SDHCI_RESET_CMD | SDHCI_RESET_DATA);
-+		break;
-+	case SDHCI_RESET_FOR_REQUEST_ERROR:
-+	case SDHCI_RESET_FOR_TUNING_ABORT:
-+	case SDHCI_RESET_FOR_CARD_REMOVED:
-+	case SDHCI_RESET_FOR_CQE_RECOVERY:
-+		sdhci_reset(host, SDHCI_RESET_CMD);
-+		sdhci_reset(host, SDHCI_RESET_DATA);
-+		break;
-+	case SDHCI_RESET_FOR_REQUEST_ERROR_DATA_ONLY:
-+		sdhci_reset(host, SDHCI_RESET_DATA);
-+		break;
-+	}
-+}
-+
-+#define sdhci_reset_for(h, r) sdhci_reset_for_reason((h), SDHCI_RESET_FOR_##r)
-+
-+static int sdhci_send_command_retry(struct sdhci *host, struct mci_cmd *cmd)
-+{
-+	int timeout = 10;
-+
-+	while ((sdhci_read32(host, SDHCI_PRESENT_STATE) & SDHCI_CMD_INHIBIT_CMD)) {
-+		if (!timeout--)
-+			return -ETIMEDOUT;
-+
-+		mdelay(1);
-+	}
-+
-+	return host->mci->send_cmd(host->mci, cmd, NULL);
-+}
-+
-+/*
-+ * We use sdhci_send_tuning() because mmc_send_tuning() is not a good fit. SDHCI
-+ * tuning command does not have a data payload (or rather the hardware does it
-+ * automatically) so mmc_send_tuning() will return -EIO. Also the tuning command
-+ * interrupt setup is different to other commands and there is no timeout
-+ * interrupt so special handling is needed.
-+ */
-+static int sdhci_send_tuning(struct sdhci *host, u32 opcode)
-+{
-+	struct mci_cmd cmd = {};
-+	int ret;
-+
-+	cmd.cmdidx = opcode;
-+	cmd.resp_type = MMC_RSP_R1 | MMC_CMD_ADTC;
-+
-+	/*
-+	 * In response to CMD19, the card sends 64 bytes of tuning
-+	 * block to the Host Controller. So we set the block size
-+	 * to 64 here.
+diff --git a/arch/arm/boards/skov-imx8mp/board.c b/arch/arm/boards/skov-imx8mp/board.c
+index 5424c3b9ab..a45fe8517f 100644
+--- a/arch/arm/boards/skov-imx8mp/board.c
++++ b/arch/arm/boards/skov-imx8mp/board.c
+@@ -83,6 +83,12 @@ static const struct board_description imx8mp_variants[] = {
+ 		.dts_compatible_hdmi = "skov,imx8mp-skov-revb-hdmi",
+ 		.flags = SKOV_IMX8MP_HAS_HDMI,
+ 	},
++	/* Keep this entry always on the last place. It will be used
++	 * as fallback variant if not supported variant is detected.
 +	 */
-+	if (cmd.cmdidx == MMC_SEND_TUNING_BLOCK_HS200 &&
-+	    host->mci->bus_width == MMC_BUS_WIDTH_8) {
-+		sdhci_write16(host, SDHCI_BLOCK_SIZE, SDHCI_MAKE_BLKSZ(7, 128));
-+	} else {
-+		sdhci_write16(host, SDHCI_BLOCK_SIZE, SDHCI_MAKE_BLKSZ(7, 64));
-+	}
-+
-+	ret = sdhci_send_command_retry(host, &cmd);
-+
-+	return ret;
-+}
-+
-+static void sdhci_end_tuning(struct sdhci *host)
-+{
-+	sdhci_write32(host, SDHCI_INT_ENABLE, host->tuning_old_ier);
-+	sdhci_write32(host, SDHCI_SIGNAL_ENABLE, host->tuning_old_sig);
-+}
-+
-+static void sdhci_start_tuning(struct sdhci *host)
-+{
-+	u16 ctrl;
-+
-+	ctrl = sdhci_read16(host, SDHCI_HOST_CONTROL2);
-+	ctrl |= SDHCI_CTRL_EXEC_TUNING;
-+	sdhci_write16(host, SDHCI_HOST_CONTROL2, ctrl);
-+
-+	mdelay(1);
-+
-+	host->tuning_old_ier = sdhci_read32(host, SDHCI_INT_ENABLE);
-+	host->tuning_old_sig = sdhci_read32(host, SDHCI_SIGNAL_ENABLE);
-+
-+	sdhci_write32(host, SDHCI_INT_ENABLE, SDHCI_INT_DATA_AVAIL);
-+	sdhci_write32(host, SDHCI_SIGNAL_ENABLE, SDHCI_INT_DATA_AVAIL);
-+}
-+
-+static void sdhci_reset_tuning(struct sdhci *host)
-+{
-+	u16 ctrl;
-+
-+	ctrl = sdhci_read16(host, SDHCI_HOST_CONTROL2);
-+	ctrl &= ~SDHCI_CTRL_TUNED_CLK;
-+	ctrl &= ~SDHCI_CTRL_EXEC_TUNING;
-+	sdhci_write16(host, SDHCI_HOST_CONTROL2, ctrl);
-+}
-+
-+static void sdhci_abort_tuning(struct sdhci *host, u32 opcode)
-+{
-+	sdhci_reset_tuning(host);
-+
-+	sdhci_reset_for(host, TUNING_ABORT);
-+
-+	sdhci_end_tuning(host);
-+
-+	mci_send_abort_tuning(host->mci->mci, opcode);
-+}
-+
-+static int __sdhci_execute_tuning(struct sdhci *host, u32 opcode)
-+{
-+	int i;
-+	int ret;
-+
-+	/*
-+	 * Issue opcode repeatedly till Execute Tuning is set to 0 or the number
-+	 * of loops reaches tuning loop count.
-+	 * Some controllers are known to always require 40 iterations.
-+	 */
-+	for (i = 0; i < host->tuning_loop_count; i++) {
-+		u16 ctrl;
-+
-+		ret = sdhci_send_tuning(host, opcode);
-+		if (ret) {
-+			sdhci_abort_tuning(host, opcode);
-+			return -ETIMEDOUT;
-+		}
-+
-+		/* Spec does not require a delay between tuning cycles */
-+		if (host->tuning_delay > 0)
-+			mdelay(host->tuning_delay);
-+
-+		ctrl = sdhci_read16(host, SDHCI_HOST_CONTROL2);
-+		if (!(ctrl & SDHCI_CTRL_EXEC_TUNING)) {
-+			if (ctrl & SDHCI_CTRL_TUNED_CLK) {
-+				return 0; /* Success! */
-+			}
-+			break;
-+		}
-+
-+	}
-+
-+	dev_dbg(&host->mci->mci->dev, "Tuning timeout, falling back to fixed sampling clock\n");
-+	sdhci_reset_tuning(host);
-+	return -EAGAIN;
-+}
-+
-+int sdhci_execute_tuning(struct sdhci *sdhci, u32 opcode)
-+{
-+	struct mci_host *host = sdhci->mci;
-+	int err = 0;
-+	unsigned int tuning_count = 0;
-+
-+	if (sdhci->tuning_mode == SDHCI_TUNING_MODE_1)
-+		tuning_count = sdhci->tuning_count;
-+
-+	/*
-+	 * The Host Controller needs tuning in case of SDR104 and DDR50
-+	 * mode, and for SDR50 mode when Use Tuning for SDR50 is set in
-+	 * the Capabilities register.
-+	 * If the Host Controller supports the HS200 mode then the
-+	 * tuning function has to be executed.
-+	 */
-+	switch (host->timing) {
-+	/* HS400 tuning is done in HS200 mode */
-+	case MMC_TIMING_MMC_HS400:
-+		err = -EINVAL;
-+		goto out;
-+
-+	case MMC_TIMING_MMC_HS200:
-+		break;
-+
-+	case MMC_TIMING_UHS_SDR104:
-+	case MMC_TIMING_UHS_DDR50:
-+		break;
-+
-+	case MMC_TIMING_UHS_SDR50:
-+		fallthrough;
-+
-+	default:
-+		goto out;
-+	}
-+
-+	if (sdhci->platform_execute_tuning) {
-+		err = sdhci->platform_execute_tuning(host, opcode);
-+		goto out;
-+	}
-+
-+	if (sdhci->tuning_delay < 0)
-+		sdhci->tuning_delay = opcode == MMC_SEND_TUNING_BLOCK;
-+
-+	sdhci_start_tuning(sdhci);
-+
-+	sdhci->tuning_err = __sdhci_execute_tuning(sdhci, opcode);
-+
-+	sdhci_end_tuning(sdhci);
-+out:
-+
-+	return err;
-+}
-+EXPORT_SYMBOL_GPL(sdhci_execute_tuning);
-+
- void sdhci_read_response(struct sdhci *sdhci, struct mci_cmd *cmd)
- {
- 	if (cmd->resp_type & MMC_RSP_136) {
-@@ -50,7 +271,12 @@ void sdhci_set_cmd_xfer_mode(struct sdhci *host, struct mci_cmd *cmd,
- 
- 	*command |= SDHCI_CMD_INDEX(cmd->cmdidx);
- 
--	if (data) {
-+	if (cmd->cmdidx == MMC_SEND_TUNING_BLOCK ||
-+	    cmd->cmdidx == MMC_SEND_TUNING_BLOCK_HS200) {
-+		*command |= SDHCI_DATA_PRESENT;
-+		*xfer = SDHCI_DATA_TO_HOST;
-+
-+	} else if (data) {
- 		*command |= SDHCI_DATA_PRESENT;
- 
- 		*xfer |= SDHCI_BLOCK_COUNT_EN;
-@@ -111,6 +337,31 @@ void sdhci_set_bus_width(struct sdhci *host, int width)
- 	sdhci_write8(host, SDHCI_HOST_CONTROL, ctrl);
- }
- 
-+static void sdhci_set_uhs_signaling(struct sdhci *host, unsigned timing)
-+{
-+	u16 ctrl_2;
-+
-+	ctrl_2 = sdhci_read16(host, SDHCI_HOST_CONTROL2);
-+	/* Select Bus Speed Mode for host */
-+	ctrl_2 &= ~SDHCI_CTRL_UHS_MASK;
-+	if ((timing == MMC_TIMING_MMC_HS200) ||
-+	    (timing == MMC_TIMING_UHS_SDR104))
-+		ctrl_2 |= SDHCI_CTRL_UHS_SDR104;
-+	else if (timing == MMC_TIMING_UHS_SDR12)
-+		ctrl_2 |= SDHCI_CTRL_UHS_SDR12;
-+	else if (timing == MMC_TIMING_UHS_SDR25)
-+		ctrl_2 |= SDHCI_CTRL_UHS_SDR25;
-+	else if (timing == MMC_TIMING_UHS_SDR50)
-+		ctrl_2 |= SDHCI_CTRL_UHS_SDR50;
-+	else if ((timing == MMC_TIMING_UHS_DDR50) ||
-+		 (timing == MMC_TIMING_MMC_DDR52))
-+		ctrl_2 |= SDHCI_CTRL_UHS_DDR50;
-+	else if (timing == MMC_TIMING_MMC_HS400)
-+		ctrl_2 |= SDHCI_CTRL_HS400; /* Non-standard */
-+	sdhci_write16(host, SDHCI_HOST_CONTROL2, ctrl_2);
-+}
-+EXPORT_SYMBOL_GPL(sdhci_set_uhs_signaling);
-+
- static inline bool sdhci_can_64bit_dma(struct sdhci *host)
- {
- 	/*
-@@ -567,6 +818,8 @@ void sdhci_set_clock(struct sdhci *host, unsigned int clock, unsigned int input_
- 
- 	host->mci->clock = 0;
- 
-+	sdhci_set_uhs_signaling(host, host->mci->timing);
-+
- 	sdhci_wait_idle(host, NULL);
- 
- 	sdhci_write16(host, SDHCI_CLOCK_CONTROL, 0);
-@@ -695,5 +948,25 @@ int sdhci_setup_host(struct sdhci *host)
- 	if (sdhci_can_64bit_dma(host))
- 		host->flags |= SDHCI_USE_64_BIT_DMA;
- 
-+	if ((mci->caps2 & (MMC_CAP2_HS200_1_8V_SDR | MMC_CAP2_HS400_1_8V)))
-+		host->flags |= SDHCI_SIGNALING_180;
-+
-+	host->tuning_delay = -1;
-+	host->tuning_loop_count = MAX_TUNING_LOOP;
-+
-+	/* Initial value for re-tuning timer count */
-+	host->tuning_count = FIELD_GET(SDHCI_RETUNING_TIMER_COUNT_MASK,
-+				       host->caps1);
-+
-+	/*
-+	 * In case Re-tuning Timer is not disabled, the actual value of
-+	 * re-tuning timer will be 2 ^ (n - 1).
-+	 */
-+	if (host->tuning_count)
-+		host->tuning_count = 1 << (host->tuning_count - 1);
-+
-+	/* Re-tuning mode supported by the Host Controller */
-+	host->tuning_mode = FIELD_GET(SDHCI_RETUNING_MODE_MASK, host->caps1);
-+
- 	return 0;
- }
-diff --git a/drivers/mci/sdhci.h b/drivers/mci/sdhci.h
-index 2139498855..f10a801c88 100644
---- a/drivers/mci/sdhci.h
-+++ b/drivers/mci/sdhci.h
-@@ -28,9 +28,11 @@
- #define SDHCI_TRANSFER_MODE					0x0c
- #define  SDHCI_MULTIPLE_BLOCKS			BIT(5)
- #define  SDHCI_DATA_TO_HOST			BIT(4)
-+#define  SDHCI_TRNS_AUTO_CMD12			BIT(3)
- #define  SDHCI_BLOCK_COUNT_EN			BIT(1)
- #define  SDHCI_DMA_EN				BIT(0)
- #define SDHCI_COMMAND						0x0e
-+#define  SDHCI_MAKE_CMD(c, f) 			(((c & 0xff) << 8) | (f & 0xff))
- #define  SDHCI_CMD_INDEX(c)			(((c) & 0x3f) << 8)
- #define  SDHCI_COMMAND_CMDTYP_SUSPEND		(1 << 6)
- #define  SDHCI_COMMAND_CMDTYP_RESUME		(2 << 6)
-@@ -121,6 +123,15 @@
- #define SDHCI_SIGNAL_ENABLE					0x38
- #define SDHCI_ACMD12_ERR__HOST_CONTROL2				0x3C
- #define SDHCI_HOST_CONTROL2					0x3E
-+#define  SDHCI_CTRL_UHS_MASK			GENMASK(3, 0)
-+#define   SDHCI_CTRL_UHS_SDR12			0x0
-+#define   SDHCI_CTRL_UHS_SDR25			0x1
-+#define   SDHCI_CTRL_UHS_SDR50			0x2
-+#define   SDHCI_CTRL_UHS_SDR104			0x3
-+#define   SDHCI_CTRL_UHS_DDR50			0x4
-+#define   SDHCI_CTRL_HS400			0x5 /* Non-standard */
-+#define  SDHCI_CTRL_EXEC_TUNING			BIT(6)
-+#define  SDHCI_CTRL_TUNED_CLK			BIT(7)
- #define  SDHCI_CTRL_64BIT_ADDR			BIT(13)
- #define  SDHCI_CTRL_V4_MODE			BIT(12)
- #define SDHCI_CAPABILITIES					0x40
-@@ -225,12 +236,27 @@ struct sdhci {
- #define SDHCI_QUIRK_MISSING_CAPS		BIT(27)
- 	unsigned int quirks2;
- #define SDHCI_QUIRK2_CLOCK_DIV_ZERO_BROKEN	BIT(15)
-+#define SDHCI_QUIRK2_ISSUE_CMD_DAT_RESET_TOGETHER	BIT(19)
- 	u32 caps;	/* CAPABILITY_0 */
- 	u32 caps1;	/* CAPABILITY_1 */
- 	bool read_caps;	/* Capability flags have been read */
- 	u32 sdma_boundary;
- 
-+	unsigned int		tuning_count;	/* Timer count for re-tuning */
-+	unsigned int		tuning_mode;	/* Re-tuning mode supported by host */
-+	unsigned int		tuning_err;	/* Error code for re-tuning */
-+#define SDHCI_TUNING_MODE_1	0
-+#define SDHCI_TUNING_MODE_2	1
-+#define SDHCI_TUNING_MODE_3	2
-+	/* Delay (ms) between tuning commands */
-+	int			tuning_delay;
-+	int			tuning_loop_count;
-+	int			tuning_old_ier;
-+	int			tuning_old_sig;
-+
- 	struct mci_host	*mci;
-+
-+	int (*platform_execute_tuning)(struct mci_host *host, u32 opcode);
++	{
++		.dts_compatible = "skov,imx8mp-skov-basic",
++	},
  };
  
- static inline u32 sdhci_read32(struct sdhci *host, int reg)
-@@ -282,6 +308,7 @@ static inline void sdhci_write8(struct sdhci *host, int reg, u32 val)
- }
+ static int skov_imx8mp_fixup(struct device_node *root, void *data)
+@@ -168,13 +174,14 @@ static int skov_imx8mp_init_variant(struct skov_imx8mp_priv *priv)
+ 	if (ret)
+ 		return ret;
  
- #define SDHCI_NO_DMA DMA_ERROR_CODE
-+int sdhci_execute_tuning(struct sdhci *sdhci, u32 opcode);
- int sdhci_wait_idle(struct sdhci *host, struct mci_cmd *cmd);
- int sdhci_wait_for_done(struct sdhci *host, u32 mask);
- void sdhci_read_response(struct sdhci *host, struct mci_cmd *cmd);
-
+-	priv->variant_id = v;
+ 
+ 	if (v >= ARRAY_SIZE(imx8mp_variants)) {
+-		dev_err(dev, "Invalid variant %u\n", v);
+-		return -EINVAL;
++		dev_warn(dev, "Unsuported variant %u. Fall back to basic variant\n", v);
++		v = ARRAY_SIZE(imx8mp_variants) - 1;
+ 	}
+ 
++	priv->variant_id = v;
++
+ 	variant = &imx8mp_variants[v];
+ 
+ 	if (variant->flags & SKOV_IMX8MP_HAS_HDMI) {
 -- 
-2.40.1
+2.39.2
 
 
 
