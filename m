@@ -1,80 +1,80 @@
-Delivery-date: Mon, 18 Mar 2024 12:31:45 +0100
+Delivery-date: Mon, 18 Mar 2024 12:31:48 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmBDV-00CHCw-32
+	id 1rmBDY-00CHDP-2O
 	for lore@lore.pengutronix.de;
-	Mon, 18 Mar 2024 12:31:45 +0100
+	Mon, 18 Mar 2024 12:31:48 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmBDU-0003PP-Oy
-	for lore@pengutronix.de; Mon, 18 Mar 2024 12:31:45 +0100
+	id 1rmBDW-0003Pc-Aj
+	for lore@pengutronix.de; Mon, 18 Mar 2024 12:31:48 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8MnacPRpHRt4mRXyIaqktb+IgGjpZbalZ8fl//9woRo=; b=UlwGiUFVA91oRHe2PNvX59K7I2
-	SbEq1XShYvYwqG9oejjtAxTY9B849e/84VySnyQoAv7Ay7sUTRWZSadXoLmDdvT/Cj8EZerHSa6th
-	tmdHRlqj78rBQeRZMLZd0vj2K7WX0EUGvEYL2sMFxGPKxqIR38gYgqcoD0mATe80YvbMy0YRBGaED
-	JRnvM3cDFvYnSHmy7tmZHo+jVCNd3ZwjoxJ1pLFo1IN6137wztfQisZtgAJocQBuuYAj012Ddmntp
-	eaXo98fSpNlAiHvIWsPH45ZKtbDF+wjAvvwknwxtVsypb2lRYDFmTDxgPDTCu3MaM0DSn2K98xh1F
-	pjii2FVw==;
+	bh=egVWyj79J+IYPqrOKMf7wZKV07uIuHtIQxFIgW1oxys=; b=BwIMZVFLrkEkqc+meqL4F8eYqv
+	mLT9hN+g22qKwIU+bDhGcqzuzmiqUq4L2euqYv8fUd9G9XEnSRfyZ6TplmLoUd11IAnNRqRaX1ox9
+	xKZTId1zS/hRcuX14ho/u4l9WbN3hEcqpkWHzIqXx6Yi32CHZOISazBDhI+WS7L4mn0S6lLcmh12Y
+	wqY47bRX4lZrKXLjTsX+tsJWrp6ckpJGwFmEJxTpWsVOf7Q0PHzbGha8wnMToSIISOZECCOZ2HUOI
+	MQWYV2mPp9Y9ij6pVvUiERmKCbfTXkxLaxm6Q4eRitA4IJYmaOjuOrnoy3sF1y9L0R3w9+Un2uz3C
+	HJsHoM0w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmBDA-00000008NBZ-0CCW;
-	Mon, 18 Mar 2024 11:31:24 +0000
+	id 1rmBDD-00000008NDG-0hmW;
+	Mon, 18 Mar 2024 11:31:27 +0000
 Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmA5X-000000087KX-0rRZ
+	id 1rmA5Y-000000087Ky-4B9w
 	for barebox@bombadil.infradead.org;
-	Mon, 18 Mar 2024 10:19:27 +0000
+	Mon, 18 Mar 2024 10:19:29 +0000
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Cc:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Sender:Reply-To:Content-ID:Content-Description;
-	bh=8MnacPRpHRt4mRXyIaqktb+IgGjpZbalZ8fl//9woRo=; b=M+a++Uj3xH03+TPn+qQIIMrAlT
-	bS8ullALy6/phLQWLMK2ncARDnITP88ta6aDeikP9n2rs5hXJqTpwzgtudbnJodD8K66iVEA9Tuvz
-	IF0m8MidsCB9116e0z+92M+/sax/qaKFTmTXCcm4jomHyQdfST7lytmN52UT4q8Er4Mz9DcawHxx+
-	mpzeWvARr37P47FFFTFBpm5K9xjgF7CgtKVU+vgqFDT9sPIsRhnso+J7m4OFgUTjs4dQw08/ZpJ3I
-	ffi23P5SxbKWkjahDd+qD1jKNx8fsr1a9hBIN4A89ksHgiyFlTEFuaFcHLT76T3/hZor9sdiJIEn5
-	HW3iHHzQ==;
+	bh=egVWyj79J+IYPqrOKMf7wZKV07uIuHtIQxFIgW1oxys=; b=VnfmAlT8QIW1BDQpn39bSTDPVc
+	W0S7ffnTyONKP8CZ9UoKrDuQQ8p9gsWOuWUukeFu4buyFd3IYI76Dxh6GUx5vLsV8362Xjbz1nEID
+	1uuEqXGt7fHcbv4eYtFvx5J827g3xy21HqyogftufEQpQrzBidyAt/ij+MEJwCJH8M5/KKggeS/9v
+	ucFClGfBUJrQcva590AutVGp7uRK4dJv3i9kXSRGHbbCtGm41WCKPuQbFHNXSDuZe1pSDW98XKtrw
+	PipZ8eq8YTi1Y432mfDCecnJUvBrO+grLa6JhSNtLPSPdr6HS2rOw8wYRVn+0ATqx8eBLfvazeh+z
+	1gDUbxIA==;
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmA5S-0000000CZpg-0hmX
+	id 1rmA5S-0000000CZpk-1we3
 	for barebox@lists.infradead.org;
-	Mon, 18 Mar 2024 10:19:25 +0000
+	Mon, 18 Mar 2024 10:19:27 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1rmA5P-0006MJ-RF; Mon, 18 Mar 2024 11:19:19 +0100
+	id 1rmA5Q-0006MJ-OJ; Mon, 18 Mar 2024 11:19:20 +0100
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 18 Mar 2024 11:18:25 +0100
+Date: Mon, 18 Mar 2024 11:18:28 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-11-48756863add6@pengutronix.de>
+Message-Id: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-14-48756863add6@pengutronix.de>
 References: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-0-48756863add6@pengutronix.de>
 In-Reply-To: <20240318-v2024-02-0-topic-arasan-hs200-support-v4-0-48756863add6@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=12741;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4089;
  i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=VuNRBAGoNlM1EN/1ZMjjEZ73mTw2nmxvlU6ci03qMjI=;
- b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFJ/iAq/DD8X0cdhd9e4vfCd84xNYsfTtOev3CFb5HpgQ
- 9PmBcrXOkpZGMS4GGTFFFki1x7S2Cz8WefL8fMMMHNYmUCGMHBxCsBEajkZfrO3Max6+6318dVp
- c4/FzJm4p+TwplkKJbMXr7fKf3Z9VaYBI8PeC4+itlld4nl99O4Hj4L9tyZdcuhuclxevbw557L
- P+WU8AA==
+ bh=s4HlH3YkfXb3iYj/aKCGYn9p0dxLrs5QiehKJBvOg4k=;
+ b=owGbwMvMwCUmvd38QH3grB+Mp9WSGFJ/iMp6Od9xMXw0TdrtlKX8rErb+Rq2LZEPNh9hzTwrs
+ OWfOk9pRykLgxgXg6yYIkvk2kMam4U/63w5fp4BZg4rE8gQBi5OAZjIQQZGhndxy51WrdDpqp8q
+ FHpE6rE40xrt1RcvRf27dkY5xHaj/DJGhl/P2DcEZz3ls3Lz4hMPz6nSEmRsdRSeGCJQE59Y/UC
+ MAQA=
 X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
  fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240318_101922_777830_70FEC462 
-X-CRM114-Status: GOOD (  30.50  )
+X-CRM114-CacheID: sfid-20240318_101922_913158_DAA41E09 
+X-CRM114-Status: GOOD (  13.04  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -97,436 +97,125 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v4 11/15] mci: mci-core: add HS200 support
+Subject: [PATCH v4 14/15] mci: arasan-sdhci: add HS200 tuning support on
+ ZynqMP
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-HS200 is a timing mode for eMMCs to work 8bit with 200MHz clocks.
-To be used, drivers need to set the correct drive strength, clock phases
-and then SDHCI can start tuning for HS200.
+The ZynpMP 8.9a has an Arasan IP core that supports HS200 tuning.
+Register the callback with the mci-core.
+
+Arasan uses the SDHCI tuning method.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Acked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/mci/Kconfig    |   7 ++
- drivers/mci/mci-core.c | 257 +++++++++++++++++++++++++++++++++++++++++++++++--
- include/mci.h          |  42 +++++++-
- 3 files changed, 294 insertions(+), 12 deletions(-)
+ drivers/mci/arasan-sdhci.c | 62 +++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 59 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/mci/Kconfig b/drivers/mci/Kconfig
-index f569e24c0d..1e8c85643b 100644
---- a/drivers/mci/Kconfig
-+++ b/drivers/mci/Kconfig
-@@ -12,6 +12,13 @@ if MCI
- 
- comment "--- Feature list ---"
- 
-+config MCI_TUNING
-+	bool "EXPERIMENTAL - support MMC tuning for higher speeds"
-+	help
-+	  Say 'y' here if supporting drivers should do tuning to support
-+	  higher clock speeds than 52 MHz SDR. MMC only; SD-Card max
-+	  frequency is 50MHz SDR at present.
-+
- config MCI_STARTUP
- 	bool "Force probe on system start"
- 	help
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 3e078862f2..e825c91c80 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -168,6 +168,35 @@ static int mci_send_status(struct mci *mci, unsigned int *status)
- 	return ret;
- }
- 
-+static int mmc_switch_status_error(struct mci_host *host, u32 status)
-+{
-+	if (mmc_host_is_spi(host)) {
-+		if (status & R1_SPI_ILLEGAL_COMMAND)
-+			return -EBADMSG;
-+	} else {
-+		if (R1_STATUS(status))
-+			pr_warn("unexpected status %#x after switch\n", status);
-+		if (status & R1_SWITCH_ERROR)
-+			return -EBADMSG;
-+	}
-+	return 0;
-+}
-+
-+/* Caller must hold re-tuning */
-+int mci_switch_status(struct mci *mci, bool crc_err_fatal)
-+{
-+	u32 status;
-+	int err;
-+
-+	err = mci_send_status(mci, &status);
-+	if (!crc_err_fatal && err == -EILSEQ)
-+		return 0;
-+	if (err)
-+		return err;
-+
-+	return mmc_switch_status_error(mci->host, status);
-+}
-+
- static int mci_poll_until_ready(struct mci *mci, int timeout_ms)
- {
- 	unsigned int status;
-@@ -1230,6 +1259,17 @@ static int mci_mmc_try_bus_width(struct mci *mci, enum mci_bus_width bus_width,
- 	mci->host->timing = timing;
- 	mci_set_bus_width(mci, bus_width);
- 
-+	switch (bus_width) {
-+		case MMC_BUS_WIDTH_8:
-+			mci->card_caps |= MMC_CAP_8_BIT_DATA;
-+			break;
-+		case MMC_BUS_WIDTH_4:
-+			mci->card_caps |= MMC_CAP_4_BIT_DATA;
-+			break;
-+		default:
-+			break;
-+	}
-+
- 	err = mmc_compare_ext_csds(mci, bus_width);
- 	if (err < 0)
- 		goto out;
-@@ -1303,10 +1343,192 @@ static int mci_mmc_select_hs_ddr(struct mci *mci)
+diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
+index 4111b3321a..c8b5a84060 100644
+--- a/drivers/mci/arasan-sdhci.c
++++ b/drivers/mci/arasan-sdhci.c
+@@ -128,6 +128,46 @@ static int arasan_sdhci_reset(struct arasan_sdhci_host *host, u8 mask)
  	return 0;
  }
  
-+int mci_execute_tuning(struct mci *mci)
++static void arasan_zynqmp_dll_reset(struct arasan_sdhci_host *host, u32 deviceid)
 +{
-+	struct mci_host *host = mci->host;
-+	u32 opcode;
++	u16 clk;
 +
-+	if (!host->execute_tuning)
++	clk = sdhci_read16(&host->sdhci, SDHCI_CLOCK_CONTROL);
++	clk &= ~(SDHCI_CLOCK_CARD_EN | SDHCI_CLOCK_INT_EN);
++	sdhci_write16(&host->sdhci, SDHCI_CLOCK_CONTROL, clk);
++
++	/* Issue DLL Reset */
++	zynqmp_pm_sd_dll_reset(deviceid, PM_DLL_RESET_PULSE);
++
++	clk = sdhci_read16(&host->sdhci, SDHCI_CLOCK_CONTROL);
++
++	sdhci_enable_clk(&host->sdhci, clk);
++}
++
++static int arasan_zynqmp_execute_tuning(struct mci_host *mci, u32 opcode)
++{
++	struct arasan_sdhci_host *host = to_arasan_sdhci_host(mci);
++	struct clk_hw *hw = &host->clk_data.sdcardclk_hw;
++	const char *clk_name = clk_hw_get_name(hw);
++	u32 device_id = !strcmp(clk_name, "clk_out_sd0") ? NODE_SD_0 :
++							   NODE_SD_1;
++	int err;
++
++	/* ZynqMP SD controller does not perform auto tuning in DDR50 mode */
++	if (mci->timing == MMC_TIMING_UHS_DDR50)
 +		return 0;
 +
-+	/* Tuning is only supported for MMC / HS200 */
-+	if (mmc_card_hs200(mci))
-+		opcode = MMC_SEND_TUNING_BLOCK_HS200;
-+	else
-+		return 0;
++	arasan_zynqmp_dll_reset(host, device_id);
 +
-+	return host->execute_tuning(host, opcode);
-+}
-+
-+int mci_send_abort_tuning(struct mci *mci, u32 opcode)
-+{
-+	struct mci_cmd cmd = {};
-+
-+	/*
-+	 * eMMC specification specifies that CMD12 can be used to stop a tuning
-+	 * command, but SD specification does not, so do nothing unless it is
-+	 * eMMC.
-+	 */
-+	if (opcode != MMC_SEND_TUNING_BLOCK_HS200)
-+		return 0;
-+
-+	cmd.cmdidx = MMC_CMD_STOP_TRANSMISSION;
-+	cmd.resp_type = MMC_RSP_SPI_R1 | MMC_RSP_R1 | MMC_CMD_AC;
-+
-+	return mci_send_cmd(mci, &cmd, NULL);
-+}
-+EXPORT_SYMBOL_GPL(mci_send_abort_tuning);
-+
-+static void mmc_select_max_dtr(struct mci *mci)
-+{
-+	u8 card_type = mci->ext_csd[EXT_CSD_DEVICE_TYPE];
-+	u32 caps2 = mci->host->caps2;
-+	u32 caps = mci->card_caps;
-+	unsigned int hs_max_dtr = 0;
-+	unsigned int hs200_max_dtr = 0;
-+
-+	if ((caps & MMC_CAP_MMC_HIGHSPEED) &&
-+	    (card_type & EXT_CSD_CARD_TYPE_26)) {
-+		hs_max_dtr = MMC_HIGH_26_MAX_DTR;
-+	}
-+
-+	if ((caps & MMC_CAP_MMC_HIGHSPEED) &&
-+	    (card_type & EXT_CSD_CARD_TYPE_52)) {
-+		hs_max_dtr = MMC_HIGH_52_MAX_DTR;
-+	}
-+
-+	if ((caps2 & MMC_CAP2_HS200_1_8V_SDR) &&
-+	    (card_type & EXT_CSD_CARD_TYPE_HS200_1_8V)) {
-+		hs200_max_dtr = MMC_HS200_MAX_DTR;
-+	}
-+
-+	if ((caps2 & MMC_CAP2_HS200_1_2V_SDR) &&
-+	    (card_type & EXT_CSD_CARD_TYPE_HS200_1_2V)) {
-+		hs200_max_dtr = MMC_HS200_MAX_DTR;
-+	}
-+
-+	mci->host->hs200_max_dtr = hs200_max_dtr;
-+	mci->host->hs_max_dtr = hs_max_dtr;
-+}
-+/*
-+ * For device supporting HS200 mode, the following sequence
-+ * should be done before executing the tuning process.
-+ * 1. set the desired bus width(4-bit or 8-bit, 1-bit is not supported)
-+ * 2. switch to HS200 mode
-+ * 3. set the clock to > 52Mhz and <=200MHz
-+ */
-+static int mmc_select_hs200(struct mci *mci)
-+{
-+	unsigned int old_timing, old_clock;
-+	int err = -EINVAL;
-+	u8 val;
-+
-+	/*
-+	 * Set the bus width(4 or 8) with host's support and
-+	 * switch to HS200 mode if bus width is set successfully.
-+	 */
-+	/* find out maximum bus width and then try DDR if supported */
-+	err = mci_mmc_select_bus_width(mci);
-+	if (err > 0) {
-+		u32 status;
-+
-+		/* TODO  actually set drive strength instead of 0. Currently unsupported. */
-+		val = EXT_CSD_TIMING_HS200 | 0 << EXT_CSD_DRV_STR_SHIFT;
-+		err = mci_switch(mci, EXT_CSD_HS_TIMING, val);
-+		if (err)
-+			goto err;
-+
-+		/*
-+		 * Bump to HS timing and frequency. Some cards don't handle
-+		 * SEND_STATUS reliably at the initial frequency.
-+		 * NB: We can't move to full (HS200) speeds until after we've
-+		 * successfully switched over.
-+		 */
-+		old_timing = mci->host->timing;
-+		old_clock = mci->host->clock;
-+
-+		mci->host->timing = MMC_TIMING_MMC_HS200;
-+		mci_set_ios(mci);
-+		mci_set_clock(mci, mci->host->hs_max_dtr);
-+
-+		err = mci_switch_status(mci, &status);
-+
-+		/*
-+		 * mmc_select_timing() assumes timing has not changed if
-+		 * it is a switch error.
-+		 */
-+		if (err == -EBADMSG) {
-+			mci->host->clock = old_clock;
-+			mci->host->timing = old_timing;
-+			mci_set_ios(mci);
-+		}
-+	}
-+err:
-+	if (err) {
-+		dev_err(&mci->dev, "%s failed, error %d\n", __func__, err);
-+	}
-+	return err;
-+}
-+
-+/*
-+ * Set the bus speed for the selected speed mode.
-+ */
-+static void mmc_set_bus_speed(struct mci *mci)
-+{
-+	unsigned int max_dtr = (unsigned int)-1;
-+
-+	if (mmc_card_hs200(mci) &&
-+		max_dtr > mci->host->hs200_max_dtr)
-+		max_dtr = mci->host->hs200_max_dtr;
-+	else if (mmc_card_hs(mci) && max_dtr > mci->host->hs_max_dtr)
-+		max_dtr = mci->host->hs_max_dtr;
-+	else if (max_dtr > mci->tran_speed)
-+		max_dtr = mci->tran_speed;
-+
-+	mci_set_clock(mci, max_dtr);
-+}
-+
-+/*
-+ * Activate HS200 or HS400ES mode if supported.
-+ */
-+int mmc_select_timing(struct mci *mci)
-+{
-+	unsigned int mmc_avail_type;
-+	int err = 0;
-+
-+	mmc_select_max_dtr(mci);
-+
-+	mmc_avail_type = mci->ext_csd[EXT_CSD_DEVICE_TYPE] & EXT_CSD_CARD_TYPE_MASK;
-+	if (mmc_avail_type & EXT_CSD_CARD_TYPE_HS200) {
-+		err = mmc_select_hs200(mci);
-+		if (err == -EBADMSG)
-+			mmc_avail_type &= ~EXT_CSD_CARD_TYPE_HS200;
-+		else
-+			goto out;
-+	}
-+
-+out:
-+	if (err && err != -EBADMSG)
++	err = sdhci_execute_tuning(&host->sdhci, opcode);
++	if (err)
 +		return err;
 +
-+	/*
-+	 * Set the bus speed to the selected bus timing.
-+	 * If timing is not selected, backward compatible is the default.
-+	 */
-+	mmc_set_bus_speed(mci);
++	arasan_zynqmp_dll_reset(host, device_id);
 +
 +	return 0;
 +}
 +
-+int mmc_hs200_tuning(struct mci *mci)
-+{
-+	return mci_execute_tuning(mci);
-+}
-+
- static int mci_startup_mmc(struct mci *mci)
+ static int arasan_sdhci_init(struct mci_host *mci, struct device *dev)
  {
- 	struct mci_host *host = mci->host;
--	int ret;
-+	int ret = 0;
+ 	struct arasan_sdhci_host *host = to_arasan_sdhci_host(mci);
+@@ -228,8 +268,9 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 				&command, &xfer);
  
- 	/* if possible, speed up the transfer */
- 	if (mci_caps(mci) & MMC_CAP_MMC_HIGHSPEED) {
-@@ -1318,19 +1540,32 @@ static int mci_startup_mmc(struct mci *mci)
- 		host->timing = MMC_TIMING_MMC_HS;
- 	}
+ 	sdhci_write8(&host->sdhci, SDHCI_TIMEOUT_CONTROL, TIMEOUT_VAL);
+-	if (data) {
++	if (xfer)
+ 		sdhci_write16(&host->sdhci, SDHCI_TRANSFER_MODE, xfer);
++	if (data) {
+ 		sdhci_write16(&host->sdhci, SDHCI_BLOCK_SIZE,
+ 			      SDHCI_DMA_BOUNDARY_512K | SDHCI_TRANSFER_BLOCK_SIZE(data->blocksize));
+ 		sdhci_write16(&host->sdhci, SDHCI_BLOCK_COUNT, data->blocks);
+@@ -237,6 +278,10 @@ static int arasan_sdhci_send_cmd(struct mci_host *mci, struct mci_cmd *cmd,
+ 	sdhci_write32(&host->sdhci, SDHCI_ARGUMENT, cmd->cmdarg);
+ 	sdhci_write16(&host->sdhci, SDHCI_COMMAND, command);
  
--	mci_set_clock(mci, mci->tran_speed);
-+	if (IS_ENABLED(CONFIG_MCI_TUNING)) {
-+		/*
-+		 * Select timing interface
-+		 */
-+		ret = mmc_select_timing(mci);
-+		if (ret)
-+			return ret;
++	/* CMD19/21 generate _only_ Buffer Read Ready interrupt */
++	if (cmd->cmdidx == MMC_SEND_TUNING_BLOCK || cmd->cmdidx == MMC_SEND_TUNING_BLOCK_HS200)
++		mask = SDHCI_INT_DATA_AVAIL;
++
+ 	ret = sdhci_wait_for_done(&host->sdhci, mask);
+ 	if (ret)
+ 		goto error;
+@@ -701,8 +746,11 @@ static int arasan_sdhci_probe(struct device *dev)
+ 	if (of_property_read_bool(np, "no-1-8-v"))
+ 		arasan_sdhci->quirks |= SDHCI_ARASAN_QUIRK_NO_1_8_V;
  
--	/* find out maximum bus width and then try DDR if supported */
--	ret = mci_mmc_select_bus_width(mci);
--	if (ret > MMC_BUS_WIDTH_1 && mci->tran_speed == 52000000)
--		ret = mci_mmc_select_hs_ddr(mci);
-+		if (mmc_card_hs200(mci))
-+			ret = mmc_hs200_tuning(mci);
+-	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a"))
++	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a")) {
++		if (IS_ENABLED(CONFIG_MCI_TUNING))
++			mci->execute_tuning = arasan_zynqmp_execute_tuning;
+ 		arasan_sdhci->quirks |= SDHCI_ARASAN_QUIRK_CLOCK_25_BROKEN;
 +	}
  
--	if (ret < 0) {
--		dev_warn(&mci->dev, "Changing MMC bus width failed: %d\n", ret);
--		return ret;
-+	if (ret || !IS_ENABLED(CONFIG_MCI_TUNING)) {
-+		mci_set_clock(mci, mci->tran_speed);
-+
-+		/* find out maximum bus width and then try DDR if supported */
-+		ret = mci_mmc_select_bus_width(mci);
-+		if (ret > MMC_BUS_WIDTH_1 && mci->tran_speed == 52000000)
-+			ret = mci_mmc_select_hs_ddr(mci);
-+
-+		if (ret < 0) {
-+			dev_warn(&mci->dev, "Changing MMC bus width failed: %d\n", ret);
-+		}
- 	}
+ 	arasan_sdhci->sdhci.base = IOMEM(iores->start);
+ 	arasan_sdhci->sdhci.mci = mci;
+@@ -713,7 +761,15 @@ static int arasan_sdhci_probe(struct device *dev)
+ 	mci->card_write_protected = arasan_sdhci_card_write_protected;
+ 	mci->hw_dev = dev;
  
--	return 0;
-+	return ret;
- }
- 
- /**
-@@ -1758,6 +1993,8 @@ static const char *mci_timing_tostr(unsigned timing)
- 		return "SD HS";
- 	case MMC_TIMING_MMC_DDR52:
- 		return "MMC DDR52";
-+	case MMC_TIMING_MMC_HS200:
-+		return "HS200";
- 	default:
- 		return "unknown"; /* shouldn't happen */
- 	}
-diff --git a/include/mci.h b/include/mci.h
-index 7a4521adde..52bf84ecdb 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -82,6 +82,8 @@
- #define MMC_CMD_SET_BLOCKLEN		16
- #define MMC_CMD_READ_SINGLE_BLOCK	17
- #define MMC_CMD_READ_MULTIPLE_BLOCK	18
-+#define MMC_SEND_TUNING_BLOCK		19   /* adtc R1  */
-+#define MMC_SEND_TUNING_BLOCK_HS200	21   /* adtc R1  */
- #define MMC_CMD_WRITE_SINGLE_BLOCK	24
- #define MMC_CMD_WRITE_MULTIPLE_BLOCK	25
- #define MMC_CMD_APP_CMD			55
-@@ -293,8 +295,8 @@
- #define EXT_CSD_CARD_TYPE_MASK		0x3f
- #define EXT_CSD_CARD_TYPE_26		(1<<0)	/* Card can run at 26MHz */
- #define EXT_CSD_CARD_TYPE_52		(1<<1)	/* Card can run at 52MHz */
--#define EXT_CSD_CARD_TYPE_HS		(EXT_CSD_CARD_TYPE_HS_26 |	\
--					 EXT_CSD_CARD_TYPE_HS_52)
-+#define EXT_CSD_CARD_TYPE_HS		(EXT_CSD_CARD_TYPE_26 |	\
-+					 EXT_CSD_CARD_TYPE_52)
- #define EXT_CSD_CARD_TYPE_DDR_1_8V	(1<<2)	/* Card can run at 52MHz */
- 						/* DDR mode @1.8V or 3V I/O */
- #define EXT_CSD_CARD_TYPE_DDR_1_2V	(1<<3)	/* Card can run at 52MHz */
-@@ -330,6 +332,12 @@
- #define EXT_CSD_DDR_BUS_WIDTH_8	6	/* Card is in 8 bit DDR mode */
- #define EXT_CSD_DDR_FLAG	BIT(2)	/* Flag for DDR mode */
- 
-+#define EXT_CSD_TIMING_BC	0	/* Backwards compatility */
-+#define EXT_CSD_TIMING_HS	1	/* High speed */
-+#define EXT_CSD_TIMING_HS200	2	/* HS200 */
-+#define EXT_CSD_TIMING_HS400	3	/* HS400 */
-+#define EXT_CSD_DRV_STR_SHIFT	4	/* Driver Strength shift */
+-	mci->f_max = clk_get_rate(clk_xin);
++	/*
++	 * clk_rates on ZynqMP are rounded wrong. For HS200 clk_get_rate retunrs
++	 * 199999998 instead of 200000000
++	 */
++	if (of_device_is_compatible(np, "xlnx,zynqmp-8.9a"))
++		mci->f_max = 200000000;
++	else
++		mci->f_max = clk_get_rate(clk_xin);
 +
- #define R1_ILLEGAL_COMMAND		(1 << 22)
- #define R1_STATUS(x)			(x & 0xFFF9A000)
- #define R1_CURRENT_STATE(x)		((x & 0x00001E00) >> 9)	/* sx, b (4 bits) */
-@@ -504,6 +512,8 @@ struct mci_host {
- 	unsigned actual_clock;
- 	enum mci_bus_width bus_width;	/**< used data bus width to the card */
- 	enum mci_timing timing;	/**< used timing specification to the card */
-+	unsigned hs_max_dtr;
-+	unsigned hs200_max_dtr;
- 	unsigned max_req_size;
- 	unsigned dsr_val;	/**< optional dsr value */
- 	int use_dsr;		/**< optional dsr usage flag */
-@@ -522,6 +532,8 @@ struct mci_host {
- 	int (*card_present)(struct mci_host *);
- 	/** check if a card is write protected */
- 	int (*card_write_protected)(struct mci_host *);
-+	/* The tuning command opcode value is different for SD and eMMC cards */
-+	int (*execute_tuning)(struct mci_host *, u32);
- };
+ 	mci->f_min = 50000000 / 256;
  
- #define MMC_NUM_BOOT_PARTITION	2
-@@ -587,6 +599,7 @@ void mci_of_parse_node(struct mci_host *host, struct device_node *np);
- int mci_detect_card(struct mci_host *);
- int mci_send_ext_csd(struct mci *mci, char *ext_csd);
- int mci_switch(struct mci *mci, unsigned index, unsigned value);
-+int mci_switch_status(struct mci *mci, bool crc_err_fatal);
- u8 *mci_get_ext_csd(struct mci *mci);
- 
- static inline int mmc_host_is_spi(struct mci_host *host)
-@@ -604,4 +617,29 @@ static inline struct mci *mci_get_device_by_devpath(const char *devpath)
- 	return mci_get_device_by_name(devpath_to_name(devpath));
- }
- 
-+#define MMC_HIGH_26_MAX_DTR	26000000
-+#define MMC_HIGH_52_MAX_DTR	52000000
-+#define MMC_HIGH_DDR_MAX_DTR	52000000
-+#define MMC_HS200_MAX_DTR	200000000
-+
-+static inline int mmc_card_hs(struct mci *mci)
-+{
-+	return mci->host->timing == MMC_TIMING_SD_HS ||
-+		mci->host->timing == MMC_TIMING_MMC_HS;
-+}
-+
-+/*
-+ * Execute tuning sequence to seek the proper bus operating
-+ * conditions for HS200 and HS400, which sends CMD21 to the device.
-+ */
-+int mmc_hs200_tuning(struct mci *mci);
-+int mci_execute_tuning(struct mci *mci);
-+int mci_send_abort_tuning(struct mci *mci, u32 opcode);
-+int mmc_select_timing(struct mci *mci);
-+
-+static inline bool mmc_card_hs200(struct mci *mci)
-+{
-+	return mci->host->timing == MMC_TIMING_MMC_HS200;
-+}
-+
- #endif /* _MCI_H_ */
+ 	arasan_sdhci_register_sdclk(&arasan_sdhci->clk_data, clk_xin, dev);
 
 -- 
 2.43.2
