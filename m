@@ -1,53 +1,53 @@
-Delivery-date: Mon, 18 Mar 2024 17:36:34 +0100
+Delivery-date: Tue, 19 Mar 2024 16:48:15 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmFyU-00CUzR-2j
+	id 1rmbhH-00DsUy-2P
 	for lore@lore.pengutronix.de;
-	Mon, 18 Mar 2024 17:36:34 +0100
+	Tue, 19 Mar 2024 16:48:15 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmFyU-0006ZM-AE
-	for lore@pengutronix.de; Mon, 18 Mar 2024 17:36:34 +0100
+	id 1rmbhH-0001Gp-6d
+	for lore@pengutronix.de; Tue, 19 Mar 2024 16:48:15 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=qEZEyIHjUBSAzlAjsGvGe1ViTnAVTxYhMiW0E4i83qE=; b=tKsSwjkSrfi5X6Zq5qFGGgPznj
-	vVprOF7llrHCWjdmdpRCtLAtNea85kJZvl02Om4ynRNtJb/Ua55xFlC+irFJgfa5YnWWsoMA0+9w+
-	9ypPxeuUUKlDS8vsq8k5LYWkRldcVpT6ScnDrzuHDw09o7Nl29y9rAtdOBLloscqHOT7ZWUj+V2jC
-	tWZfmbQzXkHtWovsvBmlGYXMPG5IX4QeLnkcUjBmexv43BBRU8SMzTHaa4UA7AvOTp6aYW7ab1ipB
-	j27Gz851X8yBM3dq6P0Av8BlLxSrQooJYsrUm/57S3MS3+MHdl9USYXWtzK44XEgqIkdn/5rpCD7j
-	/vrjfVxQ==;
+	bh=E4X0XbS/R7uJT2GntoMVnPFJ8TfSkCmO4efwer5MuIY=; b=AtBBPfYJQmzSU07s+gZvtgLtTc
+	FgfatoYt645/IM5pu5gtHJZr9NIb4yHZTKwUdb6sVm4gaS68TR9A0SPBim2nUWVKEWc8jXwkZ5w2r
+	cpeBTaZIvIgVOAnFvgkAuV/ihGZAxaWozdUowF106H+Vbb4kE3GPkxhNveQD859u3PdCmJ3qAr+gL
+	om2OtJE/A+M8LH/mjY0ljMuutbgfuREVuNcXkKcqCri+Ilhd7zg1ljSR6JhgajByX0WIroQqxR3mA
+	xe6/cH+1p4nCj2UdVo12KUkFXCVztEz/Bh5lLwcqkKZ72Ts489VC/QWk8/ySZHmBKnBMcRr0JmzYs
+	q7fiLDtg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmFxn-00000009G5H-2Vdg;
-	Mon, 18 Mar 2024 16:35:51 +0000
+	id 1rmbgV-0000000DDHV-1Pgw;
+	Tue, 19 Mar 2024 15:47:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmFxl-00000009G4M-1dAP
+	id 1rmbgR-0000000DDDQ-11gR
 	for barebox@lists.infradead.org;
-	Mon, 18 Mar 2024 16:35:50 +0000
-Received: from dude04.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::ac])
+	Tue, 19 Mar 2024 15:47:25 +0000
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <bst@pengutronix.de>)
-	id 1rmFxi-0005wX-NK; Mon, 18 Mar 2024 17:35:46 +0100
-From: Bastian Krause <bst@pengutronix.de>
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1rmbgN-0000Q7-Dk
+	for barebox@lists.infradead.org; Tue, 19 Mar 2024 16:47:19 +0100
+From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Bastian Krause <bst@pengutronix.de>
-Date: Mon, 18 Mar 2024 17:35:31 +0100
-Message-Id: <20240318163531.2348091-1-bst@pengutronix.de>
+Date: Tue, 19 Mar 2024 16:47:18 +0100
+Message-Id: <20240319154718.3510015-1-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240318_093549_445061_DCA34382 
-X-CRM114-Status: UNSURE (   9.06  )
+X-CRM114-CacheID: sfid-20240319_084723_307656_A83F3BD3 
+X-CRM114-Status: UNSURE (   8.75  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -66,33 +66,49 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] firmware: fix SoC variant in help text of FIRMWARE_IMX93_OPTEE
+Subject: [PATCH] console: make console_set_stdoutpath public
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Signed-off-by: Bastian Krause <bst@pengutronix.de>
----
- firmware/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This can be an very useful helper for boards to setup the linux console
+boot param.
 
-diff --git a/firmware/Kconfig b/firmware/Kconfig
-index 9d4be855f99..d72b9dd4598 100644
---- a/firmware/Kconfig
-+++ b/firmware/Kconfig
-@@ -77,7 +77,7 @@ config FIRMWARE_IMX93_OPTEE
- 	bool "install OP-TEE on i.MX93 boards"
- 	depends on FIRMWARE_IMX93_ATF && PBL_OPTEE
- 	help
--	  This enables OP-TEE loading and starting on i.MX8MQ. Place the OP-TEE binary
-+	  This enables OP-TEE loading and starting on i.MX93. Place the OP-TEE binary
- 	  in CONFIG_EXTRA_FIRMWARE_DIR/imx93-bl32.bin. When this option is enabled then
- 	  the TF-A binary will be used from CONFIG_EXTRA_FIRMWARE_DIR/imx93-bl31.bin-optee.
- 	  Additionally OP-TEE requires a RAM firmware loaded into the ELE. This is expected
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ common/console.c  | 2 +-
+ include/console.h | 1 +
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/common/console.c b/common/console.c
+index 03b76b122b2b..81782de7caaa 100644
+--- a/common/console.c
++++ b/common/console.c
+@@ -235,7 +235,7 @@ static void console_add_earlycon_param(struct console_device *cdev, unsigned bau
+ 	free(str);
+ }
+ 
+-static void console_set_stdoutpath(struct console_device *cdev, unsigned baudrate)
++void console_set_stdoutpath(struct console_device *cdev, unsigned baudrate)
+ {
+ 	int id;
+ 	char *str;
+diff --git a/include/console.h b/include/console.h
+index 69c0ec144b31..62d13d7aa02c 100644
+--- a/include/console.h
++++ b/include/console.h
+@@ -102,6 +102,7 @@ int console_set_active(struct console_device *cdev, unsigned active);
+ unsigned console_get_active(struct console_device *cdev);
+ int console_set_baudrate(struct console_device *cdev, unsigned baudrate);
+ unsigned console_get_baudrate(struct console_device *cdev);
++void console_set_stdoutpath(struct console_device *cdev, unsigned baudrate);
+ 
+ struct console_device *of_console_by_stdout_path(void);
+ 
 -- 
 2.39.2
 
