@@ -1,54 +1,82 @@
-Delivery-date: Tue, 19 Mar 2024 16:48:15 +0100
+Delivery-date: Wed, 20 Mar 2024 05:39:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmbhH-00DsUy-2P
+	id 1rmnjY-00EhaB-1d
 	for lore@lore.pengutronix.de;
-	Tue, 19 Mar 2024 16:48:15 +0100
+	Wed, 20 Mar 2024 05:39:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmbhH-0001Gp-6d
-	for lore@pengutronix.de; Tue, 19 Mar 2024 16:48:15 +0100
+	id 1rmnjV-0000JX-IF
+	for lore@pengutronix.de; Wed, 20 Mar 2024 05:39:24 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=E4X0XbS/R7uJT2GntoMVnPFJ8TfSkCmO4efwer5MuIY=; b=AtBBPfYJQmzSU07s+gZvtgLtTc
-	FgfatoYt645/IM5pu5gtHJZr9NIb4yHZTKwUdb6sVm4gaS68TR9A0SPBim2nUWVKEWc8jXwkZ5w2r
-	cpeBTaZIvIgVOAnFvgkAuV/ihGZAxaWozdUowF106H+Vbb4kE3GPkxhNveQD859u3PdCmJ3qAr+gL
-	om2OtJE/A+M8LH/mjY0ljMuutbgfuREVuNcXkKcqCri+Ilhd7zg1ljSR6JhgajByX0WIroQqxR3mA
-	xe6/cH+1p4nCj2UdVo12KUkFXCVztEz/Bh5lLwcqkKZ72Ts489VC/QWk8/ySZHmBKnBMcRr0JmzYs
-	q7fiLDtg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=+SAYqt7bxPKPYFZvVulntEA94qpBWUkjbQpinjHpUn0=; b=DEcxU1uGfSa6JM
+	sZEaBYpXbz+2x0/6hifJfobIYZCFTTLphZcbPMFlIH3hejHYx8BM9mJ3RsXcm43CDiTb4v7aN9E7c
+	QxUqXt5TARglZGLSBiRxj4GHnZ3Znk8eIALGOmbQXYkPRlF5rxjU0aUG0NhLxcirkCt34EfffK/tZ
+	cWQnVeNspDWNSdSf7W8DqY5N1s/Kv5LA7qEvOf4Kld97inl4aMOZ5Bi1aF9t+m0mYbIA1K9m3MxDq
+	kGa8065WZaDyaPaUHj+6u/Uoo1y0bAd58f2o9Alj0ZkK+M6BdeoHgdfeLL6WPZbo+yeOhqdgJAQT5
+	1Z5cLMb/PcmbTm1VZygA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmbgV-0000000DDHV-1Pgw;
-	Tue, 19 Mar 2024 15:47:27 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1rmnid-0000000FOCQ-2Y8M;
+	Wed, 20 Mar 2024 04:38:27 +0000
+Received: from mail-lj1-x22b.google.com ([2a00:1450:4864:20::22b])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmbgR-0000000DDDQ-11gR
+	id 1rmniX-0000000FOBh-065n
 	for barebox@lists.infradead.org;
-	Tue, 19 Mar 2024 15:47:25 +0000
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1rmbgN-0000Q7-Dk
-	for barebox@lists.infradead.org; Tue, 19 Mar 2024 16:47:19 +0100
-From: Marco Felsch <m.felsch@pengutronix.de>
+	Wed, 20 Mar 2024 04:38:24 +0000
+Received: by mail-lj1-x22b.google.com with SMTP id 38308e7fff4ca-2d46dd5f222so72111521fa.1
+        for <barebox@lists.infradead.org>; Tue, 19 Mar 2024 21:38:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1710909497; x=1711514297; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=+SAYqt7bxPKPYFZvVulntEA94qpBWUkjbQpinjHpUn0=;
+        b=j0buWVKWYHdjTb/ExSWvGEgNZSGZmRCoGUruHvL0RBMD43zZr6zIR1V7c+DD4Qp92F
+         HjhMNwV0blPPdyd0Jt/E4lsiFNRDAo5ByW4gnmZZjs2Icmty//GTo3UKut2HXSYTejNF
+         7hsW7SCmw1qi4hZJfKC4RyrxDLQklcpg/enJF1jUcs1V2mRFAQqJrhsI6lP2/XQG6fCo
+         L9GMFwdcZWL5SQgD/uO2c9O8npiJcYDTxULe4Zkky1rbgluI+PV0PKLAC8D+5N2+WKmB
+         dznGzw3zw0mDomQzrFV0cC+KDjoWVv1+AZ1XTay6Alwxv+GJxv8RJIGza4an72ho3Z1n
+         OPyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1710909497; x=1711514297;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+SAYqt7bxPKPYFZvVulntEA94qpBWUkjbQpinjHpUn0=;
+        b=VCJtaW0+uTaFRnKhYyJcNBR62o8z5UHu52/bWvKwtjAZWmnq3nz2dPJs1ZPkpn7pUJ
+         qqnJRCYNi5NPZsyLkz8utFucNiyEey7e1iCtoekU3gvKzEASxk4qAUy5OxjHPtlvpZvu
+         /uunr6lpaS4xUzHYI9IVqAvUX/czMXgoWn6SZPPAtWQXtF31AnluYPijzwc155pTZZjY
+         lIXPsmUBKSJ1uSO42AJiyQLn6ykO0KskykoaaENRyGXPiyU97sU2MB+CNHyj7rakh7ob
+         tqKF/cWgAg/V43HTYwPds1anjicZ5p8OsMAvyd7tZBClMkkLQuKqecl8ehMxMfRT+LEb
+         tKYA==
+X-Gm-Message-State: AOJu0YyKLMnLgSbumob0+dr3PqnpSkhtlXS/xKu0ImldNPxWfFUsnnfw
+	pKbbH/D1fLj6mTeCNLi8jWtxHYl5S6A36ht5WEckfbFcXiWp376ctRXlF8jb
+X-Google-Smtp-Source: AGHT+IGym1uJzHZ6BsfJo7BcPq93ISKcCN/QCXX7PU5NczKzSN2UOY0ihh/jfvkT58JW5dWeOSujZA==
+X-Received: by 2002:a2e:9209:0:b0:2d4:74c4:9f64 with SMTP id k9-20020a2e9209000000b002d474c49f64mr10075770ljg.3.1710909496324;
+        Tue, 19 Mar 2024 21:38:16 -0700 (PDT)
+Received: from cinco.. (109-252-3-142.nat.spd-mgts.ru. [109.252.3.142])
+        by smtp.gmail.com with ESMTPSA id u7-20020a2e8447000000b002d497b16af3sm1408337ljh.128.2024.03.19.21.38.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 Mar 2024 21:38:16 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Tue, 19 Mar 2024 16:47:18 +0100
-Message-Id: <20240319154718.3510015-1-m.felsch@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+Date: Wed, 20 Mar 2024 07:38:50 +0300
+Message-Id: <20240320043850.1621511-1-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240319_084723_307656_A83F3BD3 
-X-CRM114-Status: UNSURE (   8.75  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240319_213821_176600_A815206B 
+X-CRM114-Status: GOOD (  22.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -60,57 +88,1691 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH] console: make console_set_stdoutpath public
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] treewide: drop unused header files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This can be an very useful helper for boards to setup the linux console
-boot param.
-
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- common/console.c  | 2 +-
- include/console.h | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ include/usb_dfu_trailer.h |   32 --
+ lib/bzlib_private.h       |  521 -------------------
+ lib/zstd/zstd_opt.h       | 1014 -------------------------------------
+ net/nfs.h                 |   68 ---
+ 4 files changed, 1635 deletions(-)
 
-diff --git a/common/console.c b/common/console.c
-index 03b76b122b2b..81782de7caaa 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -235,7 +235,7 @@ static void console_add_earlycon_param(struct console_device *cdev, unsigned bau
- 	free(str);
- }
- 
--static void console_set_stdoutpath(struct console_device *cdev, unsigned baudrate)
-+void console_set_stdoutpath(struct console_device *cdev, unsigned baudrate)
- {
- 	int id;
- 	char *str;
-diff --git a/include/console.h b/include/console.h
-index 69c0ec144b31..62d13d7aa02c 100644
---- a/include/console.h
-+++ b/include/console.h
-@@ -102,6 +102,7 @@ int console_set_active(struct console_device *cdev, unsigned active);
- unsigned console_get_active(struct console_device *cdev);
- int console_set_baudrate(struct console_device *cdev, unsigned baudrate);
- unsigned console_get_baudrate(struct console_device *cdev);
-+void console_set_stdoutpath(struct console_device *cdev, unsigned baudrate);
- 
- struct console_device *of_console_by_stdout_path(void);
- 
+diff --git a/include/usb_dfu_trailer.h b/include/usb_dfu_trailer.h
+deleted file mode 100644
+index 64b84072755..00000000000
+--- a/include/usb_dfu_trailer.h
++++ /dev/null
+@@ -1,32 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-#ifndef _USB_DFU_TRAILER_H
+-#define _USB_DFU_TRAILER_H
+-
+-/* trailer handling for DFU files */
+-
+-#define BAREBOX_DFU_TRAILER_V1	1
+-#define BAREBOX_DFU_TRAILER_MAGIC	0x19731978
+-struct barebox_dfu_trailer {
+-	u_int32_t	magic;
+-	u_int16_t	version;
+-	u_int16_t	length;
+-	u_int16_t	vendor;
+-	u_int16_t	product;
+-	u_int32_t	revision;
+-} __attribute__((packed));
+-
+-/* we mirror the trailer because we want it to be longer in later versions
+- * while keeping backwards compatibility */
+-static inline void dfu_trailer_mirror(struct barebox_dfu_trailer *trailer,
+-				      unsigned char *eof)
+-{
+-	int i;
+-	int len = sizeof(struct barebox_dfu_trailer);
+-	unsigned char *src = eof - len;
+-	unsigned char *dst = (unsigned char *) trailer;
+-
+-	for (i = 0; i < len; i++)
+-		dst[len-1-i] = src[i];
+-}
+-
+-#endif /* _USB_DFU_TRAILER_H */
+diff --git a/lib/bzlib_private.h b/lib/bzlib_private.h
+deleted file mode 100644
+index de10dd42150..00000000000
+--- a/lib/bzlib_private.h
++++ /dev/null
+@@ -1,521 +0,0 @@
+-/*
+- * This file is a modified version of bzlib_private.h from the bzip2-1.0.2
+- * distribution which can be found at http://sources.redhat.com/bzip2/
+- */
+-
+-/*-------------------------------------------------------------*/
+-/*--- Private header file for the library.                  ---*/
+-/*---                                       bzlib_private.h ---*/
+-/*-------------------------------------------------------------*/
+-
+-/*--
+-  This file is a part of bzip2 and/or libbzip2, a program and
+-  library for lossless, block-sorting data compression.
+-
+-  Copyright (C) 1996-2002 Julian R Seward.  All rights reserved.
+-
+-  Redistribution and use in source and binary forms, with or without
+-  modification, are permitted provided that the following conditions
+-  are met:
+-
+-  1. Redistributions of source code must retain the above copyright
+-     notice, this list of conditions and the following disclaimer.
+-
+-  2. The origin of this software must not be misrepresented; you must
+-     not claim that you wrote the original software.  If you use this
+-     software in a product, an acknowledgment in the product
+-     documentation would be appreciated but is not required.
+-
+-  3. Altered source versions must be plainly marked as such, and must
+-     not be misrepresented as being the original software.
+-
+-  4. The name of the author may not be used to endorse or promote
+-     products derived from this software without specific prior written
+-     permission.
+-
+-  THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS
+-  OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+-  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+-  ARE DISCLAIMED.  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+-  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+-  DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+-  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+-  INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+-  WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+-  NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+-  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+-
+-  Julian Seward, Cambridge, UK.
+-  jseward@acm.org
+-  bzip2/libbzip2 version 1.0 of 21 March 2000
+-
+-  This program is based on (at least) the work of:
+-     Mike Burrows
+-     David Wheeler
+-     Peter Fenwick
+-     Alistair Moffat
+-     Radford Neal
+-     Ian H. Witten
+-     Robert Sedgewick
+-     Jon L. Bentley
+-
+-  For more information on these sources, see the manual.
+---*/
+-
+-
+-#ifndef _BZLIB_PRIVATE_H
+-#define _BZLIB_PRIVATE_H
+-
+-#include <malloc.h>
+-#include <linux/stddef.h>
+-
+-#include "bzlib.h"
+-
+-#ifndef BZ_NO_STDIO
+-#include <stdio.h>
+-#include <ctype.h>
+-#include <string.h>
+-#endif
+-
+-
+-/*-- General stuff. --*/
+-
+-#define BZ_VERSION  "1.0.2, 30-Dec-2001"
+-
+-typedef char            Char;
+-typedef unsigned char   Bool;
+-typedef unsigned char   UChar;
+-typedef int             Int32;
+-typedef unsigned int    UInt32;
+-typedef short           Int16;
+-typedef unsigned short  UInt16;
+-
+-#define True  ((Bool)1)
+-#define False ((Bool)0)
+-
+-#ifndef __GNUC__
+-#define __inline__  /* */
+-#endif
+-
+-#ifndef BZ_NO_STDIO
+-extern void BZ2_bz__AssertH__fail ( int errcode );
+-#define AssertH(cond,errcode) \
+-   { if (!(cond)) BZ2_bz__AssertH__fail ( errcode ); }
+-#if BZ_DEBUG
+-#define AssertD(cond,msg) \
+-   { if (!(cond)) {       \
+-      fprintf ( stderr,   \
+-	"\n\nlibbzip2(debug build): internal error\n\t%s\n", msg );\
+-      exit(1); \
+-   }}
+-#else
+-#define AssertD(cond,msg) /* */
+-#endif
+-#define VPrintf0(zf) \
+-   fprintf(stderr,zf)
+-#define VPrintf1(zf,za1) \
+-   fprintf(stderr,zf,za1)
+-#define VPrintf2(zf,za1,za2) \
+-   fprintf(stderr,zf,za1,za2)
+-#define VPrintf3(zf,za1,za2,za3) \
+-   fprintf(stderr,zf,za1,za2,za3)
+-#define VPrintf4(zf,za1,za2,za3,za4) \
+-   fprintf(stderr,zf,za1,za2,za3,za4)
+-#define VPrintf5(zf,za1,za2,za3,za4,za5) \
+-   fprintf(stderr,zf,za1,za2,za3,za4,za5)
+-#else
+-extern void bz_internal_error ( int errcode );
+-#define AssertH(cond,errcode) \
+-   { if (!(cond)) bz_internal_error ( errcode ); }
+-#define AssertD(cond,msg) /* */
+-#define VPrintf0(zf) /* */
+-#define VPrintf1(zf,za1) /* */
+-#define VPrintf2(zf,za1,za2) /* */
+-#define VPrintf3(zf,za1,za2,za3) /* */
+-#define VPrintf4(zf,za1,za2,za3,za4) /* */
+-#define VPrintf5(zf,za1,za2,za3,za4,za5) /* */
+-#endif
+-
+-
+-#define BZALLOC(nnn) (strm->bzalloc)(strm->opaque,(nnn),1)
+-#define BZFREE(ppp)  (strm->bzfree)(strm->opaque,(ppp))
+-
+-
+-/*-- Header bytes. --*/
+-
+-#define BZ_HDR_B 0x42   /* 'B' */
+-#define BZ_HDR_Z 0x5a   /* 'Z' */
+-#define BZ_HDR_h 0x68   /* 'h' */
+-#define BZ_HDR_0 0x30   /* '0' */
+-
+-/*-- Constants for the back end. --*/
+-
+-#define BZ_MAX_ALPHA_SIZE 258
+-#define BZ_MAX_CODE_LEN    23
+-
+-#define BZ_RUNA 0
+-#define BZ_RUNB 1
+-
+-#define BZ_N_GROUPS 6
+-#define BZ_G_SIZE   50
+-#define BZ_N_ITERS  4
+-
+-#define BZ_MAX_SELECTORS (2 + (900000 / BZ_G_SIZE))
+-
+-
+-/*-- Stuff for randomising repetitive blocks. --*/
+-
+-extern Int32 BZ2_rNums[512];
+-
+-#define BZ_RAND_DECLS                          \
+-   Int32 rNToGo;                               \
+-   Int32 rTPos                                 \
+-
+-#define BZ_RAND_INIT_MASK                      \
+-   s->rNToGo = 0;                              \
+-   s->rTPos  = 0                               \
+-
+-#define BZ_RAND_MASK ((s->rNToGo == 1) ? 1 : 0)
+-
+-#define BZ_RAND_UPD_MASK                       \
+-   if (s->rNToGo == 0) {                       \
+-      s->rNToGo = BZ2_rNums[s->rTPos];         \
+-      s->rTPos++;                              \
+-      if (s->rTPos == 512) s->rTPos = 0;       \
+-   }                                           \
+-   s->rNToGo--;
+-
+-
+-/*-- Stuff for doing CRCs. --*/
+-
+-extern UInt32 BZ2_crc32Table[256];
+-
+-#define BZ_INITIALISE_CRC(crcVar)              \
+-{                                              \
+-   crcVar = 0xffffffffL;                       \
+-}
+-
+-#define BZ_FINALISE_CRC(crcVar)                \
+-{                                              \
+-   crcVar = ~(crcVar);                         \
+-}
+-
+-#define BZ_UPDATE_CRC(crcVar,cha)              \
+-{                                              \
+-   crcVar = (crcVar << 8) ^                    \
+-	    BZ2_crc32Table[(crcVar >> 24) ^    \
+-			   ((UChar)cha)];      \
+-}
+-
+-
+-/*-- States and modes for compression. --*/
+-
+-#define BZ_M_IDLE      1
+-#define BZ_M_RUNNING   2
+-#define BZ_M_FLUSHING  3
+-#define BZ_M_FINISHING 4
+-
+-#define BZ_S_OUTPUT    1
+-#define BZ_S_INPUT     2
+-
+-#define BZ_N_RADIX 2
+-#define BZ_N_QSORT 12
+-#define BZ_N_SHELL 18
+-#define BZ_N_OVERSHOOT (BZ_N_RADIX + BZ_N_QSORT + BZ_N_SHELL + 2)
+-
+-
+-/*-- Structure holding all the compression-side stuff. --*/
+-
+-typedef
+-   struct {
+-      /* pointer back to the struct bz_stream */
+-      bz_stream* strm;
+-
+-      /* mode this stream is in, and whether inputting */
+-      /* or outputting data */
+-      Int32    mode;
+-      Int32    state;
+-
+-      /* remembers avail_in when flush/finish requested */
+-      UInt32   avail_in_expect;
+-
+-      /* for doing the block sorting */
+-      UInt32*  arr1;
+-      UInt32*  arr2;
+-      UInt32*  ftab;
+-      Int32    origPtr;
+-
+-      /* aliases for arr1 and arr2 */
+-      UInt32*  ptr;
+-      UChar*   block;
+-      UInt16*  mtfv;
+-      UChar*   zbits;
+-
+-      /* for deciding when to use the fallback sorting algorithm */
+-      Int32    workFactor;
+-
+-      /* run-length-encoding of the input */
+-      UInt32   state_in_ch;
+-      Int32    state_in_len;
+-      BZ_RAND_DECLS;
+-
+-      /* input and output limits and current posns */
+-      Int32    nblock;
+-      Int32    nblockMAX;
+-      Int32    numZ;
+-      Int32    state_out_pos;
+-
+-      /* map of bytes used in block */
+-      Int32    nInUse;
+-      Bool     inUse[256];
+-      UChar    unseqToSeq[256];
+-
+-      /* the buffer for bit stream creation */
+-      UInt32   bsBuff;
+-      Int32    bsLive;
+-
+-      /* block and combined CRCs */
+-      UInt32   blockCRC;
+-      UInt32   combinedCRC;
+-
+-      /* misc administratium */
+-      Int32    verbosity;
+-      Int32    blockNo;
+-      Int32    blockSize100k;
+-
+-      /* stuff for coding the MTF values */
+-      Int32    nMTF;
+-      Int32    mtfFreq    [BZ_MAX_ALPHA_SIZE];
+-      UChar    selector   [BZ_MAX_SELECTORS];
+-      UChar    selectorMtf[BZ_MAX_SELECTORS];
+-
+-      UChar    len     [BZ_N_GROUPS][BZ_MAX_ALPHA_SIZE];
+-      Int32    code    [BZ_N_GROUPS][BZ_MAX_ALPHA_SIZE];
+-      Int32    rfreq   [BZ_N_GROUPS][BZ_MAX_ALPHA_SIZE];
+-      /* second dimension: only 3 needed; 4 makes index calculations faster */
+-      UInt32   len_pack[BZ_MAX_ALPHA_SIZE][4];
+-
+-   }
+-   EState;
+-
+-
+-/*-- externs for compression. --*/
+-
+-extern void
+-BZ2_blockSort ( EState* );
+-
+-extern void
+-BZ2_compressBlock ( EState*, Bool );
+-
+-extern void
+-BZ2_bsInitWrite ( EState* );
+-
+-extern void
+-BZ2_hbAssignCodes ( Int32*, UChar*, Int32, Int32, Int32 );
+-
+-extern void
+-BZ2_hbMakeCodeLengths ( UChar*, Int32*, Int32, Int32 );
+-
+-
+-/*-- states for decompression. --*/
+-
+-#define BZ_X_IDLE        1
+-#define BZ_X_OUTPUT      2
+-
+-#define BZ_X_MAGIC_1     10
+-#define BZ_X_MAGIC_2     11
+-#define BZ_X_MAGIC_3     12
+-#define BZ_X_MAGIC_4     13
+-#define BZ_X_BLKHDR_1    14
+-#define BZ_X_BLKHDR_2    15
+-#define BZ_X_BLKHDR_3    16
+-#define BZ_X_BLKHDR_4    17
+-#define BZ_X_BLKHDR_5    18
+-#define BZ_X_BLKHDR_6    19
+-#define BZ_X_BCRC_1      20
+-#define BZ_X_BCRC_2      21
+-#define BZ_X_BCRC_3      22
+-#define BZ_X_BCRC_4      23
+-#define BZ_X_RANDBIT     24
+-#define BZ_X_ORIGPTR_1   25
+-#define BZ_X_ORIGPTR_2   26
+-#define BZ_X_ORIGPTR_3   27
+-#define BZ_X_MAPPING_1   28
+-#define BZ_X_MAPPING_2   29
+-#define BZ_X_SELECTOR_1  30
+-#define BZ_X_SELECTOR_2  31
+-#define BZ_X_SELECTOR_3  32
+-#define BZ_X_CODING_1    33
+-#define BZ_X_CODING_2    34
+-#define BZ_X_CODING_3    35
+-#define BZ_X_MTF_1       36
+-#define BZ_X_MTF_2       37
+-#define BZ_X_MTF_3       38
+-#define BZ_X_MTF_4       39
+-#define BZ_X_MTF_5       40
+-#define BZ_X_MTF_6       41
+-#define BZ_X_ENDHDR_2    42
+-#define BZ_X_ENDHDR_3    43
+-#define BZ_X_ENDHDR_4    44
+-#define BZ_X_ENDHDR_5    45
+-#define BZ_X_ENDHDR_6    46
+-#define BZ_X_CCRC_1      47
+-#define BZ_X_CCRC_2      48
+-#define BZ_X_CCRC_3      49
+-#define BZ_X_CCRC_4      50
+-
+-
+-/*-- Constants for the fast MTF decoder. --*/
+-
+-#define MTFA_SIZE 4096
+-#define MTFL_SIZE 16
+-
+-
+-/*-- Structure holding all the decompression-side stuff. --*/
+-
+-typedef
+-   struct {
+-      /* pointer back to the struct bz_stream */
+-      bz_stream* strm;
+-
+-      /* state indicator for this stream */
+-      Int32    state;
+-
+-      /* for doing the final run-length decoding */
+-      UChar    state_out_ch;
+-      Int32    state_out_len;
+-      Bool     blockRandomised;
+-      BZ_RAND_DECLS;
+-
+-      /* the buffer for bit stream reading */
+-      UInt32   bsBuff;
+-      Int32    bsLive;
+-
+-      /* misc administratium */
+-      Int32    blockSize100k;
+-      Bool     smallDecompress;
+-      Int32    currBlockNo;
+-      Int32    verbosity;
+-
+-      /* for undoing the Burrows-Wheeler transform */
+-      Int32    origPtr;
+-      UInt32   tPos;
+-      Int32    k0;
+-      Int32    unzftab[256];
+-      Int32    nblock_used;
+-      Int32    cftab[257];
+-      Int32    cftabCopy[257];
+-
+-      /* for undoing the Burrows-Wheeler transform (FAST) */
+-      UInt32   *tt;
+-
+-      /* for undoing the Burrows-Wheeler transform (SMALL) */
+-      UInt16   *ll16;
+-      UChar    *ll4;
+-
+-      /* stored and calculated CRCs */
+-      UInt32   storedBlockCRC;
+-      UInt32   storedCombinedCRC;
+-      UInt32   calculatedBlockCRC;
+-      UInt32   calculatedCombinedCRC;
+-
+-      /* map of bytes used in block */
+-      Int32    nInUse;
+-      Bool     inUse[256];
+-      Bool     inUse16[16];
+-      UChar    seqToUnseq[256];
+-
+-      /* for decoding the MTF values */
+-      UChar    mtfa   [MTFA_SIZE];
+-      Int32    mtfbase[256 / MTFL_SIZE];
+-      UChar    selector   [BZ_MAX_SELECTORS];
+-      UChar    selectorMtf[BZ_MAX_SELECTORS];
+-      UChar    len  [BZ_N_GROUPS][BZ_MAX_ALPHA_SIZE];
+-
+-      Int32    limit  [BZ_N_GROUPS][BZ_MAX_ALPHA_SIZE];
+-      Int32    base   [BZ_N_GROUPS][BZ_MAX_ALPHA_SIZE];
+-      Int32    perm   [BZ_N_GROUPS][BZ_MAX_ALPHA_SIZE];
+-      Int32    minLens[BZ_N_GROUPS];
+-
+-      /* save area for scalars in the main decompress code */
+-      Int32    save_i;
+-      Int32    save_j;
+-      Int32    save_t;
+-      Int32    save_alphaSize;
+-      Int32    save_nGroups;
+-      Int32    save_nSelectors;
+-      Int32    save_EOB;
+-      Int32    save_groupNo;
+-      Int32    save_groupPos;
+-      Int32    save_nextSym;
+-      Int32    save_nblockMAX;
+-      Int32    save_nblock;
+-      Int32    save_es;
+-      Int32    save_N;
+-      Int32    save_curr;
+-      Int32    save_zt;
+-      Int32    save_zn;
+-      Int32    save_zvec;
+-      Int32    save_zj;
+-      Int32    save_gSel;
+-      Int32    save_gMinlen;
+-      Int32*   save_gLimit;
+-      Int32*   save_gBase;
+-      Int32*   save_gPerm;
+-
+-   }
+-   DState;
+-
+-
+-/*-- Macros for decompression. --*/
+-
+-#define BZ_GET_FAST(cccc)                     \
+-    s->tPos = s->tt[s->tPos];                 \
+-    cccc = (UChar)(s->tPos & 0xff);           \
+-    s->tPos >>= 8;
+-
+-#define BZ_GET_FAST_C(cccc)                   \
+-    c_tPos = c_tt[c_tPos];                    \
+-    cccc = (UChar)(c_tPos & 0xff);            \
+-    c_tPos >>= 8;
+-
+-#define SET_LL4(i,n)                                          \
+-   { if (((i) & 0x1) == 0)                                    \
+-	s->ll4[(i) >> 1] = (s->ll4[(i) >> 1] & 0xf0) | (n); else    \
+-	s->ll4[(i) >> 1] = (s->ll4[(i) >> 1] & 0x0f) | ((n) << 4);  \
+-   }
+-
+-#define GET_LL4(i)                             \
+-   ((((UInt32)(s->ll4[(i) >> 1])) >> (((i) << 2) & 0x4)) & 0xF)
+-
+-#define SET_LL(i,n)                          \
+-   { s->ll16[i] = (UInt16)(n & 0x0000ffff);  \
+-     SET_LL4(i, n >> 16);                    \
+-   }
+-
+-#define GET_LL(i) \
+-   (((UInt32)s->ll16[i]) | (GET_LL4(i) << 16))
+-
+-#define BZ_GET_SMALL(cccc)                            \
+-      cccc = BZ2_indexIntoF ( s->tPos, s->cftab );    \
+-      s->tPos = GET_LL(s->tPos);
+-
+-
+-/*-- externs for decompression. --*/
+-
+-extern Int32
+-BZ2_indexIntoF ( Int32, Int32* );
+-
+-extern Int32
+-BZ2_decompress ( DState* );
+-
+-extern void
+-BZ2_hbCreateDecodeTables ( Int32*, Int32*, Int32*, UChar*,
+-			   Int32,  Int32, Int32 );
+-
+-
+-#endif
+-
+-/*-------------------------------------------------------------*/
+-/*--- end                                   bzlib_private.h ---*/
+-/*-------------------------------------------------------------*/
+diff --git a/lib/zstd/zstd_opt.h b/lib/zstd/zstd_opt.h
+deleted file mode 100644
+index 55e1b4cba80..00000000000
+--- a/lib/zstd/zstd_opt.h
++++ /dev/null
+@@ -1,1014 +0,0 @@
+-/**
+- * Copyright (c) 2016-present, Przemyslaw Skibinski, Yann Collet, Facebook, Inc.
+- * All rights reserved.
+- *
+- * This source code is licensed under the BSD-style license found in the
+- * LICENSE file in the root directory of https://github.com/facebook/zstd.
+- * An additional grant of patent rights can be found in the PATENTS file in the
+- * same directory.
+- *
+- * This program is free software; you can redistribute it and/or modify it under
+- * the terms of the GNU General Public License version 2 as published by the
+- * Free Software Foundation. This program is dual-licensed; you may select
+- * either version 2 of the GNU General Public License ("GPL") or BSD license
+- * ("BSD").
+- */
+-
+-/* Note : this file is intended to be included within zstd_compress.c */
+-
+-#ifndef ZSTD_OPT_H_91842398743
+-#define ZSTD_OPT_H_91842398743
+-
+-#define ZSTD_LITFREQ_ADD 2
+-#define ZSTD_FREQ_DIV 4
+-#define ZSTD_MAX_PRICE (1 << 30)
+-
+-/*-*************************************
+-*  Price functions for optimal parser
+-***************************************/
+-FORCE_INLINE void ZSTD_setLog2Prices(seqStore_t *ssPtr)
+-{
+-	ssPtr->log2matchLengthSum = ZSTD_highbit32(ssPtr->matchLengthSum + 1);
+-	ssPtr->log2litLengthSum = ZSTD_highbit32(ssPtr->litLengthSum + 1);
+-	ssPtr->log2litSum = ZSTD_highbit32(ssPtr->litSum + 1);
+-	ssPtr->log2offCodeSum = ZSTD_highbit32(ssPtr->offCodeSum + 1);
+-	ssPtr->factor = 1 + ((ssPtr->litSum >> 5) / ssPtr->litLengthSum) + ((ssPtr->litSum << 1) / (ssPtr->litSum + ssPtr->matchSum));
+-}
+-
+-ZSTD_STATIC void ZSTD_rescaleFreqs(seqStore_t *ssPtr, const BYTE *src, size_t srcSize)
+-{
+-	unsigned u;
+-
+-	ssPtr->cachedLiterals = NULL;
+-	ssPtr->cachedPrice = ssPtr->cachedLitLength = 0;
+-	ssPtr->staticPrices = 0;
+-
+-	if (ssPtr->litLengthSum == 0) {
+-		if (srcSize <= 1024)
+-			ssPtr->staticPrices = 1;
+-
+-		for (u = 0; u <= MaxLit; u++)
+-			ssPtr->litFreq[u] = 0;
+-		for (u = 0; u < srcSize; u++)
+-			ssPtr->litFreq[src[u]]++;
+-
+-		ssPtr->litSum = 0;
+-		ssPtr->litLengthSum = MaxLL + 1;
+-		ssPtr->matchLengthSum = MaxML + 1;
+-		ssPtr->offCodeSum = (MaxOff + 1);
+-		ssPtr->matchSum = (ZSTD_LITFREQ_ADD << Litbits);
+-
+-		for (u = 0; u <= MaxLit; u++) {
+-			ssPtr->litFreq[u] = 1 + (ssPtr->litFreq[u] >> ZSTD_FREQ_DIV);
+-			ssPtr->litSum += ssPtr->litFreq[u];
+-		}
+-		for (u = 0; u <= MaxLL; u++)
+-			ssPtr->litLengthFreq[u] = 1;
+-		for (u = 0; u <= MaxML; u++)
+-			ssPtr->matchLengthFreq[u] = 1;
+-		for (u = 0; u <= MaxOff; u++)
+-			ssPtr->offCodeFreq[u] = 1;
+-	} else {
+-		ssPtr->matchLengthSum = 0;
+-		ssPtr->litLengthSum = 0;
+-		ssPtr->offCodeSum = 0;
+-		ssPtr->matchSum = 0;
+-		ssPtr->litSum = 0;
+-
+-		for (u = 0; u <= MaxLit; u++) {
+-			ssPtr->litFreq[u] = 1 + (ssPtr->litFreq[u] >> (ZSTD_FREQ_DIV + 1));
+-			ssPtr->litSum += ssPtr->litFreq[u];
+-		}
+-		for (u = 0; u <= MaxLL; u++) {
+-			ssPtr->litLengthFreq[u] = 1 + (ssPtr->litLengthFreq[u] >> (ZSTD_FREQ_DIV + 1));
+-			ssPtr->litLengthSum += ssPtr->litLengthFreq[u];
+-		}
+-		for (u = 0; u <= MaxML; u++) {
+-			ssPtr->matchLengthFreq[u] = 1 + (ssPtr->matchLengthFreq[u] >> ZSTD_FREQ_DIV);
+-			ssPtr->matchLengthSum += ssPtr->matchLengthFreq[u];
+-			ssPtr->matchSum += ssPtr->matchLengthFreq[u] * (u + 3);
+-		}
+-		ssPtr->matchSum *= ZSTD_LITFREQ_ADD;
+-		for (u = 0; u <= MaxOff; u++) {
+-			ssPtr->offCodeFreq[u] = 1 + (ssPtr->offCodeFreq[u] >> ZSTD_FREQ_DIV);
+-			ssPtr->offCodeSum += ssPtr->offCodeFreq[u];
+-		}
+-	}
+-
+-	ZSTD_setLog2Prices(ssPtr);
+-}
+-
+-FORCE_INLINE U32 ZSTD_getLiteralPrice(seqStore_t *ssPtr, U32 litLength, const BYTE *literals)
+-{
+-	U32 price, u;
+-
+-	if (ssPtr->staticPrices)
+-		return ZSTD_highbit32((U32)litLength + 1) + (litLength * 6);
+-
+-	if (litLength == 0)
+-		return ssPtr->log2litLengthSum - ZSTD_highbit32(ssPtr->litLengthFreq[0] + 1);
+-
+-	/* literals */
+-	if (ssPtr->cachedLiterals == literals) {
+-		U32 const additional = litLength - ssPtr->cachedLitLength;
+-		const BYTE *literals2 = ssPtr->cachedLiterals + ssPtr->cachedLitLength;
+-		price = ssPtr->cachedPrice + additional * ssPtr->log2litSum;
+-		for (u = 0; u < additional; u++)
+-			price -= ZSTD_highbit32(ssPtr->litFreq[literals2[u]] + 1);
+-		ssPtr->cachedPrice = price;
+-		ssPtr->cachedLitLength = litLength;
+-	} else {
+-		price = litLength * ssPtr->log2litSum;
+-		for (u = 0; u < litLength; u++)
+-			price -= ZSTD_highbit32(ssPtr->litFreq[literals[u]] + 1);
+-
+-		if (litLength >= 12) {
+-			ssPtr->cachedLiterals = literals;
+-			ssPtr->cachedPrice = price;
+-			ssPtr->cachedLitLength = litLength;
+-		}
+-	}
+-
+-	/* literal Length */
+-	{
+-		const BYTE LL_deltaCode = 19;
+-		const BYTE llCode = (litLength > 63) ? (BYTE)ZSTD_highbit32(litLength) + LL_deltaCode : LL_Code[litLength];
+-		price += LL_bits[llCode] + ssPtr->log2litLengthSum - ZSTD_highbit32(ssPtr->litLengthFreq[llCode] + 1);
+-	}
+-
+-	return price;
+-}
+-
+-FORCE_INLINE U32 ZSTD_getPrice(seqStore_t *seqStorePtr, U32 litLength, const BYTE *literals, U32 offset, U32 matchLength, const int ultra)
+-{
+-	/* offset */
+-	U32 price;
+-	BYTE const offCode = (BYTE)ZSTD_highbit32(offset + 1);
+-
+-	if (seqStorePtr->staticPrices)
+-		return ZSTD_getLiteralPrice(seqStorePtr, litLength, literals) + ZSTD_highbit32((U32)matchLength + 1) + 16 + offCode;
+-
+-	price = offCode + seqStorePtr->log2offCodeSum - ZSTD_highbit32(seqStorePtr->offCodeFreq[offCode] + 1);
+-	if (!ultra && offCode >= 20)
+-		price += (offCode - 19) * 2;
+-
+-	/* match Length */
+-	{
+-		const BYTE ML_deltaCode = 36;
+-		const BYTE mlCode = (matchLength > 127) ? (BYTE)ZSTD_highbit32(matchLength) + ML_deltaCode : ML_Code[matchLength];
+-		price += ML_bits[mlCode] + seqStorePtr->log2matchLengthSum - ZSTD_highbit32(seqStorePtr->matchLengthFreq[mlCode] + 1);
+-	}
+-
+-	return price + ZSTD_getLiteralPrice(seqStorePtr, litLength, literals) + seqStorePtr->factor;
+-}
+-
+-ZSTD_STATIC void ZSTD_updatePrice(seqStore_t *seqStorePtr, U32 litLength, const BYTE *literals, U32 offset, U32 matchLength)
+-{
+-	U32 u;
+-
+-	/* literals */
+-	seqStorePtr->litSum += litLength * ZSTD_LITFREQ_ADD;
+-	for (u = 0; u < litLength; u++)
+-		seqStorePtr->litFreq[literals[u]] += ZSTD_LITFREQ_ADD;
+-
+-	/* literal Length */
+-	{
+-		const BYTE LL_deltaCode = 19;
+-		const BYTE llCode = (litLength > 63) ? (BYTE)ZSTD_highbit32(litLength) + LL_deltaCode : LL_Code[litLength];
+-		seqStorePtr->litLengthFreq[llCode]++;
+-		seqStorePtr->litLengthSum++;
+-	}
+-
+-	/* match offset */
+-	{
+-		BYTE const offCode = (BYTE)ZSTD_highbit32(offset + 1);
+-		seqStorePtr->offCodeSum++;
+-		seqStorePtr->offCodeFreq[offCode]++;
+-	}
+-
+-	/* match Length */
+-	{
+-		const BYTE ML_deltaCode = 36;
+-		const BYTE mlCode = (matchLength > 127) ? (BYTE)ZSTD_highbit32(matchLength) + ML_deltaCode : ML_Code[matchLength];
+-		seqStorePtr->matchLengthFreq[mlCode]++;
+-		seqStorePtr->matchLengthSum++;
+-	}
+-
+-	ZSTD_setLog2Prices(seqStorePtr);
+-}
+-
+-#define SET_PRICE(pos, mlen_, offset_, litlen_, price_)           \
+-	{                                                         \
+-		while (last_pos < pos) {                          \
+-			opt[last_pos + 1].price = ZSTD_MAX_PRICE; \
+-			last_pos++;                               \
+-		}                                                 \
+-		opt[pos].mlen = mlen_;                            \
+-		opt[pos].off = offset_;                           \
+-		opt[pos].litlen = litlen_;                        \
+-		opt[pos].price = price_;                          \
+-	}
+-
+-/* Update hashTable3 up to ip (excluded)
+-   Assumption : always within prefix (i.e. not within extDict) */
+-FORCE_INLINE
+-U32 ZSTD_insertAndFindFirstIndexHash3(ZSTD_CCtx *zc, const BYTE *ip)
+-{
+-	U32 *const hashTable3 = zc->hashTable3;
+-	U32 const hashLog3 = zc->hashLog3;
+-	const BYTE *const base = zc->base;
+-	U32 idx = zc->nextToUpdate3;
+-	const U32 target = zc->nextToUpdate3 = (U32)(ip - base);
+-	const size_t hash3 = ZSTD_hash3Ptr(ip, hashLog3);
+-
+-	while (idx < target) {
+-		hashTable3[ZSTD_hash3Ptr(base + idx, hashLog3)] = idx;
+-		idx++;
+-	}
+-
+-	return hashTable3[hash3];
+-}
+-
+-/*-*************************************
+-*  Binary Tree search
+-***************************************/
+-static U32 ZSTD_insertBtAndGetAllMatches(ZSTD_CCtx *zc, const BYTE *const ip, const BYTE *const iLimit, U32 nbCompares, const U32 mls, U32 extDict,
+-					 ZSTD_match_t *matches, const U32 minMatchLen)
+-{
+-	const BYTE *const base = zc->base;
+-	const U32 curr = (U32)(ip - base);
+-	const U32 hashLog = zc->params.cParams.hashLog;
+-	const size_t h = ZSTD_hashPtr(ip, hashLog, mls);
+-	U32 *const hashTable = zc->hashTable;
+-	U32 matchIndex = hashTable[h];
+-	U32 *const bt = zc->chainTable;
+-	const U32 btLog = zc->params.cParams.chainLog - 1;
+-	const U32 btMask = (1U << btLog) - 1;
+-	size_t commonLengthSmaller = 0, commonLengthLarger = 0;
+-	const BYTE *const dictBase = zc->dictBase;
+-	const U32 dictLimit = zc->dictLimit;
+-	const BYTE *const dictEnd = dictBase + dictLimit;
+-	const BYTE *const prefixStart = base + dictLimit;
+-	const U32 btLow = btMask >= curr ? 0 : curr - btMask;
+-	const U32 windowLow = zc->lowLimit;
+-	U32 *smallerPtr = bt + 2 * (curr & btMask);
+-	U32 *largerPtr = bt + 2 * (curr & btMask) + 1;
+-	U32 matchEndIdx = curr + 8;
+-	U32 dummy32; /* to be nullified at the end */
+-	U32 mnum = 0;
+-
+-	const U32 minMatch = (mls == 3) ? 3 : 4;
+-	size_t bestLength = minMatchLen - 1;
+-
+-	if (minMatch == 3) { /* HC3 match finder */
+-		U32 const matchIndex3 = ZSTD_insertAndFindFirstIndexHash3(zc, ip);
+-		if (matchIndex3 > windowLow && (curr - matchIndex3 < (1 << 18))) {
+-			const BYTE *match;
+-			size_t currMl = 0;
+-			if ((!extDict) || matchIndex3 >= dictLimit) {
+-				match = base + matchIndex3;
+-				if (match[bestLength] == ip[bestLength])
+-					currMl = ZSTD_count(ip, match, iLimit);
+-			} else {
+-				match = dictBase + matchIndex3;
+-				if (ZSTD_readMINMATCH(match, MINMATCH) ==
+-				    ZSTD_readMINMATCH(ip, MINMATCH)) /* assumption : matchIndex3 <= dictLimit-4 (by table construction) */
+-					currMl = ZSTD_count_2segments(ip + MINMATCH, match + MINMATCH, iLimit, dictEnd, prefixStart) + MINMATCH;
+-			}
+-
+-			/* save best solution */
+-			if (currMl > bestLength) {
+-				bestLength = currMl;
+-				matches[mnum].off = ZSTD_REP_MOVE_OPT + curr - matchIndex3;
+-				matches[mnum].len = (U32)currMl;
+-				mnum++;
+-				if (currMl > ZSTD_OPT_NUM)
+-					goto update;
+-				if (ip + currMl == iLimit)
+-					goto update; /* best possible, and avoid read overflow*/
+-			}
+-		}
+-	}
+-
+-	hashTable[h] = curr; /* Update Hash Table */
+-
+-	while (nbCompares-- && (matchIndex > windowLow)) {
+-		U32 *nextPtr = bt + 2 * (matchIndex & btMask);
+-		size_t matchLength = MIN(commonLengthSmaller, commonLengthLarger); /* guaranteed minimum nb of common bytes */
+-		const BYTE *match;
+-
+-		if ((!extDict) || (matchIndex + matchLength >= dictLimit)) {
+-			match = base + matchIndex;
+-			if (match[matchLength] == ip[matchLength]) {
+-				matchLength += ZSTD_count(ip + matchLength + 1, match + matchLength + 1, iLimit) + 1;
+-			}
+-		} else {
+-			match = dictBase + matchIndex;
+-			matchLength += ZSTD_count_2segments(ip + matchLength, match + matchLength, iLimit, dictEnd, prefixStart);
+-			if (matchIndex + matchLength >= dictLimit)
+-				match = base + matchIndex; /* to prepare for next usage of match[matchLength] */
+-		}
+-
+-		if (matchLength > bestLength) {
+-			if (matchLength > matchEndIdx - matchIndex)
+-				matchEndIdx = matchIndex + (U32)matchLength;
+-			bestLength = matchLength;
+-			matches[mnum].off = ZSTD_REP_MOVE_OPT + curr - matchIndex;
+-			matches[mnum].len = (U32)matchLength;
+-			mnum++;
+-			if (matchLength > ZSTD_OPT_NUM)
+-				break;
+-			if (ip + matchLength == iLimit) /* equal : no way to know if inf or sup */
+-				break;			/* drop, to guarantee consistency (miss a little bit of compression) */
+-		}
+-
+-		if (match[matchLength] < ip[matchLength]) {
+-			/* match is smaller than curr */
+-			*smallerPtr = matchIndex;	  /* update smaller idx */
+-			commonLengthSmaller = matchLength; /* all smaller will now have at least this guaranteed common length */
+-			if (matchIndex <= btLow) {
+-				smallerPtr = &dummy32;
+-				break;
+-			}			  /* beyond tree size, stop the search */
+-			smallerPtr = nextPtr + 1; /* new "smaller" => larger of match */
+-			matchIndex = nextPtr[1];  /* new matchIndex larger than previous (closer to curr) */
+-		} else {
+-			/* match is larger than curr */
+-			*largerPtr = matchIndex;
+-			commonLengthLarger = matchLength;
+-			if (matchIndex <= btLow) {
+-				largerPtr = &dummy32;
+-				break;
+-			} /* beyond tree size, stop the search */
+-			largerPtr = nextPtr;
+-			matchIndex = nextPtr[0];
+-		}
+-	}
+-
+-	*smallerPtr = *largerPtr = 0;
+-
+-update:
+-	zc->nextToUpdate = (matchEndIdx > curr + 8) ? matchEndIdx - 8 : curr + 1;
+-	return mnum;
+-}
+-
+-/** Tree updater, providing best match */
+-static U32 ZSTD_BtGetAllMatches(ZSTD_CCtx *zc, const BYTE *const ip, const BYTE *const iLimit, const U32 maxNbAttempts, const U32 mls, ZSTD_match_t *matches,
+-				const U32 minMatchLen)
+-{
+-	if (ip < zc->base + zc->nextToUpdate)
+-		return 0; /* skipped area */
+-	ZSTD_updateTree(zc, ip, iLimit, maxNbAttempts, mls);
+-	return ZSTD_insertBtAndGetAllMatches(zc, ip, iLimit, maxNbAttempts, mls, 0, matches, minMatchLen);
+-}
+-
+-static U32 ZSTD_BtGetAllMatches_selectMLS(ZSTD_CCtx *zc, /* Index table will be updated */
+-					  const BYTE *ip, const BYTE *const iHighLimit, const U32 maxNbAttempts, const U32 matchLengthSearch,
+-					  ZSTD_match_t *matches, const U32 minMatchLen)
+-{
+-	switch (matchLengthSearch) {
+-	case 3: return ZSTD_BtGetAllMatches(zc, ip, iHighLimit, maxNbAttempts, 3, matches, minMatchLen);
+-	default:
+-	case 4: return ZSTD_BtGetAllMatches(zc, ip, iHighLimit, maxNbAttempts, 4, matches, minMatchLen);
+-	case 5: return ZSTD_BtGetAllMatches(zc, ip, iHighLimit, maxNbAttempts, 5, matches, minMatchLen);
+-	case 7:
+-	case 6: return ZSTD_BtGetAllMatches(zc, ip, iHighLimit, maxNbAttempts, 6, matches, minMatchLen);
+-	}
+-}
+-
+-/** Tree updater, providing best match */
+-static U32 ZSTD_BtGetAllMatches_extDict(ZSTD_CCtx *zc, const BYTE *const ip, const BYTE *const iLimit, const U32 maxNbAttempts, const U32 mls,
+-					ZSTD_match_t *matches, const U32 minMatchLen)
+-{
+-	if (ip < zc->base + zc->nextToUpdate)
+-		return 0; /* skipped area */
+-	ZSTD_updateTree_extDict(zc, ip, iLimit, maxNbAttempts, mls);
+-	return ZSTD_insertBtAndGetAllMatches(zc, ip, iLimit, maxNbAttempts, mls, 1, matches, minMatchLen);
+-}
+-
+-static U32 ZSTD_BtGetAllMatches_selectMLS_extDict(ZSTD_CCtx *zc, /* Index table will be updated */
+-						  const BYTE *ip, const BYTE *const iHighLimit, const U32 maxNbAttempts, const U32 matchLengthSearch,
+-						  ZSTD_match_t *matches, const U32 minMatchLen)
+-{
+-	switch (matchLengthSearch) {
+-	case 3: return ZSTD_BtGetAllMatches_extDict(zc, ip, iHighLimit, maxNbAttempts, 3, matches, minMatchLen);
+-	default:
+-	case 4: return ZSTD_BtGetAllMatches_extDict(zc, ip, iHighLimit, maxNbAttempts, 4, matches, minMatchLen);
+-	case 5: return ZSTD_BtGetAllMatches_extDict(zc, ip, iHighLimit, maxNbAttempts, 5, matches, minMatchLen);
+-	case 7:
+-	case 6: return ZSTD_BtGetAllMatches_extDict(zc, ip, iHighLimit, maxNbAttempts, 6, matches, minMatchLen);
+-	}
+-}
+-
+-/*-*******************************
+-*  Optimal parser
+-*********************************/
+-FORCE_INLINE
+-void ZSTD_compressBlock_opt_generic(ZSTD_CCtx *ctx, const void *src, size_t srcSize, const int ultra)
+-{
+-	seqStore_t *seqStorePtr = &(ctx->seqStore);
+-	const BYTE *const istart = (const BYTE *)src;
+-	const BYTE *ip = istart;
+-	const BYTE *anchor = istart;
+-	const BYTE *const iend = istart + srcSize;
+-	const BYTE *const ilimit = iend - 8;
+-	const BYTE *const base = ctx->base;
+-	const BYTE *const prefixStart = base + ctx->dictLimit;
+-
+-	const U32 maxSearches = 1U << ctx->params.cParams.searchLog;
+-	const U32 sufficient_len = ctx->params.cParams.targetLength;
+-	const U32 mls = ctx->params.cParams.searchLength;
+-	const U32 minMatch = (ctx->params.cParams.searchLength == 3) ? 3 : 4;
+-
+-	ZSTD_optimal_t *opt = seqStorePtr->priceTable;
+-	ZSTD_match_t *matches = seqStorePtr->matchTable;
+-	const BYTE *inr;
+-	U32 offset, rep[ZSTD_REP_NUM];
+-
+-	/* init */
+-	ctx->nextToUpdate3 = ctx->nextToUpdate;
+-	ZSTD_rescaleFreqs(seqStorePtr, (const BYTE *)src, srcSize);
+-	ip += (ip == prefixStart);
+-	{
+-		U32 i;
+-		for (i = 0; i < ZSTD_REP_NUM; i++)
+-			rep[i] = ctx->rep[i];
+-	}
+-
+-	/* Match Loop */
+-	while (ip < ilimit) {
+-		U32 cur, match_num, last_pos, litlen, price;
+-		U32 u, mlen, best_mlen, best_off, litLength;
+-		memset(opt, 0, sizeof(ZSTD_optimal_t));
+-		last_pos = 0;
+-		litlen = (U32)(ip - anchor);
+-
+-		/* check repCode */
+-		{
+-			U32 i, last_i = ZSTD_REP_CHECK + (ip == anchor);
+-			for (i = (ip == anchor); i < last_i; i++) {
+-				const S32 repCur = (i == ZSTD_REP_MOVE_OPT) ? (rep[0] - 1) : rep[i];
+-				if ((repCur > 0) && (repCur < (S32)(ip - prefixStart)) &&
+-				    (ZSTD_readMINMATCH(ip, minMatch) == ZSTD_readMINMATCH(ip - repCur, minMatch))) {
+-					mlen = (U32)ZSTD_count(ip + minMatch, ip + minMatch - repCur, iend) + minMatch;
+-					if (mlen > sufficient_len || mlen >= ZSTD_OPT_NUM) {
+-						best_mlen = mlen;
+-						best_off = i;
+-						cur = 0;
+-						last_pos = 1;
+-						goto _storeSequence;
+-					}
+-					best_off = i - (ip == anchor);
+-					do {
+-						price = ZSTD_getPrice(seqStorePtr, litlen, anchor, best_off, mlen - MINMATCH, ultra);
+-						if (mlen > last_pos || price < opt[mlen].price)
+-							SET_PRICE(mlen, mlen, i, litlen, price); /* note : macro modifies last_pos */
+-						mlen--;
+-					} while (mlen >= minMatch);
+-				}
+-			}
+-		}
+-
+-		match_num = ZSTD_BtGetAllMatches_selectMLS(ctx, ip, iend, maxSearches, mls, matches, minMatch);
+-
+-		if (!last_pos && !match_num) {
+-			ip++;
+-			continue;
+-		}
+-
+-		if (match_num && (matches[match_num - 1].len > sufficient_len || matches[match_num - 1].len >= ZSTD_OPT_NUM)) {
+-			best_mlen = matches[match_num - 1].len;
+-			best_off = matches[match_num - 1].off;
+-			cur = 0;
+-			last_pos = 1;
+-			goto _storeSequence;
+-		}
+-
+-		/* set prices using matches at position = 0 */
+-		best_mlen = (last_pos) ? last_pos : minMatch;
+-		for (u = 0; u < match_num; u++) {
+-			mlen = (u > 0) ? matches[u - 1].len + 1 : best_mlen;
+-			best_mlen = matches[u].len;
+-			while (mlen <= best_mlen) {
+-				price = ZSTD_getPrice(seqStorePtr, litlen, anchor, matches[u].off - 1, mlen - MINMATCH, ultra);
+-				if (mlen > last_pos || price < opt[mlen].price)
+-					SET_PRICE(mlen, mlen, matches[u].off, litlen, price); /* note : macro modifies last_pos */
+-				mlen++;
+-			}
+-		}
+-
+-		if (last_pos < minMatch) {
+-			ip++;
+-			continue;
+-		}
+-
+-		/* initialize opt[0] */
+-		{
+-			U32 i;
+-			for (i = 0; i < ZSTD_REP_NUM; i++)
+-				opt[0].rep[i] = rep[i];
+-		}
+-		opt[0].mlen = 1;
+-		opt[0].litlen = litlen;
+-
+-		/* check further positions */
+-		for (cur = 1; cur <= last_pos; cur++) {
+-			inr = ip + cur;
+-
+-			if (opt[cur - 1].mlen == 1) {
+-				litlen = opt[cur - 1].litlen + 1;
+-				if (cur > litlen) {
+-					price = opt[cur - litlen].price + ZSTD_getLiteralPrice(seqStorePtr, litlen, inr - litlen);
+-				} else
+-					price = ZSTD_getLiteralPrice(seqStorePtr, litlen, anchor);
+-			} else {
+-				litlen = 1;
+-				price = opt[cur - 1].price + ZSTD_getLiteralPrice(seqStorePtr, litlen, inr - 1);
+-			}
+-
+-			if (cur > last_pos || price <= opt[cur].price)
+-				SET_PRICE(cur, 1, 0, litlen, price);
+-
+-			if (cur == last_pos)
+-				break;
+-
+-			if (inr > ilimit) /* last match must start at a minimum distance of 8 from oend */
+-				continue;
+-
+-			mlen = opt[cur].mlen;
+-			if (opt[cur].off > ZSTD_REP_MOVE_OPT) {
+-				opt[cur].rep[2] = opt[cur - mlen].rep[1];
+-				opt[cur].rep[1] = opt[cur - mlen].rep[0];
+-				opt[cur].rep[0] = opt[cur].off - ZSTD_REP_MOVE_OPT;
+-			} else {
+-				opt[cur].rep[2] = (opt[cur].off > 1) ? opt[cur - mlen].rep[1] : opt[cur - mlen].rep[2];
+-				opt[cur].rep[1] = (opt[cur].off > 0) ? opt[cur - mlen].rep[0] : opt[cur - mlen].rep[1];
+-				opt[cur].rep[0] =
+-				    ((opt[cur].off == ZSTD_REP_MOVE_OPT) && (mlen != 1)) ? (opt[cur - mlen].rep[0] - 1) : (opt[cur - mlen].rep[opt[cur].off]);
+-			}
+-
+-			best_mlen = minMatch;
+-			{
+-				U32 i, last_i = ZSTD_REP_CHECK + (mlen != 1);
+-				for (i = (opt[cur].mlen != 1); i < last_i; i++) { /* check rep */
+-					const S32 repCur = (i == ZSTD_REP_MOVE_OPT) ? (opt[cur].rep[0] - 1) : opt[cur].rep[i];
+-					if ((repCur > 0) && (repCur < (S32)(inr - prefixStart)) &&
+-					    (ZSTD_readMINMATCH(inr, minMatch) == ZSTD_readMINMATCH(inr - repCur, minMatch))) {
+-						mlen = (U32)ZSTD_count(inr + minMatch, inr + minMatch - repCur, iend) + minMatch;
+-
+-						if (mlen > sufficient_len || cur + mlen >= ZSTD_OPT_NUM) {
+-							best_mlen = mlen;
+-							best_off = i;
+-							last_pos = cur + 1;
+-							goto _storeSequence;
+-						}
+-
+-						best_off = i - (opt[cur].mlen != 1);
+-						if (mlen > best_mlen)
+-							best_mlen = mlen;
+-
+-						do {
+-							if (opt[cur].mlen == 1) {
+-								litlen = opt[cur].litlen;
+-								if (cur > litlen) {
+-									price = opt[cur - litlen].price + ZSTD_getPrice(seqStorePtr, litlen, inr - litlen,
+-															best_off, mlen - MINMATCH, ultra);
+-								} else
+-									price = ZSTD_getPrice(seqStorePtr, litlen, anchor, best_off, mlen - MINMATCH, ultra);
+-							} else {
+-								litlen = 0;
+-								price = opt[cur].price + ZSTD_getPrice(seqStorePtr, 0, NULL, best_off, mlen - MINMATCH, ultra);
+-							}
+-
+-							if (cur + mlen > last_pos || price <= opt[cur + mlen].price)
+-								SET_PRICE(cur + mlen, mlen, i, litlen, price);
+-							mlen--;
+-						} while (mlen >= minMatch);
+-					}
+-				}
+-			}
+-
+-			match_num = ZSTD_BtGetAllMatches_selectMLS(ctx, inr, iend, maxSearches, mls, matches, best_mlen);
+-
+-			if (match_num > 0 && (matches[match_num - 1].len > sufficient_len || cur + matches[match_num - 1].len >= ZSTD_OPT_NUM)) {
+-				best_mlen = matches[match_num - 1].len;
+-				best_off = matches[match_num - 1].off;
+-				last_pos = cur + 1;
+-				goto _storeSequence;
+-			}
+-
+-			/* set prices using matches at position = cur */
+-			for (u = 0; u < match_num; u++) {
+-				mlen = (u > 0) ? matches[u - 1].len + 1 : best_mlen;
+-				best_mlen = matches[u].len;
+-
+-				while (mlen <= best_mlen) {
+-					if (opt[cur].mlen == 1) {
+-						litlen = opt[cur].litlen;
+-						if (cur > litlen)
+-							price = opt[cur - litlen].price + ZSTD_getPrice(seqStorePtr, litlen, ip + cur - litlen,
+-													matches[u].off - 1, mlen - MINMATCH, ultra);
+-						else
+-							price = ZSTD_getPrice(seqStorePtr, litlen, anchor, matches[u].off - 1, mlen - MINMATCH, ultra);
+-					} else {
+-						litlen = 0;
+-						price = opt[cur].price + ZSTD_getPrice(seqStorePtr, 0, NULL, matches[u].off - 1, mlen - MINMATCH, ultra);
+-					}
+-
+-					if (cur + mlen > last_pos || (price < opt[cur + mlen].price))
+-						SET_PRICE(cur + mlen, mlen, matches[u].off, litlen, price);
+-
+-					mlen++;
+-				}
+-			}
+-		}
+-
+-		best_mlen = opt[last_pos].mlen;
+-		best_off = opt[last_pos].off;
+-		cur = last_pos - best_mlen;
+-
+-	/* store sequence */
+-_storeSequence: /* cur, last_pos, best_mlen, best_off have to be set */
+-		opt[0].mlen = 1;
+-
+-		while (1) {
+-			mlen = opt[cur].mlen;
+-			offset = opt[cur].off;
+-			opt[cur].mlen = best_mlen;
+-			opt[cur].off = best_off;
+-			best_mlen = mlen;
+-			best_off = offset;
+-			if (mlen > cur)
+-				break;
+-			cur -= mlen;
+-		}
+-
+-		for (u = 0; u <= last_pos;) {
+-			u += opt[u].mlen;
+-		}
+-
+-		for (cur = 0; cur < last_pos;) {
+-			mlen = opt[cur].mlen;
+-			if (mlen == 1) {
+-				ip++;
+-				cur++;
+-				continue;
+-			}
+-			offset = opt[cur].off;
+-			cur += mlen;
+-			litLength = (U32)(ip - anchor);
+-
+-			if (offset > ZSTD_REP_MOVE_OPT) {
+-				rep[2] = rep[1];
+-				rep[1] = rep[0];
+-				rep[0] = offset - ZSTD_REP_MOVE_OPT;
+-				offset--;
+-			} else {
+-				if (offset != 0) {
+-					best_off = (offset == ZSTD_REP_MOVE_OPT) ? (rep[0] - 1) : (rep[offset]);
+-					if (offset != 1)
+-						rep[2] = rep[1];
+-					rep[1] = rep[0];
+-					rep[0] = best_off;
+-				}
+-				if (litLength == 0)
+-					offset--;
+-			}
+-
+-			ZSTD_updatePrice(seqStorePtr, litLength, anchor, offset, mlen - MINMATCH);
+-			ZSTD_storeSeq(seqStorePtr, litLength, anchor, offset, mlen - MINMATCH);
+-			anchor = ip = ip + mlen;
+-		}
+-	} /* for (cur=0; cur < last_pos; ) */
+-
+-	/* Save reps for next block */
+-	{
+-		int i;
+-		for (i = 0; i < ZSTD_REP_NUM; i++)
+-			ctx->repToConfirm[i] = rep[i];
+-	}
+-
+-	/* Last Literals */
+-	{
+-		size_t const lastLLSize = iend - anchor;
+-		memcpy(seqStorePtr->lit, anchor, lastLLSize);
+-		seqStorePtr->lit += lastLLSize;
+-	}
+-}
+-
+-FORCE_INLINE
+-void ZSTD_compressBlock_opt_extDict_generic(ZSTD_CCtx *ctx, const void *src, size_t srcSize, const int ultra)
+-{
+-	seqStore_t *seqStorePtr = &(ctx->seqStore);
+-	const BYTE *const istart = (const BYTE *)src;
+-	const BYTE *ip = istart;
+-	const BYTE *anchor = istart;
+-	const BYTE *const iend = istart + srcSize;
+-	const BYTE *const ilimit = iend - 8;
+-	const BYTE *const base = ctx->base;
+-	const U32 lowestIndex = ctx->lowLimit;
+-	const U32 dictLimit = ctx->dictLimit;
+-	const BYTE *const prefixStart = base + dictLimit;
+-	const BYTE *const dictBase = ctx->dictBase;
+-	const BYTE *const dictEnd = dictBase + dictLimit;
+-
+-	const U32 maxSearches = 1U << ctx->params.cParams.searchLog;
+-	const U32 sufficient_len = ctx->params.cParams.targetLength;
+-	const U32 mls = ctx->params.cParams.searchLength;
+-	const U32 minMatch = (ctx->params.cParams.searchLength == 3) ? 3 : 4;
+-
+-	ZSTD_optimal_t *opt = seqStorePtr->priceTable;
+-	ZSTD_match_t *matches = seqStorePtr->matchTable;
+-	const BYTE *inr;
+-
+-	/* init */
+-	U32 offset, rep[ZSTD_REP_NUM];
+-	{
+-		U32 i;
+-		for (i = 0; i < ZSTD_REP_NUM; i++)
+-			rep[i] = ctx->rep[i];
+-	}
+-
+-	ctx->nextToUpdate3 = ctx->nextToUpdate;
+-	ZSTD_rescaleFreqs(seqStorePtr, (const BYTE *)src, srcSize);
+-	ip += (ip == prefixStart);
+-
+-	/* Match Loop */
+-	while (ip < ilimit) {
+-		U32 cur, match_num, last_pos, litlen, price;
+-		U32 u, mlen, best_mlen, best_off, litLength;
+-		U32 curr = (U32)(ip - base);
+-		memset(opt, 0, sizeof(ZSTD_optimal_t));
+-		last_pos = 0;
+-		opt[0].litlen = (U32)(ip - anchor);
+-
+-		/* check repCode */
+-		{
+-			U32 i, last_i = ZSTD_REP_CHECK + (ip == anchor);
+-			for (i = (ip == anchor); i < last_i; i++) {
+-				const S32 repCur = (i == ZSTD_REP_MOVE_OPT) ? (rep[0] - 1) : rep[i];
+-				const U32 repIndex = (U32)(curr - repCur);
+-				const BYTE *const repBase = repIndex < dictLimit ? dictBase : base;
+-				const BYTE *const repMatch = repBase + repIndex;
+-				if ((repCur > 0 && repCur <= (S32)curr) &&
+-				    (((U32)((dictLimit - 1) - repIndex) >= 3) & (repIndex > lowestIndex)) /* intentional overflow */
+-				    && (ZSTD_readMINMATCH(ip, minMatch) == ZSTD_readMINMATCH(repMatch, minMatch))) {
+-					/* repcode detected we should take it */
+-					const BYTE *const repEnd = repIndex < dictLimit ? dictEnd : iend;
+-					mlen = (U32)ZSTD_count_2segments(ip + minMatch, repMatch + minMatch, iend, repEnd, prefixStart) + minMatch;
+-
+-					if (mlen > sufficient_len || mlen >= ZSTD_OPT_NUM) {
+-						best_mlen = mlen;
+-						best_off = i;
+-						cur = 0;
+-						last_pos = 1;
+-						goto _storeSequence;
+-					}
+-
+-					best_off = i - (ip == anchor);
+-					litlen = opt[0].litlen;
+-					do {
+-						price = ZSTD_getPrice(seqStorePtr, litlen, anchor, best_off, mlen - MINMATCH, ultra);
+-						if (mlen > last_pos || price < opt[mlen].price)
+-							SET_PRICE(mlen, mlen, i, litlen, price); /* note : macro modifies last_pos */
+-						mlen--;
+-					} while (mlen >= minMatch);
+-				}
+-			}
+-		}
+-
+-		match_num = ZSTD_BtGetAllMatches_selectMLS_extDict(ctx, ip, iend, maxSearches, mls, matches, minMatch); /* first search (depth 0) */
+-
+-		if (!last_pos && !match_num) {
+-			ip++;
+-			continue;
+-		}
+-
+-		{
+-			U32 i;
+-			for (i = 0; i < ZSTD_REP_NUM; i++)
+-				opt[0].rep[i] = rep[i];
+-		}
+-		opt[0].mlen = 1;
+-
+-		if (match_num && (matches[match_num - 1].len > sufficient_len || matches[match_num - 1].len >= ZSTD_OPT_NUM)) {
+-			best_mlen = matches[match_num - 1].len;
+-			best_off = matches[match_num - 1].off;
+-			cur = 0;
+-			last_pos = 1;
+-			goto _storeSequence;
+-		}
+-
+-		best_mlen = (last_pos) ? last_pos : minMatch;
+-
+-		/* set prices using matches at position = 0 */
+-		for (u = 0; u < match_num; u++) {
+-			mlen = (u > 0) ? matches[u - 1].len + 1 : best_mlen;
+-			best_mlen = matches[u].len;
+-			litlen = opt[0].litlen;
+-			while (mlen <= best_mlen) {
+-				price = ZSTD_getPrice(seqStorePtr, litlen, anchor, matches[u].off - 1, mlen - MINMATCH, ultra);
+-				if (mlen > last_pos || price < opt[mlen].price)
+-					SET_PRICE(mlen, mlen, matches[u].off, litlen, price);
+-				mlen++;
+-			}
+-		}
+-
+-		if (last_pos < minMatch) {
+-			ip++;
+-			continue;
+-		}
+-
+-		/* check further positions */
+-		for (cur = 1; cur <= last_pos; cur++) {
+-			inr = ip + cur;
+-
+-			if (opt[cur - 1].mlen == 1) {
+-				litlen = opt[cur - 1].litlen + 1;
+-				if (cur > litlen) {
+-					price = opt[cur - litlen].price + ZSTD_getLiteralPrice(seqStorePtr, litlen, inr - litlen);
+-				} else
+-					price = ZSTD_getLiteralPrice(seqStorePtr, litlen, anchor);
+-			} else {
+-				litlen = 1;
+-				price = opt[cur - 1].price + ZSTD_getLiteralPrice(seqStorePtr, litlen, inr - 1);
+-			}
+-
+-			if (cur > last_pos || price <= opt[cur].price)
+-				SET_PRICE(cur, 1, 0, litlen, price);
+-
+-			if (cur == last_pos)
+-				break;
+-
+-			if (inr > ilimit) /* last match must start at a minimum distance of 8 from oend */
+-				continue;
+-
+-			mlen = opt[cur].mlen;
+-			if (opt[cur].off > ZSTD_REP_MOVE_OPT) {
+-				opt[cur].rep[2] = opt[cur - mlen].rep[1];
+-				opt[cur].rep[1] = opt[cur - mlen].rep[0];
+-				opt[cur].rep[0] = opt[cur].off - ZSTD_REP_MOVE_OPT;
+-			} else {
+-				opt[cur].rep[2] = (opt[cur].off > 1) ? opt[cur - mlen].rep[1] : opt[cur - mlen].rep[2];
+-				opt[cur].rep[1] = (opt[cur].off > 0) ? opt[cur - mlen].rep[0] : opt[cur - mlen].rep[1];
+-				opt[cur].rep[0] =
+-				    ((opt[cur].off == ZSTD_REP_MOVE_OPT) && (mlen != 1)) ? (opt[cur - mlen].rep[0] - 1) : (opt[cur - mlen].rep[opt[cur].off]);
+-			}
+-
+-			best_mlen = minMatch;
+-			{
+-				U32 i, last_i = ZSTD_REP_CHECK + (mlen != 1);
+-				for (i = (mlen != 1); i < last_i; i++) {
+-					const S32 repCur = (i == ZSTD_REP_MOVE_OPT) ? (opt[cur].rep[0] - 1) : opt[cur].rep[i];
+-					const U32 repIndex = (U32)(curr + cur - repCur);
+-					const BYTE *const repBase = repIndex < dictLimit ? dictBase : base;
+-					const BYTE *const repMatch = repBase + repIndex;
+-					if ((repCur > 0 && repCur <= (S32)(curr + cur)) &&
+-					    (((U32)((dictLimit - 1) - repIndex) >= 3) & (repIndex > lowestIndex)) /* intentional overflow */
+-					    && (ZSTD_readMINMATCH(inr, minMatch) == ZSTD_readMINMATCH(repMatch, minMatch))) {
+-						/* repcode detected */
+-						const BYTE *const repEnd = repIndex < dictLimit ? dictEnd : iend;
+-						mlen = (U32)ZSTD_count_2segments(inr + minMatch, repMatch + minMatch, iend, repEnd, prefixStart) + minMatch;
+-
+-						if (mlen > sufficient_len || cur + mlen >= ZSTD_OPT_NUM) {
+-							best_mlen = mlen;
+-							best_off = i;
+-							last_pos = cur + 1;
+-							goto _storeSequence;
+-						}
+-
+-						best_off = i - (opt[cur].mlen != 1);
+-						if (mlen > best_mlen)
+-							best_mlen = mlen;
+-
+-						do {
+-							if (opt[cur].mlen == 1) {
+-								litlen = opt[cur].litlen;
+-								if (cur > litlen) {
+-									price = opt[cur - litlen].price + ZSTD_getPrice(seqStorePtr, litlen, inr - litlen,
+-															best_off, mlen - MINMATCH, ultra);
+-								} else
+-									price = ZSTD_getPrice(seqStorePtr, litlen, anchor, best_off, mlen - MINMATCH, ultra);
+-							} else {
+-								litlen = 0;
+-								price = opt[cur].price + ZSTD_getPrice(seqStorePtr, 0, NULL, best_off, mlen - MINMATCH, ultra);
+-							}
+-
+-							if (cur + mlen > last_pos || price <= opt[cur + mlen].price)
+-								SET_PRICE(cur + mlen, mlen, i, litlen, price);
+-							mlen--;
+-						} while (mlen >= minMatch);
+-					}
+-				}
+-			}
+-
+-			match_num = ZSTD_BtGetAllMatches_selectMLS_extDict(ctx, inr, iend, maxSearches, mls, matches, minMatch);
+-
+-			if (match_num > 0 && (matches[match_num - 1].len > sufficient_len || cur + matches[match_num - 1].len >= ZSTD_OPT_NUM)) {
+-				best_mlen = matches[match_num - 1].len;
+-				best_off = matches[match_num - 1].off;
+-				last_pos = cur + 1;
+-				goto _storeSequence;
+-			}
+-
+-			/* set prices using matches at position = cur */
+-			for (u = 0; u < match_num; u++) {
+-				mlen = (u > 0) ? matches[u - 1].len + 1 : best_mlen;
+-				best_mlen = matches[u].len;
+-
+-				while (mlen <= best_mlen) {
+-					if (opt[cur].mlen == 1) {
+-						litlen = opt[cur].litlen;
+-						if (cur > litlen)
+-							price = opt[cur - litlen].price + ZSTD_getPrice(seqStorePtr, litlen, ip + cur - litlen,
+-													matches[u].off - 1, mlen - MINMATCH, ultra);
+-						else
+-							price = ZSTD_getPrice(seqStorePtr, litlen, anchor, matches[u].off - 1, mlen - MINMATCH, ultra);
+-					} else {
+-						litlen = 0;
+-						price = opt[cur].price + ZSTD_getPrice(seqStorePtr, 0, NULL, matches[u].off - 1, mlen - MINMATCH, ultra);
+-					}
+-
+-					if (cur + mlen > last_pos || (price < opt[cur + mlen].price))
+-						SET_PRICE(cur + mlen, mlen, matches[u].off, litlen, price);
+-
+-					mlen++;
+-				}
+-			}
+-		} /* for (cur = 1; cur <= last_pos; cur++) */
+-
+-		best_mlen = opt[last_pos].mlen;
+-		best_off = opt[last_pos].off;
+-		cur = last_pos - best_mlen;
+-
+-	/* store sequence */
+-_storeSequence: /* cur, last_pos, best_mlen, best_off have to be set */
+-		opt[0].mlen = 1;
+-
+-		while (1) {
+-			mlen = opt[cur].mlen;
+-			offset = opt[cur].off;
+-			opt[cur].mlen = best_mlen;
+-			opt[cur].off = best_off;
+-			best_mlen = mlen;
+-			best_off = offset;
+-			if (mlen > cur)
+-				break;
+-			cur -= mlen;
+-		}
+-
+-		for (u = 0; u <= last_pos;) {
+-			u += opt[u].mlen;
+-		}
+-
+-		for (cur = 0; cur < last_pos;) {
+-			mlen = opt[cur].mlen;
+-			if (mlen == 1) {
+-				ip++;
+-				cur++;
+-				continue;
+-			}
+-			offset = opt[cur].off;
+-			cur += mlen;
+-			litLength = (U32)(ip - anchor);
+-
+-			if (offset > ZSTD_REP_MOVE_OPT) {
+-				rep[2] = rep[1];
+-				rep[1] = rep[0];
+-				rep[0] = offset - ZSTD_REP_MOVE_OPT;
+-				offset--;
+-			} else {
+-				if (offset != 0) {
+-					best_off = (offset == ZSTD_REP_MOVE_OPT) ? (rep[0] - 1) : (rep[offset]);
+-					if (offset != 1)
+-						rep[2] = rep[1];
+-					rep[1] = rep[0];
+-					rep[0] = best_off;
+-				}
+-
+-				if (litLength == 0)
+-					offset--;
+-			}
+-
+-			ZSTD_updatePrice(seqStorePtr, litLength, anchor, offset, mlen - MINMATCH);
+-			ZSTD_storeSeq(seqStorePtr, litLength, anchor, offset, mlen - MINMATCH);
+-			anchor = ip = ip + mlen;
+-		}
+-	} /* for (cur=0; cur < last_pos; ) */
+-
+-	/* Save reps for next block */
+-	{
+-		int i;
+-		for (i = 0; i < ZSTD_REP_NUM; i++)
+-			ctx->repToConfirm[i] = rep[i];
+-	}
+-
+-	/* Last Literals */
+-	{
+-		size_t lastLLSize = iend - anchor;
+-		memcpy(seqStorePtr->lit, anchor, lastLLSize);
+-		seqStorePtr->lit += lastLLSize;
+-	}
+-}
+-
+-#endif /* ZSTD_OPT_H_91842398743 */
+diff --git a/net/nfs.h b/net/nfs.h
+deleted file mode 100644
+index e9ac5f299af..00000000000
+--- a/net/nfs.h
++++ /dev/null
+@@ -1,68 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-or-later */
+-/* SPDX-FileCopyrightText: 2004 Masami Komiya <mkomiya@sonare.it> */
+-
+-#ifndef __NFS_H__
+-#define __NFS_H__
+-
+-#define SUNRPC_PORT     111
+-
+-#define PROG_PORTMAP    100000
+-#define PROG_NFS        100003
+-#define PROG_MOUNT      100005
+-
+-#define MSG_CALL        0
+-#define MSG_REPLY       1
+-
+-#define PORTMAP_GETPORT 3
+-
+-#define MOUNT_ADDENTRY  1
+-#define MOUNT_UMOUNTALL 4
+-
+-#define NFS_LOOKUP      4
+-#define NFS_READLINK    5
+-#define NFS_READ        6
+-
+-#define NFS_FHSIZE      32
+-
+-#define NFSERR_PERM     1
+-#define NFSERR_NOENT    2
+-#define NFSERR_ACCES    13
+-#define NFSERR_ISDIR    21
+-#define NFSERR_INVAL    22
+-
+-/* Block size used for NFS read accesses.  A RPC reply packet (including  all
+- * headers) must fit within a single Ethernet frame to avoid fragmentation.
+- * Chosen to be a power of two, as most NFS servers are optimized for this.  */
+-#define NFS_READ_SIZE   1024
+-
+-#define NFS_MAXLINKDEPTH 16
+-
+-struct rpc_t {
+-	union {
+-		uint8_t data[2048];
+-		struct {
+-			uint32_t id;
+-			uint32_t type;
+-			uint32_t rpcvers;
+-			uint32_t prog;
+-			uint32_t vers;
+-			uint32_t proc;
+-			uint32_t data[1];
+-		} call;
+-		struct {
+-			uint32_t id;
+-			uint32_t type;
+-			uint32_t rstatus;
+-			uint32_t verifier;
+-			uint32_t v2;
+-			uint32_t astatus;
+-			uint32_t data[19];
+-		} reply;
+-	} u;
+-};
+-extern void	NfsStart (char *);	/* Begin NFS */
+-
+-
+-/**********************************************************************/
+-
+-#endif /* __NFS_H__ */
 -- 
-2.39.2
+2.39.0
 
 
 
