@@ -1,82 +1,83 @@
-Delivery-date: Wed, 20 Mar 2024 17:45:06 +0100
+Delivery-date: Thu, 21 Mar 2024 06:53:24 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmz3q-00FKzH-0a
+	id 1rnBMg-00G3ZL-2u
 	for lore@lore.pengutronix.de;
-	Wed, 20 Mar 2024 17:45:06 +0100
+	Thu, 21 Mar 2024 06:53:24 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rmz3p-0006nX-Ks
-	for lore@pengutronix.de; Wed, 20 Mar 2024 17:45:06 +0100
+	id 1rnBMg-0000lF-BI
+	for lore@pengutronix.de; Thu, 21 Mar 2024 06:53:22 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=WzZfUmn6nbbDF7XhsOwY7dPMm8Dvd465HS10WQ7vfYs=; b=2oTN7SMs7rqOWR
-	5p1cvlWcE5HfSxK8jVyCCDCLuvtOXb4lFw7aXVDzr1oe83uIJCoQu+8YmU6OWKTO+dKwzO1ZgrHqN
-	pklpX4WL0S8tyqzKXx3HEc2jWV09wlORYAQJNlk6V2cgIGh7UMmETsL7Cp17hSwEL6b/dDFIt/5tA
-	QmiK4raRNc35UbfN6UK/8ZHYoonTyW/XyMXpvurtFTXB5wwJ21PK93TI01G2rZXfwypuaDjVBIEZP
-	lh7D/RXFNhJsviyV0YSdh4ABjm5HUSq4PQwxcqRsQeTZcPwMVuhA4d9DJbEUPw0/snQrFlY3d56Sc
-	CmwqgFVbUUUXwDQAWvLA==;
+	List-Owner; bh=+MAcY8I5GJGxxmaCJwnfkGRJErYnNskO2S1p4ELyGgc=; b=4D4AubU4mUZ+60
+	zLaudR6vEtskgN+jMCo+Hgi7Q9cdV7M9RemZqHZjtiPi4c/Z7VfLtGHjTdIXqvy4rEQ7Of1iO8n4e
+	EN4UN2aUWM11ZhKp/CSdGtQznz4yrQfZEEqv3OWca3kdQRy9Gpz/cUpItVRISH6mr5qO+z3OUkQb/
+	1ARqPIMisbFGxzHMqNnZRLcKWFz8hXUlZjrMOEaqTDQbSs9C1+lTxlWF/A2kmqI4OJ4as5pRUmLWv
+	hcZ6xaF9Q7pl3yNhahZvzKjh530whdaS8xTUaMN4eirU0uTMSXqRxuqr4A7v8C1fX3ew7ej0bh/de
+	BdkwTnITKyrrr63weFKA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmz38-00000000N22-252n;
-	Wed, 20 Mar 2024 16:44:22 +0000
-Received: from mail-lj1-x22c.google.com ([2a00:1450:4864:20::22c])
+	id 1rnBM3-00000001yRG-2IW3;
+	Thu, 21 Mar 2024 05:52:43 +0000
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rmz34-00000000N0u-3MTI
+	id 1rnBM0-00000001yPm-06Dj
 	for barebox@lists.infradead.org;
-	Wed, 20 Mar 2024 16:44:20 +0000
-Received: by mail-lj1-x22c.google.com with SMTP id 38308e7fff4ca-2d41d1bedc9so1082681fa.3
-        for <barebox@lists.infradead.org>; Wed, 20 Mar 2024 09:44:17 -0700 (PDT)
+	Thu, 21 Mar 2024 05:52:41 +0000
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-513dd2d2415so637265e87.3
+        for <barebox@lists.infradead.org>; Wed, 20 Mar 2024 22:52:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1710953055; x=1711557855; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1711000356; x=1711605156; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WzZfUmn6nbbDF7XhsOwY7dPMm8Dvd465HS10WQ7vfYs=;
-        b=np6yqDdSGjH1ieg15Km04FbJi0yqKbrGOH97H2JwcWCzUf3e1YAA/bh6lpz/avYhrP
-         MIeGszq5QgkMNBxpDn3o6/CMecSiXAHuq3cRGpQziqvyh6c1RG8+ULswDDIApL/P8T47
-         i2GM54adscWsWjTOwwgz5FRhd7sfkVYJZZidYsmd3TqG9I0HaWjyc+5e2V3QGx+6S8WS
-         bQhZMjt8/g/GXo7ODRQJcKkmTGGDLJ1DvlPs95T3ITgk5ffUIOQtfbua5aMKozWJ8jKr
-         KdwHhAww7RlTnhxFsjoaK68uF3RPsjDkA3kXpKaCJEEooTo1fsfHeNL7PY+cfzM3CDzl
-         kp7g==
+        bh=+MAcY8I5GJGxxmaCJwnfkGRJErYnNskO2S1p4ELyGgc=;
+        b=C/1tOnW21iHiKkNKuOw3SK60sM2Asmfx1oKLt0Gglfv5wgzrUWZ8uQjcNddawHgDdA
+         fFdYL/65UT6fyxotgFws05Owlpm2T3JhqN60ofTZ7mOzJYH/SwgdwlYcgt3XLDMFD6vo
+         s5p2WqSrMS2UpcmV6lmlIlvOBexHCggmfrgXgD5RMBPJuf+wfV4BSst4iUoXIWgSxgV6
+         PQOmbjUwJJlmVa2qF5wdXpk4TwI+PyarrOrwSG7tvvImYRi/84NwN1D/p/9XfH2m5aiQ
+         fqsA0kPLMmXPKzpnREmFu6y65mUNzaSbY03mqcd0/M9MAuN189GVkLM52JdRkbA1dLe5
+         arWg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1710953055; x=1711557855;
+        d=1e100.net; s=20230601; t=1711000356; x=1711605156;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=WzZfUmn6nbbDF7XhsOwY7dPMm8Dvd465HS10WQ7vfYs=;
-        b=c+2zOQW38srjNxt4U7/tmmljH9VmPpoBxylpJ/vUNqHbRwEh2LP9jP3rH/ot4jzuzF
-         pCYG9kqe2w1QC9PGYQBTBkXQySTXRNpHsP4reHXGbQsXy9SkvNO+lVieq5qZtyCnF5K1
-         mTCjO1BOYPs5NVROyKAek+YRzgYoU38g10qYsUrB/a+qIcVKbUmJ2Ry0/T13qjqNbnsH
-         Sw4pCZO5idGukPz6frYCXTaDcKdZisUOp/q+umXe1+8UhXFXhR0HodPJUG6juEBbwt4M
-         G0iSL+kvCNJVJuE580ZT7PT0wxzkppZFp+al2yqL/frNr9Yya8XSj5Vr0lkJXZDPSp2X
-         KACw==
-X-Gm-Message-State: AOJu0Yxx8bwSmXXsTuWifGCYNxZLj/m6JIKInBoZt7mTafrOr5QB++BB
-	phQQaQ/Wmq7ZVH5c8GysKvXN9ue6hIkwhiDi54CYFeDCl15snqFqsNeGajWVTCjZug==
-X-Google-Smtp-Source: AGHT+IGg0i9sNAD5liYFFvolYIaVr72/t0wfLS5fqcm3JKH/dN9D5SJhb5xqRt4gpEUvV0zCZKmxiw==
-X-Received: by 2002:a2e:8653:0:b0:2d6:87d7:601 with SMTP id i19-20020a2e8653000000b002d687d70601mr4815337ljj.9.1710953054948;
-        Wed, 20 Mar 2024 09:44:14 -0700 (PDT)
-Received: from localhost.localdomain ([46.39.34.39])
-        by smtp.gmail.com with ESMTPSA id l16-20020a2e7010000000b002d2ab6ae675sm2198154ljc.137.2024.03.20.09.44.14
+        bh=+MAcY8I5GJGxxmaCJwnfkGRJErYnNskO2S1p4ELyGgc=;
+        b=pd8Bbk4cpTVyIZZKPJckseHb3nulPStr8iEqUD99F7/iuyRgXWEetzZ7X8q0d7ppah
+         O/BN02x3O1HD5LAgZaIdXkpMnaa5YHrTPi7f4LaOnBozQSYaZibQeW+ifukk6v1TzHOP
+         cGjgLyzmeCYS4wIpr4p8QCBowWj57ndIHP6zLbjGjtkb86sCQYRrzhFwEY8mfqXbY4Lb
+         AHWe6UuhBChqGB9I32Aa+06tVXsahCKEzEqyOqF/ya41H14V9Nty5ZzH8ET1Lj4TEZLx
+         6W70UagQXgS3i0nplDp51fKNj2dTS7pMA1gUCmchmcCHZ+SrA2E6TKK7uJmStBje5Tzh
+         AcIQ==
+X-Gm-Message-State: AOJu0YyAJVUru+jA8GBotRF2sjQOmui3o5clh1VyCH7AIN7MOM8a1FEh
+	oUhzJjuDOiD6NBEM2d5kRfC+Tc1IyD4NSAmYdt5WOw3hmzAKo8TR0aBVY4d4
+X-Google-Smtp-Source: AGHT+IEmz/bHK5Q8bl/x0zbaOPryni5lka8VxwG9XTvZDtOyjpG6zdQXUDWblNz19NsW5765L2bJKA==
+X-Received: by 2002:a05:6512:4d9:b0:513:97d5:245e with SMTP id w25-20020a05651204d900b0051397d5245emr652780lfq.31.1711000354191;
+        Wed, 20 Mar 2024 22:52:34 -0700 (PDT)
+Received: from cinco.. (109-252-3-142.nat.spd-mgts.ru. [109.252.3.142])
+        by smtp.gmail.com with ESMTPSA id l24-20020a19c218000000b00513d1ff9eb2sm2374066lfc.208.2024.03.20.22.52.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 Mar 2024 09:44:14 -0700 (PDT)
-From: Denis Orlov <denorl2009@gmail.com>
+        Wed, 20 Mar 2024 22:52:33 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Wed, 20 Mar 2024 19:43:36 +0300
-Message-ID: <20240320164404.15347-1-denorl2009@gmail.com>
-X-Mailer: git-send-email 2.44.0
+Date: Thu, 21 Mar 2024 08:53:12 +0300
+Message-Id: <20240321055312.1664676-1-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240320_094418_923954_2AE63609 
-X-CRM114-Status: GOOD (  10.76  )
+X-CRM114-CacheID: sfid-20240320_225240_222091_5DB0BD75 
+X-CRM114-Status: UNSURE (   8.98  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,46 +89,55 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Denis Orlov <denorl2009@gmail.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>, Marco Felsch <m.felsch@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.9 required=4.0 tests=AWL,BAYES_00,
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,
 	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] clk: fix clk_set_rate command help text
+Subject: [PATCH] common: deep-probe: fix DEEP_PROBE_UNKNOWN misspelling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-It was at odds with the list of options, with the former mentioning
-RATE and the latter mentioning HZ as a parameter. It seems that every
-other clk-related command uses HZ, so use it here too.
-
-Signed-off-by: Denis Orlov <denorl2009@gmail.com>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- commands/clk.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ common/deep-probe.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/commands/clk.c b/commands/clk.c
-index b1741b9da4..606519091e 100644
---- a/commands/clk.c
-+++ b/commands/clk.c
-@@ -67,7 +67,7 @@ static int do_clk_set_rate(int argc, char *argv[])
- }
+diff --git a/common/deep-probe.c b/common/deep-probe.c
+index 931e5a17709..b270a10f7fe 100644
+--- a/common/deep-probe.c
++++ b/common/deep-probe.c
+@@ -7,18 +7,18 @@
+ #include <of.h>
  
- BAREBOX_CMD_HELP_START(clk_set_rate)
--BAREBOX_CMD_HELP_TEXT("Set clock CLK to RATE")
-+BAREBOX_CMD_HELP_TEXT("Set clock CLK rate to HZ")
- BAREBOX_CMD_HELP_END
+ enum deep_probe_state {
+-	DEEP_PROBE_UNKONWN = -1,
++	DEEP_PROBE_UNKNOWN = -1,
+ 	DEEP_PROBE_NOT_SUPPORTED,
+ 	DEEP_PROBE_SUPPORTED
+ };
  
- BAREBOX_CMD_START(clk_set_rate)
+-static enum deep_probe_state boardstate = DEEP_PROBE_UNKONWN;
++static enum deep_probe_state boardstate = DEEP_PROBE_UNKNOWN;
+ 
+ bool deep_probe_is_supported(void)
+ {
+ 	struct deep_probe_entry *board;
+ 
+-	if (boardstate > DEEP_PROBE_UNKONWN)
++	if (boardstate > DEEP_PROBE_UNKNOWN)
+ 		return boardstate;
+ 
+ 	/* determine boardstate */
 -- 
-2.44.0
+2.39.0
 
 
 
