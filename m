@@ -1,55 +1,55 @@
-Delivery-date: Fri, 22 Mar 2024 17:50:38 +0100
+Delivery-date: Fri, 22 Mar 2024 17:50:42 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rni6I-0007Nr-0y
+	id 1rni6M-0007Og-2q
 	for lore@lore.pengutronix.de;
-	Fri, 22 Mar 2024 17:50:38 +0100
+	Fri, 22 Mar 2024 17:50:42 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rni6H-0002Rl-Kw
-	for lore@pengutronix.de; Fri, 22 Mar 2024 17:50:38 +0100
+	id 1rni6L-0002Uh-Qk
+	for lore@pengutronix.de; Fri, 22 Mar 2024 17:50:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/ZQ1ViacHy9KROnx7hDAw5MXqBELZVdRoRIIrwIjTGg=; b=VLQ4UlvDbWTgrt6PYP31MOiML1
-	lamkko0J9oJms593ZOaStft/Gho65l3dsyo0XhB6oWkigffipRAveXW8Cq7ly5BBHKZw1+JZYvzfa
-	XhPz5Wvq6Lt7y0+P/LHMQ2Xa2MsasgxDPfCpB2IudLqd/cISqAy1sHkLfvdLHsmfkdclOiIG8M7Qr
-	5HPlpaoKJEGSj8NEccBqxa5qwe1oiwDMeq4I/HQ1dzJ7/64yoPWnMmzweHb7ayU3s8ewLquPAJrEt
-	atIz1iYm8MiWY9DX3O8QBwZMWplGQFt9PCY+jAmSvjZcGLgWyzd7Ol14UFk2i+pmpRd7hEaho+ohk
-	wLIk7MSg==;
+	bh=i/EVs829VnyH27yFUa3mDpj5Ie7rtOcpulcKLsCI39s=; b=LTlJ9ReEzbVC0aOwbQfpFJgS+i
+	d4/te19vBibuVnWECcgpoHOei3C9ud+3ytiKYS9dNFIsYw+BpXbj832V+hwcC3SIB0dkX/dR3eMwa
+	9/VUBJWPDrePauKexKI15c9PaLevBKiiXL3hGTEpa4wOGIzLewMPn576RK8w5cDm6qq0P8SG2p5uu
+	tqL1r36u+KOEqyb8Nd7DuGhHtiQlGcFDM8UJJgGv6ZIqgQIEvM3aoAnkOffPEpISX2Kl5qAddMDBD
+	fawiC/fr197GbFMoxEw3cYlWEK23pzlY8/7rIKPheYc+1aoJHwOIg+35f/aSgeWW2nrW0IDPa9wpb
+	iQql0Mpw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rni5o-000000081Ev-1aIH;
-	Fri, 22 Mar 2024 16:50:08 +0000
+	id 1rni5s-000000081Ih-3ZGI;
+	Fri, 22 Mar 2024 16:50:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rni5c-0000000816x-3fiB
+	id 1rni5d-00000008170-003X
 	for barebox@lists.infradead.org;
-	Fri, 22 Mar 2024 16:50:00 +0000
+	Fri, 22 Mar 2024 16:50:01 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1rni5b-0001y5-Ps
+	id 1rni5b-0001y5-Re
 	for barebox@lists.infradead.org; Fri, 22 Mar 2024 17:49:55 +0100
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 22 Mar 2024 17:49:49 +0100
-Message-Id: <20240322164953.1772129-4-m.felsch@pengutronix.de>
+Date: Fri, 22 Mar 2024 17:49:51 +0100
+Message-Id: <20240322164953.1772129-6-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240322164953.1772129-1-m.felsch@pengutronix.de>
 References: <20240322164953.1772129-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240322_094957_021104_DC05AF0F 
-X-CRM114-Status: GOOD (  10.84  )
+X-CRM114-CacheID: sfid-20240322_094957_207752_D83F081B 
+X-CRM114-Status: GOOD (  17.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,93 +71,176 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/8] of: overlay: make search dir/path more generic
+Subject: [PATCH 6/8] of: overlay: add FIT overlay support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In preparation of adding support for FIT image overlay handling the
-global.of.overlay.dir can be reused if we rename it to a more generic
-global.of.overlay.path since it does not imply an directory.
+This adds the support to load devicetree overlays from an FIT image.
+There are quite a few options to handle FIT overlays since the FIT
+overlay spec is not very strict.
 
-This commit adds the ground work by deprecating the old
-global.of.overlay.dir and moving the directory handling into a separate
-of_overlay_global_fixup_dir() helper.
+This patch implement the most configurable case where each overlay does
+have it's own config node (including the optional signature).
 
-No functional change.
+- The "name" filter check is performed on the config-node name (the node
+  under the configurations) and not the FIT overlay image name (the node
+  name under the images node).
+- The "content" filter check does not differ from the file based overlay
+  handling.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/of/overlay.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ drivers/of/overlay.c | 110 ++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 103 insertions(+), 7 deletions(-)
 
 diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-index b688e708c382..e9fd5c0a1f7d 100644
+index e9fd5c0a1f7d..c8e70ab00091 100644
 --- a/drivers/of/overlay.c
 +++ b/drivers/of/overlay.c
-@@ -398,7 +398,7 @@ int of_register_overlay(struct device_node *overlay)
+@@ -8,10 +8,12 @@
+  */
+ #define pr_fmt(fmt) "of_overlay: " fmt
  
- static char *of_overlay_fitconfigpattern;
- static char *of_overlay_pattern;
--static char *of_overlay_dir;
-+static char *of_overlay_path;
- static char *of_overlay_basedir;
- 
- /**
-@@ -453,18 +453,18 @@ static int of_overlay_apply_dir(struct device_node *root, const char *dirname,
++#include <bootm.h>
+ #include <common.h>
+ #include <of.h>
+ #include <errno.h>
+ #include <globalvar.h>
++#include <image-fit.h>
+ #include <magicvar.h>
+ #include <string.h>
+ #include <libfile.h>
+@@ -473,9 +475,103 @@ static int of_overlay_global_fixup_dir(struct device_node *root, const char *ovl
  	return ret;
  }
  
--static int of_overlay_global_fixup(struct device_node *root, void *data)
-+static int of_overlay_global_fixup_dir(struct device_node *root, const char *ovl_dir)
- {
- 	char *dir;
- 	int ret;
- 
--	if (*of_overlay_dir == '/')
--		return of_overlay_apply_dir(root, of_overlay_dir, true);
-+	if (*ovl_dir == '/')
-+		return of_overlay_apply_dir(root, ovl_dir, true);
- 
--	if (*of_overlay_dir == '\0')
-+	if (*ovl_dir == '\0')
- 		return 0;
- 
--	dir = concat_path_file(of_overlay_basedir, of_overlay_dir);
-+	dir = concat_path_file(of_overlay_basedir, ovl_dir);
- 
- 	ret = of_overlay_apply_dir(root, dir, true);
- 
-@@ -473,6 +473,11 @@ static int of_overlay_global_fixup(struct device_node *root, void *data)
- 	return ret;
- }
- 
-+static int of_overlay_global_fixup(struct device_node *root, void *data)
++static int of_overlay_apply_fit(struct device_node *root, struct fit_handle *fit,
++				struct device_node *config)
 +{
-+	return of_overlay_global_fixup_dir(root, of_overlay_path);
++	const char *name = config->name;
++	struct device_node *overlay;
++	unsigned long ovl_sz;
++	const void *ovl;
++	int ret;
++
++	if (!fit_has_image(fit, config, "fdt"))
++		return 0;
++
++	if (!of_overlay_matches_filter(name, NULL))
++		return 0;
++
++	ret = fit_open_image(fit, config, "fdt", &ovl, &ovl_sz);
++	if (ret)
++		return ret;
++
++	overlay = of_unflatten_dtb(ovl, ovl_sz);
++
++	if (!of_overlay_matches_filter(NULL, overlay)) {
++		ret = 0;
++		goto out;
++	}
++
++	ret = of_overlay_apply_tree(root, overlay);
++	if (ret == -ENODEV)
++		pr_debug("Not applied %s (not compatible)\n", name);
++	else if (ret)
++		pr_err("Cannot apply %s: %s\n", name, strerror(-ret));
++	else
++		pr_info("Applied %s\n", name);
++
++out:
++	of_delete_node(overlay);
++
++	return ret;
 +}
 +
++static int of_overlay_global_fixup_fit(struct device_node *root, const char *ovl_dev)
++{
++	enum bootm_verify verify = bootm_get_verify_mode();
++	struct device_node *conf_node;
++	struct fit_handle *fit;
++	struct stat s;
++	int ret;
++
++	if (!IS_ENABLED(CONFIG_FITIMAGE))
++		return 0;
++
++	if (stat(of_overlay_path, &s))
++		return -errno;
++
++	fit = fit_open(ovl_dev, 0, verify, s.st_size);
++	if (IS_ERR(fit)) {
++		pr_err("Loading FIT image %s failed with: %pe\n", ovl_dev, fit);
++		return PTR_ERR(fit);
++	}
++
++	for_each_child_of_node(fit->configurations, conf_node) {
++		if (!fit_config_is_overlay(conf_node))
++			continue;
++
++		ret = fit_config_verify_signature(fit, conf_node);
++		if (ret)
++			goto out;
++
++		ret = of_overlay_apply_fit(root, fit, conf_node);
++		if (ret)
++			goto out;
++	}
++
++out:
++	fit_close(fit);
++	return ret;
++}
++
+ static int of_overlay_global_fixup(struct device_node *root, void *data)
+ {
+-	return of_overlay_global_fixup_dir(root, of_overlay_path);
++	struct stat s;
++
++	if (isempty(of_overlay_path))
++		return 0;
++
++	if (stat(of_overlay_path, &s)) {
++		pr_err("Failed to detect file status\n");
++		return -errno;
++	}
++
++	if (S_ISDIR(s.st_mode))
++		return of_overlay_global_fixup_dir(root, of_overlay_path);
++	else if (S_ISCHR(s.st_mode) || S_ISBLK(s.st_mode))
++		return of_overlay_global_fixup_fit(root, of_overlay_path);
++
++	pr_err("of_overlay_path is invalid!\n");
++	return -EINVAL;
+ }
+ 
  /**
-  * of_overlay_register_filter - register a new overlay filter
-  * @filter: The new filter
-@@ -607,10 +612,11 @@ static int of_overlay_init(void)
- 	globalvar_add_simple_string("of.overlay.compatible", &of_overlay_compatible);
- 	globalvar_add_simple_string("of.overlay.pattern", &of_overlay_pattern);
- 	globalvar_add_simple_string("of.overlay.filter", &of_overlay_filter);
--	globalvar_add_simple_string("of.overlay.dir", &of_overlay_dir);
-+	globalvar_add_simple_string("of.overlay.path", &of_overlay_path);
- 	globalvar_add_simple_string("of.overlay.fitconfigpattern", &of_overlay_fitconfigpattern);
+@@ -500,13 +596,13 @@ int of_overlay_register_filter(struct of_overlay_filter *filter)
  
- 	globalvar_alias_deprecated("of.overlay.filepattern", "of.overlay.pattern");
-+	globalvar_alias_deprecated("of.overlay.dir", "of.overlay.path");
- 
- 	of_overlay_register_filter(&of_overlay_pattern_filter);
- 	of_overlay_register_filter(&of_overlay_filepattern_filter);
-@@ -624,6 +630,6 @@ device_initcall(of_overlay_init);
+ /**
+  * of_overlay_filter_pattern - A filter that matches on the filename or
+- *                                an overlay
++ *			       FIT config-node name of an overlay
+  * @f: The filter
+- * @pattern: The filename of the overlay
++ * @pattern: The filename or FIT config-node name of the overlay
+  *
+- * This filter matches when the filename matches one of the patterns given
+- * in global.of.overlay.filepattern. global.of.overlay.filepattern shall
+- * contain a space separated list of wildcard patterns.
++ * This filter matches when the filename or FIT config-node name matches one of
++ * the patterns given in global.of.overlay.pattern. global.of.overlay.pattern
++ * shall contain a space separated list of wildcard patterns.
+  *
+  * @return: True when the overlay shall be applied, false otherwise.
+  */
+@@ -629,7 +725,7 @@ static int of_overlay_init(void)
+ device_initcall(of_overlay_init);
  
  BAREBOX_MAGICVAR(global.of.overlay.compatible, "space separated list of compatibles an overlay must match");
- BAREBOX_MAGICVAR(global.of.overlay.pattern, "space separated list of filepatterns an overlay must match");
--BAREBOX_MAGICVAR(global.of.overlay.dir, "Directory to look for dt overlays");
-+BAREBOX_MAGICVAR(global.of.overlay.path, "Path to look for dt overlays");
+-BAREBOX_MAGICVAR(global.of.overlay.pattern, "space separated list of filepatterns an overlay must match");
++BAREBOX_MAGICVAR(global.of.overlay.pattern, "space separated list of filename or fit config-node name patterns an overlay must match");
+ BAREBOX_MAGICVAR(global.of.overlay.path, "Path to look for dt overlays");
  BAREBOX_MAGICVAR(global.of.overlay.filter, "space separated list of filters");
  BAREBOX_MAGICVAR(global.of.overlay.fitconfigpattern, "FIT config node name pattern to look for dt overlays");
 -- 
