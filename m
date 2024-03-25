@@ -1,66 +1,67 @@
-Delivery-date: Mon, 25 Mar 2024 11:01:53 +0100
+Delivery-date: Mon, 25 Mar 2024 11:08:17 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1roh9N-003gZ3-2g
+	id 1rohFZ-003gxN-16
 	for lore@lore.pengutronix.de;
-	Mon, 25 Mar 2024 11:01:53 +0100
+	Mon, 25 Mar 2024 11:08:17 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1roh9J-0001dc-KK
-	for lore@pengutronix.de; Mon, 25 Mar 2024 11:01:53 +0100
+	id 1rohFY-0002Ob-Qb
+	for lore@pengutronix.de; Mon, 25 Mar 2024 11:08:17 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=DRQBzRmAM0a7CghcC3dwM8v1UUsulRmQCWR9BxefV00=; b=eWTkxfUh7tlZeMS0FaApdq14ku
-	OVqX3g569BLZXj79tkOgzjPhAiX6+usPfbhNdz3cRlwKNk0hz+x3adwtLQcf9XOnI20EWBZ+6pI4G
-	QyKuPjADstKPIEhJiwBA4kd5Ri/+G+/HEvi1cr7togZKXgqrgy0IutPNi1ym96XLkt/yynBIWhdsq
-	qbuMWpcR0hM/HUF2xRMc2v93coqsUejheqe3cWFrg4IWpt9Al0o+X1k2KjKLb9L8dL46TWqEm1mCc
-	hlEJ066m+jaU/4hvEwBS4rCtfFxn6mOctLj2EQmylELlKMYfHT+jwLChTkyNVBMMmOYa4ga34dhWc
-	bvMom9pQ==;
+	bh=zmsY2QxlwtQBGnAM37Xuo2rBo/DzWG7hpgU5XalOWv4=; b=VM/G0Hzdxuap6yqKwzBj4qSZz4
+	cbRrA3V+mRQZhpqbMd9otF9NCuWtnhEtR0A9C3aFE8A5ycjX88F39yum6gvRk+/OLfDD0np5XL665
+	fUl6T+VozyRvmIvtQvGbdvxhfZpoNl0aW4VJCfPKP0fc+TMgoIs/lHCiNmYpQu7NUdV98CsMQwkIb
+	G3cghMa7xt6c0kLqtBsoR9fdLB0RD27AeT5fw36u7Pp9fWa1AIoi/hlXNFhMRl2BM94ZvKyjFyEF4
+	pQTUpZ246Uv9VdatjNigs/cUjZ2jL8Ys+E0fe6gKTr7z1xGYhkqHv+OQThhKuWZUJUqYllEK8Xv1p
+	amnw8Pkg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1roh8V-0000000GbcT-0q2M;
-	Mon, 25 Mar 2024 10:00:59 +0000
+	id 1rohF0-0000000Ge8n-41pP;
+	Mon, 25 Mar 2024 10:07:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1roh8R-0000000Gbb5-1qCd
+	id 1rohEw-0000000Ge7O-3Lev
 	for barebox@lists.infradead.org;
-	Mon, 25 Mar 2024 10:00:56 +0000
+	Mon, 25 Mar 2024 10:07:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1roh8Q-0001RB-83; Mon, 25 Mar 2024 11:00:54 +0100
+	id 1rohEv-0002K3-8z; Mon, 25 Mar 2024 11:07:37 +0100
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1roh8P-008OSt-S7; Mon, 25 Mar 2024 11:00:53 +0100
+	id 1rohEu-008OW2-M5; Mon, 25 Mar 2024 11:07:36 +0100
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1roh8P-00CMgI-2c;
-	Mon, 25 Mar 2024 11:00:53 +0100
+	id 1rohEu-00CR4Y-1z;
+	Mon, 25 Mar 2024 11:07:36 +0100
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Bastian Krause <bst@pengutronix.de>
-In-Reply-To: <20240318163531.2348091-1-bst@pengutronix.de>
-References: <20240318163531.2348091-1-bst@pengutronix.de>
-Message-Id: <171136085380.2947081.18028837616519205903.b4-ty@pengutronix.de>
-Date: Mon, 25 Mar 2024 11:00:53 +0100
+To: barebox@lists.infradead.org, Antony Pavlov <antonynpavlov@gmail.com>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240320043850.1621511-1-antonynpavlov@gmail.com>
+References: <20240320043850.1621511-1-antonynpavlov@gmail.com>
+Message-Id: <171136125661.2963961.9937760744487833206.b4-ty@pengutronix.de>
+Date: Mon, 25 Mar 2024 11:07:36 +0100
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240325_030055_507079_F932A085 
-X-CRM114-Status: UNSURE (   5.28  )
+X-CRM114-CacheID: sfid-20240325_030738_986745_F2E9074F 
+X-CRM114-Status: UNSURE (   5.03  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -82,21 +83,20 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] firmware: fix SoC variant in help text of
- FIRMWARE_IMX93_OPTEE
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] treewide: drop unused header files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 18 Mar 2024 17:35:31 +0100, Bastian Krause wrote:
+On Wed, 20 Mar 2024 07:38:50 +0300, Antony Pavlov wrote:
 > 
 
 
 Applied, thanks!
 
-[1/1] firmware: fix SoC variant in help text of FIRMWARE_IMX93_OPTEE
-      https://git.pengutronix.de/cgit/barebox/commit/?id=bbda2f90b296 (link may not be stable)
+[1/1] treewide: drop unused header files
+      https://git.pengutronix.de/cgit/barebox/commit/?id=67643db3a914 (link may not be stable)
 
 Best regards,
 -- 
