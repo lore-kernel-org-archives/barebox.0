@@ -1,66 +1,70 @@
-Delivery-date: Tue, 26 Mar 2024 12:51:46 +0100
+Delivery-date: Tue, 26 Mar 2024 13:35:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rp5LG-005BWe-14
+	id 1rp61n-005Ezd-11
 	for lore@lore.pengutronix.de;
-	Tue, 26 Mar 2024 12:51:46 +0100
+	Tue, 26 Mar 2024 13:35:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rp5LF-0004q7-QG
-	for lore@pengutronix.de; Tue, 26 Mar 2024 12:51:46 +0100
+	id 1rp61m-0007Lv-Om
+	for lore@pengutronix.de; Tue, 26 Mar 2024 13:35:43 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
-	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5RniLWi3BJLl5kHuxmBbRFzVA3JFPaOKKTH0vhD/o/E=; b=muB5Tm8/YYrKOuWDFEeflU15TI
-	VYz2LcH5eWEXtW/bmjgmP7WOTJ4iSyqPaU9xowzCuVOlVtfjqCLzfPVkbAu8bO5dW4FlKUKtsCKq6
-	Pq1RpRGWMgm5X7t4S8L47uEQQ/J9VCtLmiguGsvFqQ4fTluCO3Zg7dJBvr0Y3CXCwoXD8TGcjZzyY
-	ZmUnqtCblkPnKr2788HiiFipH7zTVFvPgIe4hzf+PC0/mlNA/GLFQ/Iqo1gE3wttZQgT9r/UC5aLi
-	St3oEOZKc6JdY4s1yEN78DD/oouo5e43JQMgv6BOHzWOIZlLvTNSAy9clmtpOxbRsCFnP8hMN7/Ge
-	BphHh9fA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ppXxd3kQuW+0HZUBaaQIg2Sg/Rb74B4FQwwwZl9tkx4=; b=ELhW0VOA4U8EIUD+oE7uoLIFMK
+	om10FJtKYh2CzogIXvRTuh1UJbgwAsu5FLlpUGbzI4buHacwqRaZPgihVqdkFJYlcgKUho3VKinKV
+	OBNgcwCpYe2i8mMKYK6qQvui4SrnhM7rZZ2hSO2keW4E1r86iPEaLcCBHNxD/NQ2s9AhTzxpK9yaS
+	wSFUSeFQiRLiRU+je0/fdHTD8Cc9LidJgnmJJ8nxv8ocQgVCMOuIVwVY6aKurePxAh/4XipeQ0gUB
+	pZH7APBn+pbyddbtRixPA2bjKK7f0ZTsWm0FBFo7b61Le8Ll9CgVntk4WrZjVMgSjZo/QSrOjC8x1
+	TP1tmRxg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rp5Kc-00000004L3X-2rav;
-	Tue, 26 Mar 2024 11:51:06 +0000
+	id 1rp610-00000004UEC-2rWQ;
+	Tue, 26 Mar 2024 12:34:54 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rp5KX-00000004L1C-3rB5
+	id 1rp60x-00000004UD0-3xWX
 	for barebox@lists.infradead.org;
-	Tue, 26 Mar 2024 11:51:04 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1rp5KU-0004KL-46
-	for barebox@lists.infradead.org; Tue, 26 Mar 2024 12:50:58 +0100
-From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Tue, 26 Mar 2024 12:50:41 +0100
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240326-worktree-barebox-bosch-be-ppm4-v1-1-7ea75c487348@pengutronix.de>
+	Tue, 26 Mar 2024 12:34:53 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rp60w-0006ub-8L; Tue, 26 Mar 2024 13:34:50 +0100
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rp60v-008cOV-SC; Tue, 26 Mar 2024 13:34:49 +0100
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rp60v-0004FE-2Y;
+	Tue, 26 Mar 2024 13:34:49 +0100
+Date: Tue, 26 Mar 2024 13:34:49 +0100
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <ZgLA6SyzyB8aBGJE@pengutronix.de>
 References: <20240326-worktree-barebox-bosch-be-ppm4-v1-0-7ea75c487348@pengutronix.de>
-In-Reply-To: <20240326-worktree-barebox-bosch-be-ppm4-v1-0-7ea75c487348@pengutronix.de>
-To: barebox@lists.infradead.org
-X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1096;
- i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
- bh=CCFkhw1rGGsrhlHd1toZkqxFREFqNs90dA7DX1CcPuc=;
- b=owGbwMvMwCUmvd38QH3grB+Mp9WSGNKYts201w/6F/+WYY/znfcsC2+2BceWXkk48X25YvnKn
- XIzks1bOkpZGMS4GGTFFFki1x7S2Cz8WefL8fMMMHNYmUCGMHBxCsBECrgZGZr2REx9fSNjzdId
- kanWD4JFIz2uq2zf7bjDaYlCS+eFZC+G/8mHEv4tlnj1R5fr2qnbGs+t1lRvv+psYRAhzvI9eX2
- dODMA
-X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
- fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
+ <20240326-worktree-barebox-bosch-be-ppm4-v1-2-7ea75c487348@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240326-worktree-barebox-bosch-be-ppm4-v1-2-7ea75c487348@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240326_045102_100172_F23942FB 
-X-CRM114-Status: UNSURE (   9.10  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240326_053452_003479_4A9FCED9 
+X-CRM114-Status: GOOD (  20.46  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,46 +82,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] mci: mci-core: fix mci_switch_status call
+Subject: Re: [PATCH 2/2] mci: arasan: fix build for non-ZynqMP
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-mci_switch_status needs to be called with a boolean instead of a u32.
+On Tue, Mar 26, 2024 at 12:50:42PM +0100, Steffen Trumtrar wrote:
+> Registering sdclk only makes sense on the ZynqMP architecture. Guard
+> calling the function with a IS_ENABLED()
+> 
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  drivers/mci/arasan-sdhci.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
+> index f01396d7ee..b7dd98049f 100644
+> --- a/drivers/mci/arasan-sdhci.c
+> +++ b/drivers/mci/arasan-sdhci.c
+> @@ -772,7 +772,8 @@ static int arasan_sdhci_probe(struct device *dev)
+>  
+>  	mci->f_min = 50000000 / 256;
+>  
+> -	arasan_sdhci_register_sdclk(&arasan_sdhci->clk_data, clk_xin, dev);
+> +	if (IS_ENABLED(CONFIG_ARCH_ZYNQMP))
+> +		arasan_sdhci_register_sdclk(&arasan_sdhci->clk_data, clk_xin, dev);
 
-Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
----
- drivers/mci/mci-core.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+CONFIG_ARCH_ZYNQMP being enabled doesn't necessarily mean the code
+actually runs on Zynqmp. Does this need a runtime check for other
+architectures?
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 414bcf6f06..78c65c8614 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -1431,8 +1431,6 @@ static int mmc_select_hs200(struct mci *mci)
- 	/* find out maximum bus width and then try DDR if supported */
- 	err = mci_mmc_select_bus_width(mci);
- 	if (err > 0) {
--		u32 status;
--
- 		/* TODO  actually set drive strength instead of 0. Currently unsupported. */
- 		val = EXT_CSD_TIMING_HS200 | 0 << EXT_CSD_DRV_STR_SHIFT;
- 		err = mci_switch(mci, EXT_CSD_HS_TIMING, val);
-@@ -1452,7 +1450,7 @@ static int mmc_select_hs200(struct mci *mci)
- 		mci_set_ios(mci);
- 		mci_set_clock(mci, mci->host->hs_max_dtr);
- 
--		err = mci_switch_status(mci, &status);
-+		err = mci_switch_status(mci, true);
- 
- 		/*
- 		 * mmc_select_timing() assumes timing has not changed if
+Sascha
 
 -- 
-2.43.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
