@@ -1,68 +1,55 @@
-Delivery-date: Tue, 26 Mar 2024 07:09:36 +0100
+Delivery-date: Tue, 26 Mar 2024 07:46:43 +0100
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rp008-004mkc-0J
+	id 1rp0a3-004ofQ-06
 	for lore@lore.pengutronix.de;
-	Tue, 26 Mar 2024 07:09:36 +0100
+	Tue, 26 Mar 2024 07:46:43 +0100
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rp006-0000uE-Vr
-	for lore@pengutronix.de; Tue, 26 Mar 2024 07:09:36 +0100
+	id 1rp0a2-0004II-Em
+	for lore@pengutronix.de; Tue, 26 Mar 2024 07:46:42 +0100
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=tqaOEUvYxJ0bO0PpHgTlb1EbU2Z9rnlAAw9445bdSCU=; b=PdjJn6WN39VhBX4VU1g0y2g57/
-	QjN9HaT47KYYkYMyJXhLaprVlcYVrpV/MhL72F3VfNSkCb5JlXokxljZ42WcrHFvOQ/meQO9uIr5o
-	MYcCfWNN8MENqz5C3VzZDbvMU2jKjfK7jLguIjPNgAa9uhUgOa+hlzzi/UAMSNrZMS//8WqzcbeMO
-	sz6q7jrAbd5GpujLyGAVCfBpEW4vYyYRwTb9LS58ykaUXTHijrS1ejxZopnzCs6suptj9EMFwKXf0
-	EHXCIZIos4ifmcT1/AljTTCfOMeKyM5CXQEPHn7SjHFSJ+l60jp1xUS7xRUYiA8cSlTijPHbfAwFY
-	d7uWFfww==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=YI+OlEWGnpOKEVC+Ey9lIXYqXNmWprYd5/tRpOt+tjw=; b=PbesYJUlwh37rBbwVDM+RbVyGm
+	OXy836jqW+dRdOtik/I0rXcYdGJrG6ErwLq59uSWvxRDPWzxOpjFXyPqcFBP+W9Xz8lK42BpML4lh
+	Z21G4Fi+GP1KoNO6MguCV+bSaFBU+RkKHxU7vzts7aNEDiOFpYt7QkJHp3cjG7zTRELpVNAiLSlrk
+	PSjqrUrSsyfz/bk1TYy4BHf4Lchnh3sbi1J0ryqZIJoxdAmYfqs5orRH80UzXMkLfUy2zMaZ6W5XR
+	dN5Mt/eE7e+ctHCYmIpfZR9BudBoKPkR4VhSM2Cz4pSOaCw8VP8PGxElk44SUvEDzjkMsRJv4VuI6
+	K9pLidvA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rozzT-00000003Eeg-1L5z;
-	Tue, 26 Mar 2024 06:08:55 +0000
-Received: from smtp.cesky-hosting.cz ([2a00:1ed0:2:0:1:5bef:c8ee:1])
+	id 1rp0ZP-00000003KQC-1g1C;
+	Tue, 26 Mar 2024 06:46:03 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rozzO-00000003EbB-2dtP
+	id 1rp0ZL-00000003KND-1jdz
 	for barebox@lists.infradead.org;
-	Tue, 26 Mar 2024 06:08:53 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=elrest.cz;
-	s=rampa2-202308; t=1711433315;
-	bh=4LA+7c8LvziYfdd7LyW/f8cich/91n9Zy+drBcblaDQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dw6kdoIHxqXhJYG1VgQpmy+kxfk0BUby4yMxirV1Vlnhq6iBfIb+yf9mFM22CHdgV
-	 BtVNqXoD6k9zKOMjKn5665aKQfmYRvLrwVBVmQ7NdlltLV66H6QTjYVrlWJbIjW/U2
-	 m3ZIbjPaH5pPZrx0+PK82IbcGmW02hchjLNwdCdIF0n7ylo4oil8AdYtjaWtmPW8ew
-	 uJL4UkSIL5Lc1vCmkii0uWNwRsbZVZGsWqXTc9v1zocxWtcJmIRO+abQy6gBkrjTeT
-	 bG9kAs4ppPCux4grqXvC8sAi64rYG2x1jKwLqpNO0huY7M6G4oKd6da/b+4LADrq1l
-	 c1xHrt4LdhzaQ==
-X-Virus-Scanned: Debian amavis at smtp.cesky-hosting.cz
-X-Thin-Conversation: seen
-Received: from debian (unknown [185.63.98.16])
-	(Authenticated sender: tomas.marek@elrest.cz)
-	by smtp.cesky-hosting.cz (Postfix) with ESMTPSA id 5BA2C5E1;
-	Tue, 26 Mar 2024 07:08:32 +0100 (CET)
-Date: Tue, 26 Mar 2024 07:08:30 +0100
-From: Tomas Marek <tomas.marek@elrest.cz>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <ZgJmXgQZKRRQQN_u@debian>
-References: <20240320125538.31679-1-tomas.marek@elrest.cz>
- <ZgFUcmW8aY-QSlRs@pengutronix.de>
+	Tue, 26 Mar 2024 06:46:01 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost)
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <r.czerwinski@pengutronix.de>)
+	id 1rp0ZF-0004BS-Er; Tue, 26 Mar 2024 07:45:53 +0100
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 26 Mar 2024 07:45:51 +0100
+Message-ID: <20240326064551.148669-1-r.czerwinski@pengutronix.de>
+X-Mailer: git-send-email 2.44.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZgFUcmW8aY-QSlRs@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240325_230851_185486_47AC808A 
-X-CRM114-Status: GOOD (  22.84  )
+X-CRM114-CacheID: sfid-20240325_234559_472618_0EEB418C 
+X-CRM114-Status: UNSURE (   8.01  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,67 +67,40 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-1.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,RCVD_IN_SBL_CSS,SPF_HELO_NONE,
-	SPF_NONE autolearn=no autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] i2c: add EFI i2c master driver
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH] mci: mci-core: make devinfo hex values obvious
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Sascha,
+The Manufacturer and OEM/Application ID are printed as hex values, but
+don't have a leading zero to designate them as hex to a human reader.
+Add the leading 0x to make it obvious that these are hex values.
 
-On Mon, Mar 25, 2024 at 11:39:46AM +0100, Sascha Hauer wrote:
-> Hi Tomas,
-> 
-> Thanks for the patch. Looks mostly fine, but this needs fixing:
-> 
-> On Wed, Mar 20, 2024 at 01:55:38PM +0100, Tomas Marek wrote:
-> > +static int efi_i2c_xfer(struct i2c_adapter *adapter,
-> > +			struct i2c_msg *msg, int nmsgs)
-> > +{
-> > +	struct efi_i2c_priv *i2c_priv = adapter_to_efi_i2c_priv(adapter);
-> > +	int i, ret;
-> > +
-> > +	for (i = nmsgs; i > 0; i--, msg++) {
-> > +		ret = efi_i2c_message_xfer(i2c_priv, msg);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> 
-> Each of the messages should start with a (repeated) start bit and only
-> the last message should be followed by a stop bit. By separating the
-> full message into segments and pushing each segment into EFI separately
-> you would instead send a stop bit after each segment, see the comment
-> above EFI_I2C_REQUEST_PACKET:
-> 
-> ///
-> /// I2C device request
-> ///
-> /// The EFI_I2C_REQUEST_PACKET describes a single I2C transaction.  The
-> /// transaction starts with a start bit followed by the first operation
-> /// in the operation array.  Subsequent operations are separated with
-> /// repeated start bits and the last operation is followed by a stop bit
-> /// which concludes the transaction.  Each operation is described by one
-> /// of the elements in the Operation array.
-> ///
-> 
-> Instead you have to compile all nmsgs into a single EFI_I2C_REQUEST_PACKET
-> and push it into EFI as a single request.
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+---
+ drivers/mci/mci-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-I see. You are right. I will fix.
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index 414bcf6f06..9d6d01f8bc 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -2058,8 +2058,8 @@ static void mci_info(struct device *dev)
+ 		mci->csd[2], mci->csd[3]);
+ 	printf("  Max. transfer speed: %u Hz\n", mci->tran_speed);
+ 	mci_print_caps(mci->card_caps);
+-	printf("  Manufacturer ID: %02X\n", extract_mid(mci));
+-	printf("  OEM/Application ID: %04X\n", extract_oid(mci));
++	printf("  Manufacturer ID: 0x%02X\n", extract_mid(mci));
++	printf("  OEM/Application ID: 0x%04X\n", extract_oid(mci));
+ 	printf("  Product name: '%c%c%c%c%c'\n", mci->cid[0] & 0xff,
+ 		(mci->cid[1] >> 24), (mci->cid[1] >> 16) & 0xff,
+ 		(mci->cid[1] >> 8) & 0xff, mci->cid[1] & 0xff);
+-- 
+2.44.0
 
-Best regards
-
-Tomas
-
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
