@@ -1,63 +1,65 @@
-Delivery-date: Tue, 02 Apr 2024 11:27:30 +0200
+Delivery-date: Tue, 02 Apr 2024 12:01:17 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rraQU-003C9s-2i
+	id 1rraxA-003FoG-3D
 	for lore@lore.pengutronix.de;
-	Tue, 02 Apr 2024 11:27:30 +0200
+	Tue, 02 Apr 2024 12:01:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rraQU-0005aI-8F
-	for lore@pengutronix.de; Tue, 02 Apr 2024 11:27:30 +0200
+	id 1rrax5-0004Vk-S8
+	for lore@pengutronix.de; Tue, 02 Apr 2024 12:01:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ZrIq9Ia2rs9HYqSVHdU4DMU+hHe7DUR5HuYJ7IPR9Ho=; b=PW0csnP6fjLRmsMmKZL62P1mE2
-	cTd3JjlrhsjQjYD737hoKMjwIvjMDI7+VYewuZCT48pextmPAHPiRtLpcZcAzTWmITFyb8SdGv1o0
-	De4ZOfOOcgUdfnAmM0IJLZlZ0muLqIZeLj1DZIwkRUV0P3XDjTnjbkLYC1WUYcxENyB/2fReGI89Y
-	u4VHcCGjAp89l6eMy7q8YSJn8A49YOyFmr8kfuofKkutPzWYpiPoMeMjtaX00zgoO08vUCKh8fODi
-	lv62TzUQJUok3B5+Fczmm5x81V31uk9/RQR9VUoUF2maTu4Z0Qoxjkpqi7UwPgGbj/b6r7yJFh+Sw
-	JG1Z7QBQ==;
+	bh=1dlSCo1A7vIs9nZ/SRW0FqZFMDNdY/zrr2tqN49RfYM=; b=XDGsalhGRfcHWq5124/4GdMZ+n
+	305pxKII9TeichB6fLP5SlhRopFowlc7WtcfeA1aAyte/41EigvIdcnAE+Hqt+TG8NsNxJb7LYj+y
+	ieslGvDqDI515QTJMIJ2zRPw6gbWGYWmI52r5eZ9PDGPmfl1jE47aYpbG36tVm82yQwkOciA9G5Ee
+	vbkSclGogzu+gOJkcwLyX1N9qe2aE2Hqv0eNOx7x6K0N45qXeSrYGaZzSn/4Czmmkl/NNTq0Bd3rC
+	X2L/ofKceCoUnehNhQh3vNfVnKsocYKKkqXMyjcokuGMJdbv8Ee/3PKL0qlbkPY0q+m/yUBjwdoMz
+	CX/0XswA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rraQ2-0000000AQye-0xHz;
-	Tue, 02 Apr 2024 09:27:02 +0000
+	id 1rrawA-0000000AXkx-3oVb;
+	Tue, 02 Apr 2024 10:00:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rraPy-0000000AQwS-0s7k
+	id 1rraw8-0000000AXk7-1lnc
 	for barebox@lists.infradead.org;
-	Tue, 02 Apr 2024 09:26:59 +0000
+	Tue, 02 Apr 2024 10:00:13 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1rraPv-000506-EX; Tue, 02 Apr 2024 11:26:55 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rraw6-0003Hi-Ko; Tue, 02 Apr 2024 12:00:10 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1rraPv-009xCn-28; Tue, 02 Apr 2024 11:26:55 +0200
-Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1rraPv-000Oao-02;
-	Tue, 02 Apr 2024 11:26:55 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rraw6-009xJ7-7y; Tue, 02 Apr 2024 12:00:10 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rraw6-00AQII-0U;
+	Tue, 02 Apr 2024 12:00:10 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-Date: Tue,  2 Apr 2024 11:26:53 +0200
-Message-Id: <20240402092654.94523-1-o.rempel@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  2 Apr 2024 12:00:06 +0200
+Message-Id: <20240402100006.2484309-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240402_022658_267639_228EBE50 
-X-CRM114-Status: GOOD (  12.40  )
+X-CRM114-CacheID: sfid-20240402_030012_490219_D127BAE3 
+X-CRM114-Status: UNSURE (   9.32  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,55 +77,47 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 1/2] ARM: i.MX8MP: skov: add fallback for unsupported HW
+Subject: [PATCH] fastboot: explain use of struct fastboot::cmd_exec/flash
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add fallback support for currently not supported HW. Instead of
-completely fail, it is better to use some kind of basic devicetree with
-reduced functionality.
+Commit ed1dded0898f ("usb: gadget: fastboot: Add external command
+execution support") added hooks that allow board code to register its
+own OEM extensions for Fastboot. There are no users of these hooks
+upstream and without digging into the Git history, it's not evident, why
+these hooks are there, especially as the files have been renamed since.
 
-Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Add a comment to explain what these never-set callbacks are for.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/boards/skov-imx8mp/board.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ common/fastboot.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boards/skov-imx8mp/board.c b/arch/arm/boards/skov-imx8mp/board.c
-index 3b6eb7b080..41122ea1e4 100644
---- a/arch/arm/boards/skov-imx8mp/board.c
-+++ b/arch/arm/boards/skov-imx8mp/board.c
-@@ -85,6 +85,10 @@ static const struct board_description imx8mp_variants[] = {
- 	},
- };
- 
-+static const struct board_description imx8mp_basic_viariant = {
-+	.dts_compatible = "skov,imx8mp-skov-basic",
-+};
-+
- static int skov_imx8mp_fixup(struct device_node *root, void *data)
- {
- 	struct device_node *chosen = of_create_node(root, "/chosen");
-@@ -171,12 +175,12 @@ static int skov_imx8mp_init_variant(struct skov_imx8mp_priv *priv)
- 	priv->variant_id = v;
- 
- 	if (v >= ARRAY_SIZE(imx8mp_variants)) {
--		dev_err(dev, "Invalid variant %u\n", v);
--		return -EINVAL;
-+		dev_warn(dev, "Unsuported variant %u. Fall back to basic variant\n", v);
-+		variant = &imx8mp_basic_viariant;
-+	} else {
-+		variant = &imx8mp_variants[v];
+diff --git a/common/fastboot.c b/common/fastboot.c
+index d8dabd89ab27..f8a01dea7a65 100644
+--- a/common/fastboot.c
++++ b/common/fastboot.c
+@@ -666,6 +666,7 @@ static void cb_flash(struct fastboot *fb, const char *cmd)
+ 		goto out;
  	}
  
--	variant = &imx8mp_variants[v];
--
- 	if (variant->flags & SKOV_IMX8MP_HAS_HDMI) {
- 		ret = skov_imx8mp_get_hdmi(dev);
- 		if (ret < 0)
++	/* Check if board-code registered a vendor-specific handler */
+ 	if (fb->cmd_flash) {
+ 		ret = fb->cmd_flash(fb, fentry, fb->tempname, fb->download_size);
+ 		if (ret != FASTBOOT_CMD_FALLTHROUGH)
+@@ -940,6 +941,7 @@ void fastboot_exec_cmd(struct fastboot *fb, const char *cmdbuf)
+ 	g_fb = fb;
+ 	fb->active = true;
+ 
++	/* Check if board-code registered a vendor-specific handler */
+ 	if (fb->cmd_exec) {
+ 		ret = fb->cmd_exec(fb, cmdbuf);
+ 		if (ret != FASTBOOT_CMD_FALLTHROUGH)
 -- 
 2.39.2
 
