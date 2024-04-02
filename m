@@ -1,64 +1,74 @@
-Delivery-date: Tue, 02 Apr 2024 10:47:00 +0200
+Delivery-date: Tue, 02 Apr 2024 10:59:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrZnI-00380F-20
+	id 1rrZzn-0039E2-2w
 	for lore@lore.pengutronix.de;
-	Tue, 02 Apr 2024 10:47:00 +0200
+	Tue, 02 Apr 2024 10:59:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrZnH-00028k-Df
-	for lore@pengutronix.de; Tue, 02 Apr 2024 10:47:00 +0200
+	id 1rrZzm-0005IS-Mx
+	for lore@pengutronix.de; Tue, 02 Apr 2024 10:59:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=7HOlzy3Hkb7VaXaJ4dO0lLASvh5NF69HQmj7X5lajwo=; b=ZIxjtQxCAK0spYOXh13xnXsrHi
-	DI32HXRJaITS52egHR3+H5sigmN6ocR6GTl1NUEfNpPyJfxhGoKlARJuqiqtbAKAvG3R2b6efmwJ/
-	2fNgFZ5VtuqqkbNo1pNbYKI+oq0sIkirKNa05pEK+oUd0fZIbKTnlQptbckbxwqYtONy3M5x8shrz
-	12PiyoVNLHL0sd3s8Cb0wwfQK2VL9AR5T5U5goJg3dvYoerSZhvEgQspgukx5so9PPuuZonikZuUs
-	ir8w8VLMch0w1Yc7CjV2568WnGGQ6LCV0Dr/AQAK7OU7LcDFzHKRs3xHswaP5Mwrrio+1k3j/g1+P
-	Je0zJovA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=iMt/uCycQJGINIJ9V88GzWnOEMW4rRTUtfSJ7Jhcf1c=; b=pkaQdXHoM1snC/tOQxdXZdlA1e
+	y3dd53OeG3OKrbz8jIHAaQdwH8ragEk1dwHRNSwbCDeU1XwOusmj5D+0qhblZSlOs5Lb5AKuPKYsl
+	ej/+q3gEAMYhwbuOB+R5nWk/+mn3WL55sALqJo61Fj9aDISjmHzagGFlx4iyFGUlLM/WQ9pA9QU2z
+	XMBJVMX6IwQYTEnpIHaA1PM1Y6RSbLf1ugvE2vrQ3cFCdOCSpgtVPDlLQd8bpqpbQ4R68EHeA3bwa
+	iLuRFjZxe/c0EL2HTL4dneLjzMSk8H8L0UQ52k0LgMBxcBE7kLTrx4Mh6NUK/YY1zVdMImtFmaiiD
+	9ZKAWblA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrZmh-0000000AIyq-1tLM;
-	Tue, 02 Apr 2024 08:46:23 +0000
+	id 1rrZzG-0000000ALEL-3tbk;
+	Tue, 02 Apr 2024 08:59:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrZme-0000000AIx3-0Rze
+	id 1rrZzD-0000000ALDE-2JAr
 	for barebox@lists.infradead.org;
-	Tue, 02 Apr 2024 08:46:21 +0000
+	Tue, 02 Apr 2024 08:59:20 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rrZmc-0001Vl-L9; Tue, 02 Apr 2024 10:46:18 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rrZzC-0004if-4d; Tue, 02 Apr 2024 10:59:18 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rrZmc-009wl7-54; Tue, 02 Apr 2024 10:46:18 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rrZmc-00EQDf-0B;
-	Tue, 02 Apr 2024 10:46:18 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1rrZzB-009wn2-OK; Tue, 02 Apr 2024 10:59:17 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rrZzB-00AlVf-29;
+	Tue, 02 Apr 2024 10:59:17 +0200
+Date: Tue, 2 Apr 2024 10:59:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Cc: David Jander <david@protonic.nl>
-Date: Tue,  2 Apr 2024 10:46:16 +0200
-Message-Id: <20240402084616.3437060-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+To: Lucas Stach <l.stach@pengutronix.de>
+Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
+	barebox@lists.infradead.org
+Message-ID: <ZgvI5SfUShsxOj0z@pengutronix.de>
+References: <20240326-worktree-barebox-bosch-be-ppm4-v1-0-7ea75c487348@pengutronix.de>
+ <20240326-worktree-barebox-bosch-be-ppm4-v1-2-7ea75c487348@pengutronix.de>
+ <ZgLA6SyzyB8aBGJE@pengutronix.de>
+ <ZgvCyRqmMUwfMbl2@pengutronix.de>
+ <f72418fa68eb9f944c2cea7ba5e8380417fec790.camel@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f72418fa68eb9f944c2cea7ba5e8380417fec790.camel@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240402_014620_194283_4289B574 
-X-CRM114-Status: GOOD (  10.20  )
+X-CRM114-CacheID: sfid-20240402_015919_612617_87A8ADB6 
+X-CRM114-Status: GOOD (  30.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,53 +86,65 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] net: usb: ax88179_178a.c: Add 2 new USB ids
+Subject: Re: [PATCH 2/2] mci: arasan: fix build for non-ZynqMP
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: David Jander <david@protonic.nl>
+On Tue, Apr 02, 2024 at 10:43:24AM +0200, Lucas Stach wrote:
+> Am Dienstag, dem 02.04.2024 um 10:33 +0200 schrieb Sascha Hauer:
+> > On Tue, Mar 26, 2024 at 01:34:49PM +0100, Sascha Hauer wrote:
+> > > On Tue, Mar 26, 2024 at 12:50:42PM +0100, Steffen Trumtrar wrote:
+> > > > Registering sdclk only makes sense on the ZynqMP architecture. Guard
+> > > > calling the function with a IS_ENABLED()
+> > > > 
+> > > > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> > > > ---
+> > > >  drivers/mci/arasan-sdhci.c | 3 ++-
+> > > >  1 file changed, 2 insertions(+), 1 deletion(-)
+> > > > 
+> > > > diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
+> > > > index f01396d7ee..b7dd98049f 100644
+> > > > --- a/drivers/mci/arasan-sdhci.c
+> > > > +++ b/drivers/mci/arasan-sdhci.c
+> > > > @@ -772,7 +772,8 @@ static int arasan_sdhci_probe(struct device *dev)
+> > > >  
+> > > >  	mci->f_min = 50000000 / 256;
+> > > >  
+> > > > -	arasan_sdhci_register_sdclk(&arasan_sdhci->clk_data, clk_xin, dev);
+> > > > +	if (IS_ENABLED(CONFIG_ARCH_ZYNQMP))
+> > > > +		arasan_sdhci_register_sdclk(&arasan_sdhci->clk_data, clk_xin, dev);
+> > > 
+> > > CONFIG_ARCH_ZYNQMP being enabled doesn't necessarily mean the code
+> > > actually runs on Zynqmp. Does this need a runtime check for other
+> > > architectures?
+> > 
+> > The arasan MMC driver is currently only used on ZynqMP, so it's OK for
+> > now.
+> > 
+> That's not true. The driver is also used on the Zynq7000.
 
-Add support for the Sitecom USB 3.0 to Gigabit Adapter and the
-Belkin Gigabit Ethernet Adapter. The existing driver works as is, so
-only add the IDs.
+You're right. I didn't remember we have support for that in barebox as
+well. In this case this note becomes relevant:
 
-Signed-off-by: David Jander <david@protonic.nl>
----
- drivers/net/usb/ax88179_178a.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+> 
+> > In Linux the driver the ZynqMP specifics are only used with the "xlnx,zynqmp-8.9a"
+> > compatible whereas our driver binds to the "arasan,sdhci-8.9a"
+> > compatible. This makes it more clear that this is really a ZynqMP
+> > specific path that is taken here.
 
-diff --git a/drivers/net/usb/ax88179_178a.c b/drivers/net/usb/ax88179_178a.c
-index c6108c488b..067b0c2f9e 100644
---- a/drivers/net/usb/ax88179_178a.c
-+++ b/drivers/net/usb/ax88179_178a.c
-@@ -723,6 +723,10 @@ static const struct usb_device_id products[] = {
- 	/* Sitecom USB 3.0 to Gigabit Adapter */
- 	USB_DEVICE(0x0df6, 0x0072),
- 	.driver_info = &sitecom_info,
-+}, {
-+	/* Sitecom USB 3.0 to Gigabit Adapter */
-+	USB_DEVICE(0x0df6, 0x0056),
-+	.driver_info = &sitecom_info,
- }, {
- 	/* Samsung USB Ethernet Adapter */
- 	USB_DEVICE(0x04e8, 0xa100),
-@@ -735,6 +739,10 @@ static const struct usb_device_id products[] = {
- 	/* Belkin B2B128 USB 3.0 Hub + Gigabit Ethernet Adapter */
- 	USB_DEVICE(0x050d, 0x0128),
- 	.driver_info = &belkin_info,
-+}, {
-+	/* Belkin Gigabit Ethernet Adapter */
-+	USB_DEVICE(0x050d, 0x5055),
-+	.driver_info = &belkin_info,
- },
- 	{ },
- };
+We have to put the ZynqMP specific stuff behind the "xlnx,zynqmp-8.9a"
+compatible to make sure Zynq7000 doesn't take this path.
+
+Sascha
+
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
