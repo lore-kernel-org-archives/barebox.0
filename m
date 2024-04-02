@@ -1,64 +1,67 @@
-Delivery-date: Tue, 02 Apr 2024 15:45:49 +0200
+Delivery-date: Tue, 02 Apr 2024 15:51:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rreST-003eBE-0o
+	id 1rreY3-003eel-22
 	for lore@lore.pengutronix.de;
-	Tue, 02 Apr 2024 15:45:49 +0200
+	Tue, 02 Apr 2024 15:51:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rreSS-0004Zg-Lr
-	for lore@pengutronix.de; Tue, 02 Apr 2024 15:45:49 +0200
+	id 1rreY3-00039k-1x
+	for lore@pengutronix.de; Tue, 02 Apr 2024 15:51:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=nMj7xRlBfLZGbYZV9HhsthZp5dSHsoeZOGtMh7NpThM=; b=utxEKBXItTazH+9Dqfv9VKGs/m
-	kMZrSlTIukJy6XZ5vfXKqNgTpY9NyadqPuSmxSudcKEM5cR+Jh/F1imled8H8CVmICmanhuRC8dg7
-	iRBKtmIynGZFoWf4olk4VPKrHz1lvOpIDU2+NDB9x+rzP2ObZCBERLLb+AGl8nognN0bg93c+aMmf
-	BDxULUH/a8+vk+SVY80ZaUfT+9zSMfg12WsxvkT2qFuJi14fI1YPwKP+Re+rLijmoNSeP8LmjzwA3
-	e6zy2DdLzAuCHbCGT8QkLdGRoB3pavlFivb+MlB5mokZY7gU+gayDt1LinQEyD/r0J72iJMc2/0I+
-	7EvcX2Nw==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=q0uxIU7sP5eglZQGbQIK23+g9r/bCiFxVP5Gp4mqI1g=; b=Po1/cgvCIyhhqGomFMb4fIO1J/
+	i0AHF7PPx6glmRUaWhwLsaMNNpBZXItwdqUAeudgS9lu5hTYKC5GJLo/TLf3hZldMzBMTH1c7axbf
+	sNOVro3WVfNkDTya+T7JawrU3zntCoSCz1Ra6mvIDPpcRbLPqg6U5hNs7IpTMtP06mmElweT877Is
+	zs2z52KlPOSJZX5C44KQg2OY9yz8aHa4lvbkuC1JkzSUxjwSm5rqbtbpqkHpneU1kPFULKbU9+4hw
+	heU5G6u6i7vIGJxhzf5tQQm1YezUmPsmDLq1Y8+DpXrox1tSkrAvr5hoNQFkCz4V08H+bwi43Kf9A
+	zNs/CAhw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rreRp-0000000BPm3-0e7H;
-	Tue, 02 Apr 2024 13:45:09 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1rreXY-0000000BRwQ-3sOw;
+	Tue, 02 Apr 2024 13:51:04 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rreRl-0000000BPj3-0dKL
+	id 1rreXO-0000000BRjq-13Ba
 	for barebox@lists.infradead.org;
-	Tue, 02 Apr 2024 13:45:06 +0000
+	Tue, 02 Apr 2024 13:51:00 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rreRi-0003XG-CF; Tue, 02 Apr 2024 15:45:02 +0200
+	id 1rreX7-0001ym-9A; Tue, 02 Apr 2024 15:50:37 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rreRh-009zgX-Vo; Tue, 02 Apr 2024 15:45:01 +0200
+	id 1rreX6-009zhX-SU; Tue, 02 Apr 2024 15:50:36 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rreRh-00FTlX-2s;
-	Tue, 02 Apr 2024 15:45:01 +0200
+	id 1rreX6-00FWhb-2a;
+	Tue, 02 Apr 2024 15:50:36 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Apr 2024 15:44:59 +0200
-Message-Id: <20240402134501.3689322-1-a.fatoum@pengutronix.de>
+Cc: lgo@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue,  2 Apr 2024 15:50:34 +0200
+Message-Id: <20240402135035.3700601-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240402135035.3700601-1-a.fatoum@pengutronix.de>
+References: <20240402135035.3700601-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240402_064505_286128_6BCC5204 
-X-CRM114-Status: UNSURE (   8.65  )
+X-CRM114-CacheID: sfid-20240402_065054_458713_E6998802 
+X-CRM114-Status: UNSURE (   9.39  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -81,31 +84,49 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 1/3] soc: sifive: l2_cache: fix 32-bit compilation
+Subject: [PATCH 3/4] input: imx-keypad: remove now-duplicate debug messages
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The StarFive SoCs are 64-bit, but the L2 cache driver could be
-compile-tested on 32-bit as well. Currently, this would fail, because
-writeq isn't defined. Fix this by emulating it using a lo-hi write.
+With the recent addition of CONFIG_EVENT_EVBUG, the debug messages in
+both i.MX keypad driver adds no extra value, so remove it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/soc/sifive/sifive_l2_cache.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/input/imx_keypad.c | 6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/soc/sifive/sifive_l2_cache.c b/drivers/soc/sifive/sifive_l2_cache.c
-index aab21f9f50e6..c404143974fc 100644
---- a/drivers/soc/sifive/sifive_l2_cache.c
-+++ b/drivers/soc/sifive/sifive_l2_cache.c
-@@ -9,6 +9,7 @@
- #define pr_fmt(fmt) "sifive-l2: " fmt
+diff --git a/drivers/input/imx_keypad.c b/drivers/input/imx_keypad.c
+index 2c003905a7d9..e57a884630aa 100644
+--- a/drivers/input/imx_keypad.c
++++ b/drivers/input/imx_keypad.c
+@@ -72,7 +72,6 @@
+ struct imx_keypad {
+ 	struct input_device input;
+ 	struct clk *clk;
+-	struct device *dev;
+ 	void __iomem *mmio_base;
  
- #include <io.h>
-+#include <io-64-nonatomic-lo-hi.h>
- #include <linux/printk.h>
- #include <stdio.h>
- #include <driver.h>
+ 	struct poller_struct poller;
+@@ -199,10 +198,6 @@ static void imx_keypad_fire_events(struct imx_keypad *keypad,
+ 
+ 			input_report_key_event(&keypad->input, keypad->keycodes[code],
+ 					       matrix_volatile_state[col] & (1 << row));
+-
+-			dev_dbg(keypad->dev, "Event code: %d, val: %d",
+-				keypad->keycodes[code],
+-				matrix_volatile_state[col] & (1 << row));
+ 		}
+ 	}
+ }
+@@ -367,7 +362,6 @@ static int __init imx_keypad_probe(struct device *dev)
+ 
+ 	keypad = xzalloc(sizeof(struct imx_keypad));
+ 
+-	keypad->dev = dev;
+ 	iores = dev_request_mem_resource(dev, 0);
+ 	if (IS_ERR(iores))
+ 		return PTR_ERR(iores);
 -- 
 2.39.2
 
