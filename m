@@ -1,71 +1,67 @@
-Delivery-date: Tue, 02 Apr 2024 10:34:06 +0200
+Delivery-date: Tue, 02 Apr 2024 10:39:42 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrZao-0036bR-00
+	id 1rrZgE-0037BX-1r
 	for lore@lore.pengutronix.de;
-	Tue, 02 Apr 2024 10:34:06 +0200
+	Tue, 02 Apr 2024 10:39:42 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrZak-00072D-97
-	for lore@pengutronix.de; Tue, 02 Apr 2024 10:34:05 +0200
+	id 1rrZgD-0003uw-UH
+	for lore@pengutronix.de; Tue, 02 Apr 2024 10:39:42 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/Cj+5IE+LGHDEnP7ol05X3CcHsK+uea7cWRltrPkZk0=; b=xlirzIA5Q3VypF7tb09gDEJIzx
-	pmtdNBl4EqNAn2Vhrg5GpPS6G/C9pST5gHsG7m1fyfT07o/TwHArultMsqzJcTBG5f7g6VrfGtyS4
-	200sHeI0UNTVuKtO2/hl9RRzGIh7PR9+EaI+XSxstjbJNivgNAaMZPAvVDyVV0NycK8D9QsEpmdXn
-	iMPbOcUNFd4BnyxbppepC/897HA28fatDFAk/asuyu83hcyJ4h9asxqLVuSY+Wfi2YwQS5Mb9QAWt
-	i7kG/AobUOIhLGZU5xrkkW+y/he6x72JqY1y6arWVMQA/M2eq5sMk/lQuWnMuhx92/6GuRMJaXnmq
-	r165Yr5w==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=N6ugc2blx5kJYSNwVKPobEjSaR7zx8iarcJOWnuhH+o=; b=IDeEhsgf1rfKi61roc+5xWBaKP
+	TvXpQgLvqLHcFq/Ejlh/yMIoY9LjiDiCruX224Fw6Ba7yNj4lROvz/7MQWZ9YNc0jqp4dM6Kp8OiG
+	4IdkNKYTQwI3GA57PRsrI0xwnoC1saCD6ZyLoUd6z1QZQKgcezjDYfwUPGhKGAxwL+ipT90fi5/22
+	eV8iKYBVknorhB5K4fkS1rgCF7Nd7tGwuDzlnXonjr/mGPKSpv/iCPLmyFcHYRIH/4mgI38qRV842
+	ERovESgvUaMFeoYWMrVRk8s4jKW8l7UPkLtZ+5O3rUux7ZlX7xGcgiUJU0ZIvQzwBB5/oLbbY0M4W
+	qB8CVsWQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrZa4-0000000AFhs-43Vw;
-	Tue, 02 Apr 2024 08:33:20 +0000
+	id 1rrZfh-0000000AHZv-3RoJ;
+	Tue, 02 Apr 2024 08:39:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrZa0-0000000AFfp-49Hl
+	id 1rrZfd-0000000AHZN-2j1I
 	for barebox@lists.infradead.org;
-	Tue, 02 Apr 2024 08:33:19 +0000
+	Tue, 02 Apr 2024 08:39:07 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rrZZx-0006Cv-Ok; Tue, 02 Apr 2024 10:33:13 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rrZfc-0003JF-28; Tue, 02 Apr 2024 10:39:04 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rrZZx-009wgv-C7; Tue, 02 Apr 2024 10:33:13 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rrZZx-00Al7A-0w;
-	Tue, 02 Apr 2024 10:33:13 +0200
-Date: Tue, 2 Apr 2024 10:33:13 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rrZfb-009wk1-Ls; Tue, 02 Apr 2024 10:39:03 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rrZfb-00Dv7H-1y;
+	Tue, 02 Apr 2024 10:39:03 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <ZgvCyRqmMUwfMbl2@pengutronix.de>
-References: <20240326-worktree-barebox-bosch-be-ppm4-v1-0-7ea75c487348@pengutronix.de>
- <20240326-worktree-barebox-bosch-be-ppm4-v1-2-7ea75c487348@pengutronix.de>
- <ZgLA6SyzyB8aBGJE@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20240326100746.471532-1-s.hauer@pengutronix.de>
+References: <20240326100746.471532-1-s.hauer@pengutronix.de>
+Message-Id: <171204714360.3317772.8116685004509656692.b4-ty@pengutronix.de>
+Date: Tue, 02 Apr 2024 10:39:03 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZgLA6SyzyB8aBGJE@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240402_013317_072570_254CFC92 
-X-CRM114-Status: GOOD (  24.26  )
+X-CRM114-CacheID: sfid-20240402_013905_729514_11BAD873 
+X-CRM114-Status: GOOD (  10.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,54 +79,66 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] mci: arasan: fix build for non-ZynqMP
+Subject: Re: [PATCH 00/16] PCI: support non 1:1 mappings
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Mar 26, 2024 at 01:34:49PM +0100, Sascha Hauer wrote:
-> On Tue, Mar 26, 2024 at 12:50:42PM +0100, Steffen Trumtrar wrote:
-> > Registering sdclk only makes sense on the ZynqMP architecture. Guard
-> > calling the function with a IS_ENABLED()
-> > 
-> > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > ---
-> >  drivers/mci/arasan-sdhci.c | 3 ++-
-> >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-> > index f01396d7ee..b7dd98049f 100644
-> > --- a/drivers/mci/arasan-sdhci.c
-> > +++ b/drivers/mci/arasan-sdhci.c
-> > @@ -772,7 +772,8 @@ static int arasan_sdhci_probe(struct device *dev)
-> >  
-> >  	mci->f_min = 50000000 / 256;
-> >  
-> > -	arasan_sdhci_register_sdclk(&arasan_sdhci->clk_data, clk_xin, dev);
-> > +	if (IS_ENABLED(CONFIG_ARCH_ZYNQMP))
-> > +		arasan_sdhci_register_sdclk(&arasan_sdhci->clk_data, clk_xin, dev);
+
+On Tue, 26 Mar 2024 11:07:30 +0100, Sascha Hauer wrote:
+> This series evolved from getting PCIe to work on a RK3568 based board.
+> The device tree PCIe ranges property uses non 1:1 mappings between CPU
+> and PCI bus which this series adds support for. With this series we
+> parse the ranges property into struct resource_entry windows like done
+> in Linux. With this we get pcibios_resource_to_bus() and
+> pcibios_bus_to_resource() to translate between the PCI/CPU address
+> spaces. Additionally we have some cleanup for the pcie-designware driver
+> and we can remove the quirk we already introduced for the rk3588 Rock5b
+> board in which we have overwritten the ranges property.
 > 
-> CONFIG_ARCH_ZYNQMP being enabled doesn't necessarily mean the code
-> actually runs on Zynqmp. Does this need a runtime check for other
-> architectures?
+> [...]
 
-The arasan MMC driver is currently only used on ZynqMP, so it's OK for
-now.
+Applied, thanks!
 
-In Linux the driver the ZynqMP specifics are only used with the "xlnx,zynqmp-8.9a"
-compatible whereas our driver binds to the "arasan,sdhci-8.9a"
-compatible. This makes it more clear that this is really a ZynqMP
-specific path that is taken here.
+[01/16] net: phy: realtek: add phy for RTL8168 internal phy
+        https://git.pengutronix.de/cgit/barebox/commit/?id=f339f40dcc62 (link may not be stable)
+[02/16] pci: add 'self' member to struct pci_bus
+        https://git.pengutronix.de/cgit/barebox/commit/?id=1d6dae5748f0 (link may not be stable)
+[03/16] pci: rename parent_bus to parent
+        https://git.pengutronix.de/cgit/barebox/commit/?id=9de886af8ad5 (link may not be stable)
+[04/16] add support for resource lists
+        https://git.pengutronix.de/cgit/barebox/commit/?id=28aafff4c8c2 (link may not be stable)
+[05/16] pci: pcie-designware: remove unused variable
+        https://git.pengutronix.de/cgit/barebox/commit/?id=596975bddbed (link may not be stable)
+[06/16] pci: dwc: Drop support for config space in 'ranges'
+        https://git.pengutronix.de/cgit/barebox/commit/?id=990deb7c1f0a (link may not be stable)
+[07/16] pci: add pci_controller_init()
+        https://git.pengutronix.de/cgit/barebox/commit/?id=fd3be9d95f34 (link may not be stable)
+[08/16] pci: support non 1:1 mappings
+        https://git.pengutronix.de/cgit/barebox/commit/?id=8fbda940edd8 (link may not be stable)
+[09/16] pci: pcie-designware: Speed up waiting for link
+        https://git.pengutronix.de/cgit/barebox/commit/?id=61e0de057dc4 (link may not be stable)
+[10/16] pci: pcie-dw-rockchip: wait for link
+        https://git.pengutronix.de/cgit/barebox/commit/?id=0d0ae293d07c (link may not be stable)
+[11/16] pci: drop resources from struct pci_bus
+        https://git.pengutronix.de/cgit/barebox/commit/?id=b920c76bc307 (link may not be stable)
+[12/16] pci: add of_pci_bridge_init()
+        https://git.pengutronix.de/cgit/barebox/commit/?id=efb6fe50eb9e (link may not be stable)
+[13/16] pci: pcie-designware: drop duplicate resource assigning
+        https://git.pengutronix.de/cgit/barebox/commit/?id=a6fc50a2192f (link may not be stable)
+[14/16] pci: pcie-designware: remove dra7xx quirks
+        https://git.pengutronix.de/cgit/barebox/commit/?id=016ec9128b49 (link may not be stable)
+[15/16] pci: pcie-designware: iterate over windows
+        https://git.pengutronix.de/cgit/barebox/commit/?id=2fa3956c036a (link may not be stable)
+[16/16] ARM: dts: rk3588-rock-5b: remove pci ranges quirks
+        https://git.pengutronix.de/cgit/barebox/commit/?id=f10bd15859b2 (link may not be stable)
 
-Sascha
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
