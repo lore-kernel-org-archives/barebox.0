@@ -1,65 +1,58 @@
-Delivery-date: Tue, 02 Apr 2024 15:51:41 +0200
+Delivery-date: Tue, 02 Apr 2024 16:07:27 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rreY9-003efX-0S
+	id 1rrenP-003gGG-07
 	for lore@lore.pengutronix.de;
-	Tue, 02 Apr 2024 15:51:41 +0200
+	Tue, 02 Apr 2024 16:07:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rreY8-0003Fw-KH
-	for lore@pengutronix.de; Tue, 02 Apr 2024 15:51:41 +0200
+	id 1rrenO-00078P-EF
+	for lore@pengutronix.de; Tue, 02 Apr 2024 16:07:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=MefXNjZhR0N0VvMRh0FaZScuc1q4sMQVdL4zZL9Xwkk=; b=i7qHvF4ne3SY829wEqKUWC5MHU
-	+SoS20huw/X5SjjKXU+vzGFUzDUyI3dzsThqMzli8TM/cIMHc6ba8gGsaLgz/lJ7PjZfBZN6NhpUf
-	uFWT+hRJGv6gQVlcGq4enncsvuCpf3FPbMAFHDSP2drrngNGOCO0ybxbJlmA0Hle5Giq+CcCNVXKx
-	A8mPNxxlPhGwrBgfrRy3eBkPmRcJmLguhMp9k2v+xVn9dARW2T/KtSz/EZF6ms+AOG7NbXF3aCny5
-	8sJqp09beENJXDFMCaBC47zmXb7bg+jvvtj6IlIuo5rPUDQGaeTvw8zM5LlqQEWH5HSUC+JvXwB3+
-	MOAykPbQ==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=UDET7fe4iueonYnu77xBiGPWdMYbo01CrJeUnzsO8ts=; b=kKQE57UvWax4wXCDv0tyxWdPWq
+	M8sdNVgcru5UOxHH6ALeNtXS4H59i4Czmhc3tPv0LQAUa/p4SvdvO4ysiXqyx47DRBVBChKsTGXjA
+	sPB0gtqmXJ8qIFeeb0AHpYQE7/n8ZnvX0CfW+qSP+GuPZZA6UO1gReImqNS7qT3ruh6fR4NEDUXqM
+	+Uo3s3OOcCbOg8o639syjtPLFKuCZY5Gxfq7H2sQkYtXjcf1WGpOrj+++VEFTp7PusbexPPYkhlAt
+	hgA7DzcsZZIJsayVeqJvf1dPlgc6S4ztGlGlO6W8jTGYt6oxBEqVORB6UbbbfIgvv/tMQwl6MQ9sl
+	bMMYglMQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rreXg-0000000BRz3-2Y16;
-	Tue, 02 Apr 2024 13:51:12 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
+	id 1rremt-0000000BVRq-0go4;
+	Tue, 02 Apr 2024 14:06:55 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rreXW-0000000BRjq-1xlT
+	id 1rremp-0000000BVRK-21Cz
 	for barebox@lists.infradead.org;
-	Tue, 02 Apr 2024 13:51:09 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+	Tue, 02 Apr 2024 14:06:52 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rreX7-0001xF-4n; Tue, 02 Apr 2024 15:50:37 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rreX6-009zhQ-O3; Tue, 02 Apr 2024 15:50:36 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rreX6-00FWhb-28;
-	Tue, 02 Apr 2024 15:50:36 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	id 1rremn-0006Hy-Ka; Tue, 02 Apr 2024 16:06:49 +0200
+Message-ID: <41331053-3e69-4f2b-a5dc-2fb6d37d5a9f@pengutronix.de>
+Date: Tue, 2 Apr 2024 16:06:49 +0200
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
 To: barebox@lists.infradead.org
 Cc: lgo@pengutronix.de
-Date: Tue,  2 Apr 2024 15:50:31 +0200
-Message-Id: <20240402135035.3700601-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240402135035.3700601-1-a.fatoum@pengutronix.de>
+ <20240402135035.3700601-4-a.fatoum@pengutronix.de>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240402135035.3700601-4-a.fatoum@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240402_065102_617645_C7750C46 
-X-CRM114-Status: UNSURE (   8.50  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240402_070651_560267_6AC529C5 
+X-CRM114-Status: GOOD (  17.22  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,32 +74,62 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/4] input: add CONFIG_INPUT_EVBUG debug option
+Subject: Re: [PATCH 3/4] input: imx-keypad: remove now-duplicate debug
+ messages
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Incorrectly specified or configured gpio-keys may cause the barebox
-boot to abort. To help debugging such issues, add a CONFIG_INPUT_EVBUG
-option similar to Linux, which will print a debug message every time
-a key event is reported.
+On 02.04.24 15:50, Ahmad Fatoum wrote:
+> With the recent addition of CONFIG_EVENT_EVBUG, the debug messages in
 
-Ahmad Fatoum (4):
-  input: record parent device at registration time
-  input: add CONFIG_INPUT_EVBUG debug option
-  input: imx-keypad: remove now-duplicate debug messages
-  input: gpio-keys: drop now-superfluous struct gpio_keys::dev
+s/CONFIG_INPUT_EVBUG/CONFIG_EVENT_EVBUG/
 
- drivers/input/Kconfig        | 11 +++++++++++
- drivers/input/gpio_keys.c    |  6 ++----
- drivers/input/imx_keypad.c   |  7 +------
- drivers/input/input.c        | 11 +++++++++++
- drivers/input/usb_kbd.c      |  1 +
- drivers/input/virtio_input.c |  1 +
- include/input/input.h        |  1 +
- 7 files changed, 28 insertions(+), 10 deletions(-)
+Please let me know if I should resend.
+
+> both i.MX keypad driver adds no extra value, so remove it.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/input/imx_keypad.c | 6 ------
+>  1 file changed, 6 deletions(-)
+> 
+> diff --git a/drivers/input/imx_keypad.c b/drivers/input/imx_keypad.c
+> index 2c003905a7d9..e57a884630aa 100644
+> --- a/drivers/input/imx_keypad.c
+> +++ b/drivers/input/imx_keypad.c
+> @@ -72,7 +72,6 @@
+>  struct imx_keypad {
+>  	struct input_device input;
+>  	struct clk *clk;
+> -	struct device *dev;
+>  	void __iomem *mmio_base;
+>  
+>  	struct poller_struct poller;
+> @@ -199,10 +198,6 @@ static void imx_keypad_fire_events(struct imx_keypad *keypad,
+>  
+>  			input_report_key_event(&keypad->input, keypad->keycodes[code],
+>  					       matrix_volatile_state[col] & (1 << row));
+> -
+> -			dev_dbg(keypad->dev, "Event code: %d, val: %d",
+> -				keypad->keycodes[code],
+> -				matrix_volatile_state[col] & (1 << row));
+>  		}
+>  	}
+>  }
+> @@ -367,7 +362,6 @@ static int __init imx_keypad_probe(struct device *dev)
+>  
+>  	keypad = xzalloc(sizeof(struct imx_keypad));
+>  
+> -	keypad->dev = dev;
+>  	iores = dev_request_mem_resource(dev, 0);
+>  	if (IS_ERR(iores))
+>  		return PTR_ERR(iores);
 
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
