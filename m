@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrfg8-003laH-1a
+	id 1rrfg8-003laR-1t
 	for lore@lore.pengutronix.de;
 	Tue, 02 Apr 2024 17:04:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrfg7-0005fT-RE
+	id 1rrfg7-0005fU-TY
 	for lore@pengutronix.de; Tue, 02 Apr 2024 17:04:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,50 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=D7ZQwSdvsGFlAyESyshrbzWxf9D+1lQrgLV5yIAioRY=; b=N0B1xTWaR7jeUoYNNo++Y7IC5V
-	5EuhP3WXwUdw06Rcwo4inRo3tTaHSVxNCVy66F2TSB5RtQxfsrfp7vaY9sipN9AzQTV/5DuOIKLmw
-	nIc0gt3YRts4MkURGVMRSjwI1DY3OG4U2OJM9C4bIP8S6xcp60K06vvABo/j7Y2PoHDR0JIrjf5xn
-	sInbRsgUeMQVo85dzIgIzk6WMtZpmPMHYbz9jiiWnMa2u6UEQP9lf9v+P2G4M15HDBR0o/2GFwAdT
-	8RVTpPVoVf3SsY/v1LoRZqD6auB2qqPcdRrlzqwcwQSO0HUrTj+T9uYkfJAmez+LNHS7C/1pwRF/W
-	ZWq9EY3w==;
+	bh=tVlIe1ZcGjPkKXlg0XC7Xjlb5rAsoeqApmI6SujeYlw=; b=cUz1/CLP421ee5tMlkIbptxZvZ
+	7MMtI5p6K7/1MFlPYckaVYtgmkd0s0ThdrYUTorHRSoTmWtPvntIjMUIVH4R3/W83TxE38NKRdaav
+	Tb+ktX9O01epjV27ylTwYpILoiZiO83J4T82xxldFW4g7vwqi2PZq5k6CR+d8ABszkgfVpgnYfWNJ
+	sKRZU64os32mDTBLdTSRFNXPqc6IdPTvXp08UrPvxU+zOECZE6WNo/2cmZnnIrBDCUQQeJiI38S2x
+	ZJ52fJKgtB1l5YPhVZWShKrNQ0YpnsI9jGdAizC6Y9kCadWxIhA1NnLIdLuoUvKBcBql0PjpisUOY
+	vTzCq/OA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrfft-0000000BjNX-0yHf;
-	Tue, 02 Apr 2024 15:03:45 +0000
+	id 1rrffs-0000000BjNC-0KPE;
+	Tue, 02 Apr 2024 15:03:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([185.203.201.7])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rreXH-0000000BRjq-45XO
+	id 1rreXA-0000000BRjq-0tMz
 	for barebox@lists.infradead.org;
-	Tue, 02 Apr 2024 13:50:50 +0000
+	Tue, 02 Apr 2024 13:50:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rreX7-0001yG-7K; Tue, 02 Apr 2024 15:50:37 +0200
+	id 1rreX7-0001xl-5w; Tue, 02 Apr 2024 15:50:37 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rreX6-009zhU-R7; Tue, 02 Apr 2024 15:50:36 +0200
+	id 1rreX6-009zhR-Pd; Tue, 02 Apr 2024 15:50:36 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rreX6-00FWhb-2R;
+	id 1rreX6-00FWhb-2H;
 	Tue, 02 Apr 2024 15:50:36 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: lgo@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue,  2 Apr 2024 15:50:33 +0200
-Message-Id: <20240402135035.3700601-3-a.fatoum@pengutronix.de>
+Date: Tue,  2 Apr 2024 15:50:32 +0200
+Message-Id: <20240402135035.3700601-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240402135035.3700601-1-a.fatoum@pengutronix.de>
 References: <20240402135035.3700601-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240402_065048_791664_8B19F6F5 
-X-CRM114-Status: GOOD (  13.80  )
+X-CRM114-CacheID: sfid-20240402_065040_538596_E74B3202 
+X-CRM114-Status: GOOD (  12.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,70 +83,85 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/4] input: add CONFIG_INPUT_EVBUG debug option
+Subject: [PATCH 1/4] input: record parent device at registration time
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Misconfigured pull-ups may cause the barebox boot to abort. To help
-debugging such issues, add a CONFIG_INPUT_EVBUG option similar to Linux,
-which will print a debug message every time a key event is reported.
+The input core doesn't create a virtual device to represent the input
+device. Still having a pointer to the parent device can be useful for
+debugging purposes.
+
+Add a parent member and start populating it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/input/Kconfig | 11 +++++++++++
- drivers/input/input.c | 11 +++++++++++
- 2 files changed, 22 insertions(+)
+ drivers/input/gpio_keys.c    | 1 +
+ drivers/input/imx_keypad.c   | 1 +
+ drivers/input/usb_kbd.c      | 1 +
+ drivers/input/virtio_input.c | 1 +
+ include/input/input.h        | 1 +
+ 5 files changed, 5 insertions(+)
 
-diff --git a/drivers/input/Kconfig b/drivers/input/Kconfig
-index 52234c0ecc49..01e0b722c20f 100644
---- a/drivers/input/Kconfig
-+++ b/drivers/input/Kconfig
-@@ -12,6 +12,17 @@ config INPUT
- config INPUT_MATRIXKMAP
- 	bool
+diff --git a/drivers/input/gpio_keys.c b/drivers/input/gpio_keys.c
+index c23d20563c38..190865b7f244 100644
+--- a/drivers/input/gpio_keys.c
++++ b/drivers/input/gpio_keys.c
+@@ -162,6 +162,7 @@ static int __init gpio_keys_probe(struct device *dev)
+ 		gk->buttons[i].previous_state = gk->buttons[i].active_low;
+ 	}
  
-+config INPUT_EVBUG
-+        bool "Event debugging"
-+        help
-+          Say Y here if you have a problem with the input subsystem and
-+          want all events (keypresses), to be output to
-+          the barebox log. While this is useful for debugging, it's also
-+          a security threat - your keypresses include your passwords, of
-+          course and could be visible to userspace if pstore is configured.
-+
-+          If unsure, say N.
-+
- config KEYBOARD_GPIO
- 	bool "GPIO Buttons"
- 	depends on GENERIC_GPIO
-diff --git a/drivers/input/input.c b/drivers/input/input.c
-index deef5ddd22a7..1a4792935114 100644
---- a/drivers/input/input.c
-+++ b/drivers/input/input.c
-@@ -1,5 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0-only
++	gk->input.parent = dev;
+ 	ret = input_device_register(&gk->input);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/input/imx_keypad.c b/drivers/input/imx_keypad.c
+index fc6b45b3cb62..2c003905a7d9 100644
+--- a/drivers/input/imx_keypad.c
++++ b/drivers/input/imx_keypad.c
+@@ -410,6 +410,7 @@ static int __init imx_keypad_probe(struct device *dev)
+ 	if (ret)
+ 		return ret;
  
-+#define pr_fmt(fmt) "input: " fmt
-+
- #include <common.h>
- #include <init.h>
- #include <kfifo.h>
-@@ -33,6 +35,15 @@ void input_report_key_event(struct input_device *idev, unsigned int code, int va
- 	if (code > KEY_MAX)
- 		return;
++	keypad->input.parent = dev;
+ 	ret = input_device_register(&keypad->input);
+ 	if (ret)
+ 		return ret;
+diff --git a/drivers/input/usb_kbd.c b/drivers/input/usb_kbd.c
+index 86b48db2a72b..2e75aabf3da4 100644
+--- a/drivers/input/usb_kbd.c
++++ b/drivers/input/usb_kbd.c
+@@ -188,6 +188,7 @@ static int usb_kbd_probe(struct usb_device *usbdev,
+ 	} else
+ 		dev_dbg(&usbdev->dev, "poll keyboard via int ep\n");
  
-+	/*
-+	 * We don't use pr_debug here as we want to output the message
-+	 * to the log, even if CONFIG_COMPILE_LOGLEVEL < MSG_DEBUG and
-+	 * the DEBUG mcro wasn't defined for the file.
-+	 */
-+	if (IS_ENABLED(CONFIG_INPUT_EVBUG))
-+		pr_print(MSG_DEBUG, "Event. Dev: %s, Type: %d, Code: %d, Value: %d\n",
-+			 dev_name(idev->parent), EV_KEY, code, value);
-+
- 	if (value)
- 		set_bit(code, idev->keys);
- 	else
++	data->input.parent = &usbdev->dev;
+ 	ret = input_device_register(&data->input);
+ 	if (ret) {
+ 		dev_err(&usbdev->dev, "can't register input\n");
+diff --git a/drivers/input/virtio_input.c b/drivers/input/virtio_input.c
+index 5c6849b561eb..655a9051726a 100644
+--- a/drivers/input/virtio_input.c
++++ b/drivers/input/virtio_input.c
+@@ -216,6 +216,7 @@ static int virtinput_probe(struct virtio_device *vdev)
+ 
+ 	virtio_device_ready(vdev);
+ 
++	vi->idev.parent = &vdev->dev;
+ 	err = input_device_register(&vi->idev);
+ 	if (err)
+ 		goto err_input_register;
+diff --git a/include/input/input.h b/include/input/input.h
+index d169c647bdaf..9445d20e566b 100644
+--- a/include/input/input.h
++++ b/include/input/input.h
+@@ -14,6 +14,7 @@ struct input_event {
+ 
+ struct input_device {
+ 	struct list_head list;
++	struct device *parent;
+ 	DECLARE_BITMAP(keys, KEY_CNT);
+ };
+ 
 -- 
 2.39.2
 
