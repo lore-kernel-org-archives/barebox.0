@@ -1,74 +1,63 @@
-Delivery-date: Tue, 02 Apr 2024 10:59:55 +0200
+Delivery-date: Tue, 02 Apr 2024 11:20:04 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrZzn-0039E2-2w
+	id 1rraJI-003BPC-2G
 	for lore@lore.pengutronix.de;
-	Tue, 02 Apr 2024 10:59:55 +0200
+	Tue, 02 Apr 2024 11:20:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrZzm-0005IS-Mx
-	for lore@pengutronix.de; Tue, 02 Apr 2024 10:59:55 +0200
+	id 1rraJI-0006zQ-24
+	for lore@pengutronix.de; Tue, 02 Apr 2024 11:20:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iMt/uCycQJGINIJ9V88GzWnOEMW4rRTUtfSJ7Jhcf1c=; b=pkaQdXHoM1snC/tOQxdXZdlA1e
-	y3dd53OeG3OKrbz8jIHAaQdwH8ragEk1dwHRNSwbCDeU1XwOusmj5D+0qhblZSlOs5Lb5AKuPKYsl
-	ej/+q3gEAMYhwbuOB+R5nWk/+mn3WL55sALqJo61Fj9aDISjmHzagGFlx4iyFGUlLM/WQ9pA9QU2z
-	XMBJVMX6IwQYTEnpIHaA1PM1Y6RSbLf1ugvE2vrQ3cFCdOCSpgtVPDlLQd8bpqpbQ4R68EHeA3bwa
-	iLuRFjZxe/c0EL2HTL4dneLjzMSk8H8L0UQ52k0LgMBxcBE7kLTrx4Mh6NUK/YY1zVdMImtFmaiiD
-	9ZKAWblA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=6qJHZX/fTZx55sOorqcQc7dfQBqkx6uWJSdHYemGrno=; b=sB2cj6OAgG/vfSjbQNJ7YOn9n6
+	p5r22LkixSJggKMZKHQF4xpAm6h88ruPV97wZowslB3Z2+R9VUWIkmlSqF2zfi833iaq/b6Mng3j2
+	tq05xenCzPmQckWALvcXj1uRNSj+qijQzUG6/UMuAwkNThGLbKj8fZdEQ56iES1jFtH3dwWmK4yUc
+	Qu0afTGUSEw8F8ERqBDSwRFVfn/PkjHDph2PDKCPsD49nC1F+P3BDtPi2ALtdw7en2RsF30J+la6y
+	dbbW7rYpv+yNyks4Lk9XCn+5zu8Z+1Qg35QIDBbnIv2K21znkVoicaxOtnarpjeV6sOHstLY9QbaL
+	woWxtT7g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrZzG-0000000ALEL-3tbk;
-	Tue, 02 Apr 2024 08:59:22 +0000
+	id 1rraIl-0000000APVQ-3nbf;
+	Tue, 02 Apr 2024 09:19:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrZzD-0000000ALDE-2JAr
+	id 1rraIj-0000000APUB-2KP2
 	for barebox@lists.infradead.org;
-	Tue, 02 Apr 2024 08:59:20 +0000
+	Tue, 02 Apr 2024 09:19:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rrZzC-0004if-4d; Tue, 02 Apr 2024 10:59:18 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rraIi-0006Sa-4V; Tue, 02 Apr 2024 11:19:28 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rrZzB-009wn2-OK; Tue, 02 Apr 2024 10:59:17 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1rrZzB-00AlVf-29;
-	Tue, 02 Apr 2024 10:59:17 +0200
-Date: Tue, 2 Apr 2024 10:59:17 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rraIh-009xBv-OR; Tue, 02 Apr 2024 11:19:27 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rraIh-00HBte-1z;
+	Tue, 02 Apr 2024 11:19:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Lucas Stach <l.stach@pengutronix.de>
-Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>,
-	barebox@lists.infradead.org
-Message-ID: <ZgvI5SfUShsxOj0z@pengutronix.de>
-References: <20240326-worktree-barebox-bosch-be-ppm4-v1-0-7ea75c487348@pengutronix.de>
- <20240326-worktree-barebox-bosch-be-ppm4-v1-2-7ea75c487348@pengutronix.de>
- <ZgLA6SyzyB8aBGJE@pengutronix.de>
- <ZgvCyRqmMUwfMbl2@pengutronix.de>
- <f72418fa68eb9f944c2cea7ba5e8380417fec790.camel@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Tue,  2 Apr 2024 11:19:26 +0200
+Message-Id: <20240402091926.4096972-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f72418fa68eb9f944c2cea7ba5e8380417fec790.camel@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240402_015919_612617_87A8ADB6 
-X-CRM114-Status: GOOD (  30.22  )
+X-CRM114-CacheID: sfid-20240402_021929_744468_80C1851D 
+X-CRM114-Status: GOOD (  15.05  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,65 +75,101 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] mci: arasan: fix build for non-ZynqMP
+Subject: [PATCH] clk: rockchip: rk3588: fix CLK_NR_CLKS usage
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Apr 02, 2024 at 10:43:24AM +0200, Lucas Stach wrote:
-> Am Dienstag, dem 02.04.2024 um 10:33 +0200 schrieb Sascha Hauer:
-> > On Tue, Mar 26, 2024 at 01:34:49PM +0100, Sascha Hauer wrote:
-> > > On Tue, Mar 26, 2024 at 12:50:42PM +0100, Steffen Trumtrar wrote:
-> > > > Registering sdclk only makes sense on the ZynqMP architecture. Guard
-> > > > calling the function with a IS_ENABLED()
-> > > > 
-> > > > Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-> > > > ---
-> > > >  drivers/mci/arasan-sdhci.c | 3 ++-
-> > > >  1 file changed, 2 insertions(+), 1 deletion(-)
-> > > > 
-> > > > diff --git a/drivers/mci/arasan-sdhci.c b/drivers/mci/arasan-sdhci.c
-> > > > index f01396d7ee..b7dd98049f 100644
-> > > > --- a/drivers/mci/arasan-sdhci.c
-> > > > +++ b/drivers/mci/arasan-sdhci.c
-> > > > @@ -772,7 +772,8 @@ static int arasan_sdhci_probe(struct device *dev)
-> > > >  
-> > > >  	mci->f_min = 50000000 / 256;
-> > > >  
-> > > > -	arasan_sdhci_register_sdclk(&arasan_sdhci->clk_data, clk_xin, dev);
-> > > > +	if (IS_ENABLED(CONFIG_ARCH_ZYNQMP))
-> > > > +		arasan_sdhci_register_sdclk(&arasan_sdhci->clk_data, clk_xin, dev);
-> > > 
-> > > CONFIG_ARCH_ZYNQMP being enabled doesn't necessarily mean the code
-> > > actually runs on Zynqmp. Does this need a runtime check for other
-> > > architectures?
-> > 
-> > The arasan MMC driver is currently only used on ZynqMP, so it's OK for
-> > now.
-> > 
-> That's not true. The driver is also used on the Zynq7000.
+barebox adoption of Linux commit 2dc66a5ab2c6:
 
-You're right. I didn't remember we have support for that in barebox as
-well. In this case this note becomes relevant:
+|    clk: rockchip: rk3588: fix CLK_NR_CLKS usage
+|
+|    CLK_NR_CLKS is not part of the DT bindings and needs to be removed
+|    from it, just like it recently happened for other platforms. This
+|    takes care of it by introducing a new function identifying the
+|    maximum used clock ID at runtime.
+|
+|    Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+|    Link: https://lore.kernel.org/r/20240126182919.48402-2-sebastian.reichel@collabora.com
+|    Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 
-> 
-> > In Linux the driver the ZynqMP specifics are only used with the "xlnx,zynqmp-8.9a"
-> > compatible whereas our driver binds to the "arasan,sdhci-8.9a"
-> > compatible. This makes it more clear that this is really a ZynqMP
-> > specific path that is taken here.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/rockchip/clk-rk3588.c |  5 ++++-
+ drivers/clk/rockchip/clk.c        | 17 +++++++++++++++++
+ drivers/clk/rockchip/clk.h        |  2 ++
+ 3 files changed, 23 insertions(+), 1 deletion(-)
 
-We have to put the ZynqMP specific stuff behind the "xlnx,zynqmp-8.9a"
-compatible to make sure Zynq7000 doesn't take this path.
-
-Sascha
-
+diff --git a/drivers/clk/rockchip/clk-rk3588.c b/drivers/clk/rockchip/clk-rk3588.c
+index 8b5c68debe..68565a188c 100644
+--- a/drivers/clk/rockchip/clk-rk3588.c
++++ b/drivers/clk/rockchip/clk-rk3588.c
+@@ -2451,15 +2451,18 @@ static struct rockchip_clk_branch rk3588_clk_branches[] __initdata = {
+ static void __init rk3588_clk_init(struct device_node *np)
+ {
+ 	struct rockchip_clk_provider *ctx;
++	unsigned long clk_nr_clks;
+ 	void __iomem *reg_base;
+ 
++	clk_nr_clks = rockchip_clk_find_max_clk_id(rk3588_clk_branches,
++					ARRAY_SIZE(rk3588_clk_branches)) + 1;
+ 	reg_base = of_iomap(np, 0);
+ 	if (!reg_base) {
+ 		pr_err("%s: could not map cru region\n", __func__);
+ 		return;
+ 	}
+ 
+-	ctx = rockchip_clk_init(np, reg_base, CLK_NR_CLKS);
++	ctx = rockchip_clk_init(np, reg_base, clk_nr_clks);
+ 	if (IS_ERR(ctx)) {
+ 		pr_err("%s: rockchip clk init failed\n", __func__);
+ 		return;
+diff --git a/drivers/clk/rockchip/clk.c b/drivers/clk/rockchip/clk.c
+index aca107a45d..aedb02a8d3 100644
+--- a/drivers/clk/rockchip/clk.c
++++ b/drivers/clk/rockchip/clk.c
+@@ -395,6 +395,23 @@ void rockchip_clk_register_plls(struct rockchip_clk_provider *ctx,
+ }
+ EXPORT_SYMBOL_GPL(rockchip_clk_register_plls);
+ 
++unsigned long rockchip_clk_find_max_clk_id(struct rockchip_clk_branch *list,
++					   unsigned int nr_clk)
++{
++	unsigned long max = 0;
++	unsigned int idx;
++
++	for (idx = 0; idx < nr_clk; idx++, list++) {
++		if (list->id > max)
++			max = list->id;
++		if (list->child && list->child->id > max)
++			max = list->id;
++	}
++
++	return max;
++}
++EXPORT_SYMBOL_GPL(rockchip_clk_find_max_clk_id);
++
+ void rockchip_clk_register_branches(struct rockchip_clk_provider *ctx,
+ 				    struct rockchip_clk_branch *list,
+ 				    unsigned int nr_clk)
+diff --git a/drivers/clk/rockchip/clk.h b/drivers/clk/rockchip/clk.h
+index df819c61f1..a451229326 100644
+--- a/drivers/clk/rockchip/clk.h
++++ b/drivers/clk/rockchip/clk.h
+@@ -888,6 +888,8 @@ void rockchip_clk_of_add_provider(struct device_node *np,
+ 				struct rockchip_clk_provider *ctx);
+ void rockchip_clk_add_lookup(struct rockchip_clk_provider *ctx,
+ 			     struct clk *clk, unsigned int id);
++unsigned long rockchip_clk_find_max_clk_id(struct rockchip_clk_branch *list,
++					   unsigned int nr_clk);
+ void rockchip_clk_register_branches(struct rockchip_clk_provider *ctx,
+ 				    struct rockchip_clk_branch *list,
+ 				    unsigned int nr_clk);
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
