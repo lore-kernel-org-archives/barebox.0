@@ -1,67 +1,53 @@
-Delivery-date: Wed, 03 Apr 2024 14:26:47 +0200
+Delivery-date: Wed, 03 Apr 2024 17:32:39 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrzhX-00684l-2w
+	id 1rs2bP-006bhK-34
 	for lore@lore.pengutronix.de;
-	Wed, 03 Apr 2024 14:26:47 +0200
+	Wed, 03 Apr 2024 17:32:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrzhX-0003v9-9T
-	for lore@pengutronix.de; Wed, 03 Apr 2024 14:26:47 +0200
+	id 1rs2bP-00033I-Ao
+	for lore@pengutronix.de; Wed, 03 Apr 2024 17:32:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GrhznvfrLMcXR6xeicMiopGhg/FErnTCQDTmx/Yga6Y=; b=FmOWcoRiFHrHKi4ygkBAJFlHPe
-	yzGkDh9NrUyeVMJnQLqYgFB+hVOAieFy04jwgLCLf2y31IQhkmbJWNvWtbAaf+LInz4WzpLG4hgUM
-	3iemri9PynR3CWtjIy+RMfIVhyeU8uKLkt79JfonyAKQSaV6BGWr25UcIVogGgWg5g/7VAYq5XZ3V
-	R0L0lumtwwRIaN6r3FRZdeGGJjQ7AdBvJsNQDohTObVvG/JSTEb7/7PVik/LVYZUThHO+3nfbuu4H
-	hFZj1mzqysOpFSQ/xPd9zMeBhLXqmRW1Mn5LX0tv4fpGzh5u1p3+Vrhkr35s+6F/xTHXbYIS6QBOh
-	j62N6AMw==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=3ZQAlPVI5lyZhwnD91GtEsdVwR3lfIeD2JM7ZIh4joY=; b=on7Nfs+GGiuP4PfSLsEER9HAW2
+	qepAwKIwL/fi9pwlaMJ8STHSB9tjto0AyaWuRc6N/4LYQfIZnTh6glUtR87q46DntVS/wBhPxeHND
+	wJoPJeIbwbrwtBFBSNMXuzoEQQS8EcBedBhtYd60jU/FN2j0xWt6jnUiYKYqploYIXe88z4vXD6Lt
+	VJXhqGSQ60h1HyOOu5sylVj5EH/8WjghllB8cSq1tCCeAIuWZ8Q4e2y+gAl0ZmFbHHJkKxruoy5+r
+	H0Yz6E69Ah6IyHKJqgsoEzx2vEozio8KOgxaVHjS9Pdlj4iaJ2YFnTwRicNFDf/MkxJEzASyCPAon
+	stpCerEg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrzh8-0000000Fw9p-04IP;
-	Wed, 03 Apr 2024 12:26:22 +0000
+	id 1rs2ao-0000000Gkl0-2maz;
+	Wed, 03 Apr 2024 15:32:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrzh3-0000000Fw8J-1kIN
+	id 1rs2al-0000000Gkje-1T8d
 	for barebox@lists.infradead.org;
-	Wed, 03 Apr 2024 12:26:19 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rrzh1-0003Tc-GO; Wed, 03 Apr 2024 14:26:15 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rrzh1-00AAq5-4B; Wed, 03 Apr 2024 14:26:15 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rrzh1-007COj-0D;
-	Wed, 03 Apr 2024 14:26:15 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240403090602.2978695-1-a.fatoum@pengutronix.de>
-References: <20240403090602.2978695-1-a.fatoum@pengutronix.de>
-Message-Id: <171214717506.1715898.15692945804643195444.b4-ty@pengutronix.de>
-Date: Wed, 03 Apr 2024 14:26:15 +0200
+	Wed, 03 Apr 2024 15:32:00 +0000
+Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <m.felsch@pengutronix.de>)
+	id 1rs2ah-0002Jv-1L
+	for barebox@lists.infradead.org; Wed, 03 Apr 2024 17:31:55 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Wed,  3 Apr 2024 17:31:51 +0200
+Message-Id: <20240403153151.2859387-1-m.felsch@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240403_052617_548807_29FF077B 
-X-CRM114-Status: UNSURE (   6.70  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240403_083159_414284_2DD2D278 
+X-CRM114-Status: GOOD (  14.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,34 +65,99 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: rpi: detect mci1 as well when searching for
- environment
+Subject: [PATCH] pmdomain: imx8mp-blk-ctrl: fix adb handshake handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Fix powering the DWC3 USB subsystem which is part of the HSIO BLKCTRL.
+Currently we enable the USB clocks and the USB module clock within the
+HSIO BLKCTRL. The later get stuck during the first call of
+imx8mp_blk_ctrl_power_on() since the parent GPCv2 device is not powered
+yet.
 
-On Wed, 03 Apr 2024 11:06:02 +0200, Ahmad Fatoum wrote:
-> On Raspberry Pi 4, which lacks aliases like other Raspberry Pis,
-> the SD-Card is named mci1, while mci0 is the SDIO card.
-> 
-> Therefore detect both mci0 and mci1 in hope that one of them will
-> provide disk0. This is safe to do as barebox will now gracefully
-> skip SDIO cards during probe.
-> 
-> [...]
+Fix this by porting the Linux imx8mp_blk_ctrl::power_nb notifier_block
+logic. The Linux driver enable/disable the USB module to propagate the
+ADB handshake instead of powering it permanently. The logic is executed
+after the parent GPCv2 power domain is powered so we can access the HSIO
+BLKCTRL registers.
 
-Applied, thanks!
+Fixes: 5cb41f0b62dc ("pmdomain: imx: add i.MX8MP HSIO blk-ctrl driver")
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+---
+ drivers/pmdomain/imx/imx8mp-blk-ctrl.c | 28 ++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-[1/1] ARM: rpi: detect mci1 as well when searching for environment
-      https://git.pengutronix.de/cgit/barebox/commit/?id=8f1923ac8ff6 (link may not be stable)
-
-Best regards,
+diff --git a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+index 38de9d88a139..b71a4a793761 100644
+--- a/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
++++ b/drivers/pmdomain/imx/imx8mp-blk-ctrl.c
+@@ -192,20 +192,34 @@ static void imx8mp_hsio_blk_ctrl_power_off(struct imx8mp_blk_ctrl *bc,
+ 	}
+ }
+ 
+-static int imx8mp_hsio_enable_usb_clk(struct imx8mp_blk_ctrl *bc)
++static int imx8mp_hsio_propagate_adb_handshake(struct imx8mp_blk_ctrl *bc)
+ {
+ 	int ret;
+ 	struct clk_bulk_data *usb_clk = bc->domains[IMX8MP_HSIOBLK_PD_USB].clks;
+ 	int num_clks = bc->domains[IMX8MP_HSIOBLK_PD_USB].data->num_clks;
++	static int once;
+ 
++	if (once)
++		return 0;
++
++	/*
++	 * enable USB clock for a moment for the power-on ADB handshake
++	 * to proceed
++	 */
+ 	ret = clk_bulk_prepare_enable(num_clks, usb_clk);
+ 	if (ret)
+ 		return ret;
+ 
+ 	regmap_set_bits(bc->regmap, GPR_REG0, USB_CLOCK_MODULE_EN);
+ 
+-	return 0;
++	udelay(5);
++
++	regmap_clear_bits(bc->regmap, GPR_REG0, USB_CLOCK_MODULE_EN);
++	clk_bulk_disable_unprepare(num_clks, usb_clk);
+ 
++	once++;
++
++	return 0;
+ }
+ 
+ static const struct imx8mp_blk_ctrl_domain_data imx8mp_hsio_domain_data[] = {
+@@ -251,10 +265,6 @@ static int imx8mp_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+ 	struct imx8mp_blk_ctrl *bc = domain->bc;
+ 	int ret;
+ 
+-	ret = imx8mp_hsio_enable_usb_clk(bc);
+-	if (ret)
+-		return ret;
+-
+ 	/* make sure bus domain is awake */
+ 	ret = pm_runtime_resume_and_get_genpd(bc->bus_power_dev);
+ 	if (ret < 0) {
+@@ -262,6 +272,12 @@ static int imx8mp_blk_ctrl_power_on(struct generic_pm_domain *genpd)
+ 		return ret;
+ 	}
+ 
++	ret = imx8mp_hsio_propagate_adb_handshake(bc);
++	if (ret) {
++		dev_err(bc->dev, "failed to propagate adb handshake\n");
++		goto bus_put;
++	}
++
+ 	/* enable upstream clocks */
+ 	ret = clk_bulk_prepare_enable(data->num_clks, domain->clks);
+ 	if (ret) {
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.2
 
 
 
