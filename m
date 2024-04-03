@@ -1,67 +1,70 @@
-Delivery-date: Wed, 03 Apr 2024 13:29:09 +0200
+Delivery-date: Wed, 03 Apr 2024 13:29:44 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrynl-005zgo-1j
+	id 1rryoK-005zmR-0c
 	for lore@lore.pengutronix.de;
-	Wed, 03 Apr 2024 13:29:09 +0200
+	Wed, 03 Apr 2024 13:29:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrynl-0003Ra-0g
-	for lore@pengutronix.de; Wed, 03 Apr 2024 13:29:09 +0200
+	id 1rryoJ-0003vQ-Jj
+	for lore@pengutronix.de; Wed, 03 Apr 2024 13:29:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=23DtpK39qx/Q7QnAO1guU1xjX4BkrQOsJTkoBnKXlxA=; b=K5kOeL/MmkOTLtOu7mSi74EJDx
-	CJ7Hgsy0tVa4an8AiExB30G7yZ3Lk1t0o43Y84hFCU7y5gollj0FTmn4VeHai9IFDHwf/haDV+0S8
-	N8X7KiZUxzH3UyDMs9lBTFZ3MaQYXbXwt7sGCb7taI95fM+oDsy+jHnEq/sm2yEBOMDBye0SOKNbX
-	OMD1yPlR5cenx8c3v8yMBD9+pmLGRfTQnv7aQHZencGFdvtSYWqG80Q487jJmL2XN7rOdUq+zroY/
-	tmXCXCyJhonZs3B5PwhA6T5SoBlmE1TPvgn88unltGbgXBQqqbEWOfZFO89J4/q3zn+b0cY4MXzFi
-	iVPl2QoA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ooL26oW2lWp9GvLM5irG8F92Io2uJnr7gaU2eDn9uEw=; b=g24x97hgogN+ZNPDjnlpWZym9r
+	5SHJV6pPyNn/sKX1b1Eid4USYsDPYvMYTIUlJnxxNdS4LGOftV+NXMDLQbxKkvDeP2htpo0Ps5qlX
+	iIYWs6gHCPcjv2fZjIf7HHS8YjEDSxB38j8LjxGla05wrLFo2HjdYyOVeNIvp8fldOyhLBV5pj0OI
+	q7b+g8OWBmx4V5TIyuz01onl/raVycBb4oJpY+GgAkC+L0tO5Jy+NMAOSu5kghOKWIRX9FdfBqjSD
+	pZbHirXvjs/vnVj5kBCaFttSP8SO+jeavPiQ6ISWeEvdkAB4vWn8Mynty+1B0BhOFQrGW/J9Ybb8Y
+	0y2pfu6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrynM-0000000FmCn-0rGI;
-	Wed, 03 Apr 2024 11:28:44 +0000
+	id 1rrynv-0000000FmHY-0Gnj;
+	Wed, 03 Apr 2024 11:29:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrynI-0000000FmBp-1h08
+	id 1rryns-0000000FmGc-0s5S
 	for barebox@lists.infradead.org;
-	Wed, 03 Apr 2024 11:28:42 +0000
+	Wed, 03 Apr 2024 11:29:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rrynG-00035Y-72; Wed, 03 Apr 2024 13:28:38 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rrynp-0003Vm-C8; Wed, 03 Apr 2024 13:29:13 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rrynF-00AALC-Qb; Wed, 03 Apr 2024 13:28:37 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rrynF-006EcQ-2S;
-	Wed, 03 Apr 2024 13:28:37 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1rryno-00AALP-KA; Wed, 03 Apr 2024 13:29:12 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rryno-00CQWT-1l;
+	Wed, 03 Apr 2024 13:29:12 +0200
+Date: Wed, 3 Apr 2024 13:29:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
-In-Reply-To: <20240402092654.94523-1-o.rempel@pengutronix.de>
+To: Thorsten Scherer <T.Scherer@eckelmann.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
+Message-ID: <Zg09iJ-ueiPaP5Xn@pengutronix.de>
 References: <20240402092654.94523-1-o.rempel@pengutronix.de>
-Message-Id: <171214371775.1486127.1291476391227135782.b4-ty@pengutronix.de>
-Date: Wed, 03 Apr 2024 13:28:37 +0200
+ <raghvrf6akiqagwlod3s65ilcfawb43slshzljngl77rnaf27l@cvxmvo7iqokx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <raghvrf6akiqagwlod3s65ilcfawb43slshzljngl77rnaf27l@cvxmvo7iqokx>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240403_042840_484680_51D71972 
-X-CRM114-Status: UNSURE (   7.31  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240403_042916_274991_86E1A4EE 
+X-CRM114-Status: GOOD (  23.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,33 +82,72 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 1/2] ARM: i.MX8MP: skov: add fallback for
- unsupported HW
+Subject: Re: [PATCH v2 1/2] ARM: i.MX8MP: skov: add fallback for unsupported
+ HW
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Tue, 02 Apr 2024 11:26:53 +0200, Oleksij Rempel wrote:
-> Add fallback support for currently not supported HW. Instead of
-> completely fail, it is better to use some kind of basic devicetree with
-> reduced functionality.
+On Wed, Apr 03, 2024 at 06:00:56AM +0200, Thorsten Scherer wrote:
+> Hi Oleksij,
 > 
+> I spotted some typos.
 > 
+> On Tue, Apr 02, 2024 at 11:26:53AM +0200, Oleksij Rempel wrote:
+> > Add fallback support for currently not supported HW. Instead of
+> > completely fail, it is better to use some kind of basic devicetree with
+> > reduced functionality.
+> > 
+> > Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+> > ---
+> >  arch/arm/boards/skov-imx8mp/board.c | 12 ++++++++----
+> >  1 file changed, 8 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/arch/arm/boards/skov-imx8mp/board.c b/arch/arm/boards/skov-imx8mp/board.c
+> > index 3b6eb7b080..41122ea1e4 100644
+> > --- a/arch/arm/boards/skov-imx8mp/board.c
+> > +++ b/arch/arm/boards/skov-imx8mp/board.c
+> > @@ -85,6 +85,10 @@ static const struct board_description imx8mp_variants[] = {
+> >  	},
+> >  };
+> >  
+> > +static const struct board_description imx8mp_basic_viariant = {
+> 
+> s/imx8mp_basic_viariant/imx8mp_basic_variant/
+> 
+> > +	.dts_compatible = "skov,imx8mp-skov-basic",
+> > +};
+> > +
+> >  static int skov_imx8mp_fixup(struct device_node *root, void *data)
+> >  {
+> >  	struct device_node *chosen = of_create_node(root, "/chosen");
+> > @@ -171,12 +175,12 @@ static int skov_imx8mp_init_variant(struct skov_imx8mp_priv *priv)
+> >  	priv->variant_id = v;
+> >  
+> >  	if (v >= ARRAY_SIZE(imx8mp_variants)) {
+> > -		dev_err(dev, "Invalid variant %u\n", v);
+> > -		return -EINVAL;
+> > +		dev_warn(dev, "Unsuported variant %u. Fall back to basic variant\n", v);
+> 
+> s/Unsuported/Unsupported/
+> 
+> > +		variant = &imx8mp_basic_viariant;
+> 
+> s/imx8mp_basic_viariant/imx8mp_basic_variant/
 
-Applied, thanks!
+Fixed while applying.
 
-[1/2] ARM: i.MX8MP: skov: add fallback for unsupported HW
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b3b526447a61 (link may not be stable)
-[2/2] ARM: i.MX8MP: skov: add new bd500 variant support
-      https://git.pengutronix.de/cgit/barebox/commit/?id=6cf809a063ed (link may not be stable)
+Thanks
+ Sascha
 
-Best regards,
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
