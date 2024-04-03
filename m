@@ -1,58 +1,66 @@
-Delivery-date: Wed, 03 Apr 2024 10:27:23 +0200
+Delivery-date: Wed, 03 Apr 2024 11:04:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrvxr-005X3P-2q
+	id 1rrwY9-005bF7-2N
 	for lore@lore.pengutronix.de;
-	Wed, 03 Apr 2024 10:27:23 +0200
+	Wed, 03 Apr 2024 11:04:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrvxq-0002jg-2Z
-	for lore@pengutronix.de; Wed, 03 Apr 2024 10:27:23 +0200
+	id 1rrwY3-0006qs-Pd
+	for lore@pengutronix.de; Wed, 03 Apr 2024 11:04:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=of0SuCuAsSaXdgt/OL9/y/uNqWnFQ79k4fZcDlU/aXQ=; b=STeCHKPL5rlSpbpXaXA+eMbv2x
-	r4aLoETFIR3dHMSQJ0EQEWdvI3mNBIed2Ngwi298w2eXXjEJ0r6EumTMfTbGTHHysodGUJS+FH1Aj
-	lnlHFXfZn/TlnMWR53xga/B1Q1geCF0Xs8rP3GbH9m6MYoTFjL6PXcFUjMkm8X7XWb6rWGJOu8Sv9
-	AUD60Jt8oSybiU9RWapnbvyGgWLChH6+VDvqNao0f91e4o29klosgDC3RNwi07uxzEyyk3XZLcXEx
-	AO1HwelobMFr/nV+VVd/xLhuHXLkIveuzZQwU+WhAPWCCcO/FKH5r+7Pkz1YoAgxUVXMgJgYfXSn3
-	9Fibp/sA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=y/bGR7RkOO11BDGewuobs2dwn2QAJx9G0zD/NRpc2c0=; b=DisfGlXxP4GFxVHr/Ohe5ap/QZ
+	9v/yKYaXr4EE2PgVe2muXPvMf/YQHl0vMhOqO8Xk4s27BLVr8afYc0j0GsnGYlFUvhjiqXqrueacD
+	Iio0AnrxJSUmVrogYsw6R61eUeLg3A0jvquDV4NXCxfCc7hkLanqtazDNgJqXEF7N6Ld+zzCTzrO3
+	/gexLDW6KaE35+WCKHs/XJvTdpbpqgY4wdNydLuBp90w4yo7Tu0bVpXLt1qedaQT25ZTTzJa0tYtC
+	CSGp54veQW1fpDBFfcL4TQiy92FwFUDDbiIEMJkW0/Q2ANl4/RZXObKmgA/uXw7KGDgn6waUDn9FU
+	KK7a332A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrvxN-0000000Es2h-1PLI;
-	Wed, 03 Apr 2024 08:26:53 +0000
+	id 1rrwXP-0000000F5w0-0rJB;
+	Wed, 03 Apr 2024 09:04:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrvxJ-0000000Es1w-3Bo2
+	id 1rrwXM-0000000F5uF-113K
 	for barebox@lists.infradead.org;
-	Wed, 03 Apr 2024 08:26:51 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Wed, 03 Apr 2024 09:04:05 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rrvxI-0001oV-GM; Wed, 03 Apr 2024 10:26:48 +0200
-Message-ID: <6172e753-5de0-41f8-a38a-1e96abc8b698@pengutronix.de>
-Date: Wed, 3 Apr 2024 10:26:48 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20240403080703.4098404-1-s.hauer@pengutronix.de>
- <20240403080703.4098404-2-s.hauer@pengutronix.de>
+	id 1rrwXD-0005zo-2L; Wed, 03 Apr 2024 11:03:55 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rrwXC-00A8sa-Lq; Wed, 03 Apr 2024 11:03:54 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1rrwXC-00CUIP-1s;
+	Wed, 03 Apr 2024 11:03:54 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240403080703.4098404-2-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  3 Apr 2024 11:03:53 +0200
+Message-Id: <20240403090353.2976380-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240403090353.2976380-1-a.fatoum@pengutronix.de>
+References: <20240403090353.2976380-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240403_012650_148861_CB123193 
-X-CRM114-Status: GOOD (  35.21  )
+X-CRM114-CacheID: sfid-20240403_020404_399864_86CBB737 
+X-CRM114-Status: GOOD (  13.72  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,381 +82,36 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/3] phy: rockchip: add pcie3 phy driver
+Subject: [PATCH 2/2] mci: remove FIXME in rca description
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
+The FIXME was added in the commit introducing the file many years ago.
+The RCA is a bit special in that it's unused for SPI, reported by the
+card for MMC and set by the host for SD. There are comments describing
+this in the MCI core, so just explain the abbreviation in the
+documentation comment.
 
-On 03.04.24 10:07, Sascha Hauer wrote:
-> This adds support for the Rockchip PCIe3 phy found on RK35x8 SoCs. The
-> code is taken from Linux as of Linux-6.9-rc2.
-> 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/mci.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Should we update the defconfigs?
-
-Cheers,
-Ahmad
-
-> ---
->  drivers/phy/rockchip/Kconfig                  |   5 +
->  drivers/phy/rockchip/Makefile                 |   1 +
->  .../phy/rockchip/phy-rockchip-snps-pcie3.c    | 317 ++++++++++++++++++
->  3 files changed, 323 insertions(+)
->  create mode 100644 drivers/phy/rockchip/phy-rockchip-snps-pcie3.c
-> 
-> diff --git a/drivers/phy/rockchip/Kconfig b/drivers/phy/rockchip/Kconfig
-> index e6cee372e7..8a10190f8e 100644
-> --- a/drivers/phy/rockchip/Kconfig
-> +++ b/drivers/phy/rockchip/Kconfig
-> @@ -13,3 +13,8 @@ config PHY_ROCKCHIP_NANENG_COMBO_PHY
->  	  Enable this to support the Rockchip PCIe/USB3.0/SATA/QSGMII
->  	  combo PHY with NaNeng IP block.
->  
-> +config PHY_ROCKCHIP_SNPS_PCIE3
-> +	bool "Rockchip Snps PCIe3 PHY Driver"
-> +	depends on ARCH_ROCKCHIP || COMPILE_TEST
-> +	help
-> +	  Enable this to support the Rockchip snps PCIe3 PHY.
-> diff --git a/drivers/phy/rockchip/Makefile b/drivers/phy/rockchip/Makefile
-> index 51ebf06aa1..1eaee4cbee 100644
-> --- a/drivers/phy/rockchip/Makefile
-> +++ b/drivers/phy/rockchip/Makefile
-> @@ -1,3 +1,4 @@
->  # SPDX-License-Identifier: GPL-2.0-only
->  obj-$(CONFIG_PHY_ROCKCHIP_INNO_USB2) += phy-rockchip-inno-usb2.o
->  obj-$(CONFIG_PHY_ROCKCHIP_NANENG_COMBO_PHY) += phy-rockchip-naneng-combphy.o
-> +obj-$(CONFIG_PHY_ROCKCHIP_SNPS_PCIE3) += phy-rockchip-snps-pcie3.o
-> diff --git a/drivers/phy/rockchip/phy-rockchip-snps-pcie3.c b/drivers/phy/rockchip/phy-rockchip-snps-pcie3.c
-> new file mode 100644
-> index 0000000000..7f39b261ca
-> --- /dev/null
-> +++ b/drivers/phy/rockchip/phy-rockchip-snps-pcie3.c
-> @@ -0,0 +1,317 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +/*
-> + * Rockchip PCIE3.0 phy driver
-> + *
-> + * Copyright (C) 2022 Rockchip Electronics Co., Ltd.
-> + */
-> +
-> +#include <of.h>
-> +#include <common.h>
-> +#include <linux/clk.h>
-> +#include <linux/io.h>
-> +#include <linux/iopoll.h>
-> +#include <linux/kernel.h>
-> +//#include <linux/phy/pcie.h>
-> +#include <mfd/syscon.h>
-> +#include <linux/phy/phy.h>
-> +#include <linux/regmap.h>
-> +#include <linux/reset.h>
-> +
-> +/* Register for RK3568 */
-> +#define GRF_PCIE30PHY_CON1			0x4
-> +#define GRF_PCIE30PHY_CON6			0x18
-> +#define GRF_PCIE30PHY_CON9			0x24
-> +#define GRF_PCIE30PHY_DA_OCM			(BIT(15) | BIT(31))
-> +#define GRF_PCIE30PHY_STATUS0			0x80
-> +#define GRF_PCIE30PHY_WR_EN			(0xf << 16)
-> +#define SRAM_INIT_DONE(reg)			(reg & BIT(14))
-> +
-> +#define RK3568_BIFURCATION_LANE_0_1		BIT(0)
-> +
-> +/* Register for RK3588 */
-> +#define PHP_GRF_PCIESEL_CON			0x100
-> +#define RK3588_PCIE3PHY_GRF_CMN_CON0		0x0
-> +#define RK3588_PCIE3PHY_GRF_PHY0_STATUS1	0x904
-> +#define RK3588_PCIE3PHY_GRF_PHY1_STATUS1	0xa04
-> +#define RK3588_SRAM_INIT_DONE(reg)		(reg & BIT(0))
-> +
-> +#define RK3588_BIFURCATION_LANE_0_1		BIT(0)
-> +#define RK3588_BIFURCATION_LANE_2_3		BIT(1)
-> +#define RK3588_LANE_AGGREGATION		BIT(2)
-> +
-> +struct rockchip_p3phy_ops;
-> +
-> +struct rockchip_p3phy_priv {
-> +	const struct rockchip_p3phy_ops *ops;
-> +	void __iomem *mmio;
-> +	/* mode: RC, EP */
-> +	int mode;
-> +	/* pcie30_phymode: Aggregation, Bifurcation */
-> +	int pcie30_phymode;
-> +	struct regmap *phy_grf;
-> +	struct regmap *pipe_grf;
-> +	struct reset_control *p30phy;
-> +	struct phy *phy;
-> +	struct clk_bulk_data *clks;
-> +	int num_clks;
-> +	int num_lanes;
-> +	u32 lanes[4];
-> +};
-> +
-> +struct rockchip_p3phy_ops {
-> +	int (*phy_init)(struct rockchip_p3phy_priv *priv);
-> +};
-> +
-> +static int rockchip_p3phy_set_mode(struct phy *phy, enum phy_mode mode, int submode)
-> +{
-> +	return 0;
-> +}
-> +
-> +static int rockchip_p3phy_rk3568_init(struct rockchip_p3phy_priv *priv)
-> +{
-> +	struct phy *phy = priv->phy;
-> +	bool bifurcation = false;
-> +	int ret;
-> +	u32 reg;
-> +
-> +	/* Deassert PCIe PMA output clamp mode */
-> +	regmap_write(priv->phy_grf, GRF_PCIE30PHY_CON9, GRF_PCIE30PHY_DA_OCM);
-> +
-> +	for (int i = 0; i < priv->num_lanes; i++) {
-> +		dev_info(&phy->dev, "lane number %d, val %d\n", i, priv->lanes[i]);
-> +		if (priv->lanes[i] > 1)
-> +			bifurcation = true;
-> +	}
-> +
-> +	/* Set bifurcation if needed, and it doesn't care RC/EP */
-> +	if (bifurcation) {
-> +		dev_info(&phy->dev, "bifurcation enabled\n");
-> +		regmap_write(priv->phy_grf, GRF_PCIE30PHY_CON6,
-> +			     GRF_PCIE30PHY_WR_EN | RK3568_BIFURCATION_LANE_0_1);
-> +		regmap_write(priv->phy_grf, GRF_PCIE30PHY_CON1,
-> +			     GRF_PCIE30PHY_DA_OCM);
-> +	} else {
-> +		dev_dbg(&phy->dev, "bifurcation disabled\n");
-> +		regmap_write(priv->phy_grf, GRF_PCIE30PHY_CON6,
-> +			     GRF_PCIE30PHY_WR_EN & ~RK3568_BIFURCATION_LANE_0_1);
-> +	}
-> +
-> +	reset_control_deassert(priv->p30phy);
-> +
-> +	ret = regmap_read_poll_timeout(priv->phy_grf,
-> +				       GRF_PCIE30PHY_STATUS0,
-> +				       reg, SRAM_INIT_DONE(reg),
-> +				       500);
-> +	if (ret)
-> +		dev_err(&priv->phy->dev, "%s: lock failed 0x%x, check input refclk and power supply\n",
-> +		       __func__, reg);
-> +	return ret;
-> +}
-> +
-> +static const struct rockchip_p3phy_ops rk3568_ops = {
-> +	.phy_init = rockchip_p3phy_rk3568_init,
-> +};
-> +
-> +static int rockchip_p3phy_rk3588_init(struct rockchip_p3phy_priv *priv)
-> +{
-> +	u32 reg = 0;
-> +	u8 mode = 0;
-> +	int ret;
-> +
-> +	/* Deassert PCIe PMA output clamp mode */
-> +	regmap_write(priv->phy_grf, RK3588_PCIE3PHY_GRF_CMN_CON0, BIT(8) | BIT(24));
-> +
-> +	/* Set bifurcation if needed */
-> +	for (int i = 0; i < priv->num_lanes; i++) {
-> +		if (!priv->lanes[i])
-> +			mode |= (BIT(i) << 3);
-> +
-> +		if (priv->lanes[i] > 1)
-> +			mode |= (BIT(i) >> 1);
-> +	}
-> +
-> +	if (!mode)
-> +		reg = RK3588_LANE_AGGREGATION;
-> +	else {
-> +		if (mode & (BIT(0) | BIT(1)))
-> +			reg |= RK3588_BIFURCATION_LANE_0_1;
-> +
-> +		if (mode & (BIT(2) | BIT(3)))
-> +			reg |= RK3588_BIFURCATION_LANE_2_3;
-> +	}
-> +
-> +	regmap_write(priv->phy_grf, RK3588_PCIE3PHY_GRF_CMN_CON0, (0x7<<16) | reg);
-> +
-> +	/* Set pcie1ln_sel in PHP_GRF_PCIESEL_CON */
-> +	if (!IS_ERR(priv->pipe_grf)) {
-> +		reg = (mode & (BIT(6) | BIT(7))) >> 6;
-> +		if (reg)
-> +			regmap_write(priv->pipe_grf, PHP_GRF_PCIESEL_CON,
-> +				     (reg << 16) | reg);
-> +	}
-> +
-> +	reset_control_deassert(priv->p30phy);
-> +
-> +	ret = regmap_read_poll_timeout(priv->phy_grf,
-> +				       RK3588_PCIE3PHY_GRF_PHY0_STATUS1,
-> +				       reg, RK3588_SRAM_INIT_DONE(reg),
-> +				       500);
-> +	ret |= regmap_read_poll_timeout(priv->phy_grf,
-> +					RK3588_PCIE3PHY_GRF_PHY1_STATUS1,
-> +					reg, RK3588_SRAM_INIT_DONE(reg),
-> +					500);
-> +	if (ret)
-> +		dev_err(&priv->phy->dev, "lock failed 0x%x, check input refclk and power supply\n",
-> +			reg);
-> +	return ret;
-> +}
-> +
-> +static const struct rockchip_p3phy_ops rk3588_ops = {
-> +	.phy_init = rockchip_p3phy_rk3588_init,
-> +};
-> +
-> +static int rochchip_p3phy_init(struct phy *phy)
-> +{
-> +	struct rockchip_p3phy_priv *priv = phy_get_drvdata(phy);
-> +	int ret;
-> +
-> +	ret = clk_bulk_prepare_enable(priv->num_clks, priv->clks);
-> +	if (ret) {
-> +		dev_err(&priv->phy->dev, "failed to enable PCIe bulk clks %d\n", ret);
-> +		return ret;
-> +	}
-> +
-> +	reset_control_assert(priv->p30phy);
-> +	udelay(1);
-> +
-> +	if (priv->ops->phy_init) {
-> +		ret = priv->ops->phy_init(priv);
-> +		if (ret)
-> +			clk_bulk_disable_unprepare(priv->num_clks, priv->clks);
-> +	}
-> +
-> +	return ret;
-> +}
-> +
-> +static int rochchip_p3phy_exit(struct phy *phy)
-> +{
-> +	struct rockchip_p3phy_priv *priv = phy_get_drvdata(phy);
-> +
-> +	clk_bulk_disable_unprepare(priv->num_clks, priv->clks);
-> +	reset_control_assert(priv->p30phy);
-> +	return 0;
-> +}
-> +
-> +static const struct phy_ops rochchip_p3phy_ops = {
-> +	.init = rochchip_p3phy_init,
-> +	.exit = rochchip_p3phy_exit,
-> +	.set_mode = rockchip_p3phy_set_mode,
-> +};
-> +
-> +static struct phy *rockchip_p3phy_xlate(struct device *dev,
-> +					struct of_phandle_args *args)
-> +{
-> +	struct rockchip_p3phy_priv *priv = dev->priv;
-> +
-> +	return priv->phy;
-> +}
-> +
-> +static int rockchip_p3phy_probe(struct device *dev)
-> +{
-> +	struct phy_provider *phy_provider;
-> +	struct rockchip_p3phy_priv *priv;
-> +	struct device_node *np = dev->of_node;
-> +	struct resource *res;
-> +	int ret;
-> +
-> +	priv = xzalloc(sizeof(*priv));
-> +
-> +	res = dev_request_mem_resource(dev, 0);
-> +	if (IS_ERR(res)) {
-> +		ret = PTR_ERR(res);
-> +		return ret;
-> +	}
-> +
-> +	priv->mmio = IOMEM(res->start);
-> +	if (IS_ERR(priv->mmio)) {
-> +		ret = PTR_ERR(priv->mmio);
-> +		return ret;
-> +	}
-> +
-> +	priv->ops = device_get_match_data(dev);
-> +	if (!priv->ops) {
-> +		dev_err(dev, "no of match data provided\n");
-> +		return -EINVAL;
-> +	}
-> +
-> +	priv->phy_grf = syscon_regmap_lookup_by_phandle(np, "rockchip,phy-grf");
-> +	if (IS_ERR(priv->phy_grf)) {
-> +		dev_err(dev, "failed to find rockchip,phy_grf regmap\n");
-> +		return PTR_ERR(priv->phy_grf);
-> +	}
-> +
-> +	if (of_device_is_compatible(np, "rockchip,rk3588-pcie3-phy")) {
-> +		priv->pipe_grf =
-> +			syscon_regmap_lookup_by_phandle(dev->of_node,
-> +							"rockchip,pipe-grf");
-> +		if (IS_ERR(priv->pipe_grf))
-> +			dev_info(dev, "failed to find rockchip,pipe_grf regmap\n");
-> +	} else {
-> +		priv->pipe_grf = NULL;
-> +	}
-> +
-> +	priv->num_lanes = of_property_read_variable_u32_array(dev->of_node, "data-lanes",
-> +							     priv->lanes, 2,
-> +							     ARRAY_SIZE(priv->lanes));
-> +
-> +	/* if no data-lanes assume aggregation */
-> +	if (priv->num_lanes == -EINVAL) {
-> +		dev_dbg(dev, "no data-lanes property found\n");
-> +		priv->num_lanes = 1;
-> +		priv->lanes[0] = 1;
-> +	} else if (priv->num_lanes < 0) {
-> +		dev_err(dev, "failed to read data-lanes property %d\n", priv->num_lanes);
-> +		return priv->num_lanes;
-> +	}
-> +
-> +	priv->phy = phy_create(dev, NULL, &rochchip_p3phy_ops);
-> +	if (IS_ERR(priv->phy)) {
-> +		dev_err(dev, "failed to create combphy\n");
-> +		return PTR_ERR(priv->phy);
-> +	}
-> +
-> +	priv->p30phy = reset_control_get_optional(dev, "phy");
-> +	if (IS_ERR(priv->p30phy)) {
-> +		return dev_err_probe(dev, PTR_ERR(priv->p30phy),
-> +				     "failed to get phy reset control\n");
-> +	}
-> +	if (!priv->p30phy)
-> +		dev_info(dev, "no phy reset control specified\n");
-> +
-> +	priv->num_clks = clk_bulk_get_all(dev, &priv->clks);
-> +	if (priv->num_clks < 1)
-> +		return -ENODEV;
-> +
-> +	dev->priv = priv;
-> +	phy_set_drvdata(priv->phy, priv);
-> +	phy_provider = of_phy_provider_register(dev, rockchip_p3phy_xlate);
-> +
-> +	return PTR_ERR_OR_ZERO(phy_provider);
-> +}
-> +
-> +static const struct of_device_id rockchip_p3phy_of_match[] = {
-> +	{ .compatible = "rockchip,rk3568-pcie3-phy", .data = &rk3568_ops },
-> +	{ .compatible = "rockchip,rk3588-pcie3-phy", .data = &rk3588_ops },
-> +	{ },
-> +};
-> +MODULE_DEVICE_TABLE(of, rockchip_p3phy_of_match);
-> +
-> +static struct driver rockchip_p3phy_driver = {
-> +	.probe	= rockchip_p3phy_probe,
-> +	.name = "rockchip-snps-pcie3-phy",
-> +	.of_compatible = rockchip_p3phy_of_match,
-> +};
-> +coredevice_platform_driver(rockchip_p3phy_driver);
-> +
-> +MODULE_DESCRIPTION("Rockchip Synopsys PCIe 3.0 PHY driver");
-> +MODULE_LICENSE("GPL");
-
+diff --git a/include/mci.h b/include/mci.h
+index 5781fb8ea381..2274ca8e97d5 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -564,7 +564,7 @@ struct mci {
+ 	unsigned scr[2];
+ 	unsigned csd[4];	/**< card's "card specific data register" */
+ 	unsigned cid[4];	/**< card's "card identification register" */
+-	unsigned short rca;	/* FIXME */
++	unsigned short rca;	/**< relative card address */
+ 	bool sdio;              /**< card is a SDIO card */
+ 	bool high_capacity;	/**< high capacity card is connected (OCR -> OCR_HCS) */
+ 	unsigned tran_speed;	/**< Maximum transfer speed */
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
