@@ -1,65 +1,67 @@
-Delivery-date: Wed, 03 Apr 2024 11:06:46 +0200
+Delivery-date: Wed, 03 Apr 2024 13:26:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrwZy-005bl0-1w
+	id 1rrylB-005zHx-0K
 	for lore@lore.pengutronix.de;
-	Wed, 03 Apr 2024 11:06:46 +0200
+	Wed, 03 Apr 2024 13:26:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rrwZy-0008Pw-1K
-	for lore@pengutronix.de; Wed, 03 Apr 2024 11:06:46 +0200
+	id 1rrylA-0001as-Ii
+	for lore@pengutronix.de; Wed, 03 Apr 2024 13:26:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=tskXyXp++xu5RDCMzk9cyFrOZ6M4n/6zLLF0HEyIu1I=; b=EtXqwLtxe7vOPABrVKi5DseCaK
-	ZxDqBU3fyMPw7HeDsf3brYWvKkjtu/E8MbHcCtK725FONJdkcwiAxrAPJQJsJkdBGBaZVF/tRkuQ9
-	I7JZ4WgmJVMNzcq+tDLPEnzNXMPNNt+e/Wqy+wZXD9vmwtsI7fUutRPNUK5rRLNwBY3uQT1mT04tv
-	hRSPqU6uvzNprEtZWtPlrv7OXrOX41H/Mh4atf37qfqu3aC1R3NMADIrIXgUqpEJhPhTtjh38u3oZ
-	uvuxTlFzZhbgE3p2fAII+0x111iHHArF03fBYM2QOM9fObY2QKsiy+RuSctEZM/C7r1mRjIcqTGEF
-	jYxTCvkA==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=VwQK5FkkfX8dCfgNZA9tz8XdyfA4v70Rcaw4y5fxT8g=; b=XzdocjkcPgr3qp1dwhPnr56Z1I
+	GyETV/hSN7Syd978mI6mQS8S6wegOghkl5SDhT8TCtNyu3G3eASIbHS1yhLktg4meeKCpogfXm7q8
+	nWF3Rcg+1ZLXUPD+G8iBollUcfLIHwcPFf0o3gfZR6wof4cKu+12br8ZiKU7YH1m/nfp1GafzdcG4
+	hk7WO5YIosZ7CsE5LLbpi78Hb8bpH2DD5+R9DXCimbHLO5XnKjRyW9+ZVktHfnub7Mh9e9lfW+2e0
+	fNbw5kswkKfyMdD4chDGeWIqMoZ6VbGruFZziEyfaTJZjG+uIeqGbivjx9lNCCH1qOeiOkQ+LJKOk
+	RQVV3Eog==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrwZM-0000000F73y-1jmu;
-	Wed, 03 Apr 2024 09:06:08 +0000
+	id 1rrykW-0000000Fli0-2qW8;
+	Wed, 03 Apr 2024 11:25:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rrwZI-0000000F72W-2nFf
+	id 1rrykT-0000000Flgs-3r6q
 	for barebox@lists.infradead.org;
-	Wed, 03 Apr 2024 09:06:05 +0000
+	Wed, 03 Apr 2024 11:25:47 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rrwZH-0007wy-EI; Wed, 03 Apr 2024 11:06:03 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rrykP-00011o-Gx; Wed, 03 Apr 2024 13:25:41 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rrwZH-00A8vE-1D; Wed, 03 Apr 2024 11:06:03 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rrwZG-00CV4X-34;
-	Wed, 03 Apr 2024 11:06:02 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed,  3 Apr 2024 11:06:02 +0200
-Message-Id: <20240403090602.2978695-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rrykP-00AAKj-4K; Wed, 03 Apr 2024 13:25:41 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rrykP-006E5g-06;
+	Wed, 03 Apr 2024 13:25:41 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20240325110214.3301152-1-s.hauer@pengutronix.de>
+References: <20240325110214.3301152-1-s.hauer@pengutronix.de>
+Message-Id: <171214354102.1484103.17117730176058171150.b4-ty@pengutronix.de>
+Date: Wed, 03 Apr 2024 13:25:41 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240403_020604_737386_C95989CE 
-X-CRM114-Status: UNSURE (   8.07  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240403_042545_998221_143932AB 
+X-CRM114-Status: GOOD (  10.28  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,36 +83,31 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: rpi: detect mci1 as well when searching for environment
+Subject: Re: [PATCH] net: phy: do not crash on missing
+ read_page()/write_page() ops
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Raspberry Pi 4, which lacks aliases like other Raspberry Pis,
-the SD-Card is named mci1, while mci0 is the SDIO card.
 
-Therefore detect both mci0 and mci1 in hope that one of them will
-provide disk0. This is safe to do as barebox will now gracefully
-skip SDIO cards during probe.
+On Mon, 25 Mar 2024 12:02:14 +0100, Sascha Hauer wrote:
+> Normally phy_select_page() is only called from within the phy driver.
+> The exception is the r8169 network driver. It calls phy_select_page()
+> assuming that its internal phy is supported by the realtek phy driver
+> which supports this operation. It can happen though that the internal
+> phy is not yet supported by the realtek phy driver and thus support
+> falls back to the generic phy driver. return gracefully in this case
+> instead of crashing barebox.
+> 
+> [...]
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/boards/raspberry-pi/rpi-common.c | 1 +
- 1 file changed, 1 insertion(+)
+Applied, thanks!
 
-diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index 7c82c740e256..924d4425bd87 100644
---- a/arch/arm/boards/raspberry-pi/rpi-common.c
-+++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -192,6 +192,7 @@ static int rpi_env_init(void)
- 	int ret;
- 
- 	device_detect_by_name("mci0");
-+	device_detect_by_name("mci1");
- 
- 	diskdev = "/dev/disk0.0";
- 	ret = stat(diskdev, &s);
+[1/1] net: phy: do not crash on missing read_page()/write_page() ops
+      https://git.pengutronix.de/cgit/barebox/commit/?id=8a9d15f9a0f4 (link may not be stable)
+
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
