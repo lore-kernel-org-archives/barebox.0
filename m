@@ -3,64 +3,64 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rsS17-00AYdn-1G
+	id 1rsS18-00AYdu-0b
 	for lore@lore.pengutronix.de;
 	Thu, 04 Apr 2024 20:40:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rsS15-0003AE-Kl
-	for lore@pengutronix.de; Thu, 04 Apr 2024 20:40:53 +0200
+	id 1rsS16-0003Ay-TL
+	for lore@pengutronix.de; Thu, 04 Apr 2024 20:40:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:References:In-Reply-To:
-	Message-Id:Date:Subject:To:From:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=YP3QzywKsN3zXpDSZncKrTwDTRY1uGXXxiMGupqNetA=; b=PPCrUfTLLM6d5M
-	JcnjWLIy4nxXqbv33ZqzonXSWBbj3V0xn/CaDTS3kIygMLgaNnDyqkg5ttw4SCbjKxcwYAwIKIl2A
-	pNEcy36x0UqvVNl1nxMzEm4tEU7nOHHoKIp5H0cNooHFJ7geTNZ6Vlkae7DJm3j2ATOhEg9ltnJyx
-	bFrNlxFf/iKEs+d6STtyLrF6a2sbv6pGu8u56ccpMWYe3bCz8RS3NOJx4gfIfE51qinBBGfKh3QeH
-	v0AZYflXL6xOhvDn5mhtNUfhn91ZCaJdi4y5FWg/mtaC2+VVcBSWK+l/G0w2/ZcrTtzredsj0mEzM
-	IjlUicSkU1BgqzirsgUg==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=5619LVbPizxTNrm2epi/YogUGY1T0r2eGBT0b8n+ibA=; b=SLmy0sJFmo+PiFN7RYQy8Q8jzX
+	NC15aYCgFf3DPI51Fpw22Gn+nAa94wB9Qo68/V4EZFoRgUHssiu1hkusUQ+FrbYueTp4L46/5cupC
+	GObzYT3+VQREFwZOcWdS4gXAxU2+g9saSgOsvGPVMXh4mK+jzRh7Q+AIugNfF/GW5fIllSL4bvFo/
+	cOEfuCdhXs47rIB62fAEl2qPERKQ6J7/MwCfUKtuGHhWGCqUXV1DMAvpX6xJILXlmGux89fPxV+Xp
+	+o4ssL1zw9VvJrwiOnz58XpvDhUwB6W16rZEYPI9IJTs4Kl8c2rxfJXdjgj7QeTVbK4FC1iO8xVxk
+	M7jhSFhA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rsS0W-00000003sKo-3igi;
-	Thu, 04 Apr 2024 18:40:16 +0000
+	id 1rsS0V-00000003sKe-3op7;
+	Thu, 04 Apr 2024 18:40:15 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rsS0N-00000003sG4-1Jk9
+	id 1rsS0N-00000003sG3-1Per
 	for barebox@lists.infradead.org;
 	Thu, 04 Apr 2024 18:40:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rsS0I-0001sC-St; Thu, 04 Apr 2024 20:40:02 +0200
+	id 1rsS0J-0001sJ-0G; Thu, 04 Apr 2024 20:40:03 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rsS0I-00AQQi-G2; Thu, 04 Apr 2024 20:40:02 +0200
+	id 1rsS0I-00AQQo-Is; Thu, 04 Apr 2024 20:40:02 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rsS0I-006VVt-1J;
+	id 1rsS0I-006VVt-1b;
 	Thu, 04 Apr 2024 20:40:02 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu,  4 Apr 2024 20:39:54 +0200
-Message-Id: <20240404184001.1532897-4-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu,  4 Apr 2024 20:39:56 +0200
+Message-Id: <20240404184001.1532897-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240404184001.1532897-1-a.fatoum@pengutronix.de>
 References: <20240404184001.1532897-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240404_114007_486062_45E8A0CF 
-X-CRM114-Status: GOOD (  18.37  )
+X-CRM114-CacheID: sfid-20240404_114007_474614_960F1A79 
+X-CRM114-Status: GOOD (  10.61  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,7 +72,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: =?UTF-8?q?Bj=C3=B6rn=20L=C3=A4ssig?= <bla@pengutronix.de>, Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -83,75 +82,37 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 03/10] net: icmp: don't blindly trust driver supplied frame size
+Subject: [PATCH 05/10] net: icmp: don't overrun buffer on send
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The barebox network stack calls ping_reply() to handle ICMP echo
-requests. The function copies destination addresses to source addresses,
-fixes up some fields, recalculates checksums and then sends back the
-ICMP echo response.
+len is the size of the ICMP echo request and the ICMP echo response will
+have the exact same size, but the code erroneously, copied ETHER_HDR_SIZE
+bytes worth of extra data beyond the buffer and sent that out.
 
-There are two checksums involved: The IP checksum over the IP header and
-the ICMP header spanning the ICMP payload, which extends to the end of
-packet.
-
-The number of bytes that the ICMP checksum should be computed for was
-being calculated as total_size_reported_by_nic - iphdr_size - ethhdr_size.
-
-This is wrong as it assumes that the IP payload extends until the end of
-packet. There are multiple reasons this may not be the case:
-
-  - The packet is smaller than the minimum and is thus padded.
-  - The sender adds trailing bytes after the IP payload for no reason.
-  - The network driver reports a wrong size, because it doesn't
-    correctly handle extra bytes added by hardware checksum offloading.
-
-The last one affects the barebox cpsw and smsc95xx drivers, which will
-be fixed up in follow-up commits.
-
-The proper solution is to use the same length for the payload and
-for its checksum. Do this by using the new ip_verify_size(), which will
-take care to fix up the size discrepancy.
-
-This issue was found by trying to ping a Raspberry Pi 3b running barebox
-sitting behind a router employing conntrack, which apparently discarded
-the ping responses due to the wrong ICMP checksum. These issues did not
-occur without such a router in-beween, because the ping command itself
-doesn't bother to verify the checksum.
+Fix this by using the correct length.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Cc: Jan Lübbe <jlu@pengutronix.de>
-Cc: Björn Lässig <bla@pengutronix.de>
----
- net/net.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/net.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/net/net.c b/net/net.c
-index 56a599d0bc61..6745085635dc 100644
+index 754a764d2a49..a9d130635417 100644
 --- a/net/net.c
 +++ b/net/net.c
-@@ -686,7 +686,7 @@ static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
- {
- 	struct ethernet *et = (struct ethernet *)pkt;
- 	struct icmphdr *icmp;
--	struct iphdr *ip = (struct iphdr *)(pkt + ETHER_HDR_SIZE);
-+	struct iphdr *ip;
- 	unsigned char *packet;
- 	int ret;
+@@ -715,9 +715,9 @@ static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
+ 	if (!packet)
+ 		return 0;
  
-@@ -696,6 +696,10 @@ static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
+-	memcpy(packet, pkt, ETHER_HDR_SIZE + len);
++	memcpy(packet, pkt, len);
  
- 	icmp = net_eth_to_icmphdr(pkt);
+-	ret = eth_send(edev, packet, ETHER_HDR_SIZE + len);
++	ret = eth_send(edev, packet, len);
  
-+	ip = ip_verify_size(pkt, &len);
-+	if (!ip)
-+		return -EILSEQ;
-+
- 	icmp->type = ICMP_ECHO_REPLY;
- 	icmp->checksum = 0;
- 	icmp->checksum = ~net_checksum((unsigned char *)icmp,
+ 	net_free_packet(packet);
+ 
 -- 
 2.39.2
 
