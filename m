@@ -3,64 +3,66 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rsS16-00AYdY-0x
+	id 1rsS18-00AYe4-2D
 	for lore@lore.pengutronix.de;
 	Thu, 04 Apr 2024 20:40:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rsS15-00039n-4q
-	for lore@pengutronix.de; Thu, 04 Apr 2024 20:40:52 +0200
+	id 1rsS17-0003BO-AS
+	for lore@pengutronix.de; Thu, 04 Apr 2024 20:40:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Ua19pJt43XUe4FoKMgR3i/QrcVD1nMGZeMeukymywPA=; b=M2QSKXU35WYkJBN9mOUxp9fQGa
-	F9nF6XEADxRAwBq95/suOdM7ekPhsM5/YrCPreZXwkblkj1fQp52cLwkShizwryu1m/3pkGFABmvm
-	5aNJgrpwPWJz284WUamZM61+pvUnyoFRslB9gixMnEwusnmXnFG1nu6yvz6J9RqeWfW2wCaKvn7M9
-	20OjXP5mWyEHcKQV2homPJrgtj7wrPaN8e2G6rB/LP//wRSD8GznMF8qJEiRr87ySlKhUQbFZbpSp
-	yQQjGALBqbIE4baiooEchK34Nhy/MtMyb65mkYEenSoAQiijDtN6sEzb53YPOEjWyZZbGQ1aJdMfO
-	IT8mXg8w==;
+	bh=sxb9AjRTlYzQHqaNNYPjLSUId5YpS+wJ7jzY9WtFvg8=; b=j3wyE3dhZKZfzq0ewp1Q307xvt
+	88/pO4K+706NOBBqhIsRT2oSeg9OaZjbGKRXOsPYvyAEx8/VC5m49sm+pzn5qNb2e9DjrcUSP7x43
+	I06hfauJsAaFoMiwEYybv2Xf9J3/rOxNe8L7e2pLnw1ttKC2Q7UadD7sG4rQVHT9VUkqrrS3RGfV+
+	RDBaZ0zA2lV+TlZbnvcp7r4W1PA2Mi7u50oJ+aJ9xguSwul8I2Zk7j43y+33nky8f/74Z3dwZGbRl
+	gBD8xeUKRh9ByJdjvXHRw1O0yiNHgNYiO4p97TOWvemSl4gDTxDm+U55mbD6BPmq4U1RcoA8K83Xz
+	ck3S7gxA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rsS0V-00000003sKY-0kkm;
-	Thu, 04 Apr 2024 18:40:15 +0000
+	id 1rsS0S-00000003sJc-1bLO;
+	Thu, 04 Apr 2024 18:40:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rsS0N-00000003sG8-1L4i
+	id 1rsS0N-00000003sG5-15BL
 	for barebox@lists.infradead.org;
-	Thu, 04 Apr 2024 18:40:10 +0000
+	Thu, 04 Apr 2024 18:40:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rsS0J-0001sn-7B; Thu, 04 Apr 2024 20:40:03 +0200
+	id 1rsS0I-0001sE-UR; Thu, 04 Apr 2024 20:40:02 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rsS0I-00AQR0-Op; Thu, 04 Apr 2024 20:40:02 +0200
+	id 1rsS0I-00AQQl-HY; Thu, 04 Apr 2024 20:40:02 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rsS0I-006VVt-2C;
+	id 1rsS0I-006VVt-1S;
 	Thu, 04 Apr 2024 20:40:02 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  4 Apr 2024 20:40:00 +0200
-Message-Id: <20240404184001.1532897-10-a.fatoum@pengutronix.de>
+Cc: =?UTF-8?q?Jan=20L=C3=BCbbe?= <j.luebbe@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu,  4 Apr 2024 20:39:55 +0200
+Message-Id: <20240404184001.1532897-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240404184001.1532897-1-a.fatoum@pengutronix.de>
 References: <20240404184001.1532897-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240404_114007_444331_584445E6 
-X-CRM114-Status: GOOD (  11.59  )
+X-CRM114-CacheID: sfid-20240404_114007_340732_4D5C0207 
+X-CRM114-Status: GOOD (  11.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,46 +84,40 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 09/10] net: usb: smsc95xx: fix handling of multiple packets per urb
+Subject: [PATCH 04/10] net: icmp: properly set IP TTL and fragement fields
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-len is the actual length of the USB bulk transfer, while size is the
-length of the current packet, which may be different if we have multiple
-packets per transfer.
+We shouldn't keep using the TTL value of the ICMP echo request,
+as we are sending a fresh packet, therefore restore it to the maximum
+value.
 
-We don't seem to run into this in barebox, perhaps because of our MTU,
-but let's fix it anyway.
+While at it, also fix the frag_off field: A fragment offset of 0 on its
+own doesn't mean that there's no fragmentation, but that this is the
+first fragment. Writing 0x4000 there sets the "Don't fragment" bit,
+which we are already setting for all other IP communication and should
+be setting here as well.
 
+Suggested-by: Jan Lübbe <j.luebbe@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/net/usb/smsc95xx.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ net/net.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/usb/smsc95xx.c b/drivers/net/usb/smsc95xx.c
-index 1587128368ad..291e3c2f80f7 100644
---- a/drivers/net/usb/smsc95xx.c
-+++ b/drivers/net/usb/smsc95xx.c
-@@ -790,14 +790,17 @@ static int smsc95xx_rx_fixup(struct usbnet *dev, void *buf, int len)
- 				return 1;
- 			}
- 
--			net_receive(&dev->edev, packet, len - 4);
-+			net_receive(&dev->edev, packet, size - 4);
- 		}
- 
- 		len -= size;
-+		buf += size;
- 
- 		/* padding bytes before the next frame starts */
--		if (len)
-+		if (len) {
- 			len -= align_count;
-+			buf += size;
-+		}
- 	}
- 
- 	if (len < 0) {
+diff --git a/net/net.c b/net/net.c
+index 6745085635dc..754a764d2a49 100644
+--- a/net/net.c
++++ b/net/net.c
+@@ -705,7 +705,8 @@ static int ping_reply(struct eth_device *edev, unsigned char *pkt, int len)
+ 	icmp->checksum = ~net_checksum((unsigned char *)icmp,
+ 				       len - sizeof(struct iphdr) - ETHER_HDR_SIZE);
+ 	ip->check = 0;
+-	ip->frag_off = 0;
++	ip->frag_off = htons(0x4000);
++	ip->ttl = 255;
+ 	net_copy_ip((void *)&ip->daddr, &ip->saddr);
+ 	net_copy_ip((void *)&ip->saddr, &edev->ipaddr);
+ 	ip->check = ~net_checksum((unsigned char *)ip, sizeof(struct iphdr));
 -- 
 2.39.2
 
