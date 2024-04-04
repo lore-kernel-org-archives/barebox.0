@@ -3,64 +3,66 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rsS15-00AYdQ-2N
+	id 1rsS16-00AYda-2V
 	for lore@lore.pengutronix.de;
 	Thu, 04 Apr 2024 20:40:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rsS14-00039E-Nj
-	for lore@pengutronix.de; Thu, 04 Apr 2024 20:40:51 +0200
+	id 1rsS15-00039q-8f
+	for lore@pengutronix.de; Thu, 04 Apr 2024 20:40:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3NjoiVZKKh9k0d6c3bh0vYKLsUzSTcpr6QvaoqxkO0g=; b=DK6kIPqtHLDw7bdg39+dM0pV39
-	eLOuPqKLYijp53ZsTOSC29d31XNlbz5/IpXDrcrJ2bxIWhmDWzfcTX0A9JKSbjqA6N+tOy8j6Yjrb
-	DyM1GTBRvnDUGrwyvngLPN8Q96htEsLoTrg17KMqGeCYTt8IHejzDixoY6v3MhXMbTf4hx0qk+7Ic
-	I+2INPFfRg/lZ+zRGvkMPyE9C5ga3bGEDsdQcTQcEKByGuWbM++mn07GBp8xL2tu6fIg7cJW1Kk5C
-	qzvqZbqhQTHS8vI+X7FPtufHm/2TOs11jKhryVFgpDo+LVla5yLufbVP6N0mzjxVZ64q7odwv5yo7
-	VpLx06gQ==;
+	Content-Type:MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=8VJc06SBmZX9nZgKajm8huVgsbzenPYpD/2lFxjRfak=; b=HCb6drGw3cFLGTd4wnrtGG39Q3
+	eImmKMBjCJdKC3sG6nNn1jOUwm15AYoZqzGyBy+4564OWrMRUeV37NPrSrFLusp6sUC5WyQZWQRkZ
+	VoIrzC51aMgz7UtntjIXCZPrq8oXrY2oysugqbzc18i66bM39VB8h716/FGY9zijDTIVY8W4bxxrA
+	8F6tNoSxi/1WJomcjubSy38S+GLxX4d1ubJeJR4a6qgesZzyiF8uq4Uxm1FdJWYNIhfWzZotr38aw
+	cNOrOioDCe16N3rnzG7LanbtDcNLJdrh6Qv9tdOSMgyFWUktFa/SHkzk/IS1Txff4RKlExTNv3Tge
+	cMhIifJg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rsS0T-00000003sKI-3yeM;
-	Thu, 04 Apr 2024 18:40:13 +0000
+	id 1rsS0R-00000003sJF-3SO3;
+	Thu, 04 Apr 2024 18:40:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rsS0N-00000003sG6-1GMW
+	id 1rsS0N-00000003sFy-1CQI
 	for barebox@lists.infradead.org;
-	Thu, 04 Apr 2024 18:40:10 +0000
+	Thu, 04 Apr 2024 18:40:09 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rsS0J-0001sT-2l; Thu, 04 Apr 2024 20:40:03 +0200
+	id 1rsS0I-0001s9-OF
+	for barebox@lists.infradead.org; Thu, 04 Apr 2024 20:40:02 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rsS0I-00AQQr-KG; Thu, 04 Apr 2024 20:40:02 +0200
+	id 1rsS0I-00AQQb-Ba
+	for barebox@lists.infradead.org; Thu, 04 Apr 2024 20:40:02 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rsS0I-006VVt-1l;
+	id 1rsS0I-006VVt-0r
+	for barebox@lists.infradead.org;
 	Thu, 04 Apr 2024 20:40:02 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  4 Apr 2024 20:39:57 +0200
-Message-Id: <20240404184001.1532897-7-a.fatoum@pengutronix.de>
+Date: Thu,  4 Apr 2024 20:39:51 +0200
+Message-Id: <20240404184001.1532897-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240404184001.1532897-1-a.fatoum@pengutronix.de>
-References: <20240404184001.1532897-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240404_114007_426711_10E8DA6B 
-X-CRM114-Status: GOOD (  12.91  )
+X-CRM114-CacheID: sfid-20240404_114007_385350_5EABC4CF 
+X-CRM114-Status: UNSURE (   7.07  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,53 +84,37 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 06/10] net: cpsw: report correct frame size to network stack
+Subject: [PATCH 00/10] net: fix problems handling trailing bytes
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-If the NIC reports that there is a computed CRC appended to the frame
-content, we need to subtract its size from the total length before
-passing that further down the network stack.
+This started by pinging a Raspberry Pi 3b running barebox sitting behind
+a router employing conntrack. The router discarded the ping responses
+due to the wrong ICMP checksum and these issues do not pop up normally
+because the ping command itself doesn't bother to verify the checksum.
 
-This fixes a WARN_ON_ONCE reported by the network stack when built
-with #define DEBUG, because the expected size as indicated by the IP
-header is not the same as what's reported by the driver.
+This unearthed issues in two drivers as well as the barebox network
+stack itself.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/net/cpsw.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+See the commit messages for details.
 
-diff --git a/drivers/net/cpsw.c b/drivers/net/cpsw.c
-index 31ca61a230e9..3aafebaad49d 100644
---- a/drivers/net/cpsw.c
-+++ b/drivers/net/cpsw.c
-@@ -51,10 +51,12 @@
- #define CPDMA_DESC_EOP		BIT(30)
- #define CPDMA_DESC_OWNER	BIT(29)
- #define CPDMA_DESC_EOQ		BIT(28)
-+#define CPDMA_DESC_PASS_CRC	BIT(26)
- #define CPDMA_DESC_TO_PORT_EN	BIT(20)
- #define CPDMA_FROM_TO_PORT_SHIFT	16
- #define CPDMA_RX_SOURCE_PORT(__status__)	\
- 	(((__status__) >> CPDMA_FROM_TO_PORT_SHIFT) & 0x7)
-+#define CPDMA_DESC_CRC_LEN	4
- 
- #define SLIVER_SIZE		0x40
- 
-@@ -865,8 +867,11 @@ static int cpdma_process(struct cpsw_slave *slave, struct cpdma_chan *chan,
- 
- 	status = readl(&desc->hw_mode);
- 
--	if (len)
-+	if (len) {
- 		*len = status & 0x7ff;
-+		if (status & CPDMA_DESC_PASS_CRC)
-+			*len -= CPDMA_DESC_CRC_LEN;
-+	}
- 
- 	if (dma)
- 		*dma = readl(&desc->hw_buffer);
+Ahmad Fatoum (10):
+  net: free packets with net_free_packet
+  net: ip: don't blindly trust driver supplied frame size
+  net: icmp: don't blindly trust driver supplied frame size
+  net: icmp: properly set IP TTL and fragement fields
+  net: icmp: don't overrun buffer on send
+  net: cpsw: report correct frame size to network stack
+  net: usb: smsc95xx: don't opencode get/put_aligned_le32
+  net: usb: smsc95xx: don't blindly trust hardware size
+  net: usb: smsc95xx: fix handling of multiple packets per urb
+  net: usb: smsc95xx: disable HW checksumming in driver
+
+ drivers/net/cpsw.c         |  7 +++-
+ drivers/net/usb/smsc95xx.c | 68 ++++++++++++++++----------------------
+ net/net.c                  | 64 +++++++++++++++++++++++++++++------
+ 3 files changed, 88 insertions(+), 51 deletions(-)
+
 -- 
 2.39.2
 
