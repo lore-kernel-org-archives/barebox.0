@@ -1,77 +1,77 @@
-Delivery-date: Fri, 05 Apr 2024 16:05:58 +0200
+Delivery-date: Fri, 05 Apr 2024 16:05:59 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rskCc-00D89R-1F
+	id 1rskCd-00D8A8-1y
 	for lore@lore.pengutronix.de;
-	Fri, 05 Apr 2024 16:05:58 +0200
+	Fri, 05 Apr 2024 16:05:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rskCa-0000WQ-QW
-	for lore@pengutronix.de; Fri, 05 Apr 2024 16:05:58 +0200
+	id 1rskCc-0000XO-8O
+	for lore@pengutronix.de; Fri, 05 Apr 2024 16:05:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:Cc:To:
 	In-Reply-To:References:Message-Id:Content-Transfer-Encoding:Content-Type:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+4ls6kZ5CTDXkxp9WUutU5RJtmY8n9xwWImTkjenQMk=; b=TfXRV5dZNmPOfobF6yohGsKRUA
-	IF9svJ2S+6h6MLXjMbeMBhr3KulQ64wnm6PMtldrll2MVgd/RvBDEixhzZeWUys8Yz5Yp+NnXsxQ1
-	oQzeFys/nuE/Nyym0B/smAPITNDSzZ8XUiLPYzietInLBNKbd/zkLdO/1Xnhky9O8Wi6PR3wzZ5h1
-	58JeyEecbSmC6vOw/pNv6b5OmLpqIEdDK1orSef0HAnhreZQFhYmEDpQkwzqz4JjBDVSEQBNxNYvg
-	u+QPEzWyU4IAMae77NfG1NHWN/yfn6cj2Uwxz0/t6reiQxkOUDNaOzFR1Nzu8P91KZPIacy5PPiBw
-	d9KG9HRg==;
+	bh=IsRu2AeBmNeb0EQmTCgirrPxC6MIFo4vwx15TcfScA4=; b=ElBTqRhCTectC23u2UP/NWlKEN
+	FF1NSetKAEns1q2Z+BO13yfor3iZuHrzlVw9jw4q0xzsiy8nt49oBcdchQfBy0Hgpv4V52Za1qujC
+	y+S1f7jEQ5Ch7UZOMHhfXsW9bsQaudruGrHbSdr0eFAG6kOShui8oWqVRie2x1DzUE28n/fUPi9yP
+	4SDyeUQ6JNMZ97vAjLETsY2Y8SU9D1MvuwQjs7ma6uVbG/k9Brm//WjUiB8Tu8LBWMLoYwqY2AUPZ
+	TX3ctruX34SXEIhkO1Tnvtqq0P7iYe7/yrLEmkJNeEcZGehpMM6Ds7BKHgxkFovWskjEbAfEuD+W5
+	nF9jaWXA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rskBz-00000007MAH-2zEH;
-	Fri, 05 Apr 2024 14:05:19 +0000
+	id 1rskC2-00000007MBQ-1iAJ;
+	Fri, 05 Apr 2024 14:05:22 +0000
 Received: from mail-vi1eur05on20701.outbound.protection.outlook.com ([2a01:111:f403:2613::701] helo=EUR05-VI1-obe.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rskBw-00000007M0l-0xub
+	id 1rskBy-00000007M0l-0Va9
 	for barebox@lists.infradead.org;
-	Fri, 05 Apr 2024 14:05:17 +0000
+	Fri, 05 Apr 2024 14:05:20 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=f2e7fjiBydgrAafHrLgKQb8eMYo3xmEiDnPErE4JQYYSaUN+m61dJbbEh2qdKeU8mu7HCILcc73XyGdmI7XS+QQObpTZ11LCVYmLfEchsGToofz2tTQeCkltHld470/f6DFxPJIXsnCam8I9eIQlm02pvZEFCuL2kYfjo5PGjet+fy4KnXQ5voXlFvZ8ODt7XrCd6+nuLijdDutlg5iiM3FdJcO5+s4zhYSlfdz24xowyGijl+OD13e8wEn1P8SEGo6E0ZC7s/RcloPywOrt8ebGGnKaKWk4k9SK/9ljRA5BVrkEl+W4yNse6yZiccS/szmYCgpOl+o2ZYaRC5Gb7A==
+ b=OWdMyvtGlJR/6yQxkG38MD+GR8BDZYngaZbI9zlzPAGcqbAENrXzdEK1qUrqnEu4hLQj0N1o2Wbro5W4B3cRQBrFvXi5ZmHLCL/6P85ctP+4TpOH3bNr37Cr+u/BKoqRb82fkwfyVQO5YBsm2n9Gvx402lehlsY6W46UYDvmFMwu9BiOCd9atdCPgUOmQQhANDDvw5d4NBMlAA7OfX5ENhZo9p577GDHtdeWx6quSp9hhBTcK7Z0K3hAVpGsbDkTnvghyXLXl1i7HA3kP790+VXm2iweMxqqI4ikZ5tuu6I9u4FIgZrQdmVpaGl94D4B1PqOCNQHF2lREBTicWpIKA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=+4ls6kZ5CTDXkxp9WUutU5RJtmY8n9xwWImTkjenQMk=;
- b=HS1Wv1hqRA0QP294/A+olZx3Ut2+pt4sYjZ0MXH2qLDxe5jiSuEw40efeZySWfL/4uyECzM5EuTXpx+XmoaxOUMi+xPT81i+BZs4hP5SqDenOuH+CUK/gknVSHgZBpVDvVH7pCOViVPkyW+KjsABXH+Lqo5T39+1mm6/qBnojc04SX4buvzBiOWfi6HCiT304jB4cs/Dj59VSjcDjs9ATklT/FOf7IEDEncR+hwUX0GUs6J7XVKE9/Dng8mca/aAKjWB19tcVJ9oZ7enHo6JsNE4UR0XfzFTf79ZFsZ/T45tgXXQ2epTjU93sNC6mulZVpITUiw+RrNtdh3DQhQg0w==
+ bh=IsRu2AeBmNeb0EQmTCgirrPxC6MIFo4vwx15TcfScA4=;
+ b=lir33e3wETPvYtmdqDwoBiQ3G6/2jakQUUhLHNRHWUbOvU0TEh8a08ZbKk4Ll9HWd00GBUTwE9DHjqMXcFEl/F9hNJTV3jR/4rpMRTvSbKS338XYNt0KLkD9hGIEFqP5JSHxY28mCK7iHYRlPCq+czmPW7+1afeTJWmgzYvD2RWOCNl9eqe08bFaTv+kqWOc++ZxeomBGePrhNJnh/ntT5uCAVVuTKtDFh/RYDo3NLvpX1SlTrzJWBhWujpdYdGNromnGEe+IfEkMOmp3tQw9ZpVeQ3KH/WGP3cPqpTQVdD8vwCs9RbUZ+M4sOwrT8zDvAM1PDdHCA0P7REFK8Fs9w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=wolfvision.net; dmarc=pass action=none
  header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=+4ls6kZ5CTDXkxp9WUutU5RJtmY8n9xwWImTkjenQMk=;
- b=VPvXJf9PNAErL5kRXgKCUxKk/Q5toiQO2+NoJkbqfu6hnxSx1X2wtSBuk2mY8Qrnu7y+4h6Zq4c65gS4xd6PofdO026dZIlKJapNNzONYoSllV+4nQLm2YkQVeCYsfyJQLC6A3fLGXhxFENL9/ueb4Uwqb+NtVc9tDPN/ARwzKE=
+ bh=IsRu2AeBmNeb0EQmTCgirrPxC6MIFo4vwx15TcfScA4=;
+ b=uEnkBI9slowO6XIbVsJPXAycLY4bK/2AxCI0kl+a7FcQacLaHlOIvGVvy0PfRmybFjo9aPjYt23wBJL9wbHbzDMq5LzXiSYq0jWLQW8ZzYLFRdB+L6eg8MnWY4By6RV66N6FoRgwOn01mKfCzyUHADeNjh5IsELf4v5VHx0kEGc=
 Received: from DU0PR08MB9155.eurprd08.prod.outlook.com (2603:10a6:10:416::5)
  by GV2PR08MB8462.eurprd08.prod.outlook.com (2603:10a6:150:bc::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Fri, 5 Apr
- 2024 14:04:51 +0000
+ 2024 14:04:49 +0000
 Received: from DU0PR08MB9155.eurprd08.prod.outlook.com
  ([fe80::e86a:6893:ac7:dad9]) by DU0PR08MB9155.eurprd08.prod.outlook.com
  ([fe80::e86a:6893:ac7:dad9%5]) with mapi id 15.20.7409.042; Fri, 5 Apr 2024
- 14:04:50 +0000
+ 14:04:49 +0000
 From: Michael Riesch <michael.riesch@wolfvision.net>
-Date: Fri, 05 Apr 2024 16:04:45 +0200
+Date: Fri, 05 Apr 2024 16:04:42 +0200
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240405-feature-wolfvision-pf5-v1-4-e4a29c0e7fe1@wolfvision.net>
+Message-Id: <20240405-feature-wolfvision-pf5-v1-1-e4a29c0e7fe1@wolfvision.net>
 References: <20240405-feature-wolfvision-pf5-v1-0-e4a29c0e7fe1@wolfvision.net>
 In-Reply-To: <20240405-feature-wolfvision-pf5-v1-0-e4a29c0e7fe1@wolfvision.net>
 To: barebox@lists.infradead.org
 Cc: Michael Riesch <michael.riesch@wolfvision.net>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1712325888; l=9538;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1712325888; l=16812;
  i=michael.riesch@wolfvision.net; s=20240405; h=from:subject:message-id;
- bh=rHLogBk3SPw90Wei+dCY9PLCvwWqHLixlDDl4ffpF/8=;
- b=xTyu/Oh30UKQrZ3VWt9zkYhS69o5MTIgDhQHLrBSj0u81x0wapW7LjvomRXuzP92rQb5cAqml
- aC2JEC4oe7rAfSLWALTvvrzRziU0rQ/jX3Ke2srA10awZrywzbPtiL3
+ bh=nW2f4nmHAxfQ5MyxRnEJw1xWxiJ1Qu1W47elg2YLKLw=;
+ b=9dVUyTekCOcmEx6eE7NFb5ufrlriy1FSDEIQ5uE1LrmcBvouCyvMFtfo3fto+Bw2x+xqVbBJj
+ kc3gr830E5/BWLgi1UM1W6oRfHl+Ntf2+JQlmyUx6OXwdP3rRWy7atm
 X-Developer-Key: i=michael.riesch@wolfvision.net; a=ed25519;
  pk=cSJmgKSH3B6kdCIDCl+IYDW1Pw/Ybc6g9rmnUd/G7Ck=
 X-ClientProxiedBy: VI1PR0202CA0009.eurprd02.prod.outlook.com
@@ -83,60 +83,60 @@ X-MS-TrafficTypeDiagnostic: DU0PR08MB9155:EE_|GV2PR08MB8462:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: M+QMdwd2J5YANCvCmd2JOZRxAgfCI8Mwdy5GcQGHlnTdQYD4dR2sb8aA9nfCEfmN0xo1p6kBAc6PvV0X0pOIjxaXeRnWicrx5QXutFrt9rLBDC8/kk4Rz22g8MZDOpvJRvDtlyKpwIyNmrB/MXyp3hV+c8lh/m2kyOeGiGl1187ooNWnLZhQ+HpATQXaWDT7nwJyX/PBg5NuYC1B8thf1SrJhNqWuFR/FUSJ89XrkrZCbtozvAyVMWRMgx7GZFQTfxQg7oLa978CpnXoGwRerjEDE7tf9C/ELnu+D0I4s0Qeo9G1/ghjqaYlwhljubeGcGHXYkl4U7IDwmD750mF8/4kr9ECQGIUXPoOO4Y56vowCZiulNmAA3V2Tuh64e+cPmZzJIzYQmXuGceBkXY+7q1l1Y6eQ3B41AJ3cTlfzvjxpbTH+D7pOkXbp3yAVGc4yaU7k81KAdwOI9Hlf6oiPLRSv2rN/v5LaCfziqB/RAXMQBcR3GtuAdT0WplwjTSB7FkNFC7bzfvStFeFM96cVjZkC+9IWoqIQrNSDPC4jnqiV3wNRnCNFanAc8XKY1GgFH/WkAF4Hl+kUrep7KFe75kXqZ7K0jcUrjMWo3GekHwRfOMofLk6vw0lmeBGigr95kHptZ5fSm+R2Z/tnUZuKL0/t4lt/bip9HzKR26fU5V2j8RmtFtcnVOTOFF/A3EfsLHX2+aXEFTI8I+f/9jexip3XOcR1SoDyBaSByC2CFY=
+X-Microsoft-Antispam-Message-Info: g+1eyGSU2+honAXX/Wu0h4lLHCAFRhvUrHWP61LRvMnt/BdpZDtQ9QucFsihYn6OaT5LVajmLcXc1ifBtuT/UC1zkwYNDmvhclPWlXNLUsjUjtibgpE4mscHc2OmAFgpjpF8nF0P5K6LPuN6Cic/VOapo13qZYVwwX80MaJEx84d8dO9X5yMrTqZuWWyf1Czq6QNkGuCk228xVI8ZARuijbjuy9bfTfBrvDxsIMuFt74/KZwczyc/xahHeohFDiwViTsZh7+y6XEWV6jPOS2dykHLZ/UIUOzWOhCz2xmifWtOcq4SYNARuEwPlsmg+1gms/2vW1ESwXgmOEuSdplyCuetvG5i9rgE53FzDlNgB1hBOdvAY+y46jcB4PCnmJB0OAE9FxiRPvolLK8ZgHON85ak4XImzidy6KUMIy4i+Z4t6cNwr36EGS9qayLh1brjsqAORn+1hKT++7elhQhCE2m8ZDjLDZjLtziI/f8rAduDlMbbLxLDSVeD6jEA3pMNYS54H7VXIZUw/0hDWmY5Eo03+QcNZtIwZaiixe+9MrJW/n4tjR3yizfMsYD6gogBvgsNxZOJqbY3kRQXcOKX7b2guJw4jZ5uA3bfeQtKWWhrqjs3VwlMD0Mg5NR1wZvuVdnXU4QagXl/58ayhOvaNXMayIh2IwI0gwmxyBVv/4=
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9155.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(52116005)(1800799015)(38350700005);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UE9vYkRZZThDN2pHL1p3dDhGTlRFQi9ZYVNuVkVkcG92NENYQmZkL2xXMW5L?=
- =?utf-8?B?N0xIbm9sbm5TWDRycVROTmlreGxSclMzSE1zL2pyODVpNEhydEE2NWg2cU1O?=
- =?utf-8?B?ZXIrcDVQb05aNDdlWXNlSE0zQU4rQ2VqV2lVam5uVCtVWkQwNHl1aXZHZitF?=
- =?utf-8?B?S3hjVG9nZkdCdkdWUmRESDhnVU1PU3FrbWxyRlQ0SkJuaVhKUDBPc2VuQ0VG?=
- =?utf-8?B?bWwvb0FtbWR3blA0WEhOK0ZQQS9iOTNEMzhqTFFIQVFXRXB3YytJaWtWQk85?=
- =?utf-8?B?b3VzZ2N4L1ZSanBuNWNWczNvS0xKWVNDSUdsbTAxK0EzU3dZQWlsand6K3U3?=
- =?utf-8?B?d1FxUjltWFVzTVhtZlJ1bnc3NVRVVDlTeEpSRmR6b1hOR0pDcjlpSGowV2xl?=
- =?utf-8?B?U0w1SVU2QWxJVGhsRGxmK3BLZFV4aXhCNlBUVWhXWUNQNWFwaUFiN0Y4bFVK?=
- =?utf-8?B?Q05VRm81VzdmV3FMMVlNckJXUHpBTmZ2STBFY3pwUGRrTjAwUWxFTkJNdVRw?=
- =?utf-8?B?MHl4UkQzVWRYNnVPL0JoeFQ1Z0pwT3B3ZW1DOTR4Ylhvd2EyWFM4RlhoQzZ6?=
- =?utf-8?B?VnZuWTBmSU5pY1M3K2NPTXYxVUMrRFRjbU5QQ0U1WnJWdm9wdnVJRm9VcUxM?=
- =?utf-8?B?bnFjenJaaDRQbEg2WUhuOFFvblE0c1RwV3QxMWwrbktFQTlnTFRpWjRsSmg3?=
- =?utf-8?B?bjVOOEMxMXlhbDRidmwwWUVjSGpoVll1K1FVbEtZaFhxTncrQkxZZGNBRVdS?=
- =?utf-8?B?SElRWVpvVXVvSklkclkxWXc3OCtxZlpZQ09tRkdYd0VtejJmYTUreGVLYlc1?=
- =?utf-8?B?VjF2UCt2SG12R1BZZVJVell0bzAyaE85NUNGdy9WaUFnQjUvSnUzd3VZQSty?=
- =?utf-8?B?cjFUZCtoMjl6WUFzOTVGZ2JORnp4OVJXWXNtMm9tSDRJRWljeDI4bW1kNW1S?=
- =?utf-8?B?a0Voekk5QzRlMVhVUFhOVzFpdVJaQ3ZlWFBlYmNUTHhMZGg2QWJZWkNaVlhF?=
- =?utf-8?B?MDUwUi9yK2hTUEFESHUwRzhMeU4zanZiM3Y3eEsreTBrVVJIdnRPbWxDMmhn?=
- =?utf-8?B?bXhZSXlsNmpCbTI5UkJjbWFzNjltYXVBUWVGdUVKRCsyWjMyZzN5R3RyZjhM?=
- =?utf-8?B?S3BEK0VXZmdYS25sT1FUcVQxY2YvMTJpVzFNWlc2Sm9lVGZsWVlFeWRrK2RR?=
- =?utf-8?B?R2R6amhNVWJ1dm5XdFhhdnhxOEJ2UWk2SGhkYkxQenFqaTY3eGpUVlRPb0c5?=
- =?utf-8?B?ZjJCZUkwWlFlMlIySXJzYTMyNUV6TDRQMnhXM1BvVnpGSUF5MmJVZFc3ZmFH?=
- =?utf-8?B?Z2tpUmdpQldZb2JYeTRqTEF6Y2Qwby8wTTRveVozcEp4VzR2MktHSnhVQ1Uz?=
- =?utf-8?B?L210U2RQY2VlOEhvcnFhS09PQ3Z3MHhSOFVQWFFWV1BmTTEveFdJTnVVQmJE?=
- =?utf-8?B?a3dvalF5R2Fsa0taL0pVcWpMWlJSVytsSE8ra3ZGTDZZQXEyakhmWEhPMENr?=
- =?utf-8?B?QmZlbGltcS9GK0hQS3JWRlZ6OEJWd0tjSHZzSXVjem9qcWNZMmRDNDI3ZjMv?=
- =?utf-8?B?Y2NEQ2s1RDZGZTRhamExTEFvRllVaS93R29HSEpxY0hpWnZMZjlGSEtwSVlC?=
- =?utf-8?B?N2F3TVZLdnY2RjZ3aHIzZnJrQTBaampvOHVla2pkdTEwdXVVcVhFQlpaZGNX?=
- =?utf-8?B?ODJYcjlYWitWcnBDVjh3cXRUNEgvZHE1citDMmxCanFpWVhzTHp0YitwR2ZT?=
- =?utf-8?B?TlVyd3hBS0ZGT1k4d3hRa1hFbVpiZGRkcnVnbmU1WGVnbGNHY0FPNmFkOHI4?=
- =?utf-8?B?aGR0WTYvUDgvbzkrSERqMkJUQ2lRYmVOTm1meVF6Yi94ZGJXeHhsSDlEN0xU?=
- =?utf-8?B?UEZJME81T1JxakV1MURrQ3oxQXNtcW83bWp4V2s2M0pCOE9PRUs1SElsNVNK?=
- =?utf-8?B?SURjZE1HeXpKeFRaRnJmeVRCQ0I5N0k0dTZmZWJBV0hLTnM3by9tVkpLZ2JM?=
- =?utf-8?B?Umx3QkJRcmdHUmhxYmd3eUVnd0c5N1FrUi9DeDFVdGZxeC9JRmRadWpFS1hY?=
- =?utf-8?B?dDgyVjJZVERrcUFWSTlaSll5WDAzd2M3TjJVNWdRRlN6NkEyYmxxdlJ5WTNv?=
- =?utf-8?B?eTFwUzFQellDd25ONjFncjJ0WTdHMFBtc2E5TWYwaVh0dXpLTTNzb2R6VTVj?=
- =?utf-8?B?VkE9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?aTQ5aXNRclZyOWpyT1ZaVlBJeFhhczkrdGpiVDlnQzhJNUZ0SlB5YjBaendl?=
+ =?utf-8?B?T2ptVlhCMnhma2s5YTd3SGtCL3hRNmFuc21abHpSM1hmVkRVUnVISVgwT2pt?=
+ =?utf-8?B?ZlkyaWZmU3FwUDR5NG1nL2xYQ0VHa2hubHQzOWRpLzJPM2RMRkJLY2xESHQy?=
+ =?utf-8?B?TFNpRDFYUHhROVladGpXekhrajlOTGZqSHlCZGF6ZzMyRUZ6by9YYkVPcG1O?=
+ =?utf-8?B?Rzh0b0NLOHRzczVmTmRRZmZNTElrNTdXcTdEWnhqelBxanJMdmIyVDFJZk51?=
+ =?utf-8?B?UnAzSEduaW9BNVNTa00ra2hjazltYnF6OEpSbEYvUzVvcmZyTTV3ZVlKYjk1?=
+ =?utf-8?B?V0c2YVByb3dndzJpdFYwb1NRZUxJbFZQU1R2d2NSWHM0bENzTlJhMVNvcmxl?=
+ =?utf-8?B?TnUrRzBQODhMWHpNSlUvTThQUzBlanVWUjNxNW5qTXhHcnBQT2FabTBSQ08v?=
+ =?utf-8?B?V3U2RTI5TmN4YlBidTE0aWRDMU1zazlseDM2dnlNQ0dJOEdwb3JqbWVOd2wx?=
+ =?utf-8?B?ekVFY211R3RBS2E0b2VMTlQ3YTFMUGc2cEJtUDNJNDVyeURTM3VwdVQyYU5l?=
+ =?utf-8?B?bWQvYVl2VHdCUjhTRXJVUFZGeUxsWEREbngycHNLc1IwWUpvRmlmSzFKN1cz?=
+ =?utf-8?B?eThTRkpNZlJ0L3kvbVpYc3orUktWZU9qQUlCeVVRUG9ydzNPK293TkdnNnVa?=
+ =?utf-8?B?OTNFWWRxT1BRT2xQQmMrUlZUUTU5RkY2czcxbnZhYTBNV0hJbmdIZW9uclBT?=
+ =?utf-8?B?ZWVhOVVKYnp1VnFRMHVsU3pFUzN3dElwWEhnMkRoYzE3ZWxmWTljZks5MS9X?=
+ =?utf-8?B?elY5VFhuaXczZTBHa1NHN0tNVThFOVFVM2l5bXUyaldIRFVMZ0NTR0duOHVR?=
+ =?utf-8?B?R0xRc3R2TUUvazlmYVM3MG9tZ2pEbTNQNlhSR3hTbEVJcjlCTDNCRlpUOVZS?=
+ =?utf-8?B?a3pKcEdHWlZ4NmdZZklEOFhvalFtcW0wNUUrOTJBcWFCNCtCd2VpNDhYeTJl?=
+ =?utf-8?B?d003L0twcU9XR25RVkZ4bTA4TUdkQzVqVDl5K0h3c0NBOUVETHM2VWlTb3Bk?=
+ =?utf-8?B?Zm9Fa3BKdXAzMmJ3VWVoTVhVVkFLOXdMZ05aMElyUVBBUHZhNW0zRmhsdGZw?=
+ =?utf-8?B?U2xiRlppRTR0ZjluSFhLb1E4TUxlTVB5M1plZEVzbkVyTlN6TGZtS3NFVGZZ?=
+ =?utf-8?B?U3pXcmZqU0hNeElVY1pCRVlweVoyU0dFeFZUWXp2TW9odUwvY1BaMEZRRTZq?=
+ =?utf-8?B?ZlI3Z2NOZWZqZDg1cmRqWVRMRWt2UHNhKzVUQi9LMEpUOVYyNmNkaDRyZnhx?=
+ =?utf-8?B?KzlrK21xRUthVHdUSDZsVC9xUnZPM29QeUx2WmV6MWJxcHhVenBrUU1NQi9N?=
+ =?utf-8?B?V1hWTWZSNnJ5cVowamcwVGtkeW0rck1zUTlhZm1zOWd5amltcDJnKzl5eDd5?=
+ =?utf-8?B?TGFRVm1JVmhZbWxCcURqd1RnOHh5SmFyZ084YS9NUzg1NW1lMy8xWjRPdC9M?=
+ =?utf-8?B?cHZOT2VITDVJZk5HU3I1YW5rZmR6RmtqZmRJUHlCUEpoekpYcEpaOXRubkVM?=
+ =?utf-8?B?ZHZQNmFFRlpsNDNyTWtHR0gxUTFDYXVLNUJlNjNrN211VmM4OHA4YzBMNWlG?=
+ =?utf-8?B?QU96V2U4SWE0Z0xYTlJvQmNhRjlRMlJmSFJPN1VrdVVKN3psM1V0REYrQWhF?=
+ =?utf-8?B?Ky92Sm9JVGZqSEJFdGJsRFkzRnFuUUJwZlZMd2V1WWs0VTZVYXBGR0w5bjVq?=
+ =?utf-8?B?RmRtRERBWnBMYWd4WHpicHEyWVhGSkovYTRCS3ppaWFpRERaNjlMOTJXbDcx?=
+ =?utf-8?B?L2dPdk81NnZYNkhuQUp0ejN0emNYUDNNZTB5WnZ5bDlkeEIzWW5jQnBLaS91?=
+ =?utf-8?B?Y1hUSXhiaFVFNGFLTGlKcklmdCtMY3FlVGF3WTZGcWVlTFhDVW1TaXJDZDJk?=
+ =?utf-8?B?SU41ZUVEM2xzcjJxaGRFTVhRbXlnUktiTnpSbmxKRnUrMkpIdm9YbFFOMmNa?=
+ =?utf-8?B?YytHZFR0a0lpQzhTdjZRNGtFNlZzNGdwb0l1Rzk3M2xoQ2lTSlltWFlqUHZO?=
+ =?utf-8?B?d3VFTXU3NWYvMVFqd2N6M2l1dDZZenVMZC9NV1EzcWd2QXRQOTBVcXQxbWdI?=
+ =?utf-8?B?TDlhTk5yVk91K21qREpocHJuVDI0Z0NVbFJMeXhxWXFPeXV4N09Ick84bHJi?=
+ =?utf-8?B?enc9PQ==?=
 X-OriginatorOrg: wolfvision.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: feddea2e-b94d-4818-4110-08dc55795c1c
+X-MS-Exchange-CrossTenant-Network-Message-Id: 37d9193b-92cc-4d95-1de4-08dc55795b65
 X-MS-Exchange-CrossTenant-AuthSource: DU0PR08MB9155.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2024 14:04:50.5547
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2024 14:04:49.3359
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: xmgJU7M4t3GHz8BcLE5Ce5ERigFdyT0PLSfgjlV2g76aXvlGsOQWoQIMZ7MHHfhue4gLLFTDqNm4zhTEHJiGBJKWetV+5myY/1Z1h/98mpQ=
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6ZBC6GUy2OZxwxAGPKdJn9umFS5NZzpKXvjybSTL5e1gDMQWNR0/rvj+4VEK0EsLRSgKqE7UziQ5a/ttWXh8kIxKolkaK0ZPlTB7sB8EQjM=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR08MB8462
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240405_070516_521895_52129CEB 
-X-CRM114-Status: GOOD (  18.43  )
+X-CRM114-CacheID: sfid-20240405_070518_242817_44529126 
+X-CRM114-Status: GOOD (  10.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -158,213 +158,30 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/4] arm: boards: add wolfvision pf5 mainboard
+Subject: [PATCH 1/4] DNM: dts: arm64: rockchip: copy pf5 device tree from
+ mainline Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add support for the WolfVision PF5 mainboard, which features the Rockchip
-RK3568 SoC and can be extended with different expansion boards.
+The device tree for the WolfVision PF5 mainboard and the overlay for
+the PF5 IO Expander have been accepted for inclusion in Linux v6.10:
+https://git.kernel.org/pub/scm/linux/kernel/git/mmind/linux-rockchip.git/log/?h=v6.10-armsoc/dts64
+
+Once the device tree changes are merged and then integrated into
+barebox this commit should vanish.
 
 Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
 ---
- arch/arm/boards/Makefile                           |  1 +
- arch/arm/boards/wolfvision-pf5/.gitignore          |  1 +
- arch/arm/boards/wolfvision-pf5/Makefile            |  3 +
- arch/arm/boards/wolfvision-pf5/board.c             | 88 ++++++++++++++++++++++
- arch/arm/boards/wolfvision-pf5/lowlevel.c          | 36 +++++++++
- arch/arm/dts/Makefile                              |  3 +
- .../arm/dts/rk3568-wolfvision-pf5-io-expander.dtso | 11 +++
- arch/arm/dts/rk3568-wolfvision-pf5.dts             | 48 ++++++++++++
- arch/arm/mach-rockchip/Kconfig                     |  9 +++
- images/Makefile.rockchip                           |  1 +
- 10 files changed, 201 insertions(+)
+ .../rk3568-wolfvision-pf5-io-expander.dtso         | 137 ++++++
+ dts/src/arm64/rockchip/rk3568-wolfvision-pf5.dts   | 528 +++++++++++++++++++++
+ 2 files changed, 665 insertions(+)
 
-diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 05fbcca175..062db96e1c 100644
---- a/arch/arm/boards/Makefile
-+++ b/arch/arm/boards/Makefile
-@@ -203,3 +203,4 @@ obj-$(CONFIG_MACH_RADXA_ROCK5)			+= radxa-rock5/
- obj-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP)	+= variscite-dt8mcustomboard-imx8mp/
- obj-$(CONFIG_MACH_RADXA_CM3)			+= radxa-cm3/
- obj-$(CONFIG_MACH_TQMA93XX)			+= tqma93xx/
-+obj-$(CONFIG_MACH_WOLFVISION_PF5)		+= wolfvision-pf5/
-diff --git a/arch/arm/boards/wolfvision-pf5/.gitignore b/arch/arm/boards/wolfvision-pf5/.gitignore
+diff --git a/dts/src/arm64/rockchip/rk3568-wolfvision-pf5-io-expander.dtso b/dts/src/arm64/rockchip/rk3568-wolfvision-pf5-io-expander.dtso
 new file mode 100644
-index 0000000000..f458f794b5
+index 0000000000..ebcaeafc38
 --- /dev/null
-+++ b/arch/arm/boards/wolfvision-pf5/.gitignore
-@@ -0,0 +1 @@
-+sdram-init.bin
-diff --git a/arch/arm/boards/wolfvision-pf5/Makefile b/arch/arm/boards/wolfvision-pf5/Makefile
-new file mode 100644
-index 0000000000..b37b6c870b
---- /dev/null
-+++ b/arch/arm/boards/wolfvision-pf5/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0-only
-+obj-y += board.o
-+lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/wolfvision-pf5/board.c b/arch/arm/boards/wolfvision-pf5/board.c
-new file mode 100644
-index 0000000000..797f51bc2e
---- /dev/null
-+++ b/arch/arm/boards/wolfvision-pf5/board.c
-@@ -0,0 +1,88 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Board code for the WolfVision PF5 mainboard.
-+ *
-+ * Copyright (C) 2024 WolfVision GmbH.
-+ */
-+#include <common.h>
-+#include <deep-probe.h>
-+#include <globalvar.h>
-+#include <init.h>
-+
-+#include <boards/wolfvision/common.h>
-+#include <mach/rockchip/bbu.h>
-+
-+#define PF5_IO_EXPANDER_FILENAME "rk3568-wolfvision-pf5-io-expander.dtbo"
-+#define PF5_IO_EXPANDER_DATA __dtbo_rk3568_wolfvision_pf5_io_expander_start
-+
-+enum {
-+	PF5_HWID_CHANNEL_MAINBOARD = 1,
-+	PF5_HWID_CHANNEL_MODULE = 2,
-+};
-+
-+extern char PF5_IO_EXPANDER_DATA[];
-+
-+static const struct wv_rk3568_extension pf5_extensions[] = {
-+	{
-+		.adc_chan = PF5_HWID_CHANNEL_MAINBOARD,
-+		.name = "mainboard",
-+		.overlays = {
-+			[0] = { .name = "PF5 DC V1.0 A", },
-+			[4] = { .name = "PF5 DC V1.1 A", },
-+		},
-+	},
-+	{
-+		.adc_chan = PF5_HWID_CHANNEL_MODULE,
-+		.name = "module",
-+		.overlays = {
-+			[0] = { .name = "PF5 IO Expander V1.0 A",
-+				.filename = PF5_IO_EXPANDER_FILENAME,
-+				.data = PF5_IO_EXPANDER_DATA,
-+			},
-+			[16] = { .name = "no", },
-+		},
-+	},
-+};
-+
-+static int pf5_probe(struct device *dev)
-+{
-+	char *pf5_overlays = NULL;
-+	int ret;
-+
-+	barebox_set_model("WolfVision PF5");
-+	barebox_set_hostname("PF5");
-+
-+	ret = wolfvision_register_ethaddr();
-+	if (ret)
-+		pr_warning("failed to register MAC addresses\n");
-+
-+	rk3568_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT, "/dev/mmc0");
-+
-+	ret = wolfvision_rk3568_detect_hw(
-+		pf5_extensions, ARRAY_SIZE(pf5_extensions), &pf5_overlays);
-+	if (ret)
-+		pr_warning("failed to detect HW\n");
-+
-+	if (pf5_overlays)
-+		globalvar_set("of.overlay.filepattern", pf5_overlays);
-+
-+	free(pf5_overlays);
-+
-+	return 0;
-+}
-+
-+static const struct of_device_id pf5_of_match[] = {
-+	{
-+		.compatible = "wolfvision,rk3568-pf5",
-+	},
-+	{ /* sentinel */ },
-+};
-+
-+static struct driver_d pf5_board_driver = {
-+	.name = "board-wolfvision-pf5",
-+	.probe = pf5_probe,
-+	.of_compatible = pf5_of_match,
-+};
-+coredevice_platform_driver(pf5_board_driver);
-+
-+BAREBOX_DEEP_PROBE_ENABLE(pf5_of_match);
-diff --git a/arch/arm/boards/wolfvision-pf5/lowlevel.c b/arch/arm/boards/wolfvision-pf5/lowlevel.c
-new file mode 100644
-index 0000000000..c20ca4ae13
---- /dev/null
-+++ b/arch/arm/boards/wolfvision-pf5/lowlevel.c
-@@ -0,0 +1,36 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <common.h>
-+#include <linux/sizes.h>
-+#include <asm/barebox-arm-head.h>
-+#include <asm/barebox-arm.h>
-+#include <mach/rockchip/hardware.h>
-+#include <mach/rockchip/atf.h>
-+#include <debug_ll.h>
-+#include <mach/rockchip/rockchip.h>
-+
-+extern char __dtb_rk3568_wolfvision_pf5_start[];
-+
-+ENTRY_FUNCTION(start_rk3568_wolfvision_pf5, r0, r1, r2)
-+{
-+	/*
-+	 * Enable vccio4 1.8V and vccio5 1.8V
-+	 * FIXME: This is done by the io-domain driver as well, but there
-+	 * currently is no mechanism to make sure the driver gets probed
-+	 * before its consumers. Remove this setup once this issue is
-+	 * resolved.
-+	 */
-+	writel(RK_SETBITS(0x30), 0xfdc20140);
-+
-+	/*
-+	 * Image execution starts at 0x0, but this is used for ATF and
-+	 * OP-TEE later, so move away from here.
-+	 */
-+	if (current_el() == 3)
-+		relocate_to_adr_full(RK3568_BAREBOX_LOAD_ADDRESS);
-+	else
-+		relocate_to_current_adr();
-+
-+	setup_c();
-+
-+	rk3568_barebox_entry(__dtb_rk3568_wolfvision_pf5_start);
-+}
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 056d4d565b..bfa39de359 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -185,6 +185,7 @@ lwl-$(CONFIG_MACH_WARP7) += imx7s-warp.dtb.o
- lwl-$(CONFIG_MACH_VF610_TWR) += vf610-twr.dtb.o
- lwl-$(CONFIG_MACH_WEBASTO_CCBV2) += imx6ul-webasto-ccbv2.dtb.o
- lwl-$(CONFIG_MACH_WEBASTO_CCBV2) += imx6ul-webasto-marvel.dtb.o
-+lwl-$(CONFIG_MACH_WOLFVISION_PF5) += rk3568-wolfvision-pf5.dtb.o
- lwl-$(CONFIG_MACH_ZII_RDU1) +=	\
- 	imx51-zii-rdu1.dtb.o		\
- 	imx51-zii-scu2-mezz.dtb.o	\
-@@ -229,4 +230,6 @@ lwl-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP) += imx8mp-var-dart-dt8mcusto
- lwl-$(CONFIG_MACH_TQMA93XX) += imx93-tqma9352-mba93xxca.dtb.o \
- 			       imx93-tqma9352-mba93xxla.dtb.o
- 
-+obj-$(CONFIG_MACH_WOLFVISION_PF5) += rk3568-wolfvision-pf5-io-expander.dtbo.o
-+
- clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
-diff --git a/arch/arm/dts/rk3568-wolfvision-pf5-io-expander.dtso b/arch/arm/dts/rk3568-wolfvision-pf5-io-expander.dtso
-new file mode 100644
-index 0000000000..5160a7ec1a
---- /dev/null
-+++ b/arch/arm/dts/rk3568-wolfvision-pf5-io-expander.dtso
-@@ -0,0 +1,11 @@
++++ b/dts/src/arm64/rockchip/rk3568-wolfvision-pf5-io-expander.dtso
+@@ -0,0 +1,137 @@
 +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
 +/*
 + * Device tree overlay for the WolfVision PF5 IO Expander board.
@@ -375,13 +192,139 @@ index 0000000000..5160a7ec1a
 +/dts-v1/;
 +/plugin/;
 +
-+#include <arm64/rockchip/rk3568-wolfvision-pf5-io-expander.dtso>
-diff --git a/arch/arm/dts/rk3568-wolfvision-pf5.dts b/arch/arm/dts/rk3568-wolfvision-pf5.dts
++#include <dt-bindings/clock/rk3568-cru.h>
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/interrupt-controller/irq.h>
++#include <dt-bindings/pinctrl/rockchip.h>
++
++&{/} {
++	gmac0_clkin: external-gmac0-clock {
++		compatible = "fixed-clock";
++		clock-frequency = <50000000>;
++		clock-output-names = "gmac0_clkin";
++		#clock-cells = <0>;
++	};
++
++	usb_host_vbus: usb-host-vbus-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = <&gpio1 RK_PA3 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&usb_host_vbus_en>;
++		regulator-name = "usb_host_vbus";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&vcc5v_in>;
++	};
++
++	vcc1v8_eth: vcc1v8-eth-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = <&gpio0 RK_PC1 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&vcc1v8_eth_en>;
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-name = "1v8_eth";
++		regulator-min-microvolt = <1800000>;
++		regulator-max-microvolt = <1800000>;
++		vin-supply = <&vcc3v3_sys>;
++	};
++
++	vcc3v3_eth: vcc3v3-eth-regulator {
++		compatible = "regulator-fixed";
++		enable-active-low;
++		gpio = <&gpio0 RK_PC0 GPIO_ACTIVE_LOW>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&vcc3v3_eth_enn>;
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-name = "3v3_eth";
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		vin-supply = <&vcc3v3_sys>;
++	};
++};
++
++&gmac0 {
++	assigned-clocks = <&cru SCLK_GMAC0_RX_TX>,
++			  <&cru SCLK_GMAC0>;
++	assigned-clock-parents = <&cru SCLK_GMAC0_RMII_SPEED>,
++				 <&gmac0_clkin>;
++	clock_in_out = "input";
++	phy-handle = <&dp83826>;
++	phy-mode = "rmii";
++	phy-supply = <&vcc3v3_eth>;
++	pinctrl-names = "default";
++	pinctrl-0 = <&gmac0_miim
++		     &gmac0_clkinout
++		     &gmac0_rx_er
++		     &gmac0_rx_bus2
++		     &gmac0_tx_bus2>;
++	status = "okay";
++};
++
++&mdio0 {
++	#address-cells = <1>;
++	#size-cells = <0>;
++
++	dp83826: ethernet-phy@0 {
++		compatible = "ethernet-phy-ieee802.3-c22";
++		reg = <0x0>;
++		interrupt-parent = <&gpio0>;
++		interrupts = <RK_PD3 IRQ_TYPE_EDGE_FALLING>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&eth_wake_intn &eth_phy_rstn>;
++		reset-assert-us = <1000>;
++		reset-deassert-us = <2000>;
++		reset-gpios = <&gpio0 RK_PD4 GPIO_ACTIVE_LOW>;
++		wakeup-source;
++	};
++};
++
++&pinctrl {
++	ethernet {
++		eth_wake_intn: eth-wake-intn-pinctrl {
++			rockchip,pins = <0 RK_PD3 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		eth_phy_rstn: eth-phy-rstn-pinctrl {
++			rockchip,pins = <0 RK_PD4 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		vcc1v8_eth_en: vcc1v8-eth-en-pinctrl {
++			rockchip,pins = <0 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		vcc3v3_eth_enn: vcc3v3-eth-enn-pinctrl {
++			rockchip,pins = <0 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
++	usb {
++		usb_host_vbus_en: usb-host-vbus-en-pinctrl {
++			rockchip,pins = <1 RK_PA3 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++};
++
++&usb_host1_xhci {
++	maximum-speed = "high-speed";
++	phys = <&usb2phy0_host>;
++	phy-names = "usb2-phy";
++	status = "okay";
++};
++
++&usb2phy0_host {
++	phy-supply = <&usb_host_vbus>;
++	status = "okay";
++};
+diff --git a/dts/src/arm64/rockchip/rk3568-wolfvision-pf5.dts b/dts/src/arm64/rockchip/rk3568-wolfvision-pf5.dts
 new file mode 100644
-index 0000000000..fe41ea6634
+index 0000000000..170b14f92f
 --- /dev/null
-+++ b/arch/arm/dts/rk3568-wolfvision-pf5.dts
-@@ -0,0 +1,48 @@
++++ b/dts/src/arm64/rockchip/rk3568-wolfvision-pf5.dts
+@@ -0,0 +1,528 @@
 +// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
 +/*
 + * Device tree for the WolfVision PF5 mainboard.
@@ -390,75 +333,526 @@ index 0000000000..fe41ea6634
 + */
 +
 +/dts-v1/;
-+#include <arm64/rockchip/rk3568-wolfvision-pf5.dts>
-+#include "rk356x.dtsi"
-+#include "wolfvision-state.dtsi"
++#include <dt-bindings/gpio/gpio.h>
++#include <dt-bindings/pinctrl/rockchip.h>
++#include <dt-bindings/regulator/ti,tps62864.h>
++#include <dt-bindings/soc/rockchip,vop2.h>
++#include "rk3568.dtsi"
 +
 +/ {
++	model = "WolfVision PF5";
++	compatible = "wolfvision,rk3568-pf5", "rockchip,rk3568";
++
 +	aliases {
-+		saradc = &saradc;
++		ethernet0 = &gmac0;
++		mmc0 = &sdhci;
++		rtc0 = &pcf85623;
++		rtc1 = &rk809;
 +	};
 +
 +	chosen: chosen {
-+		environment-emmc {
-+			compatible = "barebox,environment";
-+			device-path = &environment_emmc;
++		stdout-path = "serial2:115200n8";
++	};
++
++	hdmi_tx: hdmi-tx-connector {
++		compatible = "hdmi-connector";
++		hdmi-pwr-supply = <&hdmi_tx_5v>;
++		type = "a";
++
++		port {
++			hdmi_tx_in: endpoint {
++				remote-endpoint = <&hdmi_tx_out>;
++			};
 +		};
 +	};
-+	/*
-+	memory@a00000 {
-+		device_type = "memory";
-+		reg = <0x0 0x00a00000 0x0 0x7f600000>;
++
++	hdmi_tx_5v: hdmi-tx-5v-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = <&gpio4 RK_PC5 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&hdmi_tx_5v_en>;
++		regulator-name = "hdmi_tx_5v";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&vcc5v_in>;
 +	};
-+	*/
++
++	pdm_codec: pdm-codec {
++		compatible = "dmic-codec";
++		num-channels = <1>;
++		#sound-dai-cells = <0>;
++	};
++
++	pdm_sound: pdm-sound {
++		compatible = "simple-audio-card";
++		simple-audio-card,name = "microphone";
++
++		simple-audio-card,cpu {
++			sound-dai = <&pdm>;
++		};
++
++		simple-audio-card,codec {
++			sound-dai = <&pdm_codec>;
++		};
++	};
++
++	vcc12v_cam: vcc12v-cam-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = <&gpio2 RK_PD1 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&vcc12v_cam_en>;
++		regulator-name = "12v_cam";
++		regulator-min-microvolt = <12000000>;
++		regulator-max-microvolt = <12000000>;
++		vin-supply = <&vcc12v_in>;
++	};
++
++	vcc12v_in: vcc12v-in-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "12v_in";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <12000000>;
++		regulator-max-microvolt = <12000000>;
++	};
++
++	vcc3v8_cam: vcc3v8-cam-regulator {
++		compatible = "regulator-fixed";
++		enable-active-high;
++		gpio = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&vcc3v8_cam_en>;
++		regulator-name = "3v8_cam";
++		regulator-min-microvolt = <3800000>;
++		regulator-max-microvolt = <3800000>;
++		vin-supply = <&vcc5v_in>;
++	};
++
++	vcc3v3_sys: vcc3v3-sys-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "3v3_sys";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <3300000>;
++		regulator-max-microvolt = <3300000>;
++		vin-supply = <&vcc5v_in>;
++	};
++
++	vcc5v_in: vcc5v-in-regulator {
++		compatible = "regulator-fixed";
++		regulator-name = "5v_in";
++		regulator-always-on;
++		regulator-boot-on;
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		vin-supply = <&vcc12v_in>;
++	};
++};
++
++&combphy0 {
++	status = "okay";
++};
++
++&cpu0 {
++	cpu-supply = <&vcc0v9_cpu>;
++};
++
++&cpu1 {
++	cpu-supply = <&vcc0v9_cpu>;
++};
++
++&cpu2 {
++	cpu-supply = <&vcc0v9_cpu>;
++};
++
++&cpu3 {
++	cpu-supply = <&vcc0v9_cpu>;
++};
++
++&gpu {
++	mali-supply = <&vcc0v9_gpu>;
++	status = "okay";
++};
++
++&hdmi {
++	avdd-0v9-supply = <&vcc0v9a_image>;
++	avdd-1v8-supply = <&vcc1v8a_image>;
++	status = "okay";
++};
++
++&hdmi_in {
++	hdmi_in_vp0: endpoint {
++		remote-endpoint = <&vp0_out_hdmi>;
++	};
++};
++
++&hdmi_out {
++	hdmi_tx_out: endpoint {
++		remote-endpoint = <&hdmi_tx_in>;
++	};
++};
++
++&i2c0 {
++	status = "okay";
++
++	rk809: pmic@20 {
++		compatible = "rockchip,rk809";
++		reg = <0x20>;
++		interrupt-parent = <&gpio0>;
++		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_LOW>;
++		#clock-cells = <0>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&pmic_int_l>;
++		rockchip,system-power-controller;
++		vcc1-supply = <&vcc5v_in>;
++		vcc2-supply = <&vcc5v_in>;
++		vcc3-supply = <&vcc5v_in>;
++		vcc4-supply = <&vcc5v_in>;
++		vcc5-supply = <&vcc3v3_sys>;
++		vcc6-supply = <&vcc5v_in>;
++		vcc7-supply = <&vcc3v3_sys>;
++		vcc8-supply = <&vcc3v3_sys>;
++		vcc9-supply = <&vcc3v3_sys>;
++		wakeup-source;
++
++		regulators {
++			vcc0v9_logic: DCDC_REG1 {
++				regulator-name = "0v9_logic";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-initial-mode = <0x2>;
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-ramp-delay = <6001>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc0v9_gpu: DCDC_REG2 {
++				regulator-name = "0v9_gpu";
++				regulator-always-on;
++				regulator-initial-mode = <0x2>;
++				regulator-min-microvolt = <500000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-ramp-delay = <6001>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc1v1_ddr4: DCDC_REG3 {
++				regulator-name = "1v1_ddr4";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-initial-mode = <0x2>;
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++				};
++			};
++
++			vcc0v9_npu: DCDC_REG4 {
++				regulator-name = "0v9_npu";
++				regulator-always-on;
++				regulator-initial-mode = <0x2>;
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <1350000>;
++				regulator-ramp-delay = <6001>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc1v8: DCDC_REG5 {
++				regulator-name = "1v8";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc0v9a_image: LDO_REG1 {
++				regulator-name = "0v9a_image";
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <900000>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc0v9a: LDO_REG2 {
++				regulator-name = "0v9a";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <900000>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc0v9a_pmu: LDO_REG3 {
++				regulator-name = "0v9a_pmu";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <900000>;
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = <900000>;
++				};
++			};
++
++			vcc3v3_acodec: LDO_REG4 {
++				regulator-name = "3v3_acodec";
++				regulator-always-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc3v3_sd: LDO_REG5 {
++				regulator-name = "3v3_sd";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc3v3_pmu: LDO_REG6 {
++				regulator-name = "3v3_pmu";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = <3300000>;
++				};
++			};
++
++			vcc1v8a: LDO_REG7 {
++				regulator-name = "1v8a";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc1v8a_pmu: LDO_REG8 {
++				regulator-name = "1v8a_pmu";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++
++				regulator-state-mem {
++					regulator-on-in-suspend;
++					regulator-suspend-microvolt = <1800000>;
++				};
++			};
++
++			vcc1v8a_image: LDO_REG9 {
++				regulator-name = "1v8a_image";
++				regulator-min-microvolt = <1800000>;
++				regulator-max-microvolt = <1800000>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++
++			vcc3v3_sw: SWITCH_REG1 {
++				regulator-name = "3v3_sw";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-min-microvolt = <3300000>;
++				regulator-max-microvolt = <3300000>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++		};
++	};
++
++	regulator@42 {
++		compatible = "ti,tps62869";
++		reg = <0x42>;
++
++		regulators {
++			vcc0v9_cpu: SW {
++				regulator-name = "0v9_cpu";
++				regulator-always-on;
++				regulator-boot-on;
++				regulator-initial-mode = <TPS62864_MODE_FPWM>;
++				regulator-min-microvolt = <900000>;
++				regulator-max-microvolt = <1150000>;
++				vin-supply = <&vcc5v_in>;
++
++				regulator-state-mem {
++					regulator-off-in-suspend;
++				};
++			};
++		};
++	};
++
++	pcf85623: rtc@51 {
++		compatible = "nxp,pcf85263";
++		reg = <0x51>;
++		pinctrl-names = "default";
++		pinctrl-0 = <&clk32k_in>;
++		quartz-load-femtofarads = <12500>;
++	};
++};
++
++&i2c3 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c3m0_xfer>;
++};
++
++&i2c4 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&i2c4m1_xfer>;
++};
++
++&pdm {
++	pinctrl-0 = <&pdmm0_clk
++		     &pdmm0_sdi0>;
++	status = "okay";
++};
++
++&pinctrl {
++	cam {
++		vcc12v_cam_en: vcc12v-cam-en-pinctrl {
++			rockchip,pins = <2 RK_PD1 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++
++		vcc3v8_cam_en: vcc3v8-cam-en-pinctrl {
++			rockchip,pins = <0 RK_PC3 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
++	hdmitx {
++		hdmi_tx_5v_en: hdmi-tx-5v-en-pinctrl {
++			rockchip,pins = <4 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
++		};
++	};
++
++	pmic {
++		pmic_int_l: pmic-int-l-pinctrl {
++			rockchip,pins = <0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
++		};
++	};
++};
++
++&pmu_io_domains {
++	pmuio1-supply = <&vcc3v3_pmu>;
++	pmuio2-supply = <&vcc3v3_pmu>;
++	vccio1-supply = <&vcc3v3_acodec>;
++	vccio2-supply = <&vcc1v8>;
++	vccio3-supply = <&vcc3v3_sd>;
++	vccio4-supply = <&vcc1v8>;
++	vccio5-supply = <&vcc1v8>;
++	vccio6-supply = <&vcc3v3_sw>;
++	vccio7-supply = <&vcc3v3_sw>;
++	status = "okay";
++};
++
++&saradc {
++	vref-supply = <&vcc1v8a>;
++	status = "okay";
 +};
 +
 +&sdhci {
-+	partitions {
-+		compatible = "fixed-partitions";
-+		#address-cells = <2>;
-+		#size-cells = <2>;
++	bus-width = <8>;
++	max-frequency = <200000000>;
++	non-removable;
++	pinctrl-names = "default";
++	pinctrl-0 = <&emmc_bus8 &emmc_clk &emmc_cmd &emmc_datastrobe>;
++	vmmc-supply = <&vcc3v3_sw>;
++	vqmmc-supply = <&vcc1v8>;
++	status = "okay";
++};
 +
-+		environment_emmc: partition@408000 {
-+			label = "barebox-environment";
-+			reg = <0x0 0x408000 0x0 0x8000>;
-+		};
++&tsadc {
++	rockchip,hw-tshut-mode = <1>;
++	rockchip,hw-tshut-polarity = <0>;
++	status = "okay";
++};
 +
-+		barebox_state: partition@410000 {
-+			reg = <0x0 0x410000 0x0 0x8000>;
-+			label = "state";
-+		};
++&uart2 {
++	status = "okay";
++};
++
++&usb_host0_xhci {
++	dr_mode = "peripheral";
++	/* The following quirks are required since the bInterval is 1 and we
++	 * handle steady ISOC streaming. See Usecase 3 in commit 729dcffd1ed3
++	 * ("usb: dwc3: gadget: Add support for disabling U1 and U2 entries").
++	 */
++	snps,dis-u1-entry-quirk;
++	snps,dis-u2-entry-quirk;
++	/*
++	 * Without this quirk the available fifosize seems to be miscalculated
++	 * in cases where many endpoints are used. In one particular situation
++	 * 8 IN EPs and 3 OUT EPs where selected and lead to stalled transfers
++	 * without the resize quirk.
++	 */
++	tx-fifo-resize;
++
++	status = "okay";
++};
++
++&usb2phy0 {
++	status = "okay";
++};
++
++&usb2phy0_otg {
++	status = "okay";
++};
++
++&vop {
++	assigned-clocks = <&cru DCLK_VOP0>, <&cru DCLK_VOP2>;
++	assigned-clock-parents = <&pmucru PLL_HPLL>, <&cru PLL_VPLL>;
++	status = "okay";
++};
++
++&vop_mmu {
++	status = "okay";
++};
++
++&vp0 {
++	vp0_out_hdmi: endpoint@ROCKCHIP_VOP2_EP_HDMI0 {
++		reg = <ROCKCHIP_VOP2_EP_HDMI0>;
++		remote-endpoint = <&hdmi_in_vp0>;
 +	};
 +};
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 8cdf2c28a9..6ef44fb0f6 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -109,6 +109,15 @@ config MACH_RADXA_CM3
- 	help
- 	  Say Y here if you are using a Radxa CM3
- 
-+config MACH_WOLFVISION_PF5
-+	select ARCH_RK3568
-+	select AIODEV
-+	select BOARD_WOLFVISION
-+	select ROCKCHIP_SARADC
-+	bool "WolfVision PF5 mainboard"
-+	help
-+	  Say Y here if you are using a WolfVision PF5 mainboard
-+
- endif
- 
- comment "select board features:"
-diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
-index ea32af4241..f585d8c79b 100644
---- a/images/Makefile.rockchip
-+++ b/images/Makefile.rockchip
-@@ -35,3 +35,4 @@ $(call build_rockchip_image, CONFIG_MACH_PINE64_QUARTZ64, start_quartz64a, pine6
- $(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK3, start_rock3a, radxa-rock3/sdram-init.bin, rock3a)
- $(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK5, start_rock5b, radxa-rock5/sdram-init.bin, rock5b)
- $(call build_rockchip_image, CONFIG_MACH_RADXA_CM3, start_radxa_cm3_io, radxa-cm3/sdram-init.bin, radxa-cm3-io)
-+$(call build_rockchip_image, CONFIG_MACH_WOLFVISION_PF5, start_rk3568_wolfvision_pf5, wolfvision-pf5/sdram-init.bin, rk3568-wolfvision-pf5)
 
 -- 
 2.34.1
