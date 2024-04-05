@@ -1,63 +1,67 @@
-Delivery-date: Fri, 05 Apr 2024 12:13:25 +0200
+Delivery-date: Fri, 05 Apr 2024 12:41:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rsgZZ-00Ccho-0F
+	id 1rsh0g-00ChEg-01
 	for lore@lore.pengutronix.de;
-	Fri, 05 Apr 2024 12:13:25 +0200
+	Fri, 05 Apr 2024 12:41:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rsgZY-0007Qb-GW
-	for lore@pengutronix.de; Fri, 05 Apr 2024 12:13:25 +0200
+	id 1rsh0f-0005gj-Ec
+	for lore@pengutronix.de; Fri, 05 Apr 2024 12:41:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=rUaOnMrvxs3uTR2FxzRVK0u1sjNSrPWJRN0Yk2Wg+Jc=; b=ufk1YOor0vno2KDUyjMSNMJKz6
-	3fcdTZl+9RCFocYevu8gX8DLQgep9fxjrvBCdJsaL7IOeSMZpNo5pGoOhmJ5uTjmhMmgexWEpSpME
-	2Xu+9nVevPiLIACVjETqI0/Z4N/C+wdlzVMYGczAbKlsUtlqhkAtr/jFcA2CXONRa+tnjdaiYK1Rl
-	OVzq0ZfKk8Trc2ULSSbvK9TV6QKegJomDG35zYnSj5Ydj2vdKu3EKQstzNi0vJkdgJiPxB/oF7RzA
-	Ty9dA9pow/FFr/SI0HogerRLis3BHw6SjPXcAYyrCIZz9+TbKBn1kNyAq1cY08diA4eWBYeEwLxiC
-	cCgXGipA==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=yuPUwnV+3zb9B+mxliEm7s0UpX7u8jDNzFMLqD/DdU4=; b=UpA/c3jjBuHXhPUcs8Nzp0F3FM
+	mheh8+Sd/FDhV1G4GLNH6dPuDlkAyP4jtsRqDGaQ/0aC3vVA2RwhlR1c+l9qRyiDjnqQl44eod3Hn
+	2JvRjtwWh3Z16TdHQ+13qEaoW7IT3OEbkQf9kUyi+msUKYoyLMoGD43DZuaVYrS8GHm4/v27fF0tb
+	NipaPSDPK41FMu9nwgVodfPsoTqO4TvGf1P4BEqa/t4Fe7lWLhauZ2HvO1kliazHhnWntOOJ/Z506
+	afABdHeu36f7WIoBUU9x1CvhnQp/JqUsngCtfvs6SbY307+NdfEPw3S23l78jWb9LSLJiHT3oQDTf
+	577jtVDg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rsgZ5-00000006NCE-3dr6;
-	Fri, 05 Apr 2024 10:12:55 +0000
+	id 1rsh06-00000006TyQ-41eh;
+	Fri, 05 Apr 2024 10:40:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rsgZ2-00000006NBA-3S6l
+	id 1rsh03-00000006TxV-2ErT
 	for barebox@lists.infradead.org;
-	Fri, 05 Apr 2024 10:12:54 +0000
+	Fri, 05 Apr 2024 10:40:49 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rsgZ1-0006sA-Ff; Fri, 05 Apr 2024 12:12:51 +0200
+	id 1rsh01-00058Q-Hg; Fri, 05 Apr 2024 12:40:45 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rsgZ1-00AY50-3J; Fri, 05 Apr 2024 12:12:51 +0200
+	id 1rsh01-00AYAJ-54; Fri, 05 Apr 2024 12:40:45 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rsgZ0-00AaZ2-3C;
-	Fri, 05 Apr 2024 12:12:51 +0200
+	id 1rsh01-00CiJ9-0K;
+	Fri, 05 Apr 2024 12:40:45 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Fri,  5 Apr 2024 12:12:50 +0200
-Message-Id: <20240405101250.2523616-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240404102623.1008974-1-a.fatoum@pengutronix.de>
+References: <20240404102623.1008974-1-a.fatoum@pengutronix.de>
+Message-Id: <171231364509.3029525.7284825235059762645.b4-ty@pengutronix.de>
+Date: Fri, 05 Apr 2024 12:40:45 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240405_031252_991060_0ACA9659 
-X-CRM114-Status: GOOD (  13.12  )
+X-CRM114-CacheID: sfid-20240405_034047_625513_674F4A10 
+X-CRM114-Status: UNSURE (   9.03  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,60 +83,31 @@ X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] arm: mecsbc: fixup /regulator-sd device tree node
+Subject: Re: [PATCH 1/2] ARM: dts: add common bootstate.dtsi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The MECSBC prototype board has a bug which makes the 1.8V SD mode
-unusable. Add a fixup which sets the regulator-min-microvolt property of
-the SD regulator to 3.3V to prevent the Kernel from going into 1.8V.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- arch/arm/boards/protonic-mecsbc/board.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+On Thu, 04 Apr 2024 12:26:22 +0200, Ahmad Fatoum wrote:
+> For use by at least the LXA MC-1, add a bootstate definition with the
+> minimal set of variables needed for bootchooser.
+> 
+> We add this to a generic location, so it may be used by other boards as
+> well.
+> 
+> 
+> [...]
 
-diff --git a/arch/arm/boards/protonic-mecsbc/board.c b/arch/arm/boards/protonic-mecsbc/board.c
-index 3ba8fb8d1c..56f7ca393a 100644
---- a/arch/arm/boards/protonic-mecsbc/board.c
-+++ b/arch/arm/boards/protonic-mecsbc/board.c
-@@ -90,6 +90,24 @@ static void mecsbc_process_adc(struct device *dev)
- 	pr_info("VIN = %d V\n", mecsbc_get_vin_mv() / 1000);
- }
- 
-+static int mecsbc_sd_of_fixup(struct device_node *root, void *context)
-+{
-+	struct device *dev = context;
-+	struct device_node *np;
-+
-+	dev_info(dev, "Fixing up /regulator-sd\n");
-+
-+	np = of_find_node_by_path_from(root, "/regulator-sd");
-+	if (!np) {
-+		dev_err(dev, "Cannot find /regulator-sd node\n");
-+		return 0;
-+	}
-+
-+	of_property_write_u32(np, "regulator-min-microvolt", 3300000);
-+
-+	return 0;
-+}
-+
- static int mecsbc_of_fixup_hwrev(struct device *dev)
- {
- 	const char *compat;
-@@ -103,6 +121,9 @@ static int mecsbc_of_fixup_hwrev(struct device *dev)
- 
- 	free(buf);
- 
-+	if (mecsbc_data.hw_id == 0 && mecsbc_data.hw_rev == 0)
-+		of_register_fixup(mecsbc_sd_of_fixup, dev);
-+
- 	return 0;
- }
- 
+Applied, thanks!
+
+[1/2] ARM: dts: add common bootstate.dtsi
+      https://git.pengutronix.de/cgit/barebox/commit/?id=1e778c610dd4 (link may not be stable)
+[2/2] ARM: stm32mp: lxa-mc1: add state description
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9dd40f0d077d (link may not be stable)
+
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
