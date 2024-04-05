@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rskCc-00D89E-0R
+	id 1rskCc-00D89R-1F
 	for lore@lore.pengutronix.de;
 	Fri, 05 Apr 2024 16:05:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rskCa-0000Ua-Gv
+	id 1rskCa-0000WQ-QW
 	for lore@pengutronix.de; Fri, 05 Apr 2024 16:05:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,60 +18,60 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	In-Reply-To:References:Message-Id:Content-Transfer-Encoding:Content-Type:
 	Subject:Date:From:Reply-To:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=j0ZDrAdsAuc0EBbjGL3T3yYtHyian9uopKyrnIR1mss=; b=BSDG7g1aZbmU1Az8OmWhGl5dsN
-	fdjtv1iBxpo2/Fw6UZOEixU4tMMRgePenZwHIDO2qMzDhEyTEVm7u2ZpzDxSV5BInG1O7jjLoZ1kt
-	4BdFMN5SNRzRO/yJ9Iy51qujOWP+J6g5vkDuq56cOtu+L2lSyAt0W/UC+3UI69Y/yL5vs0/7a9Oyt
-	AZti1+dtzmBAxo2LMjkmfJ9PIiN7KwuASQ6JHRfEYEqX2zTZbgSYVzilm+zCAdeM8SNuKr0jikm4t
-	7L+3Zfw4cC8ryCjFhKyqR476BeJWnxWZWWGfPczXIeQ4xqO0wU1iYoIM+ahH6H9VkTpqs4VnhRjPX
-	CAu0EGKg==;
+	bh=+4ls6kZ5CTDXkxp9WUutU5RJtmY8n9xwWImTkjenQMk=; b=TfXRV5dZNmPOfobF6yohGsKRUA
+	IF9svJ2S+6h6MLXjMbeMBhr3KulQ64wnm6PMtldrll2MVgd/RvBDEixhzZeWUys8Yz5Yp+NnXsxQ1
+	oQzeFys/nuE/Nyym0B/smAPITNDSzZ8XUiLPYzietInLBNKbd/zkLdO/1Xnhky9O8Wi6PR3wzZ5h1
+	58JeyEecbSmC6vOw/pNv6b5OmLpqIEdDK1orSef0HAnhreZQFhYmEDpQkwzqz4JjBDVSEQBNxNYvg
+	u+QPEzWyU4IAMae77NfG1NHWN/yfn6cj2Uwxz0/t6reiQxkOUDNaOzFR1Nzu8P91KZPIacy5PPiBw
+	d9KG9HRg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rskBy-00000007M9k-3jT2;
-	Fri, 05 Apr 2024 14:05:18 +0000
+	id 1rskBz-00000007MAH-2zEH;
+	Fri, 05 Apr 2024 14:05:19 +0000
 Received: from mail-vi1eur05on20701.outbound.protection.outlook.com ([2a01:111:f403:2613::701] helo=EUR05-VI1-obe.outbound.protection.outlook.com)
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rskBu-00000007M0l-1spr
+	id 1rskBw-00000007M0l-0xub
 	for barebox@lists.infradead.org;
-	Fri, 05 Apr 2024 14:05:15 +0000
+	Fri, 05 Apr 2024 14:05:17 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JIUCfuKivFWGZujf+Fj9GeIm7VQ75lz5KqeXptRzXAHa0vy+5sOMDFEJ4i6NFPy6p6D1MFiRc2cOiXt0TfGBadHQv9E53SKMYmcAgjHPSHtkVCWrS1WR7Fr53S+4psbJwlTHFl+HiAkE6iCywcmKBzpqRvhSGmzBoA3+tcnM9ltI+EjPJ+Nh0V3t+0CxqbfXu/bD+rFxfkZ8RzGjt8susUZ060itgUX9ddp9IzXxDu2pZEEQbfzgenx9VrPE8HLbatFOrKu/sUSZN9F0RK81zVylYSVJUUVA4PATv5HhQAOAWoPPY+wmWs2en0wl2XrXCnkeJVm6mJ6r04VoHEf4Fg==
+ b=f2e7fjiBydgrAafHrLgKQb8eMYo3xmEiDnPErE4JQYYSaUN+m61dJbbEh2qdKeU8mu7HCILcc73XyGdmI7XS+QQObpTZ11LCVYmLfEchsGToofz2tTQeCkltHld470/f6DFxPJIXsnCam8I9eIQlm02pvZEFCuL2kYfjo5PGjet+fy4KnXQ5voXlFvZ8ODt7XrCd6+nuLijdDutlg5iiM3FdJcO5+s4zhYSlfdz24xowyGijl+OD13e8wEn1P8SEGo6E0ZC7s/RcloPywOrt8ebGGnKaKWk4k9SK/9ljRA5BVrkEl+W4yNse6yZiccS/szmYCgpOl+o2ZYaRC5Gb7A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=j0ZDrAdsAuc0EBbjGL3T3yYtHyian9uopKyrnIR1mss=;
- b=NNx2Gue1JZ2HPlG8OJOVynWVBU04wlPrbmpbfqPhjN33703kaFUXIJHLn3L/XEz5UWVMMgGT4HM+uIcjoCOuB+wjfxjElE5+S4vkQsy0pGdUpH0IEFH0hbCEla0a7OFj2pkZhZxL6uqtdrMT6fwmJCPXI5y4Q7mECCFLrsCuulNsrCPRkNzdGR3M0ivJMHX6aeW7Qfs3Tzzk022hS8sHEz1OW2GjsNEXWZyH9Oz1VZ+dybm7Sgzt49uC0fN1n4Jvr7dzAsQY/pCo3H9dHljQnBcf0hA9n6N0voFnEAh214bThYeSoLOCQ9lfqKvTs5yuWoD+eHNYfBs4dnYcBJWBGQ==
+ bh=+4ls6kZ5CTDXkxp9WUutU5RJtmY8n9xwWImTkjenQMk=;
+ b=HS1Wv1hqRA0QP294/A+olZx3Ut2+pt4sYjZ0MXH2qLDxe5jiSuEw40efeZySWfL/4uyECzM5EuTXpx+XmoaxOUMi+xPT81i+BZs4hP5SqDenOuH+CUK/gknVSHgZBpVDvVH7pCOViVPkyW+KjsABXH+Lqo5T39+1mm6/qBnojc04SX4buvzBiOWfi6HCiT304jB4cs/Dj59VSjcDjs9ATklT/FOf7IEDEncR+hwUX0GUs6J7XVKE9/Dng8mca/aAKjWB19tcVJ9oZ7enHo6JsNE4UR0XfzFTf79ZFsZ/T45tgXXQ2epTjU93sNC6mulZVpITUiw+RrNtdh3DQhQg0w==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=wolfvision.net; dmarc=pass action=none
  header.from=wolfvision.net; dkim=pass header.d=wolfvision.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wolfvision.net;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=j0ZDrAdsAuc0EBbjGL3T3yYtHyian9uopKyrnIR1mss=;
- b=I05OFwgcxVXdXL7zn/iNillitQlq+yswZsifI0idDJQhvK4hZZLjDx1peHyuzmAVzCX5vGGDv+gc+GDd82diCTkRX+O7XKE3GcCHhpAm4mWl1LaX2UOyFG93h8Pg5CPIRauRHAKLMlTIiLBbiXlEfATwZ/AScgAe1Vq9wUnNPk4=
+ bh=+4ls6kZ5CTDXkxp9WUutU5RJtmY8n9xwWImTkjenQMk=;
+ b=VPvXJf9PNAErL5kRXgKCUxKk/Q5toiQO2+NoJkbqfu6hnxSx1X2wtSBuk2mY8Qrnu7y+4h6Zq4c65gS4xd6PofdO026dZIlKJapNNzONYoSllV+4nQLm2YkQVeCYsfyJQLC6A3fLGXhxFENL9/ueb4Uwqb+NtVc9tDPN/ARwzKE=
 Received: from DU0PR08MB9155.eurprd08.prod.outlook.com (2603:10a6:10:416::5)
  by GV2PR08MB8462.eurprd08.prod.outlook.com (2603:10a6:150:bc::5) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7409.46; Fri, 5 Apr
- 2024 14:04:50 +0000
+ 2024 14:04:51 +0000
 Received: from DU0PR08MB9155.eurprd08.prod.outlook.com
  ([fe80::e86a:6893:ac7:dad9]) by DU0PR08MB9155.eurprd08.prod.outlook.com
  ([fe80::e86a:6893:ac7:dad9%5]) with mapi id 15.20.7409.042; Fri, 5 Apr 2024
  14:04:50 +0000
 From: Michael Riesch <michael.riesch@wolfvision.net>
-Date: Fri, 05 Apr 2024 16:04:43 +0200
+Date: Fri, 05 Apr 2024 16:04:45 +0200
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240405-feature-wolfvision-pf5-v1-2-e4a29c0e7fe1@wolfvision.net>
+Message-Id: <20240405-feature-wolfvision-pf5-v1-4-e4a29c0e7fe1@wolfvision.net>
 References: <20240405-feature-wolfvision-pf5-v1-0-e4a29c0e7fe1@wolfvision.net>
 In-Reply-To: <20240405-feature-wolfvision-pf5-v1-0-e4a29c0e7fe1@wolfvision.net>
 To: barebox@lists.infradead.org
 Cc: Michael Riesch <michael.riesch@wolfvision.net>
 X-Mailer: b4 0.13.0
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1712325888; l=5864;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1712325888; l=9538;
  i=michael.riesch@wolfvision.net; s=20240405; h=from:subject:message-id;
- bh=ZbGVLKULSt6r0Rr9hdpfU9Tcvt6BJL8m/TiKRA1VRmE=;
- b=RPLIo0GqtBIlS22ksqUhIosrf/xAwK9A70kFOvU1I2TkdSRqutvXVASQVFNC6hSbTXxe41aLL
- Zy49f2bG+vjAX5vdhEnObbdasm0aJx4jJZUKfQmYBZOokey//u2xq1a
+ bh=rHLogBk3SPw90Wei+dCY9PLCvwWqHLixlDDl4ffpF/8=;
+ b=xTyu/Oh30UKQrZ3VWt9zkYhS69o5MTIgDhQHLrBSj0u81x0wapW7LjvomRXuzP92rQb5cAqml
+ aC2JEC4oe7rAfSLWALTvvrzRziU0rQ/jX3Ke2srA10awZrywzbPtiL3
 X-Developer-Key: i=michael.riesch@wolfvision.net; a=ed25519;
  pk=cSJmgKSH3B6kdCIDCl+IYDW1Pw/Ybc6g9rmnUd/G7Ck=
 X-ClientProxiedBy: VI1PR0202CA0009.eurprd02.prod.outlook.com
@@ -83,60 +83,60 @@ X-MS-TrafficTypeDiagnostic: DU0PR08MB9155:EE_|GV2PR08MB8462:EE_
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lxQ9Y9InyDj3AtTKrPCWa1vJhPqQhCfm/TbyrNKE6PfrDM451vuMFvQ4wyfkvidJ/l6ZYgGIPrh13QvdNvaTk9dsk4zBeNmZnaQ1Qi8yMEOhBLA/yGJUj5XUbYqL/u58SIC8VuIf2tBPxPWOIKuy9NuAJ/rnxeeGH2p+kI2SZ59uJ7Y6NOeaccVLCopebfHlJUVhBww6JewaxEhJbQb3Od5rfNJr2457tuSm+8johJnHOwgTI8/Ve1Th24o19DKt3Eqfas0HFKY9v3B8BVXkm3Y4pSh0zztVUcE38KfJQjbUcTcQrF3EjID6GAr9orQFp1NeKDNlkRtDMLGX0SZrV9W0XjGqdfMrBNgwCoV/qwHSDsVkHxtBcPGVgHjpHjMvFuox0vkIfo7hmlM3P8YSHOTPgB57myCxQK70kHFElGHyh56JA5AUW5lXqkP+D69FOJfJV+KCX87LMzso1BuIU5ZAmTjz8kJ1xQdx8PyZvnTCIqZWp7bj6/K/fH05UqCrTgc1bepf80SwroaNAZ75J/pM9TzXlxXX8mexoTfZc+cSOBj2N0ezz71aDdIFp6tuQxaq+wq2zm3c/hKcyJtnCPG6bQ+eIzQZRTQ3C+0pBaGnLDoRqjuxVOCLb4MIVUufhI9EwrPxECmGQwKhOrw7O37xJjwVK1EnwpVFp4mS4fpmsh/F1vjcaAPFS8biU9WN/7IqmiZwc48EzYjPjQxDjy4QAJdFg1yCMS0rS8BFVYg=
+X-Microsoft-Antispam-Message-Info: M+QMdwd2J5YANCvCmd2JOZRxAgfCI8Mwdy5GcQGHlnTdQYD4dR2sb8aA9nfCEfmN0xo1p6kBAc6PvV0X0pOIjxaXeRnWicrx5QXutFrt9rLBDC8/kk4Rz22g8MZDOpvJRvDtlyKpwIyNmrB/MXyp3hV+c8lh/m2kyOeGiGl1187ooNWnLZhQ+HpATQXaWDT7nwJyX/PBg5NuYC1B8thf1SrJhNqWuFR/FUSJ89XrkrZCbtozvAyVMWRMgx7GZFQTfxQg7oLa978CpnXoGwRerjEDE7tf9C/ELnu+D0I4s0Qeo9G1/ghjqaYlwhljubeGcGHXYkl4U7IDwmD750mF8/4kr9ECQGIUXPoOO4Y56vowCZiulNmAA3V2Tuh64e+cPmZzJIzYQmXuGceBkXY+7q1l1Y6eQ3B41AJ3cTlfzvjxpbTH+D7pOkXbp3yAVGc4yaU7k81KAdwOI9Hlf6oiPLRSv2rN/v5LaCfziqB/RAXMQBcR3GtuAdT0WplwjTSB7FkNFC7bzfvStFeFM96cVjZkC+9IWoqIQrNSDPC4jnqiV3wNRnCNFanAc8XKY1GgFH/WkAF4Hl+kUrep7KFe75kXqZ7K0jcUrjMWo3GekHwRfOMofLk6vw0lmeBGigr95kHptZ5fSm+R2Z/tnUZuKL0/t4lt/bip9HzKR26fU5V2j8RmtFtcnVOTOFF/A3EfsLHX2+aXEFTI8I+f/9jexip3XOcR1SoDyBaSByC2CFY=
 X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DU0PR08MB9155.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(376005)(366007)(52116005)(1800799015)(38350700005);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UjVwQzIwUzEwREhlZisxeXA4Z1JXS0hFWmpOSGZoSnNLaFNVdXkweVdJc3pm?=
- =?utf-8?B?QmZKUE43N29PNGU3RmxnN080SWNvWGdTU1oxdHc4a1lWdVdLVlNjeEtxNG5w?=
- =?utf-8?B?YnZCSXZCc2R4alpuNkg0R295anNtQUx0cEtUbnBNb3F2QWlsd1hpaDI2azFa?=
- =?utf-8?B?K1NNd1k0YTdJSUJ4MDBxZEtlQzF4SXFRa3d1R0NqT2NsbHBsRjRXby9lVU1T?=
- =?utf-8?B?eUEzQ2JQY3RoTW9iMWRCcG43YkxBWXJwSFdhUUM2YUtOa1RCM3ZnMzZNazJP?=
- =?utf-8?B?dTkrbUxBUWVHNk9FbEEzZzVkeENzR3NzeTZraCtNenFxdzBYZFp4MzV6am9l?=
- =?utf-8?B?Y3pyZlNlL2ZPM21jbkhRYXBHS3hLaWlHbGF5S1JSOEJyRHN3SkQwVEJmYWpB?=
- =?utf-8?B?bkU0V251YWs3bE80Ri9VVnFtaGpXcWQwRGFKaFFtS3AzamliZTh4NkFkSSt5?=
- =?utf-8?B?Uko5MkJ1djBxdmFBQ2hxV1lRL2NIOVVsTHBZZ2Q3ci9NaVJwZ0pjVU9xQVdv?=
- =?utf-8?B?bkhmaGFmZU1oQTV5QUUwL3kwN1pLVXN6elF3RjVOU0lnN3R1aHNiVHZwZVY5?=
- =?utf-8?B?ZkxSL01YZEhWeElQSlFkR3VJUCtpaWd3NEowVHAzZ3JJcGtIMnp4M3Vwd1FY?=
- =?utf-8?B?THAwdlZydTlUUkp4VDE4R3JBa1JqRkpsVUl6ekNtTDA1UVJIazBwTTRQWGgv?=
- =?utf-8?B?TkM3a1kxTWYzREx5SURIUUQ1OFJXZ0pjTTFwaHdFN1ZiU2t6NU42WHFuc0FR?=
- =?utf-8?B?VGtxQjdxOGdlQU1MQSsvdUFDclZOOHZDdTlxWjl6dFNmVVFWbzByZTR1UHo4?=
- =?utf-8?B?c2gzN2pJaHRXOW1FdUdxNDh3b0xpWE1pejNTaHdMODY4N2lRSGJuWElhSHA0?=
- =?utf-8?B?Y0NLb1ZCdk5ZR0Q1QlRiL2V6RFVOdWdqUlNjM2NoNEpTWS9XbjFVZWVFWTlh?=
- =?utf-8?B?dUhNTUhsNXJodXdLZUVBSHJuWDVhd1VPSjB6UWF1TmFkd2R6QkJXUUtoTktl?=
- =?utf-8?B?YkdQTkxqTG5CcnhhYWRRRVBTRGZQeVVJcDJBdXlTWjdIenh5cHpmSnJtZlZ1?=
- =?utf-8?B?V3ZXMUdQNys3c1NKN1d1OHJqZTZQanVPcGh5cTBidzE5QS9JOGNKeWFzM0dO?=
- =?utf-8?B?aGErZURjcjh2YUxZVVVOSW9EMmpSZGhPQTUxcE8ybnZhMEZkSEwyZk01bzNN?=
- =?utf-8?B?ekNPYll3cFd1RGsrek1sZEVDYmV6cWdtandQeTZCUnpRc1lEU21WN0pCdzNG?=
- =?utf-8?B?Z3BYRU5KWWhGT05vaHFNV1I3aW1RT3B0ZGE5eFZmWjE1ZzhrenZnaFpyWDhR?=
- =?utf-8?B?SG1WcE93ZEt4ZUUzMEVldjFRRm02ZEpIZlBZdXhYa294Z25JMGpwMlRKcTYz?=
- =?utf-8?B?VFFWVTkzakxwMW1XQ2tvMitZMDBIQk9LdGZIVXRqWFpVc09RZEVJcXFRaGRC?=
- =?utf-8?B?MUNKVHI3L0I2R0xSOUZVYXFqVmxIeXN4QmtCbTVpN1JlTUg2M1NzdGYxeVlM?=
- =?utf-8?B?WkR2R1NTNWcvY3o4Sis5a2VpZUtuaDdGTk9RbG1zR3NZNWhqeDd0enY4VVdn?=
- =?utf-8?B?NkdIV0ViQVJBdHpBRUk4ano5TWxWVi8zZkF4a2pjeTIrWENWUDl6SWdQQXpu?=
- =?utf-8?B?V1l0WU1kMVRKT2V1RkNBMCtqYWFidmEwVUZ1SzFRVm5EaHRJc0wvRmZnU21S?=
- =?utf-8?B?QTc0bTdCVEl2cDBNMHc5a0szSFgySTRvZEVCa1dBY0Y0anJ0aXRwci9qRTVY?=
- =?utf-8?B?WXh5NEtaRUp5RUJIUDlBR1Q4ZVZTMTlRLzhaOXpvNjFSQk9QQy9GV1IzamxZ?=
- =?utf-8?B?SmtwVVlRaEMxM0orSW1BYm1YRFJwQXZZbHFoYjh0NUhBU3UrczB0OHRTelRT?=
- =?utf-8?B?NHgzSGxTUmExVllIUHVwbDV2SFRTVXRxSWlGOHJZaTI5WGk1L2pXK2pNamVJ?=
- =?utf-8?B?YmZpZDJMVTBVMDBkUTlsKzJEREdRa1JwcjEzbnF0Q3o4MWUrc2FyR3MwUUlC?=
- =?utf-8?B?L0cvbEV2blAxWDEyMTI3eGF5S0Y5QXM3bVRNM1BZTXJpanBPMGhEdXJGMHN5?=
- =?utf-8?B?bFgzb1dGZC9TVTI3dUJ4VzZGWGVwVE55ZjJJc3NEQUc1VFBJMk1YSnZQRUNn?=
- =?utf-8?B?M1NZcUZ5V0xhZ3BjcmdwT1RqaEFtY0l6VDk3WXpyQTF6QzdBdzNrVFluYmll?=
- =?utf-8?B?UWc9PQ==?=
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?UE9vYkRZZThDN2pHL1p3dDhGTlRFQi9ZYVNuVkVkcG92NENYQmZkL2xXMW5L?=
+ =?utf-8?B?N0xIbm9sbm5TWDRycVROTmlreGxSclMzSE1zL2pyODVpNEhydEE2NWg2cU1O?=
+ =?utf-8?B?ZXIrcDVQb05aNDdlWXNlSE0zQU4rQ2VqV2lVam5uVCtVWkQwNHl1aXZHZitF?=
+ =?utf-8?B?S3hjVG9nZkdCdkdWUmRESDhnVU1PU3FrbWxyRlQ0SkJuaVhKUDBPc2VuQ0VG?=
+ =?utf-8?B?bWwvb0FtbWR3blA0WEhOK0ZQQS9iOTNEMzhqTFFIQVFXRXB3YytJaWtWQk85?=
+ =?utf-8?B?b3VzZ2N4L1ZSanBuNWNWczNvS0xKWVNDSUdsbTAxK0EzU3dZQWlsand6K3U3?=
+ =?utf-8?B?d1FxUjltWFVzTVhtZlJ1bnc3NVRVVDlTeEpSRmR6b1hOR0pDcjlpSGowV2xl?=
+ =?utf-8?B?U0w1SVU2QWxJVGhsRGxmK3BLZFV4aXhCNlBUVWhXWUNQNWFwaUFiN0Y4bFVK?=
+ =?utf-8?B?Q05VRm81VzdmV3FMMVlNckJXUHpBTmZ2STBFY3pwUGRrTjAwUWxFTkJNdVRw?=
+ =?utf-8?B?MHl4UkQzVWRYNnVPL0JoeFQ1Z0pwT3B3ZW1DOTR4Ylhvd2EyWFM4RlhoQzZ6?=
+ =?utf-8?B?VnZuWTBmSU5pY1M3K2NPTXYxVUMrRFRjbU5QQ0U1WnJWdm9wdnVJRm9VcUxM?=
+ =?utf-8?B?bnFjenJaaDRQbEg2WUhuOFFvblE0c1RwV3QxMWwrbktFQTlnTFRpWjRsSmg3?=
+ =?utf-8?B?bjVOOEMxMXlhbDRidmwwWUVjSGpoVll1K1FVbEtZaFhxTncrQkxZZGNBRVdS?=
+ =?utf-8?B?SElRWVpvVXVvSklkclkxWXc3OCtxZlpZQ09tRkdYd0VtejJmYTUreGVLYlc1?=
+ =?utf-8?B?VjF2UCt2SG12R1BZZVJVell0bzAyaE85NUNGdy9WaUFnQjUvSnUzd3VZQSty?=
+ =?utf-8?B?cjFUZCtoMjl6WUFzOTVGZ2JORnp4OVJXWXNtMm9tSDRJRWljeDI4bW1kNW1S?=
+ =?utf-8?B?a0Voekk5QzRlMVhVUFhOVzFpdVJaQ3ZlWFBlYmNUTHhMZGg2QWJZWkNaVlhF?=
+ =?utf-8?B?MDUwUi9yK2hTUEFESHUwRzhMeU4zanZiM3Y3eEsreTBrVVJIdnRPbWxDMmhn?=
+ =?utf-8?B?bXhZSXlsNmpCbTI5UkJjbWFzNjltYXVBUWVGdUVKRCsyWjMyZzN5R3RyZjhM?=
+ =?utf-8?B?S3BEK0VXZmdYS25sT1FUcVQxY2YvMTJpVzFNWlc2Sm9lVGZsWVlFeWRrK2RR?=
+ =?utf-8?B?R2R6amhNVWJ1dm5XdFhhdnhxOEJ2UWk2SGhkYkxQenFqaTY3eGpUVlRPb0c5?=
+ =?utf-8?B?ZjJCZUkwWlFlMlIySXJzYTMyNUV6TDRQMnhXM1BvVnpGSUF5MmJVZFc3ZmFH?=
+ =?utf-8?B?Z2tpUmdpQldZb2JYeTRqTEF6Y2Qwby8wTTRveVozcEp4VzR2MktHSnhVQ1Uz?=
+ =?utf-8?B?L210U2RQY2VlOEhvcnFhS09PQ3Z3MHhSOFVQWFFWV1BmTTEveFdJTnVVQmJE?=
+ =?utf-8?B?a3dvalF5R2Fsa0taL0pVcWpMWlJSVytsSE8ra3ZGTDZZQXEyakhmWEhPMENr?=
+ =?utf-8?B?QmZlbGltcS9GK0hQS3JWRlZ6OEJWd0tjSHZzSXVjem9qcWNZMmRDNDI3ZjMv?=
+ =?utf-8?B?Y2NEQ2s1RDZGZTRhamExTEFvRllVaS93R29HSEpxY0hpWnZMZjlGSEtwSVlC?=
+ =?utf-8?B?N2F3TVZLdnY2RjZ3aHIzZnJrQTBaampvOHVla2pkdTEwdXVVcVhFQlpaZGNX?=
+ =?utf-8?B?ODJYcjlYWitWcnBDVjh3cXRUNEgvZHE1citDMmxCanFpWVhzTHp0YitwR2ZT?=
+ =?utf-8?B?TlVyd3hBS0ZGT1k4d3hRa1hFbVpiZGRkcnVnbmU1WGVnbGNHY0FPNmFkOHI4?=
+ =?utf-8?B?aGR0WTYvUDgvbzkrSERqMkJUQ2lRYmVOTm1meVF6Yi94ZGJXeHhsSDlEN0xU?=
+ =?utf-8?B?UEZJME81T1JxakV1MURrQ3oxQXNtcW83bWp4V2s2M0pCOE9PRUs1SElsNVNK?=
+ =?utf-8?B?SURjZE1HeXpKeFRaRnJmeVRCQ0I5N0k0dTZmZWJBV0hLTnM3by9tVkpLZ2JM?=
+ =?utf-8?B?Umx3QkJRcmdHUmhxYmd3eUVnd0c5N1FrUi9DeDFVdGZxeC9JRmRadWpFS1hY?=
+ =?utf-8?B?dDgyVjJZVERrcUFWSTlaSll5WDAzd2M3TjJVNWdRRlN6NkEyYmxxdlJ5WTNv?=
+ =?utf-8?B?eTFwUzFQellDd25ONjFncjJ0WTdHMFBtc2E5TWYwaVh0dXpLTTNzb2R6VTVj?=
+ =?utf-8?B?VkE9PQ==?=
 X-OriginatorOrg: wolfvision.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ab6f87ab-044d-497f-1eae-08dc55795ba0
+X-MS-Exchange-CrossTenant-Network-Message-Id: feddea2e-b94d-4818-4110-08dc55795c1c
 X-MS-Exchange-CrossTenant-AuthSource: DU0PR08MB9155.eurprd08.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2024 14:04:49.7437
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Apr 2024 14:04:50.5547
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: e94ec9da-9183-471e-83b3-51baa8eb804f
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: wLkf0qbmg+R898XEdarS3IIewNUPMCLcxkZTmzqK4mGh7dlMkN1bnGg1ABpQha0DXA7br5idCFft5cpQPoZLL1JybvprNJinqR5h8MF7vlM=
+X-MS-Exchange-CrossTenant-UserPrincipalName: xmgJU7M4t3GHz8BcLE5Ce5ERigFdyT0PLSfgjlV2g76aXvlGsOQWoQIMZ7MHHfhue4gLLFTDqNm4zhTEHJiGBJKWetV+5myY/1Z1h/98mpQ=
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV2PR08MB8462
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240405_070514_549811_CD5A37B0 
-X-CRM114-Status: GOOD (  16.45  )
+X-CRM114-CacheID: sfid-20240405_070516_521895_52129CEB 
+X-CRM114-Status: GOOD (  18.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -158,238 +158,307 @@ X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/4] common: add wolfvision board code library
+Subject: [PATCH 4/4] arm: boards: add wolfvision pf5 mainboard
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add board code library for all WolfVision boards.
+Add support for the WolfVision PF5 mainboard, which features the Rockchip
+RK3568 SoC and can be extended with different expansion boards.
 
 Signed-off-by: Michael Riesch <michael.riesch@wolfvision.net>
 ---
- common/boards/Kconfig              |   3 +
- common/boards/Makefile             |   1 +
- common/boards/wolfvision/Makefile  |   2 +
- common/boards/wolfvision/common.c  | 145 +++++++++++++++++++++++++++++++++++++
- include/boards/wolfvision/common.h |  32 ++++++++
- 5 files changed, 183 insertions(+)
+ arch/arm/boards/Makefile                           |  1 +
+ arch/arm/boards/wolfvision-pf5/.gitignore          |  1 +
+ arch/arm/boards/wolfvision-pf5/Makefile            |  3 +
+ arch/arm/boards/wolfvision-pf5/board.c             | 88 ++++++++++++++++++++++
+ arch/arm/boards/wolfvision-pf5/lowlevel.c          | 36 +++++++++
+ arch/arm/dts/Makefile                              |  3 +
+ .../arm/dts/rk3568-wolfvision-pf5-io-expander.dtso | 11 +++
+ arch/arm/dts/rk3568-wolfvision-pf5.dts             | 48 ++++++++++++
+ arch/arm/mach-rockchip/Kconfig                     |  9 +++
+ images/Makefile.rockchip                           |  1 +
+ 10 files changed, 201 insertions(+)
 
-diff --git a/common/boards/Kconfig b/common/boards/Kconfig
-index f6d4a56f88..a2a51155ea 100644
---- a/common/boards/Kconfig
-+++ b/common/boards/Kconfig
-@@ -14,3 +14,6 @@ config BOARD_PHYTEC_SOM_IMX8M_DETECTION
- config BOARD_TQ
- 	select CRC_ITU_T
- 	bool
-+
-+config BOARD_WOLFVISION
-+	bool
-diff --git a/common/boards/Makefile b/common/boards/Makefile
-index 147c36643d..3f8ac57b2f 100644
---- a/common/boards/Makefile
-+++ b/common/boards/Makefile
-@@ -3,3 +3,4 @@
- obj-$(CONFIG_BOARD_QEMU_VIRT)	+= qemu-virt/
- obj-$(CONFIG_BOARD_PHYTEC_SOM_DETECTION) += phytec/
- obj-$(CONFIG_BOARD_TQ) += tq/
-+obj-$(CONFIG_BOARD_WOLFVISION) += wolfvision/
-diff --git a/common/boards/wolfvision/Makefile b/common/boards/wolfvision/Makefile
+diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
+index 05fbcca175..062db96e1c 100644
+--- a/arch/arm/boards/Makefile
++++ b/arch/arm/boards/Makefile
+@@ -203,3 +203,4 @@ obj-$(CONFIG_MACH_RADXA_ROCK5)			+= radxa-rock5/
+ obj-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP)	+= variscite-dt8mcustomboard-imx8mp/
+ obj-$(CONFIG_MACH_RADXA_CM3)			+= radxa-cm3/
+ obj-$(CONFIG_MACH_TQMA93XX)			+= tqma93xx/
++obj-$(CONFIG_MACH_WOLFVISION_PF5)		+= wolfvision-pf5/
+diff --git a/arch/arm/boards/wolfvision-pf5/.gitignore b/arch/arm/boards/wolfvision-pf5/.gitignore
 new file mode 100644
-index 0000000000..b2be4b73f4
+index 0000000000..f458f794b5
 --- /dev/null
-+++ b/common/boards/wolfvision/Makefile
-@@ -0,0 +1,2 @@
++++ b/arch/arm/boards/wolfvision-pf5/.gitignore
+@@ -0,0 +1 @@
++sdram-init.bin
+diff --git a/arch/arm/boards/wolfvision-pf5/Makefile b/arch/arm/boards/wolfvision-pf5/Makefile
+new file mode 100644
+index 0000000000..b37b6c870b
+--- /dev/null
++++ b/arch/arm/boards/wolfvision-pf5/Makefile
+@@ -0,0 +1,3 @@
 +# SPDX-License-Identifier: GPL-2.0-only
-+obj-pbl-y += common.o
-diff --git a/common/boards/wolfvision/common.c b/common/boards/wolfvision/common.c
++obj-y += board.o
++lwl-y += lowlevel.o
+diff --git a/arch/arm/boards/wolfvision-pf5/board.c b/arch/arm/boards/wolfvision-pf5/board.c
 new file mode 100644
-index 0000000000..188931c24c
+index 0000000000..797f51bc2e
 --- /dev/null
-+++ b/common/boards/wolfvision/common.c
-@@ -0,0 +1,145 @@
++++ b/arch/arm/boards/wolfvision-pf5/board.c
+@@ -0,0 +1,88 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +/*
-+ * Common board code functions WolfVision boards.
++ * Board code for the WolfVision PF5 mainboard.
 + *
 + * Copyright (C) 2024 WolfVision GmbH.
 + */
-+
 +#include <common.h>
-+#include <aiodev.h>
-+#include <net.h>
-+#include <state.h>
++#include <deep-probe.h>
++#include <globalvar.h>
++#include <init.h>
 +
 +#include <boards/wolfvision/common.h>
++#include <mach/rockchip/bbu.h>
 +
-+#define WV_RK3568_HWID_TOLERANCE 50
++#define PF5_IO_EXPANDER_FILENAME "rk3568-wolfvision-pf5-io-expander.dtbo"
++#define PF5_IO_EXPANDER_DATA __dtbo_rk3568_wolfvision_pf5_io_expander_start
 +
-+int wolfvision_apply_overlay(const struct wv_overlay *overlay, char **files)
-+{
-+	int ret;
-+
-+	if (overlay->filename) {
-+		if (*files) {
-+			char *old = *files;
-+			*files = basprintf("%s %s", old, overlay->filename);
-+			free(old);
-+		} else {
-+			*files = basprintf("%s", overlay->filename);
-+		}
-+	}
-+
-+	if (overlay->data) {
-+		struct device_node *node =
-+			of_unflatten_dtb(overlay->data, INT_MAX);
-+
-+		if (!node) {
-+			pr_err("Cannot unflatten dtbo\n");
-+			return -EINVAL;
-+		}
-+
-+		ret = of_overlay_apply_tree(of_get_root_node(), node);
-+
-+		of_delete_node(node);
-+
-+		if (ret) {
-+			pr_err("Cannot apply overlay: %s\n", strerror(-ret));
-+			return ret;
-+		}
-+
-+		of_clk_init();
-+		of_probe();
-+	}
-+
-+	return 0;
-+}
-+
-+int wolfvision_register_ethaddr(void)
-+{
-+	struct device_node *eth0;
-+	struct state *state;
-+	char mac[ETH_ALEN];
-+	int ret;
-+
-+	ret = of_device_ensure_probed_by_alias("state");
-+	if (ret)
-+		return ret;
-+
-+	state = state_by_name("state");
-+	if (!state)
-+		return -ENOENT;
-+
-+	ret = state_read_mac(state, "mac-address", mac);
-+	if (ret)
-+		return ret;
-+
-+	if (!is_valid_ether_addr(mac))
-+		return -EINVAL;
-+
-+	eth0 = of_find_node_by_alias(of_get_root_node(), "ethernet0");
-+	if (eth0)
-+		of_eth_register_ethaddr(eth0, mac);
-+
-+	return 0;
-+}
-+
-+int wolfvision_rk3568_get_hwid(int chan_idx)
-+{
-+	const int values[WV_RK3568_HWID_MAX] = {
-+		0,    112,  225,  337,	450,  562,  675,  787,	900,
-+		1012, 1125, 1237, 1350, 1462, 1575, 1687, 1800,
-+	};
-+	struct aiochannel *chan;
-+	int ret, hwid, voltage;
-+	char *chan_name;
-+
-+	chan_name = basprintf("saradc.in_value%d_mV", chan_idx);
-+	chan = aiochannel_by_name(chan_name);
-+	free(chan_name);
-+	if (IS_ERR(chan))
-+		return PTR_ERR(chan);
-+
-+	ret = aiochannel_get_value(chan, &voltage);
-+	if (ret)
-+		return ret;
-+
-+	for (hwid = 0; hwid < ARRAY_SIZE(values); hwid++)
-+		if (abs(voltage - values[hwid]) < WV_RK3568_HWID_TOLERANCE)
-+			return hwid;
-+
-+	return -EINVAL;
++enum {
++	PF5_HWID_CHANNEL_MAINBOARD = 1,
++	PF5_HWID_CHANNEL_MODULE = 2,
 +};
 +
-+int wolfvision_rk3568_detect_hw(const struct wv_rk3568_extension *extensions,
-+				int num_extensions, char **overlays)
++extern char PF5_IO_EXPANDER_DATA[];
++
++static const struct wv_rk3568_extension pf5_extensions[] = {
++	{
++		.adc_chan = PF5_HWID_CHANNEL_MAINBOARD,
++		.name = "mainboard",
++		.overlays = {
++			[0] = { .name = "PF5 DC V1.0 A", },
++			[4] = { .name = "PF5 DC V1.1 A", },
++		},
++	},
++	{
++		.adc_chan = PF5_HWID_CHANNEL_MODULE,
++		.name = "module",
++		.overlays = {
++			[0] = { .name = "PF5 IO Expander V1.0 A",
++				.filename = PF5_IO_EXPANDER_FILENAME,
++				.data = PF5_IO_EXPANDER_DATA,
++			},
++			[16] = { .name = "no", },
++		},
++	},
++};
++
++static int pf5_probe(struct device *dev)
 +{
-+	int i, hwid, ret;
++	char *pf5_overlays = NULL;
++	int ret;
 +
-+	ret = of_device_ensure_probed_by_alias("saradc");
++	barebox_set_model("WolfVision PF5");
++	barebox_set_hostname("PF5");
++
++	ret = wolfvision_register_ethaddr();
 +	if (ret)
-+		return ret;
++		pr_warning("failed to register MAC addresses\n");
 +
-+	for (i = 0; i < num_extensions; i++) {
-+		const struct wv_rk3568_extension *extension = &extensions[i];
-+		const struct wv_overlay *overlay;
++	rk3568_bbu_mmc_register("emmc", BBU_HANDLER_FLAG_DEFAULT, "/dev/mmc0");
 +
-+		ret = wolfvision_rk3568_get_hwid(extension->adc_chan);
-+		if (ret < 0) {
-+			pr_warning("Could not retrieve %s HWID (%d)\n",
-+				   extension->name, ret);
-+			return ret;
-+		}
++	ret = wolfvision_rk3568_detect_hw(
++		pf5_extensions, ARRAY_SIZE(pf5_extensions), &pf5_overlays);
++	if (ret)
++		pr_warning("failed to detect HW\n");
 +
-+		hwid = ret;
-+		overlay = &extension->overlays[hwid];
-+		if (overlay->name) {
-+			pr_info("Detected %s %s\n", overlay->name,
-+				extension->name);
-+			wolfvision_apply_overlay(overlay, overlays);
-+		} else {
-+			pr_warning("Detected unknown %s HWID %d\n",
-+				   extension->name, hwid);
-+		}
-+	}
++	if (pf5_overlays)
++		globalvar_set("of.overlay.filepattern", pf5_overlays);
++
++	free(pf5_overlays);
 +
 +	return 0;
 +}
-diff --git a/include/boards/wolfvision/common.h b/include/boards/wolfvision/common.h
++
++static const struct of_device_id pf5_of_match[] = {
++	{
++		.compatible = "wolfvision,rk3568-pf5",
++	},
++	{ /* sentinel */ },
++};
++
++static struct driver_d pf5_board_driver = {
++	.name = "board-wolfvision-pf5",
++	.probe = pf5_probe,
++	.of_compatible = pf5_of_match,
++};
++coredevice_platform_driver(pf5_board_driver);
++
++BAREBOX_DEEP_PROBE_ENABLE(pf5_of_match);
+diff --git a/arch/arm/boards/wolfvision-pf5/lowlevel.c b/arch/arm/boards/wolfvision-pf5/lowlevel.c
 new file mode 100644
-index 0000000000..a9bf6acbbb
+index 0000000000..c20ca4ae13
 --- /dev/null
-+++ b/include/boards/wolfvision/common.h
-@@ -0,0 +1,32 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++++ b/arch/arm/boards/wolfvision-pf5/lowlevel.c
+@@ -0,0 +1,36 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <common.h>
++#include <linux/sizes.h>
++#include <asm/barebox-arm-head.h>
++#include <asm/barebox-arm.h>
++#include <mach/rockchip/hardware.h>
++#include <mach/rockchip/atf.h>
++#include <debug_ll.h>
++#include <mach/rockchip/rockchip.h>
++
++extern char __dtb_rk3568_wolfvision_pf5_start[];
++
++ENTRY_FUNCTION(start_rk3568_wolfvision_pf5, r0, r1, r2)
++{
++	/*
++	 * Enable vccio4 1.8V and vccio5 1.8V
++	 * FIXME: This is done by the io-domain driver as well, but there
++	 * currently is no mechanism to make sure the driver gets probed
++	 * before its consumers. Remove this setup once this issue is
++	 * resolved.
++	 */
++	writel(RK_SETBITS(0x30), 0xfdc20140);
++
++	/*
++	 * Image execution starts at 0x0, but this is used for ATF and
++	 * OP-TEE later, so move away from here.
++	 */
++	if (current_el() == 3)
++		relocate_to_adr_full(RK3568_BAREBOX_LOAD_ADDRESS);
++	else
++		relocate_to_current_adr();
++
++	setup_c();
++
++	rk3568_barebox_entry(__dtb_rk3568_wolfvision_pf5_start);
++}
+diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
+index 056d4d565b..bfa39de359 100644
+--- a/arch/arm/dts/Makefile
++++ b/arch/arm/dts/Makefile
+@@ -185,6 +185,7 @@ lwl-$(CONFIG_MACH_WARP7) += imx7s-warp.dtb.o
+ lwl-$(CONFIG_MACH_VF610_TWR) += vf610-twr.dtb.o
+ lwl-$(CONFIG_MACH_WEBASTO_CCBV2) += imx6ul-webasto-ccbv2.dtb.o
+ lwl-$(CONFIG_MACH_WEBASTO_CCBV2) += imx6ul-webasto-marvel.dtb.o
++lwl-$(CONFIG_MACH_WOLFVISION_PF5) += rk3568-wolfvision-pf5.dtb.o
+ lwl-$(CONFIG_MACH_ZII_RDU1) +=	\
+ 	imx51-zii-rdu1.dtb.o		\
+ 	imx51-zii-scu2-mezz.dtb.o	\
+@@ -229,4 +230,6 @@ lwl-$(CONFIG_MACH_VARISCITE_DT8MCUSTOMBOARD_IMX8MP) += imx8mp-var-dart-dt8mcusto
+ lwl-$(CONFIG_MACH_TQMA93XX) += imx93-tqma9352-mba93xxca.dtb.o \
+ 			       imx93-tqma9352-mba93xxla.dtb.o
+ 
++obj-$(CONFIG_MACH_WOLFVISION_PF5) += rk3568-wolfvision-pf5-io-expander.dtbo.o
++
+ clean-files := *.dtb *.dtb.S .*.dtc .*.pre .*.dts *.dtb.z
+diff --git a/arch/arm/dts/rk3568-wolfvision-pf5-io-expander.dtso b/arch/arm/dts/rk3568-wolfvision-pf5-io-expander.dtso
+new file mode 100644
+index 0000000000..5160a7ec1a
+--- /dev/null
++++ b/arch/arm/dts/rk3568-wolfvision-pf5-io-expander.dtso
+@@ -0,0 +1,11 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
 +/*
-+ * Common board code functions WolfVision boards.
++ * Device tree overlay for the WolfVision PF5 IO Expander board.
 + *
 + * Copyright (C) 2024 WolfVision GmbH.
 + */
 +
-+#ifndef _BOARDS_WOLFVISION_COMMON_H
-+#define _BOARDS_WOLFVISION_COMMON_H
++/dts-v1/;
++/plugin/;
 +
-+#define WV_RK3568_HWID_MAX 17
++#include <arm64/rockchip/rk3568-wolfvision-pf5-io-expander.dtso>
+diff --git a/arch/arm/dts/rk3568-wolfvision-pf5.dts b/arch/arm/dts/rk3568-wolfvision-pf5.dts
+new file mode 100644
+index 0000000000..fe41ea6634
+--- /dev/null
++++ b/arch/arm/dts/rk3568-wolfvision-pf5.dts
+@@ -0,0 +1,48 @@
++// SPDX-License-Identifier: (GPL-2.0-or-later OR MIT)
++/*
++ * Device tree for the WolfVision PF5 mainboard.
++ *
++ * Copyright (C) 2024 WolfVision GmbH.
++ */
 +
-+struct wv_overlay {
-+	const char *name;
-+	const char *filename;
-+	const void *data;
++/dts-v1/;
++#include <arm64/rockchip/rk3568-wolfvision-pf5.dts>
++#include "rk356x.dtsi"
++#include "wolfvision-state.dtsi"
++
++/ {
++	aliases {
++		saradc = &saradc;
++	};
++
++	chosen: chosen {
++		environment-emmc {
++			compatible = "barebox,environment";
++			device-path = &environment_emmc;
++		};
++	};
++	/*
++	memory@a00000 {
++		device_type = "memory";
++		reg = <0x0 0x00a00000 0x0 0x7f600000>;
++	};
++	*/
 +};
 +
-+struct wv_rk3568_extension {
-+	int adc_chan;
-+	const char *name;
-+	const struct wv_overlay overlays[WV_RK3568_HWID_MAX];
++&sdhci {
++	partitions {
++		compatible = "fixed-partitions";
++		#address-cells = <2>;
++		#size-cells = <2>;
++
++		environment_emmc: partition@408000 {
++			label = "barebox-environment";
++			reg = <0x0 0x408000 0x0 0x8000>;
++		};
++
++		barebox_state: partition@410000 {
++			reg = <0x0 0x410000 0x0 0x8000>;
++			label = "state";
++		};
++	};
 +};
+diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
+index 8cdf2c28a9..6ef44fb0f6 100644
+--- a/arch/arm/mach-rockchip/Kconfig
++++ b/arch/arm/mach-rockchip/Kconfig
+@@ -109,6 +109,15 @@ config MACH_RADXA_CM3
+ 	help
+ 	  Say Y here if you are using a Radxa CM3
+ 
++config MACH_WOLFVISION_PF5
++	select ARCH_RK3568
++	select AIODEV
++	select BOARD_WOLFVISION
++	select ROCKCHIP_SARADC
++	bool "WolfVision PF5 mainboard"
++	help
++	  Say Y here if you are using a WolfVision PF5 mainboard
 +
-+int wolfvision_apply_overlay(const struct wv_overlay *overlay, char **files);
-+
-+int wolfvision_register_ethaddr(void);
-+
-+int wolfvision_rk3568_detect_hw(const struct wv_rk3568_extension *extensions,
-+				int num_extensions, char **overlays);
-+
-+#endif /* _BOARDS_WOLFVISION_COMMON_H */
+ endif
+ 
+ comment "select board features:"
+diff --git a/images/Makefile.rockchip b/images/Makefile.rockchip
+index ea32af4241..f585d8c79b 100644
+--- a/images/Makefile.rockchip
++++ b/images/Makefile.rockchip
+@@ -35,3 +35,4 @@ $(call build_rockchip_image, CONFIG_MACH_PINE64_QUARTZ64, start_quartz64a, pine6
+ $(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK3, start_rock3a, radxa-rock3/sdram-init.bin, rock3a)
+ $(call build_rockchip_image, CONFIG_MACH_RADXA_ROCK5, start_rock5b, radxa-rock5/sdram-init.bin, rock5b)
+ $(call build_rockchip_image, CONFIG_MACH_RADXA_CM3, start_radxa_cm3_io, radxa-cm3/sdram-init.bin, radxa-cm3-io)
++$(call build_rockchip_image, CONFIG_MACH_WOLFVISION_PF5, start_rk3568_wolfvision_pf5, wolfvision-pf5/sdram-init.bin, rk3568-wolfvision-pf5)
 
 -- 
 2.34.1
