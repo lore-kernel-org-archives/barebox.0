@@ -1,59 +1,63 @@
-Delivery-date: Wed, 10 Apr 2024 10:38:18 +0200
+Delivery-date: Wed, 10 Apr 2024 11:24:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ruTTG-005nPr-0K
+	id 1ruUBi-005qhC-32
 	for lore@lore.pengutronix.de;
-	Wed, 10 Apr 2024 10:38:18 +0200
+	Wed, 10 Apr 2024 11:24:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ruTTF-0006Vv-EH
-	for lore@pengutronix.de; Wed, 10 Apr 2024 10:38:18 +0200
+	id 1ruUBi-0004xM-6b
+	for lore@pengutronix.de; Wed, 10 Apr 2024 11:24:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=PuPzYd/0n9v2QS73I1rZXC1cPIrgtFW0+xoeXAZIVVY=; b=S2FajOmc0bJ4qRT51TAr51eM0X
-	X7nFxE2kEzgDP+oPJ0Wz0feJY7GzQegSwgnaX1v/8CJgnVNlp8TxIElAk8LTpqBsteo0J+zuiF/cu
-	7X3pD5dfyf8DIAghTwvBayWcbkRY86DhdwuauyLEWlhPb43soEo7JF1/0apv9haIt30uVsaNpFK67
-	A3UZVFkCQdSGktDwBJITDdBIs4uCqjqSwe3utDIoeKc7GpvB5KlH/hnX3ExfocUa7E/0aFfvXKr4M
-	6xMDO3+6/P1A88uT3X3QHFm3IIXPFjpn/0UQEGEZKvtTd6qHp+zRqPfvpNwYAj+UvcakJ1mHiebxX
-	2OqPQxYQ==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=2LUOZO9xq69fEYQ1xm8HQlK70X+B+jHW5peLcPO29lQ=; b=UUg4dEZQIbeKIDWRsv6wYnLidH
+	8MldNmpp/8sIOEmvWQCsM74Axb5PMhKEQ6AHJp9tCAU4sU/YPfefakuWGKjhc+Xj4pCF6eIbW0aMz
+	rkD7vdF11mTWD1rtEV2Jnjl4oM9bDePMUHzPykWAWi2BCSUdf9z7srkyfijCJ+hXDpTif5wURXxyc
+	SgqzV/erxD3TfoS7UjfmuOlrg9d/eNvxmf/HNyw2UfC0pXhOA6cE4yVlXzD5B3tdaAT6EGcI9bgvj
+	Zv7Cv2dJKBUaRMKxDCvrEbkHFNnLK0fnlm3pMqQPRlgebRNvkbV88MdWy/+YfPvHXzDCdg2DdhlK4
+	liCQfmHw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1ruTSd-00000005uEF-3bfF;
-	Wed, 10 Apr 2024 08:37:39 +0000
+	id 1ruUB6-0000000681Y-30xz;
+	Wed, 10 Apr 2024 09:23:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1ruTSa-00000005uCC-2Bx8
+	id 1ruUB3-0000000680i-1P7j
 	for barebox@lists.infradead.org;
-	Wed, 10 Apr 2024 08:37:38 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1ruTSY-0005tk-Ld; Wed, 10 Apr 2024 10:37:34 +0200
-Message-ID: <2ab8a4fd-908f-4966-83a7-86eeb8dca501@pengutronix.de>
-Date: Wed, 10 Apr 2024 10:37:33 +0200
+	Wed, 10 Apr 2024 09:23:34 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1ruUB1-0004GH-RX; Wed, 10 Apr 2024 11:23:31 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1ruUB1-00BT7Q-Ev; Wed, 10 Apr 2024 11:23:31 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1ruUB1-000Suz-16;
+	Wed, 10 Apr 2024 11:23:31 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Wed, 10 Apr 2024 11:23:30 +0200
+Message-Id: <20240410092330.111150-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Tomas Marek <tomas.marek@elrest.cz>
-Cc: barebox@lists.infradead.org
-References: <20240409071422.5934-1-tomas.marek@elrest.cz>
- <46db4b10-73d7-4f33-9fc9-e383326bfe5d@pengutronix.de>
- <ZhZCQCMlD7Q-51Co@debian>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <ZhZCQCMlD7Q-51Co@debian>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240410_013736_611691_AFA0ECFD 
-X-CRM114-Status: GOOD (  32.22  )
+X-CRM114-CacheID: sfid-20240410_022333_395887_5190795A 
+X-CRM114-Status: GOOD (  10.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,125 +79,202 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] gpio: Add Intel gpio controller support
+Subject: [PATCH] jffs2: change pr_fmt prefix to jffs2
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Tomas,
+KBUILD_MODNAME expands to the filename which is not a good prefix for
+messages. Change it to jffs2 to give the messages a more meaningful
+prefix.
 
-On 10.04.24 09:39, Tomas Marek wrote:
-> On Tue, Apr 09, 2024 at 09:41:28AM +0200, Ahmad Fatoum wrote:
->>> +static int intel_gpio_get_direction(struct gpio_chip *gc, unsigned int gpio)
->>> +		kfree(intel_gpio);
->>> +		return ret;
->>> +	}
->>> +
->>> +	return 0;
->>> +}
->>> +
->>> +static struct driver_d intel_gpio_driver = {
->>> +	.name = "intel-gpio",
->>> +	.probe = intel_gpio_probe,
->>> +};
->>> +
->>> +coredevice_platform_driver(intel_gpio_driver);
->>
->> Who will register this device? Is it possible to add an ACPI table match
->> (like itco_wdt does for example) for your SoC and then register the device
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ fs/jffs2/build.c       | 2 +-
+ fs/jffs2/compr.c       | 2 +-
+ fs/jffs2/compr_rubin.c | 2 +-
+ fs/jffs2/compr_zlib.c  | 2 +-
+ fs/jffs2/debug.c       | 2 +-
+ fs/jffs2/dir.c         | 2 +-
+ fs/jffs2/fs.c          | 2 +-
+ fs/jffs2/malloc.c      | 2 +-
+ fs/jffs2/nodelist.c    | 2 +-
+ fs/jffs2/read.c        | 2 +-
+ fs/jffs2/readinode.c   | 2 +-
+ fs/jffs2/scan.c        | 2 +-
+ fs/jffs2/super.c       | 2 +-
+ 13 files changed, 13 insertions(+), 13 deletions(-)
 
-Typo: s/itco_wdt/WDAT/
-
->> there like Linux does?
->>
->> This would make extension for more SoCs easier in future.
-> 
-> I have registered the device in the board code now. In theory, it is
-> definitely possible to register the device using ACPI match, and I agree
-> with you that it's useful.
-> 
-> Unfortunately, the GPIO community resource definition is inside the DSDT
-> ACPI table for my device. I might be wrong here, but I think that Barebox
-> parses root tables but doesn’t delve into the nested DSDT at the moment.
-
-We indeed do not do DSDT parsing yet.
-
-> So it's getting a bit complicated here. I can take a closer look at it
-> later (without any guarantee of success, of course :-)), but I would
-> consider it a different patch if you don't mind.
-
-I was thinking of matching against the SoC type (e.g. Alderlake) and just
-register hardcoded values for the addresses/ngpios. I am not sure what's the
-easiest way to get this information though (maybe SMBIOS?).
-
-This shouldn't delay applying this driver though.
-
-> Needless to say, I am coming from the ARM world and haven't found my way
-> the ACPI just yet :-).
-
-Same here ^^
-
->>> +#ifndef __GPIO_INTEL_H
->>> +#define __GPIO_INTEL_H
->>> +
->>> +struct gpio_intel_platform_data {
->>> +	unsigned int	ngpios;
->>> +};
->>
->> I'd suggest you add a add_intel_gpio_device helper here that would create a suitable
->> device. This could be then called from the ACPI driver probe or from board code if
->> discoverability is not possible.
-> 
-> Is following code what you have in mind?
-> 
-> include/platform_data/gpio-intel.h:
-> 
-> 	struct gpio_intel_platform_data {
-> 		resource_size_t community_base;
-> 		resource_size_t community_size;
-> 		unsigned int	ngpios;
-> 	};
-> 
-> 	static inline struct device *add_intel_gpio_device(
-> 		struct gpio_intel_platform_data *pdata
-> 	)
-> 	{
-> 		return add_generic_device("intel-gpio", DEVICE_ID_DYNAMIC, NULL,
-> 			pdata->community_base, pdata->community_size,
-> 			IORESOURCE_MEM, pdata);
-> 	}
-
-This looks ok.
-
-Cheers,
-Ahmad
-
-> 
-> 
-> Best regards
-> 
-> Tomas
-> 
->>
->>
->> Cheers,
->> Ahmad
->>
->>> +
->>> +#endif /* __GPIO_INTEL_H */
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
-> 
-
+diff --git a/fs/jffs2/build.c b/fs/jffs2/build.c
+index d5757d100b..3871547b99 100644
+--- a/fs/jffs2/build.c
++++ b/fs/jffs2/build.c
+@@ -8,7 +8,7 @@
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+ 
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ #include <common.h>
+ #include <linux/kernel.h>
+ #include <linux/sched.h>
+diff --git a/fs/jffs2/compr.c b/fs/jffs2/compr.c
+index 04b014199f..a056be051c 100644
+--- a/fs/jffs2/compr.c
++++ b/fs/jffs2/compr.c
+@@ -9,7 +9,7 @@
+  *
+  * Created by Arjan van de Ven <arjan@infradead.org>
+  */
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ #include <common.h>
+ #include "compr.h"
+ 
+diff --git a/fs/jffs2/compr_rubin.c b/fs/jffs2/compr_rubin.c
+index 91a500f4fb..913276d986 100644
+--- a/fs/jffs2/compr_rubin.c
++++ b/fs/jffs2/compr_rubin.c
+@@ -8,7 +8,7 @@
+  * Created by Arjan van de Ven <arjanv@redhat.com>
+  */
+ 
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ 
+ #include <linux/string.h>
+ #include <linux/types.h>
+diff --git a/fs/jffs2/compr_zlib.c b/fs/jffs2/compr_zlib.c
+index 2b7914f1f5..0580bab0de 100644
+--- a/fs/jffs2/compr_zlib.c
++++ b/fs/jffs2/compr_zlib.c
+@@ -7,7 +7,7 @@
+  *
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ #include <common.h>
+ #include <linux/kernel.h>
+ #include <linux/zlib.h>
+diff --git a/fs/jffs2/debug.c b/fs/jffs2/debug.c
+index edf8539762..4ac501e2de 100644
+--- a/fs/jffs2/debug.c
++++ b/fs/jffs2/debug.c
+@@ -8,7 +8,7 @@
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+ 
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ 
+ #include <common.h>
+ #include <crc.h>
+diff --git a/fs/jffs2/dir.c b/fs/jffs2/dir.c
+index 34f8d141f2..94ef51f778 100644
+--- a/fs/jffs2/dir.c
++++ b/fs/jffs2/dir.c
+@@ -7,7 +7,7 @@
+  *
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ #include <common.h>
+ #include <linux/fs.h>
+ #include <linux/hash.h>
+diff --git a/fs/jffs2/fs.c b/fs/jffs2/fs.c
+index 6f2cbff6c9..fcce56c15f 100644
+--- a/fs/jffs2/fs.c
++++ b/fs/jffs2/fs.c
+@@ -7,7 +7,7 @@
+  *
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ #include <common.h>
+ #include <crc.h>
+ #include <driver.h>
+diff --git a/fs/jffs2/malloc.c b/fs/jffs2/malloc.c
+index 202191be94..e0e29fa648 100644
+--- a/fs/jffs2/malloc.c
++++ b/fs/jffs2/malloc.c
+@@ -7,7 +7,7 @@
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+ 
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ 
+ #include <common.h>
+ #include <linux/kernel.h>
+diff --git a/fs/jffs2/nodelist.c b/fs/jffs2/nodelist.c
+index 94753e1995..debf10e751 100644
+--- a/fs/jffs2/nodelist.c
++++ b/fs/jffs2/nodelist.c
+@@ -7,7 +7,7 @@
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+ 
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ 
+ #include <common.h>
+ #include <crc.h>
+diff --git a/fs/jffs2/read.c b/fs/jffs2/read.c
+index a1c3b9d47b..fffa5f60cb 100644
+--- a/fs/jffs2/read.c
++++ b/fs/jffs2/read.c
+@@ -7,7 +7,7 @@
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+ 
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ #include <common.h>
+ #include <crc.h>
+ #include <linux/kernel.h>
+diff --git a/fs/jffs2/readinode.c b/fs/jffs2/readinode.c
+index aaf2619613..605130d60c 100644
+--- a/fs/jffs2/readinode.c
++++ b/fs/jffs2/readinode.c
+@@ -7,7 +7,7 @@
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+ 
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ 
+ #include <common.h>
+ #include <crc.h>
+diff --git a/fs/jffs2/scan.c b/fs/jffs2/scan.c
+index 0d74a8f51f..e1e5120a28 100644
+--- a/fs/jffs2/scan.c
++++ b/fs/jffs2/scan.c
+@@ -7,7 +7,7 @@
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+ 
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ #include <common.h>
+ #include <crc.h>
+ #include <linux/kernel.h>
+diff --git a/fs/jffs2/super.c b/fs/jffs2/super.c
+index 37b3f328c6..d56cdfe132 100644
+--- a/fs/jffs2/super.c
++++ b/fs/jffs2/super.c
+@@ -7,7 +7,7 @@
+  *
+  * Created by David Woodhouse <dwmw2@infradead.org>
+  */
+-#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
++#define pr_fmt(fmt) "jffs2: " fmt
+ #include <common.h>
+ #include <init.h>
+ #include <linux/slab.h>
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
