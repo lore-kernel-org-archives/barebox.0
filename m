@@ -1,64 +1,65 @@
-Delivery-date: Mon, 15 Apr 2024 07:32:07 +0200
+Delivery-date: Mon, 15 Apr 2024 07:32:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwEwp-001ZDG-14
+	id 1rwEx5-001ZEF-36
 	for lore@lore.pengutronix.de;
-	Mon, 15 Apr 2024 07:32:07 +0200
+	Mon, 15 Apr 2024 07:32:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwEwo-0002Jl-Jc
-	for lore@pengutronix.de; Mon, 15 Apr 2024 07:32:07 +0200
+	id 1rwEx5-0002dY-D5
+	for lore@pengutronix.de; Mon, 15 Apr 2024 07:32:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=7b3t60W4wxzP4fo6GH3NoCFFyQBWrjNvQlTYYvl/NR0=; b=JUlR0HauSu2i4SXiPRu0iNE8QK
-	pBd3g4vJl7hub70p6t4tQPE5zxVBE7S6nAhhewKlfQ8HAGIsrJ9gwtpDgvPESMjf9NhJxnbFWoMe5
-	Tc0E1eos53JH9CqJL0hCOgWFlEvgkVSGoaSkqTZtw8CEEH8TGiOh2MmCxFpQ1gxqie0qAIeGiUKhi
-	OISpAiOH1AQ76V/5CNE9PGHUVuTxCTlt8rHJZSRVXc2H0XipwMrPPKa6VpZtzpno40+mTXHYEqhbC
-	lGW98tWi1f3NHyMh2tsxKjgox+q2ZJoybw1wD5aKhpqXkOEThMktzj8vphN7XZkxvly/oWCGQVH7a
-	BoK0G2rw==;
+	bh=uGr39Y/XR/X0TTUsVJ4JXZHWjUGXD8A7ucIQr+QNBQs=; b=cWMZlNYLdUFqHotvnr1aoKXRER
+	5vqCRh10czd7jAKB9rswe2+jNiLY88ChXsaYrOfVYAsG071PgpMILv1UIfrFxFcU29MVLq6IEvYCH
+	YkaWAEiYtmw+TH9s9/CWes2wdfgUl7ViNSSPY83JKLDBaaXEPP93DUpLfj58RkHUZhWHD/QmA4tO0
+	oJyQ6OworiKONygOMLa0dcnOhOAhUy1oI0birSeqW9k8tQESfFdy534xfRJH0we+jjIPpB3dB17Yi
+	lFmHVcUfwebKFxB1xHmVq9TH2lXxB1+aWEatau4qGlwNz8kJvdM59nu1g/Kvh7ow0jYxEoAkdap72
+	y/Jtx2/g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwEwQ-000000070l2-3ELu;
-	Mon, 15 Apr 2024 05:31:42 +0000
+	id 1rwEwi-000000070pX-0MoI;
+	Mon, 15 Apr 2024 05:32:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwEwN-000000070k3-1feO
+	id 1rwEwe-000000070oc-3VMW
 	for barebox@lists.infradead.org;
-	Mon, 15 Apr 2024 05:31:40 +0000
+	Mon, 15 Apr 2024 05:31:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rwEwM-0001oK-9k; Mon, 15 Apr 2024 07:31:38 +0200
+	id 1rwEwd-00029W-ID; Mon, 15 Apr 2024 07:31:55 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rwEwL-00CMjy-T6; Mon, 15 Apr 2024 07:31:37 +0200
+	id 1rwEwd-00CMk6-5w; Mon, 15 Apr 2024 07:31:55 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rwEwL-001Xq3-2d;
-	Mon, 15 Apr 2024 07:31:37 +0200
+	id 1rwEwd-001XsY-0K;
+	Mon, 15 Apr 2024 07:31:55 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 15 Apr 2024 07:31:37 +0200
-Message-Id: <20240415053137.368391-1-a.fatoum@pengutronix.de>
+Date: Mon, 15 Apr 2024 07:31:54 +0200
+Message-Id: <20240415053154.368546-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240414_223139_478165_34DE922E 
-X-CRM114-Status: GOOD (  14.76  )
+X-CRM114-CacheID: sfid-20240414_223156_943463_80A48434 
+X-CRM114-Status: UNSURE (   7.67  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,74 +81,44 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] gpio: rockchip: fix support for RK3588/RK3566
+Subject: [PATCH] clk: rk3568: sync PLL rates with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The GPIO controller on newer Rockchip SoCs isn't compatible with the
-older ones. Back when GPIOv2 support was added, RK3568 was the only
-SoC supported using it, but since then support for the very similar
-RK3566 as well as the newer RK3588 has followed, but the driver wasn't
-extended to support them.
-
-As GPIOv2 controllers have an identification register, start checking it
-like Linux does and use that to detect whether we have a GPIOv2 or GPIOv1.
-
-This issue was found trying to read GPIO inputs of the RK3566.
+The Linux driver has gained additional PLL rates since we last
+synchronized. Add their parameters to barebox as well.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/gpio/gpio-rockchip.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
+ drivers/clk/rockchip/clk-rk3568.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
-index 7c67512ee380..2c13e97b9774 100644
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -10,6 +10,10 @@
- #include <linux/basic_mmio_gpio.h>
- #include <mach/rockchip/rockchip.h>
- 
-+#define GPIO_TYPE_V1		(0)           /* GPIO Version ID reserved */
-+#define GPIO_TYPE_V2		(0x01000C2B)  /* GPIO Version ID 0x01000C2B */
-+#define GPIO_TYPE_V2_1		(0x0101157C)  /* GPIO Version ID 0x0101157C */
-+
- struct rockchip_gpiochip {
- 	struct device			*dev;
- 	void __iomem			*reg_base;
-@@ -131,6 +135,7 @@ static int rockchip_gpio_probe(struct device *dev)
- 	struct gpio_chip *gpio;
- 	struct resource *res;
- 	void __iomem *reg_base;
-+	u32 id, gpio_type;
- 	int ret;
- 
- 	rgc = xzalloc(sizeof(*rgc));
-@@ -153,7 +158,13 @@ static int rockchip_gpio_probe(struct device *dev)
- 
- 	reg_base = rgc->reg_base;
- 
--	if (rockchip_soc() == 3568) {
-+	id = readl(reg_base + 0x78);
-+	if (id == GPIO_TYPE_V2 || id == GPIO_TYPE_V2_1)
-+		gpio_type = GPIO_TYPE_V2;
-+	else
-+		gpio_type = GPIO_TYPE_V1;
-+
-+	if (gpio_type >= GPIO_TYPE_V2) {
- 		gpio->ngpio = 32;
- 		gpio->dev = dev;
- 		gpio->ops = &rockchip_gpio_ops;
-@@ -176,6 +187,9 @@ static int rockchip_gpio_probe(struct device *dev)
- 		return ret;
- 	}
- 
-+	dev_dbg(dev, "registered GPIOv%d-compatible bank\n",
-+		gpio_type == GPIO_TYPE_V1 ? 1 : 2);
-+
- 	return 0;
- }
- 
+diff --git a/drivers/clk/rockchip/clk-rk3568.c b/drivers/clk/rockchip/clk-rk3568.c
+index d07d7aef5d8d..50fbf66d23d0 100644
+--- a/drivers/clk/rockchip/clk-rk3568.c
++++ b/drivers/clk/rockchip/clk-rk3568.c
+@@ -73,11 +73,21 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
+ 	RK3036_PLL_RATE(500000000, 1, 125, 6, 1, 1, 0),
+ 	RK3036_PLL_RATE(408000000, 1, 68, 2, 2, 1, 0),
+ 	RK3036_PLL_RATE(312000000, 1, 78, 6, 1, 1, 0),
++	RK3036_PLL_RATE(297000000, 2, 99, 4, 1, 1, 0),
++	RK3036_PLL_RATE(292500000, 1, 195, 4, 4, 1, 0),
++	RK3036_PLL_RATE(241500000, 2, 161, 4, 2, 1, 0),
+ 	RK3036_PLL_RATE(216000000, 1, 72, 4, 2, 1, 0),
+ 	RK3036_PLL_RATE(200000000, 1, 100, 3, 4, 1, 0),
+ 	RK3036_PLL_RATE(148500000, 1, 99, 4, 4, 1, 0),
++	RK3036_PLL_RATE(135000000, 2, 45, 4, 1, 1, 0),
++	RK3036_PLL_RATE(126400000, 1, 79, 5, 3, 1, 0),
++	RK3036_PLL_RATE(119000000, 3, 119, 4, 2, 1, 0),
++	RK3036_PLL_RATE(115200000, 1, 24, 5, 1, 1, 0),
++	RK3036_PLL_RATE(108000000, 2, 45, 5, 1, 1, 0),
++	RK3036_PLL_RATE(101000000, 1, 101, 6, 4, 1, 0),
+ 	RK3036_PLL_RATE(100000000, 1, 150, 6, 6, 1, 0),
+ 	RK3036_PLL_RATE(96000000, 1, 96, 6, 4, 1, 0),
++	RK3036_PLL_RATE(78750000, 4, 315, 6, 4, 1, 0),
+ 	RK3036_PLL_RATE(74250000, 2, 99, 4, 4, 1, 0),
+ 	{ /* sentinel */ },
+ };
 -- 
 2.39.2
 
