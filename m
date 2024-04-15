@@ -1,64 +1,64 @@
-Delivery-date: Mon, 15 Apr 2024 07:32:23 +0200
+Delivery-date: Mon, 15 Apr 2024 07:32:44 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwEx5-001ZEF-36
+	id 1rwExQ-001ZFl-2t
 	for lore@lore.pengutronix.de;
-	Mon, 15 Apr 2024 07:32:23 +0200
+	Mon, 15 Apr 2024 07:32:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwEx5-0002dY-D5
-	for lore@pengutronix.de; Mon, 15 Apr 2024 07:32:23 +0200
+	id 1rwExP-0002wK-Tl
+	for lore@pengutronix.de; Mon, 15 Apr 2024 07:32:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=uGr39Y/XR/X0TTUsVJ4JXZHWjUGXD8A7ucIQr+QNBQs=; b=cWMZlNYLdUFqHotvnr1aoKXRER
-	5vqCRh10czd7jAKB9rswe2+jNiLY88ChXsaYrOfVYAsG071PgpMILv1UIfrFxFcU29MVLq6IEvYCH
-	YkaWAEiYtmw+TH9s9/CWes2wdfgUl7ViNSSPY83JKLDBaaXEPP93DUpLfj58RkHUZhWHD/QmA4tO0
-	oJyQ6OworiKONygOMLa0dcnOhOAhUy1oI0birSeqW9k8tQESfFdy534xfRJH0we+jjIPpB3dB17Yi
-	lFmHVcUfwebKFxB1xHmVq9TH2lXxB1+aWEatau4qGlwNz8kJvdM59nu1g/Kvh7ow0jYxEoAkdap72
-	y/Jtx2/g==;
+	bh=PDIsgYZwoXBak4ndF8GrEiJ7zwzT+T45Tdz7vB42TGM=; b=VmfeMSACOhwL7tlLAltuRi9k5u
+	tsPc3A4P3PC7nQlQhJanVHIoXkgfMCZ5bmuCOadfsuV8VGSshGGXG/5NXUuxVLN+Jx67bLdQZaDd7
+	CHFq29TgYTG8jWXxaKe0PLRftU3PbE6eWt3b+1y8pWessdfvTZ3rto9d+wZgbT7qmnlHMGqdPrBGv
+	N/VCCeh/9y8+6TfQCTSmERmRkgGyY58AJ7mujaZbMqCh+MfF/KKjBqpR7lAoaar8SxdGx224yLLcI
+	uMNzeI/R6la81sjM16UHCt0gvKeiSujMSolfawg1bg9yWnhB6H7/7umhDpV9nkcTjwa2L9kpigsr+
+	ZQd/SgAw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwEwi-000000070pX-0MoI;
-	Mon, 15 Apr 2024 05:32:00 +0000
+	id 1rwEx0-000000070uS-13Lb;
+	Mon, 15 Apr 2024 05:32:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwEwe-000000070oc-3VMW
+	id 1rwEww-000000070tJ-2FAA
 	for barebox@lists.infradead.org;
-	Mon, 15 Apr 2024 05:31:58 +0000
+	Mon, 15 Apr 2024 05:32:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rwEwd-00029W-ID; Mon, 15 Apr 2024 07:31:55 +0200
+	id 1rwEwv-0002T6-A7; Mon, 15 Apr 2024 07:32:13 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rwEwd-00CMk6-5w; Mon, 15 Apr 2024 07:31:55 +0200
+	id 1rwEwu-00CMkA-Tt; Mon, 15 Apr 2024 07:32:12 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rwEwd-001XsY-0K;
-	Mon, 15 Apr 2024 07:31:55 +0200
+	id 1rwEwu-001XwJ-2i;
+	Mon, 15 Apr 2024 07:32:12 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 15 Apr 2024 07:31:54 +0200
-Message-Id: <20240415053154.368546-1-a.fatoum@pengutronix.de>
+Date: Mon, 15 Apr 2024 07:32:12 +0200
+Message-Id: <20240415053212.368779-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240414_223156_943463_80A48434 
-X-CRM114-Status: UNSURE (   7.67  )
+X-CRM114-CacheID: sfid-20240414_223214_751263_D148E6BE 
+X-CRM114-Status: UNSURE (   8.90  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -81,44 +81,370 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] clk: rk3568: sync PLL rates with Linux
+Subject: [PATCH] ARM: dts: rockchip: drop unreferenced rockchip-pinconf.dtsi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The Linux driver has gained additional PLL rates since we last
-synchronized. Add their parameters to barebox as well.
+This file is no longer used in barebox and existing drivers instead use
+the upstream variant. Therefore drop our unreferenced and possibly stale
+copy.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/clk/rockchip/clk-rk3568.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+ arch/arm/dts/rockchip-pinconf.dtsi | 344 -----------------------------
+ 1 file changed, 344 deletions(-)
+ delete mode 100644 arch/arm/dts/rockchip-pinconf.dtsi
 
-diff --git a/drivers/clk/rockchip/clk-rk3568.c b/drivers/clk/rockchip/clk-rk3568.c
-index d07d7aef5d8d..50fbf66d23d0 100644
---- a/drivers/clk/rockchip/clk-rk3568.c
-+++ b/drivers/clk/rockchip/clk-rk3568.c
-@@ -73,11 +73,21 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
- 	RK3036_PLL_RATE(500000000, 1, 125, 6, 1, 1, 0),
- 	RK3036_PLL_RATE(408000000, 1, 68, 2, 2, 1, 0),
- 	RK3036_PLL_RATE(312000000, 1, 78, 6, 1, 1, 0),
-+	RK3036_PLL_RATE(297000000, 2, 99, 4, 1, 1, 0),
-+	RK3036_PLL_RATE(292500000, 1, 195, 4, 4, 1, 0),
-+	RK3036_PLL_RATE(241500000, 2, 161, 4, 2, 1, 0),
- 	RK3036_PLL_RATE(216000000, 1, 72, 4, 2, 1, 0),
- 	RK3036_PLL_RATE(200000000, 1, 100, 3, 4, 1, 0),
- 	RK3036_PLL_RATE(148500000, 1, 99, 4, 4, 1, 0),
-+	RK3036_PLL_RATE(135000000, 2, 45, 4, 1, 1, 0),
-+	RK3036_PLL_RATE(126400000, 1, 79, 5, 3, 1, 0),
-+	RK3036_PLL_RATE(119000000, 3, 119, 4, 2, 1, 0),
-+	RK3036_PLL_RATE(115200000, 1, 24, 5, 1, 1, 0),
-+	RK3036_PLL_RATE(108000000, 2, 45, 5, 1, 1, 0),
-+	RK3036_PLL_RATE(101000000, 1, 101, 6, 4, 1, 0),
- 	RK3036_PLL_RATE(100000000, 1, 150, 6, 6, 1, 0),
- 	RK3036_PLL_RATE(96000000, 1, 96, 6, 4, 1, 0),
-+	RK3036_PLL_RATE(78750000, 4, 315, 6, 4, 1, 0),
- 	RK3036_PLL_RATE(74250000, 2, 99, 4, 4, 1, 0),
- 	{ /* sentinel */ },
- };
+diff --git a/arch/arm/dts/rockchip-pinconf.dtsi b/arch/arm/dts/rockchip-pinconf.dtsi
+deleted file mode 100644
+index 5c645437b507..000000000000
+--- a/arch/arm/dts/rockchip-pinconf.dtsi
++++ /dev/null
+@@ -1,344 +0,0 @@
+-// SPDX-License-Identifier: (GPL-2.0+ OR MIT)
+-/*
+- * Copyright (c) 2021 Rockchip Electronics Co., Ltd.
+- */
+-
+-&pinctrl {
+-	/omit-if-no-ref/
+-	pcfg_pull_up: pcfg-pull-up {
+-		bias-pull-up;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down: pcfg-pull-down {
+-		bias-pull-down;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none: pcfg-pull-none {
+-		bias-disable;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_0: pcfg-pull-none-drv-level-0 {
+-		bias-disable;
+-		drive-strength = <0>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_1: pcfg-pull-none-drv-level-1 {
+-		bias-disable;
+-		drive-strength = <1>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_2: pcfg-pull-none-drv-level-2 {
+-		bias-disable;
+-		drive-strength = <2>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_3: pcfg-pull-none-drv-level-3 {
+-		bias-disable;
+-		drive-strength = <3>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_4: pcfg-pull-none-drv-level-4 {
+-		bias-disable;
+-		drive-strength = <4>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_5: pcfg-pull-none-drv-level-5 {
+-		bias-disable;
+-		drive-strength = <5>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_6: pcfg-pull-none-drv-level-6 {
+-		bias-disable;
+-		drive-strength = <6>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_7: pcfg-pull-none-drv-level-7 {
+-		bias-disable;
+-		drive-strength = <7>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_8: pcfg-pull-none-drv-level-8 {
+-		bias-disable;
+-		drive-strength = <8>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_9: pcfg-pull-none-drv-level-9 {
+-		bias-disable;
+-		drive-strength = <9>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_10: pcfg-pull-none-drv-level-10 {
+-		bias-disable;
+-		drive-strength = <10>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_11: pcfg-pull-none-drv-level-11 {
+-		bias-disable;
+-		drive-strength = <11>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_12: pcfg-pull-none-drv-level-12 {
+-		bias-disable;
+-		drive-strength = <12>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_13: pcfg-pull-none-drv-level-13 {
+-		bias-disable;
+-		drive-strength = <13>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_14: pcfg-pull-none-drv-level-14 {
+-		bias-disable;
+-		drive-strength = <14>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_15: pcfg-pull-none-drv-level-15 {
+-		bias-disable;
+-		drive-strength = <15>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_0: pcfg-pull-up-drv-level-0 {
+-		bias-pull-up;
+-		drive-strength = <0>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_1: pcfg-pull-up-drv-level-1 {
+-		bias-pull-up;
+-		drive-strength = <1>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_2: pcfg-pull-up-drv-level-2 {
+-		bias-pull-up;
+-		drive-strength = <2>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_3: pcfg-pull-up-drv-level-3 {
+-		bias-pull-up;
+-		drive-strength = <3>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_4: pcfg-pull-up-drv-level-4 {
+-		bias-pull-up;
+-		drive-strength = <4>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_5: pcfg-pull-up-drv-level-5 {
+-		bias-pull-up;
+-		drive-strength = <5>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_6: pcfg-pull-up-drv-level-6 {
+-		bias-pull-up;
+-		drive-strength = <6>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_7: pcfg-pull-up-drv-level-7 {
+-		bias-pull-up;
+-		drive-strength = <7>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_8: pcfg-pull-up-drv-level-8 {
+-		bias-pull-up;
+-		drive-strength = <8>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_9: pcfg-pull-up-drv-level-9 {
+-		bias-pull-up;
+-		drive-strength = <9>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_10: pcfg-pull-up-drv-level-10 {
+-		bias-pull-up;
+-		drive-strength = <10>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_11: pcfg-pull-up-drv-level-11 {
+-		bias-pull-up;
+-		drive-strength = <11>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_12: pcfg-pull-up-drv-level-12 {
+-		bias-pull-up;
+-		drive-strength = <12>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_13: pcfg-pull-up-drv-level-13 {
+-		bias-pull-up;
+-		drive-strength = <13>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_14: pcfg-pull-up-drv-level-14 {
+-		bias-pull-up;
+-		drive-strength = <14>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_drv_level_15: pcfg-pull-up-drv-level-15 {
+-		bias-pull-up;
+-		drive-strength = <15>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_0: pcfg-pull-down-drv-level-0 {
+-		bias-pull-down;
+-		drive-strength = <0>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_1: pcfg-pull-down-drv-level-1 {
+-		bias-pull-down;
+-		drive-strength = <1>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_2: pcfg-pull-down-drv-level-2 {
+-		bias-pull-down;
+-		drive-strength = <2>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_3: pcfg-pull-down-drv-level-3 {
+-		bias-pull-down;
+-		drive-strength = <3>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_4: pcfg-pull-down-drv-level-4 {
+-		bias-pull-down;
+-		drive-strength = <4>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_5: pcfg-pull-down-drv-level-5 {
+-		bias-pull-down;
+-		drive-strength = <5>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_6: pcfg-pull-down-drv-level-6 {
+-		bias-pull-down;
+-		drive-strength = <6>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_7: pcfg-pull-down-drv-level-7 {
+-		bias-pull-down;
+-		drive-strength = <7>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_8: pcfg-pull-down-drv-level-8 {
+-		bias-pull-down;
+-		drive-strength = <8>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_9: pcfg-pull-down-drv-level-9 {
+-		bias-pull-down;
+-		drive-strength = <9>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_10: pcfg-pull-down-drv-level-10 {
+-		bias-pull-down;
+-		drive-strength = <10>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_11: pcfg-pull-down-drv-level-11 {
+-		bias-pull-down;
+-		drive-strength = <11>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_12: pcfg-pull-down-drv-level-12 {
+-		bias-pull-down;
+-		drive-strength = <12>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_13: pcfg-pull-down-drv-level-13 {
+-		bias-pull-down;
+-		drive-strength = <13>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_14: pcfg-pull-down-drv-level-14 {
+-		bias-pull-down;
+-		drive-strength = <14>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_drv_level_15: pcfg-pull-down-drv-level-15 {
+-		bias-pull-down;
+-		drive-strength = <15>;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_up_smt: pcfg-pull-up-smt {
+-		bias-pull-up;
+-		input-schmitt-enable;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_down_smt: pcfg-pull-down-smt {
+-		bias-pull-down;
+-		input-schmitt-enable;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_smt: pcfg-pull-none-smt {
+-		bias-disable;
+-		input-schmitt-enable;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_pull_none_drv_level_0_smt: pcfg-pull-none-drv-level-0-smt {
+-		bias-disable;
+-		drive-strength = <0>;
+-		input-schmitt-enable;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_output_high: pcfg-output-high {
+-		output-high;
+-	};
+-
+-	/omit-if-no-ref/
+-	pcfg_output_low: pcfg-output-low {
+-		output-low;
+-	};
+-};
 -- 
 2.39.2
 
