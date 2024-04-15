@@ -1,65 +1,56 @@
-Delivery-date: Mon, 15 Apr 2024 11:17:38 +0200
+Delivery-date: Mon, 15 Apr 2024 14:30:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwIT4-001lJR-34
+	id 1rwLTd-001x1t-21
 	for lore@lore.pengutronix.de;
-	Mon, 15 Apr 2024 11:17:38 +0200
+	Mon, 15 Apr 2024 14:30:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwIT4-0004cv-D7
-	for lore@pengutronix.de; Mon, 15 Apr 2024 11:17:38 +0200
+	id 1rwLTd-0004Ax-0x
+	for lore@pengutronix.de; Mon, 15 Apr 2024 14:30:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=NYKm7Sz2uiV/bSZIVXLh0lCy2caFxzBZkebyM6SmLpM=; b=ljCv8xqcA1XHjv1w5DR/TvmS1a
-	AAKCs8MfahQ5+rJVgoZMr2uRnWHUu8X5MTHoh2tBOoenP6YyPbyCvx6LLOC3Bz5zYHplPvx3N2fPJ
-	6vqzdDrJ67VJ/Br8Jv9ACofY/UmLpbsnoseeSMjevyY8dk51tZ/rEn04TUn1S9hQl4wVS9M+Av5AQ
-	M5tqoHdrjZzxfQiRfgJOG0xG3jaiRABS2I04O/NcnOx3nGp50b3WAAr3mPthDpH98se+yhwmTHVs3
-	hzuKSXDQW94aEtlioYanzrBY+M65vPpDOqm/fBwFfFprl4pcPr4wMnaAV2Ij0+f6Afkn4odcG6//u
-	R/2svSjA==;
+	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=fsdatKSiwwHjgQptkFN/MljQHLJfGB1IE5g3BrSmUBg=; b=IXN/Nlbpl70ne70ewewZ2K4gZZ
+	9k/9FIurWdbvlUc6KMhLK6l9aT7MtEJjRDNVAQQl8d9tsnW6WNtk8RN+kQv+q2yMRKKaT9QdAM/8E
+	vW+uLwZ/eSlEH1UJkUcGSXF9WKoc8ElUSoN2qokizb3NHhS5efwDisVQ6rUP3sHdld0GGoYD5N8aw
+	IpOdlYykYTHpQwdTQ2CqelUyPwDbpPQa7Gq0O5J0h3OW77XlgYhUnjjtQrF7d9gpTsAP+C4sUo+Bh
+	mkuaH8qIXbypmharf9yW36qttSLi6BP4vDuTUVC7CtftaQJPnAKV594I8bTJbsqEd9VuecehT6uQb
+	OkJTYvZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwISf-00000007fr0-24eB;
-	Mon, 15 Apr 2024 09:17:13 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1rwLSx-00000008CLD-3oE9;
+	Mon, 15 Apr 2024 12:29:43 +0000
+Received: from mx1.emlix.com ([178.63.209.131])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwISb-00000007fqF-3ofS
+	id 1rwLSs-00000008CK1-1F9E
 	for barebox@lists.infradead.org;
-	Mon, 15 Apr 2024 09:17:11 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rwISa-00041t-No; Mon, 15 Apr 2024 11:17:08 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rwISa-00COj9-BW; Mon, 15 Apr 2024 11:17:08 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rwISa-00G364-0r;
-	Mon, 15 Apr 2024 11:17:08 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Mon, 15 Apr 2024 12:29:40 +0000
+Received: from mailer.emlix.com (unknown [81.20.112.87])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.emlix.com (Postfix) with ESMTPS id E46F45F74B
+	for <barebox@lists.infradead.org>; Mon, 15 Apr 2024 14:29:31 +0200 (CEST)
+From: Jonas Richardsen <jonasrichardsen@emlix.com>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 15 Apr 2024 11:17:07 +0200
-Message-Id: <20240415091707.3825140-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+Cc: Jonas Richardsen <jonasrichardsen@emlix.com>
+Date: Mon, 15 Apr 2024 14:26:04 +0200
+Message-ID: <20240415122757.327312-1-jonasrichardsen@emlix.com>
+X-Mailer: git-send-email 2.42.0
+In-Reply-To: <69c9a97e-80e8-40e9-89c7-b9479f9dfd01@pengutronix.de>
+References: <69c9a97e-80e8-40e9-89c7-b9479f9dfd01@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240415_021709_966755_ECF0B4F9 
-X-CRM114-Status: UNSURE (   9.89  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240415_052938_566624_C70D9D4B 
+X-CRM114-Status: GOOD (  12.88  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,38 +68,59 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-7.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] Documentation: devel: project-ideas: remove outdated info on MMC speed
+Subject: [PATCH v2] of: do not copy properties if they already exist in the destination
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is now doubly outdated. We have support for DDR in a number of
-drivers and HS200 for one SoC (ZynqMP) and more is likely to come with
-time, so remove that outdate info.
+Currently `of_copy_property` copies the given property even if a property 
+with the same name already exists on the destination node. 
+This leads to kernel warnings about duplicate properties:
+```
+[    0.014063] Duplicate name in chosen, renamed to "stdout-path#1"
+[    0.014093] Duplicate name in chosen, renamed to "bootargs#1"
+[    0.014119] Duplicate name in chosen, renamed to "phandle#1"
+[    0.014197] Duplicate name in reserved-memory, renamed to "#address-cells#1"
+[    0.014226] Duplicate name in reserved-memory, renamed to "#size-cells#1"
+[    0.014252] Duplicate name in reserved-memory, renamed to "ranges#1"
+[    0.014278] Duplicate name in reserved-memory, renamed to "phandle#1"
+```
+Therefore, the function was changed to return an error if the property
+already exists in the destination.
+The change does not cause any regressions, because the only usage of
+this function occurs within `arch/arm/boards/raspberry-pi/rpi-common.c`
+where the original behaviour of the function is obviously unintended.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Jonas Richardsen <jonasrichardsen@emlix.com>
 ---
- Documentation/devel/project-ideas.rst | 2 --
- 1 file changed, 2 deletions(-)
+In the process of creating this patch, we realized that the fixups 
+    for the Raspberry Pi are extensively copying properties from the video
+    core device tree that are not strictly necessary. We will do some
+    work on making the fixups more precise (i.e., only copy specific
+    properties, not entire nodes) soon.
 
-diff --git a/Documentation/devel/project-ideas.rst b/Documentation/devel/project-ideas.rst
-index da146c3e520e..4127b2556b55 100644
---- a/Documentation/devel/project-ideas.rst
-+++ b/Documentation/devel/project-ideas.rst
-@@ -156,8 +156,6 @@ on top of a block device which caches blocks previously read from the
- hardware driver, often by means of DMA. There are a number of improvements
- possible to increase throughput of barebox I/O:
+ drivers/of/base.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index b22959dabe..3192a74ab9 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -2346,6 +2346,9 @@ struct property *of_copy_property(const struct device_node *src,
+ 	if (!prop)
+ 		return NULL;
  
--    - Support for higher MMC speed modes: The maximum currently supported
--      is 50/52 MHz and no DDR.
-     - More efficient erase: Communication protocols like Android Fastboot
-       encode large blocks of zeros specially. MMCs with erase-to-zero
-       capability could perform such erases in the background instead
++	if (of_property_present(dst, propname))
++		return ERR_PTR(-EEXIST);
++
+ 	return of_new_property(dst, propname,
+ 			       of_property_get_value(prop), prop->length);
+ }
 -- 
-2.39.2
+2.42.0
 
 
 
