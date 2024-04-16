@@ -1,66 +1,65 @@
-Delivery-date: Tue, 16 Apr 2024 11:54:21 +0200
+Delivery-date: Tue, 16 Apr 2024 11:54:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwfW9-003BPk-09
+	id 1rwfWA-003BQB-17
 	for lore@lore.pengutronix.de;
-	Tue, 16 Apr 2024 11:54:21 +0200
+	Tue, 16 Apr 2024 11:54:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwfW1-0003sf-RF
-	for lore@pengutronix.de; Tue, 16 Apr 2024 11:54:20 +0200
+	id 1rwfW4-0003vJ-Bv
+	for lore@pengutronix.de; Tue, 16 Apr 2024 11:54:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7Kt+x6zjLKTL1HvAxhyNdCl8y8vhZb2Gx2a4xUBCNQ0=; b=JFGjzocnjOKGR8Gw04tvuuxETI
-	1aVh5HBA19gvo5b8KrE+ziyBnn7V270ZnKuiLh9lyDFzjovcESHdF64DBIp5t13d+x7FTw7fRbRFZ
-	SCk0XZExcJGAR3KySQuu/3ScZ95eZMTK5djnJtpFiPjrsKq9SWcBOJkgpbv1BFph1xkR7pxvERwV6
-	6saVw9Xdz4efRvuDpAJJury0udNlvl9FAUR8659ESfHnyAj7S2/eWklpTiGr3hJbHgOw7gyFsysnr
-	0eonRP3OKUIsRyzd/RgD1rSV986LqPbkprX3Smdpm+ssK9L40PZnjLUX13CtguUiOKvEvIaoYILM/
-	027LgFMw==;
+	bh=oTXq2o8cHwgh42F7K1F4v0GoXa4qT7fvtLe12852Mwg=; b=3zeYa7a6PIvaHqqeSPt8dUjIaB
+	ATyC8QYMPsOk32f5x5UNWcAj4e0at2Q59NdxxrEhT9N8Y64G3dR7A4fDDepDTcl0BLAsRtJ1wvXgW
+	Ud9ylSwoVnzXmcB7Tv53Sxf79wIHk5R9vS79E1hicO3sqeXUm7p0Xb3XCXae4aLVxETgiDnS62BjL
+	h+EMO7riAaNClUTR249oP+NVghRrwWC+D1cxduAGL7cMsIUi1m467qxJuPTNMszvAv5fPkx/GgyZ6
+	qtJs+MMXWA4oWkacGqJW5+0T8B3XoYzGwqap4U7Z5ucwv+sJon0pg2IqaqhCVD6o4O/nxTD0m+NeJ
+	qj0gM71w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwfVJ-0000000Bfh6-3plb;
-	Tue, 16 Apr 2024 09:53:29 +0000
+	id 1rwfVH-0000000Bffz-2xs4;
+	Tue, 16 Apr 2024 09:53:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwfV8-0000000BfcD-0mXh
+	id 1rwfV8-0000000BfcJ-0nOn
 	for barebox@lists.infradead.org;
-	Tue, 16 Apr 2024 09:53:24 +0000
+	Tue, 16 Apr 2024 09:53:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfV5-0002cn-4o; Tue, 16 Apr 2024 11:53:15 +0200
+	id 1rwfV5-0002dl-Jh; Tue, 16 Apr 2024 11:53:15 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfV4-00CaK7-Oj; Tue, 16 Apr 2024 11:53:14 +0200
+	id 1rwfV5-00CaKQ-6s; Tue, 16 Apr 2024 11:53:15 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfV4-008J49-27;
-	Tue, 16 Apr 2024 11:53:14 +0200
+	id 1rwfV5-008J49-0L;
+	Tue, 16 Apr 2024 11:53:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 16 Apr 2024 11:53:06 +0200
-Message-Id: <20240416095313.1977242-2-s.hauer@pengutronix.de>
+Date: Tue, 16 Apr 2024 11:53:12 +0200
+Message-Id: <20240416095313.1977242-8-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240416095313.1977242-1-s.hauer@pengutronix.de>
 References: <20240416095313.1977242-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240416_025318_635889_5B5B1158 
-X-CRM114-Status: GOOD (  30.72  )
+X-CRM114-CacheID: sfid-20240416_025318_609407_3E5318BC 
+X-CRM114-Status: GOOD (  29.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,691 +81,566 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/8] bch: update from Kernel
+Subject: [PATCH 7/8] mtd: nand: mxc_nand: implement exec_op
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This updates BCH support from Linux as of Linux-6.9-rc2. Among other
-things in Linux the bch function names changed from a _bch suffix to a bch_
-prefix.
+This converts the driver to the more modern exec_op which gets us rid
+of a bunch of legacy code. Tested on i.MX27 and i.MX25.
 
-Link: https://lore.barebox.org/20240416062147.1337233-1-s.hauer@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/imx-bbu-nand-fcb.c   |  12 +--
- drivers/mtd/devices/docg3.c |   8 +-
- drivers/mtd/nand/nand_bch.c |  10 +--
- include/linux/bch.h         |  25 ++----
- lib/Kconfig                 |   1 +
- lib/bch.c                   | 167 +++++++++++++++++++++++-------------
- 6 files changed, 130 insertions(+), 93 deletions(-)
+ drivers/mtd/nand/raw/mxc_nand.c | 426 ++++++++++----------------------
+ 1 file changed, 132 insertions(+), 294 deletions(-)
 
-diff --git a/common/imx-bbu-nand-fcb.c b/common/imx-bbu-nand-fcb.c
-index 0d46192720..d0261140cf 100644
---- a/common/imx-bbu-nand-fcb.c
-+++ b/common/imx-bbu-nand-fcb.c
-@@ -79,7 +79,7 @@ static void encode_bch_ecc(void *buf, struct fcb_block *fcb, int eccbits)
- 	int blocksize = 128;
- 	int numblocks = 8;
- 	int ecc_buf_size = (m * eccbits + 7) / 8;
--	struct bch_control *bch = init_bch(m, eccbits, 0);
-+	struct bch_control *bch = bch_init(m, eccbits, 0, false);
- 	uint8_t *ecc_buf = xmalloc(ecc_buf_size);
- 	uint8_t *tmp_buf = xzalloc(blocksize * numblocks);
- 	uint8_t *psrc, *pdst;
-@@ -109,7 +109,7 @@ static void encode_bch_ecc(void *buf, struct fcb_block *fcb, int eccbits)
- 		for (j = 0; j < blocksize; j++)
- 			psrc[j] = reverse_bit(psrc[j]);
+diff --git a/drivers/mtd/nand/raw/mxc_nand.c b/drivers/mtd/nand/raw/mxc_nand.c
+index d9e06a0014..bd320bf3b8 100644
+--- a/drivers/mtd/nand/raw/mxc_nand.c
++++ b/drivers/mtd/nand/raw/mxc_nand.c
+@@ -119,8 +119,7 @@ struct mxc_nand_host;
  
--		encode_bch(bch, psrc, blocksize, ecc_buf);
-+		bch_encode(bch, psrc, blocksize, ecc_buf);
+ struct mxc_nand_devtype_data {
+ 	void (*preset)(struct mtd_info *);
+-	int (*read_page)(struct nand_chip *chip, void *buf, void *oob, bool ecc,
+-			 int page);
++	int (*read_page)(struct nand_chip *chip);
+ 	void (*send_cmd)(struct mxc_nand_host *, uint16_t, int);
+ 	void (*send_addr)(struct mxc_nand_host *, uint16_t, int);
+ 	void (*send_page)(struct mtd_info *, unsigned int);
+@@ -175,8 +174,7 @@ struct mxc_nand_host {
  
- 		/* reverse ecc bit */
- 		for (j = 0; j < ecc_buf_size; j++)
-@@ -121,7 +121,7 @@ static void encode_bch_ecc(void *buf, struct fcb_block *fcb, int eccbits)
+ 	struct completion	op_completion;
  
- 	free(ecc_buf);
- 	free(tmp_buf);
--	free_bch(bch);
-+	bch_free(bch);
+-	uint8_t			*data_buf;
+-	unsigned int		buf_start;
++	void			*data_buf;
+ 
+ 	const struct mxc_nand_devtype_data *devtype_data;
+ };
+@@ -279,63 +277,6 @@ static void copy_spare(struct mtd_info *mtd, bool bfrom, void *buf)
+ 	}
  }
  
- static struct fcb_block *fcb_decode_bch(void *rawpage, int eccbits)
-@@ -130,7 +130,7 @@ static struct fcb_block *fcb_decode_bch(void *rawpage, int eccbits)
- 	int blocksize = 128;
- 	int numblocks = 8;
- 	int ecc_buf_size = (m * eccbits + 7) / 8;
--	struct bch_control *bch = init_bch(m, eccbits, 0);
-+	struct bch_control *bch = bch_init(m, eccbits, 0, false);
- 	uint8_t *fcb = xmalloc(numblocks * blocksize);
- 	uint8_t *ecc_buf = xmalloc(ecc_buf_size);
- 	uint8_t *data_buf = xmalloc(blocksize);
-@@ -152,7 +152,7 @@ static struct fcb_block *fcb_decode_bch(void *rawpage, int eccbits)
- 		for (j = 0; j < ecc_buf_size; j++)
- 			ecc_buf[j] = reverse_bit(psrc[j + blocksize]);
- 
--		ret = decode_bch(bch, data_buf, blocksize, ecc_buf,
-+		ret = bch_decode(bch, data_buf, blocksize, ecc_buf,
- 				 NULL, NULL, errloc);
- 
- 		if (ret < 0) {
-@@ -185,7 +185,7 @@ static struct fcb_block *fcb_decode_bch(void *rawpage, int eccbits)
- 	free(data_buf);
- 	free(ecc_buf);
- 	free(errloc);
--	free_bch(bch);
-+	bch_free(bch);
- 
- 	return (struct fcb_block *)fcb;
- }
-diff --git a/drivers/mtd/devices/docg3.c b/drivers/mtd/devices/docg3.c
-index 593a7035e5..fcf9403b8f 100644
---- a/drivers/mtd/devices/docg3.c
-+++ b/drivers/mtd/devices/docg3.c
-@@ -325,7 +325,7 @@ static int doc_ecc_bch_fix_data(struct docg3 *docg3, void *buf, u8 *hwecc)
- 
- 	for (i = 0; i < DOC_ECC_BCH_SIZE; i++)
- 		ecc[i] = bitrev8(hwecc[i]);
--	numerrs = decode_bch(docg3_bch, NULL, DOC_ECC_BCH_COVERED_BYTES,
-+	numerrs = bch_decode(docg3_bch, NULL, DOC_ECC_BCH_COVERED_BYTES,
- 			     NULL, ecc, NULL, errorpos);
- 	BUG_ON(numerrs == -EINVAL);
- 	if (numerrs < 0)
-@@ -1144,8 +1144,8 @@ static int __init docg3_probe(struct device *dev)
- 	base = IOMEM(iores->start);
- 
- 	ret = -ENOMEM;
--	docg3_bch = init_bch(DOC_ECC_BCH_M, DOC_ECC_BCH_T,
--			     DOC_ECC_BCH_PRIMPOLY);
-+	docg3_bch = bch_init(DOC_ECC_BCH_M, DOC_ECC_BCH_T,
-+			     DOC_ECC_BCH_PRIMPOLY, false);
- 	if (!docg3_bch)
- 		goto nomem2;
- 
-@@ -1181,7 +1181,7 @@ static int __init docg3_probe(struct device *dev)
- 	ret = -ENODEV;
- 	dev_info(dev, "No supported DiskOnChip found\n");
- err_probe:
--	free_bch(docg3_bch);
-+	bch_free(docg3_bch);
- nomem2:
- 	return ret;
- }
-diff --git a/drivers/mtd/nand/nand_bch.c b/drivers/mtd/nand/nand_bch.c
-index 0d636d9608..45f9c5052a 100644
---- a/drivers/mtd/nand/nand_bch.c
-+++ b/drivers/mtd/nand/nand_bch.c
-@@ -42,7 +42,7 @@ int nand_bch_calculate_ecc(struct nand_chip *chip, const unsigned char *buf,
- 	unsigned int i;
- 
- 	memset(code, 0, chip->ecc.bytes);
--	encode_bch(nbc->bch, buf, chip->ecc.size, code);
-+	bch_encode(nbc->bch, buf, chip->ecc.size, code);
- 
- 	/* apply mask so that an erased page is a valid codeword */
- 	for (i = 0; i < chip->ecc.bytes; i++)
-@@ -68,7 +68,7 @@ int nand_bch_correct_data(struct nand_chip *chip, unsigned char *buf,
- 	unsigned int *errloc = nbc->errloc;
- 	int i, count;
- 
--	count = decode_bch(nbc->bch, NULL, chip->ecc.size, read_ecc, calc_ecc,
-+	count = bch_decode(nbc->bch, NULL, chip->ecc.size, read_ecc, calc_ecc,
- 			   NULL, errloc);
- 	if (count > 0) {
- 		for (i = 0; i < count; i++) {
-@@ -131,7 +131,7 @@ struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
- 	if (!nbc)
- 		goto fail;
- 
--	nbc->bch = init_bch(m, t, 0);
-+	nbc->bch = bch_init(m, t, 0, false);
- 	if (!nbc->bch)
- 		goto fail;
- 
-@@ -183,7 +183,7 @@ struct nand_bch_control *nand_bch_init(struct mtd_info *mtd)
- 		goto fail;
- 
- 	memset(erased_page, 0xff, eccsize);
--	encode_bch(nbc->bch, erased_page, eccsize, nbc->eccmask);
-+	bch_encode(nbc->bch, erased_page, eccsize, nbc->eccmask);
- 	kfree(erased_page);
- 
- 	for (i = 0; i < eccbytes; i++)
-@@ -206,7 +206,7 @@ EXPORT_SYMBOL(nand_bch_init);
- void nand_bch_free(struct nand_bch_control *nbc)
+-/*
+- * MXC NANDFC can only perform full page+spare or spare-only read/write.  When
+- * the upper layers perform a read/write buf operation, the saved column address
+- * is used to index into the full page. So usually this function is called with
+- * column == 0 (unless no column cycle is needed indicated by column == -1)
+- */
+-static void mxc_do_addr_cycle(struct mtd_info *mtd, int column, int page_addr)
+-{
+-	struct nand_chip *nand_chip = mtd_to_nand(mtd);
+-	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
+-
+-	/* Write out column address, if necessary */
+-	if (column != -1) {
+-		host->devtype_data->send_addr(host, column & 0xff,
+-					      page_addr == -1);
+-		if (mtd->writesize > 512)
+-			/* another col addr cycle for 2k page */
+-			host->devtype_data->send_addr(host,
+-						      (column >> 8) & 0xff,
+-						      false);
+-	}
+-
+-	/* Write out page address, if necessary */
+-	if (page_addr != -1) {
+-		/* paddr_0 - p_addr_7 */
+-		host->devtype_data->send_addr(host, (page_addr & 0xff), false);
+-
+-		if (mtd->writesize > 512) {
+-			if (mtd->size >= 0x10000000) {
+-				/* paddr_8 - paddr_15 */
+-				host->devtype_data->send_addr(host,
+-						(page_addr >> 8) & 0xff,
+-						false);
+-				host->devtype_data->send_addr(host,
+-						(page_addr >> 16) & 0xff,
+-						true);
+-			} else
+-				/* paddr_8 - paddr_15 */
+-				host->devtype_data->send_addr(host,
+-						(page_addr >> 8) & 0xff, true);
+-		} else {
+-			if (nand_chip->options & NAND_ROW_ADDR_3) {
+-				/* paddr_8 - paddr_15 */
+-				host->devtype_data->send_addr(host,
+-						(page_addr >> 8) & 0xff,
+-						false);
+-				host->devtype_data->send_addr(host,
+-						(page_addr >> 16) & 0xff,
+-						true);
+-			} else
+-				/* paddr_8 - paddr_15 */
+-				host->devtype_data->send_addr(host,
+-						(page_addr >> 8) & 0xff, true);
+-		}
+-	}
+-}
+-
+ static int check_int_v3(struct mxc_nand_host *host)
  {
- 	if (nbc) {
--		free_bch(nbc->bch);
-+		bch_free(nbc->bch);
- 		kfree(nbc->errloc);
- 		kfree(nbc->eccmask);
- 		kfree(nbc);
-diff --git a/include/linux/bch.h b/include/linux/bch.h
-index 295b4ef153..85fdce83d4 100644
---- a/include/linux/bch.h
-+++ b/include/linux/bch.h
-@@ -1,19 +1,7 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
+ 	uint32_t tmp;
+@@ -716,18 +657,7 @@ static void mxc_nand_enable_hwecc_v3(struct nand_chip *chip, bool enable)
+ 	writel(config2, NFC_V3_CONFIG2);
+ }
+ 
+-/* This functions is used by upper layer to checks if device is ready */
+-static int mxc_nand_dev_ready(struct nand_chip *chip)
+-{
+-	/*
+-	 * NFC handles R/B internally. Therefore, this function
+-	 * always returns status as ready.
+-	 */
+-	return 1;
+-}
+-
+-static int mxc_nand_read_page_v1(struct nand_chip *chip, void *buf, void *oob,
+-				 bool ecc, int page)
++static int mxc_nand_read_page_v1(struct nand_chip *chip)
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	struct mxc_nand_host *host = nand_get_controller_data(chip);
+@@ -735,14 +665,6 @@ static int mxc_nand_read_page_v1(struct nand_chip *chip, void *buf, void *oob,
+ 	int i;
+ 	unsigned int ecc_stats = 0;
+ 
+-	host->devtype_data->enable_hwecc(chip, ecc);
+-
+-	host->devtype_data->send_cmd(host, NAND_CMD_READ0, false);
+-	mxc_do_addr_cycle(mtd, 0, page);
+-
+-	if (mtd->writesize > 512)
+-		host->devtype_data->send_cmd(host, NAND_CMD_READSTART, true);
+-
+ 	no_subpages = mtd->writesize >> 9;
+ 
+ 	for (i = 0; i < no_subpages; i++) {
+@@ -760,78 +682,72 @@ static int mxc_nand_read_page_v1(struct nand_chip *chip, void *buf, void *oob,
+ 
+ 	host->ecc_stats_v1 = ecc_stats;
+ 
+-	if (buf)
+-		memcpy32_fromio(buf, host->main_area0, mtd->writesize);
+-	if (oob)
+-		copy_spare(mtd, true, oob);
+-
+ 	return 0;
+ }
+ 
+-static int mxc_nand_read_page_v2_v3(struct nand_chip *chip, void *buf,
+-				    void *oob, bool ecc, int page)
++static int mxc_nand_read_page_v2_v3(struct nand_chip *chip)
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	struct mxc_nand_host *host = nand_get_controller_data(chip);
+ 
+-	host->devtype_data->enable_hwecc(chip, ecc);
+-
+-	host->devtype_data->send_cmd(host, NAND_CMD_READ0, false);
+-	mxc_do_addr_cycle(mtd, 0, page);
+-
+-	if (mtd->writesize > 512)
+-		host->devtype_data->send_cmd(host,
+-				NAND_CMD_READSTART, true);
+-
+ 	host->devtype_data->send_page(mtd, NFC_OUTPUT);
+ 
+-	if (buf)
+-		memcpy32_fromio(buf, host->main_area0, mtd->writesize);
+-	if (oob)
+-		copy_spare(mtd, true, oob);
+-
+ 	return 0;
+ }
+ 
+ static int mxc_nand_read_page(struct nand_chip *chip, uint8_t *buf,
+ 			      int oob_required, int page)
+ {
++	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	struct mxc_nand_host *host = nand_get_controller_data(chip);
+-	void *oob_buf;
+ 	int ret;
+ 
+-	if (oob_required)
+-		oob_buf = chip->oob_poi;
+-	else
+-		oob_buf = NULL;
++	host->devtype_data->enable_hwecc(chip, true);
+ 
+-	ret = host->devtype_data->read_page(chip, buf, oob_buf, 1, page);
++	ret = nand_read_page_op(chip, page, 0, buf, mtd->writesize);
+ 	if (ret)
+ 		return ret;
+ 
++	if (oob_required)
++		copy_spare(mtd, true, chip->oob_poi);
++
+ 	return host->devtype_data->get_ecc_status(chip);
+ }
+ 
+ static int mxc_nand_read_page_raw(struct nand_chip *chip, uint8_t *buf,
+ 				  int oob_required, int page)
+ {
++	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	struct mxc_nand_host *host = nand_get_controller_data(chip);
+-	void *oob_buf;
++	int ret;
++
++	host->devtype_data->enable_hwecc(chip, false);
++
++	ret = nand_read_page_op(chip, page, 0, buf, mtd->writesize);
++	if (ret)
++		return ret;
+ 
+ 	if (oob_required)
+-		oob_buf = chip->oob_poi;
+-	else
+-		oob_buf = NULL;
++		copy_spare(mtd, true, chip->oob_poi);
+ 
+-	return host->devtype_data->read_page(chip, buf, oob_buf, 0, page);
++	return 0;
+ }
+ 
+ static int mxc_nand_read_oob(struct nand_chip *chip, int page)
+ {
++	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	struct mxc_nand_host *host = nand_get_controller_data(chip);
++	int ret;
++
++	host->devtype_data->enable_hwecc(chip, false);
++
++	ret = nand_read_page_op(chip, page, 0, NULL, 0);
++	if (ret)
++		return ret;
+ 
+-	return host->devtype_data->read_page(chip, NULL, chip->oob_poi, 0,
+-					     page);
++	copy_spare(mtd, true, chip->oob_poi);
++
++	return 0;
+ }
+ 
+ static int mxc_nand_write_page(struct nand_chip *chip, const uint8_t *buf,
+@@ -842,17 +758,7 @@ static int mxc_nand_write_page(struct nand_chip *chip, const uint8_t *buf,
+ 
+ 	host->devtype_data->enable_hwecc(chip, ecc);
+ 
+-	host->devtype_data->send_cmd(host, NAND_CMD_SEQIN, false);
+-	mxc_do_addr_cycle(mtd, 0, page);
+-
+-	memcpy32_toio(host->main_area0, buf, mtd->writesize);
+-	copy_spare(mtd, false, chip->oob_poi);
+-
+-	host->devtype_data->send_page(mtd, NFC_INPUT);
+-	host->devtype_data->send_cmd(host, NAND_CMD_PAGEPROG, true);
+-	mxc_do_addr_cycle(mtd, 0, page);
+-
+-	return 0;
++	return nand_prog_page_op(chip, page, 0, buf, mtd->writesize);
+ }
+ 
+ static int mxc_nand_write_page_ecc(struct nand_chip *chip, const uint8_t *buf,
+@@ -877,66 +783,6 @@ static int mxc_nand_write_oob(struct nand_chip *chip, int page)
+ 	return mxc_nand_write_page(chip, host->data_buf, false, page);
+ }
+ 
+-static u_char mxc_nand_read_byte(struct nand_chip *nand_chip)
+-{
+-	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
+-	uint8_t ret;
+-
+-	/* Check for status request */
+-	if (host->status_request)
+-		return host->devtype_data->get_dev_status(host) & 0xFF;
+-
+-	if (nand_chip->options & NAND_BUSWIDTH_16) {
+-		/* only take the lower byte of each word */
+-		ret = *(uint16_t *)(host->data_buf + host->buf_start);
+-
+-		host->buf_start += 2;
+-	} else {
+-		ret = *(uint8_t *)(host->data_buf + host->buf_start);
+-		host->buf_start++;
+-	}
+-
+-	dev_dbg(host->dev, "%s: ret=0x%hhx (start=%u)\n", __func__, ret, host->buf_start);
+-	return ret;
+-}
+-
+-/* Write data of length len to buffer buf. The data to be
+- * written on NAND Flash is first copied to RAMbuffer. After the Data Input
+- * Operation by the NFC, the data is written to NAND Flash */
+-static void mxc_nand_write_buf(struct nand_chip *nand_chip, const u_char *buf,
+-			       int len)
+-{
+-	struct mtd_info *mtd = nand_to_mtd(nand_chip);
+-	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
+-	u16 col = host->buf_start;
+-	int n = mtd->oobsize + mtd->writesize - col;
+-
+-	n = min(n, len);
+-
+-	memcpy(host->data_buf + col, buf, n);
+-
+-	host->buf_start += n;
+-}
+-
+-/* Read the data buffer from the NAND Flash. To read the data from NAND
+- * Flash first the data output cycle is initiated by the NFC, which copies
+- * the data to RAMbuffer. This data of length len is then copied to buffer buf.
+- */
+-static void mxc_nand_read_buf(struct nand_chip *nand_chip, u_char *buf,
+-			      int len)
+-{
+-	struct mtd_info *mtd = nand_to_mtd(nand_chip);
+-	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
+-	u16 col = host->buf_start;
+-	int n = mtd->oobsize + mtd->writesize - col;
+-
+-	n = min(n, len);
+-
+-	memcpy(buf, host->data_buf + col, n);
+-
+-	host->buf_start += n;
+-}
+-
+ /* This function is used by upper layer for select and
+  * deselect of the NAND chip */
+ static void mxc_nand_select_chip_v1_v3(struct nand_chip *nand_chip, int chip)
+@@ -1313,107 +1159,6 @@ static void preset_v3(struct mtd_info *mtd)
+ 	writel(0, NFC_V3_DELAY_LINE);
+ }
+ 
+-/* Used by the upper layer to write command to NAND Flash for
+- * different operations to be carried out on NAND Flash */
+-static void mxc_nand_command(struct nand_chip *nand_chip, unsigned command,
+-			     int column, int page_addr)
+-{
+-	struct mtd_info *mtd = nand_to_mtd(nand_chip);
+-	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
+-
+-	dev_dbg(host->dev, "mxc_nand_command (cmd = 0x%x, col = 0x%x, page = 0x%x)\n",
+-	      command, column, page_addr);
+-
+-	/* Reset command state information */
+-	host->status_request = false;
+-
+-	/* Command pre-processing step */
+-	switch (command) {
+-	case NAND_CMD_RESET:
+-		host->devtype_data->preset(mtd);
+-		host->devtype_data->send_cmd(host, command, false);
+-		break;
+-
+-	case NAND_CMD_STATUS:
+-		host->buf_start = 0;
+-		host->status_request = true;
+-
+-		host->devtype_data->send_cmd(host, command, true);
+-		WARN_ONCE(column != -1 || page_addr != -1,
+-			  "Unexpected column/row value (cmd=%u, col=%d, row=%d)\n",
+-			  command, column, page_addr);
+-		mxc_do_addr_cycle(mtd, column, page_addr);
+-		break;
+-
+-	case NAND_CMD_READID:
+-		host->devtype_data->send_cmd(host, command, true);
+-		mxc_do_addr_cycle(mtd, column, page_addr);
+-		host->devtype_data->send_read_id(host);
+-		host->buf_start = 0;
+-		break;
+-
+-	case NAND_CMD_ERASE1:
+-	case NAND_CMD_ERASE2:
+-		host->devtype_data->send_cmd(host, command, false);
+-		WARN_ONCE(column != -1,
+-			  "Unexpected column value (cmd=%u, col=%d)\n",
+-			  command, column);
+-		mxc_do_addr_cycle(mtd, column, page_addr);
+-
+-		break;
+-	case NAND_CMD_PARAM:
+-		host->devtype_data->send_cmd(host, command, false);
+-		mxc_do_addr_cycle(mtd, column, page_addr);
+-		host->devtype_data->send_page(mtd, NFC_OUTPUT);
+-		memcpy32_fromio(host->data_buf, host->main_area0, 512);
+-		host->buf_start = 0;
+-		break;
+-	default:
+-		WARN_ONCE(1, "Unimplemented command (cmd=%u)\n",
+-			  command);
+-		break;
+-	}
+-}
+-
+-static int mxc_nand_set_features(struct nand_chip *chip, int addr,
+-				 u8 *subfeature_param)
+-{
+-	struct mtd_info *mtd = nand_to_mtd(chip);
+-	struct mxc_nand_host *host = nand_get_controller_data(chip);
+-	int i;
+-
+-	host->buf_start = 0;
+-
+-	for (i = 0; i < ONFI_SUBFEATURE_PARAM_LEN; ++i)
+-		chip->legacy.write_byte(chip, subfeature_param[i]);
+-
+-	memcpy32_toio(host->main_area0, host->data_buf, mtd->writesize);
+-	host->devtype_data->send_cmd(host, NAND_CMD_SET_FEATURES, false);
+-	mxc_do_addr_cycle(mtd, addr, -1);
+-	host->devtype_data->send_page(mtd, NFC_INPUT);
+-
+-	return 0;
+-}
+-
+-static int mxc_nand_get_features(struct nand_chip *chip, int addr,
+-				 u8 *subfeature_param)
+-{
+-	struct mtd_info *mtd = nand_to_mtd(chip);
+-	struct mxc_nand_host *host = nand_get_controller_data(chip);
+-	int i;
+-
+-	host->devtype_data->send_cmd(host, NAND_CMD_GET_FEATURES, false);
+-	mxc_do_addr_cycle(mtd, addr, -1);
+-	host->devtype_data->send_page(mtd, NFC_OUTPUT);
+-	memcpy32_fromio(host->data_buf, host->main_area0, 512);
+-	host->buf_start = 0;
+-
+-	for (i = 0; i < ONFI_SUBFEATURE_PARAM_LEN; ++i)
+-		*subfeature_param++ = chip->legacy.read_byte(chip);
+-
+-	return 0;
+-}
+-
  /*
-  * Generic binary BCH encoding/decoding library
-  *
-- * This program is free software; you can redistribute it and/or modify it
-- * under the terms of the GNU General Public License version 2 as published by
-- * the Free Software Foundation.
-- *
-- * This program is distributed in the hope that it will be useful, but WITHOUT
-- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
-- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-- * more details.
-- *
-- * You should have received a copy of the GNU General Public License along with
-- * this program; if not, write to the Free Software Foundation, Inc., 51
-- * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
-- *
-  * Copyright © 2011 Parrot S.A.
-  *
-  * Author: Ivan Djelic <ivan.djelic@parrot.com>
-@@ -45,6 +33,7 @@
-  * @cache:      log-based polynomial representation buffer
-  * @elp:        error locator polynomial
-  * @poly_2t:    temporary polynomials of degree 2t
-+ * @swap_bits:  swap bits within data and syndrome bytes
-  */
- struct bch_control {
- 	unsigned int    m;
-@@ -63,16 +52,18 @@ struct bch_control {
- 	int            *cache;
- 	struct gf_poly *elp;
- 	struct gf_poly *poly_2t[4];
-+	bool		swap_bits;
- };
+  * The generic flash bbt descriptors overlap with our ecc
+  * hardware, so define some i.MX specific ones.
+@@ -1670,9 +1415,109 @@ static int mxcnd_setup_interface(struct nand_chip *chip, int chipnr,
+ 	return host->devtype_data->setup_interface(chip, chipnr, conf);
+ }
  
--struct bch_control *init_bch(int m, int t, unsigned int prim_poly);
-+struct bch_control *bch_init(int m, int t, unsigned int prim_poly,
-+			     bool swap_bits);
- 
--void free_bch(struct bch_control *bch);
-+void bch_free(struct bch_control *bch);
- 
--void encode_bch(struct bch_control *bch, const uint8_t *data,
-+void bch_encode(struct bch_control *bch, const uint8_t *data,
- 		unsigned int len, uint8_t *ecc);
- 
--int decode_bch(struct bch_control *bch, const uint8_t *data, unsigned int len,
-+int bch_decode(struct bch_control *bch, const uint8_t *data, unsigned int len,
- 	       const uint8_t *recv_ecc, const uint8_t *calc_ecc,
- 	       const unsigned int *syn, unsigned int *errloc);
- 
-diff --git a/lib/Kconfig b/lib/Kconfig
-index 71715ef6e8..df9ba6ccc9 100644
---- a/lib/Kconfig
-+++ b/lib/Kconfig
-@@ -86,6 +86,7 @@ config BCH_CONST_PARAMS
- 	bool
- 
- config BCH
-+	select BITREV
- 	bool
- 
- config BITREV
-diff --git a/lib/bch.c b/lib/bch.c
-index 5797c3faf8..c4e59eaf37 100644
---- a/lib/bch.c
-+++ b/lib/bch.c
-@@ -10,6 +10,10 @@
-  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for
-  * more details.
-  *
-+ * You should have received a copy of the GNU General Public License along with
-+ * this program; if not, write to the Free Software Foundation, Inc., 51
-+ * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
-+ *
-  * Copyright © 2011 Parrot S.A.
-  *
-  * Author: Ivan Djelic <ivan.djelic@parrot.com>
-@@ -19,15 +23,15 @@
-  * This library provides runtime configurable encoding/decoding of binary
-  * Bose-Chaudhuri-Hocquenghem (BCH) codes.
-  *
-- * Call init_bch to get a pointer to a newly allocated bch_control structure for
-+ * Call bch_init to get a pointer to a newly allocated bch_control structure for
-  * the given m (Galois field order), t (error correction capability) and
-  * (optional) primitive polynomial parameters.
-  *
-- * Call encode_bch to compute and store ecc parity bytes to a given buffer.
-- * Call decode_bch to detect and locate errors in received data.
-+ * Call bch_encode to compute and store ecc parity bytes to a given buffer.
-+ * Call bch_decode to detect and locate errors in received data.
-  *
-  * On systems supporting hw BCH features, intermediate results may be provided
-- * to decode_bch in order to skip certain steps. See decode_bch() documentation
-+ * to bch_decode in order to skip certain steps. See bch_decode() documentation
-  * for details.
-  *
-  * Option CONFIG_BCH_CONST_PARAMS can be used to force fixed values of
-@@ -59,16 +63,14 @@
-  * - WEWoRC 2009, Graz, Austria, LNCS, Springer, July 2009, to appear.
-  * [2] [Zin96] V.A. Zinoviev. On the solution of equations of degree 10 over
-  * finite fields GF(2^q). In Rapport de recherche INRIA no 2829, 1996.
-- *
-- * Taken from the linux kernel.
-  */
- 
--#include <common.h>
--#include <errno.h>
--#include <init.h>
--#include <malloc.h>
- #include <linux/kernel.h>
-+#include <linux/export.h>
-+#include <linux/errno.h>
-+#include <linux/slab.h>
- #include <linux/bitops.h>
-+#include <linux/bitrev.h>
- #include <asm/byteorder.h>
- #include <linux/bch.h>
- 
-@@ -76,15 +78,21 @@
- #define GF_M(_p)               (CONFIG_BCH_CONST_M)
- #define GF_T(_p)               (CONFIG_BCH_CONST_T)
- #define GF_N(_p)               ((1 << (CONFIG_BCH_CONST_M))-1)
-+#define BCH_MAX_M              (CONFIG_BCH_CONST_M)
-+#define BCH_MAX_T	       (CONFIG_BCH_CONST_T)
- #else
- #define GF_M(_p)               ((_p)->m)
- #define GF_T(_p)               ((_p)->t)
- #define GF_N(_p)               ((_p)->n)
-+#define BCH_MAX_M              15 /* 2KB */
-+#define BCH_MAX_T              64 /* 64 bit correction */
- #endif
- 
- #define BCH_ECC_WORDS(_p)      DIV_ROUND_UP(GF_M(_p)*GF_T(_p), 32)
- #define BCH_ECC_BYTES(_p)      DIV_ROUND_UP(GF_M(_p)*GF_T(_p), 8)
- 
-+#define BCH_ECC_MAX_WORDS      DIV_ROUND_UP(BCH_MAX_M * BCH_MAX_T, 32)
-+
- #ifndef dbg
- #define dbg(_fmt, args...)     do {} while (0)
- #endif
-@@ -94,7 +102,7 @@
-  */
- struct gf_poly {
- 	unsigned int deg;    /* polynomial degree */
--	unsigned int c[0];   /* polynomial terms */
-+	unsigned int c[];   /* polynomial terms */
- };
- 
- /* given its degree, compute a polynomial size in bytes */
-@@ -106,10 +114,18 @@ struct gf_poly_deg1 {
- 	unsigned int   c[2];
- };
- 
-+static u8 swap_bits(struct bch_control *bch, u8 in)
++static int mxcnd_exec_op(struct nand_chip *chip,
++			 const struct nand_operation *op,
++			 bool check_only)
 +{
-+	if (!bch->swap_bits)
-+		return in;
++	struct mxc_nand_host *host = nand_get_controller_data(chip);
++	struct mtd_info *mtd = nand_to_mtd(chip);
++	int i, j, buf_len;
++	void *buf_read = NULL;
++	const void *buf_write = NULL;
++	const struct nand_op_instr *instr;
++	bool readid = false;
++	bool statusreq = false;
 +
-+	return bitrev8(in);
++	dev_dbg(host->dev, "%s: %d instructions\n", __func__, op->ninstrs);
++
++	for (i = 0; i < op->ninstrs; i++) {
++		instr = &op->instrs[i];
++
++		nand_op_trace("  ", instr);
++
++		switch (instr->type) {
++		case NAND_OP_WAITRDY_INSTR:
++			/*
++			 * NFC handles R/B internally. Therefore, this function
++			 * always returns status as ready.
++			 */
++			break;
++		case NAND_OP_CMD_INSTR:
++			host->devtype_data->send_cmd(host, instr->ctx.cmd.opcode, true);
++
++			if (instr->ctx.cmd.opcode == NAND_CMD_READID)
++				readid = true;
++			if (instr->ctx.cmd.opcode == NAND_CMD_STATUS)
++				statusreq = true;
++
++			break;
++		case NAND_OP_ADDR_INSTR:
++			for (j = 0; j < instr->ctx.addr.naddrs; j++) {
++				bool islast = j == instr->ctx.addr.naddrs - 1;
++				host->devtype_data->send_addr(host, instr->ctx.addr.addrs[j], islast);
++			}
++			break;
++		case NAND_OP_DATA_OUT_INSTR:
++			buf_write = instr->ctx.data.buf.out;
++			buf_len = instr->ctx.data.len;
++
++			memcpy32_toio(host->main_area0, buf_write, buf_len);
++			copy_spare(mtd, false, chip->oob_poi);
++
++			host->devtype_data->send_page(mtd, NFC_INPUT);
++
++			break;
++		case NAND_OP_DATA_IN_INSTR:
++
++			buf_read = instr->ctx.data.buf.in;
++			buf_len = instr->ctx.data.len;
++
++			if (!buf_len)
++				break;
++
++			if (readid) {
++				host->devtype_data->send_read_id(host);
++				readid = false;
++
++				memcpy32_fromio(host->data_buf, host->main_area0, buf_len * 2);
++
++				if (chip->options & NAND_BUSWIDTH_16) {
++					u8 *bufr = buf_read;
++					u16 *bufw = host->data_buf;
++					for (j = 0; j < buf_len; j++)
++						bufr[j] = bufw[j];
++				} else {
++					memcpy(buf_read, host->data_buf, buf_len);
++				}
++				break;
++			}
++
++			if (statusreq) {
++				*(u8*)buf_read = host->devtype_data->get_dev_status(host);
++				statusreq = false;
++				break;
++			}
++
++			host->devtype_data->read_page(chip);
++
++			if (IS_ALIGNED(buf_len, 4)) {
++				memcpy32_fromio(buf_read, host->main_area0, buf_len);
++			} else {
++				memcpy32_fromio(host->data_buf, host->main_area0, mtd->writesize);
++				memcpy(buf_read, host->data_buf, buf_len);
++			}
++
++			break;
++		}
++	}
++
++	return 0;
 +}
 +
- /*
-- * same as encode_bch(), but process input data one byte at a time
-+ * same as bch_encode(), but process input data one byte at a time
-  */
--static void encode_bch_unaligned(struct bch_control *bch,
-+static void bch_encode_unaligned(struct bch_control *bch,
- 				 const unsigned char *data, unsigned int len,
- 				 uint32_t *ecc)
- {
-@@ -118,7 +134,9 @@ static void encode_bch_unaligned(struct bch_control *bch,
- 	const int l = BCH_ECC_WORDS(bch)-1;
- 
- 	while (len--) {
--		p = bch->mod8_tab + (l+1)*(((ecc[0] >> 24)^(*data++)) & 0xff);
-+		u8 tmp = swap_bits(bch, *data++);
-+
-+		p = bch->mod8_tab + (l+1)*(((ecc[0] >> 24)^(tmp)) & 0xff);
- 
- 		for (i = 0; i < l; i++)
- 			ecc[i] = ((ecc[i] << 8)|(ecc[i+1] >> 24))^(*p++);
-@@ -137,10 +155,16 @@ static void load_ecc8(struct bch_control *bch, uint32_t *dst,
- 	unsigned int i, nwords = BCH_ECC_WORDS(bch)-1;
- 
- 	for (i = 0; i < nwords; i++, src += 4)
--		dst[i] = (src[0] << 24)|(src[1] << 16)|(src[2] << 8)|src[3];
-+		dst[i] = ((u32)swap_bits(bch, src[0]) << 24) |
-+			((u32)swap_bits(bch, src[1]) << 16) |
-+			((u32)swap_bits(bch, src[2]) << 8) |
-+			swap_bits(bch, src[3]);
- 
- 	memcpy(pad, src, BCH_ECC_BYTES(bch)-4*nwords);
--	dst[nwords] = (pad[0] << 24)|(pad[1] << 16)|(pad[2] << 8)|pad[3];
-+	dst[nwords] = ((u32)swap_bits(bch, pad[0]) << 24) |
-+		((u32)swap_bits(bch, pad[1]) << 16) |
-+		((u32)swap_bits(bch, pad[2]) << 8) |
-+		swap_bits(bch, pad[3]);
- }
+ static const struct nand_controller_ops mxcnd_controller_ops = {
+ 	.attach_chip = mxcnd_attach_chip,
+ 	.setup_interface = mxcnd_setup_interface,
++	.exec_op = mxcnd_exec_op,
+ };
  
  /*
-@@ -153,20 +177,20 @@ static void store_ecc8(struct bch_control *bch, uint8_t *dst,
- 	unsigned int i, nwords = BCH_ECC_WORDS(bch)-1;
+@@ -1812,13 +1657,6 @@ static int mxcnd_probe(struct device *dev)
  
- 	for (i = 0; i < nwords; i++) {
--		*dst++ = (src[i] >> 24);
--		*dst++ = (src[i] >> 16) & 0xff;
--		*dst++ = (src[i] >>  8) & 0xff;
--		*dst++ = (src[i] >>  0) & 0xff;
-+		*dst++ = swap_bits(bch, src[i] >> 24);
-+		*dst++ = swap_bits(bch, src[i] >> 16);
-+		*dst++ = swap_bits(bch, src[i] >> 8);
-+		*dst++ = swap_bits(bch, src[i]);
- 	}
--	pad[0] = (src[nwords] >> 24);
--	pad[1] = (src[nwords] >> 16) & 0xff;
--	pad[2] = (src[nwords] >>  8) & 0xff;
--	pad[3] = (src[nwords] >>  0) & 0xff;
-+	pad[0] = swap_bits(bch, src[nwords] >> 24);
-+	pad[1] = swap_bits(bch, src[nwords] >> 16);
-+	pad[2] = swap_bits(bch, src[nwords] >> 8);
-+	pad[3] = swap_bits(bch, src[nwords]);
- 	memcpy(dst, pad, BCH_ECC_BYTES(bch)-4*nwords);
- }
+ 	nand_set_controller_data(this, host);
+ 	nand_set_flash_node(this, dev->of_node);
+-	this->legacy.dev_ready = mxc_nand_dev_ready;
+-	this->legacy.cmdfunc = mxc_nand_command;
+-	this->legacy.read_byte = mxc_nand_read_byte;
+-	this->legacy.write_buf = mxc_nand_write_buf;
+-	this->legacy.read_buf = mxc_nand_read_buf;
+-	this->legacy.set_features = mxc_nand_set_features;
+-	this->legacy.get_features = mxc_nand_get_features;
  
- /**
-- * encode_bch - calculate BCH ecc parity of data
-+ * bch_encode - calculate BCH ecc parity of data
-  * @bch:   BCH control structure
-  * @data:  data to encode
-  * @len:   data length in bytes
-@@ -179,31 +203,35 @@ static void store_ecc8(struct bch_control *bch, uint8_t *dst,
-  * The exact number of computed ecc parity bits is given by member @ecc_bits of
-  * @bch; it may be less than m*t for large values of t.
-  */
--void encode_bch(struct bch_control *bch, const uint8_t *data,
-+void bch_encode(struct bch_control *bch, const uint8_t *data,
- 		unsigned int len, uint8_t *ecc)
- {
- 	const unsigned int l = BCH_ECC_WORDS(bch)-1;
- 	unsigned int i, mlen;
- 	unsigned long m;
--	uint32_t w, r[l+1];
-+	uint32_t w, r[BCH_ECC_MAX_WORDS];
-+	const size_t r_bytes = BCH_ECC_WORDS(bch) * sizeof(*r);
- 	const uint32_t * const tab0 = bch->mod8_tab;
- 	const uint32_t * const tab1 = tab0 + 256*(l+1);
- 	const uint32_t * const tab2 = tab1 + 256*(l+1);
- 	const uint32_t * const tab3 = tab2 + 256*(l+1);
- 	const uint32_t *pdata, *p0, *p1, *p2, *p3;
- 
-+	if (WARN_ON(r_bytes > sizeof(r)))
-+		return;
-+
- 	if (ecc) {
- 		/* load ecc parity bytes into internal 32-bit buffer */
- 		load_ecc8(bch, bch->ecc_buf, ecc);
- 	} else {
--		memset(bch->ecc_buf, 0, sizeof(r));
-+		memset(bch->ecc_buf, 0, r_bytes);
- 	}
- 
- 	/* process first unaligned data bytes */
- 	m = ((unsigned long)data) & 3;
- 	if (m) {
- 		mlen = (len < (4-m)) ? len : 4-m;
--		encode_bch_unaligned(bch, data, mlen, bch->ecc_buf);
-+		bch_encode_unaligned(bch, data, mlen, bch->ecc_buf);
- 		data += mlen;
- 		len  -= mlen;
- 	}
-@@ -213,7 +241,7 @@ void encode_bch(struct bch_control *bch, const uint8_t *data,
- 	mlen  = len/4;
- 	data += 4*mlen;
- 	len  -= 4*mlen;
--	memcpy(r, bch->ecc_buf, sizeof(r));
-+	memcpy(r, bch->ecc_buf, r_bytes);
- 
- 	/*
- 	 * split each 32-bit word into 4 polynomials of weight 8 as follows:
-@@ -228,7 +256,13 @@ void encode_bch(struct bch_control *bch, const uint8_t *data,
- 	 */
- 	while (mlen--) {
- 		/* input data is read in big-endian format */
--		w = r[0]^cpu_to_be32(*pdata++);
-+		w = cpu_to_be32(*pdata++);
-+		if (bch->swap_bits)
-+			w = (u32)swap_bits(bch, w) |
-+			    ((u32)swap_bits(bch, w >> 8) << 8) |
-+			    ((u32)swap_bits(bch, w >> 16) << 16) |
-+			    ((u32)swap_bits(bch, w >> 24) << 24);
-+		w ^= r[0];
- 		p0 = tab0 + (l+1)*((w >>  0) & 0xff);
- 		p1 = tab1 + (l+1)*((w >>  8) & 0xff);
- 		p2 = tab2 + (l+1)*((w >> 16) & 0xff);
-@@ -239,17 +273,17 @@ void encode_bch(struct bch_control *bch, const uint8_t *data,
- 
- 		r[l] = p0[l]^p1[l]^p2[l]^p3[l];
- 	}
--	memcpy(bch->ecc_buf, r, sizeof(r));
-+	memcpy(bch->ecc_buf, r, r_bytes);
- 
- 	/* process last unaligned bytes */
- 	if (len)
--		encode_bch_unaligned(bch, data, len, bch->ecc_buf);
-+		bch_encode_unaligned(bch, data, len, bch->ecc_buf);
- 
- 	/* store ecc parity bytes into original parity buffer */
- 	if (ecc)
- 		store_ecc8(bch, ecc, bch->ecc_buf);
- }
--EXPORT_SYMBOL_GPL(encode_bch);
-+EXPORT_SYMBOL_GPL(bch_encode);
- 
- static inline int modulo(struct bch_control *bch, unsigned int v)
- {
-@@ -432,7 +466,7 @@ static int solve_linear_system(struct bch_control *bch, unsigned int *rows,
- {
- 	const int m = GF_M(bch);
- 	unsigned int tmp, mask;
--	int rem, c, r, p, k, param[m];
-+	int rem, c, r, p, k, param[BCH_MAX_M];
- 
- 	k = 0;
- 	mask = 1 << m;
-@@ -515,7 +549,7 @@ static int find_affine4_roots(struct bch_control *bch, unsigned int a,
- 	k = a_log(bch, a);
- 	rows[0] = c;
- 
--	/* buid linear system to solve X^4+aX^2+bX+c = 0 */
-+	/* build linear system to solve X^4+aX^2+bX+c = 0 */
- 	for (i = 0; i < m; i++) {
- 		rows[i+1] = bch->a_pow_tab[4*i]^
- 			(a ? bch->a_pow_tab[mod_s(bch, k)] : 0)^
-@@ -940,7 +974,7 @@ static int chien_search(struct bch_control *bch, unsigned int len,
- #endif /* USE_CHIEN_SEARCH */
- 
- /**
-- * decode_bch - decode received codeword and find bit error locations
-+ * bch_decode - decode received codeword and find bit error locations
-  * @bch:      BCH control structure
-  * @data:     received data, ignored if @calc_ecc is provided
-  * @len:      data length in bytes, must always be provided
-@@ -954,22 +988,22 @@ static int chien_search(struct bch_control *bch, unsigned int len,
-  *  invalid parameters were provided
-  *
-  * Depending on the available hw BCH support and the need to compute @calc_ecc
-- * separately (using encode_bch()), this function should be called with one of
-+ * separately (using bch_encode()), this function should be called with one of
-  * the following parameter configurations -
-  *
-  * by providing @data and @recv_ecc only:
-- *   decode_bch(@bch, @data, @len, @recv_ecc, NULL, NULL, @errloc)
-+ *   bch_decode(@bch, @data, @len, @recv_ecc, NULL, NULL, @errloc)
-  *
-  * by providing @recv_ecc and @calc_ecc:
-- *   decode_bch(@bch, NULL, @len, @recv_ecc, @calc_ecc, NULL, @errloc)
-+ *   bch_decode(@bch, NULL, @len, @recv_ecc, @calc_ecc, NULL, @errloc)
-  *
-  * by providing ecc = recv_ecc XOR calc_ecc:
-- *   decode_bch(@bch, NULL, @len, NULL, ecc, NULL, @errloc)
-+ *   bch_decode(@bch, NULL, @len, NULL, ecc, NULL, @errloc)
-  *
-  * by providing syndrome results @syn:
-- *   decode_bch(@bch, NULL, @len, NULL, NULL, @syn, @errloc)
-+ *   bch_decode(@bch, NULL, @len, NULL, NULL, @syn, @errloc)
-  *
-- * Once decode_bch() has successfully returned with a positive value, error
-+ * Once bch_decode() has successfully returned with a positive value, error
-  * locations returned in array @errloc should be interpreted as follows -
-  *
-  * if (errloc[n] >= 8*len), then n-th error is located in ecc (no need for
-@@ -981,7 +1015,7 @@ static int chien_search(struct bch_control *bch, unsigned int len,
-  * Note that this function does not perform any data correction by itself, it
-  * merely indicates error locations.
-  */
--int decode_bch(struct bch_control *bch, const uint8_t *data, unsigned int len,
-+int bch_decode(struct bch_control *bch, const uint8_t *data, unsigned int len,
- 	       const uint8_t *recv_ecc, const uint8_t *calc_ecc,
- 	       const unsigned int *syn, unsigned int *errloc)
- {
-@@ -1000,7 +1034,7 @@ int decode_bch(struct bch_control *bch, const uint8_t *data, unsigned int len,
- 			/* compute received data ecc into an internal buffer */
- 			if (!data || !recv_ecc)
- 				return -EINVAL;
--			encode_bch(bch, data, len, NULL);
-+			bch_encode(bch, data, len, NULL);
- 		} else {
- 			/* load provided calculated ecc */
- 			load_ecc8(bch, bch->ecc_buf, calc_ecc);
-@@ -1036,12 +1070,14 @@ int decode_bch(struct bch_control *bch, const uint8_t *data, unsigned int len,
- 				break;
- 			}
- 			errloc[i] = nbits-1-errloc[i];
--			errloc[i] = (errloc[i] & ~7)|(7-(errloc[i] & 7));
-+			if (!bch->swap_bits)
-+				errloc[i] = (errloc[i] & ~7) |
-+					    (7-(errloc[i] & 7));
- 		}
- 	}
- 	return (err >= 0) ? err : -EBADMSG;
- }
--EXPORT_SYMBOL_GPL(decode_bch);
-+EXPORT_SYMBOL_GPL(bch_decode);
- 
- /*
-  * generate Galois field lookup tables
-@@ -1112,7 +1148,7 @@ static int build_deg2_base(struct bch_control *bch)
- {
- 	const int m = GF_M(bch);
- 	int i, j, r;
--	unsigned int sum, x, y, remaining, ak = 0, xi[m];
-+	unsigned int sum, x, y, remaining, ak = 0, xi[BCH_MAX_M];
- 
- 	/* find k s.t. Tr(a^k) = 1 and 0 <= k < m */
- 	for (i = 0; i < m; i++) {
-@@ -1224,27 +1260,29 @@ static uint32_t *compute_generator_polynomial(struct bch_control *bch)
- }
- 
- /**
-- * init_bch - initialize a BCH encoder/decoder
-+ * bch_init - initialize a BCH encoder/decoder
-  * @m:          Galois field order, should be in the range 5-15
-  * @t:          maximum error correction capability, in bits
-  * @prim_poly:  user-provided primitive polynomial (or 0 to use default)
-+ * @swap_bits:  swap bits within data and syndrome bytes
-  *
-  * Returns:
-  *  a newly allocated BCH control structure if successful, NULL otherwise
-  *
-  * This initialization can take some time, as lookup tables are built for fast
-  * encoding/decoding; make sure not to call this function from a time critical
-- * path. Usually, init_bch() should be called on module/driver init and
-- * free_bch() should be called to release memory on exit.
-+ * path. Usually, bch_init() should be called on module/driver init and
-+ * bch_free() should be called to release memory on exit.
-  *
-  * You may provide your own primitive polynomial of degree @m in argument
-- * @prim_poly, or let init_bch() use its default polynomial.
-+ * @prim_poly, or let bch_init() use its default polynomial.
-  *
-- * Once init_bch() has successfully returned a pointer to a newly allocated
-+ * Once bch_init() has successfully returned a pointer to a newly allocated
-  * BCH control structure, ecc length in bytes is given by member @ecc_bytes of
-  * the structure.
-  */
--struct bch_control *init_bch(int m, int t, unsigned int prim_poly)
-+struct bch_control *bch_init(int m, int t, unsigned int prim_poly,
-+			     bool swap_bits)
- {
- 	int err = 0;
- 	unsigned int i, words;
-@@ -1252,7 +1290,6 @@ struct bch_control *init_bch(int m, int t, unsigned int prim_poly)
- 	struct bch_control *bch = NULL;
- 
- 	const int min_m = 5;
--	const int max_m = 15;
- 
- 	/* default primitive polynomials */
- 	static const unsigned int prim_poly_tab[] = {
-@@ -1268,7 +1305,7 @@ struct bch_control *init_bch(int m, int t, unsigned int prim_poly)
- 		goto fail;
- 	}
- #endif
--	if ((m < min_m) || (m > max_m))
-+	if ((m < min_m) || (m > BCH_MAX_M))
- 		/*
- 		 * values of m greater than 15 are not currently supported;
- 		 * supporting m > 15 would require changing table base type
-@@ -1276,6 +1313,13 @@ struct bch_control *init_bch(int m, int t, unsigned int prim_poly)
- 		 */
- 		goto fail;
- 
-+	if (t > BCH_MAX_T)
-+		/*
-+		 * we can support larger than 64 bits if necessary, at the
-+		 * cost of higher stack usage.
-+		 */
-+		goto fail;
-+
- 	/* sanity checks */
- 	if ((t < 1) || (m*t >= ((1 << m)-1)))
- 		/* invalid t value */
-@@ -1303,6 +1347,7 @@ struct bch_control *init_bch(int m, int t, unsigned int prim_poly)
- 	bch->syn       = bch_alloc(2*t*sizeof(*bch->syn), &err);
- 	bch->cache     = bch_alloc(2*t*sizeof(*bch->cache), &err);
- 	bch->elp       = bch_alloc((t+1)*sizeof(struct gf_poly_deg1), &err);
-+	bch->swap_bits = swap_bits;
- 
- 	for (i = 0; i < ARRAY_SIZE(bch->poly_2t); i++)
- 		bch->poly_2t[i] = bch_alloc(GF_POLY_SZ(2*t), &err);
-@@ -1329,16 +1374,16 @@ struct bch_control *init_bch(int m, int t, unsigned int prim_poly)
- 	return bch;
- 
- fail:
--	free_bch(bch);
-+	bch_free(bch);
- 	return NULL;
- }
--EXPORT_SYMBOL_GPL(init_bch);
-+EXPORT_SYMBOL_GPL(bch_init);
- 
- /**
-- *  free_bch - free the BCH control structure
-+ *  bch_free - free the BCH control structure
-  *  @bch:    BCH control structure to release
-  */
--void free_bch(struct bch_control *bch)
-+void bch_free(struct bch_control *bch)
- {
- 	unsigned int i;
- 
-@@ -1359,7 +1404,7 @@ void free_bch(struct bch_control *bch)
- 		kfree(bch);
- 	}
- }
--EXPORT_SYMBOL_GPL(free_bch);
-+EXPORT_SYMBOL_GPL(bch_free);
- 
- MODULE_LICENSE("GPL");
- MODULE_AUTHOR("Ivan Djelic <ivan.djelic@parrot.com>");
+ 	host->clk = clk_get(dev, NULL);
+ 	if (IS_ERR(host->clk))
 -- 
 2.39.2
 
