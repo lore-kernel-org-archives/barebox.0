@@ -3,61 +3,63 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwfW4-003BOj-17
+	id 1rwfW4-003BOw-1n
 	for lore@lore.pengutronix.de;
 	Tue, 16 Apr 2024 11:54:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwfVy-0003ne-J3
+	id 1rwfVz-0003p5-CR
 	for lore@pengutronix.de; Tue, 16 Apr 2024 11:54:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=+pKoVysgZu5DNd/1CI5DoQA3RVILSBP27aYrGlLRyX4=; b=fWIjSb7x3uOO9SXFaFFcL0yuXB
-	+Rk/9Dle9+U8wAhxYj+LHuiVihkjFh1UfsEPabsMcG6A2E9o1Cu6Kn66nd3VkDpFam98sy9SIqQ88
-	Po72fhCxpVbO9zIYkIiLB+J+Nf7kGNGfsxWWARFy2rjzeZouyscgzc5w/kxFz0AdNFnWU2Aano7V7
-	rNIeOUaDYeQSlRnRVFgJ8p3IxulHSmaYflOKqPQ6q2jdj2ltx3IZvX1AlNGmS0MMQSS7WJ8TS8l+H
-	+z6p2Nt3PMLBWovk+rXAoFFGBrqRkDw1/hiVQkcHOUxu8WjUt6gouaKf6Uq0csGmBaJVprPSz9pEE
-	5sNNWp9w==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=x4v/xtqKSjtlwzAy+o1lCwy+jzYducM9pES5PgarGCg=; b=T9FEOQ9+uYAi8P7/6b3kN6I/Z0
+	BSYuIwc7Rg1zVWWPurJyugylxJ8+oy0BiJzyNXorPhEwbsw2EDUQKzBhUx7GhXpFTqk28jDUcJo6k
+	ixnl/Gpxkb6vrGNxcwJ0SX6G2efrICRUnLxI4tMHLLZmN1iPdxbQdYAKIsM7iWbXZUukbpnu+Dd8U
+	xFrJkqk95YyBdWXpvNJrTBjhAO4Ern+16aytDcMuAQjWpIW/XxOKMMxN9rL7zq4msky0GoyrTCY+K
+	dDl5fX5CfqOxHhotf2txODJfovtGP2r0N3mXtgkL5C/YMD+JM4rhOWrCCbI0ivrTGvyHVYHRj04lR
+	bQeZfGBw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwfVG-0000000Bffk-3V0x;
-	Tue, 16 Apr 2024 09:53:26 +0000
+	id 1rwfVF-0000000BffG-2uu2;
+	Tue, 16 Apr 2024 09:53:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwfV8-0000000BfcC-0n44
+	id 1rwfV8-0000000BfcI-0mGd
 	for barebox@lists.infradead.org;
 	Tue, 16 Apr 2024 09:53:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfV5-0002cm-3Q; Tue, 16 Apr 2024 11:53:15 +0200
+	id 1rwfV5-0002di-HV; Tue, 16 Apr 2024 11:53:15 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfV4-00CaK6-NJ; Tue, 16 Apr 2024 11:53:14 +0200
+	id 1rwfV5-00CaKM-50; Tue, 16 Apr 2024 11:53:15 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfV4-008J49-1x;
-	Tue, 16 Apr 2024 11:53:14 +0200
+	id 1rwfV5-008J49-09;
+	Tue, 16 Apr 2024 11:53:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 16 Apr 2024 11:53:05 +0200
-Message-Id: <20240416095313.1977242-1-s.hauer@pengutronix.de>
+Date: Tue, 16 Apr 2024 11:53:11 +0200
+Message-Id: <20240416095313.1977242-7-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240416095313.1977242-1-s.hauer@pengutronix.de>
+References: <20240416095313.1977242-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240416_025318_446183_2211826C 
-X-CRM114-Status: GOOD (  17.80  )
+X-CRM114-CacheID: sfid-20240416_025318_433340_ADAD0AD3 
+X-CRM114-Status: GOOD (  20.67  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,160 +81,270 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/8] Update NAND layer
+Subject: [PATCH 6/8] mtd: nand: mxc_nand: separate page read from ecc calc
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This series comes out of the need to support software BCH ECC for the i.MX
-NAND driver, as the ancient i.MX27 hardware only supports 1-bit Hamming
-ECC which is not sufficient on more modern NAND chips.
+Our read_page hook currently reads out a page and also counts and
+returns the number of bitflips. In upcoming exec_op conversion we'll
+need to read the page data in exec_op, but the bitflip information
+will be needed in mxc_nand_read_page(). To ease exec_op conversion
+separate the page read out from the bitflip evaluation.
 
-1st of all the NAND layer is updated to Linux-6.9-rc2, because this has
-better support for Software ECC. And yes, the update is overdue as our
-last update is from Linux-5.9 which is already 4 years old. We take the
-opportunity to move the NAND drivers over to drivers/mtd/nand/raw/, the
-place where the Kernel NAND drivers live for several years now.
+For the v2/v3 controllers we can leave the bitflip information in the
+status register for later evaluation. For the v1 controller this is
+not possible, because the status register is overwritten with each
+subpage read. We therefore store the bitflip information in the private
+data.
 
-Next thing is to move the i.MX NAND driver over to exec_op which makes
-it easier to support software BCH ECC. Before doing this we move over
-to the Kernel i.MX NAND driver so that the same patches can be sent for
-Kernel inclusion as well.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/mtd/nand/raw/mxc_nand.c | 140 ++++++++++++++++++++------------
+ 1 file changed, 86 insertions(+), 54 deletions(-)
 
-Finally fixing the driver for using software BCH ECC is only a small
-patch.
-
-I've tested the NAND layer update on i.MX6, i.MX27, i.MX25, SoCFPGA
-(denali) and one Atmel sama5d4 device. The patch is huge and I am sure
-there will be regressions somewhere in it, so I welcome all testing
-reports and will happily fix fallout.
-
-Sascha
-
-Sascha Hauer (8):
-  bch: update from Kernel
-  mtd: nand: move to drivers/mtd/nand/raw/
-  mtd: update _lock/_unlock prototype
-  mtd: nand: update to Linux-6.9-rc2
-  mtd: nand: replace nand_imx driver with kernel driver
-  mtd: nand: mxc_nand: separate page read from ecc calc
-  mtd: nand: mxc_nand: implement exec_op
-  mtd: nand: mxc_nand: support software ECC
-
- commands/Kconfig                              |    6 +-
- common/imx-bbu-nand-fcb.c                     |   12 +-
- drivers/mtd/Makefile                          |    2 +-
- drivers/mtd/devices/docg3.c                   |    8 +-
- drivers/mtd/mtdconcat.c                       |    4 +-
- drivers/mtd/nand/Kconfig                      |  184 +-
- drivers/mtd/nand/Makefile                     |   28 +-
- drivers/mtd/nand/core.c                       |  133 +-
- drivers/mtd/nand/ecc-sw-bch.c                 |  406 ++++
- drivers/mtd/nand/ecc-sw-hamming.c             |  660 +++++++
- drivers/mtd/nand/ecc.c                        |  697 +++++++
- drivers/mtd/nand/nand_bch.c                   |  219 ---
- drivers/mtd/nand/nand_imx.c                   | 1494 --------------
- drivers/mtd/nand/raw/Kconfig                  |  171 ++
- drivers/mtd/nand/raw/Makefile                 |   23 +
- drivers/mtd/nand/{ => raw}/atmel/Makefile     |    0
- .../mtd/nand/{ => raw}/atmel/atmel_nand_ecc.h |    0
- drivers/mtd/nand/{ => raw}/atmel/legacy.c     |   11 +-
- .../nand/{ => raw}/atmel/nand-controller.c    |    0
- drivers/mtd/nand/{ => raw}/atmel/pmecc.c      |    0
- drivers/mtd/nand/{ => raw}/atmel/pmecc.h      |    0
- drivers/mtd/nand/{ => raw}/denali.h           |    0
- drivers/mtd/nand/{ => raw}/fsl_ifc.h          |    0
- drivers/mtd/nand/{ => raw}/internals.h        |    5 +
- drivers/mtd/nand/raw/mxc_nand.c               | 1751 +++++++++++++++++
- drivers/mtd/nand/{ => raw}/nand_amd.c         |    0
- drivers/mtd/nand/{ => raw}/nand_base.c        | 1635 +++++++++------
- drivers/mtd/nand/{ => raw}/nand_bbt.c         |    0
- drivers/mtd/nand/{ => raw}/nand_denali.c      |    3 +-
- drivers/mtd/nand/{ => raw}/nand_denali_dt.c   |    0
- drivers/mtd/nand/{ => raw}/nand_ecc.c         |    0
- drivers/mtd/nand/{ => raw}/nand_esmt.c        |   17 +-
- drivers/mtd/nand/{ => raw}/nand_fsl_ifc.c     |    8 +-
- drivers/mtd/nand/{ => raw}/nand_hynix.c       |   59 +-
- drivers/mtd/nand/{ => raw}/nand_ids.c         |    0
- drivers/mtd/nand/{ => raw}/nand_jedec.c       |    0
- drivers/mtd/nand/{ => raw}/nand_legacy.c      |    0
- drivers/mtd/nand/{ => raw}/nand_macronix.c    |   42 +-
- drivers/mtd/nand/{ => raw}/nand_micron.c      |   24 +-
- drivers/mtd/nand/{ => raw}/nand_mrvl_nfc.c    |   10 +-
- drivers/mtd/nand/{ => raw}/nand_mxs.c         |    2 +-
- .../nand/{ => raw}/nand_omap_bch_decoder.c    |    0
- .../nand/{ => raw}/nand_omap_bch_decoder.h    |    0
- drivers/mtd/nand/{ => raw}/nand_omap_gpmc.c   |    5 +-
- drivers/mtd/nand/{ => raw}/nand_onfi.c        |   32 +-
- drivers/mtd/nand/{ => raw}/nand_orion.c       |    3 +-
- drivers/mtd/nand/{ => raw}/nand_samsung.c     |   22 +-
- drivers/mtd/nand/{ => raw}/nand_timings.c     |  370 +++-
- drivers/mtd/nand/{ => raw}/nand_toshiba.c     |   25 +-
- drivers/mtd/nand/{ => raw}/nomadik_nand.c     |    2 +-
- drivers/mtd/nand/{ => raw}/omap_elm.c         |    0
- drivers/mtd/nand/{ => raw}/stm32_fmc2_nand.c  |    2 +-
- drivers/mtd/nor/cfi_flash.c                   |    4 +-
- drivers/mtd/partition.c                       |    4 +-
- drivers/mtd/spi-nor/spi-nor.c                 |    4 +-
- drivers/net/e1000/mtd.c                       |    4 +-
- drivers/of/of_mtd.c                           |    1 -
- include/linux/bch.h                           |   25 +-
- include/linux/mtd/mtd.h                       |    7 +-
- include/linux/mtd/nand-ecc-sw-bch.h           |   71 +
- include/linux/mtd/nand-ecc-sw-hamming.h       |   89 +
- include/linux/mtd/nand.h                      |  327 ++-
- include/linux/mtd/onfi.h                      |   42 +-
- include/linux/mtd/rawnand.h                   |  275 ++-
- include/nand.h                                |    2 +-
- lib/Kconfig                                   |    1 +
- lib/bch.c                                     |  167 +-
- 67 files changed, 6300 insertions(+), 2798 deletions(-)
- create mode 100644 drivers/mtd/nand/ecc-sw-bch.c
- create mode 100644 drivers/mtd/nand/ecc-sw-hamming.c
- create mode 100644 drivers/mtd/nand/ecc.c
- delete mode 100644 drivers/mtd/nand/nand_bch.c
- delete mode 100644 drivers/mtd/nand/nand_imx.c
- create mode 100644 drivers/mtd/nand/raw/Kconfig
- create mode 100644 drivers/mtd/nand/raw/Makefile
- rename drivers/mtd/nand/{ => raw}/atmel/Makefile (100%)
- rename drivers/mtd/nand/{ => raw}/atmel/atmel_nand_ecc.h (100%)
- rename drivers/mtd/nand/{ => raw}/atmel/legacy.c (99%)
- rename drivers/mtd/nand/{ => raw}/atmel/nand-controller.c (100%)
- rename drivers/mtd/nand/{ => raw}/atmel/pmecc.c (100%)
- rename drivers/mtd/nand/{ => raw}/atmel/pmecc.h (100%)
- rename drivers/mtd/nand/{ => raw}/denali.h (100%)
- rename drivers/mtd/nand/{ => raw}/fsl_ifc.h (100%)
- rename drivers/mtd/nand/{ => raw}/internals.h (95%)
- create mode 100644 drivers/mtd/nand/raw/mxc_nand.c
- rename drivers/mtd/nand/{ => raw}/nand_amd.c (100%)
- rename drivers/mtd/nand/{ => raw}/nand_base.c (82%)
- rename drivers/mtd/nand/{ => raw}/nand_bbt.c (100%)
- rename drivers/mtd/nand/{ => raw}/nand_denali.c (99%)
- rename drivers/mtd/nand/{ => raw}/nand_denali_dt.c (100%)
- rename drivers/mtd/nand/{ => raw}/nand_ecc.c (100%)
- rename drivers/mtd/nand/{ => raw}/nand_esmt.c (76%)
- rename drivers/mtd/nand/{ => raw}/nand_fsl_ifc.c (99%)
- rename drivers/mtd/nand/{ => raw}/nand_hynix.c (92%)
- rename drivers/mtd/nand/{ => raw}/nand_ids.c (100%)
- rename drivers/mtd/nand/{ => raw}/nand_jedec.c (100%)
- rename drivers/mtd/nand/{ => raw}/nand_legacy.c (100%)
- rename drivers/mtd/nand/{ => raw}/nand_macronix.c (88%)
- rename drivers/mtd/nand/{ => raw}/nand_micron.c (95%)
- rename drivers/mtd/nand/{ => raw}/nand_mrvl_nfc.c (99%)
- rename drivers/mtd/nand/{ => raw}/nand_mxs.c (99%)
- rename drivers/mtd/nand/{ => raw}/nand_omap_bch_decoder.c (100%)
- rename drivers/mtd/nand/{ => raw}/nand_omap_bch_decoder.h (100%)
- rename drivers/mtd/nand/{ => raw}/nand_omap_gpmc.c (99%)
- rename drivers/mtd/nand/{ => raw}/nand_onfi.c (89%)
- rename drivers/mtd/nand/{ => raw}/nand_orion.c (97%)
- rename drivers/mtd/nand/{ => raw}/nand_samsung.c (86%)
- rename drivers/mtd/nand/{ => raw}/nand_timings.c (52%)
- rename drivers/mtd/nand/{ => raw}/nand_toshiba.c (92%)
- rename drivers/mtd/nand/{ => raw}/nomadik_nand.c (99%)
- rename drivers/mtd/nand/{ => raw}/omap_elm.c (100%)
- rename drivers/mtd/nand/{ => raw}/stm32_fmc2_nand.c (99%)
- create mode 100644 include/linux/mtd/nand-ecc-sw-bch.h
- create mode 100644 include/linux/mtd/nand-ecc-sw-hamming.h
-
+diff --git a/drivers/mtd/nand/raw/mxc_nand.c b/drivers/mtd/nand/raw/mxc_nand.c
+index 9b5b5c744a..d9e06a0014 100644
+--- a/drivers/mtd/nand/raw/mxc_nand.c
++++ b/drivers/mtd/nand/raw/mxc_nand.c
+@@ -12,6 +12,7 @@
+ #include <linux/clk.h>
+ #include <linux/err.h>
+ #include <linux/io.h>
++#include <linux/bitfield.h>
+ #include <linux/completion.h>
+ 
+ #define DRIVER_NAME "mxc_nand"
+@@ -40,6 +41,8 @@
+ #define NFC_V1_V2_CONFIG1		(host->regs + 0x1a)
+ #define NFC_V1_V2_CONFIG2		(host->regs + 0x1c)
+ 
++#define NFC_V1_V2_ECC_STATUS_RESULT_ERM GENMASK(3, 2)
++
+ #define NFC_V2_CONFIG1_ECC_MODE_4	(1 << 0)
+ #define NFC_V1_V2_CONFIG1_SP_EN		(1 << 2)
+ #define NFC_V1_V2_CONFIG1_ECC_EN	(1 << 3)
+@@ -125,7 +128,7 @@ struct mxc_nand_devtype_data {
+ 	uint16_t (*get_dev_status)(struct mxc_nand_host *);
+ 	int (*check_int)(struct mxc_nand_host *);
+ 	void (*irq_control)(struct mxc_nand_host *, int);
+-	u32 (*get_ecc_status)(struct mxc_nand_host *);
++	u32 (*get_ecc_status)(struct nand_chip *);
+ 	const struct mtd_ooblayout_ops *ooblayout;
+ 	void (*select_chip)(struct nand_chip *chip, int cs);
+ 	int (*setup_interface)(struct nand_chip *chip, int csline,
+@@ -168,6 +171,7 @@ struct mxc_nand_host {
+ 	int			eccsize;
+ 	int			used_oobsize;
+ 	int			active_cs;
++	unsigned int		ecc_stats_v1;
+ 
+ 	struct completion	op_completion;
+ 
+@@ -388,19 +392,81 @@ static void irq_control_v3(struct mxc_nand_host *host, int activate)
+ 	writel(tmp, NFC_V3_CONFIG2);
+ }
+ 
+-static u32 get_ecc_status_v1(struct mxc_nand_host *host)
++static u32 get_ecc_status_v1(struct nand_chip *chip)
++{
++	struct mtd_info *mtd = nand_to_mtd(chip);
++	struct mxc_nand_host *host = nand_get_controller_data(chip);
++	unsigned int ecc_stats, max_bitflips = 0;
++	int no_subpages, i;
++
++	no_subpages = mtd->writesize >> 9;
++
++	ecc_stats = host->ecc_stats_v1;
++
++	for (i = 0; i < no_subpages; i++) {
++		switch (ecc_stats & 0x3) {
++		case 0:
++		default:
++			break;
++		case 1:
++			mtd->ecc_stats.corrected++;
++			max_bitflips = 1;
++			break;
++		case 2:
++			mtd->ecc_stats.failed++;
++			break;
++		}
++
++		ecc_stats >>= 2;
++	}
++
++	return max_bitflips;
++}
++
++static u32 get_ecc_status_v2_v3(struct nand_chip *chip, unsigned int ecc_stat)
+ {
+-	return readw(NFC_V1_V2_ECC_STATUS_RESULT);
++	struct mtd_info *mtd = nand_to_mtd(chip);
++	struct mxc_nand_host *host = nand_get_controller_data(chip);
++	u8 ecc_bit_mask, err_limit;
++	unsigned int max_bitflips = 0;
++	int no_subpages, err;
++
++	ecc_bit_mask = (host->eccsize == 4) ? 0x7 : 0xf;
++	err_limit = (host->eccsize == 4) ? 0x4 : 0x8;
++
++	no_subpages = mtd->writesize >> 9;
++
++	do {
++		err = ecc_stat & ecc_bit_mask;
++		if (err > err_limit) {
++			mtd->ecc_stats.failed++;
++		} else {
++			mtd->ecc_stats.corrected += err;
++			max_bitflips = max_t(unsigned int, max_bitflips, err);
++		}
++
++		ecc_stat >>= 4;
++	} while (--no_subpages);
++
++	return max_bitflips;
+ }
+ 
+-static u32 get_ecc_status_v2(struct mxc_nand_host *host)
++static u32 get_ecc_status_v2(struct nand_chip *chip)
+ {
+-	return readl(NFC_V1_V2_ECC_STATUS_RESULT);
++	struct mxc_nand_host *host = nand_get_controller_data(chip);
++
++	u32 ecc_stat = readl(NFC_V1_V2_ECC_STATUS_RESULT);
++
++	return get_ecc_status_v2_v3(chip, ecc_stat);
+ }
+ 
+-static u32 get_ecc_status_v3(struct mxc_nand_host *host)
++static u32 get_ecc_status_v3(struct nand_chip *chip)
+ {
+-	return readl(NFC_V3_ECC_STATUS_RESULT);
++	struct mxc_nand_host *host = nand_get_controller_data(chip);
++
++	u32 ecc_stat = readl(NFC_V3_ECC_STATUS_RESULT);
++
++	return get_ecc_status_v2_v3(chip, ecc_stat);
+ }
+ 
+ /* This function polls the NANDFC to wait for the basic operation to
+@@ -665,9 +731,9 @@ static int mxc_nand_read_page_v1(struct nand_chip *chip, void *buf, void *oob,
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	struct mxc_nand_host *host = nand_get_controller_data(chip);
+-	unsigned int bitflips_corrected = 0;
+ 	int no_subpages;
+ 	int i;
++	unsigned int ecc_stats = 0;
+ 
+ 	host->devtype_data->enable_hwecc(chip, ecc);
+ 
+@@ -680,8 +746,6 @@ static int mxc_nand_read_page_v1(struct nand_chip *chip, void *buf, void *oob,
+ 	no_subpages = mtd->writesize >> 9;
+ 
+ 	for (i = 0; i < no_subpages; i++) {
+-		uint16_t ecc_stats;
+-
+ 		/* NANDFC buffer 0 is used for page read/write */
+ 		writew((host->active_cs << 4) | i, NFC_V1_V2_BUF_ADDR);
+ 
+@@ -690,32 +754,18 @@ static int mxc_nand_read_page_v1(struct nand_chip *chip, void *buf, void *oob,
+ 		/* Wait for operation to complete */
+ 		wait_op_done(host, true);
+ 
+-		ecc_stats = get_ecc_status_v1(host);
+-
+-		ecc_stats >>= 2;
+-
+-		if (buf && ecc) {
+-			switch (ecc_stats & 0x3) {
+-			case 0:
+-			default:
+-				break;
+-			case 1:
+-				mtd->ecc_stats.corrected++;
+-				bitflips_corrected = 1;
+-				break;
+-			case 2:
+-				mtd->ecc_stats.failed++;
+-				break;
+-			}
+-		}
++		ecc_stats |= FIELD_GET(NFC_V1_V2_ECC_STATUS_RESULT_ERM,
++				       readw(NFC_V1_V2_ECC_STATUS_RESULT)) << i * 2;
+ 	}
+ 
++	host->ecc_stats_v1 = ecc_stats;
++
+ 	if (buf)
+ 		memcpy32_fromio(buf, host->main_area0, mtd->writesize);
+ 	if (oob)
+ 		copy_spare(mtd, true, oob);
+ 
+-	return bitflips_corrected;
++	return 0;
+ }
+ 
+ static int mxc_nand_read_page_v2_v3(struct nand_chip *chip, void *buf,
+@@ -723,10 +773,6 @@ static int mxc_nand_read_page_v2_v3(struct nand_chip *chip, void *buf,
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	struct mxc_nand_host *host = nand_get_controller_data(chip);
+-	unsigned int max_bitflips = 0;
+-	u32 ecc_stat, err;
+-	int no_subpages;
+-	u8 ecc_bit_mask, err_limit;
+ 
+ 	host->devtype_data->enable_hwecc(chip, ecc);
+ 
+@@ -744,26 +790,7 @@ static int mxc_nand_read_page_v2_v3(struct nand_chip *chip, void *buf,
+ 	if (oob)
+ 		copy_spare(mtd, true, oob);
+ 
+-	ecc_bit_mask = (host->eccsize == 4) ? 0x7 : 0xf;
+-	err_limit = (host->eccsize == 4) ? 0x4 : 0x8;
+-
+-	no_subpages = mtd->writesize >> 9;
+-
+-	ecc_stat = host->devtype_data->get_ecc_status(host);
+-
+-	do {
+-		err = ecc_stat & ecc_bit_mask;
+-		if (err > err_limit) {
+-			mtd->ecc_stats.failed++;
+-		} else {
+-			mtd->ecc_stats.corrected += err;
+-			max_bitflips = max_t(unsigned int, max_bitflips, err);
+-		}
+-
+-		ecc_stat >>= 4;
+-	} while (--no_subpages);
+-
+-	return max_bitflips;
++	return 0;
+ }
+ 
+ static int mxc_nand_read_page(struct nand_chip *chip, uint8_t *buf,
+@@ -771,13 +798,18 @@ static int mxc_nand_read_page(struct nand_chip *chip, uint8_t *buf,
+ {
+ 	struct mxc_nand_host *host = nand_get_controller_data(chip);
+ 	void *oob_buf;
++	int ret;
+ 
+ 	if (oob_required)
+ 		oob_buf = chip->oob_poi;
+ 	else
+ 		oob_buf = NULL;
+ 
+-	return host->devtype_data->read_page(chip, buf, oob_buf, 1, page);
++	ret = host->devtype_data->read_page(chip, buf, oob_buf, 1, page);
++	if (ret)
++		return ret;
++
++	return host->devtype_data->get_ecc_status(chip);
+ }
+ 
+ static int mxc_nand_read_page_raw(struct nand_chip *chip, uint8_t *buf,
 -- 
 2.39.2
 
