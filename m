@@ -1,66 +1,66 @@
-Delivery-date: Tue, 16 Apr 2024 12:23:25 +0200
+Delivery-date: Tue, 16 Apr 2024 12:23:39 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwfyH-003D9Z-2j
+	id 1rwfyV-003DAK-0E
 	for lore@lore.pengutronix.de;
-	Tue, 16 Apr 2024 12:23:25 +0200
+	Tue, 16 Apr 2024 12:23:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwfyH-0000k7-7E
-	for lore@pengutronix.de; Tue, 16 Apr 2024 12:23:25 +0200
+	id 1rwfyT-00013E-9N
+	for lore@pengutronix.de; Tue, 16 Apr 2024 12:23:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=UQERvnYSlb4hR2ZvMb54fuC7c9XOtUJ/+0H8iK3Hznk=; b=gyE41vqaE4dyLh0ReJXACl+6Cu
-	O9jJVB+sWhLIGkSSBr5PZz4CbIkyG8kxcY8/eG6TLCYVE53IhYXVxnioeSht3iWX0ldEdxgOYA0PU
-	v7FtEi1C3oXHsNt/dcIjuhfRL83B1F1Ppjz5JeZG4YIoqom8YKkgHOMHG/gTCgDqdfVktZ2O4Jx7j
-	N2hY0iPS6zlXLYhW37eO7vpEmVL88Cr3E8qdmthnCWLBPUrm98DGOVXVdvQYoyBD3BYhM2Tmnvjg3
-	H8TT9SdpmCbSx4bgFWFD/2u+Nro0bH/J9kgBuO/+OgFBgvfSVxdUbCDvgUZL58zK+Poy9N/s41VZT
-	GAGdqCLA==;
+	bh=fG2eeUB+zg29+W+0lxkn7k0uLakXbucEeiDAfu7+7ZU=; b=ZjACo358Od3+xrGMxGkl0BafDg
+	pMVV3mT2IgD3J/xY/mECD6OhGPJls6/5FlPDSc4WDQ3+Fioea5N42vA7WQge0gHi1JnZsY1qbtUTw
+	0u3eqoHfHScN4gooysfo0lL9lp14XemGfBfuruVkQchiaRVeVb5DSxtGH4NJJCdiuKrbJUGAKyQdE
+	xbPKiMF38ZCNz51n2rnKF6hLqmnZ/J0fCCBjTGmXLL3uKgDR3P89WDeyrTKwkvBE6Xm5NBcOB0Cgb
+	rEZTzbXbRz45KjN7ovRtBnjdH87BBLjef94WUo+rBR5o2Wx9V2KCEz6260lVqWzQnTbz5BIAYkawb
+	/BIQ+tdA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwfxm-0000000BlEG-2s8W;
-	Tue, 16 Apr 2024 10:22:54 +0000
+	id 1rwfy6-0000000BlJj-01hF;
+	Tue, 16 Apr 2024 10:23:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwfxj-0000000BlCz-2mY5
+	id 1rwfy1-0000000BlIv-3S9I
 	for barebox@lists.infradead.org;
-	Tue, 16 Apr 2024 10:22:53 +0000
+	Tue, 16 Apr 2024 10:23:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfxi-0008My-8u; Tue, 16 Apr 2024 12:22:50 +0200
+	id 1rwfy0-0000QN-Lx; Tue, 16 Apr 2024 12:23:08 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfxh-00CaiX-Sh; Tue, 16 Apr 2024 12:22:49 +0200
+	id 1rwfy0-00Cais-9R; Tue, 16 Apr 2024 12:23:08 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfxh-00AEaL-2g;
-	Tue, 16 Apr 2024 12:22:49 +0200
+	id 1rwfy0-00AGNs-0k;
+	Tue, 16 Apr 2024 12:23:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240415053253.369354-1-a.fatoum@pengutronix.de>
-References: <20240415053253.369354-1-a.fatoum@pengutronix.de>
-Message-Id: <171326296982.2439316.10639415345649887433.b4-ty@pengutronix.de>
-Date: Tue, 16 Apr 2024 12:22:49 +0200
+In-Reply-To: <20240415053212.368779-1-a.fatoum@pengutronix.de>
+References: <20240415053212.368779-1-a.fatoum@pengutronix.de>
+Message-Id: <171326298822.2446175.17735967496451695208.b4-ty@pengutronix.de>
+Date: Tue, 16 Apr 2024 12:23:08 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240416_032251_898416_DA76D730 
-X-CRM114-Status: UNSURE (   6.99  )
+X-CRM114-CacheID: sfid-20240416_032309_908482_C3656FC5 
+X-CRM114-Status: UNSURE (   6.68  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,26 +83,23 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: dts: rk356x: describe serial reboot mode
+Subject: Re: [PATCH] ARM: dts: rockchip: drop unreferenced
+ rockchip-pinconf.dtsi
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 15 Apr 2024 07:32:53 +0200, Ahmad Fatoum wrote:
-> The PMUGRF (Power Management Unit - General Register File) of the RK3568
-> has a general purpose register checked by the BootROM on power-on to
-> decide on whether to drop to recovery mode (rk-usb-loader/rkdeveloptool).
+On Mon, 15 Apr 2024 07:32:12 +0200, Ahmad Fatoum wrote:
+> This file is no longer used in barebox and existing drivers instead use
+> the upstream variant. Therefore drop our unreferenced and possibly stale
+> copy.
 > 
-> Describe this in the device tree, so it's possible to use, e.g.
 > 
->   global.system.reboot_mode.next=serial reset
-> 
-> [...]
 
 Applied, thanks!
 
-[1/1] ARM: dts: rk356x: describe serial reboot mode
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c55fc4d1dbea (link may not be stable)
+[1/1] ARM: dts: rockchip: drop unreferenced rockchip-pinconf.dtsi
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3d633c0f7c52 (link may not be stable)
 
 Best regards,
 -- 
