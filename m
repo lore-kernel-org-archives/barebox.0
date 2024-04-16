@@ -1,65 +1,65 @@
-Delivery-date: Tue, 16 Apr 2024 11:54:22 +0200
+Delivery-date: Tue, 16 Apr 2024 11:54:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwfWA-003BQB-17
+	id 1rwfWH-003BR5-0q
 	for lore@lore.pengutronix.de;
-	Tue, 16 Apr 2024 11:54:22 +0200
+	Tue, 16 Apr 2024 11:54:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwfW4-0003vJ-Bv
-	for lore@pengutronix.de; Tue, 16 Apr 2024 11:54:22 +0200
+	id 1rwfWA-00040J-Ez
+	for lore@pengutronix.de; Tue, 16 Apr 2024 11:54:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=oTXq2o8cHwgh42F7K1F4v0GoXa4qT7fvtLe12852Mwg=; b=3zeYa7a6PIvaHqqeSPt8dUjIaB
-	ATyC8QYMPsOk32f5x5UNWcAj4e0at2Q59NdxxrEhT9N8Y64G3dR7A4fDDepDTcl0BLAsRtJ1wvXgW
-	Ud9ylSwoVnzXmcB7Tv53Sxf79wIHk5R9vS79E1hicO3sqeXUm7p0Xb3XCXae4aLVxETgiDnS62BjL
-	h+EMO7riAaNClUTR249oP+NVghRrwWC+D1cxduAGL7cMsIUi1m467qxJuPTNMszvAv5fPkx/GgyZ6
-	qtJs+MMXWA4oWkacGqJW5+0T8B3XoYzGwqap4U7Z5ucwv+sJon0pg2IqaqhCVD6o4O/nxTD0m+NeJ
-	qj0gM71w==;
+	bh=IJO4EpIDwTr/Sb2/fzAavutMUdrk/1mbPqYuj+mDHhI=; b=T3f5DjUQfCZNjlosdeIc8us2Wv
+	up2ZJmP9pikDZekOZIdY7ci+OCPNCNWij6D/RsBceejorwOP7TCTvf/nSsJg/uPQJPgvyF1fmdGhD
+	A31Ip5cgVgt2yTOD4pVfxC52xyB5foYpgI2L9BE8ZOyXzCg/wsDHSZp4kfgjvUteC3PzZAmlzLp+G
+	hLx/8ZEX1ZK/59SRdVotGB6VAKUwO38TfXJns87fRqvv2fBVTA8e0tui1y9rLBk9d5TZuSTvvY70D
+	jPjkxhZc2stELXLn3FjGZ9ZTDA+/D/fXzNPIW1HcLFUMPq365mAI+3phAFWlkYuG5p842geo4x9EL
+	qW4vqX4Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwfVH-0000000Bffz-2xs4;
-	Tue, 16 Apr 2024 09:53:27 +0000
+	id 1rwfVL-0000000Bfhf-0bNl;
+	Tue, 16 Apr 2024 09:53:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwfV8-0000000BfcJ-0nOn
+	id 1rwfV8-0000000BfcE-0mTd
 	for barebox@lists.infradead.org;
-	Tue, 16 Apr 2024 09:53:21 +0000
+	Tue, 16 Apr 2024 09:53:25 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfV5-0002dl-Jh; Tue, 16 Apr 2024 11:53:15 +0200
+	id 1rwfV5-0002co-7G; Tue, 16 Apr 2024 11:53:15 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfV5-00CaKQ-6s; Tue, 16 Apr 2024 11:53:15 +0200
+	id 1rwfV4-00CaKA-QT; Tue, 16 Apr 2024 11:53:14 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwfV5-008J49-0L;
-	Tue, 16 Apr 2024 11:53:15 +0200
+	id 1rwfV4-008J49-2J;
+	Tue, 16 Apr 2024 11:53:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Tue, 16 Apr 2024 11:53:12 +0200
-Message-Id: <20240416095313.1977242-8-s.hauer@pengutronix.de>
+Date: Tue, 16 Apr 2024 11:53:07 +0200
+Message-Id: <20240416095313.1977242-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240416095313.1977242-1-s.hauer@pengutronix.de>
 References: <20240416095313.1977242-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240416_025318_609407_3E5318BC 
-X-CRM114-Status: GOOD (  29.96  )
+X-CRM114-CacheID: sfid-20240416_025318_654080_F5134754 
+X-CRM114-Status: GOOD (  28.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,566 +81,735 @@ X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 7/8] mtd: nand: mxc_nand: implement exec_op
+Subject: [PATCH 2/8] mtd: nand: move to drivers/mtd/nand/raw/
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This converts the driver to the more modern exec_op which gets us rid
-of a bunch of legacy code. Tested on i.MX27 and i.MX25.
+Linux moved the raw NAND drivers from drivers/mtd/nand/ to
+drivers/mtd/nand/raw/ years ago. Follow suit and do the same
+for barebox to be more consistent with Linux.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/mtd/nand/raw/mxc_nand.c | 426 ++++++++++----------------------
- 1 file changed, 132 insertions(+), 294 deletions(-)
+ commands/Kconfig                              |   6 +-
+ drivers/mtd/Makefile                          |   2 +-
+ drivers/mtd/nand/Kconfig                      | 165 +---------------
+ drivers/mtd/nand/Makefile                     |  24 +--
+ drivers/mtd/nand/raw/Kconfig                  | 177 ++++++++++++++++++
+ drivers/mtd/nand/raw/Makefile                 |  24 +++
+ drivers/mtd/nand/{ => raw}/atmel/Makefile     |   0
+ .../mtd/nand/{ => raw}/atmel/atmel_nand_ecc.h |   0
+ drivers/mtd/nand/{ => raw}/atmel/legacy.c     |   0
+ .../nand/{ => raw}/atmel/nand-controller.c    |   0
+ drivers/mtd/nand/{ => raw}/atmel/pmecc.c      |   0
+ drivers/mtd/nand/{ => raw}/atmel/pmecc.h      |   0
+ drivers/mtd/nand/{ => raw}/denali.h           |   0
+ drivers/mtd/nand/{ => raw}/fsl_ifc.h          |   0
+ drivers/mtd/nand/{ => raw}/internals.h        |   0
+ drivers/mtd/nand/{ => raw}/nand_amd.c         |   0
+ drivers/mtd/nand/{ => raw}/nand_base.c        |   0
+ drivers/mtd/nand/{ => raw}/nand_bbt.c         |   0
+ drivers/mtd/nand/{ => raw}/nand_bch.c         |   0
+ drivers/mtd/nand/{ => raw}/nand_denali.c      |   0
+ drivers/mtd/nand/{ => raw}/nand_denali_dt.c   |   0
+ drivers/mtd/nand/{ => raw}/nand_ecc.c         |   0
+ drivers/mtd/nand/{ => raw}/nand_esmt.c        |   0
+ drivers/mtd/nand/{ => raw}/nand_fsl_ifc.c     |   0
+ drivers/mtd/nand/{ => raw}/nand_hynix.c       |   0
+ drivers/mtd/nand/{ => raw}/nand_ids.c         |   0
+ drivers/mtd/nand/{ => raw}/nand_imx.c         |   0
+ drivers/mtd/nand/{ => raw}/nand_jedec.c       |   0
+ drivers/mtd/nand/{ => raw}/nand_legacy.c      |   0
+ drivers/mtd/nand/{ => raw}/nand_macronix.c    |   0
+ drivers/mtd/nand/{ => raw}/nand_micron.c      |   0
+ drivers/mtd/nand/{ => raw}/nand_mrvl_nfc.c    |   0
+ drivers/mtd/nand/{ => raw}/nand_mxs.c         |   0
+ .../nand/{ => raw}/nand_omap_bch_decoder.c    |   0
+ .../nand/{ => raw}/nand_omap_bch_decoder.h    |   0
+ drivers/mtd/nand/{ => raw}/nand_omap_gpmc.c   |   0
+ drivers/mtd/nand/{ => raw}/nand_onfi.c        |   0
+ drivers/mtd/nand/{ => raw}/nand_orion.c       |   0
+ drivers/mtd/nand/{ => raw}/nand_samsung.c     |   0
+ drivers/mtd/nand/{ => raw}/nand_timings.c     |   0
+ drivers/mtd/nand/{ => raw}/nand_toshiba.c     |   0
+ drivers/mtd/nand/{ => raw}/nomadik_nand.c     |   0
+ drivers/mtd/nand/{ => raw}/omap_elm.c         |   0
+ drivers/mtd/nand/{ => raw}/stm32_fmc2_nand.c  |   0
+ include/nand.h                                |   2 +-
+ 45 files changed, 213 insertions(+), 187 deletions(-)
+ create mode 100644 drivers/mtd/nand/raw/Kconfig
+ create mode 100644 drivers/mtd/nand/raw/Makefile
+ rename drivers/mtd/nand/{ => raw}/atmel/Makefile (100%)
+ rename drivers/mtd/nand/{ => raw}/atmel/atmel_nand_ecc.h (100%)
+ rename drivers/mtd/nand/{ => raw}/atmel/legacy.c (100%)
+ rename drivers/mtd/nand/{ => raw}/atmel/nand-controller.c (100%)
+ rename drivers/mtd/nand/{ => raw}/atmel/pmecc.c (100%)
+ rename drivers/mtd/nand/{ => raw}/atmel/pmecc.h (100%)
+ rename drivers/mtd/nand/{ => raw}/denali.h (100%)
+ rename drivers/mtd/nand/{ => raw}/fsl_ifc.h (100%)
+ rename drivers/mtd/nand/{ => raw}/internals.h (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_amd.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_base.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_bbt.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_bch.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_denali.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_denali_dt.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_ecc.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_esmt.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_fsl_ifc.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_hynix.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_ids.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_imx.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_jedec.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_legacy.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_macronix.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_micron.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_mrvl_nfc.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_mxs.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_omap_bch_decoder.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_omap_bch_decoder.h (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_omap_gpmc.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_onfi.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_orion.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_samsung.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_timings.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nand_toshiba.c (100%)
+ rename drivers/mtd/nand/{ => raw}/nomadik_nand.c (100%)
+ rename drivers/mtd/nand/{ => raw}/omap_elm.c (100%)
+ rename drivers/mtd/nand/{ => raw}/stm32_fmc2_nand.c (100%)
 
-diff --git a/drivers/mtd/nand/raw/mxc_nand.c b/drivers/mtd/nand/raw/mxc_nand.c
-index d9e06a0014..bd320bf3b8 100644
---- a/drivers/mtd/nand/raw/mxc_nand.c
-+++ b/drivers/mtd/nand/raw/mxc_nand.c
-@@ -119,8 +119,7 @@ struct mxc_nand_host;
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 8d0816c4d0..93e176c2d6 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -2011,7 +2011,7 @@ config CMD_LED
+ config CMD_NAND
+ 	tristate
+ 	default y
+-	depends on NAND
++	depends on MTD_RAW_NAND
+ 	prompt "nand"
+ 	help
+ 	  NAND flash handling
+@@ -2027,7 +2027,7 @@ config CMD_NAND
  
- struct mxc_nand_devtype_data {
- 	void (*preset)(struct mtd_info *);
--	int (*read_page)(struct nand_chip *chip, void *buf, void *oob, bool ecc,
--			 int page);
-+	int (*read_page)(struct nand_chip *chip);
- 	void (*send_cmd)(struct mxc_nand_host *, uint16_t, int);
- 	void (*send_addr)(struct mxc_nand_host *, uint16_t, int);
- 	void (*send_page)(struct mtd_info *, unsigned int);
-@@ -175,8 +174,7 @@ struct mxc_nand_host {
+ config CMD_NANDTEST
+ 	tristate
+-	depends on NAND
++	depends on MTD_RAW_NAND
+ 	depends on PARTITION
+ 	prompt "nandtest"
+ 	help
+@@ -2045,7 +2045,7 @@ config CMD_NANDTEST
  
- 	struct completion	op_completion;
- 
--	uint8_t			*data_buf;
--	unsigned int		buf_start;
-+	void			*data_buf;
- 
- 	const struct mxc_nand_devtype_data *devtype_data;
- };
-@@ -279,63 +277,6 @@ static void copy_spare(struct mtd_info *mtd, bool bfrom, void *buf)
- 	}
- }
- 
--/*
-- * MXC NANDFC can only perform full page+spare or spare-only read/write.  When
-- * the upper layers perform a read/write buf operation, the saved column address
-- * is used to index into the full page. So usually this function is called with
-- * column == 0 (unless no column cycle is needed indicated by column == -1)
-- */
--static void mxc_do_addr_cycle(struct mtd_info *mtd, int column, int page_addr)
--{
--	struct nand_chip *nand_chip = mtd_to_nand(mtd);
--	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
--
--	/* Write out column address, if necessary */
--	if (column != -1) {
--		host->devtype_data->send_addr(host, column & 0xff,
--					      page_addr == -1);
--		if (mtd->writesize > 512)
--			/* another col addr cycle for 2k page */
--			host->devtype_data->send_addr(host,
--						      (column >> 8) & 0xff,
--						      false);
--	}
--
--	/* Write out page address, if necessary */
--	if (page_addr != -1) {
--		/* paddr_0 - p_addr_7 */
--		host->devtype_data->send_addr(host, (page_addr & 0xff), false);
--
--		if (mtd->writesize > 512) {
--			if (mtd->size >= 0x10000000) {
--				/* paddr_8 - paddr_15 */
--				host->devtype_data->send_addr(host,
--						(page_addr >> 8) & 0xff,
--						false);
--				host->devtype_data->send_addr(host,
--						(page_addr >> 16) & 0xff,
--						true);
--			} else
--				/* paddr_8 - paddr_15 */
--				host->devtype_data->send_addr(host,
--						(page_addr >> 8) & 0xff, true);
--		} else {
--			if (nand_chip->options & NAND_ROW_ADDR_3) {
--				/* paddr_8 - paddr_15 */
--				host->devtype_data->send_addr(host,
--						(page_addr >> 8) & 0xff,
--						false);
--				host->devtype_data->send_addr(host,
--						(page_addr >> 16) & 0xff,
--						true);
--			} else
--				/* paddr_8 - paddr_15 */
--				host->devtype_data->send_addr(host,
--						(page_addr >> 8) & 0xff, true);
--		}
--	}
--}
--
- static int check_int_v3(struct mxc_nand_host *host)
- {
- 	uint32_t tmp;
-@@ -716,18 +657,7 @@ static void mxc_nand_enable_hwecc_v3(struct nand_chip *chip, bool enable)
- 	writel(config2, NFC_V3_CONFIG2);
- }
- 
--/* This functions is used by upper layer to checks if device is ready */
--static int mxc_nand_dev_ready(struct nand_chip *chip)
--{
--	/*
--	 * NFC handles R/B internally. Therefore, this function
--	 * always returns status as ready.
--	 */
--	return 1;
--}
--
--static int mxc_nand_read_page_v1(struct nand_chip *chip, void *buf, void *oob,
--				 bool ecc, int page)
-+static int mxc_nand_read_page_v1(struct nand_chip *chip)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxc_nand_host *host = nand_get_controller_data(chip);
-@@ -735,14 +665,6 @@ static int mxc_nand_read_page_v1(struct nand_chip *chip, void *buf, void *oob,
- 	int i;
- 	unsigned int ecc_stats = 0;
- 
--	host->devtype_data->enable_hwecc(chip, ecc);
--
--	host->devtype_data->send_cmd(host, NAND_CMD_READ0, false);
--	mxc_do_addr_cycle(mtd, 0, page);
--
--	if (mtd->writesize > 512)
--		host->devtype_data->send_cmd(host, NAND_CMD_READSTART, true);
--
- 	no_subpages = mtd->writesize >> 9;
- 
- 	for (i = 0; i < no_subpages; i++) {
-@@ -760,78 +682,72 @@ static int mxc_nand_read_page_v1(struct nand_chip *chip, void *buf, void *oob,
- 
- 	host->ecc_stats_v1 = ecc_stats;
- 
--	if (buf)
--		memcpy32_fromio(buf, host->main_area0, mtd->writesize);
--	if (oob)
--		copy_spare(mtd, true, oob);
--
- 	return 0;
- }
- 
--static int mxc_nand_read_page_v2_v3(struct nand_chip *chip, void *buf,
--				    void *oob, bool ecc, int page)
-+static int mxc_nand_read_page_v2_v3(struct nand_chip *chip)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxc_nand_host *host = nand_get_controller_data(chip);
- 
--	host->devtype_data->enable_hwecc(chip, ecc);
--
--	host->devtype_data->send_cmd(host, NAND_CMD_READ0, false);
--	mxc_do_addr_cycle(mtd, 0, page);
--
--	if (mtd->writesize > 512)
--		host->devtype_data->send_cmd(host,
--				NAND_CMD_READSTART, true);
--
- 	host->devtype_data->send_page(mtd, NFC_OUTPUT);
- 
--	if (buf)
--		memcpy32_fromio(buf, host->main_area0, mtd->writesize);
--	if (oob)
--		copy_spare(mtd, true, oob);
--
- 	return 0;
- }
- 
- static int mxc_nand_read_page(struct nand_chip *chip, uint8_t *buf,
- 			      int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxc_nand_host *host = nand_get_controller_data(chip);
--	void *oob_buf;
- 	int ret;
- 
--	if (oob_required)
--		oob_buf = chip->oob_poi;
--	else
--		oob_buf = NULL;
-+	host->devtype_data->enable_hwecc(chip, true);
- 
--	ret = host->devtype_data->read_page(chip, buf, oob_buf, 1, page);
-+	ret = nand_read_page_op(chip, page, 0, buf, mtd->writesize);
- 	if (ret)
- 		return ret;
- 
-+	if (oob_required)
-+		copy_spare(mtd, true, chip->oob_poi);
+ config CMD_NAND_BITFLIP
+ 	tristate
+-	depends on NAND
++	depends on MTD_RAW_NAND
+ 	prompt "nand_bitflip"
+ 	help
+ 	  nand_bitflip - Create bitflips on Nand pages. This command is useful for testing
+diff --git a/drivers/mtd/Makefile b/drivers/mtd/Makefile
+index dc05793ca1..5a0753edd0 100644
+--- a/drivers/mtd/Makefile
++++ b/drivers/mtd/Makefile
+@@ -1,5 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
+-obj-$(CONFIG_NAND)			+= nand/
++obj-y					+= nand/
+ obj-$(CONFIG_DRIVER_CFI)		+= nor/
+ obj-$(CONFIG_MTD_SPI_NOR)		+= spi-nor/
+ obj-$(CONFIG_MTD_UBI)			+= ubi/
+diff --git a/drivers/mtd/nand/Kconfig b/drivers/mtd/nand/Kconfig
+index 19f4322f65..4de2d86113 100644
+--- a/drivers/mtd/nand/Kconfig
++++ b/drivers/mtd/nand/Kconfig
+@@ -1,4 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0-only
 +
- 	return host->devtype_data->get_ecc_status(chip);
- }
++config MTD_NAND_CORE
++	bool
++
+ menuconfig NAND
+ 	bool "NAND support"
+ 	help
+@@ -8,165 +12,6 @@ menuconfig NAND
  
- static int mxc_nand_read_page_raw(struct nand_chip *chip, uint8_t *buf,
- 				  int oob_required, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxc_nand_host *host = nand_get_controller_data(chip);
--	void *oob_buf;
-+	int ret;
-+
-+	host->devtype_data->enable_hwecc(chip, false);
-+
-+	ret = nand_read_page_op(chip, page, 0, buf, mtd->writesize);
-+	if (ret)
-+		return ret;
+ if NAND
  
- 	if (oob_required)
--		oob_buf = chip->oob_poi;
--	else
--		oob_buf = NULL;
-+		copy_spare(mtd, true, chip->oob_poi);
+-config MTD_NAND_ECC_SOFT
+-	bool
+-	prompt "Support software ecc"
+-
+-config MTD_NAND_ECC_SW_BCH
+-	select BCH
+-	depends on MTD_NAND_ECC_SOFT
+-	bool
+-	prompt "Support software BCH ecc"
+-
+-config NAND_ECC_HW_SYNDROME
+-	bool
+-	prompt "Support syndrome hardware ecc controllers"
+-
+-config NAND_ALLOW_ERASE_BAD
+-	bool
+-	depends on MTD_WRITE
+-	prompt "Add device parameter to allow erasing bad blocks"
+-	help
+-	  This adds a 'erasebad' device parameter to nand devices. When set
+-	  to '1' it will be allowed to erase bad blocks. This is a potientially
+-	  dangerous operation, so if unsure say no to this option.
+-
+-config NAND_IMX
+-	bool
+-	prompt "i.MX21 to 53 NAND driver aka 'mxc', for NFC"
+-	depends on ARCH_IMX
+-	help
+-	  Support for NAND flash on Freescale/NXP i.MX devices.  This is for the
+-	  "MXC" series:  i.MX21/25/27/31/35/51/53.
+-
+-	  This is not for the "MXS" series i.MX processors (23 & 28), or i.MX6
+-	  and later, which use the GPMI NAND controller from the MXS series.
+-	  See the i.MX 'mxs' driver for those chips.
+-
+-config NAND_FSL_IFC
+-	bool
+-	prompt "FSL IFC NAND driver"
+-	depends on ARCH_LAYERSCAPE
+-	help
+-	  Freescale IFC NAND driver for various chips.
+-
+-config NAND_MXS
+-	bool
+-	select STMP_DEVICE
+-	prompt "i.MX23/28 & 6+ NAND driver aka 'mxs', for GPMI"
+-	depends on MXS_APBH_DMA
+-	help
+-	  Support for NAND flash on Freescale/NXP i.MX devices.	 This is for the
+-	  "MXS" series:  i.MX23/28 and all i.MX6 and later SoCs.
+-
+-	  This is not for the "MXC" series of i.MX processors in the i.MX21 to
+-	  i.MX53 range.  See the i.MX "mxc" driver for those chips.
+-
+-config NAND_OMAP_GPMC
+-	tristate "NAND Flash Support for GPMC based OMAP platforms"
+-	depends on OMAP_GPMC
+-	depends on BUS_OMAP_GPMC
+-	help
+-	  Support for NAND flash using GPMC. GPMC is a common memory
+-	  interface found on Texas Instrument's OMAP platforms
+-
+-config MTD_NAND_OMAP_ELM
+-	bool "Support for ELM (Error Location Module) on OMAP platforms"
+-	depends on NAND_OMAP_GPMC || COMPILE_TEST
+-	help
+-	  This config enables the ELM hardware engine, which can be used to
+-	  locate and correct errors when using BCH ECC scheme. This offloads
+-	  the cpu from doing ECC error searching and correction. However some
+-	  legacy OMAP families like OMAP2xxx, OMAP3xxx do not have ELM engine
+-	  so this is optional for them.
+-
+-config NAND_ORION
+-	bool
+-	prompt "Marvell Orion NAND driver"
+-	depends on (ARM && !CPU_32v4T) && (ARCH_KIRKWOOD || COMPILE_TEST)
+-	help
+-	  Support for the Orion NAND controller, present in Kirkwood SoCs.
+-
+-config NAND_MRVL_NFC
+-	bool
+-	prompt "Marvell PXA3xx NAND driver"
+-	depends on ARCH_ARMADA_370 || ARCH_ARMADA_XP || ARCH_PXA3XX || COMPILE_TEST
+-	help
+-	  Support for the PXA3xx NAND controller, present in Armada 370/XP and
+-	  PXA3xx SoCs.
+-
+-config NAND_STM32
+-	bool "Support for NAND controller on STM32MP SoCs"
+-	depends on ARCH_STM32MP || COMPILE_TEST
+-	select STM32_FMC2_EBI if ARCH_STM32MP
+-	select RESET_CONTROLLER if ARCH_STM32MP
+-	select RESET_SIMPLE if ARCH_STM32MP
+-	help
+-	  Enables support for NAND Flash chips on SoCs containing the FMC2
+-	  NAND controller. This controller is found on STM32MP SoCs.
+-	  The controller supports a maximum 8k page size and supports
+-	  a maximum 8-bit correction error per sector of 512 bytes.
+-
+-config NAND_ATMEL
+-	bool
+-	prompt "Atmel (AT91SAM9xxx) NAND driver"
+-	select GENERIC_ALLOCATOR if OFDEVICE
+-	depends on ARCH_AT91 || (OFDEVICE && COMPILE_TEST)
+-
+-config NAND_ATMEL_LEGACY
+-	def_bool !AT91_MULTI_BOARDS || SOC_AT91SAM9
+-	depends on NAND_ATMEL
+-	help
+-	  Select legacy driver for non-DT-enabled platforms
+-	  and for the deprecated non-EBI binding.
+-
+-	  The deprecated binding is currently the only one
+-	  support for AT91SAM9.
+-
+-config NAND_ATMEL_PMECC
+-	bool
+-	prompt "PMECC support"
+-	depends on NAND_ATMEL_LEGACY
+-	help
+-	  Support for PMECC present on the SoC sam9x5 and sam9n12
+-
+-config MTD_NAND_ECC_SW_HAMMING_SMC
+-	bool "NAND ECC Smart Media byte order"
+-	default n
+-	help
+-	  Software ECC according to the Smart Media Specification.
+-	  The original Linux implementation had byte 0 and 1 swapped.
+-
+-config MTD_NAND_NOMADIK
+-	tristate "ST Nomadik 8815 NAND support"
+-	depends on ARCH_NOMADIK
+-	help
+-	  Driver for the NAND flash controller on the Nomadik, with ECC.
+-
+-config MTD_NAND_DENALI
+-        tristate "Support Denali NAND controller"
+-        depends on HAS_DMA
+-        help
+-          Enable support for the Denali NAND controller.  This should be
+-          combined with either the PCI or platform drivers to provide device
+-          registration.
+-
+-config MTD_NAND_DENALI_DT
+-        tristate "Support Denali NAND controller as a DT device"
+-        depends on HAVE_CLK && MTD_NAND_DENALI
+-        help
+-          Enable the driver for NAND flash on platforms using a Denali NAND
+-          controller as a DT device.
+-
+-if MTD_NAND_DENALI
+-
+-config MTD_NAND_DENALI_TIMING_MODE
+-	int "Overrides default ONFI timing mode."
+-	default -1
+-	range -1 5
+-	help
+-	   -1 indicates use default timings
+-
+-endif
++source "drivers/mtd/nand/raw/Kconfig"
  
--	return host->devtype_data->read_page(chip, buf, oob_buf, 0, page);
-+	return 0;
- }
+ endif
+diff --git a/drivers/mtd/nand/Makefile b/drivers/mtd/nand/Makefile
+index a0207d328b..6e94575728 100644
+--- a/drivers/mtd/nand/Makefile
++++ b/drivers/mtd/nand/Makefile
+@@ -1,25 +1,5 @@
+ # SPDX-License-Identifier: GPL-2.0-only
  
- static int mxc_nand_read_oob(struct nand_chip *chip, int page)
- {
-+	struct mtd_info *mtd = nand_to_mtd(chip);
- 	struct mxc_nand_host *host = nand_get_controller_data(chip);
-+	int ret;
-+
-+	host->devtype_data->enable_hwecc(chip, false);
-+
-+	ret = nand_read_page_op(chip, page, 0, NULL, 0);
-+	if (ret)
-+		return ret;
+-# Generic NAND options
+-obj-$(CONFIG_NAND)			+= nand_ecc.o
+-obj-$(CONFIG_MTD_NAND_ECC_SW_BCH)	+= nand_bch.o
+-obj-$(CONFIG_NAND)			+= nand_ids.o
+-obj-$(CONFIG_NAND)			+= nand_base.o nand-bb.o nand_timings.o
+-obj-$(CONFIG_NAND)			+= nand_legacy.o nand_onfi.o nand_amd.o
+-obj-$(CONFIG_NAND)			+= nand_esmt.o nand_hynix.o nand_macronix.o
+-obj-$(CONFIG_NAND)			+= nand_micron.o nand_samsung.o nand_toshiba.o
+-obj-$(CONFIG_NAND)			+= nand_jedec.o core.o bbt.o
+-obj-$(CONFIG_NAND)			+= nand_bbt.o
++obj-$(CONFIG_MTD_NAND_CORE) += core.o bbt.o nand-bb.o
  
--	return host->devtype_data->read_page(chip, NULL, chip->oob_poi, 0,
--					     page);
-+	copy_spare(mtd, true, chip->oob_poi);
+-obj-$(CONFIG_MTD_NAND_NOMADIK)		+= nomadik_nand.o
+-obj-$(CONFIG_NAND_IMX)			+= nand_imx.o
+-obj-$(CONFIG_NAND_OMAP_GPMC)		+= nand_omap_gpmc.o nand_omap_bch_decoder.o
+-obj-$(CONFIG_MTD_NAND_OMAP_ELM)		+= omap_elm.o
+-obj-$(CONFIG_NAND_ORION)		+= nand_orion.o
+-obj-$(CONFIG_NAND_STM32)		+= stm32_fmc2_nand.o
+-obj-$(CONFIG_NAND_MRVL_NFC)		+= nand_mrvl_nfc.o
+-obj-$(CONFIG_NAND_ATMEL)		+= atmel/
+-obj-$(CONFIG_NAND_MXS)			+= nand_mxs.o
+-obj-$(CONFIG_MTD_NAND_DENALI)		+= nand_denali.o
+-obj-$(CONFIG_MTD_NAND_DENALI_DT)	+= nand_denali_dt.o
+-obj-$(CONFIG_NAND_FSL_IFC)		+= nand_fsl_ifc.o
++obj-y += raw/
+diff --git a/drivers/mtd/nand/raw/Kconfig b/drivers/mtd/nand/raw/Kconfig
+new file mode 100644
+index 0000000000..b979bc5bd0
+--- /dev/null
++++ b/drivers/mtd/nand/raw/Kconfig
+@@ -0,0 +1,177 @@
++# SPDX-License-Identifier: GPL-2.0-only
++menuconfig MTD_RAW_NAND
++	default y
++	bool "Raw/Parallel NAND Device Support"
++	select MTD_NAND_CORE
++	select MTD_NAND_ECC
++	help
++	  This enables support for accessing all type of raw/parallel
++	  NAND flash devices. For further information see
++	  <http://www.linux-mtd.infradead.org/doc/nand.html>.
 +
-+	return 0;
- }
++if MTD_RAW_NAND
++
++config MTD_NAND_ECC_SOFT
++	bool
++	prompt "Support software ecc"
++
++config MTD_NAND_ECC_SW_BCH
++	select BCH
++	depends on MTD_NAND_ECC_SOFT
++	bool
++	prompt "Support software BCH ecc"
++
++config NAND_ECC_HW_SYNDROME
++	bool
++	prompt "Support syndrome hardware ecc controllers"
++
++config NAND_ALLOW_ERASE_BAD
++	bool
++	depends on MTD_WRITE
++	prompt "Add device parameter to allow erasing bad blocks"
++	help
++	  This adds a 'erasebad' device parameter to nand devices. When set
++	  to '1' it will be allowed to erase bad blocks. This is a potientially
++	  dangerous operation, so if unsure say no to this option.
++
++comment "Raw/parallel NAND flash controllers"
++
++config NAND_IMX
++	bool
++	prompt "i.MX21 to 53 NAND driver aka 'mxc', for NFC"
++	depends on ARCH_IMX
++	help
++	  Support for NAND flash on Freescale/NXP i.MX devices.  This is for the
++	  "MXC" series:  i.MX21/25/27/31/35/51/53.
++
++	  This is not for the "MXS" series i.MX processors (23 & 28), or i.MX6
++	  and later, which use the GPMI NAND controller from the MXS series.
++	  See the i.MX 'mxs' driver for those chips.
++
++config NAND_FSL_IFC
++	bool
++	prompt "FSL IFC NAND driver"
++	depends on ARCH_LAYERSCAPE
++	help
++	  Freescale IFC NAND driver for various chips.
++
++config NAND_MXS
++	bool
++	select STMP_DEVICE
++	prompt "i.MX23/28 & 6+ NAND driver aka 'mxs', for GPMI"
++	depends on MXS_APBH_DMA
++	help
++	  Support for NAND flash on Freescale/NXP i.MX devices.	 This is for the
++	  "MXS" series:  i.MX23/28 and all i.MX6 and later SoCs.
++
++	  This is not for the "MXC" series of i.MX processors in the i.MX21 to
++	  i.MX53 range.  See the i.MX "mxc" driver for those chips.
++
++config NAND_OMAP_GPMC
++	tristate "NAND Flash Support for GPMC based OMAP platforms"
++	depends on OMAP_GPMC
++	depends on BUS_OMAP_GPMC
++	help
++	  Support for NAND flash using GPMC. GPMC is a common memory
++	  interface found on Texas Instrument's OMAP platforms
++
++config MTD_NAND_OMAP_ELM
++	bool "Support for ELM (Error Location Module) on OMAP platforms"
++	depends on NAND_OMAP_GPMC || COMPILE_TEST
++	help
++	  This config enables the ELM hardware engine, which can be used to
++	  locate and correct errors when using BCH ECC scheme. This offloads
++	  the cpu from doing ECC error searching and correction. However some
++	  legacy OMAP families like OMAP2xxx, OMAP3xxx do not have ELM engine
++	  so this is optional for them.
++
++config NAND_ORION
++	bool
++	prompt "Marvell Orion NAND driver"
++	depends on (ARM && !CPU_32v4T) && (ARCH_KIRKWOOD || COMPILE_TEST)
++	help
++	  Support for the Orion NAND controller, present in Kirkwood SoCs.
++
++config NAND_MRVL_NFC
++	bool
++	prompt "Marvell PXA3xx NAND driver"
++	depends on ARCH_ARMADA_370 || ARCH_ARMADA_XP || ARCH_PXA3XX || COMPILE_TEST
++	help
++	  Support for the PXA3xx NAND controller, present in Armada 370/XP and
++	  PXA3xx SoCs.
++
++config NAND_STM32
++	bool "Support for NAND controller on STM32MP SoCs"
++	depends on ARCH_STM32MP || COMPILE_TEST
++	select STM32_FMC2_EBI if ARCH_STM32MP
++	select RESET_CONTROLLER if ARCH_STM32MP
++	select RESET_SIMPLE if ARCH_STM32MP
++	help
++	  Enables support for NAND Flash chips on SoCs containing the FMC2
++	  NAND controller. This controller is found on STM32MP SoCs.
++	  The controller supports a maximum 8k page size and supports
++	  a maximum 8-bit correction error per sector of 512 bytes.
++
++config NAND_ATMEL
++	bool
++	prompt "Atmel (AT91SAM9xxx) NAND driver"
++	select GENERIC_ALLOCATOR if OFDEVICE
++	depends on ARCH_AT91 || (OFDEVICE && COMPILE_TEST)
++
++config NAND_ATMEL_LEGACY
++	def_bool !AT91_MULTI_BOARDS || SOC_AT91SAM9
++	depends on NAND_ATMEL
++	help
++	  Select legacy driver for non-DT-enabled platforms
++	  and for the deprecated non-EBI binding.
++
++	  The deprecated binding is currently the only one
++	  support for AT91SAM9.
++
++config NAND_ATMEL_PMECC
++	bool
++	prompt "PMECC support"
++	depends on NAND_ATMEL_LEGACY
++	help
++	  Support for PMECC present on the SoC sam9x5 and sam9n12
++
++config MTD_NAND_ECC_SW_HAMMING_SMC
++	bool "NAND ECC Smart Media byte order"
++	default n
++	help
++	  Software ECC according to the Smart Media Specification.
++	  The original Linux implementation had byte 0 and 1 swapped.
++
++config MTD_NAND_NOMADIK
++	tristate "ST Nomadik 8815 NAND support"
++	depends on ARCH_NOMADIK
++	help
++	  Driver for the NAND flash controller on the Nomadik, with ECC.
++
++config MTD_NAND_DENALI
++        tristate "Support Denali NAND controller"
++        depends on HAS_DMA
++        help
++          Enable support for the Denali NAND controller.  This should be
++          combined with either the PCI or platform drivers to provide device
++          registration.
++
++config MTD_NAND_DENALI_DT
++        tristate "Support Denali NAND controller as a DT device"
++        depends on HAVE_CLK && MTD_NAND_DENALI
++        help
++          Enable the driver for NAND flash on platforms using a Denali NAND
++          controller as a DT device.
++
++if MTD_NAND_DENALI
++
++config MTD_NAND_DENALI_TIMING_MODE
++	int "Overrides default ONFI timing mode."
++	default -1
++	range -1 5
++	help
++	   -1 indicates use default timings
++
++endif
++
++endif
+diff --git a/drivers/mtd/nand/raw/Makefile b/drivers/mtd/nand/raw/Makefile
+new file mode 100644
+index 0000000000..5f45cd91e6
+--- /dev/null
++++ b/drivers/mtd/nand/raw/Makefile
+@@ -0,0 +1,24 @@
++# Generic NAND options
++
++obj-$(CONFIG_MTD_RAW_NAND)		+= nand_ecc.o
++obj-$(CONFIG_MTD_NAND_ECC_SW_BCH)	+= nand_bch.o
++obj-$(CONFIG_MTD_RAW_NAND)		+= nand_ids.o
++obj-$(CONFIG_MTD_RAW_NAND)		+= nand_base.o  nand_timings.o
++obj-$(CONFIG_MTD_RAW_NAND)		+= nand_legacy.o nand_onfi.o nand_amd.o
++obj-$(CONFIG_MTD_RAW_NAND)		+= nand_esmt.o nand_hynix.o nand_macronix.o
++obj-$(CONFIG_MTD_RAW_NAND)		+= nand_micron.o nand_samsung.o nand_toshiba.o
++obj-$(CONFIG_MTD_RAW_NAND)		+= nand_jedec.o
++obj-$(CONFIG_MTD_RAW_NAND)		+= nand_bbt.o
++
++obj-$(CONFIG_MTD_NAND_NOMADIK)		+= nomadik_nand.o
++obj-$(CONFIG_NAND_IMX)			+= nand_imx.o
++obj-$(CONFIG_NAND_OMAP_GPMC)		+= nand_omap_gpmc.o nand_omap_bch_decoder.o
++obj-$(CONFIG_MTD_NAND_OMAP_ELM)		+= omap_elm.o
++obj-$(CONFIG_NAND_ORION)		+= nand_orion.o
++obj-$(CONFIG_NAND_STM32)		+= stm32_fmc2_nand.o
++obj-$(CONFIG_NAND_MRVL_NFC)		+= nand_mrvl_nfc.o
++obj-$(CONFIG_NAND_ATMEL)		+= atmel/
++obj-$(CONFIG_NAND_MXS)			+= nand_mxs.o
++obj-$(CONFIG_MTD_NAND_DENALI)		+= nand_denali.o
++obj-$(CONFIG_MTD_NAND_DENALI_DT)	+= nand_denali_dt.o
++obj-$(CONFIG_NAND_FSL_IFC)		+= nand_fsl_ifc.o
+diff --git a/drivers/mtd/nand/atmel/Makefile b/drivers/mtd/nand/raw/atmel/Makefile
+similarity index 100%
+rename from drivers/mtd/nand/atmel/Makefile
+rename to drivers/mtd/nand/raw/atmel/Makefile
+diff --git a/drivers/mtd/nand/atmel/atmel_nand_ecc.h b/drivers/mtd/nand/raw/atmel/atmel_nand_ecc.h
+similarity index 100%
+rename from drivers/mtd/nand/atmel/atmel_nand_ecc.h
+rename to drivers/mtd/nand/raw/atmel/atmel_nand_ecc.h
+diff --git a/drivers/mtd/nand/atmel/legacy.c b/drivers/mtd/nand/raw/atmel/legacy.c
+similarity index 100%
+rename from drivers/mtd/nand/atmel/legacy.c
+rename to drivers/mtd/nand/raw/atmel/legacy.c
+diff --git a/drivers/mtd/nand/atmel/nand-controller.c b/drivers/mtd/nand/raw/atmel/nand-controller.c
+similarity index 100%
+rename from drivers/mtd/nand/atmel/nand-controller.c
+rename to drivers/mtd/nand/raw/atmel/nand-controller.c
+diff --git a/drivers/mtd/nand/atmel/pmecc.c b/drivers/mtd/nand/raw/atmel/pmecc.c
+similarity index 100%
+rename from drivers/mtd/nand/atmel/pmecc.c
+rename to drivers/mtd/nand/raw/atmel/pmecc.c
+diff --git a/drivers/mtd/nand/atmel/pmecc.h b/drivers/mtd/nand/raw/atmel/pmecc.h
+similarity index 100%
+rename from drivers/mtd/nand/atmel/pmecc.h
+rename to drivers/mtd/nand/raw/atmel/pmecc.h
+diff --git a/drivers/mtd/nand/denali.h b/drivers/mtd/nand/raw/denali.h
+similarity index 100%
+rename from drivers/mtd/nand/denali.h
+rename to drivers/mtd/nand/raw/denali.h
+diff --git a/drivers/mtd/nand/fsl_ifc.h b/drivers/mtd/nand/raw/fsl_ifc.h
+similarity index 100%
+rename from drivers/mtd/nand/fsl_ifc.h
+rename to drivers/mtd/nand/raw/fsl_ifc.h
+diff --git a/drivers/mtd/nand/internals.h b/drivers/mtd/nand/raw/internals.h
+similarity index 100%
+rename from drivers/mtd/nand/internals.h
+rename to drivers/mtd/nand/raw/internals.h
+diff --git a/drivers/mtd/nand/nand_amd.c b/drivers/mtd/nand/raw/nand_amd.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_amd.c
+rename to drivers/mtd/nand/raw/nand_amd.c
+diff --git a/drivers/mtd/nand/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_base.c
+rename to drivers/mtd/nand/raw/nand_base.c
+diff --git a/drivers/mtd/nand/nand_bbt.c b/drivers/mtd/nand/raw/nand_bbt.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_bbt.c
+rename to drivers/mtd/nand/raw/nand_bbt.c
+diff --git a/drivers/mtd/nand/nand_bch.c b/drivers/mtd/nand/raw/nand_bch.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_bch.c
+rename to drivers/mtd/nand/raw/nand_bch.c
+diff --git a/drivers/mtd/nand/nand_denali.c b/drivers/mtd/nand/raw/nand_denali.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_denali.c
+rename to drivers/mtd/nand/raw/nand_denali.c
+diff --git a/drivers/mtd/nand/nand_denali_dt.c b/drivers/mtd/nand/raw/nand_denali_dt.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_denali_dt.c
+rename to drivers/mtd/nand/raw/nand_denali_dt.c
+diff --git a/drivers/mtd/nand/nand_ecc.c b/drivers/mtd/nand/raw/nand_ecc.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_ecc.c
+rename to drivers/mtd/nand/raw/nand_ecc.c
+diff --git a/drivers/mtd/nand/nand_esmt.c b/drivers/mtd/nand/raw/nand_esmt.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_esmt.c
+rename to drivers/mtd/nand/raw/nand_esmt.c
+diff --git a/drivers/mtd/nand/nand_fsl_ifc.c b/drivers/mtd/nand/raw/nand_fsl_ifc.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_fsl_ifc.c
+rename to drivers/mtd/nand/raw/nand_fsl_ifc.c
+diff --git a/drivers/mtd/nand/nand_hynix.c b/drivers/mtd/nand/raw/nand_hynix.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_hynix.c
+rename to drivers/mtd/nand/raw/nand_hynix.c
+diff --git a/drivers/mtd/nand/nand_ids.c b/drivers/mtd/nand/raw/nand_ids.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_ids.c
+rename to drivers/mtd/nand/raw/nand_ids.c
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/raw/nand_imx.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_imx.c
+rename to drivers/mtd/nand/raw/nand_imx.c
+diff --git a/drivers/mtd/nand/nand_jedec.c b/drivers/mtd/nand/raw/nand_jedec.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_jedec.c
+rename to drivers/mtd/nand/raw/nand_jedec.c
+diff --git a/drivers/mtd/nand/nand_legacy.c b/drivers/mtd/nand/raw/nand_legacy.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_legacy.c
+rename to drivers/mtd/nand/raw/nand_legacy.c
+diff --git a/drivers/mtd/nand/nand_macronix.c b/drivers/mtd/nand/raw/nand_macronix.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_macronix.c
+rename to drivers/mtd/nand/raw/nand_macronix.c
+diff --git a/drivers/mtd/nand/nand_micron.c b/drivers/mtd/nand/raw/nand_micron.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_micron.c
+rename to drivers/mtd/nand/raw/nand_micron.c
+diff --git a/drivers/mtd/nand/nand_mrvl_nfc.c b/drivers/mtd/nand/raw/nand_mrvl_nfc.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_mrvl_nfc.c
+rename to drivers/mtd/nand/raw/nand_mrvl_nfc.c
+diff --git a/drivers/mtd/nand/nand_mxs.c b/drivers/mtd/nand/raw/nand_mxs.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_mxs.c
+rename to drivers/mtd/nand/raw/nand_mxs.c
+diff --git a/drivers/mtd/nand/nand_omap_bch_decoder.c b/drivers/mtd/nand/raw/nand_omap_bch_decoder.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_omap_bch_decoder.c
+rename to drivers/mtd/nand/raw/nand_omap_bch_decoder.c
+diff --git a/drivers/mtd/nand/nand_omap_bch_decoder.h b/drivers/mtd/nand/raw/nand_omap_bch_decoder.h
+similarity index 100%
+rename from drivers/mtd/nand/nand_omap_bch_decoder.h
+rename to drivers/mtd/nand/raw/nand_omap_bch_decoder.h
+diff --git a/drivers/mtd/nand/nand_omap_gpmc.c b/drivers/mtd/nand/raw/nand_omap_gpmc.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_omap_gpmc.c
+rename to drivers/mtd/nand/raw/nand_omap_gpmc.c
+diff --git a/drivers/mtd/nand/nand_onfi.c b/drivers/mtd/nand/raw/nand_onfi.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_onfi.c
+rename to drivers/mtd/nand/raw/nand_onfi.c
+diff --git a/drivers/mtd/nand/nand_orion.c b/drivers/mtd/nand/raw/nand_orion.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_orion.c
+rename to drivers/mtd/nand/raw/nand_orion.c
+diff --git a/drivers/mtd/nand/nand_samsung.c b/drivers/mtd/nand/raw/nand_samsung.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_samsung.c
+rename to drivers/mtd/nand/raw/nand_samsung.c
+diff --git a/drivers/mtd/nand/nand_timings.c b/drivers/mtd/nand/raw/nand_timings.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_timings.c
+rename to drivers/mtd/nand/raw/nand_timings.c
+diff --git a/drivers/mtd/nand/nand_toshiba.c b/drivers/mtd/nand/raw/nand_toshiba.c
+similarity index 100%
+rename from drivers/mtd/nand/nand_toshiba.c
+rename to drivers/mtd/nand/raw/nand_toshiba.c
+diff --git a/drivers/mtd/nand/nomadik_nand.c b/drivers/mtd/nand/raw/nomadik_nand.c
+similarity index 100%
+rename from drivers/mtd/nand/nomadik_nand.c
+rename to drivers/mtd/nand/raw/nomadik_nand.c
+diff --git a/drivers/mtd/nand/omap_elm.c b/drivers/mtd/nand/raw/omap_elm.c
+similarity index 100%
+rename from drivers/mtd/nand/omap_elm.c
+rename to drivers/mtd/nand/raw/omap_elm.c
+diff --git a/drivers/mtd/nand/stm32_fmc2_nand.c b/drivers/mtd/nand/raw/stm32_fmc2_nand.c
+similarity index 100%
+rename from drivers/mtd/nand/stm32_fmc2_nand.c
+rename to drivers/mtd/nand/raw/stm32_fmc2_nand.c
+diff --git a/include/nand.h b/include/nand.h
+index f0114a227d..84f5a96714 100644
+--- a/include/nand.h
++++ b/include/nand.h
+@@ -4,7 +4,7 @@
  
- static int mxc_nand_write_page(struct nand_chip *chip, const uint8_t *buf,
-@@ -842,17 +758,7 @@ static int mxc_nand_write_page(struct nand_chip *chip, const uint8_t *buf,
+ struct nand_bb;
  
- 	host->devtype_data->enable_hwecc(chip, ecc);
- 
--	host->devtype_data->send_cmd(host, NAND_CMD_SEQIN, false);
--	mxc_do_addr_cycle(mtd, 0, page);
--
--	memcpy32_toio(host->main_area0, buf, mtd->writesize);
--	copy_spare(mtd, false, chip->oob_poi);
--
--	host->devtype_data->send_page(mtd, NFC_INPUT);
--	host->devtype_data->send_cmd(host, NAND_CMD_PAGEPROG, true);
--	mxc_do_addr_cycle(mtd, 0, page);
--
--	return 0;
-+	return nand_prog_page_op(chip, page, 0, buf, mtd->writesize);
- }
- 
- static int mxc_nand_write_page_ecc(struct nand_chip *chip, const uint8_t *buf,
-@@ -877,66 +783,6 @@ static int mxc_nand_write_oob(struct nand_chip *chip, int page)
- 	return mxc_nand_write_page(chip, host->data_buf, false, page);
- }
- 
--static u_char mxc_nand_read_byte(struct nand_chip *nand_chip)
--{
--	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
--	uint8_t ret;
--
--	/* Check for status request */
--	if (host->status_request)
--		return host->devtype_data->get_dev_status(host) & 0xFF;
--
--	if (nand_chip->options & NAND_BUSWIDTH_16) {
--		/* only take the lower byte of each word */
--		ret = *(uint16_t *)(host->data_buf + host->buf_start);
--
--		host->buf_start += 2;
--	} else {
--		ret = *(uint8_t *)(host->data_buf + host->buf_start);
--		host->buf_start++;
--	}
--
--	dev_dbg(host->dev, "%s: ret=0x%hhx (start=%u)\n", __func__, ret, host->buf_start);
--	return ret;
--}
--
--/* Write data of length len to buffer buf. The data to be
-- * written on NAND Flash is first copied to RAMbuffer. After the Data Input
-- * Operation by the NFC, the data is written to NAND Flash */
--static void mxc_nand_write_buf(struct nand_chip *nand_chip, const u_char *buf,
--			       int len)
--{
--	struct mtd_info *mtd = nand_to_mtd(nand_chip);
--	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
--	u16 col = host->buf_start;
--	int n = mtd->oobsize + mtd->writesize - col;
--
--	n = min(n, len);
--
--	memcpy(host->data_buf + col, buf, n);
--
--	host->buf_start += n;
--}
--
--/* Read the data buffer from the NAND Flash. To read the data from NAND
-- * Flash first the data output cycle is initiated by the NFC, which copies
-- * the data to RAMbuffer. This data of length len is then copied to buffer buf.
-- */
--static void mxc_nand_read_buf(struct nand_chip *nand_chip, u_char *buf,
--			      int len)
--{
--	struct mtd_info *mtd = nand_to_mtd(nand_chip);
--	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
--	u16 col = host->buf_start;
--	int n = mtd->oobsize + mtd->writesize - col;
--
--	n = min(n, len);
--
--	memcpy(buf, host->data_buf + col, n);
--
--	host->buf_start += n;
--}
--
- /* This function is used by upper layer for select and
-  * deselect of the NAND chip */
- static void mxc_nand_select_chip_v1_v3(struct nand_chip *nand_chip, int chip)
-@@ -1313,107 +1159,6 @@ static void preset_v3(struct mtd_info *mtd)
- 	writel(0, NFC_V3_DELAY_LINE);
- }
- 
--/* Used by the upper layer to write command to NAND Flash for
-- * different operations to be carried out on NAND Flash */
--static void mxc_nand_command(struct nand_chip *nand_chip, unsigned command,
--			     int column, int page_addr)
--{
--	struct mtd_info *mtd = nand_to_mtd(nand_chip);
--	struct mxc_nand_host *host = nand_get_controller_data(nand_chip);
--
--	dev_dbg(host->dev, "mxc_nand_command (cmd = 0x%x, col = 0x%x, page = 0x%x)\n",
--	      command, column, page_addr);
--
--	/* Reset command state information */
--	host->status_request = false;
--
--	/* Command pre-processing step */
--	switch (command) {
--	case NAND_CMD_RESET:
--		host->devtype_data->preset(mtd);
--		host->devtype_data->send_cmd(host, command, false);
--		break;
--
--	case NAND_CMD_STATUS:
--		host->buf_start = 0;
--		host->status_request = true;
--
--		host->devtype_data->send_cmd(host, command, true);
--		WARN_ONCE(column != -1 || page_addr != -1,
--			  "Unexpected column/row value (cmd=%u, col=%d, row=%d)\n",
--			  command, column, page_addr);
--		mxc_do_addr_cycle(mtd, column, page_addr);
--		break;
--
--	case NAND_CMD_READID:
--		host->devtype_data->send_cmd(host, command, true);
--		mxc_do_addr_cycle(mtd, column, page_addr);
--		host->devtype_data->send_read_id(host);
--		host->buf_start = 0;
--		break;
--
--	case NAND_CMD_ERASE1:
--	case NAND_CMD_ERASE2:
--		host->devtype_data->send_cmd(host, command, false);
--		WARN_ONCE(column != -1,
--			  "Unexpected column value (cmd=%u, col=%d)\n",
--			  command, column);
--		mxc_do_addr_cycle(mtd, column, page_addr);
--
--		break;
--	case NAND_CMD_PARAM:
--		host->devtype_data->send_cmd(host, command, false);
--		mxc_do_addr_cycle(mtd, column, page_addr);
--		host->devtype_data->send_page(mtd, NFC_OUTPUT);
--		memcpy32_fromio(host->data_buf, host->main_area0, 512);
--		host->buf_start = 0;
--		break;
--	default:
--		WARN_ONCE(1, "Unimplemented command (cmd=%u)\n",
--			  command);
--		break;
--	}
--}
--
--static int mxc_nand_set_features(struct nand_chip *chip, int addr,
--				 u8 *subfeature_param)
--{
--	struct mtd_info *mtd = nand_to_mtd(chip);
--	struct mxc_nand_host *host = nand_get_controller_data(chip);
--	int i;
--
--	host->buf_start = 0;
--
--	for (i = 0; i < ONFI_SUBFEATURE_PARAM_LEN; ++i)
--		chip->legacy.write_byte(chip, subfeature_param[i]);
--
--	memcpy32_toio(host->main_area0, host->data_buf, mtd->writesize);
--	host->devtype_data->send_cmd(host, NAND_CMD_SET_FEATURES, false);
--	mxc_do_addr_cycle(mtd, addr, -1);
--	host->devtype_data->send_page(mtd, NFC_INPUT);
--
--	return 0;
--}
--
--static int mxc_nand_get_features(struct nand_chip *chip, int addr,
--				 u8 *subfeature_param)
--{
--	struct mtd_info *mtd = nand_to_mtd(chip);
--	struct mxc_nand_host *host = nand_get_controller_data(chip);
--	int i;
--
--	host->devtype_data->send_cmd(host, NAND_CMD_GET_FEATURES, false);
--	mxc_do_addr_cycle(mtd, addr, -1);
--	host->devtype_data->send_page(mtd, NFC_OUTPUT);
--	memcpy32_fromio(host->data_buf, host->main_area0, 512);
--	host->buf_start = 0;
--
--	for (i = 0; i < ONFI_SUBFEATURE_PARAM_LEN; ++i)
--		*subfeature_param++ = chip->legacy.read_byte(chip);
--
--	return 0;
--}
--
- /*
-  * The generic flash bbt descriptors overlap with our ecc
-  * hardware, so define some i.MX specific ones.
-@@ -1670,9 +1415,109 @@ static int mxcnd_setup_interface(struct nand_chip *chip, int chipnr,
- 	return host->devtype_data->setup_interface(chip, chipnr, conf);
- }
- 
-+static int mxcnd_exec_op(struct nand_chip *chip,
-+			 const struct nand_operation *op,
-+			 bool check_only)
-+{
-+	struct mxc_nand_host *host = nand_get_controller_data(chip);
-+	struct mtd_info *mtd = nand_to_mtd(chip);
-+	int i, j, buf_len;
-+	void *buf_read = NULL;
-+	const void *buf_write = NULL;
-+	const struct nand_op_instr *instr;
-+	bool readid = false;
-+	bool statusreq = false;
-+
-+	dev_dbg(host->dev, "%s: %d instructions\n", __func__, op->ninstrs);
-+
-+	for (i = 0; i < op->ninstrs; i++) {
-+		instr = &op->instrs[i];
-+
-+		nand_op_trace("  ", instr);
-+
-+		switch (instr->type) {
-+		case NAND_OP_WAITRDY_INSTR:
-+			/*
-+			 * NFC handles R/B internally. Therefore, this function
-+			 * always returns status as ready.
-+			 */
-+			break;
-+		case NAND_OP_CMD_INSTR:
-+			host->devtype_data->send_cmd(host, instr->ctx.cmd.opcode, true);
-+
-+			if (instr->ctx.cmd.opcode == NAND_CMD_READID)
-+				readid = true;
-+			if (instr->ctx.cmd.opcode == NAND_CMD_STATUS)
-+				statusreq = true;
-+
-+			break;
-+		case NAND_OP_ADDR_INSTR:
-+			for (j = 0; j < instr->ctx.addr.naddrs; j++) {
-+				bool islast = j == instr->ctx.addr.naddrs - 1;
-+				host->devtype_data->send_addr(host, instr->ctx.addr.addrs[j], islast);
-+			}
-+			break;
-+		case NAND_OP_DATA_OUT_INSTR:
-+			buf_write = instr->ctx.data.buf.out;
-+			buf_len = instr->ctx.data.len;
-+
-+			memcpy32_toio(host->main_area0, buf_write, buf_len);
-+			copy_spare(mtd, false, chip->oob_poi);
-+
-+			host->devtype_data->send_page(mtd, NFC_INPUT);
-+
-+			break;
-+		case NAND_OP_DATA_IN_INSTR:
-+
-+			buf_read = instr->ctx.data.buf.in;
-+			buf_len = instr->ctx.data.len;
-+
-+			if (!buf_len)
-+				break;
-+
-+			if (readid) {
-+				host->devtype_data->send_read_id(host);
-+				readid = false;
-+
-+				memcpy32_fromio(host->data_buf, host->main_area0, buf_len * 2);
-+
-+				if (chip->options & NAND_BUSWIDTH_16) {
-+					u8 *bufr = buf_read;
-+					u16 *bufw = host->data_buf;
-+					for (j = 0; j < buf_len; j++)
-+						bufr[j] = bufw[j];
-+				} else {
-+					memcpy(buf_read, host->data_buf, buf_len);
-+				}
-+				break;
-+			}
-+
-+			if (statusreq) {
-+				*(u8*)buf_read = host->devtype_data->get_dev_status(host);
-+				statusreq = false;
-+				break;
-+			}
-+
-+			host->devtype_data->read_page(chip);
-+
-+			if (IS_ALIGNED(buf_len, 4)) {
-+				memcpy32_fromio(buf_read, host->main_area0, buf_len);
-+			} else {
-+				memcpy32_fromio(host->data_buf, host->main_area0, mtd->writesize);
-+				memcpy(buf_read, host->data_buf, buf_len);
-+			}
-+
-+			break;
-+		}
-+	}
-+
-+	return 0;
-+}
-+
- static const struct nand_controller_ops mxcnd_controller_ops = {
- 	.attach_chip = mxcnd_attach_chip,
- 	.setup_interface = mxcnd_setup_interface,
-+	.exec_op = mxcnd_exec_op,
- };
- 
- /*
-@@ -1812,13 +1657,6 @@ static int mxcnd_probe(struct device *dev)
- 
- 	nand_set_controller_data(this, host);
- 	nand_set_flash_node(this, dev->of_node);
--	this->legacy.dev_ready = mxc_nand_dev_ready;
--	this->legacy.cmdfunc = mxc_nand_command;
--	this->legacy.read_byte = mxc_nand_read_byte;
--	this->legacy.write_buf = mxc_nand_write_buf;
--	this->legacy.read_buf = mxc_nand_read_buf;
--	this->legacy.set_features = mxc_nand_set_features;
--	this->legacy.get_features = mxc_nand_get_features;
- 
- 	host->clk = clk_get(dev, NULL);
- 	if (IS_ERR(host->clk))
+-#ifdef CONFIG_NAND
++#ifdef CONFIG_MTD_RAW_NAND
+ int dev_add_bb_dev(const char *filename, const char *name);
+ int dev_remove_bb_dev(const char *name);
+ struct cdev *mtd_add_bb(struct mtd_info *mtd, const char *name);
 -- 
 2.39.2
 
