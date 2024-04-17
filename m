@@ -1,63 +1,66 @@
-Delivery-date: Wed, 17 Apr 2024 08:52:10 +0200
+Delivery-date: Wed, 17 Apr 2024 11:12:43 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwz9O-004a1o-1h
+	id 1rx1LP-004jrv-2g
 	for lore@lore.pengutronix.de;
-	Wed, 17 Apr 2024 08:52:10 +0200
+	Wed, 17 Apr 2024 11:12:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rwz9N-0008Oq-V3
-	for lore@pengutronix.de; Wed, 17 Apr 2024 08:52:10 +0200
+	id 1rx1LP-0006jw-6B
+	for lore@pengutronix.de; Wed, 17 Apr 2024 11:12:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=e3OgwM3sveBB5LoBLQbmkXSv1HrGCqs9GR6+jKukA8w=; b=hqNzQ22KxGjfanps3/i65YdmhW
-	bU8PQbWCla965ahPu3/hkHAPDKA9dr29UoI9frXZNvjzxdBpHGVdvZt4N097MT80JaZ6Z+BNclNrj
-	zvkoS9AYcQIwqP09jUbBt2QuArg8LW/FQkkxxo0BdOt1/BLfYsqpzkhnIQWSwT5THTQ6CvJOxPkN5
-	+M5ipF9aNwJfEzYGdNNxXHB2b6vf0X+ZFbel5eiGX/c+s6dfovn3YwISYVjrcdKLW3T8rVo5mvYaJ
-	C3wtgoc0uy6KCZCfgzyxktDUPgc2hgnkZAavSchB4fkD5pcMerI3qJ3iy2olYRcv53FB9rbymslvU
-	ynM8gbYQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
+	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=aQfLP2L2Znd3nFY53M96BNEHbpEnl4WAii5QwNek2dQ=; b=Xo/EcsXJwB3cKA8D57RSFZ248S
+	20RGit6zpCkHLX2DlGJndLrFTITxgA2tZiHx7BJntqFlG5XMOX8aA+q3gC6VCEt6kQIqa7/U6SIHp
+	EJdsJ9YTm2hYi9zk2naARdksFh7b+mV4ZJuEt1UXa8G0GMkHxzpbtZeOnjvj6r2ElL1XBPgrZ1Id/
+	UqhNE6kgGKoGSzH/JLWerM9bhP0gK9s0THT4HuafjqcgJ+YVKXiDtLC8yjXK29KnMBgLwfQSdtsf9
+	MgJ3r3s4hzEf0HBXKe4HvC40bp2x0Qmv0RO7btr5h50cZYcRPhl/fr4RXlDXvEHJonegBKz2k1LV/
+	N0IQYvJg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwz90-0000000Euhc-1IqU;
-	Wed, 17 Apr 2024 06:51:46 +0000
+	id 1rx1Kf-0000000FM2f-3aii;
+	Wed, 17 Apr 2024 09:11:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rwz8x-0000000Eugl-1Z6j
+	id 1rx1Kb-0000000FLzh-0jVz
 	for barebox@lists.infradead.org;
-	Wed, 17 Apr 2024 06:51:44 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwz8w-0007wA-2e; Wed, 17 Apr 2024 08:51:42 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwz8v-00CkAW-M8; Wed, 17 Apr 2024 08:51:41 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rwz8v-001KmO-1o;
-	Wed, 17 Apr 2024 08:51:41 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 17 Apr 2024 08:51:40 +0200
-Message-Id: <20240417065140.316133-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	Wed, 17 Apr 2024 09:11:54 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <s.trumtrar@pengutronix.de>)
+	id 1rx1KY-0005JK-Fj
+	for barebox@lists.infradead.org; Wed, 17 Apr 2024 11:11:50 +0200
+From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Date: Wed, 17 Apr 2024 11:11:26 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240417-v2024-03-0-topic-imx93-designware-imx-v1-2-c532c18f9ba5@pengutronix.de>
+References: <20240417-v2024-03-0-topic-imx93-designware-imx-v1-0-c532c18f9ba5@pengutronix.de>
+In-Reply-To: <20240417-v2024-03-0-topic-imx93-designware-imx-v1-0-c532c18f9ba5@pengutronix.de>
+To: barebox@lists.infradead.org
+X-Mailer: b4 0.13.0
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1390;
+ i=s.trumtrar@pengutronix.de; h=from:subject:message-id;
+ bh=U5ZqbVKwCEe8ljsmRASUm/ImJnXdEsgGVq/19lrca7w=;
+ b=owGbwMvMwCUmvd38QH3grB+Mp9WSGNLkJwWp3u2/9OOnYH92TNukLrcIt5vTYoSd296KbCl8c
+ 6ooNkqjo5SFQYyLQVZMkSVy7SGNzcKfdb4cP88AM4eVCWQIAxenAEwk7jnDX5kJEsKtWkreq5+x
+ PUubdaLuqfsR5rX9u65avGLYL/dS+zrDP4XrRlxq1WIPa/xn7OVXvdnP1PRQskf+4W+/LMmdKRe
+ TWAE=
+X-Developer-Key: i=s.trumtrar@pengutronix.de; a=openpgp;
+ fpr=59ADC228B313F32CF4C7CF001BB737C07F519AF8
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240416_235143_433804_CE13041E 
-X-CRM114-Status: GOOD (  10.10  )
+X-CRM114-CacheID: sfid-20240417_021153_243260_BCD8D645 
+X-CRM114-Status: UNSURE (   9.03  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,34 +82,51 @@ X-Spam-Status: No, score=-5.9 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] mtd: nand: mxc_nand: disable subpage reads
+Subject: [PATCH 2/2] net: designware-imx: i.MX93: set TX_CLK in RMII mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The NAND core enabled subpage reads when a largepage NAND is used with
-SOFT_ECC. The i.MX NAND controller doesn't support subpage reads, so
-clear the flag again.
+According to NXP AT14149 the TX_CLK direction must be set to output
+when the ENET is used in RMII mode.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- drivers/mtd/nand/raw/mxc_nand.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/designware_imx.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/drivers/mtd/nand/raw/mxc_nand.c b/drivers/mtd/nand/raw/mxc_nand.c
-index 46f8bb2406..2774b6bb4f 100644
---- a/drivers/mtd/nand/raw/mxc_nand.c
-+++ b/drivers/mtd/nand/raw/mxc_nand.c
-@@ -1708,6 +1708,8 @@ static int mxcnd_probe(struct device *dev)
- 	if (err)
- 		goto escan;
+diff --git a/drivers/net/designware_imx.c b/drivers/net/designware_imx.c
+index ab60d98298..2cc707ecac 100644
+--- a/drivers/net/designware_imx.c
++++ b/drivers/net/designware_imx.c
+@@ -26,6 +26,10 @@
  
-+	this->options &= ~NAND_SUBPAGE_READ;
+ #define RMII_RESET_SPEED			(0x3 << 14)
+ 
++#define MX93_GPR_ENET_CLK_SEL_OFFSET		0x4
++#define MX93_ENET_CLK_ENET_QOS_TX_CLK_SEL_MASK	GENMASK(0, 0)
++#define MX93_ENET_CLK_ENET_QOS_TX_CLK_SEL	(0x1 << 0)
 +
- 	if ((this->bbt_options & NAND_BBT_USE_FLASH) &&
- 	    this->bbt_td->pages[0] == -1 && this->bbt_md->pages[0] == -1) {
- 		dev_info(dev, "no BBT found. creating one\n");
+ struct eqos_imx_soc_data {
+ 	int (*set_interface_mode)(struct eqos *eqos);
+ 	void (*fix_soc_reset)(struct eqos *eqos, u32 *mac_regs);
+@@ -155,6 +159,14 @@ static int eqos_imx93_set_interface_mode(struct eqos *eqos)
+ 		break;
+ 	case PHY_INTERFACE_MODE_RMII:
+ 		val = MX93_GPR_ENET_QOS_INTF_SEL_RMII;
++
++		/* According to NXP AN14149, the direction of the
++		 * TX_CLK must be set to output in RMII mode.
++		 */
++		regmap_update_bits(priv->intf_regmap,
++				   priv->intf_reg_off + MX93_GPR_ENET_CLK_SEL_OFFSET,
++				   MX93_ENET_CLK_ENET_QOS_TX_CLK_SEL_MASK,
++				   MX93_ENET_CLK_ENET_QOS_TX_CLK_SEL);
+ 		break;
+ 	case PHY_INTERFACE_MODE_RGMII:
+ 	case PHY_INTERFACE_MODE_RGMII_ID:
+
 -- 
-2.39.2
+2.43.2
 
 
 
