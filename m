@@ -1,66 +1,66 @@
-Delivery-date: Fri, 19 Apr 2024 08:14:12 +0200
+Delivery-date: Fri, 19 Apr 2024 08:14:13 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rxhVk-0074eA-2P
+	id 1rxhVk-0074eV-3B
 	for lore@lore.pengutronix.de;
-	Fri, 19 Apr 2024 08:14:12 +0200
+	Fri, 19 Apr 2024 08:14:13 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rxhVj-00085M-Pe
+	id 1rxhVj-00085h-WA
 	for lore@pengutronix.de; Fri, 19 Apr 2024 08:14:12 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hHaelZJeGgZs81gKP8yiOfPnPoN3SA1iCrzdUN7b0/k=; b=eX7u4bsBWG7+a07t26WmHRYWMU
-	EO4HNJvOrN1uWmKTYypwQa9dCxA+rAqwVIzVYBbutDvlFrwpOfhli/r387R3m8UlDsJNw2cOI+awc
-	T982yVoEWBBSdZw7/ul3QZSm4xfbUOY5Aoyj0/KettAPc3AtwRlnPDpQbZsxAHNUnAdJfXIv/jWOB
-	3NlbIohIXn3T+mnVqG4MTG5Phvk3zdfmSINDcRPyNL9xcrJfha5Gvg5K+dSKKjelaLJ9QPOqZgrFa
-	MM7B99B4uREHT9LOYY20Pk1M5xF5rGuPo0w88kJPWBiXaJMt7bAAXUn/W1UwDR9+Qo7U+A2irZXfx
-	CcHXj5tg==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=Wmr4jfpgRdrMdP5y/xFWLcBhRC3I6WD9YYhX70Q5tpU=; b=BMc/GivP3sIxkYYT6xgIsIAcul
+	NMT9lQc+dhTo23XYYHFjaoDIm11JunQvt8jhnr9QweuRoQtCGnCxiSwOTzavxtTZB59gBiu4RpyUQ
+	U2RTHHRV9JcESN76Anx3mV8xnPO9Zi168BM+1/zKJPt5CATfqYpdHYhEVS+C/TNm/GbGKf9vsrzCm
+	N5Epk51RKxEjadxP3/ObtejzYid/ZRzorus6ZBP2JIPc6UhOl7aDt9SFJ5ZtzT7zggjDdNRiUDjS0
+	LvY0/5e435zZpP023SROsgIDaITmZLnYR1JiaJr8gQOYj2gpCg6m+Gvhv2B5yGmqwYcNBB4BeCEdR
+	RjVExfAw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rxhVK-00000004Z8k-2vtX;
-	Fri, 19 Apr 2024 06:13:46 +0000
+	id 1rxhVG-00000004Z7J-23rZ;
+	Fri, 19 Apr 2024 06:13:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rxhV8-00000004Z3i-3oFT
+	id 1rxhV8-00000004Z3d-3o9d
 	for barebox@lists.infradead.org;
-	Fri, 19 Apr 2024 06:13:42 +0000
+	Fri, 19 Apr 2024 06:13:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rxhV7-0007C9-JF; Fri, 19 Apr 2024 08:13:33 +0200
+	id 1rxhV7-0007C2-D9
+	for barebox@lists.infradead.org; Fri, 19 Apr 2024 08:13:33 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rxhV7-00D6hs-6y; Fri, 19 Apr 2024 08:13:33 +0200
+	id 1rxhV7-00D6hh-0o
+	for barebox@lists.infradead.org; Fri, 19 Apr 2024 08:13:33 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rxhV7-00AsV5-0O;
-	Fri, 19 Apr 2024 08:13:33 +0200
+	id 1rxhV6-00AsV5-32
+	for barebox@lists.infradead.org;
+	Fri, 19 Apr 2024 08:13:32 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 19 Apr 2024 08:13:30 +0200
-Message-Id: <20240419061331.2592739-5-a.fatoum@pengutronix.de>
+Date: Fri, 19 Apr 2024 08:13:26 +0200
+Message-Id: <20240419061331.2592739-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240419061331.2592739-1-a.fatoum@pengutronix.de>
-References: <20240419061331.2592739-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240418_231335_010317_243A4B4B 
-X-CRM114-Status: GOOD (  12.39  )
+X-CRM114-CacheID: sfid-20240418_231335_019298_C426D791 
+X-CRM114-Status: GOOD (  10.19  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,61 +82,34 @@ X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 4/5] ARM: i.MX8MP: don't reparent GIC from BootROM default
+Subject: [PATCH 0/5] ARM: i.MX8MP: add nominal drive mode support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On i.MX8MP, GIC can run at up to 400 MHz in nominal drive mode and up
-to 500 MHz in overdrive mode. We currently configure unconditionally
-to 100 MHz on i.MX8MP.
+Unlike the i.MX8MM and i.MX8MN SoCs added earlier, the early setup code
+and device tree for the i.MX8MP configures some clocks at frequencies
+that are only validated for overdrive mode, i.e. when VDD_SOC is 950 mV.
 
-The BootROM default is running it on 400 MHz, which works well for us on
-the i.MX8MP, so skip the GIC configuration on the i.MX8MP.
+Boards may want to run their SoC at the lower voltage of 850 mV though
+to reduce heat generation and power usage. For this to work, clock rates
+need to adhere to the limits of the nominal drive mode.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/arm/mach-imx/imx8m.c | 16 +++++++++-------
- 1 file changed, 9 insertions(+), 7 deletions(-)
+This needs to be done across both barebox and Linux. This series handles
+the barebox side and a separate series will follow for the kernel.
 
-diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
-index 56330cef500c..0966f7fdf076 100644
---- a/arch/arm/mach-imx/imx8m.c
-+++ b/arch/arm/mach-imx/imx8m.c
-@@ -100,13 +100,6 @@ static void __imx8m_early_clock_init(int cpu_type)
- 		INTPLL_DIV20_CLKE_MASK;
- 	writel(val, ana + IMX8MM_CCM_ANALOG_SYS_PLL2_GEN_CTRL);
- 
--	/* config GIC to sys_pll2_100m */
--	imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_GIC);
--	imx8m_clock_set_target_val(IMX8M_GIC_CLK_ROOT,
--				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
--				   IMX8M_CCM_TARGET_ROOTn_MUX(3));
--	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_GIC);
--
- 	if (cpu_type == IMX_CPU_IMX8MN || cpu_type == IMX_CPU_IMX8MP)
- 		pll3_freq = 600000000UL;
- 	else
-@@ -118,11 +111,20 @@ static void __imx8m_early_clock_init(int cpu_type)
- 
- 	if (cpu_type == IMX_CPU_IMX8MP) {
- 		/* 8MP ROM already set NOC to 800Mhz, only need to configure NOC_IO clk to 600Mhz */
-+		/* 8MP ROM already set GIC to 400Mhz, system_pll1_800m with div = 2 */
- 		imx8m_clock_set_target_val(IMX8M_NOC_IO_CLK_ROOT,
- 					   IMX8M_CCM_TARGET_ROOTn_ENABLE |
- 					   IMX8M_CCM_TARGET_ROOTn_MUX(2));
-+	} else {
-+		/* config GIC to sys_pll2_100m */
-+		imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_GIC);
-+		imx8m_clock_set_target_val(IMX8M_GIC_CLK_ROOT,
-+					   IMX8M_CCM_TARGET_ROOTn_ENABLE |
-+					   IMX8M_CCM_TARGET_ROOTn_MUX(3));
-+		imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_GIC);
- 	}
- 
-+
- 	clrsetbits_le32(ccm + IMX8M_CCM_TARGET_ROOTn(IMX8M_ARM_A53_CLK_ROOT),
- 			IMX8M_CCM_TARGET_ROOTn_MUX(7),
- 			IMX8M_CCM_TARGET_ROOTn_MUX(2));
+Ahmad Fatoum (5):
+  ARM: i.MX8M: pass cpu_type parameter to __imx8m_early_clock_init
+  ARM: i.MX8MP: configure PLL3 as 600MHz
+  ARM: i.MX8MP: configure PLL3 as noc_io parent
+  ARM: i.MX8MP: don't reparent GIC from BootROM default
+  ARM: dts: i.MX8MP: Add optional nominal drive mode DTSI
+
+ arch/arm/dts/imx8mp-nominal.dtsi  | 51 +++++++++++++++++++++++++++++++
+ arch/arm/mach-imx/imx8m.c         | 42 +++++++++++++++++++------
+ include/mach/imx/imx8m-ccm-regs.h |  1 +
+ 3 files changed, 84 insertions(+), 10 deletions(-)
+ create mode 100644 arch/arm/dts/imx8mp-nominal.dtsi
+
 -- 
 2.39.2
 
