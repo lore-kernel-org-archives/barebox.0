@@ -1,72 +1,55 @@
-Delivery-date: Mon, 22 Apr 2024 12:00:45 +0200
+Delivery-date: Mon, 22 Apr 2024 12:24:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ryqTd-00BMxQ-2c
+	id 1ryqqG-00BO3U-0V
 	for lore@lore.pengutronix.de;
-	Mon, 22 Apr 2024 12:00:45 +0200
+	Mon, 22 Apr 2024 12:24:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ryqTZ-0002rH-5V
-	for lore@pengutronix.de; Mon, 22 Apr 2024 12:00:45 +0200
+	id 1ryqqE-0007HC-Ut
+	for lore@pengutronix.de; Mon, 22 Apr 2024 12:24:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:MIME-Version:
-	Content-Transfer-Encoding:Content-Type:References:In-Reply-To:Date:To:From:
-	Subject:Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LozHHhmWnYPiILcAAMfFhtSHxTLy4cxam3VcSGx0AUs=; b=BBGbxdf4luhw4VXygQZtdIK7HF
-	EQv1ON3L1mSxmfDznonEZup+dtISOLzKSchVshYsVf+cEHXrxV8waCDh7Lv4Pt+LvM3w4ggXO+6p3
-	CMkHjV6qbqsqpTej83jtEp1oXfznzBRfRWOGB1x7JAbE8vuVVrrgeaDeDC85b+mIMs/U6sKszCNMH
-	E3TlXgIwucD8dLH7nsOJh9IKJRUsFmHIj9ZCssBT+KQGI7VpdkIg0pQf2NmYgsZxGCecdPxPmBgjS
-	ImrI9BOKtSUCKe1ReKta/dLWwgesHPPiSgNAHXQwOzJk8T8gX2C4U39hBLb2tzFn1WKx/lvADUiA8
-	Ve4bylYg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=geIIU5pLeUj7gN8TiCw1VUi3W1Xk03rBib4rSpSaOTE=; b=qDnIX+jBhL1ZU9zNqYVaCSC0Pz
+	MNPRYY62MiltptacD78ZjpV4aR1ckG1XAk1Uey7/9HgB/aLyIgKkP+Xq3Wjj+238CpLUFCEkiA3VE
+	S3YoOxjfB8s0HHDdKnuOA1PRih0mtQRI+bkD+rs6xJleIN0i2q5dtt2X+IyBArR7vqbh9ShlNQldz
+	KOJuxQcmBLJhY765t9zgKKffD/GTIAzFnldFcDpaLmkW6fMBfEq5UlAk1/c3fsCZgYCvkMEMzHYqP
+	/cs//X8eO12WZ6vVaGarHYWGHZ7RcFLl3epie66BV3rjTGWP8EfJFEmd5Tqp2ekmWbSW6eBjn1NJk
+	+g6UcFsw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1ryqTF-0000000D4B6-0qKo;
-	Mon, 22 Apr 2024 10:00:21 +0000
-Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
+	id 1ryqpl-0000000D8MK-208c;
+	Mon, 22 Apr 2024 10:23:37 +0000
+Received: from mx1.emlix.com ([178.63.209.131])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rypPW-0000000ClrM-2DZ4
-	for barebox@bombadil.infradead.org;
-	Mon, 22 Apr 2024 08:52:26 +0000
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Transfer-Encoding
-	:Content-Type:References:In-Reply-To:Date:To:From:Subject:Message-ID:Sender:
-	Reply-To:Cc:Content-ID:Content-Description;
-	bh=LozHHhmWnYPiILcAAMfFhtSHxTLy4cxam3VcSGx0AUs=; b=TQRMEhRJJO2PRY+iJqv5AYBrYY
-	aePFdM8E3eu0SyxgF96/zfHuKCQaWyZjuLNi9mV/Ma77VMY0n/mTbbyyt1ByIvh0FV6jrlnFKW7sT
-	gPYYfvN73y/9wp+MufTiyrwuy71hzC1UwwCCMUwUXYH3WRfCYvZdurshpJZAtVyEDypQm12tmj1J1
-	DuVJ9H8cf45dYNZ0/TPb1Wp/o4K6XO4+oSGh4CTJZBdofRa7EgdzrGUbIqJbW51CLqOEZR1GSkcep
-	TXNQbIhz5YuS1l1ent+o7NO6aiz2jTSWT3AZl7wwguMWoY7Ksq87wFnDQbAuxdSSssDzYL3AxxGVo
-	pOtmq9zA==;
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
-	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rypPQ-0000000Db2d-4ANr
+	id 1ryqph-0000000D8Is-35ze
 	for barebox@lists.infradead.org;
-	Mon, 22 Apr 2024 08:52:25 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[IPv6:::1])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <l.stach@pengutronix.de>)
-	id 1rypPN-0006TK-Cz; Mon, 22 Apr 2024 10:52:17 +0200
-Message-ID: <e1768e0703f688b5e99bab72eee95bdc58c7cb9c.camel@pengutronix.de>
-From: Lucas Stach <l.stach@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>, barebox@lists.infradead.org
-Date: Mon, 22 Apr 2024 10:52:17 +0200
-In-Reply-To: <20240419061331.2592739-5-a.fatoum@pengutronix.de>
-References: <20240419061331.2592739-1-a.fatoum@pengutronix.de>
-	 <20240419061331.2592739-5-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+	Mon, 22 Apr 2024 10:23:35 +0000
+Received: from mailer.emlix.com (unknown [81.20.112.87])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by mx1.emlix.com (Postfix) with ESMTPS id ED9F95FC0D;
+	Mon, 22 Apr 2024 12:23:21 +0200 (CEST)
+From: Jonas Richardsen <jonasrichardsen@emlix.com>
+To: barebox@lists.infradead.org
+Cc: Jonas Richardsen <jonasrichardsen@emlix.com>,
+	denis.osterland@diehl.com
+Date: Mon, 22 Apr 2024 10:16:46 +0000
+Message-ID: <20240422102232.551842-1-jonasrichardsen@emlix.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240422_095221_338116_235827D6 
-X-CRM114-Status: GOOD (  17.97  )
+X-CRM114-CacheID: sfid-20240422_032333_953078_F7C383B0 
+X-CRM114-Status: GOOD (  11.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,78 +67,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 4/5] ARM: i.MX8MP: don't reparent GIC from BootROM
- default
+Subject: [PATCH 0/3] raspi: cleanup of vc fixups
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Am Freitag, dem 19.04.2024 um 08:13 +0200 schrieb Ahmad Fatoum:
-> On i.MX8MP, GIC can run at up to 400 MHz in nominal drive mode and up
-> to 500 MHz in overdrive mode. We currently configure unconditionally
-> to 100 MHz on i.MX8MP.
->=20
-> The BootROM default is running it on 400 MHz, which works well for us on
-> the i.MX8MP, so skip the GIC configuration on the i.MX8MP.
->=20
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  arch/arm/mach-imx/imx8m.c | 16 +++++++++-------
->  1 file changed, 9 insertions(+), 7 deletions(-)
->=20
-> diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
-> index 56330cef500c..0966f7fdf076 100644
-> --- a/arch/arm/mach-imx/imx8m.c
-> +++ b/arch/arm/mach-imx/imx8m.c
-> @@ -100,13 +100,6 @@ static void __imx8m_early_clock_init(int cpu_type)
->  		INTPLL_DIV20_CLKE_MASK;
->  	writel(val, ana + IMX8MM_CCM_ANALOG_SYS_PLL2_GEN_CTRL);
-> =20
-> -	/* config GIC to sys_pll2_100m */
-> -	imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_GIC);
-> -	imx8m_clock_set_target_val(IMX8M_GIC_CLK_ROOT,
-> -				   IMX8M_CCM_TARGET_ROOTn_ENABLE |
-> -				   IMX8M_CCM_TARGET_ROOTn_MUX(3));
-> -	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_GIC);
-> -
->  	if (cpu_type =3D=3D IMX_CPU_IMX8MN || cpu_type =3D=3D IMX_CPU_IMX8MP)
->  		pll3_freq =3D 600000000UL;
->  	else
-> @@ -118,11 +111,20 @@ static void __imx8m_early_clock_init(int cpu_type)
-> =20
->  	if (cpu_type =3D=3D IMX_CPU_IMX8MP) {
->  		/* 8MP ROM already set NOC to 800Mhz, only need to configure NOC_IO cl=
-k to 600Mhz */
-> +		/* 8MP ROM already set GIC to 400Mhz, system_pll1_800m with div =3D 2 =
-*/
+This patch series contains a few changes to the video core fixups where
+the desired behaviour is obvious from raspberry device trees. These were
+tested on a Raspberry Pi 4B. There's a few more differences between the
+video core device tree and the one provided by barebox for which a
+discussion is welcome:
 
-This comment change looks odd. Now it doesn't explain anymore what's
-done here and why, but rather explains why the else path isn't executed
-on the 8MP.
->  		imx8m_clock_set_target_val(IMX8M_NOC_IO_CLK_ROOT,
->  					   IMX8M_CCM_TARGET_ROOTn_ENABLE |
->  					   IMX8M_CCM_TARGET_ROOTn_MUX(2));
-> +	} else {
+- After a [recent change][link1] the `/chosen` node of the device tree
+  is now fully copied from the video core device tree. This could
+  possibly be restricted to only copy relevant properties.
+- The properties `memreserve` and `serial-number` of the root node are
+  added by the video core and could also be copied. 
+- The property `model` of the root node is updated with the specific
+  hardware revision of the pi.
+- The video core adds the two aliases `i2c_arm` and `i2c_vc` (as
+  properties to the `/aliases` node). As the [raspberrypi
+  documentation][link2] suggests to use the former for writing overlays,
+  it should maybe also be copied as a fixup.
 
-Maybe move this into a separate condition !=3D IMX_CPU_IMX8MP and move
-the comment above here? Leaving the comment about NOC_IO clocks
-untouched?
+[link1]: https://git.pengutronix.de/cgit/barebox/commit/?id=30754085bdba91853acbb3973ce348bf5aa2c9e7
+[link2]: https://www.raspberrypi.com/documentation/computers/configuration.html#part3.3
 
-> +		/* config GIC to sys_pll2_100m */
-> +		imx8m_ccgr_clock_disable(IMX8M_CCM_CCGR_GIC);
-> +		imx8m_clock_set_target_val(IMX8M_GIC_CLK_ROOT,
-> +					   IMX8M_CCM_TARGET_ROOTn_ENABLE |
-> +					   IMX8M_CCM_TARGET_ROOTn_MUX(3));
-> +		imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_GIC);
->  	}
-> =20
-> +
->  	clrsetbits_le32(ccm + IMX8M_CCM_TARGET_ROOTn(IMX8M_ARM_A53_CLK_ROOT),
->  			IMX8M_CCM_TARGET_ROOTn_MUX(7),
->  			IMX8M_CCM_TARGET_ROOTn_MUX(2));
+Jonas Richardsen (3):
+  raspi: add fixup method for specific properties
+  raspi: override properties in /reserved-memory node of device tree
+  raspi: add a fixup for the `dma-ranges` property of the `/emmc2bus` dt
+    node
+
+ arch/arm/boards/raspberry-pi/rpi-common.c | 50 ++++++++++++++++++++++-
+ 1 file changed, 49 insertions(+), 1 deletion(-)
+
+-- 
+2.42.0
 
 
 
