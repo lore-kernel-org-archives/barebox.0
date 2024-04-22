@@ -1,56 +1,56 @@
-Delivery-date: Mon, 22 Apr 2024 12:24:12 +0200
+Delivery-date: Mon, 22 Apr 2024 12:24:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ryqqK-00BO3v-2h
+	id 1ryqqN-00BO4b-3D
 	for lore@lore.pengutronix.de;
-	Mon, 22 Apr 2024 12:24:12 +0200
+	Mon, 22 Apr 2024 12:24:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ryqqI-0007NL-89
-	for lore@pengutronix.de; Mon, 22 Apr 2024 12:24:12 +0200
+	id 1ryqqN-0007TX-50
+	for lore@pengutronix.de; Mon, 22 Apr 2024 12:24:15 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5gw/My+NlmGmROvklx8n+MtCBirvhim99bzf0pNPF5I=; b=SL+iE6PK2jXUAZdjfZYvEvTvlD
-	Vb3CPsTttp3CHV8uCJbUtxAhBaO/x0Uyo1Y9opkobr3g2DNyhIiun6aimdlCoXwewE5iFfCt9Mts8
-	Ldc6m1UsdecZr/u0m17TRqsoKuQbpRmkWZj1lb4KCz++5IpcL/9vPnzXfCWPgoSqkiPYXJ+bBx0sC
-	gZaRr14JzB8ZrxrUD58232tZqkzipJuRgCHye8aZM6RnGgeleCaUtwlVzHB6YmUTU93vs/mlSJVRK
-	o3iq9OxOWQykou8o9JlkcCdi0HCo/bgEE+nCvAOQyLbrCXHt6VYyXKty6/HQjOVvPNFPelXTy3WIU
-	80IfuU0Q==;
+	bh=b9WPTEUXvpv20RIal0m+3OlSsFM1zyosWshHvKiGPyI=; b=QKoMXHqPJAHDwETzSn6eCvwf61
+	Jiq+PXrQj7KpZFvNiM3K7+5TAISs4VFJt+qio3WzKsTavGpalye56pirCt5xTQXW8cK0+wgdKgkDV
+	sEdHrj2/KBp1fU6O9g8G/PyIP/u2N23b9R02Q9v+b55Uw0wgFU9+lPcIEGpBQa5WHoH/d34SGexV0
+	UjNST1k/9MGr+r8/4Z/cYTveUi6D0vZPRKNGFYo9AGgo6jVGucjsUneUDQe9W4H1LXIoPV2vLEd6b
+	qpBNSKvbo4+5/zbLfUBm7M5wbtEgAmiT6xFTvDc73kkY2peLx3AjC9tuBTF4SVOIutTcIz5jmTJjo
+	jPCnmumw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1ryqpu-0000000D8Pp-1hgP;
-	Mon, 22 Apr 2024 10:23:46 +0000
+	id 1ryqq2-0000000D8SU-14T5;
+	Mon, 22 Apr 2024 10:23:54 +0000
 Received: from mx1.emlix.com ([178.63.209.131])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1ryqpr-0000000D8OR-038H
+	id 1ryqpy-0000000D8RA-32bJ
 	for barebox@lists.infradead.org;
-	Mon, 22 Apr 2024 10:23:44 +0000
+	Mon, 22 Apr 2024 10:23:52 +0000
 Received: from mailer.emlix.com (cr-emlix.sta.goetel.net [81.20.112.87])
 	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by mx1.emlix.com (Postfix) with ESMTPS id E22CC5FDA5
-	for <barebox@lists.infradead.org>; Mon, 22 Apr 2024 12:23:28 +0200 (CEST)
+	by mx1.emlix.com (Postfix) with ESMTPS id 7ACCB5FE0D
+	for <barebox@lists.infradead.org>; Mon, 22 Apr 2024 12:23:31 +0200 (CEST)
 From: Jonas Richardsen <jonasrichardsen@emlix.com>
 To: barebox@lists.infradead.org
 Cc: Jonas Richardsen <jonasrichardsen@emlix.com>
-Date: Mon, 22 Apr 2024 10:16:47 +0000
-Message-ID: <20240422102232.551842-2-jonasrichardsen@emlix.com>
+Date: Mon, 22 Apr 2024 10:16:48 +0000
+Message-ID: <20240422102232.551842-3-jonasrichardsen@emlix.com>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20240422102232.551842-1-jonasrichardsen@emlix.com>
 References: <20240422102232.551842-1-jonasrichardsen@emlix.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240422_032343_227826_22300FEE 
-X-CRM114-Status: GOOD (  12.41  )
+X-CRM114-CacheID: sfid-20240422_032350_970970_A9C63E15 
+X-CRM114-Status: GOOD (  12.15  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -68,89 +68,48 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-6.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-6.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] raspi: add fixup method for specific properties
+Subject: [PATCH 2/3] raspi: override properties in /reserved-memory node of device tree
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add `rpi_vc_property_fixup` method to allow for fixups of specific
-properties, i.e., copy a property of some node from the video core
-device tree. Notably, this does override the property if it already
-existed (as opposed to `rpi_vc_fixup`, which copies an entire node, but
-does not override existing properties).
+Previously, the fixups in rpi-common.c only tries to copy the
+`/reserved-memory` node from the video core. As explained in
+`bcm2711-rpi.dtsi`, line 58, the video core does only update the
+placement information of the `/reserved-memory/nvram@0` subnode:
+> /*
+>  * RPi4's co-processor will copy the board's bootloader configuration
+>  * into memory for the OS to consume. It'll also update this node with
+>  * its placement information.
+>  */
+This behaviour is not achieved by the previous fixup, as this fixup
+operates on the wrong node and, even if applied to
+"/reserved-memory/nvram@0" would not override the already existing
+properties of this node. Instead, we can use the previously added
+`register_vc_property_fixup` method to achieve the desired behaviour.
 
 Signed-off-by: Jonas Richardsen <jonasrichardsen@emlix.com>
 ---
- arch/arm/boards/raspberry-pi/rpi-common.c | 46 +++++++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
-index 7c82c740e2..2245c36cbe 100644
+index 2245c36cbe..3c685852d3 100644
 --- a/arch/arm/boards/raspberry-pi/rpi-common.c
 +++ b/arch/arm/boards/raspberry-pi/rpi-common.c
-@@ -60,6 +60,11 @@ struct rpi_priv {
- 	const char *name;
- };
+@@ -372,7 +372,8 @@ static void rpi_vc_fdt_parse(struct device_node *root)
  
-+struct rpi_property_fixup_data {
-+    const struct device_node* vc_node;
-+    const char *propname;
-+};
-+
- static void rpi_set_usbethaddr(void)
- {
- 	u8 mac[ETH_ALEN];
-@@ -301,6 +306,47 @@ static struct device_node *register_vc_fixup(struct device_node *root,
- 	return ret;
- }
- 
-+static int rpi_vc_fdt_fixup_property(struct device_node *root, void *data)
-+{
-+	const struct rpi_property_fixup_data *fixup = data;
-+	struct device_node *node;
-+	struct property *prop;
-+
-+	node = of_create_node(root, fixup->vc_node->full_name);
-+	if (!node)
-+		return -ENOMEM;
-+
-+	prop = of_find_property(fixup->vc_node, fixup->propname, NULL);
-+	if (!prop)
-+		return -ENOENT;
-+
-+	return of_set_property(node, prop->name,
-+						   of_property_get_value(prop), prop->length, 1);
-+}
-+
-+static int register_vc_property_fixup(struct device_node *root,
-+						 const char *path, const char *propname)
-+{
-+	struct device_node *node, *tmp;
-+	struct rpi_property_fixup_data* fixup_data;
-+
-+	node = of_find_node_by_path_from(root, path);
-+	if (node) {
-+		tmp = of_dup(node);
-+		tmp->full_name = xstrdup(node->full_name);
-+		fixup_data = xzalloc(sizeof(*fixup_data));
-+		fixup_data->vc_node = tmp;
-+		fixup_data->propname = xstrdup(propname);
-+
-+		of_register_fixup(rpi_vc_fdt_fixup_property, fixup_data);
-+	} else {
-+		pr_info("no '%s' node found in vc fdt\n", path);
-+		return -ENOENT;
-+	}
-+
-+	return 0;
-+}
-+
- static u32 rpi_boot_mode, rpi_boot_part;
- /* Extract useful information from the VideoCore FDT we got.
-  * Some parameters are defined here:
+ 	register_vc_fixup(root, "/system");
+ 	register_vc_fixup(root, "/axi");
+-	register_vc_fixup(root, "/reserved-memory");
++	register_vc_property_fixup(root, "/reserved-memory/nvram@0", "reg");
++	register_vc_property_fixup(root, "/reserved-memory/nvram@0", "status");
+ 	register_vc_fixup(root, "/hat");
+ 	register_vc_fixup(root, "/chosen/bootloader");
+ 	chosen = register_vc_fixup(root, "/chosen");
 -- 
 2.42.0
 
