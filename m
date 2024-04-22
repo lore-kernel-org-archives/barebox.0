@@ -1,67 +1,70 @@
-Delivery-date: Mon, 22 Apr 2024 13:26:31 +0200
+Delivery-date: Mon, 22 Apr 2024 14:12:44 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ryrod-00BR7g-2R
+	id 1rysXM-00BTjb-0F
 	for lore@lore.pengutronix.de;
-	Mon, 22 Apr 2024 13:26:31 +0200
+	Mon, 22 Apr 2024 14:12:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1ryrod-0003sE-6n
-	for lore@pengutronix.de; Mon, 22 Apr 2024 13:26:31 +0200
+	id 1rysXL-0002Nf-Fa
+	for lore@pengutronix.de; Mon, 22 Apr 2024 14:12:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hGX626V+yn71Yi4aEElAoQle1/495F5aEUgGihG8A1Q=; b=b1nM1UCjokMcJq8OqB/DZp/YX7
-	pJiIWIpcoM4quM/BCUZTzlaw4O4j63GUPT6QV1oIzitVizoN1KtxwFh3NWvX2zwq+zt1wQhfgQxBg
-	A5G0xRzyfxMKasxXYaTjHLdGCWVwwM+4ZjlRM+21C8A5oEgBc37Ynxa8ZoC3rvZ0YBj32ap0OdWOq
-	xsXGJSU2oJ768QKH0odRyGwJALYty71Jxv/LIGUtRef61zANtnSqjsL0k64Qk3i3Kx38mMBCXV8Dg
-	DNlWP59YBC4zFLmig/giFLI6W9LrsnVCX/gJS6AKi+0HxJmMpYQZmJ+M2fvoTBTLz6+/3ePb63Dlx
-	HCYsWh6Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=fxNBxJ5nfHBvHSk6p2JMGOjkfJdSKSfdcAPfVYVWQeQ=; b=NBpxFjGmCgoYMF3LxNdglW1wrI
+	vO3euOV+IhEjX3H/hSLuRd/H+h4HgN+EPKPgkxvELp/LORvE4sxLRukQ9i5bnwzZkYP/78Rar6l9a
+	LjQnzmK/qwnzVygCSfk7DXy+w+2U/Fq3Yu6/Dol9ohSjvSn/dHyS4U4ZIsKT9reVejlPrNHWMcaQL
+	+q86nzP1r43zcMNLaNOCKGl8T1QIcIMG1dXQ39ps3KJZwOTanxBrnmmwsBkLhflP2IGjO7x6OUh+w
+	Aj1QT2rsozUeOpP4JZneYxlTlXGX22CzVR999ZHd1zINo79p1aKA2BJgw8fCdBrGl+Rs0VdRIBWPp
+	YoepYGsQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1ryroE-0000000DMWa-3tPS;
-	Mon, 22 Apr 2024 11:26:06 +0000
+	id 1rysWm-0000000DTBx-2yZk;
+	Mon, 22 Apr 2024 12:12:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1ryroA-0000000DMW6-0yuN
+	id 1rysWj-0000000DT7d-0dNu
 	for barebox@lists.infradead.org;
-	Mon, 22 Apr 2024 11:26:03 +0000
+	Mon, 22 Apr 2024 12:12:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ryro8-0003Rh-Nq; Mon, 22 Apr 2024 13:26:00 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rysWe-0001lE-Ld; Mon, 22 Apr 2024 14:12:00 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ryro8-00DgGm-BZ; Mon, 22 Apr 2024 13:26:00 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1ryro8-005rrf-0u;
-	Mon, 22 Apr 2024 13:26:00 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1rysWe-00DgQo-8k; Mon, 22 Apr 2024 14:12:00 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1rysWe-0087rx-0Z;
+	Mon, 22 Apr 2024 14:12:00 +0200
+Date: Mon, 22 Apr 2024 14:12:00 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240419061003.2590849-1-a.fatoum@pengutronix.de>
-References: <20240419061003.2590849-1-a.fatoum@pengutronix.de>
-Message-Id: <171378516026.1398297.1314384820112926148.b4-ty@pengutronix.de>
-Date: Mon, 22 Apr 2024 13:26:00 +0200
+To: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <ZiZUECGk10cVsnXn@pengutronix.de>
+References: <20240417-v2024-03-0-topic-imx93-designware-imx-v1-0-c532c18f9ba5@pengutronix.de>
+ <20240417-v2024-03-0-topic-imx93-designware-imx-v1-2-c532c18f9ba5@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240417-v2024-03-0-topic-imx93-designware-imx-v1-2-c532c18f9ba5@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240422_042602_315188_ED7140C0 
-X-CRM114-Status: UNSURE (   8.04  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240422_051205_212705_2457F1F2 
+X-CRM114-Status: GOOD (  23.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,39 +82,69 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 0/3] clk: imx: composite-8m: fix muxing of core
- and bus
+Subject: Re: [PATCH 2/2] net: designware-imx: i.MX93: set TX_CLK in RMII mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Fri, 19 Apr 2024 08:10:00 +0200, Ahmad Fatoum wrote:
-> The i.MX8M differntiates between three types of composite clocks (called
-> slices): Core, Bus and IP (peripheral) clocks. How muxes are configured
-> differs between these clocks, so the driver is populating a mux_ops
-> variable to point at the correct struct clk_ops.
+On Wed, Apr 17, 2024 at 11:11:26AM +0200, Steffen Trumtrar wrote:
+> According to NXP AT14149 the TX_CLK direction must be set to output
+> when the ENET is used in RMII mode.
 > 
-> Unfortunately, mux_ops wasn't actually used, leading to barebox hangs,
-> depending on the assigned-clock-parents properties in the device tree.
+> Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
+> ---
+>  drivers/net/designware_imx.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
 > 
-> [...]
+> diff --git a/drivers/net/designware_imx.c b/drivers/net/designware_imx.c
+> index ab60d98298..2cc707ecac 100644
+> --- a/drivers/net/designware_imx.c
+> +++ b/drivers/net/designware_imx.c
+> @@ -26,6 +26,10 @@
+>  
+>  #define RMII_RESET_SPEED			(0x3 << 14)
+>  
+> +#define MX93_GPR_ENET_CLK_SEL_OFFSET		0x4
+> +#define MX93_ENET_CLK_ENET_QOS_TX_CLK_SEL_MASK	GENMASK(0, 0)
+> +#define MX93_ENET_CLK_ENET_QOS_TX_CLK_SEL	(0x1 << 0)
 
-Applied, thanks!
+No need to define an extra _MASK for single bit fields. Just use
+MX93_ENET_CLK_ENET_QOS_TX_CLK_SEL instead.
 
-[1/3] clk: imx: add IMX_COMPOSITE_CLK_FLAGS_DEFAULT macro
-      https://git.pengutronix.de/cgit/barebox/commit/?id=fb6c852f5b87 (link may not be stable)
-[2/3] clk: imx: composite-8m: fix muxing of core and bus clocks
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4ec1f1d2887f (link may not be stable)
-[3/3] clk: imx: imx8mp: sync with Linux v6.9-rc3
-      https://git.pengutronix.de/cgit/barebox/commit/?id=ed8dad10eac8 (link may not be stable)
+> +
+>  struct eqos_imx_soc_data {
+>  	int (*set_interface_mode)(struct eqos *eqos);
+>  	void (*fix_soc_reset)(struct eqos *eqos, u32 *mac_regs);
+> @@ -155,6 +159,14 @@ static int eqos_imx93_set_interface_mode(struct eqos *eqos)
+>  		break;
+>  	case PHY_INTERFACE_MODE_RMII:
+>  		val = MX93_GPR_ENET_QOS_INTF_SEL_RMII;
+> +
+> +		/* According to NXP AN14149, the direction of the
+> +		 * TX_CLK must be set to output in RMII mode.
+> +		 */
+> +		regmap_update_bits(priv->intf_regmap,
+> +				   priv->intf_reg_off + MX93_GPR_ENET_CLK_SEL_OFFSET,
+> +				   MX93_ENET_CLK_ENET_QOS_TX_CLK_SEL_MASK,
+> +				   MX93_ENET_CLK_ENET_QOS_TX_CLK_SEL);
 
-Best regards,
+I think this is ok for now as all in tree boards need this set, but what
+about this comment to the corresponding kernel patch?
+
+https://lore.kernel.org/all/f01d49cf-5955-405c-9c2b-05b0c7bb982c@armadeus.com/
+
+Also according to the reference manual this bit is default 1 already,
+how comes you have to adjust it?
+
+Sascha
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
