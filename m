@@ -1,58 +1,68 @@
-Delivery-date: Tue, 23 Apr 2024 08:53:11 +0200
+Delivery-date: Tue, 23 Apr 2024 10:35:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzA1f-00CYhW-35
+	id 1rzBcI-00CeaZ-2W
 	for lore@lore.pengutronix.de;
-	Tue, 23 Apr 2024 08:53:11 +0200
+	Tue, 23 Apr 2024 10:35:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzA1f-00015V-4l
-	for lore@pengutronix.de; Tue, 23 Apr 2024 08:53:11 +0200
+	id 1rzBcH-0002ul-Iy
+	for lore@pengutronix.de; Tue, 23 Apr 2024 10:35:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=062NkxmmizP2ghL+sfbpWTxpSsZ9dS7m60JQq/KYFLg=; b=2qVKOmbOsvfBRq6lF2aPEZmMAe
-	Yn2lYZc+WFI+I0vWiu7G+efjnxL3zDGaFuKPXswinpLE/mn+5/EpYRE7qS9SCQCjVRdHF6AJJZZvo
-	9I6iDlJfCg71Sr0UogS8nP4iZ9gxgc74gZICYmqQnBg3cYDmJ9B3t+rV3MRQjzRWDaiW14BZXV09u
-	K4jYdfFryQvA3a4yzBN3fzcd3bgdFn3UtgPuM4ejX2XZF57d4299nr3HP93pFpMYGEr5Wkr0K6OAG
-	oGYP8oTffOKEyZP/y+6O62wlZT+NXkAi5H2+OTY6+UOt3RYv05N25oAW4JHst07oSpHRG3um1umcP
-	ChoZyZXw==;
+	bh=Sv2oh3k7XWL3Iv2eB3Dbv0yP4dMXp+DN3iVrZJZoq04=; b=JYWo2wWnmMGiL21J/tuy4L4y2E
+	p7j9K4xE5EVvz9ImiFfng9p/xDLOZ4wlt+n/p34HvAUYbeGUISA1W48iaRcN+3Xo0ocRdnoI6reEq
+	4fDuOX4SA8qC2OQxcuRGYwMhIEp+vTxYhPyfFbSBYIhgBoANwged86ptFdUME+fZTv98/DmM/APaY
+	Tn8uazjj7clxPCFZJhLAwuWaXk/zPDRy3DAFw3ixGAMKSD8EF0Zbc2xnju/346kPxWrnGRBaXoiKO
+	Ga3p8cjVo+VPaGGJBZMoD+HGclJAn6JisJI0tecsXwsHtgWATZUjjV/nWE4BfNJDk7wNpmYIxGhh1
+	+4OzCUFA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzA1D-0000000GBuz-1Dua;
-	Tue, 23 Apr 2024 06:52:43 +0000
+	id 1rzBbc-0000000GTTC-2QLd;
+	Tue, 23 Apr 2024 08:34:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzA19-0000000GBts-1jKC
+	id 1rzBbZ-0000000GTOu-1U0X
 	for barebox@lists.infradead.org;
-	Tue, 23 Apr 2024 06:52:41 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzA18-0000xG-2J; Tue, 23 Apr 2024 08:52:38 +0200
-Message-ID: <1da89dfd-2ce1-4394-9354-a9384804fc6f@pengutronix.de>
-Date: Tue, 23 Apr 2024 08:52:37 +0200
+	Tue, 23 Apr 2024 08:34:23 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rzBbL-0002cl-5Q; Tue, 23 Apr 2024 10:34:07 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rzBbK-00DrUy-EI; Tue, 23 Apr 2024 10:34:06 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1rzBbK-00EWZY-1B;
+	Tue, 23 Apr 2024 10:34:06 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, 
+ Jonas Richardsen <jonasrichardsen@emlix.com>
+Cc: denis.osterland@diehl.com
+In-Reply-To: <20240422102232.551842-1-jonasrichardsen@emlix.com>
+References: <20240422102232.551842-1-jonasrichardsen@emlix.com>
+Message-Id: <171386124636.3461761.10857280667691362622.b4-ty@pengutronix.de>
+Date: Tue, 23 Apr 2024 10:34:06 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org, str@pengutronix.de, mtr@pengutronix.de
-References: <20240423062206.1518464-1-a.fatoum@pengutronix.de>
- <ZidY2gPIldO_pfIk@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <ZidY2gPIldO_pfIk@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240422_235239_485603_FB492F09 
-X-CRM114-Status: GOOD (  22.43  )
+X-CRM114-CacheID: sfid-20240423_013421_428632_06A09DB5 
+X-CRM114-Status: GOOD (  15.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,78 +84,44 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 1/3] mci: core: fix fallback when eMMC DDR52 is not
- possible
+Subject: Re: [PATCH 0/3] raspi: cleanup of vc fixups
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 23.04.24 08:44, Sascha Hauer wrote:
-> On Tue, Apr 23, 2024 at 08:22:04AM +0200, Ahmad Fatoum wrote:
->> mci_mmc_select_hs_ddr() will try DDR52 and if that fails, revert to
->> SDR operation. In that case, it returns the bus width, which would
->> be forwarded as if it were an error code:
->>
->>   WARNING: mmc2: Card's startup fails with 3
->>
->> Fix this by translating successful return values to 0 in
->> mci_startup_mmc().
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  drivers/mci/mci-core.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
->> index 1d383e6449e9..57b4c5b99c9c 100644
->> --- a/drivers/mci/mci-core.c
->> +++ b/drivers/mci/mci-core.c
->> @@ -1566,7 +1566,7 @@ static int mci_startup_mmc(struct mci *mci)
->>  		}
->>  	}
->>  
->> -	return ret;
->> +	return ret >= MMC_BUS_WIDTH_1 ? 0 : ret;
->>  }
-> 
-> Can we do it like below instead? It makes clear where a MMC_BUS_WIDTH_x
-> return value is expected.
 
-mci_mmc_select_hs_ddr() may return MMC_BUS_WIDTH_*, which isn't addressed
-by your patch.
+On Mon, 22 Apr 2024 10:16:46 +0000, Jonas Richardsen wrote:
+> This patch series contains a few changes to the video core fixups where
+> the desired behaviour is obvious from raspberry device trees. These were
+> tested on a Raspberry Pi 4B. There's a few more differences between the
+> video core device tree and the one provided by barebox for which a
+> discussion is welcome:
+> 
+> - After a [recent change][link1] the `/chosen` node of the device tree
+>   is now fully copied from the video core device tree. This could
+>   possibly be restricted to only copy relevant properties.
+> - The properties `memreserve` and `serial-number` of the root node are
+>   added by the video core and could also be copied.
+> - The property `model` of the root node is updated with the specific
+>   hardware revision of the pi.
+> - The video core adds the two aliases `i2c_arm` and `i2c_vc` (as
+>   properties to the `/aliases` node). As the [raspberrypi
+>   documentation][link2] suggests to use the former for writing overlays,
+>   it should maybe also be copied as a fixup.
+> 
+> [...]
 
-> 
-> Sascha
-> 
-> 
-> ----------------------------------8<---------------------------
-> 
-> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-> index 083d2f4ed1..da892a5f84 100644
-> --- a/drivers/mci/mci-core.c
-> +++ b/drivers/mci/mci-core.c
-> @@ -1558,8 +1558,12 @@ static int mci_startup_mmc(struct mci *mci)
->  
->  		/* find out maximum bus width and then try DDR if supported */
->  		ret = mci_mmc_select_bus_width(mci);
-> -		if (ret > MMC_BUS_WIDTH_1 && mci->tran_speed == 52000000)
-> -			ret = mci_mmc_select_hs_ddr(mci);
-> +		if (ret > MMC_BUS_WIDTH_1) {
-> +			ret = 0;
-> +
-> +			if (mci->tran_speed == 52000000)
-> +				ret = mci_mmc_select_hs_ddr(mci);
-> +		}
->  
->  		if (ret < 0) {
->  			dev_warn(&mci->dev, "Changing MMC bus width failed: %d\n", ret);
-> 
-> 
+Applied, thanks!
 
+[1/3] raspi: add fixup method for specific properties
+      https://git.pengutronix.de/cgit/barebox/commit/?id=dcb947764491 (link may not be stable)
+[2/3] raspi: override properties in /reserved-memory node of device tree
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3cf4417d0045 (link may not be stable)
+[3/3] raspi: add a fixup for the `dma-ranges` property of the `/emmc2bus` dt node
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3f9788433919 (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
