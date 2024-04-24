@@ -1,67 +1,67 @@
-Delivery-date: Wed, 24 Apr 2024 09:09:33 +0200
+Delivery-date: Wed, 24 Apr 2024 09:09:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzWl3-00ERB1-0T
+	id 1rzWl8-00ERC7-2f
 	for lore@lore.pengutronix.de;
-	Wed, 24 Apr 2024 09:09:33 +0200
+	Wed, 24 Apr 2024 09:09:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzWl1-0006rf-Ad
-	for lore@pengutronix.de; Wed, 24 Apr 2024 09:09:32 +0200
+	id 1rzWl7-0006z3-AA
+	for lore@pengutronix.de; Wed, 24 Apr 2024 09:09:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=N0XxjyNzxaqzlFk+Bz8BGgwy/XeytR1aTV4Gc/cdFgY=; b=VOFl+I30C5G4RSRbm3hFcNoFhi
-	TBR/jOs3tRRPP2bacTnRO0DsdokUYAx0iM3lhpkXzTlpQH4HIVatJACyN/cLbYe2BZmjV3snNO+j1
-	UyaC7LSiEX7v+QzhWPAA7+cWHLsCaYDz85R1xCd/IUw87QgvlRIaNsie9Pv6SDujH3tmN32445I8M
-	J+3dJuWqsCxm0e6wEnmUljEI0pbBSxsDZTYTiuaWnLsLKwjsYZWMFb4Nx6m/MchbCeG44Aaw6YJln
-	TcUURFyqHSsdrziqmhW/Rn10FS9kGR4Vimicv6PT+aTseRTZ6L6HiUA5jOv2YVLMAQkEqncMlnpqs
-	YAJyQS1A==;
+	bh=3w6ZkRCdx09CWHVZR1UBudwmy7m7CxbDQL1A69/uJq4=; b=I2p78m+JYeNB5cJqDBsFYcHnpL
+	89pvWj3jom5o8f1ca+ajHmd2ewzSDBj0CbWjw0XqgRJz+qCSQb5rFwPiPjkdjwzuClo1H2oIHuorv
+	6PdLRH28b8rCkB41YZ8Y49Ua8frpTB6W2LvuISNqKL6D5+/59K9Gi92tpRj2GppGzoQJ0n8jyHz9x
+	LXOcT/NpesjpHkXxTllJ3AkNacZJhmQdQCQNuY9LGzjcuXN4wG2v/r+HDPzwb00bJnWr0+wdJoLdO
+	fRLmSKCqaDcKNz2xVWoN46zhb+CLsN+YjVYxTIZ8sfd0idnbWxopqxSHiG38WL1gwEc66ZFUztegp
+	zsLH4hgA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzWkR-000000032JU-0Nmd;
-	Wed, 24 Apr 2024 07:08:55 +0000
+	id 1rzWkU-000000032ME-0csM;
+	Wed, 24 Apr 2024 07:08:58 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzWjx-000000031tD-2oT2
+	id 1rzWjx-000000031tH-3K3a
 	for barebox@lists.infradead.org;
-	Wed, 24 Apr 2024 07:08:30 +0000
+	Wed, 24 Apr 2024 07:08:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWjw-0005dl-3e; Wed, 24 Apr 2024 09:08:24 +0200
+	id 1rzWjw-0005eA-7a; Wed, 24 Apr 2024 09:08:24 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWjv-00E24w-NQ; Wed, 24 Apr 2024 09:08:23 +0200
+	id 1rzWjv-00E255-RG; Wed, 24 Apr 2024 09:08:23 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWJT-00F8kt-2U;
+	id 1rzWJT-00F8kt-2m;
 	Wed, 24 Apr 2024 08:41:03 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 24 Apr 2024 08:40:53 +0200
-Message-Id: <20240424064058.3608016-19-a.fatoum@pengutronix.de>
+Date: Wed, 24 Apr 2024 08:40:55 +0200
+Message-Id: <20240424064058.3608016-21-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240424064058.3608016-1-a.fatoum@pengutronix.de>
 References: <20240424064058.3608016-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240424_000825_960323_898C6E7D 
-X-CRM114-Status: GOOD (  11.65  )
+X-CRM114-CacheID: sfid-20240424_000825_958467_4EA200D4 
+X-CRM114-Status: GOOD (  12.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,61 +83,91 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 18/23] usb: hub: use DMA memory in usb_get_port_status
+Subject: [PATCH master 20/23] treewide: use new dma_zalloc instead of opencoding
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Depending on driver, the data parameter in usb_control_msg may be used
-in DMA, so let's use a bounce buffer allocated with dma_alloc instead of
-doing DMA to the stack.
+We got a number of places using dma_alloc and zeroing its contents.
+Replace the ones found by a quick grep with the new dma_zalloc.
+
+No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/usb/core/hub.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/net/fsl-fman.c                   |  4 +---
+ drivers/usb/gadget/function/f_fastboot.c |  3 +--
+ drivers/video/mipi_dbi.c                 |  3 +--
+ fs/ext4/ext4_common.h                    | 10 +---------
+ 4 files changed, 4 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/usb/core/hub.c b/drivers/usb/core/hub.c
-index 650af0e8845a..9776fd72a5a4 100644
---- a/drivers/usb/core/hub.c
-+++ b/drivers/usb/core/hub.c
-@@ -86,18 +86,25 @@ static int usb_get_hub_status(struct usb_device *dev, void *data)
- 			data, sizeof(struct usb_hub_status), USB_CNTL_TIMEOUT);
- }
+diff --git a/drivers/net/fsl-fman.c b/drivers/net/fsl-fman.c
+index 9ae4dc9abf70..5528ecccc950 100644
+--- a/drivers/net/fsl-fman.c
++++ b/drivers/net/fsl-fman.c
+@@ -616,9 +616,7 @@ static int fm_eth_rx_port_parameter_init(struct fm_eth *fm_eth)
+ 		return -ENOMEM;
  
--static int usb_get_port_status(struct usb_device *dev, int port, void *data)
-+static int usb_get_port_status(struct usb_device *dev, int port,
-+			       struct usb_port_status *status)
- {
-+	struct usb_port_status *data;
- 	int ret;
+ 	/* alloc Rx buffer from main memory */
+-	rx_buf_pool = dma_alloc(MAX_RXBUF_LEN * RX_BD_RING_SIZE);
+-
+-	memset(rx_buf_pool, 0, MAX_RXBUF_LEN * RX_BD_RING_SIZE);
++	rx_buf_pool = dma_zalloc(MAX_RXBUF_LEN * RX_BD_RING_SIZE);
  
-+	data = dma_alloc(sizeof(*data));
-+	if (!data)
-+		return -ENOMEM;
-+
- 	ret = usb_control_msg(dev, usb_rcvctrlpipe(dev, 0),
- 			USB_REQ_GET_STATUS, USB_DIR_IN | USB_RT_PORT, 0, port,
- 			data, sizeof(struct usb_hub_status), USB_CNTL_TIMEOUT);
- 	if (ret < 0)
--		return ret;
-+		goto out;
-+
-+	*status = *data;
+ 	/* save them to fm_eth */
+ 	fm_eth->rx_bd_ring = rx_bd_ring_base;
+diff --git a/drivers/usb/gadget/function/f_fastboot.c b/drivers/usb/gadget/function/f_fastboot.c
+index 41450268fcdb..30d257b5002a 100644
+--- a/drivers/usb/gadget/function/f_fastboot.c
++++ b/drivers/usb/gadget/function/f_fastboot.c
+@@ -199,12 +199,11 @@ static struct usb_request *fastboot_alloc_request(struct usb_ep *ep)
+ 		return NULL;
  
- 	if (!usb_hub_is_root_hub(dev) && usb_hub_is_superspeed(dev)) {
--		struct usb_port_status *status = data;
- 		u16 tmp = status->wPortStatus & USB_SS_PORT_STAT_MASK;
- 
- 		if (status->wPortStatus & USB_SS_PORT_STAT_POWER)
-@@ -109,6 +116,8 @@ static int usb_get_port_status(struct usb_device *dev, int port, void *data)
- 		status->wPortStatus = tmp;
+ 	req->length = EP_BUFFER_SIZE;
+-	req->buf = dma_alloc(EP_BUFFER_SIZE);
++	req->buf = dma_zalloc(EP_BUFFER_SIZE);
+ 	if (!req->buf) {
+ 		usb_ep_free_request(ep, req);
+ 		return NULL;
  	}
+-	memset(req->buf, 0, EP_BUFFER_SIZE);
  
-+out:
-+	dma_free(data);
- 	return ret;
+ 	return req;
  }
+diff --git a/drivers/video/mipi_dbi.c b/drivers/video/mipi_dbi.c
+index 2f8d6ecc72cf..9611a402d1ba 100644
+--- a/drivers/video/mipi_dbi.c
++++ b/drivers/video/mipi_dbi.c
+@@ -398,8 +398,7 @@ int mipi_dbi_dev_init(struct mipi_dbi_dev *dbidev, struct fb_ops *ops,
+ 	info->bits_per_pixel = 16;
+ 	info->line_length = info->xres * 2;
+ 	info->screen_size = info->line_length * info->yres;
+-	info->screen_base = dma_alloc(info->screen_size);
+-	memset(info->screen_base, 0, info->screen_size);
++	info->screen_base = dma_zalloc(info->screen_size);
  
+ 	info->red.length = 5;
+ 	info->red.offset = 11;
+diff --git a/fs/ext4/ext4_common.h b/fs/ext4/ext4_common.h
+index f8ebd7626636..3286a21c0e26 100644
+--- a/fs/ext4/ext4_common.h
++++ b/fs/ext4/ext4_common.h
+@@ -36,15 +36,7 @@
+ #include "ext4fs.h"
+ #include "ext_common.h"
+ 
+-static inline void *zalloc(size_t size)
+-{
+-	void *p = dma_alloc(size);
+-
+-	if (p)
+-		memset(p, 0, size);
+-
+-	return p;
+-}
++#define zalloc	dma_zalloc
+ 
+ int ext4fs_read_inode(struct ext2_data *data, int ino,
+ 		      struct ext2_inode *inode);
 -- 
 2.39.2
 
