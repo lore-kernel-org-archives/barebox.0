@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzWKL-00EOO5-0p
+	id 1rzWKL-00EOO8-0y
 	for lore@lore.pengutronix.de;
 	Wed, 24 Apr 2024 08:41:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzWKJ-0000ZU-Cp
+	id 1rzWKJ-0000ZR-66
 	for lore@pengutronix.de; Wed, 24 Apr 2024 08:41:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,50 +18,51 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=COncbXMgRApHyhi4HSD81BSJkUt5cqrVJxf+h37fEbA=; b=p5AiJWx/NIGi5sPfUHyfhBW761
-	R2SrRb/FQrBy8tDHWsxxtlgKA+xZc6KfXpzdaPdOXItq9hLoW4LaZPJvBBYexWd2QFh+JGXA1kVs4
-	LFN9BgMq+34Ul8a6oWDcRhD2BAfzXXafn1zCjrEbnNicOxm81f8ga9uXeGs2rwNlrjQR3g5yaSHHn
-	kOSvsAYKnv8eOml/n/WrANNlbJNlPgHXE/YaEt3cKKUW1PVZqWJBQKJ4f5CChKRljnFtl7v6FD3gM
-	VQJFxtjmdvaXTHhp4c25afopm0DPp0NRPpYLhzQtHEs3rOr1fMvMUtpk3ee1SmtIo9Cv9gaEC3Pig
-	A52bxuVA==;
+	bh=gef03YhwBbKmveuJpm/qMdb0z4RikBBp9v8mvOT1m/o=; b=aDvfYHVxNjgjkMy31VxK7ceZ+F
+	liMENpQqvM4kzc4u3UWe5nnjeFHWqUUK3zrRPlXsXl6/N3ehwntuKQj6IrbwkvZ0DxRtEH21bmA9+
+	/QHu6f7AzTI1anhKfZflvy+mOfRPeudXS09viGEA6iUl2DbRKeKmU4l63942x+U5n1srkdrcb2pf0
+	rLYBGq8SWkCXNjxCNdWmX9q/pUZ5mdl7zDYMYJFI8SChDVScLLRIQxET2e0dqhGyBsyk5x0obup01
+	ue3JqQO5cbkYBkvr2h32A26ilAeUEARKCXVHDnT7gm6NlAFusJMhDMjPZ+5ZY4E4gRD5zruC4zbfj
+	y8oWxUEA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzWJf-00000002v86-2Yko;
-	Wed, 24 Apr 2024 06:41:15 +0000
+	id 1rzWJe-00000002v7I-0moF;
+	Wed, 24 Apr 2024 06:41:14 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzWJW-00000002uze-2PNc
+	id 1rzWJW-00000002uzh-2QEX
 	for barebox@lists.infradead.org;
 	Wed, 24 Apr 2024 06:41:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWJT-0008Bf-PS; Wed, 24 Apr 2024 08:41:03 +0200
+	id 1rzWJT-0008Bg-R8; Wed, 24 Apr 2024 08:41:03 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWJT-00E1yn-BJ; Wed, 24 Apr 2024 08:41:03 +0200
+	id 1rzWJT-00E1yq-Cs; Wed, 24 Apr 2024 08:41:03 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWJT-00F8kt-0s;
+	id 1rzWJT-00F8kt-10;
 	Wed, 24 Apr 2024 08:41:03 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 24 Apr 2024 08:40:42 +0200
-Message-Id: <20240424064058.3608016-8-a.fatoum@pengutronix.de>
+Date: Wed, 24 Apr 2024 08:40:43 +0200
+Message-Id: <20240424064058.3608016-9-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240424064058.3608016-1-a.fatoum@pengutronix.de>
 References: <20240424064058.3608016-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240423_234106_785215_3D6F6A36 
-X-CRM114-Status: GOOD (  10.13  )
+X-CRM114-CacheID: sfid-20240423_234106_806401_4D3BD80E 
+X-CRM114-Status: UNSURE (   7.92  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,57 +84,29 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 07/23] RISC-V: dma: fix dma.h inclusion
+Subject: [PATCH master 08/23] sandbox: dma: drop unused driver.h include
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-dma.h include <asm/dma.h> first thing, so including <dma.h> from
-<asm/dma.h> is pointless and using <asm/dma.h> directly is wrong.
+We don't require anything out of this header, so drop it.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/riscv/cpu/dma.c              | 2 +-
- arch/riscv/include/asm/dma.h      | 2 --
- drivers/soc/starfive/jh7100_dma.c | 2 +-
- 3 files changed, 2 insertions(+), 4 deletions(-)
+ arch/sandbox/include/asm/dma.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/riscv/cpu/dma.c b/arch/riscv/cpu/dma.c
-index 511170aaa4e2..f3a1a8ec9ac5 100644
---- a/arch/riscv/cpu/dma.c
-+++ b/arch/riscv/cpu/dma.c
-@@ -2,7 +2,7 @@
+diff --git a/arch/sandbox/include/asm/dma.h b/arch/sandbox/include/asm/dma.h
+index cafbb7fe6a4c..ab84166846a2 100644
+--- a/arch/sandbox/include/asm/dma.h
++++ b/arch/sandbox/include/asm/dma.h
+@@ -10,7 +10,6 @@
  
- #include <common.h>
- #include <xfuncs.h>
--#include <asm/dma.h>
-+#include <dma.h>
- #include <malloc.h>
+ #include <linux/kernel.h>
+ #include <linux/string.h>
+-#include <driver.h>
  
- static void __dma_flush_range(dma_addr_t start, dma_addr_t end)
-diff --git a/arch/riscv/include/asm/dma.h b/arch/riscv/include/asm/dma.h
-index 56bcf06cc4af..e1829d8c9613 100644
---- a/arch/riscv/include/asm/dma.h
-+++ b/arch/riscv/include/asm/dma.h
-@@ -17,6 +17,4 @@ void dma_set_ops(const struct dma_ops *ops);
+ #define DMA_ALIGNMENT	64
  
- #define DMA_ALIGNMENT 64
- 
--#include <dma.h>
--
- #endif /* _ASM_DMA_MAPPING_H */
-diff --git a/drivers/soc/starfive/jh7100_dma.c b/drivers/soc/starfive/jh7100_dma.c
-index e3cfc8cf6534..5f6e78fc3632 100644
---- a/drivers/soc/starfive/jh7100_dma.c
-+++ b/drivers/soc/starfive/jh7100_dma.c
-@@ -4,7 +4,7 @@
-  */
- 
- #include <common.h>
--#include <asm/dma.h>
-+#include <dma.h>
- #include <soc/sifive/l2_cache.h>
- 
- #define SDRAM_CACHED_BASE	0x80000000
 -- 
 2.39.2
 
