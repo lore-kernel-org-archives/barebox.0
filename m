@@ -1,67 +1,68 @@
-Delivery-date: Wed, 24 Apr 2024 09:09:13 +0200
+Delivery-date: Wed, 24 Apr 2024 09:09:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzWkj-00ER5j-33
+	id 1rzWkk-00ER64-1U
 	for lore@lore.pengutronix.de;
-	Wed, 24 Apr 2024 09:09:13 +0200
+	Wed, 24 Apr 2024 09:09:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzWke-0006P3-Gp
-	for lore@pengutronix.de; Wed, 24 Apr 2024 09:09:13 +0200
+	id 1rzWke-0006PA-KS
+	for lore@pengutronix.de; Wed, 24 Apr 2024 09:09:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=1SCW6tIg36BXRaCQGoAhMjzDi+qrHUVd6nU5oSXkbMY=; b=Yzjq/iMS+BwusPrPDYYGoyywCf
-	uiwpHQVGQ5mjq2Y5if8rJ/ZS002pFTD8xEaMmqGKjcjp4HV1ogk6B+gIl1RyRlSAMOFSfmA/SAoP8
-	fm2QcNpFCIUshh47hwrEyY1wH/zZ3cT+XKChD4NAruAvSebxp5ZvnhuudSXWOm/JW/R2UZkLix85g
-	ERQLx1OXXyTaS554S04Bc3vCTpBLAEmphJgx735s5iBr8cqBAeHpqVaxMJlv58mf7IJwrGsH0Z6/T
-	0Llheovx8yVl6kzbMJ5Z6i/RSeTBBk43hTtw0Tsl2OjBbrKBL+GOuFulZiF7y8gsFxC90iq7kj5ch
-	9oDGKHMQ==;
+	bh=ZPtw3fLFO4pabMriRXatmHaIjsHopg0Lo+ViTvt5oi0=; b=1owny0U/PPrqaGpiEwUVsVLceY
+	OVUU37LXc1HfKOKfBEbHfexEw/todHOGs33iu2LnQdDCIyMwTDS201nYvVXwtl3LSrytSYSDqBC1D
+	3DJm9srZqIdXbGaN02MtdojvU77qnFKm3NTKOLuZu3Ka7demGF6+IFJDT87IlFBgAXc6kMALVlvMl
+	uW7KfJV3fEfcu7r/vp7e+1WTh3thOT7E0oUoo41mJ5ztGWrXCCbKR46MNLzkurIn0fgabpiD6a+H0
+	vNO9LBR37vXz8IkacuUcdS2rrORnTuMVP9TKgPBSHkE0T3HjCZRMUOQ5DUPsbmgEca2oFlq/bQabZ
+	II9Q7Ppg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzWk4-00000003209-07e4;
-	Wed, 24 Apr 2024 07:08:32 +0000
+	id 1rzWk7-0000000321R-2Mo4;
+	Wed, 24 Apr 2024 07:08:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzWjw-000000031t4-4910
+	id 1rzWjx-000000031t7-0sht
 	for barebox@lists.infradead.org;
-	Wed, 24 Apr 2024 07:08:28 +0000
+	Wed, 24 Apr 2024 07:08:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWjv-0005c5-JY; Wed, 24 Apr 2024 09:08:23 +0200
+	id 1rzWjv-0005cT-Oq; Wed, 24 Apr 2024 09:08:23 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWjv-00E24S-5o; Wed, 24 Apr 2024 09:08:23 +0200
+	id 1rzWjv-00E24b-BS; Wed, 24 Apr 2024 09:08:23 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWJT-00F8kt-34;
-	Wed, 24 Apr 2024 08:41:03 +0200
+	id 1rzWJT-00F8kt-3C;
+	Wed, 24 Apr 2024 08:41:04 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 24 Apr 2024 08:40:57 +0200
-Message-Id: <20240424064058.3608016-23-a.fatoum@pengutronix.de>
+Date: Wed, 24 Apr 2024 08:40:58 +0200
+Message-Id: <20240424064058.3608016-24-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240424064058.3608016-1-a.fatoum@pengutronix.de>
 References: <20240424064058.3608016-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240424_000825_185394_35111B05 
-X-CRM114-Status: GOOD (  11.81  )
+X-CRM114-CacheID: sfid-20240424_000825_924591_DA4A4067 
+X-CRM114-Status: UNSURE (   8.70  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,50 +84,35 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 22/23] net: bcmgenet: map DMA buffers with dma_map_single
+Subject: [PATCH master 23/23] dma: debug: add alignment check when mapping buffers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We need to map DMA buffers first before handing them off to HW,
-otherwise dirty cache lines may get evicted in the time window
-between HW conducting DMA to rx_buffer and dma_sync_single_for_cpu
-invalidating the CPU cache leading to corrupted packets.
-
-This was detected by CONFIG_DMA_API_DEBUG, but needed adding a manual
-!dev check into debug_dma_sync_single_for_cpu/device to silence the
-not-yet fixed reports about the Rpi mailbox driver.
+dma_map_single should only be called on buffers that have suitable DMA
+alignment, otherwise cache maintenance may corrupt adjacent memory due
+the cache line granularity. Let's verify this is indeed the case at
+runtime.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
----
- drivers/net/bcmgenet.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/dma/debug.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/bcmgenet.c b/drivers/net/bcmgenet.c
-index 9e0bacb31adf..acbb973a92f2 100644
---- a/drivers/net/bcmgenet.c
-+++ b/drivers/net/bcmgenet.c
-@@ -356,12 +356,13 @@ static void rx_descs_init(struct bcmgenet_eth_priv *priv)
- 	len_stat = (RX_BUF_LENGTH << DMA_BUFLENGTH_SHIFT) | DMA_OWN;
+diff --git a/drivers/dma/debug.c b/drivers/dma/debug.c
+index f4272e8f5822..32a417504479 100644
+--- a/drivers/dma/debug.c
++++ b/drivers/dma/debug.c
+@@ -128,6 +128,10 @@ void debug_dma_map(struct device *dev, void *addr,
+ 	list_add(&entry->list, &dma_mappings);
  
- 	for (i = 0; i < RX_DESCS; i++) {
--		writel(lower_32_bits((uintptr_t)&rxbuffs[i * RX_BUF_LENGTH]),
--		       desc_base + i * DMA_DESC_SIZE + DMA_DESC_ADDRESS_LO);
--		writel(upper_32_bits((uintptr_t)&rxbuffs[i * RX_BUF_LENGTH]),
--		       desc_base + i * DMA_DESC_SIZE + DMA_DESC_ADDRESS_HI);
--		writel(len_stat,
--		       desc_base + i * DMA_DESC_SIZE + DMA_DESC_LENGTH_STATUS);
-+		dma_addr_t dma_addr = dma_map_single(priv->dev, &rxbuffs[i * RX_BUF_LENGTH],
-+			   RX_BUF_LENGTH, DMA_FROM_DEVICE);
-+		void *desc = desc_base + i * DMA_DESC_SIZE;
+ 	dma_debug(entry, "allocated\n");
 +
-+		writel(lower_32_bits(dma_addr), desc + DMA_DESC_ADDRESS_LO);
-+		writel(upper_32_bits(dma_addr), desc + DMA_DESC_ADDRESS_HI);
-+		writel(len_stat, desc + DMA_DESC_LENGTH_STATUS);
- 	}
++	if (!IS_ALIGNED(dev_addr, DMA_ALIGNMENT))
++		dma_dev_warn(dev, "Mapping insufficiently aligned %s buffer 0x%llx+0x%zx: %u bytes required!\n",
++			     dir2name[direction], (u64)addr, size, DMA_ALIGNMENT);
  }
  
+ void debug_dma_unmap(struct device *dev, dma_addr_t addr,
 -- 
 2.39.2
 
