@@ -1,67 +1,65 @@
-Delivery-date: Wed, 24 Apr 2024 09:09:38 +0200
+Delivery-date: Wed, 24 Apr 2024 18:48:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzWl8-00ERC7-2f
+	id 1rzfnP-00F6zB-1Y
 	for lore@lore.pengutronix.de;
-	Wed, 24 Apr 2024 09:09:38 +0200
+	Wed, 24 Apr 2024 18:48:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzWl7-0006z3-AA
-	for lore@pengutronix.de; Wed, 24 Apr 2024 09:09:38 +0200
+	id 1rzfnO-0003EL-Na
+	for lore@pengutronix.de; Wed, 24 Apr 2024 18:48:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=3w6ZkRCdx09CWHVZR1UBudwmy7m7CxbDQL1A69/uJq4=; b=I2p78m+JYeNB5cJqDBsFYcHnpL
-	89pvWj3jom5o8f1ca+ajHmd2ewzSDBj0CbWjw0XqgRJz+qCSQb5rFwPiPjkdjwzuClo1H2oIHuorv
-	6PdLRH28b8rCkB41YZ8Y49Ua8frpTB6W2LvuISNqKL6D5+/59K9Gi92tpRj2GppGzoQJ0n8jyHz9x
-	LXOcT/NpesjpHkXxTllJ3AkNacZJhmQdQCQNuY9LGzjcuXN4wG2v/r+HDPzwb00bJnWr0+wdJoLdO
-	fRLmSKCqaDcKNz2xVWoN46zhb+CLsN+YjVYxTIZ8sfd0idnbWxopqxSHiG38WL1gwEc66ZFUztegp
-	zsLH4hgA==;
+	Content-Type:MIME-Version:Message-ID:Date:Subject:To:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=fgf0F98j94QOJuCjoak7I8/yTebnT9/LZlvmaEffuMc=; b=kfjr40Q5YoC/j/IbceN2gVQLFv
+	o2yEUzmCsuLVUKUSQOJF1BzEOIl9tt8wxYMZdmx9psbSZwebD3mIvSekTvHDy7gAc7/cC/eLNs6dr
+	G4xagWLOHDZlJ/YJgVmuxkHsQaCXx10KS217YUzONNFmXMi12akfLAh04wttOPYdmuGGhmeGjtMd1
+	lfub2QwxIQmMu/12hj1wODtu7aOE0dVNfsHXFOASTJflgcmHmKpK0rNe+SiGln/4BXEZtQbHdJb9Q
+	7I85GuwkgUsmeKiBkpAuXh7UmOhv0iobHg8xfTtpp6cATHP8GETx5HGS/RBlMQGpL/rq8VBvpUpUe
+	BndIMePw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzWkU-000000032ME-0csM;
-	Wed, 24 Apr 2024 07:08:58 +0000
+	id 1rzfms-000000050sw-0xCk;
+	Wed, 24 Apr 2024 16:48:02 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzWjx-000000031tH-3K3a
+	id 1rzfmn-000000050qK-36sH
 	for barebox@lists.infradead.org;
-	Wed, 24 Apr 2024 07:08:31 +0000
+	Wed, 24 Apr 2024 16:47:59 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWjw-0005eA-7a; Wed, 24 Apr 2024 09:08:24 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rzfml-0002cl-TQ; Wed, 24 Apr 2024 18:47:55 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWjv-00E255-RG; Wed, 24 Apr 2024 09:08:23 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1rzWJT-00F8kt-2m;
-	Wed, 24 Apr 2024 08:41:03 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rzfml-00E73F-H8; Wed, 24 Apr 2024 18:47:55 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1rzfml-007tnp-1S;
+	Wed, 24 Apr 2024 18:47:55 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 24 Apr 2024 08:40:55 +0200
-Message-Id: <20240424064058.3608016-21-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240424064058.3608016-1-a.fatoum@pengutronix.de>
-References: <20240424064058.3608016-1-a.fatoum@pengutronix.de>
+Date: Wed, 24 Apr 2024 18:47:43 +0200
+Message-ID: <20240424164743.586410-3-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2041; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=N5eUWadh4eMRTOA26Ffysd6jWEkjdtZ8zI7hV/Qw+hE=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmKTevO1XAOVLL8LAAyZntJge43GiovzAxraSpr Kxofur/6/WJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZik3rwAKCRCPgPtYfRL+ TnMvB/9IWA/kU+am3efto57YwGmqEe4KuuCa1mtdNCS/QLgiiBMooYiWt0enOukVGN0MW8qU6ij M71gZVM3QN7SNPXHbSTe3XBQ9ThbcSLORGz2pA8FPbvzzq/dstMgLV/iCGU01HUN8cM5yw9vvBp y2rWHihzEG4ISwkl/C4GOlBStXv+k9NBbRT95M27q+xAi4O5fbs61tr8a1jqZd/OY9AaJ2ZMeLh JjLkU8YXbq80O2H3PAF65IkstjhoDYpTpf3r1a0OYJwGsSMr590LE64UayTXcGzvOJgyW847IUs kbk1YvkLqnJE9sT6u87R3IPwl5fPxMfQsVuKt0HcGsqiuX9m
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240424_000825_958467_4EA200D4 
-X-CRM114-Status: GOOD (  12.27  )
+X-CRM114-CacheID: sfid-20240424_094757_849178_683247E1 
+X-CRM114-Status: GOOD (  14.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,97 +77,77 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master 20/23] treewide: use new dma_zalloc instead of opencoding
+Subject: [PATCH 1/2] mtd: nand-imx: Cleanup and simplify code creating bad block table
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We got a number of places using dma_alloc and zeroing its contents.
-Replace the ones found by a quick grep with the new dma_zalloc.
+Let the variable "numblocks" contain the number of blocks of the NAND
+device (and not twice this value). Also the loop variable counts blocks
+now instead of the doubled value. Further calculate the offset of the
+i-th block from i instead of incrementing in each step and pick a more
+sensbile variable name for it.
 
-No functional change.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 ---
- drivers/net/fsl-fman.c                   |  4 +---
- drivers/usb/gadget/function/f_fastboot.c |  3 +--
- drivers/video/mipi_dbi.c                 |  3 +--
- fs/ext4/ext4_common.h                    | 10 +---------
- 4 files changed, 4 insertions(+), 16 deletions(-)
+ drivers/mtd/nand/nand_imx.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/fsl-fman.c b/drivers/net/fsl-fman.c
-index 9ae4dc9abf70..5528ecccc950 100644
---- a/drivers/net/fsl-fman.c
-+++ b/drivers/net/fsl-fman.c
-@@ -616,9 +616,7 @@ static int fm_eth_rx_port_parameter_init(struct fm_eth *fm_eth)
+diff --git a/drivers/mtd/nand/nand_imx.c b/drivers/mtd/nand/nand_imx.c
+index 77655daa4efe..b26889358b3f 100644
+--- a/drivers/mtd/nand/nand_imx.c
++++ b/drivers/mtd/nand/nand_imx.c
+@@ -1194,31 +1194,31 @@ static int imxnd_create_bbt(struct nand_chip *chip)
+ {
+ 	struct mtd_info *mtd = nand_to_mtd(chip);
+ 	int len, i, numblocks, ret;
+-	loff_t from = 0;
+ 	uint8_t *bbt;
+ 
+-	len = mtd->size >> (chip->bbt_erase_shift + 2);
++	numblocks = mtd->size >> chip->bbt_erase_shift;
+ 
+-	/* Allocate memory (2bit per block) and clear the memory bad block table */
++	/*
++	 * Allocate memory (2bit per block = 1 byte per 4 blocks) and clear the
++	 * memory bad block table
++	 */
++	len = (numblocks + 3) >> 2;
+ 	bbt = kzalloc(len, GFP_KERNEL);
+ 	if (!bbt)
  		return -ENOMEM;
  
- 	/* alloc Rx buffer from main memory */
--	rx_buf_pool = dma_alloc(MAX_RXBUF_LEN * RX_BD_RING_SIZE);
+-	numblocks = mtd->size >> (chip->bbt_erase_shift - 1);
++	for (i = 0; i < numblocks; ++i) {
++		loff_t ofs = i << chip->bbt_erase_shift;
+ 
+-	for (i = 0; i < numblocks;) {
+-		ret = checkbad(chip, from);
++		ret = checkbad(chip, ofs);
+ 		if (ret < 0)
+ 			goto out;
+ 
+ 		if (ret) {
+-			bbt[i >> 3] |= 0x03 << (i & 0x6);
++			bbt[i >> 2] |= 0x03 << (2 * (i & 0x3));
+ 			dev_info(mtd->dev.parent, "Bad eraseblock %d at 0x%08x\n",
+-				 i >> 1, (unsigned int)from);
++				 i, (unsigned int)ofs);
+ 		}
 -
--	memset(rx_buf_pool, 0, MAX_RXBUF_LEN * RX_BD_RING_SIZE);
-+	rx_buf_pool = dma_zalloc(MAX_RXBUF_LEN * RX_BD_RING_SIZE);
- 
- 	/* save them to fm_eth */
- 	fm_eth->rx_bd_ring = rx_bd_ring_base;
-diff --git a/drivers/usb/gadget/function/f_fastboot.c b/drivers/usb/gadget/function/f_fastboot.c
-index 41450268fcdb..30d257b5002a 100644
---- a/drivers/usb/gadget/function/f_fastboot.c
-+++ b/drivers/usb/gadget/function/f_fastboot.c
-@@ -199,12 +199,11 @@ static struct usb_request *fastboot_alloc_request(struct usb_ep *ep)
- 		return NULL;
- 
- 	req->length = EP_BUFFER_SIZE;
--	req->buf = dma_alloc(EP_BUFFER_SIZE);
-+	req->buf = dma_zalloc(EP_BUFFER_SIZE);
- 	if (!req->buf) {
- 		usb_ep_free_request(ep, req);
- 		return NULL;
+-		i += 2;
+-		from += (1 << chip->bbt_erase_shift);
  	}
--	memset(req->buf, 0, EP_BUFFER_SIZE);
  
- 	return req;
- }
-diff --git a/drivers/video/mipi_dbi.c b/drivers/video/mipi_dbi.c
-index 2f8d6ecc72cf..9611a402d1ba 100644
---- a/drivers/video/mipi_dbi.c
-+++ b/drivers/video/mipi_dbi.c
-@@ -398,8 +398,7 @@ int mipi_dbi_dev_init(struct mipi_dbi_dev *dbidev, struct fb_ops *ops,
- 	info->bits_per_pixel = 16;
- 	info->line_length = info->xres * 2;
- 	info->screen_size = info->line_length * info->yres;
--	info->screen_base = dma_alloc(info->screen_size);
--	memset(info->screen_base, 0, info->screen_size);
-+	info->screen_base = dma_zalloc(info->screen_size);
- 
- 	info->red.length = 5;
- 	info->red.offset = 11;
-diff --git a/fs/ext4/ext4_common.h b/fs/ext4/ext4_common.h
-index f8ebd7626636..3286a21c0e26 100644
---- a/fs/ext4/ext4_common.h
-+++ b/fs/ext4/ext4_common.h
-@@ -36,15 +36,7 @@
- #include "ext4fs.h"
- #include "ext_common.h"
- 
--static inline void *zalloc(size_t size)
--{
--	void *p = dma_alloc(size);
--
--	if (p)
--		memset(p, 0, size);
--
--	return p;
--}
-+#define zalloc	dma_zalloc
- 
- int ext4fs_read_inode(struct ext2_data *data, int ino,
- 		      struct ext2_inode *inode);
+ 	chip->bbt_td->options |= NAND_BBT_CREATE;
+
+base-commit: f40319c8e157c90117d32aed1dae5549a723c63e
+prerequisite-patch-id: acee91c52d3f79ce61961584c6712403adad66ef
 -- 
-2.39.2
+2.43.0
 
 
 
