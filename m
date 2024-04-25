@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzxwN-00Ggok-0i
+	id 1rzxwN-00Ggoy-1P
 	for lore@lore.pengutronix.de;
 	Thu, 25 Apr 2024 14:11:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzxwL-0007Ej-42
+	id 1rzxwL-0007F7-HM
 	for lore@pengutronix.de; Thu, 25 Apr 2024 14:11:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
@@ -18,48 +18,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=bO3DYvmO2Bo0k6WFiabud0GRjYfx/yH1MmHR4t74Nps=; b=1dGn/KYPYqmVD/
-	ovRCKtlhrqrM/TOYrYBXjDLXq9flA6CEYl/z7fhPZlejJTAt9BulYyS45PPOFPPeT4SFqp3w6QDvn
-	dtWOfqcIv5KzYGF6d4FeQj1Jj8/RuIiIhS96yoTXLtWrCmE5VaKVGwA0pu00+JMVaqkuX3BcD8/zz
-	s5qIEgcrxVoSPDdNNJIfyrtu8TCJsgPtXpZ55WTQtcqPT9hcy/QZU9P/E6UCqUOLF0UaVCQZuIcb9
-	TGGwZ0Rx01KqnWWS1onp3Yb7UiJnLMl16YAALM+bw41JqKaqJmCUOwzzKdc9HKgTdtiuha+MCVfRR
-	erf8IpKrPapuAciNRgWw==;
+	List-Owner; bh=AHQXJOmFnoKKfpMJH0v5iqkXxQJhaLR2yNB2QNr6zTs=; b=2mFtRqi28XC7IB
+	dr6/J3Trh+cCfjiUsW/XN3Qrx5ZtbfAy36cUNmhOsvohFttFK7xWUM4Dzj1Sx45vKJjXsKQtdgPAH
+	ery0PaRgbe+zaMTHY2n4HuCwfckwn0U5NBC7/6jH0WeCDOUB0ueTjvDgdSLEDxH2lAyytimjA7ls3
+	b/E/qcPU4TTq90694QXXvxwt7SFBgUnp7xWQZN4x0UAnh45nkHo+dWIZLFdDT3tz1QbAKzZ1LpyzD
+	Kfoivs8c1WxRTctGze1T5GKkaPTZSQOxW7cw0jVsgNWWNYLjyUTOF9CsNsT488kHEO83Jhz2utZyy
+	2MTKssR09XtjPiETmtjQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzxvm-000000089fH-3nD4;
-	Thu, 25 Apr 2024 12:10:26 +0000
+	id 1rzxvt-000000089il-2nJY;
+	Thu, 25 Apr 2024 12:10:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzxvi-000000089cZ-00pk
+	id 1rzxvp-000000089gH-2HeR
 	for barebox@lists.infradead.org;
-	Thu, 25 Apr 2024 12:10:24 +0000
+	Thu, 25 Apr 2024 12:10:30 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxvg-0006ef-D9; Thu, 25 Apr 2024 14:10:20 +0200
+	id 1rzxvg-0006eb-Cd; Thu, 25 Apr 2024 14:10:20 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxvf-00EFvW-W9; Thu, 25 Apr 2024 14:10:20 +0200
+	id 1rzxvf-00EFvK-Lq; Thu, 25 Apr 2024 14:10:19 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxgZ-009aQk-00;
-	Thu, 25 Apr 2024 13:54:43 +0200
+	id 1rzxgY-009aQk-2W;
+	Thu, 25 Apr 2024 13:54:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 25 Apr 2024 13:54:39 +0200
-Message-Id: <20240425115439.2269239-16-s.hauer@pengutronix.de>
+Date: Thu, 25 Apr 2024 13:54:35 +0200
+Message-Id: <20240425115439.2269239-12-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240425115439.2269239-1-s.hauer@pengutronix.de>
 References: <20240425115439.2269239-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240425_051022_345061_A6C97F88 
-X-CRM114-Status: GOOD (  13.11  )
+X-CRM114-CacheID: sfid-20240425_051029_610984_977F4A18 
+X-CRM114-Status: GOOD (  12.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,277 +82,180 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 15/15] ARM: drop TEXT_BASE
+Subject: [PATCH 11/15] ARM: move HAVE_PBL_MULTI_IMAGES to toplevel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With all ARM boards being relocatable TEXT_BASE is always defined to 0x0
-and can be dropped. The ARCH_TEXT_BASE Kconfig symbol is also no longer
-used and can be removed.
+All ARM architectures now have PBL multi image support, so move
+HAVE_PBL_MULTI_IMAGES and HAVE_PBL_IMAGE to the toplevel ARM
+config.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                  | 4 ----
- arch/arm/Makefile                 | 4 ----
- arch/arm/boards/versatile/Kconfig | 4 ----
- arch/arm/lib32/barebox.lds.S      | 2 +-
- arch/arm/lib64/barebox.lds.S      | 2 +-
- arch/arm/mach-at91/Kconfig        | 8 --------
- arch/arm/mach-bcm283x/Kconfig     | 4 ----
- arch/arm/mach-mvebu/Kconfig       | 7 -------
- arch/arm/mach-mxs/Kconfig         | 9 ---------
- arch/arm/mach-omap/Kconfig        | 5 -----
- arch/arm/mach-rockchip/Kconfig    | 5 -----
- arch/arm/mach-socfpga/Kconfig     | 4 ----
- arch/arm/mach-tegra/Kconfig       | 4 ----
- arch/arm/mach-versatile/Kconfig   | 3 ---
- arch/arm/mach-vexpress/Kconfig    | 4 ----
- arch/arm/mach-zynq/Kconfig        | 4 ----
- 16 files changed, 2 insertions(+), 71 deletions(-)
+ arch/arm/Kconfig              |  9 ++-------
+ arch/arm/cpu/Kconfig          |  3 ---
+ arch/arm/cpu/uncompress.c     | 13 -------------
+ arch/arm/mach-omap/Kconfig    |  1 -
+ arch/arm/mach-socfpga/Kconfig |  2 --
+ arch/arm/mach-zynq/Kconfig    |  1 -
+ 6 files changed, 2 insertions(+), 27 deletions(-)
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 6a6d7955d1..b9883b30f7 100644
+index 5a10b5aaa3..e2ea68e762 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -24,10 +24,6 @@ config ARM_USE_COMPRESSED_DTB
-        bool
-        select USE_COMPRESSED_DTB
+@@ -10,6 +10,8 @@ config ARM
+ 	select ARCH_HAS_SJLJ
+ 	select ARM_OPTIMZED_STRING_FUNCTIONS if KASAN
+ 	select HAVE_EFI_STUB
++	select HAVE_PBL_IMAGE
++	select HAVE_PBL_MULTI_IMAGES
+ 	default y
  
--config TEXT_BASE
--	hex
--	default 0x0
--
- menu "System Type"
+ config ARM_LINUX
+@@ -42,7 +44,6 @@ choice
+ 	prompt "ARM system type"
  
- config ARCH_STM32
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index f98770f66a..f91fcb0454 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -102,10 +102,6 @@ machine-$(CONFIG_ARCH_TEGRA)		+= tegra
- machine-$(CONFIG_ARCH_ZYNQ)		+= zynq
- machine-$(CONFIG_ARCH_ZYNQMP)		+= zynqmp
+ config ARCH_MULTIARCH
+-	select HAVE_PBL_MULTI_IMAGES
+ 	select OFTREE
+ 	select OFDEVICE
+ 	bool "Allow multiple archs to be selected"
+@@ -52,7 +53,6 @@ config ARCH_AT91
+ 	depends on 32BIT
+ 	select GPIOLIB
+ 	select CLKDEV_LOOKUP
+-	select HAVE_PBL_MULTI_IMAGES
+ 	select HAS_DEBUG_LL
+ 	select HAVE_CLK
+ 	select COMMON_CLK_AT91 if COMMON_CLK_OF_PROVIDER
+@@ -66,7 +66,6 @@ config ARCH_CLPS711X
+ 	select CPU_32v4T
+ 	select GPIOLIB
+ 	select HAS_DEBUG_LL
+-	select HAVE_PBL_MULTI_IMAGES
+ 	select MFD_SYSCON
+ 	select RELOCATABLE
  
--TEXT_BASE = $(CONFIG_TEXT_BASE)
--
--KBUILD_CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE)
--
- # Add cleanup flags
- KBUILD_CPPFLAGS += -fdata-sections -ffunction-sections
- LDFLAGS_barebox += --gc-sections -pie
-diff --git a/arch/arm/boards/versatile/Kconfig b/arch/arm/boards/versatile/Kconfig
-index 66492404e0..5cb3061635 100644
---- a/arch/arm/boards/versatile/Kconfig
-+++ b/arch/arm/boards/versatile/Kconfig
-@@ -2,8 +2,4 @@
- 
- if MACH_VERSATILEPB
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x01000000
--
- endif
-diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
-index ad9e9e84ef..97f41f72fe 100644
---- a/arch/arm/lib32/barebox.lds.S
-+++ b/arch/arm/lib32/barebox.lds.S
-@@ -83,5 +83,5 @@ SECTIONS
- #endif
- 
- 	_end = .;
--	_barebox_image_size = __bss_start - TEXT_BASE;
-+	_barebox_image_size = __bss_start;
- }
-diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
-index 2479646d9d..1d0cc6dc54 100644
---- a/arch/arm/lib64/barebox.lds.S
-+++ b/arch/arm/lib64/barebox.lds.S
-@@ -53,5 +53,5 @@ SECTIONS
- 	.bss : { *(.bss*) }
- 	.__bss_stop :  { *(.__bss_stop) }
- 	_end = .;
--	_barebox_image_size = __bss_start - TEXT_BASE;
-+	_barebox_image_size = __bss_start;
- }
-diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
-index b68a9f4e25..0b75d665d0 100644
---- a/arch/arm/mach-at91/Kconfig
-+++ b/arch/arm/mach-at91/Kconfig
-@@ -147,14 +147,6 @@ config SOC_SAMA7G5
- 	help
- 	  Select this if you are using one of Microchip's SAMA7G5 family SoC.
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x73f00000 if SOC_AT91SAM9G45
--	default 0x26f00000 if SOC_AT91SAM9X5
--	default 0x20f00000 if SOC_AT91RM9200
--	default 0x21f00000 if MACH_ANIMEO_IP
--	default 0x23f00000
--
- config HAVE_NAND_ATMEL_BUSWIDTH_16
- 	bool
- 
-diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
-index f7434d2f5c..defccf8362 100644
---- a/arch/arm/mach-bcm283x/Kconfig
-+++ b/arch/arm/mach-bcm283x/Kconfig
-@@ -2,10 +2,6 @@
- 
- if ARCH_BCM283X
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x0
--
- config MACH_RPI_COMMON
- 	bool
- 	select ARM_USE_COMPRESSED_DTB
-diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
-index 1b26148434..ed1302af65 100644
---- a/arch/arm/mach-mvebu/Kconfig
-+++ b/arch/arm/mach-mvebu/Kconfig
-@@ -2,13 +2,6 @@
- 
- if ARCH_MVEBU
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x2000000 if ARCH_ARMADA_370
--	default 0x2000000 if ARCH_ARMADA_XP
--	default 0x2000000 if ARCH_DOVE
--	default 0x2000000 if ARCH_KIRKWOOD
--
- config ARCH_ARMADA_370
- 	bool
- 	select CPU_V7
-diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
-index c8ef2c62af..0219196794 100644
---- a/arch/arm/mach-mxs/Kconfig
-+++ b/arch/arm/mach-mxs/Kconfig
-@@ -2,15 +2,6 @@
- 
- if ARCH_MXS
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x41000000 if MACH_MX23EVK
--	default 0x42000000 if MACH_CHUMBY
--	default 0x42000000 if MACH_IMX233_OLINUXINO
--	default 0x47000000 if MACH_TX28
--	default 0x47000000 if MACH_MX28EVK
--	default 0x47000000 if MACH_CFA10036
--
- config ARCH_MXS_OF_SUPPORT
- 	bool
+@@ -77,7 +76,6 @@ config ARCH_MVEBU
  	select COMMON_CLK_OF_PROVIDER
+ 	select GPIOLIB
+ 	select HAS_DEBUG_LL
+-	select HAVE_PBL_MULTI_IMAGES
+ 	select HW_HAS_PCI
+ 	select MVEBU_MBUS
+ 	select OFTREE
+@@ -91,7 +89,6 @@ config ARCH_MXS
+ 	select GENERIC_GPIO
+ 	select COMMON_CLK
+ 	select HAS_DEBUG_LL
+-	select HAVE_PBL_MULTI_IMAGES
+ 
+ config ARCH_PXA
+ 	bool "Intel/Marvell PXA based"
+@@ -116,7 +113,6 @@ config ARCH_TEGRA
+ 	select COMMON_CLK_OF_PROVIDER
+ 	select GPIOLIB
+ 	select GPIO_TEGRA
+-	select HAVE_PBL_MULTI_IMAGES
+ 	select OFDEVICE
+ 	select OFTREE
+ 	select RELOCATABLE
+@@ -277,7 +273,6 @@ config BOARD_ARM_VIRT
+ config BOARD_ARM_GENERIC_DT
+ 	select BOARD_GENERIC_DT
+ 	select ARM_AMBA
+-	depends on HAVE_PBL_MULTI_IMAGES
+ 	depends on OFDEVICE
+ 	bool "Build generic ARM device tree 2nd stage image"
+ 	help
+diff --git a/arch/arm/cpu/Kconfig b/arch/arm/cpu/Kconfig
+index e69acaacdf..6563394a7a 100644
+--- a/arch/arm/cpu/Kconfig
++++ b/arch/arm/cpu/Kconfig
+@@ -10,14 +10,11 @@ config CPU_32
+ 	select HAS_MODULES
+ 	select HAVE_MOD_ARCH_SPECIFIC
+ 	select HAS_DMA
+-	select HAVE_PBL_IMAGE
+ 	select ARCH_HAS_ZERO_PAGE
+ 
+ config CPU_64
+ 	bool
+ 	select PHYS_ADDR_T_64BIT
+-	select HAVE_PBL_IMAGE
+-	select HAVE_PBL_MULTI_IMAGES
+ 	select HAS_DMA
+ 	select ARCH_WANT_FRAME_POINTERS
+ 	select ARCH_HAS_ZERO_PAGE
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index a481c4634d..4101cb36a4 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -23,19 +23,6 @@
+ 
+ #include "entry.h"
+ 
+-#ifndef CONFIG_HAVE_PBL_MULTI_IMAGES
+-
+-void start_pbl(void);
+-
+-/*
+- * First instructions in the pbl image
+- */
+-void __naked __section(.text_head_entry_start_single_pbl) start_pbl(void)
+-{
+-	barebox_arm_head();
+-}
+-#endif
+-
+ unsigned long free_mem_ptr;
+ unsigned long free_mem_end_ptr;
+ 
 diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
-index 6ddbb6e572..7b0eade65a 100644
+index fe3c6316dc..6ddbb6e572 100644
 --- a/arch/arm/mach-omap/Kconfig
 +++ b/arch/arm/mach-omap/Kconfig
-@@ -100,11 +100,6 @@ config BAREBOX_UPDATE_AM33XX_EMMC
- 	help
- 	  Say Y for barebox update eMMC handler.
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x80e80000 if MACH_OMAP343xSDP
--	default 0x80e80000 if MACH_BEAGLE
--
- config AM33XX_NET_BOOT
- 	bool "enable AM335x network boot"
- 	select ENVIRONMENT_VARIABLES
-diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
-index 1421b9e257..901d4a9ae0 100644
---- a/arch/arm/mach-rockchip/Kconfig
-+++ b/arch/arm/mach-rockchip/Kconfig
-@@ -3,11 +3,6 @@
- menu "Rockchip Features"
- 	depends on ARCH_ROCKCHIP
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x68000000 if ARCH_RK3188
--	default 0x0
--
- config RK_TIMER
- 	hex
- 	default 1
+@@ -182,7 +182,6 @@ config MACH_VSCOM_BALTOS
+ config MACH_WAGO_PFC_AM35XX
+         bool "Wago PFC200 Fieldbus Controller"
+         select ARCH_AM35XX
+-        select HAVE_PBL_MULTI_IMAGES
+         select HAVE_CONFIGURABLE_MEMORY_LAYOUT
+         help
+           Say Y here if you are using a the AM3505 based PFC200 controller
 diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
-index 75f03d3f6a..a4d7177797 100644
+index b23a41d3f9..75f03d3f6a 100644
 --- a/arch/arm/mach-socfpga/Kconfig
 +++ b/arch/arm/mach-socfpga/Kconfig
-@@ -2,10 +2,6 @@
- 
- if ARCH_SOCFPGA
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x0
--
- config ARCH_SOCFPGA_XLOAD
+@@ -15,7 +15,6 @@ comment "Altera SoCFPGA System-on-Chip"
+ config ARCH_SOCFPGA_CYCLONE5
  	bool
- 	prompt "Build preloader image"
-diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
-index cc256f584a..3e25758353 100644
---- a/arch/arm/mach-tegra/Kconfig
-+++ b/arch/arm/mach-tegra/Kconfig
-@@ -2,10 +2,6 @@
- 
- if ARCH_TEGRA
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x0
--
- # ---------------------------------------------------------
- 
- config ARCH_TEGRA_2x_SOC
-diff --git a/arch/arm/mach-versatile/Kconfig b/arch/arm/mach-versatile/Kconfig
-index 89f50c270e..c72673cbf0 100644
---- a/arch/arm/mach-versatile/Kconfig
-+++ b/arch/arm/mach-versatile/Kconfig
-@@ -2,9 +2,6 @@
- 
- if ARCH_VERSATILE
- 
--config ARCH_TEXT_BASE
--	default 0x02000000
--
- config MACH_VERSATILEPB
- 	bool
- 	default y
-diff --git a/arch/arm/mach-vexpress/Kconfig b/arch/arm/mach-vexpress/Kconfig
-index 1b89d0edf9..eb0520b8d4 100644
---- a/arch/arm/mach-vexpress/Kconfig
-+++ b/arch/arm/mach-vexpress/Kconfig
-@@ -2,10 +2,6 @@
- 
- if ARCH_VEXPRESS
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x0
--
- config MACH_VEXPRESS
- 	bool "ARM Vexpress"
+ 	select CPU_V7
+-	select HAVE_PBL_MULTI_IMAGES
+ 	select OFDEVICE if !ARCH_SOCFPGA_XLOAD
+ 	select OFTREE if !ARCH_SOCFPGA_XLOAD
+ 	select GPIOLIB if !ARCH_SOCFPGA_XLOAD
+@@ -25,7 +24,6 @@ config ARCH_SOCFPGA_ARRIA10
+ 	select CPU_V7
+ 	select ARM_USE_COMPRESSED_DTB
+ 	select RESET_CONTROLLER
+-	select HAVE_PBL_MULTI_IMAGES
+ 	select OFDEVICE
+ 	select OFTREE
  
 diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
-index 2403c2edc3..27136a65fc 100644
+index 451a344b2e..be51411a43 100644
 --- a/arch/arm/mach-zynq/Kconfig
 +++ b/arch/arm/mach-zynq/Kconfig
-@@ -2,10 +2,6 @@
- 
- if ARCH_ZYNQ
- 
--config ARCH_TEXT_BASE
--	hex
--	default 0x0
--
- config ZYNQ_DEBUG_LL_UART_BASE
- 	hex
- 	default 0xe0001000 if MACH_ZEDBOARD
+@@ -17,7 +17,6 @@ config ARCH_ZYNQ7000
+ 	select COMMON_CLK_OF_PROVIDER
+ 	select ARM_SMP_TWD
+ 	select HAS_MACB
+-	select HAVE_PBL_MULTI_IMAGES
+ 	select OFTREE
+ 	select OFDEVICE
+ 	select RELOCATABLE
 -- 
 2.39.2
 
