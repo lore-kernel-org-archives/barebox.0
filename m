@@ -1,65 +1,65 @@
-Delivery-date: Thu, 25 Apr 2024 13:56:13 +0200
+Delivery-date: Thu, 25 Apr 2024 13:56:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzxi1-00GfAJ-1V
+	id 1rzxiK-00GfC8-1O
 	for lore@lore.pengutronix.de;
-	Thu, 25 Apr 2024 13:56:13 +0200
+	Thu, 25 Apr 2024 13:56:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzxhu-00070v-Bf
-	for lore@pengutronix.de; Thu, 25 Apr 2024 13:56:13 +0200
+	id 1rzxi8-00079e-0X
+	for lore@pengutronix.de; Thu, 25 Apr 2024 13:56:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=TTu+TDFPayI/04Msu+L7ZDKrCws7OTmpppARguAVCZI=; b=gItlxGt64cegsD
-	6wIIW2iFj3w+o5IsOrRkmahK2qba2cUZZqbszUByzbO+6aJh/LOssxdP6k2++8Y2GkBu5GSY2UU6j
-	pwTUAO9UEz8bBGlxGDJhLCUA9sBb5NsMTlFPtyoBnrV600lpMmgUzV7c5mreuedTdn3fhlg07omJe
-	QXB9wPQ1+N+/Libbw4ks+fCaUxPqMZm0HjFvNcl9OOFCi/yckknEMlm0i0R/B089Gl9s9sswB5HdS
-	bus86W1wKQZ+pIqavPiTgGmvkygyGdY8C5XZduC1j6UsK05tSWrbuAz4t+FyHeQJHFfBSU39DZtCb
-	ikMtu9zwq7oY2J/+STdg==;
+	List-Owner; bh=1dGW4YcEFeZk9vs2CQY9PDBiJq5hMQ8jy2Hli33NP2g=; b=uRmR+kSkaQtAih
+	0yT+j4VeqQT0cPfpoP5ON+z4lZXCz8d2kMnXzOzVBKnEvn6kALWB4Lbw6pVZ+hlGdeay2+CHYclVQ
+	UNOEINoWYQSXPruHn9peDoio5SjwH+H99iNU3yfEq6qrGUqKcEjhuop0A2ZbqWCFOImQUK001MMPH
+	6Hu5K3L1zGh5FmbV1PC3QH0d3K1AQSyowMJrn/Iozy/kbYtF23dAsq3fwMwJg1RjEf0q96z74WvVE
+	ltJXw21yuPAomxdbwOlo/dAubNZeS7Jh3gPgJbla9WG+CP97HdXUU6Z3LjOrEmBpukUwo2tQLCMlu
+	WRTlai4xd6qJ9KyBFTKw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzxgy-000000085KI-4AcS;
-	Thu, 25 Apr 2024 11:55:09 +0000
+	id 1rzxh6-000000085RS-3Yi1;
+	Thu, 25 Apr 2024 11:55:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzxgq-000000085F3-2qKR
+	id 1rzxgy-000000085KT-2c54
 	for barebox@lists.infradead.org;
-	Thu, 25 Apr 2024 11:55:05 +0000
+	Thu, 25 Apr 2024 11:55:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxgZ-00062h-8i; Thu, 25 Apr 2024 13:54:43 +0200
+	id 1rzxgZ-00062j-8l; Thu, 25 Apr 2024 13:54:43 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxgY-00EFqq-FW; Thu, 25 Apr 2024 13:54:42 +0200
+	id 1rzxgY-00EFqw-Ky; Thu, 25 Apr 2024 13:54:42 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxgY-009aQk-1C;
+	id 1rzxgY-009aQk-1h;
 	Thu, 25 Apr 2024 13:54:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 25 Apr 2024 13:54:30 +0200
-Message-Id: <20240425115439.2269239-7-s.hauer@pengutronix.de>
+Date: Thu, 25 Apr 2024 13:54:32 +0200
+Message-Id: <20240425115439.2269239-9-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240425115439.2269239-1-s.hauer@pengutronix.de>
 References: <20240425115439.2269239-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240425_045501_525789_0F69C92E 
-X-CRM114-Status: GOOD (  17.66  )
+X-CRM114-CacheID: sfid-20240425_045509_195764_80D77A10 
+X-CRM114-Status: GOOD (  22.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,795 +82,860 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 06/15] ARM: remove davinci
+Subject: [PATCH 08/15] ARM: remove nomadik
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-barebox davinci support is very minimal, the only supported board is
-the virt2real board. This still has no PBL support which becomes
-mandatory soon, so remove the architecture.
+Nomadik was mainlined once and has never got any attention. It still
+doesn't have PBL support or device tree support. Remove the ancient
+and likely unused architecture.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig                     |   8 -
- arch/arm/Makefile                    |  13 --
- arch/arm/boards/Makefile             |   1 -
- arch/arm/boards/virt2real/Makefile   |   4 -
- arch/arm/boards/virt2real/board.c    |  15 --
- arch/arm/boards/virt2real/lowlevel.c |  28 ----
- arch/arm/configs/virt2real_defconfig |  45 ------
- arch/arm/dts/Makefile                |   1 -
- arch/arm/dts/virt2real.dts           |  36 -----
- arch/arm/include/asm/debug_ll.h      |   2 -
- arch/arm/mach-davinci/Kconfig        |  19 ---
- arch/arm/mach-davinci/Makefile       |   3 -
- arch/arm/mach-davinci/time.c         | 216 ---------------------------
- include/mach/davinci/debug_ll.h      |  28 ----
- include/mach/davinci/hardware.h      |  27 ----
- include/mach/davinci/serial.h        |  18 ---
- include/mach/davinci/time.h          |  18 ---
- scripts/Kconfig                      |   7 -
- scripts/Makefile                     |   1 -
- scripts/mkublheader.c                |  85 -----------
- 20 files changed, 575 deletions(-)
- delete mode 100644 arch/arm/boards/virt2real/Makefile
- delete mode 100644 arch/arm/boards/virt2real/board.c
- delete mode 100644 arch/arm/boards/virt2real/lowlevel.c
- delete mode 100644 arch/arm/configs/virt2real_defconfig
- delete mode 100644 arch/arm/dts/virt2real.dts
- delete mode 100644 arch/arm/mach-davinci/Kconfig
- delete mode 100644 arch/arm/mach-davinci/Makefile
- delete mode 100644 arch/arm/mach-davinci/time.c
- delete mode 100644 include/mach/davinci/debug_ll.h
- delete mode 100644 include/mach/davinci/hardware.h
- delete mode 100644 include/mach/davinci/serial.h
- delete mode 100644 include/mach/davinci/time.h
- delete mode 100644 scripts/mkublheader.c
+ arch/arm/Kconfig                              |  10 --
+ arch/arm/Makefile                             |   1 -
+ arch/arm/boards/Makefile                      |   1 -
+ arch/arm/boards/nhk8815/Makefile              |   5 -
+ .../boards/nhk8815/defaultenv-nhk8815/config  |  43 -------
+ arch/arm/boards/nhk8815/lowlevel.c            |  12 --
+ arch/arm/boards/nhk8815/setup.c               | 113 ------------------
+ arch/arm/configs/nhk8815_defconfig            |  50 --------
+ arch/arm/include/asm/debug_ll.h               |   2 -
+ arch/arm/include/asm/mach-types.h             |  12 --
+ arch/arm/mach-nomadik/8815.c                  |  71 -----------
+ arch/arm/mach-nomadik/Kconfig                 |  23 ----
+ arch/arm/mach-nomadik/Makefile                |   4 -
+ arch/arm/mach-nomadik/clock.c                 |  55 ---------
+ arch/arm/mach-nomadik/clock.h                 |  14 ---
+ arch/arm/mach-nomadik/reset.c                 |  42 -------
+ arch/arm/mach-nomadik/timer.c                 |  33 -----
+ include/mach/nomadik/board.h                  |  24 ----
+ include/mach/nomadik/fsmc.h                   |  30 -----
+ include/mach/nomadik/hardware.h               |  87 --------------
+ include/mach/nomadik/nand.h                   |  15 ---
+ 21 files changed, 647 deletions(-)
+ delete mode 100644 arch/arm/boards/nhk8815/Makefile
+ delete mode 100644 arch/arm/boards/nhk8815/defaultenv-nhk8815/config
+ delete mode 100644 arch/arm/boards/nhk8815/lowlevel.c
+ delete mode 100644 arch/arm/boards/nhk8815/setup.c
+ delete mode 100644 arch/arm/configs/nhk8815_defconfig
+ delete mode 100644 arch/arm/mach-nomadik/8815.c
+ delete mode 100644 arch/arm/mach-nomadik/Kconfig
+ delete mode 100644 arch/arm/mach-nomadik/Makefile
+ delete mode 100644 arch/arm/mach-nomadik/clock.c
+ delete mode 100644 arch/arm/mach-nomadik/clock.h
+ delete mode 100644 arch/arm/mach-nomadik/reset.c
+ delete mode 100644 arch/arm/mach-nomadik/timer.c
+ delete mode 100644 include/mach/nomadik/board.h
+ delete mode 100644 include/mach/nomadik/fsmc.h
+ delete mode 100644 include/mach/nomadik/hardware.h
+ delete mode 100644 include/mach/nomadik/nand.h
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index b3e4330ffe..7f84a1a12b 100644
+index 7f84a1a12b..bf3240df96 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -70,13 +70,6 @@ config ARCH_CLPS711X
- 	select MFD_SYSCON
- 	select RELOCATABLE
+@@ -93,15 +93,6 @@ config ARCH_MXS
+ 	select HAS_DEBUG_LL
+ 	select HAVE_PBL_MULTI_IMAGES
  
--config ARCH_DAVINCI
--	bool "TI Davinci"
+-config ARCH_NOMADIK
+-	bool "STMicroelectronics Nomadik"
 -	depends on 32BIT
 -	select CPU_ARM926T
--	select HAS_DEBUG_LL
--	select GPIOLIB
+-	select CLOCKSOURCE_NOMADIK
+-	select HAVE_LEGACY_CLK
+-	help
+-	  Support for the Nomadik platform by ST-Ericsson
 -
- config ARCH_MVEBU
- 	bool "Marvell EBU platforms"
+ config ARCH_OMAP_SINGLE
+ 	bool "TI OMAP"
  	depends on 32BIT
-@@ -274,7 +267,6 @@ source "arch/arm/cpu/Kconfig"
- source "arch/arm/mach-at91/Kconfig"
- source "arch/arm/mach-bcm283x/Kconfig"
- source "arch/arm/mach-clps711x/Kconfig"
--source "arch/arm/mach-davinci/Kconfig"
- source "arch/arm/mach-imx/Kconfig"
+@@ -271,7 +262,6 @@ source "arch/arm/mach-imx/Kconfig"
  source "arch/arm/mach-layerscape/Kconfig"
  source "arch/arm/mach-mxs/Kconfig"
+ source "arch/arm/mach-mvebu/Kconfig"
+-source "arch/arm/mach-nomadik/Kconfig"
+ source "arch/arm/mach-k3/Kconfig"
+ source "arch/arm/mach-omap/Kconfig"
+ source "arch/arm/mach-pxa/Kconfig"
 diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index a183a5a61e..beb1c102c9 100644
+index beb1c102c9..67362d2023 100644
 --- a/arch/arm/Makefile
 +++ b/arch/arm/Makefile
-@@ -85,7 +85,6 @@ endif
- machine-$(CONFIG_ARCH_AT91)		+= at91
- machine-$(CONFIG_ARCH_BCM283X)		+= bcm283x
- machine-$(CONFIG_ARCH_CLPS711X)		+= clps711x
--machine-$(CONFIG_ARCH_DAVINCI)		+= davinci
- machine-$(CONFIG_ARCH_IMX)		+= imx
- machine-$(CONFIG_ARCH_K3)		+= k3
+@@ -90,7 +90,6 @@ machine-$(CONFIG_ARCH_K3)		+= k3
  machine-$(CONFIG_ARCH_LAYERSCAPE)	+= layerscape
-@@ -140,18 +139,6 @@ ifeq ($(CONFIG_OMAP_BUILD_IFT),y)
- KBUILD_IMAGE := MLO
- endif
- 
--quiet_cmd_davinci_ubl_image = UBL-IMG $@
--      cmd_davinci_ubl_image = set -e; \
--	 scripts/mkublheader $< > $@; \
--	 cat $< >> $@
--
--barebox.ubl: $(KBUILD_BINARY) FORCE
--	$(call if_changed,davinci_ubl_image)
--
--ifeq ($(CONFIG_ARCH_DAVINCI),y)
--KBUILD_IMAGE := barebox.ubl
--endif
--
- archclean:
- 	$(MAKE) $(clean)=$(pbl)
- 
+ machine-$(CONFIG_ARCH_MXS)		+= mxs
+ machine-$(CONFIG_ARCH_MVEBU)		+= mvebu
+-machine-$(CONFIG_ARCH_NOMADIK)		+= nomadik
+ machine-$(CONFIG_ARCH_OMAP)		+= omap
+ machine-$(CONFIG_ARCH_PXA)		+= pxa
+ machine-$(CONFIG_ARCH_ROCKCHIP)		+= rockchip
 diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index a06c45d11d..022ba9903a 100644
+index fc7a829900..ca6f8f2137 100644
 --- a/arch/arm/boards/Makefile
 +++ b/arch/arm/boards/Makefile
-@@ -161,7 +161,6 @@ obj-$(CONFIG_MACH_USB_A9G20)			+= usb-a926x/
- obj-$(CONFIG_MACH_USI_TOPKICK)			+= usi-topkick/
- obj-$(CONFIG_MACH_VERSATILEPB)			+= versatile/
- obj-$(CONFIG_MACH_VEXPRESS)			+= vexpress/
--obj-$(CONFIG_MACH_VIRT2REAL)			+= virt2real/
- obj-$(CONFIG_MACH_ZEDBOARD)			+= avnet-zedboard/
- obj-$(CONFIG_MACH_ZYLONITE)			+= zylonite/
- obj-$(CONFIG_MACH_VARISCITE_MX6)		+= variscite-mx6/
-diff --git a/arch/arm/boards/virt2real/Makefile b/arch/arm/boards/virt2real/Makefile
+@@ -63,7 +63,6 @@ obj-$(CONFIG_MACH_MX28EVK)			+= freescale-mx28-evk/
+ obj-$(CONFIG_MACH_MYIRTECH_X335X)		+= myirtech-x335x/
+ obj-$(CONFIG_MACH_NETGEAR_RN104)		+= netgear-rn104/
+ obj-$(CONFIG_MACH_NETGEAR_RN2120)		+= netgear-rn2120/
+-obj-$(CONFIG_MACH_NOMADIK_8815NHK)		+= nhk8815/
+ obj-$(CONFIG_MACH_NVIDIA_BEAVER)		+= nvidia-beaver/
+ obj-$(CONFIG_MACH_NVIDIA_JETSON)		+= nvidia-jetson-tk1/
+ obj-$(CONFIG_MACH_NXP_IMX6ULL_EVK)		+= nxp-imx6ull-evk/
+diff --git a/arch/arm/boards/nhk8815/Makefile b/arch/arm/boards/nhk8815/Makefile
 deleted file mode 100644
-index da63d2625f..0000000000
---- a/arch/arm/boards/virt2real/Makefile
+index 0367fa7dd5..0000000000
+--- a/arch/arm/boards/nhk8815/Makefile
 +++ /dev/null
-@@ -1,4 +0,0 @@
+@@ -1,5 +0,0 @@
 -# SPDX-License-Identifier: GPL-2.0-only
 -
--obj-y += board.o
+-obj-y += setup.o
 -lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/virt2real/board.c b/arch/arm/boards/virt2real/board.c
+-bbenv-$(CONFIG_DEFAULT_ENVIRONMENT_GENERIC) += defaultenv-nhk8815
+diff --git a/arch/arm/boards/nhk8815/defaultenv-nhk8815/config b/arch/arm/boards/nhk8815/defaultenv-nhk8815/config
 deleted file mode 100644
-index caa2b53a68..0000000000
---- a/arch/arm/boards/virt2real/board.c
+index c05ed2704e..0000000000
+--- a/arch/arm/boards/nhk8815/defaultenv-nhk8815/config
 +++ /dev/null
-@@ -1,15 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--// SPDX-FileCopyrightText: 2014 Antony Pavlov <antonynpavlov@gmail.com>
+@@ -1,43 +0,0 @@
+-#!/bin/sh
 -
--/* This file is part of barebox. */
+-# use 'dhcp' to do dhcp in barebox and in kernel
+-# use 'none' if you want to skip kernel ip autoconfiguration
+-ip=dhcp
+-
+-# or set your networking parameters here
+-#eth0.ipaddr=a.b.c.d
+-#eth0.netmask=a.b.c.d
+-#eth0.gateway=a.b.c.d
+-#eth0.serverip=a.b.c.d
+-
+-# can be either 'nfs', 'tftp' or 'nand'
+-kernel_loc=tftp
+-# can be either 'net', 'nand' or 'initrd'
+-rootfs_loc=net
+-
+-# can be either 'jffs2' or 'ubifs'
+-rootfs_type=ubifs
+-rootfsimage=root.$rootfs_type
+-
+-#kernelimage=zImage
+-kernelimage=uImage
+-#kernelimage=Image
+-#kernelimage=Image.lzo
+-
+-# Partition			Size	Start
+-# XloaderTOC + X-Loader		256KB	0x00000000
+-# Memory init function		256KB	0x00040000
+-# Barebox + env			2MB	0x00080000
+-# Kernel Image			3MB	0x00280000
+-# JFFS2 Root filesystem		22MB	0x00580000
+-# JFFS2 User Data		100MB	0x01b80000
+-
+-nand_parts="256k(xloader)ro,256k(meminit),2M(barebox),3M(kernel),22M(rootfs),100M(userfs),384k(free),128k(bareboxenv)"
+-
+-autoboot_timeout=3
+-
+-bootargs="root=/dev/ram0 console=ttyAMA1,115200n8 init=linuxrc"
+-
+-# set a fancy prompt (if support is compiled in)
+-PS1="\e[1;32mbarebox@\e[1;31m\h:\w\e[0m "
+-
+diff --git a/arch/arm/boards/nhk8815/lowlevel.c b/arch/arm/boards/nhk8815/lowlevel.c
+deleted file mode 100644
+index 9ba5bbffad..0000000000
+--- a/arch/arm/boards/nhk8815/lowlevel.c
++++ /dev/null
+@@ -1,12 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-
+-#include <common.h>
+-#include <linux/sizes.h>
+-#include <asm/barebox-arm-head.h>
+-#include <asm/barebox-arm.h>
+-
+-void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+-{
+-	arm_cpu_lowlevel_init();
+-	barebox_arm_entry(0x0, SZ_64M, NULL);
+-}
+diff --git a/arch/arm/boards/nhk8815/setup.c b/arch/arm/boards/nhk8815/setup.c
+deleted file mode 100644
+index c7a2afdbfe..0000000000
+--- a/arch/arm/boards/nhk8815/setup.c
++++ /dev/null
+@@ -1,113 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-// SPDX-FileCopyrightText: 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
 -
 -#include <common.h>
 -#include <init.h>
+-#include <linux/mtd/mtd.h>
+-#include <linux/mtd/nand.h>
+-#include <nand.h>
+-#include <asm/armlinux.h>
+-#include <asm/mach-types.h>
+-#include <io.h>
+-#include <envfs.h>
 -
--static int hostname_init(void)
+-#include <mach/nomadik/hardware.h>
+-#include <mach/nomadik/board.h>
+-#include <mach/nomadik/nand.h>
+-#include <mach/nomadik/fsmc.h>
+-
+-static int nhk8815_nand_init(void)
 -{
--	barebox_set_hostname("virt2real");
+-	/* FSMC setup for nand chip select (8-bit nand in 8815NHK) */
+-	writel(0x0000000E, FSMC_PCR(0));
+-	writel(0x000D0A00, FSMC_PMEM(0));
+-	writel(0x00100A00, FSMC_PATT(0));
+-
+-	/* enable access to the chip select area */
+-	writel(readl(FSMC_PCR(0)) | 0x04, FSMC_PCR(0));
 -
 -	return 0;
 -}
--core_initcall(hostname_init);
-diff --git a/arch/arm/boards/virt2real/lowlevel.c b/arch/arm/boards/virt2real/lowlevel.c
-deleted file mode 100644
-index d14907b768..0000000000
---- a/arch/arm/boards/virt2real/lowlevel.c
-+++ /dev/null
-@@ -1,28 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--// SPDX-FileCopyrightText: 2014 Antony Pavlov <antonynpavlov@gmail.com>
 -
--/* This file is part of barebox. */
+-static struct nomadik_nand_platform_data nhk8815_nand_data = {
+-	.init		= nhk8815_nand_init,
+-};
 -
--#define __LOWLEVEL_INIT__
+-static struct resource nhk8815_nand_resources[] = {
+-	{
+-		.name	= "nand_addr",
+-		.start	= NAND_IO_ADDR,
+-		.end	= NAND_IO_ADDR + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	}, {
+-		.name	= "nand_cmd",
+-		.start	= NAND_IO_CMD,
+-		.end	= NAND_IO_CMD + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	}, {
+-		.name	= "nand_data",
+-		.start	= NAND_IO_DATA,
+-		.end	= NAND_IO_DATA + 0xfff,
+-		.flags	= IORESOURCE_MEM,
+-	}
+-};
 -
--#include <common.h>
--#include <asm/barebox-arm.h>
--#include <asm/barebox-arm-head.h>
--#include <init.h>
--#include <linux/sizes.h>
+-static struct device nhk8815_nand_device = {
+-	.id		= DEVICE_ID_DYNAMIC,
+-	.name		= "nomadik_nand",
+-	.num_resources	= ARRAY_SIZE(nhk8815_nand_resources),
+-	.resource	= nhk8815_nand_resources,
+-	.platform_data	= &nhk8815_nand_data,
+-};
 -
--#define VIRT2REAL_SRAM_BASE 0x82000000
--#define VIRT2REAL_SRAM_SIZE SZ_16M
--
--extern char __dtb_virt2real_start[];
--
--void __naked __bare_init barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+-static int nhk8815_mem_init(void)
 -{
--	void *fdt;
+-	st8815_add_device_sdram(64 * 1024 *1024);
 -
--	arm_cpu_lowlevel_init();
--
--	fdt = __dtb_virt2real_start + get_runtime_offset();
--
--	barebox_arm_entry(VIRT2REAL_SRAM_BASE, VIRT2REAL_SRAM_SIZE, fdt);
+-	return 0;
 -}
-diff --git a/arch/arm/configs/virt2real_defconfig b/arch/arm/configs/virt2real_defconfig
+-mem_initcall(nhk8815_mem_init);
+-
+-static int nhk8815_devices_init(void)
+-{
+-	writel(0xC37800F0, NOMADIK_GPIO1_BASE + 0x20);
+-	writel(0x00000000, NOMADIK_GPIO1_BASE + 0x24);
+-	writel(0x00000000, NOMADIK_GPIO1_BASE + 0x28);
+-	writel(readl(NOMADIK_SRC_BASE) | 0x8000, NOMADIK_SRC_BASE);
+-
+-	/* Set up SMCS1 for Ethernet: sram-like, enabled, timing values */
+-	writel(0x0000305b, FSMC_BCR(1));
+-	writel(0x00033f33, FSMC_BTR(1));
+-
+-	add_generic_device("smc91c111", DEVICE_ID_DYNAMIC, NULL, 0x34000300, 16,
+-			   IORESOURCE_MEM, NULL);
+-
+-	platform_device_register(&nhk8815_nand_device);
+-
+-	armlinux_set_architecture(MACH_TYPE_NOMADIK);
+-
+-	devfs_add_partition("nand0", 0x0000000, 0x040000, DEVFS_PARTITION_FIXED, "xloader_raw");
+-	devfs_add_partition("nand0", 0x0040000, 0x080000, DEVFS_PARTITION_FIXED, "meminit_raw");
+-	devfs_add_partition("nand0", 0x0080000, 0x200000, DEVFS_PARTITION_FIXED, "self_raw");
+-	dev_add_bb_dev("self_raw", "self0");
+-	devfs_add_partition("nand0", 0x7FE0000, 0x020000, DEVFS_PARTITION_FIXED, "env_raw");
+-	dev_add_bb_dev("env_raw", "env0");
+-
+-	if (IS_ENABLED(CONFIG_DEFAULT_ENVIRONMENT_GENERIC))
+-		defaultenv_append_directory(defaultenv_nhk8815);
+-
+-	return 0;
+-}
+-device_initcall(nhk8815_devices_init);
+-
+-static int nhk8815_console_init(void)
+-{
+-	barebox_set_model("Nomadik nhk8815");
+-	barebox_set_hostname("nhk8815");
+-
+-	st8815_register_uart(1);
+-
+-	return 0;
+-}
+-
+-console_initcall(nhk8815_console_init);
+diff --git a/arch/arm/configs/nhk8815_defconfig b/arch/arm/configs/nhk8815_defconfig
 deleted file mode 100644
-index 6e51f53f19..0000000000
---- a/arch/arm/configs/virt2real_defconfig
+index b2816f563b..0000000000
+--- a/arch/arm/configs/nhk8815_defconfig
 +++ /dev/null
-@@ -1,45 +0,0 @@
--CONFIG_TEXT_BASE=0x82300000
--CONFIG_ARCH_DAVINCI=y
--CONFIG_AEABI=y
+@@ -1,50 +0,0 @@
+-CONFIG_TEXT_BASE=0x03F80000
+-CONFIG_ARCH_NOMADIK=y
 -CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_MALLOC_SIZE=0x200000
--CONFIG_MALLOC_TLSF=y
--CONFIG_PROMPT="virt2real: "
+-CONFIG_PROMPT="Nomadik:"
 -CONFIG_HUSH_FANCY_PROMPT=y
 -CONFIG_CMDLINE_EDITING=y
 -CONFIG_AUTO_COMPLETE=y
 -CONFIG_MENU=y
--CONFIG_PASSWORD=y
+-CONFIG_PASSWD_SUM_SHA1=y
+-CONFIG_BOOTM_SHOW_TYPE=y
 -CONFIG_PARTITION=y
+-CONFIG_DEFAULT_ENVIRONMENT_GENERIC=y
 -CONFIG_LONGHELP=y
--CONFIG_CMD_IOMEM=y
 -CONFIG_CMD_MEMINFO=y
--# CONFIG_CMD_BOOTM is not set
--# CONFIG_CMD_BOOTU is not set
 -CONFIG_CMD_GO=y
 -CONFIG_CMD_LOADB=y
--CONFIG_CMD_LOADY=y
 -CONFIG_CMD_RESET=y
 -CONFIG_CMD_PARTITION=y
 -CONFIG_CMD_EXPORT=y
+-CONFIG_CMD_LOADENV=y
 -CONFIG_CMD_PRINTENV=y
+-CONFIG_CMD_SAVEENV=y
 -CONFIG_CMD_UNCOMPRESS=y
 -CONFIG_CMD_SLEEP=y
+-CONFIG_CMD_DHCP=y
+-CONFIG_CMD_PING=y
+-CONFIG_CMD_TFTP=y
 -CONFIG_CMD_ECHO_E=y
 -CONFIG_CMD_EDIT=y
+-CONFIG_CMD_LOGIN=y
+-CONFIG_CMD_MENU=y
+-CONFIG_CMD_MENU_MANAGEMENT=y
+-CONFIG_CMD_PASSWD=y
 -CONFIG_CMD_READLINE=y
 -CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_MM=y
--CONFIG_CMD_GPIO=y
--CONFIG_CMD_LED=y
--CONFIG_CMD_OF_NODE=y
--CONFIG_CMD_OF_PROPERTY=y
--CONFIG_CMD_OFTREE=y
--CONFIG_OF_BAREBOX_DRIVERS=y
--CONFIG_DRIVER_SERIAL_NS16550=y
+-CONFIG_CMD_FLASH=y
+-CONFIG_NET=y
+-CONFIG_NET_NFS=y
+-CONFIG_NET_NETCONSOLE=y
+-CONFIG_NET_RESOLV=y
+-CONFIG_SERIAL_AMBA_PL011=y
+-CONFIG_DRIVER_NET_SMC91111=y
 -# CONFIG_SPI is not set
--CONFIG_LED=y
--CONFIG_LED_GPIO=y
--CONFIG_LED_GPIO_OF=y
--CONFIG_DIGEST_SHA1_GENERIC=y
+-CONFIG_MTD=y
+-CONFIG_NAND=y
+-CONFIG_MTD_NAND_ECC_SW_HAMMING_SMC=y
+-CONFIG_MTD_NAND_NOMADIK=y
+-CONFIG_FS_CRAMFS=y
+-CONFIG_FS_TFTP=y
 -CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index bb4e752f2c..40d61ce8db 100644
---- a/arch/arm/dts/Makefile
-+++ b/arch/arm/dts/Makefile
-@@ -178,7 +178,6 @@ lwl-$(CONFIG_MACH_VARISCITE_SOM_MX7) += imx7d-gome-e143_01.dtb.o
- lwl-$(CONFIG_MACH_VERSATILEPB) += versatile-pb.dtb.o
- lwl-$(CONFIG_MACH_VEXPRESS) += vexpress-v2p-ca9.dtb.o
- lwl-$(CONFIG_MACH_VEXPRESS) += vexpress-v2p-ca15.dtb.o
--lwl-$(CONFIG_MACH_VIRT2REAL) += virt2real.dtb.o
- lwl-$(CONFIG_MACH_VSCOM_BALTOS) += am335x-baltos-minimal.dtb.o
- lwl-$(CONFIG_MACH_WARP7) += imx7s-warp.dtb.o
- lwl-$(CONFIG_MACH_VF610_TWR) += vf610-twr.dtb.o
-diff --git a/arch/arm/dts/virt2real.dts b/arch/arm/dts/virt2real.dts
-deleted file mode 100644
-index 3b543b6e93..0000000000
---- a/arch/arm/dts/virt2real.dts
-+++ /dev/null
-@@ -1,36 +0,0 @@
--/dts-v1/;
--
--#include "dm365.dtsi"
--
--/ {
--	model = "virt2real";
--
--	memory@82000000 {
--		device_type = "memory";
--		reg = <0x82000000 0x01000000>;
--	};
--
--	soc {
--		serial0: serial@1c20000 {
--			status = "okay";
--		};
--
--		gpio: gpio@1c67000 {
--			status = "okay";
--		};
--	};
--
--	leds {
--		compatible = "gpio-leds";
--
--		green_led {
--			label = "green-led";
--			gpios = <&gpio 73 0>;
--		};
--
--		red_led {
--			label = "red-led";
--			gpios = <&gpio 74 0>;
--		};
--	};
--};
 diff --git a/arch/arm/include/asm/debug_ll.h b/arch/arm/include/asm/debug_ll.h
-index a8860f6b0c..43baea2207 100644
+index 43baea2207..0cc3d28662 100644
 --- a/arch/arm/include/asm/debug_ll.h
 +++ b/arch/arm/include/asm/debug_ll.h
-@@ -36,8 +36,6 @@
- #include <debug_ll/pl011.h>
- #elif defined CONFIG_ARCH_MVEBU
- #include <mach/mvebu/debug_ll.h>
--#elif defined CONFIG_ARCH_DAVINCI
--#include <mach/davinci/debug_ll.h>
- #elif defined CONFIG_ARCH_ZYNQ
- #include <mach/zynq/debug_ll.h>
- #elif defined CONFIG_ARCH_VERSATILE
-diff --git a/arch/arm/mach-davinci/Kconfig b/arch/arm/mach-davinci/Kconfig
+@@ -48,8 +48,6 @@
+ #include <mach/socfpga/debug_ll.h>
+ #elif defined CONFIG_ARCH_PXA
+ #include <mach/pxa/debug_ll.h>
+-#elif defined CONFIG_ARCH_NOMADIK
+-#include <mach/nomadik/debug_ll.h>
+ #elif defined CONFIG_ARCH_MXS
+ #include <mach/mxs/debug_ll.h>
+ #elif defined CONFIG_ARCH_CLPS711X
+diff --git a/arch/arm/include/asm/mach-types.h b/arch/arm/include/asm/mach-types.h
+index 259dc9568a..6b446d5185 100644
+--- a/arch/arm/include/asm/mach-types.h
++++ b/arch/arm/include/asm/mach-types.h
+@@ -101,18 +101,6 @@ extern unsigned int __machine_arch_type;
+ # define machine_is_csb337()	(0)
+ #endif
+ 
+-#ifdef CONFIG_MACH_NOMADIK
+-# ifdef machine_arch_type
+-#  undef machine_arch_type
+-#  define machine_arch_type	__machine_arch_type
+-# else
+-#  define machine_arch_type	MACH_TYPE_NOMADIK
+-# endif
+-# define machine_is_nomadik()	(machine_arch_type == MACH_TYPE_NOMADIK)
+-#else
+-# define machine_is_nomadik()	(0)
+-#endif
+-
+ #ifdef CONFIG_MACH_SCB9328
+ # ifdef machine_arch_type
+ #  undef machine_arch_type
+diff --git a/arch/arm/mach-nomadik/8815.c b/arch/arm/mach-nomadik/8815.c
 deleted file mode 100644
-index a87b6256ce..0000000000
---- a/arch/arm/mach-davinci/Kconfig
+index 78b4ed8d5e..0000000000
+--- a/arch/arm/mach-nomadik/8815.c
 +++ /dev/null
-@@ -1,19 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--
--if ARCH_DAVINCI
--
--config ARCH_TEXT_BASE
--	hex
--	default 0x82000000
--
--choice
--	prompt "Davinci Board type"
--
--config MACH_VIRT2REAL
--	bool "Virt2Real"
--	select OFTREE
--	select OFDEVICE
--
--endchoice
--
--endif
-diff --git a/arch/arm/mach-davinci/Makefile b/arch/arm/mach-davinci/Makefile
-deleted file mode 100644
-index f7865a941b..0000000000
---- a/arch/arm/mach-davinci/Makefile
-+++ /dev/null
-@@ -1,3 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--
--obj-y += time.o
-diff --git a/arch/arm/mach-davinci/time.c b/arch/arm/mach-davinci/time.c
-deleted file mode 100644
-index 5456820009..0000000000
---- a/arch/arm/mach-davinci/time.c
-+++ /dev/null
-@@ -1,216 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--/* SPDX-FileCopyrightText: 2007 MontaVista Software, Inc. */
--
+@@ -1,71 +0,0 @@
 -/*
-- * DaVinci timer subsystem
+- * Copyright (C) 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
 - *
-- * Author: Kevin Hilman, MontaVista Software, Inc. <source@mvista.com>
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; version 2 of
+- * the License.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- *
 - */
 -
 -#include <common.h>
--#include <io.h>
 -#include <init.h>
+-#include <linux/clkdev.h>
+-#include <mach/nomadik/hardware.h>
+-#include <mach/nomadik/board.h>
+-#include <asm/armlinux.h>
+-#include <asm/mach-types.h>
+-#include <linux/amba/bus.h>
+-
+-#include "clock.h"
+-
+-static struct clk st8815_clk_48 = {
+-       .rate = 48 * 1000 * 1000,
+-};
+-
+-static struct clk st8815_clk_2_4 = {
+-       .rate = 2400000,
+-};
+-
+-static struct clk st8815_dummy;
+-
+-void st8815_add_device_sdram(u32 size)
+-{
+-	arm_add_mem_device("ram0", 0x00000000, size);
+-}
+-
+-static struct clk_lookup clocks_lookups[] = {
+-	CLKDEV_CON_ID("apb_pclk", &st8815_dummy),
+-	CLKDEV_CON_ID("nomadik_mtu", &st8815_clk_2_4),
+-	CLKDEV_DEV_ID("uart-pl0110", &st8815_clk_48),
+-	CLKDEV_DEV_ID("uart-pl0111", &st8815_clk_48),
+-};
+-
+-static int st8815_clkdev_init(void)
+-{
+-	clkdev_add_table(clocks_lookups, ARRAY_SIZE(clocks_lookups));
+-
+-	return 0;
+-}
+-postcore_initcall(st8815_clkdev_init);
+-
+-void st8815_register_uart(unsigned id)
+-{
+-	resource_size_t start;
+-
+-	switch (id) {
+-	case 0:
+-		start = NOMADIK_UART1_BASE;
+-		break;
+-	case 1:
+-		start = NOMADIK_UART1_BASE;
+-		break;
+-	}
+-	amba_apb_device_add(NULL, "uart-pl011", id, start, 4096, NULL, 0);
+-}
+diff --git a/arch/arm/mach-nomadik/Kconfig b/arch/arm/mach-nomadik/Kconfig
+deleted file mode 100644
+index 8237779173..0000000000
+--- a/arch/arm/mach-nomadik/Kconfig
++++ /dev/null
+@@ -1,23 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-
+-if ARCH_NOMADIK
+-
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x03c00000 if MACH_NOMADIK_8815NHK
+-
+-choice
+-	prompt "Nomadik boards"
+-
+-config MACH_NOMADIK_8815NHK
+-	bool "ST 8815 Nomadik Hardware Kit (evaluation board)"
+-	select NOMADIK_8815
+-	select CLKDEV_LOOKUP
+-
+-endchoice
+-
+-config NOMADIK_8815
+-	bool
+-	select ARM_AMBA
+-
+-endif
+diff --git a/arch/arm/mach-nomadik/Makefile b/arch/arm/mach-nomadik/Makefile
+deleted file mode 100644
+index 0ab83f61c8..0000000000
+--- a/arch/arm/mach-nomadik/Makefile
++++ /dev/null
+@@ -1,4 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-
+-obj-y	+= clock.o reset.o timer.o
+-obj-y	+= 8815.o
+diff --git a/arch/arm/mach-nomadik/clock.c b/arch/arm/mach-nomadik/clock.c
+deleted file mode 100644
+index e68097ade8..0000000000
+--- a/arch/arm/mach-nomadik/clock.c
++++ /dev/null
+@@ -1,55 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-
+-/*
+- * linux/arch/arm/mach-nomadik/clock.c
+- *
+- * Copyright (C) 2009 Alessandro Rubini
+- */
+-#include <common.h>
+-#include <errno.h>
+-#include <linux/err.h>
+-#include <linux/clk.h>
+-#include <init.h>
+-#include <linux/clkdev.h>
+-
+-#include "clock.h"
+-
+-/*
+- * The nomadik board uses generic clocks, but the serial pl011 file
+- * calls clk_enable(), clk_disable(), clk_get_rate(), so we provide them
+- */
+-unsigned long clk_get_rate(struct clk *clk)
+-{
+-	return clk->rate;
+-}
+-EXPORT_SYMBOL(clk_get_rate);
+-
+-int clk_set_rate(struct clk *clk, unsigned long rate)
+-{
+-	return 0;
+-}
+-EXPORT_SYMBOL(clk_set_rate);
+-
+-/* enable and disable do nothing */
+-int clk_enable(struct clk *clk)
+-{
+-	return 0;
+-}
+-EXPORT_SYMBOL(clk_enable);
+-
+-void clk_disable(struct clk *clk)
+-{
+-}
+-EXPORT_SYMBOL(clk_disable);
+-
+-/* Create a clock structure with the given name */
+-int nmdk_clk_create(struct clk *clk, const char *dev_id)
+-{
+-	struct clk_lookup *clkdev;
+-
+-	clkdev = clkdev_alloc(clk, NULL, dev_id);
+-	if (!clkdev)
+-		return -ENOMEM;
+-	clkdev_add(clkdev);
+-	return 0;
+-}
+diff --git a/arch/arm/mach-nomadik/clock.h b/arch/arm/mach-nomadik/clock.h
+deleted file mode 100644
+index eade4a68ec..0000000000
+--- a/arch/arm/mach-nomadik/clock.h
++++ /dev/null
+@@ -1,14 +0,0 @@
+-/*
+- * linux/arch/arm/mach-nomadik/clock.h
+- *
+- * Copyright (C) 2009 Alessandro Rubini
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2 as
+- * published by the Free Software Foundation.
+- */
+-struct clk {
+-	unsigned long	rate;
+-};
+-
+-int nmdk_clk_create(struct clk *clk, const char *dev_id);
+diff --git a/arch/arm/mach-nomadik/reset.c b/arch/arm/mach-nomadik/reset.c
+deleted file mode 100644
+index d3d54de07e..0000000000
+--- a/arch/arm/mach-nomadik/reset.c
++++ /dev/null
+@@ -1,42 +0,0 @@
+-/*
+- *  mach-nomadik/include/mach/system.h
+- *
+- *  Copyright (C) 2008 STMicroelectronics
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <common.h>
+-#include <init.h>
+-#include <io.h>
 -#include <restart.h>
--#include <clock.h>
+-#include <mach/nomadik/hardware.h>
 -
--#include <mach/davinci/time.h>
--
--/* Timer register offsets */
--#define PID12			0x0
--#define TIM12			0x10
--#define TIM34			0x14
--#define PRD12			0x18
--#define PRD34			0x1c
--#define TCR			0x20
--#define TGCR			0x24
--#define WDTCR			0x28
--
--/* Timer register bitfields */
--#define TCR_ENAMODE_DISABLE          0x0
--#define TCR_ENAMODE_ONESHOT          0x1
--#define TCR_ENAMODE_PERIODIC         0x2
--#define TCR_ENAMODE_MASK             0x3
--
--#define TGCR_TIMMODE_SHIFT           2
--#define TGCR_TIMMODE_64BIT_GP        0x0
--#define TGCR_TIMMODE_32BIT_UNCHAINED 0x1
--#define TGCR_TIMMODE_64BIT_WDOG      0x2
--#define TGCR_TIMMODE_32BIT_CHAINED   0x3
--
--#define TGCR_TIM12RS_SHIFT           0
--#define TGCR_TIM34RS_SHIFT           1
--#define TGCR_RESET                   0x0
--#define TGCR_UNRESET                 0x1
--#define TGCR_RESET_MASK              0x3
--
--#define WDTCR_WDEN_SHIFT             14
--#define WDTCR_WDEN_DISABLE           0x0
--#define WDTCR_WDEN_ENABLE            0x1
--#define WDTCR_WDKEY_SHIFT            16
--#define WDTCR_WDKEY_SEQ0             0xa5c6
--#define WDTCR_WDKEY_SEQ1             0xda7e
--
--#define DAVINCI_TIMER_CLOCK 24000000
--
--struct timer_s {
--	void __iomem *base;
--	unsigned long tim_off;
--	unsigned long prd_off;
--	unsigned long enamode_shift;
--};
--
--static struct timer_s timers[] = {
--	{
--		.base = IOMEM(DAVINCI_TIMER0_BASE),
--		.enamode_shift = 6,
--		.tim_off = TIM12,
--		.prd_off = PRD12,
--	},
--	{
--		.base = IOMEM(DAVINCI_TIMER0_BASE),
--		.enamode_shift = 22,
--		.tim_off = TIM34,
--		.prd_off = PRD34,
--	},
--	{
--		.base = IOMEM(DAVINCI_TIMER1_BASE),
--		.enamode_shift = 6,
--		.tim_off = TIM12,
--		.prd_off = PRD12,
--	},
--	{
--		.base = IOMEM(DAVINCI_TIMER1_BASE),
--		.enamode_shift = 22,
--		.tim_off = TIM34,
--		.prd_off = PRD34,
--	},
--};
--
--static struct timer_s *t = &timers[0];
--
--static uint64_t davinci_cs_read(void)
+-static void __noreturn nomadik_restart_soc(struct restart_handler *rst)
 -{
--	return (uint64_t)__raw_readl(t->base + t->tim_off);
--}
+-	void __iomem *src_rstsr = (void *)(NOMADIK_SRC_BASE + 0x18);
 -
--static struct clocksource davinci_cs = {
--	.read	= davinci_cs_read,
--	.mask	= CLOCKSOURCE_MASK(32),
--	.priority = 80,
--};
+-	/* FIXME: use egpio when implemented */
 -
--static int timer32_config(struct timer_s *t)
--{
--	u32 tcr;
+-	/* Write anything to Reset status register */
+-	writel(1, src_rstsr);
 -
--	tcr = __raw_readl(t->base + TCR);
--
--	/* disable timer */
--	tcr &= ~(TCR_ENAMODE_MASK << t->enamode_shift);
--	__raw_writel(tcr, t->base + TCR);
--
--	/* reset counter to zero, set new period */
--	__raw_writel(0, t->base + t->tim_off);
--	__raw_writel(0xffffffff, t->base + t->prd_off);
--
--	/* Set enable mode for periodic timer */
--	tcr |= TCR_ENAMODE_PERIODIC << t->enamode_shift;
--
--	__raw_writel(tcr, t->base + TCR);
--
--	return 0;
--}
--
--/* Global init of 64-bit timer as a whole */
--static void __init timer_init(void __iomem *base)
--{
--	u32 tgcr;
--
--	/* Disabled, Internal clock source */
--	__raw_writel(0, base + TCR);
--
--	/* reset both timers, no pre-scaler for timer34 */
--	tgcr = 0;
--	__raw_writel(tgcr, base + TGCR);
--
--	/* Set both timers to unchained 32-bit */
--	tgcr = TGCR_TIMMODE_32BIT_UNCHAINED << TGCR_TIMMODE_SHIFT;
--	__raw_writel(tgcr, base + TGCR);
--
--	/* Unreset timers */
--	tgcr |= (TGCR_UNRESET << TGCR_TIM12RS_SHIFT) |
--		(TGCR_UNRESET << TGCR_TIM34RS_SHIFT);
--	__raw_writel(tgcr, base + TGCR);
--
--	/* Init both counters to zero */
--	__raw_writel(0, base + TIM12);
--	__raw_writel(0, base + TIM34);
--}
--
--static int clocksource_init(void)
--{
--	clocks_calc_mult_shift(&davinci_cs.mult, &davinci_cs.shift,
--		DAVINCI_TIMER_CLOCK, NSEC_PER_SEC, 10);
--
--	init_clock(&davinci_cs);
--
--	timer_init(IOMEM(DAVINCI_TIMER0_BASE));
--	timer_init(IOMEM(DAVINCI_TIMER1_BASE));
--
--	timer32_config(t);
--
--	return 0;
--}
--core_initcall(clocksource_init);
--
--/* reset board using watchdog timer */
--static void __noreturn davinci_restart_soc(struct restart_handler *rst)
--{
--	u32 tgcr, wdtcr;
--	void __iomem *base;
--
--	base = IOMEM(DAVINCI_WDOG_BASE);
--
--	/* disable, internal clock source */
--	__raw_writel(0, base + TCR);
--
--	/* reset timer, set mode to 64-bit watchdog, and unreset */
--	tgcr = 0;
--	__raw_writel(tgcr, base + TGCR);
--	tgcr = TGCR_TIMMODE_64BIT_WDOG << TGCR_TIMMODE_SHIFT;
--	tgcr |= (TGCR_UNRESET << TGCR_TIM12RS_SHIFT) |
--		(TGCR_UNRESET << TGCR_TIM34RS_SHIFT);
--	__raw_writel(tgcr, base + TGCR);
--
--	/* clear counter and period regs */
--	__raw_writel(0, base + TIM12);
--	__raw_writel(0, base + TIM34);
--	__raw_writel(0, base + PRD12);
--	__raw_writel(0, base + PRD34);
--
--	/* put watchdog in pre-active state */
--	wdtcr = __raw_readl(base + WDTCR);
--	wdtcr = (WDTCR_WDKEY_SEQ0 << WDTCR_WDKEY_SHIFT) |
--		(WDTCR_WDEN_ENABLE << WDTCR_WDEN_SHIFT);
--	__raw_writel(wdtcr, base + WDTCR);
--
--	/* put watchdog in active state */
--	wdtcr = (WDTCR_WDKEY_SEQ1 << WDTCR_WDKEY_SHIFT) |
--		(WDTCR_WDEN_ENABLE << WDTCR_WDEN_SHIFT);
--	__raw_writel(wdtcr, base + WDTCR);
--
--	/* write an invalid value to the WDKEY field to trigger
--	 * a watchdog reset */
--	wdtcr = 0x00004000;
--	__raw_writel(wdtcr, base + WDTCR);
--
+-	/* Not reached */
 -	hang();
 -}
 -
 -static int restart_register_feature(void)
 -{
--	restart_handler_register_fn("soc-wdt", davinci_restart_soc);
+-	restart_handler_register_fn("soc", nomadik_restart_soc);
 -
 -	return 0;
 -}
 -coredevice_initcall(restart_register_feature);
-diff --git a/include/mach/davinci/debug_ll.h b/include/mach/davinci/debug_ll.h
+diff --git a/arch/arm/mach-nomadik/timer.c b/arch/arm/mach-nomadik/timer.c
 deleted file mode 100644
-index 1539bf8ee4..0000000000
---- a/include/mach/davinci/debug_ll.h
+index 73abbe9b91..0000000000
+--- a/arch/arm/mach-nomadik/timer.c
 +++ /dev/null
-@@ -1,28 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/* SPDX-FileCopyrightText: 2014 Antony Pavlov <antonynpavlov@gmail.com> */
--
--/** @file
-- *  This File contains declaration for early output support
+@@ -1,33 +0,0 @@
+-/*
+- * linux/arch/arm/mach-nomadik/timer.c
+- *
+- * Copyright (C) 2008 STMicroelectronics
+- * Copyright (C) 2009 Alessandro Rubini, somewhat based on at91sam926x
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License version 2, as
+- * published by the Free Software Foundation.
 - */
--#ifndef __MACH_DAVINCI_DEBUG_LL_H__
--#define __MACH_DAVINCI_DEBUG_LL_H__
+-#include <common.h>
+-#include <init.h>
+-#include <io.h>
+-#include <mach/nomadik/hardware.h>
 -
--#include <asm/io.h>
--#include <mach/davinci/serial.h>
+-/* Initial value for SRC control register: all timers use MXTAL/8 source */
+-#define SRC_CR_INIT_MASK	0x00007fff
+-#define SRC_CR_INIT_VAL		0x2aaa8000
 -
--#define DEBUG_LL_UART_ADDR	DAVINCI_UART0_BASE
--#define DEBUG_LL_UART_RSHFT	2
--
--#define rbr		(0 << DEBUG_LL_UART_RSHFT)
--#define lsr		(5 << DEBUG_LL_UART_RSHFT)
--#define LSR_THRE	0x20	/* Xmit holding register empty */
--
--static inline void PUTC_LL(char ch)
+-static int st8815_timer_init(void)
 -{
--	while (!(__raw_readb(DEBUG_LL_UART_ADDR + lsr) & LSR_THRE))
--		;
+-	u32 src_cr;
 -
--	__raw_writeb(ch, DEBUG_LL_UART_ADDR + rbr);
+-	/* Configure timer sources in "system reset controller" ctrl reg */
+-	src_cr = readl(NOMADIK_SRC_BASE);
+-	src_cr &= SRC_CR_INIT_MASK;
+-	src_cr |= SRC_CR_INIT_VAL;
+-	writel(src_cr, NOMADIK_SRC_BASE);
+-
+-	add_generic_device("nomadik_mtu", DEVICE_ID_SINGLE, NULL, NOMADIK_MTU0_BASE, 0x1000, IORESOURCE_MEM, NULL);
+-	return 0;
 -}
--
--#endif /* __MACH_DAVINCI_DEBUG_LL_H__ */
-diff --git a/include/mach/davinci/hardware.h b/include/mach/davinci/hardware.h
+-coredevice_initcall(st8815_timer_init);
+diff --git a/include/mach/nomadik/board.h b/include/mach/nomadik/board.h
 deleted file mode 100644
-index a0a1918444..0000000000
---- a/include/mach/davinci/hardware.h
+index 49004a6825..0000000000
+--- a/include/mach/nomadik/board.h
 +++ /dev/null
-@@ -1,27 +0,0 @@
+@@ -1,24 +0,0 @@
+-/*
+- * Copyright (C) 2009 Jean-Christophe PLAGNIOL-VILLARD <plagnio@jcrosoft.com>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; version 2 of
+- * the License.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- *
+- */
+-
+-#ifndef __ASM_ARCH_BOARD_H
+-#define __ASM_ARCH_BOARD_H
+-
+-void st8815_add_device_sdram(u32 size);
+-
+-void st8815_register_uart(unsigned id);
+-
+-#endif
+diff --git a/include/mach/nomadik/fsmc.h b/include/mach/nomadik/fsmc.h
+deleted file mode 100644
+index be0f9569b5..0000000000
+--- a/include/mach/nomadik/fsmc.h
++++ /dev/null
+@@ -1,30 +0,0 @@
 -/* SPDX-License-Identifier: GPL-2.0-only */
--/* SPDX-FileCopyrightText: 2007 Deep Root Systems, LLC. */
 -
+-/* Definitions for the Nomadik FSMC "Flexible Static Memory controller" */
+-
+-#ifndef __ASM_ARCH_FSMC_H
+-#define __ASM_ARCH_FSMC_H
+-
+-#include <mach/nomadik/hardware.h>
 -/*
-- * Hardware definitions common to all DaVinci family processors
-- *
-- * Author: Kevin Hilman, Deep Root Systems, LLC
+- * Register list
 - */
--#ifndef __MACH_DAVINCI_HARDWARE_H
--#define __MACH_DAVINCI_HARDWARE_H
 -
--#include <asm/memory.h>
+-/* bus control reg. and bus timing reg. for CS0..CS3 */
+-#define FSMC_BCR(x)     (NOMADIK_FSMC_VA + (x << 3))
+-#define FSMC_BTR(x)     (NOMADIK_FSMC_VA + (x << 3) + 0x04)
 -
--/*
-- * Before you add anything to this file:
-- *
-- * This header is for defines common to ALL DaVinci family chips.
-- * Anything that is chip specific should go in <chipname>.h,
-- * and the chip/board init code should then explicitly include
-- * <chipname>.h
+-/* PC-card and NAND:
+- * PCR = control register
+- * PMEM = memory timing
+- * PATT = attribute timing
+- * PIO = I/O timing
+- * PECCR = ECC result
 - */
--/*
-- * I/O mapping
-- */
--#define IO_PHYS				UL(0x01c00000)
+-#define FSMC_PCR(x)     (NOMADIK_FSMC_VA + ((2 + x) << 5) + 0x00)
+-#define FSMC_PMEM(x)    (NOMADIK_FSMC_VA + ((2 + x) << 5) + 0x08)
+-#define FSMC_PATT(x)    (NOMADIK_FSMC_VA + ((2 + x) << 5) + 0x0c)
+-#define FSMC_PIO(x)     (NOMADIK_FSMC_VA + ((2 + x) << 5) + 0x10)
+-#define FSMC_PECCR(x)   (NOMADIK_FSMC_VA + ((2 + x) << 5) + 0x14)
 -
--#endif /* __MACH_DAVINCI_HARDWARE_H */
-diff --git a/include/mach/davinci/serial.h b/include/mach/davinci/serial.h
+-#endif /* __ASM_ARCH_FSMC_H */
+diff --git a/include/mach/nomadik/hardware.h b/include/mach/nomadik/hardware.h
 deleted file mode 100644
-index cc14c5cf29..0000000000
---- a/include/mach/davinci/serial.h
+index 00b42cd1ff..0000000000
+--- a/include/mach/nomadik/hardware.h
 +++ /dev/null
-@@ -1,18 +0,0 @@
+@@ -1,87 +0,0 @@
+-/*
+- * This file contains the hardware definitions of the Nomadik.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- */
+-#ifndef __MACH_NOMADIK_HARDWARE_H
+-#define __MACH_NOMADIK_HARDWARE_H
+-
+-/* Nomadik registers live from 0x1000.0000 to 0x1023.0000 -- currently */
+-#define NOMADIK_IO_VIRTUAL	0xF0000000	/* VA of IO */
+-#define NOMADIK_IO_PHYSICAL	0x10000000	/* PA of IO */
+-#define NOMADIK_IO_SIZE		0x00300000	/* 3MB for all regs */
+-
+-#ifndef CONFIG_MMU
+-#define io_p2v(x) (x)
+-#define io_v2p(x) (x)
+-#else
+-#define io_p2v(x) ((x) - NOMADIK_IO_PHYSICAL + NOMADIK_IO_VIRTUAL)
+-#define io_v2p(x) ((x) - NOMADIK_IO_VIRTUAL + NOMADIK_IO_PHYSICAL)
+-#endif
+-
+-#define IO_ADDRESS(x) (io_p2v(x)) /* used in asm and more */
+-
+-/*
+- * Base address defination for Nomadik Onchip Logic Block
+- */
+-#define NOMADIK_FSMC_BASE	0x10100000	/* FSMC registers */
+-#define NOMADIK_SDRAMC_BASE	0x10110000	/* SDRAM Controller */
+-#define NOMADIK_CLCDC_BASE	0x10120000	/* CLCD Controller */
+-#define NOMADIK_MDIF_BASE	0x10120000	/* MDIF */
+-#define NOMADIK_DMA0_BASE	0x10130000	/* DMA0 Controller */
+-#define NOMADIK_IC_BASE		0x10140000	/* Vectored Irq Controller */
+-#define NOMADIK_DMA1_BASE	0x10150000	/* DMA1 Controller */
+-#define NOMADIK_USB_BASE	0x10170000	/* USB-OTG conf reg base */
+-#define NOMADIK_CRYP_BASE	0x10180000	/* Crypto processor */
+-#define NOMADIK_SHA1_BASE	0x10190000	/* SHA-1 Processor */
+-#define NOMADIK_XTI_BASE	0x101A0000	/* XTI */
+-#define NOMADIK_RNG_BASE	0x101B0000	/* Random number generator */
+-#define NOMADIK_SRC_BASE	0x101E0000	/* SRC base */
+-#define NOMADIK_WDOG_BASE	0x101E1000	/* Watchdog */
+-#define NOMADIK_MTU0_BASE	0x101E2000	/* Multiple Timer 0 */
+-#define NOMADIK_MTU1_BASE	0x101E3000	/* Multiple Timer 1 */
+-#define NOMADIK_GPIO0_BASE	0x101E4000	/* GPIO0 */
+-#define NOMADIK_GPIO1_BASE	0x101E5000	/* GPIO1 */
+-#define NOMADIK_GPIO2_BASE	0x101E6000	/* GPIO2 */
+-#define NOMADIK_GPIO3_BASE	0x101E7000	/* GPIO3 */
+-#define NOMADIK_RTC_BASE	0x101E8000	/* Real Time Clock base */
+-#define NOMADIK_PMU_BASE	0x101E9000	/* Power Management Unit */
+-#define NOMADIK_OWM_BASE	0x101EA000	/* One wire master */
+-#define NOMADIK_SCR_BASE	0x101EF000	/* Secure Control registers */
+-#define NOMADIK_MSP2_BASE	0x101F0000	/* MSP 2 interface */
+-#define NOMADIK_MSP1_BASE	0x101F1000	/* MSP 1 interface */
+-#define NOMADIK_UART2_BASE	0x101F2000	/* UART 2 interface */
+-#define NOMADIK_SSIRx_BASE	0x101F3000	/* SSI 8-ch rx interface */
+-#define NOMADIK_SSITx_BASE	0x101F4000	/* SSI 8-ch tx interface */
+-#define NOMADIK_MSHC_BASE	0x101F5000	/* Memory Stick(Pro) Host */
+-#define NOMADIK_SDI_BASE	0x101F6000	/* SD-card/MM-Card */
+-#define NOMADIK_I2C1_BASE	0x101F7000	/* I2C1 interface */
+-#define NOMADIK_I2C0_BASE	0x101F8000	/* I2C0 interface */
+-#define NOMADIK_MSP0_BASE	0x101F9000	/* MSP 0 interface */
+-#define NOMADIK_FIRDA_BASE	0x101FA000	/* FIrDA interface */
+-#define NOMADIK_UART1_BASE	0x101FB000	/* UART 1 interface */
+-#define NOMADIK_SSP_BASE	0x101FC000	/* SSP interface */
+-#define NOMADIK_UART0_BASE	0x101FD000	/* UART 0 interface */
+-#define NOMADIK_SGA_BASE	0x101FE000	/* SGA interface */
+-#define NOMADIK_L2CC_BASE	0x10210000	/* L2 Cache controller */
+-
+-/* Other ranges, not for p2v/v2p */
+-#define NOMADIK_BACKUP_RAM	0x80010000
+-#define NOMADIK_EBROM		0x80000000	/* Embedded boot ROM */
+-#define NOMADIK_HAMACV_DMEM_BASE 0xA0100000	/* HAMACV Data Memory Start */
+-#define NOMADIK_HAMACV_DMEM_END	0xA01FFFFF	/* HAMACV Data Memory End */
+-#define NOMADIK_HAMACA_DMEM	0xA0200000	/* HAMACA Data Memory Space */
+-
+-#define NOMADIK_FSMC_VA		IO_ADDRESS(NOMADIK_FSMC_BASE)
+-#define NOMADIK_MTU0_VA		IO_ADDRESS(NOMADIK_MTU0_BASE)
+-#define NOMADIK_MTU1_VA		IO_ADDRESS(NOMADIK_MTU1_BASE)
+-
+-#endif /* __MACH_NOMADIK_HARDWARE_H */
+diff --git a/include/mach/nomadik/nand.h b/include/mach/nomadik/nand.h
+deleted file mode 100644
+index 419db3e33c..0000000000
+--- a/include/mach/nomadik/nand.h
++++ /dev/null
+@@ -1,15 +0,0 @@
 -/* SPDX-License-Identifier: GPL-2.0-only */
--/* SPDX-FileCopyrightText: 2007 MontaVista Software, Inc. */
 -
--/*
-- * DaVinci serial device definitions
-- *
-- * Author: Kevin Hilman, MontaVista Software, Inc. <source@mvista.com>
-- */
--#ifndef __ASM_ARCH_SERIAL_H
--#define __ASM_ARCH_SERIAL_H
+-#ifndef __ASM_ARCH_NAND_H
+-#define __ASM_ARCH_NAND_H
 -
--#include <mach/davinci/hardware.h>
--
--#define DAVINCI_UART0_BASE	(IO_PHYS + 0x20000)
--#define DAVINCI_UART1_BASE	(IO_PHYS + 0x20400)
--#define DAVINCI_UART2_BASE	(IO_PHYS + 0x20800)
--
--#endif /* __ASM_ARCH_SERIAL_H */
-diff --git a/include/mach/davinci/time.h b/include/mach/davinci/time.h
-deleted file mode 100644
-index d7d90efea9..0000000000
---- a/include/mach/davinci/time.h
-+++ /dev/null
-@@ -1,18 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-only */
--/* SPDX-FileCopyrightText: 2007 MontaVista Software, Inc. */
--
--/*
-- * Local header file for DaVinci time code.
-- *
-- * Author: Kevin Hilman, MontaVista Software, Inc. <source@mvista.com>
-- */
--#ifndef __ARCH_ARM_MACH_DAVINCI_TIME_H
--#define __ARCH_ARM_MACH_DAVINCI_TIME_H
--
--#include <mach/davinci/hardware.h>
--
--#define DAVINCI_TIMER0_BASE		(IO_PHYS + 0x21400)
--#define DAVINCI_TIMER1_BASE		(IO_PHYS + 0x21800)
--#define DAVINCI_WDOG_BASE		(IO_PHYS + 0x21C00)
--
--#endif /* __ARCH_ARM_MACH_DAVINCI_TIME_H */
-diff --git a/scripts/Kconfig b/scripts/Kconfig
-index 4b675671ee..4034f020d0 100644
---- a/scripts/Kconfig
-+++ b/scripts/Kconfig
-@@ -70,13 +70,6 @@ config OMAP_IMAGE
- 	help
- 	  This enables building the image creation tools for TI OMAP SoCs
- 
--config DAVINCI_IMAGE
--	bool "Davinci image tool" if COMPILE_HOST_TOOLS
--	depends on ARCH_DAVINCI || COMPILE_HOST_TOOLS
--	default y if ARCH_DAVINCI
--	help
--	  This enables building the image creation tool for Davinci SoCs
--
- config MVEBU_HOSTTOOLS
- 	bool "mvebu hosttools" if COMPILE_HOST_TOOLS
- 	depends on ARCH_MVEBU || COMPILE_HOST_TOOLS
-diff --git a/scripts/Makefile b/scripts/Makefile
-index cb1d916439..20da6fc5e7 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -18,7 +18,6 @@ hostprogs-always-$(CONFIG_KALLSYMS)			+= kallsyms
- hostprogs-always-$(CONFIG_MIPS)				+= mips-relocs
- hostprogs-always-$(CONFIG_MVEBU_HOSTTOOLS)		+= kwbimage kwboot mvebuimg
- hostprogs-always-$(CONFIG_OMAP_IMAGE)			+= omap_signGP mk-omap-image
--hostprogs-always-$(CONFIG_DAVINCI_IMAGE)		+= mkublheader
- HOSTCFLAGS_zynq_mkimage.o = -I$(srctree) -I$(srctree)/include/mach
- hostprogs-always-$(CONFIG_ZYNQ_MKIMAGE)			+= zynq_mkimage
- hostprogs-always-$(CONFIG_SOCFPGA_MKIMAGE)		+= socfpga_mkimage
-diff --git a/scripts/mkublheader.c b/scripts/mkublheader.c
-deleted file mode 100644
-index db3e284a8a..0000000000
---- a/scripts/mkublheader.c
-+++ /dev/null
-@@ -1,85 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--// SPDX-FileCopyrightText: 2012 Jan Luebbe <j.luebbe@pengutronix.de>
--
--/* mkublheader.c - produce the header needed to load barebox on OMAP-L138 */
--
--#define _BSD_SOURCE
--#define _DEFAULT_SOURCE
--
--#include <stdio.h>
--#include <sys/types.h>
--#include <sys/stat.h>
--#include <fcntl.h>
--#include <unistd.h>
--#include <stdint.h>
--#include <limits.h>
--#include <errno.h>
--#include <stdlib.h>
--#include <string.h>
--#include <getopt.h>
--#include <endian.h>
--
--#define MAGICNUM 0xa1aced00
--
--struct ubl_header
--{
--  uint32_t magicNum; /* Expected magic number */
--  uint32_t epAddr;   /* Entry point of the user application */
--  uint32_t imgSize;  /* Number of bytes of the application image */
--  uint32_t imgAddr;  /* SPI memory offset where application image is located */
--  uint32_t ldAddr;   /* Address where image is copied to */
+-struct nomadik_nand_platform_data {
+-	int options;
+-	int (*init) (void);
 -};
 -
--static void usage(char *prgname)
--{
--	printf( "Usage : %s [OPTION] FILE > HEADER\n"
--		"\n"
--		"options:\n"
--		"  -a <address> image flash address\n"
--		"  -e <address> entry point memory address\n"
--		"  -l <address> load memory address\n",
--		prgname);
--}
+-#define NAND_IO_DATA	0x40000000
+-#define NAND_IO_CMD	0x40800000
+-#define NAND_IO_ADDR	0x41000000
 -
--int main(int argc, char *argv[])
--{
--	struct stat sb;
--	struct ubl_header uh;
--	int opt;
--	uint32_t imgAddr = 0x00040000 + sizeof(uh);
--	uint32_t epAddr = 0xc1080000, ldAddr = 0xc1080000;
--
--	while((opt = getopt(argc, argv, "ael:")) != -1) {
--		switch (opt) {
--		case 'a':
--			imgAddr = strtoul(optarg, NULL, 0);
--			break;
--		case 'e':
--			epAddr = strtoul(optarg, NULL, 0);
--			break;
--		case 'l':
--			ldAddr = strtoul(optarg, NULL, 0);
--			break;
--		}
--	}
--
--	if (optind >= argc) {
--		usage(argv[0]);
--		exit(1);
--	}
--
--	if (stat(argv[optind], &sb) == -1) {
--		perror("stat");
--		exit(EXIT_FAILURE);
--	}
--
--	uh.magicNum = htole32(MAGICNUM);
--	uh.epAddr = htole32(epAddr);
--	uh.imgSize = htole32((uint32_t)sb.st_size);
--	uh.imgAddr = htole32(imgAddr);
--	uh.ldAddr = htole32(ldAddr);
--
--	fwrite(&uh, sizeof(uh), 1, stdout);
--
--	exit(EXIT_SUCCESS);
--}
+-#endif				/* __ASM_ARCH_NAND_H */
 -- 
 2.39.2
 
