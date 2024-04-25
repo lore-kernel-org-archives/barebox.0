@@ -1,62 +1,65 @@
-Delivery-date: Thu, 25 Apr 2024 13:56:42 +0200
+Delivery-date: Thu, 25 Apr 2024 13:56:49 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzxiU-00GfDW-0h
+	id 1rzxib-00GfEU-0m
 	for lore@lore.pengutronix.de;
-	Thu, 25 Apr 2024 13:56:42 +0200
+	Thu, 25 Apr 2024 13:56:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzxiA-0007Cd-Oh
-	for lore@pengutronix.de; Thu, 25 Apr 2024 13:56:42 +0200
+	id 1rzxiR-0007MK-Jo
+	for lore@pengutronix.de; Thu, 25 Apr 2024 13:56:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=ZNIvHfKy2il7HU14JRRBMaksWyVHIHInP8Dwv8tSf0o=; b=10CdlkkGjGupTN
-	IIx2skmgORKmU1QxSKBPowfnaGiustV+spUYDJsKcBVtWLjDvm/xmJaFGtt8B+duBcnt/q9NO6xt8
-	iLL4HJPIui7nLeJb5evlqlI6OVpOchexJmxrBTlgu6TJ3yXsAT8CBq5T9xQ33maf4jqj7WZiGzYVk
-	KHfzGmuV1x0p3VnsF8qOvWB33dhBGC64OpGXrVVkvr02D36cpf+wFFuTowUSfJNuaQStamtPZs7CY
-	it6UYVJAjmBw62o77TxelXyT+pC1CrptsmMRAKJmHtAfAzet3h+XWr8ebdKvNUqCInaLkZvW3pVle
-	NDKVZ0Enrc5q9x3xt9QA==;
+	List-Owner; bh=VoJVFXrEQOrAzomy2myogTcrZbO9s/ou8SiDsf7b60U=; b=Id7a6HlPSLI9vJ
+	mV3yOB/oI29ixZAiNhYs1rg1wnYxaNwV7lRjdTyi+4ecZPwMm374Ly/8x+jsCFr+n0WYhC0dCnVaD
+	7R/Ra313SWQE3DN2iQWL6AA5H6Q4kYev0rPyQOJCEo4TUKLMBUePw2cScpsoZaDSAF/LtR8vn3UCF
+	O+JU4As97VgvHPI3YdwUBKJhOs/3IYiuiNi660RndRZR8940/bs6JrTqaT3zBNaHfoiIFts+bJsDE
+	aRH81g+njFemrZJH6nfs7RlfBObBzAWWHhEfZJDMH4s9sRarUIt4P+b0YF6zIt1/9ZxiOzafDBQPf
+	tvTZ4Ou/LHMTtWVrxibA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzxgr-000000085FM-2T7d;
-	Thu, 25 Apr 2024 11:55:01 +0000
+	id 1rzxhH-000000085Ya-0lHY;
+	Thu, 25 Apr 2024 11:55:27 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzxgi-000000085CF-29vs
+	id 1rzxh6-000000085R7-2hGJ
 	for barebox@lists.infradead.org;
-	Thu, 25 Apr 2024 11:54:57 +0000
+	Thu, 25 Apr 2024 11:55:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxgZ-00062i-8j; Thu, 25 Apr 2024 13:54:43 +0200
+	id 1rzxgZ-00062f-8j; Thu, 25 Apr 2024 13:54:43 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxgY-00EFqv-Ie; Thu, 25 Apr 2024 13:54:42 +0200
+	id 1rzxgY-00EFql-Bz; Thu, 25 Apr 2024 13:54:42 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxgY-009aQk-1P;
+	id 1rzxgY-009aQk-0l;
 	Thu, 25 Apr 2024 13:54:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 25 Apr 2024 13:54:31 +0200
-Message-Id: <20240425115439.2269239-8-s.hauer@pengutronix.de>
+Date: Thu, 25 Apr 2024 13:54:28 +0200
+Message-Id: <20240425115439.2269239-5-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240425115439.2269239-1-s.hauer@pengutronix.de>
 References: <20240425115439.2269239-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
+X-CRM114-CacheID: sfid-20240425_045518_026086_D30E14EF 
+X-CRM114-Status: GOOD (  17.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,3475 +82,2564 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 07/15] ARM: remove PXA boards
+Subject: [PATCH 04/15] ARM: remove ep93xx
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-None of the PXA boards has PBL support. This becomes mandatory soon, so
-remove the boards.
+None of the ep93xx boards supports PBL. PBL becomes mandatory, so remove
+the boards and with it the now unused architecture.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/Makefile                      |   5 -
- arch/arm/boards/lubbock/Makefile              |   4 -
- arch/arm/boards/lubbock/board.c               | 118 -----
- arch/arm/boards/lubbock/env/boot/nor-ubi      |   5 -
- arch/arm/boards/lubbock/env/init/mtdparts-nor |   6 -
- .../lubbock/env/nv/linux.bootargs.console     |   1 -
- arch/arm/boards/lubbock/lowlevel.c            | 194 --------
- arch/arm/boards/mainstone/Makefile            |   4 -
- arch/arm/boards/mainstone/board.c             | 118 -----
- arch/arm/boards/mainstone/env/boot/nor-ubi    |   5 -
- .../boards/mainstone/env/init/mtdparts-nor    |   6 -
- .../mainstone/env/nv/linux.bootargs.console   |   1 -
- arch/arm/boards/mainstone/lowlevel.c          | 266 -----------
- arch/arm/boards/mioa701/Makefile              |   4 -
- arch/arm/boards/mioa701/board.c               | 274 -----------
- .../arm/boards/mioa701/env/bin/barebox_update |  11 -
- arch/arm/boards/mioa701/env/bin/console_mode  |   6 -
- arch/arm/boards/mioa701/env/bin/dps1_unlock   |  12 -
- arch/arm/boards/mioa701/env/bin/dps1_update   |  12 -
- arch/arm/boards/mioa701/env/bin/init          |  79 ---
- .../boards/mioa701/env/bin/mtd_env_override   |   4 -
- .../boards/mioa701/env/bin/sdcard_override    |  19 -
- arch/arm/boards/mioa701/env/config            |   6 -
- arch/arm/boards/mioa701/env/data/dps1.raw.gz  | Bin 1324 -> 0 bytes
- arch/arm/boards/mioa701/gpio0_poweroff.c      |  67 ---
- arch/arm/boards/mioa701/lowlevel.c            |  12 -
- arch/arm/boards/mioa701/mioa701.h             |  67 ---
- .../arm/boards/phytec-phycore-pxa270/Makefile |   4 -
- arch/arm/boards/phytec-phycore-pxa270/board.c | 171 -------
- .../arm/boards/phytec-phycore-pxa270/config.h | 314 ------------
- .../env/init/mtdparts-nor                     |   6 -
- .../env/nv/linux.bootargs.console             |   1 -
- .../phytec-phycore-pxa270/lowlevel_init.S     | 448 ------------------
- arch/arm/boards/zylonite/Makefile             |   4 -
- arch/arm/boards/zylonite/board.c              |  93 ----
- arch/arm/boards/zylonite/env/boot/nand-ubi    |   5 -
- .../boards/zylonite/env/init/mtdparts-nand    |   6 -
- arch/arm/boards/zylonite/env/nv/hostname      |   1 -
- .../zylonite/env/nv/linux.bootargs.base       |   1 -
- .../zylonite/env/nv/linux.bootargs.console    |   1 -
- arch/arm/boards/zylonite/lowlevel.c           |  12 -
- arch/arm/configs/lubbock_defconfig            | 100 ----
- arch/arm/configs/mainstone_defconfig          | 103 ----
- arch/arm/configs/mioa701_defconfig            | 104 ----
- .../configs/phytec-phycore-pxa270_defconfig   |  60 ---
- arch/arm/configs/zylonite310_defconfig        | 104 ----
- arch/arm/include/asm/mach-types.h             |  60 ---
- arch/arm/mach-pxa/Kconfig                     |  87 ----
- 48 files changed, 2991 deletions(-)
- delete mode 100644 arch/arm/boards/lubbock/Makefile
- delete mode 100644 arch/arm/boards/lubbock/board.c
- delete mode 100644 arch/arm/boards/lubbock/env/boot/nor-ubi
- delete mode 100644 arch/arm/boards/lubbock/env/init/mtdparts-nor
- delete mode 100644 arch/arm/boards/lubbock/env/nv/linux.bootargs.console
- delete mode 100644 arch/arm/boards/lubbock/lowlevel.c
- delete mode 100644 arch/arm/boards/mainstone/Makefile
- delete mode 100644 arch/arm/boards/mainstone/board.c
- delete mode 100644 arch/arm/boards/mainstone/env/boot/nor-ubi
- delete mode 100644 arch/arm/boards/mainstone/env/init/mtdparts-nor
- delete mode 100644 arch/arm/boards/mainstone/env/nv/linux.bootargs.console
- delete mode 100644 arch/arm/boards/mainstone/lowlevel.c
- delete mode 100644 arch/arm/boards/mioa701/Makefile
- delete mode 100644 arch/arm/boards/mioa701/board.c
- delete mode 100644 arch/arm/boards/mioa701/env/bin/barebox_update
- delete mode 100644 arch/arm/boards/mioa701/env/bin/console_mode
- delete mode 100644 arch/arm/boards/mioa701/env/bin/dps1_unlock
- delete mode 100644 arch/arm/boards/mioa701/env/bin/dps1_update
- delete mode 100644 arch/arm/boards/mioa701/env/bin/init
- delete mode 100644 arch/arm/boards/mioa701/env/bin/mtd_env_override
- delete mode 100644 arch/arm/boards/mioa701/env/bin/sdcard_override
- delete mode 100644 arch/arm/boards/mioa701/env/config
- delete mode 100644 arch/arm/boards/mioa701/env/data/dps1.raw.gz
- delete mode 100644 arch/arm/boards/mioa701/gpio0_poweroff.c
- delete mode 100644 arch/arm/boards/mioa701/lowlevel.c
- delete mode 100644 arch/arm/boards/mioa701/mioa701.h
- delete mode 100644 arch/arm/boards/phytec-phycore-pxa270/Makefile
- delete mode 100644 arch/arm/boards/phytec-phycore-pxa270/board.c
- delete mode 100644 arch/arm/boards/phytec-phycore-pxa270/config.h
- delete mode 100644 arch/arm/boards/phytec-phycore-pxa270/env/init/mtdparts-nor
- delete mode 100644 arch/arm/boards/phytec-phycore-pxa270/env/nv/linux.bootargs.console
- delete mode 100644 arch/arm/boards/phytec-phycore-pxa270/lowlevel_init.S
- delete mode 100644 arch/arm/boards/zylonite/Makefile
- delete mode 100644 arch/arm/boards/zylonite/board.c
- delete mode 100644 arch/arm/boards/zylonite/env/boot/nand-ubi
- delete mode 100644 arch/arm/boards/zylonite/env/init/mtdparts-nand
- delete mode 100644 arch/arm/boards/zylonite/env/nv/hostname
- delete mode 100644 arch/arm/boards/zylonite/env/nv/linux.bootargs.base
- delete mode 100644 arch/arm/boards/zylonite/env/nv/linux.bootargs.console
- delete mode 100644 arch/arm/boards/zylonite/lowlevel.c
- delete mode 100644 arch/arm/configs/lubbock_defconfig
- delete mode 100644 arch/arm/configs/mainstone_defconfig
- delete mode 100644 arch/arm/configs/mioa701_defconfig
- delete mode 100644 arch/arm/configs/phytec-phycore-pxa270_defconfig
- delete mode 100644 arch/arm/configs/zylonite310_defconfig
+ arch/arm/Kconfig                              |   7 -
+ arch/arm/Makefile                             |   1 -
+ arch/arm/boards/Makefile                      |   8 -
+ arch/arm/boards/edb93xx/Makefile              |   4 -
+ arch/arm/boards/edb93xx/early_udelay.h        |  15 -
+ arch/arm/boards/edb93xx/edb93xx.c             | 121 ----
+ arch/arm/boards/edb93xx/edb93xx.h             |  29 -
+ arch/arm/boards/edb93xx/env/bin/boot          |  48 --
+ .../boards/edb93xx/env/bin/flash_partition    |  22 -
+ arch/arm/boards/edb93xx/env/bin/init          |  19 -
+ arch/arm/boards/edb93xx/env/bin/set_nor_parts |   3 -
+ arch/arm/boards/edb93xx/env/bin/update_kernel |  16 -
+ arch/arm/boards/edb93xx/env/bin/update_rootfs |  16 -
+ arch/arm/boards/edb93xx/env/config            |  16 -
+ arch/arm/boards/edb93xx/flash_cfg.c           |  22 -
+ arch/arm/boards/edb93xx/pll_cfg.c             |  41 --
+ arch/arm/boards/edb93xx/pll_cfg.h             |  53 --
+ arch/arm/boards/edb93xx/sdram_cfg.c           | 128 ----
+ arch/arm/boards/edb93xx/sdram_cfg.h           | 125 ----
+ arch/arm/configs/edb93xx_defconfig            |  32 -
+ arch/arm/include/asm/barebox.lds.h            |   4 -
+ arch/arm/include/asm/debug_ll.h               |   2 -
+ arch/arm/include/asm/mach-types.h             |  96 ---
+ arch/arm/mach-ep93xx/Kconfig                  | 411 ------------
+ arch/arm/mach-ep93xx/Makefile                 |   5 -
+ arch/arm/mach-ep93xx/clocksource.c            |  93 ---
+ arch/arm/mach-ep93xx/gpio.c                   | 134 ----
+ arch/arm/mach-ep93xx/header.c                 |  12 -
+ arch/arm/mach-ep93xx/led.c                    |  57 --
+ arch/arm/mach-ep93xx/led.h                    |  19 -
+ arch/arm/mach-ep93xx/lowlevel_init.S          |  61 --
+ include/mach/ep93xx/barebox.lds.h             |  10 -
+ include/mach/ep93xx/ep93xx-regs.h             | 599 ------------------
+ 33 files changed, 2229 deletions(-)
+ delete mode 100644 arch/arm/boards/edb93xx/Makefile
+ delete mode 100644 arch/arm/boards/edb93xx/early_udelay.h
+ delete mode 100644 arch/arm/boards/edb93xx/edb93xx.c
+ delete mode 100644 arch/arm/boards/edb93xx/edb93xx.h
+ delete mode 100644 arch/arm/boards/edb93xx/env/bin/boot
+ delete mode 100644 arch/arm/boards/edb93xx/env/bin/flash_partition
+ delete mode 100644 arch/arm/boards/edb93xx/env/bin/init
+ delete mode 100644 arch/arm/boards/edb93xx/env/bin/set_nor_parts
+ delete mode 100644 arch/arm/boards/edb93xx/env/bin/update_kernel
+ delete mode 100644 arch/arm/boards/edb93xx/env/bin/update_rootfs
+ delete mode 100644 arch/arm/boards/edb93xx/env/config
+ delete mode 100644 arch/arm/boards/edb93xx/flash_cfg.c
+ delete mode 100644 arch/arm/boards/edb93xx/pll_cfg.c
+ delete mode 100644 arch/arm/boards/edb93xx/pll_cfg.h
+ delete mode 100644 arch/arm/boards/edb93xx/sdram_cfg.c
+ delete mode 100644 arch/arm/boards/edb93xx/sdram_cfg.h
+ delete mode 100644 arch/arm/configs/edb93xx_defconfig
+ delete mode 100644 arch/arm/mach-ep93xx/Kconfig
+ delete mode 100644 arch/arm/mach-ep93xx/Makefile
+ delete mode 100644 arch/arm/mach-ep93xx/clocksource.c
+ delete mode 100644 arch/arm/mach-ep93xx/gpio.c
+ delete mode 100644 arch/arm/mach-ep93xx/header.c
+ delete mode 100644 arch/arm/mach-ep93xx/led.c
+ delete mode 100644 arch/arm/mach-ep93xx/led.h
+ delete mode 100644 arch/arm/mach-ep93xx/lowlevel_init.S
+ delete mode 100644 include/mach/ep93xx/barebox.lds.h
+ delete mode 100644 include/mach/ep93xx/ep93xx-regs.h
 
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 0b4333db6a..837c7eb9f4 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -87,12 +87,6 @@ config ARCH_DIGIC
+ 	help
+ 	  Support for Canon's digital cameras that use the DIGIC4 chip.
+ 
+-config ARCH_EP93XX
+-	bool "Cirrus Logic EP93xx"
+-	depends on 32BIT
+-	select CPU_ARM920T
+-	select GENERIC_GPIO
+-
+ config ARCH_MVEBU
+ 	bool "Marvell EBU platforms"
+ 	depends on 32BIT
+@@ -292,7 +286,6 @@ source "arch/arm/mach-bcm283x/Kconfig"
+ source "arch/arm/mach-clps711x/Kconfig"
+ source "arch/arm/mach-davinci/Kconfig"
+ source "arch/arm/mach-digic/Kconfig"
+-source "arch/arm/mach-ep93xx/Kconfig"
+ source "arch/arm/mach-imx/Kconfig"
+ source "arch/arm/mach-layerscape/Kconfig"
+ source "arch/arm/mach-mxs/Kconfig"
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 1c8ec48988..a08be94687 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -87,7 +87,6 @@ machine-$(CONFIG_ARCH_BCM283X)		+= bcm283x
+ machine-$(CONFIG_ARCH_CLPS711X)		+= clps711x
+ machine-$(CONFIG_ARCH_DAVINCI)		+= davinci
+ machine-$(CONFIG_ARCH_DIGIC)		+= digic
+-machine-$(CONFIG_ARCH_EP93XX)		+= ep93xx
+ machine-$(CONFIG_ARCH_IMX)		+= imx
+ machine-$(CONFIG_ARCH_K3)		+= k3
+ machine-$(CONFIG_ARCH_LAYERSCAPE)	+= layerscape
 diff --git a/arch/arm/boards/Makefile b/arch/arm/boards/Makefile
-index 022ba9903a..fc7a829900 100644
+index eb4e80d3e0..2e41865890 100644
 --- a/arch/arm/boards/Makefile
 +++ b/arch/arm/boards/Makefile
-@@ -56,11 +56,8 @@ obj-$(CONFIG_MACH_KAMSTRUP_MX7_CONCENTRATOR)	+= kamstrup-mx7-concentrator/
- obj-$(CONFIG_MACH_KARO_QSXP_ML81)		+= karo-qsxp-ml81/
- obj-$(CONFIG_MACH_KONTRON_SAMX6I)		+= kontron-samx6i/
- obj-$(CONFIG_MACH_LENOVO_IX4_300D)		+= lenovo-ix4-300d/
--obj-$(CONFIG_MACH_LUBBOCK)			+= lubbock/
--obj-$(CONFIG_MACH_MAINSTONE)			+= mainstone/
- obj-$(CONFIG_MACH_MARVELL_ARMADA_XP_GP)		+= marvell-armada-xp-gp/
- obj-$(CONFIG_MACH_MARVELL_ARMADA_XP_DB)		+= marvell-armada-xp-db/
--obj-$(CONFIG_MACH_MIOA701)			+= mioa701/
- obj-$(CONFIG_MACH_MX23EVK)			+= freescale-mx23-evk/
- obj-$(CONFIG_MACH_MX28EVK)			+= freescale-mx28-evk/
- obj-$(CONFIG_MACH_MYIRTECH_X335X)		+= myirtech-x335x/
-@@ -82,7 +79,6 @@ obj-$(CONFIG_MACH_PANDA)			+= panda/
- obj-$(CONFIG_MACH_PCA100)			+= phytec-phycard-imx27/
- obj-$(CONFIG_MACH_PCAAL1)			+= phytec-phycard-omap3/
- obj-$(CONFIG_MACH_PCAAXL2)			+= phytec-phycard-omap4/
--obj-$(CONFIG_MACH_PCM027)			+= phytec-phycore-pxa270/
- obj-$(CONFIG_MACH_PCM038)			+= phytec-phycore-imx27/
- obj-$(CONFIG_MACH_PCM049)			+= phytec-phycore-omap4460/
- obj-$(CONFIG_MACH_PHYTEC_SOM_AM335X)		+= phytec-som-am335x/
-@@ -162,7 +158,6 @@ obj-$(CONFIG_MACH_USI_TOPKICK)			+= usi-topkick/
- obj-$(CONFIG_MACH_VERSATILEPB)			+= versatile/
- obj-$(CONFIG_MACH_VEXPRESS)			+= vexpress/
- obj-$(CONFIG_MACH_ZEDBOARD)			+= avnet-zedboard/
--obj-$(CONFIG_MACH_ZYLONITE)			+= zylonite/
- obj-$(CONFIG_MACH_VARISCITE_MX6)		+= variscite-mx6/
- obj-$(CONFIG_MACH_VARISCITE_SOM_MX7)		+= variscite-som-mx7/
- obj-$(CONFIG_MACH_VSCOM_BALTOS)			+= vscom-baltos/
-diff --git a/arch/arm/boards/lubbock/Makefile b/arch/arm/boards/lubbock/Makefile
+@@ -32,14 +32,6 @@ obj-$(CONFIG_MACH_DFI_FS700_M60)		+= dfi-fs700-m60/
+ obj-$(CONFIG_MACH_DIGI_CCIMX6ULSBCPRO)		+= digi-ccimx6ulsom/
+ obj-$(CONFIG_MACH_DUCKBILL)			+= duckbill/
+ obj-$(CONFIG_MACH_DSS11)			+= dss11/
+-obj-$(CONFIG_MACH_EDB93012)			+= edb93xx/
+-obj-$(CONFIG_MACH_EDB9301)			+= edb93xx/
+-obj-$(CONFIG_MACH_EDB9302A)			+= edb93xx/
+-obj-$(CONFIG_MACH_EDB9302)			+= edb93xx/
+-obj-$(CONFIG_MACH_EDB9307A)			+= edb93xx/
+-obj-$(CONFIG_MACH_EDB9307)			+= edb93xx/
+-obj-$(CONFIG_MACH_EDB9315A)			+= edb93xx/
+-obj-$(CONFIG_MACH_EDB9315)			+= edb93xx/
+ obj-$(CONFIG_MACH_EFIKA_MX_SMARTBOOK)		+= efika-mx-smartbook/
+ obj-$(CONFIG_MACH_EMBEDSKY_E9)			+= embedsky-e9/
+ obj-$(CONFIG_MACH_EMBEST_MARSBOARD)		+= embest-marsboard/
+diff --git a/arch/arm/boards/edb93xx/Makefile b/arch/arm/boards/edb93xx/Makefile
 deleted file mode 100644
-index da63d2625f..0000000000
---- a/arch/arm/boards/lubbock/Makefile
+index be969bde20..0000000000
+--- a/arch/arm/boards/edb93xx/Makefile
 +++ /dev/null
 @@ -1,4 +0,0 @@
 -# SPDX-License-Identifier: GPL-2.0-only
 -
--obj-y += board.o
--lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/lubbock/board.c b/arch/arm/boards/lubbock/board.c
+-obj-y += edb93xx.o
+-lwl-y += flash_cfg.o pll_cfg.o sdram_cfg.o
+diff --git a/arch/arm/boards/edb93xx/early_udelay.h b/arch/arm/boards/edb93xx/early_udelay.h
 deleted file mode 100644
-index af046e110a..0000000000
---- a/arch/arm/boards/lubbock/board.c
+index b902c3bfb7..0000000000
+--- a/arch/arm/boards/edb93xx/early_udelay.h
 +++ /dev/null
-@@ -1,118 +0,0 @@
+@@ -1,15 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
--// SPDX-FileCopyrightText: 2011 Robert Jarzmik <robert.jarzmik@free.fr>
+-// SPDX-FileCopyrightText: 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
+-
+-#include <common.h>
+-
+-/* delay execution before timers are initialized */
+-static inline void early_udelay(uint32_t usecs)
+-{
+-	/* loop takes 4 cycles at 5.0ns (fastest case, running at 200MHz) */
+-	register uint32_t loops = usecs * (1000 / 20);
+-
+-	__asm__ volatile ("1:\n"
+-			"subs %0, %1, #1\n"
+-			"bne 1b":"=r" (loops):"0" (loops));
+-}
+diff --git a/arch/arm/boards/edb93xx/edb93xx.c b/arch/arm/boards/edb93xx/edb93xx.c
+deleted file mode 100644
+index a3fb14822a..0000000000
+--- a/arch/arm/boards/edb93xx/edb93xx.c
++++ /dev/null
+@@ -1,121 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-// SPDX-FileCopyrightText: 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
 -
 -#include <common.h>
 -#include <driver.h>
 -#include <environment.h>
 -#include <fs.h>
 -#include <init.h>
--#include <led.h>
--#include <gpio.h>
--#include <pwm.h>
--#include <linux/sizes.h>
--
--#include <mach/pxa/devices.h>
--#include <mach/pxa/mfp-pxa27x.h>
--#include <mach/pxa/pxa-regs.h>
--#include <mach/pxa/udc_pxa2xx.h>
--#include <mach/pxa/mci_pxa2xx.h>
--
--#include <platform_data/eth-smc91111.h>
 -#include <asm/armlinux.h>
--#include <asm/io.h>
--#include <asm/mmu.h>
--
--#include <asm/mach-types.h>
--
--#define ECOR            0x8000
--#define ECOR_RESET      0x80
--#define ECOR_LEVEL_IRQ  0x40
--#define ECOR_WR_ATTRIB  0x04
--#define ECOR_ENABLE     0x01
--
--#define ECSR            0x8002
--#define ECSR_IOIS8      0x20
--#define ECSR_PWRDWN     0x04
--#define ECSR_INT        0x02
--
--static struct smc91c111_pdata smsc91x_pdata = {
--	.control_setup = 0x0800,
--	.config_setup = 0x10b2,
--	.bus_width = 16,
--	.addr_shift = 2,
--};
--
--static unsigned long lubbock_pin_config[] = {
--	GPIO15_nCS_1,	/* CS1 - Flash */
--	GPIO78_nCS_2,	/* CS2 - Baseboard FGPA + SRAM */
--	GPIO79_nCS_3,	/* CS3 - SMC ethernet */
--	GPIO80_nCS_4,	/* CS4 - SA1111 */
--
--	/* LCD - 16bpp DSTN */
--	GPIOxx_LCD_DSTN_16BPP,
--
--	/* FFUART */
--	GPIO34_FFUART_RXD,
--	GPIO35_FFUART_CTS,
--	GPIO36_FFUART_DCD,
--	GPIO37_FFUART_DSR,
--	GPIO38_FFUART_RI,
--	GPIO39_FFUART_TXD,
--	GPIO40_FFUART_DTR,
--	GPIO41_FFUART_RTS,
--};
--
--static int lubbock_devices_init(void)
--{
--	void *nor0_iospace;
--
--	armlinux_set_architecture(MACH_TYPE_LUBBOCK);
--
--	pxa_add_uart((void *)0x40100000, 0);
--	pxa_add_pwm((void *)0x40b00000, 0);
--
--	nor0_iospace = map_io_sections(0x0, (void *)0xe0000000, SZ_64M);
--	add_cfi_flash_device(0, (ulong)nor0_iospace, SZ_64M, 0);
--	add_cfi_flash_device(1, 0x04000000, SZ_64M, 0);
--	devfs_add_partition("nor0", SZ_2M, SZ_256K, DEVFS_PARTITION_FIXED,
--			    "env0");
--	add_generic_device("smc91c111", DEVICE_ID_DYNAMIC, NULL,
--			   0x0c000300, 0xff4000, IORESOURCE_MEM,
--			   &smsc91x_pdata);
--	return 0;
--}
--
--device_initcall(lubbock_devices_init);
--
--static void smc_init(void)
--{
--	/* SMC91c96 */
--	void __iomem *attaddr = (void __iomem *)0x0e000000;
--
--	writel(ECOR_RESET, attaddr + (ECOR << 2));
--	mdelay(100);
--	writel(0, attaddr + (ECOR << 2));
--	writel(ECOR_ENABLE, attaddr + (ECOR << 2));
--
--	/* force 16-bit mode */
--	writel(0, attaddr + (ECSR << 2));
--	mdelay(100);
--}
--
--static int lubbock_coredevice_init(void)
--{
--	barebox_set_model("Lubbock PXA25x");
--	barebox_set_hostname("lubbock");
--	pxa2xx_mfp_config(ARRAY_AND_SIZE(lubbock_pin_config));
--	smc_init();
--	return 0;
--}
--coredevice_initcall(lubbock_coredevice_init);
--
--static int lubbock_mem_init(void)
--{
--	arm_add_mem_device("ram0", 0xa0000000, SZ_64M);
--	add_mem_device("sram0", 0x0a000000, SZ_1M, IORESOURCE_MEM_WRITEABLE);
--	return 0;
--}
--mem_initcall(lubbock_mem_init);
-diff --git a/arch/arm/boards/lubbock/env/boot/nor-ubi b/arch/arm/boards/lubbock/env/boot/nor-ubi
-deleted file mode 100644
-index 533605e86a..0000000000
---- a/arch/arm/boards/lubbock/env/boot/nor-ubi
-+++ /dev/null
-@@ -1,5 +0,0 @@
--#!/bin/sh
--
--global.bootm.image="/dev/nor0.kernel"
--#global.bootm.oftree="/env/oftree"
--global.linux.bootargs.dyn.root="root=ubi0:linux_root ubi.mtd=nor0.root rootfstype=ubifs"
-diff --git a/arch/arm/boards/lubbock/env/init/mtdparts-nor b/arch/arm/boards/lubbock/env/init/mtdparts-nor
-deleted file mode 100644
-index b5c4e32411..0000000000
---- a/arch/arm/boards/lubbock/env/init/mtdparts-nor
-+++ /dev/null
-@@ -1,6 +0,0 @@
--#!/bin/sh
--
--mtdparts="2048k@0(nor0.barebox)ro,256k(nor0.barebox-env),256k(nor0.barebox-logo),256k(nor0.barebox-logo2),5120k(nor0.kernel),-(nor0.root)"
--kernelname="application-flash"
--
--mtdparts-add -d nor0 -k ${kernelname} -p ${mtdparts}
-diff --git a/arch/arm/boards/lubbock/env/nv/linux.bootargs.console b/arch/arm/boards/lubbock/env/nv/linux.bootargs.console
-deleted file mode 100644
-index 476b1fbe49..0000000000
---- a/arch/arm/boards/lubbock/env/nv/linux.bootargs.console
-+++ /dev/null
-@@ -1 +0,0 @@
--console=ttyS0,115200
-diff --git a/arch/arm/boards/lubbock/lowlevel.c b/arch/arm/boards/lubbock/lowlevel.c
-deleted file mode 100644
-index ef6b544a26..0000000000
---- a/arch/arm/boards/lubbock/lowlevel.c
-+++ /dev/null
-@@ -1,194 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--
--#include <common.h>
--#include <init.h>
 -#include <io.h>
--
--#include <asm/barebox-arm-head.h>
--#include <asm/barebox-arm.h>
--#include <linux/sizes.h>
--#include <mach/pxa/pxa-regs.h>
--#include <mach/pxa/regs-ost.h>
--
--/*
-- * Memory settings
-- */
--#define DEFAULT_MSC0_VAL	0x23d223d2
--#define DEFAULT_MSC1_VAL	0x3ff1a441
--#define DEFAULT_MSC2_VAL	0x7ff17ff1
--#define DEFAULT_MDCNFG_VAL	0x00001ac9
--#define DEFAULT_MDREFR_VAL	0x00018018
--#define DEFAULT_MDMRS_VAL	0x00000000
--
--#define DEFAULT_FLYCNFG_VAL	0x00000000
--#define DEFAULT_SXCNFG_VAL	0x00000000
--
--/*
-- * PCMCIA and CF Interfaces
-- */
--#define DEFAULT_MECR_VAL	0x00000000
--#define DEFAULT_MCMEM0_VAL	0x00010504
--#define DEFAULT_MCMEM1_VAL	0x00010504
--#define DEFAULT_MCATT0_VAL	0x00010504
--#define DEFAULT_MCATT1_VAL	0x00010504
--#define DEFAULT_MCIO0_VAL	0x00004715
--#define DEFAULT_MCIO1_VAL	0x00004715
--
--static inline void writelrb(uint32_t val, volatile u32 __iomem *addr)
--{
--	writel(val, addr);
--	barrier();
--	readl(addr);
--	barrier();
--}
--
--static inline void pxa_wait_ticks(int ticks)
--{
--	writel(0, &OSCR);
--	while (readl(&OSCR) < ticks)
--		barrier();
--}
--
--static inline void pxa2xx_dram_init(void)
--{
--	uint32_t tmp;
--	int i;
--	/*
--	 * 1) Initialize Asynchronous static memory controller
--	 */
--
--	writelrb(DEFAULT_MSC0_VAL, &MSC0);
--	writelrb(DEFAULT_MSC1_VAL, &MSC1);
--	writelrb(DEFAULT_MSC2_VAL, &MSC2);
--	/*
--	 * 2) Initialize Card Interface
--	 */
--
--	/* MECR: Memory Expansion Card Register */
--	writelrb(DEFAULT_MECR_VAL, &MECR);
--	/* MCMEM0: Card Interface slot 0 timing */
--	writelrb(DEFAULT_MCMEM0_VAL, &MCMEM0);
--	/* MCMEM1: Card Interface slot 1 timing */
--	writelrb(DEFAULT_MCMEM1_VAL, &MCMEM1);
--	/* MCATT0: Card Interface Attribute Space Timing, slot 0 */
--	writelrb(DEFAULT_MCATT0_VAL, &MCATT0);
--	/* MCATT1: Card Interface Attribute Space Timing, slot 1 */
--	writelrb(DEFAULT_MCATT1_VAL, &MCATT1);
--	/* MCIO0: Card Interface I/O Space Timing, slot 0 */
--	writelrb(DEFAULT_MCIO0_VAL, &MCIO0);
--	/* MCIO1: Card Interface I/O Space Timing, slot 1 */
--	writelrb(DEFAULT_MCIO1_VAL, &MCIO1);
--
--	/*
--	 * 3) Configure Fly-By DMA register
--	 */
--
--	writelrb(DEFAULT_FLYCNFG_VAL, &FLYCNFG);
--
--	/*
--	 * 4) Initialize Timing for Sync Memory (SDCLK0)
--	 */
--
--	/*
--	 * Before accessing MDREFR we need a valid DRI field, so we set
--	 * this to power on defaults + DRI field.
--	 */
--
--	/* Read current MDREFR config and zero out DRI */
--	tmp = readl(&MDREFR) & ~0xfff;
--	/* Add user-specified DRI */
--	tmp |= DEFAULT_MDREFR_VAL & 0xfff;
--	/* Configure important bits */
--	tmp |= MDREFR_K0RUN | MDREFR_SLFRSH;
--	tmp &= ~(MDREFR_APD | MDREFR_E1PIN);
--
--	/* Write MDREFR back */
--	writelrb(tmp, &MDREFR);
--
--	/*
--	 * 5) Initialize Synchronous Static Memory (Flash/Peripherals)
--	 */
--
--	/* Initialize SXCNFG register. Assert the enable bits.
--	 *
--	 * Write SXMRS to cause an MRS command to all enabled banks of
--	 * synchronous static memory. Note that SXLCR need not be written
--	 * at this time.
--	 */
--	writelrb(DEFAULT_SXCNFG_VAL, &SXCNFG);
--
--	/*
--	 * 6) Initialize SDRAM
--	 */
--
--	writelrb(DEFAULT_MDREFR_VAL & ~MDREFR_SLFRSH, &MDREFR);
--	writelrb(DEFAULT_MDREFR_VAL | MDREFR_E1PIN, &MDREFR);
--
--	/*
--	 * 7) Write MDCNFG with MDCNFG:DEx deasserted (set to 0), to configure
--	 *    but not enable each SDRAM partition pair.
--	 */
--
--	writelrb(DEFAULT_MDCNFG_VAL &
--		 ~(MDCNFG_DE0 | MDCNFG_DE1 | MDCNFG_DE2 | MDCNFG_DE3), &MDCNFG);
--	/* Wait for the clock to the SDRAMs to stabilize, 100..200 usec. */
--	pxa_wait_ticks(0x300);
--
--	/*
--	 * 8) Trigger a number (usually 8) refresh cycles by attempting
--	 *    non-burst read or write accesses to disabled SDRAM, as commonly
--	 *    specified in the power up sequence documented in SDRAM data
--	 *    sheets. The address(es) used for this purpose must not be
--	 *    cacheable.
--	 */
--	for (i = 9; i >= 0; i--) {
--		writel(i, 0xa0000000);
--		barrier();
--	}
--	/*
--	 * 9) Write MDCNFG with enable bits asserted (MDCNFG:DEx set to 1).
--	 */
--
--	tmp = DEFAULT_MDCNFG_VAL &
--		(MDCNFG_DE0 | MDCNFG_DE1 | MDCNFG_DE2 | MDCNFG_DE3);
--	tmp |= readl(&MDCNFG);
--	writelrb(tmp, &MDCNFG);
--
--	/*
--	 * 10) Write MDMRS.
--	 */
--
--	writelrb(DEFAULT_MDMRS_VAL, &MDMRS);
--
--	/*
--	 * 11) Enable APD
--	 */
--
--	if (DEFAULT_MDREFR_VAL & MDREFR_APD) {
--		tmp = readl(&MDREFR);
--		tmp |= MDREFR_APD;
--		writelrb(tmp, &MDREFR);
--	}
--}
--
--void __bare_init __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
--{
--	unsigned long pssr = PSPR;
--	unsigned long pc = get_pc();
--
--	arm_cpu_lowlevel_init();
--	CKEN |= CKEN_OSTIMER | CKEN_MEMC | CKEN_FFUART;
--
--	/*
--	 * When not running from SDRAM, get it out of self refresh, and/or
--	 * initialize it.
--	 */
--	if (!(pc >= 0xa0000000 && pc < 0xb0000000))
--		pxa2xx_dram_init();
--
--	if ((pssr >= 0xa0000000 && pssr < 0xb0000000) ||
--	    (pssr >= 0x04000000 && pssr < 0x10000000))
--		asm("mov pc, %0" : : "r"(pssr) : );
--
--	barebox_arm_entry(0xa0000000, SZ_64M, 0);
--}
-diff --git a/arch/arm/boards/mainstone/Makefile b/arch/arm/boards/mainstone/Makefile
-deleted file mode 100644
-index da63d2625f..0000000000
---- a/arch/arm/boards/mainstone/Makefile
-+++ /dev/null
-@@ -1,4 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--
--obj-y += board.o
--lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/mainstone/board.c b/arch/arm/boards/mainstone/board.c
-deleted file mode 100644
-index 979a4f3609..0000000000
---- a/arch/arm/boards/mainstone/board.c
-+++ /dev/null
-@@ -1,118 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--// SPDX-FileCopyrightText: 2015 Robert Jarzmik <robert.jarzmik@free.fr>
--
--#include <common.h>
--#include <driver.h>
--#include <environment.h>
--#include <fs.h>
--#include <init.h>
--#include <led.h>
--#include <gpio.h>
--#include <pwm.h>
--#include <linux/sizes.h>
--
--#include <mach/pxa/devices.h>
--#include <mach/pxa/mfp-pxa27x.h>
--#include <mach/pxa/pxa-regs.h>
--#include <mach/pxa/udc_pxa2xx.h>
--#include <mach/pxa/mci_pxa2xx.h>
--
--#include <platform_data/eth-smc91111.h>
--#include <asm/armlinux.h>
--#include <asm/io.h>
--#include <asm/mmu.h>
--
+-#include <malloc.h>
 -#include <asm/mach-types.h>
+-#include <mach/ep93xx/ep93xx-regs.h>
+-#include <platform_data/eth-ep93xx.h>
+-#include "edb93xx.h"
 -
--static struct smc91c111_pdata smsc91x_pdata = {
--	.word_aligned_short_writes = true,
+-#define DEVCFG_U1EN (1 << 18)
+-
+-static struct ep93xx_eth_platform_data ep93xx_eth_info = {
+-        .xcv_type = PHY_INTERFACE_MODE_MII,
+-        .phy_addr = 1,
 -};
 -
--static unsigned long mainstone_pin_config[] = {
--	GPIO15_nCS_1,	/* CS1 - Flash */
--	GPIO78_nCS_2,	/* CS2 - Baseboard FGPA + SRAM */
--	GPIO80_nCS_4,	/* CS4 - SMC ethernet */
--
--	/* Ethernet: static memory VLIO */
--	GPIO18_RDY,
--
--	/* PC Card */
--	GPIO48_nPOE,
--	GPIO49_nPWE,
--	GPIO50_nPIOR,
--	GPIO51_nPIOW,
--	GPIO85_nPCE_1,
--	GPIO54_nPCE_2,
--	GPIO79_PSKTSEL,
--	GPIO55_nPREG,
--	GPIO56_nPWAIT,
--	GPIO57_nIOIS16,
--
--	/* MMC */
--	GPIO32_MMC_CLK,
--	GPIO112_MMC_CMD,
--	GPIO92_MMC_DAT_0,
--	GPIO109_MMC_DAT_1,
--	GPIO110_MMC_DAT_2,
--	GPIO111_MMC_DAT_3,
--
--	/* LCD - 16bpp DSTN */
--	GPIOxx_LCD_TFT_16BPP,
--
--	/* Backlight */
--	GPIO16_PWM0_OUT,
--
--	/* FFUART */
--	GPIO34_FFUART_RXD,
--	GPIO35_FFUART_CTS,
--	GPIO36_FFUART_DCD,
--	GPIO37_FFUART_DSR,
--	GPIO38_FFUART_RI,
--	GPIO39_FFUART_TXD,
--	GPIO40_FFUART_DTR,
--	GPIO41_FFUART_RTS,
--};
--
--static int mainstone_devices_init(void)
+-static int ep93xx_mem_init(void)
 -{
--	void *nor0_iospace;
+-	arm_add_mem_device("ram0", CONFIG_EP93XX_SDRAM_BANK0_BASE,
+-				   CONFIG_EP93XX_SDRAM_BANK0_SIZE);
+-#if (CONFIG_EP93XX_SDRAM_NUM_BANKS >= 2)
+-	arm_add_mem_device("ram1", CONFIG_EP93XX_SDRAM_BANK1_BASE,
+-				   CONFIG_EP93XX_SDRAM_BANK1_SIZE);
+-#endif
+-#if (CONFIG_EP93XX_SDRAM_NUM_BANKS >= 3)
+-	arm_add_mem_device("ram2", CONFIG_EP93XX_SDRAM_BANK2_BASE,
+-				   CONFIG_EP93XX_SDRAM_BANK2_SIZE);
+-#endif
+-#if (CONFIG_EP93XX_SDRAM_NUM_BANKS == 4)
+-	arm_add_mem_device("ram3", CONFIG_EP93XX_SDRAM_BANK3_BASE,
+-				   CONFIG_EP93XX_SDRAM_BANK3_SIZE);
+-#endif
 -
--	armlinux_set_architecture(MACH_TYPE_MAINSTONE);
+-	return 0;
+-}
+-mem_initcall(ep93xx_mem_init);
 -
--	pxa_add_uart((void *)0x40100000, 0);
--	pxa_add_pwm((void *)0x40b00000, 0);
+-static int ep93xx_devices_init(void)
+-{
+-	add_cfi_flash_device(DEVICE_ID_DYNAMIC, 0x60000000, EDB93XX_CFI_FLASH_SIZE, 0);
 -
--	nor0_iospace = map_io_sections(0x0, (void *)0xe0000000, SZ_64M);
--	add_cfi_flash_device(0, (ulong)nor0_iospace, SZ_64M, 0);
--	add_cfi_flash_device(1, 0x04000000, SZ_64M, 0);
--	devfs_add_partition("nor0", SZ_2M, SZ_256K, DEVFS_PARTITION_FIXED,
--			    "env0");
--	add_generic_device("smc91c111", DEVICE_ID_DYNAMIC, NULL,
--			   0x10000300, 0xff4000, IORESOURCE_MEM,
--			   &smsc91x_pdata);
+-	/*
+-	 * Create partitions that should be
+-	 * not touched by any regular user
+-	 */
+-	devfs_add_partition("nor0", 0x00000, 0x40000, DEVFS_PARTITION_FIXED, "self0");
+-	devfs_add_partition("nor0", 0x40000, 0x20000, DEVFS_PARTITION_FIXED, "env0");
+-
+-	protect_file("/dev/env0", 1);
+-
+-	/*
+-	 * Up to 32MiB NOR type flash, connected to
+-	 * CS line 6, data width is 16 bit
+-	 */
+-	add_generic_device("ep93xx_eth", DEVICE_ID_DYNAMIC, NULL, 0, 0, IORESOURCE_MEM,
+-			&ep93xx_eth_info);
+-
+-	armlinux_set_architecture(MACH_TYPE);
+-
 -	return 0;
 -}
 -
--device_initcall(mainstone_devices_init);
+-device_initcall(ep93xx_devices_init);
 -
--static int mainstone_coredevice_init(void)
+-static int edb93xx_console_init(void)
 -{
--	/*
--	 * Put the board in superspeed (520 MHz) to speed-up logo/OS loading.
--	 */
--	CCCR = CCCR_A | 0x20290;
+-	struct syscon_regs *syscon = (struct syscon_regs *)SYSCON_BASE;
+-	char *shortname, *board;
 -
--	barebox_set_model("Mainstone PXA27x");
--	barebox_set_hostname("mainstone");
--	pxa2xx_mfp_config(ARRAY_AND_SIZE(mainstone_pin_config));
+-	/*
+-	 * set UARTBAUD bit to drive UARTs with 14.7456MHz instead of
+-	 * 14.7456/2 MHz
+-	 */
+-	uint32_t value = readl(&syscon->pwrcnt);
+-	value |= SYSCON_PWRCNT_UART_BAUD;
+-	writel(value, &syscon->pwrcnt);
+-
+-	/* Enable UART1 */
+-	value = readl(&syscon->devicecfg);
+-	value |= DEVCFG_U1EN;
+-	writel(0xAA, &syscon->sysswlock);
+-	writel(value, &syscon->devicecfg);
+-
+-	if (IS_ENABLED(CONFIG_MACH_EDB9301))
+-		shortname = "EDB9301";
+-	else if (IS_ENABLED(CONFIG_MACH_EDB9302))
+-		shortname = "EDB9302";
+-	else if (IS_ENABLED(CONFIG_MACH_EDB9302))
+-		shortname = "EDB9302A";
+-	else if (IS_ENABLED(CONFIG_MACH_EDB9307))
+-		shortname = "EDB9307";
+-	else if (IS_ENABLED(CONFIG_MACH_EDB9307A))
+-		shortname = "EDB9307A";
+-	else if (IS_ENABLED(CONFIG_MACH_EDB9312))
+-		shortname = "EDB9312";
+-	else if (IS_ENABLED(CONFIG_MACH_EDB9315))
+-		shortname = "EDB9315";
+-	else if (IS_ENABLED(CONFIG_MACH_EDB9315A))
+-		shortname = "EDB9315A";
+-	else
+-		shortname = "unknown";
+-
+-	board = basprintf("Cirrus Logic %s", shortname);
+-	barebox_set_model(board);
+-	free(board);
+-	barebox_set_hostname(shortname);
+-
+-	add_generic_device("pl010_serial", DEVICE_ID_DYNAMIC, NULL, UART1_BASE, 4096,
+-			   IORESOURCE_MEM, NULL);
+-
 -	return 0;
 -}
--coredevice_initcall(mainstone_coredevice_init);
 -
--static int mainstone_mem_init(void)
--{
--	arm_add_mem_device("ram0", 0xa0000000, SZ_64M);
--	add_mem_device("sram0", 0x0a000000, SZ_1M, IORESOURCE_MEM_WRITEABLE);
--	return 0;
--}
--mem_initcall(mainstone_mem_init);
-diff --git a/arch/arm/boards/mainstone/env/boot/nor-ubi b/arch/arm/boards/mainstone/env/boot/nor-ubi
+-console_initcall(edb93xx_console_init);
+diff --git a/arch/arm/boards/edb93xx/edb93xx.h b/arch/arm/boards/edb93xx/edb93xx.h
 deleted file mode 100644
-index 533605e86a..0000000000
---- a/arch/arm/boards/mainstone/env/boot/nor-ubi
+index efbe87684e..0000000000
+--- a/arch/arm/boards/edb93xx/edb93xx.h
 +++ /dev/null
-@@ -1,5 +0,0 @@
--#!/bin/sh
--
--global.bootm.image="/dev/nor0.kernel"
--#global.bootm.oftree="/env/oftree"
--global.linux.bootargs.dyn.root="root=ubi0:linux_root ubi.mtd=nor0.root rootfstype=ubifs"
-diff --git a/arch/arm/boards/mainstone/env/init/mtdparts-nor b/arch/arm/boards/mainstone/env/init/mtdparts-nor
-deleted file mode 100644
-index b5c4e32411..0000000000
---- a/arch/arm/boards/mainstone/env/init/mtdparts-nor
-+++ /dev/null
-@@ -1,6 +0,0 @@
--#!/bin/sh
--
--mtdparts="2048k@0(nor0.barebox)ro,256k(nor0.barebox-env),256k(nor0.barebox-logo),256k(nor0.barebox-logo2),5120k(nor0.kernel),-(nor0.root)"
--kernelname="application-flash"
--
--mtdparts-add -d nor0 -k ${kernelname} -p ${mtdparts}
-diff --git a/arch/arm/boards/mainstone/env/nv/linux.bootargs.console b/arch/arm/boards/mainstone/env/nv/linux.bootargs.console
-deleted file mode 100644
-index 476b1fbe49..0000000000
---- a/arch/arm/boards/mainstone/env/nv/linux.bootargs.console
-+++ /dev/null
-@@ -1 +0,0 @@
--console=ttyS0,115200
-diff --git a/arch/arm/boards/mainstone/lowlevel.c b/arch/arm/boards/mainstone/lowlevel.c
-deleted file mode 100644
-index 29d12f7424..0000000000
---- a/arch/arm/boards/mainstone/lowlevel.c
-+++ /dev/null
-@@ -1,266 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
--
--#include <common.h>
--#include <init.h>
--#include <io.h>
--
--#include <asm/barebox-arm-head.h>
--#include <asm/barebox-arm.h>
--#include <linux/sizes.h>
--#include <mach/pxa/pxa-regs.h>
--#include <mach/pxa/regs-ost.h>
--
--/*
-- * Memory settings
-- */
--#define DEFAULT_MSC0_VAL	0x23F2B8F2
--#define DEFAULT_MSC1_VAL	0x7ff0fff1
--/*
-- * MSC2: static partitions 4 and 5
-- *
-- * [31]      0   - RBUFF5
-- * [30:28]   111 - RRR5
-- * [27:24]   1111- RDN5
-- * [23:20]   1111- RDF5
-- * [19]      0   - RBW5
-- * [18:16]   000 - RT5
-- * [15]      0   - RBUFF4: Slow device (don't wait for data return)
-- * [14:12]   111 - RRR4: Toff=(2*RRR + 1)*CLK_MEM (from nCS=1 to next nCS=0)
-- * [11:8]    1111- RDN4: T=2*RDN*CLK_MEM (from nOE=1 to addr hold)
-- * [7:4]     1111- RDF4: T=RDF*CLK_MEM of hold nOE/nPWE for read/write
-- * [3]       0   - RBW4: Bus width is 32 bits
-- * [2:0]     000 - RT4: Partition is VLIO
-- */
--#define DEFAULT_MSC2_VAL	0x7ff0fff4
--
--/*
-- * MDCNFG: SDRAM Configuration Register
-- *
-- * [31]      0	 - Memory map 0/1 uses normal 256 MBytes
-- * [30]      0   - dcacx2: no extra column addressing
-- * [29]      0   - reserved
-- * [28]      0	 - SA1111 compatiblity mode
-- * [27]      0   - latch return data with return clock
-- * [26]      0   - alternate addressing for pair 2/3
-- * [25:24]   00  - timings
-- * [23]      0   - internal banks in lower partition 2/3 (not used)
-- * [22:21]   00  - row address bits for partition 2/3 (not used)
-- * [20:19]   00  - column address bits for partition 2/3 (not used)
-- * [18]      0   - SDRAM partition 2/3 width is 32 bit
-- * [17]      0   - SDRAM partition 3 disabled
-- * [16]      0   - SDRAM partition 2 disabled
-- * [15]      0	 - Stack1 : see stack0
-- * [14]      0   - dcacx0 : no extra column addressing
-- * [13]      0   - stack0 : stack = 0b00 => SDRAM address placed on MA<24:10>
-- * [12]      0	 - SA1110 compatiblity mode
-- * [11]      1   - always 1
-- * [10]      0   - no alternate addressing for pair 0/1
-- * [09:08]   10  - tRP=2*MemClk CL=2 tRCD=2*MemClk tRAS=7*MemClk tRC=11*MemClk
-- * [7]       1   - 4 internal banks in partitions 0/1
-- * [06:05]   10  - drac0: 13 row address bits for partition 0/1
-- * [04:03]   01  - dcac0: 9 column address bits for partition 0/1
-- * [02]      0   - SDRAM partition 0/1 width is 32 bit
-- * [01]      1   - enable SDRAM partition 1
-- * [00]      1   - enable SDRAM partition 0
-- *
-- * Configuration is for 1 bank of 64MBytes (13 rows * 9 cols)
-- * in bank0, of width 32 bits, with 4 internal banks.
-- * Timings (in times of SDCLK<1>): tRP = 3clk, CL=3, rRCD=3clk,
-- *                                 tRAS=7clk, tRC=11clk
-- */
--#define DEFAULT_MDCNFG_VAL	0x00000acb
--
--/*
-- * MDREFR: SDRAM Configuration Register
-- *
-- * [25]      0   - K2FREE=0
-- * [24]      0   - K1FREE=0
-- * [23]      0   - K0FREE=0
-- * [22]      0   - SLFRSH=0
-- * [21]
-- * [20]      0   - APD
-- * [19]      0   - K2DB2=0
-- * [18]      0   - K2RUN=0
-- * [17]      1   - K1DB2=1
-- * [16]      1   - K1RUN=1
-- * [15]      0   - EP1IN
-- * [14]      1   - K0DB2=1
-- * [13]      1   - K0RUN=1
-- * [12]
-- * [11..0]  17   - DRI=17
-- */
--#define DEFAULT_MDREFR_VAL	0x00036017
--#define DEFAULT_MDMRS_VAL	0x00320032
--
--#define DEFAULT_FLYCNFG_VAL	0x00000000
--#define DEFAULT_SXCNFG_VAL	0x40044004
--
--/*
-- * PCMCIA and CF Interfaces
-- */
--#define DEFAULT_MECR_VAL	0x00000001
--#define DEFAULT_MCMEM0_VAL	0x00014307
--#define DEFAULT_MCMEM1_VAL	0x00014307
--#define DEFAULT_MCATT0_VAL	0x0001c787
--#define DEFAULT_MCATT1_VAL	0x0001c787
--#define DEFAULT_MCIO0_VAL	0x0001430f
--#define DEFAULT_MCIO1_VAL	0x0001430f
--
--static inline void writelrb(uint32_t val, volatile u32 __iomem *addr)
--{
--	writel(val, addr);
--	barrier();
--	readl(addr);
--	barrier();
--}
--
--static inline void pxa_wait_ticks(int ticks)
--{
--	writel(0, &OSCR);
--	while (readl(&OSCR) < ticks)
--		barrier();
--}
--
--static inline void pxa2xx_dram_init(void)
--{
--	uint32_t tmp, mask;
--	int i;
--	/*
--	 * 1) Initialize Asynchronous static memory controller
--	 */
--
--	writelrb(DEFAULT_MSC1_VAL, &MSC1);
--	writelrb(DEFAULT_MSC2_VAL, &MSC2);
--	/*
--	 * 2) Initialize Card Interface
--	 */
--
--	/* MECR: Memory Expansion Card Register */
--	writelrb(DEFAULT_MECR_VAL, &MECR);
--	/* MCMEM0: Card Interface slot 0 timing */
--	writelrb(DEFAULT_MCMEM0_VAL, &MCMEM0);
--	/* MCMEM1: Card Interface slot 1 timing */
--	writelrb(DEFAULT_MCMEM1_VAL, &MCMEM1);
--	/* MCATT0: Card Interface Attribute Space Timing, slot 0 */
--	writelrb(DEFAULT_MCATT0_VAL, &MCATT0);
--	/* MCATT1: Card Interface Attribute Space Timing, slot 1 */
--	writelrb(DEFAULT_MCATT1_VAL, &MCATT1);
--	/* MCIO0: Card Interface I/O Space Timing, slot 0 */
--	writelrb(DEFAULT_MCIO0_VAL, &MCIO0);
--	/* MCIO1: Card Interface I/O Space Timing, slot 1 */
--	writelrb(DEFAULT_MCIO1_VAL, &MCIO1);
--
--	/*
--	 * 3) Configure Fly-By DMA register
--	 */
--
--	writelrb(DEFAULT_FLYCNFG_VAL, &FLYCNFG);
--
--	/*
--	 * 4) Initialize Timing for Sync Memory (SDCLK0)
--	 */
--
--	/*
--	 * Before accessing MDREFR we need a valid DRI field, so we set
--	 * this to power on defaults + DRI field.
--	 */
--
--	/* Read current MDREFR config and zero out DRI */
--	tmp = readl(&MDREFR) & ~0xfff;
--	tmp |= DEFAULT_MDREFR_VAL & 0xfff;
--	writelrb(tmp, &MDREFR);
--
--	/* clear the free-running clock bits (clear K0Free, K1Free, K2Free) */
--	mask = MDREFR_K0FREE | MDREFR_K1FREE | MDREFR_K2FREE |
--		MDREFR_K0DB2 | MDREFR_K0DB4 | MDREFR_K1DB2 | MDREFR_K2DB2 |
--		MDREFR_K0RUN | MDREFR_K1RUN | MDREFR_K2RUN;
--	tmp &= ~mask;
--	tmp |= (DEFAULT_MDREFR_VAL & mask);
--	writelrb(tmp, &MDREFR);
--
--	/*
--	 * 5) Initialize Synchronous Static Memory (Flash/Peripherals)
--	 */
--
--	/* Initialize SXCNFG register. Assert the enable bits.
--	 *
--	 * Write SXMRS to cause an MRS command to all enabled banks of
--	 * synchronous static memory. Note that SXLCR need not be written
--	 * at this time.
--	 */
--	writelrb(DEFAULT_SXCNFG_VAL, &SXCNFG);
--
--	/*
--	 * 6) Initialize SDRAM
--	 */
--
--	tmp &= ~MDREFR_SLFRSH;
--	writelrb(tmp, &MDREFR);
--	tmp |= MDREFR_E1PIN;
--	writelrb(tmp, &MDREFR);
--
--	/*
--	 * 7) Write MDCNFG with MDCNFG:DEx deasserted (set to 0), to configure
--	 *    but not enable each SDRAM partition pair.
--	 */
--
--	mask = MDCNFG_DE0 | MDCNFG_DE1 | MDCNFG_DE2 | MDCNFG_DE3;
--	writelrb(DEFAULT_MDCNFG_VAL & ~mask, &MDCNFG);
--
--	/* Wait for the clock to the SDRAMs to stabilize, 100..200 usec. */
--	pxa_wait_ticks(0x300);
--
--	/*
--	 * 8) Trigger a number (usually 8) refresh cycles by attempting
--	 *    non-burst read or write accesses to disabled SDRAM, as commonly
--	 *    specified in the power up sequence documented in SDRAM data
--	 *    sheets. The address(es) used for this purpose must not be
--	 *    cacheable.
--	 */
--	for (i = 9; i >= 0; i--) {
--		readl(0xa0000000);
--		barrier();
--	}
--	/*
--	 * 9) Write MDCNFG with enable bits asserted (MDCNFG:DEx set to 1).
--	 */
--
--	tmp = (readl(&MDCNFG) & ~mask) | (DEFAULT_MDCNFG_VAL & mask);
--	writelrb(tmp, &MDCNFG);
--
--	/*
--	 * 10) Write MDMRS.
--	 */
--	writelrb(DEFAULT_MDMRS_VAL, &MDMRS);
--
--	/*
--	 * 11) Enable APD
--	 */
--	if (DEFAULT_MDREFR_VAL & MDREFR_APD) {
--		tmp = readl(&MDREFR);
--		tmp |= MDREFR_APD;
--		writelrb(tmp, &MDREFR);
--	}
--}
--
--void __bare_init __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
--{
--	unsigned long pssr = PSPR;
--	unsigned long pc = get_pc();
--
--	arm_cpu_lowlevel_init();
--	CKEN |= CKEN_OSTIMER | CKEN_MEMC | CKEN_FFUART;
--
--	/*
--	 * When not running from SDRAM, get it out of self refresh, and/or
--	 * initialize it.
--	 */
--	if (!(pc >= 0xa0000000 && pc < 0xb0000000))
--		pxa2xx_dram_init();
--
--	if ((pssr >= 0xa0000000 && pssr < 0xb0000000) ||
--	    (pssr >= 0x04000000 && pssr < 0x10000000))
--		asm("mov pc, %0" : : "r"(pssr) : );
--
--	barebox_arm_entry(0xa0000000, SZ_64M, 0);
--}
-diff --git a/arch/arm/boards/mioa701/Makefile b/arch/arm/boards/mioa701/Makefile
-deleted file mode 100644
-index bf17869fb2..0000000000
---- a/arch/arm/boards/mioa701/Makefile
-+++ /dev/null
-@@ -1,4 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--
--obj-y += board.o gpio0_poweroff.o
--lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/mioa701/board.c b/arch/arm/boards/mioa701/board.c
-deleted file mode 100644
-index 685c78611b..0000000000
---- a/arch/arm/boards/mioa701/board.c
-+++ /dev/null
-@@ -1,274 +0,0 @@
+@@ -1,29 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
--// SPDX-FileCopyrightText: 2011 Robert Jarzmik <robert.jarzmik@free.fr>
+-// SPDX-FileCopyrightText: 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
 -
--#include <common.h>
--#include <driver.h>
--#include <environment.h>
--#include <fs.h>
--#include <init.h>
--#include <led.h>
--#include <gpio.h>
--#include <pwm.h>
+-#if defined(CONFIG_MACH_EDB9301)
+-#define MACH_TYPE MACH_TYPE_EDB9301
+-#elif defined(CONFIG_MACH_EDB9302)
+-#define MACH_TYPE MACH_TYPE_EDB9302
+-#elif defined(CONFIG_MACH_EDB9302A)
+-#define MACH_TYPE MACH_TYPE_EDB9302A
+-#elif defined(CONFIG_MACH_EDB9307)
+-#define MACH_TYPE MACH_TYPE_EDB9307
+-#elif defined(CONFIG_MACH_EDB9307A)
+-#define MACH_TYPE MACH_TYPE_EDB9307A
+-#elif defined(CONFIG_MACH_EDB9312)
+-#define MACH_TYPE MACH_TYPE_EDB9312
+-#elif defined(CONFIG_MACH_EDB9315)
+-#define MACH_TYPE MACH_TYPE_EDB9315
+-#elif defined(CONFIG_MACH_EDB9315A)
+-#define MACH_TYPE MACH_TYPE_EDB9315A
+-#endif
 -
--#include <mach/pxa/devices.h>
--#include <mach/pxa/mfp-pxa27x.h>
--#include <mach/pxa/pxa-regs.h>
--#include <mach/pxa/udc_pxa2xx.h>
--#include <mach/pxa/mci_pxa2xx.h>
--
--#include <asm/armlinux.h>
--#include <asm/io.h>
--#include <asm/mach-types.h>
--#include <asm/mmu.h>
--
--#include "mioa701.h"
--
--/*
-- * LTM0305A776C LCD panel timings
-- *
-- * see:
-- *  - the LTM0305A776C datasheet,
-- *  - and the PXA27x Programmers' manual
-- */
--static struct pxafb_videomode mioa701_ltm0305a776c = {
--	{
--		.pixclock		= 220000,	/* CLK=4.545 MHz */
--		.xres			= 240,
--		.yres			= 320,
--		.hsync_len		= 4,
--		.vsync_len		= 2,
--		.left_margin		= 6,
--		.right_margin		= 4,
--		.upper_margin		= 5,
--		.lower_margin		= 3,
--	},
--	.bpp = 16,
--};
--
--static void mioa701_lcd_power(int on)
--{
--	gpio_set_value(GPIO87_LCD_POWER, on);
--}
--
--static void mioa701_lcd_backlight(int on)
--{
--	struct pwm_device *pwm0 = pwm_request("pwm0");
--
--	/*
--	 * The backlight has a base frequency of 250kHz (<=> 4 ms).
--	 */
--	if (on) {
--		pwm_enable(pwm0);
--		pwm_config(pwm0, 2000 * 1024, 4000 * 1024);
--	} else {
--		pwm_disable(pwm0);
--	}
--	pwm_free(pwm0);
--}
--
--static struct pxafb_platform_data mioa701_pxafb_info = {
--	.mode			= &mioa701_ltm0305a776c,
--	.lcd_conn		= LCD_COLOR_TFT_16BPP | LCD_PCLK_EDGE_FALL,
--	.lcd_power		= mioa701_lcd_power,
--	.backlight_power	= mioa701_lcd_backlight,
--};
--
--#define MIO_LED(_name, _gpio) \
--	{ .gpio = _gpio, .active_low = 1, .led = { .name = #_name, } }
--static struct gpio_led leds[] = {
--	MIO_LED(charging, GPIO10_LED_nCharging),
--	MIO_LED(blue, GPIO97_LED_nBlue),
--	MIO_LED(orange, GPIO98_LED_nOrange),
--	MIO_LED(vibra, GPIO82_LED_nVibra),
--	MIO_LED(keyboard, GPIO115_LED_nKeyboard),
--};
--
--
--static int is_usb_connected(void)
--{
--	return !gpio_get_value(GPIO13_nUSB_DETECT);
--}
--
--static struct pxa2xx_udc_mach_info mioa701_udc_info = {
--	.udc_is_connected = is_usb_connected,
--	.gpio_pullup	  = GPIO22_USB_ENABLE,
--};
--
--static struct pxamci_platform_data mioa701_mmc_info = {
--	.gpio_power = GPIO91_SDIO_EN,
--};
--
--static int mioa701_devices_init(void)
--{
--	int i;
--	void *docg3_iospace;
--
--	pxa_add_pwm((void *)0x40b00000, 0);
--	pxa_add_fb((void *)0x44000000, &mioa701_pxafb_info);
--	pxa_add_mmc((void *)0x41100000, DEVICE_ID_DYNAMIC, &mioa701_mmc_info);
--	docg3_iospace = map_io_sections(0x0, (void *)0xe0000000, 0x2000);
--	add_generic_device("docg3", DEVICE_ID_DYNAMIC, NULL, (ulong) docg3_iospace,
--			0x2000, IORESOURCE_MEM, NULL);
--	armlinux_set_architecture(MACH_TYPE_MIOA701);
--
--	for (i = 0; i < ARRAY_SIZE(leds); i++)
--		led_gpio_register(&leds[i]);
--	add_generic_device("pxa27x-udc", 0, NULL, 0x40600000,
--			   1024, IORESOURCE_MEM, &mioa701_udc_info);
--	return 0;
--}
--
--device_initcall(mioa701_devices_init);
--
--static unsigned long mioa701_pin_config[] = {
--	/* Mio global */
--	MIO_CFG_OUT(GPIO9_CHARGE_EN, AF0, DRIVE_LOW),
--	MIO_CFG_OUT(GPIO18_POWEROFF, AF0, DRIVE_LOW),
--	MFP_CFG_OUT(GPIO3, AF0, DRIVE_HIGH),
--	MFP_CFG_OUT(GPIO4, AF0, DRIVE_HIGH),
--	MIO_CFG_IN(GPIO80_MAYBE_CHARGE_VDROP, AF0),
--
--	/* Backlight PWM 0 */
--	GPIO16_PWM0_OUT,
--
--	/* LCD */
--	GPIOxx_LCD_TFT_16BPP,
--	MIO_CFG_OUT(GPIO87_LCD_POWER, AF0, DRIVE_LOW),
--
--	/* MMC */
--	GPIO32_MMC_CLK,
--	GPIO92_MMC_DAT_0,
--	GPIO109_MMC_DAT_1,
--	GPIO110_MMC_DAT_2,
--	GPIO111_MMC_DAT_3,
--	GPIO112_MMC_CMD,
--	MIO_CFG_IN(GPIO78_SDIO_RO, AF0),
--	MIO_CFG_IN(GPIO15_SDIO_INSERT, AF0),
--	MIO_CFG_OUT(GPIO91_SDIO_EN, AF0, DRIVE_LOW),
--
--	/* USB */
--	MIO_CFG_IN(GPIO13_nUSB_DETECT, AF0),
--	MIO_CFG_OUT(GPIO22_USB_ENABLE, AF0, DRIVE_LOW),
--
--	/* QCI */
--	GPIO12_CIF_DD_7,
--	GPIO17_CIF_DD_6,
--	GPIO50_CIF_DD_3,
--	GPIO51_CIF_DD_2,
--	GPIO52_CIF_DD_4,
--	GPIO53_CIF_MCLK,
--	GPIO54_CIF_PCLK,
--	GPIO55_CIF_DD_1,
--	GPIO81_CIF_DD_0,
--	GPIO82_CIF_DD_5,
--	GPIO84_CIF_FV,
--	GPIO85_CIF_LV,
--
--	/* Bluetooth */
--	MIO_CFG_IN(GPIO14_BT_nACTIVITY, AF0),
--	GPIO44_BTUART_CTS,
--	GPIO42_BTUART_RXD,
--	GPIO45_BTUART_RTS,
--	GPIO43_BTUART_TXD,
--	MIO_CFG_OUT(GPIO83_BT_ON, AF0, DRIVE_LOW),
--	MIO_CFG_OUT(GPIO77_BT_UNKNOWN1, AF0, DRIVE_HIGH),
--	MIO_CFG_OUT(GPIO86_BT_MAYBE_nRESET, AF0, DRIVE_HIGH),
--
--	/* GPS */
--	MIO_CFG_OUT(GPIO23_GPS_UNKNOWN1, AF0, DRIVE_LOW),
--	MIO_CFG_OUT(GPIO26_GPS_ON, AF0, DRIVE_LOW),
--	MIO_CFG_OUT(GPIO27_GPS_RESET, AF0, DRIVE_LOW),
--	MIO_CFG_OUT(GPIO106_GPS_UNKNOWN2, AF0, DRIVE_LOW),
--	MIO_CFG_OUT(GPIO107_GPS_UNKNOWN3, AF0, DRIVE_LOW),
--	GPIO46_STUART_RXD,
--	GPIO47_STUART_TXD,
--
--	/* GSM */
--	MIO_CFG_OUT(GPIO24_GSM_MOD_RESET_CMD, AF0, DRIVE_LOW),
--	MIO_CFG_OUT(GPIO88_GSM_nMOD_ON_CMD, AF0, DRIVE_HIGH),
--	MIO_CFG_OUT(GPIO90_GSM_nMOD_OFF_CMD, AF0, DRIVE_HIGH),
--	MIO_CFG_OUT(GPIO114_GSM_nMOD_DTE_UART_STATE, AF0, DRIVE_HIGH),
--	MIO_CFG_IN(GPIO25_GSM_MOD_ON_STATE, AF0),
--	MIO_CFG_IN(GPIO113_GSM_EVENT, AF0) | WAKEUP_ON_EDGE_BOTH,
--	GPIO34_FFUART_RXD,
--	GPIO35_FFUART_CTS,
--	GPIO36_FFUART_DCD,
--	GPIO37_FFUART_DSR,
--	GPIO39_FFUART_TXD,
--	GPIO40_FFUART_DTR,
--	GPIO41_FFUART_RTS,
--
--	/* Sound */
--	GPIO28_AC97_BITCLK,
--	GPIO29_AC97_SDATA_IN_0,
--	GPIO30_AC97_SDATA_OUT,
--	GPIO31_AC97_SYNC,
--	GPIO89_AC97_SYSCLK,
--	MIO_CFG_IN(GPIO12_HPJACK_INSERT, AF0),
--
--	/* Leds */
--	MIO_CFG_OUT(GPIO10_LED_nCharging, AF0, DRIVE_HIGH),
--	MIO_CFG_OUT(GPIO97_LED_nBlue, AF0, DRIVE_HIGH),
--	MIO_CFG_OUT(GPIO98_LED_nOrange, AF0, DRIVE_HIGH),
--	MIO_CFG_OUT(GPIO82_LED_nVibra, AF0, DRIVE_HIGH),
--	MIO_CFG_OUT(GPIO115_LED_nKeyboard, AF0, DRIVE_HIGH),
--
--	/* Keyboard */
--	MIO_CFG_IN(GPIO0_KEY_POWER, AF0) | WAKEUP_ON_EDGE_BOTH,
--	MIO_CFG_IN(GPIO93_KEY_VOLUME_UP, AF0),
--	MIO_CFG_IN(GPIO94_KEY_VOLUME_DOWN, AF0),
--	GPIO100_KP_MKIN_0,
--	GPIO101_KP_MKIN_1,
--	GPIO102_KP_MKIN_2,
--	GPIO103_KP_MKOUT_0,
--	GPIO104_KP_MKOUT_1,
--	GPIO105_KP_MKOUT_2,
--
--	/* I2C */
--	GPIO117_I2C_SCL,
--	GPIO118_I2C_SDA,
--
--	/* Unknown */
--	MFP_CFG_IN(GPIO20, AF0),
--	MFP_CFG_IN(GPIO21, AF0),
--	MFP_CFG_IN(GPIO33, AF0),
--	MFP_CFG_OUT(GPIO49, AF0, DRIVE_HIGH),
--	MFP_CFG_OUT(GPIO57, AF0, DRIVE_HIGH),
--	MFP_CFG_IN(GPIO96, AF0),
--	MFP_CFG_OUT(GPIO116, AF0, DRIVE_HIGH),
--};
--
--static int mioa701_coredevice_init(void)
--{
--	unsigned int cclk;
--	/* route pins */
--	pxa2xx_mfp_config(ARRAY_AND_SIZE(mioa701_pin_config));
--
--	/*
--	 * Put the board in superspeed (520 MHz) to speed-up logo/OS loading.
--	 * This requires to command the Maxim 1586 to upgrade core voltage to
--	 * 1.475 V, on the power I2C bus (device 0x14).
--	 */
--	CKEN |= CKEN_PWRI2C;
--	CCCR = CCCR_A | 0x20290;
--	PCFR = PCFR_GPR_EN | PCFR_FVC | PCFR_DC_EN | PCFR_PI2C_EN | PCFR_OPDE;
--	PCMD(0) = PCMD_LC | 0x1f;
--	PVCR = 0x14;
--
--	cclk = 0x0b;
--	asm volatile("mcr p14, 0, %0, c6, c0, 0 @ set CCLK"
--	  : : "r" (cclk) : "cc");
--
--	barebox_set_model("Scoter Mitac Mio A701");
--	barebox_set_hostname("mioa701");
--
--	return 0;
--}
--coredevice_initcall(mioa701_coredevice_init);
--
--static int mioa701_mem_init(void)
--{
--	arm_add_mem_device("ram0", 0xa0000000, 64 * 1024 * 1024);
--	return 0;
--}
--mem_initcall(mioa701_mem_init);
-diff --git a/arch/arm/boards/mioa701/env/bin/barebox_update b/arch/arm/boards/mioa701/env/bin/barebox_update
+-#if defined(CONFIG_MACH_EDB9301) || defined(CONFIG_MACH_EDB9302) || \
+-	defined(CONFIG_MACH_EDB9302A)
+-#define EDB93XX_CFI_FLASH_SIZE (16 * 1024 * 1024)
+-#elif defined(CONFIG_MACH_EDB9307) || defined(CONFIG_MACH_EDB9307A) || \
+-	defined(CONFIG_MACH_EDB9312) || defined(CONFIG_MACH_EDB9315) ||	\
+-	defined(CONFIG_MACH_EDB9315A)
+-#define EDB93XX_CFI_FLASH_SIZE (32 * 1024 * 1024)
+-#endif
+diff --git a/arch/arm/boards/edb93xx/env/bin/boot b/arch/arm/boards/edb93xx/env/bin/boot
 deleted file mode 100644
-index 632c20926a..0000000000
---- a/arch/arm/boards/mioa701/env/bin/barebox_update
+index 143f3d018d..0000000000
+--- a/arch/arm/boards/edb93xx/env/bin/boot
 +++ /dev/null
-@@ -1,11 +0,0 @@
+@@ -1,48 +0,0 @@
 -#!/bin/sh
 -
--# Page+OOB specific partitions
--addpart /dev/mtd0.raw 2162688@405504(barebox)
+-. /env/config
 -
--if [ -r /barebox.BIP0 ]; then
--	dps1_unlock
--	erase /dev/mtd0.raw.barebox
--	cp -v /barebox.BIPO /dev/mtd0.raw.barebox
--	dps1_unlock
+-if [ x${rootfs_boot_media} = xflash ];
+-then
+-		rootfs_img=/dev/nor0.rootfs_${active_cfg}
+-
+-		if [ x${active_cfg} = x1 ];
+-		then
+-				rootfs_blkdev=/dev/mtdblock4
+-				cfg_1_ro="ro"
+-				cfg_2_ro=""
+-		else
+-				rootfs_blkdev=/dev/mtdblock6
+-				cfg_1_ro=""
+-				cfg_2_ro="ro"
+-		fi
+-
+-		bootargs_rootfs="root=${rootfs_blkdev} rootfstype=squashfs ro"
+-elif [ x${rootfs_boot_media} = xnet ];
+-then
+-		bootargs_rootfs="root=/dev/nfs nfsroot=${eth0.serverip}:/srv/nfs/${board},v3,nolock,tcp ip=${eth0.ipaddr}"
+-else
+-		echo "ERROR: \$rootfs_boot_media invalid: ${rootfs_boot_media}"
+-		exit 1
 -fi
-diff --git a/arch/arm/boards/mioa701/env/bin/console_mode b/arch/arm/boards/mioa701/env/bin/console_mode
-deleted file mode 100644
-index aa06e920b4..0000000000
---- a/arch/arm/boards/mioa701/env/bin/console_mode
-+++ /dev/null
-@@ -1,6 +0,0 @@
--#!/bin/sh
--# Script to run barebox in console mode
 -
--splash /dev/mtd0.barebox-logo2
--echo
--echo "Welcome to barebox console"
-diff --git a/arch/arm/boards/mioa701/env/bin/dps1_unlock b/arch/arm/boards/mioa701/env/bin/dps1_unlock
-deleted file mode 100644
-index 2d7dab8c58..0000000000
---- a/arch/arm/boards/mioa701/env/bin/dps1_unlock
-+++ /dev/null
-@@ -1,12 +0,0 @@
--#!/bin/sh
--#
--# Shell to unlock the DPS1 with "12345678" key.
--
--mw -b 0x105e 0x31
--mw -b 0x105e 0x32
--mw -b 0x105e 0x33
--mw -b 0x105e 0x34
--mw -b 0x105e 0x35
--mw -b 0x105e 0x36
--mw -b 0x105e 0x37
--mw -b 0x105e 0x38
-diff --git a/arch/arm/boards/mioa701/env/bin/dps1_update b/arch/arm/boards/mioa701/env/bin/dps1_update
-deleted file mode 100644
-index e6535eda72..0000000000
---- a/arch/arm/boards/mioa701/env/bin/dps1_update
-+++ /dev/null
-@@ -1,12 +0,0 @@
--#!/bin/sh
--
--# Page+OOB specific partitions
--addpart /dev/mtd0.raw 67584@202752(dps1)
--uncompress /env/data/dps1.raw.gz /dps1.raw
--
--if [ -r /dps1.raw ]; then
--	dps1_unlock
--	erase /dev/mtd0.raw.dps1
--	cp -v /dps1.raw /dev/mtd0.raw.dps1
--	dps1_unlock
+-if [ x${kernel_boot_media} = xflash ];
+-then
+-		kernel_img=/dev/nor0.kernel_${active_cfg}
+-elif [ x${kernel_boot_media} = xnet ];
+-then
+-		cd /
+-		tftp ${board}/kernel.img || exit 1
+-		kernel_img=/kernel.img
+-else
+-		echo "ERROR: \$kernel_boot_media invalid: ${kernel_boot_media}"
+-		exit 1
 -fi
-diff --git a/arch/arm/boards/mioa701/env/bin/init b/arch/arm/boards/mioa701/env/bin/init
+-
+-source /env/bin/set_nor_parts
+-
+-bootargs_mtd="mtdparts=physmap-flash.0:${nor_parts}"
+-
+-bootargs="${bootargs_common} ${bootargs_mtd} ${bootargs_rootfs}"
+-
+-bootm ${kernel_img}
+\ No newline at end of file
+diff --git a/arch/arm/boards/edb93xx/env/bin/flash_partition b/arch/arm/boards/edb93xx/env/bin/flash_partition
 deleted file mode 100644
-index e914eae32f..0000000000
---- a/arch/arm/boards/mioa701/env/bin/init
+index ded40aa8a3..0000000000
+--- a/arch/arm/boards/edb93xx/env/bin/flash_partition
 +++ /dev/null
-@@ -1,79 +0,0 @@
+@@ -1,22 +0,0 @@
+-#!/bin/sh
+-
+-if [ $# != 2 ];
+-then
+-				echo "Usage: $0 <image> <partition>"
+-				exit 1
+-fi
+-
+-image=$1
+-partition=$2
+-
+-echo "Unlocking ${partition}"
+-unprotect ${partition}
+-
+-echo "Erasing ${partition}"
+-erase ${partition}
+-
+-echo "Flashing ${image} to ${partition}"
+-cp ${image} ${partition}
+-
+-echo "Locking ${partition}"
+-protect ${partition}
+diff --git a/arch/arm/boards/edb93xx/env/bin/init b/arch/arm/boards/edb93xx/env/bin/init
+deleted file mode 100644
+index c6b5aed271..0000000000
+--- a/arch/arm/boards/edb93xx/env/bin/init
++++ /dev/null
+@@ -1,19 +0,0 @@
 -#!/bin/sh
 -
 -PATH=/env/bin
 -export PATH
 -
 -. /env/config
--addpart /dev/mtd0 $mtdparts
 -
--usbserial -s "Mio A701 usb gadget"
+-# add partitions to barebox
+-. /env/bin/set_nor_parts
+-addpart /dev/nor0 ${nor_parts}
 -
--gpio_get_value 22
--is_usb_connected=$?
--
--gpio_get_value 93
--is_vol_up=$?
--
--fb0.enable=1
--# Phase1: Handle Vol-Up key case : drop immediately to console
--if [ $is_vol_up != 0 ]; then
--	console_mode
+-echo
+-echo -n "Hit any key to stop autoboot: "
+-timeout -a $autoboot_timeout
+-if [ $? != 0 ]; then
 -	exit
 -fi
 -
--# Phase2: Handle Power-On case : debounce PowerUp key or Halt
--if [ $global.system.reset = "POR" -o $global.system.reset = "WKE" ]; then
--	powerup_released=0
--
--	gpio_get_value 0
--	is_power_up=$?
--	if [ $is_power_up = 0 ]; then
--		powerup_released=1
--	fi
--	msleep 500
--
--	gpio_get_value 0
--	is_power_up=$?
--	if [ $is_power_up = 0 ]; then
--		powerup_released=1
--	fi
--
--	if [ $powerup_released = 1 ]; then
--		echo "Power button not held, halting"
--		poweroff
--	fi
--fi
--
--# Phase3: display logo
--led keyboard 0
--splash /dev/mtd0.barebox-logo
--
--# Phase4: check for SD Card override
--sdcard_override
--if [ $? = 0 ]; then
--    console_mode
--    exit
--fi
--
--# Phase5: check for MTD override
--mtd_env_override
--if [ $? = 0 ]; then
--    echo "Switching to custom environment"
--    /env/init
--    exit
--fi
--
--# Phase6: check for user interrupting auto-boot
--echo "No custom environment found"
--if [ $is_usb_connected != 0 ]; then
--	echo -n "Hit any key to stop autoboot: "
--	timeout -a $autoboot_timeout
--	if [ $? != 0 ]; then
--		console_mode
--		exit
--	fi
--fi
--
--# Phase7: auto-boot linux kernel
--echo "Booting linux kernel on docg3 chip ..."
--bootm /dev/mtd0.kernel
-diff --git a/arch/arm/boards/mioa701/env/bin/mtd_env_override b/arch/arm/boards/mioa701/env/bin/mtd_env_override
+-boot
+\ No newline at end of file
+diff --git a/arch/arm/boards/edb93xx/env/bin/set_nor_parts b/arch/arm/boards/edb93xx/env/bin/set_nor_parts
 deleted file mode 100644
-index faeb4d0d43..0000000000
---- a/arch/arm/boards/mioa701/env/bin/mtd_env_override
+index 38321fa8cc..0000000000
+--- a/arch/arm/boards/edb93xx/env/bin/set_nor_parts
 +++ /dev/null
-@@ -1,4 +0,0 @@
+@@ -1,3 +0,0 @@
 -#!/bin/sh
 -
--loadenv /dev/mtd0.barebox-env
--exit $?
-diff --git a/arch/arm/boards/mioa701/env/bin/sdcard_override b/arch/arm/boards/mioa701/env/bin/sdcard_override
+-nor_parts="256k(barebox)ro,128k(env_boot),128k(env_boot.bak),1664k(kernel_1)${cfg_1_ro},6144k(rootfs_1)${cfg_1_ro},1664k(kernel_2)${cfg_2_ro},6144k(rootfs_2)${cfg_2_ro},128k(cfg_app),128k(cfg_app.bak)"
+\ No newline at end of file
+diff --git a/arch/arm/boards/edb93xx/env/bin/update_kernel b/arch/arm/boards/edb93xx/env/bin/update_kernel
 deleted file mode 100644
-index 7003fa967e..0000000000
---- a/arch/arm/boards/mioa701/env/bin/sdcard_override
+index 3e4b9b0b8e..0000000000
+--- a/arch/arm/boards/edb93xx/env/bin/update_kernel
 +++ /dev/null
-@@ -1,19 +0,0 @@
+@@ -1,16 +0,0 @@
 -#!/bin/sh
--# Script to switch to execute sdcard environment scripts if available
--#
--# This enables an override of the default environment if an SD Card
--# is inserted, has a FAT filesystem,  and has a barebox.env file in
--# the root directory.
 -
--mci0.probe=1
--if [ $mci0.probe = 1 ]; then
--	mkdir /sdcard
--	mount /dev/disk0.0 /sdcard
--	if [ -f /sdcard/barebox.env ]; then
--		loadenv /sdcard/barebox.env /env.sd
--		/env.sd/bin/init
--		exit
--	fi
+-. /env/config
+-
+-if [ $# != 1 ];
+-then
+-				echo "Usage: $0 <1/2>"
+-				exit 1
 -fi
--trigger_error_return_code
--exit
-diff --git a/arch/arm/boards/mioa701/env/config b/arch/arm/boards/mioa701/env/config
+-
+-partition=/dev/nor0.kernel_$1
+-
+-cd /
+-tftp ${board}/kernel.img || exit 1
+-
+-flash_partition kernel.img ${partition}
+diff --git a/arch/arm/boards/edb93xx/env/bin/update_rootfs b/arch/arm/boards/edb93xx/env/bin/update_rootfs
 deleted file mode 100644
-index 92014511b4..0000000000
---- a/arch/arm/boards/mioa701/env/config
+index 52a3699fd0..0000000000
+--- a/arch/arm/boards/edb93xx/env/bin/update_rootfs
 +++ /dev/null
-@@ -1,6 +0,0 @@
+@@ -1,16 +0,0 @@
 -#!/bin/sh
 -
+-. /env/config
+-
+-if [ $# != 1 ];
+-then
+-				echo "Usage: $0 <1/2>"
+-				exit 1
+-fi
+-
+-partition=/dev/nor0.rootfs_$1
+-
+-cd /
+-tftp ${board}/rootfs.img || exit 1
+-
+-flash_partition rootfs.img ${partition}
+diff --git a/arch/arm/boards/edb93xx/env/config b/arch/arm/boards/edb93xx/env/config
+deleted file mode 100644
+index 3266272742..0000000000
+--- a/arch/arm/boards/edb93xx/env/config
++++ /dev/null
+@@ -1,16 +0,0 @@
+-#!/bin/sh
+-
+-eth0.ipaddr=192.168.0.50
+-eth0.netmask=255.255.0.0
+-eth0.serverip=192.168.0.8
+-#eth0.ethaddr=
+-
+-board=edb9301
 -autoboot_timeout=3
+-active_cfg=1
+-bootargs_common="console=ttyAM0,115200"
 -
--mtdparts="2048k@384k(barebox)ro,256k(barebox-logo),256k(barebox-logo2),128k(barebox-env),5120k(kernel),-(root)"
--bootargs="$bootargs mtdparts=docg3.0:$mtdparts ubi.mtd=5 rootfstype=ubifs root=ubi0:linux_root ro"
-diff --git a/arch/arm/boards/mioa701/env/data/dps1.raw.gz b/arch/arm/boards/mioa701/env/data/dps1.raw.gz
+-# valid media: flash/net
+-kernel_boot_media=flash
+-rootfs_boot_media=flash
+-
+diff --git a/arch/arm/boards/edb93xx/flash_cfg.c b/arch/arm/boards/edb93xx/flash_cfg.c
 deleted file mode 100644
-index 9857c83e0718d0268dd8c2082193063cd3dfbc72..0000000000000000000000000000000000000000
-GIT binary patch
-literal 0
-HcmV?d00001
-
-literal 1324
-zcmV+{1=IQ;iwFo+Y|>Hy17vV>F)ngpcL42GacEUl82`?__vvdcy>1KV9D1A!%r?54
-zujjVx?YVHIDc)LT!~!*=OvAMd!UEskb4xU8If)^`PMCj1U=)Nx@$8LJ{t?;=B>dyu
-zd$_0#WYixLNVng)?@dQE{|fr&{NUp|=eytezH`p^o!>R-L27ATn|L_6uC0cMwyyc{
-z^s_hL3^g<~G)&D88X6iJ8vg?Qf6&m-m<yU8H13AeM8EwNhX0hhnK4m}w(i-_H>`77
-z_$GG?Z{|<!-}O@e0ls->|H0Sx>_tzVaK?fY_E<n%$XYuWyoYf;^bu$deHglSaW2R}
-zH)6i3UdYwZ2QY7f?o)Pr-v?dEbAb)pZj5W7cPJaa^+G?5Z_jZx&IN0h3b}(Tzg+MN
-z^gc)*#Nk<=C3C)o@$&E?kEoa?BZFNUCUGk^kMIgI&G!<0AE(MAY~ZtoFzmeb!O)_Q
-znHw9Xs<lEgTS%4rtMZxZ5sO3OutocWSTquh;`=Bc3z$tsgAaHrr^QDCcK>%W8rvhm
-zJNRxa9gtS}yaa7K#{+YH&bMu7deXZUh8-2HLRPI3lCb8k;wU*DFefL;$p($M`!uwr
-zY{{IoFjnWj+&q1VhTpofgiKB((myY->{e=^IQ-*?VNMILRNn}!qe(PeK6VAe>2%!L
-z=C8-T*Aw<jyNV`diV3VUFA9$wA)8d))Va_*lpncj=CfBVC+D;Li$$Vd`DYkjP<yc8
-zu-Zh#(Cpo9MtOQI73WUwUXHngJ6k|i67F?sZ$?FrWJE`=gyGchkY6BbU*s(ERyYMY
-ziL;y24|sOx;v4TjT97f=SVvA8u-l#N#ulekx5u$hRfjmF22#&I49w(XzRk0!=|FS_
-zbr#FcqNcc$rYvfL{N<V)Lf$8C=f9Ya_CU@CGF<wBXsTA#zC*}!D+^v1pA4qC;m=3x
-zE?$Ug&}9=f&hlx4&pe#7hL6P<iE7wb7fr^{ordyngTGos<vT*oQ>ri2xZW<sQRg~S
-zQ}9yAF<aF7MJK~>#z)yqTSR_FzNFhwqg4KUaIWRN*G88DMz#!zeAKH#t%=r_`{Cf;
-z_9Yuzj*;dE%@3L%G(Tv5(EOnJLGy#=2h9(fA2dJwSNt#&o7W1Dj|*=meweTHL!0?(
-zz4A#CBoDFg>__>w!k$pJvM77|?Oce1x7G&#KhO_->E`R7xWemnV?Ol^7Fk+&3rW2R
-zA*WD-9ne*nU&A;?*vqRzURHMWWWt#U(lqF&pq2atdx$s=zNOrWAW^m}Ijh#g&eAph
-zY`gM%+bLEj(-SeaS;(X_abL<E4?c(g3a5x1<M1m<U*?-@(HSyAR%8l+>J=u0tn3pq
-zzH=;S$J?;JKp(ougIF&N7iAtkDA7~{a^HhHXyxNU3^hs&j|cN{o)ol_*?Cf#l6;MI
-z1CXN-;}P^z%Xst_jb-Que#!fi4|(W+f91j+_5SLjx=?BD&ZvK%k;c9ue|bjbqB?Ru
-z0&l7}+~a`^>nzN}L_sdVoP@w@b>ZJ#HPa8<U(SAdc(j+8yRk~WQ`3q0jC!Qu4jRlI
-z^baBag)scp=zG_1R6OTA?=weKGup29Ss?g+i+yb?y`@v#-QCo+$=w#3ihKn45_g9_
-zuy|4SLsx*u)jU?7pKB?2XPimTsO*s&!f@HCD2~Se1a|V~8`saazpnW~^F!1RnjbV~
-iLGy#=2h9%}b3yZi<_FCW8gt<`Kl}}u?I7TQF#rH>#-j-U
-
-diff --git a/arch/arm/boards/mioa701/gpio0_poweroff.c b/arch/arm/boards/mioa701/gpio0_poweroff.c
-deleted file mode 100644
-index 41d886d74b..0000000000
---- a/arch/arm/boards/mioa701/gpio0_poweroff.c
+index 2c471c7721..0000000000
+--- a/arch/arm/boards/edb93xx/flash_cfg.c
 +++ /dev/null
-@@ -1,67 +0,0 @@
+@@ -1,22 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
--// SPDX-FileCopyrightText: 2011 Robert Jarzmik <robert.jarzmik@free.fr>
+-// SPDX-FileCopyrightText: 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
 -
--#include <clock.h>
--#include <common.h>
--#include <init.h>
--#include <poweroff.h>
--#include <gpio.h>
--#include <poller.h>
--
--#include "mioa701.h"
--
--#define POWEROFF_SECS (4 * SECOND)
--
--static void blink_led_keyboard(void)
--{
--	gpio_set_value(GPIO115_LED_nKeyboard, 0);
--	mdelay(400);
--	gpio_set_value(GPIO115_LED_nKeyboard, 1);
--	mdelay(400);
--}
--
--static void try_poweroff(void)
--{
--	int poweroff_released = 0;
--
--	blink_led_keyboard();
--	poweroff_released |= !gpio_get_value(GPIO0_KEY_POWER);
--	if (poweroff_released)
--		return;
--
--	gpio_set_value(GPIO115_LED_nKeyboard, 0);
--	mdelay(2000);
--	poweroff_machine();
--}
--
--static void gpio0_poller_fn(struct poller_struct *poller)
--{
--	static uint64_t gpio0_start;
--	static bool gpio0_activated;
--
--	if (!gpio_get_value(GPIO0_KEY_POWER)) {
--		gpio0_activated = false;
--		return;
--	}
--
--	if (gpio0_activated) {
--		if (is_timeout_non_interruptible(gpio0_start, POWEROFF_SECS)) {
--			try_poweroff();
--			gpio0_activated = false;
--		}
--	} else {
--		gpio0_activated = true;
--		gpio0_start = get_time_ns();
--	}
--}
--
--static struct poller_struct gpio0_poller = {
--	.func = gpio0_poller_fn,
--};
--
--static int gpio0_poweroff_probe(void)
--{
--	return poller_register(&gpio0_poller, "power-button");
--}
--
--device_initcall(gpio0_poweroff_probe);
-diff --git a/arch/arm/boards/mioa701/lowlevel.c b/arch/arm/boards/mioa701/lowlevel.c
-deleted file mode 100644
-index 6116990402..0000000000
---- a/arch/arm/boards/mioa701/lowlevel.c
-+++ /dev/null
-@@ -1,12 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
+-/* Flash setup for Cirrus edb93xx boards */
 -
 -#include <common.h>
--#include <linux/sizes.h>
--#include <asm/barebox-arm-head.h>
--#include <asm/barebox-arm.h>
+-#include <mach/ep93xx/ep93xx-regs.h>
+-#include <io.h>
 -
--void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
+-#define SMC_BCR6_VALUE	(2 << SMC_BCR_IDCY_SHIFT | 5 << SMC_BCR_WST1_SHIFT | \
+-				SMC_BCR_BLE | 2 << SMC_BCR_WST2_SHIFT | \
+-				1 << SMC_BCR_MW_SHIFT)
+-
+-/* Called from assembly */
+-void flash_cfg(void);
+-
+-void flash_cfg(void)
 -{
--	arm_cpu_lowlevel_init();
--	barebox_arm_entry(0xa0000000, SZ_64M, NULL);
+-	struct smc_regs *smc = (struct smc_regs *)SMC_BASE;
+-
+-	writel(SMC_BCR6_VALUE, &smc->bcr6);
 -}
-diff --git a/arch/arm/boards/mioa701/mioa701.h b/arch/arm/boards/mioa701/mioa701.h
+diff --git a/arch/arm/boards/edb93xx/pll_cfg.c b/arch/arm/boards/edb93xx/pll_cfg.c
 deleted file mode 100644
-index 5f6d5e65f7..0000000000
---- a/arch/arm/boards/mioa701/mioa701.h
+index 1a1c01aba2..0000000000
+--- a/arch/arm/boards/edb93xx/pll_cfg.c
 +++ /dev/null
-@@ -1,67 +0,0 @@
+@@ -1,41 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
--// SPDX-FileCopyrightText: 2011 Robert Jarzmik <robert.jarzmik@free.fr>
+-// SPDX-FileCopyrightText: 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
+-// SPDX-FileCopyrightText: 2006 Dominic Rath <Dominic.Rath@gmx.de>
 -
--#ifndef _MIOA701_H_
--#define _MIOA701_H_
--
--#define MIO_CFG_IN(pin, af)		\
--	((MFP_CFG_DEFAULT & ~(MFP_AF_MASK | MFP_DIR_MASK)) |\
--	 (MFP_PIN(pin) | MFP_##af | MFP_DIR_IN))
--
--#define MIO_CFG_OUT(pin, af, state)	\
--	((MFP_CFG_DEFAULT & ~(MFP_AF_MASK | MFP_DIR_MASK | MFP_LPM_STATE_MASK)) |\
--	 (MFP_PIN(pin) | MFP_##af | MFP_DIR_OUT | MFP_LPM_##state))
--
--/* Global GPIOs */
--#define GPIO9_CHARGE_EN				9
--#define GPIO18_POWEROFF				18
--#define GPIO87_LCD_POWER			87
--#define GPIO96_AC_DETECT			96
--#define GPIO80_MAYBE_CHARGE_VDROP		80	/* Drop of 88mV */
--
--/* USB */
--#define GPIO13_nUSB_DETECT			13
--#define GPIO22_USB_ENABLE			22
--
--/* SDIO bits */
--#define GPIO78_SDIO_RO				78
--#define GPIO15_SDIO_INSERT			15
--#define GPIO91_SDIO_EN				91
--
--/* Bluetooth */
--#define GPIO14_BT_nACTIVITY			14
--#define GPIO83_BT_ON				83
--#define GPIO77_BT_UNKNOWN1			77
--#define GPIO86_BT_MAYBE_nRESET			86
--
--/* GPS */
--#define GPIO23_GPS_UNKNOWN1			23
--#define GPIO26_GPS_ON				26
--#define GPIO27_GPS_RESET			27
--#define GPIO106_GPS_UNKNOWN2			106
--#define GPIO107_GPS_UNKNOWN3			107
--
--/* GSM */
--#define GPIO24_GSM_MOD_RESET_CMD		24
--#define GPIO88_GSM_nMOD_ON_CMD			88
--#define GPIO90_GSM_nMOD_OFF_CMD			90
--#define GPIO114_GSM_nMOD_DTE_UART_STATE		114
--#define GPIO25_GSM_MOD_ON_STATE			25
--#define GPIO113_GSM_EVENT			113
--
--/* SOUND */
--#define GPIO12_HPJACK_INSERT			12
--
--/* LEDS */
--#define GPIO10_LED_nCharging			10
--#define GPIO97_LED_nBlue			97
--#define GPIO98_LED_nOrange			98
--#define GPIO82_LED_nVibra			82
--#define GPIO115_LED_nKeyboard			115
--
--/* Keyboard */
--#define GPIO0_KEY_POWER				0
--#define GPIO93_KEY_VOLUME_UP			93
--#define GPIO94_KEY_VOLUME_DOWN			94
--
--#endif /* _MIOA701_H */
-diff --git a/arch/arm/boards/phytec-phycore-pxa270/Makefile b/arch/arm/boards/phytec-phycore-pxa270/Makefile
-deleted file mode 100644
-index e00d1cfd7f..0000000000
---- a/arch/arm/boards/phytec-phycore-pxa270/Makefile
-+++ /dev/null
-@@ -1,4 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--
--obj-y += board.o
--lwl-y += lowlevel_init.o
-diff --git a/arch/arm/boards/phytec-phycore-pxa270/board.c b/arch/arm/boards/phytec-phycore-pxa270/board.c
-deleted file mode 100644
-index 0283659a4e..0000000000
---- a/arch/arm/boards/phytec-phycore-pxa270/board.c
-+++ /dev/null
-@@ -1,171 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--// SPDX-FileCopyrightText: 2009 Sascha Hauer <s.hauer@pengutronix.de>, Pengutronix
--// SPDX-FileCopyrightText: 2010 Marc Kleine-Budde <kernel@pengutronix.de>
+-/* PLL setup for Cirrus edb93xx boards */
 -
 -#include <common.h>
--#include <driver.h>
--#include <environment.h>
--#include <fs.h>
--#include <init.h>
--#include <linux/sizes.h>
+-#include <io.h>
+-#include "pll_cfg.h"
+-#include "early_udelay.h"
 -
--#include <gpio.h>
--#include <mach/pxa/mfp-pxa27x.h>
--#include <mach/pxa/pxa-regs.h>
--#include <mach/pxa/pxafb.h>
--#include <mach/pxa/devices.h>
+-/* Called from assembly */
+-void pll_cfg(void);
 -
--#include <asm/armlinux.h>
--#include <asm/io.h>
--#include <asm/mach-types.h>
--#include <asm/mmu.h>
--
--#define PCM990_CTRL_PHYS	(void *)PXA_CS1_PHYS
--
--#define PCM990_CTRL_REG3	0x0006	/* LCD CTRL REGISTER 3 */
--#define PCM990_CTRL_LCDPWR	0x0001	/* RW LCD Power on */
--#define PCM990_CTRL_LCDON	0x0002	/* RW LCD Latch on */
--#define PCM990_CTRL_LCDPOS1	0x0004	/* RW POS 1 */
--#define PCM990_CTRL_LCDPOS2	0x0008	/* RW POS 2 */
--
--static void lcd_power(int on)
+-void pll_cfg(void)
 -{
--	void __iomem *ctrl3 = PCM990_CTRL_PHYS + PCM990_CTRL_REG3;
+-	struct syscon_regs *syscon = (struct syscon_regs *)SYSCON_BASE;
 -
--	if (on)
--		writeb(PCM990_CTRL_LCDPWR | PCM990_CTRL_LCDON, ctrl3);
--	else
--		writeb(0x0, ctrl3);
+-	/* setup PLL1 */
+-	writel(CLKSET1_VAL, &syscon->clkset1);
+-
+-	/*
+-	 * flush the pipeline
+-	 * writing to CLKSET1 causes the EP93xx to enter standby for between
+-	 * 8 ms to 16 ms, until PLL1 stabilizes
+-	 */
+-	asm("nop");
+-	asm("nop");
+-	asm("nop");
+-	asm("nop");
+-	asm("nop");
+-
+-	/* setup PLL2 */
+-	writel(CLKSET2_VAL, &syscon->clkset2);
+-
+-	/*
+-	 * the user's guide recommends to wait at least 1 ms for PLL2 to
+-	 * stabilize
+-	 */
+-	early_udelay(1000);
 -}
--
--static void backlight_power(int on)
--{
--	if (on) {
--		mdelay(20);
--		gpio_set_value(16, 1);
--	} else {
--		gpio_set_value(16, 0);
--	}
--}
--
--static struct pxafb_videomode pxafb_mode = {
--	.mode = {
--		.pixclock	= 28000,
--		.xres		= 640,
--		.yres		= 480,
--		.hsync_len	= 20,
--		.left_margin	= 103,
--		.right_margin	= 47,
--		.vsync_len	= 6,
--		.upper_margin	= 28,
--		.lower_margin	= 5,
--		.sync		= 0,
--	},
--	.bpp			= 16,
--};
--
--static struct pxafb_platform_data fb_pdata = {
--	.mode			= &pxafb_mode,
--	.lcd_conn		= LCD_COLOR_TFT_16BPP | LCD_PCLK_EDGE_FALL,
--	.lcd_power		= lcd_power,
--	.backlight_power	= backlight_power,
--};
--
--static int pcm027_mem_init(void)
--{
--	arm_add_mem_device("ram0", 0xa0000000, SZ_64M);
--
--	return 0;
--}
--mem_initcall(pcm027_mem_init);
--
--static unsigned long pin_config[] = {
--	/* Chip Selects */
--	GPIO20_nSDCS_2,
--	GPIO21_nSDCS_3,
--	GPIO15_nCS_1,
--	GPIO78_nCS_2,
--	GPIO80_nCS_4,
--
--	/* Variable Latency I/O Ready Pin */
--	GPIO18_RDY,
--
--	/* FFUART */
--	GPIO85_nPCE_1,		/* enables RX */
--	GPIO34_FFUART_RXD,
--	GPIO35_FFUART_CTS,
--	GPIO36_FFUART_DCD,
--	GPIO37_FFUART_DSR,
--	GPIO38_FFUART_RI,
--	GPIO39_FFUART_TXD,
--	GPIO40_FFUART_DTR,
--	GPIO41_FFUART_RTS,
--
--	/* LCD */
--	GPIO58_LCD_LDD_0,
--	GPIO59_LCD_LDD_1,
--	GPIO60_LCD_LDD_2,
--	GPIO61_LCD_LDD_3,
--	GPIO62_LCD_LDD_4,
--	GPIO63_LCD_LDD_5,
--	GPIO64_LCD_LDD_6,
--	GPIO65_LCD_LDD_7,
--	GPIO66_LCD_LDD_8,
--	GPIO67_LCD_LDD_9,
--	GPIO68_LCD_LDD_10,
--	GPIO69_LCD_LDD_11,
--	GPIO70_LCD_LDD_12,
--	GPIO71_LCD_LDD_13,
--	GPIO72_LCD_LDD_14,
--	GPIO73_LCD_LDD_15,
--	GPIO74_LCD_FCLK,
--	GPIO75_LCD_LCLK,
--	GPIO76_LCD_PCLK,
--	GPIO77_LCD_BIAS,
--	MFP_CFG_OUT(GPIO16, AF0, DRIVE_LOW),	/* backlight */
--
--	/* NIC */
--	GPIO33_nCS_5,
--	GPIO49_nPWE,
--};
--
--static int pcm027_devices_init(void)
--{
--	void *cfi_iospace;
--
--	add_generic_device("smc91c111", DEVICE_ID_DYNAMIC, NULL, 0x14000300, 16,
--			IORESOURCE_MEM, NULL);
--
--	cfi_iospace = map_io_sections(0x0, (void *)0xe0000000, SZ_32M);
--	add_cfi_flash_device(DEVICE_ID_DYNAMIC, (unsigned long)cfi_iospace, SZ_32M, 0);
--
--	pxa_add_fb((void *)0x44000000, &fb_pdata);
--
--	armlinux_set_architecture(MACH_TYPE_PCM027);
--
--	devfs_add_partition("nor0", 0x00000, SZ_512K, DEVFS_PARTITION_FIXED, "self0");
--	devfs_add_partition("nor0", SZ_512K, SZ_256K, DEVFS_PARTITION_FIXED, "env0");
--	protect_file("/dev/env0", 1);
--
--	return 0;
--}
--
--device_initcall(pcm027_devices_init);
--
--static int pcm027_console_init(void)
--{
--	/* route pins */
--	pxa2xx_mfp_config(ARRAY_AND_SIZE(pin_config));
--
--	/* enable clock */
--	CKEN |= CKEN_FFUART;
--
--	barebox_set_model("Phytec phyCORE-PXA270");
--	barebox_set_hostname("pcm027");
--
--	pxa_add_uart((void *)0x40100000, 0);
--
--	return 0;
--}
--
--console_initcall(pcm027_console_init);
-diff --git a/arch/arm/boards/phytec-phycore-pxa270/config.h b/arch/arm/boards/phytec-phycore-pxa270/config.h
+diff --git a/arch/arm/boards/edb93xx/pll_cfg.h b/arch/arm/boards/edb93xx/pll_cfg.h
 deleted file mode 100644
-index 6aba53edea..0000000000
---- a/arch/arm/boards/phytec-phycore-pxa270/config.h
+index 662c92337a..0000000000
+--- a/arch/arm/boards/edb93xx/pll_cfg.h
 +++ /dev/null
-@@ -1,314 +0,0 @@
--/* SPDX-License-Identifier: GPL-2.0-or-later */
--
--/*
-- * Copyright (C) 2005 Phytec Messtechnik GmbH
-- * Juergen Kilb, H. Klaholz <armlinux@phytec.de>
-- *
-- * Copyright (C) 2006 Pengutronix
-- * Sascha Hauer <s.hauer@pengutronix.de>
-- * Robert Schwebel <r.schwebel@pengutronix.de>
-- */
--
--#ifndef __CONFIG_H
--#define __CONFIG_H
--
--/*
-- * phyCORE-PXA270 configuration settings
-- * Set these to 0/1 to enable or disable the features.
-- */
--
--#define PHYCORE_PXA270_USE_K3FLASH	0
--
--/* 260 MHz or 520 MHZ */
--#define PHYCORE_PXA270_SPEED		520
--
--/*********************************************************************
-- * CONFIG PXA270 GPIO settings                                       *
-- *********************************************************************/
--
--/*
-- * GPIO set "1"
-- *
-- *** REG GPSR0
-- * GP15 == nCS1      is 1
-- * GP20 == nSDCS2    is 1
-- * GP21 == nSDCS3    is 1
-- *** REG GPSR1
-- * GP33 == nCS5      is 1
-- *** REG GPSR2
-- * GP78 == nCS2      is 1
-- * GP80 == nCS4      is 1
-- */
--#define GPSR0_DFT		0x00308000
--#define GPSR1_DFT		0x00000002
--#define GPSR2_DFT		0x00014000
--
--#define CONFIG_GPSR0_VAL	GPSR0_DFT
--#define CONFIG_GPSR1_VAL	GPSR1_DFT
--#define CONFIG_GPSR2_VAL	GPSR2_DFT
--#define CONFIG_GPSR3_VAL	GPSR3_DFT
--
--/*
-- * set Direction "1" GPIO == output else input
-- *
-- ** REG GPDR0
-- * GP03 == PWR_SDA   is output
-- * GP04 == PWR_SCL   is output
-- * GP15 == nCS1      is output
-- * GP20 == nSDCS2    is output
-- * GP21 == nSDCS3    is output
-- ** REG GPDR1
-- * GP33 == nCS5      is output
-- ** REG GPDR2
-- * GP78 == nCS2      is output
-- * GP80 == nCS4      is output
-- * GP90 == LED0      is output
-- * GP91 == LED1      is output
-- */
--
--#define GPDR0_DFT		0x00308018
--#define GPDR1_DFT		0x00000002
--#define GPDR2_DFT		0x00014000
--
--#define CONFIG_GPDR0_VAL	GPDR0_DFT
--#define CONFIG_GPDR1_VAL	GPDR1_DFT
--#define CONFIG_GPDR2_VAL	GPDR2_DFT
--
--/*
-- * set Alternate Funktions
-- *
-- ** REG GAFR0_L
-- * GP15 == nCS1      is AF10
-- ** REG GAFR0_U
-- * GP18 == RDY       is AF01
-- * GP20 == nSDCS2    is AF01
-- * GP21 == nSDCS3    is AF01
-- ** REG GAFR1_L
-- * GP33 == nCS5      is AF10
-- ** REG GAFR2_L
-- * GP78 == nCS2      is AF10
-- ** REG GAFR2_U
-- * GP80 == nCS4      is AF10
-- */
--
--#define GAFR0_L_DFT		0x80000000
--#define GAFR0_U_DFT		0x00000510
--#define GAFR1_L_DFT		0x00000008
--#define GAFR1_U_DFT		0x00000000
--#define GAFR2_L_DFT		0x20000000
--#define GAFR2_U_DFT		0x00000002
--
--#define CONFIG_GAFR0_L_VAL	GAFR0_L_DFT
--#define CONFIG_GAFR0_U_VAL	GAFR0_U_DFT
--#define CONFIG_GAFR1_L_VAL	GAFR1_L_DFT
--#define CONFIG_GAFR1_U_VAL	GAFR1_U_DFT
--#define CONFIG_GAFR2_L_VAL	GAFR2_L_DFT
--#define CONFIG_GAFR2_U_VAL	GAFR2_U_DFT
--
--
--/*
-- * Power Manager Sleep Status Register (PSSR)
-- *
-- * [6] = 0   OTG pad is not holding it's state
-- * [5] = 1   Read Disable Hold: receivers of all gpio pins are disabled
-- * [4] = 1   gpio pins are held in their sleep mode state
-- * [3] = 0   The processor has not been placed in standby mode by
-- *           configuring the PWRMODE register since STS was cleared
-- *           by a reset or by software.
-- * [2] = 1   nVDD_FAULT has been asserted and caused the processor to
-- *           enter deep-sleep mode.
-- * [1] = 1   nBATT_FAULT has been asserted and caused the processor to
-- *           enter deep-sleep mode.
-- * [0] = 1   The processor was placed in sleep mode by configuring the
-- *           PWRMODE register.
-- */
--
--#define CONFIG_PSSR_VAL		0x37
--
--
--/*********************************************************************
-- * CONFIG PXA270 Chipselect settings                                 *
-- *********************************************************************/
--
--/*
-- * Memory settings
-- *
-- * This is the configuration for nCS1/0 -> PLD / flash
-- * configuration for nCS1:
-- * [31]    0    - Slower Device
-- * [30:28] 001  - CS deselect to CS time: 1*(2*MemClk) = 20 ns
-- * [27:24] 0010 - Address to data valid in bursts: (2+1)*MemClk = 30 ns
-- * [23:20] 1011 - " for first access: (11+2)*MemClk = 130 ns
-- * [19]    1    - 16 Bit bus width
-- * [18:16] 011  - burst RAM or FLASH
-- * configuration for nCS0 (J3 Flash):
-- * [15]    0    - Slower Device
-- * [14:12] 001  - CS deselect to CS time: 1*(2*MemClk) = 20 ns
-- * [11:08] 0010 - Address to data valid in bursts: (2+1)*MemClk = 30 ns
-- * [07:04] 1011 - " for first access: (11+2)*MemClk = 130 ns
-- * [03]    0    - 32 Bit bus width
-- * [02:00] 011  - burst RAM or FLASH
-- */
--#if PHYCORE_PXA270_USE_K3FLASH == 0
--#define CONFIG_MSC0_VAL		0x128C1262
--#else
--/* configuration for nCS0 (K3 Flash):
-- * [15]    0    - Slower Device
-- * [14:12] 001  - CS deselect to CS time: 1*(2*MemClk) = 20 ns
-- * [11:08] 0010 - Address to data valid in bursts: (2+1)*MemClk = 30 ns
-- * [07:04] 1011 - " for first access: (11+2)*MemClk = 130 ns
-- * [03]    0    - 32 Bit bus width
-- * [02:00] 011  - burst RAM or FLASH
-- */
--#define CONFIG_MSC0_VAL		0x128C12B3
--#endif
--
--/*
-- * This is the configuration for nCS3/2
-- * configuration for nCS3: POWER
-- *
-- * [31]    0    - Slower Device
-- * [30:28] 111  - RRR3: CS deselect to CS time: 7*(2*MemClk) = 140 ns
-- * [27:24] 1111 - RDN3: Address to data valid in bursts: (15+1)*MemClk = 160 ns
-- * [23:20] 1111 - RDF3: Address for first access: (23+1)*MemClk = 240 ns
-- * [19]    0    - 32 Bit bus width
-- * [18:16] 100  - variable latency I/O
-- * configuration for nCS2: PLD
-- * [15]    0    - Slower Device
-- * [14:12] 111  - RRR2: CS deselect to CS time: 7*(2*MemClk) = 140 ns
-- * [11:08] 1111 - RDN2: Address to data valid in bursts: (15+1)*MemClk = 160 ns
-- * [07:04] 1111 - RDF2: Address for first access: (23+1)*MemClk = 240 ns
-- * [03]    1    - 16 Bit bus width
-- * [02:00] 100  - variable latency I/O
-- */
--#define CONFIG_MSC1_VAL		0x128c128c
--
--/*
-- * This is the configuration for nCS5/4
-- *
-- * configuration for nCS5: LAN Controller
-- * [31]    0    - Slower Device
-- * [30:28] 001  - RRR5: CS deselect to CS time: 1*(2*MemClk) = 20 ns
-- * [27:24] 0010 - RDN5: Address to data valid in bursts: (2+1)*MemClk = 30 ns
-- * [23:20] 0011 - RDF5: Address for first access: (3+1)*MemClk = 40 ns
-- * [19]    0    - 32 Bit bus width
-- * [18:16] 100  - variable latency I/O
-- * configuration for nCS4: USB
-- * [15]    0    - Slower Device
-- * [14:12] 111  - RRR4: CS deselect to CS time: 7*(2*MemClk) = 140 ns
-- * [11:08] 1111 - RDN4: Address to data valid in bursts: (15+1)*MemClk = 160 ns
-- * [07:04] 1111 - RDF4: Address for first access: (23+1)*MemClk = 240 ns
-- * [03]    1    - 16 Bit bus width
-- * [02:00] 100  - variable latency I/O
-- */
--#define CONFIG_MSC2_VAL		0x1234128C
--
--/*********************************************************************
-- * CONFIG PXA270 SDRAM settings                                      *
-- *********************************************************************/
--
--#define CONFIG_DRAM_BASE	0xa0000000
--
--
--/* MDCNFG: SDRAM Configuration Register
-- *
-- * [31]      0	 - Stack1
-- * [30]      0   - dcacx2
-- * [20]      0   - reserved
-- * [31:29]   000 - reserved
-- * [28]      1	 - SA1111 compatiblity mode
-- * [27]      1   - latch return data with return clock
-- * [26]      0   - alternate addressing for pair 2/3
-- * [25:24]   10  - timings
-- * [23]      1   - internal banks in lower partition 2/3 (not used)
-- * [22:21]   10  - row address bits for partition 2/3 (not used)
-- * [20:19]   01  - column address bits for partition 2/3 (not used)
-- * [18]      0   - SDRAM partition 2/3 width is 32 bit
-- * [17]      0   - SDRAM partition 3 disabled
-- * [16]      0   - SDRAM partition 2 disabled
-- * [15]      0	 - Stack1
-- * [14]      0   - dcacx0
-- * [13]      0   - Stack0
-- * [12]      0	 - SA1110 compatiblity mode
-- * [11]      1   - always 1
-- * [10]      0   - no alternate addressing for pair 0/1
-- * [09:08]   10  - tRP=2*MemClk CL=2 tRCD=2*MemClk tRAS=5*MemClk tRC=8*MemClk
-- * [7]       1   - 4 internal banks in lower partition pair
-- * [06:05]   10  - 13 row address bits for partition 0/1
-- * [04:03]   01  - 9 column address bits for partition 0/1
-- * [02]      0   - SDRAM partition 0/1 width is 32 bit
-- * [01]      0   - disable SDRAM partition 1
-- * [00]      1   - enable  SDRAM partition 0
-- */
--
--/* K4S561633*/
--#define CONFIG_MDCNFG_VAL	0x0AC90AC9
--
--/* MDREFR: SDRAM Refresh Control Register
-- *
-- * [31]    0     - ALTREFA
-- * [30]    0     - ALTREFB
-- * [29]    1     - K0DB4
-- * [28]    0     - reserved
-- * [27]    0     - reserved
-- * [26]    0     - reserved
-- * [25]    1     - K2FREE: not free running
-- * [24]    0     - K1FREE: not free running
-- * [23]    1     - K0FREE: not free running
-- * [22]    0     - SLFRSH: self refresh disabled
-- * [21]    0     - reserved
-- * [20]    0     - APD: no auto power down
-- * [19]    0     - K2DB2: SDCLK2 is MemClk
-- * [18]    0     - K2RUN: disable SDCLK2
-- * [17]    0     - K1DB2: SDCLK1 is MemClk
-- * [16]    1     - K1RUN: enable SDCLK1
-- * [15]    1     - E1PIN: SDRAM clock enable
-- * [14]    1     - K0DB2: SDCLK0 is MemClk
-- * [13]    0     - K0RUN: disable SDCLK0
-- * [12]    0     - RESERVED
-- * [11:00] 000000011000 - (64ms/8192)*MemClkFreq/32 = 24
-- */
--#define CONFIG_MDREFR_VAL	0x2281C018
--
--/* MDMRS: Mode Register Set Configuration Register
-- *
-- * [31]      0       - reserved
-- * [30:23]   00000000- MDMRS2: SDRAM2/3 MRS Value. (not used)
-- * [22:20]   000     - MDCL2:  SDRAM2/3 Cas Latency.  (not used)
-- * [19]      0       - MDADD2: SDRAM2/3 burst Type. Fixed to sequential.  (not used)
-- * [18:16]   010     - MDBL2:  SDRAM2/3 burst Length. Fixed to 4.  (not used)
-- * [15]      0       - reserved
-- * [14:07]   00000000- MDMRS0: SDRAM0/1 MRS Value.
-- * [06:04]   010     - MDCL0:  SDRAM0/1 Cas Latency.
-- * [03]      0       - MDADD0: SDRAM0/1 burst Type. Fixed to sequential.
-- * [02:00]   010     - MDBL0:  SDRAM0/1 burst Length. Fixed to 4.
-- */
--#define CONFIG_MDMRS_VAL	0x00020022
--
--/*********************************************************************
-- * CONFIG PXA270 Clock generation                                    *
-- *********************************************************************/
--#define CONFIG_FLYCNFG_VAL	0x00010001
--#define CONFIG_SXCNFG_VAL	0x40044004
--#define CONFIG_CKEN		(CKEN_MEMC |  CKEN_OSTIMER)
--
--#if PHYCORE_PXA270_SPEED == 520
--#define CONFIG_CCCR		0x00000290	/* Memory Clock is f. Table;         N=2.5, L=16 => 16x13=208, 208x2,5=520 MHz */
--#elif PHYCORE_PXA270_SPEED == 260
--#define CONFIG_CCCR		0x02000288	/* Memory Clock is System-Bus Freq., N=2.5, L=8  =>  8x13=104, 104x2,5=260 MHz */
--#else
--#error You have specified an illegal speed.
--#endif
--
--/*********************************************************************
-- * CONFIG PXA270 CF interface                                        *
-- *********************************************************************/
--#define CONFIG_MECR_VAL		0x00000003
--#define CONFIG_MCMEM0_VAL	0x00010504
--#define CONFIG_MCMEM1_VAL	0x00010504
--#define CONFIG_MCATT0_VAL	0x00010504
--#define CONFIG_MCATT1_VAL	0x00010504
--#define CONFIG_MCIO0_VAL	0x00004715
--#define CONFIG_MCIO1_VAL	0x00004715
--
--#endif  /* __CONFIG_H */
-diff --git a/arch/arm/boards/phytec-phycore-pxa270/env/init/mtdparts-nor b/arch/arm/boards/phytec-phycore-pxa270/env/init/mtdparts-nor
-deleted file mode 100644
-index 4423943211..0000000000
---- a/arch/arm/boards/phytec-phycore-pxa270/env/init/mtdparts-nor
-+++ /dev/null
-@@ -1,6 +0,0 @@
--#!/bin/sh
--
--mtdparts="512k(nor0.barebox),256k(nor0.bareboxenv),4M(nor0.kernel),-(nor0.root)"
--kernelname="physmap-flash.0"
--
--mtdparts-add -d nor0 -k ${kernelname} -p ${mtdparts}
-diff --git a/arch/arm/boards/phytec-phycore-pxa270/env/nv/linux.bootargs.console b/arch/arm/boards/phytec-phycore-pxa270/env/nv/linux.bootargs.console
-deleted file mode 100644
-index 476b1fbe49..0000000000
---- a/arch/arm/boards/phytec-phycore-pxa270/env/nv/linux.bootargs.console
-+++ /dev/null
-@@ -1 +0,0 @@
--console=ttyS0,115200
-diff --git a/arch/arm/boards/phytec-phycore-pxa270/lowlevel_init.S b/arch/arm/boards/phytec-phycore-pxa270/lowlevel_init.S
-deleted file mode 100644
-index f8f1a037e0..0000000000
---- a/arch/arm/boards/phytec-phycore-pxa270/lowlevel_init.S
-+++ /dev/null
-@@ -1,448 +0,0 @@
+@@ -1,53 +0,0 @@
 -// SPDX-License-Identifier: GPL-2.0-or-later
+-// SPDX-FileCopyrightText: 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
 -
--/*
-- * This was originally from the Lubbock u-boot port.
-- *
-- * Most of this taken from Redboot hal_platform_setup.h with cleanup
-- *
-- * NOTE: I haven't clean this up considerably, just enough to get it
-- * running. See hal_platform_setup.h for the source. See
-- * board/cradle/lowlevel_init.S for another PXA250 setup that is
-- * much cleaner.
-- */
+-/* PLL register values for Cirrus edb93xx boards */
 -
 -#include <config.h>
--#include <linux/sizes.h>
--#include <mach/pxa/pxa-regs.h>
--#include <mach/pxa/regs-ost.h>
--#include <mach/pxa/regs-intc.h>
--#include <asm/barebox-arm-head.h>
--#include "config.h"
+-#include <mach/ep93xx/ep93xx-regs.h>
 -
--#define GPSR0		0x40E00018	/* GPIO Pin Output Set Register GPIO <31:00> */
--#define GPSR1		0x40E0001C	/* GPIO Pin Output Set Register GPIO <63:32> */
--#define GPSR2		0x40E00020	/* GPIO Pin Output Set Register GPIO <80:64> */
--
--#define GPCR0		0x40E00024	/* GPIO Pin Output Clear Register GPIO <31:00> */
--#define GPCR1		0x40E00028	/* GPIO Pin Output Clear Register GPIO <63:32> */
--#define GPCR2		0x40E0002C	/* GPIO Pin Output Clear Register GPIO <80:64> */
--
--#define GPDR0		0x40E0000C	/* GPIO Pin Direction Register GPIO <31:0o> */
--#define GPDR1		0x40E00010	/* GPIO Pin Direction Register GPIO <63:32> */
--#define GPDR2		0x40E00014	/* GPIO Pin Direction Register GPIO <80:64> */
--
--#define GAFR0_L		0x40E00054	/* GPIO Alternate Function Select Register GPIO <15:00> */
--#define GAFR0_U		0x40E00058	/* GPIO Alternate Function Select Register GPIO <31:16> */
--#define GAFR1_L		0x40E0005C	/* GPIO Alternate Function Select Register GPIO <47:32> */
--#define GAFR1_U		0x40E00060	/* GPIO Alternate Function Select Register GPIO <63:48> */
--#define GAFR2_L		0x40E00064	/* GPIO Alternate Function Select Register GPIO <79:64> */
--#define GAFR2_U		0x40E00068	/* GPIO Alternate Function Select Register GPIO <95:80> */
+-#if defined(CONFIG_MACH_EDB9301)
+-/*
+- * fclk_div: 2, nbyp1: 1, hclk_div: 5, pclk_div: 2
+- * pll1_x1: 294912000.000000, pll1_x2ip: 36864000.000000,
+- * pll1_x2: 331776000.000000, pll1_out: 331776000.000000
+- */
+-#define CLKSET1_VAL	(7 << SYSCON_CLKSET_PLL_X2IPD_SHIFT |      \
+-			8 << SYSCON_CLKSET_PLL_X2FBD2_SHIFT |	   \
+-			19 << SYSCON_CLKSET_PLL_X1FBD1_SHIFT |	   \
+-			1 << SYSCON_CLKSET1_PCLK_DIV_SHIFT |	   \
+-			3 << SYSCON_CLKSET1_HCLK_DIV_SHIFT |	   \
+-			SYSCON_CLKSET1_NBYP1 |			   \
+-			1 << SYSCON_CLKSET1_FCLK_DIV_SHIFT)
+-#elif defined(CONFIG_MACH_EDB9302) || defined(CONFIG_MACH_EDB9302A) ||	\
+-	defined(CONFIG_MACH_EDB9307) || defined(CONFIG_MACH_EDB9307A) || \
+-	defined CONFIG_MACH_EDB9312 || defined(CONFIG_MACH_EDB9315) ||\
+-	defined(CONFIG_MACH_EDB9315A)
+-/*
+- * fclk_div: 2, nbyp1: 1, hclk_div: 4, pclk_div: 2
+- * pll1_x1: 3096576000.000000, pll1_x2ip: 129024000.000000,
+- * pll1_x2: 3999744000.000000, pll1_out: 1999872000.000000
+- */
+-#define CLKSET1_VAL	(23 << SYSCON_CLKSET_PLL_X2IPD_SHIFT | \
+-			30 << SYSCON_CLKSET_PLL_X2FBD2_SHIFT | \
+-			20 << SYSCON_CLKSET_PLL_X1FBD1_SHIFT | \
+-			1 << SYSCON_CLKSET1_PCLK_DIV_SHIFT |   \
+-			2 << SYSCON_CLKSET1_HCLK_DIV_SHIFT |   \
+-			SYSCON_CLKSET1_NBYP1 |		       \
+-			1 << SYSCON_CLKSET1_FCLK_DIV_SHIFT)
+-#else
+-#error "Undefined board"
+-#endif
 -
 -/*
-- *	Memory setup
+- * usb_div: 4, nbyp2: 1, pll2_en: 1
+- * pll2_x1: 368640000.000000, pll2_x2ip: 15360000.000000,
+- * pll2_x2: 384000000.000000, pll2_out: 192000000.000000
 - */
--.globl barebox_arm_reset_vector
--barebox_arm_reset_vector:
--		bl	arm_cpu_lowlevel_init
+-#define CLKSET2_VAL	(23 << SYSCON_CLKSET_PLL_X2IPD_SHIFT | \
+-			24 << SYSCON_CLKSET_PLL_X2FBD2_SHIFT | \
+-			24 << SYSCON_CLKSET_PLL_X1FBD1_SHIFT | \
+-			1 << SYSCON_CLKSET_PLL_PS_SHIFT |      \
+-			SYSCON_CLKSET2_PLL2_EN |	       \
+-			SYSCON_CLKSET2_NBYP2 |		       \
+-			3 << SYSCON_CLKSET2_USB_DIV_SHIFT)
+diff --git a/arch/arm/boards/edb93xx/sdram_cfg.c b/arch/arm/boards/edb93xx/sdram_cfg.c
+deleted file mode 100644
+index 3cee834910..0000000000
+--- a/arch/arm/boards/edb93xx/sdram_cfg.c
++++ /dev/null
+@@ -1,128 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-// SPDX-FileCopyrightText: 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
+-// SPDX-FileCopyrightText: 2006 Dominic Rath <Dominic.Rath@gmx.de>
 -
--		@ Preserve r8/r7 i.e. kernel entry values
+-#include <common.h>
+-#include <io.h>
+-#include "sdram_cfg.h"
+-#include "early_udelay.h"
 -
--		@ Data cache might be active.
--		@ Be sure to flush kernel binary out of the cache,
--		@ whatever state it is, before it is turned off.
--		@ This is done by fetching through currently executed
--		@ memory to be sure we hit the same cache.
--		bic	r2, pc, #0x1f
--		add	r3, r2, #0x10000	@ 64 kb is quite enough...
--1:		ldr	r0, [r2], #32
--		teq	r2, r3
--		bne	1b
--		mcr	p15, 0, r0, c7, c10, 4	@ drain WB
--		mcr	p15, 0, r0, c7, c7, 0	@ flush I & D caches
+-#define PROGRAM_MODE_REG(bank)		(*(volatile uint32_t *)		\
+-		(SDRAM_BASE_ADDR | SDRAM_BANK_SEL_##bank | SDRAM_MODE_REG_VAL))
 -
--		@ disabling MMU and caches
--		mrc	p15, 0, r0, c1, c0, 0	@ read control reg
--		bic	r0, r0, #0x05		@ clear DC, MMU
--		bic	r0, r0, #0x1000		@ clear Icache
--		mcr	p15, 0, r0, c1, c0, 0
--	/* set output */
--	ldr	r0, =GPSR0
--	ldr	r1, =CONFIG_GPSR0_VAL
--	str	r1, [r0]
+-#define PRECHARGE_BANK(bank)		(*(volatile uint32_t *)	\
+-		(SDRAM_BASE_ADDR | SDRAM_BANK_SEL_##bank)) = 0
 -
--	ldr	r0, =GPSR1
--	ldr	r1, =CONFIG_GPSR1_VAL
--	str	r1, [r0]
+-static void precharge_all_banks(void);
+-static void setup_refresh_timer(void);
+-static void program_mode_registers(void);
 -
--	ldr	r0, =GPSR2
--	ldr	r1, =CONFIG_GPSR2_VAL
--	str	r1, [r0]
+-/* Called from assembly */
+-void sdram_cfg(void);
 -
--	/* set direction */
--	ldr	r0, =GPDR0
--	ldr	r1, =CONFIG_GPDR0_VAL
--	str	r1, [r0]
+-void sdram_cfg(void)
+-{
+-	struct sdram_regs *sdram = (struct sdram_regs *)SDRAM_BASE;
+-	unsigned long pc = get_pc();
 -
--	ldr	r0, =GPDR1
--	ldr	r1, =CONFIG_GPDR1_VAL
--	str	r1, [r0]
+-	if (pc < CONFIG_EP93XX_SDRAM_BANK3_BASE + CONFIG_EP93XX_SDRAM_BANK3_SIZE)
+-		return;
 -
--	ldr	r0, =GPDR2
--	ldr	r1, =CONFIG_GPDR2_VAL
--	str	r1, [r0]
+-	writel(SDRAM_DEVCFG_VAL, &sdram->SDRAM_DEVCFG_REG);
 -
--	/* alternate function */
--	ldr	r0, =GAFR0_L
--	ldr	r1, =CONFIG_GAFR0_L_VAL
--	str	r1, [r0]
+-	/* Issue continous NOP commands */
+-	writel(GLCONFIG_INIT | GLCONFIG_MRS | GLCONFIG_CKE, &sdram->glconfig);
 -
--	ldr	r0, =GAFR0_U
--	ldr	r1, =CONFIG_GAFR0_U_VAL
--	str	r1, [r0]
+-	early_udelay(200);
 -
--	ldr	r0, =GAFR1_L
--	ldr	r1, =CONFIG_GAFR1_L_VAL
--	str	r1, [r0]
+-	precharge_all_banks();
 -
--	ldr	r0, =GAFR1_U
--	ldr	r1, =CONFIG_GAFR1_U_VAL
--	str	r1, [r0]
+-	setup_refresh_timer();
 -
--	ldr	r0, =GAFR2_L
--	ldr	r1, =CONFIG_GAFR2_L_VAL
--	str	r1, [r0]
+-	program_mode_registers();
 -
--	ldr	r0, =GAFR2_U
--	ldr	r1, =CONFIG_GAFR2_U_VAL
--	str	r1, [r0]
+-	/* Select normal operation mode */
+-	writel(GLCONFIG_CKE, &sdram->glconfig);
+-}
 -
--	/* enable GPIO pins */
--	ldr	r0, =PSSR
--	ldr	r1, =CONFIG_PSSR_VAL
--	str	r1, [r0]
+-static void precharge_all_banks(void)
+-{
+-	struct sdram_regs *sdram = (struct sdram_regs *)SDRAM_BASE;
 -
--	/* -------------------------------------------------------------------- */
--	/* Enable memory interface						*/
--	/*									*/
--	/* The sequence below is based on the recommended init steps		*/
--	/* detailed in the Intel PXA250 Operating Systems Developers Guide,	*/
--	/* Chapter 10.								*/
--	/* -------------------------------------------------------------------- */
--
--	/* -------------------------------------------------------------------- */
--	/* Step 1: Wait for at least 200 microsedonds to allow internal		*/
--	/*	   clocks to settle. Only necessary after hard reset...		*/
--	/*	   FIXME: can be optimized later				*/
--	/* -------------------------------------------------------------------- */
--
--	ldr	r3, =OSCR			/* reset the OS Timer Count to zero */
--	mov	r2, #0
--	str	r2, [r3]
--	ldr	r4, =0x300			/* really 0x2E1 is about 200usec, */
--						/* so 0x300 should be plenty */
--1:
--	ldr	r2, [r3]
--	cmp	r4, r2
--	bgt	1b
--
--	cmp	pc, #0xa0000000
--	bls	mem_init
--	cmp	pc, #0xb0000000
--	bhi	mem_init
--	b	skip_mem_init
--
--mem_init:
--	ldr	r1, =MDCNFG			/* get memory controller base addr. */
--
--	/* -------------------------------------------------------------------- */
--	/* Step 2a: Initialize Asynchronous static memory controller		*/
--	/* -------------------------------------------------------------------- */
--
--	/* MSC registers: timing, bus width, mem type */
--
--	/* MSC0: nCS(0,1) */
--	ldr	r2, =CONFIG_MSC0_VAL
--	str	r2, [r1, #MSC0_OFFSET]
--	ldr	r2, [r1, #MSC0_OFFSET]		/* read back to ensure */
--						/* that data latches */
--	/* MSC1: nCS(2,3) */
--	ldr	r2, =CONFIG_MSC1_VAL
--	str	r2, [r1, #MSC1_OFFSET]
--	ldr	r2, [r1, #MSC1_OFFSET]
--
--	/* MSC2: nCS(4,5) */
--	ldr	r2, =CONFIG_MSC2_VAL
--	str	r2, [r1, #MSC2_OFFSET]
--	ldr	r2, [r1, #MSC2_OFFSET]
--
--	/* -------------------------------------------------------------------- */
--	/* Step 2b: Initialize Card Interface					*/
--	/* -------------------------------------------------------------------- */
--
--	/* MECR: Memory Expansion Card Register	*/
--	ldr	r2, =CONFIG_MECR_VAL
--	str	r2, [r1, #MECR_OFFSET]
--	ldr	r2, [r1, #MECR_OFFSET]
--
--	/* MCMEM0: Card Interface slot 0 timing	*/
--	ldr	r2, =CONFIG_MCMEM0_VAL
--	str	r2, [r1, #MCMEM0_OFFSET]
--	ldr	r2, [r1, #MCMEM0_OFFSET]
--
--	/* MCMEM1: Card Interface slot 1 timing	*/
--	ldr	r2, =CONFIG_MCMEM1_VAL
--	str	r2, [r1, #MCMEM1_OFFSET]
--	ldr	r2, [r1, #MCMEM1_OFFSET]
--
--	/* MCATT0: Card Interface Attribute Space Timing, slot 0 */
--	ldr	r2, =CONFIG_MCATT0_VAL
--	str	r2, [r1, #MCATT0_OFFSET]
--	ldr	r2, [r1, #MCATT0_OFFSET]
--
--	/* MCATT1: Card Interface Attribute Space Timing, slot 1 */
--	ldr	r2, =CONFIG_MCATT1_VAL
--	str	r2, [r1, #MCATT1_OFFSET]
--	ldr	r2, [r1, #MCATT1_OFFSET]
--
--	/* MCIO0: Card Interface I/O Space Timing, slot 0 */
--	ldr	r2, =CONFIG_MCIO0_VAL
--	str	r2, [r1, #MCIO0_OFFSET]
--	ldr	r2, [r1, #MCIO0_OFFSET]
--
--	/* MCIO1: Card Interface I/O Space Timing, slot 1 */
--	ldr	r2, =CONFIG_MCIO1_VAL
--	str	r2, [r1, #MCIO1_OFFSET]
--	ldr	r2, [r1, #MCIO1_OFFSET]
--
--	/* -------------------------------------------------------------------- */
--	/* Step 2c: Write FLYCNFG FIXME: what's that???				*/
--	/* -------------------------------------------------------------------- */
--	ldr	r2, =CONFIG_FLYCNFG_VAL
--	str	r2, [r1, #FLYCNFG_OFFSET]
--	str	r2, [r1, #FLYCNFG_OFFSET]
--
--	/* -------------------------------------------------------------------- */
--	/* Step 2d: Initialize Timing for Sync Memory (SDCLK0)			*/
--	/* -------------------------------------------------------------------- */
--
--	/* Before accessing MDREFR we need a valid DRI field, so we set	*/
--	/* this to power on defaults + DRI field. */
--
--	ldr	r4, [r1, #MDREFR_OFFSET]
--	ldr	r2, =0xFFF
--	bic	r4, r4, r2
--
--	ldr	r3, =CONFIG_MDREFR_VAL
--	and	r3, r3, r2
--
--	orr	r4, r4, r3
--	str	r4, [r1, #MDREFR_OFFSET]	/* write back MDREFR */
--
--	orr	r4, r4, #MDREFR_K0RUN
--	orr	r4, r4, #MDREFR_K0DB4
--	orr	r4, r4, #MDREFR_K0FREE
--	orr	r4, r4, #MDREFR_K2FREE
--	orr	r4, r4, #MDREFR_K0DB2
--	orr	r4, r4, #MDREFR_K1DB2
--	bic	r4, r4, #MDREFR_K1FREE
--
--	str	r4, [r1, #MDREFR_OFFSET]	/* write back MDREFR */
--	ldr	r4, [r1, #MDREFR_OFFSET]
--
--	/* Note: preserve the mdrefr value in r4 */
--
--
--	/* -------------------------------------------------------------------- */
--	/* Step 3: Initialize Synchronous Static Memory (Flash/Peripherals)	*/
--	/* -------------------------------------------------------------------- */
--
--	/* Initialize SXCNFG register. Assert the enable bits */
+-	/* Issue PRECHARGE ALL commands */
+-	writel(GLCONFIG_INIT | GLCONFIG_CKE, &sdram->glconfig);
 -
 -	/*
--	 * Write SXMRS to cause an MRS command to all enabled banks of
--	 * synchronous static memory. Note that SXLCR need not be
--	 * written at this time.
+-	 * Errata of most EP93xx revisions say that PRECHARGE ALL isn't always
+-	 * issued.
+-	 *
+-	 *  Cirrus proposes a workaround which consists in performing a read from
+-	 * each bank to force the precharge. This causes some boards to hang.
+-	 * Writing to the SDRAM banks instead of reading has the same
+-	 * side-effect (the SDRAM controller issues the necessary precharges),
+-	 * but is known to work on all supported boards
 -	 */
--	ldr	r2, =CONFIG_SXCNFG_VAL
--	str	r2, [r1, #SXCNFG_OFFSET]
 -
--	/* -------------------------------------------------------------------- */
--	/* Step 4: Initialize SDRAM						*/
--	/* -------------------------------------------------------------------- */
--	bic	r4, r4, #(MDREFR_K1FREE | MDREFR_K0FREE)
+-	PRECHARGE_BANK(0);
 -
--	orr	r4, r4, #MDREFR_K1RUN
--	orr	r4, r4, #MDREFR_K2FREE
--	bic	r4, r4, #MDREFR_K2DB2
--	str	r4, [r1, #MDREFR_OFFSET]
--	ldr	r4, [r1, #MDREFR_OFFSET]
--
--	bic	r4, r4, #MDREFR_SLFRSH
--	str	r4, [r1, #MDREFR_OFFSET]
--	ldr	r4, [r1, #MDREFR_OFFSET]
--
--	orr	r4, r4, #MDREFR_E1PIN
--	str	r4, [r1, #MDREFR_OFFSET]
--	ldr	r4, [r1, #MDREFR_OFFSET]
--
--	nop
--	nop
--
--
--	/*
--	 * Step 4d: write MDCNFG with MDCNFG:DEx deasserted
--	 * (set to 0), to configure but not enable each SDRAM
--	 * partition pair.
--	 */
--	ldr	r4, =CONFIG_MDCNFG_VAL
--	bic	r4, r4,	#(MDCNFG_DE0|MDCNFG_DE1)
--	bic	r4, r4,	#(MDCNFG_DE2|MDCNFG_DE3)
--
--	str	r4, [r1, #MDCNFG_OFFSET]	/* write back MDCNFG */
--	ldr	r4, [r1, #MDCNFG_OFFSET]
--
--
--	/*
--	 * Step 4e: Wait for the clock to the SDRAMs to stabilize,
--	 * 100..200 usec.
--	 */
--	ldr	r3, =OSCR			/* reset the OS Timer Count to zero */
--	mov	r2, #0
--	str	r2, [r3]
--	ldr	r4, =0x300			/* really 0x2E1 is about 200 usec,  */
--						/* so 0x300 should be plenty */
--1:
--	ldr	r2, [r3]
--	cmp	r4, r2
--	bgt	1b
--
--
--	/* Step 4f: Trigger a number (usually 8) refresh cycles by		*/
--	/*		attempting non-burst read or write accesses to disabled */
--	/*		SDRAM, as commonly specified in the power up sequence   */
--	/*		documented in SDRAM data sheets. The address(es) used   */
--	/*		for this purpose must not be cacheable.			*/
--	ldr	r3, =CONFIG_DRAM_BASE
--	str	r2, [r3]
--	str	r2, [r3]
--	str	r2, [r3]
--	str	r2, [r3]
--	str	r2, [r3]
--	str	r2, [r3]
--	str	r2, [r3]
--	str	r2, [r3]
--
--
--	/*
--	 * Step 4g: Write MDCNFG with enable bits asserted
--	 * (MDCNFG:DEx set to 1)
--	 */
--	ldr	r3, [r1, #MDCNFG_OFFSET]
--	mov	r4, r3
--	orr	r3, r3,	#MDCNFG_DE0
--	str	r3, [r1, #MDCNFG_OFFSET]
--	mov	r0, r3
--
--	/* Step 4h: Write MDMRS. */
--	ldr	r2, =CONFIG_MDMRS_VAL
--	str	r2, [r1, #MDMRS_OFFSET]
--
--	/* enable APD */
--	ldr	r3, [r1, #MDREFR_OFFSET]
--	orr	r3, r3, #MDREFR_APD
--	str	r3, [r1, #MDREFR_OFFSET]
--
--	/* We are finished with Intel's memory controller initialisation */
--skip_mem_init:
--
--wakeup:
--	/* Are we waking from sleep? */
--	ldr	r0, =RCSR
--	ldr	r1, [r0]
--	and	r1, r1, #(RCSR_GPR | RCSR_SMR | RCSR_WDR | RCSR_HWR)
--	str	r1, [r0]
--	teq	r1, #RCSR_SMR
--
--	bne	initirqs
--
--	ldr	r0, =PSSR
--	mov	r1, #PSSR_PH
--	str	r1, [r0]
--
--	/* if so, resume at PSPR */
--	ldr	r0, =PSPR
--	ldr	r1, [r0]
--	mov	pc, r1
--
--	/* -------------------------------------------------------------------- */
--	/* Disable (mask) all interrupts at interrupt controller		*/
--	/* -------------------------------------------------------------------- */
--
--initirqs:
--	mov	r1, #0		/* clear int. level register (IRQ, not FIQ) */
--	ldr	r2, =ICLR
--	str	r1, [r2]
--
--	ldr	r2, =ICMR	/* mask all interrupts at the controller */
--	str	r1, [r2]
--
--	/* -------------------------------------------------------------------- */
--	/* Clock initialisation							*/
--	/* -------------------------------------------------------------------- */
--
--initclks:
--	/* Disable the peripheral clocks, and set the core clock frequency */
--
--	/* Turn Off on-chip peripheral clocks (except for memory) */
--	/* for re-configuration. */
--	ldr	r1, =CKEN
--	ldr	r2, =CONFIG_CKEN
--	str	r2, [r1]
--
--	/* ... and write the core clock config register */
--	ldr	r2, =CONFIG_CCCR
--	ldr	r1, =CCCR
--	str	r2, [r1]
--
--	/* Turn on turbo mode */
--	mrc	p14, 0, r2, c6, c0, 0
--	orr	r2, r2, #0xB			/* Turbo, Fast-Bus, Freq change */
--	mcr	p14, 0, r2, c6, c0, 0
--
--	/* Re-write MDREFR */
--	ldr	r1, =MDCNFG
--	ldr	r2, [r1, #MDREFR_OFFSET]
--	str	r2, [r1, #MDREFR_OFFSET]
--
--	/* enable the 32Khz oscillator for RTC and PowerManager */
--	ldr	r1, =OSCC
--	mov	r2, #OSCC_OON
--	str	r2, [r1]
--
--	/* Interrupt init: Mask all interrupts */
--	ldr	r0, =ICMR			/* enable no sources */
--	mov	r1, #0
--	str	r1, [r0]
--	/* FIXME */
--
--#ifdef NODEBUG
--	/* Disable software and data breakpoints */
--	mov	r0, #0
--	mcr	p15, 0, r0, c14, c8, 0		/* ibcr0 */
--	mcr	p15, 0, r0, c14, c9, 0		/* ibcr1 */
--	mcr	p15, 0, r0, c14, c4, 0		/* dbcon */
--
--	/* Enable all debug functionality */
--	mov	r0, #0x80000000
--	mcr	p14, 0, r0, c10, c0, 0		/* dcsr */
+-#if (CONFIG_EP93XX_SDRAM_NUM_BANKS >= 2)
+-	PRECHARGE_BANK(1);
 -#endif
 -
--	/* -------------------------------------------------------------------- */
--	/* End lowlevel_init							*/
--	/* -------------------------------------------------------------------- */
+-#if (CONFIG_EP93XX_SDRAM_NUM_BANKS >= 3)
+-	PRECHARGE_BANK(2);
+-#endif
 -
--endlowlevel_init:
--	mov	r0, #0xa0000000
--	mov	r1, #SZ_64M
--	mov	r2, #0
--	b	barebox_arm_entry
-diff --git a/arch/arm/boards/zylonite/Makefile b/arch/arm/boards/zylonite/Makefile
-deleted file mode 100644
-index da63d2625f..0000000000
---- a/arch/arm/boards/zylonite/Makefile
-+++ /dev/null
-@@ -1,4 +0,0 @@
--# SPDX-License-Identifier: GPL-2.0-only
--
--obj-y += board.o
--lwl-y += lowlevel.o
-diff --git a/arch/arm/boards/zylonite/board.c b/arch/arm/boards/zylonite/board.c
-deleted file mode 100644
-index 04cb34754c..0000000000
---- a/arch/arm/boards/zylonite/board.c
-+++ /dev/null
-@@ -1,93 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-or-later
--// SPDX-FileCopyrightText: 2014 Robert Jarzmik <robert.jarzmik@free.fr>
--
--#include <common.h>
--
--#include <driver.h>
--#include <environment.h>
--#include <fs.h>
--#include <gpio.h>
--#include <init.h>
--#include <led.h>
--#include <platform_data/eth-smc91111.h>
--#include <platform_data/mtd-nand-mrvl.h>
--#include <pwm.h>
--#include <linux/clk.h>
--#include <linux/clkdev.h>
--#include <linux/sizes.h>
--
--#include <mach/pxa/devices.h>
--#include <mach/pxa/mfp-pxa3xx.h>
--#include <mach/pxa/pxa-regs.h>
--
--#include <asm/armlinux.h>
--#include <asm/io.h>
--#include <asm/mmu.h>
--#include <asm/mach-types.h>
--
--static struct smc91c111_pdata smsc91x_pdata;
--static struct mrvl_nand_platform_data nand_pdata = {
--	.keep_config = 0,
--	.flash_bbt = 1,
--};
--
--static mfp_cfg_t pxa310_mfp_cfg[] = {
--	/* FFUART */
--	MFP_CFG_LPM(GPIO99,  AF1, FLOAT),	/* GPIO99_UART1_RXD */
--	MFP_CFG_LPM(GPIO100, AF1, FLOAT),	/* GPIO100_UART1_RXD */
--	MFP_CFG_LPM(GPIO101, AF1, FLOAT),	/* GPIO101_UART1_CTS */
--	MFP_CFG_LPM(GPIO106, AF1, FLOAT),	/* GPIO106_UART1_CTS */
--
--	/* Ethernet */
--	MFP_CFG(GPIO2,  AF1),			/* GPIO2_nCS3 */
--};
--
--static int zylonite_devices_init(void)
--{
--	struct clk *clk;
--
--	armlinux_set_architecture(MACH_TYPE_ZYLONITE);
--	pxa_add_uart((void *)0x40100000, 0);
--	add_generic_device("smc91c111", DEVICE_ID_DYNAMIC, NULL,
--			   0x14000300, 0x100000, IORESOURCE_MEM,
--			   &smsc91x_pdata);
--	clk = clk_get_sys("nand", NULL);
--	if (!IS_ERR(clk))
--		clkdev_add_physbase(clk, 0x43100000, NULL);
--	add_generic_device("mrvl_nand", DEVICE_ID_DYNAMIC, NULL,
--			   0x43100000, 0x1000, IORESOURCE_MEM, &nand_pdata);
--	devfs_add_partition("nand0", SZ_1M, SZ_256K, DEVFS_PARTITION_FIXED,
--			    "env0");
--	return 0;
+-#if (CONFIG_EP93XX_SDRAM_NUM_BANKS == 4)
+-	PRECHARGE_BANK(3);
+-#endif
 -}
--device_initcall(zylonite_devices_init);
 -
--static int zylonite_coredevice_init(void)
+-static void setup_refresh_timer(void)
 -{
--	barebox_set_model("Zylonite");
--	barebox_set_hostname("zylonite");
+-	struct sdram_regs *sdram = (struct sdram_regs *)SDRAM_BASE;
 -
--	mfp_init();
--	if (cpu_is_pxa310())
--		pxa3xx_mfp_config(pxa310_mfp_cfg, ARRAY_SIZE(pxa310_mfp_cfg));
--	CKENA |= CKEN_NAND | CKEN_SMC | CKEN_FFUART | CKEN_GPIO;
+-	/* Load refresh timer with 10 to issue refresh every 10 cycles */
+-	writel(0x0a, &sdram->refrshtimr);
+-
 -	/*
--	 * Configure Ethernet controller :
--	 * MCS1: setup VLIO on nCS3, with 15 DF_SCLK cycles (max) for hold,
--	 *       setup and assertion times
--	 * CSADRCFG3: DFI AA/D multiplexing VLIO, addr split at bit <16>, full
--	 * latched mode, 7 DF_SCLK cycles (max) for nLUA and nLLA.
+-	 * Wait at least 80 clock cycles to provide 8 refresh cycles
+-	 * to all SDRAMs
 -	 */
--	MSC1 = 0x7ffc0000 | (MSC1 & 0x0000ffff);
--	CSADRCFG3 = 0x003e080b;
+-	early_udelay(1);
 -
--	return 0;
+-	/*
+-	 * Program refresh timer with normal value
+-	 * We need 8192 refresh cycles every 64ms
+-	 * at 15ns (HCLK >= 66MHz) per cycle:
+-	 * 64ms / 8192 = 7.8125us
+-	 * 7.8125us / 15ns = 520 (0x208)
+-	 */
+-	/*
+-	 * TODO: redboot uses 0x1e0 for the slowest possible device
+-	 * but i don't understand how this value is calculated
+-	 */
+-	writel(0x208, &sdram->refrshtimr);
 -}
--coredevice_initcall(zylonite_coredevice_init);
 -
--static int zylonite_mem_init(void)
+-static void program_mode_registers(void)
 -{
--	arm_add_mem_device("ram0", 0x80000000, 64 * 1024 * 1024);
--	return 0;
+-	struct sdram_regs *sdram = (struct sdram_regs *)SDRAM_BASE;
+-
+-	/* Select mode register update mode */
+-	writel(GLCONFIG_MRS | GLCONFIG_CKE, &sdram->glconfig);
+-
+-	PROGRAM_MODE_REG(0);
+-
+-#if (CONFIG_EP93XX_SDRAM_NUM_BANKS >= 2)
+-	PROGRAM_MODE_REG(1);
+-#endif
+-
+-#if (CONFIG_EP93XX_SDRAM_NUM_BANKS >= 3)
+-	PROGRAM_MODE_REG(2);
+-#endif
+-
+-#if (CONFIG_EP93XX_SDRAM_NUM_BANKS == 4)
+-	PROGRAM_MODE_REG(3);
+-#endif
 -}
--mem_initcall(zylonite_mem_init);
-diff --git a/arch/arm/boards/zylonite/env/boot/nand-ubi b/arch/arm/boards/zylonite/env/boot/nand-ubi
+diff --git a/arch/arm/boards/edb93xx/sdram_cfg.h b/arch/arm/boards/edb93xx/sdram_cfg.h
 deleted file mode 100644
-index 2231738224..0000000000
---- a/arch/arm/boards/zylonite/env/boot/nand-ubi
+index ddb9e442ed..0000000000
+--- a/arch/arm/boards/edb93xx/sdram_cfg.h
 +++ /dev/null
-@@ -1,5 +0,0 @@
--#!/bin/sh
+@@ -1,125 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-or-later
+-// SPDX-FileCopyrightText: 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
+-// SPDX-FileCopyrightText: 2006 Dominic Rath <Dominic.Rath@gmx.de>
 -
--global.bootm.image="/dev/nand0.kernel"
--#global.bootm.oftree="/env/oftree"
--global.linux.bootargs.dyn.root="root=ubi0:linux_root ubi.mtd=nand.root rootfstype=ubifs"
-diff --git a/arch/arm/boards/zylonite/env/init/mtdparts-nand b/arch/arm/boards/zylonite/env/init/mtdparts-nand
-deleted file mode 100644
-index 749318b59e..0000000000
---- a/arch/arm/boards/zylonite/env/init/mtdparts-nand
-+++ /dev/null
-@@ -1,6 +0,0 @@
--#!/bin/sh
+-#include <config.h>
+-#include <mach/ep93xx/ep93xx-regs.h>
 -
--mtdparts="128k@0(TIMH)ro,128k@128k(OBMI)ro,768k@256k(barebox),256k@1024k(barebox-env),12M@1280k(kernel),38016k@13568k(root)"
--kernelname="pxa3xx_nand-0"
+-#define SDRAM_BASE_ADDR		CONFIG_EP93XX_SDRAM_BANK0_BASE
 -
--mtdparts-add -d nand0 -k ${kernelname} -p ${mtdparts}
-diff --git a/arch/arm/boards/zylonite/env/nv/hostname b/arch/arm/boards/zylonite/env/nv/hostname
-deleted file mode 100644
-index 6e6d865eda..0000000000
---- a/arch/arm/boards/zylonite/env/nv/hostname
-+++ /dev/null
-@@ -1 +0,0 @@
--zylonite
-diff --git a/arch/arm/boards/zylonite/env/nv/linux.bootargs.base b/arch/arm/boards/zylonite/env/nv/linux.bootargs.base
-deleted file mode 100644
-index 317f8b16a1..0000000000
---- a/arch/arm/boards/zylonite/env/nv/linux.bootargs.base
-+++ /dev/null
-@@ -1 +0,0 @@
--ram=64M
-diff --git a/arch/arm/boards/zylonite/env/nv/linux.bootargs.console b/arch/arm/boards/zylonite/env/nv/linux.bootargs.console
-deleted file mode 100644
-index 476b1fbe49..0000000000
---- a/arch/arm/boards/zylonite/env/nv/linux.bootargs.console
-+++ /dev/null
-@@ -1 +0,0 @@
--console=ttyS0,115200
-diff --git a/arch/arm/boards/zylonite/lowlevel.c b/arch/arm/boards/zylonite/lowlevel.c
-deleted file mode 100644
-index 972fd34761..0000000000
---- a/arch/arm/boards/zylonite/lowlevel.c
-+++ /dev/null
-@@ -1,12 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0-only
+-#ifdef CONFIG_EP93XX_SDCE0_PHYS_OFFSET
+-#define SDRAM_DEVCFG_REG	devcfg0
+-#elif defined(CONFIG_EP93XX_SDCE3_SYNC_PHYS_OFFSET)
+-#define SDRAM_DEVCFG_REG	devcfg3
+-#else
+-#error "SDRAM bank configuration"
+-#endif
 -
--#include <common.h>
--#include <linux/sizes.h>
--#include <asm/barebox-arm-head.h>
--#include <asm/barebox-arm.h>
+-#if defined(CONFIG_MACH_EDB9301) || defined(CONFIG_MACH_EDB9302) ||\
+-	defined(CONFIG_MACH_EDB9302A)
+-/*
+- * 1x Samsung K4S561632C-TC/L75 4M x 16bit x 4 banks SDRAM
+- *
+- * CLK cycle time min:
+- *	@ CAS latency = 3: 7.5ns
+- *	@ CAS latency = 2: 10ns
+- * We're running at 66MHz (EDB9301) / 100Mhz (EDB9302(a)) external
+- * bus speed (HCLK), with a cycle time of 15ns / 10ns, so it's safe
+- * to use CAS latency = 2
+- *
+- * RAS-to-CAS delay min:
+- *	20ns
+- * At 15ns/10ns cycle time, we use RAS-to-CAS delay = 2
+- *
+- * SROMLL = 1: Swap BA[1:0] with A[13:12], making the SDRAM appear
+- * as four blocks of 8MB size, instead of eight blocks of 4MB size:
+- *
+- * EDB9301/EDB9302:
+- *
+- * 0x00000000 - 0x007fffff
+- * 0x01000000 - 0x017fffff
+- * 0x04000000 - 0x047fffff
+- * 0x05000000 - 0x057fffff
+- *
+- *
+- * EDB9302a:
+- *
+- * 0xc0000000 - 0xc07fffff
+- * 0xc1000000 - 0xc17fffff
+- * 0xc4000000 - 0xc47fffff
+- * 0xc5000000 - 0xc57fffff
+- *
+- * BANKCOUNT = 1: This is a device with four banks
+- */
 -
--void __naked barebox_arm_reset_vector(uint32_t r0, uint32_t r1, uint32_t r2)
--{
--	arm_cpu_lowlevel_init();
--	barebox_arm_entry(0x80000000, SZ_64M, NULL);
--}
-diff --git a/arch/arm/configs/lubbock_defconfig b/arch/arm/configs/lubbock_defconfig
+-#define SDRAM_DEVCFG_VAL (SDRAM_DEVCFG_BANKCOUNT |			\
+-				SDRAM_DEVCFG_SROMLL |			\
+-				SDRAM_DEVCFG_CASLAT_2 |			\
+-				SDRAM_DEVCFG_RASTOCAS_2 |		\
+-				SDRAM_DEVCFG_EXTBUSWIDTH)
+-
+-/*
+- * 16 bit ext. bus
+- *
+- * A[22:09] is output as SYA[13:0]
+- * CAS latency: 2
+- * Burst type: sequential
+- * Burst length: 8 (required for 16 bit ext. bus)
+- * SYA[13:0] = 0x0023
+- */
+-#define SDRAM_MODE_REG_VAL	0x4600
+-
+-#define SDRAM_BANK_SEL_0	0x00000000 /* A[22:21] = b00 */
+-#define SDRAM_BANK_SEL_1	0x00200000 /* A[22:21] = b01 */
+-#define SDRAM_BANK_SEL_2	0x00400000 /* A[22:21] = b10 */
+-#define SDRAM_BANK_SEL_3	0x00600000 /* A[22:21] = b11 */
+-
+-#elif defined(CONFIG_MACH_EDB9307) || defined(CONFIG_MACH_EDB9307A) ||\
+-	defined CONFIG_MACH_EDB9312 || defined(CONFIG_MACH_EDB9315) ||\
+-	defined(CONFIG_MACH_EDB9315A)
+-/*
+- * 2x Samsung K4S561632C-TC/L75 4M x 16bit x 4 banks SDRAM
+- *
+- * CLK cycle time min:
+- *	@ CAS latency = 3: 7.5ns
+- *	@ CAS latency = 2: 10ns
+- * We're running at 100MHz (10ns cycle time) external bus speed (HCLK),
+- * so it's safe to use CAS latency = 2
+- *
+- * RAS-to-CAS delay min:
+- *	20ns
+- * At 10ns cycle time, we use RAS-to-CAS delay = 2
+- *
+- * EDB9307, EDB9312, EDB9315:
+- *
+- * 0x00000000 - 0x01ffffff
+- * 0x04000000 - 0x05ffffff
+- *
+- *
+- * EDB9307a, EDB9315a:
+- *
+- * 0xc0000000 - 0xc1ffffff
+- * 0xc4000000 - 0xc5ffffff
+- */
+-
+-#define SDRAM_DEVCFG_VAL	(SDRAM_DEVCFG_BANKCOUNT |		\
+-				SDRAM_DEVCFG_SROMLL |			\
+-				SDRAM_DEVCFG_CASLAT_2 |			\
+-				SDRAM_DEVCFG_RASTOCAS_2)
+-
+-/*
+- * 32 bit ext. bus
+- *
+- * A[23:10] is output as SYA[13:0]
+- * CAS latency: 2
+- * Burst type: sequential
+- * Burst length: 4
+- * SYA[13:0] = 0x0022
+- */
+-#define SDRAM_MODE_REG_VAL	0x8800
+-
+-#define SDRAM_BANK_SEL_0	0x00000000 /* A[23:22] = b00 */
+-#define SDRAM_BANK_SEL_1	0x00400000 /* A[23:22] = b01 */
+-#define SDRAM_BANK_SEL_2	0x00800000 /* A[23:22] = b10 */
+-#define SDRAM_BANK_SEL_3	0x00c00000 /* A[23:22] = b11 */
+-#endif
+diff --git a/arch/arm/configs/edb93xx_defconfig b/arch/arm/configs/edb93xx_defconfig
 deleted file mode 100644
-index 78f2236648..0000000000
---- a/arch/arm/configs/lubbock_defconfig
+index 0632be1945..0000000000
+--- a/arch/arm/configs/edb93xx_defconfig
 +++ /dev/null
-@@ -1,100 +0,0 @@
--CONFIG_ARCH_PXA=y
--CONFIG_AEABI=y
--CONFIG_ARM_BOARD_APPEND_ATAG=y
--CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_ARM_UNWIND=y
--# CONFIG_BANNER is not set
--CONFIG_MMU=y
--CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x100000
--CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
--CONFIG_MALLOC_SIZE=0x1000000
--CONFIG_EXPERIMENTAL=y
--CONFIG_MODULES=y
--CONFIG_KALLSYMS=y
--CONFIG_PROMPT="lubbock-barebox:"
--CONFIG_HUSH_FANCY_PROMPT=y
--CONFIG_CMDLINE_EDITING=y
--CONFIG_AUTO_COMPLETE=y
--CONFIG_MENU=y
--CONFIG_BOOTM_SHOW_TYPE=y
--CONFIG_BOOTM_VERBOSE=y
--CONFIG_BOOTM_INITRD=y
--CONFIG_BOOTM_OFTREE=y
--CONFIG_CONSOLE_ACTIVATE_ALL=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/lubbock/env"
--CONFIG_RESET_SOURCE=y
--CONFIG_CMD_DMESG=y
--CONFIG_LONGHELP=y
--CONFIG_CMD_IOMEM=y
--CONFIG_CMD_MEMINFO=y
--CONFIG_CMD_GO=y
--CONFIG_CMD_LOADB=y
--CONFIG_CMD_LOADS=y
--CONFIG_CMD_LOADY=y
--CONFIG_CMD_RESET=y
--CONFIG_CMD_SAVES=y
--CONFIG_CMD_PARTITION=y
--CONFIG_CMD_UBIFORMAT=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_LOADENV=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_FILETYPE=y
--CONFIG_CMD_LN=y
--CONFIG_CMD_UNCOMPRESS=y
--CONFIG_CMD_LET=y
--CONFIG_CMD_MSLEEP=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_MIITOOL=y
--CONFIG_CMD_PING=y
--CONFIG_CMD_TFTP=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_MENU=y
--CONFIG_CMD_MENU_MANAGEMENT=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_CRC=y
--CONFIG_CMD_CRC_CMP=y
--CONFIG_CMD_MEMTEST=y
--CONFIG_CMD_MM=y
--CONFIG_CMD_DETECT=y
--CONFIG_CMD_FLASH=y
--CONFIG_CMD_GPIO=y
--CONFIG_CMD_LED=y
--CONFIG_CMD_POWEROFF=y
--CONFIG_CMD_LSMOD=y
--CONFIG_CMD_OF_NODE=y
--CONFIG_CMD_OF_PROPERTY=y
--CONFIG_CMD_OFTREE=y
--CONFIG_CMD_TIME=y
--CONFIG_NET=y
--CONFIG_NET_NETCONSOLE=y
--CONFIG_OFDEVICE=y
--CONFIG_OF_BAREBOX_DRIVERS=y
--CONFIG_DRIVER_SERIAL_PXA=y
--CONFIG_DRIVER_NET_SMC91111=y
--# CONFIG_SPI is not set
--CONFIG_MTD=y
--CONFIG_DRIVER_CFI=y
--# CONFIG_DRIVER_CFI_AMD is not set
--CONFIG_CFI_BUFFER_WRITE=y
--CONFIG_MTD_UBI=y
--CONFIG_MCI=y
--CONFIG_MCI_PXA=y
--CONFIG_LED=y
--CONFIG_LED_GPIO=y
--CONFIG_KEYBOARD_GPIO=y
--CONFIG_GENERIC_PHY=y
--CONFIG_FS_CRAMFS=y
--CONFIG_FS_EXT4=y
--CONFIG_FS_TFTP=y
--CONFIG_FS_FAT=y
--CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
--CONFIG_FS_UBIFS=y
--CONFIG_FS_UBIFS_COMPRESSION_LZO=y
--CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
--CONFIG_BZLIB=y
-diff --git a/arch/arm/configs/mainstone_defconfig b/arch/arm/configs/mainstone_defconfig
-deleted file mode 100644
-index d452885e6d..0000000000
---- a/arch/arm/configs/mainstone_defconfig
-+++ /dev/null
-@@ -1,103 +0,0 @@
--CONFIG_ARCH_PXA=y
--CONFIG_ARCH_PXA27X=y
--CONFIG_AEABI=y
--CONFIG_ARM_BOARD_APPEND_ATAG=y
--CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_ARM_UNWIND=y
--# CONFIG_BANNER is not set
--CONFIG_MMU=y
--CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x100000
--CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
--CONFIG_MALLOC_SIZE=0x1000000
--CONFIG_EXPERIMENTAL=y
--CONFIG_MODULES=y
--CONFIG_KALLSYMS=y
--CONFIG_PROMPT="mainstone-barebox:"
--CONFIG_HUSH_FANCY_PROMPT=y
--CONFIG_CMDLINE_EDITING=y
--CONFIG_AUTO_COMPLETE=y
--CONFIG_MENU=y
--CONFIG_BOOTM_SHOW_TYPE=y
--CONFIG_BOOTM_VERBOSE=y
--CONFIG_BOOTM_INITRD=y
--CONFIG_BOOTM_OFTREE=y
--CONFIG_CONSOLE_ACTIVATE_ALL=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/mainstone/env"
--CONFIG_RESET_SOURCE=y
--CONFIG_CMD_DMESG=y
--CONFIG_LONGHELP=y
--CONFIG_CMD_IOMEM=y
--CONFIG_CMD_MEMINFO=y
--CONFIG_CMD_GO=y
--CONFIG_CMD_LOADB=y
--CONFIG_CMD_LOADS=y
--CONFIG_CMD_LOADY=y
--CONFIG_CMD_RESET=y
--CONFIG_CMD_SAVES=y
--CONFIG_CMD_PARTITION=y
--CONFIG_CMD_UBIFORMAT=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_LOADENV=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_MAGICVAR=y
--CONFIG_CMD_MAGICVAR_HELP=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_FILETYPE=y
--CONFIG_CMD_LN=y
--CONFIG_CMD_UNCOMPRESS=y
--CONFIG_CMD_LET=y
--CONFIG_CMD_MSLEEP=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_MIITOOL=y
--CONFIG_CMD_PING=y
--CONFIG_CMD_TFTP=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_MENU=y
--CONFIG_CMD_MENU_MANAGEMENT=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_CRC=y
--CONFIG_CMD_CRC_CMP=y
--CONFIG_CMD_MEMTEST=y
--CONFIG_CMD_MM=y
--CONFIG_CMD_DETECT=y
--CONFIG_CMD_FLASH=y
--CONFIG_CMD_GPIO=y
--CONFIG_CMD_LED=y
--CONFIG_CMD_POWEROFF=y
--CONFIG_CMD_LSMOD=y
--CONFIG_CMD_OF_NODE=y
--CONFIG_CMD_OF_PROPERTY=y
--CONFIG_CMD_OFTREE=y
--CONFIG_CMD_TIME=y
--CONFIG_NET=y
--CONFIG_NET_NETCONSOLE=y
--CONFIG_OFDEVICE=y
--CONFIG_OF_BAREBOX_DRIVERS=y
--CONFIG_DRIVER_SERIAL_PXA=y
--CONFIG_DRIVER_NET_SMC91111=y
--# CONFIG_SPI is not set
--CONFIG_MTD=y
--CONFIG_DRIVER_CFI=y
--# CONFIG_DRIVER_CFI_AMD is not set
--CONFIG_CFI_BUFFER_WRITE=y
--CONFIG_MTD_UBI=y
--CONFIG_MCI=y
--CONFIG_MCI_PXA=y
--CONFIG_LED=y
--CONFIG_LED_GPIO=y
--CONFIG_KEYBOARD_GPIO=y
--CONFIG_GENERIC_PHY=y
--CONFIG_FS_CRAMFS=y
--CONFIG_FS_EXT4=y
--CONFIG_FS_TFTP=y
--CONFIG_FS_FAT=y
--CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
--CONFIG_FS_UBIFS=y
--CONFIG_FS_UBIFS_COMPRESSION_LZO=y
--CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
--CONFIG_BZLIB=y
-diff --git a/arch/arm/configs/mioa701_defconfig b/arch/arm/configs/mioa701_defconfig
-deleted file mode 100644
-index 991fca0d7b..0000000000
---- a/arch/arm/configs/mioa701_defconfig
-+++ /dev/null
-@@ -1,104 +0,0 @@
--CONFIG_ARCH_PXA=y
--CONFIG_ARCH_PXA27X=y
--CONFIG_AEABI=y
--CONFIG_ARM_BOARD_APPEND_ATAG=y
--CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_ARM_UNWIND=y
--# CONFIG_BANNER is not set
--CONFIG_MMU=y
--CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x100000
--CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
--CONFIG_MALLOC_SIZE=0x1000000
--CONFIG_EXPERIMENTAL=y
--CONFIG_MODULES=y
--CONFIG_KALLSYMS=y
--CONFIG_HUSH_FANCY_PROMPT=y
--CONFIG_CMDLINE_EDITING=y
--CONFIG_AUTO_COMPLETE=y
--CONFIG_MENU=y
--CONFIG_BOOTM_SHOW_TYPE=y
--CONFIG_BOOTM_VERBOSE=y
--CONFIG_BOOTM_INITRD=y
--CONFIG_BOOTM_OFTREE=y
--CONFIG_FLEXIBLE_BOOTARGS=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/mioa701/env"
--CONFIG_RESET_SOURCE=y
--CONFIG_LONGHELP=y
--CONFIG_CMD_IOMEM=y
--CONFIG_CMD_MEMINFO=y
--CONFIG_CMD_BOOT=y
--CONFIG_CMD_GO=y
--CONFIG_CMD_LOADB=y
--CONFIG_CMD_LOADS=y
--CONFIG_CMD_LOADY=y
--CONFIG_CMD_RESET=y
--CONFIG_CMD_SAVES=y
--CONFIG_CMD_PARTITION=y
--CONFIG_CMD_AUTOMOUNT=y
--CONFIG_CMD_UBIFORMAT=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_GLOBAL=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_BASENAME=y
--CONFIG_CMD_DIRNAME=y
--CONFIG_CMD_FILETYPE=y
--CONFIG_CMD_LN=y
--CONFIG_CMD_READLINK=y
--CONFIG_CMD_UNCOMPRESS=y
--CONFIG_CMD_GETOPT=y
--CONFIG_CMD_LET=y
--CONFIG_CMD_MSLEEP=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_LOGIN=y
--CONFIG_CMD_MENU=y
--CONFIG_CMD_MENU_MANAGEMENT=y
--CONFIG_CMD_PASSWD=y
--CONFIG_CMD_SPLASH=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_CRC=y
--CONFIG_CMD_CRC_CMP=y
--CONFIG_CMD_MEMTEST=y
--CONFIG_CMD_MM=y
--CONFIG_CMD_DETECT=y
--CONFIG_CMD_FLASH=y
--CONFIG_CMD_GPIO=y
--CONFIG_CMD_LED=y
--CONFIG_CMD_POWEROFF=y
--CONFIG_CMD_LSMOD=y
--CONFIG_CMD_OF_NODE=y
--CONFIG_CMD_OF_PROPERTY=y
--CONFIG_CMD_OFTREE=y
--CONFIG_CMD_TIME=y
--CONFIG_OFDEVICE=y
--CONFIG_OF_BAREBOX_DRIVERS=y
--CONFIG_DRIVER_SERIAL_PXA=y
--# CONFIG_SPI is not set
--CONFIG_MTD=y
--CONFIG_MTD_RAW_DEVICE=y
--CONFIG_MTD_DOCG3=y
--CONFIG_MTD_UBI=y
--CONFIG_USB_GADGET=y
--CONFIG_USB_GADGET_SERIAL=y
--CONFIG_VIDEO=y
--CONFIG_DRIVER_VIDEO_PXA=y
--CONFIG_MCI=y
--CONFIG_MCI_PXA=y
--CONFIG_LED=y
--CONFIG_LED_GPIO=y
--CONFIG_KEYBOARD_GPIO=y
--CONFIG_FS_CRAMFS=y
--CONFIG_FS_EXT4=y
--CONFIG_FS_FAT=y
--CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
--CONFIG_FS_UBIFS=y
--CONFIG_FS_UBIFS_COMPRESSION_LZO=y
--CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
--CONFIG_BZLIB=y
--CONFIG_BMP=y
--CONFIG_PNG=y
--CONFIG_DIGEST_SHA256_GENERIC=y
-diff --git a/arch/arm/configs/phytec-phycore-pxa270_defconfig b/arch/arm/configs/phytec-phycore-pxa270_defconfig
-deleted file mode 100644
-index 370902c3c1..0000000000
---- a/arch/arm/configs/phytec-phycore-pxa270_defconfig
-+++ /dev/null
-@@ -1,60 +0,0 @@
--CONFIG_ARCH_PXA=y
--CONFIG_ARCH_PXA27X=y
--CONFIG_MACH_PCM027=y
+@@ -1,32 +0,0 @@
+-CONFIG_ARCH_EP93XX=y
 -CONFIG_AEABI=y
 -CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_ARM_UNWIND=y
--CONFIG_MMU=y
--CONFIG_MALLOC_SIZE=0x1000000
--CONFIG_MALLOC_TLSF=y
--CONFIG_KALLSYMS=y
--CONFIG_HUSH_FANCY_PROMPT=y
 -CONFIG_CMDLINE_EDITING=y
 -CONFIG_AUTO_COMPLETE=y
--CONFIG_BOOTM_SHOW_TYPE=y
--CONFIG_BOOTM_VERBOSE=y
--CONFIG_BOOTM_INITRD=y
--CONFIG_BOOTM_OFTREE=y
--CONFIG_BOOTM_OFTREE_UIMAGE=y
 -CONFIG_PARTITION=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/phytec-phycore-pxa270/env"
+-CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/edb93xx/env"
 -CONFIG_LONGHELP=y
--CONFIG_CMD_IOMEM=y
--CONFIG_CMD_MEMINFO=y
--# CONFIG_CMD_BOOTU is not set
--CONFIG_CMD_GO=y
--CONFIG_CMD_RESET=y
--CONFIG_CMD_UIMAGE=y
--CONFIG_CMD_PARTITION=y
--CONFIG_CMD_EXPORT=y
--CONFIG_CMD_PRINTENV=y
--CONFIG_CMD_MAGICVAR=y
--CONFIG_CMD_MAGICVAR_HELP=y
--CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_UNCOMPRESS=y
--CONFIG_CMD_SLEEP=y
--CONFIG_CMD_DHCP=y
--CONFIG_CMD_PING=y
--CONFIG_CMD_TFTP=y
--CONFIG_CMD_ECHO_E=y
--CONFIG_CMD_EDIT=y
--CONFIG_CMD_SPLASH=y
--CONFIG_CMD_READLINE=y
--CONFIG_CMD_TIMEOUT=y
--CONFIG_CMD_CRC=y
--CONFIG_CMD_CRC_CMP=y
--CONFIG_CMD_FLASH=y
--CONFIG_CMD_GPIO=y
--CONFIG_CMD_OFTREE=y
--CONFIG_CMD_TIME=y
--CONFIG_NET=y
--CONFIG_DRIVER_SERIAL_PXA=y
--CONFIG_DRIVER_NET_SMC91111=y
--# CONFIG_SPI is not set
--CONFIG_MTD=y
--CONFIG_DRIVER_CFI=y
--CONFIG_VIDEO=y
--CONFIG_DRIVER_VIDEO_PXA=y
--CONFIG_FS_TFTP=y
--CONFIG_LZO_DECOMPRESS=y
-diff --git a/arch/arm/configs/zylonite310_defconfig b/arch/arm/configs/zylonite310_defconfig
-deleted file mode 100644
-index cdbd135081..0000000000
---- a/arch/arm/configs/zylonite310_defconfig
-+++ /dev/null
-@@ -1,104 +0,0 @@
--CONFIG_ARCH_PXA=y
--CONFIG_ARCH_PXA3XX=y
--CONFIG_AEABI=y
--CONFIG_ARM_BOARD_APPEND_ATAG=y
--CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS=y
--CONFIG_ARM_UNWIND=y
--# CONFIG_BANNER is not set
--CONFIG_MMU=y
--CONFIG_BAREBOX_MAX_IMAGE_SIZE=0x100000
--CONFIG_BAREBOX_MAX_BARE_INIT_SIZE=0x80000
--CONFIG_MALLOC_SIZE=0x800000
--CONFIG_EXPERIMENTAL=y
--CONFIG_MODULES=y
--CONFIG_KALLSYMS=y
--CONFIG_PROMPT="zylonite-barebox:"
--CONFIG_HUSH_FANCY_PROMPT=y
--CONFIG_CMDLINE_EDITING=y
--CONFIG_AUTO_COMPLETE=y
--CONFIG_MENU=y
--CONFIG_BOOTM_SHOW_TYPE=y
--CONFIG_BOOTM_VERBOSE=y
--CONFIG_BOOTM_INITRD=y
--CONFIG_BOOTM_OFTREE=y
--CONFIG_CONSOLE_ACTIVATE_ALL=y
--CONFIG_DEFAULT_ENVIRONMENT_GENERIC_NEW=y
--CONFIG_DEFAULT_ENVIRONMENT_PATH="arch/arm/boards/zylonite/env"
--CONFIG_RESET_SOURCE=y
--CONFIG_DEFAULT_LOGLEVEL=8
--CONFIG_CMD_DMESG=y
--CONFIG_LONGHELP=y
--CONFIG_CMD_IOMEM=y
 -CONFIG_CMD_MEMINFO=y
 -CONFIG_CMD_GO=y
--CONFIG_CMD_LOADB=y
--CONFIG_CMD_LOADS=y
--CONFIG_CMD_LOADY=y
 -CONFIG_CMD_RESET=y
--CONFIG_CMD_SAVES=y
 -CONFIG_CMD_PARTITION=y
--CONFIG_CMD_UBIFORMAT=y
 -CONFIG_CMD_EXPORT=y
 -CONFIG_CMD_LOADENV=y
 -CONFIG_CMD_PRINTENV=y
 -CONFIG_CMD_SAVEENV=y
--CONFIG_CMD_CMP=y
--CONFIG_CMD_FILETYPE=y
--CONFIG_CMD_LN=y
--CONFIG_CMD_UNCOMPRESS=y
--CONFIG_CMD_LET=y
--CONFIG_CMD_MSLEEP=y
 -CONFIG_CMD_SLEEP=y
 -CONFIG_CMD_DHCP=y
--CONFIG_CMD_MIITOOL=y
 -CONFIG_CMD_PING=y
 -CONFIG_CMD_TFTP=y
--CONFIG_CMD_ECHO_E=y
 -CONFIG_CMD_EDIT=y
--CONFIG_CMD_LOGIN=y
--CONFIG_CMD_MENU=y
--CONFIG_CMD_MENU_MANAGEMENT=y
--CONFIG_CMD_PASSWD=y
 -CONFIG_CMD_READLINE=y
 -CONFIG_CMD_TIMEOUT=y
 -CONFIG_CMD_CRC=y
--CONFIG_CMD_CRC_CMP=y
--CONFIG_CMD_MEMTEST=y
--CONFIG_CMD_MM=y
--CONFIG_CMD_DETECT=y
 -CONFIG_CMD_FLASH=y
 -CONFIG_CMD_GPIO=y
--CONFIG_CMD_POWEROFF=y
--CONFIG_CMD_2048=y
--CONFIG_CMD_LSMOD=y
--CONFIG_CMD_OF_NODE=y
--CONFIG_CMD_OF_PROPERTY=y
--CONFIG_CMD_OFTREE=y
--CONFIG_CMD_TIME=y
 -CONFIG_NET=y
--CONFIG_NET_NETCONSOLE=y
--CONFIG_OFDEVICE=y
--CONFIG_OF_BAREBOX_DRIVERS=y
--CONFIG_DRIVER_SERIAL_PXA=y
--CONFIG_DRIVER_NET_SMC91111=y
+-CONFIG_DRIVER_NET_EP93XX=y
 -# CONFIG_SPI is not set
 -CONFIG_MTD=y
--CONFIG_NAND=y
--CONFIG_NAND_MRVL_NFC=y
--CONFIG_MTD_UBI=y
--CONFIG_MCI=y
--CONFIG_KEYBOARD_GPIO=y
--CONFIG_PWM=y
--# CONFIG_PINCTRL is not set
--CONFIG_FS_CRAMFS=y
--CONFIG_FS_EXT4=y
+-CONFIG_DRIVER_CFI=y
 -CONFIG_FS_TFTP=y
--CONFIG_FS_NFS=y
--CONFIG_FS_FAT=y
--CONFIG_FS_FAT_WRITE=y
--CONFIG_FS_FAT_LFN=y
--CONFIG_FS_UBIFS=y
--CONFIG_FS_UBIFS_COMPRESSION_LZO=y
--CONFIG_FS_UBIFS_COMPRESSION_ZLIB=y
--CONFIG_BZLIB=y
--CONFIG_DIGEST_SHA256_GENERIC=y
+diff --git a/arch/arm/include/asm/barebox.lds.h b/arch/arm/include/asm/barebox.lds.h
+index a5c74381d8..72aabe155b 100644
+--- a/arch/arm/include/asm/barebox.lds.h
++++ b/arch/arm/include/asm/barebox.lds.h
+@@ -1,9 +1,5 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ 
+-#if defined CONFIG_ARCH_EP93XX
+-#include <mach/ep93xx/barebox.lds.h>
+-#endif
+-
+ #ifdef CONFIG_CPU_32
+ #define BAREBOX_OUTPUT_FORMAT	"elf32-littlearm", "elf32-littlearm", "elf32-littlearm"
+ #define BAREBOX_OUTPUT_ARCH	"arm"
+diff --git a/arch/arm/include/asm/debug_ll.h b/arch/arm/include/asm/debug_ll.h
+index ced81c1a8b..5fe1b0be91 100644
+--- a/arch/arm/include/asm/debug_ll.h
++++ b/arch/arm/include/asm/debug_ll.h
+@@ -54,8 +54,6 @@
+ #include <mach/nomadik/debug_ll.h>
+ #elif defined CONFIG_ARCH_MXS
+ #include <mach/mxs/debug_ll.h>
+-#elif defined CONFIG_ARCH_EP93XX
+-#include <mach/ep93xx/debug_ll.h>
+ #elif defined CONFIG_ARCH_DIGIC
+ #include <mach/digic/debug_ll.h>
+ #elif defined CONFIG_ARCH_CLPS711X
 diff --git a/arch/arm/include/asm/mach-types.h b/arch/arm/include/asm/mach-types.h
-index 3b902aa021..259dc9568a 100644
+index f16aeb88db..3b902aa021 100644
 --- a/arch/arm/include/asm/mach-types.h
 +++ b/arch/arm/include/asm/mach-types.h
-@@ -77,18 +77,6 @@ extern unsigned int __machine_arch_type;
- #define MACH_TYPE_PCAAXS1              4526
- #define MACH_TYPE_PFLA03               4575
- 
--#ifdef CONFIG_ARCH_LUBBOCK
--# ifdef machine_arch_type
--#  undef machine_arch_type
--#  define machine_arch_type	__machine_arch_type
--# else
--#  define machine_arch_type	MACH_TYPE_LUBBOCK
--# endif
--# define machine_is_lubbock()	(machine_arch_type == MACH_TYPE_LUBBOCK)
--#else
--# define machine_is_lubbock()	(0)
--#endif
--
- #ifdef CONFIG_ARCH_VERSATILE_PB
- # ifdef machine_arch_type
- #  undef machine_arch_type
-@@ -113,18 +101,6 @@ extern unsigned int __machine_arch_type;
- # define machine_is_csb337()	(0)
+@@ -137,42 +137,6 @@ extern unsigned int __machine_arch_type;
+ # define machine_is_nomadik()	(0)
  #endif
  
--#ifdef CONFIG_MACH_MAINSTONE
+-#ifdef CONFIG_MACH_EDB9312
 -# ifdef machine_arch_type
 -#  undef machine_arch_type
 -#  define machine_arch_type	__machine_arch_type
 -# else
--#  define machine_arch_type	MACH_TYPE_MAINSTONE
+-#  define machine_arch_type	MACH_TYPE_EDB9312
 -# endif
--# define machine_is_mainstone()	(machine_arch_type == MACH_TYPE_MAINSTONE)
+-# define machine_is_edb9312()	(machine_arch_type == MACH_TYPE_EDB9312)
 -#else
--# define machine_is_mainstone()	(0)
+-# define machine_is_edb9312()	(0)
 -#endif
 -
- #ifdef CONFIG_MACH_NOMADIK
- # ifdef machine_arch_type
- #  undef machine_arch_type
-@@ -161,18 +137,6 @@ extern unsigned int __machine_arch_type;
- # define machine_is_at91rm9200ek()	(0)
- #endif
- 
--#ifdef CONFIG_MACH_PCM027
+-#ifdef CONFIG_MACH_EDB9301
 -# ifdef machine_arch_type
 -#  undef machine_arch_type
 -#  define machine_arch_type	__machine_arch_type
 -# else
--#  define machine_arch_type	MACH_TYPE_PCM027
+-#  define machine_arch_type	MACH_TYPE_EDB9301
 -# endif
--# define machine_is_pcm027()	(machine_arch_type == MACH_TYPE_PCM027)
+-# define machine_is_edb9301()	(machine_arch_type == MACH_TYPE_EDB9301)
 -#else
--# define machine_is_pcm027()	(0)
+-# define machine_is_edb9301()	(0)
+-#endif
+-
+-#ifdef CONFIG_MACH_EDB9315
+-# ifdef machine_arch_type
+-#  undef machine_arch_type
+-#  define machine_arch_type	__machine_arch_type
+-# else
+-#  define machine_arch_type	MACH_TYPE_EDB9315
+-# endif
+-# define machine_is_edb9315()	(machine_arch_type == MACH_TYPE_EDB9315)
+-#else
+-# define machine_is_edb9315()	(0)
+-#endif
+-
+ #ifdef CONFIG_MACH_SCB9328
+ # ifdef machine_arch_type
+ #  undef machine_arch_type
+@@ -185,30 +149,6 @@ extern unsigned int __machine_arch_type;
+ # define machine_is_scb9328()	(0)
+ #endif
+ 
+-#ifdef CONFIG_MACH_EDB9302
+-# ifdef machine_arch_type
+-#  undef machine_arch_type
+-#  define machine_arch_type	__machine_arch_type
+-# else
+-#  define machine_arch_type	MACH_TYPE_EDB9302
+-# endif
+-# define machine_is_edb9302()	(machine_arch_type == MACH_TYPE_EDB9302)
+-#else
+-# define machine_is_edb9302()	(0)
+-#endif
+-
+-#ifdef CONFIG_MACH_EDB9307
+-# ifdef machine_arch_type
+-#  undef machine_arch_type
+-#  define machine_arch_type	__machine_arch_type
+-# else
+-#  define machine_arch_type	MACH_TYPE_EDB9307
+-# endif
+-# define machine_is_edb9307()	(machine_arch_type == MACH_TYPE_EDB9307)
+-#else
+-# define machine_is_edb9307()	(0)
+-#endif
+-
+ #ifdef CONFIG_MACH_AT91RM9200EK
+ # ifdef machine_arch_type
+ #  undef machine_arch_type
+@@ -233,18 +173,6 @@ extern unsigned int __machine_arch_type;
+ # define machine_is_pcm027()	(0)
+ #endif
+ 
+-#ifdef CONFIG_MACH_EDB9315A
+-# ifdef machine_arch_type
+-#  undef machine_arch_type
+-#  define machine_arch_type	__machine_arch_type
+-# else
+-#  define machine_arch_type	MACH_TYPE_EDB9315A
+-# endif
+-# define machine_is_edb9315a()	(machine_arch_type == MACH_TYPE_EDB9315A)
+-#else
+-# define machine_is_edb9315a()	(0)
 -#endif
 -
  #ifdef CONFIG_MACH_AT91SAM9261EK
  # ifdef machine_arch_type
  #  undef machine_arch_type
-@@ -221,30 +185,6 @@ extern unsigned int __machine_arch_type;
- # define machine_is_at91sam9263ek()	(0)
+@@ -269,30 +197,6 @@ extern unsigned int __machine_arch_type;
+ # define machine_is_at91sam9260ek()	(0)
  #endif
  
--#ifdef CONFIG_MACH_ZYLONITE
+-#ifdef CONFIG_MACH_EDB9302A
 -# ifdef machine_arch_type
 -#  undef machine_arch_type
 -#  define machine_arch_type	__machine_arch_type
 -# else
--#  define machine_arch_type	MACH_TYPE_ZYLONITE
+-#  define machine_arch_type	MACH_TYPE_EDB9302A
 -# endif
--# define machine_is_zylonite()	(machine_arch_type == MACH_TYPE_ZYLONITE)
+-# define machine_is_edb9302a()	(machine_arch_type == MACH_TYPE_EDB9302A)
 -#else
--# define machine_is_zylonite()	(0)
+-# define machine_is_edb9302a()	(0)
 -#endif
 -
--#ifdef CONFIG_MACH_MIOA701
+-#ifdef CONFIG_MACH_EDB9307A
 -# ifdef machine_arch_type
 -#  undef machine_arch_type
 -#  define machine_arch_type	__machine_arch_type
 -# else
--#  define machine_arch_type	MACH_TYPE_MIOA701
+-#  define machine_arch_type	MACH_TYPE_EDB9307A
 -# endif
--# define machine_is_mioa701()	(machine_arch_type == MACH_TYPE_MIOA701)
+-# define machine_is_edb9307a()	(machine_arch_type == MACH_TYPE_EDB9307A)
 -#else
--# define machine_is_mioa701()	(0)
+-# define machine_is_edb9307a()	(0)
 -#endif
 -
- #ifdef CONFIG_MACH_PM9263
+ #ifdef CONFIG_MACH_PM9261
  # ifdef machine_arch_type
  #  undef machine_arch_type
-diff --git a/arch/arm/mach-pxa/Kconfig b/arch/arm/mach-pxa/Kconfig
-index a506c8e892..53becd51d4 100644
---- a/arch/arm/mach-pxa/Kconfig
-+++ b/arch/arm/mach-pxa/Kconfig
-@@ -2,14 +2,6 @@
- 
- if ARCH_PXA
- 
+diff --git a/arch/arm/mach-ep93xx/Kconfig b/arch/arm/mach-ep93xx/Kconfig
+deleted file mode 100644
+index e39f1d8a9b..0000000000
+--- a/arch/arm/mach-ep93xx/Kconfig
++++ /dev/null
+@@ -1,411 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-
+-if ARCH_EP93XX
+-
+-config EP93XX_SDCE0_PHYS_OFFSET
+-	bool
+-
+-config EP93XX_SDCE3_SYNC_PHYS_OFFSET
+-	bool
+-
+-comment "Cirrus EP93xx System-on-Chip"
+-
+-choice
+-	prompt "Cirrus Logic EP93XX Processor"
+-
+-config ARCH_EP9301
+-	bool "EP9301"
+-
+-config ARCH_EP9302
+-	bool "EP9302"
+-
+-config ARCH_EP9307
+-	depends on BROKEN
+-	bool "EP9307"
+-
+-config ARCH_EP9312
+-	depends on BROKEN
+-	bool "EP9312"
+-
+-config ARCH_EP9315
+-	depends on BROKEN
+-	bool "EP9315"
+-
+-endchoice
+-
+-# ----------------------------------------------------------
+-
+-if ARCH_EP9301
+-
+-choice
+-	prompt "EP9301 Board Type"
+-
+-config MACH_EDB9301
+-	bool "Cirrus Logic EDB9301"
+-	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
+-	help
+-	  Say y here if you are using Cirrus Logic's EDB9301 Evaluation board
+-
+-endchoice
+-
+-if MACH_EDB9301
+-
 -config ARCH_TEXT_BASE
 -	hex
--	default 0xa0000000 if MACH_MIOA701
--	default 0xa3f00000 if MACH_PCM027
--	default 0xa3d00000 if MACH_LUBBOCK
--	default 0xa3d00000 if MACH_MAINSTONE
--	default 0x83f00000 if MACH_ZYLONITE
+-	default 0x05700000
 -
- # ----------------------------------------------------------
- 
- config ARCH_PXA2XX
-@@ -41,83 +33,4 @@ config ARCH_PXA3XX
- 
- endchoice
- 
--# ----------------------------------------------------------
--
--if ARCH_PXA25X
--
--choice
--	prompt "PXA25x Board Type"
--	bool
--
--config MACH_LUBBOCK
--	bool "Lubbock board"
--	select PWM
--	help
--	  Say Y here if you are using a Lubbock board
--endchoice
--
--endif
--
--# ----------------------------------------------------------
--
--if ARCH_PXA27X
--
--choice
--	prompt "PXA27x Board Type"
--	bool
--
--config MACH_MAINSTONE
--	bool "Mainstone board"
--	select PWM
--	help
--	  Say Y here if you are using a Mainstone board
--config MACH_MIOA701
--	bool "Mitac Mio A701"
--	select PWM
--	select POLLER
--	help
--	  Say Y here if you are using a Mitac Mio A701 smartphone
--
--config MACH_PCM027
--	bool "Phytec phyCORE-PXA270"
--	help
--	  Say Y here if you are using a Phytec phyCORE PXA270
--	  board
--endchoice
--
--if MACH_MIOA701
--config BCH_CONST_M
+-config EP93XX_SDRAM_NUM_BANKS
 -	int
--	default 14 if MACH_MIOA701
--config BCH_CONST_T
--	int
--	default 4 if MACH_MIOA701
+-	default 4
+-
+-config EP93XX_SDRAM_BANK0_BASE
+-	hex
+-	default 0x00000000
+-
+-config EP93XX_SDRAM_BANK0_SIZE
+-	hex
+-	default 0x00800000
+-
+-config EP93XX_SDRAM_BANK1_BASE
+-	hex
+-	default 0x01000000
+-
+-config EP93XX_SDRAM_BANK1_SIZE
+-	hex
+-	default 0x00800000
+-
+-config EP93XX_SDRAM_BANK2_BASE
+-	hex
+-	default 0x04000000
+-
+-config EP93XX_SDRAM_BANK2_SIZE
+-	hex
+-	default 0x00800000
+-
+-config EP93XX_SDRAM_BANK3_BASE
+-	hex
+-	default 0x05000000
+-
+-config EP93XX_SDRAM_BANK3_SIZE
+-	hex
+-	default 0x00800000
+-
 -endif
 -
 -endif
 -
 -# ----------------------------------------------------------
 -
--if ARCH_PXA3XX
--
--config MACH_ZYLONITE
--       bool
+-if ARCH_EP9302
 -
 -choice
--	prompt "PXA3xx Board Type"
+-	prompt "EP9302 Board Type"
 -
--config MACH_ZYLONITE_PXA310
--	bool "Zylonite board based on a PXA310 pxa SoC"
+-config MACH_EDB9302
+-	bool "Cirrus Logic EDB9302"
+-	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
 -	help
--	  Say Y here if you are using a Zylonite board, based
--	  on a PXA31x SoC.
--	select ARCH_PXA310
--	select MACH_ZYLONITE
+-	  Say y here if you are using Cirrus Logic's EDB9302 Evaluation board
+-
+-config MACH_EDB9302A
+-	bool "Cirrus Logic EDB9302A"
+-	select EP93XX_SDCE0_PHYS_OFFSET
+-	help
+-	  Say y here if you are using Cirrus Logic's EDB9302A Evaluation board
 -
 -endchoice
 -
+-if MACH_EDB9302
+-
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x05700000
+-
+-config EP93XX_SDRAM_NUM_BANKS
+-	int
+-	default 4
+-
+-config EP93XX_SDRAM_BANK0_BASE
+-	hex
+-	default 0x00000000
+-
+-config EP93XX_SDRAM_BANK0_SIZE
+-	hex
+-	default 0x00800000
+-
+-config EP93XX_SDRAM_BANK1_BASE
+-	hex
+-	default 0x01000000
+-
+-config EP93XX_SDRAM_BANK1_SIZE
+-	hex
+-	default 0x00800000
+-
+-config EP93XX_SDRAM_BANK2_BASE
+-	hex
+-	default 0x04000000
+-
+-config EP93XX_SDRAM_BANK2_SIZE
+-	hex
+-	default 0x00800000
+-
+-config EP93XX_SDRAM_BANK3_BASE
+-	hex
+-	default 0x05000000
+-
+-config EP93XX_SDRAM_BANK3_SIZE
+-	hex
+-	default 0x00800000
+-
+-endif
+-
+-if MACH_EDB9302A
+-
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0xc5700000
+-
+-config EP93XX_SDRAM_NUM_BANKS
+-	int
+-	default 4
+-
+-config EP93XX_SDRAM_BANK0_BASE
+-	hex
+-	default 0xc0000000
+-
+-config EP93XX_SDRAM_BANK0_SIZE
+-	hex
+-	default 0x00800000
+-
+-config EP93XX_SDRAM_BANK1_BASE
+-	hex
+-	default 0xc1000000
+-
+-config EP93XX_SDRAM_BANK1_SIZE
+-	hex
+-	default 0x00800000
+-
+-config EP93XX_SDRAM_BANK2_BASE
+-	hex
+-	default 0xc4000000
+-
+-config EP93XX_SDRAM_BANK2_SIZE
+-	hex
+-	default 0x00800000
+-
+-config EP93XX_SDRAM_BANK3_BASE
+-	hex
+-	default 0xc5000000
+-
+-config EP93XX_SDRAM_BANK3_SIZE
+-	hex
+-	default 0x00800000
+-
+-endif
+-
 -endif
 -
 -# ----------------------------------------------------------
 -
- endif
+-if ARCH_EP9307
+-
+-choice
+-	prompt "EP9307 Board Type"
+-
+-config MACH_EDB9307
+-	bool "Cirrus Logic EDB9307"
+-	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
+-	help
+-	  Say y here if you are using Cirrus Logic's EDB9307 Evaluation board
+-
+-config MACH_EDB9307A
+-	bool "Cirrus Logic EDB9307A"
+-	select EP93XX_SDCE0_PHYS_OFFSET
+-	help
+-	  Say y here if you are using Cirrus Logic's EDB9307A Evaluation board
+-
+-endchoice
+-
+-if MACH_EDB9307
+-
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x01f00000
+-
+-config EP93XX_SDRAM_NUM_BANKS
+-	int
+-	default 2
+-
+-config EP93XX_SDRAM_BANK0_BASE
+-	hex
+-	default 0x00000000
+-
+-config EP93XX_SDRAM_BANK0_SIZE
+-	hex
+-	default 0x02000000
+-
+-config EP93XX_SDRAM_BANK1_BASE
+-	hex
+-	default 0x04000000
+-
+-config EP93XX_SDRAM_BANK1_SIZE
+-	hex
+-	default 0x02000000
+-
+-endif
+-
+-if MACH_EDB9307A
+-
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0xc1f00000
+-
+-config EP93XX_SDRAM_NUM_BANKS
+-	int
+-	default 2
+-
+-config EP93XX_SDRAM_BANK0_BASE
+-	hex
+-	default 0xc0000000
+-
+-config EP93XX_SDRAM_BANK0_SIZE
+-	hex
+-	default 0x02000000
+-
+-config EP93XX_SDRAM_BANK1_BASE
+-	hex
+-	default 0xc4000000
+-
+-config EP93XX_SDRAM_BANK1_SIZE
+-	hex
+-	default 0x02000000
+-
+-endif
+-
+-endif
+-
+-# ----------------------------------------------------------
+-
+-if ARCH_EP9312
+-
+-choice
+-	prompt "EP9312 Board Type"
+-
+-config MACH_EDB9312
+-	bool "Cirrus Logic EDB9312"
+-	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
+-	help
+-	  Say y here if you are using Cirrus Logic's EDB9312 Evaluation board
+-
+-endchoice
+-
+-if MACH_EDB9312
+-
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x01f00000
+-
+-config EP93XX_SDRAM_NUM_BANKS
+-	int
+-	default 2
+-
+-config EP93XX_SDRAM_BANK0_BASE
+-	hex
+-	default 0x00000000
+-
+-config EP93XX_SDRAM_BANK0_SIZE
+-	hex
+-	default 0x02000000
+-
+-config EP93XX_SDRAM_BANK1_BASE
+-	hex
+-	default 0x04000000
+-
+-config EP93XX_SDRAM_BANK1_SIZE
+-	hex
+-	default 0x02000000
+-
+-endif
+-
+-endif
+-
+-# ----------------------------------------------------------
+-
+-if ARCH_EP9315
+-
+-choice
+-	prompt "EP9315 Board Type"
+-
+-config MACH_EDB9315
+-	bool "Cirrus Logic EDB9315"
+-	select EP93XX_SDCE3_SYNC_PHYS_OFFSET
+-	help
+-	  Say y here if you are using Cirrus Logic's EDB9315 Evaluation board
+-
+-config MACH_EDB9315A
+-	bool "Cirrus Logic EDB9315A"
+-	select EP93XX_SDCE0_PHYS_OFFSET
+-	help
+-	  Say y here if you are using Cirrus Logic's EDB9315A Evaluation board
+-
+-endchoice
+-
+-if MACH_EDB9315
+-
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x01f00000
+-
+-config EP93XX_SDRAM_NUM_BANKS
+-	int
+-	default 2
+-
+-config EP93XX_SDRAM_BANK0_BASE
+-	hex
+-	default 0x00000000
+-
+-config EP93XX_SDRAM_BANK0_SIZE
+-	hex
+-	default 0x02000000
+-
+-config EP93XX_SDRAM_BANK1_BASE
+-	hex
+-	default 0x04000000
+-
+-config EP93XX_SDRAM_BANK1_SIZE
+-	hex
+-	default 0x02000000
+-
+-endif
+-
+-if MACH_EDB9315A
+-
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0xc1f00000
+-
+-config EP93XX_SDRAM_NUM_BANKS
+-	int
+-	default 2
+-
+-config EP93XX_SDRAM_BANK0_BASE
+-	hex
+-	default 0xc0000000
+-
+-config EP93XX_SDRAM_BANK0_SIZE
+-	hex
+-	default 0x02000000
+-
+-config EP93XX_SDRAM_BANK1_BASE
+-	hex
+-	default 0xc4000000
+-
+-config EP93XX_SDRAM_BANK1_SIZE
+-	hex
+-	default 0x02000000
+-
+-endif
+-
+-endif
+-
+-endif
+diff --git a/arch/arm/mach-ep93xx/Makefile b/arch/arm/mach-ep93xx/Makefile
+deleted file mode 100644
+index 80dbe7c42b..0000000000
+--- a/arch/arm/mach-ep93xx/Makefile
++++ /dev/null
+@@ -1,5 +0,0 @@
+-# SPDX-License-Identifier: GPL-2.0-only
+-
+-obj-y += clocksource.o gpio.o header.o
+-
+-lwl-y += lowlevel_init.o led.o
+diff --git a/arch/arm/mach-ep93xx/clocksource.c b/arch/arm/mach-ep93xx/clocksource.c
+deleted file mode 100644
+index 53aae437b3..0000000000
+--- a/arch/arm/mach-ep93xx/clocksource.c
++++ /dev/null
+@@ -1,93 +0,0 @@
+-/*
+- * Copyright (C) 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <common.h>
+-#include <init.h>
+-#include <clock.h>
+-#include <io.h>
+-#include <restart.h>
+-#include <mach/ep93xx/ep93xx-regs.h>
+-
+-#define TIMER_CLKSEL		(1 << 3)
+-#define TIMER_MODE		(1 << 6)
+-#define TIMER_ENABLE		(1 << 7)
+-
+-#define TIMER_FREQ		508469
+-
+-static uint64_t ep93xx_clocksource_read(void)
+-{
+-	struct timer_regs *timer = (struct timer_regs *)TIMER_BASE;
+-
+-	return 0xffffffff - readl(&timer->timer3.value);
+-}
+-
+-static struct clocksource cs = {
+-	.read	= ep93xx_clocksource_read,
+-	.mask	= CLOCKSOURCE_MASK(32),
+-	.shift	= 10,
+-	.priority = 80,
+-};
+-
+-static int clocksource_init(void)
+-{
+-	struct timer_regs *timer = (struct timer_regs *)TIMER_BASE;
+-
+-	/* use timer 3 with 508KHz and free running */
+-	writel(TIMER_CLKSEL,
+-	       &timer->timer3.control);
+-
+-	/* load timer 3 with max value */
+-	writel(0xffffffff, &timer->timer3.load);
+-
+-	/* enable timer 3 with 508KHz and periodic mode */
+-	writel(TIMER_ENABLE | TIMER_MODE | TIMER_CLKSEL,
+-	       &timer->timer3.control);
+-
+-	cs.mult = clocksource_hz2mult(TIMER_FREQ, cs.shift);
+-
+-	return init_clock(&cs);
+-}
+-
+-core_initcall(clocksource_init);
+-
+-/* Reset the SoC */
+-static void __noreturn ep92xx_restart_soc(struct restart_handler *rst)
+-{
+-	struct syscon_regs *syscon = (struct syscon_regs *)SYSCON_BASE;
+-	uint32_t value;
+-
+-	/* Unlock DeviceCfg and set SWRST */
+-	writel(0xAA, &syscon->sysswlock);
+-	value = readl(&syscon->devicecfg);
+-	value |= SYSCON_DEVICECFG_SWRST;
+-	writel(value, &syscon->devicecfg);
+-
+-	/* Unlock DeviceCfg and clear SWRST */
+-	writel(0xAA, &syscon->sysswlock);
+-	value = readl(&syscon->devicecfg);
+-	value &= ~SYSCON_DEVICECFG_SWRST;
+-	writel(value, &syscon->devicecfg);
+-
+-	/* Dying... */
+-	hang();
+-}
+-
+-static int restart_register_feature(void)
+-{
+-	restart_handler_register_fn("soc", ep92xx_restart_soc);
+-
+-	return 0;
+-}
+-coredevice_initcall(restart_register_feature);
+diff --git a/arch/arm/mach-ep93xx/gpio.c b/arch/arm/mach-ep93xx/gpio.c
+deleted file mode 100644
+index f30798fd4b..0000000000
+--- a/arch/arm/mach-ep93xx/gpio.c
++++ /dev/null
+@@ -1,134 +0,0 @@
+-/*
+- * Copyright (C) 2010 Matthias Kaehlcke <matthias@kaehlcke.net>
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- *
+- */
+-
+-#include <common.h>
+-#include <errno.h>
+-#include <init.h>
+-#include <io.h>
+-#include <gpio.h>
+-#include <mach/ep93xx/ep93xx-regs.h>
+-
+-#define EP93XX_GPIO_NUM_PORTS	8
+-#define EP93XX_GPIO_NUM_GPIOS	(EP93XX_GPIO_NUM_PORTS * 8)
+-
+-struct gpio_port {
+-	uint32_t *dr;
+-	uint32_t *ddr;
+-};
+-
+-struct gpio_port gpio_ports[EP93XX_GPIO_NUM_PORTS];
+-
+-static int ep93xx_gpio_init(void)
+-{
+-	struct gpio_regs *gpio_regs = (struct gpio_regs *)GPIO_BASE;
+-
+-	gpio_ports[0].dr = &gpio_regs->padr;
+-	gpio_ports[0].ddr = &gpio_regs->paddr;
+-	gpio_ports[1].dr = &gpio_regs->pbdr;
+-	gpio_ports[1].ddr = &gpio_regs->pbddr;
+-	gpio_ports[2].dr = &gpio_regs->pcdr;
+-	gpio_ports[2].ddr = &gpio_regs->pcddr;
+-	gpio_ports[3].dr = &gpio_regs->pddr;
+-	gpio_ports[3].ddr = &gpio_regs->pdddr;
+-	gpio_ports[4].dr = &gpio_regs->pedr;
+-	gpio_ports[4].ddr = &gpio_regs->peddr;
+-	gpio_ports[5].dr = &gpio_regs->pfdr;
+-	gpio_ports[5].ddr = &gpio_regs->pfddr;
+-	gpio_ports[6].dr = &gpio_regs->pgdr;
+-	gpio_ports[6].ddr = &gpio_regs->pgddr;
+-	gpio_ports[7].dr = &gpio_regs->phdr;
+-	gpio_ports[7].ddr = &gpio_regs->phddr;
+-
+-	return 0;
+-}
+-
+-postcore_initcall(ep93xx_gpio_init);
+-
+-static struct gpio_port *gpio_get_port(unsigned gpio)
+-{
+-	if (gpio >= EP93XX_GPIO_NUM_GPIOS)
+-		return 0;
+-
+-	return &gpio_ports[gpio / 8];
+-}
+-
+-void gpio_set_value(unsigned gpio, int value)
+-{
+-	struct gpio_port *port = gpio_get_port(gpio);
+-	const int shift = gpio % 8;
+-	u32 val;
+-
+-	if (!port)
+-		return;
+-
+-	val = readl(port->dr);
+-
+-	if (value)
+-		val |= 1 << shift;
+-	else
+-		val &= ~(1 << shift);
+-
+-	writel(val, port->dr);
+-}
+-
+-int gpio_direction_input(unsigned gpio)
+-{
+-	struct gpio_port *port = gpio_get_port(gpio);
+-	const int shift = gpio % 8;
+-	u32 val;
+-
+-	if (!port)
+-		return -EINVAL;
+-
+-	val = readl(port->ddr);
+-	val &= ~(1 << shift);
+-	writel(val, port->ddr);
+-
+-	return 0;
+-}
+-
+-int gpio_direction_output(unsigned gpio, int value)
+-{
+-	struct gpio_port *port = gpio_get_port(gpio);
+-	const int shift = gpio % 8;
+-	u32 val;
+-
+-	if (!port)
+-		return -EINVAL;
+-
+-	gpio_set_value(gpio, value);
+-
+-	val = readl(port->ddr);
+-	val |= 1 << shift;
+-	writel(val, port->ddr);
+-
+-	return 0;
+-}
+-
+-int gpio_get_value(unsigned gpio)
+-{
+-	struct gpio_port *port = gpio_get_port(gpio);
+-	const int shift = gpio % 8;
+-	u32 val;
+-
+-	if (!port)
+-		return -EINVAL;
+-
+-	val = readl(port->dr);
+-
+-	return val & (1 << shift) ? 1 : 0;
+-}
+-
+diff --git a/arch/arm/mach-ep93xx/header.c b/arch/arm/mach-ep93xx/header.c
+deleted file mode 100644
+index 0d7e68c34b..0000000000
+--- a/arch/arm/mach-ep93xx/header.c
++++ /dev/null
+@@ -1,12 +0,0 @@
+-// SPDX-License-Identifier: GPL-2.0-only
+-
+-#include <common.h>
+-#include <linux/compiler.h>
+-#include <asm/barebox-arm-head.h>
+-
+-void go(void);
+-
+-void __naked __section(.flash_header_start) go(void)
+-{
+-        barebox_arm_head();
+-}
+diff --git a/arch/arm/mach-ep93xx/led.c b/arch/arm/mach-ep93xx/led.c
+deleted file mode 100644
+index b2909fc070..0000000000
+--- a/arch/arm/mach-ep93xx/led.c
++++ /dev/null
+@@ -1,57 +0,0 @@
+-/*
+- * Copyright (C) 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <common.h>
+-#include <io.h>
+-#include <mach/ep93xx/ep93xx-regs.h>
+-
+-#include "led.h"
+-
+-#define GREEN_LED_POS		0x01
+-#define RED_LED_POS		0x02
+-
+-inline void switch_LED_on(uint32_t bit_pos)
+-{
+-	register struct gpio_regs *gpio = (struct gpio_regs *)GPIO_BASE;
+-
+-	writel(readl(&gpio->pedr) | bit_pos, &gpio->pedr);
+-}
+-
+-inline void switch_LED_off(uint32_t bit_pos)
+-{
+-	register struct gpio_regs *gpio = (struct gpio_regs *)GPIO_BASE;
+-
+-	writel(readl(&gpio->pedr) & ~bit_pos, &gpio->pedr);
+-}
+-
+-void red_LED_on(void)
+-{
+-	switch_LED_on(RED_LED_POS);
+-}
+-
+-void red_LED_off(void)
+-{
+-	switch_LED_off(RED_LED_POS);
+-}
+-
+-void green_LED_on(void)
+-{
+-	switch_LED_on(GREEN_LED_POS);
+-}
+-
+-void green_LED_off(void)
+-{
+-	switch_LED_off(GREEN_LED_POS);
+-}
+diff --git a/arch/arm/mach-ep93xx/led.h b/arch/arm/mach-ep93xx/led.h
+deleted file mode 100644
+index 7ac907effa..0000000000
+--- a/arch/arm/mach-ep93xx/led.h
++++ /dev/null
+@@ -1,19 +0,0 @@
+-/*
+- * Copyright (C) 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-extern void red_LED_on(void);
+-extern void red_LED_off(void);
+-extern void green_LED_on(void);
+-extern void green_LED_off(void);
+diff --git a/arch/arm/mach-ep93xx/lowlevel_init.S b/arch/arm/mach-ep93xx/lowlevel_init.S
+deleted file mode 100644
+index 5cc24a1cc0..0000000000
+--- a/arch/arm/mach-ep93xx/lowlevel_init.S
++++ /dev/null
+@@ -1,61 +0,0 @@
+-/*
+- * Low-level initialization for EP93xx
+- *
+- * Copyright (C) 2009 Matthias Kaehlcke <matthias@kaehlcke.net>
+- *
+- * Copyright (C) 2006 Dominic Rath <Dominic.Rath@gmx.de>
+- *
+- * This program is free software; you can redistribute it and/or
+- * modify it under the terms of the GNU General Public License as
+- * published by the Free Software Foundation; either version 2 of
+- * the License, or (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful,
+- * but WITHOUT ANY WARRANTY; without even the implied warranty of
+- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+- * GNU General Public License for more details.
+- *
+- */
+-
+-#include <linux/sizes.h>
+-#include <mach/ep93xx/ep93xx-regs.h>
+-#include <asm/barebox-arm-head.h>
+-
+-.globl barebox_arm_reset_vector
+-barebox_arm_reset_vector:
+-	bl arm_cpu_lowlevel_init
+-
+-	/* Turn on both LEDs */
+-	bl red_LED_on
+-	bl green_LED_on
+-
+-	/* Configure flash wait states before we switch to the PLL */
+-	bl flash_cfg
+-
+-	/* Set up PLL */
+-	bl pll_cfg
+-
+-	/* Turn off the Green LED and leave the Red LED on */
+-	bl green_LED_off
+-
+-	/* Setup SDRAM */
+-	bl sdram_cfg
+-
+-	/* Turn on Green LED, Turn off the Red LED */
+-	bl green_LED_on
+-	bl red_LED_off
+-
+-	/* switch to async mode */
+-	mrc p15, 0, r0, c1, c0, 0
+-	orr r0, r0, #0xc0000000
+-	mcr p15, 0, r0, c1, c0, 0
+-
+-	/*
+-	 * FIXME: This is suitable for the edb9301, the
+-	 * only ep93xx board we have in our defconfigs.
+-	 * Other boards need different values here.
+-	 */
+-	mov	r0, #0x05000000
+-	mov	r1, #SZ_8M
+-	mov	r2, #0
+-	b	barebox_arm_entry
+diff --git a/include/mach/ep93xx/barebox.lds.h b/include/mach/ep93xx/barebox.lds.h
+deleted file mode 100644
+index 4e497f5e2d..0000000000
+--- a/include/mach/ep93xx/barebox.lds.h
++++ /dev/null
+@@ -1,10 +0,0 @@
+-/* SPDX-License-Identifier: GPL-2.0-only */
+-
+-/* the EP93xx expects to find the pattern 'CRUS' at 0x1000 */
+-
+-#define PRE_IMAGE				\
+-	.pre_image : {				\
+-		KEEP(*(.flash_header_start*))	\
+-		. = 0x1000;			\
+-		LONG(0x53555243) /* 'CRUS' */	\
+-	}
+diff --git a/include/mach/ep93xx/ep93xx-regs.h b/include/mach/ep93xx/ep93xx-regs.h
+deleted file mode 100644
+index f1d3076045..0000000000
+--- a/include/mach/ep93xx/ep93xx-regs.h
++++ /dev/null
+@@ -1,599 +0,0 @@
+-/* -----------------------------------------------------------------------------
+- * Cirrus Logic EP93xx register definitions.
+- *
+- * Copyright (C) 2009
+- * Matthias Kaehlcke <matthias@kaehlcke.net>
+- *
+- * Copyright (C) 2006
+- * Dominic Rath <Dominic.Rath@gmx.de>
+- *
+- * Copyright (C) 2004, 2005
+- * Cory T. Tusar, Videon Central, Inc., <ctusar@videon-central.com>
+- *
+- * Based in large part on linux/include/asm-arm/arch-ep93xx/regmap.h, which is
+- *
+- * Copyright (C) 2004 Ray Lehtiniemi
+- * Copyright (C) 2003 Cirrus Logic, Inc
+- * Copyright (C) 1999 ARM Limited.
+- *
+- * This program is free software; you can redistribute it and/or modify
+- * it under the terms of the GNU General Public License as published by
+- * the Free Software Foundation; either version 2 of the License, or
+- * (at your option) any later version.
+- *
+- * This program is distributed in the hope that it will be useful, but
+- * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+- * or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU General Public License
+- * for more details.
+- *
+- * You should have received a copy of the GNU General Public License along
+- * with this program; if not, write to the Free Software Foundation, Inc.,
+- * 675 Mass Ave, Cambridge, MA 02139, USA.
+- */
+-
+-#ifndef __ASSEMBLY__
+-#include <linux/types.h>
+-#endif
+-
+-#define EP93XX_AHB_BASE			0x80000000
+-#define EP93XX_APB_BASE			0x80800000
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80000000 - 0x8000FFFF: DMA
+- */
+-#define DMA_OFFSET			0x000000
+-#define DMA_BASE			(EP93XX_AHB_BASE | DMA_OFFSET)
+-
+-#ifndef __ASSEMBLY__
+-struct dma_channel {
+-	uint32_t control;
+-	uint32_t interrupt;
+-	uint32_t ppalloc;
+-	uint32_t status;
+-	uint32_t reserved0;
+-	uint32_t remain;
+-	uint32_t reserved1[2];
+-	uint32_t maxcnt0;
+-	uint32_t base0;
+-	uint32_t current0;
+-	uint32_t reserved2;
+-	uint32_t maxcnt1;
+-	uint32_t base1;
+-	uint32_t current1;
+-	uint32_t reserved3;
+-};
+-
+-struct dma_regs {
+-	struct dma_channel m2p_channel_0;
+-	struct dma_channel m2p_channel_1;
+-	struct dma_channel m2p_channel_2;
+-	struct dma_channel m2p_channel_3;
+-	struct dma_channel m2m_channel_0;
+-	struct dma_channel m2m_channel_1;
+-	struct dma_channel reserved0[2];
+-	struct dma_channel m2p_channel_5;
+-	struct dma_channel m2p_channel_4;
+-	struct dma_channel m2p_channel_7;
+-	struct dma_channel m2p_channel_6;
+-	struct dma_channel m2p_channel_9;
+-	struct dma_channel m2p_channel_8;
+-	uint32_t channel_arbitration;
+-	uint32_t reserved[15];
+-	uint32_t global_interrupt;
+-};
+-#endif
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80010000 - 0x8001FFFF: Ethernet MAC
+- */
+-#define MAC_OFFSET			0x010000
+-#define MAC_BASE			(EP93XX_AHB_BASE | MAC_OFFSET)
+-
+-#ifndef __ASSEMBLY__
+-struct mac_queue {
+-	uint32_t badd;
+-	union { /* deal with half-word aligned registers */
+-		uint32_t blen;
+-		union {
+-			uint16_t filler;
+-			uint16_t curlen;
+-		};
+-	};
+-	uint32_t curadd;
+-};
+-
+-struct mac_regs {
+-	uint32_t rxctl;
+-	uint32_t txctl;
+-	uint32_t testctl;
+-	uint32_t reserved0;
+-	uint32_t miicmd;
+-	uint32_t miidata;
+-	uint32_t miists;
+-	uint32_t reserved1;
+-	uint32_t selfctl;
+-	uint32_t inten;
+-	uint32_t intstsp;
+-	uint32_t intstsc;
+-	uint32_t reserved2[2];
+-	uint32_t diagad;
+-	uint32_t diagdata;
+-	uint32_t gt;
+-	uint32_t fct;
+-	uint32_t fcf;
+-	uint32_t afp;
+-	union {
+-		struct {
+-			uint32_t indad;
+-			uint32_t indad_upper;
+-		};
+-		uint32_t hashtbl;
+-	};
+-	uint32_t reserved3[2];
+-	uint32_t giintsts;
+-	uint32_t giintmsk;
+-	uint32_t giintrosts;
+-	uint32_t giintfrc;
+-	uint32_t txcollcnt;
+-	uint32_t rxmissnct;
+-	uint32_t rxruntcnt;
+-	uint32_t reserved4;
+-	uint32_t bmctl;
+-	uint32_t bmsts;
+-	uint32_t rxbca;
+-	uint32_t reserved5;
+-	struct mac_queue rxdq;
+-	uint32_t rxdqenq;
+-	struct mac_queue rxstsq;
+-	uint32_t rxstsqenq;
+-	struct mac_queue txdq;
+-	uint32_t txdqenq;
+-	struct mac_queue txstsq;
+-	uint32_t reserved6;
+-	uint32_t rxbufthrshld;
+-	uint32_t txbufthrshld;
+-	uint32_t rxststhrshld;
+-	uint32_t txststhrshld;
+-	uint32_t rxdthrshld;
+-	uint32_t txdthrshld;
+-	uint32_t maxfrmlen;
+-	uint32_t maxhdrlen;
+-};
+-#endif
+-
+-#define SELFCTL_RWP		(1 << 7)
+-#define SELFCTL_GPO0		(1 << 5)
+-#define SELFCTL_PUWE		(1 << 4)
+-#define SELFCTL_PDWE		(1 << 3)
+-#define SELFCTL_MIIL		(1 << 2)
+-#define SELFCTL_RESET		(1 << 0)
+-
+-#define INTSTS_RWI		(1 << 30)
+-#define INTSTS_RXMI		(1 << 29)
+-#define INTSTS_RXBI		(1 << 28)
+-#define INTSTS_RXSQI		(1 << 27)
+-#define INTSTS_TXLEI		(1 << 26)
+-#define INTSTS_ECIE		(1 << 25)
+-#define INTSTS_TXUHI		(1 << 24)
+-#define INTSTS_MOI		(1 << 18)
+-#define INTSTS_TXCOI		(1 << 17)
+-#define INTSTS_RXROI		(1 << 16)
+-#define INTSTS_MIII		(1 << 12)
+-#define INTSTS_PHYI		(1 << 11)
+-#define INTSTS_TI		(1 << 10)
+-#define INTSTS_AHBE		(1 << 8)
+-#define INTSTS_OTHER		(1 << 4)
+-#define INTSTS_TXSQ		(1 << 3)
+-#define INTSTS_RXSQ		(1 << 2)
+-
+-#define BMCTL_MT		(1 << 13)
+-#define BMCTL_TT		(1 << 12)
+-#define BMCTL_UNH		(1 << 11)
+-#define BMCTL_TXCHR		(1 << 10)
+-#define BMCTL_TXDIS		(1 << 9)
+-#define BMCTL_TXEN		(1 << 8)
+-#define BMCTL_EH2		(1 << 6)
+-#define BMCTL_EH1		(1 << 5)
+-#define BMCTL_EEOB		(1 << 4)
+-#define BMCTL_RXCHR		(1 << 2)
+-#define BMCTL_RXDIS		(1 << 1)
+-#define BMCTL_RXEN		(1 << 0)
+-
+-#define BMSTS_TXACT		(1 << 7)
+-#define BMSTS_TP		(1 << 4)
+-#define BMSTS_RXACT		(1 << 3)
+-#define BMSTS_QID_MASK		0x07
+-#define BMSTS_QID_RXDATA	0x00
+-#define BMSTS_QID_TXDATA	0x01
+-#define BMSTS_QID_RXSTS		0x02
+-#define BMSTS_QID_TXSTS		0x03
+-#define BMSTS_QID_RXDESC	0x04
+-#define BMSTS_QID_TXDESC	0x05
+-
+-#define AFP_MASK		0x07
+-#define AFP_IAPRIMARY		0x00
+-#define AFP_IASECONDARY1	0x01
+-#define AFP_IASECONDARY2	0x02
+-#define AFP_IASECONDARY3	0x03
+-#define AFP_TX			0x06
+-#define AFP_HASH		0x07
+-
+-#define RXCTL_PAUSEA		(1 << 20)
+-#define RXCTL_RXFCE1		(1 << 19)
+-#define RXCTL_RXFCE0		(1 << 18)
+-#define RXCTL_BCRC		(1 << 17)
+-#define RXCTL_SRXON		(1 << 16)
+-#define RXCTL_RCRCA		(1 << 13)
+-#define RXCTL_RA		(1 << 12)
+-#define RXCTL_PA		(1 << 11)
+-#define RXCTL_BA		(1 << 10)
+-#define RXCTL_MA		(1 << 9)
+-#define RXCTL_IAHA		(1 << 8)
+-#define RXCTL_IA3		(1 << 3)
+-#define RXCTL_IA2		(1 << 2)
+-#define RXCTL_IA1		(1 << 1)
+-#define RXCTL_IA0		(1 << 0)
+-
+-#define TXCTL_DEFDIS		(1 << 7)
+-#define TXCTL_MBE		(1 << 6)
+-#define TXCTL_ICRC		(1 << 5)
+-#define TXCTL_TPD		(1 << 4)
+-#define TXCTL_OCOLL		(1 << 3)
+-#define TXCTL_SP		(1 << 2)
+-#define TXCTL_PB		(1 << 1)
+-#define TXCTL_STXON		(1 << 0)
+-
+-#define MIICMD_REGAD_MASK	(0x001F)
+-#define MIICMD_PHYAD_MASK	(0x03E0)
+-#define MIICMD_OPCODE_MASK	(0xC000)
+-#define MIICMD_PHYAD_8950	(0x0000)
+-#define MIICMD_OPCODE_READ	(0x8000)
+-#define MIICMD_OPCODE_WRITE	(0x4000)
+-
+-#define MIISTS_BUSY		(1 << 0)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80020000 - 0x8002FFFF: USB OHCI
+- */
+-#define USB_OFFSET			0x020000
+-#define USB_BASE			(EP93XX_AHB_BASE | USB_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80030000 - 0x8003FFFF: Raster engine
+- */
+-#if (defined(CONFIG_EP9307) || defined(CONFIG_EP9312) || defined(CONFIG_EP9315))
+-#define RASTER_OFFSET			0x030000
+-#define RASTER_BASE			(EP93XX_AHB_BASE | RASTER_OFFSET)
+-#endif
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80040000 - 0x8004FFFF: Graphics accelerator
+- */
+-#if defined(CONFIG_EP9315)
+-#define GFX_OFFSET			0x040000
+-#define GFX_BASE			(EP93XX_AHB_BASE | GFX_OFFSET)
+-#endif
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80050000 - 0x8005FFFF: Reserved
+- */
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80060000 - 0x8006FFFF: SDRAM controller
+- */
+-#define SDRAM_OFFSET			0x060000
+-#define SDRAM_BASE			(EP93XX_AHB_BASE | SDRAM_OFFSET)
+-
+-#ifndef __ASSEMBLY__
+-struct sdram_regs {
+-	uint32_t reserved;
+-	uint32_t glconfig;
+-	uint32_t refrshtimr;
+-	uint32_t bootsts;
+-	uint32_t devcfg0;
+-	uint32_t devcfg1;
+-	uint32_t devcfg2;
+-	uint32_t devcfg3;
+-};
+-#endif
+-
+-#define SDRAM_DEVCFG_EXTBUSWIDTH	(1 << 2)
+-#define SDRAM_DEVCFG_BANKCOUNT		(1 << 3)
+-#define SDRAM_DEVCFG_SROMLL		(1 << 5)
+-#define SDRAM_DEVCFG_CASLAT_2		0x00010000
+-#define SDRAM_DEVCFG_RASTOCAS_2		0x00200000
+-
+-#define GLCONFIG_INIT			(1 << 0)
+-#define GLCONFIG_MRS			(1 << 1)
+-#define GLCONFIG_SMEMBUSY		(1 << 5)
+-#define GLCONFIG_LCR			(1 << 6)
+-#define GLCONFIG_REARBEN		(1 << 7)
+-#define GLCONFIG_CLKSHUTDOWN		(1 << 30)
+-#define GLCONFIG_CKE			(1 << 31)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80070000 - 0x8007FFFF: Reserved
+- */
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80080000 - 0x8008FFFF: SRAM controller & PCMCIA
+- */
+-#define SMC_OFFSET			0x080000
+-#define SMC_BASE			(EP93XX_AHB_BASE | SMC_OFFSET)
+-
+-#ifndef __ASSEMBLY__
+-struct smc_regs {
+-	uint32_t bcr0;
+-	uint32_t bcr1;
+-	uint32_t bcr2;
+-	uint32_t bcr3;
+-	uint32_t reserved0[2];
+-	uint32_t bcr6;
+-	uint32_t bcr7;
+-#if defined(CONFIG_EP9315)
+-	uint32_t pcattribute;
+-	uint32_t pccommon;
+-	uint32_t pcio;
+-	uint32_t reserved1[5];
+-	uint32_t pcmciactrl;
+-#endif
+-};
+-#endif
+-
+-#define SMC_BCR_IDCY_SHIFT	0
+-#define SMC_BCR_WST1_SHIFT	5
+-#define SMC_BCR_BLE		(1 << 10)
+-#define SMC_BCR_WST2_SHIFT	11
+-#define SMC_BCR_MW_SHIFT	28
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80090000 - 0x8009FFFF: Boot ROM
+- */
+-
+-/* -----------------------------------------------------------------------------
+- * 0x800A0000 - 0x800AFFFF: IDE interface
+- */
+-
+-/* -----------------------------------------------------------------------------
+- * 0x800B0000 - 0x800BFFFF: VIC1
+- */
+-
+-/* -----------------------------------------------------------------------------
+- * 0x800C0000 - 0x800CFFFF: VIC2
+- */
+-
+-/* -----------------------------------------------------------------------------
+- * 0x800D0000 - 0x800FFFFF: Reserved
+- */
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80800000 - 0x8080FFFF: Reserved
+- */
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80810000 - 0x8081FFFF: Timers
+- */
+-#define TIMER_OFFSET		0x010000
+-#define TIMER_BASE		(EP93XX_APB_BASE | TIMER_OFFSET)
+-
+-#ifndef __ASSEMBLY__
+-struct timer {
+-	uint32_t load;
+-	uint32_t value;
+-	uint32_t control;
+-	uint32_t clear;
+-};
+-
+-struct timer4 {
+-	uint32_t value_low;
+-	uint32_t value_high;
+-};
+-
+-struct timer_regs {
+-	struct timer timer1;
+-	uint32_t reserved0[4];
+-	struct timer timer2;
+-	uint32_t reserved1[12];
+-	struct timer4 timer4;
+-	uint32_t reserved2[6];
+-	struct timer timer3;
+-};
+-#endif
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80820000 - 0x8082FFFF: I2S
+- */
+-#define I2S_OFFSET		0x020000
+-#define I2S_BASE		(EP93XX_APB_BASE | I2S_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80830000 - 0x8083FFFF: Security
+- */
+-#define SECURITY_OFFSET		0x030000
+-#define SECURITY_BASE		(EP93XX_APB_BASE | SECURITY_OFFSET)
+-
+-#define EXTENSIONID		(SECURITY_BASE + 0x2714)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80840000 - 0x8084FFFF: GPIO
+- */
+-#define GPIO_OFFSET		0x040000
+-#define GPIO_BASE		(EP93XX_APB_BASE | GPIO_OFFSET)
+-
+-#ifndef __ASSEMBLY__
+-struct gpio_int {
+-	uint32_t inttype1;
+-	uint32_t inttype2;
+-	uint32_t eoi;
+-	uint32_t inten;
+-	uint32_t intsts;
+-	uint32_t rawintsts;
+-	uint32_t db;
+-};
+-
+-struct gpio_regs {
+-	uint32_t padr;
+-	uint32_t pbdr;
+-	uint32_t pcdr;
+-	uint32_t pddr;
+-	uint32_t paddr;
+-	uint32_t pbddr;
+-	uint32_t pcddr;
+-	uint32_t pdddr;
+-	uint32_t pedr;
+-	uint32_t peddr;
+-	uint32_t reserved0[2];
+-	uint32_t pfdr;
+-	uint32_t pfddr;
+-	uint32_t pgdr;
+-	uint32_t pgddr;
+-	uint32_t phdr;
+-	uint32_t phddr;
+-	uint32_t reserved1;
+-	uint32_t finttype1;
+-	uint32_t finttype2;
+-	uint32_t reserved2;
+-	struct gpio_int pfint;
+-	uint32_t reserved3[10];
+-	struct gpio_int paint;
+-	struct gpio_int pbint;
+-	uint32_t eedrive;
+-};
+-#endif
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80850000 - 0x8087FFFF: Reserved
+- */
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80880000 - 0x8088FFFF: AAC
+- */
+-#define AAC_OFFSET		0x080000
+-#define AAC_BASE		(EP93XX_APB_BASE | AAC_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80890000 - 0x8089FFFF: Reserved
+- */
+-
+-/* -----------------------------------------------------------------------------
+- * 0x808A0000 - 0x808AFFFF: SPI
+- */
+-#define SPI_OFFSET		0x0A0000
+-#define SPI_BASE		(EP93XX_APB_BASE | SPI_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x808B0000 - 0x808BFFFF: IrDA
+- */
+-#define IRDA_OFFSET		0x0B0000
+-#define IRDA_BASE		(EP93XX_APB_BASE | IRDA_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x808C0000 - 0x808CFFFF: UART1
+- */
+-#define UART1_OFFSET		0x0C0000
+-#define UART1_BASE		(EP93XX_APB_BASE | UART1_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x808D0000 - 0x808DFFFF: UART2
+- */
+-#define UART2_OFFSET		0x0D0000
+-#define UART2_BASE		(EP93XX_APB_BASE | UART2_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x808E0000 - 0x808EFFFF: UART3
+- */
+-#define UART3_OFFSET		0x0E0000
+-#define UART3_BASE		(EP93XX_APB_BASE | UART3_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x808F0000 - 0x808FFFFF: Key Matrix
+- */
+-#define KEY_OFFSET		0x0F0000
+-#define KEY_BASE		(EP93XX_APB_BASE | KEY_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80900000 - 0x8090FFFF: Touchscreen
+- */
+-#define TOUCH_OFFSET		0x900000
+-#define TOUCH_BASE		(EP93XX_APB_BASE | TOUCH_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80910000 - 0x8091FFFF: Pulse Width Modulation
+- */
+-#define PWM_OFFSET		0x910000
+-#define PWM_BASE		(EP93XX_APB_BASE | PWM_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80920000 - 0x8092FFFF: Real time clock
+- */
+-#define RTC_OFFSET		0x920000
+-#define RTC_BASE		(EP93XX_APB_BASE | RTC_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80930000 - 0x8093FFFF: Syscon
+- */
+-#define SYSCON_OFFSET		0x930000
+-#define SYSCON_BASE		(EP93XX_APB_BASE | SYSCON_OFFSET)
+-
+-#ifndef __ASSEMBLY__
+-struct syscon_regs {
+-	uint32_t pwrsts;
+-	uint32_t pwrcnt;
+-	uint32_t halt;
+-	uint32_t stby;
+-	uint32_t reserved0[2];
+-	uint32_t teoi;
+-	uint32_t stfclr;
+-	uint32_t clkset1;
+-	uint32_t clkset2;
+-	uint32_t reserved1[6];
+-	uint32_t scratch0;
+-	uint32_t scratch1;
+-	uint32_t reserved2[2];
+-	uint32_t apbwait;
+-	uint32_t bustmstrarb;
+-	uint32_t bootmodeclr;
+-	uint32_t reserved3[9];
+-	uint32_t devicecfg;
+-	uint32_t vidclkdiv;
+-	uint32_t mirclkdiv;
+-	uint32_t i2sclkdiv;
+-	uint32_t keytchclkdiv;
+-	uint32_t chipid;
+-	uint32_t reserved4;
+-	uint32_t syscfg;
+-	uint32_t reserved5[8];
+-	uint32_t sysswlock;
+-};
+-#else
+-#define SYSCON_SCRATCH0		(SYSCON_BASE + 0x0040)
+-#endif
+-
+-#define SYSCON_PWRCNT_UART_BAUD			(1 << 29)
+-
+-#define SYSCON_CLKSET_PLL_X2IPD_SHIFT		0
+-#define SYSCON_CLKSET_PLL_X2FBD2_SHIFT		5
+-#define SYSCON_CLKSET_PLL_X1FBD1_SHIFT		11
+-#define SYSCON_CLKSET_PLL_PS_SHIFT		16
+-#define SYSCON_CLKSET1_PCLK_DIV_SHIFT		18
+-#define SYSCON_CLKSET1_HCLK_DIV_SHIFT		20
+-#define SYSCON_CLKSET1_NBYP1			(1 << 23)
+-#define SYSCON_CLKSET1_FCLK_DIV_SHIFT		25
+-
+-#define SYSCON_CLKSET2_PLL2_EN			(1 << 18)
+-#define SYSCON_CLKSET2_NBYP2			(1 << 19)
+-#define SYSCON_CLKSET2_USB_DIV_SHIFT		28
+-
+-#define SYSCON_CHIPID_REV_MASK			0xF0000000
+-#define SYSCON_DEVICECFG_SWRST			(1 << 31)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80930000 - 0x8093FFFF: Watchdog Timer
+- */
+-#define WATCHDOG_OFFSET		0x940000
+-#define WATCHDOG_BASE		(EP93XX_APB_BASE | WATCHDOG_OFFSET)
+-
+-/* -----------------------------------------------------------------------------
+- * 0x80950000 - 0x9000FFFF: Reserved
+- */
+-
 -- 
 2.39.2
 
