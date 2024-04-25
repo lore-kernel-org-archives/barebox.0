@@ -1,66 +1,65 @@
-Delivery-date: Thu, 25 Apr 2024 14:11:00 +0200
+Delivery-date: Thu, 25 Apr 2024 14:11:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzxwK-00Ggnf-0r
+	id 1rzxwN-00Ggok-0i
 	for lore@lore.pengutronix.de;
-	Thu, 25 Apr 2024 14:11:00 +0200
+	Thu, 25 Apr 2024 14:11:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1rzxwJ-0007Ds-Io
-	for lore@pengutronix.de; Thu, 25 Apr 2024 14:11:00 +0200
+	id 1rzxwL-0007Ej-42
+	for lore@pengutronix.de; Thu, 25 Apr 2024 14:11:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=NmoBg9B2vXuz0XFwqPKLqfLL969VOlYhtexxSFrTYWg=; b=LOQsQHOJ6/fpFK
-	RM48y8eCneeDfNjIHjIrPYrgZU1iWbcSD2fEsjV92xusxZ5ovhr2qkHb6Gy5rrDzE0fSjGZodsgG1
-	roByxCmOjoar4OFvzq/r+fulqmdLgzz9lx0CBYSB5+DZBx8HUM85CLfs9XTjb5raXpECoitDrPXPf
-	g+R0dca1X3mFaf8GzPvE+JnKzR5iXa16cOsS0zzwG4vuvjLCski42eXEjj1WQJskjgQoTRUYl0ep8
-	8Wxj0rP7GKW6Kvz83X8dFIwsggFO3fXRbba+pjyvAcdSYP5GsiW5rzgYzr5K8PJZ9ZgeOCQQQ5Iw4
-	hva9bE4ZjFiKZGnzHVJw==;
+	List-Owner; bh=bO3DYvmO2Bo0k6WFiabud0GRjYfx/yH1MmHR4t74Nps=; b=1dGn/KYPYqmVD/
+	ovRCKtlhrqrM/TOYrYBXjDLXq9flA6CEYl/z7fhPZlejJTAt9BulYyS45PPOFPPeT4SFqp3w6QDvn
+	dtWOfqcIv5KzYGF6d4FeQj1Jj8/RuIiIhS96yoTXLtWrCmE5VaKVGwA0pu00+JMVaqkuX3BcD8/zz
+	s5qIEgcrxVoSPDdNNJIfyrtu8TCJsgPtXpZ55WTQtcqPT9hcy/QZU9P/E6UCqUOLF0UaVCQZuIcb9
+	TGGwZ0Rx01KqnWWS1onp3Yb7UiJnLMl16YAALM+bw41JqKaqJmCUOwzzKdc9HKgTdtiuha+MCVfRR
+	erf8IpKrPapuAciNRgWw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzxvl-000000089eT-0a4g;
-	Thu, 25 Apr 2024 12:10:25 +0000
+	id 1rzxvm-000000089fH-3nD4;
+	Thu, 25 Apr 2024 12:10:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1rzxvi-000000089cX-0121
+	id 1rzxvi-000000089cZ-00pk
 	for barebox@lists.infradead.org;
-	Thu, 25 Apr 2024 12:10:23 +0000
+	Thu, 25 Apr 2024 12:10:24 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxvg-0006ee-Cc; Thu, 25 Apr 2024 14:10:20 +0200
+	id 1rzxvg-0006ef-D9; Thu, 25 Apr 2024 14:10:20 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxvf-00EFvT-Tg; Thu, 25 Apr 2024 14:10:19 +0200
+	id 1rzxvf-00EFvW-W9; Thu, 25 Apr 2024 14:10:20 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1rzxgY-009aQk-2h;
-	Thu, 25 Apr 2024 13:54:42 +0200
+	id 1rzxgZ-009aQk-00;
+	Thu, 25 Apr 2024 13:54:43 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 25 Apr 2024 13:54:36 +0200
-Message-Id: <20240425115439.2269239-13-s.hauer@pengutronix.de>
+Date: Thu, 25 Apr 2024 13:54:39 +0200
+Message-Id: <20240425115439.2269239-16-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240425115439.2269239-1-s.hauer@pengutronix.de>
 References: <20240425115439.2269239-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240425_051022_074870_0A13DA95 
-X-CRM114-Status: UNSURE (   9.96  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240425_051022_345061_A6C97F88 
+X-CRM114-Status: GOOD (  13.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,130 +82,277 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 12/15] ARM: drop non PBL support
+Subject: [PATCH 15/15] ARM: drop TEXT_BASE
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-All ARM boards now use PBL, so remove unused code inside #ifdef
-CONFIG_PBL_IMAGE.
+With all ARM boards being relocatable TEXT_BASE is always defined to 0x0
+and can be dropped. The ARCH_TEXT_BASE Kconfig symbol is also no longer
+used and can be removed.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/Kconfig             |  1 -
- arch/arm/cpu/entry_ll_32.S   |  4 ----
- arch/arm/cpu/entry_ll_64.S   |  4 ----
- arch/arm/cpu/start.c         | 17 -----------------
- arch/arm/lib32/barebox.lds.S |  3 ---
- arch/arm/lib64/barebox.lds.S |  3 ---
- 6 files changed, 32 deletions(-)
+ arch/arm/Kconfig                  | 4 ----
+ arch/arm/Makefile                 | 4 ----
+ arch/arm/boards/versatile/Kconfig | 4 ----
+ arch/arm/lib32/barebox.lds.S      | 2 +-
+ arch/arm/lib64/barebox.lds.S      | 2 +-
+ arch/arm/mach-at91/Kconfig        | 8 --------
+ arch/arm/mach-bcm283x/Kconfig     | 4 ----
+ arch/arm/mach-mvebu/Kconfig       | 7 -------
+ arch/arm/mach-mxs/Kconfig         | 9 ---------
+ arch/arm/mach-omap/Kconfig        | 5 -----
+ arch/arm/mach-rockchip/Kconfig    | 5 -----
+ arch/arm/mach-socfpga/Kconfig     | 4 ----
+ arch/arm/mach-tegra/Kconfig       | 4 ----
+ arch/arm/mach-versatile/Kconfig   | 3 ---
+ arch/arm/mach-vexpress/Kconfig    | 4 ----
+ arch/arm/mach-zynq/Kconfig        | 4 ----
+ 16 files changed, 2 insertions(+), 71 deletions(-)
 
 diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index e2ea68e762..9acda8d929 100644
+index 6a6d7955d1..b9883b30f7 100644
 --- a/arch/arm/Kconfig
 +++ b/arch/arm/Kconfig
-@@ -123,7 +123,6 @@ config ARCH_ZYNQ
- 	bool "Xilinx Zynq-based boards"
- 	depends on 32BIT
- 	select HAS_DEBUG_LL
--	select PBL_IMAGE
- 	select GPIOLIB
+@@ -24,10 +24,6 @@ config ARM_USE_COMPRESSED_DTB
+        bool
+        select USE_COMPRESSED_DTB
  
- endchoice
-diff --git a/arch/arm/cpu/entry_ll_32.S b/arch/arm/cpu/entry_ll_32.S
-index 2800174c45..0d4c47c1c8 100644
---- a/arch/arm/cpu/entry_ll_32.S
-+++ b/arch/arm/cpu/entry_ll_32.S
-@@ -19,9 +19,5 @@ ENTRY(__barebox_arm_entry)
- 	mov	r0, r4
- 	mov	r1, r5
- 	mov	r2, r6
--#if IS_ENABLED(CONFIG_PBL_IMAGE)
- 	b	barebox_pbl_start
--#else
--	b	barebox_non_pbl_start
--#endif
- ENDPROC(__barebox_arm_entry)
-diff --git a/arch/arm/cpu/entry_ll_64.S b/arch/arm/cpu/entry_ll_64.S
-index 6530bec5eb..5eb6efed5b 100644
---- a/arch/arm/cpu/entry_ll_64.S
-+++ b/arch/arm/cpu/entry_ll_64.S
-@@ -19,9 +19,5 @@ ENTRY(__barebox_arm_entry)
- 	mov	x0, x19
- 	mov	x1, x20
- 	mov	x2, x21
--#if IS_ENABLED(CONFIG_PBL_IMAGE)
- 	b	barebox_pbl_start
--#else
--	b	barebox_non_pbl_start
--#endif
- ENDPROC(__barebox_arm_entry)
-diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 0351dcb927..cc5529eef5 100644
---- a/arch/arm/cpu/start.c
-+++ b/arch/arm/cpu/start.c
-@@ -224,11 +224,6 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
+-config TEXT_BASE
+-	hex
+-	default 0x0
+-
+ menu "System Type"
  
- 	mem_malloc_init((void *)malloc_start, (void *)malloc_end - 1);
+ config ARCH_STM32
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index f98770f66a..f91fcb0454 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -102,10 +102,6 @@ machine-$(CONFIG_ARCH_TEGRA)		+= tegra
+ machine-$(CONFIG_ARCH_ZYNQ)		+= zynq
+ machine-$(CONFIG_ARCH_ZYNQMP)		+= zynqmp
  
--	if (IS_ENABLED(CONFIG_MMU) && !IS_ENABLED(CONFIG_PBL_IMAGE)) {
--		arm_early_mmu_cache_invalidate();
--		mmu_early_enable(membase, memsize);
--	}
+-TEXT_BASE = $(CONFIG_TEXT_BASE)
 -
- 	if (IS_ENABLED(CONFIG_BOOTM_OPTEE))
- 		of_add_reserve_entry(endmem - OPTEE_SIZE, endmem - 1);
+-KBUILD_CPPFLAGS += -DTEXT_BASE=$(TEXT_BASE)
+-
+ # Add cleanup flags
+ KBUILD_CPPFLAGS += -fdata-sections -ffunction-sections
+ LDFLAGS_barebox += --gc-sections -pie
+diff --git a/arch/arm/boards/versatile/Kconfig b/arch/arm/boards/versatile/Kconfig
+index 66492404e0..5cb3061635 100644
+--- a/arch/arm/boards/versatile/Kconfig
++++ b/arch/arm/boards/versatile/Kconfig
+@@ -2,8 +2,4 @@
  
-@@ -237,17 +232,6 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
- 	start_barebox();
- }
+ if MACH_VERSATILEPB
  
--#ifndef CONFIG_PBL_IMAGE
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x01000000
 -
--void start(void);
--
--void NAKED __section(.text_entry) start(void)
--{
--	barebox_arm_head();
--}
--
--#else
--
- void start(unsigned long membase, unsigned long memsize, void *boarddata);
- /*
-  * First function in the uncompressed image. We get here from
-@@ -258,4 +242,3 @@ void NAKED __prereloc __section(.text_entry) start(unsigned long membase,
- {
- 	barebox_non_pbl_start(membase, memsize, boarddata);
- }
--#endif
+ endif
 diff --git a/arch/arm/lib32/barebox.lds.S b/arch/arm/lib32/barebox.lds.S
-index ec145569be..90be773840 100644
+index ad9e9e84ef..97f41f72fe 100644
 --- a/arch/arm/lib32/barebox.lds.S
 +++ b/arch/arm/lib32/barebox.lds.S
-@@ -16,9 +16,6 @@ SECTIONS
+@@ -83,5 +83,5 @@ SECTIONS
  #endif
- 	.image_start : { *(.__image_start) }
  
--#ifndef CONFIG_PBL_IMAGE
--	PRE_IMAGE
--#endif
- 	. = ALIGN(4);
- 
- 	._text : { *(._text) }
+ 	_end = .;
+-	_barebox_image_size = __bss_start - TEXT_BASE;
++	_barebox_image_size = __bss_start;
+ }
 diff --git a/arch/arm/lib64/barebox.lds.S b/arch/arm/lib64/barebox.lds.S
-index de777ddb54..a05340ad48 100644
+index 2479646d9d..1d0cc6dc54 100644
 --- a/arch/arm/lib64/barebox.lds.S
 +++ b/arch/arm/lib64/barebox.lds.S
-@@ -16,9 +16,6 @@ SECTIONS
+@@ -53,5 +53,5 @@ SECTIONS
+ 	.bss : { *(.bss*) }
+ 	.__bss_stop :  { *(.__bss_stop) }
+ 	_end = .;
+-	_barebox_image_size = __bss_start - TEXT_BASE;
++	_barebox_image_size = __bss_start;
+ }
+diff --git a/arch/arm/mach-at91/Kconfig b/arch/arm/mach-at91/Kconfig
+index b68a9f4e25..0b75d665d0 100644
+--- a/arch/arm/mach-at91/Kconfig
++++ b/arch/arm/mach-at91/Kconfig
+@@ -147,14 +147,6 @@ config SOC_SAMA7G5
+ 	help
+ 	  Select this if you are using one of Microchip's SAMA7G5 family SoC.
  
- 	.image_start : { *(.__image_start) }
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x73f00000 if SOC_AT91SAM9G45
+-	default 0x26f00000 if SOC_AT91SAM9X5
+-	default 0x20f00000 if SOC_AT91RM9200
+-	default 0x21f00000 if MACH_ANIMEO_IP
+-	default 0x23f00000
+-
+ config HAVE_NAND_ATMEL_BUSWIDTH_16
+ 	bool
  
--#ifndef CONFIG_PBL_IMAGE
--	PRE_IMAGE
--#endif
- 	. = ALIGN(4);
- 	._text : { *(._text) }
- 	.text      :
+diff --git a/arch/arm/mach-bcm283x/Kconfig b/arch/arm/mach-bcm283x/Kconfig
+index f7434d2f5c..defccf8362 100644
+--- a/arch/arm/mach-bcm283x/Kconfig
++++ b/arch/arm/mach-bcm283x/Kconfig
+@@ -2,10 +2,6 @@
+ 
+ if ARCH_BCM283X
+ 
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x0
+-
+ config MACH_RPI_COMMON
+ 	bool
+ 	select ARM_USE_COMPRESSED_DTB
+diff --git a/arch/arm/mach-mvebu/Kconfig b/arch/arm/mach-mvebu/Kconfig
+index 1b26148434..ed1302af65 100644
+--- a/arch/arm/mach-mvebu/Kconfig
++++ b/arch/arm/mach-mvebu/Kconfig
+@@ -2,13 +2,6 @@
+ 
+ if ARCH_MVEBU
+ 
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x2000000 if ARCH_ARMADA_370
+-	default 0x2000000 if ARCH_ARMADA_XP
+-	default 0x2000000 if ARCH_DOVE
+-	default 0x2000000 if ARCH_KIRKWOOD
+-
+ config ARCH_ARMADA_370
+ 	bool
+ 	select CPU_V7
+diff --git a/arch/arm/mach-mxs/Kconfig b/arch/arm/mach-mxs/Kconfig
+index c8ef2c62af..0219196794 100644
+--- a/arch/arm/mach-mxs/Kconfig
++++ b/arch/arm/mach-mxs/Kconfig
+@@ -2,15 +2,6 @@
+ 
+ if ARCH_MXS
+ 
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x41000000 if MACH_MX23EVK
+-	default 0x42000000 if MACH_CHUMBY
+-	default 0x42000000 if MACH_IMX233_OLINUXINO
+-	default 0x47000000 if MACH_TX28
+-	default 0x47000000 if MACH_MX28EVK
+-	default 0x47000000 if MACH_CFA10036
+-
+ config ARCH_MXS_OF_SUPPORT
+ 	bool
+ 	select COMMON_CLK_OF_PROVIDER
+diff --git a/arch/arm/mach-omap/Kconfig b/arch/arm/mach-omap/Kconfig
+index 6ddbb6e572..7b0eade65a 100644
+--- a/arch/arm/mach-omap/Kconfig
++++ b/arch/arm/mach-omap/Kconfig
+@@ -100,11 +100,6 @@ config BAREBOX_UPDATE_AM33XX_EMMC
+ 	help
+ 	  Say Y for barebox update eMMC handler.
+ 
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x80e80000 if MACH_OMAP343xSDP
+-	default 0x80e80000 if MACH_BEAGLE
+-
+ config AM33XX_NET_BOOT
+ 	bool "enable AM335x network boot"
+ 	select ENVIRONMENT_VARIABLES
+diff --git a/arch/arm/mach-rockchip/Kconfig b/arch/arm/mach-rockchip/Kconfig
+index 1421b9e257..901d4a9ae0 100644
+--- a/arch/arm/mach-rockchip/Kconfig
++++ b/arch/arm/mach-rockchip/Kconfig
+@@ -3,11 +3,6 @@
+ menu "Rockchip Features"
+ 	depends on ARCH_ROCKCHIP
+ 
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x68000000 if ARCH_RK3188
+-	default 0x0
+-
+ config RK_TIMER
+ 	hex
+ 	default 1
+diff --git a/arch/arm/mach-socfpga/Kconfig b/arch/arm/mach-socfpga/Kconfig
+index 75f03d3f6a..a4d7177797 100644
+--- a/arch/arm/mach-socfpga/Kconfig
++++ b/arch/arm/mach-socfpga/Kconfig
+@@ -2,10 +2,6 @@
+ 
+ if ARCH_SOCFPGA
+ 
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x0
+-
+ config ARCH_SOCFPGA_XLOAD
+ 	bool
+ 	prompt "Build preloader image"
+diff --git a/arch/arm/mach-tegra/Kconfig b/arch/arm/mach-tegra/Kconfig
+index cc256f584a..3e25758353 100644
+--- a/arch/arm/mach-tegra/Kconfig
++++ b/arch/arm/mach-tegra/Kconfig
+@@ -2,10 +2,6 @@
+ 
+ if ARCH_TEGRA
+ 
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x0
+-
+ # ---------------------------------------------------------
+ 
+ config ARCH_TEGRA_2x_SOC
+diff --git a/arch/arm/mach-versatile/Kconfig b/arch/arm/mach-versatile/Kconfig
+index 89f50c270e..c72673cbf0 100644
+--- a/arch/arm/mach-versatile/Kconfig
++++ b/arch/arm/mach-versatile/Kconfig
+@@ -2,9 +2,6 @@
+ 
+ if ARCH_VERSATILE
+ 
+-config ARCH_TEXT_BASE
+-	default 0x02000000
+-
+ config MACH_VERSATILEPB
+ 	bool
+ 	default y
+diff --git a/arch/arm/mach-vexpress/Kconfig b/arch/arm/mach-vexpress/Kconfig
+index 1b89d0edf9..eb0520b8d4 100644
+--- a/arch/arm/mach-vexpress/Kconfig
++++ b/arch/arm/mach-vexpress/Kconfig
+@@ -2,10 +2,6 @@
+ 
+ if ARCH_VEXPRESS
+ 
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x0
+-
+ config MACH_VEXPRESS
+ 	bool "ARM Vexpress"
+ 
+diff --git a/arch/arm/mach-zynq/Kconfig b/arch/arm/mach-zynq/Kconfig
+index 2403c2edc3..27136a65fc 100644
+--- a/arch/arm/mach-zynq/Kconfig
++++ b/arch/arm/mach-zynq/Kconfig
+@@ -2,10 +2,6 @@
+ 
+ if ARCH_ZYNQ
+ 
+-config ARCH_TEXT_BASE
+-	hex
+-	default 0x0
+-
+ config ZYNQ_DEBUG_LL_UART_BASE
+ 	hex
+ 	default 0xe0001000 if MACH_ZEDBOARD
 -- 
 2.39.2
 
