@@ -1,66 +1,79 @@
-Delivery-date: Mon, 29 Apr 2024 16:17:01 +0200
+Delivery-date: Mon, 29 Apr 2024 18:33:50 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s1RoT-007hFL-0g
+	id 1s1Twr-007v0u-3A
 	for lore@lore.pengutronix.de;
-	Mon, 29 Apr 2024 16:17:01 +0200
+	Mon, 29 Apr 2024 18:33:50 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s1RoS-0007Hl-EZ
-	for lore@pengutronix.de; Mon, 29 Apr 2024 16:17:01 +0200
+	id 1s1Twr-0002Sb-Fd
+	for lore@pengutronix.de; Mon, 29 Apr 2024 18:33:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:MIME-Version:
+	Message-ID:Date:Subject:To:From:Reply-To:Cc:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ZiQEveRPjqqVeKtLLcsXCzVW8EWyIzHXNImA9hkJyPY=; b=D5SDAbsExmN3VJIgc2SWAY6RW2
-	1N2PmcX+f21RPPwfeqH6g+mswD/kF2DcYOV8oqCGvuFwQtzNuOAgzeJ07iK72PKYClImkGNNj+IB8
-	Lf8cK58pTAhAvuizFbz5HWtQkhet0Am1BJpBRcyg6zNz1pULEYJOjiZ46OP8HhXBELHeizEqRu0oc
-	DgGlWmSY0d5wjpMIJ+rEvvdleLwBfGWxujqkhPe+IWZYFNzcL1ioJCkuZwBeTFk6IH3lSG7lnl3M6
-	ZFe2h55E0KKZ7eWDbC2iR2ENDKaMGuQ+nkQxrtwvDJdDXq5rfyUmRH2PLzQAt2LwAAW9hVyYKwyel
-	d/bsG0Vg==;
+	bh=+JnroPaUi9WyVzWb4K9gEJ5mAIm1bkguaO73bgFJ0+Q=; b=YJCGIsR4SAHMforqrCMJberc3k
+	I7KwCa4Yi3WX2v7+3NJItEjblMcqRzGrTkDbBFY7KAQwEKE8H5P/NI+Kcd9+ewuW94NxdoiDUyMgl
+	cxM06yJS62FGhJ5+lZmwE3oTCOT8wj0gBQ6+X3GVndOqj20RZTwZmGxcVtMfphR4nPKtWOPgks4nJ
+	o9urMc8x+07hTBcb9JlTo2C5TxdCx4NxhVoH8t6nnMZHVjOk0BNhzQEAxlVTd8n0lyVVkNimIHpHS
+	Kc8rBfYehjfCFnPqgjp6MDQLy2FHSdkxMAbapQGxwWysBPAR2AyFYtSBktYmbE5Q2v79U4ESJPW2R
+	wfiq32Zg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s1Rnt-0000000366N-2EzL;
-	Mon, 29 Apr 2024 14:16:25 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1s1TwF-00000003axV-1vGW;
+	Mon, 29 Apr 2024 16:33:11 +0000
+Received: from smtpout-3.cvg.de ([2003:49:a034:1067:5::3])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s1Rnn-0000000365b-20ZL
+	id 1s1TwA-00000003atb-34Bl
 	for barebox@lists.infradead.org;
-	Mon, 29 Apr 2024 14:16:23 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s1Rnk-000797-5o; Mon, 29 Apr 2024 16:16:16 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s1Rnj-00Ezr0-KY; Mon, 29 Apr 2024 16:16:15 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s1Rnj-00EvCQ-1k;
-	Mon, 29 Apr 2024 16:16:15 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Mon, 29 Apr 2024 16:33:09 +0000
+Received: from mail-mta-2.intern.sigma-chemnitz.de (mail-mta-2.intern.sigma-chemnitz.de [192.168.12.70])
+	by mail-out-3.intern.sigma-chemnitz.de (8.17.1/8.17.1) with ESMTPS id 43TGWkQQ582698
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=OK)
+	for <barebox@lists.infradead.org>; Mon, 29 Apr 2024 18:32:46 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sigma-chemnitz.de;
+	s=v2022040800; t=1714408366;
+	bh=+JnroPaUi9WyVzWb4K9gEJ5mAIm1bkguaO73bgFJ0+Q=; l=815;
+	h=From:To:Subject:Date;
+	b=etzVXnpD/XFb71cN2W6I7vuixqfTvTEI1mBabIf5Tx3AfHESg2CXXOfDUqMqdUaaW
+	 cuA0/MgBtnhXqPJYRPpBYxej5Z1D0vFcLSo4t1FzpEYnYqL15q7+DpnVCG27Ix5sEZ
+	 /RIxrgb0qUbf2NC9sx6qublKNQNexdKrkqGQwPGXHyfzDjpd6BmkJw2VHVN9MWWEt1
+	 ooSErXsmqbMYeR3zqCQXRxApTR8hV8IlyzZPfowLeASZnJCYY8PSEkT0zMeMA4JppI
+	 tkU1sOCc4ZRrQve0tT5WTInjaOSoIUfVDGSeFF1V/u9US3qsLaVPC9id3iOlKuBcTj
+	 /Dr4cZ4dAVxUg==
+Received: from reddoxx.intern.sigma-chemnitz.de (reddoxx.sigma.local [192.168.16.32])
+	by mail-mta-2.intern.sigma-chemnitz.de (8.17.1/8.17.1) with ESMTP id 43TGWixT805050
+	for <barebox@lists.infradead.org> from enrico.scholz@sigma-chemnitz.de; Mon, 29 Apr 2024 18:32:45 +0200
+Received: from mail-msa-3.intern.sigma-chemnitz.de ([192.168.12.73])
+	by reddoxx.intern.sigma-chemnitz.de with ESMTP
+	id M34W1CBTY6; Mon, 29 Apr 2024 18:32:44 +0200
+Received: from ensc-pc.intern.sigma-chemnitz.de (ensc-pc.intern.sigma-chemnitz.de [192.168.3.24])
+	by mail-msa-3.intern.sigma-chemnitz.de (8.15.2/8.15.2) with ESMTPS id 43TGWgvb568400
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO)
+	for <barebox@lists.infradead.org> from ensc@sigma-chemnitz.de; Mon, 29 Apr 2024 18:32:44 +0200
+Received: from ensc by ensc-pc.intern.sigma-chemnitz.de with local (Exim 4.97.1)
+	(envelope-from <ensc@sigma-chemnitz.de>)
+	id 1s1Tvm-00000006BJz-0FY4
+	for barebox@lists.infradead.org;
+	Mon, 29 Apr 2024 18:32:42 +0200
+From: Enrico Scholz <enrico.scholz@sigma-chemnitz.de>
 To: barebox@lists.infradead.org
-Cc: =?UTF-8?q?Alvin=20=C5=A0ipraga?= <ALSI@bang-olufsen.dk>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 29 Apr 2024 16:16:10 +0200
-Message-Id: <20240429141610.3556452-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+Date: Mon, 29 Apr 2024 18:32:42 +0200
+Message-ID: <lyv840ku39.fsf@ensc-pc.intern.sigma-chemnitz.de>
+User-Agent: Gnus/5.13 (Gnus v5.13)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-REDDOXX-Id: 662fcbacb121c496daa9b231
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240429_071619_544391_F914E5D6 
-X-CRM114-Status: GOOD (  19.23  )
+X-CRM114-CacheID: sfid-20240429_093307_281785_713BA132 
+X-CRM114-Status: UNSURE (   5.49  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,146 +91,45 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ddr: imx8m: fix broken sharing of DRAM timing with TF-A for DFS
+X-Spam-Status: No, score=-105.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	USER_IN_WELCOMELIST,USER_IN_WHITELIST autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: imx8: 'struct dram_timing_info' incompatibilities
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To facilitate dynamic frequency scaling, barebox will place the DRAM
-parameters it has configured into a well-known location in DRAM
-for consumption by TF-A.
+Hi,
 
-This means that we need to be very picky about the struct layout for the
-data we write there to maintain ABI-compatibility. Unfortunately, NXP
-chose for the i.MX9 to add two fields into the middle, when it would
-have been possible to cleanly embed the i.MX8 DRAM timings in the
-i.MX9 DRAM timing struct. This is done now, so we need to arrange
-ourselves with it and ensure that the i.MX8M DRAM timings we share with
-TF-A don't have glimpses of the i.MX9 future.
+commit e6234f90 ("ddr: Initial i.MX9 support") adds unconditionally
+fields to the dram timing info object (include/soc/imx/ddr.h):
 
-As templating dram_config_save using the preprocessor would be
-excessively ugly, we add a fixup that turns the common dram_timing_info
-format into the format expected by TF-A on the i.MX8M family of SoCs.
+|  struct dram_timing_info {
+|       ...
+| +	/* fsp config */
+| +	struct dram_fsp_cfg *fsp_cfg;
+| +	unsigned int fsp_cfg_num;
 
-Fixes: e6234f907416 ("ddr: Initial i.MX9 support")
-Reported-by: Alvin Šipraga <ALSI@bang-olufsen.dk>
-Tested-by: Alvin Šipraga <ALSI@bang-olufsen.dk>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/ddr/imx/imx8m_ddr_init.c |  7 ++++
- include/soc/imx/ddr.h            | 62 +++++++++++++++++++++-----------
- 2 files changed, 49 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/ddr/imx/imx8m_ddr_init.c b/drivers/ddr/imx/imx8m_ddr_init.c
-index d9a5d589f27b..c16e04d27483 100644
---- a/drivers/ddr/imx/imx8m_ddr_init.c
-+++ b/drivers/ddr/imx/imx8m_ddr_init.c
-@@ -481,6 +481,7 @@ static void ddrphy_init_set_dfi_clk(struct dram_controller *dram, unsigned int d
- 
- int imx8m_ddr_init(struct dram_controller *dram, struct dram_timing_info *dram_timing)
- {
-+	struct dram_timing_info *saved_timing;
- 	unsigned long src_ddrc_rcr = MX8M_SRC_DDRC_RCR_ADDR;
- 	unsigned int tmp, initial_drate, target_freq;
- 	int ret;
-@@ -644,5 +645,11 @@ int imx8m_ddr_init(struct dram_controller *dram, struct dram_timing_info *dram_t
- 	/* save the dram timing config into memory */
- 	dram_config_save(dram, dram_timing, IMX8M_SAVED_DRAM_TIMING_BASE);
- 
-+	saved_timing = (struct dram_timing_info *)IMX8M_SAVED_DRAM_TIMING_BASE;
-+
-+	/* There's no fsp_cfg for i.MX8, so we must close the gap again */
-+	memmove(&saved_timing->fsp_config, &saved_timing->common_config,
-+		sizeof(saved_timing->common_config));
-+
- 	return 0;
- }
-diff --git a/include/soc/imx/ddr.h b/include/soc/imx/ddr.h
-index 0225ac0e033c..caf33d3e34b9 100644
---- a/include/soc/imx/ddr.h
-+++ b/include/soc/imx/ddr.h
-@@ -6,6 +6,8 @@
- #ifndef __SOC_IMX_DDR_H
- #define __SOC_IMX_DDR_H
- 
-+#include <linux/stddef.h>
-+
- /* user data type */
- enum fw_type {
- 	FW_1D_IMAGE,
-@@ -58,27 +60,47 @@ struct dram_fsp_msg {
- 	__attribute__((deprecated("board-specific data here is ignored in favor of the defaults." \
- 				  " You can probably remove the array")))
- 
-+/*
-+ * The DRAM timing values are machine-generated by an NXP tool.
-+ * This is evaluated by barebox to initialize and train the DDR and
-+ * is then shared with TF-A to enable dynamic frequency scaling.
-+ *
-+ * To minimize both duplicate code and manual fixups needed for the
-+ * NXP tool output, we use a struct definition that's a superset
-+ * of both of i.MX8M and i.MX9. This means that each SoC type making
-+ * use of this struct needs to translate it to the appropriate format
-+ * expected by TF-A.
-+ *
-+ * i.e: Do not change the struct definition without adjusting
-+ * dram_config_save and its callers to maintain ABI-compatibility.
-+ */
- struct dram_timing_info {
--	/* umctl2 config */
--	struct dram_cfg_param *ddrc_cfg;
--	unsigned int ddrc_cfg_num;
--	/* fsp config */
--	struct dram_fsp_cfg *fsp_cfg;
--	unsigned int fsp_cfg_num;
--	/* ddrphy config */
--	struct dram_cfg_param *ddrphy_cfg;
--	unsigned int ddrphy_cfg_num;
--	/* ddr fsp train info */
--	struct dram_fsp_msg *fsp_msg;
--	unsigned int fsp_msg_num;
--	/* ddr phy trained CSR */
--	struct dram_cfg_param *ddrphy_trained_csr __deprecated_dram_timing_info;
--	unsigned int ddrphy_trained_csr_num __deprecated_dram_timing_info;
--	/* ddr phy PIE */
--	struct dram_cfg_param *ddrphy_pie;
--	unsigned int ddrphy_pie_num;
--	/* initialized drate table */
--	unsigned int fsp_table[4];
-+	struct_group(umctl2_config,
-+		struct dram_cfg_param *ddrc_cfg;
-+		unsigned int ddrc_cfg_num;
-+	);
-+
-+	struct_group(fsp_config, /* i.MX9-only */
-+		struct dram_fsp_cfg *fsp_cfg;
-+		unsigned int fsp_cfg_num;
-+	);
-+
-+	struct_group(common_config,
-+		/* ddrphy config */
-+		struct dram_cfg_param *ddrphy_cfg;
-+		unsigned int ddrphy_cfg_num;
-+		/* ddr fsp train info */
-+		struct dram_fsp_msg *fsp_msg;
-+		unsigned int fsp_msg_num;
-+		/* ddr phy trained CSR */
-+		struct dram_cfg_param *ddrphy_trained_csr __deprecated_dram_timing_info;
-+		unsigned int ddrphy_trained_csr_num __deprecated_dram_timing_info;
-+		/* ddr phy PIE */
-+		struct dram_cfg_param *ddrphy_pie;
-+		unsigned int ddrphy_pie_num;
-+		/* initialized drate table */
-+		unsigned int fsp_table[4];
-+	);
- };
- 
- struct dram_controller {
--- 
-2.39.2
+However, the iMX8 ATF ([1]) does not have this field and DRAM related
+SMC calls like
 
+|	arm_smccc_smc(FSL_SIP_DDR_DVFS, 0x11, i, 0, 0, 0, 0, 0, &res);
+
+in the NXP busfreq-imx8mq.c driver will fail [2].
+
+
+Am I missing something here or should the dram_timing_info table somehow
+translated between these architectures (e.g. in dram_config_save())?
+
+
+
+Enrico
+
+Footnotes:
+[1]  https://github.com/nxp-imx/imx-atf/blob/lf_v2.8/plat/imx/imx8m/include/dram.h
+
+[2]  typical message: "imx_busfreq: probe of busfreq failed with error -22"
 
 
