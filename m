@@ -1,80 +1,67 @@
-Delivery-date: Fri, 26 Apr 2024 13:50:16 +0200
+Delivery-date: Mon, 29 Apr 2024 15:48:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s0K5n-001CVL-20
+	id 1s1RNE-007eFD-39
 	for lore@lore.pengutronix.de;
-	Fri, 26 Apr 2024 13:50:16 +0200
+	Mon, 29 Apr 2024 15:48:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s0K5n-0003hJ-1Y
-	for lore@pengutronix.de; Fri, 26 Apr 2024 13:50:15 +0200
+	id 1s1RND-0000b3-Pt
+	for lore@pengutronix.de; Mon, 29 Apr 2024 15:48:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=x07PJR8R1AAgYDQHo8G0DdsEpT3V00Iaj2jcg2E9A6I=; b=guXfwsyZy+z3/Fu7b6xE2lR1oI
-	cM/4X7F3JeJvzC+BZSuztJjwQrUARI2cqXoQN8f90X33hGnzP9jJSbkmY6JCuHQxgcn6nkhV7NqCz
-	njB3pC8iqhdHbw8gN0wBb+fPwqKlR3IsBSgSaPu/gS8t4uGMhJ1YyKNSKuAP/mQ/V2bQiP98ae29F
-	REVsHFLcPShqbQRcm1VmwsCL7p9V7Jgk/pmlWRmZIC/QaJ7HbmXD08wp2dgowI0sDsFcD0dq4ppj5
-	LIXYIZUB6NdZB8LHLpyfejNYNz0GzrtLJHnhWkqBeDAJq+9wpPBLQOxkBZ2Bhvy+mRU0mGAKyXc66
-	j+Y3O6JQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Vv4avd/H/jI3UmoUHnZgROzGD3CbXBd+KxqwP+tyg6c=; b=CKqSi49sdd6rGYJvJS0K8pBOid
+	Pn8xHe31SJPJhr3atdPT1WOv4v4lfrijGim9B1Mm7Y7xNuu2yX/grHE8YJTuNQ6oUyPp8KOm42oKu
+	1QVE5fg9/mZRTybJ/IhUhFq3ktfZ8kUjJJbykUYJfG1C11WLQ4Pqth+Nx81nYskc0qbWxjfbhVXmb
+	i4/42Hryw/knQ+bDP5fSXWFjIwaIrDoRvzZSuszwa6iVHsiBg8Lo7PSVur0oNn08NiRIR6Q3JMgh7
+	/U8OvG2QuwtGQPsiwiISCaRp/Ut2q27GfVWTLLves+e4bLcNV6Q9tHwIiEcMzy43+XjyUmVMTIaZE
+	SDWEVcUw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s0K5A-0000000CO4w-3M7C;
-	Fri, 26 Apr 2024 11:49:36 +0000
-Received: from mailrelay6-1.pub.mailoutpod3-cph3.one.com ([2a02:2350:5:425::1])
+	id 1s1RMX-00000002zjN-1UnF;
+	Mon, 29 Apr 2024 13:48:09 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s0K52-0000000CO2I-40GF
+	id 1s1RMT-00000002zgW-29VY
 	for barebox@lists.infradead.org;
-	Fri, 26 Apr 2024 11:49:34 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=ravnborg.org; s=rsa1;
-	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-	 from:date:from;
-	bh=x07PJR8R1AAgYDQHo8G0DdsEpT3V00Iaj2jcg2E9A6I=;
-	b=BeEVLtTCY/pKLcZhaUQYLE83twb/1T339ZR6532SIudHSO4rR9lwXN9DR7lcA4MEQe84fPycnXIfO
-	 LFdPn5U8gxxkXop2hICiN+jwtehEPl25B4lSW/by36Mq1gIfEcsAVC8eWKxsU5VGRUCPN7iYpYoOO+
-	 8Nc9zRry4BNzBcuhT4HuCDjG/Jg8gXD8VUuqxPxITQNWtyMuUrDvSa//KAB7szB6SgbDU9Ew+T0/QS
-	 BdPiIHM9FPND8a2ZjJUOmFQpqzj0hmq8QpMLBdM/CJUSASQbBkvivZIFScmNB0cedMFPxOMjf1ax3o
-	 Di355q8UxUnXD0HFUOMs9Zkfy9ep1Wg==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed;
-	d=ravnborg.org; s=ed1;
-	h=in-reply-to:content-type:mime-version:references:message-id:subject:cc:to:
-	 from:date:from;
-	bh=x07PJR8R1AAgYDQHo8G0DdsEpT3V00Iaj2jcg2E9A6I=;
-	b=plNT5DjNlGA9HqrJtuMKGjgKpdJDIVoDTzumiie5/FzldpTW4Q/GmSaPWBGuouC3YsupeHUyGwCmD
-	 zb1fG/1BA==
-X-HalOne-ID: 048534df-03c3-11ef-bfda-83bcbd00a978
-Received: from ravnborg.org (2-105-2-98-cable.dk.customer.tdc.net [2.105.2.98])
-	by mailrelay6.pub.mailoutpod3-cph3.one.com (Halon) with ESMTPSA
-	id 048534df-03c3-11ef-bfda-83bcbd00a978;
-	Fri, 26 Apr 2024 11:49:22 +0000 (UTC)
-Date: Fri, 26 Apr 2024 13:49:20 +0200
-From: Sam Ravnborg <sam@ravnborg.org>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Barebox List <barebox@lists.infradead.org>,
-	Jan Weitzel <j.weitzel@phytec.de>,
-	Vicente Bergas <vicencb@gmail.com>, Bo Shen <voice.shen@atmel.com>,
-	Matthias Kaehlcke <matthias@kaehlcke.net>,
-	Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
-Message-ID: <20240426114920.GA1036113@ravnborg.org>
-References: <20240425115439.2269239-1-s.hauer@pengutronix.de>
- <20240425115439.2269239-11-s.hauer@pengutronix.de>
- <20240425165648.GA999552@ravnborg.org>
- <ZiuI_jJd9LNWMpuC@pengutronix.de>
+	Mon, 29 Apr 2024 13:48:07 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s1RMO-0000Ms-DH; Mon, 29 Apr 2024 15:48:00 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s1RMO-00EzTX-0k; Mon, 29 Apr 2024 15:48:00 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s1RMN-00706E-32;
+	Mon, 29 Apr 2024 15:47:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240423173625.2299942-1-a.fatoum@pengutronix.de>
+References: <20240423173625.2299942-1-a.fatoum@pengutronix.de>
+Message-Id: <171439847993.1668567.8024334015010792972.b4-ty@pengutronix.de>
+Date: Mon, 29 Apr 2024 15:47:59 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZiuI_jJd9LNWMpuC@pengutronix.de>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240426_044929_978351_61EEC137 
-X-CRM114-Status: GOOD (  18.83  )
+X-CRM114-CacheID: sfid-20240429_064805_606198_F970CA5F 
+X-CRM114-Status: UNSURE (   5.79  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,47 +79,30 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 10/15] ARM: remove non PBL Atmel boards
+Subject: Re: [PATCH] net: fsl-fman: remove superfluous zeroing of new
+ dma_alloc_coherent buf
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Apr 26, 2024 at 12:59:10PM +0200, Sascha Hauer wrote:
-> Hi Sam,
-> 
-> On Thu, Apr 25, 2024 at 06:56:48PM +0200, Sam Ravnborg wrote:
-> > Hi Sascha
-> > 
-> > On Thu, Apr 25, 2024 at 01:54:34PM +0200, Sascha Hauer wrote:
-> > > Some Atmel AT91 boards still do not have PBL support which becomes
-> > > mandatory soon. Remove these boards.
-> > > 
-> > > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> > > ---
-> > >  arch/arm/boards/Makefile                      |   3 -
-> > >  arch/arm/boards/sama5d3xek/Makefile           |   6 -
-> > >  .../defaultenv-sama5d3xek/bin/init_board      |  15 -
-> > >  .../sama5d3xek/defaultenv-sama5d3xek/config   |  44 --
-> > >  arch/arm/boards/sama5d3xek/hw_version.c       | 236 ---------
-> > >  arch/arm/boards/sama5d3xek/hw_version.h       |  40 --
-> > >  arch/arm/boards/sama5d3xek/init.c             | 475 ------------------
-> > >  arch/arm/boards/sama5d3xek/lowlevel.c         |  23 -
-> > >  arch/arm/boards/sama5d4_xplained/Makefile     |   4 -
-> > I have patches that DT enable this board, and an attempt to
-> > add PBL support (which did not succeed).
-> > 
-> > I did not touch the patches since last summer, so some rebasing is
-> > required.
-> > I will try to find time to give it a spin within the next days and
-> > post the result.
-> 
-> Ok, thanks. I'll mark the board as broken then instead of removing it.
-Good plan then you do not need to wait for me.
-The rest of the patches looked like nice cleanup all over.
 
-	Sam
+On Tue, 23 Apr 2024 19:36:25 +0200, Ahmad Fatoum wrote:
+> dma_alloc_coherent() already takes care to zero the memory, so there's
+> no need to zero it explicitly.
+> 
+> 
+
+Applied, thanks!
+
+[1/1] net: fsl-fman: remove superfluous zeroing of new dma_alloc_coherent buf
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0e5b0c7c11bc (link may not be stable)
+
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
