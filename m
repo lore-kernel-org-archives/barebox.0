@@ -1,56 +1,64 @@
-Delivery-date: Tue, 30 Apr 2024 14:06:15 +0200
+Delivery-date: Tue, 30 Apr 2024 15:16:30 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s1mFS-00AJtw-35
+	id 1s1nLS-00ARQv-2L
 	for lore@lore.pengutronix.de;
-	Tue, 30 Apr 2024 14:06:14 +0200
+	Tue, 30 Apr 2024 15:16:30 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s1mFO-00023H-Mr
-	for lore@pengutronix.de; Tue, 30 Apr 2024 14:06:14 +0200
+	id 1s1nLP-0005wC-3I
+	for lore@pengutronix.de; Tue, 30 Apr 2024 15:16:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=pQ5dpx5KTKzlL0XbEvVOEvV+OCtvUanUXYUyfdsGGo0=; b=G/PvDWALCV69ROBMl/ZaMEbumj
-	7omXRZjeA7peLnuNVIyB7JgfQuNE68KWoQrCHhUS4m+j9FxrPeLjaC2fjxI6AcpUGy7BuvRsEfw3s
-	Oe+vU20FJ9jSKhO2IlSE9A09rlUsqXa7UBKJMbv/XunvzpOWAARZ0twDbB4OhShtTN3MzALMpxP3+
-	edhaZEDd1mEVo++LOVRRebKjWxW0FoHCdhIjm2QUlw2YVhoVWkn7UTHz9FWB1juJp5OLYDA9UlqXT
-	UMUKIvMZ3EzpyGOigWx8Z+axPvA2IJLQRFbNWJG4l9bk0BOqtEnNIJs669NPvCNHtMUB7LJZiBVCA
-	EaRGu7HA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=r4cHo4KFWttKs2E13qkw4/Mq3y7msTTePHgci5vg8Xo=; b=bP8X/GLAM1RWPRTirk6ZlwxS7c
+	mYx2bZMAG3OtguxCXLfZRHknE4uAob5pgMsolk8OVQSRc6KTw4/j5mx8uO4FTKBmFe1VlhBzhe+H4
+	hQV0x6hdh3GbjzkANmgH7ChYYp4U1J3Uc3SZVmR4c4ftSzueUnJbn+2qPTUKL5Lo4RhQ5E2HYde1K
+	L4VoCu6vSF3KxkvonLWd3BFKqB2ArdxIvXkG20UqQZUCHdTQ80tHVpGFOtggU10jpV3nBR0FlmhGO
+	pBIs8fcWKbWH/3DXxsHOTwByv8c0Fu7rsiBlnsHl81WFUXzdOOKnlmTdWFdnGx2Mp42j5rlHByBSK
+	D7n7sRxQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s1mEo-00000006HYa-0fqe;
-	Tue, 30 Apr 2024 12:05:34 +0000
+	id 1s1nKo-00000006TfV-2VfQ;
+	Tue, 30 Apr 2024 13:15:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s1mEk-00000006HY6-1sNg
+	id 1s1nKi-00000006TbR-318R
 	for barebox@lists.infradead.org;
-	Tue, 30 Apr 2024 12:05:32 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Tue, 30 Apr 2024 13:15:47 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s1mEh-0001sP-Tu; Tue, 30 Apr 2024 14:05:28 +0200
-Message-ID: <9b63e960-845b-4213-873c-da9749f82a64@pengutronix.de>
-Date: Tue, 30 Apr 2024 14:05:27 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: Roland Hieber <rhi@pengutronix.de>, barebox@lists.infradead.org
-References: <20240430102357.1357983-1-rhi@pengutronix.de>
+	id 1s1nKf-0005lk-BO; Tue, 30 Apr 2024 15:15:41 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s1nKe-00FAll-V6; Tue, 30 Apr 2024 15:15:40 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s1nKe-00F5qS-2q;
+	Tue, 30 Apr 2024 15:15:40 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240430102357.1357983-1-rhi@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 30 Apr 2024 15:15:40 +0200
+Message-Id: <20240430131540.3597376-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240430_050530_676613_7DEFCE5D 
-X-CRM114-Status: GOOD (  17.59  )
+X-CRM114-CacheID: sfid-20240430_061544_866637_4FCB2196 
+X-CRM114-Status: GOOD (  12.81  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,48 +80,47 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] ARM: i.MX8MP: fix compatible string for
- koenigbauer,alphajet board
+Subject: [PATCH] kbuild: make implicit int to pointer conversion warning an error
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 30.04.24 12:23, Roland Hieber wrote:
-> During the review of the initial board support patch, the SoM compatible
-> was changed (and unified) to "congatec,qmx8p" from several different
-> incompatible variants. However, the compatible in the alphajet device
-> tree contained a different typo and was overlooked, which had the effect
-> that the barebox_update handler and the Ethernet fixups were not
-> registered on the alphajet board.
-> 
-> Fixes: 34f14b1519715d47d879 (2024-03-11, "ARM: i.MX8MP: add König+Bauer AlphaJet board")
-> Rubberducked-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
-> ---
->  arch/arm/dts/imx8mp-koenigbauer-alphajet.kernel.dts | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm/dts/imx8mp-koenigbauer-alphajet.kernel.dts b/arch/arm/dts/imx8mp-koenigbauer-alphajet.kernel.dts
-> index 3f958ddf78e8..198fe1379a05 100644
-> --- a/arch/arm/dts/imx8mp-koenigbauer-alphajet.kernel.dts
-> +++ b/arch/arm/dts/imx8mp-koenigbauer-alphajet.kernel.dts
-> @@ -7,7 +7,7 @@
->  
->  / {
->  	model = "Koenig+Bauer Alphajet";
-> -	compatible = "koenigbauer,alphajet", "congatec,qmxp8p", "fsl,imx8mp";
-> +	compatible = "koenigbauer,alphajet", "congatec,qmx8p", "fsl,imx8mp";
+We are guilty of using ints as pointers in readl/writel, but the old
+definition of these uses a cast to silence the warning.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Everywhere else there's no reason to allow this, so make this a hard
+error always to weed out any instances we may still have.
 
->  
->  	display {
->  		compatible = "innolux,g101ice-l01";
+Disallowing this has the added benefit of making it easier to change API
+in barebox: We do not guarantee out-of-tree board code API stability,
+but we want changes in API to result in build errors, not in warnings
+that may be eaten up by a build system sitting in-between Kbuild and the
+user.
 
+While at it, we fix the whitespace for the surrounding lines.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ Makefile | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 8e262c17fd50..517b54bd9e6d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -451,8 +451,9 @@ KBUILD_CPPFLAGS        := -D__KERNEL__ -D__BAREBOX__ $(LINUXINCLUDE) -fno-builti
+ 
+ KBUILD_CFLAGS   := -Wall -Wundef -Werror=strict-prototypes -Wno-trigraphs \
+ 		   -fno-strict-aliasing -fno-common -fshort-wchar \
+-                   -Werror=implicit-function-declaration -Werror=implicit-int \
+-                   -Os -pipe -Wmissing-prototypes -std=gnu11
++		   -Werror=implicit-function-declaration -Werror=implicit-int \
++		   -Werror=int-conversion \
++		   -Os -pipe -Wmissing-prototypes -std=gnu11
+ KBUILD_AFLAGS          := -D__ASSEMBLY__
+ KBUILD_AFLAGS_KERNEL :=
+ KBUILD_CFLAGS_KERNEL :=
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
