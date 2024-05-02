@@ -1,67 +1,64 @@
-Delivery-date: Tue, 30 Apr 2024 23:11:11 +0200
+Delivery-date: Thu, 02 May 2024 09:04:39 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s1ukp-00B8QS-2g
+	id 1s2QUh-00EVkF-1c
 	for lore@lore.pengutronix.de;
-	Tue, 30 Apr 2024 23:11:11 +0200
+	Thu, 02 May 2024 09:04:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s1ukp-00083G-80
-	for lore@pengutronix.de; Tue, 30 Apr 2024 23:11:11 +0200
+	id 1s2QUc-0000KW-HG
+	for lore@pengutronix.de; Thu, 02 May 2024 09:04:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=bwRf7iDgNdgn3CzJEoaL8sAqIe0d9QssFyfOjR4JxDE=; b=oRNPrTNa06obPdAiFABDqmptGh
-	OtUjSxw8jsOwJCcmSJVC1QRNgwQI7FhGmeakYOAHdqtvgIlMulxlM67Z/mKK24lHNYONXxOBZN98t
-	ofokwIkBKFKPcGyrCg2JjoQYGQfvArHLCzdGzc/YXI/awMLJQDoL45lx4lnzKkPTyoiSGMuJKU95d
-	ncNGSaRnp0dRyM54yjZf3pYfcc/aCguqaz85Dvg+98Zx2JTiXylT2XiFJIpS/Md0xkiPUEp6hwqN7
-	yWs2R+9UpE+PKIaIo1pD55Meu6tDspOD2D9j2WECXAASyWb+knECYEsNYE0NZV3yKerQKJgVdCkLY
-	a+OXRvEQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=tsAmwai4ns1CrLtMpcx7P82Rue84qlOjQ/x8YURXLS8=; b=ipLpDBAK0g5cPjQLl4zH6uVCtP
+	mLO+O1C7sK0obtPnTWN58nqi9SaXxHgbyP3oXR7BaPHj6zzs1AWPm01kKzVxTlCXwB5L1PiISh0SP
+	cWTv4hGOHUj2yPcIWAD/8Tp0nhw8OKH7lrqt8qPZqE87pjzxNRZo8afIenpQTuyaWwQXCfqbg9m08
+	+ZGrXS1DmdpqN4zAyILYgCM8sjBVR1P4IfJHSmNyIeO/hre7IN3b37AUj4t+XvfUb16ZDt4VLdv29
+	9sR2fIFI9KjmCxODMwNblfxqE5Bt7Szg9fDBIIKtWPbja0HEE3qp/6w6KzRYSZRRfzFpdif0kIZWH
+	OCjBhZug==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s1ukE-00000007wQZ-1bM7;
-	Tue, 30 Apr 2024 21:10:34 +0000
+	id 1s2QTs-0000000Bjmv-1aK3;
+	Thu, 02 May 2024 07:03:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s1ukA-00000007wQ6-3dI5
+	id 1s2QTo-0000000BjjL-0drt
 	for barebox@lists.infradead.org;
-	Tue, 30 Apr 2024 21:10:32 +0000
+	Thu, 02 May 2024 07:03:46 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1s1uk7-0007sS-Qp
-	for barebox@lists.infradead.org; Tue, 30 Apr 2024 23:10:27 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s2QTj-00008A-IR; Thu, 02 May 2024 09:03:39 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1s1uk7-00FEHu-EO
-	for barebox@lists.infradead.org; Tue, 30 Apr 2024 23:10:27 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1s1uk7-004FVy-1A
-	for barebox@lists.infradead.org;
-	Tue, 30 Apr 2024 23:10:27 +0200
-Date: Tue, 30 Apr 2024 23:10:27 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s2QTj-00FTLf-5v; Thu, 02 May 2024 09:03:39 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s2QTj-009LxQ-0F;
+	Thu, 02 May 2024 09:03:39 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Message-ID: <20240430211027.w6ks4esmht25c7df@pengutronix.de>
-References: <20240430112941.3207284-1-m.felsch@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Thu,  2 May 2024 09:03:28 +0200
+Message-Id: <20240502070328.2218748-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240430112941.3207284-1-m.felsch@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240430_141030_931618_F98B4DC8 
-X-CRM114-Status: GOOD (  16.26  )
+X-CRM114-CacheID: sfid-20240502_000344_235804_959FD15E 
+X-CRM114-Status: GOOD (  12.42  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,58 +76,70 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.7 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] ARM: aarch64: fix scr_el3 register setup
+Subject: [PATCH master] net: workaround NICs and MDIO busses sharing same OF node
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
+v2024.04.0 broke Ethernet on the Skov IMX6 board:
 
-On 24-04-30, Marco Felsch wrote:
-> The current code moved '1' as immediate into x0 and does OR with
-> BIT(10). This doesn't look right since it will set the scr_el3 to 0.
-> 
-> Instead read the scr_el3 and OR the interessting bits to fix this. The
-> interessting bits are taken from the current U-Boot implementation.
+  ERROR: KSZ8873 MDIO mdio1-dev00: can't find ethernet master device
 
-please ignore this message which is complete off, my head tricked me :/
+The board has an Ethernet switch controlled via a bitbanged
+MDIO bus and the MDIO bus of the Ethernet device is unused.
 
-I will fix this in v2. But still, I'm out of glue regarding the 64-bit
-EL2 setting. We set this since the very beginning but without mentioning
-the reason. Therefore I would like to drop it and align our code with
-U-Boot.
+The FEC node has no mdio subnode, just a fixed-link.
 
-Regards,
-  Marco
+Starting with commit ac855ffe5730 ("net: phy: fix miibus parent
+device of_node not matching phy node"), MDIO busses will get assigned
+the device tree node of their parent if none was configured.
+This means we have two devices competing for the same device tree node:
 
-> 
-> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> ---
->  arch/arm/cpu/lowlevel_64.S | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/arm/cpu/lowlevel_64.S b/arch/arm/cpu/lowlevel_64.S
-> index ed00c8c47057..1f5a0b73f8b3 100644
-> --- a/arch/arm/cpu/lowlevel_64.S
-> +++ b/arch/arm/cpu/lowlevel_64.S
-> @@ -10,8 +10,8 @@ ENTRY(arm_cpu_lowlevel_init)
->  	switch_el x1, 3f, 2f, 1f
->  
->  3:
-> -	mov	x0, #1			/* Non-Secure EL0/1 */
-> -	orr	x0, x0, #(1 << 10)	/* 64-bit EL2 */
-> +	mrs	x0, scr_el3
-> +	orr	x0, x0, #0xf			/* SCR_EL3.NS|IRQ|FIQ|EA */
->  	msr	scr_el3, x0
->  	msr	cptr_el3, xzr
->  
-> -- 
-> 2.39.2
-> 
-> 
-> 
+  barebox@Skov IMX6:/ devinfo 2188000.ethernet@2188000.of
+  [...]
+  Device node: /soc/bus@2100000/ethernet@2188000 (populated by miibus0)
+
+This has the effect that calling of_device_ensure_probed on the device
+tree fails with -EPROBE_DEFER because miibus0 has no driver bound and
+the network device itself is ignored.
+
+We probably want to rethink allowing multiple devices to share the same
+device tree node, especially for network drivers. But as long this is
+the case, fix the regression by always walking the list of registered
+device tree nodes.
+
+Fixes: ac855ffe5730 ("net: phy: fix miibus parent device of_node not matching phy node")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ net/eth.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/net/eth.c b/net/eth.c
+index 28961e868b7a..98567d8d3fc2 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -528,11 +528,12 @@ void led_trigger_network(enum led_trigger trigger)
+ struct eth_device *of_find_eth_device_by_node(struct device_node *np)
+ {
+ 	struct eth_device *edev;
+-	int ret;
+ 
+-	ret = of_device_ensure_probed(np);
+-	if (ret)
+-		return NULL;
++	/* There may multiple devices with the same device_node, e.g.
++	 * MII bus and Ethernet controller. Thus ignore errors and
++	 * walk the full list of registered network devices below
++	 */
++	(void)of_device_ensure_probed(np);
+ 
+ 	list_for_each_entry(edev, &netdev_list, list)
+ 		if (edev->parent->of_node == np)
+-- 
+2.39.2
+
 
 
