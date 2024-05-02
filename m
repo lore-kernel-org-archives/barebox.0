@@ -1,64 +1,66 @@
-Delivery-date: Thu, 02 May 2024 17:17:58 +0200
+Delivery-date: Thu, 02 May 2024 17:18:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2YC6-00FHSt-2p
+	id 1s2YCf-00FHVY-2C
 	for lore@lore.pengutronix.de;
-	Thu, 02 May 2024 17:17:58 +0200
+	Thu, 02 May 2024 17:18:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2YC6-0003q7-AO
-	for lore@pengutronix.de; Thu, 02 May 2024 17:17:58 +0200
+	id 1s2YCf-00047g-42
+	for lore@pengutronix.de; Thu, 02 May 2024 17:18:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=rqoBYChJ1GlM1+D+KAtxhaa+9bIfGicrBXnq5Vh80Po=; b=FnlHckj/RI/NkJS+r56b+N34pK
-	uyYtRmcazAHyW1aSp2TfbNYkllKOIXE9hQ7iLFtpaJBysUsAJPbE4YiLg0H44aI+DPKRBvsrrqPj1
-	LLwH1R32ehuXGQgVgCBW0/ZXchaBpbcHpbDLPOpxu4l8VpP6cIrBaBP6gcuxQxYTD2AW7hw2V47K7
-	HeQniDyQ4wyUBiPTCaTw3ShWo+KCe/1fFwpDCcO2yVH6cGxEEbzfX+1ZKa/EzhBIyyH7Gi7ScMZez
-	ewkWuqTQlpp0yckk2mjgc6MCcpFeIQa/A/Pp3/rUkleWslwZZiIIDWnywtlaK1pI6GrnU2IldJZ6e
-	3OCb1wIQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=mez7SrqVpCza1H9AP3dF7RHnRgodFpmIeant4snUex4=; b=mgsApIBokZsrVOlIS63nvBILDX
+	yAlLxYSw8p+37OpWzOcYXX9wYK7q4HnVyWBfhu/N+lFeaCdjp9e9P8b25jQ+kYdCD3KDVPSL8tvmb
+	A9gd3w5cj0Jwmd5a2MPGtMkh2bWEfCqoIkyuuHOuQbk+DcLwrV3EFKCQcK4y4xU6griDsNeCrQ+PQ
+	ioRDUbeRGnHbxan/YI7JnrzaPtQZHIfjrLxX986/8LWUSSBk6/rWRmrbJpehNWNNjgtBfsHV911Ck
+	bU1ca0kCk+SfH6EIM+Zi6PFn5tIMRtTYI050NUPRMFCvsOGpp1i+6cfdOwFFQRz3dnzp19PhkAbU4
+	G+XKe6pA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2YBe-0000000D54k-0NrQ;
-	Thu, 02 May 2024 15:17:30 +0000
+	id 1s2YCF-0000000D5Di-473j;
+	Thu, 02 May 2024 15:18:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2YBa-0000000D544-1fw6
+	id 1s2YCB-0000000D5BL-1dGn
 	for barebox@lists.infradead.org;
-	Thu, 02 May 2024 15:17:27 +0000
+	Thu, 02 May 2024 15:18:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2YBY-0003fe-Jh; Thu, 02 May 2024 17:17:24 +0200
+	id 1s2YC9-0003rf-WC; Thu, 02 May 2024 17:18:02 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2YBY-00FXr7-7V; Thu, 02 May 2024 17:17:24 +0200
+	id 1s2YC9-00FXrI-JK; Thu, 02 May 2024 17:18:01 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2YBY-00GdI5-0S;
-	Thu, 02 May 2024 17:17:24 +0200
+	id 1s2YC9-00GdMI-1c;
+	Thu, 02 May 2024 17:18:01 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 May 2024 17:17:23 +0200
-Message-Id: <20240502151723.3964267-1-a.fatoum@pengutronix.de>
+Date: Thu,  2 May 2024 17:17:57 +0200
+Message-Id: <20240502151757.3964461-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240502151757.3964461-1-a.fatoum@pengutronix.de>
+References: <20240502151757.3964461-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240502_081726_462036_EBEAC523 
-X-CRM114-Status: GOOD (  12.36  )
+X-CRM114-CacheID: sfid-20240502_081803_714272_540B8180 
+X-CRM114-Status: GOOD (  12.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,54 +82,56 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH master] mdio_bus: return 0xFFFF when read fails with error code
+Subject: [PATCH 3/3] net: dsa: ksz9477: return negative error codes on PHY access failures
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-phy_read may return an error code if the underlying transport
-misbehaves, e.g. a busy and non-recoverable I2C bus.
+The ksz register accessors return a negative error code if the
+underlying transport, e.g. i2c, fails. We need to propagate this error
+code, instead of reporting incorrect data.
 
-Instead of packing the error code value into the buffer, let's just
-report 0xFFFF, which is the natural value used for unresponsive PHYs,
-due to the pull-ups.
-
-We could instead also return an error code, but this brings us quite a
-bit of complexity, because we would need to decide:
-
-  - Either use an intermediary buffer and report an error code
-    immediately
-
-  - Return an incomplete count and assume that the error condition persists
-    to the follow-up read, so it can return the error code
-
-Take the easy way out and just report 0xFFFF, which is generally
-understood to mean unresponsive PHY.
+For the case a PHY doesn't exist, reads on a physical bus return 0xFFFF
+due to the pull-ups on the MDIO line, so we leave that as is.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/net/phy/mdio_bus.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ksz9477.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
-index eed7c779e753..30d5aeacff0d 100644
---- a/drivers/net/phy/mdio_bus.c
-+++ b/drivers/net/phy/mdio_bus.c
-@@ -472,12 +472,13 @@ int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
- 
- static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
+diff --git a/drivers/net/ksz9477.c b/drivers/net/ksz9477.c
+index 5c5f4ec8d995..950eb89c09c2 100644
+--- a/drivers/net/ksz9477.c
++++ b/drivers/net/ksz9477.c
+@@ -29,12 +29,15 @@ static int ksz9477_phy_read16(struct dsa_switch *ds, int addr, int reg)
  {
--	int i = count;
-+	int ret, i = count;
- 	uint16_t *buf = _buf;
- 	struct phy_device *phydev = cdev->priv;
+ 	struct device *dev = ds->dev;
+ 	struct ksz_switch *priv = dev_get_priv(dev);
+-	u16 val = 0xffff;
++	int ret;
++	u16 val;
  
- 	while (i > 0) {
--		*buf = phy_read(phydev, offset / 2);
-+		ret = phy_read(phydev, offset / 2);
-+		*buf = ret >= 0 ? ret : 0xffff;
- 		buf++;
- 		i -= 2;
- 		offset += 2;
+ 	if (addr >= priv->phy_port_cnt)
+-		return val;
++		return 0xffff;
+ 
+-	ksz_pread16(priv, addr, 0x100 + (reg << 1), &val);
++	ret = ksz_pread16(priv, addr, 0x100 + (reg << 1), &val);
++	if (ret)
++		return ret;
+ 
+ 	return val;
+ }
+@@ -52,9 +55,8 @@ static int ksz9477_phy_write16(struct dsa_switch *ds, int addr, int reg,
+ 	/* No gigabit support.  Do not write to this register. */
+ 	if (!(priv->features & GBIT_SUPPORT) && reg == MII_CTRL1000)
+ 		return 0;
+-	ksz_pwrite16(priv, addr, 0x100 + (reg << 1), val);
+ 
+-	return 0;
++	return ksz_pwrite16(priv, addr, 0x100 + (reg << 1), val);
+ }
+ 
+ static int ksz9477_switch_detect(struct ksz_switch *priv)
 -- 
 2.39.2
 
