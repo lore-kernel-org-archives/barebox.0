@@ -1,64 +1,64 @@
-Delivery-date: Thu, 02 May 2024 17:15:13 +0200
+Delivery-date: Thu, 02 May 2024 17:17:58 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2Y9R-00FHFK-0v
+	id 1s2YC6-00FHSt-2p
 	for lore@lore.pengutronix.de;
-	Thu, 02 May 2024 17:15:13 +0200
+	Thu, 02 May 2024 17:17:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2Y9P-00034D-5F
-	for lore@pengutronix.de; Thu, 02 May 2024 17:15:13 +0200
+	id 1s2YC6-0003q7-AO
+	for lore@pengutronix.de; Thu, 02 May 2024 17:17:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=QsWw38237vx7DV5C+jFngGQlTyAfQQnuhQoU7UQotMo=; b=PU88xdPlIwDWbqySNCmjXdtZuM
-	mXorDB0G6ZL2/muEruqQr1T8fJsull5TYdSFAuEU6nmMPt7FGgaxK/nd71YvdNjmccNbPLzYmYGVP
-	yoNjL9SDa/IkauDzn+HJOWr4PJazzc8MDBsPLjjzxImTP2Nkt7FmjZ+5JeeT5828XGoSQyOQNCK8n
-	1MZ1/OQOIoUSDsyaZxxg6vSvll/89F1+jQZMqUhnPmiZlW7r3PFYKmR513snwSaaZbuaqE9dL7E3Q
-	TI4UVFb97UUwjhYiGPNVLQEjYNAy/TIabsUmxur46SnYSBUtGFKk2i5UOJbAVRYfECT8LdGE9/2pt
-	EugHePrw==;
+	bh=rqoBYChJ1GlM1+D+KAtxhaa+9bIfGicrBXnq5Vh80Po=; b=FnlHckj/RI/NkJS+r56b+N34pK
+	uyYtRmcazAHyW1aSp2TfbNYkllKOIXE9hQ7iLFtpaJBysUsAJPbE4YiLg0H44aI+DPKRBvsrrqPj1
+	LLwH1R32ehuXGQgVgCBW0/ZXchaBpbcHpbDLPOpxu4l8VpP6cIrBaBP6gcuxQxYTD2AW7hw2V47K7
+	HeQniDyQ4wyUBiPTCaTw3ShWo+KCe/1fFwpDCcO2yVH6cGxEEbzfX+1ZKa/EzhBIyyH7Gi7ScMZez
+	ewkWuqTQlpp0yckk2mjgc6MCcpFeIQa/A/Pp3/rUkleWslwZZiIIDWnywtlaK1pI6GrnU2IldJZ6e
+	3OCb1wIQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2Y8r-0000000D4Oz-1XeC;
-	Thu, 02 May 2024 15:14:37 +0000
+	id 1s2YBe-0000000D54k-0NrQ;
+	Thu, 02 May 2024 15:17:30 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2Y8n-0000000D4Nh-3III
+	id 1s2YBa-0000000D544-1fw6
 	for barebox@lists.infradead.org;
-	Thu, 02 May 2024 15:14:34 +0000
+	Thu, 02 May 2024 15:17:27 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2Y8m-0002qO-Cl; Thu, 02 May 2024 17:14:32 +0200
+	id 1s2YBY-0003fe-Jh; Thu, 02 May 2024 17:17:24 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2Y8m-00FXqQ-0N; Thu, 02 May 2024 17:14:32 +0200
+	id 1s2YBY-00FXr7-7V; Thu, 02 May 2024 17:17:24 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2Y8l-00Gd1F-2y;
-	Thu, 02 May 2024 17:14:31 +0200
+	id 1s2YBY-00GdI5-0S;
+	Thu, 02 May 2024 17:17:24 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  2 May 2024 17:14:29 +0200
-Message-Id: <20240502151430.3963160-1-a.fatoum@pengutronix.de>
+Date: Thu,  2 May 2024 17:17:23 +0200
+Message-Id: <20240502151723.3964267-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240502_081433_844368_AE2398B4 
-X-CRM114-Status: GOOD (  11.61  )
+X-CRM114-CacheID: sfid-20240502_081726_462036_EBEAC523 
+X-CRM114-Status: GOOD (  12.36  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,67 +80,54 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/2] include: ktime: implement __ktime_divns for 32-bit systems
+Subject: [PATCH master] mdio_bus: return 0xFFFF when read fails with error code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-ktime_devns is an inline function for constant divisors. For
-non-constant divisors, it's only inline for 64-bit systems and calls to
-an out-of-line __ktime_divns function otherwise.
+phy_read may return an error code if the underlying transport
+misbehaves, e.g. a busy and non-recoverable I2C bus.
 
-Implement the out-of-line function, so it's use of the function in
-common code is portable.
+Instead of packing the error code value into the buffer, let's just
+report 0xFFFF, which is the natural value used for unresponsive PHYs,
+due to the pull-ups.
+
+We could instead also return an error code, but this brings us quite a
+bit of complexity, because we would need to decide:
+
+  - Either use an intermediary buffer and report an error code
+    immediately
+
+  - Return an incomplete count and assume that the error condition persists
+    to the follow-up read, so it can return the error code
+
+Take the easy way out and just report 0xFFFF, which is generally
+understood to mean unresponsive PHY.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- lib/math/div64.c | 30 ++++++++++++++++++++++++++++++
- 1 file changed, 30 insertions(+)
+ drivers/net/phy/mdio_bus.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/lib/math/div64.c b/lib/math/div64.c
-index 386497592b0b..3d646c487b3d 100644
---- a/lib/math/div64.c
-+++ b/lib/math/div64.c
-@@ -21,6 +21,7 @@
- #include <linux/bitops.h>
- #include <module.h>
- #include <linux/kernel.h>
-+#include <linux/ktime.h>
- #include <linux/math64.h>
- #include <linux/log2.h>
+diff --git a/drivers/net/phy/mdio_bus.c b/drivers/net/phy/mdio_bus.c
+index eed7c779e753..30d5aeacff0d 100644
+--- a/drivers/net/phy/mdio_bus.c
++++ b/drivers/net/phy/mdio_bus.c
+@@ -472,12 +472,13 @@ int mdiobus_write(struct mii_bus *bus, int addr, u32 regnum, u16 val)
  
-@@ -233,3 +234,32 @@ u64 mul_u64_u64_div_u64(u64 a, u64 b, u64 c)
- 	return res + div64_u64(a * b, c);
- }
- #endif
-+
-+/*
-+ * Functions for the union type storage format of ktime_t which are
-+ * too large for inlining:
-+ */
-+#if BITS_PER_LONG < 64
-+/*
-+ * Divide a ktime value by a nanosecond value
-+ */
-+s64 __ktime_divns(const ktime_t kt, s64 div)
-+{
-+	int sft = 0;
-+	s64 dclc;
-+	u64 tmp;
-+
-+	dclc = ktime_to_ns(kt);
-+	tmp = dclc < 0 ? -dclc : dclc;
-+
-+	/* Make sure the divisor is less than 2^32: */
-+	while (div >> 32) {
-+		sft++;
-+		div >>= 1;
-+	}
-+	tmp >>= sft;
-+	do_div(tmp, (u32) div);
-+	return dclc < 0 ? -tmp : tmp;
-+}
-+EXPORT_SYMBOL_GPL(__ktime_divns);
-+#endif /* BITS_PER_LONG >= 64 */
+ static ssize_t phydev_read(struct cdev *cdev, void *_buf, size_t count, loff_t offset, ulong flags)
+ {
+-	int i = count;
++	int ret, i = count;
+ 	uint16_t *buf = _buf;
+ 	struct phy_device *phydev = cdev->priv;
+ 
+ 	while (i > 0) {
+-		*buf = phy_read(phydev, offset / 2);
++		ret = phy_read(phydev, offset / 2);
++		*buf = ret >= 0 ? ret : 0xffff;
+ 		buf++;
+ 		i -= 2;
+ 		offset += 2;
 -- 
 2.39.2
 
