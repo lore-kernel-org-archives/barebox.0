@@ -1,65 +1,67 @@
-Delivery-date: Fri, 03 May 2024 12:33:13 +0200
+Delivery-date: Fri, 03 May 2024 12:37:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2qE5-00H7mv-1c
+	id 1s2qIb-00H8B4-1C
 	for lore@lore.pengutronix.de;
-	Fri, 03 May 2024 12:33:13 +0200
+	Fri, 03 May 2024 12:37:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2qE4-0001El-QU
-	for lore@pengutronix.de; Fri, 03 May 2024 12:33:13 +0200
+	id 1s2qIa-0002Ef-GI
+	for lore@pengutronix.de; Fri, 03 May 2024 12:37:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=CAVuwYLJ3X1jpSwcxscp0OL1QMb8KVfgovtiSlvtzOc=; b=L8db6fcb1MdbVZfEJ4OqLBcW7T
-	oNRdOqfUhC8/c+8/jXLxxwzHOufgpsNlkTH+a29bdMzPljJo1A9XatW1Yi+rP7vg+9C+vRMA037YS
-	RaECwyHj7k3vPvKKUhZq+E1pX1mhN/V4mn2vQxME6ECJgU2rpXX40PNZugI7E76JUe7jXOjv2UqQq
-	5yDtSLd5pUJdxUh2/HQJ9zKlmKQKjodw3qRf/Hyu0VXpHBSxJGDbsWZ7emZIu2OULn7ftDDYvvysa
-	aFyHpYGRwXRaZJjB83/owjRyh/vlLnLnkcnP4HC70q8j8kVicqp1AxlsT39bTPFXWDiKuL0c2xaMN
-	RCxO2bQQ==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=yNsRIRLgZlZe6ZrJsMAtsEfnNuokMCDUOOkG4KS/5zM=; b=yCsU7V7zsMuH17ruWkktNRPTId
+	j9y6Ec684xss80MvdtTzN3BvKiC4/JFeg9i8mYiZdn8+EdZwepo3q6b8mDmHw41xxqEXXcEflXDeI
+	0OJZSl8GNS8k5ElCdD6BZypVVHQ3+CmRcuX5pSsLlX2VlOMZZdngdGnVWZuNmDklLgmoWxzhQF/hD
+	wli/SKGUUElkjL641ODGcldgS6fgXu2iE6jogNssbv40Jm/9gt6qOsn/GTX3vZwN1GdrqKFRXys6u
+	ylgFdRMJSjeLrwPHyMMMp43W9AB9XqP9KHFldf/WEyuLpJxosn6NDWjBWDUJT00HQVUmfXhh2p42A
+	2Is4d7Pg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2qDd-0000000G3r4-2Flr;
-	Fri, 03 May 2024 10:32:45 +0000
+	id 1s2qIA-0000000G4ul-0HTO;
+	Fri, 03 May 2024 10:37:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2qDZ-0000000G3oV-1pru
+	id 1s2qI5-0000000G4s4-0JTL
 	for barebox@lists.infradead.org;
-	Fri, 03 May 2024 10:32:42 +0000
+	Fri, 03 May 2024 10:37:23 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2qDQ-0000ye-2i; Fri, 03 May 2024 12:32:32 +0200
+	id 1s2qI3-0001wN-P0; Fri, 03 May 2024 12:37:19 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2qDP-00FgUP-MG; Fri, 03 May 2024 12:32:31 +0200
+	id 1s2qI3-00FgXh-CJ; Fri, 03 May 2024 12:37:19 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2qDP-005jqG-1w;
-	Fri, 03 May 2024 12:32:31 +0200
+	id 1s2qI3-005kc5-0v;
+	Fri, 03 May 2024 12:37:19 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: mfe@pengutronix.de,
+Cc: lst@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  3 May 2024 12:32:28 +0200
-Message-Id: <20240503103230.1367842-1-a.fatoum@pengutronix.de>
+Date: Fri,  3 May 2024 12:37:14 +0200
+Message-Id: <20240503103717.1370636-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240503103717.1370636-1-a.fatoum@pengutronix.de>
+References: <20240503103717.1370636-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240503_033241_517520_A73E1B62 
-X-CRM114-Status: GOOD (  15.99  )
+X-CRM114-CacheID: sfid-20240503_033721_201983_F259B22F 
+X-CRM114-Status: GOOD (  12.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,89 +83,56 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] firmware: support optional firmware in barebox proper
+Subject: [PATCH v2 2/5] ARM: i.MX8MP: configure PLL3 as 600MHz
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For firmware used in the prebootloader, missing firmware is handled
-according to the CONFIG_MISSING_FIRMWARE_ERROR symbol:
+When running the i.MX8MP in nominal drive mode, a number of clocks are
+validated only up to 600MHz: m7_core, audio_axi, vpu_bus, gpu_axi,
+noc_io, vpu_g1.
 
-  - If set, barebox will throw an error when assmebling the final image
-    with a list of missing firmware
+Let's configure PLL3 as 600MHz to make it a suitable parent for these
+clocks. The upstream Linux DTs don't yet use PLL3, but this aligns us
+with U-Boot's boot-time configuration.
 
-  - If unset, a warning will be printed for each barebox image that
-    can't be built due to missing firmware and all
+While at it, we also add a comment about how pll1 and pll2 are
+configured.
 
-This replaced the previous behavior of make throwing an error due to a
-missing dependency, which broke the ability to use a single config for
-multiple platforms, where only some have missing firmware.
-
-Nothing of the sort was done for firmware in barebox proper. We only
-have that on Layerscape for PPA (EL3 Secure Monitor) and FMan (NIC).
-
-With the addition of Layerscape to multi_v8_defconfig, building that
-config now also throws aforementioned make errors.
-
-This is now also resolved depending on CONFIG_MISSING_FIRMWARE_ERROR:
-
-  - If set, an immediate make error occurs as before as we can't
-    pinpoint which of the enabled barebox images will at runtime
-    instantiate the driver that requires the firmware.
-
-  - If unset, we continue build as normal and the size of the firmware
-    as determined at runtime will be zero bytes. Code in barebox
-    proper is expected to check for that and report an error.
-
-Fixes: 9922f78ec58c3a7b8d28427f470edc469627c9cd.
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- firmware/Makefile | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
+v1 -> v2:
+  - no change
+---
+ arch/arm/mach-imx/imx8m.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/firmware/Makefile b/firmware/Makefile
-index 83ce77f510ba..d5e4cee8594b 100644
---- a/firmware/Makefile
-+++ b/firmware/Makefile
-@@ -61,7 +61,7 @@ filechk_fwbin = { \
- 	echo "_fw_$(FWSTR)_start:"				;\
- 	echo "\#if $(FWNAME_EXISTS)"				;\
- 	echo "    .incbin \"$(fwdir)/$(FWNAME)\""		;\
--	echo "\#else"						;\
-+	echo "\#elif defined(__PBL__)"				;\
- 	echo "ASM_PTR _fwname_$(FWSTR)"				;\
- 	echo "\#endif"						;\
- 	echo ".global _fw_$(FWSTR)_end"				;\
-@@ -102,13 +102,25 @@ $(obj)/%.sum: FORCE
+diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
+index d798c52c6a6e..211b4f782199 100644
+--- a/arch/arm/mach-imx/imx8m.c
++++ b/arch/arm/mach-imx/imx8m.c
+@@ -77,6 +77,13 @@ static void __imx8m_early_clock_init(int cpu_type)
  
- clean-files += *.sha.bin *.sum
+ 	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_DDR1);
  
--# The .o files depend on the binaries directly; the .S files don't.
--$(patsubst %.gen.o,$(obj)/%.gen.o, $(obj-pbl-y)): $(obj)/%.gen.o: $(fwdir)/%
-+# This dependency is used if missing firmware should fail the build immediately
-+fwdep-required-y = $(fwdir)/%
-+# This dependency expands to nothing if the file doesn't exist. This allows
-+# delaying the firmware check:
-+#
-+#   - to final assembly of the PBL image for pbl-firmware
-+#   - to runtime for firmware in barebox proper
-+#
-+# This way, we allow users to build defconfigs with multiple images without requiring
-+# them to install all firmware for all platforms if only few are of interest.
-+fwdep-required-n = $$(wildcard $(fwdir)/%)
++	/*
++	 * The gate is not exported to clk tree, so configure them here.
++	 * According to ANAMIX SPEC
++	 * sys pll1 fixed at 800MHz
++	 * sys pll2 fixed at 1GHz
++	 * Here we only enable the outputs.
++	 */
+ 	val = readl(ana + IMX8MM_CCM_ANALOG_SYS_PLL1_GEN_CTRL);
+ 	val |= INTPLL_CLKE_MASK | INTPLL_DIV2_CLKE_MASK |
+ 		INTPLL_DIV3_CLKE_MASK | INTPLL_DIV4_CLKE_MASK |
+@@ -100,7 +107,7 @@ static void __imx8m_early_clock_init(int cpu_type)
+ 				   IMX8M_CCM_TARGET_ROOTn_MUX(3));
+ 	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_GIC);
  
--# The same for pbl:
- .SECONDEXPANSION:
--$(patsubst %.gen.o,$(obj)/%.gen.pbl.o, $(obj-pbl-y) $(pbl-y)): $(obj)/%.gen.pbl.o: $$(wildcard $(fwdir)/%)
--$(patsubst %.extgen.o,$(obj)/%.extgen.pbl.o, $(pbl-fwext-y)): $(obj)/%.extgen.pbl.o: $$(wildcard $(fwdir)/%)
-+# The .o files depend on the binaries directly if available; the .S files don't.
-+$(patsubst %.gen.o,$(obj)/%.gen.pbl.o, $(obj-pbl-y) $(pbl-y)): $(obj)/%.gen.pbl.o: $(fwdep-required-n)
-+$(patsubst %.extgen.o,$(obj)/%.extgen.pbl.o, $(pbl-fwext-y)): $(obj)/%.extgen.pbl.o: $(fwdep-required-n)
-+# For barebox proper, firmware existance is either checked here
-+# or in driver code by checking whether size != 0
-+$(patsubst %.gen.o,$(obj)/%.gen.o, $(obj-pbl-y)): $(obj)/%.gen.o: $(fwdep-required-$(CONFIG_MISSING_FIRMWARE_ERROR))
- 
- pbl-y += $(pbl-fwext-y)
- 
+-	if (cpu_type == IMX_CPU_IMX8MN)
++	if (cpu_type == IMX_CPU_IMX8MN || cpu_type == IMX_CPU_IMX8MP)
+ 		pll3_freq = 600000000UL;
+ 	else
+ 		pll3_freq = 750000000UL;
 -- 
 2.39.2
 
