@@ -1,66 +1,67 @@
-Delivery-date: Fri, 03 May 2024 08:53:50 +0200
+Delivery-date: Fri, 03 May 2024 08:55:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2mnm-00Glmq-2F
+	id 1s2mp2-00Gltb-2q
 	for lore@lore.pengutronix.de;
-	Fri, 03 May 2024 08:53:50 +0200
+	Fri, 03 May 2024 08:55:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2mnm-0004Xf-5A
-	for lore@pengutronix.de; Fri, 03 May 2024 08:53:50 +0200
+	id 1s2mp2-0004my-AP
+	for lore@pengutronix.de; Fri, 03 May 2024 08:55:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=aE+7juGsjvtikSkfja5wyfF0Np8ansQomV/cwhHaYdk=; b=HDoRxvFVHQMc4h3zpLkDZSGtbu
-	tf2+wIzkZioCTFosoBbOkdzeSRCKIRfMfYuAt+N0/KvGmcd+H6OUPHzlazhhgEm991bVO79IxOJr5
-	9DMVfwWAEAXbtgTov1FJiTQJ9/xxVpYNw1UQAjy6xai+sPVP16/HD86pEOGag2lU7CyVkpR5w9bMY
-	9MQ4Q5PWwHQXNaatvhgEBDpvqQ6/oQK5DVP6cbgGJ5Kh9tEdTorHnGAc8KJf5X7Y54IILfO/llxb7
-	78kX6gNOothvRZY2q89wd3bdbVtRagUy0KTYMY5QYXcIJjGc/C7wkFyhkMvga0XGPgOnfjSewS3De
-	AZcvmRKg==;
+	bh=CM6EUysq34BEuR2UuhA8huWW6rp4KlvE1lBF7fLhOVE=; b=yMl+0GS5qpMvH9XLkzQsKSV1a3
+	HrZs24D+5OUPPkIsMfQ4RfXfooIxQTyXyhqcoaRor29xTiZ5xHvqnV6OdyAZZ1/Io2oOAz0ppKwcr
+	Qh2eLM91IOG5IN0XH9DC2Yp0HwjhMLKSh6yAfNFBGgytBE5AcD1UldCMUBRvLUOp5QS8IcArNdk6f
+	4wphdGSCcRHLePlJ/fbWF3kbV1IpelotHGj5ga267ReC9D+QUTLuwxUFjBV2A4t6mOMkl559tYPuC
+	xugw1hb77VvcUyBlJcGE8Z1ojr2yadIYWJiYz6CVDRyp4nWCsUlV9T4SZf5TCAkjtPKf+Pu01Lkfb
+	5NKpH2vQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2mnN-0000000FMzm-16tQ;
-	Fri, 03 May 2024 06:53:25 +0000
+	id 1s2moa-0000000FNBJ-1yKr;
+	Fri, 03 May 2024 06:54:40 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2mnK-0000000FMzC-3GpF
+	id 1s2moV-0000000FN9t-3jKS
 	for barebox@lists.infradead.org;
-	Fri, 03 May 2024 06:53:24 +0000
+	Fri, 03 May 2024 06:54:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s2mnJ-0004SH-AZ; Fri, 03 May 2024 08:53:21 +0200
+	id 1s2moU-0004fe-EW; Fri, 03 May 2024 08:54:34 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s2mnI-00Feff-UC; Fri, 03 May 2024 08:53:20 +0200
+	id 1s2moU-00Fefl-2J; Fri, 03 May 2024 08:54:34 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s2mnI-0003Me-2o;
-	Fri, 03 May 2024 08:53:20 +0200
+	id 1s2moU-0003Rr-02;
+	Fri, 03 May 2024 08:54:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240502151430.3963160-1-a.fatoum@pengutronix.de>
-References: <20240502151430.3963160-1-a.fatoum@pengutronix.de>
-Message-Id: <171471920086.12869.17303112530012010627.b4-ty@pengutronix.de>
-Date: Fri, 03 May 2024 08:53:20 +0200
+Cc: has@pengutronix.de, bst@pengutronix.de
+In-Reply-To: <20240502101724.2609941-1-a.fatoum@pengutronix.de>
+References: <20240502101724.2609941-1-a.fatoum@pengutronix.de>
+Message-Id: <171471927400.13188.10940873456885380104.b4-ty@pengutronix.de>
+Date: Fri, 03 May 2024 08:54:34 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240502_235322_852441_C2C537B0 
-X-CRM114-Status: UNSURE (   7.64  )
+X-CRM114-CacheID: sfid-20240502_235435_962026_57057E80 
+X-CRM114-Status: UNSURE (   6.08  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,28 +84,22 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] include: ktime: implement __ktime_divns for 32-bit
- systems
+Subject: Re: [PATCH] mfd: pca9450: print reset reason as hex if unknown
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 02 May 2024 17:14:29 +0200, Ahmad Fatoum wrote:
-> ktime_devns is an inline function for constant divisors. For
-> non-constant divisors, it's only inline for 64-bit systems and calls to
-> an out-of-line __ktime_divns function otherwise.
+On Thu, 02 May 2024 12:17:24 +0200, Ahmad Fatoum wrote:
+> On an i.MX93-based board, it was observed that a potential ELE-induced
+> reset ended up with an unknown reset reason. To aid in debugging this,
+> print the value in hexadecimal when no mapping is known.
 > 
-> Implement the out-of-line function, so it's use of the function in
-> common code is portable.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/2] include: ktime: implement __ktime_divns for 32-bit systems
-      https://git.pengutronix.de/cgit/barebox/commit/?id=d3f1bbc9ae16 (link may not be stable)
-[2/2] poller: report pollers taking more than 20 milliseconds
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c5d2a98c51b2 (link may not be stable)
+[1/1] mfd: pca9450: print reset reason as hex if unknown
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9af02f7f50ab (link may not be stable)
 
 Best regards,
 -- 
