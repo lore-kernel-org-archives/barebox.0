@@ -1,57 +1,67 @@
-Delivery-date: Thu, 02 May 2024 17:19:42 +0200
+Delivery-date: Fri, 03 May 2024 08:51:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2YDm-00FHb6-1Z
+	id 1s2mlb-00Glaq-0Y
 	for lore@lore.pengutronix.de;
-	Thu, 02 May 2024 17:19:42 +0200
+	Fri, 03 May 2024 08:51:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2YDl-0004WV-Qk
-	for lore@pengutronix.de; Thu, 02 May 2024 17:19:42 +0200
+	id 1s2mla-00048Z-J7
+	for lore@pengutronix.de; Fri, 03 May 2024 08:51:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=RAp/gXa78Z+oj7uFvVX6liSW7FD3Iywe3LBMFcBf5Go=; b=WDrz0e9P0MeNUjZptAvF3aCFNO
-	AUW6VZkN2vSEmFBUDugF2JxdH3gW2u8y0APovyNgXrkrz8p0W5eQYK0oJPb+viXk6I87dN06CAKiQ
-	kwnhydB5XpHI4qRXTALk86SshikxUQ0euDjxWbqo5M0tEHK71HHLL0Y0wQrcq+GS2W/S67rTNVwTj
-	ozg5AeOCB5n15aMTHc0tecLSKSJpBT1WKPg/DViAr3EkXFtZUXhl02YMQNHFv04Y5CtpH68DKKksL
-	AsTnlJzO8k2PKwUPVFYiZuzXrqkSOemhr+wOnYp4R4BHakjRY7PLeBwQPDvtwt+GGOEPUA/2dbxcp
-	PAA/SMhg==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=5jhzcA8nxDJbQ+/OMkGKlO/8fmHz1ibN+drrdFXri2g=; b=Tfv67M3BaCVct7HECBlUKlVG8H
+	qEj5SBJxP4db2hvJjLzaJhgn4Z66LuJY1dh3nf98jSzI8tkpRfGtk48zr0DJRaeUQpTXHkgMRsTsb
+	JH9KdZOE1VA+ZRotXxD6xECHzDQEBV3FilsaHIOq2Ax6X2ab4rSLMYwo89/mCUOOWJjSzA3SW4dM1
+	CIB8WegCgY0ILgLHp5P0CwBAkxA09ogTEL2kbK1y6Ik+ZslCp4K2jyC2YnPXsUsFbq3XykpFwMD7f
+	UOehf/rf5ZgTOq/mAcTR0wNQrTjR6LCn6J6yBRvykONvZo0nFjJzAqyt/AFVPZSrwZfjkh8leoa3U
+	EmRIQA9g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2YDL-0000000D5Uw-0k10;
-	Thu, 02 May 2024 15:19:15 +0000
+	id 1s2mkv-0000000FMfZ-32ek;
+	Fri, 03 May 2024 06:50:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2YDH-0000000D5TV-3bs1
+	id 1s2mkq-0000000FMeB-1za4
 	for barebox@lists.infradead.org;
-	Thu, 02 May 2024 15:19:13 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2YDG-0004Le-MN
-	for barebox@lists.infradead.org; Thu, 02 May 2024 17:19:10 +0200
-Message-ID: <36534163-87c9-4afd-bb50-9ec13aa58cd1@pengutronix.de>
-Date: Thu, 2 May 2024 17:19:10 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-US
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <20240502151757.3964461-1-a.fatoum@pengutronix.de>
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Fri, 03 May 2024 06:50:51 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s2mkl-0003ve-QP; Fri, 03 May 2024 08:50:43 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s2mkl-00Fef6-D5; Fri, 03 May 2024 08:50:43 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s2mkl-0003BF-16;
+	Fri, 03 May 2024 08:50:43 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
 In-Reply-To: <20240502151757.3964461-1-a.fatoum@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20240502151757.3964461-1-a.fatoum@pengutronix.de>
+Message-Id: <171471904333.12156.15682184984126685414.b4-ty@pengutronix.de>
+Date: Fri, 03 May 2024 08:50:43 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240502_081911_943723_EE42734B 
-X-CRM114-Status: GOOD (  21.60  )
+X-CRM114-CacheID: sfid-20240502_235048_709046_531FCD48 
+X-CRM114-Status: UNSURE (   7.92  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -78,7 +88,8 @@ Subject: Re: [PATCH 1/3] net: dsa: ksz9477: always toggle reset gpio if
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 02.05.24 17:17, Ahmad Fatoum wrote:
+
+On Thu, 02 May 2024 17:17:55 +0200, Ahmad Fatoum wrote:
 > The barebox driver currently only ensures that the switch is out of
 > reset, but doesn't actually trigger a reset pulse.
 > 
@@ -88,48 +99,20 @@ On 02.05.24 17:17, Ahmad Fatoum wrote:
 > This seems excessive by a thousandfold for at least KSZ9893R[1], whose
 > datasheet states:
 > 
->   After the de-assertion of reset, it is recommended to wait a minimum of
->   100µs before starting to program the device through any interface.
-> 
-> Therefore, let's pulse the reset like Linux does and give the switch 100
-> microseconds before continuing with the driver probe.
-> 
-> [1]: DS00002420E-page 176
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> [...]
 
-I forgot to include the patch prefix, but IMO all three patches are
-master material.
+Applied, thanks!
 
-Cheers,
-Ahmad
+[1/3] net: dsa: ksz9477: always toggle reset gpio if available
+      https://git.pengutronix.de/cgit/barebox/commit/?id=372d21e79e30 (link may not be stable)
+[2/3] net: dsa: ksz9477: report 0 as value when returning error
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6d42b2827243 (link may not be stable)
+[3/3] net: dsa: ksz9477: return negative error codes on PHY access failures
+      https://git.pengutronix.de/cgit/barebox/commit/?id=eefd990b4cfd (link may not be stable)
 
-> ---
->  drivers/net/ksz9477.c | 4 +++-
->  1 file changed, 3 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ksz9477.c b/drivers/net/ksz9477.c
-> index 1abea9d04017..5c5f4ec8d995 100644
-> --- a/drivers/net/ksz9477.c
-> +++ b/drivers/net/ksz9477.c
-> @@ -433,8 +433,10 @@ static int microchip_switch_probe(struct device *dev)
->  	if (IS_ERR(gpio)) {
->  		dev_warn(dev, "Failed to get 'reset' GPIO (ignored)\n");
->  	} else if (gpio) {
-> -		mdelay(1);
-> +		gpiod_set_value(gpio, true);
-> +		mdelay(10);
->  		gpiod_set_value(gpio, false);
-> +		udelay(100);
->  	}
->  
->  	ksz_reset_switch(dev->priv);
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
