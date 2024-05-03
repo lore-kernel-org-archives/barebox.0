@@ -1,67 +1,64 @@
-Delivery-date: Fri, 03 May 2024 12:37:53 +0200
+Delivery-date: Fri, 03 May 2024 12:37:54 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2qIb-00H8B4-1C
+	id 1s2qIb-00H8BP-3C
 	for lore@lore.pengutronix.de;
-	Fri, 03 May 2024 12:37:53 +0200
+	Fri, 03 May 2024 12:37:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s2qIa-0002Ef-GI
+	id 1s2qIa-0002Et-V8
 	for lore@pengutronix.de; Fri, 03 May 2024 12:37:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=yNsRIRLgZlZe6ZrJsMAtsEfnNuokMCDUOOkG4KS/5zM=; b=yCsU7V7zsMuH17ruWkktNRPTId
-	j9y6Ec684xss80MvdtTzN3BvKiC4/JFeg9i8mYiZdn8+EdZwepo3q6b8mDmHw41xxqEXXcEflXDeI
-	0OJZSl8GNS8k5ElCdD6BZypVVHQ3+CmRcuX5pSsLlX2VlOMZZdngdGnVWZuNmDklLgmoWxzhQF/hD
-	wli/SKGUUElkjL641ODGcldgS6fgXu2iE6jogNssbv40Jm/9gt6qOsn/GTX3vZwN1GdrqKFRXys6u
-	ylgFdRMJSjeLrwPHyMMMp43W9AB9XqP9KHFldf/WEyuLpJxosn6NDWjBWDUJT00HQVUmfXhh2p42A
-	2Is4d7Pg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=p3K1pcXJ22/naD6/MKtfIGP7Lqgfo7TC15jJrNPotmw=; b=z3DmvOan21or6TxpEBWPfAAe1s
+	723SwHIag7Htn9oxBMtKio569e38D31eroFCmHCe9RTl8Mm+Fv2PIHV/mtcSQ/oN/tf6bQwz/oSSZ
+	fPv5cdMT3IHgarNH8V8hlYBFTS/XhBcxiW7W2JrFkClA3jRlO17r/RLkyrjaKDK6agCEkoiV9gLWk
+	R5fsaFm7nGAAxbw2CobM13S5Jrynw1InV+kgMtiON+Cp67ie37M1Rc/5ticy/oFBT8GktJUCiR8ly
+	IVYz+s7Cg6G+H2pC8kZ4TtlOzqMywsfocyWJavl9CmlBb0Kc4GdLCCCO/h7iXU5MNFqOpaIgQohyU
+	3HQF76hg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2qIA-0000000G4ul-0HTO;
-	Fri, 03 May 2024 10:37:26 +0000
+	id 1s2qI8-0000000G4u4-34vy;
+	Fri, 03 May 2024 10:37:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s2qI5-0000000G4s4-0JTL
+	id 1s2qI4-0000000G4rz-3jsR
 	for barebox@lists.infradead.org;
-	Fri, 03 May 2024 10:37:23 +0000
+	Fri, 03 May 2024 10:37:22 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2qI3-0001wN-P0; Fri, 03 May 2024 12:37:19 +0200
+	id 1s2qI3-0001wL-LZ; Fri, 03 May 2024 12:37:19 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2qI3-00FgXh-CJ; Fri, 03 May 2024 12:37:19 +0200
+	id 1s2qI3-00FgXd-99; Fri, 03 May 2024 12:37:19 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s2qI3-005kc5-0v;
+	id 1s2qI3-005kc5-0c;
 	Fri, 03 May 2024 12:37:19 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: lst@pengutronix.de,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri,  3 May 2024 12:37:14 +0200
-Message-Id: <20240503103717.1370636-3-a.fatoum@pengutronix.de>
+Cc: lst@pengutronix.de
+Date: Fri,  3 May 2024 12:37:12 +0200
+Message-Id: <20240503103717.1370636-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240503103717.1370636-1-a.fatoum@pengutronix.de>
-References: <20240503103717.1370636-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240503_033721_201983_F259B22F 
-X-CRM114-Status: GOOD (  12.89  )
+X-CRM114-CacheID: sfid-20240503_033720_948093_168CD88F 
+X-CRM114-Status: GOOD (  10.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,56 +80,34 @@ X-Spam-Status: No, score=-5.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/5] ARM: i.MX8MP: configure PLL3 as 600MHz
+Subject: [PATCH v2 0/5] ARM: i.MX8MP: add nominal drive mode support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-When running the i.MX8MP in nominal drive mode, a number of clocks are
-validated only up to 600MHz: m7_core, audio_axi, vpu_bus, gpu_axi,
-noc_io, vpu_g1.
+Unlike the i.MX8MM and i.MX8MN SoCs added earlier, the early setup code
+and device tree for the i.MX8MP configures some clocks at frequencies
+that are only validated for overdrive mode, i.e. when VDD_SOC is 950 mV.
 
-Let's configure PLL3 as 600MHz to make it a suitable parent for these
-clocks. The upstream Linux DTs don't yet use PLL3, but this aligns us
-with U-Boot's boot-time configuration.
+Boards may want to run their SoC at the lower voltage of 850 mV though
+to reduce heat generation and power usage. For this to work, clock rates
+need to adhere to the limits of the nominal drive mode.
 
-While at it, we also add a comment about how pll1 and pll2 are
-configured.
+This needs to be done across both barebox and Linux. This series handles
+the barebox side and a separate series will follow for the kernel.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v1 -> v2:
-  - no change
----
- arch/arm/mach-imx/imx8m.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+Ahmad Fatoum (5):
+  ARM: i.MX8M: pass cpu_type parameter to __imx8m_early_clock_init
+  ARM: i.MX8MP: configure PLL3 as 600MHz
+  ARM: i.MX8MP: configure PLL3 as noc_io parent
+  ARM: i.MX8MP: don't reparent GIC from BootROM default
+  ARM: dts: i.MX8MP: Add optional nominal drive mode DTSI
 
-diff --git a/arch/arm/mach-imx/imx8m.c b/arch/arm/mach-imx/imx8m.c
-index d798c52c6a6e..211b4f782199 100644
---- a/arch/arm/mach-imx/imx8m.c
-+++ b/arch/arm/mach-imx/imx8m.c
-@@ -77,6 +77,13 @@ static void __imx8m_early_clock_init(int cpu_type)
- 
- 	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_DDR1);
- 
-+	/*
-+	 * The gate is not exported to clk tree, so configure them here.
-+	 * According to ANAMIX SPEC
-+	 * sys pll1 fixed at 800MHz
-+	 * sys pll2 fixed at 1GHz
-+	 * Here we only enable the outputs.
-+	 */
- 	val = readl(ana + IMX8MM_CCM_ANALOG_SYS_PLL1_GEN_CTRL);
- 	val |= INTPLL_CLKE_MASK | INTPLL_DIV2_CLKE_MASK |
- 		INTPLL_DIV3_CLKE_MASK | INTPLL_DIV4_CLKE_MASK |
-@@ -100,7 +107,7 @@ static void __imx8m_early_clock_init(int cpu_type)
- 				   IMX8M_CCM_TARGET_ROOTn_MUX(3));
- 	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_GIC);
- 
--	if (cpu_type == IMX_CPU_IMX8MN)
-+	if (cpu_type == IMX_CPU_IMX8MN || cpu_type == IMX_CPU_IMX8MP)
- 		pll3_freq = 600000000UL;
- 	else
- 		pll3_freq = 750000000UL;
+ arch/arm/dts/imx8mp-nominal.dtsi  | 49 +++++++++++++++++++++++++++++++
+ arch/arm/mach-imx/imx8m.c         | 43 ++++++++++++++++++++-------
+ include/mach/imx/imx8m-ccm-regs.h |  1 +
+ 3 files changed, 83 insertions(+), 10 deletions(-)
+ create mode 100644 arch/arm/dts/imx8mp-nominal.dtsi
+
 -- 
 2.39.2
 
