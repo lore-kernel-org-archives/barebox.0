@@ -1,67 +1,67 @@
-Delivery-date: Mon, 06 May 2024 09:58:51 +0200
+Delivery-date: Mon, 06 May 2024 16:48:18 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s3tFL-005kTe-0e
+	id 1s3zdZ-0069HV-1K
 	for lore@lore.pengutronix.de;
-	Mon, 06 May 2024 09:58:51 +0200
+	Mon, 06 May 2024 16:48:18 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s3tFK-0000se-65
-	for lore@pengutronix.de; Mon, 06 May 2024 09:58:51 +0200
+	id 1s3zdY-0003Bk-JD
+	for lore@pengutronix.de; Mon, 06 May 2024 16:48:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nnBtl9u3P748UOHW5N85yPmJfucMn8pboujnXQCJZeA=; b=LPbLXNNzKA17loHqQ8VFnN2yn0
-	OK91TZlGPXeTkZ/PIgKC+Kdfapp/GvFx+SqSx8g4bVg1vYXtXXrFx7DFrReQc9XZQL78uybEG4vj7
-	Ozgg294uERqbqE9LiDN3vtx8wda/SwskLtUnhP4jWW6z5cXc5whPaqq25vOQVNuPQNfWvFMIpoViE
-	tup+021yB0nwf5hQxTgvgvXk7eBZp9D8Dw4Rvi6pOlracwZh3hY1yPNEPxMYriLxVJePwTmUfZY2Y
-	dio8ZxDoSu417NCSqKrdnS0wte/8lz9GGUtfAklT+e+XVfuppqYH+XI13p3IhlCfJOj8WKcwn1bYu
-	taLO8idw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=5J/p5A9m1qHDLdpKpJNPIVHZAffAn9BRYjr2LJQIu+U=; b=3w+duLMZ9XAmJ3WPBpqDt5w+zB
+	qt1SpL4y3Iw8y90k1O57w62Ex3qwJSBcKEt0iEgu8eMFkyfiyl4OoyowBdcKYkBeWWI1ppnP+rldf
+	MlNJzmyGrrfyliQZ/pdkq/8Zt8XzRcuVBvHrRdurzeFr2HkEyRfdAy0jqd0Tz/rOCs2EL3n1iwnyq
+	IPnSK3veJuu9llGDsdPgxNIOSFduN6y3fPHy+Ctey90gUqhTNzkMSFm71lgMV/efILv0vNsedigCG
+	CJ7u9ng9fj0w2H4khLoQQO5HGB6wppqNJtxVK6LzK89za0HH4YfI37+e/VjnN41Tm9Nbmu84rn1mx
+	l8WTiPvw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s3tEm-00000006XDv-1GE3;
-	Mon, 06 May 2024 07:58:16 +0000
+	id 1s3zd0-00000007jlU-3n6l;
+	Mon, 06 May 2024 14:47:42 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s3tEi-00000006XCS-2uQs
+	id 1s3zct-00000007jg6-2HOf
 	for barebox@lists.infradead.org;
-	Mon, 06 May 2024 07:58:14 +0000
+	Mon, 06 May 2024 14:47:38 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1s3tEf-0000l4-Vw; Mon, 06 May 2024 09:58:10 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1s3zcq-0002rx-Ng; Mon, 06 May 2024 16:47:32 +0200
+Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1s3tEf-00GDlw-JR; Mon, 06 May 2024 09:58:09 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1s3tEf-00EYuW-1g;
-	Mon, 06 May 2024 09:58:09 +0200
-Date: Mon, 6 May 2024 09:58:09 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20240506075809.uobxclav7bdzmx76@pengutronix.de>
-References: <20240430112941.3207284-1-m.felsch@pengutronix.de>
- <20240430112941.3207284-2-m.felsch@pengutronix.de>
- <ZjSQVPs3xsyJN-H4@pengutronix.de>
+	(envelope-from <ukl@pengutronix.de>)
+	id 1s3zcq-00GHbb-BD; Mon, 06 May 2024 16:47:32 +0200
+Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ukl@pengutronix.de>)
+	id 1s3zcq-00GqIS-0s;
+	Mon, 06 May 2024 16:47:32 +0200
+From: =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Mon,  6 May 2024 16:46:10 +0200
+Message-ID: <20240506144606.1562643-9-u.kleine-koenig@pengutronix.de>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240506144606.1562643-6-u.kleine-koenig@pengutronix.de>
+References: <20240506144606.1562643-6-u.kleine-koenig@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZjSQVPs3xsyJN-H4@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=842; i=u.kleine-koenig@pengutronix.de; h=from:subject; bh=jVcSlfppaSPKbVA4UL2KMO4XsS7rHJ8mvxKQZPYwm3M=; b=owEBbQGS/pANAwAKAY+A+1h9Ev5OAcsmYgBmOO0yvWofaHYZNmP617dguld3RA0LPDP/hhTu9 QZqVAMQioSJATMEAAEKAB0WIQQ/gaxpOnoeWYmt/tOPgPtYfRL+TgUCZjjtMgAKCRCPgPtYfRL+ Ts8pCACTASgk6dF5N1qDeT9Urw2gVLGnv8S70BqOAua5Yv7OMz/TyjhaKJ4B8pIPDW1FQSKrFyS Wytn0ZeKzqdWsn2B9ZaZWRdD+aw4nEiDlztzFe+Gg4RWGwvTLBwCsK9PJkupOR3AyeBph4SZ7C0 UHkvbuIe3c0YHmp/alE4UUgZ8jCnm1+tryhHZIG8zqTMdt8HuYyBmAZ5so6KK+qJD1y1h7cPFqH EneaHCOiKcMwfCD1bk4D4bw9K9TOS3tkAhzdVHyrkAbx7zRw3Z+gHf5hqRCphSMFkj8cb7hMSkB Y5LgNbpfcrKg0nj0Y215y2P/ZHDLznM2ce7V73u1xiWGI+NJ
+X-Developer-Key: i=u.kleine-koenig@pengutronix.de; a=openpgp; fpr=0D2511F322BFAB1C1580266BE2DCDD9132669BD6
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240506_005812_910160_FE29C2DC 
-X-CRM114-Status: GOOD (  36.93  )
+X-CRM114-CacheID: sfid-20240506_074735_687624_6C068ECE 
+X-CRM114-Status: GOOD (  12.94  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,240 +79,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/2] ARM: i.MX8M: add support to handle ROM SError
- ERR050350
+Subject: [PATCH v2 3/4] mtd: nand: mxc_nand: Add error message if BBT creation fails
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 24-05-03, Sascha Hauer wrote:
-> On Tue, Apr 30, 2024 at 01:29:41PM +0200, Marco Felsch wrote:
-> > This ports U-Boot commit:
-> > 
-> > | commit 2f3c92060dcd6bc9cfd3e2e344a3e1745ca39f09
-> > | Author: Peng Fan <peng.fan@nxp.com>
-> > | Date:   Thu Jul 9 13:39:26 2020 +0800
-> > |
-> > |     imx8m: workaround ROM serror
-> > |
-> > |     ROM SError happens on two cases:
-> > |
-> > |     1. ERR050342, on iMX8MQ HDCP enabled parts ROM writes to GPV1 register, but
-> > |     when ROM patch lock is fused, this write will cause SError.
-> > |
-> > |     2. ERR050350, on iMX8MQ/MM/MN, when the field return fuse is burned, HAB
-> > |     is field return mode, but the last 4K of ROM is still protected and cause
-> > |     SError.
-> > |
-> > |     Since ROM mask SError until ATF unmask it, so then ATF always meets the
-> > |     exception. This patch works around the issue in SPL by enabling SPL
-> > |     Exception vectors table and the SError exception, take the exception
-> > |     to eret immediately to clear the SError.
-> > |
-> > |     Signed-off-by: Ye Li <ye.li@nxp.com>
-> > |     Signed-off-by: Peng Fan <peng.fan@nxp.com>
-> > 
-> > Other than U-Boot we don't support exceptions in PBL and therefore we
-> > can handle it simpler by installing an dummy exception table which does
-> > nothing. The table gets overriden by TF-A later on anyway.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> > Hi all,
-> > 
-> > I'm not sure if the relocation should be done within the erratum
-> > handler or if we should move it into the lowlevel code per default for
-> > all i.MX8M platforms since the board files call it anyway after the
-> > lowlevel init. In the later case this would be an separate patch to drop
-> > the pattern:
-> > 
-> >  lowlevel_setup();
-> >  relocate_to_current_adr();
-> > 
-> > from the board files.
-> > 
-> > Regards,
-> >   Marco
-> > 
-> >  arch/arm/mach-imx/Makefile                    |  1 +
-> >  arch/arm/mach-imx/cpu_init.c                  | 12 +++++-
-> >  arch/arm/mach-imx/errata.c                    | 22 ++++++++++
-> >  arch/arm/mach-imx/imx8m_early_exceptions_64.S | 42 +++++++++++++++++++
-> >  include/mach/imx/errata.h                     | 12 ++++++
-> >  5 files changed, 88 insertions(+), 1 deletion(-)
-> >  create mode 100644 arch/arm/mach-imx/errata.c
-> >  create mode 100644 arch/arm/mach-imx/imx8m_early_exceptions_64.S
-> >  create mode 100644 include/mach/imx/errata.h
-> > 
-> > diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-> > index ce8af486aed4..d182f95673f5 100644
-> > --- a/arch/arm/mach-imx/Makefile
-> > +++ b/arch/arm/mach-imx/Makefile
-> > @@ -34,6 +34,7 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND) += imx-bbu-external-nand.o
-> >  pbl-$(CONFIG_USB_GADGET_DRIVER_ARC_PBL) += imx-udc.o
-> >  obj-$(CONFIG_RESET_IMX_SRC) += src.o
-> >  lwl-y += cpu_init.o
-> > +lwl-y += errata.o imx8m_early_exceptions_64.o
-> 
-> Should likely be:
-> 
-> lwl-$(CONFIG_ARCH_IMX8M) += imx8m_early_exceptions_64.o
-> 
-> Also you can drop the _64 suffix from the filename as the imx8m_ preifx
-> already implies this.
+Then reading from the chip and thus aborting creation of a bad block
+table, at inform the user about that with an error message.
 
-Sure.
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+---
+ drivers/mtd/nand/raw/mxc_nand.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-> >  pbl-y += xload-spi.o xload-common.o xload-imx-nand.o xload-gpmi-nand.o
-> >  pbl-y += xload-qspi.o
-> >  obj-pbl-$(CONFIG_ARCH_IMX9) += ele.o
-> > diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
-> > index c5a47d9b9154..aebbd3defaec 100644
-> > --- a/arch/arm/mach-imx/cpu_init.c
-> > +++ b/arch/arm/mach-imx/cpu_init.c
-> > @@ -6,6 +6,7 @@
-> >  #include <asm/errata.h>
-> >  #include <linux/types.h>
-> >  #include <linux/bitops.h>
-> > +#include <mach/imx/errata.h>
-> >  #include <mach/imx/generic.h>
-> >  #include <mach/imx/imx7-regs.h>
-> >  #include <mach/imx/imx8mq-regs.h>
-> > @@ -75,17 +76,26 @@ void imx8mm_cpu_lowlevel_init(void)
-> >  	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_SCTR);
-> >  
-> >  	imx8m_cpu_lowlevel_init();
-> > +
-> > +	erratum_050350_imx8m();
-> >  }
-> >  
-> >  void imx8mn_cpu_lowlevel_init(void)
-> >  	__alias(imx8mm_cpu_lowlevel_init);
-> >  
-> >  void imx8mp_cpu_lowlevel_init(void)
-> > -	__alias(imx8mm_cpu_lowlevel_init);
-> > +{
-> > +	/* ungate system counter */
-> > +	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_SCTR);
-> > +
-> > +	imx8m_cpu_lowlevel_init();
-> > +}
-> >  
-> >  void imx8mq_cpu_lowlevel_init(void)
-> >  {
-> >  	imx8m_cpu_lowlevel_init();
-> > +
-> > +	erratum_050350_imx8m();
-> >  }
-> >  
-> >  #define CCM_AUTHEN_TZ_NS	BIT(9)
-> > diff --git a/arch/arm/mach-imx/errata.c b/arch/arm/mach-imx/errata.c
-> > new file mode 100644
-> > index 000000000000..ef8de91a9278
-> > --- /dev/null
-> > +++ b/arch/arm/mach-imx/errata.c
-> > @@ -0,0 +1,22 @@
-> > +// SPDX-License-Identifier: GPL-2.0+
-> > +
-> > +#include <asm/barebox-arm.h>
-> > +#include <asm/system.h>
-> > +#include <mach/imx/errata.h>
-> > +
-> > +#ifdef CONFIG_CPU_V8
-> > +
-> > +extern unsigned long early_imx8m_vectors;
-> > +
-> > +void erratum_050350_imx8m(void)
-> > +{
-> > +	if (current_el() != 3)
-> > +		return;
-> > +
-> > +	relocate_to_current_adr();
-> > +
-> > +	asm volatile("msr vbar_el3, %0" : : "r" (&early_imx8m_vectors) : "cc");
-> > +	asm volatile("msr daifclr, #4;isb");
-> > +}
-> > +
-> > +#endif /* CONFIG_CPU_V8 */
-> > diff --git a/arch/arm/mach-imx/imx8m_early_exceptions_64.S b/arch/arm/mach-imx/imx8m_early_exceptions_64.S
-> > new file mode 100644
-> > index 000000000000..cd91e1a07b9c
-> > --- /dev/null
-> > +++ b/arch/arm/mach-imx/imx8m_early_exceptions_64.S
-> > @@ -0,0 +1,42 @@
-> > +/*
-> > + * (C) Copyright 2013
-> > + * David Feng <fenghua@phytium.com.cn>
-> > + *
-> > + * SPDX-License-Identifier:	GPL-2.0+
-> > + */
-> > +
-> > +#include <linux/linkage.h>
-> > +
-> > +#ifdef CONFIG_CPU_V8
-> > +
-> > +/*
-> > + * Early exception vectors.
-> > + */
-> > +	.align	11
-> > +	.globl	early_imx8m_vectors
-> > +early_imx8m_vectors:
-> > +	.align	7
-> > +		eret
-> > +
-> > +	.align	7
-> > +		eret
-> > +
-> > +	.align	7
-> > +		eret
-> > +
-> > +	.align	7
-> > +		eret
-> > +
-> > +	.align	7
-> > +		eret
-> > +
-> > +	.align	7
-> > +		eret
-> > +
-> > +	.align	7
-> > +		eret
-> > +
-> > +	.align	7
-> > +		eret
-> > +
-> > +#endif /* CONFIG_CPU_V8 */
-> > diff --git a/include/mach/imx/errata.h b/include/mach/imx/errata.h
-> > new file mode 100644
-> > index 000000000000..f63342d446fc
-> > --- /dev/null
-> > +++ b/include/mach/imx/errata.h
-> > @@ -0,0 +1,12 @@
-> > +/* SPDX-License-Identifier: GPL-2.0-only */
-> > +
-> > +#ifndef __MACH_IMX_ERRATA_H
-> > +#define __MACH_IMX_ERRATA_H
-> > +
-> > +#ifdef CONFIG_CPU_V8
-> 
-> No need to ifdef function prototypes.
+diff --git a/drivers/mtd/nand/raw/mxc_nand.c b/drivers/mtd/nand/raw/mxc_nand.c
+index 8e564fa76a33..faea1c95f95e 100644
+--- a/drivers/mtd/nand/raw/mxc_nand.c
++++ b/drivers/mtd/nand/raw/mxc_nand.c
+@@ -1569,8 +1569,11 @@ static int checkbad(struct mtd_info *mtd, loff_t ofs)
+ 	};
+ 
+ 	ret = mtd_read_oob(mtd, ofs, &ops);
+-	if (ret < 0)
++	if (ret < 0) {
++		dev_err(mtd->dev.parent, "Failed to read page at 0x%08x\n",
++			(unsigned int)ofs);
+ 		return ret;
++	}
+ 
+ 	if (buf[2000] != 0xff)
+ 		/* block considered bad */
+-- 
+2.43.0
 
-Yes you're right.
-
-Regards,
-  Marco
-
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
 
 
