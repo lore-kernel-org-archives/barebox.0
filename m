@@ -1,68 +1,67 @@
-Delivery-date: Mon, 06 May 2024 09:24:03 +0200
+Delivery-date: Mon, 06 May 2024 09:58:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s3shf-005hof-1q
+	id 1s3tFL-005kTe-0e
 	for lore@lore.pengutronix.de;
-	Mon, 06 May 2024 09:24:03 +0200
+	Mon, 06 May 2024 09:58:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s3she-0004DR-P1
-	for lore@pengutronix.de; Mon, 06 May 2024 09:24:03 +0200
+	id 1s3tFK-0000se-65
+	for lore@pengutronix.de; Mon, 06 May 2024 09:58:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=AfS49dLl8nAWONgDkqWkMl7Tj3H006/hsaGDSLX98JE=; b=YnthVTEAa77CWMZ+ehMV6EmbMe
-	VW5u49uTmBMBP/51gBuyE+oGWmFdWWsUp0QCKmyAOwCuYTNgjAhcG9ygFrVU3pmm5fyxQIi/MoKz5
-	be7wNtdziEuyHi7CzxUlV3NgKQrYJGEolpGuzzXoyJbX3g6tyoPHRVLAobGFVDpAWt+/XsYOZWnyV
-	ZfEuMgkbGbT4U70tsbKEe2khiccjJDlYAe8mXsQa1QMA2tIzspiWqjZvL1fTPi2EWsY3jOLQYLcEf
-	HPdhqRpBT1RJFecNVslsIbLqTKseHa/FTUOURZYbo3shgIDyu9k0OXXLtyNnTSQR2DRNmUD8P/d6w
-	zu5rUu7g==;
+	bh=nnBtl9u3P748UOHW5N85yPmJfucMn8pboujnXQCJZeA=; b=LPbLXNNzKA17loHqQ8VFnN2yn0
+	OK91TZlGPXeTkZ/PIgKC+Kdfapp/GvFx+SqSx8g4bVg1vYXtXXrFx7DFrReQc9XZQL78uybEG4vj7
+	Ozgg294uERqbqE9LiDN3vtx8wda/SwskLtUnhP4jWW6z5cXc5whPaqq25vOQVNuPQNfWvFMIpoViE
+	tup+021yB0nwf5hQxTgvgvXk7eBZp9D8Dw4Rvi6pOlracwZh3hY1yPNEPxMYriLxVJePwTmUfZY2Y
+	dio8ZxDoSu417NCSqKrdnS0wte/8lz9GGUtfAklT+e+XVfuppqYH+XI13p3IhlCfJOj8WKcwn1bYu
+	taLO8idw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s3sh2-00000006RNp-3Tj0;
-	Mon, 06 May 2024 07:23:24 +0000
+	id 1s3tEm-00000006XDv-1GE3;
+	Mon, 06 May 2024 07:58:16 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s3sgz-00000006RNF-42eH
+	id 1s3tEi-00000006XCS-2uQs
 	for barebox@lists.infradead.org;
-	Mon, 06 May 2024 07:23:23 +0000
+	Mon, 06 May 2024 07:58:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s3sgw-00042x-6Q; Mon, 06 May 2024 09:23:18 +0200
-Received: from [2a0a:edc0:0:900:1d::77] (helo=ptz.office.stw.pengutronix.de)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1s3tEf-0000l4-Vw; Mon, 06 May 2024 09:58:10 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s3sgv-00GDeT-Q7; Mon, 06 May 2024 09:23:17 +0200
-Received: from ukl by ptz.office.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ukl@pengutronix.de>)
-	id 1s3sgv-00GVIQ-2M;
-	Mon, 06 May 2024 09:23:17 +0200
-Date: Mon, 6 May 2024 09:23:17 +0200
-From: Uwe =?utf-8?Q?Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>
+	(envelope-from <mfe@pengutronix.de>)
+	id 1s3tEf-00GDlw-JR; Mon, 06 May 2024 09:58:09 +0200
+Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <mfe@pengutronix.de>)
+	id 1s3tEf-00EYuW-1g;
+	Mon, 06 May 2024 09:58:09 +0200
+Date: Mon, 6 May 2024 09:58:09 +0200
+From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <fa2amnimprlfmc5xwt4p7gwoykkwusxwx575od4tfemmj7p2aq@yq32awymfdxx>
-References: <20240430094451.1038256-4-u.kleine-koenig@pengutronix.de>
- <20240430094451.1038256-6-u.kleine-koenig@pengutronix.de>
- <ZjSV2G-NZ30WAeF8@pengutronix.de>
+Message-ID: <20240506075809.uobxclav7bdzmx76@pengutronix.de>
+References: <20240430112941.3207284-1-m.felsch@pengutronix.de>
+ <20240430112941.3207284-2-m.felsch@pengutronix.de>
+ <ZjSQVPs3xsyJN-H4@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="xa5depd2olkpkezb"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZjSV2G-NZ30WAeF8@pengutronix.de>
+In-Reply-To: <ZjSQVPs3xsyJN-H4@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240506_002322_033490_E9BA44BB 
-X-CRM114-Status: GOOD (  40.96  )
+X-CRM114-CacheID: sfid-20240506_005812_910160_FE29C2DC 
+X-CRM114-Status: GOOD (  36.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,160 +79,240 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 3/3] mtd: mxc-nand: Only automatically create BBT if NAND
- seems to be pristine
+Subject: Re: [PATCH 2/2] ARM: i.MX8M: add support to handle ROM SError
+ ERR050350
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
---xa5depd2olkpkezb
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-
-Hallo Sascha,
-
-On Fri, May 03, 2024 at 09:44:24AM +0200, Sascha Hauer wrote:
-> On Tue, Apr 30, 2024 at 11:44:54AM +0200, Uwe Kleine-K=F6nig wrote:
-> > Automatically creating a BBT is the right thing to do if the NAND is
-> > factory new. However when migrating from a barebox older than commit
-> > v2020.03.0~28^2~1 ("mtd: nand-imx: Create BBT automatically when
-> > necessary") on a used machine, this automatism is really bad because it
-> > most likely marks the blocks containing the barebox image (and possibly
-> > more) as bad. On such a system the vendor BBMs are gone, but it was
-> > operated without that information before, so continuing to do so is a
-> > sane option.
-> >=20
-> > Add a light check for the NAND to be really pristine: If the first block
-> > looks like containing a barebox image or a UBI refuse to create a BBT.
-> >=20
-> > Signed-off-by: Uwe Kleine-K=F6nig <u.kleine-koenig@pengutronix.de>
+On 24-05-03, Sascha Hauer wrote:
+> On Tue, Apr 30, 2024 at 01:29:41PM +0200, Marco Felsch wrote:
+> > This ports U-Boot commit:
+> > 
+> > | commit 2f3c92060dcd6bc9cfd3e2e344a3e1745ca39f09
+> > | Author: Peng Fan <peng.fan@nxp.com>
+> > | Date:   Thu Jul 9 13:39:26 2020 +0800
+> > |
+> > |     imx8m: workaround ROM serror
+> > |
+> > |     ROM SError happens on two cases:
+> > |
+> > |     1. ERR050342, on iMX8MQ HDCP enabled parts ROM writes to GPV1 register, but
+> > |     when ROM patch lock is fused, this write will cause SError.
+> > |
+> > |     2. ERR050350, on iMX8MQ/MM/MN, when the field return fuse is burned, HAB
+> > |     is field return mode, but the last 4K of ROM is still protected and cause
+> > |     SError.
+> > |
+> > |     Since ROM mask SError until ATF unmask it, so then ATF always meets the
+> > |     exception. This patch works around the issue in SPL by enabling SPL
+> > |     Exception vectors table and the SError exception, take the exception
+> > |     to eret immediately to clear the SError.
+> > |
+> > |     Signed-off-by: Ye Li <ye.li@nxp.com>
+> > |     Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > 
+> > Other than U-Boot we don't support exceptions in PBL and therefore we
+> > can handle it simpler by installing an dummy exception table which does
+> > nothing. The table gets overriden by TF-A later on anyway.
+> > 
+> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > > ---
-> >  drivers/mtd/nand/raw/mxc_nand.c | 58 ++++++++++++++++++---------------
-> >  1 file changed, 31 insertions(+), 27 deletions(-)
-> >=20
-> > diff --git a/drivers/mtd/nand/raw/mxc_nand.c b/drivers/mtd/nand/raw/mxc=
-_nand.c
-> > index a72275480144..fd5ae447a198 100644
-> > --- a/drivers/mtd/nand/raw/mxc_nand.c
-> > +++ b/drivers/mtd/nand/raw/mxc_nand.c
-> > @@ -1555,30 +1555,6 @@ static const struct nand_controller_ops mxcnd_co=
-ntroller_ops =3D {
-> >   * From this point on we can forget about the BBMs and rely completely
-> >   * on the flash BBT.
-> >   */
-> > -static int checkbad(struct nand_chip *chip, loff_t ofs)
-> > -{
-> > -	struct mtd_info *mtd =3D nand_to_mtd(chip);
-> > -	int ret;
-> > -	uint8_t buf[mtd->writesize + mtd->oobsize];
-> > -	struct mtd_oob_ops ops;
-> > -
-> > -	ops.mode =3D MTD_OPS_RAW;
-> > -	ops.ooboffs =3D 0;
-> > -	ops.datbuf =3D buf;
-> > -	ops.len =3D mtd->writesize;
-> > -	ops.oobbuf =3D buf + mtd->writesize;
-> > -	ops.ooblen =3D mtd->oobsize;
-> > -
-> > -	ret =3D mtd_read_oob(mtd, ofs, &ops);
-> > -	if (ret < 0)
-> > -		return ret;
-> > -
-> > -	if (buf[2000] !=3D 0xff)
-> > -		return 1;
-> > -
-> > -	return 0;
-> > -}
-> > -
-> >  static int imxnd_create_bbt(struct nand_chip *chip)
+> > Hi all,
+> > 
+> > I'm not sure if the relocation should be done within the erratum
+> > handler or if we should move it into the lowlevel code per default for
+> > all i.MX8M platforms since the board files call it anyway after the
+> > lowlevel init. In the later case this would be an separate patch to drop
+> > the pattern:
+> > 
+> >  lowlevel_setup();
+> >  relocate_to_current_adr();
+> > 
+> > from the board files.
+> > 
+> > Regards,
+> >   Marco
+> > 
+> >  arch/arm/mach-imx/Makefile                    |  1 +
+> >  arch/arm/mach-imx/cpu_init.c                  | 12 +++++-
+> >  arch/arm/mach-imx/errata.c                    | 22 ++++++++++
+> >  arch/arm/mach-imx/imx8m_early_exceptions_64.S | 42 +++++++++++++++++++
+> >  include/mach/imx/errata.h                     | 12 ++++++
+> >  5 files changed, 88 insertions(+), 1 deletion(-)
+> >  create mode 100644 arch/arm/mach-imx/errata.c
+> >  create mode 100644 arch/arm/mach-imx/imx8m_early_exceptions_64.S
+> >  create mode 100644 include/mach/imx/errata.h
+> > 
+> > diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+> > index ce8af486aed4..d182f95673f5 100644
+> > --- a/arch/arm/mach-imx/Makefile
+> > +++ b/arch/arm/mach-imx/Makefile
+> > @@ -34,6 +34,7 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND) += imx-bbu-external-nand.o
+> >  pbl-$(CONFIG_USB_GADGET_DRIVER_ARC_PBL) += imx-udc.o
+> >  obj-$(CONFIG_RESET_IMX_SRC) += src.o
+> >  lwl-y += cpu_init.o
+> > +lwl-y += errata.o imx8m_early_exceptions_64.o
+> 
+> Should likely be:
+> 
+> lwl-$(CONFIG_ARCH_IMX8M) += imx8m_early_exceptions_64.o
+> 
+> Also you can drop the _64 suffix from the filename as the imx8m_ preifx
+> already implies this.
+
+Sure.
+
+> >  pbl-y += xload-spi.o xload-common.o xload-imx-nand.o xload-gpmi-nand.o
+> >  pbl-y += xload-qspi.o
+> >  obj-pbl-$(CONFIG_ARCH_IMX9) += ele.o
+> > diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+> > index c5a47d9b9154..aebbd3defaec 100644
+> > --- a/arch/arm/mach-imx/cpu_init.c
+> > +++ b/arch/arm/mach-imx/cpu_init.c
+> > @@ -6,6 +6,7 @@
+> >  #include <asm/errata.h>
+> >  #include <linux/types.h>
+> >  #include <linux/bitops.h>
+> > +#include <mach/imx/errata.h>
+> >  #include <mach/imx/generic.h>
+> >  #include <mach/imx/imx7-regs.h>
+> >  #include <mach/imx/imx8mq-regs.h>
+> > @@ -75,17 +76,26 @@ void imx8mm_cpu_lowlevel_init(void)
+> >  	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_SCTR);
+> >  
+> >  	imx8m_cpu_lowlevel_init();
+> > +
+> > +	erratum_050350_imx8m();
+> >  }
+> >  
+> >  void imx8mn_cpu_lowlevel_init(void)
+> >  	__alias(imx8mm_cpu_lowlevel_init);
+> >  
+> >  void imx8mp_cpu_lowlevel_init(void)
+> > -	__alias(imx8mm_cpu_lowlevel_init);
+> > +{
+> > +	/* ungate system counter */
+> > +	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_SCTR);
+> > +
+> > +	imx8m_cpu_lowlevel_init();
+> > +}
+> >  
+> >  void imx8mq_cpu_lowlevel_init(void)
 > >  {
-> >  	struct mtd_info *mtd =3D nand_to_mtd(chip);
-> > @@ -1598,12 +1574,40 @@ static int imxnd_create_bbt(struct nand_chip *c=
-hip)
-> > =20
-> >  	for (i =3D 0; i < numblocks; ++i) {
-> >  		loff_t ofs =3D i << chip->bbt_erase_shift;
-> > +		uint8_t buf[mtd->writesize + mtd->oobsize];
-> > +		struct mtd_oob_ops ops =3D {
-> > +			.mode =3D MTD_OPS_RAW,
-> > +			.ooboffs =3D 0,
-> > +			.datbuf =3D buf,
-> > +			.len =3D mtd->writesize,
-> > +			.oobbuf =3D buf + mtd->writesize,
-> > +			.ooblen =3D mtd->oobsize,
-> > +		};
-> > =20
-> > -		ret =3D checkbad(chip, ofs);
-> > -		if (ret < 0)
-> > +		ret =3D mtd_read_oob(mtd, ofs, &ops);
-> > +		if (ret < 0) {
-> > +			dev_err(mtd->dev.parent, "Failed to read page at 0x%08x\n", (unsign=
-ed int)ofs);
-> >  			goto out;
-> > +		}
-> > =20
-> > -		if (ret) {
-> > +		/*
-> > +		 * Automatically adding a BBT based on factory BBTs is only
-> > +		 * sensible if the NAND is pristine. Abort if the first page
-> > +		 * looks like a bootloader or UBI block.
-> > +		 */
-> > +		if (ofs =3D=3D 0 && is_barebox_arm_head(buf)) {
-> > +			dev_err(mtd->dev.parent, "Flash seems to contain a barebox image, r=
-efusing\n");
-> > +			ret =3D -EINVAL;
-> > +			goto out;
-> > +		}
+> >  	imx8m_cpu_lowlevel_init();
 > > +
-> > +		if (ofs =3D=3D 0 && !memcmp(buf, "UBI#", 4)) {
-> > +			dev_err(mtd->dev.parent, "Flash seems to contain a UBI, refusing\n"=
-);
-> > +			ret =3D -EINVAL;
-> > +			goto out;
-> > +		}
+> > +	erratum_050350_imx8m();
+> >  }
+> >  
+> >  #define CCM_AUTHEN_TZ_NS	BIT(9)
+> > diff --git a/arch/arm/mach-imx/errata.c b/arch/arm/mach-imx/errata.c
+> > new file mode 100644
+> > index 000000000000..ef8de91a9278
+> > --- /dev/null
+> > +++ b/arch/arm/mach-imx/errata.c
+> > @@ -0,0 +1,22 @@
+> > +// SPDX-License-Identifier: GPL-2.0+
 > > +
-> > +		if (buf[2000] !=3D 0xff) {
-> >  			bbt[i >> 2] |=3D 0x03 << (2 * (i & 0x3));
-> >  			dev_info(mtd->dev.parent, "Bad eraseblock %d at 0x%08x\n",
-> >  				 i, (unsigned int)ofs);
->=20
-> Could you add the new code to checkbad() instead of inlining it? That
-> way it seems easier to adjust the code in case we have to change the way
-> how we detect useful data on a page. Rename checkbad() in case the name
-> doesn't feel appropriate anymore.
+> > +#include <asm/barebox-arm.h>
+> > +#include <asm/system.h>
+> > +#include <mach/imx/errata.h>
+> > +
+> > +#ifdef CONFIG_CPU_V8
+> > +
+> > +extern unsigned long early_imx8m_vectors;
+> > +
+> > +void erratum_050350_imx8m(void)
+> > +{
+> > +	if (current_el() != 3)
+> > +		return;
+> > +
+> > +	relocate_to_current_adr();
+> > +
+> > +	asm volatile("msr vbar_el3, %0" : : "r" (&early_imx8m_vectors) : "cc");
+> > +	asm volatile("msr daifclr, #4;isb");
+> > +}
+> > +
+> > +#endif /* CONFIG_CPU_V8 */
+> > diff --git a/arch/arm/mach-imx/imx8m_early_exceptions_64.S b/arch/arm/mach-imx/imx8m_early_exceptions_64.S
+> > new file mode 100644
+> > index 000000000000..cd91e1a07b9c
+> > --- /dev/null
+> > +++ b/arch/arm/mach-imx/imx8m_early_exceptions_64.S
+> > @@ -0,0 +1,42 @@
+> > +/*
+> > + * (C) Copyright 2013
+> > + * David Feng <fenghua@phytium.com.cn>
+> > + *
+> > + * SPDX-License-Identifier:	GPL-2.0+
+> > + */
+> > +
+> > +#include <linux/linkage.h>
+> > +
+> > +#ifdef CONFIG_CPU_V8
+> > +
+> > +/*
+> > + * Early exception vectors.
+> > + */
+> > +	.align	11
+> > +	.globl	early_imx8m_vectors
+> > +early_imx8m_vectors:
+> > +	.align	7
+> > +		eret
+> > +
+> > +	.align	7
+> > +		eret
+> > +
+> > +	.align	7
+> > +		eret
+> > +
+> > +	.align	7
+> > +		eret
+> > +
+> > +	.align	7
+> > +		eret
+> > +
+> > +	.align	7
+> > +		eret
+> > +
+> > +	.align	7
+> > +		eret
+> > +
+> > +	.align	7
+> > +		eret
+> > +
+> > +#endif /* CONFIG_CPU_V8 */
+> > diff --git a/include/mach/imx/errata.h b/include/mach/imx/errata.h
+> > new file mode 100644
+> > index 000000000000..f63342d446fc
+> > --- /dev/null
+> > +++ b/include/mach/imx/errata.h
+> > @@ -0,0 +1,12 @@
+> > +/* SPDX-License-Identifier: GPL-2.0-only */
+> > +
+> > +#ifndef __MACH_IMX_ERRATA_H
+> > +#define __MACH_IMX_ERRATA_H
+> > +
+> > +#ifdef CONFIG_CPU_V8
+> 
+> No need to ifdef function prototypes.
 
-I hesitated to add the check for the chip being pristine to checkbad().
-Then maybe read page 0 and check its contents before the check_bad()
-loop? Then page 0 will be read twice but checkbad() can stay around and
-only do what its name promises.
+Yes you're right.
 
-Best regards
-Uwe
+Regards,
+  Marco
 
---=20
-Pengutronix e.K.                           | Uwe Kleine-K=F6nig            |
-Industrial Linux Solutions                 | https://www.pengutronix.de/ |
-
---xa5depd2olkpkezb
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEP4GsaTp6HlmJrf7Tj4D7WH0S/k4FAmY4hWQACgkQj4D7WH0S
-/k5tQQf8C/xyzT2bFOGCHcwM/ct2HVC+DiDdfsHjkXrqIK7LZmzsxzCjNG7ixzVl
-YBBw4KzIdTjuoxKJzJv/C8CBXWhvSTBOYuG4DUMoSZZelrhKAilIHgJ573f6bd8n
-J+EoCBivYgkIGzABhNfxCw8wPzNun7iSiKZuSnsMTyyGaTrnd0dOrU0kaqp7EXp/
-X0GBNvPW9fo7pSj85IFhPTuhzQ9WiCXjsBvqKoLSz6ZEHFphRhuV2t2cizurbSPN
-mmCnSCQGwy3jCfgGKTnYt8uXZRl3GPrOAMojDElIokbtvtSTB2/szNQ1LT16ahIJ
-eXyKGKWcBoLSTc4czWK6QqCbX0eiFA==
-=ZrZY
------END PGP SIGNATURE-----
-
---xa5depd2olkpkezb--
+> 
+> Sascha
+> 
+> -- 
+> Pengutronix e.K.                           |                             |
+> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+> 
 
 
