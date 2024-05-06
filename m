@@ -1,70 +1,68 @@
-Delivery-date: Mon, 06 May 2024 08:34:07 +0200
+Delivery-date: Mon, 06 May 2024 09:06:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s3rvL-005e4S-0y
+	id 1s3sQf-005fya-2b
 	for lore@lore.pengutronix.de;
-	Mon, 06 May 2024 08:34:07 +0200
+	Mon, 06 May 2024 09:06:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s3rvK-0005VO-OR
-	for lore@pengutronix.de; Mon, 06 May 2024 08:34:07 +0200
+	id 1s3sQd-0001Oo-VB
+	for lore@pengutronix.de; Mon, 06 May 2024 09:06:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=VrM3R1jSr1Xyp9o7S4Y3fCMmrq1eLq2vLhfcqqfuB0M=; b=L9RnHhUzD/Lxq3mcP8cE9olqoL
-	GT2WV5Tp7d2Z6B12ziS2hzvW7qyhx72prxeoNs2ikTzVj4UnQFrL2JmNJVHgrqLxrgbos0NCfh77B
-	pzhLFSzyCePLJmcLCv7815FL0kCxNqvh10GRPVZrCNjb0poiFNZ7gL/JI7kRY4opjqgUWWXtn6K3S
-	3SZWFzOFjaog8C1juGBjFfnB0J0y9Tj85fWQBTi1Yc4EgpCoATVXa64YAAo7RHRrUjXF9wxJjdZfE
-	edOHklsX0b81uns916Tg2+SmdsalWBZISHSk+1TctqmEP4cXy9Ti6EIQy0vsAyhMSTqErlLYvAS3B
-	H5YAcKAw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=xpGKBxKfBIVrFq1a55Pj10ovbyVLizzL56ktE92wv1s=; b=LLjeXh69dfL8CT4SDcuRhy/LhD
+	+uDJ00RHlItDBV+4G5hxsowv3RSUDA67sI2lVUXbxY1Bnco/SxeWQ1O0L9dpj9gVRTYyZY3C/H9kD
+	EH0T6h13EYOzFqGaIL0g1h9aNKnzXgYIX6QxumBc3nwXdbqNxfueYi/RcGadRqNIFI4Qq34UHriw8
+	G5AphDExG/tCwEZo5R3PBNHmN8PH6gDcWbqtBjsSK4TmJa5D+OFt3xXD/gdMEN9whSakvPyc3ZTWK
+	xpiCoLVIhQ0yGFRqlVAtaA2JxtiQr2Eq/d6nd9aI6+ek2kbstFdL586M9GoTQQ9AZUE39EYh0i9GD
+	X1ivxPzQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s3rur-00000006Jvw-3o4V;
-	Mon, 06 May 2024 06:33:37 +0000
+	id 1s3sQ2-00000006OWs-0G7c;
+	Mon, 06 May 2024 07:05:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s3rup-00000006JvS-02oj
+	id 1s3sPy-00000006OWP-2sJL
 	for barebox@lists.infradead.org;
-	Mon, 06 May 2024 06:33:36 +0000
+	Mon, 06 May 2024 07:05:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1s3run-0005Mv-EB; Mon, 06 May 2024 08:33:33 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s3sPw-0001EP-NP; Mon, 06 May 2024 09:05:44 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1s3run-00GDBm-14; Mon, 06 May 2024 08:33:33 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1s3rum-00EWws-32;
-	Mon, 06 May 2024 08:33:32 +0200
-Date: Mon, 6 May 2024 08:33:32 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s3sPw-00GDKP-Am; Mon, 06 May 2024 09:05:44 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s3sPw-001PnZ-0r;
+	Mon, 06 May 2024 09:05:44 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org, mfe@pengutronix.de
-Message-ID: <Zjh5vPXOrbAf1nyG@pengutronix.de>
-References: <20240503103230.1367842-1-a.fatoum@pengutronix.de>
- <20240503103230.1367842-2-a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: lst@pengutronix.de
+In-Reply-To: <20240503103717.1370636-1-a.fatoum@pengutronix.de>
+References: <20240503103717.1370636-1-a.fatoum@pengutronix.de>
+Message-Id: <171497914426.337448.1634732696833876057.b4-ty@pengutronix.de>
+Date: Mon, 06 May 2024 09:05:44 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240503103230.1367842-2-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240505_233335_073271_965929F2 
-X-CRM114-Status: GOOD (  17.66  )
+X-CRM114-CacheID: sfid-20240506_000547_095855_28340FB4 
+X-CRM114-Status: UNSURE (   9.30  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,38 +80,42 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.5 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 2/3] ARM: layerscape: add helpful runtime warning when
- firmware is missing
+Subject: Re: [PATCH v2 0/5] ARM: i.MX8MP: add nominal drive mode support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, May 03, 2024 at 12:32:29PM +0200, Ahmad Fatoum wrote:
-> Firmware compiled into barebox PBL is rarely optional, so even if
-> CONFIG_MISSING_FIRMWARE_ERROR is disabled, barebox will not generate
-> images with missing PBL firmware.
+
+On Fri, 03 May 2024 12:37:12 +0200, Ahmad Fatoum wrote:
+> Unlike the i.MX8MM and i.MX8MN SoCs added earlier, the early setup code
+> and device tree for the i.MX8MP configures some clocks at frequencies
+> that are only validated for overdrive mode, i.e. when VDD_SOC is 950 mV.
 > 
-> We can relax this for firmware compiled into barebox proper though: If
-> the user disables CONFIG_MISSING_FIRMWARE_ERROR, just have the driver
-> fail at runtime as not to break other boards in the same build that
-> don't require the firmware.
+> Boards may want to run their SoC at the lower voltage of 850 mV though
+> to reduce heat generation and power usage. For this to work, clock rates
+> need to adhere to the limits of the nominal drive mode.
 > 
-> Missing barebox proper firmware will be detectable as a 0-byte firmware
-> blob in the follow-up commit, so prepare for that by printing an
-> informative error message.
+> [...]
 
-I changed the order of the first two patches to what this sentence
-suggests.
+Applied, thanks!
 
-Sascha
+[1/5] ARM: i.MX8M: pass cpu_type parameter to __imx8m_early_clock_init
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ae2dd4a4850f (link may not be stable)
+[2/5] ARM: i.MX8MP: configure PLL3 as 600MHz
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4a8c03958738 (link may not be stable)
+[3/5] ARM: i.MX8MP: configure PLL3 as noc_io parent
+      https://git.pengutronix.de/cgit/barebox/commit/?id=608ea0c2fa33 (link may not be stable)
+[4/5] ARM: i.MX8MP: don't reparent GIC from BootROM default
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ecff33a34978 (link may not be stable)
+[5/5] ARM: dts: i.MX8MP: Add optional nominal drive mode DTSI
+      https://git.pengutronix.de/cgit/barebox/commit/?id=180337d60753 (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
