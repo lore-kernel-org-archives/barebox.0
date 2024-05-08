@@ -1,69 +1,66 @@
-Delivery-date: Tue, 07 May 2024 16:12:36 +0200
+Delivery-date: Wed, 08 May 2024 13:19:23 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s4LYa-000zoX-1B
+	id 1s4fKV-002spe-1W
 	for lore@lore.pengutronix.de;
-	Tue, 07 May 2024 16:12:36 +0200
+	Wed, 08 May 2024 13:19:23 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s4LYY-0008Jx-BT
-	for lore@pengutronix.de; Tue, 07 May 2024 16:12:36 +0200
+	id 1s4fKU-0003zj-SN
+	for lore@pengutronix.de; Wed, 08 May 2024 13:19:23 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fJOYiqcSMe6FF99Xq7PvGPJLszxV99ZAfLzPBjxQnNA=; b=19vY5D1Bijwv6XPczx9fjFgmbU
-	KwQdT06YdBLz1mW4UYcKA/VbxMdrTDIzheOVszm65uTafW634GiscEoHlpZZvggFbBu+jLbtsb7LW
-	dELJ+Ju1qVIPXFtSih+EWDNsOwnibpPorzE/wpxcDl/yGjFQHPyCFUzjfG9/iwuelbZ62IO17PozE
-	O15MGeQsAbCo/QNqAiKRq/8ezduzcAaOenE18Oq4NkwDZuD4mNSnKzuJNSPaMxO28f/agEzat7VqG
-	hIBFgchSk3KATG0t+NPTNaAoymzMj/94sBtK7XUve8ZiPgz52ZwK8F8DoGmmVEScYLyHLrHYuQ/cG
-	iPuSOFmg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=n6wpjrYJDARLyJi2KdhWZATZtuEhJVXEX3vvIFYRx5k=; b=w/wk1kK4oK+3RX3tTz8lB63Aru
+	VCmuhunzK6mI2i16QiIvYUmtE8L2b34H0S9IhAC/XnucHg8AVJzY2Ohxcm53pmH4QGV43qr/X5HXU
+	lmhQnF5KVVGVe7t3wLeA0st/oyPtAXO1zdpkVFfP1UyrGR2l8sptnnmWfk0lKwF1YQOkmXBL+Ydym
+	3pMJz1BmitcV9tcJNdULBR0wpVbLuWz8eoNnRDSb/wGLDbRX5jJoa6q2EQrejFOjVWfI7yMENJpj/
+	uk0Tm5/IeIiKT4Ufvqdbzev3gBC+O6xiEBZaxEYYUwu5M2dasQR1uAkFKSkRtuu7OXnYeXoTsuur0
+	DarE1+Ww==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s4LXx-0000000BPg0-1g0B;
-	Tue, 07 May 2024 14:11:57 +0000
+	id 1s4fJs-0000000FAYb-2iHH;
+	Wed, 08 May 2024 11:18:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s4LXu-0000000BPdV-12dv
+	id 1s4fJp-0000000FAW4-0Gl9
 	for barebox@lists.infradead.org;
-	Tue, 07 May 2024 14:11:56 +0000
+	Wed, 08 May 2024 11:18:42 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <ore@pengutronix.de>)
-	id 1s4LXr-0007xc-Gs; Tue, 07 May 2024 16:11:51 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s4fJm-0003l6-0o; Wed, 08 May 2024 13:18:38 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <ore@pengutronix.de>)
-	id 1s4LXr-0006uP-3d; Tue, 07 May 2024 16:11:51 +0200
-Received: from ore by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <ore@pengutronix.de>)
-	id 1s4LXr-00GRmQ-06;
-	Tue, 07 May 2024 16:11:51 +0200
-Date: Tue, 7 May 2024 16:11:51 +0200
-From: Oleksij Rempel <o.rempel@pengutronix.de>
-To: Roland Hieber <rhi@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Zjo2p5lZd6W6d-Lh@pengutronix.de>
-References: <20240507133952.3716733-1-rhi@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s4fJl-000GPa-Ka; Wed, 08 May 2024 13:18:37 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s4fJl-001JMd-1j;
+	Wed, 08 May 2024 13:18:37 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed,  8 May 2024 13:18:36 +0200
+Message-Id: <20240508111836.307806-2-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240508111836.307806-1-a.fatoum@pengutronix.de>
+References: <20240508111836.307806-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240507133952.3716733-1-rhi@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240507_071154_366763_C24BD0B1 
-X-CRM114-Status: GOOD (  23.43  )
+X-CRM114-CacheID: sfid-20240508_041841_133870_A06D15B7 
+X-CRM114-Status: GOOD (  12.56  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,82 +78,68 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] net: phy: dp83867: reset PHY on probe
+Subject: [PATCH 2/2] pstore: add unlink implementation for deleting pstore files
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, May 07, 2024 at 03:39:52PM +0200, Roland Hieber wrote:
-> Some PHY variants set the DP83867_PHYCR_FORCE_LINK_GOOD bit by default,
-> which should be unset if we want to rely on autonegotiation. Port
-> dp83867_phy_reset() from Linux v6.9-rc7, which already does all
-> necessary things, and call it in dp83867_probe(). (Keep the functions in
-> the original order so that the diff stays clean.)
-> 
-> Suggested-by: Oleksij Rempel <o.rempel@pengutronix.de>
-> Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+During debugging, it can be useful to delete a pstore file to start
+fresh. There's already support for this in the code base using the erase
+callback, but it was so far never called. Call it from the newly
+introduced unlink operation.
 
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ fs/pstore/fs.c | 24 ++++++++++++++++++++++++
+ 1 file changed, 24 insertions(+)
 
-> ---
->  drivers/net/phy/dp83867.c | 18 ++++++++++++++++++
->  1 file changed, 18 insertions(+)
-> 
-> diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
-> index 5dc5bac12536..aefc65148926 100644
-> --- a/drivers/net/phy/dp83867.c
-> +++ b/drivers/net/phy/dp83867.c
-> @@ -362,6 +362,8 @@ static int dp83867_of_init(struct phy_device *phydev)
->  	return 0;
->  }
->  
-> +static int dp83867_phy_reset(struct phy_device *phydev); /* see below */
-> +
->  static int dp83867_probe(struct phy_device *phydev)
->  {
->  	struct dp83867_private *dp83867;
-> @@ -370,6 +372,8 @@ static int dp83867_probe(struct phy_device *phydev)
->  
->  	phydev->priv = dp83867;
->  
-> +	dp83867_phy_reset(phydev);
-> +
->  	return dp83867_of_init(phydev);
->  }
->  
-> @@ -563,6 +567,20 @@ static int dp83867_config_init(struct phy_device *phydev)
->  	return 0;
->  }
->  
-> +static int dp83867_phy_reset(struct phy_device *phydev)
-> +{
-> +	int err;
-> +
-> +	err = phy_write(phydev, DP83867_CTRL, DP83867_SW_RESTART);
-> +	if (err < 0)
-> +		return err;
-> +
-> +	udelay(20);
-> +
-> +	return phy_modify(phydev, MII_DP83867_PHYCTRL,
-> +			 DP83867_PHYCR_FORCE_LINK_GOOD, 0);
-> +}
-> +
->  static struct phy_driver dp83867_driver[] = {
->  	{
->  		.phy_id		= DP83867_PHY_ID,
-> -- 
-> 2.39.2
-> 
-> 
-
+diff --git a/fs/pstore/fs.c b/fs/pstore/fs.c
+index f2ffc0ac6251..f11db91582aa 100644
+--- a/fs/pstore/fs.c
++++ b/fs/pstore/fs.c
+@@ -182,6 +182,29 @@ static int pstore_lseek(struct device *dev, FILE *file, loff_t pos)
+ 	return 0;
+ }
+ 
++static int pstore_unlink(struct device *dev, const char *filename)
++{
++	struct list_head *head = dev->priv;
++	struct pstore_private *d;
++	int ret;
++
++	d = pstore_get_by_name(head, filename);
++	if (!d)
++		return -ENOENT;
++
++	if (!d->psi->erase)
++		return -EPERM;
++
++	ret = d->psi->erase(d->type, d->id, d->count, d->psi);
++	if (ret)
++		return ret;
++
++	list_del(&d->list);
++	free(d);
++
++	return 0;
++}
++
+ static DIR *pstore_opendir(struct device *dev, const char *pathname)
+ {
+ 	DIR *dir;
+@@ -256,6 +279,7 @@ static struct fs_driver pstore_driver = {
+ 	.close     = pstore_close,
+ 	.read      = pstore_read,
+ 	.lseek     = pstore_lseek,
++	.unlink    = pstore_unlink,
+ 	.opendir   = pstore_opendir,
+ 	.readdir   = pstore_readdir,
+ 	.closedir  = pstore_closedir,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
