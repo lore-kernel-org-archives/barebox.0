@@ -1,67 +1,66 @@
-Delivery-date: Mon, 13 May 2024 11:28:22 +0200
+Delivery-date: Mon, 13 May 2024 11:31:27 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s6Ryo-00CMw8-2V
+	id 1s6S1n-00CNAg-1C
 	for lore@lore.pengutronix.de;
-	Mon, 13 May 2024 11:28:22 +0200
+	Mon, 13 May 2024 11:31:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s6Ryo-0007pH-74
-	for lore@pengutronix.de; Mon, 13 May 2024 11:28:22 +0200
+	id 1s6S1j-0008KM-5J
+	for lore@pengutronix.de; Mon, 13 May 2024 11:31:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zBW/SJ4NxsvjLoYQQfpEnD9EKcZJWbEKyEenhsqr1PA=; b=PZFDnt+qI7DIAvLpgRkWAKMsR2
-	aIfAlA7LraxNed/KoITjLwoKbio6rVy8un5WSbcjKN+2fwSunuR3J+fFwHvQSvVOJA75yiCAcfHGK
-	kWqL0MRW5mTxy4azpafWl9GDBHIc4vBbuSQyNqzAaKF5kA0plgcEupu/QjUUtuFGIKmWwWlK67FQ0
-	XBrVzgnG1odKrIewt4+bmQQCECW3d2F8t5rUC7OsFuSZe9iQxwfL9C3AxMcGAhNkZhg1aAv2HBG3G
-	QnmI4W2NiYzzxDxRLtFkcfNePpMBCYwcwF9oOLftRaDn+NPHpR1lZ8Hve08+ipxlpom0NQH0Tcmhl
-	R1fW6mYA==;
+	bh=TGJnWUnujvk1rIy498QNI+nbKApQGwjnuM5ed1kxVzQ=; b=2lBIZeFmVPxkyfuM6FvlrMLMso
+	PKEF4eXL4j8VzGEhT1EP2AFQkL42F6YuajMzL32anX5YYgdT+wZfEvo9h14fuLHPevqF1U+uk9QKP
+	rxmtwfDNwNlagggZ2pBxGOTWA5Z9gv9OanOJyur+UUvJ43GWwHzZv46PCrjYbyg+bgEATnsIHzHhx
+	Q0JfCBs9Hfy70enQUY/4AYtfyQcFzHvJf9PVePoaO98vnmqaq0vqkFC9yaj7fCAmc3l9C0ZODk2jx
+	2lZOOWYQ0uBaK7hjgq/Wb8TopxJEaUNIaoyK0Y2mcHZZirfM6Q08+scIgKsYZv2tqiQc+tKudZJwx
+	GuyOrKaA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s6RyB-0000000CORF-2syO;
-	Mon, 13 May 2024 09:27:43 +0000
+	id 1s6S16-0000000COqO-2SdT;
+	Mon, 13 May 2024 09:30:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s6Ry7-0000000COQd-2KLF
+	id 1s6S12-0000000COpX-2dbq
 	for barebox@lists.infradead.org;
-	Mon, 13 May 2024 09:27:41 +0000
+	Mon, 13 May 2024 09:30:42 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s6Ry6-0007fz-Az; Mon, 13 May 2024 11:27:38 +0200
+	id 1s6S11-0008CY-0b; Mon, 13 May 2024 11:30:39 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s6Ry5-0018uI-Ut; Mon, 13 May 2024 11:27:37 +0200
+	id 1s6S10-0018vO-KR; Mon, 13 May 2024 11:30:38 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s6Ry5-00EvU9-2t;
-	Mon, 13 May 2024 11:27:37 +0200
+	id 1s6S10-00Evc1-1q;
+	Mon, 13 May 2024 11:30:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Roland Hieber <rhi@pengutronix.de>
-Cc: Oleksij Rempel <o.rempel@pengutronix.de>
-In-Reply-To: <20240507133952.3716733-1-rhi@pengutronix.de>
-References: <20240507133952.3716733-1-rhi@pengutronix.de>
-Message-Id: <171559245789.3557554.2861144799798288019.b4-ty@pengutronix.de>
-Date: Mon, 13 May 2024 11:27:37 +0200
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240415053430.370061-1-a.fatoum@pengutronix.de>
+References: <20240415053430.370061-1-a.fatoum@pengutronix.de>
+Message-Id: <171559263856.3558040.82399139400446645.b4-ty@pengutronix.de>
+Date: Mon, 13 May 2024 11:30:38 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240513_022739_901185_F8AF4E4C 
-X-CRM114-Status: UNSURE (   7.46  )
+X-CRM114-CacheID: sfid-20240513_023040_721531_33C58705 
+X-CRM114-Status: UNSURE (   6.21  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,25 +83,23 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] net: phy: dp83867: reset PHY on probe
+Subject: Re: [PATCH] usb: gadget: ums: add support for optional partition
+ flag
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 07 May 2024 15:39:52 +0200, Roland Hieber wrote:
-> Some PHY variants set the DP83867_PHYCR_FORCE_LINK_GOOD bit by default,
-> which should be unset if we want to rely on autonegotiation. Port
-> dp83867_phy_reset() from Linux v6.9-rc7, which already does all
-> necessary things, and call it in dp83867_probe(). (Keep the functions in
-> the original order so that the diff stays clean.)
+On Mon, 15 Apr 2024 07:34:30 +0200, Ahmad Fatoum wrote:
+> File lists for fastboot support a 'o' flag to silently skip files that
+> don't exist at bind time. Add support for the same for USB mass storage
+> gadgets as well.
 > 
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] net: phy: dp83867: reset PHY on probe
-      https://git.pengutronix.de/cgit/barebox/commit/?id=59a6b92960ff (link may not be stable)
+[1/1] usb: gadget: ums: add support for optional partition flag
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2487ca3fba71 (link may not be stable)
 
 Best regards,
 -- 
