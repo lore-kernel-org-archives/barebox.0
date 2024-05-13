@@ -1,67 +1,67 @@
-Delivery-date: Mon, 13 May 2024 11:26:44 +0200
+Delivery-date: Mon, 13 May 2024 11:28:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s6RxE-00CMo1-0O
+	id 1s6Ryo-00CMw8-2V
 	for lore@lore.pengutronix.de;
-	Mon, 13 May 2024 11:26:44 +0200
+	Mon, 13 May 2024 11:28:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s6RxD-0007Uj-Jn
-	for lore@pengutronix.de; Mon, 13 May 2024 11:26:44 +0200
+	id 1s6Ryo-0007pH-74
+	for lore@pengutronix.de; Mon, 13 May 2024 11:28:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=+A7GlUDvluP7A78/L0/anFO+P2U6uq46c1ZXhxtODLM=; b=rqZ5oT8dzWK+2cxmVk1uju+YOP
-	jSoGHmVIAvnSEp90y0y2fNkJ6dzHg0MhXaZ9iVdnKlW0+VwWKOMDTddFSylhNDxNRPI0mLBQAOkw5
-	W/Vdmn8zwmmDPddeX34xhtFqnnEO2XWvQNfHcCV1//Dgsr/LKnjbpPZf2JjrG/9T2sJ7rT9vw+Fs0
-	vcuQDUxPpY6+Jo+GjHZlJg8LJhXF/5vmfhkE+6ztGp9tkXEWfu5P/Z44BYa9zjXqxbuy22CqANNDQ
-	oAhEAnM7l0mYFWmNPL5828JATlveFljoaa+ao7apYE8HfdVWVCHf4EQNrKId7L7/GSdJEZOng1o6U
-	i61Rb0Vw==;
+	bh=zBW/SJ4NxsvjLoYQQfpEnD9EKcZJWbEKyEenhsqr1PA=; b=PZFDnt+qI7DIAvLpgRkWAKMsR2
+	aIfAlA7LraxNed/KoITjLwoKbio6rVy8un5WSbcjKN+2fwSunuR3J+fFwHvQSvVOJA75yiCAcfHGK
+	kWqL0MRW5mTxy4azpafWl9GDBHIc4vBbuSQyNqzAaKF5kA0plgcEupu/QjUUtuFGIKmWwWlK67FQ0
+	XBrVzgnG1odKrIewt4+bmQQCECW3d2F8t5rUC7OsFuSZe9iQxwfL9C3AxMcGAhNkZhg1aAv2HBG3G
+	QnmI4W2NiYzzxDxRLtFkcfNePpMBCYwcwF9oOLftRaDn+NPHpR1lZ8Hve08+ipxlpom0NQH0Tcmhl
+	R1fW6mYA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s6Rwi-0000000CO5k-21St;
-	Mon, 13 May 2024 09:26:12 +0000
+	id 1s6RyB-0000000CORF-2syO;
+	Mon, 13 May 2024 09:27:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s6Rwf-0000000CO4g-14VP
+	id 1s6Ry7-0000000COQd-2KLF
 	for barebox@lists.infradead.org;
-	Mon, 13 May 2024 09:26:10 +0000
+	Mon, 13 May 2024 09:27:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s6Rwd-0007Jg-Sa; Mon, 13 May 2024 11:26:07 +0200
+	id 1s6Ry6-0007fz-Az; Mon, 13 May 2024 11:27:38 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s6Rwd-0018tm-9c; Mon, 13 May 2024 11:26:07 +0200
+	id 1s6Ry5-0018uI-Ut; Mon, 13 May 2024 11:27:37 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s6Rwd-00EvOI-0k;
-	Mon, 13 May 2024 11:26:07 +0200
+	id 1s6Ry5-00EvU9-2t;
+	Mon, 13 May 2024 11:27:37 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Antony Pavlov <antonynpavlov@gmail.com>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240509093548.52130-1-antonynpavlov@gmail.com>
-References: <20240509093548.52130-1-antonynpavlov@gmail.com>
-Message-Id: <171559236722.3557185.7216231984792959653.b4-ty@pengutronix.de>
-Date: Mon, 13 May 2024 11:26:07 +0200
+To: barebox@lists.infradead.org, Roland Hieber <rhi@pengutronix.de>
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+In-Reply-To: <20240507133952.3716733-1-rhi@pengutronix.de>
+References: <20240507133952.3716733-1-rhi@pengutronix.de>
+Message-Id: <171559245789.3557554.2861144799798288019.b4-ty@pengutronix.de>
+Date: Mon, 13 May 2024 11:27:37 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240513_022609_355352_24FB5787 
-X-CRM114-Status: UNSURE (   4.05  )
+X-CRM114-CacheID: sfid-20240513_022739_901185_F8AF4E4C 
+X-CRM114-Status: UNSURE (   7.46  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,19 +84,25 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] Documentation: devel: project-ideas: fix typo
+Subject: Re: [PATCH] net: phy: dp83867: reset PHY on probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 09 May 2024 12:35:48 +0300, Antony Pavlov wrote:
+On Tue, 07 May 2024 15:39:52 +0200, Roland Hieber wrote:
+> Some PHY variants set the DP83867_PHYCR_FORCE_LINK_GOOD bit by default,
+> which should be unset if we want to rely on autonegotiation. Port
+> dp83867_phy_reset() from Linux v6.9-rc7, which already does all
+> necessary things, and call it in dp83867_probe(). (Keep the functions in
+> the original order so that the diff stays clean.)
 > 
-
+> 
+> [...]
 
 Applied, thanks!
 
-[1/1] Documentation: devel: project-ideas: fix typo
-      https://git.pengutronix.de/cgit/barebox/commit/?id=f15f63ae50d1 (link may not be stable)
+[1/1] net: phy: dp83867: reset PHY on probe
+      https://git.pengutronix.de/cgit/barebox/commit/?id=59a6b92960ff (link may not be stable)
 
 Best regards,
 -- 
