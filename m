@@ -1,66 +1,64 @@
-Delivery-date: Mon, 13 May 2024 11:31:27 +0200
+Delivery-date: Mon, 13 May 2024 11:59:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s6S1n-00CNAg-1C
+	id 1s6SSy-00CQRC-07
 	for lore@lore.pengutronix.de;
-	Mon, 13 May 2024 11:31:27 +0200
+	Mon, 13 May 2024 11:59:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s6S1j-0008KM-5J
-	for lore@pengutronix.de; Mon, 13 May 2024 11:31:27 +0200
+	id 1s6SSw-0004KM-Rb
+	for lore@pengutronix.de; Mon, 13 May 2024 11:59:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=TGJnWUnujvk1rIy498QNI+nbKApQGwjnuM5ed1kxVzQ=; b=2lBIZeFmVPxkyfuM6FvlrMLMso
-	PKEF4eXL4j8VzGEhT1EP2AFQkL42F6YuajMzL32anX5YYgdT+wZfEvo9h14fuLHPevqF1U+uk9QKP
-	rxmtwfDNwNlagggZ2pBxGOTWA5Z9gv9OanOJyur+UUvJ43GWwHzZv46PCrjYbyg+bgEATnsIHzHhx
-	Q0JfCBs9Hfy70enQUY/4AYtfyQcFzHvJf9PVePoaO98vnmqaq0vqkFC9yaj7fCAmc3l9C0ZODk2jx
-	2lZOOWYQ0uBaK7hjgq/Wb8TopxJEaUNIaoyK0Y2mcHZZirfM6Q08+scIgKsYZv2tqiQc+tKudZJwx
-	GuyOrKaA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=sFuZOXQnytzTKfz8+nIiiRFUrfNcpaPWN4CngAmmBMg=; b=CsHQJtaDcGmFiUJfMGt05ZQ1X+
+	ODJHace98f/UuSUcuo1MD2lZW8q4wANDaqsNokm78zmtbagB0e6oz/cVv7Fnb48S9K2SFsZoqDJUQ
+	3mFhrAnaKGTyZqXE5sBA4FwESn+Cnbnnp8Y8wrqgvmBuGA6bGVoKFv2Vta6il5cE20BSdOalXxzvc
+	W9jsiX5MBvONPtGAxGbuzONYl58wIGDz4LxssGJv0CBLH+ewcdZ+zyiyftnhucZ8uaUfzbnrmJJLG
+	KFpw1PU8arM7C8y6hJoJduk3gkQEG0uuP053vp+10WaYrKEcutGb5zxpAtVsYfKy68c/AJbpGZXuP
+	1go9iM9Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s6S16-0000000COqO-2SdT;
-	Mon, 13 May 2024 09:30:44 +0000
+	id 1s6SSP-0000000CSwR-1Rxs;
+	Mon, 13 May 2024 09:58:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s6S12-0000000COpX-2dbq
+	id 1s6SSK-0000000CSuE-2zEV
 	for barebox@lists.infradead.org;
-	Mon, 13 May 2024 09:30:42 +0000
+	Mon, 13 May 2024 09:58:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s6S11-0008CY-0b; Mon, 13 May 2024 11:30:39 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s6SSH-00047m-Ba; Mon, 13 May 2024 11:58:49 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s6S10-0018vO-KR; Mon, 13 May 2024 11:30:38 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s6S10-00Evc1-1q;
-	Mon, 13 May 2024 11:30:38 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240415053430.370061-1-a.fatoum@pengutronix.de>
-References: <20240415053430.370061-1-a.fatoum@pengutronix.de>
-Message-Id: <171559263856.3558040.82399139400446645.b4-ty@pengutronix.de>
-Date: Mon, 13 May 2024 11:30:38 +0200
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s6SSG-00191G-V9; Mon, 13 May 2024 11:58:48 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s6SSG-00AAQ6-2n;
+	Mon, 13 May 2024 11:58:48 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon, 13 May 2024 11:58:45 +0200
+Message-Id: <20240513095847.2420044-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240513_023040_721531_33C58705 
-X-CRM114-Status: UNSURE (   6.21  )
+X-CRM114-CacheID: sfid-20240513_025852_775312_857D0ADB 
+X-CRM114-Status: UNSURE (   9.23  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,27 +81,41 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] usb: gadget: ums: add support for optional partition
- flag
+Subject: [PATCH master 1/3] mci: core: reset number of parttions on card probe failure
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+mci_part_add records information about MMC hardware partitions and
+increments mci->nr_parts by one afterwards.
+If starting up the card succeeds, this information is then used to
+call mci_register_partition for each added partition.
 
-On Mon, 15 Apr 2024 07:34:30 +0200, Ahmad Fatoum wrote:
-> File lists for fastboot support a 'o' flag to silently skip files that
-> don't exist at bind time. Add support for the same for USB mass storage
-> gadgets as well.
-> 
-> 
+If card start up fails, registration will be skipped, but mci->nr_parts
+is not reset. This means that repeatedly calling device_detect will
+overflow the mci->part buffer and overwrite subsequent memory.
 
-Applied, thanks!
+Fix this by setting mci->nr_parts to zero on error. We don't need to
+touch mci->part as it will be overwritten by subsequent detect attempts.
 
-[1/1] usb: gadget: ums: add support for optional partition flag
-      https://git.pengutronix.de/cgit/barebox/commit/?id=2487ca3fba71 (link may not be stable)
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/mci/mci-core.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Best regards,
+diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
+index f6565b2b64dd..66ca98a414ce 100644
+--- a/drivers/mci/mci-core.c
++++ b/drivers/mci/mci-core.c
+@@ -2363,6 +2363,7 @@ static int mci_card_probe(struct mci *mci)
+ 		host->clock = 0;	/* disable the MCI clock */
+ 		mci_set_ios(mci);
+ 		regulator_disable(host->supply);
++		mci->nr_parts = 0;
+ 	}
+ 
+ 	return rc;
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.2
 
 
 
