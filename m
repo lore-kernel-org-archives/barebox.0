@@ -1,63 +1,64 @@
-Delivery-date: Wed, 15 May 2024 13:03:21 +0200
+Delivery-date: Wed, 15 May 2024 13:19:40 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7CPp-00Fhzu-2B
+	id 1s7Cfc-00FjDr-0k
 	for lore@lore.pengutronix.de;
-	Wed, 15 May 2024 13:03:21 +0200
+	Wed, 15 May 2024 13:19:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7CPn-00005E-MI
-	for lore@pengutronix.de; Wed, 15 May 2024 13:03:21 +0200
+	id 1s7Cfb-0003Ye-KL
+	for lore@pengutronix.de; Wed, 15 May 2024 13:19:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GUDRznx7hzXt8tFiXBPmzOMTxryfwfS7qFw3ebCpwhA=; b=gv43GyPV9+Gam3kFehQSjHg9IN
-	LgKtH71gCdVEEvWfIgSBUF+VM5UStbrxu2dW48gvzyZJskfa77GG9DSz4+1x4izijq+rDu+0Vd62I
-	/wm83icum8Mx9WjHveG4ws1J8lSLxpEF6ksqBXri8RuLRxvnp5oRlVWqKJr5yFOmxRht2MOVkOAY0
-	tpCjP+uASBS+hh+HFpFkgLKG4IbQsJrvehU+CEoEOijlhcXKmu8NxHYkxFzi6XrqpAWC20Vs4YkES
-	HlTmTmTuylMiANDYU9UETX8pcmL+GdyviTYXKcPLLEF90AAnjVu4WOK0xtE9/0ZnPRM6eT8WrA5vC
-	MRD5c5cQ==;
+	bh=nKtuzwrtsY2mE7OP2duzjeY1gZVjW0ptXx+x1myd2PQ=; b=ay0XXnRLydn9XNyoem4jW5jjTg
+	m0LsQI8uo5zTRFVl4CsyL6efiGUXiuLMoMyfUGueCK3DvG44uv1Cmb3s+vLy4tKcfkboDCNAaBS53
+	lRL+Zf5NxZvMHxpln5r7/JBdCLNilKf7A6BCC1FJ3MuFnLtws/7AJqHqonqGxrwBV1fAZQbrixVyC
+	nZKJvxOp4pLBemEgiKelwrJAXbvidQX4S+aJ2+hH+I8+qykNrLgikOLn0ERQlgOfr8IZ3lMgrAiz1
+	H3/uirRodGw11FcRmnUi6MxkZxI34vbwyvjhkfN8kxWq9wSn4KATBbO8d29dSZzV8oOi5h5SLvQy7
+	hfe3H51Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7COg-00000001J1Y-0LEK;
-	Wed, 15 May 2024 11:02:10 +0000
+	id 1s7Cf7-00000001L7j-0Mwo;
+	Wed, 15 May 2024 11:19:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7COd-00000001Izx-1sXR
+	id 1s7Cf3-00000001L6o-0etj
 	for barebox@lists.infradead.org;
-	Wed, 15 May 2024 11:02:08 +0000
+	Wed, 15 May 2024 11:19:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s7COU-0008GS-JE; Wed, 15 May 2024 13:01:58 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s7Cf1-0003Ob-Mr; Wed, 15 May 2024 13:19:03 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s7COU-001WBu-6w; Wed, 15 May 2024 13:01:58 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s7COU-0083Zn-0J;
-	Wed, 15 May 2024 13:01:58 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 15 May 2024 13:01:56 +0200
-Message-Id: <20240515110156.1920361-1-s.hauer@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s7Cf1-001WWy-AE; Wed, 15 May 2024 13:19:03 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s7Cf1-001C2m-0j;
+	Wed, 15 May 2024 13:19:03 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 15 May 2024 13:19:02 +0200
+Message-Id: <20240515111902.284612-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240515_040207_507120_56E95788 
-X-CRM114-Status: GOOD (  16.05  )
+X-CRM114-CacheID: sfid-20240515_041905_215276_BE6422FC 
+X-CRM114-Status: GOOD (  14.51  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,61 +80,63 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] watchdog: imxwd: Do not suspend in lpm on i.MX27
+Subject: [PATCH] Documentation: pstore: add some information about interfacing with Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The i.MX watchdog has two different configurable behaviours for low
-power modes.  The watchdog can either be suspended during low power
-modes or kept running.
-The useful behaviour is normally to disable it during low power modes to
-be able to suspend the system without having the watchdog resetting the
-system. This setting was introduced in the Kernel back in 2014 [1] and
-in barebox back in 2021 [2].
-On i.MX27 however this setting has the effect that the watchdog is
-suspended during normal cpu_do_idle(), so on an idle system it takes
-very long time until the watchdog triggers. This renders this setting
-useless, so disable it on i.MX27. This seems to be fixed on SoCs newer
-than i.MX35.
+The help text erroneously states that CONFIG_FS_PSTORE_RAMOOPS_RO
+disables writing completely, but this is not correct: It merely stops
+barebox from zapping log content previously written by Linux.
 
-[1] 1a9c5efa576ec ("watchdog: imx2_wdt: disable watchdog timer during low power mode")
-[2] c3787a81f26bb ("watchdog: imxwd: suspend watchdog timer in low power mode")
+The Kconfig help text is correct, so adjust the documentation to reflect
+that and while at it, add some more information about how to access
+pstore in Linux.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/watchdog/imxwd.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ Documentation/filesystems/pstore.rst | 29 +++++++++++++++++++++++-----
+ 1 file changed, 24 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/watchdog/imxwd.c b/drivers/watchdog/imxwd.c
-index 8f4de5a994..616248af38 100644
---- a/drivers/watchdog/imxwd.c
-+++ b/drivers/watchdog/imxwd.c
-@@ -33,6 +33,7 @@ struct imx_wd {
- 	struct restart_handler restart_warm;
- 	bool ext_reset;
- 	bool bigendian;
-+	bool suspend_in_lpm;
- };
+diff --git a/Documentation/filesystems/pstore.rst b/Documentation/filesystems/pstore.rst
+index b8c2cb825ced..e16c4f35e704 100644
+--- a/Documentation/filesystems/pstore.rst
++++ b/Documentation/filesystems/pstore.rst
+@@ -73,11 +73,30 @@ in the Barebox shell. The RAMOOPS area is listed as 'persistent ram':
+     0x2fee4000 - 0x2fee7fff (size 0x00004000) ttb
+     0x2fee8000 - 0x2feeffff (size 0x00008000) stack
  
- #define to_imx_wd(h) container_of(h, struct imx_wd, wd)
-@@ -127,7 +128,8 @@ static int imx21_watchdog_set_timeout(struct imx_wd *priv, unsigned timeout)
- 		val |= IMX21_WDOG_WCR_WDT;
- 
- 	/* Suspend timer in low power mode */
--	val |= IMX21_WDOG_WCR_WDZST;
-+	if (priv->suspend_in_lpm)
-+		val |= IMX21_WDOG_WCR_WDZST;
- 
- 	/*
- 	 * set time and some write once bits first prior enabling the
-@@ -273,6 +275,7 @@ static int imx_wd_probe(struct device *dev)
- 
- 	priv->ext_reset = of_property_read_bool(dev->of_node,
- 						"fsl,ext-reset-output");
-+	priv->suspend_in_lpm = !of_machine_is_compatible("fsl,imx27");
- 
- 	if (IS_ENABLED(CONFIG_WATCHDOG_IMX)) {
- 		if (priv->ops->is_running) {
+-All pstore files that could be found are added to the /pstore directory. This is
+-a read-only filesystem. If you disable the Kconfig option FS_PSTORE_RAMOOPS_RO,
+-the RAMOOPS area is reset and its ECC recalculated. But that does not allow any
+-writes from Barebox into that area.
+-
+ If the menu entry ``FS_PSTORE_CONSOLE`` is enabled, Barebox itself will add all
+ its own console output to the *ramoops:console* part, which enables the regular
+ userland later on to have access to the bootloaders output.
++
++All pstore files that could be found are added to the /pstore directory. This is
++a read-only filesystem with the only supported operation being unlinking:
++This resets (zaps) the RAMOOPS area and recalculates the ECC.
++
++Zapping is done automatically, if the menu entry ``FS_PSTORE_RAMOOPS_RO`` is
++disabled. In this case, only the barebox log will be available to the kernel
++and ramoops from previous boots will not survive.
++
++The usual setup is to not zap any buffers, i.e. ``CONFIG_FS_PSTORE_RAMOOPS_RO=y``
++and no manual unlinking of files in ``/pstore``.
++
++In Linux, the pstore file system is often mounted at ``/sys/fs/pstore``.
++This will often not contain older output as Linux frequently zaps ramoops
++buffers to conserve the limited space.
++
++To counteract this, userland needs to archive the pstore contents
++after booting into Linux and then clear pstore. Systemd has built-in support
++for this when compiled with ``-Dpstore=true``.
++
++Logs (including barebox log messages if enabled) will then be written to
++journal by default and are accessible via::
++
++  journalctl -b -o verbose -a -t systemd-pstore
 -- 
 2.39.2
 
