@@ -1,63 +1,64 @@
-Delivery-date: Wed, 15 May 2024 15:17:03 +0200
+Delivery-date: Wed, 15 May 2024 17:24:58 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7EVD-00FrWH-0m
+	id 1s7GV0-00Fy0A-17
 	for lore@lore.pengutronix.de;
-	Wed, 15 May 2024 15:17:03 +0200
+	Wed, 15 May 2024 17:24:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7EVC-0000Rc-8N
-	for lore@pengutronix.de; Wed, 15 May 2024 15:17:03 +0200
+	id 1s7GUz-0001rd-Nq
+	for lore@pengutronix.de; Wed, 15 May 2024 17:24:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=pREL0FvWp8ckT1rmOfd9gOIQGxbWp8k6Sb6Sr3DxPPg=; b=0xoDfZW98LbLQd5tYXOprkdM58
-	cmOKMnyu96ZHGDHCOfs2VLZtTeH44pwHtjfpo+ANklxnPFhHCg333SrQPkAl1J7CG4BzsFSOC4voi
-	jMwE4bvQreeok5LdGsG0uQNSIA4RsqoOsaYVm5oT+Wip5kuuHAg20sCgF5v/wgYTjm7O7NKTaWtVm
-	zglWK9sY4SLW9v1E0Bh32oEGjJF7DXM0j4STUGXSYV24ou7w/d47YMu8pEWL4HPbxTb5tjyDDobsH
-	dCbRmoQHYK6qSPvYzqqOBlRc6mEm2cLbTh5uUVwVEkL8NWnoSIwiAAn3vM5BE1H7i7dzIHcjbLA+U
-	lnME1HhQ==;
+	bh=LRlmoysioy4stMrhFpFoXGYru7tPQq27U6h4UGC8p4c=; b=rWrTl9FNHB4nukNZONgnUE9QCI
+	6iL0VpFjhdMWC6xbyAlBLZOhSb/kDnApH1HtPw2yF0YVnQNgHD41AA1/meGkouwf93YCStku1EHCD
+	H7CYbgtCGRi1nqNF/YUfES2VQ5lEEQ08+ofuTK45LD3cqgGUe0zcyvxgwPiM29LQoLfwZMbQ7LAVl
+	jcW6LANEEWt5U8CAW7W37onybC/UZmk/V+slGxjHRlKEFN802intaSdZXEwQYzcEmN4BbqO5+adLK
+	pjH72wJCfFVbSpwD8vVMmVyLMKSCKIkZxKBxKY6M7ltwIZok98IX6GkjlT5HRrY25I6ftB1/iSTl7
+	MTRHIZ8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7EUe-00000001cSp-41mm;
-	Wed, 15 May 2024 13:16:28 +0000
+	id 1s7GUN-00000001wuI-16Lf;
+	Wed, 15 May 2024 15:24:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7EUb-00000001cR3-3ndg
+	id 1s7GUK-00000001wtb-2LLO
 	for barebox@lists.infradead.org;
-	Wed, 15 May 2024 13:16:27 +0000
+	Wed, 15 May 2024 15:24:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1s7EUZ-0008W0-4H; Wed, 15 May 2024 15:16:23 +0200
-Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s7GUI-0001YB-K7; Wed, 15 May 2024 17:24:14 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1s7EUY-001Xj9-OI; Wed, 15 May 2024 15:16:22 +0200
-Received: from rhi by dude04.red.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <rhi@pengutronix.de>)
-	id 1s7EUY-001eNP-2F;
-	Wed, 15 May 2024 15:16:22 +0200
-From: Roland Hieber <rhi@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s7GUI-001Ycg-7M; Wed, 15 May 2024 17:24:14 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s7GUI-00ECuz-0S;
+	Wed, 15 May 2024 17:24:14 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Roland Hieber <rhi@pengutronix.de>
-Date: Wed, 15 May 2024 15:16:08 +0200
-Message-Id: <20240515131607.393479-1-rhi@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 15 May 2024 17:24:10 +0200
+Message-Id: <20240515152410.3386237-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240515_061625_973802_129A963A 
-X-CRM114-Status: GOOD (  11.35  )
+X-CRM114-CacheID: sfid-20240515_082416_623531_C7522339 
+X-CRM114-Status: GOOD (  12.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,46 +76,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: dts: GoMe e143_01: fix default state priorities
+Subject: [PATCH] fs: ramfs: allocate once instead of twice per ramfs chunk
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-During the initial installation we can forgo writing an initial state
-variable set to the eMMC if it is zeroed, and if the default values
-priorities are set correctly. Since only the first rootfs partition is
-populated during the install process, it should be preferred over the
-second rootfs.
+There's no reason to maintain two allocations per chunk, so just collect
+them both into the same calloc call.
 
-Signed-off-by: Roland Hieber <rhi@pengutronix.de>
+No functional change.
+
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/imx7d-gome-e143_01.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+I didn't test thoroughly what performance improvement this might bring,
+but it looks like a sensible thing to do.
+---
+ fs/ramfs.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm/dts/imx7d-gome-e143_01.dts b/arch/arm/dts/imx7d-gome-e143_01.dts
-index ea118ddc76f7..ed7f3cfa216b 100644
---- a/arch/arm/dts/imx7d-gome-e143_01.dts
-+++ b/arch/arm/dts/imx7d-gome-e143_01.dts
-@@ -50,7 +50,7 @@ remaining_attempts@0 {
- 				priority@4 {
- 					reg = <0x4 0x4>;
- 					type = "uint32";
--					default = <10>;
-+					default = <20>;
- 				};
- 			};
+diff --git a/fs/ramfs.c b/fs/ramfs.c
+index 117e69b70c0c..3223beba7212 100644
+--- a/fs/ramfs.c
++++ b/fs/ramfs.c
+@@ -28,10 +28,10 @@
+ #define CHUNK_SIZE	(4096 * 2)
  
-@@ -67,7 +67,7 @@ remaining_attempts@8 {
- 				priority@c {
- 					reg = <0xc 0x4>;
- 					type = "uint32";
--					default = <20>;
-+					default = <10>;
- 				};
- 			};
+ struct ramfs_chunk {
+-	char *data;
+ 	unsigned long ofs;
+ 	int size;
+ 	struct list_head list;
++	char data[];
+ };
+ 
+ struct ramfs_inode {
+@@ -98,19 +98,14 @@ static struct inode *ramfs_get_inode(struct super_block *sb, const struct inode
+ 
+ static struct ramfs_chunk *ramfs_get_chunk(unsigned long size)
+ {
+-	struct ramfs_chunk *data = malloc(sizeof(struct ramfs_chunk));
+-
+-	if (!data)
+-		return NULL;
++	struct ramfs_chunk *data;
+ 
+ 	if (size < MIN_SIZE)
+ 		size = MIN_SIZE;
+ 
+-	data->data = calloc(size, 1);
+-	if (!data->data) {
+-		free(data);
++	data = calloc(struct_size(data, data, size), 1);
++	if (!data)
+ 		return NULL;
+-	}
+ 
+ 	data->size = size;
+ 
+@@ -119,7 +114,6 @@ static struct ramfs_chunk *ramfs_get_chunk(unsigned long size)
+ 
+ static void ramfs_put_chunk(struct ramfs_chunk *data)
+ {
+-	free(data->data);
+ 	free(data);
+ }
  
 -- 
 2.39.2
