@@ -1,66 +1,66 @@
-Delivery-date: Thu, 16 May 2024 07:57:32 +0200
+Delivery-date: Thu, 16 May 2024 07:57:58 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7U7Q-00GqjJ-1m
+	id 1s7U7q-00Gqkn-1r
 	for lore@lore.pengutronix.de;
-	Thu, 16 May 2024 07:57:32 +0200
+	Thu, 16 May 2024 07:57:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7U7Q-00045S-1R
-	for lore@pengutronix.de; Thu, 16 May 2024 07:57:32 +0200
+	id 1s7U7o-0004C4-UJ
+	for lore@pengutronix.de; Thu, 16 May 2024 07:57:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CfxhzHuQ2eqXaFbXBF8uSDA5Mfz1E6Qpvu2EZPUcoAw=; b=MGFetMDwsgLCOhTpxJ9XkvwrCL
-	Gn8njzhNKxhWughANCB1WaraZPTAu/EJMC7def1xEJXgReXvENGsLT+twy2dyaPaQ+3IegeSJ28Wc
-	+NGNVVOwVoaXkMGM/AvN7nc7rLeafCgP5hnZyklndMR4i7tAowEc3fiS3bjW8x3RxY9dvHKHn9ZhY
-	DEE89/tnZnZUEuSPEfzuSbJgW+8U8zfscNH3qcOPAhWXfY4570pbt8lD1lypzDJ52eSnmP2Pv7oEB
-	Sf3TJk1pi+TJom20PrCPDGN8HPU7M0RiG58IFB5Y5nw/2LCmOCnOGMCLfsNIN7i9q2oYvoKGFNvKE
-	yhwsg8Ww==;
+	bh=FdilfBIDufDsqqhS8VrzjHe/60GcG7zTsGpzQML4Wqg=; b=lLuSYCUXmdMLtl5+jNrNZYFcp6
+	gRQGhvMNakBFVWc8fd0eVMYltEWnkGmG+Fi2O2iE4+GxDcXVDryPzR756SaoRfB4AxEF4qYRcqmoB
+	hYEy9a7daiMbVbCYc6e3ABHTe4qr65NEjx0SiM0JZxAwpIPFnffU21+YaFOW/0wHKPXIA5H6VB5kR
+	olAExjgx7rR7fTpDIQdaRrtbR2DJOsaqCcnroJtQBgSBOVC9zaYl0n96s/ro/ObWmuQwfsW0XoSrE
+	5P4ffQiZCir6CirSB7kUUPZUcaaqVgbzOpG4v/fvfFWdYy5NiehS0rIU3sf7leDorryHRtj7nqmVq
+	SHaf261A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7U6l-00000003oHA-2ptd;
-	Thu, 16 May 2024 05:56:51 +0000
+	id 1s7U7R-00000003oMY-1g5U;
+	Thu, 16 May 2024 05:57:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7U6h-00000003oGW-2K5I
+	id 1s7U7O-00000003oLt-0Aev
 	for barebox@lists.infradead.org;
-	Thu, 16 May 2024 05:56:49 +0000
+	Thu, 16 May 2024 05:57:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s7U6e-0003wc-HR; Thu, 16 May 2024 07:56:44 +0200
+	id 1s7U7M-00044O-Tl; Thu, 16 May 2024 07:57:28 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s7U6e-001exV-4x; Thu, 16 May 2024 07:56:44 +0200
+	id 1s7U7M-001exc-HM; Thu, 16 May 2024 07:57:28 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s7U6e-00BRCC-0H;
-	Thu, 16 May 2024 07:56:44 +0200
+	id 1s7U7M-00BRF4-1X;
+	Thu, 16 May 2024 07:57:28 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240515152410.3386237-1-a.fatoum@pengutronix.de>
-References: <20240515152410.3386237-1-a.fatoum@pengutronix.de>
-Message-Id: <171583900407.2726137.4567468168777283596.b4-ty@pengutronix.de>
-Date: Thu, 16 May 2024 07:56:44 +0200
+To: barebox@lists.infradead.org, Roland Hieber <rhi@pengutronix.de>
+In-Reply-To: <20240515131607.393479-1-rhi@pengutronix.de>
+References: <20240515131607.393479-1-rhi@pengutronix.de>
+Message-Id: <171583904847.2726313.4471850677431993129.b4-ty@pengutronix.de>
+Date: Thu, 16 May 2024 07:57:28 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240515_225647_720710_46924BFC 
-X-CRM114-Status: UNSURE (   5.21  )
+X-CRM114-CacheID: sfid-20240515_225730_324593_6CF45D88 
+X-CRM114-Status: UNSURE (   8.83  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -82,25 +82,26 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] fs: ramfs: allocate once instead of twice per ramfs
- chunk
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] ARM: dts: GoMe e143_01: fix default state priorities
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 15 May 2024 17:24:10 +0200, Ahmad Fatoum wrote:
-> There's no reason to maintain two allocations per chunk, so just collect
-> them both into the same calloc call.
+On Wed, 15 May 2024 15:16:08 +0200, Roland Hieber wrote:
+> During the initial installation we can forgo writing an initial state
+> variable set to the eMMC if it is zeroed, and if the default values
+> priorities are set correctly. Since only the first rootfs partition is
+> populated during the install process, it should be preferred over the
+> second rootfs.
 > 
-> No functional change.
 > 
-> 
+> [...]
 
 Applied, thanks!
 
-[1/1] fs: ramfs: allocate once instead of twice per ramfs chunk
-      https://git.pengutronix.de/cgit/barebox/commit/?id=6e502a0ca8d9 (link may not be stable)
+[1/1] ARM: dts: GoMe e143_01: fix default state priorities
+      https://git.pengutronix.de/cgit/barebox/commit/?id=a657866d377b (link may not be stable)
 
 Best regards,
 -- 
