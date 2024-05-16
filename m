@@ -1,65 +1,65 @@
-Delivery-date: Thu, 16 May 2024 09:09:13 +0200
+Delivery-date: Thu, 16 May 2024 09:09:15 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7VEn-00GuTO-33
+	id 1s7VEo-00GuUM-3C
 	for lore@lore.pengutronix.de;
-	Thu, 16 May 2024 09:09:13 +0200
+	Thu, 16 May 2024 09:09:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7VEl-0006T1-ME
-	for lore@pengutronix.de; Thu, 16 May 2024 09:09:13 +0200
+	id 1s7VEm-0006UE-Cm
+	for lore@pengutronix.de; Thu, 16 May 2024 09:09:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=zAYTdERhgHodjppt0PRtk4pRWJnSP3DPFVNBjM3kT/Q=; b=4JaZ5aN0i+nGv4/GBg3mJE0Ftt
-	nlWhg7ELBUyzLJjoADKhQ1Up8O1ES5U5Aq+aET/xwVV5KQdiU6gnE4iBgDRCQ0f9kO9Vp72GB4r59
-	uwRzmeTRkWuGWGjQKUKN7c/PsByBXry5sUCxkFe58LaMhWcqt88FRLS/npTx+9yyMsUU1UQC9cBE0
-	Kwb+LT29fbChDWajKkWFIQfz2aIp4g9tTHrIea22VKrfyvYU8adoRucUn4TSamlg+bHVz4JDn4zLm
-	7bMhzCCCNJ6Ke9c6X5nEx9LC2zDSnjImHtnQGBwors4xDJMKCundoRyHSSFUfVI4y78ZjLw/+8k+0
-	+GljfEow==;
+	bh=RB9+jIYZ3ogug6kyUyQcGnO0PYDd9MElE0MYiAlo2tA=; b=rgDXHMfnqJy90CAfIdUnVr7uno
+	9dAHbbjnqWV0D9ilSsRmahrf0mJP9McPG8O+7aXTfy+x8Y4NroCPW/TAjF3lvRrfDKWOV1+3Se4C1
+	o79p+klK1pq1LPYGgvDzNSucIq75orrvkXqIovth8hbZAuQdaIVShcE295/mylhcx8g/Zxxypvdnq
+	g3KQ9RD9/tJNmP40W6nEfYzc9I2+8n479bPuKnk5kn7mxBN3NuVWwumCkiaUOnLFHoX0erxsVbnSj
+	WWwG9hMrTLzVhAVaX8/i9C3O1sF55q5CQ8yIgEEo59gcRLYky+FRVrAr/9cd9a1ygRlchQz7hRYvL
+	ELnkcXbw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7VEE-00000003wQx-01la;
-	Thu, 16 May 2024 07:08:38 +0000
+	id 1s7VED-00000003wQf-1iWO;
+	Thu, 16 May 2024 07:08:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7VE4-00000003wLc-0gou
+	id 1s7VE4-00000003wLb-0hCY
 	for barebox@lists.infradead.org;
-	Thu, 16 May 2024 07:08:33 +0000
+	Thu, 16 May 2024 07:08:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s7VDz-00061q-Td; Thu, 16 May 2024 09:08:23 +0200
+	id 1s7VDz-00061p-S7; Thu, 16 May 2024 09:08:23 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s7VDz-001fT1-H5; Thu, 16 May 2024 09:08:23 +0200
+	id 1s7VDz-001fSy-FW; Thu, 16 May 2024 09:08:23 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s7VDz-00BWfZ-1N;
+	id 1s7VDz-00BWfZ-1D;
 	Thu, 16 May 2024 09:08:23 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Thu, 16 May 2024 09:08:17 +0200
-Message-Id: <20240516070822.2746845-3-s.hauer@pengutronix.de>
+Date: Thu, 16 May 2024 09:08:16 +0200
+Message-Id: <20240516070822.2746845-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240516070822.2746845-1-s.hauer@pengutronix.de>
 References: <20240516070822.2746845-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240516_000828_379142_791F3836 
-X-CRM114-Status: GOOD (  13.53  )
+X-CRM114-CacheID: sfid-20240516_000828_333804_ACD82187 
+X-CRM114-Status: GOOD (  13.26  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,7 +81,7 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/7] ARM: tx28: use cdev_open_by_name()
+Subject: [PATCH 1/7] ARM: Freescale i.MX23 evk: use cdev_open_by_name()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -91,14 +91,14 @@ instead and make sure it's closed afterwards when no longer needed.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/boards/karo-tx28/tx28-stk5.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ arch/arm/boards/freescale-mx23-evk/mx23-evk.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boards/karo-tx28/tx28-stk5.c b/arch/arm/boards/karo-tx28/tx28-stk5.c
-index d1fd526c00..01a14a33a3 100644
---- a/arch/arm/boards/karo-tx28/tx28-stk5.c
-+++ b/arch/arm/boards/karo-tx28/tx28-stk5.c
-@@ -310,20 +310,21 @@ static const uint32_t tx28_starterkit_pad_setup[] = {
+diff --git a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
+index d4de99eafb..b10a6e8dcd 100644
+--- a/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
++++ b/arch/arm/boards/freescale-mx23-evk/mx23-evk.c
+@@ -52,22 +52,21 @@ static struct fsl_usb2_platform_data usb_pdata = {
   */
  static int register_persistent_environment(void)
  {
@@ -106,7 +106,7 @@ index d1fd526c00..01a14a33a3 100644
 +	struct cdev *cdev, *env;
  
  	/*
- 	 * The TX28 STK5 has only one usable MCI card socket.
+ 	 * The imx23-olinuxino only has one MCI card socket.
  	 * So, we expect its name as "disk0".
  	 */
 -	cdev = cdev_by_name("disk0");
@@ -115,28 +115,28 @@ index d1fd526c00..01a14a33a3 100644
  		pr_err("No MCI card preset\n");
  		return -ENODEV;
  	}
+-
+-
 +	cdev_close(cdev);
  
- 	/* MCI card is present, also a usable partition on it? */
+ 	/* MCI card is present, also a useable partition on it? */
 -	cdev = cdev_by_name("disk0.1");
 +	cdev = cdev_open_by_name("disk0.1", O_RDONLY);
  	if (cdev == NULL) {
  		pr_err("No second partition available\n");
  		pr_info("Please create at least a second partition with"
-@@ -332,9 +333,11 @@ static int register_persistent_environment(void)
+@@ -76,8 +75,10 @@ static int register_persistent_environment(void)
  	}
  
  	/* use the full partition as our persistent environment storage */
 -	cdev = devfs_add_partition("disk0.1", 0, cdev->size,
 +	env = devfs_add_partition("disk0.1", 0, cdev->size,
- 					DEVFS_PARTITION_FIXED, "env0");
--	return PTR_ERR_OR_ZERO(cdev);
+ 						DEVFS_PARTITION_FIXED, "env0");
 +	cdev_close(cdev);
 +
-+	return PTR_ERR_OR_ZERO(env);
+ 	return PTR_ERR_OR_ZERO(cdev);
  }
  
- static void tx28_get_ethaddr(void)
 -- 
 2.39.2
 
