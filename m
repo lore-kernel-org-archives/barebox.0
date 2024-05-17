@@ -1,66 +1,66 @@
-Delivery-date: Fri, 17 May 2024 15:27:48 +0200
+Delivery-date: Fri, 17 May 2024 15:27:49 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7xci-001lP9-1n
+	id 1s7xcj-001lQ2-1b
 	for lore@lore.pengutronix.de;
-	Fri, 17 May 2024 15:27:48 +0200
+	Fri, 17 May 2024 15:27:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7xcg-0003ZJ-GB
-	for lore@pengutronix.de; Fri, 17 May 2024 15:27:48 +0200
+	id 1s7xci-0003ax-0x
+	for lore@pengutronix.de; Fri, 17 May 2024 15:27:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=GcPNpD/qIXDGdNgXiy88me1295Fmu/k+Jdin5O6FrQw=; b=lp51RJkqkGTUGHSnv8kv/oCm0Q
-	Jba3KMyDr9g5yvT57dFrWgn1ZfFGw1SxtLHyddsdu6pALK7coBcqSHmps8TFp5Mo33HsIAUeI4kMD
-	Y1zw6rmECEbYlS/kDrkg2PQnOrc6Nx5lvqp6jrnfbJVegbMu6ztWG4npHuL/zLJ9Cii9iicz2beuA
-	LcSwoqZW29Evnyctwjvi2CRkvvRQJGHNgSZ+TD9hC5SqlvnfSd8Yo+sbA9UTMj9syQ+swMLRInSFc
-	8tBFg6LkxSYJvN+KmDXvh3u+H6HUczdtmhOBJl2yDpkf5FxdUzt5DLTt/1dofD4L5XGiutqvx1mo4
-	rD4GCSAA==;
+	bh=9smvlVEXmmuwiqw/iLAtE6Ajww4Gxgdykq5oU5Y2SCM=; b=ybXKZMfVkY9aX6jM+E9kwg5m9r
+	TOMZw3IQ5JRebJC5jnmbZk7J/Me34Fn58eTqVedrKEjRnnmG44MHzB1ubNg7CF/E6NdSCy9pLL/m8
+	QzMRoLXBYCZSwS3+JpFHVwxAUMls5s6Ab3gpcSHNwko6JHZ3IPTqvirdOHixf9GNQ57S5Vw0pcUuU
+	ZRn81K+hKivRXPgkZIM1hkL9m/LPxwtrYkHmG5xF1AormELrNxmFOljfLs/Suwm+Q9s0v8XdTpIr/
+	jg2bx2SPnjCABoZqqKilS8RaQtksgWBvewcVwUY6zA/+N+P0oDJbJ7fn8VjuMgF2e84MP2vYzjIHh
+	TsqewrDg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7xc7-00000007wpM-137G;
-	Fri, 17 May 2024 13:27:11 +0000
+	id 1s7xc8-00000007wq4-3EH7;
+	Fri, 17 May 2024 13:27:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7xbx-00000007wjb-3pum
+	id 1s7xbx-00000007wjY-3yKa
 	for barebox@lists.infradead.org;
-	Fri, 17 May 2024 13:27:05 +0000
+	Fri, 17 May 2024 13:27:06 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7xbt-00032h-Ib; Fri, 17 May 2024 15:26:57 +0200
+	id 1s7xbt-00032f-G1; Fri, 17 May 2024 15:26:57 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7xbt-001sCI-5o; Fri, 17 May 2024 15:26:57 +0200
+	id 1s7xbt-001sCC-2v; Fri, 17 May 2024 15:26:57 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7xbt-00DEM4-0J;
+	id 1s7xbt-00DEM4-01;
 	Fri, 17 May 2024 15:26:57 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 17 May 2024 15:26:51 +0200
-Message-Id: <20240517132656.3151273-4-a.fatoum@pengutronix.de>
+Date: Fri, 17 May 2024 15:26:49 +0200
+Message-Id: <20240517132656.3151273-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240517132656.3151273-1-a.fatoum@pengutronix.de>
 References: <20240517132656.3151273-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240517_062702_150414_DFE9F854 
-X-CRM114-Status: GOOD (  18.84  )
+X-CRM114-CacheID: sfid-20240517_062702_347784_18804F1D 
+X-CRM114-Status: GOOD (  11.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,138 +82,166 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/8] kbuild: add support for merged defconfigs
+Subject: [PATCH 1/8] test: move common config fragments into common/boards/configs
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently use scripts/kconfig/merge_config.sh only in MAKEALL.
-Linux has been using it inside Kbuild as well to derive new defconfigs
-from the existing ones that differ only by a few options, e.g. to enable
-virtualization or to switch endianness.
+We'll start using these fragments inside Kbuild too for merged defconfigs
+to cut down on defconfigs that are largely duplicated, but differ only
+in a few options. To share such configs between architectures, we add
+common/boards/configs as a common fragment directory here and
+standardize on using .config as extension.
 
-This is useful for us in barebox as well to cut down on the number of
-configs and to avoid bitrot in the less used ones, e.g. a lot of AT91
-configs can probably be replaced with two lines in mach-at91/Makefile
-each this way.
-
-To support this, let's import scripts/Makefile.defconf from Linux, but
-we do some barebox-specific changes on it:
-
-  - We include it globally, instead of each architecture including it
-  - We implement a global way for architecture Makefiles to register
-    their generated defconfigs, so they are shown in the help text
-  - We look in common/boards/configs/ for fragments if there is no
-    architecture-specific fragment with the same name to allow sharing
-    fragments for common features
-
-As this adds configs that aren't located in the source tree,
-scripts/list-defconfigs.sh is adjusted to parse the help text instead,
-so CI is aware of the new targets.
+No functional change.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- Makefile                   |  6 +++++-
- scripts/Makefile.defconf   | 37 +++++++++++++++++++++++++++++++++++++
- scripts/list-defconfigs.sh | 20 ++++++++++----------
- 3 files changed, 52 insertions(+), 11 deletions(-)
- create mode 100644 scripts/Makefile.defconf
+ .github/workflows/build-defconfigs.yml                 |  8 +++++---
+ .github/workflows/test-labgrid-pytest.yml              |  6 ++++--
+ .../base.cfg => common/boards/configs/base.config      |  0
+ .../boards/configs/disable_size_check.config           |  0
+ .../boards/configs/disable_target_tools.config         |  0
+ .../boards/configs/enable_self_test.config             |  0
+ .../boards/configs/enable_werror.config                |  0
+ .../full.cfg => common/boards/configs/full.config      |  0
+ .../boards/configs/virtio-pci.config                   |  0
+ scripts/container.sh                                   |  2 +-
+ test/emulate.pl                                        | 10 +++++-----
+ test/x86/virtio@efi_defconfig.yaml                     |  2 +-
+ 12 files changed, 16 insertions(+), 12 deletions(-)
+ rename test/kconfig/base.cfg => common/boards/configs/base.config (100%)
+ rename test/kconfig/disable_size_check.kconf => common/boards/configs/disable_size_check.config (100%)
+ rename test/kconfig/disable_target_tools.kconf => common/boards/configs/disable_target_tools.config (100%)
+ rename test/kconfig/enable_self_test.kconf => common/boards/configs/enable_self_test.config (100%)
+ rename test/kconfig/enable_werror.kconf => common/boards/configs/enable_werror.config (100%)
+ rename test/kconfig/full.cfg => common/boards/configs/full.config (100%)
+ rename test/kconfig/virtio-pci.cfg => common/boards/configs/virtio-pci.config (100%)
 
-diff --git a/Makefile b/Makefile
-index 517b54bd9e6d..93d0b58341b7 100644
---- a/Makefile
-+++ b/Makefile
-@@ -535,6 +535,8 @@ ifdef config-build
- # *config targets only - make sure prerequisites are updated, and descend
- # in scripts/kconfig to make the *config target
+diff --git a/.github/workflows/build-defconfigs.yml b/.github/workflows/build-defconfigs.yml
+index 012852053e87..6690b9db25b8 100644
+--- a/.github/workflows/build-defconfigs.yml
++++ b/.github/workflows/build-defconfigs.yml
+@@ -39,6 +39,8 @@ jobs:
  
-+include $(srctree)/scripts/Makefile.defconf
-+
- # Read arch specific Makefile to set KBUILD_DEFCONFIG as needed.
- # KBUILD_DEFCONFIG may point out an alternative default configuration
- # used for 'make defconfig'
-@@ -1225,7 +1227,9 @@ PHONY += compile_commands.json
- # ---------------------------------------------------------------------------
+         ./test/generate-dummy-fw.sh
  
- boards := $(wildcard $(srctree)/arch/$(SRCARCH)/configs/*_defconfig)
--boards := $(sort $(notdir $(boards)))
-+boards := $(sort $(notdir $(boards)) $(generated_configs))
-+
-+PHONY += $(generated_configs)
+-        ./MAKEALL -O build-${{matrix.arch}} -k test/kconfig/disable_size_check.kconf \
+-                -k test/kconfig/disable_target_tools.kconf \
+-                -k test/kconfig/enable_werror.kconf '${{matrix.config}}'
++        ./MAKEALL -O build-${{matrix.arch}} \
++                -k common/boards/configs/disable_size_check.config \
++                -k common/boards/configs/disable_target_tools.config \
++                -k common/boards/configs/enable_werror.config \
++                '${{matrix.config}}'
+diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
+index 6eb38cc03e6b..21d189880941 100644
+--- a/.github/workflows/test-labgrid-pytest.yml
++++ b/.github/workflows/test-labgrid-pytest.yml
+@@ -55,8 +55,10 @@ jobs:
+       run: |
+         export ARCH=${{matrix.arch}}
  
- help:
- 	@echo  'Cleaning targets:'
-diff --git a/scripts/Makefile.defconf b/scripts/Makefile.defconf
-new file mode 100644
-index 000000000000..93c848bb5a12
---- /dev/null
-+++ b/scripts/Makefile.defconf
-@@ -0,0 +1,37 @@
-+# SPDX-License-Identifier: GPL-2.0
-+# Configuration heplers
-+
-+# Creates 'merged defconfigs'
-+# compared to the Linux versions, this also looks for global config fragments
-+# in common/boards/configs/ if no global fragments exist.
-+# ---------------------------------------------------------------------------
-+# Usage:
-+#   $(call merge_into_defconfig,base_config,config_fragment1 config_fragment2 ...)
-+#
-+# Input config fragments without '.config' suffix
-+define merge_into_defconfig
-+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
-+		-m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$(1) \
-+		$(foreach config,$(2),$(firstword \
-+			$(wildcard $(srctree)/arch/$(SRCARCH)/configs/$(config).config) \
-+			$(wildcard $(srctree)/common/boards/configs/$(config).config) \
-+		))
-+	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
-+endef
-+
-+
-+# Creates 'merged defconfigs without warning about overrides'
-+# ---------------------------------------------------------------------------
-+# Usage:
-+#   $(call merge_into_defconfig_override,base_config,config_fragment1 config_fragment2 ...)
-+#
-+# Input config fragments without '.config' suffix
-+define merge_into_defconfig_override
-+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/kconfig/merge_config.sh \
-+		-Q -m -O $(objtree) $(srctree)/arch/$(SRCARCH)/configs/$(1) \
-+		$(foreach config,$(2),$(firstword \
-+			$(wildcard $(srctree)/arch/$(SRCARCH)/configs/$(config).config) \
-+			$(wildcard $(srctree)/common/boards/configs/$(config).config) \
-+		))
-+	+$(Q)$(MAKE) -f $(srctree)/Makefile olddefconfig
-+endef
-diff --git a/scripts/list-defconfigs.sh b/scripts/list-defconfigs.sh
-index eeae9fbfdc30..d7516425f8e3 100755
---- a/scripts/list-defconfigs.sh
-+++ b/scripts/list-defconfigs.sh
-@@ -2,14 +2,14 @@
+-        ./MAKEALL -O build-${{matrix.arch}} -k test/kconfig/enable_self_test.kconf \
+-                -k test/kconfig/disable_target_tools.kconf ${{matrix.defconfig}}
++        ./MAKEALL -O build-${{matrix.arch}} \
++                -k common/boards/configs/enable_self_test.config \
++                -k common/boards/configs/disable_target_tools.config \
++                ${{matrix.defconfig}}
+ 
+         if [ ${{matrix.arch}} = "riscv" ]; then
+           cp /usr/share/qemu/opensbi-riscv32-generic-fw_dynamic.bin build-${{matrix.arch}}
+diff --git a/test/kconfig/base.cfg b/common/boards/configs/base.config
+similarity index 100%
+rename from test/kconfig/base.cfg
+rename to common/boards/configs/base.config
+diff --git a/test/kconfig/disable_size_check.kconf b/common/boards/configs/disable_size_check.config
+similarity index 100%
+rename from test/kconfig/disable_size_check.kconf
+rename to common/boards/configs/disable_size_check.config
+diff --git a/test/kconfig/disable_target_tools.kconf b/common/boards/configs/disable_target_tools.config
+similarity index 100%
+rename from test/kconfig/disable_target_tools.kconf
+rename to common/boards/configs/disable_target_tools.config
+diff --git a/test/kconfig/enable_self_test.kconf b/common/boards/configs/enable_self_test.config
+similarity index 100%
+rename from test/kconfig/enable_self_test.kconf
+rename to common/boards/configs/enable_self_test.config
+diff --git a/test/kconfig/enable_werror.kconf b/common/boards/configs/enable_werror.config
+similarity index 100%
+rename from test/kconfig/enable_werror.kconf
+rename to common/boards/configs/enable_werror.config
+diff --git a/test/kconfig/full.cfg b/common/boards/configs/full.config
+similarity index 100%
+rename from test/kconfig/full.cfg
+rename to common/boards/configs/full.config
+diff --git a/test/kconfig/virtio-pci.cfg b/common/boards/configs/virtio-pci.config
+similarity index 100%
+rename from test/kconfig/virtio-pci.cfg
+rename to common/boards/configs/virtio-pci.config
+diff --git a/scripts/container.sh b/scripts/container.sh
+index dff6546c2cf6..6bfb070692f5 100755
+--- a/scripts/container.sh
++++ b/scripts/container.sh
+@@ -2,7 +2,7 @@
  # SPDX-License-Identifier: GPL-2.0-only
- #
- # Output json formatted defconfig list for Github Action consumption
-+ARCH=${@:-$(for a in arch/*/; do basename $a; done)}
  
--ARCH=${@:-*}
--
--cd arch
--
--archs=$(for arch in $ARCH; do
--	ls -1 $arch/configs | xargs -i printf '{ "arch": "%s", "config": "%s" }\n' \
--		"$arch" "{}" | paste -sd ',' -
--done | paste -sd ',' -)
--
--echo '{ "include" : '" [ $archs ] }"
-+echo '{ "include" : [ '
-+for arch in $ARCH; do
-+	make ARCH=$arch CROSS_COMPILE= help | \
-+		awk '/_defconfig/ { print $1  }' | \
-+		xargs -i printf '{ "arch": "%s", "config": "%s" }\n' \
-+		"$arch" "{}" | \
-+		paste -sd ',' -
-+done | paste -sd ',' -
-+echo '] }'
+ CONTAINER=${CONTAINER:-ghcr.io/barebox/barebox/barebox-ci:latest}
+-export KCONFIG_ADD="test/kconfig/disable_target_tools.kconf $KCONFIG_ADD"
++export KCONFIG_ADD="common/boards/configs/disable_target_tools.config $KCONFIG_ADD"
+ 
+ while getopts "c:uh" opt; do
+ 	case "$opt" in
+diff --git a/test/emulate.pl b/test/emulate.pl
+index a4ca6b7aee6e..086fae0f7708 100755
+--- a/test/emulate.pl
++++ b/test/emulate.pl
+@@ -201,8 +201,8 @@ sub build {
+ 	}
+     }
+ 
+-    push @TUXMAKE_ARGS, "--kconfig-add=test/kconfig/base.cfg" if $kconfig_base || $kconfig_full;
+-    push @TUXMAKE_ARGS, "--kconfig-add=test/kconfig/full.cfg" if $kconfig_full;
++    push @TUXMAKE_ARGS, "--kconfig-add=common/boards/configs/base.config" if $kconfig_base || $kconfig_full;
++    push @TUXMAKE_ARGS, "--kconfig-add=common/boards/configs/full.config" if $kconfig_full;
+ 
+     for (@kconfig_add) {
+ 	push @TUXMAKE_ARGS, "--kconfig-add=$_";
+@@ -511,19 +511,19 @@ Supported: null, podman-local, podman, docker, docker-local.
+ 
+ =item B<--no-kconfig-base>
+ 
+-Don't apply test/kconfig/base.cfg. This may lead to more tests being
++Don't apply common/boards/configs/base.config. This may lead to more tests being
+ skipped.
+ 
+ =item B<--kconfig-full>
+ 
+-Applies test/kconfig/full.cfg on top of base.cfg. This enables as much as
++Applies common/boards/configs/full.config on top of base.config. This enables as much as
+ possible to avoid skipping tests for disabled functionality.
+ 
+ =item B<--kconfig-add>=%s, B<-K>=%s
+ 
+ Extra kconfig fragments, merged on top of the defconfig and Kconfig
+ fragments described by the YAML. In tree configuration fragment
+-(e.g. `test/kconfig/virtio-pci.config`), path to local file, URL,
++(e.g. `common/boards/configs/virtio-pci.config`), path to local file, URL,
+ `CONFIG_*=[y|m|n]`, or `# CONFIG_* is not set` are supported.
+ Can be specified multiple times, and will be merged in the order given.
+ 
+diff --git a/test/x86/virtio@efi_defconfig.yaml b/test/x86/virtio@efi_defconfig.yaml
+index 83340d19ddef..9ff4ff5a4e5a 100644
+--- a/test/x86/virtio@efi_defconfig.yaml
++++ b/test/x86/virtio@efi_defconfig.yaml
+@@ -17,7 +17,7 @@ targets:
+     runner:
+       tuxmake_arch: x86_64
+       kconfig_add:
+-        - test/kconfig/virtio-pci.cfg
++        - common/boards/configs/virtio-pci.config
+         - CONFIG_DRIVER_SERIAL_NS16550=y
+         - CONFIG_CONSOLE_ACTIVATE_FIRST=y # avoid duplicate output
+ images:
 -- 
 2.39.2
 
