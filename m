@@ -3,66 +3,64 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7rLn-000wqJ-0Y
+	id 1s7rLn-000wqH-0O
 	for lore@lore.pengutronix.de;
 	Fri, 17 May 2024 08:45:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7rLm-0006w9-2x
+	id 1s7rLm-0006wA-2a
 	for lore@pengutronix.de; Fri, 17 May 2024 08:45:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dKoFQn+9x3HJlRHhBpWHhq7xemBptH0kAwxoDt82c2s=; b=I1HQY1R4vu5D0NziJTb4glnk5S
-	VeFifiBn+BmlLURqtP2/gWwm0PqLnOq6JuvTobpMi4utpDr3CWATm6eTtOWaXHW4YY2P/TPeKJ5IT
-	FKLX6BOuOV5p6mZ0IFDme7gygQWBZ9o+/I0zO+/fPhWYGQ3m7m61ur6ZNfGOCfO0qf1/2LbOdDX+S
-	f9ne6j5vwsoXTWN0QLNtH03R8/XpzSnuEPMjoiGG+ZkFqTUCPv2Avd5SZQt/hRoA09lOzkOw53s/e
-	klkk8wUttIGruSOrx5uNL/lDfVCIPbMJN4yHHbzN4CQD4J2LRmhxsvZJEGbPekYKaXr4naNMAj7Tf
-	XKacSiog==;
+	bh=jLESi186QKafWWDLfLzCJ4JqFHHgF+SDs2dezB+l660=; b=toRyIHbZ4+KbMJbLMW9i+7bfzl
+	lnh4eYjYHPOQrs/s4t7obM1z0Ews7CJbL2U6NrAZT4vupJVBZaafqVh958Aj0RSaoa/ihSUQuM9AE
+	a1HqMDTqPYTABqV9eDI2symzNWPUghVEb/PHHsFi7bIIgv+65APHMyz6G/MyiOuMLGP4r44vV2lWA
+	hDcJ9VjHNbsiFFoYTON3U5ECGFViajXfYyHVrpU6gZd5Mg0vpSuE2XnffqG/0VVC6YCt8oPqfR84z
+	SNmQvkvXY6Nz5ZjdTVpXyL15vwwZnpDmltxDBFojBQoKa85u1oBNtUNh2tI4JleZ0Y3X6+mNQ1qRY
+	UytZ4iKg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7rLH-00000006yVC-0LY9;
-	Fri, 17 May 2024 06:45:23 +0000
+	id 1s7rLG-00000006yUp-256B;
+	Fri, 17 May 2024 06:45:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7rL7-00000006yQy-49pl
+	id 1s7rL8-00000006yQz-076A
 	for barebox@lists.infradead.org;
-	Fri, 17 May 2024 06:45:17 +0000
+	Fri, 17 May 2024 06:45:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7rL6-0006X7-TR
-	for barebox@lists.infradead.org; Fri, 17 May 2024 08:45:12 +0200
+	id 1s7rL6-0006Ws-Oq; Fri, 17 May 2024 08:45:12 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7rL6-001pev-H1
-	for barebox@lists.infradead.org; Fri, 17 May 2024 08:45:12 +0200
+	id 1s7rL6-001pem-CI; Fri, 17 May 2024 08:45:12 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7rL6-00Emcc-1N
-	for barebox@lists.infradead.org;
+	id 1s7rL6-00Emcc-0s;
 	Fri, 17 May 2024 08:45:12 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Fri, 17 May 2024 08:45:10 +0200
-Message-Id: <20240517064511.3307462-6-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Fri, 17 May 2024 08:45:07 +0200
+Message-Id: <20240517064511.3307462-3-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240517064511.3307462-1-a.fatoum@pengutronix.de>
 References: <20240517064511.3307462-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240516_234514_290083_BAA88FA6 
-X-CRM114-Status: GOOD (  30.81  )
+X-CRM114-CacheID: sfid-20240516_234514_300253_16F5E843 
+X-CRM114-Status: GOOD (  16.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,308 +82,231 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 5/6] add handoff-data support
+Subject: [PATCH v2 2/6] treewide: use request_barebox_region for possible barebox memory regions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+This is a prerequisite for allowing architectures to call
+register_barebox_area() to register the whole barebox region.
 
-We need to pass data from the PBL to barebox proper. Right now we do
-this with passing the data in registers which is quite limited. As the
-amount of information that has to be passed increases it's time to
-overcome this limitation.
+No functional change (yet).
 
-With this patch we introduce handoff-data which is a linked list of
-memory blobs that can be passed from PBL to barebox proper.
-
-The data format is done in a way that enables us to compile the list
-entries and the data into the binary, so that no memory allocations
-are needed in PBL.
-
-Link: https://lore.barebox.org/20240430105310.3149242-3-s.hauer@pengutronix.de
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
 v1 -> v2:
-  - move header into pbl/ subdirectory
-  - implement __handoff_data_size with head as argument
-  - call new request_barebox_region instead of request_sdram_region
+  - new patch
 ---
- include/pbl/handoff-data.h |  53 ++++++++++
- pbl/Makefile               |   1 +
- pbl/handoff-data.c         | 194 +++++++++++++++++++++++++++++++++++++
- 3 files changed, 248 insertions(+)
- create mode 100644 include/pbl/handoff-data.h
- create mode 100644 pbl/handoff-data.c
+ arch/arm/cpu/cpu.c              | 2 +-
+ arch/arm/cpu/mmu_32.c           | 8 ++++----
+ arch/arm/cpu/mmu_64.c           | 4 ++--
+ arch/arm/cpu/start.c            | 2 +-
+ arch/arm/mach-imx/scratch.c     | 2 +-
+ arch/mips/lib/cpu-probe.c       | 2 +-
+ arch/powerpc/mach-mpc5xxx/cpu.c | 2 +-
+ arch/powerpc/mach-mpc85xx/cpu.c | 2 +-
+ arch/riscv/boot/start.c         | 4 ++--
+ arch/riscv/cpu/core.c           | 2 +-
+ common/memory.c                 | 6 +++---
+ fs/pstore/ram_core.c            | 2 +-
+ 12 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/include/pbl/handoff-data.h b/include/pbl/handoff-data.h
-new file mode 100644
-index 000000000000..7f883421df16
---- /dev/null
-+++ b/include/pbl/handoff-data.h
-@@ -0,0 +1,53 @@
-+#ifndef __PBL_HANDOFF_DATA_H
-+#define __PBL_HANDOFF_DATA_H
-+
-+#include <linux/list.h>
-+
-+struct handoff_data {
-+	struct list_head entries;
-+};
-+
-+#define HANDOFF_DATA_BAREBOX(n)		(0x28061971 + (n))
-+#define HANDOFF_DATA_INTERNAL_DT	HANDOFF_DATA_BAREBOX(0)
-+#define HANDOFF_DATA_INTERNAL_DT_Z	HANDOFF_DATA_BAREBOX(1)
-+#define HANDOFF_DATA_EXTERNAL_DT	HANDOFF_DATA_BAREBOX(2)
-+#define HANDOFF_DATA_BOARDDATA		HANDOFF_DATA_BAREBOX(3)
-+
-+#define HANDOFF_DATA_BOARD(n)		(0x951726fb + (n))
-+
-+struct handoff_data_entry {
-+	struct list_head list;
-+	void *data;
-+	size_t size;
-+	unsigned int cookie;
-+#define HANDOFF_DATA_FLAG_NO_COPY	BIT(0)
-+	unsigned int flags;
-+};
-+
-+#define handoff_data_add_flags(_cookie, _data, _size, _flags)	\
-+	do {							\
-+		static struct handoff_data_entry hde;		\
-+		hde.cookie = _cookie;				\
-+		hde.data = _data;				\
-+		hde.size = _size;				\
-+		hde.flags = _flags;				\
-+								\
-+		handoff_data_add_entry(&hde);			\
-+	} while (0);
-+
-+#define handoff_data_add(_cookie, _data, _size)			\
-+	handoff_data_add_flags((_cookie), (_data), (_size), 0)
-+
-+void handoff_data_add_entry(struct handoff_data_entry *entry);
-+void handoff_data_move(void *dest);
-+void handoff_data_set(struct handoff_data *handoff);
-+void *handoff_data_get_entry(unsigned int cookie, size_t *size);
-+int handoff_data_show(void);
-+
-+size_t __handoff_data_size(const struct handoff_data *hd);
-+static inline size_t handoff_data_size(void)
-+{
-+	return __handoff_data_size(NULL);
-+}
-+
-+#endif /* __PBL_HANDOFF_DATA_H */
-diff --git a/pbl/Makefile b/pbl/Makefile
-index f6e98e78be3f..79837c56114a 100644
---- a/pbl/Makefile
-+++ b/pbl/Makefile
-@@ -8,3 +8,4 @@ pbl-y += string.o
- pbl-y += decomp.o
- pbl-$(CONFIG_LIBFDT) += fdt.o
- pbl-$(CONFIG_PBL_CONSOLE) += console.o
-+obj-pbl-y += handoff-data.o
-diff --git a/pbl/handoff-data.c b/pbl/handoff-data.c
-new file mode 100644
-index 000000000000..e6745797c038
---- /dev/null
-+++ b/pbl/handoff-data.c
-@@ -0,0 +1,194 @@
-+// SPDX-License-Identifier: GPL-2.0
-+#include <common.h>
-+#include <pbl/handoff-data.h>
-+#include <init.h>
-+#include <linux/list.h>
-+#include <memory.h>
-+
-+static struct handoff_data *handoff_data = (void *)-1;
-+
-+static struct handoff_data *handoff_data_get(void)
-+{
-+	static struct handoff_data __handoff_data;
-+
-+	/*
-+	 * Sometimes the PBL copies itself to some other location and is
-+	 * re-entered at that location. For example on some i.MX SoCs we have
-+	 * to move the PBL out of the SRAM (which will be occupied by the TF-A
-+	 * later). We force the handoff_data variable into the data segment.
-+	 * When moving the PBL somewhere else with handoff_data set we move the
-+	 * content of the variable with it and thus find it to have the correct
-+	 * value in the new PBL.
-+	 */
-+	if (handoff_data == (void *)-1) {
-+		handoff_data = &__handoff_data;
-+		INIT_LIST_HEAD(&handoff_data->entries);
-+	}
-+
-+	return handoff_data;
-+}
-+
-+/**
-+ * handoff_data_set - set the handoff data to be at a specified pointer
-+ * @handoff: the place where the handoff data is
-+ *
-+ * This sets the handoff data to @handoff. To be used by barebox proper
-+ * to pass the place where the handoff data has been placed by the PBL.
-+ */
-+void handoff_data_set(struct handoff_data *handoff)
-+{
-+	handoff_data = handoff;
-+}
-+
-+/**
-+ * handoff_data_add_entry - add a new handoff data entry
-+ * @hde: the new entry
-+ *
-+ * This adds a new handoff data entry.
-+ */
-+void handoff_data_add_entry(struct handoff_data_entry *hde)
-+{
-+	struct handoff_data *hd = handoff_data_get();
-+
-+	list_add_tail(&hde->list, &hd->entries);
-+}
-+
-+/**
-+ * handoff_data_size - calculate the handoff data size
-+ *
-+ * This calculates the size needed for the current handoff data
-+ * when put to a contiguous memory regions. Can be used to get the
-+ * size needed in preparation for a handoff_data_move()
-+ */
-+size_t __handoff_data_size(const struct handoff_data *hd)
-+{
-+	struct handoff_data_entry *hde;
-+	size_t size = 0;
-+	size_t dsize = 0;
-+
-+	if (!hd)
-+		hd = handoff_data_get();
-+
-+	dsize += sizeof(*hd);
-+
-+	list_for_each_entry(hde, &hd->entries, list) {
-+		dsize += sizeof(*hde);
-+		size += ALIGN(hde->size, 8);
-+	}
-+
-+	return dsize + size;
-+}
-+
-+/**
-+ * handoff_data_move - move handoff data to specified destination
-+ * @dest: The place where to move the handoff data to
-+ *
-+ * This moves the handoff data to @dest and also sets the new location
-+ * to @dest. This can be used to move the handoff data to a contiguous
-+ * region outside the binary. Note once moved no data should be added,
-+ * as that would make the handoff_data discontigoous again.
-+ */
-+void handoff_data_move(void *dest)
-+{
-+	struct handoff_data *hd = handoff_data_get();
-+	struct handoff_data *hdnew = dest;
-+	struct handoff_data_entry *hde;
-+
-+	INIT_LIST_HEAD(&hdnew->entries);
-+
-+	dest = hdnew + 1;
-+
-+	list_for_each_entry(hde, &hd->entries, list) {
-+		struct handoff_data_entry *newde = dest;
-+
-+		dest = newde + 1;
-+
-+		if (hde->flags & HANDOFF_DATA_FLAG_NO_COPY) {
-+			newde->data = hde->data;
-+		} else {
-+			memcpy(dest, hde->data, hde->size);
-+			newde->data = dest;
-+			dest += ALIGN(hde->size, 8);
-+		}
-+
-+		newde->size = hde->size;
-+		newde->cookie = hde->cookie;
-+		list_add_tail(&newde->list, &hdnew->entries);
-+	}
-+
-+	handoff_data_set(hdnew);
-+}
-+
-+/**
-+ * handoff_data_get_entry - get the memory associated to a cookie
-+ * @cookie: the cookie the data is identified with
-+ * @size: size of the memory returned
-+ *
-+ * This returns the memory associated with @cookie.
-+ */
-+void *handoff_data_get_entry(unsigned int cookie, size_t *size)
-+{
-+	struct handoff_data *hd = handoff_data_get();
-+	struct handoff_data_entry *hde;
-+
-+	list_for_each_entry(hde, &hd->entries, list) {
-+		if (hde->cookie == cookie) {
-+			*size = hde->size;
-+			return hde->data;
-+		}
-+	}
-+
-+	return NULL;
-+}
-+
-+/**
-+ * handoff_data_show - show current handoff data entries
-+ *
-+ * This prints the current handoff data entries to the console for debugging
-+ * purposes.
-+ */
-+int handoff_data_show(void)
-+{
-+	struct handoff_data *hd = handoff_data_get();
-+	struct handoff_data_entry *hde;
-+
-+	list_for_each_entry(hde, &hd->entries, list) {
-+		printf("handoff 0x%08x at 0x%p (size %zu)\n",
-+			hde->cookie, hde->data, hde->size);
-+	}
-+
-+	return 0;
-+}
-+
-+static const char *handoff_data_entry_name(struct handoff_data_entry *hde)
-+{
-+	static char name[sizeof("handoff 12345678")];
-+
-+	switch (hde->cookie) {
-+	case HANDOFF_DATA_INTERNAL_DT:
-+		return "handoff FDT (internal)";
-+	case HANDOFF_DATA_INTERNAL_DT_Z:
-+		return "handoff FDT (internal, compressed)";
-+	case HANDOFF_DATA_EXTERNAL_DT:
-+		return "handoff FDT (external)";
-+	case HANDOFF_DATA_BOARDDATA:
-+		return "handoff boarddata";
-+	default:
-+		sprintf(name, "handoff %08x", hde->cookie);
-+		return name;
-+	}
-+}
-+
-+static int handoff_data_reserve(void)
-+{
-+	struct handoff_data *hd = handoff_data_get();
-+	struct handoff_data_entry *hde;
-+
-+	list_for_each_entry(hde, &hd->entries, list) {
-+		const char *name = handoff_data_entry_name(hde);
-+		request_barebox_region(name, (resource_size_t)hde->data, hde->size);
-+	}
-+
-+	return 0;
-+}
-+late_initcall(handoff_data_reserve);
+diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
+index 5f1ffe9a3c76..b00e9e51e5ea 100644
+--- a/arch/arm/cpu/cpu.c
++++ b/arch/arm/cpu/cpu.c
+@@ -102,7 +102,7 @@ static int arm_request_stack(void)
+ 	if (efi_is_payload())
+ 		return 0;
+ 
+-	if (!request_sdram_region("stack", arm_stack_top - STACK_SIZE, STACK_SIZE))
++	if (!request_barebox_region("stack", arm_stack_top - STACK_SIZE, STACK_SIZE))
+ 		pr_err("Error: Cannot request SDRAM region for stack\n");
+ 
+ 	return 0;
+diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
+index 3a8d025ecdee..24d83d933661 100644
+--- a/arch/arm/cpu/mmu_32.c
++++ b/arch/arm/cpu/mmu_32.c
+@@ -390,7 +390,7 @@ static void create_vector_table(unsigned long adr)
+ 	void *vectors;
+ 	u32 *pte;
+ 
+-	vectors_sdram = request_sdram_region("vector table", adr, PAGE_SIZE);
++	vectors_sdram = request_barebox_region("vector table", adr, PAGE_SIZE);
+ 	if (vectors_sdram) {
+ 		/*
+ 		 * The vector table address is inside the SDRAM physical
+@@ -486,7 +486,7 @@ static void create_guard_page(void)
+ 		return;
+ 
+ 	guard_page = arm_mem_guard_page_get();
+-	request_sdram_region("guard page", guard_page, PAGE_SIZE);
++	request_barebox_region("guard page", guard_page, PAGE_SIZE);
+ 	remap_range((void *)guard_page, PAGE_SIZE, MAP_FAULT);
+ 
+ 	pr_debug("Created guard page\n");
+@@ -535,8 +535,8 @@ void __mmu_init(bool mmu_on)
+ 	struct memory_bank *bank;
+ 	uint32_t *ttb = get_ttb();
+ 
+-	if (!request_sdram_region("ttb", (unsigned long)ttb,
+-				  ARM_EARLY_PAGETABLE_SIZE))
++	if (!request_barebox_region("ttb", (unsigned long)ttb,
++				    ARM_EARLY_PAGETABLE_SIZE))
+ 		/*
+ 		 * This can mean that:
+ 		 * - the early MMU code has put the ttb into a place
+diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
+index 71c0d8930e63..7c7834201b65 100644
+--- a/arch/arm/cpu/mmu_64.c
++++ b/arch/arm/cpu/mmu_64.c
+@@ -219,7 +219,7 @@ static void create_guard_page(void)
+ 		return;
+ 
+ 	guard_page = arm_mem_guard_page_get();
+-	request_sdram_region("guard page", guard_page, PAGE_SIZE);
++	request_barebox_region("guard page", guard_page, PAGE_SIZE);
+ 	remap_range((void *)guard_page, PAGE_SIZE, MAP_FAULT);
+ 
+ 	pr_debug("Created guard page\n");
+@@ -233,7 +233,7 @@ void __mmu_init(bool mmu_on)
+ 	uint64_t *ttb = get_ttb();
+ 	struct memory_bank *bank;
+ 
+-	if (!request_sdram_region("ttb", (unsigned long)ttb,
++	if (!request_barebox_region("ttb", (unsigned long)ttb,
+ 				  ARM_EARLY_PAGETABLE_SIZE))
+ 		/*
+ 		 * This can mean that:
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 2adc60fa8831..a73224bab930 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -134,7 +134,7 @@ EXPORT_SYMBOL_GPL(arm_mem_membase_get);
+ static int barebox_memory_areas_init(void)
+ {
+ 	if(barebox_boarddata)
+-		request_sdram_region("board data", (unsigned long)barebox_boarddata,
++		request_barebox_region("board data", (unsigned long)barebox_boarddata,
+ 				     barebox_boarddata_size);
+ 
+ 	if (IS_ENABLED(CONFIG_KASAN))
+diff --git a/arch/arm/mach-imx/scratch.c b/arch/arm/mach-imx/scratch.c
+index 60d15a4f1a33..002b499fab3a 100644
+--- a/arch/arm/mach-imx/scratch.c
++++ b/arch/arm/mach-imx/scratch.c
+@@ -95,7 +95,7 @@ const struct optee_header *imx_scratch_get_optee_hdr(void)
+ 
+ static int imx8m_reserve_scratch_area(void)
+ {
+-	return PTR_ERR_OR_ZERO(request_sdram_region("scratch area",
++	return PTR_ERR_OR_ZERO(request_barebox_region("scratch area",
+ 				    (ulong)arm_mem_scratch_get(),
+ 				    sizeof(struct imx_scratch_space)));
+ }
+diff --git a/arch/mips/lib/cpu-probe.c b/arch/mips/lib/cpu-probe.c
+index fc202815973f..ccb27a81497f 100644
+--- a/arch/mips/lib/cpu-probe.c
++++ b/arch/mips/lib/cpu-probe.c
+@@ -231,7 +231,7 @@ unsigned long mips_stack_top;
+ 
+ static int mips_request_stack(void)
+ {
+-	if (!request_sdram_region("stack", mips_stack_top - STACK_SIZE, STACK_SIZE))
++	if (!request_barebox_region("stack", mips_stack_top - STACK_SIZE, STACK_SIZE))
+ 		pr_err("Error: Cannot request SDRAM region for stack\n");
+ 
+ 	return 0;
+diff --git a/arch/powerpc/mach-mpc5xxx/cpu.c b/arch/powerpc/mach-mpc5xxx/cpu.c
+index 9c99bdd26f9b..647109b7fb63 100644
+--- a/arch/powerpc/mach-mpc5xxx/cpu.c
++++ b/arch/powerpc/mach-mpc5xxx/cpu.c
+@@ -40,7 +40,7 @@ static int mpc5xxx_reserve_region(void)
+ 	struct resource *r;
+ 
+ 	/* keep this in sync with the assembler routines setting up the stack */
+-	r = request_sdram_region("stack", _text_base - STACK_SIZE, STACK_SIZE);
++	r = request_barebox_region("stack", _text_base - STACK_SIZE, STACK_SIZE);
+ 	if (r == NULL) {
+ 		pr_err("Failed to request stack region at: 0x%08lx/0x%08lx\n",
+ 			_text_base - STACK_SIZE, _text_base - 1);
+diff --git a/arch/powerpc/mach-mpc85xx/cpu.c b/arch/powerpc/mach-mpc85xx/cpu.c
+index 2119352f84a7..acfd4699a2ff 100644
+--- a/arch/powerpc/mach-mpc85xx/cpu.c
++++ b/arch/powerpc/mach-mpc85xx/cpu.c
+@@ -96,7 +96,7 @@ phys_size_t fsl_get_effective_memsize(void)
+ 
+ static int fsl_reserve_region(void)
+ {
+-	request_sdram_region("stack", _text_base - STACK_SIZE,
++	request_barebox_region("stack", _text_base - STACK_SIZE,
+ 			STACK_SIZE);
+ 	return 0;
+ }
+diff --git a/arch/riscv/boot/start.c b/arch/riscv/boot/start.c
+index d20526293bac..2e18105bbfb3 100644
+--- a/arch/riscv/boot/start.c
++++ b/arch/riscv/boot/start.c
+@@ -98,8 +98,8 @@ EXPORT_SYMBOL_GPL(riscv_mem_endmem_get);
+ static int barebox_memory_areas_init(void)
+ {
+ 	if(barebox_boarddata)
+-		request_sdram_region("board data", (unsigned long)barebox_boarddata,
+-				     barebox_boarddata_size);
++		request_barebox_region("board data", (unsigned long)barebox_boarddata,
++				       barebox_boarddata_size);
+ 
+ 	return 0;
+ }
+diff --git a/arch/riscv/cpu/core.c b/arch/riscv/cpu/core.c
+index 38aa40275829..ad9030ede78b 100644
+--- a/arch/riscv/cpu/core.c
++++ b/arch/riscv/cpu/core.c
+@@ -28,7 +28,7 @@
+ static int riscv_request_stack(void)
+ {
+ 	extern unsigned long riscv_stack_top;
+-	return PTR_ERR_OR_ZERO(request_sdram_region("stack", riscv_stack_top - STACK_SIZE, STACK_SIZE));
++	return PTR_ERR_OR_ZERO(request_barebox_region("stack", riscv_stack_top - STACK_SIZE, STACK_SIZE));
+ }
+ coredevice_initcall(riscv_request_stack);
+ 
+diff --git a/common/memory.c b/common/memory.c
+index 8e68b5e8bb20..eb7838d03613 100644
+--- a/common/memory.c
++++ b/common/memory.c
+@@ -103,15 +103,15 @@ static int mem_malloc_resource(void)
+ 	request_sdram_region("malloc space",
+ 			malloc_start,
+ 			malloc_end - malloc_start + 1);
+-	request_sdram_region("barebox code",
++	request_barebox_region("barebox code",
+ 			(unsigned long)&_stext,
+ 			(unsigned long)&_etext -
+ 			(unsigned long)&_stext);
+-	request_sdram_region("barebox data",
++	request_barebox_region("barebox data",
+ 			(unsigned long)&_sdata,
+ 			(unsigned long)&_edata -
+ 			(unsigned long)&_sdata);
+-	request_sdram_region("barebox bss",
++	request_barebox_region("barebox bss",
+ 			(unsigned long)&__bss_start,
+ 			(unsigned long)&__bss_stop -
+ 			(unsigned long)&__bss_start);
+diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
+index 24948d701744..fbc936a44fd6 100644
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -342,7 +342,7 @@ void persistent_ram_zap(struct persistent_ram_zone *prz)
+ static int persistent_ram_buffer_map(phys_addr_t start, phys_addr_t size,
+ 		struct persistent_ram_zone *prz, int memtype)
+ {
+-	prz->res = request_sdram_region(prz->label ?: "ramoops", start, size);
++	prz->res = request_barebox_region(prz->label ?: "ramoops", start, size);
+ 	if (!prz->res)
+ 		return -ENOMEM;
+ 
 -- 
 2.39.2
 
