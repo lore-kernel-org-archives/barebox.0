@@ -1,66 +1,66 @@
-Delivery-date: Fri, 17 May 2024 09:48:22 +0200
+Delivery-date: Fri, 17 May 2024 09:48:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7sKE-001476-2r
+	id 1s7sKn-0014Bq-0L
 	for lore@lore.pengutronix.de;
-	Fri, 17 May 2024 09:48:22 +0200
+	Fri, 17 May 2024 09:48:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7sKE-0007MS-4v
-	for lore@pengutronix.de; Fri, 17 May 2024 09:48:22 +0200
+	id 1s7sKm-0007oI-Ff
+	for lore@pengutronix.de; Fri, 17 May 2024 09:48:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=U9deKkPISqHqqbL7+cthT1LiOVt9BnvHKdrIZFK8nuM=; b=CE+tO6bvXx7D7PtkGGZte8jK+i
-	yAz29fvDHcxhHDgky93R26NshhECbyF5poQvvHVcLxRhGHx7gnLd2dHDx+3+OTdWGZw0OD1eKBH/2
-	MheqOUoMwMrG/OaDipk8j7qToYGX/dac/c7P5JNUq3DJIgdtzvT4mO+SovuFdLEd4y9ws8FJZO20c
-	5nN5seXHqXPp5UVq1XlmB3S4+c5cmtztwVWoWeBrpYp8Qi3yXXe0MkWnx2SwGpYiS0h3IfwChKYlo
-	D3W3BrdhaQNNQ2plF6Btw8GdtzaOXL0GcO8YL4YoL9PshoyNDt4/5EMpQQGDkLnTA87sd5kZkeLHv
-	anOQnEVg==;
+	bh=7bjKBwJdz8iXamI3W75l6K7Cn7XYkhkF3JHkrKz3PfM=; b=EwlXV8sM3Ix+3NUB3mO5vYP9a2
+	iZjdM46jqHJvJwUD49bxGLZro25N9NBUxPs6/ZGMxAXoFPkvaezMJJB0kDI7Ck6mq+DXVUBMW8X6y
+	sV5clugHDrYlfetn9JkJYsq9lOgu3h+tDeuZrnWQVoEHAMXLmnMfVmBO/Iir1fb6g3Qpn9xDuhkM2
+	oeRKo0xKPJeBaBiuTw7pcYwNXAxcSAiBjQATUFQPuOmODiDlioF5jbNQlTsqXNfXTxbCoofKiIp3v
+	yIvcCwGzd0VABMKzTS4o+Gdaj097kxNCNP8OUf5av+aMQtDx8smKJ1YuQWYW9HEStqbQiKvftZq8i
+	OQta17rA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7sJt-000000076UH-0Ibi;
-	Fri, 17 May 2024 07:48:01 +0000
+	id 1s7sKN-000000076ld-3KIg;
+	Fri, 17 May 2024 07:48:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7sJp-000000076Sc-49Fk
+	id 1s7sKJ-000000076hO-0mps
 	for barebox@lists.infradead.org;
-	Fri, 17 May 2024 07:47:59 +0000
+	Fri, 17 May 2024 07:48:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7sJo-00079m-KX; Fri, 17 May 2024 09:47:56 +0200
+	id 1s7sKH-0007P2-HU; Fri, 17 May 2024 09:48:25 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7sJo-001q0H-8C; Fri, 17 May 2024 09:47:56 +0200
+	id 1s7sKH-001q0a-3b; Fri, 17 May 2024 09:48:25 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7sJo-003Dad-0Y;
-	Fri, 17 May 2024 09:47:56 +0200
+	id 1s7sKH-003DkZ-06;
+	Fri, 17 May 2024 09:48:25 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 17 May 2024 09:47:54 +0200
-Message-Id: <20240517074754.767031-2-a.fatoum@pengutronix.de>
+Date: Fri, 17 May 2024 09:48:21 +0200
+Message-Id: <20240517074824.767767-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240517074754.767031-1-a.fatoum@pengutronix.de>
-References: <20240517074754.767031-1-a.fatoum@pengutronix.de>
+In-Reply-To: <20240517074824.767767-1-a.fatoum@pengutronix.de>
+References: <20240517074824.767767-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240517_004758_051375_4B3C574D 
-X-CRM114-Status: UNSURE (   8.50  )
+X-CRM114-CacheID: sfid-20240517_004827_271283_9F8256A0 
+X-CRM114-Status: UNSURE (   9.41  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,46 +83,46 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] x86: lib: setjmp: mark as not needing executable stack
+Subject: [PATCH 4/7] test: self: ramfs: fix memory leak
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We don't require an executable stack for our x86 setjmp
-implementations. Note that, so we don't get a warning when we start
-using this implementation for sandbox when compiled on x86.
+Like many other tests, ramfs also leaks memory. Fix this.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/x86/lib/setjmp_32.S | 2 ++
- arch/x86/lib/setjmp_64.S | 2 ++
- 2 files changed, 4 insertions(+)
+ test/self/ramfs.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/lib/setjmp_32.S b/arch/x86/lib/setjmp_32.S
-index 5814623f9478..cf340d35d8fd 100644
---- a/arch/x86/lib/setjmp_32.S
-+++ b/arch/x86/lib/setjmp_32.S
-@@ -10,6 +10,8 @@
- #include <linux/linkage.h>
- #include <asm-generic/pointer.h>
- 
-+.section .note.GNU-stack,"",%progbits
+diff --git a/test/self/ramfs.c b/test/self/ramfs.c
+index 1bc2b3b068f0..239e3e690740 100644
+--- a/test/self/ramfs.c
++++ b/test/self/ramfs.c
+@@ -58,7 +58,7 @@ static void test_ramfs(void)
+ 	char *content = NULL;
+ 	char *oldpwd = NULL;
+ 	DIR *dir = NULL;
+-	const char *dname;
++	char *dname;
+ 	struct stat st;
+ 	int i, j, ret, fd;
+ 	struct dirent *d;
+@@ -196,6 +196,8 @@ static void test_ramfs(void)
+ 			expect_success(memcmp(buf, ARRAY_AND_SIZE(hello)),
+ 				       "read_file() content");
+ 		}
 +
- .text
- .align 8
++		free(buf);
+ 	}
  
-diff --git a/arch/x86/lib/setjmp_64.S b/arch/x86/lib/setjmp_64.S
-index bfa152149975..a0be4c0d7858 100644
---- a/arch/x86/lib/setjmp_64.S
-+++ b/arch/x86/lib/setjmp_64.S
-@@ -8,6 +8,8 @@
- #include <linux/linkage.h>
- #include <asm-generic/pointer.h>
+ out:
+@@ -209,5 +211,6 @@ static void test_ramfs(void)
  
-+.section .note.GNU-stack,"",%progbits
-+
- .text
- .align 8
- 
+ 	dir = opendir(dname);
+ 	expect_fail(dir ? 0 : -EISDIR, "opening removed directory");
++	free(dname);
+ }
+ bselftest(core, test_ramfs);
 -- 
 2.39.2
 
