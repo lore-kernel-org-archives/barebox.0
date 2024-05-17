@@ -1,66 +1,68 @@
-Delivery-date: Fri, 17 May 2024 08:45:55 +0200
+Delivery-date: Fri, 17 May 2024 08:45:57 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7rLn-000wqH-0O
+	id 1s7rLp-000wrO-0W
 	for lore@lore.pengutronix.de;
-	Fri, 17 May 2024 08:45:55 +0200
+	Fri, 17 May 2024 08:45:57 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s7rLm-0006wA-2a
-	for lore@pengutronix.de; Fri, 17 May 2024 08:45:55 +0200
+	id 1s7rLn-0006xI-VI
+	for lore@pengutronix.de; Fri, 17 May 2024 08:45:57 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jLESi186QKafWWDLfLzCJ4JqFHHgF+SDs2dezB+l660=; b=toRyIHbZ4+KbMJbLMW9i+7bfzl
-	lnh4eYjYHPOQrs/s4t7obM1z0Ews7CJbL2U6NrAZT4vupJVBZaafqVh958Aj0RSaoa/ihSUQuM9AE
-	a1HqMDTqPYTABqV9eDI2symzNWPUghVEb/PHHsFi7bIIgv+65APHMyz6G/MyiOuMLGP4r44vV2lWA
-	hDcJ9VjHNbsiFFoYTON3U5ECGFViajXfYyHVrpU6gZd5Mg0vpSuE2XnffqG/0VVC6YCt8oPqfR84z
-	SNmQvkvXY6Nz5ZjdTVpXyL15vwwZnpDmltxDBFojBQoKa85u1oBNtUNh2tI4JleZ0Y3X6+mNQ1qRY
-	UytZ4iKg==;
+	bh=Rwh6WRUS49EUoAui/dJADHnhukbooUW3Eji0FLggENs=; b=33N2rvTcW3EVWFjmuyJUMLYfhB
+	QgFYEWE4UNXp1dGgmskdKLGaAL2FZiZcJsl4sOJmaWKi+rwPL0p8rIZgkLTC2LALn+sn70yabbgtR
+	/pCSv2VPd5yd+tzJN/A1n9oY6OopSyHLWCgWQDiSsqZxFRtzFvxsWSQGlFTDQFsTFUKK5NVNu2677
+	39m+4hi6pTOqz+BTVc5TNYawQ0v5pUDd06YOb/O0lamjOCbJX61GriPVPaYvUOV3g9WeE4NR4rluW
+	5QUVJfeKXIW5ceip68As/9fmPDlAFCkWhI6kuTLAy1cVp7ZW2qTsZ8GnC55+SE3sxD0hwaYbGr8sa
+	3VeobrRg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7rLG-00000006yUp-256B;
-	Fri, 17 May 2024 06:45:22 +0000
+	id 1s7rLH-00000006yVR-2rDN;
+	Fri, 17 May 2024 06:45:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s7rL8-00000006yQz-076A
+	id 1s7rL8-00000006yR1-0Fpl
 	for barebox@lists.infradead.org;
-	Fri, 17 May 2024 06:45:16 +0000
+	Fri, 17 May 2024 06:45:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7rL6-0006Ws-Oq; Fri, 17 May 2024 08:45:12 +0200
+	id 1s7rL6-0006XB-VB
+	for barebox@lists.infradead.org; Fri, 17 May 2024 08:45:12 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7rL6-001pem-CI; Fri, 17 May 2024 08:45:12 +0200
+	id 1s7rL6-001pey-IN
+	for barebox@lists.infradead.org; Fri, 17 May 2024 08:45:12 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s7rL6-00Emcc-0s;
+	id 1s7rL6-00Emcc-1X
+	for barebox@lists.infradead.org;
 	Fri, 17 May 2024 08:45:12 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 17 May 2024 08:45:07 +0200
-Message-Id: <20240517064511.3307462-3-a.fatoum@pengutronix.de>
+Date: Fri, 17 May 2024 08:45:11 +0200
+Message-Id: <20240517064511.3307462-7-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240517064511.3307462-1-a.fatoum@pengutronix.de>
 References: <20240517064511.3307462-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240516_234514_300253_16F5E843 
-X-CRM114-Status: GOOD (  16.21  )
+X-CRM114-CacheID: sfid-20240516_234514_370992_18915FAC 
+X-CRM114-Status: GOOD (  22.33  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,231 +84,318 @@ X-Spam-Status: No, score=-5.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/6] treewide: use request_barebox_region for possible barebox memory regions
+Subject: [PATCH v2 6/6] ARM: pass handoff data from PBL to proper
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is a prerequisite for allowing architectures to call
-register_barebox_area() to register the whole barebox region.
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-No functional change (yet).
+Use newly introduced handoff data to pass data from PBL to barebox
+proper. This will allow us later to pass more SoC and/or board specific
+data from PBL to barebox proper.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Link: https://lore.barebox.org/20240430105310.3149242-4-s.hauer@pengutronix.de
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
 v1 -> v2:
-  - new patch
+  - delete no longer used arm_mem_boarddata()
+  - in PBL, add board data before computing size, so it's taken into
+    account
+  - in barebox proper, fix arm_mem_barebox_image() to take account of
+    handoff data size
+  - support NULL boarddata passed in by PBL entry point. This is
+    possibly useful for boards that have board data in ROM that they
+    want to pass in a custom manner
 ---
- arch/arm/cpu/cpu.c              | 2 +-
- arch/arm/cpu/mmu_32.c           | 8 ++++----
- arch/arm/cpu/mmu_64.c           | 4 ++--
- arch/arm/cpu/start.c            | 2 +-
- arch/arm/mach-imx/scratch.c     | 2 +-
- arch/mips/lib/cpu-probe.c       | 2 +-
- arch/powerpc/mach-mpc5xxx/cpu.c | 2 +-
- arch/powerpc/mach-mpc85xx/cpu.c | 2 +-
- arch/riscv/boot/start.c         | 4 ++--
- arch/riscv/cpu/core.c           | 2 +-
- common/memory.c                 | 6 +++---
- fs/pstore/ram_core.c            | 2 +-
- 12 files changed, 19 insertions(+), 19 deletions(-)
+ arch/arm/cpu/start.c               | 74 ++++++++----------------------
+ arch/arm/cpu/uncompress.c          | 36 +++++++++++++--
+ arch/arm/include/asm/barebox-arm.h | 24 ++++++----
+ 3 files changed, 66 insertions(+), 68 deletions(-)
 
-diff --git a/arch/arm/cpu/cpu.c b/arch/arm/cpu/cpu.c
-index 5f1ffe9a3c76..b00e9e51e5ea 100644
---- a/arch/arm/cpu/cpu.c
-+++ b/arch/arm/cpu/cpu.c
-@@ -102,7 +102,7 @@ static int arm_request_stack(void)
- 	if (efi_is_payload())
- 		return 0;
- 
--	if (!request_sdram_region("stack", arm_stack_top - STACK_SIZE, STACK_SIZE))
-+	if (!request_barebox_region("stack", arm_stack_top - STACK_SIZE, STACK_SIZE))
- 		pr_err("Error: Cannot request SDRAM region for stack\n");
- 
- 	return 0;
-diff --git a/arch/arm/cpu/mmu_32.c b/arch/arm/cpu/mmu_32.c
-index 3a8d025ecdee..24d83d933661 100644
---- a/arch/arm/cpu/mmu_32.c
-+++ b/arch/arm/cpu/mmu_32.c
-@@ -390,7 +390,7 @@ static void create_vector_table(unsigned long adr)
- 	void *vectors;
- 	u32 *pte;
- 
--	vectors_sdram = request_sdram_region("vector table", adr, PAGE_SIZE);
-+	vectors_sdram = request_barebox_region("vector table", adr, PAGE_SIZE);
- 	if (vectors_sdram) {
- 		/*
- 		 * The vector table address is inside the SDRAM physical
-@@ -486,7 +486,7 @@ static void create_guard_page(void)
- 		return;
- 
- 	guard_page = arm_mem_guard_page_get();
--	request_sdram_region("guard page", guard_page, PAGE_SIZE);
-+	request_barebox_region("guard page", guard_page, PAGE_SIZE);
- 	remap_range((void *)guard_page, PAGE_SIZE, MAP_FAULT);
- 
- 	pr_debug("Created guard page\n");
-@@ -535,8 +535,8 @@ void __mmu_init(bool mmu_on)
- 	struct memory_bank *bank;
- 	uint32_t *ttb = get_ttb();
- 
--	if (!request_sdram_region("ttb", (unsigned long)ttb,
--				  ARM_EARLY_PAGETABLE_SIZE))
-+	if (!request_barebox_region("ttb", (unsigned long)ttb,
-+				    ARM_EARLY_PAGETABLE_SIZE))
- 		/*
- 		 * This can mean that:
- 		 * - the early MMU code has put the ttb into a place
-diff --git a/arch/arm/cpu/mmu_64.c b/arch/arm/cpu/mmu_64.c
-index 71c0d8930e63..7c7834201b65 100644
---- a/arch/arm/cpu/mmu_64.c
-+++ b/arch/arm/cpu/mmu_64.c
-@@ -219,7 +219,7 @@ static void create_guard_page(void)
- 		return;
- 
- 	guard_page = arm_mem_guard_page_get();
--	request_sdram_region("guard page", guard_page, PAGE_SIZE);
-+	request_barebox_region("guard page", guard_page, PAGE_SIZE);
- 	remap_range((void *)guard_page, PAGE_SIZE, MAP_FAULT);
- 
- 	pr_debug("Created guard page\n");
-@@ -233,7 +233,7 @@ void __mmu_init(bool mmu_on)
- 	uint64_t *ttb = get_ttb();
- 	struct memory_bank *bank;
- 
--	if (!request_sdram_region("ttb", (unsigned long)ttb,
-+	if (!request_barebox_region("ttb", (unsigned long)ttb,
- 				  ARM_EARLY_PAGETABLE_SIZE))
- 		/*
- 		 * This can mean that:
 diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
-index 2adc60fa8831..a73224bab930 100644
+index 8461184db467..2158edafa4a9 100644
 --- a/arch/arm/cpu/start.c
 +++ b/arch/arm/cpu/start.c
-@@ -134,7 +134,7 @@ EXPORT_SYMBOL_GPL(arm_mem_membase_get);
- static int barebox_memory_areas_init(void)
- {
- 	if(barebox_boarddata)
--		request_sdram_region("board data", (unsigned long)barebox_boarddata,
-+		request_barebox_region("board data", (unsigned long)barebox_boarddata,
- 				     barebox_boarddata_size);
+@@ -21,6 +21,7 @@
+ #include <asm/mmu.h>
+ #include <linux/kasan.h>
+ #include <memory.h>
++#include <pbl/handoff-data.h>
+ #include <uncompress.h>
+ #include <compressed-dtb.h>
+ #include <malloc.h>
+@@ -38,10 +39,9 @@ static unsigned long barebox_boarddata_size;
  
- 	if (IS_ENABLED(CONFIG_KASAN))
-diff --git a/arch/arm/mach-imx/scratch.c b/arch/arm/mach-imx/scratch.c
-index 60d15a4f1a33..002b499fab3a 100644
---- a/arch/arm/mach-imx/scratch.c
-+++ b/arch/arm/mach-imx/scratch.c
-@@ -95,7 +95,7 @@ const struct optee_header *imx_scratch_get_optee_hdr(void)
- 
- static int imx8m_reserve_scratch_area(void)
+ const struct barebox_boarddata *barebox_get_boarddata(void)
  {
--	return PTR_ERR_OR_ZERO(request_sdram_region("scratch area",
-+	return PTR_ERR_OR_ZERO(request_barebox_region("scratch area",
- 				    (ulong)arm_mem_scratch_get(),
- 				    sizeof(struct imx_scratch_space)));
+-	if (!barebox_boarddata || !blob_is_arm_boarddata(barebox_boarddata))
+-		return NULL;
++	size_t size;
+ 
+-	return barebox_boarddata;
++	return handoff_data_get_entry(HANDOFF_DATA_BOARDDATA, &size);
  }
-diff --git a/arch/mips/lib/cpu-probe.c b/arch/mips/lib/cpu-probe.c
-index fc202815973f..ccb27a81497f 100644
---- a/arch/mips/lib/cpu-probe.c
-+++ b/arch/mips/lib/cpu-probe.c
-@@ -231,7 +231,7 @@ unsigned long mips_stack_top;
  
- static int mips_request_stack(void)
- {
--	if (!request_sdram_region("stack", mips_stack_top - STACK_SIZE, STACK_SIZE))
-+	if (!request_barebox_region("stack", mips_stack_top - STACK_SIZE, STACK_SIZE))
- 		pr_err("Error: Cannot request SDRAM region for stack\n");
+ u32 barebox_arm_machine(void)
+@@ -56,19 +56,24 @@ void *barebox_arm_boot_dtb(void)
+ 	int ret = 0;
+ 	struct barebox_boarddata_compressed_dtb *compressed_dtb;
+ 	static void *boot_dtb;
++	void *blob;
++	size_t size;
  
- 	return 0;
-diff --git a/arch/powerpc/mach-mpc5xxx/cpu.c b/arch/powerpc/mach-mpc5xxx/cpu.c
-index 9c99bdd26f9b..647109b7fb63 100644
---- a/arch/powerpc/mach-mpc5xxx/cpu.c
-+++ b/arch/powerpc/mach-mpc5xxx/cpu.c
-@@ -40,7 +40,7 @@ static int mpc5xxx_reserve_region(void)
- 	struct resource *r;
+ 	if (boot_dtb)
+ 		return boot_dtb;
  
- 	/* keep this in sync with the assembler routines setting up the stack */
--	r = request_sdram_region("stack", _text_base - STACK_SIZE, STACK_SIZE);
-+	r = request_barebox_region("stack", _text_base - STACK_SIZE, STACK_SIZE);
- 	if (r == NULL) {
- 		pr_err("Failed to request stack region at: 0x%08lx/0x%08lx\n",
- 			_text_base - STACK_SIZE, _text_base - 1);
-diff --git a/arch/powerpc/mach-mpc85xx/cpu.c b/arch/powerpc/mach-mpc85xx/cpu.c
-index 2119352f84a7..acfd4699a2ff 100644
---- a/arch/powerpc/mach-mpc85xx/cpu.c
-+++ b/arch/powerpc/mach-mpc85xx/cpu.c
-@@ -96,7 +96,7 @@ phys_size_t fsl_get_effective_memsize(void)
+-	if (barebox_boarddata && blob_is_fdt(barebox_boarddata)) {
+-		pr_debug("%s: using barebox_boarddata\n", __func__);
+-		return barebox_boarddata;
+-	}
++	blob = handoff_data_get_entry(HANDOFF_DATA_INTERNAL_DT, &size);
++	if (blob)
++		return blob;
  
- static int fsl_reserve_region(void)
- {
--	request_sdram_region("stack", _text_base - STACK_SIZE,
-+	request_barebox_region("stack", _text_base - STACK_SIZE,
- 			STACK_SIZE);
- 	return 0;
+-	if (!fdt_blob_can_be_decompressed(barebox_boarddata))
++	blob = handoff_data_get_entry(HANDOFF_DATA_INTERNAL_DT_Z, &size);
++	if (!blob)
+ 		return NULL;
+ 
+-	compressed_dtb = barebox_boarddata;
++	if (!fdt_blob_can_be_decompressed(blob))
++		return NULL;
++
++	compressed_dtb = blob;
+ 
+ 	pr_debug("%s: using compressed_dtb\n", __func__);
+ 
+@@ -94,18 +99,6 @@ void *barebox_arm_boot_dtb(void)
+ 	return boot_dtb;
  }
-diff --git a/arch/riscv/boot/start.c b/arch/riscv/boot/start.c
-index d20526293bac..2e18105bbfb3 100644
---- a/arch/riscv/boot/start.c
-+++ b/arch/riscv/boot/start.c
-@@ -98,8 +98,8 @@ EXPORT_SYMBOL_GPL(riscv_mem_endmem_get);
- static int barebox_memory_areas_init(void)
- {
- 	if(barebox_boarddata)
--		request_sdram_region("board data", (unsigned long)barebox_boarddata,
--				     barebox_boarddata_size);
-+		request_barebox_region("board data", (unsigned long)barebox_boarddata,
-+				       barebox_boarddata_size);
  
- 	return 0;
+-static inline unsigned long arm_mem_boarddata(unsigned long membase,
+-					      unsigned long endmem,
+-					      unsigned long size)
+-{
+-	unsigned long mem;
+-
+-	mem = arm_mem_barebox_image(membase, endmem, arm_barebox_size);
+-	mem -= ALIGN(size, 64);
+-
+-	return mem;
+-}
+-
+ unsigned long arm_mem_ramoops_get(void)
+ {
+ 	return arm_mem_ramoops(arm_stack_top);
+@@ -143,10 +136,9 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
+ {
+ 	unsigned long endmem = membase + memsize;
+ 	unsigned long malloc_start, malloc_end;
+-	unsigned long barebox_size = barebox_image_size + MAX_BSS_SIZE;
+-	unsigned long barebox_base = arm_mem_barebox_image(membase,
+-							   endmem,
+-							   barebox_size);
++	unsigned long barebox_base = arm_mem_barebox_image(membase, endmem,
++							   barebox_image_size,
++							   boarddata);
+ 
+ 	if (IS_ENABLED(CONFIG_CPU_V7))
+ 		armv7_hyp_install();
+@@ -164,37 +156,9 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
+ 	arm_membase = membase;
+ 	arm_endmem = endmem;
+ 	arm_stack_top = arm_mem_stack_top(endmem);
+-	arm_barebox_size = barebox_size;
++	arm_barebox_size = barebox_image_size + MAX_BSS_SIZE;
+ 	malloc_end = barebox_base;
+ 
+-	if (boarddata) {
+-		uint32_t totalsize = 0;
+-		const char *name;
+-
+-		if (blob_is_fdt(boarddata)) {
+-			totalsize = get_unaligned_be32(boarddata + 4);
+-			name = "DTB";
+-		} else if (blob_is_compressed_fdt(boarddata)) {
+-			struct barebox_boarddata_compressed_dtb *bd = boarddata;
+-			totalsize = bd->datalen + sizeof(*bd);
+-			name = "Compressed DTB";
+-		} else if (blob_is_arm_boarddata(boarddata)) {
+-			totalsize = sizeof(struct barebox_arm_boarddata);
+-			name = "machine type";
+-		}
+-
+-		if (totalsize) {
+-			unsigned long mem = arm_mem_boarddata(membase, endmem,
+-							      totalsize);
+-			pr_debug("found %s in boarddata, copying to 0x%08lx\n",
+-				 name, mem);
+-			barebox_boarddata = memcpy((void *)mem, boarddata,
+-						   totalsize);
+-			barebox_boarddata_size = totalsize;
+-			malloc_end = mem;
+-		}
+-	}
+-
+ 	/*
+ 	 * Maximum malloc space is the Kconfig value if given
+ 	 * or 1GB.
+@@ -218,6 +182,8 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
+ 
+ 	mem_malloc_init((void *)malloc_start, (void *)malloc_end - 1);
+ 
++	handoff_data_set(boarddata);
++
+ 	if (IS_ENABLED(CONFIG_BOOTM_OPTEE))
+ 		of_add_reserve_entry(endmem - OPTEE_SIZE, endmem - 1);
+ 
+diff --git a/arch/arm/cpu/uncompress.c b/arch/arm/cpu/uncompress.c
+index 612a5b65ff4c..af702d510eb7 100644
+--- a/arch/arm/cpu/uncompress.c
++++ b/arch/arm/cpu/uncompress.c
+@@ -10,6 +10,7 @@
+ #include <init.h>
+ #include <linux/sizes.h>
+ #include <pbl.h>
++#include <pbl/handoff-data.h>
+ #include <asm/barebox-arm.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm-generic/memory_layout.h>
+@@ -18,6 +19,7 @@
+ #include <asm/cache.h>
+ #include <asm/mmu.h>
+ #include <asm/unaligned.h>
++#include <compressed-dtb.h>
+ 
+ #include <debug_ll.h>
+ 
+@@ -29,6 +31,24 @@ unsigned long free_mem_end_ptr;
+ extern unsigned char input_data[];
+ extern unsigned char input_data_end[];
+ 
++static void add_handoff_data(void *boarddata)
++{
++	if (!boarddata)
++		return;
++	if (blob_is_fdt(boarddata)) {
++		handoff_data_add(HANDOFF_DATA_INTERNAL_DT, boarddata,
++				 get_unaligned_be32(boarddata + 4));
++	} else if (blob_is_compressed_fdt(boarddata)) {
++		struct barebox_boarddata_compressed_dtb *bd = boarddata;
++
++		handoff_data_add(HANDOFF_DATA_INTERNAL_DT_Z, boarddata,
++				 bd->datalen + sizeof(*bd));
++	} else if (blob_is_arm_boarddata(boarddata)) {
++		handoff_data_add(HANDOFF_DATA_BOARDDATA, boarddata,
++				 sizeof(struct barebox_arm_boarddata));
++	}
++}
++
+ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 				  void *boarddata)
+ {
+@@ -38,6 +58,7 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	unsigned long barebox_base;
+ 	void *pg_start, *pg_end;
+ 	unsigned long pc = get_pc();
++	void *handoff_data;
+ 
+ 	/* piggy data is not relocated, so determine the bounds now */
+ 	pg_start = runtime_address(input_data);
+@@ -56,9 +77,6 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	pg_len = pg_end - pg_start;
+ 	uncompressed_len = get_unaligned((const u32 *)(pg_start + pg_len - 4));
+ 
+-	barebox_base = arm_mem_barebox_image(membase, endmem,
+-					     uncompressed_len + MAX_BSS_SIZE);
+-
+ 	setup_c();
+ 
+ 	pr_debug("memory at 0x%08lx, size 0x%08lx\n", membase, memsize);
+@@ -66,6 +84,14 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	if (IS_ENABLED(CONFIG_MMU))
+ 		mmu_early_enable(membase, memsize);
+ 
++	/* Add handoff data now, so arm_mem_barebox_image takes it into account */
++	add_handoff_data(boarddata);
++
++	barebox_base = arm_mem_barebox_image(membase, endmem,
++					     uncompressed_len, NULL);
++
++	handoff_data = (void *)barebox_base + uncompressed_len + MAX_BSS_SIZE;
++
+ 	free_mem_ptr = barebox_base - ARM_MEM_EARLY_MALLOC_SIZE;
+ 	free_mem_end_ptr = barebox_base;
+ 
+@@ -74,6 +100,8 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 
+ 	pbl_barebox_uncompress((void*)barebox_base, pg_start, pg_len);
+ 
++	handoff_data_move(handoff_data);
++
+ 	sync_caches_for_execution();
+ 
+ 	if (IS_ENABLED(CONFIG_THUMB2_BAREBOX))
+@@ -86,5 +114,5 @@ void __noreturn barebox_pbl_start(unsigned long membase, unsigned long memsize,
+ 	if (IS_ENABLED(CONFIG_CPU_V7) && boot_cpu_mode() == HYP_MODE)
+ 		armv7_switch_to_hyp();
+ 
+-	barebox(membase, memsize, boarddata);
++	barebox(membase, memsize, handoff_data);
  }
-diff --git a/arch/riscv/cpu/core.c b/arch/riscv/cpu/core.c
-index 38aa40275829..ad9030ede78b 100644
---- a/arch/riscv/cpu/core.c
-+++ b/arch/riscv/cpu/core.c
-@@ -28,7 +28,7 @@
- static int riscv_request_stack(void)
- {
- 	extern unsigned long riscv_stack_top;
--	return PTR_ERR_OR_ZERO(request_sdram_region("stack", riscv_stack_top - STACK_SIZE, STACK_SIZE));
-+	return PTR_ERR_OR_ZERO(request_barebox_region("stack", riscv_stack_top - STACK_SIZE, STACK_SIZE));
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 8447ef7ba7fa..e9afd8f4539c 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -18,6 +18,7 @@
+ #include <linux/pagemap.h>
+ #include <linux/types.h>
+ #include <linux/compiler.h>
++#include <pbl/handoff-data.h>
+ #include <asm/barebox-arm-head.h>
+ #include <asm/common.h>
+ #include <asm/sections.h>
+@@ -158,10 +159,22 @@ static inline unsigned long arm_mem_guard_page_get(void)
+ 	return arm_mem_guard_page(arm_mem_endmem_get());
  }
- coredevice_initcall(riscv_request_stack);
  
-diff --git a/common/memory.c b/common/memory.c
-index 8e68b5e8bb20..eb7838d03613 100644
---- a/common/memory.c
-+++ b/common/memory.c
-@@ -103,15 +103,15 @@ static int mem_malloc_resource(void)
- 	request_sdram_region("malloc space",
- 			malloc_start,
- 			malloc_end - malloc_start + 1);
--	request_sdram_region("barebox code",
-+	request_barebox_region("barebox code",
- 			(unsigned long)&_stext,
- 			(unsigned long)&_etext -
- 			(unsigned long)&_stext);
--	request_sdram_region("barebox data",
-+	request_barebox_region("barebox data",
- 			(unsigned long)&_sdata,
- 			(unsigned long)&_edata -
- 			(unsigned long)&_sdata);
--	request_sdram_region("barebox bss",
-+	request_barebox_region("barebox bss",
- 			(unsigned long)&__bss_start,
- 			(unsigned long)&__bss_stop -
- 			(unsigned long)&__bss_start);
-diff --git a/fs/pstore/ram_core.c b/fs/pstore/ram_core.c
-index 24948d701744..fbc936a44fd6 100644
---- a/fs/pstore/ram_core.c
-+++ b/fs/pstore/ram_core.c
-@@ -342,7 +342,7 @@ void persistent_ram_zap(struct persistent_ram_zone *prz)
- static int persistent_ram_buffer_map(phys_addr_t start, phys_addr_t size,
- 		struct persistent_ram_zone *prz, int memtype)
++/*
++ * When using compressed images in conjunction with relocatable images
++ * the PBL code must pick a suitable place where to uncompress the barebox
++ * image. For doing this the PBL code must know the size of the final
++ * image including the BSS segment. The BSS size is unknown to the PBL
++ * code, so define a maximum BSS size here.
++ */
++#define MAX_BSS_SIZE SZ_1M
++
+ static inline unsigned long arm_mem_barebox_image(unsigned long membase,
+ 						  unsigned long endmem,
+-						  unsigned long size)
++						  unsigned long uncompressed_len,
++						  const struct handoff_data *handoff_data)
  {
--	prz->res = request_sdram_region(prz->label ?: "ramoops", start, size);
-+	prz->res = request_barebox_region(prz->label ?: "ramoops", start, size);
- 	if (!prz->res)
- 		return -ENOMEM;
++	unsigned long size = uncompressed_len + MAX_BSS_SIZE + __handoff_data_size(handoff_data);
++
+ 	endmem = arm_mem_ramoops(endmem);
  
+ 	return ALIGN_DOWN(endmem - size, SZ_1M);
+@@ -237,15 +250,6 @@ void __barebox_arm64_head(ulong x0, ulong x1, ulong x2);
+ 			      __barebox_arm_head, arg0, arg1, arg2)
+ #endif
+ 
+-/*
+- * When using compressed images in conjunction with relocatable images
+- * the PBL code must pick a suitable place where to uncompress the barebox
+- * image. For doing this the PBL code must know the size of the final
+- * image including the BSS segment. The BSS size is unknown to the PBL
+- * code, so define a maximum BSS size here.
+- */
+-#define MAX_BSS_SIZE SZ_1M
+-
+ #define barebox_image_size (__image_end - __image_start)
+ 
+ #ifdef CONFIG_CPU_32
 -- 
 2.39.2
 
