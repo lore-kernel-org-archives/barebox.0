@@ -1,66 +1,66 @@
-Delivery-date: Tue, 21 May 2024 12:58:09 +0200
+Delivery-date: Tue, 21 May 2024 13:01:03 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s9NC5-00C8P7-06
+	id 1s9NEt-00C8bH-2P
 	for lore@lore.pengutronix.de;
-	Tue, 21 May 2024 12:58:09 +0200
+	Tue, 21 May 2024 13:01:03 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s9NC4-0008Pp-FZ
-	for lore@pengutronix.de; Tue, 21 May 2024 12:58:08 +0200
+	id 1s9NEp-0000j0-D7
+	for lore@pengutronix.de; Tue, 21 May 2024 13:01:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=FY9SlLj1CdfjfxJVJiauyQTEl54bUjFCFkqvL7MEsZU=; b=MTanPQ1rUQoNbOlEzXH4S32S+t
-	zSgUqPfNgLvKOENXMSq1jaF8twQ/DD0aHdNIU5oEwXncUxxFE2K2p7f18pdJhu48f6cAOytAgTHdd
-	FHIB2PXragEbJv3ABxby2SuLi61j7T/MbY6Cjp1sbXsBonPu976+Z9XIsa8V+yFJlNJjc6if/1hn6
-	NBtQscNBxsYMSiIhWrppGVaZ10LK2t5BKXZbGWRUQzknuJ2w9rV+W8evB/+mXdHyTpzcoTGBaCEtq
-	k7x0P9S+p+caP0kog6xLGamS8HweVDE9rAOnxLnKsebNKHcORzORUGRyBLox/WnZTPuamd0Y9/zRx
-	yrE2d2vA==;
+	bh=DYR8mjBoFj8qhtmCVgo53ybZpifvhZug04C6jbo3+Sc=; b=HwmDIXquBN/kvkubPkgGfhmkE+
+	2RQpOcapBJC/PDGm9nX8BdqzrYYE3G7T/yQm44MS+qekGIxvcJI4bn6WaMwyMF53JM+WZPK/zLi4B
+	gycMsSUFCJQV8dn3LYhscQRuetg2wWqlltVEqvAbuIMgp3B608bBzR3bKPZmkNvBTDrNbuJIUmPdb
+	sH7l1K1KNA620XgkiJjKmDHxVUS+XIqPRdh64Pv7EDI3bADjgEk8Yb5iUlc3xq3P/HAYtc4b+9S73
+	LcPBwHriO7isp7V4Bopqkaem/SE6csy552jc9h+jBnIiPmU608CQ+1m7VNj73PQ4H/Ul1Dql5cz8I
+	S8qD1mgQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s9NBf-0000000HClZ-01CR;
-	Tue, 21 May 2024 10:57:43 +0000
+	id 1s9NED-0000000HDId-07Y6;
+	Tue, 21 May 2024 11:00:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s9NBc-0000000HCkv-0ylF
+	id 1s9NE9-0000000HDIC-3HbV
 	for barebox@lists.infradead.org;
-	Tue, 21 May 2024 10:57:41 +0000
+	Tue, 21 May 2024 11:00:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s9NBa-0008AT-I3; Tue, 21 May 2024 12:57:38 +0200
+	id 1s9NE8-0000XK-6P; Tue, 21 May 2024 13:00:16 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s9NBa-002NVZ-5C; Tue, 21 May 2024 12:57:38 +0200
+	id 1s9NE7-002NVn-QC; Tue, 21 May 2024 13:00:15 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s9NBa-008LAT-0J;
-	Tue, 21 May 2024 12:57:38 +0200
+	id 1s9NE7-008LY2-2P;
+	Tue, 21 May 2024 13:00:15 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240517060944.3298926-1-a.fatoum@pengutronix.de>
-References: <20240517060944.3298926-1-a.fatoum@pengutronix.de>
-Message-Id: <171628905809.1987896.7574431481813712164.b4-ty@pengutronix.de>
-Date: Tue, 21 May 2024 12:57:38 +0200
+In-Reply-To: <20240517055951.2437582-1-a.fatoum@pengutronix.de>
+References: <20240517055951.2437582-1-a.fatoum@pengutronix.de>
+Message-Id: <171628921574.1989307.13480199358432538229.b4-ty@pengutronix.de>
+Date: Tue, 21 May 2024 13:00:15 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240521_035740_312211_C0C00C07 
-X-CRM114-Status: UNSURE (   7.11  )
+X-CRM114-CacheID: sfid-20240521_040018_027645_E0E651E0 
+X-CRM114-Status: UNSURE (   6.35  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,25 +83,22 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] mci: collect host operation in struct mci_ops
+Subject: Re: [PATCH] mci: imx-esdhc: retire esdhc_platform_data
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Fri, 17 May 2024 08:09:44 +0200, Ahmad Fatoum wrote:
-> The number of ops implementable by MCI drivers increase due to HS200
-> support and will increase more for HS400. Collecting them into a common
-> struct makes it easier to specialize them for drivers that support
-> multiple variants and makes code more similar to Linux.
+On Fri, 17 May 2024 07:59:51 +0200, Ahmad Fatoum wrote:
+> We have no board in-tree that doesn't probe the imx-esdhc from DT.
+> The platform data is thus unused as the PBL usage happens without it,
+> therefore remove that struct definition and the dead code handling it.
 > 
-> No functional change.
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] mci: collect host operation in struct mci_ops
-      https://git.pengutronix.de/cgit/barebox/commit/?id=dfef2a2d2792 (link may not be stable)
+[1/1] mci: imx-esdhc: retire esdhc_platform_data
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4cce368d53c1 (link may not be stable)
 
 Best regards,
 -- 
