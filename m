@@ -1,67 +1,70 @@
-Delivery-date: Tue, 21 May 2024 08:29:52 +0200
+Delivery-date: Tue, 21 May 2024 08:31:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s9J0S-00BoO5-0O
+	id 1s9J1e-00BoTC-0E
 	for lore@lore.pengutronix.de;
-	Tue, 21 May 2024 08:29:52 +0200
+	Tue, 21 May 2024 08:31:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s9J0R-00080U-IU
-	for lore@pengutronix.de; Tue, 21 May 2024 08:29:52 +0200
+	id 1s9J1b-0008HJ-Qx
+	for lore@pengutronix.de; Tue, 21 May 2024 08:31:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7BZ2xbzKT8KYGvjMd3jIYAVZjp7sUn8U1fSqegu6FyM=; b=v37NEfJhyWsU+d+IsiG1DuZnYX
-	CwJm6+DtstLPfXBab2LlT62FrZXn0j+sPWcr5m3Uu2AvqZfw0Hpg2VQ0+2V1FZiRpAHcyjdJbJD5g
-	tv7PPnasAJCUcHtvk8o14A6G0BoqDJb9TQ1yTwB3CwOO2FJHrCAx8p/FY124F6eC+0Ka/4vrxRz0k
-	urJgnN4qIWZ0oL47aitwLeb3uBOshBp+rzi7cLExhJOquPkqMTpgYoZzSFgSK3GQhMGn03nYGhsaG
-	HyENtyUT6wstSh3FnQdSVNBuTYbM7clXkMEBDzXyKnBeLRX2PaXDsKuElfgpaIeG5+83bmlCWVJCG
-	78pz1INQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ZQmDfz8SmHQsx+WUx5iBj/xeu9cicN9w7An7nCuDoN0=; b=MeVjFOOASX5PWqQ0Hsigui+LDe
+	76MFkahSRwEswHtkpTMnXNmzAzyW/79c7pRiTB6Fo5t9BAZSLf30H6MFgKfRxv5n+bLeaL1lBRJZd
+	Q4iA2oqxGfZMcqqhJbUVdzZRvXB2GXID4dMGXFUXmdnohhDntnSyO4PmfFhF4fzCTpEwp/OjHntpT
+	TwubwtuAG89wsO4mfXPtKQ5mO1hOk0PGZzsLI6bL9fafLZebGKs71Z2M/IFP0138xlrkdFjxawSaO
+	VdpMo4PBLZ8tBFJbI9Cw/rVJ8c2ex4unIQwkvr0yzXJnRfaNbdy0okF43DdJvJSc2FEl5Cp70sfP+
+	iIYr745w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s9Izw-0000000GTvB-49I3;
-	Tue, 21 May 2024 06:29:20 +0000
+	id 1s9J18-0000000GU3J-0oKi;
+	Tue, 21 May 2024 06:30:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s9Izu-0000000GTus-0O2T
+	id 1s9J15-0000000GU2j-0X7O
 	for barebox@lists.infradead.org;
-	Tue, 21 May 2024 06:29:19 +0000
+	Tue, 21 May 2024 06:30:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s9Izs-0007sf-JS; Tue, 21 May 2024 08:29:16 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s9J12-00089K-9Z; Tue, 21 May 2024 08:30:28 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s9Izs-002Lth-6u; Tue, 21 May 2024 08:29:16 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s9Izs-0060Nt-0T;
-	Tue, 21 May 2024 08:29:16 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1s9J11-002Ltp-T8; Tue, 21 May 2024 08:30:27 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1s9J11-0065FX-2f;
+	Tue, 21 May 2024 08:30:27 +0200
+Date: Tue, 21 May 2024 08:30:27 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240517074824.767767-1-a.fatoum@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <Zkw_g1dLzYhN5COk@pengutronix.de>
 References: <20240517074824.767767-1-a.fatoum@pengutronix.de>
-Message-Id: <171627295614.1431398.1386330542147736047.b4-ty@pengutronix.de>
-Date: Tue, 21 May 2024 08:29:16 +0200
+ <20240517074824.767767-5-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240517074824.767767-5-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240520_232918_167099_40671D04 
-X-CRM114-Status: UNSURE (   6.77  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240520_233031_213280_30BECCF8 
+X-CRM114-Status: GOOD (  20.93  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,43 +82,59 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/7] of: free unflattened overlays after application
+Subject: Re: [PATCH 5/7] regulator: of_regulator: remove unused allocation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+On Fri, May 17, 2024 at 09:48:22AM +0200, Ahmad Fatoum wrote:
+> We leak this allocation, but we don't actually need it, so drop it.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  drivers/regulator/of_regulator.c | 6 ------
+>  1 file changed, 6 deletions(-)
+> 
+> diff --git a/drivers/regulator/of_regulator.c b/drivers/regulator/of_regulator.c
+> index 10f75a4f1c60..c037f85c439d 100644
+> --- a/drivers/regulator/of_regulator.c
+> +++ b/drivers/regulator/of_regulator.c
+> @@ -41,16 +41,10 @@ int of_regulator_match(struct device *dev, struct device_node *node,
+>  	unsigned int i;
+>  	const char *name;
+>  	struct device_node *child;
+> -	struct devm_of_regulator_matches *devm_matches;
+>  
+>  	if (!dev || !node)
+>  		return -EINVAL;
+>  
+> -	devm_matches = xzalloc(sizeof(struct devm_of_regulator_matches));
+> -
+> -	devm_matches->matches = matches;
+> -	devm_matches->num_matches = num_matches;
+> -
 
-On Fri, 17 May 2024 09:48:18 +0200, Ahmad Fatoum wrote:
-> of_unflatten_dtb allocates an unflattened tree and of_overlay_apply_tree
-> copies it into another tree. The unflattened tree is then usually
-> leaked. Add a function that takes care of these two steps and then frees
-> the tree.
+Removed the definition of struct devm_of_regulator_matches along with
+this patch.
+
+Sascha
+
+>  	for (i = 0; i < num_matches; i++) {
+>  		struct of_regulator_match *match = &matches[i];
+>  		match->of_node = NULL;
+> -- 
+> 2.39.2
 > 
 > 
+> 
 
-Applied, thanks!
-
-[1/7] of: free unflattened overlays after application
-      https://git.pengutronix.de/cgit/barebox/commit/?id=21598db0d106 (link may not be stable)
-[2/7] of: overlay: do not leak fixed up path
-      https://git.pengutronix.de/cgit/barebox/commit/?id=92b4598183fb (link may not be stable)
-[3/7] test: self: digest: don't leak digest buffers
-      https://git.pengutronix.de/cgit/barebox/commit/?id=920740d28004 (link may not be stable)
-[4/7] test: self: ramfs: fix memory leak
-      https://git.pengutronix.de/cgit/barebox/commit/?id=3451af15b4cb (link may not be stable)
-[5/7] regulator: of_regulator: remove unused allocation
-      https://git.pengutronix.de/cgit/barebox/commit/?id=ae990b192979 (link may not be stable)
-[6/7] globalvar: fix memory leak
-      https://git.pengutronix.de/cgit/barebox/commit/?id=4dcae371c292 (link may not be stable)
-[7/7] power: reset: reboot-mode: fix memory leak
-      https://git.pengutronix.de/cgit/barebox/commit/?id=22f770fb9041 (link may not be stable)
-
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
