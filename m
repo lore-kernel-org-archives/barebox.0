@@ -1,66 +1,67 @@
-Delivery-date: Mon, 20 May 2024 12:24:06 +0200
+Delivery-date: Tue, 21 May 2024 08:18:52 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s90Ba-00ALvv-2w
+	id 1s9Ipo-00Bnbn-1a
 	for lore@lore.pengutronix.de;
-	Mon, 20 May 2024 12:24:06 +0200
+	Tue, 21 May 2024 08:18:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s90Ba-0000YD-Cd
-	for lore@pengutronix.de; Mon, 20 May 2024 12:24:06 +0200
+	id 1s9Ipn-0005cM-T3
+	for lore@pengutronix.de; Tue, 21 May 2024 08:18:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=J4i8BbWKQALwDL+n1sAANH05Y7+oaB4MkFtv+Cx3EJA=; b=gJ8v/3ZdNVr83lEIyThiuDLkv3
-	6o3P850an85oEJv5dMk2v6dA2rf6ZrOsn43A63rvNzJbINMIdGfNt51fYhjSapg28hnI4ns5YbSWJ
-	SBDq3HQvfWPeStzdGNj2l5UMZnxj+ZGtASYVgK7ykKDkQbrhG3ESTI9Y9FZtTwpOY/FeDj+OXxLma
-	k5IM7whBwBJhPCT40W61+K3U3NvPBNzYQbUoR3mApGoI7ZYnrETAeRRbMXQPPf0hfKXW0jrL56DlT
-	CDjDQaYoh7hJ8Sk55XdMukGr6bYptZVZK06azbJwRkBCuczAWX6coxQTx8t6lL1doTolJmHN4A2kU
-	sXzHd48A==;
+	bh=Hek+P5fwmeFLT3b1omLh3P0xfba46RJIqA2xMNN4CXc=; b=3QfIgu15kD37QVPvr3JjrHznQh
+	HmtsklHeoLzAjILB6XWtvPP60vl4AGyKOW+QZD6twws7uclRZrXHlRjthq3HusYkupXK0DNMgFNxC
+	tq8ILWU1yHyTPos/lMCePVOrzLK5Z1Bp/H8waQlg+tHtlZMR00ebzJBFgWiEYaxnBYAKu39/gNmTz
+	Yl2Q3OHaEvMx8mYk6+ee050bsVg/vYqyeFsGWJM+p0unCbmpbr7PzoHJ/oWrnmUa+GOM6ADd8IUJl
+	FRUGJwrnipjMA52QduwXXdimp26U0PMuUxC9xzI/T9ACXmuQtpM6OT4LDrkrOz6JvwY95HyrsApFe
+	3kTeSZ6A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s90Aw-0000000E7wG-0aOa;
-	Mon, 20 May 2024 10:23:26 +0000
+	id 1s9Ip6-0000000GSIc-0TUN;
+	Tue, 21 May 2024 06:18:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s90As-0000000E7ui-3dD1
+	id 1s9Ip0-0000000GSFA-2Nsf
 	for barebox@lists.infradead.org;
-	Mon, 20 May 2024 10:23:24 +0000
+	Tue, 21 May 2024 06:18:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s90Al-0000NL-Ju; Mon, 20 May 2024 12:23:15 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s9Iow-0005Op-F5; Tue, 21 May 2024 08:17:58 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s90Al-002F7W-7N; Mon, 20 May 2024 12:23:15 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1s90Al-0040K9-0R;
-	Mon, 20 May 2024 12:23:15 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon, 20 May 2024 12:23:14 +0200
-Message-Id: <20240520102314.954544-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240517132656.3151273-5-a.fatoum@pengutronix.de>
-References: <20240517132656.3151273-5-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s9Iow-002LsU-2F; Tue, 21 May 2024 08:17:58 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1s9Iow-005zXx-01;
+	Tue, 21 May 2024 08:17:58 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20240516070822.2746845-1-s.hauer@pengutronix.de>
+References: <20240516070822.2746845-1-s.hauer@pengutronix.de>
+Message-Id: <171627227800.1428178.6212792306461694761.b4-ty@pengutronix.de>
+Date: Tue, 21 May 2024 08:17:58 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240520_032323_000422_79FF1028 
-X-CRM114-Status: UNSURE (   9.60  )
+X-CRM114-CacheID: sfid-20240520_231802_822298_D2A96F5D 
+X-CRM114-Status: UNSURE (   6.69  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,32 +84,48 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] fixup! MIPS: make use of merged defconfigs
+Subject: Re: [PATCH 0/7] replace cdev_by_name() with cdev_open_by_name()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Fix a typo in the target name.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- arch/mips/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Thu, 16 May 2024 09:08:15 +0200, Sascha Hauer wrote:
+> As Ahmad noticed cdev_by_name() doesn't increase the reference counting
+> on the returned cdev which causes problems further down the road. This
+> series replaces some of the easier occurences of cdev_by_name() with
+> cdev_open_by_name().
+> 
+> Sascha Hauer (7):
+>   ARM: Freescale i.MX23 evk: use cdev_open_by_name()
+>   ARM: tx28: use cdev_open_by_name()
+>   ARM: omap: use cdev_open_by_name()
+>   ARM: Rockchip: use cdev_open_by_name()
+>   commands: devlookup: use cdev_open_by_name()
+>   commands: findmnt: use cdev_open_by_name()
+>   bootm: use cdev_open_by_name()
+> 
+> [...]
 
-diff --git a/arch/mips/Makefile b/arch/mips/Makefile
-index be360c48a359..67d355e0ad81 100644
---- a/arch/mips/Makefile
-+++ b/arch/mips/Makefile
-@@ -3,7 +3,7 @@
- KBUILD_DEFCONFIG := qemu-malta_defconfig
- 
- generated_configs += $(patsubst %, qemu-malta%_defconfig, el 64 64el)
--qemu-maltael_defconfigs:
-+qemu-maltael_defconfig:
- 	$(call merge_into_defconfig,qemu-malta_defconfig,le)
- qemu-malta64_defconfig:
- 	$(call merge_into_defconfig,qemu-malta_defconfig,mips64)
+Applied, thanks!
+
+[1/7] ARM: Freescale i.MX23 evk: use cdev_open_by_name()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3111bf9b13d2 (link may not be stable)
+[2/7] ARM: tx28: use cdev_open_by_name()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=05164ce75799 (link may not be stable)
+[3/7] ARM: omap: use cdev_open_by_name()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=50788af27a89 (link may not be stable)
+[4/7] ARM: Rockchip: use cdev_open_by_name()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9da41e4d65fc (link may not be stable)
+[5/7] commands: devlookup: use cdev_open_by_name()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=bc5868b647aa (link may not be stable)
+[6/7] commands: findmnt: use cdev_open_by_name()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7aa92b02b84a (link may not be stable)
+[7/7] bootm: use cdev_open_by_name()
+      https://git.pengutronix.de/cgit/barebox/commit/?id=888a17fa7e95 (link may not be stable)
+
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
