@@ -1,67 +1,64 @@
-Delivery-date: Tue, 21 May 2024 13:07:55 +0200
+Delivery-date: Tue, 21 May 2024 14:14:48 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s9NLX-00C93u-1n
+	id 1s9OOG-00CEiB-2v
 	for lore@lore.pengutronix.de;
-	Tue, 21 May 2024 13:07:55 +0200
+	Tue, 21 May 2024 14:14:48 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1s9NLX-0002sD-0X
-	for lore@pengutronix.de; Tue, 21 May 2024 13:07:55 +0200
+	id 1s9OOG-0003PZ-56
+	for lore@pengutronix.de; Tue, 21 May 2024 14:14:48 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=e6tcFTuTI561NnFY+uFo3+3Lmn0jnHCOshcqeqIaA+I=; b=s+1lFk2Ik6M8qrCwS4wgCqx7GE
-	8+6A5Byvdm5slmIf6x82XqS9gZUd9ZawQKT9YND/HsX9RAkoj9cMe2xmXs6kz5ioRyseYNfaq1OF9
-	2G2BO6H0qkG3Eyq9z/Y4vh2o7nVZb6yBK6B4qocVX0c/nJ0i3AMXZPDFqdmmCY0y1wzbHG/tmTpTe
-	YXRcwm6XLchMM+qMaomMsDmzq5buqJ9+2N18Rl1qJJ6QkR3+Hz2OBlRU/M9Hf/e1OQSzEmqhrBuzQ
-	fbF2Qwll+WhhAzlvrQaBb34elAZa5I47W93ZKDQ3dLfYAy2NgIjy//Zy5MGcD19yE+1qhZvsNgOit
-	s28UXTQg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ZZEog5xNANvlSxttyPT6sYNhWlk1koO3DrBg2k27uOk=; b=Ze+ZVPx4Cm+pbqA0Lb1kPZP0cy
+	y/EczsrETuUifs2pgl4z6+0/gsqWu/4roKSoINv9x2UMLFTrwgxZeXkQkLwnip0KeV2lE0vUg3+by
+	CDDLdmZWvfuJkpZ8/6/IBLs3rsegeYd6NXaUtwsNLzBTtVO/VGjD+YaLE1gxtBnNza9tF6NYi2bRj
+	TT9WjaON4F5bFqxTuv/URFUjG2iqx/WzGgJU2XkLd2K/L4ZHx/gE2TRWXiaayqP5xYUsLwEeZD4jv
+	ZeLj3/AKnYE7w8+C0t6Ic11UypTWexRKw4IAWL2APPJzlY2IncLZ8y6L4iUh74DOxbXD5hdeVZBz7
+	J0hiodMQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s9NL1-0000000HEhY-17OS;
-	Tue, 21 May 2024 11:07:23 +0000
+	id 1s9ONf-0000000HOsD-3uj9;
+	Tue, 21 May 2024 12:14:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1s9NKx-0000000HEgK-0JZV
+	id 1s9ONd-0000000HOr1-0E9g
 	for barebox@lists.infradead.org;
-	Tue, 21 May 2024 11:07:20 +0000
+	Tue, 21 May 2024 12:14:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s9NKv-0002e3-Et; Tue, 21 May 2024 13:07:17 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s9ONZ-00038J-K6; Tue, 21 May 2024 14:14:05 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s9NKv-002NZM-2V; Tue, 21 May 2024 13:07:17 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1s9NKv-008dHx-04;
-	Tue, 21 May 2024 13:07:17 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240521082944.7208-1-a.fatoum@pengutronix.de>
-References: <20240521082944.7208-1-a.fatoum@pengutronix.de>
-Message-Id: <171628963701.2057213.9730269394231307663.b4-ty@pengutronix.de>
-Date: Tue, 21 May 2024 13:07:17 +0200
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s9ONZ-002O56-7a; Tue, 21 May 2024 14:14:05 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1s9ONZ-006E5u-0Q;
+	Tue, 21 May 2024 14:14:05 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 21 May 2024 14:13:55 +0200
+Message-Id: <20240521121357.1477071-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240521_040719_362677_38090392 
-X-CRM114-Status: UNSURE (   5.76  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240521_051409_120241_773A41BB 
+X-CRM114-Status: GOOD (  14.14  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,26 +80,166 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] include: linux/types.h: define intptr_t
+Subject: [PATCH v2 1/3] pinctrl: split off consumer API into linux/pinctrl/consumer.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Follow-up patches will align the barebox pinctrl consumer API with
+Linux'. So it makes sense to have the header called the same as well.
+Users of the old pinctrl.h header are unaffected as it will include
+the new <linux/pinctrl/consumer.h>.
 
-On Tue, 21 May 2024 10:29:44 +0200, Ahmad Fatoum wrote:
-> We already define the unsigned uintptr_t, but lack its signed
-> counterpart although we do define INTPTR_MAX. Add the definition
-> for completeness.
-> 
-> 
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - no change
+---
+ include/linux/pinctrl/consumer.h | 61 ++++++++++++++++++++++++++++++++
+ include/pinctrl.h                | 55 +++-------------------------
+ 2 files changed, 65 insertions(+), 51 deletions(-)
+ create mode 100644 include/linux/pinctrl/consumer.h
 
-Applied, thanks!
-
-[1/1] include: linux/types.h: define intptr_t
-      https://git.pengutronix.de/cgit/barebox/commit/?id=7176954ca289 (link may not be stable)
-
-Best regards,
+diff --git a/include/linux/pinctrl/consumer.h b/include/linux/pinctrl/consumer.h
+new file mode 100644
+index 000000000000..3028f960deb4
+--- /dev/null
++++ b/include/linux/pinctrl/consumer.h
+@@ -0,0 +1,61 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef LINUX_PINCTRL_CONSUMER_H
++#define LINUX_PINCTRL_CONSUMER_H
++
++#include <linux/errno.h>
++
++struct device;
++struct device_node;
++
++#ifdef CONFIG_PINCTRL
++int pinctrl_select_state(struct device *dev, const char *state);
++int pinctrl_select_state_default(struct device *dev);
++int of_pinctrl_select_state(struct device_node *np, const char *state);
++int of_pinctrl_select_state_default(struct device_node *np);
++int pinctrl_gpio_direction_input(unsigned pin);
++int pinctrl_gpio_direction_output(unsigned int pin);
++int pinctrl_gpio_get_direction(unsigned pin);
++int pinctrl_single_probe(struct device *dev);
++#else
++static inline int pinctrl_select_state(struct device *dev, const char *state)
++{
++	return -ENODEV;
++}
++
++static inline int pinctrl_select_state_default(struct device *dev)
++{
++	return -ENODEV;
++}
++
++static inline int of_pinctrl_select_state(struct device_node *np, const char *state)
++{
++	return -ENODEV;
++}
++
++static inline int of_pinctrl_select_state_default(struct device_node *np)
++{
++	return -ENODEV;
++}
++
++static inline int pinctrl_gpio_direction_input(unsigned pin)
++{
++	return -ENOTSUPP;
++}
++
++static inline int pinctrl_gpio_direction_output(unsigned int pin)
++{
++	return -ENOTSUPP;
++}
++
++static inline int pinctrl_gpio_get_direction(unsigned pin)
++{
++	return -ENOTSUPP;
++}
++
++static inline int pinctrl_single_probe(struct device *dev)
++{
++	return -ENOSYS;
++}
++#endif
++
++#endif /* LINUX_PINCTRL_CONSUMER_H */
+diff --git a/include/pinctrl.h b/include/pinctrl.h
+index f0f7c2cc8b3e..4ba7b489345b 100644
+--- a/include/pinctrl.h
++++ b/include/pinctrl.h
+@@ -2,7 +2,11 @@
+ #ifndef PINCTRL_H
+ #define PINCTRL_H
+ 
++#include <linux/types.h>
++#include <linux/pinctrl/consumer.h>
++
+ struct pinctrl_device;
++struct device_node;
+ 
+ struct pinctrl_ops {
+ 	int (*set_state)(struct pinctrl_device *, struct device_node *);
+@@ -21,55 +25,4 @@ struct pinctrl_device {
+ int pinctrl_register(struct pinctrl_device *pdev);
+ void pinctrl_unregister(struct pinctrl_device *pdev);
+ 
+-#ifdef CONFIG_PINCTRL
+-int pinctrl_select_state(struct device *dev, const char *state);
+-int pinctrl_select_state_default(struct device *dev);
+-int of_pinctrl_select_state(struct device_node *np, const char *state);
+-int of_pinctrl_select_state_default(struct device_node *np);
+-int pinctrl_gpio_direction_input(unsigned pin);
+-int pinctrl_gpio_direction_output(unsigned int pin);
+-int pinctrl_gpio_get_direction(unsigned pin);
+-int pinctrl_single_probe(struct device *dev);
+-#else
+-static inline int pinctrl_select_state(struct device *dev, const char *state)
+-{
+-	return -ENODEV;
+-}
+-
+-static inline int pinctrl_select_state_default(struct device *dev)
+-{
+-	return -ENODEV;
+-}
+-
+-static inline int of_pinctrl_select_state(struct device_node *np, const char *state)
+-{
+-	return -ENODEV;
+-}
+-
+-static inline int of_pinctrl_select_state_default(struct device_node *np)
+-{
+-	return -ENODEV;
+-}
+-
+-static inline int pinctrl_gpio_direction_input(unsigned pin)
+-{
+-	return -ENOTSUPP;
+-}
+-
+-static inline int pinctrl_gpio_direction_output(unsigned int pin)
+-{
+-	return -ENOTSUPP;
+-}
+-
+-static inline int pinctrl_gpio_get_direction(unsigned pin)
+-{
+-	return -ENOTSUPP;
+-}
+-
+-static inline int pinctrl_single_probe(struct device *dev)
+-{
+-	return -ENOSYS;
+-}
+-#endif
+-
+ #endif /* PINCTRL_H */
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.2
 
 
 
