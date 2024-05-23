@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sA9dC-00FH98-1o
+	id 1sA9dC-00FH9J-2V
 	for lore@lore.pengutronix.de;
 	Thu, 23 May 2024 16:41:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sA9dB-0006Rd-No
+	id 1sA9dB-0006Rj-Vo
 	for lore@pengutronix.de; Thu, 23 May 2024 16:41:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,42 +18,42 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=riffsNknrBssvadFb9g3rK5xhHQP6TcjJsf542h2bl8=; b=ZcekzqG+A0IcSXt4X2l6Nbjt5n
-	akx689Dy+3Q1q8cB5H2pkJDXJyrXEW7RGG8jybZGiduuAEomoxwre2jBqx1fVPYxn0HDVBwYYciY/
-	OQbCCTH4HEITz6LeOcaE9hEgEgHEPVtZMFmhNUeUtm5yyhQnk0RSep8imlFavQCgPFdVV8oT4UomE
-	1r7ZbwL3uuvsyn3QzP7FqfF7mF//DhzGS2WZkATph+Nhj9D/lNBfG9LHxsDa2+3tU0f8b6/AiNbmR
-	NJjuP5Sg1y4fcdoaSP8tRzVogNvlOxlvvY/ydyScww8FKljM/Y0aGJgEvGd9MQi5c0cm/p6NqWSgG
-	rxo/Ujag==;
+	bh=LrkfpK1rh8SLmB42X8Bk7a25Tp89IrkIWPvidZY7UEo=; b=Z5YyJ0LY6TGbga6tWeJkg9UTrm
+	G9WE+V9Iosy05tuPDnu5SX1S36vGK3leafcNpH4kbKDyv1ODhvGKRxOE5btj06/liQu6z6na+hcol
+	CFP2UWWj5zCLQueySrE49TJUMMTZD1sXCrCT50EFMt+qg73l7nIwIlNMIIxGzpfPtUNPfT1l/Mmd3
+	pA2I+xgkdA5lKgnz/IoLlv2xIsnZsg4VxVO/wTUOxWgOYerQPBYajAyaSwxmzELUD6QaVGXohMiFl
+	gyX2PZUx9O3eNHeDZjjB33FSIVTYAjveMwhkXV3YOJP4ZpYKlcxy4YoaDANiqJrlm7z1HP0rCha2/
+	1ta7X3iQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sA9cd-00000006WNF-2Mhc;
-	Thu, 23 May 2024 14:40:47 +0000
+	id 1sA9cZ-00000006WMS-2rm8;
+	Thu, 23 May 2024 14:40:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sA9ca-00000006WMT-0VMP
+	id 1sA9cV-00000006WKz-14Xs
 	for barebox@lists.infradead.org;
-	Thu, 23 May 2024 14:40:45 +0000
+	Thu, 23 May 2024 14:40:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1sA9cQ-00065E-TZ; Thu, 23 May 2024 16:40:34 +0200
+	id 1sA9cQ-00065G-Tu; Thu, 23 May 2024 16:40:34 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1sA9cQ-002fq3-Gp; Thu, 23 May 2024 16:40:34 +0200
+	id 1sA9cQ-002fq5-HO; Thu, 23 May 2024 16:40:34 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1sA9cQ-0078ww-1Y;
+	id 1sA9cQ-0078ww-1a;
 	Thu, 23 May 2024 16:40:34 +0200
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Thu, 23 May 2024 16:40:28 +0200
+Date: Thu, 23 May 2024 16:40:30 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240523-feature-dp83867-soft-reset-v1-1-428d15168dfe@pengutronix.de>
+Message-Id: <20240523-feature-dp83867-soft-reset-v1-3-428d15168dfe@pengutronix.de>
 References: <20240523-feature-dp83867-soft-reset-v1-0-428d15168dfe@pengutronix.de>
 In-Reply-To: <20240523-feature-dp83867-soft-reset-v1-0-428d15168dfe@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -61,8 +61,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 X-Mailer: b4 0.12.4
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240523_074044_265909_92853435 
-X-CRM114-Status: GOOD (  15.76  )
+X-CRM114-CacheID: sfid-20240523_074039_331841_002B5C80 
+X-CRM114-Status: GOOD (  14.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,76 +84,90 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/3] net: phy: allow PHY drivers to implement their own
- software reset
+Subject: [PATCH 3/3] net: phy: dp83867: sync dp83867_phy_rest
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is a port of linux commit 9df81dd7583d14862d0cfb673a941b261f3b2112
-("net: phy: allow PHY drivers to implement their own software reset")
-which implements the ability for phy drivers to implement the own
-non-standard software reset sequence.
+This is a port of the `dp83867_phy_reset` function at the state of linux
+commit a129b41fe0a8b4da828c46b10f5244ca07a3fec3 ("Revert "net: phy:
+dp83867: perform soft reset and retain established link"). Which
+performs a reset before starting the initial configuration.
 
-A side effect is that fixups will now applied always even if
-.config_init is undefined. This shouldn't be possible to happen though,
-because phy_driver_register will populate the member with
-genphy_config_init in that case, so the member should never be NULL.
+It is a refactoring of commit 095cd32961aab64cfe72941ce43d99876852e12b
+("net: phy: dp83867: reset PHY on probe") which already ported parts of
+the function, but diverted from the upstream implementation.
 
 Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- drivers/net/phy/phy.c | 16 ++++++++++++++--
- include/linux/phy.h   |  5 +++++
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ drivers/net/phy/dp83867.c | 28 ++++++++++++++++++++++------
+ 1 file changed, 22 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
-index abd78b2c80..a83f183302 100644
---- a/drivers/net/phy/phy.c
-+++ b/drivers/net/phy/phy.c
-@@ -1108,14 +1108,26 @@ int phy_init_hw(struct phy_device *phydev)
- 	struct phy_driver *phydrv = to_phy_driver(phydev->dev.driver);
- 	int ret;
+diff --git a/drivers/net/phy/dp83867.c b/drivers/net/phy/dp83867.c
+index aefc651489..3c9a8e6355 100644
+--- a/drivers/net/phy/dp83867.c
++++ b/drivers/net/phy/dp83867.c
+@@ -362,8 +362,6 @@ static int dp83867_of_init(struct phy_device *phydev)
+ 	return 0;
+ }
  
--	if (!phydrv || !phydrv->config_init)
-+	if (!phydrv)
- 		return 0;
+-static int dp83867_phy_reset(struct phy_device *phydev); /* see below */
+-
+ static int dp83867_probe(struct phy_device *phydev)
+ {
+ 	struct dp83867_private *dp83867;
+@@ -372,8 +370,6 @@ static int dp83867_probe(struct phy_device *phydev)
  
-+	if (phydrv->soft_reset) {
-+		ret = phydrv->soft_reset(phydev);
-+		if (ret < 0)
-+			return ret;
-+	}
+ 	phydev->priv = dp83867;
+ 
+-	dp83867_phy_reset(phydev);
+-
+ 	return dp83867_of_init(phydev);
+ }
+ 
+@@ -571,14 +567,33 @@ static int dp83867_phy_reset(struct phy_device *phydev)
+ {
+ 	int err;
+ 
++	err = phy_write(phydev, DP83867_CTRL, DP83867_SW_RESET);
++	if (err < 0)
++		return err;
 +
- 	ret = phy_scan_fixups(phydev);
- 	if (ret < 0)
- 		return ret;
- 
--	return phydrv->config_init(phydev);
-+	if (phydrv->config_init) {
-+		ret = phydrv->config_init(phydev);
-+		if (ret < 0)
-+			return ret;
-+	}
++	udelay(20);
 +
++	err = phy_modify(phydev, MII_DP83867_PHYCTRL,
++			 DP83867_PHYCR_FORCE_LINK_GOOD, 0);
++	if (err < 0)
++		return err;
++
++	/* Configure the DSP Feedforward Equalizer Configuration register to
++	 * improve short cable (< 1 meter) performance. This will not affect
++	 * long cable performance.
++	 */
++	err = phy_write_mmd(phydev, DP83867_DEVADDR, DP83867_DSP_FFE_CFG,
++			    0x0e81);
++	if (err < 0)
++		return err;
++
+ 	err = phy_write(phydev, DP83867_CTRL, DP83867_SW_RESTART);
+ 	if (err < 0)
+ 		return err;
+ 
+ 	udelay(20);
+ 
+-	return phy_modify(phydev, MII_DP83867_PHYCTRL,
+-			 DP83867_PHYCR_FORCE_LINK_GOOD, 0);
 +	return 0;
  }
  
- static struct phy_driver genphy_driver = {
-diff --git a/include/linux/phy.h b/include/linux/phy.h
-index 7da4f94e0e..a6b96a5984 100644
---- a/include/linux/phy.h
-+++ b/include/linux/phy.h
-@@ -275,6 +275,11 @@ struct phy_driver {
- 	const void *driver_data;
- 	bool is_phy;
+ static struct phy_driver dp83867_driver[] = {
+@@ -590,6 +605,7 @@ static struct phy_driver dp83867_driver[] = {
  
-+	/**
-+	 * @soft_reset: Called to issue a PHY software reset
-+	 */
-+	int (*soft_reset)(struct phy_device *phydev);
-+
- 	/*
- 	 * Called to initialize the PHY,
- 	 * including after a reset
+ 		.probe          = dp83867_probe,
+ 		.config_init	= dp83867_config_init,
++		.soft_reset	= dp83867_phy_reset,
+ 
+ 		.read_status	= dp83867_read_status,
+ 	},
 
 -- 
 2.39.2
