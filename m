@@ -1,67 +1,67 @@
-Delivery-date: Fri, 24 May 2024 13:44:10 +0200
+Delivery-date: Fri, 24 May 2024 13:44:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sATLG-00GcJM-1E
+	id 1sATLR-00GcJz-3A
 	for lore@lore.pengutronix.de;
-	Fri, 24 May 2024 13:44:10 +0200
+	Fri, 24 May 2024 13:44:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sATLF-0005Un-QL
-	for lore@pengutronix.de; Fri, 24 May 2024 13:44:10 +0200
+	id 1sATLR-0005Xm-Er
+	for lore@pengutronix.de; Fri, 24 May 2024 13:44:21 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nAatQydg4bkE3WgncslTNYyLB4i+WjnREMt477g4BT0=; b=tiSHnLuUPsKysMjVmoZkhN6chM
-	685p+eV1B3IxXusn56J3uZAJJFv8LLZbj4bScjlRghaU5iBz59QUofVkSWL6aYv/SOrgJj5a8k/a3
-	XebgfiyRNGHvGQUcFZQP1L7A5NMPATUouCeR/ey0vm8IGuXrwZCdoU1NZa57yq2SfqoXY0zZxlHtK
-	Sh0tFj4xghGMjRk9mPcpVRGvS15zhipNAVtmsBSbTt7EIGkS4YN2K8uzE3Rp51Zq7Q2BOauk9ZDzy
-	mMlpy3u8IFtXAlCvPe8sgiTetpe6eTdNotgZ5S1Sb+OKmS9h9IZjimMPO36g621l4vfWDE6GCbVZd
-	yOuqY8KA==;
+	bh=/hzdPqHmhymsiEiAZFv6qCWUkX+0t3Uvj0fWoMsfb14=; b=ojXUjyELb3MvabFr3KI6dUacje
+	0PYYpTa1O2H8IFWJljOAGOhPPehl/VDTyqpniphHUb53AJprYzOuPuw6FyginYQitNX1icf1fUeHL
+	AkuChsiaxsX/PfY/mqgGvJEWnaOAIja7/lmxQ5eoTfz3QbTzxN+18SESDLoPHlS52LTeK3UlLFTd5
+	zxU+Xy7ZsNV01E7fDLvEbuZv1+Nb6fvl19g+nu4PFZnWA8wQkfMB1spKe2wMhMnh+2R/hq93ymNed
+	hxqe2OElFgGW8CqCYYfOlb2gPUHZhHVEBpIKr6bCCtS4/nozrHmj0ZZqZT49Lj0cOeHxyo7cl5hY6
+	pi0XkWfw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sATKq-00000008nhY-1wIg;
-	Fri, 24 May 2024 11:43:44 +0000
+	id 1sATL3-00000008nje-1Mpm;
+	Fri, 24 May 2024 11:43:57 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sATKn-00000008nh7-0ftH
+	id 1sATL0-00000008niq-0QJB
 	for barebox@lists.infradead.org;
-	Fri, 24 May 2024 11:43:42 +0000
+	Fri, 24 May 2024 11:43:56 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sATKl-0005PZ-Pa; Fri, 24 May 2024 13:43:39 +0200
+	id 1sATKy-0005RZ-OA; Fri, 24 May 2024 13:43:52 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sATKl-002mtz-8f; Fri, 24 May 2024 13:43:39 +0200
+	id 1sATKy-002muB-Bc; Fri, 24 May 2024 13:43:52 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sATKl-002VTQ-0f;
-	Fri, 24 May 2024 13:43:39 +0200
+	id 1sATKy-002Vd2-0v;
+	Fri, 24 May 2024 13:43:52 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Jonas Richardsen <jonasrichardsen@emlix.com>
-In-Reply-To: <20240522080734.1965257-1-a.fatoum@pengutronix.de>
-References: <20240522080734.1965257-1-a.fatoum@pengutronix.de>
-Message-Id: <171655101920.597568.11569376389944666222.b4-ty@pengutronix.de>
-Date: Fri, 24 May 2024 13:43:39 +0200
+To: barebox@lists.infradead.org, 
+ Jonas Richardsen <jonasrichardsen@emlix.com>
+In-Reply-To: <20240522061819.6150-1-jonasrichardsen@emlix.com>
+References: <20240522061819.6150-1-jonasrichardsen@emlix.com>
+Message-Id: <171655103228.598205.11589084034414468285.b4-ty@pengutronix.de>
+Date: Fri, 24 May 2024 13:43:52 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240524_044341_233728_8C27A1E7 
-X-CRM114-Status: UNSURE (   6.32  )
+X-CRM114-CacheID: sfid-20240524_044354_228794_CD8A6270 
+X-CRM114-Status: UNSURE (   7.56  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,27 +84,26 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master 1/3] mci: sdhci: use host device, not card, for
- debug message
+Subject: Re: [PATCH] mci: bcm2835: Set mci host for sdhci
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 22 May 2024 10:07:32 +0200, Ahmad Fatoum wrote:
-> All other messages printed in sdhci.c use the host's device to prefix
-> the message, except this one debug message here that uses the card's
-> instead. Unify this by using the host device everywhere.
+On Wed, 22 May 2024 08:15:27 +0200, Jonas Richardsen wrote:
+> The pointer `sdhci.mci` is currently not being set for the bcm2835. This
+> leads to a null pointer dereference for example in `sdhci_wait_idle()`
+> if the `sdhci_read` function fails or times out.
 > 
+> Set the pointer within the `bcm2835_mci_probe` function. This is
+> analogous to the behaviour seen in `arasan_sdhci_probe`,
+> `fsl_esdhc_probe`, `rk_sdhci_probe` and other, similar functions.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/3] mci: sdhci: use host device, not card, for debug message
-      https://git.pengutronix.de/cgit/barebox/commit/?id=affdaa4a9df4 (link may not be stable)
-[2/3] mci: sdhci: retrieve host device via common helper or NULL
-      https://git.pengutronix.de/cgit/barebox/commit/?id=1ddaa6821b90 (link may not be stable)
-[3/3] mci: sdhci: populate struct sdhci::mci in drivers
-      https://git.pengutronix.de/cgit/barebox/commit/?id=532da9c40cdc (link may not be stable)
+[1/1] mci: bcm2835: Set mci host for sdhci
+      https://git.pengutronix.de/cgit/barebox/commit/?id=5d74c69b3279 (link may not be stable)
 
 Best regards,
 -- 
