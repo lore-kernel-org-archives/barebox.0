@@ -3,63 +3,63 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBXaJ-000ezt-0H
+	id 1sBXaJ-000f03-0l
 	for lore@lore.pengutronix.de;
 	Mon, 27 May 2024 12:28:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBXaI-0005mq-1v
-	for lore@pengutronix.de; Mon, 27 May 2024 12:28:06 +0200
+	id 1sBXaI-0005nJ-Ee
+	for lore@pengutronix.de; Mon, 27 May 2024 12:28:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
 	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
 	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
 	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=HTlw/dkmsNeuCf5vmj7JuDD1dk3cIYWP2xG7yVeLg+4=; b=oZZBgUcH2rPWic
-	DkoLe3s0boJRekE1+ynty7osralsNIsNUxRjsqJmj/giONO1cYENMN3N3XydNPhkt2iAJMI8Byot3
-	70yphZW5bs3Phm8Zx9OvHNH2qY2Febm2UreC6UX/mjwzk2ridSepCqJEfZccFqp1GUTIrTI2J6+Ya
-	9TmCvaLlFZpa7LJqzYTnYjMTTAGWZfuu0csjLaPDA1izXcZM23p4BFA4frUxGT5Vdaq1GJn1Hyw2h
-	91AnTuS1qRaExDxrH9kaUJtcG7wsPVntJqPSQyvmipPJu7ky0fX14FbMKxVKUjLO4yyAEs598eoQe
-	oYF3DccWwNjgJV3X75kA==;
+	List-Owner; bh=UGXkR2c5Gj8NC5DbF3wI4bC0skUB7iAdye955pRp/T0=; b=FJMzMbepUO7HiP
+	QEWZvYwKOCNenkWOMxwTNH/jgyXrHUraCrOj3ckDIbb7KVzGb+dGL3/rnshcbyMEKyDmOPyL9bp1Z
+	vDkg4CXscZuBd+TWvgkSyMLTesR995dnXm0dcg1ocuncl+AnkW7nccH9k0aunOsx8KK+gTG0XoC2E
+	w0Ge6SFDh9pOSoPQ+YcR/3bVLS6fQ2OkKSlllJmMuATkWpPgC4JW/f6pjnbstRWGWE3BAFutr8NK1
+	iq0HPI6MqtUuttwKsnV0P7qTUxAXLA++wQ+F/z95l+twm6awbg30rZrZTo4TfFpyMdJZumMCJGxN9
+	0BG4OoMAW1Qw6EmwxFqw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBXZk-0000000Ea9n-27f4;
-	Mon, 27 May 2024 10:27:32 +0000
+	id 1sBXZn-0000000EaB0-0yQX;
+	Mon, 27 May 2024 10:27:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBXZe-0000000Ea6o-2Muq
+	id 1sBXZe-0000000Ea6q-2MDr
 	for barebox@lists.infradead.org;
-	Mon, 27 May 2024 10:27:29 +0000
+	Mon, 27 May 2024 10:27:31 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sBXZc-0005RH-Ck; Mon, 27 May 2024 12:27:24 +0200
+	id 1sBXZc-0005RQ-Hf; Mon, 27 May 2024 12:27:24 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sBXZb-003Asr-VJ; Mon, 27 May 2024 12:27:23 +0200
+	id 1sBXZc-003At0-3r; Mon, 27 May 2024 12:27:24 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sBXZb-00Ejyk-2m;
-	Mon, 27 May 2024 12:27:23 +0200
+	id 1sBXZc-00Ejyk-02;
+	Mon, 27 May 2024 12:27:24 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 27 May 2024 12:27:18 +0200
-Message-Id: <20240527102723.3504270-3-s.hauer@pengutronix.de>
+Date: Mon, 27 May 2024 12:27:21 +0200
+Message-Id: <20240527102723.3504270-6-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240527102723.3504270-1-s.hauer@pengutronix.de>
 References: <20240527102723.3504270-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240527_032726_704585_597C41B1 
-X-CRM114-Status: GOOD (  12.00  )
+X-CRM114-CacheID: sfid-20240527_032726_698677_7578E8F0 
+X-CRM114-Status: GOOD (  11.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,41 +83,44 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 2/7] net: cs8900: do not read past the receive buffer
+Subject: [PATCH v2 5/7] net: smc911x: do not read past the receive buffer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-the hardware may report a packet longer than our receive buffer. Instead
+The hardware may report a packet longer than our receive buffer. Instead
 of reading past the read buffer, discard too long packets.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- drivers/net/cs8900.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/smc911x.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/cs8900.c b/drivers/net/cs8900.c
-index afb0f3e26e..bce26d4def 100644
---- a/drivers/net/cs8900.c
-+++ b/drivers/net/cs8900.c
-@@ -295,10 +295,14 @@ static int cs8900_recv(struct eth_device *dev)
- 	status = readw(priv->regs + CS8900_RTDATA0);
- 	len = readw(priv->regs + CS8900_RTDATA0);
+diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
+index 767d51761b..4b2bd79392 100644
+--- a/drivers/net/smc911x.c
++++ b/drivers/net/smc911x.c
+@@ -460,13 +460,18 @@ static int smc911x_eth_rx(struct eth_device *edev)
+ 		smc911x_reg_write(priv, RX_CFG, 0);
  
--	for (addr = (u16 *)priv->rx_buf, i = (len + 1) >> 1; i > 0; i--)
--		*addr++ = readw(priv->regs + CS8900_RTDATA0);
--
--	net_receive(dev, priv->rx_buf, len);
-+	if (len <= PKTSIZE) {
-+		for (addr = (u16 *)priv->rx_buf, i = (len + 1) >> 1; i > 0; i--)
-+			*addr++ = readw(priv->regs + CS8900_RTDATA0);
-+		net_receive(dev, priv->rx_buf, len);
-+	} else {
-+		for (addr = (u16 *)priv->rx_buf, i = (len + 1) >> 1; i > 0; i--)
-+			(void)readw(priv->regs + CS8900_RTDATA0);
-+	}
+ 		tmplen = (pktlen + 2 + 3) / 4;
+-		while(tmplen--)
+-			*data++ = smc911x_reg_read(priv, RX_DATA_FIFO);
++		if (tmplen <= PKTSIZE / sizeof(u32)) {
++			while (tmplen--)
++				*data++ = smc911x_reg_read(priv, RX_DATA_FIFO);
++		} else {
++			while (tmplen--)
++				smc911x_reg_read(priv, RX_DATA_FIFO);
++		}
  
- 	return len;
- }
+ 		if(status & RX_STS_ES)
+ 			dev_err(&edev->dev, "dropped bad packet. Status: 0x%08x\n",
+ 				status);
+-		else
++		else if (tmplen <= PKTSIZE / sizeof(u32))
+ 			net_receive(edev, priv->rx_buf, pktlen);
+ 	}
+ 
 -- 
 2.39.2
 
