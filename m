@@ -1,69 +1,69 @@
-Delivery-date: Mon, 27 May 2024 14:28:32 +0200
+Delivery-date: Mon, 27 May 2024 14:30:01 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBZSq-000gA3-1m
+	id 1sBZUH-000gAl-1B
 	for lore@lore.pengutronix.de;
-	Mon, 27 May 2024 14:28:32 +0200
+	Mon, 27 May 2024 14:30:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBZSp-000309-Tx
-	for lore@pengutronix.de; Mon, 27 May 2024 14:28:32 +0200
+	id 1sBZUG-0003GV-PE
+	for lore@pengutronix.de; Mon, 27 May 2024 14:30:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:References:
 	Subject:Cc:To:From:Message-Id:Date:Content-Type:Content-Transfer-Encoding:
 	Mime-Version:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=XJVVyLhaTQklOsY3mtlGPkuYMDvX3DAlcawSzjZCndk=; b=L8qmkx9ojNUEM8po5qgG2KlGn5
-	ppyqaD/d47MVGWIz79wc7KYdRZLXsAuhzlB+IghROoF3HPDYJ77vGDs9zKc8JSB85GAv4pVaSQm24
-	nVUpq+ZMq1uIiVx0tEo7PMXtj03zqXsnV5NtISMbRDKqr4Py0wWEZp6hUWhjTUpUgufdVmy/QB9rw
-	PEj6jNHn4ntDPJv47R+9M2oU6Obd5rjGaEwEa8VekW706guUQXH69hpwWpoQnuCDGPJvlnzpJ8DzR
-	xzXzLtDl4GfI+j1yriZohphg+CEOiPVtZgeOEepw5YaduzwydDWnzPhP1GNh6MwEB1A2SUNynxrQD
-	+d06ZQjg==;
+	bh=5GfUaSU8UvBER1SOLH8jk55URirweNdzj3J/vwUkTSk=; b=X3PrKETr3VBgRd2GVDDT3MBMoy
+	LUCO+sYeY6f6yDgRhuS2cf0b/QSAUohctkO3tgp/XZ2rMvZEt4+P7S7XLK9O59eYthC+zkb5XW0jI
+	yZLRIGF/hW+ii0COizua3hQGr0yUlgtj22moFDrOmvG5qUU7KFs9FI3FV82Gu9Ij1DXK1AA0E1pye
+	dPHTg9OddwBNPPJ+HK04qMEGqGnZw8shW49irusTnl4RplowgY0c5HedaFDeAYfvbmiG0Q2Jh+quj
+	7zldMecyFDT4kt1RTd5q060KwINiQvDB1d+T+V90kJbUW/1XzvOuCIr4WCUf3L4FeOIdvm5YZkKH9
+	oddNbPuw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBZSA-0000000EsXw-2XRD;
-	Mon, 27 May 2024 12:27:50 +0000
+	id 1sBZTs-0000000EswO-45YP;
+	Mon, 27 May 2024 12:29:36 +0000
 Received: from xvm-107-148.dc0.ghst.net ([46.226.107.148] helo=zdiv.net)
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBZS7-0000000EsWL-18gb
+	id 1sBZTp-0000000Esu6-0o8Z
 	for barebox@lists.infradead.org;
-	Mon, 27 May 2024 12:27:48 +0000
+	Mon, 27 May 2024 12:29:34 +0000
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zdiv.net; s=23;
-	t=1716812848;
+	t=1716812971;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XJVVyLhaTQklOsY3mtlGPkuYMDvX3DAlcawSzjZCndk=;
-	b=IHGEv5T0rQl7KA+qqnL0cm7wEPNLDgeBY/C7SB9xp8L9FL+xr3J/4GFOgs1zLmQUO16o/E
-	zMMxn48XzKq+7jvXtnR36nY5j+RlZj5Tqkc6kKWAYOsDjrbYWC3pKox22kXsnOLkflwnpJ
-	fnnBYZHt9xihGf5A6j3RiKBssxbhVB+rnUESVxZylJCEBGnXrlU8BZZ6wYq4rwx1rtLXna
-	zAEJYbZMtuaoHQ3DBI+Dw2YpmAnM01Sn3crEhGLgOCJgxxc2YPvtHLU4LjMircbq0wGJVA
-	3NnG9m5nv8EHB+1AnaVyzSWXQlMJevP/tj56h44/AOXqef+ZbWHcCtVmvZssVw==
+	bh=5GfUaSU8UvBER1SOLH8jk55URirweNdzj3J/vwUkTSk=;
+	b=H8J706pJhURn5NglgKb+baFbQ8XfVG1hhwbySK7zKBJHaUjDlX0w7uM5bl5zHE7Wi92PAt
+	5iLEiUqf/ba2ITV+HHt4+nqPvkk7J6csz8RCvCIC1alG0ALmRxlXbzAlXmU7OM2zI/+iiR
+	Bt+WeV7h4k5QN1g5EW78We18X+/hVMvJITGb5Fg3ewo6zaYFQvOi5POSzhSRNlq9pqZBIm
+	sDqXl3Fx0bjXD4YZHzqjAn34ML7aOM8gNGdGfr+97H0VL7A19l2/QJqMfl+krteL17683V
+	8SLCJo6f/xp/akBHF9iO00RxQrz2dwV7/1pgk8NOJs33ExIEkWHeHjb7oEPTwg==
 Received: from localhost (91-160-75-97.subs.proxad.net [91.160.75.97])
-	by zdiv.net (OpenSMTPD) with ESMTPSA id 9cbce1e6 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
-	Mon, 27 May 2024 12:27:28 +0000 (UTC)
+	by zdiv.net (OpenSMTPD) with ESMTPSA id d42ee0a0 (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Mon, 27 May 2024 12:29:31 +0000 (UTC)
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 27 May 2024 14:27:28 +0200
-Message-Id: <D1KFD2L4BTS3.1U2Q6YUGTPH8W@zdiv.net>
+Date: Mon, 27 May 2024 14:29:31 +0200
+Message-Id: <D1KFEMZH7ULX.4F80HL9UHOC8@zdiv.net>
 From: "Jules Maselbas" <jmaselbas@zdiv.net>
 To: "Sascha Hauer" <s.hauer@pengutronix.de>, "Barebox List"
  <barebox@lists.infradead.org>
 Cc: "jianqiang wang" <wjq.sec@gmail.com>
 X-Mailer: aerc 0.17.0
 References: <20240527102723.3504270-1-s.hauer@pengutronix.de>
- <20240527102723.3504270-6-s.hauer@pengutronix.de>
-In-Reply-To: <20240527102723.3504270-6-s.hauer@pengutronix.de>
+ <20240527102723.3504270-5-s.hauer@pengutronix.de>
+In-Reply-To: <20240527102723.3504270-5-s.hauer@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240527_052747_617008_8A04B873 
-X-CRM114-Status: GOOD (  14.00  )
+X-CRM114-CacheID: sfid-20240527_052933_518830_2CB4E338 
+X-CRM114-Status: GOOD (  14.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,48 +86,38 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v2 5/7] net: smc911x: do not read past the receive
+Subject: Re: [PATCH v2 4/7] net: liteeth: do not read past the receive
  buffer
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+a bit unrelated, also a nitpick:
+
 On Mon May 27, 2024 at 12:27 PM CEST, Sascha Hauer wrote:
-> The hardware may report a packet longer than our receive buffer. Instead
-> of reading past the read buffer, discard too long packets.
+> The driver already discards packets bigger than 2048 bytes, but that is
+> already larger than the buffer we read the data into. Limit packet size
+> to PKTSIZE instead which matches our receive buffer size.
 >
 > Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 > ---
->  drivers/net/smc911x.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
+>  drivers/net/liteeth.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> diff --git a/drivers/net/smc911x.c b/drivers/net/smc911x.c
-> index 767d51761b..4b2bd79392 100644
-> --- a/drivers/net/smc911x.c
-> +++ b/drivers/net/smc911x.c
-> @@ -460,13 +460,18 @@ static int smc911x_eth_rx(struct eth_device *edev)
->  		smc911x_reg_write(priv, RX_CFG, 0);
-> =20
->  		tmplen =3D (pktlen + 2 + 3) / 4;
-> -		while(tmplen--)
-> -			*data++ =3D smc911x_reg_read(priv, RX_DATA_FIFO);
-> +		if (tmplen <=3D PKTSIZE / sizeof(u32)) {
-> +			while (tmplen--)
-> +				*data++ =3D smc911x_reg_read(priv, RX_DATA_FIFO);
-> +		} else {
-> +			while (tmplen--)
-> +				smc911x_reg_read(priv, RX_DATA_FIFO);
-> +		}
-> =20
->  		if(status & RX_STS_ES)
->  			dev_err(&edev->dev, "dropped bad packet. Status: 0x%08x\n",
->  				status);
-> -		else
-> +		else if (tmplen <=3D PKTSIZE / sizeof(u32))
-tmplen here is zero, because it is used as a loop counter.
-
->  			net_receive(edev, priv->rx_buf, pktlen);
+> diff --git a/drivers/net/liteeth.c b/drivers/net/liteeth.c
+> index 1781e26348..0d63e1da16 100644
+> --- a/drivers/net/liteeth.c
+> +++ b/drivers/net/liteeth.c
+> @@ -223,7 +223,7 @@ static int liteeth_eth_rx(struct eth_device *edev)
 >  	}
 > =20
+>  	len =3D litex_read32(priv->base + LITEETH_WRITER_LENGTH);
+> -	if (len =3D=3D 0 || len > 2048) {
+> +	if (len =3D=3D 0 || len > PKTSIZE) {
+>  		len =3D 0;
+>  		dev_err(priv->dev, "%s: invalid len %d\n", __func__, len);
+the len here is always zero
+
+>  		litex_write8(priv->base + LITEETH_WRITER_EV_PENDING, reg);
 
 
 
