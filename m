@@ -1,67 +1,67 @@
-Delivery-date: Tue, 28 May 2024 10:59:29 +0200
+Delivery-date: Tue, 28 May 2024 11:01:39 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBsg5-000slc-1R
+	id 1sBsiB-000smh-0a
 	for lore@lore.pengutronix.de;
-	Tue, 28 May 2024 10:59:29 +0200
+	Tue, 28 May 2024 11:01:39 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBsg4-0001dl-Rm
-	for lore@pengutronix.de; Tue, 28 May 2024 10:59:29 +0200
+	id 1sBsiA-0001zo-LO
+	for lore@pengutronix.de; Tue, 28 May 2024 11:01:39 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=9d0U7apAcNmrYMWZEYJYBrleMTZZmDiL4hyEy9eWLo0=; b=y4OaZ8BwF21/EMYovyUEsIL8Y5
-	QbzdV44shcd48ii7xD3ydF7MitRq3/KGiT0KDeG1qlfJPpcHTgibXtwVW5ECcv0ng0QTNfGz12c5v
-	8qtnnBtOJYsGxN2HeOiVBPHbnwDdxylcl4+FjoU9gQesHHU3B3aplfghuomPYbK3I0fxllMJ2TAAD
-	4vcnHU9MRKpX/WEYM/pSt1y/0yYHjRnULVq/fz1lSYf+Z3yIs2b1fmPzOHtVRHeCaUH/PVfP7/LtW
-	N9QzIR5YTJ7RgkrQ9Rrppu17pyze4XsWvE+WVXrP/LwFbO9XcForMXFoFUSc6clbJTssmkBFQq9il
-	H4VYWOxQ==;
+	bh=HmQNMErTLvYE9f0TyNpjX0ciLxuUQ0AQD1Ts7xom76s=; b=FmUesvaj7pDc68aBnoz5OiQZQp
+	UYO7jsch5B6yOZeMj0D6x0xOnXqj9s372QOnZpl5qSkBaW4Bou0XNOyG+0NJdYnIPobYmPDdvVler
+	mivP24OwGMMUieCY73m0l/Xz3iWZyZyM4JY35FZM2EGrEL7fRCH0lWlkl3DwRTAL/Z6IboO5sOFu5
+	2nghbIZaG6WZTXVsEKyijUmC348Vpx9n8Jv+93ibh19Iz3n8QIdMxwK4Fib2YCfbFxjynYY/hQG39
+	0sLhGOLLVp1nAh3w7KEiSXUJNqIV9S6tyWrrm/KPCVxGdbsYRVdRJwIRvqAqB2yvLxzdlRJc2l3K6
+	Za6q+u8A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBsfi-0000000HZDl-1VoP;
-	Tue, 28 May 2024 08:59:06 +0000
+	id 1sBshX-0000000HaDp-1m5K;
+	Tue, 28 May 2024 09:00:59 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBsfc-0000000HZAo-413Y
+	id 1sBshI-0000000Ha5Z-2K71
 	for barebox@lists.infradead.org;
-	Tue, 28 May 2024 08:59:02 +0000
+	Tue, 28 May 2024 09:00:54 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sBsfb-0001N0-L5; Tue, 28 May 2024 10:58:59 +0200
+	id 1sBshH-0001pp-2S; Tue, 28 May 2024 11:00:43 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sBsfb-003Isz-5y; Tue, 28 May 2024 10:58:59 +0200
+	id 1sBshG-003ItK-MG; Tue, 28 May 2024 11:00:42 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sBsfb-004vAH-0N;
-	Tue, 28 May 2024 10:58:59 +0200
+	id 1sBshG-004yAW-21;
+	Tue, 28 May 2024 11:00:42 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20240527095057.3418435-1-s.hauer@pengutronix.de>
-References: <20240527095057.3418435-1-s.hauer@pengutronix.de>
-Message-Id: <171688673911.1172868.63250949119883197.b4-ty@pengutronix.de>
-Date: Tue, 28 May 2024 10:58:59 +0200
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: ore@pengutronix.de
+In-Reply-To: <20240528082542.3013919-1-a.fatoum@pengutronix.de>
+References: <20240528082542.3013919-1-a.fatoum@pengutronix.de>
+Message-Id: <171688684262.1184367.18048382653429425994.b4-ty@pengutronix.de>
+Date: Tue, 28 May 2024 11:00:42 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240528_015901_083000_83BCC21B 
-X-CRM114-Status: UNSURE (   8.61  )
+X-CRM114-CacheID: sfid-20240528_020044_826054_2E7B9F49 
+X-CRM114-Status: UNSURE (   6.06  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,27 +85,23 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 1/2] watchdog: dw_wdt: do not register restart handler
+Subject: Re: [PATCH 1/2] string: inline isempty
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 27 May 2024 11:50:56 +0200, Sascha Hauer wrote:
-> The designware watchdog driver doesn't have a special reset function,
-> instead it only uses the regular watchdog to reset the SoC. Since
-> 0ed7bb09f2ef7b ("watchdog: add option to provide fall-back restart handler")
-> the watchdog core provides the same functionality, so just drop the
-> restart functionality from the driver.
+On Tue, 28 May 2024 10:25:41 +0200, Ahmad Fatoum wrote:
+> The helper is trivial, so make it inline to save users the minimal
+> hassle of calling it out-of-line.
 > 
 > 
-> [...]
 
 Applied, thanks!
 
-[1/2] watchdog: dw_wdt: do not register restart handler
-      https://git.pengutronix.de/cgit/barebox/commit/?id=421ac5c9ec21 (link may not be stable)
-[2/2] watchdog: fix watchdog restart handler when autoping is enabled
-      https://git.pengutronix.de/cgit/barebox/commit/?id=77a000225df4 (link may not be stable)
+[1/2] string: inline isempty
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6fc15d43dabc (link may not be stable)
+[2/2] string: add nonempty helper
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7253e9872c95 (link may not be stable)
 
 Best regards,
 -- 
