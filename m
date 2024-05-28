@@ -1,67 +1,66 @@
-Delivery-date: Tue, 28 May 2024 07:46:56 +0200
+Delivery-date: Tue, 28 May 2024 10:26:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBpfk-000qaW-00
+	id 1sBsA6-000sS5-1a
 	for lore@lore.pengutronix.de;
-	Tue, 28 May 2024 07:46:56 +0200
+	Tue, 28 May 2024 10:26:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBpfj-00072Q-Dx
-	for lore@pengutronix.de; Tue, 28 May 2024 07:46:55 +0200
+	id 1sBsA5-0005rX-Rt
+	for lore@pengutronix.de; Tue, 28 May 2024 10:26:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Qb1aNiX8UBOHcBVIqeTe12q/XxowIllzo5twSXnWRWk=; b=Ue9S/jbeHUHT1XTHhS3Ll0d1DP
-	iiyS0m33qke8sSXOqz8vfIb2JXCS7aWO7oqMnGXd0K4INdWeC3ndGKpRF+eiym8/FmnXy8IibhRqf
-	X9vwSMebBkVu7RRAVbpZ++Qo0WA/WIQu99sVOkKpjhok9LrmFHdQPsR7i5AWWCkHCa209W/5sPo4O
-	SOzvtvvlkPU5OSX5sQS368PHdtWIso0LaOhHosFQolS1n5ktGtSs4JYnS+e+phhH4ZtBEf3YCZwzK
-	a6rPSQoQDVPxoeWkuVcvi5tZMRk9RJNeReqzOLO6nUF4y6LQ9ZlzQubAIpb/G5bFnKr87ZFPjAIyJ
-	dgjXQUjA==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=IxNlO/yVJjVoZvo9Qzl/i5FVm1Ehar2jA7no/zIQdhc=; b=TdQ94hjwT5YohPMlVjlQEuEiCa
+	CIDBEEHAaUmXLd59C+7Q8Vvm0t3X+ZkL/bl5EC1JuN7ueG//NR87x6lR5C6QLUQxeXeJAQBWl9UIQ
+	1imF30EIMv8R/zmVw73mZfWVcnj1aN9lMoA2ceMZuFCVkgrR1SiYrdxRamJdjNBwwyx22GX6fTBrP
+	BmwGUEtL85+HEHgqUXWXo11/mny7tDv2Et5KP6TwDlrseQdGsQHGW/2aTawoK07YkpHpUm9CwA98h
+	REvek+Qa7W2ibC0RCh68bHrfItaW61tVdq+UP9+Lde7ktDxA4Onxl3NvjfwRQPcGLm0LSQQ4+eaxH
+	CbdX9mUQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBpf5-0000000H8WW-229O;
-	Tue, 28 May 2024 05:46:15 +0000
+	id 1sBs9W-0000000HTQq-20jv;
+	Tue, 28 May 2024 08:25:50 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBpf0-0000000H8Vx-3bwq
+	id 1sBs9T-0000000HTPv-0UQR
 	for barebox@lists.infradead.org;
-	Tue, 28 May 2024 05:46:12 +0000
+	Tue, 28 May 2024 08:25:48 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sBpey-0006wE-Bc; Tue, 28 May 2024 07:46:08 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sBs9P-0005jM-FU; Tue, 28 May 2024 10:25:43 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sBpex-003Hj6-Uw; Tue, 28 May 2024 07:46:07 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sBpex-004F4t-2s;
-	Tue, 28 May 2024 07:46:07 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20240527125725.1722214-1-s.hauer@pengutronix.de>
-References: <20240527125725.1722214-1-s.hauer@pengutronix.de>
-Message-Id: <171687516788.1011016.17346950850347128918.b4-ty@pengutronix.de>
-Date: Tue, 28 May 2024 07:46:07 +0200
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sBs9P-003Iju-2m; Tue, 28 May 2024 10:25:43 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sBs9O-00Ce84-3D;
+	Tue, 28 May 2024 10:25:43 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: ore@pengutronix.de,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 28 May 2024 10:25:41 +0200
+Message-Id: <20240528082542.3013919-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240527_224610_936689_60E785AE 
-X-CRM114-Status: GOOD (  11.39  )
+X-CRM114-CacheID: sfid-20240528_012547_282880_CC3EC6C7 
+X-CRM114-Status: UNSURE (   7.96  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,33 +83,50 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] mtd: nand: mxc_nand: sync with kernel driver
+Subject: [PATCH 1/2] string: inline isempty
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+The helper is trivial, so make it inline to save users the minimal
+hassle of calling it out-of-line.
 
-On Mon, 27 May 2024 14:57:25 +0200, Sascha Hauer wrote:
-> The software BCH ECC support merged into barebox was a preliminary
-> version. Sync this with the code that was merged to the kernel.
-> This hasn't hit Linus' tree yet, but is merged into next:
-> https://lore.kernel.org/all/20240527121848.178542-1-miquel.raynal@bootlin.com/
-> 
-> The version first merged into barebox has a syndrome page layout. With
-> this patch this is changed to the regular user data / OOB layout so that
-> the raw layout on the NAND matches the view the nand core has on the
-> chip. Merge this ASAP to match the layout the Kernel uses. The previous
-> layout didn't hit a release yet and should not be used.
-> 
-> [...]
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/string.h | 5 ++++-
+ lib/string.c     | 6 ------
+ 2 files changed, 4 insertions(+), 7 deletions(-)
 
-Applied, thanks!
-
-[1/1] mtd: nand: mxc_nand: sync with kernel driver
-      https://git.pengutronix.de/cgit/barebox/commit/?id=538a63f54e6a (link may not be stable)
-
-Best regards,
+diff --git a/include/string.h b/include/string.h
+index 4ee3be6d93cc..5139c7ef1f3d 100644
+--- a/include/string.h
++++ b/include/string.h
+@@ -33,6 +33,9 @@ static inline bool streq_ptr(const char *a, const char *b)
+ 	return strcmp_ptr(a, b) == 0;
+ }
+ 
+-bool isempty(const char *s);
++static inline bool isempty(const char *s)
++{
++	return !s || s[0] == '\0';
++}
+ 
+ #endif /* __STRING_H */
+diff --git a/lib/string.c b/lib/string.c
+index 7e4bec2e99cc..374f326143a7 100644
+--- a/lib/string.c
++++ b/lib/string.c
+@@ -1049,9 +1049,3 @@ char *strreplace(char *str, char old, char new)
+ 	return str;
+ }
+ EXPORT_SYMBOL(strreplace);
+-
+-bool isempty(const char *s)
+-{
+-	return !s || s[0] == '\0';
+-}
+-EXPORT_SYMBOL(isempty);
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
+2.39.2
 
 
 
