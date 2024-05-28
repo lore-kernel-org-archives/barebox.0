@@ -1,59 +1,59 @@
-Delivery-date: Tue, 28 May 2024 17:40:34 +0200
+Delivery-date: Tue, 28 May 2024 17:40:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBywE-000xA2-0u
+	id 1sBywF-000xAP-1R
 	for lore@lore.pengutronix.de;
-	Tue, 28 May 2024 17:40:34 +0200
+	Tue, 28 May 2024 17:40:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBywD-0002Bj-7j
-	for lore@pengutronix.de; Tue, 28 May 2024 17:40:34 +0200
+	id 1sBywC-0002Af-2n
+	for lore@pengutronix.de; Tue, 28 May 2024 17:40:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=deiVtgYK0SveTAZNuAfV5EcCy9Hul7c4Twon3gmDkSk=; b=h3FwAy+fxt55lt1+0A7Gd5fb2F
-	9jRQmgfvLm0eixrg8r5jUZRdom0VL/FGL4Xj/p68q4iHtGg9V4v1JjwVd3Snwv5TqGEa4UIe9E5DZ
-	48BnNSON2F+vCv/aSUFoc4Iyzv5lu5x8bsGLnHwmLSGZLpk54BGFVgZpnoIb/ks0p6QN1kH4ELXtk
-	7HJvj9hDZOLTroQGW0Yjw9lVW6sXmFK5rIMEhgT2ZcZI+sMx4NlFqalOZLUXGdlSG6NSQYLTnjfoA
-	PANbK7vOZGHd7bpIsYW/+1IrYB3LC5R/SIxFXSJhlRVQf7+Q6rzPjz2vzOgO3lyJ6VfTBDCFCpoUZ
-	qdNgg7kA==;
+	bh=B/9cyfCPRVmKyqXKm48Las/Im8DM62pABVgFsE4YqsY=; b=wnKHoBte7PECp4dQ0etggrnbgx
+	VSTcVwkjiyDbfwXAhmNhd4hIKOJgmTPmaDAeXHyOuajDjHH+W6il2vcs6nO1YdsclS4jO9HTbopcL
+	IG+0wKosUT7E5zZKQuyniFtakZ/1SrQlrvglf8AJSmpEAwRjVCYd92lyaFRNIZQGoXqr0Yjg+1oFI
+	QePxdFnfEfGAIH7vgL5xevG44zwT3cvT8sxnt3uqnIifL3bIY0RGzhrCOA4POrMu+6vDq5gXuFPRx
+	qO7RBbjOQ99gjhrqCUDHK/KDnRuPB6ZFYK4VP/HQF18o4zuLECZgPsjXj95qsqNGPSkdqzG4RzRrg
+	jDGNl6iQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sByvq-00000001HBw-0gKj;
-	Tue, 28 May 2024 15:40:10 +0000
+	id 1sByvc-00000001H1c-0hHq;
+	Tue, 28 May 2024 15:39:56 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sByvk-00000001H6L-3Mp3
+	id 1sByvX-00000001GyR-1lUo
 	for barebox@lists.infradead.org;
-	Tue, 28 May 2024 15:40:07 +0000
+	Tue, 28 May 2024 15:39:53 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1sByvT-0001fu-BZ; Tue, 28 May 2024 17:39:47 +0200
+	id 1sByvT-0001fv-Bi; Tue, 28 May 2024 17:39:47 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1sByvS-003LXf-KW; Tue, 28 May 2024 17:39:46 +0200
+	id 1sByvS-003LXc-KM; Tue, 28 May 2024 17:39:46 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.kerkmann@pengutronix.de>)
-	id 1sByvS-00BFIe-1k;
+	id 1sByvS-00BFIe-1h;
 	Tue, 28 May 2024 17:39:46 +0200
 From: Stefan Kerkmann <s.kerkmann@pengutronix.de>
-Date: Tue, 28 May 2024 17:39:24 +0200
+Date: Tue, 28 May 2024 17:39:21 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240528-feature-mmc-cid-as-parameters-v1-5-e5dc0c1d3eaa@pengutronix.de>
+Message-Id: <20240528-feature-mmc-cid-as-parameters-v1-2-e5dc0c1d3eaa@pengutronix.de>
 References: <20240528-feature-mmc-cid-as-parameters-v1-0-e5dc0c1d3eaa@pengutronix.de>
 In-Reply-To: <20240528-feature-mmc-cid-as-parameters-v1-0-e5dc0c1d3eaa@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -61,8 +61,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 X-Mailer: b4 0.12.4
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240528_084005_239807_102ECD6C 
-X-CRM114-Status: UNSURE (   9.73  )
+X-CRM114-CacheID: sfid-20240528_083951_519855_62C81B87 
+X-CRM114-Status: UNSURE (   8.80  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -86,73 +86,44 @@ X-Spam-Status: No, score=-5.4 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 5/9] mci: core: parse cid into parameters
+Subject: [PATCH 2/9] mci: core: add cbx extraction function
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To make the MMC/SD CID information accessible for scripting all
-available CID fields are added as parameters during device probing. As
-some fields have different data types for MMC and SD cards a string
-representation is chosen these cases.
+The CBX field is only present for eMMC and designates the type:
+
+00 - Device (Removable)
+01 - BGA (Discrete embedded)
+10 - POP
+11 - Reserved
 
 Signed-off-by: Stefan Kerkmann <s.kerkmann@pengutronix.de>
 ---
- drivers/mci/mci-core.c | 35 +++++++++++++++++++++++++----------
- 1 file changed, 25 insertions(+), 10 deletions(-)
+ drivers/mci/mci-core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 48eee35f2c..d1c425dda6 100644
+index 07ac7dd512..2a71fdd39a 100644
 --- a/drivers/mci/mci-core.c
 +++ b/drivers/mci/mci-core.c
-@@ -2119,16 +2119,29 @@ static void mci_info(struct device *dev)
- 		mci->csd[2], mci->csd[3]);
- 	printf("  Max. transfer speed: %u Hz\n", mci->tran_speed);
- 	mci_print_caps(mci->card_caps);
--	printf("  Manufacturer ID: 0x%02X\n", extract_mid(mci));
--	printf("  OEM/Application ID: 0x%04X\n", extract_oid(mci));
--	printf("  Product name: '%c%c%c%c%c'\n", mci->cid[0] & 0xff,
--		(mci->cid[1] >> 24), (mci->cid[1] >> 16) & 0xff,
--		(mci->cid[1] >> 8) & 0xff, mci->cid[1] & 0xff);
--	printf("  Product revision: %u.%u\n", extract_prv(mci) >> 4,
--		extract_prv(mci) & 0xf);
--	printf("  Serial no: %0u\n", extract_psn(mci));
--	printf("  Manufacturing date: %u.%u\n", extract_mdt_month(mci),
--		extract_mdt_year(mci));
-+	printf("  Manufacturer ID: %s\n", dev_get_param(dev, "cid_mid"));
-+	printf("  OEM/Application ID: %s\n", dev_get_param(dev, "cid_oid"));
-+	printf("  Product name: '%s'\n", dev_get_param(dev, "cid_pnm"));
-+	printf("  Product revision: %s\n", dev_get_param(dev, "cid_prv"));
-+	printf("  Serial no: %s\n", dev_get_param(dev, "cid_psn"));
-+	printf("  Manufacturing date: %s\n", dev_get_param(dev, "cid_mdt"));
-+}
-+
-+static void mci_parse_cid(struct mci *mci) {
-+	struct device *dev = &mci->dev;
-+	char buffer[8];
-+	unsigned int prv;
-+
-+	dev_add_param_uint32_fixed(dev, "cid_mid", extract_mid(mci), "0x%02X");
-+	dev_add_param_uint32_fixed(dev, "cid_oid", extract_oid(mci), "0x%04X");
-+	extract_pnm(mci, buffer);
-+	dev_add_param_string_fixed(dev, "cid_pnm", buffer);
-+	prv = extract_prv(mci);
-+	snprintf(buffer, sizeof(buffer), "%u.%u", (prv >> 4) & 0xf, prv & 0xf);
-+	dev_add_param_string_fixed(dev, "cid_prv", buffer);
-+	dev_add_param_uint32_fixed(dev, "cid_psn", extract_psn(mci), "%0u");
-+	extract_mdt(mci, buffer);
-+	dev_add_param_string_fixed(dev, "cid_mdt", buffer);
+@@ -1917,6 +1917,17 @@ static unsigned extract_mid(struct mci *mci)
+ 		return UNSTUFF_BITS(mci->cid, 120, 8);
  }
  
- /**
-@@ -2406,6 +2419,8 @@ static int mci_card_probe(struct mci *mci)
- 			dev_add_param_bool_fixed(&mci->dev, "partitioning_completed", ret);
- 	}
- 
-+	mci_parse_cid(mci);
++/**
++ * Extract the CBX from the CID
++ * @param mci Instance data
++ *
++ * The 'CBX' is encoded in bit 113:112 in the CID and only present in MMC cards
++ */
++static unsigned extract_cbx(struct mci *mci)
++{
++	return UNSTUFF_BITS(mci->cid, 112, 2);
++}
 +
- 	dev_dbg(&mci->dev, "SD Card successfully added\n");
- 
- on_error:
+ /**
+  * Extract the OEM/Application ID from the CID
+  * @param mci Instance data
 
 -- 
 2.39.2
