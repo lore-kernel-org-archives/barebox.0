@@ -1,64 +1,56 @@
-Delivery-date: Tue, 28 May 2024 13:52:14 +0200
+Delivery-date: Tue, 28 May 2024 13:56:01 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBvNG-000udE-2t
+	id 1sBvQu-000uen-3D
 	for lore@lore.pengutronix.de;
-	Tue, 28 May 2024 13:52:14 +0200
+	Tue, 28 May 2024 13:56:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sBvNG-0004Mr-5T
-	for lore@pengutronix.de; Tue, 28 May 2024 13:52:14 +0200
+	id 1sBvQu-0004oL-A2
+	for lore@pengutronix.de; Tue, 28 May 2024 13:56:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-Type:Subject:To:From:MIME-Version:Date:Message-ID:Reply-To:Cc:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=+IUQ2RiYo6+i5YMcDNezSAgaQbpWvGnEm6fnwM0Y6k4=; b=riDRGT5lAHCqejQrObbwr0WAqI
-	kDrysDw8Zkr5IMZAv/KN+vu+WbEa6gqZpNDWm9GOR1Nf0jvKufduZs8jxPe7QpoUrVGda01/DMsEr
-	wuF8eNiAehY4Jy7qaN36S6GZS+Mpp99zRWD4o6RZBAdNTqP2dAFxUHD4t4Bc8FR53BD6DgvB+qoIN
-	yfzRWNAkxpXFWWgzJBtOO11tLbD0uIWj2b2kiqizApwTy0hcUICGhYX8ioCO+/ASxzFcznyIyL8Kl
-	XdQmdPaEoSFX/MYm4uPXYkvfAVEuJTS8gJLg6Jp9gLn59M3gIyqBUjCVtv3C1SfhCDd+to3NDYEM+
-	w0Xj3Fag==;
+	bh=Ysr+VmubdqaCeFxxnuG5LHblYClPZBAjnZ/pfOuGADA=; b=qoiGlL0bKXVl7YsNEo1Sr0TcnL
+	0qs2tVGy9iNlJ4R289pdJbUSWcRwI14TENly2geuyrHE7AXuDwMvE5rA+9TPHLVEneadrQFeNPkgr
+	Mjfh4198hN7YsFrYrhwu4YulDx6aSr/rFGEL90GcIjQC0GxFcg+JXAmrFfLLtB8qgs38G4o8D24BR
+	RHDTKE8WMwHytX8pvutGbUI3f4p1C9VYDrw83pxAcyt2D11epuPZCnLiNPt+GnzcubsHCfn19J8Sd
+	oJbsuoKPmX+ys26lLpiuypaWpA1QY8HJ3eEjjI4rW5/BdYb+3kWK2ELtBY8p1Z+rR5DP8iMAqapeK
+	wMpUYRRA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBvMn-00000000SFk-3BwK;
-	Tue, 28 May 2024 11:51:45 +0000
+	id 1sBvQR-00000000TCR-43qv;
+	Tue, 28 May 2024 11:55:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sBvMl-00000000SF6-3b6O
+	id 1sBvQP-00000000TBg-2W4d
 	for barebox@lists.infradead.org;
-	Tue, 28 May 2024 11:51:45 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
+	Tue, 28 May 2024 11:55:30 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sBvMk-0004Gh-8d; Tue, 28 May 2024 13:51:42 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sBvMj-003Jxb-SZ; Tue, 28 May 2024 13:51:41 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sBvMj-008EIy-2Z;
-	Tue, 28 May 2024 13:51:41 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 28 May 2024 13:51:41 +0200
-Message-Id: <20240528115141.1961600-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	id 1sBvQO-0004kF-Dn; Tue, 28 May 2024 13:55:28 +0200
+Message-ID: <f8ce07a1-af83-4cdd-a6d4-1c800ec5458a@pengutronix.de>
+Date: Tue, 28 May 2024 13:55:28 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>,
+ "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240528_045143_926005_31B8276C 
-X-CRM114-Status: GOOD (  15.12  )
+X-CRM114-CacheID: sfid-20240528_045529_672848_0DE80543 
+X-CRM114-Status: UNSURE (   9.13  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,183 +73,81 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH master] mtd: nand: reinstate raw NAND IS_ENABLED(CONFIG_MTD_WRITE) checks
+Subject: MTD/NAND layer size increase after update
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Some barebox configurations like OMAP MLO require no MTD write support
-to chainload the bigger second stage barebox. As these configurations
-are often size limited by On-Chip SRAM, drivers are expected to guard
-write-related code behind CONFIG_MTD_WRITE. This got lost with the
-recent NAND sync leading to multiple kilobytes in increased code size.
+Hello Sascha,
 
-Reinstate the IS_ENABLED(CONFIG_MTD_WRITE) checks to counteract this
-somewhat. There's likely more opportunity to slim down nand_base as we
-are still above the original size, but this here is the lowest hanging
-fruit.
+The recent MTD/NAND layer sync with Linux made barebox a good deal fatter with the result
+that the DistroKit configuration[1] for am335x MLO now fails to compile on v2024.05.0:
 
-Fixes: 78c57f8acd69 ("mtd: nand: update to Linux-6.9-rc2")
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- drivers/mtd/nand/raw/nand_base.c | 45 ++++++++++++++++++++++++++++++++
- 1 file changed, 45 insertions(+)
+  images/start_am33xx_afi_gf_sram.pblb size 113544 > maximum size 111616
 
-diff --git a/drivers/mtd/nand/raw/nand_base.c b/drivers/mtd/nand/raw/nand_base.c
-index 0e214edac876..69451b87d19e 100644
---- a/drivers/mtd/nand/raw/nand_base.c
-+++ b/drivers/mtd/nand/raw/nand_base.c
-@@ -3695,6 +3695,9 @@ int nand_write_oob_std(struct nand_chip *chip, int page)
- {
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	return nand_prog_page_op(chip, page, mtd->writesize, chip->oob_poi,
- 				 mtd->oobsize);
- }
-@@ -3714,6 +3717,9 @@ static int nand_write_oob_syndrome(struct nand_chip *chip, int page)
- 	int ret, i, len, pos, sndcmd = 0, steps = chip->ecc.steps;
- 	const uint8_t *bufpoi = chip->oob_poi;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	/*
- 	 * data-ecc-data-ecc ... ecc-oob
- 	 * or
-@@ -3916,6 +3922,9 @@ int nand_write_page_raw(struct nand_chip *chip, const uint8_t *buf,
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int ret;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	ret = nand_prog_page_begin_op(chip, page, 0, buf, mtd->writesize);
- 	if (ret)
- 		return ret;
-@@ -3954,6 +3963,9 @@ int nand_monolithic_write_page_raw(struct nand_chip *chip, const u8 *buf,
- 	unsigned int size = mtd->writesize;
- 	u8 *write_buf = (u8 *)buf;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	if (oob_required) {
- 		size += mtd->oobsize;
- 
-@@ -3986,6 +3998,9 @@ static int nand_write_page_raw_syndrome(struct nand_chip *chip,
- 	uint8_t *oob = chip->oob_poi;
- 	int steps, size, ret;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	ret = nand_prog_page_begin_op(chip, page, 0, NULL, 0);
- 	if (ret)
- 		return ret;
-@@ -4048,6 +4063,9 @@ static int nand_write_page_swecc(struct nand_chip *chip, const uint8_t *buf,
- 	uint8_t *ecc_calc = chip->ecc.calc_buf;
- 	const uint8_t *p = buf;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	/* Software ECC calculation */
- 	for (i = 0; eccsteps; eccsteps--, i += eccbytes, p += eccsize)
- 		chip->ecc.calculate(chip, p, &ecc_calc[i]);
-@@ -4077,6 +4095,9 @@ static int nand_write_page_hwecc(struct nand_chip *chip, const uint8_t *buf,
- 	uint8_t *ecc_calc = chip->ecc.calc_buf;
- 	const uint8_t *p = buf;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	ret = nand_prog_page_begin_op(chip, page, 0, NULL, 0);
- 	if (ret)
- 		return ret;
-@@ -4128,6 +4149,9 @@ static int nand_write_subpage_hwecc(struct nand_chip *chip, uint32_t offset,
- 	int oob_bytes       = mtd->oobsize / ecc_steps;
- 	int step, ret;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	ret = nand_prog_page_begin_op(chip, page, 0, NULL, 0);
- 	if (ret)
- 		return ret;
-@@ -4195,6 +4219,9 @@ static int nand_write_page_syndrome(struct nand_chip *chip, const uint8_t *buf,
- 	uint8_t *oob = chip->oob_poi;
- 	int ret;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	ret = nand_prog_page_begin_op(chip, page, 0, NULL, 0);
- 	if (ret)
- 		return ret;
-@@ -4261,6 +4288,9 @@ static int nand_write_page(struct nand_chip *chip, uint32_t offset,
- 	struct mtd_info *mtd = nand_to_mtd(chip);
- 	int status, subpage;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	if (!(chip->options & NAND_NO_SUBPAGE_WRITE) &&
- 		chip->ecc.write_subpage)
- 		subpage = offset || (data_len < mtd->writesize);
-@@ -4307,6 +4337,9 @@ static int nand_do_write_ops(struct nand_chip *chip, loff_t to,
- 	int ret;
- 	int oob_required = oob ? 1 : 0;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	ops->retlen = 0;
- 	if (!writelen)
- 		return 0;
-@@ -4424,6 +4457,9 @@ static int nand_write_oob(struct mtd_info *mtd, loff_t to,
- 	struct nand_chip *chip = mtd_to_nand(mtd);
- 	int ret = 0;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	ops->retlen = 0;
- 
- 	nand_get_device(chip);
-@@ -4457,6 +4493,9 @@ static int nand_write_oob(struct mtd_info *mtd, loff_t to,
-  */
- static int nand_erase(struct mtd_info *mtd, struct erase_info *instr)
- {
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	return nand_erase_nand(mtd_to_nand(mtd), instr, 0);
- }
- 
-@@ -4475,6 +4514,9 @@ int nand_erase_nand(struct nand_chip *chip, struct erase_info *instr,
- 	int page, pages_per_block, ret, chipnr;
- 	loff_t len;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	pr_debug("%s: start = 0x%012llx, len = %llu\n",
- 			__func__, (unsigned long long)instr->addr,
- 			(unsigned long long)instr->len);
-@@ -4610,6 +4652,9 @@ static int nand_block_markbad(struct mtd_info *mtd, loff_t ofs)
- {
- 	int ret;
- 
-+	if (!IS_ENABLED(CONFIG_MTD_WRITE))
-+		return -ENOTSUPP;
-+
- 	ret = nand_block_isbad(mtd, ofs);
- 	if (ret) {
- 		/* If it was bad already, return success and do nothing */
+[1]: https://git.pengutronix.de/cgit/DistroKit/plain/configs/platform-v7a/barebox-am335x-mlo.config?h=next&id=5db984fcb018f57bc19553a7c95be58ab8cc8b5f
+
+I looked at the diff and found that the sync commit inadvertently dropped CONFIG_MTD_WRITE
+checks. I added back these checks to save some Kilobytes, but there is still some size increase,
+which I think is unreasonable for existing users that didn't need the newly imported
+functionality. Can you take a look and perhaps add some IS_ENABLED() checks?
+
+Here is bloaty output that shows some of the symbols responsible for the size increase
+(Some may be false positives due to symbol rename or refactoring):
+
+bloaty build/barebox --domain=vm -- barebox.old  -d symbols -n 40 
+     VM SIZE    
+ -------------- 
+  [NEW] +1.12Ki    onfi_nvddr_timings
+  [NEW]   +1000    nand_lp_exec_cont_read_page_op
+   +34%    +588    nand_scan_tail
+  [NEW]    +428    nanddev_mtd_max_bad_blocks
+ -98.5%    +396    [163 Others]
+  [NEW]    +342    nand_read_page_syndrome
+  +1.6%    +332    [section .rodata]
+  [NEW]    +324    of_get_nand_ecc_user_config
+  [NEW]    +256    onfi_find_closest_nvddr_mode
+   +13%    +236    nand_scan_ident
+  [NEW]    +192    nand_read_oob_syndrome
+  [NEW]    +190    nand_read_page_raw_syndrome
+   +22%    +180    nand_read_page_op
+  [NEW]    +170    nand_read_page_swecc
+   +16%    +168    nand_read_oob
+   +77%    +144    nand_read_data_op
+  [NEW]    +132    handoff_data_reserve
+  [NEW]    +122    nand_choose_best_nvddr_timings
+  [NEW]    +108    rawnand_cap_cont_reads
+   +28%    +100    nand_get_features
+  [NEW]     +92    barebox_hostname_is_valid
+   +32%     +88    nand_readid_op
+   +55%     +84    onfi_fill_interface_config
+  +6.9%     +80    nand_onfi_detect
+  [NEW]     +74    nand_ecc_is_strong_enough
+  [NEW]     +64    nand_isreserved_bbt
+  [NEW]     +60    console_set_stdoutpath
+  [NEW]     +56    broken_get_timings.5
+  +8.7%     +52    macronix_nand_init
+   +12%     +48    nand_read_param_page_op
+   +20%     +48    nand_setup_interface
+   +13%     +44    nand_set_features
+  [NEW]     +40    handoff_data_get
+  +8.3%     +40    nand_exec_prog_page_op
+  -8.2%     -40    console_register
+  [DEL]     -56    broken_get_timings.4
+  [DEL]     -60    of_get_nand_ecc_mode
+  [DEL]     -96    nand_block_markgood
+  [DEL]    -102    nand_mark_bbt
+  [DEL]    -104    reparse_partition_table
+ -45.5%    -120    barebox_non_pbl_start
+  +4.0% +6.69Ki    TOTAL
+
+
+Thanks,
+Ahmad
+
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
