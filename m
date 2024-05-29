@@ -1,67 +1,66 @@
-Delivery-date: Wed, 29 May 2024 08:09:18 +0200
+Delivery-date: Wed, 29 May 2024 08:09:44 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sCCUw-0016F3-0r
+	id 1sCCVM-0016FV-18
 	for lore@lore.pengutronix.de;
-	Wed, 29 May 2024 08:09:18 +0200
+	Wed, 29 May 2024 08:09:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sCCUv-00079f-N3
-	for lore@pengutronix.de; Wed, 29 May 2024 08:09:18 +0200
+	id 1sCCVL-0007HP-RD
+	for lore@pengutronix.de; Wed, 29 May 2024 08:09:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wQE6hswM4M/1IelVxPR10Rn7yKmfq8CjkuukLYMEPd4=; b=1RN0coRXumBWdmEiPYj4S4y/ik
-	l/eqdwL5RVDSz42UjuEwVY74YPnc1ULesmgNF5+myHYq39ej7QkvI6abS6+E5OxBrvULl0vYplPGI
-	nA1xnkuVGMjX7IxXR14ZbL/YQzilz+RC++h38I4TCZAysJl9dXmBNzoxvKsuUBRxMl+qu1PpZ136X
-	RuVx1g6Mk0Q1H9msYjRVtiCqwNzXcxQBfWHbveaxhY2OmP7rP455CZvFdyEl6dtlJX8XCg1AtnoCw
-	+2W0MyXhMKwehcIetYRYpnR+fzM10LcS6RGqiSNj9IDNFLFxKbeC/OFk8ZI3PLBI76g1XTWa5lK2o
-	f5UTwyCw==;
+	bh=9yfBn1CQWn2WCtjw77dfwDAQqORehSTAOtCTW4xds60=; b=raooLfP2YDrMF33huIiQ/5m9uO
+	nfunxRaYGb9eM7tdZDvlSVuG1almjqNXaYhuT4S1bHApiqJAmBYTXrz6gMUElhidW/e6ibBBtnwzq
+	aAZoSUVE6HogrwTNDDlGHjBDVsomNl1XkviDo5Fr2H8PzKRnWxvyBLiMTCtbDT09m2sykcxEsIizE
+	baELYGWN1gXApWsU7w6aRmqKFjHmrkid5YSpdVd2ocdeUjOE4sStqzgPMuwSm1mvuoMChY/yldJGs
+	pZuEcmcsyMjAReuB8EM7eydZci80oMWba+M2zCV6PG/Ftsnd0bp+8t98Dh05C5gABGlHaw+A1pWNC
+	0nYcvP3A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sCCUL-00000002xnc-3wmH;
-	Wed, 29 May 2024 06:08:41 +0000
+	id 1sCCUx-00000002xuh-3hSb;
+	Wed, 29 May 2024 06:09:19 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sCCUI-00000002xkw-0rKZ
+	id 1sCCUu-00000002xtj-1Vbb
 	for barebox@lists.infradead.org;
-	Wed, 29 May 2024 06:08:40 +0000
+	Wed, 29 May 2024 06:09:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sCCUE-00071B-QV; Wed, 29 May 2024 08:08:34 +0200
+	id 1sCCUs-00078j-Vm; Wed, 29 May 2024 08:09:14 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sCCUE-003QTg-EC; Wed, 29 May 2024 08:08:34 +0200
+	id 1sCCUs-003QTs-JA; Wed, 29 May 2024 08:09:14 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sCCUE-002SFe-1E;
-	Wed, 29 May 2024 08:08:34 +0200
+	id 1sCCUs-002SHu-1i;
+	Wed, 29 May 2024 08:09:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Roland Hieber <rhi@pengutronix.de>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240527132842.1016597-1-rhi@pengutronix.de>
-References: <20240527132842.1016597-1-rhi@pengutronix.de>
-Message-Id: <171696291437.585205.13492870584984122304.b4-ty@pengutronix.de>
-Date: Wed, 29 May 2024 08:08:34 +0200
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240528114505.1931962-1-a.fatoum@pengutronix.de>
+References: <20240528114505.1931962-1-a.fatoum@pengutronix.de>
+Message-Id: <171696295452.585343.179238143827251042.b4-ty@pengutronix.de>
+Date: Wed, 29 May 2024 08:09:14 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240528_230838_289045_0EA78693 
-X-CRM114-Status: UNSURE (   7.16  )
+X-CRM114-CacheID: sfid-20240528_230916_468930_807F8EE8 
+X-CRM114-Status: UNSURE (   6.83  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,26 +84,26 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] commands: mipi_dbi: fix null pointer dereference when
- writing data
+Subject: Re: [PATCH master] bus: omap-gpmc: allow build with raw NAND
+ support disabled
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 27 May 2024 15:28:43 +0200, Roland Hieber wrote:
-> When accessing argv[optind + i], the whole array index must stay below
-> argc, not only i. Also val is only 4 bytes long, so when indexed with i
-> (which was initialised to optind, which is at least 3) will overflow
-> after reading one data argument from the command line. Add a guard
-> against the latter case, and initialise i to 0 to fix the first problem.
+On Tue, 28 May 2024 13:45:05 +0200, Ahmad Fatoum wrote:
+> GCC complains about an undefined reference to `of_get_nand_bus_width'
+> when building the driver with CONFIG_MTD_RAW_NAND disabled.
+> 
+> Fix this by omitting probe of the NAND children when barebox doesn't
+> have NAND drivers enabled anyway.
 > 
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] commands: mipi_dbi: fix null pointer dereference when writing data
-      https://git.pengutronix.de/cgit/barebox/commit/?id=da602c975fcc (link may not be stable)
+[1/1] bus: omap-gpmc: allow build with raw NAND support disabled
+      https://git.pengutronix.de/cgit/barebox/commit/?id=2375d985921d (link may not be stable)
 
 Best regards,
 -- 
