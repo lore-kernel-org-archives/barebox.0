@@ -1,67 +1,66 @@
-Delivery-date: Thu, 30 May 2024 15:24:33 +0200
+Delivery-date: Thu, 30 May 2024 15:26:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sCflh-0004Rl-2Z
+	id 1sCfnd-0004Sa-2N
 	for lore@lore.pengutronix.de;
-	Thu, 30 May 2024 15:24:33 +0200
+	Thu, 30 May 2024 15:26:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sCflh-0007Iz-7V
-	for lore@pengutronix.de; Thu, 30 May 2024 15:24:33 +0200
+	id 1sCfnd-0007Re-5R
+	for lore@pengutronix.de; Thu, 30 May 2024 15:26:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=WlcuLrMyN7T81GHEs/nGgTBFoC0txMtASuKliSoRH2U=; b=dJpo6psZFzE8RleKQM6ivt0BSf
-	/GwC9fLgFheA0Ko/zyvpmn3yjEqy5Fd1SyBYKIqY/OWTvwSY9iOwKReU72rH+G2MA1rQMiiWsaK84
-	5zc7rYVK72pOZ9YQYIH3nlSdWYOrnUh7EXcpEoycHsh4qJ/r6WxjO+4dvwhlnzE1KfYZ9FPSYjbP8
-	xtmWjr8SbcT8bejKxEkT20sifrxbehvsEu0DfAqCJQG0TTF+zsyxU2MZO00blOjl4iI/QKdJ+SM43
-	BHbnYNRqXjQFdUB5bqqzojvCAM08F0Xxjafhaga9R/y3Kxhkk3ArZqR5AAfAG0QmD3cuYPIvbiwOJ
-	Ji5BwOKw==;
+	bh=l9jIeKV6MURTGeiIqA08Qtcp+tlDdJqKFwih7C8NkxY=; b=yej0ctdYD5h3RaRzYzwjwpjQyS
+	9ou8AXU1bP9SpraChnndEatA0Bj7i0goZ/3JF6QnQhdVjAaKD+ETgiUIlzFAeZDy3fjv8pK/w2w7F
+	fN++62J9lwa7wYAn2iYEqnmJuhVhwtvdyE/cw6VNPLwcT6vnm6gWA91QnuiI+KsAYLNHBX0aF9r1d
+	F/n7/F7QUb5NyJQ9Yry21orRbNcEO+/sazwfXRVlL+mq8YT5CjIi80NAk/mJpzQ90mcDomMKkYY/r
+	ID0LEGDSnnCYml8rExZMqa5wNcids/XiBBOGmp613rl0uz/WUU3Ny+Yc06RV/eASRTx8HwXWA03R+
+	cOMX+HBw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sCflG-00000007Lli-3dCW;
-	Thu, 30 May 2024 13:24:06 +0000
+	id 1sCfn7-00000007M5C-3tza;
+	Thu, 30 May 2024 13:26:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sCflD-00000007Lki-3tNB
+	id 1sCfn3-00000007M4N-2r6y
 	for barebox@lists.infradead.org;
-	Thu, 30 May 2024 13:24:05 +0000
+	Thu, 30 May 2024 13:25:59 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sCflC-0007FC-Of; Thu, 30 May 2024 15:24:02 +0200
+	id 1sCfn2-0007Np-5c; Thu, 30 May 2024 15:25:56 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sCflC-003bOs-8U; Thu, 30 May 2024 15:24:02 +0200
+	id 1sCfn1-003bPG-Or; Thu, 30 May 2024 15:25:55 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sCflC-008gkO-0e;
-	Thu, 30 May 2024 15:24:02 +0200
+	id 1sCfn1-008tmk-2I;
+	Thu, 30 May 2024 15:25:55 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: David Jander <david@protonic.nl>
-In-Reply-To: <20240529100838.551840-1-o.rempel@pengutronix.de>
-References: <20240529100838.551840-1-o.rempel@pengutronix.de>
-Message-Id: <171707544219.2070692.5571978277298286575.b4-ty@pengutronix.de>
-Date: Thu, 30 May 2024 15:24:02 +0200
+In-Reply-To: <20240529094124.513880-1-o.rempel@pengutronix.de>
+References: <20240529094124.513880-1-o.rempel@pengutronix.de>
+Message-Id: <171707555570.2120785.18298365506014669730.b4-ty@pengutronix.de>
+Date: Thu, 30 May 2024 15:25:55 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240530_062404_005448_1F78E1FC 
-X-CRM114-Status: UNSURE (   8.30  )
+X-CRM114-CacheID: sfid-20240530_062557_772132_0F866564 
+X-CRM114-Status: UNSURE (   8.62  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,27 +84,28 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v1] spi: stm32: avoid enabling SPI in setup to allow
- register configuration
+Subject: Re: [PATCH v1 1/2] net: sja1105: split adjust_link into reusable
+ functions
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 29 May 2024 12:08:38 +0200, Oleksij Rempel wrote:
-> The stm32_spi_setup function configures the STM32 SPI engine by setting
-> the SPI mode and speed. However, enabling the SPI peripheral during this
-> process blocks all changes to configuration registers, causing the
-> configuration writes to be ignored.
-> 
-> Remove stm32_spi_enable calls from stm32_spi_setup to ensure proper
-> configuration of the SPI registers before enabling the peripheral.
+On Wed, 29 May 2024 11:41:23 +0200, Oleksij Rempel wrote:
+> Refactor sja1105_adjust_link by moving RGMII delay and speed settings
+> into separate functions: sja1105_set_rgmii_delay() and
+> sja1105_set_speed().
+> This restructuring makes the code more modular and reusable, preparing
+> for the next patch where the CPU port configuration will be handled in
+> a separate function.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] spi: stm32: avoid enabling SPI in setup to allow register configuration
-      https://git.pengutronix.de/cgit/barebox/commit/?id=e548c6f567f2 (link may not be stable)
+[1/2] net: sja1105: split adjust_link into reusable functions
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7eb2939bc051 (link may not be stable)
+[2/2] net: sja1105: add function to configure CPU port
+      https://git.pengutronix.de/cgit/barebox/commit/?id=9cce2d64ba7d (link may not be stable)
 
 Best regards,
 -- 
