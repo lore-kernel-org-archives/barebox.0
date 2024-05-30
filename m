@@ -1,56 +1,67 @@
-Delivery-date: Wed, 29 May 2024 12:30:50 +0200
+Delivery-date: Thu, 30 May 2024 15:23:41 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sCGa2-0019BU-2R
+	id 1sCfko-0004RD-2S
 	for lore@lore.pengutronix.de;
-	Wed, 29 May 2024 12:30:50 +0200
+	Thu, 30 May 2024 15:23:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sCGa2-0005PC-2C
-	for lore@pengutronix.de; Wed, 29 May 2024 12:30:50 +0200
+	id 1sCfko-0007DU-7T
+	for lore@pengutronix.de; Thu, 30 May 2024 15:23:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dGhqmLZXuPboWcmqQSx2ROwu+FEoYaajYJpQ3+fdm6g=; b=oPCvciGkXsxGESecOxnoSSrqu4
-	nDhSdZes93TUup7vl45Ixjgp+pjOdLTPhfstvYD9xznTGDkUpbiSbvSMrCF8isU8Vk/OLqy85q31k
-	KO6ishXo4DmAj2otQKUGXWCGF4XB1ZbWQ9U3jxyQLTcJJy65+sX9bHXj8vovL8Oswg3Eov/LmIu69
-	WmFu6Z4z0JEtwwmA7ylyAotHEC+8lVMcffZfDO4U7lKqctMovo/tIu17XyHKCXDjQ0xDhj60FMgTO
-	grFILnVT0Jd4I7WPemuuvh/tuBN9mci9qJDmfwR/0SxFfnLTqmSPGW5PIOG3EBTTfDO45fJTO4Zpc
-	cJ3QK7hg==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=dSDZbpkMbz8qw6RVc0C34MaLe2Je56jh7RMgK3sIv0A=; b=Xbcy0Pgu2RZoWL7GjzQ9RYk51Z
+	r2MNCp36zjPnx7lkM0ibTtORpNd7r4o47BlG2f6ACiGJIxgvc8/nSu99PtEraOqMBHs2RDwHz/6dP
+	exVnSbyhi3TCQPGhdvn9h3Nh7nk22k+AazROzFTycnPvh9CZmkHH/VAH278RrEzT3vpqn9BqYbiFZ
+	I+k5azYM7W939LabUOli3qYTLF6e+exS5JQbLgZFPKVIkxqLLs0XxnOEgqpht1Dz0APO1eALfBs03
+	818yaonVoa6HGZt+m1yVnJ40WIhJ9FMsxv96Vj9MIMe5jDTmAxhpVJN718dkNHjI8AS3QKhM1Kmi8
+	TfPPLJIQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sCGZa-00000003oIG-3lH5;
-	Wed, 29 May 2024 10:30:22 +0000
+	id 1sCfk4-00000007LPQ-3oVP;
+	Thu, 30 May 2024 13:22:52 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sCGZX-00000003oGe-2gyh
+	id 1sCfk2-00000007LOy-1w0y
 	for barebox@lists.infradead.org;
-	Wed, 29 May 2024 10:30:21 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sCGZV-00058C-2y; Wed, 29 May 2024 12:30:17 +0200
-Message-ID: <f654f2dc-2741-4e7e-92fe-e22fdef46ef2@pengutronix.de>
-Date: Wed, 29 May 2024 12:30:16 +0200
+	Thu, 30 May 2024 13:22:52 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sCfk1-00078a-55; Thu, 30 May 2024 15:22:49 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sCfk0-003bOg-Oh; Thu, 30 May 2024 15:22:48 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sCfk0-008aV7-2H;
+	Thu, 30 May 2024 15:22:48 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
+In-Reply-To: <20240529102713.624072-1-o.rempel@pengutronix.de>
+References: <20240529102713.624072-1-o.rempel@pengutronix.de>
+Message-Id: <171707536870.2046724.8597463966959229172.b4-ty@pengutronix.de>
+Date: Thu, 30 May 2024 15:22:48 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Oleksij Rempel <o.rempel@pengutronix.de>, barebox@lists.infradead.org
-References: <20240529093308.502072-1-o.rempel@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240529093308.502072-1-o.rempel@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240529_033019_716170_25449008 
-X-CRM114-Status: GOOD (  17.81  )
+X-CRM114-CacheID: sfid-20240530_062250_642728_95A19112 
+X-CRM114-Status: UNSURE (   7.80  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,53 +84,27 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v1] of: add sanity check for machine compatible string
+Subject: Re: [PATCH v1] ARM: dts: stm32mp151-prtt1c: sync with the kernel
+ dts
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 29.05.24 11:33, Oleksij Rempel wrote:
-> Add a sanity check in of_get_machine_compatible to ensure we fall back
-> to the default hostname "barebox" when the machine compatible string is
-> empty. This prevents scenarios where no hostname is set, which can occur
-> when starting an STM32 version of Barebox as a second stage on top of
-> Barebox prior to commit 1da26bfb9da2 ("common: don't fixup empty serial/
-> machine_compatible strings"). This fallback makes debugging easier in
-> case someone faces a similar issue.
+
+On Wed, 29 May 2024 12:27:13 +0200, Oleksij Rempel wrote:
+> Remove the barebox-specific device tree code in favor of the upstream
+> kernel version. With most of the issues now resolved, we can rely on the
+> kernel's version.
 > 
-> Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
-
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-
-> ---
->  drivers/of/base.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> diff --git a/drivers/of/base.c b/drivers/of/base.c
-> index 2213165fd7..62d84786ae 100644
-> --- a/drivers/of/base.c
-> +++ b/drivers/of/base.c
-> @@ -3416,7 +3416,7 @@ const char *of_get_machine_compatible(void)
->  		return NULL;
->  
->  	p = strchr(name, ',');
-> -	return p ? p + 1 : name;
-> +	return nonempty(p ? p + 1 : name);
 
-An alternative would be return `p ? p + 1 : nonempty(name);`, but that's
-not really more readable, so the current change is alright.
+Applied, thanks!
 
-Thanks!
-Ahmad
+[1/1] ARM: dts: stm32mp151-prtt1c: sync with the kernel dts
+      https://git.pengutronix.de/cgit/barebox/commit/?id=b31d9add37eb (link may not be stable)
 
->  }
->  EXPORT_SYMBOL(of_get_machine_compatible);
->  
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
