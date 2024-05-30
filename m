@@ -1,66 +1,67 @@
-Delivery-date: Thu, 30 May 2024 15:23:41 +0200
+Delivery-date: Thu, 30 May 2024 15:24:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sCfko-0004RD-2S
+	id 1sCflh-0004Rl-2Z
 	for lore@lore.pengutronix.de;
-	Thu, 30 May 2024 15:23:41 +0200
+	Thu, 30 May 2024 15:24:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sCfko-0007DU-7T
-	for lore@pengutronix.de; Thu, 30 May 2024 15:23:38 +0200
+	id 1sCflh-0007Iz-7V
+	for lore@pengutronix.de; Thu, 30 May 2024 15:24:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=dSDZbpkMbz8qw6RVc0C34MaLe2Je56jh7RMgK3sIv0A=; b=Xbcy0Pgu2RZoWL7GjzQ9RYk51Z
-	r2MNCp36zjPnx7lkM0ibTtORpNd7r4o47BlG2f6ACiGJIxgvc8/nSu99PtEraOqMBHs2RDwHz/6dP
-	exVnSbyhi3TCQPGhdvn9h3Nh7nk22k+AazROzFTycnPvh9CZmkHH/VAH278RrEzT3vpqn9BqYbiFZ
-	I+k5azYM7W939LabUOli3qYTLF6e+exS5JQbLgZFPKVIkxqLLs0XxnOEgqpht1Dz0APO1eALfBs03
-	818yaonVoa6HGZt+m1yVnJ40WIhJ9FMsxv96Vj9MIMe5jDTmAxhpVJN718dkNHjI8AS3QKhM1Kmi8
-	TfPPLJIQ==;
+	bh=WlcuLrMyN7T81GHEs/nGgTBFoC0txMtASuKliSoRH2U=; b=dJpo6psZFzE8RleKQM6ivt0BSf
+	/GwC9fLgFheA0Ko/zyvpmn3yjEqy5Fd1SyBYKIqY/OWTvwSY9iOwKReU72rH+G2MA1rQMiiWsaK84
+	5zc7rYVK72pOZ9YQYIH3nlSdWYOrnUh7EXcpEoycHsh4qJ/r6WxjO+4dvwhlnzE1KfYZ9FPSYjbP8
+	xtmWjr8SbcT8bejKxEkT20sifrxbehvsEu0DfAqCJQG0TTF+zsyxU2MZO00blOjl4iI/QKdJ+SM43
+	BHbnYNRqXjQFdUB5bqqzojvCAM08F0Xxjafhaga9R/y3Kxhkk3ArZqR5AAfAG0QmD3cuYPIvbiwOJ
+	Ji5BwOKw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sCfk4-00000007LPQ-3oVP;
-	Thu, 30 May 2024 13:22:52 +0000
+	id 1sCflG-00000007Lli-3dCW;
+	Thu, 30 May 2024 13:24:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sCfk2-00000007LOy-1w0y
+	id 1sCflD-00000007Lki-3tNB
 	for barebox@lists.infradead.org;
-	Thu, 30 May 2024 13:22:52 +0000
+	Thu, 30 May 2024 13:24:05 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sCfk1-00078a-55; Thu, 30 May 2024 15:22:49 +0200
+	id 1sCflC-0007FC-Of; Thu, 30 May 2024 15:24:02 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sCfk0-003bOg-Oh; Thu, 30 May 2024 15:22:48 +0200
+	id 1sCflC-003bOs-8U; Thu, 30 May 2024 15:24:02 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sCfk0-008aV7-2H;
-	Thu, 30 May 2024 15:22:48 +0200
+	id 1sCflC-008gkO-0e;
+	Thu, 30 May 2024 15:24:02 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
-In-Reply-To: <20240529102713.624072-1-o.rempel@pengutronix.de>
-References: <20240529102713.624072-1-o.rempel@pengutronix.de>
-Message-Id: <171707536870.2046724.8597463966959229172.b4-ty@pengutronix.de>
-Date: Thu, 30 May 2024 15:22:48 +0200
+Cc: David Jander <david@protonic.nl>
+In-Reply-To: <20240529100838.551840-1-o.rempel@pengutronix.de>
+References: <20240529100838.551840-1-o.rempel@pengutronix.de>
+Message-Id: <171707544219.2070692.5571978277298286575.b4-ty@pengutronix.de>
+Date: Thu, 30 May 2024 15:24:02 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240530_062250_642728_95A19112 
-X-CRM114-Status: UNSURE (   7.80  )
+X-CRM114-CacheID: sfid-20240530_062404_005448_1F78E1FC 
+X-CRM114-Status: UNSURE (   8.30  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,23 +85,27 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH v1] ARM: dts: stm32mp151-prtt1c: sync with the kernel
- dts
+Subject: Re: [PATCH v1] spi: stm32: avoid enabling SPI in setup to allow
+ register configuration
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 29 May 2024 12:27:13 +0200, Oleksij Rempel wrote:
-> Remove the barebox-specific device tree code in favor of the upstream
-> kernel version. With most of the issues now resolved, we can rely on the
-> kernel's version.
+On Wed, 29 May 2024 12:08:38 +0200, Oleksij Rempel wrote:
+> The stm32_spi_setup function configures the STM32 SPI engine by setting
+> the SPI mode and speed. However, enabling the SPI peripheral during this
+> process blocks all changes to configuration registers, causing the
+> configuration writes to be ignored.
 > 
+> Remove stm32_spi_enable calls from stm32_spi_setup to ensure proper
+> configuration of the SPI registers before enabling the peripheral.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] ARM: dts: stm32mp151-prtt1c: sync with the kernel dts
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b31d9add37eb (link may not be stable)
+[1/1] spi: stm32: avoid enabling SPI in setup to allow register configuration
+      https://git.pengutronix.de/cgit/barebox/commit/?id=e548c6f567f2 (link may not be stable)
 
 Best regards,
 -- 
