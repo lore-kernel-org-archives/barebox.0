@@ -1,65 +1,71 @@
-Delivery-date: Tue, 04 Jun 2024 12:40:21 +0200
+Delivery-date: Wed, 05 Jun 2024 15:14:47 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sERaX-001GE9-0c
+	id 1sEqTX-001WTu-0R
 	for lore@lore.pengutronix.de;
-	Tue, 04 Jun 2024 12:40:21 +0200
+	Wed, 05 Jun 2024 15:14:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sERaW-0000wI-JT
-	for lore@pengutronix.de; Tue, 04 Jun 2024 12:40:21 +0200
+	id 1sEqTW-0004vO-DO
+	for lore@pengutronix.de; Wed, 05 Jun 2024 15:14:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ElsYeK+/Ad+bVfvgXmr0h5jRJW4cK3YpIWkcNTNk6/0=; b=RzDMu/RqL5bVXLBSofQe7WGjaR
-	wP0nS6Lm2YE97iMkf0mvbh0Z5EhLkw3F9QQrNWKk4iMRqtm7dp1Ph/AP2KXpR/tTKcgq1P23avkux
-	SHQApa+HGs2IejS+opfxFwPM2LqVpyCzwOYAm5JXmjoVBHQ1rsv/E9rHVQl/5PqDXVYki/dFPiW9F
-	J+lACdXK12UcSiPfWdIVJtAx7/Wpkx7Fipo/AG/9MGojXgUiixSHHIuxKb8bpkg2N/kfwiwjSjWmy
-	X66HI22BSnV91ei8+im6/SpyXhYfpCdGGDFa7t1V3rnO6oMQPKsKm413YIaDjGyNG+haEwUTyLLH5
-	lk9VZpSg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:Message-Id:
+	Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:From:
+	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
+	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=aAcrCwQ3m1/rtjjl9CYACRny0EhnIv98tkD4kjhr/Mg=; b=HNmhHxUhGqKYV1Qbak3Afc8GU+
+	cYL4pQdzVvcj3m/053dEbobOAe4qpkOhhICpZD/RhOFRYO9V5vKNS02sC0ALpc461079QYpSO0ICM
+	JVQJlJWhz7AVOR1VEdofV7fO4eltPgWvLLjRIiRUbnmzCNr4C0Q6RjuvijAvrM3qW0T5oAmLnBVbP
+	uRZAnwZVQUySIYfi1uBV575UTe4pUv+whqsn054B595CB/4YHgTwtD8pZo+yPb4Pg1OD6GDYBtvN9
+	XblLIrzMgyioY/VnoprbXMjKVUgmBv53nOEahGpdiBwVTCzZjvrs1RPmpF6yDYHarSYKXllFo24hr
+	aPBoExKQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sERZq-000000020Td-30cU;
-	Tue, 04 Jun 2024 10:39:38 +0000
-Received: from mail.ela-soft.com ([213.23.49.162])
+	id 1sEqSo-00000006Bbb-1qXK;
+	Wed, 05 Jun 2024 13:14:02 +0000
+Received: from 13.mo583.mail-out.ovh.net ([87.98.182.191])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sERZn-000000020T1-1y1V
+	id 1sEqSk-00000006BYN-2YGk
 	for barebox@lists.infradead.org;
-	Tue, 04 Jun 2024 10:39:36 +0000
-Received: from tupai.ela-bln.local (tupai.ela-bln.local [10.0.1.140])
-	by mail.ela-soft.com (mailsystem) with ESMTP id C9C8C22CAE;
-	Tue,  4 Jun 2024 12:39:32 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ela-soft.com;
-	s=2021; t=1717497572;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=ElsYeK+/Ad+bVfvgXmr0h5jRJW4cK3YpIWkcNTNk6/0=;
-	b=m8NIo+4WgMuseKAsna4TT7lGJmG0UmD+qGmd9BC1XSiGzbvb5uMeUehhzE5UhEbGuNa8Fi
-	FZId3Jsu8eR1St7gSuNZxsByy73GHkGnBkto14aHK+BnLsItlxjjE7RI3YlzCJIei8JQ1A
-	ayezwAtHblUkcQHfA24H09yq8DFoiRxkzBNapwVOLQiDQoS07vYrQoKWpTM+nzpnd1Q/aI
-	+BqcSJMfcOV6JTf2jCNks9UsUncrUyElV552OgMfi7j4Mp9i21z6O6Wjj8+HaB2nDH3Hfy
-	K64i84aVG0EHtVqlq8OwcP4xwPUpptIp+NS9fRU3qXSTLUxO3PTlkN6Fq/Oblg==
-Received: by tupai.ela-bln.local (Postfix, from userid 1000)
-	id BFF0734032E; Tue,  4 Jun 2024 12:39:32 +0200 (CEST)
-From: Andreas Helmcke <ahelmcke@ela-soft.com>
-To: barebox@lists.infradead.org
-Cc: Andreas Helmcke <ahelmcke@ela-soft.com>
-Date: Tue,  4 Jun 2024 12:39:30 +0200
-Message-ID: <20240604103930.83268-1-ahelmcke@ela-soft.com>
-X-Mailer: git-send-email 2.43.0
+	Wed, 05 Jun 2024 13:14:00 +0000
+Received: from director9.ghost.mail-out.ovh.net (unknown [10.109.148.7])
+	by mo583.mail-out.ovh.net (Postfix) with ESMTP id 4VvSZw4gc6z1R6c
+	for <barebox@lists.infradead.org>; Wed,  5 Jun 2024 13:13:44 +0000 (UTC)
+Received: from ghost-submission-6684bf9d7b-vbh44 (unknown [10.110.96.131])
+	by director9.ghost.mail-out.ovh.net (Postfix) with ESMTPS id B05E11FEAF;
+	Wed,  5 Jun 2024 13:13:43 +0000 (UTC)
+Received: from schlaraffenlan.de ([37.59.142.106])
+	by ghost-submission-6684bf9d7b-vbh44 with ESMTPSA
+	id sL6wJYdkYGaYVgAAoLgKtw
+	(envelope-from <mail@schlaraffenlan.de>); Wed, 05 Jun 2024 13:13:43 +0000
+Authentication-Results: garm.ovh; auth=pass (GARM-106R006a35b9433-38c4-4e4e-ac42-0b23294b9240,
+                    93EF46EAE3D8452F1CAE73C1AE6730C23720AB02) smtp.auth=mail@schlaraffenlan.de
+X-OVh-ClientIp: 91.191.178.71
+From: Jonas Rebmann <mail@schlaraffenlan.de>
+Date: Wed, 05 Jun 2024 15:13:22 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240605-test_tftp-v1-1-5752ea677b06@schlaraffenlan.de>
+X-B4-Tracking: v=1; b=H4sIAHJkYGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDMwNT3ZLU4pL4krSSAl3LVEMjIwujFBOzRAMloPqCotS0zAqwWdGxtbU
+ AZH/RdVsAAAA=
+To: Sascha Hauer <s.hauer@pengutronix.de>, 
+ BAREBOX <barebox@lists.infradead.org>
+Cc: Jonas Rebmann <mail@schlaraffenlan.de>
+X-Mailer: b4 0.13.0
+X-Ovh-Tracer-Id: 7244040004057335040
+X-VR-SPAMSTATE: OK
+X-VR-SPAMSCORE: -100
+X-VR-SPAMCAUSE: gggruggvucftvghtrhhoucdtuddrgedvledrvdeliedgiedvucetufdoteggodetrfdotffvucfrrhhofhhilhgvmecuqfggjfdpvefjgfevmfevgfenuceurghilhhouhhtmecuhedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujfgurhephfffufggtgfgkffvvefosehtjeertdertdejnecuhfhrohhmpeflohhnrghsucftvggsmhgrnhhnuceomhgrihhlsehstghhlhgrrhgrfhhfvghnlhgrnhdruggvqeenucggtffrrghtthgvrhhnpefggfejuefhteffhfegudeliedtieegueegieetieevkeeludfhleejheetheevjeenucfkphepuddvjedrtddrtddruddpledurdduledurddujeekrdejuddpfeejrdehledrudegvddruddtieenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepihhnvghtpeduvdejrddtrddtrddupdhmrghilhhfrhhomhepmhgrihhlsehstghhlhgrrhgrfhhfvghnlhgrnhdruggvpdhnsggprhgtphhtthhopedupdhrtghpthhtohepsggrrhgvsghogieslhhishhtshdrihhnfhhrrgguvggrugdrohhrghdpoffvtefjohhsthepmhhoheekfedpmhhouggvpehsmhhtphhouhht
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240604_033935_840520_22F36713 
-X-CRM114-Status: GOOD (  13.99  )
+X-CRM114-CacheID: sfid-20240605_061358_964322_B85A33DA 
+X-CRM114-Status: GOOD (  13.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -77,193 +83,141 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-103.6 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-3.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE,USER_IN_WELCOMELIST,USER_IN_WHITELIST
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] nandtest: fix wrong ecc stats and start offset parameter
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: [PATCH] test: pytest: introduce pytest for network, test tftp
+ notfound
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-- The -o (start offset on flash) parameter has no effect. The check always
-starts at address 0, despite the value given with -o.
+barebox already has a few pytest integration tests but none of them are
+networking related. This type of test requires a network connection to
+the barebox device, without the "network" feature the test is marked
+xfail. DHCP is assumed. For the case of qemu device we also assume DHCP
+to set serverip correctly. In any other case, it is set via console to
+that IP of the pytest-host that has the route to the barebox devices IP.
+The test asserts on a successful ICMP ping from the test device to the
+pytest-host as well as on a "No such file or directory" conversation
+from the barebox device to the pytest-host
 
-- Due to an invalid initialization the ecc error stats sometimes showed invalid values.
-
-Signed-off-by: Andreas Helmcke <ahelmcke@ela-soft.com>
+Signed-off-by: Jonas Rebmann <mail@schlaraffenlan.de>
 ---
- commands/nandtest.c | 62 ++++++++++++++++++++++++++++++---------------
- 1 file changed, 42 insertions(+), 20 deletions(-)
- mode change 100644 => 100755 commands/nandtest.c
+ test/arm/virt@multi_v8_defconfig.yaml |  1 +
+ test/openrisc/generic_defconfig.yaml  |  2 +
+ test/py/test_network.py               | 69 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 72 insertions(+)
 
-diff --git a/commands/nandtest.c b/commands/nandtest.c
-old mode 100644
-new mode 100755
-index 4a7db9cc74..c2eed15c50
---- a/commands/nandtest.c
-+++ b/commands/nandtest.c
-@@ -34,11 +34,32 @@ static unsigned int ecc_stats[MAX_ECC_BITS];
- static unsigned int ecc_stats_over;
- static unsigned int ecc_failed_cnt;
- 
-+/* Helper for progression bar */
-+static loff_t pb_len;
-+static loff_t pb_start;
+diff --git a/test/arm/virt@multi_v8_defconfig.yaml b/test/arm/virt@multi_v8_defconfig.yaml
+index d8f8ab5cbf..42ce10328d 100644
+--- a/test/arm/virt@multi_v8_defconfig.yaml
++++ b/test/arm/virt@multi_v8_defconfig.yaml
+@@ -14,6 +14,7 @@ targets:
+       BareboxTestStrategy: {}
+     features:
+       - virtio-mmio
++      - network
+     runner:
+       tuxmake_arch: arm64
+ images:
+diff --git a/test/openrisc/generic_defconfig.yaml b/test/openrisc/generic_defconfig.yaml
+index 93ba9586c4..56b70b8242 100644
+--- a/test/openrisc/generic_defconfig.yaml
++++ b/test/openrisc/generic_defconfig.yaml
+@@ -12,6 +12,8 @@ targets:
+         prompt: 'barebox@[^:]+:[^ ]+ '
+         bootstring: 'commandline:'
+       BareboxTestStrategy: {}
++    features:
++      - network
+ images:
+   barebox: !template "$LG_BUILDDIR/barebox"
+ imports:
+diff --git a/test/py/test_network.py b/test/py/test_network.py
+new file mode 100644
+index 0000000000..00bcea3606
+--- /dev/null
++++ b/test/py/test_network.py
+@@ -0,0 +1,69 @@
++import pytest
 +
-+static void pb_init(void)
-+{
-+	init_progression_bar(pb_len);
-+}
++from labgrid import driver,Environment
++import socket
++import threading
 +
-+static void pb_update(const loff_t done)
-+{
-+	show_progress(done - pb_start);	
-+}
++TFTP_TEST_PORT = 6968
 +
-+static void pb_rewrite(const loff_t done)
-+{
-+	pb_init();
-+	pb_update(done);
-+}
++def get_source_addr(destination_ip, destination_port):
++    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
++    udp_socket.connect((destination_ip, destination_port))
++    source_ip, _ = udp_socket.getsockname()
++    return source_ip
 +
++def expect_tftp_notfound(filename, listen_port, listen_addr):
++    uname = filename.encode("ascii")
++    messages = [
++        b"\000\001" + uname + b"\000octet\000timeout\0005\000blksize\000512\000tsize\0000\000",
++        b"\000\005\000\001File not found\000",
++    ]
++    udp_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
++    udp_socket.bind((listen_addr, listen_port))
++    udp_socket.settimeout(3)
++    data, addr = udp_socket.recvfrom(1024)
++    udp_socket.sendto(messages[1], addr)
++    udp_socket.close()
++    assert data == messages[0]
 +
- /*
-  * Implementation of pwrite with lseek and write.
-  */
- static ssize_t __pwrite(int fd, const void *buf,
--		size_t count, loff_t offset, loff_t length)
-+		size_t count, loff_t offset)
- {
- 	ssize_t ret;
- 
-@@ -50,8 +71,7 @@ static ssize_t __pwrite(int fd, const void *buf,
- 			printf("\nMark block bad at 0x%08llx\n",
- 					offset + memregion.offset);
- 			ioctl(fd, MEMSETBADBLOCK, &offset);
--			init_progression_bar(length);
--			show_progress(offset);
-+			pb_rewrite(offset);
- 		}
- 	}
- 
-@@ -59,7 +79,7 @@ static ssize_t __pwrite(int fd, const void *buf,
- 	return ret;
- }
- 
--static int _read_get_stats(loff_t ofs, unsigned char *buf, loff_t totallength)
-+static int _read_get_stats(loff_t ofs, unsigned char *buf)
- {
- 	int ret;
- 
-@@ -76,8 +96,7 @@ static int _read_get_stats(loff_t ofs, unsigned char *buf, loff_t totallength)
- 		printf("\n %d bit(s) ECC corrected at page 0x%08llx\n",
- 				newstats.corrected - oldstats.corrected,
- 				ofs + memregion.offset);
--		init_progression_bar(totallength);
--		show_progress(ofs);
-+		pb_rewrite(ofs);
- 		if ((newstats.corrected-oldstats.corrected) >=
- 				MAX_ECC_BITS) {
- 			/* Increment ECC stats that
-@@ -95,8 +114,7 @@ static int _read_get_stats(loff_t ofs, unsigned char *buf, loff_t totallength)
- 	if (newstats.failed > oldstats.failed) {
- 		printf("\nECC failed at page 0x%08llx\n",
- 				ofs + memregion.offset);
--		init_progression_bar(totallength);
--		show_progress(ofs);
-+		pb_rewrite(ofs);
- 		oldstats.failed = newstats.failed;
- 		ecc_failed_cnt++;
- 	}
-@@ -117,7 +135,7 @@ static int read_corrected(loff_t ofs, unsigned char *rbuf, loff_t length)
- 
- 	for (i = 0; i < meminfo.erasesize;
- 			i += meminfo.writesize) {
--		ret = _read_get_stats(ofs + i, rbuf + i, length);
-+		ret = _read_get_stats(ofs + i, rbuf + i);
- 		if (ret)
- 			return ret;
- 	}
-@@ -154,9 +172,9 @@ static int erase_and_write(loff_t ofs, unsigned char *data,
- 			i += meminfo.writesize) {
- 		/* Write data to given offset */
- 		__pwrite(fd, data + i, meminfo.writesize,
--				ofs + i, length);
-+				ofs + i);
- 
--		ret = _read_get_stats(ofs + i, rbuf + i, length);
-+		ret = _read_get_stats(ofs + i, rbuf + i);
- 		if (ret)
- 			return ret;
- 	}
-@@ -201,7 +219,7 @@ static void print_stats(int nr_passes, loff_t length)
- static int do_nandtest(int argc, char *argv[])
- {
- 	int opt, do_nandtest_dev = -1, do_nandtest_ro = 0, ret = -1;
--	loff_t flash_offset = 0, test_ofs, length = 0;
-+	loff_t flash_offset = 0, test_ofs, length = 0, flash_end = 0;
- 	unsigned int nr_iterations = 1, iter;
- 	unsigned char *wbuf, *rbuf;
- 
-@@ -210,7 +228,7 @@ static int do_nandtest(int argc, char *argv[])
- 	markbad = 0;
- 	fd = -1;
- 
--	memset(ecc_stats, 0, sizeof(*ecc_stats));
-+	memset(ecc_stats, 0, sizeof(ecc_stats));
- 
- 	while ((opt = getopt(argc, argv, "ms:i:o:l:tr")) > 0) {
- 		switch (opt) {
-@@ -315,6 +333,8 @@ static int do_nandtest(int argc, char *argv[])
- 		goto err;
- 	}
- 
-+	flash_end = length + flash_offset;
-+	
- 	wbuf = malloc(meminfo.erasesize * 2);
- 	if (!wbuf) {
- 		printf("Could not allocate %d bytes for buffer\n",
-@@ -323,20 +343,22 @@ static int do_nandtest(int argc, char *argv[])
- 	}
- 	rbuf = wbuf + meminfo.erasesize;
- 
-+	pb_start = flash_offset;
-+	pb_len = length;
-+	
- 	for (iter = 0; iter < nr_iterations; iter++) {
--		init_progression_bar(length);
--		for (test_ofs = 0;
--				test_ofs < length;
-+		pb_init();
-+		for (test_ofs = flash_offset;
-+				test_ofs < flash_end;
- 				test_ofs += meminfo.erasesize) {
--			show_progress(test_ofs);
-+			pb_update(test_ofs);
- 			srand(seed);
- 			seed = rand();
- 
- 			if (ioctl(fd, MEMGETBADBLOCK, &test_ofs)) {
- 				printf("\nBad block at 0x%08llx\n",
- 						test_ofs + memregion.offset);
--				init_progression_bar(length);
--				show_progress(test_ofs);
-+				pb_rewrite(test_ofs);
- 				continue;
- 			}
- 			if (do_nandtest_ro) {
-@@ -349,7 +371,7 @@ static int do_nandtest(int argc, char *argv[])
- 			if (ret < 0)
- 				goto err2;
- 		}
--		show_progress(test_ofs);
-+		pb_update(test_ofs);
- 		printf("\nFinished pass %d successfully\n", iter + 1);
- 	}
- 
++def test_skip():
++    pytest.mark.skip("no network adapter available")
++
++def test_barebox_tftp_not_found(barebox, barebox_config, env):
++    # on duts without network feature, this is expected to fail
++    # set xfail_strict=True to enforce specifying the network feature if available
++    if not 'network' in env.get_target_features():
++        pytest.xfail("network feature not specified")
++
++    barebox.run_check("ifup eth0")
++    guestaddr = barebox.run_check("echo $eth0.ipaddr")[0]
++    assert guestaddr != "0.0.0.0"
++
++    listen_addr = "127.0.0.1"
++    if not isinstance(barebox.console, driver.QEMUDriver):
++        # sending an arbitrary udp package to determine the IP towards dut
++        listen_addr = get_source_addr(guestaddr, TFTP_TEST_PORT)
++        barebox.run_check(f"eth0.serverip={listen_addr}")
++
++    barebox.run_check("ping $eth0.serverip", timeout=2)
++
++    tftp_thread = threading.Thread(
++        target=expect_tftp_notfound,
++        name="expect_tftp_notfound",
++        args=("a", TFTP_TEST_PORT, listen_addr),
++    )
++    tftp_thread.daemon = True
++    tftp_thread.start()
++    
++    try:
++        stdout, _, returncode = barebox.run(f"tftp -P {TFTP_TEST_PORT} a", timeout=3)
++        assert returncode == 127
++    except:
++        raise
++    finally:
++        # terminate a timed-out ftpf
++        barebox.console.sendcontrol("c")
++
++    tftp_thread.join()
++    barebox.run_check("ifdown eth0")
++
+
+---
+base-commit: 55cf43c442c260846b393c2099d4a72d0ebdbdd9
+change-id: 20240605-test_tftp-9e12282d46a0
+
+Best regards,
 -- 
-2.43.0
+Jonas Rebmann <mail@schlaraffenlan.de>
 
 
 
