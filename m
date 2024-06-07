@@ -1,86 +1,87 @@
-Delivery-date: Fri, 07 Jun 2024 02:13:06 +0200
+Delivery-date: Fri, 07 Jun 2024 02:40:00 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sFNEA-001sts-1x
+	id 1sFNeC-001t31-2X
 	for lore@lore.pengutronix.de;
-	Fri, 07 Jun 2024 02:13:06 +0200
+	Fri, 07 Jun 2024 02:40:00 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sFNEA-00086G-05
-	for lore@pengutronix.de; Fri, 07 Jun 2024 02:13:06 +0200
+	id 1sFNeC-0000U8-4r
+	for lore@pengutronix.de; Fri, 07 Jun 2024 02:40:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=1TbpSNSG2OJXlvXezcl655646V+JkLBtFJOdFTG72A4=; b=jaP6u0HqYFjEb5
-	MMNzWk8h/iGUQpVtmidJ5jNbDVlW7lVH7uScJW6J0FtQuL29IO5jmy1YNoibBjqd0d9vGoKbLjYvX
-	rHYMW9FClsUx63UrWJjRYynbQEAGBtEHCSJSm6ZhIGum9MOpIxLTsYK9Od/EN3YtVcBhl4W5A6KTQ
-	f3Y1DJqbKJkeoKfyWsHa7cAs8CWrIonxNqy/RrvYjOt9LT2aguiwx5yR8n/+Is10WG5NdUJOM2cnk
-	vDILe0ueghvogKLa/SuHKH6T4qrWTjwllFStOB7wtuCj0AQfllRKP75exEVzWW+nxgXZgohRnJGot
-	cJE1kTGUt0JFwzdlt7WQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:Mime-Version:References:In-Reply-To:Message-Id:Subject:Cc:To:
+	From:Date:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=t9Sh2HsoH/m2jMbDQ9L8D02knU8E1fnt2uewLbwPpRw=; b=XLYan90FQ2tB+BhK7jTU9vVfmR
+	hK8aM453bPRxT3nMJSYO9+iaWWDZ7jeZalR8JETXYvtyymrhASrkpyoiqel2yhP7hiokFYuA1T1OW
+	WQg+z88LLLFn4xl5ninfJmnGV3e/t0F3rOtdsn3CX2F+u+nH/9COH0g/xKLGyrckeIgqbm1bkI0EL
+	dfTNNl387qBC2a2ftNU9+wONT5CSj/eu/24w3cgxH5gbeOgYpVEN6ALtWYYK7BSFj1LwnaclsNjQ8
+	x9ffpiPtnTLzt1u+KdaoorMVDBwV0AJGo+inCZZZTcpoNI1rgr1YkljxVeG5LmPgkGcjYF7a2TJyl
+	JHVXQbHA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sFNDc-0000000Bmqk-0nIl;
-	Fri, 07 Jun 2024 00:12:32 +0000
-Received: from mail-lf1-x129.google.com ([2a00:1450:4864:20::129])
+	id 1sFNdi-0000000Br8A-3xEV;
+	Fri, 07 Jun 2024 00:39:30 +0000
+Received: from mail-lj1-x231.google.com ([2a00:1450:4864:20::231])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sFNDW-0000000BmoT-3BqQ
+	id 1sFNdf-0000000Br7l-47Sb
 	for barebox@lists.infradead.org;
-	Fri, 07 Jun 2024 00:12:29 +0000
-Received: by mail-lf1-x129.google.com with SMTP id 2adb3069b0e04-52b936c958dso1862808e87.0
-        for <barebox@lists.infradead.org>; Thu, 06 Jun 2024 17:12:17 -0700 (PDT)
+	Fri, 07 Jun 2024 00:39:29 +0000
+Received: by mail-lj1-x231.google.com with SMTP id 38308e7fff4ca-2ea903cd11bso20606141fa.1
+        for <barebox@lists.infradead.org>; Thu, 06 Jun 2024 17:39:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717719136; x=1718323936; darn=lists.infradead.org;
+        d=gmail.com; s=20230601; t=1717720765; x=1718325565; darn=lists.infradead.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1TbpSNSG2OJXlvXezcl655646V+JkLBtFJOdFTG72A4=;
-        b=JACLibqIp4CzRyP5qNSlJ26JtEl2ackDqMlZShsxS+MlndF6NIHa0wsl1n/pJ70uFl
-         DT74fKibpG1ckE+GaYyAnKwA0zwe1VGN45q+BNtlKan9xbjsEMMlpNnIyAy977cT/Ic5
-         SEbsthYjq7iUwW+XlM/aEZTuXLmnc/8eCq2t2C2ZfnNTBZqrBOu6COnPqouvxpB9cVtw
-         XiyjnxkXUkrWYdwJowjab0/4sxNkCUr6nCUIe9GU+kpJ5VRoZQSGQUf0aQZeamf4dX7/
-         yMXtGflX5G2NSlq5sPTSsjqDnUVxFj3rGOdwCvYEV/ItatL/pmFa731uuRohrzw9Thym
-         OCAw==
+        bh=t9Sh2HsoH/m2jMbDQ9L8D02knU8E1fnt2uewLbwPpRw=;
+        b=nsvROhysRW+SZKYHvkoCh3po/X7oNZqbDkbG6HvX1riJCB3FphdGBPatMsuIRDcpBF
+         Kv3uwwTyBPFHAcc8To5WbKVkB0klcS821UsnNRaNjcFuQnP6/DeCkfEl6emFtFIbycr8
+         KX6roB/YLm7xYR54J6SsAicmBZHt+dPZz8DPlnLrNw2KQiBlA2HdxPrGFhHY6zAfe68b
+         TbFZOlGfA/D9JZS8aOWE8Dx0PecgxoHzbgU9WzuupHRtXPZdOnN4Im4ccEpg4I4jRDaX
+         ic0EaV8mZQduJaECjAxFUYAwsS2kNx9+YnDL8Cc7dPrSo6vETsGn1KTP5fiygLpPIkUE
+         AKdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717719136; x=1718323936;
+        d=1e100.net; s=20230601; t=1717720765; x=1718325565;
         h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :message-id:subject:cc:to:from:date:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1TbpSNSG2OJXlvXezcl655646V+JkLBtFJOdFTG72A4=;
-        b=PWepu43V0tR/ZTW+HgVD98TmdB+BCl/OXmNuugeE5yQxuNaVapxy7e9Q+/cpeU3M7g
-         CP36tWr8IPgeWrm4vW+AsUe9FKE+ftcFcrk0tZ5KZi/aJghq0Cyfd0+ZCpRPNcw11aJ5
-         4CzJmKY7ezqIE+VuST6Kv1ayr04hHeMnlMe7idvVHmQMlX3DYQbmRY1ZO1TvwDRrHdZw
-         KquakPwnneg5NWs/nfpBPlrcDzXeVrabI1E7oRznZWj1Lv29WDHua2gF2oc3yGcKGky9
-         M1HXQeKuEckLdLhBL6320BCJAweZS7hTQ06L7BlQNNJW0+vei85PwH/0gmsSjnEbz91z
-         nXNQ==
-X-Gm-Message-State: AOJu0YzQa0ZmaT02RUFgvHz4LWwDNmYnqhoeyiXwcPa9VInN2obfLNQF
-	5jQgzzCXNwdy0LU7/gun8Tj4/7GohIgR0zaAqZS1ZGgIpp/6EVuj4IyE5Q==
-X-Google-Smtp-Source: AGHT+IFBvy+wZyi6s2/VbrYXKLwQxD3f3Q9LhLo+1Pc0q3/ghtT1YcZx9SXr/IDbAFPRrCeLi7bcJg==
-X-Received: by 2002:ac2:52a7:0:b0:520:85cf:db7f with SMTP id 2adb3069b0e04-52bb9f7aa6emr553977e87.28.1717719135521;
-        Thu, 06 Jun 2024 17:12:15 -0700 (PDT)
-Received: from cinco.. (109-252-6-122.nat.spd-mgts.ru. [109.252.6.122])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52bb41e1db0sm342594e87.18.2024.06.06.17.12.14
+        bh=t9Sh2HsoH/m2jMbDQ9L8D02knU8E1fnt2uewLbwPpRw=;
+        b=OU3ShlGkSB4DX4TWnVzxex/GJavtVIieoAeZwdbZ4uAXQvEavxjYECvMDGz0U8wki2
+         B96fSfvlyZ2NUrbrDKTtAMVswhKyptT7EhZ6ex8NOUNRugn19xnrBTCih3jmUHvpqyaT
+         jv+8CshAmQWjco7JUZ1qe4VTW2hLQ+eWrFcWN6IChDI/gCpl7ZRG0tROyo4DpVXbIJYt
+         jZ29L4X0vQAKTsoGi7QPZYLW8y+RMCVaXVBCCNcVt05pPvJFroSBFB9DSV/ExY4Mvdk4
+         G+1mpIOnUM7JA6VwM4MDb+hnh+y+RP4Wb/tL5SYK4rDDnc9yfytBTPnpwbzIJ7rsUlqZ
+         RjhQ==
+X-Gm-Message-State: AOJu0YzSyoZzDABei1+lYnjvBaOe4PodxDf7BUp9G9z/fXTLDAGiNdYG
+	y+gB2Vo+ds9CEGcfgg8CG4A5VXQ0omnQj8O/DSxnjbuWJT6dIxJXbn/+FA==
+X-Google-Smtp-Source: AGHT+IH2qMD+ANo4KKzXajJaGncTX2PpCPe8VODFsuCbpo2PjgijZJ690MqQ7AzBbppiIOe6rPRZtQ==
+X-Received: by 2002:a2e:984a:0:b0:2e5:67a8:10f2 with SMTP id 38308e7fff4ca-2eadce9a1femr7557671fa.44.1717720765359;
+        Thu, 06 Jun 2024 17:39:25 -0700 (PDT)
+Received: from flare ([146.185.218.236])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ead41b077fsm3556431fa.84.2024.06.06.17.39.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 17:12:15 -0700 (PDT)
+        Thu, 06 Jun 2024 17:39:24 -0700 (PDT)
+Date: Fri, 7 Jun 2024 03:47:17 +0300
 From: Antony Pavlov <antonynpavlov@gmail.com>
-To: barebox@lists.infradead.org
-Date: Fri,  7 Jun 2024 03:12:56 +0300
-Message-Id: <20240607001259.107805-2-antonynpavlov@gmail.com>
-X-Mailer: git-send-email 2.39.0
-In-Reply-To: <20240607001259.107805-1-antonynpavlov@gmail.com>
-References: <20240607001259.107805-1-antonynpavlov@gmail.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-Id: <20240607034717.a55d06b83aecfe8088077d88@gmail.com>
+In-Reply-To: <Zl341MMAYanIfGAt@pengutronix.de>
+References: <Zl341MMAYanIfGAt@pengutronix.de>
+X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; i686-pc-linux-gnu)
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240606_171227_004780_47B72BE7 
-X-CRM114-Status: UNSURE (   9.76  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240606_173928_119763_BB9ABECC 
+X-CRM114-Status: GOOD (  18.40  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -92,42 +93,56 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,
-	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
-	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+X-Spam-Status: No, score=-6.9 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,NICE_REPLY_A,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 1/4] pbl: enable image verification for MIPS and RISC-V too
+Subject: Re: barebox + picotcp
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
----
- pbl/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Mon, 3 Jun 2024 19:09:40 +0200
+Sascha Hauer <s.hauer@pengutronix.de> wrote:
 
-diff --git a/pbl/Kconfig b/pbl/Kconfig
-index d1877a988d2..5ff2a6ad3c3 100644
---- a/pbl/Kconfig
-+++ b/pbl/Kconfig
-@@ -54,7 +54,7 @@ config PBL_FULLY_PIC
- 	  the code sections.
- 
- config PBL_VERIFY_PIGGY
--	depends on ARM
-+	depends on ARM || MIPS || RISCV
- 	bool "Verify barebox proper hash before decompression" if COMPILE_TEST
- 
- config BOARD_GENERIC_DT
--- 
-2.39.0
+Hi Sascha!
 
+> Hi Antony,
+>=20
+> I am currently playing with your barebox picotcp integration in order to
+> get it into mainline. I am currently on your picotcp v2.1 branch and
+> noticed you had to disable TCP support. I wonder if v2.1 is the way
+> forward or if it's the v1.7 based branch instead. The v2.1 branch is
+> newer, but also hasn't seen any activity for multiple years now. One of
+> the main features of the v2.1 branch is that it introduces
+> PICO_SUPPORT_TICKLESS, from which I don't exactly know if we want/need
+> it, but what I do see is that the stack won't compile when this option
+> is enabled.
+>=20
+> Do you have any thoughts what could be the way forward?
+
+I suppose that most beneficial picotcp feature is TCP support.
+Working with picotcp v1.7 I have used tcp examples from
+https://github.com/tass-belgium/picotcp-modules
+
+It looks like that the tcp code does not work "as-is" after switching from
+v1.7 to v2.1 so I have disabled it.
+
+At the moment I have no good idea on picotcp integration next step.
+
+This year I have faced with iPXE (https://ipxe.org/) as a user.
+iPXE just works. It supports TCP and IPv6. It uses GPLv2.
+May be iPXE would be a better choice?
+However, I have not looked at the iPXE code yet.=20
+
+--=20
+Best regards,
+=A0 Antony Pavlov
 
 
