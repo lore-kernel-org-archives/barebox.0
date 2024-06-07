@@ -1,83 +1,85 @@
-Delivery-date: Wed, 05 Jun 2024 19:26:43 +0200
+Delivery-date: Fri, 07 Jun 2024 02:13:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sEuPL-001Z4q-2r
+	id 1sFNE8-001st8-18
 	for lore@lore.pengutronix.de;
-	Wed, 05 Jun 2024 19:26:43 +0200
+	Fri, 07 Jun 2024 02:13:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sEuPL-0003Ch-9L
-	for lore@pengutronix.de; Wed, 05 Jun 2024 19:26:43 +0200
+	id 1sFNE7-00084Y-Ob
+	for lore@pengutronix.de; Fri, 07 Jun 2024 02:13:04 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=zIG3TBl6Z7KdbDF952/M/hdLgE5rLSQT7AKhGlqFPic=; b=PsCRUqPp1u3wIWZ4UpT2fputMm
-	FIE7TUxs/jvvdNsoY+haVY0ziCf8a0nlkPw4ksSz+JZ3DvTRr8zEcQKKGpKmgFmkLG95iGxQEP0cn
-	Ytu+lTNtUd8ROQhK5GG4okGqggH/BOe0X4hrp3M7XYeuOHINm/N7QqB6U139necIdPBOKxjJ78r6h
-	3EndD05//MnKtpiBeCFyypr4+DtNybqELjzv0lda+Gk6PZjKDdVz6JxufsOLHH31vyCsvguvCZItm
-	n3zl4NejAxyDMVq4aH8k/ps5ypKDYh8ENlYRsfu9Kjd8bYuGP5S1t0opykPAWMDdph7v0UZNmOqPE
-	DQ+Z+7wA==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=pLoe67kPB4qRKlurRRxq7xgaPSeOZUSBBV7nmi/CNqY=; b=hSh9+F2QOzoolj
+	33EjFskqnOwsXOZPGKMCysbxgIiqOue+fjb1szn6H8z63evOg0RN4P/HGctVrFpLLYORxbfSoLrME
+	rEYxleztlwvAU1AjBFn6QpM95Iy1ss7R9itWNzmdhQoDtZUPFgiTsPYzb6DAKcy4dVUkxsRa+/XjN
+	8X4cz/7qLiD5+I0xqTZAg4hR7k8aywKAkRtapVkWAy91uIC3Q/Sw/wnoR5J82O5n33IFs+EZLaQGC
+	xzu8eJLfGie3BkDHqZBD/lhdW7oHZLxMrwSyH3x2BuepV11cUNX8zIO4PDlilAL5z1K7vRNduKMBy
+	4/JOMB6XI76WD+pHImCg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sEuOg-00000006ynV-0K9l;
-	Wed, 05 Jun 2024 17:26:02 +0000
-Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
+	id 1sFNDc-0000000Bmqq-37zq;
+	Fri, 07 Jun 2024 00:12:32 +0000
+Received: from mail-lf1-x130.google.com ([2a00:1450:4864:20::130])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sEuOc-00000006yls-1WzZ
+	id 1sFNDW-0000000BmoU-3ARJ
 	for barebox@lists.infradead.org;
-	Wed, 05 Jun 2024 17:25:59 +0000
-Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-52b92e73e2fso106832e87.2
-        for <barebox@lists.infradead.org>; Wed, 05 Jun 2024 10:25:53 -0700 (PDT)
+	Fri, 07 Jun 2024 00:12:29 +0000
+Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-52b919d1fc0so1315926e87.0
+        for <barebox@lists.infradead.org>; Thu, 06 Jun 2024 17:12:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717608352; x=1718213152; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zIG3TBl6Z7KdbDF952/M/hdLgE5rLSQT7AKhGlqFPic=;
-        b=Kw7GZn2fxcLn0rwih0ZprQ+dcm/P1PseLPX/3Vlf/kQw4mIMfqpEK+UHagNNJvONJ5
-         DC38sujpUBFnQRdRknYr9KYNEZMQZAp0mP9LxYfJw6ArcD4Ywaj63t1TDInKMe1jV2XU
-         abA9/EpgjX+z1a8TeNFJlntVHx8a9BtKD532ql6Lr9NZ6Pyl/bFa3zI3+duRB8y9RX96
-         u+c3MvNivQuLJW+WVi3KE6eWilnYP7vFq93UUCad1YqQ/gUc9X5uCto1o4p8uFGJZghe
-         1FkNwmELF3y5/9vWz0h/4GRFEjhuOMeeygYQNiAP05CiqfX3bdFaTHW+qwO6nRqE4/Jy
-         notQ==
+        d=gmail.com; s=20230601; t=1717719136; x=1718323936; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pLoe67kPB4qRKlurRRxq7xgaPSeOZUSBBV7nmi/CNqY=;
+        b=iRKO/Yy4sgFR7iaT8stOhPfGTqAzQUpfa9ZtmWAlJYC2fhjW2sbvGqcr5W2IFXOjGX
+         nY0QzccoQ1uQkAYrUoKbtvrBwtRmY2bivETwspQCzynUB6PQcbbZXciDePHxe5vkRm52
+         HbfnfUMVDYnHKH9aIJQrEfQHEhZrLZNACEMnllPweBUI8X7slS6R5iEfy0/XpaPxq76G
+         pa+3qUbDjyzLXFlyWzXezs0cGwy0XeOAWqmfKirwl7eUdtNnRm8yj3xEsFIZ4jTSjZQX
+         2EctNw7hYOVJa7+y0BRw92LogaEgv+NzxvjBC0ZNiCkPECelxLUyHtnD+IS5uVQFWQ4t
+         FQPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717608352; x=1718213152;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zIG3TBl6Z7KdbDF952/M/hdLgE5rLSQT7AKhGlqFPic=;
-        b=HeNhz4nMNqnf4tzb6+8hG+Z+wqiTwffANsGYRulN+M8gcrknbGYl8+hgqYXtg+qlwn
-         XdBA9NWhGjLs1JJq2EGBIaWe9x3Aa8byTXb6a75dSNr1EZHV2bE3NP1wi45b3rdemFXY
-         IhDxsRDzjtv/2xfCJReFsgLyIwu9asAJdRa5Egozhpxzo5uw7SYEy6NpVxC8cJtRg3DM
-         Zp8HkE1QrXM2zTELdxc3kYlVHza+rQL/9St0UCb4KyZLK/S+zYTHbE7UnhfVs+80JZWC
-         w5QJdkLfZM6BxrnrUOCwSwV0ySbwdYn7cSfP9LHlWYMXeMpVwhS8psgylF/GosBtXmxU
-         aO8A==
-X-Gm-Message-State: AOJu0YwTRlMLazI+X9DFY2egzWZUoQI5uZu06hg1sVClyYTS9bV1E+No
-	9k2yvTay/xrWUWaEcq9x7Z8W3ftCJxeI1hsK2LBjKGj0hlKps+OnZS8IoQ==
-X-Google-Smtp-Source: AGHT+IGtVU0Nd8It3LDubqTyJ8rFHMK3wHp+q8jbO8KeKtgRndp263wsd1JHs0dhVsjt+LTOsPoLrw==
-X-Received: by 2002:ac2:4849:0:b0:521:532d:eb38 with SMTP id 2adb3069b0e04-52bab4f93dcmr1979578e87.63.1717608351280;
-        Wed, 05 Jun 2024 10:25:51 -0700 (PDT)
-Received: from localhost.localdomain ([95.161.223.172])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52b84d3f4f7sm1834792e87.89.2024.06.05.10.25.50
+        d=1e100.net; s=20230601; t=1717719136; x=1718323936;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pLoe67kPB4qRKlurRRxq7xgaPSeOZUSBBV7nmi/CNqY=;
+        b=mhS4scf3XOqh7o6DdCNf5kl77VC01WG5FIUeQnsvC4Brd+JA1/29kr8qrC+QebD6QG
+         l0jChIKN2JiojEv8NoaEiv58QcWnPDjW4oOPU415mxo2jRgvgK5lswSiq55CmEXJO5uR
+         uDaIUfirQhOuktr7mt4NYWbDhsOz0Zr+i+PtkmbiRBxPF7fm9b9TLxxXlisbCHycWeOK
+         K5F3N3EBOnxoBeJVWRljkzeA1J6BBaQWNrwpoAa5LTbP01VAi+O2ZiVACyBsgxL9Mvu7
+         3QoxLiVOo6dQ9mAXJ5UJVaxp7KSUvA7L1WnU4jBMYfWO6YBndMYz9nBzAQ+iygz6ZT2b
+         BV0g==
+X-Gm-Message-State: AOJu0YzmQLPAjo9xmMz3Rlr/TT1pJ1W6pA3g2xaVpOB7+c49/N3tg8m1
+	V7AVnn/KTL3gtBy5BbwzXje1m/RYzhwbPu9Nzl6tO4RPeYabCWS4qu7BTg==
+X-Google-Smtp-Source: AGHT+IFFQG5LrzfzgKSqahThzQHzM/yiqvOGNwVnNNQzCIREJu28NddPFgwRp9wPi1CebjC5AlxjoQ==
+X-Received: by 2002:a05:6512:3a8a:b0:52b:81de:1119 with SMTP id 2adb3069b0e04-52bb9f07ed4mr378109e87.21.1717719136247;
+        Thu, 06 Jun 2024 17:12:16 -0700 (PDT)
+Received: from cinco.. (109-252-6-122.nat.spd-mgts.ru. [109.252.6.122])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52bb41e1db0sm342594e87.18.2024.06.06.17.12.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 05 Jun 2024 10:25:50 -0700 (PDT)
-From: Alexander Shiyan <eagle.alexander923@gmail.com>
+        Thu, 06 Jun 2024 17:12:15 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Cc: Alexander Shiyan <eagle.alexander923@gmail.com>
-Date: Wed,  5 Jun 2024 20:25:39 +0300
-Message-Id: <20240605172539.251490-1-eagle.alexander923@gmail.com>
-X-Mailer: git-send-email 2.38.2
+Date: Fri,  7 Jun 2024 03:12:57 +0300
+Message-Id: <20240607001259.107805-3-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20240607001259.107805-1-antonynpavlov@gmail.com>
+References: <20240607001259.107805-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240605_102558_428926_9FA3E5D8 
-X-CRM114-Status: GOOD (  11.93  )
+X-CRM114-CacheID: sfid-20240606_171226_986102_AEDDA9DE 
+X-CRM114-Status: GOOD (  10.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,102 +91,63 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
-	SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE autolearn=unavailable
-	autolearn_force=no version=3.4.2
-Subject: [PATCH] scripts/rk-usb-loader: Add support for rk3588
+X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH 2/4] RISC-V: fix crash on start if CONFIG_IMAGE_COMPRESSION_NONE=y
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds support for rk3588 CPU for rk-usb-loader.
-Instead of 0x350a PID, the rk3588 uses 0x350b, so lets use mask
-to be compatible with both CPUs.
-Tested with 3588OK-C Forlinx board.
+Use the same approach as ARM barebox uses.
 
-Signed-off-by: Alexander Shiyan <eagle.alexander923@gmail.com>
+See also 6c03bdf8f99 ("kbuild: pbl: use same compression algo for both
+barebox and DTB").
+
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
- scripts/rk-usb-loader.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ arch/riscv/boot/start.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/scripts/rk-usb-loader.c b/scripts/rk-usb-loader.c
-index 9c2367ed28..ad70cfe271 100644
---- a/scripts/rk-usb-loader.c
-+++ b/scripts/rk-usb-loader.c
-@@ -66,7 +66,9 @@ static void log_debug(char *fmt, ...)
- 	va_end(va);
- }
- 
--static libusb_device_handle *rk_usb_open(libusb_context *ctx, uint16_t vendor, uint16_t product)
-+static libusb_device_handle *rk_usb_open(libusb_context *ctx,
-+					 uint16_t vendor, uint16_t vmask,
-+					 uint16_t product, uint16_t pmask)
+diff --git a/arch/riscv/boot/start.c b/arch/riscv/boot/start.c
+index 2e18105bbfb..ab9bb6f320f 100644
+--- a/arch/riscv/boot/start.c
++++ b/arch/riscv/boot/start.c
+@@ -35,7 +35,7 @@ static unsigned long barebox_boarddata_size;
+ void *barebox_riscv_boot_dtb(void)
  {
- 	libusb_device **devlist;
- 	libusb_device_handle *handle;
-@@ -74,8 +76,8 @@ static libusb_device_handle *rk_usb_open(libusb_context *ctx, uint16_t vendor, u
- 	ssize_t count, i;
- 	int ret;
+ 	void *dtb;
+-	int ret;
++	int ret = 0;
+ 	struct barebox_boarddata_compressed_dtb *compressed_dtb;
+ 	static void *boot_dtb;
  
--	log_info("scanning for USB device matching %04hx:%04hx...\n",
--		 vendor, product);
-+	log_info("scanning for USB device matching %04hx/%04hx:%04hx/%04hx...\n",
-+		 vendor, vmask, product, pmask);
- 
- 	while (1) {
- 		if ((count = libusb_get_device_list(ctx, &devlist)) < 0) {
-@@ -93,11 +95,11 @@ static libusb_device_handle *rk_usb_open(libusb_context *ctx, uint16_t vendor, u
- 				return NULL;
- 			}
- 
--			if (desc.idVendor != vendor)
-+			if ((desc.idVendor & vmask) != (vendor & vmask))
- 				continue;
- 
- 			if (product) {
--				if (desc.idProduct != product)
-+				if ((desc.idProduct & pmask) != (product & pmask))
- 					continue;
- 				goto found;
- 			}
-@@ -113,7 +115,8 @@ static libusb_device_handle *rk_usb_open(libusb_context *ctx, uint16_t vendor, u
- 	ret = libusb_open(devlist[i], &handle);
- 	if (ret < 0) {
- 		log_error("failed to open USB device %04hx:%04hx: %s\n",
--				vendor, product, libusb_error_name(ret));
-+				desc.idVendor, desc.idProduct,
-+				libusb_error_name(ret));
- 		libusb_free_device_list(devlist, 1);
+@@ -58,8 +58,13 @@ void *barebox_riscv_boot_dtb(void)
+ 	if (!dtb)
  		return NULL;
- 	}
-@@ -124,7 +127,8 @@ static libusb_device_handle *rk_usb_open(libusb_context *ctx, uint16_t vendor, u
- 		return NULL;
- 	}
  
--	log_info("successfully opened %04hx:%04hx\n", vendor, product);
-+	log_info("successfully opened %04hx:%04hx\n",
-+		 desc.idVendor, desc.idProduct);
- 
- 	return handle;
- }
-@@ -231,7 +235,7 @@ static int upload_image(const char *filename)
- 		return ret;
- 	}
- 
--	dev = rk_usb_open(ctx, 0x2207, 0x350a);
-+	dev = rk_usb_open(ctx, 0x2207, 0xffff, 0x350a, 0xfffe);
- 	if (!dev) {
- 		libusb_exit(ctx);
- 		return 1;
+-	ret = uncompress(compressed_dtb->data, compressed_dtb->datalen,
+-			 NULL, NULL, dtb, NULL, NULL);
++	if (IS_ENABLED(CONFIG_IMAGE_COMPRESSION_NONE))
++		memcpy(dtb, compressed_dtb->data,
++		       compressed_dtb->datalen_uncompressed);
++	else
++		ret = uncompress(compressed_dtb->data, compressed_dtb->datalen,
++				 NULL, NULL, dtb, NULL, NULL);
++
+ 	if (ret) {
+ 		pr_err("uncompressing dtb failed\n");
+ 		free(dtb);
 -- 
-2.38.2
+2.39.0
 
 
 
