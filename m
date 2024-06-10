@@ -1,64 +1,65 @@
-Delivery-date: Mon, 10 Jun 2024 09:52:03 +0200
+Delivery-date: Mon, 10 Jun 2024 10:12:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGZox-003Ztb-0e
+	id 1sGa97-003af9-32
 	for lore@lore.pengutronix.de;
-	Mon, 10 Jun 2024 09:52:03 +0200
+	Mon, 10 Jun 2024 10:12:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGZow-0003dp-Lo
-	for lore@pengutronix.de; Mon, 10 Jun 2024 09:52:03 +0200
+	id 1sGa97-0006Jz-AA
+	for lore@pengutronix.de; Mon, 10 Jun 2024 10:12:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Llqbne8pb9qHro7JkX7LUfmohO0EezMYkt5l4V5iQU4=; b=eo6Sk7wvs5UuGYyHpNvFm8+qEx
-	fc0ike5/W2Ae4MA1AblDXDRLb/N7Kp0Qrmf1H63Wf64ZmFHxeWBD3HsAgcM462KZCS/m7vK3KySi+
-	mt7OXAZ5G1lIT6gRzOqoWtXy6IOHpIA8giAxJ/TI5n1/LQUr3wjE0PEaEAhkx2051iXvxiVSgmigh
-	TfSap5GJigWmKALmj1qAwmRsFmEXw34mnkuooFULZO8ig2qJylb5kUzpO4VH4NN/JeJwiBVGbSHBG
-	0QYaY6pGE6WBy84W4TeQhJJDojfThd/+mw1ebOW0uaYjipYaOEBYgLMLyRkHFq9RnYfPGumdHRG2o
-	v+mFZmwg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=eZUFxjg1XtCaA7q2//nzUErglKo/G16IwF/G+kRXr8A=; b=B7ZAPM9aeHsxZokLCu4r0XEtUv
+	BQamZ2+v0cmEe4vG4ycJsqbxBvp/V8YIKLhyCZ3jzibvtZqXJi/YXtpDpH3L2E3i5q3JiCoyaH8lg
+	YIaiHgxu/RUCinRBuY2TTClLsrf6W4dg25Fkoz044SvN+FiKEgqjhYB6LZZThEYfeu6rCfxhQQp5E
+	gB/5ixo6G3CQRbr+Bjmj68wRhwFJ7cBkZYQsp6RZcFg2KII1NAHX0eIWSPIS0O7MDnf5RbwpxJEcE
+	6IejaieZXI2v1PEENTJU/Njwl4/6dJlECI/KgLGQvLcH0IrVxmvS16eT/nrC0ow50KfWIOhYhvPTJ
+	qjwdkg/g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGZoD-0000000482T-1vaX;
-	Mon, 10 Jun 2024 07:51:17 +0000
+	id 1sGa8b-00000004C7u-0N5u;
+	Mon, 10 Jun 2024 08:12:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGZo6-0000000480A-2qa0
+	id 1sGa8W-00000004C65-1lO8
 	for barebox@lists.infradead.org;
-	Mon, 10 Jun 2024 07:51:12 +0000
+	Mon, 10 Jun 2024 08:12:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sGZo2-0003Jh-RA; Mon, 10 Jun 2024 09:51:06 +0200
+	id 1sGa8V-000667-3I; Mon, 10 Jun 2024 10:12:15 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sGZo2-001Feh-Ei; Mon, 10 Jun 2024 09:51:06 +0200
+	id 1sGa8U-001G2x-N2; Mon, 10 Jun 2024 10:12:14 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sGZo2-003PNM-15;
-	Mon, 10 Jun 2024 09:51:06 +0200
+	id 1sGa8U-003h57-1y;
+	Mon, 10 Jun 2024 10:12:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 10 Jun 2024 09:51:00 +0200
-Message-Id: <20240610075105.812496-1-s.hauer@pengutronix.de>
+Date: Mon, 10 Jun 2024 10:12:10 +0200
+Message-Id: <20240610081213.858714-2-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240610081213.858714-1-s.hauer@pengutronix.de>
+References: <20240610081213.858714-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240610_005110_800392_34597A7B 
-X-CRM114-Status: UNSURE (   9.65  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240610_011216_535680_F0AE01F0 
+X-CRM114-Status: GOOD (  12.10  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,32 +82,49 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 0/5] net: preparations for integrating a network stack
+Subject: [PATCH 1/4] net: use for_each_netdev()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This series has some preparation patches to better integrate a network
-stack in the future.
+We have a define to iterate over all network interfaces, use it on the
+remaining places which still iterate over the list manually.
 
-Sascha Hauer (5):
-  net: virtio-net: allow to set current MAC address
-  net: ifup: use accessor to set network device ip/netmask
-  net: add edev argument to net_set_gateway()
-  net: establish single code path for setting edev parameters
-  net: host command: move to commands/
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ net/eth.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
- commands/Makefile    |  2 +-
- commands/host.c      | 40 ++++++++++++++++++++++++++++++++++++++++
- drivers/net/virtio.c | 34 ++++++++++++++++++++++------------
- include/net.h        |  2 +-
- net/dhcp.c           |  2 +-
- net/dns.c            | 37 -------------------------------------
- net/eth.c            | 33 ++++++++++++++++++++++++++++++---
- net/ifup.c           |  6 +++---
- net/net.c            |  2 +-
- 9 files changed, 99 insertions(+), 59 deletions(-)
- create mode 100644 commands/host.c
-
+diff --git a/net/eth.c b/net/eth.c
+index 98567d8d3f..26a36474f8 100644
+--- a/net/eth.c
++++ b/net/eth.c
+@@ -535,7 +535,7 @@ struct eth_device *of_find_eth_device_by_node(struct device_node *np)
+ 	 */
+ 	(void)of_device_ensure_probed(np);
+ 
+-	list_for_each_entry(edev, &netdev_list, list)
++	for_each_netdev(edev)
+ 		if (edev->parent->of_node == np)
+ 			return edev;
+ 	return NULL;
+@@ -546,7 +546,7 @@ void eth_open_all(void)
+ {
+ 	struct eth_device *edev;
+ 
+-	list_for_each_entry(edev, &netdev_list, list) {
++	for_each_netdev(edev) {
+ 		if (edev->global_mode == ETH_MODE_DISABLED)
+ 			continue;
+ 		eth_open(edev);
+@@ -559,7 +559,7 @@ static int populate_ethaddr(void)
+ 	bool generated = false;
+ 	int ret;
+ 
+-	list_for_each_entry(edev, &netdev_list, list) {
++	for_each_netdev(edev) {
+ 		if (!edev->parent || is_valid_ether_addr(edev->ethaddr))
+ 			continue;
+ 
 -- 
 2.39.2
 
