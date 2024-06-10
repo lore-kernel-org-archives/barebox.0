@@ -1,65 +1,65 @@
-Delivery-date: Mon, 10 Jun 2024 10:12:54 +0200
+Delivery-date: Mon, 10 Jun 2024 10:12:56 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGa98-003afU-1M
+	id 1sGa9A-003aft-00
 	for lore@lore.pengutronix.de;
-	Mon, 10 Jun 2024 10:12:54 +0200
+	Mon, 10 Jun 2024 10:12:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGa97-0006KJ-Pz
-	for lore@pengutronix.de; Mon, 10 Jun 2024 10:12:54 +0200
+	id 1sGa99-0006Kz-6R
+	for lore@pengutronix.de; Mon, 10 Jun 2024 10:12:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=YcwxU3HvB38IIhI9d5uaHYS/EsUvyNuBGVZpxXRM7FE=; b=lRumboLCdRf99hekwTYf6kYlKV
-	jPIVKIaa8syp53UeusqorTiZYmGYy84x0hwsl68vWA9nXe2vmwkD3eNUugN7/D9tTDO7stsBZmcLW
-	JJVC1/mZrU1+M9P0lYTzHLF/lm4X9dzd7uFrDRyU7L2xhdGP+BSgp8vL6iDVwUf92lFauqqixYWaq
-	+mb+9YB3nsgSLIPWNlkoaEST+2y1zNb+UiI6YyHOJ7+XPzSlmiFycCLQ4/3q2OU2FBOA34e5Duf6q
-	jeAYtgXEEeaukjMKMAc5LP3k7k/Nyz9XYHKxIDe0dDkIPaSqeOMP/I8K9Sb5U991K6rV8Nk1jW6+6
-	VsgdGpig==;
+	bh=Go2Wfjxof+nmTxUamFUIG5fsBNWVWr0kqgaD9WFaPhk=; b=WLALMtGmP6cXMhlEzsW3R2Prdj
+	4t2lfKEoyBTFAU8v3YNTQoAPJ0Kwe+pLEwd/iRJUErEVBOdpWGXB3GkYodxCtMpx2V/X02nq5AoXJ
+	ueC/Js5cxcPre+a2aTgXUAhWkglsB/ZV41BW6S7jDgpKFsZUKdCl2ZlaIY/Qar37RrmCL7ZVaVXpj
+	M2PZdYv2UG4BGuYd3O38UDvv8Sbg7zy00QO3xPaEh2zpqf5Mp2loyZ9btOuAvWlKm6Pc7BDl7c+fN
+	NOOXiEE6Aw8Dvil53rUsRfaGUJ6MvKr2HTlIxXOCJsG85Ha+uEKeeWlOhJ8CpDWicM2kggchYZ9N6
+	vKMzxZPQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGa8g-00000004CAe-48ap;
-	Mon, 10 Jun 2024 08:12:26 +0000
+	id 1sGa8e-00000004C8N-2to0;
+	Mon, 10 Jun 2024 08:12:24 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGa8W-00000004C67-1lJd
+	id 1sGa8W-00000004C66-1lVV
 	for barebox@lists.infradead.org;
-	Mon, 10 Jun 2024 08:12:19 +0000
+	Mon, 10 Jun 2024 08:12:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sGa8V-00066H-6j; Mon, 10 Jun 2024 10:12:15 +0200
+	id 1sGa8V-000669-5Y; Mon, 10 Jun 2024 10:12:15 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sGa8U-001G33-QC; Mon, 10 Jun 2024 10:12:14 +0200
+	id 1sGa8U-001G30-On; Mon, 10 Jun 2024 10:12:14 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sGa8U-003h57-2I;
+	id 1sGa8U-003h57-28;
 	Mon, 10 Jun 2024 10:12:14 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 10 Jun 2024 10:12:12 +0200
-Message-Id: <20240610081213.858714-4-s.hauer@pengutronix.de>
+Date: Mon, 10 Jun 2024 10:12:11 +0200
+Message-Id: <20240610081213.858714-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240610081213.858714-1-s.hauer@pengutronix.de>
 References: <20240610081213.858714-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240610_011216_553358_C1D6FD14 
-X-CRM114-Status: GOOD (  12.09  )
+X-CRM114-CacheID: sfid-20240610_011216_538448_5BA5E36B 
+X-CRM114-Status: GOOD (  20.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,79 +82,222 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 3/4] net: register eth class
+Subject: [PATCH 2/4] base: add class device support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Register network devices as class devices. This allows us to implement
-for_each_netdev() by iterating over the network class devices.
+This introduces the concept of class devices in barebox. Class devices
+group together devices of the same type. Several subsystems like
+watchdog and network devices have a struct device embedded in their
+subsystem specific struct anyway, so we can use this as a class device.
+As these class devices are collected on a list we can use this list to
+iterate over all network/watchdog devices and thus free the subsystems
+from the burden of keeping a list themselves.
+
+There is a 'class' command added in this patch which can be used to show
+all registered classes along with the devices registered for each class.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- include/net.h | 4 ++--
- net/eth.c     | 6 ++++--
- net/ifup.c    | 2 +-
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ commands/Kconfig                  |  6 +++++
+ commands/Makefile                 |  1 +
+ commands/class.c                  | 30 ++++++++++++++++++++++
+ drivers/base/Makefile             |  1 +
+ drivers/base/class.c              | 41 +++++++++++++++++++++++++++++++
+ include/asm-generic/barebox.lds.h |  7 ++++++
+ include/device.h                  | 21 ++++++++++++++++
+ 7 files changed, 107 insertions(+)
+ create mode 100644 commands/class.c
+ create mode 100644 drivers/base/class.c
 
-diff --git a/include/net.h b/include/net.h
-index 5a6dd9ca7b..edfea0d105 100644
---- a/include/net.h
-+++ b/include/net.h
-@@ -599,8 +599,8 @@ void ifdown_edev(struct eth_device *edev);
- int ifdown(const char *name);
- void ifdown_all(void);
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 899673bfee..7831e6276d 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -68,6 +68,12 @@ config CMD_BOOTROM
  
--extern struct list_head netdev_list;
-+#define for_each_netdev(netdev) list_for_each_entry(netdev, &eth_class.devices, dev.class_list)
+ 	  bootrom [-la]
  
--#define for_each_netdev(netdev) list_for_each_entry(netdev, &netdev_list, list)
-+extern struct class eth_class;
- 
- #endif /* __NET_H__ */
-diff --git a/net/eth.c b/net/eth.c
-index 26a36474f8..74386d6e7b 100644
---- a/net/eth.c
-+++ b/net/eth.c
-@@ -21,7 +21,7 @@
- #include <linux/ctype.h>
- #include <linux/stat.h>
- 
--LIST_HEAD(netdev_list);
-+DECLARE_CLASS(eth_class, "eth");
- 
- struct eth_ethaddr {
- 	struct list_head list;
-@@ -445,7 +445,7 @@ int eth_register(struct eth_device *edev)
- 	if (edev->init)
- 		edev->init(edev);
- 
--	list_add_tail(&edev->list, &netdev_list);
-+	class_add_device(&eth_class, &edev->dev);
- 
- 	ret = eth_get_registered_ethaddr(edev, ethaddr);
- 	if (!ret)
-@@ -512,6 +512,8 @@ void eth_unregister(struct eth_device *edev)
- 	if (IS_ENABLED(CONFIG_OFDEVICE))
- 		free(edev->nodepath);
- 
-+	class_remove_device(&eth_class, &edev->dev);
++config CMD_CLASS
++	tristate
++	prompt "class"
++	help
++	  Show information about registered classes and devices
 +
- 	free(edev->devname);
+ config CMD_DEVINFO
+ 	tristate
+ 	default y
+diff --git a/commands/Makefile b/commands/Makefile
+index 30e1f8403e..f65187703f 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -115,6 +115,7 @@ obj-$(CONFIG_CMD_BAREBOX_UPDATE)+= barebox-update.o
+ obj-$(CONFIG_CMD_MIITOOL)	+= miitool.o
+ obj-$(CONFIG_CMD_DETECT)	+= detect.o
+ obj-$(CONFIG_CMD_BOOT)		+= boot.o
++obj-$(CONFIG_CMD_CLASS)		+= class.o
+ obj-$(CONFIG_CMD_DEVINFO)	+= devinfo.o
+ obj-$(CONFIG_CMD_DEVUNBIND)	+= devunbind.o
+ obj-$(CONFIG_CMD_DEVLOOKUP)	+= devlookup.o
+diff --git a/commands/class.c b/commands/class.c
+new file mode 100644
+index 0000000000..f5d67b012f
+--- /dev/null
++++ b/commands/class.c
+@@ -0,0 +1,30 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <common.h>
++#include <command.h>
++#include <complete.h>
++
++static int do_class(int argc, char *argv[])
++{
++	struct class *class;
++	struct device *dev;
++
++	class_for_each(class) {
++		printf("%s:\n", class->name);
++		class_for_each_device(class, dev) {
++			printf("    %s\n", dev_name(dev));
++		}
++	}
++
++	return 0;
++}
++
++BAREBOX_CMD_HELP_START(class)
++BAREBOX_CMD_HELP_TEXT("Show information about registered classes and their devices")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(class)
++	.cmd = do_class,
++	BAREBOX_CMD_DESC("show information about classes")
++	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
++	BAREBOX_CMD_COMPLETE(empty_complete)
++BAREBOX_CMD_END
+diff --git a/drivers/base/Makefile b/drivers/base/Makefile
+index acc53763da..94b677eea0 100644
+--- a/drivers/base/Makefile
++++ b/drivers/base/Makefile
+@@ -3,6 +3,7 @@ obj-y	+= bus.o
+ obj-y	+= driver.o
+ obj-y	+= platform.o
+ obj-y	+= resource.o
++obj-y	+= class.o
+ obj-y	+= regmap/
  
- 	unregister_device(&edev->dev);
-diff --git a/net/ifup.c b/net/ifup.c
-index 5b92ee794d..41c1942670 100644
---- a/net/ifup.c
-+++ b/net/ifup.c
-@@ -358,7 +358,7 @@ int ifup_all(unsigned flags)
- 	closedir(dir);
+ obj-$(CONFIG_PM_GENERIC_DOMAINS) += power.o
+diff --git a/drivers/base/class.c b/drivers/base/class.c
+new file mode 100644
+index 0000000000..6757d34140
+--- /dev/null
++++ b/drivers/base/class.c
+@@ -0,0 +1,41 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <device.h>
++#include <driver.h>
++#include <linux/list.h>
++
++LIST_HEAD(class_list);
++
++static int class_register(struct class *class)
++{
++	list_add_tail(&class->list, &class_list);
++
++	return 0;
++}
++
++int class_add_device(struct class *class, struct device *dev)
++{
++	list_add_tail(&dev->class_list, &class->devices);
++
++	return 0;
++}
++
++void class_remove_device(struct class *class, struct device *dev)
++{
++	list_del(&class->devices);
++}
++
++extern struct class __barebox_class_start;
++extern struct class __barebox_class_end;
++
++static int register_classes(void)
++{
++	struct class *c;
++
++	for (c = &__barebox_class_start;
++	     c != &__barebox_class_end;
++	     c++)
++		class_register(c);
++
++	return 0;
++}
++device_initcall(register_classes);
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index d3736ebaed..8bbf5907cd 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -70,6 +70,12 @@
+ 	KEEP(*(SORT_BY_NAME(.barebox_magicvar*)))	\
+ 	__barebox_magicvar_end = .;
  
- 	if ((flags & IFUP_FLAG_FORCE) || net_ifup_force_detect ||
--	    list_empty(&netdev_list))
-+	    list_empty(&eth_class.devices))
- 		device_detect_all();
++#define BAREBOX_CLASSES				\
++	STRUCT_ALIGN();				\
++	__barebox_class_start = .;		\
++	KEEP(*(SORT_BY_NAME(.barebox_class*)))	\
++	__barebox_class_end = .;
++
+ #define BAREBOX_CLK_TABLE			\
+ 	STRUCT_ALIGN();				\
+ 	__clk_of_table_start = .;		\
+@@ -138,6 +144,7 @@
+ 	BAREBOX_SYMS				\
+ 	KERNEL_CTORS()				\
+ 	BAREBOX_MAGICVARS			\
++	BAREBOX_CLASSES				\
+ 	BAREBOX_CLK_TABLE			\
+ 	BAREBOX_DTB				\
+ 	BAREBOX_RSA_KEYS			\
+diff --git a/include/device.h b/include/device.h
+index ad1bc7ca1e..38eab6037e 100644
+--- a/include/device.h
++++ b/include/device.h
+@@ -76,6 +76,8 @@ struct device {
  
- 	/*
+ 	struct list_head cdevs;
+ 
++	struct list_head class_list;
++
+ 	const struct platform_device_id *id_entry;
+ 	union {
+ 		struct device_node *device_node;
+@@ -102,6 +104,25 @@ struct device {
+ 	char *deferred_probe_reason;
+ };
+ 
++struct class {
++	const char *name;
++	struct list_head devices;
++	struct list_head list;
++};
++
++#define DECLARE_CLASS(_name, _classname)					\
++	struct class _name __ll_elem(.barebox_class_##_name) = {		\
++		.name = _classname,						\
++		.devices = LIST_HEAD_INIT(_name.devices),			\
++	}
++
++int class_add_device(struct class *class, struct device *dev);
++void class_remove_device(struct class *class, struct device *dev);
++
++extern struct list_head class_list;
++#define class_for_each_device(class, dev) list_for_each_entry(dev, &class->devices, class_list)
++#define class_for_each(class) list_for_each_entry(class, &class_list, list)
++
+ struct device_alias {
+ 	struct device *dev;
+ 	struct list_head list;
 -- 
 2.39.2
 
