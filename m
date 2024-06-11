@@ -1,67 +1,63 @@
-Delivery-date: Tue, 11 Jun 2024 11:10:31 +0200
+Delivery-date: Tue, 11 Jun 2024 15:44:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGxWR-004AIU-26
+	id 1sH1nv-004GoK-0M
 	for lore@lore.pengutronix.de;
-	Tue, 11 Jun 2024 11:10:31 +0200
+	Tue, 11 Jun 2024 15:44:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGxWQ-0007kV-TA
-	for lore@pengutronix.de; Tue, 11 Jun 2024 11:10:31 +0200
+	id 1sH1nu-0002q4-GD
+	for lore@pengutronix.de; Tue, 11 Jun 2024 15:44:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=KRmz8LoE3xbWFrN9wq6z36GJl6LUHu+xUjHWLUCaMjc=; b=q8Bi7t3ozD0wtywHpJr9unYuMz
-	PhFn2lA4HZfT6cYoVDqHOSubIFmGJN1++RMKWoNTFw6sMWdZu+APtPpPRP96E+kI/67ZQ0BoXpBvi
-	yTcHarj0VkOkn5PQp5zFg2v7ws8RJFURy5F4wceUPWpv0QqR9wavqEscWQdFkS3IlRfDAs0ETx4ah
-	HLm3CNzW5E6354ShQNkQh1lzHmAFsK9YUH38RX6z6V6GiY62PGuS2AA66y5hCDdSAII6VeuKoL+dU
-	lboV6JgtSsSKALS6KL1kUT87m/cigQfCVSZtrNWbCRXcEWMaQeO5dEZ5VZm4HnO6q2QJt5wMRayOY
-	Wk/w3g+g==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=VHUxv+YfXcyClVN35MXohbo7frg/EjBonm/gdlDLbp4=; b=tOi8mAe92ONND1rxIzp7XfMk2p
+	rNySn6K6An5+nhZESW+SnzKynJc9wpK6Ub7YIRLydBTRKlfFuVs+bN+PI4RDWmJpSOEYkL8saGNW9
+	akkiwq8eioHXXqWXGWMNp8UU2BKuR7a/ACC6Q8oZJrPspJS5sR2u5CKJZ++tZIXqdy+8wvcBrSI0c
+	PBBSyuUNdtW1sSEaPWlys1RLQaSKU24nfHVIiPe9w5Hfgdus+Qya1ZkCs8cqArCtU2yvk1i9V7zY0
+	7rva6xDq+1TrFGIgYVjvPA+vwA9rZ9lg+knSYJPfuAcvFLEsHAwcKw3NGl6Y0F2DDPl0IFnCzXrX+
+	vgmJxMEw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGxVp-00000008FG5-1Omz;
-	Tue, 11 Jun 2024 09:09:53 +0000
+	id 1sH1nC-000000092T3-0MXD;
+	Tue, 11 Jun 2024 13:44:06 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGxVg-00000008FDQ-3gYS
+	id 1sH1n7-000000092PE-07hL
 	for barebox@lists.infradead.org;
-	Tue, 11 Jun 2024 09:09:51 +0000
+	Tue, 11 Jun 2024 13:44:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sGxVf-0007fi-6T; Tue, 11 Jun 2024 11:09:43 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <ore@pengutronix.de>)
+	id 1sH1n0-0002hs-05; Tue, 11 Jun 2024 15:43:54 +0200
+Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sGxVe-001VjG-QI; Tue, 11 Jun 2024 11:09:42 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sGxVe-004dep-2N;
-	Tue, 11 Jun 2024 11:09:42 +0200
-Date: Tue, 11 Jun 2024 11:09:42 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20240611090942.hrbiensrmm6vcquu@pengutronix.de>
-References: <20240322164953.1772129-1-m.felsch@pengutronix.de>
- <20240322164953.1772129-6-m.felsch@pengutronix.de>
- <ZgE7LPdGLmU2BoXN@pengutronix.de>
+	(envelope-from <ore@pengutronix.de>)
+	id 1sH1mx-001YoB-SL; Tue, 11 Jun 2024 15:43:51 +0200
+Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <ore@pengutronix.de>)
+	id 1sH1mx-00G1By-2e;
+	Tue, 11 Jun 2024 15:43:51 +0200
+From: Oleksij Rempel <o.rempel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Oleksij Rempel <o.rempel@pengutronix.de>
+Date: Tue, 11 Jun 2024 15:43:50 +0200
+Message-Id: <20240611134350.3817821-1-o.rempel@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZgE7LPdGLmU2BoXN@pengutronix.de>
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240611_020949_138115_3506C484 
-X-CRM114-Status: GOOD (  33.69  )
+X-CRM114-CacheID: sfid-20240611_064401_115756_AAE2493C 
+X-CRM114-Status: GOOD (  13.58  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,187 +75,122 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 6/8] of: overlay: add FIT overlay support
+Subject: [PATCH v1] add ip command
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 24-03-25, Sascha Hauer wrote:
-> On Fri, Mar 22, 2024 at 05:49:51PM +0100, Marco Felsch wrote:
-> > This adds the support to load devicetree overlays from an FIT image.
-> > There are quite a few options to handle FIT overlays since the FIT
-> > overlay spec is not very strict.
-> > 
-> > This patch implement the most configurable case where each overlay does
-> > have it's own config node (including the optional signature).
-> > 
-> > - The "name" filter check is performed on the config-node name (the node
-> >   under the configurations) and not the FIT overlay image name (the node
-> >   name under the images node).
-> > - The "content" filter check does not differ from the file based overlay
-> >   handling.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  drivers/of/overlay.c | 110 ++++++++++++++++++++++++++++++++++++++++---
-> >  1 file changed, 103 insertions(+), 7 deletions(-)
-> > 
-> > diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
-> > index e9fd5c0a1f7d..c8e70ab00091 100644
-> > --- a/drivers/of/overlay.c
-> > +++ b/drivers/of/overlay.c
-> > @@ -8,10 +8,12 @@
-> >   */
-> >  #define pr_fmt(fmt) "of_overlay: " fmt
-> >  
-> > +#include <bootm.h>
-> >  #include <common.h>
-> >  #include <of.h>
-> >  #include <errno.h>
-> >  #include <globalvar.h>
-> > +#include <image-fit.h>
-> >  #include <magicvar.h>
-> >  #include <string.h>
-> >  #include <libfile.h>
-> > @@ -473,9 +475,103 @@ static int of_overlay_global_fixup_dir(struct device_node *root, const char *ovl
-> >  	return ret;
-> >  }
-> >  
-> > +static int of_overlay_apply_fit(struct device_node *root, struct fit_handle *fit,
-> > +				struct device_node *config)
-> > +{
-> > +	const char *name = config->name;
-> > +	struct device_node *overlay;
-> > +	unsigned long ovl_sz;
-> > +	const void *ovl;
-> > +	int ret;
-> > +
-> > +	if (!fit_has_image(fit, config, "fdt"))
-> > +		return 0;
-> > +
-> > +	if (!of_overlay_matches_filter(name, NULL))
-> > +		return 0;
-> > +
-> > +	ret = fit_open_image(fit, config, "fdt", &ovl, &ovl_sz);
-> > +	if (ret)
-> > +		return ret;
-> > +
-> > +	overlay = of_unflatten_dtb(ovl, ovl_sz);
-> > +
-> > +	if (!of_overlay_matches_filter(NULL, overlay)) {
-> > +		ret = 0;
-> > +		goto out;
-> > +	}
-> > +
-> > +	ret = of_overlay_apply_tree(root, overlay);
-> > +	if (ret == -ENODEV)
-> > +		pr_debug("Not applied %s (not compatible)\n", name);
-> > +	else if (ret)
-> > +		pr_err("Cannot apply %s: %s\n", name, strerror(-ret));
-> > +	else
-> > +		pr_info("Applied %s\n", name);
-> > +
-> > +out:
-> > +	of_delete_node(overlay);
-> > +
-> > +	return ret;
-> > +}
-> > +
-> > +static int of_overlay_global_fixup_fit(struct device_node *root, const char *ovl_dev)
-> > +{
-> > +	enum bootm_verify verify = bootm_get_verify_mode();
-> > +	struct device_node *conf_node;
-> > +	struct fit_handle *fit;
-> > +	struct stat s;
-> > +	int ret;
-> > +
-> > +	if (!IS_ENABLED(CONFIG_FITIMAGE))
-> > +		return 0;
-> > +
-> > +	if (stat(of_overlay_path, &s))
-> > +		return -errno;
-> 
-> Why this? The caller already checked for existence of of_overlay_path.
-> Besides, it is not even used in this function.
+The output of this command will as follow:
+eth0: 5800a000.ethernet@5800a000.of
+    link/ether 00:00:00:00:00:00
+    inet 0.0.0.0
+    link status: UP
+eth1: spi-gpio-0:switch@0:ports:port@0.of
+    link/ether 00:00:00:00:00:00
+    inet 0.0.0.0
+    link status: DOWN
+eth2: spi-gpio-0:switch@0:ports:port@1.of
+    link/ether 00:00:00:00:00:00
+    inet 0.0.0.0
+    link status: DOWN
+eth3: spi-gpio-0:switch@0:ports:port@2.of
+    link/ether 00:00:00:00:00:00
+    inet 0.0.0.0
+    link status: DOWN
+eth4: spi-gpio-0:switch@0:ports:port@3.of
+    link/ether 00:00:00:00:00:00
+    inet 0.0.0.0
+    link status: UP
+eth5: usb1-0
+    link/ether 00:50:b6:e5:b0:11
+    inet 0.0.0.0
+    link status: UNKNOWN
 
-Yes, good point. I wanted to make the of_overlay_global_fixup_{dir,fit}
-APIs symmetrical but I think we can drop this.
+Signed-off-by: Oleksij Rempel <o.rempel@pengutronix.de>
+---
+ commands/Kconfig  |  7 +++++++
+ commands/Makefile |  1 +
+ commands/ip.c     | 35 +++++++++++++++++++++++++++++++++++
+ 3 files changed, 43 insertions(+)
+ create mode 100644 commands/ip.c
 
-> > +
-> > +	fit = fit_open(ovl_dev, 0, verify, s.st_size);
-> > +	if (IS_ERR(fit)) {
-> > +		pr_err("Loading FIT image %s failed with: %pe\n", ovl_dev, fit);
-> > +		return PTR_ERR(fit);
-> > +	}
-> 
-> Are you anticipating taking only the overlays from a FIT image and the
-> kernel coming from somewhere else? Otherwise I would expect the
-> integration to happen in the bootm and FIT code where we already have a
-> handle to the opened FIT image. It seems wasteful to open the same FIT
-> image here again.
+diff --git a/commands/Kconfig b/commands/Kconfig
+index 899673bfee..cc8f5b9628 100644
+--- a/commands/Kconfig
++++ b/commands/Kconfig
+@@ -1367,6 +1367,13 @@ config CMD_TFTP
+ 	  Options:
+ 		  -p	push to TFTP server
+ 
++config CMD_IP
++	tristate
++	prompt "ip"
++	default y
++	help
++	  The ip command is used to show current network configuration.
++
+ config CMD_IP_ROUTE_GET
+ 	tristate
+ 	prompt "ip-route-get"
+diff --git a/commands/Makefile b/commands/Makefile
+index 30e1f8403e..5d7e5b9eaf 100644
+--- a/commands/Makefile
++++ b/commands/Makefile
+@@ -60,6 +60,7 @@ obj-$(CONFIG_CMD_FALSE)		+= false.o
+ obj-$(CONFIG_CMD_VERSION)	+= version.o
+ obj-$(CONFIG_CMD_HELP)		+= help.o
+ obj-$(CONFIG_CMD_LSMOD)		+= lsmod.o
++obj-$(CONFIG_CMD_IP)		+= ip.o
+ obj-$(CONFIG_CMD_INSMOD)	+= insmod.o
+ obj-$(CONFIG_CMD_SPLASH)	+= splash.o
+ obj-$(CONFIG_CMD_FBTEST)	+= fbtest.o
+diff --git a/commands/ip.c b/commands/ip.c
+new file mode 100644
+index 0000000000..8a26baa231
+--- /dev/null
++++ b/commands/ip.c
+@@ -0,0 +1,35 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <command.h>
++#include <net.h>
++
++static int do_ip(int argc, char *argv[])
++{
++	struct eth_device *edev;
++
++	list_for_each_entry(edev, &netdev_list, list) {
++		printf("%s: %s\n", edev->devname, edev->parent->name);
++		printf("    link/ether %pM\n", edev->ethaddr);
++		printf("    inet %pI4\n", &edev->ipaddr);
++
++		if (edev->phydev) {
++			printf("    link status: %s\n",
++				edev->phydev->link ? "UP" : "DOWN");
++		} else {
++			printf("    link status: UNKNOWN\n");
++		}
++	}
++
++	return 0;
++}
++
++BAREBOX_CMD_HELP_START(ip)
++BAREBOX_CMD_HELP_TEXT("List network interfaces and their configuration or status")
++BAREBOX_CMD_HELP_END
++
++BAREBOX_CMD_START(ip)
++	.cmd = do_ip,
++	BAREBOX_CMD_DESC("List network interfaces and their configuration or status")
++	BAREBOX_CMD_GROUP(CMD_GRP_NET)
++	BAREBOX_CMD_HELP(cmd_ip_help)
++BAREBOX_CMD_END
+-- 
+2.39.2
 
-I thought about this too but didn't went this way since it would not
-allow us to patch the barebox-dt with overlays coming from the fit nor
-is it possible to run the of_overlay command. It shouldn't matter to the
-end-user if the overlay is coming from the (root)fs or the fit-image.
-
-> > +	for_each_child_of_node(fit->configurations, conf_node) {
-> > +		if (!fit_config_is_overlay(conf_node))
-> > +			continue;
-> > +
-> > +		ret = fit_config_verify_signature(fit, conf_node);
-> > +		if (ret)
-> > +			goto out;
-> > +
-> > +		ret = of_overlay_apply_fit(root, fit, conf_node);
-> > +		if (ret)
-> > +			goto out;
-> > +	}
-> > +
-> > +out:
-> > +	fit_close(fit);
-> > +	return ret;
-> > +}
-> > +
-> >  static int of_overlay_global_fixup(struct device_node *root, void *data)
-> >  {
-> > -	return of_overlay_global_fixup_dir(root, of_overlay_path);
-> > +	struct stat s;
-> > +
-> > +	if (isempty(of_overlay_path))
-> > +		return 0;
-> > +
-> > +	if (stat(of_overlay_path, &s)) {
-> > +		pr_err("Failed to detect file status\n");
-> > +		return -errno;
-> > +	}
-> > +
-> > +	if (S_ISDIR(s.st_mode))
-> > +		return of_overlay_global_fixup_dir(root, of_overlay_path);
-> > +	else if (S_ISCHR(s.st_mode) || S_ISBLK(s.st_mode))
-> > +		return of_overlay_global_fixup_fit(root, of_overlay_path);
-> 
-> Why must the FIT image providing overlays be on a plain block device?
-> Shouldn't we allow FIT images to live in a filesystem?
-
-Good point, I didn't considered this since fit-images are mostly used on
-secure/verified-boot devices. These devices often have a plain fit-image
-partition.
-
-> Anyway, as said I think this is the wrong place to implement this. When
-> opening a FIT image it's already clear that we should take the overlays
-> from that image, and not open some image again.
-
-Please consider the use-cases listed above as well. If we strictly bind
-it to the bootm command we can't do the live-patching of barebox dtbs
-and IMHO we shouldn't care if the overlay is coming from the FIT or an
-FS.
-
-Regards,
-  Marco
 
 
