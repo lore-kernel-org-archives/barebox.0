@@ -1,66 +1,66 @@
-Delivery-date: Tue, 11 Jun 2024 09:00:09 +0200
+Delivery-date: Tue, 11 Jun 2024 10:28:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGvUH-00472U-2Q
+	id 1sGwrO-0049DY-10
 	for lore@lore.pengutronix.de;
-	Tue, 11 Jun 2024 09:00:09 +0200
+	Tue, 11 Jun 2024 10:28:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGvUH-0006BY-5U
-	for lore@pengutronix.de; Tue, 11 Jun 2024 09:00:09 +0200
+	id 1sGwrN-00045U-NQ
+	for lore@pengutronix.de; Tue, 11 Jun 2024 10:28:06 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=IjtdrOOkttjN08Tj67IKiUCuXGUlqrv2v96mVvidZdo=; b=EizN7GRyuqjrPVsfMSRYo99/3E
-	SKEbkSht8Ji7X/gYIWi9SCMIf5lLeTbUq7hj9vcC7qauz0TDKeLA3x4yeTEd62utKAtgVdvyEwLbz
-	nquGvNtgJ9035kBAqhPhapVwZ1gooZq063EbN++wJyYPBBygdT72ftpvJu62/5TIgpRrPfocwNFOh
-	jQWImKBjnCCbS1qO3TuVf1l3WnriBIGz0LRPx+53N74I4zkdjcVBtDDxxIKsFUktBlU8bSXRjDvId
-	aJhTlf/9IFocZDf/jxoOFrND9v5rIYfj/SXybWUVaYig/CTgHxAa+a5eZdQVo/3ymPeQYLRdq4yjV
-	EmA6tufQ==;
+	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=5o3lIBkA1QYv2OPQmqLIUV2lCK7yjN5f2myZckvnMm8=; b=IjA5Km1zQ7qtAghxpMVL/Lf6T0
+	13oB5Rz+Y0oT1D3qqf3HxxNjLbElIblOiPJjXO2EEiG/yrItDjST+/B9dy/2FQXKGxqgU5+Gx95wr
+	YoRxLvJtEVfEGlsCuo9tix+h8tKjHULTXS4WmhxAYVyWtDwQXj/kp5FoqU2OoJRO1jZap0gnJk16e
+	lEMB752mRFvUDEs+BVJV5clU0SsUlpmeUw6xaMbPEDbHeSMgHsGdasyD5/K3YejOwAamn+C1shN5n
+	6V3/JCcVKL4rEmI+Yx0Jn4qFjPT2QygZd60oxKK5SFyLtOnIvPELeciNIA+eKbELqwnUX2UeKTsOy
+	0RAecwPw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGvTj-00000007mzl-2Zd2;
-	Tue, 11 Jun 2024 06:59:35 +0000
+	id 1sGwqj-000000086lV-1OoF;
+	Tue, 11 Jun 2024 08:27:25 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGvTa-00000007msv-11TU
+	id 1sGwqb-000000086iZ-3jB6
 	for barebox@lists.infradead.org;
-	Tue, 11 Jun 2024 06:59:29 +0000
+	Tue, 11 Jun 2024 08:27:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sGvTY-0005qM-UT; Tue, 11 Jun 2024 08:59:24 +0200
+	id 1sGwqZ-0003yY-G4; Tue, 11 Jun 2024 10:27:15 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sGvTY-001UDH-GV; Tue, 11 Jun 2024 08:59:24 +0200
+	id 1sGwqZ-001VAV-3e; Tue, 11 Jun 2024 10:27:15 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sGvTY-00CATV-1N;
-	Tue, 11 Jun 2024 08:59:24 +0200
+	id 1sGwqZ-00CQy7-05;
+	Tue, 11 Jun 2024 10:27:15 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 11 Jun 2024 08:59:20 +0200
-Message-Id: <20240611065923.2900168-4-a.fatoum@pengutronix.de>
+Cc: =?UTF-8?q?Sven=20P=C3=BCschel?= <s.pueschel@pengutronix.de>,
+	Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 11 Jun 2024 10:27:14 +0200
+Message-Id: <20240611082714.2963587-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240611065923.2900168-1-a.fatoum@pengutronix.de>
-References: <20240611065923.2900168-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240610_235926_440714_17B612F3 
-X-CRM114-Status: GOOD (  10.39  )
+X-CRM114-CacheID: sfid-20240611_012718_585994_22D1E6D1 
+X-CRM114-Status: GOOD (  10.98  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,62 +83,43 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 3/6] firmware: semihosting: don't return error code from writec/write0
+Subject: [PATCH master] serial: stm32: suppress -EPROBE_DEFER messages using dev_err_probe
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-As described in the "ARM Compiler toolchain Developing Software
-for ARM Processors Version 5.0" document[1], SYS_WRITE0 and SYS_WRITEC
-corrupt the R0 register, unlike the other calls that return negative
-error codes. Therefore change the return type to void.
+A return code of -EPROBE_DEFER is not necessarily an error as the clock
+driver may indeed be probed later. Use dev_err_probe to silence the
+error message in this situation and to store it for later use if the
+probe is deferred permanently.
 
-[1]: https://developer.arm.com/documentation/dui0471/i/semihosting/sys-write0--0x04-?lang=en
-
+Co-developed-by: Sven Püschel <s.pueschel@pengutronix.de>
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/firmware/semihosting.c    | 8 ++++----
- include/asm-generic/semihosting.h | 4 ++--
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ drivers/serial/serial_stm32.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/firmware/semihosting.c b/drivers/firmware/semihosting.c
-index a037a95a1077..1dfbdf219727 100644
---- a/drivers/firmware/semihosting.c
-+++ b/drivers/firmware/semihosting.c
-@@ -91,15 +91,15 @@ int semihosting_close(int fd)
- }
- EXPORT_SYMBOL(semihosting_close);
+diff --git a/drivers/serial/serial_stm32.c b/drivers/serial/serial_stm32.c
+index 3e18a2c152af..eebae6f6ee9e 100644
+--- a/drivers/serial/serial_stm32.c
++++ b/drivers/serial/serial_stm32.c
+@@ -167,14 +167,14 @@ static int stm32_serial_probe(struct device *dev)
  
--int semihosting_writec(char c)
-+void semihosting_writec(char c)
- {
--	return semihosting_trap(SEMIHOSTING_SYS_WRITEC, &c);
-+	(void)semihosting_trap(SEMIHOSTING_SYS_WRITEC, &c);
- }
- EXPORT_SYMBOL(semihosting_writec);
+ 	stm32->clk = clk_get_for_console(dev, NULL);
+ 	if (IS_ERR(stm32->clk)) {
+-		ret = PTR_ERR(stm32->clk);
+-		dev_err(dev, "Failed to get UART clock %d\n", ret);
++		ret = dev_err_probe(dev, PTR_ERR(stm32->clk),
++				    "Failed to get UART clock\n");
+ 		goto io_release;
+ 	}
  
--int semihosting_write0(const char *str)
-+void semihosting_write0(const char *str)
- {
--	return semihosting_trap(SEMIHOSTING_SYS_WRITE0, (void *)str);
-+	(void)semihosting_trap(SEMIHOSTING_SYS_WRITE0, (void *)str);
- }
- EXPORT_SYMBOL(semihosting_write0);
+ 	ret = clk_enable(stm32->clk);
+ 	if (ret) {
+-		dev_err(dev, "Failed to enable UART clock %d\n", ret);
++		dev_err_probe(dev, ret, "Failed to enable UART clock\n");
+ 		goto io_release;
+ 	}
  
-diff --git a/include/asm-generic/semihosting.h b/include/asm-generic/semihosting.h
-index b745f8831977..67031c331b97 100644
---- a/include/asm-generic/semihosting.h
-+++ b/include/asm-generic/semihosting.h
-@@ -7,8 +7,8 @@
- 
- int semihosting_open(const char *fname, int flags);
- int semihosting_close(int fd);
--int semihosting_writec(char c);
--int semihosting_write0(const char *str);
-+void semihosting_writec(char c);
-+void semihosting_write0(const char *str);
- ssize_t semihosting_write(int fd, const void *buf, size_t count);
- ssize_t semihosting_read(int fd, void *buf, size_t count);
- int semihosting_readc(void);
 -- 
 2.39.2
 
