@@ -1,66 +1,66 @@
-Delivery-date: Tue, 11 Jun 2024 09:00:08 +0200
+Delivery-date: Tue, 11 Jun 2024 09:00:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGvUG-00471n-0c
+	id 1sGvUH-004729-1C
 	for lore@lore.pengutronix.de;
-	Tue, 11 Jun 2024 09:00:08 +0200
+	Tue, 11 Jun 2024 09:00:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGvUF-0006AG-DQ
-	for lore@pengutronix.de; Tue, 11 Jun 2024 09:00:08 +0200
+	id 1sGvUG-0006B7-JM
+	for lore@pengutronix.de; Tue, 11 Jun 2024 09:00:09 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZIqNH5n91jKO7gYORWf0amYKsCNyU8wOI5LrBEv29Kg=; b=RyO9AIEKPXaruwSxQnJpmZtI/e
-	64aLLqAenERsK0yE28mxYvxlYnXgTOBPxXetHTjmSrr42kDTEnjFuq8r2KODuZxPuv+DIiuj1O11b
-	KpUoQLDDzyUnelj3D0ZdpNIT5mUTj6LHntNRaoZVPyHQPH+fRT54R0oK5wqHtgTnhPjn0tJhq60Po
-	Aq8AnAUQ8r7x/KAD8tYHFHdREr836qSustMlKsD80ZU40Dg5Hs1g9saXwq1QhMiQ0LyTp69vVEdMK
-	/ZnJuYa+xyjTR7AvUZDzg0b6EabPA6ZxdWtTb0HnKozYpwJ6K0hBqlUVE8fvQmscUCIHXIMnTy1dO
-	mF5ib+4A==;
+	bh=vIOXw+qglvhT9Mtct8fwKwowQzaMGjDsxPmM5F20sUU=; b=RtXO0l2e9xl3jwL//hNNZxzv69
+	sHfoWxeflg2d9MGjvEh/b8iG4HHGpHO+ZLOjvyQU7ElzbBFuhOV/Fkeqk+LsNWZO9vrNleoqCRvYp
+	JaPh6RxapUWHhEpUNaSWiXUy8Ml93jrcX8N/9iZfZRLHfBm7JQ4vm/96M7hAj7uLPr0daGG86xHHo
+	AtJBlssdXcnQ7KaZo8dfyN6DLdX1m8wrQyh2jyOl4PH73S0WMr2P0DmHZ5O9nkCn4A8AQeX8njbZR
+	h0nZmUhYSBWCuHumgQDmTEfgw8pskHFQILXKou4UMcwO70XuZJzDwRLrqq+TJh81H7phVLB/fMZLR
+	2qyQrNFQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGvTi-00000007mys-1jSm;
-	Tue, 11 Jun 2024 06:59:34 +0000
+	id 1sGvTk-00000007n0W-2udg;
+	Tue, 11 Jun 2024 06:59:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGvTa-00000007mst-0a9s
+	id 1sGvTa-00000007msw-0zPb
 	for barebox@lists.infradead.org;
 	Tue, 11 Jun 2024 06:59:29 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sGvTY-0005qL-Rz; Tue, 11 Jun 2024 08:59:24 +0200
+	id 1sGvTZ-0005qV-0V; Tue, 11 Jun 2024 08:59:25 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sGvTY-001UDF-F6; Tue, 11 Jun 2024 08:59:24 +0200
+	id 1sGvTY-001UDN-JU; Tue, 11 Jun 2024 08:59:24 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sGvTY-00CATV-1D;
+	id 1sGvTY-00CATV-1g;
 	Tue, 11 Jun 2024 08:59:24 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 11 Jun 2024 08:59:19 +0200
-Message-Id: <20240611065923.2900168-3-a.fatoum@pengutronix.de>
+Date: Tue, 11 Jun 2024 08:59:22 +0200
+Message-Id: <20240611065923.2900168-6-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240611065923.2900168-1-a.fatoum@pengutronix.de>
 References: <20240611065923.2900168-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240610_235926_356692_F647BB51 
-X-CRM114-Status: GOOD (  17.63  )
+X-CRM114-CacheID: sfid-20240610_235926_426463_67B1FF2E 
+X-CRM114-Status: GOOD (  15.43  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,225 +83,144 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 2/6] firmware: semihosting: add ARMv8-A semihosting support
+Subject: [PATCH 5/6] ARM: semihosting: add DEBUG_LL implementation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The semihosting code was assuming registers and pointers to be 32-bit in
-size. To enable usage for ARM64, switch to long-sized types where
-appropriate and add a trap implementation for ARMv8.
+Both OpenOCD and QEMU have a semihosting implementation that provides a
+console suitable for low level debugging. Add a DEBUG_LL implementation
+that is usable when QEMU is called with
+
+  --semihosting-config chardev=serial0
+
+or following OpenOCD is executed:
+
+  arm semihosting enable
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/Kconfig                   |  1 -
- arch/arm/cpu/semihosting-trap_64.S | 10 ++++++
- drivers/firmware/semihosting.c     | 55 +++++++++++++++---------------
- fs/smhfs.c                         |  4 +--
- include/asm-generic/semihosting.h  |  4 +--
- 5 files changed, 41 insertions(+), 33 deletions(-)
- create mode 100644 arch/arm/cpu/semihosting-trap_64.S
+ arch/arm/include/asm/debug_ll.h    |  4 ++++
+ arch/arm/include/asm/semihosting.h | 32 ++++++++++++++++++++++++++++++
+ common/Kconfig.debug_ll            | 13 ++++++++++++
+ drivers/firmware/Kconfig           |  1 +
+ include/debug_ll/semihosting.h     | 15 ++++++++++++++
+ 5 files changed, 65 insertions(+)
+ create mode 100644 include/debug_ll/semihosting.h
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 26547cd3ba71..89125ca576ea 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -372,7 +372,6 @@ config ARM_UNWIND
+diff --git a/arch/arm/include/asm/debug_ll.h b/arch/arm/include/asm/debug_ll.h
+index 999f1cb831a8..bac0b2106936 100644
+--- a/arch/arm/include/asm/debug_ll.h
++++ b/arch/arm/include/asm/debug_ll.h
+@@ -35,6 +35,10 @@
+ #include <mach/layerscape/debug_ll.h>
+ #endif
  
- config ARM_SEMIHOSTING
- 	bool "enable ARM semihosting support"
--	depends on !CPU_V8
- 	select SEMIHOSTING
- 	help
- 	  This option enables ARM semihosting support in barebox. ARM
-diff --git a/arch/arm/cpu/semihosting-trap_64.S b/arch/arm/cpu/semihosting-trap_64.S
-new file mode 100644
-index 000000000000..0f52094fc46b
---- /dev/null
-+++ b/arch/arm/cpu/semihosting-trap_64.S
-@@ -0,0 +1,10 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
++#ifdef CONFIG_DEBUG_SEMIHOSTING
++#include <debug_ll/semihosting.h>
++#endif
 +
-+#include <linux/linkage.h>
+ #ifdef CONFIG_DEBUG_QEMU_ARM64_VIRT
+ #define DEBUG_LL_UART_ADDR		0x9000000
+ #include <debug_ll/pl011.h>
+diff --git a/arch/arm/include/asm/semihosting.h b/arch/arm/include/asm/semihosting.h
+index c18aa1a5fef5..2219e858d040 100644
+--- a/arch/arm/include/asm/semihosting.h
++++ b/arch/arm/include/asm/semihosting.h
+@@ -4,5 +4,37 @@
+ #define __ASM_ARM_SEMIHOSTING_H
+ 
+ #include <asm-generic/semihosting.h>
 +#include <asm/unified.h>
 +
-+.section .text.semihosting_trap
-+ENTRY(semihosting_trap)
-+	hlt	#0xf000
-+	ret
-+ENDPROC(semihosting_trap)
-diff --git a/drivers/firmware/semihosting.c b/drivers/firmware/semihosting.c
-index 57b412e08ded..a037a95a1077 100644
---- a/drivers/firmware/semihosting.c
-+++ b/drivers/firmware/semihosting.c
-@@ -41,9 +41,9 @@ enum {
- 	SEMIHOSTING_SYS_SYSTEM	= 0x12,
- };
++static inline void semihosting_putc(void *unused, int c)
++{
++	/* We may not be relocated yet here, so we push
++	 * to stack and take address of that
++	 */
++#ifdef CONFIG_CPU_64
++	asm volatile (
++		"stp %0, xzr, [sp, #-16]!\n"
++		"mov x1, sp\n"
++		"mov x0, #0x03\n"
++	 	"hlt #0xf000\n"
++		"add sp, sp, #16\n"
++		: /* No outputs */
++		: "r" ((long)c)
++		: "x0", "x1", "x2", "x3", "x12", "memory"
++	);
++#else
++	asm volatile (
++		"push {%0}\n"
++		"mov r1, sp\n"
++		"mov r0, #0x03\n"
++	 ARM(	"bkpt #0x123456\n")
++	 THUMB(	"bkpt #0xAB\n")
++		"pop {%0}\n"
++		: /* No outputs */
++		: "r" (c)
++		: "r0", "r1", "r2", "r3", "r12", "memory"
++	);
++#endif
++}
  
--uint32_t semihosting_trap(uint32_t sysnum, void *addr);
-+long semihosting_trap(ulong sysnum, void *addr);
+ #endif
+diff --git a/common/Kconfig.debug_ll b/common/Kconfig.debug_ll
+index 472048177f8b..3f6f3e7c3bdb 100644
+--- a/common/Kconfig.debug_ll
++++ b/common/Kconfig.debug_ll
+@@ -337,6 +337,19 @@ config DEBUG_QEMU_ARM64_VIRT
+ 	bool "QEMU ARM64 Virt PL011 console"
+ 	depends on ARCH_ARM64_VIRT
  
--static uint32_t semihosting_flags_to_mode(int flags)
-+static ulong semihosting_flags_to_mode(int flags)
- {
- 	static const int semihosting_open_modeflags[12] = {
- 		O_RDONLY,
-@@ -72,11 +72,11 @@ static uint32_t semihosting_flags_to_mode(int flags)
- int semihosting_open(const char *fname, int flags)
- {
- 	struct __packed {
--		uint32_t fname;
--		uint32_t mode;
--		uint32_t len;
-+		ulong fname;
-+		ulong mode;
-+		ulong len;
- 	} open = {
--		.fname = (uint32_t)fname,
-+		.fname = virt_to_phys(fname),
- 		.len = strlen(fname),
- 		.mode = semihosting_flags_to_mode(flags),
- 	};
-@@ -104,16 +104,16 @@ int semihosting_write0(const char *str)
- EXPORT_SYMBOL(semihosting_write0);
++config DEBUG_SEMIHOSTING
++	bool "Semihosting console"
++	depends on SEMIHOSTING
++	help
++	  Semihosting enables code to use the I/O facilities on a
++	  host debugger/emulator through a simple supervisor call.
++	  The host debugger or emulator must have semihosting enabled
++	  for the supervisor call to be trapped, otherwise barebox
++	  will crash.
++
++	  Say Y here if you want low-level debugging support
++	  using semihosting writec.
++
+ endchoice
  
- struct __packed semihosting_file_io {
--	uint32_t fd;
--	uint32_t memp;
--	uint32_t len;
-+	ulong fd;
-+	ulong memp;
-+	ulong len;
- };
+ config DEBUG_LL_NS16550
+diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
+index 89c8bdeda3f0..264f7b2a5a65 100644
+--- a/drivers/firmware/Kconfig
++++ b/drivers/firmware/Kconfig
+@@ -3,6 +3,7 @@ menu "Firmware Drivers"
  
- ssize_t semihosting_write(int fd, const void *buf, size_t count)
- {
- 	struct semihosting_file_io write = {
- 		.fd = fd,
--		.memp = (uint32_t)buf,
-+		.memp = virt_to_phys(buf),
- 		.len = count,
- 	};
+ config SEMIHOSTING
+ 	bool
++	select HAS_DEBUG_LL
  
-@@ -125,7 +125,7 @@ ssize_t semihosting_read(int fd, void *buf, size_t count)
- {
- 	struct semihosting_file_io read = {
- 		.fd = fd,
--		.memp = (uint32_t)buf,
-+		.memp = virt_to_phys(buf),
- 		.len = count,
- 	};
- 
-@@ -145,11 +145,11 @@ int semihosting_isatty(int fd)
- }
- EXPORT_SYMBOL(semihosting_isatty);
- 
--int semihosting_seek(int fd, loff_t pos)
-+off_t semihosting_seek(int fd, off_t pos)
- {
- 	struct __packed {
--		uint32_t fd;
--		uint32_t pos;
-+		ulong fd;
-+		ulong pos;
- 	} seek = {
- 		.fd = fd,
- 		.pos = pos,
-@@ -158,8 +158,7 @@ int semihosting_seek(int fd, loff_t pos)
- 	return semihosting_trap(SEMIHOSTING_SYS_SEEK, &seek);
- }
- EXPORT_SYMBOL(semihosting_seek);
--
--int semihosting_flen(int fd)
-+off_t semihosting_flen(int fd)
- {
- 	return semihosting_trap(SEMIHOSTING_SYS_FLEN, &fd);
- }
-@@ -168,10 +167,10 @@ EXPORT_SYMBOL(semihosting_flen);
- int semihosting_remove(const char *fname)
- {
- 	struct __packed {
--		uint32_t fname;
--		uint32_t fname_length;
-+		ulong fname;
-+		ulong fname_length;
- 	} remove = {
--		.fname = (uint32_t)fname,
-+		.fname = virt_to_phys(fname),
- 		.fname_length = strlen(fname),
- 	};
- 
-@@ -182,14 +181,14 @@ EXPORT_SYMBOL(semihosting_remove);
- int semihosting_rename(const char *fname1, const char *fname2)
- {
- 	struct __packed {
--		uint32_t fname1;
--		uint32_t fname1_length;
--		uint32_t fname2;
--		uint32_t fname2_length;
-+		ulong fname1;
-+		ulong fname1_length;
-+		ulong fname2;
-+		ulong fname2_length;
- 	} rename = {
--		.fname1 = (uint32_t)fname1,
-+		.fname1 = virt_to_phys(fname1),
- 		.fname1_length = strlen(fname1),
--		.fname2 = (uint32_t)fname2,
-+		.fname2 = virt_to_phys(fname2),
- 		.fname2_length = strlen(fname2),
- 	};
- 
-@@ -207,10 +206,10 @@ EXPORT_SYMBOL(semihosting_errno);
- int semihosting_system(const char *command)
- {
- 	struct __packed {
--		uint32_t cmd;
--		uint32_t cmd_len;
-+		ulong cmd;
-+		ulong cmd_len;
- 	} system = {
--		.cmd = (uint32_t)command,
-+		.cmd = virt_to_phys(command),
- 		.cmd_len = strlen(command),
- 	};
- 
-diff --git a/fs/smhfs.c b/fs/smhfs.c
-index 5165bf939406..da285b5be52f 100644
---- a/fs/smhfs.c
-+++ b/fs/smhfs.c
-@@ -26,7 +26,7 @@
- 
- static int file_to_fd(const FILE *f)
- {
--	return (int)f->priv;
-+	return (int)(uintptr_t)f->priv;
- }
- 
- static int smhfs_create(struct device __always_unused *dev,
-@@ -72,7 +72,7 @@ static int smhfs_open(struct device __always_unused *dev,
- 	if (fd < 0)
- 		goto error;
- 
--	file->priv = (void *)fd;
-+	file->priv = (void *)(uintptr_t)fd;
- 	file->size = semihosting_flen(fd);
- 	if (file->size < 0)
- 		goto error;
-diff --git a/include/asm-generic/semihosting.h b/include/asm-generic/semihosting.h
-index d337c33ff486..b745f8831977 100644
---- a/include/asm-generic/semihosting.h
-+++ b/include/asm-generic/semihosting.h
-@@ -13,8 +13,8 @@ ssize_t semihosting_write(int fd, const void *buf, size_t count);
- ssize_t semihosting_read(int fd, void *buf, size_t count);
- int semihosting_readc(void);
- int semihosting_isatty(int fd);
--int semihosting_seek(int fd, loff_t pos);
--int semihosting_flen(int fd);
-+off_t semihosting_seek(int fd, off_t pos);
-+off_t semihosting_flen(int fd);
- int semihosting_remove(const char *fname);
- int semihosting_rename(const char *fname1, const char *fname2);
- int semihosting_errno(void);
+ config FIRMWARE_ALTERA_SERIAL
+ 	bool "Altera SPI programming"
+diff --git a/include/debug_ll/semihosting.h b/include/debug_ll/semihosting.h
+new file mode 100644
+index 000000000000..125d42ee88de
+--- /dev/null
++++ b/include/debug_ll/semihosting.h
+@@ -0,0 +1,15 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef __DEBUG_LL_SEMIHOSTING_H
++#define __DEBUG_LL_SEMIHOSTING_H
++
++#include <asm/semihosting.h>
++#include <linux/stddef.h>
++
++#ifdef CONFIG_DEBUG_SEMIHOSTING
++static inline void PUTC_LL(char c)
++{
++	semihosting_putc(NULL, c);
++}
++#endif
++
++#endif /* __DEBUG_LL_ARM_SEMIHOSTING_H */
 -- 
 2.39.2
 
