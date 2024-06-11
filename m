@@ -1,16 +1,16 @@
-Delivery-date: Tue, 11 Jun 2024 09:00:05 +0200
+Delivery-date: Tue, 11 Jun 2024 09:00:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGvUD-004714-1n
+	id 1sGvUE-00471Q-09
 	for lore@lore.pengutronix.de;
-	Tue, 11 Jun 2024 09:00:05 +0200
+	Tue, 11 Jun 2024 09:00:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sGvUC-00068c-OT
+	id 1sGvUD-000695-50
 	for lore@pengutronix.de; Tue, 11 Jun 2024 09:00:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,49 +18,49 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=OpiIlzMYBHxmiWdwWxR2tx1BDtlDaDcExPWTvoG+YmE=; b=UA91hhwtD3XlHIafxRdI5TvvOp
-	bS8TNnQ/q2WyEp9V91jPr+D7cyYRTyhp/k1leqeut873mQlsyzDXwv7rDOn0rXzbgS0Q4rN0Dueuz
-	l7il/4EsegJW7bIHOptviaVsCXFmzgkFp26X18w4cYzfzY9yXUEdh79eQL1344bJzbI0KO2y6bTds
-	bXtxw/UCu1MHEpcCuR/Facs5WdCR6agfk4iwPwcn80dHoY0QwC8gtnuCe8BVahuYE5ZYuxJHtaX0g
-	zrjbh/mjEsiY+nLHX0Gk++pYEMKlugSeeWxH4asRDVkWVVy0B8XRObgpmNDkbeBK0Ba9LfT/KZo45
-	lvYe6A9A==;
+	bh=lVAOcFRW2CM/Enbpdwg3EFIkp7O1ROAD5doA2OQcEhA=; b=Z5XXTkFZCwhb6MS710GbBj+50G
+	hebp/eRuxtZQEtK60Jnbf75Jqb54FKqSNZ838zJ88/j3M47vDbpR9b3f8kkCMKyF4zcrc07VAayHf
+	99/ifFd/DG+buyQvBKBXYBRBPUEUnVPBpCeyKP0cdwSYRpQuwRcIGAbxtI3AcOHgNK4KtH7foKIOc
+	jfMkvKgLAJacMesP4sRc+NV/Q1jcilulN/z2Ool8iIe/F2tk4mgm9pUccCYx7hn1hRJanoCykbLOH
+	s7+z4Ua9NSu5Jkwbu3hseX2d8L0ZZeWj9VQ9OCypLTkalNoBn7J7U0ALFtbBCwgb26W96YyPc+pd3
+	Fm2f3WAg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGvTf-00000007mwm-0uKv;
-	Tue, 11 Jun 2024 06:59:31 +0000
+	id 1sGvTh-00000007myH-0ZqW;
+	Tue, 11 Jun 2024 06:59:33 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sGvTa-00000007mss-0FXS
+	id 1sGvTa-00000007msu-0siI
 	for barebox@lists.infradead.org;
-	Tue, 11 Jun 2024 06:59:27 +0000
+	Tue, 11 Jun 2024 06:59:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sGvTY-0005qK-Pk; Tue, 11 Jun 2024 08:59:24 +0200
+	id 1sGvTY-0005qP-Us; Tue, 11 Jun 2024 08:59:24 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sGvTY-001UDB-DM; Tue, 11 Jun 2024 08:59:24 +0200
+	id 1sGvTY-001UDK-I9; Tue, 11 Jun 2024 08:59:24 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sGvTY-00CATV-13;
+	id 1sGvTY-00CATV-1W;
 	Tue, 11 Jun 2024 08:59:24 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 11 Jun 2024 08:59:18 +0200
-Message-Id: <20240611065923.2900168-2-a.fatoum@pengutronix.de>
+Date: Tue, 11 Jun 2024 08:59:21 +0200
+Message-Id: <20240611065923.2900168-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240611065923.2900168-1-a.fatoum@pengutronix.de>
 References: <20240611065923.2900168-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240610_235926_239199_0BA2982D 
-X-CRM114-Status: GOOD (  16.88  )
+X-CRM114-CacheID: sfid-20240610_235926_381960_86EFF625 
+X-CRM114-Status: GOOD (  13.57  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,179 +83,230 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/6] ARM: lib32: semihosting: prepare for more general use
+Subject: [PATCH 4/6] firmware: semihosting: translate return values in wrappers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-So far, we limited semihosting support to 32-bit ARM, but it's also
-usable on ARM64 and even RISC-V. Move the common code to
-drivers/firmware, so it can be shared by all architectures.
+It's needlessly verbose to expect callers of the semihosting wrappers to
+call semihosting_errno() on error, so let's just do that inside the
+wrappers so they behave like other functions.
+
+While at it, also have semihosting_read() and semihosting_write() return
+the number of bytes sent. The semihosting API returns the number of
+bytes that were _not_ sent instead, so a return value of 0 is success.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/Kconfig                              |  1 +
- arch/arm/cpu/Makefile                         |  2 ++
- .../semihosting-trap_32.S}                    |  2 +-
- arch/arm/include/asm/semihosting.h            | 15 +-----------
- arch/arm/lib32/Makefile                       |  1 -
- drivers/firmware/Kconfig                      |  3 +++
- drivers/firmware/Makefile                     |  1 +
- .../lib32 => drivers/firmware}/semihosting.c  |  0
- fs/Kconfig                                    |  2 +-
- include/asm-generic/semihosting.h             | 23 +++++++++++++++++++
- 10 files changed, 33 insertions(+), 17 deletions(-)
- rename arch/arm/{lib32/semihosting-trap.S => cpu/semihosting-trap_32.S} (84%)
- rename {arch/arm/lib32 => drivers/firmware}/semihosting.c (100%)
- create mode 100644 include/asm-generic/semihosting.h
+ drivers/firmware/semihosting.c | 36 ++++++++++++++++++++++------------
+ fs/smhfs.c                     | 33 +++++++++----------------------
+ 2 files changed, 33 insertions(+), 36 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index be18b609c782..26547cd3ba71 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -373,6 +373,7 @@ config ARM_UNWIND
- config ARM_SEMIHOSTING
- 	bool "enable ARM semihosting support"
- 	depends on !CPU_V8
-+	select SEMIHOSTING
- 	help
- 	  This option enables ARM semihosting support in barebox. ARM
- 	  semihosting is a communication discipline that allows code
-diff --git a/arch/arm/cpu/Makefile b/arch/arm/cpu/Makefile
-index 28161cd7d714..999cc375da1c 100644
---- a/arch/arm/cpu/Makefile
-+++ b/arch/arm/cpu/Makefile
-@@ -23,6 +23,8 @@ obj-pbl-y += setupc_$(S64_32).o cache_$(S64_32).o
+diff --git a/drivers/firmware/semihosting.c b/drivers/firmware/semihosting.c
+index 1dfbdf219727..9663959aa49f 100644
+--- a/drivers/firmware/semihosting.c
++++ b/drivers/firmware/semihosting.c
+@@ -43,6 +43,12 @@ enum {
  
- obj-$(CONFIG_ARM_PSCI_CLIENT) += psci-client.o
+ long semihosting_trap(ulong sysnum, void *addr);
  
-+obj-$(CONFIG_ARM_SEMIHOSTING) += semihosting-trap_$(S64_32).o
++static long semihosting_call(ulong sysnum, void *addr)
++{
++	long ret = semihosting_trap(sysnum, addr);
++	return ret >= 0 ? ret : -semihosting_errno();
++}
 +
- #
- # Any variants can be called as start-armxyz.S
- #
-diff --git a/arch/arm/lib32/semihosting-trap.S b/arch/arm/cpu/semihosting-trap_32.S
-similarity index 84%
-rename from arch/arm/lib32/semihosting-trap.S
-rename to arch/arm/cpu/semihosting-trap_32.S
-index f7960d7cea96..069cdaa1dd38 100644
---- a/arch/arm/lib32/semihosting-trap.S
-+++ b/arch/arm/cpu/semihosting-trap_32.S
-@@ -2,7 +2,7 @@
- /* SPDX-FileCopyrightText: 2015 Zodiac Inflight Innovations */
+ static ulong semihosting_flags_to_mode(int flags)
+ {
+ 	static const int semihosting_open_modeflags[12] = {
+@@ -81,13 +87,13 @@ int semihosting_open(const char *fname, int flags)
+ 		.mode = semihosting_flags_to_mode(flags),
+ 	};
  
- /*
-- * semihosting-trap.S -- Assembly code needed to make a semihosting call
-+ * semihosting-trap_32.S -- Assembly code needed to make a semihosting call
-  *
-  * Author: Andrey Smirnov <andrew.smirnov@gmail.com>
-  */
-diff --git a/arch/arm/include/asm/semihosting.h b/arch/arm/include/asm/semihosting.h
-index 9e1606c4aeaa..c18aa1a5fef5 100644
---- a/arch/arm/include/asm/semihosting.h
-+++ b/arch/arm/include/asm/semihosting.h
-@@ -3,19 +3,6 @@
- #ifndef __ASM_ARM_SEMIHOSTING_H
- #define __ASM_ARM_SEMIHOSTING_H
+-	return semihosting_trap(SEMIHOSTING_SYS_OPEN, &open);
++	return semihosting_call(SEMIHOSTING_SYS_OPEN, &open);
+ }
+ EXPORT_SYMBOL(semihosting_open);
  
--int semihosting_open(const char *fname, int flags);
--int semihosting_close(int fd);
--int semihosting_writec(char c);
--int semihosting_write0(const char *str);
--ssize_t semihosting_write(int fd, const void *buf, size_t count);
--ssize_t semihosting_read(int fd, void *buf, size_t count);
--int semihosting_readc(void);
--int semihosting_isatty(int fd);
--int semihosting_seek(int fd, loff_t pos);
--int semihosting_flen(int fd);
--int semihosting_remove(const char *fname);
--int semihosting_rename(const char *fname1, const char *fname2);
--int semihosting_errno(void);
--int semihosting_system(const char *command);
-+#include <asm-generic/semihosting.h>
+ int semihosting_close(int fd)
+ {
+-	return semihosting_trap(SEMIHOSTING_SYS_CLOSE, &fd);
++	return semihosting_call(SEMIHOSTING_SYS_CLOSE, &fd);
+ }
+ EXPORT_SYMBOL(semihosting_close);
  
- #endif
-diff --git a/arch/arm/lib32/Makefile b/arch/arm/lib32/Makefile
-index d54fb7644c39..511a029062e6 100644
---- a/arch/arm/lib32/Makefile
-+++ b/arch/arm/lib32/Makefile
-@@ -23,7 +23,6 @@ pbl-y	+= runtime-offset.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memcpy.o
- obj-$(CONFIG_ARM_OPTIMZED_STRING_FUNCTIONS)	+= memset.o
- obj-$(CONFIG_ARM_UNWIND) += unwind.o
--obj-$(CONFIG_ARM_SEMIHOSTING) += semihosting-trap.o semihosting.o
- obj-$(CONFIG_MODULES) += module.o
- obj-$(CONFIG_ARM_MODULE_PLTS) += module-plts.o
- extra-y += barebox.lds
-diff --git a/drivers/firmware/Kconfig b/drivers/firmware/Kconfig
-index 3252b61bc764..89c8bdeda3f0 100644
---- a/drivers/firmware/Kconfig
-+++ b/drivers/firmware/Kconfig
-@@ -1,6 +1,9 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menu "Firmware Drivers"
+@@ -111,37 +117,43 @@ struct __packed semihosting_file_io {
  
-+config SEMIHOSTING
-+	bool
-+
- config FIRMWARE_ALTERA_SERIAL
- 	bool "Altera SPI programming"
- 	depends on OFDEVICE
-diff --git a/drivers/firmware/Makefile b/drivers/firmware/Makefile
-index 4eabf42fd639..d0ebe663ea55 100644
---- a/drivers/firmware/Makefile
-+++ b/drivers/firmware/Makefile
-@@ -1,4 +1,5 @@
- # SPDX-License-Identifier: GPL-2.0-only
-+obj-$(CONFIG_SEMIHOSTING) += semihosting.o
- obj-$(CONFIG_FIRMWARE_ALTERA_SERIAL) += altera_serial.o
- obj-$(CONFIG_FIRMWARE_ALTERA_SOCFPGA) += socfpga.o socfpga_sdr.o
- obj-$(CONFIG_FIRMWARE_ZYNQMP_FPGA) += zynqmp-fpga.o
-diff --git a/arch/arm/lib32/semihosting.c b/drivers/firmware/semihosting.c
-similarity index 100%
-rename from arch/arm/lib32/semihosting.c
-rename to drivers/firmware/semihosting.c
-diff --git a/fs/Kconfig b/fs/Kconfig
-index a3ba84b6aefd..e02cb939a5cf 100644
---- a/fs/Kconfig
-+++ b/fs/Kconfig
-@@ -113,7 +113,7 @@ config FS_UIMAGEFS
- 	prompt "uImage FS support"
+ ssize_t semihosting_write(int fd, const void *buf, size_t count)
+ {
++	ssize_t ret;
+ 	struct semihosting_file_io write = {
+ 		.fd = fd,
+ 		.memp = virt_to_phys(buf),
+ 		.len = count,
+ 	};
  
- config FS_SMHFS
--	depends on ARM_SEMIHOSTING
-+	depends on SEMIHOSTING
- 	select FS_LEGACY
- 	bool
- 	prompt "Semihosting FS support"
-diff --git a/include/asm-generic/semihosting.h b/include/asm-generic/semihosting.h
-new file mode 100644
-index 000000000000..d337c33ff486
---- /dev/null
-+++ b/include/asm-generic/semihosting.h
-@@ -0,0 +1,23 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
+-	return semihosting_trap(SEMIHOSTING_SYS_WRITE, &write);
++	ret = semihosting_call(SEMIHOSTING_SYS_WRITE, &write);
 +
-+#ifndef __ASM_GENERIC_SEMIHOSTING_H
-+#define __ASM_GENERIC_SEMIHOSTING_H
++	return ret >= 0 ? count - ret : ret;
+ }
+ EXPORT_SYMBOL(semihosting_write);
+ 
+ ssize_t semihosting_read(int fd, void *buf, size_t count)
+ {
++	ssize_t ret;
+ 	struct semihosting_file_io read = {
+ 		.fd = fd,
+ 		.memp = virt_to_phys(buf),
+ 		.len = count,
+ 	};
+ 
+-	return semihosting_trap(SEMIHOSTING_SYS_READ, &read);
++	ret = semihosting_call(SEMIHOSTING_SYS_READ, &read);
 +
-+#include <linux/types.h>
-+
-+int semihosting_open(const char *fname, int flags);
-+int semihosting_close(int fd);
-+int semihosting_writec(char c);
-+int semihosting_write0(const char *str);
-+ssize_t semihosting_write(int fd, const void *buf, size_t count);
-+ssize_t semihosting_read(int fd, void *buf, size_t count);
-+int semihosting_readc(void);
-+int semihosting_isatty(int fd);
-+int semihosting_seek(int fd, loff_t pos);
-+int semihosting_flen(int fd);
-+int semihosting_remove(const char *fname);
-+int semihosting_rename(const char *fname1, const char *fname2);
-+int semihosting_errno(void);
-+int semihosting_system(const char *command);
-+
-+#endif
++	return ret >= 0 ? count - ret : ret;
+ }
+ EXPORT_SYMBOL(semihosting_read);
+ 
+ int semihosting_readc(void)
+ {
+-	return semihosting_trap(SEMIHOSTING_SYS_READC, NULL);
++	return semihosting_call(SEMIHOSTING_SYS_READC, NULL);
+ }
+ EXPORT_SYMBOL(semihosting_readc);
+ 
+ int semihosting_isatty(int fd)
+ {
+-	return semihosting_trap(SEMIHOSTING_SYS_ISATTY, &fd);
++	return semihosting_call(SEMIHOSTING_SYS_ISATTY, &fd);
+ }
+ EXPORT_SYMBOL(semihosting_isatty);
+ 
+@@ -155,12 +167,12 @@ off_t semihosting_seek(int fd, off_t pos)
+ 		.pos = pos,
+ 	};
+ 
+-	return semihosting_trap(SEMIHOSTING_SYS_SEEK, &seek);
++	return semihosting_call(SEMIHOSTING_SYS_SEEK, &seek);
+ }
+ EXPORT_SYMBOL(semihosting_seek);
+ off_t semihosting_flen(int fd)
+ {
+-	return semihosting_trap(SEMIHOSTING_SYS_FLEN, &fd);
++	return semihosting_call(SEMIHOSTING_SYS_FLEN, &fd);
+ }
+ EXPORT_SYMBOL(semihosting_flen);
+ 
+@@ -174,7 +186,7 @@ int semihosting_remove(const char *fname)
+ 		.fname_length = strlen(fname),
+ 	};
+ 
+-	return semihosting_trap(SEMIHOSTING_SYS_REMOVE, &remove);
++	return semihosting_call(SEMIHOSTING_SYS_REMOVE, &remove);
+ }
+ EXPORT_SYMBOL(semihosting_remove);
+ 
+@@ -192,13 +204,13 @@ int semihosting_rename(const char *fname1, const char *fname2)
+ 		.fname2_length = strlen(fname2),
+ 	};
+ 
+-	return semihosting_trap(SEMIHOSTING_SYS_RENAME, &rename);
++	return semihosting_call(SEMIHOSTING_SYS_RENAME, &rename);
+ }
+ EXPORT_SYMBOL(semihosting_rename);
+ 
+ int semihosting_errno(void)
+ {
+-	return semihosting_trap(SEMIHOSTING_SYS_ERRNO, NULL);
++	return semihosting_call(SEMIHOSTING_SYS_ERRNO, NULL);
+ }
+ EXPORT_SYMBOL(semihosting_errno);
+ 
+@@ -213,6 +225,6 @@ int semihosting_system(const char *command)
+ 		.cmd_len = strlen(command),
+ 	};
+ 
+-	return semihosting_trap(SEMIHOSTING_SYS_SYSTEM, &system);
++	return semihosting_call(SEMIHOSTING_SYS_SYSTEM, &system);
+ }
+ EXPORT_SYMBOL(semihosting_system);
+diff --git a/fs/smhfs.c b/fs/smhfs.c
+index da285b5be52f..ce027f203e23 100644
+--- a/fs/smhfs.c
++++ b/fs/smhfs.c
+@@ -48,10 +48,7 @@ static int smhfs_rm(struct device __always_unused *dev,
+ 	/* Get rid of leading '/' */
+ 	pathname = &pathname[1];
+ 
+-	if (semihosting_remove(pathname) != 0)
+-		return -semihosting_errno();
+-	else
+-		return 0;
++	return semihosting_remove(pathname);
+ }
+ 
+ static int smhfs_truncate(struct device __always_unused *dev,
+@@ -70,52 +67,40 @@ static int smhfs_open(struct device __always_unused *dev,
+ 
+ 	fd = semihosting_open(filename, file->flags);
+ 	if (fd < 0)
+-		goto error;
++		return fd;
+ 
+ 	file->priv = (void *)(uintptr_t)fd;
+ 	file->size = semihosting_flen(fd);
+ 	if (file->size < 0)
+-		goto error;
++		return file->size;
+ 
+ 	return 0;
+-error:
+-	return -semihosting_errno();
+ }
+ 
+ static int smhfs_close(struct device __always_unused *dev,
+ 		       FILE *f)
+ {
+-	if (semihosting_close(file_to_fd(f)))
+-		return -semihosting_errno();
+-	else
+-		return 0;
++	return semihosting_close(file_to_fd(f));
+ }
+ 
+ static int smhfs_write(struct device __always_unused *dev,
+ 		       FILE *f, const void *inbuf, size_t insize)
+ {
+-	if (semihosting_write(file_to_fd(f), inbuf, insize))
+-		return -semihosting_errno();
+-	else
+-		return insize;
++	long ret = semihosting_write(file_to_fd(f), inbuf, insize);
++	return ret < 0 ? ret : insize;
+ }
+ 
+ static int smhfs_read(struct device __always_unused *dev,
+ 		      FILE *f, void *buf, size_t insize)
+ {
+-	if (!semihosting_read(file_to_fd(f), buf, insize))
+-		return insize;
+-	else
+-		return -semihosting_errno();
++	long ret = semihosting_read(file_to_fd(f), buf, insize);
++	return ret < 0 ? ret : insize;
+ }
+ 
+ static int smhfs_lseek(struct device __always_unused *dev,
+ 			  FILE *f, loff_t pos)
+ {
+-	if (semihosting_seek(file_to_fd(f), pos))
+-		return -semihosting_errno();
+-
+-	return 0;
++	return semihosting_seek(file_to_fd(f), pos);
+ }
+ 
+ static DIR* smhfs_opendir(struct device __always_unused *dev,
 -- 
 2.39.2
 
