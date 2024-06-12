@@ -1,82 +1,85 @@
-Delivery-date: Thu, 13 Jun 2024 01:28:36 +0200
+Delivery-date: Thu, 13 Jun 2024 01:28:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHXOO-00546s-14
+	id 1sHXOP-00547N-1S
 	for lore@lore.pengutronix.de;
-	Thu, 13 Jun 2024 01:28:36 +0200
+	Thu, 13 Jun 2024 01:28:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHXON-0006Aa-Qb
-	for lore@pengutronix.de; Thu, 13 Jun 2024 01:28:36 +0200
+	id 1sHXOO-0006BB-T9
+	for lore@pengutronix.de; Thu, 13 Jun 2024 01:28:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
 	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=+bWgoHgTfozdtkj12x80jZtRFaJbmLgg8gbAWtvlQl8=; b=FBrjhBhlU8vRl1
-	2R8CcKuxOSjh2PbNgyYrlmia5Uv2koj1WQTLENHelOWQPuPFV3tjcJ5y0r+H8RYGTU/th+rpDm2LP
-	09ePL0+CXIPmhhKjN49PluOisk46/xhlapfMpplxHQXP2TIW4iHwtmn3/8x6wrl1Aa966XfV6bdGh
-	ebJNuCB+fwvSeKJxizswbReQFmx8DB8JKlAK4Zopt3WlGrB1JCGseU4WYxkZB/oHGDdJkQMzLDBT1
-	1l8O8//Hotxlw+bY++l1XuUBZBxQ1n0YuAhpY+cGPoaoi9EZGYP+64S0Fn0cvFuB0FjSIwanHKoCo
-	0XfJe1n9+SnA8KWbMpIA==;
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
+	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
+	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	List-Owner; bh=o2YkGGTvtBF4XLfqcc8ht9Cj4pKAgaDaTW8TWzB9Ue0=; b=xL7OUJtu2R0TdV
+	A6MZj8epVpOWTyd2iTd2PS4O9bi9RXUkBdtnK8Vhn4LFqw47xwsaMMl10FoxHIi1766yBfH3SVxIF
+	Ew+deYOovcAoJnxGXMZKYXVXjqUCBGPokP/lEj3VajKt+GY3tYD4wI5KayuEdazTOvWu8o0nBUqaX
+	Enkzmrnx5BDA1q5A16BYC29tu7Q5XMYa1ZL2Hgv4qCOP0XT7rbxmXdL05+a0jyKs5VbtXgA52Fbrk
+	HLRd3pr4Z05McMQT4HPfVG4Dpb7VxP0f/Fbq9EdEM0zCPAu96GaJRV0hVXXMc7XTDYcp9e0USaowF
+	qTi3qJuKpsYNhTADN8pQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHXNj-0000000ETou-1HZs;
-	Wed, 12 Jun 2024 23:27:55 +0000
-Received: from mail-lf1-x12c.google.com ([2a00:1450:4864:20::12c])
+	id 1sHXNl-0000000ETpJ-20gW;
+	Wed, 12 Jun 2024 23:27:57 +0000
+Received: from mail-lf1-x135.google.com ([2a00:1450:4864:20::135])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHXNg-0000000ETn7-1MtI
+	id 1sHXNh-0000000ETnD-1JJl
 	for barebox@lists.infradead.org;
-	Wed, 12 Jun 2024 23:27:53 +0000
-Received: by mail-lf1-x12c.google.com with SMTP id 2adb3069b0e04-52c84a21c62so517890e87.1
-        for <barebox@lists.infradead.org>; Wed, 12 Jun 2024 16:27:49 -0700 (PDT)
+	Wed, 12 Jun 2024 23:27:54 +0000
+Received: by mail-lf1-x135.google.com with SMTP id 2adb3069b0e04-52962423ed8so530669e87.2
+        for <barebox@lists.infradead.org>; Wed, 12 Jun 2024 16:27:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718234868; x=1718839668; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+bWgoHgTfozdtkj12x80jZtRFaJbmLgg8gbAWtvlQl8=;
-        b=d9C01n7e6TLlb+yLAwSbflv//qTZVDIk53T6xyMGyp5AigvvCA781Mpk1a8xx/iZd0
-         2yR1bFHNNsgJppbHRKTsQv7E2Mj346CMiPCMK4U3TvFDYU4hj6k0zGHOBQ+J4R44C2I5
-         BaFJKFs2XYS3LZE6A9Xd321PsYDZk832mE2zBhXjfqrCplb0UnvEM+SevrEDCtkf9WYX
-         ugvYSio+7ZNFMjUOkrovuOb9nGjBcaWKRa3v0Syocl4x6o5Lr47XevQr5+RNJHQ4y6z3
-         15eF64T1/r8m0wtGUn/XDaFFxxFBnsfzo2A0Jhpksp8WMspUKZJCjOOrPUpsijnftNFv
-         HNTQ==
+        d=gmail.com; s=20230601; t=1718234869; x=1718839669; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o2YkGGTvtBF4XLfqcc8ht9Cj4pKAgaDaTW8TWzB9Ue0=;
+        b=SMqnUD6d/NsEqEcXpyBDLmZvmZsyEqGZQVApWWdHnDaWobMc6/jpWu0mUlgBunK2U0
+         blE2XwbZBNWP0L8nRc//t2kD3i15yA9bcWMBGtix6dFAHZbXuMJHwfHN5Fc/VxGaup87
+         fpOcaIKP+kYqkKkZtN8+1RHMS6rxftdGdIWxrfgMEBHVUr8bY3xjJ+RUmR6zBSVV/DhI
+         qmBoId1rs4szgBJvAFpLD8085aky2r0R5LS5cpDYoLUK316Knurpyzxwu/DvfhWJVvKC
+         X5QTVMPZOrMZUR1vCBxfZywhHI6R4WOYqyJ8xGuIJvoNTf0AKhyEoSEyTGjW/m7ZrdCl
+         acOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718234868; x=1718839668;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+bWgoHgTfozdtkj12x80jZtRFaJbmLgg8gbAWtvlQl8=;
-        b=eLGqA9L13H1Ve8UFlCRP1o9KlOkvST24wPcdxonIIbH4aCVvK88PoafN1Vp4ethDW2
-         RLHqTPWcei/HNGijUGKRWDq3qeOJrxcEa1B+HrZFNyoQxIdqLd/YZc6TiTZ5xwKjDhO0
-         yBKOTm14VjhS/kNOBmOpY+s3WjlI0dAIU7Ywx22h2r0i/PTE5vJL6p/l5ilgSWyVmf4L
-         pXowx8MPHt3B1pW0cExPKhRNvtpHYX7djhESwg+vKPWIEh9RuN7w3/FpVbjy/lwJtubz
-         VxJWz/KyUTNzCLpExwuZRXIegFIhKyLhzjWoTr56oGgRFwzK7q+osKnrrD8TLEDxulqf
-         FjIQ==
-X-Gm-Message-State: AOJu0Yy3Gx3iaX8mbpvWpUlGQmuRyGmQ9DmIDmDVJ8h8JZ6FVOKDLFai
-	pSF//AVrla1QCEssoIkuAmz4o6XqeGuncdMsMjE6mg1khCuHKIEjBse4WA==
-X-Google-Smtp-Source: AGHT+IFdQf/huHlY0paU6YAYIxCY+/9ocJSwXtxiczU6KHnpRM+zsuqjYDjHYoDdtXxkoohnrEcu6Q==
-X-Received: by 2002:a05:6512:39d4:b0:52c:a016:5405 with SMTP id 2adb3069b0e04-52ca01654c6mr660533e87.8.1718234867423;
-        Wed, 12 Jun 2024 16:27:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718234869; x=1718839669;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=o2YkGGTvtBF4XLfqcc8ht9Cj4pKAgaDaTW8TWzB9Ue0=;
+        b=B0LmZHozNV1zuBwdvkWALl5v8cZJhRxOQMMXap97lWCd8M92H0Xt8BjgFV846s3Wey
+         aldhnoViyFVwSSxtIZq7ndKoy9qzplghJJ5oAYPiXUhD5NHH+qQyLDoRORP2Sv6tIjcK
+         3xb/WRKBMbrOT+x3oHKSgVbd7eSjRoEBbE6iZsz6igsUWHQoZpPYQhVeuVxDT+ykNOJO
+         y6PyMFXb6G1WgumrZQLNryv/Fb432ZjcSJL1TwC+BuN9dEojofZwKqE7BOPC+BlvQCYw
+         ItYVNm7kq0+K9VXNa3uXlGmgr+/qxFzZ4WuMZDbvJaBeoaVpK6PIJwA+MbZpzduAuNES
+         11nA==
+X-Gm-Message-State: AOJu0YwwqxTJUDI7qHE0XrjMg7Gupiiz7+Y53fEmiF0NTnhEJNUMHhfA
+	TM2iNwLR64MV7caep5P3oyab0E5b8VM9Dh0zGlyI6U8Vutv0ZqMniOkz8g==
+X-Google-Smtp-Source: AGHT+IEbWWkUDv/lQuwZ205Ts+0A07f1Dr/nclE/lv0zPSXtJue/6WnlvSxuBw1O7+bpIKDt6cf/7w==
+X-Received: by 2002:a05:6512:3158:b0:52c:8dc9:20cc with SMTP id 2adb3069b0e04-52c9a405445mr1856186e87.57.1718234868813;
+        Wed, 12 Jun 2024 16:27:48 -0700 (PDT)
 Received: from cinco.. (109-252-6-122.nat.spd-mgts.ru. [109.252.6.122])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca282593esm19024e87.44.2024.06.12.16.27.46
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52ca282593esm19024e87.44.2024.06.12.16.27.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jun 2024 16:27:46 -0700 (PDT)
+        Wed, 12 Jun 2024 16:27:48 -0700 (PDT)
 From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Date: Thu, 13 Jun 2024 02:28:04 +0300
-Message-Id: <20240612232807.142127-1-antonynpavlov@gmail.com>
+Date: Thu, 13 Jun 2024 02:28:06 +0300
+Message-Id: <20240612232807.142127-3-antonynpavlov@gmail.com>
 X-Mailer: git-send-email 2.39.0
+In-Reply-To: <20240612232807.142127-1-antonynpavlov@gmail.com>
+References: <20240612232807.142127-1-antonynpavlov@gmail.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240612_162752_391211_D998A577 
-X-CRM114-Status: UNSURE (   6.28  )
+X-CRM114-CacheID: sfid-20240612_162753_371394_FBF9BFD1 
+X-CRM114-Status: UNSURE (   9.20  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -101,27 +104,52 @@ X-Spam-Status: No, score=-4.5 required=4.0 tests=AWL,BAYES_00,
 	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
 	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 0/3] MIPS: pbl fixes
+Subject: [PATCH 2/3] MIPS: pbl_main_entry(): inline barebox_uncompress()
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Antony Pavlov (3):
-  MIPS: don't pass fdt_size into main_entry()
-  MIPS: pbl_main_entry(): inline barebox_uncompress()
-  MIPS: rename pbl_main_entry() -> barebox_pbl_start()
+Unify MIPS pbl_main_entry() with RISC-V barebox_pbl_start().
 
- arch/mips/boards/board-dt-2nd.S               |  4 +--
- arch/mips/boards/netgear-wg102/lowlevel.S     |  2 +-
- arch/mips/boot/Makefile                       |  2 +-
- arch/mips/boot/dtb.c                          |  1 -
- arch/mips/boot/main_entry.c                   |  6 ++---
- arch/mips/boot/start.c                        |  9 +++----
- .../boot/{main_entry-pbl.c => uncompress.c}   | 26 ++++++++-----------
- arch/mips/include/asm/asm.h                   |  2 +-
- arch/mips/lib/reloc.c                         | 12 ++++-----
- 9 files changed, 27 insertions(+), 37 deletions(-)
- rename arch/mips/boot/{main_entry-pbl.c => uncompress.c} (71%)
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
+---
+ arch/mips/boot/main_entry-pbl.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
+diff --git a/arch/mips/boot/main_entry-pbl.c b/arch/mips/boot/main_entry-pbl.c
+index 01833a508d3..7b5e81817e0 100644
+--- a/arch/mips/boot/main_entry-pbl.c
++++ b/arch/mips/boot/main_entry-pbl.c
+@@ -21,15 +21,6 @@ unsigned long free_mem_end_ptr;
+ 
+ void pbl_main_entry(void *fdt, void *fdt_end, u32 ram_size);
+ 
+-static void barebox_uncompress(void *compressed_start, unsigned int len)
+-{
+-	/* set 128 KiB at the end of the MALLOC_BASE for early malloc */
+-	free_mem_ptr = TEXT_BASE - SZ_128K;
+-	free_mem_end_ptr = free_mem_ptr + SZ_128K;
+-
+-	pbl_barebox_uncompress((void*)TEXT_BASE, compressed_start, len);
+-}
+-
+ void __section(.text_entry) pbl_main_entry(void *fdt, void *fdt_end,
+ 					   u32 ram_size)
+ {
+@@ -42,8 +33,13 @@ void __section(.text_entry) pbl_main_entry(void *fdt, void *fdt_end,
+ 	/* clear bss */
+ 	memset(__bss_start, 0, __bss_stop - __bss_start);
+ 
++	/* set 128 KiB at the end of the MALLOC_BASE for early malloc */
++	free_mem_ptr = TEXT_BASE - SZ_128K;
++	free_mem_end_ptr = free_mem_ptr + SZ_128K;
++
+ 	piggy_len = (unsigned long)&input_data_end - (unsigned long)&input_data;
+-	barebox_uncompress(&input_data, piggy_len);
++
++	pbl_barebox_uncompress((void *)TEXT_BASE, &input_data, piggy_len);
+ 
+ 	fdt_len = (unsigned long)fdt_end - (unsigned long)fdt;
+ 	if (!fdt_len) {
 -- 
 2.39.0
 
