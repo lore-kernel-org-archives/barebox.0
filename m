@@ -1,63 +1,65 @@
-Delivery-date: Wed, 12 Jun 2024 15:05:48 +0200
+Delivery-date: Wed, 12 Jun 2024 15:06:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHNfg-004p9a-2k
+	id 1sHNgR-004pAA-2h
 	for lore@lore.pengutronix.de;
-	Wed, 12 Jun 2024 15:05:48 +0200
+	Wed, 12 Jun 2024 15:06:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHNff-00085M-OA
-	for lore@pengutronix.de; Wed, 12 Jun 2024 15:05:48 +0200
+	id 1sHNgQ-0008Ch-Ky
+	for lore@pengutronix.de; Wed, 12 Jun 2024 15:06:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=RvflGaKpZbzaROjN9j0Hyeh3FYpPXOOeKZs7RQe/z+A=; b=LNt0y8KQBEOhit/622jTULVcKG
-	Cj2zAE6clPlZI6Drmcq9pEW1tlRl+jluxzpt4bjlts+4pm70rfn2LWM5lvefrWUafffnqnojLW2D6
-	VoFYnBYtvvUjXxSNts5gPDAMOEqyCTWWBmfwnJWemCU3y9m28XcYX7DoIPNnoN7irFaIQ6aykWANy
-	cmqtjNEu0AfSPBZO9ERROKmP/Ie67U9mPolds8sANrWsRXsVwALltXXHJQ5oKi01T96IBwQybYeIC
-	Lto4lYd5xAvzPpR31P2qliqSC0yLs7ABhXqgHYDzmLAV2+rfstmaQHfhNCpa6e9aPuXTDrHVTrDoa
-	7dN24cUg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=5/zKC6xOPA/dtRCsmaszyX2Oz8fj2CLz08Q68jIiOOU=; b=RdQLxwON/X4e3OFWcJ1eaYR97g
+	WgLovxiR4I4QNPsv7k3SfepDz2gaOewRQi8mIXOTyqmnfn16GBMGgsy3r9X8jcJL6GD7JJm52hhig
+	YxbmXtAuFLpuvzINnnPtYGKqKSTy0FXyTaAsS04tdEiHvMoRwR5J+PkxhapB27WL3a1uNJbPwIB1/
+	6UCzx3kXpcu07JHrsNmgAd5TVxrkCcCyN3bRyxNVzKK7+zws47NjM+MVo17bdKw614WoSKwO1Etij
+	sBqKI9vSWmQfEwXctWfuNkzgEUGuj0kb6MxRS3GbcH6XXlVlrqvD/ED9LwFv8eXMBcYa/ymH8zhcf
+	zOfkt2nA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHNf9-0000000Cfko-2Ecx;
-	Wed, 12 Jun 2024 13:05:15 +0000
+	id 1sHNfB-0000000Cfl1-0ttb;
+	Wed, 12 Jun 2024 13:05:17 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHNf6-0000000CfjL-218d
+	id 1sHNf6-0000000CfjM-20Qw
 	for barebox@lists.infradead.org;
-	Wed, 12 Jun 2024 13:05:13 +0000
+	Wed, 12 Jun 2024 13:05:14 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <ore@pengutronix.de>)
-	id 1sHNf5-0007yY-85; Wed, 12 Jun 2024 15:05:11 +0200
+	id 1sHNf5-0007yZ-9I; Wed, 12 Jun 2024 15:05:11 +0200
 Received: from [2a0a:edc0:0:1101:1d::ac] (helo=dude04.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <ore@pengutronix.de>)
-	id 1sHNf4-001nK5-Rl; Wed, 12 Jun 2024 15:05:10 +0200
+	id 1sHNf4-001nK6-T8; Wed, 12 Jun 2024 15:05:10 +0200
 Received: from ore by dude04.red.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <ore@pengutronix.de>)
-	id 1sHNf4-00FVur-2d;
+	id 1sHNf4-00FVuv-2l;
 	Wed, 12 Jun 2024 15:05:10 +0200
 From: Oleksij Rempel <o.rempel@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: David Jander <david@protonic.nl>
-Date: Wed, 12 Jun 2024 15:05:08 +0200
-Message-Id: <20240612130509.3697488-1-o.rempel@pengutronix.de>
+Date: Wed, 12 Jun 2024 15:05:09 +0200
+Message-Id: <20240612130509.3697488-2-o.rempel@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240612130509.3697488-1-o.rempel@pengutronix.de>
+References: <20240612130509.3697488-1-o.rempel@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240612_060512_704332_07717EDA 
-X-CRM114-Status: GOOD (  16.92  )
+X-CRM114-CacheID: sfid-20240612_060512_864246_8E304E29 
+X-CRM114-Status: GOOD (  18.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,7 +82,7 @@ X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v1 1/2] arm: boards: Add support for Protonic MECIO1 board
+Subject: [PATCH v1 2/2] arm: boards: Add support for Protonic MECT1S board
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
@@ -89,23 +91,23 @@ From: David Jander <david@protonic.nl>
 Signed-off-by: David Jander <david@protonic.nl>
 ---
  arch/arm/boards/protonic-stm32mp1/board.c    |   5 +
- arch/arm/boards/protonic-stm32mp1/lowlevel.c |  15 ++
+ arch/arm/boards/protonic-stm32mp1/lowlevel.c |  15 +
  arch/arm/dts/Makefile                        |   3 +-
- arch/arm/dts/stm32mp151-mecio1.dts           | 214 +++++++++++++++++++
- arch/arm/mach-stm32mp/Kconfig                |   6 +-
+ arch/arm/dts/stm32mp151-mect1s.dts           | 322 +++++++++++++++++++
+ arch/arm/mach-stm32mp/Kconfig                |   4 +-
  images/Makefile.stm32mp                      |   1 +
- 6 files changed, 240 insertions(+), 4 deletions(-)
- create mode 100644 arch/arm/dts/stm32mp151-mecio1.dts
+ 6 files changed, 347 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/dts/stm32mp151-mect1s.dts
 
 diff --git a/arch/arm/boards/protonic-stm32mp1/board.c b/arch/arm/boards/protonic-stm32mp1/board.c
-index 68297debab..e8f47c6849 100644
+index e8f47c6849..a919de36c2 100644
 --- a/arch/arm/boards/protonic-stm32mp1/board.c
 +++ b/arch/arm/boards/protonic-stm32mp1/board.c
-@@ -113,10 +113,15 @@ static const struct prt_stm32_machine_data prt_stm32_prtt1c = {
- 	.flags = PRT_STM32_BOOTSRC_SD | PRT_STM32_BOOTSRC_EMMC,
+@@ -117,11 +117,16 @@ static const struct prt_stm32_machine_data prt_stm32_mecio1 = {
+ 	.flags = PRT_STM32_BOOTSRC_SPI_NOR,
  };
  
-+static const struct prt_stm32_machine_data prt_stm32_mecio1 = {
++static const struct prt_stm32_machine_data prt_stm32_mect1s = {
 +	.flags = PRT_STM32_BOOTSRC_SPI_NOR,
 +};
 +
@@ -113,28 +115,29 @@ index 68297debab..e8f47c6849 100644
  	{ .compatible = "prt,prtt1a", .data = &prt_stm32_prtt1a },
  	{ .compatible = "prt,prtt1c", .data = &prt_stm32_prtt1c },
  	{ .compatible = "prt,prtt1s", .data = &prt_stm32_prtt1a },
-+	{ .compatible = "prt,mecio1", .data = &prt_stm32_mecio1 },
+ 	{ .compatible = "prt,mecio1", .data = &prt_stm32_mecio1 },
++	{ .compatible = "prt,mect1s", .data = &prt_stm32_mect1s },
  	{ /* sentinel */ },
  };
  BAREBOX_DEEP_PROBE_ENABLE(prt_stm32_of_match);
 diff --git a/arch/arm/boards/protonic-stm32mp1/lowlevel.c b/arch/arm/boards/protonic-stm32mp1/lowlevel.c
-index 2fd7f8ba8b..97d60b6ea4 100644
+index 97d60b6ea4..2afa931126 100644
 --- a/arch/arm/boards/protonic-stm32mp1/lowlevel.c
 +++ b/arch/arm/boards/protonic-stm32mp1/lowlevel.c
-@@ -8,6 +8,7 @@
- extern char __dtb_z_stm32mp151_prtt1a_start[];
+@@ -9,6 +9,7 @@ extern char __dtb_z_stm32mp151_prtt1a_start[];
  extern char __dtb_z_stm32mp151_prtt1c_start[];
  extern char __dtb_z_stm32mp151_prtt1s_start[];
-+extern char __dtb_z_stm32mp151_mecio1_start[];
+ extern char __dtb_z_stm32mp151_mecio1_start[];
++extern char __dtb_z_stm32mp151_mect1s_start[];
  
  static void setup_uart(void)
  {
-@@ -56,3 +57,17 @@ ENTRY_FUNCTION(start_prtt1s, r0, r1, r2)
+@@ -71,3 +72,17 @@ ENTRY_FUNCTION(start_mecio1, r0, r1, r2)
  
  	stm32mp1_barebox_entry(fdt);
  }
 +
-+ENTRY_FUNCTION(start_mecio1, r0, r1, r2)
++ENTRY_FUNCTION(start_mect1s, r0, r1, r2)
 +{
 +	void *fdt;
 +
@@ -143,30 +146,30 @@ index 2fd7f8ba8b..97d60b6ea4 100644
 +	if (IS_ENABLED(CONFIG_DEBUG_LL))
 +		setup_uart();
 +
-+	fdt = __dtb_z_stm32mp151_mecio1_start + get_runtime_offset();
++	fdt = __dtb_z_stm32mp151_mect1s_start + get_runtime_offset();
 +
 +	stm32mp1_barebox_entry(fdt);
 +}
 diff --git a/arch/arm/dts/Makefile b/arch/arm/dts/Makefile
-index 40d61ce8db..37158ce0df 100644
+index 37158ce0df..68585e1e4b 100644
 --- a/arch/arm/dts/Makefile
 +++ b/arch/arm/dts/Makefile
-@@ -111,7 +111,8 @@ lwl-$(CONFIG_MACH_PROTONIC_MECSBC) += rk3568-mecsbc.dtb.o
- lwl-$(CONFIG_MACH_PROTONIC_STM32MP1) += \
+@@ -112,7 +112,8 @@ lwl-$(CONFIG_MACH_PROTONIC_STM32MP1) += \
  	stm32mp151-prtt1a.dtb.o \
  	stm32mp151-prtt1c.dtb.o \
--	stm32mp151-prtt1s.dtb.o
-+	stm32mp151-prtt1s.dtb.o \
-+	stm32mp151-mecio1.dtb.o
+ 	stm32mp151-prtt1s.dtb.o \
+-	stm32mp151-mecio1.dtb.o
++	stm32mp151-mecio1.dtb.o \
++	stm32mp151-mect1s.dtb.o
  lwl-$(CONFIG_MACH_RADXA_ROCK) += rk3188-radxarock.dtb.o
  lwl-$(CONFIG_MACH_RADXA_ROCK3) += rk3568-rock-3a.dtb.o
  lwl-$(CONFIG_MACH_RADXA_ROCK5) += rk3588-rock-5b.dtb.o
-diff --git a/arch/arm/dts/stm32mp151-mecio1.dts b/arch/arm/dts/stm32mp151-mecio1.dts
+diff --git a/arch/arm/dts/stm32mp151-mect1s.dts b/arch/arm/dts/stm32mp151-mect1s.dts
 new file mode 100644
-index 0000000000..6b50bdd4ef
+index 0000000000..4d0e31d189
 --- /dev/null
-+++ b/arch/arm/dts/stm32mp151-mecio1.dts
-@@ -0,0 +1,214 @@
++++ b/arch/arm/dts/stm32mp151-mect1s.dts
+@@ -0,0 +1,322 @@
 +// SPDX-License-Identifier: (GPL-2.0+ OR BSD-3-Clause)
 +/*
 + * Copyright (C) Protonic Holland
@@ -181,9 +184,11 @@ index 0000000000..6b50bdd4ef
 +#include <dt-bindings/gpio/gpio.h>
 +#include <dt-bindings/input/input.h>
 +
++#include "stm32mp151.dtsi"
++
 +/ {
-+	model = "Protonic MECIO1";
-+	compatible = "prt,mecio1", "st,stm32mp151";
++	model = "Protonic MECT1S";
++	compatible = "prt,mect1s", "st,stm32mp151";
 +
 +	chosen {
 +		stdout-path = "serial0:1500000n8";
@@ -209,24 +214,41 @@ index 0000000000..6b50bdd4ef
 +		regulator-always-on;
 +	};
 +
++	clock_sja1105: clock-sja1105 {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <25000000>;
++	};
++
 +	led {
 +		compatible = "gpio-leds";
 +
 +		led-0 {
 +			label = "debug:red";
-+			gpios = <&gpioa 13 GPIO_ACTIVE_HIGH>;
++			gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
 +		};
 +
 +		led-1 {
 +			label = "debug:green";
-+			gpios = <&gpioa 14 GPIO_ACTIVE_HIGH>;
++			gpios = <&gpioa 14 GPIO_ACTIVE_LOW>;
 +			linux,default-trigger = "heartbeat";
 +		};
++	};
++
++	spi_gpio: spi-gpio-0 {
++		compatible = "spi-gpio";
++		gpio-sck = <&gpioi 1 GPIO_ACTIVE_HIGH>;
++		gpio-mosi = <&gpioi 3 GPIO_ACTIVE_HIGH>;
++		gpio-miso = <&gpioi 2 GPIO_ACTIVE_HIGH>;
++		cs-gpios = <&gpioj 3 GPIO_ACTIVE_LOW>;
++		num-chipselects = <1>;
++		#address-cells = <1>;
++		#size-cells = <0>;
 +	};
 +};
 +
 +&clk_hse {
-+	clock-frequency = <25000000>;
++	clock-frequency = <24000000>;
 +};
 +
 +&clk_lse {
@@ -266,24 +288,126 @@ index 0000000000..6b50bdd4ef
 +	pinctrl-0 = <&ethernet0_rgmii_pins_x>;
 +	pinctrl-1 = <&ethernet0_rgmii_sleep_pins_x>;
 +	pinctrl-names = "default", "sleep";
-+	phy-mode = "rgmii-id";
-+	phy-handle = <&phy0>;
-+	assigned-clocks = <&rcc ETHCK_K>, <&rcc PLL3_Q>;
-+	assigned-clock-parents = <&rcc PLL3_Q>;
-+	assigned-clock-rates = <125000000>; /* Clock PLL4 to 750Mhz in ATF/U-Boot */
++	phy-mode = "rgmii";
 +	st,eth-clk-sel;
 +
-+	mdio {
++	fixed-link {
++		speed = <1000>;
++		full-duplex;
++	};
++
++	mdio0: mdio {
 +		#address-cells = <1>;
 +		#size-cells = <0>;
 +		compatible = "snps,dwmac-mdio";
++	};
++};
 +
-+		phy0: ethernet-phy@8 {
-+			reg = <8>;
-+			interrupts-extended = <&gpiog 7 IRQ_TYPE_LEVEL_LOW>;
-+			reset-gpios = <&gpiog 10 GPIO_ACTIVE_LOW>;
-+			reset-assert-us = <10>;
-+			reset-deassert-us = <35>;
++&mdio0 {
++	/* All this DP83TG720R PHYs can't be probed before switch@0 is
++	 * probed so we need to use compatible with PHYid
++	 */
++	/* TI DP83TG720R */
++	t1_phy0: ethernet-phy@8 {
++		compatible = "ethernet-phy-id2000.a284";
++		reg = <8>;
++		interrupts-extended = <&gpioi 5 IRQ_TYPE_LEVEL_LOW>;
++		reset-gpios = <&gpioh 13 GPIO_ACTIVE_LOW>;
++		reset-assert-us = <10>;
++		reset-deassert-us = <35>;
++	};
++
++	/* TI DP83TG720R */
++	t1_phy1: ethernet-phy@c {
++		compatible = "ethernet-phy-id2000.a284";
++		reg = <12>;
++		interrupts-extended = <&gpioj 0 IRQ_TYPE_LEVEL_LOW>;
++		reset-gpios = <&gpioh 14 GPIO_ACTIVE_LOW>;
++		reset-assert-us = <10>;
++		reset-deassert-us = <35>;
++	};
++
++	/* TI DP83TG720R */
++	t1_phy2: ethernet-phy@4 {
++		compatible = "ethernet-phy-id2000.a284";
++		reg = <4>;
++		interrupts-extended = <&gpioi 7 IRQ_TYPE_LEVEL_LOW>;
++		reset-gpios = <&gpioh 15 GPIO_ACTIVE_LOW>;
++		reset-assert-us = <10>;
++		reset-deassert-us = <35>;
++	};
++
++	/* TI DP83TG720R */
++	t1_phy3: ethernet-phy@d {
++		compatible = "ethernet-phy-id2000.a284";
++		reg = <13>;
++		interrupts-extended = <&gpioi 15 IRQ_TYPE_LEVEL_LOW>;
++		reset-gpios = <&gpioi 13 GPIO_ACTIVE_LOW>;
++		reset-assert-us = <10000>;
++		reset-deassert-us = <1000>;
++	};
++};
++
++&spi_gpio {
++	switch@0 {
++		compatible = "nxp,sja1105q";
++		reg = <0>;
++		#address-cells = <1>;
++		#size-cells = <0>;
++		spi-max-frequency = <1000000>;
++		spi-rx-delay-us = <1>;
++		spi-tx-delay-us = <1>;
++		spi-cpha;
++
++		reset-gpios = <&gpioi 0 GPIO_ACTIVE_LOW>;
++
++		clocks = <&clock_sja1105>;
++
++		ports {
++			#address-cells = <1>;
++			#size-cells = <0>;
++
++			port@0 {
++				reg = <0>;
++				label = "t10";
++				phy-mode = "rgmii-id";
++				phy-handle = <&t1_phy0>;
++			};
++
++			port@1 {
++				reg = <1>;
++				label = "t11";
++				phy-mode = "rgmii-id";
++				phy-handle = <&t1_phy1>;
++			};
++
++			port@2 {
++				reg = <2>;
++				label = "t12";
++				phy-mode = "rgmii-id";
++				phy-handle = <&t1_phy2>;
++			};
++
++			port@3 {
++				reg = <3>;
++				label = "t13";
++				phy-mode = "rgmii-id";
++				phy-handle = <&t1_phy3>;
++			};
++
++			port@4 {
++				reg = <4>;
++				label = "cpu";
++				ethernet = <&ethernet0>;
++				phy-mode = "rgmii-id";
++				rx-internal-delay-ps = <2000>;
++				tx-internal-delay-ps = <2000>;
++
++				fixed-link {
++					speed = <1000>;
++					full-duplex;
++				};
++			};
 +		};
 +	};
 +};
@@ -314,19 +438,6 @@ index 0000000000..6b50bdd4ef
 +	/delete-property/dmas;
 +	/delete-property/dma-names;
 +	status = "okay";
-+};
-+
-+&uart4_pins_a {
-+	pins1 {
-+		pinmux = <STM32_PINMUX('B', 9, AF8)>; /* UART4_TX */
-+		bias-disable;
-+		drive-push-pull;
-+		slew-rate = <0>;
-+	};
-+	pins2 {
-+		pinmux = <STM32_PINMUX('B', 2, AF8)>; /* UART4_RX */
-+		bias-pull-up;
-+	};
 +};
 +
 +&pinctrl {
@@ -382,32 +493,31 @@ index 0000000000..6b50bdd4ef
 +	};
 +};
 diff --git a/arch/arm/mach-stm32mp/Kconfig b/arch/arm/mach-stm32mp/Kconfig
-index 524d282a1d..d9db74a576 100644
+index d9db74a576..5d60c79967 100644
 --- a/arch/arm/mach-stm32mp/Kconfig
 +++ b/arch/arm/mach-stm32mp/Kconfig
 @@ -43,10 +43,10 @@ config MACH_STM32MP15X_EV1
  
  config MACH_PROTONIC_STM32MP1
  	select ARCH_STM32MP157
--	bool "Protonic PRTT1L family of boards"
-+	bool "Protonic PRTT1L/MECIOx family of boards"
+-	bool "Protonic PRTT1L/MECIOx family of boards"
++	bool "Protonic PRTT1L/MECIOx/MECT1S family of boards"
  	help
--	  Builds all barebox-prtt1*.stm32 that can be deployed as SSBL
--	  on the respective PRTT1L family board
-+	  Builds all barebox-*.stm32 that can be deployed as SSBL
-+	  on the respective PRTT1L/MECIOx family board
+ 	  Builds all barebox-*.stm32 that can be deployed as SSBL
+-	  on the respective PRTT1L/MECIOx family board
++	  on the respective PRTT1L/MECIOx/MECT1S family board
  
  config MACH_PHYTEC_PHYCORE_STM32MP1
  	select ARCH_STM32MP157
 diff --git a/images/Makefile.stm32mp b/images/Makefile.stm32mp
-index cc70aee923..663c08a741 100644
+index 663c08a741..cb01eb2555 100644
 --- a/images/Makefile.stm32mp
 +++ b/images/Makefile.stm32mp
-@@ -38,6 +38,7 @@ $(call build_stm32mp_image, CONFIG_MACH_LXA_MC1, start_stm32mp157c_lxa_mc1, stm3
- $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_prtt1a, prtt1a)
+@@ -39,6 +39,7 @@ $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_prtt1a, prtt1a)
  $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_prtt1s, prtt1s)
  $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_prtt1c, prtt1c)
-+$(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_mecio1, mecio1)
+ $(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_mecio1, mecio1)
++$(call build_stm32mp_image, CONFIG_MACH_PROTONIC_STM32MP1, start_mect1s, mect1s)
  
  $(call build_stm32mp_image, CONFIG_MACH_SEEED_ODYSSEY, start_stm32mp157c_seeed_odyssey, stm32mp157c-seeed-odyssey)
  
