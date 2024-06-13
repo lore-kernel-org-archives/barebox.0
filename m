@@ -1,53 +1,56 @@
-Delivery-date: Thu, 13 Jun 2024 15:07:40 +0200
+Delivery-date: Thu, 13 Jun 2024 15:10:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHkB2-005NSw-1I
+	id 1sHkDh-005NhQ-2p
 	for lore@lore.pengutronix.de;
-	Thu, 13 Jun 2024 15:07:40 +0200
+	Thu, 13 Jun 2024 15:10:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHkB1-0005KV-Rt
-	for lore@pengutronix.de; Thu, 13 Jun 2024 15:07:40 +0200
+	id 1sHkDh-0005zE-Au
+	for lore@pengutronix.de; Thu, 13 Jun 2024 15:10:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=A6oY/Wcxq7o9R50/ThB5PjIqWHxV7NRbkY3P7rSHcgg=; b=2ReXObctcGRvhpxIMYzIJEtZ8d
-	/Wb8zObs1rOfZ1RdD2FgTQO8KVjrNnE+/+iUk/isWxuL7GLrL+ZkgdQizXg70xFD+S6k3xQdQRne3
-	bA7vmQx4gzqt2TfdxbShzyFRecu6e4TaUEdP0Ql43ua47OM6XaY/2R+d6HkLoccA3I01rmQOR7uzV
-	s4a/fJjMz1jgfVIQENogoyQfjrHowi70syZ06aIUrHZi53receqwOIu+pw0J9t8RrPGHkIIpmJ4oQ
-	AMGTYRKHmq7YIDP8T54JZJXEC2kYB1CO8hFa0FHdGuXOYGz39fMIfjgGvYmUWONnuqqoz545W1xAa
-	CsRG0FTA==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Ga2epwSQLp2EgKgPUJqZ2TkhCd9ySeQy3zDHrHY6qw4=; b=rvL81TeHwm6HwcWHTNquBc+GFm
+	DWFlq+w1hGMBoAFyIwqdZrO2Uf0Zv8WWhKJkwX9VyMYufuqxPvvhtyo7aBbMPO+FKGnPCri4Y8G8P
+	xc+ZqLF0vEMpPNW7F8obeu4clb5OWMl3CiJMM4+15OOGLoFRdZssQkJJ06G9bdRyOD+JSYQ1WNoHx
+	fY7Mf7xL3Okk0lVA4wxpYyvd5wV99zy2NLHqYG5HZVHdlk8xw9a2e83qrgVKzbzPBJT5y9kwPsvxZ
+	c3Jl+f4MV+gAzSlAlBJTiK1dq3o13lrecRxGcQ0mPZ71vySRc7zaNqy9FBlkWeUrzWu7Op2aFFapJ
+	xrtFMSxg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHkAW-0000000Gcq4-37R8;
-	Thu, 13 Jun 2024 13:07:08 +0000
+	id 1sHkDD-0000000GdR3-0bxM;
+	Thu, 13 Jun 2024 13:09:55 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHkAS-0000000Gcp6-2Tal
+	id 1sHkD9-0000000GdNj-2Biv
 	for barebox@lists.infradead.org;
-	Thu, 13 Jun 2024 13:07:06 +0000
+	Thu, 13 Jun 2024 13:09:52 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sHkAQ-0005DG-TB
-	for barebox@lists.infradead.org; Thu, 13 Jun 2024 15:07:02 +0200
+	id 1sHkD8-0005fE-EA
+	for barebox@lists.infradead.org; Thu, 13 Jun 2024 15:09:50 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 13 Jun 2024 15:06:58 +0200
-Message-Id: <20240613130659.165278-1-m.felsch@pengutronix.de>
+Date: Thu, 13 Jun 2024 15:09:39 +0200
+Message-Id: <20240613130944.264396-4-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240613130944.264396-1-m.felsch@pengutronix.de>
+References: <20240613130944.264396-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240613_060704_797451_F6700176 
-X-CRM114-Status: GOOD (  10.62  )
+X-CRM114-CacheID: sfid-20240613_060951_613154_62BCD61A 
+X-CRM114-Status: UNSURE (   8.52  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,43 +73,48 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 1/2] ARM: aarch64: align scr_el3 register setup with U-Boot
+Subject: [PATCH 4/9] hab: convert flags to use BIT() macro
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Currently we don't honor the setup done by the BootROM. Fix this by
-reading the scr_el3 first and update the corresponding bits afterwards.
-
-Furthermore also align the register settings:
- - Remove the register with (RW) setup since this is done by the EL3
-   firmware (TF-A).
- - Set IRQ/FIQ/EA bits to make it possible to handle early exceptions
-   within the PBL at EL3. Early exception handling requires platform
-   support since it involves exception table and DAIF handling.
+Make use of the BIT() macro to define the flags, no functional change.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
-v2:
-- adapt the commit message
+ include/hab.h | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
- arch/arm/cpu/lowlevel_64.S | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/arch/arm/cpu/lowlevel_64.S b/arch/arm/cpu/lowlevel_64.S
-index ed00c8c47057..dc76a9fcdac5 100644
---- a/arch/arm/cpu/lowlevel_64.S
-+++ b/arch/arm/cpu/lowlevel_64.S
-@@ -10,8 +10,8 @@ ENTRY(arm_cpu_lowlevel_init)
- 	switch_el x1, 3f, 2f, 1f
+diff --git a/include/hab.h b/include/hab.h
+index da79a8ffea36..2cef3841d149 100644
+--- a/include/hab.h
++++ b/include/hab.h
+@@ -7,6 +7,7 @@
+ #define __HABV4_H
  
- 3:
--	mov	x0, #1			/* Non-Secure EL0/1 */
--	orr	x0, x0, #(1 << 10)	/* 64-bit EL2 */
-+	mrs	x0, scr_el3
-+	orr	x0, x0, #0xf		/* SCR_EL3.NS|IRQ|FIQ|EA */
- 	msr	scr_el3, x0
- 	msr	cptr_el3, xzr
+ #include <errno.h>
++#include <linux/bits.h>
  
+ /* State definitions */
+ enum habv4_state {
+@@ -32,15 +33,15 @@ static inline int habv4_get_state(void)
+ #define SRK_HASH_SIZE	32
+ 
+ /* Force writing of key, even when a key is already written */
+-#define IMX_SRK_HASH_FORCE		(1 << 0)
++#define IMX_SRK_HASH_FORCE		BIT(0)
+ /* Permanently write fuses, without this flag only the shadow registers
+  * are written.
+  */
+-#define IMX_SRK_HASH_WRITE_PERMANENT	(1 << 1)
++#define IMX_SRK_HASH_WRITE_PERMANENT	BIT(1)
+ /* When writing the super root key hash, also burn the write protection
+  * fuses so that the key hash can not be modified.
+  */
+-#define IMX_SRK_HASH_WRITE_LOCK		(1 << 2)
++#define IMX_SRK_HASH_WRITE_LOCK		BIT(2)
+ 
+ bool imx_hab_srk_hash_valid(const void *buf);
+ int imx_hab_write_srk_hash(const void *buf, unsigned flags);
 -- 
 2.39.2
 
