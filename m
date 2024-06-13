@@ -1,66 +1,66 @@
-Delivery-date: Thu, 13 Jun 2024 09:19:06 +0200
+Delivery-date: Thu, 13 Jun 2024 09:22:45 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHeji-005FE3-2n
+	id 1sHenF-005FFh-2j
 	for lore@lore.pengutronix.de;
-	Thu, 13 Jun 2024 09:19:06 +0200
+	Thu, 13 Jun 2024 09:22:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHeji-0005MK-5U
-	for lore@pengutronix.de; Thu, 13 Jun 2024 09:19:06 +0200
+	id 1sHenF-0005oW-90
+	for lore@pengutronix.de; Thu, 13 Jun 2024 09:22:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wcBnR+HHvlAqq8D4vIBp2B+ic2XdeIpTytVb2LzV/7g=; b=J0ui3ikD6qC7OYRJ6wMkIq+pK+
-	DG+7wnWuo7SCJuWVsFi0UegGnNBLBe7QTETBOW68hCMnKE+dUuFTlDtE1iClBJ1olwIEioLtyc9hO
-	J/RDDVydkk78/9cpvLfitS/pUtGmmiMDKbkFDxQ0RyaHbFxPW8HlkqD7boYBla3KDlR91S/imiy/I
-	UKacgqSY4hh8pb+GA1vhm4TXnRDlmPUiakIqfGPbbo4oywz+Id1YCpCrBqaACrZMdnPrySI7QATQI
-	M8wpNSnODvkZBBqfG7nHP+l9NYUGD6ny3jyFJpNdwGDUNv2K2MIqn2cGNxpDbvpUu6Ffff3j2ofxG
-	JUkQNsIQ==;
+	bh=Q3S5SdzhTeSLzG3VauOu2ZjOqCofuOEbq43KB3S1Pgw=; b=VrKiFHZspnxuoe/KkTrPbPtPEr
+	AQUZ2R0wv1BZzT6AANGXZ+Jb2gIZqknQBj/MazuzkSPUMITnI1rnl5YY/DRWE6Bb6qf0xW7Ef06xf
+	FMVDpjsyzQuyhTLXpnBUWUT7e93lh0BO2UFo1opAH3cb/1wLbeXgalw1ZOYyP0NjsEhdlcq3uBoCH
+	py/4sS8oA169K1EdjzHzxITJ0jsntsOtVrCdOfgjgcuVgbwlfMWFgQs9v7NbjpqMlCbYxaMpvdKpv
+	uUx2fl6B+PsH2j64ZAko01lImBjnXbBGRzDJLogXGH+MzV1yv27CvVdmTbaE2tAtE3YGqPhJqkeNa
+	oOod4MqA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHejA-0000000FRNk-4A5c;
-	Thu, 13 Jun 2024 07:18:32 +0000
+	id 1sHemo-0000000FS5y-1wXm;
+	Thu, 13 Jun 2024 07:22:18 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHej7-0000000FRNI-1b8s
+	id 1sHemk-0000000FS3v-08iZ
 	for barebox@lists.infradead.org;
-	Thu, 13 Jun 2024 07:18:30 +0000
+	Thu, 13 Jun 2024 07:22:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sHej5-0005Jg-Ry; Thu, 13 Jun 2024 09:18:27 +0200
+	id 1sHemi-0005hV-IU; Thu, 13 Jun 2024 09:22:12 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sHej5-001yP3-F6; Thu, 13 Jun 2024 09:18:27 +0200
+	id 1sHemi-001yPR-5v; Thu, 13 Jun 2024 09:22:12 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sHej5-00BTZY-1I;
-	Thu, 13 Jun 2024 09:18:27 +0200
+	id 1sHemi-00BTks-0O;
+	Thu, 13 Jun 2024 09:22:12 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240611065923.2900168-1-a.fatoum@pengutronix.de>
-References: <20240611065923.2900168-1-a.fatoum@pengutronix.de>
-Message-Id: <171826310739.2735251.16861775276380736572.b4-ty@pengutronix.de>
-Date: Thu, 13 Jun 2024 09:18:27 +0200
+In-Reply-To: <20240611065811.2900029-1-a.fatoum@pengutronix.de>
+References: <20240611065811.2900029-1-a.fatoum@pengutronix.de>
+Message-Id: <171826333211.2735965.14219809320808592531.b4-ty@pengutronix.de>
+Date: Thu, 13 Jun 2024 09:22:12 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240613_001829_461179_FB7782FA 
-X-CRM114-Status: UNSURE (   8.56  )
+X-CRM114-CacheID: sfid-20240613_002214_183229_B1956F33 
+X-CRM114-Status: UNSURE (   8.25  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,42 +84,28 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 0/6] semihosting: extend support for ARM64, console
+Subject: Re: [PATCH 1/2] watchdog: bcm2835: add support for powering off
+ SoC
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 11 Jun 2024 08:59:17 +0200, Ahmad Fatoum wrote:
-> So far, we limited semihosting support to 32-bit ARM, but it's also
-> usable on ARM64 and even RISC-V.
+On Tue, 11 Jun 2024 08:58:10 +0200, Ahmad Fatoum wrote:
+> The watchdog peripheral on the Raspberry Pi can be used to shutdown by
+> writing a magic value that the firmware checks for and rebooting.
 > 
-> This series does the first step by making it compile for ARM64 and also
-> adds DEBUG_LL and console drivers.
+> This is useful to close an emulated Raspberry Pi in QEMU, so add
+> support.
 > 
-> Ahmad Fatoum (6):
->   ARM: lib32: semihosting: prepare for more general use
->   firmware: semihosting: add ARMv8-A semihosting support
->   firmware: semihosting: don't return error code from writec/write0
->   firmware: semihosting: translate return values in wrappers
->   ARM: semihosting: add DEBUG_LL implementation
->   serial: add semihosting console
 > 
 > [...]
 
 Applied, thanks!
 
-[1/6] ARM: lib32: semihosting: prepare for more general use
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b31058d41bb9 (link may not be stable)
-[2/6] firmware: semihosting: add ARMv8-A semihosting support
-      https://git.pengutronix.de/cgit/barebox/commit/?id=ea71e603e460 (link may not be stable)
-[3/6] firmware: semihosting: don't return error code from writec/write0
-      https://git.pengutronix.de/cgit/barebox/commit/?id=8f79ab770a4c (link may not be stable)
-[4/6] firmware: semihosting: translate return values in wrappers
-      https://git.pengutronix.de/cgit/barebox/commit/?id=5f87fad31eef (link may not be stable)
-[5/6] ARM: semihosting: add DEBUG_LL implementation
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0e87c409e354 (link may not be stable)
-[6/6] serial: add semihosting console
-      https://git.pengutronix.de/cgit/barebox/commit/?id=1d2df6d26c35 (link may not be stable)
+[1/2] watchdog: bcm2835: add support for powering off SoC
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ee835e946c91 (link may not be stable)
+[2/2] test: arm: describe Qemu Raspberry Pi 3b labgrid environment
+      https://git.pengutronix.de/cgit/barebox/commit/?id=ee90dc47d271 (link may not be stable)
 
 Best regards,
 -- 
