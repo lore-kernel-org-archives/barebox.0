@@ -3,53 +3,51 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHkB2-005NSm-0g
+	id 1sHkB2-005NSw-1I
 	for lore@lore.pengutronix.de;
 	Thu, 13 Jun 2024 15:07:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHkB1-0005KK-FM
+	id 1sHkB1-0005KV-Rt
 	for lore@pengutronix.de; Thu, 13 Jun 2024 15:07:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8LEdVyoXnyIfmoAn1rvyw3+QDG6GhoG+/1nqjMne9G8=; b=OPCidB51uTKcjZ6KTIl1bS/70E
-	N2vHA4Ihg0lj4sGSRmuexViHUkoL1ywhW1zo2GtI31G/5RQpQklkFcBO7/MgtzpVRDOqsk5vpAzrv
-	OK09cX+QUI5S3R2YAwDaIujtOJdRoCkkUrjTkcM7cdJtCIM/50JlNqCt0iNg8Ae2+0Mexq339g8Ue
-	UFoBcyD3YzlJiJtgzb4APXdiTT/RW4+/Qu5Po08sOJCp450FmJhwE4PjnRf0z6fN2gpDZ8PHD8+jG
-	9hdfFoi9ttmf9roZfISVVXS6TwJycNlTpL8r2i80Tr3W1WrPKJW6WiixJXjmgmm9uv/wlCTpV23+H
-	gwYGjOcQ==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=A6oY/Wcxq7o9R50/ThB5PjIqWHxV7NRbkY3P7rSHcgg=; b=2ReXObctcGRvhpxIMYzIJEtZ8d
+	/Wb8zObs1rOfZ1RdD2FgTQO8KVjrNnE+/+iUk/isWxuL7GLrL+ZkgdQizXg70xFD+S6k3xQdQRne3
+	bA7vmQx4gzqt2TfdxbShzyFRecu6e4TaUEdP0Ql43ua47OM6XaY/2R+d6HkLoccA3I01rmQOR7uzV
+	s4a/fJjMz1jgfVIQENogoyQfjrHowi70syZ06aIUrHZi53receqwOIu+pw0J9t8RrPGHkIIpmJ4oQ
+	AMGTYRKHmq7YIDP8T54JZJXEC2kYB1CO8hFa0FHdGuXOYGz39fMIfjgGvYmUWONnuqqoz545W1xAa
+	CsRG0FTA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHkAW-0000000Gcps-0p8s;
+	id 1sHkAW-0000000Gcq4-37R8;
 	Thu, 13 Jun 2024 13:07:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHkAS-0000000Gcp7-2TxO
+	id 1sHkAS-0000000Gcp6-2Tal
 	for barebox@lists.infradead.org;
 	Thu, 13 Jun 2024 13:07:06 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sHkAQ-0005DG-UO
+	id 1sHkAQ-0005DG-TB
 	for barebox@lists.infradead.org; Thu, 13 Jun 2024 15:07:02 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 13 Jun 2024 15:06:59 +0200
-Message-Id: <20240613130659.165278-2-m.felsch@pengutronix.de>
+Date: Thu, 13 Jun 2024 15:06:58 +0200
+Message-Id: <20240613130659.165278-1-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240613130659.165278-1-m.felsch@pengutronix.de>
-References: <20240613130659.165278-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240613_060704_795868_606DDE7B 
-X-CRM114-Status: GOOD (  17.70  )
+X-CRM114-CacheID: sfid-20240613_060704_797451_F6700176 
+X-CRM114-Status: GOOD (  10.62  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,202 +70,43 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH v2 2/2] ARM: i.MX8M: add support to handle ROM SError ERR050350
+Subject: [PATCH v2 1/2] ARM: aarch64: align scr_el3 register setup with U-Boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This ports U-Boot commit:
+Currently we don't honor the setup done by the BootROM. Fix this by
+reading the scr_el3 first and update the corresponding bits afterwards.
 
-| commit 2f3c92060dcd6bc9cfd3e2e344a3e1745ca39f09
-| Author: Peng Fan <peng.fan@nxp.com>
-| Date:   Thu Jul 9 13:39:26 2020 +0800
-|
-|     imx8m: workaround ROM serror
-|
-|     ROM SError happens on two cases:
-|
-|     1. ERR050342, on iMX8MQ HDCP enabled parts ROM writes to GPV1 register, but
-|     when ROM patch lock is fused, this write will cause SError.
-|
-|     2. ERR050350, on iMX8MQ/MM/MN, when the field return fuse is burned, HAB
-|     is field return mode, but the last 4K of ROM is still protected and cause
-|     SError.
-|
-|     Since ROM mask SError until ATF unmask it, so then ATF always meets the
-|     exception. This patch works around the issue in SPL by enabling SPL
-|     Exception vectors table and the SError exception, take the exception
-|     to eret immediately to clear the SError.
-|
-|     Signed-off-by: Ye Li <ye.li@nxp.com>
-|     Signed-off-by: Peng Fan <peng.fan@nxp.com>
-
-Other than U-Boot we don't support exceptions in PBL and therefore we
-can handle it simpler by installing an dummy exception table to handle
-the pending exception. Later on the TF-A overrides the dummy table.
+Furthermore also align the register settings:
+ - Remove the register with (RW) setup since this is done by the EL3
+   firmware (TF-A).
+ - Set IRQ/FIQ/EA bits to make it possible to handle early exceptions
+   within the PBL at EL3. Early exception handling requires platform
+   support since it involves exception table and DAIF handling.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
 v2:
-- Adapt the Makefile
-- Drop the ifdef guard from the errata.h
-- Make use of runtime_address() to apply the erratum always during soc
-  lowlevel init.
+- adapt the commit message
 
- arch/arm/mach-imx/Makefile                 |  2 ++
- arch/arm/mach-imx/cpu_init.c               | 12 ++++++-
- arch/arm/mach-imx/errata.c                 | 24 +++++++++++++
- arch/arm/mach-imx/imx8m_early_exceptions.S | 42 ++++++++++++++++++++++
- include/mach/imx/errata.h                  |  8 +++++
- 5 files changed, 87 insertions(+), 1 deletion(-)
- create mode 100644 arch/arm/mach-imx/errata.c
- create mode 100644 arch/arm/mach-imx/imx8m_early_exceptions.S
- create mode 100644 include/mach/imx/errata.h
+ arch/arm/cpu/lowlevel_64.S | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
-index cfd066c69de9..22ea48a83330 100644
---- a/arch/arm/mach-imx/Makefile
-+++ b/arch/arm/mach-imx/Makefile
-@@ -34,6 +34,8 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND) += imx-bbu-external-nand.o
- pbl-$(CONFIG_USB_GADGET_DRIVER_ARC_PBL) += imx-udc.o
- obj-$(CONFIG_RESET_IMX_SRC) += src.o
- lwl-y += cpu_init.o
-+lwl-y += errata.o
-+lwl-$(CONFIG_ARCH_IMX8M) += imx8m_early_exceptions.o
- pbl-y += xload-spi.o xload-common.o xload-imx-nand.o xload-gpmi-nand.o
- pbl-y += xload-qspi.o
- obj-pbl-$(CONFIG_ARCH_IMX9) += ele.o
-diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
-index c5a47d9b9154..aebbd3defaec 100644
---- a/arch/arm/mach-imx/cpu_init.c
-+++ b/arch/arm/mach-imx/cpu_init.c
-@@ -6,6 +6,7 @@
- #include <asm/errata.h>
- #include <linux/types.h>
- #include <linux/bitops.h>
-+#include <mach/imx/errata.h>
- #include <mach/imx/generic.h>
- #include <mach/imx/imx7-regs.h>
- #include <mach/imx/imx8mq-regs.h>
-@@ -75,17 +76,26 @@ void imx8mm_cpu_lowlevel_init(void)
- 	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_SCTR);
+diff --git a/arch/arm/cpu/lowlevel_64.S b/arch/arm/cpu/lowlevel_64.S
+index ed00c8c47057..dc76a9fcdac5 100644
+--- a/arch/arm/cpu/lowlevel_64.S
++++ b/arch/arm/cpu/lowlevel_64.S
+@@ -10,8 +10,8 @@ ENTRY(arm_cpu_lowlevel_init)
+ 	switch_el x1, 3f, 2f, 1f
  
- 	imx8m_cpu_lowlevel_init();
-+
-+	erratum_050350_imx8m();
- }
+ 3:
+-	mov	x0, #1			/* Non-Secure EL0/1 */
+-	orr	x0, x0, #(1 << 10)	/* 64-bit EL2 */
++	mrs	x0, scr_el3
++	orr	x0, x0, #0xf		/* SCR_EL3.NS|IRQ|FIQ|EA */
+ 	msr	scr_el3, x0
+ 	msr	cptr_el3, xzr
  
- void imx8mn_cpu_lowlevel_init(void)
- 	__alias(imx8mm_cpu_lowlevel_init);
- 
- void imx8mp_cpu_lowlevel_init(void)
--	__alias(imx8mm_cpu_lowlevel_init);
-+{
-+	/* ungate system counter */
-+	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_SCTR);
-+
-+	imx8m_cpu_lowlevel_init();
-+}
- 
- void imx8mq_cpu_lowlevel_init(void)
- {
- 	imx8m_cpu_lowlevel_init();
-+
-+	erratum_050350_imx8m();
- }
- 
- #define CCM_AUTHEN_TZ_NS	BIT(9)
-diff --git a/arch/arm/mach-imx/errata.c b/arch/arm/mach-imx/errata.c
-new file mode 100644
-index 000000000000..afab08667879
---- /dev/null
-+++ b/arch/arm/mach-imx/errata.c
-@@ -0,0 +1,24 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+
-+#include <asm/barebox-arm.h>
-+#include <asm/system.h>
-+#include <mach/imx/errata.h>
-+
-+#ifdef CONFIG_CPU_V8
-+
-+extern char early_imx8m_vectors[];
-+
-+void erratum_050350_imx8m(void)
-+{
-+	void *addr;
-+
-+	if (current_el() != 3)
-+		return;
-+
-+	addr = runtime_address(early_imx8m_vectors);
-+
-+	asm volatile("msr vbar_el3, %0" : : "r" (addr) : "cc");
-+	asm volatile("msr daifclr, #4;isb");
-+}
-+
-+#endif /* CONFIG_CPU_V8 */
-diff --git a/arch/arm/mach-imx/imx8m_early_exceptions.S b/arch/arm/mach-imx/imx8m_early_exceptions.S
-new file mode 100644
-index 000000000000..cd91e1a07b9c
---- /dev/null
-+++ b/arch/arm/mach-imx/imx8m_early_exceptions.S
-@@ -0,0 +1,42 @@
-+/*
-+ * (C) Copyright 2013
-+ * David Feng <fenghua@phytium.com.cn>
-+ *
-+ * SPDX-License-Identifier:	GPL-2.0+
-+ */
-+
-+#include <linux/linkage.h>
-+
-+#ifdef CONFIG_CPU_V8
-+
-+/*
-+ * Early exception vectors.
-+ */
-+	.align	11
-+	.globl	early_imx8m_vectors
-+early_imx8m_vectors:
-+	.align	7
-+		eret
-+
-+	.align	7
-+		eret
-+
-+	.align	7
-+		eret
-+
-+	.align	7
-+		eret
-+
-+	.align	7
-+		eret
-+
-+	.align	7
-+		eret
-+
-+	.align	7
-+		eret
-+
-+	.align	7
-+		eret
-+
-+#endif /* CONFIG_CPU_V8 */
-diff --git a/include/mach/imx/errata.h b/include/mach/imx/errata.h
-new file mode 100644
-index 000000000000..c3d28266dca4
---- /dev/null
-+++ b/include/mach/imx/errata.h
-@@ -0,0 +1,8 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef __MACH_IMX_ERRATA_H
-+#define __MACH_IMX_ERRATA_H
-+
-+void erratum_050350_imx8m(void);
-+
-+#endif /* __MACH_IMX_ERRATA_H */
 -- 
 2.39.2
 
