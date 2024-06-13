@@ -1,67 +1,66 @@
-Delivery-date: Thu, 13 Jun 2024 09:09:40 +0200
+Delivery-date: Thu, 13 Jun 2024 09:11:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHeaa-005F7V-1E
+	id 1sHeby-005F8E-06
 	for lore@lore.pengutronix.de;
-	Thu, 13 Jun 2024 09:09:40 +0200
+	Thu, 13 Jun 2024 09:11:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHeaZ-0004bd-RP
-	for lore@pengutronix.de; Thu, 13 Jun 2024 09:09:40 +0200
+	id 1sHebx-0004kM-Fl
+	for lore@pengutronix.de; Thu, 13 Jun 2024 09:11:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hhpV+6VWpAJCuXMVAUNsnQ5tbSjnQIvuQfBEbzmtHOQ=; b=VJ7eY7ow2AHzaTdBvR3AHFs6Ga
-	ipV34iK2WBv9FVWMlComyF0vjxOXWYpZ2BloZlP8p+QAklvm9PF9Ko9I22uQCZSJOyLJ2pYyxF7U1
-	yI/Ip2zKTSDJR5K0fjgRYGqbuUM032Tg3O2dUdHYBtJSqZS7RcMH1O5lcRCvcsdLlec9Yox71TCNN
-	Hwkc7y0s46IWFvtE4aOgRJyZo/picN3FrRGKQ8IoI7zAQLmuG8krEUnC6vGbC7bmzK6jBVNRRbtSk
-	yrxt/lD2kkISEoTdz2A1H/iFu6vKYFq77dr3H1GLXEG9hKFvmkC2B5GPMVscSw7PuP0MCt5s+ASeq
-	Eht0WUjg==;
+	bh=W9R6fZoS6r6uAwypW+xCo4lR/des/FVTW75GvDouroE=; b=hW56r0Z5F+7sT4NppiUzwP6FfA
+	+6MFm1mICMV8xXlBPSL9PPcPpLh+F0Se8FIaSVRlsWB+Mzmfl4/KCOlyTdDyCY+8nLiMWxNvIP/EM
+	R2rdkE2DEQ7KH8VitdV4PvBCA35cZ8Qet84XOruvJObK7AqXOfKh87+hFshPtjqNXFR/AbN4pZ6jH
+	m4K7api1Naktlc2HtY5pf8FomtURLQlqiFNfWZyTCJB8nx0yDuvmo4qQYSe+R8L9f2fCIo/q1KMqU
+	Bpva2UZQqe1hSZMhovTitliCRJ6J7tPOW35PgoTTsQVWlHoZoHHuPVV2QLrTH7RwW4fmZSOwdlyE9
+	vqu8JnwQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHea9-0000000FPxh-1miA;
-	Thu, 13 Jun 2024 07:09:13 +0000
+	id 1sHebS-0000000FQAM-1HtI;
+	Thu, 13 Jun 2024 07:10:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHea5-0000000FPx8-2EVz
+	id 1sHebO-0000000FQ8X-29dq
 	for barebox@lists.infradead.org;
-	Thu, 13 Jun 2024 07:09:11 +0000
+	Thu, 13 Jun 2024 07:10:32 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sHea4-0004YW-DR; Thu, 13 Jun 2024 09:09:08 +0200
+	id 1sHebK-0004er-9b; Thu, 13 Jun 2024 09:10:26 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sHea4-001yJp-0t; Thu, 13 Jun 2024 09:09:08 +0200
+	id 1sHebJ-001yJz-TS; Thu, 13 Jun 2024 09:10:25 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sHea3-00BSRg-35;
-	Thu, 13 Jun 2024 09:09:07 +0200
+	id 1sHebJ-00BTEA-2k;
+	Thu, 13 Jun 2024 09:10:25 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
-Cc: David Jander <david@protonic.nl>
-In-Reply-To: <20240612130256.3587709-1-o.rempel@pengutronix.de>
-References: <20240612130256.3587709-1-o.rempel@pengutronix.de>
-Message-Id: <171826254795.2730933.10680688244057722794.b4-ty@pengutronix.de>
-Date: Thu, 13 Jun 2024 09:09:07 +0200
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240611082829.2964046-1-a.fatoum@pengutronix.de>
+References: <20240611082829.2964046-1-a.fatoum@pengutronix.de>
+Message-Id: <171826262584.2733941.12963622491957486206.b4-ty@pengutronix.de>
+Date: Thu, 13 Jun 2024 09:10:25 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240613_000909_603394_18411344 
-X-CRM114-Status: UNSURE (   5.53  )
+X-CRM114-CacheID: sfid-20240613_001030_674875_161661B3 
+X-CRM114-Status: UNSURE (   5.64  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,22 +82,28 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] net: phy: dp83tg720: wake up PHYs in managed mode
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH] ARM: stm32mp: remove unused hardcoded MMIO address
+ constants
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 12 Jun 2024 15:02:56 +0200, Oleksij Rempel wrote:
-> In case this PHY is bootstrapped for managed mode, we need to manually
-> wake it. Otherwise no link will be detected.
+On Tue, 11 Jun 2024 10:28:29 +0200, Ahmad Fatoum wrote:
+> These address are not used and probably won't be soon, because they are
+> either probed from DT or handled in the secure world.
+> 
+> Given that they are needlessly generic (STM32_ instead of STM32MP1(5)),
+> let's drop them.
 > 
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] net: phy: dp83tg720: wake up PHYs in managed mode
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c9a2b7c74058 (link may not be stable)
+[1/1] ARM: stm32mp: remove unused hardcoded MMIO address constants
+      https://git.pengutronix.de/cgit/barebox/commit/?id=c7111ead0f54 (link may not be stable)
 
 Best regards,
 -- 
