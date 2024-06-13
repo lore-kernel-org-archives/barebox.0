@@ -1,67 +1,67 @@
-Delivery-date: Thu, 13 Jun 2024 09:08:12 +0200
+Delivery-date: Thu, 13 Jun 2024 09:09:40 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHeZA-005Etp-2u
+	id 1sHeaa-005F7V-1E
 	for lore@lore.pengutronix.de;
-	Thu, 13 Jun 2024 09:08:12 +0200
+	Thu, 13 Jun 2024 09:09:40 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHeZA-0004TK-Cp
-	for lore@pengutronix.de; Thu, 13 Jun 2024 09:08:12 +0200
+	id 1sHeaZ-0004bd-RP
+	for lore@pengutronix.de; Thu, 13 Jun 2024 09:09:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
 	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=RFgyNZaQVuLm08LjyXkmoqNDahnohNVo02/FFhXc1OY=; b=C3Ig+Yqaryi8PDbtbylueAzU/0
-	Yq7KP45bWBlt0+/lgeCXpxPfxgQXq8GTk+xTF7LF80BAiOYS9c5/CswzAhTyqoF0NtsLPm3MRwoPK
-	4i4f+zhxs96sYaYjqf5xte2zSod/JicgpjCZzeMJHi1YBhVjUaYvN2mBovEMj/EQ+AozLpqoFpMQp
-	5PxZtelYXq5+jIRgVqjkamJgWFGbqxuKaG/LHAJI52hrUmuUBKDboEU8xfH12/yATnZmr8RfjDSrF
-	NacELWxlvago+njPvBHR+OqM04xa1xdCsTsCCjTCSBnLvS2fOvvF7zAM9zKDOhVG2uvqsCjWaGD1l
-	yDlYFNoQ==;
+	bh=hhpV+6VWpAJCuXMVAUNsnQ5tbSjnQIvuQfBEbzmtHOQ=; b=VJ7eY7ow2AHzaTdBvR3AHFs6Ga
+	ipV34iK2WBv9FVWMlComyF0vjxOXWYpZ2BloZlP8p+QAklvm9PF9Ko9I22uQCZSJOyLJ2pYyxF7U1
+	yI/Ip2zKTSDJR5K0fjgRYGqbuUM032Tg3O2dUdHYBtJSqZS7RcMH1O5lcRCvcsdLlec9Yox71TCNN
+	Hwkc7y0s46IWFvtE4aOgRJyZo/picN3FrRGKQ8IoI7zAQLmuG8krEUnC6vGbC7bmzK6jBVNRRbtSk
+	yrxt/lD2kkISEoTdz2A1H/iFu6vKYFq77dr3H1GLXEG9hKFvmkC2B5GPMVscSw7PuP0MCt5s+ASeq
+	Eht0WUjg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHeYk-0000000FPi3-3ihP;
-	Thu, 13 Jun 2024 07:07:46 +0000
+	id 1sHea9-0000000FPxh-1miA;
+	Thu, 13 Jun 2024 07:09:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHeYg-0000000FPhO-2Zh0
+	id 1sHea5-0000000FPx8-2EVz
 	for barebox@lists.infradead.org;
-	Thu, 13 Jun 2024 07:07:44 +0000
+	Thu, 13 Jun 2024 07:09:11 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sHeYf-0004NK-EG; Thu, 13 Jun 2024 09:07:41 +0200
+	id 1sHea4-0004YW-DR; Thu, 13 Jun 2024 09:09:08 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sHeYe-001yJj-Tp; Thu, 13 Jun 2024 09:07:40 +0200
+	id 1sHea4-001yJp-0t; Thu, 13 Jun 2024 09:09:08 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sHeYe-00BSIz-2m;
-	Thu, 13 Jun 2024 09:07:40 +0200
+	id 1sHea3-00BSRg-35;
+	Thu, 13 Jun 2024 09:09:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Oleksij Rempel <o.rempel@pengutronix.de>
 Cc: David Jander <david@protonic.nl>
-In-Reply-To: <20240612130509.3697488-1-o.rempel@pengutronix.de>
-References: <20240612130509.3697488-1-o.rempel@pengutronix.de>
-Message-Id: <171826246085.2730396.6391644887129239703.b4-ty@pengutronix.de>
-Date: Thu, 13 Jun 2024 09:07:40 +0200
+In-Reply-To: <20240612130256.3587709-1-o.rempel@pengutronix.de>
+References: <20240612130256.3587709-1-o.rempel@pengutronix.de>
+Message-Id: <171826254795.2730933.10680688244057722794.b4-ty@pengutronix.de>
+Date: Thu, 13 Jun 2024 09:09:07 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240613_000742_690362_02A3CED4 
-X-CRM114-Status: UNSURE (   4.69  )
+X-CRM114-CacheID: sfid-20240613_000909_603394_18411344 
+X-CRM114-Status: UNSURE (   5.53  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,24 +83,22 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: Re: [PATCH v1 1/2] arm: boards: Add support for Protonic MECIO1
- board
+	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] net: phy: dp83tg720: wake up PHYs in managed mode
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Wed, 12 Jun 2024 15:05:08 +0200, Oleksij Rempel wrote:
+On Wed, 12 Jun 2024 15:02:56 +0200, Oleksij Rempel wrote:
+> In case this PHY is bootstrapped for managed mode, we need to manually
+> wake it. Otherwise no link will be detected.
 > 
-
+> 
 
 Applied, thanks!
 
-[1/2] arm: boards: Add support for Protonic MECIO1 board
-      https://git.pengutronix.de/cgit/barebox/commit/?id=979f8397a217 (link may not be stable)
-[2/2] arm: boards: Add support for Protonic MECT1S board
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b9254aa9f983 (link may not be stable)
+[1/1] net: phy: dp83tg720: wake up PHYs in managed mode
+      https://git.pengutronix.de/cgit/barebox/commit/?id=c9a2b7c74058 (link may not be stable)
 
 Best regards,
 -- 
