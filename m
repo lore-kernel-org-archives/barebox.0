@@ -1,55 +1,53 @@
-Delivery-date: Thu, 13 Jun 2024 15:10:29 +0200
+Delivery-date: Thu, 13 Jun 2024 15:10:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHkDk-005NiW-38
+	id 1sHkDn-005Nis-0G
 	for lore@lore.pengutronix.de;
-	Thu, 13 Jun 2024 15:10:28 +0200
+	Thu, 13 Jun 2024 15:10:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sHkDk-00060c-9f
-	for lore@pengutronix.de; Thu, 13 Jun 2024 15:10:28 +0200
+	id 1sHkDm-00061p-8p
+	for lore@pengutronix.de; Thu, 13 Jun 2024 15:10:30 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=P2fd4lxvYbAOzXnLRco51HrapC6i99EsBlnELVtUPcU=; b=vBq3yk/aP/BcB6FNmFzJi9Q3Zo
-	3MUVZh0F9yEZSeyRhn0AvRj48/+J18BMf9rbEXJPFxMqVCNKaosSBuotrzbbkkWu+Bzl4hmLLyRsz
-	7yC69JJ5yfR/81fnNy8SerZhsmeihwEA9f8fVpokZNAlgNAyxrBZZJVTKTjeU9CWfHVv51g4NKnEP
-	D1imdsF3jHROBv0IoQQT7jdp8TDkd8E+0FSyD4xmoIpMubcRJzBW24UNm7wbscJHJzp6AehilGGxr
-	V+XxuVskFWYoCNT3QzW5jNqD1h1RQ/YTHvaFOTvU7I7hw412+6RHdWs98dv0new8H/S/3GagjDlUC
-	W8NXCcpg==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=/+k0Twt5pTccsZ6kw2W0xCsYAZCwxulXrsqSZSXZNtU=; b=IPDbTfg7Al2dsevLZfBc/1daB4
+	WmRHj1oSDxajo46/wvGAdwtV6bdYbeJaPZyfVrqBbb9ismhTeCWIN300aw/8b7zOr9VMRn4u9kWHY
+	yeNlsiYiQ9D40oTaVPplKNJISgXn3BExgf+khHfxg7RBOybDYcly7uv9IPxmqhxI2i9J+cCNDHtVZ
+	uAptqychFDP+ZQNDQDdgs4A8C16k0ZsxmFlKvTkRlGAAusmHAGs1dAFZvUPzzl2WnKmtywuIRikdk
+	jzsWGl7vjYMewXu0UQlL7BLO2dF40eNTtQJs6/mcNwAiSVpO9LFg5d8MY0XKnjCMnLvuDgnRNL4Qf
+	Cjp21NLA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHkDF-0000000GdSq-3w4r;
-	Thu, 13 Jun 2024 13:09:57 +0000
+	id 1sHkDI-0000000GdVN-3oC3;
+	Thu, 13 Jun 2024 13:10:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sHkD9-0000000GdNi-2Bzt
+	id 1sHkD9-0000000GdNf-2BtO
 	for barebox@lists.infradead.org;
-	Thu, 13 Jun 2024 13:09:53 +0000
+	Thu, 13 Jun 2024 13:09:54 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sHkD8-0005fE-DF
+	id 1sHkD8-0005fE-BE
 	for barebox@lists.infradead.org; Thu, 13 Jun 2024 15:09:50 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Thu, 13 Jun 2024 15:09:38 +0200
-Message-Id: <20240613130944.264396-3-m.felsch@pengutronix.de>
+Date: Thu, 13 Jun 2024 15:09:36 +0200
+Message-Id: <20240613130944.264396-1-m.felsch@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240613130944.264396-1-m.felsch@pengutronix.de>
-References: <20240613130944.264396-1-m.felsch@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240613_060951_620181_A738D56F 
-X-CRM114-Status: GOOD (  11.79  )
+X-CRM114-CacheID: sfid-20240613_060951_645035_AFE24E4F 
+X-CRM114-Status: GOOD (  12.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -72,110 +70,106 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 3/9] nvmem: ocotp: add support to query the field-return sticky bit
+Subject: [PATCH 1/9] i.MX: HABv4: fix SRK_LOCK for i.MX8M devices
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The i.MX8M* devices do have an sticky bit which indicates if the
-field-return fuse can be written. Add support to query the lock bit.
+All current known i.MX8M devices: i.MX8MQ, i.MX8MP, i.MX8MN, i.MX8MM use
+an other fuse to lock the SRK hash. Fix this by refactoring
+imx_hab_write_srk_hash_ocotp() and make the lock fusing device specific.
 
-To make it easy to read align the STICKY bit definitions as well.
-
+Fixes: 6c4d5bb5acfe ("i.MX: HABv4: implement interface for i.MX8MQ")
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/nvmem/ocotp.c    | 24 ++++++++++++++++++++++++
- include/mach/imx/ocotp.h |  1 +
- 2 files changed, 25 insertions(+)
+ drivers/hab/hab.c                | 34 +++++++++++++++++++++++++++++---
+ include/mach/imx/ocotp-fusemap.h |  1 +
+ 2 files changed, 32 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index c0517980fb18..87cc95a636f3 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -91,6 +91,7 @@
- #define OCOTP_TIMING_WAIT		GENMASK(27, 22)
- 
- #define OCOTP_SW_STICKY_SRK_REVOKE_LOCK		BIT(1)
-+#define OCOTP_SW_STICKY_FIELD_RETURN_LOCK	BIT(2)
- 
- #define OCOTP_READ_CTRL_READ_FUSE	BIT(1)
- 
-@@ -152,6 +153,7 @@ struct imx_ocotp_data {
- 	int (*fuse_blow)(struct ocotp_priv *priv, u32 addr, u32 value);
- 	bool (*srk_revoke_locked)(struct ocotp_priv *priv);
- 	void (*lock_srk_revoke)(struct ocotp_priv *priv);
-+	bool (*field_return_locked)(struct ocotp_priv *priv);
- 	u8  mac_offsets[MAX_MAC_OFFSETS];
- 	u8  mac_offsets_num;
- 	struct imx8m_featctrl_data *feat;
-@@ -292,6 +294,11 @@ static void imx8m_lock_srk_revoke(struct ocotp_priv *priv)
- 	writel(val, priv->base + OCOTP_SW_STICKY);
+diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
+index ed091058d8fb..28a091841a69 100644
+--- a/drivers/hab/hab.c
++++ b/drivers/hab/hab.c
+@@ -128,7 +128,7 @@ static int imx_hab_read_srk_hash_ocotp(u8 *__srk)
+ 	return 0;
  }
  
-+static bool imx8m_field_return_locked(struct ocotp_priv *priv)
-+{
-+	return readl(priv->base + OCOTP_SW_STICKY) & OCOTP_SW_STICKY_FIELD_RETURN_LOCK;
+-static int imx_hab_write_srk_hash_ocotp(const u8 *__newsrk, unsigned flags)
++static int imx_hab_write_srk_hash_ocotp(const u8 *__newsrk)
+ {
+ 	u32 *newsrk = (u32 *)__newsrk;
+ 	int ret, i;
+@@ -139,6 +139,17 @@ static int imx_hab_write_srk_hash_ocotp(const u8 *__newsrk, unsigned flags)
+ 			return ret;
+ 	}
+ 
++	return 0;
 +}
 +
- static int imx6_fuse_read_addr(struct ocotp_priv *priv, u32 addr, u32 *pdata)
- {
- 	const u32 bm_ctrl_error = priv->data->ctrl->bm_error;
-@@ -674,6 +681,20 @@ int imx_ocotp_lock_srk_revoke(void)
- 	return -ENOSYS;
- }
- 
-+int imx_ocotp_field_return_locked(void)
++static int imx6_hab_write_srk_hash_ocotp(const u8 *newsrk, unsigned flags)
 +{
 +	int ret;
 +
-+	ret = imx_ocotp_ensure_probed();
++	ret = imx_hab_write_srk_hash_ocotp(newsrk);
 +	if (ret)
 +		return ret;
 +
-+	if (imx_ocotp->data->field_return_locked)
-+		return imx_ocotp->data->field_return_locked(imx_ocotp);
+ 	if (flags & IMX_SRK_HASH_WRITE_LOCK) {
+ 		ret = imx_ocotp_write_field(OCOTP_SRK_LOCK, 1);
+ 		if (ret < 0)
+@@ -148,6 +159,23 @@ static int imx_hab_write_srk_hash_ocotp(const u8 *__newsrk, unsigned flags)
+ 	return 0;
+ }
+ 
++static int imx8m_hab_write_srk_hash_ocotp(const u8 *newsrk, unsigned flags)
++{
++	int ret;
 +
-+	return -ENOSYS;
++	ret = imx_hab_write_srk_hash_ocotp(newsrk);
++	if (ret)
++		return ret;
++
++	if (flags & IMX_SRK_HASH_WRITE_LOCK) {
++		ret = imx_ocotp_write_field(MX8M_OCOTP_SRK_LOCK, 1);
++		if (ret < 0)
++			return ret;
++	}
++
++	return 0;
 +}
 +
- static void imx_ocotp_format_mac(u8 *dst, const u8 *src,
- 				 enum imx_ocotp_format_mac_direction dir)
+ static int imx_hab_permanent_write_enable_ocotp(int enable)
  {
-@@ -1036,6 +1057,7 @@ static struct imx_ocotp_data imx8mp_ocotp_data = {
- 	.fuse_read = imx6_fuse_read_addr,
- 	.srk_revoke_locked = imx8m_srk_revoke_locked,
- 	.lock_srk_revoke = imx8m_lock_srk_revoke,
-+	.field_return_locked = imx8m_field_return_locked,
- 	.ctrl = &ocotp_ctrl_reg_8mp,
+ 	return imx_ocotp_permanent_write(enable);
+@@ -222,7 +250,7 @@ static struct imx_hab_ops imx_hab_ops_iim = {
  };
  
-@@ -1067,6 +1089,7 @@ static struct imx_ocotp_data imx8mm_ocotp_data = {
- 	.fuse_read = imx6_fuse_read_addr,
- 	.srk_revoke_locked = imx8m_srk_revoke_locked,
- 	.lock_srk_revoke = imx8m_lock_srk_revoke,
-+	.field_return_locked = imx8m_field_return_locked,
- 	.feat = &imx8mm_featctrl_data,
- 	.ctrl = &ocotp_ctrl_reg_default,
+ static struct imx_hab_ops imx6_hab_ops_ocotp = {
+-	.write_srk_hash = imx_hab_write_srk_hash_ocotp,
++	.write_srk_hash = imx6_hab_write_srk_hash_ocotp,
+ 	.read_srk_hash =  imx_hab_read_srk_hash_ocotp,
+ 	.lockdown_device = imx6_hab_lockdown_device_ocotp,
+ 	.device_locked_down = imx6_hab_device_locked_down_ocotp,
+@@ -231,7 +259,7 @@ static struct imx_hab_ops imx6_hab_ops_ocotp = {
  };
-@@ -1087,6 +1110,7 @@ static struct imx_ocotp_data imx8mn_ocotp_data = {
- 	.fuse_read = imx6_fuse_read_addr,
- 	.srk_revoke_locked = imx8m_srk_revoke_locked,
- 	.lock_srk_revoke = imx8m_lock_srk_revoke,
-+	.field_return_locked = imx8m_field_return_locked,
- 	.feat = &imx8mn_featctrl_data,
- 	.ctrl = &ocotp_ctrl_reg_default,
- };
-diff --git a/include/mach/imx/ocotp.h b/include/mach/imx/ocotp.h
-index 7a516ff789b9..e6f62a9da48c 100644
---- a/include/mach/imx/ocotp.h
-+++ b/include/mach/imx/ocotp.h
-@@ -38,6 +38,7 @@ int imx_ocotp_permanent_write(int enable);
- int imx_ocotp_sense_enable(bool enable);
- int imx_ocotp_srk_revoke_locked(void);
- int imx_ocotp_lock_srk_revoke(void);
-+int imx_ocotp_field_return_locked(void);
  
- static inline u64 imx_ocotp_read_uid(void __iomem *ocotp)
- {
+ static struct imx_hab_ops imx8m_hab_ops_ocotp = {
+-	.write_srk_hash = imx_hab_write_srk_hash_ocotp,
++	.write_srk_hash = imx8m_hab_write_srk_hash_ocotp,
+ 	.read_srk_hash =  imx_hab_read_srk_hash_ocotp,
+ 	.lockdown_device = imx8m_hab_lockdown_device_ocotp,
+ 	.device_locked_down = imx8m_hab_device_locked_down_ocotp,
+diff --git a/include/mach/imx/ocotp-fusemap.h b/include/mach/imx/ocotp-fusemap.h
+index 823273895502..c4f94e61e8f8 100644
+--- a/include/mach/imx/ocotp-fusemap.h
++++ b/include/mach/imx/ocotp-fusemap.h
+@@ -54,6 +54,7 @@
+ #define OCOTP_GP2			(OCOTP_WORD(0x670) | OCOTP_BIT(0) | OCOTP_WIDTH(32))
+ #define OCOTP_PAD_SETTINGS		(OCOTP_WORD(0x6d0) | OCOTP_BIT(0) | OCOTP_WIDTH(6))
+ /* i.MX8M moved the security related fuses */
++#define MX8M_OCOTP_SRK_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(9) | OCOTP_WIDTH(1))
+ #define MX8M_OCOTP_SEC_CONFIG_1		(OCOTP_WORD(0x470) | OCOTP_BIT(25) | OCOTP_WIDTH(1))
+ #define MX8MQ_OCOTP_DIR_BT_DIS		(OCOTP_WORD(0x470) | OCOTP_BIT(27) | OCOTP_WIDTH(1))
+ 
 -- 
 2.39.2
 
