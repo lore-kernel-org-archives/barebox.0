@@ -3,55 +3,54 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sJAfv-007Yez-1z
+	id 1sJAfv-007YfE-2E
 	for lore@lore.pengutronix.de;
 	Mon, 17 Jun 2024 13:37:27 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sJAfu-00079H-Pl
+	id 1sJAfu-00079M-Ua
 	for lore@pengutronix.de; Mon, 17 Jun 2024 13:37:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=SJWdZ7z17GtgQel23uqteLO7HUyp2BySB9LYbl2nQxA=; b=toOUe3QknscsqY
-	qyz75rYy6vN13/WtkBWqj2VglgnQbD2mGzdZnrxMc3XoECriEOlCEGh0kKAgZWLuc544ushBV2+qd
-	dQFMvxN605Km4BpE+oNRJF4DDt/pyDi1XXbHbLwJ1VHAvVenKcRwAU3nxTfGQr8AKKo+/sLPhmbkU
-	uUwDqgo2FmWxB8f5mZr/o2TRkxzLocfxzvSmJYnIVs8GYIbO1ZemHpNdL8KAwDpUM5tFcLOP1qgKU
-	5f08aznugN33wQ7DzW/wnQr39bdaYyd/ZTRlJFvEWrh0G9ITQrXjXwbyZTZX5i5ONx1UAyYPIz30T
-	vb8MpZgxoNYC6H/zaNuA==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ByV9UMVOpQPlbx6ZYNIJu8H0QPajOt7lbWu4u/kif60=; b=yQBqFQbVSpO66c0Z2ixJDT0ApX
+	8FR6/jYyxarT8/lNMiniLQGNZWQ1eVPIApsW1QM80dWIu5pMNInIJiC8JS3YKEa+66g5E+MdB1KOR
+	ErkPbdQmH0RaIy/ZlFPiXxOV6I+IYr93hP9gHxsWCCesieIRqpphQJ3KKzvJ5R3Y/mfS3ME3Ay4TV
+	C9gCLAp0BBcf9gXHuCnP3nmIM8MRvYY2/OgQ58teHLZ8NrRWXGVaGUtm3RfmQqxUqywJoDb/DN/o5
+	03FIZ2vegwxIhhz9skvT3NJIS/SG/fDQ55UEh9bDlLBnhOQdrAQM7Q/z80lEBoFm8giBOeaBjW1TI
+	nrpl+bwQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sJAfG-0000000AVcT-28Ej;
-	Mon, 17 Jun 2024 11:36:46 +0000
+	id 1sJAfJ-0000000AVep-0QLj;
+	Mon, 17 Jun 2024 11:36:49 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sJAfA-0000000AVW8-0wm9
+	id 1sJAfA-0000000AVW9-0wfQ
 	for barebox@lists.infradead.org;
 	Mon, 17 Jun 2024 11:36:41 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1sJAf7-0006ab-Kw; Mon, 17 Jun 2024 13:36:37 +0200
+	id 1sJAf7-0006ab-OI; Mon, 17 Jun 2024 13:36:37 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 17 Jun 2024 13:36:22 +0200
-Message-Id: <20240617-v2024-05-0-topic-socfpga-arria10-xloader-v1-0-48a6eba4bb5e@pengutronix.de>
+Date: Mon, 17 Jun 2024 13:36:23 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIALYfcGYC/x2NQQqDMBAAvyJ7dmETU6t+pfSwxNUuFBM2RQTx7
- 017m7nMnFDEVApMzQkmuxZNWxXXNhBfvK2COlcHTz5Q7+64/wjphoSflDViSXHJKyObKTvC451
- 4FkNhCX7suy4MDDWXTRY9/qvH87q+qfRc/3oAAAA=
+Message-Id: <20240617-v2024-05-0-topic-socfpga-arria10-xloader-v1-1-48a6eba4bb5e@pengutronix.de>
+References: <20240617-v2024-05-0-topic-socfpga-arria10-xloader-v1-0-48a6eba4bb5e@pengutronix.de>
+In-Reply-To: <20240617-v2024-05-0-topic-socfpga-arria10-xloader-v1-0-48a6eba4bb5e@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.13.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240617_043640_347941_34F69EE5 
-X-CRM114-Status: UNSURE (   5.66  )
+X-CRM114-CacheID: sfid-20240617_043640_349846_36AAD9AD 
+X-CRM114-Status: UNSURE (   6.14  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -75,53 +74,41 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 00/14] ARM: SoCFPGA: arria10: clean up early bitstream
- loading
+Subject: [PATCH 01/14] ARM: arria10: system-manager: add handoff registers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This series cleans up/reworks the early bitstream loading in the Arria10
-xloader code.
-      
-Some useful defines are added on the way.
-      
+The isw handoff registers are free to use for the bootloader. Add their
+offsets for lowlevel debugging purposes.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
-Steffen Trumtrar (14):
-      ARM: arria10: system-manager: add handoff registers
-      ARM: Arria10: reset manager: document reset source
-      ARM: socfpga: Arria10: PE1: remove arm_cpu_lowlevel_init
-      ARM: arria10: reset-manager: don't touch l4 wdog
-      ARM: Arria10: PE1: disable l4wd0 in bringup
-      ARM: Arria10: xload: rework __arria10_load_fpga
-      ARM: arria10: xload: fix __arria10_load_fpga
-      ARM: Arria10: xload: kick watchdog
-      ARM: arria10: mark image in OCRAM as valid
-      ARM: Arria10: arria10_finish_io: remove unused param
-      ARM: Arria10: xload: remove useless writel
-      ARM: Arria10: xload: refactor wait loops
-      ARM: Arria10: xload: reduce timeout on condone
-      ARM: arria10-xload: rework broken bitstream handling
+ include/mach/socfpga/arria10-system-manager.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
- arch/arm/boards/enclustra-aa1/lowlevel.c      |   7 +-
- arch/arm/boards/reflex-achilles/lowlevel.c    |   4 +-
- arch/arm/mach-socfpga/arria10-generic.c       |   4 +
- arch/arm/mach-socfpga/arria10-init.c          |   4 +-
- arch/arm/mach-socfpga/arria10-reset-manager.c |   9 ++-
- arch/arm/mach-socfpga/arria10-xload.c         | 106 ++++++++++++++------------
- include/mach/socfpga/arria10-fpga.h           |   1 +
- include/mach/socfpga/arria10-reset-manager.h  |  31 ++++++++
- include/mach/socfpga/arria10-system-manager.h |  12 ++-
- include/mach/socfpga/generic.h                |  16 +++-
- 10 files changed, 131 insertions(+), 63 deletions(-)
----
-base-commit: bafdf4b35d777d159ac4058efc86d36622ce5ccf
-change-id: 20240617-v2024-05-0-topic-socfpga-arria10-xloader-eae42963348a
+diff --git a/include/mach/socfpga/arria10-system-manager.h b/include/mach/socfpga/arria10-system-manager.h
+index f92025ae32..536baf6bc3 100644
+--- a/include/mach/socfpga/arria10-system-manager.h
++++ b/include/mach/socfpga/arria10-system-manager.h
+@@ -53,6 +53,15 @@
+ #define ARRIA10_SYSMGR_FPGA2SOC_CTRL		(ARRIA10_SYSMGR_ADDR + 0xd8)
+ 
+ #define ARRIA10_SYSMGR_ROM_INITSWLASTLD		(ARRIA10_SYSMGR_ADDR + 0x10)
++#define ARRIA10_SYSMGR_ROM_ISW0			(ARRIA10_SYSMGR_ADDR + 0x230)
++#define ARRIA10_SYSMGR_ROM_ISW1			(ARRIA10_SYSMGR_ADDR + 0x234)
++#define ARRIA10_SYSMGR_ROM_ISW2			(ARRIA10_SYSMGR_ADDR + 0x238)
++#define ARRIA10_SYSMGR_ROM_ISW3			(ARRIA10_SYSMGR_ADDR + 0x23c)
++#define ARRIA10_SYSMGR_ROM_ISW4			(ARRIA10_SYSMGR_ADDR + 0x240)
++#define ARRIA10_SYSMGR_ROM_ISW5			(ARRIA10_SYSMGR_ADDR + 0x244)
++#define ARRIA10_SYSMGR_ROM_ISW6			(ARRIA10_SYSMGR_ADDR + 0x248)
++#define ARRIA10_SYSMGR_ROM_ISW7			(ARRIA10_SYSMGR_ADDR + 0x24c)
++
+ 
+ 
+ #define ARRIA10_SYSMGR_BOOTINFO_BSEL_MASK	0x00007000
 
-Best regards,
 -- 
-Steffen Trumtrar <s.trumtrar@pengutronix.de>
+2.43.2
 
 
 
