@@ -1,16 +1,16 @@
-Delivery-date: Mon, 17 Jun 2024 13:37:27 +0200
+Delivery-date: Mon, 17 Jun 2024 13:37:28 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sJAfv-007YfV-2l
+	id 1sJAfw-007Yfp-0I
 	for lore@lore.pengutronix.de;
-	Mon, 17 Jun 2024 13:37:27 +0200
+	Mon, 17 Jun 2024 13:37:28 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sJAfu-00078V-7D
+	id 1sJAfv-00079O-91
 	for lore@pengutronix.de; Mon, 17 Jun 2024 13:37:27 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,40 +18,39 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=K8kKNZO3IOO3qpvv9ilbJ/coP/YPCYgRoRCyXn4hJ6s=; b=0Plb4tu+zSxzPp/l7sJXp5YDbI
-	T5fNSZZSrGoMuWMcfmCugr8VHdYSyNtBTwIzMYKAJ2z1MdbY34ijzjHpcGrAdJVV/hREuwmJZgAYj
-	mqCF1H4rEOnJ3kV9us8/6HaAGBIuerHP1f0y/VfGddWMws0jnmRqJCC6PSR+Xb7FjBY+ZF2IIJrQD
-	cL3s/B6Xutx9TxMcz68F5HaKJ7gQxuFKLfiYhQTcdAh904MuBL+jXsELyatguHm+lNvPBtiT2hLWZ
-	Bt8YNsOq8ch2EZ0DXvWksjwp+Kft5PWrAgqJZmgRWCMH9X+u0g4WX2FL9f1Tnupuj/CcB/IEuQCi3
-	Yo6z+hgw==;
+	bh=U8Loij0ggguKq6sbj/bEkmXGz88P/C40r+J3+IrtUbQ=; b=KHQM1LtgGgzUkSutH7+U3+Nl3G
+	Jo/84TiV0kmo+3O7eZqTDjdOlnbB3cuhIdDdhTdjn/l2Z9YKMAaFGIXpMyOQNLguIIgg/hIrtkaKc
+	KsyhJHamAwHB61PYE0yGxpizNPqyNiTr0WVoG3E+06ztiHPUvdjByPZpYupKPALH1h9etwVT32Vd0
+	mHtNgbkK9l0m8xd24Q5ZPT77qaOr3in6gz/QMRjc0JROp+7LeNihmOQoLHWM7711I26i/kRtzvTa+
+	Mc61syTEpv8BB9GYF27ZGr/KGzLuYS3Z/IvXzQC3mEI1muQTw+owb/damB+8d7/eilzwLdeo61jDt
+	T2n3Vk9w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sJAfK-0000000AVfW-34kC;
-	Mon, 17 Jun 2024 11:36:50 +0000
+	id 1sJAfL-0000000AVg2-2wR2;
+	Mon, 17 Jun 2024 11:36:51 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sJAfA-0000000AVWD-2UPZ
+	id 1sJAfA-0000000AVWC-2AU3
 	for barebox@lists.infradead.org;
-	Mon, 17 Jun 2024 11:36:43 +0000
+	Mon, 17 Jun 2024 11:36:42 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=ratatoskr.trumtrar.info)
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <s.trumtrar@pengutronix.de>)
-	id 1sJAf8-0006ab-4J; Mon, 17 Jun 2024 13:36:38 +0200
+	id 1sJAf8-0006ab-1G; Mon, 17 Jun 2024 13:36:38 +0200
 From: Steffen Trumtrar <s.trumtrar@pengutronix.de>
-Date: Mon, 17 Jun 2024 13:36:27 +0200
+Date: Mon, 17 Jun 2024 13:36:26 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240617-v2024-05-0-topic-socfpga-arria10-xloader-v1-5-48a6eba4bb5e@pengutronix.de>
+Message-Id: <20240617-v2024-05-0-topic-socfpga-arria10-xloader-v1-4-48a6eba4bb5e@pengutronix.de>
 References: <20240617-v2024-05-0-topic-socfpga-arria10-xloader-v1-0-48a6eba4bb5e@pengutronix.de>
 In-Reply-To: <20240617-v2024-05-0-topic-socfpga-arria10-xloader-v1-0-48a6eba4bb5e@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 X-Mailer: b4 0.13.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240617_043640_791805_61AB7E4A 
-X-CRM114-Status: UNSURE (   8.04  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240617_043640_735267_88CD04F3 
+X-CRM114-Status: GOOD (  11.99  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,32 +73,83 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 05/14] ARM: Arria10: PE1: disable l4wd0 in bringup
+Subject: [PATCH 04/14] ARM: arria10: reset-manager: don't touch l4 wdog
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The l4wd0 is now left running from the BootROM. Disable it in the
-bringup image, because it would only make problems and has no benefit in
-that case.
+Leave the L4 watchdog 0 running.
+If a watchdog reset happens while booting, the bootrom attempts to load
+the last valid bootloader identified by the initswlastld register.
+
+As we now hang() in arria10-xload after 10 failed FPGA writing attempts,
+we need the watchdog to trigger so that the bootrom can try to start the
+next bootloader image as fallback.
 
 Signed-off-by: Steffen Trumtrar <s.trumtrar@pengutronix.de>
 ---
- arch/arm/boards/enclustra-aa1/lowlevel.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/mach-socfpga/arria10-reset-manager.c | 9 ++++++---
+ arch/arm/mach-socfpga/arria10-xload.c         | 5 +++++
+ include/mach/socfpga/generic.h                | 2 ++
+ 3 files changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boards/enclustra-aa1/lowlevel.c b/arch/arm/boards/enclustra-aa1/lowlevel.c
-index ada7cb5a9f..10a2095e19 100644
---- a/arch/arm/boards/enclustra-aa1/lowlevel.c
-+++ b/arch/arm/boards/enclustra-aa1/lowlevel.c
-@@ -110,6 +110,8 @@ ENTRY_FUNCTION_WITHSTACK(start_socfpga_aa1_bringup, ARRIA10_STACKTOP, r0, r1, r2
+diff --git a/arch/arm/mach-socfpga/arria10-reset-manager.c b/arch/arm/mach-socfpga/arria10-reset-manager.c
+index 05440cf903..6f209e7045 100644
+--- a/arch/arm/mach-socfpga/arria10-reset-manager.c
++++ b/arch/arm/mach-socfpga/arria10-reset-manager.c
+@@ -33,9 +33,13 @@ void arria10_reset_peripherals(void)
+ 	}
  
- 	arria10_init(&mainpll_cfg, &perpll_cfg, pinmux);
+ 	/* disable all components except the ECC_OCP and bootsource */
+-	writel(0xffffffff, ARRIA10_RSTMGR_ADDR + ARRIA10_RSTMGR_PER1MODRST);
+ 	writel(~mask, ARRIA10_RSTMGR_ADDR + ARRIA10_RSTMGR_PER0MODRST);
  
++	mask = ARRIA10_RSTMGR_PER1MODRST_WATCHDOG0 |
++	       ARRIA10_RSTMGR_PER1MODRST_L4SYSTIMER0;
++	/* disable all components except L4 watchdog */
++	writel(~mask, ARRIA10_RSTMGR_ADDR + ARRIA10_RSTMGR_PER1MODRST);
++
+ 	mask = 0xffffffff;
+ 
+ 	if (src == BOOTSOURCE_MMC) {
+@@ -65,8 +69,7 @@ void arria10_reset_deassert_dedicated_peripherals(void)
+ 
+ 	clrbits_le32(ARRIA10_RSTMGR_ADDR + ARRIA10_RSTMGR_PER0MODRST, mask);
+ 
+-	mask = ARRIA10_RSTMGR_PER1MODRST_L4SYSTIMER0 |
+-	       ARRIA10_RSTMGR_PER1MODRST_UART1 |
++	mask = ARRIA10_RSTMGR_PER1MODRST_UART1 |
+ 	       ARRIA10_RSTMGR_PER1MODRST_UART0;
+ 
+ 	clrbits_le32(ARRIA10_RSTMGR_ADDR + ARRIA10_RSTMGR_PER1MODRST, mask);
+diff --git a/arch/arm/mach-socfpga/arria10-xload.c b/arch/arm/mach-socfpga/arria10-xload.c
+index db3cc209ee..7b0d6f00fb 100644
+--- a/arch/arm/mach-socfpga/arria10-xload.c
++++ b/arch/arm/mach-socfpga/arria10-xload.c
+@@ -437,6 +437,11 @@ void arria10_start_image(int offset)
+ 	if (ret)
+ 		hang();
+ 
++	/* mark image in OCRAM as valid */
++	writel(ARRIA10_SYSMGR_ROM_INITSWSTATE_VALID, ARRIA10_SYSMGR_ROM_INITSWSTATE);
++
 +	arria10_watchdog_disable();
 +
- 	/* wait for fpga_usermode */
- 	a10_wait_for_usermode(0x1000000);
+ 	bb = buf;
  
+ 	bb();
+diff --git a/include/mach/socfpga/generic.h b/include/mach/socfpga/generic.h
+index 6c359e2abb..1af086140f 100644
+--- a/include/mach/socfpga/generic.h
++++ b/include/mach/socfpga/generic.h
+@@ -85,6 +85,8 @@ static inline int arria10_device_init(struct arria10_mainpll_cfg *mainpll,
+ {
+ 	return 0;
+ }
++static void arria10_kick_l4wd0(void) {}
++static void arria10_watchdog_disable(void) {}
+ #endif
+ 
+ static inline void __udelay(unsigned us)
 
 -- 
 2.43.2
