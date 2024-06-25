@@ -1,67 +1,67 @@
-Delivery-date: Tue, 25 Jun 2024 10:08:12 +0200
+Delivery-date: Tue, 25 Jun 2024 10:20:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sM1Do-00Buxe-29
+	id 1sM1Pp-00BvIO-0Q
 	for lore@lore.pengutronix.de;
-	Tue, 25 Jun 2024 10:08:12 +0200
+	Tue, 25 Jun 2024 10:20:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sM1Dn-0007cP-U3
-	for lore@pengutronix.de; Tue, 25 Jun 2024 10:08:12 +0200
+	id 1sM1Po-0000bR-6j
+	for lore@pengutronix.de; Tue, 25 Jun 2024 10:20:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=LR3kchkqcU7f7ccEhFicwBHIJaps5ZlCT1P80BlHXuQ=; b=Q7uC8onA+sWlxbs8QnwwFMQqt+
-	vonW71AVWfk+hz6HCovhquZJQ470UYAKJP75eNVVcHba9Aruk4snI+NUrao047hR3KAJ3HKS+H/Kd
-	6zGBzKmsvGUW1CuUR/istfk3FlJhZVYr5IvgyfQNzX6Ox+RNfDtwjnIwY3lHjHAUasgWV1JbEtO/q
-	oOi/IPDVyIe4uZ65EbwgXdahdiu/Iho1uk/GoyHpPB2/jYzIAQo6iBE1sByGLvm56AZwIDcfMUqpl
-	hdhdJnk+cb3sSWTbxzmsYk4Ohh1Wj8oWB2Ayy7WEJc6qzrDg+R3yysUFpbCJUR4WeM3ckj5BJOr/M
-	MJQIfmfw==;
+	bh=tk5gaAbJFMkhdXOOfx/41uqcEcqlrR9gRgjY0e+2kVc=; b=0SEUCiyJuTXZlPlU/RcxGjjjCb
+	XCxSq1PNjACdZbpPkNM6Ggn1/Q4OzNWspvl+7VldTC33L5PXMK32ir9PaAABSC0Bobf0jh3xBtJuf
+	gtCZ6P1seVdpvYm4Stil+rQZ9+5eRv6Gp7ZN+ISMDL/UdEwPJW572IRdS80cF0OtxDQMeFsN0JFRM
+	G/f7GoQT7Fk1Xme8YCDErIDa6WptUug/1Hw+rsDmzhl7i0XVqDTlTI+1yyogCnMFZSwfg6Ezb7rRY
+	gWZbZQWO4FIvJrRRhO3FADA0sAo/SnkOCsWz0iC/zW8D7+aCUf3YuSaC5x70CGuermcLAjkXVIupD
+	oOpT+NTQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sM1D7-000000023hS-1LSa;
-	Tue, 25 Jun 2024 08:07:29 +0000
+	id 1sM1PE-000000025J3-0dkD;
+	Tue, 25 Jun 2024 08:20:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sM1D3-000000023fP-0TWL
+	id 1sM1PB-000000025If-2hpb
 	for barebox@lists.infradead.org;
-	Tue, 25 Jun 2024 08:07:27 +0000
+	Tue, 25 Jun 2024 08:19:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1sM1Cz-0007Wm-3J; Tue, 25 Jun 2024 10:07:21 +0200
+	id 1sM1PA-0000We-Dm; Tue, 25 Jun 2024 10:19:56 +0200
 Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1sM1Cy-004qO0-Mf; Tue, 25 Jun 2024 10:07:20 +0200
+	id 1sM1PA-004qWb-1G; Tue, 25 Jun 2024 10:19:56 +0200
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1sM1Cy-00E3J3-20;
-	Tue, 25 Jun 2024 10:07:20 +0200
-Date: Tue, 25 Jun 2024 10:07:20 +0200
+	id 1sM1P9-00E3bs-36;
+	Tue, 25 Jun 2024 10:19:55 +0200
+Date: Tue, 25 Jun 2024 10:19:55 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20240625080720.hxw7b2ntio5vrhba@pengutronix.de>
-References: <20240613130944.264396-1-m.felsch@pengutronix.de>
- <20240613130944.264396-5-m.felsch@pengutronix.de>
- <ZmwwHwTSqpVuMSOv@pengutronix.de>
+Message-ID: <20240625081955.bheuv4xw3owosqv2@pengutronix.de>
+References: <20240613130659.165278-1-m.felsch@pengutronix.de>
+ <20240613130659.165278-2-m.felsch@pengutronix.de>
+ <Zm_cj2rCcwPDDblA@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZmwwHwTSqpVuMSOv@pengutronix.de>
+In-Reply-To: <Zm_cj2rCcwPDDblA@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240625_010725_191501_EAB45AC4 
-X-CRM114-Status: GOOD (  32.93  )
+X-CRM114-CacheID: sfid-20240625_011957_711917_7E84EEF0 
+X-CRM114-Status: GOOD (  29.07  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,162 +83,170 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 5/9] i.MX: HAB: add imx_hab_revoke_key support
+Subject: Re: [PATCH v2 2/2] ARM: i.MX8M: add support to handle ROM SError
+ ERR050350
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 24-06-14, Sascha Hauer wrote:
-> On Thu, Jun 13, 2024 at 03:09:40PM +0200, Marco Felsch wrote:
-> > Add an helper to revoke an i.MX SRK key. At the moment the helper
-> > supprts i.MX8M devices only, but adding support for other SoCs can be
-> > done easily by providing the .revoke_key() hook.
+On 24-06-17, Sascha Hauer wrote:
+> On Thu, Jun 13, 2024 at 03:06:59PM +0200, Marco Felsch wrote:
+> > This ports U-Boot commit:
+> > 
+> > | commit 2f3c92060dcd6bc9cfd3e2e344a3e1745ca39f09
+> > | Author: Peng Fan <peng.fan@nxp.com>
+> > | Date:   Thu Jul 9 13:39:26 2020 +0800
+> > |
+> > |     imx8m: workaround ROM serror
+> > |
+> > |     ROM SError happens on two cases:
+> > |
+> > |     1. ERR050342, on iMX8MQ HDCP enabled parts ROM writes to GPV1 register, but
+> > |     when ROM patch lock is fused, this write will cause SError.
+> > |
+> > |     2. ERR050350, on iMX8MQ/MM/MN, when the field return fuse is burned, HAB
+> > |     is field return mode, but the last 4K of ROM is still protected and cause
+> > |     SError.
+> > |
+> > |     Since ROM mask SError until ATF unmask it, so then ATF always meets the
+> > |     exception. This patch works around the issue in SPL by enabling SPL
+> > |     Exception vectors table and the SError exception, take the exception
+> > |     to eret immediately to clear the SError.
+> > |
+> > |     Signed-off-by: Ye Li <ye.li@nxp.com>
+> > |     Signed-off-by: Peng Fan <peng.fan@nxp.com>
+> > 
+> > Other than U-Boot we don't support exceptions in PBL and therefore we
+> > can handle it simpler by installing an dummy exception table to handle
+> > the pending exception. Later on the TF-A overrides the dummy table.
 > > 
 > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > > ---
-> >  drivers/hab/hab.c                | 45 ++++++++++++++++++++++++++++++++
-> >  include/hab.h                    |  6 +++++
-> >  include/mach/imx/ocotp-fusemap.h |  1 +
-> >  3 files changed, 52 insertions(+)
+> > v2:
+> > - Adapt the Makefile
+> > - Drop the ifdef guard from the errata.h
+> > - Make use of runtime_address() to apply the erratum always during soc
+> >   lowlevel init.
 > > 
-> > diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
-> > index 28a091841a69..e21a3c3acf81 100644
-> > --- a/drivers/hab/hab.c
-> > +++ b/drivers/hab/hab.c
-> > @@ -231,6 +231,27 @@ static int imx8m_hab_device_locked_down_ocotp(void)
-> >  	return v;
+> >  arch/arm/mach-imx/Makefile                 |  2 ++
+> >  arch/arm/mach-imx/cpu_init.c               | 12 ++++++-
+> >  arch/arm/mach-imx/errata.c                 | 24 +++++++++++++
+> >  arch/arm/mach-imx/imx8m_early_exceptions.S | 42 ++++++++++++++++++++++
+> >  include/mach/imx/errata.h                  |  8 +++++
+> >  5 files changed, 87 insertions(+), 1 deletion(-)
+> >  create mode 100644 arch/arm/mach-imx/errata.c
+> >  create mode 100644 arch/arm/mach-imx/imx8m_early_exceptions.S
+> >  create mode 100644 include/mach/imx/errata.h
+> > 
+> > diff --git a/arch/arm/mach-imx/Makefile b/arch/arm/mach-imx/Makefile
+> > index cfd066c69de9..22ea48a83330 100644
+> > --- a/arch/arm/mach-imx/Makefile
+> > +++ b/arch/arm/mach-imx/Makefile
+> > @@ -34,6 +34,8 @@ obj-$(CONFIG_BAREBOX_UPDATE_IMX_EXTERNAL_NAND) += imx-bbu-external-nand.o
+> >  pbl-$(CONFIG_USB_GADGET_DRIVER_ARC_PBL) += imx-udc.o
+> >  obj-$(CONFIG_RESET_IMX_SRC) += src.o
+> >  lwl-y += cpu_init.o
+> > +lwl-y += errata.o
+> > +lwl-$(CONFIG_ARCH_IMX8M) += imx8m_early_exceptions.o
+> >  pbl-y += xload-spi.o xload-common.o xload-imx-nand.o xload-gpmi-nand.o
+> >  pbl-y += xload-qspi.o
+> >  obj-pbl-$(CONFIG_ARCH_IMX9) += ele.o
+> > diff --git a/arch/arm/mach-imx/cpu_init.c b/arch/arm/mach-imx/cpu_init.c
+> > index c5a47d9b9154..aebbd3defaec 100644
+> > --- a/arch/arm/mach-imx/cpu_init.c
+> > +++ b/arch/arm/mach-imx/cpu_init.c
+> > @@ -6,6 +6,7 @@
+> >  #include <asm/errata.h>
+> >  #include <linux/types.h>
+> >  #include <linux/bitops.h>
+> > +#include <mach/imx/errata.h>
+> >  #include <mach/imx/generic.h>
+> >  #include <mach/imx/imx7-regs.h>
+> >  #include <mach/imx/imx8mq-regs.h>
+> > @@ -75,17 +76,26 @@ void imx8mm_cpu_lowlevel_init(void)
+> >  	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_SCTR);
+> >  
+> >  	imx8m_cpu_lowlevel_init();
+> > +
+> > +	erratum_050350_imx8m();
 > >  }
 > >  
-> > +static int imx8m_hab_revoke_key_ocotp(unsigned key_idx)
+> >  void imx8mn_cpu_lowlevel_init(void)
+> >  	__alias(imx8mm_cpu_lowlevel_init);
+> >  
+> >  void imx8mp_cpu_lowlevel_init(void)
+> > -	__alias(imx8mm_cpu_lowlevel_init);
 > > +{
-> > +	int ret;
+> > +	/* ungate system counter */
+> > +	imx8m_ccgr_clock_enable(IMX8M_CCM_CCGR_SCTR);
 > > +
-> > +	/* Prohibit revocation of last possible key */
-> > +	if (key_idx >= 4)
-> > +		return -EINVAL;
+> > +	imx8m_cpu_lowlevel_init();
+> > +}
+> >  
+> >  void imx8mq_cpu_lowlevel_init(void)
+> >  {
+> >  	imx8m_cpu_lowlevel_init();
 > > +
-> > +	ret = imx_ocotp_srk_revoke_locked();
-> > +	if (ret < 0)
-> > +		return ret;
+> > +	erratum_050350_imx8m();
+> >  }
+> >  
+> >  #define CCM_AUTHEN_TZ_NS	BIT(9)
+> > diff --git a/arch/arm/mach-imx/errata.c b/arch/arm/mach-imx/errata.c
+> > new file mode 100644
+> > index 000000000000..afab08667879
+> > --- /dev/null
+> > +++ b/arch/arm/mach-imx/errata.c
+> > @@ -0,0 +1,24 @@
+> > +// SPDX-License-Identifier: GPL-2.0+
 > > +
-> > +	/* Return -EINVAL in case the SRK_REVOKE write is locked */
-> > +	if (ret == 1)
-> > +		return -EINVAL;
+> > +#include <asm/barebox-arm.h>
+> > +#include <asm/system.h>
+> > +#include <mach/imx/errata.h>
 > > +
-> > +	ret = imx_ocotp_write_field(MX8M_OCOTP_SRK_REVOKE, BIT(key_idx));
+> > +#ifdef CONFIG_CPU_V8
 > > +
-> > +	return ret;
+> > +extern char early_imx8m_vectors[];
+> > +
+> > +void erratum_050350_imx8m(void)
+> > +{
+> > +	void *addr;
+> > +
+> > +	if (current_el() != 3)
+> > +		return;
+> > +
+> > +	addr = runtime_address(early_imx8m_vectors);
+> > +
+> > +	asm volatile("msr vbar_el3, %0" : : "r" (addr) : "cc");
+> > +	asm volatile("msr daifclr, #4;isb");
 > > +}
 > > +
-> >  struct imx_hab_ops {
-> >  	int (*write_srk_hash)(const u8 *srk, unsigned flags);
-> >  	int (*read_srk_hash)(u8 *srk);
-> > @@ -238,6 +259,7 @@ struct imx_hab_ops {
-> >  	int (*lockdown_device)(unsigned flags);
-> >  	int (*device_locked_down)(void);
-> >  	int (*print_status)(void);
-> > +	int (*revoke_key)(unsigned key_idx);
-> >  };
-> >  
-> >  static struct imx_hab_ops imx_hab_ops_iim = {
-> > @@ -265,6 +287,7 @@ static struct imx_hab_ops imx8m_hab_ops_ocotp = {
-> >  	.device_locked_down = imx8m_hab_device_locked_down_ocotp,
-> >  	.permanent_write_enable = imx_hab_permanent_write_enable_ocotp,
-> >  	.print_status = imx8m_hab_print_status,
-> > +	.revoke_key = imx8m_hab_revoke_key_ocotp,
-> >  };
-> >  
-> >  static int imx_ahab_write_srk_hash(const u8 *__newsrk, unsigned flags)
-> > @@ -536,3 +559,25 @@ static int init_imx_hab_print_status(void)
-> >  	return 0;
-> >  }
-> >  postmmu_initcall(init_imx_hab_print_status);
+> > +#endif /* CONFIG_CPU_V8 */
+> > diff --git a/arch/arm/mach-imx/imx8m_early_exceptions.S b/arch/arm/mach-imx/imx8m_early_exceptions.S
+> > new file mode 100644
+> > index 000000000000..cd91e1a07b9c
+> > --- /dev/null
+> > +++ b/arch/arm/mach-imx/imx8m_early_exceptions.S
+> > @@ -0,0 +1,42 @@
+> > +/*
+> > + * (C) Copyright 2013
+> > + * David Feng <fenghua@phytium.com.cn>
+> > + *
+> > + * SPDX-License-Identifier:	GPL-2.0+
+> > + */
 > > +
-> > +int imx_hab_revoke_key(unsigned key_idx, unsigned flags)
+> > +#include <linux/linkage.h>
+> > +
+> > +#ifdef CONFIG_CPU_V8
 > 
-> Are you anticipating more flags? If not, should we better use a boolean
-> flag for now?
+> This file is compiled only when CONFIG_ARCH_IMX8M is enabled. This
+> options selects CONFIG_CPU_V8 which makes this #ifdef unnecessary.
 
-I followed the actual concept of having separate flags but to answer you
-question, no I don't anticipate more flags.
+Of course.
 
-> Otherwise it's not really clear which of the IMX_SRK_* flags is used by
-> which function.
+> Dropped while applying.
 
-I added the documentation above the flag like the previous flags did.
-But you're right in the end it is all about permanent write en-/disable
-so this could be covered in just one flag.
+Thank you.
 
 Regards,
   Marco
-
-> Sascha
-> 
-> 
-> > +{
-> > +	struct imx_hab_ops *ops = imx_get_hab_ops();
-> > +	int ret;
-> > +
-> > +	if (!ops || !ops->revoke_key)
-> > +		return -ENOSYS;
-> > +
-> > +	if (flags & IMX_SRK_REVOKE_KEY_PERMANENT) {
-> > +		ret = ops->permanent_write_enable(1);
-> > +		if (ret)
-> > +			return ret;
-> > +	}
-> > +
-> > +	ret = ops->revoke_key(key_idx);
-> > +
-> > +	if (flags & IMX_SRK_REVOKE_KEY_PERMANENT)
-> > +		ops->permanent_write_enable(0);
-> > +
-> > +	return ret;
-> > +}
-> > diff --git a/include/hab.h b/include/hab.h
-> > index 2cef3841d149..fd32bff15ef8 100644
-> > --- a/include/hab.h
-> > +++ b/include/hab.h
-> > @@ -42,6 +42,11 @@ static inline int habv4_get_state(void)
-> >   * fuses so that the key hash can not be modified.
-> >   */
-> >  #define IMX_SRK_HASH_WRITE_LOCK		BIT(2)
-> > +/*
-> > + * Revoke the SRK key permanently, without the flag only shadow registers are
-> > + * written.
-> > + */
-> > +#define IMX_SRK_REVOKE_KEY_PERMANENT	BIT(3)
-> >  
-> >  bool imx_hab_srk_hash_valid(const void *buf);
-> >  int imx_hab_write_srk_hash(const void *buf, unsigned flags);
-> > @@ -51,5 +56,6 @@ int imx_hab_read_srk_hash(void *buf);
-> >  int imx_hab_lockdown_device(unsigned flags);
-> >  int imx_hab_device_locked_down(void);
-> >  int imx_hab_print_status(void);
-> > +int imx_hab_revoke_key(unsigned key_idx, unsigned flags);
-> >  
-> >  #endif /* __HABV4_H */
-> > diff --git a/include/mach/imx/ocotp-fusemap.h b/include/mach/imx/ocotp-fusemap.h
-> > index c4f94e61e8f8..e6fa96b40ba9 100644
-> > --- a/include/mach/imx/ocotp-fusemap.h
-> > +++ b/include/mach/imx/ocotp-fusemap.h
-> > @@ -57,5 +57,6 @@
-> >  #define MX8M_OCOTP_SRK_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(9) | OCOTP_WIDTH(1))
-> >  #define MX8M_OCOTP_SEC_CONFIG_1		(OCOTP_WORD(0x470) | OCOTP_BIT(25) | OCOTP_WIDTH(1))
-> >  #define MX8MQ_OCOTP_DIR_BT_DIS		(OCOTP_WORD(0x470) | OCOTP_BIT(27) | OCOTP_WIDTH(1))
-> > +#define MX8M_OCOTP_SRK_REVOKE		(OCOTP_WORD(0x670) | OCOTP_BIT(0) | OCOTP_WIDTH(4))
-> >  
-> >  #endif /* __MACH_IMX_OCOTP_FUSEMAP_H */
-> > -- 
-> > 2.39.2
-> > 
-> > 
-> > 
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
 
 
