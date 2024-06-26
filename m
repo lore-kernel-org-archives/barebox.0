@@ -1,67 +1,67 @@
-Delivery-date: Wed, 26 Jun 2024 12:15:22 +0200
+Delivery-date: Wed, 26 Jun 2024 12:15:59 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sMPgQ-00CWRF-2l
+	id 1sMPh1-00CWRi-1s
 	for lore@lore.pengutronix.de;
-	Wed, 26 Jun 2024 12:15:22 +0200
+	Wed, 26 Jun 2024 12:15:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sMPgQ-0006E3-7t
-	for lore@pengutronix.de; Wed, 26 Jun 2024 12:15:22 +0200
+	id 1sMPh0-0006Ov-SE
+	for lore@pengutronix.de; Wed, 26 Jun 2024 12:15:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CXbJGnHXlmF9hjxLN0f+yb3RCuEHpjwofn8OefY5MuE=; b=Tq+ObTWNRJqwOG0ZpNC5JOS5Gp
-	WlV2cIFBPcdQZnIi283TfKhpxcFVuodxB9ThOqygtfcQ4qNwkoj0tjzcCRjYeRfqgwBP91CIfqjnW
-	l878oXteJXx1tn1ymRgxwCokR61QYMqJnEjvma7ih7uw9NHosr7v+b9htoyJQTknuFedPfOI8NNCz
-	Yh6DA+evx7FDV9MdgXRGIMWhlfyOFLkdfx++lnVGkR7GUfBecl2TcZwu1Fst0bXrmMxc0pBaEY96d
-	tFIHYLdThq+MOoonF6eMxd2lMq4SqS3M/w8IsNl3xeAFVziAyarxZ/c/4ZwNJWNGUamqQG/ublNrX
-	uN1YZcZg==;
+	bh=JH2ugEiGAOJRtLQOgrnjWPlKtswCqvxQEeYeNyx3jsc=; b=KFx/s0b/bKEy3DzefVPto0jG8i
+	XdUz7OgaF+JnMEjuKnnhAgNRuGa7BKrFJGk5bybXfal974+lxXp1rv79aivAPN1CqWlvRDEmNYp5s
+	P7qwEEHODMLTjD/6CnJK3EQw1eBCKI6m8tFS2hCm93Grz8VayhWxXg70dVEEj0asa+Hs2hyXjtxKc
+	7fOKQam0lC4zCwDmnDnZ5hs38w31W47A4je6z2nDWfiCSoTdScnGMSGvk92jKJodcUWIm5gSti0pG
+	U3vksTj4neRMLp+x0zTgctMnG6jWXwNi6DuhfzjXU89RCW8aG3m4BhZwVDPRi9lcX0Ct0jOFgWKc1
+	CmNLZyLg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sMPfu-00000006GxI-2ZAQ;
-	Wed, 26 Jun 2024 10:14:50 +0000
+	id 1sMPgZ-00000006HCy-0gpj;
+	Wed, 26 Jun 2024 10:15:31 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sMPfp-00000006Gve-1T5X
+	id 1sMPgU-00000006HBP-4BJT
 	for barebox@lists.infradead.org;
-	Wed, 26 Jun 2024 10:14:47 +0000
+	Wed, 26 Jun 2024 10:15:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1sMPfo-00066i-4I; Wed, 26 Jun 2024 12:14:44 +0200
+	id 1sMPgT-0006HT-Pg; Wed, 26 Jun 2024 12:15:25 +0200
 Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1sMPfn-0056aV-O4; Wed, 26 Jun 2024 12:14:43 +0200
+	id 1sMPgT-0056ae-DB; Wed, 26 Jun 2024 12:15:25 +0200
 Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
 	(envelope-from <mfe@pengutronix.de>)
-	id 1sMPfn-00G3zp-29;
-	Wed, 26 Jun 2024 12:14:43 +0200
-Date: Wed, 26 Jun 2024 12:14:43 +0200
+	id 1sMPgT-00G40V-15;
+	Wed, 26 Jun 2024 12:15:25 +0200
+Date: Wed, 26 Jun 2024 12:15:25 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>
 Cc: barebox@lists.infradead.org
-Message-ID: <20240626101443.b5zozjpyaldxleks@pengutronix.de>
+Message-ID: <20240626101525.lwy4oilxe4xz4ysj@pengutronix.de>
 References: <20240613125818.30499-1-m.felsch@pengutronix.de>
- <20240613125818.30499-12-m.felsch@pengutronix.de>
- <ZnAZ-YlV83TZOUcZ@pengutronix.de>
+ <20240613125818.30499-11-m.felsch@pengutronix.de>
+ <ZnAXtIKclnIk_7Tk@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZnAZ-YlV83TZOUcZ@pengutronix.de>
+In-Reply-To: <ZnAXtIKclnIk_7Tk@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240626_031445_409125_F4881250 
-X-CRM114-Status: GOOD (  21.57  )
+X-CRM114-CacheID: sfid-20240626_031527_059149_8C800E13 
+X-CRM114-Status: GOOD (  19.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,68 +83,43 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 11/11] FIT: add support to cache opened fit images
+Subject: Re: [PATCH v2 10/11] FIT: save filename during fit_open
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 On 24-06-17, Sascha Hauer wrote:
-> On Thu, Jun 13, 2024 at 02:58:18PM +0200, Marco Felsch wrote:
-> > Cache the FIT image fit_open() calls to avoid loading the same FIT image
-> > twice. This is very useful if the same FIT image is used to provide the
-> > base devicetree, kernel and initrd as well as devicetree overlays.
+> On Thu, Jun 13, 2024 at 02:58:17PM +0200, Marco Felsch wrote:
+> > This is in preparation of buffering fit_open() calls to not load the
+> > same fit twice if it is still open.
 > > 
 > > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 > > ---
-> >  common/image-fit.c  | 38 +++++++++++++++++++++++++++++++++++++-
-> >  include/image-fit.h |  4 ++++
-> >  2 files changed, 41 insertions(+), 1 deletion(-)
+> >  common/image-fit.c  | 4 ++++
+> >  include/image-fit.h | 1 +
+> >  2 files changed, 5 insertions(+)
 > > 
 > > diff --git a/common/image-fit.c b/common/image-fit.c
-> > index c5c88ebe4c1e..061825f5f22c 100644
+> > index e93946a0615e..c5c88ebe4c1e 100644
 > > --- a/common/image-fit.c
 > > +++ b/common/image-fit.c
-> > @@ -18,6 +18,8 @@
-> >  #include <fnmatch.h>
-> >  #include <malloc.h>
-> >  #include <linux/ctype.h>
-> > +#include <linux/minmax.h>
-> > +#include <linux/refcount.h>
-> >  #include <asm/byteorder.h>
-> >  #include <errno.h>
-> >  #include <linux/err.h>
-> > @@ -34,6 +36,8 @@
-> >  #define CHECK_LEVEL_SIG 2
-> >  #define CHECK_LEVEL_MAX 3
+> > @@ -951,6 +951,7 @@ struct fit_handle *fit_open(const char *filename, bool verbose,
+> >  	}
 > >  
-> > +LIST_HEAD(open_fits);
-> 
-> Should be static
-
-Sure!
-
-> > +
-> >  static uint32_t dt_struct_advance(struct fdt_header *f, uint32_t dt, int size)
-> >  {
-> >  	dt += size;
-> > @@ -861,6 +865,22 @@ void *fit_open_configuration(struct fit_handle *handle, const char *name)
-> >  	return conf_node;
-> >  }
+> >  	handle->fit = handle->fit_alloc;
+> > +	handle->filename = xstrdup(filename);
 > >  
-> > +static struct fit_handle *fit_get_handle(const char *filename)
-> > +{
-> > +	size_t query_len = strlen(filename);
-> > +	struct fit_handle *handle;
-> > +
-> > +	list_for_each_entry(handle, &open_fits, entry) {
-> > +		size_t len = strlen(handle->filename);
-> > +
-> > +		len = min(len, query_len);
-> > +		if (!strncmp(filename, handle->filename, len))
-> > +			return handle;
+> >  	ret = fit_do_open(handle);
+> >  	if (ret) {
+> > @@ -966,6 +967,9 @@ void fit_close(struct fit_handle *handle)
+> >  	if (handle->root)
+> >  		of_delete_node(handle->root);
+> >  
+> > +	if (handle->filename)
+> > +		free(handle->filename);
 > 
-> Why not plain strcmp() here?
+> free() handles NULL pointers gracefully, no need to check.
 
-Good question, I will change this, thanks.
+Sure, I will change this.
 
 Regards,
   Marco
