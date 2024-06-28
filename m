@@ -1,67 +1,81 @@
-Delivery-date: Wed, 26 Jun 2024 12:15:59 +0200
+Delivery-date: Fri, 28 Jun 2024 11:40:06 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sMPh1-00CWRi-1s
+	id 1sN85N-00Db0e-35
 	for lore@lore.pengutronix.de;
-	Wed, 26 Jun 2024 12:15:59 +0200
+	Fri, 28 Jun 2024 11:40:06 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sMPh0-0006Ov-SE
-	for lore@pengutronix.de; Wed, 26 Jun 2024 12:15:59 +0200
+	id 1sN85M-0003F4-Uy
+	for lore@pengutronix.de; Fri, 28 Jun 2024 11:40:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JH2ugEiGAOJRtLQOgrnjWPlKtswCqvxQEeYeNyx3jsc=; b=KFx/s0b/bKEy3DzefVPto0jG8i
-	XdUz7OgaF+JnMEjuKnnhAgNRuGa7BKrFJGk5bybXfal974+lxXp1rv79aivAPN1CqWlvRDEmNYp5s
-	P7qwEEHODMLTjD/6CnJK3EQw1eBCKI6m8tFS2hCm93Grz8VayhWxXg70dVEEj0asa+Hs2hyXjtxKc
-	7fOKQam0lC4zCwDmnDnZ5hs38w31W47A4je6z2nDWfiCSoTdScnGMSGvk92jKJodcUWIm5gSti0pG
-	U3vksTj4neRMLp+x0zTgctMnG6jWXwNi6DuhfzjXU89RCW8aG3m4BhZwVDPRi9lcX0Ct0jOFgWKc1
-	CmNLZyLg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:To:Subject:Message-ID:Date:From:MIME-Version:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=870HQiD8SH/dW8eoWyVSYU0zMSW2oemaYF5r4hKb+BM=; b=I8jsTin2DUjQRl2dC9zK8WLkFx
+	TcqoKl6qhRO5G4L5RjmIa6Z1K3GsBo1eEpo2nAvkJ1z4hDZGKl7Fsh1sAZa8353lq/o34mnYHmCOC
+	LUJiJkDee36vJyxKPzRGtbjW0QwQDq/u2kLdEdd4o9qewUt7d4psGRlUNQ30wjWa+a4DrEfwmdVcW
+	7fsdSPbHK/5aHS3zO14C90e6E9QlRvn1/fMVBoQ+0T2t/xrLlg09PkN2ejsFOfQlDHf5v4iHh1Xgy
+	ua0LgD78lAEyZIuNgDoocaTxto79AyqjCXSx5nz3vD0F3a+DgIvqIhJ+XGgpo9ldip6GZzkUitPP2
+	AGBkE+mg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sMPgZ-00000006HCy-0gpj;
-	Wed, 26 Jun 2024 10:15:31 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1sN84k-0000000DIGQ-38bM;
+	Fri, 28 Jun 2024 09:39:26 +0000
+Received: from mail-pj1-x102e.google.com ([2607:f8b0:4864:20::102e])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sMPgU-00000006HBP-4BJT
+	id 1sN84g-0000000DIEf-411M
 	for barebox@lists.infradead.org;
-	Wed, 26 Jun 2024 10:15:28 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sMPgT-0006HT-Pg; Wed, 26 Jun 2024 12:15:25 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sMPgT-0056ae-DB; Wed, 26 Jun 2024 12:15:25 +0200
-Received: from mfe by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <mfe@pengutronix.de>)
-	id 1sMPgT-00G40V-15;
-	Wed, 26 Jun 2024 12:15:25 +0200
-Date: Wed, 26 Jun 2024 12:15:25 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <20240626101525.lwy4oilxe4xz4ysj@pengutronix.de>
-References: <20240613125818.30499-1-m.felsch@pengutronix.de>
- <20240613125818.30499-11-m.felsch@pengutronix.de>
- <ZnAXtIKclnIk_7Tk@pengutronix.de>
+	Fri, 28 Jun 2024 09:39:24 +0000
+Received: by mail-pj1-x102e.google.com with SMTP id 98e67ed59e1d1-2c7b3c513f9so263857a91.3
+        for <barebox@lists.infradead.org>; Fri, 28 Jun 2024 02:39:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719567561; x=1720172361; darn=lists.infradead.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=870HQiD8SH/dW8eoWyVSYU0zMSW2oemaYF5r4hKb+BM=;
+        b=XhAzTyFQ31CHp6uN31XVU50LAYAmWY4TGwu/prNheKMMpC+Gdn4jq31b18xhuTCW+E
+         q6Ca6y32HasldW5hybYpF/+3TKs0FcJdKqhxjZhrnCkANnie7Z1naK3zIBetujIqiq9K
+         1yV5EkCMRvzwaRB+qJkMsDVaJFDzS5VGyLUIwHT/6dyfs9sPew7S9sNhOcRG6LjXgw3C
+         bfFH/j7UxoTm6LQj7sX9vYeSkCGWafUjXN2vwD6CzNFkzawJYaKYvajNB+DsKRDqZIwc
+         P+pa4+F/uaz3S0uM9clyu8x0ivNNwUIBRvJTCULLHbZaIlCUn4EyXGJ5dC0WMGqDr+Y9
+         +8IQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719567561; x=1720172361;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=870HQiD8SH/dW8eoWyVSYU0zMSW2oemaYF5r4hKb+BM=;
+        b=F8cNsi/RnxQ1tKPHLt76NKzdy35loiohXSWLT+yCTjyaWiGGErZyRqdiJbpkxtVj7o
+         HBQDHXqn4/pgFwB/up1zNn2/i+4t6MUGL/DRJ8DWbSUCt4TVnR4Z6OXCdH+Aeqi838cQ
+         LZwVYazm/6ytA8sGUqFH0O6jftB8QVl2vOhKbOcO3V+RT9m/Y/KkfT1MwzfYH2Yx8Bul
+         Da6+D32m5Uthae8gpxXEQ0DDtM1EZNrGxmyhMt/TPAK6ysM39EuuUMUm7dWKz57dqbaQ
+         QBnRhw/Xqjp22g5EsR1uRYfo7/w8r5ChYG4WfOVwu8wEQFDN+/VGxY8TcNvfgLiV2emp
+         2Rwg==
+X-Gm-Message-State: AOJu0Ywlapo8Jy4lhEK9LiPUxsv7xfSir0obtCWIruWMh5ML75x30XZH
+	r5CM566rrsVicwAm3M99rU8YcM/+mUkiMw3a0/XzgExf2AB1iUtCD6ZL2Ss1PUyaodXSLyepcYB
+	5yrMGSq7aFtkVc+Hf3JUBNBhO3VDsOz0448oQtQ==
+X-Google-Smtp-Source: AGHT+IGqFswJh4LLwbLdmt0XlVdL2/97jj2Dudo3HU9qoeXYHjUffoWo5VSbr/5Q/B97qwI8l4tmGIhZQpjrVsqAfVg=
+X-Received: by 2002:a17:90a:118f:b0:2bd:f8c4:46d2 with SMTP id
+ 98e67ed59e1d1-2c850512946mr13785585a91.22.1719567561306; Fri, 28 Jun 2024
+ 02:39:21 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZnAXtIKclnIk_7Tk@pengutronix.de>
+From: Alexander Shiyan <eagle.alexander923@gmail.com>
+Date: Fri, 28 Jun 2024 12:39:10 +0300
+Message-ID: <CAP1tNvS2DWF-xLSCe0y1kib_kOSrdkWPJC6bGm+7Yuv7wxJ3tA@mail.gmail.com>
+To: Barebox List <barebox@lists.infradead.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240626_031527_059149_8C800E13 
-X-CRM114-Status: GOOD (  19.21  )
+X-CRM114-CacheID: sfid-20240628_023923_024604_AADC6298 
+X-CRM114-Status: UNSURE (   6.16  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,59 +93,108 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 10/11] FIT: save filename during fit_open
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: rk3568 boot fail with TF-A binary
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 24-06-17, Sascha Hauer wrote:
-> On Thu, Jun 13, 2024 at 02:58:17PM +0200, Marco Felsch wrote:
-> > This is in preparation of buffering fit_open() calls to not load the
-> > same fit twice if it is still open.
-> > 
-> > Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-> > ---
-> >  common/image-fit.c  | 4 ++++
-> >  include/image-fit.h | 1 +
-> >  2 files changed, 5 insertions(+)
-> > 
-> > diff --git a/common/image-fit.c b/common/image-fit.c
-> > index e93946a0615e..c5c88ebe4c1e 100644
-> > --- a/common/image-fit.c
-> > +++ b/common/image-fit.c
-> > @@ -951,6 +951,7 @@ struct fit_handle *fit_open(const char *filename, bool verbose,
-> >  	}
-> >  
-> >  	handle->fit = handle->fit_alloc;
-> > +	handle->filename = xstrdup(filename);
-> >  
-> >  	ret = fit_do_open(handle);
-> >  	if (ret) {
-> > @@ -966,6 +967,9 @@ void fit_close(struct fit_handle *handle)
-> >  	if (handle->root)
-> >  		of_delete_node(handle->root);
-> >  
-> > +	if (handle->filename)
-> > +		free(handle->filename);
-> 
-> free() handles NULL pointers gracefully, no need to check.
+Hello All.
 
-Sure, I will change this.
+I'm trying to use the open source TF-A implementation for the Rockchip
+rk3568 CPU:
+https://github.com/ARM-software/arm-trusted-firmware/commit/9fd9f1d024872b4=
+40e3906eded28037330b6f422
 
-Regards,
-  Marco
+The barebox starts to launch, but an error occurs, the meaning of
+which I don=E2=80=99t know how to interpret.
+If I use Rockchip's RKBIN binary this doesn't happen.
 
-> 
-> Sascha
-> 
-> -- 
-> Pengutronix e.K.                           |                             |
-> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-> 
+Has anyone tried running something like this?
+What does this error mean?
+
+<DDR initialization part skipped>
+rockchip-dmc: rockchip_sdram_size(reg2=3D1000ea01, reg3=3D30000031)
+rockchip-dmc: rank 2 cs0_col 10 cs1_col 10 bk 3 cs0_row 17 cs1_row 17
+bw 2 row_3_4 0
+rockchip-dmc: rk3568_ram0_size() =3D 4026531840
+Loading phdr 0 to 0x0000000000040000 (98526 bytes)
+Loading phdr 1 to 0x00000000fdcd0000 (112 bytes)
+Loading phdr 2 to 0x0000000000000000 (0 bytes)
+NOTICE:  BL31: v2.11.0(release):v2.11.0-136-ga6e01be25
+NOTICE:  BL31: Built : 06:28:20, Jun 18 2024
+NOTICE:  BL31: Rockchip release version: v1.0
+>rockchip-dmc: rockchip_sdram_size(reg2=3D1000ea01, reg3=3D30000031)
+rockchip-dmc: rank 2 cs0_col 10 cs1_col 10 bk 3 cs0_row 17 cs1_row 17
+bw 2 row_3_4 0
+rockchip-dmc: rk3568_ram0_size() =3D 4026531840
+uncompress.c: memory at 0x00a00000, size 0xef600000
+mmu: enabling MMU, ttb @ 0xeffe0000
+uncompress.c: uncompressing barebox binary at 0x0000000000b55ce0 (size
+0x000800a8) to 0xefd00000 (uncompressed size: 0x00106310)
+uncompress.c: jumping to uncompressed image at 0x00000000efd00000
+deep-probe: supported due to diasom,ds-rk3568-evb
+Switch to console [cs0]
+
+barebox 2024.04.0-00177-gce195ae78894-dirty #22 Tue Jun 25 21:09:41 MSK 202=
+4
+
+Board: Diasom DS-RK3568-EVB
+deep-probe: supported due to diasom,ds-rk3568-evb
+rockchip-dmc memory-controller.of: Detected memory size: 0x0000000200000000
+netconsole: registered as netconsole-1
+rk808 rk8090: chip id: 0x8090
+vdd_npu: Bringing 500000uV into 850000-850000uV
+vdda0v9_image: Bringing 600000uV into 900000-900000uV
+vcca1v8_image: Bringing 600000uV into 1800000-1800000uV
+rockchip_saradc fe720000.saradc@fe720000.of: registered as aiodev0
+Boot source: usb, instance 0
+psci psci.of: detected version 1.1
+xHCI xHCI0: USB XHCI 1.10
+mdio_bus: miibus0: probed
+dw_mmc fe2b0000.mmc@fe2b0000.of: registered as mmc0
+rk3568-dwcmshc-sdhci fe310000.mmc@fe310000.of: registered as mmc1
+mmc1: detected MMC card version 5.1
+mmc1: registered mmc1.boot0
+mmc1: registered mmc1.boot1
+mmc1: registered mmc1
+mdio_bus: miibus1: probed
+Setup Machine ID from EMMC serial: 30948368
+Unknown/Uncategorized exception (ESR 0x02000000) at 0xbf96b728aba34bf1
+elr: 00000000efd7da48 lr : 00000000efd7d7e0
+x0 : 00000000afdc1b10 x1 : 00000000afdc1b70
+x2 : 0000000000000000 x3 : 0000000000000020
+x4 : 0000000000000000 x5 : 00000000efff7dd8
+x6 : 00000000ca62c1d6 x7 : 0000000000000000
+x8 : 00000000afdc1b68 x9 : 0000000000000000
+x10: 0000000000000000 x11: 00000000fffffff6
+x12: 00000000fffffff6 x13: 0000000000000020
+x14: 0000000000000000 x15: 0000000000000003
+x16: 00000000efff7968 x17: 0000000000000003
+x18: 00000000efff7ef0 x19: 0000000000000001
+x20: 00000000afdc1b30 x21: 00000000afdc1b10
+x22: 00000000afdc1b30 x23: 00000000ef600000
+x24: 0000000000b35a40 x25: 00000000000800a8
+x26: 0000000000106310 x27: 00000000effe0000
+x28: 0000000000000000 x29: 00000000efff7e40
+
+Call trace:
+[<efd7da48>] (cmd_parted_help+0xefce25ef/0xefd00281) from [<efd7d8b0>]
+(cmd_parted_help+0xefce2457/0xefd00281)
+[<efd7d8b0>] (cmd_parted_help+0xefce2457/0xefd00281) from [<efd0297c>]
+(machine_id_set_globalvar+0x7c/0x100)
+[<efd0297c>] (machine_id_set_globalvar+0x7c/0x100) from [<efd01adc>]
+(start_barebox+0x60/0x8c)
+[<efd01adc>] (start_barebox+0x60/0x8c) from [<efd7bf1c>]
+(cmd_parted_help+0xefce0ac3/0xefd00281)
+[<efd7bf1c>] (cmd_parted_help+0xefce0ac3/0xefd00281) from [<efd0000c>]
+(__bare_init_start+0x0/0x14)
+[<efd0000c>] (__bare_init_start+0x0/0x14) from [<00b01d8c>] (0xb01d8c)
+[<00b01d8c>] (0xb01d8c) from [<00b01640>] (0xb01640)
+panic: unhandled exception
+### ERROR ### Please RESET the board ###
 
 
