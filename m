@@ -1,67 +1,69 @@
-Delivery-date: Mon, 01 Jul 2024 11:58:27 +0200
+Delivery-date: Mon, 01 Jul 2024 12:09:09 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sODnn-000SmP-2x
+	id 1sODy9-000SuF-03
 	for lore@lore.pengutronix.de;
-	Mon, 01 Jul 2024 11:58:27 +0200
+	Mon, 01 Jul 2024 12:09:09 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sODnn-0004pi-CN
-	for lore@pengutronix.de; Mon, 01 Jul 2024 11:58:27 +0200
+	id 1sODy8-0006Sg-CO
+	for lore@pengutronix.de; Mon, 01 Jul 2024 12:09:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=NLgAcYuhO8SbyynDa+n67bTXDRwf5A/L9Ny9XYDUcmc=; b=xSBS75x4SRymNizI7TqqU2dsGg
-	MWfwAxty1MOjRDSwKVSFmTlhJemI/8jVe2Tm/tBCbb6nQP6FHyV2ECZbdhddBA5B2TQTuvOavIsBf
-	+NuKsHE0eD5ot9biVVDz3TFVMGrSrfK/i2J9FK6rMHf0VsnzUVB2WVySw8fvwdhmv87EX3hnPjJ4A
-	Q3K+Y6bPXuP7NSxcgwShlOHiGhC78/uHu9lPK7uCq0DcHCO9k1yj3GzwcZYsrnswW4H6HEAf4UuAb
-	qFUc2I6bK93zvz9NBBL78bn7FDX3K2pfJ9vMvQ9dF4hIyAKwpNCgcYDl2f14MPBJX8Syn55EVdX+C
-	xvmFXD8A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=0R+fUWUh/GIA/zTBR9P1olvrdewHR27SzqNr6s12yuM=; b=mls7eGHQ7ofH3ey1qqlwp7MVOd
+	hv83GyJU8XYfM+FUMSSifL/YKV7nTgY49gL+aGnPm3xCLMRjl1NE7QmzBU+KRXXvuy+gzOJ2VEoGv
+	JCNV9WCkMmC+BRe6SBw5R1dTOrinC4N4Jw4ZlPJqyu1k1LX8tOX8rYrUSHpLEDZjldfTXNJvs0ODF
+	Vh9PtnlTZk2F0409JjiSvJ8YiNlehq8K1J3xoXMS+R+8Wu/+zekSy5tkJkBErsxlbfXh2NlDAZnRs
+	U6mNaMLYlSE0f3S3YgpKMjOB4tsxiFasn2HAsG+N/M6F1Is3hl+MKas/3F8KZdrm7UdjXChjfLMc3
+	IhY9j1aA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sODnI-00000002XWZ-1iNL;
-	Mon, 01 Jul 2024 09:57:56 +0000
+	id 1sODxb-00000002ZSg-10si;
+	Mon, 01 Jul 2024 10:08:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sODnE-00000002XU5-3JjX
+	id 1sODxY-00000002ZRg-2an2
 	for barebox@lists.infradead.org;
-	Mon, 01 Jul 2024 09:57:54 +0000
+	Mon, 01 Jul 2024 10:08:34 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sODnD-0004jl-AO; Mon, 01 Jul 2024 11:57:51 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sODxX-0006EE-1T; Mon, 01 Jul 2024 12:08:31 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sODnC-006LLt-UC; Mon, 01 Jul 2024 11:57:50 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sODnC-00BkNi-2n;
-	Mon, 01 Jul 2024 11:57:50 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1sODxW-006LTw-L3; Mon, 01 Jul 2024 12:08:30 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sODxW-008O9Y-1p;
+	Mon, 01 Jul 2024 12:08:30 +0200
+Date: Mon, 1 Jul 2024 12:08:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240701072714.163239-1-a.fatoum@pengutronix.de>
-References: <20240701072714.163239-1-a.fatoum@pengutronix.de>
-Message-Id: <171982787086.2799849.10345342293254360509.b4-ty@pengutronix.de>
-Date: Mon, 01 Jul 2024 11:57:50 +0200
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <ZoKAHmX1_V3quUnA@pengutronix.de>
+References: <20240701071455.138644-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240701071455.138644-1-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240701_025752_876907_AC0BB4A8 
-X-CRM114-Status: UNSURE (   7.53  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240701_030832_680544_AC9C40D7 
+X-CRM114-Status: GOOD (  25.34  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -79,35 +81,87 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] video: backlight: make brightness and slew time
- parameters unsigned
+Subject: Re: [PATCH] bbu: command: update via TFTP if no image given
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Mon, 01 Jul 2024 09:27:14 +0200, Ahmad Fatoum wrote:
-> Despite the backlight parameter being registered as uint32,
-> backlight_brightness_set took the brightness level as a signed value.
+On Mon, Jul 01, 2024 at 09:14:55AM +0200, Ahmad Fatoum wrote:
+> Booting barebox over TFTP is a common operation that even has a default
+> boot target: `boot bnet`.
 > 
-> This can lead to wrap around for very large values of brightness
-> supplied as device parameter and if this results in a negative
-> brightness, the function appears to hang, because the slew rate loop
-> runs for a long time.
+> Once, a chainloaded barebox was tested to work, it may need to be
+> persisted, which needs a cumbersome:
 > 
-> [...]
+>   barebox_update /mnt/tftp/${global.user}-barebox-${global.hostname}
+> 
+> Make this more straight-forward by interpreting barebox_update called
+> without any non-option argument to mean just that.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  commands/barebox-update.c | 11 ++++++++---
+>  1 file changed, 8 insertions(+), 3 deletions(-)
+> 
+> diff --git a/commands/barebox-update.c b/commands/barebox-update.c
+> index 4b23433e84f2..59db315e5650 100644
+> --- a/commands/barebox-update.c
+> +++ b/commands/barebox-update.c
+> @@ -6,6 +6,7 @@
+>  #include <common.h>
+>  #include <command.h>
+>  #include <libfile.h>
+> +#include <globalvar.h>
+>  #include <getopt.h>
+>  #include <malloc.h>
+>  #include <errno.h>
+> @@ -20,6 +21,7 @@ static void print_handlers_list(void)
+>  
+>  static int do_barebox_update(int argc, char *argv[])
+>  {
+> +	char pathbuf[PATH_MAX];
 
-Applied, thanks!
+Do we really want to allocate 1KiB on the stack?
 
-[1/1] video: backlight: make brightness and slew time parameters unsigned
-      https://git.pengutronix.de/cgit/barebox/commit/?id=7b4c629a16ae (link may not be stable)
+sascha
 
-Best regards,
+>  	int opt, ret, repair = 0;
+>  	struct bbu_data data = {};
+>  	struct bbu_handler *handler;
+> @@ -82,14 +84,17 @@ static int do_barebox_update(int argc, char *argv[])
+>  
+>  	if (argc - optind > 0) {
+>  		data.imagefile = argv[optind];
+> +	} else if (!repair) {
+> +		snprintf(pathbuf, sizeof(pathbuf), "/mnt/tftp/%s-barebox-%s",
+> +			 globalvar_get("user"), globalvar_get("hostname"));
+> +		data.imagefile = pathbuf;
+> +	}
+>  
+> +	if (data.imagefile) {
+>  		image = read_file(data.imagefile, &data.len);
+>  		if (!image)
+>  			return -errno;
+>  		data.image = image;
+> -	} else {
+> -		if (!repair)
+> -			return COMMAND_ERROR_USAGE;
+>  	}
+>  
+>  	ret = barebox_update(&data, handler);
+> -- 
+> 2.39.2
+> 
+> 
+> 
+
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
