@@ -1,66 +1,64 @@
-Delivery-date: Mon, 01 Jul 2024 09:12:59 +0200
+Delivery-date: Mon, 01 Jul 2024 09:15:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sOBDf-000QAF-2x
+	id 1sOBGB-000QFK-1O
 	for lore@lore.pengutronix.de;
-	Mon, 01 Jul 2024 09:12:59 +0200
+	Mon, 01 Jul 2024 09:15:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sOBDf-0005Ap-AD
-	for lore@pengutronix.de; Mon, 01 Jul 2024 09:12:59 +0200
+	id 1sOBGA-0005Mz-Ru
+	for lore@pengutronix.de; Mon, 01 Jul 2024 09:15:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=u40yRZWO2PMEsEaVI+OS3RhIs4hj0TpGkeZkppa/Lvs=; b=GccQT/NoE35UbqRHUjZBNCYcri
-	U6r4gJrXQAsLgzjqjv5Ka6zHHVN5d293K4aLyVFgRNd7SwGWD7jymVN+UPY2ZGA7Ao+ZD3Ybue+3m
-	kICWDLgGP10ZJ+ZPu3rW9AoJ+NGzpRbqG2DA3CE93OUoHMpINjDuGWd912gUAfxBPb+AIehL2NhFo
-	OxMBSeyma7LzC6Mp2KHVAQm3o+o272mGS6TapBXeP5RuTa1cVwaG4t7gny1jNTgrihexHB8t0Vs8k
-	k0/SHoWdzbWhYXDn5hLbM3eNBIkggltFdi2piUSg2772na3wRYb3IRd3MZmehHR2RTkZnXMnT3ii1
-	37XPR9pg==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=tn0GOYYLaszjmcyd+F2BPi6z0P5vUu79c/aWNvsooiM=; b=UUm/P0TMW0OnUoEtwVb1o3EZp+
+	TaiSB3DjaqJpiYt8ZrNxE249Rev1KQvkemXTw9KPM0gqSFqm38oghjx5A3WjIl10mSNKqKVV3hj8n
+	2aPj4pJF5R4qWEQg1/5JUdlTYK42JBtcX+gRaJgMIFxpPB6fotnqHobJhYZvaWt0n3gdhy+k9RpVj
+	ibzanu8hEhpPR9YXJOaLLqlkzrp+oTRF7JAJRTh6NX8uOJPDUXpP5ppKXjpfdVoVXuiK8MUk+CU4b
+	5oGUtuLXUBVgh2gJ2GJB4pYgjE30oYLpO8nXVucBPYfArS+TncrMpbq6X0R99yncJ46wuC4SEnJpC
+	QT7D0CHw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sOBDC-00000001zCO-12fC;
-	Mon, 01 Jul 2024 07:12:30 +0000
+	id 1sOBFd-00000001zaN-3RJk;
+	Mon, 01 Jul 2024 07:15:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sOBD8-00000001zBW-3aTf
+	id 1sOBFa-00000001zY2-206D
 	for barebox@lists.infradead.org;
-	Mon, 01 Jul 2024 07:12:28 +0000
+	Mon, 01 Jul 2024 07:15:00 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sOBD7-00054s-9m; Mon, 01 Jul 2024 09:12:25 +0200
+	id 1sOBFY-0005He-Q3; Mon, 01 Jul 2024 09:14:56 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sOBD6-006JcA-TR; Mon, 01 Jul 2024 09:12:24 +0200
+	id 1sOBFY-006JcQ-DE; Mon, 01 Jul 2024 09:14:56 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sOBD6-000ZpI-2e;
-	Mon, 01 Jul 2024 09:12:24 +0200
+	id 1sOBFY-000a4S-12;
+	Mon, 01 Jul 2024 09:14:56 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Jul 2024 09:12:23 +0200
-Message-Id: <20240701071223.137695-2-a.fatoum@pengutronix.de>
+Date: Mon,  1 Jul 2024 09:14:55 +0200
+Message-Id: <20240701071455.138644-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240701071223.137695-1-a.fatoum@pengutronix.de>
-References: <20240701071223.137695-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240701_001227_098740_15A19DB7 
-X-CRM114-Status: GOOD (  12.96  )
+X-CRM114-CacheID: sfid-20240701_001458_603839_07C80996 
+X-CRM114-Status: GOOD (  12.84  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,97 +80,67 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 2/2] include: common.h: move barebox version/info declarations to new header
+Subject: [PATCH] bbu: command: update via TFTP if no image given
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Including all of common.h just to get the barebox version is overkill.
-Let's move the version/info declarations into a separate header that can
-be used instead.
+Booting barebox over TFTP is a common operation that even has a default
+boot target: `boot bnet`.
+
+Once, a chainloaded barebox was tested to work, it may need to be
+persisted, which needs a cumbersome:
+
+  barebox_update /mnt/tftp/${global.user}-barebox-${global.hostname}
+
+Make this more straight-forward by interpreting barebox_update called
+without any non-option argument to mean just that.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/barebox-info.h | 31 +++++++++++++++++++++++++++++++
- include/common.h       | 23 +----------------------
- 2 files changed, 32 insertions(+), 22 deletions(-)
- create mode 100644 include/barebox-info.h
+ commands/barebox-update.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-diff --git a/include/barebox-info.h b/include/barebox-info.h
-new file mode 100644
-index 000000000000..446cd0dbaf93
---- /dev/null
-+++ b/include/barebox-info.h
-@@ -0,0 +1,31 @@
-+/* SPDX-License-Identifier: GPL-2.0-or-later */
-+
-+#ifndef __BAREBOX_INFO_H__
-+#define __BAREBOX_INFO_H__
-+
-+#include <linux/types.h>
-+
-+extern const char version_string[];
-+extern const char release_string[];
-+extern const char buildsystem_version_string[];
-+
-+#ifdef CONFIG_BANNER
-+void barebox_banner(void);
-+#else
-+static inline void barebox_banner(void) {}
-+#endif
-+
-+const char *barebox_get_model(void);
-+void barebox_set_model(const char *);
-+const char *barebox_get_hostname(void);
-+void barebox_set_hostname(const char *);
-+void barebox_set_hostname_no_overwrite(const char *);
-+bool barebox_hostname_is_valid(const char *s);
-+
-+const char *barebox_get_serial_number(void);
-+void barebox_set_serial_number(const char *);
-+
-+void barebox_set_of_machine_compatible(const char *);
-+const char *barebox_get_of_machine_compatible(void);
-+
-+#endif
-diff --git a/include/common.h b/include/common.h
-index d7b5261bc921..fb8931c51eb9 100644
---- a/include/common.h
-+++ b/include/common.h
-@@ -20,6 +20,7 @@
- #include <asm/common.h>
- #include <asm/io.h>
- #include <linux/printk.h>
-+#include <barebox-info.h>
+diff --git a/commands/barebox-update.c b/commands/barebox-update.c
+index 4b23433e84f2..59db315e5650 100644
+--- a/commands/barebox-update.c
++++ b/commands/barebox-update.c
+@@ -6,6 +6,7 @@
+ #include <common.h>
+ #include <command.h>
+ #include <libfile.h>
++#include <globalvar.h>
+ #include <getopt.h>
+ #include <malloc.h>
+ #include <errno.h>
+@@ -20,6 +21,7 @@ static void print_handlers_list(void)
  
- /*
-  * sanity check. The Linux Kernel defines only one of __LITTLE_ENDIAN and
-@@ -113,26 +114,4 @@ int memcpy_parse_options(int argc, char *argv[], int *sourcefd,
- 			 int rwsize, int destmode);
- #define RW_BUF_SIZE	(unsigned)4096
+ static int do_barebox_update(int argc, char *argv[])
+ {
++	char pathbuf[PATH_MAX];
+ 	int opt, ret, repair = 0;
+ 	struct bbu_data data = {};
+ 	struct bbu_handler *handler;
+@@ -82,14 +84,17 @@ static int do_barebox_update(int argc, char *argv[])
  
--extern const char version_string[];
--extern const char release_string[];
--extern const char buildsystem_version_string[];
--#ifdef CONFIG_BANNER
--void barebox_banner(void);
--#else
--static inline void barebox_banner(void) {}
--#endif
--
--const char *barebox_get_model(void);
--void barebox_set_model(const char *);
--const char *barebox_get_hostname(void);
--void barebox_set_hostname(const char *);
--void barebox_set_hostname_no_overwrite(const char *);
--bool barebox_hostname_is_valid(const char *s);
--
--const char *barebox_get_serial_number(void);
--void barebox_set_serial_number(const char *);
--
--void barebox_set_of_machine_compatible(const char *);
--const char *barebox_get_of_machine_compatible(void);
--
- #endif	/* __COMMON_H_ */
+ 	if (argc - optind > 0) {
+ 		data.imagefile = argv[optind];
++	} else if (!repair) {
++		snprintf(pathbuf, sizeof(pathbuf), "/mnt/tftp/%s-barebox-%s",
++			 globalvar_get("user"), globalvar_get("hostname"));
++		data.imagefile = pathbuf;
++	}
+ 
++	if (data.imagefile) {
+ 		image = read_file(data.imagefile, &data.len);
+ 		if (!image)
+ 			return -errno;
+ 		data.image = image;
+-	} else {
+-		if (!repair)
+-			return COMMAND_ERROR_USAGE;
+ 	}
+ 
+ 	ret = barebox_update(&data, handler);
 -- 
 2.39.2
 
