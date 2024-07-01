@@ -1,65 +1,64 @@
-Delivery-date: Mon, 01 Jul 2024 09:20:57 +0200
+Delivery-date: Mon, 01 Jul 2024 09:27:55 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sOBLN-000QHN-2C
+	id 1sOBS7-000QJp-24
 	for lore@lore.pengutronix.de;
-	Mon, 01 Jul 2024 09:20:57 +0200
+	Mon, 01 Jul 2024 09:27:55 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sOBLN-00060f-2p
-	for lore@pengutronix.de; Mon, 01 Jul 2024 09:20:57 +0200
+	id 1sOBS7-0006QU-2U
+	for lore@pengutronix.de; Mon, 01 Jul 2024 09:27:55 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Ik+dC8250DFG4Np3SbeD4VrSkXXG7DupoIXtN1tpjEU=; b=uawL1pgbNrDJdS624TLQZzNFbS
-	JdwP6aImzUaSXzaEAkxFdABYYEiZKdJ0KkuB/PC4T0AX9QSM4fyUy1IGVQNu2z8KIXYCtGcaMQJI3
-	K5spa9fVW+LKFLtF5tJ0BZpkE4DHsChC09p7sbhAK5NEtHUoHmrWGC8OfaLliTBXlwyMxnMsYQWzu
-	AFDo0FM8Lw2zoMQqEUCC5MeT5lDGLks8I2lP8ByRbqmUtc2qabxObH3oDnB8IYLgVy6fnMSMSv0rd
-	Jb4N8/rDhCE3P7swCpQ9UVRtv5VzDXx7kBJWw/X9S+fQosawGlZmmvuanSxuVpkG9rBbn8YvrPfeF
-	+O9myofw==;
+	bh=m2f8XA+Jmt2vFkxYOv8/+STQhHbZbawWf6nbr2zvJnI=; b=nsZ8t6TSTFjN+sVOERrpN4WdQv
+	QRewv16WfVxKU+DbzJEk9VeprbtvQvMRsgZo/Rij5Sr8ADi/Ki7DPnUX6rReSPxUz15kN+wsplUlE
+	g4A/4//7OUWQJmTr7BNxj8gTuo0W9nPeeADojmDoe9437+feHZOdfkHhspcOQ3VD2NYMuq8JVbRyS
+	lzZI06zVfBW1qrpqn0lFo2TMPQ+MbKuPKqifuXW819DXtgHjpgZcL3qshJpXN9RXdhorqF02WbA+7
+	hvk0PF2kn0pHH331V6wP/AsUg+s4LOMEq73sED0OZBR9maefiuNylNQ9IflICn+Fyaz/BXHgDH/F6
+	kh7V+o3w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sOBKr-000000020dU-2CXQ;
-	Mon, 01 Jul 2024 07:20:25 +0000
+	id 1sOBRY-000000021ZH-2OC5;
+	Mon, 01 Jul 2024 07:27:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sOBKo-000000020cx-0Aa9
+	id 1sOBRV-000000021YF-2dNm
 	for barebox@lists.infradead.org;
-	Mon, 01 Jul 2024 07:20:23 +0000
+	Mon, 01 Jul 2024 07:27:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sOBKm-0005xo-AU; Mon, 01 Jul 2024 09:20:20 +0200
+	id 1sOBRT-0006Id-NC; Mon, 01 Jul 2024 09:27:15 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sOBKl-006JdH-U6; Mon, 01 Jul 2024 09:20:19 +0200
+	id 1sOBRT-006Ji7-Ad; Mon, 01 Jul 2024 09:27:15 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sOBKl-000d9O-2i;
-	Mon, 01 Jul 2024 09:20:19 +0200
+	id 1sOBRT-000gTC-0j;
+	Mon, 01 Jul 2024 09:27:15 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Mon,  1 Jul 2024 09:20:19 +0200
-Message-Id: <20240701072019.150463-1-a.fatoum@pengutronix.de>
+Date: Mon,  1 Jul 2024 09:27:14 +0200
+Message-Id: <20240701072714.163239-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240701_002022_103538_6E5939B8 
-X-CRM114-Status: UNSURE (   9.68  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240701_002717_686110_518A9E07 
+X-CRM114-Status: GOOD (  10.97  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,90 +79,75 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: dts: imx8mp-skov: describe RTC
+	autolearn=unavailable autolearn_force=no version=3.4.2
+Subject: [PATCH master] video: backlight: make brightness and slew time parameters unsigned
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The kernel device trees for the platform already describe the RTC, so
-let's do the same in barebox as well.
+Despite the backlight parameter being registered as uint32,
+backlight_brightness_set took the brightness level as a signed value.
 
+This can lead to wrap around for very large values of brightness
+supplied as device parameter and if this results in a negative
+brightness, the function appears to hang, because the slew rate loop
+runs for a long time.
+
+Fix this by making brightness level an unsigned entity.
+
+Fixes: e3ea90860e99 ("video: Add backlight support")
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/dts/imx8mp-skov.dts | 39 ++++++++++++++++++++++++++++++++++++
- 1 file changed, 39 insertions(+)
+ drivers/video/backlight.c | 6 +++---
+ include/video/backlight.h | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm/dts/imx8mp-skov.dts b/arch/arm/dts/imx8mp-skov.dts
-index 3761da89cae7..6e21b81c30a1 100644
---- a/arch/arm/dts/imx8mp-skov.dts
-+++ b/arch/arm/dts/imx8mp-skov.dts
-@@ -33,6 +33,7 @@ aliases {
- 		ethernet1 = &lan1;
- 		ethernet2 = &lan2;
- 		state = &state;
-+		rtc0 = &i2c_rtc;
- 	};
+diff --git a/drivers/video/backlight.c b/drivers/video/backlight.c
+index 6c00cc115e6d..d171b0d960d2 100644
+--- a/drivers/video/backlight.c
++++ b/drivers/video/backlight.c
+@@ -6,7 +6,7 @@
  
- 	leds {
-@@ -322,6 +323,24 @@ ldo5: LDO5 {
- 	};
+ static LIST_HEAD(backlights);
+ 
+-int backlight_set_brightness(struct backlight_device *bl, int brightness)
++int backlight_set_brightness(struct backlight_device *bl, unsigned brightness)
+ {
+ 	int ret, step, i, num_steps;
+ 
+@@ -80,9 +80,9 @@ int backlight_register(struct backlight_device *bl)
+ 		return ret;
+ 
+ 	dev_add_param_uint32(&bl->dev, "brightness", backlight_brightness_set,
+-			NULL, &bl->brightness, "%d", bl);
++			NULL, &bl->brightness, "%u", bl);
+ 	dev_add_param_uint32(&bl->dev, "slew_time_ms", NULL, NULL,
+-			     &bl->slew_time_ms, "%d", NULL);
++			     &bl->slew_time_ms, "%u", NULL);
+ 
+ 	list_add_tail(&bl->list, &backlights);
+ 
+diff --git a/include/video/backlight.h b/include/video/backlight.h
+index b510de9d294f..2dd63202cd6e 100644
+--- a/include/video/backlight.h
++++ b/include/video/backlight.h
+@@ -16,7 +16,7 @@ struct backlight_device {
+ 	struct device_node *node;
  };
  
-+&i2c3 {
-+	clock-frequency = <100000>;
-+	pinctrl-names = "default", "gpio";
-+	pinctrl-0 = <&pinctrl_i2c3>, <&pinctrl_i2c3_gpio>;
-+	scl-gpios = <&gpio5 18 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	sda-gpios = <&gpio5 19 (GPIO_ACTIVE_HIGH | GPIO_OPEN_DRAIN)>;
-+	status = "okay";
-+
-+	i2c_rtc: rtc@51 {
-+		compatible = "nxp,pcf85063tp";
-+		reg = <0x51>;
-+		pinctrl-names = "default";
-+		pinctrl-0 = <&pinctrl_rtc>;
-+		interrupts-extended = <&gpio4 31 IRQ_TYPE_EDGE_FALLING>;
-+		quartz-load-femtofarads = <12500>;
-+	};
-+};
-+
- &i2c4 {
- 	clock-frequency = <100000>;
- 	pinctrl-names = "default";
-@@ -493,6 +512,20 @@ MX8MP_IOMUXC_I2C1_SDA__I2C1_SDA					0x400001c2
- 		>;
- 	};
+-int backlight_set_brightness(struct backlight_device *, int brightness);
++int backlight_set_brightness(struct backlight_device *, unsigned brightness);
+ int backlight_set_brightness_default(struct backlight_device *);
+ int backlight_register(struct backlight_device *);
+ struct backlight_device *of_backlight_find(struct device_node *node);
+@@ -24,7 +24,7 @@ struct backlight_device *of_backlight_find(struct device_node *node);
+ struct backlight_device ;
  
-+	pinctrl_i2c3: i2c3grp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C3_SCL__I2C3_SCL				0x400001c2
-+			MX8MP_IOMUXC_I2C3_SDA__I2C3_SDA				0x400001c2
-+		>;
-+	};
-+
-+	pinctrl_i2c3_gpio: i2c3gpiogrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_I2C3_SCL__GPIO5_IO18				0x400001c2
-+			MX8MP_IOMUXC_I2C3_SDA__GPIO5_IO19				0x400001c2
-+		>;
-+	};
-+
- 	pinctrl_i2c4: i2c4grp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_I2C4_SCL__I2C4_SCL					0x400001c3
-@@ -500,6 +533,12 @@ MX8MP_IOMUXC_I2C4_SDA__I2C4_SDA					0x400001c3
- 		>;
- 	};
- 
-+	pinctrl_rtc: rtcgrp {
-+		fsl,pins = <
-+			MX8MP_IOMUXC_SAI3_TXFS__GPIO4_IO31			0x41
-+		>;
-+	};
-+
- 	pinctrl_switch: switchgrp {
- 		fsl,pins = <
- 			MX8MP_IOMUXC_SAI3_TXD__GPIO5_IO01				0x41
+ static inline int
+-backlight_set_brightness(struct backlight_device *dev, int brightness)
++backlight_set_brightness(struct backlight_device *dev, unsigned brightness)
+ {
+ 	return 0;
+ }
 -- 
 2.39.2
 
