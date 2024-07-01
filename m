@@ -1,69 +1,65 @@
-Delivery-date: Mon, 01 Jul 2024 12:09:09 +0200
+Delivery-date: Mon, 01 Jul 2024 12:09:32 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sODy9-000SuF-03
+	id 1sODyW-000Sug-0r
 	for lore@lore.pengutronix.de;
-	Mon, 01 Jul 2024 12:09:09 +0200
+	Mon, 01 Jul 2024 12:09:32 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sODy8-0006Sg-CO
-	for lore@pengutronix.de; Mon, 01 Jul 2024 12:09:08 +0200
+	id 1sODyV-0006Y8-Jl
+	for lore@pengutronix.de; Mon, 01 Jul 2024 12:09:32 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0R+fUWUh/GIA/zTBR9P1olvrdewHR27SzqNr6s12yuM=; b=mls7eGHQ7ofH3ey1qqlwp7MVOd
-	hv83GyJU8XYfM+FUMSSifL/YKV7nTgY49gL+aGnPm3xCLMRjl1NE7QmzBU+KRXXvuy+gzOJ2VEoGv
-	JCNV9WCkMmC+BRe6SBw5R1dTOrinC4N4Jw4ZlPJqyu1k1LX8tOX8rYrUSHpLEDZjldfTXNJvs0ODF
-	Vh9PtnlTZk2F0409JjiSvJ8YiNlehq8K1J3xoXMS+R+8Wu/+zekSy5tkJkBErsxlbfXh2NlDAZnRs
-	U6mNaMLYlSE0f3S3YgpKMjOB4tsxiFasn2HAsG+N/M6F1Is3hl+MKas/3F8KZdrm7UdjXChjfLMc3
-	IhY9j1aA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=6JC/s9H7v3Q5Cwm8TTw4f5iQ+k3i9lkv/z9VCCvaOhQ=; b=rbbEN0gy/QK5cZYi1xyAafWdYy
+	HjZh8MEBt0nNFaIIJFrVTMMsbC3MbiHTnf0VUlEs94HeKIrw6J4ezPF/vjrjDUCF3oNjudAz3cXsV
+	0ZeALe3bRV5W8FCp7bN7x30+uQxiz9oa4qLy/n5o0sVugwH+ElnS9OzNzXYju+nsXk8GcSqUAW0AR
+	Khfrv13hlyw6BSRE+TGA53EcigC83zbx7jnkaWslx5r4lRU0VFGduE6JKt9KL+TBkQiu24JUL+tbg
+	hLYQgLxGp/VoBQJXNTFMLMH1x7L2tIPxwiur3pKeMTR0C2tU1GU6Y9pp7Xi21ElAI53bUEoajHk0X
+	0xjl1Euw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sODxb-00000002ZSg-10si;
-	Mon, 01 Jul 2024 10:08:35 +0000
+	id 1sODy5-00000002ZaO-1zAz;
+	Mon, 01 Jul 2024 10:09:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sODxY-00000002ZRg-2an2
+	id 1sODy2-00000002ZYv-1LUV
 	for barebox@lists.infradead.org;
-	Mon, 01 Jul 2024 10:08:34 +0000
+	Mon, 01 Jul 2024 10:09:03 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sODxX-0006EE-1T; Mon, 01 Jul 2024 12:08:31 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sODy0-0006Pz-QG; Mon, 01 Jul 2024 12:09:00 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sODxW-006LTw-L3; Mon, 01 Jul 2024 12:08:30 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sODxW-008O9Y-1p;
-	Mon, 01 Jul 2024 12:08:30 +0200
-Date: Mon, 1 Jul 2024 12:08:30 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <ZoKAHmX1_V3quUnA@pengutronix.de>
-References: <20240701071455.138644-1-a.fatoum@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sODy0-006LU0-DQ; Mon, 01 Jul 2024 12:09:00 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sODy0-00GGRv-13;
+	Mon, 01 Jul 2024 12:09:00 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Mon,  1 Jul 2024 12:08:59 +0200
+Message-Id: <20240701100859.3876429-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240701071455.138644-1-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240701_030832_680544_AC9C40D7 
-X-CRM114-Status: GOOD (  25.34  )
+X-CRM114-CacheID: sfid-20240701_030902_383778_2803B0B9 
+X-CRM114-Status: GOOD (  12.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,87 +77,86 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] bbu: command: update via TFTP if no image given
+Subject: [PATCH master] ARM: fix OP-TEE DT reservation clashing with barebox area at endmem
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Mon, Jul 01, 2024 at 09:14:55AM +0200, Ahmad Fatoum wrote:
-> Booting barebox over TFTP is a common operation that even has a default
-> boot target: `boot bnet`.
-> 
-> Once, a chainloaded barebox was tested to work, it may need to be
-> persisted, which needs a cumbersome:
-> 
->   barebox_update /mnt/tftp/${global.user}-barebox-${global.hostname}
-> 
-> Make this more straight-forward by interpreting barebox_update called
-> without any non-option argument to mean just that.
-> 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  commands/barebox-update.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/commands/barebox-update.c b/commands/barebox-update.c
-> index 4b23433e84f2..59db315e5650 100644
-> --- a/commands/barebox-update.c
-> +++ b/commands/barebox-update.c
-> @@ -6,6 +6,7 @@
->  #include <common.h>
->  #include <command.h>
->  #include <libfile.h>
-> +#include <globalvar.h>
->  #include <getopt.h>
->  #include <malloc.h>
->  #include <errno.h>
-> @@ -20,6 +21,7 @@ static void print_handlers_list(void)
->  
->  static int do_barebox_update(int argc, char *argv[])
->  {
-> +	char pathbuf[PATH_MAX];
+The barebox area reservation is meant to fix the issue of having gaps
+between early barebox-related reservations that might be clobbered by
+later calls to request_sdram_region().
 
-Do we really want to allocate 1KiB on the stack?
+The OP-TEE memory region, if it exists, is not a barebox-related
+reservation and treating it as such will clash if the reservation is
+also listed in the device-tree:
 
-sascha
+  WARNING: of-reserved-mem: couldn't request reserved sdram region 0xdd000000-0xdfffffff
 
->  	int opt, ret, repair = 0;
->  	struct bbu_data data = {};
->  	struct bbu_handler *handler;
-> @@ -82,14 +84,17 @@ static int do_barebox_update(int argc, char *argv[])
->  
->  	if (argc - optind > 0) {
->  		data.imagefile = argv[optind];
-> +	} else if (!repair) {
-> +		snprintf(pathbuf, sizeof(pathbuf), "/mnt/tftp/%s-barebox-%s",
-> +			 globalvar_get("user"), globalvar_get("hostname"));
-> +		data.imagefile = pathbuf;
-> +	}
->  
-> +	if (data.imagefile) {
->  		image = read_file(data.imagefile, &data.len);
->  		if (!image)
->  			return -errno;
->  		data.image = image;
-> -	} else {
-> -		if (!repair)
-> -			return COMMAND_ERROR_USAGE;
->  	}
->  
->  	ret = barebox_update(&data, handler);
-> -- 
-> 2.39.2
-> 
-> 
-> 
+This failed reservation can lead to a failure to boot, e.g. on
+STM32MP13:
 
+  WARNING: of-reserved-mem: couldn't request reserved sdram region 0xdd000000-0xdfffffff
+  E/TC:0   tzc_it_handler:26 TZC permission failure
+  E/TC:0   dump_fail_filter:420 Permission violation on filter 0
+  E/TC:0   dump_fail_filter:425 Violation @0xde03c530, non-secure privileged read, AXI ID 5c0
+  E/TC:0   Panic at core/arch/arm/plat-stm32mp1/plat_tzc400.c:30 <tzc_it_handler>
+  E/TC:0   TEE load address @ 0xde000000
+  E/TC:0   Call stack:
+
+Fix this by defining the end of the barebox area to not include any
+OP-TEE memory regions.
+
+Fixes: 3f7b6146669c ("ARM: cpu: start: register barebox memory area")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ arch/arm/cpu/start.c               | 3 ++-
+ arch/arm/include/asm/barebox-arm.h | 7 ++++++-
+ 2 files changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/arch/arm/cpu/start.c b/arch/arm/cpu/start.c
+index 2d60d190fe7c..ece9512a79f1 100644
+--- a/arch/arm/cpu/start.c
++++ b/arch/arm/cpu/start.c
+@@ -170,7 +170,8 @@ __noreturn __prereloc void barebox_non_pbl_start(unsigned long membase,
+ 	pr_debug("initializing malloc pool at 0x%08lx (size 0x%08lx)\n",
+ 			malloc_start, malloc_end - malloc_start);
+ 
+-	register_barebox_area(barebox_base, endmem - barebox_base);
++	register_barebox_area(barebox_base,
++			      arm_mem_barebox_image_end(endmem) - barebox_base);
+ 
+ 	kasan_init(membase, memsize, malloc_start - (memsize >> KASAN_SHADOW_SCALE_SHIFT));
+ 
+diff --git a/arch/arm/include/asm/barebox-arm.h b/arch/arm/include/asm/barebox-arm.h
+index 566986e515a4..6071c6435535 100644
+--- a/arch/arm/include/asm/barebox-arm.h
++++ b/arch/arm/include/asm/barebox-arm.h
+@@ -59,7 +59,7 @@ void *barebox_arm_boot_dtb(void);
+  *                                   ↑
+  *	        OPTEE_SIZE (depends on CONFIG_OPTEE_SIZE)
+  *                                   ↓
+- *  ------------------------- arm_mem_optee() -------------------------
++ *  ---------- arm_mem_optee() / arm_mem_barebox_image_end() ----------
+  *                                   ↑
+  *                                 SZ_32K
+  *                                   ↓
+@@ -97,6 +97,11 @@ static inline unsigned long arm_mem_optee(unsigned long endmem)
+ 	return endmem - OPTEE_SIZE;
+ }
+ 
++static inline unsigned long arm_mem_barebox_image_end(unsigned long endmem)
++{
++	return arm_mem_optee(endmem);
++}
++
+ static inline unsigned long arm_mem_scratch(unsigned long endmem)
+ {
+ 	return arm_mem_optee(endmem) - SZ_32K;
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
