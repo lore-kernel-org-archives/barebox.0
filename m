@@ -1,57 +1,58 @@
-Delivery-date: Wed, 03 Jul 2024 19:21:04 +0200
+Delivery-date: Wed, 03 Jul 2024 20:30:17 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sP3fE-001F4b-04
+	id 1sP4kD-001G1w-0X
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jul 2024 19:21:04 +0200
+	Wed, 03 Jul 2024 20:30:17 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sP3fD-0007VS-8d
-	for lore@pengutronix.de; Wed, 03 Jul 2024 19:21:03 +0200
+	id 1sP4kC-0003Qa-I2
+	for lore@pengutronix.de; Wed, 03 Jul 2024 20:30:17 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
-	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
-	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=a2nJKMTXf5/o4PS8iiHsoHfhNGGGAlxCOjRz/T9ASpM=; b=JC4fyhMjwqve/2UwnnOpMkEO7I
-	ofsjzC7iNAMmbgni0rkzq+xoaTJVoonqWb1bLhlAVaEGGQhPvSWUecqoZYGO6HdGb/I8wuY+1ynrk
-	Pq5rcCLOKiO1ymEMxjzE8MG+RviZmzZVPQ4rDJIyJeIn93T/BCWrGc6V4jhGggvveE6sT3lTMsR8T
-	EDLRU/9sFyMhkKCcxAafFeODQqB7hVVO/YaYgOXiZx9lYVbQkcrutxrlrEBiNaiDHJAaiXRSC1cJW
-	jsaN60oH7wQqCssFlHtxwdzzkQ0S5XFAQXkyMmJxj60Djf+mLrsasJG3IJbMkPjsUwiBQa2R77hbn
-	b6aH4PSg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=zZDjPrZTnStsot9FAlbZRouvrBjEbkDMDhiCAO63gQI=; b=2JCKG3jGEtqCc0cCR/rDIxApVv
+	6VyURknko73/rWfvxDK7nAbaPZxjcrr6ZF4Ys/mgvRB9LstBFVqGC+zeMslDLF5mA2mdk6+4asVKH
+	ooKqyCQYoflBiejCQ6j33KhsU596ZDPphhZlVgT2w1kNMC7tlpZqg3ubEJ8ofVnH3aMVUAGaii8xq
+	M+kW0RTZv10gqfxn06ZWt/qzc42BWgWFe2KN3GBEXdNT4PAMOHOdVGS68VCBOOSQWZTvopPUNkQwF
+	fV3+su1cJDIJPylIaCZuMW/GpUBmFM7PNaY/gytrH6+spR4GYaF1WPYh3Q7QrgpL7HZ/RC5ob2QNE
+	qgNbBVdA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sP3em-0000000Aygp-3FaK;
-	Wed, 03 Jul 2024 17:20:36 +0000
+	id 1sP4jY-0000000B9nk-0nq2;
+	Wed, 03 Jul 2024 18:29:36 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sP3eW-0000000AyXA-3QSF
+	id 1sP4jU-0000000B9lq-0MFF
 	for barebox@lists.infradead.org;
-	Wed, 03 Jul 2024 17:20:26 +0000
-Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
+	Wed, 03 Jul 2024 18:29:34 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sP3eU-00073M-Ph; Wed, 03 Jul 2024 19:20:18 +0200
-From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 03 Jul 2024 19:20:22 +0200
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sP4jS-0003Ma-Fy; Wed, 03 Jul 2024 20:29:30 +0200
+Message-ID: <38177bf4-4a0e-4765-881e-8404370bfdd5@pengutronix.de>
+Date: Wed, 3 Jul 2024 20:29:30 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-v2024-05-0-topic-hab-v2-5-17419aa5d3a3@pengutronix.de>
+User-Agent: Mozilla Thunderbird
+To: Marco Felsch <m.felsch@pengutronix.de>,
+ Sascha Hauer <s.hauer@pengutronix.de>, BAREBOX <barebox@lists.infradead.org>
 References: <20240703-v2024-05-0-topic-hab-v2-0-17419aa5d3a3@pengutronix.de>
-In-Reply-To: <20240703-v2024-05-0-topic-hab-v2-0-17419aa5d3a3@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>, 
- BAREBOX <barebox@lists.infradead.org>
-Cc: Marco Felsch <m.felsch@pengutronix.de>
-X-Mailer: b4 0.14.0
+ <20240703-v2024-05-0-topic-hab-v2-7-17419aa5d3a3@pengutronix.de>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240703-v2024-05-0-topic-hab-v2-7-17419aa5d3a3@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240703_102021_284501_52E96983 
-X-CRM114-Status: GOOD (  14.90  )
+X-CRM114-CacheID: sfid-20240703_112932_153580_855DEEB2 
+X-CRM114-Status: GOOD (  21.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,120 +74,95 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 5/9] i.MX: HAB: add imx_hab_revoke_key support
+Subject: Re: [PATCH v2 7/9] i.MX8M: HABv4: add an option to allow key
+ revocation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Add an helper to revoke an i.MX SRK key. At the moment the helper
-supprts i.MX8M devices only, but adding support for other SoCs can be
-done easily by providing the .revoke_key() hook.
+Hello Marco,
 
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
----
- drivers/hab/hab.c                | 45 ++++++++++++++++++++++++++++++++++++++++
- include/hab.h                    |  1 +
- include/mach/imx/ocotp-fusemap.h |  1 +
- 3 files changed, 47 insertions(+)
+On 03.07.24 19:20, Marco Felsch wrote:
+> The HAB code needs an special [Unlock] instruction to keep the
+> SRK_REVOKE fuse bank unlocked. This is required if a key needs to be
+> revoked.
+> 
+> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+> ---
+>  arch/arm/mach-imx/Kconfig            | 8 ++++++++
+>  include/mach/imx/habv4-imx8-gencsf.h | 6 ++++++
+>  2 files changed, 14 insertions(+)
+> 
+> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+> index 61258137736f..68f55971506b 100644
+> --- a/arch/arm/mach-imx/Kconfig
+> +++ b/arch/arm/mach-imx/Kconfig
+> @@ -835,6 +835,14 @@ config HABV4_QSPI
+>  	help
+>  	  Enable this option to build signed QSPI/FlexSPI images.
+>  
+> +config HABV4_CSF_UNLOCK_SRK_REVOKE
+> +	depends on HABV4
+> +	bool "Unlock SRK revocation"
+> +	help
+> +	  Enable this option to instruct the HAB code to not lock
+> +	  the SRK_REVOKE_LOCK sticky bit. This is required for key
+> +	  revocation. Don't enable this if you are unsure.
 
-diff --git a/drivers/hab/hab.c b/drivers/hab/hab.c
-index 28a091841a69..7c840303d395 100644
---- a/drivers/hab/hab.c
-+++ b/drivers/hab/hab.c
-@@ -231,6 +231,27 @@ static int imx8m_hab_device_locked_down_ocotp(void)
- 	return v;
- }
- 
-+static int imx8m_hab_revoke_key_ocotp(unsigned key_idx)
-+{
-+	int ret;
-+
-+	/* Prohibit revocation of last possible key */
-+	if (key_idx >= 4)
-+		return -EINVAL;
-+
-+	ret = imx_ocotp_srk_revoke_locked();
-+	if (ret < 0)
-+		return ret;
-+
-+	/* Return -EINVAL in case the SRK_REVOKE write is locked */
-+	if (ret == 1)
-+		return -EINVAL;
-+
-+	ret = imx_ocotp_write_field(MX8M_OCOTP_SRK_REVOKE, BIT(key_idx));
-+
-+	return ret;
-+}
-+
- struct imx_hab_ops {
- 	int (*write_srk_hash)(const u8 *srk, unsigned flags);
- 	int (*read_srk_hash)(u8 *srk);
-@@ -238,6 +259,7 @@ struct imx_hab_ops {
- 	int (*lockdown_device)(unsigned flags);
- 	int (*device_locked_down)(void);
- 	int (*print_status)(void);
-+	int (*revoke_key)(unsigned key_idx);
- };
- 
- static struct imx_hab_ops imx_hab_ops_iim = {
-@@ -265,6 +287,7 @@ static struct imx_hab_ops imx8m_hab_ops_ocotp = {
- 	.device_locked_down = imx8m_hab_device_locked_down_ocotp,
- 	.permanent_write_enable = imx_hab_permanent_write_enable_ocotp,
- 	.print_status = imx8m_hab_print_status,
-+	.revoke_key = imx8m_hab_revoke_key_ocotp,
- };
- 
- static int imx_ahab_write_srk_hash(const u8 *__newsrk, unsigned flags)
-@@ -536,3 +559,25 @@ static int init_imx_hab_print_status(void)
- 	return 0;
- }
- postmmu_initcall(init_imx_hab_print_status);
-+
-+int imx_hab_revoke_key(unsigned key_idx, bool permanent)
-+{
-+	struct imx_hab_ops *ops = imx_get_hab_ops();
-+	int ret;
-+
-+	if (!ops || !ops->revoke_key)
-+		return -ENOSYS;
-+
-+	if (permanent) {
-+		ret = ops->permanent_write_enable(1);
-+		if (ret)
-+			return ret;
-+	}
-+
-+	ret = ops->revoke_key(key_idx);
-+
-+	if (permanent)
-+		ops->permanent_write_enable(0);
-+
-+	return ret;
-+}
-diff --git a/include/hab.h b/include/hab.h
-index 2cef3841d149..7a70c67f0488 100644
---- a/include/hab.h
-+++ b/include/hab.h
-@@ -51,5 +51,6 @@ int imx_hab_read_srk_hash(void *buf);
- int imx_hab_lockdown_device(unsigned flags);
- int imx_hab_device_locked_down(void);
- int imx_hab_print_status(void);
-+int imx_hab_revoke_key(unsigned key_idx, bool permanent);
- 
- #endif /* __HABV4_H */
-diff --git a/include/mach/imx/ocotp-fusemap.h b/include/mach/imx/ocotp-fusemap.h
-index c4f94e61e8f8..e6fa96b40ba9 100644
---- a/include/mach/imx/ocotp-fusemap.h
-+++ b/include/mach/imx/ocotp-fusemap.h
-@@ -57,5 +57,6 @@
- #define MX8M_OCOTP_SRK_LOCK		(OCOTP_WORD(0x400) | OCOTP_BIT(9) | OCOTP_WIDTH(1))
- #define MX8M_OCOTP_SEC_CONFIG_1		(OCOTP_WORD(0x470) | OCOTP_BIT(25) | OCOTP_WIDTH(1))
- #define MX8MQ_OCOTP_DIR_BT_DIS		(OCOTP_WORD(0x470) | OCOTP_BIT(27) | OCOTP_WIDTH(1))
-+#define MX8M_OCOTP_SRK_REVOKE		(OCOTP_WORD(0x670) | OCOTP_BIT(0) | OCOTP_WIDTH(4))
- 
- #endif /* __MACH_IMX_OCOTP_FUSEMAP_H */
+I think for added safety we should have an extra option that prompts
+for the key to be revoked and an initcall that is activated depending
+on it, e.g.:
+
+config HABV4_CSF_SRK_REVOKE_INDEX
+        int "SRK to revoke"
+        range 0 3
+        default 0
+        depends on HABV4_CSF_SRK_REVOKE_UNLOCK
+        help
+          Which of the first three SRKs to revoke. The SRK indices are
+          1-based. Saying 0 here will just print the SRK Revocation
+          register without modification. SRK #4 is immutable.
+                                                                       
+          Proceed with caution, revoking a SRK is irreversible and
+          manual manipulation of this code can brick the board!
+                                                                       
+if HABV4_CSF_SRK_REVOKE_INDEX = HABV4_SRK_INDEX
+comment "Can't revoke same SRK used for signing"
+comment "Attempts to build a signed barebox image will fail"
+endif
+
+and then some code that checks the same above condition during final
+assembly of the signed image.
+
+What do you think?
+
+> +
+>  config HAB_CERTS_ENV
+>  	depends on HAB
+>  	bool "Specify certificates in environment"
+> diff --git a/include/mach/imx/habv4-imx8-gencsf.h b/include/mach/imx/habv4-imx8-gencsf.h
+> index 5f92ceceab00..56d9ef2de92f 100644
+> --- a/include/mach/imx/habv4-imx8-gencsf.h
+> +++ b/include/mach/imx/habv4-imx8-gencsf.h
+> @@ -36,6 +36,12 @@ hab [Unlock]
+>  hab Engine = CAAM
+>  hab Features = RNG, MID
+>  
+> +#if defined(CONFIG_HABV4_CSF_UNLOCK_SRK_REVOKE)
+> +hab [Unlock]
+> +hab Engine = OCOTP
+> +hab Features = SRK REVOKE
+> +#endif
+> +
+>  hab [Install Key]
+>  /* verification key index in key store (0, 2...4) */
+>  hab Verification index = 0
+> 
 
 -- 
-2.39.2
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
