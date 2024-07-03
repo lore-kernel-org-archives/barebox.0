@@ -1,59 +1,57 @@
-Delivery-date: Wed, 03 Jul 2024 18:59:59 +0200
+Delivery-date: Wed, 03 Jul 2024 19:20:58 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sP3Kp-001Eb4-11
+	id 1sP3f8-001F1M-0i
 	for lore@lore.pengutronix.de;
-	Wed, 03 Jul 2024 18:59:59 +0200
+	Wed, 03 Jul 2024 19:20:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sP3Km-0005Sa-TR
-	for lore@pengutronix.de; Wed, 03 Jul 2024 18:59:59 +0200
+	id 1sP3f6-0007Po-9u
+	for lore@pengutronix.de; Wed, 03 Jul 2024 19:20:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:
-	Content-Transfer-Encoding:Content-Type:MIME-Version:Message-Id:Date:Subject:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Cc:To:In-Reply-To:References
+	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=AQ4ZRFM2qyUEoFSbtVr3XNJVoBqBWrpacEna/m05y8o=; b=MsIjW5TQmHeVpc
-	MUW0Jf2wlA8+n4svNoRqvY7Xgcbm0kivwh2f/V/cjWP6awXtq/Qmr2Rl6TE/KfLaBIVT3/4Hfw017
-	wZ7qp80Wah1T8o2R3o5QEkeOinvmEBZkQGr6jGDd15DeP1uTSxSZfz/aaXkHrJrQbqe9mowLO0zIG
-	MHRQcEbPWloYNkjlRGMluDCgiFlmLf+gU9y+Mr/fzvKCDDdn7wwNbB6D6ANL5S2ERn0nyYOrxqa5Y
-	jzJfCSQNU1ECdOJLEeOp/cLogPdsR8q4P+xVYLPjdlH1Tfxjh6TbPQ9AxXBOolYaUgCwKho6nMlgj
-	7ICOFbwOBa+dL+tbSrnA==;
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=5xrp4La5G96SPbD6Wuntue23FCGK6kodN7hRE3S0kRE=; b=cQnzKtAx1h+EuEEUAdMm20kVmJ
+	1UahdRV/qtQpnVcmgSW2EwDzBr9tDmfyD3j8g5WEZQW9ehxiw8G5sZxc0b1aYJrC3RHIOFpvQ1zJT
+	lPuhLkeQrLLRc5hxikQidnRHrtE+MKU2tjYGr9366X440km+0/nbb9LwZWKZnFuSjVzAlNA37esT+
+	hZpJMFkpfLkIR7Ow2Z1YuSXi5qCO4TdJjVQncDl81v4EdbA5Beg52POHBI+k5Haipj/2GFOUNcBr4
+	fyG+c2kfwR/ciqA90MbXoVH6XBFe0WIl/4/V2mZmHJHpiz4bkbvJJLrYHrGZMMwdgD0ltiGrmt/CI
+	aT8crEQg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sP3K5-0000000Av7O-0G4U;
-	Wed, 03 Jul 2024 16:59:13 +0000
+	id 1sP3ef-0000000Aybq-1GZd;
+	Wed, 03 Jul 2024 17:20:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sP3Jv-0000000Av21-02zX
+	id 1sP3eW-0000000AyX6-3PGc
 	for barebox@lists.infradead.org;
-	Wed, 03 Jul 2024 16:59:08 +0000
+	Wed, 03 Jul 2024 17:20:24 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sP3Jr-0004uJ-8Y; Wed, 03 Jul 2024 18:58:59 +0200
+	id 1sP3eU-00073M-Md; Wed, 03 Jul 2024 19:20:18 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 03 Jul 2024 18:58:28 +0200
-Message-Id: <20240703-v2024-05-0-topic-fit-overlay-v3-0-c1fd766fd31d@pengutronix.de>
+Date: Wed, 03 Jul 2024 19:20:19 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIADSDhWYC/x3MTQqAIBBA4avErBuYfkzoKtEidKyByNCQIrp71
- u59m3dD5CAcoS9uCJwkit8ymrIAs0zbzCg2G2qqW9LUYPoKSSHh4Xcx6ORAnzis04W6s6rSnal
- sy5AXe2An578fxud5AWJZouduAAAA
+Message-Id: <20240703-v2024-05-0-topic-hab-v2-2-17419aa5d3a3@pengutronix.de>
+References: <20240703-v2024-05-0-topic-hab-v2-0-17419aa5d3a3@pengutronix.de>
+In-Reply-To: <20240703-v2024-05-0-topic-hab-v2-0-17419aa5d3a3@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
  BAREBOX <barebox@lists.infradead.org>
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240703_095903_241720_063A4EE0 
-X-CRM114-Status: UNSURE (   8.74  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240703_102021_266463_D71E9D1D 
+X-CRM114-Status: GOOD (  13.12  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,70 +73,152 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 00/10] Add FIT image overlay support
+Subject: [PATCH v2 2/9] nvmem: ocotp: add support to get/set srk_revoke
+ sticky bit
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi,
-
-this series add the support to load FIT image supplied devicetree overlays.
-The v1 of this series can be found here [1].
-                                                                                                                                                       
-The overlay loading wasn't coupled to bootm due to the following
-reasons:
- - By making use of the common overlay handling we can specifiy a
-   different/separate FIT image which provides only overlays.
- - It should be possible to apply FIT image overlay to the barebox
-   live-tree (not implemented yet).
- - Loading a single overlay takes ~20ms (depending on the overlay size)
-   if the same FIT image is used to supply the kernel, initrd,
-   devicetree and devicetree-overlays. This is an improvement compared to
-   the v1 of this series which required ~1sec.
-
-Regards,
-  Marco
+The i.MX8M* devices do have an sticky bit which indicates if the
+srk_revoke fuse can be written. Add support to query and to set the lock
+bit.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
-Changes in v3:
-- Link to v2: https://lore.barebox.org/barebox/20240613125818.30499-1-m.felsch@pengutronix.de/
-- drop of.overlay.fitconfigpattern usage and make use of an match-fn
-  instead
-- fit_get_handle(): make use of strcmp
-- open_fits: make it static
-- fit_close(): use free unconditional
+ drivers/nvmem/ocotp.c    | 55 ++++++++++++++++++++++++++++++++++++++++++++++++
+ include/mach/imx/ocotp.h |  2 ++
+ 2 files changed, 57 insertions(+)
 
-Changes in v2:
-- Link to v1: https://lore.pengutronix.de/barebox/20240322164953.1772129-1-m.felsch@pengutronix.de/
-- add caching
+diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
+index c282efefa824..c0517980fb18 100644
+--- a/drivers/nvmem/ocotp.c
++++ b/drivers/nvmem/ocotp.c
+@@ -52,6 +52,7 @@
+ #define OCOTP_DATA			0x20
+ #define OCOTP_READ_CTRL			0x30
+ #define OCOTP_READ_FUSE_DATA		0x40
++#define OCOTP_SW_STICKY			0x50
+ 
+ #define MX7_OCOTP_DATA0			0x20
+ #define MX7_OCOTP_DATA1			0x30
+@@ -89,6 +90,8 @@
+ #define OCOTP_TIMING_STROBE_PROG	GENMASK(11, 0)
+ #define OCOTP_TIMING_WAIT		GENMASK(27, 22)
+ 
++#define OCOTP_SW_STICKY_SRK_REVOKE_LOCK		BIT(1)
++
+ #define OCOTP_READ_CTRL_READ_FUSE	BIT(1)
+ 
+ #define OCOTP_OFFSET_TO_ADDR(o) (OCOTP_OFFSET_TO_INDEX(o) * 4)
+@@ -147,6 +150,8 @@ struct imx_ocotp_data {
+ 	int (*set_timing)(struct ocotp_priv *priv);
+ 	int (*fuse_read)(struct ocotp_priv *priv, u32 addr, u32 *pdata);
+ 	int (*fuse_blow)(struct ocotp_priv *priv, u32 addr, u32 value);
++	bool (*srk_revoke_locked)(struct ocotp_priv *priv);
++	void (*lock_srk_revoke)(struct ocotp_priv *priv);
+ 	u8  mac_offsets[MAX_MAC_OFFSETS];
+ 	u8  mac_offsets_num;
+ 	struct imx8m_featctrl_data *feat;
+@@ -273,6 +278,20 @@ static int imx6_ocotp_prepare(struct ocotp_priv *priv)
+ 	return 0;
+ }
+ 
++static bool imx8m_srk_revoke_locked(struct ocotp_priv *priv)
++{
++	return readl(priv->base + OCOTP_SW_STICKY) & OCOTP_SW_STICKY_SRK_REVOKE_LOCK;
++}
++
++static void imx8m_lock_srk_revoke(struct ocotp_priv *priv)
++{
++	u32 val;
++
++	val = readl(priv->base + OCOTP_SW_STICKY);
++	val |= OCOTP_SW_STICKY_SRK_REVOKE_LOCK;
++	writel(val, priv->base + OCOTP_SW_STICKY);
++}
++
+ static int imx6_fuse_read_addr(struct ocotp_priv *priv, u32 addr, u32 *pdata)
+ {
+ 	const u32 bm_ctrl_error = priv->data->ctrl->bm_error;
+@@ -625,6 +644,36 @@ int imx_ocotp_sense_enable(bool enable)
+ 	return old_value;
+ }
+ 
++int imx_ocotp_srk_revoke_locked(void)
++{
++	int ret;
++
++	ret = imx_ocotp_ensure_probed();
++	if (ret)
++		return ret;
++
++	if (imx_ocotp->data->srk_revoke_locked)
++		return imx_ocotp->data->srk_revoke_locked(imx_ocotp);
++
++	return -ENOSYS;
++}
++
++int imx_ocotp_lock_srk_revoke(void)
++{
++	int ret;
++
++	ret = imx_ocotp_ensure_probed();
++	if (ret)
++		return ret;
++
++	if (imx_ocotp->data->lock_srk_revoke) {
++		imx_ocotp->data->lock_srk_revoke(imx_ocotp);
++		return 0;
++	}
++
++	return -ENOSYS;
++}
++
+ static void imx_ocotp_format_mac(u8 *dst, const u8 *src,
+ 				 enum imx_ocotp_format_mac_direction dir)
+ {
+@@ -985,6 +1034,8 @@ static struct imx_ocotp_data imx8mp_ocotp_data = {
+ 	.set_timing = imx6_ocotp_set_timing,
+ 	.fuse_blow = imx6_fuse_blow_addr,
+ 	.fuse_read = imx6_fuse_read_addr,
++	.srk_revoke_locked = imx8m_srk_revoke_locked,
++	.lock_srk_revoke = imx8m_lock_srk_revoke,
+ 	.ctrl = &ocotp_ctrl_reg_8mp,
+ };
+ 
+@@ -1014,6 +1065,8 @@ static struct imx_ocotp_data imx8mm_ocotp_data = {
+ 	.set_timing = imx6_ocotp_set_timing,
+ 	.fuse_blow = imx6_fuse_blow_addr,
+ 	.fuse_read = imx6_fuse_read_addr,
++	.srk_revoke_locked = imx8m_srk_revoke_locked,
++	.lock_srk_revoke = imx8m_lock_srk_revoke,
+ 	.feat = &imx8mm_featctrl_data,
+ 	.ctrl = &ocotp_ctrl_reg_default,
+ };
+@@ -1032,6 +1085,8 @@ static struct imx_ocotp_data imx8mn_ocotp_data = {
+ 	.set_timing = imx6_ocotp_set_timing,
+ 	.fuse_blow = imx6_fuse_blow_addr,
+ 	.fuse_read = imx6_fuse_read_addr,
++	.srk_revoke_locked = imx8m_srk_revoke_locked,
++	.lock_srk_revoke = imx8m_lock_srk_revoke,
+ 	.feat = &imx8mn_featctrl_data,
+ 	.ctrl = &ocotp_ctrl_reg_default,
+ };
+diff --git a/include/mach/imx/ocotp.h b/include/mach/imx/ocotp.h
+index 5f7b88f716a7..7a516ff789b9 100644
+--- a/include/mach/imx/ocotp.h
++++ b/include/mach/imx/ocotp.h
+@@ -36,6 +36,8 @@ int imx_ocotp_read_field(uint32_t field, unsigned *value);
+ int imx_ocotp_write_field(uint32_t field, unsigned value);
+ int imx_ocotp_permanent_write(int enable);
+ int imx_ocotp_sense_enable(bool enable);
++int imx_ocotp_srk_revoke_locked(void);
++int imx_ocotp_lock_srk_revoke(void);
+ 
+ static inline u64 imx_ocotp_read_uid(void __iomem *ocotp)
+ {
 
----
-Marco Felsch (10):
-      FIT: fix missing free in fit_open error path
-      FIT: fit_open_configuration: add match function support
-      of: overlay: make the pattern match function more generic
-      of: overlay: make search dir/path more generic
-      FIT: expose useful helpers
-      of: overlay: add FIT overlay support
-      of: overlay: drop unnecessary empty check in of_overlay_global_fixup_dir
-      of: overlay: replace filename with an more unique name
-      FIT: save filename during fit_open
-      FIT: add support to cache opened fit images
-
- arch/arm/mach-layerscape/ppa.c |   2 +-
- common/bootm.c                 |  13 ++-
- common/image-fit.c             |  57 +++++++++--
- drivers/of/overlay.c           | 222 +++++++++++++++++++++++++++++++++--------
- include/image-fit.h            |  10 +-
- include/of.h                   |   3 +-
- 6 files changed, 255 insertions(+), 52 deletions(-)
----
-base-commit: bafdf4b35d777d159ac4058efc86d36622ce5ccf
-change-id: 20240703-v2024-05-0-topic-fit-overlay-76d5176c1d4e
-
-Best regards,
 -- 
-Marco Felsch <m.felsch@pengutronix.de>
+2.39.2
 
 
 
