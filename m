@@ -1,63 +1,67 @@
-Delivery-date: Tue, 02 Jul 2024 21:45:17 +0200
+Delivery-date: Wed, 03 Jul 2024 10:54:44 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sOjRF-000wNh-1J
+	id 1sOvlE-0017fw-2X
 	for lore@lore.pengutronix.de;
-	Tue, 02 Jul 2024 21:45:17 +0200
+	Wed, 03 Jul 2024 10:54:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sOjRE-0002wp-Q8
-	for lore@pengutronix.de; Tue, 02 Jul 2024 21:45:17 +0200
+	id 1sOvlE-0007zB-5h
+	for lore@pengutronix.de; Wed, 03 Jul 2024 10:54:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=LxboF6bNkv2x/I3/cDfHeGyshWZ3g14HUV3UNRkP1TA=; b=od3iz14nrxzvbV
-	bxzWl6iepxzV3DEFKX7Nz5NqKAneWbwcTlDxPhDyWOzD7zGzxrvy3HIfwan3GVM5P/9jMVbEW9l4e
-	XHSzFwcIAmZz6kanpu2eePI2Pr185jz2J3oL7am2SY4Y3VLhm99ZQUAziPAm+HaVypb6KdqMrTA9d
-	6wp5S5cCXFvXZ0AXiTJhYjk/JwZl4MPz/Ei9Lx9h2icHNnayhN572CTGWzRIVRw5twZ3KZfg75f4l
-	ghcRFnhL3P8ryOxIeXHw7Ix7Zf9eGOoySb8lqrYLefUVqJxI6FbHOhAOP4xk90l9+gN1aMurAJQLA
-	5Edh48vcFpqhDfRUhD7g==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=G9wH1hA1kaGwkwAZXC7493DCEuUa7wMiH5utvpJfH0Q=; b=OAFKcu4LskoLCvv0oyh4XZOyph
+	ORf2h8NTXkag+7SqmCvzFDbl42yxcNTS/6o2dBl+3OU3rkclTnPt/kUMi33kzp9821qHQXV1ncytC
+	HAL1qiYaHiYxDUMkUFHYrqt/4Z5yw0XhgNaSdMVBI0SGNYXg7ZoVNJ0RL6YxdVumoBT200bKqMjnu
+	vs6iuhBkGbLlo7E5edcXr5sqmHk4Mkog7X0cd6ZKaavkej6Kn5dQNf6yciiKg37DYld/84XCX6UiJ
+	SruEPP77eH7rsb17NCOla5dsQXZc7DjkbGzuB8NUucRRVB7LzQ2Lb/flkAGFrDRsW5ATPJpjGDG50
+	EPxFmtvg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sOjQe-00000007of8-2AYy;
-	Tue, 02 Jul 2024 19:44:40 +0000
-Received: from lithops.sigma-star.at ([195.201.40.130])
+	id 1sOvke-00000009UJK-37Rq;
+	Wed, 03 Jul 2024 08:54:08 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sOjQb-00000007oec-3Qwb
+	id 1sOvkb-00000009UIu-1fqj
 	for barebox@lists.infradead.org;
-	Tue, 02 Jul 2024 19:44:39 +0000
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id 3663C64943DE;
-	Tue,  2 Jul 2024 21:44:33 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10032)
-	with ESMTP id AneQAEIwZnoY; Tue,  2 Jul 2024 21:44:32 +0200 (CEST)
-Received: from localhost (localhost [127.0.0.1])
-	by lithops.sigma-star.at (Postfix) with ESMTP id DB99664943E1;
-	Tue,  2 Jul 2024 21:44:32 +0200 (CEST)
-Received: from lithops.sigma-star.at ([127.0.0.1])
-	by localhost (lithops.sigma-star.at [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id mhAU7zSqeXW9; Tue,  2 Jul 2024 21:44:32 +0200 (CEST)
-Received: from foxxylove.corp.sigma-star.at (unknown [82.150.214.1])
-	by lithops.sigma-star.at (Postfix) with ESMTPSA id A322264943DE;
-	Tue,  2 Jul 2024 21:44:32 +0200 (CEST)
-From: Richard Weinberger <richard@nod.at>
-To: barebox@lists.infradead.org
-Date: Tue,  2 Jul 2024 21:44:27 +0200
-Message-Id: <20240702194427.936-1-richard@nod.at>
-X-Mailer: git-send-email 2.35.3
+	Wed, 03 Jul 2024 08:54:07 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sOvkS-0007rV-9R; Wed, 03 Jul 2024 10:53:56 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sOvkR-006oJH-Sh; Wed, 03 Jul 2024 10:53:55 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sOvkR-002nIU-2b;
+	Wed, 03 Jul 2024 10:53:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20240702084455.697720-1-s.hauer@pengutronix.de>
+References: <20240702084455.697720-1-s.hauer@pengutronix.de>
+Message-Id: <171999683580.666015.1486863592198613491.b4-ty@pengutronix.de>
+Date: Wed, 03 Jul 2024 10:53:55 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240702_124438_027262_7D7CE0BF 
-X-CRM114-Status: GOOD (  10.52  )
+X-CRM114-CacheID: sfid-20240703_015405_778728_3827F1BA 
+X-CRM114-Status: GOOD (  11.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,70 +73,62 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Richard Weinberger <richard@nod.at>, upstream+barebox@sigma-star.at
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ext4: Fix integer overflow in ext4fs_read_symlink()
+Subject: Re: [PATCH] mtd: rawnand: Ensure ECC configuration is propagated
+ to upper layers
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-While zalloc() takes a size_t type, adding 1 to the le32 variable
-will overflow.
-A carefully crafted ext4 filesystem can exhibit an inode size of 0xffffff=
-ff
-and as consequence zalloc() will do a zero allocation.
 
-Later in the function the inode size is again used for copying data.
-So an attacker can overwrite memory.
+On Tue, 02 Jul 2024 10:44:55 +0200, Sascha Hauer wrote:
+> This is an adoption of Linux Commit:
+> 
+> |commit 3a1b777eb9fb75d09c45ae5dd1d007eddcbebf1f
+> |Author: Miquel Raynal <miquel.raynal@bootlin.com>
+> |Date:   Tue May 7 10:58:42 2024 +0200
+> |
+> |    mtd: rawnand: Ensure ECC configuration is propagated to upper layers
+> |
+> |    Until recently the "upper layer" was MTD. But following incremental
+> |    reworks to bring spi-nand support and more recently generic ECC support,
+> |    there is now an intermediate "generic NAND" layer that also needs to get
+> |    access to some values. When using "converted" ECC engines, like the
+> |    software ones, these values are already propagated correctly. But
+> |    otherwise when using good old raw NAND controller drivers, we need to
+> |    manually set these values ourselves at the end of the "scan" operation,
+> |    once these values have been negotiated.
+> |
+> |    Without this propagation, later (generic) checks like the one warning
+> |    users that the ECC strength is not high enough might simply no longer
+> |    work.
+> |
+> |    Fixes: 8c126720fe10 ("mtd: rawnand: Use the ECC framework nand_ecc_is_strong_enough() helper")
+> |    Cc: stable@vger.kernel.org
+> |    Reported-by: Sascha Hauer <s.hauer@pengutronix.de>
+> |    Closes: https://lore.kernel.org/all/Zhe2JtvvN1M4Ompw@pengutronix.de/
+> |    Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+> |    Tested-by: Sascha Hauer <s.hauer@pengutronix.de>
+> |    Link: https://lore.kernel.org/linux-mtd/20240507085842.108844-1-miquel.raynal@bootlin.com
+> 
+> [...]
 
-Avoid the overflow by using the __builtin_add_overflow() helper.
+Applied, thanks!
 
-Signed-off-by: Richard Weinberger <richard@nod.at>
----
-I have found and verified this bug in u-boot.
-But Barebox uses the same code, so it is most likely affected too.
+[1/1] mtd: rawnand: Ensure ECC configuration is propagated to upper layers
+      https://git.pengutronix.de/cgit/barebox/commit/?id=0f5c97472bfb (link may not be stable)
 
-Thanks,
-//richard
----
- fs/ext4/ext4_common.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/fs/ext4/ext4_common.c b/fs/ext4/ext4_common.c
-index 4bfb55ad0d..a38593105f 100644
---- a/fs/ext4/ext4_common.c
-+++ b/fs/ext4/ext4_common.c
-@@ -369,13 +369,18 @@ char *ext4fs_read_symlink(struct ext2fs_node *node)
- 	char *symlink;
- 	struct ext2fs_node *diro =3D node;
- 	int status, ret;
-+	size_t alloc_size;
-=20
- 	if (!diro->inode_read) {
- 		ret =3D ext4fs_read_inode(diro->data, diro->ino, &diro->inode);
- 		if (ret)
- 			return NULL;
- 	}
--	symlink =3D zalloc(le32_to_cpu(diro->inode.size) + 1);
-+
-+	if (__builtin_add_overflow(le32_to_cpu(diro->inode.size), 1, &alloc_siz=
-e))
-+		return NULL;
-+
-+	symlink =3D zalloc(alloc_size);
- 	if (!symlink)
- 		return 0;
-=20
---=20
-2.35.3
+Best regards,
+-- 
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
