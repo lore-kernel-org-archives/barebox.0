@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sP3f8-001F1M-0i
+	id 1sP3f8-001F1X-1h
 	for lore@lore.pengutronix.de;
 	Wed, 03 Jul 2024 19:20:58 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sP3f6-0007Po-9u
+	id 1sP3f7-0007QP-KH
 	for lore@pengutronix.de; Wed, 03 Jul 2024 19:20:58 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,31 +18,31 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	:Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=5xrp4La5G96SPbD6Wuntue23FCGK6kodN7hRE3S0kRE=; b=cQnzKtAx1h+EuEEUAdMm20kVmJ
-	1UahdRV/qtQpnVcmgSW2EwDzBr9tDmfyD3j8g5WEZQW9ehxiw8G5sZxc0b1aYJrC3RHIOFpvQ1zJT
-	lPuhLkeQrLLRc5hxikQidnRHrtE+MKU2tjYGr9366X440km+0/nbb9LwZWKZnFuSjVzAlNA37esT+
-	hZpJMFkpfLkIR7Ow2Z1YuSXi5qCO4TdJjVQncDl81v4EdbA5Beg52POHBI+k5Haipj/2GFOUNcBr4
-	fyG+c2kfwR/ciqA90MbXoVH6XBFe0WIl/4/V2mZmHJHpiz4bkbvJJLrYHrGZMMwdgD0ltiGrmt/CI
-	aT8crEQg==;
+	bh=SBB/Es9Uq+5amQB72oDHCUVB6zVGgob+sX3MKVvn2t8=; b=1u40yHLlcC+F2LeUIktuXBVzhV
+	N3RhvwTC/Z1OcvnD1yCHgPPr3Gnts+YB14dno3+bVOcxeZUACTUWAkrfiNtV0hrR0JBtv3072Hjb3
+	9KD4h5ceEBn2l/kJ2ORok2rmEb5AcT6oZboKqc4SG6PPhI+YkT6Y5HN5WLYwPRaKcpT5YAqhiKJin
+	lom0lziTbWnPfBUbdtTjwtgPvw7mMjaVNFqLHnedn1Drrhubvn3ndkFrwN9OPpRo3RqudtHS1i+wK
+	4AhbIYe9xIZX0x+14+fu2zT8t4UnHE4D+cAb/QH8OdlWEuR8O4UjyY4KQ4Wj3b54OZWwD/hV3kizO
+	fdr0BQxA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sP3ef-0000000Aybq-1GZd;
-	Wed, 03 Jul 2024 17:20:29 +0000
+	id 1sP3ec-0000000Ayal-2k5N;
+	Wed, 03 Jul 2024 17:20:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sP3eW-0000000AyX6-3PGc
+	id 1sP3eW-0000000AyXD-3QZQ
 	for barebox@lists.infradead.org;
-	Wed, 03 Jul 2024 17:20:24 +0000
+	Wed, 03 Jul 2024 17:20:23 +0000
 Received: from dude02.red.stw.pengutronix.de ([2a0a:edc0:0:1101:1d::28])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <m.felsch@pengutronix.de>)
-	id 1sP3eU-00073M-Md; Wed, 03 Jul 2024 19:20:18 +0200
+	id 1sP3eU-00073M-T1; Wed, 03 Jul 2024 19:20:18 +0200
 From: Marco Felsch <m.felsch@pengutronix.de>
-Date: Wed, 03 Jul 2024 19:20:19 +0200
+Date: Wed, 03 Jul 2024 19:20:25 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20240703-v2024-05-0-topic-hab-v2-2-17419aa5d3a3@pengutronix.de>
+Message-Id: <20240703-v2024-05-0-topic-hab-v2-8-17419aa5d3a3@pengutronix.de>
 References: <20240703-v2024-05-0-topic-hab-v2-0-17419aa5d3a3@pengutronix.de>
 In-Reply-To: <20240703-v2024-05-0-topic-hab-v2-0-17419aa5d3a3@pengutronix.de>
 To: Sascha Hauer <s.hauer@pengutronix.de>, 
@@ -50,8 +50,8 @@ To: Sascha Hauer <s.hauer@pengutronix.de>,
 Cc: Marco Felsch <m.felsch@pengutronix.de>
 X-Mailer: b4 0.14.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240703_102021_266463_D71E9D1D 
-X-CRM114-Status: GOOD (  13.12  )
+X-CRM114-CacheID: sfid-20240703_102021_236484_3DE4C122 
+X-CRM114-Status: GOOD (  13.38  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -73,149 +73,92 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v2 2/9] nvmem: ocotp: add support to get/set srk_revoke
- sticky bit
+Subject: [PATCH v2 8/9] i.MX8M: HABv4: add option to allow burning the
+ field-return fuse
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The i.MX8M* devices do have an sticky bit which indicates if the
-srk_revoke fuse can be written. Add support to query and to set the lock
-bit.
+This adds the required Kconfig options which need to be enabled and
+correctly set to build a custom device specific barebox image which can
+be used to burn the FIELD_RETURN fuse.
+
+The CST tool can't handle quoted UID strings so we need to define it on
+the cmdline by using the -D switch. This removes the quotes within the
+CSF file and the CST is happy.
 
 Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
 ---
- drivers/nvmem/ocotp.c    | 55 ++++++++++++++++++++++++++++++++++++++++++++++++
- include/mach/imx/ocotp.h |  2 ++
- 2 files changed, 57 insertions(+)
+ arch/arm/mach-imx/Kconfig            | 25 +++++++++++++++++++++++++
+ include/mach/imx/habv4-imx8-gencsf.h |  7 +++++++
+ scripts/Makefile.lib                 |  1 +
+ 3 files changed, 33 insertions(+)
 
-diff --git a/drivers/nvmem/ocotp.c b/drivers/nvmem/ocotp.c
-index c282efefa824..c0517980fb18 100644
---- a/drivers/nvmem/ocotp.c
-+++ b/drivers/nvmem/ocotp.c
-@@ -52,6 +52,7 @@
- #define OCOTP_DATA			0x20
- #define OCOTP_READ_CTRL			0x30
- #define OCOTP_READ_FUSE_DATA		0x40
-+#define OCOTP_SW_STICKY			0x50
+diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
+index 68f55971506b..8bbde38e0d9a 100644
+--- a/arch/arm/mach-imx/Kconfig
++++ b/arch/arm/mach-imx/Kconfig
+@@ -843,6 +843,31 @@ config HABV4_CSF_UNLOCK_SRK_REVOKE
+ 	  the SRK_REVOKE_LOCK sticky bit. This is required for key
+ 	  revocation. Don't enable this if you are unsure.
  
- #define MX7_OCOTP_DATA0			0x20
- #define MX7_OCOTP_DATA1			0x30
-@@ -89,6 +90,8 @@
- #define OCOTP_TIMING_STROBE_PROG	GENMASK(11, 0)
- #define OCOTP_TIMING_WAIT		GENMASK(27, 22)
++config HABV4_CSF_UNLOCK_FIELD_RETURN
++	depends on HABV4
++	bool "Unlock field return"
++	help
++	  Enable this option to instruct the HAB code to not lock
++	  the FIELD_RETURN_LOCK sticky bit. This is required to be
++	  able to fuse the FIELD_RETURN fuse. It is also required
++	  that the CONFIG_HABV4_CSF_UNLOCK_UID is set correct as
++	  well.
++
++config HABV4_CSF_UNLOCK_UID
++	depends on HABV4 && HABV4_CSF_UNLOCK_FIELD_RETURN
++	string "CSF Unlock UID"
++	help
++	  Device specific 64-bit UID Required to unlock the field-return
++          feature. This value must match the per device UNIQUE_ID fuses.
++
++	  The below example shows the expected format. The UNIQUE_ID is
++	  queried by Linux via:
++            - cat /sys/devices/soc0/serial_number
++	      7766554433221100
++
++	  So this value have to be set:
++	    - 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77
++
+ config HAB_CERTS_ENV
+ 	depends on HAB
+ 	bool "Specify certificates in environment"
+diff --git a/include/mach/imx/habv4-imx8-gencsf.h b/include/mach/imx/habv4-imx8-gencsf.h
+index 56d9ef2de92f..3106facc511f 100644
+--- a/include/mach/imx/habv4-imx8-gencsf.h
++++ b/include/mach/imx/habv4-imx8-gencsf.h
+@@ -42,6 +42,13 @@ hab Engine = OCOTP
+ hab Features = SRK REVOKE
+ #endif
  
-+#define OCOTP_SW_STICKY_SRK_REVOKE_LOCK		BIT(1)
++#if defined(CONFIG_HABV4_CSF_UNLOCK_FIELD_RETURN)
++hab [Unlock]
++hab Engine = OCOTP
++hab Features = FIELD RETURN
++hab UID = HABV4_CSF_UNLOCK_UID
++#endif
 +
- #define OCOTP_READ_CTRL_READ_FUSE	BIT(1)
+ hab [Install Key]
+ /* verification key index in key store (0, 2...4) */
+ hab Verification index = 0
+diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
+index 6b1f0ccbc003..ffbd5360cba0 100644
+--- a/scripts/Makefile.lib
++++ b/scripts/Makefile.lib
+@@ -566,6 +566,7 @@ imxcfg_cpp_flags  = -Wp,-MD,$(depfile) -nostdinc -x assembler-with-cpp \
+       $(call overwrite-hab-env,CONFIG_HABV4_TABLE_BIN) \
+       $(call overwrite-hab-env,CONFIG_HABV4_CSF_CRT_PEM) \
+       $(call overwrite-hab-env,CONFIG_HABV4_IMG_CRT_PEM) \
++      -DHABV4_CSF_UNLOCK_UID=$(CONFIG_HABV4_CSF_UNLOCK_UID) \
+       $(call overwrite-fit-env,CONFIG_BOOTM_FITIMAGE_PUBKEY) \
  
- #define OCOTP_OFFSET_TO_ADDR(o) (OCOTP_OFFSET_TO_INDEX(o) * 4)
-@@ -147,6 +150,8 @@ struct imx_ocotp_data {
- 	int (*set_timing)(struct ocotp_priv *priv);
- 	int (*fuse_read)(struct ocotp_priv *priv, u32 addr, u32 *pdata);
- 	int (*fuse_blow)(struct ocotp_priv *priv, u32 addr, u32 value);
-+	bool (*srk_revoke_locked)(struct ocotp_priv *priv);
-+	void (*lock_srk_revoke)(struct ocotp_priv *priv);
- 	u8  mac_offsets[MAX_MAC_OFFSETS];
- 	u8  mac_offsets_num;
- 	struct imx8m_featctrl_data *feat;
-@@ -273,6 +278,20 @@ static int imx6_ocotp_prepare(struct ocotp_priv *priv)
- 	return 0;
- }
- 
-+static bool imx8m_srk_revoke_locked(struct ocotp_priv *priv)
-+{
-+	return readl(priv->base + OCOTP_SW_STICKY) & OCOTP_SW_STICKY_SRK_REVOKE_LOCK;
-+}
-+
-+static void imx8m_lock_srk_revoke(struct ocotp_priv *priv)
-+{
-+	u32 val;
-+
-+	val = readl(priv->base + OCOTP_SW_STICKY);
-+	val |= OCOTP_SW_STICKY_SRK_REVOKE_LOCK;
-+	writel(val, priv->base + OCOTP_SW_STICKY);
-+}
-+
- static int imx6_fuse_read_addr(struct ocotp_priv *priv, u32 addr, u32 *pdata)
- {
- 	const u32 bm_ctrl_error = priv->data->ctrl->bm_error;
-@@ -625,6 +644,36 @@ int imx_ocotp_sense_enable(bool enable)
- 	return old_value;
- }
- 
-+int imx_ocotp_srk_revoke_locked(void)
-+{
-+	int ret;
-+
-+	ret = imx_ocotp_ensure_probed();
-+	if (ret)
-+		return ret;
-+
-+	if (imx_ocotp->data->srk_revoke_locked)
-+		return imx_ocotp->data->srk_revoke_locked(imx_ocotp);
-+
-+	return -ENOSYS;
-+}
-+
-+int imx_ocotp_lock_srk_revoke(void)
-+{
-+	int ret;
-+
-+	ret = imx_ocotp_ensure_probed();
-+	if (ret)
-+		return ret;
-+
-+	if (imx_ocotp->data->lock_srk_revoke) {
-+		imx_ocotp->data->lock_srk_revoke(imx_ocotp);
-+		return 0;
-+	}
-+
-+	return -ENOSYS;
-+}
-+
- static void imx_ocotp_format_mac(u8 *dst, const u8 *src,
- 				 enum imx_ocotp_format_mac_direction dir)
- {
-@@ -985,6 +1034,8 @@ static struct imx_ocotp_data imx8mp_ocotp_data = {
- 	.set_timing = imx6_ocotp_set_timing,
- 	.fuse_blow = imx6_fuse_blow_addr,
- 	.fuse_read = imx6_fuse_read_addr,
-+	.srk_revoke_locked = imx8m_srk_revoke_locked,
-+	.lock_srk_revoke = imx8m_lock_srk_revoke,
- 	.ctrl = &ocotp_ctrl_reg_8mp,
- };
- 
-@@ -1014,6 +1065,8 @@ static struct imx_ocotp_data imx8mm_ocotp_data = {
- 	.set_timing = imx6_ocotp_set_timing,
- 	.fuse_blow = imx6_fuse_blow_addr,
- 	.fuse_read = imx6_fuse_read_addr,
-+	.srk_revoke_locked = imx8m_srk_revoke_locked,
-+	.lock_srk_revoke = imx8m_lock_srk_revoke,
- 	.feat = &imx8mm_featctrl_data,
- 	.ctrl = &ocotp_ctrl_reg_default,
- };
-@@ -1032,6 +1085,8 @@ static struct imx_ocotp_data imx8mn_ocotp_data = {
- 	.set_timing = imx6_ocotp_set_timing,
- 	.fuse_blow = imx6_fuse_blow_addr,
- 	.fuse_read = imx6_fuse_read_addr,
-+	.srk_revoke_locked = imx8m_srk_revoke_locked,
-+	.lock_srk_revoke = imx8m_lock_srk_revoke,
- 	.feat = &imx8mn_featctrl_data,
- 	.ctrl = &ocotp_ctrl_reg_default,
- };
-diff --git a/include/mach/imx/ocotp.h b/include/mach/imx/ocotp.h
-index 5f7b88f716a7..7a516ff789b9 100644
---- a/include/mach/imx/ocotp.h
-+++ b/include/mach/imx/ocotp.h
-@@ -36,6 +36,8 @@ int imx_ocotp_read_field(uint32_t field, unsigned *value);
- int imx_ocotp_write_field(uint32_t field, unsigned value);
- int imx_ocotp_permanent_write(int enable);
- int imx_ocotp_sense_enable(bool enable);
-+int imx_ocotp_srk_revoke_locked(void);
-+int imx_ocotp_lock_srk_revoke(void);
- 
- static inline u64 imx_ocotp_read_uid(void __iomem *ocotp)
- {
+ dcd-tmp = $(subst $(comma),_,$(dot-target).dcd.tmp)
 
 -- 
 2.39.2
