@@ -1,59 +1,84 @@
-Delivery-date: Tue, 09 Jul 2024 11:17:32 +0200
+Delivery-date: Thu, 11 Jul 2024 13:48:33 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sR6yZ-00339l-34
+	id 1sRsHp-003k6W-2Y
 	for lore@lore.pengutronix.de;
-	Tue, 09 Jul 2024 11:17:31 +0200
+	Thu, 11 Jul 2024 13:48:33 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sR6yZ-0004Fg-6L
-	for lore@pengutronix.de; Tue, 09 Jul 2024 11:17:31 +0200
+	id 1sRsHp-00078p-5Q
+	for lore@pengutronix.de; Thu, 11 Jul 2024 13:48:33 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=iaw+osLBylkPus84hAlYGsieXHg0v/6O1DNZ3RwQZA0=; b=jKqysh1AsjTYXqI4KTqIbrgT1K
-	AFs0e82+NSU0MCDm5LFIOYkD2cnmb1O0SzP7+9InyZxS2nu93wzywDt50c4AGIgg6lYAuqUCJijbr
-	Sl4WEK/OMTC8bA4rONlo+38j1gbJ/XPXIcrX05CecbMy9guFYecmrKX+K8ziieA6Mkx2ayPY4vcX/
-	s5mmC7vl+/3AXQNKlo1yknY1v595l1i+lSL8IctVBqNABK8QeqsgVD6p9QMYFvujV3x2MZZmUyddA
-	rOX0TtQbvH9ewZSgeyCAx/npiSh/v60S5WwwJ3IuoLZh/THpdYvxbI8tKnwbAKbt946WMlaGmEUJx
-	9SF1Gkow==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:Cc:To:Subject:
+	Message-ID:Date:From:In-Reply-To:References:MIME-Version:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=u6ijd898lZP8Kv5aXvBUGJu6kkwTluGf/voqEM4F5sw=; b=UClBgsopL5uXRDubDUxqJEoYKh
+	CxWbuFSygQ6G6Ly3FqbhCvo27pjWppQFvmlXeKehiO9Cf0d7m8v+90yJTXaGd/JH8S+nyOPiVsHc/
+	co7iqLy0DC5jDjSgAEsGEGG85xYqnjwOY1e7I0IJ38HByYuGEn2uWbix4IVSF5ZFvc9u+0QcC/4MP
+	nZ3NHCWeMlLZLxmzADYld1aIR+k84YjUSHOzGQyG80mg8YZV7+O+FPs1a/P+lIL3O8VgmlljAuhtT
+	v5qZ9ayEubzXM6fGQPGMvZPyQVCSRF0I8pinnvInASe0hK9GqHNDBTngjvRuMjG1DyAFa5f3ZML0v
+	IWv0PpJQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sR6xj-00000006ZP5-3Sk8;
-	Tue, 09 Jul 2024 09:16:39 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1sRsH8-0000000DpjB-2Pom;
+	Thu, 11 Jul 2024 11:47:50 +0000
+Received: from mail-ed1-x532.google.com ([2a00:1450:4864:20::532])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sR6xf-00000006ZOH-3dIZ
+	id 1sRsH6-0000000DpiK-0ptD
 	for barebox@lists.infradead.org;
-	Tue, 09 Jul 2024 09:16:37 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sR6xc-0004Bz-3w; Tue, 09 Jul 2024 11:16:32 +0200
-Message-ID: <c1ac0b3f-5a9d-4aab-9f26-d8e0970e959b@pengutronix.de>
-Date: Tue, 9 Jul 2024 11:16:31 +0200
+	Thu, 11 Jul 2024 11:47:49 +0000
+Received: by mail-ed1-x532.google.com with SMTP id 4fb4d7f45d1cf-57d05e0017aso1076092a12.1
+        for <barebox@lists.infradead.org>; Thu, 11 Jul 2024 04:47:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720698466; x=1721303266; darn=lists.infradead.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=u6ijd898lZP8Kv5aXvBUGJu6kkwTluGf/voqEM4F5sw=;
+        b=ALAdFPtAf+549iBN9C1SPg4yZLO3WlGU+zfjeQ56Q1gXDDBarWyJXM04lib4R8LQTI
+         lxoB8mQt3VvVF3DCNIFfivP2Yf5JLFcjp8TOJKrwxOkPFRdu8RjqDYbAUefXB36TP9ts
+         bA4BAdPwsBQJvwU6OHmJ9wyzW0fB4VvJC2n4hDMKEiaRWhMjjtOnnAWquwHD5QK5VLgs
+         nGD6COe4N/U7b7/mjUlwh1r3UY/dz+c93/9qCSfoRK8Cp6iSBWPMYSiiwar6rm0erqGd
+         bt1h5shdQYABsAPLBpOSgwCAHsqiI4LBxYnt781jbtKE+eB68/cmNNpggILOG3o6f82o
+         F/fg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720698466; x=1721303266;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u6ijd898lZP8Kv5aXvBUGJu6kkwTluGf/voqEM4F5sw=;
+        b=f7h7ECoSWFl+LfZKd+R+CTbOvl4gASe3ojSE3GNU4YPA7KtlKd8kovDxPeDGBXQJaW
+         x0uq3w1z/oYkuIqXhU8M4cXD5MdcZ/kntgGFOU5vkZy9BdDJTC03vtskPv3bGp5f3LHI
+         dM5kNxzdDuzKAL8Yg5pdwsIE/5kud46jL83IeMhHiJRvY4r1Dbgah92OsYwA/dNEW2OX
+         JvgUac2uwT4RJxphuw930XS3IsWASttVIYSRVr/efVlqNGBp8OxBjek7YNc1NABvelMp
+         XimWsG7WRbbnsYlF35k9rsfjvEx+RyJg7pRIqpz51OCcdmJk1gC5/FP2TsahF7wXbG59
+         PaCQ==
+X-Gm-Message-State: AOJu0Yw2ULFJk3uzi4HRmbjwXYeS77fz4BqDfexGOJZuouNZD9kq5OJa
+	99LvszI7NZy5lFK4Fy/TQLOrc9kOufJuoZGR3cUlYZuFBVPbCLrzL5U1WC99VHrtlnk91+zoAWH
+	Ll+9jk+iHm2z7hATwyuzKiefNlqk=
+X-Google-Smtp-Source: AGHT+IHLKSHFgFyivNNk2CfFSRZmYQOYNRuASiWm6EyGQtKhwqlfnEKvlHdKtq8HLmeMrD4Gt/up6v7+6N2lDXAwAkQ=
+X-Received: by 2002:a50:eac7:0:b0:58e:13e8:dc6b with SMTP id
+ 4fb4d7f45d1cf-594ba6953b7mr4405919a12.24.1720698465534; Thu, 11 Jul 2024
+ 04:47:45 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Wes Chow <wes.chow@gmail.com>
-Cc: barebox@lists.infradead.org
 References: <CAGWymk3LSCYpVDjYXs8NvdmkQeB+Bh22BJ7Sezm+hwuhUoSjFw@mail.gmail.com>
- <09205dea-7c95-47d3-b339-e7ad2477d592@pengutronix.de>
- <CAGWymk23wmB14DSzHcyjc0eHCVaNgxeG6ykL7WyE_fCCiTsdsw@mail.gmail.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <CAGWymk23wmB14DSzHcyjc0eHCVaNgxeG6ykL7WyE_fCCiTsdsw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <09205dea-7c95-47d3-b339-e7ad2477d592@pengutronix.de> <CAGWymk23wmB14DSzHcyjc0eHCVaNgxeG6ykL7WyE_fCCiTsdsw@mail.gmail.com>
+ <c1ac0b3f-5a9d-4aab-9f26-d8e0970e959b@pengutronix.de>
+In-Reply-To: <c1ac0b3f-5a9d-4aab-9f26-d8e0970e959b@pengutronix.de>
+From: Wes Chow <wes.chow@gmail.com>
+Date: Thu, 11 Jul 2024 07:47:33 -0400
+Message-ID: <CAGWymk38NhebcvNAbDUeXJ+1BRU3V+npCTYjeykca4EoHkiyYQ@mail.gmail.com>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Content-Type: text/plain; charset="UTF-8"
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240709_021636_059326_9D2BE4E6 
-X-CRM114-Status: GOOD (  31.02  )
+X-CRM114-CacheID: sfid-20240711_044748_260498_62CD18B3 
+X-CRM114-Status: GOOD (  28.29  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,130 +96,83 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
+	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+	version=3.4.2
 Subject: Re: barebox state w/ qemu
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Wes,
+>
+> Not quite. As you see in the overlay, there are two partitions created
+> for barebox use: The environment partition and state.
 
-On 09.07.24 04:13, Wes Chow wrote:
-> Ahmad,
-> 
->> Normally, the barebox device tree already describes the state and
->> environment, but Qemu is a special case, because the device tree is
->> not compiled into barebox, but supplied by the virtual machine.
->>
->> Thus this overlay to add some barebox specific information. As this
->> should happen very early, so that the environment can take effect early
->> on, the overlays aren't applied dynamically in this case, but compiled-in.
-> 
-> Thanks, that's very helpful. I'm starting to understand but I'm not
-> quite there yet...
+Ah, so I misunderstood the relationship between environment and state.
+I had thought that state was the storage mechanism for persisting
+things in the environment.
 
-No problem. Once we have figured this out, maybe we should reword the parts
-of the docs that were confusing.
 
->> Because that flash is a fixed part of the virt machine, you should
->> already have functional state:
->>
->>   barebox@ARM QEMU virt64:/ state
->>   registered state instances:
->>   state                (backend: raw, path: /dev/nor0.barebox-state)
->>
->> Is this not the case and if not, what errors did you get?
-> 
-> I do have the same thing. If I'm reading the docs correctly though I
-> should be able to modify state with the nv command, right?
+> State is automatically saved when barebox exits, so you don't
+> need to call state -s manually to write your changes back.
 
-Not quite. As you see in the overlay, there are two partitions created
-for barebox use: The environment partition and state.
+Got it, yes I can see it working now.
 
-The environment partition can contain anything: scripts, default values
-for variables (nv), boot splashes, binaries ...etc.
+>
+> The assumption (that's probably not written down anywhere) is that the
+> user would use reset, not poweroff if they want state to persist.
 
-The state partition however only contains the variables that you explicitly
-define in your device tree state description. Unlike the environment,
-these variables are laid out redundantly, so they are accessible in a
-power-fail safe manner.
+Ah that explains it -- no, I didn't see this in documentation
+anywhere, but I'm a noob. I may write up a blog post or something on
+what I've been learning.
 
-Systems with verified boot can thus elect to disable the mutable
-environment completely and only keep the barebox built-in environment
-while still being able to do A/B boot and such as that uses the
-barebox state as backend, which is separate.
+> Of course, on real boards, both are expected to work, but it's IMO an acceptable
+> tradeoff for emulation.
 
-> This doesn't seem to persist the foo variable:
-> 
->  barebox@ARM QEMU virt64:/ state
->  registered state instances:
->  state                (backend: raw, path: /dev/nor0.barebox-state)
->  barebox@ARM QEMU virt64:/ nv foo=bar
->  nv variable modified, will save nv variables on shutdown
->  barebox@ARM QEMU virt64:/ nv
->    allow_color: true
->    autoboot_timeout: 3
->    foo: bar
->    user: none
->  barebox@ARM QEMU virt64:/ poweroff
+Got it.. that should work for my purposes. I was able to see that the
+nv variables persisted after a reboot so that's great.
 
-state variables can be set via device parameters, devinfo state
-will tell you what variables you have and then you can set them like
-this:
+> > ... but I'm guessing I'm missing a pflash argument. I've been trying
+> > various incantations but haven't been able to get Qemu to boot
+> > successfully if I supply a `-drive if=pflash,...`.
+>
+> I think the problem is that QEMU expects you to place a "BIOS" (first stage
+> bootloader) into the pflash if you specify it. Unlike e.g. vexpress, barebox
+> for Qemu Virt64 only generates an image for use with -kernel.
+>
+> You can use the second flash though (-drive if=pflash,unit=1) and change
+> the device tree overlay to point at.
+>
+> There's surely neater ways to go about it. What are you trying to do?
 
-  state.bootstate.system0.priority=30
+Thanks, that's good to know.. I don't think I need to go down this
+route though. My high level goal is that I would like to have a
+hands-on understanding of setting up an A/B boot strategy, and I
+figured I'd learn via Qemu emulation before attempting on real
+hardware. In a past defunct project we used Qemu emulation for a lot
+of development and testing and then deployed onto Raspberry Pi CM3s,
+so I just naturally reached for Qemu again for this personal project.
+Ultimately I want to do this with real hardware, likely Raspberry Pis
+or something similar.
 
-The variables have tab completion, so you can just state.<Tab> to list
-them.
+After I set state:
 
-State is automatically saved when barebox exits, so you don't
-need to call state -s manually to write your changes back.
+ barebox@ARM QEMU virt64:/ state.bootstate.system0.priority=30
 
-> When I restart Qemu the "foo" variable goes away. And actually, every
-> time I start Qemu I get this message:
-> 
->  state state.of: Fresh state detected, continuing with defaults
-> 
-> Do I need to specify a flash device when starting Qemu? I'm running
-> this (taken from the docs):
-> 
->  qemu-system-aarch64 -m 2048M -cpu cortex-a57 -machine virt -display
-> none -serial stdio -kernel ./images/barebox-dt-2nd.img
+How do I see that that's been reflected in the state? Is there a way
+for me to dump out all state values?
 
-The assumption (that's probably not written down anywhere) is that the
-user would use reset, not poweroff if they want state to persist.
+In the target, I'm getting an error with barebox-state:
 
-Of course, on real boards, both are expected to work, but it's IMO an acceptable
-tradeoff for emulation.
+ # barebox-state -d
+ state: state failed to parse path to backend: No such device
+ unable to initialize state: No such device
 
-> ... but I'm guessing I'm missing a pflash argument. I've been trying
-> various incantations but haven't been able to get Qemu to boot
-> successfully if I supply a `-drive if=pflash,...`.
+Do I need to configure barebox-state somehow? Perhaps the Linux kernel
+can't see the flash?
 
-I think the problem is that QEMU expects you to place a "BIOS" (first stage
-bootloader) into the pflash if you specify it. Unlike e.g. vexpress, barebox
-for Qemu Virt64 only generates an image for use with -kernel.
-
-You can use the second flash though (-drive if=pflash,unit=1) and change
-the device tree overlay to point at.
-
-There's surely neater ways to go about it. What are you trying to do?
-
-Cheers,
-Ahmad
-
-> 
-> Thanks,
-> Wes
-> 
-
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
+Thanks,
+Wes
 
 
