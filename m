@@ -1,66 +1,66 @@
-Delivery-date: Tue, 16 Jul 2024 13:57:45 +0200
+Delivery-date: Tue, 16 Jul 2024 13:57:47 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sTgoT-005Qrv-2I
+	id 1sTgoV-005QsK-2X
 	for lore@lore.pengutronix.de;
-	Tue, 16 Jul 2024 13:57:45 +0200
+	Tue, 16 Jul 2024 13:57:47 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sTgoS-0001Ba-Vp
-	for lore@pengutronix.de; Tue, 16 Jul 2024 13:57:45 +0200
+	id 1sTgoV-0001CX-2U
+	for lore@pengutronix.de; Tue, 16 Jul 2024 13:57:47 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
 	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=rCem3++WhxvdZie/a5VJedyN6rYh0qHx6eeJsW1HD9o=; b=1hC0Fl/nxVHs4hlwR47SHNkNZ1
-	n6VrtUR3JmJpZDrKxjpCN/YFQhWvXopooqpdFDMw9rKALN9uj3lJZdxqxg+/LW+KYmsQy1TZ3Nchk
-	ImS6lv7bliM+R+WXm1yFLekO0yS/wxOLF9lgsDv84TGFjQwkV4MQQYm9YybKKIqba8zqRovulw7er
-	ny395DCNGr+OiNoMA7Y8Uhf6z1FOem/rCjqaRU4FelnD0uE+QC22OyULFneWHFSLod+wNTKvY7Ygj
-	zNIurRgTI58rInSfUpJ13S1TJ5Pir3RBoyJ+1bSrZkME+54eesirK+5Tt5lfjt9G6mU0OVJKi4OZw
-	itlFGaQQ==;
+	bh=KQK2CV67468i0SoDCjb4QNKO6egZP141R+wS3wphH5c=; b=s4dAntlVKOOkYGAu7d55Tw1Wr0
+	TbJD4GDxCzu8XfuoZpp53r1IVRDN6CDe0nNCE9Z0mG5jcY6lIdBUAESY6UAfx83/EFFgVn0eNqtOW
+	s4R5mKshCdJwzJeA4o3IL2Trd9KVLpCqQhXdRyDMVkOPPXFycn1HYrdnbEAabWGAmHyjnsvGQRQpG
+	UwHxguAlI0XQsot4ZijxgL7V56iXBGmFvyVOVZOVlGFUk0OsLz+5+bkOuLC3AJ4g3SkE8PvG1MhN9
+	fBGsUCi/y09VMxy5MnPccT+Orlt5BhqLF5c43T7eGwLhjvFqUoMtXws3QVTYvQA7Xnc4lelcJjEpD
+	gTlgjuuQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sTgo3-0000000AKFr-2Lbq;
-	Tue, 16 Jul 2024 11:57:19 +0000
+	id 1sTgo4-0000000AKGP-1PTh;
+	Tue, 16 Jul 2024 11:57:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sTgny-0000000AKCx-2xv3
+	id 1sTgny-0000000AKCy-3BoJ
 	for barebox@lists.infradead.org;
 	Tue, 16 Jul 2024 11:57:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sTgnx-0000wn-FG; Tue, 16 Jul 2024 13:57:13 +0200
+	id 1sTgnx-0000wq-HY; Tue, 16 Jul 2024 13:57:13 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sTgnx-0007Yh-1h; Tue, 16 Jul 2024 13:57:13 +0200
+	id 1sTgnx-0007Yk-3C; Tue, 16 Jul 2024 13:57:13 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sTgnw-008DFD-37;
+	id 1sTgnx-008DFD-01;
 	Tue, 16 Jul 2024 13:57:13 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 16 Jul 2024 13:57:10 +0200
-Message-Id: <20240716115711.1956907-3-a.fatoum@pengutronix.de>
+Date: Tue, 16 Jul 2024 13:57:11 +0200
+Message-Id: <20240716115711.1956907-4-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240716115711.1956907-1-a.fatoum@pengutronix.de>
 References: <20240716115711.1956907-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240716_045714_805956_DDFFE20E 
-X-CRM114-Status: GOOD (  13.66  )
+X-CRM114-CacheID: sfid-20240716_045714_876109_D8A42613 
+X-CRM114-Status: GOOD (  14.60  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,137 +82,138 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/4] watchdog: remove needless error checking for device parameter
+Subject: [PATCH 4/4] watchdog: factor out device registration into common class code
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Poller and device parameter are attached to the class device, either
-directly or by name. It's thus not really possible for them to fail,
-because of a naming conflict, which only leaves the -ENOMEM case as
-possible failure.
+Watchdog devices are called wdog[0-...], unless a DT alias is available
+and no device had been registered with that name.
 
-So far, we failed the watchdog registration, but ultimately device
-parameters are optional: If barebox can still limp along in this
-low-memory situation, the user is better served by a barebox that can
-control the watchdog via the wd command than one that has no watchdog at
-all.
+This is a useful scheme for other devices as well, so move it to a
+generic place for reuse.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- drivers/watchdog/wd_core.c | 54 +++++++-------------------------------
- 1 file changed, 10 insertions(+), 44 deletions(-)
+ drivers/base/class.c       | 38 ++++++++++++++++++++++++++++++++++++++
+ drivers/watchdog/wd_core.c | 25 +++----------------------
+ include/device.h           |  4 ++++
+ 3 files changed, 45 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
-index 90ae233b0f9e..44f2b6da8cf2 100644
---- a/drivers/watchdog/wd_core.c
-+++ b/drivers/watchdog/wd_core.c
-@@ -111,19 +111,12 @@ static int watchdog_set_poller(struct param_d *param, void *priv)
+diff --git a/drivers/base/class.c b/drivers/base/class.c
+index 5fbbae0ff025..d0765e496f9e 100644
+--- a/drivers/base/class.c
++++ b/drivers/base/class.c
+@@ -17,6 +17,44 @@ int class_add_device(struct class *class, struct device *dev)
  	return 0;
  }
  
--static int watchdog_register_poller(struct watchdog *wd)
-+static void watchdog_register_poller(struct watchdog *wd)
++static int __class_register_device(struct device *class_dev, const char *name, int id)
++{
++	class_dev->id = id;
++	dev_set_name(class_dev, name);
++
++	return register_device(class_dev);
++}
++
++int class_register_device(struct class *class,
++			  struct device *class_dev,
++			  const char *name)
++{
++	struct device *parent = class_dev->parent;
++	const char *alias = NULL;
++	int ret = 0;
++
++	if (dev_of_node(parent))
++		alias = of_alias_get(parent->of_node);
++
++	if (alias)
++		ret = __class_register_device(class_dev, alias, DEVICE_ID_SINGLE);
++
++	if (!alias || ret)
++		ret = __class_register_device(class_dev, name, DEVICE_ID_DYNAMIC);
++
++	if (ret)
++		return ret;
++
++	class_add_device(class, class_dev);
++	return 0;
++}
++
++void class_unregister_device(struct device *class_dev)
++{
++	list_del(&class_dev->class_list);
++	unregister_device(class_dev);
++}
++
+ void class_remove_device(struct class *class, struct device *dev)
  {
--	struct param_d *p;
--	int ret;
-+	poller_async_register(&wd->poller, dev_name(&wd->dev));
- 
--	ret = poller_async_register(&wd->poller, dev_name(&wd->dev));
--	if (ret)
--		return ret;
--
--	p = dev_add_param_bool(&wd->dev, "autoping", watchdog_set_poller,
--			NULL, &wd->poller_enable, wd);
--
--	return PTR_ERR_OR_ZERO(p);
-+	dev_add_param_bool(&wd->dev, "autoping", watchdog_set_poller,
-+			   NULL, &wd->poller_enable, wd);
+ 	list_del(&dev->class_list);
+diff --git a/drivers/watchdog/wd_core.c b/drivers/watchdog/wd_core.c
+index 44f2b6da8cf2..adb4c639097e 100644
+--- a/drivers/watchdog/wd_core.c
++++ b/drivers/watchdog/wd_core.c
+@@ -119,15 +119,6 @@ static void watchdog_register_poller(struct watchdog *wd)
+ 			   NULL, &wd->poller_enable, wd);
  }
  
- static int watchdog_register_dev(struct watchdog *wd, const char *name, int id)
-@@ -194,7 +187,6 @@ static struct restart_handler restart_handler = {
+-static int watchdog_register_dev(struct watchdog *wd, const char *name, int id)
+-{
+-	wd->dev.parent = wd->hwdev;
+-	wd->dev.id = id;
+-	dev_set_name(&wd->dev, name);
+-
+-	return register_device(&wd->dev);
+-}
+-
+ /**
+  * dev_get_watchdog_priority() - get a device's desired watchdog priority
+  * @dev:	The device, which device_node to read the property from
+@@ -187,18 +178,10 @@ static struct restart_handler restart_handler = {
  
  int watchdog_register(struct watchdog *wd)
  {
--	struct param_d *p;
- 	const char *alias = NULL;
- 	int ret = 0;
+-	const char *alias = NULL;
+-	int ret = 0;
+-
+-	if (wd->hwdev)
+-		alias = of_alias_get(wd->hwdev->of_node);
+-
+-	if (alias)
+-		ret = watchdog_register_dev(wd, alias, DEVICE_ID_SINGLE);
+-
+-	if (!alias || ret)
+-		ret = watchdog_register_dev(wd, "wdog", DEVICE_ID_DYNAMIC);
++	int ret;
  
-@@ -210,57 +202,35 @@ int watchdog_register(struct watchdog *wd)
++	wd->dev.parent = wd->hwdev;
++	ret = class_register_device(&watchdog_class, &wd->dev, "wdog");
  	if (ret)
  		return ret;
  
--	p = dev_add_param_tristate_ro(&wd->dev, "running", &wd->running);
--	if (IS_ERR(p)) {
--		ret = PTR_ERR(p);
--		goto error_unregister;
--	}
-+	dev_add_param_tristate_ro(&wd->dev, "running", &wd->running);
- 
- 	if (!wd->priority)
- 		wd->priority = dev_get_watchdog_priority(wd->hwdev);
- 
--	p = dev_add_param_uint32(&wd->dev, "priority",
-+	dev_add_param_uint32(&wd->dev, "priority",
- 				 watchdog_set_priority, NULL,
- 				 &wd->priority, "%u", wd);
--	if (IS_ERR(p)) {
--		ret = PTR_ERR(p);
--		goto error_unregister;
--	}
- 
- 	/* set some default sane value */
- 	if (!wd->timeout_max)
- 		wd->timeout_max = 60 * 60 * 24;
- 
--	p = dev_add_param_uint32_ro(&wd->dev, "timeout_max",
-+	dev_add_param_uint32_ro(&wd->dev, "timeout_max",
- 			&wd->timeout_max, "%u");
--	if (IS_ERR(p)) {
--		ret = PTR_ERR(p);
--		goto error_unregister;
--	}
- 
- 	if (IS_ENABLED(CONFIG_WATCHDOG_POLLER)) {
- 		if (!wd->poller_timeout_cur ||
- 		    wd->poller_timeout_cur > wd->timeout_max)
- 			wd->poller_timeout_cur = wd->timeout_max;
- 
--		p = dev_add_param_uint32(&wd->dev, "timeout_cur", watchdog_set_cur,
-+		dev_add_param_uint32(&wd->dev, "timeout_cur", watchdog_set_cur,
- 				NULL, &wd->poller_timeout_cur, "%u", wd);
--		if (IS_ERR(p)) {
--			ret = PTR_ERR(p);
--			goto error_unregister;
--		}
- 
--		ret = watchdog_register_poller(wd);
--		if (ret)
--			goto error_unregister;
-+		watchdog_register_poller(wd);
+@@ -239,8 +222,6 @@ int watchdog_register(struct watchdog *wd)
+ 			dev_warn(&wd->dev, "failed to register restart handler\n");
  	}
  
--	p = dev_add_param_uint32(&wd->dev, "seconds_to_expire", param_set_readonly,
-+	dev_add_param_uint32(&wd->dev, "seconds_to_expire", param_set_readonly,
- 			seconds_to_expire_get, &wd->seconds_to_expire, "%d", wd);
--	if (IS_ERR(p)) {
--		ret = PTR_ERR(p);
--		goto error_unregister;
--	}
- 
- 	if (!restart_handler.priority) {
- 		restart_handler.priority = 10; /* don't override others */
-@@ -275,10 +245,6 @@ int watchdog_register(struct watchdog *wd)
+-	class_add_device(&watchdog_class, &wd->dev);
+-
+ 	pr_debug("registering watchdog %s with priority %d\n", watchdog_name(wd),
  			wd->priority);
  
- 	return 0;
--
--error_unregister:
--	unregister_device(&wd->dev);
--	return ret;
- }
- EXPORT_SYMBOL(watchdog_register);
+diff --git a/include/device.h b/include/device.h
+index 4c76da2f82dd..5d3923786167 100644
+--- a/include/device.h
++++ b/include/device.h
+@@ -128,6 +128,10 @@ void class_register(struct class *class);
+ int class_add_device(struct class *class, struct device *dev);
+ void class_remove_device(struct class *class, struct device *dev);
  
++int class_register_device(struct class *class, struct device *class_dev,
++			  const char *name);
++void class_unregister_device(struct device *class_dev);
++
+ extern struct list_head class_list;
+ #define class_for_each_device(class, dev) list_for_each_entry((dev), &(class)->devices, class_list)
+ #define class_for_each(class) list_for_each_entry((class), &class_list, list)
 -- 
 2.39.2
 
