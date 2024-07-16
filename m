@@ -1,84 +1,58 @@
-Delivery-date: Tue, 16 Jul 2024 11:17:20 +0200
+Delivery-date: Tue, 16 Jul 2024 13:10:15 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sTeJE-005OjP-28
+	id 1sTg4U-005QIB-3B
 	for lore@lore.pengutronix.de;
-	Tue, 16 Jul 2024 11:17:20 +0200
+	Tue, 16 Jul 2024 13:10:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sTeJD-0006UA-U0
-	for lore@pengutronix.de; Tue, 16 Jul 2024 11:17:20 +0200
+	id 1sTg4U-00067l-BW
+	for lore@pengutronix.de; Tue, 16 Jul 2024 13:10:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
-	Content-Transfer-Encoding:MIME-Version:Message-ID:Date:Subject:To:From:
-	Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender
-	:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=GZ2jPlNAm2ONX+mr472sZWwnWPOhO4fI1/oRrzh91pE=; b=g0H581P+SUUk/PpPgbl+8MliR0
-	/T8IQP6hvx8N2dISn78DnuRF5syxb7I9GHkLPuBm93SPiHkXj1NvXqrvKkkbDrnc7RDtaAb0XbgRx
-	R97rShJeiNlkUFCf/NUhXZ71F2TqZixyPQeqBofbKcvS1oXr4uQrWILgBKRBF86L0V8UXXlGJO56l
-	sr5Bz27m7yQElFqDXw6lt3qSd5BIGaY4LGJb5Ygp5b5TQkROhrqWyvJCSRG6Sb63s6kGn6/U4unJO
-	EyQO9PARq4mxfzPHF9okxG68G8nqAf0xDNIDYipqbrl/taynyNFlav/1QfZbiE2o/RpRnsiTqsvUY
-	2NVd1ZFQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:References:To:From:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
+	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=/lYVX6htb9LL3s052ObT7wDPvr56uPOpmG8hKx3PI9U=; b=MjNcJnHadNcO7jdFYmed+9cInd
+	2JqQXsoyQhTFyhh6zWcJ4t2NbAw5T9z5VtLpCiKtAKTCst/mdUqJfyHISoVP5V3GKw8Qx6RXGmBHB
+	qwhLwDaI/3DEHbp/IP3t7552UL5qBGrSWdBMBdpgi/vpWmwCpThOveY/hvQp43Yydj/zGc296wIWj
+	cnxq/dp9YGtZvN9tHComHaZHAONGWJijCLDt5Yfq13k2dDYhfTYQMXIxFx1V32rwgxBFWs/uam5hI
+	095D/7fjVmULb1ePbAliaqfaaNmVobuSpUU1dKvwXjR5O3zSl3U2d+rUgkYxho8GO6ylNcOqsQ5Hh
+	Ji4Ikjjw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sTeIZ-00000009qaY-02NH;
-	Tue, 16 Jul 2024 09:16:39 +0000
-Received: from mail-wm1-x32b.google.com ([2a00:1450:4864:20::32b])
+	id 1sTg3p-0000000A8yc-3jhM;
+	Tue, 16 Jul 2024 11:09:33 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sTeIV-00000009qZw-1Uui
+	id 1sTg3m-0000000A8xk-1ict
 	for barebox@lists.infradead.org;
-	Tue, 16 Jul 2024 09:16:37 +0000
-Received: by mail-wm1-x32b.google.com with SMTP id 5b1f17b1804b1-4266182a9d7so33445605e9.0
-        for <barebox@lists.infradead.org>; Tue, 16 Jul 2024 02:16:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sigma-star.at; s=google; t=1721121392; x=1721726192; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GZ2jPlNAm2ONX+mr472sZWwnWPOhO4fI1/oRrzh91pE=;
-        b=Bov7UQs44sdnKEglHl9mC1bkiMv1guPCW2EiCN5rJL749iJ5ty0N77oQvNzxoPhKBr
-         n1Mpim3NR9y97ir00T6Jvq/Y6+G5U0+DaEG6u2OTGRZNNfyM/7UCIDvXouRImIxifssi
-         D8WhaNakuwtjAI6ggOXUid6XaVSQiGceW2OGuYOJ2aS7IzjdY5uVtQhOxuj/YUK7NXgL
-         GpWi/BZVLKG8S/HYwbxFtgJbEFLr6ENaERUchbSPWXVdPBqPZfFLfv+ueAwyvZzDlWFN
-         62U04g8CVNHuUFXaqprP+t1vZ24tmQ5tALDWcEQCVaRA5Ze1LIYWVx+lgy9ntZSFarRi
-         fCEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721121392; x=1721726192;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GZ2jPlNAm2ONX+mr472sZWwnWPOhO4fI1/oRrzh91pE=;
-        b=CNcj7bDyrzJmiQAf3rOqCVMhBEqo14kQ/5NKb3lfpwiXVlGuILEfDuUDb4tNfcjh/t
-         VKPQki2u0D+EFvdBymurmFh4UfW1YPzwdcDhqhsSWU2e8mg+GJ+H2HaGHGYLy1oXhQyO
-         WfR212hqL+3ffmm+zTF2MXmLO13r1x9aCsbJXZQK1YkWHge+Eo+fp38Wr99gontpx+JX
-         aWs5Om3lpx2ZPxo8vBt9f3+zZicuC1kpDg3i+df/w8TacwheODwjfW6/Ur1PRvkP/XCR
-         bZY+u+ILIqbRvUFm5lZQ/arV5pInbehBe6KAXFn6OiBAou2oUjsYn/U+LouXKZHUNajC
-         Jhfg==
-X-Forwarded-Encrypted: i=1; AJvYcCX/cba2reNSaWm2qrrfyY7VDSa3gKuBFic5iz/rkQOFGiWzZLpGGe64JPklJxJTp/Qn8Z0IkF6IBz9q7kllGyTxJm1c5mEoTcF2IFs=
-X-Gm-Message-State: AOJu0YxVOsq915r0Ik8RTkdv7rDsnylzYpPOIgQSR1Ta0AkJnf3Q5hTW
-	KDY+u5cnS+Jj5VIE48EzftQEHx7eC3kBigKZv94OlgvSuRpmbC9oMpEZ5fQDdKATAd+ThDvrXM8
-	J
-X-Google-Smtp-Source: AGHT+IGHRJv3athRiei8PV950ta6PNvBvRJRqfgdVPxHa5hveXXcuQYO68NRjfUTW9facCgmaSIU5g==
-X-Received: by 2002:a05:600c:1383:b0:426:67ad:38e3 with SMTP id 5b1f17b1804b1-427ba654c0cmr10932495e9.3.1721121391758;
-        Tue, 16 Jul 2024 02:16:31 -0700 (PDT)
-Received: from blindfold.localnet ([82.150.214.1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4279f23cc5bsm149625925e9.2.2024.07.16.02.16.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 16 Jul 2024 02:16:30 -0700 (PDT)
-From: Richard Weinberger <richard@sigma-star.at>
-To: u-boot@lists.denx.de
-Date: Tue, 16 Jul 2024 11:16:27 +0200
-Message-ID: <2561107.TLnPLrj5Ze@somecomputer>
+	Tue, 16 Jul 2024 11:09:32 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sTg3j-0005v6-4f
+	for barebox@lists.infradead.org; Tue, 16 Jul 2024 13:09:27 +0200
+Message-ID: <99f688d3-f0ad-4206-a746-3af755c20e22@pengutronix.de>
+Date: Tue, 16 Jul 2024 13:09:26 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
+References: <20240703190226.686987-1-a.fatoum@pengutronix.de>
+ <52824a89-78d9-413a-b65b-3c3a064e7968@pengutronix.de>
+Content-Language: en-US
+In-Reply-To: <52824a89-78d9-413a-b65b-3c3a064e7968@pengutronix.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240716_021635_725970_6A7C5AA9 
-X-CRM114-Status: GOOD (  14.41  )
+X-CRM114-CacheID: sfid-20240716_040930_487709_CA414928 
+X-CRM114-Status: GOOD (  16.90  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -90,114 +64,67 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: trini@konsulko.com, barebox@lists.infradead.org
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-4.8 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Various Integer Overflows in dlmalloc
+Subject: Re: [PATCH master] sandbox: lds: fix "ELF has a LOAD segment with RWX
+ permissions" warning
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi!
+On 15.07.24 08:04, Ahmad Fatoum wrote:
+> On 03.07.24 21:02, Ahmad Fatoum wrote:
+>> With binutils 2.39+, the barebox build started emitting this warning.
+>> On platforms other than sandbox, we disable this warning by passing --no-warn-rwx
+>> to ld as we don't care for ELF attributes as they aren't used anyway.
+>>
+>> On sandbox, however, the ELF attributes matter, so disabling the warning
+>> completely felt wrong. Looking more into it now, we can mark the
+>> .barebox_rodata section in the linker file snippet we have in sandbox as
+>> READONLY and the warning disappears, so let's do that instead.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> 
+> Please dismiss this patch. The new BAREBOX_CLASSES addition to RO_DATA_SECTION
+> makes the section not const anymore, so this would crash on the first class
+> addition. I'll send a v2 later.
 
-While inspecting various security aspects of U-Boot I noticed some
-issues around dlmalloc and asking for your feedback, especially for the
-first issue.
-I'm CC'ing Barebox folks since Barebox seems to be based on the same
-dlmalloc-implementation as U-Boot does.
+This is further complicated by REAONLY being new in GCC 11 apparently.
+I need to find out which version of GNU ld that is and how we could
+check whether READONLY is supported..
 
-1. Integer Overflow While Computing Allocation Size
+> 
+>> ---
+>>  arch/sandbox/board/barebox.lds.S | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/sandbox/board/barebox.lds.S b/arch/sandbox/board/barebox.lds.S
+>> index ab2801f3d207..de8552dba0ac 100644
+>> --- a/arch/sandbox/board/barebox.lds.S
+>> +++ b/arch/sandbox/board/barebox.lds.S
+>> @@ -5,7 +5,7 @@
+>>  SECTIONS
+>>  {
+>>  	. = ALIGN(64);
+>> -	.barebox_rodata : {
+>> +	.barebox_rodata (READONLY) : {
+>>  		RO_DATA_SECTION
+>>  	}
+>>  }
+> 
 
-malloc/realloc/memalign take an arbitrary request size and apply
-padding.
-
-=46irst, the length is (imperfectly) checked and the the conversion happens:
-
-  if ((long)bytes < 0) return NULL;
-
-  nb =3D request2size(bytes);  /* padded request size; */
-
-The problem is that the request2size() macro is casting the requested
-size to an signed long and adds SIZE_SZ + MALLOC_ALIGN_MASK:
-
-#define request2size(req) \
- (((long)((req) + (SIZE_SZ + MALLOC_ALIGN_MASK)) < \
-  (long)(MINSIZE + MALLOC_ALIGN_MASK)) ? MINSIZE : \
-   (((req) + (SIZE_SZ + MALLOC_ALIGN_MASK)) & ~(MALLOC_ALIGN_MASK)))
-
-So, any allocation request between LONG_MAX - (SIZE_SZ + MALLOC_ALIGN_MASK)=
- - 1 and LONG_MAX
-will cause an overflow and as a consequence the caller will get
-less memory than requested.
-
-e.g. on an 32bits system malloc(2147483647) will succeed but allocates
-only 16 bytes (MINSIZE). I've tested this with U-Boot on i386 and ARM.
-
-This is a beefy vulnerability for exploit writers since unbound allocations
-do happen. Like in the ext4 and squashfs symlink code, I'm sure there are m=
-ore.
-If you don't care about verified boot, it's less of an issue, though.
-
-I'm not so sure what the best fix is.
-Mostly because I'm not sure why request2size() is anyway casting to long.
-The original dlmalloc.c implementation doesn't do so. It has also a more
-sophisticated overflow check, which is also missing in both U-Boot and Bare=
-box.
-See https://research.cs.wisc.edu/sonar/projects/mnemosyne/resources/doc/htm=
-l/malloc-original_2src_2dlmalloc_8c-source.html
-Lines 01938 to 01962.
-
-I tracked down the bug to ppcboot, it's there since day 0.
-So I don't know what's the intention behind casting.
-
-On the other hand, since over commit is not supported, we could also just f=
-ail
-if the requested size is larger then the total amount of system memory.
-I'm a little in fear that more overflows are lurking in the code.
-
-2. Integer overflow in sbrk() (U-Boot only)
-
-sbrk() does:
-        ulong new =3D old + increment;
-
-        /*
-         * if we are giving memory back make sure we clear it out since
-         * we set MORECORE_CLEARS to 1
-         */
-        if (increment < 0)
-                memset((void *)new, 0, -increment);
-
-        if ((new < mem_malloc_start) || (new > mem_malloc_end))
-                return (void *)MORECORE_FAILURE;
-
-
-If old + increment overflows (increment is a ptrdiff_t) then
-sbrk() wrongly thinks we're shrinking the heap and memsets an invalid
-range.
-
-I propose as solution, applying memset() after the range check.
-
-3. Wrong ptrdiff_t type (U-Boot only)
-
-U-Boot defines __kernel_ptrdiff_t to int for both i386 and x86_64.
-As a consequence, large allocations on x86_64 will overflow the increment
-parameter of sbrk() and less than requested is allocated.
-I suggest defining __kernel_ptrdiff_t on x86_64 to long.
-
-Thanks,
-//richard
-=2D-=20
-=E2=80=8B=E2=80=8B=E2=80=8B=E2=80=8B=E2=80=8Bsigma star gmbh | Eduard-Bodem=
-=2DGasse 6, 6020 Innsbruck, AUT
-UID/VAT Nr: ATU 66964118 | FN: 374287y
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
 
