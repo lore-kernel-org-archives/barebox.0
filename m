@@ -1,58 +1,65 @@
-Delivery-date: Tue, 16 Jul 2024 13:10:15 +0200
+Delivery-date: Tue, 16 Jul 2024 13:56:56 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sTg4U-005QIB-3B
+	id 1sTgng-005QpD-2A
 	for lore@lore.pengutronix.de;
-	Tue, 16 Jul 2024 13:10:14 +0200
+	Tue, 16 Jul 2024 13:56:56 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sTg4U-00067l-BW
-	for lore@pengutronix.de; Tue, 16 Jul 2024 13:10:14 +0200
+	id 1sTgng-0000mN-3v
+	for lore@pengutronix.de; Tue, 16 Jul 2024 13:56:56 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/lYVX6htb9LL3s052ObT7wDPvr56uPOpmG8hKx3PI9U=; b=MjNcJnHadNcO7jdFYmed+9cInd
-	2JqQXsoyQhTFyhh6zWcJ4t2NbAw5T9z5VtLpCiKtAKTCst/mdUqJfyHISoVP5V3GKw8Qx6RXGmBHB
-	qwhLwDaI/3DEHbp/IP3t7552UL5qBGrSWdBMBdpgi/vpWmwCpThOveY/hvQp43Yydj/zGc296wIWj
-	cnxq/dp9YGtZvN9tHComHaZHAONGWJijCLDt5Yfq13k2dDYhfTYQMXIxFx1V32rwgxBFWs/uam5hI
-	095D/7fjVmULb1ePbAliaqfaaNmVobuSpUU1dKvwXjR5O3zSl3U2d+rUgkYxho8GO6ylNcOqsQ5Hh
-	Ji4Ikjjw==;
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=epe4jCz4omzktQObDLPYTAMuRAnJfLxMszGr2WtuOn0=; b=Zl74KLCBqfo81jRlSSEW1rjOLE
+	ceKpqJTKTuAwiCuFi2TqlKdU+4AJZcWLuTpLlHxg+JH4jyUGE0UTO+nAHZFiOZ8Nu6Yku/rXW1xpt
+	8RzP+1uEn0/H8FrwehN2p6ELp8Zp4WEbuaByoGD2cEDeVN0gdgDV6+3d/VCW3hiNXCvOsiBhv701w
+	yJYzBxq7dyp8Sqdi7JCwLxQHu+bWHk6wSCYVeniVtcknmV1r/JZ/utbWCa8obJxnFXuOZ43+F3EIr
+	v5HmOIFizOUXMxRzcBGq3j2mVwUsS/BX6V+DHGx65gkJnSMwL34NaoNiOOGnwzl2FeimxMuOFeF1F
+	y7jr0G0Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sTg3p-0000000A8yc-3jhM;
-	Tue, 16 Jul 2024 11:09:33 +0000
+	id 1sTgnC-0000000AJpQ-1vhv;
+	Tue, 16 Jul 2024 11:56:26 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sTg3m-0000000A8xk-1ict
+	id 1sTgnA-0000000AJoi-01Oz
 	for barebox@lists.infradead.org;
-	Tue, 16 Jul 2024 11:09:32 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Tue, 16 Jul 2024 11:56:25 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sTg3j-0005v6-4f
-	for barebox@lists.infradead.org; Tue, 16 Jul 2024 13:09:27 +0200
-Message-ID: <99f688d3-f0ad-4206-a746-3af755c20e22@pengutronix.de>
-Date: Tue, 16 Jul 2024 13:09:26 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	id 1sTgn8-0000am-QN; Tue, 16 Jul 2024 13:56:22 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sTgn8-0007YK-Dk; Tue, 16 Jul 2024 13:56:22 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sTgn8-008CH2-14;
+	Tue, 16 Jul 2024 13:56:22 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: "barebox@lists.infradead.org" <barebox@lists.infradead.org>
-References: <20240703190226.686987-1-a.fatoum@pengutronix.de>
- <52824a89-78d9-413a-b65b-3c3a064e7968@pengutronix.de>
-Content-Language: en-US
-In-Reply-To: <52824a89-78d9-413a-b65b-3c3a064e7968@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 16 Jul 2024 13:56:21 +0200
+Message-Id: <20240716115621.1953788-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240716_040930_487709_CA414928 
-X-CRM114-Status: GOOD (  16.90  )
+X-CRM114-CacheID: sfid-20240716_045624_061540_21DA53E6 
+X-CRM114-Status: UNSURE (   9.76  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,57 +81,35 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] sandbox: lds: fix "ELF has a LOAD segment with RWX
- permissions" warning
+Subject: [PATCH] aiodev: mc13xxx_adc: zero-initialize struct aiochannel
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 15.07.24 08:04, Ahmad Fatoum wrote:
-> On 03.07.24 21:02, Ahmad Fatoum wrote:
->> With binutils 2.39+, the barebox build started emitting this warning.
->> On platforms other than sandbox, we disable this warning by passing --no-warn-rwx
->> to ld as we don't care for ELF attributes as they aren't used anyway.
->>
->> On sandbox, however, the ELF attributes matter, so disabling the warning
->> completely felt wrong. Looking more into it now, we can mark the
->> .barebox_rodata section in the linker file snippet we have in sandbox as
->> READONLY and the warning disappears, so let's do that instead.
->>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> 
-> Please dismiss this patch. The new BAREBOX_CLASSES addition to RO_DATA_SECTION
-> makes the section not const anymore, so this would crash on the first class
-> addition. I'll send a v2 later.
+The mc13xxx_adc driver is the only driver that doesn't allocate the
+channels from pre-zeroed memory. The aiodev core doesn't currently
+require it, but we may want to in the future, so let's explicitly
+zero the channel like all other drivers do.
 
-This is further complicated by REAONLY being new in GCC 11 apparently.
-I need to find out which version of GNU ld that is and how we could
-check whether READONLY is supported..
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ drivers/aiodev/mc13xxx_adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> 
->> ---
->>  arch/sandbox/board/barebox.lds.S | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/sandbox/board/barebox.lds.S b/arch/sandbox/board/barebox.lds.S
->> index ab2801f3d207..de8552dba0ac 100644
->> --- a/arch/sandbox/board/barebox.lds.S
->> +++ b/arch/sandbox/board/barebox.lds.S
->> @@ -5,7 +5,7 @@
->>  SECTIONS
->>  {
->>  	. = ALIGN(64);
->> -	.barebox_rodata : {
->> +	.barebox_rodata (READONLY) : {
->>  		RO_DATA_SECTION
->>  	}
->>  }
-> 
-
+diff --git a/drivers/aiodev/mc13xxx_adc.c b/drivers/aiodev/mc13xxx_adc.c
+index 21eea1f525af..4d80ee57e3f5 100644
+--- a/drivers/aiodev/mc13xxx_adc.c
++++ b/drivers/aiodev/mc13xxx_adc.c
+@@ -196,7 +196,7 @@ int mc13xxx_adc_probe(struct device *dev, struct mc13xxx *mc_dev)
+ 
+ 	mc13xxx_adc->mc_dev = mc_dev;
+ 	mc13xxx_adc->aiodev.num_channels = chans;
+-	mc13xxx_adc->aiochan = xmalloc(mc13xxx_adc->aiodev.num_channels *
++	mc13xxx_adc->aiochan = xzalloc(mc13xxx_adc->aiodev.num_channels *
+ 			sizeof(*mc13xxx_adc->aiochan));
+ 	mc13xxx_adc->aiodev.hwdev = dev;
+ 	mc13xxx_adc->aiodev.channels =
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
