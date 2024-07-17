@@ -1,68 +1,66 @@
-Delivery-date: Wed, 17 Jul 2024 08:34:09 +0200
+Delivery-date: Wed, 17 Jul 2024 08:34:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sTyEr-0005b9-2m
+	id 1sTyEs-0005bW-1A
 	for lore@lore.pengutronix.de;
-	Wed, 17 Jul 2024 08:34:09 +0200
+	Wed, 17 Jul 2024 08:34:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sTyEq-0004Nh-Of
-	for lore@pengutronix.de; Wed, 17 Jul 2024 08:34:09 +0200
+	id 1sTyEr-0004OF-Ka
+	for lore@pengutronix.de; Wed, 17 Jul 2024 08:34:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=nftSVbJKUPnBR8z9Hida1R5IMgeWVv0vVHb2MFEv3PU=; b=SzZ0NWUSsShdFCpn0AOgUSQCJv
-	X4Soijbefs83IgXZDfnLAqRnKU+Qyi9Ife6i/HAPHUyvuzEXIjbqE+bRRe0MYNkZGTPsuNoYThsoC
-	DCLF93PLA+jPF7ClWTitybSHrqusB2atmbKtVrRgPyO0uJ3TuByptLoXxUR9q2iXW/5WIUyYq4biO
-	2/N1cViHDxYdOIdqSe6ntU4YD3fmi1nSvFrxif6jKJrOHhE7IWAFViEbTm2BGeUogh/7KpSJvZvwf
-	mbluk7c3U9027iWaFt2Hfpj0WJYpOKX7cZvcYn7RXeBjWdngNYLVvj+cz/ltZ24XZfndUHi/z8/KX
-	eywxFQvw==;
+	Content-Type:MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=96dSLWnbiwxGUPc2PLE6zYkJxljqDg+a3J5CxnlPAjQ=; b=Vh03piDtwql4xnEs96EkGp/QdR
+	AkC/DZIJEHkUElyW0hAOOg9S+h3NGeC85ObgiheUTbZFARK2COp4L+mtcD3HviOMbrNqkB0LdYDaG
+	QIXXdAT1MSUrDB3TjjETA0AVpoCqvelRi+AfshZ3oR8gda2FAIT8pnKWvpxjWziDoVx3D99Q9NJ2c
+	4BlvlrkEK0Cxx/SQP7Ea9uL7+6KLoDN3LQx6gqnklX3XqJdt2NhNgbkKOK9xn3oBUZLDV/RQKGGQ7
+	I0jApEyHLHr45SIUxyNCPQMUTRaPYgk0j9/wnKGD1IgyOPpAUDvI2hD27LyTc9seGL1B5MTyiK0cz
+	fn/eh91A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sTyEL-0000000CrFa-3KF0;
+	id 1sTyEL-0000000CrF9-0qxs;
 	Wed, 17 Jul 2024 06:33:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sTyEI-0000000CrDj-0DkD
+	id 1sTyEH-0000000CrDh-3HIt
 	for barebox@lists.infradead.org;
 	Wed, 17 Jul 2024 06:33:35 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sTyEG-00045W-Iv; Wed, 17 Jul 2024 08:33:32 +0200
+	id 1sTyEG-00045T-Cw; Wed, 17 Jul 2024 08:33:32 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sTyEG-0009QB-4T; Wed, 17 Jul 2024 08:33:32 +0200
+	id 1sTyEF-0009Q4-W3; Wed, 17 Jul 2024 08:33:32 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sTyEG-00BnEX-07;
-	Wed, 17 Jul 2024 08:33:32 +0200
+	id 1sTyEF-00BnEX-2u;
+	Wed, 17 Jul 2024 08:33:31 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Richard Weinberger <richard@nod.at>,
-	Richard Weinberger <richard@sigma-star.at>,
-	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 17 Jul 2024 08:33:25 +0200
-Message-Id: <20240717063328.2810835-4-a.fatoum@pengutronix.de>
+Cc: Richard Weinberger <richard@nod.at>
+Date: Wed, 17 Jul 2024 08:33:22 +0200
+Message-Id: <20240717063328.2810835-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240717063328.2810835-1-a.fatoum@pengutronix.de>
-References: <20240717063328.2810835-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240716_233334_357338_0B28384B 
-X-CRM114-Status: GOOD (  18.08  )
+X-CRM114-CacheID: sfid-20240716_233333_840604_A08CFE60 
+X-CRM114-Status: UNSURE (   9.63  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,130 +82,51 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/6] squashfs metadata 2: electric boogaloo
+Subject: [PATCH 0/6] squashfs: harden against crafted metadata
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This is a port of Linux commit cdbb65c4c7ead680ebe54f4f0d486e2847a500ea:
+Richard reports[1] that barebox is susceptible to a number of memory safety
+issues when parsing crafted squashfs files, which have been fixed in the
+upstream Linux implementation in the meantime.
 
-| Author:     Linus Torvalds <torvalds@linux-foundation.org>
-| AuthorDate: Wed Aug 1 10:38:43 2018 -0700
-|
-| Anatoly continues to find issues with fuzzed squashfs images.
-|
-| This time, corrupt, missing, or undersized data for the page filling
-| wasn't checked for, because the squashfs_{copy,read}_cache() functions
-| did the squashfs_copy_data() call without checking the resulting data
-| size.
-|
-| Which could result in the page cache pages being incompletely filled in,
-| and no error indication to the user space reading garbage data.
-|
-| So make a helper function for the "fill in pages" case, because the
-| exact same incomplete sequence existed in two places.
-|
-| [ I should have made a squashfs branch for these things, but I didn't
-|   intend to start doing them in the first place.
-|
-|   My historical connection through cramfs is why I got into looking at
-|   these issues at all, and every time I (continue to) think it's a
-|   one-off.
-|
-|   Because _this_ time is always the last time. Right?   - Linus ]
-|
-| Reported-by: Anatoly Trosinenko <anatoly.trosinenko@gmail.com>
-| Tested-by: Willy Tarreau <w@1wt.eu>
-| Cc: Al Viro <viro@zeniv.linux.org.uk>
-| Cc: Phillip Lougher <phillip@squashfs.org.uk>
-| Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Import the mentioned commits from Linux to fix this:
 
-Reported-by: Richard Weinberger <richard@sigma-star.at>
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- fs/squashfs/file.c       | 23 +++++++++++++++++++----
- fs/squashfs/file_cache.c |  5 +++--
- fs/squashfs/squashfs.h   |  2 +-
- 3 files changed, 23 insertions(+), 7 deletions(-)
+  01cfb7937a9af ("squashfs: be more careful about metadata corruption")
+  d512584780d3e ("squashfs: more metadata hardening")
+  cdbb65c4c7ead ("squashfs metadata 2: electric boogaloo")
+  71755ee5350b6 ("squashfs: more metadata hardening")
+  a3f94cb99a854 ("Squashfs: Compute expected length from inode size rather than block length")
 
-diff --git a/fs/squashfs/file.c b/fs/squashfs/file.c
-index 1413ef7ecbd8..8316f0edb645 100644
---- a/fs/squashfs/file.c
-+++ b/fs/squashfs/file.c
-@@ -347,12 +347,23 @@ static int read_blocklist(struct inode *inode, int index, u64 *block)
- 	return squashfs_block_size(size);
- }
- 
-+static int squashfs_fill_page(char *dest, struct squashfs_cache_entry *buffer,
-+			      int offset, int avail)
-+{
-+	int copied;
-+
-+	copied = squashfs_copy_data(dest, buffer, offset, avail);
-+	memset(dest + avail, 0, PAGE_CACHE_SIZE - avail);
-+
-+	return copied == avail ? 0 : -EILSEQ;
-+}
-+
- /* Copy data into page cache  */
--void squashfs_copy_cache(struct page *page, struct squashfs_cache_entry *buffer,
-+int squashfs_copy_cache(struct page *page, struct squashfs_cache_entry *buffer,
- 	int bytes, int offset)
- {
--	int i;
- 	struct squashfs_page *sq_page = squashfs_page(page);
-+	int ret, i;
- 
- 	/*
- 	 * Loop copying datablock into pages.  As the datablock likely covers
-@@ -366,10 +377,14 @@ void squashfs_copy_cache(struct page *page, struct squashfs_cache_entry *buffer,
- 
- 		TRACE("bytes %d, i %d, available_bytes %d\n", bytes, i, avail);
- 
--		squashfs_copy_data(sq_page->buf[i], buffer, offset, avail);
--		memset(sq_page->buf[i] + avail, 0, PAGE_CACHE_SIZE - avail);
-+		ret = squashfs_fill_page(sq_page->buf[i], buffer, offset, avail);
-+		if (ret)
-+			return ret;
-+
- 		sq_page->idx++;
- 	}
-+
-+	return 0;
- }
- 
- /* Read datablock stored packed inside a fragment (tail-end packed block) */
-diff --git a/fs/squashfs/file_cache.c b/fs/squashfs/file_cache.c
-index 9443e4558d1a..fbd829849d18 100644
---- a/fs/squashfs/file_cache.c
-+++ b/fs/squashfs/file_cache.c
-@@ -24,11 +24,12 @@ int squashfs_readpage_block(struct page *page, u64 block, int bsize)
- 		block, bsize);
- 	int res = buffer->error;
- 
-+	if (!res)
-+		res = squashfs_copy_cache(page, buffer, buffer->length, 0);
-+
- 	if (res)
- 		ERROR("Unable to read page, block %llx, size %x\n", block,
- 			bsize);
--	else
--		squashfs_copy_cache(page, buffer, buffer->length, 0);
- 
- 	squashfs_cache_put(buffer);
- 	return res;
-diff --git a/fs/squashfs/squashfs.h b/fs/squashfs/squashfs.h
-index d22e83dc3c55..456021dcfd3e 100644
---- a/fs/squashfs/squashfs.h
-+++ b/fs/squashfs/squashfs.h
-@@ -93,7 +93,7 @@ extern int squashfs_frag_lookup(struct super_block *, unsigned int, u64 *);
- extern __le64 *squashfs_read_fragment_index_table(struct super_block *,
- 				u64, u64, unsigned int);
- /* file.c */
--void squashfs_copy_cache(struct page *, struct squashfs_cache_entry *, int,
-+int squashfs_copy_cache(struct page *, struct squashfs_cache_entry *, int,
- 				int);
- extern int squashfs_readpage(struct file *file, struct page *page);
- 
+A full synchronization of the squashfs code is probably also in-order,
+e.g. to support block sizes other than the default 128K, but
+cherry-picking these changes is quite straight-forward, so let's do that
+now.
+
+[1]: https://lore.barebox.org/barebox/2572594.vzjCzTo3RI@somecomputer/
+
+
+Ahmad Fatoum (6):
+  squashfs: be more careful about metadata corruption
+  squashfs: more metadata hardening
+  squashfs metadata 2: electric boogaloo
+  squashfs: more metadata hardening
+  Squashfs: Compute expected length from inode size rather than block
+    length
+  squashfs: refuse mount of squashfs images with non-128K block size
+
+ fs/squashfs/Kconfig          |  5 +---
+ fs/squashfs/block.c          |  2 ++
+ fs/squashfs/cache.c          |  3 ++
+ fs/squashfs/file.c           | 57 ++++++++++++++++++++++--------------
+ fs/squashfs/file_cache.c     |  7 +++--
+ fs/squashfs/fragment.c       | 17 ++++++-----
+ fs/squashfs/squashfs.h       |  4 +--
+ fs/squashfs/squashfs_fs.h    | 11 +++++++
+ fs/squashfs/squashfs_fs_sb.h |  1 +
+ fs/squashfs/super.c          | 12 ++++++--
+ 10 files changed, 79 insertions(+), 40 deletions(-)
+
 -- 
 2.39.2
 
