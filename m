@@ -1,16 +1,16 @@
-Delivery-date: Mon, 22 Jul 2024 10:25:03 +0200
+Delivery-date: Mon, 22 Jul 2024 10:25:04 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sVoLv-001kr7-2E
+	id 1sVoLw-001krI-00
 	for lore@lore.pengutronix.de;
-	Mon, 22 Jul 2024 10:25:03 +0200
+	Mon, 22 Jul 2024 10:25:04 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sVoLs-0000Fj-El
+	id 1sVoLt-0000Gq-Ds
 	for lore@pengutronix.de; Mon, 22 Jul 2024 10:25:03 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,48 +18,48 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=T0ZbepC29gYEVetFMNiLsDu8MbTDX7bmJrS/zWygkLU=; b=FXskz7qXEMJuLyLqZ1m33Cx2hb
-	ob0j2uxe3PMm62QqKIQqAnfXE5q4Vyw6iG68H8h7vpLsaqOImCFyYL+gJmD3UbDW/vRxEteRuDED3
-	tI0/He/8gp9yhI5CfjfYqaimkndQ5Do3NiMdJsV39gJVH4hggD9PwZcjHwj5ifnYYSy+P0JgIM1YO
-	OKnqbzIXujptCyC/He689BMLdRzXalOVJsBc/SxGWT8X/gWf+Znw6khbjIht71j8Kakk8imM0THP/
-	MCNfIQVvznSGNAu4UhCLRGuigwXgvO0Ezb+yOFCICiPoerj3od0yvTEZvngToCQulGTZJwg6iVW0M
-	Q1ND/59Q==;
+	bh=+Gq7a125VcSto3YVWoztqQ7gCxKUDInSESRTxFPp1ao=; b=AfSR88ooKMKo7SI3aUqXBYtOZP
+	M4B4g/iu8TEsq5vFVDRxhbvnlySIyuAdbYyc6FFr8/Y/jGeWomPYJ1jZH59oguuNdHhhs8dbwOdI1
+	KdgxhRbrm3WP9tXIM1d1eZobX5NUywlDybfduq46t8AjArl0SW6PcJVUulhSt1T6Il31sXwLbWUQN
+	BS92EeCrV8gev5GWztgGmVkNAzxWpLAzepl4/Gljs+/KSIvYf9IKMz1qWg5kfbdfYhxP3TWAhhs+a
+	hO+k7NCzY4QyJZWMAkr+fF2EH7WoJH549+AhEfqVF+8/9m3PiWuIj5tEWokLz8u4yinDf6caUM88Q
+	XrcnhYaw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sVoLG-00000008rnT-26cC;
-	Mon, 22 Jul 2024 08:24:22 +0000
+	id 1sVoLF-00000008rnA-1tOI;
+	Mon, 22 Jul 2024 08:24:21 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sVoL6-00000008rif-1iWx
+	id 1sVoL6-00000008riY-1eRR
 	for barebox@lists.infradead.org;
-	Mon, 22 Jul 2024 08:24:18 +0000
+	Mon, 22 Jul 2024 08:24:17 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sVoL2-0008GW-Nd; Mon, 22 Jul 2024 10:24:08 +0200
+	id 1sVoL2-0008Fn-Ea; Mon, 22 Jul 2024 10:24:08 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sVoL2-001L9p-Ak; Mon, 22 Jul 2024 10:24:08 +0200
+	id 1sVoL2-001L9a-1C; Mon, 22 Jul 2024 10:24:08 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sVoL2-00629B-0j;
-	Mon, 22 Jul 2024 10:24:08 +0200
+	id 1sVoL1-00629B-30;
+	Mon, 22 Jul 2024 10:24:07 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 22 Jul 2024 10:24:03 +0200
-Message-Id: <20240722082405.926111-8-s.hauer@pengutronix.de>
+Date: Mon, 22 Jul 2024 10:23:58 +0200
+Message-Id: <20240722082405.926111-3-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240722082405.926111-1-s.hauer@pengutronix.de>
 References: <20240722082405.926111-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240722_012412_778246_D647A5DD 
-X-CRM114-Status: GOOD (  24.59  )
+X-CRM114-CacheID: sfid-20240722_012412_690608_820110B2 
+X-CRM114-Status: GOOD (  24.52  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,309 +81,375 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 7/9] crypro: add ECDSA support
+Subject: [PATCH 2/9] rsatoc: switch to non deprecated openssl API
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This adds ECDSA signature verification support. The code is based on the
-Linux code as of Linux-6.10. The Linux code expects the key to be in
-ASN.1 encoded format. We don't need this in barebox as directly compile
-the x and y key values into the binary, so this is left out.
+The ENGINE API has been deprecated as of openSSL-3.0. Switch to modern
+API to be future proof and to get rid of compile warnings.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- crypto/Kconfig                    |  20 ++++
- crypto/Makefile                   |  19 ++++
- crypto/ecdsa.c                    | 169 ++++++++++++++++++++++++++++++
- include/asm-generic/barebox.lds.h |   7 ++
- include/ecdsa.h                   |  21 ++++
- 5 files changed, 236 insertions(+)
- create mode 100644 crypto/ecdsa.c
- create mode 100644 include/ecdsa.h
+ scripts/rsatoc.c | 201 ++++++++++++++++++-----------------------------
+ 1 file changed, 77 insertions(+), 124 deletions(-)
 
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index e953ef5e15..32051d8d2b 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -156,4 +156,24 @@ config JWT
- config CRYPTO_ECC
- 	bool
+diff --git a/scripts/rsatoc.c b/scripts/rsatoc.c
+index d5943d4a11..9f8aaf8c36 100644
+--- a/scripts/rsatoc.c
++++ b/scripts/rsatoc.c
+@@ -16,7 +16,8 @@
+ #include <openssl/err.h>
+ #include <openssl/ssl.h>
+ #include <openssl/evp.h>
+-#include <openssl/engine.h>
++#include <openssl/provider.h>
++#include <openssl/core_names.h>
  
-+config CRYPTO_ECDSA
-+	bool "ECDSA support"
-+	select CRYPTO_ECC
+ static int dts, standalone;
+ 
+@@ -34,20 +35,16 @@ static int rsa_err(const char *msg)
+ /**
+  * rsa_pem_get_pub_key() - read a public key from a .crt file
+  *
+- * @keydir:	Directory containins the key
+- * @name	Name of key file (will have a .crt extension)
+- * @rsap	Returns RSA object, or NULL on failure
++ * @path: Path to the key file
++ * @key: Returns the key object
+  * @return 0 if ok, -ve on error (in which case *rsap will be set to NULL)
+  */
+-static int rsa_pem_get_pub_key(const char *path, RSA **rsap)
++static int rsa_pem_get_pub_key(const char *path, EVP_PKEY **key)
+ {
+-	EVP_PKEY *key;
+-	X509 *cert;
+-	RSA *rsa;
++	X509 *cert = NULL;
+ 	FILE *f;
+ 	int ret;
+ 
+-	*rsap = NULL;
+ 	f = fopen(path, "r");
+ 	if (!f) {
+ 		fprintf(stderr, "Couldn't open RSA certificate: '%s': %s\n",
+@@ -56,41 +53,29 @@ static int rsa_pem_get_pub_key(const char *path, RSA **rsap)
+ 	}
+ 
+ 	/* Read the certificate */
+-	cert = NULL;
+ 	if (!PEM_read_X509(f, &cert, NULL, NULL)) {
+ 		rewind(f);
+-		key = PEM_read_PUBKEY(f, NULL, NULL, NULL);
+-		if (!key) {
++		*key = PEM_read_PUBKEY(f, NULL, NULL, NULL);
++		if (!*key) {
+ 			rsa_err("Couldn't read certificate");
+ 			ret = -EINVAL;
+ 			goto err_cert;
+ 		}
+ 	} else {
+ 		/* Get the public key from the certificate. */
+-		key = X509_get_pubkey(cert);
+-		if (!key) {
++		*key = X509_get_pubkey(cert);
++		if (!*key) {
+ 			rsa_err("Couldn't read public key\n");
+ 			ret = -EINVAL;
+ 			goto err_pubkey;
+ 		}
+ 	}
+ 
+-	/* Convert to a RSA_style key. */
+-	rsa = EVP_PKEY_get1_RSA(key);
+-	if (!rsa) {
+-		rsa_err("Couldn't convert to a RSA style key");
+-		ret = -EINVAL;
+-		goto err_rsa;
+-	}
+ 	fclose(f);
+-	EVP_PKEY_free(key);
+ 	X509_free(cert);
+-	*rsap = rsa;
+ 
+ 	return 0;
+ 
+-err_rsa:
+-	EVP_PKEY_free(key);
+ err_pubkey:
+ 	X509_free(cert);
+ err_cert:
+@@ -101,60 +86,81 @@ static int rsa_pem_get_pub_key(const char *path, RSA **rsap)
+ /**
+  * rsa_engine_get_pub_key() - read a public key from given engine
+  *
+- * @keydir:	Key prefix
+- * @name	Name of key
+- * @engine	Engine to use
+- * @rsap	Returns RSA object, or NULL on failure
++ * @key_id: Key ID
++ * @provider: Provider to use
++ * @key: Returns key object
+  * @return 0 if ok, -ve on error (in which case *rsap will be set to NULL)
+  */
+ static int rsa_engine_get_pub_key(const char *key_id,
+-				  ENGINE *engine, RSA **rsap)
++				  const char *provider, EVP_PKEY **key)
+ {
+-	EVP_PKEY *key;
+-	RSA *rsa;
+-	int ret;
++	EVP_PKEY_CTX *ctx = NULL;
++	int ret = -1;
 +
-+config CRYPTO_ECDSA_BUILTIN_KEYS
-+	bool
-+	default y if CRYPTO_ECDSA_KEY != ""
-+	select RSATOC
-+
-+config CRYPTO_ECDSA_KEY
-+	depends on CRYPTO_ECDSA
-+	string "ECDSA key to compile in"
-+	help
-+	  This option should be a filename of a PEM-formatted file containing
-+	  X.509 certificates to be included into barebox. If the string starts
-+	  with "pkcs11:" it is interpreted as a PKCS#11 URI rather than a file.
-+
-+	  This avoids the mkimage dependency of CONFIG_BOOTM_FITIMAGE_PUBKEY
-+	  at the cost of an openssl build-time dependency.
-+
- endmenu
-diff --git a/crypto/Makefile b/crypto/Makefile
-index 83c05761de..0bbd495378 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -37,3 +37,22 @@ endif
- $(obj)/rsa-keys.h: $(RSA_DEP) FORCE
- 	$(call cmd,public_keys,$(CONFIG_CRYPTO_RSA_KEY_NAME_HINT):$(if $(RSA_DEP),$<,$(CONFIG_CRYPTO_RSA_KEY)))
- endif
-+
-+extra-$(CONFIG_CRYPTO_ECDSA_BUILTIN_KEYS) += ecdsa-keys.h
-+
-+ifdef CONFIG_CRYPTO_ECDSA_BUILTIN_KEYS
-+
-+$(obj)/ecdsa.o: $(obj)/ecdsa-keys.h
-+
-+CONFIG_CRYPTO_ECDSA_KEY := $(CONFIG_CRYPTO_ECDSA_KEY:"%"=%)
-+
-+ifneq ($(filter-out pkcs11:% __ENV__%, $(CONFIG_CRYPTO_ECDSA_KEY)),)
-+ECDSA_DEP := $(CONFIG_CRYPTO_ECDSA_KEY)
-+endif
-+
-+$(obj)/ecdsa-keys.h: $(ECDSA_DEP) FORCE
-+	$(call cmd,public_keys,ecdsa_key:$(if $(ECDSA_DEP),$<,$(CONFIG_CRYPTO_ECDSA_KEY)))
-+
-+endif
-+
-+obj-$(CONFIG_CRYPTO_ECDSA) += ecdsa.o
-diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
-new file mode 100644
-index 0000000000..d6b534be6d
---- /dev/null
-+++ b/crypto/ecdsa.c
-@@ -0,0 +1,169 @@
-+// SPDX-License-Identifier: GPL-2.0+
-+/*
-+ * Copyright (c) 2021 IBM Corporation
-+ */
-+
-+#include <common.h>
-+
-+#include <crypto/internal/ecc.h>
-+#include <crypto/ecdh.h>
-+#include <ecdsa.h>
-+
-+struct ecc_ctx {
-+	unsigned int curve_id;
-+	const struct ecc_curve *curve;
-+
-+	bool pub_key_set;
-+	u64 x[ECC_MAX_DIGITS]; /* pub key x and y coordinates */
-+	u64 y[ECC_MAX_DIGITS];
-+	struct ecc_point pub_key;
-+};
-+
-+static int _ecdsa_verify(struct ecc_ctx *ctx, const u64 *hash, const u64 *r, const u64 *s)
-+{
-+	const struct ecc_curve *curve = ctx->curve;
-+	unsigned int ndigits = curve->g.ndigits;
-+	u64 s1[ECC_MAX_DIGITS];
-+	u64 u1[ECC_MAX_DIGITS];
-+	u64 u2[ECC_MAX_DIGITS];
-+	u64 x1[ECC_MAX_DIGITS];
-+	u64 y1[ECC_MAX_DIGITS];
-+	struct ecc_point res = ECC_POINT_INIT(x1, y1, ndigits);
-+
-+	/* 0 < r < n  and 0 < s < n */
-+	if (vli_is_zero(r, ndigits) || vli_cmp(r, curve->n, ndigits) >= 0 ||
-+	    vli_is_zero(s, ndigits) || vli_cmp(s, curve->n, ndigits) >= 0)
-+		return -EBADMSG;
-+
-+	/* hash is given */
-+	pr_debug("hash : %016llx %016llx ... %016llx\n",
-+		 hash[ndigits - 1], hash[ndigits - 2], hash[0]);
-+
-+	/* s1 = (s^-1) mod n */
-+	vli_mod_inv(s1, s, curve->n, ndigits);
-+	/* u1 = (hash * s1) mod n */
-+	vli_mod_mult_slow(u1, hash, s1, curve->n, ndigits);
-+	/* u2 = (r * s1) mod n */
-+	vli_mod_mult_slow(u2, r, s1, curve->n, ndigits);
-+	/* res = u1*G + u2 * pub_key */
-+	ecc_point_mult_shamir(&res, u1, &curve->g, u2, &ctx->pub_key, curve);
-+
-+	/* res.x = res.x mod n (if res.x > order) */
-+	if (unlikely(vli_cmp(res.x, curve->n, ndigits) == 1))
-+		/* faster alternative for NIST p521, p384, p256 & p192 */
-+		vli_sub(res.x, res.x, curve->n, ndigits);
-+
-+	if (!vli_cmp(res.x, r, ndigits))
-+		return 0;
-+
-+	return -EKEYREJECTED;
-+}
-+
-+static int ecdsa_key_size(const char *curve_name)
-+{
-+	if (!strcmp(curve_name, "prime256v1"))
-+		return 256;
-+	else
-+		return 0;
-+}
-+
-+int ecdsa_verify(const struct ecdsa_public_key *key, const uint8_t *sig,
-+		 const uint32_t sig_len, const uint8_t *hash)
-+{
-+	struct ecc_ctx _ctx = {};
-+	struct ecc_ctx *ctx = &_ctx;
-+	unsigned int curve_id = ECC_CURVE_NIST_P256;
-+	int ret;
-+	const void *r, *s;
-+	u64 rh[4], sh[4];
-+	u64 mhash[ECC_MAX_DIGITS];
-+	int key_size_bytes = key->size_bits / 8;
-+
-+	ctx->curve_id = curve_id;
-+	ctx->curve = ecc_get_curve(curve_id);
-+	if (!ctx->curve)
-+		return -EINVAL;
-+
-+	ctx->pub_key = ECC_POINT_INIT(ctx->x, ctx->y, ctx->curve->g.ndigits);
-+	memcpy(ctx->pub_key.x, key->x, key_size_bytes);
-+	memcpy(ctx->pub_key.y, key->y, key_size_bytes);
-+
-+	ret = ecc_is_pubkey_valid_full(ctx->curve, &ctx->pub_key);
-+	if (ret)
++	OSSL_LIB_CTX *libctx = OSSL_LIB_CTX_new();
++	if (!libctx) {
++		rsa_err("Failed to create OpenSSL library context");
 +		return ret;
++	}
+ 
+-	*rsap = NULL;
++	if (OSSL_LIB_CTX_load_config(libctx, provider) <= 0) {
++		rsa_err("Failed to load provider");
++		OSSL_LIB_CTX_free(libctx);
++		return ret;
++	}
+ 
+-	key = ENGINE_load_public_key(engine, key_id, NULL, NULL);
+-	if (!key)
+-		return rsa_err("Failure loading public key from engine");
++	ctx = EVP_PKEY_CTX_new_from_name(libctx, "RSA", NULL);
++	if (!ctx) {
++		rsa_err("Failed to create EVP_PKEY_CTX");
++		goto err_ctx;
++	}
+ 
+-	/* Convert to a RSA_style key. */
+-	rsa = EVP_PKEY_get1_RSA(key);
+-	if (!rsa) {
+-		rsa_err("Couldn't convert to a RSA style key");
+-		ret = -EINVAL;
+-		goto err_rsa;
++	if (EVP_PKEY_fromdata_init(ctx) <= 0) {
++		rsa_err("Failed to initialize EVP_PKEY from data");
++		goto err_ctx;
+ 	}
+ 
+-	EVP_PKEY_free(key);
+-	*rsap = rsa;
++	OSSL_PARAM params[] = {
++		OSSL_PARAM_construct_utf8_string("uri", (char *)key_id, 0),
++		OSSL_PARAM_END
++	};
 +
-+	r = sig;
-+	s = sig + key_size_bytes;
-+
-+	ecc_swap_digits((u64 *)r, rh, ctx->curve->g.ndigits);
-+	ecc_swap_digits((u64 *)s, sh, ctx->curve->g.ndigits);
-+
-+	ecc_swap_digits((u64 *)hash, mhash, ctx->curve->g.ndigits);
-+
-+	return _ecdsa_verify(ctx, (void *)mhash, rh, sh);
-+}
-+
-+static LIST_HEAD(ecdsa_keys);
-+
-+static int ecdsa_key_add(struct ecdsa_public_key *key)
-+{
-+	list_add_tail(&key->list, &ecdsa_keys);
-+
-+	return 0;
-+}
-+
-+const struct ecdsa_public_key *ecdsa_key_next(const struct ecdsa_public_key *prev)
-+{
-+	prev = list_prepare_entry(prev, &ecdsa_keys, list);
-+	list_for_each_entry_continue(prev, &ecdsa_keys, list)
-+		return prev;
-+
-+	return NULL;
-+}
-+
-+static struct ecdsa_public_key *ecdsa_key_dup(const struct ecdsa_public_key *key)
-+{
-+	struct ecdsa_public_key *new;
-+	int key_size_bits;
-+
-+	key_size_bits = ecdsa_key_size(key->curve_name);
-+	if (!key_size_bits)
-+		return NULL;
-+
-+	new = xmemdup(key, sizeof(*key));
-+	new->x = xmemdup(key->x, key_size_bits / 8);
-+	new->y = xmemdup(key->y, key_size_bits / 8);
-+	new->size_bits = key_size_bits;
-+
-+	return new;
-+}
-+
-+extern const struct ecdsa_public_key * const __ecdsa_keys_start;
-+extern const struct ecdsa_public_key * const __ecdsa_keys_end;
-+
-+static int ecdsa_init_keys(void)
-+{
-+	const struct ecdsa_public_key * const *iter;
-+	struct ecdsa_public_key *key;
-+	int ret;
-+
-+	for (iter = &__ecdsa_keys_start; iter != &__ecdsa_keys_end; iter++) {
-+		key = ecdsa_key_dup(*iter);
-+		if (!key) {
-+			pr_err("Ignoring key with unknown curve_name %s\n", key->curve_name);
-+			continue;
-+		}
-+
-+		ret = ecdsa_key_add(key);
-+		if (ret)
-+			pr_err("Cannot add rsa key: %pe\n", ERR_PTR(ret));
++	if (EVP_PKEY_fromdata(ctx, key, EVP_PKEY_PUBLIC_KEY, params) <= 0) {
++		rsa_err("Failed to load public key from engine");
++		goto err_ctx;
 +	}
 +
-+	return 0;
-+}
-+
-+device_initcall(ecdsa_init_keys);
-+
-+#ifdef CONFIG_CRYPTO_ECDSA_BUILTIN_KEYS
-+#include "ecdsa-keys.h"
-+#endif
-diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
-index 8bbf5907cd..8d0007419d 100644
---- a/include/asm-generic/barebox.lds.h
-+++ b/include/asm-generic/barebox.lds.h
-@@ -118,6 +118,12 @@
- 	KEEP(*(.rsa_keys.rodata.*));		\
- 	__rsa_keys_end = .;			\
++	EVP_PKEY_free(*key);
++	EVP_PKEY_CTX_free(ctx);
++	OSSL_LIB_CTX_free(libctx);
  
-+#define BAREBOX_ECDSA_KEYS			\
-+	STRUCT_ALIGN();				\
-+	__ecdsa_keys_start = .;			\
-+	KEEP(*(.ecdsa_keys.rodata.*));		\
-+	__ecdsa_keys_end = .;			\
-+
- #define BAREBOX_DEEP_PROBE			\
- 	STRUCT_ALIGN();				\
- 	__barebox_deep_probe_start = .;		\
-@@ -148,6 +154,7 @@
- 	BAREBOX_CLK_TABLE			\
- 	BAREBOX_DTB				\
- 	BAREBOX_RSA_KEYS			\
-+	BAREBOX_ECDSA_KEYS			\
- 	BAREBOX_PCI_FIXUP			\
- 	BAREBOX_DEEP_PROBE
+ 	return 0;
  
-diff --git a/include/ecdsa.h b/include/ecdsa.h
-new file mode 100644
-index 0000000000..e3df15a060
---- /dev/null
-+++ b/include/ecdsa.h
-@@ -0,0 +1,21 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#ifndef _ECDSA_H
-+#define _ECDSA_H
+-err_rsa:
+-	EVP_PKEY_free(key);
++err_ctx:
++	EVP_PKEY_CTX_free(ctx);
++	OSSL_LIB_CTX_free(libctx);
+ 	return ret;
+ }
+ 
+ /*
+  * rsa_get_exponent(): - Get the public exponent from an RSA key
+  */
+-static int rsa_get_exponent(RSA *key, uint64_t *e)
++static int rsa_get_exponent(EVP_PKEY *key, uint64_t *e)
+ {
+ 	int ret;
+-	BIGNUM *bn_te;
+-	const BIGNUM *key_e;
++	BIGNUM *bn_te = NULL;
++	BIGNUM *key_e = NULL;
+ 	uint64_t te;
+ 
+-	ret = -EINVAL;
+-	bn_te = NULL;
+-
+ 	if (!e)
+ 		goto cleanup;
+ 
+-	RSA_get0_key(key, NULL, &key_e, NULL);
++	ret = EVP_PKEY_get_bn_param(key, OSSL_PKEY_PARAM_RSA_E, &key_e);
++	if (!ret)
++		return -EINVAL;
 +
-+struct ecdsa_public_key {
-+	const char *curve_name;	/* Name of curve, e.g. "prime256v1" */
-+	const void *x;		/* x coordinate of public key */
-+	const void *y;		/* y coordinate of public key */
-+	unsigned int size_bits;	/* key size in bits, derived from curve name */
-+	struct list_head list;
-+};
++	ret = -EINVAL;
 +
-+int ecdsa_verify(const struct ecdsa_public_key *key, const uint8_t *sig,
-+		 const uint32_t sig_len, const uint8_t *hash);
+ 	if (BN_num_bits(key_e) > 64)
+ 		goto cleanup;
+ 
+@@ -181,8 +187,7 @@ static int rsa_get_exponent(RSA *key, uint64_t *e)
+ 	ret = 0;
+ 
+ cleanup:
+-	if (bn_te)
+-		BN_free(bn_te);
++	BN_free(bn_te);
+ 
+ 	return ret;
+ }
+@@ -190,12 +195,12 @@ static int rsa_get_exponent(RSA *key, uint64_t *e)
+ /*
+  * rsa_get_params(): - Get the important parameters of an RSA public key
+  */
+-static int rsa_get_params(RSA *key, uint64_t *exponent, uint32_t *n0_invp,
++static int rsa_get_params(EVP_PKEY *key, uint64_t *exponent, uint32_t *n0_invp,
+ 			  BIGNUM **modulusp, BIGNUM **r_squaredp)
+ {
+ 	BIGNUM *big1, *big2, *big32, *big2_32;
+ 	BIGNUM *n, *r, *r_squared, *tmp;
+-	const BIGNUM *key_n;
++	BIGNUM *key_n = NULL;
+ 	BN_CTX *bn_ctx = BN_CTX_new();
+ 	int ret = 0;
+ 
+@@ -207,9 +212,7 @@ static int rsa_get_params(RSA *key, uint64_t *exponent, uint32_t *n0_invp,
+ 	r_squared = BN_new();
+ 	tmp = BN_new();
+ 	big2_32 = BN_new();
+-	n = BN_new();
+-	if (!big1 || !big2 || !big32 || !r || !r_squared || !tmp || !big2_32 ||
+-	    !n) {
++	if (!big1 || !big2 || !big32 || !r || !r_squared || !tmp || !big2_32) {
+ 		fprintf(stderr, "Out of memory (bignum)\n");
+ 		return -ENOMEM;
+ 	}
+@@ -217,8 +220,13 @@ static int rsa_get_params(RSA *key, uint64_t *exponent, uint32_t *n0_invp,
+ 	if (0 != rsa_get_exponent(key, exponent))
+ 		ret = -1;
+ 
+-	RSA_get0_key(key, &key_n, NULL, NULL);
+-	if (!BN_copy(n, key_n) || !BN_set_word(big1, 1L) ||
++	ret = EVP_PKEY_get_bn_param(key, OSSL_PKEY_PARAM_RSA_N, &key_n);
++	if (!ret)
++		return -EINVAL;
++	ret = 0;
 +
-+const struct ecdsa_public_key *ecdsa_key_next(const struct ecdsa_public_key *prev);
-+
-+#define for_each_ecdsa_key(key) \
-+	for (key = ecdsa_key_next(NULL); key; key = ecdsa_key_next(key))
-+
-+#endif /* _ECDSA_H */
++	n = BN_dup(key_n);
++	if (!n || !BN_set_word(big1, 1L) ||
+ 	    !BN_set_word(big2, 2L) || !BN_set_word(big32, 32L))
+ 		ret = -1;
+ 
+@@ -233,8 +241,7 @@ static int rsa_get_params(RSA *key, uint64_t *exponent, uint32_t *n0_invp,
+ 	*n0_invp = BN_get_word(tmp);
+ 
+ 	/* Calculate R = 2^(# of key bits) */
+-	if (!BN_set_word(tmp, BN_num_bits(n)) ||
+-	    !BN_exp(r, big2, tmp, bn_ctx))
++	if (!BN_set_word(tmp, BN_num_bits(n)) || !BN_exp(r, big2, tmp, bn_ctx))
+ 		ret = -1;
+ 
+ 	/* Calculate r_squared = R^2 mod n */
+@@ -260,56 +267,6 @@ static int rsa_get_params(RSA *key, uint64_t *exponent, uint32_t *n0_invp,
+ 	return ret;
+ }
+ 
+-static int rsa_engine_init(ENGINE **pe)
+-{
+-	ENGINE *e;
+-	int ret;
+-	const char *key_pass = getenv("KBUILD_SIGN_PIN");
+-
+-	ENGINE_load_builtin_engines();
+-
+-	e = ENGINE_by_id("pkcs11");
+-	if (!e) {
+-		fprintf(stderr, "Engine isn't available\n");
+-		ret = -1;
+-		goto err_engine_by_id;
+-	}
+-
+-	if (!ENGINE_init(e)) {
+-		fprintf(stderr, "Couldn't initialize engine\n");
+-		ret = -1;
+-		goto err_engine_init;
+-	}
+-
+-	if (key_pass) {
+-		if (!ENGINE_ctrl_cmd_string(e, "PIN", key_pass, 0)) {
+-			fprintf(stderr, "Cannot set PKCS#11 PIN\n");
+-			goto err_set_rsa;
+-		}
+-	}
+-
+-	if (!ENGINE_set_default_RSA(e)) {
+-		fprintf(stderr, "Couldn't set engine as default for RSA\n");
+-		ret = -1;
+-		goto err_set_rsa;
+-	}
+-
+-	*pe = e;
+-
+-	return 0;
+-
+-err_set_rsa:
+-	ENGINE_finish(e);
+-err_engine_init:
+-	ENGINE_free(e);
+-err_engine_by_id:
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L || \
+-	(defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x02070000fL)
+-	ENGINE_cleanup();
+-#endif
+-	return ret;
+-}
+-
+ static FILE *outfilep;
+ 
+ static int print_bignum(BIGNUM *num, int num_bits)
+@@ -328,7 +285,7 @@ static int print_bignum(BIGNUM *num, int num_bits)
+ 	 * Note: This code assumes that all of the above succeed, or all fail.
+ 	 * In practice memory allocations generally do not fail (unless the
+ 	 * process is killed), so it does not seem worth handling each of these
+-	 * as a separate case. Technicaly this could leak memory on failure,
++	 * as a separate case. Technically this could leak memory on failure,
+ 	 * but a) it won't happen in practice, and b) it doesn't matter as we
+ 	 * will immediately exit with a failure code.
+ 	 */
+@@ -389,8 +346,7 @@ static int gen_key(const char *keyname, const char *path)
+ 	uint32_t n0_inv;
+ 	int ret;
+ 	int bits;
+-	RSA *rsa;
+-	ENGINE *e = NULL;
++	EVP_PKEY *key;
+ 	char *tmp, *key_name_c;
+ 
+ 	tmp = key_name_c = strdup(keyname);
+@@ -412,19 +368,16 @@ static int gen_key(const char *keyname, const char *path)
+ 	}
+ 
+ 	if (!strncmp(path, "pkcs11:", 7)) {
+-		ret = rsa_engine_init(&e);
+-		if (ret)
+-			exit(1);
+-		ret = rsa_engine_get_pub_key(path, e, &rsa);
++		ret = rsa_engine_get_pub_key(path, "pkcs11", &key);
+ 		if (ret)
+ 			exit(1);
+ 	} else {
+-		ret = rsa_pem_get_pub_key(path, &rsa);
++		ret = rsa_pem_get_pub_key(path, &key);
+ 		if (ret)
+ 			exit(1);
+ 	}
+ 
+-	ret = rsa_get_params(rsa, &exponent, &n0_inv, &modulus, &r_squared);
++	ret = rsa_get_params(key, &exponent, &n0_inv, &modulus, &r_squared);
+ 	if (ret)
+ 		return ret;
+ 
 -- 
 2.39.2
 
