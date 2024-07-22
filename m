@@ -3,63 +3,63 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sVoLt-001kq4-01
+	id 1sVoLt-001kqF-0l
 	for lore@lore.pengutronix.de;
 	Mon, 22 Jul 2024 10:25:01 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sVoLq-0000EV-Kb
-	for lore@pengutronix.de; Mon, 22 Jul 2024 10:25:00 +0200
+	id 1sVoLr-0000F9-Dd
+	for lore@pengutronix.de; Mon, 22 Jul 2024 10:25:01 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=wj8NGqJQCiF8OTdxpLNmWgCOr+U1z2mYmzCki/w886U=; b=T0Vc/ywz5dF2K4g64tChI9lAuj
-	Z8UeHH1Fbxe2aIHiMpl5sOaFDuyTBamZTSFChBsiiEE21cF2HW16A91eI1Si/HO0WwolPpu04/KKb
-	q7WEH1HJ8Kjw/pgKKYOOKxMBsZ5kZrzJr6ev/gXE3pVlIWAXurR8WCWhd2ojvlOp96Lj306JxJocN
-	S/jJnj1lwTvwp2w5UHT4w/ixGwL2ooqG7PAFXv3TJyS4jomUsPeDIdAT5lhQxikR+LkVlakWuREf5
-	266BW+ANnOoH9noJYDd1TGltDxc2vc5sHllv+n9i2oP+SCtwrKT76nb3vvZJ/inUJ3ZMdwzz03Mm4
-	bxM7EwBw==;
+	bh=iXmC0GsBEtk/onalHJRcd2QCr5ZsNiaRbyQ7jURZzkA=; b=Fj4TJa+23wp3L2HYgZEbvgRUP5
+	Flxi4Bsez3iHHQ8YcKcLikEOc2dpI7mBjz+VvVEy48k2QgeamNiKNpVhCDr+X0dBdUHIoEgzJsnHx
+	/ppc/UFP43qqHyvKFwOiyZ9LFVueAJtUomnV8NxGpKxfyL0eckuBMzbc6x6z+pwnlyZs1LnvxX8Iq
+	Xi0beZY2UXWD+LTjmxhuEikZKr/V9NDWjeMABFc4qWKNvUTXpjIfymFUcfc9QPuGuhuN02U7I8/b8
+	YeSY+y6ypCva2/FXtnuLyVQRBTTCoxTNv00i+BfQCRCQ6T9NOqPdJIzxU1iUwA5bKxKEPgXsMtl95
+	JMPfB+iA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sVoLE-00000008rme-0yGn;
+	id 1sVoLE-00000008rml-3Pqe;
 	Mon, 22 Jul 2024 08:24:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sVoL6-00000008rib-1gVL
+	id 1sVoL6-00000008rih-1jZ8
 	for barebox@lists.infradead.org;
 	Mon, 22 Jul 2024 08:24:16 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sVoL2-0008Fo-GJ; Mon, 22 Jul 2024 10:24:08 +0200
+	id 1sVoL2-0008H1-Rd; Mon, 22 Jul 2024 10:24:08 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sVoL2-001L9d-2n; Mon, 22 Jul 2024 10:24:08 +0200
+	id 1sVoL2-001L9v-Dg; Mon, 22 Jul 2024 10:24:08 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sVoL1-00629B-39;
+	id 1sVoL2-00629B-12;
 	Mon, 22 Jul 2024 10:24:08 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Mon, 22 Jul 2024 10:23:59 +0200
-Message-Id: <20240722082405.926111-4-s.hauer@pengutronix.de>
+Date: Mon, 22 Jul 2024 10:24:05 +0200
+Message-Id: <20240722082405.926111-10-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240722082405.926111-1-s.hauer@pengutronix.de>
 References: <20240722082405.926111-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240722_012412_545581_F782803D 
-X-CRM114-Status: GOOD (  15.21  )
+X-CRM114-CacheID: sfid-20240722_012412_640743_3FBA3509 
+X-CRM114-Status: GOOD (  18.96  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,155 +81,195 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 3/9] rsatoc: rename to keytoc
+Subject: [PATCH 9/9] fit: Add ecdsa support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The rsatoc tool will be extended to also handle ecdsa keys, so change
-'rsa' to a more generic name 'key'.
+This adds ECDSA signing support to the FIT image code.
+
+Previously we unconditionally called into rsa_verify() as this was the
+only option. Now with ECDSA support we first have to check the type of
+the signature, so we start evaluating the signature type in given in the
+FIT image and call rsa_verify() or ecdsa_verify() depending on it.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- crypto/Kconfig                 |  2 +-
- crypto/Makefile                |  2 +-
- scripts/.gitignore             |  2 +-
- scripts/Kconfig                |  4 ++--
- scripts/Makefile               |  6 +++---
- scripts/Makefile.lib           | 12 ++++++------
- scripts/{rsatoc.c => keytoc.c} |  4 ++--
- test/self/Makefile             |  2 +-
- 8 files changed, 17 insertions(+), 17 deletions(-)
- rename scripts/{rsatoc.c => keytoc.c} (98%)
+ common/image-fit.c | 112 +++++++++++++++++++++++++++++++++++++--------
+ 1 file changed, 94 insertions(+), 18 deletions(-)
 
-diff --git a/crypto/Kconfig b/crypto/Kconfig
-index d1360a2101..78b499f646 100644
---- a/crypto/Kconfig
-+++ b/crypto/Kconfig
-@@ -121,7 +121,7 @@ config CRYPTO_RSA
- config CRYPTO_RSA_BUILTIN_KEYS
- 	bool
- 	default y if CRYPTO_RSA_KEY != ""
--	select RSATOC
-+	select KEYTOC
+diff --git a/common/image-fit.c b/common/image-fit.c
+index 6002440e7e..599d969a38 100644
+--- a/common/image-fit.c
++++ b/common/image-fit.c
+@@ -21,6 +21,7 @@
+ #include <linux/err.h>
+ #include <stringlist.h>
+ #include <rsa.h>
++#include <ecdsa.h>
+ #include <uncompress.h>
+ #include <image-fit.h>
  
- config CRYPTO_RSA_KEY
- 	depends on CRYPTO_RSA
-diff --git a/crypto/Makefile b/crypto/Makefile
-index cf041dd6b3..e84360a8c7 100644
---- a/crypto/Makefile
-+++ b/crypto/Makefile
-@@ -34,5 +34,5 @@ RSA_DEP := $(CONFIG_CRYPTO_RSA_KEY)
- endif
+@@ -253,13 +254,11 @@ static struct digest *fit_alloc_digest(struct device_node *sig_node,
+ 	return digest;
+ }
  
- $(obj)/rsa-keys.h: $(RSA_DEP) FORCE
--	$(call cmd,rsa_keys,$(CONFIG_CRYPTO_RSA_KEY_NAME_HINT):$(if $(RSA_DEP),$<,$(CONFIG_CRYPTO_RSA_KEY)))
-+	$(call cmd,public_keys,$(CONFIG_CRYPTO_RSA_KEY_NAME_HINT):$(if $(RSA_DEP),$<,$(CONFIG_CRYPTO_RSA_KEY)))
- endif
-diff --git a/scripts/.gitignore b/scripts/.gitignore
-index 8c653d184f..6ee81e8998 100644
---- a/scripts/.gitignore
-+++ b/scripts/.gitignore
-@@ -33,7 +33,7 @@ rk-usb-loader
- rk-usb-loader-target
- rkimage
- mips-relocs
--rsatoc
-+keytoc
- stm32image
- mvebuimg
- prelink-riscv
-diff --git a/scripts/Kconfig b/scripts/Kconfig
-index 4034f020d0..62bf0298ec 100644
---- a/scripts/Kconfig
-+++ b/scripts/Kconfig
-@@ -110,10 +110,10 @@ config QOICONV
- 	help
- 	  This enable converting png to qoi images to generate boot logo.
+-static int fit_check_rsa_signature(struct device_node *sig_node,
+-				   enum hash_algo algo, void *hash)
++static int fit_check_rsa_signature(const void *signature, size_t sig_len,
++				   enum hash_algo algo, void *hash,
++				   const char *key_name)
+ {
+ 	const struct rsa_public_key *key;
+-	const char *key_name = NULL;
+-	int sig_len;
+-	const char *sig_value;
+ 	int ret;
  
--config RSATOC
-+config KEYTOC
- 	bool "RSA to C converter" if COMPILE_HOST_TOOLS
- 	help
--	  This utility converts RSA keys in PEM format to either C or
-+	  This utility converts public keys in PEM format to either C or
- 	  device tree snippets. This requires OpenSSL on the build host
- 	  and will be selected by the build system if required.
+ 	if (!IS_ENABLED(CONFIG_CRYPTO_RSA)) {
+@@ -267,17 +266,10 @@ static int fit_check_rsa_signature(struct device_node *sig_node,
+ 		return -EOPNOTSUPP;
+ 	}
  
-diff --git a/scripts/Makefile b/scripts/Makefile
-index 20da6fc5e7..a780f05bd9 100644
---- a/scripts/Makefile
-+++ b/scripts/Makefile
-@@ -10,9 +10,9 @@ hostprogs-always-y					+= bareboxenv
- hostprogs-always-y					+= bareboxcrc32
- hostprogs-always-y					+= kernel-install
- hostprogs-always-$(CONFIG_QOICONV)			+= qoiconv
--hostprogs-always-$(CONFIG_RSATOC)			+= rsatoc
--HOSTCFLAGS_rsatoc.o = `$(PKG_CONFIG) --cflags openssl`
--HOSTLDLIBS_rsatoc = `$(PKG_CONFIG) --libs openssl`
-+hostprogs-always-$(CONFIG_KEYTOC)			+= keytoc
-+HOSTCFLAGS_keytoc.o = `$(PKG_CONFIG) --cflags openssl`
-+HOSTLDLIBS_keytoc = `$(PKG_CONFIG) --libs openssl`
- hostprogs-always-$(CONFIG_IMD)				+= bareboximd
- hostprogs-always-$(CONFIG_KALLSYMS)			+= kallsyms
- hostprogs-always-$(CONFIG_MIPS)				+= mips-relocs
-diff --git a/scripts/Makefile.lib b/scripts/Makefile.lib
-index 6b1f0ccbc0..1881e3c139 100644
---- a/scripts/Makefile.lib
-+++ b/scripts/Makefile.lib
-@@ -604,17 +604,17 @@ quiet_cmd_stm32_image = STM32-IMG $@
- quiet_cmd_b64dec = B64DEC  $@
-       cmd_b64dec = base64 -d $< > $@
+-	sig_value = of_get_property(sig_node, "value", &sig_len);
+-	if (!sig_value) {
+-		pr_err("signature value not found in %pOF\n", sig_node);
+-		return -EINVAL;
+-	}
+-
+-	of_property_read_string(sig_node, "key-name-hint", &key_name);
+ 	if (key_name) {
+ 		key = rsa_get_key(key_name);
+ 		if (key) {
+-			ret = rsa_verify(key, sig_value, sig_len, hash, algo);
++			ret = rsa_verify(key, signature, sig_len, hash, algo);
+ 			if (!ret)
+ 				goto ok;
+ 		}
+@@ -287,20 +279,104 @@ static int fit_check_rsa_signature(struct device_node *sig_node,
+ 		if (key_name && !strcmp(key->key_name_hint, key_name))
+ 			continue;
  
--# rsa_keys
-+# public_keys
- # ---------------------------------------------------------------------------
- # Build a header file containing a rsa public key.
- #
- # The keys can change without the build system noticing, so we always
--# have to call rsatoc. To avoid unnecessary rebuilds of barebox compare
--# its output to the last rsatoc output. Only if it differs overwrite the
-+# have to call keytoc. To avoid unnecessary rebuilds of barebox compare
-+# its output to the last keytoc output. Only if it differs overwrite the
- # target file.
--quiet_cmd_rsa_keys = RSAKEY  $@
--cmd_rsa_keys = \
--	$(objtree)/scripts/rsatoc -o $@.tmp "$(2)" $(3) &&		\
-+quiet_cmd_public_keys = KEY     $@
-+cmd_public_keys = \
-+	$(objtree)/scripts/keytoc -o $@.tmp "$(2)" $(3) &&		\
- 	if cmp -s $@.tmp $@; then					\
- 		rm $@.tmp;						\
- 	else								\
-diff --git a/scripts/rsatoc.c b/scripts/keytoc.c
-similarity index 98%
-rename from scripts/rsatoc.c
-rename to scripts/keytoc.c
-index 9f8aaf8c36..be50ec86b9 100644
---- a/scripts/rsatoc.c
-+++ b/scripts/keytoc.c
-@@ -1,8 +1,8 @@
- // SPDX-License-Identifier: GPL-2.0-or-later WITH LicenseRef-OpenSSL-exception
+-		ret = rsa_verify(key, sig_value, sig_len, hash, algo);
++		ret = rsa_verify(key, signature, sig_len, hash, algo);
+ 		if (!ret)
+ 			goto ok;
+ 	}
+ 
+-	pr_err("image signature BAD\n");
++	pr_err("image RSA signature BAD\n");
+ 
+ 	return -EBADMSG;
+ ok:
+-	pr_info("image signature OK\n");
++	pr_info("image RSA signature OK\n");
+ 
+ 	return 0;
+ }
+ 
++static int fit_check_ecdsa_signature(const void *signature, size_t sig_len,
++				     enum hash_algo algo, void *hash,
++				     const char *key_name)
++{
++	const struct ecdsa_public_key *key;
++	int ret;
++
++	if (!IS_ENABLED(CONFIG_CRYPTO_ECDSA)) {
++		pr_err("ECDSA support is disabled, Cannot verify image\n");
++		return -EOPNOTSUPP;
++	}
++
++	for_each_ecdsa_key(key) {
++		ret = ecdsa_verify(key, signature, sig_len, hash);
++		if (!ret) {
++			pr_info("image ECDSA signature OK\n");
++			return 0;
++		}
++	}
++
++	pr_err("image ECDSA signature BAD\n");
++
++	return -EBADMSG;
++}
++
++struct crypto_algo {
++	const char *name;
++	int (*verify)(const void *signature, size_t sig_len, enum hash_algo algo,
++		      void *hash, const char *key_name);
++};
++
++static struct crypto_algo crypto_algos[] = {
++	{
++		.name = "rsa2048",
++		.verify = fit_check_rsa_signature,
++	}, {
++		.name = "rsa3072",
++		.verify = fit_check_rsa_signature,
++	}, {
++		.name = "rsa4096",
++		.verify = fit_check_rsa_signature,
++	}, {
++		.name = "ecdsa256",
++		.verify = fit_check_ecdsa_signature,
++	},
++};
++
++static int fit_check_signature(struct device_node *sig_node,
++			       enum hash_algo algo, void *hash)
++{
++	int sig_len, i;
++	const char *sig_value;
++	const char *algo_name;
++	const char *key_name = NULL;
++	const char *str;
++
++	sig_value = of_get_property(sig_node, "value", &sig_len);
++	if (!sig_value) {
++		pr_err("signature value not found in %pOF\n", sig_node);
++		return -EINVAL;
++	}
++
++	of_property_read_string(sig_node, "key-name-hint", &key_name);
++
++	if (of_property_read_string(sig_node, "algo", &algo_name)) {
++		pr_err("algo property not found\n");
++		return -EINVAL;
++	}
++
++	str = strchr(algo_name, ',');
++	if (!str)
++		return -EINVAL;
++	str++;
++
++	for (i = 0; i < ARRAY_SIZE(crypto_algos); i++) {
++		struct crypto_algo *ca = &crypto_algos[i];
++
++		if (!strcmp(ca->name, str))
++			return ca->verify(sig_value, sig_len, algo, hash, key_name);
++	}
++
++	return -EINVAL;
++}
++
  /*
-- * rsatoc - utility to convert an RSA key to a C struct
-+ * keytoc - utility to convert a public key to a C struct
-  *
-- * This tool converts an RSA key given as file or PKCS#11
-+ * This tool converts an public key given as file or PKCS#11
-  * URI to a C struct suitable to compile with barebox.
+  * The consistency of the FTD structure was already checked by of_unflatten_dtb()
   */
- #include <stdio.h>
-diff --git a/test/self/Makefile b/test/self/Makefile
-index fbc1867254..6390c4afd4 100644
---- a/test/self/Makefile
-+++ b/test/self/Makefile
-@@ -22,7 +22,7 @@ obj-$(CONFIG_SELFTEST_IDR) += idr.o
- ifdef REGENERATE_RSATOC
+@@ -346,7 +422,7 @@ static int fit_verify_signature(struct device_node *sig_node, const void *fit)
+ 	hash = xzalloc(digest_length(digest));
+ 	digest_final(digest, hash);
  
- $(obj)/jwt_test.pem.c_shipped: $(src)/jwt_test.pem FORCE
--	$(call if_changed,rsa_keys,$(basename $(target-stem)):$<,-s)
-+	$(call if_changed,public_keys,$(basename $(target-stem)):$<,-s)
+-	ret = fit_check_rsa_signature(sig_node, algo, hash);
++	ret = fit_check_signature(sig_node, algo, hash);
+ 	if (ret)
+ 		goto out_free_hash;
  
- endif
+@@ -469,7 +545,7 @@ static int fit_image_verify_signature(struct fit_handle *handle,
+ 	hash = xzalloc(digest_length(digest));
+ 	digest_final(digest, hash);
+ 
+-	ret = fit_check_rsa_signature(sig_node, algo, hash);
++	ret = fit_check_signature(sig_node, algo, hash);
+ 
+ 	free(hash);
  
 -- 
 2.39.2
