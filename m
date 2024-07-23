@@ -1,92 +1,84 @@
-Delivery-date: Tue, 23 Jul 2024 16:55:29 +0200
+Delivery-date: Tue, 23 Jul 2024 17:32:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sWGvJ-002Agm-1C
+	id 1sWHVD-002BFL-1t
 	for lore@lore.pengutronix.de;
-	Tue, 23 Jul 2024 16:55:29 +0200
+	Tue, 23 Jul 2024 17:32:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sWGvI-0003Dm-QC
-	for lore@pengutronix.de; Tue, 23 Jul 2024 16:55:29 +0200
+	id 1sWHVC-0005gj-Ui
+	for lore@pengutronix.de; Tue, 23 Jul 2024 17:32:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Content-Type:References:In-Reply-To:Date:To:From:Subject:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4Q4VC/Yb1eDjHJWK2A42Gg/1zp9kyF3O49xHz6PgJNg=; b=wozxjnixEpKmQtULHqUT2kYp5C
-	kHxO0DivhYXUX98z2L9RSMItdXNouHykiKyOSra2dgenChq+DSR5ft2x2K/6X/93I8Hh6ovmnhHhH
-	mMow8ro0SDLIylwHN+Z/h3XtBuXUeKiqSgX3gnOeTUcmMAeVz9Rytw0S/DfS03WS5JDODxNoYn6gV
-	kwjDy5mHtTUfuNM4HgBkPq7nC5PHa8snS5jvVbOQy1jM5j3IozCM3b5YeYODCyUteiXr+E8tfzJxr
-	WG5VliYUXlvFI6c+BcOjvPk4RTwDOC4TwsR8foY/aPrMPIbuJKEBf4KFGlg7rAO7A6gBRvihoW373
-	+UUHCkyw==;
+	MIME-Version:Content-Type:Date:Cc:To:From:Subject:Message-ID:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=CvX5amq9R714nwxHsNxjLgJEZCT+NvUo1piHj2pKkqA=; b=cCZ88fV3mjtKW7udeTAAW/S6Iq
+	0j+ae0fn9/J/svHkm2Ve/GjxviQrHz0+yu5eqm5U3E0Ljt520pPABwrelhumPmjuupWnGouV9TKj3
+	YNBen2FJIY6dKzPXE889gMERirGhuAHna3TC83F2Hyq3UdpqHHxCUXL3cmNY29XINi9tb7YuJaMBX
+	85KyHSKiFohFyv6XYjMNX0WmfJjq/0incJCz+2ivQccllaLcoxf5L5vALBZ/wqQh6GSz3RLG6OA6v
+	vSh0EoEk82jmKBpsVmk8f8mx/oxaQDb3uIG80lHpGcx92+9M1OHe6kFDglUvWFm1/zGHh0THxAQDs
+	2kCaArlw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sWGuf-0000000Cnlx-0PXM;
-	Tue, 23 Jul 2024 14:54:49 +0000
-Received: from mail-wr1-x433.google.com ([2a00:1450:4864:20::433])
+	id 1sWHUc-0000000CtdP-0hQE;
+	Tue, 23 Jul 2024 15:31:58 +0000
+Received: from mail-wr1-x434.google.com ([2a00:1450:4864:20::434])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sWGub-0000000CnkQ-1kNV
+	id 1sWHUY-0000000Ctca-35ZQ
 	for barebox@lists.infradead.org;
-	Tue, 23 Jul 2024 14:54:46 +0000
-Received: by mail-wr1-x433.google.com with SMTP id ffacd0b85a97d-368526b1333so2399392f8f.1
-        for <barebox@lists.infradead.org>; Tue, 23 Jul 2024 07:54:45 -0700 (PDT)
+	Tue, 23 Jul 2024 15:31:56 +0000
+Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-368557c9e93so3025221f8f.2
+        for <barebox@lists.infradead.org>; Tue, 23 Jul 2024 08:31:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721746484; x=1722351284; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:to:from:subject:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4Q4VC/Yb1eDjHJWK2A42Gg/1zp9kyF3O49xHz6PgJNg=;
-        b=JiQFzBpWG97HL0gJKoWHv7kDDKK4p7IxbpP88TM++crzvWEhf6kP7mWKna55WlejsY
-         uihloSjC8bSaURiAhg+6G4ijBbhj3JhSASDWArwRGVLCTUQ+Ly21CPakxGyAmiVgB2uh
-         JpFB3cbBl3iBnVmZ2A4eERLg2RuJRhtHLvqyXR97J/wIohME9rmL2B40nnSRlaVfN/74
-         qiQpOSQDPUJTDRr58RhK8A6Vk0xAtF66A9ySI8uV6sQlA1TACr4v1Eb1oF6otOWsdsl3
-         gCVgOd+jZTG/BVX4h7j89irxE2rmONoDLmwGyjX4RkKbnGUS81azGOOVpyT6nm8OcLBT
-         xPJw==
+        d=gmail.com; s=20230601; t=1721748713; x=1722353513; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:user-agent:date:cc:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=CvX5amq9R714nwxHsNxjLgJEZCT+NvUo1piHj2pKkqA=;
+        b=hN+2HjbMk3Ym1sHUUycyC79LPVtoCouGVV9MzFO8xcyaWsTgfBbPO0rkt72Vnivr9B
+         ajp7BaMx41p0zXx5+SWQ9ssOD4j/Giiqn5D7Q8cnW3fVrla5q7nQFeRiHua9RQEGnI49
+         AZzMymMLCbHnB1Vembu3mGT+w8RyWeJ6ts8nhpJENn5OTJ5G3/RcQ7iGFefeEffIkCJ+
+         jRLKnXUBmTjn4XZ8sdGk5peIsZAJMqI/DJae1fLa7A0wy3bWbsQ7zWfo4TRYPLl4Sy2q
+         5CEInqfnyJzI0u6Jl0EhmnUKfiHVoLqvV04WhahVKTLao9huObv+mxX8UfIX1cQVggMv
+         HkzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721746484; x=1722351284;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:to:from:subject:message-id:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=4Q4VC/Yb1eDjHJWK2A42Gg/1zp9kyF3O49xHz6PgJNg=;
-        b=v4joxazvIqTFO3mnmD0g061KlDHJBleWUBz1pN65T1H2jMyWp4j6537pGnKBgCVY1V
-         CuGWK02CsrcFrsyQsUcu4Fa+Hy57iHB5yBEkYQNnd0/bX7ahIXzmpifHtyqDcT4gMgD/
-         7iDL9eK29MGgL/0OE7qB+zuLk4nfIiw6bn1lUUrNH8qbbUJNOeQr5UENczBZzZ54TMki
-         exp5JUFgtHn0DWmi6JwW9HKQPiCzjy9hB8x2VyvJnsXd50F8zneyQf90J6Btp9He9yg/
-         nMhkkhc+W5TO55VPfAp0eRcvHEVelNnxcKHz4u+odLLIGmh1FDEraetpL+wmjJCur/LQ
-         E6KQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU4p0bgv0B3rxhMgQOmP3UqIghJMIKRyoVKm8Y0fUYZQQH1ySZgxNR4JW4JoSO5VGJTceK+YQy1yNBaJLxJfgljcl9Na1pqUUi+2Pk=
-X-Gm-Message-State: AOJu0YyVmc+3SzvK6e+34hBJhU5hpCd6macOeyv9ctRqv5n8P7+1rHGn
-	QT1xiV/CJwQ0hYLIiBZfUDFYjqHND2KtjYJMcUO6BqIKgNCRqpr7
-X-Google-Smtp-Source: AGHT+IEyqYeMO9FflvwiOcV52q2+4dU4DGrae4d1Mv56qd/Na2M6YUmWfvB0vE8KSrMybKqSq2gWzg==
-X-Received: by 2002:a05:6000:2a6:b0:362:ad01:5435 with SMTP id ffacd0b85a97d-369e3f29f4emr2124647f8f.29.1721746483728;
-        Tue, 23 Jul 2024 07:54:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1721748713; x=1722353513;
+        h=content-transfer-encoding:mime-version:user-agent:date:cc:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CvX5amq9R714nwxHsNxjLgJEZCT+NvUo1piHj2pKkqA=;
+        b=CfeAV7CZI4Smohi+vngFfNJ9EHRLcSoFJuNYqeMMejIix4bA8Ox7GF9Z8zQXVyTfwN
+         lfhOMcTIV0XFE38ibcME/ZblRc9czCco4IqhgHpvJhpxZleV0TSG9YBmgu8Eb8JKbSMA
+         MvMmobfmfXDIcv5p6dz3iSb2tuT0xT0OXy1VxmeEIaJfYDrHfFocfslnAWzoZz66mJf6
+         QBPjvxw0sLIHAq7kK4PV4YXxvWayXI9RAlKTPr+w8sSkbto631WCKHYRMviGOCeCLLWp
+         PXmfA5qGN+6xUfQXjcE/FOC/5/DIBNmTaIYgQ4iLMbQEJhl7WeG35LqXBwjxqoZy6lvV
+         UrYA==
+X-Gm-Message-State: AOJu0YyrdtWFdagSyBXlzY/sTCtObLIFjgatiPt+6SGv0DjasTuUcAV/
+	A8MzCZZxooW/d6fiilYE+ylv62+pPNN/wszDtLNfjtOV4LD8c54mXjEIYg==
+X-Google-Smtp-Source: AGHT+IFwQkUokAS5ojkdsBtue55tRcQOCaU5WXgN8emiif45AG63FpODRVg+iWTxoMYMhXRaSEyqDw==
+X-Received: by 2002:a05:6000:2c3:b0:367:434f:caa2 with SMTP id ffacd0b85a97d-369bad3a81amr8163713f8f.0.1721748712846;
+        Tue, 23 Jul 2024 08:31:52 -0700 (PDT)
 Received: from vaio ([91.142.65.210])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-368787ceda0sm11748523f8f.87.2024.07.23.07.54.42
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-368787cededsm11941952f8f.78.2024.07.23.08.31.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jul 2024 07:54:43 -0700 (PDT)
-Message-ID: <38ba9d4d886c030154f2eb52ccf2a6b7c4881c13.camel@gmail.com>
+        Tue, 23 Jul 2024 08:31:52 -0700 (PDT)
+Message-ID: <9bf8686f882714867ac2dc864c8e5539ad06400b.camel@gmail.com>
 From: Stefano Manni <stefano.manni@gmail.com>
-To: Rouven Czerwinski <r.czerwinski@pengutronix.de>, 
-	barebox@lists.infradead.org
-Date: Tue, 23 Jul 2024 16:54:40 +0200
-In-Reply-To: <ba1febb9b457f5876959f093f866b680e266f987.camel@pengutronix.de>
-References: <CANn9nbgEYhJEPCZs4oQ-TBLM5OFz-076yiwRCYzewPJVfoiKMw@mail.gmail.com>
-	 <c91faed04802d13072ac42b233216fc5cb414d4f.camel@pengutronix.de>
-	 <8f4d5c086afb381b17a2289bdc7e22129a51d9e7.camel@gmail.com>
-	 <ba1febb9b457f5876959f093f866b680e266f987.camel@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue, 23 Jul 2024 17:31:51 +0200
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240723_075445_492658_4C603394 
-X-CRM114-Status: UNSURE (   8.58  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240723_083154_810104_2974C583 
+X-CRM114-Status: GOOD (  10.53  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -109,21 +101,70 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: HAB warning on imx6sx
+Subject: [PATCH] habv4: ignore engine failure due to RNG self-test in boot
+ ROM
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, 2024-07-23 at 15:18 +0200, Rouven Czerwinski wrote:
-> 
-> Yes, this is correct. You'll probably want to send a patch to modify
-> the habv4_known_rng_fail_events[] array in drivers/hab/habv4.c, this
-> should prevent it from being displayed as an error. 
-> 
+From: Stefano Manni <stefano.manni@gmail.com>
+Date: Tue, 23 Jul 2024 15:08:22 +0000
+Subject: [PATCH] habv4: ignore engine failure due to RNG self-test in
+boot ROM
 
-Thank you Rouven, patch is coming.
+Few i.MX chips which have HAB 4.2.3 or beyond, have oberserved
+following warning message generated by HAB due to incorrect
+implementation of RNG self-test in boot ROM:
 
-Best,
-Stefano
+	HABv4: Status: Operation completed with warning (0x69)
+	HABv4: Config: Non-secure IC (0xf0)
+	HABv4: State: Non-secure state (0x66)
+	ERROR: HABv4: -------- HAB Event 0 --------
+	ERROR: HABv4: event data:
+	ERROR: HABv4:  db 00 24 42  69 30 e1 1d
+	ERROR: HABv4:  00 08 00 02  40 00 36 06
+	ERROR: HABv4:  55 55 00 03  00 00 00 00
+	ERROR: HABv4:  00 00 00 00  00 00 00 00
+	ERROR: HABv4:  00 00 00 01
+	ERROR: HABv4: Status: Operation completed with warning (0x69)
+	ERROR: HABv4: Reason: Engine failure (0x30)
+	ERROR: HABv4: Context: Event logged in hab_rvt.entry() (0xe1)
+	ERROR: HABv4: Engine: CAAM (0x1d)
+
+On these chips it is recommended to run the software self-test
+in order to discover any other failure in addition to the
+false positivie above.
+
+This patch filters out the event and not show it as suggested in [1].
+
+[1] 
+https://lore.barebox.org/barebox/ba1febb9b457f5876959f093f866b680e266f987.camel@pengutronix.de/
+
+Suggested-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Signed-off-by: Stefano Manni <stefano.manni@gmail.com>
+---
+ drivers/hab/habv4.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/drivers/hab/habv4.c b/drivers/hab/habv4.c
+index c60a658b89..d3462eaeb7 100644
+--- a/drivers/hab/habv4.c
++++ b/drivers/hab/habv4.c
+@@ -553,6 +553,11 @@ static uint8_t
+habv4_known_rng_fail_events[][RNG_FAIL_EVENT_SIZE] = {
+ 	  0x55, 0x55, 0x00, 0x03,  0x00, 0x00, 0x00, 0x00,
+ 	  0x00, 0x00, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
+ 	  0x00, 0x00, 0x00, 0x01 },
++	{ 0xdb, 0x00, 0x24, 0x42,  0x69, 0x30, 0xe1, 0x1d,
++	  0x00, 0x08, 0x00, 0x02,  0x40, 0x00, 0x36, 0x06,
++	  0x55, 0x55, 0x00, 0x03,  0x00, 0x00, 0x00, 0x00,
++	  0x00, 0x00, 0x00, 0x00,  0x00, 0x00, 0x00, 0x00,
++	  0x00, 0x00, 0x00, 0x01 },
+ };
+ 
+ static bool is_known_rng_fail_event(const uint8_t *data, size_t len)
+-- 
+2.25.1
+
 
 
 
