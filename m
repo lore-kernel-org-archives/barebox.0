@@ -1,65 +1,67 @@
-Delivery-date: Fri, 26 Jul 2024 14:24:20 +0200
+Delivery-date: Fri, 26 Jul 2024 14:26:59 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sXJzg-0038vn-05
+	id 1sXK2F-0038wv-2z
 	for lore@lore.pengutronix.de;
-	Fri, 26 Jul 2024 14:24:20 +0200
+	Fri, 26 Jul 2024 14:26:59 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sXJzf-0005LP-AJ
-	for lore@pengutronix.de; Fri, 26 Jul 2024 14:24:19 +0200
+	id 1sXK2F-0005qh-5Z
+	for lore@pengutronix.de; Fri, 26 Jul 2024 14:26:59 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ukQvCvtkTSi0HBybfgDeeUfzFUjlssgKlgDP6wvlgbU=; b=qoxnP7YJsMA7PAKid8YcqEIQBH
-	+r8v4sWwVy0nwYnjVRombZw57xM44t1dv8uClaMCB2YSpjtICC9vM5v1wBWCszPQdgdv5O+20nYp6
-	oB7hy1Ee33yWURXdgh+tvwbh75rDBGaGyzq3D8OO3d99X6TLhGIs2gG+k4cvb8ONKJ4/RL97i5K8A
-	hwX6Uj1wH5AUw140UVnvSS/NWH1LMHZxus3aZuCUmaI9enImv1UiWWcFGFTIAvcs0nQXC0rNl6pJj
-	DzPrK7HglSmu+RjSLjXYenUd5pdUeESSfI6M7aB19erxeXnhCfRWuSyzeRYpthxtTbOQyV7+vv1hd
-	+Ecp6hhg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ukQvCvtkTSi0HBybfgDeeUfzFUjlssgKlgDP6wvlgbU=; b=fiZM3XB0LJOeAWyvhw9TC3tDyY
+	29eo7AcCCQyqOGFC8f9xz8W47Oy+NbFSEnJeLbt0cll5u0Yt/ygYq3M8583PNaL0fU8LRQr2kMWlP
+	u9FKBRSNU0TucI4nqca1dMHwxVXDBc2lG3yTnHVHffahQw5ZM8mbxQQTzKfqBxwqgRhoc2zGqZreB
+	utWR6G8JdHY6UXdZVSVjbotZUqIj0/x1yb7uVC858MWS6CwCs0FHXXYbJpRccpgNHypWRZq+nrqFp
+	rqzKmPZYovmQTh5GRXx8+SE3qUedlSElGoshcZtCzRcBVgYWPjB5iD/QWcVn1gg31c2lxYiZBCdj6
+	EBiyAVxQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sXJz6-00000003psi-3Xg6;
-	Fri, 26 Jul 2024 12:23:44 +0000
+	id 1sXK1l-00000003q8N-1g0J;
+	Fri, 26 Jul 2024 12:26:29 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sXJz3-00000003psG-2qKn
+	id 1sXK1i-00000003q7V-2d0k
 	for barebox@lists.infradead.org;
-	Fri, 26 Jul 2024 12:23:42 +0000
+	Fri, 26 Jul 2024 12:26:28 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sXJz2-0005CK-1F; Fri, 26 Jul 2024 14:23:40 +0200
+	id 1sXK1h-0005h4-6Y; Fri, 26 Jul 2024 14:26:25 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sXJz1-002KoA-Hb; Fri, 26 Jul 2024 14:23:39 +0200
+	id 1sXK1g-002KoZ-PI; Fri, 26 Jul 2024 14:26:24 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sXJz1-00ExtB-1R;
-	Fri, 26 Jul 2024 14:23:39 +0200
+	id 1sXK1g-00ExvY-2E;
+	Fri, 26 Jul 2024 14:26:24 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Casey Reeves <contact@xogium.me>,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 26 Jul 2024 14:23:36 +0200
-Message-Id: <20240726122336.3566793-1-a.fatoum@pengutronix.de>
+Date: Fri, 26 Jul 2024 14:26:23 +0200
+Message-Id: <20240726122623.3566935-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240726122623.3566935-1-a.fatoum@pengutronix.de>
+References: <20240726122623.3566935-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240726_052341_739202_7892A9E7 
-X-CRM114-Status: GOOD (  12.62  )
+X-CRM114-CacheID: sfid-20240726_052626_673379_2748CE89 
+X-CRM114-Status: GOOD (  13.08  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,7 +83,7 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] common: clarify help text for CONFIG_CONSOLE_ACTIVATE_* options
+Subject: [RESEND][PATCH 2/2] common: clarify help text for CONFIG_CONSOLE_ACTIVATE_* options
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
