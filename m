@@ -1,64 +1,83 @@
-Delivery-date: Fri, 26 Jul 2024 14:27:00 +0200
+Delivery-date: Sun, 28 Jul 2024 23:22:21 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sXK2G-0038xH-30
+	id 1sYBLP-003vj9-1s
 	for lore@lore.pengutronix.de;
-	Fri, 26 Jul 2024 14:27:00 +0200
+	Sun, 28 Jul 2024 23:22:21 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sXK2G-0005ro-7A
-	for lore@pengutronix.de; Fri, 26 Jul 2024 14:27:00 +0200
+	id 1sYBLO-0008Os-Sj
+	for lore@pengutronix.de; Sun, 28 Jul 2024 23:22:19 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=WtLq1YtCvLqxr1fUaEx+Ib/15QJCJ28qeMK6m2s+/8Q=; b=cLzPtmD6ZNyQl90o0gnSBpwtOp
-	OZRHtpeM1vbui7J66Ddjgq3XNfzxz1w8Dr/3QcbCLOBt2Q0IuahKjgOTBj9fR0gqCgBD12ty8WSkQ
-	Mp5Z093VO8ZzUoOxOUjWCo+LjPI/Bx92eWP810VC7SHR5wV49lN7qkXxKY+0DQ9aJiiCGXGhYpceN
-	X7GT8Z7jyAe0dRJG+r5RmFD5hgZkqd0Xwm/M+ITTLuCXd8DmMBJXPsyaD4d8O+zc4Regjb6o35EG8
-	7A2R12iG4NwtHnOZ89kOvyDFSHZjsgwCZZdiB6GXucoI9vEELlZCRVq7hH2xgBuDbDLPkI9/EouO0
-	u0lDFuBw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
+	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
+	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
+	List-Owner; bh=vkeSAih99H6TwMc2TqtZMninrh0pNixN8O3XFsXi8ss=; b=aBkOAL9JfaADbI
+	T7hd4Fa1uK1jyi+M8AxBGGXFErbElaMzs6GqpBZjTkYrC+T360Go76oWgReBhbkt6gUZVE6c/b1q1
+	EftzKiFMXz+u8QZ1MpspxkKA/nmbOh7f606A7gzlVqO3OrLTAC00OTVUY5ZXMEnU0eQxZxLwD3Xzt
+	fx+ijDMIzXr25F/ERCA7/vASbnNa/2nz3ypQzXQtPbPMEipDaUXmBHbyboS6BzS6VZwLj/JpccC5U
+	0wYrHr82rnfd82OSE8Fwg2/iIx0NK0NVU+oA7RQ251oqYVFFBXsab1PV/MCkO1AJCfSGVMcwsh8+N
+	aU0Sjn90TNH2nNY8yjQw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sXK1m-00000003q8b-40ND;
-	Fri, 26 Jul 2024 12:26:30 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1sYBKk-00000009FfX-4BAJ;
+	Sun, 28 Jul 2024 21:21:39 +0000
+Received: from mail-lf1-x133.google.com ([2a00:1450:4864:20::133])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sXK1i-00000003q7T-2dJj
+	id 1sYBHw-00000009EXb-281Y
 	for barebox@lists.infradead.org;
-	Fri, 26 Jul 2024 12:26:28 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sXK1h-0005h3-4h; Fri, 26 Jul 2024 14:26:25 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sXK1g-002KoY-Nj; Fri, 26 Jul 2024 14:26:24 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sXK1g-00ExvY-25;
-	Fri, 26 Jul 2024 14:26:24 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Sun, 28 Jul 2024 21:18:46 +0000
+Received: by mail-lf1-x133.google.com with SMTP id 2adb3069b0e04-52f01b8738dso2655561e87.1
+        for <barebox@lists.infradead.org>; Sun, 28 Jul 2024 14:18:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722201522; x=1722806322; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vkeSAih99H6TwMc2TqtZMninrh0pNixN8O3XFsXi8ss=;
+        b=CsBSbGI0oNqVMHQpIlL3z2SuEgiAirSPKoyW5OCmFz7rNW5AsRVojyMw+sH0pmwbk7
+         LZPe5/GPZPnKLebSPtx075Z0lOdna82qYbfe1bEipE+ZedOWLiARyy7DnWhTw+58vRyD
+         vf5oIOovWayrsoBRqenDZsV6ghu5IPuC2gATB3qNRBZv2O5u62UVEGoz7tNGcxmSQhyM
+         IROI0OAItj409GWhnKMnw8jsei08y2WZ+zmUpuKFLx3BjBUix9xj4svBjYHOLBxl9bgo
+         Gqw5GTqaLE+cfJuSFKyoYXVkEHWfy0qiG+4rcTO1QkBGNtJqAbJEzFKGVXIIeMC9Deoq
+         IA2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722201522; x=1722806322;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vkeSAih99H6TwMc2TqtZMninrh0pNixN8O3XFsXi8ss=;
+        b=Ch5NdX/0wjCO+osVAvmnYlBbo2MvdJmq5iECbIr0iKrMyaV9qbnJDt5YYUUZBA93+3
+         ZvGLMSOYGIJjzKug6vjs9iGTKoI+HOsPlAudCVA9f+MRSyYjz09mi6cFEcHFO0CPRGLr
+         yLIBo//PAkSv0nR/ChuMy2ZSG+6ncHbowAdrLc3LYzxhBao+i5SHItGZzEg5paTxRJhu
+         gb9yCLlgMLyJg//8cFZg/LLThsJCrKPRbqxsA6clxMkFDlMWKHWceuWOSK5p1j0KLsvT
+         sYL3f+Mp2Ej65mKgVEKjyikGZsvy9W9THCDQj+OBgTzQlDK1Pr2CVvSFqLkC4a/qt+Q4
+         sAhQ==
+X-Gm-Message-State: AOJu0YyhK1j/uenpiwiX5CbQ+pSy4rnSCkxn08KJMlkcpfjqwCFsmqVy
+	MVu2MynZi29PAuWccVKOHznGf+Yk6f7r6wrBqfk73nYO8xPYV990VggAfQ==
+X-Google-Smtp-Source: AGHT+IHWUbU5+5IyjgtGRkWsQpeIBQTv7AcAVXLQBJBJGdKkk98MsOY1lp0ozvgrvhw6hIuB3aZ50A==
+X-Received: by 2002:a05:6512:250e:b0:52c:e1e1:ae91 with SMTP id 2adb3069b0e04-5309b2696ebmr5561157e87.11.1722201521570;
+        Sun, 28 Jul 2024 14:18:41 -0700 (PDT)
+Received: from cinco.. (109-252-1-200.nat.spd-mgts.ru. [109.252.1.200])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52fd5c2d8bcsm1226648e87.283.2024.07.28.14.18.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 28 Jul 2024 14:18:41 -0700 (PDT)
+From: Antony Pavlov <antonynpavlov@gmail.com>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Fri, 26 Jul 2024 14:26:22 +0200
-Message-Id: <20240726122623.3566935-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+Date: Mon, 29 Jul 2024 00:19:29 +0300
+Message-Id: <20240728211929.91608-1-antonynpavlov@gmail.com>
+X-Mailer: git-send-email 2.39.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240726_052626_686976_8E123E12 
-X-CRM114-Status: GOOD (  18.69  )
+X-CRM114-CacheID: sfid-20240728_141844_572369_2D9DF975 
+X-CRM114-Status: UNSURE (   8.05  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -70,124 +89,102 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [RESEND][PATCH 1/2] console: add new CONSOLE_ACTIVATE_ALL_FALLBACK option
+X-Spam-Status: No, score=-4.6 required=4.0 tests=AWL,BAYES_00,
+	DKIM_ADSP_CUSTOM_MED,DKIM_SIGNED,DKIM_VALID,FREEMAIL_FORGED_FROMDOMAIN,
+	FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: [PATCH] MIPS: <asm/io.h>: use generic io accessors
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We already have three CONSOLE_ACTIVATE options and every one of them has
-drawbacks:
-
-  - ACTIVATE_ALL: May write barebox log to external devices like MCUs
-    that don't expect it
-
-  - ACTIVATE_FIRST: Not applicable for most systems that probe from
-    device tree, where the order of probe is not necessarily fixed,
-    so what console is first may change over updates
-
-  - ACTIVATE_NONE: has a misleading name and may leave the user without
-    any consoles at all if nothing else activates a console
-
-Let's add a new option and make it the default, which avoids all these
-issues: Like ACTIVATE_NONE, it expects board code, DT or environment to
-enable a console and if none of them do it falls back to activating all
-consoles, so the user isn't kept in the dark with an error instructing
-the user to fix this.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Antony Pavlov <antonynpavlov@gmail.com>
 ---
-Sent out second patch only by mistake instead of both...
----
- common/Kconfig   | 19 ++++++++++++++++++-
- common/console.c | 27 +++++++++++++++++++++++++++
- 2 files changed, 45 insertions(+), 1 deletion(-)
+ arch/mips/include/asm/io.h | 62 --------------------------------------
+ 1 file changed, 62 deletions(-)
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 31360892aeef..2dda5ce5743a 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -812,7 +812,7 @@ endchoice
- choice
- 	prompt "Console activation strategy"
- 	depends on CONSOLE_FULL
--	default CONSOLE_ACTIVATE_FIRST
-+	default CONSOLE_ACTIVATE_ALL_FALLBACK
+diff --git a/arch/mips/include/asm/io.h b/arch/mips/include/asm/io.h
+index 4584eec8ca0..bbd1c0199f8 100644
+--- a/arch/mips/include/asm/io.h
++++ b/arch/mips/include/asm/io.h
+@@ -52,68 +52,6 @@ static inline void *phys_to_virt(unsigned long address)
  
- config CONSOLE_ACTIVATE_FIRST
- 	bool
-@@ -831,6 +831,23 @@ config CONSOLE_ACTIVATE_ALL
- 	  Only the first registered console will have the full startup
- 	  log though.
+ #define	IO_SPACE_LIMIT	0
  
-+config CONSOLE_ACTIVATE_ALL_FALLBACK
-+	bool
-+	prompt "activate all consoles as fallback"
-+	help
-+	  This option is similar to CONFIG_CONSOLE_ACTIVATE_NONE in that it
-+	  leaves consoles disabled on startup. If by the end of barebox
-+	  startup, no consoles have been activated via board code, device
-+	  tree or environment, barebox will enable all registered consoles
-+	  as fallback, so the user has a chance to see output.
-+
-+	  This will be indicated by a fat error, so the user knows that
-+	  the configuration needs to be fixed. If you don't see any
-+	  output at all, consider trying again after enabling
-+	  CONFIG_CONSOLE_ACTIVATE_ALL, so consoles are activated immediately
-+	  at registration time and/or with CONFIG_DEBUG_LL, so barebox output
-+	  is written even before console drivers were registered.
-+
- config CONSOLE_ACTIVATE_NONE
- 	prompt "leave all consoles disabled"
- 	bool
-diff --git a/common/console.c b/common/console.c
-index 73b4c4d4db01..e83a3e1e2d7f 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -450,6 +450,33 @@ int console_unregister(struct console_device *cdev)
- }
- EXPORT_SYMBOL(console_unregister);
- 
-+static int console_activate_all_fallback(void)
-+{
-+	int activate = CONSOLE_STDIOE;
-+	struct console_device *cdev;
-+
-+	for_each_console(cdev) {
-+		if (cdev->f_active & (CONSOLE_STDOUT | CONSOLE_STDERR))
-+			return 0;
-+	}
-+
-+	if (IS_ENABLED(CONFIG_CONSOLE_DISABLE_INPUT))
-+		activate &= ~CONSOLE_STDIN;
-+
-+	for_each_console(cdev)
-+		console_set_active(cdev, activate);
-+
-+	/*
-+	 * This is last resort, so the user is not kept in the dark.
-+	 * Writing to all consoles is a bad idea as the devices at the
-+	 * other side might get confused by it, thus the error log level.
-+	 */
-+	pr_err("No consoles were activated. Activating all consoles as fallback!\n");
-+
-+	return 0;
-+}
-+postenvironment_initcall(console_activate_all_fallback);
-+
- static int getc_raw(void)
- {
- 	struct console_device *cdev;
+-/*****************************************************************************/
+-/*
+- * readX/writeX() are used to access memory mapped devices. On some
+- * architectures the memory mapped IO stuff needs to be accessed
+- * differently. On the simple architectures, we just read/write the
+- * memory location directly.
+- */
+-#ifndef __raw_readb
+-static inline u8 __raw_readb(const volatile void __iomem *addr)
+-{
+-	return *(const volatile u8 __force *) addr;
+-}
+-#endif
+-
+-#ifndef __raw_readw
+-static inline u16 __raw_readw(const volatile void __iomem *addr)
+-{
+-	return *(const volatile u16 __force *) addr;
+-}
+-#endif
+-
+-#ifndef __raw_readl
+-static inline u32 __raw_readl(const volatile void __iomem *addr)
+-{
+-	return *(const volatile u32 __force *) addr;
+-}
+-#endif
+-
+-#define readb __raw_readb
+-#define readw(addr) __le16_to_cpu(__raw_readw(addr))
+-#define readl(addr) __le32_to_cpu(__raw_readl(addr))
+-
+-#ifndef __raw_writeb
+-static inline void __raw_writeb(u8 b, volatile void __iomem *addr)
+-{
+-	*(volatile u8 __force *) addr = b;
+-}
+-#endif
+-
+-#ifndef __raw_writew
+-static inline void __raw_writew(u16 b, volatile void __iomem *addr)
+-{
+-	*(volatile u16 __force *) addr = b;
+-}
+-#endif
+-
+-#ifndef __raw_writel
+-static inline void __raw_writel(u32 b, volatile void __iomem *addr)
+-{
+-	*(volatile u32 __force *) addr = b;
+-}
+-#endif
+-
+-#define writeb __raw_writeb
+-#define writew(b,addr) __raw_writew(__cpu_to_le16(b),addr)
+-#define writel(b,addr) __raw_writel(__cpu_to_le32(b),addr)
+-
+-#define in_be16(a)	__be16_to_cpu(__raw_readw(a))
+-#define in_be32(a)	__be32_to_cpu(__raw_readl(a))
+-#define out_be16(a, v)	__raw_writew(__cpu_to_be16(v), a)
+-#define out_be32(a, v)	__raw_writel(__cpu_to_be32(v), a)
+-
+ #ifdef CONFIG_64BIT
+ #define IOMEM(addr)	((void __force __iomem *)PHYS_TO_XKSEG_UNCACHED(addr))
+ #else
 -- 
-2.39.2
+2.39.0
 
 
 
