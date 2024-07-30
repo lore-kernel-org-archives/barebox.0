@@ -1,66 +1,67 @@
-Delivery-date: Tue, 30 Jul 2024 12:18:25 +0200
+Delivery-date: Tue, 30 Jul 2024 12:18:26 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYjw1-004Qn0-0q
+	id 1sYjw2-004QnL-2T
 	for lore@lore.pengutronix.de;
-	Tue, 30 Jul 2024 12:18:25 +0200
+	Tue, 30 Jul 2024 12:18:26 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYjw0-0000Cp-MJ
-	for lore@pengutronix.de; Tue, 30 Jul 2024 12:18:25 +0200
+	id 1sYjw2-0000DC-6p
+	for lore@pengutronix.de; Tue, 30 Jul 2024 12:18:26 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZdzWPzNN1ktnLUeX4fDnTNEeLqHTmGI+Hbbd1ekUR2c=; b=YQb3Cz6yYVqgbsuDg2CARZrKRR
-	qe8jJxqnwy2mhikpoGyADSGFAoMvg3eoeJNNdbHQOWujpnYGjQl6YaoavuCOA1S2+LHzQ6sACzna7
-	K9BlAAoMmZL4MxP0qFWtjJuzY4lBi0choYG3pwJx5f5kWXXZWlHkRJTkBJ9bf6GCxk3ZBp6DvWuKf
-	U2hRD4UFe2vvcbOmdAN/qygdw9K+lZT2dha747XnO357XqOu+2yhcvQpD7paDCdX5EFpYwO4/8J3B
-	CB5lGKJXrO7qqMvoucgCKOKG4CeB5LUvp8CiJ+mHRQuxGWbkjrFPPRGD5bLSDH6SS8V0TwpxHnT74
-	qQLvXkeQ==;
+	bh=HrS8W7i11FFA3H7chczvqKJmUYCqYLw3T18KS6ttsfo=; b=vY+3hAWZucXD09+oqNPK6km1dE
+	P06GdRPN9OFCoh2v4JSu0C7uF2g/jsn1vowCcpWugKpaqfxxrjEaihhtWwr6PphlOEpuR4OM6aIBQ
+	PStwbqEFlssBS4aBq8hfag0owEXCuVq8j/2X1NnYcWfywBg1Mh0mHtMcLZNgpIuJn7HURgiIJ6gAe
+	1+FAo3cvCbQBHSzzAe4OWTN45BVnjJ51q/EUHbt+z9C5f/0O1xWOQ179o3e9B/ZxlfmdOUWkQRV52
+	69DZbkZs9JxLjYGg2UBizPFBbwzrZigGmctXPw55Y865/2KFsatI0qWH9kXFWMPeJl+FfR1ln9sk4
+	czXWY44g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYjvV-0000000EgkK-2MNH;
+	id 1sYjvV-0000000EgkD-0KAY;
 	Tue, 30 Jul 2024 10:17:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYjvR-0000000Egir-0e10
+	id 1sYjvR-0000000Egiq-0dtL
 	for barebox@lists.infradead.org;
 	Tue, 30 Jul 2024 10:17:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sYjvO-0008UF-R2; Tue, 30 Jul 2024 12:17:46 +0200
+	id 1sYjvP-0008UE-0i; Tue, 30 Jul 2024 12:17:47 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sYjvO-003GCq-Cj; Tue, 30 Jul 2024 12:17:46 +0200
+	id 1sYjvO-003GCp-Cf; Tue, 30 Jul 2024 12:17:46 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sYjvO-009yjq-12;
+	id 1sYjvO-009yjq-10;
 	Tue, 30 Jul 2024 12:17:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240730083451.2203330-1-a.fatoum@pengutronix.de>
-References: <20240730083451.2203330-1-a.fatoum@pengutronix.de>
-Message-Id: <172233466631.2378343.8900994932274321429.b4-ty@pengutronix.de>
+Cc: Casey Reeves <contact@xogium.me>
+In-Reply-To: <20240726122336.3566793-1-a.fatoum@pengutronix.de>
+References: <20240726122336.3566793-1-a.fatoum@pengutronix.de>
+Message-Id: <172233466630.2378343.9269871474677367773.b4-ty@pengutronix.de>
 Date: Tue, 30 Jul 2024 12:17:46 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240730_031749_231898_9165AFF7 
-X-CRM114-Status: UNSURE (   8.81  )
+X-CRM114-CacheID: sfid-20240730_031749_231475_3D0C5071 
+X-CRM114-Status: UNSURE (   7.19  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,30 +84,26 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 1/2] console: add new CONSOLE_ACTIVATE_ALL_FALLBACK
- option
+Subject: Re: [PATCH] common: clarify help text for
+ CONFIG_CONSOLE_ACTIVATE_* options
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 30 Jul 2024 10:34:50 +0200, Ahmad Fatoum wrote:
-> We already have three CONSOLE_ACTIVATE options and every one of them has
-> drawbacks:
+On Fri, 26 Jul 2024 14:23:36 +0200, Ahmad Fatoum wrote:
+> CONFIG_CONSOLE_ACTIVATE_NONE is an unfortunate name. The help text
+> explains how consoles are still activated, but omits the main way they
+> are activated: The device tree's /chosen/stdout-path property.
 > 
->   - ACTIVATE_ALL: May write barebox log to external devices like MCUs
->     that don't expect it
-> 
->   - ACTIVATE_FIRST: Not applicable for most systems that probe from
->     device tree, where the order of probe is not necessarily fixed,
->     so what console is first may change over updates
+> Similarly, CONFIG_CONSOLE_ACTIVATE_(FIRST/NONE) don't talk about the
+> implications of selecting them, so reword the help texts to better
+> inform the user.
 > 
 > [...]
 
 Applied, thanks!
 
-[1/2] console: add new CONSOLE_ACTIVATE_ALL_FALLBACK option
-      https://git.pengutronix.de/cgit/barebox/commit/?id=6b01a6c7d14d (link may not be stable)
-[2/2] common: clarify help text for CONFIG_CONSOLE_ACTIVATE_* options
+[1/1] common: clarify help text for CONFIG_CONSOLE_ACTIVATE_* options
       https://git.pengutronix.de/cgit/barebox/commit/?id=eb00dd84d698 (link may not be stable)
 
 Best regards,
