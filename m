@@ -1,59 +1,72 @@
-Delivery-date: Tue, 30 Jul 2024 13:19:31 +0200
+Delivery-date: Tue, 30 Jul 2024 13:22:20 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYkt9-004Rgj-0s
+	id 1sYkvs-004Rlw-31
 	for lore@lore.pengutronix.de;
-	Tue, 30 Jul 2024 13:19:31 +0200
+	Tue, 30 Jul 2024 13:22:20 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYkt8-0004iU-33
-	for lore@pengutronix.de; Tue, 30 Jul 2024 13:19:31 +0200
+	id 1sYkvs-0004tv-9o
+	for lore@pengutronix.de; Tue, 30 Jul 2024 13:22:20 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=vBl0A8PilugADzUOWk+vxMV9P8lLKPaZ9KD2FIVqPRY=; b=lJQ3ajYUq3T2eAaTXboT9ovjJ8
-	OvpfD18qsU5kc/7DNCpYad4EzY8Ni10D5Mc/Z1BBqgOIIrbgGubH/iOirQLdEJvxXVNCQKuqV8n+i
-	Ju9YofxYpYxV3BM+wc8OdqRCsQnfaw+FYjPrgPZV45ln9+8CZfw5I3FwAuU6AJ871t54uauI0QkHu
-	mADTrxXYZuBFl0nx4jv5Ika0HyxKwH11sBxg24cU6rGACzE52BpPiLn67q8UwgKtzs1OjEw5ViZTI
-	Bip9qL/UROs/Y4MY5isItNOap8FnfqqqqrV+hoHRZQVnSAGzySTmOcH6h+l1tmxfcRyPbzIsHnyQB
-	4q/uhzZw==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=8PiRG7MTQgaXOrj8t7NkLzYN+yI7g2iPLpiRItcbwoM=; b=H7OcDV6a/YjNGZcovINGXtkFMN
+	TER90gkGIeFSCNR/YQNbbqhSXmkCMP5cqI/PsaCBhncUfK0GGR/SWwEaRZ8/OrHortskTHbuZNHFx
+	s5V8w2wQkPfd1iOF5xWcuGw6u4EA3dGEliqNA8/ylL18Gw2NStSqrAYHG7Zk67S4amudW1dowaknT
+	0NxTMhSiZjChP1xsDO4MQlRcQE21QjBDWlIPqRlOGi2d8bWuGGzQghRQTtL1fL3D1CAIiJwEoJSih
+	nljzmlwy1lKwMw73xzUaYAfPcfqNOnSVs/lS6bT4TbaSs7Jco+CJCK6RrLmraKyb6I7oLCt+x4Y1S
+	ZrRixDAA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYksa-0000000Erxq-3P4Z;
-	Tue, 30 Jul 2024 11:18:56 +0000
+	id 1sYkvM-0000000EsJb-3Myg;
+	Tue, 30 Jul 2024 11:21:48 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYkqq-0000000ErTl-2mHK
+	id 1sYkvK-0000000EsJ5-0Ifl
 	for barebox@lists.infradead.org;
-	Tue, 30 Jul 2024 11:17:11 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYkqp-0004UB-Bx; Tue, 30 Jul 2024 13:17:07 +0200
-Message-ID: <7f0e6122-2a6f-4d88-88f6-17abebc4595a@pengutronix.de>
-Date: Tue, 30 Jul 2024 13:17:07 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>
+	Tue, 30 Jul 2024 11:21:47 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sYkvI-0004qB-CI; Tue, 30 Jul 2024 13:21:44 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sYkvH-003GrN-VU; Tue, 30 Jul 2024 13:21:43 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sYkvH-0097Vq-2r;
+	Tue, 30 Jul 2024 13:21:43 +0200
+Date: Tue, 30 Jul 2024 13:21:43 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Cc: barebox@lists.infradead.org
+Message-ID: <ZqjMx1xWl1toOM59@pengutronix.de>
 References: <20240730071929.2016537-1-a.fatoum@pengutronix.de>
- <20240730071929.2016537-8-a.fatoum@pengutronix.de>
- <Zqi6zHop6xz7jMvo@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Zqi6zHop6xz7jMvo@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+ <20240730071929.2016537-4-a.fatoum@pengutronix.de>
+ <Zqiqn66-dv3m_MOB@pengutronix.de>
+ <fed9e44d-dc12-483c-ac02-7e63e2190b72@pengutronix.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fed9e44d-dc12-483c-ac02-7e63e2190b72@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240730_041709_771399_11E6311B 
-X-CRM114-Status: GOOD (  29.21  )
+X-CRM114-CacheID: sfid-20240730_042146_132523_FC3D7638 
+X-CRM114-Status: GOOD (  26.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,124 +88,62 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 07/10] mci: add support for discarding write blocks
+Subject: Re: [PATCH 03/10] block: allow block devices to implement the cdev
+ erase operation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 30.07.24 12:05, Sascha Hauer wrote:
-> On Tue, Jul 30, 2024 at 09:19:26AM +0200, Ahmad Fatoum wrote:
-
->> +	__be32 *ssr;
->> +	int err;
->> +	unsigned int au, eo, et, es;
->> +
->> +	if (!IS_ENABLED(CONFIG_MCI_ERASE))
->> +		return -ENOSYS;
+On Tue, Jul 30, 2024 at 01:10:05PM +0200, Ahmad Fatoum wrote:
+> On 30.07.24 10:55, Sascha Hauer wrote:
+> > On Tue, Jul 30, 2024 at 09:19:22AM +0200, Ahmad Fatoum wrote:
+> >> We mainly implement cdev erase for raw flashes. Many block devices, like
+> >> NVMe, SSD or SD/MMC are also flash-based and expose a mechanism or
+> >> multiple to trigger an erase on hardware or flash translation layer
+> >> level without an accompanied write.
+> >>
+> >> To make it possible to use this functionality elsewhere in barebox,
+> >> let's have the common block device layer pass through the erase
+> >> operation, so it may be implemented in a device-specific manner.
+> >>
+> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> >> ---
+> >>  common/block.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
+> >>  include/block.h |  1 +
+> >>  2 files changed, 44 insertions(+)
+> >>
+> >> diff --git a/common/block.c b/common/block.c
+> >> index f55da775a797..b43fcbe6927b 100644
+> >> --- a/common/block.c
+> >> +++ b/common/block.c
+> >> @@ -380,10 +380,45 @@ static int block_op_discard_range(struct cdev *cdev, loff_t count, loff_t offset
+> >>  	return 0;
+> >>  }
+> >>  
+> >> +static bool region_overlap(loff_t starta, loff_t lena,
+> >> +                           loff_t startb, loff_t lenb)
+> >> +{
+> >> +        if (starta + lena <= startb)
+> >> +                return 0;
+> >> +        if (startb + lenb <= starta)
+> >> +                return 0;
+> >> +        return 1;
+> >> +}
+> > 
+> > We already have this function in fs/devfs-core.c. Time to export it?
 > 
-> I think we settled on using -EOPNOTSUPP in this case.
-
-I like -ENOSYS, because it indicates that supper is merely missing instead of not
-being available in the first place.
-
->> +	if (mci->can_trim) {
->> +		arg = MMC_TRIM_ARG;
->> +	} else {
->> +		/* We don't use discard, as it doesn't guarantee a fixed value */
->> +		arg = MMC_ERASE_ARG;
->> +		blkcnt = mmc_align_erase_size(mci, &from, &to, blkcnt);
->> +	}
->> +
->> +	if (blkcnt == 0)
->> +		return 0;
->> +
->> +	if (to <= from)
->> +		return -EINVAL;
+> This used to be exported, but the export was removed in commit
+> 04e2aa516ed5 ("common.h: move and rename lregion_overlap()").
 > 
-> When mmc_align_erase_size() is not called then we cannot arrive here
-> as we already returned in the if (blkcnt == 0) check above.
-> When mmc_align_erase_size() is called and this test triggers then it
-> only reveals a bug in mmc_align_erase_size().
-> 
-> I think this test should go away.
+> I can add it back if you prefer.
 
+I think now that we have two users it makes sense to add it back.
 
-
->> +	while (i < blkcnt) {
->> +		sector_t blk_r;
->> +
->> +		/* TODO: While it's possible to clear many erase groups at once
->> +		 * and it greatly improves throughput, drivers need adjustment:
->> +		 *
->> +		 * Many drivers hardcode a maximal wait time before aborting
->> +		 * the wait for R1b and returning -ETIMEDOUT. With long
->> +		 * erases/trims, we are bound to run into this timeout, so for now
->> +		 * we just split into suifficiently small erases that are unlikely
->> +		 * to trigger the time.
->> +		 *
->> +		 * What Linux does and what we should be doing in barebox is:
->> +		 *
->> +		 *  - add a struct mci_cmd::busy_timeout member that drivers should
->> +		 *    use instead of hardcoding their own timeout delay. The busy
->> +		 *    timeout length can be calculated by the MCI core after
->> +		 *    consulting the appropriate CSD/EXT_CSD/SSR registers.
->> +		 *
->> +		 *  - add a struct mci_host::max_busy_timeout member, where drivers
->> +		 *    can indicate the maximum timeout they are able to support.
->> +		 *    The MCI core will never set a busy_timeout that exceeds this
->> +		 *    value.
->> +		 *
->> +		 *  Example Samsung eMMC 8GTF4:
->> +		 *
->> +		 *    time erase /dev/mmc2.part_of_512m # 1024 trims
->> +		 *    time: 2849ms
->> +		 *
->> +		 *    time erase /dev/mmc2.part_of_512m # single trim
->> +		 *    time: 56ms
->> +		 */
->> +
->> +		if (IS_SD(mci) && mci->ssr.au) {
->> +			blk_r = ((blkcnt - i) > mci->ssr.au) ?
->> +				mci->ssr.au : (blkcnt - i);
->> +		} else {
->> +			blk_r = ((blkcnt - i) > mci->erase_grp_size) ?
->> +				mci->erase_grp_size : (blkcnt - i);
->> +		}
->> +
->> +		rc =  mci_block_erase(mci, from, to, arg);
-> 
-> You say you split up the whole erase into sufficiently small erases, but
-> 'from' and 'to' are never changed in this loop and you seem to erase
-> the whole area multiple times.
-
-
-Ouch. Will revisit.
-
-Thanks,
-Ahmad
-
-> 
->> +		if (rc)
->> +			break;
->> +
->> +		/* Waiting for the ready status */
->> +		rc = mci_poll_until_ready(mci, 1000 /* ms */);
->> +		if (rc)
->> +			break;
->> +
->> +		i += blk_r;
->> +	}
->> +
->> +	return i == blkcnt ? 0 : rc;
->> +}
-> 
-> Sascha
-> 
+Sascha
 
 -- 
 Pengutronix e.K.                           |                             |
 Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
 Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
-
 
 
