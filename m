@@ -1,59 +1,58 @@
-Delivery-date: Tue, 30 Jul 2024 10:36:00 +0200
+Delivery-date: Tue, 30 Jul 2024 10:36:07 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYiKu-004PGx-1T
+	id 1sYiL1-004PHP-2d
 	for lore@lore.pengutronix.de;
-	Tue, 30 Jul 2024 10:36:00 +0200
+	Tue, 30 Jul 2024 10:36:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYiKt-0007Ne-NY
-	for lore@pengutronix.de; Tue, 30 Jul 2024 10:36:00 +0200
+	id 1sYiL0-0007PR-RB
+	for lore@pengutronix.de; Tue, 30 Jul 2024 10:36:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:Content-Type:In-Reply-To:From:References:To:Subject
-	:MIME-Version:Date:Message-ID:Reply-To:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=5ZSpd25swx96JFbH/c2tbFEEqu/nAQZMBMVVb16yFnM=; b=itlWfKX9H8effg
-	SIvr2dDPL4YEvaVfy9BSt20UfGq4yszg1/ZmrI20pLqy/ad01pWBtFim9TM8X53EEp3tyR1QjlnJc
-	F9CjAHu5MY41Vnteu7KsM4b/4yPNVRLE7Nn8qcNHObKohgbFZDYxCmyg3KSbxsQSVHvSwxGD558MD
-	iTdqT1z5S/RDXul9IDW2w+VBNw1qWH6ShXuPOAhkQ4jXOMP2VtCowEdc0PdrFPUvVFMbbLv+v7QEl
-	PlYQxLFtwxMWYawW2L5Jh9auZu56ifPz2VLUvmVKwGw9BuJcM43UAzraO8hYr41ylHt3TeXonwXig
-	qk9kqPfukrfz3PdgguFQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=4FrAqvcqQRCaQHzsLcd2RFOxEVza72R9rq6whTLYH3g=; b=OUioW0rIeo37vcVkEjhsMggTZn
+	93v0RafaMPxXDKNqg0lVQYLV5CHXrRv2cPeX65cYT9cBx6WpR/0zrPA6QYPoJasCwa3dDMbF2ZTlr
+	o/40Styi8KesLPfiSpocKPOuH+sPP+/mxzU+3huWU739kifh1ftp54/ND1aCnVpxNDw6SShuazr2d
+	ddy35oA+PhMr1+sgWVHDeHfzTLyElXaaujUMB5wRqfOmLiY+RPzE8kLzT6AaRtKWdjAqV/kV3+3Q/
+	ymYAWOMEtofmVyEQHSeQeOyPwv5nuZglF7Wmhpjt1K+LpsZIMAzvPYzrDDlz1FCBv83d3FfC3+DBl
+	lusY6W/w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYiKM-0000000EJ0g-2nc7;
-	Tue, 30 Jul 2024 08:35:26 +0000
+	id 1sYiKX-0000000EJ4K-1Y7k;
+	Tue, 30 Jul 2024 08:35:37 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYiD0-0000000EFW5-32zs
+	id 1sYiIO-0000000EI9w-0lTk
 	for barebox@lists.infradead.org;
-	Tue, 30 Jul 2024 08:27:52 +0000
+	Tue, 30 Jul 2024 08:33:25 +0000
 Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
 	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYiCz-000621-BK; Tue, 30 Jul 2024 10:27:49 +0200
-Message-ID: <e67592fa-1d95-47ed-ad28-5d4538ae8b04@pengutronix.de>
-Date: Tue, 30 Jul 2024 10:27:47 +0200
+	id 1sYiIM-00073Z-UD; Tue, 30 Jul 2024 10:33:22 +0200
+Message-ID: <82cad5a3-4218-4c08-a419-2f492bf3734b@pengutronix.de>
+Date: Tue, 30 Jul 2024 10:33:22 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-To: Marco Felsch <m.felsch@pengutronix.de>
-References: <20240703-v2024-05-0-topic-hab-v2-0-17419aa5d3a3@pengutronix.de>
- <20240703-v2024-05-0-topic-hab-v2-7-17419aa5d3a3@pengutronix.de>
- <38177bf4-4a0e-4765-881e-8404370bfdd5@pengutronix.de>
- <20240704081526.ksuml42balhx4jym@pengutronix.de>
+To: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: barebox@lists.infradead.org
+References: <20240726122623.3566935-1-a.fatoum@pengutronix.de>
+ <ZqiftuMEQnAPH0gi@pengutronix.de>
 Content-Language: en-US, de-DE, de-BE
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240704081526.ksuml42balhx4jym@pengutronix.de>
+In-Reply-To: <ZqiftuMEQnAPH0gi@pengutronix.de>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240730_012750_811710_DD0B9E68 
-X-CRM114-Status: GOOD (  24.46  )
+X-CRM114-CacheID: sfid-20240730_013324_275460_AE8EAAC1 
+X-CRM114-Status: GOOD (  23.89  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -65,7 +64,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: BAREBOX <barebox@lists.infradead.org>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -76,118 +74,121 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v2 7/9] i.MX8M: HABv4: add an option to allow key
- revocation
+Subject: Re: [RESEND][PATCH 1/2] console: add new
+ CONSOLE_ACTIVATE_ALL_FALLBACK option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Marco,
 
-On 7/4/24 10:15, Marco Felsch wrote:
-> Hi Ahmad,
-> 
-> On 24-07-03, Ahmad Fatoum wrote:
->> Hello Marco,
->>
->> On 03.07.24 19:20, Marco Felsch wrote:
->>> The HAB code needs an special [Unlock] instruction to keep the
->>> SRK_REVOKE fuse bank unlocked. This is required if a key needs to be
->>> revoked.
->>>
->>> Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
->>> ---
->>>  arch/arm/mach-imx/Kconfig            | 8 ++++++++
->>>  include/mach/imx/habv4-imx8-gencsf.h | 6 ++++++
->>>  2 files changed, 14 insertions(+)
->>>
->>> diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
->>> index 61258137736f..68f55971506b 100644
->>> --- a/arch/arm/mach-imx/Kconfig
->>> +++ b/arch/arm/mach-imx/Kconfig
->>> @@ -835,6 +835,14 @@ config HABV4_QSPI
->>>  	help
->>>  	  Enable this option to build signed QSPI/FlexSPI images.
->>>  
->>> +config HABV4_CSF_UNLOCK_SRK_REVOKE
->>> +	depends on HABV4
->>> +	bool "Unlock SRK revocation"
->>> +	help
->>> +	  Enable this option to instruct the HAB code to not lock
->>> +	  the SRK_REVOKE_LOCK sticky bit. This is required for key
->>> +	  revocation. Don't enable this if you are unsure.
->>
->> I think for added safety we should have an extra option that prompts
->> for the key to be revoked and an initcall that is activated depending
->> on it, e.g.:
->>
->> config HABV4_CSF_SRK_REVOKE_INDEX
->>         int "SRK to revoke"
->>         range 0 3
->>         default 0
->>         depends on HABV4_CSF_SRK_REVOKE_UNLOCK
->>         help
->>           Which of the first three SRKs to revoke. The SRK indices are
->>           1-based. Saying 0 here will just print the SRK Revocation
->>           register without modification. SRK #4 is immutable.
->>                                                                        
->>           Proceed with caution, revoking a SRK is irreversible and
->>           manual manipulation of this code can brick the board!
->>                                                                        
->> if HABV4_CSF_SRK_REVOKE_INDEX = HABV4_SRK_INDEX
->> comment "Can't revoke same SRK used for signing"
->> comment "Attempts to build a signed barebox image will fail"
->> endif
->>
->> and then some code that checks the same above condition during final
->> assembly of the signed image.
->>
->> What do you think?
-> 
-> That's an good idea to make it more user-friendly for most users :)
-> Regarding this patchset I do see it more as an addition since for my
-> project the revocation is checked on every startup and we do allow the
-> revocation of multiple SRK slots at the same time.
 
-Ok. I just have a single nit then, can you rename
-HABV4_CSF_UNLOCK_SRK_REVOKE to HABV4_CSF_SRK_REVOKE_UNLOCK, so we can
-add HABV4_CSF_SRK_REVOKE_INDEX in future with the same prefix?
+On 7/30/24 10:09, Sascha Hauer wrote:
+> On Fri, Jul 26, 2024 at 02:26:22PM +0200, Ahmad Fatoum wrote:
+>> We already have three CONSOLE_ACTIVATE options and every one of them has
+>> drawbacks:
+>>
+>>   - ACTIVATE_ALL: May write barebox log to external devices like MCUs
+>>     that don't expect it
+>>
+>>   - ACTIVATE_FIRST: Not applicable for most systems that probe from
+>>     device tree, where the order of probe is not necessarily fixed,
+>>     so what console is first may change over updates
+>>
+>>   - ACTIVATE_NONE: has a misleading name and may leave the user without
+>>     any consoles at all if nothing else activates a console
+>>
+>> Let's add a new option and make it the default, which avoids all these
+>> issues: Like ACTIVATE_NONE, it expects board code, DT or environment to
+>> enable a console and if none of them do it falls back to activating all
+>> consoles, so the user isn't kept in the dark with an error instructing
+>> the user to fix this.
+>>
+>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+>> ---
+>> Sent out second patch only by mistake instead of both...
+>> ---
+>>  common/Kconfig   | 19 ++++++++++++++++++-
+>>  common/console.c | 27 +++++++++++++++++++++++++++
+>>  2 files changed, 45 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/common/Kconfig b/common/Kconfig
+>> index 31360892aeef..2dda5ce5743a 100644
+>> --- a/common/Kconfig
+>> +++ b/common/Kconfig
+>> @@ -812,7 +812,7 @@ endchoice
+>>  choice
+>>  	prompt "Console activation strategy"
+>>  	depends on CONSOLE_FULL
+>> -	default CONSOLE_ACTIVATE_FIRST
+>> +	default CONSOLE_ACTIVATE_ALL_FALLBACK
+>>  
+>>  config CONSOLE_ACTIVATE_FIRST
+>>  	bool
+>> @@ -831,6 +831,23 @@ config CONSOLE_ACTIVATE_ALL
+>>  	  Only the first registered console will have the full startup
+>>  	  log though.
+>>  
+>> +config CONSOLE_ACTIVATE_ALL_FALLBACK
+>> +	bool
+>> +	prompt "activate all consoles as fallback"
+>> +	help
+>> +	  This option is similar to CONFIG_CONSOLE_ACTIVATE_NONE in that it
+>> +	  leaves consoles disabled on startup. If by the end of barebox
+>> +	  startup, no consoles have been activated via board code, device
+>> +	  tree or environment, barebox will enable all registered consoles
+>> +	  as fallback, so the user has a chance to see output.
+>> +
+>> +	  This will be indicated by a fat error, so the user knows that
+>> +	  the configuration needs to be fixed. If you don't see any
+>> +	  output at all, consider trying again after enabling
+>> +	  CONFIG_CONSOLE_ACTIVATE_ALL, so consoles are activated immediately
+>> +	  at registration time and/or with CONFIG_DEBUG_LL, so barebox output
+>> +	  is written even before console drivers were registered.
+>> +
+>>  config CONSOLE_ACTIVATE_NONE
+>>  	prompt "leave all consoles disabled"
+>>  	bool
+>> diff --git a/common/console.c b/common/console.c
+>> index 73b4c4d4db01..e83a3e1e2d7f 100644
+>> --- a/common/console.c
+>> +++ b/common/console.c
+>> @@ -450,6 +450,33 @@ int console_unregister(struct console_device *cdev)
+>>  }
+>>  EXPORT_SYMBOL(console_unregister);
+>>  
+>> +static int console_activate_all_fallback(void)
+>> +{
+>> +	int activate = CONSOLE_STDIOE;
+>> +	struct console_device *cdev;
+>> +
+>> +	for_each_console(cdev) {
+>> +		if (cdev->f_active & (CONSOLE_STDOUT | CONSOLE_STDERR))
+>> +			return 0;
+>> +	}
+>> +
+>> +	if (IS_ENABLED(CONFIG_CONSOLE_DISABLE_INPUT))
+>> +		activate &= ~CONSOLE_STDIN;
+>> +
+>> +	for_each_console(cdev)
+>> +		console_set_active(cdev, activate);
+>> +
+>> +	/*
+>> +	 * This is last resort, so the user is not kept in the dark.
+>> +	 * Writing to all consoles is a bad idea as the devices at the
+>> +	 * other side might get confused by it, thus the error log level.
+>> +	 */
+>> +	pr_err("No consoles were activated. Activating all consoles as fallback!\n");
+>> +
+>> +	return 0;
+>> +}
+>> +postenvironment_initcall(console_activate_all_fallback);
+> 
+> Shouldn't this code only run when CONSOLE_ACTIVATE_ALL_FALLBACK is
+> enabled?
 
-Thanks,
-Ahmad
+Of course, sorry about that. Just sent out v3.
 
 > 
-> Regards,
->   Marco
-> 
->>>  config HAB_CERTS_ENV
->>>  	depends on HAB
->>>  	bool "Specify certificates in environment"
->>> diff --git a/include/mach/imx/habv4-imx8-gencsf.h b/include/mach/imx/habv4-imx8-gencsf.h
->>> index 5f92ceceab00..56d9ef2de92f 100644
->>> --- a/include/mach/imx/habv4-imx8-gencsf.h
->>> +++ b/include/mach/imx/habv4-imx8-gencsf.h
->>> @@ -36,6 +36,12 @@ hab [Unlock]
->>>  hab Engine = CAAM
->>>  hab Features = RNG, MID
->>>  
->>> +#if defined(CONFIG_HABV4_CSF_UNLOCK_SRK_REVOKE)
->>> +hab [Unlock]
->>> +hab Engine = OCOTP
->>> +hab Features = SRK REVOKE
->>> +#endif
->>> +
->>>  hab [Install Key]
->>>  /* verification key index in key store (0, 2...4) */
->>>  hab Verification index = 0
->>>
->>
->> -- 
->> Pengutronix e.K.                           |                             |
->> Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
->> 31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
->> Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
->>
->>
+> Sascha
 > 
 
 
