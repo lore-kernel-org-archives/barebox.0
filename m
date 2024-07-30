@@ -1,66 +1,67 @@
-Delivery-date: Tue, 30 Jul 2024 09:53:16 +0200
+Delivery-date: Tue, 30 Jul 2024 09:54:05 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYhfY-004OaA-10
+	id 1sYhgL-004Oak-10
 	for lore@lore.pengutronix.de;
-	Tue, 30 Jul 2024 09:53:16 +0200
+	Tue, 30 Jul 2024 09:54:05 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYhfX-0001oL-K2
-	for lore@pengutronix.de; Tue, 30 Jul 2024 09:53:16 +0200
+	id 1sYhgK-0001wN-OE
+	for lore@pengutronix.de; Tue, 30 Jul 2024 09:54:05 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=RLMItaLy7kVfboINlDng5I9O3pLJwPhKN5ONjrx9O+0=; b=lG7pJlJL1bI5POimJwmuckCKUT
-	cqGtr99XqQzoi9B8IznDGA21T5fr8clp2lVRUWxMWR+/A8R6C1izbgptNAdYycKOwWyrflP+LjUrg
-	7B1RVOgbO3W/BHm4BdeNPWKZenFRnorf3EmU1qM2IEGff56SAintN9561SXt3MXm1B6uTpI6WLe8U
-	RUBm+ttFMA32rmhNPfpAKo7igI/bcEM6/bxKDLblCpOOBZLBqa33goqkBzJN0ZgTYpIe5jrdRjPWs
-	fqVfzviCfyCd2lpL4bBxV/UaOnVoTAZJNku/7doq1EKP/vq2BmIGlySqytfBvasJq8QqdfNvPzxGg
-	3ATqeIog==;
+	bh=zHF9/WuXwnjoGJxNUb09kTi12UIMpsMWyVdZsu8z3mM=; b=u0tGaGbzKOGqUOVMJrtevQeu5N
+	fGK+DjVI8LxnfTO1MBzwXtvKqDAAOfFzWQpcJ0UiExDY3rh+ja2nZVmbJ0TRUS2Q8n3ui7z9BGNGL
+	CX6T/h2TQjIpi82Rj8NeLsEHsXvuC+xYFLJHrG1YedrMXn7R0w3tO+u0xszlmauFk/AklPVmTUP4c
+	2vFw4JfL7zhCpO++Tck+uNKHcWcF4CG+EOcikWwmqCE5aBTRyF+NR1JFVZp3fM4rrZmqjMBRbYCPl
+	oK774+PXzYgbFi1lpCEqKNEERfZbN9TvDKkJIYnqtsLeODcSu8/1uEjmT90m0bWdo8EBP+ivIVO9K
+	zqwyHA4A==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYhf7-0000000E764-05PF;
-	Tue, 30 Jul 2024 07:52:49 +0000
+	id 1sYhfr-0000000E7Ru-0T64;
+	Tue, 30 Jul 2024 07:53:35 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYhec-0000000E6s4-49ef
+	id 1sYhfo-0000000E7RF-0lsT
 	for barebox@lists.infradead.org;
-	Tue, 30 Jul 2024 07:52:20 +0000
+	Tue, 30 Jul 2024 07:53:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sYheb-0001e2-Ez; Tue, 30 Jul 2024 09:52:17 +0200
+	id 1sYhfm-0001rl-Gk; Tue, 30 Jul 2024 09:53:30 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sYheb-003EZf-1o; Tue, 30 Jul 2024 09:52:17 +0200
+	id 1sYhfm-003EZm-3e; Tue, 30 Jul 2024 09:53:30 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sYhea-004Rfi-3B;
-	Tue, 30 Jul 2024 09:52:16 +0200
+	id 1sYhfm-004Rk8-08;
+	Tue, 30 Jul 2024 09:53:30 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240729143233.1565563-1-a.fatoum@pengutronix.de>
-References: <20240729143233.1565563-1-a.fatoum@pengutronix.de>
-Message-Id: <172232593698.1059623.10863290155325780729.b4-ty@pengutronix.de>
-Date: Tue, 30 Jul 2024 09:52:16 +0200
+Cc: has@pengutronix.de
+In-Reply-To: <20240729143347.1566660-1-a.fatoum@pengutronix.de>
+References: <20240729143347.1566660-1-a.fatoum@pengutronix.de>
+Message-Id: <172232601003.1059939.13626611540955397275.b4-ty@pengutronix.de>
+Date: Tue, 30 Jul 2024 09:53:30 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240730_005219_085753_C6E78CA6 
-X-CRM114-Status: UNSURE (   6.92  )
+X-CRM114-CacheID: sfid-20240730_005332_254003_F9F8550C 
+X-CRM114-Status: UNSURE (   8.97  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,23 +84,26 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH] bbu: report what device caused the handler to be
- unavailble
+Subject: Re: (subset) [PATCH 1/2] ARM: i.MX8MP: tqma8mpxl: fix eMMC barebox
+ update handler
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 29 Jul 2024 16:32:33 +0200, Ahmad Fatoum wrote:
-> The current message only lists the handler name, but to understand why
-> the operation failed, it's useful to print also the path of the device
-> that wasn't found. Change the info message to list both.
+On Mon, 29 Jul 2024 16:33:46 +0200, Ahmad Fatoum wrote:
+> While the eMMC is indeed uSDHC3, the board's device tree aliases shuffle
+> around the order, so the eMMC is at mmc0 and the SD is at mmc1.
+> 
+> We thus need to follow suit in the board code as to register the correct
+> device with the eMMC barebox update handler.
 > 
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] bbu: report what device caused the handler to be unavailble
-      https://git.pengutronix.de/cgit/barebox/commit/?id=64905c7496aa (link may not be stable)
+[1/2] ARM: i.MX8MP: tqma8mpxl: fix eMMC barebox update handler
+      https://git.pengutronix.de/cgit/barebox/commit/?id=f068a5dbe9f3 (link may not be stable)
 
 Best regards,
 -- 
