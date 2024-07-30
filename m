@@ -1,66 +1,66 @@
-Delivery-date: Tue, 30 Jul 2024 09:20:14 +0200
+Delivery-date: Tue, 30 Jul 2024 09:20:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYh9a-004O8G-1o
+	id 1sYh9c-004O8c-1Q
 	for lore@lore.pengutronix.de;
-	Tue, 30 Jul 2024 09:20:14 +0200
+	Tue, 30 Jul 2024 09:20:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYh9Y-0007El-09
-	for lore@pengutronix.de; Tue, 30 Jul 2024 09:20:14 +0200
+	id 1sYh9b-0007HY-Ai
+	for lore@pengutronix.de; Tue, 30 Jul 2024 09:20:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ta2hd4YneOsyrwCujChmu+LZDpIdESnLnaHB5QlBWjc=; b=GTJcDk2w7b6x11zumpr06kUmdn
-	nkJnh2+M+hMRVMy/t04+z8gF8LAs6uWb4APW/C72Y/LqMyWEfYcXmrJivLwkIMOivXUg7cRZyNSQX
-	yXhUeVdSWMvb0chgI7oeLZl3+gapyUBOz9pxivOCAl5A3DzeP27FNtQEZLCl9JW0U484+IynG2T3c
-	Gg3sNA0NCizLSWssqOOElnB9nonS38fhpbxjrF17LUC02M+i9u8MB9xrCBw5UftsyWxrqRZeD0Sda
-	ZgkEAIw/idn12BZPvN3qNYiuxSaJ8yNYfpE1btZYlXaY+Sm1oC3QR9hbMD73SMr50AC4HbGmo9bzm
-	jYPk8m4Q==;
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=A3yOT9pUH4WHC2794/dp7GAnZgKt+SJy8YnbC8wCIZk=; b=oHm3s3Z5YxpKW5QLZPriOLOWMx
+	N7NJp1SyTffii3wDp8mtgVIyFDGvKq0b5dmq9QoYgYXosOEhQoMq5Oi/bxIerr88p3gJLV75MvB83
+	8oKl/A9CAAnMQc2DY2NQ5Bur7iG/u3UPZ3AGulr9lf7OzRua5hMndjevJRCQlV1Iivm10dZgsC2Gg
+	XoKuhi/gYG5N8FHD5R8VYvq+q3KqCu94o9srw1FrWnQ7FvLeHfAQdPmIY4waT9MLbf7hT520eUoSd
+	YV4Z4Il/MgAXe73vyY+sJZnVVJgFWZp8/LXoXV1oIAqJN101QtZMdPfAJagqKI3qTQtIUMZ6sHNER
+	IsVQHG0Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYh94-0000000Dz1B-4B4Y;
-	Tue, 30 Jul 2024 07:19:43 +0000
+	id 1sYh96-0000000Dz30-2SNX;
+	Tue, 30 Jul 2024 07:19:44 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYh8u-0000000Dyv0-25U0
+	id 1sYh8u-0000000Dyuq-24ec
 	for barebox@lists.infradead.org;
-	Tue, 30 Jul 2024 07:19:35 +0000
+	Tue, 30 Jul 2024 07:19:36 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYh8s-0006nt-TV; Tue, 30 Jul 2024 09:19:30 +0200
+	id 1sYh8s-0006nM-FR
+	for barebox@lists.infradead.org; Tue, 30 Jul 2024 09:19:30 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYh8s-003EJL-D9; Tue, 30 Jul 2024 09:19:30 +0200
+	id 1sYh8s-003EJ3-0s
+	for barebox@lists.infradead.org; Tue, 30 Jul 2024 09:19:30 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYh8s-008TRQ-0z;
-	Tue, 30 Jul 2024 09:19:30 +0200
+	id 1sYh8r-008TRQ-31
+	for barebox@lists.infradead.org;
+	Tue, 30 Jul 2024 09:19:29 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 30 Jul 2024 09:19:27 +0200
-Message-Id: <20240730071929.2016537-9-a.fatoum@pengutronix.de>
+Date: Tue, 30 Jul 2024 09:19:19 +0200
+Message-Id: <20240730071929.2016537-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240730071929.2016537-1-a.fatoum@pengutronix.de>
-References: <20240730071929.2016537-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240730_001932_615071_D5A72AB2 
-X-CRM114-Status: GOOD (  17.35  )
+X-CRM114-CacheID: sfid-20240730_001932_633652_6BCC528D 
+X-CRM114-Status: GOOD (  20.69  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -82,119 +82,94 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 08/10] commands: sync: add new command to flush cached writes
+Subject: [PATCH 00/10] mmc: add SD/eMMC erase support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-In barebox, the dirty block cache for a given device is flushed when
-closing all file descriptors to it, a cached block needs to be evicted
-due to pressure or when barebox shuts down.
+A common optimization for flashing is to skip gaps between partitions
+and only flash actual data. The problem with that is that data from
+the previous installation may persist and confuse later software, e.g.
+an existing barebox state partition not contained in the image may
+survive, when the expectation is that a new state is created.
 
-There are valid uses to do it explicitly however:
+eMMCs can support three different commands for erasing data:
 
-  - When benchmarking write speed to a block device
-  - Before forced resets, because a regular reset would run shutdown
-    code that should be omitted.
+  - Erase: This has the widest support, but works on only on the level
+    of erase groups that may span multiple write blocks.
+    The region reads as either '0' or '1' afterwards.
 
-Add a sync command that does this. Unlike the userspace variant, we
-don't both to implement a argument-less sync that's global. Users are
-supposed to flush the files they are actually interested in, e.g.:
+  - Trim: New in eMMC v4.4. This erases write blocks.
+    The region reads as either '0' or '1' afterwards.
 
-  sync /dev/mmc2.0
+  - Discard: New in eMMC v4.5. This discards write blocks. It's up to the
+    card what action if any is taken.
+    All or part of the data may remain accessible.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- commands/Kconfig  | 14 ++++++++++++++
- commands/Makefile |  1 +
- commands/sync.c   | 42 ++++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 57 insertions(+)
+All of these don't enforce a actual physical NAND erase operation.
+In case erasure does happen, it may happen later at a convenient time.
+
+All of them, except for discard guarantee that a fixed pattern (either
+all zeroes or all ones) will be read back after the erase operation
+concludes. Therefore let's use them in barebox to implement the erase
+command.
+
+The behavior of the erase command will be similar to the Linux
+blkdiscard -z command when the erase byte value is all-zeroes. In Linux
+blkdiscard -z is emulated with zero writes if the erased byte is 0xFF,
+but for barebox, the erase operation won't care whether it writes 0x00
+or 0xFF.
+
+Note that this is considerably slower than need be, because we don't
+erase multiple erase groups at once. Doing so could run into the
+send_cmd timeout of the host hardware or its drivers. The correct
+workaround is to calculate the duration of the erase operation and split
+up the erases, so we always stay below a specific erase operation
+duration. There's a comment that explains this and implementing it is
+left as future exercise.
+
+Ahmad Fatoum (10):
+  fs: give erase() a new erase_type parameter
+  block: factor out chunk_flush helper
+  block: allow block devices to implement the cdev erase operation
+  mci: turn bool members into bitfield in struct mci
+  mci: describe more command structure in mci.h
+  mci: core: use CONFIG_MCI_WRITE, not CONFIG_BLOCK_WRITE
+  mci: add support for discarding write blocks
+  commands: sync: add new command to flush cached writes
+  mci: core: remove reference to SD Card from common mci_card_probe
+  commands: blkstats: add command to print block device statistics
+
+ arch/arm/mach-imx/imx-bbu-external-nand.c |   2 +-
+ arch/arm/mach-imx/imx-bbu-internal.c      |   4 +-
+ arch/arm/mach-omap/am33xx_bbu_spi_mlo.c   |   2 +-
+ commands/Kconfig                          |  25 ++
+ commands/Makefile                         |   2 +
+ commands/blkstats.c                       |  60 ++++
+ commands/flash.c                          |   2 +-
+ commands/nandtest.c                       |   2 +-
+ commands/sync.c                           |  42 +++
+ common/Kconfig                            |   3 +
+ common/bbu.c                              |   2 +-
+ common/block.c                            | 123 +++++--
+ common/environment.c                      |   7 +-
+ common/fastboot.c                         |   2 +-
+ common/state/backend_bucket_circular.c    |   2 +-
+ drivers/mci/Kconfig                       |   5 +
+ drivers/mci/mci-core.c                    | 405 ++++++++++++++++++++--
+ drivers/misc/storage-by-uuid.c            |   3 +
+ drivers/usb/gadget/function/dfu.c         |   4 +-
+ fs/devfs-core.c                           |   7 +-
+ fs/devfs.c                                |   5 +-
+ fs/fs.c                                   |   4 +-
+ include/block.h                           |  11 +
+ include/driver.h                          |  13 +
+ include/fs.h                              |  26 +-
+ include/mci.h                             |  75 +++-
+ lib/libfile.c                             |   2 +-
+ 27 files changed, 767 insertions(+), 73 deletions(-)
+ create mode 100644 commands/blkstats.c
  create mode 100644 commands/sync.c
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index 5b512f1bbac7..a8b7037618cc 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -1871,6 +1871,20 @@ config CMD_DETECT
- 		  -e	bail out if one device fails to detect
- 		  -a	detect all devices
- 
-+config CMD_SYNC
-+	tristate
-+	prompt "sync"
-+	help
-+	  sync - flush cached writes
-+
-+	  Usage: sync DEVICE
-+
-+	  Synchronize cached writes to persistent storage of DEVICE
-+	  immediately instead of waiting for block device to be closed,
-+	  cache eviction or the regular barebox exit.
-+
-+	  This command is mainly useful for benchmarking.
-+
- config CMD_FLASH
- 	tristate
- 	prompt "erase, protect and unprotect"
-diff --git a/commands/Makefile b/commands/Makefile
-index 4ca7ba7eb609..a9dbead4389f 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -41,6 +41,7 @@ obj-$(CONFIG_CMD_REGINFO)	+= reginfo.o
- obj-$(CONFIG_CMD_CRC)		+= crc.o
- obj-$(CONFIG_CMD_CLEAR)		+= clear.o
- obj-$(CONFIG_CMD_TEST)		+= test.o
-+obj-$(CONFIG_CMD_SYNC)		+= sync.o
- obj-$(CONFIG_CMD_FLASH)		+= flash.o
- obj-$(CONFIG_CMD_MEMINFO)	+= meminfo.o
- obj-$(CONFIG_CMD_TIMEOUT)	+= timeout.o
-diff --git a/commands/sync.c b/commands/sync.c
-new file mode 100644
-index 000000000000..6add67cd0876
---- /dev/null
-+++ b/commands/sync.c
-@@ -0,0 +1,42 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+/* sync - flushing support */
-+
-+#include <common.h>
-+#include <command.h>
-+#include <fcntl.h>
-+#include <fs.h>
-+
-+static int do_sync(int argc, char *argv[])
-+{
-+	int ret, fd;
-+
-+	if (argc != 2)
-+		return COMMAND_ERROR_USAGE;
-+
-+	fd = open(argv[1], O_WRONLY);
-+	if (fd < 0) {
-+		printf("open %s: %m\n", argv[1]);
-+		return 1;
-+	}
-+
-+	ret = flush(fd);
-+
-+	close(fd);
-+
-+	return ret;
-+}
-+
-+BAREBOX_CMD_HELP_START(sync)
-+BAREBOX_CMD_HELP_TEXT("Synchronize cached writes to persistent storage of DEVICE")
-+BAREBOX_CMD_HELP_TEXT("immediately instead of waiting for block device to be closed,")
-+BAREBOX_CMD_HELP_TEXT("cache eviction or the regular barebox exit.")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(sync)
-+	.cmd		= do_sync,
-+	BAREBOX_CMD_DESC("flush cached writes")
-+	BAREBOX_CMD_OPTS("DEVICE")
-+	BAREBOX_CMD_GROUP(CMD_GRP_HWMANIP)
-+	BAREBOX_CMD_HELP(cmd_sync_help)
-+BAREBOX_CMD_END
 -- 
 2.39.2
 
