@@ -1,66 +1,68 @@
-Delivery-date: Tue, 30 Jul 2024 09:45:58 +0200
+Delivery-date: Tue, 30 Jul 2024 09:50:29 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYhYU-004OSD-1a
+	id 1sYhcr-004OTv-29
 	for lore@lore.pengutronix.de;
-	Tue, 30 Jul 2024 09:45:58 +0200
+	Tue, 30 Jul 2024 09:50:29 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYhYT-0000mp-C8
-	for lore@pengutronix.de; Tue, 30 Jul 2024 09:45:58 +0200
+	id 1sYhcr-0001BE-3T
+	for lore@pengutronix.de; Tue, 30 Jul 2024 09:50:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=Fc5AfSOj+oBNqpM09PUHUB4KE1xZnpj6Eea1Ca0W9s0=; b=CpXGXhtJW90qtse2mxHrZS5ujx
-	9VCyV1xc4xXYE/v5aXfNRxK/aCb8WhSmoOnc9QNHM2uGmzR6tt8Qe7LruHmXAmEiRZw/ZLE3P9G+Z
-	0uCgqGhJ4eP2j61NQmdbDOGFlVnZPz9ErY61XXIaELfsZZRLq0r5LoeyXvOG4MdV0IKIcME+zgisQ
-	55bQlkOnAWKa24Aw5pKkV0Nm+19+hKSka29xEKQAUPbdEv0ZAp0JvtLC+eHvbn4qQagZQb/HnoLri
-	X6rL3BH1H0zDfT4wtrP1UQObxlPMxw2HSJp0f6SbUcwbNwURZqtwg9isNwmUDEMCtQJ/zhJ9Jlwo5
-	sd9qI4wg==;
+	bh=4iVjwQHqBaMLyCTz3AsXbGi+7SYj0JoZl3XWA8szIfY=; b=sxZ32Un6VYh2OJ+kyBRSTk27iQ
+	KlsATOb0Cs+nq1bx08xjfqaLnv6+E0AFG9Ma7jEAHfZeneueogbcvmJCPAIvtfp73Q8+xVRDyN6Sc
+	BvLrmsWtqMWUXECqblXzI5h86VmDwl70yA1EjvBoCEmU1N3/JDPkm62UvjnWvvcRNxVrES8JkBCzL
+	Ht2wMY7VakP8x8r62wci/UzkWh6KwGHBEnGQuQFvzbapJUBBFvwaN7ED4StGOHVc7nmFrC1nkYbNn
+	KnWvVljUWRIMmQd086cEm+j8UhpygyERkI7RPKH7qM45Zq2itmeQMX3e7JNIEyKoUQ/kleaBItO7Y
+	KKigImYA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYhXv-0000000E4gw-3z9k;
-	Tue, 30 Jul 2024 07:45:23 +0000
+	id 1sYhcP-0000000E5iL-0AlT;
+	Tue, 30 Jul 2024 07:50:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYhXs-0000000E4g3-24E2
+	id 1sYhcK-0000000E5fu-2Gs3
 	for barebox@lists.infradead.org;
-	Tue, 30 Jul 2024 07:45:21 +0000
+	Tue, 30 Jul 2024 07:49:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYhXq-0000ix-Ro; Tue, 30 Jul 2024 09:45:18 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sYhcJ-000170-C3; Tue, 30 Jul 2024 09:49:55 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYhXq-003EYm-Ew; Tue, 30 Jul 2024 09:45:18 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYh8s-008TRQ-1H;
-	Tue, 30 Jul 2024 09:19:30 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 30 Jul 2024 09:19:29 +0200
-Message-Id: <20240730071929.2016537-11-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240730071929.2016537-1-a.fatoum@pengutronix.de>
-References: <20240730071929.2016537-1-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sYhcI-003EZ9-VS; Tue, 30 Jul 2024 09:49:54 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sYhcI-004Qzl-2u;
+	Tue, 30 Jul 2024 09:49:54 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20240729143439.245039-1-s.hauer@pengutronix.de>
+References: <20240729143439.245039-1-s.hauer@pengutronix.de>
+Message-Id: <172232579489.1057066.14785610036513761939.b4-ty@pengutronix.de>
+Date: Tue, 30 Jul 2024 09:49:54 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240730_004520_716958_7FC46252 
-X-CRM114-Status: GOOD (  22.31  )
+X-CRM114-CacheID: sfid-20240730_004956_627110_D5C92975 
+X-CRM114-Status: UNSURE (   5.08  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,267 +83,26 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH 10/10] commands: blkstats: add command to print block device statistics
+	autolearn=ham autolearn_force=no version=3.4.2
+Subject: Re: [PATCH] optee: ioctl takes unsigned int argument
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-To test proper operations of block device operations, add a command that
-prints how many sectors were read/written/erased for a device so far.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- commands/Kconfig    | 11 +++++++++
- commands/Makefile   |  1 +
- commands/blkstats.c | 60 +++++++++++++++++++++++++++++++++++++++++++++
- common/Kconfig      |  3 +++
- common/block.c      | 46 ++++++++++++++++++++++++++++------
- include/block.h     | 10 ++++++++
- 6 files changed, 123 insertions(+), 8 deletions(-)
- create mode 100644 commands/blkstats.c
+On Mon, 29 Jul 2024 16:34:39 +0200, Sascha Hauer wrote:
+> Fix incompatible pointer warning. the ioctl() op now takes a unsigned
+> int as command argument.
+> 
+> 
 
-diff --git a/commands/Kconfig b/commands/Kconfig
-index a8b7037618cc..64e834d95a8f 100644
---- a/commands/Kconfig
-+++ b/commands/Kconfig
-@@ -255,6 +255,17 @@ config CMD_REGINFO
- 	help
- 	  Print register information.
- 
-+config CMD_BLKSTATS
-+	bool
-+	depends on BLOCK
-+	select BLOCK_STATS
-+	prompt "blkstats command"
-+	help
-+	  The blkstats displays statistics about a block devices' number of
-+	  sectors read, written and erased. This should only be needed for
-+	  development. Saying y here will start to collect these statistics
-+	  and enable a command for querying them.
-+
- config CMD_REGULATOR
- 	bool
- 	depends on REGULATOR
-diff --git a/commands/Makefile b/commands/Makefile
-index a9dbead4389f..ff5d713ca72c 100644
---- a/commands/Makefile
-+++ b/commands/Makefile
-@@ -125,6 +125,7 @@ obj-$(CONFIG_CMD_DRVINFO)	+= drvinfo.o
- obj-$(CONFIG_CMD_READF)		+= readf.o
- obj-$(CONFIG_CMD_MENUTREE)	+= menutree.o
- obj-$(CONFIG_CMD_2048)		+= 2048.o
-+obj-$(CONFIG_CMD_BLKSTATS)	+= blkstats.o
- obj-$(CONFIG_CMD_REGULATOR)	+= regulator.o
- obj-$(CONFIG_CMD_PM_DOMAIN)	+= pm_domain.o
- obj-$(CONFIG_CMD_LSPCI)		+= lspci.o
-diff --git a/commands/blkstats.c b/commands/blkstats.c
-new file mode 100644
-index 000000000000..69bed8b40e95
---- /dev/null
-+++ b/commands/blkstats.c
-@@ -0,0 +1,60 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+
-+#include <common.h>
-+#include <command.h>
-+#include <block.h>
-+#include <getopt.h>
-+#include <fs.h>
-+
-+static int do_blkstats(int argc, char *argv[])
-+{
-+	struct block_device *blk;
-+	const char *name;
-+	int opt;
-+
-+	while ((opt = getopt(argc, argv, "l")) > 0) {
-+		switch (opt) {
-+		case 'l':
-+			for_each_block_device(blk) {
-+				printf("%s\n", blk->cdev.name);
-+			}
-+		default:
-+			return COMMAND_ERROR_USAGE;
-+		}
-+	}
-+
-+	argv += optind;
-+	argc -= optind;
-+
-+	name = argv[0];
-+
-+	for_each_block_device(blk) {
-+		struct block_device_stats *stats;
-+
-+		if (name && strcmp(name, blk->cdev.name))
-+			continue;
-+
-+		stats = &blk->stats;
-+
-+		printf("%-10s %10s %10s %10s\n", "Device", "Read", "Write", "Erase");
-+		printf("%-10s %10llu %10llu %10llu\n", blk->cdev.name,
-+		       stats->read_sectors, stats->write_sectors, stats->erase_sectors);
-+	}
-+
-+	return 0;
-+}
-+
-+BAREBOX_CMD_HELP_START(blkstats)
-+BAREBOX_CMD_HELP_TEXT("Display a block device's number of read, written and erased sectors")
-+BAREBOX_CMD_HELP_TEXT("")
-+BAREBOX_CMD_HELP_TEXT("Options:")
-+BAREBOX_CMD_HELP_OPT("-l",  "list all currently registered block devices")
-+BAREBOX_CMD_HELP_END
-+
-+BAREBOX_CMD_START(blkstats)
-+	.cmd		= do_blkstats,
-+	BAREBOX_CMD_DESC("display block layer statistics")
-+	BAREBOX_CMD_OPTS("[-l] [DEVICE]")
-+	BAREBOX_CMD_GROUP(CMD_GRP_INFO)
-+	BAREBOX_CMD_HELP(cmd_blkstats_help)
-+BAREBOX_CMD_END
-diff --git a/common/Kconfig b/common/Kconfig
-index fea26262da86..4500feb66c92 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -41,6 +41,9 @@ config BLOCK
- config BLOCK_WRITE
- 	bool
- 
-+config BLOCK_STATS
-+	bool
-+
- config FILETYPE
- 	bool
- 
-diff --git a/common/block.c b/common/block.c
-index b43fcbe6927b..92124a415cd9 100644
---- a/common/block.c
-+++ b/common/block.c
-@@ -31,19 +31,40 @@ static int writebuffer_io_len(struct block_device *blk, struct chunk *chunk)
- 	return min_t(blkcnt_t, blk->rdbufsize, blk->num_blocks - chunk->block_start);
- }
- 
-+#ifdef CONFIG_BLOCK_STATS
-+static void blk_stats_record_read(struct block_device *blk, blkcnt_t count)
-+{
-+	blk->stats.read_sectors += count;
-+}
-+static void blk_stats_record_write(struct block_device *blk, blkcnt_t count)
-+{
-+	blk->stats.write_sectors += count;
-+}
-+static void blk_stats_record_erase(struct block_device *blk, blkcnt_t count)
-+{
-+	blk->stats.erase_sectors += count;
-+}
-+#else
-+static void blk_stats_record_read(struct block_device *blk, blkcnt_t count) { }
-+static void blk_stats_record_write(struct block_device *blk, blkcnt_t count) { }
-+static void blk_stats_record_erase(struct block_device *blk, blkcnt_t count) { }
-+#endif
-+
- static int chunk_flush(struct block_device *blk, struct chunk *chunk)
- {
-+	size_t len;
- 	int ret;
- 
- 	if (!chunk->dirty)
- 		return 0;
- 
--	ret = blk->ops->write(blk, chunk->data,
--			      chunk->block_start,
--			      writebuffer_io_len(blk, chunk));
-+	len = writebuffer_io_len(blk, chunk);
-+	ret = blk->ops->write(blk, chunk->data, chunk->block_start, len);
- 	if (ret < 0)
- 		return ret;
- 
-+	blk_stats_record_write(blk, len);
-+
- 	chunk->dirty = 0;
- 
- 	return 0;
-@@ -144,6 +165,7 @@ static struct chunk *get_chunk(struct block_device *blk)
- static int block_cache(struct block_device *blk, sector_t block)
- {
- 	struct chunk *chunk;
-+	size_t len;
- 	int ret;
- 
- 	chunk = get_chunk(blk);
-@@ -155,20 +177,22 @@ static int block_cache(struct block_device *blk, sector_t block)
- 	dev_dbg(blk->dev, "%s: %llu to %d\n", __func__, chunk->block_start,
- 		chunk->num);
- 
-+	len = writebuffer_io_len(blk, chunk);
- 	if (chunk->block_start * BLOCKSIZE(blk) >= blk->discard_start &&
--	    chunk->block_start * BLOCKSIZE(blk) + writebuffer_io_len(blk, chunk)
-+	    chunk->block_start * BLOCKSIZE(blk) + len
- 	    <= blk->discard_start + blk->discard_size) {
--		memset(chunk->data, 0, writebuffer_io_len(blk, chunk));
-+		memset(chunk->data, 0, len);
- 		list_add(&chunk->list, &blk->buffered_blocks);
- 		return 0;
- 	}
- 
--	ret = blk->ops->read(blk, chunk->data, chunk->block_start,
--			     writebuffer_io_len(blk, chunk));
-+	ret = blk->ops->read(blk, chunk->data, chunk->block_start, len);
- 	if (ret) {
- 		list_add_tail(&chunk->list, &blk->idle_blocks);
- 		return ret;
- 	}
-+
-+	blk_stats_record_read(blk, len);
- 	list_add(&chunk->list, &blk->buffered_blocks);
- 
- 	return 0;
-@@ -411,7 +435,13 @@ static __maybe_unused int block_op_erase(struct cdev *cdev, loff_t count, loff_t
- 		}
- 	}
- 
--	return blk->ops->erase(blk, offset, count);
-+	ret = blk->ops->erase(blk, offset, count);
-+	if (ret)
-+		return ret;
-+
-+	blk_stats_record_erase(blk, count);
-+
-+	return 0;
- }
- 
- static struct cdev_operations block_ops = {
-diff --git a/include/block.h b/include/block.h
-index eb319b953d32..b57d99a3fc08 100644
---- a/include/block.h
-+++ b/include/block.h
-@@ -31,6 +31,12 @@ enum blk_type {
- 
- const char *blk_type_str(enum blk_type);
- 
-+struct block_device_stats {
-+	blkcnt_t read_sectors;
-+	blkcnt_t write_sectors;
-+	blkcnt_t erase_sectors;
-+};
-+
- struct block_device {
- 	struct device *dev;
- 	struct list_head list;
-@@ -50,6 +56,10 @@ struct block_device {
- 	struct cdev cdev;
- 
- 	bool need_reparse;
-+
-+#ifdef CONFIG_BLOCK_STATS
-+	struct block_device_stats stats;
-+#endif
- };
- 
- #define BLOCKSIZE(blk)	(1u << (blk)->blockbits)
+Applied, thanks!
+
+[1/1] optee: ioctl takes unsigned int argument
+      https://git.pengutronix.de/cgit/barebox/commit/?id=aa650bf29486 (link may not be stable)
+
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
