@@ -1,70 +1,67 @@
-Delivery-date: Tue, 30 Jul 2024 12:10:00 +0200
+Delivery-date: Tue, 30 Jul 2024 12:18:25 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYjns-004Qh8-2j
+	id 1sYjw1-004Qn0-0q
 	for lore@lore.pengutronix.de;
-	Tue, 30 Jul 2024 12:10:00 +0200
+	Tue, 30 Jul 2024 12:18:25 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYjns-0007uz-8S
-	for lore@pengutronix.de; Tue, 30 Jul 2024 12:10:00 +0200
+	id 1sYjw0-0000Cp-MJ
+	for lore@pengutronix.de; Tue, 30 Jul 2024 12:18:25 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=0CAoo2vWY9MuY6lfw/a/7IqhpbFWMUYAzKP6NU0xi5Y=; b=rthepU7Hjy+uj0Lpb0YB7VKSd+
-	Z8AQj+D7QPtiuOj1FGn3TRhhGDSBIxVg3l/cFKLkIUrJJWOIuov53lKrlEgQsp29Pi6RVA/qzEgqX
-	nc9+tgcer1oH8CkbJvJ+0C+2DOfgmIkhnEdEPwff39DKthTWKVdhkg6PSBklDCE1kQ8D8kxtFPVKI
-	aADzOCxyeEICT7ubLrdx7MzGbziHv+3p7DuCaeS+8/1DY+wTt8Lm2aJrp4NyaWd2oYwfxAbt59icz
-	q/3odunDmC1Li4LwPo2/d7eSlVOL0CSUrEStlan1T1wbtbvz/+Ch8n8C8zyrrcXG8RDozTPKJyLm+
-	kkUlABdQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=ZdzWPzNN1ktnLUeX4fDnTNEeLqHTmGI+Hbbd1ekUR2c=; b=YQb3Cz6yYVqgbsuDg2CARZrKRR
+	qe8jJxqnwy2mhikpoGyADSGFAoMvg3eoeJNNdbHQOWujpnYGjQl6YaoavuCOA1S2+LHzQ6sACzna7
+	K9BlAAoMmZL4MxP0qFWtjJuzY4lBi0choYG3pwJx5f5kWXXZWlHkRJTkBJ9bf6GCxk3ZBp6DvWuKf
+	U2hRD4UFe2vvcbOmdAN/qygdw9K+lZT2dha747XnO357XqOu+2yhcvQpD7paDCdX5EFpYwO4/8J3B
+	CB5lGKJXrO7qqMvoucgCKOKG4CeB5LUvp8CiJ+mHRQuxGWbkjrFPPRGD5bLSDH6SS8V0TwpxHnT74
+	qQLvXkeQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYjnQ-0000000EfZg-3jq0;
-	Tue, 30 Jul 2024 10:09:32 +0000
+	id 1sYjvV-0000000EgkK-2MNH;
+	Tue, 30 Jul 2024 10:17:53 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYjnN-0000000EfYt-2sSt
+	id 1sYjvR-0000000Egir-0e10
 	for barebox@lists.infradead.org;
-	Tue, 30 Jul 2024 10:09:31 +0000
+	Tue, 30 Jul 2024 10:17:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sYjnM-0007sW-4l; Tue, 30 Jul 2024 12:09:28 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sYjvO-0008UF-R2; Tue, 30 Jul 2024 12:17:46 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sYjnL-003GCJ-O9; Tue, 30 Jul 2024 12:09:27 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sYjnL-0096US-27;
-	Tue, 30 Jul 2024 12:09:27 +0200
-Date: Tue, 30 Jul 2024 12:09:27 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sYjvO-003GCq-Cj; Tue, 30 Jul 2024 12:17:46 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sYjvO-009yjq-12;
+	Tue, 30 Jul 2024 12:17:46 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <Zqi71zu6eBtQIQ9T@pengutronix.de>
-References: <20240730071929.2016537-1-a.fatoum@pengutronix.de>
- <20240730071929.2016537-10-a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240730083451.2203330-1-a.fatoum@pengutronix.de>
+References: <20240730083451.2203330-1-a.fatoum@pengutronix.de>
+Message-Id: <172233466631.2378343.8900994932274321429.b4-ty@pengutronix.de>
+Date: Tue, 30 Jul 2024 12:17:46 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240730071929.2016537-10-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240730_030929_742804_ADA81F8A 
-X-CRM114-Status: GOOD (  17.86  )
+X-CRM114-CacheID: sfid-20240730_031749_231898_9165AFF7 
+X-CRM114-Status: UNSURE (   8.81  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -86,32 +83,35 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 09/10] mci: core: remove reference to SD Card from common
- mci_card_probe
+Subject: Re: [PATCH v3 1/2] console: add new CONSOLE_ACTIVATE_ALL_FALLBACK
+ option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Jul 30, 2024 at 09:19:28AM +0200, Ahmad Fatoum wrote:
-> mci_card_probe is called for both SD cards and MMC, so reporting that
-> an SD Card was successfully added is misleading.
+
+On Tue, 30 Jul 2024 10:34:50 +0200, Ahmad Fatoum wrote:
+> We already have three CONSOLE_ACTIVATE options and every one of them has
+> drawbacks:
 > 
-> There is an info message that reports whether it's a MMC or SD card
-> already, so just remove the SD from this last debug print.
+>   - ACTIVATE_ALL: May write barebox log to external devices like MCUs
+>     that don't expect it
 > 
-> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> ---
->  drivers/mci/mci-core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>   - ACTIVATE_FIRST: Not applicable for most systems that probe from
+>     device tree, where the order of probe is not necessarily fixed,
+>     so what console is first may change over updates
+> 
+> [...]
 
-You sent this as an extra patch already (which I applied). You can drop
-this from the next round.
+Applied, thanks!
 
-Sascha
+[1/2] console: add new CONSOLE_ACTIVATE_ALL_FALLBACK option
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6b01a6c7d14d (link may not be stable)
+[2/2] common: clarify help text for CONFIG_CONSOLE_ACTIVATE_* options
+      https://git.pengutronix.de/cgit/barebox/commit/?id=eb00dd84d698 (link may not be stable)
 
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
