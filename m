@@ -1,64 +1,70 @@
-Delivery-date: Tue, 30 Jul 2024 10:37:41 +0200
+Delivery-date: Tue, 30 Jul 2024 10:56:37 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYiMX-004PJI-2h
+	id 1sYier-004PVc-0p
 	for lore@lore.pengutronix.de;
-	Tue, 30 Jul 2024 10:37:41 +0200
+	Tue, 30 Jul 2024 10:56:37 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYiMX-0007hi-2v
-	for lore@pengutronix.de; Tue, 30 Jul 2024 10:37:41 +0200
+	id 1sYieq-0000w8-Kw
+	for lore@pengutronix.de; Tue, 30 Jul 2024 10:56:37 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ya4ndfTSs5obDYIlZl0JX3aaHuZqCEYewJvB1M0Q8wo=; b=JR93DY+nQk8Lq09FJdjuGFSpnm
-	/5xbHsT9s/emFBeVDkusoOX5GQYmB6EFB4AtTcWsCduy1nwV2+oc+Dwpx8vLZQkfiaR8CNqAR/iPj
-	g0PFTYKNhqGv22++kjdtIbValtAOZX5pFYGHEFcbzzPYL2Xr3U7AH87/SNHN+BRnDh0wgReG6pQfE
-	U6ROPMdHS6YrisQqGNr148GbDPzEXPrH6JduNE9Sac5kdzlQdUstFxRgWUzqcgn2M2w1cl9KmGwqd
-	V5WTv4x8guRY8h2Haputn++JSbB6S6c4wQpntk0Lsm1+lEPQ2fsYzuIeM/3r2j8+yC051RPF0J6i4
-	hLm/pXUQ==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=vsqP9TiO2NJ7jlLLE+E41FnoCXlA65Yrtwtu6deMLL8=; b=m3sibXJuupaCC/FU2SCTWpAgZd
+	yEXCkgF571W52qzg4qZ4TL/qa5J6tSS7CRb+nhtP9uOXBgto3y4X8H5ReDhVSatp2W7v7dVKLL4ux
+	lz+KsBycRUlQDM6/8B2DCl50tXlZUhrGUEccD3z4s/mdWClDiuPMeMKB4SDJfBbuwdskNYgge+0eY
+	pGc/Z8cd8S7vas1V3fgo39GmQTSJ9+0Y4iiDzb7C5+QDuXE6ZiyXCEO8rmOlaeyPzsJbryNY8FFtZ
+	VKAwHbsdrtknim0PPzXscl7jC0iK+QqWCVNXubpN4zcTZoED8cdtrprVpsXZCSgQZkhaj0Nqwaudi
+	M94uIQYg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYiM5-0000000EJdM-3U2A;
-	Tue, 30 Jul 2024 08:37:13 +0000
+	id 1sYieL-0000000EOQy-29fD;
+	Tue, 30 Jul 2024 08:56:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYiJs-0000000EIoI-1GbC
+	id 1sYieI-0000000EOQH-0qpT
 	for barebox@lists.infradead.org;
-	Tue, 30 Jul 2024 08:34:58 +0000
+	Tue, 30 Jul 2024 08:56:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYiJq-0007CV-Pj; Tue, 30 Jul 2024 10:34:54 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sYieG-0000si-Du; Tue, 30 Jul 2024 10:56:00 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYiJq-003F7q-Cf; Tue, 30 Jul 2024 10:34:54 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sYiJq-009FuX-0y;
-	Tue, 30 Jul 2024 10:34:54 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 30 Jul 2024 10:34:50 +0200
-Message-Id: <20240730083451.2203330-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	(envelope-from <sha@pengutronix.de>)
+	id 1sYieG-003FIK-0w; Tue, 30 Jul 2024 10:56:00 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sYieF-00954f-30;
+	Tue, 30 Jul 2024 10:55:59 +0200
+Date: Tue, 30 Jul 2024 10:55:59 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <Zqiqn66-dv3m_MOB@pengutronix.de>
+References: <20240730071929.2016537-1-a.fatoum@pengutronix.de>
+ <20240730071929.2016537-4-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240730071929.2016537-4-a.fatoum@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240730_013456_438204_E6E694D7 
-X-CRM114-Status: GOOD (  19.50  )
+X-CRM114-CacheID: sfid-20240730_015602_264405_9B44E457 
+X-CRM114-Status: GOOD (  23.74  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,119 +86,53 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 1/2] console: add new CONSOLE_ACTIVATE_ALL_FALLBACK option
+Subject: Re: [PATCH 03/10] block: allow block devices to implement the cdev
+ erase operation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We already have three CONSOLE_ACTIVATE options and every one of them has
-drawbacks:
+On Tue, Jul 30, 2024 at 09:19:22AM +0200, Ahmad Fatoum wrote:
+> We mainly implement cdev erase for raw flashes. Many block devices, like
+> NVMe, SSD or SD/MMC are also flash-based and expose a mechanism or
+> multiple to trigger an erase on hardware or flash translation layer
+> level without an accompanied write.
+> 
+> To make it possible to use this functionality elsewhere in barebox,
+> let's have the common block device layer pass through the erase
+> operation, so it may be implemented in a device-specific manner.
+> 
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+>  common/block.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
+>  include/block.h |  1 +
+>  2 files changed, 44 insertions(+)
+> 
+> diff --git a/common/block.c b/common/block.c
+> index f55da775a797..b43fcbe6927b 100644
+> --- a/common/block.c
+> +++ b/common/block.c
+> @@ -380,10 +380,45 @@ static int block_op_discard_range(struct cdev *cdev, loff_t count, loff_t offset
+>  	return 0;
+>  }
+>  
+> +static bool region_overlap(loff_t starta, loff_t lena,
+> +                           loff_t startb, loff_t lenb)
+> +{
+> +        if (starta + lena <= startb)
+> +                return 0;
+> +        if (startb + lenb <= starta)
+> +                return 0;
+> +        return 1;
+> +}
 
-  - ACTIVATE_ALL: May write barebox log to external devices like MCUs
-    that don't expect it
+We already have this function in fs/devfs-core.c. Time to export it?
 
-  - ACTIVATE_FIRST: Not applicable for most systems that probe from
-    device tree, where the order of probe is not necessarily fixed,
-    so what console is first may change over updates
+Sascha
 
-  - ACTIVATE_NONE: has a misleading name and may leave the user without
-    any consoles at all if nothing else activates a console
-
-Let's add a new option and make it the default, which avoids all these
-issues: Like ACTIVATE_NONE, it expects board code, DT or environment to
-enable a console and if none of them do it falls back to activating all
-consoles, so the user isn't kept in the dark with an error instructing
-the user to fix this.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
-v2 -> v3:
-  - actually use CONFIG_CONSOLE_ACTIVATE_ALL_FALLBACK in C-code (Sascha)
-v1 -> v2 (RESEND):
-  - added this missing patch
----
- common/Kconfig   | 19 ++++++++++++++++++-
- common/console.c | 29 +++++++++++++++++++++++++++++
- 2 files changed, 47 insertions(+), 1 deletion(-)
-
-diff --git a/common/Kconfig b/common/Kconfig
-index 31360892aeef..2dda5ce5743a 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -812,7 +812,7 @@ endchoice
- choice
- 	prompt "Console activation strategy"
- 	depends on CONSOLE_FULL
--	default CONSOLE_ACTIVATE_FIRST
-+	default CONSOLE_ACTIVATE_ALL_FALLBACK
- 
- config CONSOLE_ACTIVATE_FIRST
- 	bool
-@@ -831,6 +831,23 @@ config CONSOLE_ACTIVATE_ALL
- 	  Only the first registered console will have the full startup
- 	  log though.
- 
-+config CONSOLE_ACTIVATE_ALL_FALLBACK
-+	bool
-+	prompt "activate all consoles as fallback"
-+	help
-+	  This option is similar to CONFIG_CONSOLE_ACTIVATE_NONE in that it
-+	  leaves consoles disabled on startup. If by the end of barebox
-+	  startup, no consoles have been activated via board code, device
-+	  tree or environment, barebox will enable all registered consoles
-+	  as fallback, so the user has a chance to see output.
-+
-+	  This will be indicated by a fat error, so the user knows that
-+	  the configuration needs to be fixed. If you don't see any
-+	  output at all, consider trying again after enabling
-+	  CONFIG_CONSOLE_ACTIVATE_ALL, so consoles are activated immediately
-+	  at registration time and/or with CONFIG_DEBUG_LL, so barebox output
-+	  is written even before console drivers were registered.
-+
- config CONSOLE_ACTIVATE_NONE
- 	prompt "leave all consoles disabled"
- 	bool
-diff --git a/common/console.c b/common/console.c
-index 73b4c4d4db01..9db994220e67 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -450,6 +450,35 @@ int console_unregister(struct console_device *cdev)
- }
- EXPORT_SYMBOL(console_unregister);
- 
-+static __maybe_unused int console_activate_all_fallback(void)
-+{
-+	int activate = CONSOLE_STDIOE;
-+	struct console_device *cdev;
-+
-+	for_each_console(cdev) {
-+		if (cdev->f_active & (CONSOLE_STDOUT | CONSOLE_STDERR))
-+			return 0;
-+	}
-+
-+	if (IS_ENABLED(CONFIG_CONSOLE_DISABLE_INPUT))
-+		activate &= ~CONSOLE_STDIN;
-+
-+	for_each_console(cdev)
-+		console_set_active(cdev, activate);
-+
-+	/*
-+	 * This is last resort, so the user is not kept in the dark.
-+	 * Writing to all consoles is a bad idea as the devices at the
-+	 * other side might get confused by it, thus the error log level.
-+	 */
-+	pr_err("No consoles were activated. Activating all consoles as fallback!\n");
-+
-+	return 0;
-+}
-+#ifdef CONSOLE_ACTIVATE_ALL_FALLBACK
-+postenvironment_initcall(console_activate_all_fallback);
-+#endif
-+
- static int getc_raw(void)
- {
- 	struct console_device *cdev;
 -- 
-2.39.2
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
