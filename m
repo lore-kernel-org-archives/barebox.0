@@ -1,67 +1,66 @@
-Delivery-date: Wed, 31 Jul 2024 09:14:31 +0200
+Delivery-date: Wed, 31 Jul 2024 09:14:49 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sZ3Xb-004izu-2S
+	id 1sZ3Xt-004j0K-2U
 	for lore@lore.pengutronix.de;
-	Wed, 31 Jul 2024 09:14:31 +0200
+	Wed, 31 Jul 2024 09:14:49 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sZ3Xb-0006Qu-1S
-	for lore@pengutronix.de; Wed, 31 Jul 2024 09:14:31 +0200
+	id 1sZ3Xt-0006dM-4J
+	for lore@pengutronix.de; Wed, 31 Jul 2024 09:14:49 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=C1YD1YdxEVe97XfOULn823CgWwszq+/bSRtkrIF0B5s=; b=smCMnWdkLmhljisEWcpVfwcfIS
-	OF0RIdlEMEKWJ218Ioz5UMOnk9dt0ugaXrkR9NDraowwioBXdQkacFlKOV7RvMdvVw2kEBs6uvNS3
-	/qs6h4mJpZRO3FDnaqW/RpPrHTFSSmc+sdzdHPmWjWO5K3X/DdCQwe8CfP1yWxvp1cH4G8ShumtZN
-	rM2D4MBGEB0jwrl14cQ3wBHJej1+A/v8PA0sNXsRmWu4oMMYfrI7l8/DG3REwP+oNYBMk+gSf+FEN
-	JIaaq0bZ7pynIkx4G269wl235azuY0AsBnhCpHlVtQFJ851+ZUT4le0ErZcASByos0xX1oP3xCmFr
-	NyvS6s7w==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=fXV6jhWPaf9fi9wS0aasI+mpqTVxyR+zjynEKk7i7IA=; b=JPDUG5NpUqhfhVWdgnxN/o9czx
+	iLcJA+Me2ikdzQsGtOuNv6d1GIX+qyLDx4jOf/cPhTni7UbhkEHvM017n7CsAWFT6sxWHDwT1xWco
+	mE+MkrUMA9W1Z1Iuj2b/3cCMlJ1lyF9CQ70JqW20v9aZS9bGmWpTGwj+U0MEDpU42gsw8oOtGK4L2
+	sX2hotCFu31geT/rkZB3Cz6Itd5VB5DV+vSV7SD5vcMl75U6aA2PuQLay8+NVJEX52JIImV2GAToa
+	c0Zl3bCzaGhZmonnj3URHDxp/Y+KOJPADrDuT5Wnkuw/ReaZrkOpcC9Ubj19qVV2B1MBhF8bDz5JW
+	Ik7uY7Xw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sZ3XB-000000004rO-19g6;
-	Wed, 31 Jul 2024 07:14:05 +0000
+	id 1sZ3XS-000000004wA-1X2M;
+	Wed, 31 Jul 2024 07:14:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sZ3X8-000000004qX-2fKR
+	id 1sZ3XP-000000004uP-23SJ
 	for barebox@lists.infradead.org;
-	Wed, 31 Jul 2024 07:14:04 +0000
+	Wed, 31 Jul 2024 07:14:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sZ3X7-0006IM-GC
-	for barebox@lists.infradead.org; Wed, 31 Jul 2024 09:14:01 +0200
+	id 1sZ3XO-0006Li-4g; Wed, 31 Jul 2024 09:14:18 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sZ3X7-003T77-35
-	for barebox@lists.infradead.org; Wed, 31 Jul 2024 09:14:01 +0200
+	id 1sZ3XN-003T7C-Nj; Wed, 31 Jul 2024 09:14:17 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sZ3X6-00AjQG-3B
-	for barebox@lists.infradead.org;
-	Wed, 31 Jul 2024 09:14:01 +0200
+	id 1sZ3XN-00AjVP-24;
+	Wed, 31 Jul 2024 09:14:17 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Wed, 31 Jul 2024 09:13:38 +0200
-Message-Id: <20240731071337.2557351-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 31 Jul 2024 09:14:13 +0200
+Message-Id: <20240731071416.2558182-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240731071416.2558182-1-a.fatoum@pengutronix.de>
+References: <20240731071416.2558182-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240731_001402_871423_2AE0A9C1 
-X-CRM114-Status: UNSURE (   8.26  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240731_001419_559577_9A557330 
+X-CRM114-Status: GOOD (  13.16  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -83,50 +82,62 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] debug_ll: implement putws_ll
+Subject: [PATCH 2/5] KASan: report: print shadow memory state to stderr
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-For use of low-level debugging of EFI-related functionality, let's
-add a wchar_t version of puts_ll.
+The hexdump is currently printed to stdout via printk in
+print_hex_dump. KASAN reports are special: They should be printed to
+stderr, but they should not be logged as that would involve
+reallocation. Therefore instead of calling print_hex_dump, call eprintf
+with the %*ph format specifier instead. This allows us to consolidate
+the code some more.
 
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- include/debug_ll.h | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ lib/kasan/Kconfig  | 1 +
+ lib/kasan/report.c | 8 ++------
+ 2 files changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/include/debug_ll.h b/include/debug_ll.h
-index 0128ab524a76..5ac8ae12ceb8 100644
---- a/include/debug_ll.h
-+++ b/include/debug_ll.h
-@@ -64,12 +64,27 @@ static inline void puts_ll(const char * str)
- 	}
- }
+diff --git a/lib/kasan/Kconfig b/lib/kasan/Kconfig
+index e96638304cd8..895a62d88439 100644
+--- a/lib/kasan/Kconfig
++++ b/lib/kasan/Kconfig
+@@ -11,6 +11,7 @@ config KASAN
+ 	depends on (HAVE_ARCH_KASAN && CC_HAS_KASAN_GENERIC)
+ 	depends on MALLOC_TLSF
+ 	select CONSTRUCTORS
++	select PRINTF_HEXSTR
+ 	help
+ 	  Enables KASAN (KernelAddressSANitizer) - runtime memory debugger,
+ 	  designed to find out-of-bounds accesses and use-after-free bugs.
+diff --git a/lib/kasan/report.c b/lib/kasan/report.c
+index a9050546e7a6..b7844e93553c 100644
+--- a/lib/kasan/report.c
++++ b/lib/kasan/report.c
+@@ -116,20 +116,16 @@ static void print_shadow_for_address(const void *addr)
  
-+static inline void putws_ll(const wchar_t * wstr)
-+{
-+	while (*wstr) {
-+		if (*wstr == L'\n')
-+			putc_ll('\r');
-+
-+		putc_ll(*wstr);
-+		wstr++;
-+	}
-+}
-+
- #else
+ 	for (i = -SHADOW_ROWS_AROUND_ADDR; i <= SHADOW_ROWS_AROUND_ADDR; i++) {
+ 		const void *kaddr = kasan_shadow_to_mem(shadow_row);
+-		char buffer[4 + (BITS_PER_LONG/8)*2];
+ 		char shadow_buf[SHADOW_BYTES_PER_ROW];
  
- static inline void putc_ll(char value)
- {
- }
+-		snprintf(buffer, sizeof(buffer),
+-			(i == 0) ? ">%px: " : " %px: ", kaddr);
+ 		/*
+ 		 * We should not pass a shadow pointer to generic
+ 		 * function, because generic functions may try to
+ 		 * access kasan mapping for the passed address.
+ 		 */
+ 		memcpy(shadow_buf, shadow_row, SHADOW_BYTES_PER_ROW);
+-		print_hex_dump(KERN_ERR, buffer,
+-			DUMP_PREFIX_NONE, SHADOW_BYTES_PER_ROW, 1,
+-			shadow_buf, SHADOW_BYTES_PER_ROW, 0);
++		eprintf("%c%px: %*ph\n", (i == 0) ? '>' : ' ', kaddr,
++			SHADOW_BYTES_PER_ROW, shadow_buf);
  
-+static inline void putws_ll(const wchar_t * wstr)
-+{
-+}
-+
- static inline void puthexc_ll(unsigned char value)
- {
- }
+ 		if (row_is_guilty(shadow_row, shadow))
+ 			eprintf("%*c\n",
 -- 
 2.39.2
 
