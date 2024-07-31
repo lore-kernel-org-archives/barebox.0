@@ -1,72 +1,65 @@
-Delivery-date: Tue, 30 Jul 2024 13:22:20 +0200
+Delivery-date: Wed, 31 Jul 2024 09:14:07 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYkvs-004Rlw-31
+	id 1sZ3XD-004izL-2i
 	for lore@lore.pengutronix.de;
-	Tue, 30 Jul 2024 13:22:20 +0200
+	Wed, 31 Jul 2024 09:14:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sYkvs-0004tv-9o
-	for lore@pengutronix.de; Tue, 30 Jul 2024 13:22:20 +0200
+	id 1sZ3XD-0006Iw-8C
+	for lore@pengutronix.de; Wed, 31 Jul 2024 09:14:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=8PiRG7MTQgaXOrj8t7NkLzYN+yI7g2iPLpiRItcbwoM=; b=H7OcDV6a/YjNGZcovINGXtkFMN
-	TER90gkGIeFSCNR/YQNbbqhSXmkCMP5cqI/PsaCBhncUfK0GGR/SWwEaRZ8/OrHortskTHbuZNHFx
-	s5V8w2wQkPfd1iOF5xWcuGw6u4EA3dGEliqNA8/ylL18Gw2NStSqrAYHG7Zk67S4amudW1dowaknT
-	0NxTMhSiZjChP1xsDO4MQlRcQE21QjBDWlIPqRlOGi2d8bWuGGzQghRQTtL1fL3D1CAIiJwEoJSih
-	nljzmlwy1lKwMw73xzUaYAfPcfqNOnSVs/lS6bT4TbaSs7Jco+CJCK6RrLmraKyb6I7oLCt+x4Y1S
-	ZrRixDAA==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=1dUQJFPA0sU/dD2ONg+NtzDF177FQRbeYykrSq+dfEY=; b=1fBUTuHTI3DkeXJbmRzxYy7ClC
+	6hxz9PqGIatW+45xoAvr+beRlxHycPV+slERKiMoIAlZP7URW8p5jABLVsJ1IL/3lAt7a4wcxySce
+	Jd9WP9oVO/6I1V5xBCllw/sFHnEi0iPwvr7RpMCJ6Kz5ggFMWYzY732lHO3IQYpqZLwdVYjrlJNrh
+	iGvLj1hbrTxkXgZHXdvg2RC8TWQOe5dxWeRNYqy0bZfCb6GR1HYJ8ZnM/JUVWIXI8OLQFMvaw+xF+
+	TbSdkcitueGd+XSrQADaA96/BQm0yVZqMgocGHR7MVLQQOurOzYtVsQdiKRqJQHJBvM4VTzY+Oj4D
+	pFA3ML/g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYkvM-0000000EsJb-3Myg;
-	Tue, 30 Jul 2024 11:21:48 +0000
+	id 1sZ3Wa-000000004m7-3XOS;
+	Wed, 31 Jul 2024 07:13:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sYkvK-0000000EsJ5-0Ifl
+	id 1sZ3WY-000000004l2-0UM5
 	for barebox@lists.infradead.org;
-	Tue, 30 Jul 2024 11:21:47 +0000
+	Wed, 31 Jul 2024 07:13:27 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sYkvI-0004qB-CI; Tue, 30 Jul 2024 13:21:44 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sZ3WV-0006DQ-06; Wed, 31 Jul 2024 09:13:23 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sYkvH-003GrN-VU; Tue, 30 Jul 2024 13:21:43 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sYkvH-0097Vq-2r;
-	Tue, 30 Jul 2024 13:21:43 +0200
-Date: Tue, 30 Jul 2024 13:21:43 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <ZqjMx1xWl1toOM59@pengutronix.de>
-References: <20240730071929.2016537-1-a.fatoum@pengutronix.de>
- <20240730071929.2016537-4-a.fatoum@pengutronix.de>
- <Zqiqn66-dv3m_MOB@pengutronix.de>
- <fed9e44d-dc12-483c-ac02-7e63e2190b72@pengutronix.de>
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sZ3WU-003T6t-IW; Wed, 31 Jul 2024 09:13:22 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sZ3WU-00AjG5-1Y;
+	Wed, 31 Jul 2024 09:13:22 +0200
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 31 Jul 2024 09:13:21 +0200
+Message-Id: <20240731071321.2557241-1-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <fed9e44d-dc12-483c-ac02-7e63e2190b72@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240730_042146_132523_FC3D7638 
-X-CRM114-Status: GOOD (  26.39  )
+X-CRM114-CacheID: sfid-20240731_001326_176126_69DC1F54 
+X-CRM114-Status: UNSURE (   8.18  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -88,62 +81,41 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 03/10] block: allow block devices to implement the cdev
- erase operation
+Subject: [PATCH] efi: define extra efi_memory_type flags
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Tue, Jul 30, 2024 at 01:10:05PM +0200, Ahmad Fatoum wrote:
-> On 30.07.24 10:55, Sascha Hauer wrote:
-> > On Tue, Jul 30, 2024 at 09:19:22AM +0200, Ahmad Fatoum wrote:
-> >> We mainly implement cdev erase for raw flashes. Many block devices, like
-> >> NVMe, SSD or SD/MMC are also flash-based and expose a mechanism or
-> >> multiple to trigger an erase on hardware or flash translation layer
-> >> level without an accompanied write.
-> >>
-> >> To make it possible to use this functionality elsewhere in barebox,
-> >> let's have the common block device layer pass through the erase
-> >> operation, so it may be implemented in a device-specific manner.
-> >>
-> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >> ---
-> >>  common/block.c  | 43 +++++++++++++++++++++++++++++++++++++++++++
-> >>  include/block.h |  1 +
-> >>  2 files changed, 44 insertions(+)
-> >>
-> >> diff --git a/common/block.c b/common/block.c
-> >> index f55da775a797..b43fcbe6927b 100644
-> >> --- a/common/block.c
-> >> +++ b/common/block.c
-> >> @@ -380,10 +380,45 @@ static int block_op_discard_range(struct cdev *cdev, loff_t count, loff_t offset
-> >>  	return 0;
-> >>  }
-> >>  
-> >> +static bool region_overlap(loff_t starta, loff_t lena,
-> >> +                           loff_t startb, loff_t lenb)
-> >> +{
-> >> +        if (starta + lena <= startb)
-> >> +                return 0;
-> >> +        if (startb + lenb <= starta)
-> >> +                return 0;
-> >> +        return 1;
-> >> +}
-> > 
-> > We already have this function in fs/devfs-core.c. Time to export it?
-> 
-> This used to be exported, but the export was removed in commit
-> 04e2aa516ed5 ("common.h: move and rename lregion_overlap()").
-> 
-> I can add it back if you prefer.
+We already define a number of memory types, but we are missing some
+bits in-between. Add them for completion's sake.
 
-I think now that we have two users it makes sense to add it back.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+ include/efi.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-Sascha
-
+diff --git a/include/efi.h b/include/efi.h
+index a27cbe1f498b..217e3d9f56ff 100644
+--- a/include/efi.h
++++ b/include/efi.h
+@@ -110,10 +110,16 @@ enum efi_memory_type {
+ #define EFI_MEMORY_WC		((u64)0x0000000000000002ULL)	/* write-coalescing */
+ #define EFI_MEMORY_WT		((u64)0x0000000000000004ULL)	/* write-through */
+ #define EFI_MEMORY_WB		((u64)0x0000000000000008ULL)	/* write-back */
++#define EFI_MEMORY_UCE		((u64)0x0000000000000010ULL)	/* uncached, exported */
+ #define EFI_MEMORY_WP		((u64)0x0000000000001000ULL)	/* write-protect */
+ #define EFI_MEMORY_RP		((u64)0x0000000000002000ULL)	/* read-protect */
+ #define EFI_MEMORY_XP		((u64)0x0000000000004000ULL)	/* execute-protect */
++#define EFI_MEMORY_NV		((u64)0x0000000000008000ULL)	/* non-volatile */
+ #define EFI_MEMORY_RUNTIME	((u64)0x8000000000000000ULL)	/* range requires runtime mapping */
++#define EFI_MEMORY_MORE_RELIABLE \
++				((u64)0x0000000000010000ULL)	/* higher reliability */
++#define EFI_MEMORY_RO		((u64)0x0000000000020000ULL)	/* read-only */
++#define EFI_MEMORY_SP		((u64)0x0000000000040000ULL)	/* specific-purpose memory (SPM) */
+ #define EFI_MEMORY_DESCRIPTOR_VERSION	1
+ 
+ #define EFI_PAGE_SHIFT		12
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
