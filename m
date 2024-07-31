@@ -1,64 +1,66 @@
-Delivery-date: Wed, 31 Jul 2024 09:14:07 +0200
+Delivery-date: Wed, 31 Jul 2024 09:14:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sZ3XD-004izL-2i
+	id 1sZ3Xb-004izu-2S
 	for lore@lore.pengutronix.de;
-	Wed, 31 Jul 2024 09:14:07 +0200
+	Wed, 31 Jul 2024 09:14:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sZ3XD-0006Iw-8C
-	for lore@pengutronix.de; Wed, 31 Jul 2024 09:14:07 +0200
+	id 1sZ3Xb-0006Qu-1S
+	for lore@pengutronix.de; Wed, 31 Jul 2024 09:14:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=1dUQJFPA0sU/dD2ONg+NtzDF177FQRbeYykrSq+dfEY=; b=1fBUTuHTI3DkeXJbmRzxYy7ClC
-	6hxz9PqGIatW+45xoAvr+beRlxHycPV+slERKiMoIAlZP7URW8p5jABLVsJ1IL/3lAt7a4wcxySce
-	Jd9WP9oVO/6I1V5xBCllw/sFHnEi0iPwvr7RpMCJ6Kz5ggFMWYzY732lHO3IQYpqZLwdVYjrlJNrh
-	iGvLj1hbrTxkXgZHXdvg2RC8TWQOe5dxWeRNYqy0bZfCb6GR1HYJ8ZnM/JUVWIXI8OLQFMvaw+xF+
-	TbSdkcitueGd+XSrQADaA96/BQm0yVZqMgocGHR7MVLQQOurOzYtVsQdiKRqJQHJBvM4VTzY+Oj4D
-	pFA3ML/g==;
+	bh=C1YD1YdxEVe97XfOULn823CgWwszq+/bSRtkrIF0B5s=; b=smCMnWdkLmhljisEWcpVfwcfIS
+	OF0RIdlEMEKWJ218Ioz5UMOnk9dt0ugaXrkR9NDraowwioBXdQkacFlKOV7RvMdvVw2kEBs6uvNS3
+	/qs6h4mJpZRO3FDnaqW/RpPrHTFSSmc+sdzdHPmWjWO5K3X/DdCQwe8CfP1yWxvp1cH4G8ShumtZN
+	rM2D4MBGEB0jwrl14cQ3wBHJej1+A/v8PA0sNXsRmWu4oMMYfrI7l8/DG3REwP+oNYBMk+gSf+FEN
+	JIaaq0bZ7pynIkx4G269wl235azuY0AsBnhCpHlVtQFJ851+ZUT4le0ErZcASByos0xX1oP3xCmFr
+	NyvS6s7w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sZ3Wa-000000004m7-3XOS;
-	Wed, 31 Jul 2024 07:13:28 +0000
+	id 1sZ3XB-000000004rO-19g6;
+	Wed, 31 Jul 2024 07:14:05 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sZ3WY-000000004l2-0UM5
+	id 1sZ3X8-000000004qX-2fKR
 	for barebox@lists.infradead.org;
-	Wed, 31 Jul 2024 07:13:27 +0000
+	Wed, 31 Jul 2024 07:14:04 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sZ3WV-0006DQ-06; Wed, 31 Jul 2024 09:13:23 +0200
+	id 1sZ3X7-0006IM-GC
+	for barebox@lists.infradead.org; Wed, 31 Jul 2024 09:14:01 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sZ3WU-003T6t-IW; Wed, 31 Jul 2024 09:13:22 +0200
+	id 1sZ3X7-003T77-35
+	for barebox@lists.infradead.org; Wed, 31 Jul 2024 09:14:01 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sZ3WU-00AjG5-1Y;
-	Wed, 31 Jul 2024 09:13:22 +0200
+	id 1sZ3X6-00AjQG-3B
+	for barebox@lists.infradead.org;
+	Wed, 31 Jul 2024 09:14:01 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 31 Jul 2024 09:13:21 +0200
-Message-Id: <20240731071321.2557241-1-a.fatoum@pengutronix.de>
+Date: Wed, 31 Jul 2024 09:13:38 +0200
+Message-Id: <20240731071337.2557351-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240731_001326_176126_69DC1F54 
-X-CRM114-Status: UNSURE (   8.18  )
+X-CRM114-CacheID: sfid-20240731_001402_871423_2AE0A9C1 
+X-CRM114-Status: UNSURE (   8.26  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -81,39 +83,50 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] efi: define extra efi_memory_type flags
+Subject: [PATCH] debug_ll: implement putws_ll
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We already define a number of memory types, but we are missing some
-bits in-between. Add them for completion's sake.
+For use of low-level debugging of EFI-related functionality, let's
+add a wchar_t version of puts_ll.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
 ---
- include/efi.h | 6 ++++++
- 1 file changed, 6 insertions(+)
+ include/debug_ll.h | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/include/efi.h b/include/efi.h
-index a27cbe1f498b..217e3d9f56ff 100644
---- a/include/efi.h
-+++ b/include/efi.h
-@@ -110,10 +110,16 @@ enum efi_memory_type {
- #define EFI_MEMORY_WC		((u64)0x0000000000000002ULL)	/* write-coalescing */
- #define EFI_MEMORY_WT		((u64)0x0000000000000004ULL)	/* write-through */
- #define EFI_MEMORY_WB		((u64)0x0000000000000008ULL)	/* write-back */
-+#define EFI_MEMORY_UCE		((u64)0x0000000000000010ULL)	/* uncached, exported */
- #define EFI_MEMORY_WP		((u64)0x0000000000001000ULL)	/* write-protect */
- #define EFI_MEMORY_RP		((u64)0x0000000000002000ULL)	/* read-protect */
- #define EFI_MEMORY_XP		((u64)0x0000000000004000ULL)	/* execute-protect */
-+#define EFI_MEMORY_NV		((u64)0x0000000000008000ULL)	/* non-volatile */
- #define EFI_MEMORY_RUNTIME	((u64)0x8000000000000000ULL)	/* range requires runtime mapping */
-+#define EFI_MEMORY_MORE_RELIABLE \
-+				((u64)0x0000000000010000ULL)	/* higher reliability */
-+#define EFI_MEMORY_RO		((u64)0x0000000000020000ULL)	/* read-only */
-+#define EFI_MEMORY_SP		((u64)0x0000000000040000ULL)	/* specific-purpose memory (SPM) */
- #define EFI_MEMORY_DESCRIPTOR_VERSION	1
+diff --git a/include/debug_ll.h b/include/debug_ll.h
+index 0128ab524a76..5ac8ae12ceb8 100644
+--- a/include/debug_ll.h
++++ b/include/debug_ll.h
+@@ -64,12 +64,27 @@ static inline void puts_ll(const char * str)
+ 	}
+ }
  
- #define EFI_PAGE_SHIFT		12
++static inline void putws_ll(const wchar_t * wstr)
++{
++	while (*wstr) {
++		if (*wstr == L'\n')
++			putc_ll('\r');
++
++		putc_ll(*wstr);
++		wstr++;
++	}
++}
++
+ #else
+ 
+ static inline void putc_ll(char value)
+ {
+ }
+ 
++static inline void putws_ll(const wchar_t * wstr)
++{
++}
++
+ static inline void puthexc_ll(unsigned char value)
+ {
+ }
 -- 
 2.39.2
 
