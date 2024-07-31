@@ -1,60 +1,66 @@
-Delivery-date: Wed, 31 Jul 2024 09:20:26 +0200
+Delivery-date: Wed, 31 Jul 2024 10:05:53 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sZ3dK-004j3i-0I
+	id 1sZ4LJ-004jVX-1r
 	for lore@lore.pengutronix.de;
-	Wed, 31 Jul 2024 09:20:26 +0200
+	Wed, 31 Jul 2024 10:05:53 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sZ3dJ-0007MW-Es
-	for lore@pengutronix.de; Wed, 31 Jul 2024 09:20:26 +0200
+	id 1sZ4LI-0004Lb-OT
+	for lore@pengutronix.de; Wed, 31 Jul 2024 10:05:53 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:References:Cc:To:From:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=sOXI5fruWMNgvYI8uwm3CjM2Oyd9/CL5A3qbUbqxcxg=; b=IrOdQ3h1OBmuxaSC3Yl+KRh4ed
-	tty7Cr0LkQFobOpbjbg26fWtc+Ts24cVIyirkEFEYYIxA9zh6u1AAA0tnsYTK+/OCW1Ml/5aexowx
-	zoEwQ0V1yplXuGGKQGShRc/mSXiaK4d7JaNOSb0VcuOFiUf4OfV2OiQrKsEvE11iDjBxesbpA3MGy
-	rKVpuvSPjoBRK4/yn66qZA+ArQ+jQg8HYxTDZD6mcvvH0MRiq971Dx3kP7Dk76MZExdeVCFvOkzfq
-	42u6hzSYVs64i4b7B3jYvcos9GT8XOMus5B7Q8tCQ7Jz2bunAlLQaT7oo3KDWLhBlVpYSZcsOZFa4
-	w2swB+1g==;
+	bh=0/I3IugbBvumF7+IrseIYltCKGHZ0WlMR/Yp0L348Bw=; b=uUGUlsWFM9lIIiCP/vI2qj5hmv
+	FqU3F//e8GgHEH9YkYMJ/fIyomZa9lfSPTvRJxvWziFARp79mB+Ev7cwjfHlQPHM9jdRyp4xrflXu
+	7tRq3/7m4PeNzpobD2ZkC3sVKjIW5sgiZc53LD4n0FxJLrQdFuQis+KeePOWWobAiI+fpSL609tNt
+	WUvDoPkzvO2HA3nHyMLAe/ow1W5+Mk5qluuJeqRjN+o3uokSMQ7u3QHWCpA6+f1XMJNFQAfpr5QHz
+	dAD3Fmfo8/+Xjs/yE7mzC6QlrC45CW2i2tBZS4TZOGpao6FeruTTCZEIN8C5v1p7vGMGe3f2pi3EB
+	NyKUTdow==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sZ3cq-000000006CC-18MI;
-	Wed, 31 Jul 2024 07:19:56 +0000
+	id 1sZ4Ko-00000000F77-0mds;
+	Wed, 31 Jul 2024 08:05:22 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sZ3cm-000000006Bc-2Qsg
+	id 1sZ4Ke-00000000F3U-3hB7
 	for barebox@lists.infradead.org;
-	Wed, 31 Jul 2024 07:19:53 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	Wed, 31 Jul 2024 08:05:17 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sZ3cl-0007Fz-99; Wed, 31 Jul 2024 09:19:51 +0200
-Message-ID: <fd9cbac7-64c1-4bef-b6e7-a2495abef83a@pengutronix.de>
-Date: Wed, 31 Jul 2024 09:19:51 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+	id 1sZ4Kd-0003y8-Hs; Wed, 31 Jul 2024 10:05:11 +0200
+Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sZ4Kd-003Tfj-4P; Wed, 31 Jul 2024 10:05:11 +0200
+Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
+	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sZ4Kd-001Wt2-08;
+	Wed, 31 Jul 2024 10:05:11 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20240730071929.2016537-1-a.fatoum@pengutronix.de>
- <20240730071929.2016537-7-a.fatoum@pengutronix.de>
- <Zqiv4ROuyhUNQz4p@pengutronix.de>
- <30067938-201b-4488-b435-011ac90c7fd3@pengutronix.de>
-Content-Language: en-US
-In-Reply-To: <30067938-201b-4488-b435-011ac90c7fd3@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+To: barebox@lists.infradead.org
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Wed, 31 Jul 2024 10:05:04 +0200
+Message-Id: <20240731080510.364706-5-a.fatoum@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240731080510.364706-1-a.fatoum@pengutronix.de>
+References: <20240731080510.364706-1-a.fatoum@pengutronix.de>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240731_001952_654098_29EAF59D 
-X-CRM114-Status: GOOD (  21.46  )
+X-CRM114-CacheID: sfid-20240731_010513_012788_4BB8BD49 
+X-CRM114-Status: GOOD (  18.11  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,94 +82,105 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 06/10] mci: core: use CONFIG_MCI_WRITE, not
- CONFIG_BLOCK_WRITE
+Subject: [PATCH v2 04/10] block: allow block devices to implement the cdev erase operation
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello again,
+We mainly implement cdev erase for raw flashes. Many block devices, like
+NVMe, SSD or SD/MMC are also flash-based and expose a mechanism or
+multiple to trigger an erase on hardware or flash translation layer
+level without an accompanied write.
 
-On 30.07.24 13:08, Ahmad Fatoum wrote:
-> Hello Sascha,
-> 
-> On 30.07.24 11:18, Sascha Hauer wrote:
->> On Tue, Jul 30, 2024 at 09:19:25AM +0200, Ahmad Fatoum wrote:
->>> There's a more specific CONFIG_MCI_WRITE that's so far only used to
->>> remove write support for in the Atmel MCI driver. We should use the same
->>> symbol also to remove support in the MCI core instead of relying on its
->>> parent CONFIG_BLOCK_WRITE option.
->>
->> Currently CONFIG_MCI_WRITE has no relation to CONFIG_BLOCK_WRITE.
->> Having CONFIG_MCI_WRITE enabled and CONFIG_BLOCK_WRITE disabled doesn't
->> make sense. Shouldn't CONFIG_MCI_WRITE depend on CONFIG_BLOCK_WRITE?
->>
->> Also having CONFIG_BLOCK_WRITE enabled and CONFIG_MCI_WRITE disabled
->> allows you to support writing to block devices that are not MCI devices.
->> Given that the vast majority of block devices are actually MCI devices
->> this seems rather exotic.
->>
->> Maybe we should drop CONFIG_MCI_WRITE and replace it with
->> CONFIG_BLOCK_WRITE, or just have
->>
->> config MCI_WRITE
->> 	bool
->> 	default y if BLOCK_WRITE
-> 
-> This works for me. I can do this for v2.
+To make it possible to use this functionality elsewhere in barebox,
+let's have the common block device layer pass through the erase
+operation, so it may be implemented in a device-specific manner.
 
-I looked into this and MCI_WRITE selects DISK_WRITE, which selects
-BLOCK_WRITE. BLOCK_WRITE has no prompt. I'd prefer to keep this as-is.
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+---
+v1 -> v2:
+  - use newly added region_overlap_size helper in range.h
+---
+ common/block.c  | 34 ++++++++++++++++++++++++++++++++++
+ include/block.h |  1 +
+ 2 files changed, 35 insertions(+)
 
-> 
-> 
->>
->> Sascha
->>
->>>
->>> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->>> ---
->>>  drivers/mci/mci-core.c | 8 +++-----
->>>  1 file changed, 3 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
->>> index f6f8a6adabb9..3a5fb0330700 100644
->>> --- a/drivers/mci/mci-core.c
->>> +++ b/drivers/mci/mci-core.c
->>> @@ -1801,8 +1801,8 @@ static int mci_blk_part_switch(struct mci_part *part)
->>>   *
->>>   * This routine expects the buffer has the correct size to read all data!
->>>   */
->>> -static int __maybe_unused mci_sd_write(struct block_device *blk,
->>> -				const void *buffer, sector_t block, blkcnt_t num_blocks)
->>> +static int mci_sd_write(struct block_device *blk,
->>> +			const void *buffer, sector_t block, blkcnt_t num_blocks)
->>>  {
->>>  	struct mci_part *part = container_of(blk, struct mci_part, blk);
->>>  	struct mci *mci = part->mci;
->>> @@ -2179,9 +2179,7 @@ static int mci_check_if_already_initialized(struct mci *mci)
->>>  
->>>  static struct block_device_ops mci_ops = {
->>>  	.read = mci_sd_read,
->>> -#ifdef CONFIG_BLOCK_WRITE
->>> -	.write = mci_sd_write,
->>> -#endif
->>> +	.write = IS_ENABLED(CONFIG_MCI_WRITE) ? mci_sd_write : NULL,
->>>  };
->>>  
->>>  static int mci_set_boot(struct param_d *param, void *priv)
->>> -- 
->>> 2.39.2
->>>
->>>
->>>
->>
-> 
-
+diff --git a/common/block.c b/common/block.c
+index f55da775a797..eaec454ecbb2 100644
+--- a/common/block.c
++++ b/common/block.c
+@@ -11,6 +11,7 @@
+ #include <linux/err.h>
+ #include <linux/list.h>
+ #include <dma.h>
++#include <range.h>
+ #include <file-list.h>
+ 
+ LIST_HEAD(block_device_list);
+@@ -380,10 +381,35 @@ static int block_op_discard_range(struct cdev *cdev, loff_t count, loff_t offset
+ 	return 0;
+ }
+ 
++static __maybe_unused int block_op_erase(struct cdev *cdev, loff_t count, loff_t offset)
++{
++	struct block_device *blk = cdev->priv;
++	struct chunk *chunk, *tmp;
++	int ret;
++
++	if (!blk->ops->erase)
++		return -EOPNOTSUPP;
++
++	count >>= blk->blockbits;
++	offset >>= blk->blockbits;
++
++	list_for_each_entry_safe(chunk, tmp, &blk->buffered_blocks, list) {
++		if (region_overlap_size(offset, count, chunk->block_start, blk->rdbufsize)) {
++			ret = chunk_flush(blk, chunk);
++			if (ret < 0)
++				return ret;
++			list_move(&chunk->list, &blk->idle_blocks);
++		}
++	}
++
++	return blk->ops->erase(blk, offset, count);
++}
++
+ static struct cdev_operations block_ops = {
+ 	.read	= block_op_read,
+ #ifdef CONFIG_BLOCK_WRITE
+ 	.write	= block_op_write,
++	.erase = block_op_erase,
+ #endif
+ 	.close	= block_op_close,
+ 	.flush	= block_op_flush,
+@@ -429,6 +455,14 @@ int blockdevice_register(struct block_device *blk)
+ 		list_add_tail(&chunk->list, &blk->idle_blocks);
+ 	}
+ 
++	/* TODO: We currently set this to ignore ERASE_TO_FLASH, but it could
++	 * be useful to propagate the enum erase_type down into the erase
++	 * callbacks and then map ERASE_TO_FLASH here to a discard operation.
++	 * Before doing that though, we need to optimize the hardware drivers
++	 * (currently eMMC) to erase bigger regions at once
++	 */
++	blk->cdev.flags |= DEVFS_WRITE_AUTOERASE;
++
+ 	ret = devfs_create(&blk->cdev);
+ 	if (ret)
+ 		return ret;
+diff --git a/include/block.h b/include/block.h
+index a0f226c7649f..eb319b953d32 100644
+--- a/include/block.h
++++ b/include/block.h
+@@ -12,6 +12,7 @@ struct file_list;
+ struct block_device_ops {
+ 	int (*read)(struct block_device *, void *buf, sector_t block, blkcnt_t num_blocks);
+ 	int (*write)(struct block_device *, const void *buf, sector_t block, blkcnt_t num_blocks);
++	int (*erase)(struct block_device *blk, sector_t block, blkcnt_t num_blocks);
+ 	int (*flush)(struct block_device *);
+ };
+ 
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
 
 
 
