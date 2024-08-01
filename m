@@ -1,64 +1,66 @@
-Delivery-date: Thu, 01 Aug 2024 09:10:06 +0200
+Delivery-date: Thu, 01 Aug 2024 12:50:41 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sZPws-0053Dx-1J
+	id 1sZTOL-0056VX-1P
 	for lore@lore.pengutronix.de;
-	Thu, 01 Aug 2024 09:10:06 +0200
+	Thu, 01 Aug 2024 12:50:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sZPwr-0006N4-Nk
-	for lore@pengutronix.de; Thu, 01 Aug 2024 09:10:06 +0200
+	id 1sZTOK-0000CZ-Qa
+	for lore@pengutronix.de; Thu, 01 Aug 2024 12:50:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=HN5f7ietgRJtzJy01bqGrVZA8uZ/uxIsWLzM7Y9G0W8=; b=zqaKfB7vthztJ6bBu8pO1PsJaV
-	HGV5q2O9bBsd9OW0UWQCF8P/k/AEnTE5yxQeb7iAZYMGtFbbSlQjyB3rNLd8ezr0gLoSaJjiJ2gBM
-	7Ksqf/GexE46UmLoXuxHixYBGZ1gpO53Ylsmnss9Vk4j6vgkiEW6TthW0HkzXcB+VnkcfDBQ6XEeh
-	9mQi2p9RFmMhdnTRlljOR6+3bM9Zoxd+6QdBa8LBx6b7zF+2bE0eRUFe4BCexi64x7cgZ+gw4lSP3
-	sMybAsiSmUn8MHtJdaCNJdJFz39wE8y6M0l96cICHdk46v7JlmumRwD2T+Y3WJ4IUynuAl66Djsu9
-	I1MSxv5g==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=wmYRS3EDHWEkBoZk0Fiv5AMAeIEgiZR17pu9Ea4NKH0=; b=uA6aXKu+iD3Vn+wN2Dg5Smvcm6
+	tnKOPLVRQhFw3AZeUoy9vzC55S/Xj5lxFqPu7sMJujRposs5PlIIW//EU3mV1isvIcC+3W1rPRPv2
+	s+OVtq6sCjP2EOR+ejQqLHH+ulZ9sOzILSDpTUsmnaGUY8N26gvriAyFCJichAqj6D3WoRdliccZd
+	kvgwjepRyrR3riXwuUdY+2XLONlrrAEHIpYE867VoC4siyjWr5bloUwgt2t0CpbvOE8D9Oohhw37Z
+	2hj+LlBdFKn0o16hSUngauhCv4X+VFwQ5LiyqGCu9k89O7KfNtYt9ELLuQguRBGz1gRImAl+DAd1D
+	TQj1eZtA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sZPwE-000000047Gw-0bIp;
-	Thu, 01 Aug 2024 07:09:26 +0000
+	id 1sZTNg-00000004nrQ-2fNg;
+	Thu, 01 Aug 2024 10:50:00 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sZPwB-000000047Fw-0fwD
+	id 1sZTNc-00000004nqs-3Pwx
 	for barebox@lists.infradead.org;
-	Thu, 01 Aug 2024 07:09:24 +0000
+	Thu, 01 Aug 2024 10:49:58 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sZPw9-0006Hd-4f; Thu, 01 Aug 2024 09:09:21 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sZTNa-00006A-Pz; Thu, 01 Aug 2024 12:49:54 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sZPw8-003iLy-Nw; Thu, 01 Aug 2024 09:09:20 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sZPw8-006zko-26;
-	Thu, 01 Aug 2024 09:09:20 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu,  1 Aug 2024 09:09:18 +0200
-Message-Id: <20240801070918.1667337-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sZTNa-003kVP-DC; Thu, 01 Aug 2024 12:49:54 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sZTNa-00Fbui-16;
+	Thu, 01 Aug 2024 12:49:54 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240731080510.364706-1-a.fatoum@pengutronix.de>
+References: <20240731080510.364706-1-a.fatoum@pengutronix.de>
+Message-Id: <172250939433.3720623.17170861178754459461.b4-ty@pengutronix.de>
+Date: Thu, 01 Aug 2024 12:49:54 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240801_000923_218275_D7092E13 
-X-CRM114-Status: GOOD (  14.60  )
+X-CRM114-CacheID: sfid-20240801_034956_889162_B396E7BF 
+X-CRM114-Status: GOOD (  11.21  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,61 +82,48 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] console: honour OF current-speed property if available
+Subject: Re: [PATCH v2 00/10] mmc: add SD/eMMC erase support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-current-speed describes the current baud rate the device operates at.
-It's not used often in DT, but we should honour it if available.
 
-This gives boards the ability to configure consoles that are activated
-early (e.g. ACTIVATE_ALL) with the correct baud rate from the beginning
-instead of activating it at CONFIG_BAUDRATE and then switching the
-baudrate at environment load time.
+On Wed, 31 Jul 2024 10:05:00 +0200, Ahmad Fatoum wrote:
+> A common optimization for flashing is to skip gaps between partitions
+> and only flash actual data. The problem with that is that data from
+> the previous installation may persist and confuse later software, e.g.
+> an existing barebox state partition not contained in the image may
+> survive, when the expectation is that a new state is created.
+> 
+> eMMCs can support three different commands for erasing data:
+> 
+> [...]
 
-Additionally, this can be used to work around following bug:
+Applied, thanks!
 
- - Console is added, but not activated automatically
- - NV sets cs0.active="ioe" cs0.baudrate="4000000"
- - .active parameter is applied first, so CONFIG_BAUDRATE is configured
- - .baudrate parameter is applied second, so baudrate switch happens
- - System hangs until Enter is pressed:
-   ## Switch baudrate on console serial1 to 4000000 bps and press ENTER
+[01/10] fs: give erase() a new erase_type parameter
+        https://git.pengutronix.de/cgit/barebox/commit/?id=25dcd56dcbdb (link may not be stable)
+[02/10] cdev: factor out range identical/overlap check
+        https://git.pengutronix.de/cgit/barebox/commit/?id=daef9e140040 (link may not be stable)
+[03/10] block: factor out chunk_flush helper
+        https://git.pengutronix.de/cgit/barebox/commit/?id=ea2ec31597a6 (link may not be stable)
+[04/10] block: allow block devices to implement the cdev erase operation
+        https://git.pengutronix.de/cgit/barebox/commit/?id=6d91caf4c2d6 (link may not be stable)
+[05/10] mci: turn bool members into bitfield in struct mci
+        https://git.pengutronix.de/cgit/barebox/commit/?id=1ded5de0109b (link may not be stable)
+[06/10] mci: describe more command structure in mci.h
+        https://git.pengutronix.de/cgit/barebox/commit/?id=72fabfcbe197 (link may not be stable)
+[07/10] mci: core: use CONFIG_MCI_WRITE, not CONFIG_BLOCK_WRITE
+        https://git.pengutronix.de/cgit/barebox/commit/?id=12b96aadefaa (link may not be stable)
+[08/10] mci: add support for discarding write blocks
+        https://git.pengutronix.de/cgit/barebox/commit/?id=96551caab87c (link may not be stable)
+[09/10] commands: sync: add new command to flush cached writes
+        https://git.pengutronix.de/cgit/barebox/commit/?id=f858d511f1bb (link may not be stable)
+[10/10] commands: blkstats: add command to print block device statistics
+        https://git.pengutronix.de/cgit/barebox/commit/?id=4dfa47cd5d44 (link may not be stable)
 
-until it's resolved in a cleaner manner.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- common/console.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/common/console.c b/common/console.c
-index 9db994220e67..310959eeb8b4 100644
---- a/common/console.c
-+++ b/common/console.c
-@@ -331,7 +331,7 @@ int console_register(struct console_device *newcdev)
- 	struct device_node *serdev_node = console_is_serdev_node(newcdev);
- 	struct device *dev = &newcdev->class_dev;
- 	int activate = 0, ret;
--	unsigned baudrate = CONFIG_BAUDRATE;
-+	unsigned of_baudrate = 0, baudrate = CONFIG_BAUDRATE;
- 
- 	if (!serdev_node && initialized == CONSOLE_UNINITIALIZED)
- 		console_init_early();
-@@ -367,6 +367,11 @@ int console_register(struct console_device *newcdev)
- 		console_set_stdoutpath(newcdev, baudrate);
- 	}
- 
-+	/* Honour the previous baudrate if it is set to a non-zero value */
-+	of_property_read_u32(dev->of_node, "current-speed", &of_baudrate);
-+	if (of_baudrate)
-+		baudrate = of_baudrate;
-+
- 	console_add_earlycon_param(newcdev, baudrate);
- 
- 	if (newcdev->setbrg) {
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
