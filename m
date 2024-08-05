@@ -1,88 +1,85 @@
-Delivery-date: Mon, 05 Aug 2024 15:36:54 +0200
+Delivery-date: Mon, 05 Aug 2024 15:48:52 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1saxtO-006VMA-0b
+	id 1say4y-006VXc-2q
 	for lore@lore.pengutronix.de;
-	Mon, 05 Aug 2024 15:36:54 +0200
+	Mon, 05 Aug 2024 15:48:52 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1saxtN-0007tY-Kj
-	for lore@pengutronix.de; Mon, 05 Aug 2024 15:36:54 +0200
+	id 1say4y-0000gk-BM
+	for lore@pengutronix.de; Mon, 05 Aug 2024 15:48:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=JT74C/AKcpOLiqG9wTWhFxHmqEpfVYmPhHYY5JLezAM=; b=Pds8lzck5oYyh83fF28TaY/0FM
-	BJr557+VoPoPYkiVl8W/fI/DJfvi/fiQgCEF2FruJWYahUenq/Z7JCWgPTmpagLSZzg9xhlIboekl
-	h0/2zXgIrmQwfKUAc13VFMGVilp3VsDjuzLN2uWf6qCDAr9o9/c9Oq+DlqAmiRWfdrjy57ebBIPtC
-	kieqlVHV9KQWShxR1rmdCcIIKfErVcP7CoBLQtGydy4GMBwiExU8dbnJ2b5+2dfzIG16vp/YqNn4Z
-	6SmItgzPnh1IuS4r9CLSBSXxDmdn8VjEF5WcdeUZSQn17kMLX8S9tx/9/oDqx0xYwiSVjR2S+cLB7
-	mA9QFhag==;
+	MIME-Version:Content-Type:Date:To:From:Subject:Message-ID:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=etDI8U8d+Uulf6MONhxS41E1MW3HUDzHS9/XEym+4Ac=; b=AzsjwanMTKCEdKHY6Z69xOrC1t
+	DKOpW5YBSnT0OXBomW0gd9+ompYGtRY4jLEz/vgihP5TzYe6JIwniG+5otMJ8p0+/YBajEsaI/Avf
+	8u92HNkkgDXnO/ynfeZbY79507bXftPhIram+x8c3e4qWCE0pCx6LCtdIivmBl3CAzF+NdKwdHwOE
+	rBIXZM7m+/oRysFVw0Uo/cWCtwnpoqNa/53uFPnqHfGIxLvL3ucqKu10wU0gwi2uB3OxzzgwZi6bl
+	pzUVWYLNGv1BFtsoPyFh2rvn0/Js0v7ETOA3TIcRcEycH0EzUO61T/u7i7w5V+PhKat0FBkSWEmu8
+	7Rr2GeBQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1saxsk-0000000FxcB-3rvD;
-	Mon, 05 Aug 2024 13:36:14 +0000
-Received: from mail-ej1-x632.google.com ([2a00:1450:4864:20::632])
+	id 1say4S-0000000G0q8-3Acx;
+	Mon, 05 Aug 2024 13:48:20 +0000
+Received: from mail-ed1-x529.google.com ([2a00:1450:4864:20::529])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1saxsi-0000000FxbB-1YIV
+	id 1say4O-0000000G0pd-3UJ1
 	for barebox@lists.infradead.org;
-	Mon, 05 Aug 2024 13:36:13 +0000
-Received: by mail-ej1-x632.google.com with SMTP id a640c23a62f3a-a7a94478a4eso937694266b.1
-        for <barebox@lists.infradead.org>; Mon, 05 Aug 2024 06:36:11 -0700 (PDT)
+	Mon, 05 Aug 2024 13:48:18 +0000
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-5a10835487fso13938265a12.1
+        for <barebox@lists.infradead.org>; Mon, 05 Aug 2024 06:48:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722864970; x=1723469770; darn=lists.infradead.org;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JT74C/AKcpOLiqG9wTWhFxHmqEpfVYmPhHYY5JLezAM=;
-        b=dp3SHMaoDrj2zl38+Ml/athvTVEXScHJXfIy/ebiZ5K8i1346CARIAWcJB1LgQyVL6
-         BEu/0LdQPp9AvGK1dDTdibE+73q6vfPJxcgfaclK5xov86Wjb2epEJ1z0nPbjLkYRHqH
-         JAcpoQ/Bn/CZFQ0uVsPiHxVJXLM9cEAORDM1Lm8ZQrf7cQGH1uTAtZgazvfxpUfdJpZd
-         I8XcVD53X5F6FJRYhmnuipxEMo8OYbioReN3EG9jzJ5mhJGXP8DVAd/ZI+bSHpaQLSZt
-         32ab57hYqkMNh93l/8nxR3ej1EwvFLbPeP7yYv9b8mvwdUTBY3mcrzucBF06LhF/ZxJu
-         OVMg==
+        d=gmail.com; s=20230601; t=1722865695; x=1723470495; darn=lists.infradead.org;
+        h=content-transfer-encoding:mime-version:user-agent:date:to:from
+         :subject:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=etDI8U8d+Uulf6MONhxS41E1MW3HUDzHS9/XEym+4Ac=;
+        b=Bgz50dt5LFQWuHbL82sVuVGP0lrKvtRWatTsWTL+dQJVRgNuEaITKecfwVDGDQA447
+         b9R2yVugaOYYSgmD1ETrrvb8MC8xCUjOaamTNe28E1IlfG698Vro8dNsap8oJwpqrBwh
+         YjRdx414lgUVB31PQaThmEV0QAo+pyM/heJKLUn5SLfrA700auXNpT5/XPb+ihowJ1Sj
+         P6N9/K/4CSOllUA8k9DrOj+b+Iq/iGG1pgQssQ2bHfHlfkfGpQ321IDL3r5SgZ4d60x4
+         vWL8TUWGMQN3JRW68DMFm5yvZLs+SyjUSjAOiuTTmY1dukUXwnu+puO3tGVB3I3Hvx0M
+         +Zxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722864970; x=1723469770;
-        h=content-transfer-encoding:mime-version:user-agent:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=JT74C/AKcpOLiqG9wTWhFxHmqEpfVYmPhHYY5JLezAM=;
-        b=NHFJjRwkDSwSawl/GGh+mjILHHLdjQmWyWxkxz2E1z1MHonPqQczljalcnw2ISBDoO
-         t6mzmiC4eKe5e8gVjAMoYCdVBYzKR9InFG2h1AOqLL0hPA1zfDBwbYM+k+XHZUY4qXIu
-         YtdUvStklzX4BK7nuLNp6FWYuJP8bsIYa6/Qie9Y60FJHD2zKhrqz2jl+JNIYYjBP7s8
-         tU0CFy9kp7Z1izt2k2ByZKj5rZeQ/jwdO5/oxwYGDyVR43wOv3+jxt3m7SHKkMdAAs/H
-         lrK1HswF4e/Mhl1y1ZJyqR4gsqZ8ZF3/K5YHGOjYH+j+NEDK0FUtJJIcgiPh0qjTR9NZ
-         +qoA==
-X-Gm-Message-State: AOJu0Yz/xjENerXCLcGaW5ZlvBn6GahRSlnNdI9Dn+eiUf9JLolzoHJH
-	aTpd0lZskhanDUs7Bj/K3ZxSe2DKu5zwCRJPMcGfGQxdJAFiO83PUtm0OQ==
-X-Google-Smtp-Source: AGHT+IGjwjpVFVu18FQkW3LrL8mlHUqXKyP0PxpPL8Nps/j5Zh+AkX85pCEnOM1ImOisdVEyQqvOww==
-X-Received: by 2002:a17:907:7d8c:b0:a7d:ab62:c317 with SMTP id a640c23a62f3a-a7dbe66b624mr1075816666b.30.1722864969699;
-        Mon, 05 Aug 2024 06:36:09 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722865695; x=1723470495;
+        h=content-transfer-encoding:mime-version:user-agent:date:to:from
+         :subject:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=etDI8U8d+Uulf6MONhxS41E1MW3HUDzHS9/XEym+4Ac=;
+        b=IgGS1Jp/YYfDvRkPuwa62N2XFwL6pl6euiW5R88ISR8M1fXoNgXF/BSuYy+7O6jWxm
+         hTWQzzRsZiVHn1yXYWGZb8W1Tj8tAaFwk3M5ZvbxnJbFCIfvL4Cif6wQtBOv8LkH6NUs
+         Uf83hE6mSDQ6DMmv1sqsSzjZorhtLI2pFPG34kWjAKDImDfS6/QNQ8cNzNOWu8jXwqBS
+         5fdNd2enlYOgqXwlHu79Zwa8elZN559J9FHgr40v3Lh5ieEgF+prEvBfuEQysSh3WqIU
+         OHyEw3ymPwkOV7/R7zJIwLtO+0AGlVtmCq0uOAheZbQO5OQFZ/fgsHJgVmQOMou9HBOo
+         m6wQ==
+X-Gm-Message-State: AOJu0Yx1Qco3G0W9G0LKRG338ii2GWmFPMXMG0gDn6XK4N9LImkwe1VR
+	DHsnW/eP3pXGVqIxLlC3HEdnAwBZDjDu9w2KqkjVIv91MGERKMc6VyVRqg==
+X-Google-Smtp-Source: AGHT+IGHtu5obaTLfLI0b4gpWXi7VlnlFolnzYXVHy0MyWT7sY4AjiIgTQ0RcqHCxPZgv9mzsc/ZvQ==
+X-Received: by 2002:a17:906:4fc7:b0:a7a:a5ae:11bd with SMTP id a640c23a62f3a-a7dc510ccefmr874620266b.67.1722865694402;
+        Mon, 05 Aug 2024 06:48:14 -0700 (PDT)
 Received: from vaio ([91.142.65.210])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5b8f7a32945sm4313765a12.13.2024.08.05.06.36.09
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9d8a4b1sm456240366b.151.2024.08.05.06.48.13
+        for <barebox@lists.infradead.org>
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 06:36:09 -0700 (PDT)
-Message-ID: <285f945e3dd499c520723ca356332319d6457e24.camel@gmail.com>
+        Mon, 05 Aug 2024 06:48:14 -0700 (PDT)
+Message-ID: <3f5eb45e38041713fb983ec00bcdf830fb86cb11.camel@gmail.com>
 From: Stefano Manni <stefano.manni@gmail.com>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Date: Mon, 05 Aug 2024 15:36:08 +0200
-In-Reply-To: <ec161afa-115a-4c2c-a9de-9279e3b8344e@pengutronix.de>
-References: <7abdbc190f22b62372d0ae76a943d6e5a1467b05.camel@gmail.com>
-	 <ec161afa-115a-4c2c-a9de-9279e3b8344e@pengutronix.de>
+To: barebox@lists.infradead.org
+Date: Mon, 05 Aug 2024 15:48:13 +0200
 Content-Type: text/plain; charset="UTF-8"
 User-Agent: Evolution 3.30.5 (3.30.5-1.fc29) 
 MIME-Version: 1.0
 Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240805_063612_442622_B797B075 
-X-CRM114-Status: GOOD (  11.38  )
+X-CRM114-CacheID: sfid-20240805_064816_905735_CD5EFD08 
+X-CRM114-Status: UNSURE (   6.15  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -105,28 +102,25 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
 	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,
 	SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: bootchooser: avoid write environment
+Subject: eth frame error on imx6ul
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hi Ahmad,
+Hello,
 
-On Wed, 2024-07-31 at 19:51 +0200, Ahmad Fatoum wrote:
-> 
-> On 31.07.24 16:35, Stefano Manni wrote:
-> > Hi,
-> > 
-> > I'm using bootchooser to switch from a partition to another in case
-> > of
-> > an update done in Linux userspace using the command bareboxenv.
-> 
-> You will want to use the barebox-state backend, not the regular
-> environment.
+on a target based on imx6ul I see lots of errors like this when
+connected to the company LAN:
 
-barebox-state with a circular backend on spinor turned to be the best
-solution.
+WARNING: eth0: error frame: 0x87ed5190 0x00000886
 
-Thanks for your hint,
+where 0x00000886 means "frame length violation" (FEC_RBD_LG).
+
+It seems to be an HW issue BUT on another target based on imx6x with
+exactly the same HW block for ethernet I never see this error.
+
+Have you ever faced something like this?
+
+Thanks,
 Stefano
 
 
