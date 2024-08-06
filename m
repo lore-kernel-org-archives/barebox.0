@@ -1,67 +1,69 @@
-Delivery-date: Tue, 06 Aug 2024 08:04:26 +0200
+Delivery-date: Tue, 06 Aug 2024 08:08:08 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sbDJ4-006jYg-1E
+	id 1sbDMe-006jaE-1i
 	for lore@lore.pengutronix.de;
-	Tue, 06 Aug 2024 08:04:26 +0200
+	Tue, 06 Aug 2024 08:08:08 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sbDJ3-0005Lt-ND
-	for lore@pengutronix.de; Tue, 06 Aug 2024 08:04:26 +0200
+	id 1sbDMd-0005ZL-BU
+	for lore@pengutronix.de; Tue, 06 Aug 2024 08:08:08 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=qkzzmqhmIMaoh1Gi2nUGAQ+gUJu2yGDB+C+r1RRQ/zQ=; b=TETaZHZvrVLr0Pjsh2KpcmHREc
-	mDoPS07sfYD9iAt3msraEOUQ5z2oAsOocuVMthC+4zrcFV5NQkO1oRnSyR+djye90ZP4FcS6ebmFz
-	ghzAAVTHgZUkInvRelgNBiXLEwGx0UyOjnwpfohmxGxH/su9d9VYHk7Sa0yOX+X5E3aLoBZwtsvaI
-	LtrLWyCovEXgzjKTDnJwrNnzSCTikWBPu2WsrNlVkUchNC/HHYKpTST/TZlHhLHccCm5doqdN1zsP
-	WDjECaFWXVxE+JxxqnIPUW80V2gOIWTnsOvcFXs3HpCdffgY3WSjC0cIv7+rhopU+gF9KagWQtAA0
-	/fB3ND1A==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:To:From:Date:Reply-To:Cc:
+	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=LCQ8u1ND209kKf00W1vBFHPooHqTjpxX1Q1+BHlwibI=; b=gBV+M3SVKXBlg7eI0m9gB6AqbR
+	hVyzQQMlG5buGR4isaNHbCVKQgiTzG2hKeTzQ/Eq1gK8zSGF7awDqkIO8ldIMKpbpRZ5MtuUCgovs
+	zPneiyzxOWn4bZsnmLIp9xzeI8VGuCkG72zJiJxpoyOuiCqvJxCof9nwspmvuYljAAWjcwnSaEAgT
+	AX9iMSbZgQcnrMK1bj17V8/DWGZNA6C04xYqRGRvALabGucSlqEE15RRfLUebLtWkK8KAcVfs9Ter
+	TXCka/Yv2mUsZk+Bv/tX9arjQUHC2o1O/m1j2hhfffqGffvphZr43+jFTMrvJY/lDw7SSD65ZBw/s
+	7v27JYig==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sbDIe-00000000d7i-32xd;
-	Tue, 06 Aug 2024 06:04:00 +0000
+	id 1sbDMA-00000000dSn-3WZk;
+	Tue, 06 Aug 2024 06:07:38 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sbDIb-00000000d6u-318b
+	id 1sbDM7-00000000dRg-40VQ
 	for barebox@lists.infradead.org;
-	Tue, 06 Aug 2024 06:03:59 +0000
+	Tue, 06 Aug 2024 06:07:37 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sbDIS-0005GF-JG; Tue, 06 Aug 2024 08:03:48 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sbDM6-0005Vc-PW; Tue, 06 Aug 2024 08:07:34 +0200
+Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sbDIS-004seB-6R; Tue, 06 Aug 2024 08:03:48 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sbDIS-002khv-0Q;
-	Tue, 06 Aug 2024 08:03:48 +0200
+	(envelope-from <sha@pengutronix.de>)
+	id 1sbDM6-004slA-CH; Tue, 06 Aug 2024 08:07:34 +0200
+Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
+	(envelope-from <sha@pengutronix.de>)
+	id 1sbDM6-004uKU-0r;
+	Tue, 06 Aug 2024 08:07:34 +0200
+Date: Tue, 6 Aug 2024 08:07:34 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20240801055737.3190132-1-s.hauer@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Message-ID: <ZrG9pjqsnWBvfkE2@pengutronix.de>
 References: <20240801055737.3190132-1-s.hauer@pengutronix.de>
-Message-Id: <172292422813.656150.12310395347700725147.b4-ty@pengutronix.de>
-Date: Tue, 06 Aug 2024 08:03:48 +0200
+ <172292422813.656150.12310395347700725147.b4-ty@pengutronix.de>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <172292422813.656150.12310395347700725147.b4-ty@pengutronix.de>
+X-Sent-From: Pengutronix Hildesheim
+X-URL: http://www.pengutronix.de/
+X-Accept-Language: de,en
+X-Accept-Content-Type: text/plain
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240805_230357_794403_33F86A7C 
-X-CRM114-Status: GOOD (  12.78  )
+X-CRM114-CacheID: sfid-20240805_230736_022097_3E4CAD3E 
+X-CRM114-Status: GOOD (  22.39  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,66 +89,63 @@ Subject: Re: [PATCH v2 00/19] Add ECDSA support for FIT image verification
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-
-On Thu, 01 Aug 2024 07:57:18 +0200, Sascha Hauer wrote:
-> This series implements ECDSA signature verification for FIT images.
-> The ECDSA code itself is taken from the Kernel. Currently only supported
-> way to specify a ECDSA key is to compile it into the binary using
-> CONFIG_CRYPTO_ECDSA_KEY, taking it from a device tree is not ye
-> supported.
+On Tue, Aug 06, 2024 at 08:03:48AM +0200, Sascha Hauer wrote:
 > 
-> Changes since v1:
-> - better split up rsatoc patches
-> - keep engine support around in rsatoc as it is still needed in many
->   cases
-> - Add more cleanup to rsatoc
+> On Thu, 01 Aug 2024 07:57:18 +0200, Sascha Hauer wrote:
+> > This series implements ECDSA signature verification for FIT images.
+> > The ECDSA code itself is taken from the Kernel. Currently only supported
+> > way to specify a ECDSA key is to compile it into the binary using
+> > CONFIG_CRYPTO_ECDSA_KEY, taking it from a device tree is not ye
+> > supported.
+> > 
+> > Changes since v1:
+> > - better split up rsatoc patches
+> > - keep engine support around in rsatoc as it is still needed in many
+> >   cases
+> > - Add more cleanup to rsatoc
+> > 
+> > [...]
 > 
-> [...]
+> Applied, thanks!
+> 
+> [01/19] errno: include string for EOPNOTSUPP
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=1ad1a884407f (link may not be stable)
+> [02/19] rsatoc: disable deprecated function warnings
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=d64d733d2451 (link may not be stable)
+> [03/19] rsatoc: remove unnecessary function call
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=42731deb592f (link may not be stable)
+> [04/19] rsatoc: pass EVP_PKEY around
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=b1fef1396772 (link may not be stable)
+> [05/19] rsatoc: rename rsa_err() to openssl_error()
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=5206d3b61418 (link may not be stable)
+> [06/19] rsatoc: move engine initialization to engine_get_pub_key()
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=89d32ef83ecd (link may not be stable)
+> [07/19] rsatoc: cleanup error handling
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=c99779284ce5 (link may not be stable)
+> [08/19] rsatoc: remove unnecessary error check
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=2ec045398f6d (link may not be stable)
+> [09/19] rsatoc: use non deprecated openssl functions to retrieve RSA params
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=cc0b8a2e7606 (link may not be stable)
+> [10/19] rsatoc: check error value of gen_key()
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=6df30149362d (link may not be stable)
+> [11/19] rsatoc: rename to keytoc
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=7b51f76a4534 (link may not be stable)
+> [12/19] keytoc: add ecdsa support
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=994f3df141f5 (link may not be stable)
+> [13/19] keytoc: Let openssl_error() take a format string
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=73a0f34fddc7 (link may not be stable)
+> [14/19] keytoc: clarify error messages
+>         https://git.pengutronix.de/cgit/barebox/commit/?id=cfd2a8f1fc19 (link may not be stable)
 
-Applied, thanks!
+Really I applied up to this patch with Ahmads comments applied. The
+remaining ones need some more work which I'll do later.
 
-[01/19] errno: include string for EOPNOTSUPP
-        https://git.pengutronix.de/cgit/barebox/commit/?id=1ad1a884407f (link may not be stable)
-[02/19] rsatoc: disable deprecated function warnings
-        https://git.pengutronix.de/cgit/barebox/commit/?id=d64d733d2451 (link may not be stable)
-[03/19] rsatoc: remove unnecessary function call
-        https://git.pengutronix.de/cgit/barebox/commit/?id=42731deb592f (link may not be stable)
-[04/19] rsatoc: pass EVP_PKEY around
-        https://git.pengutronix.de/cgit/barebox/commit/?id=b1fef1396772 (link may not be stable)
-[05/19] rsatoc: rename rsa_err() to openssl_error()
-        https://git.pengutronix.de/cgit/barebox/commit/?id=5206d3b61418 (link may not be stable)
-[06/19] rsatoc: move engine initialization to engine_get_pub_key()
-        https://git.pengutronix.de/cgit/barebox/commit/?id=89d32ef83ecd (link may not be stable)
-[07/19] rsatoc: cleanup error handling
-        https://git.pengutronix.de/cgit/barebox/commit/?id=c99779284ce5 (link may not be stable)
-[08/19] rsatoc: remove unnecessary error check
-        https://git.pengutronix.de/cgit/barebox/commit/?id=2ec045398f6d (link may not be stable)
-[09/19] rsatoc: use non deprecated openssl functions to retrieve RSA params
-        https://git.pengutronix.de/cgit/barebox/commit/?id=cc0b8a2e7606 (link may not be stable)
-[10/19] rsatoc: check error value of gen_key()
-        https://git.pengutronix.de/cgit/barebox/commit/?id=6df30149362d (link may not be stable)
-[11/19] rsatoc: rename to keytoc
-        https://git.pengutronix.de/cgit/barebox/commit/?id=7b51f76a4534 (link may not be stable)
-[12/19] keytoc: add ecdsa support
-        https://git.pengutronix.de/cgit/barebox/commit/?id=994f3df141f5 (link may not be stable)
-[13/19] keytoc: Let openssl_error() take a format string
-        https://git.pengutronix.de/cgit/barebox/commit/?id=73a0f34fddc7 (link may not be stable)
-[14/19] keytoc: clarify error messages
-        https://git.pengutronix.de/cgit/barebox/commit/?id=cfd2a8f1fc19 (link may not be stable)
-[15/19] malloc: implement free_sensitive()
-        (no commit info)
-[16/19] Add elliptic curve cryptography (ECC) helper functions
-        (no commit info)
-[17/19] crypto: add ECDSA support
-        (no commit info)
-[18/19] crypto: make RSA a visible option
-        (no commit info)
-[19/19] fit: Add ecdsa support
-        (no commit info)
+Sascha
 
-Best regards,
 -- 
-Sascha Hauer <s.hauer@pengutronix.de>
-
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
