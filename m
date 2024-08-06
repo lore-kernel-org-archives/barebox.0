@@ -1,58 +1,67 @@
-Delivery-date: Mon, 05 Aug 2024 18:58:20 +0200
+Delivery-date: Tue, 06 Aug 2024 07:55:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sb12K-006YOP-23
+	id 1sbDA6-006jQJ-1a
 	for lore@lore.pengutronix.de;
-	Mon, 05 Aug 2024 18:58:20 +0200
+	Tue, 06 Aug 2024 07:55:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sb12K-0001IG-2e
-	for lore@pengutronix.de; Mon, 05 Aug 2024 18:58:20 +0200
+	id 1sbDA5-0003uN-Sp
+	for lore@pengutronix.de; Tue, 06 Aug 2024 07:55:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=aSbP9UH/az3Z2DsmF9v5vlbHYIFQxtzqgyxkdhg5UiQ=; b=AmbHPRBJYIWT2vvreyVPps2WwV
-	BaNWDwTleG6pE/gxWiUIBEHw86IRT7nEKebI34C78Z1hKwDbeAvCkPhesOWMKJ/YtdEG87Z6+yu3A
-	p+ALizZ4ELutUVz+PxWu7Aqfr05IyV/O1QivxsI6qysoYLkysr9uTxTbfDfnKKVPItLRNAxqAgD5/
-	bzTzeFJGlVZ4W1piV38WUe8PJoRKVwyRH8K8wHewuqNi522vmcUAs0xyo9a9DEEPnHyVGdRk7D8up
-	19+21xE4F8jWZ9qFK79bFTtCNZz92kZF9r+tpry445FO4Rt9Zsh/gbOXfiCC0RQNUT1ZLAC2FAvI1
-	b85HDPrA==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=0EiWlf4tL7alsNUU3+42hVMBhkrpaCRJWu6jDUKvIo8=; b=PHva+0e/1LPjBvOPQ9C0vr3qWV
+	DJnYFfmoMzC6zguttjEA0UDaVVmRFF4EsxdFW0NB+IkuPZUOwUFC+0LfnpJoCjEazR8zBEUg8Fs+z
+	UHlhVIePpEkNjvJnOwwo8rEJdnaE6W9U5oKSR5RVvzmbUZr2IS8Qs2f58pcxFhmg0xyFgZdBTFGQa
+	ca4WAD9vHRjAmC8fvCo+NtvH4R3dvNi2Cw70FgiyuRiTxF4SwmKkhqO3Euwanrw1ZF+kSl+WW902w
+	+zTYwr0R9mafCbMRD14ADWziGRvbaO+wAfU7FGJwf6Wcqr7mQAzGnXNG5HyfrbhN2jgjkBzBIlUOL
+	uXydm11w==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sb11t-0000000Gb65-20US;
-	Mon, 05 Aug 2024 16:57:53 +0000
+	id 1sbD9Q-00000000buR-1xiV;
+	Tue, 06 Aug 2024 05:54:28 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sb11p-0000000Gb3Q-1aoN
+	id 1sbD9N-00000000bu5-0aBG
 	for barebox@lists.infradead.org;
-	Mon, 05 Aug 2024 16:57:51 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sb11o-0001Ez-7q; Mon, 05 Aug 2024 18:57:48 +0200
-Message-ID: <9695c594-d410-4e72-afeb-68777a82ce71@pengutronix.de>
-Date: Mon, 5 Aug 2024 18:57:47 +0200
+	Tue, 06 Aug 2024 05:54:26 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sbD9K-0003oj-QE; Tue, 06 Aug 2024 07:54:22 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sbD9K-004scm-DV; Tue, 06 Aug 2024 07:54:22 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sbD9K-002jY5-18;
+	Tue, 06 Aug 2024 07:54:22 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240805162809.722890-1-a.fatoum@pengutronix.de>
+References: <20240805162809.722890-1-a.fatoum@pengutronix.de>
+Message-Id: <172292366234.651649.2900965482860701694.b4-ty@pengutronix.de>
+Date: Tue, 06 Aug 2024 07:54:22 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Stefano Manni <stefano.manni@gmail.com>, barebox@lists.infradead.org
-References: <3f5eb45e38041713fb983ec00bcdf830fb86cb11.camel@gmail.com>
- <98259e53-5bdd-4e6f-a0c9-1c0d2a11e85b@pengutronix.de>
- <34a3bd84065357c7ab6e8a55c6ec34f5267edad6.camel@gmail.com>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <34a3bd84065357c7ab6e8a55c6ec34f5267edad6.camel@gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240805_095749_449947_1EF9FED4 
-X-CRM114-Status: GOOD (  13.69  )
+X-CRM114-CacheID: sfid-20240805_225425_212154_0FE7DD42 
+X-CRM114-Status: UNSURE (   6.74  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,50 +83,28 @@ X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: eth frame error on imx6ul
+Subject: Re: [PATCH] fixup! console: add new CONSOLE_ACTIVATE_ALL_FALLBACK
+ option
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On 05.08.24 16:38, Stefano Manni wrote:
-> Hello Ahmad
-> 
-> On Mon, 2024-08-05 at 15:54 +0200, Ahmad Fatoum wrote:
->>
->> Do you have TFTP or something running while seeing these errors,
->> or when do they pop up?
-> 
-> They pop up unconditionally just after ifup. If I run tcpdump on the
-> same LAN I see a lot of multicast/broadcast frames and probably the
-> error comes out on the reception of them. Also because I figured out
-> from fec_imx.h that 0x00000886 means:
-> 
-> #define FEC_RBD_LAST		0x0800	/**< Receive BD status: Buffer
-> is last in frame (useless here!) */
-> #define FEC_RBD_BC		0x0080	/**< Receive BD status: The
-> received frame is broadcast frame */
-> #define FEC_RBD_CR		0x0004	/**< Receive BD status: CRC
-> error */
-> #define FEC_RBD_OV		0x0002	/**< Receive BD status: Receive
-> FIFO overrun */
 
-You can enable CONFIG_CMD_ETHLOG to capture the frames and see if
-the frame that triggers the error looks odd in some way.
-
-Cheers,
-Ahmad
-
-
+On Mon, 05 Aug 2024 18:28:09 +0200, Ahmad Fatoum wrote:
+> console: fix CONSOLE_ACTIVATE_ALL_FALLBACK initcall enablement
 > 
-> Best,
-> Stefano
+> This used to be enabled unconditionally and when the #ifdef was added,
+> it checked a never-defined symbol. Add the CONFIG_ prefix to fix this.
 > 
 > 
 
+Applied, thanks!
+
+[1/1] fixup! console: add new CONSOLE_ACTIVATE_ALL_FALLBACK option
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4f4e5624b851 (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
