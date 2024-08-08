@@ -1,67 +1,71 @@
-Delivery-date: Wed, 07 Aug 2024 08:59:56 +0200
+Delivery-date: Thu, 08 Aug 2024 11:46:45 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sbaeK-0075Ba-1k
+	id 1sbzjI-007SCw-2y
 	for lore@lore.pengutronix.de;
-	Wed, 07 Aug 2024 08:59:56 +0200
+	Thu, 08 Aug 2024 11:46:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sbaeK-0004Kb-05
-	for lore@pengutronix.de; Wed, 07 Aug 2024 08:59:56 +0200
+	id 1sbzjI-0001ES-Bk
+	for lore@pengutronix.de; Thu, 08 Aug 2024 11:46:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=afW2pPUZ6MAcVy3WYmY+pnblIdEKAXMwrNSj8RTL1MA=; b=oy0SAr8FdKpaI7iet4aupqx7jJ
-	SvMPrt6Cp+eCw7DDLMxeZ1lIsKpgpTpf378gQkVLtofSH9gDceUrJHXMzryePyExH/yQ4gn817xas
-	BuaLlQiwKeI45Uz2+zwZP/iscaVrKYAdBRRungzfuVqt2BONAvTqNA73d+qT0ahEKyEpU59pH6SuK
-	l9NTsce/Au6QhJkCQ4ulPJ3AJsk7rgU1baMzF2JTrtkvM4CYAuS7u0KsCfIok6hUPk1ULw9f02uAY
-	Zq3a2Ym5cQivk3eZYytMbmNXyzz9HjYXp3+mj6MB+L56BzfgMl/x9qD644Rm9D+GOP9EOk/kELjgI
-	uCqhRmRA==;
+	Content-type:MIME-Version:Subject:Date:Message-ID:To:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=EOOpCw2x1/EaRbLAD00Es01xsCV2Ek0T1ezenxIwiGI=; b=Z60/weGwk0Ce9dOM5iE1h5JBBI
+	/JVIQ3lQBDI+nrGU5d/o1cgc5PuU1fAZNv0nj9R7ayteoRn9zVLA1vjEZ5By5h8+4Nkx/csextHrt
+	xy71F3tzqiiMpStpCvdjnItd1AFm0uepBAM3e6fmb6VQpKJ/ZA75EKSWBoFdm2Va00bKK6wJakvG4
+	DTjqReggr6mB4CmSEOfym55zVdmGuevqYWTlMfLBmCNiEzHZ1Jf8z7SXQVmOJa753hYfTBO4fB9At
+	t6cHaCvS9I00AvMEutKFVnrSlnPbvS5aqVRvf77A5qjLMmu/IH9Yf3lq0NCEWGsNXZ7TMEFC4ul6z
+	ad04zluw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sbadc-000000048g0-0OgS;
-	Wed, 07 Aug 2024 06:59:12 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1sbzid-00000007lPU-0MOP;
+	Thu, 08 Aug 2024 09:46:03 +0000
+Received: from mr5.vodafonemail.de ([145.253.228.165])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sbadK-000000048ax-2ECm
+	id 1sbziZ-00000007lMn-2MdN
 	for barebox@lists.infradead.org;
-	Wed, 07 Aug 2024 06:58:56 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sbadH-0004Bv-AB; Wed, 07 Aug 2024 08:58:51 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sbadG-0058Ls-Sc; Wed, 07 Aug 2024 08:58:50 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sbadG-00HSls-2d;
-	Wed, 07 Aug 2024 08:58:50 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>, 
- Sascha Hauer <s.hauer@pengutronix.de>
-In-Reply-To: <20240806105429.2278660-1-s.hauer@pengutronix.de>
-References: <20240806105429.2278660-1-s.hauer@pengutronix.de>
-Message-Id: <172301393080.4162125.1452610225806364175.b4-ty@pengutronix.de>
-Date: Wed, 07 Aug 2024 08:58:50 +0200
+	Thu, 08 Aug 2024 09:46:01 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arcor.de;
+	s=vfde-mb-mr2-23sep; t=1723110350;
+	bh=EOOpCw2x1/EaRbLAD00Es01xsCV2Ek0T1ezenxIwiGI=;
+	h=From:To:Message-ID:Date:Subject:Content-type:From;
+	b=Elw838CwOjiS0ZzaZxnwasM7SGcyRtd0LQ9I7etVQVDhs+Rmzbtsg+mbR6HdRu743
+	 7VtsmgQShJCYS/UcWSiMc7dyKr1ZyWBwduN3+yrhx/LacTLSuEXQWuCa6qLJyHijsc
+	 eyC2IYCilF6nERXvUm4WOtwLq8+bUEXxJWHz5Wb8=
+Received: from mp102.fra-mediabeam.com (unknown [10.0.0.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by mr5.vodafonemail.de (Postfix) with ESMTPS id 4WfhxV57Mjz1y4K
+	for <barebox@lists.infradead.org>; Thu,  8 Aug 2024 09:45:50 +0000 (UTC)
+Received: from mailbackend01 (unknown [10.0.0.2])
+	by mp102.fra-mediabeam.com (Postfix) with ESMTP id 4WfhxV1ZS4z8t5g
+	for <barebox@lists.infradead.org>; Thu,  8 Aug 2024 09:45:50 +0000 (UTC)
+Received: from [212.43.72.26]
+	by mail.vodafone.de via HTTP; Thu, 08 Aug 2024 11:45:45 +0200
+From: giorgio.nicole@arcor.de
+To: barebox@lists.infradead.org
+Message-ID: <48fe5dbe42e14b518a86e25bf21e4425@arcor.de>
+Date: Thu, 08 Aug 2024 11:45:45 +0200
+X-Priority: 3
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+X-purgate-type: clean
+X-purgate: clean
+X-purgate-size: 787
+X-purgate-ID: 155817::1723110350-ABFFE11D-A1617949/0/0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240806_235854_623737_6A10D95B 
-X-CRM114-Status: UNSURE (   5.72  )
+X-CRM114-CacheID: sfid-20240808_024600_051070_4D59A2A2 
+X-CRM114-Status: UNSURE (   8.92  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,31 +84,41 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.3 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
-	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH 1/2] malloc: implement malloc_usable_size()
+X-Spam-Status: No, score=-2.8 required=4.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MALFORMED_FREEMAIL,
+	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+	autolearn_force=no version=3.4.2
+Subject: barebox on EFI bios and secure boot
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 06 Aug 2024 12:54:28 +0200, Sascha Hauer wrote:
-> malloc_usable_size() is a standard libc function. Implement it for the
-> barebox allocators, dlmalloc and tlsf_malloc.
-> 
-> 
 
-Applied, thanks!
+Hi,
 
-[1/2] malloc: implement malloc_usable_size()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=c89226c58ac3 (link may not be stable)
-[2/2] malloc: implement free_sensitive()
-      https://git.pengutronix.de/cgit/barebox/commit/?id=47ff229f3fae (link may not be stable)
+I use barebox to boot a linux kernel on an Intel atom based PC with an =
+EFI bios and this just works=2E
 
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+Now I wanted to configure the bios to enable the secure boot mode: this=
+ means I tried to write some
+EFI variables (db, dbx, KEK, PK); for this I used the efitools utils (e=
+fi-updatevar for example) but it didn't
+worked: I always get an 'Invalid argument' error=2E
+
+After some unsuccessful tries I booted the linux kernel directly from t=
+he bios, without barebox and in this
+case the efi-updatevar tool worked as expected; so I suppose that start=
+ing barebox has some kind of effect
+on the persistent store for the efi vars=2E
+
+Does anyone have similar issues or a suggestion about what can be check=
+ed to fix this ???
+
+thank you,
+
+giorgio
+
 
 
 
