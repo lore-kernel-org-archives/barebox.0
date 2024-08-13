@@ -1,64 +1,75 @@
-Delivery-date: Tue, 13 Aug 2024 09:02:51 +0200
+Delivery-date: Tue, 13 Aug 2024 14:45:35 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sdlYR-0097E6-1w
+	id 1sdqu7-009CGK-0i
 	for lore@lore.pengutronix.de;
-	Tue, 13 Aug 2024 09:02:51 +0200
+	Tue, 13 Aug 2024 14:45:35 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sdlYQ-0004Sr-QP
-	for lore@pengutronix.de; Tue, 13 Aug 2024 09:02:51 +0200
+	id 1sdqu6-0004FQ-IE
+	for lore@pengutronix.de; Tue, 13 Aug 2024 14:45:35 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=gUsgP2BJpWfUjIh2rkaupZgh9cOLfJ2xBMdftvnX75w=; b=W2UfY51tNMYnrAh9sH/JGlg0f3
-	eJjGjDqTBXD4fX8ASx8JUrFMUf0NGNQzHK0TKwt3tzTLizwUo/adHHUPraqHmTf/+SBfKC0/dn2dR
-	LTLn2kgli8Ydli6ChDhQbLntt2XcoaARD9488tiWbMLGIPKB5EjM0ICu0fHsb2nJBFPO2VTELYSNl
-	Weo6q8OkbfDFlULBTte+5khhQDA1DE3qaE3GBDOpr47+1mruBE5B5LVykvzho2wBDQ6BCY53SEMpB
-	7X8G+rEu0bc2vgDBQUN0/0GFMve3HaUc3x656nSwEEWbd9yezJfJRNd5Oo+mQC1tDVYZZbFfkhbr0
-	q+nbrnjg==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Type:
+	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-ID:Date
+	:Subject:Cc:To:From:Reply-To:Content-ID:Content-Description:Resent-Date:
+	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=VaemaDfaasvmX9w0kJDXiZgEE9GxgVhH6t9B2Skxfv0=; b=idH9s1DreyxafJ1H198N96ilub
+	0GrfELKouJiZVoAdFnaObZOTO4ExJ0rzPD6rd2AO9vLgxEbx/Ec+EDn/63fdswDxRsO8co9WVFJGy
+	z9X5GcSDXpn2RsC0GpwuMtVYHFGeXqtseIvNelbFL1EXGyQjnFD0TpUzfD7/k4Vf50KDqBYppqvKC
+	xmg5u1fCXWZGZwaGM8HgNsAuMbUSnietaiPtmGKxyPkjMMh9kBVrHRSz36KBJCooi07IRUvqo9UKO
+	ZKavTU6WDldYhuffJykae+VnSofdZdHIqFD8rONbd2FoRZcIIeGcieeblXVmoZbzvxvz8OkKkfsfR
+	CMiyplEQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sdlXw-00000002dd1-1KPc;
-	Tue, 13 Aug 2024 07:02:20 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1sdqtS-00000003kD4-31G1;
+	Tue, 13 Aug 2024 12:44:55 +0000
+Received: from smtpout43.security-mail.net ([85.31.212.43])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sdlXg-00000002dYO-0CPr
+	id 1sdqtL-00000003k8O-15UM
 	for barebox@lists.infradead.org;
-	Tue, 13 Aug 2024 07:02:08 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sdlXe-000481-Hq; Tue, 13 Aug 2024 09:02:02 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sdlXe-0004ET-4Y; Tue, 13 Aug 2024 09:02:02 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sdlXe-004UK1-09;
-	Tue, 13 Aug 2024 09:02:02 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+	Tue, 13 Aug 2024 12:44:51 +0000
+Received: from localhost (fx303.security-mail.net [127.0.0.1])
+	by fx303.security-mail.net (Postfix) with ESMTP id E3CCF30F255
+	for <barebox@lists.infradead.org>; Tue, 13 Aug 2024 14:44:42 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kalrayinc.com;
+	s=sec-sig-email; t=1723553082;
+	bh=0oln/USqoGZklSelAELCKrNVRLIni1qO8UT7uANpQWg=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=W5N7SMNlXq8onij3w+1TuzFd3LzP+rR2STLCXrUpLP48ygdYvTtIZ39hUD8MUvzXs
+	 7cqm89UUEn5j5R2IZLA+bxQUdVnDDU2MjvsV6QkI/NdhplgQQwvsT3zZp8NpWbh08C
+	 ZX1jTYHbokecd16u3X/6wTDtcYFR1kJpKs3YfAgM=
+Received: from fx303 (fx303.security-mail.net [127.0.0.1]) by
+ fx303.security-mail.net (Postfix) with ESMTP id A267B30F02A; Tue, 13 Aug
+ 2024 14:44:42 +0200 (CEST)
+Received: from srvsmtp.lin.mbt.kalray.eu (unknown [217.181.231.53]) by
+ fx303.security-mail.net (Postfix) with ESMTPS id 0182530ED08; Tue, 13 Aug
+ 2024 14:44:41 +0200 (CEST)
+Received: from junon.lan.kalrayinc.com (unknown [192.168.37.161]) by
+ srvsmtp.lin.mbt.kalray.eu (Postfix) with ESMTPS id B977E40349; Tue, 13 Aug
+ 2024 14:44:41 +0200 (CEST)
+X-Quarantine-ID: <mi5dJcHiKLIw>
+X-Secumail-id: <8219.66bb5539.f2d89.0>
+From: Yann Sionneau <ysionneau@kalrayinc.com>
 To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 13 Aug 2024 09:01:55 +0200
-Message-Id: <20240813070201.1069847-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+Cc: jvetter@kalrayinc.com, jborne@kalrayinc.com, Yann Sionneau
+ <ysionneau@kalrayinc.com>
+Date: Tue, 13 Aug 2024 14:44:08 +0200
+Message-ID: <20240813124408.2569-3-ysionneau@kalrayinc.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240813124408.2569-1-ysionneau@kalrayinc.com>
+References: <20240813124408.2569-1-ysionneau@kalrayinc.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+X-ALTERMIMEV2_out: done
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240813_000204_474959_30D9E5E4 
-X-CRM114-Status: GOOD (  13.68  )
+X-CRM114-CacheID: sfid-20240813_054448_047605_3CCDABC0 
+X-CRM114-Status: GOOD (  10.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -76,63 +87,75 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 1/7] ci: container: update to Debian Bookworm with GCC v14.2.0
+Subject: [PATCH v2 3/3] ci: add support for running basic tests on kvx arch
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We have been using the same distro/toolchain for more than a year now,
-so let's update them to their newest versions.
+Add support for running tests on qemu for kvx port of Barebox.
 
-pip3 now warns that we are not in a venv. Acknowledge this and ignore
-it as we want labgrid to be available to pytest in the container without
-having to source a virtualenv first.
-
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Signed-off-by: Yann Sionneau <ysionneau@kalrayinc.com>
 ---
 v1 -> v2:
-  - no change
----
- test/Containerfile | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+  - use `dtb` key in kvx test yaml config instead of extra_args
+  - add `-semihosting` as extra qemu arg to make qemu exit properly upon executing "scall 0xfff" from poweroff driver.
 
-diff --git a/test/Containerfile b/test/Containerfile
-index fe3e3a6186b0..06d155bf4d28 100644
---- a/test/Containerfile
-+++ b/test/Containerfile
-@@ -2,7 +2,7 @@
- # This Containerfile is used to build an image containing basic stuff to be used
- # to build barebox and run our test suites.
+ .github/workflows/test-labgrid-pytest.yml |  4 ++++
+ test/kvx/qemu@generic_defconfig.yaml      | 20 ++++++++++++++++++++
+ 2 files changed, 24 insertions(+)
+ create mode 100644 test/kvx/qemu@generic_defconfig.yaml
+
+diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
+index 2e038e371f..f4ef1b3a00 100644
+--- a/.github/workflows/test-labgrid-pytest.yml
++++ b/.github/workflows/test-labgrid-pytest.yml
+@@ -23,6 +23,10 @@ jobs:
+             lgenv: test/arm/multi_v8_defconfig.yaml
+             defconfig: multi_v8_defconfig
  
--FROM debian:bullseye
-+FROM debian:bookworm
- MAINTAINER Sascha Hauer <s.hauer@pengutronix.de>
- LABEL Description="This image is for building and testing barebox inside a container"
- 
-@@ -49,7 +49,7 @@ RUN apt-get update && apt-get install -y \
- 	u-boot-tools \
- 	&& rm -rf /var/lib/apt/lists/*
- 
--ENV GCC_VERSION=13.1.0
-+ENV GCC_VERSION=14.2.0
- 
- # Manually install the kernel.org Crosstool based toolchains
- RUN korg_crosstool_dl() { wget -nv -O - https://mirrors.edge.kernel.org/pub/tools/crosstool/files/bin/${1}/${2}/${1}-gcc-${2}-nolibc-${3}.tar.xz | tar -C /opt -xJ ; } && \
-@@ -70,7 +70,7 @@ RUN echo barebox ALL=NOPASSWD: ALL > /etc/sudoers.d/barebox
- RUN cd /tmp && \
-     git clone --depth 1 -b v23.0 https://github.com/labgrid-project/labgrid && \
-     cd labgrid && \
--    pip3 install . && \
-+    pip3 install --break-system-packages . && \
-     ln -s $(which pytest) /usr/local/bin/labgrid-pytest;
- 
- ENV CROSS_COMPILE_arm=/opt/gcc-${GCC_VERSION}-nolibc/arm-linux-gnueabi/bin/arm-linux-gnueabi-
++          - ARCH: kvx
++            lgenv: test/kvx/qemu@generic_defconfig.yaml
++            defconfig: generic_defconfig
++
+           - ARCH: mips
+             lgenv: test/mips/qemu-malta_defconfig.yaml
+             defconfig: qemu-malta_defconfig
+diff --git a/test/kvx/qemu@generic_defconfig.yaml b/test/kvx/qemu@generic_defconfig.yaml
+new file mode 100644
+index 0000000000..97f5d8689a
+--- /dev/null
++++ b/test/kvx/qemu@generic_defconfig.yaml
+@@ -0,0 +1,20 @@
++targets:
++  main:
++    drivers:
++      QEMUDriver:
++        qemu_bin: qemu-system-kvx
++        machine: mppa-coolidge
++        cpu: kv3-1
++        memory: 2G
++        kernel: barebox
++        extra_args: '-semihosting'
++        dtb: qemu.dtb
++      BareboxDriver:
++        prompt: 'barebox:/ '
++        bootstring: 'commandline:'
++      BareboxTestStrategy: {}
++images:
++  barebox: !template "$LG_BUILDDIR/barebox"
++  qemu.dtb: !template "$LG_BUILDDIR/arch/kvx/dts/qemu.dtb"
++imports:
++  -  ../strategy.py
 -- 
-2.39.2
+2.34.1
+
+
+
+
 
 
 
