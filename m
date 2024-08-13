@@ -1,72 +1,58 @@
-Delivery-date: Mon, 12 Aug 2024 17:27:05 +0200
+Delivery-date: Tue, 13 Aug 2024 08:26:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sdWwr-008thx-2m
+	id 1sdkzH-0096ld-1V
 	for lore@lore.pengutronix.de;
-	Mon, 12 Aug 2024 17:27:05 +0200
+	Tue, 13 Aug 2024 08:26:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sdWwr-0001Gj-7j
-	for lore@pengutronix.de; Mon, 12 Aug 2024 17:27:05 +0200
+	id 1sdkzG-00027s-RA
+	for lore@pengutronix.de; Tue, 13 Aug 2024 08:26:31 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-type:MIME-Version:Subject:Date:Message-ID:To:From:Reply-To:Cc:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=Lq4dMYq7HWmaKrOfkQTDc6Rj4qUMXJSD+HTfBbWzrAg=; b=vLL7MjBjAMesSLw9JBWDAMFgIg
-	OkUaLGQX8j5RUYdWXtIBQ8B540QsJE9afLlv9p5DUmhQxvonbAKKHlIpv93GD6sUrt8T0b29sRYCY
-	TtSOWVRCKgGt3LNrPOM0q7OEGvROd0qhI1kAfEIzKX83KyB+d9lXhC/omod7n4zZJbG/+nrSmzF5Z
-	TJZepfxRjqCWZC1MZ5Tk3pDhuwa5Xt/NH7oawo3bkvJxIMMMiJFc4s+FGKEywfA1wc6rzVqNrzmn4
-	BfAJly91xH3XOU1upMI9kKX6gHNaoKDsn5bC2HkuF8fTNZSCSX1pX+0nCNAL3tKG+2pcE+FrBN/iW
-	9GR9XjvA==;
+	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
+	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=reWI/uAfnl3A8iC7dm+DWP0TybeGDI+rPxtc7gDuujo=; b=N4Xp2jv2FuHG85NeAo12KRoL4X
+	YaZUME3/kNYFJU5a/XBS3MCzY7BNjGn/esiNJYr/A+5ZPeaa60jeDLphYsl36tRKdlllYSNh43mAi
+	ift0penqkLnfAE6eooX9TPV3cM7FKiJBmjfZjaXVeCss7my9IjEsmlObSP40PDz4ynyRvWqweBJ42
+	9LO0nK1DWYTyswRG7Twn7fCneeu7haJnfW1mkgM3otGGF59lQK6FzzhmPX7OVCgC9Rpj7zGqwbjHl
+	+6tUa9e554IGb+YRu03F5q82DaOxXvQS+2OKEqufmxu6v9MSB3vBF0otlNtwG5p82jBI6ujEQ+/1a
+	nxE6SezA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sdWwI-00000000j5c-1Sqy;
-	Mon, 12 Aug 2024 15:26:30 +0000
-Received: from mr4.vodafonemail.de ([145.253.228.164])
+	id 1sdkyc-00000002ZIn-0PYJ;
+	Tue, 13 Aug 2024 06:25:50 +0000
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sdWwE-00000000j4c-12SO
+	id 1sdkyY-00000002ZI5-2YCA
 	for barebox@lists.infradead.org;
-	Mon, 12 Aug 2024 15:26:28 +0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arcor.de;
-	s=vfde-mb-mr2-23sep; t=1723476378;
-	bh=Lq4dMYq7HWmaKrOfkQTDc6Rj4qUMXJSD+HTfBbWzrAg=;
-	h=From:To:Message-ID:Date:Subject:Content-type:From;
-	b=T4TvVlMbDhkxm63+06KVNE2xRoyoghQ+Gk/ezGFG4I+Rp8WCdYXzMN7uKmOoR9Loo
-	 e0G3AzoJ3mQExMWvb+X8VmttxWRoTTRk6Ayyp2NlNmcS1CJtPIfuvtT1m6G3Bks4w4
-	 wjKFIFUp/ZQHfsR9xK5rRDW4rgSvlDWplS86K8cY=
-Received: from mp100.fra-mediabeam.com (unknown [10.0.0.2])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(No client certificate requested)
-	by mr4.vodafonemail.de (Postfix) with ESMTPS id 4WjJJV4Y9dz1xxV;
-	Mon, 12 Aug 2024 15:26:18 +0000 (UTC)
-Received: from mailbackend01 (unknown [10.0.0.2])
-	by mp100.fra-mediabeam.com (Postfix) with ESMTP id 4WjJJV3j3dz2xc9;
-	Mon, 12 Aug 2024 15:26:18 +0000 (UTC)
-Received: from [212.43.72.26]
-	by mail.vodafone.de via HTTP; Mon, 12 Aug 2024 17:26:17 +0200
-From: giorgio.nicole@arcor.de
-To: "Ahmad Fatoum" <a.fatoum@pengutronix.de>,	
-   barebox@lists.infradead.org
-Message-ID: <c0c7c38e7f7d49c6ba08f8e43259e0d2@arcor.de>
-Date: Mon, 12 Aug 2024 17:26:17 +0200
-X-Priority: 3
+	Tue, 13 Aug 2024 06:25:48 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
+	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
+	(envelope-from <a.fatoum@pengutronix.de>)
+	id 1sdkyW-0001yd-KC; Tue, 13 Aug 2024 08:25:44 +0200
+Message-ID: <47a7870c-0ac1-43ed-8f4a-6fc99d74259d@pengutronix.de>
+Date: Tue, 13 Aug 2024 08:25:43 +0200
 MIME-Version: 1.0
-Content-type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-purgate-type: clean
-X-purgate: clean
-X-purgate-size: 2218
-X-purgate-ID: 155817::1723476378-5C3DD11D-B998B914/0/0
+User-Agent: Mozilla Thunderbird
+To: Yann Sionneau <ysionneau@kalrayinc.com>, barebox@lists.infradead.org
+Cc: jvetter@kalrayinc.com, jborne@kalrayinc.com
+References: <20240812144150.27707-1-ysionneau@kalrayinc.com>
+ <20240812144150.27707-3-ysionneau@kalrayinc.com>
+Content-Language: en-US
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240812144150.27707-3-ysionneau@kalrayinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240812_082626_743129_D1EECFEB 
-X-CRM114-Status: GOOD (  17.28  )
+X-CRM114-CacheID: sfid-20240812_232546_681649_617F9677 
+X-CRM114-Status: GOOD (  15.48  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,75 +70,73 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-2.4 required=4.0 tests=AWL,BAYES_00,DKIM_SIGNED,
-	DKIM_VALID,DKIM_VALID_AU,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-	HEADER_FROM_DIFFERENT_DOMAINS,MAILING_LIST_MULTI,MALFORMED_FREEMAIL,
-	RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,T_SCC_BODY_TEXT_LINE
-	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: AW: Re: barebox on EFI bios and secure boot
+X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH 3/3] ci: add support for running basic tests on kvx arch
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hallo Ahmad,
+Hello Yann,
+
+On 12.08.24 16:41, Yann Sionneau wrote:
+> Signed-off-by: Yann Sionneau <ysionneau@kalrayinc.com>
+> ---
+>  .github/workflows/test-labgrid-pytest.yml |  4 ++++
+>  test/kvx/qemu@generic_defconfig.yaml      | 18 ++++++++++++++++++
+>  2 files changed, 22 insertions(+)
+>  create mode 100644 test/kvx/qemu@generic_defconfig.yaml
+> 
+> diff --git a/.github/workflows/test-labgrid-pytest.yml b/.github/workflows/test-labgrid-pytest.yml
+> index 2e038e371f..f4ef1b3a00 100644
+> --- a/.github/workflows/test-labgrid-pytest.yml
+> +++ b/.github/workflows/test-labgrid-pytest.yml
+> @@ -23,6 +23,10 @@ jobs:
+>              lgenv: test/arm/multi_v8_defconfig.yaml
+>              defconfig: multi_v8_defconfig
+>  
+> +          - ARCH: kvx
+> +            lgenv: test/kvx/qemu@generic_defconfig.yaml
+> +            defconfig: generic_defconfig
+> +
+>            - ARCH: mips
+>              lgenv: test/mips/qemu-malta_defconfig.yaml
+>              defconfig: qemu-malta_defconfig
+> diff --git a/test/kvx/qemu@generic_defconfig.yaml b/test/kvx/qemu@generic_defconfig.yaml
+> new file mode 100644
+> index 0000000000..bc15afb632
+> --- /dev/null
+> +++ b/test/kvx/qemu@generic_defconfig.yaml
+> @@ -0,0 +1,18 @@
+> +targets:
+> +  main:
+> +    drivers:
+> +      QEMUDriver:
+> +        qemu_bin: qemu-system-kvx
+> +        machine: mppa-coolidge
+> +        cpu: kv3-1
+> +        memory: 2G
+> +        kernel: barebox
+> +        extra_args: !template "-dtb $LG_BUILDDIR/arch/kvx/dts/qemu.dtb"
+
+There's a dtb: attribute you can use instead.
+
+> +      BareboxDriver:
+> +        prompt: 'barebox:/ '
+> +        bootstring: 'commandline:'
+> +      BareboxTestStrategy: {}
+> +images:
+> +  barebox: !template "$LG_BUILDDIR/barebox"
+> +imports:
+> +  -  ../strategy.py
 
 
-thank you for the answer,
-
-
->> I use barebox to boot a linux kernel on an Intel atom based PC with =
-an EFI bios and this just works=2E
->>=20
->> Now I wanted to configure the bios to enable the secure boot mode: t=
-his means I tried to write some
->> EFI variables (db, dbx, KEK, PK); for this I used the efitools utils=
- (efi-updatevar for example) but it didn't
->> worked: I always get an 'Invalid argument' error=2E
-
-> In this case, neither barebox or the kernel are signed, right?
-
-yes, I can write the efi vars with the keys and certificates with the B=
-ios gui and then enable the secure boot: then
-the bios will only load properly signed bootloader or kernel images=2E
-This already works=2E
-
->> After some unsuccessful tries I booted the linux kernel directly fro=
-m the bios, without barebox and in this
->> case the efi-updatevar tool worked as expected; so I suppose that st=
-arting barebox has some kind of effect
->> on the persistent store for the efi vars=2E
-
-> I am not familiar with UEFI secure boot, so I don't know if there is =
-some lock
-> down happening here or what could cause this=2E
-
-Experimenting with the barebox configuration / source code (2024=2E8=2E=
-0) I found that if I disable the PCI bus support
-in the barebox configuration (CONFIG_PCI) then my Invalid argument prob=
-lem disappears=2E
-
-Then I tried to follow the pci bus initialization in the barebox source=
- at: drivers/pci/pci=2Ec and found that in the function
-pci_scan_bus(), in the for loop at devfn =3D=3D 105 (0x69) there appear=
- a device with IDs 8086:5a94: as soon as I include
-this device in the enumeration I have my Invalid argument problem, if I=
- skip the device, with a hacky:
-
-if (devfn =3D=3D 105) continue;
-
-at the beginning of the loop then the problem disappears=2E
-
-It seems something very special actually and I'm not really a guru abou=
-t PCI initialization=2E=2E=2E
-
-I just hope someone with more experience on the matter can suggest a so=
-lution here; maybe the device should
-really be skipped (but not with my hacky if condition)=2E
-
-If requested I could provide some more detail about the device=2E=2E=2E
-
-thanks again,
-giorgio
-
-
+-- 
+Pengutronix e.K.                           |                             |
+Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
+31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
+Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
 
 
