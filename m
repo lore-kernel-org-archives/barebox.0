@@ -1,63 +1,83 @@
-Delivery-date: Wed, 14 Aug 2024 10:33:51 +0200
+Delivery-date: Wed, 14 Aug 2024 10:47:02 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1se9S3-009TZc-0v
+	id 1se9em-009Tl9-2J
 	for lore@lore.pengutronix.de;
-	Wed, 14 Aug 2024 10:33:51 +0200
+	Wed, 14 Aug 2024 10:47:02 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1se9S2-0002Pv-Ng
-	for lore@pengutronix.de; Wed, 14 Aug 2024 10:33:51 +0200
+	id 1se9em-0003i5-3k
+	for lore@pengutronix.de; Wed, 14 Aug 2024 10:47:00 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=ZIsqcHM7n7WIr/d3jd/HxvOYmeH/iPrJwl9TczMwt/g=; b=fFPSUUon9Tp/EHoRaGYjB1MEel
-	LlLSum6SVw6tXZOjIwXXvHwz0hx6GL6DqCP1inEYm9ZOu4c0tcgKk8j0QUT+MFvdH4hqNFcXIb960
-	JyTABwsOMq9x2MgbgWlcRgM8S48KGICWr7x6kpA+YESxB5tOpKe7CwUUzc33PnFjOUFw9AFrEnkWX
-	2FdxW6KqCxuPHCw+qBg+6ZQdYUa9errAQfpQ++W1JrNB1t0P43OLV0XQe8YWpbS62VGpfvDhXB+cj
-	R/MXmnHEIfCuPYm0DAs4VJAwLmolSRhyA5L+F3eFKN6jXLuxh6i6m5LXFm6LKrmOMbxXmEwcGdeE8
-	6zZP4d5g==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=CzLy+5ba8MgpYlN8GeoVhQ3H2EKSY8Z7oi45ucO3nf4=; b=jq13V2rJllMLKvgrkIICLXI+vw
+	ZhNPNxdjNIvPi3cRG31jLjKUbFBWV4cce3efNI7YLHR8mK/h7eFzqN1RHwuqxcEM5J4qUhl0VVWpr
+	GEvP5uLSGj+EKnHdCoFO+LCQFcAO7M6ZmU2mE7PYPYw6HZLrPSiM7GmoBQ3dWcU7OBktySeCuPoQr
+	kkCjLbil/hj4f17lWYG7LePkoDXZT8NOiqPqV0ha7CwFE4YMQjA6KWom7UbecTm3YQ60twpLA9ded
+	8wKn3tvRXdbu6P+PtsRH2H9pgWbIG9qeeaqEvHGTU9E7d0ySf2bKrHdeYvRnWL7nIb7wRMW5DfEKP
+	A8txFuWA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1se9RY-00000006Fbx-42rn;
-	Wed, 14 Aug 2024 08:33:20 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1se9eE-00000006Gbg-0uaX;
+	Wed, 14 Aug 2024 08:46:26 +0000
+Received: from desiato.infradead.org ([2001:8b0:10b:1:d65d:64ff:fe57:4e05])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1se9RV-00000006Fb8-2TyB
+	id 1se9eB-00000006GbG-12Jx
+	for barebox@bombadil.infradead.org;
+	Wed, 14 Aug 2024 08:46:23 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=Content-Transfer-Encoding:Content-Type
+	:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:From:Sender:
+	Reply-To:Cc:Content-ID:Content-Description;
+	bh=CzLy+5ba8MgpYlN8GeoVhQ3H2EKSY8Z7oi45ucO3nf4=; b=V2EyO6Pn5z0/LD/3QlpTiuAgQi
+	oiMr5ZDTHNQO9NR5VecQCN8pCCFtsSZDPagQp3YwKRz6w0ZrjG/QnRDjMp4Ka5+05zLfAtwe2AMB5
+	hkVaTUZ5e5srv33Y+mfSt19mHhlXfZSyrtUc9gPPWO5Y6JAURxOlYThEAwPKEIIoEJMDx66pihzGT
+	Wz4RRsjjcPuyiLFGMfPkJhgG0Gx7TsBrdTP4JfySYOWLzi9kvw7KdEBO+tx4dqPTawnK3GpFj1/BF
+	nPvqgYchw8QIP6neQpJW1VuVrT4CDqKMkjZCq4v/Qwj1V7fs9BhAyLvdjjpapI0CxDO70NSl5mjuK
+	Le1eQ1lw==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by desiato.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1se9e7-00000007yhk-273Z
 	for barebox@lists.infradead.org;
-	Wed, 14 Aug 2024 08:33:19 +0000
+	Wed, 14 Aug 2024 08:46:21 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1se9RU-0002Lm-9A; Wed, 14 Aug 2024 10:33:16 +0200
+	id 1se9e6-0003aJ-DY; Wed, 14 Aug 2024 10:46:18 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1se9RR-000JmA-BS; Wed, 14 Aug 2024 10:33:13 +0200
+	id 1se9e6-000Jty-0B; Wed, 14 Aug 2024 10:46:18 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1se9RR-005PJi-0o;
-	Wed, 14 Aug 2024 10:33:13 +0200
+	id 1se9e5-005Pfg-33;
+	Wed, 14 Aug 2024 10:46:17 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Wed, 14 Aug 2024 10:33:12 +0200
-Message-Id: <20240814083312.1288951-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+To: Barebox List <barebox@lists.infradead.org>, 
+ Sascha Hauer <s.hauer@pengutronix.de>
+In-Reply-To: <20240814083312.1288951-1-s.hauer@pengutronix.de>
+References: <20240814083312.1288951-1-s.hauer@pengutronix.de>
+Message-Id: <172362517794.1290283.11528490764196382737.b4-ty@pengutronix.de>
+Date: Wed, 14 Aug 2024 10:46:17 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240814_013317_650530_8D2EA4D3 
-X-CRM114-Status: GOOD (  10.49  )
+X-CRM114-CacheID: sfid-20240814_094619_698715_E9569095 
+X-CRM114-Status: UNSURE (   6.90  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,39 +100,26 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] clk: imx: clk-pllv2: Fix unitialized variable warning
+Subject: Re: [PATCH] clk: imx: clk-pllv2: Fix unitialized variable warning
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-__clk_pllv2_set_rate() might return with an error in which case some
-of the variables are used uninitialized. Check for an error like the
-Kernel does.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
----
- drivers/clk/imx/clk-pllv2.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+On Wed, 14 Aug 2024 10:33:12 +0200, Sascha Hauer wrote:
+> __clk_pllv2_set_rate() might return with an error in which case some
+> of the variables are used uninitialized. Check for an error like the
+> Kernel does.
+> 
+> 
 
-diff --git a/drivers/clk/imx/clk-pllv2.c b/drivers/clk/imx/clk-pllv2.c
-index d997e465d5..bb99555e22 100644
---- a/drivers/clk/imx/clk-pllv2.c
-+++ b/drivers/clk/imx/clk-pllv2.c
-@@ -185,8 +185,12 @@ static long clk_pllv2_round_rate(struct clk_hw *hw, unsigned long rate,
- 		unsigned long *prate)
- {
- 	u32 dp_op, dp_mfd, dp_mfn;
-+	int ret;
-+
-+	ret = __clk_pllv2_set_rate(rate, *prate, &dp_op, &dp_mfd, &dp_mfn);
-+	if (ret)
-+		return ret;
- 
--	__clk_pllv2_set_rate(rate, *prate, &dp_op, &dp_mfd, &dp_mfn);
- 	return __clk_pllv2_recalc_rate(*prate, MXC_PLL_DP_CTL_DPDCK0_2_EN,
- 			dp_op, dp_mfd, dp_mfn);
- }
+Applied, thanks!
+
+[1/1] clk: imx: clk-pllv2: Fix unitialized variable warning
+      https://git.pengutronix.de/cgit/barebox/commit/?id=8632a853a613 (link may not be stable)
+
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
