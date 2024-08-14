@@ -1,70 +1,63 @@
-Delivery-date: Wed, 14 Aug 2024 10:07:05 +0200
+Delivery-date: Wed, 14 Aug 2024 10:33:51 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1se929-009TJt-2Y
+	id 1se9S3-009TZc-0v
 	for lore@lore.pengutronix.de;
-	Wed, 14 Aug 2024 10:07:05 +0200
+	Wed, 14 Aug 2024 10:33:51 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1se929-0007PB-26
-	for lore@pengutronix.de; Wed, 14 Aug 2024 10:07:05 +0200
+	id 1se9S2-0002Pv-Ng
+	for lore@pengutronix.de; Wed, 14 Aug 2024 10:33:51 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
-	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=7Rgbq4A7P27ANedxvAAgC/VdBi/aMyHmCGOqclKgprU=; b=buOmUVj6Pkqiyb5cnvjeBuief4
-	T2HqXfM8YVI9jE9TekwbnYsyzfkPt0iH8Hkm/pdXM2z+RNB6C44B4AQiCAY3y8YofiW/kxGvkVILz
-	vIDk0AhgSe7U20nH5FJWDAu+TqnrVrKDhmJDrcF2iVVJ80XNVQbBn4z0du7sn+8xywC8OqJEPBtBh
-	g2fBo5fzuMDWyBZfnN8S/xYoVQm1WU+XFTpf1HmmG4j+6tdAokj9/RSU6eS+XVffjfGPG7mZC8+N/
-	8xt5lp1G0xuvgVm0Q9LFzJnT1hA0E3u9OY0sIHGEp4w9HK1oVsOyCLgFBULff8un/OjM4qd9kS/RG
-	Bwulba2Q==;
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=ZIsqcHM7n7WIr/d3jd/HxvOYmeH/iPrJwl9TczMwt/g=; b=fFPSUUon9Tp/EHoRaGYjB1MEel
+	LlLSum6SVw6tXZOjIwXXvHwz0hx6GL6DqCP1inEYm9ZOu4c0tcgKk8j0QUT+MFvdH4hqNFcXIb960
+	JyTABwsOMq9x2MgbgWlcRgM8S48KGICWr7x6kpA+YESxB5tOpKe7CwUUzc33PnFjOUFw9AFrEnkWX
+	2FdxW6KqCxuPHCw+qBg+6ZQdYUa9errAQfpQ++W1JrNB1t0P43OLV0XQe8YWpbS62VGpfvDhXB+cj
+	R/MXmnHEIfCuPYm0DAs4VJAwLmolSRhyA5L+F3eFKN6jXLuxh6i6m5LXFm6LKrmOMbxXmEwcGdeE8
+	6zZP4d5g==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1se91h-00000006APs-17YQ;
-	Wed, 14 Aug 2024 08:06:37 +0000
+	id 1se9RY-00000006Fbx-42rn;
+	Wed, 14 Aug 2024 08:33:20 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1se91E-00000006AGr-3bow
+	id 1se9RV-00000006Fb8-2TyB
 	for barebox@lists.infradead.org;
-	Wed, 14 Aug 2024 08:06:10 +0000
+	Wed, 14 Aug 2024 08:33:19 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1se91B-0007Hj-Qv; Wed, 14 Aug 2024 10:06:05 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1se9RU-0002Lm-9A; Wed, 14 Aug 2024 10:33:16 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1se91B-000JZB-Dx; Wed, 14 Aug 2024 10:06:05 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1se91B-002TJf-0z;
-	Wed, 14 Aug 2024 10:06:05 +0200
-Date: Wed, 14 Aug 2024 10:06:05 +0200
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1se9RR-000JmA-BS; Wed, 14 Aug 2024 10:33:13 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1se9RR-005PJi-0o;
+	Wed, 14 Aug 2024 10:33:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: barebox@lists.infradead.org
-Message-ID: <ZrxlbX3nubocX-JE@pengutronix.de>
-References: <20240809142444.316021-1-a.fatoum@pengutronix.de>
- <20240809142444.316021-3-a.fatoum@pengutronix.de>
+To: Barebox List <barebox@lists.infradead.org>
+Date: Wed, 14 Aug 2024 10:33:12 +0200
+Message-Id: <20240814083312.1288951-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240809142444.316021-3-a.fatoum@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240814_010608_930353_D45C0CB3 
-X-CRM114-Status: GOOD (  13.97  )
+X-CRM114-CacheID: sfid-20240814_013317_650530_8D2EA4D3 
+X-CRM114-Status: GOOD (  10.49  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -87,28 +80,39 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 3/3] README: bring it up to date
+Subject: [PATCH] clk: imx: clk-pllv2: Fix unitialized variable warning
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Fri, Aug 09, 2024 at 04:24:44PM +0200, Ahmad Fatoum wrote:
-> Most of the file was written when barebox used to be called U-Boot v2.
-> It thus focused on comparisons and highlighted some aspects that
-> U-Boot has since adopted.
-> 
-> Give the file an overhaul by converting it to ReST and highlight
-> my subjective take on what makes barebox cool in 2024.
+__clk_pllv2_set_rate() might return with an error in which case some
+of the variables are used uninitialized. Check for an error like the
+Kernel does.
 
-This was overdue. The result reads really good :)
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+---
+ drivers/clk/imx/clk-pllv2.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Thanks for working on this.
-
-Sascha
-
+diff --git a/drivers/clk/imx/clk-pllv2.c b/drivers/clk/imx/clk-pllv2.c
+index d997e465d5..bb99555e22 100644
+--- a/drivers/clk/imx/clk-pllv2.c
++++ b/drivers/clk/imx/clk-pllv2.c
+@@ -185,8 +185,12 @@ static long clk_pllv2_round_rate(struct clk_hw *hw, unsigned long rate,
+ 		unsigned long *prate)
+ {
+ 	u32 dp_op, dp_mfd, dp_mfn;
++	int ret;
++
++	ret = __clk_pllv2_set_rate(rate, *prate, &dp_op, &dp_mfd, &dp_mfn);
++	if (ret)
++		return ret;
+ 
+-	__clk_pllv2_set_rate(rate, *prate, &dp_op, &dp_mfd, &dp_mfn);
+ 	return __clk_pllv2_recalc_rate(*prate, MXC_PLL_DP_CTL_DPDCK0_2_EN,
+ 			dp_op, dp_mfd, dp_mfn);
+ }
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+2.39.2
+
 
 
