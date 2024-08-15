@@ -1,58 +1,69 @@
-Delivery-date: Thu, 15 Aug 2024 08:57:48 +0200
+Delivery-date: Thu, 15 Aug 2024 10:50:43 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1seUQe-009nAV-2X
+	id 1seWBv-009ojM-0P
 	for lore@lore.pengutronix.de;
-	Thu, 15 Aug 2024 08:57:48 +0200
+	Thu, 15 Aug 2024 10:50:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1seUQe-00036q-4q
-	for lore@pengutronix.de; Thu, 15 Aug 2024 08:57:48 +0200
+	id 1seWBu-00085g-Gw
+	for lore@pengutronix.de; Thu, 15 Aug 2024 10:50:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
+	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=4w9A1e49OAky2UduftNU4DjMseY8ZAEzQuyU+bo3Hcw=; b=VgzNCL4WdFNl1IoUgNXvws+xkV
-	if1htnHdHAFT9Ypi3t0DgaTZD53xVUDkCnKxi4BZ8/fezuKRlXwXKBJ0qhKwR2Kp8zibHH2hR2aVb
-	bVDhUH0bGNxDybh+5FJhjVPWE57LavKBYKqaUNiyVVNckCPgW2J1UMNK93Qwv2nW/ITmaO6/yLc08
-	aEscObT6ECKbWn6QQd/nsf95jBOrZ927bCEEBfjSfsp7SL0JiUXv0mMNZqwleP/keGy1/iUGb1BYY
-	P+DvVPO4vXtuy6xtaNAT65FUaI/I1pL+PRnc8blgYaPpOwg+z1y5WjJ3+S+0I80Zx2g0nH6vsLKrN
-	pEdvhJAg==;
+	bh=MaOCPnBBWJFHKqcASKgYtaMRi50WBMY9+6rjggB6DRg=; b=kZQTTn7gu/8h/CvWZgsn3IPR+3
+	sBSOfz6mGWsK81Z3nLFqjAl440MIUm0gZd/BMf9qbPOyAyaFQ5aXG5Ch+DTDhVBOBbJfolLo6L2VI
+	y9AFm3RSaCaoQBKZxZ3EcX1rj7LVGcQgTdr7odkYDeEbOhJpK4bpQfgoDhfM6eElrGXH3O60+A0K+
+	CJva2AnrEdK0OTzDNMSNIn9l6UV5HGlMHHfASrKm3UQVLBjIJXMPAaQ00uxjpw+YhI2P8yLHVqKQ8
+	OEhYOLTtps8NHzLPHbwUBonNdnFLUCBVXmzJz0eX4PMfGQh6amU/y+y6okPVyQ2A9H0nB3RNlpSAb
+	F5fy/aDw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1seUQE-00000009D5x-3W5o;
-	Thu, 15 Aug 2024 06:57:22 +0000
+	id 1seWBF-00000009QNx-3wVC;
+	Thu, 15 Aug 2024 08:50:01 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1seUQB-00000009D4g-2q0C
+	id 1seWBC-00000009QMq-2PbS
 	for barebox@lists.infradead.org;
-	Thu, 15 Aug 2024 06:57:21 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1seUQA-0002y7-Ct; Thu, 15 Aug 2024 08:57:18 +0200
-Message-ID: <f8931b23-768b-429e-a634-b28494fb95fa@pengutronix.de>
-Date: Thu, 15 Aug 2024 08:57:18 +0200
+	Thu, 15 Aug 2024 08:50:00 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1seWB9-0007zx-Cg; Thu, 15 Aug 2024 10:49:55 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1seWB8-000YV5-Vw; Thu, 15 Aug 2024 10:49:55 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1seWB8-004lD3-2z;
+	Thu, 15 Aug 2024 10:49:54 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+Cc: Stafford Horne <shorne@gmail.com>
+In-Reply-To: <20240814161435.566270-3-a.fatoum@pengutronix.de>
+References: <20240814161435.566270-1-a.fatoum@pengutronix.de>
+ <20240814161435.566270-3-a.fatoum@pengutronix.de>
+Message-Id: <172371179492.1134754.9264719507234438377.b4-ty@pengutronix.de>
+Date: Thu, 15 Aug 2024 10:49:54 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Tomas Marek <tomas.marek@elrest.cz>, Sascha Hauer <s.hauer@pengutronix.de>
-Cc: barebox@lists.infradead.org
-References: <20240814092424.39878-1-a.fatoum@pengutronix.de>
- <20240814092424.39878-5-a.fatoum@pengutronix.de> <Zr2XxoD4Gce7bTB4@debian>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <Zr2XxoD4Gce7bTB4@debian>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240814_235719_752198_21A5C752 
-X-CRM114-Status: GOOD (  21.60  )
+X-CRM114-CacheID: sfid-20240815_014958_645671_4E45286D 
+X-CRM114-Status: UNSURE (   5.73  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -75,71 +86,30 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 5/6] i2c: efi: avoid 64-bit division
+Subject: Re: (subset) [PATCH 3/3] ci: container: downgrade OpenRISC
+ toolchain from 14.2.0 to 13.1.0
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Tomas,
 
-On 15.08.24 07:53, Tomas Marek wrote:
-> Hello Ahmad,
+On Wed, 14 Aug 2024 18:14:35 +0200, Ahmad Fatoum wrote:
+> The newest toolchain bump breaks OpenRISC start-up under QEMU: The console is
+> now completely silent. Steps to reproduce the hang:
 > 
-> Thanks for maintenance of the Barebox EFI.
+>   CONTAINER_GCC13=bdfdd5effcc169ebf8a9df2f1a5956ef34549682f78b450a97aceea2afd76f7a
+>   CONTAINER_GCC14=fa35adeae1ab49b4dc09fc3bf4d68f92541a0d1f41e0df91a4879fd331e4b592
+>   CONTAINER_BASE=ghcr.io/barebox/barebox/barebox-ci@sha256:fa35adeae1a
 > 
-> On Wed, Aug 14, 2024 at 11:24:23AM +0200, Ahmad Fatoum wrote:
->> I2C message length is 16 bit, so doing a 64-bit division is overkill.
->> Let's remove the cast and just rely on the usual integer promotion
->> to 32-bit.
->>
->> Cc: Tomas Marek <tomas.marek@elrest.cz>
->> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
->> ---
->>  drivers/i2c/busses/i2c-efi.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/drivers/i2c/busses/i2c-efi.c b/drivers/i2c/busses/i2c-efi.c
->> index 5f6cc0eed28e..a666a28fab51 100644
->> --- a/drivers/i2c/busses/i2c-efi.c
->> +++ b/drivers/i2c/busses/i2c-efi.c
->> @@ -114,7 +114,7 @@ static unsigned int efi_i2c_msg_op_cnt(const struct efi_i2c_priv *i2c_priv,
->>  
->>  	max_len = efi_i2c_max_len(i2c_priv, msg);
->>  
->> -	return ((u64)msg->len + max_len - 1) / max_len;
->> +	return (msg->len + max_len - 1) / max_len;
-> 
-> The issue here is that max_len, which represents the MaximumReceiveBytes
-> or MaximumTransmitBytes in EFI I2C capabilities, is 32-bit. In some EFI
-> implementations (including the one I use), the EFI I2C MaximumReceiveBytes
-> and MaximumTransmitBytes are set to the maximum value (0xFFFFFFFF). This
-> causes msg->len + max_len - 1 to overflow, leading to an incorrect number
-> of returned operations. To address this, the msg->len is extended to 64 bits.
+> [...]
 
-Thanks for the info. See the patch I just Cc'd you on.
+Applied, thanks!
 
-@Sascha, can you drop this one patch again?
+[3/3] ci: container: downgrade OpenRISC toolchain from 14.2.0 to 13.1.0
+      https://git.pengutronix.de/cgit/barebox/commit/?id=6d4c6b01f4c4 (link may not be stable)
 
-Thanks,
-Ahmad
-
-> 
-> Best regards
-> 
-> Tomas
-> 
->>  }
->>  
->>  static unsigned int efi_i2c_req_op_cnt(
->> -- 
->> 2.39.2
->>
-> 
-
-
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
