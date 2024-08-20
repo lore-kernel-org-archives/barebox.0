@@ -1,66 +1,65 @@
-Delivery-date: Tue, 20 Aug 2024 14:41:47 +0200
+Delivery-date: Tue, 20 Aug 2024 15:07:07 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sgOBG-00BaFE-37
+	id 1sgOZn-00BaXI-26
 	for lore@lore.pengutronix.de;
-	Tue, 20 Aug 2024 14:41:46 +0200
+	Tue, 20 Aug 2024 15:07:07 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sgOBG-0005kT-DD
-	for lore@pengutronix.de; Tue, 20 Aug 2024 14:41:46 +0200
+	id 1sgOZn-0007CV-3C
+	for lore@pengutronix.de; Tue, 20 Aug 2024 15:07:07 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:To:From:Reply-To:Cc:Content-Type:
+	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=jCYi6d1CtmGsXVMxmpgr9rdVRWg8d/uC7BqdxY40b2c=; b=0LAHg8L8j2qJXLkg+hEeuwyN50
-	1fxZ7ozfzwuEdriItzHXDJWycJthecRNkJi1yZF8b+3fJdKQP7c5kyL9We6aYrHAN/42swmXU3kJm
-	J+Vuabrne6tr3co4XurEL3whoSf/oen/KWAYSKCN2KHGr3TrONWUTLZz0XZ+2kc3Zr/5NR7HLSD62
-	LRHh1PYmJMP/fN1OZG1v7YLYPr6IidLHvXw5cXXDgfyjokLmrZXWeZ5E7af4KYlDo+OYm+23S9Qp4
-	E2wvVfP6tdJ/YbeffO6ada82wIt/JJp+zid/k/4Gbcr3wfqLUWvhusyPbQISvp/ZLY4jz1K/aZzBR
-	IOX68pVA==;
+	bh=soppxv98QNDJuoKSra/T3eY4rJziwnyIKzhHxFmyLwk=; b=xBnnWfiT+phr6cDemEeYBP/snd
+	wFV/dJnU+5l5DtL2alFdB+5stNdSl3e579UZhl21PBZO6b2wxxwnx20/a3AkPpRPqW1MryQJeJwIJ
+	tCxutkf89HXFq72Et0TddE3Jkf+bzXhj8GWw1XVM/+CyA1B9/LjdpwW2dQhbGIb/LkITk+UOCHHts
+	NKkucttxDxaLRhUP5ZMaSoGB8Qx08QebQhcv/HOdckwbp3J3BfLc6hyBg2CvUG8lflGiUeNvKJaRM
+	A+/jOKwht0Xp9ZyY4vVNNLAJPwPPxhzr06bZtyX8YqOFozhxxxk0zaiH7ie8NgtvTSBl/oOtdKeQv
+	/ezoOSmQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sgOAl-00000005Ezl-3twm;
-	Tue, 20 Aug 2024 12:41:15 +0000
+	id 1sgOZG-00000005IQJ-1Kef;
+	Tue, 20 Aug 2024 13:06:34 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sgOAA-00000005Eun-2RyQ
+	id 1sgOZE-00000005IPu-0GGL
 	for barebox@lists.infradead.org;
-	Tue, 20 Aug 2024 12:40:39 +0000
+	Tue, 20 Aug 2024 13:06:33 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sgOA7-0005cv-M9
-	for barebox@lists.infradead.org; Tue, 20 Aug 2024 14:40:35 +0200
+	id 1sgOZC-000799-Jj; Tue, 20 Aug 2024 15:06:30 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sgOA7-001m5W-9A
-	for barebox@lists.infradead.org; Tue, 20 Aug 2024 14:40:35 +0200
+	id 1sgOZC-001mJ6-6g; Tue, 20 Aug 2024 15:06:30 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sgOA7-00C2pA-0c
-	for barebox@lists.infradead.org;
-	Tue, 20 Aug 2024 14:40:35 +0200
+	id 1sgOZC-00G7nx-0M;
+	Tue, 20 Aug 2024 15:06:30 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
-Date: Tue, 20 Aug 2024 14:40:34 +0200
-Message-Id: <20240820124034.2870742-1-a.fatoum@pengutronix.de>
+Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Date: Tue, 20 Aug 2024 15:06:26 +0200
+Message-Id: <20240820130626.3843235-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240820_054038_647060_80169828 
-X-CRM114-Status: GOOD (  12.43  )
+X-CRM114-CacheID: sfid-20240820_060632_118785_B5DE0D04 
+X-CRM114-Status: UNSURE (   7.79  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,47 +80,33 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
-	version=3.4.2
-Subject: [PATCH v3] acpi: fix compilation for 32-bit
+	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.2
+Subject: [PATCH] ci: container: rerun workflow when modifying container.yml
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Build test on 32-bit failed because of forcing the bigger alignment on
-the flexible array.
+We currently, only rebuild the container when its Containerfile changes.
+The container build is described by the workflow in container.yml,
+so Github changes should also rebuild the container on changes to this
+file.
 
-Removing the alignment in turn broke the CI tests for 64-bit, so
-let's go back to using a packed struct, but have the alignment follow
-the size of the pointer.
-
-Fixes: 4fa3b9d2b64b ("acpi: fix compilation for 32-bit")
-Signed-off-by: Ahmad Fatoum <ahmad@a3f.at>
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
-v2 -> v3:
-  - make commit apply on top of v1, which has already been applied.
-v1 -> v2:
-  - fix CI x86_64 breakage, by keeping the packed/aligned specifiction
-    as is, but changing it to 32-bit on 32-bit systems.
----
- include/acpi.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ .github/workflows/container.yml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/acpi.h b/include/acpi.h
-index 837476424664..fc0da30610a6 100644
---- a/include/acpi.h
-+++ b/include/acpi.h
-@@ -113,9 +113,9 @@ struct __packed acpi_sdt { /* system description table header */
- 	u32		creator_revision;
- };
+diff --git a/.github/workflows/container.yml b/.github/workflows/container.yml
+index 9bb23a5836ac..81680069ea3f 100644
+--- a/.github/workflows/container.yml
++++ b/.github/workflows/container.yml
+@@ -7,6 +7,7 @@ on:
+       - 'ci'
+     paths:
+       - 'test/Containerfile'
++      - '.github/workflows/container.yml'
+   workflow_dispatch: {}
  
--struct acpi_rsdt { /* system description table header */
-+struct __packed acpi_rsdt { /* system description table header */
- 	struct acpi_sdt	sdt;
--	struct acpi_sdt	*entries[];
-+	struct acpi_sdt	*__aligned(sizeof(void *)) entries[];
- };
- 
- struct acpi_driver {
+ jobs:
 -- 
 2.39.2
 
