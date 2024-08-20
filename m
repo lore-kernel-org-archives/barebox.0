@@ -1,72 +1,67 @@
-Delivery-date: Mon, 19 Aug 2024 08:17:04 +0200
+Delivery-date: Tue, 20 Aug 2024 07:29:31 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sfvhQ-00B9FP-0J
+	id 1sgHQv-00BU9o-1u
 	for lore@lore.pengutronix.de;
-	Mon, 19 Aug 2024 08:17:04 +0200
+	Tue, 20 Aug 2024 07:29:31 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sfvhP-0007h9-Ab
-	for lore@pengutronix.de; Mon, 19 Aug 2024 08:17:03 +0200
+	id 1sgHQu-0008A9-W4
+	for lore@pengutronix.de; Tue, 20 Aug 2024 07:29:29 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:In-Reply-To:Content-Type:
 	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description:Resent-Date:
 	Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=fH2r3SmBiuDHnLRrdn+Sw7xaeHWGSceFFZe2JO1dGE8=; b=VkIQeaylfovTV1KUiL2vFaB7oD
-	yo7rRKnmeQ14BtRaeAvjopPl0NBRDaoWDUYFzl+oGR/LKwc0/jVGokuB/rF7fPQ1X64DOlvqB0wEu
-	qodCBdln+UIYHuAdRTlPdKxrW+3nBlEzHVku6uIfJkbnkZvnQI+ma/WCRcc0sZLVAJ4FXajYsb+x6
-	vdhje0tlWkXA0FUhTfxbmiSYWvcXxDKvCdiq7Orbe46mJj/PabE9R5owTXZHk9+ri82I8z/sKhUN4
-	qHdoxPoBzURg9Sn9jEYDIlzuIZsUAJMIu/fjBAufjoRSaQerEFMm5XONIzfHGs4/z78TGZ3aw3O53
-	PhYUmbXA==;
+	bh=4nnCn5veBngKhdjI7KrCIAbDTWyKI5QGGWDxgjCLio0=; b=yOmGetdnYYFbJ/mDNaK0sXZyAe
+	bhgrtr5wYD0wKz9ku0DUVWtB9Y1X8Bk+PS0M7QFgdWSfaTi8yeqZEANWT+/olKphYJsT8Pwo2DTzx
+	DfvNQU2utvO9tuIxu4dSyETdE3Uw3Hj/BW2F4gURbpOAkC/yj9xLc+2IULokctNPcg4odC9m3qmB0
+	Irn7r+WA5a/UKt1ngJlf1oimcLhC8N95X7Esi8q2vXGEbrD110yYR8zGR47lIKV6m32iLJuFxO2Qu
+	9bSMqAIkFO52oP+UVOH9XEPWQ+YnMHCMNUt7XlRMbErG6JmcC/0KiXNqEHQ2Pzv52hfWzki5rauTm
+	nrWu4pqg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sfvgj-00000000VLt-1nzs;
-	Mon, 19 Aug 2024 06:16:21 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1sgHQ8-00000003sFD-3uFX;
+	Tue, 20 Aug 2024 05:28:40 +0000
+Received: from smtp.cesky-hosting.cz ([2001:67c:e94:0:1:5bef:c8ee:1])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sfvgf-00000000VKz-3mzt
+	id 1sgHQ5-00000003sAF-2L7w
 	for barebox@lists.infradead.org;
-	Mon, 19 Aug 2024 06:16:19 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sfvgc-0007Sw-4e; Mon, 19 Aug 2024 08:16:14 +0200
-Received: from [2a0a:edc0:2:b01:1d::c5] (helo=pty.whiteo.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sfvgb-001T0g-Ik; Mon, 19 Aug 2024 08:16:13 +0200
-Received: from sha by pty.whiteo.stw.pengutronix.de with local (Exim 4.96)
-	(envelope-from <sha@pengutronix.de>)
-	id 1sfvgb-00Bfz0-1Y;
-	Mon, 19 Aug 2024 08:16:13 +0200
-Date: Mon, 19 Aug 2024 08:16:13 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
+	Tue, 20 Aug 2024 05:28:40 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=elrest.cz;
+	s=rampa2-202408; t=1724131700;
+	bh=n+NxK9sc4Hofo+htKm+62dsU4c9C9vX48Urw3KC3TWI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vzSFyebOfU6oquPXJWLGxXlpJ1vanVSht6HWMsylHID8Hg1iqqOQx5jX4RjsyJmL6
+	 vkLgmhfWOArskjqjqlMq02uGvX1XmpjbT+IHrvsClTCjw2PG+hoPBTJM6Wp2WSHDwk
+	 R9RVLNLNqcLKfgGv9xjrIV91wHfPZjm98E8bAiuRRodmA17v9aKrbs5ub2IxsmAnkY
+	 OMR+mbT+jI0Roge/QlBJeBBuvGc0l9frVWoT4Xjjj7n/5NTxHfpJTk7dXzvoKq06f3
+	 bPSZSCYXH5C52D6MtZBJKlHta5invrONBPdZbyDikfb0Di2EsoAJYQtf93D06Ivd5m
+	 hPEkwf9QcF6Zg==
+X-Virus-Scanned: Debian amavis at smtp.cesky-hosting.cz
+Received: from debian (unknown [185.63.98.16])
+	(Authenticated sender: tomas.marek@elrest.cz)
+	by smtp.cesky-hosting.cz (Postfix) with ESMTPSA id 4Wnyfp5HZWzFg;
+	Tue, 20 Aug 2024 07:28:18 +0200 (CEST)
+Date: Tue, 20 Aug 2024 07:28:17 +0200
+From: Tomas Marek <tomas.marek@elrest.cz>
 To: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Tomas Marek <tomas.marek@elrest.cz>, barebox@lists.infradead.org
-Message-ID: <ZsLjLZLzHfQfAWdB@pengutronix.de>
-References: <20240814092424.39878-1-a.fatoum@pengutronix.de>
- <20240814092424.39878-5-a.fatoum@pengutronix.de>
- <Zr2XxoD4Gce7bTB4@debian>
- <f8931b23-768b-429e-a634-b28494fb95fa@pengutronix.de>
+Cc: barebox@lists.infradead.org
+Message-ID: <ZsQpccI0u_hwbpil@debian>
+References: <20240815065646.1156788-1-a.fatoum@pengutronix.de>
+ <20240815065646.1156788-2-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f8931b23-768b-429e-a634-b28494fb95fa@pengutronix.de>
-X-Sent-From: Pengutronix Hildesheim
-X-URL: http://www.pengutronix.de/
-X-Accept-Language: de,en
-X-Accept-Content-Type: text/plain
+In-Reply-To: <20240815065646.1156788-2-a.fatoum@pengutronix.de>
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240818_231617_962380_17F39DD1 
-X-CRM114-Status: GOOD (  27.06  )
+X-CRM114-CacheID: sfid-20240819_222838_289226_EB90F3F5 
+X-CRM114-Status: GOOD (  19.27  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -84,65 +79,60 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
-	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
+X-Spam-Status: No, score=-4.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+	DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH 5/6] i2c: efi: avoid 64-bit division
+Subject: Re: [PATCH 2/2] i2c: efi: use DIV_ROUND_UP_ULL instead of native
+ division
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-On Thu, Aug 15, 2024 at 08:57:18AM +0200, Ahmad Fatoum wrote:
-> Hello Tomas,
+Hello Ahmad,
+
+On Thu, Aug 15, 2024 at 08:56:46AM +0200, Ahmad Fatoum wrote:
+> 64-bit division on 32-bit platforms is normally handled by libgcc,
+> which, like the kernel, we don't link against in barebox.
 > 
-> On 15.08.24 07:53, Tomas Marek wrote:
-> > Hello Ahmad,
-> > 
-> > Thanks for maintenance of the Barebox EFI.
-> > 
-> > On Wed, Aug 14, 2024 at 11:24:23AM +0200, Ahmad Fatoum wrote:
-> >> I2C message length is 16 bit, so doing a 64-bit division is overkill.
-> >> Let's remove the cast and just rely on the usual integer promotion
-> >> to 32-bit.
-> >>
-> >> Cc: Tomas Marek <tomas.marek@elrest.cz>
-> >> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-> >> ---
-> >>  drivers/i2c/busses/i2c-efi.c | 2 +-
-> >>  1 file changed, 1 insertion(+), 1 deletion(-)
-> >>
-> >> diff --git a/drivers/i2c/busses/i2c-efi.c b/drivers/i2c/busses/i2c-efi.c
-> >> index 5f6cc0eed28e..a666a28fab51 100644
-> >> --- a/drivers/i2c/busses/i2c-efi.c
-> >> +++ b/drivers/i2c/busses/i2c-efi.c
-> >> @@ -114,7 +114,7 @@ static unsigned int efi_i2c_msg_op_cnt(const struct efi_i2c_priv *i2c_priv,
-> >>  
-> >>  	max_len = efi_i2c_max_len(i2c_priv, msg);
-> >>  
-> >> -	return ((u64)msg->len + max_len - 1) / max_len;
-> >> +	return (msg->len + max_len - 1) / max_len;
-> > 
-> > The issue here is that max_len, which represents the MaximumReceiveBytes
-> > or MaximumTransmitBytes in EFI I2C capabilities, is 32-bit. In some EFI
-> > implementations (including the one I use), the EFI I2C MaximumReceiveBytes
-> > and MaximumTransmitBytes are set to the maximum value (0xFFFFFFFF). This
-> > causes msg->len + max_len - 1 to overflow, leading to an incorrect number
-> > of returned operations. To address this, the msg->len is extended to 64 bits.
+> Instead we have a number of division helpers that should be used for
+> 64-bit division, which either expand to a normal division if possible or
+> to an out-of-line division. Make use of this to fix compilation for
+> 32-bit.
+
+Thanks for hint.
+
 > 
-> Thanks for the info. See the patch I just Cc'd you on.
+> Cc: Tomas Marek <tomas.marek@elrest.cz>
+> Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+> ---
+> This replaces "i2c: efi: avoid 64-bit division"
+> ---
+>  drivers/i2c/busses/i2c-efi.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> @Sascha, can you drop this one patch again?
+> diff --git a/drivers/i2c/busses/i2c-efi.c b/drivers/i2c/busses/i2c-efi.c
+> index 5f6cc0eed28e..4c58279e0398 100644
+> --- a/drivers/i2c/busses/i2c-efi.c
+> +++ b/drivers/i2c/busses/i2c-efi.c
+> @@ -114,7 +114,7 @@ static unsigned int efi_i2c_msg_op_cnt(const struct efi_i2c_priv *i2c_priv,
+>  
+>  	max_len = efi_i2c_max_len(i2c_priv, msg);
+>  
+> -	return ((u64)msg->len + max_len - 1) / max_len;
+> +	return DIV_ROUND_UP_ULL(msg->len, max_len);
 
-Ok, reverted it.
+It looks good to me.
 
-Sascha
+Best regards
 
+Tomas
 
--- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+>  }
+>  
+>  static unsigned int efi_i2c_req_op_cnt(
+> -- 
+> 2.39.2
+> 
 
 
