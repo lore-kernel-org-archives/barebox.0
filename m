@@ -1,66 +1,66 @@
-Delivery-date: Thu, 22 Aug 2024 13:58:14 +0200
+Delivery-date: Thu, 22 Aug 2024 14:05:45 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sh6SE-00CEqK-1P
+	id 1sh6ZV-00CEsq-2I
 	for lore@lore.pengutronix.de;
-	Thu, 22 Aug 2024 13:58:14 +0200
+	Thu, 22 Aug 2024 14:05:45 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sh6SD-0005Zp-Ru
-	for lore@pengutronix.de; Thu, 22 Aug 2024 13:58:14 +0200
+	id 1sh6ZV-0007vr-35
+	for lore@pengutronix.de; Thu, 22 Aug 2024 14:05:45 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=urk6I+xUQr/B1Yll2T8P1BLQbfMUY+549RLM6sVMpog=; b=cVauNn1XVFb7Fkj7iVpQUY541A
-	EqO+LQx9p0v5TI1owf3y+65hH1R+uclLQCQmVO94FLuPA6ryk0I06FGbeyNqsJBJ235fEr0qVhkVu
-	hF/QSqey4vogaRwJwqq4R0q9wOCuPZRu9HcwZh1gGDErzGoLIQO/sWciiy9UClVxfe1/o2tAKwg6I
-	qWYfaO4Wu45BZzXabl10yIqgaZM6jkPb9wrEPATA7eHwY75FUT9s+VNHY+kyC5ZzkUzt7cetVQind
-	UI+Gj38kDWvlqJ7W/ne+Utw9+nqeprpLEojVa+V2qn7lIMdxvBhGzo/ADItH1DTVeD3x4uu3980Gg
-	Imc/iK8g==;
+	bh=M9yhkLxKK1elhqJMyXPHjzJJjems7ud306c/sBxc2ro=; b=TeN4gJC5dgW2Na+XdqUSy2ra6m
+	ej1TREAXL2C05ZAFrttqei69klIUu1lGLO3ogQWMqE04if9MdMQbhojXV9vFeU0WML6o2oPZutFtS
+	YxGaCOwWb00Y+a0JUuh98SnXwybsTx1EJEy20rOW//bbN3IJ0WA/7A8gWkvHxBsVETEqn6MSsxB1G
+	jKnQWDuJiEv0X5vFYyzpSvK5fEdRTq3PEx0C0OlJ6F6LvJJa0IHgiYommnnxInZvVhDemci3jZfr+
+	jpZd5MEEJWk6k3t38nu5GL8dKOgmPzCUcjKMjO9jMkvY8DxILlKs6o5PtpFHJWOtjPktlpKWSXgXl
+	1Nb10Ivw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sh6Rn-0000000CfXN-0pH1;
-	Thu, 22 Aug 2024 11:57:47 +0000
+	id 1sh6Yx-0000000ChPk-45Pi;
+	Thu, 22 Aug 2024 12:05:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sh6Rh-0000000CfRi-1hfG
+	id 1sh6Yj-0000000ChE6-1l13
 	for barebox@lists.infradead.org;
-	Thu, 22 Aug 2024 11:57:44 +0000
+	Thu, 22 Aug 2024 12:05:00 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sh6RX-00054t-Sn; Thu, 22 Aug 2024 13:57:31 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sh6Yh-0007k1-OS; Thu, 22 Aug 2024 14:04:55 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sh6RX-002Ey4-EZ; Thu, 22 Aug 2024 13:57:31 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sh6RX-004y9I-1A;
-	Thu, 22 Aug 2024 13:57:31 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Thu, 22 Aug 2024 13:57:28 +0200
-Message-Id: <20240822115730.1184500-3-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20240822115730.1184500-1-a.fatoum@pengutronix.de>
-References: <20240822115730.1184500-1-a.fatoum@pengutronix.de>
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sh6Yh-002F5v-Bd; Thu, 22 Aug 2024 14:04:55 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sh6Yh-007tcA-0x;
+	Thu, 22 Aug 2024 14:04:55 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240822115337.1178520-1-a.fatoum@pengutronix.de>
+References: <20240822115337.1178520-1-a.fatoum@pengutronix.de>
+Message-Id: <172432829529.1882071.13118469512945748365.b4-ty@pengutronix.de>
+Date: Thu, 22 Aug 2024 14:04:55 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240822_045741_517735_011C3076 
-X-CRM114-Status: UNSURE (   9.59  )
+X-CRM114-CacheID: sfid-20240822_050457_632382_F12BB0A9 
+X-CRM114-Status: UNSURE (   7.01  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,63 +84,30 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH 3/5] MAKEALL: don't build all configs wen defconfigs given
+Subject: Re: [PATCH master] ci: container: fix CROSS_COMPILE_openrisc to
+ point at correct version
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently build all defconfigs when no architecture was specified,
-which leads to surprising behavior, e.g.
 
-  ./MAKEALL some_defconfig
+On Thu, 22 Aug 2024 13:53:36 +0200, Ahmad Fatoum wrote:
+> Due to the test failing with the latest 14.2.0 release, we are
+> downgrading OpenRISC to the old GCC 13.1.0 version as an interim
+> measure. The patch doing this was faulty and while it downloaded
+> the older toolchain, the CROSS_COMPILE_openrisc variable still
+> referenced the 14.2.0 toolchain breaking MAKEALL.
+> 
+> 
+> [...]
 
-will start building for all architectures and ignore the argument
-completely. Improve upon this by calling do_build_all only if
-there are no positional arguments.
+Applied, thanks!
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- MAKEALL | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+[1/1] ci: container: fix CROSS_COMPILE_openrisc to point at correct version
+      https://git.pengutronix.de/cgit/barebox/commit/?id=18a154ce190e (link may not be stable)
 
-diff --git a/MAKEALL b/MAKEALL
-index df318c6d123c..68ebe6ef98a3 100755
---- a/MAKEALL
-+++ b/MAKEALL
-@@ -281,20 +281,20 @@ then
- 	REGEX="*"
- fi
- 
--if [ ! "${ARCH}" ] || [ ! -d arch/${ARCH} ]
--then
--	do_build_all
--	if [ $? -eq 0 ]
--	then
--		echo "You need to specify the ARCH or CROSS_COMPILE_<arch> or CROSS_COMPILE_<target> in your config file"
--		usage
--		exit 1
--	fi
--	exit 0
--fi
--
- if [ $# -eq 0 ]
- then
-+	if [ ! "${ARCH}" ] || [ ! -d arch/${ARCH} ]
-+	then
-+		do_build_all
-+		if [ $? -eq 0 ]
-+		then
-+			echo "You need to specify the ARCH or CROSS_COMPILE_<arch> or CROSS_COMPILE_<target> in your config file"
-+			usage
-+			exit 1
-+		fi
-+		exit 0
-+	fi
-+
- 	do_build ${ARCH} "${REGEX}"
- else
- 	for i in $*; do
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
