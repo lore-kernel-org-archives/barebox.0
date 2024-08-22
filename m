@@ -1,64 +1,66 @@
-Delivery-date: Tue, 20 Aug 2024 15:07:07 +0200
+Delivery-date: Thu, 22 Aug 2024 12:52:54 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sgOZn-00BaXI-26
+	id 1sh5R0-00CDq8-0e
 	for lore@lore.pengutronix.de;
-	Tue, 20 Aug 2024 15:07:07 +0200
+	Thu, 22 Aug 2024 12:52:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sgOZn-0007CV-3C
-	for lore@pengutronix.de; Tue, 20 Aug 2024 15:07:07 +0200
+	id 1sh5Qz-0005KO-Kr
+	for lore@pengutronix.de; Thu, 22 Aug 2024 12:52:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=soppxv98QNDJuoKSra/T3eY4rJziwnyIKzhHxFmyLwk=; b=xBnnWfiT+phr6cDemEeYBP/snd
-	wFV/dJnU+5l5DtL2alFdB+5stNdSl3e579UZhl21PBZO6b2wxxwnx20/a3AkPpRPqW1MryQJeJwIJ
-	tCxutkf89HXFq72Et0TddE3Jkf+bzXhj8GWw1XVM/+CyA1B9/LjdpwW2dQhbGIb/LkITk+UOCHHts
-	NKkucttxDxaLRhUP5ZMaSoGB8Qx08QebQhcv/HOdckwbp3J3BfLc6hyBg2CvUG8lflGiUeNvKJaRM
-	A+/jOKwht0Xp9ZyY4vVNNLAJPwPPxhzr06bZtyX8YqOFozhxxxk0zaiH7ie8NgtvTSBl/oOtdKeQv
-	/ezoOSmQ==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=zzqjClofmMdqfHAPqwbWooUdWZYkj/kGhQdVo5chhms=; b=k9cA8gyt5uIIpb5uo39SV+lDrX
+	sk7HB0ABgs3ch8Eww51LNRC/h2ZfLqyIRiHH3AYO1MjF2ISrrpoN18C+fYlanyUMlchEztd8zX5YU
+	loi+557A0fni+fXGHBYax4JdKEqUaNsE+r2KuStxKnrbLEmrO2p/oM7bFLhuSaonhiYloxdIy9NN7
+	0MQh2QI6vWbKlwfffFbXDMYWSQbhqTxZOlIrs15bm3Dbo9SNKFOqdaYq+OpVqcZW/jvXsQX9dgpfH
+	H3o/b/eK13yhnZGAV6/mQ1rlhvAE+OMuQk4JwhU7xv9GYORArUSbmdEkVJMMXglgdJbORc0SCIMb1
+	2hbi5rPw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sgOZG-00000005IQJ-1Kef;
-	Tue, 20 Aug 2024 13:06:34 +0000
+	id 1sh5QK-0000000CUAA-230D;
+	Thu, 22 Aug 2024 10:52:12 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sgOZE-00000005IPu-0GGL
+	id 1sh5QH-0000000CU8x-1YIS
 	for barebox@lists.infradead.org;
-	Tue, 20 Aug 2024 13:06:33 +0000
+	Thu, 22 Aug 2024 10:52:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sgOZC-000799-Jj; Tue, 20 Aug 2024 15:06:30 +0200
-Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sh5QE-0005Bf-B2; Thu, 22 Aug 2024 12:52:06 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sgOZC-001mJ6-6g; Tue, 20 Aug 2024 15:06:30 +0200
-Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
-	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1sgOZC-00G7nx-0M;
-	Tue, 20 Aug 2024 15:06:30 +0200
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-To: barebox@lists.infradead.org
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 20 Aug 2024 15:06:26 +0200
-Message-Id: <20240820130626.3843235-1-a.fatoum@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sh5QD-002EL1-U7; Thu, 22 Aug 2024 12:52:05 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1sh5QD-007nSZ-2p;
+	Thu, 22 Aug 2024 12:52:05 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240820124034.2870742-1-a.fatoum@pengutronix.de>
+References: <20240820124034.2870742-1-a.fatoum@pengutronix.de>
+Message-Id: <172432392587.1858406.6751307374729498518.b4-ty@pengutronix.de>
+Date: Thu, 22 Aug 2024 12:52:05 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240820_060632_118785_B5DE0D04 
-X-CRM114-Status: UNSURE (   7.79  )
+X-CRM114-CacheID: sfid-20240822_035209_437536_2572357B 
+X-CRM114-Status: UNSURE (   8.43  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,35 +82,31 @@ X-Spam-Level:
 X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
-	T_SCC_BODY_TEXT_LINE autolearn=ham autolearn_force=no version=3.4.2
-Subject: [PATCH] ci: container: rerun workflow when modifying container.yml
+	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
+	version=3.4.2
+Subject: Re: [PATCH v3] acpi: fix compilation for 32-bit
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We currently, only rebuild the container when its Containerfile changes.
-The container build is described by the workflow in container.yml,
-so Github changes should also rebuild the container on changes to this
-file.
 
-Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
----
- .github/workflows/container.yml | 1 +
- 1 file changed, 1 insertion(+)
+On Tue, 20 Aug 2024 14:40:34 +0200, Ahmad Fatoum wrote:
+> Build test on 32-bit failed because of forcing the bigger alignment on
+> the flexible array.
+> 
+> Removing the alignment in turn broke the CI tests for 64-bit, so
+> let's go back to using a packed struct, but have the alignment follow
+> the size of the pointer.
+> 
+> [...]
 
-diff --git a/.github/workflows/container.yml b/.github/workflows/container.yml
-index 9bb23a5836ac..81680069ea3f 100644
---- a/.github/workflows/container.yml
-+++ b/.github/workflows/container.yml
-@@ -7,6 +7,7 @@ on:
-       - 'ci'
-     paths:
-       - 'test/Containerfile'
-+      - '.github/workflows/container.yml'
-   workflow_dispatch: {}
- 
- jobs:
+Applied, thanks!
+
+[1/1] acpi: fix compilation for 32-bit
+      https://git.pengutronix.de/cgit/barebox/commit/?id=cd20189cd18b (link may not be stable)
+
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
