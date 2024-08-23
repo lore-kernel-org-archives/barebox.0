@@ -1,67 +1,66 @@
-Delivery-date: Fri, 23 Aug 2024 09:58:21 +0200
+Delivery-date: Fri, 23 Aug 2024 10:06:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1shPBd-00CVoT-02
+	id 1shPJe-00CW7U-1S
 	for lore@lore.pengutronix.de;
-	Fri, 23 Aug 2024 09:58:21 +0200
+	Fri, 23 Aug 2024 10:06:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1shPBc-0006iC-EA
-	for lore@pengutronix.de; Fri, 23 Aug 2024 09:58:20 +0200
+	id 1shPJd-0000Ai-S4
+	for lore@pengutronix.de; Fri, 23 Aug 2024 10:06:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:Cc:
-	To:From:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=jAecQFaHEYhEvai96Sp1p8VI6Y4NXtw0TpPAPStoxfM=; b=fbmxkZ4PIroX8CrHYvJ4NfUr/W
-	idx2Kr7OG71PgLFZw0Z9d9nme0LKGKo2awren1ovkiM6vnOs6t2B7630fg2HT3QtpU7IqdLRl3peo
-	PnmfI92+Ip4rnynGRhOhQy+amiOPinYnMuh2PCjKDVLOcjkARmWyN1F6wXxIa/NMksO/cv1A25TO1
-	9R/1LxUw2x9cD5c/qXlCytlOpCFKMLnj0CwrD1D6lQEqfL4PB6zzpDRmv6lXs4Pj2UXHnwufjYbWQ
-	W1EkY8f/PjJFFwEzWsT6jSzKIFs853I+52tBIxDwJCsUMgbr8ZTco4Dx2MzwHZs+w/tMoMtBW7rw6
-	WEOFjvDg==;
+	bh=6fXZDfXR12j5Dl9qv1JpQEjbu3Y4IuiCDxtWi3Xjy/U=; b=GlBCCbjJ2K0UX9000y7hGlF4eo
+	yvu0kgk5D+hZQeRVWXg6fuK0RiPVhN9h/yQ3IR1PAN1+6UmKWMmKQTeP88c2x/YsqORqUSEuX9WRU
+	L+c4UvXMIoAo2wdmr4QEEV0rOZF4on9X3MdxE1m7acj5BPTpm0dvRwf0cWJYMg8+nxT0uoKBndWc7
+	ZP5t6L6Ukf3NsOuA6fQxMbLCy2/tT3jCDew5xPcsQFOs//EbL5F6YLvKqC/XyBaoA4/qtmrCQfHfl
+	vMOmTXHEYph0sgya2Zui3bDCyYJhVdfnMiae1BkR0jM8p3cyyG6A/DfS1xPPXbLLXtlD0PIeNZY82
+	/Gy2H4oQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1shPB2-0000000FjRg-3rzw;
-	Fri, 23 Aug 2024 07:57:44 +0000
+	id 1shPJB-0000000FlMk-01ik;
+	Fri, 23 Aug 2024 08:06:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1shPAz-0000000FjRG-20rc
+	id 1shPHM-0000000FkeX-08iW
 	for barebox@lists.infradead.org;
-	Fri, 23 Aug 2024 07:57:43 +0000
+	Fri, 23 Aug 2024 08:04:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1shPAx-0006cC-CV; Fri, 23 Aug 2024 09:57:39 +0200
+	id 1shPHK-0008C8-EX; Fri, 23 Aug 2024 10:04:14 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1shPAw-002RAd-QP; Fri, 23 Aug 2024 09:57:38 +0200
+	id 1shPHK-002RBK-1R; Fri, 23 Aug 2024 10:04:14 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1shPAw-008smR-2Q;
-	Fri, 23 Aug 2024 09:57:38 +0200
+	id 1shPHJ-008tMp-3B;
+	Fri, 23 Aug 2024 10:04:13 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-Cc: Stafford Horne <shorne@gmail.com>
-In-Reply-To: <20240822165633.3726922-1-a.fatoum@pengutronix.de>
-References: <20240822165633.3726922-1-a.fatoum@pengutronix.de>
-Message-Id: <172439985874.2117184.17088977068542734386.b4-ty@pengutronix.de>
-Date: Fri, 23 Aug 2024 09:57:38 +0200
+In-Reply-To: <20240822115730.1184500-1-a.fatoum@pengutronix.de>
+References: <20240822115730.1184500-1-a.fatoum@pengutronix.de>
+Message-Id: <172440025398.2119439.1002536867973308224.b4-ty@pengutronix.de>
+Date: Fri, 23 Aug 2024 10:04:13 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240823_005741_550024_D7A3E84B 
-X-CRM114-Status: UNSURE (   9.05  )
+X-CRM114-CacheID: sfid-20240823_010416_154474_B2D1A736 
+X-CRM114-Status: UNSURE (   8.77  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -85,27 +84,33 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH master] openrisc: dts: describe all 4 UARTs
+Subject: Re: [PATCH 1/5] test: conftest.py: move top-level
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Thu, 22 Aug 2024 18:56:34 +0200, Ahmad Fatoum wrote:
-> Starting with QEMU v7.1.0, the openrisc_sim machine features 4 serial
-> ports. This was introduced with QEMU commit 777784bda468 ("hw/openrisc:
-> support 4 serial ports in or1ksim"), which also made the last console
-> (serial@90000300) the default.
+On Thu, 22 Aug 2024 13:57:26 +0200, Ahmad Fatoum wrote:
+> We have a top level pytest.ini to support running pytest --lg-env=$some_env
+> without extra arguments. This works for running tests nornally, but not if
+> extra options like --qemu should be used, because the conftest.py won't
+> be loaded early enough.
 > 
-> This is still the case as of v9.1.0-rc3, but I submitted a patch to
-> restore serial@90000000 as default. Until that's merged, let's just
-> activate all consoles after describing them in the device tree.
+> The easy fix is moving the conftest.py a level higher as described in:
 > 
 > [...]
 
 Applied, thanks!
 
-[1/1] openrisc: dts: describe all 4 UARTs
-      https://git.pengutronix.de/cgit/barebox/commit/?id=b2a21df3b07b (link may not be stable)
+[1/5] test: conftest.py: move top-level
+      https://git.pengutronix.de/cgit/barebox/commit/?id=884fd2ec8497 (link may not be stable)
+[2/5] MAKEALL: return error code from do_build_target
+      https://git.pengutronix.de/cgit/barebox/commit/?id=4a89f37d0c2b (link may not be stable)
+[3/5] MAKEALL: don't build all configs wen defconfigs given
+      https://git.pengutronix.de/cgit/barebox/commit/?id=3c0c3ebaa523 (link may not be stable)
+[4/5] MAKEALL: add support for running pytest after build
+      https://git.pengutronix.de/cgit/barebox/commit/?id=d0ef5a0c8e3a (link may not be stable)
+[5/5] Documentation: board: emulated: rewrite to use MAKEALL/pytest directly
+      https://git.pengutronix.de/cgit/barebox/commit/?id=af54b28a8c1d (link may not be stable)
 
 Best regards,
 -- 
