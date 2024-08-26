@@ -3,64 +3,64 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1siXbT-00DZ6N-0B
+	id 1siXbT-00DZ6c-1x
 	for lore@lore.pengutronix.de;
 	Mon, 26 Aug 2024 13:09:43 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1siXbS-0005CK-C0
-	for lore@pengutronix.de; Mon, 26 Aug 2024 13:09:42 +0200
+	id 1siXbT-0005Cl-2I
+	for lore@pengutronix.de; Mon, 26 Aug 2024 13:09:43 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=mgN7ZXI9Z0m+5PwSV6KZI4SSvuxC9HPDJt1Ow3Z28Io=; b=UhykFz8cvk60GHl7AJwhCJTKWq
-	7CypZITTrE5lRSRQ6hyfpCtbBnJHCUKuJtMFnnLBlkMlsqgClWcoYL/770M1eM2FUx/Zdi6LrtRfJ
-	1WjpAXsNpIQy1cvCk55dpE5gNAXoDPNF5ggulFXugfVgKSKyetKFC0iio4URKwX1kSa/vo2y8XMs6
-	5wL0l3MjvP3c8Keu8sXAs02xB9++AdXCCLlJUP0Qdd4vD2WJ9mkuVvNJLNBn21IGU9+dVWCDgUMJQ
-	aiW7gihTj04hA5iJMDgVk2IRjI1l3fQtlgwzYsefidGI3GTWcCZM/xFjvKry81hjc6aUqG1HxVIz8
-	Aq4GPXRA==;
+	bh=qBggtnsBBqAlosvKUTBvnu/Eu56LKZvu1yBuw/aHIKg=; b=jnvNFayXU2w9MPDJQYxtGkltpS
+	OEdETzqQylu3CsJNKTJIPrICY/SOdXUxU8howE4Gz22dkftyJorpsDxHfM2KNL5cMgFAVmwhF56dl
+	FhKTcQXfBM/xrfSox0kwOM7N9XP1yTfK0/shS4s4uccJifdZEjXl2yaSy1MXQ25gaHOh1hs63T35A
+	bO08RyklChxtdfAtWv1kInpYtsdYLI58kS9Zwj9oyKMeRrLDhBu2hUTq89ZrWU172tzF+tC7vp7Z5
+	UcI+eFOYHTxV92szQyFS/yrZmH8m351uviARKMgk5+ZOhNI1AA2r/NGFqVq96ibivE+bBfsN0QNfV
+	ALPDiIpg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1siXas-000000075Hk-3WDN;
-	Mon, 26 Aug 2024 11:09:06 +0000
+	id 1siXat-000000075Hy-2QXF;
+	Mon, 26 Aug 2024 11:09:07 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1siXYP-000000074pU-1r3s
+	id 1siXZj-0000000755N-47IN
 	for barebox@lists.infradead.org;
-	Mon, 26 Aug 2024 11:06:35 +0000
+	Mon, 26 Aug 2024 11:07:57 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1siXYM-0004ig-4Y; Mon, 26 Aug 2024 13:06:30 +0200
+	id 1siXZi-0004tt-KR; Mon, 26 Aug 2024 13:07:54 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1siXYL-003AhI-Ml; Mon, 26 Aug 2024 13:06:29 +0200
+	id 1siXZi-003Arq-7B; Mon, 26 Aug 2024 13:07:54 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1siXYL-004alq-27;
-	Mon, 26 Aug 2024 13:06:29 +0200
+	id 1siXZi-004aom-0Y;
+	Mon, 26 Aug 2024 13:07:54 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240824200157.2159691-1-a.fatoum@pengutronix.de>
-References: <20240824200157.2159691-1-a.fatoum@pengutronix.de>
-Message-Id: <172467038965.1094622.17995476459551949378.b4-ty@pengutronix.de>
-Date: Mon, 26 Aug 2024 13:06:29 +0200
+In-Reply-To: <20240824200214.2159827-1-a.fatoum@pengutronix.de>
+References: <20240824200214.2159827-1-a.fatoum@pengutronix.de>
+Message-Id: <172467047416.1094811.3240264362308053946.b4-ty@pengutronix.de>
+Date: Mon, 26 Aug 2024 13:07:54 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240826_040633_515403_B3D0DC3B 
-X-CRM114-Status: UNSURE (   6.95  )
+X-CRM114-CacheID: sfid-20240826_040756_050005_52254FD2 
+X-CRM114-Status: UNSURE (   8.42  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -84,21 +84,25 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] lib: math: rename file providing arith() to arith.c
+Subject: Re: [PATCH] include: move STACK_ALIGN_ARRAY to linux/align.h
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Sat, 24 Aug 2024 22:01:57 +0200, Ahmad Fatoum wrote:
-> We have math/ in the same directory, so having a math.c file is
-> a bit confusing. Rename the file to a more descriptive arith.c.
+On Sat, 24 Aug 2024 22:02:14 +0200, Ahmad Fatoum wrote:
+> As part of the measures to factor out stuff from common.h into dedicated
+> headers, move out STACK_ALIGN_ARRAY. This macro doesn't exit in Linux,
+> but the file is fitting.
 > 
+> We don't need to explicitly include it, because it's being included by
+> <linux/kernel.h>.
 > 
+> [...]
 
 Applied, thanks!
 
-[1/1] lib: math: rename file providing arith() to arith.c
-      https://git.pengutronix.de/cgit/barebox/commit/?id=0aacba55d3f8 (link may not be stable)
+[1/1] include: move STACK_ALIGN_ARRAY to linux/align.h
+      https://git.pengutronix.de/cgit/barebox/commit/?id=74fe1ce29bcf (link may not be stable)
 
 Best regards,
 -- 
