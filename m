@@ -1,67 +1,56 @@
-Delivery-date: Mon, 02 Sep 2024 09:59:51 +0200
+Delivery-date: Mon, 02 Sep 2024 11:38:41 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sl1yZ-000SEX-1T
+	id 1sl3WE-000Tfy-0x
 	for lore@lore.pengutronix.de;
-	Mon, 02 Sep 2024 09:59:50 +0200
+	Mon, 02 Sep 2024 11:38:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sl1yY-0007oQ-Dx
-	for lore@pengutronix.de; Mon, 02 Sep 2024 09:59:50 +0200
+	id 1sl3WD-0004Gd-8C
+	for lore@pengutronix.de; Mon, 02 Sep 2024 11:38:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
-	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=/xWvSaLYpXq540CT6G4XgzDm0c/4dvwRDme/gRUCp4o=; b=dUTf2wQ38bX1pSgqK2Bhr2xIXU
-	1bL4tIHTyoO5VohFrcMyNCcoHnuSlj+LlD/YiQH5NTpbR+4gtgenczkXr38A2Iqf2LsBJUlB7BXvl
-	gV0GkDH87vD3bBu9wzdZ7RijThd6o784nrmZ+HaCUqa2+tWEaadT72C/P9CJVDO8hJWZ2kUQCKm4o
-	pEbOwleLNMVj0OaTBJ5z3Kuold3YUJBO+ohOf+qV71rE2/BDVJcueEEEQOdniMS7lXsAJulW3RTWt
-	5kOX8FGp5mhTGrK/5o6jjLZ+dmX/K8Se38JrzQEuZFW52FM+K14FonnCyyYBt1oR1/deNyv1QQv9M
-	uh8IuTHg==;
+	Content-Type:Message-ID:Subject:Date:MIME-Version:To:From:Reply-To:Cc:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
+	bh=2Iz6KD8EoIddynycNV6k0cCCT8VKFTlYhIFRIG/Bfvs=; b=AvktIZcxCde9iZNly41wTsSNUF
+	gpMj5texcNXcazXY2tJY5F1kGUs4fHGJa3+dcXGRcsriYNKapjJfDGnBuOAUgoMTOn2aQWeAEGyK1
+	Gx/GkCysOE0kJUv0OH0jNYOc3VRIYfkaukPAQpOHgYb5A2mQMzcazPaEDz7BCSuoKRtQFqp8oYZPV
+	L7GVymMRwKv370Ghxv1h3WlrgjNTXwgBanqJ4DuvpWdYbgXgIbB3a3Jw/gRZKHOU5NE70l/hs7YMY
+	cy98FQKH/WtXiomwZcnfkWgbBmGvOz0DCSLLsOgLA9mRXIYqUJUiCcdQv4J3hRWTeTs31YhIx9BPG
+	f788WD4Q==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sl1y8-0000000DPKB-28W3;
-	Mon, 02 Sep 2024 07:59:24 +0000
-Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	id 1sl3Ve-0000000DjbV-0ANY;
+	Mon, 02 Sep 2024 09:38:06 +0000
+Received: from vm594.rz.uni-osnabrueck.de ([2001:638:508:100::83ad:1234])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sl1y5-0000000DPJM-2qLU
+	id 1sl3U3-0000000DjI6-1KDg
 	for barebox@lists.infradead.org;
-	Mon, 02 Sep 2024 07:59:23 +0000
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sl1y4-0007Ya-I6; Mon, 02 Sep 2024 09:59:20 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sl1y4-004qrK-0I; Mon, 02 Sep 2024 09:59:20 +0200
-Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
-	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
-	(envelope-from <s.hauer@pengutronix.de>)
-	id 1sl1y3-00AjBa-31;
-	Mon, 02 Sep 2024 09:59:19 +0200
-From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, 
- Alexander Shiyan <eagle.alexander923@gmail.com>
-In-Reply-To: <20240830053839.4201-1-eagle.alexander923@gmail.com>
-References: <20240830053839.4201-1-eagle.alexander923@gmail.com>
-Message-Id: <172526395992.2556712.8620004843169150174.b4-ty@pengutronix.de>
-Date: Mon, 02 Sep 2024 09:59:19 +0200
+	Mon, 02 Sep 2024 09:36:29 +0000
+Received: from vm079.rz.uni-osnabrueck.de (vm079.rz.uni-osnabrueck.de [IPv6:2001:638:508:100::83ad:1027])
+	by vm594.rz.uni-osnabrueck.de (Postfix) with ESMTP id 69D0D200077
+	for <barebox@lists.infradead.org>; Mon,  2 Sep 2024 11:36:11 +0200 (CEST)
+Received: from localhost (localhost [IPv6:::1])
+	by vm079.rz.uni-osnabrueck.de (Postfix) with ESMTP id 8A70B20F45D
+	for <barebox@lists.infradead.org>; Mon,  2 Sep 2024 11:36:11 +0200 (CEST)
+From: "Florian Otte" <fotte@uni-osnabrueck.de>
+To: barebox@lists.infradead.org
+User-Agent: SOGoMail 5.10.0
 MIME-Version: 1.0
+Date: Mon, 02 Sep 2024 11:36:11 +0200
+Message-ID: <a0f3-66d58700-13-45dc9e00@205549251>
+X-Forward: 217.243.193.146
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.12.3
+Content-Transfer-Encoding: quoted-printable
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240902_005921_749344_6634DD94 
-X-CRM114-Status: UNSURE (   7.22  )
+X-CRM114-CacheID: sfid-20240902_023627_535831_64775187 
+X-CRM114-Status: UNSURE (   4.51  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -80,31 +69,26 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Re: [PATCH] clk: rockchip: clk-rk3588: Fix 32k clock name for
- pmu_24m_32k_100m_src_p
+Subject: Bufferoverflow on eMMC partition handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
+Hi Everyone.
 
-On Fri, 30 Aug 2024 08:38:39 +0300, Alexander Shiyan wrote:
-> The 32kHz input clock is named "xin32k" in the driver,
-> so the name "32k" appears to be a typo in this case. Lets fix this.
-> 
-> 
+I tried to use all general purpose partitions on an eMMC storage device=
+ and ran into some trouble. In ./include/mci.h the number of partitions=
+ is limited to 6, but there might be 7 partitions. This results in a bu=
+ffer overflow or access out of bound and causes a nasty bootloop when a=
+ll general purpose-partitions are used. I created a simple patch and ap=
+pended it to this mail.
 
-Applied, thanks!
-
-[1/1] clk: rockchip: clk-rk3588: Fix 32k clock name for pmu_24m_32k_100m_src_p
-      https://git.pengutronix.de/cgit/barebox/commit/?id=00e7ccbee794 (link may not be stable)
-
-Best regards,
--- 
-Sascha Hauer <s.hauer@pengutronix.de>
+Kind regards
+fotte
 
 
 
