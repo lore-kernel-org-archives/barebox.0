@@ -1,57 +1,55 @@
-Delivery-date: Mon, 02 Sep 2024 11:38:41 +0200
+Delivery-date: Mon, 02 Sep 2024 11:38:44 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sl3WE-000Tfy-0x
+	id 1sl3WG-000TgJ-1w
 	for lore@lore.pengutronix.de;
-	Mon, 02 Sep 2024 11:38:41 +0200
+	Mon, 02 Sep 2024 11:38:44 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sl3WD-0004Gd-8C
-	for lore@pengutronix.de; Mon, 02 Sep 2024 11:38:41 +0200
+	id 1sl3WF-0004JX-Gd
+	for lore@pengutronix.de; Mon, 02 Sep 2024 11:38:44 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:Message-ID:Subject:Date:MIME-Version:To:From:Reply-To:Cc:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Subject:Message-ID:
+	MIME-Version:To:Date:Content-Type:From:Reply-To:Cc:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=2Iz6KD8EoIddynycNV6k0cCCT8VKFTlYhIFRIG/Bfvs=; b=AvktIZcxCde9iZNly41wTsSNUF
-	gpMj5texcNXcazXY2tJY5F1kGUs4fHGJa3+dcXGRcsriYNKapjJfDGnBuOAUgoMTOn2aQWeAEGyK1
-	Gx/GkCysOE0kJUv0OH0jNYOc3VRIYfkaukPAQpOHgYb5A2mQMzcazPaEDz7BCSuoKRtQFqp8oYZPV
-	L7GVymMRwKv370Ghxv1h3WlrgjNTXwgBanqJ4DuvpWdYbgXgIbB3a3Jw/gRZKHOU5NE70l/hs7YMY
-	cy98FQKH/WtXiomwZcnfkWgbBmGvOz0DCSLLsOgLA9mRXIYqUJUiCcdQv4J3hRWTeTs31YhIx9BPG
-	f788WD4Q==;
+	bh=FRz6GcPyJfhc2Hf3zCZzjsT3bvZABj5VD/44fJeHb5w=; b=WYNfMejz4AMnv6yLpCkDN0IktC
+	OCC+pw6LedgKNPM9tkbtmS0sTrxvVd9xUd6/XBxG/cpILyDJg5BwC1MeWTPLo/w/ybC1ABcgMcCWE
+	7HenUf1bZ5a1TNBAr7a+BHcBMfz+9HM/AW40Dgda4vSfQef+e9IXAh4Ilydw1nWjElmuy1k5ek9RW
+	dmlqaL6Neo4Dotq1AXzuQpcwGlq+x07lBqxNAezlMXNIX0nSuGPuUK2wxlR9XprBxlUij35voNZR1
+	0p8ksJimicW+S/F7nisFpeBiK1P8SjOE5aFIbaXUGozBObe7MhswDJSePIhEMSAOqZ50+X+ytTvJR
+	aKAXS4aw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sl3Ve-0000000DjbV-0ANY;
+	id 1sl3Ve-0000000Djc4-47IS;
 	Mon, 02 Sep 2024 09:38:06 +0000
-Received: from vm594.rz.uni-osnabrueck.de ([2001:638:508:100::83ad:1234])
+Received: from vm593.rz.uni-osnabrueck.de ([131.173.17.199])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sl3U3-0000000DjI6-1KDg
+	id 1sl3VX-0000000Djab-1Ffw
 	for barebox@lists.infradead.org;
-	Mon, 02 Sep 2024 09:36:29 +0000
-Received: from vm079.rz.uni-osnabrueck.de (vm079.rz.uni-osnabrueck.de [IPv6:2001:638:508:100::83ad:1027])
-	by vm594.rz.uni-osnabrueck.de (Postfix) with ESMTP id 69D0D200077
-	for <barebox@lists.infradead.org>; Mon,  2 Sep 2024 11:36:11 +0200 (CEST)
+	Mon, 02 Sep 2024 09:38:00 +0000
+Received: from vm079.rz.uni-osnabrueck.de (vm079.rz.uni-osnabrueck.de [131.173.16.39])
+	by vm593.rz.uni-osnabrueck.de (Postfix) with ESMTP id AE13E202D67
+	for <barebox@lists.infradead.org>; Mon,  2 Sep 2024 11:37:56 +0200 (CEST)
 Received: from localhost (localhost [IPv6:::1])
-	by vm079.rz.uni-osnabrueck.de (Postfix) with ESMTP id 8A70B20F45D
-	for <barebox@lists.infradead.org>; Mon,  2 Sep 2024 11:36:11 +0200 (CEST)
+	by vm079.rz.uni-osnabrueck.de (Postfix) with ESMTP id 9122B20F45D
+	for <barebox@lists.infradead.org>; Mon,  2 Sep 2024 11:37:56 +0200 (CEST)
 From: "Florian Otte" <fotte@uni-osnabrueck.de>
-To: barebox@lists.infradead.org
-User-Agent: SOGoMail 5.10.0
-MIME-Version: 1.0
-Date: Mon, 02 Sep 2024 11:36:11 +0200
-Message-ID: <a0f3-66d58700-13-45dc9e00@205549251>
+Content-Type: multipart/mixed; boundary="----=_=-_OpenGroupware_org_NGMime-40855-1725269876.463860-4------"
 X-Forward: 217.243.193.146
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Date: Mon, 02 Sep 2024 11:37:56 +0200
+To: barebox@lists.infradead.org
+MIME-Version: 1.0
+Message-ID: <9f97-66d58780-19-542e2c00@140924414>
+User-Agent: SOGoMail 5.10.0
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240902_023627_535831_64775187 
-X-CRM114-Status: UNSURE (   4.51  )
-X-CRM114-Notice: Please train this message.
+X-CRM114-CacheID: sfid-20240902_023759_526424_2A506A7C 
+X-CRM114-Status: GOOD (  13.35  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,7 +67,7 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
@@ -77,6 +75,11 @@ X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 Subject: Bufferoverflow on eMMC partition handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
+
+------=_=-_OpenGroupware_org_NGMime-40855-1725269876.463860-4------
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Content-Length: 498
 
 Hi Everyone.
 
@@ -89,6 +92,50 @@ pended it to this mail.
 
 Kind regards
 fotte
+
+[Edit]: Sorry. Clicked the wrong button to fast. Now with Attachment.
+
+------=_=-_OpenGroupware_org_NGMime-40855-1725269876.463860-4------
+Content-Type: text/plain
+Content-Disposition: attachment; filename="0001-FIX-buffer-overflow-on-MCI-partition-enumeration.patch"
+Content-Transfer-Encoding: quoted-printable
+Content-Length: 1111
+
+>From 0bae0df23bbc4a9e98f1bcac6c6fbe0c3b21bc78 Mon Sep 17 00:00:00 2001
+From: Florian Otte <fotte@uos.de>
+Date: Mon, 2 Sep 2024 11:27:47 +0200
+Subject: [PATCH] FIX: buffer overflow on MCI-partition enumeration
+
+Memory for up to 6 partitions is reserved, however there can be up to 7
+partitions on an mci storage (e.g. emmc). A user partition two boot par=
+titions
+and up to four general pupose partitions.
+---
+ include/mci.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/include/mci.h b/include/mci.h
+index 3bf1455a40..cd01e2f992 100644
+--- a/include/mci.h
++++ b/include/mci.h
+@@ -600,7 +600,10 @@ struct mci=5Fhost {
+=20
+ #define MMC=5FNUM=5FBOOT=5FPARTITION	2
+ #define MMC=5FNUM=5FGP=5FPARTITION	4
+-#define MMC=5FNUM=5FPHY=5FPARTITION	6
++#define MMC=5FNUM=5FUSER=5FPARTITION	1
++#define MMC=5FNUM=5FPHY=5FPARTITION	(MMC=5FNUM=5FBOOT=5FPARTITION + \
++                                 MMC=5FNUM=5FGP=5FPARTITION + \
++                                 MMC=5FNUM=5FUSER=5FPARTITION)
+=20
+ struct mci=5Fpart {
+ 	struct block=5Fdevice	blk;		/**< the blockdevice for the card */
+--=20
+2.39.2
+
+
+
+------=_=-_OpenGroupware_org_NGMime-40855-1725269876.463860-4--------
 
 
 
