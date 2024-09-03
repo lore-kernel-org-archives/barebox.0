@@ -1,55 +1,70 @@
-Delivery-date: Mon, 02 Sep 2024 11:38:44 +0200
+Delivery-date: Tue, 03 Sep 2024 11:52:54 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sl3WG-000TgJ-1w
+	id 1slQDV-000pQU-08
 	for lore@lore.pengutronix.de;
-	Mon, 02 Sep 2024 11:38:44 +0200
+	Tue, 03 Sep 2024 11:52:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1sl3WF-0004JX-Gd
-	for lore@pengutronix.de; Mon, 02 Sep 2024 11:38:44 +0200
+	id 1slQDT-0007Uu-UD
+	for lore@pengutronix.de; Tue, 03 Sep 2024 11:52:52 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
-	:List-Post:List-Archive:List-Unsubscribe:List-Id:Subject:Message-ID:
-	MIME-Version:To:Date:Content-Type:From:Reply-To:Cc:Content-Transfer-Encoding:
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Message-ID:Date:Subject:Cc:To:From:Reply-To:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=FRz6GcPyJfhc2Hf3zCZzjsT3bvZABj5VD/44fJeHb5w=; b=WYNfMejz4AMnv6yLpCkDN0IktC
-	OCC+pw6LedgKNPM9tkbtmS0sTrxvVd9xUd6/XBxG/cpILyDJg5BwC1MeWTPLo/w/ybC1ABcgMcCWE
-	7HenUf1bZ5a1TNBAr7a+BHcBMfz+9HM/AW40Dgda4vSfQef+e9IXAh4Ilydw1nWjElmuy1k5ek9RW
-	dmlqaL6Neo4Dotq1AXzuQpcwGlq+x07lBqxNAezlMXNIX0nSuGPuUK2wxlR9XprBxlUij35voNZR1
-	0p8ksJimicW+S/F7nisFpeBiK1P8SjOE5aFIbaXUGozBObe7MhswDJSePIhEMSAOqZ50+X+ytTvJR
-	aKAXS4aw==;
+	bh=ulejDGl8/9zr1pfXNF2wV39GkBK0AthSnAP2Flfid98=; b=i5S/SdZGNCky77XTQPFJc7ptUj
+	tZ6NYL5vkihJl6P4TmZMqxAsMQsrvVUHOOpq2tZabG71/Y2zaQ2pPYVs5O50ZYAK8BJMu5r19JQyl
+	vIuldvlw45EXgiSvypAWKM01Fp+XGIaL0+Y5WMZz53lxrgrUtw3ManHbPW/HGNeH5e0jX1wGnuLlX
+	1OapOF6D2pyMrpnsJDmWEY54YXA7Zpo3bAt021gr7QqcFYwzKLAh0HKHlcpk2kKzQZK7JFgwDGCAt
+	0sQSP7XRyOVUdW9YVMG6Le9yTS0KgNsBmSknkYf2hoaKvIi2RbyDIlkOPYifwHCqnQSGxu6I3nwuR
+	3ygHGdbw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sl3Ve-0000000Djc4-47IS;
-	Mon, 02 Sep 2024 09:38:06 +0000
-Received: from vm593.rz.uni-osnabrueck.de ([131.173.17.199])
+	id 1slQCn-0000000HFJu-3Yzl;
+	Tue, 03 Sep 2024 09:52:09 +0000
+Received: from casper.infradead.org ([2001:8b0:10b:1236::1])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sl3VX-0000000Djab-1Ffw
+	id 1slPyS-0000000HC3y-04IP
+	for barebox@bombadil.infradead.org;
+	Tue, 03 Sep 2024 09:37:20 +0000
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=ulejDGl8/9zr1pfXNF2wV39GkBK0AthSnAP2Flfid98=; b=voNdPeeD6zJMsEI8+RayziHsSV
+	AdHE34XKM7VXFMysGyRn6PXWcR2Vg7myJHgijINaJWOMFe9CSRVLzlepsg7d+2LZhcMl5G8q/7nfu
+	qJ3gUHP0aTZ0QU0QJTkmNVaqRkEYt0KbVLnSMW7Er93YZGZBNqVsP8U6F+YIqkzePkkoxwUZV5lM0
+	FumVoTgAn2TmN4seYFJ9hoMCKvmTcDvF3TzjBBsA3VODEFPWg3dG1hF4AlwiafApoGOKiv5ehhsPj
+	LIjdkzN0mwkLpXL/ybzkiBXGkgsPem1ByCOWwhMXGba16bpKe9qnJJeNThTIhE00YfmnMRwvLT9u+
+	kNrnTxIg==;
+Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
+	by casper.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
+	id 1slPyO-0000000825i-48dz
 	for barebox@lists.infradead.org;
-	Mon, 02 Sep 2024 09:38:00 +0000
-Received: from vm079.rz.uni-osnabrueck.de (vm079.rz.uni-osnabrueck.de [131.173.16.39])
-	by vm593.rz.uni-osnabrueck.de (Postfix) with ESMTP id AE13E202D67
-	for <barebox@lists.infradead.org>; Mon,  2 Sep 2024 11:37:56 +0200 (CEST)
-Received: from localhost (localhost [IPv6:::1])
-	by vm079.rz.uni-osnabrueck.de (Postfix) with ESMTP id 9122B20F45D
-	for <barebox@lists.infradead.org>; Mon,  2 Sep 2024 11:37:56 +0200 (CEST)
-From: "Florian Otte" <fotte@uni-osnabrueck.de>
-Content-Type: multipart/mixed; boundary="----=_=-_OpenGroupware_org_NGMime-40855-1725269876.463860-4------"
-X-Forward: 217.243.193.146
-Date: Mon, 02 Sep 2024 11:37:56 +0200
+	Tue, 03 Sep 2024 09:37:18 +0000
+Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=localhost)
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <r.czerwinski@pengutronix.de>)
+	id 1slPyN-0000hU-Qv; Tue, 03 Sep 2024 11:37:15 +0200
+From: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 To: barebox@lists.infradead.org
+Cc: Rouven Czerwinski <r.czerwinski@pengutronix.de>
+Date: Tue,  3 Sep 2024 11:37:12 +0200
+Message-ID: <20240903093712.453901-1-r.czerwinski@pengutronix.de>
+X-Mailer: git-send-email 2.46.0
 MIME-Version: 1.0
-Message-ID: <9f97-66d58780-19-542e2c00@140924414>
-User-Agent: SOGoMail 5.10.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240902_023759_526424_2A506A7C 
-X-CRM114-Status: GOOD (  13.35  )
+X-CRM114-CacheID: sfid-20240903_103717_048035_9D55E0DE 
+X-CRM114-Status: GOOD (  10.78  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -67,75 +82,46 @@ X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
 X-Spam-Checker-Version: SpamAssassin 3.4.2 (2018-09-13) on
 	metis.whiteo.stw.pengutronix.de
 X-Spam-Level: 
-X-Spam-Status: No, score=-5.1 required=4.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+X-Spam-Status: No, score=-5.1 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: Bufferoverflow on eMMC partition handling
+Subject: [PATCH] include: linux/iopoll: fix uninitialized warning
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-------=_=-_OpenGroupware_org_NGMime-40855-1725269876.463860-4------
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Content-Length: 498
+In gcc 13.3 there is a warning that start may be used unitialized:
 
-Hi Everyone.
+  include/linux/iopoll.h:42:21: warning: ‘start’ may be used uninitialized [-Wmaybe-uninitialized]
+     42 |                     is_timeout(start, ((timeout_us) * USECOND))) { \
+        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-I tried to use all general purpose partitions on an eMMC storage device=
- and ran into some trouble. In ./include/mci.h the number of partitions=
- is limited to 6, but there might be 7 partitions. This results in a bu=
-ffer overflow or access out of bound and causes a nasty bootloop when a=
-ll general purpose-partitions are used. I created a simple patch and ap=
-pended it to this mail.
+The warning is bogus since before usage of start !IN_PBL and
+timeout_us != 0 are checked for the case where start is used, but in
+this case it is also always initialized to get_time_ns().
+Initialize it to zero to silence the warning.
 
-Kind regards
-fotte
-
-[Edit]: Sorry. Clicked the wrong button to fast. Now with Attachment.
-
-------=_=-_OpenGroupware_org_NGMime-40855-1725269876.463860-4------
-Content-Type: text/plain
-Content-Disposition: attachment; filename="0001-FIX-buffer-overflow-on-MCI-partition-enumeration.patch"
-Content-Transfer-Encoding: quoted-printable
-Content-Length: 1111
-
->From 0bae0df23bbc4a9e98f1bcac6c6fbe0c3b21bc78 Mon Sep 17 00:00:00 2001
-From: Florian Otte <fotte@uos.de>
-Date: Mon, 2 Sep 2024 11:27:47 +0200
-Subject: [PATCH] FIX: buffer overflow on MCI-partition enumeration
-
-Memory for up to 6 partitions is reserved, however there can be up to 7
-partitions on an mci storage (e.g. emmc). A user partition two boot par=
-titions
-and up to four general pupose partitions.
+Signed-off-by: Rouven Czerwinski <r.czerwinski@pengutronix.de>
 ---
- include/mci.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/linux/iopoll.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/mci.h b/include/mci.h
-index 3bf1455a40..cd01e2f992 100644
---- a/include/mci.h
-+++ b/include/mci.h
-@@ -600,7 +600,10 @@ struct mci=5Fhost {
-=20
- #define MMC=5FNUM=5FBOOT=5FPARTITION	2
- #define MMC=5FNUM=5FGP=5FPARTITION	4
--#define MMC=5FNUM=5FPHY=5FPARTITION	6
-+#define MMC=5FNUM=5FUSER=5FPARTITION	1
-+#define MMC=5FNUM=5FPHY=5FPARTITION	(MMC=5FNUM=5FBOOT=5FPARTITION + \
-+                                 MMC=5FNUM=5FGP=5FPARTITION + \
-+                                 MMC=5FNUM=5FUSER=5FPARTITION)
-=20
- struct mci=5Fpart {
- 	struct block=5Fdevice	blk;		/**< the blockdevice for the card */
---=20
-2.39.2
-
-
-
-------=_=-_OpenGroupware_org_NGMime-40855-1725269876.463860-4--------
+diff --git a/include/linux/iopoll.h b/include/linux/iopoll.h
+index 96b17dee48..c7dcaec382 100644
+--- a/include/linux/iopoll.h
++++ b/include/linux/iopoll.h
+@@ -31,7 +31,7 @@
+  */
+ #define read_poll_timeout(op, val, cond, timeout_us, args...)	\
+ ({ \
+-	uint64_t start; \
++	uint64_t start = 0; \
+ 	if (!IN_PBL && (timeout_us) != 0) \
+ 		start = get_time_ns(); \
+ 	for (;;) { \
+-- 
+2.46.0
 
 
 
