@@ -1,63 +1,67 @@
-Delivery-date: Tue, 03 Sep 2024 13:35:21 +0200
+Delivery-date: Tue, 03 Sep 2024 13:36:10 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1slRof-000r1u-2C
+	id 1slRpT-000r2X-0F
 	for lore@lore.pengutronix.de;
-	Tue, 03 Sep 2024 13:35:21 +0200
+	Tue, 03 Sep 2024 13:36:10 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1slRoe-0004is-Jr
-	for lore@pengutronix.de; Tue, 03 Sep 2024 13:35:21 +0200
+	id 1slRpS-0005CW-1k
+	for lore@pengutronix.de; Tue, 03 Sep 2024 13:36:10 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:
-	List-Owner; bh=tnvRwoiqUTI2R56INV4sq9etPs1hi68NU2747AYp+0Y=; b=xuycJ5vCg61LaE
-	l4F2sS8/vFhMXFdIx51iSllP8Kf/fZmCWiGKGl76dtoPJ4L3ApxJeTHMwA9em17TeDCkDIc/MOpaD
-	69tWbzhgmDOFQlyEhp1y5VJHTwe3Lo88wJ8jt6cQhetRfdiK2nqlWz656WwG55Z4Aj4EBUY3iJz2B
-	40ZgmZJxPi2feKYeuXqBjYbZcXgqAVhGi9o/L5JIR5cbtlJ//vxJy+GeVQ23fjM0BvYLOBwwK10H+
-	Cicw9SfGHhhSlJtyxPl/U6Cgf8CN14kLfFLJ6dGJ14n0DZk5GAxW8ekXGgLFqyqk72OEV7hQp+hpz
-	PeI2CnJHJ5oLVVjd0DiQ==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=2SvxA4LRf7hB6/syydPNT748Y8PmYZ7mbs+4isydhQc=; b=hUU8CKsMyfUXRJ5qkUipsPq/nx
+	Db0qSsoEncQFfDRpaU+v/mTZKxHm0vJiToUNSvqxOe1ciqzEqq1/KXWhcnQl25eQgpNxUsTsps8w0
+	cAXAzLdaMWCVq836sgkXeSLWdDEqYci4GotbpsaDMHzVlI+SOAcauz6gogcoH4muG+RXwXloZ9xX2
+	PzOI+0+zRJdqecOxcaIcJEEBoNNz4R0HBi4kVJbVI7aXpDugAbXWKnCEmMx7YDRbY8YKktstCwcZh
+	EH2YPMBJcuLA8p6Bzde4boxwjhPf+960cVE4dWaI3aZ1IyXUrYkYA22mARHIK50ZetZnLJfqzJkaR
+	wdfAcPtA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1slRo4-0000000HYH5-1E3U;
-	Tue, 03 Sep 2024 11:34:44 +0000
+	id 1slRp1-0000000HYYf-49g8;
+	Tue, 03 Sep 2024 11:35:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1slRo1-0000000HYEl-26Mh
+	id 1slRoy-0000000HYXs-1JNR
 	for barebox@lists.infradead.org;
-	Tue, 03 Sep 2024 11:34:43 +0000
+	Tue, 03 Sep 2024 11:35:41 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1slRnx-0004IX-RX; Tue, 03 Sep 2024 13:34:37 +0200
+	id 1slRox-0004tS-4x; Tue, 03 Sep 2024 13:35:39 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1slRnu-005Bal-Op; Tue, 03 Sep 2024 13:34:34 +0200
+	id 1slRow-005Baw-OV; Tue, 03 Sep 2024 13:35:38 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1slRnu-00Ejfk-25;
-	Tue, 03 Sep 2024 13:34:34 +0200
+	id 1slRow-00Ejil-2H;
+	Tue, 03 Sep 2024 13:35:38 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: Barebox List <barebox@lists.infradead.org>
-Date: Tue,  3 Sep 2024 13:34:33 +0200
-Message-Id: <20240903113433.3512146-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+To: barebox@lists.infradead.org, Florian Otte <fotte@uni-osnabrueck.de>
+In-Reply-To: <9f97-66d58780-19-542e2c00@140924414>
+References: <9f97-66d58780-19-542e2c00@140924414>
+Message-Id: <172536333870.3512332.15791360758297093524.b4-ty@pengutronix.de>
+Date: Tue, 03 Sep 2024 13:35:38 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240903_043441_557796_B3BF8ABA 
-X-CRM114-Status: GOOD (  11.23  )
+X-CRM114-CacheID: sfid-20240903_043540_381432_21EE157B 
+X-CRM114-Status: UNSURE (   6.74  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -69,7 +73,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Florian Otte <fotte@uni-osnabrueck.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -81,43 +84,26 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE,
 	T_SCC_BODY_TEXT_LINE autolearn=unavailable autolearn_force=no
 	version=3.4.2
-Subject: [PATCH] mci: avoid out of bounds partition access
+Subject: Re: Bufferoverflow on eMMC partition handling
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-The mci->part array has MMC_NUM_PHY_PARTITION. Avoid creating more
-partitions than we have entries in the array and print an error
-message instead.
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Reported-by: Florian Otte <fotte@uni-osnabrueck.de>
----
- drivers/mci/mci-core.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+On Mon, 02 Sep 2024 11:37:56 +0200, Florian Otte wrote:
+> Memory for up to 6 partitions is reserved, however there can be up to 7
+> partitions on an mci storage (e.g. emmc). A user partition two boot partitions
+> and up to four general pupose partitions.
+> 
+> 
 
-diff --git a/drivers/mci/mci-core.c b/drivers/mci/mci-core.c
-index 0261f36d89..ec4a5c0749 100644
---- a/drivers/mci/mci-core.c
-+++ b/drivers/mci/mci-core.c
-@@ -651,7 +651,15 @@ static void mci_part_add(struct mci *mci, uint64_t size,
-                         unsigned int part_cfg, char *name, char *partname, int idx, bool ro,
-                         int area_type)
- {
--	struct mci_part *part = &mci->part[mci->nr_parts];
-+	struct mci_part *part;
-+
-+	if (mci->nr_parts == MMC_NUM_PHY_PARTITION) {
-+		dev_err(&mci->dev, "Out of physical partitions, cannot create partition %s\n",
-+			name);
-+		return;
-+	}
-+
-+	part = &mci->part[mci->nr_parts];
- 
- 	part->mci = mci;
- 	part->size = size;
+Applied, thanks!
+
+[1/1] Bufferoverflow on eMMC partition handling
+      https://git.pengutronix.de/cgit/barebox/commit/?id=46b577013b3c (link may not be stable)
+
+Best regards,
 -- 
-2.39.2
+Sascha Hauer <s.hauer@pengutronix.de>
 
 
 
