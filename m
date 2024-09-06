@@ -1,65 +1,65 @@
-Delivery-date: Fri, 06 Sep 2024 12:43:51 +0200
+Delivery-date: Fri, 06 Sep 2024 12:43:54 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1smWRT-001qwu-1S
+	id 1smWRW-001qxI-30
 	for lore@lore.pengutronix.de;
-	Fri, 06 Sep 2024 12:43:51 +0200
+	Fri, 06 Sep 2024 12:43:54 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1smWRR-0003nM-7t
-	for lore@pengutronix.de; Fri, 06 Sep 2024 12:43:50 +0200
+	id 1smWRU-0003qI-8E
+	for lore@pengutronix.de; Fri, 06 Sep 2024 12:43:54 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=lists.infradead.org; s=bombadil.20210309; h=Sender:Cc:List-Subscribe:
-	List-Help:List-Post:List-Archive:List-Unsubscribe:List-Id:
-	Content-Transfer-Encoding:MIME-Version:References:In-Reply-To:Message-Id:Date
-	:Subject:To:From:Reply-To:Content-Type:Content-ID:Content-Description:
-	Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	List-Owner; bh=OBk3TgmswelJ4XCE+rLQ1vbSu5aIGya7tAhemxM9lho=; b=s0EI5kuK/ROJ19
-	SNFKT/0cCoMjW+1SbnGMns0ukh1fE6KHy9+BId388TwiyTZSQ0yBig7QCfgM5IQngahK9C9825aQK
-	mjqV1/8YALV6IEfrC7/iPnVryqOeR9ih7qFT8+WxDlSU0ogsPXeYneBy+o80mJ/aYvhFYvBDx+tWT
-	wxh/l8T7RhV0CbMOWuX1aXSy0dFmDRu56B+7G0skQQTncLd0LysRrhmat0lnw1Iz5JPPP/V5UCUFS
-	Dfi9OYQeh76vIWnTgUjRLNnVeld8fwRVO79safF3pOdLip4gOJ1AxWs+yuuh7KHMFM7YWu5o14+ev
-	UrqCDewqwk3SYUvLAlHw==;
+	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
+	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:To:From:Reply-To:
+	Cc:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=Uy32eLYN5NILRhajJAL5gNrEUJKrh2ALPM3FeWNEqE0=; b=ojjvYsFvv5TMv3v1p2Q4nHyO6j
+	NehszVlKdVZXCaE0ToRCNlJgc9NQWr5U91fHDbliTNsm7AkyVfAJIVDNNlsO2Bp9LsEwL36RuOxla
+	tZs31Kvy6pLiwYZxPdhuhMiVE2z0gQMg6nd9FDQc8bg2CPhWPOoIdvHSU9u2bwtEVtjMea9JNPIPI
+	bb1VetZJ1FbXyIWMEAl3CPJuucEOoo98JCULUo8MJSh7V6t4QjLawr7r6418VMFeyggaQNV0iRcWd
+	zvQ6sOVN0d0OVJO/Ot2VxDEzW37bDv1rZwRFDe2WwS0z1Tw58Gq+gJjqjIUS3OlfAQIiYHks7PuHt
+	dqs8CmqQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1smWR1-0000000Bp8N-0S5L;
+	id 1smWR1-0000000Bp8t-3yDI;
 	Fri, 06 Sep 2024 10:43:23 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1smWQs-0000000Bp4I-1mVp
+	id 1smWQs-0000000Bp4A-0CRj
 	for barebox@lists.infradead.org;
-	Fri, 06 Sep 2024 10:43:17 +0000
+	Fri, 06 Sep 2024 10:43:18 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1smWQr-0003NH-0Q; Fri, 06 Sep 2024 12:43:13 +0200
+	id 1smWQq-0003NF-Qb; Fri, 06 Sep 2024 12:43:12 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1smWQq-005vOO-JA; Fri, 06 Sep 2024 12:43:12 +0200
+	id 1smWQq-005vOI-DN; Fri, 06 Sep 2024 12:43:12 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1smWOF-009BBJ-1K;
+	id 1smWOF-009BBJ-1A;
 	Fri, 06 Sep 2024 12:40:31 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: Barebox List <barebox@lists.infradead.org>
-Date: Fri,  6 Sep 2024 12:40:28 +0200
-Message-Id: <20240906104028.2187872-16-s.hauer@pengutronix.de>
+Date: Fri,  6 Sep 2024 12:40:27 +0200
+Message-Id: <20240906104028.2187872-15-s.hauer@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 In-Reply-To: <20240906104028.2187872-1-s.hauer@pengutronix.de>
 References: <20240906104028.2187872-1-s.hauer@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240906_034314_495276_A38C6454 
-X-CRM114-Status: GOOD (  10.38  )
+X-CRM114-CacheID: sfid-20240906_034314_286357_EE1AD24A 
+X-CRM114-Status: GOOD (  24.68  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -71,7 +71,6 @@ List-Post: <mailto:barebox@lists.infradead.org>
 List-Help: <mailto:barebox-request@lists.infradead.org?subject=help>
 List-Subscribe: <http://lists.infradead.org/mailman/listinfo/barebox>,
  <mailto:barebox-request@lists.infradead.org?subject=subscribe>
-Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
 Sender: "barebox" <barebox-bounces@lists.infradead.org>
 X-SA-Exim-Connect-IP: 2607:7c80:54:3::133
 X-SA-Exim-Mail-From: barebox-bounces+lore=pengutronix.de@lists.infradead.org
@@ -82,49 +81,292 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH v3 15/15] crypto: make RSA a visible option
+Subject: [PATCH v3 14/15] crypto: add ECDSA support
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-With ECDSA support RSA is no longer the only option for FIT image
-verification. Make CONFIG_CRYPTO_RSA visible so that the user can
-choose. CONFIG_CRYPTO_RSA defaults to yes when FITIMAGE_SIGNATURE is
-selected so that existing configs continue to work.
+This adds ECDSA signature verification support. The code is based on the
+Linux code as of Linux-6.10. The Linux code expects the key to be in
+ASN.1 encoded format. We don't need this in barebox as directly compile
+the x and y key values into the binary, so this is left out.
 
-Reviewed-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Link: https://lore.barebox.org/20240801055737.3190132-19-s.hauer@pengutronix.de
+Link: https://lore.barebox.org/20240801055737.3190132-18-s.hauer@pengutronix.de
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- common/Kconfig | 1 -
- crypto/Kconfig | 3 ++-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ crypto/Kconfig              |   4 ++
+ crypto/Makefile             |   1 +
+ crypto/ecdsa.c              | 140 ++++++++++++++++++++++++++++++++++++
+ crypto/public-keys.c        |   8 +++
+ include/crypto/public_key.h |   1 +
+ include/ecdsa.h             |  42 +++++++++++
+ 6 files changed, 196 insertions(+)
+ create mode 100644 crypto/ecdsa.c
+ create mode 100644 include/ecdsa.h
 
-diff --git a/common/Kconfig b/common/Kconfig
-index 4500feb66c..c925b1bd99 100644
---- a/common/Kconfig
-+++ b/common/Kconfig
-@@ -62,7 +62,6 @@ config FITIMAGE
- 	select DIGEST
- 
- config FITIMAGE_SIGNATURE
--	select CRYPTO_RSA
- 	bool
- 
- config LOGBUF
 diff --git a/crypto/Kconfig b/crypto/Kconfig
-index a90e3e1005..45011802e3 100644
+index 7935af3da8..a90e3e1005 100644
 --- a/crypto/Kconfig
 +++ b/crypto/Kconfig
-@@ -116,7 +116,8 @@ config CRYPTO_PBKDF2
+@@ -151,4 +151,8 @@ config JWT
+ config CRYPTO_ECC
  	bool
  
- config CRYPTO_RSA
--	bool
-+	bool "RSA support"
-+	default y if FITIMAGE_SIGNATURE
++config CRYPTO_ECDSA
++	bool "ECDSA support"
++	select CRYPTO_ECC
++
+ endmenu
+diff --git a/crypto/Makefile b/crypto/Makefile
+index a697bb594f..09eb3f2a8c 100644
+--- a/crypto/Makefile
++++ b/crypto/Makefile
+@@ -20,6 +20,7 @@ obj-$(CONFIG_CRYPTO_RSA)	+= rsa.o
+ obj-$(CONFIG_CRYPTO_KEYSTORE)	+= keystore.o
+ obj-$(CONFIG_CRYPTO_BUILTIN_KEYS)      += public-keys.o
+ obj-$(CONFIG_CRYPTO_ECC)	+= ecc.o
++obj-$(CONFIG_CRYPTO_ECDSA) 	+= ecdsa.o
  
- config CRYPTO_BUILTIN_KEYS
- 	bool "builtin keys"
+ obj-$(CONFIG_JWT)		+= jwt.o
+ 
+diff --git a/crypto/ecdsa.c b/crypto/ecdsa.c
+new file mode 100644
+index 0000000000..3025410df3
+--- /dev/null
++++ b/crypto/ecdsa.c
+@@ -0,0 +1,140 @@
++// SPDX-License-Identifier: GPL-2.0+
++/*
++ * Copyright (c) 2021 IBM Corporation
++ */
++
++#include <common.h>
++
++#include <crypto/internal/ecc.h>
++#include <crypto/public_key.h>
++#include <crypto/ecdh.h>
++#include <ecdsa.h>
++
++struct ecc_ctx {
++	unsigned int curve_id;
++	const struct ecc_curve *curve;
++
++	bool pub_key_set;
++	u64 x[ECC_MAX_DIGITS]; /* pub key x and y coordinates */
++	u64 y[ECC_MAX_DIGITS];
++	struct ecc_point pub_key;
++};
++
++static int _ecdsa_verify(struct ecc_ctx *ctx, const u64 *hash, const u64 *r, const u64 *s)
++{
++	const struct ecc_curve *curve = ctx->curve;
++	unsigned int ndigits = curve->g.ndigits;
++	u64 s1[ECC_MAX_DIGITS];
++	u64 u1[ECC_MAX_DIGITS];
++	u64 u2[ECC_MAX_DIGITS];
++	u64 x1[ECC_MAX_DIGITS];
++	u64 y1[ECC_MAX_DIGITS];
++	struct ecc_point res = ECC_POINT_INIT(x1, y1, ndigits);
++
++	/* 0 < r < n  and 0 < s < n */
++	if (vli_is_zero(r, ndigits) || vli_cmp(r, curve->n, ndigits) >= 0 ||
++	    vli_is_zero(s, ndigits) || vli_cmp(s, curve->n, ndigits) >= 0)
++		return -EBADMSG;
++
++	/* hash is given */
++	pr_debug("hash : %016llx %016llx ... %016llx\n",
++		 hash[ndigits - 1], hash[ndigits - 2], hash[0]);
++
++	/* s1 = (s^-1) mod n */
++	vli_mod_inv(s1, s, curve->n, ndigits);
++	/* u1 = (hash * s1) mod n */
++	vli_mod_mult_slow(u1, hash, s1, curve->n, ndigits);
++	/* u2 = (r * s1) mod n */
++	vli_mod_mult_slow(u2, r, s1, curve->n, ndigits);
++	/* res = u1*G + u2 * pub_key */
++	ecc_point_mult_shamir(&res, u1, &curve->g, u2, &ctx->pub_key, curve);
++
++	/* res.x = res.x mod n (if res.x > order) */
++	if (unlikely(vli_cmp(res.x, curve->n, ndigits) == 1))
++		/* faster alternative for NIST p521, p384, p256 & p192 */
++		vli_sub(res.x, res.x, curve->n, ndigits);
++
++	if (!vli_cmp(res.x, r, ndigits))
++		return 0;
++
++	return -EKEYREJECTED;
++}
++
++static int ecdsa_key_size(const char *curve_name)
++{
++	if (!strcmp(curve_name, "prime256v1"))
++		return 256;
++	else
++		return 0;
++}
++
++int ecdsa_verify(const struct ecdsa_public_key *key, const uint8_t *sig,
++		 const uint32_t sig_len, const uint8_t *hash)
++{
++	struct ecc_ctx _ctx = {};
++	struct ecc_ctx *ctx = &_ctx;
++	unsigned int curve_id = ECC_CURVE_NIST_P256;
++	int ret;
++	const void *r, *s;
++	u64 rh[4], sh[4];
++	u64 mhash[ECC_MAX_DIGITS];
++	int key_size_bytes = key->size_bits / 8;
++
++	ctx->curve_id = curve_id;
++	ctx->curve = ecc_get_curve(curve_id);
++	if (!ctx->curve)
++		return -EINVAL;
++
++	ctx->pub_key = ECC_POINT_INIT(ctx->x, ctx->y, ctx->curve->g.ndigits);
++	memcpy(ctx->pub_key.x, key->x, key_size_bytes);
++	memcpy(ctx->pub_key.y, key->y, key_size_bytes);
++
++	ret = ecc_is_pubkey_valid_full(ctx->curve, &ctx->pub_key);
++	if (ret)
++		return ret;
++
++	r = sig;
++	s = sig + key_size_bytes;
++
++	ecc_swap_digits((u64 *)r, rh, ctx->curve->g.ndigits);
++	ecc_swap_digits((u64 *)s, sh, ctx->curve->g.ndigits);
++
++	ecc_swap_digits((u64 *)hash, mhash, ctx->curve->g.ndigits);
++
++	return _ecdsa_verify(ctx, (void *)mhash, rh, sh);
++}
++
++static LIST_HEAD(ecdsa_keys);
++
++int ecdsa_key_add(struct ecdsa_public_key *key)
++{
++	list_add_tail(&key->list, &ecdsa_keys);
++
++	return 0;
++}
++
++struct ecdsa_public_key *ecdsa_key_dup(const struct ecdsa_public_key *key)
++{
++	struct ecdsa_public_key *new;
++	int key_size_bits;
++
++	key_size_bits = ecdsa_key_size(key->curve_name);
++	if (!key_size_bits)
++		return NULL;
++
++	new = xmemdup(key, sizeof(*key));
++	new->x = xmemdup(key->x, key_size_bits / 8);
++	new->y = xmemdup(key->y, key_size_bits / 8);
++	new->size_bits = key_size_bits;
++
++	return new;
++}
++
++const struct ecdsa_public_key *ecdsa_key_next(const struct ecdsa_public_key *prev)
++{
++	prev = list_prepare_entry(prev, &ecdsa_keys, list);
++	list_for_each_entry_continue(prev, &ecdsa_keys, list)
++		return prev;
++
++	return NULL;
++}
+diff --git a/crypto/public-keys.c b/crypto/public-keys.c
+index dc51ef18f8..bab608be17 100644
+--- a/crypto/public-keys.c
++++ b/crypto/public-keys.c
+@@ -1,6 +1,7 @@
+ #include <common.h>
+ #include <crypto/public_key.h>
+ #include <rsa.h>
++#include <ecdsa.h>
+ 
+ static LIST_HEAD(public_keys);
+ 
+@@ -49,6 +50,11 @@ static struct public_key *public_key_dup(const struct public_key *key)
+ 		if (!k->rsa)
+ 			goto err;
+ 		break;
++	case PUBLIC_KEY_TYPE_ECDSA:
++		k->ecdsa = ecdsa_key_dup(key->ecdsa);
++		if (!k->ecdsa)
++			goto err;
++		break;
+ 	default:
+ 		goto err;
+ 	}
+@@ -68,6 +74,8 @@ int public_key_verify(const struct public_key *key, const uint8_t *sig,
+ 	switch (key->type) {
+ 	case PUBLIC_KEY_TYPE_RSA:
+ 		return rsa_verify(key->rsa, sig, sig_len, hash, algo);
++	case PUBLIC_KEY_TYPE_ECDSA:
++		return ecdsa_verify(key->ecdsa, sig, sig_len, hash);
+ 	}
+ 
+ 	return -ENOKEY;
+diff --git a/include/crypto/public_key.h b/include/crypto/public_key.h
+index 1b91063042..ed7c74859f 100644
+--- a/include/crypto/public_key.h
++++ b/include/crypto/public_key.h
+@@ -8,6 +8,7 @@ struct ecdsa_public_key;
+ 
+ enum pulic_key_type {
+ 	PUBLIC_KEY_TYPE_RSA,
++	PUBLIC_KEY_TYPE_ECDSA,
+ };
+ 
+ struct public_key {
+diff --git a/include/ecdsa.h b/include/ecdsa.h
+new file mode 100644
+index 0000000000..1d6340c645
+--- /dev/null
++++ b/include/ecdsa.h
+@@ -0,0 +1,42 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#ifndef _ECDSA_H
++#define _ECDSA_H
++
++struct ecdsa_public_key {
++	const char *curve_name;	/* Name of curve, e.g. "prime256v1" */
++	const uint64_t *x;	/* x coordinate of public key */
++	const uint64_t *y;	/* y coordinate of public key */
++	unsigned int size_bits;	/* key size in bits, derived from curve name */
++	struct list_head list;
++};
++
++const struct ecdsa_public_key *ecdsa_key_next(const struct ecdsa_public_key *prev);
++
++#define for_each_ecdsa_key(key) \
++	for (key = ecdsa_key_next(NULL); key; key = ecdsa_key_next(key))
++
++#ifdef CONFIG_CRYPTO_ECDSA
++int ecdsa_verify(const struct ecdsa_public_key *key, const uint8_t *sig,
++		 const uint32_t sig_len, const uint8_t *hash);
++int ecdsa_key_add(struct ecdsa_public_key *key);
++struct ecdsa_public_key *ecdsa_key_dup(const struct ecdsa_public_key *key);
++#else
++static inline int ecdsa_verify(const struct ecdsa_public_key *key, const uint8_t *sig,
++		 const uint32_t sig_len, const uint8_t *hash)
++{
++	return -ENOSYS;
++}
++
++static inline int ecdsa_key_add(struct ecdsa_public_key *key)
++{
++	return -ENOSYS;
++}
++
++static inline struct ecdsa_public_key *ecdsa_key_dup(const struct ecdsa_public_key *key)
++{
++	return NULL;
++}
++
++#endif
++
++#endif /* _ECDSA_H */
 -- 
 2.39.2
 
