@@ -1,64 +1,64 @@
-Delivery-date: Tue, 10 Sep 2024 10:54:03 +0200
+Delivery-date: Tue, 10 Sep 2024 11:02:14 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1snwdQ-0036Ok-0r
+	id 1snwlK-0036V0-1x
 	for lore@lore.pengutronix.de;
-	Tue, 10 Sep 2024 10:54:03 +0200
+	Tue, 10 Sep 2024 11:02:14 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1snwdP-0000wc-7A
-	for lore@pengutronix.de; Tue, 10 Sep 2024 10:54:03 +0200
+	id 1snwlJ-0004Jj-Fc
+	for lore@pengutronix.de; Tue, 10 Sep 2024 11:02:14 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
 	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
 	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=TFQjw9DbUhq70vuYkACNaUX73LZ7RFL/hfSQmJxe7EQ=; b=cZyq254Uc1/FLROHVvrawV/Qgl
-	nYEi8lNL36ibcRy6ukyxtaZzMOzLA8kd+RaUGCJEI4mlAkREfReO+CNJNc+Dio0YM3+sj/TvEWkCG
-	65RS6U1UlDNc5oyug0OxswSjl2URZTNEOHtsAqYtAO0olCI1FJffdpLL1ClQNMSgsyYsaR2hU7Ad8
-	ch7e5YC5q9ykcuWJL6t44wsIFxI7wFD/2poo6ErtwkOw//cPzfexYxJ0WZo1FHVaz0+5axOM9MWKf
-	F+CYdg0kE6GrrMjxTu0MLyLPe8C4JsY2QVvMbtcJbfWku6irVY65Yx8sbsWjcNL4LHPF/ezvWFsgv
-	1wfUwpdw==;
+	bh=Co54P2E8ScNUDcgF01E59QtcxqvppUYS2fWwm729cLs=; b=1lqHXakTHMEUBQIxdBqeYmpLXv
+	9Nm/ikdNN/Jkqwxh3MOh/8cu/f6g11Er2Ir/YZCLGz3a1uxHrK35FnoN7QePc04xwRqsRl/yV5xQZ
+	r7nWRBuZQdDjZ52C3vIKKgL2fG8itVNnMYbsjLE09E43uJdb7PnjOTIbsMsXliW4B2YyOy84BrTFU
+	gfmT5FRMkfBUTmXJwdOkAYkwQ0OCrJ0Wa+qlqXtm2SOUjTWalUK8cO6tQHpgec1YmOI8+q+GSdABY
+	fIrdi5iMPs8nMxbyzT+h+2kokUSY3SdsCZzLdUx4+/w9QnuMWsOePq4C6nUh8h8wDBN3txiAyHfsq
+	+1K0SNjA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1snwcz-00000004tPD-2JsX;
-	Tue, 10 Sep 2024 08:53:37 +0000
+	id 1snwkp-00000004uhi-3luT;
+	Tue, 10 Sep 2024 09:01:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1snwcw-00000004tO2-1khF
+	id 1snwk9-00000004uVj-3qWC
 	for barebox@lists.infradead.org;
-	Tue, 10 Sep 2024 08:53:35 +0000
+	Tue, 10 Sep 2024 09:01:10 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1snwcu-0000bN-U2; Tue, 10 Sep 2024 10:53:32 +0200
+	id 1snwk8-0003gi-DP; Tue, 10 Sep 2024 11:01:00 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1snwcu-006r7c-HR; Tue, 10 Sep 2024 10:53:32 +0200
+	id 1snwk8-006r8E-0b; Tue, 10 Sep 2024 11:01:00 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1snwct-000DP9-3D;
-	Tue, 10 Sep 2024 10:53:32 +0200
+	id 1snwk7-000Dxl-1W;
+	Tue, 10 Sep 2024 11:00:59 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 10 Sep 2024 10:53:31 +0200
-Message-Id: <20240910085331.50498-1-a.fatoum@pengutronix.de>
+Date: Tue, 10 Sep 2024 11:00:50 +0200
+Message-Id: <20240910090050.53550-1-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240910_015334_474526_78C0E63E 
-X-CRM114-Status: GOOD (  10.01  )
+X-CRM114-CacheID: sfid-20240910_020106_283157_91119A45 
+X-CRM114-Status: GOOD (  11.03  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,34 +80,54 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] lib: notifier: allow unregistering notifier in notifier_call_chain
+Subject: [PATCH v2] sandbox: lds: fix "ELF has a LOAD segment with RWX permissions" warning
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-It's possible for Linux notifiers to be removed from within the notifier
-callback. Allow the same within barebox to avoid subtle bugs.
+With binutils 2.39+, the barebox build started emitting this warning.
+On platforms other than sandbox, we disable this warning by passing --no-warn-rwx
+to ld as we don't care for ELF attributes as they aren't used anyway.
+
+On sandbox, however, the ELF attributes matter, so disabling the warning
+completely felt wrong. Looking more into it now, we can mark the
+.barebox_rodata section in the linker file snippet we have in sandbox as
+READONLY and the warning disappears, so let's do that instead.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- lib/notifier.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+v1 -> v2:
+  - add fallback for earlier binutils that don't know about READONLY.
+---
+ arch/sandbox/board/barebox.lds.S  | 2 +-
+ include/asm-generic/barebox.lds.h | 5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/lib/notifier.c b/lib/notifier.c
-index c55ec22f94c2..3ca557f76df2 100644
---- a/lib/notifier.c
-+++ b/lib/notifier.c
-@@ -18,9 +18,9 @@ int notifier_chain_unregister(struct notifier_head *nh, struct notifier_block *n
- 
- int notifier_call_chain(struct notifier_head *nh, unsigned long val, void *v)
+diff --git a/arch/sandbox/board/barebox.lds.S b/arch/sandbox/board/barebox.lds.S
+index ab2801f3d207..de8552dba0ac 100644
+--- a/arch/sandbox/board/barebox.lds.S
++++ b/arch/sandbox/board/barebox.lds.S
+@@ -5,7 +5,7 @@
+ SECTIONS
  {
--	struct notifier_block *entry;
-+	struct notifier_block *entry, *tmp;
+ 	. = ALIGN(64);
+-	.barebox_rodata : {
++	.barebox_rodata (READONLY) : {
+ 		RO_DATA_SECTION
+ 	}
+ }
+diff --git a/include/asm-generic/barebox.lds.h b/include/asm-generic/barebox.lds.h
+index d3736ebaed59..9af874b2262b 100644
+--- a/include/asm-generic/barebox.lds.h
++++ b/include/asm-generic/barebox.lds.h
+@@ -171,3 +171,8 @@ CONFIG_ARCH_BAREBOX_MAX_PBL_SIZE < CONFIG_BAREBOX_MAX_PBL_SIZE
+ 	ASSERT(_barebox_pbl_size < MAX_PBL_SIZE, "Barebox pbl size > ") \
+ 	ASSERT(_barebox_pbl_size < MAX_PBL_SIZE, __stringify(MAX_PBL_SIZE)) \
  
--	list_for_each_entry(entry, &nh->blocks, list)
-+	list_for_each_entry_safe(entry, tmp, &nh->blocks, list)
- 		entry->notifier_call(entry, val, v);
- 
- 	return 0;
++#if defined(__GNUC__) && __GNUC__ >= 11
++#define READONLY READONLY
++#else
++#define READONLY
++#endif
 -- 
 2.39.2
 
