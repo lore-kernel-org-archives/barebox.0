@@ -1,65 +1,67 @@
-Delivery-date: Tue, 10 Sep 2024 11:06:38 +0200
+Delivery-date: Tue, 10 Sep 2024 13:49:16 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1snwpa-0036Wi-35
+	id 1snzMz-0038tl-1G
 	for lore@lore.pengutronix.de;
-	Tue, 10 Sep 2024 11:06:38 +0200
+	Tue, 10 Sep 2024 13:49:16 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1snwpZ-0006u8-Mw
-	for lore@pengutronix.de; Tue, 10 Sep 2024 11:06:38 +0200
+	id 1snzMy-0001MS-4R
+	for lore@pengutronix.de; Tue, 10 Sep 2024 13:49:16 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=A8vaQfuZZepLbBcTNDc5ziQy753HVLKq9+2S8sCNSDY=; b=KZ+z645H7fRqzkjlY6OL1kFwIa
-	QJjBPbMVV48GOhXe0LjBsmeLUdNqx3xSxyoOzqRUIwI6g94KUnIg1I+4bHG9/fRoiTa9LRkl1Cqu2
-	jZqnJqMvppxck36rBhy0eXpoOtxKSrXpQcgn9Nvd7EndFWwuzjJfmhD66bv3Ce1iqKDLTgT+He4EA
-	j6FHRz0o2AEAOOrOpaM7lBTmcOCfrTUlJo/n3gky3TEBPM8Qye05QA/0MEbvfht/576xgUPl1Jad5
-	Hovv/NqHvtrRDNUrMw9k0wi1Y5tyePP/p0rWW6QfOljinoWkn3tmkXPSORzgSLUuOSQBsfsBB9fVx
-	LQmCZmhg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=KS/0RAhNKDrjt0IuUgikV5iKJiIuNSQYjsVysJanLBQ=; b=3dYsrUJEjlu5SKuhMcp0uLeDn3
+	HZwb/yh4ubYM5oWQ1gHzVHLREcyD8T/ny0rOsXNsMzwamPVz7rsSHo44YpjZfQGuGl77wpu74Ot8o
+	CNtanZBbY7+FV4IQiUWu4r1rCtpzPgZkeKPIPu0FxHKlYHKKsYp8KgeoN4nON1+XIdUfF4/qYpEmU
+	6YGemRlPpknG7R0HoKtU1C/jr6oHKoupwkU1s1xhxE5RK3BlpWd5BDuRKTDaDtz5hvnQ9ix0wBNK4
+	eInkTaEzbmLTXYuZFOUWfYXkonOC1oaW5R8d7KV+3oUBlR9/cZ01TJ+UuAUoWfoFn+lZvwypWtJDt
+	Mb7oknjA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1snwp5-00000004w20-13Hx;
-	Tue, 10 Sep 2024 09:06:07 +0000
+	id 1snzMP-00000005R8e-21RV;
+	Tue, 10 Sep 2024 11:48:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1snwmg-00000004vOi-2zQJ
+	id 1snzMK-00000005R6W-3g0m
 	for barebox@lists.infradead.org;
-	Tue, 10 Sep 2024 09:03:40 +0000
+	Tue, 10 Sep 2024 11:48:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1snwmf-0004zs-54; Tue, 10 Sep 2024 11:03:37 +0200
+	id 1snzMJ-0000q9-A8; Tue, 10 Sep 2024 13:48:35 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1snwme-006rCW-Ok; Tue, 10 Sep 2024 11:03:36 +0200
+	id 1snzMI-006sxF-TZ; Tue, 10 Sep 2024 13:48:34 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1snwme-000NOF-0i;
-	Tue, 10 Sep 2024 11:03:36 +0200
+	id 1snzMI-00CWph-1B;
+	Tue, 10 Sep 2024 13:48:34 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: lst@pengutronix.de,
 	Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Tue, 10 Sep 2024 11:03:36 +0200
-Message-Id: <20240910090336.89871-1-a.fatoum@pengutronix.de>
+Date: Tue, 10 Sep 2024 13:48:32 +0200
+Message-Id: <20240910114832.2984195-5-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240910114832.2984195-1-a.fatoum@pengutronix.de>
+References: <20240910114832.2984195-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240910_020338_775154_E6F632CA 
-X-CRM114-Status: GOOD (  11.61  )
+X-CRM114-CacheID: sfid-20240910_044837_006298_F6827917 
+X-CRM114-Status: GOOD (  12.47  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -81,168 +83,63 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: errata: document errata workarounds
+Subject: [PATCH 4/4] dma: debug: detect repeated DMA sync using KASAN
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Give all errata workaround functions a kernel-doc listing the title of
-the erratum and what CPUs it affects for documentation purposes.
+Now that we poison/unpoison DMA buffers as part of ownership transfer,
+it's possible for us to detect repeated sync's that are unnecessary at a
+granularity of cache lines, which was not possible with the initial
+approach in commit 1ad4b32702dd ("dma: debug: detect repeated DMA
+sync").
+
+Such repeated sync's are usually a result of mapping a buffer and then
+calling dma_sync_single_for_device on it. This is unnecessary and warrants
+a renewed look at the DMA management scheme, which this warning hopefully
+accomplishes.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/include/asm/errata.h | 83 +++++++++++++++++++++++++++++++++++
- 1 file changed, 83 insertions(+)
+ drivers/dma/debug.c | 20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/include/asm/errata.h b/arch/arm/include/asm/errata.h
-index 9bb0e650c7ee..58b38be7e4d9 100644
---- a/arch/arm/include/asm/errata.h
-+++ b/arch/arm/include/asm/errata.h
-@@ -1,6 +1,17 @@
- /* SPDX-License-Identifier: GPL-2.0-or-later */
- /* SPDX-FileCopyrightText: 2014 Lucas Stach, Pengutronix */
+diff --git a/drivers/dma/debug.c b/drivers/dma/debug.c
+index fd279be5be02..01a3832ea30a 100644
+--- a/drivers/dma/debug.c
++++ b/drivers/dma/debug.c
+@@ -213,7 +213,14 @@ void debug_dma_sync_single_for_cpu(struct device *dev,
  
-+/**
-+ * enable_arm_errata_709718_war() - Workaround ARM erratum 709718
-+ *
-+ * Enables workaround for "Load and Store operations on the shared device
-+ * memory regions may not complete in program order".
-+ *
-+ * This is described as part of the i.MX51 errata at
-+ * https://www.nxp.com/docs/en/errata/IMX51CE.pdf
-+ *
-+ * Affects Cortex-A8 as found in i.MX51
-+ */
- static inline void enable_arm_errata_709718_war(void)
- {
- 	__asm__ __volatile__ (
-@@ -13,6 +24,14 @@ static inline void enable_arm_errata_709718_war(void)
- 	);
+ 	cpu_addr = dma_debug_entry_cpu_addr(entry, dma_handle);
+ 	if (cpu_addr) {
+-		kasan_unpoison_shadow(cpu_addr, DMA_KASAN_ALIGN(size));
++		size_t kasan_size = DMA_KASAN_ALIGN(size);
++
++		if (kasan_is_poisoned_shadow(cpu_addr, kasan_size) == 0) {
++			dma_dev_warn(dev, "unexpected sync for CPU of already CPU-mapped %s buffer 0x%llx+0x%zx!\n",
++				     dir2name[direction], (u64)dma_handle, size);
++		} else {
++			kasan_unpoison_shadow(cpu_addr, kasan_size);
++		}
+ 	}
  }
  
-+/**
-+ * enable_arm_errata_716044_war() - Workaround ARM erratum 716044
-+ *
-+ * Enables workaround for "Under very rare circumstances, an uncacheable
-+ * load multiple instruction might cause a deadlock"
-+ *
-+ * Affects Cortex-A9 revisions before r2p0
-+ */
- static inline void enable_arm_errata_716044_war(void)
- {
- 	__asm__ __volatile__ (
-@@ -22,6 +41,13 @@ static inline void enable_arm_errata_716044_war(void)
- 	);
- }
+@@ -239,6 +246,15 @@ void debug_dma_sync_single_for_device(struct device *dev,
  
-+/**
-+ * enable_arm_errata_742230_war() - Workaround ARM erratum 742230
-+ *
-+ * Enables workaround for "DMB operation may be faulty"
-+ *
-+ * Affects Cortex-A9 revisions before r2p3
-+ */
- static inline void enable_arm_errata_742230_war(void)
- {
- 	__asm__ __volatile__ (
-@@ -31,6 +57,14 @@ static inline void enable_arm_errata_742230_war(void)
- 	);
+ 	cpu_addr = dma_debug_entry_cpu_addr(entry, dma_handle);
+ 	if (cpu_addr) {
+-		kasan_poison_shadow(cpu_addr, DMA_KASAN_ALIGN(size), KASAN_DMA_DEV_MAPPED);
++		size_t kasan_size = DMA_KASAN_ALIGN(size);
++
++		/* explicit == 1 check as function may return negative value on error */
++		if (kasan_is_poisoned_shadow(cpu_addr, kasan_size) == 1) {
++			dma_dev_warn(dev, "unexpected sync for device of already device-mapped %s buffer 0x%llx+0x%zx!\n",
++				     dir2name[direction], (u64)dma_handle, size);
++		} else {
++			kasan_poison_shadow(cpu_addr, kasan_size, KASAN_DMA_DEV_MAPPED);
++		}
++
+ 	}
  }
- 
-+/**
-+ * enable_arm_errata_743622_war() - Workaround for ARM erratum 743622
-+ *
-+ * Enables workaround for "Faulty hazard checking in the Store Buffer may
-+ * lead to data corruption"
-+ *
-+ * Affects Cortex-A9 revisions before r3p0
-+ */
- static inline void enable_arm_errata_743622_war(void)
- {
- 	__asm__ __volatile__ (
-@@ -40,6 +74,15 @@ static inline void enable_arm_errata_743622_war(void)
- 	);
- }
- 
-+/** enable_arm_errata_751472_war() - Workaround for ARM erratum 751472
-+ *
-+ * Workaround for "Interrupted ICIALLUIS may prevent completion of
-+ * broadcasted operation"
-+ *
-+ * Affects Cortex-A9 revisions before r3p0
-+ *
-+ * NOTE: Must be first set in secure mode
-+ */
- static inline void enable_arm_errata_751472_war(void)
- {
- 	__asm__ __volatile__ (
-@@ -49,6 +92,15 @@ static inline void enable_arm_errata_751472_war(void)
- 	);
- }
- 
-+/** enable_arm_errata_761320_war() - Workaround for ARM erratum 761320
-+ *
-+ * Enables workaround for "Full cache line writes to the same memory region
-+ * from at least two processors might deadlock processor"
-+ *
-+ * Affects Cortex-A9 revisions before r4p0
-+ *
-+ * NOTE: Must be first set in secure mode
-+ */
- static inline void enable_arm_errata_761320_war(void)
- {
- 	__asm__ __volatile__ (
-@@ -58,6 +110,16 @@ static inline void enable_arm_errata_761320_war(void)
- 	);
- }
- 
-+/**
-+ * enable_arm_errata_794072_war() - Workaround for ARM erratum 794072
-+ *
-+ * Enables workaround for "A short loop including a DMB instruction might
-+ * cause a denial of service"
-+ *
-+ * Affects Cortex-A9 all revisions
-+ *
-+ * NOTE: Must be first set in secure mode
-+ */
- static inline void enable_arm_errata_794072_war(void)
- {
- 	__asm__ __volatile__ (
-@@ -67,6 +129,16 @@ static inline void enable_arm_errata_794072_war(void)
- 	);
- }
- 
-+/**
-+ * enable_arm_errata_845369_war() - Workaround for ARM erratum 845369
-+ *
-+ * Enables workaround for "Under very rare timing circumstances, transitioning
-+ * into streaming mode might create a data corruption"
-+ *
-+ * Affects Cortex-A9 all revisions
-+ *
-+ * NOTE: Must be first set in secure mode
-+ */
- static inline void enable_arm_errata_845369_war(void)
- {
- 	__asm__ __volatile__ (
-@@ -76,6 +148,17 @@ static inline void enable_arm_errata_845369_war(void)
- 	);
- }
- 
-+/**
-+ * enable_arm_errata_cortexa8_enable_ibe() - Enable Invalidate BTB Enable bit
-+ * workaround
-+ *
-+ * Enables use of BPIALL for hardening the branch predictor as workaround
-+ * for CVE 2017-5715 "Spectre v2".
-+ *
-+ * Affects Cortex-A8 all revisions.
-+ *
-+ * NOTE: Must be first set in secure mode
-+ */
- static inline void enable_arm_errata_cortexa8_enable_ibe(void)
- {
- 	__asm__ __volatile__ (
 -- 
 2.39.2
 
