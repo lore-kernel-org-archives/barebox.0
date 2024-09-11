@@ -1,64 +1,66 @@
-Delivery-date: Wed, 11 Sep 2024 10:24:40 +0200
+Delivery-date: Wed, 11 Sep 2024 10:24:41 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1soIeW-003QGW-2Q
+	id 1soIeX-003QH0-1N
 	for lore@lore.pengutronix.de;
-	Wed, 11 Sep 2024 10:24:40 +0200
+	Wed, 11 Sep 2024 10:24:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1soIeV-0001UO-L4
+	id 1soIeW-0001Uh-8v
 	for lore@pengutronix.de; Wed, 11 Sep 2024 10:24:40 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	MIME-Version:Message-Id:Date:Subject:Cc:To:From:Reply-To:Content-Type:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Owner;
-	bh=TFZ8/JaiEBfDpbjqTbarxLj0brR3hcUIYGmuQId1R8Q=; b=1FOFt1dlO5feXXmn2gLkrEWc76
-	/jXRKFhIiqXpEFUJbayfyp5Zxx7PARVLntizuOQXxXvtEzP/9nfqmJ0oMTz5fawLXFrxf2rcCh+sM
-	UM7HlyVhO1ERSYOll1PXqV+j2KYD/GUeAZfcnW1knctndCehmhqEsvQtIt9bchGooRGSFkRkPn3qs
-	2BUlWDEU1Et3zmyfBUtzE7NVY/wGWqaRelH8LIT6pqrC5tf8B9ulJIh5NyoZU9v9L1WaLWRDuzeiY
-	I/JpoAerLRsSQhPJwn/pYo0oaWbbfmQVq2iaW7u90c5oNozZeqnHadEcVj6cYtJyqklzAzN+TuVpX
-	ZsVJlgBg==;
+	MIME-Version:References:In-Reply-To:Message-Id:Date:Subject:Cc:To:From:
+	Reply-To:Content-Type:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=pteW5c4Kq9tilj1wvGSIKiI1HgZ5te7FM3Jpv37Zrls=; b=rZJC4qpJw4kd5up1C7tFwimOMI
+	pDwDOoHbG7bbGasDyp9CgckIk1goMJrtIWzrBXmX+ywQRu6Ghz1MCzs+0WcGXRkn9ncLKNiYpJJyP
+	OAlg+ju+Ppja3T/cY0TNXnN+UxaprtQ9RQ7sopj/w1hQWcABNKpZ/Q/bjSrhPP+3C+WJG1GbXNARO
+	v1CSjhOX+0PAZTd7d4o3g79Xx/3iANJlHvsZkhGU8Bywxs1gYLlfENuDT1g7itbxJrcLRcej44U2r
+	OMt9YPTBl4n6dirfvEm8fS5rFLEqdwuixYdo503wNQFdftwnozP/AvKgnodFlDRz24DiXYyj/vWEa
+	tMpXKYUw==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1soIdz-00000008d2K-0XyB;
-	Wed, 11 Sep 2024 08:24:07 +0000
+	id 1soIdz-00000008d2h-4Bn4;
+	Wed, 11 Sep 2024 08:24:08 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1soIXc-00000008bEN-2jtP
+	id 1soIXu-00000008bIn-0DLV
 	for barebox@lists.infradead.org;
-	Wed, 11 Sep 2024 08:17:34 +0000
+	Wed, 11 Sep 2024 08:17:51 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1soIXb-0006fb-DH; Wed, 11 Sep 2024 10:17:31 +0200
+	id 1soIXs-0006mq-PR; Wed, 11 Sep 2024 10:17:48 +0200
 Received: from [2a0a:edc0:0:1101:1d::54] (helo=dude05.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1soIXb-0075kM-0g; Wed, 11 Sep 2024 10:17:31 +0200
+	id 1soIXs-0075kR-CH; Wed, 11 Sep 2024 10:17:48 +0200
 Received: from localhost ([::1] helo=dude05.red.stw.pengutronix.de)
 	by dude05.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1soIXa-006OIC-1W;
-	Wed, 11 Sep 2024 10:17:30 +0200
+	id 1soIXr-006Piu-2e;
+	Wed, 11 Sep 2024 10:17:48 +0200
 From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 To: barebox@lists.infradead.org
 Cc: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Date: Wed, 11 Sep 2024 10:17:30 +0200
-Message-Id: <20240911081730.1523334-1-a.fatoum@pengutronix.de>
+Date: Wed, 11 Sep 2024 10:17:46 +0200
+Message-Id: <20240911081747.1523613-2-a.fatoum@pengutronix.de>
 X-Mailer: git-send-email 2.39.2
+In-Reply-To: <20240911081747.1523613-1-a.fatoum@pengutronix.de>
+References: <20240911081747.1523613-1-a.fatoum@pengutronix.de>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240911_011732_718823_97784537 
-X-CRM114-Status: GOOD (  11.38  )
+X-CRM114-CacheID: sfid-20240911_011750_109392_21E3E90E 
+X-CRM114-Status: GOOD (  11.31  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -80,58 +82,42 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: [PATCH] ARM: psci: hide ARM_PSCI options when ARCH_IMX7 is disabled
+Subject: [PATCH 2/3] ARM: rpi: always add built-in env
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-We only support providing PSCI on a single SoC, the i.MX7. Having the
-option in other configuration is thus confusing.
-
-Therefore hide the symbols when not building for the i.MX7. Using PSCI
-as consumer is a separate symbol (ARM_PSCI_CLIENT) and should be
-unaffected.
+The function loads both the built-in env and the barebox.env file on the
+SD-Card's boot partition. Failure to mount the SD-Card should still
+result in the built-in env being loaded, therefore move it to the start
+of the function.
 
 Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
 ---
- arch/arm/Kconfig          | 11 +++++++++--
- arch/arm/mach-imx/Kconfig |  1 +
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ arch/arm/boards/raspberry-pi/rpi-common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index 6406b8ebe073..6815e4de46bd 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -412,9 +412,16 @@ config ARM_SECURE_MONITOR
- config ARM_PSCI_OF
- 	bool
+diff --git a/arch/arm/boards/raspberry-pi/rpi-common.c b/arch/arm/boards/raspberry-pi/rpi-common.c
+index ee0b0f63dbef..7a3911e36fa1 100644
+--- a/arch/arm/boards/raspberry-pi/rpi-common.c
++++ b/arch/arm/boards/raspberry-pi/rpi-common.c
+@@ -196,6 +196,8 @@ static int rpi_env_init(void)
+ 	const char *diskdev;
+ 	int ret;
  
-+config HAS_PSCI_PROVIDER
-+	bool
-+	help
-+	  Selected by platforms that implement PSCI inside barebox.
-+	  This is uncommon as barebox is usually PSCI client on systems
-+	  with PSCI with the provider being ARM Trusted Firmware.
++	defaultenv_append_directory(defaultenv_rpi);
 +
- config ARM_PSCI
--	bool "enable Power State Coordination Interface (PSCI) support"
--	depends on CPU_V7
-+	bool "Provide Power State Coordination Interface (PSCI) support"
-+	depends on HAS_PSCI_PROVIDER
- 	select ARM_SECURE_MONITOR
- 	select ARM_PSCI_OF
- 	help
-diff --git a/arch/arm/mach-imx/Kconfig b/arch/arm/mach-imx/Kconfig
-index 96ab72315732..d1f8dc795b57 100644
---- a/arch/arm/mach-imx/Kconfig
-+++ b/arch/arm/mach-imx/Kconfig
-@@ -143,6 +143,7 @@ config ARCH_IMX6UL
- config ARCH_IMX7
- 	bool
- 	select CPU_V7
-+	select HAS_PSCI_PROVIDER
- 	select PINCTRL_IMX_IOMUX_V3
- 	select COMMON_CLK_OF_PROVIDER
- 	select ARCH_HAS_FEC_IMX
+ 	device_detect_by_name("mci0");
+ 	device_detect_by_name("mci1");
+ 
+@@ -218,8 +220,6 @@ static int rpi_env_init(void)
+ 		return 0;
+ 	}
+ 
+-	defaultenv_append_directory(defaultenv_rpi);
+-
+ 	default_environment_path_set("/boot/barebox.env");
+ 
+ 	return 0;
 -- 
 2.39.2
 
