@@ -1,58 +1,67 @@
-Delivery-date: Wed, 11 Sep 2024 10:31:24 +0200
+Delivery-date: Wed, 11 Sep 2024 10:36:36 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1soIl2-003QJM-1Z
+	id 1soIq5-003QOm-1A
 	for lore@lore.pengutronix.de;
-	Wed, 11 Sep 2024 10:31:24 +0200
+	Wed, 11 Sep 2024 10:36:36 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1soIl1-0004Jb-BU
-	for lore@pengutronix.de; Wed, 11 Sep 2024 10:31:23 +0200
+	id 1soIq4-0006dS-0K
+	for lore@pengutronix.de; Wed, 11 Sep 2024 10:36:36 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
-	Content-Type:In-Reply-To:From:References:To:Subject:MIME-Version:Date:
-	Message-ID:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From
-	:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=HlIGT8Yak6be4azJe4+Zl8q6RxejI5PSCPZpM518QP8=; b=GesqcgljF6SgTULCIaK9w4B0+u
-	ZU/vlfiASnV/osawC+yR8BG3l3p5O4N67VWCTsv/2qojepFoqkONc50CR/nAagrsAkrMafxqa7Dw4
-	VLsVT8qEIaWrq/Y3JXqdBlvoq3qUi3e+SO0i/nOHBlHxL5/WhAiiu7harUpD4jLrCmDsy9pbTPceo
-	XLbf6Cd5zNGZfFWVvLpBsyNsS5LrMrCDPzx6ss5yEN46RaLOdGP+6TqV5HAKjPV0ORaApnbLaLBLT
-	c922CgbXY/1FwyRD2w/7QZ0h4f1cUrkBvhnMKjVb18HuZzCdMbx+tjeHdJyYvCbniDSoNlDk2LQo+
-	gH33vGWw==;
+	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
+	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
+	bh=vkn1bWIkRkw+614sUp9jrQ6WQh6GnerJ3K8U/swKU64=; b=C3t4xqbHNOkIca8PMfY+3hhERR
+	oJ6wS1bT/trL3n9o4kphRYo36Vz12wm+/78qlxordso76x9ij/6hxp+z06V3pP6f0cquu//hMjUPU
+	99q4GbPYyt/Lgx1aOOJMjyUkfz1PJD7wCGsMaoFLNc6GAAT6v7WNGIWECYfJBAL99P4AcDkH9W3TX
+	4cuTIn1epMwmQpulmeVPIdr3DmXzXp4wfNzGADAbu3CK49B0slpJoaeH7teki/Ufv9iz7o9k9nbRk
+	6X9IliyGZ9nSIzwyYcT5zbPiZOVfTY81/ugdig93C04jUDuE/rmTS5RAZVQHrclodl2K1p/b6V3Ya
+	qkDhe3ZA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1soIka-00000008euM-2oy5;
-	Wed, 11 Sep 2024 08:30:56 +0000
+	id 1soIpd-00000008g2F-3gM3;
+	Wed, 11 Sep 2024 08:36:09 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1soIhd-00000008eCj-2QY5
+	id 1soIjY-00000008eir-3hRd
 	for barebox@lists.infradead.org;
-	Wed, 11 Sep 2024 08:27:55 +0000
-Received: from ptz.office.stw.pengutronix.de ([2a0a:edc0:0:900:1d::77] helo=[127.0.0.1])
-	by metis.whiteo.stw.pengutronix.de with esmtp (Exim 4.92)
-	(envelope-from <a.fatoum@pengutronix.de>)
-	id 1soIhS-0002lF-NC; Wed, 11 Sep 2024 10:27:42 +0200
-Message-ID: <f1f058a9-c2a9-4113-a1f2-920452686194@pengutronix.de>
-Date: Wed, 11 Sep 2024 10:27:42 +0200
+	Wed, 11 Sep 2024 08:29:54 +0000
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1soIjX-0003fE-BW; Wed, 11 Sep 2024 10:29:51 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1soIjW-0075pq-V0; Wed, 11 Sep 2024 10:29:50 +0200
+Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
+	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
+	(envelope-from <s.hauer@pengutronix.de>)
+	id 1soIjW-001g0S-2v;
+	Wed, 11 Sep 2024 10:29:50 +0200
+From: Sascha Hauer <s.hauer@pengutronix.de>
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240911081747.1523613-1-a.fatoum@pengutronix.de>
+References: <20240911081747.1523613-1-a.fatoum@pengutronix.de>
+Message-Id: <172604339090.399789.15463967305998583483.b4-ty@pengutronix.de>
+Date: Wed, 11 Sep 2024 10:29:50 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Sascha Hauer <s.hauer@pengutronix.de>,
- Barebox List <barebox@lists.infradead.org>
-References: <20240906104028.2187872-1-s.hauer@pengutronix.de>
- <20240906104028.2187872-8-s.hauer@pengutronix.de>
-Content-Language: en-US
-From: Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240906104028.2187872-8-s.hauer@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240911_012753_651719_69113FDE 
-X-CRM114-Status: GOOD (  22.45  )
+X-CRM114-CacheID: sfid-20240911_012952_980228_0C720883 
+X-CRM114-Status: UNSURE (   7.15  )
+X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -74,92 +83,31 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH v3 07/15] crypto: rsa: include key name hint into
- CONFIG_CRYPTO_RSA_KEY
+Subject: Re: [PATCH 1/3] ARM: rpi: turn fixup message into debug messages
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Hello Sascha,
 
-On 06.09.24 12:40, Sascha Hauer wrote:
-> Set the key name hint in CONFIG_CRYPTO_RSA_KEY. CONFIG_CRYPTO_RSA_KEY
-> now has the form:
+On Wed, 11 Sep 2024 10:17:45 +0200, Ahmad Fatoum wrote:
+> When network booted, these properties may be missing and informing the
+> user about it arguably just clutters the log.
 > 
-> <key_name_hint>:<filename/uri>
+> Thus bump down the log level to debug.
 > 
-> This is done in preparation to make CONFIG_CRYPTO_RSA_KEY a list of
-> keys.
-
-IIUC, existing users that do make oldconfig will:
-
-  - either lose the key hint and need to add it back or just live with
-    an iteration of the list
-
-  - have pkcs11:$uri URIs which will be interpreted as key hint and
-    result on some error message that the URI is not a valid path.
-
-Can we check if the hint is pkcs11 in the rsa-keys.h rule and bail out with
-a sensible error message?
-
-Cheers,
-Ahmad
-
-
 > 
-> Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-> ---
->  crypto/Kconfig  | 9 ++-------
->  crypto/Makefile | 7 +++----
->  2 files changed, 5 insertions(+), 11 deletions(-)
-> 
-> diff --git a/crypto/Kconfig b/crypto/Kconfig
-> index 78b499f646..64a016eb2c 100644
-> --- a/crypto/Kconfig
-> +++ b/crypto/Kconfig
-> @@ -130,17 +130,12 @@ config CRYPTO_RSA_KEY
->  	  This option should be a filename of a PEM-formatted file containing
->  	  X.509 certificates to be included into barebox. If the string starts
->  	  with "pkcs11:" it is interpreted as a PKCS#11 URI rather than a file.
-> +	  If the string starts with a <hint>: prefix, <hint> is used as a key
-> +	  name hint to find a key without iterating over all keys.
->  
->  	  This avoids the mkimage dependency of CONFIG_BOOTM_FITIMAGE_PUBKEY
->  	  at the cost of an openssl build-time dependency.
->  
-> -config CRYPTO_RSA_KEY_NAME_HINT
-> -	depends on CRYPTO_RSA
-> -	string "FIT image key name hint"
-> -	help
-> -	  In FIT images keys are identified by a key name hint string. Provide
-> -	  the key name hint here.
-> -
->  config CRYPTO_KEYSTORE
->  	bool "Keystore"
->  	help
-> diff --git a/crypto/Makefile b/crypto/Makefile
-> index d7a06a721d..f3e49ab7ba 100644
-> --- a/crypto/Makefile
-> +++ b/crypto/Makefile
-> @@ -29,10 +29,9 @@ $(obj)/rsa.o: $(obj)/rsa-keys.h
->  
->  CONFIG_CRYPTO_RSA_KEY := $(CONFIG_CRYPTO_RSA_KEY:"%"=%)
->  
-> -ifneq ($(filter-out pkcs11:% __ENV__%, $(CONFIG_CRYPTO_RSA_KEY)),)
-> -RSA_DEP := $(CONFIG_CRYPTO_RSA_KEY)
-> -endif
-> +RSA_DEP := $(filter-out pkcs11:% __ENV__%, $(CONFIG_CRYPTO_RSA_KEY))
-> +RSA_DEP := $(shell echo $(RSA_DEP) | sed -e "s/[[:alnum:]]*://g")
->  
->  $(obj)/rsa-keys.h: $(RSA_DEP) FORCE
-> -	$(call cmd,public_keys,$(CONFIG_CRYPTO_RSA_KEY_NAME_HINT):$(CONFIG_CRYPTO_RSA_KEY))
-> +	$(call cmd,public_keys,$(CONFIG_CRYPTO_RSA_KEY))
->  endif
 
+Applied, thanks!
 
+[1/3] ARM: rpi: turn fixup message into debug messages
+      https://git.pengutronix.de/cgit/barebox/commit/?id=514157b1ae5b (link may not be stable)
+[2/3] ARM: rpi: always add built-in env
+      https://git.pengutronix.de/cgit/barebox/commit/?id=7f8daea2da40 (link may not be stable)
+[3/3] ARM: rpi: return correct error code when failing to read revision
+      https://git.pengutronix.de/cgit/barebox/commit/?id=314ef77d68ba (link may not be stable)
+
+Best regards,
 -- 
-Pengutronix e.K.                           |                             |
-Steuerwalder Str. 21                       | http://www.pengutronix.de/  |
-31137 Hildesheim, Germany                  | Phone: +49-5121-206917-0    |
-Amtsgericht Hildesheim, HRA 2686           | Fax:   +49-5121-206917-5555 |
+Sascha Hauer <s.hauer@pengutronix.de>
+
 
 
