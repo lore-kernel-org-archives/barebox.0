@@ -1,66 +1,66 @@
-Delivery-date: Wed, 11 Sep 2024 10:36:37 +0200
+Delivery-date: Wed, 11 Sep 2024 10:36:38 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1soIq6-003QP7-1L
+	id 1soIq7-003QPR-0E
 	for lore@lore.pengutronix.de;
-	Wed, 11 Sep 2024 10:36:37 +0200
+	Wed, 11 Sep 2024 10:36:38 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1soIq5-0006ds-7j
-	for lore@pengutronix.de; Wed, 11 Sep 2024 10:36:37 +0200
+	id 1soIq5-0006ef-Qy
+	for lore@pengutronix.de; Wed, 11 Sep 2024 10:36:38 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=6s30osZW/BDge7ha1W5Hcr3VYUHhQyjK7MkQxsizLyM=; b=ZNbFYSjEAZgksH/AMNTKIgUEhS
-	a80btPsazYsNccFIvVftSHAk0zPijjvXAAhwoufXcECrv10M6/yqqg3seTt/r4ODPIJsX+qHK2h1o
-	frXphtD0IXcDKhjxY32F/QkzveFqYAk6TI/L+65wox9pkVSD8af199+cD9itEaajYjBqSvi50298a
-	g3d6jrZgY65To35GVynjb9tmlgn+kbxvNCfsKnkLbhQV2KRlNEHkMICWFQ34Rpqdp1uu/n3c7/w5Y
-	rUK9yxpcoLuYenMUyVpyL3ZF6/fCVANkFP2lzzuvv+PMnoqxgCof4QbSzR810Fu4oUgYWXMTZylPU
-	lfQtlznA==;
+	bh=Z66iFxWdAfVnoz9OARm5b3dY5mjJkRHACmOcB1zoWM4=; b=42xZYaXkF/Ptnqlc9Fd09OWnuO
+	La7zdZdm29k1SG73yE45ddfPUY9LxLFBh6ZC28kwbs+xHA8MAydxfhDWqhgWv0xVFPYn3khumA5JI
+	n6y7bflu7imK7rp3qNF6Pk7GlCWmkI75i7kAAeONKMKfIMn4XePYoVk9YrwbjHGGC0R+mywA9VFtA
+	YV2fNdRQW8zlvxIrO+BnjRTQDZyBZAvwyDrvNBJUIn3xPfDeJZFN02+ZDN8OsHHXVyWR5rDBM/R6F
+	Wmmo72T+g9DKhZN2JfI9iWjsW83Cm2mbG45/mdBE2who3bKxR6DgnjyoBbl++Y0hlN/USwFrOnZnj
+	wHGUuwmg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1soIpc-00000008g1W-2lbh;
-	Wed, 11 Sep 2024 08:36:08 +0000
+	id 1soIpf-00000008g3U-2BmA;
+	Wed, 11 Sep 2024 08:36:11 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1soIiB-00000008eLl-1lxh
+	id 1soIkI-00000008epx-35Zj
 	for barebox@lists.infradead.org;
-	Wed, 11 Sep 2024 08:28:28 +0000
+	Wed, 11 Sep 2024 08:30:40 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1soIi8-00034Y-Qi; Wed, 11 Sep 2024 10:28:24 +0200
+	id 1soIkH-0003vy-D4; Wed, 11 Sep 2024 10:30:37 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1soIi8-0075pa-7W; Wed, 11 Sep 2024 10:28:24 +0200
+	id 1soIkH-0075q4-0L; Wed, 11 Sep 2024 10:30:37 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1soIi8-001fVC-0X;
-	Wed, 11 Sep 2024 10:28:24 +0200
+	id 1soIkG-001g4b-35;
+	Wed, 11 Sep 2024 10:30:36 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-To: barebox@lists.infradead.org, Florian Otte <fotte@uni-osnabrueck.de>
-In-Reply-To: <9f97-66d58780-19-542e2c00@140924414>
-References: <9f97-66d58780-19-542e2c00@140924414>
-Message-Id: <172604330416.397851.15341961911163376221.b4-ty@pengutronix.de>
-Date: Wed, 11 Sep 2024 10:28:24 +0200
+To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
+In-Reply-To: <20240911081722.1523162-1-a.fatoum@pengutronix.de>
+References: <20240911081722.1523162-1-a.fatoum@pengutronix.de>
+Message-Id: <172604343695.400042.16461624924191723334.b4-ty@pengutronix.de>
+Date: Wed, 11 Sep 2024 10:30:36 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240911_012827_489481_13AB711B 
-X-CRM114-Status: UNSURE (   6.33  )
+X-CRM114-CacheID: sfid-20240911_013038_811256_FFC2A2F0 
+X-CRM114-Status: UNSURE (   7.05  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,22 +83,23 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: Bufferoverflow on eMMC partition handling
+Subject: Re: [PATCH] PWM: core: make pwm.h header self-contained
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Mon, 02 Sep 2024 11:37:56 +0200, Florian Otte wrote:
-> Memory for up to 6 partitions is reserved, however there can be up to 7
-> partitions on an mci storage (e.g. emmc). A user partition two boot partitions
-> and up to four general pupose partitions.
+On Wed, 11 Sep 2024 10:17:22 +0200, Ahmad Fatoum wrote:
+> The file has references to DIV_ROUND_CLOSEST_ULL and struct device_node,
+> which so far only worked because of headers previously included.
+> 
+> Fix this to make the header self-contained.
 > 
 > 
 
 Applied, thanks!
 
-[1/1] Bufferoverflow on eMMC partition handling
-      https://git.pengutronix.de/cgit/barebox/commit/?id=631f2de801e4 (link may not be stable)
+[1/1] PWM: core: make pwm.h header self-contained
+      https://git.pengutronix.de/cgit/barebox/commit/?id=dcec91fd3a4b (link may not be stable)
 
 Best regards,
 -- 
