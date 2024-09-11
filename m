@@ -1,66 +1,66 @@
-Delivery-date: Wed, 11 Sep 2024 10:36:40 +0200
+Delivery-date: Wed, 11 Sep 2024 10:36:41 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1soIq8-003QQ9-19
+	id 1soIqA-003QQX-1G
 	for lore@lore.pengutronix.de;
-	Wed, 11 Sep 2024 10:36:39 +0200
+	Wed, 11 Sep 2024 10:36:41 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1soIq7-0006fs-9S
-	for lore@pengutronix.de; Wed, 11 Sep 2024 10:36:39 +0200
+	id 1soIq9-0006im-BY
+	for lore@pengutronix.de; Wed, 11 Sep 2024 10:36:41 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:Content-Transfer-Encoding:
 	Content-Type:MIME-Version:Date:Message-Id:Subject:References:In-Reply-To:To:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=ZJAhUxjdUVEOP/IvWbnnTroeT7JkECwF6d7CkgYFlNI=; b=Qfe1EhaGSUYgdOuvKmRKfhBrMY
-	V5Zdmv0AXHqKt13IVM1KzRZJP7bNhenk5xoB7m57PRNnXuXAQZDmp2b74c1H1M1SuVyfoIyVBVgsF
-	rAaJDdLgSamc7mS6yWqH9EyL6m8ID5lFR6zvvwO0VtbfNhmFFOP/C6qEoQoiMg08jEEzryBlHeylM
-	xE0B4xS/2rKeTsRN1Sz0CsCGOXCu+eZq0N6DA13xNT29USBdMUs0A0DYmkshkLcmyMKug9kTKAudJ
-	M9bOPQqQMGNuW7MWycXilVBcJtBaL1QUd0FSu0j6jm1SPRxBUhuVpp5tr1V0+UDK1I5hd4r8GBJ3q
-	aJM5jNDQ==;
+	bh=21io7Vlple7t/MUKciRMZ9B3pkqgnp9OZTA5HfUX5Tw=; b=oNORBmforxWZtnkq1JX2cDiZ9u
+	0FiJQMUL/ooc6gfoLuMFUZPF1ZN7dTL/zroLqgtUHbT6/Evubn2PbUdw96snxoGZgceka+6p1vTEm
+	c0lFZCy+7pzVKJDsm33QCcRiGrVE/y9qVyOCn9Xi3ZFgJwePcYOWJdcGGVGxRtNLhuEqXRbSuMffK
+	sdL8BQVFnZq/XplWN42B6F8RPSmMSR729+jYCb81MemEA0VySFJ/NCKROQzAsow/605R9qpzLf/HJ
+	u7gkr/TRm3Hvd/Wtgpeg6aOeYp03u5NejwzEi45cm/bRzOaLQcN7Uni2c60bcDuQVyCpqCjHjRp+P
+	mmWyQvFA==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1soIpd-00000008g1m-10dX;
-	Wed, 11 Sep 2024 08:36:09 +0000
+	id 1soIph-00000008g4A-0B8b;
+	Wed, 11 Sep 2024 08:36:13 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1soIiB-00000008eLp-2cPj
+	id 1soIkV-00000008esP-2H1t
 	for barebox@lists.infradead.org;
-	Wed, 11 Sep 2024 08:28:29 +0000
+	Wed, 11 Sep 2024 08:30:52 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1soIi8-00034X-L1; Wed, 11 Sep 2024 10:28:24 +0200
+	id 1soIkU-00043I-3a; Wed, 11 Sep 2024 10:30:50 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1soIi8-0075pb-7h; Wed, 11 Sep 2024 10:28:24 +0200
+	id 1soIkT-0075q8-Mk; Wed, 11 Sep 2024 10:30:49 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1soIi8-001fVC-0Z;
-	Wed, 11 Sep 2024 10:28:24 +0200
+	id 1soIkT-001g69-26;
+	Wed, 11 Sep 2024 10:30:49 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
 To: barebox@lists.infradead.org, Ahmad Fatoum <a.fatoum@pengutronix.de>
-In-Reply-To: <20240910085146.37240-1-a.fatoum@pengutronix.de>
-References: <20240910085146.37240-1-a.fatoum@pengutronix.de>
-Message-Id: <172604330417.397851.4718186560669986899.b4-ty@pengutronix.de>
-Date: Wed, 11 Sep 2024 10:28:24 +0200
+In-Reply-To: <20240911081710.1522975-1-a.fatoum@pengutronix.de>
+References: <20240911081710.1522975-1-a.fatoum@pengutronix.de>
+Message-Id: <172604344964.400136.2534760595680562129.b4-ty@pengutronix.de>
+Date: Wed, 11 Sep 2024 10:30:49 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
 X-Mailer: b4 0.12.3
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240911_012827_717194_90C06564 
-X-CRM114-Status: UNSURE (   7.20  )
+X-CRM114-CacheID: sfid-20240911_013051_614613_38D262B4 
+X-CRM114-Status: UNSURE (   5.81  )
 X-CRM114-Notice: Please train this message.
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
@@ -83,26 +83,23 @@ X-Spam-Status: No, score=-5.2 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE
 	autolearn=unavailable autolearn_force=no version=3.4.2
-Subject: Re: [PATCH master] Kbuild: update gen_compile_commands.py
+Subject: Re: [PATCH] font: fbconsole: use DIV_ROUND_UP for clarity
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
 
-On Tue, 10 Sep 2024 10:51:46 +0200, Ahmad Fatoum wrote:
-> With python 3.12, we now get following warning when running the script:
+On Wed, 11 Sep 2024 10:17:11 +0200, Ahmad Fatoum wrote:
+> Adding X - 1 and then dividing by X is effectively rounding up, so let's
+> use the macro to make this clearer.
 > 
->     SyntaxWarning: invalid escape sequence '\#'
+> No functional change.
 > 
-> This and other minor issues have been fixed upstream since we first
-> imported the script, so let's sync and import the content of following
-> Linux v6.11-rc6 commits:
 > 
-> [...]
 
 Applied, thanks!
 
-[1/1] Kbuild: update gen_compile_commands.py
-      https://git.pengutronix.de/cgit/barebox/commit/?id=898776bbecd1 (link may not be stable)
+[1/1] font: fbconsole: use DIV_ROUND_UP for clarity
+      https://git.pengutronix.de/cgit/barebox/commit/?id=dacd9045fb10 (link may not be stable)
 
 Best regards,
 -- 
