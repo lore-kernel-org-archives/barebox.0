@@ -3,14 +3,14 @@ Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stSVB-002cEN-0p
+	id 1stSVB-002cEY-1U
 	for lore@lore.pengutronix.de;
 	Wed, 25 Sep 2024 15:56:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stSVA-0001Dl-Ta
+	id 1stSVB-0001EC-CO
 	for lore@pengutronix.de; Wed, 25 Sep 2024 15:56:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
@@ -18,56 +18,56 @@ DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=CVM+PPC7YIPH+5g5mXLuxkPwNgfdkY4wYHJNV7VD7ac=; b=34vS5yGnXf52rDpH+0jfEzK5I6
-	/nl6zZWu66X57RLyW1oeoXYubuVfMbi3g/vpzgAPbwDOOQZdfqZ86NlBDDHNYCU1z4Q2ODCpNYuN4
-	uPZcLsF2jo4eev2gDplasHvvKFRVD6PByQU5Y2diar3oMtSgEfY6D3algAZYkSiwccUcb+b46ZogV
-	M+ubepyqqrvQ/SWNEOlOXC0gwFKu09OTpk702nzgQP2VDZesz4/OBCfMEa4qL9zxm0Er47zzjRGeA
-	bhvPe044A7svQjs93s8F5bI1zYgHToahdGmJrO+Fydm+ximEYhSnehjsODxwEJQWuIl5gVnZYdpeE
-	5fljiofQ==;
+	bh=2T1XKeSKYAcxBZeF290ogqsiZlc12Q3j8MhrnWuPm7g=; b=LY3nxcuob07HgLkXqBjv4VU6rr
+	tsn+JauIOwgNr0/XKM0c0bb9zHVXkxV5PeU6VnzuHY9gyhFJly9oDZ+aq4RQfHnOwNEB6OLaCRoYK
+	35zS8I5V/DjJBwsc2ptHCqlTSdf9XBgcep+OIsz4MD8HPinB+A+0mEEE5pRfZYJdMDt+gApslp5Ko
+	GG7enGwSMdEZiI0k+ekcSHgf19iFphiAFbyrv9BL2upgRhRgs2XbzcclKWLDcApqhErtDY0vOtiSe
+	sv6otNLpbX2Oi2kgu4qVaKhUSSbjt33/ltrsmx+ENeg/EvVErAX4CopL23yTft9B20geII2mLSb6v
+	w/L3SVwg==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1stSUX-00000005TqP-2Hvg;
-	Wed, 25 Sep 2024 13:55:41 +0000
+	id 1stSUZ-00000005Tse-3ZYk;
+	Wed, 25 Sep 2024 13:55:43 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1stSUR-00000005Tml-3sQX
+	id 1stSUS-00000005Tmn-0L3l
 	for barebox@lists.infradead.org;
-	Wed, 25 Sep 2024 13:55:38 +0000
+	Wed, 25 Sep 2024 13:55:39 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stSUI-0000gd-OE; Wed, 25 Sep 2024 15:55:26 +0200
+	id 1stSUI-0000gf-Qj; Wed, 25 Sep 2024 15:55:26 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stSUI-001Sjg-3l; Wed, 25 Sep 2024 15:55:26 +0200
+	id 1stSUI-001Sjj-4R; Wed, 25 Sep 2024 15:55:26 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stSUI-00DChO-1V;
+	id 1stSUI-00DChO-1Y;
 	Wed, 25 Sep 2024 15:55:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Sep 2024 15:55:26 +0200
+Date: Wed, 25 Sep 2024 15:55:29 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240925-arm-assembly-memmove-v1-3-0d92103658a0@pengutronix.de>
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240925-arm-assembly-memmove-v1-6-0d92103658a0@pengutronix.de>
 References: <20240925-arm-assembly-memmove-v1-0-0d92103658a0@pengutronix.de>
 In-Reply-To: <20240925-arm-assembly-memmove-v1-0-0d92103658a0@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727272525; l=12592;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727272525; l=9241;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=Emz/UcjPUF0abHWsbugQnrsdrwFl2cHq+8AUm3c5h/Q=;
- b=8S9G6+hi6jcTvsodVyyfLGLuzwclnHMJ8hXJ6obw1oiq7Bh0yASSHrZSRk78F4m3pQKgsvRLq
- sCci1NbsA4zB43uIF2VtEoV6FXcmJL4JGCTJHeyVnYI0/vosJIZBL0F
+ bh=I4jZJSvhK63JRmjGonJm9NRZ4VZRi/Asxs0NvFvbcP4=;
+ b=sPDSQoV9aHZfsHRkUwQAwehHPHTaAgT0fViSNrPNPM+vYQpDz7EZPg7PSdqVvTupO+I4opIEU
+ ivCiz1ol5ERC6Ik+pBYcHTbqQpwupN1ZhA/T50II5foYZhxNYgSNuHz
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240925_065536_407592_CAC15D98 
-X-CRM114-Status: GOOD (  17.30  )
+X-CRM114-CacheID: sfid-20240925_065536_486781_6E3DFAE0 
+X-CRM114-Status: GOOD (  10.44  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,480 +89,403 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 03/10] ARM: convert all "mov.* pc, reg" to "bx reg" for
- ARMv6+
+Subject: [PATCH 06/10] ARM: update io-* from Linux
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-Adoption of Linux commit:
-
-| commit 6ebbf2ce437b33022d30badd49dc94d33ecfa498
-| Author: Russell King <rmk+kernel@arm.linux.org.uk>
-| Date:   Mon Jun 30 16:29:12 2014 +0100
-|
-|     ARM: convert all "mov.* pc, reg" to "bx reg" for ARMv6+
-|
-|     ARMv6 and greater introduced a new instruction ("bx") which can be used
-|     to return from function calls.  Recent CPUs perform better when the
-|     "bx lr" instruction is used rather than the "mov pc, lr" instruction,
-|     and this sequence is strongly recommended to be used by the ARM
-|     architecture manual (section A.4.1.1).
-|
-|     We provide a new macro "ret" with all its variants for the condition
-|     code which will resolve to the appropriate instruction.
-|
-|     Rather than doing this piecemeal, and miss some instances, change all
-|     the "mov pc" instances to use the new macro, with the exception of
-|     the "movs" instruction and the kprobes code.  This allows us to detect
-|     the "mov pc, lr" case and fix it up - and also gives us the possibility
-|     of deploying this for other registers depending on the CPU selection.
-|
-|     Reported-by: Will Deacon <will.deacon@arm.com>
-|     Tested-by: Stephen Warren <swarren@nvidia.com> # Tegra Jetson TK1
-|     Tested-by: Robert Jarzmik <robert.jarzmik@free.fr> # mioa701_bootresume.S
-|     Tested-by: Andrew Lunn <andrew@lunn.ch> # Kirkwood
-|     Tested-by: Shawn Guo <shawn.guo@freescale.com>
-|     Tested-by: Tony Lindgren <tony@atomide.com> # OMAPs
-|     Tested-by: Gregory CLEMENT <gregory.clement@free-electrons.com> # Armada XP, 375, 385
-|     Acked-by: Sekhar Nori <nsekhar@ti.com> # DaVinci
-|     Acked-by: Christoffer Dall <christoffer.dall@linaro.org> # kvm/hyp
-|     Acked-by: Haojian Zhuang <haojian.zhuang@gmail.com> # PXA3xx
-|     Acked-by: Stefano Stabellini <stefano.stabellini@eu.citrix.com> # Xen
-|     Tested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de> # ARMv7M
-|     Tested-by: Simon Horman <horms+renesas@verge.net.au> # Shmobile
-|     Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
+This updates io-readsb.S, io-readsl.S, io-readsw-armv4.S, io-writesb.S,
+io-writesl.S and io-writesw-armv4.S from Linux.
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/cpu/cache-armv4.S       | 11 ++++++-----
- arch/arm/cpu/cache-armv5.S       | 13 +++++++------
- arch/arm/cpu/cache-armv6.S       | 13 +++++++------
- arch/arm/cpu/cache-armv7.S       |  9 +++++----
- arch/arm/cpu/hyp.S               |  3 ++-
- arch/arm/cpu/setupc_32.S         |  7 ++++---
- arch/arm/cpu/sm_as.S             |  3 ++-
- arch/arm/include/asm/assembler.h | 22 ++++++++++++++++++++++
- arch/arm/lib32/ashldi3.S         |  3 ++-
- arch/arm/lib32/ashrdi3.S         |  3 ++-
- arch/arm/lib32/lshrdi3.S         |  3 ++-
- arch/arm/lib32/runtime-offset.S  |  2 +-
- 12 files changed, 62 insertions(+), 30 deletions(-)
+ arch/arm/lib32/io-readsb.S        | 28 +++++++++++++++-------------
+ arch/arm/lib32/io-readsl.S        | 16 +++++++++-------
+ arch/arm/lib32/io-readsw-armv4.S  | 22 ++++++++++++----------
+ arch/arm/lib32/io-writesb.S       | 30 ++++++++++++++++--------------
+ arch/arm/lib32/io-writesl.S       | 20 +++++++++++---------
+ arch/arm/lib32/io-writesw-armv4.S | 18 ++++++++++--------
+ 6 files changed, 73 insertions(+), 61 deletions(-)
 
-diff --git a/arch/arm/cpu/cache-armv4.S b/arch/arm/cpu/cache-armv4.S
-index 78a098b2fe..024a94c583 100644
---- a/arch/arm/cpu/cache-armv4.S
-+++ b/arch/arm/cpu/cache-armv4.S
-@@ -2,6 +2,7 @@
- 
+diff --git a/arch/arm/lib32/io-readsb.S b/arch/arm/lib32/io-readsb.S
+index 41f68092c5..2777a49b22 100644
+--- a/arch/arm/lib32/io-readsb.S
++++ b/arch/arm/lib32/io-readsb.S
+@@ -1,12 +1,14 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+-/* SPDX-FileCopyrightText: 1995-2000 Russell King */
+-
+ /*
+  *  linux/arch/arm/lib/io-readsb.S
++ *
++ *  Copyright (C) 1995-2000 Russell King
+  */
  #include <linux/linkage.h>
- #include <init.h>
-+#include <asm/assembler.h>
+ #include <asm/assembler.h>
  
- #define CACHE_DLINESIZE 32
- 
-@@ -22,7 +23,7 @@ ENTRY(v4_mmu_cache_on)
- 		mov	r0, #0
- 		mcr	p15, 0, r0, c8, c7, 0	@ flush I,D TLBs
- #endif
--		mov	pc, r12
-+		ret	r12
- ENDPROC(v4_mmu_cache_on)
- 
- __common_mmu_cache_on:
-@@ -43,7 +44,7 @@ ENTRY(v4_mmu_cache_off)
- 		mcr	p15, 0, r0, c7, c7	@ invalidate whole cache v4
- 		mcr	p15, 0, r0, c8, c7	@ invalidate whole TLB v4
- #endif
--		mov	pc, lr
-+		ret	lr
- ENDPROC(v4_mmu_cache_off)
- 
- .section .text.v4_mmu_cache_flush
-@@ -105,7 +106,7 @@ ENTRY(v4_dma_inv_range)
- 	cmp	r0, r1
- 	blo	1b
- 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
--	mov	pc, lr
-+	ret	lr
- 
- /*
-  *	dma_clean_range(start, end)
-@@ -125,7 +126,7 @@ ENTRY(v4_dma_clean_range)
- 	cmp	r0, r1
- 	blo	1b
- 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
--	mov	pc, lr
-+	ret	lr
- 
- /*
-  *	dma_flush_range(start, end)
-@@ -143,5 +144,5 @@ ENTRY(v4_dma_flush_range)
- 	cmp	r0, r1
- 	blo	1b
- 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
--	mov	pc, lr
-+	ret	lr
- 
-diff --git a/arch/arm/cpu/cache-armv5.S b/arch/arm/cpu/cache-armv5.S
-index bcb7ebf466..6d9cbba015 100644
---- a/arch/arm/cpu/cache-armv5.S
-+++ b/arch/arm/cpu/cache-armv5.S
-@@ -2,6 +2,7 @@
- 
- #include <linux/linkage.h>
- #include <init.h>
-+#include <asm/assembler.h>
- 
- #define CACHE_DLINESIZE 32
- 
-@@ -22,7 +23,7 @@ ENTRY(v5_mmu_cache_on)
- 		mov	r0, #0
- 		mcr	p15, 0, r0, c8, c7, 0	@ flush I,D TLBs
- #endif
--		mov	pc, r12
-+		ret	r12
- ENDPROC(v5_mmu_cache_on)
- 
- __common_mmu_cache_on:
-@@ -43,7 +44,7 @@ ENTRY(v5_mmu_cache_off)
- 		mcr	p15, 0, r0, c7, c7	@ invalidate whole cache v4
- 		mcr	p15, 0, r0, c8, c7	@ invalidate whole TLB v4
- #endif
--		mov	pc, lr
-+		ret	lr
- ENDPROC(v5_mmu_cache_off)
- 
- .section .text.v5_mmu_cache_flush
-@@ -52,7 +53,7 @@ ENTRY(v5_mmu_cache_flush)
- 		bne	1b
- 		mcr	p15, 0, r0, c7, c5, 0	@ flush I cache
- 		mcr	p15, 0, r0, c7, c10, 4	@ drain WB
--		mov	pc, lr
-+		ret	lr
- ENDPROC(v5_mmu_cache_flush)
- 
- /*
-@@ -80,7 +81,7 @@ ENTRY(v5_dma_inv_range)
- 	cmp	r0, r1
- 	blo	1b
- 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
--	mov	pc, lr
-+	ret	lr
- 
- /*
-  *	dma_clean_range(start, end)
-@@ -100,7 +101,7 @@ ENTRY(v5_dma_clean_range)
- 	cmp	r0, r1
- 	blo	1b
- 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
--	mov	pc, lr
-+	ret	lr
- 
- /*
-  *	dma_flush_range(start, end)
-@@ -118,5 +119,5 @@ ENTRY(v5_dma_flush_range)
- 	cmp	r0, r1
- 	blo	1b
- 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
--	mov	pc, lr
-+	ret	lr
- 
-diff --git a/arch/arm/cpu/cache-armv6.S b/arch/arm/cpu/cache-armv6.S
-index cc720314c0..ab965623a3 100644
---- a/arch/arm/cpu/cache-armv6.S
-+++ b/arch/arm/cpu/cache-armv6.S
-@@ -2,6 +2,7 @@
- 
- #include <linux/linkage.h>
- #include <init.h>
-+#include <asm/assembler.h>
- 
- #define HARVARD_CACHE
- #define CACHE_LINE_SIZE		32
-@@ -24,7 +25,7 @@ ENTRY(v6_mmu_cache_on)
- 		mov	r0, #0
- 		mcr	p15, 0, r0, c8, c7, 0	@ flush I,D TLBs
- #endif
--		mov	pc, r12
-+		ret	r12
- ENDPROC(v6_mmu_cache_on)
- 
- __common_mmu_cache_on:
-@@ -46,7 +47,7 @@ ENTRY(v6_mmu_cache_off)
- 		mcr	p15, 0, r0, c7, c7	@ invalidate whole cache v4
- 		mcr	p15, 0, r0, c8, c7	@ invalidate whole TLB v4
- #endif
--		mov	pc, lr
-+		ret	lr
- 
- .section .text.v6_mmu_cache_flush
- ENTRY(v6_mmu_cache_flush)
-@@ -55,7 +56,7 @@ ENTRY(v6_mmu_cache_flush)
- 		mcr	p15, 0, r1, c7, c5, 0	@ invalidate I+BTB
- 		mcr	p15, 0, r1, c7, c15, 0	@ clean+invalidate unified
- 		mcr	p15, 0, r1, c7, c10, 4	@ drain WB
--		mov	pc, lr
-+		ret	lr
- ENDPROC(v6_mmu_cache_flush)
- 
- /*
-@@ -95,7 +96,7 @@ ENTRY(v6_dma_inv_range)
- 	blo	1b
- 	mov	r0, #0
- 	mcr	p15, 0, r0, c7, c10, 4		@ drain write buffer
--	mov	pc, lr
-+	ret	lr
- ENDPROC(v6_dma_inv_range)
- 
- /*
-@@ -117,7 +118,7 @@ ENTRY(v6_dma_clean_range)
- 	blo	1b
- 	mov	r0, #0
- 	mcr	p15, 0, r0, c7, c10, 4		@ drain write buffer
--	mov	pc, lr
-+	ret	lr
- ENDPROC(v6_dma_clean_range)
- 
- /*
-@@ -139,5 +140,5 @@ ENTRY(v6_dma_flush_range)
- 	blo	1b
- 	mov	r0, #0
- 	mcr	p15, 0, r0, c7, c10, 4		@ drain write buffer
--	mov	pc, lr
-+	ret	lr
- ENDPROC(v6_dma_flush_range)
-diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
-index efd9fe412f..3f6e5e6b73 100644
---- a/arch/arm/cpu/cache-armv7.S
-+++ b/arch/arm/cpu/cache-armv7.S
-@@ -2,6 +2,7 @@
- 
- #include <linux/linkage.h>
- #include <init.h>
-+#include <asm/assembler.h>
- 
- .section .text.v7_mmu_cache_on
- ENTRY(v7_mmu_cache_on)
-@@ -140,7 +141,7 @@ iflush:
- 		mcr	p15, 0, r12, c7, c5, 0	@ invalidate I+BTB
- 		dsb
- 		isb
--		mov	pc, lr
-+		ret	lr
- ENDPROC(__v7_mmu_cache_flush_invalidate)
- 
- /*
-@@ -182,7 +183,7 @@ ENTRY(v7_dma_inv_range)
- 	cmp	r0, r1
- 	blo	1b
- 	dsb
--	mov	pc, lr
-+	ret	lr
- ENDPROC(v7_dma_inv_range)
- 
- /*
-@@ -201,7 +202,7 @@ ENTRY(v7_dma_clean_range)
- 	cmp	r0, r1
- 	blo	1b
- 	dsb
--	mov	pc, lr
-+	ret	lr
- ENDPROC(v7_dma_clean_range)
- 
- /*
-@@ -220,5 +221,5 @@ ENTRY(v7_dma_flush_range)
- 	cmp	r0, r1
- 	blo	1b
- 	dsb
--	mov	pc, lr
-+	ret	lr
- ENDPROC(v7_dma_flush_range)
-diff --git a/arch/arm/cpu/hyp.S b/arch/arm/cpu/hyp.S
-index b5e4807877..016bcd79c0 100644
---- a/arch/arm/cpu/hyp.S
-+++ b/arch/arm/cpu/hyp.S
-@@ -4,6 +4,7 @@
- #include <asm/system.h>
- #include <asm/opcodes-virt.h>
- #include <init.h>
-+#include <asm/assembler.h>
- 
- .arch_extension sec
- .arch_extension virt
-@@ -80,7 +81,7 @@ THUMB(	orr	r12, r12, #PSR_T_BIT	)
- 	__ERET
- 1:	msr	cpsr_c, r12
- 2:
--	mov	pc, r2
-+	ret	r2
- ENDPROC(armv7_hyp_install)
- 
- ENTRY(armv7_switch_to_hyp)
-diff --git a/arch/arm/cpu/setupc_32.S b/arch/arm/cpu/setupc_32.S
-index eafc9b52c6..d3449d9646 100644
---- a/arch/arm/cpu/setupc_32.S
-+++ b/arch/arm/cpu/setupc_32.S
-@@ -2,6 +2,7 @@
- 
- #include <linux/linkage.h>
- #include <asm/sections.h>
-+#include <asm/assembler.h>
- 
- .section .text.setupc
- 
-@@ -32,7 +33,7 @@ ENTRY(setup_c)
- 	bl	sync_caches_for_execution
- 	sub	lr, r5, r4		/* adjust return address to new location */
- 	pop	{r4, r5}
--	mov	pc, lr
-+	ret	lr
- ENDPROC(setup_c)
- 
- /*
-@@ -76,13 +77,13 @@ ENTRY(relocate_to_adr)
- 	ldr	r0,=1f
- 	sub	r0, r0, r8
- 	add	r0, r0, r6
--	mov	pc, r0			/* jump to relocated address */
-+	ret	r0			/* jump to relocated address */
- 1:
- 	bl	relocate_to_current_adr	/* relocate binary */
- 
- 	mov	lr, r7
- 
- 	pop	{r3, r4, r5, r6, r7, r8}
--	mov	pc, lr
-+	ret	lr
- 
- ENDPROC(relocate_to_adr)
-diff --git a/arch/arm/cpu/sm_as.S b/arch/arm/cpu/sm_as.S
-index f55ac8661c..32007147d4 100644
---- a/arch/arm/cpu/sm_as.S
-+++ b/arch/arm/cpu/sm_as.S
-@@ -5,6 +5,7 @@
- #include <asm-generic/memory_layout.h>
- #include <asm/secure.h>
- #include <asm/system.h>
-+#include <asm/assembler.h>
- 
- .arch_extension sec
- .arch_extension virt
-@@ -147,7 +148,7 @@ secure_monitor:
- 
- hyp_trap:
-         mrs     lr, elr_hyp     @ for older asm: .byte 0x00, 0xe3, 0x0e, 0xe1
--        mov pc, lr                              @ do no switch modes, but
-+        ret	lr                              @ do no switch modes, but
-                                                 @ return to caller
- 
- ENTRY(psci_cpu_entry)
-diff --git a/arch/arm/include/asm/assembler.h b/arch/arm/include/asm/assembler.h
-index 4e7ad57170..e8f5625a0a 100644
---- a/arch/arm/include/asm/assembler.h
-+++ b/arch/arm/include/asm/assembler.h
-@@ -340,4 +340,26 @@
- 	blx\c		\dst
- 	.endif
- 	.endm
++.syntax unified
 +
-+	.irp	c,,eq,ne,cs,cc,mi,pl,vs,vc,hi,ls,ge,lt,gt,le,hs,lo
-+	.macro	ret\c, reg
-+#if __LINUX_ARM_ARCH__ < 6
-+	mov\c	pc, \reg
-+#else
-+	.ifeqs	"\reg", "lr"
-+	bx\c	\reg
-+	.else
-+	mov\c	pc, \reg
-+	.endif
-+#endif
-+	.endm
-+	.endr
+ .section .text.__raw_readsb
+ 
+ .Linsb_align:	rsb	ip, ip, #4
+@@ -15,16 +17,16 @@
+ 		cmp	ip, #2
+ 		ldrb	r3, [r0]
+ 		strb	r3, [r1], #1
+-		ldrgeb	r3, [r0]
+-		strgeb	r3, [r1], #1
+-		ldrgtb	r3, [r0]
+-		strgtb	r3, [r1], #1
++		ldrbge	r3, [r0]
++		strbge	r3, [r1], #1
++		ldrbgt	r3, [r0]
++		strbgt	r3, [r1], #1
+ 		subs	r2, r2, ip
+ 		bne	.Linsb_aligned
+ 
+ ENTRY(__raw_readsb)
+ 		teq	r2, #0		@ do we have to check for the zero len?
+-		moveq	pc, lr
++		reteq	lr
+ 		ands	ip, r1, #3
+ 		bne	.Linsb_align
+ 
+@@ -71,7 +73,7 @@ ENTRY(__raw_readsb)
+ 		bpl	.Linsb_16_lp
+ 
+ 		tst	r2, #15
+-		ldmeqfd	sp!, {r4 - r6, pc}
++		ldmfdeq	sp!, {r4 - r6, pc}
+ 
+ .Linsb_no_16:	tst	r2, #8
+ 		beq	.Linsb_no_8
+@@ -108,15 +110,15 @@ ENTRY(__raw_readsb)
+ 		str	r3, [r1], #4
+ 
+ .Linsb_no_4:	ands	r2, r2, #3
+-		ldmeqfd	sp!, {r4 - r6, pc}
++		ldmfdeq	sp!, {r4 - r6, pc}
+ 
+ 		cmp	r2, #2
+ 		ldrb	r3, [r0]
+ 		strb	r3, [r1], #1
+-		ldrgeb	r3, [r0]
+-		strgeb	r3, [r1], #1
+-		ldrgtb	r3, [r0]
+-		strgtb	r3, [r1]
++		ldrbge	r3, [r0]
++		strbge	r3, [r1], #1
++		ldrbgt	r3, [r0]
++		strbgt	r3, [r1]
+ 
+ 		ldmfd	sp!, {r4 - r6, pc}
+ ENDPROC(__raw_readsb)
+diff --git a/arch/arm/lib32/io-readsl.S b/arch/arm/lib32/io-readsl.S
+index 7bcd0d45bc..aecac1f9eb 100644
+--- a/arch/arm/lib32/io-readsl.S
++++ b/arch/arm/lib32/io-readsl.S
+@@ -1,17 +1,19 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+-/* SPDX-FileCopyrightText: 1995-2000 Russell King */
+-
+ /*
+- * linux/arch/arm/lib/io-readsl.S
++ *  linux/arch/arm/lib/io-readsl.S
++ *
++ *  Copyright (C) 1995-2000 Russell King
+  */
+ #include <linux/linkage.h>
+ #include <asm/assembler.h>
+ 
++.syntax unified
 +
-+	.macro	ret.w, reg
-+	ret	\reg
-+#ifdef CONFIG_THUMB2_BAREBOX
-+	nop
-+#endif
-+	.endm
+ .section .text.__raw_readsl
+ 
+ ENTRY(__raw_readsl)
+ 		teq	r2, #0		@ do we have to check for the zero len?
+-		moveq	pc, lr
++		reteq	lr
+ 		ands	ip, r1, #3
+ 		bne	3f
+ 
+@@ -29,10 +31,10 @@ ENTRY(__raw_readsl)
+ 2:		movs	r2, r2, lsl #31
+ 		ldrcs	r3, [r0, #0]
+ 		ldrcs	ip, [r0, #0]
+-		stmcsia	r1!, {r3, ip}
++		stmiacs	r1!, {r3, ip}
+ 		ldrne	r3, [r0, #0]
+ 		strne	r3, [r1, #0]
+-		mov	pc, lr
++		ret	lr
+ 
+ 3:		ldr	r3, [r0]
+ 		cmp	ip, #2
+@@ -74,5 +76,5 @@ ENTRY(__raw_readsl)
+ 		strb	r3, [r1, #1]
+ 8:		mov	r3, ip, get_byte_0
+ 		strb	r3, [r1, #0]
+-		mov	pc, lr
++		ret	lr
+ ENDPROC(__raw_readsl)
+diff --git a/arch/arm/lib32/io-readsw-armv4.S b/arch/arm/lib32/io-readsw-armv4.S
+index 9fb7fd7576..f5c633027c 100644
+--- a/arch/arm/lib32/io-readsw-armv4.S
++++ b/arch/arm/lib32/io-readsw-armv4.S
+@@ -1,12 +1,14 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+-/* SPDX-FileCopyrightText: 1995-2000 Russell King */
+-
+ /*
+- * linux/arch/arm/lib/io-readsw-armv4.S
++ *  linux/arch/arm/lib/io-readsw-armv4.S
++ *
++ *  Copyright (C) 1995-2000 Russell King
+  */
+ #include <linux/linkage.h>
+ #include <asm/assembler.h>
+ 
++.syntax unified
 +
+ 		.macro	pack, rd, hw1, hw2
+ #ifndef __ARMEB__
+ 		orr	\rd, \hw1, \hw2, lsl #16
+@@ -25,7 +27,7 @@
+ 
+ ENTRY(__raw_readsw)
+ 		teq	r2, #0
+-		moveq	pc, lr
++		reteq	lr
+ 		tst	r1, #3
+ 		bne	.Linsw_align
+ 
+@@ -75,8 +77,8 @@ ENTRY(__raw_readsw)
+ 		pack	r3, r3, ip
+ 		str	r3, [r1], #4
+ 
+-.Lno_insw_2:	ldrneh	r3, [r0]
+-		strneh	r3, [r1]
++.Lno_insw_2:	ldrhne	r3, [r0]
++		strhne	r3, [r1]
+ 
+ 		ldmfd	sp!, {r4, r5, pc}
+ 
+@@ -93,7 +95,7 @@ ENTRY(__raw_readsw)
  #endif
-diff --git a/arch/arm/lib32/ashldi3.S b/arch/arm/lib32/ashldi3.S
-index b62e06f602..dccb732078 100644
---- a/arch/arm/lib32/ashldi3.S
-+++ b/arch/arm/lib32/ashldi3.S
-@@ -23,6 +23,7 @@ General Public License for more details.
- */
  
+ .Linsw_noalign:	stmfd	sp!, {r4, lr}
+-		ldrccb	ip, [r1, #-1]!
++		ldrbcc	ip, [r1, #-1]!
+ 		bcc	1f
+ 
+ 		ldrh	ip, [r0]
+@@ -120,11 +122,11 @@ ENTRY(__raw_readsw)
+ 
+ 3:		tst	r2, #1
+ 		strb	ip, [r1], #1
+-		ldrneh	ip, [r0]
++		ldrhne	ip, [r0]
+    _BE_ONLY_(	movne	ip, ip, ror #8		)
+-		strneb	ip, [r1], #1
++		strbne	ip, [r1], #1
+    _LE_ONLY_(	movne	ip, ip, lsr #8		)
+    _BE_ONLY_(	movne	ip, ip, lsr #24		)
+-		strneb	ip, [r1]
++		strbne	ip, [r1]
+ 		ldmfd	sp!, {r4, pc}
+ ENDPROC(__raw_readsw)
+diff --git a/arch/arm/lib32/io-writesb.S b/arch/arm/lib32/io-writesb.S
+index b6ce85f0d4..0bfb1f914e 100644
+--- a/arch/arm/lib32/io-writesb.S
++++ b/arch/arm/lib32/io-writesb.S
+@@ -1,12 +1,14 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+-/* SPDX-FileCopyrightText: 1995-2000 Russell King */
+-
+ /*
+- * linux/arch/arm/lib/io-writesb.S
++ *  linux/arch/arm/lib/io-writesb.S
++ *
++ *  Copyright (C) 1995-2000 Russell King
+  */
  #include <linux/linkage.h>
-+#include <asm/assembler.h>
+ #include <asm/assembler.h>
  
- #ifdef __ARMEB__
- #define al r1
-@@ -44,7 +45,7 @@ ENTRY(__aeabi_llsl)
-  THUMB(	lsrmi	r3, al, ip		)
-  THUMB(	orrmi	ah, ah, r3		)
- 	mov	al, al, lsl r2
--	mov	pc, lr
-+	ret	lr
++.syntax unified
++
+ 		.macro	outword, rd
+ #ifndef __ARMEB__
+ 		strb	\rd, [r0]
+@@ -35,16 +37,16 @@
+ 		cmp	ip, #2
+ 		ldrb	r3, [r1], #1
+ 		strb	r3, [r0]
+-		ldrgeb	r3, [r1], #1
+-		strgeb	r3, [r0]
+-		ldrgtb	r3, [r1], #1
+-		strgtb	r3, [r0]
++		ldrbge	r3, [r1], #1
++		strbge	r3, [r0]
++		ldrbgt	r3, [r1], #1
++		strbgt	r3, [r0]
+ 		subs	r2, r2, ip
+ 		bne	.Loutsb_aligned
  
- ENDPROC(__ashldi3)
- ENDPROC(__aeabi_llsl)
-diff --git a/arch/arm/lib32/ashrdi3.S b/arch/arm/lib32/ashrdi3.S
-index db849b65fc..3db06281e5 100644
---- a/arch/arm/lib32/ashrdi3.S
-+++ b/arch/arm/lib32/ashrdi3.S
-@@ -23,6 +23,7 @@ General Public License for more details.
- */
+ ENTRY(__raw_writesb)
+ 		teq	r2, #0		@ do we have to check for the zero len?
+-		moveq	pc, lr
++		reteq	lr
+ 		ands	ip, r1, #3
+ 		bne	.Loutsb_align
  
+@@ -63,7 +65,7 @@ ENTRY(__raw_writesb)
+ 		bpl	.Loutsb_16_lp
+ 
+ 		tst	r2, #15
+-		ldmeqfd	sp!, {r4, r5, pc}
++		ldmfdeq	sp!, {r4, r5, pc}
+ 
+ .Loutsb_no_16:	tst	r2, #8
+ 		beq	.Loutsb_no_8
+@@ -79,15 +81,15 @@ ENTRY(__raw_writesb)
+ 		outword	r3
+ 
+ .Loutsb_no_4:	ands	r2, r2, #3
+-		ldmeqfd	sp!, {r4, r5, pc}
++		ldmfdeq	sp!, {r4, r5, pc}
+ 
+ 		cmp	r2, #2
+ 		ldrb	r3, [r1], #1
+ 		strb	r3, [r0]
+-		ldrgeb	r3, [r1], #1
+-		strgeb	r3, [r0]
+-		ldrgtb	r3, [r1]
+-		strgtb	r3, [r0]
++		ldrbge	r3, [r1], #1
++		strbge	r3, [r0]
++		ldrbgt	r3, [r1]
++		strbgt	r3, [r0]
+ 
+ 		ldmfd	sp!, {r4, r5, pc}
+ ENDPROC(__raw_writesb)
+diff --git a/arch/arm/lib32/io-writesl.S b/arch/arm/lib32/io-writesl.S
+index 61164234de..c300a62daf 100644
+--- a/arch/arm/lib32/io-writesl.S
++++ b/arch/arm/lib32/io-writesl.S
+@@ -1,17 +1,19 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+-/* SPDX-FileCopyrightText: 1995-2000 Russell King */
+-
+ /*
+- * linux/arch/arm/lib/io-writesl.S
++ *  linux/arch/arm/lib/io-writesl.S
++ *
++ *  Copyright (C) 1995-2000 Russell King
+  */
  #include <linux/linkage.h>
-+#include <asm/assembler.h>
+ #include <asm/assembler.h>
  
- #ifdef __ARMEB__
- #define al r1
-@@ -44,7 +45,7 @@ ENTRY(__aeabi_lasr)
-  THUMB(	lslmi	r3, ah, ip		)
-  THUMB(	orrmi	al, al, r3		)
- 	mov	ah, ah, asr r2
--	mov	pc, lr
-+	ret	lr
++.syntax unified
++
+ .section .text.__raw_writesl
  
- ENDPROC(__ashrdi3)
- ENDPROC(__aeabi_lasr)
-diff --git a/arch/arm/lib32/lshrdi3.S b/arch/arm/lib32/lshrdi3.S
-index e77e96c7bc..5af522482c 100644
---- a/arch/arm/lib32/lshrdi3.S
-+++ b/arch/arm/lib32/lshrdi3.S
-@@ -23,6 +23,7 @@ General Public License for more details.
- */
+ ENTRY(__raw_writesl)
+ 		teq	r2, #0		@ do we have to check for the zero len?
+-		moveq	pc, lr
++		reteq	lr
+ 		ands	ip, r1, #3
+ 		bne	3f
  
+@@ -27,12 +29,12 @@ ENTRY(__raw_writesl)
+ 		bpl	1b
+ 		ldmfd	sp!, {r4, lr}
+ 2:		movs	r2, r2, lsl #31
+-		ldmcsia	r1!, {r3, ip}
++		ldmiacs	r1!, {r3, ip}
+ 		strcs	r3, [r0, #0]
+ 		ldrne	r3, [r1, #0]
+ 		strcs	ip, [r0, #0]
+ 		strne	r3, [r0, #0]
+-		mov	pc, lr
++		ret	lr
+ 
+ 3:		bic	r1, r1, #3
+ 		ldr	r3, [r1], #4
+@@ -46,7 +48,7 @@ ENTRY(__raw_writesl)
+ 		orr	ip, ip, r3, lspush #16
+ 		str	ip, [r0]
+ 		bne	4b
+-		mov	pc, lr
++		ret	lr
+ 
+ 5:		mov	ip, r3, lspull #8
+ 		ldr	r3, [r1], #4
+@@ -54,7 +56,7 @@ ENTRY(__raw_writesl)
+ 		orr	ip, ip, r3, lspush #24
+ 		str	ip, [r0]
+ 		bne	5b
+-		mov	pc, lr
++		ret	lr
+ 
+ 6:		mov	ip, r3, lspull #24
+ 		ldr	r3, [r1], #4
+@@ -62,5 +64,5 @@ ENTRY(__raw_writesl)
+ 		orr	ip, ip, r3, lspush #8
+ 		str	ip, [r0]
+ 		bne	6b
+-		mov	pc, lr
++		ret	lr
+ ENDPROC(__raw_writesl)
+diff --git a/arch/arm/lib32/io-writesw-armv4.S b/arch/arm/lib32/io-writesw-armv4.S
+index 5cfa74356c..717237f3cc 100644
+--- a/arch/arm/lib32/io-writesw-armv4.S
++++ b/arch/arm/lib32/io-writesw-armv4.S
+@@ -1,12 +1,14 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+-/* SPDX-FileCopyrightText: 1995-2000 Russell King */
+-
+ /*
+- * linux/arch/arm/lib/io-writesw-armv4.S
++ *  linux/arch/arm/lib/io-writesw-armv4.S
++ *
++ *  Copyright (C) 1995-2000 Russell King
+  */
  #include <linux/linkage.h>
-+#include <asm/assembler.h>
+ #include <asm/assembler.h>
  
- #ifdef __ARMEB__
- #define al r1
-@@ -44,7 +45,7 @@ ENTRY(__aeabi_llsr)
-  THUMB(	lslmi	r3, ah, ip		)
-  THUMB(	orrmi	al, al, r3		)
- 	mov	ah, ah, lsr r2
--	mov	pc, lr
-+	ret	lr
++.syntax unified
++
+ 		.macro	outword, rd
+ #ifndef __ARMEB__
+ 		strh	\rd, [r0]
+@@ -30,7 +32,7 @@
  
- ENDPROC(__lshrdi3)
- ENDPROC(__aeabi_llsr)
-diff --git a/arch/arm/lib32/runtime-offset.S b/arch/arm/lib32/runtime-offset.S
-index ac104de119..d9ba864b3b 100644
---- a/arch/arm/lib32/runtime-offset.S
-+++ b/arch/arm/lib32/runtime-offset.S
-@@ -14,7 +14,7 @@ ENTRY(get_runtime_offset)
- 	ldr r1, linkadr
- 	subs r0, r0, r1
- THUMB(	adds r0, r0, #1)
--	mov pc, lr
-+	ret lr
+ ENTRY(__raw_writesw)
+ 		teq	r2, #0
+-		moveq	pc, lr
++		reteq	lr
+ 		ands	r3, r1, #3
+ 		bne	.Loutsw_align
  
- linkadr:
- .word get_runtime_offset
+@@ -60,8 +62,8 @@ ENTRY(__raw_writesw)
+ 		ldr	r3, [r1], #4
+ 		outword	r3
+ 
+-.Lno_outsw_2:	ldrneh	r3, [r1]
+-		strneh	r3, [r0]
++.Lno_outsw_2:	ldrhne	r3, [r1]
++		strhne	r3, [r0]
+ 
+ 		ldmfd	sp!, {r4, r5, pc}
+ 
+@@ -94,6 +96,6 @@ ENTRY(__raw_writesw)
+ 
+ 		tst	r2, #1
+ 3:		movne	ip, r3, lsr #8
+-		strneh	ip, [r0]
+-		mov	pc, lr
++		strhne	ip, [r0]
++		ret	lr
+ ENDPROC(__raw_writesw)
 
 -- 
 2.39.5
