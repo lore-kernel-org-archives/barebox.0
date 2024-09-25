@@ -1,73 +1,73 @@
-Delivery-date: Wed, 25 Sep 2024 15:56:21 +0200
+Delivery-date: Wed, 25 Sep 2024 15:56:22 +0200
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by lore.white.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stSVA-002cE1-22
+	id 1stSVB-002cEN-0p
 	for lore@lore.pengutronix.de;
-	Wed, 25 Sep 2024 15:56:21 +0200
+	Wed, 25 Sep 2024 15:56:22 +0200
 Received: from bombadil.infradead.org ([2607:7c80:54:3::133])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <barebox-bounces+lore=pengutronix.de@lists.infradead.org>)
-	id 1stSV9-0001CN-0H
-	for lore@pengutronix.de; Wed, 25 Sep 2024 15:56:21 +0200
+	id 1stSVA-0001Dl-Ta
+	for lore@pengutronix.de; Wed, 25 Sep 2024 15:56:22 +0200
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=lists.infradead.org; s=bombadil.20210309; h=Sender:List-Subscribe:List-Help
 	:List-Post:List-Archive:List-Unsubscribe:List-Id:To:In-Reply-To:References:
 	Message-Id:Content-Transfer-Encoding:Content-Type:MIME-Version:Subject:Date:
 	From:Reply-To:Cc:Content-ID:Content-Description:Resent-Date:Resent-From:
 	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:List-Owner;
-	bh=hQy+aJbsCioiEPpYnqeSzMoJTbb4H4K8rA2J8k1nEuc=; b=RxexmubwGnzXpzp1Q2ratMQ9ie
-	tae4E7dtsTIebAGi2wO+0zt37dLHSG+QycfbiuMXH/d3e8p/A2EIxMEpurU8anFij57wjlWGiLn0k
-	sg18W/bRcj910CFzD+PZTSsJ3sEEzrDlCE88NVcpuFs5W6NJs7Sb8eRuiN4GGwTaJWGYMTB3RwwEd
-	3pKRiwgZ19w47Up5LOqiDiarxRLtXnRX9W6QFok8LhBNYDDeHaDOzr//hmMHA2tYa7q6gHJxq+BU4
-	hENYGtuy+HQh4pgRsa+hiBqsEMQGK+jJJG0xCsxclpeG0ejIJYG2KJaQTwf6lxdi6XGAvVzRkw1FF
-	AABPHXuw==;
+	bh=CVM+PPC7YIPH+5g5mXLuxkPwNgfdkY4wYHJNV7VD7ac=; b=34vS5yGnXf52rDpH+0jfEzK5I6
+	/nl6zZWu66X57RLyW1oeoXYubuVfMbi3g/vpzgAPbwDOOQZdfqZ86NlBDDHNYCU1z4Q2ODCpNYuN4
+	uPZcLsF2jo4eev2gDplasHvvKFRVD6PByQU5Y2diar3oMtSgEfY6D3algAZYkSiwccUcb+b46ZogV
+	M+ubepyqqrvQ/SWNEOlOXC0gwFKu09OTpk702nzgQP2VDZesz4/OBCfMEa4qL9zxm0Er47zzjRGeA
+	bhvPe044A7svQjs93s8F5bI1zYgHToahdGmJrO+Fydm+ximEYhSnehjsODxwEJQWuIl5gVnZYdpeE
+	5fljiofQ==;
 Received: from localhost ([::1] helo=bombadil.infradead.org)
 	by bombadil.infradead.org with esmtp (Exim 4.98 #2 (Red Hat Linux))
-	id 1stSUY-00000005TrW-0mP0;
-	Wed, 25 Sep 2024 13:55:42 +0000
+	id 1stSUX-00000005TqP-2Hvg;
+	Wed, 25 Sep 2024 13:55:41 +0000
 Received: from metis.whiteo.stw.pengutronix.de ([2a0a:edc0:2:b01:1d::104])
 	by bombadil.infradead.org with esmtps (Exim 4.98 #2 (Red Hat Linux))
-	id 1stSUS-00000005Tmo-0Kbo
+	id 1stSUR-00000005Tml-3sQX
 	for barebox@lists.infradead.org;
-	Wed, 25 Sep 2024 13:55:39 +0000
+	Wed, 25 Sep 2024 13:55:38 +0000
 Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stSUI-0000gi-RA; Wed, 25 Sep 2024 15:55:26 +0200
+	id 1stSUI-0000gd-OE; Wed, 25 Sep 2024 15:55:26 +0200
 Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.94.2)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stSUI-001Sjl-4o; Wed, 25 Sep 2024 15:55:26 +0200
+	id 1stSUI-001Sjg-3l; Wed, 25 Sep 2024 15:55:26 +0200
 Received: from localhost ([::1] helo=dude02.red.stw.pengutronix.de)
 	by dude02.red.stw.pengutronix.de with esmtp (Exim 4.96)
 	(envelope-from <s.hauer@pengutronix.de>)
-	id 1stSUI-00DChO-1a;
+	id 1stSUI-00DChO-1V;
 	Wed, 25 Sep 2024 15:55:26 +0200
 From: Sascha Hauer <s.hauer@pengutronix.de>
-Date: Wed, 25 Sep 2024 15:55:31 +0200
+Date: Wed, 25 Sep 2024 15:55:26 +0200
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240925-arm-assembly-memmove-v1-8-0d92103658a0@pengutronix.de>
+Content-Transfer-Encoding: 8bit
+Message-Id: <20240925-arm-assembly-memmove-v1-3-0d92103658a0@pengutronix.de>
 References: <20240925-arm-assembly-memmove-v1-0-0d92103658a0@pengutronix.de>
 In-Reply-To: <20240925-arm-assembly-memmove-v1-0-0d92103658a0@pengutronix.de>
 To: "open list:BAREBOX" <barebox@lists.infradead.org>
 X-Mailer: b4 0.12.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727272525; l=11720;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727272525; l=12592;
  i=s.hauer@pengutronix.de; s=20230412; h=from:subject:message-id;
- bh=hQzJgESfgcNnWfrhVnd+QMMpCeL5bKpTSvnbgtrFIPw=;
- b=EITkxv47db9mp4oZ7rjGb/6iQB6l6+zzCEA/WsoS54MAJG/YvuDYD5mcLTccq0z0f4e7H6OSJ
- lsk2v4p8zg1CDhpgTMXDYpT4J4r5axMl2OtMxzbfQoImdMyhLavCesN
+ bh=Emz/UcjPUF0abHWsbugQnrsdrwFl2cHq+8AUm3c5h/Q=;
+ b=8S9G6+hi6jcTvsodVyyfLGLuzwclnHMJ8hXJ6obw1oiq7Bh0yASSHrZSRk78F4m3pQKgsvRLq
+ sCci1NbsA4zB43uIF2VtEoV6FXcmJL4JGCTJHeyVnYI0/vosJIZBL0F
 X-Developer-Key: i=s.hauer@pengutronix.de; a=ed25519;
  pk=4kuc9ocmECiBJKWxYgqyhtZOHj5AWi7+d0n/UjhkwTg=
 X-CRM114-Version: 20100106-BlameMichelson ( TRE 0.8.0 (BSD) ) MR-646709E3 
-X-CRM114-CacheID: sfid-20240925_065536_462723_3DA1A409 
-X-CRM114-Status: GOOD (  17.96  )
+X-CRM114-CacheID: sfid-20240925_065536_407592_CAC15D98 
+X-CRM114-Status: GOOD (  17.30  )
 X-BeenThere: barebox@lists.infradead.org
 X-Mailman-Version: 2.1.34
 Precedence: list
@@ -89,480 +89,480 @@ X-Spam-Status: No, score=-4.0 required=4.0 tests=AWL,BAYES_00,DKIMWL_WL_HIGH,
 	DKIM_SIGNED,DKIM_VALID,HEADER_FROM_DIFFERENT_DOMAINS,
 	MAILING_LIST_MULTI,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
 	autolearn_force=no version=3.4.2
-Subject: [PATCH 08/10] ARM: update memcpy.S and memset.S from Linux
+Subject: [PATCH 03/10] ARM: convert all "mov.* pc, reg" to "bx reg" for
+ ARMv6+
 X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
 X-SA-Exim-Scanned: Yes (on metis.whiteo.stw.pengutronix.de)
 
-This updates the assembler optimized memcpy() and memset() functions
-from Linux.
+Adoption of Linux commit:
+
+| commit 6ebbf2ce437b33022d30badd49dc94d33ecfa498
+| Author: Russell King <rmk+kernel@arm.linux.org.uk>
+| Date:   Mon Jun 30 16:29:12 2014 +0100
+|
+|     ARM: convert all "mov.* pc, reg" to "bx reg" for ARMv6+
+|
+|     ARMv6 and greater introduced a new instruction ("bx") which can be used
+|     to return from function calls.  Recent CPUs perform better when the
+|     "bx lr" instruction is used rather than the "mov pc, lr" instruction,
+|     and this sequence is strongly recommended to be used by the ARM
+|     architecture manual (section A.4.1.1).
+|
+|     We provide a new macro "ret" with all its variants for the condition
+|     code which will resolve to the appropriate instruction.
+|
+|     Rather than doing this piecemeal, and miss some instances, change all
+|     the "mov pc" instances to use the new macro, with the exception of
+|     the "movs" instruction and the kprobes code.  This allows us to detect
+|     the "mov pc, lr" case and fix it up - and also gives us the possibility
+|     of deploying this for other registers depending on the CPU selection.
+|
+|     Reported-by: Will Deacon <will.deacon@arm.com>
+|     Tested-by: Stephen Warren <swarren@nvidia.com> # Tegra Jetson TK1
+|     Tested-by: Robert Jarzmik <robert.jarzmik@free.fr> # mioa701_bootresume.S
+|     Tested-by: Andrew Lunn <andrew@lunn.ch> # Kirkwood
+|     Tested-by: Shawn Guo <shawn.guo@freescale.com>
+|     Tested-by: Tony Lindgren <tony@atomide.com> # OMAPs
+|     Tested-by: Gregory CLEMENT <gregory.clement@free-electrons.com> # Armada XP, 375, 385
+|     Acked-by: Sekhar Nori <nsekhar@ti.com> # DaVinci
+|     Acked-by: Christoffer Dall <christoffer.dall@linaro.org> # kvm/hyp
+|     Acked-by: Haojian Zhuang <haojian.zhuang@gmail.com> # PXA3xx
+|     Acked-by: Stefano Stabellini <stefano.stabellini@eu.citrix.com> # Xen
+|     Tested-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de> # ARMv7M
+|     Tested-by: Simon Horman <horms+renesas@verge.net.au> # Shmobile
+|     Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
 
 Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
 ---
- arch/arm/include/asm/assembler.h |  6 +++
- arch/arm/lib32/copy_template.S   | 66 +++++++++++++++------------
- arch/arm/lib32/memcpy.S          | 30 +++++++------
- arch/arm/lib32/memset.S          | 96 +++++++++++++++++++++++++---------------
- 4 files changed, 122 insertions(+), 76 deletions(-)
+ arch/arm/cpu/cache-armv4.S       | 11 ++++++-----
+ arch/arm/cpu/cache-armv5.S       | 13 +++++++------
+ arch/arm/cpu/cache-armv6.S       | 13 +++++++------
+ arch/arm/cpu/cache-armv7.S       |  9 +++++----
+ arch/arm/cpu/hyp.S               |  3 ++-
+ arch/arm/cpu/setupc_32.S         |  7 ++++---
+ arch/arm/cpu/sm_as.S             |  3 ++-
+ arch/arm/include/asm/assembler.h | 22 ++++++++++++++++++++++
+ arch/arm/lib32/ashldi3.S         |  3 ++-
+ arch/arm/lib32/ashrdi3.S         |  3 ++-
+ arch/arm/lib32/lshrdi3.S         |  3 ++-
+ arch/arm/lib32/runtime-offset.S  |  2 +-
+ 12 files changed, 62 insertions(+), 30 deletions(-)
 
-diff --git a/arch/arm/include/asm/assembler.h b/arch/arm/include/asm/assembler.h
-index e8f5625a0a..c84c8ec734 100644
---- a/arch/arm/include/asm/assembler.h
-+++ b/arch/arm/include/asm/assembler.h
-@@ -67,6 +67,12 @@
- #define CALGN(code...)
- #endif
- 
-+#ifndef CONFIG_CPU_64
-+/* the frame pointer used for stack unwinding */
-+ARM(	fpreg	.req	r11	)
-+THUMB(	fpreg	.req	r7	)
-+#endif
-+
- /*
-  * Enable and disable interrupts
-  */
-diff --git a/arch/arm/lib32/copy_template.S b/arch/arm/lib32/copy_template.S
-index 897e3db3ff..8fbafb074f 100644
---- a/arch/arm/lib32/copy_template.S
-+++ b/arch/arm/lib32/copy_template.S
-@@ -1,10 +1,12 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
--/* SPDX-FileCopyrightText: 2005 MontaVista Software, Inc (Nicolas Pitre)
--
- /*
-- * linux/arch/arm/lib/copy_template.s
-+ *  linux/arch/arm/lib/copy_template.s
-+ *
-+ *  Code template for optimized memory copy functions
-  *
-- * Code template for optimized memory copy functions
-+ *  Author:	Nicolas Pitre
-+ *  Created:	Sep 28, 2005
-+ *  Copyright:	MontaVista Software, Inc.
-  */
- 
- /*
-@@ -48,6 +50,12 @@
-  *	data as needed by the implementation including this code. Called
-  *	upon code entry.
-  *
-+ * usave reg1 reg2
-+ *
-+ *	Unwind annotation macro is corresponding for 'enter' macro.
-+ *	It tell unwinder that preserved some provided registers on the stack
-+ *	and additional data by a prior 'enter' macro.
-+ *
-  * exit reg1 reg2
-  *
-  *	Restore registers with the values previously saved with the
-@@ -61,8 +69,10 @@
-  *	than one 32bit instruction in Thumb-2)
-  */
- 
--
--		enter	r4, lr
-+	UNWIND(	.fnstart			)
-+		enter	r4, UNWIND(fpreg,) lr
-+	UNWIND(	.setfp	fpreg, sp		)
-+	UNWIND(	mov	fpreg, sp		)
- 
- 		subs	r2, r2, #4
- 		blt	8f
-@@ -73,12 +83,12 @@
- 		bne	10f
- 
- 1:		subs	r2, r2, #(28)
--		stmfd	sp!, {r5 - r8}
-+		stmfd	sp!, {r5, r6, r8, r9}
- 		blt	5f
- 
- 	CALGN(	ands	ip, r0, #31		)
- 	CALGN(	rsb	r3, ip, #32		)
--	CALGN(	sbcnes	r4, r3, r2		)  @ C is always set here
-+	CALGN(	sbcsne	r4, r3, r2		)  @ C is always set here
- 	CALGN(	bcs	2f			)
- 	CALGN(	adr	r4, 6f			)
- 	CALGN(	subs	r2, r2, r3		)  @ C gets set
-@@ -92,9 +102,9 @@
- 	PLD(	pld	[r1, #92]		)
- 
- 3:	PLD(	pld	[r1, #124]		)
--4:		ldr8w	r1, r3, r4, r5, r6, r7, r8, ip, lr, abort=20f
-+4:		ldr8w	r1, r3, r4, r5, r6, r8, r9, ip, lr, abort=20f
- 		subs	r2, r2, #32
--		str8w	r0, r3, r4, r5, r6, r7, r8, ip, lr, abort=20f
-+		str8w	r0, r3, r4, r5, r6, r8, r9, ip, lr, abort=20f
- 		bge	3b
- 	PLD(	cmn	r2, #96			)
- 	PLD(	bge	4b			)
-@@ -114,8 +124,8 @@
- 		ldr1w	r1, r4, abort=20f
- 		ldr1w	r1, r5, abort=20f
- 		ldr1w	r1, r6, abort=20f
--		ldr1w	r1, r7, abort=20f
- 		ldr1w	r1, r8, abort=20f
-+		ldr1w	r1, r9, abort=20f
- 		ldr1w	r1, lr, abort=20f
- 
- #if LDR1W_SHIFT < STR1W_SHIFT
-@@ -132,13 +142,13 @@
- 		str1w	r0, r4, abort=20f
- 		str1w	r0, r5, abort=20f
- 		str1w	r0, r6, abort=20f
--		str1w	r0, r7, abort=20f
- 		str1w	r0, r8, abort=20f
-+		str1w	r0, r9, abort=20f
- 		str1w	r0, lr, abort=20f
- 
- 	CALGN(	bcs	2b			)
- 
--7:		ldmfd	sp!, {r5 - r8}
-+7:		ldmfd	sp!, {r5, r6, r8, r9}
- 
- 8:		movs	r2, r2, lsl #31
- 		ldr1b	r1, r3, ne, abort=21f
-@@ -148,7 +158,7 @@
- 		str1b	r0, r4, cs, abort=21f
- 		str1b	r0, ip, cs, abort=21f
- 
--		exit	r4, pc
-+		exit	r4, UNWIND(fpreg,) pc
- 
- 9:		rsb	ip, ip, #4
- 		cmp	ip, #2
-@@ -177,11 +187,11 @@
- 
- 	CALGN(	ands	ip, r0, #31		)
- 	CALGN(	rsb	ip, ip, #32		)
--	CALGN(	sbcnes	r4, ip, r2		)  @ C is always set here
-+	CALGN(	sbcsne	r4, ip, r2		)  @ C is always set here
- 	CALGN(	subcc	r2, r2, ip		)
- 	CALGN(	bcc	15f			)
- 
--11:		stmfd	sp!, {r5 - r9}
-+11:		stmfd	sp!, {r5, r6, r8 - r10}
- 
- 	PLD(	pld	[r1, #0]		)
- 	PLD(	subs	r2, r2, #96		)
-@@ -191,31 +201,31 @@
- 	PLD(	pld	[r1, #92]		)
- 
- 12:	PLD(	pld	[r1, #124]		)
--13:		ldr4w	r1, r4, r5, r6, r7, abort=19f
-+13:		ldr4w	r1, r4, r5, r6, r8, abort=19f
- 		mov	r3, lr, lspull #\pull
- 		subs	r2, r2, #32
--		ldr4w	r1, r8, r9, ip, lr, abort=19f
-+		ldr4w	r1, r9, r10, ip, lr, abort=19f
- 		orr	r3, r3, r4, lspush #\push
- 		mov	r4, r4, lspull #\pull
- 		orr	r4, r4, r5, lspush #\push
- 		mov	r5, r5, lspull #\pull
- 		orr	r5, r5, r6, lspush #\push
- 		mov	r6, r6, lspull #\pull
--		orr	r6, r6, r7, lspush #\push
--		mov	r7, r7, lspull #\pull
--		orr	r7, r7, r8, lspush #\push
-+		orr	r6, r6, r8, lspush #\push
- 		mov	r8, r8, lspull #\pull
- 		orr	r8, r8, r9, lspush #\push
- 		mov	r9, r9, lspull #\pull
--		orr	r9, r9, ip, lspush #\push
-+		orr	r9, r9, r10, lspush #\push
-+		mov	r10, r10, lspull #\pull
-+		orr	r10, r10, ip, lspush #\push
- 		mov	ip, ip, lspull #\pull
- 		orr	ip, ip, lr, lspush #\push
--		str8w	r0, r3, r4, r5, r6, r7, r8, r9, ip, , abort=19f
-+		str8w	r0, r3, r4, r5, r6, r8, r9, r10, ip, abort=19f
- 		bge	12b
- 	PLD(	cmn	r2, #96			)
- 	PLD(	bge	13b			)
- 
--		ldmfd	sp!, {r5 - r9}
-+		ldmfd	sp!, {r5, r6, r8 - r10}
- 
- 14:		ands	ip, r2, #28
- 		beq	16f
-@@ -241,6 +251,7 @@
- 
- 18:		forward_copy_shift	pull=24	push=8
- 
-+	UNWIND(	.fnend				)
- 
- /*
-  * Abort preamble and completion macros.
-@@ -250,14 +261,13 @@
-  */
- 
- 	.macro	copy_abort_preamble
--19:	ldmfd	sp!, {r5 - r9}
-+19:	ldmfd	sp!, {r5, r6, r8 - r10}
- 	b	21f
--20:	ldmfd	sp!, {r5 - r8}
-+20:	ldmfd	sp!, {r5, r6, r8, r9}
- 21:
- 	.endm
- 
- 	.macro	copy_abort_end
--	ldmfd	sp!, {r4, pc}
-+	ldmfd	sp!, {r4, UNWIND(fpreg,) pc}
- 	.endm
- 
--
-diff --git a/arch/arm/lib32/memcpy.S b/arch/arm/lib32/memcpy.S
-index d40296e4bf..90f2b645aa 100644
---- a/arch/arm/lib32/memcpy.S
-+++ b/arch/arm/lib32/memcpy.S
-@@ -1,12 +1,15 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
--/* SPDX-FileCopyrightText: 2005 MontaVista Software, Inc (Nicolas Pitre)
--
- /*
-- * linux/arch/arm/lib/memcpy.S
-+ *  linux/arch/arm/lib/memcpy.S
-+ *
-+ *  Author:	Nicolas Pitre
-+ *  Created:	Sep 28, 2005
-+ *  Copyright:	MontaVista Software, Inc.
-  */
+diff --git a/arch/arm/cpu/cache-armv4.S b/arch/arm/cpu/cache-armv4.S
+index 78a098b2fe..024a94c583 100644
+--- a/arch/arm/cpu/cache-armv4.S
++++ b/arch/arm/cpu/cache-armv4.S
+@@ -2,6 +2,7 @@
  
  #include <linux/linkage.h>
- #include <asm/assembler.h>
-+#include <asm/unwind.h>
+ #include <init.h>
++#include <asm/assembler.h>
  
- #define LDR1W_SHIFT	0
- #define STR1W_SHIFT	0
-@@ -24,7 +27,7 @@
- 	.endm
+ #define CACHE_DLINESIZE 32
  
- 	.macro ldr1b ptr reg cond=al abort
--	ldr\cond\()b \reg, [\ptr], #1
-+	ldrb\cond \reg, [\ptr], #1
- 	.endm
- 
- 	.macro str1w ptr reg abort
-@@ -36,27 +39,28 @@
- 	.endm
- 
- 	.macro str1b ptr reg cond=al abort
--	str\cond\()b \reg, [\ptr], #1
-+	strb\cond \reg, [\ptr], #1
- 	.endm
- 
--	.macro enter reg1 reg2
--	stmdb sp!, {r0, \reg1, \reg2}
-+	.macro enter regs:vararg
-+UNWIND( .save	{r0, \regs}		)
-+	stmdb sp!, {r0, \regs}
- 	.endm
- 
--	.macro exit reg1 reg2
--	ldmfd sp!, {r0, \reg1, \reg2}
-+	.macro exit regs:vararg
-+	ldmfd sp!, {r0, \regs}
- 	.endm
- 
- 	.text
- 
- /* Prototype: void *memcpy(void *dest, const void *src, size_t n); */
- 
--.weak memcpy
--ENTRY(memcpy)
- ENTRY(__memcpy)
-+ENTRY(mmiocpy)
-+WEAK(memcpy)
- 
- #include "copy_template.S"
- 
--ENDPROC(__memcpy)
- ENDPROC(memcpy)
--
-+ENDPROC(mmiocpy)
-+ENDPROC(__memcpy)
-diff --git a/arch/arm/lib32/memset.S b/arch/arm/lib32/memset.S
-index 4ba74e0c6c..de75ae4d5a 100644
---- a/arch/arm/lib32/memset.S
-+++ b/arch/arm/lib32/memset.S
-@@ -1,19 +1,23 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
--/* SPDX-FileCopyrightText: 1995-2000 Russell King */
--
- /*
-- * linux/arch/arm/lib/memset.S
-- * ASM optimised string functions
-+ *  linux/arch/arm/lib/memset.S
-+ *
-+ *  Copyright (C) 1995-2000 Russell King
-+ *
-+ *  ASM optimised string functions
-  */
- #include <linux/linkage.h>
- #include <asm/assembler.h>
-+#include <asm/unwind.h>
- 
- 	.text
- 	.align	5
- 
--.weak memset
- ENTRY(__memset)
--ENTRY(memset)
-+ENTRY(mmioset)
-+WEAK(memset)
-+UNWIND( .fnstart         )
-+	and	r1, r1, #255		@ cast to unsigned char
- 	ands	r3, r0, #3		@ 1 unaligned?
- 	mov	ip, r0			@ preserve r0 as return value
- 	bne	6f			@ 1
-@@ -23,34 +27,38 @@ ENTRY(memset)
- 1:	orr	r1, r1, r1, lsl #8
- 	orr	r1, r1, r1, lsl #16
- 	mov	r3, r1
--	cmp	r2, #16
-+7:	cmp	r2, #16
- 	blt	4f
-+UNWIND( .fnend              )
- 
- #if ! CALGN(1)+0
- 
- /*
-- * We need an 2 extra registers for this loop - use r8 and the LR
-+ * We need 2 extra registers for this loop - use r8 and the LR
-  */
-+UNWIND( .fnstart            )
-+UNWIND( .save {r8, lr}      )
- 	stmfd	sp!, {r8, lr}
- 	mov	r8, r1
--	mov	lr, r1
-+	mov	lr, r3
- 
- 2:	subs	r2, r2, #64
--	stmgeia	ip!, {r1, r3, r8, lr}	@ 64 bytes at a time.
--	stmgeia	ip!, {r1, r3, r8, lr}
--	stmgeia	ip!, {r1, r3, r8, lr}
--	stmgeia	ip!, {r1, r3, r8, lr}
-+	stmiage	ip!, {r1, r3, r8, lr}	@ 64 bytes at a time.
-+	stmiage	ip!, {r1, r3, r8, lr}
-+	stmiage	ip!, {r1, r3, r8, lr}
-+	stmiage	ip!, {r1, r3, r8, lr}
- 	bgt	2b
--	ldmeqfd	sp!, {r8, pc}		@ Now <64 bytes to go.
-+	ldmfdeq	sp!, {r8, pc}		@ Now <64 bytes to go.
- /*
-  * No need to correct the count; we're only testing bits from now on
-  */
- 	tst	r2, #32
--	stmneia	ip!, {r1, r3, r8, lr}
--	stmneia	ip!, {r1, r3, r8, lr}
-+	stmiane	ip!, {r1, r3, r8, lr}
-+	stmiane	ip!, {r1, r3, r8, lr}
- 	tst	r2, #16
--	stmneia	ip!, {r1, r3, r8, lr}
-+	stmiane	ip!, {r1, r3, r8, lr}
- 	ldmfd	sp!, {r8, lr}
-+UNWIND( .fnend              )
- 
- #else
- 
-@@ -59,13 +67,15 @@ ENTRY(memset)
-  * whole cache lines at once.
-  */
- 
-+UNWIND( .fnstart               )
-+UNWIND( .save {r4-r8, lr}      )
- 	stmfd	sp!, {r4-r8, lr}
- 	mov	r4, r1
--	mov	r5, r1
-+	mov	r5, r3
- 	mov	r6, r1
--	mov	r7, r1
-+	mov	r7, r3
- 	mov	r8, r1
--	mov	lr, r1
-+	mov	lr, r3
- 
- 	cmp	r2, #96
- 	tstgt	ip, #31
-@@ -75,48 +85,64 @@ ENTRY(memset)
- 	rsb	r8, r8, #32
- 	sub	r2, r2, r8
- 	movs	r8, r8, lsl #(32 - 4)
--	stmcsia	ip!, {r4, r5, r6, r7}
--	stmmiia	ip!, {r4, r5}
-+	stmiacs	ip!, {r4, r5, r6, r7}
-+	stmiami	ip!, {r4, r5}
- 	tst	r8, #(1 << 30)
- 	mov	r8, r1
- 	strne	r1, [ip], #4
- 
- 3:	subs	r2, r2, #64
--	stmgeia	ip!, {r1, r3-r8, lr}
--	stmgeia	ip!, {r1, r3-r8, lr}
-+	stmiage	ip!, {r1, r3-r8, lr}
-+	stmiage	ip!, {r1, r3-r8, lr}
- 	bgt	3b
--	ldmeqfd	sp!, {r4-r8, pc}
-+	ldmfdeq	sp!, {r4-r8, pc}
- 
- 	tst	r2, #32
--	stmneia	ip!, {r1, r3-r8, lr}
-+	stmiane	ip!, {r1, r3-r8, lr}
- 	tst	r2, #16
--	stmneia	ip!, {r4-r7}
-+	stmiane	ip!, {r4-r7}
- 	ldmfd	sp!, {r4-r8, lr}
-+UNWIND( .fnend                 )
- 
+@@ -22,7 +23,7 @@ ENTRY(v4_mmu_cache_on)
+ 		mov	r0, #0
+ 		mcr	p15, 0, r0, c8, c7, 0	@ flush I,D TLBs
  #endif
+-		mov	pc, r12
++		ret	r12
+ ENDPROC(v4_mmu_cache_on)
  
-+UNWIND( .fnstart            )
- 4:	tst	r2, #8
--	stmneia	ip!, {r1, r3}
-+	stmiane	ip!, {r1, r3}
- 	tst	r2, #4
- 	strne	r1, [ip], #4
- /*
-- * When we get here, we've got less than 4 bytes to zero.  We
-+ * When we get here, we've got less than 4 bytes to set.  We
-  * may have an unaligned pointer as well.
-  */
- 5:	tst	r2, #2
--	strneb	r1, [ip], #1
--	strneb	r1, [ip], #1
-+	strbne	r1, [ip], #1
-+	strbne	r1, [ip], #1
- 	tst	r2, #1
--	strneb	r1, [ip], #1
+ __common_mmu_cache_on:
+@@ -43,7 +44,7 @@ ENTRY(v4_mmu_cache_off)
+ 		mcr	p15, 0, r0, c7, c7	@ invalidate whole cache v4
+ 		mcr	p15, 0, r0, c8, c7	@ invalidate whole TLB v4
+ #endif
+-		mov	pc, lr
++		ret	lr
+ ENDPROC(v4_mmu_cache_off)
+ 
+ .section .text.v4_mmu_cache_flush
+@@ -105,7 +106,7 @@ ENTRY(v4_dma_inv_range)
+ 	cmp	r0, r1
+ 	blo	1b
+ 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
 -	mov	pc, lr
-+	strbne	r1, [ip], #1
 +	ret	lr
  
- 6:	subs	r2, r2, #4		@ 1 do we have enough
- 	blt	5b			@ 1 bytes to align with?
- 	cmp	r3, #2			@ 1
--	strltb	r1, [ip], #1		@ 1
--	strleb	r1, [ip], #1		@ 1
-+	strblt	r1, [ip], #1		@ 1
-+	strble	r1, [ip], #1		@ 1
- 	strb	r1, [ip], #1		@ 1
- 	add	r2, r2, r3		@ 1 (r2 = r2 - (4 - r3))
- 	b	1b
-+UNWIND( .fnend   )
- ENDPROC(memset)
-+ENDPROC(mmioset)
- ENDPROC(__memset)
+ /*
+  *	dma_clean_range(start, end)
+@@ -125,7 +126,7 @@ ENTRY(v4_dma_clean_range)
+ 	cmp	r0, r1
+ 	blo	1b
+ 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
+-	mov	pc, lr
++	ret	lr
+ 
+ /*
+  *	dma_flush_range(start, end)
+@@ -143,5 +144,5 @@ ENTRY(v4_dma_flush_range)
+ 	cmp	r0, r1
+ 	blo	1b
+ 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
+-	mov	pc, lr
++	ret	lr
+ 
+diff --git a/arch/arm/cpu/cache-armv5.S b/arch/arm/cpu/cache-armv5.S
+index bcb7ebf466..6d9cbba015 100644
+--- a/arch/arm/cpu/cache-armv5.S
++++ b/arch/arm/cpu/cache-armv5.S
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/linkage.h>
+ #include <init.h>
++#include <asm/assembler.h>
+ 
+ #define CACHE_DLINESIZE 32
+ 
+@@ -22,7 +23,7 @@ ENTRY(v5_mmu_cache_on)
+ 		mov	r0, #0
+ 		mcr	p15, 0, r0, c8, c7, 0	@ flush I,D TLBs
+ #endif
+-		mov	pc, r12
++		ret	r12
+ ENDPROC(v5_mmu_cache_on)
+ 
+ __common_mmu_cache_on:
+@@ -43,7 +44,7 @@ ENTRY(v5_mmu_cache_off)
+ 		mcr	p15, 0, r0, c7, c7	@ invalidate whole cache v4
+ 		mcr	p15, 0, r0, c8, c7	@ invalidate whole TLB v4
+ #endif
+-		mov	pc, lr
++		ret	lr
+ ENDPROC(v5_mmu_cache_off)
+ 
+ .section .text.v5_mmu_cache_flush
+@@ -52,7 +53,7 @@ ENTRY(v5_mmu_cache_flush)
+ 		bne	1b
+ 		mcr	p15, 0, r0, c7, c5, 0	@ flush I cache
+ 		mcr	p15, 0, r0, c7, c10, 4	@ drain WB
+-		mov	pc, lr
++		ret	lr
+ ENDPROC(v5_mmu_cache_flush)
+ 
+ /*
+@@ -80,7 +81,7 @@ ENTRY(v5_dma_inv_range)
+ 	cmp	r0, r1
+ 	blo	1b
+ 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
+-	mov	pc, lr
++	ret	lr
+ 
+ /*
+  *	dma_clean_range(start, end)
+@@ -100,7 +101,7 @@ ENTRY(v5_dma_clean_range)
+ 	cmp	r0, r1
+ 	blo	1b
+ 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
+-	mov	pc, lr
++	ret	lr
+ 
+ /*
+  *	dma_flush_range(start, end)
+@@ -118,5 +119,5 @@ ENTRY(v5_dma_flush_range)
+ 	cmp	r0, r1
+ 	blo	1b
+ 	mcr	p15, 0, r0, c7, c10, 4		@ drain WB
+-	mov	pc, lr
++	ret	lr
+ 
+diff --git a/arch/arm/cpu/cache-armv6.S b/arch/arm/cpu/cache-armv6.S
+index cc720314c0..ab965623a3 100644
+--- a/arch/arm/cpu/cache-armv6.S
++++ b/arch/arm/cpu/cache-armv6.S
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/linkage.h>
+ #include <init.h>
++#include <asm/assembler.h>
+ 
+ #define HARVARD_CACHE
+ #define CACHE_LINE_SIZE		32
+@@ -24,7 +25,7 @@ ENTRY(v6_mmu_cache_on)
+ 		mov	r0, #0
+ 		mcr	p15, 0, r0, c8, c7, 0	@ flush I,D TLBs
+ #endif
+-		mov	pc, r12
++		ret	r12
+ ENDPROC(v6_mmu_cache_on)
+ 
+ __common_mmu_cache_on:
+@@ -46,7 +47,7 @@ ENTRY(v6_mmu_cache_off)
+ 		mcr	p15, 0, r0, c7, c7	@ invalidate whole cache v4
+ 		mcr	p15, 0, r0, c8, c7	@ invalidate whole TLB v4
+ #endif
+-		mov	pc, lr
++		ret	lr
+ 
+ .section .text.v6_mmu_cache_flush
+ ENTRY(v6_mmu_cache_flush)
+@@ -55,7 +56,7 @@ ENTRY(v6_mmu_cache_flush)
+ 		mcr	p15, 0, r1, c7, c5, 0	@ invalidate I+BTB
+ 		mcr	p15, 0, r1, c7, c15, 0	@ clean+invalidate unified
+ 		mcr	p15, 0, r1, c7, c10, 4	@ drain WB
+-		mov	pc, lr
++		ret	lr
+ ENDPROC(v6_mmu_cache_flush)
+ 
+ /*
+@@ -95,7 +96,7 @@ ENTRY(v6_dma_inv_range)
+ 	blo	1b
+ 	mov	r0, #0
+ 	mcr	p15, 0, r0, c7, c10, 4		@ drain write buffer
+-	mov	pc, lr
++	ret	lr
+ ENDPROC(v6_dma_inv_range)
+ 
+ /*
+@@ -117,7 +118,7 @@ ENTRY(v6_dma_clean_range)
+ 	blo	1b
+ 	mov	r0, #0
+ 	mcr	p15, 0, r0, c7, c10, 4		@ drain write buffer
+-	mov	pc, lr
++	ret	lr
+ ENDPROC(v6_dma_clean_range)
+ 
+ /*
+@@ -139,5 +140,5 @@ ENTRY(v6_dma_flush_range)
+ 	blo	1b
+ 	mov	r0, #0
+ 	mcr	p15, 0, r0, c7, c10, 4		@ drain write buffer
+-	mov	pc, lr
++	ret	lr
+ ENDPROC(v6_dma_flush_range)
+diff --git a/arch/arm/cpu/cache-armv7.S b/arch/arm/cpu/cache-armv7.S
+index efd9fe412f..3f6e5e6b73 100644
+--- a/arch/arm/cpu/cache-armv7.S
++++ b/arch/arm/cpu/cache-armv7.S
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/linkage.h>
+ #include <init.h>
++#include <asm/assembler.h>
+ 
+ .section .text.v7_mmu_cache_on
+ ENTRY(v7_mmu_cache_on)
+@@ -140,7 +141,7 @@ iflush:
+ 		mcr	p15, 0, r12, c7, c5, 0	@ invalidate I+BTB
+ 		dsb
+ 		isb
+-		mov	pc, lr
++		ret	lr
+ ENDPROC(__v7_mmu_cache_flush_invalidate)
+ 
+ /*
+@@ -182,7 +183,7 @@ ENTRY(v7_dma_inv_range)
+ 	cmp	r0, r1
+ 	blo	1b
+ 	dsb
+-	mov	pc, lr
++	ret	lr
+ ENDPROC(v7_dma_inv_range)
+ 
+ /*
+@@ -201,7 +202,7 @@ ENTRY(v7_dma_clean_range)
+ 	cmp	r0, r1
+ 	blo	1b
+ 	dsb
+-	mov	pc, lr
++	ret	lr
+ ENDPROC(v7_dma_clean_range)
+ 
+ /*
+@@ -220,5 +221,5 @@ ENTRY(v7_dma_flush_range)
+ 	cmp	r0, r1
+ 	blo	1b
+ 	dsb
+-	mov	pc, lr
++	ret	lr
+ ENDPROC(v7_dma_flush_range)
+diff --git a/arch/arm/cpu/hyp.S b/arch/arm/cpu/hyp.S
+index b5e4807877..016bcd79c0 100644
+--- a/arch/arm/cpu/hyp.S
++++ b/arch/arm/cpu/hyp.S
+@@ -4,6 +4,7 @@
+ #include <asm/system.h>
+ #include <asm/opcodes-virt.h>
+ #include <init.h>
++#include <asm/assembler.h>
+ 
+ .arch_extension sec
+ .arch_extension virt
+@@ -80,7 +81,7 @@ THUMB(	orr	r12, r12, #PSR_T_BIT	)
+ 	__ERET
+ 1:	msr	cpsr_c, r12
+ 2:
+-	mov	pc, r2
++	ret	r2
+ ENDPROC(armv7_hyp_install)
+ 
+ ENTRY(armv7_switch_to_hyp)
+diff --git a/arch/arm/cpu/setupc_32.S b/arch/arm/cpu/setupc_32.S
+index eafc9b52c6..d3449d9646 100644
+--- a/arch/arm/cpu/setupc_32.S
++++ b/arch/arm/cpu/setupc_32.S
+@@ -2,6 +2,7 @@
+ 
+ #include <linux/linkage.h>
+ #include <asm/sections.h>
++#include <asm/assembler.h>
+ 
+ .section .text.setupc
+ 
+@@ -32,7 +33,7 @@ ENTRY(setup_c)
+ 	bl	sync_caches_for_execution
+ 	sub	lr, r5, r4		/* adjust return address to new location */
+ 	pop	{r4, r5}
+-	mov	pc, lr
++	ret	lr
+ ENDPROC(setup_c)
+ 
+ /*
+@@ -76,13 +77,13 @@ ENTRY(relocate_to_adr)
+ 	ldr	r0,=1f
+ 	sub	r0, r0, r8
+ 	add	r0, r0, r6
+-	mov	pc, r0			/* jump to relocated address */
++	ret	r0			/* jump to relocated address */
+ 1:
+ 	bl	relocate_to_current_adr	/* relocate binary */
+ 
+ 	mov	lr, r7
+ 
+ 	pop	{r3, r4, r5, r6, r7, r8}
+-	mov	pc, lr
++	ret	lr
+ 
+ ENDPROC(relocate_to_adr)
+diff --git a/arch/arm/cpu/sm_as.S b/arch/arm/cpu/sm_as.S
+index f55ac8661c..32007147d4 100644
+--- a/arch/arm/cpu/sm_as.S
++++ b/arch/arm/cpu/sm_as.S
+@@ -5,6 +5,7 @@
+ #include <asm-generic/memory_layout.h>
+ #include <asm/secure.h>
+ #include <asm/system.h>
++#include <asm/assembler.h>
+ 
+ .arch_extension sec
+ .arch_extension virt
+@@ -147,7 +148,7 @@ secure_monitor:
+ 
+ hyp_trap:
+         mrs     lr, elr_hyp     @ for older asm: .byte 0x00, 0xe3, 0x0e, 0xe1
+-        mov pc, lr                              @ do no switch modes, but
++        ret	lr                              @ do no switch modes, but
+                                                 @ return to caller
+ 
+ ENTRY(psci_cpu_entry)
+diff --git a/arch/arm/include/asm/assembler.h b/arch/arm/include/asm/assembler.h
+index 4e7ad57170..e8f5625a0a 100644
+--- a/arch/arm/include/asm/assembler.h
++++ b/arch/arm/include/asm/assembler.h
+@@ -340,4 +340,26 @@
+ 	blx\c		\dst
+ 	.endif
+ 	.endm
 +
-+ENTRY(__memset32)
-+UNWIND( .fnstart         )
-+	mov	r3, r1			@ copy r1 to r3 and fall into memset64
-+UNWIND( .fnend   )
-+ENDPROC(__memset32)
-+ENTRY(__memset64)
-+UNWIND( .fnstart         )
-+	mov	ip, r0			@ preserve r0 as return value
-+	b	7b			@ jump into the middle of memset
-+UNWIND( .fnend   )
-+ENDPROC(__memset64)
++	.irp	c,,eq,ne,cs,cc,mi,pl,vs,vc,hi,ls,ge,lt,gt,le,hs,lo
++	.macro	ret\c, reg
++#if __LINUX_ARM_ARCH__ < 6
++	mov\c	pc, \reg
++#else
++	.ifeqs	"\reg", "lr"
++	bx\c	\reg
++	.else
++	mov\c	pc, \reg
++	.endif
++#endif
++	.endm
++	.endr
++
++	.macro	ret.w, reg
++	ret	\reg
++#ifdef CONFIG_THUMB2_BAREBOX
++	nop
++#endif
++	.endm
++
+ #endif
+diff --git a/arch/arm/lib32/ashldi3.S b/arch/arm/lib32/ashldi3.S
+index b62e06f602..dccb732078 100644
+--- a/arch/arm/lib32/ashldi3.S
++++ b/arch/arm/lib32/ashldi3.S
+@@ -23,6 +23,7 @@ General Public License for more details.
+ */
+ 
+ #include <linux/linkage.h>
++#include <asm/assembler.h>
+ 
+ #ifdef __ARMEB__
+ #define al r1
+@@ -44,7 +45,7 @@ ENTRY(__aeabi_llsl)
+  THUMB(	lsrmi	r3, al, ip		)
+  THUMB(	orrmi	ah, ah, r3		)
+ 	mov	al, al, lsl r2
+-	mov	pc, lr
++	ret	lr
+ 
+ ENDPROC(__ashldi3)
+ ENDPROC(__aeabi_llsl)
+diff --git a/arch/arm/lib32/ashrdi3.S b/arch/arm/lib32/ashrdi3.S
+index db849b65fc..3db06281e5 100644
+--- a/arch/arm/lib32/ashrdi3.S
++++ b/arch/arm/lib32/ashrdi3.S
+@@ -23,6 +23,7 @@ General Public License for more details.
+ */
+ 
+ #include <linux/linkage.h>
++#include <asm/assembler.h>
+ 
+ #ifdef __ARMEB__
+ #define al r1
+@@ -44,7 +45,7 @@ ENTRY(__aeabi_lasr)
+  THUMB(	lslmi	r3, ah, ip		)
+  THUMB(	orrmi	al, al, r3		)
+ 	mov	ah, ah, asr r2
+-	mov	pc, lr
++	ret	lr
+ 
+ ENDPROC(__ashrdi3)
+ ENDPROC(__aeabi_lasr)
+diff --git a/arch/arm/lib32/lshrdi3.S b/arch/arm/lib32/lshrdi3.S
+index e77e96c7bc..5af522482c 100644
+--- a/arch/arm/lib32/lshrdi3.S
++++ b/arch/arm/lib32/lshrdi3.S
+@@ -23,6 +23,7 @@ General Public License for more details.
+ */
+ 
+ #include <linux/linkage.h>
++#include <asm/assembler.h>
+ 
+ #ifdef __ARMEB__
+ #define al r1
+@@ -44,7 +45,7 @@ ENTRY(__aeabi_llsr)
+  THUMB(	lslmi	r3, ah, ip		)
+  THUMB(	orrmi	al, al, r3		)
+ 	mov	ah, ah, lsr r2
+-	mov	pc, lr
++	ret	lr
+ 
+ ENDPROC(__lshrdi3)
+ ENDPROC(__aeabi_llsr)
+diff --git a/arch/arm/lib32/runtime-offset.S b/arch/arm/lib32/runtime-offset.S
+index ac104de119..d9ba864b3b 100644
+--- a/arch/arm/lib32/runtime-offset.S
++++ b/arch/arm/lib32/runtime-offset.S
+@@ -14,7 +14,7 @@ ENTRY(get_runtime_offset)
+ 	ldr r1, linkadr
+ 	subs r0, r0, r1
+ THUMB(	adds r0, r0, #1)
+-	mov pc, lr
++	ret lr
+ 
+ linkadr:
+ .word get_runtime_offset
 
 -- 
 2.39.5
